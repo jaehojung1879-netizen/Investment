@@ -3,109 +3,120 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="투자 철학 Markdown과 일간 시장 데이터 JSON을 기반으로 QQQ 중심의 증시를 분석하는 리서치 워크벤치" />
-    <title>Market Research Workbench</title>
+    <meta
+      name="description"
+      content="개인 포트폴리오용 투자 인사이트 대시보드 — 멀티 호라이즌 ML 상승확률 신호, 매크로 환경, 리스크·국면 진단, 투자 원칙 체크리스트"
+    />
+    <title>My Investment Insight</title>
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
     <header class="app-header">
-      <div>
-        <p class="eyebrow">Markdown-driven market analysis</p>
-        <h1>투자 철학 → 데이터 수집 → 지표 계산 → 의사결정</h1>
+      <div class="header-main">
+        <p class="eyebrow">Personal investment insight</p>
+        <h1 id="portfolioName">내 투자 인사이트</h1>
         <p class="lede">
-          이 사이트는 광고형 랜딩 페이지가 아니라, <code>docs/investment-philosophy.md</code>와
-          <code>data/market-data.json</code>을 읽어 시장 상태를 분석하는 정적 리서치 워크벤치입니다.
+          노트북의 멀티 호라이즌 LightGBM 알림 시스템을 이식한 개인용 대시보드입니다.
+          종목별 <strong>21·63·126일 상승확률</strong>, 매크로 환경, 리스크·국면 진단을
+          한 화면에서 확인하고, 행동 전에 투자 원칙을 점검합니다.
         </p>
       </div>
       <aside class="status-card">
         <span>Data status</span>
-        <strong id="dataStatus">Loading</strong>
-        <small id="dataSource">market-data.json 확인 중</small>
+        <strong id="dataStatus">Loading…</strong>
+        <small id="dataSource">site-data.json 확인 중</small>
+        <small id="dataGenerated"></small>
       </aside>
     </header>
 
-    <nav class="tabs" aria-label="분석 화면 이동">
-      <a href="#philosophy">철학 MD</a>
-      <a href="#market">시장 데이터</a>
-      <a href="#signals">신호 분석</a>
-      <a href="#risks">리스크</a>
-      <a href="#pipeline">데이터 파이프라인</a>
+    <nav class="tabs" aria-label="대시보드 이동">
+      <a href="#signals">① 오늘의 신호</a>
+      <a href="#macro">② 매크로 환경</a>
+      <a href="#risk">③ 리스크·국면</a>
+      <a href="#principles">④ 투자 원칙</a>
     </nav>
 
     <main>
-      <section class="section grid-two" id="philosophy">
-        <div>
-          <p class="eyebrow">Source of truth</p>
-          <h2>분석 기준은 Markdown으로 관리합니다.</h2>
-          <p class="section-copy">
-            투자 철학, 국면 정의, 행동 프레임워크를 코드에 하드코딩하지 않고 Markdown 문서로 분리했습니다.
-            사이트는 이 문서를 불러와 오른쪽에 렌더링하고, 데이터 분석 화면은 동일한 원칙을 기준으로 해석됩니다.
-          </p>
-        </div>
-        <article class="markdown-panel" id="philosophyDoc" aria-live="polite">Markdown 로딩 중...</article>
-      </section>
-
-      <section class="section" id="market">
+      <!-- ① 오늘의 신호 / 알림 -->
+      <section class="section" id="signals">
         <div class="section-heading">
-          <p class="eyebrow">Market snapshot</p>
-          <h2>GitHub Actions가 만든 시장 데이터 JSON을 읽습니다.</h2>
+          <p class="eyebrow">① Today's signals</p>
+          <h2>오늘의 신호 · 알림</h2>
           <p>
-            배포 시 <code>scripts/fetch_market_data.py</code>가 QQQ/SPY 일간 데이터를 가져와 SMA, RSI, 변동성,
-            drawdown, 상대강도, horizon별 수익률을 계산하고 <code>data/market-data.json</code>으로 저장합니다.
+            종목별로 호라이즌(21/63/126일)마다 캘리브레이션된 상승확률과
+            동적 임계값 기반 알림(STRONG BUY / HOLD / STRONG SELL)을 표시합니다.
+            각 신호 옆 OOS 정밀도·백테스트는 그 신호를 얼마나 믿을지 가늠하는 근거입니다.
           </p>
         </div>
-        <div class="kpi-grid" id="kpiGrid"></div>
+        <div class="ticker-grid" id="signalCards"></div>
+        <p class="disclaimer-inline">
+          확률은 행동 명령이 아니라 포지션 크기와 확인 강도를 조절하는 입력값입니다.
+          OOS 정밀도가 기준선(baseline)을 크게 넘지 못하는 신호는 신뢰도를 낮춰 해석하세요.
+        </p>
       </section>
 
-      <section class="section grid-two" id="signals">
-        <div>
-          <p class="eyebrow">Signal engine</p>
-          <h2>단기/중기/반기 horizon을 별도로 판정합니다.</h2>
-          <p class="section-copy">
-            21D는 단기 리스크와 반등, 63D는 핵심 추세, 126D는 큰 국면을 보는 용도입니다.
-            단일 매수/매도 문구 대신 score, stance, risk flag를 같이 확인합니다.
-          </p>
-          <div class="decision-card" id="decisionCard"></div>
-        </div>
-        <div class="table-card">
-          <div class="table-row table-head"><span>Horizon</span><span>Return</span><span>View</span></div>
-          <div id="signalRows"></div>
-        </div>
-      </section>
-
-      <section class="section" id="risks">
+      <!-- ② 매크로 환경 -->
+      <section class="section" id="macro">
         <div class="section-heading">
-          <p class="eyebrow">Risk flags</p>
-          <h2>행동 전에 리스크 플래그를 먼저 확인합니다.</h2>
+          <p class="eyebrow">② Macro environment</p>
+          <h2>매크로 환경</h2>
+          <p>
+            FRED 국채 금리(10Y·2Y), 장단기 금리차, VIX로 거시 리스크를 읽습니다.
+            금리차 역전이나 VIX 급등은 개별 종목 신호보다 우선해 확인합니다.
+          </p>
+        </div>
+        <div class="macro-wrap" id="macroPanel"></div>
+      </section>
+
+      <!-- ③ 리스크 / 국면 -->
+      <section class="section" id="risk">
+        <div class="section-heading">
+          <p class="eyebrow">③ Risk &amp; regime</p>
+          <h2>리스크 · 국면 진단</h2>
+          <p>
+            추세(SMA50/200), 실현 변동성, 1년 낙폭, 상대강도, RSI로 각 종목의 국면을
+            Bull / Transition / Bear 로 분류하고 활성화된 리스크 플래그를 보여줍니다.
+          </p>
         </div>
         <div class="risk-grid" id="riskGrid"></div>
       </section>
 
-      <section class="section grid-two" id="pipeline">
+      <!-- ④ 투자 원칙 / 체크리스트 -->
+      <section class="section grid-two" id="principles">
         <div>
-          <p class="eyebrow">How it works</p>
-          <h2>정적 사이트지만 실제 분석 파이프라인을 갖습니다.</h2>
-          <ol class="timeline">
-            <li><strong>철학:</strong> <code>docs/investment-philosophy.md</code>에 분석 원칙과 행동 프레임워크를 기록합니다.</li>
-            <li><strong>수집:</strong> GitHub Actions가 공개 일간 CSV를 가져옵니다.</li>
-            <li><strong>계산:</strong> Python 스크립트가 SMA, RSI, 변동성, drawdown, QQQ/SPY 상대강도를 계산합니다.</li>
-            <li><strong>게시:</strong> 계산 결과를 <code>data/market-data.json</code>으로 저장하고 Pages가 그대로 배포합니다.</li>
-            <li><strong>해석:</strong> 브라우저는 Markdown과 JSON을 읽어 같은 화면에서 원칙과 데이터를 연결합니다.</li>
-          </ol>
+          <p class="eyebrow">④ Principles &amp; checklist</p>
+          <h2>내 투자 원칙 · 체크리스트</h2>
+          <p class="section-copy">
+            신호와 데이터를 행동으로 옮기기 전에 점검하는 개인 원칙입니다.
+            기준은 코드가 아니라 <code>docs/investment-philosophy.md</code> 에서 관리하므로
+            언제든 문서만 고치면 이 화면이 갱신됩니다.
+          </p>
         </div>
-        <pre class="code-card"><code>docs/investment-philosophy.md
-        ↓
-scripts/fetch_market_data.py
-        ↓
-data/market-data.json
-        ↓
-GitHub Pages dashboard</code></pre>
+        <article class="markdown-panel" id="principlesDoc" aria-live="polite">
+          Markdown 로딩 중…
+        </article>
+      </section>
+
+      <section class="section" id="pipeline">
+        <div class="section-heading">
+          <p class="eyebrow">How it works</p>
+          <h2>정적 사이트지만 실제 ML 파이프라인을 갖습니다.</h2>
+        </div>
+        <div class="pipeline-flow">
+          <span>config.json (추적 종목)</span><i>→</i>
+          <span>GitHub Actions</span><i>→</i>
+          <span>yfinance + FRED 수집</span><i>→</i>
+          <span>LightGBM walk-forward + 캘리브레이션</span><i>→</i>
+          <span>data/site-data.json</span><i>→</i>
+          <span>이 대시보드</span>
+        </div>
       </section>
     </main>
 
     <footer>
-      이 도구는 개인 리서치와 교육 목적이며 투자 조언이 아닙니다. 데이터 제공처 장애나 지연 가능성이 있으므로 실제 주문 전 원천 데이터를 재확인하세요.
+      이 도구는 개인 리서치·교육 목적이며 투자 조언이 아닙니다. 과거 성과는 미래를 보장하지
+      않으며 데이터 지연·오류 가능성이 있으므로 실제 주문 전 원천 데이터를 재확인하세요.
     </footer>
-    <script src="script.js"></script>
+    <script src="app.js"></script>
   </body>
 </html>

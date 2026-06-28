@@ -1,0 +1,7 @@
+# Pipeline dependencies (installed in CI before running python -m pipeline.build)
+yfinance>=0.2.40
+fredapi>=0.5.2
+lightgbm>=4.3.0
+scikit-learn>=1.6.0
+pandas>=2.2.0
+numpy>=1.26.0
