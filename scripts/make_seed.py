@@ -69,7 +69,9 @@ def main() -> int:
         if tsig is not None:
             stats = M.horizon_return_stats(feat, th)
             idea = trade_mod.build_idea(tk, region, tsig["probUp"], stats, th, tsig["asOf"], diag["regime"])
-            screened.append({"ticker": tk, "region": region, "probUp": tsig["probUp"], "regime": diag["regime"], "qualifies": idea is not None})
+            screened.append({"ticker": tk, "region": region, "probUp": tsig["probUp"], "regime": diag["regime"],
+                             "qualifies": idea is not None, "aboveMA50": diag["aboveMA50"],
+                             "aboveMA200": diag["aboveMA200"], "mom63": diag["mom63"]})
             if idea:
                 ideas.append(idea)
         if tk in cfg.core:
@@ -86,11 +88,17 @@ def main() -> int:
             core_cards.append({"ticker": tk, "asOf": feat.dropna(subset=fcols).index[-1].strftime("%Y-%m-%d"),
                                "lastClose": diag["lastClose"], "signals": sigs, "risk": diag})
 
+    from pipeline import sentiment as sentiment_mod
+    sent = sentiment_mod.summarize(screened, macro, vix)
+    screen_table = [{k: r[k] for k in ("ticker", "region", "probUp", "regime", "qualifies")}
+                    for r in sorted(screened, key=lambda x: x["probUp"], reverse=True)]
     payload = {"generatedAt": datetime.now(timezone.utc).isoformat(), "portfolioName": cfg.portfolio_name,
                "primary": cfg.primary, "benchmark": cfg.benchmark, "horizons": cfg.horizons, "tradeHorizon": th,
-               "names": cfg.names, "seed": True, "dataSource": "SEED (예시) — 합성 데이터", "tradeIdeas": trade_mod.rank_ideas(ideas),
-               "screened": sorted(screened, key=lambda x: x["probUp"], reverse=True), "core": core_cards,
-               "macro": macro_mod.summarize(macro, vix)}
+               "names": cfg.names, "seed": True, "stale": False, "dataSource": "SEED (예시) — 합성 데이터",
+               "tradeIdeas": trade_mod.rank_ideas(ideas), "screened": screen_table, "sentiment": sent,
+               "core": core_cards, "macro": macro_mod.summarize(macro, vix),
+               "meta": {"modelsTrained": 0, "universeScreened": len(screened),
+                        "latestDataDate": dates[-1].strftime("%Y-%m-%d"), "fredEnabled": True, "elapsedSec": 0}}
     out = ROOT / "data" / "site-data.json"
     out.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(f"wrote {out}: {len(core_cards)} core, {len(ideas)} ideas, {len(screened)} screened")

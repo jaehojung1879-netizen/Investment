@@ -13,21 +13,45 @@ import pandas as pd
 from .config import Config
 
 
-def fetch_prices(tickers: list[str], start: str) -> dict[str, pd.DataFrame]:
-    """Return {ticker: DataFrame[Open, High, Low, Close, Volume]} indexed by date."""
+OHLCV = ["Open", "High", "Low", "Close", "Volume"]
+
+
+def fetch_prices(tickers: list[str], start: str, batch: int = 40) -> dict[str, pd.DataFrame]:
+    """Return {ticker: DataFrame[Open, High, Low, Close, Volume]} indexed by date.
+
+    Downloads in threaded batches (much faster for a large universe). Tickers
+    with no data are skipped.
+    """
     import yfinance as yf
 
     out: dict[str, pd.DataFrame] = {}
-    for ticker in tickers:
-        df = yf.download(ticker, start=start, progress=False, auto_adjust=True)
+    for i in range(0, len(tickers), batch):
+        chunk = tickers[i : i + batch]
+        df = yf.download(
+            chunk, start=start, progress=False, auto_adjust=True,
+            group_by="ticker", threads=True,
+        )
         if df is None or len(df) == 0:
-            print(f"  warning: no data for {ticker}")
             continue
-        # Flatten possible MultiIndex columns (yfinance batch behaviour).
-        if isinstance(df.columns, pd.MultiIndex):
-            df.columns = df.columns.get_level_values(0)
-        keep = [c for c in ["Open", "High", "Low", "Close", "Volume"] if c in df.columns]
-        out[ticker] = df[keep].copy()
+        if len(chunk) == 1:
+            tk = chunk[0]
+            if isinstance(df.columns, pd.MultiIndex):
+                df.columns = df.columns.get_level_values(-1)
+            keep = [c for c in OHLCV if c in df.columns]
+            if keep:
+                out[tk] = df[keep].dropna(how="all").copy()
+            continue
+        for tk in chunk:
+            if tk not in df.columns.get_level_values(0):
+                continue
+            sub = df[tk]
+            keep = [c for c in OHLCV if c in sub.columns]
+            sub = sub[keep].dropna(how="all")
+            if len(sub):
+                out[tk] = sub.copy()
+    missing = [t for t in tickers if t not in out]
+    if missing:
+        print(f"  warning: no data for {len(missing)} tickers (e.g. {missing[:5]})")
     return out
 
 

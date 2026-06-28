@@ -11,9 +11,11 @@ GitHub Actions(Python)가 매일 데이터를 수집·모델링해 `data/site-da
 
 1. **오늘의 트레이드** — KR/US 후보를 트레이드 호라이즌(기본 10영업일)으로 스크리닝, 비용·확신 게이트를 통과한 것만 entry·hold-until·무효화 조건과 함께 제안
 2. **보유 종목** — core 종목 × 21/63/126D 캘리브레이션 확률 + 알림 + OOS 정밀도/lift/백테스트
-3. **매크로** — FRED 10Y/2Y, 장단기 금리차, VIX
-4. **국면·리스크** — 추세·변동성·낙폭·상대강도·RSI 기반 Bull/Transition/Bear
+3. **매크로** — FRED 국외(10Y/2Y·금리차·기준금리·HY스프레드·VIX) + 국내(원/달러·국고채 10Y/3M·금리차)
+4. **시장 국면** — 구루 인용 대신 유니버스 breadth(추세 위 비중)·모멘텀 + 매크로로 계산한 **정량 시장심리**(US/KR, 0~100·강세/중립/약세)
 5. **원칙·체크리스트** — `docs/investment-philosophy.md`에서 관리
+
+설명은 섹션 제목 옆 **?** 또는 점선 용어(확률·edge·lift·OOS 등)를 **클릭하면 팝업**으로 뜹니다. 상단에 데이터 기준일·유니버스 수·모델 학습 횟수가 표시되고, 갱신 실패 시 stale 배너가 뜹니다.
 
 ## 방법론 메모 (노트북 대비 수정점)
 
@@ -28,6 +30,7 @@ GitHub Actions(Python)가 매일 데이터를 수집·모델링해 `data/site-da
 ```json
 {
   "core": ["QQQ", "NVDA", "PLTR"],
+  "universeSize": 40,
   "universe": { "US": ["QQQ", "AAPL", "..."], "KR": ["005930.KS", "000660.KS", "..."] },
   "names": { "005930.KS": "삼성전자", "000660.KS": "SK하이닉스" },
   "benchmark": "SPY", "primary": "QQQ", "tradeHorizon": 10,
@@ -39,10 +42,11 @@ GitHub Actions(Python)가 매일 데이터를 수집·모델링해 `data/site-da
 ```
 
 - `core` = 보유 종목(전체 분석 + 보유 카드)
-- `universe.US` / `universe.KR` = 트레이드 아이디어 스크리닝 후보
-- `names` = KR 코드 → 화면에 보일 종목명 (코드는 작게 같이 표시)
+- **스크리닝 유니버스는 매일 자동 구성**: S&P500 + KOSPI 상위 `universeSize`개를 FinanceDataReader로 가져옴(종목명도 자동). 네트워크 실패 시 `universe.US/KR` 정적 목록으로 fallback
+- `universeSize` = 지역별 스크리닝 종목 수. **클수록 매일 CI 시간이 길어짐**(40이면 수십초~수분)
+- `names` = 자동 종목명 위에 덮어쓸 오버라이드(코드는 작게 같이 표시)
 - `tradeHorizon` = 단기 트레이드 기본 보유 영업일
-- `fred.US` / `fred.KR` = 지역별 매크로 시리즈(국채·금리·스프레드·환율). FRED 한 키로 미국·한국 모두 조회
+- `fred.US` / `fred.KR` = 지역별 매크로 시리즈. FRED 한 키로 미국·한국 모두 조회
 
 ## 구성
 
@@ -52,11 +56,13 @@ pipeline/                   노트북 이식 ML 파이프라인
   config.py                 config.json + 환경변수 로딩
   datafeed.py               yfinance(가격) + FRED(매크로) 수집
   features.py               피처 엔지니어링 + 타깃
+  universe.py               S&P500/KOSPI 자동 구성(+종목명), 실패 시 fallback
   model.py                  LightGBM purged walk-forward + 캘리브레이션 + EV + 백테스트
   trade.py                  비용 인지 단기 트레이드 아이디어 엔진(KR/US)
-  macro.py                  매크로 환경 요약
-  risk.py                   국면·리스크 진단
-  build.py                  오케스트레이터 → data/site-data.json
+  macro.py                  매크로 환경 요약(US/KR)
+  sentiment.py              정량 시장심리(breadth·모멘텀·매크로) US/KR
+  risk.py                   종목 국면·리스크 진단(+breadth 입력)
+  build.py                  오케스트레이터 → data/site-data.json (+meta/stale)
 data/site-data.json         사이트가 읽는 산출물 (현재는 SEED 예시)
 docs/investment-philosophy.md  투자 원칙·체크리스트(사이트가 렌더)
 index.html / styles.css / app.js  대시보드
