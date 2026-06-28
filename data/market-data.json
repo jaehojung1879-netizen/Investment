@@ -1,0 +1,29 @@
+{
+  "generatedAt": "2026-06-28T08:45:00Z",
+  "source": "Committed seed snapshot; GitHub Actions refreshes this artifact from public daily CSV when network access is available.",
+  "symbol": "QQQ",
+  "latestDate": "2026-06-27",
+  "latestClose": 706.52,
+  "composite": {
+    "score": 58,
+    "stance": "Neutral",
+    "action": "실시간/일간 데이터 갱신 후 추세와 리스크가 같은 방향인지 확인"
+  },
+  "metrics": {
+    "sma50": null,
+    "sma200": null,
+    "rsi14": null,
+    "realizedVol21d": null,
+    "maxDrawdown252d": null,
+    "relativeStrength63d": null
+  },
+  "returns": {},
+  "signals": [
+    { "horizon": "21D", "return": null, "view": "단기 리스크/반등 확인" },
+    { "horizon": "63D", "return": null, "view": "중기 추세 판단" },
+    { "horizon": "126D", "return": null, "view": "반기 국면 판단" }
+  ],
+  "riskFlags": [
+    { "name": "Data Freshness", "active": true, "message": "초기 스냅샷입니다. GitHub Actions 데이터 갱신 결과를 확인하세요." }
+  ]
+}

@@ -3,115 +3,108 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Personal Market Insight Dashboard</title>
+    <meta name="description" content="투자 철학 Markdown과 일간 시장 데이터 JSON을 기반으로 QQQ 중심의 증시를 분석하는 리서치 워크벤치" />
+    <title>Market Research Workbench</title>
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <header class="hero">
-      <nav class="nav">
-        <div class="brand">Market Insight Lab</div>
-        <a href="#disclaimer">개인 분석용 · 투자 조언 아님</a>
-      </nav>
-      <section class="hero-grid">
-        <div>
-          <p class="eyebrow">QQQ 기반 다기간 시장 알림 시스템</p>
-          <h1>노트북 모델을 개인 투자 인사이트 사이트로 정리했습니다.</h1>
-          <p class="lede">
-            예전 Market Alert System의 핵심 아이디어인 확률 보정, 동적 알림, 현실적 백테스트,
-            국면별 검증을 한 화면에서 해석할 수 있도록 설계한 정적 대시보드입니다.
-          </p>
-          <div class="hero-actions">
-            <a class="button primary" href="#signals">현재 시그널 보기</a>
-            <a class="button secondary" href="#workflow">분석 흐름 보기</a>
-          </div>
-        </div>
-        <aside class="signal-card strong-buy">
-          <span class="card-label">예시 종합 상태</span>
-          <strong>관찰 우위</strong>
-          <p>21d · 63d · 126d horizon을 따로 보고, 확신도가 높은 구간만 행동 후보로 분리합니다.</p>
-        </aside>
-      </section>
+    <header class="app-header">
+      <div>
+        <p class="eyebrow">Markdown-driven market analysis</p>
+        <h1>투자 철학 → 데이터 수집 → 지표 계산 → 의사결정</h1>
+        <p class="lede">
+          이 사이트는 광고형 랜딩 페이지가 아니라, <code>docs/investment-philosophy.md</code>와
+          <code>data/market-data.json</code>을 읽어 시장 상태를 분석하는 정적 리서치 워크벤치입니다.
+        </p>
+      </div>
+      <aside class="status-card">
+        <span>Data status</span>
+        <strong id="dataStatus">Loading</strong>
+        <small id="dataSource">market-data.json 확인 중</small>
+      </aside>
     </header>
 
+    <nav class="tabs" aria-label="분석 화면 이동">
+      <a href="#philosophy">철학 MD</a>
+      <a href="#market">시장 데이터</a>
+      <a href="#signals">신호 분석</a>
+      <a href="#risks">리스크</a>
+      <a href="#pipeline">데이터 파이프라인</a>
+    </nav>
+
     <main>
-      <section class="section" id="signals">
-        <div class="section-heading">
-          <p class="eyebrow">Current Signals</p>
-          <h2>기간별 알림을 분리해서 과잉 확신을 줄입니다.</h2>
+      <section class="section grid-two" id="philosophy">
+        <div>
+          <p class="eyebrow">Source of truth</p>
+          <h2>분석 기준은 Markdown으로 관리합니다.</h2>
+          <p class="section-copy">
+            투자 철학, 국면 정의, 행동 프레임워크를 코드에 하드코딩하지 않고 Markdown 문서로 분리했습니다.
+            사이트는 이 문서를 불러와 오른쪽에 렌더링하고, 데이터 분석 화면은 동일한 원칙을 기준으로 해석됩니다.
+          </p>
         </div>
-        <div class="cards three">
-          <article class="metric-card">
-            <span>21일</span>
-            <h3>단기 리스크/반등</h3>
-            <p class="score">확률 보정 기반</p>
-            <p>VIX 변화, 단기 모멘텀, Bollinger 위치를 빠르게 반영하는 구간입니다.</p>
-          </article>
-          <article class="metric-card featured">
-            <span>63일</span>
-            <h3>중기 추세 판단</h3>
-            <p class="score">핵심 의사결정</p>
-            <p>분기 단위 포지션 점검에 적합하며, QQQ/SPY 상대강도와 금리 스트레스를 함께 봅니다.</p>
-          </article>
-          <article class="metric-card">
-            <span>126일</span>
-            <h3>반기 국면 판단</h3>
-            <p class="score">노이즈 완화</p>
-            <p>MA50/MA200, 52주 고저점, 수익률 분포를 통해 큰 추세와 방어 필요성을 봅니다.</p>
-          </article>
+        <article class="markdown-panel" id="philosophyDoc" aria-live="polite">Markdown 로딩 중...</article>
+      </section>
+
+      <section class="section" id="market">
+        <div class="section-heading">
+          <p class="eyebrow">Market snapshot</p>
+          <h2>GitHub Actions가 만든 시장 데이터 JSON을 읽습니다.</h2>
+          <p>
+            배포 시 <code>scripts/fetch_market_data.py</code>가 QQQ/SPY 일간 데이터를 가져와 SMA, RSI, 변동성,
+            drawdown, 상대강도, horizon별 수익률을 계산하고 <code>data/market-data.json</code>으로 저장합니다.
+          </p>
+        </div>
+        <div class="kpi-grid" id="kpiGrid"></div>
+      </section>
+
+      <section class="section grid-two" id="signals">
+        <div>
+          <p class="eyebrow">Signal engine</p>
+          <h2>단기/중기/반기 horizon을 별도로 판정합니다.</h2>
+          <p class="section-copy">
+            21D는 단기 리스크와 반등, 63D는 핵심 추세, 126D는 큰 국면을 보는 용도입니다.
+            단일 매수/매도 문구 대신 score, stance, risk flag를 같이 확인합니다.
+          </p>
+          <div class="decision-card" id="decisionCard"></div>
+        </div>
+        <div class="table-card">
+          <div class="table-row table-head"><span>Horizon</span><span>Return</span><span>View</span></div>
+          <div id="signalRows"></div>
         </div>
       </section>
 
-      <section class="section split" id="workflow">
+      <section class="section" id="risks">
+        <div class="section-heading">
+          <p class="eyebrow">Risk flags</p>
+          <h2>행동 전에 리스크 플래그를 먼저 확인합니다.</h2>
+        </div>
+        <div class="risk-grid" id="riskGrid"></div>
+      </section>
+
+      <section class="section grid-two" id="pipeline">
         <div>
-          <p class="eyebrow">Model Workflow</p>
-          <h2>노트북의 분석 파이프라인</h2>
+          <p class="eyebrow">How it works</p>
+          <h2>정적 사이트지만 실제 분석 파이프라인을 갖습니다.</h2>
           <ol class="timeline">
-            <li><strong>데이터 수집:</strong> QQQ, SPY, VIX, 미국 2년/10년 금리와 수익률 곡선을 결합합니다.</li>
-            <li><strong>특징 생성:</strong> 모멘텀, 변동성, RSI, MACD, Bollinger, 상대강도, 리스크 스코어를 계산합니다.</li>
-            <li><strong>Walk-forward 학습:</strong> LightGBM을 확장 윈도우로 학습하고 isotonic calibration으로 확률을 보정합니다.</li>
-            <li><strong>검증:</strong> always-UP 기준선, UP/DOWN 양방향 성능, OOS, 국면별 성능을 비교합니다.</li>
-            <li><strong>알림:</strong> 상위 분위수 확률만 STRONG BUY, 하위 꼬리만 STRONG SELL 후보로 봅니다.</li>
+            <li><strong>철학:</strong> <code>docs/investment-philosophy.md</code>에 분석 원칙과 행동 프레임워크를 기록합니다.</li>
+            <li><strong>수집:</strong> GitHub Actions가 공개 일간 CSV를 가져옵니다.</li>
+            <li><strong>계산:</strong> Python 스크립트가 SMA, RSI, 변동성, drawdown, QQQ/SPY 상대강도를 계산합니다.</li>
+            <li><strong>게시:</strong> 계산 결과를 <code>data/market-data.json</code>으로 저장하고 Pages가 그대로 배포합니다.</li>
+            <li><strong>해석:</strong> 브라우저는 Markdown과 JSON을 읽어 같은 화면에서 원칙과 데이터를 연결합니다.</li>
           </ol>
         </div>
-        <div class="panel">
-          <h3>사이트가 보여줄 핵심 질문</h3>
-          <ul class="check-list">
-            <li>모델 확률이 기준선 대비 실제로 lift가 있는가?</li>
-            <li>상승장뿐 아니라 하락 경고도 의미 있게 작동하는가?</li>
-            <li>거래비용, 세금, 슬리피지 후에도 buy & hold 대비 유리한가?</li>
-            <li>최근 OOS 기간에서도 성능이 유지되는가?</li>
-          </ul>
-        </div>
-      </section>
-
-      <section class="section dark">
-        <div class="section-heading">
-          <p class="eyebrow">Insight Cards</p>
-          <h2>투자 판단 전 확인할 대시보드 카드</h2>
-        </div>
-        <div class="cards four">
-          <article><h3>Alert Quality</h3><p>STRONG BUY/SELL의 정확도, 빈도, coverage를 같이 확인합니다.</p></article>
-          <article><h3>Backtest Reality</h3><p>수수료 $5, 슬리피지 0.1%, 단기/장기 세금, T+1 체결 가정을 반영합니다.</p></article>
-          <article><h3>Regime Map</h3><p>Dot-com, GFC, COVID, 강세장 등 구간별 취약점을 따로 봅니다.</p></article>
-          <article><h3>Risk Context</h3><p>VIX ratio, yield curve change, treasury stress를 단일 가격 신호와 분리해 해석합니다.</p></article>
-        </div>
-      </section>
-
-      <section class="section" id="roadmap">
-        <div class="section-heading">
-          <p class="eyebrow">Next Build</p>
-          <h2>다음 단계 구현 로드맵</h2>
-        </div>
-        <div class="roadmap">
-          <div><span>01</span><h3>백엔드 분석 작업</h3><p>노트북 코드를 Python 모듈로 정리하고 API 또는 배치 산출물(JSON/CSV)을 생성합니다.</p></div>
-          <div><span>02</span><h3>데이터 캐시</h3><p>FRED API 키는 환경변수로 옮기고 최신 지표와 모델 결과를 저장합니다.</p></div>
-          <div><span>03</span><h3>대시보드 연결</h3><p>이 정적 화면의 예시 텍스트를 실제 확률, 수익률, drawdown 차트로 교체합니다.</p></div>
-        </div>
+        <pre class="code-card"><code>docs/investment-philosophy.md
+        ↓
+scripts/fetch_market_data.py
+        ↓
+data/market-data.json
+        ↓
+GitHub Pages dashboard</code></pre>
       </section>
     </main>
 
-    <footer id="disclaimer">
-      <strong>중요:</strong> 이 사이트는 개인 분석 도구의 초안이며 투자 조언이 아닙니다. 과거 성과는 미래 성과를 보장하지 않습니다.
+    <footer>
+      이 도구는 개인 리서치와 교육 목적이며 투자 조언이 아닙니다. 데이터 제공처 장애나 지연 가능성이 있으므로 실제 주문 전 원천 데이터를 재확인하세요.
     </footer>
     <script src="script.js"></script>
   </body>
