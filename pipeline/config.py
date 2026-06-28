@@ -28,10 +28,12 @@ class ModelConfig:
 @dataclass
 class Config:
     portfolio_name: str
-    tickers: list[str]
+    core: list[str]
+    universe: dict[str, list[str]]  # region -> tickers, e.g. {"US": [...], "KR": [...]}
     benchmark: str
     primary: str
     horizons: list[int]
+    trade_horizon: int
     model: ModelConfig
     fred_series: dict[str, str] = field(default_factory=dict)
     fred_api_key: str | None = None
@@ -40,8 +42,14 @@ class Config:
     def has_fred(self) -> bool:
         return bool(self.fred_api_key)
 
+    def region_of(self, ticker: str) -> str:
+        for region, names in self.universe.items():
+            if ticker in names:
+                return region
+        return "KR" if ticker.upper().endswith((".KS", ".KQ")) else "US"
 
-def load_config(path: Path | str = CONFIG_PATH) -> Config:
+
+def load_config(path: Path | str = CONFIG_PATH) -> tuple[Config, list[str]]:
     raw = json.loads(Path(path).read_text(encoding="utf-8"))
     model_raw = raw.get("model", {})
     model = ModelConfig(
@@ -54,20 +62,24 @@ def load_config(path: Path | str = CONFIG_PATH) -> Config:
         history_start=model_raw.get("historyStart", "2010-01-01"),
     )
 
-    tickers = list(dict.fromkeys(raw.get("tickers", ["QQQ"])))  # de-dup, keep order
+    universe = raw.get("universe", {"US": raw.get("tickers", ["QQQ"]), "KR": []})
+    universe = {region: list(dict.fromkeys(names)) for region, names in universe.items()}
+    core = list(dict.fromkeys(raw.get("core", universe.get("US", ["QQQ"])[:3])))
     benchmark = raw.get("benchmark", "SPY")
-    primary = raw.get("primary", tickers[0] if tickers else "QQQ")
+    primary = raw.get("primary", core[0] if core else "QQQ")
 
-    # Make sure the benchmark price series is always downloaded even if it is
-    # not one of the tracked tickers.
-    download_universe = list(dict.fromkeys(tickers + [benchmark]))
+    # Every distinct ticker we need price data for (universe + core + benchmark).
+    all_tickers = [t for names in universe.values() for t in names] + core + [benchmark]
+    download_universe = list(dict.fromkeys(all_tickers))
 
     return Config(
         portfolio_name=raw.get("portfolioName", "Investment Insight"),
-        tickers=tickers,
+        core=core,
+        universe=universe,
         benchmark=benchmark,
         primary=primary,
         horizons=raw.get("horizons", [21, 63, 126]),
+        trade_horizon=raw.get("tradeHorizon", 10),
         model=model,
         fred_series=raw.get("fred", {}).get("series", {}),
         fred_api_key=os.environ.get("FRED_API_KEY"),

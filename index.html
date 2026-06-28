@@ -3,120 +3,69 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta
-      name="description"
-      content="개인 포트폴리오용 투자 인사이트 대시보드 — 멀티 호라이즌 ML 상승확률 신호, 매크로 환경, 리스크·국면 진단, 투자 원칙 체크리스트"
-    />
-    <title>My Investment Insight</title>
+    <title>Investment Insight</title>
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <header class="app-header">
-      <div class="header-main">
-        <p class="eyebrow">Personal investment insight</p>
-        <h1 id="portfolioName">내 투자 인사이트</h1>
-        <p class="lede">
-          노트북의 멀티 호라이즌 LightGBM 알림 시스템을 이식한 개인용 대시보드입니다.
-          종목별 <strong>21·63·126일 상승확률</strong>, 매크로 환경, 리스크·국면 진단을
-          한 화면에서 확인하고, 행동 전에 투자 원칙을 점검합니다.
-        </p>
+    <header class="bar">
+      <div class="bar-left">
+        <strong id="portfolioName">Investment Insight</strong>
+        <span id="dataStatus" class="muted">loading…</span>
       </div>
-      <aside class="status-card">
-        <span>Data status</span>
-        <strong id="dataStatus">Loading…</strong>
-        <small id="dataSource">site-data.json 확인 중</small>
-        <small id="dataGenerated"></small>
-      </aside>
+      <div class="bar-right muted">
+        <span id="dataGenerated"></span>
+        <span id="dataSource"></span>
+      </div>
     </header>
 
-    <nav class="tabs" aria-label="대시보드 이동">
-      <a href="#signals">① 오늘의 신호</a>
-      <a href="#macro">② 매크로 환경</a>
-      <a href="#risk">③ 리스크·국면</a>
-      <a href="#principles">④ 투자 원칙</a>
+    <nav class="tabs">
+      <a href="#trade">트레이드</a>
+      <a href="#core">보유</a>
+      <a href="#macro">매크로</a>
+      <a href="#risk">국면</a>
+      <a href="#rules">원칙</a>
     </nav>
 
     <main>
-      <!-- ① 오늘의 신호 / 알림 -->
-      <section class="section" id="signals">
-        <div class="section-heading">
-          <p class="eyebrow">① Today's signals</p>
-          <h2>오늘의 신호 · 알림</h2>
-          <p>
-            종목별로 호라이즌(21/63/126일)마다 캘리브레이션된 상승확률과
-            동적 임계값 기반 알림(STRONG BUY / HOLD / STRONG SELL)을 표시합니다.
-            각 신호 옆 OOS 정밀도·백테스트는 그 신호를 얼마나 믿을지 가늠하는 근거입니다.
-          </p>
+      <section id="trade" class="sec">
+        <div class="sec-head"><h2>오늘의 트레이드</h2><span id="tradeMeta" class="muted"></span></div>
+        <div class="trade-cols">
+          <div class="trade-col">
+            <h3>국내 (KR)</h3>
+            <div id="tradeKR" class="idea-list"></div>
+          </div>
+          <div class="trade-col">
+            <h3>국외 (US)</h3>
+            <div id="tradeUS" class="idea-list"></div>
+          </div>
         </div>
-        <div class="ticker-grid" id="signalCards"></div>
-        <p class="disclaimer-inline">
-          확률은 행동 명령이 아니라 포지션 크기와 확인 강도를 조절하는 입력값입니다.
-          OOS 정밀도가 기준선(baseline)을 크게 넘지 못하는 신호는 신뢰도를 낮춰 해석하세요.
-        </p>
+        <details class="screen">
+          <summary>전체 스크리닝 (확률순)</summary>
+          <div id="screenTable" class="screen-table"></div>
+        </details>
       </section>
 
-      <!-- ② 매크로 환경 -->
-      <section class="section" id="macro">
-        <div class="section-heading">
-          <p class="eyebrow">② Macro environment</p>
-          <h2>매크로 환경</h2>
-          <p>
-            FRED 국채 금리(10Y·2Y), 장단기 금리차, VIX로 거시 리스크를 읽습니다.
-            금리차 역전이나 VIX 급등은 개별 종목 신호보다 우선해 확인합니다.
-          </p>
-        </div>
-        <div class="macro-wrap" id="macroPanel"></div>
+      <section id="core" class="sec">
+        <div class="sec-head"><h2>보유 종목</h2></div>
+        <div id="coreCards" class="core-grid"></div>
       </section>
 
-      <!-- ③ 리스크 / 국면 -->
-      <section class="section" id="risk">
-        <div class="section-heading">
-          <p class="eyebrow">③ Risk &amp; regime</p>
-          <h2>리스크 · 국면 진단</h2>
-          <p>
-            추세(SMA50/200), 실현 변동성, 1년 낙폭, 상대강도, RSI로 각 종목의 국면을
-            Bull / Transition / Bear 로 분류하고 활성화된 리스크 플래그를 보여줍니다.
-          </p>
-        </div>
-        <div class="risk-grid" id="riskGrid"></div>
+      <section id="macro" class="sec">
+        <div class="sec-head"><h2>매크로</h2><span id="macroStance" class="muted"></span></div>
+        <div id="macroPanel"></div>
       </section>
 
-      <!-- ④ 투자 원칙 / 체크리스트 -->
-      <section class="section grid-two" id="principles">
-        <div>
-          <p class="eyebrow">④ Principles &amp; checklist</p>
-          <h2>내 투자 원칙 · 체크리스트</h2>
-          <p class="section-copy">
-            신호와 데이터를 행동으로 옮기기 전에 점검하는 개인 원칙입니다.
-            기준은 코드가 아니라 <code>docs/investment-philosophy.md</code> 에서 관리하므로
-            언제든 문서만 고치면 이 화면이 갱신됩니다.
-          </p>
-        </div>
-        <article class="markdown-panel" id="principlesDoc" aria-live="polite">
-          Markdown 로딩 중…
-        </article>
+      <section id="risk" class="sec">
+        <div class="sec-head"><h2>국면 · 리스크</h2></div>
+        <div id="riskGrid" class="risk-grid"></div>
       </section>
 
-      <section class="section" id="pipeline">
-        <div class="section-heading">
-          <p class="eyebrow">How it works</p>
-          <h2>정적 사이트지만 실제 ML 파이프라인을 갖습니다.</h2>
-        </div>
-        <div class="pipeline-flow">
-          <span>config.json (추적 종목)</span><i>→</i>
-          <span>GitHub Actions</span><i>→</i>
-          <span>yfinance + FRED 수집</span><i>→</i>
-          <span>LightGBM walk-forward + 캘리브레이션</span><i>→</i>
-          <span>data/site-data.json</span><i>→</i>
-          <span>이 대시보드</span>
-        </div>
+      <section id="rules" class="sec">
+        <div class="sec-head"><h2>원칙 · 체크리스트</h2></div>
+        <article id="rulesDoc" class="md"></article>
       </section>
     </main>
 
-    <footer>
-      이 도구는 개인 리서치·교육 목적이며 투자 조언이 아닙니다. 과거 성과는 미래를 보장하지
-      않으며 데이터 지연·오류 가능성이 있으므로 실제 주문 전 원천 데이터를 재확인하세요.
-    </footer>
     <script src="app.js"></script>
   </body>
 </html>
