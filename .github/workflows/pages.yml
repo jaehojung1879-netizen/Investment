@@ -1,9 +1,10 @@
-name: Build market data and deploy Pages
+name: Build insight data and deploy Pages
 
 on:
   push:
     branches: [main]
   schedule:
+    # Weekdays ~22:30 UTC (after US market close)
     - cron: "30 22 * * 1-5"
   workflow_dispatch:
 
@@ -25,14 +26,31 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Build market data artifact
-        run: python3 scripts/fetch_market_data.py
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Build insight data
+        env:
+          # Add this secret in repo Settings → Secrets and variables → Actions.
+          # If absent, the pipeline still runs and the macro panel is simply empty.
+          FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
+        run: python -m pipeline.build
+
       - name: Configure Pages
         uses: actions/configure-pages@v5
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: .
+
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
