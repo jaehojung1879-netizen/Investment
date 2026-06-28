@@ -7,6 +7,18 @@
     "US": ["QQQ", "SPY", "NVDA", "PLTR", "AAPL", "MSFT", "GOOGL", "AMZN", "META", "TSLA", "AMD", "AVGO"],
     "KR": ["005930.KS", "000660.KS", "373220.KS", "207940.KS", "005380.KS", "035420.KS", "035720.KS", "068270.KS", "105560.KS", "012330.KS"]
   },
+  "names": {
+    "005930.KS": "삼성전자",
+    "000660.KS": "SK하이닉스",
+    "373220.KS": "LG에너지솔루션",
+    "207940.KS": "삼성바이오로직스",
+    "005380.KS": "현대차",
+    "035420.KS": "NAVER",
+    "035720.KS": "카카오",
+    "068270.KS": "셀트리온",
+    "105560.KS": "KB금융",
+    "012330.KS": "현대모비스"
+  },
   "benchmark": "SPY",
   "primary": "QQQ",
   "model": {
@@ -19,11 +31,17 @@
     "historyStart": "2010-01-01"
   },
   "fred": {
-    "series": {
+    "US": {
       "Treasury_10Y": "DGS10",
       "Treasury_2Y": "DGS2",
-      "VIX": "VIXCLS"
+      "FedFunds": "DFF",
+      "HY_Spread": "BAMLH0A0HYM2"
+    },
+    "KR": {
+      "USD_KRW": "DEXKOUS",
+      "Korea_10Y": "IRLTLT01KRM156N",
+      "Korea_3M": "IR3TIB01KRM156N"
     }
   },
-  "_notes": "core = 보유 종목(전체 분석+카드). universe.US/KR = 트레이드 아이디어 스크리닝 후보. tradeHorizon = 단기 트레이드 보유일(영업일). KR 티커는 .KS(코스피)/.KQ(코스닥) 접미사. FRED_API_KEY 는 GitHub Actions Secret 으로만 주입."
+  "_notes": "core=보유, universe.US/KR=스크리닝 후보, names=KR 코드→종목명 표시, fred.US/KR=지역별 매크로 시리즈. tradeHorizon=보유 영업일. KR 티커는 .KS/.KQ 접미사. FRED_API_KEY 는 GitHub Actions Secret 으로만 주입."
 }

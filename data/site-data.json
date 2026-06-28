@@ -7,6 +7,18 @@
   "tradeHorizon": 10,
   "seed": true,
   "dataSource": "SEED (예시) — 첫 CI 실행 전 미리보기. 실제 값 아님",
+  "names": {
+    "005930.KS": "삼성전자",
+    "000660.KS": "SK하이닉스",
+    "373220.KS": "LG에너지솔루션",
+    "207940.KS": "삼성바이오로직스",
+    "005380.KS": "현대차",
+    "035420.KS": "NAVER",
+    "035720.KS": "카카오",
+    "068270.KS": "셀트리온",
+    "105560.KS": "KB금융",
+    "012330.KS": "현대모비스"
+  },
   "tradeIdeas": {
     "KR": [
       { "ticker": "000660.KS", "region": "KR", "probUp": 0.66, "expMovePct": 1.9, "edgeNetPct": 1.2, "horizon": 10, "entry": "2026-06-26", "holdUntil": "2026-07-10", "regime": "Bull", "invalidation": "종가가 MA20 하회하거나 다음 신호 확률이 0.5 미만이면 조기 청산" },
@@ -57,8 +69,28 @@
     }
   ],
   "macro": {
-    "available": true, "stance": "Caution", "treasury10y": 4.32, "treasury2y": 4.41,
-    "yieldCurve": -0.09, "yieldCurveChange21d": -0.06, "vix": 18.4, "vixChange21d": 2.1,
-    "riskFlags": [ { "name": "Yield Curve", "active": true, "message": "장단기 금리차 역전 (경기 둔화 신호)" } ]
+    "available": true,
+    "US": {
+      "stance": "Caution",
+      "indicators": [
+        ["10Y", "4.32%", "미국 국채 10년"],
+        ["2Y", "4.41%", "미국 국채 2년"],
+        ["금리차", "-0.09%p", "10Y−2Y"],
+        ["기준금리", "4.33%", "Fed Funds"],
+        ["HY스프레드", "3.4%p", "하이일드 신용"],
+        ["VIX", "18.4", "21일 +2.1"]
+      ],
+      "riskFlags": ["장단기 금리차 역전 (경기 둔화 신호)"]
+    },
+    "KR": {
+      "stance": "Caution",
+      "indicators": [
+        ["원/달러", "1378", "21일 +1.4%"],
+        ["한국 10Y", "3.31%", "국고채 10년"],
+        ["한국 3M", "3.42%", "단기 금리"],
+        ["한국 금리차", "-0.11%p", "10Y−3M"]
+      ],
+      "riskFlags": ["한국 장단기 금리차 역전"]
+    }
   }
 }

@@ -30,13 +30,22 @@ class Config:
     portfolio_name: str
     core: list[str]
     universe: dict[str, list[str]]  # region -> tickers, e.g. {"US": [...], "KR": [...]}
+    names: dict[str, str]           # ticker -> display name (mainly KR)
     benchmark: str
     primary: str
     horizons: list[int]
     trade_horizon: int
     model: ModelConfig
-    fred_series: dict[str, str] = field(default_factory=dict)
+    fred_regions: dict[str, dict[str, str]] = field(default_factory=dict)  # region -> {name: series_id}
     fred_api_key: str | None = None
+
+    @property
+    def fred_series(self) -> dict[str, str]:
+        """Flat {friendly_name: series_id} across all regions (for fetching)."""
+        out: dict[str, str] = {}
+        for region in self.fred_regions.values():
+            out.update(region)
+        return out
 
     @property
     def has_fred(self) -> bool:
@@ -72,15 +81,23 @@ def load_config(path: Path | str = CONFIG_PATH) -> tuple[Config, list[str]]:
     all_tickers = [t for names in universe.values() for t in names] + core + [benchmark]
     download_universe = list(dict.fromkeys(all_tickers))
 
+    # Backward compatible: old config used fred.series (flat). New uses fred.{US,KR}.
+    fred_raw = raw.get("fred", {})
+    if "series" in fred_raw:
+        fred_regions = {"US": fred_raw["series"]}
+    else:
+        fred_regions = {r: s for r, s in fred_raw.items() if isinstance(s, dict)}
+
     return Config(
         portfolio_name=raw.get("portfolioName", "Investment Insight"),
         core=core,
         universe=universe,
+        names=raw.get("names", {}),
         benchmark=benchmark,
         primary=primary,
         horizons=raw.get("horizons", [21, 63, 126]),
         trade_horizon=raw.get("tradeHorizon", 10),
         model=model,
-        fred_series=raw.get("fred", {}).get("series", {}),
+        fred_regions=fred_regions,
         fred_api_key=os.environ.get("FRED_API_KEY"),
     ), download_universe

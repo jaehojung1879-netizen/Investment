@@ -41,8 +41,15 @@ def main() -> int:
     dates = pd.bdate_range(end=pd.Timestamp.today().normalize(), periods=n)
     bench = synth(99, 0.0003, n, dates)
     vix = pd.Series(17 + 7 * np.abs(np.random.default_rng(7).normal(0, 1, n)), index=dates, name="VIX")
-    macro = pd.DataFrame({"Treasury_10Y": 4.0 + np.cumsum(np.random.default_rng(1).normal(0, 0.008, n)),
-                          "Treasury_2Y": 4.2 + np.cumsum(np.random.default_rng(2).normal(0, 0.008, n))}, index=dates)
+    macro = pd.DataFrame({
+        "Treasury_10Y": 4.0 + np.cumsum(np.random.default_rng(1).normal(0, 0.008, n)),
+        "Treasury_2Y": 4.2 + np.cumsum(np.random.default_rng(2).normal(0, 0.008, n)),
+        "FedFunds": 4.3 + np.cumsum(np.random.default_rng(3).normal(0, 0.003, n)),
+        "HY_Spread": 3.5 + np.cumsum(np.random.default_rng(4).normal(0, 0.01, n)),
+        "USD_KRW": 1350 + np.cumsum(np.random.default_rng(5).normal(0, 1.5, n)),
+        "Korea_10Y": 3.3 + np.cumsum(np.random.default_rng(6).normal(0, 0.006, n)),
+        "Korea_3M": 3.4 + np.cumsum(np.random.default_rng(8).normal(0, 0.004, n)),
+    }, index=dates)
     macro["Yield_Curve"] = macro["Treasury_10Y"] - macro["Treasury_2Y"]
 
     th = cfg.trade_horizon
@@ -81,7 +88,7 @@ def main() -> int:
 
     payload = {"generatedAt": datetime.now(timezone.utc).isoformat(), "portfolioName": cfg.portfolio_name,
                "primary": cfg.primary, "benchmark": cfg.benchmark, "horizons": cfg.horizons, "tradeHorizon": th,
-               "seed": True, "dataSource": "SEED (예시) — 합성 데이터", "tradeIdeas": trade_mod.rank_ideas(ideas),
+               "names": cfg.names, "seed": True, "dataSource": "SEED (예시) — 합성 데이터", "tradeIdeas": trade_mod.rank_ideas(ideas),
                "screened": sorted(screened, key=lambda x: x["probUp"], reverse=True), "core": core_cards,
                "macro": macro_mod.summarize(macro, vix)}
     out = ROOT / "data" / "site-data.json"

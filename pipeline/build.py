@@ -117,6 +117,7 @@ def main() -> int:
         "benchmark": cfg.benchmark,
         "horizons": cfg.horizons,
         "tradeHorizon": cfg.trade_horizon,
+        "names": cfg.names,
         "dataSource": "Yahoo Finance (prices) + FRED (macro)" if cfg.has_fred else "Yahoo Finance (prices); FRED disabled",
         "tradeIdeas": trade_mod.rank_ideas(ideas),
         "screened": sorted(screened, key=lambda x: x["probUp"], reverse=True),
