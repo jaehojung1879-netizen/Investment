@@ -1,15 +1,27 @@
-# Market Insight Lab
+# Market Research Workbench
 
-QQQ 중심의 다기간 투자 신호, 리스크 컨텍스트, 백테스트 관점을 한 화면에서 확인하기 위한 정적 리서치 사이트입니다.
+투자 철학 Markdown과 시장 데이터 JSON을 기반으로 QQQ 중심의 증시 상태를 분석하는 GitHub Pages용 정적 사이트입니다.
 
-## GitHub Pages 배포
+## 구성
 
-1. 이 저장소를 GitHub에 push합니다.
-2. GitHub 저장소의 **Settings → Pages**로 이동합니다.
-3. **Build and deployment → Source**를 **GitHub Actions**로 선택합니다.
-4. `main` 브랜치에 push하면 `.github/workflows/pages.yml` 워크플로가 정적 파일을 배포합니다.
-5. 배포 후 `https://사용자명.github.io/저장소명/` 주소에서 사이트를 확인합니다.
+- `docs/investment-philosophy.md`: 투자 철학, 분석 원칙, 행동 프레임워크의 원천 문서
+- `scripts/fetch_market_data.py`: 공개 일간 CSV에서 QQQ/SPY 데이터를 가져와 지표를 계산하는 빌드 스크립트
+- `data/market-data.json`: 사이트가 읽는 시장 데이터 및 분석 결과 artifact
+- `index.html`, `styles.css`, `script.js`: Markdown과 JSON을 렌더링하는 대시보드
+- `.github/workflows/pages.yml`: 시장 데이터 갱신 후 GitHub Pages에 배포하는 워크플로
 
-## 향후 데이터 연결 방향
+## 배포
 
-현재 화면은 샘플 데이터 기반입니다. 이후 노트북 또는 배치 작업에서 `market-data.json` 같은 산출물을 생성하고 `script.js`에서 해당 파일을 읽도록 바꾸면 실제 모델 확률, 리스크 지표, 백테스트 결과를 사이트에 반영할 수 있습니다.
+1. GitHub 저장소 Settings → Pages에서 Source를 **GitHub Actions**로 선택합니다.
+2. `main` 브랜치에 push하거나 Actions에서 수동 실행합니다.
+3. 워크플로가 `scripts/fetch_market_data.py`를 실행해 `data/market-data.json`을 갱신한 뒤 Pages artifact를 배포합니다.
+4. 배포 후 `https://사용자명.github.io/저장소명/`에서 확인합니다.
+
+## 로컬 확인
+
+```bash
+python3 scripts/fetch_market_data.py
+python3 -m http.server 8000
+```
+
+이후 `http://127.0.0.1:8000/`에서 확인합니다.
