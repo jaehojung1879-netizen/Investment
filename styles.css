@@ -85,9 +85,10 @@ b { font-weight: 700; }
 /* ticker name subtext */
 .tk { color: var(--muted); font-size: 0.72rem; font-weight: 500; margin-left: -2px; }
 
-/* info button + clickable terms + popup */
-.info { margin-left: 6px; width: 18px; height: 18px; padding: 0; font-size: 0.72rem; font-weight: 800; line-height: 1; color: var(--accent); background: rgba(56,189,248,0.12); border: 1px solid rgba(56,189,248,0.4); border-radius: 50%; cursor: pointer; vertical-align: middle; }
-.info:hover { background: rgba(56,189,248,0.25); }
+/* clickable section heading + info icon + terms + popup */
+.qh { cursor: pointer; }
+.qh .ico { font-size: 0.78rem; color: var(--muted); margin-left: 4px; vertical-align: middle; transition: color 0.15s; }
+.qh:hover .ico { color: var(--accent); }
 .term { cursor: pointer; border-bottom: 1px dashed rgba(56,189,248,0.6); color: var(--text); }
 .edge[data-x] { cursor: pointer; }
 .pop { position: absolute; z-index: 50; max-width: 320px; padding: 12px 14px; background: #0e1626; border: 1px solid rgba(56,189,248,0.35); border-radius: 12px; box-shadow: 0 18px 50px rgba(0,0,0,0.5); }
