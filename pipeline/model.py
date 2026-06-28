@@ -67,36 +67,51 @@ def walk_forward(
     target_col: str,
     cfg: ModelConfig,
     oos_start: str,
+    horizon: int,
 ) -> pd.DataFrame:
-    """Expanding-window walk-forward, storing predictions from oos_start onward.
+    """Purged, embargoed expanding-window walk-forward.
 
-    Training always uses all history before the test window; only the stored
-    predictions are limited to the OOS region to keep CI runtime bounded.
+    Two leakage fixes vs. the original notebook:
+      * Calibration window is HELD OUT of the model's training data, so the
+        isotonic map is fit on genuinely out-of-sample scores (the old code
+        calibrated on rows the model had already trained on, which collapsed
+        probabilities to 0/1).
+      * An embargo of `horizon` days separates train/calibration from the test
+        block, so the h-day forward-looking target never overlaps the test
+        period.
+    Only predictions from oos_start onward are stored to bound CI runtime.
     """
     model_frame = data.dropna(subset=feature_cols + [target_col])
-    if len(model_frame) <= cfg.min_train_days + cfg.step_size:
+    cal_w = cfg.calibration_window
+    min_history = cfg.min_train_days + cal_w + horizon
+    if len(model_frame) <= min_history + cfg.step_size:
         return pd.DataFrame()
 
     # Index (positional) of first OOS row inside model_frame.
     oos_mask = np.asarray(model_frame.index >= pd.Timestamp(oos_start))
     if oos_mask.any():
-        start_pos = max(cfg.min_train_days, int(np.argmax(oos_mask)))
+        start_pos = max(min_history, int(np.argmax(oos_mask)))
     else:
-        start_pos = cfg.min_train_days
+        start_pos = min_history
 
     records: list[dict] = []
     n = len(model_frame)
     for i in range(start_pos, n, cfg.step_size):
-        train = model_frame.iloc[0:i]
         test = model_frame.iloc[i : i + cfg.step_size]
         if len(test) == 0:
             break
 
+        # Embargo `horizon` rows, then hold out the calibration window.
+        cal_end = i - horizon
+        cal_start = cal_end - cal_w
+        if cal_start <= cfg.min_train_days:
+            continue
+        train = model_frame.iloc[0:cal_start]
+        cal = model_frame.iloc[cal_start:cal_end]
+
         model = _new_model()
         model.fit(train[feature_cols], train[target_col])
 
-        cal_start = max(0, i - cfg.calibration_window)
-        cal = model_frame.iloc[cal_start:i]
         prob_cal = _calibrated_proba(model, cal[feature_cols], cal[target_col], test[feature_cols])
         prob_raw = model.predict_proba(test[feature_cols])[:, 1]
 
@@ -125,19 +140,28 @@ def current_signal(
     target_col: str,
     cfg: ModelConfig,
 ) -> dict | None:
-    """Train on all known history, predict today's calibrated UP-probability."""
+    """Predict today's calibrated UP-probability.
+
+    The calibration window is held out of training (see walk_forward) so the
+    live probability is calibrated out-of-sample rather than in-sample.
+    """
     feat = data.dropna(subset=feature_cols)
     if feat.empty:
         return None
-    train = feat.dropna(subset=[target_col])
-    if len(train) <= cfg.min_train_days or train[target_col].nunique() < 2:
+    train_all = feat.dropna(subset=[target_col])
+    cal_w = cfg.calibration_window
+    if len(train_all) <= cfg.min_train_days + cal_w or train_all[target_col].nunique() < 2:
+        return None
+
+    fit_part = train_all.iloc[:-cal_w]
+    cal = train_all.iloc[-cal_w:]
+    if fit_part[target_col].nunique() < 2:
         return None
 
     model = _new_model()
-    model.fit(train[feature_cols], train[target_col])
+    model.fit(fit_part[feature_cols], fit_part[target_col])
 
     latest_X = feat.iloc[[-1]][feature_cols]
-    cal = train.iloc[-cfg.calibration_window :]
     prob_cal = float(_calibrated_proba(model, cal[feature_cols], cal[target_col], latest_X)[0])
     prob_raw = float(model.predict_proba(latest_X)[:, 1][0])
 
@@ -146,6 +170,21 @@ def current_signal(
         "probUp": round(prob_cal, 4),
         "probUpRaw": round(prob_raw, 4),
         "prediction": "UP" if prob_cal >= 0.5 else "DOWN",
+    }
+
+
+def horizon_return_stats(data: pd.DataFrame, horizon: int) -> dict:
+    """Historical mean UP/DOWN forward returns at a horizon (for EV scoring)."""
+    col = f"forward_return_{horizon}d"
+    if col not in data:
+        return {"upMean": 0.0, "downMean": 0.0, "baseRate": 0.5}
+    fr = data[col].dropna()
+    up = fr[fr > 0]
+    down = fr[fr <= 0]
+    return {
+        "upMean": float(up.mean()) if len(up) else 0.0,
+        "downMean": float(down.mean()) if len(down) else 0.0,
+        "baseRate": float((fr > 0).mean()) if len(fr) else 0.5,
     }
 
 

@@ -1,36 +1,52 @@
 # My Investment Insight
 
-개인 포트폴리오용 투자 인사이트 대시보드입니다. `market_alert_system` 노트북의
-멀티 호라이즌 LightGBM 알림 시스템을 재사용 가능한 파이프라인으로 이식해,
-종목별 상승확률 신호·매크로 환경·리스크/국면 진단·투자 원칙을 한 화면에서 봅니다.
+개인용 단기 트레이드 인사이트 대시보드입니다. `market_alert_system` 노트북의
+멀티 호라이즌 LightGBM 알림 시스템을 재사용 가능한 파이프라인으로 이식하고,
+국내(KR)/국외(US) 후보를 매일 스크리닝해 **무엇을 언제까지 보유할지**를 제안합니다.
 
-GitHub Actions(Python)가 데이터를 수집·모델링해 `data/site-data.json`을 만들고,
+GitHub Actions(Python)가 매일 데이터를 수집·모델링해 `data/site-data.json`을 만들고,
 정적 GitHub Pages 사이트가 그것을 렌더링합니다. (서버·DB 불필요, 무료 호스팅)
 
 ## 화면
 
-1. **오늘의 신호** — 종목 × 호라이즌(21/63/126D) 캘리브레이션 상승확률 + 동적 임계값 알림(STRONG BUY / HOLD / STRONG SELL), OOS 정밀도·lift·백테스트 동반 표시
-2. **매크로 환경** — FRED 국채 10Y/2Y, 장단기 금리차, VIX, 거시 스탠스/플래그
-3. **리스크·국면 진단** — 추세·변동성·낙폭·상대강도·RSI 기반 Bull/Transition/Bear 분류 + 리스크 플래그
-4. **투자 원칙·체크리스트** — `docs/investment-philosophy.md`에서 관리
+1. **오늘의 트레이드** — KR/US 후보를 트레이드 호라이즌(기본 10영업일)으로 스크리닝, 비용·확신 게이트를 통과한 것만 entry·hold-until·무효화 조건과 함께 제안
+2. **보유 종목** — core 종목 × 21/63/126D 캘리브레이션 확률 + 알림 + OOS 정밀도/lift/백테스트
+3. **매크로** — FRED 10Y/2Y, 장단기 금리차, VIX
+4. **국면·리스크** — 추세·변동성·낙폭·상대강도·RSI 기반 Bull/Transition/Bear
+5. **원칙·체크리스트** — `docs/investment-philosophy.md`에서 관리
 
-## 추적 종목 바꾸기
+## 방법론 메모 (노트북 대비 수정점)
 
-`config.json`의 `tickers` 배열만 수정하면 됩니다. `benchmark`/`primary`는 그 목록 안에 있어야 합니다.
+- **캘리브레이션 누수 제거**: 노트북은 모델이 학습한 데이터로 isotonic 보정을 해 확률이 0/1로 붕괴했음. 보정 구간을 학습에서 **제외**하도록 수정.
+- **horizon embargo**: h일 선행 타깃이 학습/테스트 경계를 넘어 누수되지 않도록 walk-forward에 embargo 추가(purged WF).
+- **비용 인지 의사결정**: 확률 0.5 초과는 우위가 아님. `EV = p·E[up] + (1−p)·E[down] − 비용허들` 이 양수이고 확신 하한·국면 조건을 만족할 때만 트레이드 제안(KR은 세금·수수료로 허들 ↑).
+
+## 종목 바꾸기
+
+`config.json`만 수정합니다. KR 티커는 `.KS`(코스피)/`.KQ`(코스닥) 접미사를 씁니다.
 
 ```json
-{ "tickers": ["QQQ", "SPY", "PLTR", "NVDA"], "benchmark": "SPY", "primary": "QQQ" }
+{
+  "core": ["QQQ", "NVDA", "PLTR"],
+  "universe": { "US": ["QQQ", "AAPL", "..."], "KR": ["005930.KS", "000660.KS", "..."] },
+  "benchmark": "SPY", "primary": "QQQ", "tradeHorizon": 10
+}
 ```
+
+- `core` = 보유 종목(전체 분석 + 보유 카드)
+- `universe.US` / `universe.KR` = 트레이드 아이디어 스크리닝 후보
+- `tradeHorizon` = 단기 트레이드 기본 보유 영업일
 
 ## 구성
 
 ```
-config.json                 추적 종목·호라이즌·모델 파라미터
+config.json                 core·universe(KR/US)·호라이즌·모델 파라미터
 pipeline/                   노트북 이식 ML 파이프라인
   config.py                 config.json + 환경변수 로딩
   datafeed.py               yfinance(가격) + FRED(매크로) 수집
   features.py               피처 엔지니어링 + 타깃
-  model.py                  LightGBM walk-forward + 캘리브레이션 + 백테스트
+  model.py                  LightGBM purged walk-forward + 캘리브레이션 + EV + 백테스트
+  trade.py                  비용 인지 단기 트레이드 아이디어 엔진(KR/US)
   macro.py                  매크로 환경 요약
   risk.py                   국면·리스크 진단
   build.py                  오케스트레이터 → data/site-data.json
@@ -38,7 +54,7 @@ data/site-data.json         사이트가 읽는 산출물 (현재는 SEED 예시
 docs/investment-philosophy.md  투자 원칙·체크리스트(사이트가 렌더)
 index.html / styles.css / app.js  대시보드
 scripts/make_seed.py        합성 데이터로 파이프라인을 점검/시드 생성하는 개발 유틸
-.github/workflows/pages.yml  데이터 빌드 후 Pages 배포
+.github/workflows/pages.yml  매일 데이터 빌드 후 Pages 배포
 requirements.txt
 ```
 

@@ -1,198 +1,123 @@
 'use strict';
+const $ = (s) => document.querySelector(s);
+const fmt = (v, suf = '', d) => (v === null || v === undefined || Number.isNaN(v)) ? '—' : `${typeof v === 'number' && d !== undefined ? v.toFixed(d) : v}${suf}`;
+const sp = (v) => (v === null || v === undefined || Number.isNaN(v)) ? '—' : `${v >= 0 ? '+' : ''}${v}%`;
+const pct0 = (v) => fmt((v ?? 0) * 100, '%', 0);
+const alertCls = (a) => a === 'STRONG BUY' ? 'buy' : a === 'STRONG SELL' ? 'sell' : 'hold';
+const alertKo = (a) => a === 'STRONG BUY' ? '강한 매수' : a === 'STRONG SELL' ? '강한 매도' : '관망';
+const regCls = (r) => r === 'Bull' ? 'bull' : r === 'Bear' ? 'bear' : 'trans';
+const regKo = (r) => r === 'Bull' ? '상승' : r === 'Bear' ? '하락' : '전환';
 
-const $ = (sel) => document.querySelector(sel);
-
-const fmt = (v, suffix = '', digits) => {
-  if (v === null || v === undefined || Number.isNaN(v)) return '—';
-  const n = typeof v === 'number' && digits !== undefined ? v.toFixed(digits) : v;
-  return `${n}${suffix}`;
-};
-
-const signedPct = (v) => {
-  if (v === null || v === undefined || Number.isNaN(v)) return '—';
-  return `${v >= 0 ? '+' : ''}${v}%`;
-};
-
-const alertClass = (alert) =>
-  alert === 'STRONG BUY' ? 'buy' : alert === 'STRONG SELL' ? 'sell' : 'hold';
-
-const alertLabel = (alert) =>
-  alert === 'STRONG BUY' ? '강한 매수' : alert === 'STRONG SELL' ? '강한 매도' : '관망';
-
-const regimeClass = (regime) =>
-  regime === 'Bull' ? 'bull' : regime === 'Bear' ? 'bear' : 'transition';
-
-const regimeLabel = (regime) =>
-  regime === 'Bull' ? '상승국면' : regime === 'Bear' ? '하락국면' : '전환국면';
-
-// --- Minimal Markdown renderer (headings, lists, tables, bold) ---
-const markdownToHtml = (markdown) => {
-  const lines = markdown.split('\n');
-  let html = '';
-  let inList = false;
-  let inTable = false;
-  const closeList = () => { if (inList) { html += '</ul>'; inList = false; } };
-  const closeTable = () => { if (inTable) { html += '</tbody></table>'; inTable = false; } };
-
-  lines.forEach((line) => {
-    if (line.startsWith('|') && !line.includes('---')) {
-      closeList();
-      const cells = line.split('|').slice(1, -1).map((c) => c.trim());
-      if (!inTable) { html += '<table><tbody>'; inTable = true; }
-      html += `<tr>${cells.map((c) => `<td>${c}</td>`).join('')}</tr>`;
-      return;
-    }
-    if (line.startsWith('|') && line.includes('---')) return;
-    closeTable();
-    if (line.startsWith('## ')) { closeList(); html += `<h3>${line.slice(3)}</h3>`; }
-    else if (line.startsWith('# ')) { closeList(); html += `<h2>${line.slice(2)}</h2>`; }
-    else if (line.startsWith('- [ ] ')) {
-      if (!inList) { html += '<ul class="checklist">'; inList = true; }
-      html += `<li class="check">${line.slice(6)}</li>`;
-    } else if (line.startsWith('- ')) {
-      if (!inList) { html += '<ul>'; inList = true; }
-      html += `<li>${line.slice(2)}</li>`;
-    } else if (/^\d+\. /.test(line)) {
-      if (!inList) { html += '<ul>'; inList = true; }
-      html += `<li>${line.replace(/^\d+\. /, '')}</li>`;
-    } else if (line.trim()) { closeList(); html += `<p>${line}</p>`; }
+// --- Markdown (headings, lists, checklist, tables, bold) ---
+const md2html = (md) => {
+  const L = md.split('\n'); let h = '', inUl = false, inT = false;
+  const cU = () => { if (inUl) { h += '</ul>'; inUl = false; } };
+  const cT = () => { if (inT) { h += '</tbody></table>'; inT = false; } };
+  L.forEach((l) => {
+    if (l.startsWith('|') && !l.includes('---')) { cU(); const c = l.split('|').slice(1, -1).map((x) => x.trim()); if (!inT) { h += '<table><tbody>'; inT = true; } h += `<tr>${c.map((x) => `<td>${x}</td>`).join('')}</tr>`; return; }
+    if (l.startsWith('|') && l.includes('---')) return; cT();
+    if (l.startsWith('## ')) { cU(); h += `<h4>${l.slice(3)}</h4>`; }
+    else if (l.startsWith('# ')) { cU(); h += `<h3>${l.slice(2)}</h3>`; }
+    else if (l.startsWith('- [ ] ')) { if (!inUl) { h += '<ul class="ck">'; inUl = true; } h += `<li class="c">${l.slice(6)}</li>`; }
+    else if (l.startsWith('- ')) { if (!inUl) { h += '<ul>'; inUl = true; } h += `<li>${l.slice(2)}</li>`; }
+    else if (/^\d+\. /.test(l)) { if (!inUl) { h += '<ul>'; inUl = true; } h += `<li>${l.replace(/^\d+\. /, '')}</li>`; }
+    else if (l.trim()) { cU(); h += `<p>${l}</p>`; }
   });
-  closeList();
-  closeTable();
-  return html.replaceAll('**', '');
+  cU(); cT(); return h.replaceAll('**', '');
 };
 
-const loadPrinciples = async () => {
-  const panel = $('#principlesDoc');
-  try {
-    const res = await fetch('docs/investment-philosophy.md', { cache: 'no-store' });
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    panel.innerHTML = markdownToHtml(await res.text());
-  } catch (err) {
-    panel.textContent = `Markdown을 불러오지 못했습니다: ${err.message}`;
-  }
+const loadRules = async () => {
+  try { const r = await fetch('docs/investment-philosophy.md', { cache: 'no-store' }); $('#rulesDoc').innerHTML = md2html(await r.text()); }
+  catch (e) { $('#rulesDoc').textContent = e.message; }
 };
 
-// --- ① Signals ---
-const renderSignalCard = (t) => {
-  const rows = (t.signals || []).map((s) => {
-    const oos = s.oos || {};
-    const bt = s.backtest || {};
-    const lift = oos.lift;
-    const liftClass = lift > 0 ? 'pos' : lift < 0 ? 'neg' : '';
-    return `
-      <div class="sig-row">
-        <div class="sig-head">
-          <span class="horizon">${s.horizon}D</span>
-          <span class="badge ${alertClass(s.alert)}">${alertLabel(s.alert)}</span>
-        </div>
-        <div class="prob">
-          <div class="prob-bar"><i style="width:${Math.round((s.probUp ?? 0) * 100)}%"></i></div>
-          <strong>${fmt((s.probUp ?? 0) * 100, '%', 0)}</strong>
-          <small>상승확률 · 임계 ${fmt((s.threshold ?? 0) * 100, '%', 0)}</small>
-        </div>
-        <div class="sig-meta">
-          <span>OOS 정밀도 <b>${fmt((oos.precision ?? 0) * 100, '%', 0)}</b> <em class="${liftClass}">(기준 ${fmt((oos.baseline ?? 0) * 100, '%', 0)}, lift ${signedPct(lift)})</em></span>
-          <span>백테스트 연 <b>${signedPct(bt.annualReturn)}</b> · Sharpe ${fmt(bt.sharpe, '', 2)} · MDD ${fmt(bt.maxDrawdown, '%')} · vs B&H ${signedPct(bt.vsBuyHold)}</span>
-        </div>
-      </div>`;
-  }).join('');
-
-  return `
-    <article class="ticker-card">
-      <header>
-        <div><h3>${t.ticker}</h3><small>as of ${t.asOf ?? '—'}</small></div>
-        <strong class="price">$${fmt(t.lastClose)}</strong>
-      </header>
-      <div class="sig-rows">${rows || '<p class="empty">신호를 계산할 데이터가 부족합니다.</p>'}</div>
-    </article>`;
-};
-
-// --- ② Macro ---
-const renderMacro = (m) => {
-  if (!m || !m.available) {
-    return `<div class="macro-empty">${m?.note ?? '매크로 데이터가 없습니다.'}</div>`;
-  }
-  const stanceMap = { Stable: ['안정', 'ok'], Caution: ['주의', 'warn'], 'Risk-off': ['위험회피', 'bad'] };
-  const [stanceKo, stanceCls] = stanceMap[m.stance] || [m.stance, ''];
-  const kpis = [
-    ['거시 스탠스', stanceKo, m.stance],
-    ['10년물', fmt(m.treasury10y, '%'), '미국 국채 10Y'],
-    ['2년물', fmt(m.treasury2y, '%'), '미국 국채 2Y'],
-    ['장단기 금리차', fmt(m.yieldCurve, '%p'), `21일 ${signedPct(m.yieldCurveChange21d)}`],
-    ['VIX', fmt(m.vix), `21일 ${m.vixChange21d >= 0 ? '+' : ''}${fmt(m.vixChange21d)}`],
-  ];
-  const flags = (m.riskFlags || []).map((f) => `
-    <article class="risk-card active"><span>ACTIVE</span><h4>${f.name}</h4><p>${f.message}</p></article>`).join('');
-  return `
-    <div class="macro-stance ${stanceCls}"><span>Macro stance</span><strong>${stanceKo}</strong></div>
-    <div class="kpi-grid">
-      ${kpis.map(([l, v, n]) => `<article class="kpi-card"><span>${l}</span><strong>${v}</strong><p>${n}</p></article>`).join('')}
+// --- Trade ideas ---
+const ideaRow = (i) => `
+  <div class="idea">
+    <div class="idea-top">
+      <strong>${i.ticker}</strong>
+      <span class="reg ${regCls(i.regime)}">${regKo(i.regime)}</span>
+      <span class="edge">edge ${sp(i.edgeNetPct)}</span>
     </div>
-    <div class="risk-grid">${flags || '<article class="risk-card"><span>OK</span><h4>거시 리스크</h4><p>활성화된 매크로 경고 없음</p></article>'}</div>`;
+    <div class="idea-bar"><i style="width:${Math.round((i.probUp ?? 0) * 100)}%"></i></div>
+    <div class="idea-meta">
+      <span>확률 <b>${pct0(i.probUp)}</b></span>
+      <span>기대 <b>${sp(i.expMovePct)}</b></span>
+      <span>보유 <b>~${i.holdUntil}</b> (${i.horizon}D)</span>
+    </div>
+    <div class="idea-inv muted">${i.invalidation}</div>
+  </div>`;
+
+const renderTrade = (d) => {
+  const ti = d.tradeIdeas || { KR: [], US: [] };
+  $('#tradeMeta').textContent = `보유 ${d.tradeHorizon ?? '—'}영업일 기준 · 비용·확신 게이트 통과분만`;
+  const fill = (el, arr) => $(el).innerHTML = (arr && arr.length) ? arr.map(ideaRow).join('') : '<div class="none muted">조건 충족 종목 없음 (관망)</div>';
+  fill('#tradeKR', ti.KR); fill('#tradeUS', ti.US);
+  const sc = d.screened || [];
+  $('#screenTable').innerHTML = `<div class="srow sh"><span>종목</span><span>지역</span><span>확률</span><span>국면</span><span>채택</span></div>` +
+    sc.map((s) => `<div class="srow"><span>${s.ticker}</span><span>${s.region}</span><span>${pct0(s.probUp)}</span><span class="reg ${regCls(s.regime)}">${regKo(s.regime)}</span><span>${s.qualifies ? '✓' : '·'}</span></div>`).join('');
 };
 
-// --- ③ Risk / regime ---
-const renderRiskCard = (t) => {
+// --- Core holdings ---
+const coreCard = (t) => {
+  const rows = (t.signals || []).map((s) => {
+    const o = s.oos || {}, b = s.backtest || {};
+    const lc = o.lift > 0 ? 'pos' : o.lift < 0 ? 'neg' : '';
+    return `<div class="cs">
+      <div class="cs-l"><span class="hz">${s.horizon}D</span><span class="badge ${alertCls(s.alert)}">${alertKo(s.alert)}</span></div>
+      <div class="cs-bar"><i style="width:${Math.round((s.probUp ?? 0) * 100)}%"></i></div>
+      <div class="cs-p">${pct0(s.probUp)}</div>
+      <div class="cs-m muted">정밀 ${pct0(o.precision)} <em class="${lc}">(${sp(o.lift)})</em> · 연 ${sp(b.annualReturn)} · vsB&H ${sp(b.vsBuyHold)}</div>
+    </div>`;
+  }).join('');
+  return `<article class="cc">
+    <header><strong>${t.ticker}</strong><span class="reg ${regCls(t.risk?.regime)}">${regKo(t.risk?.regime)}</span><span class="price">$${fmt(t.lastClose)}</span></header>
+    ${rows || '<p class="none muted">데이터 부족</p>'}
+  </article>`;
+};
+
+// --- Macro ---
+const renderMacro = (m) => {
+  if (!m || !m.available) { $('#macroPanel').innerHTML = `<div class="none muted">${m?.note ?? '매크로 비활성'}</div>`; return; }
+  const map = { Stable: ['안정', 'ok'], Caution: ['주의', 'warn'], 'Risk-off': ['위험회피', 'bad'] };
+  const [ko, cls] = map[m.stance] || [m.stance, ''];
+  $('#macroStance').innerHTML = `<span class="reg ${cls === 'ok' ? 'bull' : cls === 'bad' ? 'bear' : 'trans'}">${ko}</span>`;
+  const k = [['10Y', fmt(m.treasury10y, '%')], ['2Y', fmt(m.treasury2y, '%')], ['금리차', fmt(m.yieldCurve, '%p')], ['VIX', fmt(m.vix)], ['VIXΔ21', sp(m.vixChange21d)]];
+  const flags = (m.riskFlags || []).map((f) => `<span class="mflag">${f.message}</span>`).join('');
+  $('#macroPanel').innerHTML = `<div class="kpi">${k.map(([l, v]) => `<div><span>${l}</span><b>${v}</b></div>`).join('')}</div><div class="mflags">${flags || '<span class="muted">경고 없음</span>'}</div>`;
+};
+
+// --- Risk / regime ---
+const riskCard = (t) => {
   const r = t.risk || {};
   const flags = (r.riskFlags || []).map((f) => `<li>${f.message}</li>`).join('');
-  const metrics = [
-    ['SMA50/200', `${fmt(r.ma50)} / ${fmt(r.ma200)}`],
-    ['실현 변동성', fmt(r.realizedVol, '%')],
-    ['RSI14', fmt(r.rsi14)],
-    ['1년 낙폭', fmt(r.maxDrawdown252d, '%')],
-    ['상대강도(20D)', signedPct(r.relMomentum)],
-    ['52주 고점 대비', fmt(r.pct52wHigh, '%')],
-  ];
-  return `
-    <article class="regime-card">
-      <header>
-        <h3>${t.ticker}</h3>
-        <span class="regime ${regimeClass(r.regime)}">${regimeLabel(r.regime)}</span>
-      </header>
-      <div class="regime-metrics">
-        ${metrics.map(([l, v]) => `<div><span>${l}</span><b>${v}</b></div>`).join('')}
-      </div>
-      <ul class="regime-flags ${flags ? '' : 'clean'}">
-        ${flags || '<li>활성화된 리스크 플래그 없음</li>'}
-      </ul>
-    </article>`;
+  const m = [['SMA50/200', `${fmt(r.ma50)}/${fmt(r.ma200)}`], ['변동성', fmt(r.realizedVol, '%')], ['RSI', fmt(r.rsi14)], ['1Y낙폭', fmt(r.maxDrawdown252d, '%')], ['상대강도', sp(r.relMomentum)], ['52H대비', fmt(r.pct52wHigh, '%')]];
+  return `<article class="rc">
+    <header><strong>${t.ticker}</strong><span class="reg ${regCls(r.regime)}">${regKo(r.regime)}</span></header>
+    <div class="rm">${m.map(([l, v]) => `<div><span>${l}</span><b>${v}</b></div>`).join('')}</div>
+    <ul class="rf ${flags ? '' : 'clean'}">${flags || '<li>플래그 없음</li>'}</ul>
+  </article>`;
 };
 
-const render = (data) => {
-  $('#portfolioName').textContent = data.portfolioName || '내 투자 인사이트';
-  $('#dataStatus').textContent = `${(data.tickers || []).length}개 종목 · primary ${data.primary || '—'}`;
-  $('#dataSource').textContent = data.dataSource || '';
-  if (data.generatedAt) {
-    const d = new Date(data.generatedAt);
-    $('#dataGenerated').textContent = `생성 ${d.toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' })} KST`;
-  }
-  $('#signalCards').innerHTML = (data.tickers || []).map(renderSignalCard).join('') ||
-    '<p class="empty">종목 데이터가 없습니다. config.json 과 CI 실행 결과를 확인하세요.</p>';
-  $('#macroPanel').innerHTML = renderMacro(data.macro);
-  $('#riskGrid').innerHTML = (data.tickers || []).map(renderRiskCard).join('') ||
-    '<p class="empty">리스크 데이터가 없습니다.</p>';
+const render = (d) => {
+  $('#portfolioName').textContent = d.portfolioName || 'Investment Insight';
+  const seedTag = d.seed ? ' · SEED' : '';
+  $('#dataStatus').textContent = `${(d.core || []).length} 보유 · primary ${d.primary || '—'}${seedTag}`;
+  if (d.generatedAt) $('#dataGenerated').textContent = new Date(d.generatedAt).toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' }) + ' KST';
+  $('#dataSource').textContent = d.dataSource || '';
+  renderTrade(d);
+  $('#coreCards').innerHTML = (d.core || []).map(coreCard).join('') || '<p class="none muted">보유 종목 없음</p>';
+  renderMacro(d.macro);
+  $('#riskGrid').innerHTML = (d.core || []).map(riskCard).join('') || '<p class="none muted">데이터 없음</p>';
 };
 
 const loadData = async () => {
-  try {
-    const res = await fetch('data/site-data.json', { cache: 'no-store' });
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    render(await res.json());
-  } catch (err) {
-    $('#dataStatus').textContent = 'Data error';
-    $('#dataSource').textContent = err.message;
-  }
+  try { const r = await fetch('data/site-data.json', { cache: 'no-store' }); if (!r.ok) throw new Error(`HTTP ${r.status}`); render(await r.json()); }
+  catch (e) { $('#dataStatus').textContent = 'data error: ' + e.message; }
 };
 
-document.querySelectorAll('a[href^="#"]').forEach((link) => {
-  link.addEventListener('click', (e) => {
-    const target = document.querySelector(link.getAttribute('href'));
-    if (!target) return;
-    e.preventDefault();
-    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  });
-});
+document.querySelectorAll('a[href^="#"]').forEach((a) => a.addEventListener('click', (e) => {
+  const t = document.querySelector(a.getAttribute('href')); if (!t) return; e.preventDefault(); t.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}));
 
-loadPrinciples();
-loadData();
+loadRules(); loadData();
