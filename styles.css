@@ -71,12 +71,25 @@ b { font-weight: 700; }
 .cs-m em { font-style: normal; } .cs-m em.pos { color: var(--green); } .cs-m em.neg { color: var(--red); }
 
 /* Macro */
-.kpi { display: grid; grid-template-columns: repeat(auto-fit, minmax(90px, 1fr)); gap: 8px; }
+.macro-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.macro-region { border: 1px solid var(--line); border-radius: 12px; background: var(--panel); padding: 12px; }
+.macro-region-head { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+.kpi { display: grid; grid-template-columns: repeat(auto-fit, minmax(84px, 1fr)); gap: 8px; }
 .kpi div { border: 1px solid var(--line); border-radius: 8px; background: var(--panel-2); padding: 8px 10px; }
 .kpi span { color: var(--muted); font-size: 0.72rem; display: block; }
-.kpi b { font-size: 1.1rem; letter-spacing: -0.02em; }
+.kpi b { font-size: 1.05rem; letter-spacing: -0.02em; }
+.kpi em { display: block; color: var(--muted); font-size: 0.66rem; font-style: normal; margin-top: 2px; }
 .mflags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
 .mflag { font-size: 0.76rem; color: var(--yellow); border: 1px solid rgba(251,191,36,0.4); background: rgba(251,191,36,0.08); border-radius: 999px; padding: 3px 9px; }
+
+/* ticker name subtext */
+.tk { color: var(--muted); font-size: 0.72rem; font-weight: 500; margin-left: -2px; }
+
+/* About / methodology */
+.about summary { cursor: pointer; color: var(--accent); font-size: 0.9rem; padding: 6px 0; }
+.about-body { margin-top: 8px; max-width: 880px; }
+.about-body p { color: var(--muted); font-size: 0.86rem; line-height: 1.6; margin: 0 0 10px; }
+.about-body b { color: var(--text); }
 
 /* Risk grid */
 .risk-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; }
@@ -101,6 +114,6 @@ b { font-weight: 700; }
 .md li.c::before { content: "☐"; position: absolute; left: 0; color: var(--accent); }
 
 @media (max-width: 620px) {
-  .trade-cols { grid-template-columns: 1fr; }
+  .trade-cols, .macro-cols { grid-template-columns: 1fr; }
   .srow { grid-template-columns: 1.4fr 0.6fr 0.7fr 0.8fr 0.4fr; }
 }

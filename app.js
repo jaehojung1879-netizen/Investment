@@ -8,6 +8,11 @@ const alertKo = (a) => a === 'STRONG BUY' ? '강한 매수' : a === 'STRONG SELL
 const regCls = (r) => r === 'Bull' ? 'bull' : r === 'Bear' ? 'bear' : 'trans';
 const regKo = (r) => r === 'Bull' ? '상승' : r === 'Bear' ? '하락' : '전환';
 
+let NAMES = {};
+// Display label: company name (if mapped) with the ticker as secondary.
+const tkName = (t) => NAMES[t] || t;
+const tkSub = (t) => (NAMES[t] ? `<small class="tk">${t}</small>` : '');
+
 // --- Markdown (headings, lists, checklist, tables, bold) ---
 const md2html = (md) => {
   const L = md.split('\n'); let h = '', inUl = false, inT = false;
@@ -35,7 +40,7 @@ const loadRules = async () => {
 const ideaRow = (i) => `
   <div class="idea">
     <div class="idea-top">
-      <strong>${i.ticker}</strong>
+      <strong>${tkName(i.ticker)}</strong>${tkSub(i.ticker)}
       <span class="reg ${regCls(i.regime)}">${regKo(i.regime)}</span>
       <span class="edge">edge ${sp(i.edgeNetPct)}</span>
     </div>
@@ -55,7 +60,7 @@ const renderTrade = (d) => {
   fill('#tradeKR', ti.KR); fill('#tradeUS', ti.US);
   const sc = d.screened || [];
   $('#screenTable').innerHTML = `<div class="srow sh"><span>종목</span><span>지역</span><span>확률</span><span>국면</span><span>채택</span></div>` +
-    sc.map((s) => `<div class="srow"><span>${s.ticker}</span><span>${s.region}</span><span>${pct0(s.probUp)}</span><span class="reg ${regCls(s.regime)}">${regKo(s.regime)}</span><span>${s.qualifies ? '✓' : '·'}</span></div>`).join('');
+    sc.map((s) => `<div class="srow"><span>${tkName(s.ticker)}</span><span>${s.region}</span><span>${pct0(s.probUp)}</span><span class="reg ${regCls(s.regime)}">${regKo(s.regime)}</span><span>${s.qualifies ? '✓' : '·'}</span></div>`).join('');
 };
 
 // --- Core holdings ---
@@ -71,20 +76,30 @@ const coreCard = (t) => {
     </div>`;
   }).join('');
   return `<article class="cc">
-    <header><strong>${t.ticker}</strong><span class="reg ${regCls(t.risk?.regime)}">${regKo(t.risk?.regime)}</span><span class="price">$${fmt(t.lastClose)}</span></header>
+    <header><strong>${tkName(t.ticker)}</strong>${tkSub(t.ticker)}<span class="reg ${regCls(t.risk?.regime)}">${regKo(t.risk?.regime)}</span><span class="price">${fmt(t.lastClose)}</span></header>
     ${rows || '<p class="none muted">데이터 부족</p>'}
   </article>`;
 };
 
-// --- Macro ---
+// --- Macro (two regions: US / KR) ---
+const stanceBadge = (stance) => {
+  const map = { Stable: ['안정', 'bull'], Caution: ['주의', 'trans'], 'Risk-off': ['위험회피', 'bear'] };
+  const [ko, cls] = map[stance] || [stance, 'trans'];
+  return `<span class="reg ${cls}">${ko}</span>`;
+};
+const macroRegion = (title, r) => {
+  if (!r) return '';
+  const kpis = (r.indicators || []).map(([l, v, n]) => `<div><span>${l}</span><b>${v}</b><em>${n ?? ''}</em></div>`).join('');
+  const flags = (r.riskFlags || []).map((f) => `<span class="mflag">${f}</span>`).join('');
+  return `<div class="macro-region">
+    <div class="macro-region-head"><h3>${title}</h3>${stanceBadge(r.stance)}</div>
+    <div class="kpi">${kpis}</div>
+    <div class="mflags">${flags || '<span class="muted">경고 없음</span>'}</div>
+  </div>`;
+};
 const renderMacro = (m) => {
   if (!m || !m.available) { $('#macroPanel').innerHTML = `<div class="none muted">${m?.note ?? '매크로 비활성'}</div>`; return; }
-  const map = { Stable: ['안정', 'ok'], Caution: ['주의', 'warn'], 'Risk-off': ['위험회피', 'bad'] };
-  const [ko, cls] = map[m.stance] || [m.stance, ''];
-  $('#macroStance').innerHTML = `<span class="reg ${cls === 'ok' ? 'bull' : cls === 'bad' ? 'bear' : 'trans'}">${ko}</span>`;
-  const k = [['10Y', fmt(m.treasury10y, '%')], ['2Y', fmt(m.treasury2y, '%')], ['금리차', fmt(m.yieldCurve, '%p')], ['VIX', fmt(m.vix)], ['VIXΔ21', sp(m.vixChange21d)]];
-  const flags = (m.riskFlags || []).map((f) => `<span class="mflag">${f.message}</span>`).join('');
-  $('#macroPanel').innerHTML = `<div class="kpi">${k.map(([l, v]) => `<div><span>${l}</span><b>${v}</b></div>`).join('')}</div><div class="mflags">${flags || '<span class="muted">경고 없음</span>'}</div>`;
+  $('#macroPanel').innerHTML = macroRegion('국외 (US)', m.US) + macroRegion('국내 (KR)', m.KR);
 };
 
 // --- Risk / regime ---
@@ -93,13 +108,14 @@ const riskCard = (t) => {
   const flags = (r.riskFlags || []).map((f) => `<li>${f.message}</li>`).join('');
   const m = [['SMA50/200', `${fmt(r.ma50)}/${fmt(r.ma200)}`], ['변동성', fmt(r.realizedVol, '%')], ['RSI', fmt(r.rsi14)], ['1Y낙폭', fmt(r.maxDrawdown252d, '%')], ['상대강도', sp(r.relMomentum)], ['52H대비', fmt(r.pct52wHigh, '%')]];
   return `<article class="rc">
-    <header><strong>${t.ticker}</strong><span class="reg ${regCls(r.regime)}">${regKo(r.regime)}</span></header>
+    <header><strong>${tkName(t.ticker)}</strong>${tkSub(t.ticker)}<span class="reg ${regCls(r.regime)}">${regKo(r.regime)}</span></header>
     <div class="rm">${m.map(([l, v]) => `<div><span>${l}</span><b>${v}</b></div>`).join('')}</div>
     <ul class="rf ${flags ? '' : 'clean'}">${flags || '<li>플래그 없음</li>'}</ul>
   </article>`;
 };
 
 const render = (d) => {
+  NAMES = d.names || {};
   $('#portfolioName').textContent = d.portfolioName || 'Investment Insight';
   const seedTag = d.seed ? ' · SEED' : '';
   $('#dataStatus').textContent = `${(d.core || []).length} 보유 · primary ${d.primary || '—'}${seedTag}`;

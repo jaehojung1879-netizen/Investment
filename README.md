@@ -29,13 +29,20 @@ GitHub Actions(Python)가 매일 데이터를 수집·모델링해 `data/site-da
 {
   "core": ["QQQ", "NVDA", "PLTR"],
   "universe": { "US": ["QQQ", "AAPL", "..."], "KR": ["005930.KS", "000660.KS", "..."] },
-  "benchmark": "SPY", "primary": "QQQ", "tradeHorizon": 10
+  "names": { "005930.KS": "삼성전자", "000660.KS": "SK하이닉스" },
+  "benchmark": "SPY", "primary": "QQQ", "tradeHorizon": 10,
+  "fred": {
+    "US": { "Treasury_10Y": "DGS10", "Treasury_2Y": "DGS2", "FedFunds": "DFF", "HY_Spread": "BAMLH0A0HYM2" },
+    "KR": { "USD_KRW": "DEXKOUS", "Korea_10Y": "IRLTLT01KRM156N", "Korea_3M": "IR3TIB01KRM156N" }
+  }
 }
 ```
 
 - `core` = 보유 종목(전체 분석 + 보유 카드)
 - `universe.US` / `universe.KR` = 트레이드 아이디어 스크리닝 후보
+- `names` = KR 코드 → 화면에 보일 종목명 (코드는 작게 같이 표시)
 - `tradeHorizon` = 단기 트레이드 기본 보유 영업일
+- `fred.US` / `fred.KR` = 지역별 매크로 시리즈(국채·금리·스프레드·환율). FRED 한 키로 미국·한국 모두 조회
 
 ## 구성
 
