@@ -2,6 +2,7 @@
   "portfolioName": "My Investment Insight",
   "tradeHorizon": 10,
   "horizons": [21, 63, 126],
+  "universeSize": 40,
   "core": ["QQQ", "NVDA", "PLTR"],
   "universe": {
     "US": ["QQQ", "SPY", "NVDA", "PLTR", "AAPL", "MSFT", "GOOGL", "AMZN", "META", "TSLA", "AMD", "AVGO"],
@@ -43,5 +44,5 @@
       "Korea_3M": "IR3TIB01KRM156N"
     }
   },
-  "_notes": "core=보유, universe.US/KR=스크리닝 후보, names=KR 코드→종목명 표시, fred.US/KR=지역별 매크로 시리즈. tradeHorizon=보유 영업일. KR 티커는 .KS/.KQ 접미사. FRED_API_KEY 는 GitHub Actions Secret 으로만 주입."
+  "_notes": "core=보유(전체 분석). 스크리닝 유니버스는 매일 S&P500+KOSPI 상위 universeSize개를 자동 구성(FinanceDataReader); universe.US/KR 은 자동 구성 실패 시 fallback 목록. names=종목명 오버라이드(자동 종목명 위에 덮어씀). fred.US/KR=지역별 매크로. FRED_API_KEY 는 GitHub Actions Secret 으로만 주입."
 }

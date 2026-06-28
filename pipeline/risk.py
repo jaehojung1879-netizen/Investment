@@ -34,8 +34,10 @@ def diagnose(ticker: str, data: pd.DataFrame) -> dict:
     rel_mom = _last(data["rel_momentum"]) if "rel_momentum" in data else None
     dd = _max_drawdown(close)
     pos_52w = _last(data["price_52w_high"]) if "price_52w_high" in data else None
+    mom63 = _last(data["momentum_60d"]) if "momentum_60d" in data else None
 
     above_200 = last_close is not None and ma200 is not None and last_close > ma200
+    above_50 = last_close is not None and ma50 is not None and last_close > ma50
     golden = ma50 is not None and ma200 is not None and ma50 > ma200
     if above_200 and golden:
         regime = "Bull"
@@ -67,5 +69,8 @@ def diagnose(ticker: str, data: pd.DataFrame) -> dict:
         "maxDrawdown252d": round(dd, 1) if dd is not None else None,
         "relMomentum": round(rel_mom * 100, 1) if rel_mom is not None else None,
         "pct52wHigh": round(pos_52w * 100, 1) if pos_52w is not None else None,
+        "aboveMA50": above_50,
+        "aboveMA200": above_200,
+        "mom63": mom63,
         "riskFlags": flags,
     }

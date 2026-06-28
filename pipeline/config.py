@@ -35,6 +35,7 @@ class Config:
     primary: str
     horizons: list[int]
     trade_horizon: int
+    universe_size: int
     model: ModelConfig
     fred_regions: dict[str, dict[str, str]] = field(default_factory=dict)  # region -> {name: series_id}
     fred_api_key: str | None = None
@@ -97,6 +98,7 @@ def load_config(path: Path | str = CONFIG_PATH) -> tuple[Config, list[str]]:
         primary=primary,
         horizons=raw.get("horizons", [21, 63, 126]),
         trade_horizon=raw.get("tradeHorizon", 10),
+        universe_size=raw.get("universeSize", 40),
         model=model,
         fred_regions=fred_regions,
         fred_api_key=os.environ.get("FRED_API_KEY"),
