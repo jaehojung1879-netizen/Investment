@@ -73,3 +73,12 @@ footer { padding: 28px clamp(20px, 5vw, 72px); color: var(--muted); line-height:
   .table-row { grid-template-columns: 1fr; }
   .section { padding-block: 52px; }
 }
+
+@media (max-width: 720px) {
+  .nav { align-items: flex-start; }
+  .nav-toggle { display: inline-flex; }
+  .nav-links { display: none; position: absolute; top: 48px; right: 0; left: 0; flex-direction: column; align-items: stretch; padding: 18px; background: rgba(5,11,20,0.96); border: 1px solid var(--line); border-radius: 20px; z-index: 10; }
+  .nav-links.open { display: flex; }
+  .table-row { grid-template-columns: 1fr; }
+  h1 { letter-spacing: -0.06em; }
+}

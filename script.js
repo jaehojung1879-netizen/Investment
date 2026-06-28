@@ -137,6 +137,8 @@ document.querySelectorAll('a[href^="#"]').forEach((link) => {
     if (!target) return;
     event.preventDefault();
     target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    document.querySelector('#site-menu')?.classList.remove('open');
+    document.querySelector('.nav-toggle')?.setAttribute('aria-expanded', 'false');
   });
 });
 
