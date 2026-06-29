@@ -68,7 +68,7 @@ def main() -> int:
         tsig = M.current_signal(feat, fcols, f"target_{th}d", cfg.model)
         if tsig is not None:
             stats = M.horizon_return_stats(feat, th)
-            idea = trade_mod.build_idea(tk, region, tsig["probUp"], stats, th, tsig["asOf"], diag["regime"])
+            idea = trade_mod.build_idea(tk, region, tsig["probUp"], stats, th, tsig["asOf"], diag["regime"], diag)
             screened.append({"ticker": tk, "region": region, "probUp": tsig["probUp"], "regime": diag["regime"],
                              "qualifies": idea is not None, "aboveMA50": diag["aboveMA50"],
                              "aboveMA200": diag["aboveMA200"], "mom63": diag["mom63"]})
