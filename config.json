@@ -2,23 +2,26 @@
   "portfolioName": "My Investment Insight",
   "tradeHorizon": 10,
   "horizons": [21, 63, 126],
-  "universeSize": 40,
-  "core": ["QQQ", "NVDA", "PLTR"],
-  "universe": {
-    "US": ["QQQ", "SPY", "NVDA", "PLTR", "AAPL", "MSFT", "GOOGL", "AMZN", "META", "TSLA", "AMD", "AVGO"],
-    "KR": ["005930.KS", "000660.KS", "373220.KS", "207940.KS", "005380.KS", "035420.KS", "035720.KS", "068270.KS", "105560.KS", "012330.KS"]
-  },
+  "universeSize": 50,
+  "core": ["005930.KS", "000660.KS", "000810.KS", "010120.KS", "035420.KS", "034020.KS", "047040.KS", "PFE", "QQQ", "NVDA", "GOOGL"],
   "names": {
-    "005930.KS": "삼성전자",
-    "000660.KS": "SK하이닉스",
-    "373220.KS": "LG에너지솔루션",
-    "207940.KS": "삼성바이오로직스",
-    "005380.KS": "현대차",
-    "035420.KS": "NAVER",
-    "035720.KS": "카카오",
-    "068270.KS": "셀트리온",
-    "105560.KS": "KB금융",
-    "012330.KS": "현대모비스"
+    "005930.KS": "삼성전자", "000660.KS": "SK하이닉스", "000810.KS": "삼성화재", "010120.KS": "LS ELECTRIC",
+    "035420.KS": "NAVER", "034020.KS": "두산에너빌리티", "047040.KS": "대우건설",
+    "000270.KS": "기아", "005380.KS": "현대차", "005935.KS": "삼성전자우", "012330.KS": "현대모비스",
+    "028260.KS": "삼성물산", "035720.KS": "카카오", "051910.KS": "LG화학", "006400.KS": "삼성SDI",
+    "055550.KS": "신한지주", "086790.KS": "하나금융지주", "105560.KS": "KB금융", "015760.KS": "한국전력",
+    "032830.KS": "삼성생명", "207940.KS": "삼성바이오로직스", "373220.KS": "LG에너지솔루션",
+    "066570.KS": "LG전자", "003670.KS": "포스코퓨처엠", "010130.KS": "고려아연", "009150.KS": "삼성전기",
+    "011200.KS": "HMM", "033780.KS": "KT&G", "024110.KS": "기업은행", "316140.KS": "우리금융지주",
+    "138040.KS": "메리츠금융지주", "018260.KS": "삼성에스디에스", "030200.KS": "KT", "068270.KS": "셀트리온",
+    "009540.KS": "HD한국조선해양", "051900.KS": "LG생활건강", "097950.KS": "CJ제일제당", "271560.KS": "오리온",
+    "004020.KS": "현대제철", "267260.KS": "HD현대일렉트릭", "042660.KS": "한화오션", "010140.KS": "삼성중공업",
+    "329180.KS": "HD현대중공업", "012450.KS": "한화에어로스페이스", "064350.KS": "현대로템",
+    "PFE": "화이자(Pfizer)"
+  },
+  "universe": {
+    "US": ["QQQ", "SPY", "AAPL", "MSFT", "NVDA", "GOOGL", "GOOG", "AMZN", "META", "AVGO", "TSLA", "BRK-B", "LLY", "JPM", "V", "WMT", "UNH", "XOM", "MA", "JNJ", "PG", "HD", "COST", "ORCL", "ABBV", "BAC", "KO", "MRK", "CVX", "ADBE", "PEP", "CRM", "AMD", "NFLX", "TMO", "ACN", "LIN", "MCD", "ABT", "CSCO", "WFC", "DHR", "TXN", "QCOM", "PM", "VZ", "INTU", "IBM", "CAT", "GE", "NOW", "ISRG", "AMGN", "PFE", "UNP", "SPGI", "GS", "HON", "BKNG", "AXP", "LOW", "BLK", "SYK", "ELV", "PLD", "TJX", "VRTX", "C", "DE", "GILD"],
+    "KR": ["005930.KS", "000660.KS", "373220.KS", "207940.KS", "005380.KS", "000270.KS", "068270.KS", "105560.KS", "035420.KS", "012330.KS", "028260.KS", "055550.KS", "035720.KS", "051910.KS", "006400.KS", "000810.KS", "015760.KS", "032830.KS", "003670.KS", "086790.KS", "138040.KS", "010130.KS", "009150.KS", "011200.KS", "034020.KS", "033780.KS", "066570.KS", "316140.KS", "024110.KS", "010120.KS", "047040.KS", "018260.KS", "030200.KS", "009540.KS", "051900.KS", "097950.KS", "271560.KS", "004020.KS", "267260.KS", "042660.KS", "010140.KS", "329180.KS", "012450.KS", "064350.KS"]
   },
   "benchmark": "SPY",
   "primary": "QQQ",
@@ -32,17 +35,8 @@
     "historyStart": "2010-01-01"
   },
   "fred": {
-    "US": {
-      "Treasury_10Y": "DGS10",
-      "Treasury_2Y": "DGS2",
-      "FedFunds": "DFF",
-      "HY_Spread": "BAMLH0A0HYM2"
-    },
-    "KR": {
-      "USD_KRW": "DEXKOUS",
-      "Korea_10Y": "IRLTLT01KRM156N",
-      "Korea_3M": "IR3TIB01KRM156N"
-    }
+    "US": { "Treasury_10Y": "DGS10", "Treasury_2Y": "DGS2", "FedFunds": "DFF", "HY_Spread": "BAMLH0A0HYM2" },
+    "KR": { "USD_KRW": "DEXKOUS", "Korea_10Y": "IRLTLT01KRM156N", "Korea_3M": "IR3TIB01KRM156N" }
   },
-  "_notes": "core=보유(전체 분석). 스크리닝 유니버스는 매일 S&P500+KOSPI 상위 universeSize개를 자동 구성(FinanceDataReader); universe.US/KR 은 자동 구성 실패 시 fallback 목록. names=종목명 오버라이드(자동 종목명 위에 덮어씀). fred.US/KR=지역별 매크로. FRED_API_KEY 는 GitHub Actions Secret 으로만 주입."
+  "_notes": "core=실제 보유 종목(전체 분석). universe=스크리닝 후보(자동 구성 실패 시 fallback로 이 목록 상위 universeSize개 사용). FinanceDataReader가 CI 네트워크에서 허용되면 S&P500/KOSPI 전체 자동 구성. FRED_API_KEY는 GitHub Actions Secret으로만 주입."
 }

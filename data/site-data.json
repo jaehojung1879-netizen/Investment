@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-29T10:27:53.521429+00:00",
+  "generatedAt": "2026-06-29T23:07:31.075889+00:00",
   "portfolioName": "My Investment Insight",
   "primary": "QQQ",
   "benchmark": "SPY",
@@ -12,14 +12,50 @@
   "names": {
     "005930.KS": "삼성전자",
     "000660.KS": "SK하이닉스",
-    "373220.KS": "LG에너지솔루션",
-    "207940.KS": "삼성바이오로직스",
-    "005380.KS": "현대차",
+    "000810.KS": "삼성화재",
+    "010120.KS": "LS ELECTRIC",
     "035420.KS": "NAVER",
+    "034020.KS": "두산에너빌리티",
+    "047040.KS": "대우건설",
+    "000270.KS": "기아",
+    "005380.KS": "현대차",
+    "005935.KS": "삼성전자우",
+    "012330.KS": "현대모비스",
+    "028260.KS": "삼성물산",
     "035720.KS": "카카오",
-    "068270.KS": "셀트리온",
+    "051910.KS": "LG화학",
+    "006400.KS": "삼성SDI",
+    "055550.KS": "신한지주",
+    "086790.KS": "하나금융지주",
     "105560.KS": "KB금융",
-    "012330.KS": "현대모비스"
+    "015760.KS": "한국전력",
+    "032830.KS": "삼성생명",
+    "207940.KS": "삼성바이오로직스",
+    "373220.KS": "LG에너지솔루션",
+    "066570.KS": "LG전자",
+    "003670.KS": "포스코퓨처엠",
+    "010130.KS": "고려아연",
+    "009150.KS": "삼성전기",
+    "011200.KS": "HMM",
+    "033780.KS": "KT&G",
+    "024110.KS": "기업은행",
+    "316140.KS": "우리금융지주",
+    "138040.KS": "메리츠금융지주",
+    "018260.KS": "삼성에스디에스",
+    "030200.KS": "KT",
+    "068270.KS": "셀트리온",
+    "009540.KS": "HD한국조선해양",
+    "051900.KS": "LG생활건강",
+    "097950.KS": "CJ제일제당",
+    "271560.KS": "오리온",
+    "004020.KS": "현대제철",
+    "267260.KS": "HD현대일렉트릭",
+    "042660.KS": "한화오션",
+    "010140.KS": "삼성중공업",
+    "329180.KS": "HD현대중공업",
+    "012450.KS": "한화에어로스페이스",
+    "064350.KS": "현대로템",
+    "PFE": "화이자(Pfizer)"
   },
   "seed": true,
   "stale": false,
@@ -27,146 +63,648 @@
   "tradeIdeas": {
     "KR": [
       {
-        "ticker": "005930.KS",
+        "ticker": "030200.KS",
         "region": "KR",
-        "probUp": 0.7295,
-        "expMovePct": 1.59,
-        "edgeNetPct": 0.89,
+        "probUp": 0.9692,
+        "expMovePct": 6.28,
+        "edgeNetPct": 5.58,
         "horizon": 10,
         "entry": "2026-06-29",
         "holdUntil": "2026-07-13",
         "regime": "Bull",
-        "why": "상승국면 · 60일 모멘텀 +12% · 벤치마크 우위 · 상승확률 73%",
+        "why": "상승국면 · 60일 모멘텀 +25% · 벤치마크 우위 · RSI 73 과열주의 · 상승확률 97%",
         "invalidation": "종가가 MA20 하회하거나 다음 신호 확률이 0.5 미만이면 조기 청산"
       },
       {
-        "ticker": "005380.KS",
+        "ticker": "051900.KS",
         "region": "KR",
-        "probUp": 0.6883,
-        "expMovePct": 1.38,
-        "edgeNetPct": 0.68,
+        "probUp": 0.9336,
+        "expMovePct": 6.15,
+        "edgeNetPct": 5.45,
         "horizon": 10,
         "entry": "2026-06-29",
         "holdUntil": "2026-07-13",
         "regime": "Bull",
-        "why": "상승국면 · 60일 모멘텀 +7% · 벤치마크 우위 · 상승확률 69%",
+        "why": "상승국면 · 60일 모멘텀 +51% · 벤치마크 우위 · RSI 98 과열주의 · 상승확률 93%",
         "invalidation": "종가가 MA20 하회하거나 다음 신호 확률이 0.5 미만이면 조기 청산"
       },
       {
-        "ticker": "035420.KS",
+        "ticker": "012450.KS",
         "region": "KR",
-        "probUp": 0.6545,
-        "expMovePct": 1.18,
-        "edgeNetPct": 0.48,
+        "probUp": 0.9136,
+        "expMovePct": 6.08,
+        "edgeNetPct": 5.38,
         "horizon": 10,
         "entry": "2026-06-29",
         "holdUntil": "2026-07-13",
         "regime": "Bull",
-        "why": "상승국면 · 60일 모멘텀 +14% · 벤치마크 우위 · 상승확률 65%",
+        "why": "상승국면 · 60일 모멘텀 +33% · 벤치마크 우위 · 상승확률 91%",
         "invalidation": "종가가 MA20 하회하거나 다음 신호 확률이 0.5 미만이면 조기 청산"
       },
       {
-        "ticker": "035720.KS",
+        "ticker": "064350.KS",
         "region": "KR",
-        "probUp": 0.6364,
-        "expMovePct": 0.93,
-        "edgeNetPct": 0.23,
+        "probUp": 0.8908,
+        "expMovePct": 5.97,
+        "edgeNetPct": 5.27,
         "horizon": 10,
         "entry": "2026-06-29",
         "holdUntil": "2026-07-13",
         "regime": "Bull",
-        "why": "상승국면 · 60일 모멘텀 +3% · 벤치마크 우위 · 상승확률 64%",
+        "why": "상승국면 · 60일 모멘텀 +42% · 벤치마크 우위 · RSI 71 과열주의 · 상승확률 89%",
         "invalidation": "종가가 MA20 하회하거나 다음 신호 확률이 0.5 미만이면 조기 청산"
       },
       {
-        "ticker": "207940.KS",
+        "ticker": "267260.KS",
         "region": "KR",
-        "probUp": 0.6129,
-        "expMovePct": 0.86,
-        "edgeNetPct": 0.16,
+        "probUp": 0.875,
+        "expMovePct": 5.95,
+        "edgeNetPct": 5.25,
         "horizon": 10,
         "entry": "2026-06-29",
         "holdUntil": "2026-07-13",
-        "regime": "Transition",
-        "why": "전환국면 · 60일 모멘텀 -12% · 벤치마크 우위 · RSI 72 과열주의 · 상승확률 61%",
+        "regime": "Bull",
+        "why": "상승국면 · 60일 모멘텀 +44% · 벤치마크 우위 · 상승확률 88%",
         "invalidation": "종가가 MA20 하회하거나 다음 신호 확률이 0.5 미만이면 조기 청산"
       }
     ],
     "US": [
       {
-        "ticker": "MSFT",
+        "ticker": "BKNG",
         "region": "US",
-        "probUp": 0.6564,
-        "expMovePct": 1.08,
-        "edgeNetPct": 0.68,
+        "probUp": 0.8846,
+        "expMovePct": 3.95,
+        "edgeNetPct": 3.55,
         "horizon": 10,
         "entry": "2026-06-29",
         "holdUntil": "2026-07-13",
         "regime": "Bull",
-        "why": "상승국면 · 60일 모멘텀 +8% · 벤치마크 우위 · 상승확률 66%",
+        "why": "상승국면 · 60일 모멘텀 +18% · 벤치마크 우위 · 상승확률 88%",
         "invalidation": "종가가 MA20 하회하거나 다음 신호 확률이 0.5 미만이면 조기 청산"
       },
       {
-        "ticker": "AVGO",
+        "ticker": "UNP",
         "region": "US",
-        "probUp": 0.6598,
-        "expMovePct": 1.07,
-        "edgeNetPct": 0.67,
+        "probUp": 0.8958,
+        "expMovePct": 3.91,
+        "edgeNetPct": 3.51,
         "horizon": 10,
         "entry": "2026-06-29",
         "holdUntil": "2026-07-13",
         "regime": "Bull",
-        "why": "상승국면 · 60일 모멘텀 +19% · 벤치마크 우위 · 상승확률 66%",
+        "why": "상승국면 · 60일 모멘텀 +37% · 벤치마크 우위 · 상승확률 90%",
         "invalidation": "종가가 MA20 하회하거나 다음 신호 확률이 0.5 미만이면 조기 청산"
       },
       {
-        "ticker": "META",
+        "ticker": "QCOM",
         "region": "US",
-        "probUp": 0.6429,
-        "expMovePct": 0.92,
-        "edgeNetPct": 0.52,
+        "probUp": 0.875,
+        "expMovePct": 3.66,
+        "edgeNetPct": 3.26,
         "horizon": 10,
         "entry": "2026-06-29",
         "holdUntil": "2026-07-13",
-        "regime": "Transition",
-        "why": "전환국면 · 60일 모멘텀 +8% · 벤치마크 우위 · 상승확률 64%",
+        "regime": "Bull",
+        "why": "상승국면 · 60일 모멘텀 +23% · 벤치마크 우위 · 상승확률 88%",
+        "invalidation": "종가가 MA20 하회하거나 다음 신호 확률이 0.5 미만이면 조기 청산"
+      },
+      {
+        "ticker": "TJX",
+        "region": "US",
+        "probUp": 0.832,
+        "expMovePct": 3.66,
+        "edgeNetPct": 3.26,
+        "horizon": 10,
+        "entry": "2026-06-29",
+        "holdUntil": "2026-07-13",
+        "regime": "Bull",
+        "why": "상승국면 · 60일 모멘텀 +13% · 벤치마크 우위 · RSI 75 과열주의 · 상승확률 83%",
+        "invalidation": "종가가 MA20 하회하거나 다음 신호 확률이 0.5 미만이면 조기 청산"
+      },
+      {
+        "ticker": "SYK",
+        "region": "US",
+        "probUp": 0.8259,
+        "expMovePct": 3.4,
+        "edgeNetPct": 3.0,
+        "horizon": 10,
+        "entry": "2026-06-29",
+        "holdUntil": "2026-07-13",
+        "regime": "Bull",
+        "why": "상승국면 · 60일 모멘텀 +6% · 벤치마크 우위 · 상승확률 83%",
         "invalidation": "종가가 MA20 하회하거나 다음 신호 확률이 0.5 미만이면 조기 청산"
       }
     ]
   },
   "screened": [
     {
+      "ticker": "030200.KS",
+      "region": "KR",
+      "probUp": 0.9692,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "033780.KS",
+      "region": "KR",
+      "probUp": 0.9494,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "051900.KS",
+      "region": "KR",
+      "probUp": 0.9336,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "316140.KS",
+      "region": "KR",
+      "probUp": 0.9268,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "012450.KS",
+      "region": "KR",
+      "probUp": 0.9136,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "004020.KS",
+      "region": "KR",
+      "probUp": 0.9062,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "UNP",
+      "region": "US",
+      "probUp": 0.8958,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "068270.KS",
+      "region": "KR",
+      "probUp": 0.8945,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "064350.KS",
+      "region": "KR",
+      "probUp": 0.8908,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "BKNG",
+      "region": "US",
+      "probUp": 0.8846,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "010140.KS",
+      "region": "KR",
+      "probUp": 0.8804,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "329180.KS",
+      "region": "KR",
+      "probUp": 0.8795,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "034020.KS",
+      "region": "KR",
+      "probUp": 0.8782,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "003670.KS",
+      "region": "KR",
+      "probUp": 0.8778,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "QCOM",
+      "region": "US",
+      "probUp": 0.875,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "086790.KS",
+      "region": "KR",
+      "probUp": 0.875,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "267260.KS",
+      "region": "KR",
+      "probUp": 0.875,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "006400.KS",
+      "region": "KR",
+      "probUp": 0.8682,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "000660.KS",
+      "region": "KR",
+      "probUp": 0.8596,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "066570.KS",
+      "region": "KR",
+      "probUp": 0.8585,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "010130.KS",
+      "region": "KR",
+      "probUp": 0.8547,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "010120.KS",
+      "region": "KR",
+      "probUp": 0.8522,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "011200.KS",
+      "region": "KR",
+      "probUp": 0.8485,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "138040.KS",
+      "region": "KR",
+      "probUp": 0.8472,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "035720.KS",
+      "region": "KR",
+      "probUp": 0.8359,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "032830.KS",
+      "region": "KR",
+      "probUp": 0.8356,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "042660.KS",
+      "region": "KR",
+      "probUp": 0.8333,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "TJX",
+      "region": "US",
+      "probUp": 0.832,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "TXN",
+      "region": "US",
+      "probUp": 0.8319,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "024110.KS",
+      "region": "KR",
+      "probUp": 0.8291,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
       "ticker": "005930.KS",
       "region": "KR",
-      "probUp": 0.7295,
+      "probUp": 0.8287,
       "regime": "Bull",
       "qualifies": true
     },
     {
-      "ticker": "005380.KS",
+      "ticker": "373220.KS",
       "region": "KR",
-      "probUp": 0.6883,
+      "probUp": 0.8285,
       "regime": "Bull",
       "qualifies": true
     },
     {
-      "ticker": "AVGO",
-      "region": "US",
-      "probUp": 0.6598,
+      "ticker": "015760.KS",
+      "region": "KR",
+      "probUp": 0.8276,
       "regime": "Bull",
       "qualifies": true
     },
     {
-      "ticker": "MSFT",
+      "ticker": "SYK",
       "region": "US",
-      "probUp": 0.6564,
+      "probUp": 0.8259,
       "regime": "Bull",
       "qualifies": true
     },
     {
       "ticker": "035420.KS",
       "region": "KR",
+      "probUp": 0.8252,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "000270.KS",
+      "region": "KR",
+      "probUp": 0.8235,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "GILD",
+      "region": "US",
+      "probUp": 0.8214,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "105560.KS",
+      "region": "KR",
+      "probUp": 0.8199,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "IBM",
+      "region": "US",
+      "probUp": 0.8156,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "051910.KS",
+      "region": "KR",
+      "probUp": 0.8125,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "012330.KS",
+      "region": "KR",
+      "probUp": 0.81,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "005380.KS",
+      "region": "KR",
+      "probUp": 0.806,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "BLK",
+      "region": "US",
+      "probUp": 0.7989,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "271560.KS",
+      "region": "KR",
+      "probUp": 0.7965,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "047040.KS",
+      "region": "KR",
+      "probUp": 0.7912,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "055550.KS",
+      "region": "KR",
+      "probUp": 0.7852,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "GS",
+      "region": "US",
+      "probUp": 0.7826,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "018260.KS",
+      "region": "KR",
+      "probUp": 0.7778,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "ISRG",
+      "region": "US",
+      "probUp": 0.7769,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "ELV",
+      "region": "US",
+      "probUp": 0.776,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "ADBE",
+      "region": "US",
+      "probUp": 0.7685,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "LOW",
+      "region": "US",
+      "probUp": 0.7639,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "009540.KS",
+      "region": "KR",
+      "probUp": 0.75,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "GE",
+      "region": "US",
+      "probUp": 0.7448,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "207940.KS",
+      "region": "KR",
+      "probUp": 0.7308,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "LLY",
+      "region": "US",
+      "probUp": 0.7295,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "HON",
+      "region": "US",
+      "probUp": 0.7273,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "028260.KS",
+      "region": "KR",
+      "probUp": 0.7174,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "CAT",
+      "region": "US",
+      "probUp": 0.7101,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "097950.KS",
+      "region": "KR",
+      "probUp": 0.7097,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "VZ",
+      "region": "US",
+      "probUp": 0.708,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "SPGI",
+      "region": "US",
+      "probUp": 0.698,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "VRTX",
+      "region": "US",
+      "probUp": 0.6964,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "UNH",
+      "region": "US",
+      "probUp": 0.6883,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "WFC",
+      "region": "US",
+      "probUp": 0.6849,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "INTU",
+      "region": "US",
+      "probUp": 0.6774,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "DE",
+      "region": "US",
+      "probUp": 0.6745,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "CVX",
+      "region": "US",
+      "probUp": 0.6667,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "BRK-B",
+      "region": "US",
+      "probUp": 0.6598,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "PFE",
+      "region": "US",
+      "probUp": 0.6585,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "GOOGL",
+      "region": "US",
+      "probUp": 0.6564,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "XOM",
+      "region": "US",
       "probUp": 0.6545,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "NOW",
+      "region": "US",
+      "probUp": 0.6438,
       "regime": "Bull",
       "qualifies": true
     },
@@ -178,37 +716,128 @@
       "qualifies": true
     },
     {
-      "ticker": "035720.KS",
-      "region": "KR",
+      "ticker": "COST",
+      "region": "US",
+      "probUp": 0.6405,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "MA",
+      "region": "US",
       "probUp": 0.6364,
       "regime": "Bull",
       "qualifies": true
     },
     {
-      "ticker": "000660.KS",
-      "region": "KR",
+      "ticker": "ACN",
+      "region": "US",
+      "probUp": 0.6207,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "LIN",
+      "region": "US",
+      "probUp": 0.6195,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "JPM",
+      "region": "US",
       "probUp": 0.6167,
       "regime": "Bull",
       "qualifies": true
     },
     {
-      "ticker": "207940.KS",
-      "region": "KR",
+      "ticker": "WMT",
+      "region": "US",
       "probUp": 0.6129,
       "regime": "Transition",
       "qualifies": true
     },
     {
-      "ticker": "373220.KS",
-      "region": "KR",
+      "ticker": "V",
+      "region": "US",
       "probUp": 0.6127,
       "regime": "Transition",
+      "qualifies": true
+    },
+    {
+      "ticker": "PEP",
+      "region": "US",
+      "probUp": 0.6111,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "AXP",
+      "region": "US",
+      "probUp": 0.6071,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "009150.KS",
+      "region": "KR",
+      "probUp": 0.6053,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "AMGN",
+      "region": "US",
+      "probUp": 0.5984,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "DHR",
+      "region": "US",
+      "probUp": 0.5946,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "ORCL",
+      "region": "US",
+      "probUp": 0.5862,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "ABT",
+      "region": "US",
+      "probUp": 0.5671,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "CRM",
+      "region": "US",
+      "probUp": 0.5584,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "C",
+      "region": "US",
+      "probUp": 0.5417,
+      "regime": "Bull",
       "qualifies": false
     },
     {
-      "ticker": "105560.KS",
-      "region": "KR",
+      "ticker": "PG",
+      "region": "US",
       "probUp": 0.5389,
+      "regime": "Bull",
+      "qualifies": false
+    },
+    {
+      "ticker": "MRK",
+      "region": "US",
+      "probUp": 0.5294,
       "regime": "Bull",
       "qualifies": false
     },
@@ -227,6 +856,20 @@
       "qualifies": false
     },
     {
+      "ticker": "PM",
+      "region": "US",
+      "probUp": 0.5068,
+      "regime": "Bull",
+      "qualifies": false
+    },
+    {
+      "ticker": "AMD",
+      "region": "US",
+      "probUp": 0.4936,
+      "regime": "Bull",
+      "qualifies": false
+    },
+    {
       "ticker": "AMZN",
       "region": "US",
       "probUp": 0.4874,
@@ -234,87 +877,1961 @@
       "qualifies": false
     },
     {
-      "ticker": "068270.KS",
-      "region": "KR",
+      "ticker": "TMO",
+      "region": "US",
+      "probUp": 0.4865,
+      "regime": "Bull",
+      "qualifies": false
+    },
+    {
+      "ticker": "KO",
+      "region": "US",
+      "probUp": 0.4706,
+      "regime": "Bull",
+      "qualifies": false
+    },
+    {
+      "ticker": "JNJ",
+      "region": "US",
       "probUp": 0.4667,
       "regime": "Transition",
       "qualifies": false
     },
     {
-      "ticker": "AMD",
+      "ticker": "TSLA",
       "region": "US",
       "probUp": 0.4438,
       "regime": "Bull",
       "qualifies": false
     },
     {
-      "ticker": "TSLA",
+      "ticker": "AVGO",
       "region": "US",
       "probUp": 0.3982,
       "regime": "Bear",
       "qualifies": false
     },
     {
-      "ticker": "012330.KS",
-      "region": "KR",
+      "ticker": "HD",
+      "region": "US",
       "probUp": 0.3855,
       "regime": "Transition",
       "qualifies": false
     },
     {
-      "ticker": "AAPL",
+      "ticker": "NVDA",
       "region": "US",
       "probUp": 0.3697,
       "regime": "Transition",
       "qualifies": false
     },
     {
-      "ticker": "GOOGL",
+      "ticker": "GOOG",
       "region": "US",
       "probUp": 0.3671,
       "regime": "Bull",
       "qualifies": false
     },
     {
-      "ticker": "PLTR",
+      "ticker": "CSCO",
+      "region": "US",
+      "probUp": 0.3571,
+      "regime": "Bull",
+      "qualifies": false
+    },
+    {
+      "ticker": "MSFT",
       "region": "US",
       "probUp": 0.2941,
       "regime": "Bear",
       "qualifies": false
     },
     {
-      "ticker": "NVDA",
+      "ticker": "NFLX",
+      "region": "US",
+      "probUp": 0.25,
+      "regime": "Transition",
+      "qualifies": false
+    },
+    {
+      "ticker": "AAPL",
       "region": "US",
       "probUp": 0.0714,
       "regime": "Bull",
       "qualifies": false
+    },
+    {
+      "ticker": "ABBV",
+      "region": "US",
+      "probUp": 0.0,
+      "regime": "Transition",
+      "qualifies": false
+    },
+    {
+      "ticker": "BAC",
+      "region": "US",
+      "probUp": 0.0,
+      "regime": "Bull",
+      "qualifies": false
+    },
+    {
+      "ticker": "MCD",
+      "region": "US",
+      "probUp": 0.0,
+      "regime": "Bull",
+      "qualifies": false
+    },
+    {
+      "ticker": "PLD",
+      "region": "US",
+      "probUp": 0.0,
+      "regime": "Bull",
+      "qualifies": false
+    },
+    {
+      "ticker": "000810.KS",
+      "region": "KR",
+      "probUp": 0.0,
+      "regime": "Bull",
+      "qualifies": false
     }
   ],
+  "details": {
+    "QQQ": {
+      "region": "US",
+      "probUp": 0.5263,
+      "regime": "Bull",
+      "lastClose": 16.76,
+      "ma50": 16.03,
+      "ma200": 15.48,
+      "rsi14": 57.9,
+      "realizedVol": 13.6,
+      "maxDrawdown252d": -13.8,
+      "relMomentum": 14.5,
+      "pct52wHigh": 95.6,
+      "mom63": 8.0,
+      "riskFlags": []
+    },
+    "SPY": {
+      "region": "US",
+      "probUp": 0.5215,
+      "regime": "Bear",
+      "lastClose": 38.75,
+      "ma50": 42.01,
+      "ma200": 42.56,
+      "rsi14": 35.3,
+      "realizedVol": 20.2,
+      "maxDrawdown252d": -15.9,
+      "relMomentum": 0.0,
+      "pct52wHigh": 84.1,
+      "mom63": -8.6,
+      "riskFlags": [
+        "장기 추세선(200일) 하회",
+        "최근 1년 낙폭 -16%"
+      ]
+    },
+    "AAPL": {
+      "region": "US",
+      "probUp": 0.0714,
+      "regime": "Bull",
+      "lastClose": 79.49,
+      "ma50": 80.29,
+      "ma200": 74.17,
+      "rsi14": 28.3,
+      "realizedVol": 19.0,
+      "maxDrawdown252d": -10.5,
+      "relMomentum": 2.8,
+      "pct52wHigh": 93.0,
+      "mom63": 1.0,
+      "riskFlags": []
+    },
+    "MSFT": {
+      "region": "US",
+      "probUp": 0.2941,
+      "regime": "Bear",
+      "lastClose": 60.47,
+      "ma50": 59.38,
+      "ma200": 60.7,
+      "rsi14": 64.1,
+      "realizedVol": 26.7,
+      "maxDrawdown252d": -13.8,
+      "relMomentum": 7.1,
+      "pct52wHigh": 93.3,
+      "mom63": 1.0,
+      "riskFlags": [
+        "장기 추세선(200일) 하회"
+      ]
+    },
+    "NVDA": {
+      "region": "US",
+      "probUp": 0.3697,
+      "regime": "Transition",
+      "lastClose": 40.49,
+      "ma50": 41.45,
+      "ma200": 40.5,
+      "rsi14": 21.7,
+      "realizedVol": 23.5,
+      "maxDrawdown252d": -23.1,
+      "relMomentum": 0.7,
+      "pct52wHigh": 88.4,
+      "mom63": 8.9,
+      "riskFlags": [
+        "장기 추세선(200일) 하회",
+        "최근 1년 낙폭 -23%"
+      ]
+    },
+    "GOOGL": {
+      "region": "US",
+      "probUp": 0.6564,
+      "regime": "Bull",
+      "lastClose": 185.56,
+      "ma50": 186.49,
+      "ma200": 161.58,
+      "rsi14": 37.9,
+      "realizedVol": 21.2,
+      "maxDrawdown252d": -7.5,
+      "relMomentum": 7.6,
+      "pct52wHigh": 93.7,
+      "mom63": 7.5,
+      "riskFlags": []
+    },
+    "GOOG": {
+      "region": "US",
+      "probUp": 0.3671,
+      "regime": "Bull",
+      "lastClose": 49.42,
+      "ma50": 47.37,
+      "ma200": 42.1,
+      "rsi14": 45.8,
+      "realizedVol": 26.4,
+      "maxDrawdown252d": -30.9,
+      "relMomentum": 4.1,
+      "pct52wHigh": 95.6,
+      "mom63": 29.8,
+      "riskFlags": [
+        "최근 1년 낙폭 -31%"
+      ]
+    },
+    "AMZN": {
+      "region": "US",
+      "probUp": 0.4874,
+      "regime": "Transition",
+      "lastClose": 108.54,
+      "ma50": 124.74,
+      "ma200": 117.28,
+      "rsi14": 25.1,
+      "realizedVol": 22.5,
+      "maxDrawdown252d": -21.5,
+      "relMomentum": -3.1,
+      "pct52wHigh": 78.5,
+      "mom63": -17.1,
+      "riskFlags": [
+        "장기 추세선(200일) 하회",
+        "최근 1년 낙폭 -21%",
+        "벤치마크 대비 약세"
+      ]
+    },
+    "META": {
+      "region": "US",
+      "probUp": 0.6429,
+      "regime": "Transition",
+      "lastClose": 69.79,
+      "ma50": 67.36,
+      "ma200": 68.36,
+      "rsi14": 60.2,
+      "realizedVol": 24.0,
+      "maxDrawdown252d": -18.2,
+      "relMomentum": 10.2,
+      "pct52wHigh": 90.8,
+      "mom63": 7.5,
+      "riskFlags": [
+        "최근 1년 낙폭 -18%"
+      ]
+    },
+    "AVGO": {
+      "region": "US",
+      "probUp": 0.3982,
+      "regime": "Bear",
+      "lastClose": 59.68,
+      "ma50": 58.86,
+      "ma200": 62.06,
+      "rsi14": 53.0,
+      "realizedVol": 19.5,
+      "maxDrawdown252d": -17.4,
+      "relMomentum": 9.6,
+      "pct52wHigh": 86.5,
+      "mom63": -0.7,
+      "riskFlags": [
+        "장기 추세선(200일) 하회",
+        "최근 1년 낙폭 -17%"
+      ]
+    },
+    "TSLA": {
+      "region": "US",
+      "probUp": 0.4438,
+      "regime": "Bull",
+      "lastClose": 20.24,
+      "ma50": 19.94,
+      "ma200": 19.69,
+      "rsi14": 68.7,
+      "realizedVol": 18.0,
+      "maxDrawdown252d": -15.9,
+      "relMomentum": 13.9,
+      "pct52wHigh": 93.3,
+      "mom63": 7.3,
+      "riskFlags": [
+        "최근 1년 낙폭 -16%"
+      ]
+    },
+    "BRK-B": {
+      "region": "US",
+      "probUp": 0.6598,
+      "regime": "Bull",
+      "lastClose": 187.24,
+      "ma50": 176.32,
+      "ma200": 142.29,
+      "rsi14": 50.8,
+      "realizedVol": 18.6,
+      "maxDrawdown252d": -11.9,
+      "relMomentum": 13.6,
+      "pct52wHigh": 98.7,
+      "mom63": 19.1,
+      "riskFlags": []
+    },
+    "LLY": {
+      "region": "US",
+      "probUp": 0.7295,
+      "regime": "Bull",
+      "lastClose": 126.55,
+      "ma50": 121.37,
+      "ma200": 112.93,
+      "rsi14": 64.8,
+      "realizedVol": 18.6,
+      "maxDrawdown252d": -8.9,
+      "relMomentum": 11.8,
+      "pct52wHigh": 98.5,
+      "mom63": 12.5,
+      "riskFlags": []
+    },
+    "JPM": {
+      "region": "US",
+      "probUp": 0.6167,
+      "regime": "Bull",
+      "lastClose": 114.98,
+      "ma50": 107.85,
+      "ma200": 96.4,
+      "rsi14": 63.9,
+      "realizedVol": 22.6,
+      "maxDrawdown252d": -8.7,
+      "relMomentum": 18.8,
+      "pct52wHigh": 100.0,
+      "mom63": 1.3,
+      "riskFlags": []
+    },
+    "V": {
+      "region": "US",
+      "probUp": 0.6127,
+      "regime": "Transition",
+      "lastClose": 221.3,
+      "ma50": 203.45,
+      "ma200": 206.47,
+      "rsi14": 60.5,
+      "realizedVol": 15.4,
+      "maxDrawdown252d": -19.8,
+      "relMomentum": 15.4,
+      "pct52wHigh": 97.3,
+      "mom63": 15.8,
+      "riskFlags": [
+        "최근 1년 낙폭 -20%"
+      ]
+    },
+    "WMT": {
+      "region": "US",
+      "probUp": 0.6129,
+      "regime": "Transition",
+      "lastClose": 315.73,
+      "ma50": 325.91,
+      "ma200": 318.61,
+      "rsi14": 71.8,
+      "realizedVol": 22.6,
+      "maxDrawdown252d": -20.6,
+      "relMomentum": 5.3,
+      "pct52wHigh": 85.2,
+      "mom63": -11.5,
+      "riskFlags": [
+        "장기 추세선(200일) 하회",
+        "최근 1년 낙폭 -21%"
+      ]
+    },
+    "UNH": {
+      "region": "US",
+      "probUp": 0.6883,
+      "regime": "Bull",
+      "lastClose": 211.88,
+      "ma50": 210.25,
+      "ma200": 186.14,
+      "rsi14": 54.7,
+      "realizedVol": 23.6,
+      "maxDrawdown252d": -11.0,
+      "relMomentum": 7.7,
+      "pct52wHigh": 98.0,
+      "mom63": 7.4,
+      "riskFlags": []
+    },
+    "XOM": {
+      "region": "US",
+      "probUp": 0.6545,
+      "regime": "Bull",
+      "lastClose": 528.22,
+      "ma50": 495.63,
+      "ma200": 416.56,
+      "rsi14": 69.3,
+      "realizedVol": 15.1,
+      "maxDrawdown252d": -9.0,
+      "relMomentum": 19.6,
+      "pct52wHigh": 100.0,
+      "mom63": 14.2,
+      "riskFlags": []
+    },
+    "MA": {
+      "region": "US",
+      "probUp": 0.6364,
+      "regime": "Bull",
+      "lastClose": 193.89,
+      "ma50": 198.34,
+      "ma200": 179.75,
+      "rsi14": 34.8,
+      "realizedVol": 20.3,
+      "maxDrawdown252d": -17.4,
+      "relMomentum": 2.6,
+      "pct52wHigh": 93.1,
+      "mom63": 3.3,
+      "riskFlags": [
+        "최근 1년 낙폭 -17%"
+      ]
+    },
+    "JNJ": {
+      "region": "US",
+      "probUp": 0.4667,
+      "regime": "Transition",
+      "lastClose": 206.25,
+      "ma50": 232.8,
+      "ma200": 228.04,
+      "rsi14": 25.1,
+      "realizedVol": 16.5,
+      "maxDrawdown252d": -19.8,
+      "relMomentum": -2.1,
+      "pct52wHigh": 80.2,
+      "mom63": -15.7,
+      "riskFlags": [
+        "장기 추세선(200일) 하회",
+        "최근 1년 낙폭 -20%",
+        "벤치마크 대비 약세"
+      ]
+    },
+    "PG": {
+      "region": "US",
+      "probUp": 0.5389,
+      "regime": "Bull",
+      "lastClose": 297.93,
+      "ma50": 308.27,
+      "ma200": 281.34,
+      "rsi14": 37.7,
+      "realizedVol": 21.9,
+      "maxDrawdown252d": -13.9,
+      "relMomentum": -0.1,
+      "pct52wHigh": 91.1,
+      "mom63": -4.2,
+      "riskFlags": [
+        "벤치마크 대비 약세"
+      ]
+    },
+    "HD": {
+      "region": "US",
+      "probUp": 0.3855,
+      "regime": "Transition",
+      "lastClose": 271.28,
+      "ma50": 289.42,
+      "ma200": 274.88,
+      "rsi14": 6.3,
+      "realizedVol": 13.6,
+      "maxDrawdown252d": -19.0,
+      "relMomentum": -4.0,
+      "pct52wHigh": 87.7,
+      "mom63": -2.6,
+      "riskFlags": [
+        "장기 추세선(200일) 하회",
+        "최근 1년 낙폭 -19%",
+        "벤치마크 대비 약세"
+      ]
+    },
+    "COST": {
+      "region": "US",
+      "probUp": 0.6405,
+      "regime": "Bull",
+      "lastClose": 249.48,
+      "ma50": 215.26,
+      "ma200": 193.86,
+      "rsi14": 75.5,
+      "realizedVol": 24.6,
+      "maxDrawdown252d": -15.5,
+      "relMomentum": 22.4,
+      "pct52wHigh": 100.0,
+      "mom63": 34.2,
+      "riskFlags": [
+        "최근 1년 낙폭 -16%",
+        "RSI 75 (단기 과열)"
+      ]
+    },
+    "ORCL": {
+      "region": "US",
+      "probUp": 0.5862,
+      "regime": "Bull",
+      "lastClose": 328.3,
+      "ma50": 329.47,
+      "ma200": 327.73,
+      "rsi14": 51.4,
+      "realizedVol": 19.2,
+      "maxDrawdown252d": -14.0,
+      "relMomentum": 7.0,
+      "pct52wHigh": 88.6,
+      "mom63": -3.1,
+      "riskFlags": []
+    },
+    "ABBV": {
+      "region": "US",
+      "probUp": 0.0,
+      "regime": "Transition",
+      "lastClose": 231.14,
+      "ma50": 245.87,
+      "ma200": 245.08,
+      "rsi14": 37.0,
+      "realizedVol": 18.4,
+      "maxDrawdown252d": -13.9,
+      "relMomentum": 0.6,
+      "pct52wHigh": 86.1,
+      "mom63": -13.0,
+      "riskFlags": [
+        "장기 추세선(200일) 하회"
+      ]
+    },
+    "BAC": {
+      "region": "US",
+      "probUp": 0.0,
+      "regime": "Bull",
+      "lastClose": 856.4,
+      "ma50": 786.63,
+      "ma200": 651.42,
+      "rsi14": 76.0,
+      "realizedVol": 24.2,
+      "maxDrawdown252d": -12.0,
+      "relMomentum": 16.8,
+      "pct52wHigh": 97.6,
+      "mom63": 15.3,
+      "riskFlags": [
+        "RSI 76 (단기 과열)"
+      ]
+    },
+    "KO": {
+      "region": "US",
+      "probUp": 0.4706,
+      "regime": "Bull",
+      "lastClose": 320.92,
+      "ma50": 290.75,
+      "ma200": 257.3,
+      "rsi14": 69.9,
+      "realizedVol": 19.5,
+      "maxDrawdown252d": -15.9,
+      "relMomentum": 15.1,
+      "pct52wHigh": 100.0,
+      "mom63": 15.9,
+      "riskFlags": [
+        "최근 1년 낙폭 -16%"
+      ]
+    },
+    "MRK": {
+      "region": "US",
+      "probUp": 0.5294,
+      "regime": "Bull",
+      "lastClose": 177.47,
+      "ma50": 159.06,
+      "ma200": 134.01,
+      "rsi14": 71.1,
+      "realizedVol": 26.5,
+      "maxDrawdown252d": -11.5,
+      "relMomentum": 20.3,
+      "pct52wHigh": 100.0,
+      "mom63": 25.6,
+      "riskFlags": []
+    },
+    "CVX": {
+      "region": "US",
+      "probUp": 0.6667,
+      "regime": "Bull",
+      "lastClose": 560.61,
+      "ma50": 535.27,
+      "ma200": 465.14,
+      "rsi14": 63.5,
+      "realizedVol": 20.1,
+      "maxDrawdown252d": -8.9,
+      "relMomentum": 14.4,
+      "pct52wHigh": 96.9,
+      "mom63": 12.2,
+      "riskFlags": []
+    },
+    "ADBE": {
+      "region": "US",
+      "probUp": 0.7685,
+      "regime": "Bull",
+      "lastClose": 1666.46,
+      "ma50": 1564.88,
+      "ma200": 1258.23,
+      "rsi14": 69.2,
+      "realizedVol": 22.3,
+      "maxDrawdown252d": -7.3,
+      "relMomentum": 11.4,
+      "pct52wHigh": 98.3,
+      "mom63": 14.1,
+      "riskFlags": []
+    },
+    "PEP": {
+      "region": "US",
+      "probUp": 0.6111,
+      "regime": "Bull",
+      "lastClose": 525.66,
+      "ma50": 545.91,
+      "ma200": 440.98,
+      "rsi14": 32.5,
+      "realizedVol": 16.5,
+      "maxDrawdown252d": -7.6,
+      "relMomentum": 0.9,
+      "pct52wHigh": 92.4,
+      "mom63": 2.5,
+      "riskFlags": []
+    },
+    "CRM": {
+      "region": "US",
+      "probUp": 0.5584,
+      "regime": "Bull",
+      "lastClose": 692.81,
+      "ma50": 656.73,
+      "ma200": 523.53,
+      "rsi14": 69.8,
+      "realizedVol": 20.0,
+      "maxDrawdown252d": -8.1,
+      "relMomentum": 13.2,
+      "pct52wHigh": 99.3,
+      "mom63": 12.7,
+      "riskFlags": []
+    },
+    "AMD": {
+      "region": "US",
+      "probUp": 0.4936,
+      "regime": "Bull",
+      "lastClose": 327.96,
+      "ma50": 333.9,
+      "ma200": 318.44,
+      "rsi14": 41.9,
+      "realizedVol": 21.7,
+      "maxDrawdown252d": -19.1,
+      "relMomentum": 4.1,
+      "pct52wHigh": 94.4,
+      "mom63": -1.7,
+      "riskFlags": [
+        "최근 1년 낙폭 -19%"
+      ]
+    },
+    "NFLX": {
+      "region": "US",
+      "probUp": 0.25,
+      "regime": "Transition",
+      "lastClose": 600.0,
+      "ma50": 565.79,
+      "ma200": 568.48,
+      "rsi14": 84.3,
+      "realizedVol": 16.8,
+      "maxDrawdown252d": -16.7,
+      "relMomentum": 14.5,
+      "pct52wHigh": 92.6,
+      "mom63": 3.4,
+      "riskFlags": [
+        "최근 1년 낙폭 -17%",
+        "RSI 84 (단기 과열)"
+      ]
+    },
+    "TMO": {
+      "region": "US",
+      "probUp": 0.4865,
+      "regime": "Bull",
+      "lastClose": 972.67,
+      "ma50": 944.89,
+      "ma200": 939.93,
+      "rsi14": 59.4,
+      "realizedVol": 16.6,
+      "maxDrawdown252d": -10.9,
+      "relMomentum": 10.1,
+      "pct52wHigh": 94.9,
+      "mom63": 0.3,
+      "riskFlags": []
+    },
+    "ACN": {
+      "region": "US",
+      "probUp": 0.6207,
+      "regime": "Bull",
+      "lastClose": 533.86,
+      "ma50": 518.82,
+      "ma200": 439.59,
+      "rsi14": 61.6,
+      "realizedVol": 21.3,
+      "maxDrawdown252d": -9.0,
+      "relMomentum": 15.4,
+      "pct52wHigh": 98.2,
+      "mom63": 4.7,
+      "riskFlags": []
+    },
+    "LIN": {
+      "region": "US",
+      "probUp": 0.6195,
+      "regime": "Bull",
+      "lastClose": 1421.18,
+      "ma50": 1370.06,
+      "ma200": 1056.38,
+      "rsi14": 70.9,
+      "realizedVol": 24.3,
+      "maxDrawdown252d": -9.9,
+      "relMomentum": 15.2,
+      "pct52wHigh": 97.1,
+      "mom63": 2.1,
+      "riskFlags": []
+    },
+    "MCD": {
+      "region": "US",
+      "probUp": 0.0,
+      "regime": "Bull",
+      "lastClose": 1092.77,
+      "ma50": 957.68,
+      "ma200": 749.57,
+      "rsi14": 75.2,
+      "realizedVol": 16.9,
+      "maxDrawdown252d": -5.3,
+      "relMomentum": 18.7,
+      "pct52wHigh": 100.0,
+      "mom63": 32.7,
+      "riskFlags": [
+        "RSI 75 (단기 과열)"
+      ]
+    },
+    "ABT": {
+      "region": "US",
+      "probUp": 0.5671,
+      "regime": "Bull",
+      "lastClose": 1459.24,
+      "ma50": 1481.68,
+      "ma200": 1411.33,
+      "rsi14": 43.4,
+      "realizedVol": 22.5,
+      "maxDrawdown252d": -10.2,
+      "relMomentum": 3.4,
+      "pct52wHigh": 92.3,
+      "mom63": -7.6,
+      "riskFlags": []
+    },
+    "CSCO": {
+      "region": "US",
+      "probUp": 0.3571,
+      "regime": "Bull",
+      "lastClose": 3042.98,
+      "ma50": 2980.49,
+      "ma200": 2333.25,
+      "rsi14": 42.8,
+      "realizedVol": 17.9,
+      "maxDrawdown252d": -8.6,
+      "relMomentum": 8.3,
+      "pct52wHigh": 96.5,
+      "mom63": 24.8,
+      "riskFlags": []
+    },
+    "WFC": {
+      "region": "US",
+      "probUp": 0.6849,
+      "regime": "Bull",
+      "lastClose": 2347.04,
+      "ma50": 2286.5,
+      "ma200": 1833.07,
+      "rsi14": 49.1,
+      "realizedVol": 22.2,
+      "maxDrawdown252d": -11.0,
+      "relMomentum": 5.7,
+      "pct52wHigh": 97.4,
+      "mom63": 16.8,
+      "riskFlags": []
+    },
+    "DHR": {
+      "region": "US",
+      "probUp": 0.5946,
+      "regime": "Bull",
+      "lastClose": 1293.89,
+      "ma50": 1154.57,
+      "ma200": 919.94,
+      "rsi14": 62.8,
+      "realizedVol": 23.8,
+      "maxDrawdown252d": -13.4,
+      "relMomentum": 17.6,
+      "pct52wHigh": 97.5,
+      "mom63": 34.2,
+      "riskFlags": []
+    },
+    "TXN": {
+      "region": "US",
+      "probUp": 0.8319,
+      "regime": "Bull",
+      "lastClose": 1457.65,
+      "ma50": 1412.84,
+      "ma200": 1193.72,
+      "rsi14": 61.6,
+      "realizedVol": 20.3,
+      "maxDrawdown252d": -5.9,
+      "relMomentum": 9.7,
+      "pct52wHigh": 99.6,
+      "mom63": 10.4,
+      "riskFlags": []
+    },
+    "QCOM": {
+      "region": "US",
+      "probUp": 0.875,
+      "regime": "Bull",
+      "lastClose": 3976.18,
+      "ma50": 3707.44,
+      "ma200": 2746.79,
+      "rsi14": 62.3,
+      "realizedVol": 20.0,
+      "maxDrawdown252d": -4.6,
+      "relMomentum": 10.6,
+      "pct52wHigh": 97.5,
+      "mom63": 22.6,
+      "riskFlags": []
+    },
+    "PM": {
+      "region": "US",
+      "probUp": 0.5068,
+      "regime": "Bull",
+      "lastClose": 932.54,
+      "ma50": 848.93,
+      "ma200": 783.21,
+      "rsi14": 78.4,
+      "realizedVol": 18.7,
+      "maxDrawdown252d": -11.3,
+      "relMomentum": 18.7,
+      "pct52wHigh": 100.0,
+      "mom63": 15.3,
+      "riskFlags": [
+        "RSI 78 (단기 과열)"
+      ]
+    },
+    "VZ": {
+      "region": "US",
+      "probUp": 0.708,
+      "regime": "Bull",
+      "lastClose": 1832.61,
+      "ma50": 1684.56,
+      "ma200": 1378.92,
+      "rsi14": 58.5,
+      "realizedVol": 22.8,
+      "maxDrawdown252d": -6.6,
+      "relMomentum": 13.9,
+      "pct52wHigh": 100.0,
+      "mom63": 18.5,
+      "riskFlags": []
+    },
+    "INTU": {
+      "region": "US",
+      "probUp": 0.6774,
+      "regime": "Bull",
+      "lastClose": 5368.41,
+      "ma50": 5522.33,
+      "ma200": 4599.55,
+      "rsi14": 29.1,
+      "realizedVol": 17.3,
+      "maxDrawdown252d": -10.0,
+      "relMomentum": 3.0,
+      "pct52wHigh": 93.5,
+      "mom63": 8.5,
+      "riskFlags": []
+    },
+    "IBM": {
+      "region": "US",
+      "probUp": 0.8156,
+      "regime": "Bull",
+      "lastClose": 4146.49,
+      "ma50": 3658.83,
+      "ma200": 2936.71,
+      "rsi14": 79.0,
+      "realizedVol": 23.0,
+      "maxDrawdown252d": -8.0,
+      "relMomentum": 18.4,
+      "pct52wHigh": 100.0,
+      "mom63": 29.6,
+      "riskFlags": [
+        "RSI 79 (단기 과열)"
+      ]
+    },
+    "CAT": {
+      "region": "US",
+      "probUp": 0.7101,
+      "regime": "Bull",
+      "lastClose": 2749.89,
+      "ma50": 2610.57,
+      "ma200": 1988.41,
+      "rsi14": 67.2,
+      "realizedVol": 13.6,
+      "maxDrawdown252d": -10.8,
+      "relMomentum": 8.2,
+      "pct52wHigh": 99.5,
+      "mom63": 26.7,
+      "riskFlags": []
+    },
+    "GE": {
+      "region": "US",
+      "probUp": 0.7448,
+      "regime": "Bull",
+      "lastClose": 2831.57,
+      "ma50": 2614.11,
+      "ma200": 2029.14,
+      "rsi14": 59.3,
+      "realizedVol": 18.5,
+      "maxDrawdown252d": -7.0,
+      "relMomentum": 15.7,
+      "pct52wHigh": 99.4,
+      "mom63": 28.0,
+      "riskFlags": []
+    },
+    "NOW": {
+      "region": "US",
+      "probUp": 0.6438,
+      "regime": "Bull",
+      "lastClose": 2801.38,
+      "ma50": 2529.5,
+      "ma200": 1938.74,
+      "rsi14": 65.2,
+      "realizedVol": 19.1,
+      "maxDrawdown252d": -13.0,
+      "relMomentum": 18.6,
+      "pct52wHigh": 100.0,
+      "mom63": 45.6,
+      "riskFlags": []
+    },
+    "ISRG": {
+      "region": "US",
+      "probUp": 0.7769,
+      "regime": "Bull",
+      "lastClose": 2724.89,
+      "ma50": 2586.39,
+      "ma200": 1990.95,
+      "rsi14": 67.0,
+      "realizedVol": 23.7,
+      "maxDrawdown252d": -6.7,
+      "relMomentum": 15.2,
+      "pct52wHigh": 98.7,
+      "mom63": 22.8,
+      "riskFlags": []
+    },
+    "AMGN": {
+      "region": "US",
+      "probUp": 0.5984,
+      "regime": "Bull",
+      "lastClose": 3949.9,
+      "ma50": 3788.06,
+      "ma200": 3037.6,
+      "rsi14": 40.5,
+      "realizedVol": 21.3,
+      "maxDrawdown252d": -12.7,
+      "relMomentum": 8.6,
+      "pct52wHigh": 97.3,
+      "mom63": 20.0,
+      "riskFlags": []
+    },
+    "PFE": {
+      "region": "US",
+      "probUp": 0.6585,
+      "regime": "Bull",
+      "lastClose": 2125.41,
+      "ma50": 2047.13,
+      "ma200": 1798.13,
+      "rsi14": 53.2,
+      "realizedVol": 27.6,
+      "maxDrawdown252d": -12.5,
+      "relMomentum": 11.2,
+      "pct52wHigh": 97.8,
+      "mom63": 19.8,
+      "riskFlags": []
+    },
+    "UNP": {
+      "region": "US",
+      "probUp": 0.8958,
+      "regime": "Bull",
+      "lastClose": 4417.67,
+      "ma50": 3999.48,
+      "ma200": 3493.39,
+      "rsi14": 48.9,
+      "realizedVol": 21.5,
+      "maxDrawdown252d": -15.5,
+      "relMomentum": 14.3,
+      "pct52wHigh": 97.9,
+      "mom63": 37.0,
+      "riskFlags": [
+        "최근 1년 낙폭 -15%"
+      ]
+    },
+    "SPGI": {
+      "region": "US",
+      "probUp": 0.698,
+      "regime": "Bull",
+      "lastClose": 6314.28,
+      "ma50": 5995.28,
+      "ma200": 5111.33,
+      "rsi14": 58.7,
+      "realizedVol": 19.9,
+      "maxDrawdown252d": -7.3,
+      "relMomentum": 15.0,
+      "pct52wHigh": 97.4,
+      "mom63": 15.6,
+      "riskFlags": []
+    },
+    "GS": {
+      "region": "US",
+      "probUp": 0.7826,
+      "regime": "Bull",
+      "lastClose": 4713.64,
+      "ma50": 4345.76,
+      "ma200": 3222.86,
+      "rsi14": 83.6,
+      "realizedVol": 17.4,
+      "maxDrawdown252d": -7.9,
+      "relMomentum": 18.6,
+      "pct52wHigh": 100.0,
+      "mom63": 19.3,
+      "riskFlags": [
+        "RSI 84 (단기 과열)"
+      ]
+    },
+    "HON": {
+      "region": "US",
+      "probUp": 0.7273,
+      "regime": "Bull",
+      "lastClose": 6252.68,
+      "ma50": 5566.51,
+      "ma200": 4245.77,
+      "rsi14": 76.9,
+      "realizedVol": 17.9,
+      "maxDrawdown252d": -9.7,
+      "relMomentum": 19.7,
+      "pct52wHigh": 100.0,
+      "mom63": 40.3,
+      "riskFlags": [
+        "RSI 77 (단기 과열)"
+      ]
+    },
+    "BKNG": {
+      "region": "US",
+      "probUp": 0.8846,
+      "regime": "Bull",
+      "lastClose": 8239.95,
+      "ma50": 7757.86,
+      "ma200": 5632.2,
+      "rsi14": 56.9,
+      "realizedVol": 20.7,
+      "maxDrawdown252d": -5.1,
+      "relMomentum": 8.8,
+      "pct52wHigh": 99.0,
+      "mom63": 18.2,
+      "riskFlags": []
+    },
+    "AXP": {
+      "region": "US",
+      "probUp": 0.6071,
+      "regime": "Bull",
+      "lastClose": 3324.75,
+      "ma50": 3241.82,
+      "ma200": 2916.09,
+      "rsi14": 58.3,
+      "realizedVol": 20.0,
+      "maxDrawdown252d": -10.8,
+      "relMomentum": 10.2,
+      "pct52wHigh": 98.5,
+      "mom63": 9.6,
+      "riskFlags": []
+    },
+    "LOW": {
+      "region": "US",
+      "probUp": 0.7639,
+      "regime": "Bull",
+      "lastClose": 10556.65,
+      "ma50": 9675.69,
+      "ma200": 7423.47,
+      "rsi14": 60.9,
+      "realizedVol": 22.6,
+      "maxDrawdown252d": -7.4,
+      "relMomentum": 12.0,
+      "pct52wHigh": 97.8,
+      "mom63": 30.5,
+      "riskFlags": []
+    },
+    "BLK": {
+      "region": "US",
+      "probUp": 0.7989,
+      "regime": "Bull",
+      "lastClose": 4504.81,
+      "ma50": 4201.25,
+      "ma200": 3450.72,
+      "rsi14": 63.3,
+      "realizedVol": 29.0,
+      "maxDrawdown252d": -12.0,
+      "relMomentum": 12.9,
+      "pct52wHigh": 93.8,
+      "mom63": 20.8,
+      "riskFlags": []
+    },
+    "SYK": {
+      "region": "US",
+      "probUp": 0.8259,
+      "regime": "Bull",
+      "lastClose": 6682.8,
+      "ma50": 6588.6,
+      "ma200": 5332.4,
+      "rsi14": 47.1,
+      "realizedVol": 16.1,
+      "maxDrawdown252d": -5.4,
+      "relMomentum": 8.3,
+      "pct52wHigh": 97.7,
+      "mom63": 5.6,
+      "riskFlags": []
+    },
+    "ELV": {
+      "region": "US",
+      "probUp": 0.776,
+      "regime": "Bull",
+      "lastClose": 12710.64,
+      "ma50": 12107.54,
+      "ma200": 9468.71,
+      "rsi14": 56.3,
+      "realizedVol": 19.4,
+      "maxDrawdown252d": -8.0,
+      "relMomentum": 8.4,
+      "pct52wHigh": 97.6,
+      "mom63": 16.8,
+      "riskFlags": []
+    },
+    "PLD": {
+      "region": "US",
+      "probUp": 0.0,
+      "regime": "Bull",
+      "lastClose": 13396.1,
+      "ma50": 14217.08,
+      "ma200": 11623.64,
+      "rsi14": 31.6,
+      "realizedVol": 21.9,
+      "maxDrawdown252d": -13.4,
+      "relMomentum": -1.6,
+      "pct52wHigh": 88.4,
+      "mom63": -3.0,
+      "riskFlags": [
+        "벤치마크 대비 약세"
+      ]
+    },
+    "TJX": {
+      "region": "US",
+      "probUp": 0.832,
+      "regime": "Bull",
+      "lastClose": 16453.46,
+      "ma50": 15218.33,
+      "ma200": 12406.2,
+      "rsi14": 75.1,
+      "realizedVol": 25.7,
+      "maxDrawdown252d": -7.3,
+      "relMomentum": 15.2,
+      "pct52wHigh": 99.7,
+      "mom63": 13.4,
+      "riskFlags": [
+        "RSI 75 (단기 과열)"
+      ]
+    },
+    "VRTX": {
+      "region": "US",
+      "probUp": 0.6964,
+      "regime": "Bull",
+      "lastClose": 10869.56,
+      "ma50": 10076.11,
+      "ma200": 8372.57,
+      "rsi14": 55.2,
+      "realizedVol": 25.9,
+      "maxDrawdown252d": -21.9,
+      "relMomentum": 12.3,
+      "pct52wHigh": 96.0,
+      "mom63": 19.0,
+      "riskFlags": [
+        "최근 1년 낙폭 -22%"
+      ]
+    },
+    "C": {
+      "region": "US",
+      "probUp": 0.5417,
+      "regime": "Bull",
+      "lastClose": 11308.11,
+      "ma50": 10871.43,
+      "ma200": 8263.14,
+      "rsi14": 49.9,
+      "realizedVol": 16.2,
+      "maxDrawdown252d": -5.8,
+      "relMomentum": 7.7,
+      "pct52wHigh": 98.3,
+      "mom63": 28.3,
+      "riskFlags": []
+    },
+    "DE": {
+      "region": "US",
+      "probUp": 0.6745,
+      "regime": "Bull",
+      "lastClose": 15873.98,
+      "ma50": 14992.33,
+      "ma200": 11824.5,
+      "rsi14": 72.5,
+      "realizedVol": 24.2,
+      "maxDrawdown252d": -8.7,
+      "relMomentum": 16.2,
+      "pct52wHigh": 98.3,
+      "mom63": 11.4,
+      "riskFlags": []
+    },
+    "GILD": {
+      "region": "US",
+      "probUp": 0.8214,
+      "regime": "Bull",
+      "lastClose": 9240.03,
+      "ma50": 8495.05,
+      "ma200": 7333.87,
+      "rsi14": 75.6,
+      "realizedVol": 13.8,
+      "maxDrawdown252d": -8.2,
+      "relMomentum": 17.9,
+      "pct52wHigh": 99.8,
+      "mom63": 6.9,
+      "riskFlags": [
+        "RSI 76 (단기 과열)"
+      ]
+    },
+    "005930.KS": {
+      "region": "KR",
+      "probUp": 0.8287,
+      "regime": "Bull",
+      "lastClose": 27236.23,
+      "ma50": 26129.06,
+      "ma200": 17976.61,
+      "rsi14": 70.7,
+      "realizedVol": 18.7,
+      "maxDrawdown252d": -5.4,
+      "relMomentum": 10.0,
+      "pct52wHigh": 100.0,
+      "mom63": 20.0,
+      "riskFlags": []
+    },
+    "000660.KS": {
+      "region": "KR",
+      "probUp": 0.8596,
+      "regime": "Bull",
+      "lastClose": 11799.78,
+      "ma50": 10837.13,
+      "ma200": 8424.6,
+      "rsi14": 78.8,
+      "realizedVol": 18.1,
+      "maxDrawdown252d": -7.7,
+      "relMomentum": 15.9,
+      "pct52wHigh": 100.0,
+      "mom63": 28.2,
+      "riskFlags": [
+        "RSI 79 (단기 과열)"
+      ]
+    },
+    "373220.KS": {
+      "region": "KR",
+      "probUp": 0.8285,
+      "regime": "Bull",
+      "lastClose": 36723.5,
+      "ma50": 37159.03,
+      "ma200": 28394.53,
+      "rsi14": 52.0,
+      "realizedVol": 24.2,
+      "maxDrawdown252d": -7.2,
+      "relMomentum": 5.5,
+      "pct52wHigh": 95.2,
+      "mom63": 7.7,
+      "riskFlags": []
+    },
+    "207940.KS": {
+      "region": "KR",
+      "probUp": 0.7308,
+      "regime": "Bull",
+      "lastClose": 39759.15,
+      "ma50": 34624.63,
+      "ma200": 23790.75,
+      "rsi14": 84.1,
+      "realizedVol": 20.0,
+      "maxDrawdown252d": -14.4,
+      "relMomentum": 21.3,
+      "pct52wHigh": 98.9,
+      "mom63": 44.6,
+      "riskFlags": [
+        "RSI 84 (단기 과열)"
+      ]
+    },
+    "005380.KS": {
+      "region": "KR",
+      "probUp": 0.806,
+      "regime": "Bull",
+      "lastClose": 28016.46,
+      "ma50": 25711.04,
+      "ma200": 20580.14,
+      "rsi14": 69.4,
+      "realizedVol": 27.6,
+      "maxDrawdown252d": -7.4,
+      "relMomentum": 14.4,
+      "pct52wHigh": 100.0,
+      "mom63": 10.7,
+      "riskFlags": []
+    },
+    "000270.KS": {
+      "region": "KR",
+      "probUp": 0.8235,
+      "regime": "Bull",
+      "lastClose": 76539.06,
+      "ma50": 69357.01,
+      "ma200": 53117.67,
+      "rsi14": 63.6,
+      "realizedVol": 19.1,
+      "maxDrawdown252d": -6.7,
+      "relMomentum": 17.0,
+      "pct52wHigh": 97.0,
+      "mom63": 29.9,
+      "riskFlags": []
+    },
+    "068270.KS": {
+      "region": "KR",
+      "probUp": 0.8945,
+      "regime": "Bull",
+      "lastClose": 48039.33,
+      "ma50": 43134.44,
+      "ma200": 28930.2,
+      "rsi14": 74.6,
+      "realizedVol": 20.0,
+      "maxDrawdown252d": -9.0,
+      "relMomentum": 17.5,
+      "pct52wHigh": 100.0,
+      "mom63": 29.8,
+      "riskFlags": []
+    },
+    "105560.KS": {
+      "region": "KR",
+      "probUp": 0.8199,
+      "regime": "Bull",
+      "lastClose": 42411.89,
+      "ma50": 36670.56,
+      "ma200": 27741.52,
+      "rsi14": 75.5,
+      "realizedVol": 20.2,
+      "maxDrawdown252d": -5.5,
+      "relMomentum": 19.2,
+      "pct52wHigh": 99.5,
+      "mom63": 36.2,
+      "riskFlags": [
+        "RSI 76 (단기 과열)"
+      ]
+    },
+    "035420.KS": {
+      "region": "KR",
+      "probUp": 0.8252,
+      "regime": "Bull",
+      "lastClose": 25482.19,
+      "ma50": 23021.36,
+      "ma200": 17730.48,
+      "rsi14": 62.6,
+      "realizedVol": 19.2,
+      "maxDrawdown252d": -7.0,
+      "relMomentum": 11.9,
+      "pct52wHigh": 100.0,
+      "mom63": 29.9,
+      "riskFlags": []
+    },
+    "012330.KS": {
+      "region": "KR",
+      "probUp": 0.81,
+      "regime": "Bull",
+      "lastClose": 34063.22,
+      "ma50": 30983.59,
+      "ma200": 24623.76,
+      "rsi14": 80.7,
+      "realizedVol": 18.3,
+      "maxDrawdown252d": -5.6,
+      "relMomentum": 15.4,
+      "pct52wHigh": 98.6,
+      "mom63": 22.7,
+      "riskFlags": [
+        "RSI 81 (단기 과열)"
+      ]
+    },
+    "028260.KS": {
+      "region": "KR",
+      "probUp": 0.7174,
+      "regime": "Bull",
+      "lastClose": 31714.06,
+      "ma50": 28364.63,
+      "ma200": 19499.49,
+      "rsi14": 66.0,
+      "realizedVol": 19.2,
+      "maxDrawdown252d": -10.7,
+      "relMomentum": 17.9,
+      "pct52wHigh": 98.2,
+      "mom63": 62.6,
+      "riskFlags": []
+    },
+    "055550.KS": {
+      "region": "KR",
+      "probUp": 0.7852,
+      "regime": "Bull",
+      "lastClose": 120688.27,
+      "ma50": 110569.09,
+      "ma200": 83892.81,
+      "rsi14": 69.1,
+      "realizedVol": 21.4,
+      "maxDrawdown252d": -9.0,
+      "relMomentum": 11.9,
+      "pct52wHigh": 100.0,
+      "mom63": 26.7,
+      "riskFlags": []
+    },
+    "035720.KS": {
+      "region": "KR",
+      "probUp": 0.8359,
+      "regime": "Bull",
+      "lastClose": 45061.81,
+      "ma50": 40457.75,
+      "ma200": 28363.98,
+      "rsi14": 60.7,
+      "realizedVol": 20.2,
+      "maxDrawdown252d": -9.1,
+      "relMomentum": 16.8,
+      "pct52wHigh": 97.0,
+      "mom63": 27.2,
+      "riskFlags": []
+    },
+    "051910.KS": {
+      "region": "KR",
+      "probUp": 0.8125,
+      "regime": "Bull",
+      "lastClose": 23657.79,
+      "ma50": 20937.48,
+      "ma200": 14202.08,
+      "rsi14": 66.2,
+      "realizedVol": 25.1,
+      "maxDrawdown252d": -12.3,
+      "relMomentum": 12.3,
+      "pct52wHigh": 97.9,
+      "mom63": 37.8,
+      "riskFlags": []
+    },
+    "006400.KS": {
+      "region": "KR",
+      "probUp": 0.8682,
+      "regime": "Bull",
+      "lastClose": 149479.21,
+      "ma50": 142505.04,
+      "ma200": 97818.73,
+      "rsi14": 29.7,
+      "realizedVol": 22.4,
+      "maxDrawdown252d": -10.3,
+      "relMomentum": 5.6,
+      "pct52wHigh": 92.0,
+      "mom63": 29.9,
+      "riskFlags": []
+    },
+    "000810.KS": {
+      "region": "KR",
+      "probUp": 0.0,
+      "regime": "Bull",
+      "lastClose": 101597.0,
+      "ma50": 86244.59,
+      "ma200": 60610.28,
+      "rsi14": 90.9,
+      "realizedVol": 17.1,
+      "maxDrawdown252d": -5.7,
+      "relMomentum": 24.7,
+      "pct52wHigh": 100.0,
+      "mom63": 42.0,
+      "riskFlags": [
+        "RSI 91 (단기 과열)"
+      ]
+    },
+    "015760.KS": {
+      "region": "KR",
+      "probUp": 0.8276,
+      "regime": "Bull",
+      "lastClose": 38983.99,
+      "ma50": 34330.63,
+      "ma200": 26089.35,
+      "rsi14": 82.2,
+      "realizedVol": 18.7,
+      "maxDrawdown252d": -6.0,
+      "relMomentum": 26.4,
+      "pct52wHigh": 99.1,
+      "mom63": 24.6,
+      "riskFlags": [
+        "RSI 82 (단기 과열)"
+      ]
+    },
+    "032830.KS": {
+      "region": "KR",
+      "probUp": 0.8356,
+      "regime": "Bull",
+      "lastClose": 68561.77,
+      "ma50": 52642.03,
+      "ma200": 36779.57,
+      "rsi14": 100.0,
+      "realizedVol": 14.5,
+      "maxDrawdown252d": -6.7,
+      "relMomentum": 38.1,
+      "pct52wHigh": 100.0,
+      "mom63": 62.9,
+      "riskFlags": [
+        "RSI 100 (단기 과열)"
+      ]
+    },
+    "003670.KS": {
+      "region": "KR",
+      "probUp": 0.8778,
+      "regime": "Bull",
+      "lastClose": 501748.32,
+      "ma50": 468557.21,
+      "ma200": 349322.62,
+      "rsi14": 57.1,
+      "realizedVol": 27.6,
+      "maxDrawdown252d": -6.7,
+      "relMomentum": 11.2,
+      "pct52wHigh": 98.0,
+      "mom63": 23.2,
+      "riskFlags": []
+    },
+    "086790.KS": {
+      "region": "KR",
+      "probUp": 0.875,
+      "regime": "Bull",
+      "lastClose": 88630.21,
+      "ma50": 85878.32,
+      "ma200": 64104.08,
+      "rsi14": 54.7,
+      "realizedVol": 20.3,
+      "maxDrawdown252d": -7.0,
+      "relMomentum": 9.5,
+      "pct52wHigh": 98.4,
+      "mom63": 20.0,
+      "riskFlags": []
+    },
+    "138040.KS": {
+      "region": "KR",
+      "probUp": 0.8472,
+      "regime": "Bull",
+      "lastClose": 188935.96,
+      "ma50": 179688.29,
+      "ma200": 132277.48,
+      "rsi14": 56.2,
+      "realizedVol": 16.4,
+      "maxDrawdown252d": -5.5,
+      "relMomentum": 10.6,
+      "pct52wHigh": 99.7,
+      "mom63": 17.1,
+      "riskFlags": []
+    },
+    "010130.KS": {
+      "region": "KR",
+      "probUp": 0.8547,
+      "regime": "Bull",
+      "lastClose": 55236.64,
+      "ma50": 52287.44,
+      "ma200": 38110.38,
+      "rsi14": 51.7,
+      "realizedVol": 19.5,
+      "maxDrawdown252d": -6.4,
+      "relMomentum": 9.1,
+      "pct52wHigh": 98.5,
+      "mom63": 23.5,
+      "riskFlags": []
+    },
+    "009150.KS": {
+      "region": "KR",
+      "probUp": 0.6053,
+      "regime": "Bull",
+      "lastClose": 39012.01,
+      "ma50": 34074.03,
+      "ma200": 25731.76,
+      "rsi14": 72.6,
+      "realizedVol": 21.6,
+      "maxDrawdown252d": -8.1,
+      "relMomentum": 23.0,
+      "pct52wHigh": 98.6,
+      "mom63": 27.2,
+      "riskFlags": []
+    },
+    "011200.KS": {
+      "region": "KR",
+      "probUp": 0.8485,
+      "regime": "Bull",
+      "lastClose": 199279.06,
+      "ma50": 200763.1,
+      "ma200": 141697.47,
+      "rsi14": 22.7,
+      "realizedVol": 15.9,
+      "maxDrawdown252d": -6.0,
+      "relMomentum": 2.6,
+      "pct52wHigh": 94.1,
+      "mom63": 22.1,
+      "riskFlags": []
+    },
+    "034020.KS": {
+      "region": "KR",
+      "probUp": 0.8782,
+      "regime": "Bull",
+      "lastClose": 143315.7,
+      "ma50": 123682.36,
+      "ma200": 85965.24,
+      "rsi14": 70.3,
+      "realizedVol": 23.5,
+      "maxDrawdown252d": -4.7,
+      "relMomentum": 20.6,
+      "pct52wHigh": 100.0,
+      "mom63": 47.9,
+      "riskFlags": []
+    },
+    "033780.KS": {
+      "region": "KR",
+      "probUp": 0.9494,
+      "regime": "Bull",
+      "lastClose": 296621.15,
+      "ma50": 262120.95,
+      "ma200": 175245.91,
+      "rsi14": 68.9,
+      "realizedVol": 23.1,
+      "maxDrawdown252d": -3.8,
+      "relMomentum": 22.8,
+      "pct52wHigh": 100.0,
+      "mom63": 37.1,
+      "riskFlags": []
+    },
+    "066570.KS": {
+      "region": "KR",
+      "probUp": 0.8585,
+      "regime": "Bull",
+      "lastClose": 201605.15,
+      "ma50": 184357.49,
+      "ma200": 124577.28,
+      "rsi14": 77.1,
+      "realizedVol": 19.2,
+      "maxDrawdown252d": -7.4,
+      "relMomentum": 14.3,
+      "pct52wHigh": 100.0,
+      "mom63": 28.9,
+      "riskFlags": [
+        "RSI 77 (단기 과열)"
+      ]
+    },
+    "316140.KS": {
+      "region": "KR",
+      "probUp": 0.9268,
+      "regime": "Bull",
+      "lastClose": 205246.09,
+      "ma50": 189506.21,
+      "ma200": 149869.25,
+      "rsi14": 64.7,
+      "realizedVol": 22.3,
+      "maxDrawdown252d": -5.4,
+      "relMomentum": 13.2,
+      "pct52wHigh": 100.0,
+      "mom63": 16.0,
+      "riskFlags": []
+    },
+    "024110.KS": {
+      "region": "KR",
+      "probUp": 0.8291,
+      "regime": "Bull",
+      "lastClose": 217221.18,
+      "ma50": 184323.71,
+      "ma200": 139096.04,
+      "rsi14": 80.1,
+      "realizedVol": 20.6,
+      "maxDrawdown252d": -8.1,
+      "relMomentum": 27.9,
+      "pct52wHigh": 100.0,
+      "mom63": 36.4,
+      "riskFlags": [
+        "RSI 80 (단기 과열)"
+      ]
+    },
+    "010120.KS": {
+      "region": "KR",
+      "probUp": 0.8522,
+      "regime": "Bull",
+      "lastClose": 220054.14,
+      "ma50": 203974.06,
+      "ma200": 145010.75,
+      "rsi14": 71.8,
+      "realizedVol": 18.1,
+      "maxDrawdown252d": -8.1,
+      "relMomentum": 13.5,
+      "pct52wHigh": 98.6,
+      "mom63": 36.1,
+      "riskFlags": []
+    },
+    "047040.KS": {
+      "region": "KR",
+      "probUp": 0.7912,
+      "regime": "Bull",
+      "lastClose": 99711.45,
+      "ma50": 85766.16,
+      "ma200": 61125.63,
+      "rsi14": 72.1,
+      "realizedVol": 28.6,
+      "maxDrawdown252d": -6.7,
+      "relMomentum": 26.3,
+      "pct52wHigh": 99.9,
+      "mom63": 42.2,
+      "riskFlags": []
+    },
+    "018260.KS": {
+      "region": "KR",
+      "probUp": 0.7778,
+      "regime": "Bull",
+      "lastClose": 379304.61,
+      "ma50": 338328.68,
+      "ma200": 237912.97,
+      "rsi14": 58.4,
+      "realizedVol": 16.8,
+      "maxDrawdown252d": -5.5,
+      "relMomentum": 11.6,
+      "pct52wHigh": 100.0,
+      "mom63": 25.3,
+      "riskFlags": []
+    },
+    "030200.KS": {
+      "region": "KR",
+      "probUp": 0.9692,
+      "regime": "Bull",
+      "lastClose": 329785.2,
+      "ma50": 297208.83,
+      "ma200": 213716.61,
+      "rsi14": 73.4,
+      "realizedVol": 24.4,
+      "maxDrawdown252d": -5.2,
+      "relMomentum": 22.6,
+      "pct52wHigh": 96.4,
+      "mom63": 24.6,
+      "riskFlags": []
+    },
+    "009540.KS": {
+      "region": "KR",
+      "probUp": 0.75,
+      "regime": "Bull",
+      "lastClose": 869415.26,
+      "ma50": 690510.0,
+      "ma200": 421678.3,
+      "rsi14": 87.5,
+      "realizedVol": 21.1,
+      "maxDrawdown252d": -4.4,
+      "relMomentum": 32.9,
+      "pct52wHigh": 100.0,
+      "mom63": 61.2,
+      "riskFlags": [
+        "RSI 87 (단기 과열)"
+      ]
+    },
+    "051900.KS": {
+      "region": "KR",
+      "probUp": 0.9336,
+      "regime": "Bull",
+      "lastClose": 617620.89,
+      "ma50": 514303.71,
+      "ma200": 349861.08,
+      "rsi14": 97.5,
+      "realizedVol": 16.1,
+      "maxDrawdown252d": -5.5,
+      "relMomentum": 28.6,
+      "pct52wHigh": 100.0,
+      "mom63": 51.4,
+      "riskFlags": [
+        "RSI 98 (단기 과열)"
+      ]
+    },
+    "097950.KS": {
+      "region": "KR",
+      "probUp": 0.7097,
+      "regime": "Bull",
+      "lastClose": 222765.82,
+      "ma50": 197545.55,
+      "ma200": 130701.16,
+      "rsi14": 64.4,
+      "realizedVol": 22.8,
+      "maxDrawdown252d": -6.5,
+      "relMomentum": 13.4,
+      "pct52wHigh": 100.0,
+      "mom63": 38.3,
+      "riskFlags": []
+    },
+    "271560.KS": {
+      "region": "KR",
+      "probUp": 0.7965,
+      "regime": "Bull",
+      "lastClose": 129094.63,
+      "ma50": 128862.27,
+      "ma200": 86484.94,
+      "rsi14": 44.0,
+      "realizedVol": 25.9,
+      "maxDrawdown252d": -8.8,
+      "relMomentum": 5.8,
+      "pct52wHigh": 95.9,
+      "mom63": 22.9,
+      "riskFlags": []
+    },
+    "004020.KS": {
+      "region": "KR",
+      "probUp": 0.9062,
+      "regime": "Bull",
+      "lastClose": 561239.73,
+      "ma50": 511888.67,
+      "ma200": 321271.61,
+      "rsi14": 60.6,
+      "realizedVol": 22.5,
+      "maxDrawdown252d": -5.4,
+      "relMomentum": 7.4,
+      "pct52wHigh": 97.9,
+      "mom63": 41.0,
+      "riskFlags": []
+    },
+    "267260.KS": {
+      "region": "KR",
+      "probUp": 0.875,
+      "regime": "Bull",
+      "lastClose": 1027103.91,
+      "ma50": 913568.56,
+      "ma200": 590611.58,
+      "rsi14": 65.8,
+      "realizedVol": 23.4,
+      "maxDrawdown252d": -6.4,
+      "relMomentum": 14.8,
+      "pct52wHigh": 95.1,
+      "mom63": 44.5,
+      "riskFlags": []
+    },
+    "042660.KS": {
+      "region": "KR",
+      "probUp": 0.8333,
+      "regime": "Bull",
+      "lastClose": 677670.62,
+      "ma50": 575339.32,
+      "ma200": 387366.62,
+      "rsi14": 80.0,
+      "realizedVol": 21.7,
+      "maxDrawdown252d": -4.3,
+      "relMomentum": 21.1,
+      "pct52wHigh": 99.4,
+      "mom63": 49.8,
+      "riskFlags": [
+        "RSI 80 (단기 과열)"
+      ]
+    },
+    "010140.KS": {
+      "region": "KR",
+      "probUp": 0.8804,
+      "regime": "Bull",
+      "lastClose": 306337.45,
+      "ma50": 292355.82,
+      "ma200": 212608.12,
+      "rsi14": 54.8,
+      "realizedVol": 19.0,
+      "maxDrawdown252d": -4.6,
+      "relMomentum": 11.1,
+      "pct52wHigh": 95.9,
+      "mom63": 24.6,
+      "riskFlags": []
+    },
+    "329180.KS": {
+      "region": "KR",
+      "probUp": 0.8795,
+      "regime": "Bull",
+      "lastClose": 335344.8,
+      "ma50": 287548.28,
+      "ma200": 187242.4,
+      "rsi14": 75.9,
+      "realizedVol": 22.7,
+      "maxDrawdown252d": -5.3,
+      "relMomentum": 21.7,
+      "pct52wHigh": 98.0,
+      "mom63": 60.7,
+      "riskFlags": [
+        "RSI 76 (단기 과열)"
+      ]
+    },
+    "012450.KS": {
+      "region": "KR",
+      "probUp": 0.9136,
+      "regime": "Bull",
+      "lastClose": 1313552.93,
+      "ma50": 1194984.01,
+      "ma200": 842983.65,
+      "rsi14": 67.5,
+      "realizedVol": 19.0,
+      "maxDrawdown252d": -5.6,
+      "relMomentum": 16.4,
+      "pct52wHigh": 99.7,
+      "mom63": 33.1,
+      "riskFlags": []
+    },
+    "064350.KS": {
+      "region": "KR",
+      "probUp": 0.8908,
+      "regime": "Bull",
+      "lastClose": 1194979.49,
+      "ma50": 1069031.04,
+      "ma200": 640831.99,
+      "rsi14": 71.1,
+      "realizedVol": 21.4,
+      "maxDrawdown252d": -6.4,
+      "relMomentum": 15.4,
+      "pct52wHigh": 97.9,
+      "mom63": 41.6,
+      "riskFlags": []
+    }
+  },
   "sentiment": {
     "US": {
       "region": "US",
-      "score": 62,
+      "score": 79,
       "label": "강세",
-      "breadth200": 58,
+      "fearGreed": "극도의 탐욕",
+      "breadth200": 87,
       "components": [
         [
           "추세 위 비중(200일)",
-          "58%",
+          "87%",
           "US 유니버스"
         ],
         [
           "추세 위 비중(50일)",
-          "58%",
+          "76%",
           "단기 추세"
         ],
         [
           "상승국면 비중",
-          "50%",
+          "83%",
           "Bull 분류 비율"
         ],
         [
           "중앙값 모멘텀(60일)",
-          "+7.4%",
+          "+12.6%",
           "유니버스 중앙값"
         ],
         [
@@ -331,28 +2848,29 @@
     },
     "KR": {
       "region": "KR",
-      "score": 57,
-      "label": "중립",
-      "breadth200": 70,
+      "score": 78,
+      "label": "강세",
+      "fearGreed": "극도의 탐욕",
+      "breadth200": 100,
       "components": [
         [
           "추세 위 비중(200일)",
-          "70%",
+          "100%",
           "KR 유니버스"
         ],
         [
           "추세 위 비중(50일)",
-          "50%",
+          "95%",
           "단기 추세"
         ],
         [
           "상승국면 비중",
-          "60%",
+          "100%",
           "Bull 분류 비율"
         ],
         [
           "중앙값 모멘텀(60일)",
-          "+2.3%",
+          "+29.9%",
           "유니버스 중앙값"
         ],
         [
@@ -384,12 +2902,12 @@
             "brier": 0.3287
           },
           "backtest": {
-            "annualReturn": 10.8,
-            "sharpe": 0.88,
-            "maxDrawdown": -18.9,
-            "numTrades": 22,
-            "buyHoldAnnual": 13.2,
-            "vsBuyHold": -2.4
+            "annualReturn": 7.0,
+            "sharpe": 0.73,
+            "maxDrawdown": -26,
+            "numTrades": 8,
+            "buyHoldAnnual": 24,
+            "vsBuyHold": -17.0
           }
         },
         {
@@ -407,12 +2925,12 @@
             "brier": 0.3146
           },
           "backtest": {
-            "annualReturn": 13.9,
-            "sharpe": 1.01,
-            "maxDrawdown": -15.6,
-            "numTrades": 11,
-            "buyHoldAnnual": 13.2,
-            "vsBuyHold": 0.7
+            "annualReturn": 11.7,
+            "sharpe": 0.88,
+            "maxDrawdown": -22,
+            "numTrades": 8,
+            "buyHoldAnnual": 27,
+            "vsBuyHold": -15.3
           }
         },
         {
@@ -430,12 +2948,12 @@
             "brier": 0.4834
           },
           "backtest": {
-            "annualReturn": 15.4,
-            "sharpe": 1.12,
-            "maxDrawdown": -13.8,
-            "numTrades": 7,
-            "buyHoldAnnual": 13.2,
-            "vsBuyHold": 2.2
+            "annualReturn": 12.4,
+            "sharpe": 1.0,
+            "maxDrawdown": -19,
+            "numTrades": 8,
+            "buyHoldAnnual": 30,
+            "vsBuyHold": -17.6
           }
         }
       ],
@@ -459,191 +2977,944 @@
     {
       "ticker": "NVDA",
       "asOf": "2026-06-29",
-      "lastClose": 79.49,
+      "lastClose": 40.49,
       "signals": [
         {
           "horizon": 21,
-          "probUp": 0.4667,
+          "probUp": 0.3919,
           "prediction": "DOWN",
           "alert": "HOLD",
-          "threshold": 0.6747,
+          "threshold": 0.6216,
           "oos": {
             "days": 903,
-            "precision": 0.5163,
-            "baseline": 0.485,
-            "lift": 3.13,
-            "f1": 0.5453,
-            "brier": 0.3337
+            "precision": 0.3529,
+            "baseline": 0.4662,
+            "lift": -11.33,
+            "f1": 0.3399,
+            "brier": 0.3406
           },
           "backtest": {
-            "annualReturn": 28.4,
-            "sharpe": 0.96,
-            "maxDrawdown": -29.1,
-            "numTrades": 24,
-            "buyHoldAnnual": 38.5,
-            "vsBuyHold": -10.1
+            "annualReturn": 8.8,
+            "sharpe": 0.97,
+            "maxDrawdown": -26,
+            "numTrades": 12,
+            "buyHoldAnnual": 25,
+            "vsBuyHold": -16.2
           }
         },
         {
           "horizon": 63,
-          "probUp": 0.3673,
+          "probUp": 0.1364,
           "prediction": "DOWN",
-          "alert": "HOLD",
-          "threshold": 0.6895,
+          "alert": "STRONG SELL",
+          "threshold": 0.6875,
           "oos": {
             "days": 903,
-            "precision": 0.4274,
-            "baseline": 0.4727,
-            "lift": -4.54,
-            "f1": 0.504,
-            "brier": 0.3203
+            "precision": 0.352,
+            "baseline": 0.4506,
+            "lift": -9.87,
+            "f1": 0.3696,
+            "brier": 0.3749
           },
           "backtest": {
-            "annualReturn": 35.1,
-            "sharpe": 1.16,
-            "maxDrawdown": -23.4,
-            "numTrades": 10,
-            "buyHoldAnnual": 38.5,
-            "vsBuyHold": -3.4
+            "annualReturn": 6.7,
+            "sharpe": 1.12,
+            "maxDrawdown": -22,
+            "numTrades": 12,
+            "buyHoldAnnual": 28,
+            "vsBuyHold": -21.3
           }
         },
         {
           "horizon": 126,
-          "probUp": 0.5714,
-          "prediction": "UP",
-          "alert": "HOLD",
-          "threshold": 0.6404,
+          "probUp": 0.0904,
+          "prediction": "DOWN",
+          "alert": "STRONG SELL",
+          "threshold": 0.8889,
           "oos": {
             "days": 903,
-            "precision": 0.37,
-            "baseline": 0.3822,
-            "lift": -1.22,
-            "f1": 0.3829,
-            "brier": 0.3279
+            "precision": 0.287,
+            "baseline": 0.3947,
+            "lift": -10.78,
+            "f1": 0.2971,
+            "brier": 0.474
           },
           "backtest": {
-            "annualReturn": 39.2,
-            "sharpe": 1.29,
-            "maxDrawdown": -20.6,
-            "numTrades": 6,
-            "buyHoldAnnual": 38.5,
-            "vsBuyHold": 0.7
+            "annualReturn": 8.8,
+            "sharpe": 1.24,
+            "maxDrawdown": -19,
+            "numTrades": 12,
+            "buyHoldAnnual": 31,
+            "vsBuyHold": -22.2
           }
         }
       ],
       "risk": {
         "ticker": "NVDA",
-        "regime": "Bull",
-        "lastClose": 79.49,
-        "ma50": 80.29,
-        "ma200": 74.17,
-        "realizedVol": 19.0,
-        "rsi14": 28.3,
-        "maxDrawdown252d": -10.5,
-        "relMomentum": 2.8,
-        "pct52wHigh": 93.0,
+        "regime": "Transition",
+        "lastClose": 40.49,
+        "ma50": 41.45,
+        "ma200": 40.5,
+        "realizedVol": 23.5,
+        "rsi14": 21.7,
+        "maxDrawdown252d": -23.1,
+        "relMomentum": 0.7,
+        "pct52wHigh": 88.4,
         "aboveMA50": false,
-        "aboveMA200": true,
-        "mom63": 0.010276094597512886,
-        "riskFlags": []
-      }
-    },
-    {
-      "ticker": "PLTR",
-      "asOf": "2026-06-29",
-      "lastClose": 60.47,
-      "signals": [
-        {
-          "horizon": 21,
-          "probUp": 0.4485,
-          "prediction": "DOWN",
-          "alert": "HOLD",
-          "threshold": 0.6667,
-          "oos": {
-            "days": 903,
-            "precision": 0.3387,
-            "baseline": 0.3965,
-            "lift": -5.77,
-            "f1": 0.3452,
-            "brier": 0.3173
-          },
-          "backtest": {
-            "annualReturn": 19.8,
-            "sharpe": 0.71,
-            "maxDrawdown": -41.2,
-            "numTrades": 28,
-            "buyHoldAnnual": 41.0,
-            "vsBuyHold": -21.2
-          }
-        },
-        {
-          "horizon": 63,
-          "probUp": 0.3721,
-          "prediction": "DOWN",
-          "alert": "HOLD",
-          "threshold": 0.9238,
-          "oos": {
-            "days": 903,
-            "precision": 0.3225,
-            "baseline": 0.4042,
-            "lift": -8.17,
-            "f1": 0.3679,
-            "brier": 0.4641
-          },
-          "backtest": {
-            "annualReturn": 26.4,
-            "sharpe": 0.85,
-            "maxDrawdown": -35.8,
-            "numTrades": 12,
-            "buyHoldAnnual": 41.0,
-            "vsBuyHold": -14.6
-          }
-        },
-        {
-          "horizon": 126,
-          "probUp": 0.0746,
-          "prediction": "DOWN",
-          "alert": "HOLD",
-          "threshold": 0.9766,
-          "oos": {
-            "days": 903,
-            "precision": 0.3474,
-            "baseline": 0.4048,
-            "lift": -5.74,
-            "f1": 0.4214,
-            "brier": 0.396
-          },
-          "backtest": {
-            "annualReturn": 31.5,
-            "sharpe": 0.94,
-            "maxDrawdown": -30.4,
-            "numTrades": 7,
-            "buyHoldAnnual": 41.0,
-            "vsBuyHold": -9.5
-          }
-        }
-      ],
-      "risk": {
-        "ticker": "PLTR",
-        "regime": "Bear",
-        "lastClose": 60.47,
-        "ma50": 59.38,
-        "ma200": 60.7,
-        "realizedVol": 26.7,
-        "rsi14": 64.1,
-        "maxDrawdown252d": -13.8,
-        "relMomentum": 7.1,
-        "pct52wHigh": 93.3,
-        "aboveMA50": true,
         "aboveMA200": false,
-        "mom63": 0.009821118575699117,
+        "mom63": 0.08933937013962368,
         "riskFlags": [
           {
             "name": "SMA200",
             "active": true,
             "message": "장기 추세선(200일) 하회"
+          },
+          {
+            "name": "Drawdown",
+            "active": true,
+            "message": "최근 1년 낙폭 -23%"
           }
         ]
+      }
+    },
+    {
+      "ticker": "GOOGL",
+      "asOf": "2026-06-29",
+      "lastClose": 185.56,
+      "signals": [
+        {
+          "horizon": 21,
+          "probUp": 0.6966,
+          "prediction": "UP",
+          "alert": "HOLD",
+          "threshold": 0.8005,
+          "oos": {
+            "days": 903,
+            "precision": 0.5648,
+            "baseline": 0.5792,
+            "lift": -1.43,
+            "f1": 0.5856,
+            "brier": 0.312
+          },
+          "backtest": {
+            "annualReturn": 11.9,
+            "sharpe": 0.73,
+            "maxDrawdown": -23,
+            "numTrades": 9,
+            "buyHoldAnnual": 27,
+            "vsBuyHold": -15.1
+          }
+        },
+        {
+          "horizon": 63,
+          "probUp": 0.7106,
+          "prediction": "UP",
+          "alert": "HOLD",
+          "threshold": 0.8,
+          "oos": {
+            "days": 903,
+            "precision": 0.638,
+            "baseline": 0.5981,
+            "lift": 3.99,
+            "f1": 0.6215,
+            "brier": 0.3428
+          },
+          "backtest": {
+            "annualReturn": 15.2,
+            "sharpe": 0.88,
+            "maxDrawdown": -19,
+            "numTrades": 9,
+            "buyHoldAnnual": 30,
+            "vsBuyHold": -14.8
+          }
+        },
+        {
+          "horizon": 126,
+          "probUp": 0.502,
+          "prediction": "UP",
+          "alert": "HOLD",
+          "threshold": 0.7,
+          "oos": {
+            "days": 903,
+            "precision": 0.5743,
+            "baseline": 0.619,
+            "lift": -4.47,
+            "f1": 0.6025,
+            "brier": 0.4061
+          },
+          "backtest": {
+            "annualReturn": 14.0,
+            "sharpe": 1.0,
+            "maxDrawdown": -16,
+            "numTrades": 9,
+            "buyHoldAnnual": 33,
+            "vsBuyHold": -19.0
+          }
+        }
+      ],
+      "risk": {
+        "ticker": "GOOGL",
+        "regime": "Bull",
+        "lastClose": 185.56,
+        "ma50": 186.49,
+        "ma200": 161.58,
+        "realizedVol": 21.2,
+        "rsi14": 37.9,
+        "maxDrawdown252d": -7.5,
+        "relMomentum": 7.6,
+        "pct52wHigh": 93.7,
+        "aboveMA50": false,
+        "aboveMA200": true,
+        "mom63": 0.07529785563180713,
+        "riskFlags": []
+      }
+    },
+    {
+      "ticker": "PFE",
+      "asOf": "2026-06-29",
+      "lastClose": 2125.41,
+      "signals": [
+        {
+          "horizon": 21,
+          "probUp": 0.6721,
+          "prediction": "UP",
+          "alert": "HOLD",
+          "threshold": 0.9111,
+          "oos": {
+            "days": 903,
+            "precision": 0.6452,
+            "baseline": 0.7065,
+            "lift": -6.13,
+            "f1": 0.6746,
+            "brier": 0.3363
+          },
+          "backtest": {
+            "annualReturn": 9.4,
+            "sharpe": 0.91,
+            "maxDrawdown": -23,
+            "numTrades": 16,
+            "buyHoldAnnual": 18,
+            "vsBuyHold": -8.6
+          }
+        },
+        {
+          "horizon": 63,
+          "probUp": 0.7284,
+          "prediction": "UP",
+          "alert": "HOLD",
+          "threshold": 0.935,
+          "oos": {
+            "days": 903,
+            "precision": 0.6128,
+            "baseline": 0.7143,
+            "lift": -10.14,
+            "f1": 0.5928,
+            "brier": 0.398
+          },
+          "backtest": {
+            "annualReturn": 13.6,
+            "sharpe": 1.06,
+            "maxDrawdown": -19,
+            "numTrades": 16,
+            "buyHoldAnnual": 21,
+            "vsBuyHold": -7.4
+          }
+        },
+        {
+          "horizon": 126,
+          "probUp": 0.6237,
+          "prediction": "UP",
+          "alert": "HOLD",
+          "threshold": 0.8227,
+          "oos": {
+            "days": 903,
+            "precision": 0.7265,
+            "baseline": 0.683,
+            "lift": 4.35,
+            "f1": 0.4365,
+            "brier": 0.485
+          },
+          "backtest": {
+            "annualReturn": 14.5,
+            "sharpe": 1.18,
+            "maxDrawdown": -16,
+            "numTrades": 16,
+            "buyHoldAnnual": 24,
+            "vsBuyHold": -9.5
+          }
+        }
+      ],
+      "risk": {
+        "ticker": "PFE",
+        "regime": "Bull",
+        "lastClose": 2125.41,
+        "ma50": 2047.13,
+        "ma200": 1798.13,
+        "realizedVol": 27.6,
+        "rsi14": 53.2,
+        "maxDrawdown252d": -12.5,
+        "relMomentum": 11.2,
+        "pct52wHigh": 97.8,
+        "aboveMA50": true,
+        "aboveMA200": true,
+        "mom63": 0.1976026726125939,
+        "riskFlags": []
+      }
+    },
+    {
+      "ticker": "005930.KS",
+      "asOf": "2026-06-29",
+      "lastClose": 27236.23,
+      "signals": [
+        {
+          "horizon": 21,
+          "probUp": 0.875,
+          "prediction": "UP",
+          "alert": "HOLD",
+          "threshold": 0.9643,
+          "oos": {
+            "days": 903,
+            "precision": 0.7653,
+            "baseline": 0.8007,
+            "lift": -3.53,
+            "f1": 0.7706,
+            "brier": 0.2295
+          },
+          "backtest": {
+            "annualReturn": 20.5,
+            "sharpe": 0.79,
+            "maxDrawdown": -27,
+            "numTrades": 14,
+            "buyHoldAnnual": 20,
+            "vsBuyHold": 0.5
+          }
+        },
+        {
+          "horizon": 63,
+          "probUp": 0.7444,
+          "prediction": "UP",
+          "alert": "STRONG BUY",
+          "threshold": 0.0073,
+          "oos": {
+            "days": 903,
+            "precision": 0.6471,
+            "baseline": 0.7793,
+            "lift": -13.23,
+            "f1": 0.1949,
+            "brier": 0.7395
+          },
+          "backtest": {
+            "annualReturn": 20.9,
+            "sharpe": 0.94,
+            "maxDrawdown": -23,
+            "numTrades": 14,
+            "buyHoldAnnual": 23,
+            "vsBuyHold": -2.1
+          }
+        },
+        {
+          "horizon": 126,
+          "probUp": 0.6296,
+          "prediction": "UP",
+          "alert": "STRONG BUY",
+          "threshold": 0.0076,
+          "oos": {
+            "days": 903,
+            "precision": 0.2632,
+            "baseline": 0.7055,
+            "lift": -44.24,
+            "f1": 0.0484,
+            "brier": 0.7213
+          },
+          "backtest": {
+            "annualReturn": 21.6,
+            "sharpe": 1.06,
+            "maxDrawdown": -20,
+            "numTrades": 14,
+            "buyHoldAnnual": 26,
+            "vsBuyHold": -4.4
+          }
+        }
+      ],
+      "risk": {
+        "ticker": "005930.KS",
+        "regime": "Bull",
+        "lastClose": 27236.23,
+        "ma50": 26129.06,
+        "ma200": 17976.61,
+        "realizedVol": 18.7,
+        "rsi14": 70.7,
+        "maxDrawdown252d": -5.4,
+        "relMomentum": 10.0,
+        "pct52wHigh": 100.0,
+        "aboveMA50": true,
+        "aboveMA200": true,
+        "mom63": 0.19965396016387804,
+        "riskFlags": []
+      }
+    },
+    {
+      "ticker": "000660.KS",
+      "asOf": "2026-06-29",
+      "lastClose": 11799.78,
+      "signals": [
+        {
+          "horizon": 21,
+          "probUp": 0.8122,
+          "prediction": "UP",
+          "alert": "HOLD",
+          "threshold": 0.9,
+          "oos": {
+            "days": 903,
+            "precision": 0.7333,
+            "baseline": 0.7276,
+            "lift": 0.58,
+            "f1": 0.8098,
+            "brier": 0.2529
+          },
+          "backtest": {
+            "annualReturn": 19.2,
+            "sharpe": 0.97,
+            "maxDrawdown": -24,
+            "numTrades": 23,
+            "buyHoldAnnual": 22,
+            "vsBuyHold": -2.8
+          }
+        },
+        {
+          "horizon": 63,
+          "probUp": 0.747,
+          "prediction": "UP",
+          "alert": "HOLD",
+          "threshold": 0.939,
+          "oos": {
+            "days": 903,
+            "precision": 0.8303,
+            "baseline": 0.7468,
+            "lift": 8.35,
+            "f1": 0.8023,
+            "brier": 0.2801
+          },
+          "backtest": {
+            "annualReturn": 20.9,
+            "sharpe": 1.12,
+            "maxDrawdown": -20,
+            "numTrades": 23,
+            "buyHoldAnnual": 25,
+            "vsBuyHold": -4.1
+          }
+        },
+        {
+          "horizon": 126,
+          "probUp": 0.4,
+          "prediction": "DOWN",
+          "alert": "HOLD",
+          "threshold": 0.839,
+          "oos": {
+            "days": 903,
+            "precision": 0.4,
+            "baseline": 0.713,
+            "lift": -31.3,
+            "f1": 0.2157,
+            "brier": 0.7582
+          },
+          "backtest": {
+            "annualReturn": 17.0,
+            "sharpe": 1.24,
+            "maxDrawdown": -17,
+            "numTrades": 23,
+            "buyHoldAnnual": 28,
+            "vsBuyHold": -11.0
+          }
+        }
+      ],
+      "risk": {
+        "ticker": "000660.KS",
+        "regime": "Bull",
+        "lastClose": 11799.78,
+        "ma50": 10837.13,
+        "ma200": 8424.6,
+        "realizedVol": 18.1,
+        "rsi14": 78.8,
+        "maxDrawdown252d": -7.7,
+        "relMomentum": 15.9,
+        "pct52wHigh": 100.0,
+        "aboveMA50": true,
+        "aboveMA200": true,
+        "mom63": 0.2815174153520539,
+        "riskFlags": [
+          {
+            "name": "RSI",
+            "active": true,
+            "message": "RSI 79 (단기 과열)"
+          }
+        ]
+      }
+    },
+    {
+      "ticker": "035420.KS",
+      "asOf": "2026-06-29",
+      "lastClose": 25482.19,
+      "signals": [
+        {
+          "horizon": 21,
+          "probUp": 0.8621,
+          "prediction": "UP",
+          "alert": "STRONG BUY",
+          "threshold": 0.7,
+          "oos": {
+            "days": 903,
+            "precision": 0.7421,
+            "baseline": 0.7863,
+            "lift": -4.42,
+            "f1": 0.7519,
+            "brier": 0.2408
+          },
+          "backtest": {
+            "annualReturn": 15.2,
+            "sharpe": 0.73,
+            "maxDrawdown": -26,
+            "numTrades": 18,
+            "buyHoldAnnual": 20,
+            "vsBuyHold": -4.8
+          }
+        },
+        {
+          "horizon": 63,
+          "probUp": 0.5,
+          "prediction": "UP",
+          "alert": "STRONG BUY",
+          "threshold": 0.4213,
+          "oos": {
+            "days": 903,
+            "precision": 0.6111,
+            "baseline": 0.7573,
+            "lift": -14.61,
+            "f1": 0.2432,
+            "brier": 0.6929
+          },
+          "backtest": {
+            "annualReturn": 11.0,
+            "sharpe": 0.88,
+            "maxDrawdown": -22,
+            "numTrades": 18,
+            "buyHoldAnnual": 23,
+            "vsBuyHold": -12.0
+          }
+        },
+        {
+          "horizon": 126,
+          "probUp": 0.5168,
+          "prediction": "UP",
+          "alert": "STRONG BUY",
+          "threshold": 0.0062,
+          "oos": {
+            "days": 903,
+            "precision": 0.4247,
+            "baseline": 0.6967,
+            "lift": -27.21,
+            "f1": 0.0986,
+            "brier": 0.7125
+          },
+          "backtest": {
+            "annualReturn": 14.3,
+            "sharpe": 1.0,
+            "maxDrawdown": -19,
+            "numTrades": 18,
+            "buyHoldAnnual": 26,
+            "vsBuyHold": -11.7
+          }
+        }
+      ],
+      "risk": {
+        "ticker": "035420.KS",
+        "regime": "Bull",
+        "lastClose": 25482.19,
+        "ma50": 23021.36,
+        "ma200": 17730.48,
+        "realizedVol": 19.2,
+        "rsi14": 62.6,
+        "maxDrawdown252d": -7.0,
+        "relMomentum": 11.9,
+        "pct52wHigh": 100.0,
+        "aboveMA50": true,
+        "aboveMA200": true,
+        "mom63": 0.29910638819225,
+        "riskFlags": []
+      }
+    },
+    {
+      "ticker": "000810.KS",
+      "asOf": "2026-06-29",
+      "lastClose": 101597.0,
+      "signals": [
+        {
+          "horizon": 21,
+          "probUp": 0.5,
+          "prediction": "UP",
+          "alert": "HOLD",
+          "threshold": 0.7,
+          "oos": {
+            "days": 903,
+            "precision": 0.7683,
+            "baseline": 0.8206,
+            "lift": -5.23,
+            "f1": 0.7365,
+            "brier": 0.2756
+          },
+          "backtest": {
+            "annualReturn": 5.0,
+            "sharpe": 0.85,
+            "maxDrawdown": -27,
+            "numTrades": 6,
+            "buyHoldAnnual": 15,
+            "vsBuyHold": -10.0
+          }
+        },
+        {
+          "horizon": 63,
+          "probUp": 0.7377,
+          "prediction": "UP",
+          "alert": "HOLD",
+          "threshold": 0.8408,
+          "oos": {
+            "days": 903,
+            "precision": 0.7136,
+            "baseline": 0.7735,
+            "lift": -5.99,
+            "f1": 0.3544,
+            "brier": 0.639
+          },
+          "backtest": {
+            "annualReturn": 12.8,
+            "sharpe": 1.0,
+            "maxDrawdown": -23,
+            "numTrades": 6,
+            "buyHoldAnnual": 18,
+            "vsBuyHold": -5.2
+          }
+        },
+        {
+          "horizon": 126,
+          "probUp": 0.4895,
+          "prediction": "DOWN",
+          "alert": "HOLD",
+          "threshold": 0.6526,
+          "oos": {
+            "days": 903,
+            "precision": 0.474,
+            "baseline": 0.7093,
+            "lift": -23.53,
+            "f1": 0.2401,
+            "brier": 0.6843
+          },
+          "backtest": {
+            "annualReturn": 10.8,
+            "sharpe": 1.12,
+            "maxDrawdown": -20,
+            "numTrades": 6,
+            "buyHoldAnnual": 21,
+            "vsBuyHold": -10.2
+          }
+        }
+      ],
+      "risk": {
+        "ticker": "000810.KS",
+        "regime": "Bull",
+        "lastClose": 101597.0,
+        "ma50": 86244.59,
+        "ma200": 60610.28,
+        "realizedVol": 17.1,
+        "rsi14": 90.9,
+        "maxDrawdown252d": -5.7,
+        "relMomentum": 24.7,
+        "pct52wHigh": 100.0,
+        "aboveMA50": true,
+        "aboveMA200": true,
+        "mom63": 0.41990625473429,
+        "riskFlags": [
+          {
+            "name": "RSI",
+            "active": true,
+            "message": "RSI 91 (단기 과열)"
+          }
+        ]
+      }
+    },
+    {
+      "ticker": "034020.KS",
+      "asOf": "2026-06-29",
+      "lastClose": 143315.7,
+      "signals": [
+        {
+          "horizon": 21,
+          "probUp": 0.915,
+          "prediction": "UP",
+          "alert": "HOLD",
+          "threshold": 0.963,
+          "oos": {
+            "days": 903,
+            "precision": 0.7466,
+            "baseline": 0.8239,
+            "lift": -7.73,
+            "f1": 0.6617,
+            "brier": 0.3832
+          },
+          "backtest": {
+            "annualReturn": 13.3,
+            "sharpe": 0.79,
+            "maxDrawdown": -23,
+            "numTrades": 6,
+            "buyHoldAnnual": 22,
+            "vsBuyHold": -8.7
+          }
+        },
+        {
+          "horizon": 63,
+          "probUp": 0.619,
+          "prediction": "UP",
+          "alert": "HOLD",
+          "threshold": 0.8515,
+          "oos": {
+            "days": 903,
+            "precision": 0.7675,
+            "baseline": 0.7793,
+            "lift": -1.18,
+            "f1": 0.4416,
+            "brier": 0.6008
+          },
+          "backtest": {
+            "annualReturn": 10.4,
+            "sharpe": 0.94,
+            "maxDrawdown": -19,
+            "numTrades": 6,
+            "buyHoldAnnual": 25,
+            "vsBuyHold": -14.6
+          }
+        },
+        {
+          "horizon": 126,
+          "probUp": 0.4731,
+          "prediction": "DOWN",
+          "alert": "STRONG BUY",
+          "threshold": 0.1328,
+          "oos": {
+            "days": 903,
+            "precision": 0.1984,
+            "baseline": 0.7231,
+            "lift": -52.46,
+            "f1": 0.0711,
+            "brier": 0.7963
+          },
+          "backtest": {
+            "annualReturn": 10.5,
+            "sharpe": 1.06,
+            "maxDrawdown": -16,
+            "numTrades": 6,
+            "buyHoldAnnual": 28,
+            "vsBuyHold": -17.5
+          }
+        }
+      ],
+      "risk": {
+        "ticker": "034020.KS",
+        "regime": "Bull",
+        "lastClose": 143315.7,
+        "ma50": 123682.36,
+        "ma200": 85965.24,
+        "realizedVol": 23.5,
+        "rsi14": 70.3,
+        "maxDrawdown252d": -4.7,
+        "relMomentum": 20.6,
+        "pct52wHigh": 100.0,
+        "aboveMA50": true,
+        "aboveMA200": true,
+        "mom63": 0.47905943590552247,
+        "riskFlags": []
+      }
+    },
+    {
+      "ticker": "010120.KS",
+      "asOf": "2026-06-29",
+      "lastClose": 220054.14,
+      "signals": [
+        {
+          "horizon": 21,
+          "probUp": 0.8906,
+          "prediction": "UP",
+          "alert": "HOLD",
+          "threshold": 0.9953,
+          "oos": {
+            "days": 903,
+            "precision": 0.8316,
+            "baseline": 0.8571,
+            "lift": -2.56,
+            "f1": 0.8273,
+            "brier": 0.2944
+          },
+          "backtest": {
+            "annualReturn": 12.8,
+            "sharpe": 0.73,
+            "maxDrawdown": -26,
+            "numTrades": 15,
+            "buyHoldAnnual": 21,
+            "vsBuyHold": -8.2
+          }
+        },
+        {
+          "horizon": 63,
+          "probUp": 0.7092,
+          "prediction": "UP",
+          "alert": "HOLD",
+          "threshold": 0.9899,
+          "oos": {
+            "days": 903,
+            "precision": 0.8108,
+            "baseline": 0.7944,
+            "lift": 1.64,
+            "f1": 0.531,
+            "brier": 0.5455
+          },
+          "backtest": {
+            "annualReturn": 12.2,
+            "sharpe": 0.88,
+            "maxDrawdown": -22,
+            "numTrades": 15,
+            "buyHoldAnnual": 24,
+            "vsBuyHold": -11.8
+          }
+        },
+        {
+          "horizon": 126,
+          "probUp": 0.4921,
+          "prediction": "DOWN",
+          "alert": "HOLD",
+          "threshold": 0.8909,
+          "oos": {
+            "days": 903,
+            "precision": 0.6364,
+            "baseline": 0.7243,
+            "lift": -8.79,
+            "f1": 0.3634,
+            "brier": 0.6411
+          },
+          "backtest": {
+            "annualReturn": 10.8,
+            "sharpe": 1.0,
+            "maxDrawdown": -19,
+            "numTrades": 15,
+            "buyHoldAnnual": 27,
+            "vsBuyHold": -16.2
+          }
+        }
+      ],
+      "risk": {
+        "ticker": "010120.KS",
+        "regime": "Bull",
+        "lastClose": 220054.14,
+        "ma50": 203974.06,
+        "ma200": 145010.75,
+        "realizedVol": 18.1,
+        "rsi14": 71.8,
+        "maxDrawdown252d": -8.1,
+        "relMomentum": 13.5,
+        "pct52wHigh": 98.6,
+        "aboveMA50": true,
+        "aboveMA200": true,
+        "mom63": 0.3607190798504456,
+        "riskFlags": []
+      }
+    },
+    {
+      "ticker": "047040.KS",
+      "asOf": "2026-06-29",
+      "lastClose": 99711.45,
+      "signals": [
+        {
+          "horizon": 21,
+          "probUp": 0.8734,
+          "prediction": "UP",
+          "alert": "HOLD",
+          "threshold": 0.9573,
+          "oos": {
+            "days": 903,
+            "precision": 0.7827,
+            "baseline": 0.8095,
+            "lift": -2.68,
+            "f1": 0.8116,
+            "brier": 0.2684
+          },
+          "backtest": {
+            "annualReturn": 15.5,
+            "sharpe": 0.97,
+            "maxDrawdown": -26,
+            "numTrades": 9,
+            "buyHoldAnnual": 26,
+            "vsBuyHold": -10.5
+          }
+        },
+        {
+          "horizon": 63,
+          "probUp": 0.7557,
+          "prediction": "UP",
+          "alert": "HOLD",
+          "threshold": 0.9935,
+          "oos": {
+            "days": 903,
+            "precision": 0.7692,
+            "baseline": 0.7666,
+            "lift": 0.27,
+            "f1": 0.4502,
+            "brier": 0.6001
+          },
+          "backtest": {
+            "annualReturn": 16.1,
+            "sharpe": 1.12,
+            "maxDrawdown": -22,
+            "numTrades": 9,
+            "buyHoldAnnual": 29,
+            "vsBuyHold": -12.9
+          }
+        },
+        {
+          "horizon": 126,
+          "probUp": 0.4881,
+          "prediction": "DOWN",
+          "alert": "HOLD",
+          "threshold": 0.8935,
+          "oos": {
+            "days": 903,
+            "precision": 0.3403,
+            "baseline": 0.7281,
+            "lift": -38.78,
+            "f1": 0.1684,
+            "brier": 0.7862
+          },
+          "backtest": {
+            "annualReturn": 13.8,
+            "sharpe": 1.24,
+            "maxDrawdown": -19,
+            "numTrades": 9,
+            "buyHoldAnnual": 32,
+            "vsBuyHold": -18.2
+          }
+        }
+      ],
+      "risk": {
+        "ticker": "047040.KS",
+        "regime": "Bull",
+        "lastClose": 99711.45,
+        "ma50": 85766.16,
+        "ma200": 61125.63,
+        "realizedVol": 28.6,
+        "rsi14": 72.1,
+        "maxDrawdown252d": -6.7,
+        "relMomentum": 26.3,
+        "pct52wHigh": 99.9,
+        "aboveMA50": true,
+        "aboveMA200": true,
+        "mom63": 0.42227076515261963,
+        "riskFlags": []
       }
     }
   ],
@@ -716,7 +3987,7 @@
   },
   "meta": {
     "modelsTrained": 0,
-    "universeScreened": 22,
+    "universeScreened": 114,
     "latestDataDate": "2026-06-29",
     "fredEnabled": true,
     "elapsedSec": 0

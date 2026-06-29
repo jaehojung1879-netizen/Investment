@@ -8,15 +8,22 @@ const regKo = (r) => r === 'Bull' ? '상승' : r === 'Bear' ? '하락' : '전환
 const mean = (a) => a.length ? a.reduce((x, y) => x + y, 0) / a.length : null;
 
 let NAMES = {};
+let DATA = {};
 const tkName = (t) => NAMES[t] || t;
 const tkSub = (t) => (NAMES[t] ? ` <span class="tk">${t}</span>` : '');
+// Clickable ticker name -> detail popover
+const tkLink = (t) => `<span class="tklink" data-tk="${t}">${tkName(t)}</span>${tkSub(t)}`;
+
+// Fear & Greed bands
+const fgLabel = (s) => s == null ? '—' : s < 25 ? '극도의 공포' : s < 45 ? '공포' : s < 55 ? '중립' : s < 75 ? '탐욕' : '극도의 탐욕';
+const fgCls = (s) => s == null ? 'g-trans' : s < 45 ? 'g-bear' : s < 55 ? 'g-trans' : 'g-bull';
 
 // --- Popover explanations ---
 const EXPL = {
   trade: ['오늘의 핵심 액션', '매일 자동 구성되는 국내·국외 유니버스를 트레이드 호라이즌(기본 10영업일)으로 스크리닝해, <b>비용을 넘는 기대값(edge)</b>이 양수이고 확신 하한(확률 0.55)·국면(하락장 제외)을 만족하는 종목만 매수 후보로 올립니다. 후보가 없으면 “관망”이 결론입니다.'],
   core: ['내 포트폴리오', '보유 종목은 호라이즌(21·63·126영업일)마다 LightGBM 상승확률을 계산하고, 확률·국면을 종합해 비중 유지/관망/축소 검토 판정을 냅니다. 신호만 보지 말고 lift·국면과 함께 보세요.'],
   macro: ['매크로', 'FRED에서 국외(미국 10Y·2Y·금리차·기준금리·하이일드 스프레드·VIX)와 국내(원/달러·국고채 10Y·3M·금리차)를 받아 위험 플래그를 띄웁니다. 개별 종목보다 먼저 점검합니다.'],
-  sentiment: ['시장 자세 · 정량 심리', '구루 인용 대신 <b>실데이터로 시장 방향성</b>을 계산합니다. 유니버스에서 200·50일선 위 비중(breadth), 상승국면 비중, 중앙값 모멘텀에 매크로(VIX·신용스프레드·원화 등)를 더해 0~100 점수와 강세/중립/약세를 냅니다.'],
+  sentiment: ['공포 · 탐욕 지수', 'CNN 공포·탐욕 지수처럼 <b>실데이터로 시장 심리</b>를 0~100으로 계산합니다. 유니버스에서 200·50일선 위 비중(breadth), 상승국면 비중, 중앙값 모멘텀에 매크로(VIX·신용스프레드·원화 등)를 더해 극도의 공포(0)~극도의 탐욕(100)으로 표시합니다. 탐욕이 과하면 추격 주의, 공포가 과하면 역발상 기회일 수 있습니다.'],
   prob: ['상승확률', '가격·추세·변동성·상대강도·매크로 피처 약 50개를 LightGBM 분류기에 넣어 해당 호라이즌 뒤 종가가 오를 확률을 추정합니다. walk-forward로 재학습하고 <b>학습에 안 쓴 최근 구간</b>으로 isotonic 보정해 확률을 실제 빈도에 맞춥니다.'],
   edge: ['edge (net)', '<code>edge = p·평균상승 + (1−p)·평균하락 − 비용허들</code>. 확률만으로는 비용을 못 넘기 때문에 기대값이 양수일 때만 제안합니다. 국내(KR)는 세금·수수료로 허들이 더 높습니다.'],
   hold: ['보유(hold-until)', '진입일 + 트레이드 호라이즌(영업일)로 잡은 <b>재평가 시점</b>입니다. 그 전에 무효화 조건(종가 MA20 이탈 또는 다음 확률 0.5 미만)이 오면 먼저 청산합니다.'],
@@ -36,7 +43,42 @@ const showPop = (key, target) => {
   pop.style.top = (r.bottom + window.scrollY + 6) + 'px';
 };
 const hidePop = () => { pop.hidden = true; popKey = null; };
+
+const placePop = (target) => {
+  const r = target.getBoundingClientRect(); const w = Math.min(340, window.innerWidth - 24);
+  pop.style.width = w + 'px';
+  let left = Math.min(r.left + window.scrollX, window.scrollX + window.innerWidth - w - 12);
+  pop.style.left = Math.max(window.scrollX + 12, left) + 'px';
+  pop.style.top = (r.bottom + window.scrollY + 6) + 'px';
+};
+
+const showTickerPop = (ticker, target) => {
+  const d = DATA.details && DATA.details[ticker];
+  if (!d) return;
+  const m = (l, v) => `<div><span>${l}</span><b>${v}</b></div>`;
+  const grid = [
+    m('현재가', fmt(d.lastClose)),
+    m('국면', regKo(d.regime)),
+    m('10일 상승확률', pct0(d.probUp)),
+    m('SMA50/200', `${fmt(d.ma50)} / ${fmt(d.ma200)}`),
+    m('RSI(14)', fmt(d.rsi14)),
+    m('실현변동성', fmt(d.realizedVol, '%')),
+    m('1년 낙폭', fmt(d.maxDrawdown252d, '%')),
+    m('상대강도', sp(d.relMomentum)),
+    m('60일 모멘텀', sp(d.mom63)),
+    m('52주고점 대비', fmt(d.pct52wHigh, '%')),
+  ].join('');
+  const core = (DATA.core || []).find((c) => c.ticker === ticker);
+  const horizons = core ? `<div class="dp-sub">호라이즌별 상승확률</div><div class="dp-h">${core.signals.map((s) => `<span>${s.horizon}D <b>${pct0(s.probUp)}</b></span>`).join('')}</div>` : '';
+  const flags = (d.riskFlags && d.riskFlags.length) ? `<div class="dp-flags">${d.riskFlags.map((f) => `<span class="mflag">${f}</span>`).join('')}</div>` : '';
+  popKey = 'tk:' + ticker;
+  pop.innerHTML = `<div class="dp-head"><b>${tkName(ticker)}</b> <span class="tk">${ticker}</span> <span class="reg ${regCls(d.regime)}">${regKo(d.regime)}</span></div><div class="dp-grid">${grid}</div>${horizons}${flags}`;
+  pop.hidden = false; placePop(target);
+};
+
 document.addEventListener('click', (e) => {
+  const tk = e.target.closest('[data-tk]');
+  if (tk) { e.preventDefault(); e.stopPropagation(); if (popKey === 'tk:' + tk.dataset.tk && !pop.hidden) return hidePop(); showTickerPop(tk.dataset.tk, tk); return; }
   const t = e.target.closest('[data-x]');
   if (t) { e.preventDefault(); e.stopPropagation(); showPop(t.dataset.x, t); return; }
   if (!pop.contains(e.target)) hidePop();
@@ -67,33 +109,33 @@ const loadRules = async () => {
   catch (e) { $('#rulesDoc').textContent = e.message; }
 };
 
-// --- Market posture (hero left) ---
-const postureCls = (s) => s >= 60 ? 'g-bull' : s < 40 ? 'g-bear' : 'g-trans';
+// --- Fear & Greed (hero left) ---
+const postureCls = (s) => fgCls(s);
+const regBadgeCls = (s) => s == null ? 'trans' : s < 45 ? 'bear' : s < 55 ? 'trans' : 'bull';
 const regionLabelKo = { US: '미국', KR: '한국' };
 const renderPosture = (sent) => {
   const regs = ['US', 'KR'].map((r) => sent && sent[r]).filter(Boolean);
   const scores = regs.map((r) => r.score).filter((n) => n != null);
   const avg = mean(scores);
-  let label = '데이터 없음', cls = 'g-trans', read = '';
+  let label = '데이터 없음', read = '';
   if (avg != null) {
-    label = avg >= 60 ? '위험자산 우호적' : avg < 40 ? '방어적' : '중립';
-    cls = postureCls(avg);
-    const detail = regs.map((r) => `${regionLabelKo[r.region]} ${r.label}(${r.score})`).join(' · ');
-    const tail = avg >= 60 ? '추세·심리 우호적 — 선별적 신규 진입 유효.'
-      : avg < 40 ? '방어 우위 — 신규 진입 자제, 리스크 관리 우선.'
-      : '신호 혼재 — 기존 비중 유지, 신규는 고확신만.';
+    label = fgLabel(avg);
+    const detail = regs.map((r) => `${regionLabelKo[r.region]} ${fgLabel(r.score)}(${r.score})`).join(' · ');
+    const tail = avg >= 60 ? '탐욕 우위 — 추세 양호하나 추격 과열 주의, 선별 진입.'
+      : avg < 45 ? '공포 우위 — 신규 진입 신중, 리스크 관리 우선.'
+      : '중립 — 기존 비중 유지, 신규는 고확신만.';
     read = `${detail}. ${tail}`;
   }
   $('#postureLabel').textContent = label;
   const ps = $('#postureScore');
   ps.textContent = avg != null ? Math.round(avg) : '';
-  ps.className = 'posture-score reg ' + (avg >= 60 ? 'bull' : avg < 40 ? 'bear' : 'trans');
-  const g = $('#postureGauge'); g.className = cls; g.style.width = (avg ?? 0) + '%';
+  ps.className = 'posture-score reg ' + regBadgeCls(avg);
+  const g = $('#postureGauge'); g.className = fgCls(avg); g.style.width = (avg ?? 0) + '%';
   $('#postureRead').textContent = read;
   $('#postureMini').innerHTML = regs.map((r) => `
     <div class="mini">
-      <div class="mini-top"><span>${regionLabelKo[r.region]}</span><b>${r.label} ${r.score}</b></div>
-      <div class="gauge"><i class="${postureCls(r.score)}" style="width:${r.score}%"></i></div>
+      <div class="mini-top"><span>${regionLabelKo[r.region]}</span><b>${fgLabel(r.score)} ${r.score}</b></div>
+      <div class="gauge"><i class="${fgCls(r.score)}" style="width:${r.score}%"></i></div>
     </div>`).join('');
 };
 
@@ -101,7 +143,7 @@ const renderPosture = (sent) => {
 const pickCard = (i, rank) => `
   <article class="pick ${rank === 1 ? 'top' : ''}">
     <span class="rank">#${rank}</span>
-    <div class="pick-name"><strong>${tkName(i.ticker)}</strong><span class="reg ${regCls(i.regime)}">${regKo(i.regime)}</span></div>
+    <div class="pick-name"><strong class="tklink" data-tk="${i.ticker}">${tkName(i.ticker)}</strong><span class="reg ${regCls(i.regime)}">${regKo(i.regime)}</span></div>
     <span class="pick-act">${i.region} · 매수 후보</span>
     <div class="pick-conv"><span class="big">${pct0(i.probUp)}</span><span class="lab">${term('prob', '상승확률')}</span></div>
     <div class="pick-meta">
@@ -126,7 +168,7 @@ const renderTopPicks = (d) => {
 // --- Idea lists ---
 const ideaRow = (i) => `
   <div class="idea">
-    <div class="idea-top"><strong>${tkName(i.ticker)}</strong>${tkSub(i.ticker)}<span class="reg ${regCls(i.regime)}">${regKo(i.regime)}</span><span class="edge" data-x="edge">edge ${sp(i.edgeNetPct)}</span></div>
+    <div class="idea-top"><strong class="tklink" data-tk="${i.ticker}">${tkName(i.ticker)}</strong>${tkSub(i.ticker)}<span class="reg ${regCls(i.regime)}">${regKo(i.regime)}</span><span class="edge" data-x="edge">edge ${sp(i.edgeNetPct)}</span></div>
     <div class="idea-bar"><i style="width:${Math.round((i.probUp ?? 0) * 100)}%"></i></div>
     <div class="idea-meta"><span>${term('prob', '확률')} <b>${pct0(i.probUp)}</b></span><span>기대 <b>${sp(i.expMovePct)}</b></span><span>${term('hold', '보유')} <b>~${i.holdUntil}</b> (${i.horizon}D)</span></div>
     <div class="idea-why">${i.why || ''}</div>
@@ -141,7 +183,7 @@ const renderIdeas = (d) => {
   const sc = d.screened || [];
   $('#screenCount').textContent = `· ${sc.length}개`;
   $('#screenTable').innerHTML = `<div class="srow sh"><span>종목</span><span>지역</span><span>${term('prob', '확률')}</span><span>국면</span><span>채택</span></div>` +
-    sc.map((s) => `<div class="srow"><span>${tkName(s.ticker)}${tkSub(s.ticker)}</span><span>${s.region}</span><span>${pct0(s.probUp)}</span><span class="reg ${regCls(s.regime)}">${regKo(s.regime)}</span><span>${s.qualifies ? '✓' : '·'}</span></div>`).join('');
+    sc.map((s) => `<div class="srow"><span>${tkLink(s.ticker)}</span><span>${s.region}</span><span>${pct0(s.probUp)}</span><span class="reg ${regCls(s.regime)}">${regKo(s.regime)}</span><span>${s.qualifies ? '✓' : '·'}</span></div>`).join('');
 };
 
 // --- Holdings table ---
@@ -159,7 +201,7 @@ const renderHoldings = (d) => {
     const [vlabel, vcls] = holdingVerdict(t);
     const sigs = (t.signals || []).map((s) => `<div class="h-sig">${s.horizon}D<b>${pct0(s.probUp)}</b><div class="mini-bar"><i style="width:${Math.round((s.probUp ?? 0) * 100)}%"></i></div></div>`).join('');
     return `<div class="hrow">
-      <span class="nm">${tkName(t.ticker)}${tkSub(t.ticker)}</span>
+      <span class="nm tklink" data-tk="${t.ticker}">${tkName(t.ticker)}${tkSub(t.ticker)}</span>
       <span>${fmt(t.lastClose)}</span>
       <span><span class="reg ${regCls(t.risk?.regime)}">${regKo(t.risk?.regime)}</span></span>
       <span class="h-sigs">${sigs || '<span class="muted">데이터 부족</span>'}</span>
@@ -186,7 +228,7 @@ const renderMacro = (m) => {
     region('국외 (US)', kpiItems(m.US?.indicators), stanceBadge(m.US?.stance), (m.US?.riskFlags || []).map((f) => `<span class="mflag">${f}</span>`).join('')) +
     region('국내 (KR)', kpiItems(m.KR?.indicators), stanceBadge(m.KR?.stance), (m.KR?.riskFlags || []).map((f) => `<span class="mflag">${f}</span>`).join(''));
 };
-const sentBadge = (r) => `<span class="reg ${postureCls(r.score) === 'g-bull' ? 'bull' : postureCls(r.score) === 'g-bear' ? 'bear' : 'trans'}">${r.label} ${r.score}</span>`;
+const sentBadge = (r) => `<span class="reg ${regBadgeCls(r.score)}">${r.fearGreed || r.label} ${r.score}</span>`;
 const renderSentiment = (s) => {
   if (!s) { $('#sentimentPanel').innerHTML = '<div class="none">데이터 없음</div>'; return; }
   const one = (title, r) => r ? region(title, kpiItems(r.components), sentBadge(r)) : region(title, '', '');
@@ -194,7 +236,7 @@ const renderSentiment = (s) => {
 };
 
 const render = (d) => {
-  NAMES = d.names || {};
+  DATA = d; NAMES = d.names || {};
   $('#portfolioName').textContent = d.portfolioName || 'Investment Insight';
   $('#dataStatus').textContent = `· ${(d.core || []).length} 보유${d.seed ? ' · SEED' : ''}`;
   const m = d.meta || {};

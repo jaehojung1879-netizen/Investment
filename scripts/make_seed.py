@@ -56,7 +56,7 @@ def main() -> int:
     target_h = sorted(set(cfg.horizons) | {th})
     all_t = list(dict.fromkeys([t for names in cfg.universe.values() for t in names] + cfg.core))
 
-    core_cards, ideas, screened = [], [], []
+    core_cards, ideas, screened, details = [], [], [], {}
     for i, tk in enumerate(all_t):
         price = bench if tk == cfg.benchmark else synth(10 + i, 0.0004 + i * 0.00005, n, dates)
         bclose = bench["Close"] if tk != cfg.benchmark else None
@@ -66,6 +66,12 @@ def main() -> int:
         diag = risk_mod.diagnose(tk, feat)
         region = cfg.region_of(tk)
         tsig = M.current_signal(feat, fcols, f"target_{th}d", cfg.model)
+        details[tk] = {"region": region, "probUp": tsig["probUp"] if tsig else None, "regime": diag["regime"],
+                       "lastClose": diag["lastClose"], "ma50": diag["ma50"], "ma200": diag["ma200"],
+                       "rsi14": diag["rsi14"], "realizedVol": diag["realizedVol"], "maxDrawdown252d": diag["maxDrawdown252d"],
+                       "relMomentum": diag["relMomentum"], "pct52wHigh": diag["pct52wHigh"],
+                       "mom63": round(diag["mom63"] * 100, 1) if diag["mom63"] is not None else None,
+                       "riskFlags": [f["message"] for f in diag["riskFlags"]]}
         if tsig is not None:
             stats = M.horizon_return_stats(feat, th)
             idea = trade_mod.build_idea(tk, region, tsig["probUp"], stats, th, tsig["asOf"], diag["regime"], diag)
@@ -95,7 +101,7 @@ def main() -> int:
     payload = {"generatedAt": datetime.now(timezone.utc).isoformat(), "portfolioName": cfg.portfolio_name,
                "primary": cfg.primary, "benchmark": cfg.benchmark, "horizons": cfg.horizons, "tradeHorizon": th,
                "names": cfg.names, "seed": True, "stale": False, "dataSource": "SEED (예시) — 합성 데이터",
-               "tradeIdeas": trade_mod.rank_ideas(ideas), "screened": screen_table, "sentiment": sent,
+               "tradeIdeas": trade_mod.rank_ideas(ideas), "screened": screen_table, "details": details, "sentiment": sent,
                "core": core_cards, "macro": macro_mod.summarize(macro, vix),
                "meta": {"modelsTrained": 0, "universeScreened": len(screened),
                         "latestDataDate": dates[-1].strftime("%Y-%m-%d"), "fredEnabled": True, "elapsedSec": 0}}
