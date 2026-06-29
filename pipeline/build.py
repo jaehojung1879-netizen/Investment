@@ -85,6 +85,7 @@ def run(cfg) -> dict:
     all_tickers = list(dict.fromkeys([t for names_ in universe.values() for t in names_] + cfg.core))
 
     core_cards, ideas, screened = [], [], []
+    details = {}
     fits = 0
     latest_date = None
 
@@ -104,6 +105,18 @@ def run(cfg) -> dict:
             region = cfg.region_of(ticker)
 
             tsig = M.current_signal(feat, fcols, f"target_{th}d", cfg.model)
+            details[ticker] = {
+                "region": region,
+                "probUp": tsig["probUp"] if tsig else None,
+                "regime": diagnosis["regime"],
+                "lastClose": diagnosis["lastClose"],
+                "ma50": diagnosis["ma50"], "ma200": diagnosis["ma200"],
+                "rsi14": diagnosis["rsi14"], "realizedVol": diagnosis["realizedVol"],
+                "maxDrawdown252d": diagnosis["maxDrawdown252d"],
+                "relMomentum": diagnosis["relMomentum"], "pct52wHigh": diagnosis["pct52wHigh"],
+                "mom63": round(diagnosis["mom63"] * 100, 1) if diagnosis["mom63"] is not None else None,
+                "riskFlags": [f["message"] for f in diagnosis["riskFlags"]],
+            }
             if tsig is not None:
                 fits += 1
                 stats = M.horizon_return_stats(feat, th)
@@ -142,6 +155,7 @@ def run(cfg) -> dict:
         "dataSource": "Yahoo Finance (prices) + FRED (macro)" if cfg.has_fred else "Yahoo Finance (prices); FRED disabled",
         "tradeIdeas": trade_mod.rank_ideas(ideas),
         "screened": screen_table,
+        "details": details,
         "sentiment": sentiment,
         "core": core_cards,
         "macro": macro_mod.summarize(macro, vix),

@@ -36,6 +36,19 @@ def _label(score: float) -> str:
     return "강세" if score >= 60 else ("약세" if score < 40 else "중립")
 
 
+def fear_greed_label(score: float) -> str:
+    """CNN-style Fear & Greed bands."""
+    if score < 25:
+        return "극도의 공포"
+    if score < 45:
+        return "공포"
+    if score < 55:
+        return "중립"
+    if score < 75:
+        return "탐욕"
+    return "극도의 탐욕"
+
+
 def _region(name: str, rows: list[dict], macro: pd.DataFrame | None, vix) -> dict | None:
     if not rows:
         return None
@@ -90,6 +103,7 @@ def _region(name: str, rows: list[dict], macro: pd.DataFrame | None, vix) -> dic
         "region": name,
         "score": round(score),
         "label": _label(score),
+        "fearGreed": fear_greed_label(score),
         "breadth200": round(breadth200),
         "components": components,
     }

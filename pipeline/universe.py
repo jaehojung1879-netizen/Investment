@@ -67,7 +67,7 @@ def resolve(cfg) -> tuple[dict[str, list[str]], dict[str, str]]:
                 continue
             raise RuntimeError("empty listing")
         except Exception as exc:
-            fallback = cfg.universe.get(region, [])
+            fallback = cfg.universe.get(region, [])[:size]
             universe[region] = fallback
             print(f"  universe {region}: fetch failed ({exc}); fallback {len(fallback)} tickers")
 
