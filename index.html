@@ -7,64 +7,91 @@
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <header class="bar">
-      <div class="bar-left">
-        <strong id="portfolioName">Investment Insight</strong>
-        <span id="dataStatus" class="muted">loading…</span>
-      </div>
-      <div class="bar-right muted">
-        <span id="dataMeta"></span>
-        <span id="dataGenerated"></span>
+    <header class="topbar">
+      <div class="wrap topbar-in">
+        <div class="brand">
+          <span class="logo">◆</span>
+          <strong id="portfolioName">Investment Insight</strong>
+          <span id="dataStatus" class="muted"></span>
+        </div>
+        <nav class="nav">
+          <a href="#action">액션</a>
+          <a href="#ideas">아이디어</a>
+          <a href="#holdings">보유</a>
+          <a href="#market">시장</a>
+          <a href="#rules">원칙</a>
+        </nav>
+        <div class="freshness muted">
+          <span id="dataMeta"></span>
+          <span id="dataGenerated"></span>
+        </div>
       </div>
     </header>
     <div id="staleBanner" class="stale" hidden></div>
 
-    <nav class="tabs">
-      <a href="#trade">트레이드</a>
-      <a href="#core">보유</a>
-      <a href="#macro">매크로</a>
-      <a href="#regime">시장국면</a>
-      <a href="#rules">원칙</a>
-    </nav>
+    <main class="wrap">
+      <!-- VERDICT: 어디에 투자? -->
+      <section id="action" class="hero">
+        <aside class="posture">
+          <div class="overline">시장 자세 <span class="ico qh" data-x="sentiment">ⓘ</span></div>
+          <div class="posture-head">
+            <span class="posture-label" id="postureLabel">—</span>
+            <span class="posture-score" id="postureScore"></span>
+          </div>
+          <div class="gauge"><i id="postureGauge"></i></div>
+          <p class="posture-read" id="postureRead"></p>
+          <div class="posture-mini" id="postureMini"></div>
+        </aside>
 
-    <main>
-      <section id="trade" class="sec">
-        <div class="sec-head"><h2>오늘의 트레이드 <button class="info" data-x="trade" aria-label="설명">?</button></h2><span id="tradeMeta" class="muted"></span></div>
-        <div class="trade-cols">
-          <div class="trade-col">
-            <h3>국내 (KR)</h3>
-            <div id="tradeKR" class="idea-list"></div>
-          </div>
-          <div class="trade-col">
-            <h3>국외 (US)</h3>
-            <div id="tradeUS" class="idea-list"></div>
-          </div>
+        <div class="actions">
+          <div class="overline">오늘의 핵심 액션 <span class="ico qh" data-x="trade">ⓘ</span></div>
+          <div id="topPicks" class="picks"></div>
+        </div>
+      </section>
+
+      <!-- 전체 아이디어 -->
+      <section id="ideas" class="section">
+        <div class="sec-title"><span class="overline">트레이드 아이디어</span><span id="tradeMeta" class="muted"></span></div>
+        <div class="cols2">
+          <div><div class="col-h">국내 (KR)</div><div id="tradeKR" class="idea-list"></div></div>
+          <div><div class="col-h">국외 (US)</div><div id="tradeUS" class="idea-list"></div></div>
         </div>
         <details class="screen">
-          <summary>전체 스크리닝 (확률순) <span id="screenCount" class="muted"></span></summary>
+          <summary>전체 스크리닝 결과 <span id="screenCount" class="muted"></span></summary>
           <div id="screenTable" class="screen-table"></div>
         </details>
       </section>
 
-      <section id="core" class="sec">
-        <div class="sec-head"><h2>보유 종목 <button class="info" data-x="core" aria-label="설명">?</button></h2></div>
-        <div id="coreCards" class="core-grid"></div>
+      <!-- 보유 -->
+      <section id="holdings" class="section">
+        <div class="sec-title"><span class="overline">내 포트폴리오 <span class="ico qh" data-x="core">ⓘ</span></span></div>
+        <div id="holdingsTable" class="holdings"></div>
       </section>
 
-      <section id="macro" class="sec">
-        <div class="sec-head"><h2>매크로 <button class="info" data-x="macro" aria-label="설명">?</button></h2><span class="muted">국외(US) · 국내(KR)</span></div>
-        <div id="macroPanel" class="macro-cols"></div>
+      <!-- 시장 상세 -->
+      <section id="market" class="section">
+        <div class="sec-title"><span class="overline">시장 상세 — 매크로 &amp; 국면</span><span class="muted">국외(US) · 국내(KR)</span></div>
+        <div class="market-grid">
+          <div class="panel">
+            <div class="panel-h">매크로 <span class="ico qh" data-x="macro">ⓘ</span></div>
+            <div id="macroPanel" class="cols2"></div>
+          </div>
+          <div class="panel">
+            <div class="panel-h">시장 국면 (정량 심리) <span class="ico qh" data-x="sentiment">ⓘ</span></div>
+            <div id="sentimentPanel" class="cols2"></div>
+          </div>
+        </div>
       </section>
 
-      <section id="regime" class="sec">
-        <div class="sec-head"><h2>시장 국면 <button class="info" data-x="sentiment" aria-label="설명">?</button></h2><span class="muted">유니버스 정량 심리 · 국외/국내</span></div>
-        <div id="sentimentPanel" class="macro-cols"></div>
-      </section>
-
-      <section id="rules" class="sec">
-        <div class="sec-head"><h2>원칙 · 체크리스트</h2></div>
+      <!-- 원칙 -->
+      <section id="rules" class="section">
+        <div class="sec-title"><span class="overline">투자 원칙 · 체크리스트</span></div>
         <article id="rulesDoc" class="md"></article>
       </section>
+
+      <footer class="foot muted">
+        개인 리서치·교육 목적의 정량 도구이며 투자 조언이 아닙니다. 과거 성과는 미래를 보장하지 않습니다.
+      </footer>
     </main>
 
     <div id="pop" class="pop" hidden></div>

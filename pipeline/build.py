@@ -107,7 +107,7 @@ def run(cfg) -> dict:
             if tsig is not None:
                 fits += 1
                 stats = M.horizon_return_stats(feat, th)
-                idea = trade_mod.build_idea(ticker, region, tsig["probUp"], stats, th, tsig["asOf"], diagnosis["regime"])
+                idea = trade_mod.build_idea(ticker, region, tsig["probUp"], stats, th, tsig["asOf"], diagnosis["regime"], diagnosis)
                 screened.append({
                     "ticker": ticker, "region": region, "probUp": tsig["probUp"],
                     "regime": diagnosis["regime"], "qualifies": idea is not None,

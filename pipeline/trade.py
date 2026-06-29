@@ -27,6 +27,23 @@ def expected_value(prob_up: float, up_mean: float, down_mean: float) -> float:
     return prob_up * up_mean + (1 - prob_up) * down_mean
 
 
+def _why(prob_up: float, regime: str, diag: dict | None) -> str:
+    """A short, human rationale for proposing the idea."""
+    parts = ["상승국면" if regime == "Bull" else "전환국면"]
+    if diag:
+        mom = diag.get("mom63")
+        if mom is not None:
+            parts.append(f"60일 모멘텀 {mom * 100:+.0f}%")
+        rel = diag.get("relMomentum")
+        if rel is not None and rel > 0:
+            parts.append("벤치마크 우위")
+        rsi = diag.get("rsi14")
+        if rsi is not None and rsi > 70:
+            parts.append(f"RSI {rsi:.0f} 과열주의")
+    parts.append(f"상승확률 {prob_up * 100:.0f}%")
+    return " · ".join(parts)
+
+
 def build_idea(
     ticker: str,
     region: str,
@@ -35,6 +52,7 @@ def build_idea(
     horizon: int,
     last_date: str,
     regime: str,
+    diag: dict | None = None,
 ) -> dict | None:
     ev = expected_value(prob_up, stats["upMean"], stats["downMean"])
     hurdle = COST_HURDLE.get(region, 0.004)
@@ -55,6 +73,7 @@ def build_idea(
         "entry": last_date,
         "holdUntil": hold_until,
         "regime": regime,
+        "why": _why(prob_up, regime, diag),
         "invalidation": "종가가 MA20 하회하거나 다음 신호 확률이 0.5 미만이면 조기 청산",
     }
 
