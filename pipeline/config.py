@@ -23,6 +23,7 @@ class ModelConfig:
     alert_quantile: float = 0.80
     fixed_threshold_fallback: float = 0.70
     history_start: str = "2010-01-01"
+    screen_history_start: str = "2019-01-01"
 
 
 @dataclass
@@ -70,6 +71,7 @@ def load_config(path: Path | str = CONFIG_PATH) -> tuple[Config, list[str]]:
         alert_quantile=model_raw.get("alertQuantile", 0.80),
         fixed_threshold_fallback=model_raw.get("fixedThresholdFallback", 0.70),
         history_start=model_raw.get("historyStart", "2010-01-01"),
+        screen_history_start=model_raw.get("screenHistoryStart", "2019-01-01"),
     )
 
     universe = raw.get("universe", {"US": raw.get("tickers", ["QQQ"]), "KR": []})

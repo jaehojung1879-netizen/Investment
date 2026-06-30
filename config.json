@@ -2,7 +2,7 @@
   "portfolioName": "My Investment Insight",
   "tradeHorizon": 10,
   "horizons": [21, 63, 126],
-  "universeSize": 50,
+  "universeSize": 120,
   "core": ["005930.KS", "000660.KS", "000810.KS", "010120.KS", "035420.KS", "034020.KS", "047040.KS", "PFE", "QQQ", "NVDA", "GOOGL"],
   "names": {
     "005930.KS": "삼성전자", "000660.KS": "SK하이닉스", "000810.KS": "삼성화재", "010120.KS": "LS ELECTRIC",
@@ -32,7 +32,8 @@
     "oosStart": "2020-01-01",
     "alertQuantile": 0.80,
     "fixedThresholdFallback": 0.70,
-    "historyStart": "2010-01-01"
+    "historyStart": "2010-01-01",
+    "screenHistoryStart": "2019-01-01"
   },
   "fred": {
     "US": { "Treasury_10Y": "DGS10", "Treasury_2Y": "DGS2", "FedFunds": "DFF", "HY_Spread": "BAMLH0A0HYM2" },
