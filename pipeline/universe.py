@@ -67,9 +67,12 @@ def resolve(cfg) -> tuple[dict[str, list[str]], dict[str, str]]:
                 continue
             raise RuntimeError("empty listing")
         except Exception as exc:
-            fallback = cfg.universe.get(region, [])[:size]
+            from . import universe_lists as UL
+            bundled = {"US": UL.US, "KR": UL.KR}.get(region, [])
+            merged = list(dict.fromkeys(list(cfg.universe.get(region, [])) + bundled))
+            fallback = merged[:size]
             universe[region] = fallback
-            print(f"  universe {region}: fetch failed ({exc}); fallback {len(fallback)} tickers")
+            print(f"  universe {region}: fetch failed ({exc}); bundled fallback {len(fallback)} tickers")
 
     # Always make sure core holdings are screened too.
     for tk in cfg.core:
@@ -78,6 +81,7 @@ def resolve(cfg) -> tuple[dict[str, list[str]], dict[str, str]]:
         if tk not in universe[region]:
             universe[region].insert(0, tk)
 
-    # config names override fetched names (user-curated wins).
-    names.update(cfg.names)
-    return universe, names
+    # Bundled KR names + fetched names, with user config overriding both.
+    from . import universe_lists as UL
+    merged_names = {**UL.KR_NAMES, **names, **cfg.names}
+    return universe, merged_names

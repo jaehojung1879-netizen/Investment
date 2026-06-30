@@ -33,6 +33,24 @@ warnings.filterwarnings("ignore", message="Number of classes in training fold")
 OUT = REPO_ROOT / "data" / "site-data.json"
 
 
+def volume_surge(price) -> float | None:
+    """Recent 5-day average volume vs the trailing 60-day average.
+
+    A reading > 1 means money/attention is rushing in relative to normal — a
+    crude but self-contained proxy for where liquidity is rotating.
+    """
+    if "Volume" not in price:
+        return None
+    vol = price["Volume"].dropna()
+    if len(vol) < 60:
+        return None
+    recent = vol.iloc[-5:].mean()
+    base = vol.iloc[-60:].mean()
+    if not base or base <= 0:
+        return None
+    return round(float(recent / base), 2)
+
+
 def core_card(feat, fcols, ticker, cfg, diagnosis):
     """Full multi-horizon signal card + backtest for a held position."""
     signals = []
@@ -75,7 +93,13 @@ def run(cfg) -> dict:
     print(f"core={cfg.core} | universe={ {k: len(v) for k, v in universe.items()} } | "
           f"download={len(download)} | FRED={cfg.has_fred}")
 
-    prices = fetch_prices(download, cfg.model.history_start)
+    # Core + benchmark need full history (walk-forward back to 2020); the broad
+    # screening universe only needs a few years, so fetch it on a shorter window
+    # to keep downloads fast for a large list.
+    core_set = list(dict.fromkeys(cfg.core + [cfg.benchmark]))
+    universe_only = [t for t in download if t not in core_set]
+    prices = fetch_prices(core_set, cfg.model.history_start)
+    prices.update(fetch_prices(universe_only, cfg.model.screen_history_start))
     vix = fetch_vix(cfg.model.history_start)
     macro = fetch_macro(cfg, cfg.model.history_start)
     benchmark_close = prices[cfg.benchmark]["Close"] if cfg.benchmark in prices else None
@@ -103,9 +127,11 @@ def run(cfg) -> dict:
             latest_date = max(latest_date, clean.index[-1]) if latest_date else clean.index[-1]
             diagnosis = risk_mod.diagnose(ticker, feat)
             region = cfg.region_of(ticker)
+            vsurge = volume_surge(prices[ticker])
 
             tsig = M.current_signal(feat, fcols, f"target_{th}d", cfg.model)
             details[ticker] = {
+                "volSurge": vsurge,
                 "region": region,
                 "probUp": tsig["probUp"] if tsig else None,
                 "regime": diagnosis["regime"],
@@ -125,7 +151,7 @@ def run(cfg) -> dict:
                     "ticker": ticker, "region": region, "probUp": tsig["probUp"],
                     "regime": diagnosis["regime"], "qualifies": idea is not None,
                     "aboveMA50": diagnosis["aboveMA50"], "aboveMA200": diagnosis["aboveMA200"],
-                    "mom63": diagnosis["mom63"],
+                    "mom63": diagnosis["mom63"], "volSurge": vsurge,
                 })
                 if idea is not None:
                     ideas.append(idea)
@@ -145,6 +171,19 @@ def run(cfg) -> dict:
         for r in sorted(screened, key=lambda x: x["probUp"], reverse=True)
     ]
 
+    # Money-flow proxy: where is liquidity rotating? Volume surging into names
+    # that are also rising (positive momentum), ranked per region.
+    flows = {}
+    for region in ("KR", "US"):
+        cand = [
+            {"ticker": r["ticker"], "region": region,
+             "volSurge": r["volSurge"], "mom63": round((r["mom63"] or 0) * 100, 1),
+             "regime": r["regime"]}
+            for r in screened
+            if r["region"] == region and r.get("volSurge") and (r.get("mom63") or 0) > 0
+        ]
+        flows[region] = sorted(cand, key=lambda x: x["volSurge"], reverse=True)[:6]
+
     return {
         "portfolioName": cfg.portfolio_name,
         "primary": cfg.primary,
@@ -156,6 +195,7 @@ def run(cfg) -> dict:
         "tradeIdeas": trade_mod.rank_ideas(ideas),
         "screened": screen_table,
         "details": details,
+        "flows": flows,
         "sentiment": sentiment,
         "core": core_cards,
         "macro": macro_mod.summarize(macro, vix),

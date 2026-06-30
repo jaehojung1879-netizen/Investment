@@ -29,6 +29,7 @@ const EXPL = {
   hold: ['보유(hold-until)', '진입일 + 트레이드 호라이즌(영업일)로 잡은 <b>재평가 시점</b>입니다. 그 전에 무효화 조건(종가 MA20 이탈 또는 다음 확률 0.5 미만)이 오면 먼저 청산합니다.'],
   lift: ['lift', '“항상 상승” 기준선 대비 정밀도의 <b>초과분(%p)</b>. lift가 0에 가까우면 동전던지기와 다를 바 없으니 신뢰도를 낮춰 보세요.'],
   oos: ['OOS 정밀도', '표본 외(학습에 안 쓴 2020년 이후) 구간에서 “상승” 예측이 실제 맞은 비율. 같은 구간 백테스트 vs B&H가 음수면 단순 보유만 못한 신호입니다.'],
+  flows: ['자금 흐름 (유동성)', '<b>거래량 급증 + 상승</b> 종목을 지역별로 보여줍니다. 최근 5일 평균 거래량이 60일 평균 대비 몇 배인지(volume surge)로 돈·관심이 어디로 몰리는지 가늠합니다. 가격 모멘텀이 +인 종목만 추립니다. (기관/외국인 실제 수급이나 13F 보유는 별도 데이터 소스가 필요합니다 — 자체 데이터로 만든 프록시입니다.)'],
 };
 const pop = $('#pop');
 let popKey = null;
@@ -187,11 +188,15 @@ const renderIdeas = (d) => {
 };
 
 // --- Holdings table ---
+// Regime-led: a stock in a clear uptrend is never tagged 축소 just because a
+// noisy short-horizon probability dipped.
 const holdingVerdict = (t) => {
   const probs = (t.signals || []).map((s) => s.probUp).filter((n) => n != null);
   const avg = mean(probs); const reg = t.risk?.regime;
-  if (reg === 'Bear' || (avg != null && avg < 0.45)) return ['축소 검토', 'sell'];
-  if (reg === 'Bull' && avg != null && avg >= 0.6) return ['비중 유지', 'buy'];
+  if (reg === 'Bull') return (avg != null && avg >= 0.55) ? ['비중 유지', 'buy'] : ['유지 · 관찰', 'hold'];
+  if (reg === 'Bear') return (avg != null && avg >= 0.6) ? ['관망', 'hold'] : ['축소 검토', 'sell'];
+  if (avg != null && avg >= 0.6) return ['비중 유지', 'buy'];
+  if (avg != null && avg < 0.4) return ['축소 검토', 'sell'];
   return ['관망', 'hold'];
 };
 const renderHoldings = (d) => {
@@ -209,6 +214,20 @@ const renderHoldings = (d) => {
     </div>`;
   }).join('');
   $('#holdingsTable').innerHTML = core.length ? head + rows : '<div class="none">보유 종목 없음</div>';
+};
+
+// --- Money flow (liquidity) ---
+const flowRow = (f) => `
+  <div class="flow">
+    <span class="flow-tk tklink" data-tk="${f.ticker}">${tkName(f.ticker)}</span>
+    <span class="reg ${regCls(f.regime)}">${regKo(f.regime)}</span>
+    <span class="flow-surge">거래량 <b>×${fmt(f.volSurge)}</b></span>
+    <span class="flow-mom">모멘텀 <b>${sp(f.mom63)}</b></span>
+  </div>`;
+const renderFlows = (d) => {
+  const fl = d.flows || { KR: [], US: [] };
+  const fill = (el, arr) => $(el).innerHTML = (arr && arr.length) ? arr.map(flowRow).join('') : '<div class="none">두드러진 자금 유입 없음</div>';
+  fill('#flowsKR', fl.KR); fill('#flowsUS', fl.US);
 };
 
 // --- Macro / sentiment panels ---
@@ -252,6 +271,7 @@ const render = (d) => {
   renderTopPicks(d);
   renderIdeas(d);
   renderHoldings(d);
+  renderFlows(d);
   renderMacro(d.macro);
   renderSentiment(d.sentiment);
 };

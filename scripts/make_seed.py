@@ -54,7 +54,9 @@ def main() -> int:
 
     th = cfg.trade_horizon
     target_h = sorted(set(cfg.horizons) | {th})
-    all_t = list(dict.fromkeys([t for names in cfg.universe.values() for t in names] + cfg.core))
+    from pipeline import universe as universe_mod
+    resolved_universe, resolved_names = universe_mod.resolve(cfg)
+    all_t = list(dict.fromkeys([t for names in resolved_universe.values() for t in names] + cfg.core))
 
     core_cards, ideas, screened, details = [], [], [], {}
     for i, tk in enumerate(all_t):
@@ -66,7 +68,8 @@ def main() -> int:
         diag = risk_mod.diagnose(tk, feat)
         region = cfg.region_of(tk)
         tsig = M.current_signal(feat, fcols, f"target_{th}d", cfg.model)
-        details[tk] = {"region": region, "probUp": tsig["probUp"] if tsig else None, "regime": diag["regime"],
+        vsurge = round(1.0 + abs(np.random.default_rng(i).normal(0, 0.4)), 2)
+        details[tk] = {"volSurge": vsurge, "region": region, "probUp": tsig["probUp"] if tsig else None, "regime": diag["regime"],
                        "lastClose": diag["lastClose"], "ma50": diag["ma50"], "ma200": diag["ma200"],
                        "rsi14": diag["rsi14"], "realizedVol": diag["realizedVol"], "maxDrawdown252d": diag["maxDrawdown252d"],
                        "relMomentum": diag["relMomentum"], "pct52wHigh": diag["pct52wHigh"],
@@ -77,7 +80,7 @@ def main() -> int:
             idea = trade_mod.build_idea(tk, region, tsig["probUp"], stats, th, tsig["asOf"], diag["regime"], diag)
             screened.append({"ticker": tk, "region": region, "probUp": tsig["probUp"], "regime": diag["regime"],
                              "qualifies": idea is not None, "aboveMA50": diag["aboveMA50"],
-                             "aboveMA200": diag["aboveMA200"], "mom63": diag["mom63"]})
+                             "aboveMA200": diag["aboveMA200"], "mom63": diag["mom63"], "volSurge": vsurge})
             if idea:
                 ideas.append(idea)
         if tk in cfg.core:
@@ -98,10 +101,16 @@ def main() -> int:
     sent = sentiment_mod.summarize(screened, macro, vix)
     screen_table = [{k: r[k] for k in ("ticker", "region", "probUp", "regime", "qualifies")}
                     for r in sorted(screened, key=lambda x: x["probUp"], reverse=True)]
+    flows = {}
+    for region in ("KR", "US"):
+        cand = [{"ticker": r["ticker"], "region": region, "volSurge": r["volSurge"],
+                 "mom63": round((r["mom63"] or 0) * 100, 1), "regime": r["regime"]}
+                for r in screened if r["region"] == region and r.get("volSurge") and (r.get("mom63") or 0) > 0]
+        flows[region] = sorted(cand, key=lambda x: x["volSurge"], reverse=True)[:6]
     payload = {"generatedAt": datetime.now(timezone.utc).isoformat(), "portfolioName": cfg.portfolio_name,
                "primary": cfg.primary, "benchmark": cfg.benchmark, "horizons": cfg.horizons, "tradeHorizon": th,
-               "names": cfg.names, "seed": True, "stale": False, "dataSource": "SEED (예시) — 합성 데이터",
-               "tradeIdeas": trade_mod.rank_ideas(ideas), "screened": screen_table, "details": details, "sentiment": sent,
+               "names": resolved_names, "seed": True, "stale": False, "dataSource": "SEED (예시) — 합성 데이터",
+               "tradeIdeas": trade_mod.rank_ideas(ideas), "screened": screen_table, "details": details, "flows": flows, "sentiment": sent,
                "core": core_cards, "macro": macro_mod.summarize(macro, vix),
                "meta": {"modelsTrained": 0, "universeScreened": len(screened),
                         "latestDataDate": dates[-1].strftime("%Y-%m-%d"), "fredEnabled": True, "elapsedSec": 0}}
