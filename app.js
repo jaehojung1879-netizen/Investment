@@ -20,15 +20,16 @@ const fgCls = (s) => s == null ? 'g-trans' : s < 45 ? 'g-bear' : s < 55 ? 'g-tra
 
 // --- Popover explanations ---
 const EXPL = {
-  trade: ['오늘의 핵심 액션', '매일 자동 구성되는 국내·국외 유니버스를 트레이드 호라이즌(기본 10영업일)으로 스크리닝해, <b>비용을 넘는 기대값(edge)</b>이 양수이고 확신 하한(확률 0.55)·국면(하락장 제외)을 만족하는 종목만 매수 후보로 올립니다. 후보가 없으면 “관망”이 결론입니다.'],
+  trade: ['오늘의 핵심 액션', '국내·국외 유니버스를 트레이드 호라이즌(기본 10영업일)으로 스크리닝해, <b>비용을 넘는 기대값(edge)</b>이 양수이고 확신 하한(확률 0.55)·국면(하락장 제외)을 만족하는 종목만 매수 후보로 올립니다. 후보가 없으면 “관망”이 결론입니다.<br><br><b>한계:</b> 수백 종목 동시 스캔은 우연한 고득점(다중검정 거짓양성)을 만듭니다 → 상위 1~2개만, 분산. 유니버스는 현재 상장 종목 기준이라 상장폐지 종목이 빠진 생존편향이 있습니다.'],
   core: ['내 포트폴리오', '보유 종목은 호라이즌(21·63·126영업일)마다 LightGBM 상승확률을 계산하고, 확률·국면을 종합해 비중 유지/관망/축소 검토 판정을 냅니다. 신호만 보지 말고 lift·국면과 함께 보세요.'],
   macro: ['매크로', 'FRED에서 국외(미국 10Y·2Y·금리차·기준금리·하이일드 스프레드·VIX)와 국내(원/달러·국고채 10Y·3M·금리차)를 받아 위험 플래그를 띄웁니다. 개별 종목보다 먼저 점검합니다.'],
-  sentiment: ['공포 · 탐욕 지수', 'CNN 공포·탐욕 지수처럼 <b>실데이터로 시장 심리</b>를 0~100으로 계산합니다. 유니버스에서 200·50일선 위 비중(breadth), 상승국면 비중, 중앙값 모멘텀에 매크로(VIX·신용스프레드·원화 등)를 더해 극도의 공포(0)~극도의 탐욕(100)으로 표시합니다. 탐욕이 과하면 추격 주의, 공포가 과하면 역발상 기회일 수 있습니다.'],
-  prob: ['상승확률', '가격·추세·변동성·상대강도·매크로 피처 약 50개를 LightGBM 분류기에 넣어 해당 호라이즌 뒤 종가가 오를 확률을 추정합니다. walk-forward로 재학습하고 <b>학습에 안 쓴 최근 구간</b>으로 isotonic 보정해 확률을 실제 빈도에 맞춥니다.'],
+  sentiment: ['공포 · 탐욕 지수', 'CNN 공포·탐욕 지수처럼 <b>실데이터로 시장 심리</b>를 0~100으로 계산합니다. 유니버스 200·50일선 위 비중·상승국면 비중·중앙값 모멘텀 + 매크로(VIX·신용스프레드·원화)를 가중합한 <b>휴리스틱 지수</b>(확률이 아님)입니다. 구성 지표가 사실상 모멘텀 한 방향에 겹치므로 종목 확률과 별개의 보조 신호로만 보세요. 탐욕 과열은 추격 주의, 극도의 공포는 역발상 기회일 수 있습니다.'],
+  prob: ['상승확률 (보정된 확률)', '가격·추세·변동성·상대강도·매크로 피처 약 50개를 <b>LightGBM(데이터 적합 모델)</b>에 넣어 해당 호라이즌 뒤 상승 확률을 추정합니다. 단순 정규화 점수가 아니라, walk-forward로 재학습하고 <b>학습에 안 쓴 최근 구간으로 isotonic 보정</b>해 실제 상승 빈도에 맞춥니다. 보정 품질은 <b>Brier 점수</b>(낮을수록 좋음, 종목 클릭 시 표시)로 측정합니다. 트리 모델이라 지표 간 상관(모멘텀·RSI 중복)은 모델이 알아서 처리합니다.'],
+  brier: ['Brier 점수', '예측 확률과 실제 결과(0/1)의 평균제곱오차입니다. <b>낮을수록 보정이 잘 된 것</b>(0=완벽, 0.25=동전던지기 수준). “확률 67%”가 정규화 점수가 아니라 실제 빈도와 맞는지 보는 지표입니다.'],
   edge: ['edge (net)', '<code>edge = p·평균상승 + (1−p)·평균하락 − 비용허들</code>. 확률만으로는 비용을 못 넘기 때문에 기대값이 양수일 때만 제안합니다. 국내(KR)는 세금·수수료로 허들이 더 높습니다.'],
   hold: ['보유(hold-until)', '진입일 + 트레이드 호라이즌(영업일)로 잡은 <b>재평가 시점</b>입니다. 그 전에 무효화 조건(종가 MA20 이탈 또는 다음 확률 0.5 미만)이 오면 먼저 청산합니다.'],
   lift: ['lift', '“항상 상승” 기준선 대비 정밀도의 <b>초과분(%p)</b>. lift가 0에 가까우면 동전던지기와 다를 바 없으니 신뢰도를 낮춰 보세요.'],
-  oos: ['OOS 정밀도', '표본 외(학습에 안 쓴 2020년 이후) 구간에서 “상승” 예측이 실제 맞은 비율. 같은 구간 백테스트 vs B&H가 음수면 단순 보유만 못한 신호입니다.'],
+  oos: ['OOS 정밀도', '표본 외(학습에 안 쓴 2020년 이후) 구간에서 “상승” 예측이 실제 맞은 비율. <b>n</b>은 검증 표본 수 — 작을수록 우연일 수 있으니 함께 보세요. 같은 구간 백테스트 vs B&H가 음수면 단순 보유만 못한 신호입니다.'],
   flows: ['자금 흐름 (유동성)', '<b>거래량 급증 + 상승</b> 종목을 지역별로 보여줍니다. 최근 5일 평균 거래량이 60일 평균 대비 몇 배인지(volume surge)로 돈·관심이 어디로 몰리는지 가늠합니다. 가격 모멘텀이 +인 종목만 추립니다. (기관/외국인 실제 수급이나 13F 보유는 별도 데이터 소스가 필요합니다 — 자체 데이터로 만든 프록시입니다.)'],
 };
 const pop = $('#pop');
@@ -70,7 +71,10 @@ const showTickerPop = (ticker, target) => {
     m('52주고점 대비', fmt(d.pct52wHigh, '%')),
   ].join('');
   const core = (DATA.core || []).find((c) => c.ticker === ticker);
-  const horizons = core ? `<div class="dp-sub">호라이즌별 상승확률</div><div class="dp-h">${core.signals.map((s) => `<span>${s.horizon}D <b>${pct0(s.probUp)}</b></span>`).join('')}</div>` : '';
+  const horizons = core ? `<div class="dp-sub">호라이즌별 신호 · 표본 외 검증</div>` + core.signals.map((s) => {
+    const o = s.oos || {}, b = s.backtest || {};
+    return `<div class="dp-sig"><b>${s.horizon}D · ${pct0(s.probUp)}</b><span class="muted">정밀 ${pct0(o.precision)} (lift ${sp(o.lift)}) · n=${fmt(o.days)} · Brier ${fmt(o.brier, '', 2)} · 연 ${sp(b.annualReturn)} · vsB&H ${sp(b.vsBuyHold)}</span></div>`;
+  }).join('') : '';
   const flags = (d.riskFlags && d.riskFlags.length) ? `<div class="dp-flags">${d.riskFlags.map((f) => `<span class="mflag">${f}</span>`).join('')}</div>` : '';
   popKey = 'tk:' + ticker;
   pop.innerHTML = `<div class="dp-head"><b>${tkName(ticker)}</b> <span class="tk">${ticker}</span> <span class="reg ${regCls(d.regime)}">${regKo(d.regime)}</span></div><div class="dp-grid">${grid}</div>${horizons}${flags}`;
@@ -184,7 +188,8 @@ const renderIdeas = (d) => {
   const sc = d.screened || [];
   $('#screenCount').textContent = `· ${sc.length}개`;
   $('#screenTable').innerHTML = `<div class="srow sh"><span>종목</span><span>지역</span><span>${term('prob', '확률')}</span><span>국면</span><span>채택</span></div>` +
-    sc.map((s) => `<div class="srow"><span>${tkLink(s.ticker)}</span><span>${s.region}</span><span>${pct0(s.probUp)}</span><span class="reg ${regCls(s.regime)}">${regKo(s.regime)}</span><span>${s.qualifies ? '✓' : '·'}</span></div>`).join('');
+    sc.map((s) => `<div class="srow" data-key="${(s.ticker + ' ' + tkName(s.ticker)).toLowerCase()}"><span>${tkLink(s.ticker)}</span><span>${s.region}</span><span>${pct0(s.probUp)}</span><span class="reg ${regCls(s.regime)}">${regKo(s.regime)}</span><span>${s.qualifies ? '✓' : '·'}</span></div>`).join('');
+  filterScreen();
 };
 
 // --- Holdings table ---
@@ -280,6 +285,20 @@ const loadData = async () => {
   try { const r = await fetch('data/site-data.json', { cache: 'no-store' }); if (!r.ok) throw new Error(`HTTP ${r.status}`); render(await r.json()); }
   catch (e) { $('#dataStatus').textContent = 'data error: ' + e.message; }
 };
+// Screening search/filter
+const filterScreen = () => {
+  const q = ($('#screenSearch')?.value || '').trim().toLowerCase();
+  const rows = document.querySelectorAll('#screenTable .srow:not(.sh)');
+  let shown = 0;
+  rows.forEach((r) => {
+    const hit = !q || (r.dataset.key || '').includes(q);
+    r.style.display = hit ? '' : 'none';
+    if (hit) shown++;
+  });
+  const empty = $('#screenEmpty'); if (empty) empty.hidden = shown !== 0;
+};
+$('#screenSearch')?.addEventListener('input', filterScreen);
+
 document.querySelectorAll('.nav a[href^="#"]').forEach((a) => a.addEventListener('click', (e) => {
   const t = document.querySelector(a.getAttribute('href')); if (!t) return; e.preventDefault(); t.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }));
