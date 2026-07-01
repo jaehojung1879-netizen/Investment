@@ -9,6 +9,7 @@ GitHub Actions(Python)가 매일 데이터를 수집·모델링해 `data/site-da
 
 ## 화면
 
+0. **글로벌 마켓** — S&P 500 · 나스닥 종합 · 다우 · 필라델피아 반도체 · 코스피 · 코스닥 · 원/달러 · VIX. 지수별 현재 레벨, 1D/1M/YTD 변화율, 52주 고점 대비 거리, 3개월 스파크라인. Yahoo Finance 실패 시 Stooq CSV로 자동 대체.
 1. **오늘의 트레이드** — KR/US 후보를 트레이드 호라이즌(기본 10영업일)으로 스크리닝, 비용·확신 게이트를 통과한 것만 entry·hold-until·무효화 조건과 함께 제안
 2. **보유 종목** — core 종목 × 21/63/126D 캘리브레이션 확률 + 알림 + OOS 정밀도/lift/백테스트
 3. **매크로** — FRED 국외(10Y/2Y·금리차·기준금리·HY스프레드·VIX) + 국내(원/달러·국고채 10Y/3M·금리차)
@@ -26,6 +27,8 @@ GitHub Actions(Python)가 매일 데이터를 수집·모델링해 `data/site-da
 - **캘리브레이션 누수 제거**: 노트북은 모델이 학습한 데이터로 isotonic 보정을 해 확률이 0/1로 붕괴했음. 보정 구간을 학습에서 **제외**하도록 수정.
 - **horizon embargo**: h일 선행 타깃이 학습/테스트 경계를 넘어 누수되지 않도록 walk-forward에 embargo 추가(purged WF).
 - **비용 인지 의사결정**: 확률 0.5 초과는 우위가 아님. `EV = p·E[up] + (1−p)·E[down] − 비용허들` 이 양수이고 확신 하한·국면 조건을 만족할 때만 트레이드 제안(KR은 세금·수수료로 허들 ↑).
+- **데이터 수집 견고성**: yfinance 다운로드에 지수 백오프 재시도 + 누락 티커 소배치 2차 패스. 지수 테이프는 Yahoo → Stooq 폴백. 클래스 주식 심볼 정규화(BRK.B/BRKB → BRK-B). 빌드마다 유니버스 **커버리지(%)를 meta에 기록**하고 85% 미만이면 사이트에 경고 배너 표시.
+- **KR 당일 반영**: 매일 07:10 UTC(16:10 KST, 한국장 마감 후)에도 빌드해 국내 데이터가 미국장 마감 빌드까지 하루 밀리지 않게 함.
 
 ## 종목 바꾸기
 
@@ -58,7 +61,8 @@ GitHub Actions(Python)가 매일 데이터를 수집·모델링해 `data/site-da
 config.json                 core·universe(KR/US)·호라이즌·모델 파라미터
 pipeline/                   노트북 이식 ML 파이프라인
   config.py                 config.json + 환경변수 로딩
-  datafeed.py               yfinance(가격) + FRED(매크로) 수집
+  datafeed.py               yfinance(가격, 재시도·2차 패스) + FRED(매크로) 수집
+  indices.py                글로벌 지수 테이프 (S&P500·나스닥·코스피 등, Yahoo→Stooq 폴백)
   features.py               피처 엔지니어링 + 타깃
   universe.py               S&P500/KOSPI 자동 구성(+종목명), 실패 시 fallback
   model.py                  LightGBM purged walk-forward + 캘리브레이션 + EV + 백테스트

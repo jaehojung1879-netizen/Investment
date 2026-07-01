@@ -3,7 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Investment Insight</title>
+    <title>Investment Insight — Global Markets · Quantitative Research</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Noto+Serif+KR:wght@600;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
@@ -15,6 +18,7 @@
           <span id="dataStatus" class="muted"></span>
         </div>
         <nav class="nav">
+          <a href="#indices">마켓</a>
           <a href="#action">액션</a>
           <a href="#ideas">아이디어</a>
           <a href="#holdings">보유</a>
@@ -31,6 +35,15 @@
     <div id="staleBanner" class="stale" hidden></div>
 
     <main class="wrap">
+      <!-- 글로벌 마켓 테이프: S&P 500 · 나스닥 · 코스피 ... -->
+      <section id="indices" class="tape-sec" hidden>
+        <div class="sec-title">
+          <span class="overline">글로벌 마켓 <span class="ico qh" data-x="indices">ⓘ</span></span>
+          <span id="tapeMeta" class="muted"></span>
+        </div>
+        <div id="indexTape" class="tape"></div>
+      </section>
+
       <!-- VERDICT: 어디에 투자? -->
       <section id="action" class="hero">
         <aside class="posture">

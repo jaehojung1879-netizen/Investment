@@ -17,6 +17,7 @@ import warnings
 from datetime import datetime, timezone
 
 from . import features as F
+from . import indices as indices_mod
 from . import macro as macro_mod
 from . import model as M
 from . import risk as risk_mod
@@ -100,8 +101,17 @@ def run(cfg) -> dict:
     universe_only = [t for t in download if t not in core_set]
     prices = fetch_prices(core_set, cfg.model.history_start)
     prices.update(fetch_prices(universe_only, cfg.model.screen_history_start))
+    missing = [t for t in download if t not in prices]
+    coverage = round(100 * len(prices) / len(download), 1) if download else 0.0
     vix = fetch_vix(cfg.model.history_start)
     macro = fetch_macro(cfg, cfg.model.history_start)
+
+    # Market tape (S&P 500 / NASDAQ / KOSPI / ...). Never let it kill a build.
+    try:
+        market_indices = indices_mod.fetch()
+    except Exception as exc:
+        print(f"  warning: index tape failed: {exc}")
+        market_indices = []
     benchmark_close = prices[cfg.benchmark]["Close"] if cfg.benchmark in prices else None
 
     th = cfg.trade_horizon
@@ -192,6 +202,7 @@ def run(cfg) -> dict:
         "tradeHorizon": th,
         "names": names,
         "dataSource": "Yahoo Finance (prices) + FRED (macro)" if cfg.has_fred else "Yahoo Finance (prices); FRED disabled",
+        "indices": market_indices,
         "tradeIdeas": trade_mod.rank_ideas(ideas),
         "screened": screen_table,
         "details": details,
@@ -204,6 +215,11 @@ def run(cfg) -> dict:
             "universeScreened": len(screened),
             "latestDataDate": latest_date.strftime("%Y-%m-%d") if latest_date is not None else None,
             "fredEnabled": cfg.has_fred,
+            "tickersRequested": len(download),
+            "tickersFetched": len(prices),
+            "coveragePct": coverage,
+            "missingSample": missing[:10],
+            "indicesFetched": len(market_indices),
         },
     }
 
@@ -220,6 +236,7 @@ def main() -> int:
     OUT.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     m = payload["meta"]
     print(f"wrote {OUT}: {len(payload['core'])} core, universe {m['universeScreened']}, "
+          f"coverage {m['coveragePct']}%, indices {m['indicesFetched']}, "
           f"{m['modelsTrained']} model fits, {m['elapsedSec']}s, data as of {m['latestDataDate']}")
     return 0
 
