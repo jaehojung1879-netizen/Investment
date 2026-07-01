@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-30T22:55:28.935465+00:00",
+  "generatedAt": "2026-07-01T22:57:05.265293+00:00",
   "portfolioName": "My Investment Insight",
   "primary": "QQQ",
   "benchmark": "SPY",
@@ -82,70 +82,704 @@
   },
   "seed": true,
   "stale": false,
-  "dataSource": "SEED (예시) — 첫 CI 실행 전 미리보기. 실제 값 아님",
+  "dataSource": "SEED (예시) — 합성 데이터",
+  "indices": [
+    {
+      "symbol": "^GSPC",
+      "name": "S&P 500",
+      "region": "US",
+      "digits": 2,
+      "last": 7167.13,
+      "chg1dPct": -0.26,
+      "chg1mPct": -2.63,
+      "ytdPct": -14.96,
+      "from52wHighPct": -17.14,
+      "above200d": false,
+      "spark": [
+        7550.65,
+        7539.77,
+        7565.1,
+        7473.96,
+        7613.83,
+        7663.21,
+        7624.83,
+        7782.43,
+        7663.58,
+        7585.31,
+        7503.1,
+        7591.37,
+        7534.32,
+        7589.59,
+        7608.27,
+        7563.2,
+        7572.65,
+        7482.87,
+        7545.66,
+        7470.98,
+        7405.31,
+        7456.06,
+        7420.18,
+        7560.72,
+        7666.54,
+        7540.98,
+        7553.14,
+        7542.79,
+        7707.68,
+        7665.85,
+        7618.58,
+        7604.14,
+        7588.48,
+        7520.69,
+        7540.81,
+        7501.12,
+        7438.14,
+        7553.23,
+        7565.41,
+        7486.71,
+        7384.19,
+        7360.36,
+        7269.8,
+        7176.61,
+        7257.18,
+        7247.18,
+        7207.21,
+        7221.41,
+        7181.51,
+        7187.77,
+        7320.27,
+        7318.99,
+        7275.65,
+        7194.11,
+        7241.05,
+        7229.86,
+        7260.41,
+        7145.17,
+        7118.86,
+        7126.94,
+        7165.91,
+        7185.66,
+        7167.13
+      ],
+      "asOf": "2026-07-01",
+      "source": "SEED"
+    },
+    {
+      "symbol": "^IXIC",
+      "name": "나스닥 종합",
+      "region": "US",
+      "digits": 2,
+      "last": 17742.27,
+      "chg1dPct": -0.98,
+      "chg1mPct": -0.34,
+      "ytdPct": -8.6,
+      "from52wHighPct": -20.29,
+      "above200d": false,
+      "spark": [
+        17939.6,
+        17771.41,
+        17762.85,
+        17625.99,
+        17644.03,
+        17610.87,
+        17847.74,
+        17793.7,
+        17757.52,
+        17769.2,
+        17456.07,
+        17276.82,
+        17533.76,
+        17631.61,
+        17653.53,
+        17852.64,
+        17827.62,
+        17790.37,
+        17743.7,
+        17438.35,
+        17609.92,
+        17583.67,
+        17574.16,
+        17522.53,
+        17418.58,
+        17036.3,
+        17068.9,
+        17452.24,
+        17632.6,
+        17588.9,
+        17433.98,
+        17445.43,
+        17517.27,
+        17503.2,
+        17656.86,
+        17496.36,
+        17691.24,
+        17725.79,
+        17635.77,
+        17592.85,
+        17661.12,
+        17803.39,
+        17823.42,
+        17934.6,
+        18378.24,
+        18086.73,
+        17734.73,
+        17757.57,
+        17593.59,
+        17620.53,
+        17345.98,
+        17376.0,
+        17612.32,
+        17815.76,
+        17628.26,
+        17580.81,
+        17744.21,
+        18078.16,
+        17913.84,
+        17768.61,
+        17975.5,
+        17918.21,
+        17742.27
+      ],
+      "asOf": "2026-07-01",
+      "source": "SEED"
+    },
+    {
+      "symbol": "^DJI",
+      "name": "다우존스",
+      "region": "US",
+      "digits": 2,
+      "last": 39827.04,
+      "chg1dPct": -0.83,
+      "chg1mPct": -4.08,
+      "ytdPct": -7.16,
+      "from52wHighPct": -14.64,
+      "above200d": false,
+      "spark": [
+        39160.77,
+        39260.77,
+        39526.49,
+        40244.81,
+        40489.06,
+        41123.22,
+        41507.51,
+        41351.46,
+        41553.01,
+        41815.46,
+        42177.02,
+        42011.08,
+        42461.95,
+        42203.87,
+        42122.41,
+        42389.35,
+        42450.38,
+        42078.7,
+        41534.17,
+        41309.8,
+        41012.2,
+        41884.54,
+        41438.37,
+        40843.35,
+        41737.64,
+        41034.67,
+        40780.24,
+        40970.14,
+        40963.44,
+        41077.96,
+        41703.5,
+        42674.4,
+        42754.6,
+        42896.3,
+        42749.62,
+        42505.0,
+        42299.9,
+        42369.78,
+        42139.4,
+        42234.59,
+        42007.72,
+        41521.29,
+        41342.65,
+        41195.35,
+        40943.35,
+        40722.59,
+        40893.08,
+        40316.12,
+        40637.84,
+        40344.18,
+        40240.92,
+        40695.51,
+        41025.83,
+        40233.83,
+        40323.23,
+        40821.3,
+        40385.19,
+        40152.86,
+        40648.52,
+        40083.93,
+        40747.48,
+        40161.06,
+        39827.04
+      ],
+      "asOf": "2026-07-01",
+      "source": "SEED"
+    },
+    {
+      "symbol": "^SOX",
+      "name": "필라델피아 반도체",
+      "region": "US",
+      "digits": 2,
+      "last": 6040.07,
+      "chg1dPct": -0.1,
+      "chg1mPct": -4.44,
+      "ytdPct": 6.91,
+      "from52wHighPct": -9.18,
+      "above200d": true,
+      "spark": [
+        6018.13,
+        5989.3,
+        5931.14,
+        5957.97,
+        5978.84,
+        5992.83,
+        6088.49,
+        6056.08,
+        6086.81,
+        6095.17,
+        6114.91,
+        6038.5,
+        5967.25,
+        6020.56,
+        5951.18,
+        6021.03,
+        6117.53,
+        6084.9,
+        6108.81,
+        6123.06,
+        6221.13,
+        6360.49,
+        6416.19,
+        6476.65,
+        6562.49,
+        6502.89,
+        6501.9,
+        6563.96,
+        6535.33,
+        6650.53,
+        6591.19,
+        6581.97,
+        6592.45,
+        6640.67,
+        6581.46,
+        6558.42,
+        6584.88,
+        6592.86,
+        6633.29,
+        6579.41,
+        6506.37,
+        6320.81,
+        6234.87,
+        6200.41,
+        6103.35,
+        6073.08,
+        6119.01,
+        6082.92,
+        6133.34,
+        6173.41,
+        6169.03,
+        6208.45,
+        6259.66,
+        6168.3,
+        6264.24,
+        6148.29,
+        6160.28,
+        6117.99,
+        6079.89,
+        6088.62,
+        6061.19,
+        6045.84,
+        6040.07
+      ],
+      "asOf": "2026-07-01",
+      "source": "SEED"
+    },
+    {
+      "symbol": "^KS11",
+      "name": "코스피",
+      "region": "KR",
+      "digits": 2,
+      "last": 3644.34,
+      "chg1dPct": 2.34,
+      "chg1mPct": 7.74,
+      "ytdPct": 4.18,
+      "from52wHighPct": -3.52,
+      "above200d": true,
+      "spark": [
+        3633.45,
+        3648.44,
+        3606.56,
+        3556.9,
+        3587.47,
+        3589.75,
+        3550.9,
+        3481.64,
+        3509.06,
+        3511.62,
+        3541.65,
+        3577.44,
+        3620.54,
+        3541.43,
+        3429.98,
+        3454.07,
+        3390.42,
+        3429.55,
+        3444.24,
+        3444.52,
+        3442.67,
+        3388.56,
+        3385.77,
+        3379.9,
+        3393.06,
+        3461.22,
+        3443.12,
+        3466.9,
+        3530.11,
+        3504.85,
+        3474.7,
+        3447.63,
+        3407.48,
+        3350.63,
+        3371.5,
+        3422.88,
+        3443.17,
+        3424.28,
+        3403.63,
+        3412.66,
+        3387.68,
+        3382.65,
+        3365.25,
+        3396.77,
+        3419.19,
+        3425.34,
+        3388.07,
+        3372.11,
+        3398.65,
+        3461.85,
+        3445.46,
+        3538.34,
+        3525.9,
+        3513.61,
+        3527.38,
+        3505.86,
+        3508.74,
+        3514.77,
+        3500.87,
+        3493.1,
+        3514.69,
+        3560.94,
+        3644.34
+      ],
+      "asOf": "2026-07-01",
+      "source": "SEED"
+    },
+    {
+      "symbol": "^KQ11",
+      "name": "코스닥",
+      "region": "KR",
+      "digits": 2,
+      "last": 1063.27,
+      "chg1dPct": 0.65,
+      "chg1mPct": 1.68,
+      "ytdPct": 14.68,
+      "from52wHighPct": -4.29,
+      "above200d": true,
+      "spark": [
+        980.79,
+        983.09,
+        963.37,
+        983.18,
+        988.87,
+        984.75,
+        989.68,
+        986.61,
+        989.24,
+        982.99,
+        1006.58,
+        1006.08,
+        1013.01,
+        1008.68,
+        1019.99,
+        1038.15,
+        1043.83,
+        1038.82,
+        1045.09,
+        1046.98,
+        1059.81,
+        1066.62,
+        1074.14,
+        1075.88,
+        1076.79,
+        1080.6,
+        1098.2,
+        1101.24,
+        1110.98,
+        1108.68,
+        1107.67,
+        1096.63,
+        1096.58,
+        1090.97,
+        1068.01,
+        1059.12,
+        1043.73,
+        1041.02,
+        1036.92,
+        1050.42,
+        1051.87,
+        1045.72,
+        1041.1,
+        1036.62,
+        1031.58,
+        1036.55,
+        1030.66,
+        1033.5,
+        1044.11,
+        1038.91,
+        1039.05,
+        1057.01,
+        1062.93,
+        1059.76,
+        1066.7,
+        1064.52,
+        1056.17,
+        1065.71,
+        1056.17,
+        1049.21,
+        1047.66,
+        1056.44,
+        1063.27
+      ],
+      "asOf": "2026-07-01",
+      "source": "SEED"
+    },
+    {
+      "symbol": "KRW=X",
+      "name": "원/달러",
+      "region": "FX",
+      "digits": 1,
+      "last": 1776.5,
+      "chg1dPct": -0.09,
+      "chg1mPct": 2.58,
+      "ytdPct": 10.37,
+      "from52wHighPct": -4.81,
+      "above200d": true,
+      "spark": [
+        1830.89,
+        1832.2,
+        1848.98,
+        1845.09,
+        1836.65,
+        1805.33,
+        1817.22,
+        1823.4,
+        1807.35,
+        1803.64,
+        1832.31,
+        1823.58,
+        1812.57,
+        1827.14,
+        1795.9,
+        1791.18,
+        1788.95,
+        1776.85,
+        1771.23,
+        1766.82,
+        1770.57,
+        1768.02,
+        1781.32,
+        1796.76,
+        1797.61,
+        1793.77,
+        1755.26,
+        1773.5,
+        1778.53,
+        1783.14,
+        1802.62,
+        1792.4,
+        1780.73,
+        1793.12,
+        1732.75,
+        1747.45,
+        1751.51,
+        1728.31,
+        1713.73,
+        1731.47,
+        1718.33,
+        1731.79,
+        1737.6,
+        1737.65,
+        1736.06,
+        1733.34,
+        1726.05,
+        1730.56,
+        1745.71,
+        1710.66,
+        1735.33,
+        1774.93,
+        1747.57,
+        1769.3,
+        1772.17,
+        1786.39,
+        1786.53,
+        1768.27,
+        1780.91,
+        1784.86,
+        1794.52,
+        1778.12,
+        1776.5
+      ],
+      "asOf": "2026-07-01",
+      "source": "SEED"
+    },
+    {
+      "symbol": "^VIX",
+      "name": "VIX",
+      "region": "US",
+      "digits": 2,
+      "last": 17.86,
+      "chg1dPct": -1.35,
+      "chg1mPct": -4.46,
+      "ytdPct": -0.77,
+      "from52wHighPct": -8.8,
+      "above200d": false,
+      "spark": [
+        19.36,
+        19.29,
+        19.59,
+        19.55,
+        19.48,
+        19.25,
+        18.95,
+        18.9,
+        19.01,
+        18.83,
+        18.74,
+        18.5,
+        18.3,
+        18.14,
+        18.31,
+        18.73,
+        18.95,
+        19.0,
+        18.89,
+        19.11,
+        18.93,
+        18.67,
+        18.9,
+        18.65,
+        18.84,
+        18.84,
+        19.01,
+        18.69,
+        18.8,
+        18.89,
+        19.02,
+        18.76,
+        18.68,
+        18.37,
+        18.64,
+        18.61,
+        18.57,
+        18.74,
+        18.65,
+        18.66,
+        18.58,
+        18.7,
+        18.27,
+        18.47,
+        18.48,
+        18.29,
+        18.5,
+        18.91,
+        18.77,
+        18.78,
+        18.79,
+        18.92,
+        18.64,
+        18.63,
+        18.49,
+        18.55,
+        18.38,
+        18.29,
+        18.19,
+        18.08,
+        18.09,
+        18.11,
+        17.86
+      ],
+      "asOf": "2026-07-01",
+      "source": "SEED"
+    }
+  ],
   "tradeIdeas": {
     "KR": [
       {
+        "ticker": "282330.KS",
+        "region": "KR",
+        "probUp": 0.96,
+        "expMovePct": 10.01,
+        "edgeNetPct": 9.31,
+        "horizon": 10,
+        "entry": "2026-07-01",
+        "holdUntil": "2026-07-15",
+        "regime": "Bull",
+        "why": "상승국면 · 60일 모멘텀 +73% · 벤치마크 우위 · RSI 90 과열주의 · 상승확률 96%",
+        "invalidation": "종가가 MA20 하회하거나 다음 신호 확률이 0.5 미만이면 조기 청산"
+      },
+      {
         "ticker": "034730.KS",
         "region": "KR",
-        "probUp": 0.9504,
-        "expMovePct": 9.97,
-        "edgeNetPct": 9.27,
+        "probUp": 0.9471,
+        "expMovePct": 9.92,
+        "edgeNetPct": 9.22,
         "horizon": 10,
-        "entry": "2026-06-30",
-        "holdUntil": "2026-07-14",
+        "entry": "2026-07-01",
+        "holdUntil": "2026-07-15",
         "regime": "Bull",
         "why": "상승국면 · 60일 모멘텀 +127% · 벤치마크 우위 · RSI 78 과열주의 · 상승확률 95%",
         "invalidation": "종가가 MA20 하회하거나 다음 신호 확률이 0.5 미만이면 조기 청산"
       },
       {
-        "ticker": "326030.KS",
-        "region": "KR",
-        "probUp": 0.9778,
-        "expMovePct": 9.67,
-        "edgeNetPct": 8.97,
-        "horizon": 10,
-        "entry": "2026-06-30",
-        "holdUntil": "2026-07-14",
-        "regime": "Bull",
-        "why": "상승국면 · 60일 모멘텀 +77% · 벤치마크 우위 · RSI 81 과열주의 · 상승확률 98%",
-        "invalidation": "종가가 MA20 하회하거나 다음 신호 확률이 0.5 미만이면 조기 청산"
-      },
-      {
         "ticker": "251270.KS",
         "region": "KR",
-        "probUp": 0.963,
-        "expMovePct": 9.62,
-        "edgeNetPct": 8.92,
+        "probUp": 0.9598,
+        "expMovePct": 9.57,
+        "edgeNetPct": 8.87,
         "horizon": 10,
-        "entry": "2026-06-30",
-        "holdUntil": "2026-07-14",
+        "entry": "2026-07-01",
+        "holdUntil": "2026-07-15",
         "regime": "Bull",
         "why": "상승국면 · 60일 모멘텀 +86% · 벤치마크 우위 · RSI 98 과열주의 · 상승확률 96%",
         "invalidation": "종가가 MA20 하회하거나 다음 신호 확률이 0.5 미만이면 조기 청산"
       },
       {
-        "ticker": "282330.KS",
+        "ticker": "326030.KS",
         "region": "KR",
-        "probUp": 0.9217,
-        "expMovePct": 9.48,
-        "edgeNetPct": 8.78,
+        "probUp": 0.9703,
+        "expMovePct": 9.57,
+        "edgeNetPct": 8.87,
         "horizon": 10,
-        "entry": "2026-06-30",
-        "holdUntil": "2026-07-14",
+        "entry": "2026-07-01",
+        "holdUntil": "2026-07-15",
         "regime": "Bull",
-        "why": "상승국면 · 60일 모멘텀 +73% · 벤치마크 우위 · RSI 90 과열주의 · 상승확률 92%",
+        "why": "상승국면 · 60일 모멘텀 +77% · 벤치마크 우위 · RSI 81 과열주의 · 상승확률 97%",
         "invalidation": "종가가 MA20 하회하거나 다음 신호 확률이 0.5 미만이면 조기 청산"
       },
       {
         "ticker": "005490.KS",
         "region": "KR",
-        "probUp": 0.9878,
-        "expMovePct": 9.33,
-        "edgeNetPct": 8.63,
+        "probUp": 0.9865,
+        "expMovePct": 9.32,
+        "edgeNetPct": 8.62,
         "horizon": 10,
-        "entry": "2026-06-30",
-        "holdUntil": "2026-07-14",
+        "entry": "2026-07-01",
+        "holdUntil": "2026-07-15",
         "regime": "Bull",
         "why": "상승국면 · 60일 모멘텀 +69% · 벤치마크 우위 · RSI 80 과열주의 · 상승확률 99%",
         "invalidation": "종가가 MA20 하회하거나 다음 신호 확률이 0.5 미만이면 조기 청산"
@@ -155,51 +789,25 @@
       {
         "ticker": "ROP",
         "region": "US",
-        "probUp": 0.9482,
-        "expMovePct": 6.59,
-        "edgeNetPct": 6.19,
+        "probUp": 0.9463,
+        "expMovePct": 6.57,
+        "edgeNetPct": 6.17,
         "horizon": 10,
-        "entry": "2026-06-30",
-        "holdUntil": "2026-07-14",
+        "entry": "2026-07-01",
+        "holdUntil": "2026-07-15",
         "regime": "Bull",
         "why": "상승국면 · 60일 모멘텀 +37% · 벤치마크 우위 · RSI 72 과열주의 · 상승확률 95%",
         "invalidation": "종가가 MA20 하회하거나 다음 신호 확률이 0.5 미만이면 조기 청산"
       },
       {
-        "ticker": "PH",
-        "region": "US",
-        "probUp": 0.9286,
-        "expMovePct": 6.53,
-        "edgeNetPct": 6.13,
-        "horizon": 10,
-        "entry": "2026-06-30",
-        "holdUntil": "2026-07-14",
-        "regime": "Bull",
-        "why": "상승국면 · 60일 모멘텀 +71% · 벤치마크 우위 · RSI 94 과열주의 · 상승확률 93%",
-        "invalidation": "종가가 MA20 하회하거나 다음 신호 확률이 0.5 미만이면 조기 청산"
-      },
-      {
-        "ticker": "DUK",
-        "region": "US",
-        "probUp": 0.9643,
-        "expMovePct": 6.23,
-        "edgeNetPct": 5.83,
-        "horizon": 10,
-        "entry": "2026-06-30",
-        "holdUntil": "2026-07-14",
-        "regime": "Bull",
-        "why": "상승국면 · 60일 모멘텀 +25% · 벤치마크 우위 · RSI 73 과열주의 · 상승확률 96%",
-        "invalidation": "종가가 MA20 하회하거나 다음 신호 확률이 0.5 미만이면 조기 청산"
-      },
-      {
         "ticker": "ITW",
         "region": "US",
-        "probUp": 0.9348,
-        "expMovePct": 6.16,
-        "edgeNetPct": 5.76,
+        "probUp": 0.9306,
+        "expMovePct": 6.11,
+        "edgeNetPct": 5.71,
         "horizon": 10,
-        "entry": "2026-06-30",
-        "holdUntil": "2026-07-14",
+        "entry": "2026-07-01",
+        "holdUntil": "2026-07-15",
         "regime": "Bull",
         "why": "상승국면 · 60일 모멘텀 +51% · 벤치마크 우위 · RSI 98 과열주의 · 상승확률 93%",
         "invalidation": "종가가 MA20 하회하거나 다음 신호 확률이 0.5 미만이면 조기 청산"
@@ -207,14 +815,40 @@
       {
         "ticker": "CSX",
         "region": "US",
-        "probUp": 0.9163,
-        "expMovePct": 6.11,
-        "edgeNetPct": 5.71,
+        "probUp": 0.915,
+        "expMovePct": 6.1,
+        "edgeNetPct": 5.7,
         "horizon": 10,
-        "entry": "2026-06-30",
-        "holdUntil": "2026-07-14",
+        "entry": "2026-07-01",
+        "holdUntil": "2026-07-15",
         "regime": "Bull",
         "why": "상승국면 · 60일 모멘텀 +33% · 벤치마크 우위 · 상승확률 92%",
+        "invalidation": "종가가 MA20 하회하거나 다음 신호 확률이 0.5 미만이면 조기 청산"
+      },
+      {
+        "ticker": "MAR",
+        "region": "US",
+        "probUp": 0.9042,
+        "expMovePct": 6.04,
+        "edgeNetPct": 5.64,
+        "horizon": 10,
+        "entry": "2026-07-01",
+        "holdUntil": "2026-07-15",
+        "regime": "Bull",
+        "why": "상승국면 · 60일 모멘텀 +55% · 벤치마크 우위 · RSI 83 과열주의 · 상승확률 90%",
+        "invalidation": "종가가 MA20 하회하거나 다음 신호 확률이 0.5 미만이면 조기 청산"
+      },
+      {
+        "ticker": "DUK",
+        "region": "US",
+        "probUp": 0.9444,
+        "expMovePct": 6.02,
+        "edgeNetPct": 5.62,
+        "horizon": 10,
+        "entry": "2026-07-01",
+        "holdUntil": "2026-07-15",
+        "regime": "Bull",
+        "why": "상승국면 · 60일 모멘텀 +25% · 벤치마크 우위 · RSI 73 과열주의 · 상승확률 94%",
         "invalidation": "종가가 MA20 하회하거나 다음 신호 확률이 0.5 미만이면 조기 청산"
       }
     ]
@@ -223,168 +857,168 @@
     {
       "ticker": "005490.KS",
       "region": "KR",
-      "probUp": 0.9878,
-      "regime": "Bull",
-      "qualifies": true
-    },
-    {
-      "ticker": "326030.KS",
-      "region": "KR",
-      "probUp": 0.9778,
+      "probUp": 0.9865,
       "regime": "Bull",
       "qualifies": true
     },
     {
       "ticker": "032830.KS",
       "region": "KR",
-      "probUp": 0.9776,
+      "probUp": 0.9802,
       "regime": "Bull",
       "qualifies": true
     },
     {
       "ticker": "086790.KS",
       "region": "KR",
-      "probUp": 0.9741,
+      "probUp": 0.9787,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "326030.KS",
+      "region": "KR",
+      "probUp": 0.9703,
       "regime": "Bull",
       "qualifies": true
     },
     {
       "ticker": "010140.KS",
       "region": "KR",
-      "probUp": 0.9682,
+      "probUp": 0.964,
       "regime": "Bull",
       "qualifies": true
     },
     {
-      "ticker": "DUK",
-      "region": "US",
-      "probUp": 0.9643,
+      "ticker": "282330.KS",
+      "region": "KR",
+      "probUp": 0.96,
       "regime": "Bull",
       "qualifies": true
     },
     {
       "ticker": "251270.KS",
       "region": "KR",
-      "probUp": 0.963,
+      "probUp": 0.9598,
       "regime": "Bull",
       "qualifies": true
     },
     {
       "ticker": "009150.KS",
       "region": "KR",
-      "probUp": 0.9587,
+      "probUp": 0.9592,
       "regime": "Bull",
       "qualifies": true
     },
     {
       "ticker": "047040.KS",
       "region": "KR",
-      "probUp": 0.9542,
+      "probUp": 0.9562,
       "regime": "Bull",
       "qualifies": true
     },
     {
       "ticker": "001040.KS",
       "region": "KR",
-      "probUp": 0.9535,
-      "regime": "Bull",
-      "qualifies": true
-    },
-    {
-      "ticker": "000080.KS",
-      "region": "KR",
-      "probUp": 0.953,
+      "probUp": 0.9559,
       "regime": "Bull",
       "qualifies": true
     },
     {
       "ticker": "030200.KS",
       "region": "KR",
-      "probUp": 0.951,
+      "probUp": 0.9522,
       "regime": "Bull",
       "qualifies": true
     },
     {
       "ticker": "034730.KS",
       "region": "KR",
-      "probUp": 0.9504,
+      "probUp": 0.9471,
       "regime": "Bull",
       "qualifies": true
     },
     {
       "ticker": "ROP",
       "region": "US",
-      "probUp": 0.9482,
+      "probUp": 0.9463,
       "regime": "Bull",
       "qualifies": true
     },
     {
-      "ticker": "PANW",
-      "region": "US",
-      "probUp": 0.9467,
-      "regime": "Bull",
-      "qualifies": true
-    },
-    {
-      "ticker": "003670.KS",
+      "ticker": "000080.KS",
       "region": "KR",
-      "probUp": 0.9426,
+      "probUp": 0.9463,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "009830.KS",
+      "region": "KR",
+      "probUp": 0.9454,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "DUK",
+      "region": "US",
+      "probUp": 0.9444,
       "regime": "Bull",
       "qualifies": true
     },
     {
       "ticker": "051900.KS",
       "region": "KR",
-      "probUp": 0.9379,
-      "regime": "Bull",
-      "qualifies": true
-    },
-    {
-      "ticker": "EOG",
-      "region": "US",
-      "probUp": 0.9355,
-      "regime": "Bull",
-      "qualifies": true
-    },
-    {
-      "ticker": "ITW",
-      "region": "US",
-      "probUp": 0.9348,
-      "regime": "Bull",
-      "qualifies": true
-    },
-    {
-      "ticker": "078930.KS",
-      "region": "KR",
-      "probUp": 0.9346,
-      "regime": "Bull",
-      "qualifies": true
-    },
-    {
-      "ticker": "011780.KS",
-      "region": "KR",
-      "probUp": 0.9346,
-      "regime": "Bull",
-      "qualifies": true
-    },
-    {
-      "ticker": "000810.KS",
-      "region": "KR",
-      "probUp": 0.9345,
-      "regime": "Bull",
-      "qualifies": true
-    },
-    {
-      "ticker": "033780.KS",
-      "region": "KR",
-      "probUp": 0.9341,
+      "probUp": 0.9405,
       "regime": "Bull",
       "qualifies": true
     },
     {
       "ticker": "138040.KS",
       "region": "KR",
-      "probUp": 0.934,
+      "probUp": 0.9381,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "034020.KS",
+      "region": "KR",
+      "probUp": 0.9381,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "003670.KS",
+      "region": "KR",
+      "probUp": 0.9378,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "033780.KS",
+      "region": "KR",
+      "probUp": 0.9375,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "PANW",
+      "region": "US",
+      "probUp": 0.9362,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "000810.KS",
+      "region": "KR",
+      "probUp": 0.9358,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "011780.KS",
+      "region": "KR",
+      "probUp": 0.9343,
       "regime": "Bull",
       "qualifies": true
     },
@@ -398,21 +1032,49 @@
     {
       "ticker": "005935.KS",
       "region": "KR",
+      "probUp": 0.9325,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "006260.KS",
+      "region": "KR",
+      "probUp": 0.9325,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "078930.KS",
+      "region": "KR",
       "probUp": 0.932,
       "regime": "Bull",
       "qualifies": true
     },
     {
-      "ticker": "352820.KS",
+      "ticker": "066570.KS",
       "region": "KR",
-      "probUp": 0.9318,
+      "probUp": 0.9316,
       "regime": "Bull",
       "qualifies": true
     },
     {
-      "ticker": "PH",
+      "ticker": "ITW",
+      "region": "US",
+      "probUp": 0.9306,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "EOG",
       "region": "US",
       "probUp": 0.9286,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "018260.KS",
+      "region": "KR",
+      "probUp": 0.9278,
       "regime": "Bull",
       "qualifies": true
     },
@@ -424,247 +1086,205 @@
       "qualifies": true
     },
     {
-      "ticker": "009830.KS",
-      "region": "KR",
-      "probUp": 0.9254,
-      "regime": "Bull",
-      "qualifies": true
-    },
-    {
-      "ticker": "018260.KS",
-      "region": "KR",
-      "probUp": 0.9247,
-      "regime": "Bull",
-      "qualifies": true
-    },
-    {
-      "ticker": "066570.KS",
+      "ticker": "316140.KS",
       "region": "KR",
       "probUp": 0.9231,
       "regime": "Bull",
       "qualifies": true
     },
     {
-      "ticker": "042660.KS",
+      "ticker": "139480.KS",
       "region": "KR",
-      "probUp": 0.9218,
-      "regime": "Bull",
-      "qualifies": true
-    },
-    {
-      "ticker": "282330.KS",
-      "region": "KR",
-      "probUp": 0.9217,
+      "probUp": 0.9189,
       "regime": "Bull",
       "qualifies": true
     },
     {
       "ticker": "017670.KS",
       "region": "KR",
-      "probUp": 0.9208,
-      "regime": "Bull",
-      "qualifies": true
-    },
-    {
-      "ticker": "006260.KS",
-      "region": "KR",
-      "probUp": 0.9194,
-      "regime": "Bull",
-      "qualifies": true
-    },
-    {
-      "ticker": "015760.KS",
-      "region": "KR",
-      "probUp": 0.9184,
-      "regime": "Bull",
-      "qualifies": true
-    },
-    {
-      "ticker": "105560.KS",
-      "region": "KR",
-      "probUp": 0.9167,
-      "regime": "Bull",
-      "qualifies": true
-    },
-    {
-      "ticker": "CSX",
-      "region": "US",
-      "probUp": 0.9163,
-      "regime": "Bull",
-      "qualifies": true
-    },
-    {
-      "ticker": "302440.KS",
-      "region": "KR",
-      "probUp": 0.9146,
-      "regime": "Bull",
-      "qualifies": true
-    },
-    {
-      "ticker": "097950.KS",
-      "region": "KR",
-      "probUp": 0.9091,
+      "probUp": 0.9183,
       "regime": "Bull",
       "qualifies": true
     },
     {
       "ticker": "004020.KS",
       "region": "KR",
-      "probUp": 0.9074,
+      "probUp": 0.9171,
       "regime": "Bull",
       "qualifies": true
     },
     {
-      "ticker": "MAR",
+      "ticker": "042660.KS",
+      "region": "KR",
+      "probUp": 0.9167,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "105560.KS",
+      "region": "KR",
+      "probUp": 0.9163,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "097950.KS",
+      "region": "KR",
+      "probUp": 0.9151,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "CSX",
       "region": "US",
-      "probUp": 0.9062,
+      "probUp": 0.915,
       "regime": "Bull",
       "qualifies": true
     },
     {
-      "ticker": "139480.KS",
+      "ticker": "352820.KS",
       "region": "KR",
-      "probUp": 0.9,
-      "regime": "Bull",
-      "qualifies": true
-    },
-    {
-      "ticker": "010130.KS",
-      "region": "KR",
-      "probUp": 0.8947,
-      "regime": "Bull",
-      "qualifies": true
-    },
-    {
-      "ticker": "BSX",
-      "region": "US",
-      "probUp": 0.8894,
-      "regime": "Bull",
-      "qualifies": true
-    },
-    {
-      "ticker": "GD",
-      "region": "US",
-      "probUp": 0.8889,
-      "regime": "Bull",
-      "qualifies": true
-    },
-    {
-      "ticker": "010120.KS",
-      "region": "KR",
-      "probUp": 0.8889,
-      "regime": "Bull",
-      "qualifies": true
-    },
-    {
-      "ticker": "000100.KS",
-      "region": "KR",
-      "probUp": 0.8889,
-      "regime": "Bull",
-      "qualifies": true
-    },
-    {
-      "ticker": "034020.KS",
-      "region": "KR",
-      "probUp": 0.8883,
+      "probUp": 0.9118,
       "regime": "Bull",
       "qualifies": true
     },
     {
       "ticker": "035420.KS",
       "region": "KR",
-      "probUp": 0.8876,
+      "probUp": 0.9114,
       "regime": "Bull",
       "qualifies": true
     },
     {
-      "ticker": "MU",
-      "region": "US",
-      "probUp": 0.8846,
+      "ticker": "302440.KS",
+      "region": "KR",
+      "probUp": 0.9091,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "015760.KS",
+      "region": "KR",
+      "probUp": 0.9085,
       "regime": "Bull",
       "qualifies": true
     },
     {
       "ticker": "RTX",
       "region": "US",
-      "probUp": 0.8841,
+      "probUp": 0.9072,
       "regime": "Bull",
       "qualifies": true
     },
     {
-      "ticker": "MSI",
+      "ticker": "MAR",
       "region": "US",
-      "probUp": 0.8832,
-      "regime": "Bull",
-      "qualifies": true
-    },
-    {
-      "ticker": "010950.KS",
-      "region": "KR",
-      "probUp": 0.8824,
-      "regime": "Bull",
-      "qualifies": true
-    },
-    {
-      "ticker": "055550.KS",
-      "region": "KR",
-      "probUp": 0.8816,
-      "regime": "Bull",
-      "qualifies": true
-    },
-    {
-      "ticker": "ZTS",
-      "region": "US",
-      "probUp": 0.8814,
-      "regime": "Bull",
-      "qualifies": true
-    },
-    {
-      "ticker": "ORLY",
-      "region": "US",
-      "probUp": 0.881,
-      "regime": "Bull",
-      "qualifies": true
-    },
-    {
-      "ticker": "000270.KS",
-      "region": "KR",
-      "probUp": 0.8805,
-      "regime": "Bull",
-      "qualifies": true
-    },
-    {
-      "ticker": "BX",
-      "region": "US",
-      "probUp": 0.8743,
+      "probUp": 0.9042,
       "regime": "Bull",
       "qualifies": true
     },
     {
       "ticker": "CDNS",
       "region": "US",
-      "probUp": 0.8741,
+      "probUp": 0.896,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "010120.KS",
+      "region": "KR",
+      "probUp": 0.8938,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "010130.KS",
+      "region": "KR",
+      "probUp": 0.8921,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "055550.KS",
+      "region": "KR",
+      "probUp": 0.8902,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "GD",
+      "region": "US",
+      "probUp": 0.8866,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "SNPS",
+      "region": "US",
+      "probUp": 0.8824,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "EMR",
+      "region": "US",
+      "probUp": 0.8824,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "MSI",
+      "region": "US",
+      "probUp": 0.8816,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "000270.KS",
+      "region": "KR",
+      "probUp": 0.881,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "ORLY",
+      "region": "US",
+      "probUp": 0.879,
       "regime": "Bull",
       "qualifies": true
     },
     {
       "ticker": "MO",
       "region": "US",
-      "probUp": 0.872,
+      "probUp": 0.878,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "MU",
+      "region": "US",
+      "probUp": 0.8765,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "BX",
+      "region": "US",
+      "probUp": 0.8733,
       "regime": "Bull",
       "qualifies": true
     },
     {
       "ticker": "QCOM",
       "region": "US",
-      "probUp": 0.8684,
+      "probUp": 0.871,
       "regime": "Bull",
       "qualifies": true
     },
     {
-      "ticker": "KLAC",
+      "ticker": "NXPI",
       "region": "US",
-      "probUp": 0.8657,
+      "probUp": 0.866,
       "regime": "Bull",
       "qualifies": true
     },
@@ -676,476 +1296,511 @@
       "qualifies": true
     },
     {
+      "ticker": "BSX",
+      "region": "US",
+      "probUp": 0.8634,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
       "ticker": "PGR",
       "region": "US",
-      "probUp": 0.8629,
-      "regime": "Bull",
-      "qualifies": true
-    },
-    {
-      "ticker": "008770.KS",
-      "region": "KR",
       "probUp": 0.8621,
-      "regime": "Bull",
-      "qualifies": true
-    },
-    {
-      "ticker": "CL",
-      "region": "US",
-      "probUp": 0.8611,
-      "regime": "Bull",
-      "qualifies": true
-    },
-    {
-      "ticker": "373220.KS",
-      "region": "KR",
-      "probUp": 0.8585,
-      "regime": "Bull",
-      "qualifies": true
-    },
-    {
-      "ticker": "BLK",
-      "region": "US",
-      "probUp": 0.8571,
-      "regime": "Bull",
-      "qualifies": true
-    },
-    {
-      "ticker": "316140.KS",
-      "region": "KR",
-      "probUp": 0.8571,
-      "regime": "Bull",
-      "qualifies": true
-    },
-    {
-      "ticker": "NXPI",
-      "region": "US",
-      "probUp": 0.8548,
-      "regime": "Bull",
-      "qualifies": true
-    },
-    {
-      "ticker": "APH",
-      "region": "US",
-      "probUp": 0.8504,
-      "regime": "Bull",
-      "qualifies": true
-    },
-    {
-      "ticker": "GILD",
-      "region": "US",
-      "probUp": 0.85,
-      "regime": "Bull",
-      "qualifies": true
-    },
-    {
-      "ticker": "ADP",
-      "region": "US",
-      "probUp": 0.8465,
       "regime": "Bull",
       "qualifies": true
     },
     {
       "ticker": "090430.KS",
       "region": "KR",
-      "probUp": 0.8431,
+      "probUp": 0.8615,
       "regime": "Bull",
       "qualifies": true
     },
     {
-      "ticker": "BKNG",
+      "ticker": "ZTS",
       "region": "US",
-      "probUp": 0.8424,
+      "probUp": 0.8611,
       "regime": "Bull",
       "qualifies": true
     },
     {
-      "ticker": "ISRG",
+      "ticker": "CL",
       "region": "US",
-      "probUp": 0.8421,
+      "probUp": 0.8603,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "KLAC",
+      "region": "US",
+      "probUp": 0.8596,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "010950.KS",
+      "region": "KR",
+      "probUp": 0.8596,
       "regime": "Bull",
       "qualifies": true
     },
     {
       "ticker": "REGN",
       "region": "US",
-      "probUp": 0.8415,
+      "probUp": 0.8533,
       "regime": "Bull",
       "qualifies": true
     },
     {
-      "ticker": "SHW",
+      "ticker": "APH",
       "region": "US",
-      "probUp": 0.8394,
+      "probUp": 0.8485,
       "regime": "Bull",
       "qualifies": true
     },
     {
-      "ticker": "SNPS",
+      "ticker": "PH",
       "region": "US",
-      "probUp": 0.8387,
+      "probUp": 0.8462,
       "regime": "Bull",
       "qualifies": true
     },
     {
-      "ticker": "BA",
+      "ticker": "ADP",
       "region": "US",
-      "probUp": 0.8374,
-      "regime": "Bull",
-      "qualifies": true
-    },
-    {
-      "ticker": "012330.KS",
-      "region": "KR",
-      "probUp": 0.8358,
-      "regime": "Bull",
-      "qualifies": true
-    },
-    {
-      "ticker": "T",
-      "region": "US",
-      "probUp": 0.8333,
-      "regime": "Bull",
-      "qualifies": true
-    },
-    {
-      "ticker": "USB",
-      "region": "US",
-      "probUp": 0.8333,
-      "regime": "Bull",
-      "qualifies": true
-    },
-    {
-      "ticker": "TJX",
-      "region": "US",
-      "probUp": 0.83,
-      "regime": "Bull",
-      "qualifies": true
-    },
-    {
-      "ticker": "MS",
-      "region": "US",
-      "probUp": 0.8294,
-      "regime": "Bull",
-      "qualifies": true
-    },
-    {
-      "ticker": "SO",
-      "region": "US",
-      "probUp": 0.8287,
-      "regime": "Bull",
-      "qualifies": true
-    },
-    {
-      "ticker": "SCHW",
-      "region": "US",
-      "probUp": 0.8261,
-      "regime": "Bull",
-      "qualifies": true
-    },
-    {
-      "ticker": "064350.KS",
-      "region": "KR",
-      "probUp": 0.8261,
-      "regime": "Bull",
-      "qualifies": true
-    },
-    {
-      "ticker": "NEE",
-      "region": "US",
-      "probUp": 0.8247,
-      "regime": "Bull",
-      "qualifies": true
-    },
-    {
-      "ticker": "TXN",
-      "region": "US",
-      "probUp": 0.8244,
-      "regime": "Bull",
-      "qualifies": true
-    },
-    {
-      "ticker": "SYK",
-      "region": "US",
-      "probUp": 0.8241,
-      "regime": "Bull",
-      "qualifies": true
-    },
-    {
-      "ticker": "028260.KS",
-      "region": "KR",
-      "probUp": 0.8235,
+      "probUp": 0.8444,
       "regime": "Bull",
       "qualifies": true
     },
     {
       "ticker": "006400.KS",
       "region": "KR",
-      "probUp": 0.8205,
+      "probUp": 0.8421,
       "regime": "Bull",
       "qualifies": true
     },
     {
-      "ticker": "207940.KS",
+      "ticker": "012330.KS",
       "region": "KR",
-      "probUp": 0.8182,
+      "probUp": 0.8406,
       "regime": "Bull",
       "qualifies": true
     },
     {
-      "ticker": "051910.KS",
-      "region": "KR",
-      "probUp": 0.8132,
-      "regime": "Bull",
-      "qualifies": true
-    },
-    {
-      "ticker": "068270.KS",
-      "region": "KR",
-      "probUp": 0.8118,
-      "regime": "Bull",
-      "qualifies": true
-    },
-    {
-      "ticker": "MDT",
+      "ticker": "SO",
       "region": "US",
-      "probUp": 0.807,
+      "probUp": 0.8371,
       "regime": "Bull",
       "qualifies": true
     },
     {
-      "ticker": "WM",
+      "ticker": "GILD",
       "region": "US",
-      "probUp": 0.8069,
-      "regime": "Bull",
-      "qualifies": true
-    },
-    {
-      "ticker": "MMC",
-      "region": "US",
-      "probUp": 0.8047,
-      "regime": "Bull",
-      "qualifies": true
-    },
-    {
-      "ticker": "CB",
-      "region": "US",
-      "probUp": 0.8024,
-      "regime": "Bull",
-      "qualifies": true
-    },
-    {
-      "ticker": "CI",
-      "region": "US",
-      "probUp": 0.8,
-      "regime": "Bull",
-      "qualifies": true
-    },
-    {
-      "ticker": "AON",
-      "region": "US",
-      "probUp": 0.8,
-      "regime": "Bull",
-      "qualifies": true
-    },
-    {
-      "ticker": "005380.KS",
-      "region": "KR",
-      "probUp": 0.7937,
-      "regime": "Bull",
-      "qualifies": true
-    },
-    {
-      "ticker": "ADI",
-      "region": "US",
-      "probUp": 0.7908,
-      "regime": "Bull",
-      "qualifies": true
-    },
-    {
-      "ticker": "MCK",
-      "region": "US",
-      "probUp": 0.7811,
-      "regime": "Bull",
-      "qualifies": true
-    },
-    {
-      "ticker": "ELV",
-      "region": "US",
-      "probUp": 0.779,
-      "regime": "Bull",
-      "qualifies": true
-    },
-    {
-      "ticker": "GS",
-      "region": "US",
-      "probUp": 0.7755,
-      "regime": "Bull",
-      "qualifies": true
-    },
-    {
-      "ticker": "IBM",
-      "region": "US",
-      "probUp": 0.7692,
-      "regime": "Bull",
-      "qualifies": true
-    },
-    {
-      "ticker": "011070.KS",
-      "region": "KR",
-      "probUp": 0.7692,
-      "regime": "Bull",
-      "qualifies": true
-    },
-    {
-      "ticker": "ADBE",
-      "region": "US",
-      "probUp": 0.7674,
-      "regime": "Bull",
-      "qualifies": true
-    },
-    {
-      "ticker": "GE",
-      "region": "US",
-      "probUp": 0.7612,
-      "regime": "Bull",
-      "qualifies": true
-    },
-    {
-      "ticker": "LOW",
-      "region": "US",
-      "probUp": 0.7552,
-      "regime": "Bull",
-      "qualifies": true
-    },
-    {
-      "ticker": "HON",
-      "region": "US",
-      "probUp": 0.7479,
-      "regime": "Bull",
-      "qualifies": true
-    },
-    {
-      "ticker": "APD",
-      "region": "US",
-      "probUp": 0.7407,
-      "regime": "Bull",
-      "qualifies": true
-    },
-    {
-      "ticker": "005930.KS",
-      "region": "KR",
-      "probUp": 0.7347,
-      "regime": "Bull",
-      "qualifies": true
-    },
-    {
-      "ticker": "DE",
-      "region": "US",
-      "probUp": 0.7308,
+      "probUp": 0.8333,
       "regime": "Bull",
       "qualifies": true
     },
     {
       "ticker": "011200.KS",
       "region": "KR",
-      "probUp": 0.72,
+      "probUp": 0.8333,
       "regime": "Bull",
       "qualifies": true
     },
     {
-      "ticker": "VZ",
-      "region": "US",
-      "probUp": 0.7192,
+      "ticker": "064350.KS",
+      "region": "KR",
+      "probUp": 0.8333,
       "regime": "Bull",
       "qualifies": true
     },
     {
-      "ticker": "CVX",
+      "ticker": "IBM",
       "region": "US",
-      "probUp": 0.7143,
+      "probUp": 0.831,
       "regime": "Bull",
       "qualifies": true
     },
     {
-      "ticker": "SPGI",
+      "ticker": "TJX",
       "region": "US",
-      "probUp": 0.7067,
+      "probUp": 0.8304,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "BA",
+      "region": "US",
+      "probUp": 0.8298,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "MS",
+      "region": "US",
+      "probUp": 0.8293,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "AON",
+      "region": "US",
+      "probUp": 0.8293,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "NEE",
+      "region": "US",
+      "probUp": 0.824,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "SCHW",
+      "region": "US",
+      "probUp": 0.8235,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "SYK",
+      "region": "US",
+      "probUp": 0.823,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "TXN",
+      "region": "US",
+      "probUp": 0.8195,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "CB",
+      "region": "US",
+      "probUp": 0.8182,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "BKNG",
+      "region": "US",
+      "probUp": 0.8158,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "373220.KS",
+      "region": "KR",
+      "probUp": 0.8148,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "271560.KS",
+      "region": "KR",
+      "probUp": 0.8095,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "MMC",
+      "region": "US",
+      "probUp": 0.8077,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "028260.KS",
+      "region": "KR",
+      "probUp": 0.8065,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "SHW",
+      "region": "US",
+      "probUp": 0.806,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "ADI",
+      "region": "US",
+      "probUp": 0.7988,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "051910.KS",
+      "region": "KR",
+      "probUp": 0.7955,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "GS",
+      "region": "US",
+      "probUp": 0.7952,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "WM",
+      "region": "US",
+      "probUp": 0.7952,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "ISRG",
+      "region": "US",
+      "probUp": 0.7945,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "011070.KS",
+      "region": "KR",
+      "probUp": 0.7931,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "068270.KS",
+      "region": "KR",
+      "probUp": 0.7923,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "MCK",
+      "region": "US",
+      "probUp": 0.792,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "MDT",
+      "region": "US",
+      "probUp": 0.7895,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "C",
+      "region": "US",
+      "probUp": 0.7885,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "BLK",
+      "region": "US",
+      "probUp": 0.7865,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "T",
+      "region": "US",
+      "probUp": 0.7778,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "036570.KS",
+      "region": "KR",
+      "probUp": 0.7778,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "207940.KS",
+      "region": "KR",
+      "probUp": 0.7742,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "ELV",
+      "region": "US",
+      "probUp": 0.7731,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "CI",
+      "region": "US",
+      "probUp": 0.7656,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "008770.KS",
+      "region": "KR",
+      "probUp": 0.7647,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "GE",
+      "region": "US",
+      "probUp": 0.7642,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "LOW",
+      "region": "US",
+      "probUp": 0.7603,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "APD",
+      "region": "US",
+      "probUp": 0.75,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "ADBE",
+      "region": "US",
+      "probUp": 0.7474,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "005380.KS",
+      "region": "KR",
+      "probUp": 0.7447,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "012450.KS",
+      "region": "KR",
+      "probUp": 0.7391,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "USB",
+      "region": "US",
+      "probUp": 0.7346,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "005930.KS",
+      "region": "KR",
+      "probUp": 0.7308,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "HON",
+      "region": "US",
+      "probUp": 0.73,
       "regime": "Bull",
       "qualifies": true
     },
     {
       "ticker": "CAT",
       "region": "US",
-      "probUp": 0.7064,
-      "regime": "Bull",
-      "qualifies": true
-    },
-    {
-      "ticker": "267260.KS",
-      "region": "KR",
-      "probUp": 0.7059,
-      "regime": "Bull",
-      "qualifies": true
-    },
-    {
-      "ticker": "ETN",
-      "region": "US",
-      "probUp": 0.6957,
-      "regime": "Bull",
-      "qualifies": true
-    },
-    {
-      "ticker": "LMT",
-      "region": "US",
-      "probUp": 0.6923,
-      "regime": "Bull",
-      "qualifies": true
-    },
-    {
-      "ticker": "035720.KS",
-      "region": "KR",
-      "probUp": 0.6897,
+      "probUp": 0.7101,
       "regime": "Bull",
       "qualifies": true
     },
     {
       "ticker": "VRTX",
       "region": "US",
-      "probUp": 0.6892,
+      "probUp": 0.7089,
       "regime": "Bull",
       "qualifies": true
     },
     {
-      "ticker": "UNH",
+      "ticker": "LMT",
       "region": "US",
-      "probUp": 0.6887,
-      "regime": "Bull",
-      "qualifies": true
-    },
-    {
-      "ticker": "INTU",
-      "region": "US",
-      "probUp": 0.6774,
-      "regime": "Bull",
-      "qualifies": true
-    },
-    {
-      "ticker": "WFC",
-      "region": "US",
-      "probUp": 0.6752,
+      "probUp": 0.7037,
       "regime": "Bull",
       "qualifies": true
     },
     {
       "ticker": "UNP",
       "region": "US",
-      "probUp": 0.6719,
+      "probUp": 0.7023,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "SPGI",
+      "region": "US",
+      "probUp": 0.693,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "CVX",
+      "region": "US",
+      "probUp": 0.686,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "UNH",
+      "region": "US",
+      "probUp": 0.6849,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "WMT",
+      "region": "US",
+      "probUp": 0.6842,
+      "regime": "Transition",
+      "qualifies": true
+    },
+    {
+      "ticker": "WFC",
+      "region": "US",
+      "probUp": 0.682,
       "regime": "Bull",
       "qualifies": true
     },
     {
       "ticker": "FCX",
+      "region": "US",
+      "probUp": 0.6818,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "DE",
+      "region": "US",
+      "probUp": 0.6765,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "INTU",
+      "region": "US",
+      "probUp": 0.6761,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "PFE",
+      "region": "US",
+      "probUp": 0.6753,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "ETN",
       "region": "US",
       "probUp": 0.6667,
       "regime": "Bull",
@@ -1159,273 +1814,259 @@
       "qualifies": true
     },
     {
-      "ticker": "BRK-B",
-      "region": "US",
-      "probUp": 0.6584,
+      "ticker": "267260.KS",
+      "region": "KR",
+      "probUp": 0.6667,
       "regime": "Bull",
       "qualifies": true
     },
     {
-      "ticker": "AXP",
-      "region": "US",
-      "probUp": 0.6538,
-      "regime": "Bull",
-      "qualifies": true
-    },
-    {
-      "ticker": "XOM",
-      "region": "US",
-      "probUp": 0.6526,
+      "ticker": "000100.KS",
+      "region": "KR",
+      "probUp": 0.6667,
       "regime": "Bull",
       "qualifies": true
     },
     {
       "ticker": "GOOGL",
       "region": "US",
-      "probUp": 0.6515,
+      "probUp": 0.6616,
       "regime": "Bull",
       "qualifies": true
     },
     {
-      "ticker": "MA",
+      "ticker": "BRK-B",
       "region": "US",
-      "probUp": 0.6429,
-      "regime": "Bull",
-      "qualifies": true
-    },
-    {
-      "ticker": "NOW",
-      "region": "US",
-      "probUp": 0.6364,
-      "regime": "Bull",
-      "qualifies": true
-    },
-    {
-      "ticker": "PFE",
-      "region": "US",
-      "probUp": 0.6364,
-      "regime": "Bull",
-      "qualifies": true
-    },
-    {
-      "ticker": "PEP",
-      "region": "US",
-      "probUp": 0.6333,
+      "probUp": 0.6598,
       "regime": "Bull",
       "qualifies": true
     },
     {
       "ticker": "COST",
       "region": "US",
-      "probUp": 0.6308,
+      "probUp": 0.6481,
       "regime": "Bull",
       "qualifies": true
     },
     {
-      "ticker": "271560.KS",
+      "ticker": "MA",
+      "region": "US",
+      "probUp": 0.6442,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "VZ",
+      "region": "US",
+      "probUp": 0.6429,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "003550.KS",
       "region": "KR",
-      "probUp": 0.625,
-      "regime": "Bull",
-      "qualifies": true
-    },
-    {
-      "ticker": "ACN",
-      "region": "US",
-      "probUp": 0.6224,
-      "regime": "Bull",
-      "qualifies": true
-    },
-    {
-      "ticker": "V",
-      "region": "US",
-      "probUp": 0.6194,
-      "regime": "Transition",
-      "qualifies": true
-    },
-    {
-      "ticker": "WMT",
-      "region": "US",
-      "probUp": 0.6136,
-      "regime": "Transition",
-      "qualifies": true
-    },
-    {
-      "ticker": "JPM",
-      "region": "US",
-      "probUp": 0.6066,
+      "probUp": 0.64,
       "regime": "Bull",
       "qualifies": true
     },
     {
       "ticker": "LIN",
       "region": "US",
-      "probUp": 0.6049,
+      "probUp": 0.6379,
       "regime": "Bull",
       "qualifies": true
     },
     {
-      "ticker": "AMGN",
+      "ticker": "PEP",
       "region": "US",
-      "probUp": 0.6028,
+      "probUp": 0.6364,
       "regime": "Bull",
       "qualifies": true
     },
     {
-      "ticker": "012450.KS",
-      "region": "KR",
-      "probUp": 0.5909,
-      "regime": "Bull",
-      "qualifies": true
-    },
-    {
-      "ticker": "036570.KS",
-      "region": "KR",
-      "probUp": 0.5833,
-      "regime": "Bull",
-      "qualifies": true
-    },
-    {
-      "ticker": "CSCO",
+      "ticker": "XOM",
       "region": "US",
-      "probUp": 0.5714,
+      "probUp": 0.6351,
       "regime": "Bull",
       "qualifies": true
     },
     {
-      "ticker": "C",
+      "ticker": "DHR",
       "region": "US",
-      "probUp": 0.5714,
+      "probUp": 0.6269,
       "regime": "Bull",
       "qualifies": true
     },
     {
-      "ticker": "ABT",
+      "ticker": "JPM",
       "region": "US",
-      "probUp": 0.5671,
+      "probUp": 0.6226,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "V",
+      "region": "US",
+      "probUp": 0.6203,
+      "regime": "Transition",
+      "qualifies": true
+    },
+    {
+      "ticker": "ACN",
+      "region": "US",
+      "probUp": 0.6186,
       "regime": "Bull",
       "qualifies": true
     },
     {
       "ticker": "LLY",
       "region": "US",
-      "probUp": 0.5556,
+      "probUp": 0.6,
       "regime": "Bull",
-      "qualifies": false
+      "qualifies": true
     },
     {
-      "ticker": "SPY",
+      "ticker": "NOW",
       "region": "US",
-      "probUp": 0.5529,
-      "regime": "Bear",
-      "qualifies": false
+      "probUp": 0.6,
+      "regime": "Bull",
+      "qualifies": true
     },
     {
-      "ticker": "MRK",
+      "ticker": "AMGN",
       "region": "US",
-      "probUp": 0.549,
+      "probUp": 0.6,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "AXP",
+      "region": "US",
+      "probUp": 0.5893,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "NOC",
+      "region": "US",
+      "probUp": 0.56,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "ORCL",
+      "region": "US",
+      "probUp": 0.5517,
+      "regime": "Bull",
+      "qualifies": true
+    },
+    {
+      "ticker": "ABT",
+      "region": "US",
+      "probUp": 0.5455,
       "regime": "Bull",
       "qualifies": false
     },
     {
       "ticker": "KO",
       "region": "US",
-      "probUp": 0.541,
-      "regime": "Bull",
-      "qualifies": false
-    },
-    {
-      "ticker": "PG",
-      "region": "US",
-      "probUp": 0.5225,
-      "regime": "Bull",
-      "qualifies": false
-    },
-    {
-      "ticker": "ORCL",
-      "region": "US",
-      "probUp": 0.5225,
+      "probUp": 0.5446,
       "regime": "Bull",
       "qualifies": false
     },
     {
       "ticker": "QQQ",
       "region": "US",
-      "probUp": 0.5164,
+      "probUp": 0.5424,
       "regime": "Bull",
       "qualifies": false
     },
     {
-      "ticker": "DHR",
+      "ticker": "PG",
       "region": "US",
-      "probUp": 0.5152,
-      "regime": "Bull",
-      "qualifies": false
-    },
-    {
-      "ticker": "TMO",
-      "region": "US",
-      "probUp": 0.5139,
-      "regime": "Bull",
-      "qualifies": false
-    },
-    {
-      "ticker": "EMR",
-      "region": "US",
-      "probUp": 0.5,
-      "regime": "Bull",
-      "qualifies": false
-    },
-    {
-      "ticker": "PM",
-      "region": "US",
-      "probUp": 0.494,
-      "regime": "Bull",
-      "qualifies": false
-    },
-    {
-      "ticker": "AMZN",
-      "region": "US",
-      "probUp": 0.4939,
-      "regime": "Transition",
-      "qualifies": false
-    },
-    {
-      "ticker": "AMD",
-      "region": "US",
-      "probUp": 0.4813,
-      "regime": "Bull",
-      "qualifies": false
-    },
-    {
-      "ticker": "JNJ",
-      "region": "US",
-      "probUp": 0.4797,
-      "regime": "Transition",
-      "qualifies": false
-    },
-    {
-      "ticker": "TSLA",
-      "region": "US",
-      "probUp": 0.4663,
-      "regime": "Bull",
-      "qualifies": false
-    },
-    {
-      "ticker": "003550.KS",
-      "region": "KR",
-      "probUp": 0.4444,
+      "probUp": 0.5423,
       "regime": "Bull",
       "qualifies": false
     },
     {
       "ticker": "META",
       "region": "US",
-      "probUp": 0.4412,
+      "probUp": 0.5303,
       "regime": "Transition",
       "qualifies": false
     },
     {
-      "ticker": "NOC",
+      "ticker": "SPY",
+      "region": "US",
+      "probUp": 0.526,
+      "regime": "Bear",
+      "qualifies": false
+    },
+    {
+      "ticker": "TMO",
+      "region": "US",
+      "probUp": 0.5065,
+      "regime": "Bull",
+      "qualifies": false
+    },
+    {
+      "ticker": "096770.KS",
+      "region": "KR",
+      "probUp": 0.5,
+      "regime": "Bull",
+      "qualifies": false
+    },
+    {
+      "ticker": "AMD",
+      "region": "US",
+      "probUp": 0.4933,
+      "regime": "Bull",
+      "qualifies": false
+    },
+    {
+      "ticker": "AMZN",
+      "region": "US",
+      "probUp": 0.4897,
+      "regime": "Transition",
+      "qualifies": false
+    },
+    {
+      "ticker": "JNJ",
+      "region": "US",
+      "probUp": 0.4756,
+      "regime": "Transition",
+      "qualifies": false
+    },
+    {
+      "ticker": "PM",
+      "region": "US",
+      "probUp": 0.4691,
+      "regime": "Bull",
+      "qualifies": false
+    },
+    {
+      "ticker": "MRK",
+      "region": "US",
+      "probUp": 0.4681,
+      "regime": "Bull",
+      "qualifies": false
+    },
+    {
+      "ticker": "035720.KS",
+      "region": "KR",
+      "probUp": 0.4667,
+      "regime": "Bull",
+      "qualifies": false
+    },
+    {
+      "ticker": "TSLA",
+      "region": "US",
+      "probUp": 0.4557,
+      "regime": "Bull",
+      "qualifies": false
+    },
+    {
+      "ticker": "CSCO",
       "region": "US",
       "probUp": 0.4286,
       "regime": "Bull",
@@ -1434,64 +2075,57 @@
     {
       "ticker": "NFLX",
       "region": "US",
-      "probUp": 0.4074,
+      "probUp": 0.4,
       "regime": "Transition",
       "qualifies": false
     },
     {
-      "ticker": "096770.KS",
-      "region": "KR",
-      "probUp": 0.4,
-      "regime": "Bull",
+      "ticker": "AVGO",
+      "region": "US",
+      "probUp": 0.3853,
+      "regime": "Bear",
       "qualifies": false
     },
     {
       "ticker": "HD",
       "region": "US",
-      "probUp": 0.3787,
-      "regime": "Transition",
-      "qualifies": false
-    },
-    {
-      "ticker": "MSFT",
-      "region": "US",
-      "probUp": 0.377,
-      "regime": "Bear",
-      "qualifies": false
-    },
-    {
-      "ticker": "NVDA",
-      "region": "US",
-      "probUp": 0.372,
+      "probUp": 0.3785,
       "regime": "Transition",
       "qualifies": false
     },
     {
       "ticker": "GOOG",
       "region": "US",
-      "probUp": 0.3679,
+      "probUp": 0.3744,
       "regime": "Bull",
       "qualifies": false
     },
     {
-      "ticker": "AVGO",
+      "ticker": "NVDA",
       "region": "US",
-      "probUp": 0.3524,
-      "regime": "Bear",
-      "qualifies": false
-    },
-    {
-      "ticker": "AAPL",
-      "region": "US",
-      "probUp": 0.3333,
-      "regime": "Bull",
+      "probUp": 0.3642,
+      "regime": "Transition",
       "qualifies": false
     },
     {
       "ticker": "CRM",
       "region": "US",
-      "probUp": 0.3103,
+      "probUp": 0.32,
       "regime": "Bull",
+      "qualifies": false
+    },
+    {
+      "ticker": "AAPL",
+      "region": "US",
+      "probUp": 0.2727,
+      "regime": "Bull",
+      "qualifies": false
+    },
+    {
+      "ticker": "MSFT",
+      "region": "US",
+      "probUp": 0.2727,
+      "regime": "Bear",
       "qualifies": false
     },
     {
@@ -1541,7 +2175,7 @@
     "QQQ": {
       "volSurge": 1.05,
       "region": "US",
-      "probUp": 0.5164,
+      "probUp": 0.5424,
       "regime": "Bull",
       "lastClose": 16.76,
       "ma50": 16.03,
@@ -1557,7 +2191,7 @@
     "SPY": {
       "volSurge": 1.14,
       "region": "US",
-      "probUp": 0.5529,
+      "probUp": 0.526,
       "regime": "Bear",
       "lastClose": 38.75,
       "ma50": 42.01,
@@ -1576,7 +2210,7 @@
     "AAPL": {
       "volSurge": 1.08,
       "region": "US",
-      "probUp": 0.3333,
+      "probUp": 0.2727,
       "regime": "Bull",
       "lastClose": 79.49,
       "ma50": 80.29,
@@ -1592,7 +2226,7 @@
     "MSFT": {
       "volSurge": 1.82,
       "region": "US",
-      "probUp": 0.377,
+      "probUp": 0.2727,
       "regime": "Bear",
       "lastClose": 60.47,
       "ma50": 59.38,
@@ -1610,7 +2244,7 @@
     "NVDA": {
       "volSurge": 1.26,
       "region": "US",
-      "probUp": 0.372,
+      "probUp": 0.3642,
       "regime": "Transition",
       "lastClose": 40.49,
       "ma50": 41.45,
@@ -1629,7 +2263,7 @@
     "GOOGL": {
       "volSurge": 1.32,
       "region": "US",
-      "probUp": 0.6515,
+      "probUp": 0.6616,
       "regime": "Bull",
       "lastClose": 185.56,
       "ma50": 186.49,
@@ -1645,7 +2279,7 @@
     "GOOG": {
       "volSurge": 1.42,
       "region": "US",
-      "probUp": 0.3679,
+      "probUp": 0.3744,
       "regime": "Bull",
       "lastClose": 49.42,
       "ma50": 47.37,
@@ -1663,7 +2297,7 @@
     "AMZN": {
       "volSurge": 1.0,
       "region": "US",
-      "probUp": 0.4939,
+      "probUp": 0.4897,
       "regime": "Transition",
       "lastClose": 108.54,
       "ma50": 124.74,
@@ -1683,7 +2317,7 @@
     "META": {
       "volSurge": 1.7,
       "region": "US",
-      "probUp": 0.4412,
+      "probUp": 0.5303,
       "regime": "Transition",
       "lastClose": 69.79,
       "ma50": 67.36,
@@ -1701,7 +2335,7 @@
     "AVGO": {
       "volSurge": 1.32,
       "region": "US",
-      "probUp": 0.3524,
+      "probUp": 0.3853,
       "regime": "Bear",
       "lastClose": 59.68,
       "ma50": 58.86,
@@ -1720,7 +2354,7 @@
     "TSLA": {
       "volSurge": 1.44,
       "region": "US",
-      "probUp": 0.4663,
+      "probUp": 0.4557,
       "regime": "Bull",
       "lastClose": 20.24,
       "ma50": 19.94,
@@ -1738,7 +2372,7 @@
     "BRK-B": {
       "volSurge": 1.01,
       "region": "US",
-      "probUp": 0.6584,
+      "probUp": 0.6598,
       "regime": "Bull",
       "lastClose": 187.24,
       "ma50": 176.32,
@@ -1754,7 +2388,7 @@
     "LLY": {
       "volSurge": 1.0,
       "region": "US",
-      "probUp": 0.5556,
+      "probUp": 0.6,
       "regime": "Bull",
       "lastClose": 126.55,
       "ma50": 121.37,
@@ -1770,7 +2404,7 @@
     "JPM": {
       "volSurge": 1.73,
       "region": "US",
-      "probUp": 0.6066,
+      "probUp": 0.6226,
       "regime": "Bull",
       "lastClose": 114.98,
       "ma50": 107.85,
@@ -1786,7 +2420,7 @@
     "V": {
       "volSurge": 1.28,
       "region": "US",
-      "probUp": 0.6194,
+      "probUp": 0.6203,
       "regime": "Transition",
       "lastClose": 221.3,
       "ma50": 203.45,
@@ -1804,7 +2438,7 @@
     "WMT": {
       "volSurge": 1.57,
       "region": "US",
-      "probUp": 0.6136,
+      "probUp": 0.6842,
       "regime": "Transition",
       "lastClose": 315.73,
       "ma50": 325.91,
@@ -1823,7 +2457,7 @@
     "UNH": {
       "volSurge": 1.24,
       "region": "US",
-      "probUp": 0.6887,
+      "probUp": 0.6849,
       "regime": "Bull",
       "lastClose": 211.88,
       "ma50": 210.25,
@@ -1839,7 +2473,7 @@
     "XOM": {
       "volSurge": 1.44,
       "region": "US",
-      "probUp": 0.6526,
+      "probUp": 0.6351,
       "regime": "Bull",
       "lastClose": 528.22,
       "ma50": 495.63,
@@ -1855,7 +2489,7 @@
     "MA": {
       "volSurge": 1.17,
       "region": "US",
-      "probUp": 0.6429,
+      "probUp": 0.6442,
       "regime": "Bull",
       "lastClose": 193.89,
       "ma50": 198.34,
@@ -1873,7 +2507,7 @@
     "JNJ": {
       "volSurge": 1.15,
       "region": "US",
-      "probUp": 0.4797,
+      "probUp": 0.4756,
       "regime": "Transition",
       "lastClose": 206.25,
       "ma50": 232.8,
@@ -1893,7 +2527,7 @@
     "PG": {
       "volSurge": 1.14,
       "region": "US",
-      "probUp": 0.5225,
+      "probUp": 0.5423,
       "regime": "Bull",
       "lastClose": 297.93,
       "ma50": 308.27,
@@ -1911,7 +2545,7 @@
     "HD": {
       "volSurge": 1.14,
       "region": "US",
-      "probUp": 0.3787,
+      "probUp": 0.3785,
       "regime": "Transition",
       "lastClose": 271.28,
       "ma50": 289.42,
@@ -1931,7 +2565,7 @@
     "COST": {
       "volSurge": 1.56,
       "region": "US",
-      "probUp": 0.6308,
+      "probUp": 0.6481,
       "regime": "Bull",
       "lastClose": 249.48,
       "ma50": 215.26,
@@ -1950,7 +2584,7 @@
     "ORCL": {
       "volSurge": 1.22,
       "region": "US",
-      "probUp": 0.5225,
+      "probUp": 0.5517,
       "regime": "Bull",
       "lastClose": 328.3,
       "ma50": 329.47,
@@ -2002,7 +2636,7 @@
     "KO": {
       "volSurge": 1.77,
       "region": "US",
-      "probUp": 0.541,
+      "probUp": 0.5446,
       "regime": "Bull",
       "lastClose": 320.92,
       "ma50": 290.75,
@@ -2020,7 +2654,7 @@
     "MRK": {
       "volSurge": 1.5,
       "region": "US",
-      "probUp": 0.549,
+      "probUp": 0.4681,
       "regime": "Bull",
       "lastClose": 177.47,
       "ma50": 159.06,
@@ -2036,7 +2670,7 @@
     "CVX": {
       "volSurge": 1.48,
       "region": "US",
-      "probUp": 0.7143,
+      "probUp": 0.686,
       "regime": "Bull",
       "lastClose": 560.61,
       "ma50": 535.27,
@@ -2052,7 +2686,7 @@
     "ADBE": {
       "volSurge": 1.16,
       "region": "US",
-      "probUp": 0.7674,
+      "probUp": 0.7474,
       "regime": "Bull",
       "lastClose": 1666.46,
       "ma50": 1564.88,
@@ -2068,7 +2702,7 @@
     "PEP": {
       "volSurge": 1.63,
       "region": "US",
-      "probUp": 0.6333,
+      "probUp": 0.6364,
       "regime": "Bull",
       "lastClose": 525.66,
       "ma50": 545.91,
@@ -2084,7 +2718,7 @@
     "CRM": {
       "volSurge": 1.16,
       "region": "US",
-      "probUp": 0.3103,
+      "probUp": 0.32,
       "regime": "Bull",
       "lastClose": 692.81,
       "ma50": 656.73,
@@ -2100,7 +2734,7 @@
     "AMD": {
       "volSurge": 1.36,
       "region": "US",
-      "probUp": 0.4813,
+      "probUp": 0.4933,
       "regime": "Bull",
       "lastClose": 327.96,
       "ma50": 333.9,
@@ -2118,7 +2752,7 @@
     "NFLX": {
       "volSurge": 1.16,
       "region": "US",
-      "probUp": 0.4074,
+      "probUp": 0.4,
       "regime": "Transition",
       "lastClose": 600.0,
       "ma50": 565.79,
@@ -2137,7 +2771,7 @@
     "TMO": {
       "volSurge": 1.02,
       "region": "US",
-      "probUp": 0.5139,
+      "probUp": 0.5065,
       "regime": "Bull",
       "lastClose": 972.67,
       "ma50": 944.89,
@@ -2153,7 +2787,7 @@
     "ACN": {
       "volSurge": 1.46,
       "region": "US",
-      "probUp": 0.6224,
+      "probUp": 0.6186,
       "regime": "Bull",
       "lastClose": 533.86,
       "ma50": 518.82,
@@ -2169,7 +2803,7 @@
     "LIN": {
       "volSurge": 1.44,
       "region": "US",
-      "probUp": 0.6049,
+      "probUp": 0.6379,
       "regime": "Bull",
       "lastClose": 1421.18,
       "ma50": 1370.06,
@@ -2203,7 +2837,7 @@
     "ABT": {
       "volSurge": 1.58,
       "region": "US",
-      "probUp": 0.5671,
+      "probUp": 0.5455,
       "regime": "Bull",
       "lastClose": 1459.24,
       "ma50": 1481.68,
@@ -2219,7 +2853,7 @@
     "CSCO": {
       "volSurge": 1.01,
       "region": "US",
-      "probUp": 0.5714,
+      "probUp": 0.4286,
       "regime": "Bull",
       "lastClose": 3042.98,
       "ma50": 2980.49,
@@ -2235,7 +2869,7 @@
     "WFC": {
       "volSurge": 1.46,
       "region": "US",
-      "probUp": 0.6752,
+      "probUp": 0.682,
       "regime": "Bull",
       "lastClose": 2347.04,
       "ma50": 2286.5,
@@ -2251,7 +2885,7 @@
     "DHR": {
       "volSurge": 1.49,
       "region": "US",
-      "probUp": 0.5152,
+      "probUp": 0.6269,
       "regime": "Bull",
       "lastClose": 1293.89,
       "ma50": 1154.57,
@@ -2267,7 +2901,7 @@
     "TXN": {
       "volSurge": 1.12,
       "region": "US",
-      "probUp": 0.8244,
+      "probUp": 0.8195,
       "regime": "Bull",
       "lastClose": 1457.65,
       "ma50": 1412.84,
@@ -2283,7 +2917,7 @@
     "QCOM": {
       "volSurge": 1.1,
       "region": "US",
-      "probUp": 0.8684,
+      "probUp": 0.871,
       "regime": "Bull",
       "lastClose": 3976.18,
       "ma50": 3707.44,
@@ -2299,7 +2933,7 @@
     "PM": {
       "volSurge": 1.58,
       "region": "US",
-      "probUp": 0.494,
+      "probUp": 0.4691,
       "regime": "Bull",
       "lastClose": 932.54,
       "ma50": 848.93,
@@ -2317,7 +2951,7 @@
     "VZ": {
       "volSurge": 1.18,
       "region": "US",
-      "probUp": 0.7192,
+      "probUp": 0.6429,
       "regime": "Bull",
       "lastClose": 1832.61,
       "ma50": 1684.56,
@@ -2333,7 +2967,7 @@
     "INTU": {
       "volSurge": 1.2,
       "region": "US",
-      "probUp": 0.6774,
+      "probUp": 0.6761,
       "regime": "Bull",
       "lastClose": 5368.41,
       "ma50": 5522.33,
@@ -2349,7 +2983,7 @@
     "IBM": {
       "volSurge": 1.27,
       "region": "US",
-      "probUp": 0.7692,
+      "probUp": 0.831,
       "regime": "Bull",
       "lastClose": 4146.49,
       "ma50": 3658.83,
@@ -2367,7 +3001,7 @@
     "CAT": {
       "volSurge": 1.12,
       "region": "US",
-      "probUp": 0.7064,
+      "probUp": 0.7101,
       "regime": "Bull",
       "lastClose": 2749.89,
       "ma50": 2610.57,
@@ -2383,7 +3017,7 @@
     "GE": {
       "volSurge": 1.23,
       "region": "US",
-      "probUp": 0.7612,
+      "probUp": 0.7642,
       "regime": "Bull",
       "lastClose": 2831.57,
       "ma50": 2614.11,
@@ -2399,7 +3033,7 @@
     "NOW": {
       "volSurge": 1.19,
       "region": "US",
-      "probUp": 0.6364,
+      "probUp": 0.6,
       "regime": "Bull",
       "lastClose": 2801.38,
       "ma50": 2529.5,
@@ -2415,7 +3049,7 @@
     "ISRG": {
       "volSurge": 1.23,
       "region": "US",
-      "probUp": 0.8421,
+      "probUp": 0.7945,
       "regime": "Bull",
       "lastClose": 2724.89,
       "ma50": 2586.39,
@@ -2431,7 +3065,7 @@
     "AMGN": {
       "volSurge": 1.33,
       "region": "US",
-      "probUp": 0.6028,
+      "probUp": 0.6,
       "regime": "Bull",
       "lastClose": 3949.9,
       "ma50": 3788.06,
@@ -2447,7 +3081,7 @@
     "PFE": {
       "volSurge": 1.04,
       "region": "US",
-      "probUp": 0.6364,
+      "probUp": 0.6753,
       "regime": "Bull",
       "lastClose": 2125.41,
       "ma50": 2047.13,
@@ -2463,7 +3097,7 @@
     "UNP": {
       "volSurge": 1.39,
       "region": "US",
-      "probUp": 0.6719,
+      "probUp": 0.7023,
       "regime": "Bull",
       "lastClose": 4417.67,
       "ma50": 3999.48,
@@ -2481,7 +3115,7 @@
     "SPGI": {
       "volSurge": 1.34,
       "region": "US",
-      "probUp": 0.7067,
+      "probUp": 0.693,
       "regime": "Bull",
       "lastClose": 6314.28,
       "ma50": 5995.28,
@@ -2497,7 +3131,7 @@
     "GS": {
       "volSurge": 1.34,
       "region": "US",
-      "probUp": 0.7755,
+      "probUp": 0.7952,
       "regime": "Bull",
       "lastClose": 4713.64,
       "ma50": 4345.76,
@@ -2515,7 +3149,7 @@
     "HON": {
       "volSurge": 1.13,
       "region": "US",
-      "probUp": 0.7479,
+      "probUp": 0.73,
       "regime": "Bull",
       "lastClose": 6252.68,
       "ma50": 5566.51,
@@ -2533,7 +3167,7 @@
     "BKNG": {
       "volSurge": 1.23,
       "region": "US",
-      "probUp": 0.8424,
+      "probUp": 0.8158,
       "regime": "Bull",
       "lastClose": 8239.95,
       "ma50": 7757.86,
@@ -2549,7 +3183,7 @@
     "AXP": {
       "volSurge": 1.4,
       "region": "US",
-      "probUp": 0.6538,
+      "probUp": 0.5893,
       "regime": "Bull",
       "lastClose": 3324.75,
       "ma50": 3241.82,
@@ -2565,7 +3199,7 @@
     "LOW": {
       "volSurge": 1.42,
       "region": "US",
-      "probUp": 0.7552,
+      "probUp": 0.7603,
       "regime": "Bull",
       "lastClose": 10556.65,
       "ma50": 9675.69,
@@ -2581,7 +3215,7 @@
     "BLK": {
       "volSurge": 1.23,
       "region": "US",
-      "probUp": 0.8571,
+      "probUp": 0.7865,
       "regime": "Bull",
       "lastClose": 4504.81,
       "ma50": 4201.25,
@@ -2597,7 +3231,7 @@
     "SYK": {
       "volSurge": 1.41,
       "region": "US",
-      "probUp": 0.8241,
+      "probUp": 0.823,
       "regime": "Bull",
       "lastClose": 6682.8,
       "ma50": 6588.6,
@@ -2613,7 +3247,7 @@
     "ELV": {
       "volSurge": 1.28,
       "region": "US",
-      "probUp": 0.779,
+      "probUp": 0.7731,
       "regime": "Bull",
       "lastClose": 12710.64,
       "ma50": 12107.54,
@@ -2647,7 +3281,7 @@
     "TJX": {
       "volSurge": 1.45,
       "region": "US",
-      "probUp": 0.83,
+      "probUp": 0.8304,
       "regime": "Bull",
       "lastClose": 16453.46,
       "ma50": 15218.33,
@@ -2665,7 +3299,7 @@
     "VRTX": {
       "volSurge": 1.22,
       "region": "US",
-      "probUp": 0.6892,
+      "probUp": 0.7089,
       "regime": "Bull",
       "lastClose": 10869.56,
       "ma50": 10076.11,
@@ -2683,7 +3317,7 @@
     "C": {
       "volSurge": 1.23,
       "region": "US",
-      "probUp": 0.5714,
+      "probUp": 0.7885,
       "regime": "Bull",
       "lastClose": 11308.11,
       "ma50": 10871.43,
@@ -2699,7 +3333,7 @@
     "DE": {
       "volSurge": 1.75,
       "region": "US",
-      "probUp": 0.7308,
+      "probUp": 0.6765,
       "regime": "Bull",
       "lastClose": 15873.98,
       "ma50": 14992.33,
@@ -2715,7 +3349,7 @@
     "GILD": {
       "volSurge": 1.29,
       "region": "US",
-      "probUp": 0.85,
+      "probUp": 0.8333,
       "regime": "Bull",
       "lastClose": 9240.03,
       "ma50": 8495.05,
@@ -2733,7 +3367,7 @@
     "MS": {
       "volSurge": 1.03,
       "region": "US",
-      "probUp": 0.8294,
+      "probUp": 0.8293,
       "regime": "Bull",
       "lastClose": 27236.23,
       "ma50": 26129.06,
@@ -2749,7 +3383,7 @@
     "RTX": {
       "volSurge": 1.02,
       "region": "US",
-      "probUp": 0.8841,
+      "probUp": 0.9072,
       "regime": "Bull",
       "lastClose": 11799.78,
       "ma50": 10837.13,
@@ -2767,7 +3401,7 @@
     "NEE": {
       "volSurge": 1.4,
       "region": "US",
-      "probUp": 0.8247,
+      "probUp": 0.824,
       "regime": "Bull",
       "lastClose": 36723.5,
       "ma50": 37159.03,
@@ -2783,7 +3417,7 @@
     "T": {
       "volSurge": 1.44,
       "region": "US",
-      "probUp": 0.8333,
+      "probUp": 0.7778,
       "regime": "Bull",
       "lastClose": 39759.15,
       "ma50": 34624.63,
@@ -2801,7 +3435,7 @@
     "SCHW": {
       "volSurge": 1.1,
       "region": "US",
-      "probUp": 0.8261,
+      "probUp": 0.8235,
       "regime": "Bull",
       "lastClose": 28016.46,
       "ma50": 25711.04,
@@ -2817,7 +3451,7 @@
     "MDT": {
       "volSurge": 1.44,
       "region": "US",
-      "probUp": 0.807,
+      "probUp": 0.7895,
       "regime": "Bull",
       "lastClose": 76539.06,
       "ma50": 69357.01,
@@ -2833,7 +3467,7 @@
     "BSX": {
       "volSurge": 1.23,
       "region": "US",
-      "probUp": 0.8894,
+      "probUp": 0.8634,
       "regime": "Bull",
       "lastClose": 48039.33,
       "ma50": 43134.44,
@@ -2849,7 +3483,7 @@
     "ADP": {
       "volSurge": 1.17,
       "region": "US",
-      "probUp": 0.8465,
+      "probUp": 0.8444,
       "regime": "Bull",
       "lastClose": 42411.89,
       "ma50": 36670.56,
@@ -2867,7 +3501,7 @@
     "BA": {
       "volSurge": 1.27,
       "region": "US",
-      "probUp": 0.8374,
+      "probUp": 0.8298,
       "regime": "Bull",
       "lastClose": 25482.19,
       "ma50": 23021.36,
@@ -2883,7 +3517,7 @@
     "MMC": {
       "volSurge": 1.25,
       "region": "US",
-      "probUp": 0.8047,
+      "probUp": 0.8077,
       "regime": "Bull",
       "lastClose": 34063.22,
       "ma50": 30983.59,
@@ -2901,7 +3535,7 @@
     "LMT": {
       "volSurge": 1.39,
       "region": "US",
-      "probUp": 0.6923,
+      "probUp": 0.7037,
       "regime": "Bull",
       "lastClose": 31714.06,
       "ma50": 28364.63,
@@ -2917,7 +3551,7 @@
     "ADI": {
       "volSurge": 1.23,
       "region": "US",
-      "probUp": 0.7908,
+      "probUp": 0.7988,
       "regime": "Bull",
       "lastClose": 120688.27,
       "ma50": 110569.09,
@@ -2933,7 +3567,7 @@
     "REGN": {
       "volSurge": 1.69,
       "region": "US",
-      "probUp": 0.8415,
+      "probUp": 0.8533,
       "regime": "Bull",
       "lastClose": 45061.81,
       "ma50": 40457.75,
@@ -2949,7 +3583,7 @@
     "CB": {
       "volSurge": 1.59,
       "region": "US",
-      "probUp": 0.8024,
+      "probUp": 0.8182,
       "regime": "Bull",
       "lastClose": 23657.79,
       "ma50": 20937.48,
@@ -2965,7 +3599,7 @@
     "MO": {
       "volSurge": 1.62,
       "region": "US",
-      "probUp": 0.872,
+      "probUp": 0.878,
       "regime": "Bull",
       "lastClose": 149479.21,
       "ma50": 142505.04,
@@ -2999,7 +3633,7 @@
     "CI": {
       "volSurge": 1.66,
       "region": "US",
-      "probUp": 0.8,
+      "probUp": 0.7656,
       "regime": "Bull",
       "lastClose": 38983.99,
       "ma50": 34330.63,
@@ -3017,7 +3651,7 @@
     "SO": {
       "volSurge": 1.2,
       "region": "US",
-      "probUp": 0.8287,
+      "probUp": 0.8371,
       "regime": "Bull",
       "lastClose": 68561.77,
       "ma50": 52642.03,
@@ -3035,7 +3669,7 @@
     "BX": {
       "volSurge": 1.29,
       "region": "US",
-      "probUp": 0.8743,
+      "probUp": 0.8733,
       "regime": "Bull",
       "lastClose": 501748.32,
       "ma50": 468557.21,
@@ -3051,7 +3685,7 @@
     "PGR": {
       "volSurge": 1.2,
       "region": "US",
-      "probUp": 0.8629,
+      "probUp": 0.8621,
       "regime": "Bull",
       "lastClose": 88630.21,
       "ma50": 85878.32,
@@ -3067,7 +3701,7 @@
     "ZTS": {
       "volSurge": 1.73,
       "region": "US",
-      "probUp": 0.8814,
+      "probUp": 0.8611,
       "regime": "Bull",
       "lastClose": 188935.96,
       "ma50": 179688.29,
@@ -3083,7 +3717,7 @@
     "KLAC": {
       "volSurge": 1.05,
       "region": "US",
-      "probUp": 0.8657,
+      "probUp": 0.8596,
       "regime": "Bull",
       "lastClose": 55236.64,
       "ma50": 52287.44,
@@ -3099,7 +3733,7 @@
     "ETN": {
       "volSurge": 1.98,
       "region": "US",
-      "probUp": 0.6957,
+      "probUp": 0.6667,
       "regime": "Bull",
       "lastClose": 39012.01,
       "ma50": 34074.03,
@@ -3115,7 +3749,7 @@
     "MU": {
       "volSurge": 1.44,
       "region": "US",
-      "probUp": 0.8846,
+      "probUp": 0.8765,
       "regime": "Bull",
       "lastClose": 199279.06,
       "ma50": 200763.1,
@@ -3131,7 +3765,7 @@
     "SNPS": {
       "volSurge": 1.4,
       "region": "US",
-      "probUp": 0.8387,
+      "probUp": 0.8824,
       "regime": "Bull",
       "lastClose": 143315.7,
       "ma50": 123682.36,
@@ -3147,7 +3781,7 @@
     "PANW": {
       "volSurge": 1.08,
       "region": "US",
-      "probUp": 0.9467,
+      "probUp": 0.9362,
       "regime": "Bull",
       "lastClose": 296621.15,
       "ma50": 262120.95,
@@ -3163,7 +3797,7 @@
     "CDNS": {
       "volSurge": 1.36,
       "region": "US",
-      "probUp": 0.8741,
+      "probUp": 0.896,
       "regime": "Bull",
       "lastClose": 201605.15,
       "ma50": 184357.49,
@@ -3197,7 +3831,7 @@
     "SHW": {
       "volSurge": 1.44,
       "region": "US",
-      "probUp": 0.8394,
+      "probUp": 0.806,
       "regime": "Bull",
       "lastClose": 217221.18,
       "ma50": 184323.71,
@@ -3215,7 +3849,7 @@
     "APH": {
       "volSurge": 1.03,
       "region": "US",
-      "probUp": 0.8504,
+      "probUp": 0.8485,
       "regime": "Bull",
       "lastClose": 220054.14,
       "ma50": 203974.06,
@@ -3231,7 +3865,7 @@
     "MCK": {
       "volSurge": 1.46,
       "region": "US",
-      "probUp": 0.7811,
+      "probUp": 0.792,
       "regime": "Bull",
       "lastClose": 99711.45,
       "ma50": 85766.16,
@@ -3247,7 +3881,7 @@
     "USB": {
       "volSurge": 1.32,
       "region": "US",
-      "probUp": 0.8333,
+      "probUp": 0.7346,
       "regime": "Bull",
       "lastClose": 379304.61,
       "ma50": 338328.68,
@@ -3263,7 +3897,7 @@
     "DUK": {
       "volSurge": 1.25,
       "region": "US",
-      "probUp": 0.9643,
+      "probUp": 0.9444,
       "regime": "Bull",
       "lastClose": 329785.2,
       "ma50": 297208.83,
@@ -3279,7 +3913,7 @@
     "AON": {
       "volSurge": 1.44,
       "region": "US",
-      "probUp": 0.8,
+      "probUp": 0.8293,
       "regime": "Bull",
       "lastClose": 869415.26,
       "ma50": 690510.0,
@@ -3297,7 +3931,7 @@
     "ITW": {
       "volSurge": 1.22,
       "region": "US",
-      "probUp": 0.9348,
+      "probUp": 0.9306,
       "regime": "Bull",
       "lastClose": 617620.89,
       "ma50": 514303.71,
@@ -3315,7 +3949,7 @@
     "NOC": {
       "volSurge": 1.03,
       "region": "US",
-      "probUp": 0.4286,
+      "probUp": 0.56,
       "regime": "Bull",
       "lastClose": 222765.82,
       "ma50": 197545.55,
@@ -3331,7 +3965,7 @@
     "WM": {
       "volSurge": 1.35,
       "region": "US",
-      "probUp": 0.8069,
+      "probUp": 0.7952,
       "regime": "Bull",
       "lastClose": 129094.63,
       "ma50": 128862.27,
@@ -3347,7 +3981,7 @@
     "EOG": {
       "volSurge": 1.15,
       "region": "US",
-      "probUp": 0.9355,
+      "probUp": 0.9286,
       "regime": "Bull",
       "lastClose": 561239.73,
       "ma50": 511888.67,
@@ -3363,7 +3997,7 @@
     "CL": {
       "volSurge": 2.17,
       "region": "US",
-      "probUp": 0.8611,
+      "probUp": 0.8603,
       "regime": "Bull",
       "lastClose": 1027103.91,
       "ma50": 913568.56,
@@ -3379,7 +4013,7 @@
     "EMR": {
       "volSurge": 1.33,
       "region": "US",
-      "probUp": 0.5,
+      "probUp": 0.8824,
       "regime": "Bull",
       "lastClose": 677670.62,
       "ma50": 575339.32,
@@ -3397,7 +4031,7 @@
     "MSI": {
       "volSurge": 1.1,
       "region": "US",
-      "probUp": 0.8832,
+      "probUp": 0.8816,
       "regime": "Bull",
       "lastClose": 306337.45,
       "ma50": 292355.82,
@@ -3413,7 +4047,7 @@
     "ORLY": {
       "volSurge": 1.12,
       "region": "US",
-      "probUp": 0.881,
+      "probUp": 0.879,
       "regime": "Bull",
       "lastClose": 335344.8,
       "ma50": 287548.28,
@@ -3431,7 +4065,7 @@
     "CSX": {
       "volSurge": 1.53,
       "region": "US",
-      "probUp": 0.9163,
+      "probUp": 0.915,
       "regime": "Bull",
       "lastClose": 1313552.93,
       "ma50": 1194984.01,
@@ -3447,7 +4081,7 @@
     "GD": {
       "volSurge": 1.64,
       "region": "US",
-      "probUp": 0.8889,
+      "probUp": 0.8866,
       "regime": "Bull",
       "lastClose": 1194979.49,
       "ma50": 1069031.04,
@@ -3463,7 +4097,7 @@
     "FCX": {
       "volSurge": 1.34,
       "region": "US",
-      "probUp": 0.6667,
+      "probUp": 0.6818,
       "regime": "Bull",
       "lastClose": 2594172.25,
       "ma50": 1988597.86,
@@ -3481,7 +4115,7 @@
     "APD": {
       "volSurge": 1.41,
       "region": "US",
-      "probUp": 0.7407,
+      "probUp": 0.75,
       "regime": "Bull",
       "lastClose": 279973.32,
       "ma50": 246326.35,
@@ -3499,7 +4133,7 @@
     "MAR": {
       "volSurge": 1.26,
       "region": "US",
-      "probUp": 0.9062,
+      "probUp": 0.9042,
       "regime": "Bull",
       "lastClose": 761684.07,
       "ma50": 628446.87,
@@ -3517,7 +4151,7 @@
     "NXPI": {
       "volSurge": 1.0,
       "region": "US",
-      "probUp": 0.8548,
+      "probUp": 0.866,
       "regime": "Bull",
       "lastClose": 912309.75,
       "ma50": 804017.56,
@@ -3535,7 +4169,7 @@
     "ROP": {
       "volSurge": 1.21,
       "region": "US",
-      "probUp": 0.9482,
+      "probUp": 0.9463,
       "regime": "Bull",
       "lastClose": 852737.55,
       "ma50": 736544.91,
@@ -3551,7 +4185,7 @@
     "PH": {
       "volSurge": 1.33,
       "region": "US",
-      "probUp": 0.9286,
+      "probUp": 0.8462,
       "regime": "Bull",
       "lastClose": 2481880.11,
       "ma50": 1963138.33,
@@ -3569,7 +4203,7 @@
     "005930.KS": {
       "volSurge": 1.25,
       "region": "KR",
-      "probUp": 0.7347,
+      "probUp": 0.7308,
       "regime": "Bull",
       "lastClose": 1212326.36,
       "ma50": 1038448.76,
@@ -3603,7 +4237,7 @@
     "373220.KS": {
       "volSurge": 1.72,
       "region": "KR",
-      "probUp": 0.8585,
+      "probUp": 0.8148,
       "regime": "Bull",
       "lastClose": 8103610.27,
       "ma50": 7807790.75,
@@ -3619,7 +4253,7 @@
     "207940.KS": {
       "volSurge": 1.4,
       "region": "KR",
-      "probUp": 0.8182,
+      "probUp": 0.7742,
       "regime": "Bull",
       "lastClose": 1204590.84,
       "ma50": 1013426.73,
@@ -3637,7 +4271,7 @@
     "005380.KS": {
       "volSurge": 1.12,
       "region": "KR",
-      "probUp": 0.7937,
+      "probUp": 0.7447,
       "regime": "Bull",
       "lastClose": 2566536.74,
       "ma50": 2271174.72,
@@ -3653,7 +4287,7 @@
     "000270.KS": {
       "volSurge": 2.0,
       "region": "KR",
-      "probUp": 0.8805,
+      "probUp": 0.881,
       "regime": "Bull",
       "lastClose": 2423564.3,
       "ma50": 2044821.66,
@@ -3671,7 +4305,7 @@
     "068270.KS": {
       "volSurge": 1.03,
       "region": "KR",
-      "probUp": 0.8118,
+      "probUp": 0.7923,
       "regime": "Bull",
       "lastClose": 1102610.48,
       "ma50": 1002640.22,
@@ -3687,7 +4321,7 @@
     "105560.KS": {
       "volSurge": 1.64,
       "region": "KR",
-      "probUp": 0.9167,
+      "probUp": 0.9163,
       "regime": "Bull",
       "lastClose": 1692944.88,
       "ma50": 1456629.3,
@@ -3705,7 +4339,7 @@
     "035420.KS": {
       "volSurge": 1.14,
       "region": "KR",
-      "probUp": 0.8876,
+      "probUp": 0.9114,
       "regime": "Bull",
       "lastClose": 2049417.98,
       "ma50": 1596447.97,
@@ -3723,7 +4357,7 @@
     "012330.KS": {
       "volSurge": 1.02,
       "region": "KR",
-      "probUp": 0.8358,
+      "probUp": 0.8406,
       "regime": "Bull",
       "lastClose": 4119089.74,
       "ma50": 3822146.75,
@@ -3739,7 +4373,7 @@
     "028260.KS": {
       "volSurge": 1.09,
       "region": "KR",
-      "probUp": 0.8235,
+      "probUp": 0.8065,
       "regime": "Bull",
       "lastClose": 2263021.85,
       "ma50": 1900327.88,
@@ -3757,7 +4391,7 @@
     "055550.KS": {
       "volSurge": 1.03,
       "region": "KR",
-      "probUp": 0.8816,
+      "probUp": 0.8902,
       "regime": "Bull",
       "lastClose": 2488663.51,
       "ma50": 2272604.57,
@@ -3773,7 +4407,7 @@
     "035720.KS": {
       "volSurge": 1.11,
       "region": "KR",
-      "probUp": 0.6897,
+      "probUp": 0.4667,
       "regime": "Bull",
       "lastClose": 2089164.17,
       "ma50": 1660710.92,
@@ -3791,7 +4425,7 @@
     "051910.KS": {
       "volSurge": 1.56,
       "region": "KR",
-      "probUp": 0.8132,
+      "probUp": 0.7955,
       "regime": "Bull",
       "lastClose": 8077327.96,
       "ma50": 6472696.6,
@@ -3809,7 +4443,7 @@
     "006400.KS": {
       "volSurge": 1.42,
       "region": "KR",
-      "probUp": 0.8205,
+      "probUp": 0.8421,
       "regime": "Bull",
       "lastClose": 2135213.7,
       "ma50": 1766460.14,
@@ -3827,7 +4461,7 @@
     "000810.KS": {
       "volSurge": 1.13,
       "region": "KR",
-      "probUp": 0.9345,
+      "probUp": 0.9358,
       "regime": "Bull",
       "lastClose": 6319146.16,
       "ma50": 5515659.48,
@@ -3845,7 +4479,7 @@
     "015760.KS": {
       "volSurge": 1.02,
       "region": "KR",
-      "probUp": 0.9184,
+      "probUp": 0.9085,
       "regime": "Bull",
       "lastClose": 3897152.7,
       "ma50": 3073907.32,
@@ -3863,7 +4497,7 @@
     "032830.KS": {
       "volSurge": 1.34,
       "region": "KR",
-      "probUp": 0.9776,
+      "probUp": 0.9802,
       "regime": "Bull",
       "lastClose": 6258957.29,
       "ma50": 5488298.44,
@@ -3879,7 +4513,7 @@
     "003670.KS": {
       "volSurge": 1.67,
       "region": "KR",
-      "probUp": 0.9426,
+      "probUp": 0.9378,
       "regime": "Bull",
       "lastClose": 5814546.95,
       "ma50": 5046345.72,
@@ -3897,7 +4531,7 @@
     "086790.KS": {
       "volSurge": 1.35,
       "region": "KR",
-      "probUp": 0.9741,
+      "probUp": 0.9787,
       "regime": "Bull",
       "lastClose": 10330332.98,
       "ma50": 8275703.37,
@@ -3915,7 +4549,7 @@
     "138040.KS": {
       "volSurge": 1.47,
       "region": "KR",
-      "probUp": 0.934,
+      "probUp": 0.9381,
       "regime": "Bull",
       "lastClose": 5978394.73,
       "ma50": 4987452.66,
@@ -3933,7 +4567,7 @@
     "010130.KS": {
       "volSurge": 1.46,
       "region": "KR",
-      "probUp": 0.8947,
+      "probUp": 0.8921,
       "regime": "Bull",
       "lastClose": 4726553.5,
       "ma50": 4226051.75,
@@ -3949,7 +4583,7 @@
     "009150.KS": {
       "volSurge": 1.12,
       "region": "KR",
-      "probUp": 0.9587,
+      "probUp": 0.9592,
       "regime": "Bull",
       "lastClose": 13941936.35,
       "ma50": 11769256.97,
@@ -3967,7 +4601,7 @@
     "011200.KS": {
       "volSurge": 1.45,
       "region": "KR",
-      "probUp": 0.72,
+      "probUp": 0.8333,
       "regime": "Bull",
       "lastClose": 13806516.77,
       "ma50": 10941743.27,
@@ -3985,7 +4619,7 @@
     "034020.KS": {
       "volSurge": 1.23,
       "region": "KR",
-      "probUp": 0.8883,
+      "probUp": 0.9381,
       "regime": "Bull",
       "lastClose": 6188865.5,
       "ma50": 5426984.88,
@@ -4001,7 +4635,7 @@
     "033780.KS": {
       "volSurge": 1.57,
       "region": "KR",
-      "probUp": 0.9341,
+      "probUp": 0.9375,
       "regime": "Bull",
       "lastClose": 8303506.53,
       "ma50": 7047390.04,
@@ -4019,7 +4653,7 @@
     "066570.KS": {
       "volSurge": 1.21,
       "region": "KR",
-      "probUp": 0.9231,
+      "probUp": 0.9316,
       "regime": "Bull",
       "lastClose": 13386442.1,
       "ma50": 11611602.65,
@@ -4035,7 +4669,7 @@
     "316140.KS": {
       "volSurge": 1.63,
       "region": "KR",
-      "probUp": 0.8571,
+      "probUp": 0.9231,
       "regime": "Bull",
       "lastClose": 16101119.39,
       "ma50": 14377944.4,
@@ -4069,7 +4703,7 @@
     "010120.KS": {
       "volSurge": 1.67,
       "region": "KR",
-      "probUp": 0.8889,
+      "probUp": 0.8938,
       "regime": "Bull",
       "lastClose": 10273547.57,
       "ma50": 8636902.28,
@@ -4085,7 +4719,7 @@
     "047040.KS": {
       "volSurge": 1.03,
       "region": "KR",
-      "probUp": 0.9542,
+      "probUp": 0.9562,
       "regime": "Bull",
       "lastClose": 14804796.36,
       "ma50": 12506118.12,
@@ -4101,7 +4735,7 @@
     "018260.KS": {
       "volSurge": 1.79,
       "region": "KR",
-      "probUp": 0.9247,
+      "probUp": 0.9278,
       "regime": "Bull",
       "lastClose": 6901334.03,
       "ma50": 5657350.18,
@@ -4119,7 +4753,7 @@
     "030200.KS": {
       "volSurge": 1.39,
       "region": "KR",
-      "probUp": 0.951,
+      "probUp": 0.9522,
       "regime": "Bull",
       "lastClose": 39672930.9,
       "ma50": 33421936.13,
@@ -4153,7 +4787,7 @@
     "051900.KS": {
       "volSurge": 1.36,
       "region": "KR",
-      "probUp": 0.9379,
+      "probUp": 0.9405,
       "regime": "Bull",
       "lastClose": 34572026.71,
       "ma50": 30298448.21,
@@ -4171,7 +4805,7 @@
     "097950.KS": {
       "volSurge": 1.17,
       "region": "KR",
-      "probUp": 0.9091,
+      "probUp": 0.9151,
       "regime": "Bull",
       "lastClose": 19475075.76,
       "ma50": 17224234.37,
@@ -4187,7 +4821,7 @@
     "271560.KS": {
       "volSurge": 1.08,
       "region": "KR",
-      "probUp": 0.625,
+      "probUp": 0.8095,
       "regime": "Bull",
       "lastClose": 36995857.14,
       "ma50": 30685356.79,
@@ -4205,7 +4839,7 @@
     "004020.KS": {
       "volSurge": 1.08,
       "region": "KR",
-      "probUp": 0.9074,
+      "probUp": 0.9171,
       "regime": "Bull",
       "lastClose": 26779065.15,
       "ma50": 22400235.4,
@@ -4223,7 +4857,7 @@
     "267260.KS": {
       "volSurge": 1.9,
       "region": "KR",
-      "probUp": 0.7059,
+      "probUp": 0.6667,
       "regime": "Bull",
       "lastClose": 61801309.48,
       "ma50": 53606800.66,
@@ -4239,7 +4873,7 @@
     "042660.KS": {
       "volSurge": 1.27,
       "region": "KR",
-      "probUp": 0.9218,
+      "probUp": 0.9167,
       "regime": "Bull",
       "lastClose": 30114828.71,
       "ma50": 22560181.13,
@@ -4257,7 +4891,7 @@
     "010140.KS": {
       "volSurge": 1.55,
       "region": "KR",
-      "probUp": 0.9682,
+      "probUp": 0.964,
       "regime": "Bull",
       "lastClose": 31849522.68,
       "ma50": 25748530.68,
@@ -4293,7 +4927,7 @@
     "012450.KS": {
       "volSurge": 1.21,
       "region": "KR",
-      "probUp": 0.5909,
+      "probUp": 0.7391,
       "regime": "Bull",
       "lastClose": 64294585.05,
       "ma50": 51283738.14,
@@ -4311,7 +4945,7 @@
     "064350.KS": {
       "volSurge": 1.04,
       "region": "KR",
-      "probUp": 0.8261,
+      "probUp": 0.8333,
       "regime": "Bull",
       "lastClose": 62299128.91,
       "ma50": 50347922.15,
@@ -4329,7 +4963,7 @@
     "005935.KS": {
       "volSurge": 1.54,
       "region": "KR",
-      "probUp": 0.932,
+      "probUp": 0.9325,
       "regime": "Bull",
       "lastClose": 37195298.21,
       "ma50": 30388116.14,
@@ -4347,7 +4981,7 @@
     "005490.KS": {
       "volSurge": 1.72,
       "region": "KR",
-      "probUp": 0.9878,
+      "probUp": 0.9865,
       "regime": "Bull",
       "lastClose": 79375356.06,
       "ma50": 64411547.41,
@@ -4365,7 +4999,7 @@
     "017670.KS": {
       "volSurge": 1.23,
       "region": "KR",
-      "probUp": 0.9208,
+      "probUp": 0.9183,
       "regime": "Bull",
       "lastClose": 23529359.97,
       "ma50": 18512475.7,
@@ -4383,7 +5017,7 @@
     "003550.KS": {
       "volSurge": 1.47,
       "region": "KR",
-      "probUp": 0.4444,
+      "probUp": 0.64,
       "regime": "Bull",
       "lastClose": 100351379.12,
       "ma50": 79000675.08,
@@ -4401,7 +5035,7 @@
     "011070.KS": {
       "volSurge": 1.22,
       "region": "KR",
-      "probUp": 0.7692,
+      "probUp": 0.7931,
       "regime": "Bull",
       "lastClose": 111035981.38,
       "ma50": 85259138.08,
@@ -4419,7 +5053,7 @@
     "009830.KS": {
       "volSurge": 1.36,
       "region": "KR",
-      "probUp": 0.9254,
+      "probUp": 0.9454,
       "regime": "Bull",
       "lastClose": 119538108.71,
       "ma50": 94695481.44,
@@ -4437,7 +5071,7 @@
     "010950.KS": {
       "volSurge": 1.15,
       "region": "KR",
-      "probUp": 0.8824,
+      "probUp": 0.8596,
       "regime": "Bull",
       "lastClose": 82524452.49,
       "ma50": 67804272.88,
@@ -4455,7 +5089,7 @@
     "078930.KS": {
       "volSurge": 1.27,
       "region": "KR",
-      "probUp": 0.9346,
+      "probUp": 0.932,
       "regime": "Bull",
       "lastClose": 115825357.17,
       "ma50": 91992456.23,
@@ -4473,7 +5107,7 @@
     "000100.KS": {
       "volSurge": 1.2,
       "region": "KR",
-      "probUp": 0.8889,
+      "probUp": 0.6667,
       "regime": "Bull",
       "lastClose": 80909094.31,
       "ma50": 63936798.06,
@@ -4491,7 +5125,7 @@
     "090430.KS": {
       "volSurge": 1.39,
       "region": "KR",
-      "probUp": 0.8431,
+      "probUp": 0.8615,
       "regime": "Bull",
       "lastClose": 268859983.92,
       "ma50": 208789783.41,
@@ -4509,7 +5143,7 @@
     "036570.KS": {
       "volSurge": 1.18,
       "region": "KR",
-      "probUp": 0.5833,
+      "probUp": 0.7778,
       "regime": "Bull",
       "lastClose": 98635710.13,
       "ma50": 76725921.15,
@@ -4527,7 +5161,7 @@
     "251270.KS": {
       "volSurge": 1.27,
       "region": "KR",
-      "probUp": 0.963,
+      "probUp": 0.9598,
       "regime": "Bull",
       "lastClose": 234107739.35,
       "ma50": 180738670.28,
@@ -4545,7 +5179,7 @@
     "139480.KS": {
       "volSurge": 1.08,
       "region": "KR",
-      "probUp": 0.9,
+      "probUp": 0.9189,
       "regime": "Bull",
       "lastClose": 312164549.98,
       "ma50": 241281239.93,
@@ -4563,7 +5197,7 @@
     "008770.KS": {
       "volSurge": 1.53,
       "region": "KR",
-      "probUp": 0.8621,
+      "probUp": 0.7647,
       "regime": "Bull",
       "lastClose": 397570814.2,
       "ma50": 353240855.91,
@@ -4579,7 +5213,7 @@
     "001040.KS": {
       "volSurge": 1.04,
       "region": "KR",
-      "probUp": 0.9535,
+      "probUp": 0.9559,
       "regime": "Bull",
       "lastClose": 182210075.62,
       "ma50": 146443417.44,
@@ -4597,7 +5231,7 @@
     "000080.KS": {
       "volSurge": 1.16,
       "region": "KR",
-      "probUp": 0.953,
+      "probUp": 0.9463,
       "regime": "Bull",
       "lastClose": 239405447.32,
       "ma50": 194065569.18,
@@ -4615,7 +5249,7 @@
     "282330.KS": {
       "volSurge": 1.17,
       "region": "KR",
-      "probUp": 0.9217,
+      "probUp": 0.96,
       "regime": "Bull",
       "lastClose": 508301076.66,
       "ma50": 407681659.4,
@@ -4633,7 +5267,7 @@
     "006260.KS": {
       "volSurge": 1.24,
       "region": "KR",
-      "probUp": 0.9194,
+      "probUp": 0.9325,
       "regime": "Bull",
       "lastClose": 39721335.14,
       "ma50": 34054188.34,
@@ -4651,7 +5285,7 @@
     "011780.KS": {
       "volSurge": 1.24,
       "region": "KR",
-      "probUp": 0.9346,
+      "probUp": 0.9343,
       "regime": "Bull",
       "lastClose": 114599122.94,
       "ma50": 89388798.83,
@@ -4669,7 +5303,7 @@
     "096770.KS": {
       "volSurge": 1.49,
       "region": "KR",
-      "probUp": 0.4,
+      "probUp": 0.5,
       "regime": "Bull",
       "lastClose": 697442769.2,
       "ma50": 569149500.29,
@@ -4687,7 +5321,7 @@
     "034730.KS": {
       "volSurge": 1.18,
       "region": "KR",
-      "probUp": 0.9504,
+      "probUp": 0.9471,
       "regime": "Bull",
       "lastClose": 709345640.62,
       "ma50": 535643275.33,
@@ -4705,7 +5339,7 @@
     "352820.KS": {
       "volSurge": 1.57,
       "region": "KR",
-      "probUp": 0.9318,
+      "probUp": 0.9118,
       "regime": "Bull",
       "lastClose": 297512499.35,
       "ma50": 231838951.84,
@@ -4723,7 +5357,7 @@
     "326030.KS": {
       "volSurge": 1.1,
       "region": "KR",
-      "probUp": 0.9778,
+      "probUp": 0.9703,
       "regime": "Bull",
       "lastClose": 245426476.33,
       "ma50": 194983308.76,
@@ -4741,7 +5375,7 @@
     "302440.KS": {
       "volSurge": 1.02,
       "region": "KR",
-      "probUp": 0.9146,
+      "probUp": 0.9091,
       "regime": "Bull",
       "lastClose": 141235248.73,
       "ma50": 112592120.65,
@@ -4925,76 +5559,76 @@
   "core": [
     {
       "ticker": "QQQ",
-      "asOf": "2026-06-30",
+      "asOf": "2026-07-01",
       "lastClose": 16.76,
       "signals": [
         {
           "horizon": 21,
-          "probUp": 0.447,
+          "probUp": 0.4037,
           "prediction": "DOWN",
           "alert": "HOLD",
-          "threshold": 0.625,
+          "threshold": 0.6594,
           "oos": {
             "days": 903,
-            "precision": 0.4882,
+            "precision": 0.4803,
             "baseline": 0.4474,
-            "lift": 4.08,
-            "f1": 0.4739,
-            "brier": 0.325
+            "lift": 3.29,
+            "f1": 0.4815,
+            "brier": 0.3361
           },
           "backtest": {
-            "annualReturn": 5.9,
-            "sharpe": 0.73,
-            "maxDrawdown": -26,
-            "numTrades": 8,
-            "buyHoldAnnual": 24,
-            "vsBuyHold": -18.1
+            "annualReturn": 11754.28,
+            "sharpe": 2.55,
+            "maxDrawdown": -12.98,
+            "numTrades": 24,
+            "buyHoldAnnual": -29.59,
+            "vsBuyHold": 11783.87
           }
         },
         {
           "horizon": 63,
-          "probUp": 0.5,
+          "probUp": 0.5769,
           "prediction": "UP",
           "alert": "HOLD",
-          "threshold": 0.7778,
+          "threshold": 0.7532,
           "oos": {
-            "days": 903,
-            "precision": 0.4135,
+            "days": 861,
+            "precision": 0.3951,
             "baseline": 0.3995,
-            "lift": 1.4,
-            "f1": 0.4286,
-            "brier": 0.325
+            "lift": -0.44,
+            "f1": 0.4297,
+            "brier": 0.3246
           },
           "backtest": {
-            "annualReturn": 10.0,
-            "sharpe": 0.88,
-            "maxDrawdown": -22,
-            "numTrades": 8,
-            "buyHoldAnnual": 27,
-            "vsBuyHold": -17.0
+            "annualReturn": 116387.92,
+            "sharpe": 3.68,
+            "maxDrawdown": -9.1,
+            "numTrades": 34,
+            "buyHoldAnnual": -31.75,
+            "vsBuyHold": 116419.67
           }
         },
         {
           "horizon": 126,
-          "probUp": 0.4667,
+          "probUp": 0.4661,
           "prediction": "DOWN",
           "alert": "HOLD",
-          "threshold": 0.75,
+          "threshold": 0.7143,
           "oos": {
-            "days": 903,
-            "precision": 0.1034,
+            "days": 798,
+            "precision": 0.131,
             "baseline": 0.4524,
-            "lift": -34.89,
-            "f1": 0.0809,
-            "brier": 0.5036
+            "lift": -32.14,
+            "f1": 0.1077,
+            "brier": 0.5061
           },
           "backtest": {
-            "annualReturn": 12.3,
-            "sharpe": 1.0,
-            "maxDrawdown": -19,
-            "numTrades": 8,
-            "buyHoldAnnual": 30,
-            "vsBuyHold": -17.7
+            "annualReturn": 2102.45,
+            "sharpe": 2.0,
+            "maxDrawdown": -15.7,
+            "numTrades": 14,
+            "buyHoldAnnual": -32.01,
+            "vsBuyHold": 2134.47
           }
         }
       ],
@@ -5017,76 +5651,76 @@
     },
     {
       "ticker": "NVDA",
-      "asOf": "2026-06-30",
+      "asOf": "2026-07-01",
       "lastClose": 40.49,
       "signals": [
         {
           "horizon": 21,
-          "probUp": 0.3824,
+          "probUp": 0.3284,
           "prediction": "DOWN",
           "alert": "STRONG SELL",
-          "threshold": 0.6114,
+          "threshold": 0.6323,
           "oos": {
             "days": 903,
-            "precision": 0.4263,
+            "precision": 0.3922,
             "baseline": 0.4662,
-            "lift": -3.99,
-            "f1": 0.3629,
-            "brier": 0.3233
+            "lift": -7.4,
+            "f1": 0.347,
+            "brier": 0.3185
           },
           "backtest": {
-            "annualReturn": 8.6,
-            "sharpe": 0.97,
-            "maxDrawdown": -26,
-            "numTrades": 12,
-            "buyHoldAnnual": 25,
-            "vsBuyHold": -16.4
+            "annualReturn": 21413.01,
+            "sharpe": 2.72,
+            "maxDrawdown": -12.91,
+            "numTrades": 27,
+            "buyHoldAnnual": -32.92,
+            "vsBuyHold": 21445.93
           }
         },
         {
           "horizon": 63,
-          "probUp": 0.1364,
+          "probUp": 0.1429,
           "prediction": "DOWN",
           "alert": "STRONG SELL",
-          "threshold": 0.7011,
+          "threshold": 0.6538,
           "oos": {
-            "days": 903,
-            "precision": 0.3272,
+            "days": 861,
+            "precision": 0.3486,
             "baseline": 0.4506,
-            "lift": -12.34,
-            "f1": 0.3247,
-            "brier": 0.3663
+            "lift": -10.2,
+            "f1": 0.3508,
+            "brier": 0.3635
           },
           "backtest": {
-            "annualReturn": 6.7,
-            "sharpe": 1.12,
-            "maxDrawdown": -22,
-            "numTrades": 12,
-            "buyHoldAnnual": 28,
-            "vsBuyHold": -21.3
+            "annualReturn": 3081.87,
+            "sharpe": 2.12,
+            "maxDrawdown": -15.73,
+            "numTrades": 17,
+            "buyHoldAnnual": -30.78,
+            "vsBuyHold": 3112.65
           }
         },
         {
           "horizon": 126,
-          "probUp": 0.0909,
+          "probUp": 0.0842,
           "prediction": "DOWN",
           "alert": "STRONG SELL",
-          "threshold": 0.8333,
+          "threshold": 0.8611,
           "oos": {
-            "days": 903,
-            "precision": 0.2486,
+            "days": 798,
+            "precision": 0.2514,
             "baseline": 0.3947,
-            "lift": -14.62,
-            "f1": 0.2602,
-            "brier": 0.4666
+            "lift": -14.33,
+            "f1": 0.2632,
+            "brier": 0.4679
           },
           "backtest": {
-            "annualReturn": 8.8,
-            "sharpe": 1.24,
-            "maxDrawdown": -19,
-            "numTrades": 12,
-            "buyHoldAnnual": 31,
-            "vsBuyHold": -22.2
+            "annualReturn": 2198.39,
+            "sharpe": 2.1,
+            "maxDrawdown": -11.97,
+            "numTrades": 14,
+            "buyHoldAnnual": -34.97,
+            "vsBuyHold": 2233.36
           }
         }
       ],
@@ -5120,76 +5754,76 @@
     },
     {
       "ticker": "GOOGL",
-      "asOf": "2026-06-30",
+      "asOf": "2026-07-01",
       "lastClose": 185.56,
       "signals": [
         {
           "horizon": 21,
-          "probUp": 0.6958,
+          "probUp": 0.692,
           "prediction": "UP",
           "alert": "HOLD",
-          "threshold": 0.8049,
+          "threshold": 0.81,
           "oos": {
             "days": 903,
-            "precision": 0.5643,
+            "precision": 0.5668,
             "baseline": 0.5792,
-            "lift": -1.49,
-            "f1": 0.5836,
-            "brier": 0.3117
+            "lift": -1.23,
+            "f1": 0.5867,
+            "brier": 0.3044
           },
           "backtest": {
-            "annualReturn": 11.9,
-            "sharpe": 0.73,
-            "maxDrawdown": -23,
-            "numTrades": 9,
-            "buyHoldAnnual": 27,
-            "vsBuyHold": -15.1
+            "annualReturn": 2399.37,
+            "sharpe": 2.07,
+            "maxDrawdown": -13.36,
+            "numTrades": 16,
+            "buyHoldAnnual": -5.42,
+            "vsBuyHold": 2404.79
           }
         },
         {
           "horizon": 63,
-          "probUp": 0.0,
-          "prediction": "DOWN",
-          "alert": "STRONG SELL",
-          "threshold": 0.8636,
+          "probUp": 0.6522,
+          "prediction": "UP",
+          "alert": "HOLD",
+          "threshold": 0.9265,
           "oos": {
-            "days": 903,
-            "precision": 0.6098,
+            "days": 861,
+            "precision": 0.6119,
             "baseline": 0.5981,
-            "lift": 1.17,
-            "f1": 0.6174,
-            "brier": 0.3364
+            "lift": 1.37,
+            "f1": 0.6166,
+            "brier": 0.3431
           },
           "backtest": {
-            "annualReturn": 1.0,
-            "sharpe": 0.88,
-            "maxDrawdown": -19,
-            "numTrades": 9,
-            "buyHoldAnnual": 30,
-            "vsBuyHold": -29.0
+            "annualReturn": 1852.97,
+            "sharpe": 1.98,
+            "maxDrawdown": -7.88,
+            "numTrades": 14,
+            "buyHoldAnnual": -8.3,
+            "vsBuyHold": 1861.27
           }
         },
         {
           "horizon": 126,
-          "probUp": 0.502,
+          "probUp": 0.504,
           "prediction": "UP",
           "alert": "HOLD",
           "threshold": 0.7,
           "oos": {
-            "days": 903,
-            "precision": 0.5498,
+            "days": 798,
+            "precision": 0.5736,
             "baseline": 0.619,
-            "lift": -6.92,
-            "f1": 0.5542,
-            "brier": 0.4216
+            "lift": -4.54,
+            "f1": 0.59,
+            "brier": 0.4183
           },
           "backtest": {
-            "annualReturn": 14.0,
-            "sharpe": 1.0,
-            "maxDrawdown": -16,
-            "numTrades": 9,
-            "buyHoldAnnual": 33,
-            "vsBuyHold": -19.0
+            "annualReturn": 918.71,
+            "sharpe": 1.72,
+            "maxDrawdown": -30.27,
+            "numTrades": 10,
+            "buyHoldAnnual": -5.54,
+            "vsBuyHold": 924.25
           }
         }
       ],
@@ -5212,76 +5846,76 @@
     },
     {
       "ticker": "PFE",
-      "asOf": "2026-06-30",
+      "asOf": "2026-07-01",
       "lastClose": 2125.41,
       "signals": [
         {
           "horizon": 21,
-          "probUp": 0.6888,
+          "probUp": 0.6548,
           "prediction": "UP",
           "alert": "HOLD",
-          "threshold": 0.8889,
+          "threshold": 0.8971,
           "oos": {
             "days": 903,
-            "precision": 0.6476,
+            "precision": 0.636,
             "baseline": 0.7065,
-            "lift": -5.9,
-            "f1": 0.6766,
-            "brier": 0.3326
+            "lift": -7.06,
+            "f1": 0.6529,
+            "brier": 0.3283
           },
           "backtest": {
-            "annualReturn": 9.8,
-            "sharpe": 0.91,
-            "maxDrawdown": -23,
-            "numTrades": 16,
-            "buyHoldAnnual": 18,
-            "vsBuyHold": -8.2
+            "annualReturn": 540.02,
+            "sharpe": 1.55,
+            "maxDrawdown": -41.2,
+            "numTrades": 9,
+            "buyHoldAnnual": 29.89,
+            "vsBuyHold": 510.12
           }
         },
         {
           "horizon": 63,
-          "probUp": 0.7449,
+          "probUp": 0.7439,
           "prediction": "UP",
           "alert": "HOLD",
-          "threshold": 0.9157,
+          "threshold": 0.875,
           "oos": {
-            "days": 903,
-            "precision": 0.5967,
+            "days": 861,
+            "precision": 0.6095,
             "baseline": 0.7143,
-            "lift": -11.75,
-            "f1": 0.5651,
-            "brier": 0.3989
+            "lift": -10.48,
+            "f1": 0.5868,
+            "brier": 0.3925
           },
           "backtest": {
-            "annualReturn": 13.9,
-            "sharpe": 1.06,
-            "maxDrawdown": -19,
-            "numTrades": 16,
-            "buyHoldAnnual": 21,
-            "vsBuyHold": -7.1
+            "annualReturn": 580.63,
+            "sharpe": 1.66,
+            "maxDrawdown": -36.31,
+            "numTrades": 9,
+            "buyHoldAnnual": 21.98,
+            "vsBuyHold": 558.65
           }
         },
         {
           "horizon": 126,
-          "probUp": 0.459,
+          "probUp": 0.4857,
           "prediction": "DOWN",
           "alert": "HOLD",
-          "threshold": 0.8227,
+          "threshold": 0.9412,
           "oos": {
-            "days": 903,
-            "precision": 0.7265,
+            "days": 798,
+            "precision": 0.7664,
             "baseline": 0.683,
-            "lift": 4.35,
-            "f1": 0.4365,
-            "brier": 0.48
+            "lift": 8.35,
+            "f1": 0.5128,
+            "brier": 0.4443
           },
           "backtest": {
-            "annualReturn": 11.2,
-            "sharpe": 1.18,
-            "maxDrawdown": -16,
-            "numTrades": 16,
-            "buyHoldAnnual": 24,
-            "vsBuyHold": -12.8
+            "annualReturn": 137.61,
+            "sharpe": 1.1,
+            "maxDrawdown": -29.55,
+            "numTrades": 4,
+            "buyHoldAnnual": 15.45,
+            "vsBuyHold": 122.16
           }
         }
       ],
@@ -5304,30 +5938,30 @@
     },
     {
       "ticker": "005930.KS",
-      "asOf": "2026-06-30",
+      "asOf": "2026-07-01",
       "lastClose": 1212326.36,
       "signals": [
         {
           "horizon": 21,
-          "probUp": 0.9114,
+          "probUp": 0.8995,
           "prediction": "UP",
           "alert": "HOLD",
-          "threshold": 0.983,
+          "threshold": 0.9864,
           "oos": {
             "days": 903,
-            "precision": 0.7919,
+            "precision": 0.7787,
             "baseline": 0.8295,
-            "lift": -3.76,
-            "f1": 0.7871,
-            "brier": 0.261
+            "lift": -5.07,
+            "f1": 0.7502,
+            "brier": 0.2771
           },
           "backtest": {
-            "annualReturn": 21.2,
-            "sharpe": 0.79,
-            "maxDrawdown": -27,
-            "numTrades": 14,
-            "buyHoldAnnual": 20,
-            "vsBuyHold": 1.2
+            "annualReturn": 3441.34,
+            "sharpe": 2.28,
+            "maxDrawdown": -24.23,
+            "numTrades": 15,
+            "buyHoldAnnual": 253.67,
+            "vsBuyHold": 3187.67
           }
         },
         {
@@ -5337,7 +5971,7 @@
           "alert": "HOLD",
           "threshold": 0.9674,
           "oos": {
-            "days": 903,
+            "days": 861,
             "precision": 0.7886,
             "baseline": 0.777,
             "lift": 1.16,
@@ -5345,12 +5979,12 @@
             "brier": 0.5706
           },
           "backtest": {
-            "annualReturn": 21.3,
-            "sharpe": 0.94,
-            "maxDrawdown": -23,
-            "numTrades": 14,
-            "buyHoldAnnual": 23,
-            "vsBuyHold": -1.7
+            "annualReturn": 189.09,
+            "sharpe": 1.39,
+            "maxDrawdown": -3.06,
+            "numTrades": 3,
+            "buyHoldAnnual": 251.88,
+            "vsBuyHold": -62.78
           }
         },
         {
@@ -5360,20 +5994,20 @@
           "alert": "HOLD",
           "threshold": 0.9306,
           "oos": {
-            "days": 903,
-            "precision": 0.4332,
+            "days": 798,
+            "precision": 0.4273,
             "baseline": 0.7206,
-            "lift": -28.74,
-            "f1": 0.2374,
-            "brier": 0.702
+            "lift": -29.33,
+            "f1": 0.2365,
+            "brier": 0.7007
           },
           "backtest": {
-            "annualReturn": 19.9,
-            "sharpe": 1.06,
-            "maxDrawdown": -20,
-            "numTrades": 14,
-            "buyHoldAnnual": 26,
-            "vsBuyHold": -6.1
+            "annualReturn": 1532.83,
+            "sharpe": 2.04,
+            "maxDrawdown": -2.79,
+            "numTrades": 11,
+            "buyHoldAnnual": 248.75,
+            "vsBuyHold": 1284.08
           }
         }
       ],
@@ -5396,12 +6030,12 @@
     },
     {
       "ticker": "000660.KS",
-      "asOf": "2026-06-30",
+      "asOf": "2026-07-01",
       "lastClose": 1554937.34,
       "signals": [
         {
           "horizon": 21,
-          "probUp": 0.7143,
+          "probUp": 0.7195,
           "prediction": "UP",
           "alert": "HOLD",
           "threshold": 0.9967,
@@ -5411,61 +6045,61 @@
             "baseline": 0.835,
             "lift": 5.43,
             "f1": 0.8975,
-            "brier": 0.1658
+            "brier": 0.1659
           },
           "backtest": {
-            "annualReturn": 17.3,
-            "sharpe": 0.97,
-            "maxDrawdown": -24,
-            "numTrades": 23,
-            "buyHoldAnnual": 22,
-            "vsBuyHold": -4.7
+            "annualReturn": 1730.99,
+            "sharpe": 2.15,
+            "maxDrawdown": -5.68,
+            "numTrades": 10,
+            "buyHoldAnnual": 262.0,
+            "vsBuyHold": 1468.98
           }
         },
         {
           "horizon": 63,
-          "probUp": 0.8,
+          "probUp": 0.789,
           "prediction": "UP",
           "alert": "HOLD",
-          "threshold": 0.9965,
+          "threshold": 0.9964,
           "oos": {
-            "days": 903,
+            "days": 861,
             "precision": 0.8125,
             "baseline": 0.7944,
             "lift": 1.81,
             "f1": 0.5353,
-            "brier": 0.5359
+            "brier": 0.5363
           },
           "backtest": {
-            "annualReturn": 22.0,
-            "sharpe": 1.12,
-            "maxDrawdown": -20,
-            "numTrades": 23,
-            "buyHoldAnnual": 25,
-            "vsBuyHold": -3.0
+            "annualReturn": 114.07,
+            "sharpe": 1.21,
+            "maxDrawdown": -3.35,
+            "numTrades": 2,
+            "buyHoldAnnual": 250.29,
+            "vsBuyHold": -136.22
           }
         },
         {
           "horizon": 126,
-          "probUp": 0.4948,
+          "probUp": 0.4974,
           "prediction": "DOWN",
           "alert": "HOLD",
-          "threshold": 0.9918,
+          "threshold": 0.9916,
           "oos": {
-            "days": 903,
+            "days": 798,
             "precision": 0.5714,
             "baseline": 0.7494,
             "lift": -17.79,
             "f1": 0.3767,
-            "brier": 0.6538
+            "brier": 0.6549
           },
           "backtest": {
-            "annualReturn": 18.9,
+            "annualReturn": 126.22,
             "sharpe": 1.24,
-            "maxDrawdown": -17,
-            "numTrades": 23,
-            "buyHoldAnnual": 28,
-            "vsBuyHold": -9.1
+            "maxDrawdown": -3.19,
+            "numTrades": 2,
+            "buyHoldAnnual": 236.2,
+            "vsBuyHold": -109.98
           }
         }
       ],
@@ -5494,15 +6128,15 @@
     },
     {
       "ticker": "035420.KS",
-      "asOf": "2026-06-30",
+      "asOf": "2026-07-01",
       "lastClose": 2049417.98,
       "signals": [
         {
           "horizon": 21,
-          "probUp": 0.8235,
+          "probUp": 0.8049,
           "prediction": "UP",
           "alert": "HOLD",
-          "threshold": 0.9937,
+          "threshold": 0.9953,
           "oos": {
             "days": 903,
             "precision": 0.9404,
@@ -5512,58 +6146,58 @@
             "brier": 0.3869
           },
           "backtest": {
-            "annualReturn": 14.5,
-            "sharpe": 0.73,
-            "maxDrawdown": -26,
-            "numTrades": 18,
-            "buyHoldAnnual": 20,
-            "vsBuyHold": -5.5
+            "annualReturn": 469.84,
+            "sharpe": 1.71,
+            "maxDrawdown": -3.0,
+            "numTrades": 6,
+            "buyHoldAnnual": 283.01,
+            "vsBuyHold": 186.83
           }
         },
         {
           "horizon": 63,
-          "probUp": 0.6986,
+          "probUp": 0.6582,
           "prediction": "UP",
           "alert": "HOLD",
-          "threshold": 0.9911,
+          "threshold": 0.991,
           "oos": {
-            "days": 903,
+            "days": 861,
             "precision": 0.8147,
             "baseline": 0.7933,
             "lift": 2.14,
             "f1": 0.5415,
-            "brier": 0.5498
+            "brier": 0.5501
           },
           "backtest": {
-            "annualReturn": 15.0,
-            "sharpe": 0.88,
-            "maxDrawdown": -22,
-            "numTrades": 18,
-            "buyHoldAnnual": 23,
-            "vsBuyHold": -8.0
+            "annualReturn": 183.66,
+            "sharpe": 1.36,
+            "maxDrawdown": -3.51,
+            "numTrades": 3,
+            "buyHoldAnnual": 273.15,
+            "vsBuyHold": -89.49
           }
         },
         {
           "horizon": 126,
-          "probUp": 0.502,
+          "probUp": 0.5,
           "prediction": "UP",
           "alert": "HOLD",
           "threshold": 0.8889,
           "oos": {
-            "days": 903,
+            "days": 798,
             "precision": 0.4375,
             "baseline": 0.7419,
             "lift": -30.44,
             "f1": 0.2402,
-            "brier": 0.7255
+            "brier": 0.7325
           },
           "backtest": {
-            "annualReturn": 14.0,
-            "sharpe": 1.0,
-            "maxDrawdown": -19,
-            "numTrades": 18,
-            "buyHoldAnnual": 26,
-            "vsBuyHold": -12.0
+            "annualReturn": 551.38,
+            "sharpe": 1.69,
+            "maxDrawdown": -3.06,
+            "numTrades": 7,
+            "buyHoldAnnual": 260.78,
+            "vsBuyHold": 290.6
           }
         }
       ],
@@ -5592,76 +6226,76 @@
     },
     {
       "ticker": "000810.KS",
-      "asOf": "2026-06-30",
+      "asOf": "2026-07-01",
       "lastClose": 6319146.16,
       "signals": [
         {
           "horizon": 21,
-          "probUp": 0.8824,
+          "probUp": 0.8793,
           "prediction": "UP",
           "alert": "HOLD",
-          "threshold": 0.996,
+          "threshold": 0.9967,
           "oos": {
             "days": 903,
-            "precision": 0.9484,
+            "precision": 0.9489,
             "baseline": 0.8726,
-            "lift": 7.58,
-            "f1": 0.646,
-            "brier": 0.4596
+            "lift": 7.63,
+            "f1": 0.6505,
+            "brier": 0.4578
           },
           "backtest": {
-            "annualReturn": 12.6,
-            "sharpe": 0.85,
-            "maxDrawdown": -27,
-            "numTrades": 6,
-            "buyHoldAnnual": 15,
-            "vsBuyHold": -2.4
+            "annualReturn": 229.87,
+            "sharpe": 1.55,
+            "maxDrawdown": -3.42,
+            "numTrades": 3,
+            "buyHoldAnnual": 359.2,
+            "vsBuyHold": -129.33
           }
         },
         {
           "horizon": 63,
-          "probUp": 0.6813,
+          "probUp": 0.6667,
           "prediction": "UP",
           "alert": "HOLD",
-          "threshold": 0.9965,
+          "threshold": 0.9967,
           "oos": {
-            "days": 903,
-            "precision": 0.8125,
+            "days": 861,
+            "precision": 0.8025,
             "baseline": 0.8351,
-            "lift": -2.26,
-            "f1": 0.5175,
-            "brier": 0.5979
+            "lift": -3.26,
+            "f1": 0.4933,
+            "brier": 0.6012
           },
           "backtest": {
-            "annualReturn": 11.6,
-            "sharpe": 1.0,
-            "maxDrawdown": -23,
-            "numTrades": 6,
-            "buyHoldAnnual": 18,
-            "vsBuyHold": -6.4
+            "annualReturn": 261.4,
+            "sharpe": 1.5,
+            "maxDrawdown": -2.77,
+            "numTrades": 4,
+            "buyHoldAnnual": 372.21,
+            "vsBuyHold": -110.81
           }
         },
         {
           "horizon": 126,
-          "probUp": 0.4694,
-          "prediction": "DOWN",
+          "probUp": 0.5566,
+          "prediction": "UP",
           "alert": "HOLD",
           "threshold": 0.9864,
           "oos": {
-            "days": 903,
+            "days": 798,
             "precision": 0.5368,
             "baseline": 0.7732,
             "lift": -23.64,
             "f1": 0.3285,
-            "brier": 0.7361
+            "brier": 0.7362
           },
           "backtest": {
-            "annualReturn": 10.4,
-            "sharpe": 1.12,
-            "maxDrawdown": -20,
-            "numTrades": 6,
-            "buyHoldAnnual": 21,
-            "vsBuyHold": -10.6
+            "annualReturn": 190.1,
+            "sharpe": 1.36,
+            "maxDrawdown": -2.63,
+            "numTrades": 3,
+            "buyHoldAnnual": 372.85,
+            "vsBuyHold": -182.75
           }
         }
       ],
@@ -5690,76 +6324,76 @@
     },
     {
       "ticker": "034020.KS",
-      "asOf": "2026-06-30",
+      "asOf": "2026-07-01",
       "lastClose": 6188865.5,
       "signals": [
         {
           "horizon": 21,
-          "probUp": 0.9095,
+          "probUp": 0.9062,
           "prediction": "UP",
           "alert": "HOLD",
           "threshold": 0.9967,
           "oos": {
             "days": 903,
-            "precision": 0.8347,
+            "precision": 0.8358,
             "baseline": 0.8538,
-            "lift": -1.91,
-            "f1": 0.8096,
-            "brier": 0.2604
+            "lift": -1.8,
+            "f1": 0.8136,
+            "brier": 0.2606
           },
           "backtest": {
-            "annualReturn": 13.2,
-            "sharpe": 0.79,
-            "maxDrawdown": -23,
-            "numTrades": 6,
-            "buyHoldAnnual": 22,
-            "vsBuyHold": -8.8
+            "annualReturn": 17138.75,
+            "sharpe": 2.77,
+            "maxDrawdown": -29.71,
+            "numTrades": 22,
+            "buyHoldAnnual": 411.2,
+            "vsBuyHold": 16727.55
           }
         },
         {
           "horizon": 63,
-          "probUp": 0.641,
+          "probUp": 0.6752,
           "prediction": "UP",
           "alert": "HOLD",
           "threshold": 0.9942,
           "oos": {
-            "days": 903,
-            "precision": 0.8136,
+            "days": 861,
+            "precision": 0.8142,
             "baseline": 0.82,
-            "lift": -0.64,
-            "f1": 0.5268,
-            "brier": 0.5636
+            "lift": -0.58,
+            "f1": 0.5282,
+            "brier": 0.5643
           },
           "backtest": {
-            "annualReturn": 10.8,
-            "sharpe": 0.94,
-            "maxDrawdown": -19,
-            "numTrades": 6,
-            "buyHoldAnnual": 25,
-            "vsBuyHold": -14.2
+            "annualReturn": 361.58,
+            "sharpe": 1.6,
+            "maxDrawdown": -2.82,
+            "numTrades": 5,
+            "buyHoldAnnual": 382.18,
+            "vsBuyHold": -20.6
           }
         },
         {
           "horizon": 126,
-          "probUp": 0.5149,
-          "prediction": "UP",
+          "probUp": 0.4521,
+          "prediction": "DOWN",
           "alert": "HOLD",
-          "threshold": 0.9036,
+          "threshold": 0.9047,
           "oos": {
-            "days": 903,
+            "days": 798,
             "precision": 0.6348,
             "baseline": 0.7494,
             "lift": -11.46,
             "f1": 0.3527,
-            "brier": 0.6337
+            "brier": 0.6339
           },
           "backtest": {
-            "annualReturn": 11.3,
-            "sharpe": 1.06,
-            "maxDrawdown": -16,
-            "numTrades": 6,
-            "buyHoldAnnual": 28,
-            "vsBuyHold": -16.7
+            "annualReturn": 324.68,
+            "sharpe": 1.51,
+            "maxDrawdown": -2.82,
+            "numTrades": 5,
+            "buyHoldAnnual": 362.46,
+            "vsBuyHold": -37.79
           }
         }
       ],
@@ -5782,30 +6416,30 @@
     },
     {
       "ticker": "010120.KS",
-      "asOf": "2026-06-30",
+      "asOf": "2026-07-01",
       "lastClose": 10273547.57,
       "signals": [
         {
           "horizon": 21,
-          "probUp": 0.6731,
+          "probUp": 0.6522,
           "prediction": "UP",
           "alert": "HOLD",
-          "threshold": 0.981,
+          "threshold": 0.98,
           "oos": {
             "days": 903,
             "precision": 0.7474,
             "baseline": 0.8306,
             "lift": -8.32,
             "f1": 0.5796,
-            "brier": 0.4264
+            "brier": 0.4235
           },
           "backtest": {
-            "annualReturn": 8.5,
-            "sharpe": 0.73,
-            "maxDrawdown": -26,
-            "numTrades": 15,
-            "buyHoldAnnual": 21,
-            "vsBuyHold": -12.5
+            "annualReturn": 907.09,
+            "sharpe": 1.92,
+            "maxDrawdown": -23.07,
+            "numTrades": 9,
+            "buyHoldAnnual": 372.48,
+            "vsBuyHold": 534.61
           }
         },
         {
@@ -5813,22 +6447,22 @@
           "probUp": 0.7268,
           "prediction": "UP",
           "alert": "HOLD",
-          "threshold": 0.995,
+          "threshold": 0.9951,
           "oos": {
-            "days": 903,
-            "precision": 0.7968,
+            "days": 861,
+            "precision": 0.7842,
             "baseline": 0.7747,
-            "lift": 2.21,
-            "f1": 0.5056,
-            "brier": 0.5416
+            "lift": 0.96,
+            "f1": 0.4776,
+            "brier": 0.5476
           },
           "backtest": {
-            "annualReturn": 12.5,
-            "sharpe": 0.88,
-            "maxDrawdown": -22,
-            "numTrades": 15,
-            "buyHoldAnnual": 24,
-            "vsBuyHold": -11.5
+            "annualReturn": 351.61,
+            "sharpe": 1.59,
+            "maxDrawdown": -3.41,
+            "numTrades": 5,
+            "buyHoldAnnual": 350.14,
+            "vsBuyHold": 1.46
           }
         },
         {
@@ -5836,22 +6470,22 @@
           "probUp": 0.5488,
           "prediction": "UP",
           "alert": "HOLD",
-          "threshold": 0.6842,
+          "threshold": 0.6849,
           "oos": {
-            "days": 903,
+            "days": 798,
             "precision": 0.3812,
             "baseline": 0.7306,
             "lift": -34.94,
             "f1": 0.1806,
-            "brier": 0.7229
+            "brier": 0.7219
           },
           "backtest": {
-            "annualReturn": 12.0,
-            "sharpe": 1.0,
-            "maxDrawdown": -19,
-            "numTrades": 15,
-            "buyHoldAnnual": 27,
-            "vsBuyHold": -15.0
+            "annualReturn": 671.2,
+            "sharpe": 1.75,
+            "maxDrawdown": -2.65,
+            "numTrades": 8,
+            "buyHoldAnnual": 319.71,
+            "vsBuyHold": 351.48
           }
         }
       ],
@@ -5874,53 +6508,53 @@
     },
     {
       "ticker": "047040.KS",
-      "asOf": "2026-06-30",
+      "asOf": "2026-07-01",
       "lastClose": 14804796.36,
       "signals": [
         {
           "horizon": 21,
-          "probUp": 0.8786,
+          "probUp": 0.8833,
           "prediction": "UP",
           "alert": "HOLD",
-          "threshold": 0.9831,
+          "threshold": 0.9761,
           "oos": {
             "days": 903,
-            "precision": 0.9504,
+            "precision": 0.9514,
             "baseline": 0.866,
-            "lift": 8.44,
-            "f1": 0.6672,
-            "brier": 0.4213
+            "lift": 8.54,
+            "f1": 0.6771,
+            "brier": 0.4236
           },
           "backtest": {
-            "annualReturn": 15.6,
-            "sharpe": 0.97,
-            "maxDrawdown": -26,
-            "numTrades": 9,
-            "buyHoldAnnual": 26,
-            "vsBuyHold": -10.4
+            "annualReturn": 436.41,
+            "sharpe": 1.76,
+            "maxDrawdown": -3.49,
+            "numTrades": 5,
+            "buyHoldAnnual": 360.38,
+            "vsBuyHold": 76.03
           }
         },
         {
           "horizon": 63,
-          "probUp": 0.5909,
+          "probUp": 0.6871,
           "prediction": "UP",
           "alert": "HOLD",
-          "threshold": 0.9632,
+          "threshold": 0.9663,
           "oos": {
-            "days": 903,
+            "days": 861,
             "precision": 0.8125,
             "baseline": 0.8084,
             "lift": 0.41,
             "f1": 0.5291,
-            "brier": 0.5535
+            "brier": 0.5568
           },
           "backtest": {
-            "annualReturn": 12.8,
-            "sharpe": 1.12,
-            "maxDrawdown": -22,
-            "numTrades": 9,
-            "buyHoldAnnual": 29,
-            "vsBuyHold": -16.2
+            "annualReturn": 195.66,
+            "sharpe": 1.41,
+            "maxDrawdown": -2.93,
+            "numTrades": 3,
+            "buyHoldAnnual": 330.74,
+            "vsBuyHold": -135.08
           }
         },
         {
@@ -5930,20 +6564,20 @@
           "alert": "HOLD",
           "threshold": 0.8989,
           "oos": {
-            "days": 903,
+            "days": 798,
             "precision": 0.5889,
             "baseline": 0.7544,
             "lift": -16.55,
             "f1": 0.3485,
-            "brier": 0.6774
+            "brier": 0.6775
           },
           "backtest": {
-            "annualReturn": 11.4,
-            "sharpe": 1.24,
-            "maxDrawdown": -19,
-            "numTrades": 9,
-            "buyHoldAnnual": 32,
-            "vsBuyHold": -20.6
+            "annualReturn": 599.91,
+            "sharpe": 1.73,
+            "maxDrawdown": -2.19,
+            "numTrades": 7,
+            "buyHoldAnnual": 339.4,
+            "vsBuyHold": 260.52
           }
         }
       ],
@@ -6035,8 +6669,13 @@
   "meta": {
     "modelsTrained": 0,
     "universeScreened": 188,
-    "latestDataDate": "2026-06-30",
+    "latestDataDate": "2026-07-01",
     "fredEnabled": true,
-    "elapsedSec": 0
+    "elapsedSec": 0,
+    "tickersRequested": 188,
+    "tickersFetched": 188,
+    "coveragePct": 100.0,
+    "missingSample": [],
+    "indicesFetched": 8
   }
 }

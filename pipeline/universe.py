@@ -11,6 +11,17 @@ pipeline never hard-fails on universe resolution.
 from __future__ import annotations
 
 
+# Class-share symbols appear as "BRK.B" (Wikipedia) or "BRKB" (some listings);
+# yfinance wants "BRK-B". The generic dot->dash rule can't fix the dotless
+# form, so map the S&P 500 cases explicitly.
+_US_SYMBOL_FIXES = {"BRK.B": "BRK-B", "BRKB": "BRK-B", "BF.B": "BF-B", "BFB": "BF-B"}
+
+
+def _us_symbol(raw: str) -> str:
+    sym = str(raw).strip().upper()
+    return _US_SYMBOL_FIXES.get(sym, sym.replace(".", "-"))
+
+
 def _us_sp500(size: int) -> tuple[list[str], dict[str, str]]:
     import FinanceDataReader as fdr
 
@@ -21,7 +32,7 @@ def _us_sp500(size: int) -> tuple[list[str], dict[str, str]]:
     df = df.dropna(subset=[sym_col])
     tickers, names = [], {}
     for _, row in df.head(size).iterrows():
-        sym = str(row[sym_col]).replace(".", "-").strip()  # BRK.B -> BRK-B for yfinance
+        sym = _us_symbol(row[sym_col])
         if not sym:
             continue
         tickers.append(sym)

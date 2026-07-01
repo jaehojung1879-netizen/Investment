@@ -31,6 +31,7 @@ const EXPL = {
   lift: ['lift', '“항상 상승” 기준선 대비 정밀도의 <b>초과분(%p)</b>. lift가 0에 가까우면 동전던지기와 다를 바 없으니 신뢰도를 낮춰 보세요.'],
   oos: ['OOS 정밀도', '표본 외(학습에 안 쓴 2020년 이후) 구간에서 “상승” 예측이 실제 맞은 비율. <b>n</b>은 검증 표본 수 — 작을수록 우연일 수 있으니 함께 보세요. 같은 구간 백테스트 vs B&H가 음수면 단순 보유만 못한 신호입니다.'],
   flows: ['자금 흐름 (유동성)', '<b>거래량 급증 + 상승</b> 종목을 지역별로 보여줍니다. 최근 5일 평균 거래량이 60일 평균 대비 몇 배인지(volume surge)로 돈·관심이 어디로 몰리는지 가늠합니다. 가격 모멘텀이 +인 종목만 추립니다. (기관/외국인 실제 수급이나 13F 보유는 별도 데이터 소스가 필요합니다 — 자체 데이터로 만든 프록시입니다.)'],
+  indices: ['글로벌 마켓', 'S&P 500 · 나스닥 · 다우 · 필라델피아 반도체 · 코스피 · 코스닥 · 원/달러 · VIX를 매 빌드마다 수집합니다. <b>1D</b>는 전일 대비, <b>YTD</b>는 연초 대비, <b>고점비</b>는 52주 최고가 대비 거리입니다. 미니 차트는 최근 3개월 추이(상승=녹색, 하락=적색). 기본 소스는 Yahoo Finance이며 실패 시 Stooq로 자동 대체해 지수 데이터가 끊기지 않게 했습니다.'],
 };
 const pop = $('#pop');
 let popKey = null;
@@ -112,6 +113,43 @@ const md2html = (md) => {
 const loadRules = async () => {
   try { const r = await fetch('docs/investment-philosophy.md', { cache: 'no-store' }); $('#rulesDoc').innerHTML = md2html(await r.text()); }
   catch (e) { $('#rulesDoc').textContent = e.message; }
+};
+
+// --- Global market tape (S&P 500 / NASDAQ / KOSPI ...) ---
+const nfmt = (v, d) => (v === null || v === undefined || Number.isNaN(v)) ? '—'
+  : v.toLocaleString('en-US', { minimumFractionDigits: d, maximumFractionDigits: d });
+const chg = (v, d = 2) => (v === null || v === undefined || Number.isNaN(v)) ? '—'
+  : `${v >= 0 ? '+' : ''}${v.toFixed(d)}%`;
+const sparkSvg = (vals) => {
+  if (!vals || vals.length < 2) return '';
+  const w = 116, h = 30, min = Math.min(...vals), max = Math.max(...vals), span = (max - min) || 1;
+  const pts = vals.map((v, i) =>
+    `${(i / (vals.length - 1) * w).toFixed(1)},${(h - 2 - (v - min) / span * (h - 4)).toFixed(1)}`).join(' ');
+  const up = vals[vals.length - 1] >= vals[0];
+  return `<svg class="spark ${up ? 'spark-up' : 'spark-down'}" viewBox="0 0 ${w} ${h}" width="${w}" height="${h}" aria-hidden="true"><polyline points="${pts}" fill="none" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/></svg>`;
+};
+const ixTile = (x) => {
+  const d1 = x.chg1dPct;
+  const dir = d1 == null ? '' : d1 >= 0 ? 'pos' : 'neg';
+  return `<article class="ix" title="${x.symbol} · ${x.asOf ?? ''} · ${x.source ?? ''}">
+    <div class="ix-h"><span class="ix-name">${x.name}</span><span class="ix-reg">${x.region}</span></div>
+    <div class="ix-quote"><span class="ix-last">${nfmt(x.last, x.digits ?? 2)}</span><span class="ix-chg ${dir}">${chg(d1)}</span></div>
+    ${sparkSvg(x.spark)}
+    <div class="ix-sub">
+      <span>1M <b class="${(x.chg1mPct ?? 0) >= 0 ? 'pos' : 'neg'}">${chg(x.chg1mPct, 1)}</b></span>
+      <span>YTD <b class="${(x.ytdPct ?? 0) >= 0 ? 'pos' : 'neg'}">${chg(x.ytdPct, 1)}</b></span>
+      <span>고점비 <b>${chg(x.from52wHighPct, 1)}</b></span>
+    </div>
+  </article>`;
+};
+const renderIndices = (d) => {
+  const sec = $('#indices');
+  const list = d.indices || [];
+  if (!list.length) { sec.hidden = true; return; }
+  sec.hidden = false;
+  $('#indexTape').innerHTML = list.map(ixTile).join('');
+  const asOf = list[0].asOf;
+  $('#tapeMeta').textContent = `${asOf ? '기준 ' + asOf + ' · ' : ''}미니 차트는 최근 3개월`;
 };
 
 // --- Fear & Greed (hero left) ---
@@ -267,11 +305,19 @@ const render = (d) => {
   $('#dataMeta').textContent = [
     m.latestDataDate ? `데이터 ${m.latestDataDate}` : '',
     m.universeScreened ? `유니버스 ${m.universeScreened}` : '',
+    m.coveragePct != null ? `커버리지 ${m.coveragePct}%` : '',
     m.modelsTrained ? `모델 ${m.modelsTrained}회 학습` : '',
   ].filter(Boolean).join(' · ');
   if (d.generatedAt) $('#dataGenerated').textContent = '생성 ' + new Date(d.generatedAt).toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' }) + ' KST';
   const sb = $('#staleBanner');
-  if (d.stale) { sb.hidden = false; sb.textContent = `⚠️ 데이터 갱신 실패 — 이전 빌드 결과입니다${m.buildError ? ' (' + m.buildError + ')' : ''}`; } else sb.hidden = true;
+  if (d.stale) {
+    sb.hidden = false; sb.classList.remove('warn');
+    sb.textContent = `⚠️ 데이터 갱신 실패 — 이전 빌드 결과입니다${m.buildError ? ' (' + m.buildError + ')' : ''}`;
+  } else if (m.coveragePct != null && m.coveragePct < 85) {
+    sb.hidden = false; sb.classList.add('warn');
+    sb.textContent = `⚠️ 데이터 일부 누락 — 유니버스 커버리지 ${m.coveragePct}% (${m.tickersFetched}/${m.tickersRequested}). 순위·심리 지표는 수집된 종목 기준입니다.`;
+  } else { sb.hidden = true; sb.classList.remove('warn'); }
+  renderIndices(d);
   renderPosture(d.sentiment);
   renderTopPicks(d);
   renderIdeas(d);

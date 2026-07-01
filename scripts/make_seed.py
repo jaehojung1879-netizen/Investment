@@ -107,13 +107,27 @@ def main() -> int:
                  "mom63": round((r["mom63"] or 0) * 100, 1), "regime": r["regime"]}
                 for r in screened if r["region"] == region and r.get("volSurge") and (r.get("mom63") or 0) > 0]
         flows[region] = sorted(cand, key=lambda x: x["volSurge"], reverse=True)[:6]
+    from pipeline import indices as indices_mod
+    idx_dates = dates[-320:]
+    seed_indices = []
+    for j, spec in enumerate(indices_mod.SPEC):
+        base = [6200, 20300, 44600, 5200, 2800, 850, 1370, 17][j % 8]
+        walk = np.cumsum(np.random.default_rng(100 + j).normal(0.0004, 0.01, len(idx_dates)))
+        close = pd.Series(base * np.exp(walk), index=idx_dates)
+        row = indices_mod.summarize_close(spec, close, "SEED")
+        if row:
+            seed_indices.append(row)
+
     payload = {"generatedAt": datetime.now(timezone.utc).isoformat(), "portfolioName": cfg.portfolio_name,
                "primary": cfg.primary, "benchmark": cfg.benchmark, "horizons": cfg.horizons, "tradeHorizon": th,
                "names": resolved_names, "seed": True, "stale": False, "dataSource": "SEED (예시) — 합성 데이터",
+               "indices": seed_indices,
                "tradeIdeas": trade_mod.rank_ideas(ideas), "screened": screen_table, "details": details, "flows": flows, "sentiment": sent,
                "core": core_cards, "macro": macro_mod.summarize(macro, vix),
                "meta": {"modelsTrained": 0, "universeScreened": len(screened),
-                        "latestDataDate": dates[-1].strftime("%Y-%m-%d"), "fredEnabled": True, "elapsedSec": 0}}
+                        "latestDataDate": dates[-1].strftime("%Y-%m-%d"), "fredEnabled": True, "elapsedSec": 0,
+                        "tickersRequested": len(all_t), "tickersFetched": len(all_t), "coveragePct": 100.0,
+                        "missingSample": [], "indicesFetched": len(seed_indices)}}
     out = ROOT / "data" / "site-data.json"
     out.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(f"wrote {out}: {len(core_cards)} core, {len(ideas)} ideas, {len(screened)} screened")
