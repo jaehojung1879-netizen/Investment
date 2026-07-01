@@ -57,9 +57,12 @@
           <div><div class="col-h">국내 (KR)</div><div id="tradeKR" class="idea-list"></div></div>
           <div><div class="col-h">국외 (US)</div><div id="tradeUS" class="idea-list"></div></div>
         </div>
+        <p class="caveat muted">⚠️ 수백 종목을 동시에 스캔하면 상위에 <b>우연한 고득점(거짓 양성)</b>이 섞입니다. 비용·확신·국면 게이트로 걸렀지만, 단일 종목 올인 대신 분산하고 표본수(n)·근거를 함께 확인하세요.</p>
         <details class="screen">
           <summary>전체 스크리닝 결과 <span id="screenCount" class="muted"></span></summary>
+          <input id="screenSearch" class="search" type="search" placeholder="종목 검색 — 티커 또는 이름 (예: NVDA, 삼성)" autocomplete="off" />
           <div id="screenTable" class="screen-table"></div>
+          <div id="screenEmpty" class="none" hidden>검색 결과 없음</div>
         </details>
       </section>
 
