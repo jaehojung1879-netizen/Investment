@@ -110,20 +110,36 @@ def main() -> int:
     from pipeline import indices as indices_mod
     idx_dates = dates[-320:]
     seed_indices = []
+    idx_bases = [6200, 20300, 44600, 5200, 2800, 850, 1370, 17, 105000, 3300, 104]
     for j, spec in enumerate(indices_mod.SPEC):
-        base = [6200, 20300, 44600, 5200, 2800, 850, 1370, 17][j % 8]
+        base = idx_bases[j % len(idx_bases)]
         walk = np.cumsum(np.random.default_rng(100 + j).normal(0.0004, 0.01, len(idx_dates)))
         close = pd.Series(base * np.exp(walk), index=idx_dates)
         row = indices_mod.summarize_close(spec, close, "SEED")
         if row:
             seed_indices.append(row)
 
+    # Direction compass + rotation on synthetic closes (no network in seed).
+    from pipeline import direction as direction_mod
+    from pipeline import rotation as rotation_mod
+    dir_symbols = [a["ticker"] for a in direction_mod.ASSETS] + list(direction_mod.TILT.values())
+    rot_symbols = [t for t, _ in rotation_mod.US_SECTORS + rotation_mod.KR_SECTORS + rotation_mod.FACTORS]
+    rot_symbols += [rotation_mod.US_BENCH, rotation_mod.KR_BENCH]
+    seed_closes = {}
+    for j, sym in enumerate(dict.fromkeys(dir_symbols + rot_symbols)):
+        walk = np.cumsum(np.random.default_rng(500 + j).normal(0.0003 + (j % 5) * 0.0001, 0.011, n))
+        seed_closes[sym] = pd.Series(100 * np.exp(walk), index=dates)
+    macro_summary = macro_mod.summarize(macro, vix)
+    direction = direction_mod.build(sentiment=sent, macro_summary=macro_summary,
+                                    indices=seed_indices, closes=seed_closes)
+    rotation = rotation_mod.build(closes=seed_closes)
+
     payload = {"generatedAt": datetime.now(timezone.utc).isoformat(), "portfolioName": cfg.portfolio_name,
                "primary": cfg.primary, "benchmark": cfg.benchmark, "horizons": cfg.horizons, "tradeHorizon": th,
                "names": resolved_names, "seed": True, "stale": False, "dataSource": "SEED (예시) — 합성 데이터",
-               "indices": seed_indices,
+               "indices": seed_indices, "direction": direction, "rotation": rotation,
                "tradeIdeas": trade_mod.rank_ideas(ideas), "screened": screen_table, "details": details, "flows": flows, "sentiment": sent,
-               "core": core_cards, "macro": macro_mod.summarize(macro, vix),
+               "core": core_cards, "macro": macro_summary,
                "meta": {"modelsTrained": 0, "universeScreened": len(screened),
                         "latestDataDate": dates[-1].strftime("%Y-%m-%d"), "fredEnabled": True, "elapsedSec": 0,
                         "tickersRequested": len(all_t), "tickersFetched": len(all_t), "coveragePct": 100.0,

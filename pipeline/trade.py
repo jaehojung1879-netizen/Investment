@@ -20,6 +20,23 @@ import pandas as pd
 # more heavily, so its hurdle is higher.
 COST_HURDLE = {"US": 0.004, "KR": 0.007}
 CONVICTION_FLOOR = 0.55
+MAX_POSITION_WEIGHT = 0.10  # cap any single idea at 10% of the book
+
+
+def suggested_weight(prob_up: float, up_mean: float, down_mean: float) -> float | None:
+    """Half-Kelly position size, capped.
+
+    Full Kelly f* = p − (1−p)/b with b = avg win / avg loss maximizes log
+    growth but assumes the probabilities are exact; since ours are model
+    estimates, half-Kelly is the standard haircut. Returns a fraction of
+    capital in [0, MAX_POSITION_WEIGHT], or None if move sizes are degenerate.
+    """
+    if up_mean <= 0 or down_mean >= 0:
+        return None
+    b = up_mean / abs(down_mean)
+    kelly = prob_up - (1 - prob_up) / b
+    half = kelly / 2
+    return max(0.0, min(MAX_POSITION_WEIGHT, half))
 
 
 def expected_value(prob_up: float, up_mean: float, down_mean: float) -> float:
@@ -63,10 +80,12 @@ def build_idea(
         return None
 
     hold_until = (pd.Timestamp(last_date) + pd.tseries.offsets.BDay(horizon)).strftime("%Y-%m-%d")
+    weight = suggested_weight(prob_up, stats["upMean"], stats["downMean"])
     return {
         "ticker": ticker,
         "region": region,
         "probUp": round(prob_up, 4),
+        "suggestedWeightPct": round(weight * 100, 1) if weight is not None else None,
         "expMovePct": round(ev * 100, 2),
         "edgeNetPct": round(ev_net * 100, 2),
         "horizon": horizon,

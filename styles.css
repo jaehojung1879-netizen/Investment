@@ -35,7 +35,7 @@ a { color: inherit; text-decoration: none; }
 .brand strong { font-family: var(--serif); font-size: 1.12rem; font-weight: 600; letter-spacing: 0.01em; }
 .brand .muted { font-size: 0.78rem; }
 .nav { display: flex; gap: 4px; margin-left: 8px; }
-.nav a { padding: 6px 12px; border-radius: 8px; color: var(--muted); font-size: 0.86rem; font-weight: 600; }
+.nav a { padding: 6px 9px; border-radius: 8px; color: var(--muted); font-size: 0.84rem; font-weight: 600; white-space: nowrap; }
 .nav a:hover { color: var(--text); background: rgba(255,255,255,0.05); }
 .freshness { margin-left: auto; display: flex; flex-direction: column; align-items: flex-end; gap: 1px; font-size: 0.72rem; line-height: 1.35; text-align: right; }
 
@@ -60,6 +60,68 @@ a { color: inherit; text-decoration: none; }
 .spark-down polyline { stroke: var(--red); }
 .ix-sub { display: flex; gap: 4px 10px; flex-wrap: wrap; font-size: 0.66rem; color: var(--muted); font-variant-numeric: tabular-nums; }
 .ix-sub b { font-weight: 700; color: var(--text); }
+
+/* Investment direction compass */
+.dir-sec { padding: 26px 0 6px; }
+.dir-grid { display: grid; grid-template-columns: 340px 1fr; gap: 16px; }
+.dir-verdict { background: linear-gradient(160deg, var(--surface-2), var(--surface)); border: 1px solid rgba(216,179,106,0.35); border-radius: var(--r); padding: 20px; }
+.dir-stance-row { display: flex; align-items: baseline; gap: 10px; margin: 12px 0 6px; }
+.dir-stance { font-family: var(--serif); font-size: 1.7rem; font-weight: 700; letter-spacing: -0.01em; }
+.dir-read { color: var(--muted); font-size: 0.86rem; line-height: 1.6; margin: 10px 0 14px; }
+.alloc-bar { display: flex; height: 14px; border-radius: 999px; overflow: hidden; background: rgba(255,255,255,0.06); }
+.alloc-bar i { display: block; height: 100%; }
+.alloc-bar .eq { background: linear-gradient(90deg, var(--accent), var(--green)); }
+.alloc-bar .cash { background: rgba(255,255,255,0.12); }
+.alloc-legend { display: flex; gap: 16px; margin-top: 8px; font-size: 0.78rem; color: var(--muted); }
+.alloc-legend .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 5px; }
+.alloc-legend .dot-eq { background: var(--green); }
+.alloc-legend .dot-cash { background: rgba(255,255,255,0.25); }
+.dir-note { margin: 12px 0 0; font-size: 0.72rem; color: var(--muted); line-height: 1.5; }
+.dir-right { min-width: 0; display: grid; gap: 12px; align-content: start; }
+.dir-signals { display: grid; grid-template-columns: repeat(auto-fit, minmax(215px, 1fr)); gap: 10px; }
+.dsig { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 11px 13px; }
+.dsig-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 6px; }
+.dsig-name { font-size: 0.78rem; font-weight: 700; }
+.dsig-detail { font-size: 0.72rem; color: var(--muted); line-height: 1.5; }
+.dm-box { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; }
+.dm-h { font-size: 0.78rem; font-weight: 700; color: var(--muted); margin-bottom: 8px; }
+.dm-table { font-variant-numeric: tabular-nums; }
+.dm-row { display: grid; grid-template-columns: 1.8fr 0.7fr 0.7fr 0.7fr; gap: 8px; padding: 5px 0; font-size: 0.8rem; border-top: 1px dashed var(--line); align-items: baseline; }
+.dm-row:first-child { border-top: 0; }
+.dm-row.dm-h2 { color: var(--muted); font-size: 0.7rem; font-weight: 800; letter-spacing: 0.06em; }
+.dm-row.dm-win .dm-name { color: var(--gold); font-weight: 700; }
+.dm-note { grid-column: 1/-1; font-size: 0.7rem; margin-top: 6px; }
+
+/* Sector rotation (RRG) + factors */
+.rrg-wrap { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 12px; }
+.rrg { display: block; width: 100%; height: auto; }
+.rrg-q { fill: transparent; }
+.rrg-q-lead { fill: rgba(46,230,160,0.045); }
+.rrg-q-weak { fill: rgba(216,179,106,0.045); }
+.rrg-q-impr { fill: rgba(78,168,255,0.045); }
+.rrg-q-lag { fill: rgba(255,107,138,0.045); }
+.rrg-ax { stroke: rgba(255,255,255,0.16); stroke-width: 1; }
+.rrg-ql { font-size: 11px; font-weight: 800; letter-spacing: 0.08em; }
+.rrg-lb { font-size: 10px; fill: var(--text); opacity: 0.85; }
+.rrg-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+.rchip { font-size: 0.72rem; padding: 3px 9px; border-radius: 999px; border: 1px solid var(--line-2); color: var(--muted); }
+.rchip b { font-weight: 800; }
+.rchip em { font-style: normal; opacity: 0.85; }
+.rchip.q-lead { color: var(--green); border-color: rgba(46,230,160,0.4); background: rgba(46,230,160,0.07); }
+.rchip.q-weak { color: var(--gold); border-color: rgba(216,179,106,0.4); background: rgba(216,179,106,0.07); }
+.rchip.q-impr { color: var(--accent); border-color: rgba(78,168,255,0.4); background: rgba(78,168,255,0.07); }
+.rchip.q-lag { color: var(--red); border-color: rgba(255,107,138,0.4); background: rgba(255,107,138,0.07); }
+.factor-panel { margin-top: 16px; }
+.factor-list { display: grid; gap: 8px; }
+.frow { display: grid; grid-template-columns: 1.1fr 1.6fr 1.6fr; gap: 12px; align-items: center; font-size: 0.8rem; }
+.f-name { font-weight: 700; }
+.f-bar { position: relative; height: 10px; border-radius: 999px; background: rgba(255,255,255,0.07); overflow: hidden; }
+.f-bar::before { content: ""; position: absolute; left: 50%; top: 0; bottom: 0; width: 1px; background: rgba(255,255,255,0.22); }
+.f-bar i { position: absolute; top: 0; bottom: 0; border-radius: 999px; }
+.f-bar .fpos { background: var(--green); }
+.f-bar .fneg { background: var(--red); }
+.f-nums { color: var(--muted); font-variant-numeric: tabular-nums; }
+.f-nums b { font-weight: 700; }
 
 /* HERO */
 .hero { display: grid; grid-template-columns: 340px 1fr; gap: 20px; padding: 28px 0 8px; }
@@ -222,6 +284,8 @@ a { color: inherit; text-decoration: none; }
   .brand strong { font-size: 0.98rem; white-space: nowrap; }
   .freshness { display: none; }
   .hero { grid-template-columns: 1fr; }
+  .dir-grid { grid-template-columns: 1fr; }
+  .frow { grid-template-columns: 1fr; gap: 4px; }
   .cols2, .market-grid { grid-template-columns: 1fr; }
   .nav { display: none; }
   .hrow { grid-template-columns: 1.3fr 0.8fr 1fr; }
