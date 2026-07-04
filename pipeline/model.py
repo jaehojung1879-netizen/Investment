@@ -134,6 +134,14 @@ def walk_forward(
     return res
 
 
+def _horizon_of(target_col: str) -> int:
+    """Extract the horizon (days) from a target column name like 'target_10d'."""
+    try:
+        return int(target_col.removeprefix("target_").removesuffix("d"))
+    except ValueError:
+        return 0
+
+
 def current_signal(
     data: pd.DataFrame,
     feature_cols: list[str],
@@ -143,17 +151,20 @@ def current_signal(
     """Predict today's calibrated UP-probability.
 
     The calibration window is held out of training (see walk_forward) so the
-    live probability is calibrated out-of-sample rather than in-sample.
+    live probability is calibrated out-of-sample rather than in-sample, and an
+    embargo of `horizon` rows separates the fit block from the calibration
+    block so the fit block's forward-looking targets never overlap it.
     """
     feat = data.dropna(subset=feature_cols)
     if feat.empty:
         return None
     train_all = feat.dropna(subset=[target_col])
     cal_w = cfg.calibration_window
-    if len(train_all) <= cfg.min_train_days + cal_w or train_all[target_col].nunique() < 2:
+    horizon = _horizon_of(target_col)
+    if len(train_all) <= cfg.min_train_days + cal_w + horizon or train_all[target_col].nunique() < 2:
         return None
 
-    fit_part = train_all.iloc[:-cal_w]
+    fit_part = train_all.iloc[: -(cal_w + horizon)]
     cal = train_all.iloc[-cal_w:]
     if fit_part[target_col].nunique() < 2:
         return None
@@ -241,10 +252,8 @@ def backtest(
     capital = float(initial_capital)
     position = 0
     shares = 0.0
-    entry_price = 0.0
     values: list[dict] = []
     n_trades = 0
-    OVERFLOW = 1e15
 
     closes = df["Close"].values
     opens = df["Open"].values
@@ -259,26 +268,19 @@ def backtest(
         if position == 0 and signal == 1:
             entry_price = next_open * (1 + slippage)
             shares = (capital - commission) / entry_price
-            capital -= commission
+            capital -= shares * entry_price + commission
             position = 1
             n_trades += 1
         elif position == 1 and signal == 0:
             exit_price = next_open * (1 - slippage)
-            pnl = (exit_price - entry_price) * shares
-            capital = capital + shares * entry_price + pnl - commission
+            capital += shares * exit_price - commission
             position = 0
             shares = 0.0
 
-        value = capital + shares * close if position == 1 else capital
-        if value > OVERFLOW:
-            value = initial_capital
-            break
-        values.append({"date": index[i], "value": value, "position": position})
+        values.append({"date": index[i], "value": capital + shares * close, "position": position})
 
     if position == 1:
-        exit_price = closes[-1] * (1 - slippage)
-        pnl = (exit_price - entry_price) * shares
-        capital = capital + shares * entry_price + pnl - commission
+        capital += shares * closes[-1] * (1 - slippage) - commission
 
     pv = pd.DataFrame(values).set_index("date")
     total_return = (capital - initial_capital) / initial_capital

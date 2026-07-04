@@ -31,7 +31,12 @@ const EXPL = {
   lift: ['lift', '“항상 상승” 기준선 대비 정밀도의 <b>초과분(%p)</b>. lift가 0에 가까우면 동전던지기와 다를 바 없으니 신뢰도를 낮춰 보세요.'],
   oos: ['OOS 정밀도', '표본 외(학습에 안 쓴 2020년 이후) 구간에서 “상승” 예측이 실제 맞은 비율. <b>n</b>은 검증 표본 수 — 작을수록 우연일 수 있으니 함께 보세요. 같은 구간 백테스트 vs B&H가 음수면 단순 보유만 못한 신호입니다.'],
   flows: ['자금 흐름 (유동성)', '<b>거래량 급증 + 상승</b> 종목을 지역별로 보여줍니다. 최근 5일 평균 거래량이 60일 평균 대비 몇 배인지(volume surge)로 돈·관심이 어디로 몰리는지 가늠합니다. 가격 모멘텀이 +인 종목만 추립니다. (기관/외국인 실제 수급이나 13F 보유는 별도 데이터 소스가 필요합니다 — 자체 데이터로 만든 프록시입니다.)'],
-  indices: ['글로벌 마켓', 'S&P 500 · 나스닥 · 다우 · 필라델피아 반도체 · 코스피 · 코스닥 · 원/달러 · VIX를 매 빌드마다 수집합니다. <b>1D</b>는 전일 대비, <b>YTD</b>는 연초 대비, <b>고점비</b>는 52주 최고가 대비 거리입니다. 미니 차트는 최근 3개월 추이(상승=녹색, 하락=적색). 기본 소스는 Yahoo Finance이며 실패 시 Stooq로 자동 대체해 지수 데이터가 끊기지 않게 했습니다.'],
+  direction: ['투자 나침반', '4가지 <b>규칙 기반 자산배분 도구</b>를 하나의 방향성으로 합성합니다: ① 듀얼 모멘텀(12개월 절대+상대 모멘텀, GEM) ② 변동성 타게팅(실현변동성 대비 목표 12%로 주식 노출 기계적 산출) ③ 시장 추세·심리·매크로 ④ KR/US 상대 모멘텀 틸트. 점수 60↑ 확대, 45~60 중립, 45↓ 방어입니다. <b>기계적 참고선이지 투자 조언이 아닙니다</b> — 개인의 위험 성향·현금 흐름에 맞게 조정하세요.'],
+  dualmom: ['듀얼 모멘텀 (GEM)', 'Gary Antonacci의 Global Equities Momentum 규칙입니다. <b>절대 모멘텀</b>: 주식의 12개월 수익률이 현금(T-Bill)보다 높을 때만 주식 보유. <b>상대 모멘텀</b>: 미국·선진국·신흥국 중 12개월 수익률 1위를 선택. 허들 미달이면 채권·금 같은 방어자산으로 이동합니다. 단순하지만 대형 하락장 회피에 오랜 실증이 있는 규칙입니다(후행성 있음 — 바닥·천장을 못 맞춥니다).'],
+  rotation: ['섹터 로테이션 (RRG)', 'Relative Rotation Graph 방식의 4사분면입니다. 가로축은 <b>상대강도 비율</b>(섹터/벤치마크 상대강도선이 자기 3개월 평균 대비 어디), 세로축은 <b>상대강도 모멘텀</b>(상대강도선의 1개월 변화)입니다. <b>주도</b>(강하고 더 강해짐)→<b>약화</b>(강하지만 식는 중)→<b>부진</b>(약하고 더 약해짐)→<b>개선</b>(약하지만 회복 중) 순으로 시계방향 순환하는 경향이 있어, 돈이 어느 섹터로 도는지 보여줍니다. 공개 산식의 근사치입니다.'],
+  factor: ['팩터 · 스타일 모멘텀', '모멘텀(MTUM)·가치(VLUE)·퀄리티(QUAL)·저변동(USMV)·소형주(IWM) ETF의 S&P500 대비 <b>초과수익(1·3·6개월)</b>입니다. 시장이 지금 어떤 성격의 주식에 프리미엄을 주는지 보여줍니다. 예: 저변동·퀄리티 우위면 방어 국면, 모멘텀·소형주 우위면 위험 선호 국면.'],
+  size: ['제안 비중 (½켈리)', '<code>켈리 f* = p − (1−p)/b</code> (b = 평균 상승폭/평균 하락폭). 켈리 기준은 장기 복리 성장을 최대화하는 베팅 비율이지만 확률 추정 오차에 민감해, 관행대로 <b>절반(½켈리)</b>만 쓰고 종목당 10%로 상한을 둡니다. 총 노출은 나침반의 권장 주식 비중 안에서 배분하세요.'],
+  indices: ['글로벌 마켓', 'S&P 500 · 나스닥 · 다우 · 필라델피아 반도체 · 코스피 · 코스닥 · 원/달러 · VIX · 비트코인 · 금 · 달러인덱스를 매 빌드마다 수집합니다. <b>1D</b>는 전일 대비, <b>YTD</b>는 연초 대비, <b>고점비</b>는 52주 최고가 대비 거리입니다. 미니 차트는 최근 3개월 추이(상승=녹색, 하락=적색). 기본 소스는 Yahoo Finance이며 실패 시 Stooq로 자동 대체해 지수 데이터가 끊기지 않게 했습니다.'],
 };
 const pop = $('#pop');
 let popKey = null;
@@ -152,6 +157,110 @@ const renderIndices = (d) => {
   $('#tapeMeta').textContent = `${asOf ? '기준 ' + asOf + ' · ' : ''}미니 차트는 최근 3개월`;
 };
 
+// --- Investment direction compass ---
+const dirSignal = (s) => `
+  <div class="dsig">
+    <div class="dsig-top"><span class="dsig-name">${s.name}</span><span class="reg ${s.cls}">${s.state}</span></div>
+    <div class="dsig-detail">${s.detail || ''}</div>
+  </div>`;
+const dmRow = (r, winner) => {
+  const cell = (v) => `<span class="${(v ?? 0) >= 0 ? 'pos' : 'neg'}">${chg(v, 1)}</span>`;
+  return `<div class="dm-row ${r.ticker === winner ? 'dm-win' : ''}">
+    <span class="dm-name">${r.ticker === winner ? '★ ' : ''}${r.name} <span class="tk">${r.ticker}</span></span>
+    <span>${cell(r.ret3mPct)}</span><span>${cell(r.ret6mPct)}</span><span>${cell(r.ret12mPct)}</span>
+  </div>`;
+};
+const renderDirection = (dir) => {
+  const sec = $('#direction');
+  if (!dir) { sec.hidden = true; return; }
+  sec.hidden = false;
+  $('#dirMeta').textContent = '듀얼 모멘텀 · 변동성 타게팅 · 추세 · 심리 · 매크로 합성';
+  const vt = dir.volTarget;
+  $('#dirVerdict').innerHTML = `
+    <div class="overline">지금의 방향</div>
+    <div class="dir-stance-row"><span class="dir-stance">${dir.stance}</span><span class="posture-score reg ${dir.stanceCls}">${dir.score}</span></div>
+    <div class="gauge"><i class="${dir.stanceCls}" style="width:${dir.score}%"></i></div>
+    <p class="dir-read">${dir.headline || ''}</p>
+    <div class="alloc">
+      <div class="alloc-bar"><i class="eq" style="width:${dir.equityPct}%"></i><i class="cash" style="width:${dir.cashPct}%"></i></div>
+      <div class="alloc-legend"><span><i class="dot dot-eq"></i>주식 ${dir.equityPct}%</span><span><i class="dot dot-cash"></i>현금·방어 ${dir.cashPct}%</span></div>
+    </div>
+    ${vt ? `<p class="dir-note">변동성 타게팅: 실현 ${vt.realizedVolPct}% vs 목표 ${vt.targetVolPct}% → 노출 상한 ${vt.suggestedExposurePct}%</p>` : ''}`;
+  $('#dirSignals').innerHTML = (dir.signals || []).map(dirSignal).join('');
+  const dm = dir.dualMomentum;
+  const box = document.querySelector('.dm-box');
+  if (!dm || !dm.rows || !dm.rows.length) { if (box) box.hidden = true; }
+  else {
+    if (box) box.hidden = false;
+    $('#dualMomTable').innerHTML =
+      `<div class="dm-row dm-h2"><span>자산</span><span>3M</span><span>6M</span><span>12M</span></div>` +
+      dm.rows.map((r) => dmRow(r, dm.winner)).join('') +
+      `<div class="dm-note muted">★ 12개월 수익률 기준 선호 자산 · 현금(T-Bill) 허들 ${dm.cash12mPct != null ? chg(dm.cash12mPct, 1) : '—'} ${dm.equitiesWin ? '통과 → 주식 우위' : '미달 → 방어자산 우위'}</div>`;
+  }
+};
+
+// --- Sector rotation (RRG quadrants) + factor momentum ---
+const QUAD = {
+  '주도': { cls: 'q-lead', color: 'var(--green)' },
+  '약화': { cls: 'q-weak', color: 'var(--gold)' },
+  '개선': { cls: 'q-impr', color: 'var(--accent)' },
+  '부진': { cls: 'q-lag', color: 'var(--red)' },
+};
+const rrgSvg = (sectors) => {
+  const W = 400, H = 300, pad = 10;
+  const cx = W / 2, cy = H / 2;
+  const maxX = Math.max(2, ...sectors.map((s) => Math.abs(s.rsRatio))) * 1.25;
+  const maxY = Math.max(2, ...sectors.map((s) => Math.abs(s.rsMom))) * 1.25;
+  const X = (v) => cx + (v / maxX) * (W / 2 - pad);
+  const Y = (v) => cy - (v / maxY) * (H / 2 - pad);
+  const dots = sectors.map((s) => {
+    const x = X(s.rsRatio), y = Y(s.rsMom), c = (QUAD[s.quadrant] || {}).color || 'var(--muted)';
+    const anchor = x > W - 60 ? 'end' : 'start';
+    return `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="4.5" fill="${c}" fill-opacity="0.9"><title>${s.name} · ${s.quadrant} · RS비율 ${s.rsRatio} · RS모멘텀 ${s.rsMom}</title></circle>
+      <text x="${(x + (anchor === 'end' ? -7 : 7)).toFixed(1)}" y="${(y + 3.5).toFixed(1)}" text-anchor="${anchor}" class="rrg-lb">${s.name}</text>`;
+  }).join('');
+  return `<svg viewBox="0 0 ${W} ${H}" class="rrg" role="img" aria-label="섹터 로테이션 사분면">
+    <rect x="${cx}" y="0" width="${cx}" height="${cy}" class="rrg-q rrg-q-lead"/>
+    <rect x="${cx}" y="${cy}" width="${cx}" height="${cy}" class="rrg-q rrg-q-weak"/>
+    <rect x="0" y="0" width="${cx}" height="${cy}" class="rrg-q rrg-q-impr"/>
+    <rect x="0" y="${cy}" width="${cx}" height="${cy}" class="rrg-q rrg-q-lag"/>
+    <line x1="0" y1="${cy}" x2="${W}" y2="${cy}" class="rrg-ax"/>
+    <line x1="${cx}" y1="0" x2="${cx}" y2="${H}" class="rrg-ax"/>
+    <text x="${W - 8}" y="14" text-anchor="end" class="rrg-ql" fill="var(--green)">주도</text>
+    <text x="${W - 8}" y="${H - 6}" text-anchor="end" class="rrg-ql" fill="var(--gold)">약화</text>
+    <text x="8" y="14" class="rrg-ql" fill="var(--accent)">개선</text>
+    <text x="8" y="${H - 6}" class="rrg-ql" fill="var(--red)">부진</text>
+    ${dots}
+  </svg>`;
+};
+const rrgChips = (sectors) => sectors.map((s) =>
+  `<span class="rchip ${(QUAD[s.quadrant] || {}).cls || ''}" title="RS비율 ${s.rsRatio} · RS모멘텀 ${s.rsMom}">${s.name} <b>${s.quadrant}</b> <em>${chg(s.ret3mPct, 1)}</em></span>`).join('');
+const renderRegionRrg = (el, region) => {
+  const host = $(el);
+  if (!region || !region.sectors || !region.sectors.length) { host.innerHTML = '<div class="none">데이터 없음</div>'; return; }
+  host.innerHTML = rrgSvg(region.sectors) + `<div class="rrg-chips">${rrgChips(region.sectors)}</div>`;
+};
+const factorRow = (f) => {
+  const v = f.ex3mPct ?? 0;
+  const w = Math.min(50, Math.abs(v) * 6);
+  return `<div class="frow">
+    <span class="f-name">${f.name} <span class="tk">${f.ticker}</span></span>
+    <span class="f-bar"><i class="${v >= 0 ? 'fpos' : 'fneg'}" style="${v >= 0 ? 'left:50%' : 'right:50%'};width:${w}%"></i></span>
+    <span class="f-nums">1M <b class="${(f.ex1mPct ?? 0) >= 0 ? 'pos' : 'neg'}">${chg(f.ex1mPct, 1)}</b> · 3M <b class="${v >= 0 ? 'pos' : 'neg'}">${chg(f.ex3mPct, 1)}</b> · 6M <b class="${(f.ex6mPct ?? 0) >= 0 ? 'pos' : 'neg'}">${chg(f.ex6mPct, 1)}</b></span>
+  </div>`;
+};
+const renderRotation = (rot) => {
+  const sec = $('#rotation');
+  if (!rot || (!rot.US && !rot.KR && !(rot.factors || []).length)) { sec.hidden = true; return; }
+  sec.hidden = false;
+  $('#rotMeta').textContent = `${rot.asOf ? '기준 ' + rot.asOf + ' · ' : ''}가로: 상대강도 비율 · 세로: 상대강도 모멘텀`;
+  renderRegionRrg('#rrgUS', rot.US);
+  renderRegionRrg('#rrgKR', rot.KR);
+  const fp = $('#factorPanel');
+  if ((rot.factors || []).length) { fp.hidden = false; $('#factorBars').innerHTML = rot.factors.map(factorRow).join(''); }
+  else fp.hidden = true;
+};
+
 // --- Fear & Greed (hero left) ---
 const postureCls = (s) => fgCls(s);
 const regBadgeCls = (s) => s == null ? 'trans' : s < 45 ? 'bear' : s < 55 ? 'trans' : 'bull';
@@ -192,6 +301,7 @@ const pickCard = (i, rank) => `
     <div class="pick-meta">
       <span>기대 <b>${sp(i.expMovePct)}</b></span>
       <span data-x="edge">edge <b>${sp(i.edgeNetPct)}</b></span>
+      ${i.suggestedWeightPct != null ? `<span data-x="size">비중 <b>~${i.suggestedWeightPct}%</b></span>` : ''}
       <span>${term('hold', '보유')} <b>~${i.holdUntil}</b></span>
     </div>
     <div class="pick-why">${i.why || ''}</div>
@@ -213,7 +323,7 @@ const ideaRow = (i) => `
   <div class="idea">
     <div class="idea-top"><strong class="tklink" data-tk="${i.ticker}">${tkName(i.ticker)}</strong>${tkSub(i.ticker)}<span class="reg ${regCls(i.regime)}">${regKo(i.regime)}</span><span class="edge" data-x="edge">edge ${sp(i.edgeNetPct)}</span></div>
     <div class="idea-bar"><i style="width:${Math.round((i.probUp ?? 0) * 100)}%"></i></div>
-    <div class="idea-meta"><span>${term('prob', '확률')} <b>${pct0(i.probUp)}</b></span><span>기대 <b>${sp(i.expMovePct)}</b></span><span>${term('hold', '보유')} <b>~${i.holdUntil}</b> (${i.horizon}D)</span></div>
+    <div class="idea-meta"><span>${term('prob', '확률')} <b>${pct0(i.probUp)}</b></span><span>기대 <b>${sp(i.expMovePct)}</b></span>${i.suggestedWeightPct != null ? `<span data-x="size">비중 <b>~${i.suggestedWeightPct}%</b></span>` : ''}<span>${term('hold', '보유')} <b>~${i.holdUntil}</b> (${i.horizon}D)</span></div>
     <div class="idea-why">${i.why || ''}</div>
     <div class="idea-inv">${i.invalidation}</div>
   </div>`;
@@ -318,6 +428,8 @@ const render = (d) => {
     sb.textContent = `⚠️ 데이터 일부 누락 — 유니버스 커버리지 ${m.coveragePct}% (${m.tickersFetched}/${m.tickersRequested}). 순위·심리 지표는 수집된 종목 기준입니다.`;
   } else { sb.hidden = true; sb.classList.remove('warn'); }
   renderIndices(d);
+  renderDirection(d.direction);
+  renderRotation(d.rotation);
   renderPosture(d.sentiment);
   renderTopPicks(d);
   renderIdeas(d);

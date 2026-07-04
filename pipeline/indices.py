@@ -24,6 +24,9 @@ SPEC = [
     {"symbol": "^KQ11", "name": "코스닥", "region": "KR", "stooq": None, "digits": 2},
     {"symbol": "KRW=X", "name": "원/달러", "region": "FX", "stooq": "usdkrw", "digits": 1},
     {"symbol": "^VIX", "name": "VIX", "region": "US", "stooq": None, "digits": 2},
+    {"symbol": "BTC-USD", "name": "비트코인", "region": "CRYPTO", "stooq": "btcusd", "digits": 0},
+    {"symbol": "GC=F", "name": "금 (선물)", "region": "CMDTY", "stooq": "xauusd", "digits": 1},
+    {"symbol": "DX-Y.NYB", "name": "달러인덱스", "region": "FX", "stooq": None, "digits": 2},
 ]
 
 SPARK_POINTS = 63  # ~3 months of trading days

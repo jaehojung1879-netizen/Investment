@@ -16,11 +16,13 @@ import traceback
 import warnings
 from datetime import datetime, timezone
 
+from . import direction as direction_mod
 from . import features as F
 from . import indices as indices_mod
 from . import macro as macro_mod
 from . import model as M
 from . import risk as risk_mod
+from . import rotation as rotation_mod
 from . import sentiment as sentiment_mod
 from . import trade as trade_mod
 from . import universe as universe_mod
@@ -175,6 +177,21 @@ def run(cfg) -> dict:
             print(f"  error on {ticker}: {exc}")
 
     sentiment = sentiment_mod.summarize(screened, macro, vix)
+    macro_summary = macro_mod.summarize(macro, vix)
+
+    # Direction compass + sector/factor rotation are additive tools; a failed
+    # download must never take the whole build down with it.
+    try:
+        direction = direction_mod.build(sentiment=sentiment, macro_summary=macro_summary,
+                                        indices=market_indices)
+    except Exception as exc:
+        print(f"  warning: direction compass failed: {exc}")
+        direction = None
+    try:
+        rotation = rotation_mod.build()
+    except Exception as exc:
+        print(f"  warning: rotation failed: {exc}")
+        rotation = None
     # Trim breadth helper fields out of the stored screen table.
     screen_table = [
         {k: r[k] for k in ("ticker", "region", "probUp", "regime", "qualifies")}
@@ -203,13 +220,15 @@ def run(cfg) -> dict:
         "names": names,
         "dataSource": "Yahoo Finance (prices) + FRED (macro)" if cfg.has_fred else "Yahoo Finance (prices); FRED disabled",
         "indices": market_indices,
+        "direction": direction,
+        "rotation": rotation,
         "tradeIdeas": trade_mod.rank_ideas(ideas),
         "screened": screen_table,
         "details": details,
         "flows": flows,
         "sentiment": sentiment,
         "core": core_cards,
-        "macro": macro_mod.summarize(macro, vix),
+        "macro": macro_summary,
         "meta": {
             "modelsTrained": fits,
             "universeScreened": len(screened),
