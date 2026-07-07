@@ -4,8 +4,10 @@ on:
   push:
     branches: [main]
   schedule:
-    # Weekdays ~22:30 UTC (after US market close)
-    - cron: "30 22 * * 1-5"
+    # Every day ~22:00 UTC (after US market close year-round) = 07:00 KST next
+    # morning. Runs on weekends too, so the site is guaranteed fresh EVERY
+    # morning — not just on trading days — carrying the latest US session.
+    - cron: "0 22 * * *"
     # Weekdays ~07:10 UTC = 16:10 KST (after KR market close at 15:30 KST),
     # so KR prices/indices refresh the same day instead of lagging to the US run.
     - cron: "10 7 * * 1-5"
