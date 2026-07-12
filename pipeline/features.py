@@ -132,8 +132,12 @@ def add_targets(data: pd.DataFrame, horizons: list[int]) -> pd.DataFrame:
     """Add forward returns and binary UP/DOWN targets for each horizon."""
     data = data.copy()
     for h in horizons:
-        data[f"forward_return_{h}d"] = data["Close"].pct_change(h).shift(-h)
-        data[f"target_{h}d"] = (data[f"forward_return_{h}d"] > 0).astype(int)
+        forward_return = data["Close"].shift(-h) / data["Close"] - 1
+        target = pd.Series(np.nan, index=data.index, dtype=float)
+        valid = forward_return.notna()
+        target.loc[valid] = (forward_return.loc[valid] > 0).astype(float)
+        data[f"forward_return_{h}d"] = forward_return
+        data[f"target_{h}d"] = target
     return data
 
 

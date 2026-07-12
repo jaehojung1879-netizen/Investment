@@ -25,6 +25,7 @@ from . import risk as risk_mod
 from . import rotation as rotation_mod
 from . import sentiment as sentiment_mod
 from . import trade as trade_mod
+from . import quality as quality_mod
 from . import universe as universe_mod
 from .config import REPO_ROOT, load_config
 from .datafeed import fetch_macro, fetch_prices, fetch_vix
@@ -34,6 +35,7 @@ warnings.filterwarnings("ignore", message="The least populated class")
 warnings.filterwarnings("ignore", message="Number of classes in training fold")
 
 OUT = REPO_ROOT / "data" / "site-data.json"
+AUDIT_OUT = REPO_ROOT / "data" / "audit.json"
 
 
 def volume_surge(price) -> float | None:
@@ -72,10 +74,11 @@ def core_card(feat, fcols, ticker, cfg, diagnosis):
                 "horizon": h,
                 "probUp": current["probUp"],
                 "prediction": current["prediction"],
-                "alert": M.classify_alert(current["probUp"], threshold),
+                "alert": "PAPER ONLY",
                 "threshold": threshold,
-                "oos": M.oos_metrics(res),
-                "backtest": M.backtest(res),
+                "oos": M.oos_metrics(res, threshold),
+                "backtest": M.backtest(res, region=cfg.region_of(ticker)),
+                "foldAudit": res[[c for c in res.columns if c.startswith("fold")]].drop_duplicates().to_dict("records") if not res.empty else [],
             }
         )
     card = {
@@ -105,6 +108,9 @@ def run(cfg) -> dict:
     prices.update(fetch_prices(universe_only, cfg.model.screen_history_start))
     missing = [t for t in download if t not in prices]
     coverage = round(100 * len(prices) / len(download), 1) if download else 0.0
+    missing_core = [t for t in cfg.core if t not in prices]
+    if missing_core or coverage < 95:
+        raise RuntimeError(f"critical price coverage failure: coverage={coverage}%, missing_core={missing_core[:10]}")
     vix = fetch_vix(cfg.model.history_start)
     macro = fetch_macro(cfg, cfg.model.history_start)
 
@@ -122,8 +128,10 @@ def run(cfg) -> dict:
 
     core_cards, ideas, screened = [], [], []
     details = {}
+    audit = {"folds": {}, "oos": {}, "eligibility": {}, "warnings": ["PAPER_ONLY=true", "survivorship_bias_unresolved", "macro_vintage_revision_bias_possible"]}
     fits = 0
     latest_date = None
+    errors = []
 
     for ticker in all_tickers:
         if ticker not in prices:
@@ -145,7 +153,8 @@ def run(cfg) -> dict:
             details[ticker] = {
                 "volSurge": vsurge,
                 "region": region,
-                "probUp": tsig["probUp"] if tsig else None,
+                "modelScore": tsig["probUp"] if tsig else None,
+                "probUp": None,
                 "regime": diagnosis["regime"],
                 "lastClose": diagnosis["lastClose"],
                 "ma50": diagnosis["ma50"], "ma200": diagnosis["ma200"],
@@ -158,9 +167,17 @@ def run(cfg) -> dict:
             if tsig is not None:
                 fits += 1
                 stats = M.horizon_return_stats(feat, th)
-                idea = trade_mod.build_idea(ticker, region, tsig["probUp"], stats, th, tsig["asOf"], diagnosis["regime"], diagnosis)
+                tres = M.walk_forward(feat, fcols, f"target_{th}d", cfg.model, cfg.model.oos_start, th)
+                threshold = M.dynamic_threshold(tres, cfg.model)
+                quality = M.oos_metrics(tres, threshold)
+                audit["oos"][ticker] = quality
+                if not tres.empty:
+                    audit["folds"][ticker] = tres[[c for c in tres.columns if c.startswith("fold")]].drop_duplicates().to_dict("records")
+                idea = trade_mod.build_idea(ticker, region, tsig["probUp"], stats, th, tsig["asOf"], diagnosis["regime"], diagnosis, quality)
                 screened.append({
-                    "ticker": ticker, "region": region, "probUp": tsig["probUp"],
+                    "ticker": ticker, "region": region, "modelScore": tsig["probUp"], "probUp": None,
+                    "qualityGrade": quality.get("qualityGrade", "REJECT"), "eligible": quality.get("eligible", False),
+                    "eligibilityReasons": quality.get("eligibilityReasons", []),
                     "regime": diagnosis["regime"], "qualifies": idea is not None,
                     "aboveMA50": diagnosis["aboveMA50"], "aboveMA200": diagnosis["aboveMA200"],
                     "mom63": diagnosis["mom63"], "volSurge": vsurge,
@@ -174,6 +191,8 @@ def run(cfg) -> dict:
                 core_cards.append(card)
                 fits += cfits
         except Exception as exc:
+            msg = f"{ticker}: {exc}"
+            errors.append(msg)
             print(f"  error on {ticker}: {exc}")
 
     sentiment = sentiment_mod.summarize(screened, macro, vix)
@@ -194,8 +213,8 @@ def run(cfg) -> dict:
         rotation = None
     # Trim breadth helper fields out of the stored screen table.
     screen_table = [
-        {k: r[k] for k in ("ticker", "region", "probUp", "regime", "qualifies")}
-        for r in sorted(screened, key=lambda x: x["probUp"], reverse=True)
+        {k: r.get(k) for k in ("ticker", "region", "modelScore", "probUp", "regime", "qualifies", "eligible", "qualityGrade", "eligibilityReasons")}
+        for r in sorted(screened, key=lambda x: x.get("modelScore") or -1, reverse=True)
     ]
 
     # Money-flow proxy: where is liquidity rotating? Volume surging into names
@@ -211,7 +230,8 @@ def run(cfg) -> dict:
         ]
         flows[region] = sorted(cand, key=lambda x: x["volSurge"], reverse=True)[:6]
 
-    return {
+    eligible_count = sum(1 for r in screened if r.get("eligible"))
+    payload = {
         "portfolioName": cfg.portfolio_name,
         "primary": cfg.primary,
         "benchmark": cfg.benchmark,
@@ -223,6 +243,8 @@ def run(cfg) -> dict:
         "direction": direction,
         "rotation": rotation,
         "tradeIdeas": trade_mod.rank_ideas(ideas),
+        "recommendationsBlocked": True,
+        "paperOnly": True,
         "screened": screen_table,
         "details": details,
         "flows": flows,
@@ -239,8 +261,18 @@ def run(cfg) -> dict:
             "coveragePct": coverage,
             "missingSample": missing[:10],
             "indicesFetched": len(market_indices),
+            "eligibleSignals": eligible_count,
+            "paperOnly": True,
+            "survivorshipBias": "unresolved_current_constituents_only",
+            "coreErrors": errors,
+            "pipelineErrors": errors,
         },
     }
+    blocked, reasons = quality_mod.recommendations_blocked(payload)
+    payload["recommendationsBlocked"] = blocked or True
+    payload["blockReasons"] = sorted(set(reasons + ["paper_only_default", "live_recommendations_disabled_pending_validation"]))
+    payload["audit"] = audit
+    return payload
 
 
 def main() -> int:
@@ -252,7 +284,8 @@ def main() -> int:
     payload["meta"]["elapsedSec"] = round(time.time() - t0, 1)
 
     OUT.parent.mkdir(parents=True, exist_ok=True)
-    OUT.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    OUT.write_text(json.dumps(payload, ensure_ascii=False, indent=2, allow_nan=False) + "\n", encoding="utf-8")
+    AUDIT_OUT.write_text(json.dumps({"generatedAt": payload["generatedAt"], "meta": payload["meta"], "audit": payload.get("audit", {}), "blockReasons": payload.get("blockReasons", [])}, ensure_ascii=False, indent=2, allow_nan=False) + "\n", encoding="utf-8")
     m = payload["meta"]
     print(f"wrote {OUT}: {len(payload['core'])} core, universe {m['universeScreened']}, "
           f"coverage {m['coveragePct']}%, indices {m['indicesFetched']}, "
@@ -283,5 +316,5 @@ if __name__ == "__main__":
         print(f"pipeline failed: {exc}", file=sys.stderr)
         traceback.print_exc()
         _mark_stale(str(exc))
-        # Keep deploy green so the (now clearly-flagged-stale) site still serves.
-        sys.exit(0)
+        # Hard failures must stop CI/Pages deployment.
+        sys.exit(1)

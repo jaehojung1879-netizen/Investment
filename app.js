@@ -21,10 +21,10 @@ const fgCls = (s) => s == null ? 'g-trans' : s < 45 ? 'g-bear' : s < 55 ? 'g-tra
 // --- Popover explanations ---
 const EXPL = {
   trade: ['오늘의 핵심 액션', '국내·국외 유니버스를 트레이드 호라이즌(기본 10영업일)으로 스크리닝해, <b>비용을 넘는 기대값(edge)</b>이 양수이고 확신 하한(확률 0.55)·국면(하락장 제외)을 만족하는 종목만 매수 후보로 올립니다. 후보가 없으면 “관망”이 결론입니다.<br><br><b>한계:</b> 수백 종목 동시 스캔은 우연한 고득점(다중검정 거짓양성)을 만듭니다 → 상위 1~2개만, 분산. 유니버스는 현재 상장 종목 기준이라 상장폐지 종목이 빠진 생존편향이 있습니다.'],
-  core: ['내 포트폴리오', '보유 종목은 호라이즌(21·63·126영업일)마다 LightGBM 상승확률을 계산하고, 확률·국면을 종합해 비중 유지/관망/축소 검토 판정을 냅니다. 신호만 보지 말고 lift·국면과 함께 보세요.'],
+  core: ['추적 종목', 'core 목록은 공개 저장소에 수량·평균단가가 없는 관심/추적 종목입니다. 품질 게이트 통과 전 모델 점수는 매매에 사용하지 않습니다.'],
   macro: ['매크로', 'FRED에서 국외(미국 10Y·2Y·금리차·기준금리·하이일드 스프레드·VIX)와 국내(원/달러·국고채 10Y·3M·금리차)를 받아 위험 플래그를 띄웁니다. 개별 종목보다 먼저 점검합니다.'],
   sentiment: ['공포 · 탐욕 지수', 'CNN 공포·탐욕 지수처럼 <b>실데이터로 시장 심리</b>를 0~100으로 계산합니다. 유니버스 200·50일선 위 비중·상승국면 비중·중앙값 모멘텀 + 매크로(VIX·신용스프레드·원화)를 가중합한 <b>휴리스틱 지수</b>(확률이 아님)입니다. 구성 지표가 사실상 모멘텀 한 방향에 겹치므로 종목 확률과 별개의 보조 신호로만 보세요. 탐욕 과열은 추격 주의, 극도의 공포는 역발상 기회일 수 있습니다.'],
-  prob: ['상승확률 (보정된 확률)', '가격·추세·변동성·상대강도·매크로 피처 약 50개를 <b>LightGBM(데이터 적합 모델)</b>에 넣어 해당 호라이즌 뒤 상승 확률을 추정합니다. 단순 정규화 점수가 아니라, walk-forward로 재학습하고 <b>학습에 안 쓴 최근 구간으로 isotonic 보정</b>해 실제 상승 빈도에 맞춥니다. 보정 품질은 <b>Brier 점수</b>(낮을수록 좋음, 종목 클릭 시 표시)로 측정합니다. 트리 모델이라 지표 간 상관(모멘텀·RSI 중복)은 모델이 알아서 처리합니다.'],
+  prob: ['모델 점수 / 확률 해석 불가', '가격·추세·변동성·상대강도·매크로 피처 약 50개를 <b>LightGBM(데이터 적합 모델)</b>에 넣어 해당 호라이즌 뒤 상승 확률을 추정합니다. 단순 정규화 점수가 아니라, walk-forward로 재학습하고 <b>학습에 안 쓴 최근 구간으로 isotonic 보정</b>해 실제 상승 빈도에 맞춥니다. 보정 품질은 <b>Brier 점수</b>(낮을수록 좋음, 종목 클릭 시 표시)로 측정합니다. 트리 모델이라 지표 간 상관(모멘텀·RSI 중복)은 모델이 알아서 처리합니다.'],
   brier: ['Brier 점수', '예측 확률과 실제 결과(0/1)의 평균제곱오차입니다. <b>낮을수록 보정이 잘 된 것</b>(0=완벽, 0.25=동전던지기 수준). “확률 67%”가 정규화 점수가 아니라 실제 빈도와 맞는지 보는 지표입니다.'],
   edge: ['edge (net)', '<code>edge = p·평균상승 + (1−p)·평균하락 − 비용허들</code>. 확률만으로는 비용을 못 넘기 때문에 기대값이 양수일 때만 제안합니다. 국내(KR)는 세금·수수료로 허들이 더 높습니다.'],
   hold: ['보유(hold-until)', '진입일 + 트레이드 호라이즌(영업일)로 잡은 <b>재평가 시점</b>입니다. 그 전에 무효화 조건(종가 MA20 이탈 또는 다음 확률 0.5 미만)이 오면 먼저 청산합니다.'],
@@ -35,7 +35,7 @@ const EXPL = {
   dualmom: ['듀얼 모멘텀 (GEM)', 'Gary Antonacci의 Global Equities Momentum 규칙입니다. <b>절대 모멘텀</b>: 주식의 12개월 수익률이 현금(T-Bill)보다 높을 때만 주식 보유. <b>상대 모멘텀</b>: 미국·선진국·신흥국 중 12개월 수익률 1위를 선택. 허들 미달이면 채권·금 같은 방어자산으로 이동합니다. 단순하지만 대형 하락장 회피에 오랜 실증이 있는 규칙입니다(후행성 있음 — 바닥·천장을 못 맞춥니다).'],
   rotation: ['섹터 로테이션 (RRG)', 'Relative Rotation Graph 방식의 4사분면입니다. 가로축은 <b>상대강도 비율</b>(섹터/벤치마크 상대강도선이 자기 3개월 평균 대비 어디), 세로축은 <b>상대강도 모멘텀</b>(상대강도선의 1개월 변화)입니다. <b>주도</b>(강하고 더 강해짐)→<b>약화</b>(강하지만 식는 중)→<b>부진</b>(약하고 더 약해짐)→<b>개선</b>(약하지만 회복 중) 순으로 시계방향 순환하는 경향이 있어, 돈이 어느 섹터로 도는지 보여줍니다. 공개 산식의 근사치입니다.'],
   factor: ['팩터 · 스타일 모멘텀', '모멘텀(MTUM)·가치(VLUE)·퀄리티(QUAL)·저변동(USMV)·소형주(IWM) ETF의 S&P500 대비 <b>초과수익(1·3·6개월)</b>입니다. 시장이 지금 어떤 성격의 주식에 프리미엄을 주는지 보여줍니다. 예: 저변동·퀄리티 우위면 방어 국면, 모멘텀·소형주 우위면 위험 선호 국면.'],
-  size: ['제안 비중 (½켈리)', '<code>켈리 f* = p − (1−p)/b</code> (b = 평균 상승폭/평균 하락폭). 켈리 기준은 장기 복리 성장을 최대화하는 베팅 비율이지만 확률 추정 오차에 민감해, 관행대로 <b>절반(½켈리)</b>만 쓰고 종목당 10%로 상한을 둡니다. 총 노출은 나침반의 권장 주식 비중 안에서 배분하세요.'],
+  size: ['비중 추천 비활성화', '<code>켈리 f* = p − (1−p)/b</code> (b = 평균 상승폭/평균 하락폭). 켈리 기준은 장기 복리 성장을 최대화하는 베팅 비율이지만 확률 추정 오차에 민감해, 관행대로 <b>절반(½켈리)</b>만 쓰고 종목당 10%로 상한을 둡니다. 총 노출은 나침반의 권장 주식 비중 안에서 배분하세요.'],
   indices: ['글로벌 마켓', 'S&P 500 · 나스닥 · 다우 · 필라델피아 반도체 · 코스피 · 코스닥 · 원/달러 · VIX · 비트코인 · 금 · 달러인덱스를 매 빌드마다 수집합니다. <b>1D</b>는 전일 대비, <b>YTD</b>는 연초 대비, <b>고점비</b>는 52주 최고가 대비 거리입니다. 미니 차트는 최근 3개월 추이(상승=녹색, 하락=적색). 기본 소스는 Yahoo Finance이며 실패 시 Stooq로 자동 대체해 지수 데이터가 끊기지 않게 했습니다.'],
 };
 const pop = $('#pop');
@@ -67,7 +67,7 @@ const showTickerPop = (ticker, target) => {
   const grid = [
     m('현재가', fmt(d.lastClose)),
     m('국면', regKo(d.regime)),
-    m('10일 상승확률', pct0(d.probUp)),
+    m('10일 모델 점수', pct0(d.modelScore ?? d.probUp)),
     m('SMA50/200', `${fmt(d.ma50)} / ${fmt(d.ma200)}`),
     m('RSI(14)', fmt(d.rsi14)),
     m('실현변동성', fmt(d.realizedVol, '%')),
@@ -79,7 +79,7 @@ const showTickerPop = (ticker, target) => {
   const core = (DATA.core || []).find((c) => c.ticker === ticker);
   const horizons = core ? `<div class="dp-sub">호라이즌별 신호 · 표본 외 검증</div>` + core.signals.map((s) => {
     const o = s.oos || {}, b = s.backtest || {};
-    return `<div class="dp-sig"><b>${s.horizon}D · ${pct0(s.probUp)}</b><span class="muted">정밀 ${pct0(o.precision)} (lift ${sp(o.lift)}) · n=${fmt(o.days)} · Brier ${fmt(o.brier, '', 2)} · 연 ${sp(b.annualReturn)} · vsB&H ${sp(b.vsBuyHold)}</span></div>`;
+    return `<div class="dp-sig"><b>${s.horizon}D · ${pct0(s.modelScore ?? s.probUp)}</b><span class="muted">정밀 ${pct0(o.precision)} (lift ${sp(o.lift)}) · n=${fmt(o.days)} · Brier ${fmt(o.brier, '', 2)} · 연 ${sp(b.annualReturn)} · vsB&H ${sp(b.vsBuyHold)}</span></div>`;
   }).join('') : '';
   const flags = (d.riskFlags && d.riskFlags.length) ? `<div class="dp-flags">${d.riskFlags.map((f) => `<span class="mflag">${f}</span>`).join('')}</div>` : '';
   popKey = 'tk:' + ticker;
@@ -297,10 +297,10 @@ const pickCard = (i, rank) => `
     <span class="rank">#${rank}</span>
     <div class="pick-name"><strong class="tklink" data-tk="${i.ticker}">${tkName(i.ticker)}</strong><span class="reg ${regCls(i.regime)}">${regKo(i.regime)}</span></div>
     <span class="pick-act">${i.region} · 매수 후보</span>
-    <div class="pick-conv"><span class="big">${pct0(i.probUp)}</span><span class="lab">${term('prob', '상승확률')}</span></div>
+    <div class="pick-conv"><span class="big">${pct0((i.modelScore ?? i.probUp))}</span><span class="lab">${term('prob', '모델 점수')}</span></div>
     <div class="pick-meta">
-      <span>기대 <b>${sp(i.expMovePct)}</b></span>
-      <span data-x="edge">edge <b>${sp(i.edgeNetPct)}</b></span>
+      <span>기대 <b>${sp((i.estimatedNetEdgePct ?? i.expMovePct))}</b></span>
+      <span data-x="edge">edge <b>${sp((i.estimatedNetEdgePct ?? i.edgeNetPct))}</b></span>
       ${i.suggestedWeightPct != null ? `<span data-x="size">비중 <b>~${i.suggestedWeightPct}%</b></span>` : ''}
       <span>${term('hold', '보유')} <b>~${i.holdUntil}</b></span>
     </div>
@@ -308,8 +308,9 @@ const pickCard = (i, rank) => `
   </article>`;
 
 const renderTopPicks = (d) => {
+  if (d.recommendationsBlocked) { $('#topPicks').innerHTML = `<div class="pick-empty danger"><b>매매 사용 금지 · 추천 차단</b><p class="muted">${(d.blockReasons||[]).join(' · ')}</p></div>`; return; }
   const ti = d.tradeIdeas || { KR: [], US: [] };
-  const all = [...(ti.KR || []), ...(ti.US || [])].sort((a, b) => (b.edgeNetPct ?? 0) - (a.edgeNetPct ?? 0));
+  const all = [...(ti.KR || []), ...(ti.US || [])].sort((a, b) => ((b.estimatedNetEdgePct ?? b.edgeNetPct) ?? 0) - ((a.estimatedNetEdgePct ?? a.edgeNetPct) ?? 0));
   const top = all.slice(0, 3);
   if (!top.length) {
     $('#topPicks').innerHTML = `<div class="pick-empty"><b>신규 진입 신호 없음 · 관망</b><p class="muted">비용을 넘는 기대값과 확신 하한을 충족하는 종목이 오늘은 없습니다. 무리한 진입보다 대기가 결론입니다.</p></div>`;
@@ -321,22 +322,23 @@ const renderTopPicks = (d) => {
 // --- Idea lists ---
 const ideaRow = (i) => `
   <div class="idea">
-    <div class="idea-top"><strong class="tklink" data-tk="${i.ticker}">${tkName(i.ticker)}</strong>${tkSub(i.ticker)}<span class="reg ${regCls(i.regime)}">${regKo(i.regime)}</span><span class="edge" data-x="edge">edge ${sp(i.edgeNetPct)}</span></div>
-    <div class="idea-bar"><i style="width:${Math.round((i.probUp ?? 0) * 100)}%"></i></div>
-    <div class="idea-meta"><span>${term('prob', '확률')} <b>${pct0(i.probUp)}</b></span><span>기대 <b>${sp(i.expMovePct)}</b></span>${i.suggestedWeightPct != null ? `<span data-x="size">비중 <b>~${i.suggestedWeightPct}%</b></span>` : ''}<span>${term('hold', '보유')} <b>~${i.holdUntil}</b> (${i.horizon}D)</span></div>
+    <div class="idea-top"><strong class="tklink" data-tk="${i.ticker}">${tkName(i.ticker)}</strong>${tkSub(i.ticker)}<span class="reg ${regCls(i.regime)}">${regKo(i.regime)}</span><span class="edge" data-x="edge">edge ${sp((i.estimatedNetEdgePct ?? i.edgeNetPct))}</span></div>
+    <div class="idea-bar"><i style="width:${Math.round(((i.modelScore ?? i.probUp) ?? 0) * 100)}%"></i></div>
+    <div class="idea-meta"><span>${term('prob', '모델 점수')} <b>${pct0((i.modelScore ?? i.probUp))}</b></span><span>기대 <b>${sp((i.estimatedNetEdgePct ?? i.expMovePct))}</b></span>${i.suggestedWeightPct != null ? `<span data-x="size">비중 <b>~${i.suggestedWeightPct}%</b></span>` : ''}<span>${term('hold', '보유')} <b>~${i.holdUntil}</b> (${i.horizon}D)</span></div>
     <div class="idea-why">${i.why || ''}</div>
     <div class="idea-inv">${i.invalidation}</div>
   </div>`;
 
 const renderIdeas = (d) => {
-  const ti = d.tradeIdeas || { KR: [], US: [] };
+  if (d.recommendationsBlocked) { $('#tradeKR').innerHTML = $('#tradeUS').innerHTML = '<div class="none">매매 사용 금지: 품질 게이트/데이터 안전 차단 상태입니다.</div>'; $('#tradeMeta').textContent = 'PAPER ONLY · 추천 차단'; }
+  const ti = d.recommendationsBlocked ? {KR:[],US:[]} : (d.tradeIdeas || { KR: [], US: [] });
   $('#tradeMeta').textContent = `보유 ${d.tradeHorizon ?? '—'}영업일 기준 · 게이트 통과분만`;
   const fill = (el, arr) => $(el).innerHTML = (arr && arr.length) ? arr.map(ideaRow).join('') : '<div class="none">조건 충족 종목 없음 (관망)</div>';
   fill('#tradeKR', ti.KR); fill('#tradeUS', ti.US);
   const sc = d.screened || [];
   $('#screenCount').textContent = `· ${sc.length}개`;
-  $('#screenTable').innerHTML = `<div class="srow sh"><span>종목</span><span>지역</span><span>${term('prob', '확률')}</span><span>국면</span><span>채택</span></div>` +
-    sc.map((s) => `<div class="srow" data-key="${(s.ticker + ' ' + tkName(s.ticker)).toLowerCase()}"><span>${tkLink(s.ticker)}</span><span>${s.region}</span><span>${pct0(s.probUp)}</span><span class="reg ${regCls(s.regime)}">${regKo(s.regime)}</span><span>${s.qualifies ? '✓' : '·'}</span></div>`).join('');
+  $('#screenTable').innerHTML = `<div class="srow sh"><span>종목</span><span>지역</span><span>${term('prob', '모델 점수')}</span><span>국면</span><span>채택</span></div>` +
+    sc.map((s) => `<div class="srow" data-key="${(s.ticker + ' ' + tkName(s.ticker)).toLowerCase()}"><span>${tkLink(s.ticker)}</span><span>${s.region}</span><span>${pct0(s.modelScore ?? s.probUp)}</span><span class="reg ${regCls(s.regime)}">${regKo(s.regime)}</span><span>${s.qualifies ? '✓' : '·'}</span></div>`).join('');
   filterScreen();
 };
 
@@ -344,7 +346,8 @@ const renderIdeas = (d) => {
 // Regime-led: a stock in a clear uptrend is never tagged 축소 just because a
 // noisy short-horizon probability dipped.
 const holdingVerdict = (t) => {
-  const probs = (t.signals || []).map((s) => s.probUp).filter((n) => n != null);
+  const probs = (t.signals || []).map((s) => s.modelScore ?? s.probUp).filter((n) => n != null);
+  if (DATA.recommendationsBlocked) return ['검증 미달', 'hold'];
   const avg = mean(probs); const reg = t.risk?.regime;
   if (reg === 'Bull') return (avg != null && avg >= 0.55) ? ['비중 유지', 'buy'] : ['유지 · 관찰', 'hold'];
   if (reg === 'Bear') return (avg != null && avg >= 0.6) ? ['관망', 'hold'] : ['축소 검토', 'sell'];
@@ -354,10 +357,10 @@ const holdingVerdict = (t) => {
 };
 const renderHoldings = (d) => {
   const core = d.core || [];
-  const head = `<div class="hrow hh"><span>종목</span><span>현재가</span><span>국면</span><span class="hcol-sig">호라이즌별 상승확률 (21·63·126D)</span><span>판정</span></div>`;
+  const head = `<div class="hrow hh"><span>종목</span><span>현재가</span><span>국면</span><span class="hcol-sig">호라이즌별 모델 점수 (21·63·126D)</span><span>판정</span></div>`;
   const rows = core.map((t) => {
     const [vlabel, vcls] = holdingVerdict(t);
-    const sigs = (t.signals || []).map((s) => `<div class="h-sig">${s.horizon}D<b>${pct0(s.probUp)}</b><div class="mini-bar"><i style="width:${Math.round((s.probUp ?? 0) * 100)}%"></i></div></div>`).join('');
+    const sigs = (t.signals || []).map((s) => `<div class="h-sig">${s.horizon}D<b>${pct0(s.modelScore ?? s.probUp)}</b><div class="mini-bar"><i style="width:${Math.round(((s.modelScore ?? s.probUp) ?? 0) * 100)}%"></i></div></div>`).join('');
     return `<div class="hrow">
       <span class="nm tklink" data-tk="${t.ticker}">${tkName(t.ticker)}${tkSub(t.ticker)}</span>
       <span>${fmt(t.lastClose)}</span>
@@ -410,7 +413,7 @@ const renderSentiment = (s) => {
 const render = (d) => {
   DATA = d; NAMES = d.names || {};
   $('#portfolioName').textContent = d.portfolioName || 'Investment Insight';
-  $('#dataStatus').textContent = `· ${(d.core || []).length} 보유${d.seed ? ' · SEED' : ''}`;
+  $('#dataStatus').textContent = `· ${(d.core || []).length} 추적 · ${d.paperOnly ? 'PAPER ONLY' : 'LIVE'}${d.seed ? ' · SEED' : ''}`;
   const m = d.meta || {};
   $('#dataMeta').textContent = [
     m.latestDataDate ? `데이터 ${m.latestDataDate}` : '',
@@ -420,12 +423,9 @@ const render = (d) => {
   ].filter(Boolean).join(' · ');
   if (d.generatedAt) $('#dataGenerated').textContent = '생성 ' + new Date(d.generatedAt).toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' }) + ' KST';
   const sb = $('#staleBanner');
-  if (d.stale) {
-    sb.hidden = false; sb.classList.remove('warn');
-    sb.textContent = `⚠️ 데이터 갱신 실패 — 이전 빌드 결과입니다${m.buildError ? ' (' + m.buildError + ')' : ''}`;
-  } else if (m.coveragePct != null && m.coveragePct < 85) {
+  if (d.recommendationsBlocked || d.stale || d.seed || (m.coveragePct != null && m.coveragePct < 95) || (m.modelsTrained||0) === 0) {
     sb.hidden = false; sb.classList.add('warn');
-    sb.textContent = `⚠️ 데이터 일부 누락 — 유니버스 커버리지 ${m.coveragePct}% (${m.tickersFetched}/${m.tickersRequested}). 순위·심리 지표는 수집된 종목 기준입니다.`;
+    sb.innerHTML = `<b>⚠️ 이 데이터로 매매하지 마세요 — 추천/확률/비중 차단</b><br><span>${(d.blockReasons || []).join(' · ') || '품질 게이트 미통과'}${m.latestDataDate ? ' · 마지막 데이터 ' + m.latestDataDate : ''}</span>`;
   } else { sb.hidden = true; sb.classList.remove('warn'); }
   renderIndices(d);
   renderDirection(d.direction);

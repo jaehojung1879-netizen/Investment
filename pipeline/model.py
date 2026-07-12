@@ -11,6 +11,8 @@ import numpy as np
 import pandas as pd
 
 from .config import ModelConfig
+from . import quality as Q
+from .backtest import long_flat_next_open
 
 LGBM_PARAMS = dict(
     n_estimators=100,
@@ -101,12 +103,16 @@ def walk_forward(
         if len(test) == 0:
             break
 
-        # Embargo `horizon` rows, then hold out the calibration window.
-        cal_end = i - horizon
+        # Purged split in trading-row units:
+        # train target observation ends before calibration features start,
+        # and calibration target observation ends before test features start.
+        test_start = i
+        cal_end = test_start - horizon
         cal_start = cal_end - cal_w
-        if cal_start <= cfg.min_train_days:
+        train_end = cal_start - horizon
+        if train_end < cfg.min_train_days or cal_start < 0 or cal_end <= cal_start:
             continue
-        train = model_frame.iloc[0:cal_start]
+        train = model_frame.iloc[0:train_end]
         cal = model_frame.iloc[cal_start:cal_end]
 
         model = _new_model()
@@ -122,6 +128,12 @@ def walk_forward(
                     "actual": int(row[target_col]),
                     "prob_raw": float(prob_raw[j]),
                     "prob_cal": float(prob_cal[j]),
+                    "foldTrainStart": train.index[0].strftime("%Y-%m-%d"),
+                    "foldTrainEnd": train.index[-1].strftime("%Y-%m-%d"),
+                    "foldCalibrationStart": cal.index[0].strftime("%Y-%m-%d"),
+                    "foldCalibrationEnd": cal.index[-1].strftime("%Y-%m-%d"),
+                    "foldTestStart": test.index[0].strftime("%Y-%m-%d"),
+                    "foldTestEnd": test.index[-1].strftime("%Y-%m-%d"),
                 }
             )
 
@@ -199,23 +211,8 @@ def horizon_return_stats(data: pd.DataFrame, horizon: int) -> dict:
     }
 
 
-def oos_metrics(res: pd.DataFrame) -> dict:
-    from sklearn.metrics import precision_score, f1_score, brier_score_loss
-
-    if res.empty:
-        return {}
-    actual = res["actual"]
-    pred = res["pred_cal"]
-    baseline = float(actual.mean())
-    precision = float(precision_score(actual, pred, zero_division=0))
-    return {
-        "days": int(len(res)),
-        "precision": round(precision, 4),
-        "baseline": round(baseline, 4),
-        "lift": round((precision - baseline) * 100, 2),
-        "f1": round(float(f1_score(actual, pred, zero_division=0)), 4),
-        "brier": round(float(brier_score_loss(actual, res["prob_cal"])), 4),
-    }
+def oos_metrics(res: pd.DataFrame, threshold: float = 0.5) -> dict:
+    return Q.evaluate_oos(res, threshold=threshold)
 
 
 def dynamic_threshold(res: pd.DataFrame, cfg: ModelConfig) -> float:
@@ -235,72 +232,6 @@ def classify_alert(prob_up: float, threshold: float) -> str:
     return "HOLD"
 
 
-def backtest(
-    res: pd.DataFrame,
-    commission: float = 5.0,
-    slippage: float = 0.001,
-    initial_capital: float = 100_000.0,
-) -> dict:
-    """Long/flat backtest on the calibrated signal with realistic costs."""
-    if res.empty or len(res) < 2:
-        return {}
-
-    df = res.dropna(subset=["Close", "Open"]).copy()
-    if len(df) < 2:
-        return {}
-
-    capital = float(initial_capital)
-    position = 0
-    shares = 0.0
-    values: list[dict] = []
-    n_trades = 0
-
-    closes = df["Close"].values
-    opens = df["Open"].values
-    signals = df["pred_cal"].values
-    index = df.index
-
-    for i in range(len(df)):
-        signal = signals[i]
-        close = closes[i]
-        next_open = opens[i + 1] if i < len(df) - 1 else close
-
-        if position == 0 and signal == 1:
-            entry_price = next_open * (1 + slippage)
-            shares = (capital - commission) / entry_price
-            capital -= shares * entry_price + commission
-            position = 1
-            n_trades += 1
-        elif position == 1 and signal == 0:
-            exit_price = next_open * (1 - slippage)
-            capital += shares * exit_price - commission
-            position = 0
-            shares = 0.0
-
-        values.append({"date": index[i], "value": capital + shares * close, "position": position})
-
-    if position == 1:
-        capital += shares * closes[-1] * (1 - slippage) - commission
-
-    pv = pd.DataFrame(values).set_index("date")
-    total_return = (capital - initial_capital) / initial_capital
-    years = max((index[-1] - index[0]).days / 365.25, 1e-9)
-    annual = (1 + total_return) ** (1 / years) - 1 if total_return > -1 else -1.0
-
-    pv["returns"] = pv["value"].pct_change()
-    std = pv["returns"].std()
-    sharpe = float(pv["returns"].mean() / std * np.sqrt(252)) if std and std > 0 else 0.0
-    pv["peak"] = pv["value"].cummax()
-    max_dd = float(((pv["value"] - pv["peak"]) / pv["peak"]).min())
-
-    bh_return = (closes[-1] - closes[0]) / closes[0]
-    bh_annual = (1 + bh_return) ** (1 / years) - 1
-
-    return {
-        "annualReturn": round(float(annual) * 100, 2),
-        "sharpe": round(sharpe, 2),
-        "maxDrawdown": round(max_dd * 100, 2),
-        "numTrades": int(n_trades),
-        "buyHoldAnnual": round(float(bh_annual) * 100, 2),
-        "vsBuyHold": round((float(annual) - float(bh_annual)) * 100, 2),
-    }
+def backtest(res: pd.DataFrame, commission: float = 5.0, slippage: float = 0.001, initial_capital: float = 100_000.0, region: str = "US") -> dict:
+    """Compatibility wrapper: audited next-open long/flat reference strategy."""
+    return long_flat_next_open(res, region=region, initial_capital=initial_capital)
