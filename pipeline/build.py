@@ -9,6 +9,7 @@ for daily trade ideas and for the market-sentiment panel.
 """
 from __future__ import annotations
 
+import datetime as _dt
 import json
 import sys
 import time
@@ -36,6 +37,42 @@ warnings.filterwarnings("ignore", message="Number of classes in training fold")
 
 OUT = REPO_ROOT / "data" / "site-data.json"
 AUDIT_OUT = REPO_ROOT / "data" / "audit.json"
+
+
+def _json_default(obj):
+    """Last-resort encoder so a stray pandas/NumPy value can never break the
+    build (and block the Pages deploy) the way a raw Timestamp once did.
+
+    The pipeline should hand plain Python types to ``json.dumps``; anything that
+    slips through — a ``Timestamp``, ``datetime``, NumPy scalar, or array — is
+    coerced here to a JSON-safe form instead of raising ``TypeError``.
+    """
+    # pandas Timestamp / NaT and stdlib datetime/date all expose isoformat().
+    if isinstance(obj, (_dt.datetime, _dt.date)):
+        return obj.isoformat()
+    isoformat = getattr(obj, "isoformat", None)
+    if callable(isoformat):
+        try:
+            return isoformat()
+        except Exception:
+            pass
+    item = getattr(obj, "item", None)  # NumPy scalar -> native Python scalar
+    if callable(item):
+        try:
+            return obj.item()
+        except Exception:
+            pass
+    tolist = getattr(obj, "tolist", None)  # NumPy array / pandas Index/Series
+    if callable(tolist):
+        try:
+            return obj.tolist()
+        except Exception:
+            pass
+    raise TypeError(f"Object of type {obj.__class__.__name__} is not JSON serializable")
+
+
+def _dumps(payload) -> str:
+    return json.dumps(payload, ensure_ascii=False, indent=2, allow_nan=False, default=_json_default)
 
 
 def volume_surge(price) -> float | None:
@@ -284,8 +321,8 @@ def main() -> int:
     payload["meta"]["elapsedSec"] = round(time.time() - t0, 1)
 
     OUT.parent.mkdir(parents=True, exist_ok=True)
-    OUT.write_text(json.dumps(payload, ensure_ascii=False, indent=2, allow_nan=False) + "\n", encoding="utf-8")
-    AUDIT_OUT.write_text(json.dumps({"generatedAt": payload["generatedAt"], "meta": payload["meta"], "audit": payload.get("audit", {}), "blockReasons": payload.get("blockReasons", [])}, ensure_ascii=False, indent=2, allow_nan=False) + "\n", encoding="utf-8")
+    OUT.write_text(_dumps(payload) + "\n", encoding="utf-8")
+    AUDIT_OUT.write_text(_dumps({"generatedAt": payload["generatedAt"], "meta": payload["meta"], "audit": payload.get("audit", {}), "blockReasons": payload.get("blockReasons", [])}) + "\n", encoding="utf-8")
     m = payload["meta"]
     print(f"wrote {OUT}: {len(payload['core'])} core, universe {m['universeScreened']}, "
           f"coverage {m['coveragePct']}%, indices {m['indicesFetched']}, "
@@ -303,7 +340,7 @@ def _mark_stale(reason: str) -> None:
         data["stale"] = True
         data.setdefault("meta", {})["buildError"] = reason[:300]
         data["staleCheckedAt"] = datetime.now(timezone.utc).isoformat()
-        OUT.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+        OUT.write_text(_dumps(data) + "\n", encoding="utf-8")
         print(f"marked existing {OUT} as STALE: {reason}", file=sys.stderr)
     except Exception as exc:
         print(f"could not mark stale: {exc}", file=sys.stderr)
