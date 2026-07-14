@@ -65,7 +65,10 @@ def test_backtest_next_open_and_costs_constant_price():
     df=pd.DataFrame({'Open':[100]*4,'Close':[100]*4,'pred_cal':[1,1,0,0]}, index=idx)
     bt=long_flat_next_open(df, costs={'US':{'buyCommissionBps':0,'sellCommissionBps':0,'sellTaxBps':0,'slippageBps':10}}, region='US')
     assert bt['totalReturn'] < 0 and bt['accountingOk']
-    assert bt['trades'][0]['date'] == idx[1]
+    # Trade dates must be JSON-safe ISO strings (a raw Timestamp here once broke
+    # the Pages build at json.dumps time).
+    assert bt['trades'][0]['date'] == idx[1].strftime('%Y-%m-%d')
+    json.dumps(bt)
 
 def test_no_sell_without_position():
     idx=pd.bdate_range('2024-01-01', periods=3)

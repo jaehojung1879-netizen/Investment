@@ -13,6 +13,11 @@ DEFAULT_COSTS = {
 def _bps(x): return float(x or 0) / 10000.0
 
 
+def _day(ts) -> str:
+    """Render a bar timestamp as an ISO date string so trades stay JSON-safe."""
+    return pd.Timestamp(ts).strftime("%Y-%m-%d")
+
+
 def long_flat_next_open(df: pd.DataFrame, signal_col: str = "pred_cal", region: str = "US",
                         costs: dict | None = None, initial_capital: float = 100_000.0,
                         force_liquidate: bool = True) -> dict:
@@ -27,14 +32,14 @@ def long_flat_next_open(df: pd.DataFrame, signal_col: str = "pred_cal", region: 
         open_px = float(df.iloc[i+1]["Open"]); close_px = float(df.iloc[i+1]["Close"])
         if shares == 0 and sig == 1:
             px = open_px * (1 + slip); shares = cash / (px * (1 + buy_fee)); cost = shares * px; fee = cost * buy_fee; cash -= cost + fee
-            trades.append({"date": trade_date, "side": "BUY", "price": px, "shares": shares, "fee": fee})
+            trades.append({"date": _day(trade_date), "side": "BUY", "price": px, "shares": shares, "fee": fee})
         elif shares > 0 and sig == 0:
             px = open_px * (1 - slip); proceeds = shares * px; fee = proceeds * sell_fee; cash += proceeds - fee
-            trades.append({"date": trade_date, "side": "SELL", "price": px, "shares": shares, "fee": fee}); shares = 0.0
+            trades.append({"date": _day(trade_date), "side": "SELL", "price": px, "shares": shares, "fee": fee}); shares = 0.0
         values.append({"date": trade_date, "cash": cash, "shares": shares, "stockValue": shares * close_px, "value": cash + shares * close_px, "position": int(shares > 0)})
     if force_liquidate and shares > 0:
         px = float(df.iloc[-1]["Close"]) * (1 - slip); proceeds = shares * px; fee = proceeds * sell_fee; cash += proceeds - fee
-        trades.append({"date": idx[-1], "side": "LIQUIDATE", "price": px, "shares": shares, "fee": fee}); shares = 0.0
+        trades.append({"date": _day(idx[-1]), "side": "LIQUIDATE", "price": px, "shares": shares, "fee": fee}); shares = 0.0
         if values:
             values[-1].update({"cash": cash, "shares": 0.0, "stockValue": 0.0, "value": cash, "position": 0})
     pv = pd.DataFrame(values).set_index("date")
