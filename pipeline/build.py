@@ -11,11 +11,13 @@ from __future__ import annotations
 
 import datetime as _dt
 import json
+import math
 import sys
 import time
 import traceback
 import warnings
 from datetime import datetime, timezone
+from numbers import Integral, Real
 
 from . import direction as direction_mod
 from . import features as F
@@ -71,8 +73,32 @@ def _json_default(obj):
     raise TypeError(f"Object of type {obj.__class__.__name__} is not JSON serializable")
 
 
+def _json_sanitize(obj):
+    """Recursively replace non-finite floats (NaN/±Inf) with ``None``.
+
+    We serialize with ``allow_nan=False`` so the artifact is strictly valid
+    JSON (the site's ``JSON.parse`` rejects the bare ``NaN`` token). A NaN metric
+    means "not available", so ``null`` is the honest representation — and letting
+    one slip through would otherwise abort the write and block the Pages deploy.
+    Integers and booleans are left untouched; other objects fall through to
+    ``_json_default`` at encode time.
+    """
+    if isinstance(obj, dict):
+        return {k: _json_sanitize(v) for k, v in obj.items()}
+    if isinstance(obj, (list, tuple)):
+        return [_json_sanitize(v) for v in obj]
+    # Real, non-integer numbers (Python float, NumPy float32/64, ...).
+    if isinstance(obj, Real) and not isinstance(obj, (bool, Integral)):
+        try:
+            f = float(obj)
+        except (TypeError, ValueError):
+            return obj
+        return f if math.isfinite(f) else None
+    return obj
+
+
 def _dumps(payload) -> str:
-    return json.dumps(payload, ensure_ascii=False, indent=2, allow_nan=False, default=_json_default)
+    return json.dumps(_json_sanitize(payload), ensure_ascii=False, indent=2, allow_nan=False, default=_json_default)
 
 
 def volume_surge(price) -> float | None:

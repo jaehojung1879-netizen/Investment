@@ -7,6 +7,7 @@ from pipeline.model import current_signal, walk_forward
 from pipeline.config import ModelConfig
 from pipeline.quality import evaluate_oos, recommendations_blocked
 from pipeline.backtest import long_flat_next_open
+from pipeline.build import _dumps
 from pipeline.trade import suggested_weight
 
 
@@ -69,6 +70,23 @@ def test_backtest_next_open_and_costs_constant_price():
     # the Pages build at json.dumps time).
     assert bt['trades'][0]['date'] == idx[1].strftime('%Y-%m-%d')
     json.dumps(bt)
+
+def test_dumps_sanitizes_nonfinite_floats():
+    # NaN/Inf once aborted the artifact write (allow_nan=False) and blocked the
+    # Pages deploy; they must serialize to null and leave ints/bools intact.
+    payload = {"sharpe": float("nan"), "ratio": float("inf"), "np_nan": np.float64("nan"),
+               "nested": [{"vol": float("-inf"), "ok": 1.5}], "n": 5, "flag": True}
+    parsed = json.loads(_dumps(payload))
+    assert parsed["sharpe"] is None and parsed["ratio"] is None and parsed["np_nan"] is None
+    assert parsed["nested"][0]["vol"] is None and parsed["nested"][0]["ok"] == 1.5
+    assert parsed["n"] == 5 and parsed["flag"] is True
+
+
+def test_dumps_serializes_timestamps():
+    # A stray pandas Timestamp must degrade to an ISO string, not raise.
+    parsed = json.loads(_dumps({"asOf": pd.Timestamp("2026-07-14")}))
+    assert parsed["asOf"].startswith("2026-07-14")
+
 
 def test_no_sell_without_position():
     idx=pd.bdate_range('2024-01-01', periods=3)
