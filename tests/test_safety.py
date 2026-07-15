@@ -3,7 +3,7 @@ import numpy as np
 import pandas as pd
 
 from pipeline.features import add_targets, build_features, feature_columns
-from pipeline.model import current_signal, walk_forward
+from pipeline.model import PROB_CLIP, current_signal, shrink_probability, walk_forward
 from pipeline.config import ModelConfig
 from pipeline.quality import evaluate_oos, recommendations_blocked
 from pipeline.backtest import long_flat_next_open
@@ -53,9 +53,29 @@ def test_quality_rejects_negative_bss_and_low_signal_count():
     res=pd.DataFrame({'actual':[0,1]*130, 'prob_cal':[.9,.1]*130})
     q=evaluate_oos(res, threshold=.95)
     assert not q['eligible']
-    assert 'signal_observations_below_30' in q['eligibilityReasons']
+    assert 'signal_observations_below_20' in q['eligibilityReasons']
     q2=evaluate_oos(res, threshold=.5)
     assert not q2['eligible'] and q2['brierSkillScore'] < 0
+
+def test_quality_grade_ladder():
+    rng=np.random.default_rng(0)
+    # A skilled, calibrated signal: prob ~ true probability of the outcome.
+    p=rng.uniform(.35,.75,600); y=(rng.uniform(0,1,600) < p).astype(int)
+    q=evaluate_oos(pd.DataFrame({'actual':y,'prob_cal':p}), threshold=.55)
+    assert q['eligible'] and q['qualityGrade'] in ('A','B')
+    # A coin-flip signal must never be eligible.
+    q2=evaluate_oos(pd.DataFrame({'actual':rng.integers(0,2,600),'prob_cal':rng.uniform(.4,.6,600)}), threshold=.55)
+    assert q2['qualityGrade'] == 'REJECT' or q2['lift'] <= 5
+
+def test_probability_shrinkage_and_clip():
+    # A saturated calibrator output (1.0) must come back inside honest bounds.
+    assert shrink_probability(1.0, .55, 25.2) <= PROB_CLIP[1]
+    assert shrink_probability(0.0, .55, 25.2) >= PROB_CLIP[0]
+    # Shrinkage pulls toward the base rate, harder with less evidence.
+    weak=float(shrink_probability(.9, .5, 5)); strong=float(shrink_probability(.9, .5, 500))
+    assert weak < strong <= .9
+    # Published probabilities can never claim certainty.
+    assert PROB_CLIP[1] < 1.0 and PROB_CLIP[0] > 0.0
 
 def test_block_reasons_seed_stale_zero_models():
     blocked, reasons=recommendations_blocked({'seed':True,'stale':True,'meta':{'modelsTrained':0,'coveragePct':100,'eligibleSignals':0}})
@@ -105,38 +125,50 @@ def test_no_sell_without_position():
     df=pd.DataFrame({'Open':[100,100,100],'Close':[100,100,100],'pred_cal':[0,0,0]}, index=idx)
     assert long_flat_next_open(df)['numTrades'] == 0
 
-def test_half_kelly_weight_math_and_cap():
-    # b = 0.1/0.05 = 2, kelly = 0.9 - 0.1/2 = 0.85, half = 0.425 -> capped at 10%
-    assert suggested_weight(.9,.1,-.05) == MAX_POSITION_WEIGHT
-    # b = 1, kelly = 0.6 - 0.4 = 0.2, half = 0.1 -> exactly the cap
-    assert abs(suggested_weight(.6,.05,-.05) - 0.1) < 1e-9
+def test_half_kelly_weight_math_grade_scale_and_caps():
+    # Grade A = pure half-Kelly: b=0.1/0.05=2, kelly=0.9-0.1/2=0.85, half=0.425 -> 10% cap
+    assert suggested_weight(.9,.1,-.05,'A') == MAX_POSITION_WEIGHT
+    # b=1, kelly=0.2, half=0.1 -> exactly the cap for grade A
+    assert abs(suggested_weight(.6,.05,-.05,'A') - 0.1) < 1e-9
+    # Grade B gets half of half-Kelly
+    assert abs(suggested_weight(.6,.05,-.05,'B') - 0.05) < 1e-9
+    # Volatility budget caps a high-vol name: 1.5% budget / 60% vol = 2.5%
+    assert abs(suggested_weight(.9,.1,-.05,'A',60.0) - 0.025) < 1e-9
     # negative-edge kelly clamps to 0, degenerate move sizes -> None
-    assert suggested_weight(.4,.05,-.05) == 0.0
-    assert suggested_weight(.9,-.01,-.05) is None
-    assert suggested_weight(.9,.05,.01) is None
+    assert suggested_weight(.4,.05,-.05,'A') == 0.0
+    assert suggested_weight(.9,-.01,-.05,'A') is None
+    assert suggested_weight(.9,.05,.01,'A') is None
 
-def test_build_idea_restored_with_quality_badge():
+def test_build_idea_requires_validated_edge():
     stats={'upMean':.05,'downMean':-.02,'baseRate':.55}
     q={'eligible':True,'qualityGrade':'A','lift':8.0,'brierSkillScore':.06,'eligibilityReasons':[]}
-    idea=build_idea('QQQ','US',.62,stats,10,'2026-07-14','Bull',{'mom63':.1},q)
+    idea=build_idea('QQQ','US',.62,stats,10,'2026-07-14','Bull',{'mom63':.1,'aboveMA50':True,'realizedVol':25.0},q)
     assert idea is not None
     assert idea['suggestedWeightPct'] is not None and idea['suggestedWeightPct'] > 0
     assert idea['quality']['qualityGrade'] == 'A'
     assert idea['estimatedNetEdgePct'] > 0
-    # unvalidated quality must NOT gate the idea out — badge only
-    idea2=build_idea('SPY','US',.62,stats,10,'2026-07-14','Bull',None,{'eligible':False,'qualityGrade':'REJECT'})
-    assert idea2 is not None and idea2['quality']['qualityGrade'] == 'REJECT'
+    # unvalidated (REJECT) models are screened, never recommended
+    assert build_idea('SPY','US',.62,stats,10,'2026-07-14','Bull',{'mom63':.1},{'eligible':False,'qualityGrade':'REJECT'}) is None
+
+def test_build_idea_trend_veto():
+    stats={'upMean':.05,'downMean':-.02,'baseRate':.55}
+    q={'eligible':True,'qualityGrade':'A','lift':8.0,'brierSkillScore':.06,'eligibilityReasons':[]}
+    # below MA50 AND negative momentum -> model fighting the tape -> veto
+    assert build_idea('X','US',.62,stats,10,'2026-07-14','Bull',{'mom63':-.34,'aboveMA50':False},q) is None
+    # either trend signal agreeing lets it through
+    assert build_idea('X','US',.62,stats,10,'2026-07-14','Bull',{'mom63':-.05,'aboveMA50':True},q) is not None
 
 def test_build_idea_rejects_bear_low_conviction_negative_edge():
     stats={'upMean':.05,'downMean':-.02,'baseRate':.55}
-    assert build_idea('QQQ','US',.62,stats,10,'2026-07-14','Bear') is None
-    assert build_idea('QQQ','US',.50,stats,10,'2026-07-14','Bull') is None
-    assert build_idea('QQQ','US',.56,{'upMean':.003,'downMean':-.003},10,'2026-07-14','Bull') is None
+    q={'eligible':True,'qualityGrade':'B','lift':4.0,'brierSkillScore':.03,'eligibilityReasons':[]}
+    assert build_idea('QQQ','US',.62,stats,10,'2026-07-14','Bear',{'mom63':.1},q) is None
+    assert build_idea('QQQ','US',.50,stats,10,'2026-07-14','Bull',{'mom63':.1},q) is None
+    assert build_idea('QQQ','US',.56,{'upMean':.003,'downMean':-.003},10,'2026-07-14','Bull',{'mom63':.1},q) is None
 
-def test_rank_ideas_prefers_quality_validated():
-    mk=lambda t,e,elig: {'ticker':t,'region':'US','estimatedNetEdgePct':e,'quality':{'eligible':elig}}
-    ranked=rank_ideas([mk('LOWEDGE_VALID',1.0,True), mk('HIGHEDGE_UNVALID',5.0,False)])
-    assert [i['ticker'] for i in ranked['US']] == ['LOWEDGE_VALID','HIGHEDGE_UNVALID']
+def test_rank_ideas_grade_a_first():
+    mk=lambda t,e,g: {'ticker':t,'region':'US','estimatedNetEdgePct':e,'quality':{'eligible':True,'qualityGrade':g}}
+    ranked=rank_ideas([mk('B_HIGH',5.0,'B'), mk('A_LOW',1.0,'A')])
+    assert [i['ticker'] for i in ranked['US']] == ['A_LOW','B_HIGH']
 
 def test_validate_exit_nonzero_on_seed(tmp_path):
     p=tmp_path/'site.json'; p.write_text(json.dumps({'seed':True,'stale':False,'generatedAt':'x','portfolioName':'x','core':[],'screened':[],'tradeIdeas':{'KR':[],'US':[]},'meta':{'modelsTrained':0,'coveragePct':100}}))

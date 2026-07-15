@@ -1,19 +1,24 @@
-"""Daily short-term trade-idea engine.
+"""Daily short-term trade-idea engine — institutional gate stack.
 
-For each candidate it combines the calibrated UP-probability at the trade
-horizon with the historical UP/DOWN move sizes to estimate an expected value,
-then subtracts a round-trip cost hurdle. Only positive-edge, high-conviction,
-non-bear ideas are proposed, each with an explicit hold-until date and an
-invalidation rule. Ideas are ranked within each region (KR / US).
+An idea must clear EVERY layer before it is published:
 
-Why a cost hurdle and a conviction floor: short-horizon direction models sit
-close to a coin flip, so a raw probability over 0.5 is not a tradeable edge.
-The edge has to clear transaction costs (and, for short-term holds, tax) to be
-worth acting on.
+1. Validated edge   — the (ticker, horizon) model passed OOS quality gates
+                      (grade A or B from pipeline.quality). Unvalidated
+                      models appear in the screening table, never as picks.
+2. Conviction       — calibrated & shrunk UP-probability ≥ 0.55. Probabilities
+                      arrive from pipeline.model already Platt-calibrated,
+                      shrunk toward the base rate, and clipped to [5%, 95%],
+                      so a 100% reading is impossible by construction.
+3. Positive net EV  — expected move (prob-weighted historical UP/DOWN moves)
+                      must clear a region-specific round-trip cost hurdle.
+4. Regime           — no fresh longs in a Bear regime.
+5. Trend agreement  — price above its 50-day MA or positive 60-day momentum;
+                      a directional model fighting the tape is a fade, not a
+                      trade (trend-following overlay, AQR/two-sigma style).
 
-OOS quality metrics (lift, Brier skill, grade) ride along on every idea as a
-badge — informational, not a hard gate — so the site can show how well the
-model has actually predicted this ticker out-of-sample.
+Position sizing: half-Kelly scaled by validation grade (A full, B half),
+then capped by a per-position volatility budget and a hard 10% ceiling —
+fractional Kelly + vol targeting, the standard institutional combination.
 """
 from __future__ import annotations
 
@@ -24,23 +29,31 @@ import pandas as pd
 # more heavily, so its hurdle is higher.
 COST_HURDLE = {"US": 0.004, "KR": 0.007}
 CONVICTION_FLOOR = 0.55
-MAX_POSITION_WEIGHT = 0.10  # cap any single idea at 10% of the book
+MAX_POSITION_WEIGHT = 0.10   # hard cap on any single idea
+POSITION_RISK_BUDGET = 0.015  # per-position annualized-vol contribution cap
+GRADE_KELLY_SCALE = {"A": 1.0, "B": 0.5}
 
 
-def suggested_weight(prob_up: float, up_mean: float, down_mean: float) -> float | None:
-    """Half-Kelly position size, capped.
+def suggested_weight(prob_up: float, up_mean: float, down_mean: float,
+                     quality_grade: str | None = None,
+                     realized_vol_pct: float | None = None) -> float | None:
+    """Grade-scaled half-Kelly with a volatility-budget cap.
 
     Full Kelly f* = p − (1−p)/b with b = avg win / avg loss maximizes log
-    growth but assumes the probabilities are exact; since ours are model
-    estimates, half-Kelly is the standard haircut. Returns a fraction of
-    capital in [0, MAX_POSITION_WEIGHT], or None if move sizes are degenerate.
+    growth but assumes exact probabilities; half-Kelly is the standard
+    haircut, and a grade-B (thinner evidence) edge gets half of that again.
+    The final weight is additionally capped so the position contributes at
+    most POSITION_RISK_BUDGET of annualized volatility to the book, and never
+    exceeds MAX_POSITION_WEIGHT. Returns None if move sizes are degenerate.
     """
     if up_mean <= 0 or down_mean >= 0:
         return None
     b = up_mean / abs(down_mean)
     kelly = prob_up - (1 - prob_up) / b
-    half = kelly / 2
-    return max(0.0, min(MAX_POSITION_WEIGHT, half))
+    weight = (kelly / 2) * GRADE_KELLY_SCALE.get(quality_grade or "", 0.5)
+    if realized_vol_pct and realized_vol_pct > 0:
+        weight = min(weight, POSITION_RISK_BUDGET / (realized_vol_pct / 100.0))
+    return max(0.0, min(MAX_POSITION_WEIGHT, weight))
 
 
 def expected_value(prob_up: float, up_mean: float, down_mean: float) -> float:
@@ -48,9 +61,23 @@ def expected_value(prob_up: float, up_mean: float, down_mean: float) -> float:
     return prob_up * up_mean + (1 - prob_up) * down_mean
 
 
+def _trend_confirms(diag: dict | None) -> bool:
+    """Trend overlay: above the 50-day MA or positive 60-day momentum."""
+    if not diag:
+        return True  # no diagnostics — don't silently veto
+    above_ma50 = diag.get("aboveMA50")
+    mom = diag.get("mom63")
+    checks = [c for c in (above_ma50, (mom > 0) if mom is not None else None) if c is not None]
+    return any(checks) if checks else True
+
+
 def _why(prob_up: float, regime: str, diag: dict | None, quality: dict | None) -> str:
     """A short, human rationale for proposing the idea."""
     parts = ["상승국면" if regime == "Bull" else "전환국면"]
+    if quality:
+        grade = quality.get("qualityGrade")
+        if grade in ("A", "B"):
+            parts.append(f"OOS 검증 {grade} (lift {quality.get('lift')}%p)")
     if diag:
         mom = diag.get("mom63")
         if mom is not None:
@@ -61,8 +88,6 @@ def _why(prob_up: float, regime: str, diag: dict | None, quality: dict | None) -
         rsi = diag.get("rsi14")
         if rsi is not None and rsi > 70:
             parts.append(f"RSI {rsi:.0f} 과열주의")
-    if quality and quality.get("eligible"):
-        parts.append(f"OOS lift {quality.get('lift')}%p 검증")
     parts.append(f"상승확률 {prob_up * 100:.0f}%")
     return " · ".join(parts)
 
@@ -83,12 +108,19 @@ def build_idea(
     hurdle = COST_HURDLE.get(region, 0.004)
     ev_net = ev - hurdle
 
-    qualifies = prob_up >= CONVICTION_FLOOR and ev_net > 0 and regime != "Bear"
+    qualifies = (
+        quality.get("eligible", False)
+        and prob_up >= CONVICTION_FLOOR
+        and ev_net > 0
+        and regime != "Bear"
+        and _trend_confirms(diag)
+    )
     if not qualifies:
         return None
 
     hold_until = (pd.Timestamp(last_date) + pd.tseries.offsets.BDay(horizon)).strftime("%Y-%m-%d")
-    weight = suggested_weight(prob_up, stats["upMean"], stats["downMean"])
+    weight = suggested_weight(prob_up, stats["upMean"], stats["downMean"],
+                              quality.get("qualityGrade"), (diag or {}).get("realizedVol"))
     return {
         "ticker": ticker,
         "region": region,
@@ -109,12 +141,14 @@ def build_idea(
 
 
 def rank_ideas(ideas: list[dict], per_region: int = 5) -> dict:
-    """Group qualifying ideas by region: quality-validated first, then net edge."""
+    """Group qualifying ideas by region: grade A first, then net edge."""
+    grade_rank = {"A": 2, "B": 1}
     out: dict[str, list[dict]] = {}
     for region in ("KR", "US"):
         regional = sorted(
             (i for i in ideas if i["region"] == region),
-            key=lambda x: (bool((x.get("quality") or {}).get("eligible")), x.get("estimatedNetEdgePct") or -999),
+            key=lambda x: (grade_rank.get((x.get("quality") or {}).get("qualityGrade"), 0),
+                           x.get("estimatedNetEdgePct") or -999),
             reverse=True,
         )
         out[region] = regional[:per_region]

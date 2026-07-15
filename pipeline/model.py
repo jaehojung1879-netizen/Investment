@@ -14,6 +14,9 @@ from .config import ModelConfig
 from . import quality as Q
 from .backtest import long_flat_next_open
 
+# NOTE ON PROBABILITIES: class_weight="balanced" is intentionally absent —
+# reweighting classes distorts predicted probabilities, and this pipeline's
+# whole output is a calibrated probability. Base rates here are ~0.5 anyway.
 LGBM_PARAMS = dict(
     n_estimators=100,
     learning_rate=0.05,
@@ -21,21 +24,86 @@ LGBM_PARAMS = dict(
     num_leaves=31,
     subsample=0.8,
     colsample_bytree=0.8,
-    class_weight="balanced",
     random_state=42,
     verbose=-1,
     n_jobs=-1,
 )
 
+# Final guard rails on any published probability. A 10-day directional
+# forecast never deserves 0% or 100%; anything outside this band is a
+# calibration artifact, not information.
+PROB_CLIP = (0.05, 0.95)
+# Bayesian shrinkage strength toward the calibration-window base rate
+# (pseudo-observations in a Beta-prior sense). Overlapping h-day targets mean
+# a 252-row calibration window holds only ~252/h independent outcomes, so the
+# calibrated probability is pulled toward the base rate accordingly.
+SHRINKAGE_K = 15.0
+
+
+class _EnsembleModel:
+    """Gradient boosting + regularized logistic regression, probability-averaged.
+
+    Averaging two decorrelated model families is the standard institutional
+    variance-reduction step: the tree model captures interactions, the linear
+    model anchors against tree overfit on ~40 noisy features. Falls back to
+    LGBM alone if the linear member fails to fit.
+    """
+
+    def __init__(self):
+        import lightgbm as lgb
+
+        self._lgbm = lgb.LGBMClassifier(**LGBM_PARAMS)
+        self._linear = None
+
+    def fit(self, X, y):
+        from sklearn.linear_model import LogisticRegression
+        from sklearn.pipeline import make_pipeline
+        from sklearn.preprocessing import StandardScaler
+
+        self._lgbm.fit(X, y)
+        try:
+            linear = make_pipeline(
+                StandardScaler(),
+                LogisticRegression(C=0.1, max_iter=1000),
+            )
+            linear.fit(X, y)
+            self._linear = linear
+        except Exception:
+            self._linear = None
+        return self
+
+    def predict_proba(self, X):
+        p = self._lgbm.predict_proba(X)
+        if self._linear is not None:
+            p = 0.5 * (p + self._linear.predict_proba(X))
+        return p
+
 
 def _new_model():
-    import lightgbm as lgb
+    return _EnsembleModel()
 
-    return lgb.LGBMClassifier(**LGBM_PARAMS)
+
+def shrink_probability(p, base_rate: float, n_eff: float):
+    """Shrink a calibrated probability toward the base rate, then clip.
+
+    p* = (n_eff·p + k·base) / (n_eff + k) — a Beta-prior posterior mean with k
+    pseudo-observations at the base rate. n_eff is the number of INDEPENDENT
+    outcomes backing the calibration (window / horizon for overlapping
+    targets). Small evidence ⇒ heavy shrink; the clip keeps any survivor of a
+    saturated calibrator inside honest bounds.
+    """
+    n_eff = max(float(n_eff), 1.0)
+    shrunk = (n_eff * np.asarray(p, dtype=float) + SHRINKAGE_K * base_rate) / (n_eff + SHRINKAGE_K)
+    return np.clip(shrunk, PROB_CLIP[0], PROB_CLIP[1])
 
 
 def _fit_calibrator(model, cal_X, cal_y):
-    """Isotonic calibration on an already-fitted model.
+    """Platt (sigmoid) calibration on an already-fitted model.
+
+    Sigmoid, not isotonic: isotonic is a step function that maps any score
+    beyond the calibration range to exactly 0/1 — with a 252-row window of
+    overlapping targets it saturated and the site displayed 100% probabilities.
+    Platt's logistic map is smooth and cannot emit 0/1.
 
     Supports both the modern FrozenEstimator API (sklearn >= 1.6) and the
     legacy cv='prefit' API (sklearn < 1.8).
@@ -45,15 +113,15 @@ def _fit_calibrator(model, cal_X, cal_y):
     try:
         from sklearn.frozen import FrozenEstimator
 
-        calibrator = CalibratedClassifierCV(FrozenEstimator(model), method="isotonic")
+        calibrator = CalibratedClassifierCV(FrozenEstimator(model), method="sigmoid")
     except ImportError:  # pragma: no cover - old sklearn
-        calibrator = CalibratedClassifierCV(model, method="isotonic", cv="prefit")
+        calibrator = CalibratedClassifierCV(model, method="sigmoid", cv="prefit")
     calibrator.fit(cal_X, cal_y)
     return calibrator
 
 
 def _calibrated_proba(model, cal_X, cal_y, target_X):
-    """Isotonic-calibrated UP probabilities; falls back to raw on failure."""
+    """Platt-calibrated UP probabilities; falls back to raw on failure."""
     try:
         if cal_y.nunique() < 2:
             raise ValueError("calibration window has a single class")
@@ -119,6 +187,7 @@ def walk_forward(
         model.fit(train[feature_cols], train[target_col])
 
         prob_cal = _calibrated_proba(model, cal[feature_cols], cal[target_col], test[feature_cols])
+        prob_cal = shrink_probability(prob_cal, float(cal[target_col].mean()), cal_w / max(horizon, 1))
         prob_raw = model.predict_proba(test[feature_cols])[:, 1]
 
         for j, (idx, row) in enumerate(test.iterrows()):
@@ -186,6 +255,7 @@ def current_signal(
 
     latest_X = feat.iloc[[-1]][feature_cols]
     prob_cal = float(_calibrated_proba(model, cal[feature_cols], cal[target_col], latest_X)[0])
+    prob_cal = float(shrink_probability(prob_cal, float(cal[target_col].mean()), cal_w / max(horizon, 1)))
     prob_raw = float(model.predict_proba(latest_X)[:, 1][0])
 
     return {

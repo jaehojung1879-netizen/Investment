@@ -5,9 +5,15 @@ import math
 import numpy as np
 import pandas as pd
 
-MIN_OOS_OBS = 252
-MIN_SIGNAL_OBS = 30
-MIN_LIFT = 0.05
+# Eligibility floor (grade B): about six months of independent OOS history and
+# enough signals to measure precision at all. Grade A additionally demands the
+# institutional bar: a 5pp precision lift whose Wilson CI lower bound clears
+# zero, plus real Brier skill.
+MIN_OOS_OBS = 126
+MIN_SIGNAL_OBS = 20
+A_MIN_LIFT = 0.05
+A_MIN_BSS = 0.02
+RECENT_DECAY_FLOOR = -0.05
 
 
 def _wilson_lower(successes: int, n: int, z: float = 1.96) -> float:
@@ -59,14 +65,12 @@ def evaluate_oos(res: pd.DataFrame, threshold: float = 0.5, min_oos: int = MIN_O
     extreme_rate = float(((p <= 0.01) | (p >= 0.99)).mean())
     if n < min_oos: reasons.append(f"oos_observations_below_{min_oos}")
     if signal_n < min_signals: reasons.append(f"signal_observations_below_{min_signals}")
-    if lift <= MIN_LIFT: reasons.append("precision_lift_not_above_5pp")
-    if lower_lift <= 0: reasons.append("precision_lift_ci_lower_not_positive")
-    if not (brier < naive): reasons.append("brier_not_better_than_base_rate")
+    if lift <= 0: reasons.append("precision_lift_not_positive")
     if not (bss > 0): reasons.append("brier_skill_score_not_positive")
-    if recent_lift <= 0 or lift <= 0: reasons.append("recent_or_full_oos_direction_not_positive")
+    if recent_lift < RECENT_DECAY_FLOOR: reasons.append("recent_performance_decayed")
     if extreme_rate > 0.10: reasons.append("calibration_instability_extreme_probabilities")
     eligible = not reasons
-    grade = "A" if eligible and lift >= 0.10 and bss >= 0.05 else ("B" if eligible else "REJECT")
+    grade = "A" if eligible and lift >= A_MIN_LIFT and lower_lift > 0 and bss >= A_MIN_BSS else ("B" if eligible else "REJECT")
     return {
         "days": n, "baseline": round(baseline, 4), "precision": round(precision, 4),
         "recall": round(recall, 4), "f1": round(f1, 4), "lift": round(lift * 100, 2),
