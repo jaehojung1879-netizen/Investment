@@ -354,9 +354,12 @@ def main() -> int:
     OUT.write_text(_dumps(payload) + "\n", encoding="utf-8")
     AUDIT_OUT.write_text(_dumps({"generatedAt": payload["generatedAt"], "meta": payload["meta"], "audit": payload.get("audit", {}), "blockReasons": payload.get("blockReasons", [])}) + "\n", encoding="utf-8")
     m = payload["meta"]
+    ti = payload.get("tradeIdeas") or {}
     print(f"wrote {OUT}: {len(payload['core'])} core, universe {m['universeScreened']}, "
           f"coverage {m['coveragePct']}%, indices {m['indicesFetched']}, "
-          f"{m['modelsTrained']} model fits, {m['elapsedSec']}s, data as of {m['latestDataDate']}")
+          f"{m['modelsTrained']} model fits, eligible {m['eligibleSignals']}, "
+          f"ideas KR={len(ti.get('KR') or [])}/US={len(ti.get('US') or [])}, "
+          f"blocked={payload['recommendationsBlocked']}, {m['elapsedSec']}s, data as of {m['latestDataDate']}")
     return 0
 
 

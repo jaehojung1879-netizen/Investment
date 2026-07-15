@@ -308,7 +308,7 @@ const pickCard = (i, rank) => `
     <span class="pick-act">${i.region} · 매수 후보</span>
     <div class="pick-conv"><span class="big">${pct0((i.modelScore ?? i.probUp))}</span><span class="lab">${term('prob', '모델 점수')}</span></div>
     <div class="pick-meta">
-      <span>기대 <b>${sp((i.estimatedNetEdgePct ?? i.expMovePct))}</b></span>
+      <span>기대 <b>${sp((i.expMovePct ?? i.estimatedNetEdgePct))}</b></span>
       <span data-x="edge">edge <b>${sp((i.estimatedNetEdgePct ?? i.edgeNetPct))}</b></span>
       ${i.suggestedWeightPct != null ? `<span data-x="size">비중 <b>~${i.suggestedWeightPct}%</b></span>` : ''}
       <span>${term('hold', '보유')} <b>~${i.holdUntil}</b></span>
@@ -333,7 +333,7 @@ const ideaRow = (i) => `
   <div class="idea">
     <div class="idea-top"><strong class="tklink" data-tk="${i.ticker}">${tkName(i.ticker)}</strong>${tkSub(i.ticker)}<span class="reg ${regCls(i.regime)}">${regKo(i.regime)}</span>${qBadge(i.quality)}<span class="edge" data-x="edge">edge ${sp((i.estimatedNetEdgePct ?? i.edgeNetPct))}</span></div>
     <div class="idea-bar"><i style="width:${Math.round(((i.modelScore ?? i.probUp) ?? 0) * 100)}%"></i></div>
-    <div class="idea-meta"><span>${term('prob', '모델 점수')} <b>${pct0((i.modelScore ?? i.probUp))}</b></span><span>기대 <b>${sp((i.estimatedNetEdgePct ?? i.expMovePct))}</b></span>${i.suggestedWeightPct != null ? `<span data-x="size">비중 <b>~${i.suggestedWeightPct}%</b></span>` : ''}<span>${term('hold', '보유')} <b>~${i.holdUntil}</b> (${i.horizon}D)</span></div>
+    <div class="idea-meta"><span>${term('prob', '모델 점수')} <b>${pct0((i.modelScore ?? i.probUp))}</b></span><span>기대 <b>${sp((i.expMovePct ?? i.estimatedNetEdgePct))}</b></span>${i.suggestedWeightPct != null ? `<span data-x="size">비중 <b>~${i.suggestedWeightPct}%</b></span>` : ''}<span>${term('hold', '보유')} <b>~${i.holdUntil}</b> (${i.horizon}D)</span></div>
     <div class="idea-why">${i.why || ''}</div>
     <div class="idea-inv">${i.invalidation}</div>
   </div>`;
