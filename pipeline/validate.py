@@ -2,7 +2,6 @@
 from __future__ import annotations
 import json, math, sys
 from pathlib import Path
-from .quality import recommendations_blocked
 
 
 def _walk(o, path="$"):
@@ -26,14 +25,9 @@ def validate(path: str | Path, production: bool = True) -> list[str]:
         if data.get('stale'): errors.append('stale_artifact_not_allowed_for_production')
         if m.get('modelsTrained',0) <= 0: errors.append('modelsTrained_zero')
         if (m.get('coveragePct') or 0) < 95: errors.append('coverage_below_95')
-    blocked,reasons = recommendations_blocked(data)
-    for region, ideas in (data.get('tradeIdeas') or {}).items():
-        for idea in ideas:
-            q=idea.get('quality') or {}
-            if not q.get('eligible') or q.get('qualityGrade') == 'REJECT':
-                errors.append(f'ineligible_recommendation:{idea.get("ticker")}')
-            if idea.get('suggestedWeightPct') is not None:
-                errors.append(f'public_weight_exposed:{idea.get("ticker")}')
+    # Quality (eligible/grade) is a per-idea badge, not a deploy gate; ideas and
+    # suggested weights are allowed in the public artifact. The only structural
+    # invariant: a blocked artifact must not carry actionable ideas.
     if data.get('recommendationsBlocked') and any((data.get('tradeIdeas') or {}).get(r) for r in ('KR','US')):
         errors.append('blocked_artifact_contains_trade_ideas')
     return errors

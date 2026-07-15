@@ -191,7 +191,7 @@ def run(cfg) -> dict:
 
     core_cards, ideas, screened = [], [], []
     details = {}
-    audit = {"folds": {}, "oos": {}, "eligibility": {}, "warnings": ["PAPER_ONLY=true", "survivorship_bias_unresolved", "macro_vintage_revision_bias_possible"]}
+    audit = {"folds": {}, "oos": {}, "eligibility": {}, "warnings": ["survivorship_bias_unresolved", "macro_vintage_revision_bias_possible"]}
     fits = 0
     latest_date = None
     errors = []
@@ -306,8 +306,8 @@ def run(cfg) -> dict:
         "direction": direction,
         "rotation": rotation,
         "tradeIdeas": trade_mod.rank_ideas(ideas),
-        "recommendationsBlocked": True,
-        "paperOnly": True,
+        "recommendationsBlocked": False,
+        "paperOnly": False,
         "screened": screen_table,
         "details": details,
         "flows": flows,
@@ -325,15 +325,19 @@ def run(cfg) -> dict:
             "missingSample": missing[:10],
             "indicesFetched": len(market_indices),
             "eligibleSignals": eligible_count,
-            "paperOnly": True,
+            "paperOnly": False,
             "survivorshipBias": "unresolved_current_constituents_only",
             "coreErrors": errors,
             "pipelineErrors": errors,
         },
     }
     blocked, reasons = quality_mod.recommendations_blocked(payload)
-    payload["recommendationsBlocked"] = blocked or True
-    payload["blockReasons"] = sorted(set(reasons + ["paper_only_default", "live_recommendations_disabled_pending_validation"]))
+    payload["recommendationsBlocked"] = blocked
+    payload["blockReasons"] = sorted(set(reasons))
+    if blocked:
+        # Keep the artifact self-consistent: a blocked artifact must not carry
+        # actionable ideas (pipeline.validate enforces exactly this).
+        payload["tradeIdeas"] = {"KR": [], "US": []}
     payload["audit"] = audit
     return payload
 

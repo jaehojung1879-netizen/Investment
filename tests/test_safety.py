@@ -8,7 +8,7 @@ from pipeline.config import ModelConfig
 from pipeline.quality import evaluate_oos, recommendations_blocked
 from pipeline.backtest import long_flat_next_open
 from pipeline.build import _dumps
-from pipeline.trade import suggested_weight
+from pipeline.trade import MAX_POSITION_WEIGHT, build_idea, rank_ideas, suggested_weight
 
 
 def price(n=80):
@@ -59,7 +59,19 @@ def test_quality_rejects_negative_bss_and_low_signal_count():
 
 def test_block_reasons_seed_stale_zero_models():
     blocked, reasons=recommendations_blocked({'seed':True,'stale':True,'meta':{'modelsTrained':0,'coveragePct':100,'eligibleSignals':0}})
-    assert blocked and {'seed_data','stale_data','models_trained_zero','no_quality_gate_passed_signals'} <= set(reasons)
+    assert blocked and {'seed_data','stale_data','models_trained_zero'} <= set(reasons)
+    # OOS quality is a per-idea badge now, never a global blocker.
+    assert 'no_quality_gate_passed_signals' not in reasons
+
+def test_healthy_build_not_blocked_despite_zero_eligible_and_few_errors():
+    blocked, reasons=recommendations_blocked({'meta':{'modelsTrained':50,'coveragePct':99,'eligibleSignals':0,
+                                                      'universeScreened':180,'pipelineErrors':['X: boom']}})
+    assert not blocked and reasons == []
+
+def test_excessive_pipeline_errors_block():
+    blocked, reasons=recommendations_blocked({'meta':{'modelsTrained':50,'coveragePct':99,
+                                                      'universeScreened':100,'pipelineErrors':['e']*11}})
+    assert blocked and 'pipeline_errors_excessive' in reasons
 
 def test_backtest_next_open_and_costs_constant_price():
     idx=pd.bdate_range('2024-01-01', periods=4)
@@ -93,8 +105,38 @@ def test_no_sell_without_position():
     df=pd.DataFrame({'Open':[100,100,100],'Close':[100,100,100],'pred_cal':[0,0,0]}, index=idx)
     assert long_flat_next_open(df)['numTrades'] == 0
 
-def test_no_portfolio_means_no_kelly_weight():
-    assert suggested_weight(.9,.1,-.05) is None
+def test_half_kelly_weight_math_and_cap():
+    # b = 0.1/0.05 = 2, kelly = 0.9 - 0.1/2 = 0.85, half = 0.425 -> capped at 10%
+    assert suggested_weight(.9,.1,-.05) == MAX_POSITION_WEIGHT
+    # b = 1, kelly = 0.6 - 0.4 = 0.2, half = 0.1 -> exactly the cap
+    assert abs(suggested_weight(.6,.05,-.05) - 0.1) < 1e-9
+    # negative-edge kelly clamps to 0, degenerate move sizes -> None
+    assert suggested_weight(.4,.05,-.05) == 0.0
+    assert suggested_weight(.9,-.01,-.05) is None
+    assert suggested_weight(.9,.05,.01) is None
+
+def test_build_idea_restored_with_quality_badge():
+    stats={'upMean':.05,'downMean':-.02,'baseRate':.55}
+    q={'eligible':True,'qualityGrade':'A','lift':8.0,'brierSkillScore':.06,'eligibilityReasons':[]}
+    idea=build_idea('QQQ','US',.62,stats,10,'2026-07-14','Bull',{'mom63':.1},q)
+    assert idea is not None
+    assert idea['suggestedWeightPct'] is not None and idea['suggestedWeightPct'] > 0
+    assert idea['quality']['qualityGrade'] == 'A'
+    assert idea['estimatedNetEdgePct'] > 0
+    # unvalidated quality must NOT gate the idea out — badge only
+    idea2=build_idea('SPY','US',.62,stats,10,'2026-07-14','Bull',None,{'eligible':False,'qualityGrade':'REJECT'})
+    assert idea2 is not None and idea2['quality']['qualityGrade'] == 'REJECT'
+
+def test_build_idea_rejects_bear_low_conviction_negative_edge():
+    stats={'upMean':.05,'downMean':-.02,'baseRate':.55}
+    assert build_idea('QQQ','US',.62,stats,10,'2026-07-14','Bear') is None
+    assert build_idea('QQQ','US',.50,stats,10,'2026-07-14','Bull') is None
+    assert build_idea('QQQ','US',.56,{'upMean':.003,'downMean':-.003},10,'2026-07-14','Bull') is None
+
+def test_rank_ideas_prefers_quality_validated():
+    mk=lambda t,e,elig: {'ticker':t,'region':'US','estimatedNetEdgePct':e,'quality':{'eligible':elig}}
+    ranked=rank_ideas([mk('LOWEDGE_VALID',1.0,True), mk('HIGHEDGE_UNVALID',5.0,False)])
+    assert [i['ticker'] for i in ranked['US']] == ['LOWEDGE_VALID','HIGHEDGE_UNVALID']
 
 def test_validate_exit_nonzero_on_seed(tmp_path):
     p=tmp_path/'site.json'; p.write_text(json.dumps({'seed':True,'stale':False,'generatedAt':'x','portfolioName':'x','core':[],'screened':[],'tradeIdeas':{'KR':[],'US':[]},'meta':{'modelsTrained':0,'coveragePct':100}}))
