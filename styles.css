@@ -233,6 +233,10 @@ a { color: inherit; text-decoration: none; }
 .reg.bull { background: rgba(46,230,160,0.15); color: var(--green); }
 .reg.bear { background: rgba(255,107,138,0.15); color: var(--red); }
 .reg.trans { background: rgba(245,196,81,0.14); color: var(--gold); }
+.qbadge { font-size: 0.66rem; font-weight: 800; padding: 2px 8px; border-radius: 999px; cursor: help; }
+.qbadge.ga { background: rgba(46,230,160,0.18); color: var(--green); }
+.qbadge.gb { background: rgba(96,165,250,0.16); color: #60a5fa; }
+.qbadge.gx { background: rgba(148,163,184,0.14); color: var(--muted); }
 .tk { color: var(--muted); font-size: 0.72rem; font-weight: 500; }
 .none { padding: 12px 0; color: var(--muted); }
 

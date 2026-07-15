@@ -79,6 +79,12 @@ def evaluate_oos(res: pd.DataFrame, threshold: float = 0.5, min_oos: int = MIN_O
 
 
 def recommendations_blocked(payload: dict) -> tuple[bool, list[str]]:
+    """Hard data-safety blockers only.
+
+    OOS quality (eligible/grade) is a per-idea badge, not a global gate, so it
+    never blocks here. Scattered per-ticker errors are tolerated; only a broad
+    pipeline failure (>10% of the screened universe erroring) blocks.
+    """
     m = payload.get("meta", {})
     reasons = []
     if payload.get("seed"): reasons.append("seed_data")
@@ -87,6 +93,8 @@ def recommendations_blocked(payload: dict) -> tuple[bool, list[str]]:
     if (m.get("coveragePct") or 0) < 95: reasons.append("coverage_below_95")
     if m.get("buildValidationFailed"): reasons.append("build_validation_failed")
     if m.get("syntheticData"): reasons.append("synthetic_data")
-    if m.get("coreErrors") or m.get("pipelineErrors"): reasons.append("pipeline_errors")
-    if m.get("eligibleSignals", 0) == 0: reasons.append("no_quality_gate_passed_signals")
+    n_errors = len(m.get("pipelineErrors") or [])
+    universe = m.get("universeScreened") or 0
+    if n_errors and n_errors > 0.10 * max(universe, 1):
+        reasons.append("pipeline_errors_excessive")
     return bool(reasons), reasons

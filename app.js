@@ -292,10 +292,19 @@ const renderPosture = (sent) => {
 };
 
 // --- Top picks (hero right) ---
+// OOS quality badge: informational, not a gate — shows how well the model has
+// actually predicted this ticker out-of-sample (grade from pipeline/quality.py).
+const qBadge = (q) => {
+  q = q || {};
+  const g = q.qualityGrade;
+  if (g === 'A' || g === 'B') return `<span class="qbadge g${g.toLowerCase()}" title="OOS 검증 통과 · lift ${q.lift ?? '—'}%p · BSS ${q.brierSkillScore ?? '—'}">검증 ${g}</span>`;
+  return `<span class="qbadge gx" title="OOS 품질 게이트 미통과 — 참고용 신호">미검증</span>`;
+};
+
 const pickCard = (i, rank) => `
   <article class="pick ${rank === 1 ? 'top' : ''}">
     <span class="rank">#${rank}</span>
-    <div class="pick-name"><strong class="tklink" data-tk="${i.ticker}">${tkName(i.ticker)}</strong><span class="reg ${regCls(i.regime)}">${regKo(i.regime)}</span></div>
+    <div class="pick-name"><strong class="tklink" data-tk="${i.ticker}">${tkName(i.ticker)}</strong><span class="reg ${regCls(i.regime)}">${regKo(i.regime)}</span>${qBadge(i.quality)}</div>
     <span class="pick-act">${i.region} · 매수 후보</span>
     <div class="pick-conv"><span class="big">${pct0((i.modelScore ?? i.probUp))}</span><span class="lab">${term('prob', '모델 점수')}</span></div>
     <div class="pick-meta">
@@ -322,7 +331,7 @@ const renderTopPicks = (d) => {
 // --- Idea lists ---
 const ideaRow = (i) => `
   <div class="idea">
-    <div class="idea-top"><strong class="tklink" data-tk="${i.ticker}">${tkName(i.ticker)}</strong>${tkSub(i.ticker)}<span class="reg ${regCls(i.regime)}">${regKo(i.regime)}</span><span class="edge" data-x="edge">edge ${sp((i.estimatedNetEdgePct ?? i.edgeNetPct))}</span></div>
+    <div class="idea-top"><strong class="tklink" data-tk="${i.ticker}">${tkName(i.ticker)}</strong>${tkSub(i.ticker)}<span class="reg ${regCls(i.regime)}">${regKo(i.regime)}</span>${qBadge(i.quality)}<span class="edge" data-x="edge">edge ${sp((i.estimatedNetEdgePct ?? i.edgeNetPct))}</span></div>
     <div class="idea-bar"><i style="width:${Math.round(((i.modelScore ?? i.probUp) ?? 0) * 100)}%"></i></div>
     <div class="idea-meta"><span>${term('prob', '모델 점수')} <b>${pct0((i.modelScore ?? i.probUp))}</b></span><span>기대 <b>${sp((i.estimatedNetEdgePct ?? i.expMovePct))}</b></span>${i.suggestedWeightPct != null ? `<span data-x="size">비중 <b>~${i.suggestedWeightPct}%</b></span>` : ''}<span>${term('hold', '보유')} <b>~${i.holdUntil}</b> (${i.horizon}D)</span></div>
     <div class="idea-why">${i.why || ''}</div>
@@ -330,11 +339,15 @@ const ideaRow = (i) => `
   </div>`;
 
 const renderIdeas = (d) => {
-  if (d.recommendationsBlocked) { $('#tradeKR').innerHTML = $('#tradeUS').innerHTML = '<div class="none">매매 사용 금지: 품질 게이트/데이터 안전 차단 상태입니다.</div>'; $('#tradeMeta').textContent = 'PAPER ONLY · 추천 차단'; }
-  const ti = d.recommendationsBlocked ? {KR:[],US:[]} : (d.tradeIdeas || { KR: [], US: [] });
-  $('#tradeMeta').textContent = `보유 ${d.tradeHorizon ?? '—'}영업일 기준 · 게이트 통과분만`;
-  const fill = (el, arr) => $(el).innerHTML = (arr && arr.length) ? arr.map(ideaRow).join('') : '<div class="none">조건 충족 종목 없음 (관망)</div>';
-  fill('#tradeKR', ti.KR); fill('#tradeUS', ti.US);
+  if (d.recommendationsBlocked) {
+    $('#tradeKR').innerHTML = $('#tradeUS').innerHTML = '<div class="none">데이터 안전 차단 상태: 추천이 일시 중지됐습니다.</div>';
+    $('#tradeMeta').textContent = '추천 차단 · ' + ((d.blockReasons || []).join(' · ') || '데이터 안전');
+  } else {
+    const ti = d.tradeIdeas || { KR: [], US: [] };
+    $('#tradeMeta').textContent = `보유 ${d.tradeHorizon ?? '—'}영업일 기준 · 확률·기대값 통과분`;
+    const fill = (el, arr) => $(el).innerHTML = (arr && arr.length) ? arr.map(ideaRow).join('') : '<div class="none">조건 충족 종목 없음 (관망)</div>';
+    fill('#tradeKR', ti.KR); fill('#tradeUS', ti.US);
+  }
   const sc = d.screened || [];
   $('#screenCount').textContent = `· ${sc.length}개`;
   $('#screenTable').innerHTML = `<div class="srow sh"><span>종목</span><span>지역</span><span>${term('prob', '모델 점수')}</span><span>국면</span><span>채택</span></div>` +
