@@ -21,7 +21,9 @@ from numbers import Integral, Real
 
 from . import direction as direction_mod
 from . import features as F
+from . import fundamentals as fundamentals_mod
 from . import indices as indices_mod
+from . import longterm as longterm_mod
 from . import macro as macro_mod
 from . import model as M
 from . import risk as risk_mod
@@ -191,6 +193,7 @@ def run(cfg) -> dict:
 
     core_cards, ideas, screened = [], [], []
     details = {}
+    diags = {}
     audit = {"folds": {}, "oos": {}, "eligibility": {}, "warnings": ["survivorship_bias_unresolved", "macro_vintage_revision_bias_possible"]}
     fits = 0
     latest_date = None
@@ -209,6 +212,7 @@ def run(cfg) -> dict:
                 continue
             latest_date = max(latest_date, clean.index[-1]) if latest_date else clean.index[-1]
             diagnosis = risk_mod.diagnose(ticker, feat)
+            diags[ticker] = diagnosis
             region = cfg.region_of(ticker)
             vsurge = volume_surge(prices[ticker])
 
@@ -261,6 +265,21 @@ def run(cfg) -> dict:
     sentiment = sentiment_mod.summarize(screened, macro, vix)
     macro_summary = macro_mod.summarize(macro, vix)
 
+    # Long-horizon (6-12mo) multi-factor engine — the PRIMARY recommendation
+    # layer. Fundamentals fetch is budgeted and fault-tolerant; if it fails
+    # entirely the engine still ranks on momentum/low-vol alone.
+    fundamentals = {}
+    try:
+        fundamentals = fundamentals_mod.fetch_fundamentals(all_tickers)
+        print(f"  fundamentals: {len(fundamentals)}/{len(all_tickers)} tickers")
+    except Exception as exc:
+        print(f"  warning: fundamentals fetch failed: {exc}")
+    try:
+        long_term = longterm_mod.build(universe, prices, fundamentals, diags)
+    except Exception as exc:
+        print(f"  warning: long-term engine failed: {exc}")
+        long_term = None
+
     # Direction compass + sector/factor rotation are additive tools; a failed
     # download must never take the whole build down with it.
     try:
@@ -305,6 +324,7 @@ def run(cfg) -> dict:
         "indices": market_indices,
         "direction": direction,
         "rotation": rotation,
+        "longTerm": long_term,
         "tradeIdeas": trade_mod.rank_ideas(ideas),
         "recommendationsBlocked": False,
         "paperOnly": False,
@@ -325,6 +345,7 @@ def run(cfg) -> dict:
             "missingSample": missing[:10],
             "indicesFetched": len(market_indices),
             "eligibleSignals": eligible_count,
+            "fundamentalsCovered": len(fundamentals),
             "paperOnly": False,
             "survivorshipBias": "unresolved_current_constituents_only",
             "coreErrors": errors,
@@ -355,10 +376,14 @@ def main() -> int:
     AUDIT_OUT.write_text(_dumps({"generatedAt": payload["generatedAt"], "meta": payload["meta"], "audit": payload.get("audit", {}), "blockReasons": payload.get("blockReasons", [])}) + "\n", encoding="utf-8")
     m = payload["meta"]
     ti = payload.get("tradeIdeas") or {}
+    lt = payload.get("longTerm") or {}
+    lt_regions = lt.get("regions") or {}
+    lt_counts = "/".join(f"{r}={len((v or {}).get('picks') or [])}" for r, v in lt_regions.items()) or "none"
     print(f"wrote {OUT}: {len(payload['core'])} core, universe {m['universeScreened']}, "
           f"coverage {m['coveragePct']}%, indices {m['indicesFetched']}, "
           f"{m['modelsTrained']} model fits, eligible {m['eligibleSignals']}, "
           f"ideas KR={len(ti.get('KR') or [])}/US={len(ti.get('US') or [])}, "
+          f"longterm {lt_counts} (fund {m['fundamentalsCovered']}), "
           f"blocked={payload['recommendationsBlocked']}, {m['elapsedSec']}s, data as of {m['latestDataDate']}")
     return 0
 
