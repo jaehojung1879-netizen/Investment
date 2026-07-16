@@ -21,7 +21,8 @@
           <a href="#indices">마켓</a>
           <a href="#direction">나침반</a>
           <a href="#action">액션</a>
-          <a href="#ideas">아이디어</a>
+          <a href="#longterm">장기 랭킹</a>
+          <a href="#ideas">단기(참고)</a>
           <a href="#holdings">보유</a>
           <a href="#rotation">로테이션</a>
           <a href="#flows">자금흐름</a>
@@ -83,9 +84,22 @@
         </div>
       </section>
 
-      <!-- 전체 아이디어 -->
+      <!-- 장기 투자 랭킹 (주 엔진) -->
+      <section id="longterm" class="section" hidden>
+        <div class="sec-title">
+          <span class="overline">장기 투자 랭킹 — 6~12개월 <span class="ico qh" data-x="longterm">ⓘ</span></span>
+          <span id="ltMeta" class="muted"></span>
+        </div>
+        <div class="cols2">
+          <div><div class="col-h">국내 (KR)</div><div id="ltKR" class="lt-list"></div></div>
+          <div><div class="col-h">국외 (US)</div><div id="ltUS" class="lt-list"></div></div>
+        </div>
+        <p class="caveat muted" id="ltCaveats"></p>
+      </section>
+
+      <!-- 단기 시그널 (참고용) -->
       <section id="ideas" class="section">
-        <div class="sec-title"><span class="overline">트레이드 아이디어</span><span id="tradeMeta" class="muted"></span></div>
+        <div class="sec-title"><span class="overline">단기 시그널 — 10일 · 참고용 <span class="ico qh" data-x="trade">ⓘ</span></span><span id="tradeMeta" class="muted"></span></div>
         <div class="cols2">
           <div><div class="col-h">국내 (KR)</div><div id="tradeKR" class="idea-list"></div></div>
           <div><div class="col-h">국외 (US)</div><div id="tradeUS" class="idea-list"></div></div>

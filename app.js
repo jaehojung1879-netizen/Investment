@@ -20,11 +20,12 @@ const fgCls = (s) => s == null ? 'g-trans' : s < 45 ? 'g-bear' : s < 55 ? 'g-tra
 
 // --- Popover explanations ---
 const EXPL = {
-  trade: ['오늘의 핵심 액션', '국내·국외 유니버스를 트레이드 호라이즌(기본 10영업일)으로 스크리닝해, <b>비용을 넘는 기대값(edge)</b>이 양수이고 확신 하한(확률 0.55)·국면(하락장 제외)을 만족하는 종목만 매수 후보로 올립니다. 후보가 없으면 “관망”이 결론입니다.<br><br><b>한계:</b> 수백 종목 동시 스캔은 우연한 고득점(다중검정 거짓양성)을 만듭니다 → 상위 1~2개만, 분산. 유니버스는 현재 상장 종목 기준이라 상장폐지 종목이 빠진 생존편향이 있습니다.'],
+  longterm: ['장기 투자 랭킹 (주 엔진)', '단기 방향 예측 대신, 세계 퀀트 운용사가 쓰는 <b>횡단면 멀티팩터 랭킹</b>으로 지역 유니버스 안에서 “상대적으로” 매력적인 종목을 고릅니다. 팩터: <b>모멘텀</b>(12-1개월, Jegadeesh-Titman) · <b>밸류</b>(이익수익률·장부가·FCF수익률, Fama-French) · <b>퀄리티</b>(ROE·마진·저부채, Novy-Marx) · <b>저변동성</b>. 지역 내 z-점수를 가중합한 종합점수 순위이며, 200일선 아래 종목은 뒤로 밀립니다. 비중은 역변동성(리스크 패리티식) 배분입니다.<br><br><b>정직한 한계:</b> 밸류·퀄리티는 현재 스냅샷 재무라 자체 백테스트가 불가능해 <b>학술 근거에 의존</b>합니다. 6~12개월 보유 + 분기 리밸런싱 전제이며, 팩터 프리미엄은 수년 단위로 부침이 있습니다.'],
+  trade: ['단기 시그널 — 참고용', '국내·국외 유니버스를 트레이드 호라이즌(기본 10영업일)으로 스크리닝해, <b>비용을 넘는 기대값(edge)</b>이 양수이고 확신 하한(확률 0.55)·국면(하락장 제외)·OOS 품질 검증을 만족하는 종목만 올립니다. 후보가 없으면 “관망”이 결론입니다.<br><br><b>왜 참고용인가:</b> 단기 방향 예측은 동전던지기에 가깝고, 수백 종목 동시 스캔은 우연한 고득점(다중검정 거짓양성)을 만듭니다. 주 판단은 위의 <b>장기 랭킹</b>을 쓰고, 이 섹션은 타이밍 참고로만 보세요.'],
   core: ['추적 종목', 'core 목록은 공개 저장소에 수량·평균단가가 없는 관심/추적 종목입니다. 품질 게이트 통과 전 모델 점수는 매매에 사용하지 않습니다.'],
   macro: ['매크로', 'FRED에서 국외(미국 10Y·2Y·금리차·기준금리·하이일드 스프레드·VIX)와 국내(원/달러·국고채 10Y·3M·금리차)를 받아 위험 플래그를 띄웁니다. 개별 종목보다 먼저 점검합니다.'],
   sentiment: ['공포 · 탐욕 지수', 'CNN 공포·탐욕 지수처럼 <b>실데이터로 시장 심리</b>를 0~100으로 계산합니다. 유니버스 200·50일선 위 비중·상승국면 비중·중앙값 모멘텀 + 매크로(VIX·신용스프레드·원화)를 가중합한 <b>휴리스틱 지수</b>(확률이 아님)입니다. 구성 지표가 사실상 모멘텀 한 방향에 겹치므로 종목 확률과 별개의 보조 신호로만 보세요. 탐욕 과열은 추격 주의, 극도의 공포는 역발상 기회일 수 있습니다.'],
-  prob: ['모델 점수 / 확률 해석 불가', '가격·추세·변동성·상대강도·매크로 피처 약 50개를 <b>LightGBM(데이터 적합 모델)</b>에 넣어 해당 호라이즌 뒤 상승 확률을 추정합니다. 단순 정규화 점수가 아니라, walk-forward로 재학습하고 <b>학습에 안 쓴 최근 구간으로 isotonic 보정</b>해 실제 상승 빈도에 맞춥니다. 보정 품질은 <b>Brier 점수</b>(낮을수록 좋음, 종목 클릭 시 표시)로 측정합니다. 트리 모델이라 지표 간 상관(모멘텀·RSI 중복)은 모델이 알아서 처리합니다.'],
+  prob: ['모델 점수 (보정 확률)', '가격·추세·변동성·상대강도·매크로 피처 약 50개를 <b>LightGBM + 로지스틱 앙상블</b>에 넣어 해당 호라이즌 뒤 상승 확률을 추정합니다. walk-forward로 재학습하고 <b>학습에 안 쓴 최근 구간으로 Platt(시그모이드) 보정</b>한 뒤, 실질 표본 수 기준으로 기저확률 쪽으로 <b>수축(shrinkage)</b>하고 <b>[5%, 95%]로 클리핑</b>합니다 — 100%/0% 같은 확신은 구조적으로 불가능합니다. 보정 품질은 <b>Brier 점수</b>(낮을수록 좋음, 종목 클릭 시 표시)로 측정합니다.'],
   brier: ['Brier 점수', '예측 확률과 실제 결과(0/1)의 평균제곱오차입니다. <b>낮을수록 보정이 잘 된 것</b>(0=완벽, 0.25=동전던지기 수준). “확률 67%”가 정규화 점수가 아니라 실제 빈도와 맞는지 보는 지표입니다.'],
   edge: ['edge (net)', '<code>edge = p·평균상승 + (1−p)·평균하락 − 비용허들</code>. 확률만으로는 비용을 못 넘기 때문에 기대값이 양수일 때만 제안합니다. 국내(KR)는 세금·수수료로 허들이 더 높습니다.'],
   hold: ['보유(hold-until)', '진입일 + 트레이드 호라이즌(영업일)로 잡은 <b>재평가 시점</b>입니다. 그 전에 무효화 조건(종가 MA20 이탈 또는 다음 확률 0.5 미만)이 오면 먼저 청산합니다.'],
@@ -316,8 +317,32 @@ const pickCard = (i, rank) => `
     <div class="pick-why">${i.why || ''}</div>
   </article>`;
 
+// Hero card for a long-term factor pick (the primary engine).
+const topPct = (p) => p != null ? `상위 ${Math.max(1, Math.round(100 - p))}%` : '—';
+const ltHeroCard = (p, rank) => `
+  <article class="pick ${rank === 1 ? 'top' : ''}">
+    <span class="rank">#${rank}</span>
+    <div class="pick-name"><strong class="tklink" data-tk="${p.ticker}">${tkName(p.ticker)}</strong><span class="reg ${regCls(p.regime)}">${regKo(p.regime)}</span></div>
+    <span class="pick-act">${p.region ?? ''} · 장기 매수 후보 (6~12개월)</span>
+    <div class="pick-conv"><span class="big">${topPct(p.percentile)}</span><span class="lab">${term('longterm', '종합 팩터 순위')}</span></div>
+    <div class="pick-meta">
+      <span>모멘텀 <b>${p.factors?.momentum ?? '—'}</b></span>
+      <span>밸류 <b>${p.factors?.value ?? '—'}</b></span>
+      <span>퀄리티 <b>${p.factors?.quality ?? '—'}</b></span>
+      ${p.weightPct != null ? `<span data-x="size">비중 <b>~${p.weightPct}%</b></span>` : ''}
+    </div>
+    <div class="pick-why">12-1M 모멘텀 ${sp(p.mom12_1Pct)} · 연변동성 ${fmt(p.vol252Pct, '%', 0)}${p.aboveMA200 ? ' · 200일선 위' : ' · 200일선 아래(주의)'}</div>
+  </article>`;
+
 const renderTopPicks = (d) => {
   if (d.recommendationsBlocked) { $('#topPicks').innerHTML = `<div class="pick-empty danger"><b>매매 사용 금지 · 추천 차단</b><p class="muted">${(d.blockReasons||[]).join(' · ')}</p></div>`; return; }
+  // Primary: long-term factor picks. Short-term ML ideas are reference-only.
+  const lt = d.longTerm;
+  if (lt && lt.regions) {
+    const all = Object.values(lt.regions).flatMap((r) => (r && r.picks) || []);
+    const top = all.sort((a, b) => (b.composite ?? -9) - (a.composite ?? -9)).slice(0, 3);
+    if (top.length) { $('#topPicks').innerHTML = top.map((p, idx) => ltHeroCard(p, idx + 1)).join(''); return; }
+  }
   const ti = d.tradeIdeas || { KR: [], US: [] };
   const all = [...(ti.KR || []), ...(ti.US || [])].sort((a, b) => ((b.estimatedNetEdgePct ?? b.edgeNetPct) ?? 0) - ((a.estimatedNetEdgePct ?? a.edgeNetPct) ?? 0));
   const top = all.slice(0, 3);
@@ -326,6 +351,27 @@ const renderTopPicks = (d) => {
     return;
   }
   $('#topPicks').innerHTML = top.map((i, idx) => pickCard(i, idx + 1)).join('');
+};
+
+// --- Long-term factor ranking (primary engine) ---
+const fBar = (label, v) => `<div class="fb"><span>${label}</span><div class="fb-bar"><i style="width:${v ?? 0}%"></i></div><b>${v != null ? v : '—'}</b></div>`;
+const ltRow = (p) => `
+  <div class="lt-item">
+    <div class="lt-top">${tkLink(p.ticker)}<span class="reg ${regCls(p.regime)}">${regKo(p.regime)}</span>${p.aboveMA200 ? '' : '<span class="qbadge gx" title="200일 이동평균 아래 — 추세 미확인">추세↓</span>'}${p.weightPct != null ? `<span class="edge" data-x="size">비중 ~${p.weightPct}%</span>` : ''}</div>
+    <div class="lt-meta"><span>종합 <b>${topPct(p.percentile)}</b></span><span>12-1M 모멘텀 <b>${sp(p.mom12_1Pct)}</b></span><span>연변동성 <b>${fmt(p.vol252Pct, '%', 0)}</b></span></div>
+    <div class="lt-bars">${fBar('모멘텀', p.factors?.momentum)}${fBar('밸류', p.factors?.value)}${fBar('퀄리티', p.factors?.quality)}${fBar('저변동', p.factors?.lowvol)}</div>
+    ${p.valueDataAvailable ? '' : '<div class="lt-note muted">재무 데이터 미수집 — 모멘텀·저변동성 위주 순위</div>'}
+  </div>`;
+
+const renderLongTerm = (d) => {
+  const lt = d.longTerm; const sec = $('#longterm');
+  if (!lt || !lt.regions || !Object.keys(lt.regions).length) { sec.hidden = true; return; }
+  sec.hidden = false;
+  const hm = lt.horizonMonths || [6, 12];
+  $('#ltMeta').textContent = `보유 ${hm[0]}~${hm[hm.length - 1]}개월 · ${lt.rebalance || '분기 리밸런싱'} · 재무 커버리지 ${lt.fundamentalsCoverage ?? '—'}%`;
+  const fill = (el, reg) => { const r = lt.regions[reg]; $(el).innerHTML = (r && r.picks && r.picks.length) ? r.picks.map(ltRow).join('') : '<div class="none">데이터 부족</div>'; };
+  fill('#ltKR', 'KR'); fill('#ltUS', 'US');
+  $('#ltCaveats').innerHTML = '⚠️ ' + (lt.caveats || []).join(' · ');
 };
 
 // --- Idea lists ---
@@ -445,6 +491,7 @@ const render = (d) => {
   renderRotation(d.rotation);
   renderPosture(d.sentiment);
   renderTopPicks(d);
+  renderLongTerm(d);
   renderIdeas(d);
   renderHoldings(d);
   renderFlows(d);

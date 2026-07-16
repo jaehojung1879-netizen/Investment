@@ -170,6 +170,60 @@ def test_rank_ideas_grade_a_first():
     ranked=rank_ideas([mk('B_HIGH',5.0,'B'), mk('A_LOW',1.0,'A')])
     assert [i['ticker'] for i in ranked['US']] == ['A_LOW','B_HIGH']
 
+def _lt_prices(n_tickers=8, days=400, seed=1):
+    rng=np.random.default_rng(seed); out={}
+    idx=pd.bdate_range('2024-01-01', periods=days)
+    for i in range(n_tickers):
+        drift=0.0002*(i - n_tickers/2)  # spread of trends so momentum ranks differ
+        close=pd.Series(100*np.exp(np.cumsum(rng.normal(drift, .015, days))), index=idx)
+        out[f'T{i}']=pd.DataFrame({'Close':close,'Open':close,'High':close,'Low':close,'Volume':1e6}, index=idx)
+    return out
+
+def test_longterm_ranks_without_fundamentals():
+    from pipeline.longterm import build
+    prices=_lt_prices()
+    universe={'US':list(prices)}
+    diags={t:{'aboveMA200':True,'regime':'Bull'} for t in prices}
+    lt=build(universe, prices, {}, diags)
+    assert lt is not None and lt['regions']['US']['picks']
+    p=lt['regions']['US']['picks'][0]
+    assert p['factors']['momentum'] is not None
+    assert p['factors']['value'] is None and not p['valueDataAvailable']
+    weights=[x['weightPct'] for x in lt['regions']['US']['picks']]
+    assert abs(sum(weights) - 100) < 1.0  # inverse-vol weights normalized
+
+def test_longterm_fundamentals_lift_value_rank():
+    from pipeline.longterm import build_region
+    prices=_lt_prices()
+    cheap={'earningsYield':.12,'bookYield':.9,'fcfYield':.08,'roe':.3,'operatingMargin':.3,'profitMargin':.2,'debtToEquity':20,'earningsGrowth':.2}
+    rich={'earningsYield':.01,'bookYield':.1,'fcfYield':.005,'roe':.02,'operatingMargin':.02,'profitMargin':.01,'debtToEquity':300,'earningsGrowth':-.1}
+    mid={'earningsYield':.05,'bookYield':.4,'fcfYield':.03,'roe':.12,'operatingMargin':.12,'profitMargin':.08,'debtToEquity':100,'earningsGrowth':.05}
+    fundamentals={'T0':cheap,'T1':rich,'T2':mid,'T3':mid}
+    diags={t:{'aboveMA200':True,'regime':'Bull'} for t in prices}
+    tbl=build_region(list(prices), prices, fundamentals, diags)
+    assert tbl is not None
+    assert tbl.loc['T0','value'] > tbl.loc['T1','value']
+    assert tbl.loc['T0','quality'] > tbl.loc['T1','quality']
+
+def test_longterm_trend_filter_orders_picks():
+    from pipeline.longterm import build
+    prices=_lt_prices()
+    universe={'US':list(prices)}
+    # best momentum name is BELOW its MA200 -> must not outrank confirmed names
+    diags={t:{'aboveMA200':t!='T7','regime':'Bull'} for t in prices}
+    lt=build(universe, prices, {}, diags)
+    picks=[p['ticker'] for p in lt['regions']['US']['picks']]
+    confirmed=[p for p in lt['regions']['US']['picks'] if p['aboveMA200']]
+    assert confirmed and picks.index(confirmed[0]['ticker']) == 0
+
+def test_zscore_winsorized_and_small_sample():
+    from pipeline.longterm import zscore
+    s=pd.Series([1,2,3,4,1000.0])
+    z=zscore(s)
+    assert z.abs().max() <= 2.5  # outlier clipped
+    tiny=zscore(pd.Series([1.0,2.0]))
+    assert tiny.isna().all()  # too few names -> no score, not garbage
+
 def test_validate_exit_nonzero_on_seed(tmp_path):
     p=tmp_path/'site.json'; p.write_text(json.dumps({'seed':True,'stale':False,'generatedAt':'x','portfolioName':'x','core':[],'screened':[],'tradeIdeas':{'KR':[],'US':[]},'meta':{'modelsTrained':0,'coveragePct':100}}))
     r=subprocess.run([sys.executable,'-m','pipeline.validate',str(p)], cwd='.', capture_output=True, text=True)

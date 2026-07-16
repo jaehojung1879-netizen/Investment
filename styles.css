@@ -237,6 +237,20 @@ a { color: inherit; text-decoration: none; }
 .qbadge.ga { background: rgba(46,230,160,0.18); color: var(--green); }
 .qbadge.gb { background: rgba(96,165,250,0.16); color: #60a5fa; }
 .qbadge.gx { background: rgba(148,163,184,0.14); color: var(--muted); }
+
+/* long-term factor ranking */
+.lt-list { display: flex; flex-direction: column; gap: 10px; }
+.lt-item { border: 1px solid var(--line); border-radius: 10px; background: var(--surface-2); padding: 12px; }
+.lt-top { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.lt-top .edge { margin-left: auto; font-size: 0.74rem; color: var(--gold); }
+.lt-meta { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 6px; font-size: 0.78rem; color: var(--muted); }
+.lt-meta b { color: var(--text); }
+.lt-bars { display: grid; grid-template-columns: 1fr 1fr; gap: 4px 14px; margin-top: 8px; }
+.fb { display: grid; grid-template-columns: 44px 1fr 26px; align-items: center; gap: 6px; font-size: 0.72rem; color: var(--muted); }
+.fb-bar { height: 5px; border-radius: 999px; background: rgba(148,163,184,0.15); overflow: hidden; }
+.fb-bar i { display: block; height: 100%; border-radius: 999px; background: linear-gradient(90deg, #60a5fa, var(--green)); }
+.fb b { color: var(--text); text-align: right; }
+.lt-note { font-size: 0.72rem; margin-top: 6px; }
 .tk { color: var(--muted); font-size: 0.72rem; font-weight: 500; }
 .none { padding: 12px 0; color: var(--muted); }
 
