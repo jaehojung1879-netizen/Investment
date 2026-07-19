@@ -1,0 +1,69 @@
+name: Append paper-signal ledger
+
+# Accumulates the immutable paper-signal ledger on a DEDICATED branch
+# (signal-history) so it never triggers the main Pages build (no recursion).
+# Runs after the daily data build has had time to publish.
+
+on:
+  schedule:
+    - cron: "30 22 * * *"   # ~30min after the main 22:00 UTC build
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: signal-ledger
+  cancel-in-progress: false
+
+jobs:
+  append-ledger:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code (main)
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Build today's artifact
+        env:
+          FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
+          ECOS_API_KEY: ${{ secrets.ECOS_API_KEY }}
+        run: python -m pipeline.build
+
+      - name: Check out signal-history branch (orphan-safe)
+        run: |
+          git config user.name "signal-ledger-bot"
+          git config user.email "actions@github.com"
+          mkdir -p ledger-work
+          if git ls-remote --exit-code --heads origin signal-history; then
+            git fetch origin signal-history
+            git worktree add ledger-work origin/signal-history
+            git -C ledger-work checkout -B signal-history
+          else
+            git worktree add --detach ledger-work
+            git -C ledger-work checkout --orphan signal-history
+            git -C ledger-work rm -rf . || true
+            mkdir -p ledger-work/ledger
+          fi
+
+      - name: Append signals + refresh outcomes
+        run: python scripts/update_ledger.py data/site-data.json ledger-work/ledger
+
+      - name: Commit & push to signal-history
+        run: |
+          cd ledger-work
+          git add ledger
+          if git diff --cached --quiet; then
+            echo "no ledger changes"
+          else
+            git commit -m "ledger: append signals for $(date -u +%Y-%m-%d)"
+            git push origin signal-history
+          fi

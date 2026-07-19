@@ -1,0 +1,55 @@
+{
+  "_doc": "Human-verified house-view summaries. NOTHING here is published to the consensus panel until verified=true AND verifiedAt is set AND the view is within staleAfterDays of publishedAt. The entries below are UNVERIFIED theme stubs (verified=false): they name the themes the 2026 mid-year outlooks are expected to address, but carry NO fabricated stance/quote until an analyst confirms the original report and fills stance/summary/publishedAt from the source. This is the semi-automatic design: a bot may open a GitHub issue when a new report is detected; a human verifies and flips verified=true.",
+  "views": [
+    {
+      "id": "blackrock-2026-midyear-ai", "sourceId": "blackrock-bii",
+      "sourceType": "assetManager", "title": "2026 Midyear Global Outlook (to verify)",
+      "publishedAt": null, "verifiedAt": null, "verified": false,
+      "url": "https://www.blackrock.com/corporate/insights/blackrock-investment-institute/outlook",
+      "horizon": "6-12m", "region": "Global", "assetClass": "Equity", "theme": "AI/Semiconductors",
+      "stance": null, "confidence": null, "summary": null,
+      "risks": ["기대치·CAPEX 집중", "밸류에이션·변동성"], "signposts": ["하이퍼스케일러 CAPEX 가이던스", "AI 수익화 지표"],
+      "staleAfterDays": 90
+    },
+    {
+      "id": "jpmam-2026-midyear-usgrowth", "sourceId": "jpmam",
+      "sourceType": "assetManager", "title": "2026 Mid-Year Investment Outlook (to verify)",
+      "publishedAt": null, "verifiedAt": null, "verified": false,
+      "url": "https://am.jpmorgan.com/us/en/asset-management/adv/insights/market-insights/investment-outlook/",
+      "horizon": "6-12m", "region": "US", "assetClass": "Equity", "theme": "US Growth",
+      "stance": null, "confidence": null, "summary": null,
+      "risks": ["정책·공급 충격", "고평가 구간"], "signposts": ["고용·소비 지표", "이익 마진"],
+      "staleAfterDays": 90
+    },
+    {
+      "id": "pimco-2026-rates", "sourceId": "pimco",
+      "sourceType": "assetManager", "title": "Secular/Cyclical Outlook (to verify)",
+      "publishedAt": null, "verifiedAt": null, "verified": false,
+      "url": "https://www.pimco.com/en-us/insights/economic-and-market-commentary",
+      "horizon": "6-12m", "region": "Global", "assetClass": "Rates", "theme": "Rates/Inflation",
+      "stance": null, "confidence": null, "summary": null,
+      "risks": ["높은 실질금리", "재정 공급"], "signposts": ["근원물가", "실질금리 경로"],
+      "staleAfterDays": 90
+    },
+    {
+      "id": "morganstanley-2026-credit", "sourceId": "morganstanley",
+      "sourceType": "sellSideResearch", "title": "2026 Midyear Investment Outlook (to verify)",
+      "publishedAt": null, "verifiedAt": null, "verified": false,
+      "url": "https://www.morganstanley.com/ideas/global-investment-outlook",
+      "horizon": "6-12m", "region": "Global", "assetClass": "Credit", "theme": "Credit Quality",
+      "stance": null, "confidence": null, "summary": null,
+      "risks": ["스프레드 타이트", "디폴트 사이클"], "signposts": ["HY 스프레드", "발행 여건"],
+      "staleAfterDays": 90
+    },
+    {
+      "id": "bok-2026-korea", "sourceId": "bok",
+      "sourceType": "centralBank", "title": "경제전망 (to verify)",
+      "publishedAt": null, "verifiedAt": null, "verified": false,
+      "url": "https://www.bok.or.kr/portal/bbs/P0002359/list.do",
+      "horizon": "6-12m", "region": "KR", "assetClass": "Macro", "theme": "Korea",
+      "stance": null, "confidence": null, "summary": null,
+      "risks": ["에너지·환율", "지정학"], "signposts": ["반도체 수출", "내수·물가"],
+      "staleAfterDays": 90
+    }
+  ]
+}

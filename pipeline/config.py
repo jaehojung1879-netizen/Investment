@@ -38,8 +38,14 @@ class Config:
     trade_horizon: int
     universe_size: int
     model: ModelConfig
+    run_mode: str = "paperTrading"
+    coverage_floor: float = 95.0
+    longterm: dict = field(default_factory=dict)
+    validation: dict = field(default_factory=dict)
     fred_regions: dict[str, dict[str, str]] = field(default_factory=dict)  # region -> {name: series_id}
+    ecos_regions: dict[str, dict[str, str]] = field(default_factory=dict)  # KR macro via BOK ECOS
     fred_api_key: str | None = None
+    ecos_api_key: str | None = None
 
     @property
     def fred_series(self) -> dict[str, str]:
@@ -52,6 +58,10 @@ class Config:
     @property
     def has_fred(self) -> bool:
         return bool(self.fred_api_key)
+
+    @property
+    def has_ecos(self) -> bool:
+        return bool(self.ecos_api_key)
 
     def region_of(self, ticker: str) -> str:
         for region, names in self.universe.items():
@@ -90,6 +100,9 @@ def load_config(path: Path | str = CONFIG_PATH) -> tuple[Config, list[str]]:
         fred_regions = {"US": fred_raw["series"]}
     else:
         fred_regions = {r: s for r, s in fred_raw.items() if isinstance(s, dict)}
+    ecos_regions = {r: s for r, s in raw.get("ecos", {}).items() if isinstance(s, dict)}
+
+    from .provenance import resolve_run_mode
 
     return Config(
         portfolio_name=raw.get("portfolioName", "Investment Insight"),
@@ -102,6 +115,12 @@ def load_config(path: Path | str = CONFIG_PATH) -> tuple[Config, list[str]]:
         trade_horizon=raw.get("tradeHorizon", 10),
         universe_size=raw.get("universeSize", 40),
         model=model,
+        run_mode=resolve_run_mode(raw.get("runMode")),
+        coverage_floor=float(raw.get("coverageFloor", 95)),
+        longterm=raw.get("longterm", {}),
+        validation=raw.get("validation", {}),
         fred_regions=fred_regions,
+        ecos_regions=ecos_regions,
         fred_api_key=os.environ.get("FRED_API_KEY"),
+        ecos_api_key=os.environ.get("ECOS_API_KEY"),
     ), download_universe

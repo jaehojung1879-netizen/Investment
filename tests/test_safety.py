@@ -179,42 +179,34 @@ def _lt_prices(n_tickers=8, days=400, seed=1):
         out[f'T{i}']=pd.DataFrame({'Close':close,'Open':close,'High':close,'Low':close,'Volume':1e6}, index=idx)
     return out
 
-def test_longterm_ranks_without_fundamentals():
+def _full_fund( ey=.06, by=.3, fcf=.04, roe=.15, opm=.15, pm=.1, dte=80, eg=.08):
+    return {'trailingPE': round(1/ey, 2) if ey else None, 'forwardPE': round(1/ey, 2) if ey else None,
+            'bookYield': by, 'fcfYield': fcf, 'roe': roe, 'operatingMargin': opm,
+            'profitMargin': pm, 'debtToEquity': dte, 'earningsGrowth': eg, 'sector': 'Technology'}
+
+def test_longterm_data_insufficient_without_fundamentals():
+    # v2: <3 factor sleeves (momentum+lowvol only) => DATA_INSUFFICIENT, never a pick.
     from pipeline.longterm import build
     prices=_lt_prices()
     universe={'US':list(prices)}
     diags={t:{'aboveMA200':True,'regime':'Bull'} for t in prices}
-    lt=build(universe, prices, {}, diags)
-    assert lt is not None and lt['regions']['US']['picks']
-    p=lt['regions']['US']['picks'][0]
-    assert p['factors']['momentum'] is not None
-    assert p['factors']['value'] is None and not p['valueDataAvailable']
-    weights=[x['weightPct'] for x in lt['regions']['US']['picks']]
-    assert abs(sum(weights) - 100) < 1.0  # inverse-vol weights normalized
+    lt=build(universe, prices, {}, diags, cfg_lt={'minNames':8,'maxNames':12})
+    assert lt is not None
+    assert lt['regions']['US']['picks'] == []
+    assert len(lt['regions']['US']['dataInsufficient']) == len(prices)
 
 def test_longterm_fundamentals_lift_value_rank():
     from pipeline.longterm import build_region
     prices=_lt_prices()
-    cheap={'earningsYield':.12,'bookYield':.9,'fcfYield':.08,'roe':.3,'operatingMargin':.3,'profitMargin':.2,'debtToEquity':20,'earningsGrowth':.2}
-    rich={'earningsYield':.01,'bookYield':.1,'fcfYield':.005,'roe':.02,'operatingMargin':.02,'profitMargin':.01,'debtToEquity':300,'earningsGrowth':-.1}
-    mid={'earningsYield':.05,'bookYield':.4,'fcfYield':.03,'roe':.12,'operatingMargin':.12,'profitMargin':.08,'debtToEquity':100,'earningsGrowth':.05}
-    fundamentals={'T0':cheap,'T1':rich,'T2':mid,'T3':mid}
+    cheap=_full_fund(ey=.12, by=.9, fcf=.08, roe=.3, opm=.3, pm=.2, dte=20, eg=.2)
+    rich=_full_fund(ey=.01, by=.1, fcf=.005, roe=.02, opm=.02, pm=.01, dte=300, eg=-.1)
+    mid=_full_fund()
+    fundamentals={'T0':cheap,'T1':rich,'T2':mid,'T3':mid,'T4':mid,'T5':mid,'T6':mid,'T7':mid}
     diags={t:{'aboveMA200':True,'regime':'Bull'} for t in prices}
     tbl=build_region(list(prices), prices, fundamentals, diags)
     assert tbl is not None
     assert tbl.loc['T0','value'] > tbl.loc['T1','value']
     assert tbl.loc['T0','quality'] > tbl.loc['T1','quality']
-
-def test_longterm_trend_filter_orders_picks():
-    from pipeline.longterm import build
-    prices=_lt_prices()
-    universe={'US':list(prices)}
-    # best momentum name is BELOW its MA200 -> must not outrank confirmed names
-    diags={t:{'aboveMA200':t!='T7','regime':'Bull'} for t in prices}
-    lt=build(universe, prices, {}, diags)
-    picks=[p['ticker'] for p in lt['regions']['US']['picks']]
-    confirmed=[p for p in lt['regions']['US']['picks'] if p['aboveMA200']]
-    assert confirmed and picks.index(confirmed[0]['ticker']) == 0
 
 def test_zscore_winsorized_and_small_sample():
     from pipeline.longterm import zscore

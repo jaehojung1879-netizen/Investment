@@ -20,12 +20,17 @@ from datetime import datetime, timezone
 from numbers import Integral, Real
 
 from . import direction as direction_mod
+from . import entry as entry_mod
+from . import expert_consensus as expert_mod
 from . import features as F
 from . import fundamentals as fundamentals_mod
 from . import indices as indices_mod
+from . import ledger as ledger_mod
 from . import longterm as longterm_mod
 from . import macro as macro_mod
 from . import model as M
+from . import provenance as prov_mod
+from . import regime as regime_mod
 from . import risk as risk_mod
 from . import rotation as rotation_mod
 from . import sentiment as sentiment_mod
@@ -121,6 +126,40 @@ def volume_surge(price) -> float | None:
     return round(float(recent / base), 2)
 
 
+def _load_prior() -> dict:
+    """Load the previous artifact (for prior regime + rank-buffer holdings)."""
+    try:
+        return json.loads(OUT.read_text(encoding="utf-8"))
+    except Exception:
+        return {}
+
+
+def _attach_entry_states(long_term: dict | None, entry_feats: dict, cfg_lt: dict) -> dict | None:
+    """Compute universe-relative overheat percentiles per region and attach an
+    entryState to every long-term row (picks + research table)."""
+    if not long_term:
+        return long_term
+    import pandas as _pd
+    sector_cap = float(cfg_lt.get("maxSectorWeight", 0.30)) * 100
+    for region, blob in (long_term.get("regions") or {}).items():
+        rows = list(blob.get("picks", [])) + list(blob.get("researchTable", []))
+        tickers = {r["ticker"] for r in rows}
+        scores = {t: entry_mod.overheat_score(entry_feats[t]) for t in tickers if t in entry_feats}
+        scores = {t: v for t, v in scores.items() if v is not None}
+        ranked = (_pd.Series(scores).rank(pct=True) * 100).to_dict() if scores else {}
+        pick_tickers = {r["ticker"] for r in blob.get("picks", [])}
+        sector_exposure = blob.get("sectorExposure", {})
+        for row in rows:
+            t = row["ticker"]
+            f = entry_feats.get(t)
+            if not f:
+                row["entry"] = {"entryState": "WATCH", "reasons": ["진입 판단용 가격 데이터 부족"], "overheatPercentile": None}
+                continue
+            conc = sector_exposure.get(row.get("sector")) if t in pick_tickers else None
+            row["entry"] = entry_mod.classify(f, ranked.get(t), conc, sector_cap)
+    return long_term
+
+
 def core_card(feat, fcols, ticker, cfg, diagnosis):
     """Full multi-horizon signal card + backtest for a held position."""
     signals = []
@@ -194,6 +233,7 @@ def run(cfg) -> dict:
     core_cards, ideas, screened = [], [], []
     details = {}
     diags = {}
+    entry_feats = {}
     audit = {"folds": {}, "oos": {}, "eligibility": {}, "warnings": ["survivorship_bias_unresolved", "macro_vintage_revision_bias_possible"]}
     fits = 0
     latest_date = None
@@ -215,6 +255,10 @@ def run(cfg) -> dict:
             diags[ticker] = diagnosis
             region = cfg.region_of(ticker)
             vsurge = volume_surge(prices[ticker])
+            try:
+                entry_feats[ticker] = entry_mod.entry_features(feat, volume_surge=vsurge)
+            except Exception:
+                pass
 
             tsig = M.current_signal(feat, fcols, f"target_{th}d", cfg.model)
             details[ticker] = {
@@ -263,22 +307,50 @@ def run(cfg) -> dict:
             print(f"  error on {ticker}: {exc}")
 
     sentiment = sentiment_mod.summarize(screened, macro, vix)
-    macro_summary = macro_mod.summarize(macro, vix)
 
-    # Long-horizon (6-12mo) multi-factor engine — the PRIMARY recommendation
-    # layer. Fundamentals fetch is budgeted and fault-tolerant; if it fails
-    # entirely the engine still ranks on momentum/low-vol alone.
+    # Prior regime + prior long-term holdings (for regime-change detection and
+    # the rank buffer) come from the last artifact, if any.
+    prior = _load_prior()
+    prior_regime = ((prior.get("macroRegime") or {}) or {}).get("regime")
+    prior_holdings = {r: ((prior.get("longTerm") or {}).get("regions", {}).get(r, {}) or {}).get("holdings", [])
+                      for r in ("KR", "US")}
+
+    # Macro DIRECTION/REGIME engine (6 axes) — the risk-budget layer. Fixed
+    # thresholds are gone; missing data lowers confidence, never fakes neutral.
+    macro_regime = regime_mod.build(macro, vix, prior_regime=prior_regime)
+    # Thin display wrapper (region indicator tables) kept for the market panel.
+    macro_summary = macro_mod.summarize(macro, vix, macro_regime)
+
+    # Long-horizon (6-12mo) multi-factor RESEARCH layer (not a buy list).
     fundamentals = {}
     try:
         fundamentals = fundamentals_mod.fetch_fundamentals(all_tickers)
         print(f"  fundamentals: {len(fundamentals)}/{len(all_tickers)} tickers")
     except Exception as exc:
         print(f"  warning: fundamentals fetch failed: {exc}")
+    bench_by_region = {"US": benchmark_close, "KR": None}
+    # A pre-pass data-safety block so long-term weights/actions are withheld too.
+    pre_block, _ = quality_mod.recommendations_blocked({
+        "seed": False, "stale": False,
+        "meta": {"modelsTrained": fits, "coveragePct": coverage,
+                 "universeScreened": len(screened), "pipelineErrors": errors}})
+    withhold = pre_block or cfg.run_mode == "researchOnly"
     try:
-        long_term = longterm_mod.build(universe, prices, fundamentals, diags)
+        long_term = longterm_mod.build(universe, prices, fundamentals, diags,
+                                       cfg_lt=cfg.longterm, bench_by_region=bench_by_region,
+                                       prior_holdings=prior_holdings, blocked=withhold)
+        long_term = _attach_entry_states(long_term, entry_feats, cfg.longterm)
     except Exception as exc:
         print(f"  warning: long-term engine failed: {exc}")
+        traceback.print_exc()
         long_term = None
+
+    # Verified expert / house-view consensus (semi-automatic; nothing fabricated).
+    try:
+        expert_consensus = expert_mod.build()
+    except Exception as exc:
+        print(f"  warning: expert consensus failed: {exc}")
+        expert_consensus = None
 
     # Direction compass + sector/factor rotation are additive tools; a failed
     # download must never take the whole build down with it.
@@ -325,9 +397,11 @@ def run(cfg) -> dict:
         "direction": direction,
         "rotation": rotation,
         "longTerm": long_term,
+        "macroRegime": macro_regime,
+        "expertConsensus": expert_consensus,
         "tradeIdeas": trade_mod.rank_ideas(ideas),
         "recommendationsBlocked": False,
-        "paperOnly": False,
+        "runMode": cfg.run_mode,
         "screened": screen_table,
         "details": details,
         "flows": flows,
@@ -338,15 +412,19 @@ def run(cfg) -> dict:
             "modelsTrained": fits,
             "universeScreened": len(screened),
             "latestDataDate": latest_date.strftime("%Y-%m-%d") if latest_date is not None else None,
+            "sourceAsOf": datetime.now(timezone.utc).strftime("%Y-%m-%d") if fundamentals else None,
             "fredEnabled": cfg.has_fred,
+            "ecosEnabled": cfg.has_ecos,
+            "macroCoverage": macro_regime.get("coverage") if macro_regime else 0.0,
             "tickersRequested": len(download),
             "tickersFetched": len(prices),
             "coveragePct": coverage,
+            "coverageFloor": cfg.coverage_floor,
             "missingSample": missing[:10],
             "indicesFetched": len(market_indices),
             "eligibleSignals": eligible_count,
             "fundamentalsCovered": len(fundamentals),
-            "paperOnly": False,
+            "runMode": cfg.run_mode,
             "survivorshipBias": "unresolved_current_constituents_only",
             "coreErrors": errors,
             "pipelineErrors": errors,
@@ -356,10 +434,16 @@ def run(cfg) -> dict:
     payload["recommendationsBlocked"] = blocked
     payload["blockReasons"] = sorted(set(reasons))
     if blocked:
-        # Keep the artifact self-consistent: a blocked artifact must not carry
-        # actionable ideas (pipeline.validate enforces exactly this).
+        # A blocked artifact must not carry ANY actionable output: short-term
+        # ideas AND long-term sleeve weights/entry actions are all withheld.
         payload["tradeIdeas"] = {"KR": [], "US": []}
+        if payload.get("longTerm") and not payload["longTerm"].get("weightsWithheld"):
+            payload["longTerm"] = longterm_mod.build(
+                universe, prices, fundamentals, diags, cfg_lt=cfg.longterm,
+                bench_by_region=bench_by_region, prior_holdings=prior_holdings, blocked=True)
+            payload["longTerm"] = _attach_entry_states(payload["longTerm"], entry_feats, cfg.longterm)
     payload["audit"] = audit
+    payload["audit"]["todaySignals"] = ledger_mod.records_from_payload(payload)
     return payload
 
 
@@ -369,7 +453,9 @@ def main() -> int:
     payload = run(cfg)
     payload["generatedAt"] = datetime.now(timezone.utc).isoformat()
     payload["stale"] = False
+    payload["seed"] = False
     payload["meta"]["elapsedSec"] = round(time.time() - t0, 1)
+    prov_mod.stamp(payload, cfg.run_mode)
 
     OUT.parent.mkdir(parents=True, exist_ok=True)
     OUT.write_text(_dumps(payload) + "\n", encoding="utf-8")

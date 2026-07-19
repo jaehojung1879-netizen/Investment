@@ -25,6 +25,23 @@
   },
   "benchmark": "SPY",
   "primary": "QQQ",
+  "runMode": "paperTrading",
+  "coverageFloor": 95,
+  "longterm": {
+    "minNames": 8,
+    "maxNames": 12,
+    "maxNameWeight": 0.15,
+    "maxSectorWeight": 0.30,
+    "minCashPct": 5,
+    "minFactorSleeves": 3,
+    "minFinancialCoverage": 0.4,
+    "rankBuffer": { "enterPct": 12, "exitPct": 28 },
+    "excludeFromRanking": ["QQQ", "SPY", "DIA", "IWM", "EFA", "EEM", "AGG", "GLD", "BIL", "MTUM", "VLUE", "QUAL", "USMV", "VOO", "IVV"]
+  },
+  "validation": {
+    "minPaperDays": 126,
+    "ledgerBranch": "signal-history"
+  },
   "model": {
     "minTrainDays": 252,
     "stepSize": 21,
@@ -36,8 +53,24 @@
     "screenHistoryStart": "2019-01-01"
   },
   "fred": {
-    "US": { "Treasury_10Y": "DGS10", "Treasury_2Y": "DGS2", "FedFunds": "DFF", "HY_Spread": "BAMLH0A0HYM2" },
+    "US": {
+      "Treasury_10Y": "DGS10", "Treasury_2Y": "DGS2", "FedFunds": "DFF",
+      "HY_Spread": "BAMLH0A0HYM2", "IG_Spread": "BAMLC0A0CM",
+      "Real_10Y": "DFII10", "Breakeven_10Y": "T10YIE",
+      "Core_CPI": "CPILFESL", "Core_PCE": "PCEPILFE",
+      "Unemployment": "UNRATE", "Initial_Claims": "ICSA", "Payrolls": "PAYEMS",
+      "CFNAI": "CFNAI", "NFCI": "NFCI", "ANFCI": "ANFCI",
+      "Fed_Assets": "WALCL", "RRP": "RRPONTSYD", "TGA": "WTREGEN",
+      "Broad_Dollar": "DTWEXBGS", "WTI": "DCOILWTICO", "M2": "M2SL"
+    },
     "KR": { "USD_KRW": "DEXKOUS", "Korea_10Y": "IRLTLT01KRM156N", "Korea_3M": "IR3TIB01KRM156N" }
   },
-  "_notes": "core=실제 보유 종목(전체 분석). universe=스크리닝 후보(자동 구성 실패 시 fallback로 이 목록 상위 universeSize개 사용). FinanceDataReader가 CI 네트워크에서 허용되면 S&P500/KOSPI 전체 자동 구성. FRED_API_KEY는 GitHub Actions Secret으로만 주입."
+  "ecos": {
+    "KR": {
+      "BaseRate": "722Y001", "KTB_3Y": "817Y002", "CorpBond_3Y": "817Y002",
+      "CPI": "901Y009", "CoreCPI": "901Y010", "IndustrialProduction": "901Y033",
+      "LeadingIndex": "901Y067", "Exports": "901Y011", "M2": "101Y004"
+    }
+  },
+  "_notes": "core=실제 보유 종목(전체 분석). universe=스크리닝 후보(자동 구성 실패 시 fallback로 이 목록 상위 universeSize개 사용). FinanceDataReader가 CI 네트워크에서 허용되면 S&P500/KOSPI 전체 자동 구성. FRED_API_KEY·ECOS_API_KEY는 GitHub Actions Secret으로만 주입. ecos series IDs are placeholders to be verified against BOK ECOS before a live KR macro build."
 }
