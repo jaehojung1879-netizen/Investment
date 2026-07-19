@@ -49,9 +49,11 @@ jobs:
 
       - name: Build insight data
         env:
-          # Add this secret in repo Settings → Secrets and variables → Actions.
-          # If absent, the pipeline still runs and the macro panel is simply empty.
+          # Add these secrets in repo Settings → Secrets and variables → Actions.
+          # If absent, the pipeline still runs and the macro regime simply reports
+          # low coverage/confidence (it never fabricates a neutral/bull reading).
           FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
+          ECOS_API_KEY: ${{ secrets.ECOS_API_KEY }}
         run: python -m pipeline.build
 
       - name: Validate artifact
@@ -67,9 +69,10 @@ jobs:
       - name: Stage Pages site
         run: |
           rm -rf _site
-          mkdir -p _site/data
+          mkdir -p _site/data _site/docs
           cp index.html styles.css app.js _site/
           cp data/site-data.json _site/data/site-data.json
+          cp docs/investment-philosophy.md _site/docs/investment-philosophy.md
 
       - name: Configure Pages
         uses: actions/configure-pages@v5

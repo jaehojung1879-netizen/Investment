@@ -9,6 +9,14 @@ from __future__ import annotations
 import numpy as np
 import pandas as pd
 
+# DAILY, same-day-public macro series that are safe as ML features (no release
+# lag). Everything else (monthly/weekly prints) is regime-description only.
+ML_MACRO_COLS = {
+    "Treasury_10Y", "Treasury_2Y", "Yield_Curve", "FedFunds", "HY_Spread",
+    "IG_Spread", "Real_10Y", "Breakeven_10Y", "Broad_Dollar", "WTI",
+    "USD_KRW", "Korea_10Y", "Korea_3M", "RRP",
+}
+
 
 def _rsi(prices: pd.Series, period: int = 14) -> pd.Series:
     delta = prices.diff()
@@ -36,9 +44,17 @@ def build_features(
     if vix is not None:
         data["VIX"] = vix.reindex(data.index).ffill()
     if macro is not None:
-        macro_aligned = macro.reindex(data.index).ffill().shift(1)
-        for col in macro_aligned.columns:
-            data[col] = macro_aligned[col]
+        # POINT-IN-TIME: only DAILY, same-day-public market series may enter the
+        # ML features. Monthly/weekly macro (CPI, PCE, unemployment, payrolls,
+        # CFNAI, NFCI, Fed balance sheet, M2, ...) is released with a lag, so
+        # ffill+shift(1) would leak a print into the model before it was public.
+        # Those series are used ONLY for the current regime description
+        # (pipeline.regime, with explicit release lags), never as ML inputs.
+        macro_ml = macro[[c for c in macro.columns if c in ML_MACRO_COLS]]
+        if len(macro_ml.columns):
+            macro_aligned = macro_ml.reindex(data.index).ffill().shift(1)
+            for col in macro_aligned.columns:
+                data[col] = macro_aligned[col]
 
     # --- Price features ---
     data["returns"] = data["Close"].pct_change()

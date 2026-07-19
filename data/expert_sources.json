@@ -1,0 +1,13 @@
+{
+  "_doc": "Registry of institutions whose PUBLISHED house views may be summarized into the consensus panel. sourceType 'companyIR' is NOT an independent expert view and is weighted down. One view per institution/research-team is enforced by expert_consensus.py. URLs are the canonical outlook hubs; the exact report title + publishedAt MUST be re-verified by a human before a view is marked verified=true.",
+  "sources": [
+    { "id": "blackrock-bii", "institution": "BlackRock Investment Institute", "team": "BII", "sourceType": "assetManager", "weight": 1.0, "url": "https://www.blackrock.com/corporate/insights/blackrock-investment-institute/outlook" },
+    { "id": "jpmam", "institution": "J.P. Morgan Asset Management", "team": "GMAI", "sourceType": "assetManager", "weight": 1.0, "url": "https://am.jpmorgan.com/us/en/asset-management/adv/insights/market-insights/investment-outlook/" },
+    { "id": "jpm-research", "institution": "J.P. Morgan Global Research", "team": "GlobalResearch", "sourceType": "sellSideResearch", "weight": 0.9, "url": "https://www.jpmorgan.com/insights/global-research/outlook" },
+    { "id": "morganstanley", "institution": "Morgan Stanley Research", "team": "GIC", "sourceType": "sellSideResearch", "weight": 0.9, "url": "https://www.morganstanley.com/ideas/global-investment-outlook" },
+    { "id": "pimco", "institution": "PIMCO", "team": "SecularCyclical", "sourceType": "assetManager", "weight": 1.0, "url": "https://www.pimco.com/en-us/insights/economic-and-market-commentary" },
+    { "id": "bok", "institution": "한국은행 (Bank of Korea)", "team": "EconomicOutlook", "sourceType": "centralBank", "weight": 1.0, "url": "https://www.bok.or.kr/portal/bbs/P0002359/list.do" },
+    { "id": "kdi", "institution": "KDI 한국개발연구원", "team": "EconomicOutlook", "sourceType": "policyInstitute", "weight": 0.95, "url": "https://www.kdi.re.kr/research/economy" },
+    { "id": "kiet", "institution": "산업연구원 (KIET)", "team": "IndustryOutlook", "sourceType": "policyInstitute", "weight": 0.9, "url": "https://www.kiet.re.kr" }
+  ]
+}

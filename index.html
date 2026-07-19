@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Investment Insight — Global Markets · Quantitative Research</title>
+    <title>Investment Research — 국면·팩터·진입·사후검증</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Noto+Serif+KR:wght@600;700&display=swap" rel="stylesheet" />
@@ -14,20 +14,19 @@
       <div class="wrap topbar-in">
         <div class="brand">
           <span class="logo">◆</span>
-          <strong id="portfolioName">Investment Insight</strong>
+          <strong id="portfolioName">Investment Research</strong>
           <span id="dataStatus" class="muted"></span>
         </div>
         <nav class="nav">
-          <a href="#indices">마켓</a>
-          <a href="#direction">나침반</a>
-          <a href="#action">액션</a>
-          <a href="#longterm">장기 랭킹</a>
+          <a href="#status">데이터·검증</a>
+          <a href="#regime">국면·위험예산</a>
+          <a href="#consensus">전문가 컨센서스</a>
+          <a href="#longterm">장기 리서치</a>
+          <a href="#entry">진입·위험</a>
+          <a href="#concentration">집중도</a>
+          <a href="#paper">Paper 성과</a>
           <a href="#ideas">단기(참고)</a>
-          <a href="#holdings">보유</a>
-          <a href="#rotation">로테이션</a>
-          <a href="#flows">자금흐름</a>
-          <a href="#market">시장</a>
-          <a href="#rules">원칙</a>
+          <a href="#rules">방법론</a>
         </nav>
         <div class="freshness muted">
           <span id="dataMeta"></span>
@@ -38,58 +37,33 @@
     <div id="staleBanner" class="stale" hidden></div>
 
     <main class="wrap">
-      <!-- 글로벌 마켓 테이프: S&P 500 · 나스닥 · 코스피 ... -->
+      <!-- 1. 데이터 상태 및 모델 검증 상태 -->
+      <section id="status" class="section">
+        <div class="sec-title"><span class="overline">데이터 상태 · 모델 검증 상태 <span class="ico qh" data-x="status">ⓘ</span></span></div>
+        <div id="statusPanel" class="status-grid"></div>
+      </section>
+
+      <!-- 마켓 테이프 -->
       <section id="indices" class="tape-sec" hidden>
-        <div class="sec-title">
-          <span class="overline">글로벌 마켓 <span class="ico qh" data-x="indices">ⓘ</span></span>
-          <span id="tapeMeta" class="muted"></span>
-        </div>
+        <div class="sec-title"><span class="overline">글로벌 마켓 <span class="ico qh" data-x="indices">ⓘ</span></span><span id="tapeMeta" class="muted"></span></div>
         <div id="indexTape" class="tape"></div>
       </section>
 
-      <!-- 투자 나침반: 지금 어느 방향으로? -->
-      <section id="direction" class="dir-sec" hidden>
-        <div class="sec-title">
-          <span class="overline">투자 나침반 — 방향성 <span class="ico qh" data-x="direction">ⓘ</span></span>
-          <span id="dirMeta" class="muted"></span>
-        </div>
-        <div class="dir-grid">
-          <aside class="dir-verdict" id="dirVerdict"></aside>
-          <div class="dir-right">
-            <div id="dirSignals" class="dir-signals"></div>
-            <div class="dm-box">
-              <div class="dm-h">글로벌 자산 듀얼 모멘텀 <span class="ico qh" data-x="dualmom">ⓘ</span></div>
-              <div id="dualMomTable" class="dm-table"></div>
-            </div>
-          </div>
-        </div>
+      <!-- 2. 매크로 국면과 위험예산 -->
+      <section id="regime" class="section">
+        <div class="sec-title"><span class="overline">매크로 국면 · 위험예산 — 6축 방향 엔진 <span class="ico qh" data-x="regime">ⓘ</span></span><span id="regimeMeta" class="muted"></span></div>
+        <div id="regimePanel" class="regime-wrap"></div>
       </section>
 
-      <!-- VERDICT: 어디에 투자? -->
-      <section id="action" class="hero">
-        <aside class="posture">
-          <div class="overline">공포 · 탐욕 지수 <span class="ico qh" data-x="sentiment">ⓘ</span></div>
-          <div class="posture-head">
-            <span class="posture-label" id="postureLabel">—</span>
-            <span class="posture-score" id="postureScore"></span>
-          </div>
-          <div class="gauge"><i id="postureGauge"></i></div>
-          <p class="posture-read" id="postureRead"></p>
-          <div class="posture-mini" id="postureMini"></div>
-        </aside>
-
-        <div class="actions">
-          <div class="overline">오늘의 핵심 액션 <span class="ico qh" data-x="trade">ⓘ</span></div>
-          <div id="topPicks" class="picks"></div>
-        </div>
+      <!-- 3. 전문가 컨센서스와 의견 분산 -->
+      <section id="consensus" class="section">
+        <div class="sec-title"><span class="overline">전문가 컨센서스 · 의견 분산 <span class="ico qh" data-x="consensus">ⓘ</span></span><span id="consensusMeta" class="muted"></span></div>
+        <div id="consensusPanel" class="consensus-wrap"></div>
       </section>
 
-      <!-- 장기 투자 랭킹 (주 엔진) -->
-      <section id="longterm" class="section" hidden>
-        <div class="sec-title">
-          <span class="overline">장기 투자 랭킹 — 6~12개월 <span class="ico qh" data-x="longterm">ⓘ</span></span>
-          <span id="ltMeta" class="muted"></span>
-        </div>
+      <!-- 4. 지역별 장기 리서치 후보 -->
+      <section id="longterm" class="section">
+        <div class="sec-title"><span class="overline">지역별 장기 리서치 후보 — 6~12개월 <span class="ico qh" data-x="longterm">ⓘ</span></span><span id="ltMeta" class="muted"></span></div>
         <div class="cols2">
           <div><div class="col-h">국내 (KR)</div><div id="ltKR" class="lt-list"></div></div>
           <div><div class="col-h">국외 (US)</div><div id="ltUS" class="lt-list"></div></div>
@@ -97,76 +71,88 @@
         <p class="caveat muted" id="ltCaveats"></p>
       </section>
 
-      <!-- 단기 시그널 (참고용) -->
+      <!-- 5. 진입상태와 위험 경고 -->
+      <section id="entry" class="section">
+        <div class="sec-title"><span class="overline">진입상태 · 위험 경고 <span class="ico qh" data-x="entry">ⓘ</span></span><span class="muted">‘좋은 종목’과 ‘지금 살 종목’은 다릅니다</span></div>
+        <div id="entryPanel" class="entry-grid"></div>
+      </section>
+
+      <!-- 6. 포트폴리오·섹터 집중도 -->
+      <section id="concentration" class="section">
+        <div class="sec-title"><span class="overline">모델 슬리브 · 섹터 집중도 <span class="ico qh" data-x="concentration">ⓘ</span></span><span class="muted">단일종목·업종 상한, 현금 하한</span></div>
+        <div id="concentrationPanel" class="cols2"></div>
+      </section>
+
+      <!-- 7. 실시간 paper 성과 -->
+      <section id="paper" class="section">
+        <div class="sec-title"><span class="overline">Paper 성과 — signal ledger <span class="ico qh" data-x="paper">ⓘ</span></span><span id="paperMeta" class="muted"></span></div>
+        <div id="paperPanel" class="paper-wrap"></div>
+      </section>
+
+      <!-- 8. 단기 ML 참고자료 -->
       <section id="ideas" class="section">
-        <div class="sec-title"><span class="overline">단기 시그널 — 10일 · 참고용 <span class="ico qh" data-x="trade">ⓘ</span></span><span id="tradeMeta" class="muted"></span></div>
+        <div class="sec-title"><span class="overline">단기 ML 참고자료 — 10일 · 참고용 <span class="ico qh" data-x="trade">ⓘ</span></span><span id="tradeMeta" class="muted"></span></div>
         <div class="cols2">
           <div><div class="col-h">국내 (KR)</div><div id="tradeKR" class="idea-list"></div></div>
           <div><div class="col-h">국외 (US)</div><div id="tradeUS" class="idea-list"></div></div>
         </div>
-        <p class="caveat muted">⚠️ 수백 종목을 동시에 스캔하면 상위에 <b>우연한 고득점(거짓 양성)</b>이 섞입니다. 비용·확신·국면 게이트로 걸렀지만, 단일 종목 올인 대신 분산하고 표본수(n)·근거를 함께 확인하세요.</p>
+        <p class="caveat muted">⚠️ 단기 방향 예측은 동전던지기에 가깝고 수백 종목 스캔은 거짓 양성을 만듭니다. 주 판단은 위의 장기 리서치·진입상태를 쓰고 이 섹션은 타이밍 참고로만 보세요.</p>
         <details class="screen">
           <summary>전체 스크리닝 결과 <span id="screenCount" class="muted"></span></summary>
-          <input id="screenSearch" class="search" type="search" placeholder="종목 검색 — 티커 또는 이름 (예: NVDA, 삼성)" autocomplete="off" />
+          <input id="screenSearch" class="search" type="search" placeholder="종목 검색 — 티커 또는 이름" autocomplete="off" />
           <div id="screenTable" class="screen-table"></div>
           <div id="screenEmpty" class="none" hidden>검색 결과 없음</div>
         </details>
       </section>
 
-      <!-- 보유 -->
-      <section id="holdings" class="section">
-        <div class="sec-title"><span class="overline">내 포트폴리오 <span class="ico qh" data-x="core">ⓘ</span></span></div>
-        <div id="holdingsTable" class="holdings"></div>
+      <!-- 보조: 나침반 / 로테이션 / 자금흐름 / 시장 상세 -->
+      <section id="direction" class="dir-sec" hidden>
+        <div class="sec-title"><span class="overline">모델 위험예산 나침반 — 참고 <span class="ico qh" data-x="direction">ⓘ</span></span><span id="dirMeta" class="muted"></span></div>
+        <div class="dir-grid">
+          <aside class="dir-verdict" id="dirVerdict"></aside>
+          <div class="dir-right">
+            <div id="dirSignals" class="dir-signals"></div>
+            <div class="dm-box"><div class="dm-h">글로벌 자산 듀얼 모멘텀 변형 <span class="ico qh" data-x="dualmom">ⓘ</span></div><div id="dualMomTable" class="dm-table"></div></div>
+          </div>
+        </div>
       </section>
 
-      <!-- 섹터 · 팩터 로테이션 -->
       <section id="rotation" class="section" hidden>
-        <div class="sec-title">
-          <span class="overline">섹터 · 팩터 로테이션 <span class="ico qh" data-x="rotation">ⓘ</span></span>
-          <span id="rotMeta" class="muted"></span>
-        </div>
+        <div class="sec-title"><span class="overline">섹터 · 팩터 로테이션 <span class="ico qh" data-x="rotation">ⓘ</span></span><span id="rotMeta" class="muted"></span></div>
         <div class="cols2">
           <div><div class="col-h">미국 섹터 (vs S&amp;P 500)</div><div id="rrgUS" class="rrg-wrap"></div></div>
           <div><div class="col-h">한국 섹터 (vs KODEX 200)</div><div id="rrgKR" class="rrg-wrap"></div></div>
         </div>
         <div class="panel factor-panel" id="factorPanel" hidden>
-          <div class="panel-h">스타일 · 팩터 모멘텀 — S&amp;P 500 대비 초과수익 <span class="ico qh" data-x="factor">ⓘ</span></div>
+          <div class="panel-h">스타일 · 팩터 모멘텀 <span class="ico qh" data-x="factor">ⓘ</span></div>
           <div id="factorBars" class="factor-list"></div>
         </div>
       </section>
 
-      <!-- 자금 흐름 -->
       <section id="flows" class="section">
-        <div class="sec-title"><span class="overline">자금 흐름 — 유동성 쏠림 <span class="ico qh" data-x="flows">ⓘ</span></span><span class="muted">거래량 급증 + 상승 종목</span></div>
+        <div class="sec-title"><span class="overline">자금 흐름 — 유동성 쏠림 <span class="ico qh" data-x="flows">ⓘ</span></span><span class="muted">거래량 급증 + 상승 종목 (자체 프록시)</span></div>
         <div class="cols2">
           <div><div class="col-h">국내 (KR)</div><div id="flowsKR" class="flow-list"></div></div>
           <div><div class="col-h">국외 (US)</div><div id="flowsUS" class="flow-list"></div></div>
         </div>
       </section>
 
-      <!-- 시장 상세 -->
       <section id="market" class="section">
-        <div class="sec-title"><span class="overline">시장 상세 — 매크로 &amp; 국면</span><span class="muted">국외(US) · 국내(KR)</span></div>
+        <div class="sec-title"><span class="overline">시장 상세 — 원지표 &amp; 심리</span><span class="muted">국외(US) · 국내(KR)</span></div>
         <div class="market-grid">
-          <div class="panel">
-            <div class="panel-h">매크로 <span class="ico qh" data-x="macro">ⓘ</span></div>
-            <div id="macroPanel" class="cols2"></div>
-          </div>
-          <div class="panel">
-            <div class="panel-h">시장 국면 (정량 심리) <span class="ico qh" data-x="sentiment">ⓘ</span></div>
-            <div id="sentimentPanel" class="cols2"></div>
-          </div>
+          <div class="panel"><div class="panel-h">매크로 원지표 <span class="ico qh" data-x="macro">ⓘ</span></div><div id="macroPanel" class="cols2"></div></div>
+          <div class="panel"><div class="panel-h">공포·탐욕 (정량 심리) <span class="ico qh" data-x="sentiment">ⓘ</span></div><div id="sentimentPanel" class="cols2"></div></div>
         </div>
       </section>
 
-      <!-- 원칙 -->
+      <!-- 9. 상세 방법론과 출처 -->
       <section id="rules" class="section">
-        <div class="sec-title"><span class="overline">투자 원칙 · 체크리스트</span></div>
+        <div class="sec-title"><span class="overline">방법론 · 출처 · 체크리스트</span></div>
         <article id="rulesDoc" class="md"></article>
       </section>
 
       <footer class="foot muted">
-        개인 리서치·교육 목적의 정량 도구이며 투자 조언이 아닙니다. 과거 성과는 미래를 보장하지 않습니다.
+        개인 리서치·교육 목적의 정량 도구이며 투자 조언이 아닙니다. 과거 성과는 미래를 보장하지 않습니다. 데이터 모드·검증 상태·출처를 항상 함께 확인하세요.
       </footer>
     </main>
 

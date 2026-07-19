@@ -2,9 +2,10 @@
 
 Synthesizes four rules-based, widely-used allocation tools into one stance:
 
-  * Dual momentum (Antonacci GEM): 12-month absolute + relative momentum
-    across global equities / bonds / gold vs cash (T-bills). Decides whether
-    risk assets deserve capital at all right now.
+  * Dual-momentum VARIANT (inspired by Antonacci GEM, but not identical — the
+    asset menu, lookbacks and defensive set differ, so we label it a variant,
+    not "GEM"): 12-month absolute + relative momentum across global equities /
+    bonds / gold vs cash (T-bills). Decides whether risk assets deserve capital.
   * Volatility targeting: size equity exposure so realized benchmark
     volatility lands near a target (the approach used by risk-parity and
     managed-vol funds). High vol -> mechanically smaller equity slice.
@@ -163,11 +164,11 @@ def build(
     if dm is not None:
         if dm["equitiesWin"]:
             score += 15
-            signals.append(_sig("듀얼 모멘텀 (12M)", "주식 우위", "bull",
+            signals.append(_sig("듀얼 모멘텀 변형 (12M)", "주식 우위", "bull",
                                 f"12개월 수익률 1위 {dm['winnerName']} — 현금(T-Bill) 허들 통과"))
         else:
             score -= 15
-            signals.append(_sig("듀얼 모멘텀 (12M)", "방어자산 우위", "bear",
+            signals.append(_sig("듀얼 모멘텀 변형 (12M)", "방어자산 우위", "bear",
                                 f"주식 12개월 모멘텀이 현금 허들 미달 — {dm['winnerName'] or '채권/금'} 선호"))
 
     eq_idx = [x for x in (indices or []) if x.get("region") in ("US", "KR") and x.get("above200d") is not None]
@@ -235,7 +236,7 @@ def build(
         headline_bits.append("듀얼 모멘텀이 주식을 지지" if dm["equitiesWin"] else "듀얼 모멘텀이 방어자산을 지지")
     if tilt is not None and tilt["label"] != "중립":
         headline_bits.append(f"지역은 {tilt['label']}")
-    headline_bits.append(f"권장 주식 비중 약 {equity_pct}% (±10%p)")
+    headline_bits.append(f"모델 위험예산(주식) 약 {equity_pct}% (±10%p)")
 
     return {
         "score": round(score),

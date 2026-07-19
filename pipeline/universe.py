@@ -29,7 +29,13 @@ def _us_sp500(size: int) -> tuple[list[str], dict[str, str]]:
     # Columns vary by version; normalise.
     sym_col = next(c for c in df.columns if c.lower() in ("symbol", "ticker", "code"))
     name_col = next((c for c in df.columns if c.lower() in ("name", "company")), sym_col)
+    # The S&P500 listing is NOT guaranteed to be market-cap ordered, so a bare
+    # head(size) would silently pick an arbitrary slice. Sort by a cap column
+    # when one exists so capping keeps the largest, most liquid names.
+    cap_col = next((c for c in df.columns if c.lower() in ("marcap", "marketcap", "market_cap", "cap")), None)
     df = df.dropna(subset=[sym_col])
+    if cap_col is not None:
+        df = df.sort_values(cap_col, ascending=False)
     tickers, names = [], {}
     for _, row in df.head(size).iterrows():
         sym = _us_symbol(row[sym_col])
