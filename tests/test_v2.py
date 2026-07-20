@@ -14,6 +14,7 @@ from pipeline import regime as RG
 from pipeline import expert_consensus as EC
 from pipeline import ledger as LG
 from pipeline import provenance as PV
+from pipeline import build as B
 from pipeline.validate import validate
 
 
@@ -213,14 +214,29 @@ def test_blocked_withholds_longterm_weights():
     lt = LT.build(uni, prices, funds, diags, cfg_lt={"minNames": 8}, blocked=True)
     assert lt["weightsWithheld"] is True
     assert lt["regions"]["US"]["picks"] == []
+    assert lt["regions"]["US"]["holdings"] == []
+    assert lt["regions"]["US"]["cashPct"] is None
     # Research view (no weights) still available — it's not actionable sizing.
     assert lt["regions"]["US"]["researchTable"]
 
-    # Validator rejects a blocked artifact that still carries weights.
+    # The build's post-processing step must not re-attach entry actions to a
+    # blocked research table (the v2 regression that prompted this test).
+    entry_feats = {t: {"aboveMA50": True, "aboveMA200": True, "mom63Pct": 3}
+                   for t in uni["US"]}
+    B._attach_entry_states(lt, entry_feats, {"maxSectorWeight": 0.30})
+    assert all("entry" not in row and "entryState" not in row
+               for row in lt["regions"]["US"]["researchTable"])
+
+    # Validator rejects a blocked artifact that carries weights OR entry action.
     good = {"recommendationsBlocked": True, "tradeIdeas": {"KR": [], "US": []},
-            "longTerm": {"regions": {"US": {"picks": [{"modelSleeveWeightPct": 12.0}]}}}}
+            "longTerm": {"regions": {"US": {
+                "picks": [{"modelSleeveWeightPct": 12.0}],
+                "researchTable": [{"ticker": "AAA", "entry": {
+                    "entryState": "WAIT_FOR_PULLBACK", "reasons": ["되돌림 대기"]}}],
+            }}}}
     errs = validate_payload(good)
     assert "blocked_artifact_contains_longterm_weights" in errs
+    assert "blocked_artifact_contains_entry_actions" in errs
 
 
 def validate_payload(payload, tmp=None):

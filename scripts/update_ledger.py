@@ -34,7 +34,8 @@ def main(argv=None) -> int:
     summ_path = ledger_dir / "summary.json"
 
     # Refuse to record synthetic/seed data into the real ledger.
-    if data.get("seed") or (data.get("meta") or {}).get("syntheticData"):
+    data_mode = data.get("dataMode") or (data.get("provenance") or {}).get("dataMode")
+    if data.get("seed") or data_mode in {"seed", "synthetic", "stale"} or (data.get("meta") or {}).get("syntheticData"):
         print("refusing to append seed/synthetic data to the ledger")
         return 0
 
@@ -58,7 +59,11 @@ def main(argv=None) -> int:
                 benches[b] = bp["Close"]
         outcomes = LG.compute_outcomes(merged, prices, benches)
         LG.write_jsonl(out_path, outcomes)
-        summary = {str(h): LG.evaluate(outcomes, horizon=h) for h in LG.HORIZONS}
+        summary = {
+            "validationStatus": LG.validation_status(
+                outcomes, min_paper_days=int(cfg.validation.get("minPaperDays", 126))),
+            "horizons": {str(h): LG.evaluate(outcomes, horizon=h) for h in LG.HORIZONS},
+        }
         summ_path.write_text(json.dumps(summary, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
         print(f"outcomes: {len(outcomes)} matured; summary written")
     except Exception as exc:  # pragma: no cover - network dependent

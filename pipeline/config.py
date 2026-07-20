@@ -33,6 +33,7 @@ class Config:
     universe: dict[str, list[str]]  # region -> tickers, e.g. {"US": [...], "KR": [...]}
     names: dict[str, str]           # ticker -> display name (mainly KR)
     benchmark: str
+    benchmarks: dict[str, str]
     primary: str
     horizons: list[int]
     trade_horizon: int
@@ -88,10 +89,12 @@ def load_config(path: Path | str = CONFIG_PATH) -> tuple[Config, list[str]]:
     universe = {region: list(dict.fromkeys(names)) for region, names in universe.items()}
     core = list(dict.fromkeys(raw.get("core", universe.get("US", ["QQQ"])[:3])))
     benchmark = raw.get("benchmark", "SPY")
+    benchmarks = {"US": benchmark, "KR": "^KS200"}
+    benchmarks.update(raw.get("benchmarks", {}))
     primary = raw.get("primary", core[0] if core else "QQQ")
 
     # Every distinct ticker we need price data for (universe + core + benchmark).
-    all_tickers = [t for names in universe.values() for t in names] + core + [benchmark]
+    all_tickers = [t for names in universe.values() for t in names] + core + list(benchmarks.values())
     download_universe = list(dict.fromkeys(all_tickers))
 
     # Backward compatible: old config used fred.series (flat). New uses fred.{US,KR}.
@@ -110,6 +113,7 @@ def load_config(path: Path | str = CONFIG_PATH) -> tuple[Config, list[str]]:
         universe=universe,
         names=raw.get("names", {}),
         benchmark=benchmark,
+        benchmarks=benchmarks,
         primary=primary,
         horizons=raw.get("horizons", [21, 63, 126]),
         trade_horizon=raw.get("tradeHorizon", 10),

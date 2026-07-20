@@ -13,7 +13,7 @@ permissions:
   contents: write
 
 concurrency:
-  group: signal-ledger
+  group: signal-history-and-pages
   cancel-in-progress: false
 
 jobs:
@@ -32,11 +32,21 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
+      - name: Fetch prior production state
+        run: |
+          mkdir -p .state
+          if git fetch origin signal-history && git show origin/signal-history:state/latest.json > .state/latest.json; then
+            echo "PRIOR_STATE_PATH=$GITHUB_WORKSPACE/.state/latest.json" >> "$GITHUB_ENV"
+          fi
+
       - name: Build today's artifact
         env:
           FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
           ECOS_API_KEY: ${{ secrets.ECOS_API_KEY }}
         run: python -m pipeline.build
+
+      - name: Validate production artifact
+        run: python -m pipeline.validate data/site-data.json
 
       - name: Check out signal-history branch (orphan-safe)
         run: |

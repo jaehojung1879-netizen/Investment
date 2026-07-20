@@ -23,8 +23,8 @@ import os
 import subprocess
 from datetime import datetime, timezone
 
-SCHEMA_VERSION = "2.0.0"
-MODEL_VERSION = "longterm-v2+regime-v2+entry-v1"
+SCHEMA_VERSION = "2.1.0"
+MODEL_VERSION = "longterm-v2.1+regime-v2.1+entry-v1"
 
 RUN_MODES = ("researchOnly", "paperTrading", "liveValidated")
 DEFAULT_RUN_MODE = "paperTrading"
