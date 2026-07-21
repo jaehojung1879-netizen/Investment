@@ -93,6 +93,42 @@ TRANSFORMATIONS = {
     "WTI": "three_month_price_return",
 }
 
+INDICATOR_META = {
+    "CFNAI": ("시카고 연은 국가활동지수", "지수", "지수 변화"),
+    "Payrolls": ("비농업 고용", "천 명/월", "천 명/월 변화"),
+    "Unemployment": ("실업률", "%", "%p 변화"),
+    "Initial_Claims": ("신규 실업수당 청구", "건", "건 변화"),
+    "Core_CPI": ("근원 소비자물가", "%", "%p 변화"),
+    "Core_PCE": ("근원 개인소비지출 물가", "%", "%p 변화"),
+    "Breakeven_10Y": ("10년 기대인플레이션", "%", "%p 변화"),
+    "WTI": ("WTI 유가", "%", "% 변화"),
+    "Fed_Assets": ("연준 총자산", "%", "%p 변화"),
+    "RRP": ("연준 역레포", "십억 달러", "십억 달러 변화"),
+    "TGA": ("미 재무부 일반계정", "백만 달러", "백만 달러 변화"),
+    "M2": ("M2 통화량", "%", "%p 변화"),
+    "NFCI": ("시카고 연은 금융여건", "지수", "지수 변화"),
+    "ANFCI": ("조정 금융여건", "지수", "지수 변화"),
+    "HY_Spread": ("하이일드 스프레드", "%p", "%p 변화"),
+    "IG_Spread": ("투자등급 스프레드", "%p", "%p 변화"),
+    "Real_10Y": ("10년 실질금리", "%", "%p 변화"),
+    "Broad_Dollar": ("광의 달러지수", "지수", "지수 변화"),
+    "VIX": ("VIX 변동성지수", "지수", "지수 변화"),
+    "Yield_Curve": ("10년-2년 금리차", "%p", "%p 변화"),
+}
+
+TRANSFORMATION_KO = {
+    "inflation_rate_yoy_and_3m_annualized": "전년동월비 인플레이션율과 3개월 연율의 최근 방향",
+    "monthly_change_3m_average": "월간 증감의 3개월 이동평균 방향",
+    "three_month_average_change": "3개월 평균 수준의 최근 변화",
+    "four_week_average_change": "4주 이동평균의 최근 변화",
+    "yoy_growth_rate": "전년동월비 증가율의 최근 방향",
+    "thirteen_week_growth_rate": "13주 증가율의 최근 방향",
+    "level_zscore_and_recent_change": "장기 z-score 수준과 최근 변화의 결합",
+    "level_and_steepening_change": "금리차 수준과 최근 스티프닝 변화의 결합",
+    "three_month_price_return": "최근 3개월 가격수익률",
+    "recent_level_change": "최근 수준 변화",
+}
+
 
 def _visible_observations(series: pd.Series, lag_bdays: int,
                           asof: pd.Timestamp | None = None) -> tuple[pd.Series, pd.Timestamp | None]:
@@ -206,8 +242,22 @@ def indicator_read(name: str, series: pd.Series, asof: pd.Timestamp | None = Non
     obs = pd.Timestamp(visible.index[-1])
     tr = _transform(name, visible)
     fresh_days = int((eval_asof.normalize() - obs.normalize()).days) if eval_asof is not None else None
+    contribution = (sign * tr["direction"]) if tr["direction"] else 0
+    display_name, value_unit, change_unit = INDICATOR_META.get(
+        name, (name, "", "변화")
+    )
+    if contribution > 0:
+        contribution_ko = DIRECTION_POS[axis]
+        signal_summary = f"{TRANSFORMATION_KO.get(tr['method'], tr['method'])} → {AXIS_KO[axis]} {contribution_ko} 기여"
+    elif contribution < 0:
+        contribution_ko = DIRECTION_NEG[axis]
+        signal_summary = f"{TRANSFORMATION_KO.get(tr['method'], tr['method'])} → {AXIS_KO[axis]} {contribution_ko} 기여"
+    else:
+        contribution_ko = "중립"
+        signal_summary = f"{TRANSFORMATION_KO.get(tr['method'], tr['method'])} → 유의한 방향 없음"
     return {
         "name": name,
+        "displayNameKo": display_name,
         "axis": axis,
         "sign": sign,
         "latestValue": round(tr["latest"], 4),
@@ -215,9 +265,14 @@ def indicator_read(name: str, series: pd.Series, asof: pd.Timestamp | None = Non
         "change": round(tr["change"], 4) if tr["change"] is not None else None,
         "annualized3m": round(tr.get("annualized3m"), 4) if tr.get("annualized3m") is not None else None,
         "transformation": tr["method"],
+        "transformationKo": TRANSFORMATION_KO.get(tr["method"], tr["method"]),
+        "valueUnit": value_unit,
+        "changeUnit": change_unit,
         "zscore": round(tr["z"], 2) if tr["z"] is not None else None,
         "direction": tr["direction"],
-        "axisContribution": (sign * tr["direction"]) if tr["direction"] else 0,
+        "axisContribution": contribution,
+        "axisContributionKo": contribution_ko,
+        "signalSummaryKo": signal_summary,
         "observationDate": obs.strftime("%Y-%m-%d") if obs is not None else None,
         "releaseLagBdays": lag,
         "freshnessDays": fresh_days,
@@ -246,19 +301,61 @@ def _axis_summary(reads: list[dict], expected_count: int | None = None) -> dict:
             "agreement": round(agreement, 2), "nIndicators": len(reads)}
 
 
-def _regime_label(growth: dict, inflation: dict) -> tuple[str, float]:
+def _regime_decision(growth: dict, inflation: dict) -> dict:
     gc, ic = growth["confidence"], inflation["confidence"]
     conf = round(min(gc, ic), 2)
     gv, iv = growth["value"], inflation["value"]
-    if conf < 0.34 or gv is None or iv is None or abs(gv) <= 0.15 or abs(iv) <= 0.15:
-        return "Transition/Low confidence", conf
+    thresholds = {"minimumConfidence": 0.34, "directionAbsMin": 0.15}
+    base = {
+        "confidence": conf,
+        "confidenceRuleKo": "성장·물가 두 축 중 낮은 신뢰도를 국면 판정 신뢰도로 사용",
+        "thresholds": thresholds,
+        "growth": {"value": gv, "direction": growth.get("direction"),
+                   "labelKo": growth.get("labelKo"), "confidence": gc},
+        "inflation": {"value": iv, "direction": inflation.get("direction"),
+                      "labelKo": inflation.get("labelKo"), "confidence": ic},
+        "matrixKo": "성장 가속×물가 둔화=골디락스 · 가속×가속=리플레이션 · 둔화×가속=스태그플레이션 · 둔화×둔화=디플레·둔화",
+    }
+    if gv is None or iv is None:
+        return {**base, "label": "Transition/Low confidence",
+                "displayLabelKo": "판정 보류·데이터 부족", "reasonCode": "MISSING_AXIS",
+                "summaryKo": "성장 또는 물가 축 데이터가 없어 국면 조합을 판정하지 않습니다."}
+    if conf < thresholds["minimumConfidence"]:
+        return {**base, "label": "Transition/Low confidence",
+                "displayLabelKo": "전환·저신뢰", "reasonCode": "LOW_CONFIDENCE",
+                "summaryKo": f"성장·물가 중 낮은 축 신뢰도가 {conf:.0%}로 판정 기준 34%에 미달합니다."}
+    growth_mixed = abs(gv) <= thresholds["directionAbsMin"]
+    inflation_mixed = abs(iv) <= thresholds["directionAbsMin"]
+    if growth_mixed or inflation_mixed:
+        if growth_mixed and inflation_mixed:
+            code = "BOTH_AXES_MIXED"
+            summary = f"성장({gv:+.2f})과 물가({iv:+.2f}) 신호가 모두 중립 범위(±0.15)에서 상쇄됩니다."
+        elif growth_mixed:
+            code = "GROWTH_MIXED"
+            summary = f"물가는 {inflation.get('labelKo', '방향 확인')}이지만 성장 신호가 보합/상쇄({gv:+.2f})라 국면을 단정하지 않습니다."
+        else:
+            code = "INFLATION_MIXED"
+            summary = f"성장은 {growth.get('labelKo', '방향 확인')}({gv:+.2f})이지만 물가 신호가 보합/상쇄({iv:+.2f})라 국면을 단정하지 않습니다."
+        return {**base, "label": "Transition/Low confidence",
+                "displayLabelKo": "전환·신호 상쇄", "reasonCode": code,
+                "summaryKo": summary}
+
     if gv >= 0 and iv < 0:
-        return "Goldilocks", conf
-    if gv >= 0 and iv >= 0:
-        return "Reflation", conf
-    if gv < 0 and iv >= 0:
-        return "Stagflation", conf
-    return "Deflation/Slowdown", conf
+        label, display = "Goldilocks", "골디락스"
+    elif gv >= 0 and iv >= 0:
+        label, display = "Reflation", "리플레이션"
+    elif gv < 0 and iv >= 0:
+        label, display = "Stagflation", "스태그플레이션"
+    else:
+        label, display = "Deflation/Slowdown", "디플레·둔화"
+    return {**base, "label": label, "displayLabelKo": display,
+            "reasonCode": label.upper().replace("/", "_"),
+            "summaryKo": f"성장 {growth.get('labelKo')}({gv:+.2f}) × 물가 {inflation.get('labelKo')}({iv:+.2f}) 조합으로 {display}로 판정합니다."}
+
+
+def _regime_label(growth: dict, inflation: dict) -> tuple[str, float]:
+    decision = _regime_decision(growth, inflation)
+    return decision["label"], decision["confidence"]
 
 
 # Base equity risk budget by regime (percent range of a risk portfolio). This is
@@ -316,7 +413,8 @@ def build(macro: pd.DataFrame | None, vix: pd.Series | None,
         summ["indicators"] = axis_reads
         axes[axis] = summ
 
-    label, conf = _regime_label(axes["growth"], axes["inflation"])
+    decision = _regime_decision(axes["growth"], axes["inflation"])
+    label, conf = decision["label"], decision["confidence"]
 
     # Supporting / contradicting evidence: indicators whose contribution agrees
     # (or not) with a risk-on reading of the regime.
@@ -349,6 +447,7 @@ def build(macro: pd.DataFrame | None, vix: pd.Series | None,
         "priorRegime": prior_regime,
         "changed": bool(prior_regime and prior_regime != label),
         "confidence": conf,
+        "regimeDecision": decision,
         "coverage": coverage,
         "axes": axes,
         "supporting": supporting[:8],

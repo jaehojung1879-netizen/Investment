@@ -150,14 +150,60 @@ const renderStatus = (d) => {
 // =========================================================================
 // 2. Macro regime & risk budget
 // =========================================================================
-const axisRow = (a) => {
+const macroNumber = (v, unit = '') => {
+  if (v === null || v === undefined || Number.isNaN(v)) return '—';
+  const digits = Math.abs(v) >= 100 ? 0 : 2;
+  return `${Number(v).toLocaleString('ko-KR', { maximumFractionDigits: digits })}${unit ? ' ' + unit : ''}`;
+};
+const indicatorCard = (i, axis) => {
+  const contribution = i.axisContribution ?? 0;
+  const cls = contribution > 0 ? 'bull' : contribution < 0 ? 'bear' : 'trans';
+  const stale = i.stale ? '<span class="ax-stale">STALE</span>' : '';
+  const isReturn = i.transformation === 'three_month_price_return';
+  const transformed = isReturn && i.transformedValue != null ? i.transformedValue * 100 : i.transformedValue;
+  const change = isReturn && i.change != null ? i.change * 100 : i.change;
+  return `<article class="ax-signal">
+    <div class="ax-signal-top"><div><b>${i.displayNameKo || i.name}</b><small>${i.name}</small></div><span class="reg ${cls}">${axis.ko} ${i.axisContributionKo || (contribution > 0 ? '긍정' : contribution < 0 ? '부정' : '중립')}</span></div>
+    <p class="ax-method">${i.transformationKo || i.transformation || '최근 변화'}</p>
+    <p class="ax-reading">${i.signalSummaryKo || '세부 판정 설명은 다음 빌드에서 제공됩니다.'}</p>
+    <dl class="ax-numbers">
+      <div><dt>변환값</dt><dd>${macroNumber(transformed, i.valueUnit)}</dd></div>
+      <div><dt>최근 변화</dt><dd>${macroNumber(change, i.changeUnit)}</dd></div>
+      ${i.annualized3m != null ? `<div><dt>3개월 연율</dt><dd>${macroNumber(i.annualized3m, '%')}</dd></div>` : ''}
+      <div><dt>장기 z</dt><dd>${macroNumber(i.zscore)}</dd></div>
+    </dl>
+    <div class="ax-source"><span>관측 ${i.observationDate || '—'} · 발표시차 ${i.releaseLagBdays ?? '—'}영업일 · 경과 ${i.freshnessDays ?? '—'}일 ${stale}</span>${i.source ? `<a href="${i.source}" target="_blank" rel="noopener">원자료</a>` : ''}</div>
+  </article>`;
+};
+const axisRow = (a, key) => {
   const v = a.value; const dirCls = v == null ? 'trans' : v > 0.15 ? 'bull' : v < -0.15 ? 'bear' : 'trans';
   const w = v == null ? 0 : Math.min(50, Math.abs(v) * 50);
-  return `<div class="ax-row">
-    <span class="ax-name">${a.ko}</span>
-    <span class="ax-bar"><i class="${v >= 0 ? 'apos' : 'aneg'}" style="${v >= 0 ? 'left:50%' : 'right:50%'};width:${w}%"></i></span>
-    <span class="ax-lab reg ${dirCls}">${a.labelKo}</span>
-    <span class="ax-conf muted">커버 ${Math.round((a.coverage ?? 0) * 100)}% · 신선도 ${Math.round((a.freshness ?? 0) * 100)}% · 합의 ${Math.round((a.agreement ?? 0) * 100)}%</span>
+  const direct = key === 'growth' || key === 'inflation';
+  const indicators = (a.indicators || []).map((i) => indicatorCard(i, a)).join('') || '<div class="ax-none">사용 가능한 지표가 없습니다.</div>';
+  return `<details class="ax-detail" ${direct ? 'open' : ''}>
+    <summary><div class="ax-row">
+      <span class="ax-name">${a.ko}</span>
+      <span class="ax-bar"><i class="${v >= 0 ? 'apos' : 'aneg'}" style="${v >= 0 ? 'left:50%' : 'right:50%'};width:${w}%"></i></span>
+      <span class="ax-lab reg ${dirCls}">${a.labelKo}</span>
+      <span class="ax-conf muted">점수 ${v == null ? '—' : Number(v).toFixed(2)} · 커버 ${Math.round((a.coverage ?? 0) * 100)}% · 신선도 ${Math.round((a.freshness ?? 0) * 100)}% · 합의 ${Math.round((a.agreement ?? 0) * 100)}%</span>
+      <span class="ax-toggle">${direct ? '판정에 직접 사용' : '위험예산 보조'} · ${a.nIndicators ?? 0}개 ▾</span>
+    </div></summary>
+    <div class="ax-signals">${indicators}</div>
+  </details>`;
+};
+const regimeDecisionCard = (r) => {
+  const d = r.regimeDecision || {};
+  const g = d.growth || (r.axes || {}).growth || {};
+  const i = d.inflation || (r.axes || {}).inflation || {};
+  const summary = d.summaryKo || '성장과 물가 축의 방향·신뢰도를 조합해 국면을 판단합니다.';
+  return `<div class="regime-decision">
+    <div><span class="rb-h">왜 이 국면인가</span><b>${summary}</b></div>
+    <div class="decision-axes">
+      <span>성장 <b>${g.labelKo || '데이터 부족'} ${g.value == null ? '' : `(${Number(g.value).toFixed(2)})`}</b><em>신뢰 ${Math.round((g.confidence ?? 0) * 100)}%</em></span>
+      <span>물가 <b>${i.labelKo || '데이터 부족'} ${i.value == null ? '' : `(${Number(i.value).toFixed(2)})`}</b><em>신뢰 ${Math.round((i.confidence ?? 0) * 100)}%</em></span>
+    </div>
+    <p>${d.confidenceRuleKo || '국면 신뢰도는 성장·물가 중 낮은 축 신뢰도입니다.'} · 방향 중립구간 ±${d.thresholds?.directionAbsMin ?? 0.15} · 최소 신뢰 ${Math.round((d.thresholds?.minimumConfidence ?? 0.34) * 100)}%</p>
+    <small>${d.matrixKo || '성장×물가 조합으로 네 국면을 판정하며, 한 축이 중립이면 전환으로 보류합니다.'}</small>
   </div>`;
 };
 const renderRegime = (r) => {
@@ -167,16 +213,17 @@ const renderRegime = (r) => {
   $('#regimeMeta').textContent = `${r.asOf ? '기준 ' + r.asOf + ' · ' : ''}지표 ${r.indicatorCount ?? 0}개 · 커버리지 ${Math.round((r.coverage ?? 0) * 100)}%`;
   const rb = r.riskBudget || {};
   const changed = r.changed ? `<span class="chg">← ${REGIME_KO[r.priorRegime] || r.priorRegime}에서 전환</span>` : '';
-  const axesHtml = Object.values(r.axes || {}).map(axisRow).join('');
+  const axesHtml = Object.entries(r.axes || {}).map(([key, axis]) => axisRow(axis, key)).join('');
   const support = (r.supporting || []).map((s) => `<span class="ev ev-pos">${s.name}</span>`).join('') || '<span class="muted">—</span>';
   const contra = (r.contradicting || []).map((s) => `<span class="ev ev-neg">${s.name}</span>`).join('') || '<span class="muted">—</span>';
   host.innerHTML = `
     <div class="regime-head">
-      <div class="regime-label reg ${r.regime && r.regime.startsWith('Transition') ? 'trans' : (r.regime === 'Goldilocks' || r.regime === 'Reflation') ? 'bull' : 'bear'}">${REGIME_KO[r.regime] || r.regime}</div>
+      <div class="regime-label reg ${r.regime && r.regime.startsWith('Transition') ? 'trans' : (r.regime === 'Goldilocks' || r.regime === 'Reflation') ? 'bull' : 'bear'}">${r.regimeDecision?.displayLabelKo || REGIME_KO[r.regime] || r.regime}</div>
       <div class="regime-conf">국면 판정 신뢰 <b>${Math.round((r.confidence ?? 0) * 100)}%</b> ${changed}</div>
       ${r.note ? `<div class="status-note warn">${r.note}</div>` : ''}
       ${r.pointInTimeLimitations ? `<div class="status-note info">한계: ${r.pointInTimeLimitations}</div>` : ''}
     </div>
+    ${regimeDecisionCard(r)}
     <div class="regime-axes">${axesHtml}</div>
     <div class="regime-budget">
       <div class="rb-h">위험예산 (매크로 레이어 — 개별 알파에 가산하지 않음)</div>
@@ -191,8 +238,8 @@ const renderRegime = (r) => {
 // =========================================================================
 const stanceKo = (s) => s == null ? '—' : s >= 1 ? `강한 긍정 (+${s})` : s > 0 ? `긍정 (+${s})` : s === 0 ? '중립 (0)' : s <= -1 ? `강한 부정 (${s})` : `부정 (${s})`;
 const themeCard = (t) => {
-  const agr = { high: ['합의 강함', 'bull'], mixed: ['혼재', 'trans'], low: ['의견 갈림', 'bear'] }[t.agreement] || ['—', 'trans'];
-  const views = (t.views || []).map((v) => `<div class="cv-view"><span>${v.institution}${v.sourceType === 'companyIR' ? ' <em class="ir">IR</em>' : ''}</span><b>${stanceKo(v.stance)}</b>${v.url ? `<a href="${v.url}" target="_blank" rel="noopener">원문</a>` : ''}</div>`).join('');
+  const agr = { high: ['합의 강함', 'bull'], mixed: ['혼재', 'trans'], low: ['의견 갈림', 'bear'], insufficient: ['1개 기관·합의 불가', 'trans'] }[t.agreement] || ['—', 'trans'];
+  const views = (t.views || []).map((v) => `<div class="cv-view"><div><span>${v.institution}${v.sourceType === 'companyIR' ? ' <em class="ir">IR</em>' : ''}</span><small>${v.publishedAt || '발행일 미상'}${v.ageDays != null ? ` · ${v.ageDays}일 전` : ''}</small></div><b>${stanceKo(v.stance)}</b>${v.url ? `<a href="${v.url}" target="_blank" rel="noopener">원문</a>` : ''}${v.summary ? `<p>${v.summary}</p>` : ''}</div>`).join('');
   return `<div class="cv-card">
     <div class="cv-top"><b>${t.theme}</b><span class="reg ${agr[1]}">${agr[0]}</span></div>
     <div class="cv-meta">중앙값 스탠스 <b>${stanceKo(t.weightedMedianStance)}</b> · 분산 ${fmt(t.dispersion)} · 기관 ${t.institutionCount}곳</div>
@@ -200,17 +247,34 @@ const themeCard = (t) => {
     ${t.counterCase ? `<div class="cv-counter">반대 논거: ${t.counterCase}</div>` : ''}
   </div>`;
 };
+const MISSING_FIELD_KO = { publishedAt: '발행일', verifiedAt: '검증일', stance: '방향 점수', summary: '검증 요약', verified: '검증 승인' };
+const awaitingCard = (a) => {
+  const missing = a.missingFields || ['publishedAt', 'verifiedAt', 'stance', 'summary', 'verified'];
+  const risks = (a.risks || []).map((x) => `<span>${x}</span>`).join('') || '<span>등록 없음</span>';
+  const signposts = (a.signposts || []).map((x) => `<span>${x}</span>`).join('') || '<span>등록 없음</span>';
+  return `<article class="cv-pending">
+    <div class="cv-pending-head"><div><b>${a.institution}</b><small>${a.theme || '주제 미분류'} · ${a.horizon || '기간 미정'}</small></div><span>${a.statusKo || '원문 검증 대기'}</span></div>
+    <p class="cv-title">${a.title || '기관 전망 원문'}</p>
+    <div class="cv-missing"><b>컨센서스 제외 사유</b>${missing.map((x) => `<em>${MISSING_FIELD_KO[x] || x} 없음</em>`).join('')}</div>
+    <div class="cv-watch"><div><b>검증할 위험요인</b>${risks}</div><div><b>확인할 지표</b>${signposts}</div></div>
+    ${a.url ? `<a class="cv-source" href="${a.url}" target="_blank" rel="noopener">공식 원문 확인 →</a>` : ''}
+  </article>`;
+};
 const renderConsensus = (c) => {
   const host = $('#consensusPanel'); const sec = $('#consensus');
   if (!c) { sec.hidden = true; return; }
   sec.hidden = false;
-  $('#consensusMeta').textContent = `검증 ${c.verifiedCount ?? 0}건 · STALE ${c.staleCount ?? 0}건`;
+  const candidates = c.candidateCount ?? (c.awaitingVerification || []).length + (c.verifiedCount || 0) + (c.staleCount || 0);
+  $('#consensusMeta').textContent = `검증 ${c.verifiedCount ?? 0}/${candidates}건 · 대기 ${c.awaitingCount ?? (c.awaitingVerification || []).length}건 · STALE ${c.staleCount ?? 0}건`;
   let html = '';
   if (c.themes && c.themes.length) html += c.themes.map(themeCard).join('');
-  else html += `<div class="status-note warn">${c.note || '검증된 전문가 의견 없음'}</div>`;
+  else html += `<div class="cv-empty">
+    <div><span>검증 커버리지</span><b>${Math.round((c.verificationCoverage ?? 0) * 100)}%</b></div>
+    <section><h3>검증된 컨센서스가 아직 없는 이유</h3><p>${c.note || '등록 후보가 모두 원문 검증 전이라 방향을 집계하지 않습니다.'}</p><small>빈 화면이나 수집 오류가 아닙니다. 미검증 자료의 스탠스를 추정하지 않는 안전장치입니다.</small></section>
+    <ol>${(c.verificationStepsKo || ['공식 원문과 발행일 확인', '스탠스·요약 기록', 'verified=true 승인', '기관 중복 제거 후 집계']).map((x) => `<li>${x}</li>`).join('')}</ol>
+  </div>`;
   if (c.awaitingVerification && c.awaitingVerification.length) {
-    html += `<div class="cv-await"><div class="rb-h">검증 대기 (원문 확인 후 반영 — 내용 날조 없음)</div>` +
-      c.awaitingVerification.map((a) => `<div class="cv-awrow"><span>${a.institution}</span><em>${a.theme || ''}</em>${a.url ? `<a href="${a.url}" target="_blank" rel="noopener">원문</a>` : ''}</div>`).join('') + `</div>`;
+    html += `<div class="cv-await"><div class="cv-await-title"><b>원문 검증 대기 ${c.awaitingVerification.length}건</b><span>아래 항목은 컨센서스에 포함되지 않습니다.</span></div><div class="cv-pending-grid">${c.awaitingVerification.map(awaitingCard).join('')}</div></div>`;
   }
   host.innerHTML = html;
 };
