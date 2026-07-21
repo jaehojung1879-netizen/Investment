@@ -1,18 +1,47 @@
 {
-  "21": {
-    "n": 0,
-    "horizon": 21
+  "validationStatus": {
+    "paperDays": 0,
+    "maturedSignals": 0,
+    "eligibleDates": 0,
+    "regionIC": {},
+    "costAdjustedExcessReturn": null,
+    "MDD": null,
+    "CVaR": null,
+    "liveValidationEligible": false,
+    "liveValidated": false,
+    "reasons": [
+      "paper_history_below_126_business_days",
+      "no_126d_matured_signals"
+    ]
   },
-  "63": {
-    "n": 0,
-    "horizon": 63
-  },
-  "126": {
-    "n": 0,
-    "horizon": 126
-  },
-  "252": {
-    "n": 0,
-    "horizon": 252
+  "horizons": {
+    "21": {
+      "n": 0,
+      "horizon": 21,
+      "crossSections": 0,
+      "eligibleDates": 0,
+      "regionIC": {}
+    },
+    "63": {
+      "n": 0,
+      "horizon": 63,
+      "crossSections": 0,
+      "eligibleDates": 0,
+      "regionIC": {}
+    },
+    "126": {
+      "n": 0,
+      "horizon": 126,
+      "crossSections": 0,
+      "eligibleDates": 0,
+      "regionIC": {}
+    },
+    "252": {
+      "n": 0,
+      "horizon": 252,
+      "crossSections": 0,
+      "eligibleDates": 0,
+      "regionIC": {}
+    }
   }
 }
