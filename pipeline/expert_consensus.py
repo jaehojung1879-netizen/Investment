@@ -66,14 +66,17 @@ def _weighted_median(pairs: list[tuple[float, float]]) -> float | None:
     return float(pairs[-1][0])
 
 
-def _days_since(iso: str | None) -> int | None:
+def _days_since(iso: str | None, now: datetime | None = None) -> int | None:
     if not iso:
         return None
     try:
         d = datetime.fromisoformat(iso.replace("Z", "+00:00"))
         if d.tzinfo is None:
             d = d.replace(tzinfo=timezone.utc)
-        return (datetime.now(timezone.utc) - d).days
+        evaluation_time = now or datetime.now(timezone.utc)
+        if evaluation_time.tzinfo is None:
+            evaluation_time = evaluation_time.replace(tzinfo=timezone.utc)
+        return (evaluation_time - d).days
     except Exception:
         return None
 
@@ -86,7 +89,7 @@ def build(sources: dict | None = None, views: dict | None = None, now: datetime 
     verified, unverified, stale = [], [], []
     for v in vlist:
         is_stale = False
-        age = _days_since(v.get("verifiedAt") or v.get("publishedAt"))
+        age = _days_since(v.get("verifiedAt") or v.get("publishedAt"), now=now)
         if v.get("verified") and v.get("stance") is not None:
             if age is not None and v.get("staleAfterDays") and age > v["staleAfterDays"]:
                 is_stale = True
@@ -121,9 +124,11 @@ def build(sources: dict | None = None, views: dict | None = None, now: datetime 
         themes[theme]["views"].append({
             "institution": s.get("institution", v.get("sourceId")),
             "sourceType": v.get("sourceType") or s.get("sourceType"),
-            "stance": v.get("stance"), "summary": v.get("summary"),
+            "title": v.get("title"), "stance": v.get("stance"),
+            "summary": v.get("summary"),
             "url": v.get("url"), "publishedAt": v.get("publishedAt"),
-            "ageDays": v.get("_ageDays"),
+            "verifiedAt": v.get("verifiedAt"), "ageDays": v.get("_ageDays"),
+            "weight": round(w, 2),
         })
 
     theme_out = []
@@ -132,31 +137,82 @@ def build(sources: dict | None = None, views: dict | None = None, now: datetime 
         wmed = _weighted_median(stances)
         vals = [s for s, _ in stances]
         dispersion = round(float(max(vals) - min(vals)), 2) if vals else None
+        institution_count = len(agg["institutions"])
+        agreement = ("insufficient" if institution_count < 2 else
+                     "high" if dispersion is not None and dispersion <= 1 else
+                     "low" if dispersion is not None and dispersion >= 2.5 else "mixed")
         theme_out.append({
             "theme": theme,
             "weightedMedianStance": round(wmed, 2) if wmed is not None else None,
             "dispersion": dispersion,
-            "agreement": ("high" if dispersion is not None and dispersion <= 1 else
-                          "low" if dispersion is not None and dispersion >= 2.5 else "mixed"),
-            "institutionCount": len(agg["institutions"]),
+            "agreement": agreement,
+            "institutionCount": institution_count,
             "counterCase": COUNTER_CASE.get(theme),
             "views": agg["views"],
         })
     theme_out.sort(key=lambda t: (-t["institutionCount"], -(abs(t["weightedMedianStance"] or 0))))
 
+    required_fields = ("publishedAt", "verifiedAt", "stance", "summary")
+    awaiting = []
+    for v in unverified:
+        missing = [field for field in required_fields if v.get(field) in (None, "")]
+        if not v.get("verified"):
+            missing.append("verified")
+        source = src_by_id.get(v.get("sourceId"), {})
+        awaiting.append({
+            "id": v.get("id"),
+            "institution": source.get("institution", v.get("sourceId")),
+            "sourceType": v.get("sourceType") or source.get("sourceType"),
+            "title": v.get("title"),
+            "theme": v.get("theme"),
+            "region": v.get("region"),
+            "assetClass": v.get("assetClass"),
+            "horizon": v.get("horizon"),
+            "url": v.get("url") or source.get("url"),
+            "risks": v.get("risks") or [],
+            "signposts": v.get("signposts") or [],
+            "staleAfterDays": v.get("staleAfterDays"),
+            "statusCode": "UNVERIFIED",
+            "statusKo": "원문 검증 대기",
+            "missingFields": missing,
+        })
+
+    stale_views = []
+    for v in stale:
+        source = src_by_id.get(v.get("sourceId"), {})
+        stale_views.append({
+            "id": v.get("id"), "institution": source.get("institution", v.get("sourceId")),
+            "title": v.get("title"), "theme": v.get("theme"),
+            "url": v.get("url") or source.get("url"), "ageDays": v.get("_ageDays"),
+            "staleAfterDays": v.get("staleAfterDays"), "statusCode": "STALE",
+            "statusKo": "유효기간 경과",
+        })
+
+    candidate_count = len(vlist)
+    verified_count = len(deduped)
+    verification_coverage = round(verified_count / candidate_count, 2) if candidate_count else 0.0
     return {
         "available": bool(theme_out),
         "asOf": (now or datetime.now(timezone.utc)).isoformat(),
         "themes": theme_out,
         "consensusThemes": [t for t in theme_out if t["agreement"] == "high"],
         "contestedThemes": [t for t in theme_out if t["agreement"] == "low"],
-        "awaitingVerification": [
-            {"institution": src_by_id.get(v.get("sourceId"), {}).get("institution", v.get("sourceId")),
-             "theme": v.get("theme"), "url": v.get("url"),
-             "risks": v.get("risks"), "signposts": v.get("signposts")}
-            for v in unverified
-        ],
+        "awaitingVerification": awaiting,
+        "staleViews": stale_views,
         "staleCount": len(stale),
-        "verifiedCount": len(deduped),
-        "note": None if theme_out else "검증된 전문가 의견 없음 — 원문 확인 후 verified=true로 갱신되면 컨센서스가 표시됩니다 (내용 날조 없음).",
+        "verifiedCount": verified_count,
+        "candidateCount": candidate_count,
+        "awaitingCount": len(awaiting),
+        "registeredSourceCount": len(src),
+        "verificationCoverage": verification_coverage,
+        "verificationStepsKo": [
+            "공식 원문과 발행일 확인",
+            "스탠스·요약·반대 논거 기록",
+            "verifiedAt과 verified=true 승인",
+            "기관별 중복 제거 후 가중 중앙값 집계",
+        ],
+        "note": None if theme_out else (
+            f"후보 {candidate_count}건 중 현재 유효한 verified=true 의견이 없습니다. "
+            "검증 전 자료는 스탠스나 컨센서스로 추정하지 않습니다."
+        ),
     }
