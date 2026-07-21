@@ -6,8 +6,8 @@ the SAME safe story:
     marketAsOf) so a consumer can always tell what produced the numbers;
   * runMode is a known value and is NEVER liveValidated straight from a build
     (that must be earned by the ledger);
-  * a blocked artifact carries NO actionable output — not short-term ideas AND
-    not long-term sleeve weights;
+  * a blocked artifact carries NO actionable output — no short-term ideas,
+    long-term positions/weights, entry states, or actionable reasons;
   * seed / synthetic / stale artifacts are rejected for production.
 """
 from __future__ import annotations
@@ -15,6 +15,10 @@ import json, math, sys
 from pathlib import Path
 
 VALID_RUN_MODES = {"researchOnly", "paperTrading", "liveValidated"}
+ACTIONABLE_REASON_TERMS = (
+    "buy", "sell", "avoid", "wait", "accumulate", "entry", "매수", "매도",
+    "진입", "대기", "회피", "되돌림", "편입", "비중",
+)
 
 
 def _walk(o, path="$"):
@@ -34,6 +38,32 @@ def _longterm_has_weights(data: dict) -> bool:
         for p in (blob or {}).get("picks", []):
             if p.get("modelSleeveWeightPct") is not None:
                 return True
+    return False
+
+
+def _longterm_has_positions(data: dict) -> bool:
+    lt = data.get("longTerm") or {}
+    for blob in (lt.get("regions") or {}).values():
+        if (blob or {}).get("picks") or (blob or {}).get("holdings"):
+            return True
+    return False
+
+
+def _has_blocked_entry_actions(obj) -> bool:
+    if isinstance(obj, dict):
+        for key, value in obj.items():
+            if key == "entryState" and value is not None:
+                return True
+            if key in {"reasons", "reason"}:
+                values = value if isinstance(value, list) else [value]
+                for item in values:
+                    text = str(item or "").lower()
+                    if any(term in text for term in ACTIONABLE_REASON_TERMS):
+                        return True
+            if _has_blocked_entry_actions(value):
+                return True
+    elif isinstance(obj, list):
+        return any(_has_blocked_entry_actions(item) for item in obj)
     return False
 
 
@@ -63,9 +93,10 @@ def validate(path: str | Path, production: bool = True) -> list[str]:
     if production:
         if data.get("seed"):
             errors.append("seed_artifact_not_allowed_for_production")
-        if m.get("syntheticData"):
+        artifact_modes = {data.get("dataMode"), prov.get("dataMode")}
+        if m.get("syntheticData") or artifact_modes & {"synthetic", "seed"}:
             errors.append("synthetic_artifact_not_allowed_for_production")
-        if data.get("stale"):
+        if data.get("stale") or "stale" in artifact_modes:
             errors.append("stale_artifact_not_allowed_for_production")
         if m.get("modelsTrained", 0) <= 0:
             errors.append("modelsTrained_zero")
@@ -78,6 +109,10 @@ def validate(path: str | Path, production: bool = True) -> list[str]:
             errors.append("blocked_artifact_contains_trade_ideas")
         if _longterm_has_weights(data):
             errors.append("blocked_artifact_contains_longterm_weights")
+        if _longterm_has_positions(data):
+            errors.append("blocked_artifact_contains_longterm_positions")
+        if _has_blocked_entry_actions(data.get("longTerm") or {}):
+            errors.append("blocked_artifact_contains_entry_actions")
     return errors
 
 

@@ -37,7 +37,7 @@ const regBadgeCls = (s) => s == null ? 'trans' : s < 45 ? 'bear' : s < 55 ? 'tra
 // --- Popover explanations ---
 const EXPL = {
   status: ['데이터 상태 · 검증 상태', '<b>runMode</b>(researchOnly·paperTrading·liveValidated)는 사용 방식, <b>dataMode</b>(live·seed·stale·synthetic)는 숫자의 실체를 나타냅니다. liveValidated는 config만으로 부여되지 않고 paper ledger 검증을 거쳐야 합니다. 빌드 커밋 SHA와 marketAsOf/sourceAsOf로 어느 코드가 언제 데이터로 만든 결과인지 추적합니다. 차단(blocked) 상태면 단기·장기 액션과 비중이 모두 숨겨집니다.'],
-  regime: ['매크로 국면 · 위험예산', '고정 임계값(10Y 4.5%, 원/달러 1,400) 대신 <b>6축(성장·물가·유동성·금융여건·위험선호·이익/신용)</b>을 방향(가속/둔화)으로 읽어 국면을 판정합니다. 월별·분기 지표는 <b>발표 시차(release lag)</b>를 적용해 point-in-time로 사용하고, 데이터가 없으면 임의 중립·강세로 바꾸지 않고 <b>confidence</b>를 낮춥니다. 매크로는 개별 종목 알파에 더하지 않고 <b>위험예산·현금범위·스타일 틸트</b>만 조정합니다.'],
+  regime: ['매크로 국면 · 위험예산', '<b>6축(성장·물가·유동성·금융여건·위험선호·이익/신용)</b>은 진단에 표시하며, 국면 라벨은 성장×물가로 판정하고 금융여건·위험선호로 위험예산만 보정합니다. 지표별 변환과 고정 발표시차를 적용하지만 실제 발표 달력·ALFRED vintage는 사용하지 않습니다. 매크로는 개별 종목 알파에 더하지 않습니다.'],
   consensus: ['전문가 컨센서스', '검증된(verified) 기관 house view만 집계합니다. 단순 평균이 아니라 <b>weighted median + 의견 분산</b>을 계산하고, 기관·연구팀별 최대 한 표로 제한합니다. 기업 IR은 독립 의견으로 취급하지 않습니다(가중치 하향). 원문 검증 전에는 내용을 만들지 않고 “검증 대기”로만 둡니다. 각 합의에는 <b>반대 논거</b>를 함께 표시합니다.'],
   longterm: ['지역별 장기 리서치', 'KR·US를 <b>지역별로 독립 z-score</b> 산출하고(서로 직접 비교하지 않음), 팩터(모멘텀·밸류·퀄리티·저변동)는 <b>섹터 내 중립화</b>합니다. 알파 점수는 <b>신뢰도(팩터·재무 커버리지·소스 품질)로 페널티</b>를 받고, 위험지표·진입상태와 <b>분리 표기</b>됩니다. 3개 슬리브·최소 재무 커버리지 미달은 <b>DATA_INSUFFICIENT</b>로 분류돼 후보에서 제외됩니다.'],
   entry: ['진입상태', '‘좋은 종목’(장기 리서치 관점)과 ‘지금 살 종목’(진입상태)은 다릅니다. 추세(20·50·200일)·200일선 이격·<b>유니버스 내 과열 백분위</b>·변동성 급등·갭·실적 이벤트·섹터 집중도를 반영해 <b>분할매수/관찰/되돌림대기/이벤트위험/회피</b>로 구분합니다. 장기 팩터가 우수해도 과열·이벤트·급변동이면 되돌림 대기 또는 이벤트 위험이 됩니다.'],
@@ -157,7 +157,7 @@ const axisRow = (a) => {
     <span class="ax-name">${a.ko}</span>
     <span class="ax-bar"><i class="${v >= 0 ? 'apos' : 'aneg'}" style="${v >= 0 ? 'left:50%' : 'right:50%'};width:${w}%"></i></span>
     <span class="ax-lab reg ${dirCls}">${a.labelKo}</span>
-    <span class="ax-conf muted">신뢰 ${a.confidence != null ? Math.round(a.confidence * 100) + '%' : '—'} · n=${a.nIndicators}</span>
+    <span class="ax-conf muted">커버 ${Math.round((a.coverage ?? 0) * 100)}% · 신선도 ${Math.round((a.freshness ?? 0) * 100)}% · 합의 ${Math.round((a.agreement ?? 0) * 100)}%</span>
   </div>`;
 };
 const renderRegime = (r) => {
@@ -173,8 +173,9 @@ const renderRegime = (r) => {
   host.innerHTML = `
     <div class="regime-head">
       <div class="regime-label reg ${r.regime && r.regime.startsWith('Transition') ? 'trans' : (r.regime === 'Goldilocks' || r.regime === 'Reflation') ? 'bull' : 'bear'}">${REGIME_KO[r.regime] || r.regime}</div>
-      <div class="regime-conf">confidence <b>${Math.round((r.confidence ?? 0) * 100)}%</b> ${changed}</div>
+      <div class="regime-conf">국면 판정 신뢰 <b>${Math.round((r.confidence ?? 0) * 100)}%</b> ${changed}</div>
       ${r.note ? `<div class="status-note warn">${r.note}</div>` : ''}
+      ${r.pointInTimeLimitations ? `<div class="status-note info">한계: ${r.pointInTimeLimitations}</div>` : ''}
     </div>
     <div class="regime-axes">${axesHtml}</div>
     <div class="regime-budget">
@@ -220,6 +221,7 @@ const renderConsensus = (c) => {
 const fBar = (label, v) => `<div class="fb"><span>${label}</span><div class="fb-bar"><i style="width:${v ?? 0}%"></i></div><b>${v != null ? v : '—'}</b></div>`;
 const prosCons = (p) => {
   const fp = p.factorPercentiles || {}; const risk = p.risk || {};
+  const completeness = p.dataCompleteness ?? p.financialCoverage ?? 0;
   const pros = [], cons = [];
   if (fp.momentum >= 66) pros.push(`모멘텀 상위 (${fp.momentum}p)`);
   if (fp.value >= 66) pros.push(`밸류 매력 (${fp.value}p)`);
@@ -228,7 +230,7 @@ const prosCons = (p) => {
   if (p.aboveMA200) pros.push('200일선 위 (추세 확인)');
   if (p.alphaPercentile >= 66) pros.push(`섹터중립 알파 ${topPct(p.alphaPercentile)}`);
   if (p.valueTrap) cons.push('가치함정 신호 (싼데 퀄리티·현금흐름 약함)');
-  if (p.financialCoverage < 0.6) cons.push(`재무 커버리지 낮음 (${Math.round(p.financialCoverage * 100)}%)`);
+  if (completeness < 0.6) cons.push(`데이터 완전성 낮음 (${Math.round(completeness * 100)}%)`);
   if (!p.aboveMA200) cons.push('200일선 아래 (추세 미확인)');
   if (fp.quality != null && fp.quality <= 33) cons.push(`퀄리티 하위 (${fp.quality}p)`);
   if (risk.maxDD252Pct != null && risk.maxDD252Pct <= -25) cons.push(`최근 낙폭 ${risk.maxDD252Pct}%`);
@@ -236,19 +238,23 @@ const prosCons = (p) => {
   if ((p.entry || {}).overheatPercentile != null && p.entry.overheatPercentile >= 85) cons.push('유니버스 내 과열');
   return { pros: pros.slice(0, 3), cons: cons.slice(0, 3) };
 };
-const ltRow = (p) => {
+const ltRow = (p, blocked = false) => {
   const { pros, cons } = prosCons(p);
-  const e = p.entry || {}; const risk = p.risk || {};
-  const w = p.modelSleeveWeightPct;
+  const e = blocked ? {} : (p.entry || {}); const risk = p.risk || {};
+  const w = blocked ? null : p.modelSleeveWeightPct;
+  const evidence = p.evidenceCoverage ?? p.factorCoverage ?? p.confidence ?? 0;
+  const completeness = p.dataCompleteness ?? p.financialCoverage ?? 0;
+  const sourceQuality = p.sourceQuality ?? 0;
+  const empirical = p.empiricalValidationStatus || 'PENDING_PAPER_HISTORY';
   const invalidation = `알파 백분위가 매도 버퍼(예: 하위 70p) 아래로 하락하거나 재무 커버리지가 기준 미달로 전환되면 후보 제외 · 진입상태가 회피로 바뀌면 신규 편입 중단`;
   return `<div class="lt-item">
     <div class="lt-top">${tkLink(p.ticker)}<span class="muted lt-sec">${p.sectorKo || '미분류'}</span>${viewBadge(p.longTermResearchView)}${entryBadge(e.entryState)}${w != null ? `<span class="edge" data-x="concentration">슬리브 ${w}%</span>` : ''}</div>
-    <div class="lt-meta"><span>알파 <b>${topPct(p.alphaPercentile)}</b></span><span>신뢰도 <b>${Math.round((p.confidence ?? 0) * 100)}%</b></span><span>재무커버 <b>${Math.round((p.financialCoverage ?? 0) * 100)}%</b></span><span>12-1M <b>${sp(p.mom12_1Pct)}</b></span></div>
+    <div class="lt-meta"><span>알파 <b>${topPct(p.alphaPercentile)}</b></span><span>근거 커버리지 <b>${Math.round(evidence * 100)}%</b></span><span>데이터 완전성 <b>${Math.round(completeness * 100)}%</b></span><span>소스 품질 <b>${Math.round(sourceQuality * 100)}%</b></span><span>실증 <b>${empirical === 'PENDING_PAPER_HISTORY' ? '검증 대기' : empirical}</b></span><span>12-1M <b>${sp(p.mom12_1Pct)}</b></span></div>
     <div class="lt-bars">${fBar('모멘텀', p.factorPercentiles?.momentum)}${fBar('밸류', p.factorPercentiles?.value)}${fBar('퀄리티', p.factorPercentiles?.quality)}${fBar('저변동', p.factorPercentiles?.lowvol)}</div>
     <div class="lt-risk muted">위험: 변동성 ${fmt(risk.vol252Pct, '%', 0)} · 하방변동 ${fmt(risk.downsideVolPct, '%', 0)} · 최대낙폭 ${fmt(risk.maxDD252Pct, '%', 0)} · CVaR ${fmt(risk.cvar95Pct, '%', 1)}${risk.beta != null ? ' · β ' + risk.beta : ''}</div>
-    ${e.reasons && e.reasons.length ? `<div class="lt-entry muted">진입: ${e.reasons.join(' · ')}</div>` : ''}
+    ${!blocked && e.reasons && e.reasons.length ? `<div class="lt-entry muted">진입: ${e.reasons.join(' · ')}</div>` : ''}
     <div class="lt-args"><div class="pro"><b>긍정</b>${(pros.length ? pros : ['—']).map((x) => `<span>${x}</span>`).join('')}</div><div class="con"><b>반대</b>${(cons.length ? cons : ['—']).map((x) => `<span>${x}</span>`).join('')}</div></div>
-    <div class="lt-inval muted">논리 무효화: ${invalidation}</div>
+    ${blocked ? '' : `<div class="lt-inval muted">논리 무효화: ${invalidation}</div>`}
   </div>`;
 };
 const renderLongTerm = (d) => {
@@ -260,7 +266,8 @@ const renderLongTerm = (d) => {
   const fill = (el, reg) => {
     const r = lt.regions[reg];
     const rows = (r && ((r.picks && r.picks.length) ? r.picks : r.researchTable)) || [];
-    let html = rows.length ? rows.map(ltRow).join('') : '<div class="none">데이터 부족</div>';
+    let html = d.recommendationsBlocked ? '<div class="status-note info">데이터 검증 전으로 진입 판단을 제공하지 않습니다.</div>' : '';
+    html += rows.length ? rows.map((p) => ltRow(p, d.recommendationsBlocked)).join('') : '<div class="none">데이터 부족</div>';
     if (r && r.dataInsufficient && r.dataInsufficient.length) html += `<div class="lt-insuf muted">DATA_INSUFFICIENT (${r.dataInsufficient.length}): 팩터/재무 커버리지 부족으로 후보 제외 — ${r.dataInsufficient.slice(0, 8).map((x) => tkName(x.ticker)).join(', ')}${r.dataInsufficient.length > 8 ? ' 외' : ''}</div>`;
     $(el).innerHTML = html;
   };
@@ -273,6 +280,10 @@ const renderEntry = (d) => {
   const lt = d.longTerm; const host = $('#entryPanel');
   if (!lt || !lt.regions) { $('#entry').hidden = true; return; }
   $('#entry').hidden = false;
+  if (d.recommendationsBlocked) {
+    host.innerHTML = '<div class="status-note info">데이터 검증 전으로 진입 판단을 제공하지 않습니다.</div>';
+    return;
+  }
   const rows = [];
   for (const reg of ['KR', 'US']) {
     const r = lt.regions[reg]; if (!r) continue;
@@ -303,12 +314,14 @@ const renderConcentration = (d) => {
 const renderPaper = (d) => {
   const host = $('#paperPanel');
   const pp = d.paperPerformance;
+  const vs = d.validationStatus || {};
   if (pp && pp.n) {
     $('#paperMeta').textContent = `누적 ${pp.n}건 · rank IC ${fmt(pp.rankIC)}`;
     host.innerHTML = `<div class="paper-metrics">${Object.entries(pp.byView || {}).map(([v, o]) => `<div class="pm"><span>${(VIEW[v] || [v])[0]}</span><b>${sp((o.meanFwd ?? 0) * 100)}</b><em>n=${o.n}</em></div>`).join('')}</div>`;
   } else {
-    $('#paperMeta').textContent = '추적 시작 — 검증 이력 누적 중';
-    host.innerHTML = `<div class="status-note info">아직 성과를 판정할 만큼 <b>paper 추적 이력이 없습니다</b>. 오늘 신호부터 변경 불가능한 ledger에 누적되며, 21/63/126/252영업일이 경과해야 수익률·rank IC를 계산합니다. 최소 <b>약 6개월(126영업일)</b> 이후에 의미 있는 판정이 가능합니다. 그 전까지 “LIVE VALIDATED”라고 표시하지 않습니다.</div>`;
+    $('#paperMeta').textContent = `검증 대기 · paper ${vs.paperDays ?? 0}일 · 성숙 신호 ${vs.maturedSignals ?? 0}개`;
+    const regionIc = Object.entries(vs.regionIC || {}).map(([region, x]) => `${region} IC ${x.mean ?? '—'} (날짜 ${x.nDates ?? 0}, 종목 ${x.nSignals ?? 0})`).join(' · ') || '지역별 IC 대기';
+    host.innerHTML = `<div class="status-note info"><b>검증 대기</b> — liveValidationEligible=${vs.liveValidationEligible === true ? 'true(수동 검토 필요)' : 'false'}<br>paperDays ${vs.paperDays ?? 0} · maturedSignals ${vs.maturedSignals ?? 0} · eligibleDates ${vs.eligibleDates ?? 0}<br>${regionIc}<br>비용 차감 초과수익 ${vs.costAdjustedExcessReturn ?? '—'} · MDD ${vs.MDD ?? '—'} · CVaR ${vs.CVaR ?? '—'}<br>미달 사유: ${(vs.reasons || ['paper history 누적 중']).join(' · ')}</div>`;
   }
 };
 

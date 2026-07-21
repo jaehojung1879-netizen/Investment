@@ -12,12 +12,14 @@ from __future__ import annotations
 import datetime as _dt
 import json
 import math
+import os
 import sys
 import time
 import traceback
 import warnings
 from datetime import datetime, timezone
 from numbers import Integral, Real
+from pathlib import Path
 
 from . import direction as direction_mod
 from . import entry as entry_mod
@@ -34,6 +36,7 @@ from . import regime as regime_mod
 from . import risk as risk_mod
 from . import rotation as rotation_mod
 from . import sentiment as sentiment_mod
+from . import state as state_mod
 from . import trade as trade_mod
 from . import quality as quality_mod
 from . import universe as universe_mod
@@ -126,23 +129,58 @@ def volume_surge(price) -> float | None:
     return round(float(recent / base), 2)
 
 
-def _load_prior() -> dict:
-    """Load the previous artifact (for prior regime + rank-buffer holdings)."""
+def _load_prior(path=None) -> tuple[dict, dict]:
+    """Load only the last validated/deployed production state.
+
+    ``data/site-data.json`` is never consulted because a committed preview may
+    be synthetic.  CI supplies ``PRIOR_STATE_PATH`` from signal-history.
+    """
+    return state_mod.load_prior_state(
+        path or os.environ.get("PRIOR_STATE_PATH"),
+        expected_schema_version=prov_mod.SCHEMA_VERSION,
+        expected_model_version=prov_mod.MODEL_VERSION,
+    )
+
+
+def _load_validation_status(path=None, min_paper_days: int = 126) -> dict:
+    fallback = {
+        "paperDays": 0, "maturedSignals": 0, "eligibleDates": 0,
+        "regionIC": {}, "costAdjustedExcessReturn": None, "MDD": None,
+        "CVaR": None, "liveValidationEligible": False, "liveValidated": False,
+        "reasons": [f"paper_history_below_{min_paper_days}_business_days"],
+    }
+    summary_path = path or os.environ.get("PAPER_SUMMARY_PATH")
+    if not summary_path:
+        return fallback
     try:
-        return json.loads(OUT.read_text(encoding="utf-8"))
+        summary = json.loads(Path(summary_path).read_text(encoding="utf-8"))
     except Exception:
-        return {}
+        fallback["reasons"].append("paper_summary_unavailable")
+        return fallback
+    status = dict(summary.get("validationStatus") or fallback)
+    status["liveValidated"] = False
+    if int(status.get("paperDays") or 0) < min_paper_days:
+        status["liveValidationEligible"] = False
+    return status
 
 
 def _attach_entry_states(long_term: dict | None, entry_feats: dict, cfg_lt: dict) -> dict | None:
     """Compute universe-relative overheat percentiles per region and attach an
-    entryState to every long-term row (picks + research table)."""
+    entryState to every unblocked long-term row. Blocked rows are sanitized."""
     if not long_term:
+        return long_term
+    if long_term.get("weightsWithheld"):
+        for blob in (long_term.get("regions") or {}).values():
+            for group in ("picks", "researchTable", "validationCrossSection"):
+                for row in (blob or {}).get(group, []):
+                    row.pop("entry", None)
+                    row.pop("entryState", None)
         return long_term
     import pandas as _pd
     sector_cap = float(cfg_lt.get("maxSectorWeight", 0.30)) * 100
     for region, blob in (long_term.get("regions") or {}).items():
-        rows = list(blob.get("picks", [])) + list(blob.get("researchTable", []))
+        rows = (list(blob.get("picks", [])) + list(blob.get("researchTable", []))
+                + list(blob.get("validationCrossSection", [])))
         tickers = {r["ticker"] for r in rows}
         scores = {t: entry_mod.overheat_score(entry_feats[t]) for t in tickers if t in entry_feats}
         scores = {t: v for t, v in scores.items() if v is not None}
@@ -198,7 +236,7 @@ def core_card(feat, fcols, ticker, cfg, diagnosis):
 def run(cfg) -> dict:
     universe, names = universe_mod.resolve(cfg)
     download = list(dict.fromkeys(
-        [t for names_ in universe.values() for t in names_] + cfg.core + [cfg.benchmark]
+        [t for names_ in universe.values() for t in names_] + cfg.core + list(cfg.benchmarks.values())
     ))
     print(f"core={cfg.core} | universe={ {k: len(v) for k, v in universe.items()} } | "
           f"download={len(download)} | FRED={cfg.has_fred}")
@@ -206,7 +244,7 @@ def run(cfg) -> dict:
     # Core + benchmark need full history (walk-forward back to 2020); the broad
     # screening universe only needs a few years, so fetch it on a shorter window
     # to keep downloads fast for a large list.
-    core_set = list(dict.fromkeys(cfg.core + [cfg.benchmark]))
+    core_set = list(dict.fromkeys(cfg.core + list(cfg.benchmarks.values())))
     universe_only = [t for t in download if t not in core_set]
     prices = fetch_prices(core_set, cfg.model.history_start)
     prices.update(fetch_prices(universe_only, cfg.model.screen_history_start))
@@ -224,7 +262,10 @@ def run(cfg) -> dict:
     except Exception as exc:
         print(f"  warning: index tape failed: {exc}")
         market_indices = []
-    benchmark_close = prices[cfg.benchmark]["Close"] if cfg.benchmark in prices else None
+    benchmark_closes = {
+        region: prices[ticker]["Close"]
+        for region, ticker in cfg.benchmarks.items() if ticker in prices
+    }
 
     th = cfg.trade_horizon
     target_horizons = sorted(set(cfg.horizons) | {th})
@@ -243,7 +284,9 @@ def run(cfg) -> dict:
         if ticker not in prices:
             continue
         try:
-            bench = benchmark_close if ticker != cfg.benchmark else None
+            region = cfg.region_of(ticker)
+            regional_benchmark = cfg.benchmarks.get(region)
+            bench = benchmark_closes.get(region) if ticker != regional_benchmark else None
             feat = F.build_features(prices[ticker], benchmark_close=bench, vix=vix, macro=macro)
             feat = F.add_targets(feat, target_horizons)
             fcols = F.feature_columns(feat)
@@ -253,7 +296,6 @@ def run(cfg) -> dict:
             latest_date = max(latest_date, clean.index[-1]) if latest_date else clean.index[-1]
             diagnosis = risk_mod.diagnose(ticker, feat)
             diags[ticker] = diagnosis
-            region = cfg.region_of(ticker)
             vsurge = volume_surge(prices[ticker])
             try:
                 entry_feats[ticker] = entry_mod.entry_features(feat, volume_surge=vsurge)
@@ -268,6 +310,7 @@ def run(cfg) -> dict:
                 "probUp": None,
                 "regime": diagnosis["regime"],
                 "lastClose": diagnosis["lastClose"],
+                "asOf": clean.index[-1].strftime("%Y-%m-%d"),
                 "ma50": diagnosis["ma50"], "ma200": diagnosis["ma200"],
                 "rsi14": diagnosis["rsi14"], "realizedVol": diagnosis["realizedVol"],
                 "maxDrawdown252d": diagnosis["maxDrawdown252d"],
@@ -310,10 +353,12 @@ def run(cfg) -> dict:
 
     # Prior regime + prior long-term holdings (for regime-change detection and
     # the rank buffer) come from the last artifact, if any.
-    prior = _load_prior()
-    prior_regime = ((prior.get("macroRegime") or {}) or {}).get("regime")
-    prior_holdings = {r: ((prior.get("longTerm") or {}).get("regions", {}).get(r, {}) or {}).get("holdings", [])
-                      for r in ("KR", "US")}
+    prior, prior_status = _load_prior()
+    prior_regime = prior.get("macroRegime")
+    prior_holdings = {
+        r: list((prior.get("holdingsByRegion") or {}).get(r, []))
+        for r in ("KR", "US")
+    }
 
     # Macro DIRECTION/REGIME engine (6 axes) — the risk-budget layer. Fixed
     # thresholds are gone; missing data lowers confidence, never fakes neutral.
@@ -328,7 +373,7 @@ def run(cfg) -> dict:
         print(f"  fundamentals: {len(fundamentals)}/{len(all_tickers)} tickers")
     except Exception as exc:
         print(f"  warning: fundamentals fetch failed: {exc}")
-    bench_by_region = {"US": benchmark_close, "KR": None}
+    bench_by_region = benchmark_closes
     # A pre-pass data-safety block so long-term weights/actions are withheld too.
     pre_block, _ = quality_mod.recommendations_blocked({
         "seed": False, "stale": False,
@@ -389,6 +434,7 @@ def run(cfg) -> dict:
         "portfolioName": cfg.portfolio_name,
         "primary": cfg.primary,
         "benchmark": cfg.benchmark,
+        "benchmarks": cfg.benchmarks,
         "horizons": cfg.horizons,
         "tradeHorizon": th,
         "names": names,
@@ -401,6 +447,9 @@ def run(cfg) -> dict:
         "expertConsensus": expert_consensus,
         "tradeIdeas": trade_mod.rank_ideas(ideas),
         "recommendationsBlocked": False,
+        "priorState": prior_status,
+        "validationStatus": _load_validation_status(
+            min_paper_days=int(cfg.validation.get("minPaperDays", 126))),
         "runMode": cfg.run_mode,
         "screened": screen_table,
         "details": details,
@@ -443,7 +492,6 @@ def run(cfg) -> dict:
                 bench_by_region=bench_by_region, prior_holdings=prior_holdings, blocked=True)
             payload["longTerm"] = _attach_entry_states(payload["longTerm"], entry_feats, cfg.longterm)
     payload["audit"] = audit
-    payload["audit"]["todaySignals"] = ledger_mod.records_from_payload(payload)
     return payload
 
 
@@ -456,6 +504,7 @@ def main() -> int:
     payload["seed"] = False
     payload["meta"]["elapsedSec"] = round(time.time() - t0, 1)
     prov_mod.stamp(payload, cfg.run_mode)
+    payload["audit"]["todaySignals"] = ledger_mod.records_from_payload(payload)
 
     OUT.parent.mkdir(parents=True, exist_ok=True)
     OUT.write_text(_dumps(payload) + "\n", encoding="utf-8")

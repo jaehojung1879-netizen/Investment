@@ -2,8 +2,8 @@
 
 Dev/preview only — every number here is illustrative. Because the data is
 synthetic, the artifact is stamped dataMode=synthetic and is
-recommendationsBlocked (modelsTrained=0), so the site shows the RESEARCH views,
-regime and entry states but WITHHOLDS sleeve weights and short-term ideas — the
+recommendationsBlocked (modelsTrained=0), so the site shows RESEARCH evidence
+but WITHHOLDS entry states, sleeve weights and short-term ideas — the
 honest blocked state. Real values come from `python -m pipeline.build` in CI
 (which needs FRED/Yahoo network access + FRED_API_KEY).
 
@@ -27,6 +27,7 @@ from pipeline import entry as entry_mod  # noqa: E402
 from pipeline import expert_consensus as expert_mod  # noqa: E402
 from pipeline import features as F  # noqa: E402
 from pipeline import longterm as longterm_mod  # noqa: E402
+from pipeline import ledger as LG  # noqa: E402
 from pipeline import macro as macro_mod  # noqa: E402
 from pipeline import model as M  # noqa: E402
 from pipeline import provenance as prov_mod  # noqa: E402
@@ -115,6 +116,7 @@ def main() -> int:
             fundamentals[tk] = synth_fundamentals(tk, 700 + i)
         details[tk] = {"volSurge": vsurge, "region": region, "modelScore": tsig["probUp"] if tsig else None,
                        "probUp": None, "regime": diag["regime"], "lastClose": diag["lastClose"],
+                       "asOf": feat.dropna(subset=fcols).index[-1].strftime("%Y-%m-%d"),
                        "ma50": diag["ma50"], "ma200": diag["ma200"], "rsi14": diag["rsi14"],
                        "realizedVol": diag["realizedVol"], "maxDrawdown252d": diag["maxDrawdown252d"],
                        "relMomentum": diag["relMomentum"], "pct52wHigh": diag["pct52wHigh"],
@@ -156,7 +158,7 @@ def main() -> int:
         flows[region] = sorted(cand, key=lambda x: x["volSurge"], reverse=True)[:6]
 
     # Long-term v2. Synthetic => blocked => weights withheld (honest).
-    bench_by_region = {"US": bench["Close"], "KR": None}
+    bench_by_region = {"US": bench["Close"], "KR": bench["Close"]}
     long_term = longterm_mod.build(resolved_universe, {tk: (bench if tk == cfg.benchmark else synth(10 + i, 0.0004 + i * 0.00005, n, dates))
                                                        for i, tk in enumerate(all_t)},
                                    fundamentals, diags, cfg_lt=cfg.longterm,
@@ -189,6 +191,7 @@ def main() -> int:
 
     payload = {
         "portfolioName": cfg.portfolio_name, "primary": cfg.primary, "benchmark": cfg.benchmark,
+        "benchmarks": cfg.benchmarks,
         "horizons": cfg.horizons, "tradeHorizon": th, "names": resolved_names,
         "seed": True, "stale": False, "runMode": cfg.run_mode,
         "recommendationsBlocked": True, "blockReasons": ["synthetic_data", "models_trained_zero"],
@@ -196,6 +199,13 @@ def main() -> int:
         "rotation": rotation, "longTerm": long_term, "macroRegime": macro_regime, "expertConsensus": expert,
         "tradeIdeas": {"KR": [], "US": []}, "screened": screen_table, "details": details, "flows": flows,
         "sentiment": sent, "core": core_cards, "macro": macro_summary,
+        "priorState": {"available": False, "reason": "synthetic_preview"},
+        "validationStatus": {
+            "paperDays": 0, "maturedSignals": 0, "eligibleDates": 0, "regionIC": {},
+            "costAdjustedExcessReturn": None, "MDD": None, "CVaR": None,
+            "liveValidationEligible": False, "liveValidated": False,
+            "reasons": ["synthetic_data_not_eligible"],
+        },
         "meta": {"modelsTrained": 0, "universeScreened": len(screened), "syntheticData": True,
                  "latestDataDate": dates[-1].strftime("%Y-%m-%d"), "sourceAsOf": dates[-1].strftime("%Y-%m-%d"),
                  "fredEnabled": True, "ecosEnabled": False, "macroCoverage": macro_regime.get("coverage"),
@@ -205,6 +215,7 @@ def main() -> int:
         "generatedAt": datetime.now(timezone.utc).isoformat(),
     }
     prov_mod.stamp(payload, cfg.run_mode)
+    payload["audit"] = {"todaySignals": LG.records_from_payload(payload)}
     out = ROOT / "data" / "site-data.json"
     out.write_text(B._dumps(payload) + "\n", encoding="utf-8")
     print(f"wrote {out}: {len(core_cards)} core, {len(screened)} screened, "

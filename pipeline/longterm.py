@@ -20,7 +20,7 @@ v2 fixes all of the above:
   * ETFs/benchmarks excluded from single-stock ranking (config.excludeFromRanking).
   * factor z-scores are SECTOR-NEUTRAL where a sector has enough names, so a
     bank's leverage isn't scored against an industrial's.
-  * an alpha score (factor composite, confidence-shrunk) is reported SEPARATELY
+  * an alpha score (factor composite, evidence-quality-shrunk) is reported SEPARATELY
     from risk metrics (downside vol / max drawdown / CVaR / beta) and from the
     entry state (pipeline.entry). Nothing is blended into one hidden number.
   * a real sleeve: 8–12 names, per-name cap, per-sector cap, and a cash floor,
@@ -249,7 +249,7 @@ def build_region(tickers: list[str], prices: dict, fundamentals: dict, diags: di
     factors["quality"] = _sleeve([snz("roe"), snz("opMargin"), snz("profitMargin"), snz("earningsGrowth"), lev_z])
     factors["lowvol"] = sector_neutral_z(-num["vol252"], sector)
 
-    # Coverage & confidence, computed per name.
+    # Evidence/data quality, computed per name. These are not prediction odds.
     value_inputs = ["earningsYield", "fwdEarningsYield", "bookYield", "fcfYield"]
     quality_inputs = ["roe", "opMargin", "profitMargin", "earningsGrowth", "debtToEquity"]
     fin_inputs = value_inputs + quality_inputs
@@ -264,11 +264,13 @@ def build_region(tickers: list[str], prices: dict, fundamentals: dict, diags: di
     avail = factors.notna().astype(float)
     weight_sum = avail.mul(w, axis=1).sum(axis=1)
     raw_alpha = factors.fillna(0).mul(w, axis=1).sum(axis=1) / weight_sum.replace(0, np.nan)
-    # Confidence in [0,1]: factor coverage, financial coverage, source quality.
+    # Evidence coverage in [0,1]: factor coverage, financial completeness and
+    # source quality. It shrinks weakly-supported alpha but is never rendered as
+    # a statistical or investment-prediction confidence.
     src_q = (avail.mul(pd.Series(SLEEVE_SOURCE_QUALITY), axis=1).sum(axis=1)
              / avail.sum(axis=1).replace(0, np.nan)).fillna(0.0)
-    confidence = (0.5 * factor_cov + 0.3 * financial_cov + 0.2 * src_q).clip(0, 1)
-    alpha = raw_alpha * confidence
+    evidence_coverage = (0.5 * factor_cov + 0.3 * financial_cov + 0.2 * src_q).clip(0, 1)
+    alpha = raw_alpha * evidence_coverage
 
     # Value-trap guard: cheap (high value z) but weak quality AND non-positive
     # free cash flow / shrinking earnings -> not a bargain, a trap.
@@ -282,7 +284,11 @@ def build_region(tickers: list[str], prices: dict, fundamentals: dict, diags: di
     out["sector"] = sector
     out["alpha"] = alpha
     out["rawAlpha"] = raw_alpha
-    out["confidence"] = confidence.round(3)
+    out["evidenceCoverage"] = factor_cov.round(3)
+    out["dataCompleteness"] = financial_cov.round(3)
+    out["sourceQuality"] = src_q.round(3)
+    # Internal compatibility columns used by eligibility logic below. They are
+    # not emitted as prediction-confidence fields in the artifact.
     out["factorCoverage"] = factor_cov.round(3)
     out["financialCoverage"] = financial_cov.round(3)
     out["sleevesPresent"] = sleeves_present
@@ -412,6 +418,9 @@ def sleeve_weights(picks: pd.DataFrame, cfg_lt: dict) -> tuple[pd.Series, float]
 def _row(table: pd.DataFrame, pct: pd.DataFrame, alpha_pct: pd.Series, region: str, t: str) -> dict:
     r = table.loc[t]
     ap = int(alpha_pct.loc[t]) if pd.notna(alpha_pct.loc[t]) else None
+    evidence = r.get("evidenceCoverage", r.get("factorCoverage", r.get("confidence", 0.0)))
+    completeness = r.get("dataCompleteness", r.get("financialCoverage", 0.0))
+    source_quality = r.get("sourceQuality", 0.0)
     return {
         "ticker": t,
         "region": region,
@@ -421,9 +430,10 @@ def _row(table: pd.DataFrame, pct: pd.DataFrame, alpha_pct: pd.Series, region: s
         "rawAlpha": round(float(r["rawAlpha"]), 3),
         "alphaPercentile": ap,
         "longTermResearchView": research_view(r, ap),
-        "confidence": round(float(r["confidence"]), 3),
-        "factorCoverage": round(float(r["factorCoverage"]), 3),
-        "financialCoverage": round(float(r["financialCoverage"]), 3),
+        "evidenceCoverage": round(float(evidence), 3),
+        "dataCompleteness": round(float(completeness), 3),
+        "sourceQuality": round(float(source_quality), 3),
+        "empiricalValidationStatus": "PENDING_PAPER_HISTORY",
         "sleevesPresent": int(r["sleevesPresent"]),
         "valueTrap": bool(r["valueTrap"]),
         "factorPercentiles": {
@@ -473,13 +483,15 @@ def build(universe: dict[str, list[str]], prices: dict, fundamentals: dict, diag
         else:
             cash_pct = None
 
-        # Research table (top eligible by alpha) — always available, no weights.
+        # UI research table is intentionally compact. The immutable ledger uses
+        # the separate full validation cross-section below.
         elig = table[~table["dataInsufficient"]].sort_values("alpha", ascending=False)
         table_rows = [_row(table, pct, alpha_pct, region, t) for t in elig.head(15).index]
+        validation_rows = [_row(table, pct, alpha_pct, region, t) for t in elig.index]
         insufficient = [
             {"ticker": t, "region": region, "sector": table.loc[t, "sector"],
              "sleevesPresent": int(table.loc[t, "sleevesPresent"]),
-             "financialCoverage": round(float(table.loc[t, "financialCoverage"]), 3)}
+             "dataCompleteness": round(float(table.loc[t, "financialCoverage"]), 3)}
             for t in table[table["dataInsufficient"]].index
         ]
 
@@ -495,6 +507,7 @@ def build(universe: dict[str, list[str]], prices: dict, fundamentals: dict, diag
             "cashPct": cash_pct,
             "sectorExposure": sector_exposure,
             "researchTable": table_rows,
+            "validationCrossSection": validation_rows,
             "dataInsufficient": insufficient,
             "universeRanked": int(len(table)),
             "holdings": chosen,

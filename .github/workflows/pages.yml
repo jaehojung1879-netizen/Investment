@@ -14,12 +14,12 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
 
 concurrency:
-  group: pages
+  group: signal-history-and-pages
   cancel-in-progress: false
 
 jobs:
@@ -46,6 +46,18 @@ jobs:
 
       - name: Run tests
         run: pytest -q
+
+      - name: Fetch prior production state and paper summary
+        run: |
+          mkdir -p .state
+          if git fetch origin signal-history; then
+            if git show origin/signal-history:state/latest.json > .state/latest.json; then
+              echo "PRIOR_STATE_PATH=$GITHUB_WORKSPACE/.state/latest.json" >> "$GITHUB_ENV"
+            fi
+            if git show origin/signal-history:ledger/summary.json > .state/summary.json; then
+              echo "PAPER_SUMMARY_PATH=$GITHUB_WORKSPACE/.state/summary.json" >> "$GITHUB_ENV"
+            fi
+          fi
 
       - name: Build insight data
         env:
@@ -85,3 +97,30 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+      # This is deliberately after production validation AND deployment. A bad
+      # build can never become the next rank-buffer/prior-regime state.
+      - name: Publish last successful state
+        run: |
+          python scripts/update_state.py data/site-data.json .state/latest.next.json
+          git config user.name "production-state-bot"
+          git config user.email "actions@github.com"
+          mkdir -p state-work
+          if git ls-remote --exit-code --heads origin signal-history; then
+            git fetch origin signal-history
+            git worktree add state-work origin/signal-history
+            git -C state-work checkout -B signal-history
+          else
+            git worktree add --detach state-work
+            git -C state-work checkout --orphan signal-history
+            git -C state-work rm -rf . || true
+          fi
+          mkdir -p state-work/state
+          cp .state/latest.next.json state-work/state/latest.json
+          git -C state-work add state/latest.json
+          if git -C state-work diff --cached --quiet; then
+            echo "production state unchanged"
+          else
+            git -C state-work commit -m "state: publish last successful production snapshot"
+            git -C state-work push origin signal-history
+          fi
