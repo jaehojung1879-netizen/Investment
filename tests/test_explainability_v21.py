@@ -8,6 +8,7 @@ import numpy as np
 import pandas as pd
 
 from pipeline import expert_consensus as EC
+from pipeline import indices as IDX
 from pipeline import regime as RG
 
 
@@ -47,6 +48,34 @@ def test_indicator_read_carries_human_readable_method_and_signal():
     assert read["valueUnit"] == "%"
     assert "물가 둔화 기여" in read["signalSummaryKo"]
     assert read["observationDate"] and read["releaseLagBdays"] == 12
+    assert len(read["history"]) >= 12
+    assert {"meaningKo", "readKo", "useKo", "cautionKo"} <= set(read["guide"])
+
+
+def test_cfnai_exposes_monthly_and_smoothed_trend_with_reference_lines():
+    idx = pd.date_range("2022-01-31", periods=40, freq="ME")
+    values = pd.Series(np.sin(np.arange(40) / 4), index=idx)
+
+    read = RG.indicator_read("CFNAI", values, asof=idx[-1] + pd.Timedelta(days=30))
+
+    assert read["history"] and read["trendHistory"]
+    assert read["trendLabelKo"] == "3개월 이동평균"
+    assert {x["value"] for x in read["referenceLines"]} == {0.0, -0.7}
+    assert "85개" in read["guide"]["meaningKo"]
+
+
+def test_index_summary_carries_dated_history_and_freshness():
+    idx = pd.bdate_range("2025-01-02", periods=300)
+    close = pd.Series(np.linspace(2500, 3100, len(idx)), index=idx)
+    spec = next(x for x in IDX.SPEC if x["symbol"] == "^KS11")
+    now = idx[-1].tz_localize("Asia/Seoul") + pd.Timedelta(hours=18)
+
+    row = IDX.summarize_close(spec, close, "TEST", now=now)
+
+    assert row["history"][-1] == {"date": idx[-1].strftime("%Y-%m-%d"), "value": 3100.0}
+    assert len(row["history"]) == IDX.HISTORY_POINTS
+    assert row["freshnessStatus"] == "CURRENT"
+    assert row["critical"] is True
 
 
 def test_expert_queue_explains_exactly_why_consensus_is_empty():
@@ -88,5 +117,9 @@ def test_frontend_surfaces_regime_rule_and_consensus_exclusion_details():
     assert "판정에 직접 사용" in app
     assert "검증된 컨센서스가 아직 없는 이유" in app
     assert "missingFields" in app
+    assert "showIndexDialog" in app
+    assert "이 지표는 무엇을 뜻하나?" in app
+    assert "성장 × 물가 국면 지도" in app
     assert ".ax-detail" in styles
     assert ".cv-empty" in styles
+    assert ".index-dialog" in styles

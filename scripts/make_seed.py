@@ -173,9 +173,10 @@ def main() -> int:
         base = idx_bases[j % len(idx_bases)]
         walk = np.cumsum(np.random.default_rng(100 + j).normal(0.0004, 0.01, len(idx_dates)))
         close = pd.Series(base * np.exp(walk), index=idx_dates)
-        row = indices_mod.summarize_close(spec, close, "SEED")
+        row = indices_mod.summarize_close(spec, close, "SEED", now=idx_dates[-1])
         if row:
             seed_indices.append(row)
+    market_data_health = indices_mod.health(seed_indices)
 
     from pipeline import direction as direction_mod
     from pipeline import rotation as rotation_mod
@@ -195,7 +196,8 @@ def main() -> int:
         "horizons": cfg.horizons, "tradeHorizon": th, "names": resolved_names,
         "seed": True, "stale": False, "runMode": cfg.run_mode,
         "recommendationsBlocked": True, "blockReasons": ["synthetic_data", "models_trained_zero"],
-        "dataSource": "SEED (예시) — 합성 데이터", "indices": seed_indices, "direction": direction,
+        "dataSource": "SEED (예시) — 합성 데이터", "indices": seed_indices,
+        "marketDataHealth": market_data_health, "direction": direction,
         "rotation": rotation, "longTerm": long_term, "macroRegime": macro_regime, "expertConsensus": expert,
         "tradeIdeas": {"KR": [], "US": []}, "screened": screen_table, "details": details, "flows": flows,
         "sentiment": sent, "core": core_cards, "macro": macro_summary,
@@ -211,7 +213,9 @@ def main() -> int:
                  "fredEnabled": True, "ecosEnabled": False, "macroCoverage": macro_regime.get("coverage"),
                  "elapsedSec": 0, "tickersRequested": len(all_t), "tickersFetched": len(all_t),
                  "coveragePct": 100.0, "coverageFloor": cfg.coverage_floor, "missingSample": [],
-                 "indicesFetched": len(seed_indices), "fundamentalsCovered": len(fundamentals)},
+                 "indicesFetched": len(seed_indices), "indicesCurrent": market_data_health["current"],
+                 "indicesDelayed": market_data_health["delayed"], "indicesStale": market_data_health["stale"],
+                 "fundamentalsCovered": len(fundamentals)},
         "generatedAt": datetime.now(timezone.utc).isoformat(),
     }
     prov_mod.stamp(payload, cfg.run_mode)

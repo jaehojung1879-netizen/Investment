@@ -262,6 +262,7 @@ def run(cfg) -> dict:
     except Exception as exc:
         print(f"  warning: index tape failed: {exc}")
         market_indices = []
+    market_data_health = indices_mod.health(market_indices)
     benchmark_closes = {
         region: prices[ticker]["Close"]
         for region, ticker in cfg.benchmarks.items() if ticker in prices
@@ -438,8 +439,9 @@ def run(cfg) -> dict:
         "horizons": cfg.horizons,
         "tradeHorizon": th,
         "names": names,
-        "dataSource": "Yahoo Finance (prices) + FRED (macro)" if cfg.has_fred else "Yahoo Finance (prices); FRED disabled",
+        "dataSource": "Yahoo Finance + FinanceDataReader/Stooq fallback (market) + FRED (macro)" if cfg.has_fred else "Yahoo Finance + FinanceDataReader/Stooq fallback (market); FRED disabled",
         "indices": market_indices,
+        "marketDataHealth": market_data_health,
         "direction": direction,
         "rotation": rotation,
         "longTerm": long_term,
@@ -471,6 +473,9 @@ def run(cfg) -> dict:
             "coverageFloor": cfg.coverage_floor,
             "missingSample": missing[:10],
             "indicesFetched": len(market_indices),
+            "indicesCurrent": market_data_health["current"],
+            "indicesDelayed": market_data_health["delayed"],
+            "indicesStale": market_data_health["stale"],
             "eligibleSignals": eligible_count,
             "fundamentalsCovered": len(fundamentals),
             "runMode": cfg.run_mode,

@@ -18,20 +18,17 @@
           <span id="dataStatus" class="muted"></span>
         </div>
         <nav class="nav">
-          <a href="#status">데이터·검증</a>
-          <a href="#regime">국면·위험예산</a>
-          <a href="#consensus">전문가 컨센서스</a>
-          <a href="#longterm">장기 리서치</a>
-          <a href="#entry">진입·위험</a>
-          <a href="#concentration">집중도</a>
-          <a href="#paper">Paper 성과</a>
-          <a href="#ideas">단기(참고)</a>
-          <a href="#rules">방법론</a>
+          <a href="#indices">시장</a>
+          <a href="#regime">매크로 국면</a>
+          <a href="#consensus">전문가 시각</a>
+          <a href="#longterm">종목 리서치</a>
+          <a href="#direction">분석 도구</a>
         </nav>
         <div class="freshness muted">
           <span id="dataMeta"></span>
           <span id="dataGenerated"></span>
         </div>
+        <button id="refreshData" class="refresh-btn" type="button">최신 데이터 확인</button>
       </div>
     </header>
     <div id="staleBanner" class="stale" hidden></div>
@@ -39,7 +36,7 @@
     <main class="wrap">
       <!-- 1. 데이터 상태 및 모델 검증 상태 -->
       <section id="status" class="section">
-        <div class="sec-title"><span class="overline">데이터 상태 · 모델 검증 상태 <span class="ico qh" data-x="status">ⓘ</span></span></div>
+        <div class="sec-title"><span class="overline">데이터 상태 · 모델 검증 <span class="ico qh" data-x="status">ⓘ</span></span><span class="muted">자동 갱신 KST 08:20 · 17:15 / 열린 화면 15분마다 확인</span></div>
         <div id="statusPanel" class="status-grid"></div>
       </section>
 
@@ -84,14 +81,14 @@
       </section>
 
       <!-- 7. 실시간 paper 성과 -->
-      <section id="paper" class="section">
-        <div class="sec-title"><span class="overline">Paper 성과 — signal ledger <span class="ico qh" data-x="paper">ⓘ</span></span><span id="paperMeta" class="muted"></span></div>
+      <details id="paper" class="section secondary">
+        <summary class="secondary-summary"><div class="sec-title"><span class="overline">Paper 성과 — signal ledger <span class="ico qh" data-x="paper">ⓘ</span></span><span id="paperMeta" class="muted"></span></div><span class="secondary-open">펼쳐보기</span></summary>
         <div id="paperPanel" class="paper-wrap"></div>
-      </section>
+      </details>
 
       <!-- 8. 단기 ML 참고자료 -->
-      <section id="ideas" class="section">
-        <div class="sec-title"><span class="overline">단기 ML 참고자료 — 10일 · 참고용 <span class="ico qh" data-x="trade">ⓘ</span></span><span id="tradeMeta" class="muted"></span></div>
+      <details id="ideas" class="section secondary">
+        <summary class="secondary-summary"><div class="sec-title"><span class="overline">단기 ML 참고자료 — 10일 · 참고용 <span class="ico qh" data-x="trade">ⓘ</span></span><span id="tradeMeta" class="muted"></span></div><span class="secondary-open">펼쳐보기</span></summary>
         <div class="cols2">
           <div><div class="col-h">국내 (KR)</div><div id="tradeKR" class="idea-list"></div></div>
           <div><div class="col-h">국외 (US)</div><div id="tradeUS" class="idea-list"></div></div>
@@ -103,11 +100,11 @@
           <div id="screenTable" class="screen-table"></div>
           <div id="screenEmpty" class="none" hidden>검색 결과 없음</div>
         </details>
-      </section>
+      </details>
 
       <!-- 보조: 나침반 / 로테이션 / 자금흐름 / 시장 상세 -->
-      <section id="direction" class="dir-sec" hidden>
-        <div class="sec-title"><span class="overline">모델 위험예산 나침반 — 참고 <span class="ico qh" data-x="direction">ⓘ</span></span><span id="dirMeta" class="muted"></span></div>
+      <details id="direction" class="dir-sec secondary" hidden>
+        <summary class="secondary-summary"><div class="sec-title"><span class="overline">모델 위험예산 나침반 — 참고 <span class="ico qh" data-x="direction">ⓘ</span></span><span id="dirMeta" class="muted"></span></div><span class="secondary-open">펼쳐보기</span></summary>
         <div class="dir-grid">
           <aside class="dir-verdict" id="dirVerdict"></aside>
           <div class="dir-right">
@@ -115,10 +112,10 @@
             <div class="dm-box"><div class="dm-h">글로벌 자산 듀얼 모멘텀 변형 <span class="ico qh" data-x="dualmom">ⓘ</span></div><div id="dualMomTable" class="dm-table"></div></div>
           </div>
         </div>
-      </section>
+      </details>
 
-      <section id="rotation" class="section" hidden>
-        <div class="sec-title"><span class="overline">섹터 · 팩터 로테이션 <span class="ico qh" data-x="rotation">ⓘ</span></span><span id="rotMeta" class="muted"></span></div>
+      <details id="rotation" class="section secondary" hidden>
+        <summary class="secondary-summary"><div class="sec-title"><span class="overline">섹터 · 팩터 로테이션 <span class="ico qh" data-x="rotation">ⓘ</span></span><span id="rotMeta" class="muted"></span></div><span class="secondary-open">펼쳐보기</span></summary>
         <div class="cols2">
           <div><div class="col-h">미국 섹터 (vs S&amp;P 500)</div><div id="rrgUS" class="rrg-wrap"></div></div>
           <div><div class="col-h">한국 섹터 (vs KODEX 200)</div><div id="rrgKR" class="rrg-wrap"></div></div>
@@ -127,35 +124,39 @@
           <div class="panel-h">스타일 · 팩터 모멘텀 <span class="ico qh" data-x="factor">ⓘ</span></div>
           <div id="factorBars" class="factor-list"></div>
         </div>
-      </section>
+      </details>
 
-      <section id="flows" class="section">
-        <div class="sec-title"><span class="overline">자금 흐름 — 유동성 쏠림 <span class="ico qh" data-x="flows">ⓘ</span></span><span class="muted">거래량 급증 + 상승 종목 (자체 프록시)</span></div>
+      <details id="flows" class="section secondary">
+        <summary class="secondary-summary"><div class="sec-title"><span class="overline">자금 흐름 — 유동성 쏠림 <span class="ico qh" data-x="flows">ⓘ</span></span><span class="muted">거래량 급증 + 상승 종목 (자체 프록시)</span></div><span class="secondary-open">펼쳐보기</span></summary>
         <div class="cols2">
           <div><div class="col-h">국내 (KR)</div><div id="flowsKR" class="flow-list"></div></div>
           <div><div class="col-h">국외 (US)</div><div id="flowsUS" class="flow-list"></div></div>
         </div>
-      </section>
+      </details>
 
-      <section id="market" class="section">
-        <div class="sec-title"><span class="overline">시장 상세 — 원지표 &amp; 심리</span><span class="muted">국외(US) · 국내(KR)</span></div>
+      <details id="market" class="section secondary">
+        <summary class="secondary-summary"><div class="sec-title"><span class="overline">시장 상세 — 원지표 &amp; 심리</span><span class="muted">국외(US) · 국내(KR)</span></div><span class="secondary-open">펼쳐보기</span></summary>
         <div class="market-grid">
           <div class="panel"><div class="panel-h">매크로 원지표 <span class="ico qh" data-x="macro">ⓘ</span></div><div id="macroPanel" class="cols2"></div></div>
           <div class="panel"><div class="panel-h">공포·탐욕 (정량 심리) <span class="ico qh" data-x="sentiment">ⓘ</span></div><div id="sentimentPanel" class="cols2"></div></div>
         </div>
-      </section>
+      </details>
 
       <!-- 9. 상세 방법론과 출처 -->
-      <section id="rules" class="section">
-        <div class="sec-title"><span class="overline">방법론 · 출처 · 체크리스트</span></div>
+      <details id="rules" class="section secondary">
+        <summary class="secondary-summary"><div class="sec-title"><span class="overline">방법론 · 출처 · 체크리스트</span></div><span class="secondary-open">펼쳐보기</span></summary>
         <article id="rulesDoc" class="md"></article>
-      </section>
+      </details>
 
       <footer class="foot muted">
         개인 리서치·교육 목적의 정량 도구이며 투자 조언이 아닙니다. 과거 성과는 미래를 보장하지 않습니다. 데이터 모드·검증 상태·출처를 항상 함께 확인하세요.
       </footer>
     </main>
 
+    <dialog id="indexDialog" class="index-dialog" aria-label="시장 지표 상세">
+      <button id="indexDialogClose" class="dialog-close" type="button" aria-label="닫기">×</button>
+      <div id="indexDialogBody"></div>
+    </dialog>
     <div id="pop" class="pop" hidden></div>
     <script src="app.js"></script>
   </body>

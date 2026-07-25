@@ -26,6 +26,46 @@ const REGIME_KO = {
   Goldilocks: '골디락스', Reflation: '리플레이션', Stagflation: '스태그플레이션',
   'Deflation/Slowdown': '디플레·둔화', 'Transition/Low confidence': '전환·저신뢰',
 };
+const REGIME_GUIDE = {
+  Goldilocks: {
+    one: '성장은 빨라지고 물가는 둔화되는, 위험자산에 가장 우호적인 조합입니다.',
+    watch: '기업이익과 고용의 개선이 이어지는지, 물가 둔화가 멈추지 않는지 확인합니다.',
+    risk: '좋은 뉴스가 이미 가격에 많이 반영됐거나 물가가 다시 뛰면 빠르게 리플레이션으로 이동할 수 있습니다.',
+  },
+  Reflation: {
+    one: '경기 회복·성장 가속과 물가 상승 압력이 동시에 나타나는 국면입니다.',
+    watch: '실물·가치·에너지 업종이 상대적으로 유리할 수 있지만 장기금리와 원가 부담을 함께 봐야 합니다.',
+    risk: '물가만 오르고 성장이 꺾이면 스태그플레이션으로 악화될 수 있습니다.',
+  },
+  Stagflation: {
+    one: '성장은 둔화하는데 물가 압력은 커지는, 주식과 채권 모두 까다로운 국면입니다.',
+    watch: '퀄리티·저변동·현금흐름과 실물자산 방어력을 우선 확인합니다.',
+    risk: '에너지 충격, 임금·서비스 물가, 신용 스프레드 확대가 핵심 위험입니다.',
+  },
+  'Deflation/Slowdown': {
+    one: '성장과 물가가 함께 둔화하는 국면으로 경기민감 자산의 이익 기대가 약해질 수 있습니다.',
+    watch: '장기채·퀄리티 방어가 상대적으로 유리할 수 있지만 신용 악화를 확인해야 합니다.',
+    risk: '침체가 깊어질 경우 실적 하향과 디폴트 위험이 커집니다.',
+  },
+  'Transition/Low confidence': {
+    one: '성장·물가 신호가 엇갈리거나 데이터 신뢰가 낮아 국면을 단정하지 않는 상태입니다.',
+    watch: '한 번의 숫자보다 다음 2~3회 발표에서 같은 방향이 이어지는지 확인합니다.',
+    risk: '확신이 낮은 구간에서 과도한 자산배분 변경을 피합니다.',
+  },
+};
+const INDEX_GUIDE = {
+  '^KS11': '한국 유가증권시장 대표 지수입니다. 대형 수출주와 반도체 비중이 커 원/달러, 글로벌 제조업, 메모리 업황의 영향을 크게 받습니다.',
+  '^KQ11': '한국 성장주·중소형주 비중이 큰 시장 지수입니다. 금리와 유동성, 바이오·2차전지·IT 투자심리에 민감합니다.',
+  '^GSPC': '미국 대형주 500개를 담은 대표 지수입니다. 미국 기업이익과 글로벌 위험선호의 핵심 기준입니다.',
+  '^IXIC': '기술·성장주 비중이 높은 나스닥 종합지수입니다. 장기금리와 AI·반도체 이익 기대에 민감합니다.',
+  '^DJI': '미국 우량 대형주 30개로 구성된 가격가중 지수입니다. 전통 산업과 경기민감주의 흐름을 함께 봅니다.',
+  '^SOX': '미국 상장 주요 반도체 기업 지수입니다. AI 투자, 메모리·파운드리 업황, 공급망 사이클을 빠르게 반영합니다.',
+  '^VIX': 'S&P 500 옵션이 반영하는 향후 약 30일 기대 변동성입니다. 높을수록 시장 불안이 크지만 방향 예측값은 아닙니다.',
+  'KRW=X': '1달러를 사는 데 필요한 원화입니다. 상승은 원화 약세, 하락은 원화 강세를 뜻합니다.',
+  'DX-Y.NYB': '주요 통화 대비 미국 달러의 강도를 나타냅니다. 강달러는 글로벌 유동성과 신흥시장에 부담이 될 수 있습니다.',
+  'BTC-USD': '비트코인의 미국 달러 가격입니다. 24시간 거래돼 주식시장 휴장 중 위험선호 변화도 반영합니다.',
+  'GC=F': '국제 금 선물 가격입니다. 실질금리, 달러, 안전자산 수요의 영향을 받습니다.',
+};
 const viewBadge = (v) => { const [ko, c] = VIEW[v] || [v, 'trans']; return `<span class="vbadge v-${c}">${ko}</span>`; };
 const entryBadge = (e) => { const [ko, c] = ENTRY[e] || [e, 'trans']; return `<span class="ebadge e-${c}">${ko}</span>`; };
 const topPct = (p) => p != null ? `상위 ${Math.max(1, Math.round(100 - p))}%` : '—';
@@ -38,7 +78,7 @@ const regBadgeCls = (s) => s == null ? 'trans' : s < 45 ? 'bear' : s < 55 ? 'tra
 const EXPL = {
   status: ['데이터 상태 · 검증 상태', '<b>runMode</b>(researchOnly·paperTrading·liveValidated)는 사용 방식, <b>dataMode</b>(live·seed·stale·synthetic)는 숫자의 실체를 나타냅니다. liveValidated는 config만으로 부여되지 않고 paper ledger 검증을 거쳐야 합니다. 빌드 커밋 SHA와 marketAsOf/sourceAsOf로 어느 코드가 언제 데이터로 만든 결과인지 추적합니다. 차단(blocked) 상태면 단기·장기 액션과 비중이 모두 숨겨집니다.'],
   regime: ['매크로 국면 · 위험예산', '<b>6축(성장·물가·유동성·금융여건·위험선호·이익/신용)</b>은 진단에 표시하며, 국면 라벨은 성장×물가로 판정하고 금융여건·위험선호로 위험예산만 보정합니다. 지표별 변환과 고정 발표시차를 적용하지만 실제 발표 달력·ALFRED vintage는 사용하지 않습니다. 매크로는 개별 종목 알파에 더하지 않습니다.'],
-  consensus: ['전문가 컨센서스', '검증된(verified) 기관 house view만 집계합니다. 단순 평균이 아니라 <b>weighted median + 의견 분산</b>을 계산하고, 기관·연구팀별 최대 한 표로 제한합니다. 기업 IR은 독립 의견으로 취급하지 않습니다(가중치 하향). 원문 검증 전에는 내용을 만들지 않고 “검증 대기”로만 둡니다. 각 합의에는 <b>반대 논거</b>를 함께 표시합니다.'],
+  consensus: ['전문가 컨센서스', '공식 원문을 사람이 확인한 기관 전망은 <b>검증 완료</b>로 요약·집계하고, 새로 발견됐지만 아직 검토하지 않은 자료도 숨기지 않고 <b>모니터링 중</b>으로 분리해 보여줍니다. 집계는 weighted median과 의견 분산을 사용하며, 기관·연구팀별 최대 한 표만 반영합니다.'],
   longterm: ['지역별 장기 리서치', 'KR·US를 <b>지역별로 독립 z-score</b> 산출하고(서로 직접 비교하지 않음), 팩터(모멘텀·밸류·퀄리티·저변동)는 <b>섹터 내 중립화</b>합니다. 알파 점수는 <b>신뢰도(팩터·재무 커버리지·소스 품질)로 페널티</b>를 받고, 위험지표·진입상태와 <b>분리 표기</b>됩니다. 3개 슬리브·최소 재무 커버리지 미달은 <b>DATA_INSUFFICIENT</b>로 분류돼 후보에서 제외됩니다.'],
   entry: ['진입상태', '‘좋은 종목’(장기 리서치 관점)과 ‘지금 살 종목’(진입상태)은 다릅니다. 추세(20·50·200일)·200일선 이격·<b>유니버스 내 과열 백분위</b>·변동성 급등·갭·실적 이벤트·섹터 집중도를 반영해 <b>분할매수/관찰/되돌림대기/이벤트위험/회피</b>로 구분합니다. 장기 팩터가 우수해도 과열·이벤트·급변동이면 되돌림 대기 또는 이벤트 위험이 됩니다.'],
   concentration: ['모델 슬리브 집중도', '<b>modelSleeveWeight</b>는 완전 투자된 <b>가상 모델 슬리브</b> 내 비중이며, 개인 포트폴리오 추천 비중이 아닙니다. 8~12종목, 단일종목 상한, 업종 상한, 현금 하한을 지킵니다. 과거의 5종목×20%(사실상 등가중) 구조를 제거했습니다.'],
@@ -51,7 +91,7 @@ const EXPL = {
   rotation: ['섹터 로테이션 (RRG)', 'Relative Rotation Graph 근사치. 상대강도 비율·모멘텀으로 섹터 순환을 봅니다.'],
   factor: ['팩터 · 스타일 모멘텀', '모멘텀·가치·퀄리티·저변동·소형주 ETF의 S&P500 대비 초과수익입니다.'],
   flows: ['자금 흐름 (자체 프록시)', '거래량 급증 + 상승 종목. 기관/외국인 실제 수급이 아니라 자체 데이터로 만든 프록시입니다.'],
-  indices: ['글로벌 마켓', '주요 지수·환율·원자재를 매 빌드마다 수집합니다. 소스 실패 시 대체 소스로 자동 전환합니다.'],
+  indices: ['글로벌 마켓', '하루 두 번 자동 빌드하고 열린 화면도 15분마다 새 배포 데이터를 확인합니다. 코스피·코스닥은 Yahoo와 FinanceDataReader를 교차 확인하며, 가능한 글로벌 지표는 Stooq를 보조 수집원으로 사용합니다. 각 카드의 날짜·최신 상태를 확인하고 클릭하면 1년 추이와 세부 설명을 볼 수 있습니다.'],
   prob: ['모델 점수 (보정 확률)', '가격·추세·변동성·매크로 피처를 LightGBM+로지스틱 앙상블에 넣어 보정한 확률입니다. [5%,95%]로 클리핑돼 100%/0%는 불가능합니다.'],
 };
 const pop = $('#pop');
@@ -89,6 +129,10 @@ const showTickerPop = (ticker, target) => {
 };
 
 document.addEventListener('click', (e) => {
+  const ixRange = e.target.closest('[data-index-range]');
+  if (ixRange) { e.preventDefault(); setIndexRange(ixRange.dataset.indexRange); return; }
+  const ix = e.target.closest('[data-index-symbol]');
+  if (ix) { e.preventDefault(); showIndexDialog(ix.dataset.indexSymbol); return; }
   const tk = e.target.closest('[data-tk]');
   if (tk) { e.preventDefault(); e.stopPropagation(); if (popKey === 'tk:' + tk.dataset.tk && !pop.hidden) return hidePop(); showTickerPop(tk.dataset.tk, tk); return; }
   const t = e.target.closest('[data-x]');
@@ -125,24 +169,30 @@ const loadRules = async () => {
 const chip = (label, value, cls = '') => `<div class="schip ${cls}"><span>${label}</span><b>${value}</b></div>`;
 const renderStatus = (d) => {
   const p = d.provenance || {}; const m = d.meta || {};
+  const mh = d.marketDataHealth || {};
   const dataMode = d.dataMode || p.dataMode || 'unknown';
   const runMode = d.runMode || p.runMode || 'paperTrading';
   const dmCls = dataMode === 'live' ? 'ok' : 'warn';
   const blocked = d.recommendationsBlocked;
   const chips = [
+    chip('데이터 모드', dataMode, dmCls),
+    chip('시장 기준일', p.marketAsOf || m.latestDataDate || '—'),
+    chip('시장 지표', `${mh.current ?? m.indicesCurrent ?? '—'}/${mh.fetched ?? m.indicesFetched ?? '—'} 최신`, mh.status === 'CURRENT' ? 'ok' : 'warn'),
+    chip('커버리지', (m.coveragePct != null ? m.coveragePct + '%' : '—') + (m.coverageFloor ? ` / ≥${m.coverageFloor}%` : ''), (m.coveragePct >= (m.coverageFloor || 95)) ? 'ok' : 'warn'),
+    chip('매크로 커버리지', m.macroCoverage != null ? Math.round(m.macroCoverage * 100) + '%' : '—', (m.macroCoverage >= 0.5) ? 'ok' : 'warn'),
+    chip('추천 상태', blocked ? '차단(액션·비중 숨김)' : '표시', blocked ? 'bad' : 'ok'),
+  ];
+  const technical = [
     chip('runMode', runMode, runMode === 'liveValidated' ? 'ok' : 'info'),
-    chip('dataMode', dataMode, dmCls),
     chip('빌드 SHA', p.buildCommitSha || '—', 'info'),
     chip('스키마', p.schemaVersion || d.schemaVersion || '—', 'info'),
     chip('모델', p.modelVersion || d.modelVersion || '—', 'info'),
-    chip('marketAsOf', p.marketAsOf || m.latestDataDate || '—'),
     chip('sourceAsOf', p.sourceAsOf || m.sourceAsOf || '—'),
-    chip('커버리지', (m.coveragePct != null ? m.coveragePct + '%' : '—') + (m.coverageFloor ? ` / ≥${m.coverageFloor}%` : ''), (m.coveragePct >= (m.coverageFloor || 95)) ? 'ok' : 'warn'),
-    chip('매크로 커버리지', m.macroCoverage != null ? Math.round(m.macroCoverage * 100) + '%' : '—', (m.macroCoverage >= 0.5) ? 'ok' : 'warn'),
     chip('모델 학습', (m.modelsTrained || 0) + '회', (m.modelsTrained > 0) ? 'ok' : 'warn'),
-    chip('추천 상태', blocked ? '차단(액션·비중 숨김)' : '표시', blocked ? 'bad' : 'ok'),
-  ];
+  ].join('');
   $('#statusPanel').innerHTML = chips.join('') +
+    `<details class="status-tech"><summary>감사·모델 세부정보</summary><div>${technical}</div></details>` +
+    (mh.status && mh.status !== 'CURRENT' ? `<div class="status-note warn">시장 데이터 일부가 늦습니다. 지수별 카드의 관측일과 수집원을 확인하세요.${(mh.staleCritical || []).length ? ` 오래된 핵심 지수: ${mh.staleCritical.join(', ')}` : ''}</div>` : '') +
     (blocked ? `<div class="status-note bad">⚠️ ${(d.blockReasons || []).join(' · ') || '데이터 안전 차단'} — 이 데이터로 매매하지 마세요.</div>` : '') +
     (dataMode !== 'live' ? `<div class="status-note warn">데이터 모드 <b>${dataMode}</b>: 예시/합성/오래된 데이터입니다. 실데이터 빌드는 Yahoo/FRED 네트워크 + FRED_API_KEY가 필요합니다.</div>` : '');
 };
@@ -155,6 +205,47 @@ const macroNumber = (v, unit = '') => {
   const digits = Math.abs(v) >= 100 ? 0 : 2;
   return `${Number(v).toLocaleString('ko-KR', { maximumFractionDigits: digits })}${unit ? ' ' + unit : ''}`;
 };
+const trendSvg = (series, references = [], opts = {}) => {
+  const width = opts.width || 560, height = opts.height || 150;
+  const pad = { l: 42, r: 14, t: 12, b: 25 };
+  const clean = (series || []).map((s) => ({
+    ...s,
+    points: (s.points || []).filter((p) => p && Number.isFinite(Number(p.value)) && p.date),
+  })).filter((s) => s.points.length);
+  if (!clean.length) return '<div class="chart-none">추이 데이터가 아직 없습니다.</div>';
+  const allPoints = clean.flatMap((s) => s.points);
+  const times = allPoints.map((p) => new Date(`${p.date}T00:00:00Z`).getTime());
+  const values = allPoints.map((p) => Number(p.value)).concat((references || []).map((r) => Number(r.value)).filter(Number.isFinite));
+  const minT = Math.min(...times), maxT = Math.max(...times), timeSpan = maxT - minT || 1;
+  let minV = Math.min(...values), maxV = Math.max(...values);
+  const valueSpan = maxV - minV || Math.max(Math.abs(maxV), 1);
+  minV -= valueSpan * 0.12; maxV += valueSpan * 0.12;
+  const x = (date) => pad.l + ((new Date(`${date}T00:00:00Z`).getTime() - minT) / timeSpan) * (width - pad.l - pad.r);
+  const y = (value) => pad.t + ((maxV - Number(value)) / (maxV - minV || 1)) * (height - pad.t - pad.b);
+  const grid = [0, 0.5, 1].map((f) => {
+    const yy = pad.t + f * (height - pad.t - pad.b);
+    const val = maxV - f * (maxV - minV);
+    return `<line x1="${pad.l}" y1="${yy.toFixed(1)}" x2="${width - pad.r}" y2="${yy.toFixed(1)}" class="chart-grid"/><text x="${pad.l - 6}" y="${(yy + 3).toFixed(1)}" text-anchor="end" class="chart-axis">${macroNumber(val)}</text>`;
+  }).join('');
+  const refLines = (references || []).map((r) => {
+    const yy = y(r.value);
+    return `<line x1="${pad.l}" y1="${yy.toFixed(1)}" x2="${width - pad.r}" y2="${yy.toFixed(1)}" class="chart-ref"><title>${r.labelKo || r.value}</title></line>`;
+  }).join('');
+  const lines = clean.map((s, idx) => {
+    const points = s.points.map((p) => `${x(p.date).toFixed(1)},${y(p.value).toFixed(1)}`).join(' ');
+    return `<polyline points="${points}" class="chart-line chart-line-${idx}" vector-effect="non-scaling-stroke"><title>${s.label || ''}</title></polyline>`;
+  }).join('');
+  const first = allPoints.reduce((a, b) => a.date < b.date ? a : b);
+  const last = allPoints.reduce((a, b) => a.date > b.date ? a : b);
+  const dateLabel = (v) => v ? v.slice(2, 7).replace('-', '.') : '';
+  return `<svg class="trend-chart" viewBox="0 0 ${width} ${height}" role="img" aria-label="${opts.aria || '기간별 추이 차트'}">${grid}${refLines}${lines}<text x="${pad.l}" y="${height - 5}" class="chart-axis">${dateLabel(first.date)}</text><text x="${width - pad.r}" y="${height - 5}" text-anchor="end" class="chart-axis">${dateLabel(last.date)}</text></svg>`;
+};
+const indicatorTrend = (i) => {
+  const lines = [{ label: i.historyLabelKo || i.displayNameKo, points: i.history || [] }];
+  if (i.trendHistory && i.trendHistory.length) lines.push({ label: i.trendLabelKo || '추세', points: i.trendHistory });
+  const legend = lines.filter((x) => x.points.length).map((x, idx) => `<span><i class="chart-key chart-key-${idx}"></i>${x.label}</span>`).join('');
+  return `<div class="indicator-chart">${trendSvg(lines, i.referenceLines || [], { width: 520, height: 132, aria: `${i.displayNameKo || i.name} 추이` })}<div class="chart-legend">${legend}</div></div>`;
+};
 const indicatorCard = (i, axis) => {
   const contribution = i.axisContribution ?? 0;
   const cls = contribution > 0 ? 'bull' : contribution < 0 ? 'bear' : 'trans';
@@ -166,12 +257,17 @@ const indicatorCard = (i, axis) => {
     <div class="ax-signal-top"><div><b>${i.displayNameKo || i.name}</b><small>${i.name}</small></div><span class="reg ${cls}">${axis.ko} ${i.axisContributionKo || (contribution > 0 ? '긍정' : contribution < 0 ? '부정' : '중립')}</span></div>
     <p class="ax-method">${i.transformationKo || i.transformation || '최근 변화'}</p>
     <p class="ax-reading">${i.signalSummaryKo || '세부 판정 설명은 다음 빌드에서 제공됩니다.'}</p>
+    ${indicatorTrend(i)}
     <dl class="ax-numbers">
       <div><dt>변환값</dt><dd>${macroNumber(transformed, i.valueUnit)}</dd></div>
       <div><dt>최근 변화</dt><dd>${macroNumber(change, i.changeUnit)}</dd></div>
       ${i.annualized3m != null ? `<div><dt>3개월 연율</dt><dd>${macroNumber(i.annualized3m, '%')}</dd></div>` : ''}
       <div><dt>장기 z</dt><dd>${macroNumber(i.zscore)}</dd></div>
     </dl>
+    <details class="indicator-guide">
+      <summary>이 지표는 무엇을 뜻하나?</summary>
+      <div><p><b>정의</b>${i.guide?.meaningKo || '여러 국면 근거 중 하나로 사용하는 경제 지표입니다.'}</p><p><b>읽는 법</b>${i.guide?.readKo || i.transformationKo || ''}</p><p><b>투자에서</b>${i.guide?.useKo || `${axis.ko} 축의 보조 근거로 봅니다.`}</p><p><b>주의</b>${i.guide?.cautionKo || '단일 지표만으로 시장 방향을 단정하지 않습니다.'}</p></div>
+    </details>
     <div class="ax-source"><span>관측 ${i.observationDate || '—'} · 발표시차 ${i.releaseLagBdays ?? '—'}영업일 · 경과 ${i.freshnessDays ?? '—'}일 ${stale}</span>${i.source ? `<a href="${i.source}" target="_blank" rel="noopener">원자료</a>` : ''}</div>
   </article>`;
 };
@@ -206,6 +302,15 @@ const regimeDecisionCard = (r) => {
     <small>${d.matrixKo || '성장×물가 조합으로 네 국면을 판정하며, 한 축이 중립이면 전환으로 보류합니다.'}</small>
   </div>`;
 };
+const regimeGuideCard = (r) => {
+  const key = r.regime || 'Transition/Low confidence';
+  const g = REGIME_GUIDE[key] || REGIME_GUIDE['Transition/Low confidence'];
+  const cell = (regime, growth, inflation) => `<div class="cycle-cell ${key === regime ? 'active' : ''}"><span>${growth} 성장 · ${inflation} 물가</span><b>${REGIME_KO[regime] || regime}</b></div>`;
+  return `<div class="regime-guide">
+    <div class="rg-copy"><span>지금 국면을 한 문장으로</span><h3>${g.one}</h3><p><b>볼 것</b>${g.watch}</p><p><b>핵심 위험</b>${g.risk}</p></div>
+    <div class="cycle-wrap"><div class="cycle-caption">성장 × 물가 국면 지도</div><div class="cycle-grid">${cell('Goldilocks', '가속', '둔화')}${cell('Reflation', '가속', '가속')}${cell('Deflation/Slowdown', '둔화', '둔화')}${cell('Stagflation', '둔화', '가속')}</div><small>강조된 칸이 현재 판정입니다. 신호가 엇갈리면 전환·저신뢰로 보류합니다.</small></div>
+  </div>`;
+};
 const renderRegime = (r) => {
   const host = $('#regimePanel'); const sec = $('#regime');
   if (!r) { sec.hidden = true; return; }
@@ -223,25 +328,32 @@ const renderRegime = (r) => {
       ${r.note ? `<div class="status-note warn">${r.note}</div>` : ''}
       ${r.pointInTimeLimitations ? `<div class="status-note info">한계: ${r.pointInTimeLimitations}</div>` : ''}
     </div>
+    ${regimeGuideCard(r)}
     ${regimeDecisionCard(r)}
     <div class="regime-axes">${axesHtml}</div>
-    <div class="regime-budget">
-      <div class="rb-h">위험예산 (매크로 레이어 — 개별 알파에 가산하지 않음)</div>
-      <div class="rb-row"><span>주식 노출</span><b>${(rb.equityRangePct || []).join('~')}%</b><span>현금</span><b>${(rb.cashRangePct || []).join('~')}%</b></div>
-      <div class="rb-tilt muted">스타일 틸트: ${rb.styleTilt || '—'}</div>
-    </div>
-    <div class="regime-ev"><div><span class="evh">근거</span>${support}</div><div><span class="evh">반대 근거</span>${contra}</div></div>`;
+    <div class="regime-lower">
+      <div class="regime-budget">
+        <div class="rb-h">위험예산 (매크로 레이어 — 개별 알파에 가산하지 않음)</div>
+        <div class="rb-row"><span>주식 노출</span><b>${(rb.equityRangePct || []).join('~')}%</b><span>현금</span><b>${(rb.cashRangePct || []).join('~')}%</b></div>
+        <div class="rb-tilt muted">스타일 틸트: ${rb.styleTilt || '—'}</div>
+      </div>
+      <div class="regime-ev"><div><span class="evh">근거</span>${support}</div><div><span class="evh">반대 근거</span>${contra}</div></div>
+    </div>`;
 };
 
 // =========================================================================
 // 3. Expert consensus
 // =========================================================================
 const stanceKo = (s) => s == null ? '—' : s >= 1 ? `강한 긍정 (+${s})` : s > 0 ? `긍정 (+${s})` : s === 0 ? '중립 (0)' : s <= -1 ? `강한 부정 (${s})` : `부정 (${s})`;
+const THEME_KO = {
+  'AI/Semiconductors': 'AI·반도체', 'US Growth': '미국 성장', 'Rates/Inflation': '금리·물가',
+  'Credit Quality': '신용 품질', Korea: '한국 경제',
+};
 const themeCard = (t) => {
   const agr = { high: ['합의 강함', 'bull'], mixed: ['혼재', 'trans'], low: ['의견 갈림', 'bear'], insufficient: ['1개 기관·합의 불가', 'trans'] }[t.agreement] || ['—', 'trans'];
-  const views = (t.views || []).map((v) => `<div class="cv-view"><div><span>${v.institution}${v.sourceType === 'companyIR' ? ' <em class="ir">IR</em>' : ''}</span><small>${v.publishedAt || '발행일 미상'}${v.ageDays != null ? ` · ${v.ageDays}일 전` : ''}</small></div><b>${stanceKo(v.stance)}</b>${v.url ? `<a href="${v.url}" target="_blank" rel="noopener">원문</a>` : ''}${v.summary ? `<p>${v.summary}</p>` : ''}</div>`).join('');
+  const views = (t.views || []).map((v) => `<div class="cv-view"><div><span>${v.institution}${v.sourceType === 'companyIR' ? ' <em class="ir">IR</em>' : ''}</span><small>공식 원문 검토 완료 · ${v.publishedAt ? v.publishedAt.slice(0, 10) : '발행일 미상'}${v.ageDays != null ? ` · ${v.ageDays}일 경과` : ''}</small></div><b>${stanceKo(v.stance)}</b>${v.url ? `<a href="${v.url}" target="_blank" rel="noopener">공식 원문 ↗</a>` : ''}${v.summary ? `<p>${v.summary}</p>` : ''}</div>`).join('');
   return `<div class="cv-card">
-    <div class="cv-top"><b>${t.theme}</b><span class="reg ${agr[1]}">${agr[0]}</span></div>
+    <div class="cv-top"><div><span class="cv-verified">검증 완료</span><b>${THEME_KO[t.theme] || t.theme}</b></div><span class="reg ${agr[1]}">${agr[0]}</span></div>
     <div class="cv-meta">중앙값 스탠스 <b>${stanceKo(t.weightedMedianStance)}</b> · 분산 ${fmt(t.dispersion)} · 기관 ${t.institutionCount}곳</div>
     <div class="cv-views">${views}</div>
     ${t.counterCase ? `<div class="cv-counter">반대 논거: ${t.counterCase}</div>` : ''}
@@ -267,14 +379,14 @@ const renderConsensus = (c) => {
   const candidates = c.candidateCount ?? (c.awaitingVerification || []).length + (c.verifiedCount || 0) + (c.staleCount || 0);
   $('#consensusMeta').textContent = `검증 ${c.verifiedCount ?? 0}/${candidates}건 · 대기 ${c.awaitingCount ?? (c.awaitingVerification || []).length}건 · STALE ${c.staleCount ?? 0}건`;
   let html = '';
-  if (c.themes && c.themes.length) html += c.themes.map(themeCard).join('');
+  if (c.themes && c.themes.length) html += `<div class="cv-method"><b>검증된 공식 전망 ${c.verifiedCount ?? 0}건</b><span>스탠스는 위험자산 관점 -2(방어적)~+2(건설적) 척도입니다. 요약은 원문을 대체하지 않으며, 기관 수가 1곳이면 ‘합의’로 보지 않습니다.</span></div>` + c.themes.map(themeCard).join('');
   else html += `<div class="cv-empty">
     <div><span>검증 커버리지</span><b>${Math.round((c.verificationCoverage ?? 0) * 100)}%</b></div>
     <section><h3>검증된 컨센서스가 아직 없는 이유</h3><p>${c.note || '등록 후보가 모두 원문 검증 전이라 방향을 집계하지 않습니다.'}</p><small>빈 화면이나 수집 오류가 아닙니다. 미검증 자료의 스탠스를 추정하지 않는 안전장치입니다.</small></section>
     <ol>${(c.verificationStepsKo || ['공식 원문과 발행일 확인', '스탠스·요약 기록', 'verified=true 승인', '기관 중복 제거 후 집계']).map((x) => `<li>${x}</li>`).join('')}</ol>
   </div>`;
   if (c.awaitingVerification && c.awaitingVerification.length) {
-    html += `<div class="cv-await"><div class="cv-await-title"><b>원문 검증 대기 ${c.awaitingVerification.length}건</b><span>아래 항목은 컨센서스에 포함되지 않습니다.</span></div><div class="cv-pending-grid">${c.awaitingVerification.map(awaitingCard).join('')}</div></div>`;
+    html += `<div class="cv-await"><div class="cv-await-title"><b>새 자료 모니터링 중 ${c.awaitingVerification.length}건</b><span>숨기지 않고 보여주되, 원문 검토 전에는 컨센서스 수치에 넣지 않습니다.</span></div><div class="cv-pending-grid">${c.awaitingVerification.map(awaitingCard).join('')}</div></div>`;
   }
   host.innerHTML = html;
 };
@@ -426,16 +538,51 @@ const sparkSvg = (vals) => {
   const up = vals[vals.length - 1] >= vals[0];
   return `<svg class="spark ${up ? 'spark-up' : 'spark-down'}" viewBox="0 0 ${w} ${h}" width="${w}" height="${h}" aria-hidden="true"><polyline points="${pts}" fill="none" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/></svg>`;
 };
+let ACTIVE_INDEX = null;
+let INDEX_RANGE = '1Y';
+const INDEX_RANGES = { '1M': 22, '3M': 66, '6M': 132, '1Y': 260 };
+const ixFresh = (x) => {
+  const cls = x.freshnessStatus === 'CURRENT' ? 'current' : x.freshnessStatus === 'DELAYED' ? 'delayed' : 'stale';
+  return `<span class="ix-fresh ${cls}"><i></i>${x.freshnessLabelKo || '상태 미상'} · ${x.asOf || '—'}</span>`;
+};
 const ixTile = (x) => {
   const d1 = x.chg1dPct; const dir = d1 == null ? '' : d1 >= 0 ? 'pos' : 'neg';
-  return `<article class="ix" title="${x.symbol} · ${x.asOf ?? ''} · ${x.source ?? ''}"><div class="ix-h"><span class="ix-name">${x.name}</span><span class="ix-reg">${x.region}</span></div><div class="ix-quote"><span class="ix-last">${nfmt(x.last, x.digits ?? 2)}</span><span class="ix-chg ${dir}">${chg(d1)}</span></div>${sparkSvg(x.spark)}<div class="ix-sub"><span>1M <b class="${(x.chg1mPct ?? 0) >= 0 ? 'pos' : 'neg'}">${chg(x.chg1mPct, 1)}</b></span><span>YTD <b class="${(x.ytdPct ?? 0) >= 0 ? 'pos' : 'neg'}">${chg(x.ytdPct, 1)}</b></span><span>고점비 <b>${chg(x.from52wHighPct, 1)}</b></span></div></article>`;
+  return `<button type="button" class="ix" data-index-symbol="${x.symbol}" aria-label="${x.name} 상세 차트 열기" title="${x.symbol} · ${x.asOf ?? ''} · ${x.source ?? ''}"><div class="ix-h"><span class="ix-name">${x.name}</span><span class="ix-reg">${x.region}</span></div><div class="ix-quote"><span class="ix-last">${nfmt(x.last, x.digits ?? 2)}</span><span class="ix-chg ${dir}">${chg(d1)}</span></div>${sparkSvg(x.spark)}<div class="ix-sub"><span>1M <b class="${(x.chg1mPct ?? 0) >= 0 ? 'pos' : 'neg'}">${chg(x.chg1mPct, 1)}</b></span><span>YTD <b class="${(x.ytdPct ?? 0) >= 0 ? 'pos' : 'neg'}">${chg(x.ytdPct, 1)}</b></span><span>고점비 <b>${chg(x.from52wHighPct, 1)}</b></span></div>${ixFresh(x)}<span class="ix-open">상세 추이 보기 →</span></button>`;
 };
 const renderIndices = (d) => {
   const sec = $('#indices'); const list = d.indices || [];
   if (!list.length) { sec.hidden = true; return; }
   sec.hidden = false;
   $('#indexTape').innerHTML = list.map(ixTile).join('');
-  $('#tapeMeta').textContent = `${list[0].asOf ? '기준 ' + list[0].asOf + ' · ' : ''}미니 차트는 최근 3개월`;
+  const h = d.marketDataHealth || {};
+  const status = h.status === 'CURRENT' ? '전체 최신' : h.status === 'DELAYED' ? '일부 지연' : '확인 필요';
+  $('#tapeMeta').textContent = `${status} · 최신 ${h.current ?? '—'}/${h.fetched ?? list.length} · 카드 클릭 시 1년 추이`;
+};
+const indexDialogMarkup = (x) => {
+  const points = (x.history || []).slice(-(INDEX_RANGES[INDEX_RANGE] || 260));
+  const first = points[0]?.value, last = points[points.length - 1]?.value;
+  const rangeChange = first != null && last != null && Number(first) !== 0 ? (Number(last) / Number(first) - 1) * 100 : null;
+  const rangeButtons = Object.keys(INDEX_RANGES).map((r) => `<button type="button" data-index-range="${r}" class="${INDEX_RANGE === r ? 'active' : ''}">${r}</button>`).join('');
+  const sourceList = (x.sourcesChecked || [x.source]).filter(Boolean).join(' · ');
+  return `<div class="ix-dialog-head"><div><span class="overline">${x.region} · ${x.symbol}</span><h2>${x.name}</h2><p>${INDEX_GUIDE[x.symbol] || '시장 수준과 추세를 보여주는 주요 지표입니다.'}</p></div><div class="ix-dialog-quote"><b>${nfmt(x.last, x.digits ?? 2)}</b><span class="${(rangeChange ?? 0) >= 0 ? 'pos' : 'neg'}">${INDEX_RANGE} ${chg(rangeChange, 1)}</span></div></div>
+    <div class="ix-range" aria-label="차트 기간">${rangeButtons}</div>
+    <div class="ix-big-chart">${trendSvg([{ label: x.name, points }], [], { width: 900, height: 300, aria: `${x.name} ${INDEX_RANGE} 가격 추이` })}</div>
+    <div class="ix-kpis"><div><span>1일</span><b class="${(x.chg1dPct ?? 0) >= 0 ? 'pos' : 'neg'}">${chg(x.chg1dPct)}</b></div><div><span>1개월</span><b class="${(x.chg1mPct ?? 0) >= 0 ? 'pos' : 'neg'}">${chg(x.chg1mPct)}</b></div><div><span>연초 대비</span><b class="${(x.ytdPct ?? 0) >= 0 ? 'pos' : 'neg'}">${chg(x.ytdPct)}</b></div><div><span>52주 고점 대비</span><b>${chg(x.from52wHighPct)}</b></div><div><span>200일선</span><b>${x.above200d == null ? '—' : x.above200d ? '위 · 상승 추세' : '아래 · 약세 추세'}</b></div></div>
+    <div class="ix-data-note">${ixFresh(x)}<span>현재 소스 <b>${x.source || '—'}</b></span><span>교차 확인 <b>${sourceList || '—'}</b></span><span>영업일 지연 <b>${x.freshnessBdays ?? '—'}일</b></span></div>`;
+};
+const showIndexDialog = (symbol) => {
+  const x = (DATA.indices || []).find((row) => row.symbol === symbol);
+  const dialog = $('#indexDialog'); const body = $('#indexDialogBody');
+  if (!x || !dialog || !body) return;
+  ACTIVE_INDEX = x; INDEX_RANGE = '1Y';
+  body.innerHTML = indexDialogMarkup(x);
+  if (typeof dialog.showModal === 'function') dialog.showModal(); else dialog.setAttribute('open', '');
+};
+const setIndexRange = (range) => {
+  if (!ACTIVE_INDEX || !INDEX_RANGES[range]) return;
+  INDEX_RANGE = range;
+  const body = $('#indexDialogBody');
+  if (body) body.innerHTML = indexDialogMarkup(ACTIVE_INDEX);
 };
 
 // --- direction compass ---
@@ -521,9 +668,21 @@ const render = (d) => {
   renderSentiment(d.sentiment);
 };
 
-const loadData = async () => {
-  try { const r = await fetch('data/site-data.json', { cache: 'no-store' }); if (!r.ok) throw new Error(`HTTP ${r.status}`); render(await r.json()); }
-  catch (e) { $('#dataStatus').textContent = 'data error: ' + e.message; }
+const loadData = async (force = false) => {
+  const button = $('#refreshData');
+  if (button) { button.disabled = true; button.textContent = '확인 중…'; }
+  try {
+    const url = `data/site-data.json${force ? `?t=${Date.now()}` : ''}`;
+    const r = await fetch(url, { cache: 'no-store' });
+    if (!r.ok) throw new Error(`HTTP ${r.status}`);
+    render(await r.json());
+    if (button) button.textContent = '최신 데이터 확인';
+  } catch (e) {
+    $('#dataStatus').textContent = 'data error: ' + e.message;
+    if (button) button.textContent = '다시 확인';
+  } finally {
+    if (button) button.disabled = false;
+  }
 };
 const filterScreen = () => {
   const q = ($('#screenSearch')?.value || '').trim().toLowerCase();
@@ -532,5 +691,14 @@ const filterScreen = () => {
   const empty = $('#screenEmpty'); if (empty) empty.hidden = shown !== 0;
 };
 $('#screenSearch')?.addEventListener('input', filterScreen);
-document.querySelectorAll('.nav a[href^="#"]').forEach((a) => a.addEventListener('click', (e) => { const t = document.querySelector(a.getAttribute('href')); if (!t) return; e.preventDefault(); t.scrollIntoView({ behavior: 'smooth', block: 'start' }); }));
+$('#refreshData')?.addEventListener('click', () => loadData(true));
+$('#indexDialogClose')?.addEventListener('click', () => $('#indexDialog')?.close());
+$('#indexDialog')?.addEventListener('click', (e) => { if (e.target.id === 'indexDialog') e.target.close(); });
+document.querySelectorAll('.nav a[href^="#"]').forEach((a) => a.addEventListener('click', (e) => {
+  const t = document.querySelector(a.getAttribute('href')); if (!t) return;
+  e.preventDefault();
+  if (t.tagName === 'DETAILS') t.open = true;
+  t.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}));
 loadRules(); loadData();
+window.setInterval(() => loadData(false), 15 * 60 * 1000);
