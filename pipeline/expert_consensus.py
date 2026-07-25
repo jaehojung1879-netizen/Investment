@@ -89,7 +89,10 @@ def build(sources: dict | None = None, views: dict | None = None, now: datetime 
     verified, unverified, stale = [], [], []
     for v in vlist:
         is_stale = False
-        age = _days_since(v.get("verifiedAt") or v.get("publishedAt"), now=now)
+        # Content freshness is measured from publication, not from the day an
+        # analyst happened to review it. Re-verifying an old report must never
+        # make the underlying view look new again.
+        age = _days_since(v.get("publishedAt") or v.get("verifiedAt"), now=now)
         if v.get("verified") and v.get("stance") is not None:
             if age is not None and v.get("staleAfterDays") and age > v["staleAfterDays"]:
                 is_stale = True
@@ -128,6 +131,8 @@ def build(sources: dict | None = None, views: dict | None = None, now: datetime 
             "summary": v.get("summary"),
             "url": v.get("url"), "publishedAt": v.get("publishedAt"),
             "verifiedAt": v.get("verifiedAt"), "ageDays": v.get("_ageDays"),
+            "verificationMethod": v.get("verificationMethod", "manual-source-review"),
+            "confidence": v.get("confidence"),
             "weight": round(w, 2),
         })
 
@@ -171,6 +176,8 @@ def build(sources: dict | None = None, views: dict | None = None, now: datetime 
             "url": v.get("url") or source.get("url"),
             "risks": v.get("risks") or [],
             "signposts": v.get("signposts") or [],
+            "detectedSummary": v.get("detectedSummary"),
+            "detectedAt": v.get("detectedAt"),
             "staleAfterDays": v.get("staleAfterDays"),
             "statusCode": "UNVERIFIED",
             "statusKo": "원문 검증 대기",

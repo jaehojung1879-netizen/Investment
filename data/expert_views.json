@@ -1,55 +1,65 @@
 {
-  "_doc": "Human-verified house-view summaries. NOTHING here is published to the consensus panel until verified=true AND verifiedAt is set AND the view is within staleAfterDays of publishedAt. The entries below are UNVERIFIED theme stubs (verified=false): they name the themes the 2026 mid-year outlooks are expected to address, but carry NO fabricated stance/quote until an analyst confirms the original report and fills stance/summary/publishedAt from the source. This is the semi-automatic design: a bot may open a GitHub issue when a new report is detected; a human verifies and flips verified=true.",
+  "_doc": "Human-reviewed summaries of official institutional publications. A view reaches the consensus only when verified=true, publishedAt/verifiedAt/stance/summary are present, and the publication remains within staleAfterDays. Summaries are paraphrases, not quotes. Stance uses a -2 (strongly defensive) to +2 (strongly constructive) risk-asset scale and never replaces the linked source.",
   "views": [
     {
       "id": "blackrock-2026-midyear-ai", "sourceId": "blackrock-bii",
-      "sourceType": "assetManager", "title": "2026 Midyear Global Outlook (to verify)",
-      "publishedAt": null, "verifiedAt": null, "verified": false,
-      "url": "https://www.blackrock.com/corporate/insights/blackrock-investment-institute/outlook",
+      "sourceType": "assetManager", "title": "Scarcity vs. abundance — 2026 Midyear Global Outlook",
+      "publishedAt": "2026-06-30T00:00:00+00:00", "verifiedAt": "2026-07-25T00:00:00+00:00", "verified": true,
+      "verificationMethod": "official-page-human-review",
+      "url": "https://www.blackrock.com/us/individual/insights/blackrock-investment-institute/outlook",
       "horizon": "6-12m", "region": "Global", "assetClass": "Equity", "theme": "AI/Semiconductors",
-      "stance": null, "confidence": null, "summary": null,
-      "risks": ["기대치·CAPEX 집중", "밸류에이션·변동성"], "signposts": ["하이퍼스케일러 CAPEX 가이던스", "AI 수익화 지표"],
-      "staleAfterDays": 90
+      "stance": 1.0, "confidence": 0.75,
+      "summary": "AI 투자의 장기 기회는 긍정적으로 보되 전력·메모리·반도체·데이터센터처럼 희소한 투입요소와 높은 자본비용이 실제 승자를 가를 것으로 본다.",
+      "risks": ["AI 기대와 실제 수익화의 격차", "전력·자본·핵심부품 공급 제약"], "signposts": ["하이퍼스케일러 CAPEX", "전력·메모리 공급", "AI 매출 전환"],
+      "staleAfterDays": 120
     },
     {
       "id": "jpmam-2026-midyear-usgrowth", "sourceId": "jpmam",
-      "sourceType": "assetManager", "title": "2026 Mid-Year Investment Outlook (to verify)",
-      "publishedAt": null, "verifiedAt": null, "verified": false,
-      "url": "https://am.jpmorgan.com/us/en/asset-management/adv/insights/market-insights/investment-outlook/",
+      "sourceType": "assetManager", "title": "2026 Mid-Year Investment Outlook — Crosscurrents and Divergence",
+      "publishedAt": "2026-07-20T00:00:00+00:00", "verifiedAt": "2026-07-25T00:00:00+00:00", "verified": true,
+      "verificationMethod": "official-page-human-review",
+      "url": "https://am.jpmorgan.com/us/en/asset-management/institutional/insights/market-insights/investment-outlook/",
       "horizon": "6-12m", "region": "US", "assetClass": "Equity", "theme": "US Growth",
-      "stance": null, "confidence": null, "summary": null,
-      "risks": ["정책·공급 충격", "고평가 구간"], "signposts": ["고용·소비 지표", "이익 마진"],
+      "stance": 1.0, "confidence": 0.8,
+      "summary": "AI 투자와 고소득층 소비가 2026년 중반 미국 성장과 기업이익을 지지하지만, 에너지·물가·정책 충격과 수요의 양극화 때문에 기본 포트폴리오와 분산을 유지해야 한다고 본다.",
+      "risks": ["에너지·물가 재상승", "소비 양극화와 정책 불확실성"], "signposts": ["AI 설비투자", "고소득층 소비", "기업이익", "근원물가"],
       "staleAfterDays": 90
     },
     {
       "id": "pimco-2026-rates", "sourceId": "pimco",
-      "sourceType": "assetManager", "title": "Secular/Cyclical Outlook (to verify)",
-      "publishedAt": null, "verifiedAt": null, "verified": false,
-      "url": "https://www.pimco.com/en-us/insights/economic-and-market-commentary",
+      "sourceType": "assetManager", "title": "Layered Uncertainty: Conflict, Credit Stress, and AI",
+      "publishedAt": "2026-03-24T00:00:00+00:00", "verifiedAt": "2026-07-25T00:00:00+00:00", "verified": true,
+      "verificationMethod": "official-page-human-review",
+      "url": "https://www.pimco.com/br/en/insights/layered-uncertainty-conflict-credit-stress-and-ai",
       "horizon": "6-12m", "region": "Global", "assetClass": "Rates", "theme": "Rates/Inflation",
-      "stance": null, "confidence": null, "summary": null,
-      "risks": ["높은 실질금리", "재정 공급"], "signposts": ["근원물가", "실질금리 경로"],
-      "staleAfterDays": 90
+      "stance": -0.5, "confidence": 0.7,
+      "summary": "에너지 충격의 스태그플레이션 위험, 사모신용 스트레스, AI가 만드는 승자·패자 격차를 강조하며 유동성이 높고 질이 좋은 공모 채권 중심의 방어적 접근을 선호한다.",
+      "risks": ["에너지 공급 충격", "사모신용 부실", "국가·산업별 성장 격차"], "signposts": ["에너지 가격", "중앙은행 금리 기대", "신용 스프레드"],
+      "staleAfterDays": 180
     },
     {
-      "id": "morganstanley-2026-credit", "sourceId": "morganstanley",
-      "sourceType": "sellSideResearch", "title": "2026 Midyear Investment Outlook (to verify)",
-      "publishedAt": null, "verifiedAt": null, "verified": false,
-      "url": "https://www.morganstanley.com/ideas/global-investment-outlook",
-      "horizon": "6-12m", "region": "Global", "assetClass": "Credit", "theme": "Credit Quality",
-      "stance": null, "confidence": null, "summary": null,
-      "risks": ["스프레드 타이트", "디폴트 사이클"], "signposts": ["HY 스프레드", "발행 여건"],
+      "id": "morganstanley-2026-midyear-ai", "sourceId": "morganstanley",
+      "sourceType": "sellSideResearch", "title": "2026 Midyear Investment Outlook: Constructive, Not Complacent",
+      "publishedAt": "2026-05-15T00:00:00+00:00", "verifiedAt": "2026-07-25T00:00:00+00:00", "verified": true,
+      "verificationMethod": "official-page-human-review",
+      "url": "https://www.morganstanley.com/insights/articles/investment-outlook-midyear-2026",
+      "horizon": "6-12m", "region": "US", "assetClass": "Equity", "theme": "AI/Semiconductors",
+      "stance": 1.0, "confidence": 0.75,
+      "summary": "AI 인프라 투자가 미국 기업이익과 위험자산을 지지해 미국 주식을 건설적으로 보지만, 지정학·에너지 가격과 AI 투자 재원을 위한 회사채 공급 확대는 경계한다.",
+      "risks": ["지정학·에너지 가격", "AI CAPEX 관련 회사채 공급"], "signposts": ["미국 기업이익", "AI 인프라 투자", "신용 발행량"],
       "staleAfterDays": 90
     },
     {
       "id": "bok-2026-korea", "sourceId": "bok",
-      "sourceType": "centralBank", "title": "경제전망 (to verify)",
-      "publishedAt": null, "verifiedAt": null, "verified": false,
-      "url": "https://www.bok.or.kr/portal/bbs/P0002359/list.do",
+      "sourceType": "centralBank", "title": "경제전망보고서(2026년 5월)",
+      "publishedAt": "2026-05-28T00:00:00+09:00", "verifiedAt": "2026-07-25T00:00:00+00:00", "verified": true,
+      "verificationMethod": "official-page-human-review",
+      "url": "https://www.bok.or.kr/portal/bbs/P0002359/view.do?depth=200066&menuNo=200066&nttId=10098209&programType=newsData&relate=Y",
       "horizon": "6-12m", "region": "KR", "assetClass": "Macro", "theme": "Korea",
-      "stance": null, "confidence": null, "summary": null,
-      "risks": ["에너지·환율", "지정학"], "signposts": ["반도체 수출", "내수·물가"],
-      "staleAfterDays": 90
+      "stance": 0.5, "confidence": 0.8,
+      "summary": "반도체 경기 호조를 반영해 2026년 성장률 전망을 2.6%로 상향했지만, 중동발 충격과 유가 영향으로 소비자물가 전망도 2.7%로 높였고 전망 불확실성이 크다고 평가한다.",
+      "risks": ["중동발 에너지 충격", "반도체 경기 변동", "물가 재상승"], "signposts": ["반도체 수출", "민간소비", "유가", "소비자물가"],
+      "staleAfterDays": 120
     }
   ]
 }

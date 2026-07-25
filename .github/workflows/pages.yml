@@ -4,13 +4,12 @@ on:
   push:
     branches: [main]
   schedule:
-    # Every day ~22:00 UTC (after US market close year-round) = 07:00 KST next
-    # morning. Runs on weekends too, so the site is guaranteed fresh EVERY
-    # morning — not just on trading days — carrying the latest US session.
-    - cron: "0 22 * * *"
-    # Weekdays ~07:10 UTC = 16:10 KST (after KR market close at 15:30 KST),
-    # so KR prices/indices refresh the same day instead of lagging to the US run.
-    - cron: "10 7 * * 1-5"
+    # 08:20 KST daily. The extra vendor-settlement buffer after the US close
+    # avoids publishing a previous-session row that was still cached at 07:00.
+    - cron: "20 23 * * *"
+    # 17:15 KST on weekdays. KRX closes at 15:30; the buffer lets both Yahoo
+    # and FinanceDataReader publish final KOSPI/KOSDAQ rows before cross-check.
+    - cron: "15 8 * * 1-5"
   workflow_dispatch:
 
 permissions:
@@ -66,7 +65,18 @@ jobs:
           # low coverage/confidence (it never fabricates a neutral/bull reading).
           FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
           ECOS_API_KEY: ${{ secrets.ECOS_API_KEY }}
-        run: python -m pipeline.build
+        run: |
+          for attempt in 1 2 3; do
+            if python -m pipeline.build; then
+              break
+            fi
+            if [ "$attempt" -eq 3 ]; then
+              echo "data build failed after 3 attempts"
+              exit 1
+            fi
+            echo "data vendor attempt $attempt failed; retrying with backoff"
+            sleep $((attempt * 45))
+          done
 
       - name: Validate artifact
         run: python -m pipeline.validate data/site-data.json

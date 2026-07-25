@@ -102,6 +102,14 @@ def validate(path: str | Path, production: bool = True) -> list[str]:
             errors.append("modelsTrained_zero")
         if (m.get("coveragePct") or 0) < (m.get("coverageFloor") or 95):
             errors.append("coverage_below_floor")
+        # Critical benchmark rows must be present and reasonably current.  A
+        # vendor outage should preserve the last good Pages deployment rather
+        # than replacing it with a dashboard that quietly omits KOSPI/KOSDAQ.
+        market_health = data.get("marketDataHealth") or {}
+        if market_health.get("missingCritical"):
+            errors.append("critical_indices_missing:" + ",".join(market_health["missingCritical"]))
+        if market_health.get("staleCritical"):
+            errors.append("critical_indices_stale:" + ",".join(market_health["staleCritical"]))
 
     # A blocked artifact must not carry actionable output of ANY kind.
     if data.get("recommendationsBlocked"):

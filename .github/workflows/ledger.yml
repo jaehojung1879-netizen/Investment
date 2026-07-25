@@ -6,7 +6,7 @@ name: Append paper-signal ledger
 
 on:
   schedule:
-    - cron: "30 22 * * *"   # ~30min after the main 22:00 UTC build
+    - cron: "10 0 * * *"   # after the 23:20 UTC production build
   workflow_dispatch:
 
 permissions:

@@ -116,6 +116,65 @@ INDICATOR_META = {
     "Yield_Curve": ("10년-2년 금리차", "%p", "%p 변화"),
 }
 
+# Short, plain-language guides shown next to each trend chart.  These are
+# descriptions of the indicator—not model-generated forecasts.
+INDICATOR_GUIDE = {
+    "CFNAI": {
+        "meaningKo": "미국 생산·고용·소비·주택·판매 등 85개 월간 지표를 한 숫자로 합친 경기 종합 온도계입니다.",
+        "readKo": "0은 미국 경제가 역사적 평균 속도로 성장한다는 뜻입니다. 양수는 평균보다 빠른 성장, 음수는 평균보다 느린 성장입니다.",
+        "useKo": "월별 값은 흔들림이 커서 3개월 이동평균을 함께 봅니다. 이동평균이 상승하면 경기 모멘텀 개선, 하락하면 둔화 신호로 해석합니다.",
+        "cautionKo": "시카고 연은은 미국 중앙은행 체계의 지역 연은 중 하나입니다. 이 지표는 금리 결정을 직접 예고하지 않으며 사후 수정될 수 있습니다.",
+    },
+    "Payrolls": {
+        "meaningKo": "미국 비농업 부문의 일자리 수가 한 달 동안 얼마나 늘거나 줄었는지 보여줍니다.",
+        "readKo": "3개월 평균 고용 증가폭이 커지면 성장 가속, 작아지면 성장 둔화 쪽 증거입니다.",
+        "useKo": "소비 여력과 경기 지속성을 확인하되 실업률·임금과 함께 봅니다.",
+        "cautionKo": "월별 변동과 수정 폭이 커 한 번의 발표만으로 방향을 단정하지 않습니다.",
+    },
+    "Unemployment": {
+        "meaningKo": "일할 의사가 있는 경제활동인구 중 실업자의 비율입니다.",
+        "readKo": "3개월 평균이 상승하면 고용시장 약화, 하락하면 고용시장 개선으로 봅니다.",
+        "useKo": "급격한 상승은 경기 둔화 위험을 높이지만 노동참여율 변화도 함께 확인해야 합니다.",
+        "cautionKo": "경기에 후행하는 성격이 있어 전환점을 늦게 확인할 수 있습니다.",
+    },
+    "Initial_Claims": {
+        "meaningKo": "미국에서 새로 실업보험을 신청한 사람 수로, 고용시장의 빠른 주간 신호입니다.",
+        "readKo": "4주 평균이 상승하면 해고 증가, 하락하면 고용시장 안정으로 해석합니다.",
+        "useKo": "비농업 고용보다 먼저 움직일 수 있어 경기 변곡점 확인에 유용합니다.",
+        "cautionKo": "휴일·계절요인으로 흔들릴 수 있어 4주 평균을 우선합니다.",
+    },
+    "Core_CPI": {
+        "meaningKo": "가격 변동이 큰 식품·에너지를 제외한 미국 소비자물가의 기조입니다.",
+        "readKo": "전년 대비 상승률과 최근 3개월 연율이 함께 내려가면 물가 둔화 신뢰가 높아집니다.",
+        "useKo": "금리와 주식 밸류에이션에 영향을 주는 인플레이션 압력을 확인합니다.",
+        "cautionKo": "주거비처럼 반영이 느린 항목 때문에 실제 체감물가와 시차가 날 수 있습니다.",
+    },
+    "Core_PCE": {
+        "meaningKo": "연준이 물가 목표 판단에 주로 참고하는 식품·에너지 제외 개인소비지출 물가지수입니다.",
+        "readKo": "상승률 둔화는 금리 부담 완화, 재가속은 긴축 장기화 위험 쪽 증거입니다.",
+        "useKo": "CPI와 함께 물가 방향의 일관성을 확인합니다.",
+        "cautionKo": "발표가 늦고 과거 수치가 수정될 수 있습니다.",
+    },
+    "NFCI": {
+        "meaningKo": "시카고 연은이 금리·신용·레버리지 등 금융여건을 종합한 주간 지수입니다.",
+        "readKo": "0보다 높을수록 역사적 평균보다 긴축적, 낮을수록 완화적인 금융여건을 뜻합니다.",
+        "useKo": "경기 자체보다 자금조달 환경과 위험자산 압력을 확인하는 보조축입니다.",
+        "cautionKo": "시장가격이 빠르게 반영돼 실물경기와 방향이 잠시 다를 수 있습니다.",
+    },
+    "VIX": {
+        "meaningKo": "S&P 500 옵션 가격에 반영된 향후 약 30일의 기대 변동성입니다.",
+        "readKo": "급등은 위험회피 확대, 안정·하락은 위험선호 회복 쪽 신호입니다.",
+        "useKo": "시장 스트레스와 포지션 규모 조절에 쓰되 방향 예측값으로 사용하지 않습니다.",
+        "cautionKo": "높은 VIX가 곧 추가 하락을 뜻하지 않으며 급등 뒤 빠르게 정상화될 수 있습니다.",
+    },
+    "Yield_Curve": {
+        "meaningKo": "미국 10년물과 2년물 국채금리 차이로 장단기 성장·정책 기대를 압축합니다.",
+        "readKo": "역전은 긴축 부담, 다시 가팔라지는 과정은 회복 기대 또는 단기 침체 신호일 수 있습니다.",
+        "useKo": "수준뿐 아니라 역전 해소의 원인이 장기금리 상승인지 단기금리 하락인지 구분합니다.",
+        "cautionKo": "한 가지 임계값만으로 침체 시점을 예측할 수 없습니다.",
+    },
+}
+
 TRANSFORMATION_KO = {
     "inflation_rate_yoy_and_3m_annualized": "전년동월비 인플레이션율과 3개월 연율의 최근 방향",
     "monthly_change_3m_average": "월간 증감의 3개월 이동평균 방향",
@@ -234,6 +293,36 @@ def _transform(name: str, visible: pd.Series) -> dict:
             "direction": _direction(change), "z": z, "method": method}
 
 
+def _display_history(name: str, visible: pd.Series) -> pd.Series:
+    """Series whose units match the transformed value shown on the card."""
+    s = _observations(visible)
+    method = TRANSFORMATIONS.get(name, "recent_level_change")
+    if method == "inflation_rate_yoy_and_3m_annualized":
+        return (s.pct_change(12) * 100).dropna()
+    if method == "monthly_change_3m_average":
+        return s.diff().rolling(3).mean().dropna()
+    if method == "three_month_average_change":
+        return s.rolling(3).mean().dropna()
+    if method == "four_week_average_change":
+        return s.rolling(4).mean().dropna()
+    if method == "yoy_growth_rate":
+        return (s.pct_change(12) * 100).dropna()
+    if method == "thirteen_week_growth_rate":
+        return (s.pct_change(13) * 100).dropna()
+    if method == "three_month_price_return":
+        step = 63 if len(s) > 400 else 3
+        return (s.pct_change(step) * 100).dropna()
+    return s
+
+
+def _history_points(series: pd.Series, limit: int = 60) -> list[dict]:
+    return [
+        {"date": pd.Timestamp(d).strftime("%Y-%m-%d"), "value": round(float(v), 4)}
+        for d, v in series.dropna().iloc[-limit:].items()
+        if np.isfinite(v)
+    ]
+
+
 def indicator_read(name: str, series: pd.Series, asof: pd.Timestamp | None = None) -> dict | None:
     axis, sign, lag, url = INDICATORS[name]
     visible, eval_asof = _visible_observations(series, lag, asof)
@@ -246,6 +335,17 @@ def indicator_read(name: str, series: pd.Series, asof: pd.Timestamp | None = Non
     display_name, value_unit, change_unit = INDICATOR_META.get(
         name, (name, "", "변화")
     )
+    display_history = _display_history(name, visible)
+    trend_history = (
+        _observations(visible).rolling(3).mean().dropna()
+        if name == "CFNAI" else pd.Series(dtype=float)
+    )
+    guide = INDICATOR_GUIDE.get(name, {
+        "meaningKo": f"{display_name}의 최근 수준과 방향을 보여주는 지표입니다.",
+        "readKo": f"{TRANSFORMATION_KO.get(tr['method'], tr['method'])}를 기준으로 방향을 읽습니다.",
+        "useKo": f"{AXIS_KO[axis]} 축의 여러 근거 중 하나로만 사용합니다.",
+        "cautionKo": "단일 지표만으로 국면이나 자산 가격을 예측하지 않습니다.",
+    })
     if contribution > 0:
         contribution_ko = DIRECTION_POS[axis]
         signal_summary = f"{TRANSFORMATION_KO.get(tr['method'], tr['method'])} → {AXIS_KO[axis]} {contribution_ko} 기여"
@@ -273,6 +373,16 @@ def indicator_read(name: str, series: pd.Series, asof: pd.Timestamp | None = Non
         "axisContribution": contribution,
         "axisContributionKo": contribution_ko,
         "signalSummaryKo": signal_summary,
+        "history": _history_points(display_history),
+        "historyLabelKo": display_name if name == "CFNAI" else TRANSFORMATION_KO.get(tr["method"], display_name),
+        "trendHistory": _history_points(trend_history),
+        "trendLabelKo": "3개월 이동평균" if name == "CFNAI" else None,
+        "referenceLines": (
+            [{"value": 0.0, "labelKo": "역사적 추세 성장"},
+             {"value": -0.7, "labelKo": "3개월 평균 경기위축 경계"}]
+            if name == "CFNAI" else []
+        ),
+        "guide": guide,
         "observationDate": obs.strftime("%Y-%m-%d") if obs is not None else None,
         "releaseLagBdays": lag,
         "freshnessDays": fresh_days,
