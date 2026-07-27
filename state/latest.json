@@ -1,23 +1,23 @@
 {
-  "schemaVersion": "2.1.0",
-  "modelVersion": "longterm-v2.1+regime-v2.1+entry-v1",
-  "buildCommitSha": "b3a9523041b6",
-  "generatedAt": "2026-07-27T00:22:30.936911+00:00",
-  "marketAsOf": "2026-07-24",
+  "schemaVersion": "2.2.0",
+  "modelVersion": "longterm-v2.1+regime-v2.1+entry-v1+portfolio-kelly-v1",
+  "buildCommitSha": "aa1a0b0c64bd",
+  "generatedAt": "2026-07-27T13:40:48.429727+00:00",
+  "marketAsOf": "2026-07-27",
   "macroRegime": "Reflation",
   "holdingsByRegion": {
     "US": [
       "ALL",
       "MO",
       "AFL",
-      "APA",
       "BNY",
       "ACGL",
+      "APA",
       "BAC",
       "NVDA",
       "CB",
-      "AMAT",
       "AIZ",
+      "CFG",
       "C"
     ],
     "KR": [
@@ -26,21 +26,47 @@
       "271560.KS",
       "033780.KS",
       "005930.KS",
-      "034730.KS",
       "006400.KS",
+      "034730.KS",
       "138930.KS",
       "175330.KS",
       "000660.KS",
-      "030200.KS",
-      "009540.KS"
+      "023530.KS",
+      "030200.KS"
     ]
+  },
+  "modelPortfolioWeights": {
+    "ALL": 0.016722,
+    "MO": 0.069031,
+    "AFL": 0.026338,
+    "BNY": 0.019649,
+    "ACGL": 0.018813,
+    "APA": 0.009615,
+    "BAC": 0.047861,
+    "NVDA": 0.069031,
+    "CB": 0.052003,
+    "AIZ": 0.017559,
+    "CFG": 0.015886,
+    "C": 0.038197,
+    "402340.KS": 0.014214,
+    "005935.KS": 0.019649,
+    "271560.KS": 0.063969,
+    "033780.KS": 0.06673,
+    "005930.KS": 0.028533,
+    "006400.KS": 0.030374,
+    "034730.KS": 0.031294,
+    "138930.KS": 0.037207,
+    "175330.KS": 0.029264,
+    "000660.KS": 0.023931,
+    "023530.KS": 0.025084,
+    "030200.KS": 0.053844
   },
   "dataMode": "live",
   "seed": false,
   "stale": false,
   "productionValidation": {
     "passed": true,
-    "validatedAt": "2026-07-27T00:22:30.936911+00:00",
+    "validatedAt": "2026-07-27T13:40:48.429727+00:00",
     "errors": []
   }
 }
