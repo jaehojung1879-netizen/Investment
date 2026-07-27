@@ -309,7 +309,22 @@ def optimize_fractional_kelly(expected_returns: list[dict], covariance: pd.DataF
     weights = pd.Series(np.maximum(result.x, 0.0), index=tickers)
     try:
         raw = np.linalg.pinv(cov) @ mu
-        raw = pd.Series(np.maximum(raw, 0.0) * float(applied_fractiÛ}í¢G§²ÚîÆ­yÞ w[over].index)
+        raw = pd.Series(np.maximum(raw, 0.0) * float(applied_fraction), index=tickers)
+    except Exception:
+        raw = pd.Series(0.0, index=tickers)
+    return {"ok": True, "weights": weights, "unconstrainedWeights": raw,
+            "objective": round(float(-result.fun), 8), "iterations": int(result.nit)}
+
+
+def _cap_portfolio(weights: pd.Series, candidates: list[dict], cfg: dict,
+                   themes: dict) -> tuple[pd.Series, list[str]]:
+    """Deterministically remove constraint excess; never force it elsewhere."""
+    w = weights.clip(lower=0).astype(float).copy()
+    bindings: list[str] = []
+    name_cap = float(cfg.get("maxPositionWeight", 0.10))
+    over = w > name_cap
+    if over.any():
+        bindings.extend(f"POSITION_CAP:{t}" for t in w[over].index)
         w[over] = name_cap
     group_specs = [
         ("SECTOR_CAP", float(cfg.get("maxSectorWeight", 0.25)), lambda c: [c.get("sector") or "Unclassified"]),
