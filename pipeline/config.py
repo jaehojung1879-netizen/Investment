@@ -42,6 +42,7 @@ class Config:
     run_mode: str = "paperTrading"
     coverage_floor: float = 95.0
     longterm: dict = field(default_factory=dict)
+    kelly_portfolio: dict = field(default_factory=dict)
     validation: dict = field(default_factory=dict)
     fred_regions: dict[str, dict[str, str]] = field(default_factory=dict)  # region -> {name: series_id}
     ecos_regions: dict[str, dict[str, str]] = field(default_factory=dict)  # KR macro via BOK ECOS
@@ -122,6 +123,7 @@ def load_config(path: Path | str = CONFIG_PATH) -> tuple[Config, list[str]]:
         run_mode=resolve_run_mode(raw.get("runMode")),
         coverage_floor=float(raw.get("coverageFloor", 95)),
         longterm=raw.get("longterm", {}),
+        kelly_portfolio=raw.get("kellyPortfolio", {}),
         validation=raw.get("validation", {}),
         fred_regions=fred_regions,
         ecos_regions=ecos_regions,

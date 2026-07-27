@@ -29,6 +29,7 @@ from . import fundamentals as fundamentals_mod
 from . import indices as indices_mod
 from . import ledger as ledger_mod
 from . import longterm as longterm_mod
+from . import kelly_portfolio as kelly_mod
 from . import macro as macro_mod
 from . import model as M
 from . import provenance as prov_mod
@@ -391,6 +392,39 @@ def run(cfg) -> dict:
         traceback.print_exc()
         long_term = None
 
+    # Portfolio Kelly is an additive SHADOW layer. Its expected returns come
+    # only from matured immutable-ledger outcomes supplied by CI/local replay;
+    # no outcome file means an explicit risk-weighted fallback, never a made-up
+    # expected return derived from today's alpha score.
+    portfolio_outcomes = kelly_mod.load_jsonl(os.environ.get("PAPER_OUTCOMES_PATH"))
+    themes = kelly_mod.load_json(REPO_ROOT / "data" / "themes.json", {})
+    prior_model_weights = (
+        prior.get("modelPortfolioWeights")
+        or ((prior.get("modelPortfolio") or {}).get("finalWeights"))
+        or {}
+    )
+    validation_status = _load_validation_status(
+        min_paper_days=int(cfg.validation.get("minPaperDays", 126)))
+    try:
+        model_portfolio = kelly_mod.build_model_portfolio(
+            long_term, prices, portfolio_outcomes, cfg.kelly_portfolio,
+            macro_regime=macro_regime, themes=themes,
+            prior_weights=prior_model_weights,
+            as_of=latest_date.strftime("%Y-%m-%d") if latest_date is not None else None,
+            blocked=withhold,
+            validation_status=validation_status,
+        )
+    except Exception as exc:
+        print(f"  warning: Kelly portfolio engine failed: {exc}")
+        traceback.print_exc()
+        model_portfolio = {
+            "status": "OPTIMIZATION_FAILED",
+            "method": "BLENDED_CONSTRAINED_FRACTIONAL_KELLY",
+            "positions": [], "finalWeights": {}, "cashPct": 100.0,
+            "fallbackReason": f"engine_error:{exc.__class__.__name__}",
+            "warnings": ["EXPLICIT_ENGINE_FAILURE; NO_KELLY_WEIGHTS_PUBLISHED"],
+        }
+
     # Verified expert / house-view consensus (semi-automatic; nothing fabricated).
     try:
         expert_consensus = expert_mod.build()
@@ -445,13 +479,13 @@ def run(cfg) -> dict:
         "direction": direction,
         "rotation": rotation,
         "longTerm": long_term,
+        "modelPortfolio": model_portfolio,
         "macroRegime": macro_regime,
         "expertConsensus": expert_consensus,
         "tradeIdeas": trade_mod.rank_ideas(ideas),
         "recommendationsBlocked": False,
         "priorState": prior_status,
-        "validationStatus": _load_validation_status(
-            min_paper_days=int(cfg.validation.get("minPaperDays", 126))),
+        "validationStatus": validation_status,
         "runMode": cfg.run_mode,
         "screened": screen_table,
         "details": details,
@@ -496,6 +530,17 @@ def run(cfg) -> dict:
                 universe, prices, fundamentals, diags, cfg_lt=cfg.longterm,
                 bench_by_region=bench_by_region, prior_holdings=prior_holdings, blocked=True)
             payload["longTerm"] = _attach_entry_states(payload["longTerm"], entry_feats, cfg.longterm)
+        # A blocked artifact must not expose portfolio positions, weights, or
+        # allocation explanations even if the pre-pass had not caught it.
+        portfolio = payload.get("modelPortfolio") or {}
+        payload["modelPortfolio"] = {
+            "status": "BLOCKED",
+            "method": portfolio.get("method", "BLENDED_CONSTRAINED_FRACTIONAL_KELLY"),
+            "positions": [], "finalWeights": {}, "riskWeightedWeights": {},
+            "constrainedKellyWeights": {}, "cashPct": None,
+            "fallbackReason": "recommendations_blocked",
+            "warnings": ["RECOMMENDATIONS_BLOCKED; WEIGHTS_WITHHELD"],
+        }
     payload["audit"] = audit
     return payload
 

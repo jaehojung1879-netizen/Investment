@@ -548,6 +548,23 @@ a { color: inherit; text-decoration: none; }
 .lt-inval { font-size: 0.72rem; border-top: 1px dashed var(--line); padding-top: 6px; }
 .lt-insuf { font-size: 0.74rem; margin-top: 8px; padding: 8px; background: var(--surface-2); border-radius: 8px; }
 
+/* constrained model portfolio */
+.mp-wrap { display: flex; flex-direction: column; gap: 12px; }
+.mp-chips { display: flex; gap: 8px; flex-wrap: wrap; }
+.mp-table { overflow-x: auto; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); }
+.mp-row { display: grid; grid-template-columns: minmax(110px,1.3fr) 48px 62px 100px 64px 64px 64px 64px 110px minmax(140px,1.4fr); gap: 8px; align-items: center; min-width: 1040px; padding: 9px 11px; border-top: 1px solid var(--line); font-size: .73rem; }
+.mp-row:first-child { border-top: 0; }
+.mp-head { color: var(--muted); font-size: .65rem; font-weight: 800; background: var(--surface-2); }
+.mp-row small { display: block; color: var(--muted); font-size: .61rem; }
+.mp-why { color: var(--muted); line-height: 1.35; }
+.mp-exposures { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.mp-exp { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 11px; }
+.mp-exp > b { display: block; margin-bottom: 6px; font-size: .76rem; }
+.mp-exp span { display: flex; justify-content: space-between; gap: 8px; color: var(--muted); font-size: .7rem; padding: 2px 0; }
+.mp-exp em { color: var(--text); font-style: normal; }
+
+/* entry & concentration */
+
 /* entry & concentration */
 .entry-grid, .paper-wrap { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 16px; }
 .entry-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
@@ -563,7 +580,7 @@ a { color: inherit; text-decoration: none; }
 .pm b { font-size: 1.1rem; } .pm em { font-size: 0.7rem; color: var(--muted); font-style: normal; }
 
 @media (max-width: 860px) {
-  .regime-guide, .regime-lower, .regime-ev, .entry-grid { grid-template-columns: 1fr; }
+  .regime-guide, .regime-lower, .regime-ev, .entry-grid, .mp-exposures { grid-template-columns: 1fr; }
   .regime-decision { grid-template-columns: 1fr; }
   .decision-axes, .cv-watch { grid-template-columns: 1fr 1fr; }
   .ax-row { grid-template-columns: 58px 1fr 66px; }

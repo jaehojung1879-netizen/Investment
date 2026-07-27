@@ -15,6 +15,11 @@ import json, math, sys
 from pathlib import Path
 
 VALID_RUN_MODES = {"researchOnly", "paperTrading", "liveValidated"}
+VALID_PORTFOLIO_STATUSES = {
+    "DISABLED", "SHADOW_INSUFFICIENT_HISTORY", "SHADOW_READY",
+    "ACTIVE_PAPER", "ACTIVE_VALIDATED", "OPTIMIZATION_FAILED",
+    "FALLBACK_RISK_WEIGHTED", "BLOCKED",
+}
 ACTIONABLE_REASON_TERMS = (
     "buy", "sell", "avoid", "wait", "accumulate", "entry", "매수", "매도",
     "진입", "대기", "회피", "되돌림", "편입", "비중",
@@ -90,6 +95,29 @@ def validate(path: str | Path, production: bool = True) -> list[str]:
     if bad:
         errors.append("nan_or_infinity:" + ",".join(bad[:5]))
 
+    portfolio = data.get("modelPortfolio")
+    if portfolio:
+        status = portfolio.get("status")
+        if status not in VALID_PORTFOLIO_STATUSES:
+            errors.append("invalid_model_portfolio_status")
+        weights = portfolio.get("finalWeights") or {}
+        if any(float(v) < -1e-10 for v in weights.values()):
+            errors.append("model_portfolio_negative_weight")
+        if status not in {"BLOCKED", "DISABLED"} and portfolio.get("cashPct") is not None:
+            total = sum(float(v) for v in weights.values()) + float(portfolio["cashPct"]) / 100.0
+            if abs(total - 1.0) > 1e-5:
+                errors.append("model_portfolio_weights_plus_cash_not_100pct")
+        constraints = portfolio.get("constraints") or {}
+        cap = constraints.get("maxPositionWeight")
+        if cap is not None and any(float(v) > float(cap) + 1e-8 for v in weights.values()):
+            errors.append("model_portfolio_position_cap_exceeded")
+        if status == "ACTIVE_VALIDATED":
+            activation = portfolio.get("validation") or {}
+            if not activation.get("eligibleForActivation") or not activation.get("humanApproved"):
+                errors.append("model_portfolio_active_without_validation_and_human_approval")
+        if status == "OPTIMIZATION_FAILED" and not portfolio.get("fallbackReason"):
+            errors.append("model_portfolio_optimizer_failure_without_reason")
+
     if production:
         if data.get("seed"):
             errors.append("seed_artifact_not_allowed_for_production")
@@ -121,6 +149,9 @@ def validate(path: str | Path, production: bool = True) -> list[str]:
             errors.append("blocked_artifact_contains_longterm_positions")
         if _has_blocked_entry_actions(data.get("longTerm") or {}):
             errors.append("blocked_artifact_contains_entry_actions")
+        portfolio = data.get("modelPortfolio") or {}
+        if portfolio.get("positions") or portfolio.get("finalWeights") or portfolio.get("cashPct") is not None:
+            errors.append("blocked_artifact_contains_model_portfolio_weights")
     return errors
 
 

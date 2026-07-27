@@ -39,6 +39,48 @@
     "rankBuffer": { "enterPct": 12, "exitPct": 28 },
     "excludeFromRanking": ["QQQ", "SPY", "DIA", "IWM", "EFA", "EEM", "AGG", "GLD", "BIL", "MTUM", "VLUE", "QUAL", "USMV", "VOO", "IVV"]
   },
+  "kellyPortfolio": {
+    "enabled": true,
+    "mode": "shadow",
+    "horizonDays": 126,
+    "kellyFraction": 0.25,
+    "blendWeight": 0.25,
+    "minEffectiveObservations": 30,
+    "minNonOverlappingDates": 12,
+    "shrinkagePriorStrength": 30,
+    "covarianceLookbackDays": 504,
+    "covarianceMinDays": 252,
+    "useLedoitWolf": true,
+    "riskAversion": 1.0,
+    "maxPositionWeight": 0.10,
+    "maxSectorWeight": 0.25,
+    "maxThemeWeight": 0.20,
+    "minCashPct": 10,
+    "maxTurnoverPct": 25,
+    "minNames": 6,
+    "maxNames": 12,
+    "watchWeightMultiplier": 0.5,
+    "waitForPullbackWeightMultiplier": 0.25,
+    "turnoverPenalty": 0.002,
+    "expectedReturnShrinkagePrior": 0.0,
+    "alphaPercentileBuckets": [0, 60, 80, 90, 95, 100],
+    "regionCaps": { "KR": 0.65, "US": 0.65 },
+    "costHaircut": { "US": 0.004, "KR": 0.007 },
+    "activation": {
+      "minPaperDays": 252,
+      "minMaturedSignals": 100,
+      "requirePositiveCostAdjustedExcess": true,
+      "requirePositiveRankIC": true,
+      "requireNoMddDeterioration": true
+    },
+    "regimeMultipliers": {
+      "Goldilocks": { "kellyMultiplier": 1.0, "minCashPct": 10 },
+      "Reflation": { "kellyMultiplier": 0.8, "minCashPct": 15 },
+      "Transition/Low confidence": { "kellyMultiplier": 0.5, "minCashPct": 20 },
+      "Deflation/Slowdown": { "kellyMultiplier": 0.4, "minCashPct": 25 },
+      "Stagflation": { "kellyMultiplier": 0.3, "minCashPct": 30 }
+    }
+  },
   "validation": {
     "minPaperDays": 126,
     "ledgerBranch": "signal-history"
