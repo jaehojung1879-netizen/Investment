@@ -451,7 +451,37 @@ const renderLongTerm = (d) => {
   $('#ltCaveats').innerHTML = '⚠️ ' + (lt.caveats || []).join(' · ');
 };
 
-// 5. Entry & risk warnings (aggregated)
+// 5. Auditable model portfolio (risk-weighted base + shadow Fractional Kelly)
+const renderModelPortfolio = (d) => {
+  const mp = d.modelPortfolio; const sec = $('#modelPortfolio'); const host = $('#modelPortfolioPanel');
+  if (!mp) { sec.hidden = true; return; }
+  sec.hidden = false;
+  const status = mp.status || 'SHADOW_INSUFFICIENT_HISTORY';
+  $('#modelPortfolioMeta').textContent = `${status} · 현금 ${mp.cashPct != null ? mp.cashPct + '%' : '—'} · Kelly ${mp.appliedKellyFraction != null ? (mp.appliedKellyFraction * 100).toFixed(1) + '%' : '—'}`;
+  if (d.recommendationsBlocked || status === 'BLOCKED') {
+    host.innerHTML = '<div class="status-note bad">데이터 안전 차단 상태입니다. 모델 비중과 행동성 설명을 표시하지 않습니다.</div>';
+    return;
+  }
+  const shadow = status.startsWith('SHADOW') || status === 'OPTIMIZATION_FAILED';
+  const chips = [
+    chip('상태', status, status === 'SHADOW_READY' ? 'info' : 'warn'),
+    chip('방법', '위험가중 75% + Kelly 25%', 'info'),
+    chip('현금', mp.cashPct != null ? `${mp.cashPct}%` : '—'),
+    chip('예상 변동성', mp.expectedVolPct != null ? `${mp.expectedVolPct}%` : '—'),
+    chip('회전율', mp.turnoverPct != null ? `${mp.turnoverPct}%` : '—'),
+    chip('기대수익 검증', mp.expectedReturnStatus || 'INSUFFICIENT', mp.expectedReturnStatus === 'SHADOW' ? 'info' : 'warn'),
+  ].join('');
+  const rows = (mp.positions || []).filter((p) => p.modelPortfolioWeightPct > 0);
+  const table = rows.length ? `<div class="mp-table"><div class="mp-row mp-head"><span>종목</span><span>지역</span><span>알파</span><span>기대 초과수익</span><span>위험</span><span>기존</span><span>Kelly</span><span>최종</span><span>진입</span><span>제약</span></div>${rows.map((p) => {
+    const bindings = (p.bindingConstraints || []).map((x) => x.replaceAll('_', ' ')).join(' · ') || '없음';
+    return `<div class="mp-row"><span>${tkLink(p.ticker)}</span><span>${p.region || '—'}</span><span>${topPct(p.alphaPercentile)}</span><span>${p.expectedReturnStatus === 'SHADOW' ? sp(p.expectedExcessReturnPct) : '검증 대기'}<small>n=${p.expectedReturnSampleSize || 0}</small></span><span>${p.riskLevel != null ? p.riskLevel + '%' : '—'}</span><span>${fmt(p.riskWeightedWeightPct, '%', 1)}</span><span>${fmt(p.constrainedKellyWeightPct, '%', 1)}</span><span><b>${fmt(p.modelPortfolioWeightPct, '%', 1)}</b></span><span>${p.entryState || '—'}</span><span class="mp-why">${bindings}</span></div>`;
+  }).join('')}</div>` : '<div class="none">표시할 투자 비중 없음 — 기존 위험가중 방식 또는 현금으로 fallback</div>';
+  const exposure = (title, values) => `<div class="mp-exp"><b>${title}</b>${Object.entries(values || {}).sort((a, b) => b[1] - a[1]).map(([k, v]) => `<span>${k}<em>${v}%</em></span>`).join('') || '<span>데이터 없음</span>'}</div>`;
+  const reason = mp.fallbackReason ? `<div class="status-note warn"><b>Fallback:</b> ${mp.fallbackReason}<br>검증되지 않은 기대수익을 만들지 않고 기존 역하방변동성 포트폴리오를 유지합니다.</div>` : '';
+  host.innerHTML = `<div class="mp-chips">${chips}</div>${reason}${shadow ? '<div class="status-note info">검증 이력이 충분하지 않아 Kelly 비중은 실험적 shadow 결과로만 표시됩니다. 현재 기본 포트폴리오는 기존 역하방변동성 방식입니다.</div>' : ''}${table}<div class="mp-exposures">${exposure('지역', mp.regionExposure)}${exposure('업종', mp.sectorExposure)}${exposure('테마', mp.themeExposure)}</div><p class="caveat muted">이 비중은 개인 투자자의 자산규모·소득·부채·투자기간을 반영한 개인화 투자 권고가 아니라, 가상 모델 포트폴리오 내부의 연구용 비중입니다.</p>`;
+};
+
+// 6. Entry & risk warnings (aggregated)
 const renderEntry = (d) => {
   const lt = d.longTerm; const host = $('#entryPanel');
   if (!lt || !lt.regions) { $('#entry').hidden = true; return; }
@@ -657,6 +687,7 @@ const render = (d) => {
   renderRegime(d.macroRegime);
   renderConsensus(d.expertConsensus);
   renderLongTerm(d);
+  renderModelPortfolio(d);
   renderEntry(d);
   renderConcentration(d);
   renderPaper(d);

@@ -1,0 +1,41 @@
+{
+  "portfolioName": "Synthetic Kelly Validation Fixture",
+  "generatedAt": "2026-01-02T00:00:00+00:00",
+  "schemaVersion": "2.2.0",
+  "modelVersion": "portfolio-kelly-test",
+  "runMode": "paperTrading",
+  "dataMode": "synthetic",
+  "seed": true,
+  "stale": false,
+  "recommendationsBlocked": true,
+  "blockReasons": ["seed_data"],
+  "core": [],
+  "screened": [],
+  "tradeIdeas": {"KR": [], "US": []},
+  "longTerm": {"weightsWithheld": true, "regions": {}},
+  "modelPortfolio": {
+    "status": "BLOCKED",
+    "method": "BLENDED_CONSTRAINED_FRACTIONAL_KELLY",
+    "positions": [],
+    "finalWeights": {},
+    "riskWeightedWeights": {},
+    "constrainedKellyWeights": {},
+    "cashPct": null,
+    "fallbackReason": "recommendations_blocked",
+    "warnings": ["RECOMMENDATIONS_BLOCKED; WEIGHTS_WITHHELD"]
+  },
+  "meta": {
+    "latestDataDate": "2026-01-02",
+    "modelsTrained": 0,
+    "coveragePct": 0,
+    "coverageFloor": 95,
+    "syntheticData": true
+  },
+  "provenance": {
+    "schemaVersion": "2.2.0",
+    "modelVersion": "portfolio-kelly-test",
+    "runMode": "paperTrading",
+    "dataMode": "synthetic",
+    "marketAsOf": "2026-01-02"
+  }
+}

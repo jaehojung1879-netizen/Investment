@@ -47,6 +47,18 @@
 
 `validationStatus`는 paperDays·maturedSignals·eligibleDates·지역별 IC·비용 차감 초과수익·MDD/CVaR·미달 사유를 표시합니다. 최소 126영업일 전에는 `liveValidationEligible=false`이며, 이번 버전은 조건이 채워져도 자동으로 `liveValidated`로 승격하지 않습니다.
 
+## 제약형 Fractional Kelly 모델 포트폴리오 (shadow)
+
+기존 역하방변동성 슬리브를 기본값으로 유지하면서, 검증된 paper ledger가 충분할 때만 제약형 포트폴리오 Kelly를 25% 혼합합니다. 기본식은 `75% × 기존 위험가중 비중 + 25% × 제약형 Kelly 비중`이며, Full Kelly가 아니라 기본 0.25 Fractional Kelly를 사용합니다.
+
+- 현재의 `alpha`, `rawAlpha`, `alphaPercentile`은 기대수익률이 아닙니다. 과거 신호 시점에 고정된 percentile 구간과 만기된 126영업일 OOS 초과수익을 연결한 뒤, 거래비용을 차감하고 유효표본 수에 따라 0 방향으로 수축합니다.
+- 표본이 부족하거나 Ledoit–Wolf 공분산을 계산할 수 없으면 기대수익이나 상관관계를 임의로 만들지 않습니다. 상태를 `SHADOW_INSUFFICIENT_HISTORY`로 기록하고 기존 역하방변동성 포트폴리오만 유지합니다.
+- 종목 10%, 업종 25%, 테마 20%, 지역 상한, 최소 현금 10%, 최대 회전율 25%를 적용합니다. `EVENT_RISK`·`AVOID`·value trap은 신규 Kelly 비중 0, `WATCH`와 `WAIT_FOR_PULLBACK`은 각각 haircut을 받습니다. 제약 때문에 남은 금액은 다른 종목에 억지로 배분하지 않고 현금으로 둡니다.
+- 매크로는 종목 기대수익에 더하지 않고 Kelly fraction과 최소 현금만 조정합니다. 낮은 confidence는 Kelly 위험예산을 추가 축소합니다.
+- 대시보드는 기존 위험가중·비제약 Kelly·제약 Kelly·최종 혼합 비중과 구속 제약을 함께 보여 계산 근거를 추적할 수 있게 합니다.
+
+Kelly Criterion은 추정된 성장률을 최대화하는 도구일 뿐 만능 공식이 아닙니다. 확률·기대수익·공분산 추정오차에 민감하고, 과거 분포가 미래에도 유지된다는 보장이 없으며, Full Kelly는 큰 낙폭을 만들 수 있습니다. 이 모델은 개인의 자산·소득·부채·투자기간·손실감내도를 반영하지 않는 연구용 가상 포트폴리오입니다.
+
 ## 실행
 
 ```bash
@@ -60,7 +72,7 @@ python scripts/make_seed.py
 python -m pipeline.validate data/site-data.json --allow-seed
 ```
 
-`data/site-data.json`과 `data/audit.json`은 workflow/로컬 명령이 만드는 생성물이며 Git에서 추적하지 않습니다. 테스트용 최소 예시는 `tests/fixtures/site-data.synthetic.json`에 있고 파일명과 내부 `dataMode` 모두 synthetic임을 명시합니다. 스키마는 v2.1에서 `2.1.0`으로 올랐으며 frontend는 v2.0의 `confidence`/`financialCoverage`가 남은 artifact도 데이터 품질 레이블로만 fallback 렌더링합니다.
+`data/site-data.json`과 `data/audit.json`은 workflow/로컬 명령이 만드는 생성물이며 Git에서 추적하지 않습니다. 테스트용 최소 예시는 `tests/fixtures/site-data.synthetic.json`에 있고 파일명과 내부 `dataMode` 모두 synthetic임을 명시합니다. 스키마는 모델 포트폴리오가 추가된 `2.2.0`이며 frontend는 v2.0의 `confidence`/`financialCoverage`가 남은 artifact도 데이터 품질 레이블로만 fallback 렌더링합니다.
 
 `FRED_API_KEY`(및 KR 매크로용 `ECOS_API_KEY`)는 GitHub Actions Secret으로만 주입합니다. 네트워크가 막힌 환경에서는 실데이터 빌드가 불가능하며, 그 경우 seed로 성공한 척하지 않고 차단 원인을 보고합니다.
 

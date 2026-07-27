@@ -54,6 +54,7 @@ def snapshot_from_payload(payload: dict, *, validation_passed: bool) -> dict:
         for region, blob in regions.items()
     }
     macro = ((payload.get("macroRegime") or {}).get("regime"))
+    model_portfolio_weights = dict((payload.get("modelPortfolio") or {}).get("finalWeights") or {})
     return {
         "schemaVersion": payload.get("schemaVersion") or provenance.get("schemaVersion"),
         "modelVersion": payload.get("modelVersion") or provenance.get("modelVersion"),
@@ -62,6 +63,7 @@ def snapshot_from_payload(payload: dict, *, validation_passed: bool) -> dict:
         "marketAsOf": provenance.get("marketAsOf") or (payload.get("meta") or {}).get("latestDataDate"),
         "macroRegime": macro,
         "holdingsByRegion": holdings,
+        "modelPortfolioWeights": model_portfolio_weights,
         "dataMode": "live",
         "seed": False,
         "stale": False,

@@ -32,6 +32,8 @@ def main(argv=None) -> int:
     sig_path = ledger_dir / "signals.jsonl"
     out_path = ledger_dir / "outcomes.jsonl"
     summ_path = ledger_dir / "summary.json"
+    portfolio_sig_path = ledger_dir / "portfolio-signals.jsonl"
+    portfolio_out_path = ledger_dir / "portfolio-outcomes.jsonl"
 
     # Refuse to record synthetic/seed data into the real ledger.
     data_mode = data.get("dataMode") or (data.get("provenance") or {}).get("dataMode")
@@ -45,27 +47,42 @@ def main(argv=None) -> int:
     LG.write_jsonl(sig_path, merged)
     print(f"signals: +{appended} appended, {skipped} already present, {len(merged)} total")
 
+    portfolio_record = LG.portfolio_record_from_payload(data)
+    portfolio_existing = LG.load_jsonl(portfolio_sig_path)
+    portfolio_new = [portfolio_record] if portfolio_record else []
+    portfolio_merged, portfolio_appended, portfolio_skipped = LG.append_portfolio_signals(
+        portfolio_existing, portfolio_new)
+    LG.write_jsonl(portfolio_sig_path, portfolio_merged)
+    print(f"portfolio signals: +{portfolio_appended} appended, {portfolio_skipped} already present, {len(portfolio_merged)} total")
+
     # Best-effort outcome refresh (needs price history for tracked tickers).
     try:
         from pipeline.datafeed import fetch_prices
         from pipeline.config import load_config
         cfg, _ = load_config()
-        tickers = sorted({r["ticker"] for r in merged})
+        tickers = sorted({r["ticker"] for r in merged} |
+                         {ticker for row in portfolio_merged for ticker in (row.get("finalWeights") or {})})
         prices = fetch_prices(tickers, cfg.model.screen_history_start)
         benches = {}
-        for b in {r.get("benchmark") for r in merged if r.get("benchmark")}:
+        benchmark_tickers = ({r.get("benchmark") for r in merged if r.get("benchmark")} |
+                             {b for row in portfolio_merged for b in (row.get("benchmarks") or {}).values() if b})
+        for b in benchmark_tickers:
             bp = fetch_prices([b], cfg.model.screen_history_start).get(b)
             if bp is not None:
                 benches[b] = bp["Close"]
         outcomes = LG.compute_outcomes(merged, prices, benches)
         LG.write_jsonl(out_path, outcomes)
+        portfolio_outcomes = LG.compute_portfolio_outcomes(portfolio_merged, prices, benches)
+        LG.write_jsonl(portfolio_out_path, portfolio_outcomes)
         summary = {
             "validationStatus": LG.validation_status(
                 outcomes, min_paper_days=int(cfg.validation.get("minPaperDays", 126))),
             "horizons": {str(h): LG.evaluate(outcomes, horizon=h) for h in LG.HORIZONS},
+            "portfolioHorizons": {str(h): LG.evaluate_portfolios(portfolio_outcomes, horizon=h)
+                                   for h in LG.HORIZONS},
         }
         summ_path.write_text(json.dumps(summary, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-        print(f"outcomes: {len(outcomes)} matured; summary written")
+        print(f"outcomes: {len(outcomes)} signals / {len(portfolio_outcomes)} portfolios matured; summary written")
     except Exception as exc:  # pragma: no cover - network dependent
         print(f"outcome refresh skipped (network/data): {exc}")
     return 0

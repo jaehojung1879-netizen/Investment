@@ -35,8 +35,16 @@ jobs:
       - name: Fetch prior production state
         run: |
           mkdir -p .state
-          if git fetch origin signal-history && git show origin/signal-history:state/latest.json > .state/latest.json; then
-            echo "PRIOR_STATE_PATH=$GITHUB_WORKSPACE/.state/latest.json" >> "$GITHUB_ENV"
+          if git fetch origin signal-history; then
+            if git show origin/signal-history:state/latest.json > .state/latest.json; then
+              echo "PRIOR_STATE_PATH=$GITHUB_WORKSPACE/.state/latest.json" >> "$GITHUB_ENV"
+            fi
+            if git show origin/signal-history:ledger/outcomes.jsonl > .state/outcomes.jsonl; then
+              echo "PAPER_OUTCOMES_PATH=$GITHUB_WORKSPACE/.state/outcomes.jsonl" >> "$GITHUB_ENV"
+            fi
+            if git show origin/signal-history:ledger/summary.json > .state/summary.json; then
+              echo "PAPER_SUMMARY_PATH=$GITHUB_WORKSPACE/.state/summary.json" >> "$GITHUB_ENV"
+            fi
           fi
 
       - name: Build today's artifact

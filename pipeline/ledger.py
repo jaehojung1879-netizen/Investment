@@ -89,6 +89,45 @@ def append_signals(existing: list[dict], new: list[dict]) -> tuple[list[dict], i
     return merged, appended, len(new) - appended
 
 
+def portfolio_record_from_payload(payload: dict) -> dict | None:
+    """Extract one immutable model-portfolio signal from a built artifact."""
+    portfolio = payload.get("modelPortfolio") or {}
+    if portfolio.get("status") in {None, "BLOCKED", "DISABLED"}:
+        return None
+    provenance = payload.get("provenance") or {}
+    date = (payload.get("meta") or {}).get("latestDataDate") or provenance.get("marketAsOf")
+    model_version = payload.get("modelVersion") or provenance.get("modelVersion")
+    if not date or not model_version:
+        return None
+    return {
+        "id": f"{date}|PORTFOLIO|{model_version}",
+        "date": date,
+        "modelVersion": model_version,
+        "schemaVersion": payload.get("schemaVersion") or provenance.get("schemaVersion"),
+        "portfolioStatus": portfolio.get("status"),
+        "horizonDays": portfolio.get("horizonDays"),
+        "positions": portfolio.get("positions") or [],
+        "cashPct": portfolio.get("cashPct"),
+        "expectedVolPct": portfolio.get("expectedVolPct"),
+        "regime": portfolio.get("regime"),
+        "appliedKellyFraction": portfolio.get("appliedKellyFraction"),
+        "riskWeightedWeights": portfolio.get("riskWeightedWeights") or {},
+        "constrainedKellyWeights": portfolio.get("constrainedKellyWeights") or {},
+        "finalWeights": portfolio.get("finalWeights") or {},
+        "sectorExposure": portfolio.get("sectorExposure") or {},
+        "themeExposure": portfolio.get("themeExposure") or {},
+        "regionExposure": portfolio.get("regionExposure") or {},
+        "estimatedTurnover": portfolio.get("turnoverPct"),
+        "bindingConstraints": portfolio.get("bindingConstraints") or [],
+        "benchmarks": payload.get("benchmarks") or {},
+    }
+
+
+def append_portfolio_signals(existing: list[dict], new: list[dict]) -> tuple[list[dict], int, int]:
+    """Append portfolio signals without ever replacing the same date/version."""
+    return append_signals(existing, new)
+
+
 def load_jsonl(path: str | Path) -> list[dict]:
     p = Path(path)
     if not p.exists():
@@ -130,7 +169,8 @@ def compute_outcomes(signals: list[dict], prices: dict[str, pd.DataFrame],
         bench = benchmarks.get(s.get("benchmark"))
         rec = {"id": s["id"], "date": s["date"], "ticker": tk, "region": s.get("region"),
                "modelVersion": s.get("modelVersion"), "longTermResearchView": s.get("longTermResearchView"),
-               "entryState": s.get("entryState"), "alpha": s.get("alpha"), "horizons": {}}
+               "entryState": s.get("entryState"), "macroRegime": s.get("macroRegime"),
+               "alpha": s.get("alpha"), "alphaPercentile": s.get("alphaPercentile"), "horizons": {}}
         for h in HORIZONS:
             j = entry_idx + h
             if j >= len(close):
@@ -157,6 +197,121 @@ def compute_outcomes(signals: list[dict], prices: dict[str, pd.DataFrame],
         if rec["horizons"]:
             out.append(rec)
     return out
+
+
+def compute_portfolio_outcomes(signals: list[dict], prices: dict[str, pd.DataFrame],
+                               benchmarks: dict[str, pd.Series] | None = None) -> list[dict]:
+    """Compute matured portfolio outcomes on a synchronized common calendar."""
+    benchmarks = benchmarks or {}
+    results = []
+    for signal in signals:
+        weights = {k: float(v) for k, v in (signal.get("finalWeights") or {}).items() if float(v) > 0}
+        if not weights or not signal.get("date"):
+            continue
+        closes = {
+            ticker: prices[ticker]["Close"].dropna()
+            for ticker in weights if ticker in prices and "Close" in prices[ticker]
+        }
+        if set(closes) != set(weights):
+            continue
+        panel = pd.concat(closes, axis=1, join="inner").dropna()
+        try:
+            start = panel.index.get_indexer([pd.Timestamp(signal["date"])], method="ffill")[0]
+        except Exception:
+            continue
+        if start < 0:
+            continue
+        record = {
+            "id": signal["id"], "date": signal["date"],
+            "modelVersion": signal.get("modelVersion"), "horizons": {},
+        }
+        for horizon in sorted({21, 63, 126, 252}):
+            end = start + horizon
+            if end >= len(panel):
+                continue
+            window = panel.iloc[start:end + 1]
+            daily = window.pct_change(fill_method=None).dropna()
+            w = pd.Series(weights).reindex(window.columns).fillna(0.0)
+            portfolio_daily = daily.mul(w, axis=1).sum(axis=1)
+            portfolio_return = float((1.0 + portfolio_daily).prod() - 1.0)
+
+            benchmark_return = 0.0
+            benchmark_available = True
+            region_exposure = signal.get("regionExposure") or {}
+            invested_region = sum(float(v) for v in region_exposure.values())
+            for region, exposure_pct in region_exposure.items():
+                benchmark_ticker = (signal.get("benchmarks") or {}).get(region)
+                series = benchmarks.get(benchmark_ticker)
+                if series is None or invested_region <= 0:
+                    benchmark_available = False
+                    break
+                start_date, end_date = window.index[0], window.index[-1]
+                if start_date not in series.index or end_date not in series.index:
+                    benchmark_available = False
+                    break
+                region_return = float(series.loc[end_date] / series.loc[start_date] - 1.0)
+                benchmark_return += float(exposure_pct) / invested_region * region_return
+            if not benchmark_available:
+                benchmark_return = None
+
+            equity = (1.0 + portfolio_daily).cumprod()
+            drawdown = equity / equity.cummax() - 1.0
+            volatility = float(portfolio_daily.std(ddof=1) * np.sqrt(252)) if len(portfolio_daily) > 1 else None
+            sharpe = (float(portfolio_daily.mean() / portfolio_daily.std(ddof=1) * np.sqrt(252))
+                      if len(portfolio_daily) > 1 and portfolio_daily.std(ddof=1) > 0 else None)
+            tail = portfolio_daily.nsmallest(max(1, int(np.ceil(len(portfolio_daily) * 0.05))))
+            transaction_cost = float(signal.get("estimatedTurnover") or 0.0) / 100.0 * 0.001
+
+            def variant_return(raw_weights: dict) -> float | None:
+                if not raw_weights:
+                    return None
+                vw = pd.Series({k: float(v) for k, v in raw_weights.items()}).reindex(window.columns).fillna(0.0)
+                return float((1.0 + daily.mul(vw, axis=1).sum(axis=1)).prod() - 1.0)
+
+            risk_return = variant_return(signal.get("riskWeightedWeights") or {})
+            kelly_return = variant_return(signal.get("constrainedKellyWeights") or {})
+            excess = portfolio_return - benchmark_return if benchmark_return is not None else None
+            record["horizons"][str(horizon)] = {
+                "portfolioReturn": round(portfolio_return, 6),
+                "benchmarkReturn": round(benchmark_return, 6) if benchmark_return is not None else None,
+                "excessReturn": round(excess, 6) if excess is not None else None,
+                "costAdjustedExcessReturn": round(excess - transaction_cost, 6) if excess is not None else None,
+                "volatility": round(volatility, 6) if volatility is not None else None,
+                "sharpe": round(sharpe, 4) if sharpe is not None else None,
+                "maxDrawdown": round(float(drawdown.min()), 6),
+                "cvar95": round(float(tail.mean()), 6),
+                "turnoverPct": signal.get("estimatedTurnover"),
+                "transactionCost": round(transaction_cost, 6),
+                "vsRiskWeightedReturn": round(portfolio_return - risk_return, 6) if risk_return is not None else None,
+                "vsKellyReturn": round(portfolio_return - kelly_return, 6) if kelly_return is not None else None,
+            }
+        if record["horizons"]:
+            results.append(record)
+    return results
+
+
+def evaluate_portfolios(outcomes: list[dict], horizon: int = 126) -> dict:
+    """Summarize only non-overlapping portfolio vintages."""
+    hk = str(horizon)
+    rows = [row for row in outcomes if hk in (row.get("horizons") or {})]
+    selected = set(_non_overlapping_dates(rows, horizon))
+    sample = [row["horizons"][hk] for row in rows if row.get("date") in selected]
+    if not sample:
+        return {"n": 0, "horizon": horizon, "nonOverlappingDates": 0}
+    def mean(key):
+        values = [float(row[key]) for row in sample if row.get(key) is not None]
+        return round(float(np.mean(values)), 6) if values else None
+    return {
+        "n": len(sample), "horizon": horizon, "nonOverlappingDates": len(selected),
+        "meanPortfolioReturn": mean("portfolioReturn"),
+        "meanExcessReturn": mean("excessReturn"),
+        "meanCostAdjustedExcessReturn": mean("costAdjustedExcessReturn"),
+        "meanVolatility": mean("volatility"), "meanSharpe": mean("sharpe"),
+        "worstMaxDrawdown": min((row["maxDrawdown"] for row in sample if row.get("maxDrawdown") is not None), default=None),
+        "meanTurnoverPct": mean("turnoverPct"),
+        "meanVsRiskWeightedReturn": mean("vsRiskWeightedReturn"),
+        "meanVsKellyReturn": mean("vsKellyReturn"),
+    }
 
 
 def _non_overlapping_dates(rows: list[dict], horizon: int) -> list[str]:

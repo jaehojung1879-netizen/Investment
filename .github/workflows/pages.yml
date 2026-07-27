@@ -56,6 +56,9 @@ jobs:
             if git show origin/signal-history:ledger/summary.json > .state/summary.json; then
               echo "PAPER_SUMMARY_PATH=$GITHUB_WORKSPACE/.state/summary.json" >> "$GITHUB_ENV"
             fi
+            if git show origin/signal-history:ledger/outcomes.jsonl > .state/outcomes.jsonl; then
+              echo "PAPER_OUTCOMES_PATH=$GITHUB_WORKSPACE/.state/outcomes.jsonl" >> "$GITHUB_ENV"
+            fi
           fi
 
       - name: Build insight data

@@ -21,7 +21,8 @@
           <a href="#indices">시장</a>
           <a href="#regime">매크로 국면</a>
           <a href="#consensus">전문가 시각</a>
-          <a href="#longterm">종목 리서치</a>
+            <a href="#longterm">종목 리서치</a>
+            <a href="#modelPortfolio">모델 포트폴리오</a>
           <a href="#direction">분석 도구</a>
         </nav>
         <div class="freshness muted">
@@ -68,7 +69,13 @@
         <p class="caveat muted" id="ltCaveats"></p>
       </section>
 
-      <!-- 5. 진입상태와 위험 경고 -->
+      <!-- 5. 제약형 Fractional Kelly 모델 포트폴리오 -->
+      <section id="modelPortfolio" class="section" hidden>
+        <div class="sec-title"><span class="overline">모델 포트폴리오 — 제약형 Fractional Kelly</span><span id="modelPortfolioMeta" class="muted"></span></div>
+        <div id="modelPortfolioPanel" class="mp-wrap"></div>
+      </section>
+
+      <!-- 6. 진입상태와 위험 경고 -->
       <section id="entry" class="section">
         <div class="sec-title"><span class="overline">진입상태 · 위험 경고 <span class="ico qh" data-x="entry">ⓘ</span></span><span class="muted">‘좋은 종목’과 ‘지금 살 종목’은 다릅니다</span></div>
         <div id="entryPanel" class="entry-grid"></div>
