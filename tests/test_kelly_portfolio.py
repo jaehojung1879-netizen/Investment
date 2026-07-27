@@ -118,6 +118,14 @@ class KellyPortfolioTests(unittest.TestCase):
         self.assertEqual(got["fallbackReason"], "expected_return_history_insufficient")
         self.assertAlmostEqual(sum(got["finalWeights"].values()) + got["cashPct"] / 100, 1.0)
 
+    def test_serialized_weights_and_cash_sum_to_100pct_after_rounding(self):
+        weights = pd.Series({"A": 0.123456, "B": 0.234567, "C": 0.345653})
+        serialized, cash_pct = KP._serialize_allocation(weights)
+        legacy_cash_pct = round((1.0 - float(weights.sum())) * 100.0, 2)
+
+        self.assertGreater(abs(sum(serialized.values()) + legacy_cash_pct / 100.0 - 1.0), 1e-5)
+        self.assertLessEqual(abs(sum(serialized.values()) + cash_pct / 100.0 - 1.0), 1e-8)
+
     def test_blocked_portfolio_hides_all_weights(self):
         got = KP.build_model_portfolio({"regions": {}}, {}, [], {"enabled": True}, blocked=True)
         self.assertEqual(got["status"], "BLOCKED")

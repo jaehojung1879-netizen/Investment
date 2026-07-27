@@ -416,6 +416,13 @@ def _regime_adjustment(macro_regime: dict | None, cfg: dict) -> tuple[str, float
     return label, multiplier, float(row.get("minCashPct", cfg.get("minCashPct", 10))), warnings
 
 
+def _serialize_allocation(weights: pd.Series) -> tuple[dict[str, float], float]:
+    """Serialize weights first, then derive cash from those exact values."""
+    final_weights = {k: round(float(v), 6) for k, v in weights.items()}
+    cash_pct = round((1.0 - sum(final_weights.values())) * 100.0, 6)
+    return final_weights, cash_pct
+
+
 def build_model_portfolio(long_term: dict | None, prices: dict, outcomes: list[dict],
                           cfg: dict | None = None, macro_regime: dict | None = None,
                           themes: dict | None = None, prior_weights: dict | None = None,
@@ -521,11 +528,12 @@ def build_model_portfolio(long_term: dict | None, prices: dict, outcomes: list[d
             "bindingConstraints": position_bindings,
         })
     positions.sort(key=lambda p: p["modelPortfolioWeightPct"], reverse=True)
+    final_weights, cash_pct = _serialize_allocation(final)
     skeleton.update({
-        "cashPct": round((1.0 - float(final.sum())) * 100, 2), "turnoverPct": round(turnover * 100, 2),
+        "cashPct": cash_pct, "turnoverPct": round(turnover * 100, 2),
         "positions": positions, "riskWeightedWeights": {k: round(v, 6) for k, v in risk_weights.items()},
         "constrainedKellyWeights": {k: round(v, 6) for k, v in kelly_weights.items()},
-        "finalWeights": {k: round(float(v), 6) for k, v in final.items()},
+        "finalWeights": final_weights,
         "sectorExposure": {k: round(v * 100, 2) for k, v in sector_exp.items()},
         "themeExposure": {k: round(v * 100, 2) for k, v in theme_exp.items()},
         "regionExposure": {k: round(v * 100, 2) for k, v in region_exp.items()},
@@ -548,7 +556,7 @@ def build_model_portfolio(long_term: dict | None, prices: dict, outcomes: list[d
             skeleton["estimatedMaxDrawdownPct"] = round(float(drawdown.min()) * 100, 2)
     except Exception:
         pass
-    total = float(final.sum()) + skeleton["cashPct"] / 100.0
+    total = sum(final_weights.values()) + skeleton["cashPct"] / 100.0
     caps_ok = (
         (not len(final) or float(final.max()) <= float(local_cfg.get("maxPositionWeight", 0.10)) + 1e-8)
         and all(v <= float(local_cfg.get("maxSectorWeight", 0.25)) + 1e-8 for v in sector_exp.values())
