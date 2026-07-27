@@ -309,4 +309,279 @@ def optimize_fractional_kelly(expected_returns: list[dict], covariance: pd.DataF
     weights = pd.Series(np.maximum(result.x, 0.0), index=tickers)
     try:
         raw = np.linalg.pinv(cov) @ mu
-        raw = pd.Series(np.maximum(raw, 0.0) * float(applied_fracti￿m÷¶Ëkºwµçâu¶÷fW%ÒææFW¢u¶÷fW%ÒÒæÖUö6 ¢w&÷W÷7V72Ò°¢%4T5Dõ%ô4"ÂfÆöB6frævWB&Ö6V7F÷%vVvB"Âã#RÂÆÖ&F3¢¶2ævWB'6V7F÷""÷"%Væ6Æ76fVB%ÒÀ¢%DTÔUô4"ÂfÆöB6frævWB&ÖFVÖUvVvB"Âã#ÂÆÖ&F3¢FVÖW2ævWB5²'F6¶W"%Ò÷"²%Væ6Æ76fVB%ÒÀ¢%$Ttôåô4"ÂæöæRÂÆÖ&F3¢¶2ævWB'&Vvöâ"÷"%Tä´äõtâ%ÒÀ¢Ð¢'÷F6¶W"Ò¶5²'F6¶W"%Ó¢2f÷"2â6æFFFW7Ð¢f÷"òâ&ævRB ¢f÷"&VfÂfVEö6ÂÆ&VÇ5öfââw&÷W÷7V73 ¢w&÷W3¢F7E·7G"ÂÆ7E·7G%ÕÒÒ·Ð¢f÷"F6¶W"ârææFW ¢f÷"Æ&VÂâÆ&VÇ5öfâ'÷F6¶W%·F6¶W%Ò ¢w&÷W2ç6WFFVfVÇBÆ&VÂÂµÒæVæBF6¶W"¢f÷"Æ&VÂÂæÖW2âw&÷W2æFV×2 ¢b&VfÓÒ%DTÔUô4"æBÆ&VÂÓÒ%Væ6Æ76fVB# ¢6öçFçVP¢6ÒfVEö6 ¢b&VfÓÒ%$Ttôåô4# ¢6ÒfÆöB6frævWB'&Vvöä62"÷"·ÒævWBÆ&VÂÂã¢F÷FÂÒfÆöBu¶æÖW5Òç7VÒ¢b62æ÷BæöæRæBF÷FÂâ6²RÓ ¢u¶æÖW5Ò£Ò6òF÷FÀ¢¶WÒb'·&VfÓ§¶Æ&VÇÒ ¢b¶Wæ÷Bâ&æFæw3 ¢&æFæw2æVæB¶W¢'VFvWBÒãÒfÆöB6frævWB&Öä667B"Âòã ¢brç7VÒâ'VFvWC ¢r£Ò'VFvWBòfÆöBrç7VÒ¢&æFæw2æVæB$Ôåô44"¢&WGW&ârÂ&æFæw0  ¦FVb&ÆVæE÷vF÷&6µ÷vVvFVE÷÷'FföÆò&6µ÷vVvG3¢F7BÂ¶VÆÇ÷vVvG3¢F7BÀ¢6æFFFW3¢Æ7E¶F7EÒÂ6fs¢F7BÀ¢FVÖW3¢F7BÂæöæRÒæöæRÀ¢&÷%÷vVvG3¢F7BÂæöæRÒæöæRÓâF7C ¢FVÖW2Â&÷%÷vVvG2ÒFVÖW2÷"·ÒÂ&÷%÷vVvG2÷"·Ð¢F6¶W'2Ò¶5²'F6¶W"%Òf÷"2â6æFFFW5Ð¢&6²ÒBå6W&W2·C¢fÆöB&6µ÷vVvG2ævWBBÂãf÷"BâF6¶W'7Ò¢¶VÆÇÒBå6W&W2·C¢fÆöB¶VÆÇ÷vVvG2ævWBBÂãf÷"BâF6¶W'7Ò¢&ÆVæBÒfÆöB6frævWB&&ÆVæEvVvB"Âã#R¢6öÖ&æVBÒãÒ&ÆVæB¢&6²²&ÆVæB¢¶VÆÇ¢6öÖ&æVBÂ&æFæw2Òö6÷÷'FföÆò6öÖ&æVBÂ6æFFFW2Â6frÂFVÖW2 ¢b&÷%÷vVvG3 ¢&÷"ÒBå6W&W2·C¢fÆöB&÷%÷vVvG2ævWBBÂãf÷"BâF6¶W'7Ò¢GW&æ÷fW"ÒãR¢fÆöB6öÖ&æVBÒ&÷"æ'2ç7VÒ¢6ÒfÆöB6frævWB&ÖGW&æ÷fW%7B"Â#Ròã ¢bGW&æ÷fW"â6æBGW&æ÷fW"â ¢6öÖ&æVBÒ&÷"²6öÖ&æVBÒ&÷"¢6òGW&æ÷fW"¢6öÖ&æVBÂÖ÷&RÒö6÷÷'FföÆò6öÖ&æVBÂ6æFFFW2Â6frÂFVÖW2¢&æFæw2æWFVæBf÷"âÖ÷&Rbæ÷Bâ&æFæw2¢&æFæw2æVæB%EU$äõdU%ô4"¢&WGW&â²'vVvG2#¢6öÖ&æVBÂ&&æFæt6öç7G&çG2#¢&æFæw7Ð  ¦FVbö6æFFFU÷&÷w2Æöæu÷FW&Ó¢F7BÂæöæRÓâÆ7E¶F7EÓ ¢&÷w3¢Æ7E¶F7EÒÒµÐ¢f÷"&VvöâÂ&Æö"âÆöæu÷FW&Ò÷"·ÒævWB'&Vvöç2"÷"·ÒæFV×2 ¢6÷W&6RÒ&Æö"÷"·ÒævWB'6·2"÷"µÐ¢f÷"&÷râ6÷W&6S ¢FVÒÒF7B&÷r¢FVÕ²'&Vvöâ%ÒÒFVÒævWB'&Vvöâ"÷"&Vvöà¢&÷w2æVæBFVÒ¢&WGW&â&÷w0  ¦FVb÷&6µ÷vVvG26æFFFW3¢Æ7E¶F7EÒÂ6fs¢F7BÓâF7C ¢&rÒ¶5²'F6¶W"%Ó¢ÖãÂfÆöB2ævWB&ÖöFVÅ6ÆVWfUvVvE7B"÷"ãòãf÷"2â6æFFFW7Ð¢F÷FÂÒ7VÒ&rçfÇVW2¢'VFvWBÒãÒfÆöB6frævWB&Öä667B"Âòã ¢bF÷FÂâ ¢&rÒ·C¢ròF÷FÂ¢'VFvWBf÷"BÂrâ&ræFV×2Ð¢6VBÂòÒö6÷÷'FföÆòBå6W&W2&rÂGGSÖfÆöBÂ6æFFFW2Â6frÂ·Ò¢&WGW&â6VBçFõöF7B  ¦FVb÷&VvÖUöF§W7FÖVçBÖ7&õ÷&VvÖS¢F7BÂæöæRÂ6fs¢F7BÓâGWÆU·7G"ÂfÆöBÂfÆöBÂÆ7E·7G%ÕÓ ¢Ö7&õ÷&VvÖRÒÖ7&õ÷&VvÖR÷"·Ð¢Æ&VÂÒÖ7&õ÷&VvÖRævWB'&VvÖR"÷"%G&ç6FöâôÆ÷r6öæfFVæ6R ¢ÖærÒ6frævWB'&VvÖT×VÇFÆW'2"÷"·Ð¢&÷rÒÖærævWBÆ&VÂ÷"ÖærævWB%G&ç6FöâôÆ÷r6öæfFVæ6R"÷"·Ð¢×VÇFÆW"ÒfÆöB&÷rævWB&¶VÆÇ×VÇFÆW""ÂãR¢v&ææw2ÒµÐ¢6öæfFVæ6RÒÖ7&õ÷&VvÖRævWB&6öæfFVæ6R"¢b6öæfFVæ6R2æ÷BæöæRæBfÆöB6öæfFVæ6RÂãS ¢×VÇFÆW"£ÒÖãRÂfÆöB6öæfFVæ6RòãR¢v&ææw2æVæB$ÄõuôÔ5$õô4ôädDTä4Uô´TÄÅô$5UB"¢&WGW&âÆ&VÂÂ×VÇFÆW"ÂfÆöB&÷rævWB&Öä667B"Â6frævWB&Öä667B"ÂÂv&ææw0  ¦FVb'VÆEöÖöFVÅ÷÷'FföÆòÆöæu÷FW&Ó¢F7BÂæöæRÂ&6W3¢F7BÂ÷WF6öÖW3¢Æ7E¶F7EÒÀ¢6fs¢F7BÂæöæRÒæöæRÂÖ7&õ÷&VvÖS¢F7BÂæöæRÒæöæRÀ¢FVÖW3¢F7BÂæöæRÒæöæRÂ&÷%÷vVvG3¢F7BÂæöæRÒæöæRÀ¢5ööc¢7G"ÂæöæRÒæöæRÂ&Æö6¶VC¢&ööÂÒfÇ6RÀ¢fÆFFöå÷7FGW3¢F7BÂæöæRÒæöæRÓâF7C ¢""%F÷ÖÆWfVÂ76VÖ&Çg&öÒ6Æ'&FVB&WGW&ç2F&÷VvfæÂ&ÆVæFVBvVvG2â"" ¢6frÂFVÖW2Â&÷%÷vVvG2Ò6fr÷"·ÒÂFVÖW2÷"·ÒÂ&÷%÷vVvG2÷"·Ð¢fÆFFöå÷7FGW2ÒfÆFFöå÷7FGW2÷"·Ð¢&6RÒfÆöB6frævWB&¶VÆÇg&7Föâ"Âã#R¢&ÆVæBÒfÆöB6frævWB&&ÆVæEvVvB"Âã#R¢Æ&VÂÂ&VvÖUö×VÇBÂ&VvÖUö66Âv&ææw2Ò÷&VvÖUöF§W7FÖVçBÖ7&õ÷&VvÖRÂ6fr¢Æö6Åö6frÒF7B6fr¢Æö6Åö6fu²&Öä667B%ÒÒÖfÆöB6frævWB&Öä667B"ÂÂ&VvÖUö66¢ÆVBÒ&6R¢&VvÖUö×VÇ@¢6¶VÆWFöâÒ°¢'7FGW2#¢%4Dõuôå5Tdd4TåEô5Dõ%"Â&ÖWFöB#¢$$ÄTäDTEô4ôå5E$äTEôe$5DôäÅô´TÄÅ"À¢&÷&¦öäF2#¢çB6frævWB&÷&¦öäF2"Â#bÂ&&6T¶VÆÇg&7Föâ#¢&6RÀ¢'&VvÖR#¢Æ&VÂÂ'&VvÖT×VÇFÆW"#¢&÷VæB&VvÖUö×VÇBÂBÀ¢&ÆVD¶VÆÇg&7Föâ#¢&÷VæBÆVBÂBÂ&¶VÆÇ&ÆVæEvVvB#¢&ÆVæBÀ¢'&6µvVvFVD&ÆVæEvVvB#¢ãÒ&ÆVæBÂ&667B#¢ãÀ¢&WV7FVEföÅ7B#¢æöæRÂ&W7FÖFVDÖG&vF÷vå7B#¢æöæRÂ'GW&æ÷fW%7B#¢ãÀ¢&WV7FVE&WGW&å7FGW2#¢$å5Tdd4TåB"Â&fÆÆ&6µ&V6öâ#¢æöæRÀ¢'÷6Föç2#¢µÒÂ'&6µvVvFVEvVvG2#¢·ÒÂ&6öç7G&æVD¶VÆÇvVvG2#¢·ÒÀ¢&fæÅvVvG2#¢·ÒÂ'6V7F÷$W÷7W&R#¢·ÒÂ'FVÖTW÷7W&R#¢·ÒÂ'&VvöäW÷7W&R#¢·ÒÀ¢&6öç7G&çG2#¢¶³¢Æö6Åö6frævWB²f÷"²â&Ö÷6FöåvVvB"Â&Ö6V7F÷%vVvB"Â&ÖFVÖUvVvB"Â&Öä667B"Â&ÖGW&æ÷fW%7B"Â&ÖäæÖW2"Â&ÖæÖW2"Â'&Vvöä62"ÒÀ¢'v&ææw2#¢v&ææw2Â'fÆFFöâ#¢²&VÆv&ÆTf÷$7FfFöâ#¢fÇ6WÒÀ¢Ð¢bæ÷B6frævWB&Væ&ÆVB"ÂG'VR ¢6¶VÆWFöå²'7FGW2%ÒÒ$D4$ÄTB ¢&WGW&â6¶VÆWFöà¢b&Æö6¶VC ¢6¶VÆWFöå²'7FGW2%ÒÒ$$Äô4´TB ¢6¶VÆWFöå²'v&ææw2%ÒæVæB%$T4ôÔÔTäDDôå5ô$Äô4´TC²tTtE5õtDTÄB"¢&WGW&â6¶VÆWFöà ¢6æFFFW2Òö6æFFFU÷&÷w2Æöæu÷FW&Ò¢bÆVâ6æFFFW2ÂçBÆö6Åö6frævWB&ÖäæÖW2"Âb ¢6¶VÆWFöå²&fÆÆ&6µ&V6öâ%ÒÒ&ÆöæwFW&Õö6æFFFW5ö&VÆ÷uöÖæ×VÒ ¢&WGW&â6¶VÆWFöà¢&6µ÷vVvG2Ò÷&6µ÷vVvG26æFFFW2ÂÆö6Åö6fr¢W7FÖFW2ÒW7FÖFUöWV7FVE÷&WGW&ç26æFFFW2Â÷WF6öÖW2ÂÆö6Åö6frÂ5ööcÖ5ööb¢W7FÖFUöÖÒ¶U²'F6¶W"%Ó¢Rf÷"RâW7FÖFW7Ð¢7Vff6VçBÒ¶Rf÷"RâW7FÖFW2bU²'7FGW2%ÒÓÒ%4Dõr%Ð¢6÷bÂ6÷eöÖWFÒW7FÖFUö6÷f&æ6R&6W2Â¶5²'F6¶W"%Òf÷"2â6æFFFW5ÒÂÆö6Åö6fr¢6¶VÆWFöå²&6÷f&æ6R%ÒÒ6÷eöÖWF¢6¶VÆWFöå²&WV7FVE&WGW&äW7FÖFW2%ÒÒW7FÖFW0 ¢fÆÆ&6µ÷&V6öâÒæöæP¢Væ6öç7G&æVC¢F7E·7G"ÂfÆöEÒÒ·Ð¢¶VÆÇ÷vVvG3¢F7E·7G"ÂfÆöEÒÒ·Ð¢bÆVâ7Vff6VçBÂçBÆö6Åö6frævWB&ÖäæÖW2"Âb ¢fÆÆ&6µ÷&V6öâÒ&WV7FVE÷&WGW&åö7F÷'öç7Vff6VçB ¢VÆb6÷b2æöæS ¢fÆÆ&6µ÷&V6öâÒ6÷eöÖWFævWB'&V6öâ"÷"&6÷f&æ6U÷VæfÆ&ÆR ¢VÇ6S ¢÷FÖ¦VBÒ÷FÖ¦Uög&7FöæÅö¶VÆÇW7FÖFW2Â6÷bÂ6æFFFW2ÂÆö6Åö6frÂÆVBÀ¢FVÖW3×FVÖW2Â&÷%÷vVvG3×&÷%÷vVvG2¢bæ÷B÷FÖ¦VBævWB&ö²" ¢6¶VÆWFöå²'7FGW2%ÒÒ$õDÔ¤DôåôdÄTB ¢fÆÆ&6µ÷&V6öâÒ÷FÖ¦VBævWB'&V6öâ"÷"&÷FÖ¦FöåöfÆVB ¢6¶VÆWFöå²'v&ææw2%ÒæVæBb$õDÔ¤U#§¶fÆÆ&6µ÷&V6öçÒ"¢VÇ6S ¢¶VÆÇ÷vVvG2Ò÷FÖ¦VE²'vVvG2%ÒçFõöF7B¢Væ6öç7G&æVBÒ÷FÖ¦VE²'Væ6öç7G&æVEvVvG2%ÒçFõöF7B¢6¶VÆWFöå²&÷FÖ¦Föâ%ÒÒ²&ö&¦V7FfR#¢÷FÖ¦VE²&ö&¦V7FfR%ÒÂ&FW&Föç2#¢÷FÖ¦VE²&FW&Föç2%×Ð ¢bfÆÆ&6µ÷&V6öã ¢fæÂÒBå6W&W2&6µ÷vVvG2ÂGGSÖfÆöB¢fæÂÂ&æFæw2Òö6÷÷'FföÆòfæÂÂ6æFFFW2ÂÆö6Åö6frÂFVÖW2¢6¶VÆWFöå²&fÆÆ&6µ&V6öâ%ÒÒfÆÆ&6µ÷&V6öà¢6¶VÆWFöå²'v&ææw2%ÒæVæB$´TÄÅôäõEô5DdDTC²U5Däuõ$4µõtTtDTEõõ%DdôÄõõ$UDäTB"¢VÇ6S ¢&ÆVæFVBÒ&ÆVæE÷vF÷&6µ÷vVvFVE÷÷'FföÆò&6µ÷vVvG2Â¶VÆÇ÷vVvG2Â6æFFFW2À¢Æö6Åö6frÂFVÖW2Â&÷%÷vVvG2¢fæÂÂ&æFæw2Ò&ÆVæFVE²'vVvG2%ÒÂ&ÆVæFVE²&&æFæt6öç7G&çG2%Ð¢6¶VÆWFöå²'7FGW2%ÒÒ%4Dõuõ$TE"b6frævWB&ÖöFR"Â'6F÷r"ÓÒ'6F÷r"VÇ6R$5DdUõU" ¢6¶VÆWFöå²&WV7FVE&WGW&å7FGW2%ÒÒ%4Dõr  ¢6V7F÷%öWÂFVÖUöWÂ&VvöåöWÒöW÷7W&W2fæÂÂ6æFFFW2ÂFVÖW2¢&÷"ÒBå6W&W2·C¢fÆöB&÷%÷vVvG2ævWBBÂãf÷"BâfæÂææFWÒ¢GW&æ÷fW"ÒãR¢fÆöBfæÂÒ&÷"æ'2ç7VÒb&÷%÷vVvG2VÇ6RfÆöBfæÂç7VÒ¢÷6Föç2ÒµÐ¢f÷"6æFFFRâ6æFFFW3 ¢F6¶W"Ò6æFFFU²'F6¶W"%Ð¢WÒW7FÖFUöÖævWBF6¶W"Â·Ò¢rÒfÆöBfæÂævWBF6¶W"Âã¢÷6Föåö&æFæw2Ò¶"f÷""â&æFæw2b"æVæG7vFb#§·F6¶W'Ò"÷ ¢"ç7F'G7vF%4T5Dõ%ô4¢"æB"ç7ÆB#¢"Â³ÒÓÒ6æFFFRævWB'6V7F÷""÷"%Væ6Æ76fVB"÷ ¢"ç7F'G7vF%$Ttôåô4¢"æB"ç7ÆB#¢"Â³ÒÓÒ6æFFFRævWB'&Vvöâ"÷ ¢"ç7F'G7vF%DTÔUô4¢"æB"ç7ÆB#¢"Â³ÒâFVÖW2ævWBF6¶W"÷"²%Væ6Æ76fVB%ÒÐ¢÷6Föç2æVæB°¢'F6¶W"#¢F6¶W"Â'&Vvöâ#¢6æFFFRævWB'&Vvöâ"Â'6V7F÷"#¢6æFFFRævWB'6V7F÷""÷"%Væ6Æ76fVB"À¢'FVÖW2#¢FVÖW2ævWBF6¶W"÷"²%Væ6Æ76fVB%ÒÂ&ÇW&6VçFÆR#¢6æFFFRævWB&ÇW&6VçFÆR"À¢&WV7FVDW6W75&WGW&å7B#¢WævWB&WV7FVDW6W75&WGW&å7B"À¢&WV7FVE&WGW&å6×ÆU6¦R#¢WævWB&VffV7FfU6×ÆU6¦R"ÂÀ¢&WV7FVE&WGW&å7FGW2#¢WævWB'7FGW2"À¢'&6´ÆWfVÂ#¢6æFFFRævWB'&6²"÷"·ÒævWB'föÃ#S%7B"À¢'&6µvVvFVEvVvE7B#¢&÷VæBfÆöB&6µ÷vVvG2ævWBF6¶W"Âã¢Â"À¢'Væ6öç7G&æVD¶VÆÇvVvE7B#¢&÷VæBfÆöBVæ6öç7G&æVBævWBF6¶W"Âã¢Â"À¢&6öç7G&æVD¶VÆÇvVvE7B#¢&÷VæBfÆöB¶VÆÇ÷vVvG2ævWBF6¶W"Âã¢Â"À¢&ÖöFVÅ÷'FföÆõvVvE7B#¢&÷VæBr¢Â"À¢&VçG'7FFR#¢6æFFFRævWB&VçG'"÷"·ÒævWB&VçG'7FFR"À¢&&æFæt6öç7G&çG2#¢÷6Föåö&æFæw2À¢Ò¢÷6Föç2ç6÷'B¶WÖÆÖ&F¢²&ÖöFVÅ÷'FföÆõvVvE7B%ÒÂ&WfW'6SÕG'VR¢6¶VÆWFöâçWFFR°¢&667B#¢&÷VæBãÒfÆöBfæÂç7VÒ¢Â"Â'GW&æ÷fW%7B#¢&÷VæBGW&æ÷fW"¢Â"À¢'÷6Föç2#¢÷6Föç2Â'&6µvVvFVEvVvG2#¢¶³¢&÷VæBbÂbf÷"²Âbâ&6µ÷vVvG2æFV×2ÒÀ¢&6öç7G&æVD¶VÆÇvVvG2#¢¶³¢&÷VæBbÂbf÷"²Âbâ¶VÆÇ÷vVvG2æFV×2ÒÀ¢&fæÅvVvG2#¢¶³¢&÷VæBfÆöBbÂbf÷"²ÂbâfæÂæFV×2ÒÀ¢'6V7F÷$W÷7W&R#¢¶³¢&÷VæBb¢Â"f÷"²Âbâ6V7F÷%öWæFV×2ÒÀ¢'FVÖTW÷7W&R#¢¶³¢&÷VæBb¢Â"f÷"²ÂbâFVÖUöWæFV×2ÒÀ¢'&VvöäW÷7W&R#¢¶³¢&÷VæBb¢Â"f÷"²Âbâ&VvöåöWæFV×2ÒÀ¢&&æFæt6öç7G&çG2#¢&æFæw2À¢Ò¢b6÷b2æ÷BæöæS ¢6öÖÖöâÒ·Bf÷"BâfæÂææFWbBâ6÷bææFWÐ¢'"ÒfæÂæÆö5¶6öÖÖöåÒçFõöçV×GGSÖfÆöB¢6¶VÆWFöå²&WV7FVEföÅ7B%ÒÒ&÷VæBfÆöBÖFç7'BÖãÂ'"6÷bæÆö5¶6öÖÖöâÂ6öÖÖöåÒçFõöçV×'"¢Â"¢27F÷&6ÂG&vF÷vâ2FW67&FfRæ÷Bf÷&V67BæBW6W2öæÇFP¢26ÖRFÇ6Æ÷6R7F÷'fÆ&ÆRBFR÷'FföÆò6Æ7VÆFöâFÖRà¢G' ¢&WGW&ç2ÒBæ6öæ6B·C¢&6W5·EÕ²$6Æ÷6R%Òç7Eö6ævRfÆÅöÖWFöCÔæöæR¢f÷"BâfæÂææFWbBâ&6W2æB$6Æ÷6R"â&6W5·E×ÒÀ¢3ÓÂ¦öãÒ&ææW""æG&÷æçFÂçBÆö6Åö6frævWB&6÷f&æ6TÆöö¶&6´F2"ÂSB¢6öÖÖöâÒ·Bf÷"BâfæÂææFWbBâ&WGW&ç2æ6öÇVÖç5Ð¢bÆVâ&WGW&ç2æB6öÖÖöã ¢FÒã²&WGW&ç5¶6öÖÖöåÒæ×VÂfæÂæÆö5¶6öÖÖöåÒÂ3Óç7VÒ3Óæ7V×&öB¢G&vF÷vâÒFòFæ7VÖÖÒã ¢6¶VÆWFöå²&W7FÖFVDÖG&vF÷vå7B%ÒÒ&÷VæBfÆöBG&vF÷vâæÖâ¢Â"¢W6WBW6WFöã ¢70¢F÷FÂÒfÆöBfæÂç7VÒ²6¶VÆWFöå²&667B%Òòã ¢65öö²Ò¢æ÷BÆVâfæÂ÷"fÆöBfæÂæÖÃÒfÆöBÆö6Åö6frævWB&Ö÷6FöåvVvB"Âã²RÓ¢æBÆÂbÃÒfÆöBÆö6Åö6frævWB&Ö6V7F÷%vVvB"Âã#R²RÓf÷"bâ6V7F÷%öWçfÇVW2¢æBÆÂÆ&VÂÓÒ%Væ6Æ76fVB"÷"bÃÒfÆöBÆö6Åö6frævWB&ÖFVÖUvVvB"Âã#²RÓ¢f÷"Æ&VÂÂbâFVÖUöWæFV×2¢æBÆÂbÃÒfÆöBÆö6Åö6frævWB'&Vvöä62"÷"·ÒævWBÆ&VÂÂã²RÓ¢f÷"Æ&VÂÂbâ&VvöåöWæFV×2¢¢7FfFöâÒÆö6Åö6frævWB&7FfFöâ"÷"·Ð¢&Vvöåö2ÒfÆFFöå÷7FGW2ævWB'&Vvöä2"÷"·Ð¢&æµö5÷÷6FfRÒ&ööÂ&Vvöåö2æBÆÂ&÷rævWB&ÖVâ"÷"âf÷"&÷râ&Vvöåö2çfÇVW2¢7FfFöåö6V6·2Ò°¢'W$F2#¢çBfÆFFöå÷7FGW2ævWB'W$F2"÷"ãÒçB7FfFöâævWB&ÖåW$F2"Â#S"À¢&ÖGW&VE6væÇ2#¢çBfÆFFöå÷7FGW2ævWB&ÖGW&VE6væÇ2"÷"ãÒçB7FfFöâævWB&ÖäÖGW&VE6væÇ2"ÂÀ¢'÷6FfT6÷7DF§W7FVDW6W72#¢fÆFFöå÷7FGW2ævWB&6÷7DF§W7FVDW6W75&WGW&â"÷"âÀ¢'÷6FfU&æ´2#¢&æµö5÷÷6FfRÀ¢&æôÖFDFWFW&÷&Föâ#¢fÆFFöå÷7FGW2ævWB&æôÖFDFWFW&÷&Föâ"2G'VRÀ¢&VÖä&÷fVB#¢fÇ6RÀ¢Ð¢&WV&VBÒ¶7FfFöåö6V6·5²'W$F2%ÒÂ7FfFöåö6V6·5²&ÖGW&VE6væÇ2%ÕÐ¢b7FfFöâævWB'&WV&U÷6FfT6÷7DF§W7FVDW6W72"ÂG'VR ¢&WV&VBæVæB7FfFöåö6V6·5²'÷6FfT6÷7DF§W7FVDW6W72%Ò¢b7FfFöâævWB'&WV&U÷6FfU&æ´2"ÂG'VR ¢&WV&VBæVæB7FfFöåö6V6·5²'÷6FfU&æ´2%Ò¢b7FfFöâævWB'&WV&TæôÖFDFWFW&÷&Föâ"ÂG'VR ¢&WV&VBæVæB7FfFöåö6V6·5²&æôÖFDFWFW&÷&Föâ%Ò¢6¶VÆWFöå²'fÆFFöâ%ÒÒ°¢'vVvG5ÇW4667B#¢&÷VæBF÷FÂ¢ÂbÀ¢&æöäæVvFfR#¢&ööÂfæÂãÒÓRÓ"æÆÂÀ¢&fæFR#¢&ööÂçæ6fæFRfæÂçFõöçV×æÆÂÀ¢&6öç7G&çG56F6fVB#¢&ööÂ65öö²æB'2F÷FÂÒãÃÒRÓbÀ¢&7FfFöä6V6·2#¢7FfFöåö6V6·2À¢&VÆv&ÆTf÷$7FfFöâ#¢&ööÂ&WV&VBæBÆÂ&WV&VBÀ¢&ÖçVÅ&WfWu&WV&VB#¢G'VRÀ¢Ð¢&WGW&â6¶VÆWFöà￿
+        raw = pd.Series(np.maximum(raw, 0.0) * float(applied_fraction), index=tickers)
+    except Exception:
+        raw = pd.Series(0.0, index=tickers)
+    return {"ok": True, "weights": weights, "unconstrainedWeights": raw,
+            "objective": round(float(-result.fun), 8), "iterations": int(result.nit)}
+
+
+def _cap_portfolio(weights: pd.Series, candidates: list[dict], cfg: dict,
+                   themes: dict) -> tuple[pd.Series, list[str]]:
+    """Deterministically remove constraint excess; never force it elsewhere."""
+    w = weights.clip(lower=0).astype(float).copy()
+    bindings: list[str] = []
+    name_cap = float(cfg.get("maxPositionWeight", 0.10))
+    over = w > name_cap
+    if over.any():
+        bindings.extend(f"POSITION_CAP:{t}" for t in w[over].index)
+        w[over] = name_cap
+    group_specs = [
+        ("SECTOR_CAP", float(cfg.get("maxSectorWeight", 0.25)), lambda c: [c.get("sector") or "Unclassified"]),
+        ("THEME_CAP", float(cfg.get("maxThemeWeight", 0.20)), lambda c: themes.get(c["ticker"]) or ["Unclassified"]),
+        ("REGION_CAP", None, lambda c: [c.get("region") or "UNKNOWN"]),
+    ]
+    by_ticker = {c["ticker"]: c for c in candidates}
+    for _ in range(4):
+        for prefix, fixed_cap, labels_fn in group_specs:
+            groups: dict[str, list[str]] = {}
+            for ticker in w.index:
+                for label in labels_fn(by_ticker[ticker]):
+                    groups.setdefault(label, []).append(ticker)
+            for label, names in groups.items():
+                if prefix == "THEME_CAP" and label == "Unclassified":
+                    continue
+                cap = fixed_cap
+                if prefix == "REGION_CAP":
+                    cap = float((cfg.get("regionCaps") or {}).get(label, 1.0))
+                total = float(w[names].sum())
+                if cap is not None and total > cap + 1e-10:
+                    w[names] *= cap / total
+                    key = f"{prefix}:{label}"
+                    if key not in bindings:
+                        bindings.append(key)
+    budget = 1.0 - float(cfg.get("minCashPct", 10)) / 100.0
+    if w.sum() > budget:
+        w *= budget / float(w.sum())
+        bindings.append("MIN_CASH")
+    return w, bindings
+
+
+def blend_with_risk_weighted_portfolio(risk_weights: dict, kelly_weights: dict,
+                                        candidates: list[dict], cfg: dict,
+                                        themes: dict | None = None,
+                                        prior_weights: dict | None = None) -> dict:
+    themes, prior_weights = themes or {}, prior_weights or {}
+    tickers = [c["ticker"] for c in candidates]
+    risk = pd.Series({t: float(risk_weights.get(t, 0.0)) for t in tickers})
+    kelly = pd.Series({t: float(kelly_weights.get(t, 0.0)) for t in tickers})
+    blend = float(cfg.get("blendWeight", 0.25))
+    combined = (1.0 - blend) * risk + blend * kelly
+    combined, bindings = _cap_portfolio(combined, candidates, cfg, themes)
+
+    if prior_weights:
+        prior = pd.Series({t: float(prior_weights.get(t, 0.0)) for t in tickers})
+        turnover = 0.5 * float((combined - prior).abs().sum())
+        cap = float(cfg.get("maxTurnoverPct", 25)) / 100.0
+        if turnover > cap and turnover > 0:
+            combined = prior + (combined - prior) * (cap / turnover)
+            combined, more = _cap_portfolio(combined, candidates, cfg, themes)
+            bindings.extend(x for x in more if x not in bindings)
+            bindings.append("TURNOVER_CAP")
+    return {"weights": combined, "bindingConstraints": bindings}
+
+
+def _candidate_rows(long_term: dict | None) -> list[dict]:
+    rows: list[dict] = []
+    for region, blob in ((long_term or {}).get("regions") or {}).items():
+        source = (blob or {}).get("picks") or []
+        for row in source:
+            item = dict(row)
+            item["region"] = item.get("region") or region
+            rows.append(item)
+    return rows
+
+
+def _risk_weights(candidates: list[dict], cfg: dict) -> dict:
+    raw = {c["ticker"]: max(0.0, float(c.get("modelSleeveWeightPct") or 0.0) / 100.0) for c in candidates}
+    total = sum(raw.values())
+    budget = 1.0 - float(cfg.get("minCashPct", 10)) / 100.0
+    if total > 0:
+        raw = {t: w / total * budget for t, w in raw.items()}
+    capped, _ = _cap_portfolio(pd.Series(raw, dtype=float), candidates, cfg, {})
+    return capped.to_dict()
+
+
+def _regime_adjustment(macro_regime: dict | None, cfg: dict) -> tuple[str, float, float, list[str]]:
+    macro_regime = macro_regime or {}
+    label = macro_regime.get("regime") or "Transition/Low confidence"
+    mapping = cfg.get("regimeMultipliers") or {}
+    row = mapping.get(label) or mapping.get("Transition/Low confidence") or {}
+    multiplier = float(row.get("kellyMultiplier", 0.5))
+    warnings = []
+    confidence = macro_regime.get("confidence")
+    if confidence is not None and float(confidence) < 0.5:
+        multiplier *= max(0.5, float(confidence) / 0.5)
+        warnings.append("LOW_MACRO_CONFIDENCE_KELLY_HAIRCUT")
+    return label, multiplier, float(row.get("minCashPct", cfg.get("minCashPct", 10))), warnings
+
+
+def build_model_portfolio(long_term: dict | None, prices: dict, outcomes: list[dict],
+                          cfg: dict | None = None, macro_regime: dict | None = None,
+                          themes: dict | None = None, prior_weights: dict | None = None,
+                          as_of: str | None = None, blocked: bool = False,
+                          validation_status: dict | None = None) -> dict:
+    """Top-level assembly from calibrated returns through final blended weights."""
+    cfg, themes, prior_weights = cfg or {}, themes or {}, prior_weights or {}
+    validation_status = validation_status or {}
+    base = float(cfg.get("kellyFraction", 0.25))
+    blend = float(cfg.get("blendWeight", 0.25))
+    label, regime_mult, regime_cash, warnings = _regime_adjustment(macro_regime, cfg)
+    local_cfg = dict(cfg)
+    local_cfg["minCashPct"] = max(float(cfg.get("minCashPct", 10)), regime_cash)
+    applied = base * regime_mult
+    skeleton = {
+        "status": "SHADOW_INSUFFICIENT_HISTORY", "method": "BLENDED_CONSTRAINED_FRACTIONAL_KELLY",
+        "horizonDays": int(cfg.get("horizonDays", 126)), "baseKellyFraction": base,
+        "regime": label, "regimeMultiplier": round(regime_mult, 4),
+        "appliedKellyFraction": round(applied, 4), "kellyBlendWeight": blend,
+        "riskWeightedBlendWeight": 1.0 - blend, "cashPct": 100.0,
+        "expectedVolPct": None, "estimatedMaxDrawdownPct": None, "turnoverPct": 0.0,
+        "expectedReturnStatus": "INSUFFICIENT", "fallbackReason": None,
+        "positions": [], "riskWeightedWeights": {}, "constrainedKellyWeights": {},
+        "finalWeights": {}, "sectorExposure": {}, "themeExposure": {}, "regionExposure": {},
+        "constraints": {k: local_cfg.get(k) for k in ("maxPositionWeight", "maxSectorWeight", "maxThemeWeight", "minCashPct", "maxTurnoverPct", "minNames", "maxNames", "regionCaps")},
+        "warnings": warnings, "validation": {"eligibleForActivation": False},
+    }
+    if not cfg.get("enabled", True):
+        skeleton["status"] = "DISABLED"
+        return skeleton
+    if blocked:
+        skeleton["status"] = "BLOCKED"
+        skeleton["warnings"].append("RECOMMENDATIONS_BLOCKED; WEIGHTS_WITHHELD")
+        return skeleton
+
+    candidates = _candidate_rows(long_term)
+    if len(candidates) < int(local_cfg.get("minNames", 6)):
+        skeleton["fallbackReason"] = "longterm_candidates_below_minimum"
+        return skeleton
+    risk_weights = _risk_weights(candidates, local_cfg)
+    estimates = estimate_expected_returns(candidates, outcomes, local_cfg, as_of=as_of)
+    estimate_map = {e["ticker"]: e for e in estimates}
+    sufficient = [e for e in estimates if e["status"] == "SHADOW"]
+    cov, cov_meta = estimate_covariance(prices, [c["ticker"] for c in candidates], local_cfg)
+    skeleton["covariance"] = cov_meta
+    skeleton["expectedReturnEstimates"] = estimates
+
+    fallback_reason = None
+    unconstrained: dict[str, float] = {}
+    kelly_weights: dict[str, float] = {}
+    if len(sufficient) < int(local_cfg.get("minNames", 6)):
+        fallback_reason = "expected_return_history_insufficient"
+    elif cov is None:
+        fallback_reason = cov_meta.get("reason") or "covariance_unavailable"
+    else:
+        optimized = optimize_fractional_kelly(estimates, cov, candidates, local_cfg, applied,
+                                               themes=themes, prior_weights=prior_weights)
+        if not optimized.get("ok"):
+            skeleton["status"] = "OPTIMIZATION_FAILED"
+            fallback_reason = optimized.get("reason") or "optimization_failed"
+            skeleton["warnings"].append(f"OPTIMIZER:{fallback_reason}")
+        else:
+            kelly_weights = optimized["weights"].to_dict()
+            unconstrained = optimized["unconstrainedWeights"].to_dict()
+            skeleton["optimization"] = {"objective": optimized["objective"], "iterations": optimized["iterations"]}
+
+    if fallback_reason:
+        final = pd.Series(risk_weights, dtype=float)
+        final, bindings = _cap_portfolio(final, candidates, local_cfg, themes)
+        skeleton["fallbackReason"] = fallback_reason
+        skeleton["warnings"].append("KELLY_NOT_ACTIVATED; EXISTING_RISK_WEIGHTED_PORTFOLIO_RETAINED")
+    else:
+        blended = blend_with_risk_weighted_portfolio(risk_weights, kelly_weights, candidates,
+                                                       local_cfg, themes, prior_weights)
+        final, bindings = blended["weights"], blended["bindingConstraints"]
+        skeleton["status"] = "SHADOW_READY" if cfg.get("mode", "shadow") == "shadow" else "ACTIVE_PAPER"
+        skeleton["expectedReturnStatus"] = "SHADOW"
+
+    sector_exp, theme_exp, region_exp = _exposures(final, candidates, themes)
+    prior = pd.Series({t: float(prior_weights.get(t, 0.0)) for t in final.index})
+    turnover = 0.5 * float((final - prior).abs().sum()) if prior_weights else float(final.sum())
+    positions = []
+    for candidate in candidates:
+        ticker = candidate["ticker"]
+        exp = estimate_map.get(ticker, {})
+        w = float(final.get(ticker, 0.0))
+        position_bindings = [b for b in bindings if b.endswith(f":{ticker}") or
+                             (b.startswith("SECTOR_CAP:") and b.split(":", 1)[1] == (candidate.get("sector") or "Unclassified")) or
+                             (b.startswith("REGION_CAP:") and b.split(":", 1)[1] == candidate.get("region")) or
+                             (b.startswith("THEME_CAP:") and b.split(":", 1)[1] in (themes.get(ticker) or ["Unclassified"]))]
+        positions.append({
+            "ticker": ticker, "region": candidate.get("region"), "sector": candidate.get("sector") or "Unclassified",
+            "themes": themes.get(ticker) or ["Unclassified"], "alphaPercentile": candidate.get("alphaPercentile"),
+            "expectedExcessReturnPct": exp.get("expectedExcessReturnPct"),
+            "expectedReturnSampleSize": exp.get("effectiveSampleSize", 0),
+            "expectedReturnStatus": exp.get("status"),
+            "riskLevel": (candidate.get("risk") or {}).get("vol252Pct"),
+            "riskWeightedWeightPct": round(float(risk_weights.get(ticker, 0.0)) * 100, 2),
+            "unconstrainedKellyWeightPct": round(float(unconstrained.get(ticker, 0.0)) * 100, 2),
+            "constrainedKellyWeightPct": round(float(kelly_weights.get(ticker, 0.0)) * 100, 2),
+            "modelPortfolioWeightPct": round(w * 100, 2),
+            "entryState": ((candidate.get("entry") or {}).get("entryState")),
+            "bindingConstraints": position_bindings,
+        })
+    positions.sort(key=lambda p: p["modelPortfolioWeightPct"], reverse=True)
+    skeleton.update({
+        "cashPct": round((1.0 - float(final.sum())) * 100, 2), "turnoverPct": round(turnover * 100, 2),
+        "positions": positions, "riskWeightedWeights": {k: round(v, 6) for k, v in risk_weights.items()},
+        "constrainedKellyWeights": {k: round(v, 6) for k, v in kelly_weights.items()},
+        "finalWeights": {k: round(float(v), 6) for k, v in final.items()},
+        "sectorExposure": {k: round(v * 100, 2) for k, v in sector_exp.items()},
+        "themeExposure": {k: round(v * 100, 2) for k, v in theme_exp.items()},
+        "regionExposure": {k: round(v * 100, 2) for k, v in region_exp.items()},
+        "bindingConstraints": bindings,
+    })
+    if cov is not None:
+        common = [t for t in final.index if t in cov.index]
+        arr = final.loc[common].to_numpy(dtype=float)
+        skeleton["expectedVolPct"] = round(float(math.sqrt(max(0.0, arr @ cov.loc[common, common].to_numpy() @ arr))) * 100, 2)
+    # Historical drawdown is descriptive (not a forecast) and uses only the
+    # same daily close history available at the portfolio calculation time.
+    try:
+        returns = pd.concat({t: prices[t]["Close"].pct_change(fill_method=None)
+                             for t in final.index if t in prices and "Close" in prices[t]},
+                            axis=1, join="inner").dropna().tail(int(local_cfg.get("covarianceLookbackDays", 504)))
+        common = [t for t in final.index if t in returns.columns]
+        if len(returns) and common:
+            path = (1.0 + returns[common].mul(final.loc[common], axis=1).sum(axis=1)).cumprod()
+            drawdown = path / path.cummax() - 1.0
+            skeleton["estimatedMaxDrawdownPct"] = round(float(drawdown.min()) * 100, 2)
+    except Exception:
+        pass
+    total = float(final.sum()) + skeleton["cashPct"] / 100.0
+    caps_ok = (
+        (not len(final) or float(final.max()) <= float(local_cfg.get("maxPositionWeight", 0.10)) + 1e-8)
+        and all(v <= float(local_cfg.get("maxSectorWeight", 0.25)) + 1e-8 for v in sector_exp.values())
+        and all(label == "Unclassified" or v <= float(local_cfg.get("maxThemeWeight", 0.20)) + 1e-8
+                for label, v in theme_exp.items())
+        and all(v <= float((local_cfg.get("regionCaps") or {}).get(label, 1.0)) + 1e-8
+                for label, v in region_exp.items())
+    )
+    activation = local_cfg.get("activation") or {}
+    region_ic = validation_status.get("regionIC") or {}
+    rank_ic_positive = bool(region_ic) and all((row.get("mean") or 0) > 0 for row in region_ic.values())
+    activation_checks = {
+        "paperDays": int(validation_status.get("paperDays") or 0) >= int(activation.get("minPaperDays", 252)),
+        "maturedSignals": int(validation_status.get("maturedSignals") or 0) >= int(activation.get("minMaturedSignals", 100)),
+        "positiveCostAdjustedExcess": (validation_status.get("costAdjustedExcessReturn") or 0) > 0,
+        "positiveRankIC": rank_ic_positive,
+        "noMddDeterioration": validation_status.get("noMddDeterioration") is True,
+        "humanApproved": False,
+    }
+    required = [activation_checks["paperDays"], activation_checks["maturedSignals"]]
+    if activation.get("requirePositiveCostAdjustedExcess", True):
+        required.append(activation_checks["positiveCostAdjustedExcess"])
+    if activation.get("requirePositiveRankIC", True):
+        required.append(activation_checks["positiveRankIC"])
+    if activation.get("requireNoMddDeterioration", True):
+        required.append(activation_checks["noMddDeterioration"])
+    skeleton["validation"] = {
+        "weightsPlusCashPct": round(total * 100, 6),
+        "nonNegative": bool((final >= -1e-12).all()),
+        "finite": bool(np.isfinite(final.to_numpy()).all()),
+        "constraintsSatisfied": bool(caps_ok and abs(total - 1.0) <= 1e-6),
+        "activationChecks": activation_checks,
+        "eligibleForActivation": bool(required and all(required)),
+        "manualReviewRequired": True,
+    }
+    return skeleton
