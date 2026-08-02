@@ -111,6 +111,77 @@ def test_regions_scored_independently():
     assert max(pcts) >= 80 and min(pcts) <= 40
 
 
+def test_longterm_scores_picks_and_weights_are_input_order_invariant():
+    uni, prices, funds, diags = _universe_with_sectors()
+    cfg = {"minNames": 8, "maxNames": 12, "maxNameWeight": .15,
+           "maxSectorWeight": .30, "minCashPct": 5}
+    baseline = LT.build(uni, prices, funds, diags, cfg_lt=cfg)["regions"]["US"]
+    shuffled = list(uni["US"])
+    np.random.default_rng(20260722).shuffle(shuffled)
+    replay = LT.build({"US": shuffled}, prices, funds, diags, cfg_lt=cfg)["regions"]["US"]
+
+    def scored(blob):
+        return {row["ticker"]: {
+            "alpha": row["alpha"], "alphaPercentile": row["alphaPercentile"],
+            "factorPercentiles": row["factorPercentiles"],
+        } for row in blob["validationCrossSection"]}
+
+    assert scored(baseline) == scored(replay)
+    assert baseline["holdings"] == replay["holdings"]
+    assert {p["ticker"]: p["modelSleeveWeightPct"] for p in baseline["picks"]} == {
+        p["ticker"]: p["modelSleeveWeightPct"] for p in replay["picks"]}
+
+
+def test_equal_score_tie_break_uses_ticker_only_at_final_step():
+    rows = pd.DataFrame({
+        "alpha": [1.0, 1.0, 1.0], "dataInsufficient": [False] * 3,
+        "evidenceCoverage": [.9, .9, .9], "dataCompleteness": [.9, .9, .9],
+        "downsideVol": [.2, .2, .2],
+    }, index=["ZZZ", "AAA", "MMM"])
+    cfg = {"minNames": 2, "maxNames": 2, "rankBuffer": {"enterPct": 100, "exitPct": 100}}
+    assert LT.select_names(rows, cfg) == ["AAA", "MMM"]
+    assert LT.select_names(rows.iloc[::-1], cfg) == ["AAA", "MMM"]
+
+
+def test_full_rank_cross_section_is_not_truncated_before_ranking():
+    uni, prices, funds, diags = _universe_with_sectors(n_per_sector=6)
+    region = LT.build(uni, prices, funds, diags, cfg_lt={"minNames": 8, "maxNames": 12})["regions"]["US"]
+    assert region["universeRanked"] == len(uni["US"])
+    assert len(region["validationCrossSection"]) == len(uni["US"])
+
+
+def test_fundamentals_coverage_never_counts_names_outside_requested_universe():
+    uni, prices, funds, diags = _universe_with_sectors()
+    funds["OUTSIDE"] = _fund("Technology")
+    result = LT.build(uni, prices, funds, diags, cfg_lt={"minNames": 8, "maxNames": 12})
+    assert 0 <= result["fundamentalsCoverage"] <= 100
+    assert result["fundamentalsCoverage"] == 100
+
+
+def test_previous_production_state_diff_is_compact_and_deterministic():
+    long_term = {"regions": {"US": {
+        "holdings": ["B", "C"],
+        "researchTable": [{"ticker": "B", "entry": {"entryState": "WATCH"}},
+                          {"ticker": "C", "entry": {"entryState": "ACCUMULATE_GRADUALLY"}}],
+    }}}
+    portfolio = {"finalWeights": {"B": .20, "C": .30}}
+    prior = {"holdingsByRegion": {"US": ["A", "B"]},
+             "modelPortfolioWeights": {"A": .10, "B": .10},
+             "entryStatesByTicker": {"B": "ACCUMULATE_GRADUALLY"},
+             "macroRegime": "Goldilocks"}
+    diff = B._changes_since_prior(
+        long_term, portfolio, {"regime": "Reflation"}, prior,
+        {"available": True},
+    )
+    assert diff["hasChanges"] is True
+    assert diff["added"] == [{"region": "US", "ticker": "C"}]
+    assert diff["removed"] == [{"region": "US", "ticker": "A"}]
+    assert [x["ticker"] for x in diff["weightIncreased"]] == ["B", "C"]
+    assert [x["ticker"] for x in diff["weightDecreased"]] == ["A"]
+    assert diff["entryStateChanged"] == [{"ticker": "B", "before": "ACCUMULATE_GRADUALLY", "after": "WATCH"}]
+    assert diff["regimeChanged"] == {"before": "Goldilocks", "after": "Reflation"}
+
+
 def test_zscore_is_cross_sectional_within_series():
     strong = LT.zscore(pd.Series({"a": 0.5, "b": 0.1, "c": 0.1, "d": 0.1, "e": 0.1}))
     weak = LT.zscore(pd.Series({"a": 0.5, "b": 0.45, "c": 0.55, "d": 0.5, "e": 0.5}))

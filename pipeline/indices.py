@@ -38,6 +38,7 @@ SPEC = [
 
 SPARK_POINTS = 63  # ~3 months of trading days
 HISTORY_POINTS = 260  # one trading year for the clickable detail view
+SPARK_PERIOD = "3M"
 
 
 def _clean_close(series: pd.Series | None) -> pd.Series | None:
@@ -162,6 +163,7 @@ def summarize_close(spec: dict, close: pd.Series, source: str, now=None) -> dict
     last = float(s.iloc[-1])
     prev = float(s.iloc[-2]) if len(s) >= 2 else None
     m1 = float(s.iloc[-22]) if len(s) >= 22 else None
+    m3 = float(s.iloc[-SPARK_POINTS]) if len(s) >= SPARK_POINTS else None
 
     year = s.index[-1].year
     prior = s[s.index.year < year]
@@ -184,10 +186,15 @@ def summarize_close(spec: dict, close: pd.Series, source: str, now=None) -> dict
         "last": round(last, spec["digits"]),
         "chg1dPct": _pct(last, prev),
         "chg1mPct": _pct(last, m1),
+        "chg3mPct": _pct(last, m3),
         "ytdPct": _pct(last, ytd_base),
         "from52wHighPct": _pct(last, hi52),
         "above200d": bool(last >= ma200) if ma200 is not None else None,
         "spark": spark,
+        "sparkPeriod": SPARK_PERIOD,
+        "sparkPoints": len(spark),
+        "sparkStartDate": s.iloc[-SPARK_POINTS:].index[0].strftime("%Y-%m-%d"),
+        "sparkEndDate": s.index[-1].strftime("%Y-%m-%d"),
         "history": history,
         "asOf": s.index[-1].strftime("%Y-%m-%d"),
         "source": source,

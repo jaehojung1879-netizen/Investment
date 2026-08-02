@@ -29,13 +29,11 @@ from pipeline import features as F  # noqa: E402
 from pipeline import longterm as longterm_mod  # noqa: E402
 from pipeline import ledger as LG  # noqa: E402
 from pipeline import macro as macro_mod  # noqa: E402
-from pipeline import model as M  # noqa: E402
 from pipeline import provenance as prov_mod  # noqa: E402
 from pipeline import regime as regime_mod  # noqa: E402
 from pipeline import risk as risk_mod  # noqa: E402
 from pipeline import sectors as SECT  # noqa: E402
 from pipeline import sentiment as sentiment_mod  # noqa: E402
-from pipeline import trade as trade_mod  # noqa: E402
 from pipeline.config import load_config  # noqa: E402
 
 
@@ -95,11 +93,18 @@ def main() -> int:
 
     th = cfg.trade_horizon
     target_h = sorted(set(cfg.horizons) | {th})
-    from pipeline import universe as universe_mod
-    resolved_universe, resolved_names = universe_mod.resolve(cfg)
+    # A seed is a bounded synthetic fixture, not a production universe claim.
+    # Production still resolves the complete S&P 500 fail-closed in
+    # pipeline.universe; the seed deliberately avoids network/listing access.
+    excluded = set(cfg.longterm.get("excludeFromRanking", []))
+    resolved_universe = {
+        region: [ticker for ticker in tickers if ticker not in excluded][:18]
+        for region, tickers in cfg.universe.items()
+    }
+    resolved_names = dict(cfg.names)
     all_t = list(dict.fromkeys([t for names in resolved_universe.values() for t in names] + cfg.core))
 
-    core_cards, ideas, screened, details, diags, entry_feats, fundamentals = [], [], [], {}, {}, {}, {}
+    core_cards, screened, details, diags, entry_feats, fundamentals = [], [], {}, {}, {}, {}
     for i, tk in enumerate(all_t):
         price = bench if tk == cfg.benchmark else synth(10 + i, 0.0004 + i * 0.00005, n, dates)
         bclose = bench["Close"] if tk != cfg.benchmark else None
@@ -109,12 +114,11 @@ def main() -> int:
         diag = risk_mod.diagnose(tk, feat)
         diags[tk] = diag
         region = cfg.region_of(tk)
-        tsig = M.current_signal(feat, fcols, f"target_{th}d", cfg.model)
         vsurge = round(1.0 + abs(np.random.default_rng(i).normal(0, 0.4)), 2)
         entry_feats[tk] = entry_mod.entry_features(feat, volume_surge=vsurge)
         if tk != cfg.benchmark:
             fundamentals[tk] = synth_fundamentals(tk, 700 + i)
-        details[tk] = {"volSurge": vsurge, "region": region, "modelScore": tsig["probUp"] if tsig else None,
+        details[tk] = {"volSurge": vsurge, "region": region, "modelScore": None,
                        "probUp": None, "regime": diag["regime"], "lastClose": diag["lastClose"],
                        "asOf": feat.dropna(subset=fcols).index[-1].strftime("%Y-%m-%d"),
                        "ma50": diag["ma50"], "ma200": diag["ma200"], "rsi14": diag["rsi14"],
@@ -122,26 +126,12 @@ def main() -> int:
                        "relMomentum": diag["relMomentum"], "pct52wHigh": diag["pct52wHigh"],
                        "mom63": round(diag["mom63"] * 100, 1) if diag["mom63"] is not None else None,
                        "riskFlags": [f["message"] for f in diag["riskFlags"]]}
-        if tsig is not None:
-            stats = M.horizon_return_stats(feat, th)
-            idea = trade_mod.build_idea(tk, region, tsig["probUp"], stats, th, tsig["asOf"], diag["regime"], diag)
-            screened.append({"ticker": tk, "region": region, "modelScore": tsig["probUp"], "probUp": None,
-                             "regime": diag["regime"], "qualifies": idea is not None, "aboveMA50": diag["aboveMA50"],
-                             "aboveMA200": diag["aboveMA200"], "mom63": diag["mom63"], "volSurge": vsurge})
-            if idea:
-                ideas.append(idea)
+        screened.append({"ticker": tk, "region": region, "modelScore": None, "probUp": None,
+                         "regime": diag["regime"], "qualifies": False, "aboveMA50": diag["aboveMA50"],
+                         "aboveMA200": diag["aboveMA200"], "mom63": diag["mom63"], "volSurge": vsurge})
         if tk in cfg.core:
-            sigs = []
-            for h in cfg.horizons:
-                cur = M.current_signal(feat, fcols, f"target_{h}d", cfg.model)
-                if cur is None:
-                    continue
-                res = M.walk_forward(feat, fcols, f"target_{h}d", cfg.model, cfg.model.oos_start, h)
-                thr = M.dynamic_threshold(res, cfg.model)
-                sigs.append({"horizon": h, "probUp": cur["probUp"], "prediction": cur["prediction"],
-                             "alert": "PAPER ONLY", "threshold": thr, "oos": M.oos_metrics(res), "backtest": M.backtest(res)})
             core_cards.append({"ticker": tk, "asOf": feat.dropna(subset=fcols).index[-1].strftime("%Y-%m-%d"),
-                               "lastClose": diag["lastClose"], "signals": sigs, "risk": diag})
+                               "lastClose": diag["lastClose"], "signals": [], "risk": diag})
 
     sent = sentiment_mod.summarize(screened, macro, vix)
     macro_regime = regime_mod.build(macro, vix)
@@ -197,8 +187,29 @@ def main() -> int:
         "seed": True, "stale": False, "runMode": cfg.run_mode,
         "recommendationsBlocked": True, "blockReasons": ["synthetic_data", "models_trained_zero"],
         "dataSource": "SEED (예시) — 합성 데이터", "indices": seed_indices,
-        "marketDataHealth": market_data_health, "direction": direction,
+        "marketDataHealth": market_data_health,
+        "universeDiagnostics": {
+            "orderingPolicy": "deterministic_multi_key_v1",
+            "regions": {region: {"obtainedCount": len(tickers), "source": "config_synthetic_fixture",
+                                  "fullListAvailable": False, "excludedEtfCount": 0,
+                                  "dataInsufficientExcluded": len(((long_term or {}).get("regions", {}).get(region) or {}).get("dataInsufficient") or []),
+                                  "rankedCount": ((long_term or {}).get("regions", {}).get(region) or {}).get("universeRanked")}
+                        for region, tickers in resolved_universe.items()},
+        },
+        "changesSincePrior": {"available": False, "hasChanges": False,
+                              "reason": "synthetic_preview", "summaryKo": "비교 가능한 이전 운영 상태가 없습니다."},
+        "direction": direction,
         "rotation": rotation, "longTerm": long_term, "macroRegime": macro_regime, "expertConsensus": expert,
+        "modelPortfolio": {
+            "status": "BLOCKED", "method": "BLENDED_CONSTRAINED_FRACTIONAL_KELLY",
+            "positions": [], "finalWeights": {}, "riskWeightedWeights": {},
+            "constrainedKellyWeights": {}, "cashPct": None, "kellyApplied": False,
+            "kellyAllocationImpactPct": 0.0, "fallbackReason": "recommendations_blocked",
+            "currencyPolicy": {"baseCurrency": "KRW", "fxReturnsIncluded": False,
+                               "fxHedged": False, "riskLayer": "REGION_ALLOCATION_ONLY",
+                               "warning": "FX_RISK_NOT_IN_ACTIVE_COVARIANCE"},
+            "warnings": ["RECOMMENDATIONS_BLOCKED; WEIGHTS_WITHHELD"],
+        },
         "tradeIdeas": {"KR": [], "US": []}, "screened": screen_table, "details": details, "flows": flows,
         "sentiment": sent, "core": core_cards, "macro": macro_summary,
         "priorState": {"available": False, "reason": "synthetic_preview"},

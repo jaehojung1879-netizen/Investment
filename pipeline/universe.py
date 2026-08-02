@@ -24,6 +24,8 @@ _SP500_CSV = (
 # yfinance wants "BRK-B". The generic dot->dash rule can't fix the dotless
 # form, so map the S&P 500 cases explicitly.
 _US_SYMBOL_FIXES = {"BRK.B": "BRK-B", "BRKB": "BRK-B", "BF.B": "BF-B", "BFB": "BF-B"}
+_LAST_DIAGNOSTICS: dict = {}
+_LAST_US_SOURCE: str | None = None
 
 
 def _us_symbol(raw: str) -> str:
@@ -50,11 +52,13 @@ def _us_rows(df) -> tuple[list[str], dict[str, str]]:
 
 
 def _complete_us_from(sources, errors=None) -> tuple[list[str], dict[str, str]]:
+    global _LAST_US_SOURCE
     errors = list(errors or [])
     for source, load in sources:
         try:
             tickers, names = _us_rows(load())
             if len(tickers) >= _MIN_SP500_CONSTITUENTS:
+                _LAST_US_SOURCE = source
                 return tickers, names
             errors.append(f"{source}: only {len(tickers)} constituents")
         except Exception as exc:
@@ -71,6 +75,8 @@ def _us_sp500() -> tuple[list[str], dict[str, str]]:
     would reintroduce the same alphabetical/partial-universe bias this module
     is intended to prevent.
     """
+    global _LAST_US_SOURCE
+    _LAST_US_SOURCE = None
     errors = []
     try:
         import FinanceDataReader as fdr
@@ -112,9 +118,11 @@ def _kr_kospi(size: int) -> tuple[list[str], dict[str, str]]:
 
 def resolve(cfg) -> tuple[dict[str, list[str]], dict[str, str]]:
     """Return (universe {region: [tickers]}, names {ticker: name})."""
+    global _LAST_DIAGNOSTICS
     size = cfg.universe_size
     universe: dict[str, list[str]] = {}
     names: dict[str, str] = {}
+    diagnostics = {"regions": {}, "orderingPolicy": "deterministic_multi_key_v1"}
 
     fetchers = {"US": lambda _size: _us_sp500(), "KR": _kr_kospi}
     for region, fetch in fetchers.items():
@@ -123,6 +131,15 @@ def resolve(cfg) -> tuple[dict[str, list[str]], dict[str, str]]:
             if tks:
                 universe[region] = tks
                 names.update(nm)
+                source = _LAST_US_SOURCE if region == "US" else "FinanceDataReader:KOSPI"
+                diagnostics["regions"][region] = {
+                    "obtainedCount": len(tks),
+                    "source": source,
+                    "fullListAvailable": bool(region != "US" or len(tks) >= _MIN_SP500_CONSTITUENTS),
+                    "excludedEtfCount": len(set(tks) & set((cfg.longterm or {}).get("excludeFromRanking", []))),
+                    "dataInsufficientExcluded": None,
+                    "rankedCount": None,
+                }
                 print(f"  universe {region}: {len(tks)} tickers (dynamic)")
                 continue
             raise RuntimeError("empty listing")
@@ -137,6 +154,14 @@ def resolve(cfg) -> tuple[dict[str, list[str]], dict[str, str]]:
                     f"({len(fallback)} < {_MIN_SP500_CONSTITUENTS})"
                 ) from exc
             universe[region] = fallback
+            diagnostics["regions"][region] = {
+                "obtainedCount": len(fallback),
+                "source": "bundled_fallback",
+                "fullListAvailable": bool(region != "US" or len(fallback) >= _MIN_SP500_CONSTITUENTS),
+                "excludedEtfCount": len(set(fallback) & set((cfg.longterm or {}).get("excludeFromRanking", []))),
+                "dataInsufficientExcluded": None,
+                "rankedCount": None,
+            }
             print(f"  universe {region}: fetch failed ({exc}); bundled fallback {len(fallback)} tickers")
 
     # Always make sure core holdings are screened too.
@@ -145,9 +170,24 @@ def resolve(cfg) -> tuple[dict[str, list[str]], dict[str, str]]:
         universe.setdefault(region, [])
         if tk not in universe[region]:
             universe[region].insert(0, tk)
+            if region in diagnostics["regions"]:
+                diagnostics["regions"][region]["obtainedCount"] = len(universe[region])
+                diagnostics["regions"][region]["excludedEtfCount"] = len(
+                    set(universe[region]) & set((cfg.longterm or {}).get("excludeFromRanking", [])))
 
     # Bundled KR names + fetched names, with user config overriding both.
     from . import universe_lists as UL
     merged_names = {**UL.KR_NAMES, **names, **cfg.names}
+    _LAST_DIAGNOSTICS = diagnostics
     return universe, merged_names
+
+
+def last_diagnostics() -> dict:
+    """Diagnostics for the most recent ``resolve`` call.
+
+    Kept separate from the historical two-value return contract so callers
+    and tests that only need the resolved universe remain backward compatible.
+    """
+    import copy
+    return copy.deepcopy(_LAST_DIAGNOSTICS)
 

@@ -174,7 +174,29 @@ def _sleeve(frames: list[pd.Series]) -> pd.Series:
 
 
 def _percentile(s: pd.Series) -> pd.Series:
-    return s.rank(pct=True).mul(100).round(0)
+    return s.rank(method="average", pct=True).mul(100).round(0)
+
+
+def _deterministic_rank(table: pd.DataFrame, alpha_pct: pd.Series | None = None) -> pd.DataFrame:
+    """Investment criteria first, ticker only as the final deterministic tie-break."""
+    ranked = table.copy()
+    def numeric_series(primary: str, fallback: str | None = None, default: float = 0.0) -> pd.Series:
+        if primary in ranked:
+            return pd.to_numeric(ranked[primary], errors="coerce").fillna(default)
+        if fallback and fallback in ranked:
+            return pd.to_numeric(ranked[fallback], errors="coerce").fillna(default)
+        return pd.Series(default, index=ranked.index, dtype=float)
+
+    ranked["_alphaPct"] = (alpha_pct.reindex(ranked.index) if alpha_pct is not None
+                           else ranked["alpha"].rank(method="average", pct=True).mul(100))
+    ranked["_ticker"] = ranked.index.astype(str)
+    ranked["_evidence"] = numeric_series("evidenceCoverage", "factorCoverage")
+    ranked["_completeness"] = numeric_series("dataCompleteness", "financialCoverage")
+    ranked["_downside"] = numeric_series("downsideVol", default=np.inf)
+    return ranked.sort_values(
+        ["alpha", "_alphaPct", "_evidence", "_completeness", "_downside", "_ticker"],
+        ascending=[False, False, False, False, True, True], kind="mergesort",
+    ).drop(columns=["_alphaPct", "_ticker", "_evidence", "_completeness", "_downside"])
 
 
 # --------------------------------------------------------------------------- #
@@ -221,6 +243,7 @@ def build_region(tickers: list[str], prices: dict, fundamentals: dict, diags: di
             "profitMargin": f.get("profitMargin"),
             "debtToEquity": f.get("debtToEquity"),
             "earningsGrowth": f.get("earningsGrowth"),
+            "marketCap": f.get("marketCap"),
             # risk (price-based)
             "vol252": realized_vol_252(close),
             "downsideVol": downside_vol_252(close),
@@ -230,7 +253,9 @@ def build_region(tickers: list[str], prices: dict, fundamentals: dict, diags: di
         }
     if len(rows) < 5:
         return None
-    df = pd.DataFrame.from_dict(rows, orient="index")
+    # Canonicalize the cross-section before any ranking/group operation. The
+    # source listing order must never become an investment input.
+    df = pd.DataFrame.from_dict(rows, orient="index").sort_index(kind="mergesort")
     sector = df["sector"]
     num = df.drop(columns=["sector"]).astype(float)
 
@@ -284,7 +309,7 @@ def build_region(tickers: list[str], prices: dict, fundamentals: dict, diags: di
     out["sector"] = sector
     out["alpha"] = alpha
     out["rawAlpha"] = raw_alpha
-    out["evidenceCoverage"] = factor_cov.round(3)
+    out["evidenceCoverage"] = evidence_coverage.round(3)
     out["dataCompleteness"] = financial_cov.round(3)
     out["sourceQuality"] = src_q.round(3)
     # Internal compatibility columns used by eligibility logic below. They are
@@ -295,6 +320,7 @@ def build_region(tickers: list[str], prices: dict, fundamentals: dict, diags: di
     out["valueTrap"] = value_trap
     for c in ["vol252", "downsideVol", "cvar95", "maxDD252", "beta", "mom121"]:
         out[c] = num[c]
+    out["marketCap"] = num["marketCap"]
     out["aboveMA200"] = [bool((diags.get(t) or {}).get("aboveMA200")) for t in out.index]
     out["regime"] = [(diags.get(t) or {}).get("regime") for t in out.index]
 
@@ -337,9 +363,8 @@ def select_names(table: pd.DataFrame, cfg_lt: dict, prior_holdings: set[str] | N
     if elig.empty:
         return []
     # Alpha percentile within the eligible set.
-    elig["alphaPct"] = elig["alpha"].rank(pct=True) * 100
-    # Trend-confirmed first, then alpha (below-MA200 can still qualify but ranks lower).
-    elig = elig.sort_values(["aboveMA200", "alpha"], ascending=[False, False])
+    elig["alphaPct"] = elig["alpha"].rank(method="average", pct=True) * 100
+    elig = _deterministic_rank(elig, elig["alphaPct"])
 
     enter_floor = 100 - enter_pct
     hold_floor = 100 - exit_pct
@@ -433,6 +458,7 @@ def _row(table: pd.DataFrame, pct: pd.DataFrame, alpha_pct: pd.Series, region: s
         "evidenceCoverage": round(float(evidence), 3),
         "dataCompleteness": round(float(completeness), 3),
         "sourceQuality": round(float(source_quality), 3),
+        "marketCap": round(float(r["marketCap"]), 2) if pd.notna(r.get("marketCap")) else None,
         "empiricalValidationStatus": "PENDING_PAPER_HISTORY",
         "sleevesPresent": int(r["sleevesPresent"]),
         "valueTrap": bool(r["valueTrap"]),
@@ -469,7 +495,7 @@ def build(universe: dict[str, list[str]], prices: dict, fundamentals: dict, diag
         if table is None:
             continue
         pct = table[["momentum", "value", "quality", "lowvol"]].apply(_percentile)
-        alpha_pct = table["alpha"].rank(pct=True).mul(100).round(0)
+        alpha_pct = table["alpha"].rank(method="average", pct=True).mul(100).round(0)
 
         chosen = [] if blocked else select_names(table, cfg_lt, set(prior_holdings.get(region, [])))
         picks_rows = []
@@ -485,14 +511,14 @@ def build(universe: dict[str, list[str]], prices: dict, fundamentals: dict, diag
 
         # UI research table is intentionally compact. The immutable ledger uses
         # the separate full validation cross-section below.
-        elig = table[~table["dataInsufficient"]].sort_values("alpha", ascending=False)
+        elig = _deterministic_rank(table[~table["dataInsufficient"]], alpha_pct)
         table_rows = [_row(table, pct, alpha_pct, region, t) for t in elig.head(15).index]
         validation_rows = [_row(table, pct, alpha_pct, region, t) for t in elig.index]
         insufficient = [
             {"ticker": t, "region": region, "sector": table.loc[t, "sector"],
              "sleevesPresent": int(table.loc[t, "sleevesPresent"]),
              "dataCompleteness": round(float(table.loc[t, "financialCoverage"]), 3)}
-            for t in table[table["dataInsufficient"]].index
+            for t in sorted(table[table["dataInsufficient"]].index.astype(str))
         ]
 
         # Sector exposure of the sleeve (concentration transparency).
@@ -514,8 +540,9 @@ def build(universe: dict[str, list[str]], prices: dict, fundamentals: dict, diag
         }
     if not regions:
         return None
-    covered = sum(1 for t in fundamentals if fundamentals[t])
-    requested = sum(len(v) for v in universe.values())
+    requested_tickers = {ticker for tickers in universe.values() for ticker in tickers}
+    covered = sum(1 for ticker in requested_tickers if fundamentals.get(ticker))
+    requested = len(requested_tickers)
     return {
         "horizonMonths": [6, 12],
         "rebalance": "분기(3개월) 리밸런싱 · rank buffer로 회전율 축소",

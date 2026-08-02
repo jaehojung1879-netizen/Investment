@@ -146,6 +146,7 @@ def _load_prior(path=None) -> tuple[dict, dict]:
 def _load_validation_status(path=None, min_paper_days: int = 126) -> dict:
     fallback = {
         "paperDays": 0, "maturedSignals": 0, "eligibleDates": 0,
+        "firstSignalDate": None, "lastSignalDate": None,
         "regionIC": {}, "costAdjustedExcessReturn": None, "MDD": None,
         "CVaR": None, "liveValidationEligible": False, "liveValidated": False,
         "reasons": [f"paper_history_below_{min_paper_days}_business_days"],
@@ -199,6 +200,57 @@ def _attach_entry_states(long_term: dict | None, entry_feats: dict, cfg_lt: dict
     return long_term
 
 
+def _changes_since_prior(long_term: dict | None, model_portfolio: dict | None,
+                         macro_regime: dict | None, prior: dict,
+                         prior_status: dict) -> dict:
+    """Compact, deterministic diff against the last validated production state."""
+    if not prior_status.get("available"):
+        return {"available": False, "reason": prior_status.get("reason"), "hasChanges": False,
+                "summaryKo": "비교 가능한 이전 운영 상태가 없습니다."}
+    regions = (long_term or {}).get("regions") or {}
+    current_holdings = {r: set((b or {}).get("holdings") or []) for r, b in regions.items()}
+    previous_holdings = {r: set(v or []) for r, v in (prior.get("holdingsByRegion") or {}).items()}
+    added, removed = [], []
+    for region in sorted(set(current_holdings) | set(previous_holdings)):
+        added.extend({"region": region, "ticker": t} for t in sorted(current_holdings.get(region, set()) - previous_holdings.get(region, set())))
+        removed.extend({"region": region, "ticker": t} for t in sorted(previous_holdings.get(region, set()) - current_holdings.get(region, set())))
+    current_weights = (model_portfolio or {}).get("finalWeights") or {}
+    previous_weights = prior.get("modelPortfolioWeights") or {}
+    increased, decreased = [], []
+    for ticker in sorted(set(current_weights) | set(previous_weights)):
+        before, after = float(previous_weights.get(ticker, 0.0)), float(current_weights.get(ticker, 0.0))
+        delta = after - before
+        if abs(delta) < 0.005:
+            continue
+        target = increased if delta > 0 else decreased
+        target.append({"ticker": ticker, "beforePct": round(before * 100, 2),
+                       "afterPct": round(after * 100, 2), "changePctPt": round(delta * 100, 2)})
+    current_entries = {}
+    for blob in regions.values():
+        for row in (blob or {}).get("researchTable", []):
+            state = ((row.get("entry") or {}).get("entryState"))
+            if state:
+                current_entries[row["ticker"]] = state
+    previous_entries = prior.get("entryStatesByTicker") or {}
+    entry_changes = [
+        {"ticker": ticker, "before": previous_entries[ticker], "after": current_entries[ticker]}
+        for ticker in sorted(set(previous_entries) & set(current_entries))
+        if previous_entries[ticker] != current_entries[ticker]
+    ]
+    before_regime = prior.get("macroRegime")
+    after_regime = (macro_regime or {}).get("regime")
+    regime_change = ({"before": before_regime, "after": after_regime}
+                     if before_regime and after_regime and before_regime != after_regime else None)
+    has_changes = bool(added or removed or increased or decreased or entry_changes or regime_change)
+    return {
+        "available": True, "hasChanges": has_changes,
+        "summaryKo": "주요 변화가 있습니다." if has_changes else "이전 실행 대비 주요 변화 없음",
+        "added": added, "removed": removed, "weightIncreased": increased,
+        "weightDecreased": decreased, "entryStateChanged": entry_changes,
+        "regimeChanged": regime_change,
+    }
+
+
 def core_card(feat, fcols, ticker, cfg, diagnosis):
     """Full multi-horizon signal card + backtest for a held position."""
     signals = []
@@ -236,6 +288,7 @@ def core_card(feat, fcols, ticker, cfg, diagnosis):
 
 def run(cfg) -> dict:
     universe, names = universe_mod.resolve(cfg)
+    universe_diagnostics = universe_mod.last_diagnostics()
     download = list(dict.fromkeys(
         [t for names_ in universe.values() for t in names_] + cfg.core + list(cfg.benchmarks.values())
     ))
@@ -413,6 +466,8 @@ def run(cfg) -> dict:
             as_of=latest_date.strftime("%Y-%m-%d") if latest_date is not None else None,
             blocked=withhold,
             validation_status=validation_status,
+            benchmarks=cfg.benchmarks,
+            bench_by_region=benchmark_closes,
         )
     except Exception as exc:
         print(f"  warning: Kelly portfolio engine failed: {exc}")
@@ -465,6 +520,11 @@ def run(cfg) -> dict:
         flows[region] = sorted(cand, key=lambda x: x["volSurge"], reverse=True)[:6]
 
     eligible_count = sum(1 for r in screened if r.get("eligible"))
+    for region, blob in ((long_term or {}).get("regions") or {}).items():
+        diag = universe_diagnostics.setdefault("regions", {}).setdefault(region, {})
+        diag["dataInsufficientExcluded"] = len((blob or {}).get("dataInsufficient") or [])
+        diag["rankedCount"] = int((blob or {}).get("universeRanked") or 0)
+    changes = _changes_since_prior(long_term, model_portfolio, macro_regime, prior, prior_status)
     payload = {
         "portfolioName": cfg.portfolio_name,
         "primary": cfg.primary,
@@ -476,6 +536,8 @@ def run(cfg) -> dict:
         "dataSource": "Yahoo Finance + FinanceDataReader/Stooq fallback (market) + FRED (macro)" if cfg.has_fred else "Yahoo Finance + FinanceDataReader/Stooq fallback (market); FRED disabled",
         "indices": market_indices,
         "marketDataHealth": market_data_health,
+        "universeDiagnostics": universe_diagnostics,
+        "changesSincePrior": changes,
         "direction": direction,
         "rotation": rotation,
         "longTerm": long_term,
@@ -538,8 +600,14 @@ def run(cfg) -> dict:
             "method": portfolio.get("method", "BLENDED_CONSTRAINED_FRACTIONAL_KELLY"),
             "positions": [], "finalWeights": {}, "riskWeightedWeights": {},
             "constrainedKellyWeights": {}, "cashPct": None,
+            "kellyApplied": False, "kellyAllocationImpactPct": 0.0,
             "fallbackReason": "recommendations_blocked",
             "warnings": ["RECOMMENDATIONS_BLOCKED; WEIGHTS_WITHHELD"],
+        }
+        payload["changesSincePrior"] = {
+            "available": False, "hasChanges": False,
+            "reason": "recommendations_blocked",
+            "summaryKo": "안전 차단 상태에서는 이전 실행 대비 행동성 변화를 표시하지 않습니다.",
         }
     payload["audit"] = audit
     return payload

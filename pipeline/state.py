@@ -55,6 +55,12 @@ def snapshot_from_payload(payload: dict, *, validation_passed: bool) -> dict:
     }
     macro = ((payload.get("macroRegime") or {}).get("regime"))
     model_portfolio_weights = dict((payload.get("modelPortfolio") or {}).get("finalWeights") or {})
+    entry_states = {}
+    for blob in regions.values():
+        for row in (blob or {}).get("researchTable", []):
+            state = ((row.get("entry") or {}).get("entryState"))
+            if state:
+                entry_states[row["ticker"]] = state
     return {
         "schemaVersion": payload.get("schemaVersion") or provenance.get("schemaVersion"),
         "modelVersion": payload.get("modelVersion") or provenance.get("modelVersion"),
@@ -64,6 +70,7 @@ def snapshot_from_payload(payload: dict, *, validation_passed: bool) -> dict:
         "macroRegime": macro,
         "holdingsByRegion": holdings,
         "modelPortfolioWeights": model_portfolio_weights,
+        "entryStatesByTicker": entry_states,
         "dataMode": "live",
         "seed": False,
         "stale": False,
