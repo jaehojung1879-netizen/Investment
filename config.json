@@ -45,8 +45,9 @@
     "horizonDays": 126,
     "kellyFraction": 0.25,
     "blendWeight": 0.25,
-    "minEffectiveObservations": 30,
-    "minNonOverlappingDates": 12,
+    "minEffectiveDates": 30,
+    "minUniqueDates": 63,
+    "timeDecayHalfLifeDays": 504,
     "shrinkagePriorStrength": 30,
     "covarianceLookbackDays": 504,
     "covarianceMinDays": 252,
@@ -58,14 +59,36 @@
     "minCashPct": 10,
     "maxTurnoverPct": 25,
     "minNames": 6,
+    "minNamesPerRegion": 3,
     "maxNames": 12,
     "watchWeightMultiplier": 0.5,
     "waitForPullbackWeightMultiplier": 0.25,
     "turnoverPenalty": 0.002,
-    "expectedReturnShrinkagePrior": 0.0,
     "alphaPercentileBuckets": [0, 60, 80, 90, 95, 100],
     "regionCaps": { "KR": 0.65, "US": 0.65 },
-    "costHaircut": { "US": 0.004, "KR": 0.007 },
+    "currency": {
+      "baseCurrency": "KRW",
+      "fxReturnsIncluded": false,
+      "fxHedged": false
+    },
+    "transactionCosts": {
+      "US": {
+        "commissionBps": 5,
+        "sellTaxBps": 3,
+        "spreadBps": 10,
+        "assumedTurnoverPct": 25,
+        "rebalanceDays": 63,
+        "expectedTradeNotionalKrw": 10000000
+      },
+      "KR": {
+        "commissionBps": 5,
+        "sellTaxBps": 20,
+        "spreadBps": 12,
+        "assumedTurnoverPct": 25,
+        "rebalanceDays": 63,
+        "expectedTradeNotionalKrw": 10000000
+      }
+    },
     "activation": {
       "minPaperDays": 252,
       "minMaturedSignals": 100,
@@ -82,7 +105,7 @@
     }
   },
   "validation": {
-    "minPaperDays": 126,
+    "minPaperDays": 252,
     "ledgerBranch": "signal-history"
   },
   "model": {
@@ -115,5 +138,5 @@
       "LeadingIndex": "901Y067", "Exports": "901Y011", "M2": "101Y004"
     }
   },
-  "_notes": "core=실제 보유 종목(전체 분석). universe=스크리닝 후보(자동 구성 실패 시 fallback로 이 목록 상위 universeSize개 사용). FinanceDataReader가 CI 네트워크에서 허용되면 S&P500/KOSPI 전체 자동 구성. FRED_API_KEY·ECOS_API_KEY는 GitHub Actions Secret으로만 주입. ecos series IDs are placeholders to be verified against BOK ECOS before a live KR macro build."
+  "_notes": "core=실제 보유 종목(전체 분석). US universe는 S&P 500 전체 목록(최소 450개)을 확보하지 못하면 fail-closed하며 부분 fallback으로 추천하지 않음. KR universe는 KOSPI 시가총액 기준 구성. FinanceDataReader가 CI 네트워크에서 허용되면 전체 목록 자동 구성. FRED_API_KEY·ECOS_API_KEY는 GitHub Actions Secret으로만 주입. ECOS series IDs are placeholders to be verified against BOK ECOS before a live KR macro build."
 }

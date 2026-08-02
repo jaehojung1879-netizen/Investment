@@ -117,6 +117,22 @@ def validate(path: str | Path, production: bool = True) -> list[str]:
                 errors.append("model_portfolio_active_without_validation_and_human_approval")
         if status == "OPTIMIZATION_FAILED" and not portfolio.get("fallbackReason"):
             errors.append("model_portfolio_optimizer_failure_without_reason")
+        kelly_applied = portfolio.get("kellyApplied") is True
+        if portfolio.get("fallbackReason") or not kelly_applied:
+            if portfolio.get("constrainedKellyWeights"):
+                errors.append("fallback_exposes_kelly_weights")
+            for position in portfolio.get("positions") or []:
+                if position.get("constrainedKellyWeightPct") is not None or position.get("unconstrainedKellyWeightPct") is not None:
+                    errors.append("fallback_exposes_position_kelly_weight")
+                    break
+            if float(portfolio.get("kellyAllocationImpactPct") or 0.0) != 0.0:
+                errors.append("fallback_has_nonzero_kelly_impact")
+        if kelly_applied:
+            covariance = portfolio.get("covariance") or {}
+            if covariance.get("returnBasis") != "REGIONAL_ACTIVE" or covariance.get("crossRegionCovarianceUsed") is not False:
+                errors.append("kelly_expected_return_covariance_basis_mismatch")
+            if not (portfolio.get("currencyPolicy") or {}).get("baseCurrency"):
+                errors.append("kelly_currency_policy_missing")
 
     if production:
         if data.get("seed"):
@@ -152,6 +168,9 @@ def validate(path: str | Path, production: bool = True) -> list[str]:
         portfolio = data.get("modelPortfolio") or {}
         if portfolio.get("positions") or portfolio.get("finalWeights") or portfolio.get("cashPct") is not None:
             errors.append("blocked_artifact_contains_model_portfolio_weights")
+        changes = data.get("changesSincePrior") or {}
+        if any(changes.get(key) for key in ("added", "removed", "weightIncreased", "weightDecreased", "entryStateChanged", "regimeChanged")):
+            errors.append("blocked_artifact_contains_actionable_changes")
     return errors
 
 

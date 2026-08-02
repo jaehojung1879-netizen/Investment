@@ -76,6 +76,27 @@ def test_index_summary_carries_dated_history_and_freshness():
     assert len(row["history"]) == IDX.HISTORY_POINTS
     assert row["freshnessStatus"] == "CURRENT"
     assert row["critical"] is True
+    assert row["sparkPeriod"] == "3M"
+    assert row["sparkPoints"] == IDX.SPARK_POINTS == len(row["spark"])
+    assert row["sparkStartDate"] == idx[-IDX.SPARK_POINTS].strftime("%Y-%m-%d")
+    assert row["sparkEndDate"] == row["asOf"]
+    expected_3m = round((close.iloc[-1] / close.iloc[-IDX.SPARK_POINTS] - 1) * 100, 2)
+    assert row["chg3mPct"] == expected_3m
+
+
+def test_index_return_windows_are_backend_calculated():
+    idx = pd.bdate_range("2025-01-02", periods=300)
+    close = pd.Series(100 + np.arange(len(idx), dtype=float), index=idx)
+    spec = next(x for x in IDX.SPEC if x["symbol"] == "^GSPC")
+    now = idx[-1].tz_localize("America/New_York") + pd.Timedelta(hours=19)
+
+    row = IDX.summarize_close(spec, close, "TEST", now=now)
+
+    assert row["chg1dPct"] == round((close.iloc[-1] / close.iloc[-2] - 1) * 100, 2)
+    assert row["chg1mPct"] == round((close.iloc[-1] / close.iloc[-22] - 1) * 100, 2)
+    assert row["chg3mPct"] == round((close.iloc[-1] / close.iloc[-63] - 1) * 100, 2)
+    prior_year_last = close[close.index.year < close.index[-1].year].iloc[-1]
+    assert row["ytdPct"] == round((close.iloc[-1] / prior_year_last - 1) * 100, 2)
 
 
 def test_expert_queue_explains_exactly_why_consensus_is_empty():

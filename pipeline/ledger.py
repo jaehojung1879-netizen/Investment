@@ -64,6 +64,8 @@ def records_from_payload(payload: dict) -> list[dict]:
                 "longTermResearchView": row.get("longTermResearchView"),
                 "alpha": row.get("alpha"),
                 "alphaPercentile": row.get("alphaPercentile"),
+                "sector": row.get("sector"),
+                "marketCap": row.get("marketCap"),
                 "refClose": detail.get("lastClose"),
                 "benchmark": (payload.get("benchmarks") or {}).get(row_region, payload.get("benchmark")),
                 "macroRegime": macro,
@@ -118,6 +120,7 @@ def portfolio_record_from_payload(payload: dict) -> dict | None:
         "themeExposure": portfolio.get("themeExposure") or {},
         "regionExposure": portfolio.get("regionExposure") or {},
         "estimatedTurnover": portfolio.get("turnoverPct"),
+        "transactionCostPolicy": portfolio.get("transactionCostPolicy") or {},
         "bindingConstraints": portfolio.get("bindingConstraints") or [],
         "benchmarks": payload.get("benchmarks") or {},
     }
@@ -260,7 +263,27 @@ def compute_portfolio_outcomes(signals: list[dict], prices: dict[str, pd.DataFra
             sharpe = (float(portfolio_daily.mean() / portfolio_daily.std(ddof=1) * np.sqrt(252))
                       if len(portfolio_daily) > 1 and portfolio_daily.std(ddof=1) > 0 else None)
             tail = portfolio_daily.nsmallest(max(1, int(np.ceil(len(portfolio_daily) * 0.05))))
-            transaction_cost = float(signal.get("estimatedTurnover") or 0.0) / 100.0 * 0.001
+            turnover = float(signal.get("estimatedTurnover") or 0.0) / 100.0
+            cost_policy = signal.get("transactionCostPolicy") or {}
+            exposures = signal.get("regionExposure") or {}
+            invested_region = sum(float(v) for v in exposures.values())
+            cost_fallback = not bool(cost_policy and invested_region > 0)
+            if cost_fallback:
+                transaction_cost = turnover * 0.001
+            else:
+                weighted_bps = 0.0
+                for region, exposure_pct in exposures.items():
+                    regional = cost_policy.get(region) or {}
+                    if not regional:
+                        cost_fallback = True
+                        break
+                    round_trip_bps = (
+                        float(regional.get("commissionBps", 5.0)) * 2.0
+                        + float(regional.get("spreadBps", 12.0)) * 2.0
+                        + float(regional.get("sellTaxBps", 20.0 if region == "KR" else 3.0))
+                    )
+                    weighted_bps += float(exposure_pct) / invested_region * round_trip_bps
+                transaction_cost = turnover * (0.001 if cost_fallback else weighted_bps / 10_000.0)
 
             def variant_return(raw_weights: dict) -> float | None:
                 if not raw_weights:
@@ -282,6 +305,7 @@ def compute_portfolio_outcomes(signals: list[dict], prices: dict[str, pd.DataFra
                 "cvar95": round(float(tail.mean()), 6),
                 "turnoverPct": signal.get("estimatedTurnover"),
                 "transactionCost": round(transaction_cost, 6),
+                "transactionCostFallbackUsed": cost_fallback,
                 "vsRiskWeightedReturn": round(portfolio_return - risk_return, 6) if risk_return is not None else None,
                 "vsKellyReturn": round(portfolio_return - kelly_return, 6) if kelly_return is not None else None,
             }
@@ -425,6 +449,8 @@ def validation_status(outcomes: list[dict], min_paper_days: int = 126) -> dict:
     eligible = paper_days >= min_paper_days and matured > 0 and metrics.get("crossSections", 0) > 0
     return {
         "paperDays": paper_days,
+        "firstSignalDate": dates[0].strftime("%Y-%m-%d") if dates else None,
+        "lastSignalDate": dates[-1].strftime("%Y-%m-%d") if dates else None,
         "maturedSignals": matured,
         "eligibleDates": metrics.get("eligibleDates", 0),
         "regionIC": metrics.get("regionIC", {}),
