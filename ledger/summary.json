@@ -1,6 +1,8 @@
 {
   "validationStatus": {
     "paperDays": 0,
+    "firstSignalDate": null,
+    "lastSignalDate": null,
     "maturedSignals": 0,
     "eligibleDates": 0,
     "regionIC": {},
@@ -10,7 +12,7 @@
     "liveValidationEligible": false,
     "liveValidated": false,
     "reasons": [
-      "paper_history_below_126_business_days",
+      "paper_history_below_252_business_days",
       "no_126d_matured_signals"
     ]
   },
