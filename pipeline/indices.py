@@ -114,8 +114,8 @@ def _as_utc(now: datetime | pd.Timestamp | None = None) -> pd.Timestamp:
 def _expected_market_date(region: str, now: datetime | pd.Timestamp | None = None) -> pd.Timestamp:
     """Most recent session date that should be available at evaluation time.
 
-    A conservative post-close buffer avoids flagging the US market as stale
-    during the Korea-close build and gives vendors time to publish final rows.
+    A short post-close buffer gives vendors time to publish final rows while
+    still making the completed US session mandatory for the 07:10 KST build.
     Exchange holidays are intentionally tolerated by the status thresholds.
     """
     now_utc = _as_utc(now)
@@ -124,12 +124,15 @@ def _expected_market_date(region: str, now: datetime | pd.Timestamp | None = Non
         after_close = (local.hour, local.minute) >= (17, 0)
     elif region == "US":
         local = now_utc.tz_convert(ZoneInfo("America/New_York"))
-        after_close = (local.hour, local.minute) >= (18, 0)
+        # 07:10 KST is 17:10 ET in standard time and 18:10 ET in daylight
+        # time.  Requiring the completed session from 16:45 ET prevents the
+        # previous trading day from being presented as current at breakfast.
+        after_close = (local.hour, local.minute) >= (16, 45)
     elif region == "CRYPTO":
         return now_utc.tz_convert(ZoneInfo("UTC")).tz_localize(None).normalize()
     else:
         local = now_utc.tz_convert(ZoneInfo("America/New_York"))
-        after_close = (local.hour, local.minute) >= (18, 0)
+        after_close = (local.hour, local.minute) >= (16, 45)
 
     candidate = local.tz_localize(None).normalize()
     if not after_close:
@@ -146,9 +149,9 @@ def _freshness(observation_date, region: str, now=None) -> tuple[int, str, str]:
         lag = 0
     else:
         lag = len(pd.bdate_range(obs + pd.offsets.BDay(1), expected))
-    if lag <= 1:
+    if lag == 0:
         return lag, "CURRENT", "최신"
-    if lag <= 3:
+    if lag <= 2:
         return lag, "DELAYED", "업데이트 지연"
     return lag, "STALE", "오래됨"
 
@@ -227,7 +230,7 @@ def fetch(now=None) -> list[dict]:
             if alt is not None:
                 candidates.append(("FinanceDataReader", alt))
         yahoo_lag = _freshness(yahoo.index[-1], spec["region"], now_utc)[0] if yahoo is not None else 99
-        if spec.get("stooq") and yahoo_lag > 1:
+        if spec.get("stooq") and yahoo_lag > 0:
             alt = _stooq_close(spec["stooq"])
             if alt is not None:
                 candidates.append(("Stooq", alt))
