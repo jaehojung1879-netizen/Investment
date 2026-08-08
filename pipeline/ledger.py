@@ -440,6 +440,10 @@ def validation_status(outcomes: list[dict], min_paper_days: int = 126) -> dict:
     dates = sorted({pd.Timestamp(o["date"]).normalize() for o in outcomes if o.get("date")})
     paper_days = len(pd.bdate_range(dates[0], dates[-1])) if dates else 0
     matured = sum("126" in (o.get("horizons") or {}) for o in outcomes)
+    matured_by_horizon = {
+        str(horizon): sum(str(horizon) in (o.get("horizons") or {}) for o in outcomes)
+        for horizon in HORIZONS
+    }
     metrics = evaluate(outcomes, horizon=63)
     reasons = []
     if paper_days < min_paper_days:
@@ -452,6 +456,7 @@ def validation_status(outcomes: list[dict], min_paper_days: int = 126) -> dict:
         "firstSignalDate": dates[0].strftime("%Y-%m-%d") if dates else None,
         "lastSignalDate": dates[-1].strftime("%Y-%m-%d") if dates else None,
         "maturedSignals": matured,
+        "maturedByHorizon": matured_by_horizon,
         "eligibleDates": metrics.get("eligibleDates", 0),
         "regionIC": metrics.get("regionIC", {}),
         "costAdjustedExcessReturn": metrics.get("meanExcessAfterCost"),
