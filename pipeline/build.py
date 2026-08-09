@@ -146,7 +146,6 @@ def _load_prior(path=None) -> tuple[dict, dict]:
 def _load_validation_status(path=None, min_paper_days: int = 126) -> dict:
     fallback = {
         "paperDays": 0, "maturedSignals": 0, "eligibleDates": 0,
-        "maturedByHorizon": {"21": 0, "63": 0, "126": 0, "252": 0},
         "firstSignalDate": None, "lastSignalDate": None,
         "regionIC": {}, "costAdjustedExcessReturn": None, "MDD": None,
         "CVaR": None, "liveValidationEligible": False, "liveValidated": False,
@@ -341,7 +340,33 @@ def run(cfg) -> dict:
             continue
         try:
             region = cfg.region_of(ticker)
- „ç-¢Gß≤⁄Óù∆≠y—50"], "ma200": diagnosis["ma200"],
+            regional_benchmark = cfg.benchmarks.get(region)
+            bench = benchmark_closes.get(region) if ticker != regional_benchmark else None
+            feat = F.build_features(prices[ticker], benchmark_close=bench, vix=vix, macro=macro)
+            feat = F.add_targets(feat, target_horizons)
+            fcols = F.feature_columns(feat)
+            clean = feat.dropna(subset=fcols)
+            if clean.empty:
+                continue
+            latest_date = max(latest_date, clean.index[-1]) if latest_date else clean.index[-1]
+            diagnosis = risk_mod.diagnose(ticker, feat)
+            diags[ticker] = diagnosis
+            vsurge = volume_surge(prices[ticker])
+            try:
+                entry_feats[ticker] = entry_mod.entry_features(feat, volume_surge=vsurge)
+            except Exception:
+                pass
+
+            tsig = M.current_signal(feat, fcols, f"target_{th}d", cfg.model)
+            details[ticker] = {
+                "volSurge": vsurge,
+                "region": region,
+                "modelScore": tsig["probUp"] if tsig else None,
+                "probUp": None,
+                "regime": diagnosis["regime"],
+                "lastClose": diagnosis["lastClose"],
+                "asOf": clean.index[-1].strftime("%Y-%m-%d"),
+                "ma50": diagnosis["ma50"], "ma200": diagnosis["ma200"],
                 "rsi14": diagnosis["rsi14"], "realizedVol": diagnosis["realizedVol"],
                 "maxDrawdown252d": diagnosis["maxDrawdown252d"],
                 "relMomentum": diagnosis["relMomentum"], "pct52wHigh": diagnosis["pct52wHigh"],

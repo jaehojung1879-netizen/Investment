@@ -4,9 +4,9 @@ on:
   push:
     branches: [main]
   schedule:
-    # 07:10 KST daily. This is at least 70 minutes after the US close. The pipeline now
-    # marks a missing completed US session as delayed instead of calling it current.
-    - cron: "10 22 * * *"
+    # 08:20 KST daily. The extra vendor-settlement buffer after the US close
+    # avoids publishing a previous-session row that was still cached at 07:00.
+    - cron: "20 23 * * *"
     # 17:15 KST on weekdays. KRX closes at 15:30; the buffer lets both Yahoo
     # and FinanceDataReader publish final KOSPI/KOSDAQ rows before cross-check.
     - cron: "15 8 * * 1-5"
@@ -95,7 +95,7 @@ jobs:
         run: |
           rm -rf _site
           mkdir -p _site/data _site/docs
-          cp index.html methodology.html styles.css app.js methodology.js _site/
+          cp index.html styles.css app.js _site/
           cp data/site-data.json _site/data/site-data.json
           cp docs/investment-philosophy.md _site/docs/investment-philosophy.md
 

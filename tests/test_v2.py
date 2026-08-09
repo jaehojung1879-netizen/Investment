@@ -458,15 +458,6 @@ def test_ledger_outcomes_only_for_matured_horizons():
     assert outs[0]["horizons"]["21"]["fwdReturn"] > 0
 
 
-def test_validation_status_reports_each_review_horizon():
-    rows = [
-        {"date": "2026-01-02", "horizons": {"21": {"excessReturn": .01}}},
-        {"date": "2026-02-02", "horizons": {"21": {"excessReturn": .02}, "63": {"excessReturn": .03}}},
-    ]
-    status = LG.validation_status(rows, min_paper_days=252)
-    assert status["maturedByHorizon"] == {"21": 2, "63": 1, "126": 0, "252": 0}
-
-
 # --------------------------------------------------------------------------- #
 # 12. Provenance / data-mode distinctions.
 # --------------------------------------------------------------------------- #
