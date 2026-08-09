@@ -1,10 +1,22 @@
-"""Auditable constrained Fractional Kelly model portfolio.
+"""Auditable concentrated model portfolio (selection + constrained Kelly).
+
+Two separate decisions, kept separate on purpose:
+
+1. WHICH names are held — ``select_portfolio``. The research layer publishes a
+   6–12 name candidate sleeve per region; a portfolio has to answer a narrower
+   question, so names are ranked by factor-rank edge per unit of realized
+   downside risk and cut to a concentrated target (3–5 by default) under
+   per-sector and per-region name limits. That score is a RANKING, never an
+   expected return or a forecast Sharpe ratio, and the full cut is published
+   with the reason each name was kept or dropped.
+2. HOW MUCH of each — ``baseline_weights`` gives conviction-tilted inverse
+   downside-volatility weights, which is what the portfolio actually uses until
+   Kelly earns its way in.
 
 The long-term alpha score is deliberately *not* treated as an expected return.
 Expected excess returns come only from matured, point-in-time paper-ledger
-outcomes.  When that history or the covariance sample is insufficient the
-module returns an explicit shadow/fallback state and preserves the existing
-inverse-downside-volatility portfolio.
+outcomes. When that history or the covariance sample is insufficient the module
+keeps the baseline allocation and says so, instead of inventing a mean.
 """
 from __future__ import annotations
 
@@ -31,6 +43,13 @@ STATUSES = {
     "ACTIVE_PAPER", "ACTIVE_VALIDATED", "OPTIMIZATION_FAILED",
     "FALLBACK_RISK_WEIGHTED", "BLOCKED",
 }
+
+# The baseline allocation used whether or not Kelly activates. It is a RANKING
+# rule, never a return forecast: factor-rank edge per unit of realized downside
+# risk decides *which* names are held, inverse-downside-vol decides how much.
+SELECTION_METHOD = "ALPHA_RANK_PER_DOWNSIDE_RISK"
+BASELINE_METHOD = "CONVICTION_TILTED_RISK_PARITY"
+NEUTRAL_PERCENTILE = 50.0
 
 
 def load_json(path: str | Path | None, default):
@@ -613,17 +632,179 @@ def _candidate_rows(long_term: dict | None) -> list[dict]:
     return rows
 
 
-def _risk_weights(candidates: list[dict], cfg: dict) -> dict:
-    raw = {c["ticker"]: max(0.0, float(c.get("modelSleeveWeightPct") or 0.0) / 100.0) for c in candidates}
+def _risk_unit(candidate: dict) -> float | None:
+    """Realized downside volatility (fraction), falling back to total vol."""
+    risk = candidate.get("risk") or {}
+    for key in ("downsideVolPct", "vol252Pct"):
+        value = risk.get(key)
+        if value is not None and float(value) > 0:
+            return float(value) / 100.0
+    return None
+
+
+def conviction_scores(candidates: list[dict], cfg: dict) -> list[dict]:
+    """Rank candidates by factor-rank edge per unit of realized downside risk.
+
+    This is deliberately NOT an expected return, a Sharpe ratio forecast, or a
+    probability. ``alphaPercentile`` is a cross-sectional *rank* produced by the
+    research layer; dividing its distance above the median by realized downside
+    volatility gives an auditable ordering of "how much rank edge am I paid per
+    unit of the risk I actually observed". Evidence coverage and the entry-state
+    multiplier can only shrink it, never inflate it.
+    """
+    selection = cfg.get("selection") or {}
+    floor_pct = float(selection.get("minAlphaPercentile", 66))
+    units = [u for u in (_risk_unit(c) for c in candidates) if u is not None]
+    median_unit = float(np.median(units)) if units else 0.25
+    rows = []
+    for candidate in candidates:
+        percentile = candidate.get("alphaPercentile")
+        risk_unit = _risk_unit(candidate) or median_unit
+        state_multiplier = _state_multiplier(candidate, cfg)
+        evidence = float(candidate.get("evidenceCoverage") or candidate.get("factorCoverage") or 0.0)
+        edge = (float(percentile) - NEUTRAL_PERCENTILE) / (100.0 - NEUTRAL_PERCENTILE) if percentile is not None else 0.0
+        edge = max(0.0, edge)
+        score = edge / max(risk_unit, 0.05) * evidence * state_multiplier
+        excluded = []
+        if percentile is None or float(percentile) < floor_pct:
+            excluded.append("ALPHA_BELOW_SELECTION_FLOOR")
+        if state_multiplier <= 0:
+            excluded.append("ENTRY_OR_RESEARCH_STATE_BLOCKS_SIZING")
+        if evidence <= 0:
+            excluded.append("NO_FACTOR_EVIDENCE")
+        rows.append({
+            "ticker": candidate["ticker"], "region": candidate.get("region") or "UNKNOWN",
+            "sector": candidate.get("sector") or "Unclassified",
+            "alphaPercentile": percentile,
+            "downsideVolPct": round(risk_unit * 100, 1),
+            "riskUnitFallback": _risk_unit(candidate) is None,
+            "evidenceCoverage": round(evidence, 3),
+            "entryStateMultiplier": round(state_multiplier, 3),
+            "convictionScore": round(float(score), 4),
+            "eligible": not excluded, "exclusionCodes": excluded,
+        })
+    rows.sort(key=lambda r: (-r["convictionScore"], -(r["alphaPercentile"] or -1),
+                             r["downsideVolPct"], str(r["ticker"])))
+    return rows
+
+
+def select_portfolio(candidates: list[dict], cfg: dict) -> tuple[list[dict], dict]:
+    """Cut the research candidate list down to a portfolio that can be held.
+
+    A 6–12 name research sleeve per region answers "what is interesting". A
+    portfolio has to answer "what do I own", so the selection is explicitly
+    concentrated and the reason each name did or did not make the cut is kept.
+    """
+    selection = cfg.get("selection") or {}
+    target = int(selection.get("targetNames", cfg.get("maxNames", 12)))
+    min_names = int(selection.get("minNames", 1))
+    per_sector = int(selection.get("maxNamesPerSector", target))
+    per_region = int(selection.get("maxNamesPerRegion", target))
+    scored = conviction_scores(candidates, cfg)
+    by_ticker = {c["ticker"]: c for c in candidates}
+
+    chosen: list[str] = []
+    sector_count: dict[str, int] = {}
+    region_count: dict[str, int] = {}
+    for row in scored:
+        if len(chosen) >= target:
+            row.setdefault("exclusionCodes", []).append("BELOW_TARGET_COUNT_CUTOFF")
+            continue
+        if not row["eligible"]:
+            continue
+        if sector_count.get(row["sector"], 0) >= per_sector:
+            row["exclusionCodes"].append("SECTOR_NAME_LIMIT")
+            continue
+        if region_count.get(row["region"], 0) >= per_region:
+            row["exclusionCodes"].append("REGION_NAME_LIMIT")
+            continue
+        chosen.append(row["ticker"])
+        sector_count[row["sector"]] = sector_count.get(row["sector"], 0) + 1
+        region_count[row["region"]] = region_count.get(row["region"], 0) + 1
+    selected_set = set(chosen)
+    for row in scored:
+        row["selected"] = row["ticker"] in selected_set
+    meta = {
+        "method": SELECTION_METHOD,
+        "scoreFormulaKo": "(알파 백분위 − 50) ÷ 50 ÷ 하방변동성 × 근거 커버리지 × 진입상태 배율",
+        "notAForecastKo": "종목을 고르기 위한 순위 점수이며 기대수익률·샤프비율 예측이 아닙니다.",
+        "targetNames": target, "minNames": min_names,
+        "maxNamesPerSector": per_sector, "maxNamesPerRegion": per_region,
+        "minAlphaPercentile": float(selection.get("minAlphaPercentile", 66)),
+        "consideredCount": len(candidates),
+        "eligibleCount": sum(1 for r in scored if r["eligible"]),
+        "selectedCount": len(chosen),
+        "shortfall": len(chosen) < min_names,
+        # Selected names plus the nearest misses: enough to audit the cut
+        # without shipping the whole cross-section twice.
+        "ranking": [r for r in scored if r["selected"]] + [r for r in scored if not r["selected"]][:8],
+    }
+    return [by_ticker[t] for t in chosen], meta
+
+
+def baseline_weights(selected: list[dict], cfg: dict) -> dict:
+    """Conviction-tilted inverse-downside-volatility weights for the held set.
+
+    Inverse downside vol sets the risk-parity base; the conviction *rank* inside
+    the selected set applies a bounded linear tilt (0.5x…1.5x) so a higher-ranked
+    name is not forced to the same size as the last name in. Nothing here claims
+    a return; capital that cannot be placed under the caps stays in cash.
+    """
+    if not selected:
+        return {}
+    tilt_range = float((cfg.get("selection") or {}).get("convictionTiltRange", 1.0))
+    scored = {row["ticker"]: row for row in conviction_scores(selected, cfg)}
+    order = sorted(selected, key=lambda c: -scored[c["ticker"]]["convictionScore"])
+    n = len(order)
+    raw = {}
+    for rank, candidate in enumerate(order):
+        risk_unit = _risk_unit(candidate) or 0.25
+        tilt = 1.0 if n == 1 else 1.0 + tilt_range * (0.5 - rank / (n - 1))
+        raw[candidate["ticker"]] = tilt / max(risk_unit, 0.05)
     total = sum(raw.values())
     budget = 1.0 - float(cfg.get("minCashPct", 10)) / 100.0
     if total > 0:
         raw = {t: w / total * budget for t, w in raw.items()}
-    capped, _ = _cap_portfolio(pd.Series(raw, dtype=float), candidates, cfg, {})
+    capped, _ = _cap_portfolio(pd.Series(raw, dtype=float), selected, cfg, {})
     return capped.to_dict()
 
 
+def concentration_diagnostics(weights: pd.Series, cfg: dict) -> dict:
+    """Report the concentration the portfolio actually carries."""
+    held = weights[weights > 1e-9].sort_values(ascending=False)
+    invested = float(held.sum())
+    if invested <= 0:
+        return {"names": 0, "effectiveNames": None, "top1WeightPct": None,
+                "top3WeightPct": None, "herfindahl": None, "warnings": ["NO_INVESTED_WEIGHT"]}
+    share = held / invested
+    herfindahl = float((share ** 2).sum())
+    effective = 1.0 / herfindahl if herfindahl > 0 else None
+    warnings = []
+    if len(held) <= 3:
+        warnings.append("SINGLE_DIGIT_NAME_COUNT_IDIOSYNCRATIC_RISK")
+    if effective is not None and effective < 2.5:
+        warnings.append("EFFECTIVE_NAMES_BELOW_2_5")
+    if float(share.iloc[0]) > 0.4:
+        warnings.append("TOP_NAME_ABOVE_40PCT_OF_EQUITY")
+    return {
+        "names": int(len(held)),
+        "effectiveNames": round(effective, 2) if effective is not None else None,
+        "top1WeightPct": round(float(held.iloc[0]) * 100, 2),
+        "top3WeightPct": round(float(held.iloc[:3].sum()) * 100, 2),
+        "herfindahl": round(herfindahl, 4),
+        "basisKo": "유효 종목수 = 1 ÷ 주식비중 허핀달지수",
+        "warnings": warnings,
+    }
+
+
 def _regime_adjustment(macro_regime: dict | None, cfg: dict) -> tuple[str, float, float, list[str]]:
+    """Translate the macro layer into a Kelly multiplier and a cash floor.
+
+    The dashboard used to publish a macro equity budget (say 20–45%) next to a
+    portfolio holding 75% equity, because the cash floor came only from the
+    regime table. The published budget's upper bound is now binding, so the two
+    layers cannot contradict each other on screen.
+    """
     macro_regime = macro_regime or {}
     label = macro_regime.get("regime") or "Transition/Low confidence"
     mapping = cfg.get("regimeMultipliers") or {}
@@ -634,7 +815,14 @@ def _regime_adjustment(macro_regime: dict | None, cfg: dict) -> tuple[str, float
     if confidence is not None and float(confidence) < 0.5:
         multiplier *= max(0.5, float(confidence) / 0.5)
         warnings.append("LOW_MACRO_CONFIDENCE_KELLY_HAIRCUT")
-    return label, multiplier, float(row.get("minCashPct", cfg.get("minCashPct", 10))), warnings
+    cash_floor = float(row.get("minCashPct", cfg.get("minCashPct", 10)))
+    equity_range = ((macro_regime.get("riskBudget") or {}).get("equityRangePct") or [])
+    if len(equity_range) == 2:
+        budget_floor = 100.0 - float(equity_range[1])
+        if budget_floor > cash_floor:
+            cash_floor = budget_floor
+            warnings.append("CASH_FLOOR_SET_BY_MACRO_EQUITY_BUDGET")
+    return label, multiplier, cash_floor, warnings
 
 
 def _serialize_allocation(weights: pd.Series) -> tuple[dict[str, float], float]:
@@ -660,11 +848,14 @@ def build_model_portfolio(long_term: dict | None, prices: dict, outcomes: list[d
     label, regime_mult, regime_cash, warnings = _regime_adjustment(macro_regime, cfg)
     local_cfg = dict(cfg)
     local_cfg["minCashPct"] = max(float(cfg.get("minCashPct", 10)), regime_cash)
+    macro_equity_range = ((macro_regime or {}).get("riskBudget") or {}).get("equityRangePct")
     applied = base * regime_mult
     skeleton = {
         "status": "SHADOW_INSUFFICIENT_HISTORY", "method": "BLENDED_CONSTRAINED_FRACTIONAL_KELLY",
         "horizonDays": int(cfg.get("horizonDays", 126)), "baseKellyFraction": base,
         "regime": label, "regimeMultiplier": round(regime_mult, 4),
+        "macroEquityRangePct": macro_equity_range,
+        "appliedMinCashPct": round(float(local_cfg["minCashPct"]), 2),
         "appliedKellyFraction": round(applied, 4), "kellyBlendWeight": blend,
         "riskWeightedBlendWeight": 1.0 - blend, "cashPct": 100.0,
         "expectedVolPct": None, "estimatedMaxDrawdownPct": None, "turnoverPct": 0.0,
@@ -691,11 +882,18 @@ def build_model_portfolio(long_term: dict | None, prices: dict, outcomes: list[d
         skeleton["warnings"].append("RECOMMENDATIONS_BLOCKED; WEIGHTS_WITHHELD")
         return skeleton
 
-    candidates = sorted(_candidate_rows(long_term), key=lambda c: str(c.get("ticker") or ""))
-    if len(candidates) < int(local_cfg.get("minNames", 6)):
+    all_candidates = sorted(_candidate_rows(long_term), key=lambda c: str(c.get("ticker") or ""))
+    if len(all_candidates) < int(local_cfg.get("minNames", 6)):
         skeleton["fallbackReason"] = "longterm_candidates_below_minimum"
         return skeleton
-    risk_weights = _risk_weights(candidates, local_cfg)
+    candidates, selection_meta = select_portfolio(all_candidates, local_cfg)
+    skeleton["selection"] = selection_meta
+    skeleton["baselineMethod"] = BASELINE_METHOD
+    if not candidates:
+        skeleton["fallbackReason"] = "no_candidate_passed_portfolio_selection"
+        skeleton["warnings"].append("SELECTION_EMPTY; ALL_CASH")
+        return skeleton
+    risk_weights = baseline_weights(candidates, local_cfg)
     estimates = estimate_expected_returns(candidates, outcomes, local_cfg, as_of=as_of)
     estimate_map = {e["ticker"]: e for e in estimates}
     sufficient = [e for e in estimates if e["status"] == "SHADOW"]
@@ -706,6 +904,18 @@ def build_model_portfolio(long_term: dict | None, prices: dict, outcomes: list[d
     kelly_weights: dict[str, float] = {}
     covariance_by_region: dict[str, dict] = {}
     covariance_matrices: dict[str, pd.DataFrame] = {}
+    # Active covariance is estimated for the held names whether or not Kelly is
+    # active: the portfolio's tracking error is reportable from prices alone and
+    # should not go dark just because the return ledger is still thin.
+    for region in sorted({c.get("region") or "UNKNOWN" for c in candidates}):
+        region_tickers = [c["ticker"] for c in candidates if (c.get("region") or "UNKNOWN") == region]
+        cov, cov_meta = estimate_active_covariance(
+            prices, region_tickers, bench_by_region.get(region), local_cfg,
+            region=region, benchmark=benchmarks.get(region) or "UNKNOWN",
+        )
+        covariance_by_region[region] = cov_meta
+        if cov is not None:
+            covariance_matrices[region] = cov
     if len(sufficient) < int(local_cfg.get("minNames", 6)):
         fallback_reason = "expected_return_history_insufficient"
     else:
@@ -723,16 +933,17 @@ def build_model_portfolio(long_term: dict | None, prices: dict, outcomes: list[d
             if len(region_candidates) < min_region_names:
                 fallback_reason = f"{region}:expected_return_history_insufficient"
                 break
-            benchmark_name = benchmarks.get(region)
-            cov, cov_meta = estimate_active_covariance(
-                prices, [c["ticker"] for c in region_candidates], bench_by_region.get(region),
-                local_cfg, region=region, benchmark=benchmark_name or "UNKNOWN",
-            )
-            covariance_by_region[region] = cov_meta
-            if cov is None:
-                fallback_reason = f"{region}:{cov_meta.get('reason') or 'active_covariance_unavailable'}"
-                break
-            covariance_matrices[region] = cov
+            cov = covariance_matrices.get(region)
+            if cov is None or not set(c["ticker"] for c in region_candidates) <= set(cov.index):
+                cov, cov_meta = estimate_active_covariance(
+                    prices, [c["ticker"] for c in region_candidates], bench_by_region.get(region),
+                    local_cfg, region=region, benchmark=benchmarks.get(region) or "UNKNOWN",
+                )
+                covariance_by_region[region] = cov_meta
+                if cov is None:
+                    fallback_reason = f"{region}:{cov_meta.get('reason') or 'active_covariance_unavailable'}"
+                    break
+                covariance_matrices[region] = cov
             regional_cfg = dict(local_cfg)
             regional_cfg["portfolioBudget"] = min(
                 risk_budget, float((local_cfg.get("regionCaps") or {}).get(region, 1.0)))
@@ -775,10 +986,16 @@ def build_model_portfolio(long_term: dict | None, prices: dict, outcomes: list[d
 
     sector_exp, theme_exp, region_exp = _exposures(final, candidates, themes)
     prior = pd.Series({t: float(prior_weights.get(t, 0.0)) for t in final.index})
+    # Without a prior production state there is nothing to turn over; the number
+    # is the cost of building the book from cash, and is labelled as such.
     turnover = 0.5 * float((final - prior).abs().sum()) if prior_weights else float(final.sum())
+    skeleton["turnoverBasis"] = "VS_PRIOR_STATE" if prior_weights else "INITIAL_BUILD"
+    ranking_by_ticker = {row["ticker"]: row for row in selection_meta.get("ranking", [])}
+    selected_order = [row["ticker"] for row in selection_meta.get("ranking", []) if row.get("selected")]
     positions = []
     for candidate in candidates:
         ticker = candidate["ticker"]
+        rank_row = ranking_by_ticker.get(ticker, {})
         exp = estimate_map.get(ticker, {})
         w = float(final.get(ticker, 0.0))
         position_bindings = [b for b in bindings if b.endswith(f":{ticker}") or
@@ -797,6 +1014,11 @@ def build_model_portfolio(long_term: dict | None, prices: dict, outcomes: list[d
             "transactionCost": exp.get("transactionCost"),
             "expectedReturnStatus": exp.get("status"),
             "riskLevel": (candidate.get("risk") or {}).get("vol252Pct"),
+            "convictionScore": rank_row.get("convictionScore"),
+            "convictionRank": (selected_order.index(ticker) + 1) if ticker in selected_order else None,
+            "downsideVolPct": rank_row.get("downsideVolPct"),
+            "thesisKo": candidate.get("thesisKo"),
+            "invalidation": candidate.get("invalidation") or [],
             "riskWeightedWeightPct": round(float(risk_weights.get(ticker, 0.0)) * 100, 2),
             "unconstrainedKellyWeightPct": (round(float(unconstrained.get(ticker, 0.0)) * 100, 2)
                                                 if not fallback_reason else None),
@@ -820,6 +1042,7 @@ def build_model_portfolio(long_term: dict | None, prices: dict, outcomes: list[d
         "themeExposure": {k: round(v * 100, 2) for k, v in theme_exp.items()},
         "regionExposure": {k: round(v * 100, 2) for k, v in region_exp.items()},
         "bindingConstraints": bindings,
+        "concentration": concentration_diagnostics(final, local_cfg),
     })
     active_variance = 0.0
     for region, cov in covariance_matrices.items():

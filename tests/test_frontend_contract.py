@@ -39,12 +39,43 @@ def test_fallback_does_not_render_kelly_weights_as_applied():
     assert "COPY.fallback" in APP
 
 
-def test_summary_first_structure_and_single_global_disclaimer():
-    for element_id in ("statusPanel", "marketSummaryPanel", "researchSummaryPanel", "portfolioSummaryPanel"):
+def test_decision_first_structure_and_single_global_disclaimer():
+    # The page opens on the answer: verdict, then the holdings themselves.
+    for element_id in ("decisionHero", "holdingsPanel", "selectionPanel",
+                       "methodStatusPanel", "statusPanel", "modelPortfolioPanel"):
         assert f'id="{element_id}"' in HTML
+    assert HTML.index('id="decisionHero"') < HTML.index('id="modelPortfolioPanel"')
+    assert HTML.index('id="holdingsPanel"') < HTML.index('id="ltKR"')
     assert HTML.count('id="globalDisclaimer"') == 1
     assert APP.count("투자 조언이나 개인화 추천") == 1
     assert "개인화 투자 권고" not in APP
+
+
+def test_secondary_material_lives_behind_uniform_folds():
+    # Everything that is not the decision is one collapsed row, not a section.
+    assert HTML.count('class="fold"') >= 8
+    assert 'class="fold-grid"' in HTML
+    assert ".fold > summary" in CSS
+    # The old always-expanded section chrome is gone.
+    assert "secondary-summary" not in HTML and "secondary-summary" not in CSS
+    assert 'class="section"' not in HTML
+
+
+def test_invalidation_is_rendered_per_name_from_pipeline_fields():
+    # No hardcoded sentence may stand in for a name's own invalidation levels.
+    assert "알파가 편출 버퍼 밖으로 밀리거나" not in APP
+    assert "invalidationLine(p.invalidation" in APP
+    assert "x.currentKo} → ${x.triggerKo}" in APP
+    assert "BREACHED" in APP
+
+
+def test_selection_funnel_and_method_status_are_rendered():
+    assert "renderSelection" in APP and "renderMethodStatus" in APP
+    assert "SELECT_EXCLUSION_KO" in APP
+    assert "scoreFormulaKo" in APP and "notAForecastKo" in APP
+    assert "방법론 적용 현황" in APP
+    assert "convictionScore" in APP and "effectiveNames" in APP
+    assert ".funnel-step" in CSS and ".ms-row" in CSS
 
 
 def test_mobile_portfolio_is_card_layout_without_wide_minimum():
