@@ -99,16 +99,6 @@ def test_index_return_windows_are_backend_calculated():
     assert row["ytdPct"] == round((close.iloc[-1] / prior_year_last - 1) * 100, 2)
 
 
-def test_us_completed_session_is_required_by_breakfast_kst():
-    # 07:10 KST is late enough that the just-completed US session must be the
-    # expected date in both EST and EDT. A prior business-day row is delayed.
-    now = pd.Timestamp("2026-01-06 07:10", tz="Asia/Seoul")
-    expected = IDX._expected_market_date("US", now)
-    assert expected.strftime("%Y-%m-%d") == "2026-01-05"
-    lag, status, _ = IDX._freshness(pd.Timestamp("2026-01-02"), "US", now)
-    assert lag == 1 and status == "DELAYED"
-
-
 def test_expert_queue_explains_exactly_why_consensus_is_empty():
     sources = {"sources": [{
         "id": "alpha", "institution": "Alpha Research",

@@ -85,14 +85,11 @@ def main() -> int:
     }, index=dates)
     macro["Yield_Curve"] = macro["Treasury_10Y"] - macro["Treasury_2Y"]
     # A few monthly macro series so the regime engine has >1 axis of coverage.
-    # Anchor to an actual month-end. Newer pandas versions otherwise omit the
-    # still-in-progress ending month and can return 59 dates for periods=60.
-    mdates = pd.date_range(end=dates[-1] + pd.offsets.MonthEnd(0), periods=60, freq="ME")
+    mdates = pd.date_range(end=dates[-1], periods=60, freq="ME")
     for name, base, slope, sd, sd_seed in [("CFNAI", 0.0, 0.002, 0.2, 21), ("Core_CPI", 300, 0.4, 0.3, 22),
                                            ("Unemployment", 4.0, -0.005, 0.1, 23), ("Payrolls", 155000, 120, 400, 24)]:
         rng = np.random.default_rng(sd_seed)
-        count = len(mdates)
-        macro[name] = pd.Series(base + slope * np.arange(count) + rng.normal(0, sd, count), index=mdates).reindex(dates).ffill()
+        macro[name] = pd.Series(base + slope * np.arange(60) + rng.normal(0, sd, 60), index=mdates).reindex(dates).ffill()
 
     th = cfg.trade_horizon
     target_h = sorted(set(cfg.horizons) | {th})
@@ -218,7 +215,6 @@ def main() -> int:
         "priorState": {"available": False, "reason": "synthetic_preview"},
         "validationStatus": {
             "paperDays": 0, "maturedSignals": 0, "eligibleDates": 0, "regionIC": {},
-            "maturedByHorizon": {"21": 0, "63": 0, "126": 0, "252": 0},
             "costAdjustedExcessReturn": None, "MDD": None, "CVaR": None,
             "liveValidationEligible": False, "liveValidated": False,
             "reasons": ["synthetic_data_not_eligible"],
