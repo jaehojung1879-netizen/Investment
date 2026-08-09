@@ -13,7 +13,7 @@ const COPY = Object.freeze({
   entryWithheld: '안전 기준에 따라 진입 판단을 표시하지 않습니다.',
   signalWithheld: '안전 기준에 따라 단기 참고 신호를 표시하지 않습니다.',
   validationPending: '검증 데이터를 축적하고 있습니다.',
-  fallback: '검증 데이터가 부족해 현재는 위험가중 비중을 사용합니다.',
+  fallback: 'Kelly 기대수익 추정에 필요한 실측 이력이 아직 없어, 비중은 컨빅션 위험가중으로 정합니다.',
   noChange: '이전 실행 대비 주요 변화 없음',
   disclaimer: '개인 리서치·교육 목적의 정량 도구이며 투자 조언이나 개인화 추천이 아닙니다. 과거 성과는 미래를 보장하지 않습니다. 데이터 모드·검증 상태·출처를 함께 확인하세요.',
 });
@@ -27,6 +27,31 @@ const USER_STATUS = Object.freeze({
   BLOCKED: '안전 차단',
   DISABLED: '데이터 부족',
   PENDING_PAPER_HISTORY: '검증 데이터 축적 중',
+});
+// The allocation rule actually in force — separate from the validation status,
+// because "Kelly is not active yet" is not the same as "there is no method".
+const ALLOC_METHOD = Object.freeze({
+  CONVICTION_TILTED_RISK_PARITY: {
+    name: '컨빅션 위험가중',
+    how: '알파 순위 대비 하방변동성으로 종목을 고르고, 하방변동성 역가중에 순위 틸트(0.5~1.5배)를 적용합니다.',
+  },
+  BLENDED_CONSTRAINED_FRACTIONAL_KELLY: {
+    name: 'Fractional Kelly 혼합',
+    how: '실측 ledger 기대 초과수익과 지역 active 공분산으로 푼 제약 Kelly 해를 기준 비중과 혼합합니다.',
+  },
+});
+const SELECT_EXCLUSION_KO = Object.freeze({
+  BELOW_TARGET_COUNT_CUTOFF: '목표 종목 수에서 밀림',
+  SECTOR_NAME_LIMIT: '동일 업종 종목 수 상한',
+  REGION_NAME_LIMIT: '동일 지역 종목 수 상한',
+  ALPHA_BELOW_SELECTION_FLOOR: '알파 백분위 하한 미달',
+  ENTRY_OR_RESEARCH_STATE_BLOCKS_SIZING: '진입·리서치 상태가 비중 배정 차단',
+  NO_FACTOR_EVIDENCE: '팩터 근거 없음',
+});
+const CONCENTRATION_KO = Object.freeze({
+  SINGLE_DIGIT_NAME_COUNT_IDIOSYNCRATIC_RISK: '종목 수가 적어 개별 종목 사고에 그대로 노출됩니다',
+  EFFECTIVE_NAMES_BELOW_2_5: '유효 종목수 2.5 미만 — 사실상 2종목 포트폴리오에 가깝습니다',
+  TOP_NAME_ABOVE_40PCT_OF_EQUITY: '1위 종목이 주식 비중의 40%를 넘습니다',
 });
 const statusLabel = (code, fallback = '검증 데이터 축적 중') => USER_STATUS[code] || fallback;
 const modeLabel = (mode) => ({ live: '실데이터', seed: '예시 데이터', synthetic: '합성 데이터', stale: '지연 데이터' }[mode] || '상태 미상');
@@ -121,6 +146,11 @@ const EXPL = {
   completeness: ['데이터 완전성', '팩터·재무 입력이 빠짐없이 채워진 정도입니다. 근거의 방향이나 출처 신뢰도를 뜻하지 않습니다.'],
   source: ['소스 품질', '원천과 시점 확인 수준을 요약합니다. 입력 항목의 개수인 근거 커버리지·완전성과 별개입니다.'],
   prob: ['모델 점수 (보정 확률)', '가격·추세·변동성·매크로 피처를 LightGBM+로지스틱 앙상블에 넣어 보정한 확률입니다. [5%,95%]로 클리핑돼 100%/0%는 불가능합니다.'],
+  portfolio: ['모델 포트폴리오', '리서치 후보 전체를 그대로 담지 않고 <b>3~5종목으로 집중</b>합니다. 종목 선정은 <b>알파 백분위 초과분 ÷ 하방변동성</b> 순위(근거 커버리지·진입상태 배율로 감쇠)로 하고, 비중은 <b>하방변동성 역가중 + 순위 틸트</b>로 정합니다. Kelly는 실측 ledger 기대수익이 쌓인 뒤에만 이 위에 얹힙니다.'],
+  selection: ['선정 과정', '후보 → 자격 필터(알파 하한·진입상태·근거) → 업종·지역 종목 수 상한 → 목표 종목 수 절단의 순서입니다. 탈락한 종목도 사유와 함께 남겨 어떤 단계에서 밀렸는지 확인할 수 있습니다.'],
+  conviction: ['컨빅션 점수', '(알파 백분위 − 50) ÷ 50 ÷ 하방변동성 × 근거 커버리지 × 진입상태 배율. <b>종목 순서를 정하는 랭킹 점수이며 기대수익률이나 샤프비율 예측이 아닙니다.</b> 알파는 횡단면 순위이지 수익률 추정치가 아니기 때문입니다.'],
+  invalidation: ['무효화 조건', '이 종목의 논리가 <b>어디서 깨지는지</b>를 종목별 현재 수치와 함께 적습니다. 기준선은 설정된 편출 버퍼, 팩터 중앙값, 200일선·12-1M 모멘텀 정의, 해당 지역 위험 횡단면 분포, 데이터 충족 하한에서 각각 산출합니다.'],
+  concentration2: ['집중도', '유효 종목수 = 1 ÷ 주식비중 허핀달지수. 5종목을 균등하게 담으면 5, 한 종목에 쏠릴수록 1에 가까워집니다.'],
 };
 const pop = $('#pop');
 let popKey = null;
@@ -207,41 +237,156 @@ const renderStatus = (d) => {
   const freshness = blocked ? '안전 차단' : mh.status === 'CURRENT' ? '최신' : mh.status === 'DELAYED' ? '일부 지연' : '확인 필요';
   const trustStatus = blocked ? '안전 차단' : dataMode === 'live' ? '검증 가능' : '실험적 데이터';
   const generated = d.generatedAt ? new Date(d.generatedAt).toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' }) : '—';
+  const cue = $('#trustSummaryCue');
+  if (cue) cue.textContent = `${trustStatus} · ${modeLabel(dataMode)} · 시장 기준 ${p.marketAsOf || m.latestDataDate || '—'}`;
   $('#statusPanel').innerHTML = `
     <div class="trust-lead ${blocked ? 'bad' : dataMode === 'live' ? 'ok' : 'warn'}"><span>${blocked ? '■' : dataMode === 'live' ? '●' : '▲'}</span><div><b>${trustStatus}</b><small>${blocked ? COPY.blocked : modeLabel(dataMode)}</small></div></div>
     <div class="trust-facts"><div><span>시장 기준일</span><b>${p.marketAsOf || m.latestDataDate || '—'}</b></div><div><span>생성 시각</span><b>${generated}</b></div><div><span>데이터 모드</span><b>${modeLabel(dataMode)}</b></div><div><span>최신 상태</span><b>${freshness}</b></div></div>
     <details class="status-tech"><summary>감사·기술 정보</summary><dl><div><dt>원래 상태</dt><dd>${d.runMode || p.runMode || 'paperTrading'} / ${dataMode}</dd></div><div><dt>빌드</dt><dd>${p.buildCommitSha || '—'}</dd></div><div><dt>스키마</dt><dd>${p.schemaVersion || d.schemaVersion || '—'}</dd></div><div><dt>모델</dt><dd>${p.modelVersion || d.modelVersion || '—'}</dd></div><div><dt>sourceAsOf</dt><dd>${p.sourceAsOf || m.sourceAsOf || '—'}</dd></div><div><dt>커버리지</dt><dd>${m.coveragePct ?? '—'}% / 기준 ${m.coverageFloor ?? 95}%</dd></div></dl></details>`;
 };
 
-const summaryCandidate = (p) => {
-  const { pros, cons } = prosCons(p); const entry = (p.entry || {}).entryState;
-  return `<div class="candidate-mini"><div><b>${tkName(p.ticker)}</b><span>${p.ticker}</span></div><div class="candidate-mini-state">${viewBadge(p.longTermResearchView)}${entryBadge(entry)}</div><div class="candidate-mini-alpha">알파 ${topPct(p.alphaPercentile)}</div><p class="positive-cue">＋ ${pros[0] || '확인 가능한 강한 근거 부족'}</p><p class="risk-cue">! ${cons[0] || '뚜렷한 위험 신호 없음'}</p></div>`;
-};
-const renderMarketSummary = (d) => {
-  const r = d.macroRegime || {}; const rb = r.riskBudget || {};
-  const indexRows = (d.indices || []).slice(0, 3).map((x) => `<div><span>${x.name}</span><b class="${(x.chg1dPct ?? 0) >= 0 ? 'pos' : 'neg'}">${trendCue(x.chg1dPct)} ${chg(x.chg1dPct)}</b></div>`).join('');
-  const changed = r.changed ? `${REGIME_KO[r.priorRegime] || r.priorRegime} → ${REGIME_KO[r.regime] || r.regime}` : '국면 변화 없음';
-  $('#marketSummaryPanel').innerHTML = `<div class="summary-index-list">${indexRows || '<div class="none">시장 지수 대기</div>'}</div><div class="summary-kpis"><div><span>매크로 국면</span><b>${REGIME_KO[r.regime] || '판정 대기'}</b></div><div><span>주식 위험예산</span><b>${(rb.equityRangePct || []).join('~') || '—'}%</b></div><div><span>현금 권장</span><b>${(rb.cashRangePct || []).join('~') || '—'}%</b></div><div><span>이전 대비</span><b>${changed}</b></div></div>`;
-};
-const renderResearchSummary = (d) => {
-  const regions = (d.longTerm || {}).regions || {};
-  const one = (region) => {
-    const blob = regions[region] || {}; const rows = ((blob.picks || []).length ? blob.picks : blob.researchTable || []).slice(0, 3);
-    return `<div class="research-mini-region"><div class="mini-region-head">${region === 'KR' ? '국내 KR' : '국외 US'} <span>${rows.length}개 요약</span></div>${rows.length ? rows.map(summaryCandidate).join('') : '<div class="none">데이터 부족</div>'}</div>`;
-  };
-  $('#researchSummaryPanel').innerHTML = d.recommendationsBlocked ? '<div class="summary-blocked">■ 안전 기준에 따라 후보 비공개</div>' : one('KR') + one('US');
-};
 const largestEntry = (obj) => Object.entries(obj || {}).sort((a, b) => b[1] - a[1])[0];
-const renderPortfolioSummary = (d) => {
-  const mp = d.modelPortfolio || {}; const positions = (mp.positions || []).filter((p) => p.modelPortfolioWeightPct > 0);
-  const largest = positions.slice().sort((a, b) => b.modelPortfolioWeightPct - a.modelPortfolioWeightPct)[0];
+
+// --- 1a. Decision hero: the whole answer in one paragraph + six numbers ---
+const turnoverLabel = (mp) => (mp.turnoverBasis === 'INITIAL_BUILD'
+  ? `신규 구축 ${fmt(mp.turnoverPct, '%', 1)}`
+  : fmt(mp.turnoverPct, '%', 1));
+const allocMethod = (mp) => ALLOC_METHOD[mp.kellyApplied === true ? 'BLENDED_CONSTRAINED_FRACTIONAL_KELLY' : (mp.baselineMethod || 'CONVICTION_TILTED_RISK_PARITY')]
+  || { name: '기준 비중', how: '' };
+const renderDecisionHero = (d) => {
+  const host = $('#decisionHero'); const mp = d.modelPortfolio || {};
+  const r = d.macroRegime || {}; const rb = r.riskBudget || {};
+  const blocked = d.recommendationsBlocked || mp.status === 'BLOCKED';
+  if (blocked) {
+    $('#heroHeadline').textContent = '오늘은 판단을 내지 않습니다';
+    host.innerHTML = `<div class="dh-verdict bad"><span class="dh-badge">■ 안전 차단</span><h3>${COPY.blocked}</h3><p>${(d.blockReasons || []).join(' · ') || '데이터 안전 기준 미달'}</p></div>`;
+    return;
+  }
+  const positions = (mp.positions || []).filter((p) => p.modelPortfolioWeightPct > 0);
+  const conc = mp.concentration || {};
+  const method = allocMethod(mp);
+  const equity = 100 - (mp.cashPct ?? 100);
   const sector = largestEntry(mp.sectorExposure);
-  const applied = mp.kellyApplied === true;
-  $('#portfolioSummaryPanel').innerHTML = d.recommendationsBlocked || mp.status === 'BLOCKED' ? '<div class="summary-blocked">■ 안전 기준에 따라 모델 비중 비공개</div>' : `
-    <div class="portfolio-state"><b>${statusLabel(mp.status)}</b><span title="${mp.status || ''}">${applied ? 'Kelly 결과 반영' : '위험가중 방식'}</span></div>
-    <div class="summary-kpis portfolio-kpis"><div><span>주식 합계</span><b>${fmt(100 - (mp.cashPct ?? 100), '%', 1)}</b></div><div><span>현금</span><b>${fmt(mp.cashPct, '%', 1)}</b></div><div><span>종목 수</span><b>${positions.length}</b></div><div><span>최대 비중</span><b>${largest ? `${tkName(largest.ticker)} ${fmt(largest.modelPortfolioWeightPct, '%', 1)}` : '—'}</b></div><div><span>최대 업종</span><b>${sector ? `${sector[0]} ${sector[1]}%` : '—'}</b></div><div><span>Kelly 영향</span><b>${applied ? fmt(mp.kellyAllocationImpactPct, '%', 1) : '미적용'}</b></div></div>
-    <p class="portfolio-reason ${mp.fallbackReason ? 'risk-cue' : ''}">${mp.fallbackReason ? `! ${COPY.fallback}` : '● 모델 제약을 통과한 비중입니다.'}</p>`;
+  $('#heroHeadline').textContent = positions.length
+    ? `${positions.length}종목 · 주식 ${equity.toFixed(0)}% · 현금 ${(mp.cashPct ?? 0).toFixed(0)}%`
+    : '보유 비중 없음';
+  const cue = positions.length ? 'ok' : 'warn';
+  const line = positions.length
+    ? `리서치 후보 ${mp.selection?.consideredCount ?? '—'}개를 <b>${positions.length}종목</b>으로 좁히고 <b>${method.name}</b>으로 비중을 정했습니다.`
+    : '자격을 통과한 종목이 없어 전액 현금입니다.';
+  const kellyLine = mp.kellyApplied === true
+    ? `Kelly 반영 — 기준 비중 대비 배분 변화 ${fmt(mp.kellyAllocationImpactPct, '%p', 1)}`
+    : `Kelly 미적용 — ${COPY.fallback}`;
+  host.innerHTML = `
+    <div class="dh-verdict ${cue}">
+      <span class="dh-badge">${statusLabel(mp.status)}</span>
+      <h3>${line}</h3>
+      <p>${method.how}</p>
+      <p class="dh-kelly ${mp.kellyApplied === true ? '' : 'risk-cue'}">${kellyLine}</p>
+    </div>
+    <div class="dh-kpis">
+      ${chip('주식 비중', fmt(equity, '%', 1))}
+      ${chip('현금', fmt(mp.cashPct, '%', 1))}
+      ${chip('종목 수', positions.length)}
+      ${chip('유효 종목수', conc.effectiveNames ?? '—', 'info')}
+      ${chip('최대 업종', sector ? `${sector[0]} ${sector[1]}%` : '—')}
+      ${chip('매크로 국면', REGIME_KO[r.regime] || '판정 대기')}
+      ${chip('주식 위험예산', `${(rb.equityRangePct || []).join('~') || '—'}%`)}
+      ${chip('회전율', turnoverLabel(mp))}
+    </div>
+    ${(conc.warnings || []).length ? `<div class="dh-warn">${conc.warnings.map((w) => `<span>! ${CONCENTRATION_KO[w] || w}</span>`).join('')}</div>` : ''}`;
 };
+
+// --- 1b. The holdings themselves: what is owned and where the case breaks ---
+const invalidationLine = (rows, limit = 3) => {
+  const all = rows || [];
+  if (!all.length) return '';
+  const ordered = all.filter((x) => x.state === 'BREACHED').concat(all.filter((x) => x.state !== 'BREACHED'));
+  return ordered.slice(0, limit).map((x) =>
+    `<span class="inval ${x.state === 'BREACHED' ? 'broken' : ''}"><em>${x.labelKo}</em> ${x.currentKo} → ${x.triggerKo}</span>`).join('');
+};
+const holdingCard = (p, maxWeight) => {
+  const w = p.modelPortfolioWeightPct ?? 0;
+  const bar = maxWeight > 0 ? Math.max(4, Math.round((w / maxWeight) * 100)) : 0;
+  return `<article class="holding">
+    <div class="h-top"><span class="h-rank">${p.convictionRank ?? '—'}</span><div>${tkLink(p.ticker)}<small>${p.region || ''} · ${p.sector || '미분류'}</small></div>${p.entryState ? entryBadge(p.entryState) : ''}</div>
+    <div class="h-weight"><b>${fmt(w, '%', 1)}</b><div class="h-bar"><i style="width:${bar}%"></i></div></div>
+    <p class="h-thesis">${p.thesisKo || '팩터 근거 요약 없음'}</p>
+    <div class="h-facts"><span>${term('conviction', '컨빅션')} <b>${fmt(p.convictionScore, '', 2)}</b></span><span>하방변동 <b>${fmt(p.downsideVolPct, '%', 1)}</b></span><span>알파 <b>${topPct(p.alphaPercentile)}</b></span></div>
+    <div class="h-inval"><b>${term('invalidation', '깨지는 지점')}</b>${invalidationLine(p.invalidation) || '<span class="inval">종목별 조건 산출 대기</span>'}</div>
+  </article>`;
+};
+const renderHoldings = (d) => {
+  const host = $('#holdingsPanel'); const mp = d.modelPortfolio || {};
+  if (d.recommendationsBlocked || mp.status === 'BLOCKED') { host.innerHTML = ''; return; }
+  const rows = (mp.positions || []).filter((p) => p.modelPortfolioWeightPct > 0)
+    .sort((a, b) => b.modelPortfolioWeightPct - a.modelPortfolioWeightPct);
+  if (!rows.length) {
+    host.innerHTML = `<div class="status-note warn">보유할 종목이 선정되지 않았습니다. <code>${mp.fallbackReason || 'selection_empty'}</code></div>`;
+    return;
+  }
+  const maxWeight = rows[0].modelPortfolioWeightPct;
+  host.innerHTML = rows.map((p) => holdingCard(p, maxWeight)).join('');
+};
+
+// --- 3. Selection funnel: candidate -> holding, with every drop reason kept ---
+const renderSelection = (d) => {
+  const host = $('#selectionPanel'); const mp = d.modelPortfolio || {};
+  const sel = mp.selection;
+  if (d.recommendationsBlocked || mp.status === 'BLOCKED' || !sel) {
+    $('#selectionMeta').textContent = '';
+    host.innerHTML = `<div class="status-note info">${d.recommendationsBlocked ? COPY.blocked : '선정 결과가 아직 없습니다.'}</div>`;
+    return;
+  }
+  $('#selectionMeta').textContent = `후보 ${sel.consideredCount} → 자격 ${sel.eligibleCount} → 보유 ${sel.selectedCount} (목표 ${sel.targetNames})`;
+  const step = (n, label, value, note) => `<div class="funnel-step"><span class="funnel-n">${n}</span><div><b>${value}</b><span>${label}</span><small>${note}</small></div></div>`;
+  const funnel = `<div class="funnel">
+    ${step(1, '리서치 후보', sel.consideredCount, '지역별 팩터 슬리브 통과 종목')}
+    ${step(2, '자격 통과', sel.eligibleCount, `알파 ${sel.minAlphaPercentile}p 이상 · 진입상태·근거 조건 충족`)}
+    ${step(3, '분산 상한', `업종 ${sel.maxNamesPerSector} · 지역 ${sel.maxNamesPerRegion}`, '동일 업종·지역 종목 수 제한')}
+    ${step(4, '최종 보유', sel.selectedCount, `컨빅션 순위 상위 ${sel.targetNames}종목까지`)}
+  </div>`;
+  const rows = (sel.ranking || []).map((r) => {
+    const why = r.selected ? '보유' : (r.exclusionCodes || []).map((c) => SELECT_EXCLUSION_KO[c] || c).join(' · ') || '—';
+    return `<div class="sel-row ${r.selected ? 'picked' : ''}">
+      <span data-label="종목">${tkLink(r.ticker)} <small>${r.region}</small></span>
+      <span data-label="업종">${r.sector}</span>
+      <span data-label="알파">${topPct(r.alphaPercentile)}</span>
+      <span data-label="하방변동">${fmt(r.downsideVolPct, '%', 1)}</span>
+      <span data-label="컨빅션"><b>${fmt(r.convictionScore, '', 2)}</b></span>
+      <span data-label="결과" class="sel-why">${why}</span>
+    </div>`;
+  }).join('');
+  host.innerHTML = `${funnel}
+    <div class="sel-method"><b>${term('conviction', '컨빅션 점수')}</b> ${sel.scoreFormulaKo}<em>${sel.notAForecastKo}</em></div>
+    <div class="sel-table"><div class="sel-row sel-head"><span>종목</span><span>업종</span><span>알파</span><span>하방변동</span><span>컨빅션</span><span>결과</span></div>${rows || '<div class="none">순위 데이터 없음</div>'}</div>
+    ${sel.shortfall ? `<div class="status-note warn">자격을 통과한 종목이 최소 ${sel.minNames}개에 미치지 못해 남은 비중은 현금으로 둡니다.</div>` : ''}`;
+};
+
+// --- 3b. Is the methodology actually switched on? Answer it explicitly. ---
+const methodRow = (name, on, detail) => `<div class="ms-row ${on ? 'on' : 'off'}"><span class="ms-dot"></span><div><b>${name}</b><small>${detail}</small></div><em>${on ? '적용' : '미적용'}</em></div>`;
+const renderMethodStatus = (d) => {
+  const host = $('#methodStatusPanel'); const mp = d.modelPortfolio || {};
+  const lt = d.longTerm || {}; const r = d.macroRegime || {};
+  const vs = d.validationStatus || {}; const gate = (mp.validation || {}).sampleGate || {};
+  const sel = mp.selection;
+  const regionCount = Object.keys(lt.regions || {}).length;
+  const rows = [
+    methodRow('팩터 리서치 (섹터중립 z · 4슬리브)', regionCount > 0,
+      regionCount > 0 ? `${regionCount}개 지역을 각각 독립 z-score로 순위화` : '지역 테이블을 만들지 못했습니다'),
+    methodRow('진입 타이밍 분리', !!(lt.regions && Object.values(lt.regions).some((b) => (b.researchTable || []).some((x) => x.entry))),
+      '장기 팩터 판단과 지금 진입 여부를 별도 상태로 유지'),
+    methodRow('매크로 위험예산', !!r.regime,
+      r.regime ? `${REGIME_KO[r.regime] || r.regime} · 주식 예산 ${(mp.macroEquityRangePct || []).join('~') || '—'}% → 현금 하한 ${fmt(mp.appliedMinCashPct, '%', 0)} · Kelly 배율 ${fmt(mp.regimeMultiplier, '', 2)}` : '국면 판정 대기'),
+    methodRow('종목 집중 (컨빅션 선정)', !!sel,
+      sel ? `${sel.consideredCount}개 후보 → ${sel.selectedCount}종목` : '선정 결과 없음'),
+    methodRow('Kelly 기대수익 배분', mp.kellyApplied === true,
+      mp.kellyApplied === true ? `실측 ledger 기준 · 배분 영향 ${fmt(mp.kellyAllocationImpactPct, '%p', 1)}`
+        : `paper ${vs.paperDays ?? 0}/${gate.thresholds?.paperDays ?? 252}일 · 만기 신호 ${vs.maturedSignals ?? 0}/${gate.thresholds?.maturedSignals ?? 100}개 — 최초 검토 가능 ${mp.validation?.earliestReviewDate || '산정 대기'}`),
+  ].join('');
+  host.innerHTML = `<div class="ms-head"><b>방법론 적용 현황</b><span class="muted">켜져 있는 층과 아직 아닌 층을 그대로 표시합니다</span></div>${rows}`;
+};
+
 const renderChanges = (d) => {
   const c = d.changesSincePrior || {}; const host = $('#changeSummary');
   if (!c.available || !c.hasChanges) { host.innerHTML = `<span>→</span><b>${c.available ? COPY.noChange : (c.summaryKo || '이전 운영 상태 비교 대기')}</b>`; return; }
@@ -254,7 +399,7 @@ const renderChanges = (d) => {
   if (c.regimeChanged) bits.push(`국면 ${REGIME_KO[c.regimeChanged.before] || c.regimeChanged.before} → ${REGIME_KO[c.regimeChanged.after] || c.regimeChanged.after}`);
   host.innerHTML = `<span>↻</span><div><b>이전 실행 대비 주요 변화</b><p>${bits.join(' · ')}</p></div>`;
 };
-const renderOverview = (d) => { renderMarketSummary(d); renderResearchSummary(d); renderPortfolioSummary(d); renderChanges(d); };
+const renderOverview = (d) => { renderDecisionHero(d); renderHoldings(d); renderChanges(d); };
 
 // =========================================================================
 // 2. Macro regime & risk budget
@@ -335,7 +480,7 @@ const axisRow = (a, key) => {
   const w = v == null ? 0 : Math.min(50, Math.abs(v) * 50);
   const direct = key === 'growth' || key === 'inflation';
   const indicators = (a.indicators || []).map((i) => indicatorCard(i, a)).join('') || '<div class="ax-none">사용 가능한 지표가 없습니다.</div>';
-  return `<details class="ax-detail" ${direct ? 'open' : ''}>
+  return `<details class="ax-detail">
     <summary><div class="ax-row">
       <span class="ax-name">${a.ko}</span>
       <span class="ax-bar"><i class="${v >= 0 ? 'apos' : 'aneg'}" style="${v >= 0 ? 'left:50%' : 'right:50%'};width:${w}%"></i></span>
@@ -371,9 +516,8 @@ const regimeGuideCard = (r) => {
   </div>`;
 };
 const renderRegime = (r) => {
-  const host = $('#regimePanel'); const sec = $('#regime');
-  if (!r) { sec.hidden = true; return; }
-  sec.hidden = false;
+  const host = $('#regimePanel');
+  if (!r) { host.innerHTML = '<div class="none">국면 판정 데이터 없음</div>'; return; }
   $('#regimeMeta').textContent = `${r.asOf ? '기준 ' + r.asOf + ' · ' : ''}지표 ${r.indicatorCount ?? 0}개 · 커버리지 ${Math.round((r.coverage ?? 0) * 100)}%`;
   const rb = r.riskBudget || {};
   const changed = r.changed ? `<span class="chg">← ${REGIME_KO[r.priorRegime] || r.priorRegime}에서 전환</span>` : '';
@@ -473,7 +617,7 @@ const prosCons = (p) => {
   if ((p.entry || {}).overheatPercentile != null && p.entry.overheatPercentile >= 85) cons.push('유니버스 내 과열');
   return { pros: pros.slice(0, 2), cons: cons.slice(0, 2) };
 };
-const ltRow = (p, blocked = false) => {
+const ltRow = (p, blocked = false, held = false) => {
   const { pros, cons } = prosCons(p);
   const e = blocked ? {} : (p.entry || {}); const risk = p.risk || {};
   const w = blocked ? null : p.modelSleeveWeightPct;
@@ -483,76 +627,92 @@ const ltRow = (p, blocked = false) => {
   const empirical = p.empiricalValidationStatus || 'PENDING_PAPER_HISTORY';
   const trust = Math.min(evidence, completeness, sourceQuality);
   const trustLabel = trust >= 0.8 ? '높음' : trust >= 0.6 ? '보통' : '낮음';
-  const invalidation = '알파가 편출 버퍼 밖으로 밀리거나 데이터 기준 미달·회피 상태가 되면 논리가 무효화됩니다.';
-  return `<div class="lt-item">
-    <div class="lt-top"><div>${tkLink(p.ticker)}<span class="muted lt-sec">${p.sectorKo || p.sector || '미분류'}</span></div><div class="lt-state">${viewBadge(p.longTermResearchView)}${e.entryState ? entryBadge(e.entryState) : ''}</div></div>
-    <div class="lt-essential"><span>알파 <b>${topPct(p.alphaPercentile)}</b></span><span>모델 슬리브 <b>${w != null ? w + '%' : '—'}</b></span><span>데이터 신뢰도 <b>${trustLabel}</b></span></div>
-    <div class="lt-args"><div class="pro"><b>핵심 근거</b>${(pros.length ? pros : ['확인 가능한 강한 근거 부족']).map((x) => `<span>＋ ${x}</span>`).join('')}</div><div class="con"><b>핵심 위험</b>${(cons.length ? cons : ['뚜렷한 위험 신호 없음']).map((x) => `<span>! ${x}</span>`).join('')}</div></div>
-    ${blocked ? '' : `<div class="lt-inval"><b>무효화 조건</b> ${invalidation}</div>`}
-    <details class="lt-details"><summary>상세 지표</summary>
+  const broken = (p.invalidation || []).filter((x) => x.state === 'BREACHED');
+  return `<div class="lt-item ${held ? 'lt-held' : ''}">
+    <div class="lt-top"><div>${tkLink(p.ticker)}<span class="muted lt-sec">${p.sectorKo || p.sector || '미분류'}</span></div><div class="lt-state">${held ? '<span class="vbadge v-held">보유</span>' : ''}${viewBadge(p.longTermResearchView)}${e.entryState ? entryBadge(e.entryState) : ''}</div></div>
+    <p class="lt-thesis">${p.thesisKo || `알파 ${topPct(p.alphaPercentile)}`}</p>
+    <div class="lt-essential"><span>알파 <b>${topPct(p.alphaPercentile)}</b></span><span>슬리브 <b>${w != null ? w + '%' : '—'}</b></span><span>데이터 <b>${trustLabel}</b></span></div>
+    ${blocked ? '' : `<div class="lt-inval"><b>${term('invalidation', '깨지는 지점')}</b>${invalidationLine(p.invalidation, 2) || '<span class="inval">조건 산출 대기</span>'}</div>`}
+    <details class="lt-details"><summary>근거 · 위험 · 전체 무효화 조건</summary>
+      <div class="lt-args"><div class="pro"><b>핵심 근거</b>${(pros.length ? pros : ['확인 가능한 강한 근거 부족']).map((x) => `<span>＋ ${x}</span>`).join('')}</div><div class="con"><b>핵심 위험</b>${(cons.length ? cons : ['뚜렷한 위험 신호 없음']).map((x) => `<span>! ${x}</span>`).join('')}</div></div>
       <div class="lt-bars">${fBar('모멘텀', p.factorPercentiles?.momentum)}${fBar('밸류', p.factorPercentiles?.value)}${fBar('퀄리티', p.factorPercentiles?.quality)}${fBar('저변동', p.factorPercentiles?.lowvol)}</div>
       <div class="lt-risk">변동성 ${fmt(risk.vol252Pct, '%', 0)} · 하방변동 ${fmt(risk.downsideVolPct, '%', 0)} · 최대낙폭 ${fmt(risk.maxDD252Pct, '%', 0)} · CVaR ${fmt(risk.cvar95Pct, '%', 1)} · β ${fmt(risk.beta, '', 2)}</div>
+      ${blocked ? '' : `<div class="lt-inval-all">${(p.invalidation || []).map((x) => `<span class="inval ${x.state === 'BREACHED' ? 'broken' : ''}"><em>${x.labelKo}</em> ${x.currentKo} → ${x.triggerKo}</span>`).join('') || '<span class="inval">조건 산출 대기</span>'}${p.invalidationBasisKo ? `<small>기준선: ${p.invalidationBasisKo}</small>` : ''}</div>`}
       <div class="lt-detail-grid"><span>${term('evidence', '근거 커버리지')} <b>${Math.round(evidence * 100)}%</b></span><span>${term('completeness', '데이터 완전성')} <b>${Math.round(completeness * 100)}%</b></span><span>${term('source', '소스 품질')} <b>${Math.round(sourceQuality * 100)}%</b></span><span>실증 상태 <b title="${empirical}">${statusLabel(empirical)}</b></span><span>12-1M <b>${sp(p.mom12_1Pct)}</b></span></div>
       ${!blocked && e.reasons && e.reasons.length ? `<div class="lt-entry">진입 근거: ${e.reasons.join(' · ')}</div>` : ''}
     </details>
+    ${broken.length ? `<div class="lt-broken">! 이미 깨진 조건 ${broken.length}건 — ${broken.map((x) => x.labelKo).join(', ')}</div>` : ''}
   </div>`;
 };
 const renderLongTerm = (d) => {
-  const lt = d.longTerm; const sec = $('#longterm');
+  const lt = d.longTerm; const sec = $('#watchlist');
   if (!lt || !lt.regions) { sec.hidden = true; return; }
   sec.hidden = false;
   const hm = lt.horizonMonths || [6, 12];
   $('#ltMeta').textContent = `보유 ${hm[0]}~${hm[hm.length - 1]}개월 · ${lt.rebalance || ''} · 재무 커버리지 ${lt.fundamentalsCoverage ?? '—'}%` + (lt.weightsWithheld ? ' · 비중 숨김(차단)' : '');
+  const heldSet = new Set(((d.modelPortfolio || {}).positions || []).filter((p) => p.modelPortfolioWeightPct > 0).map((p) => p.ticker));
   const fill = (el, reg) => {
     const r = lt.regions[reg];
     const rows = (r && ((r.picks && r.picks.length) ? r.picks : r.researchTable)) || [];
     let html = d.recommendationsBlocked ? `<div class="status-note info">${COPY.blocked}</div>` : '';
-    html += rows.length ? rows.map((p) => ltRow(p, d.recommendationsBlocked)).join('') : '<div class="none">데이터 부족</div>';
+    // Only the next names in line are shown up front; the tail stays one click
+    // away so the watchlist cannot drown the decision above it.
+    const card = (p) => ltRow(p, d.recommendationsBlocked, heldSet.has(p.ticker));
+    if (!rows.length) html += '<div class="none">데이터 부족</div>';
+    else {
+      html += rows.slice(0, 6).map(card).join('');
+      if (rows.length > 6) html += `<details class="lt-more"><summary>나머지 ${rows.length - 6}개 후보 보기</summary><div class="lt-list">${rows.slice(6).map(card).join('')}</div></details>`;
+    }
     if (r && r.dataInsufficient && r.dataInsufficient.length) html += `<details class="lt-insuf"><summary>데이터 부족 제외 ${r.dataInsufficient.length}개</summary><p>팩터·재무 기준 미달: ${r.dataInsufficient.slice(0, 8).map((x) => tkName(x.ticker)).join(', ')}${r.dataInsufficient.length > 8 ? ' 외' : ''}</p></details>`;
     $(el).innerHTML = html;
   };
   fill('#ltKR', 'KR'); fill('#ltUS', 'US');
-  $('#ltCaveats').textContent = '팩터·재무 시점과 실증 검증 한계는 상세 방법론에서 확인할 수 있습니다.';
+  $('#ltCaveats').textContent = '이 목록은 후보이며 보유 종목이 아닙니다. 실제 보유는 위 모델 포트폴리오의 집중된 종목뿐입니다. 팩터·재무 시점과 실증 검증 한계는 상세 방법론에서 확인할 수 있습니다.';
 };
 
 // 6. Auditable model portfolio (risk-weighted base + regional active Kelly)
 const renderModelPortfolio = (d) => {
-  const mp = d.modelPortfolio; const sec = $('#modelPortfolio'); const host = $('#modelPortfolioPanel');
+  const mp = d.modelPortfolio; const sec = $('#portfolio'); const host = $('#modelPortfolioPanel');
   if (!mp) { sec.hidden = true; return; }
   sec.hidden = false;
   const status = mp.status || 'SHADOW_INSUFFICIENT_HISTORY';
   const applied = mp.kellyApplied === true;
-  $('#modelPortfolioMeta').textContent = `${statusLabel(status)} · ${applied ? 'Kelly 결과 반영' : '위험가중 방식'}`;
+  const method = allocMethod(mp);
+  $('#modelPortfolioMeta').textContent = `${method.name} · ${statusLabel(status)}`;
   if (d.recommendationsBlocked || status === 'BLOCKED') {
     host.innerHTML = `<div class="status-note bad">■ ${COPY.blocked}<details><summary>기술 상태</summary><code>${status}</code></details></div>`;
     return;
   }
   const rows = (mp.positions || []).filter((p) => p.modelPortfolioWeightPct > 0);
+  const conc = mp.concentration || {};
   const gate = (mp.validation || {}).sampleGate || {}; const actual = gate.actual || {}; const threshold = gate.thresholds || {};
   const kpis = `<div class="mp-kpis">
-    ${chip('상태', statusLabel(status), applied ? 'ok' : 'warn')}
+    ${chip('배분 방식', method.name, applied ? 'ok' : 'info')}
     ${chip('최종 주식 비중', fmt(100 - (mp.cashPct ?? 100), '%', 1))}
     ${chip('현금 비중', fmt(mp.cashPct, '%', 1))}
     ${chip('종목 수', rows.length)}
+    ${chip('유효 종목수', conc.effectiveNames ?? '—', 'info')}
+    ${chip('최대 단일 비중', fmt(conc.top1WeightPct, '%', 1))}
     ${chip('예상 변동성', mp.expectedVolPct != null ? `${mp.expectedVolPct}% active` : '—')}
-    ${chip('회전율', fmt(mp.turnoverPct, '%', 1))}
-    ${chip('Kelly 영향도', applied ? fmt(mp.kellyAllocationImpactPct, '%', 1) : '미적용', applied ? 'info' : 'warn')}
-    ${chip('Fallback', mp.fallbackReason ? '사용 중' : '없음', mp.fallbackReason ? 'warn' : 'ok')}
+    ${chip('회전율', turnoverLabel(mp))}
   </div>`;
   const dirKo = (v) => ({ INCREASE: '▲ 비중 확대', DECREASE: '▼ 비중 축소', UNCHANGED: '→ 변화 없음', NOT_APPLIED: '— Kelly 미적용' }[v] || '—');
-  const table = rows.length ? `<div class="mp-table" role="table"><div class="mp-row mp-head" role="row"><span>종목</span><span>최종 비중</span><span>위험가중</span><span>Kelly 조정</span><span>진입상태</span><span>주요 제약</span></div>${rows.map((p) => {
+  const table = rows.length ? `<div class="mp-table" role="table"><div class="mp-row mp-head" role="row"><span>종목</span><span>최종 비중</span><span>기준 비중</span><span>${applied ? 'Kelly 조정' : '컨빅션 순위'}</span><span>진입상태</span><span>주요 제약</span></div>${rows.map((p) => {
     const bindingList = (p.bindingConstraints || []).map((x) => x.replaceAll('_', ' ')); const binding = bindingList[0] || '없음';
     const interval = p.expectedReturnIntervalPct || [];
-    return `<details class="mp-position"><summary class="mp-row" role="row"><span data-label="종목">${tkLink(p.ticker)} <small>${p.region || ''}</small></span><span data-label="최종 비중"><b>${fmt(p.modelPortfolioWeightPct, '%', 1)}</b></span><span data-label="위험가중">${fmt(p.riskWeightedWeightPct, '%', 1)}</span><span data-label="Kelly 조정" class="kelly-${(p.kellyAdjustment || '').toLowerCase()}">${dirKo(p.kellyAdjustment)}</span><span data-label="진입상태">${p.entryState ? entryBadge(p.entryState) : '—'}</span><span data-label="주요 제약" class="mp-why">${binding}</span></summary>
+    return `<details class="mp-position"><summary class="mp-row" role="row"><span data-label="종목">${tkLink(p.ticker)} <small>${p.region || ''}</small></span><span data-label="최종 비중"><b>${fmt(p.modelPortfolioWeightPct, '%', 1)}</b></span><span data-label="기준 비중">${fmt(p.riskWeightedWeightPct, '%', 1)}</span><span data-label="${applied ? 'Kelly 조정' : '컨빅션 순위'}" class="kelly-${(p.kellyAdjustment || '').toLowerCase()}">${applied ? dirKo(p.kellyAdjustment) : `${p.convictionRank ?? '—'}위 · ${fmt(p.convictionScore, '', 2)}`}</span><span data-label="진입상태">${p.entryState ? entryBadge(p.entryState) : '—'}</span><span data-label="주요 제약" class="mp-why">${binding}</span></summary>
       <div class="mp-position-detail">
-        <div><span>기대 초과수익</span><b>${p.expectedReturnStatus === 'SHADOW' ? sp(p.expectedExcessReturnPct) : '추정 보류'}</b></div><div><span>표본 / 유효 날짜</span><b>${p.expectedReturnSampleSize || 0} / ${p.expectedReturnEffectiveDates || 0}</b></div><div><span>독립 날짜</span><b>${p.expectedReturnUniqueDates || 0}</b></div><div><span>신뢰도</span><b>${p.expectedReturnConfidence || '낮음'}</b></div><div><span>불확실성</span><b>${interval.length === 2 ? `${interval[0]}~${interval[1]}%` : '표본 부족'}</b></div><div><span>실현 변동성</span><b>${fmt(p.riskLevel, '%', 1)}</b></div><div><span>비제약 Kelly</span><b>${applied ? fmt(p.unconstrainedKellyWeightPct, '%', 1) : '미적용'}</b></div><div><span>제약 Kelly</span><b>${applied ? fmt(p.constrainedKellyWeightPct, '%', 1) : '미적용'}</b></div><div><span>거래비용 추정</span><b>${p.transactionCost ? fmt(p.transactionCost.estimatedCostPct, '%', 2) : '—'}</b></div><div><span>전체 제약</span><b>${bindingList.join(' · ') || '없음'}</b></div>
+        <div><span>컨빅션 순위</span><b>${p.convictionRank ?? '—'}위 (${fmt(p.convictionScore, '', 2)})</b></div><div><span>하방변동성</span><b>${fmt(p.downsideVolPct, '%', 1)}</b></div><div><span>기대 초과수익</span><b>${p.expectedReturnStatus === 'SHADOW' ? sp(p.expectedExcessReturnPct) : '추정 보류'}</b></div><div><span>표본 / 유효 날짜</span><b>${p.expectedReturnSampleSize || 0} / ${p.expectedReturnEffectiveDates || 0}</b></div><div><span>독립 날짜</span><b>${p.expectedReturnUniqueDates || 0}</b></div><div><span>불확실성</span><b>${interval.length === 2 ? `${interval[0]}~${interval[1]}%` : '표본 부족'}</b></div><div><span>실현 변동성</span><b>${fmt(p.riskLevel, '%', 1)}</b></div><div><span>비제약 Kelly</span><b>${applied ? fmt(p.unconstrainedKellyWeightPct, '%', 1) : '미적용'}</b></div><div><span>제약 Kelly</span><b>${applied ? fmt(p.constrainedKellyWeightPct, '%', 1) : '미적용'}</b></div><div><span>거래비용 추정</span><b>${p.transactionCost ? fmt(p.transactionCost.estimatedCostPct, '%', 2) : '—'}</b></div><div><span>전체 제약</span><b>${bindingList.join(' · ') || '없음'}</b></div>
+        <div class="mp-inval"><span>깨지는 지점</span><b>${invalidationLine(p.invalidation, 4) || '조건 산출 대기'}</b></div>
       </div></details>`;
   }).join('')}</div>` : '<div class="none">표시할 종목 비중이 없습니다.</div>';
   const exposure = (title, values) => `<div class="mp-exp"><b>${title}</b>${Object.entries(values || {}).sort((a, b) => b[1] - a[1]).map(([k, v]) => `<span>${k}<em>${v}%</em></span>`).join('') || '<span>데이터 없음</span>'}</div>`;
-  const reason = mp.fallbackReason ? `<div class="status-note warn"><b>${COPY.fallback}</b><details><summary>상세 원인</summary><code>${mp.fallbackReason}</code></details></div>` : '';
+  const reason = applied ? '' : `<div class="status-note info"><b>${COPY.fallback}</b><details><summary>기술 사유</summary><code>${mp.fallbackReason || 'kelly_not_activated'}</code></details></div>`;
+  const concNote = (conc.warnings || []).length
+    ? `<div class="status-note warn"><b>집중도 경고</b><ul>${conc.warnings.map((w) => `<li>${CONCENTRATION_KO[w] || w}</li>`).join('')}</ul></div>` : '';
   const currency = mp.currencyPolicy || {}; const fxWarning = currency.warning ? '<span class="risk-cue">! 환율 위험은 지역 배분 레이어에서만 표시되며 종목 active covariance에는 미반영</span>' : '<span>● 환율 수익률 반영</span>';
-  const method = `<details class="mp-method"><summary>Kelly 계산·검증 상세</summary><div class="mp-method-grid"><div><span>Base Kelly fraction</span><b>${fmt((mp.baseKellyFraction ?? 0) * 100, '%', 1)}</b></div><div><span>매크로 조정 위험배율</span><b>${fmt((mp.appliedKellyFraction ?? 0) * 100, '%', 1)}</b></div><div><span>최종 비중 반영률</span><b>${applied ? fmt((mp.kellyBlendWeight ?? 0) * 100, '%', 1) : '미적용'}</b></div><div><span>Kelly allocation impact</span><b>${applied ? fmt(mp.kellyAllocationImpactPct, '%', 1) : '0.0%'}</b></div><div><span>기준통화</span><b>${currency.baseCurrency || 'KRW'}</b></div><div><span>환헤지</span><b>${currency.fxHedged ? '반영' : '미적용'}</b></div></div><p>${fxWarning}</p><div class="gate-grid"><div><span>Paper days</span><b>${actual.paperDays ?? mp.validation?.currentPaperDays ?? 0} / ${threshold.paperDays ?? '—'}</b></div><div><span>만기 신호</span><b>${actual.maturedSignals ?? mp.validation?.currentMaturedSignals ?? 0} / ${threshold.maturedSignals ?? '—'}</b></div><div><span>유효 날짜</span><b>${actual.effectiveDates ?? mp.validation?.currentEffectiveDates ?? 0} / ${threshold.effectiveDates ?? '—'}</b></div><div><span>관측 날짜</span><b>${actual.uniqueDates ?? mp.validation?.currentUniqueDates ?? 0} / ${threshold.uniqueDates ?? '—'}</b></div><div><span>최초 검토 가능</span><b>${mp.validation?.earliestReviewDate || '산정 대기'}</b></div><div><span>미달 항목</span><b>${(mp.validation?.missing || []).join(', ') || '없음'}</b></div></div><p class="technical-code">기술 상태: ${status} · 표본법: ${gate.method || 'DATE_CLUSTERED_NEWEY_WEST_HAC'}</p></details>`;
-  host.innerHTML = `${kpis}${reason}${table}${method}<details class="mp-exposure-detail"><summary>지역·업종·테마 노출</summary><div class="mp-exposures">${exposure('지역', mp.regionExposure)}${exposure('업종', mp.sectorExposure)}${exposure('테마', mp.themeExposure)}</div></details>`;
+  const methodFold = `<details class="mp-method"><summary>배분 규칙 · Kelly 승격 조건 상세</summary><p class="mp-method-lead"><b>${method.name}</b> — ${method.how}</p><div class="mp-method-grid"><div><span>${term('concentration2', '유효 종목수')}</span><b>${conc.effectiveNames ?? '—'} / ${conc.names ?? 0}종목</b></div><div><span>상위 3종목 비중</span><b>${fmt(conc.top3WeightPct, '%', 1)}</b></div><div><span>단일종목 상한</span><b>${fmt((mp.constraints?.maxPositionWeight ?? 0) * 100, '%', 0)}</b></div><div><span>업종 상한</span><b>${fmt((mp.constraints?.maxSectorWeight ?? 0) * 100, '%', 0)}</b></div><div><span>Base Kelly fraction</span><b>${fmt((mp.baseKellyFraction ?? 0) * 100, '%', 1)}</b></div><div><span>매크로 조정 위험배율</span><b>${fmt((mp.appliedKellyFraction ?? 0) * 100, '%', 1)}</b></div><div><span>Kelly 혼합 비율</span><b>${applied ? fmt((mp.kellyBlendWeight ?? 0) * 100, '%', 1) : '미적용'}</b></div><div><span>기준통화 · 환헤지</span><b>${currency.baseCurrency || 'KRW'} · ${currency.fxHedged ? '반영' : '미적용'}</b></div></div><p>${fxWarning}</p><div class="gate-grid"><div><span>Paper days</span><b>${actual.paperDays ?? mp.validation?.currentPaperDays ?? 0} / ${threshold.paperDays ?? '—'}</b></div><div><span>만기 신호</span><b>${actual.maturedSignals ?? mp.validation?.currentMaturedSignals ?? 0} / ${threshold.maturedSignals ?? '—'}</b></div><div><span>유효 날짜</span><b>${actual.effectiveDates ?? mp.validation?.currentEffectiveDates ?? 0} / ${threshold.effectiveDates ?? '—'}</b></div><div><span>관측 날짜</span><b>${actual.uniqueDates ?? mp.validation?.currentUniqueDates ?? 0} / ${threshold.uniqueDates ?? '—'}</b></div><div><span>최초 검토 가능</span><b>${mp.validation?.earliestReviewDate || '산정 대기'}</b></div><div><span>미달 항목</span><b>${(mp.validation?.missing || []).join(', ') || '없음'}</b></div></div><p class="technical-code">기술 상태: ${status} · 표본법: ${gate.method || 'DATE_CLUSTERED_NEWEY_WEST_HAC'}</p></details>`;
+  host.innerHTML = `${kpis}${reason}${concNote}${table}${methodFold}<details class="mp-exposure-detail"><summary>지역·업종·테마 노출</summary><div class="mp-exposures">${exposure('지역', mp.regionExposure)}${exposure('업종', mp.sectorExposure)}${exposure('테마', mp.themeExposure)}</div></details>`;
 };
 
 // 6. Entry & risk warnings (aggregated)
@@ -662,9 +822,8 @@ const ixTile = (x) => {
     ${ixFresh(x)}<span class="ix-open">기간별 상세 보기 →</span></button>`;
 };
 const renderIndices = (d) => {
-  const sec = $('#indices'); const list = d.indices || [];
-  if (!list.length) { sec.hidden = true; return; }
-  sec.hidden = false;
+  const list = d.indices || [];
+  if (!list.length) { $('#indexTape').innerHTML = ''; $('#tapeMeta').textContent = ''; return; }
   $('#indexTape').innerHTML = list.map(ixTile).join('');
   const h = d.marketDataHealth || {};
   const status = h.status === 'CURRENT' ? '전체 최신' : h.status === 'DELAYED' ? '일부 지연' : '확인 필요';
@@ -770,6 +929,8 @@ const render = (d) => {
   } else { sb.hidden = true; sb.classList.remove('warn'); }
   renderStatus(d);
   renderOverview(d);
+  renderSelection(d);
+  renderMethodStatus(d);
   renderIndices(d);
   renderRegime(d.macroRegime);
   renderConsensus(d.expertConsensus);

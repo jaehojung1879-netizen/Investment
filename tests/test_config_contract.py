@@ -27,3 +27,19 @@ def test_every_kelly_config_key_is_connected_to_implementation_or_metadata():
     ignored_structural = {"activation", "regimeMultipliers", "transactionCosts", "currency"}
     for key in set(cfg) - ignored_structural:
         assert key in source, f"unused Kelly config key: {key}"
+    for key in cfg["selection"]:
+        assert key in source, f"unused selection config key: {key}"
+
+
+def test_portfolio_is_configured_to_concentrate_not_to_mirror_the_candidate_list():
+    cfg = json.loads((ROOT / "config.json").read_text(encoding="utf-8"))
+    kelly, longterm = cfg["kellyPortfolio"], cfg["longterm"]
+    selection = kelly["selection"]
+    assert 3 <= selection["targetNames"] <= 5
+    assert selection["minNames"] <= selection["targetNames"]
+    assert kelly["maxNames"] <= longterm["maxNames"], "the book must be narrower than the research sleeve"
+    # A 5-name book under a 10% name cap could never be fully invested; the
+    # caps have to be sized for the concentration that is actually intended.
+    assert kelly["maxPositionWeight"] * selection["targetNames"] >= 1.0 - kelly["minCashPct"] / 100
+    assert kelly["maxSectorWeight"] >= kelly["maxPositionWeight"]
+    assert selection["maxNamesPerSector"] < selection["targetNames"]

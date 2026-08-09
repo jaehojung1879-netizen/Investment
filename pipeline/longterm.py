@@ -60,8 +60,11 @@ CAVEATS = [
     "유니버스는 현재 상장 종목 기준(생존편향) — 과거 성과 재현 검증에는 영향, 오늘의 상대 순위 산출에는 영향 제한적",
     "modelSleeveWeight는 '완전 투자된 가상 모델 슬리브' 내 비중이며 개인 포트폴리오 추천 비중이 아님 — 전체 규모·지역·위험예산은 사용자가 결정",
     "팩터 알파 점수와 위험지표·진입상태는 별도 표기 — 하나의 점수로 섞지 않음",
+    "무효화 조건은 종목별 현재 수치와 지역 횡단면 분포에서 산출한 개별 기준선이며, 모든 종목에 같은 문구를 붙이지 않음",
     "투자 조언이 아닌 리서치 참고 자료",
 ]
+
+FACTOR_KO = {"momentum": "모멘텀", "value": "밸류", "quality": "퀄리티", "lowvol": "저변동"}
 
 
 # --------------------------------------------------------------------------- #
@@ -332,6 +335,129 @@ def build_region(tickers: list[str], prices: dict, fundamentals: dict, diags: di
     return out if len(out) >= 5 else None
 
 
+def region_risk_limits(table: pd.DataFrame) -> dict:
+    """Cross-sectional risk limits used as per-name invalidation levels.
+
+    A name's tail-risk / drawdown trigger is the *region's own* distribution,
+    not a number typed into the source. A name already past the limit is
+    reported as breached instead of being given a comfortable headroom story.
+    """
+    def q(column: str, quantile: float) -> float | None:
+        if column not in table:
+            return None
+        values = pd.to_numeric(table[column], errors="coerce").dropna()
+        if len(values) < 5:
+            return None
+        return float(np.quantile(values, quantile))
+    return {
+        "cvar95Pct": q("cvar95", 0.90),
+        "maxDD252Pct": q("maxDD252", 0.10),
+        "downsideVolPct": q("downsideVol", 0.90),
+        "basisKo": "지역 횡단면 분포 (꼬리위험·하방변동 90퍼센타일, 최대낙폭 10퍼센타일)",
+    }
+
+
+def invalidation_conditions(row: pd.Series, pct_row: pd.Series, alpha_pct: float | None,
+                            cfg_lt: dict, risk_limits: dict | None = None) -> list[dict]:
+    """Per-name conditions that would break THIS name's research case.
+
+    Every condition carries the name's own current reading and the level at
+    which the case stops holding, so two names never get the same sentence.
+    Sources of the level: the configured rank buffer, the factor median, the
+    trend definition already used by the momentum sleeve, the region's risk
+    cross-section, and the data-sufficiency floor.
+    """
+    risk_limits = risk_limits or {}
+    buf = (cfg_lt or {}).get("rankBuffer", {}) or {}
+    exit_pct = float(buf.get("exitPct", 28))
+    hold_floor = round(100 - exit_pct)
+    out: list[dict] = []
+
+    def add(key, label, current, trigger, breached=False):
+        out.append({"key": key, "labelKo": label, "currentKo": current,
+                    "triggerKo": trigger, "state": "BREACHED" if breached else "OK"})
+
+    # 1. Relative rank — the reason the name is in the candidate set at all.
+    if alpha_pct is not None:
+        add("RANK_EXIT", "상대 순위", f"알파 {int(alpha_pct)}p",
+            f"{hold_floor}p 미만으로 하락", breached=alpha_pct < hold_floor)
+
+    # 2. The sleeves actually carrying the case (its thesis), each with its own
+    #    current percentile and the median it must not fall through.
+    leaders = [(k, float(pct_row[k])) for k in ("momentum", "value", "quality", "lowvol")
+               if k in pct_row and pd.notna(pct_row[k]) and float(pct_row[k]) >= 66]
+    for key, value in sorted(leaders, key=lambda kv: -kv[1])[:2]:
+        add(f"FACTOR_{key.upper()}", f"{FACTOR_KO[key]} 팩터", f"{int(value)}p",
+            "50p(중앙값) 미만으로 하락")
+
+    # 3. Trend — the momentum sleeve's own definition (12-1M and the 200d line).
+    mom = row.get("mom121")
+    above = bool(row.get("aboveMA200"))
+    if pd.notna(mom):
+        add("TREND", "추세", f"12-1M {round(float(mom) * 100, 1)}% · 200일선 {'위' if above else '아래'}",
+            "12-1M 음전환 또는 200일선 하회 고착", breached=(float(mom) <= 0 and not above))
+    elif not above:
+        add("TREND", "추세", "200일선 아래", "200일선 회복 실패 지속", breached=True)
+
+    # 4. Risk — measured against the region's own cross-section, not a fixed line.
+    for column, key, label, unit, worse_is_lower in (
+        ("cvar95", "cvar95Pct", "꼬리위험 CVaR", "%", False),
+        ("maxDD252", "maxDD252Pct", "최대낙폭", "%", True),
+    ):
+        current, limit = row.get(column), risk_limits.get(key)
+        if pd.isna(current) or limit is None:
+            continue
+        current, limit = float(current), float(limit)
+        breached = current < limit if worse_is_lower else current > limit
+        add(f"RISK_{key.upper()}", label, f"{round(current, 1)}{unit}",
+            f"지역 기준 {round(limit, 1)}{unit} {'하회' if worse_is_lower else '초과'}", breached=breached)
+
+    # 5. Value trap — a cheap-but-deteriorating name is already invalidated.
+    if bool(row.get("valueTrap")):
+        add("VALUE_TRAP", "가치함정", "싼 가격 + 약한 퀄리티·현금흐름", "이미 성립", breached=True)
+
+    # 6. Data sufficiency — the floor that decides whether the name is rankable.
+    min_sleeves = int((cfg_lt or {}).get("minFactorSleeves", 3))
+    min_fin = float((cfg_lt or {}).get("minFinancialCoverage", 0.4))
+    sleeves = int(row.get("sleevesPresent") or 0)
+    coverage = float(row.get("financialCoverage") or 0.0)
+    add("DATA_FLOOR", "데이터 기준",
+        f"슬리브 {sleeves}/{len(FACTOR_WEIGHTS)} · 재무 {round(coverage * 100)}%",
+        f"슬리브 {min_sleeves}개 미만 또는 재무 {round(min_fin * 100)}% 미만",
+        breached=(sleeves < min_sleeves or coverage < min_fin))
+    return out
+
+
+ENTRY_STATE_KO = {
+    "ACCUMULATE_GRADUALLY": "분할 매수 구간", "WATCH": "관찰",
+    "WAIT_FOR_PULLBACK": "되돌림 대기", "EVENT_RISK": "이벤트 위험", "AVOID": "회피",
+}
+
+
+def entry_invalidation(entry_state: str | None) -> dict | None:
+    """Timing-layer condition. Separate from the factor case on purpose."""
+    if not entry_state:
+        return None
+    return {
+        "key": "ENTRY_STATE", "labelKo": "진입 상태",
+        "currentKo": ENTRY_STATE_KO.get(entry_state, entry_state),
+        "triggerKo": "회피·이벤트 위험으로 전환",
+        "state": "BREACHED" if entry_state in {"AVOID", "EVENT_RISK"} else "OK",
+    }
+
+
+def thesis_summary(row: pd.Series, pct_row: pd.Series, alpha_pct: float | None) -> str:
+    """One line naming which sleeves carry the case for THIS name."""
+    leaders = [(FACTOR_KO[k], float(pct_row[k])) for k in ("momentum", "value", "quality", "lowvol")
+               if k in pct_row and pd.notna(pct_row[k]) and float(pct_row[k]) >= 66]
+    leaders.sort(key=lambda kv: -kv[1])
+    rank = f"섹터중립 알파 상위 {max(1, round(100 - alpha_pct))}%" if alpha_pct is not None else "알파 순위 미산출"
+    if not leaders:
+        return f"{rank} · 단일 팩터가 아닌 전 슬리브 평균으로 올라온 사례"
+    driver = "·".join(name for name, _ in leaders[:2])
+    return f"{driver} 주도 · {rank}"
+
+
 def research_view(row: pd.Series, alpha_pct: float | None) -> str:
     if bool(row.get("dataInsufficient")):
         return "DATA_INSUFFICIENT"
@@ -440,7 +566,8 @@ def sleeve_weights(picks: pd.DataFrame, cfg_lt: dict) -> tuple[pd.Series, float]
 # --------------------------------------------------------------------------- #
 # Assembly
 # --------------------------------------------------------------------------- #
-def _row(table: pd.DataFrame, pct: pd.DataFrame, alpha_pct: pd.Series, region: str, t: str) -> dict:
+def _row(table: pd.DataFrame, pct: pd.DataFrame, alpha_pct: pd.Series, region: str, t: str,
+         cfg_lt: dict | None = None, risk_limits: dict | None = None) -> dict:
     r = table.loc[t]
     ap = int(alpha_pct.loc[t]) if pd.notna(alpha_pct.loc[t]) else None
     evidence = r.get("evidenceCoverage", r.get("factorCoverage", r.get("confidence", 0.0)))
@@ -476,6 +603,9 @@ def _row(table: pd.DataFrame, pct: pd.DataFrame, alpha_pct: pd.Series, region: s
         "mom12_1Pct": round(float(r["mom121"]) * 100, 1) if pd.notna(r["mom121"]) else None,
         "aboveMA200": bool(r["aboveMA200"]),
         "regime": r["regime"],
+        "thesisKo": thesis_summary(r, pct.loc[t], ap),
+        "invalidation": invalidation_conditions(r, pct.loc[t], ap, cfg_lt or {}, risk_limits),
+        "invalidationBasisKo": (risk_limits or {}).get("basisKo"),
     }
 
 
@@ -496,6 +626,8 @@ def build(universe: dict[str, list[str]], prices: dict, fundamentals: dict, diag
             continue
         pct = table[["momentum", "value", "quality", "lowvol"]].apply(_percentile)
         alpha_pct = table["alpha"].rank(method="average", pct=True).mul(100).round(0)
+        risk_limits = region_risk_limits(table)
+        row_of = lambda t: _row(table, pct, alpha_pct, region, t, cfg_lt, risk_limits)
 
         chosen = [] if blocked else select_names(table, cfg_lt, set(prior_holdings.get(region, [])))
         picks_rows = []
@@ -503,7 +635,7 @@ def build(universe: dict[str, list[str]], prices: dict, fundamentals: dict, diag
             picks_df = table.loc[chosen]
             weights, cash_pct = sleeve_weights(picks_df, cfg_lt)
             for t in chosen:
-                row = _row(table, pct, alpha_pct, region, t)
+                row = row_of(t)
                 row["modelSleeveWeightPct"] = round(float(weights[t]) * 100, 1)
                 picks_rows.append(row)
         else:
@@ -512,8 +644,8 @@ def build(universe: dict[str, list[str]], prices: dict, fundamentals: dict, diag
         # UI research table is intentionally compact. The immutable ledger uses
         # the separate full validation cross-section below.
         elig = _deterministic_rank(table[~table["dataInsufficient"]], alpha_pct)
-        table_rows = [_row(table, pct, alpha_pct, region, t) for t in elig.head(15).index]
-        validation_rows = [_row(table, pct, alpha_pct, region, t) for t in elig.index]
+        table_rows = [row_of(t) for t in elig.head(15).index]
+        validation_rows = [row_of(t) for t in elig.index]
         insufficient = [
             {"ticker": t, "region": region, "sector": table.loc[t, "sector"],
              "sleevesPresent": int(table.loc[t, "sleevesPresent"]),
@@ -537,6 +669,7 @@ def build(universe: dict[str, list[str]], prices: dict, fundamentals: dict, diag
             "dataInsufficient": insufficient,
             "universeRanked": int(len(table)),
             "holdings": chosen,
+            "riskLimits": risk_limits,
         }
     if not regions:
         return None

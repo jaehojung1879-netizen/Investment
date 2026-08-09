@@ -194,9 +194,13 @@ def _attach_entry_states(long_term: dict | None, entry_feats: dict, cfg_lt: dict
             f = entry_feats.get(t)
             if not f:
                 row["entry"] = {"entryState": "WATCH", "reasons": ["진입 판단용 가격 데이터 부족"], "overheatPercentile": None}
-                continue
-            conc = sector_exposure.get(row.get("sector")) if t in pick_tickers else None
-            row["entry"] = entry_mod.classify(f, ranked.get(t), conc, sector_cap)
+            else:
+                conc = sector_exposure.get(row.get("sector")) if t in pick_tickers else None
+                row["entry"] = entry_mod.classify(f, ranked.get(t), conc, sector_cap)
+            timing = longterm_mod.entry_invalidation(row["entry"].get("entryState"))
+            if timing:
+                conditions = [c for c in (row.get("invalidation") or []) if c.get("key") != "ENTRY_STATE"]
+                row["invalidation"] = conditions + [timing]
     return long_term
 
 
