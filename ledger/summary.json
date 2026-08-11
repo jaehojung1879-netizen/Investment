@@ -1,14 +1,26 @@
 {
   "validationStatus": {
-    "paperDays": 0,
-    "firstSignalDate": null,
-    "lastSignalDate": null,
+    "paperDays": 18,
+    "trackingDays": 18,
+    "maturedObservationDays": 0,
+    "signalsRecorded": 7622,
+    "uniqueDates": 18,
+    "maturedUniqueDates": 0,
+    "firstSignalDate": "2026-07-17",
+    "lastSignalDate": "2026-08-11",
     "maturedSignals": 0,
+    "maturedByHorizon": {
+      "21": 0,
+      "63": 0,
+      "126": 0,
+      "252": 0
+    },
     "eligibleDates": 0,
     "regionIC": {},
     "costAdjustedExcessReturn": null,
     "MDD": null,
     "CVaR": null,
+    "evidenceClass": "PROSPECTIVE_PAPER",
     "liveValidationEligible": false,
     "liveValidated": false,
     "reasons": [
