@@ -9,6 +9,8 @@ cuts risk rather than raising it.
 """
 from __future__ import annotations
 
+import json
+
 import numpy as np
 import pandas as pd
 import pytest
@@ -16,6 +18,7 @@ import pytest
 from pipeline import evidence as EV
 from pipeline import historical_calibration as HC
 from pipeline import kelly_portfolio as KP
+from pipeline.kelly_portfolio import build_model_portfolio
 from pipeline import walkforward as WF
 
 
@@ -385,3 +388,139 @@ def test_candidate_prior_is_absent_rather_than_zero_for_a_thin_bucket():
     thin = HC.calibrate([_outcome("2015-01-02", percentile=97, excess=0.2)],
                         horizon=126, cfg={"minEffectiveDates": 30}, diagnostics={})
     assert EV.candidate_prior(thin, "US", 97) is None
+
+
+# --------------------------------------------------------------------------- #
+# Partial-region fallback must publish no Kelly weights
+# --------------------------------------------------------------------------- #
+def _two_region_candidates() -> list[dict]:
+    """Eight names across KR and US, all portfolio-eligible.
+
+    Regions are optimized in sorted order, so KR runs first. The calibration
+    fixture below covers KR only — that is what makes KR solve and US fail,
+    which is the ordering required to leave a partial solution in the
+    accumulator.
+    """
+    rows = []
+    for i in range(8):
+        region = "KR" if i % 2 == 0 else "US"
+        rows.append({
+            "ticker": f"{region}{i}", "region": region, "sector": f"S{i % 3}",
+            "alpha": 1.0 - i * 0.01,
+            "alphaPercentile": 92,
+            "longTermResearchView": "POSITIVE", "valueTrap": False,
+            "evidenceCoverage": 0.9, "dataCompleteness": 0.9,
+            "risk": {"vol252Pct": 20 + i, "downsideVolPct": 15 + i},
+            "entry": {"entryState": "ACCUMULATE_GRADUALLY"},
+        })
+    return rows
+
+
+def _kr_only_calibration():
+    """Calibration covering KR but not US — the ordinary asymmetric case."""
+    rng = np.random.default_rng(3)
+    rows = []
+    for date in pd.bdate_range("2015-01-02", periods=90, freq="5B"):
+        stamp = date.strftime("%Y-%m-%d")
+        for percentile, mean in ((50, 0.005), (70, 0.015), (85, 0.030),
+                                 (92, 0.045), (97, 0.070)):
+            for k in range(3):
+                rows.append(_outcome(stamp, percentile=percentile,
+                                     excess=float(rng.normal(mean, 0.05)),
+                                     region="KR", ticker=f"T{percentile}{k}"))
+    return HC.calibrate(rows, horizon=126,
+                        cfg={"minEffectiveDates": 5, "shrinkagePriorStrength": 5},
+                        diagnostics={"survivorshipRisk": "HIGH",
+                                     "macroPitStatus": "REVISED_HISTORY",
+                                     "fundamentalsPit": False})
+
+
+def _price_frames(tickers, periods=900) -> dict:
+    rng = np.random.default_rng(4)
+    index = pd.bdate_range("2021-01-04", periods=periods)
+    out = {}
+    for i, ticker in enumerate(tickers):
+        close = 100 * np.exp(np.cumsum(rng.normal(0.0003, 0.012, periods)))
+        out[ticker] = pd.DataFrame({"Close": close}, index=index)
+    return out
+
+
+def test_partial_region_kelly_solution_is_never_published_on_fallback():
+    """A later region failing must not leave an earlier region's weights on show.
+
+    Regions are optimized one at a time. Before expected returns could come
+    from a historical prior this was unreachable, because an empty ledger made
+    every region insufficient at once. With a prior, one region having a usable
+    calibration bucket while the other does not is the ORDINARY case — and the
+    accumulator would otherwise carry the solved region's weights into an
+    artifact whose status says Kelly was not applied.
+    """
+    candidates = _two_region_candidates()
+    tickers = [c["ticker"] for c in candidates]
+    prices = _price_frames(tickers + ["SPY", "^KS200"])
+    long_term = {"regions": {
+        "KR": {"picks": [c for c in candidates if c["region"] == "KR"]},
+        "US": {"picks": [c for c in candidates if c["region"] == "US"]},
+    }}
+    cfg = {**_kelly_cfg(), "enabled": True, "mode": "shadow",
+           "minNames": 2, "maxNames": 8, "minNamesPerRegion": 2,
+           "covarianceMinDays": 200, "covarianceLookbackDays": 400,
+           "selection": {"targetNames": 8, "minNames": 2, "maxNamesPerSector": 8,
+                         "maxNamesPerRegion": 8, "minAlphaPercentile": 50},
+           "regionCaps": {"KR": 0.65, "US": 0.65}}
+
+    portfolio = build_model_portfolio(
+        long_term, prices, [], cfg,
+        benchmarks={"KR": "^KS200", "US": "SPY"},
+        bench_by_region={"KR": prices["^KS200"]["Close"], "US": prices["SPY"]["Close"]},
+        as_of="2024-06-28", historical_calibration=_kr_only_calibration())
+
+    if not portfolio.get("fallbackReason"):
+        pytest.skip("this fixture did not reach the partial-region fallback path")
+    # The invariant the validator enforces: a fallback exposes no Kelly weights.
+    assert portfolio["constrainedKellyWeights"] == {}
+    assert portfolio["kellyApplied"] is False
+    assert portfolio["kellyAllocationImpactPct"] == 0.0
+    for position in portfolio["positions"]:
+        assert position["constrainedKellyWeightPct"] is None
+        assert position["unconstrainedKellyWeightPct"] is None
+
+
+def test_fallback_artifact_passes_the_kelly_weight_validator(tmp_path):
+    """End-to-end: the same scenario must not trip `fallback_exposes_kelly_weights`."""
+    from pipeline import validate as V
+
+    candidates = _two_region_candidates()
+    tickers = [c["ticker"] for c in candidates]
+    prices = _price_frames(tickers + ["SPY", "^KS200"])
+    long_term = {"regions": {
+        "KR": {"picks": [c for c in candidates if c["region"] == "KR"]},
+        "US": {"picks": [c for c in candidates if c["region"] == "US"]},
+    }}
+    cfg = {**_kelly_cfg(), "enabled": True, "mode": "shadow",
+           "minNames": 2, "maxNames": 8, "minNamesPerRegion": 2,
+           "covarianceMinDays": 200, "covarianceLookbackDays": 400,
+           "selection": {"targetNames": 8, "minNames": 2, "maxNamesPerSector": 8,
+                         "maxNamesPerRegion": 8, "minAlphaPercentile": 50},
+           "regionCaps": {"KR": 0.65, "US": 0.65}}
+    portfolio = build_model_portfolio(
+        long_term, prices, [], cfg,
+        benchmarks={"KR": "^KS200", "US": "SPY"},
+        bench_by_region={"KR": prices["^KS200"]["Close"], "US": prices["SPY"]["Close"]},
+        as_of="2024-06-28", historical_calibration=_kr_only_calibration())
+
+    payload = {
+        "portfolioName": "t", "meta": {"modelsTrained": 1, "coveragePct": 100},
+        "generatedAt": "2024-06-28T00:00:00Z", "core": [], "screened": [],
+        "tradeIdeas": {"KR": [], "US": []}, "runMode": "paperTrading",
+        "schemaVersion": "2.4.0", "modelVersion": "test",
+        "provenance": {"schemaVersion": "2.4.0", "modelVersion": "test",
+                       "runMode": "paperTrading", "marketAsOf": "2024-06-28"},
+        "modelPortfolio": portfolio, "recommendationsBlocked": False,
+    }
+    path = tmp_path / "artifact.json"
+    path.write_text(json.dumps(payload, ensure_ascii=False, default=str), encoding="utf-8")
+    errors = V.validate(str(path), production=False)
+    assert "fallback_exposes_kelly_weights" not in errors
+    assert "fallback_exposes_position_kelly_weight" not in errors
+    assert "fallback_has_nonzero_kelly_impact" not in errors

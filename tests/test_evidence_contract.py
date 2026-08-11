@@ -250,3 +250,64 @@ def test_radar_explanations_state_the_core_separation():
 def test_single_global_disclaimer_is_still_unique():
     assert HTML.count('id="globalDisclaimer"') == 1
     assert APP.count("투자 조언이나 개인화 추천") == 1
+
+
+# --------------------------------------------------------------------------- #
+# Daily change transitions
+# --------------------------------------------------------------------------- #
+def _transitions(previous_opp, current_opp, previous_warn=None, current_warn=None):
+    from pipeline import build as B
+    current = {
+        "opportunityRadar": {"regions": {"US": [
+            {"ticker": t, "tier": tier} for t, tier in (current_opp or {}).items()]}},
+        "warningRadar": {"regions": {"US": [
+            {"ticker": t, "tier": tier} for t, tier in (current_warn or {}).items()]}},
+    }
+    prior = {"opportunityTiersByTicker": previous_opp or {},
+             "warningTiersByTicker": previous_warn or {}}
+    return B._opportunity_transitions(current, prior, {"available": True})
+
+
+def test_a_tier_that_did_not_change_is_not_re_announced():
+    """Yesterday's HIGH must not fire again today, or the alert becomes noise."""
+    result = _transitions({"AAA": "VALIDATED_OPPORTUNITY"},
+                          {"AAA": "VALIDATED_OPPORTUNITY"})
+    assert result["newOpportunities"] == []
+    assert result["hasChanges"] is False
+
+
+def test_a_promotion_is_announced_once():
+    result = _transitions({"AAA": "WATCH"}, {"AAA": "EMERGING_OPPORTUNITY"})
+    assert result["newOpportunities"] == [
+        {"ticker": "AAA", "before": "WATCH", "after": "EMERGING_OPPORTUNITY"}]
+    assert result["hasChanges"] is True
+
+
+def test_a_demotion_is_not_reported_as_a_new_opportunity():
+    result = _transitions({"AAA": "VALIDATED_OPPORTUNITY"}, {"AAA": "WATCH"})
+    assert result["newOpportunities"] == []
+    assert result["resolvedOpportunities"] == [
+        {"ticker": "AAA", "before": "VALIDATED_OPPORTUNITY"}]
+
+
+def test_a_name_that_was_only_ever_watch_is_not_a_resolution():
+    """Operator precedence bug guard: `A or B and C` grouped the wrong way here."""
+    result = _transitions({"AAA": "WATCH"}, {})
+    assert result["resolvedOpportunities"] == []
+    assert result["hasChanges"] is False
+
+
+def test_new_warnings_are_tracked_separately_from_opportunities():
+    result = _transitions({}, {}, previous_warn={"BBB": "WATCH"},
+                          current_warn={"BBB": "CRITICAL_WARNING"})
+    assert result["newWarnings"] == [
+        {"ticker": "BBB", "before": "WATCH", "after": "CRITICAL_WARNING"}]
+    assert result["newOpportunities"] == []
+
+
+def test_transitions_are_withheld_without_a_prior_production_state():
+    from pipeline import build as B
+    result = B._opportunity_transitions({}, {}, {"available": False,
+                                                 "reason": "state_file_missing"})
+    assert result["available"] is False
+    assert result["hasChanges"] is False

@@ -217,12 +217,26 @@ def _load_historical_evidence(cfg) -> dict:
         require_pit=bool(cfg_replay.get("requirePitQuality", True)),
     ) if outcomes else {"available": False, "reason": "historical_ledger_unavailable",
                         "regions": {}, "horizonDays": horizon}
+    # Regime interaction is RESEARCH: region x alpha-bucket stays the production
+    # calibration, and this only reports whether conditioning on the macro regime
+    # would add anything. Splitting a single dataset into region x bucket x regime
+    # is where a calibration goes to overfit, so cells shrink to their parent and
+    # `activate` stays false until a cell is genuinely significant.
+    regime_interaction = (
+        histcal_mod.regime_interaction(
+            outcomes, horizon=horizon,
+            buckets=cfg_replay.get("alphaPercentileBuckets", histcal_mod.DEFAULT_BUCKETS),
+            cfg={"minEffectiveDates": int(cfg_replay.get("minEffectiveDates", 30))},
+            require_pit=bool(cfg_replay.get("requirePitQuality", True)))
+        if outcomes else {"available": False, "reason": "historical_ledger_unavailable",
+                          "regions": {}, "activate": False})
     coverage = (histout_mod.coverage_summary(signals, outcomes, horizon=horizon)
                 if signals else {})
     dataset = opportunity_mod.build_dataset(signals, outcomes) if signals and outcomes else None
     return {
         "signals": signals, "outcomes": outcomes, "diagnostics": diagnostics,
-        "calibration": calibration, "coverage": coverage, "dataset": dataset,
+        "calibration": calibration, "regimeInteraction": regime_interaction,
+        "coverage": coverage, "dataset": dataset,
         "modelSpec": model_spec, "warningSpec": warning_spec,
         "replayVersionMismatchedRecords": mismatched,
     }
@@ -260,6 +274,7 @@ def _historical_validation_block(historical: dict, cfg) -> dict:
         "knownDeviationsFromProduction": diagnostics.get("knownDeviationsFromProduction") or [],
         "replayVersionMismatchedRecords": historical.get("replayVersionMismatchedRecords", 0),
         "alphaCalibration": calibration,
+        "regimeInteraction": historical.get("regimeInteraction"),
         "finalHoldoutStart": (cfg.opportunity or {}).get("finalHoldoutStart"),
         "walkForward": spec.get("walkForward"),
         "overfittingDiagnostics": spec.get("diagnostics"),
@@ -342,9 +357,15 @@ def _opportunity_transitions(current: dict | None, prior: dict,
     new_warnings = promoted(
         current_warn, previous_warn,
         ("WATCH", "ELEVATED_WARNING", "CRITICAL_WARNING"))
-    resolved = [{"ticker": t, "before": previous[t]} for t in sorted(previous)
-                if t not in current_tiers or current_tiers[t] == "WATCH"
-                and previous[t] != "WATCH"]
+    # A name is "resolved" only if it WAS above WATCH and no longer is.
+    # Without the explicit grouping, `or` binds looser than `and` and every
+    # name that merely dropped off the radar — including ones that were already
+    # WATCH — would be announced as a resolution, which is pure noise.
+    resolved = [
+        {"ticker": t, "before": previous[t]} for t in sorted(previous)
+        if previous[t] != "WATCH"
+        and (t not in current_tiers or current_tiers[t] == "WATCH")
+    ]
     has_changes = bool(new_opportunities or new_warnings or resolved)
     return {
         "available": True, "hasChanges": has_changes,
