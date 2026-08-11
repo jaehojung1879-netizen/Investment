@@ -20,6 +20,7 @@
         <nav class="nav" aria-label="주요 메뉴">
           <a href="#today">결론</a>
           <a href="#portfolio">포트폴리오</a>
+          <a href="#radar">기회·경고</a>
           <a href="#selection">선정 과정</a>
           <a href="#watchlist">후보</a>
           <a href="#context">시장</a>
@@ -64,7 +65,26 @@
         <div id="modelPortfolioPanel" class="mp-wrap"></div>
       </section>
 
-      <!-- ── 3. 선정 과정 (왜 이 종목인가) ──────────────────────────── -->
+      <!-- ── 3. 기회 · 경고 레이더 ─────────────────────────────────── -->
+      <section id="radar" class="block">
+        <div class="block-head">
+          <div><span class="overline">기회 · 경고 레이더 <span class="ico qh" data-x="radar">ⓘ</span></span><h2>지금 무엇이 달라졌는가</h2></div>
+          <span id="radarMeta" class="muted"></span>
+        </div>
+        <p class="section-warning muted" id="radarBasis"></p>
+        <div class="cols2 radar-columns">
+          <div>
+            <div class="col-h">기회 — 최근 비대칭적 변화 <span class="ico qh" data-x="opportunity">ⓘ</span></div>
+            <div id="opportunityRadarPanel" class="radar-list"></div>
+          </div>
+          <div>
+            <div class="col-h">경고 — 기존 논리 악화 <span class="ico qh" data-x="warning">ⓘ</span></div>
+            <div id="warningRadarPanel" class="radar-list"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── 4. 선정 과정 (왜 이 종목인가) ──────────────────────────── -->
       <section id="selection" class="block">
         <div class="block-head">
           <div><span class="overline">선정 과정 <span class="ico qh" data-x="selection">ⓘ</span></span><h2>후보에서 보유로 좁히는 단계</h2></div>
@@ -104,6 +124,11 @@
           <div><span class="overline">검증 · 근거 · 방법론</span><h2>필요할 때만 펼쳐 보는 자료</h2></div>
         </div>
         <div class="fold-grid">
+          <details id="validationLab" class="fold" open>
+            <summary><b>Validation Lab — 과거 OOS vs 실시간 <span class="ico qh" data-x="validationlab">ⓘ</span></b><span id="validationLabMeta" class="muted"></span></summary>
+            <div id="validationLabPanel" class="vlab"></div>
+          </details>
+
           <details id="paper" class="fold">
             <summary><b>Paper 성과 — signal ledger <span class="ico qh" data-x="paper">ⓘ</span></b><span id="paperMeta" class="muted"></span></summary>
             <div id="paperPanel" class="paper-wrap"></div>

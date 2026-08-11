@@ -214,10 +214,43 @@ def main() -> int:
         "sentiment": sent, "core": core_cards, "macro": macro_summary,
         "priorState": {"available": False, "reason": "synthetic_preview"},
         "validationStatus": {
-            "paperDays": 0, "maturedSignals": 0, "eligibleDates": 0, "regionIC": {},
+            "paperDays": 0, "trackingDays": 0, "maturedObservationDays": 0,
+            "signalsRecorded": 0, "uniqueDates": 0, "maturedUniqueDates": 0,
+            "maturedSignals": 0, "maturedByHorizon": {}, "eligibleDates": 0, "regionIC": {},
             "costAdjustedExcessReturn": None, "MDD": None, "CVaR": None,
+            "evidenceClass": "PROSPECTIVE_PAPER",
             "liveValidationEligible": False, "liveValidated": False,
             "reasons": ["synthetic_data_not_eligible"],
+        },
+        # A seed carries the v2.4 evidence sections in their empty-but-labelled
+        # shape so the dashboard contract is exercised offline. It never carries
+        # fabricated historical results: a synthetic preview has no replay.
+        "historicalValidation": B._historical_validation_block(
+            {"signals": [], "outcomes": [], "diagnostics": {}, "coverage": {},
+             "calibration": {"available": False,
+                             "reason": "synthetic_preview_has_no_replay",
+                             "regions": {}, "horizonDays": 126},
+             "modelSpec": {}, "replayVersionMismatchedRecords": 0}, cfg),
+        "prospectiveValidation": B._prospective_validation_block({
+            "firstSignalDate": None, "trackingDays": 0, "signalsRecorded": 0,
+            "uniqueDates": 0, "maturedObservationDays": 0, "maturedSignals": 0,
+            "maturedByHorizon": {}, "eligibleDates": 0, "regionIC": {},
+            "reasons": ["synthetic_data_not_eligible"]}),
+        "kellyEvidence": {
+            "byRegion": {}, "drift": None, "activation": None,
+            "historicalCalibrationAvailable": False,
+            "evidenceSeparationKo": "합성 미리보기에는 과거·실시간 증거가 모두 없습니다.",
+        },
+        "opportunityRadar": {"regions": {}, "blocked": True,
+                             "reason": "recommendations_blocked"},
+        "warningRadar": {"regions": {}, "blocked": True,
+                         "reason": "recommendations_blocked"},
+        "radarDiagnostics": {"status": "BLOCKED"},
+        "modelComparison": {
+            "champion": {"name": "CONVICTION_RISK_WEIGHTED", "inProduction": True,
+                         "descriptionKo": "현재 운영 중인 컨빅션 위험가중 선정·비중"},
+            "challengers": [],
+            "separationKo": "Core Portfolio와 Opportunity는 하나의 점수로 합치지 않습니다.",
         },
         "meta": {"modelsTrained": 0, "universeScreened": len(screened), "syntheticData": True,
                  "latestDataDate": dates[-1].strftime("%Y-%m-%d"), "sourceAsOf": dates[-1].strftime("%Y-%m-%d"),

@@ -1,0 +1,387 @@
+"""Walk-forward discipline, historical calibration, and the Kelly posterior.
+
+The behaviour under test is the central change of this work: an empty
+prospective ledger no longer forces the expected excess return to zero, because
+zero is itself a strong claim ("no edge") that the historical ledger can test.
+What must NOT change is that evidence can only move the estimate toward what was
+measured — uncertainty always shrinks toward zero, and a live shortfall always
+cuts risk rather than raising it.
+"""
+from __future__ import annotations
+
+import numpy as np
+import pandas as pd
+import pytest
+
+from pipeline import evidence as EV
+from pipeline import historical_calibration as HC
+from pipeline import kelly_portfolio as KP
+from pipeline import walkforward as WF
+
+
+# --------------------------------------------------------------------------- #
+# Walk-forward
+# --------------------------------------------------------------------------- #
+def test_folds_are_strictly_time_ordered_with_no_random_split():
+    folds = WF.make_folds(pd.bdate_range("2013-01-01", "2024-12-31"),
+                          train_years=3, validation_years=1, test_years=1,
+                          horizon_days=126, embargo_days=21)
+    assert folds
+    for fold in folds:
+        assert fold.train_start <= fold.train_end < fold.validation_start
+        assert fold.validation_end < fold.test_start <= fold.test_end
+        WF.assert_ordered(fold, 126)
+    # Test blocks march forward and never revisit an earlier period.
+    starts = [f.test_start for f in folds]
+    assert starts == sorted(starts)
+    assert WF.split_summary(folds)["randomSplitUsed"] is False
+
+
+def test_purge_and_embargo_gap_is_at_least_the_forecast_horizon():
+    horizon, embargo = 126, 21
+    folds = WF.make_folds(pd.bdate_range("2013-01-01", "2024-12-31"),
+                          horizon_days=horizon, embargo_days=embargo)
+    required = pd.Timedelta(days=horizon + embargo)
+    for fold in folds:
+        assert fold.validation_start - fold.train_end >= required
+        assert fold.test_start - fold.validation_end >= required
+
+
+def test_a_fold_with_overlapping_blocks_is_rejected():
+    bad = WF.Fold(index=0, train_start=pd.Timestamp("2013-01-01"),
+                  train_end=pd.Timestamp("2016-01-01"),
+                  validation_start=pd.Timestamp("2016-01-02"),
+                  validation_end=pd.Timestamp("2017-01-01"),
+                  test_start=pd.Timestamp("2017-01-02"),
+                  test_end=pd.Timestamp("2018-01-01"),
+                  embargo_days=21, mode="expanding")
+    with pytest.raises(ValueError):
+        WF.assert_ordered(bad, horizon_days=126)
+
+
+def test_test_rows_never_appear_in_training_or_validation_slices():
+    dates = pd.bdate_range("2013-01-01", "2024-12-31")
+    frame = pd.DataFrame({"date": dates, "value": range(len(dates))})
+    for fold in WF.make_folds(dates, horizon_days=126, embargo_days=21):
+        train = set(fold.slice(frame, "train")["date"])
+        validation = set(fold.slice(frame, "validation")["date"])
+        test = set(fold.slice(frame, "test")["date"])
+        assert not train & test
+        assert not validation & test
+        assert not train & validation
+
+
+def test_final_holdout_is_sealed_until_explicitly_unsealed():
+    dates = pd.bdate_range("2013-01-01", "2025-12-31")
+    frame = pd.DataFrame({"date": dates})
+    guard = WF.HoldoutGuard.from_config({"finalHoldoutStart": "2023-01-01"})
+    development = guard.development(frame)
+    assert development["date"].max() < pd.Timestamp("2023-01-01")
+    with pytest.raises(WF.HoldoutViolation):
+        guard.holdout(frame)
+    guard.unseal("model_frozen")
+    holdout = guard.holdout(frame, reason="final_evaluation")
+    assert holdout["date"].min() >= pd.Timestamp("2023-01-01")
+    assert "unsealed:model_frozen" in guard.to_dict()["accessLog"]
+
+
+def test_rolling_mode_drops_old_data_and_expanding_keeps_it():
+    dates = pd.bdate_range("2013-01-01", "2024-12-31")
+    expanding = WF.make_folds(dates, mode="expanding", horizon_days=126)
+    rolling = WF.make_folds(dates, mode="rolling", horizon_days=126)
+    assert all(f.train_start == expanding[0].train_start for f in expanding)
+    assert rolling[-1].train_start > rolling[0].train_start
+
+
+# --------------------------------------------------------------------------- #
+# Historical calibration
+# --------------------------------------------------------------------------- #
+def _outcome(date, *, percentile, excess, region="US", pit=0.8, sector="Tech",
+             regime="Goldilocks", ticker="AAA", cost=0.005):
+    return {
+        "id": f"{date}|{region}|{ticker}", "date": date, "asOf": date,
+        "ticker": ticker, "region": region, "sector": sector,
+        "macroRegime": regime, "alphaPercentile": percentile,
+        "evidenceClass": "HISTORICAL_OOS",
+        "pit": {"pitCoverage": pit, "lookAheadCheckPassed": True,
+                "usableForCalibration": pit >= 0.6},
+        "horizons": {"126": {"excessReturn": excess,
+                             "costAdjustedExcessReturn": excess - cost,
+                             "absoluteReturn": excess}},
+    }
+
+
+def _ledger(n_dates=90, seed=3):
+    """A ledger where higher alpha buckets genuinely paid more."""
+    rng = np.random.default_rng(seed)
+    dates = pd.bdate_range("2015-01-02", periods=n_dates, freq="5B")
+    rows = []
+    for date in dates:
+        stamp = date.strftime("%Y-%m-%d")
+        for percentile, mean in ((50, 0.005), (70, 0.015), (85, 0.030),
+                                 (92, 0.045), (97, 0.070)):
+            for k in range(3):
+                rows.append(_outcome(stamp, percentile=percentile,
+                                     excess=float(rng.normal(mean, 0.05)),
+                                     ticker=f"T{percentile}{k}"))
+    return rows
+
+
+def test_calibration_produces_an_increasing_bucket_ladder():
+    calibration = HC.calibrate(_ledger(), horizon=126,
+                               cfg={"minEffectiveDates": 5, "shrinkagePriorStrength": 5},
+                               diagnostics={"survivorshipRisk": "HIGH",
+                                            "macroPitStatus": "REVISED_HISTORY",
+                                            "fundamentalsPit": False})
+    assert calibration["available"]
+    buckets = calibration["regions"]["US"]["buckets"]
+    values = [b["calibratedExpectedExcessReturnPct"] for b in buckets if b["usable"]]
+    assert values == sorted(values), "isotonic repair must leave a non-decreasing ladder"
+    assert values[-1] > values[0]
+
+
+def test_calibration_shrinks_thin_buckets_toward_zero():
+    thin = [_outcome("2015-01-02", percentile=97, excess=0.5),
+            _outcome("2015-03-02", percentile=97, excess=0.5),
+            _outcome("2015-05-04", percentile=97, excess=0.5)]
+    calibration = HC.calibrate(thin, horizon=126,
+                               cfg={"minEffectiveDates": 30, "shrinkagePriorStrength": 30},
+                               diagnostics={})
+    row = calibration["regions"]["US"]["buckets"][0]
+    # A 50% mean from three dates must not survive as a 50% expectation.
+    assert row["meanExcessReturnPct"] > 40
+    assert row["shrunkExpectedExcessReturnPct"] < 10
+    assert row["usable"] is False
+
+
+def test_low_pit_observations_never_reach_calibration():
+    poor = [_outcome(d.strftime("%Y-%m-%d"), percentile=97, excess=0.30, pit=0.2)
+            for d in pd.bdate_range("2015-01-02", periods=60, freq="5B")]
+    calibration = HC.calibrate(poor, horizon=126, cfg={"minEffectiveDates": 5},
+                               diagnostics={}, require_pit=True)
+    assert calibration["available"] is False
+    assert calibration["excludedLowPitObservations"] == len(poor)
+
+
+def test_path_statistics_use_non_overlapping_dates_only():
+    """Chaining overlapping 126-day returns would invent a drawdown."""
+    index = pd.bdate_range("2015-01-02", periods=200)
+    values = pd.Series(np.full(200, 0.02), index=index)
+    summary = HC._summary_stats(values, horizon=126)
+    assert summary["nonOverlappingDates"] <= 3
+    # All-positive returns cannot produce a drawdown, however they are sampled.
+    assert summary["mdd"] in (None, 0.0) or summary["mdd"] >= -1e-12
+
+
+def test_evidence_weight_discounts_each_named_defect():
+    clean = HC.evidence_weight(
+        pit_coverage=0.95, survivorship_risk="LOW", macro_pit_status="PIT_EXACT",
+        fundamentals_pit=True, regime_share=0.3, sector_share=0.2,
+        fold_stable=True, effective_dates=100, min_effective_dates=30)
+    dirty = HC.evidence_weight(
+        pit_coverage=0.4, survivorship_risk="HIGH", macro_pit_status="REVISED_HISTORY",
+        fundamentals_pit=False, regime_share=0.9, sector_share=0.8,
+        fold_stable=False, effective_dates=5, min_effective_dates=30)
+    assert clean["weight"] > dirty["weight"]
+    assert clean["weight"] <= HC.HISTORICAL_BASE_WEIGHT
+    assert dirty["weight"] >= HC.MIN_HISTORICAL_WEIGHT
+    for defect in ("survivorship_unresolved", "macro_revised_history",
+                   "fundamentals_not_point_in_time", "regime_concentration",
+                   "sector_concentration", "fold_instability", "low_pit_coverage"):
+        assert defect in dirty["penaltiesApplied"]
+
+
+def test_historical_evidence_never_outweighs_prospective_evidence():
+    assert HC.HISTORICAL_BASE_WEIGHT < HC.PROSPECTIVE_WEIGHT
+    assert 0.5 <= HC.HISTORICAL_BASE_WEIGHT <= 0.8
+
+
+# --------------------------------------------------------------------------- #
+# Evidence combination
+# --------------------------------------------------------------------------- #
+HISTORICAL = {"expectedExcessReturnPct": 6.0, "standardErrorPct": 1.5,
+              "effectiveDates": 84, "weight": 0.55}
+
+
+def test_historical_prior_replaces_the_zero_fallback():
+    """The core fix: no prospective history must not mean 'no edge'."""
+    combined = EV.combine(HISTORICAL, None, prior_scale_pct=3.0)
+    assert combined["posterior"]["expectedExcessReturnPct"] > 0
+    assert combined["posterior"]["historicalWeightPct"] == 100.0
+    assert combined["posterior"]["prospectiveWeightPct"] == 0.0
+    # Still shrunk toward zero — a prior is not a promise.
+    assert combined["posterior"]["expectedExcessReturnPct"] < 6.0
+
+
+def test_no_evidence_at_all_still_yields_zero():
+    combined = EV.combine(None, None, prior_scale_pct=3.0)
+    assert combined["posterior"]["expectedExcessReturnPct"] == 0.0
+
+
+def test_prospective_weight_rises_automatically_as_its_sample_grows():
+    shares = []
+    for dates, se in ((5, 5.0), (20, 3.0), (60, 1.5), (200, 0.8)):
+        combined = EV.combine(
+            HISTORICAL,
+            {"expectedExcessReturnPct": 2.0, "standardErrorPct": se,
+             "effectiveDates": dates},
+            prior_scale_pct=3.0)
+        shares.append(combined["posterior"]["prospectiveWeightPct"])
+    assert shares == sorted(shares), shares
+    assert shares[0] < 30 and shares[-1] > 70
+
+
+def test_a_wider_confidence_interval_shrinks_the_posterior():
+    tight = EV.combine({**HISTORICAL, "standardErrorPct": 0.5}, None, prior_scale_pct=3.0)
+    wide = EV.combine({**HISTORICAL, "standardErrorPct": 6.0}, None, prior_scale_pct=3.0)
+    assert (tight["posterior"]["expectedExcessReturnPct"]
+            > wide["posterior"]["expectedExcessReturnPct"])
+
+
+def test_drift_detection_only_ever_reduces_risk():
+    worse = EV.drift_report(HISTORICAL, {"expectedExcessReturnPct": 1.0,
+                                         "standardErrorPct": 1.0, "effectiveDates": 40})
+    assert worse["detected"] is True
+    assert worse["kellyMultiplier"] < 1.0
+
+    better = EV.drift_report(HISTORICAL, {"expectedExcessReturnPct": 12.0,
+                                          "standardErrorPct": 1.0, "effectiveDates": 40})
+    assert better["detected"] is False
+    assert better["kellyMultiplier"] == 1.0
+
+    thin = EV.drift_report(HISTORICAL, {"expectedExcessReturnPct": 0.0,
+                                        "standardErrorPct": 1.0, "effectiveDates": 3})
+    assert thin["detected"] is False
+
+
+def test_poor_prospective_results_never_raise_the_expected_return():
+    baseline = EV.combine(HISTORICAL, None, prior_scale_pct=3.0)
+    disappointing = EV.combine(
+        HISTORICAL,
+        {"expectedExcessReturnPct": -2.0, "standardErrorPct": 1.0, "effectiveDates": 60},
+        prior_scale_pct=3.0)
+    assert (disappointing["posterior"]["expectedExcessReturnPct"]
+            < baseline["posterior"]["expectedExcessReturnPct"])
+
+
+def test_activation_ladder_reports_which_evidence_is_carrying_the_estimate():
+    assert EV.activation_status(historical=None, prospective=None,
+                                min_effective_dates=30)["code"] == "NO_EVIDENCE"
+    assert EV.activation_status(historical={"effectiveDates": 10}, prospective=None,
+                                min_effective_dates=30)["code"] == "HISTORICAL_PRIOR_ONLY"
+    assert EV.activation_status(historical=HISTORICAL, prospective=None,
+                                min_effective_dates=30)["code"] == "HISTORICAL_OOS_SUPPORTED"
+    early = EV.activation_status(historical=HISTORICAL,
+                                 prospective={"effectiveDates": 5},
+                                 min_effective_dates=30)
+    assert early["code"] == "PROSPECTIVE_EARLY"
+    confirmed = EV.activation_status(historical=HISTORICAL,
+                                     prospective={"effectiveDates": 120},
+                                     min_effective_dates=30)
+    assert confirmed["code"] == "PROSPECTIVE_CONFIRMED"
+    # Every rung has user-facing Korean copy, not just a code.
+    for code in EV.ACTIVATION_LADDER:
+        assert EV.ACTIVATION_KO[code] and EV.ACTIVATION_EXPLAIN_KO[code]
+
+
+def test_portfolio_drift_takes_the_worst_region():
+    region_evidence = {
+        "KR": {"drift": {"detected": True, "kellyMultiplier": 0.4, "differencePct": -5.0}},
+        "US": {"drift": {"detected": False, "kellyMultiplier": 1.0}},
+    }
+    result = EV.portfolio_drift(region_evidence)
+    assert result["detected"] is True
+    assert result["kellyMultiplier"] == 0.4
+    assert result["regionsAffected"] == ["KR"]
+
+
+# --------------------------------------------------------------------------- #
+# Kelly wiring
+# --------------------------------------------------------------------------- #
+def _kelly_cfg():
+    return {"horizonDays": 126, "minEffectiveDates": 5, "minUniqueDates": 5,
+            "shrinkagePriorStrength": 5, "evidencePriorScalePct": 3.0,
+            "activation": {"minPaperDays": 0, "minMaturedSignals": 0},
+            "alphaPercentileBuckets": [0, 60, 80, 90, 95, 100],
+            "transactionCosts": {"US": {"commissionBps": 5, "sellTaxBps": 3,
+                                        "spreadBps": 10, "assumedTurnoverPct": 25,
+                                        "rebalanceDays": 63}}}
+
+
+def _calibration():
+    return HC.calibrate(_ledger(), horizon=126,
+                        cfg={"minEffectiveDates": 5, "shrinkagePriorStrength": 5},
+                        diagnostics={"survivorshipRisk": "HIGH",
+                                     "macroPitStatus": "REVISED_HISTORY",
+                                     "fundamentalsPit": False})
+
+
+def test_kelly_expected_return_is_zero_without_any_evidence():
+    """The pre-existing safe behaviour must survive untouched."""
+    got = KP.estimate_expected_returns(
+        [{"ticker": "X", "region": "US", "alphaPercentile": 97}], [], _kelly_cfg(),
+        as_of="2026-01-01")[0]
+    assert got["expectedExcessReturnPct"] == 0.0
+    assert got["status"] == "SHADOW_INSUFFICIENT_HISTORY"
+    assert got.get("evidence") is None
+
+
+def test_historical_prior_replaces_the_kelly_zero_fallback():
+    got = KP.estimate_expected_returns(
+        [{"ticker": "X", "region": "US", "alphaPercentile": 97}], [], _kelly_cfg(),
+        as_of="2026-01-01", historical_calibration=_calibration())[0]
+    assert got["prospectiveOnlyExpectedExcessReturnPct"] == 0.0
+    assert got["expectedExcessReturnPct"] > 0.0
+    assert got["status"] == "SHADOW"
+    evidence = got["evidence"]
+    assert evidence["posterior"]["historicalWeightPct"] == 100.0
+    assert evidence["activation"]["code"] == "HISTORICAL_OOS_SUPPORTED"
+    assert evidence["historicalBucket"] == "95-100"
+
+
+def test_kelly_posterior_moves_toward_prospective_as_it_accumulates():
+    calibration = _calibration()
+    rng = np.random.default_rng(9)
+    prospective = [
+        {"id": f"p{i}", "date": d.strftime("%Y-%m-%d"), "ticker": "X", "region": "US",
+         "alphaPercentile": 97, "sector": "Tech",
+         "horizons": {"126": {"excessReturn": float(rng.normal(0.005, 0.02))}}}
+        for i, d in enumerate(pd.bdate_range("2024-01-02", periods=120, freq="2B"))
+    ]
+    candidate = [{"ticker": "X", "region": "US", "alphaPercentile": 97}]
+    prior_only = KP.estimate_expected_returns(candidate, [], _kelly_cfg(),
+                                              as_of="2026-01-01",
+                                              historical_calibration=calibration)[0]
+    with_live = KP.estimate_expected_returns(candidate, prospective, _kelly_cfg(),
+                                             as_of="2026-01-01",
+                                             historical_calibration=calibration)[0]
+    assert with_live["evidence"]["posterior"]["prospectiveWeightPct"] > 0
+    # Live evidence of +0.5% must pull a +7% historical prior down, not up.
+    assert (with_live["expectedExcessReturnPct"]
+            < prior_only["expectedExcessReturnPct"])
+
+
+def test_alpha_score_itself_never_becomes_an_expected_return():
+    """Alpha selects a calibration bucket. It is never multiplied into a return."""
+    calibration = _calibration()
+    absurd = KP.estimate_expected_returns(
+        [{"ticker": "X", "region": "US", "alpha": 9_999_999, "alphaPercentile": 97}],
+        [], _kelly_cfg(), as_of="2026-01-01", historical_calibration=calibration)[0]
+    normal = KP.estimate_expected_returns(
+        [{"ticker": "Y", "region": "US", "alpha": 0.01, "alphaPercentile": 97}],
+        [], _kelly_cfg(), as_of="2026-01-01", historical_calibration=calibration)[0]
+    assert absurd["expectedExcessReturnPct"] == normal["expectedExcessReturnPct"]
+
+
+def test_an_unknown_region_gets_no_historical_prior():
+    got = KP.estimate_expected_returns(
+        [{"ticker": "X", "region": "JP", "alphaPercentile": 97}], [], _kelly_cfg(),
+        as_of="2026-01-01", historical_calibration=_calibration())[0]
+    assert got["expectedExcessReturnPct"] == 0.0
+    assert got.get("evidence") is None
+
+
+def test_candidate_prior_is_absent_rather_than_zero_for_a_thin_bucket():
+    thin = HC.calibrate([_outcome("2015-01-02", percentile=97, excess=0.2)],
+                        horizon=126, cfg={"minEffectiveDates": 30}, diagnostics={})
+    assert EV.candidate_prior(thin, "US", 97) is None

@@ -45,6 +45,21 @@ jobs:
             if git show origin/signal-history:ledger/summary.json > .state/summary.json; then
               echo "PAPER_SUMMARY_PATH=$GITHUB_WORKSPACE/.state/summary.json" >> "$GITHUB_ENV"
             fi
+            if git show origin/signal-history:ledger/historical-signals.jsonl > .state/historical-signals.jsonl; then
+              echo "HISTORICAL_SIGNALS_PATH=$GITHUB_WORKSPACE/.state/historical-signals.jsonl" >> "$GITHUB_ENV"
+            fi
+            if git show origin/signal-history:ledger/historical-outcomes.jsonl > .state/historical-outcomes.jsonl; then
+              echo "HISTORICAL_OUTCOMES_PATH=$GITHUB_WORKSPACE/.state/historical-outcomes.jsonl" >> "$GITHUB_ENV"
+            fi
+            if git show origin/signal-history:ledger/historical-diagnostics.json > .state/historical-diagnostics.json; then
+              echo "HISTORICAL_DIAGNOSTICS_PATH=$GITHUB_WORKSPACE/.state/historical-diagnostics.json" >> "$GITHUB_ENV"
+            fi
+            if git show origin/signal-history:ledger/opportunity-model.json > .state/opportunity-model.json; then
+              echo "OPPORTUNITY_MODEL_PATH=$GITHUB_WORKSPACE/.state/opportunity-model.json" >> "$GITHUB_ENV"
+            fi
+            if git show origin/signal-history:ledger/warning-model.json > .state/warning-model.json; then
+              echo "WARNING_MODEL_PATH=$GITHUB_WORKSPACE/.state/warning-model.json" >> "$GITHUB_ENV"
+            fi
           fi
 
       - name: Build today's artifact

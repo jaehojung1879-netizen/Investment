@@ -23,8 +23,17 @@ import os
 import subprocess
 from datetime import datetime, timezone
 
-SCHEMA_VERSION = "2.3.0"
+SCHEMA_VERSION = "2.4.0"
 MODEL_VERSION = "longterm-v2.2+regime-v2.1+entry-v1+regional-active-kelly-v2"
+
+# Versions that identify a body of HISTORICAL evidence rather than the live
+# engine. A replay is only comparable to another replay run with the same
+# three, so every historical record carries them and evidence is never pooled
+# across versions. Changing one does not invalidate the old records — it starts
+# a new generation alongside them.
+REPLAY_VERSION = "replay-v1"
+FEATURE_VERSION = "hfeat-v1"
+DATA_VERSION = "yahoo-adjusted-close-v1"
 
 RUN_MODES = ("researchOnly", "paperTrading", "liveValidated")
 DEFAULT_RUN_MODE = "paperTrading"
@@ -84,6 +93,9 @@ def stamp(payload: dict, run_mode: str) -> dict:
     prov = {
         "schemaVersion": SCHEMA_VERSION,
         "modelVersion": MODEL_VERSION,
+        "replayVersion": REPLAY_VERSION,
+        "featureVersion": FEATURE_VERSION,
+        "dataVersion": DATA_VERSION,
         "buildCommitSha": build_commit_sha(),
         "generatedAt": payload.get("generatedAt") or datetime.now(timezone.utc).isoformat(),
         "marketAsOf": meta.get("latestDataDate"),

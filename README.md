@@ -8,7 +8,7 @@
 - **dataMode**: `live` · `seed` · `stale` · `synthetic`. 화면에 데이터 모드와 **빌드 커밋 SHA**를 항상 표시합니다.
 - README·빌드·검증 코드·화면 문구가 **동일한 안전 상태**를 표현합니다. (과거의 “README는 PAPER ONLY인데 build는 paperOnly=false” 불일치를 제거했습니다.)
 
-화면은 `오늘의 결론 → 포트폴리오 상세 → 선정 과정 → 리서치 후보 → 시장·국면 → 검증·방법론` 여섯 블록입니다. 첫 화면은 **보유 3~5종목과 각 종목의 무효화 조건**으로 시작하고, 근거 자료는 전부 접힌 fold 한 줄로 내려가 목록이 결론을 덮지 않습니다. 기술 상태 코드는 상세에서만 보여주고 기본 화면에는 `검증 데이터 축적 중`, `Paper 운용 중`, `안전 차단` 같은 사용자용 상태를 표시합니다. `선정 과정` 블록의 **방법론 적용 현황**은 어떤 층이 실제로 켜져 있고 어떤 층이 왜 아직 아닌지를 그대로 나열합니다. 글로벌 마켓 카드는 현재값·1일 등락과 **3M 추이·3M 수익률**을 분리하며, 상세 차트 기본 기간도 3M입니다.
+화면은 `오늘의 결론 → 포트폴리오 상세 → 기회·경고 레이더 → 선정 과정 → 리서치 후보 → 시장·국면 → 검증·방법론(Validation Lab 포함)` 일곱 블록입니다. 첫 화면은 **보유 3~5종목과 각 종목의 무효화 조건**으로 시작하고, 근거 자료는 전부 접힌 fold 한 줄로 내려가 목록이 결론을 덮지 않습니다. 기술 상태 코드는 상세에서만 보여주고 기본 화면에는 `검증 데이터 축적 중`, `Paper 운용 중`, `안전 차단` 같은 사용자용 상태를 표시합니다. `선정 과정` 블록의 **방법론 적용 현황**은 어떤 층이 실제로 켜져 있고 어떤 층이 왜 아직 아닌지를 그대로 나열합니다. 글로벌 마켓 카드는 현재값·1일 등락과 **3M 추이·3M 수익률**을 분리하며, 상세 차트 기본 기간도 3M입니다.
 
 ## 정직성 원칙
 
@@ -68,6 +68,47 @@
 
 `validationStatus`는 paperDays·maturedSignals·eligibleDates·지역별 IC·비용 차감 초과수익·MDD/CVaR·미달 사유를 표시합니다. Kelly 추정과 활성화는 하나의 gate를 공유하며 기본 기준은 paper 252영업일, 만기 신호 100개, HAC 유효 날짜 30개, 관측 날짜 63개입니다. 조건이 채워져도 자동으로 `liveValidated`로 승격하지 않습니다.
 
+## 과거 Point-in-Time 재현 (Historical OOS Evidence)
+
+**과거를 쓰지 않는 것이 정직한 것이 아니라, 과거에서 미래를 보지 않는 것이 정직한 것입니다.** 새 데이터가 1년 쌓일 때까지 기다리는 대신, 2013년부터 오늘까지의 날짜 그리드를 하루씩(기본 주 단위) 다시 살아가며 **그 시점에 실제로 알 수 있었던 정보만으로** 모델을 실행하고 판단을 동결합니다.
+
+- **같은 모델을 재현합니다.** 팩터 정의는 `longterm.score_cross_section`, 진입상태는 `pipeline.entry`, 국면은 `pipeline.regime`을 **그대로 호출**합니다. 재현용 알파 공식을 따로 만들지 않습니다 — 그러면 아무도 운영하지 않는 모델을 검증하게 됩니다.
+- **속도와 정확성을 동시에.** 종목별 시계열을 NumPy 배열로 한 번 변환한 뒤 T 시점까지의 후행 윈도로 계산합니다. 모든 지표가 후행 전용(`shift(-n)`·미래 `cummax` 없음)이므로 "잘라서 다시 계산"과 **산술적으로 동일**하며, 그 동치성은 `tests/test_historical_replay.py`가 pandas 원본 함수와 대조해 고정합니다.
+- **가격**은 시점 정합적이지만 배당·액면 조정이 현재 기준이므로 `PIT_APPROXIMATE`입니다.
+- **재무**는 report period / filing date / **available-from date**를 구분합니다. 무료 소스에는 발표일 이력이 없으므로 현재 스냅샷을 과거에 소급 적용하지 않고 **밸류·퀄리티 슬리브를 제외**합니다(`CURRENT_SNAPSHOT_ONLY`). 팩터 커버리지가 떨어지면 알파는 그만큼 수축합니다.
+- **매크로**는 고정 발표시차로 "그날 공개됐는가"는 막지만 개정 이전 값(ALFRED vintage)은 확보하지 못해 `REVISED_HISTORY`입니다.
+- **유니버스**는 과거 구성종목 파일이 있으면 상장·상장폐지를 반영하고, 없으면 모든 관측치에 `SURVIVORSHIP_BIAS_UNRESOLVED`를 기록하고 증거 가중치를 낮춥니다.
+- 관측치마다 `pitCoverage`·`pitQuality`·`lookAheadCheckPassed`·`survivorshipRisk`를 남기고, PIT 품질이 낮은 관측치는 **Kelly calibration에서 제외**합니다. 다만 커버리지는 *실제로 사용된* 소스에 대해서만 계산합니다 — 쓰지 않은 슬리브의 부재는 leakage가 아니라 커버리지 문제이고, 그 페널티는 `evidenceCoverage`와 증거 가중치에서 별도로 부과합니다.
+- **ledger는 완전히 분리**합니다: `historical-signals.jsonl`·`historical-outcomes.jsonl`(HISTORICAL_OOS) vs `signals.jsonl`·`outcomes.jsonl`(PROSPECTIVE_PAPER). 두 증거는 절대 한 파일·한 표에 섞이지 않습니다.
+- 기록은 **append-only**이며 `modelVersion`·`replayVersion`·`featureVersion`·`dataVersion`을 함께 남깁니다. 모델을 바꾸면 새 세대가 별도로 쌓이고 기존 기록은 보존됩니다. CI는 **증분 실행**이라 이미 있는 날짜는 다시 계산하지 않습니다.
+- 재현에서 빠진 것도 숨기지 않습니다: 단기 LightGBM 점수는 비용 문제로 재현하지 않고 `null`, 실적 캘린더가 없어 `EVENT_RISK` 분기 일부가 비활성, 섹터 로테이션은 ETF RRG가 아닌 구성종목 상대강도 프록시입니다.
+
+## Alpha Calibration과 Kelly 기대수익 posterior
+
+`alpha`·`rawAlpha`·`alphaPercentile`은 여전히 **기대수익률이 아닙니다.** 대신 과거 OOS ledger에 실증적으로 묻습니다: *"이 모델이 미래를 보지 않고 KR 90~95p에 넣었던 종목은 이후 126일 동안 KOSPI200 대비 실제로 어땠는가?"*
+
+- 같은 날 수백 종목은 **날짜 단위로 군집화**하고, 겹치는 126일 forward return은 Bartlett kernel Newey–West/HAC(`lag=horizon-1`)로 보정합니다. 낙폭·CVaR 같은 **경로 의존 지표는 겹치지 않는 표본에서만** 계산합니다(겹친 수익률을 이어 붙이면 존재하지 않는 낙폭이 만들어집니다).
+- 표본이 얇으면 `eff/(eff+prior)`로 0을 향해 수축하고, 버킷 단조성이 깨지면 가중 isotonic으로 복원합니다.
+- **과거 증거 할인율**: 기본 `0.6`(0.5~0.8 구간의 중간). 과거 재현은 시점상 진짜 out-of-sample이지만, **모델 설계 자체가 그 시기를 겪은 뒤에 만들어졌다**는 점은 어떤 replay로도 제거할 수 없습니다. 실시간 증거(1.0)보다 낮되, 비어 있는 실시간 ledger를 이기기에는 충분한 값입니다. 여기에 PIT 커버리지 부족·생존편향·매크로 개정·재무 근사·표본 부족·국면 집중·섹터 집중·fold 불안정이 있으면 각각 추가 할인됩니다.
+- **결합은 정밀도 가중**입니다: `mu_post = Σ(w_i/se_i² · mu_i) / (Σ w_i/se_i² + 1/τ²)`. 0을 중심으로 하는 사전분포(τ=3%)가 얇은 추정치를 수축시킵니다. 실시간 표본이 쌓일수록 정밀도가 커져 **자동으로** 실시간 비중이 올라갑니다 — 전환 시점을 하드코딩하지 않습니다.
+- **비대칭이 의도적입니다.** 실시간 성과가 과거보다 크게 낮으면 Kelly fraction을 축소하고, 반대 방향은 작동하지 않습니다. 실시간 성과가 나쁘다고 기대수익을 올리는 일은 절대 없습니다.
+- Kelly 활성화 상태는 단일 코드가 아니라 **증거 사다리**입니다: `NO_EVIDENCE` → `HISTORICAL_PRIOR_ONLY` → `HISTORICAL_OOS_SUPPORTED` → `PROSPECTIVE_EARLY` → `PROSPECTIVE_CONFIRMED` → `ACTIVE_PAPER` → `ACTIVE_VALIDATED`. 화면에는 "과거 OOS 검증 활용 중", "실시간 검증 축적 중"처럼 표시합니다.
+
+## Opportunity · Warning Radar
+
+Core Portfolio는 "위험 대비 지금 안정적으로 보유할 3~5종목"을 답합니다. 레이더는 **다른 질문**에 답합니다: *"최근 무엇이 달라졌는가?"* 두 층은 **하나의 점수로 합치지 않습니다.**
+
+- 그래서 **변화(change) 피처**가 수준(level) 피처만큼 중요합니다: 알파 백분위 Δ, 20/60일 모멘텀 가속, 상대강도 Δ, 거래량 가속, 진입상태 전환, 섹터 로테이션 전환, 변동성 국면 전환, 200일선 돌파/이탈. **2년 내내 95p였던 종목은 기회가 아닙니다 — 아무 일도 일어나지 않았습니다.**
+- ML은 복잡성보다 검증 가능성을 우선합니다. 로지스틱 baseline이 항상 후보에 있고, **OOS에서 baseline을 못 이기면 채택하지 않습니다.** target도 4종(양의 초과수익 / +5% 초과 / 횡단면 상위 20% / 비대칭 MFE-MAE)을 validation 안에서 비교하며, 사후에 가장 예뻐 보이는 것을 고르지 않습니다.
+- 평가는 정확도가 아니라 **점수 구간별 실제 미래 초과수익의 단조성**과 상위 구간 실측 초과수익이 결정합니다. AUC·PR-AUC·Brier·calibration error·precision@K·turnover·MDD·CVaR는 맥락으로 함께 봅니다.
+- **과최적화 방지**: nested walk-forward(선택은 validation에서만), purge+embargo, 시도한 variant 수와 grid 크기 기록, fold별 안정성, date-block bootstrap, Deflated Sharpe Ratio, PBO 추정, 그리고 **모델 확정 전까지 손대지 않는 최종 홀드아웃**(기본 2023~). 홀드아웃은 봉인 상태에서 접근하면 예외를 던집니다.
+- **실패 조건을 명시적으로 구현합니다**(§37). baseline 미달·단조성 없음·비용 후 edge 소멸·fold 불안정·PIT 커버리지 부족·국면/섹터 집중·홀드아웃 붕괴 중 하나라도 걸리면 **모델을 적용하지 않고** 투명한 규칙 기반 변화 점수를 유지하며, 화면에 그 사실을 표시합니다.
+- 3단계 등급: **검증된 기회**(과거 OOS 검증 통과 + 신호 수렴), **관찰 필요한 변화**(변화는 강하나 검증 부족 — 리서치 전용), **관심 목록**. 검증 모델이 없으면 "검증된 기회"는 **구조적으로 도달할 수 없습니다**(validator가 강제).
+- **거래량 급증 + 가격 하락은 기회로 분류하지 않습니다.** 분배(distribution)이지 매집이 아닙니다.
+- Warning은 기회 점수의 반대값이 아니라 **별도 점수·별도 모델**입니다. 변동성 급등처럼 기회 쪽에 짝이 없는 항이 있고, 조용한 종목이 조용하다는 이유로 위험해 보이면 안 되기 때문입니다. **보유 종목의 경고는 최상단**에 배치합니다.
+- 오늘의 변화 알림은 **state transition 기반**입니다. 어제부터 HIGH였다면 오늘 다시 신규 알림을 만들지 않습니다.
+- **과거 유사 사례**(historical analogue)는 설명·리서치 도구이며 주 예측모델이 아닙니다. 스케일링 후 같은 지역 안에서만 거리를 계산하고, 표본이 얇으면 수치를 노출하지 않습니다.
+
 ## 제약형 Fractional Kelly 모델 포트폴리오 (shadow)
 
 위 컨빅션 기준 비중을 기본값으로 유지하면서, 검증된 paper ledger가 충분할 때만 제약형 포트폴리오 Kelly를 25% 혼합합니다. 기본식은 `75% × 컨빅션 기준 비중 + 25% × 제약형 Kelly 비중`이며, Full Kelly가 아니라 기본 0.25 Fractional Kelly를 사용합니다. Kelly가 켜져도 보유 종목 집합은 선정 단계가 정한 3~5종목 그대로이고, 바뀌는 것은 그 안의 비중입니다.
@@ -95,9 +136,21 @@ python -m pipeline.validate data/site-data.json
 # 오프라인 미리보기(합성 데이터; 생성물은 Git에서 무시됨):
 python scripts/make_seed.py
 python -m pipeline.validate data/site-data.json --allow-seed
+
+# 과거 point-in-time 재현 (증분 — 이미 있는 날짜는 다시 계산하지 않음)
+python scripts/run_replay.py <ledger-dir> [--start 2013-01-01] [--frequency W] [--full]
+python scripts/train_opportunity.py <ledger-dir>            # 기회 모델 학습·검증
+python scripts/train_opportunity.py <ledger-dir> --warning  # 경고 모델 학습·검증
+
+# 합성 데이터로 전체 체인 점검 (기계 검증용 — 투자 결과 아님)
+python scripts/demo_replay.py --tickers 40 --years 9
 ```
 
-`data/site-data.json`과 `data/audit.json`은 workflow/로컬 명령이 만드는 생성물이며 Git에서 추적하지 않습니다. 테스트용 최소 예시는 `tests/fixtures/site-data.synthetic.json`에 있고 파일명과 내부 `dataMode` 모두 synthetic임을 명시합니다. regional active Kelly·universe diagnostics·run-to-run diff가 추가된 스키마는 `2.3.0`입니다. v3에서 `modelPortfolio.selection`, `modelPortfolio.concentration`, `longTerm.*.picks[].invalidation`, `longTerm.*.riskLimits`가 추가되었습니다.
+빌드는 다음 환경변수로 과거 ledger를 읽습니다(CI가 `signal-history` 브랜치에서 주입): `HISTORICAL_SIGNALS_PATH`, `HISTORICAL_OUTCOMES_PATH`, `HISTORICAL_DIAGNOSTICS_PATH`, `OPPORTUNITY_MODEL_PATH`, `WARNING_MODEL_PATH`. 없으면 과거 prior 없이 정상 동작하며 그 상태를 artifact에 기록합니다.
+
+**계산비용.** 전체 재현은 종목수 × 재현 날짜 수에 비례합니다(주 단위 기준 550종목 × 13년 ≈ 수십 분). 그래서 `.github/workflows/replay.yml`은 **증분**으로 돌고, ML 재학습은 주 1회입니다. 일주일치 새 관측치가 walk-forward 선택을 바꿀 수 없는데 매일 재학습하면 비용만 늘고 **유효 시도 횟수만 부풀립니다**. 재현 주기 선택(`D`/`W`/`M`)의 trade-off는 `config.historicalReplay._notes`에 기록했습니다: 일 단위는 5배 비용에 대부분 겹치는 관측치만 추가되고 HAC 유효표본은 거의 늘지 않으며, 월 단위는 버킷 calibration에 필요한 횡단면 수를 밑돕니다.
+
+`data/site-data.json`과 `data/audit.json`은 workflow/로컬 명령이 만드는 생성물이며 Git에서 추적하지 않습니다. 테스트용 최소 예시는 `tests/fixtures/site-data.synthetic.json`에 있고 파일명과 내부 `dataMode` 모두 synthetic임을 명시합니다. regional active Kelly·universe diagnostics·run-to-run diff가 추가된 스키마는 `2.3.0`이었고, v3에서 `modelPortfolio.selection`, `modelPortfolio.concentration`, `longTerm.*.picks[].invalidation`, `longTerm.*.riskLimits`가 추가되었습니다. **현재 스키마는 `2.4.0`**이며 `historicalValidation`, `prospectiveValidation`, `kellyEvidence`, `opportunityRadar`, `warningRadar`, `radarDiagnostics`, `modelComparison`이 추가되고 `provenance`에 `replayVersion`·`featureVersion`·`dataVersion`이 붙었습니다. 기존 필드는 그대로 유지되므로 2.3.0 소비자는 새 섹션을 무시하면 계속 동작합니다.
 
 `FRED_API_KEY`(및 KR 매크로용 `ECOS_API_KEY`)는 GitHub Actions Secret으로만 주입합니다. 네트워크가 막힌 환경에서는 실데이터 빌드가 불가능하며, 그 경우 seed로 성공한 척하지 않고 차단 원인을 보고합니다.
 

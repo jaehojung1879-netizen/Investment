@@ -76,7 +76,8 @@ def main(argv=None) -> int:
         LG.write_jsonl(portfolio_out_path, portfolio_outcomes)
         summary = {
             "validationStatus": LG.validation_status(
-                outcomes, min_paper_days=int(cfg.validation.get("minPaperDays", 126))),
+                outcomes, min_paper_days=int(cfg.validation.get("minPaperDays", 126)),
+                signals=merged),
             "horizons": {str(h): LG.evaluate(outcomes, horizon=h) for h in LG.HORIZONS},
             "portfolioHorizons": {str(h): LG.evaluate_portfolios(portfolio_outcomes, horizon=h)
                                    for h in LG.HORIZONS},

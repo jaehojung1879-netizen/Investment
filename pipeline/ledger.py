@@ -436,27 +436,58 @@ def evaluate(outcomes: list[dict], horizon: int = 63) -> dict:
     }
 
 
-def validation_status(outcomes: list[dict], min_paper_days: int = 126) -> dict:
-    dates = sorted({pd.Timestamp(o["date"]).normalize() for o in outcomes if o.get("date")})
-    paper_days = len(pd.bdate_range(dates[0], dates[-1])) if dates else 0
-    matured = sum("126" in (o.get("horizons") or {}) for o in outcomes)
+def validation_status(outcomes: list[dict], min_paper_days: int = 126,
+                      signals: list[dict] | None = None) -> dict:
+    """Prospective-ledger status.
+
+    ``trackingDays`` and ``maturedObservationDays`` are DIFFERENT quantities and
+    are reported separately. The old code derived both from the outcomes file,
+    so on a fresh ledger — thousands of signals recorded, none yet matured — the
+    dashboard announced "0 days tracked", which is simply false: tracking had
+    been running the whole time. Tracking now measures the signal ledger's own
+    span, and maturity measures how much of it has completed a horizon.
+    """
+    signal_dates = sorted({pd.Timestamp(s["date"]).normalize()
+                           for s in (signals or []) if s.get("date")})
+    outcome_dates = sorted({pd.Timestamp(o["date"]).normalize()
+                            for o in outcomes if o.get("date")})
+    span_dates = signal_dates or outcome_dates
+    tracking_days = len(pd.bdate_range(span_dates[0], span_dates[-1])) if span_dates else 0
+
+    matured_rows = [o for o in outcomes if "126" in (o.get("horizons") or {})]
+    matured_dates = sorted({pd.Timestamp(o["date"]).normalize() for o in matured_rows})
+    matured_days = (len(pd.bdate_range(matured_dates[0], matured_dates[-1]))
+                    if matured_dates else 0)
+    matured = len(matured_rows)
     metrics = evaluate(outcomes, horizon=63)
     reasons = []
-    if paper_days < min_paper_days:
+    if tracking_days < min_paper_days:
         reasons.append(f"paper_history_below_{min_paper_days}_business_days")
     if matured == 0:
         reasons.append("no_126d_matured_signals")
-    eligible = paper_days >= min_paper_days and matured > 0 and metrics.get("crossSections", 0) > 0
+    eligible = tracking_days >= min_paper_days and matured > 0 and metrics.get("crossSections", 0) > 0
     return {
-        "paperDays": paper_days,
-        "firstSignalDate": dates[0].strftime("%Y-%m-%d") if dates else None,
-        "lastSignalDate": dates[-1].strftime("%Y-%m-%d") if dates else None,
+        # paperDays keeps its name for backward compatibility with existing
+        # consumers, but now means what it always claimed to: days tracked.
+        "paperDays": tracking_days,
+        "trackingDays": tracking_days,
+        "maturedObservationDays": matured_days,
+        "signalsRecorded": len(signals) if signals is not None else None,
+        "uniqueDates": len(signal_dates) if signal_dates else len(outcome_dates),
+        "maturedUniqueDates": len(matured_dates),
+        "firstSignalDate": span_dates[0].strftime("%Y-%m-%d") if span_dates else None,
+        "lastSignalDate": span_dates[-1].strftime("%Y-%m-%d") if span_dates else None,
         "maturedSignals": matured,
+        "maturedByHorizon": {
+            str(h): sum(1 for o in outcomes if str(h) in (o.get("horizons") or {}))
+            for h in HORIZONS
+        },
         "eligibleDates": metrics.get("eligibleDates", 0),
         "regionIC": metrics.get("regionIC", {}),
         "costAdjustedExcessReturn": metrics.get("meanExcessAfterCost"),
         "MDD": metrics.get("mdd"),
         "CVaR": metrics.get("cvar95"),
+        "evidenceClass": "PROSPECTIVE_PAPER",
         "liveValidationEligible": bool(eligible),
         "liveValidated": False,
         "reasons": reasons if not eligible else ["manual_review_required; auto-promotion_disabled"],

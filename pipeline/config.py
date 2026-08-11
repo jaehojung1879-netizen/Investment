@@ -44,6 +44,9 @@ class Config:
     longterm: dict = field(default_factory=dict)
     kelly_portfolio: dict = field(default_factory=dict)
     validation: dict = field(default_factory=dict)
+    historical_replay: dict = field(default_factory=dict)
+    evidence: dict = field(default_factory=dict)
+    opportunity: dict = field(default_factory=dict)
     fred_regions: dict[str, dict[str, str]] = field(default_factory=dict)  # region -> {name: series_id}
     ecos_regions: dict[str, dict[str, str]] = field(default_factory=dict)  # KR macro via BOK ECOS
     fred_api_key: str | None = None
@@ -125,6 +128,9 @@ def load_config(path: Path | str = CONFIG_PATH) -> tuple[Config, list[str]]:
         longterm=raw.get("longterm", {}),
         kelly_portfolio=raw.get("kellyPortfolio", {}),
         validation=raw.get("validation", {}),
+        historical_replay=raw.get("historicalReplay", {}),
+        evidence=raw.get("evidence", {}),
+        opportunity=raw.get("opportunity", {}),
         fred_regions=fred_regions,
         ecos_regions=ecos_regions,
         fred_api_key=os.environ.get("FRED_API_KEY"),
