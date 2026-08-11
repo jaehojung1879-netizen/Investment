@@ -836,8 +836,8 @@ def challenger_selection(candidates: list[dict], estimates: list[dict],
             "downsideVolPct": round(risk_unit * 100, 1),
             "entryStateMultiplier": round(state_multiplier, 3),
             "score": round(float(mu) / (risk_unit * 100) * state_multiplier, 4),
-            "evidenceClass": ((estimate.get("evidence") or {}).get("posterior")
-                              and "POSTERIOR" or "PROSPECTIVE_ONLY"),
+            "evidenceClass": ("POSTERIOR" if (estimate.get("evidence") or {}).get("posterior")
+                              else "PROSPECTIVE_ONLY"),
         })
     challenger_rows.sort(key=lambda r: (-r["score"], str(r["ticker"])))
     target = int((cfg.get("selection") or {}).get("targetNames", 5))
@@ -1118,10 +1118,24 @@ def build_model_portfolio(long_term: dict | None, prices: dict, outcomes: list[d
     }
 
     if fallback_reason:
+        # Regions are optimized one at a time, so a later region failing leaves
+        # an EARLIER region's solved weights sitting in the accumulator. Those
+        # weights are not the portfolio — the portfolio fell back — and
+        # publishing them would show a Kelly allocation the model is not
+        # standing behind. Discard them before serializing.
+        #
+        # This became reachable the moment expected returns could come from a
+        # historical prior: one region having a usable calibration bucket while
+        # the other does not is the ordinary case, not an edge case.
+        partial = bool(kelly_weights)
+        kelly_weights.clear()
+        unconstrained.clear()
         final = pd.Series(risk_weights, dtype=float)
         final, bindings = _cap_portfolio(final, candidates, local_cfg, themes)
         skeleton["fallbackReason"] = fallback_reason
         skeleton["warnings"].append("KELLY_NOT_ACTIVATED; EXISTING_RISK_WEIGHTED_PORTFOLIO_RETAINED")
+        if partial:
+            skeleton["warnings"].append("PARTIAL_REGION_KELLY_SOLUTION_DISCARDED")
         # "Not activated" now has more than one cause, and the difference
         # matters to the reader: no evidence at all is a different situation
         # from a usable historical prior that has not yet been joined by live

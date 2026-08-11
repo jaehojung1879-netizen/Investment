@@ -83,6 +83,18 @@
 - 기록은 **append-only**이며 `modelVersion`·`replayVersion`·`featureVersion`·`dataVersion`을 함께 남깁니다. 모델을 바꾸면 새 세대가 별도로 쌓이고 기존 기록은 보존됩니다. CI는 **증분 실행**이라 이미 있는 날짜는 다시 계산하지 않습니다.
 - 재현에서 빠진 것도 숨기지 않습니다: 단기 LightGBM 점수는 비용 문제로 재현하지 않고 `null`, 실적 캘린더가 없어 `EVENT_RISK` 분기 일부가 비활성, 섹터 로테이션은 ETF RRG가 아닌 구성종목 상대강도 프록시입니다.
 
+### Phase 현황 — 각 Phase는 단독으로 테스트 가능합니다
+
+| Phase | 내용 | 상태 | 무엇이 막고 있나 |
+|---|---|---|---|
+| **1. Replay Infrastructure** | time-safe replay engine, price-only PIT, historical signal ledger, outcomes, leakage 탐지 | **완료 · 가동** | — |
+| **2. PIT Fundamentals / Macro** | publication-aware 재무, vintage-aware 매크로, historical universe | **인터페이스 완료 · 데이터 대기** | 무료 소스에 발표일 이력·ALFRED vintage·과거 구성종목이 없음. `pit_data.FundamentalStore.from_jsonl` / `UniverseHistory.from_json`에 파일만 넣으면 즉시 활성화되고 PIT 커버리지가 올라갑니다. |
+| **3. Historical Calibration** | alpha bucket calibration, historical Kelly prior, shrinkage | **완료 · 가동** | 실데이터 replay ledger가 CI에서 채워지면 자동으로 켜집니다 |
+| **4. ML Opportunity / Warning** | change feature dataset, walk-forward ML, calibrated probability, radar | **완료 · acceptance gate 대기** | gate 통과 전까지 규칙 기반 점수 사용 (설계된 동작) |
+| **5. Prospective Bayesian Update** | historical + live posterior, drift 감지, Kelly 영향도 적응 | **완료 · 가동** | prospective ledger가 쌓이면 자동으로 비중이 이동 |
+
+Phase 2가 비어 있어도 Phase 1·3·5는 정상 동작합니다. price-only 재현의 알파는 모멘텀·저변동 슬리브만으로 만들어지고, 빠진 밸류·퀄리티는 `evidenceCoverage` 축소와 증거 가중치 할인으로 이미 반영됩니다.
+
 ## Alpha Calibration과 Kelly 기대수익 posterior
 
 `alpha`·`rawAlpha`·`alphaPercentile`은 여전히 **기대수익률이 아닙니다.** 대신 과거 OOS ledger에 실증적으로 묻습니다: *"이 모델이 미래를 보지 않고 KR 90~95p에 넣었던 종목은 이후 126일 동안 KOSPI200 대비 실제로 어땠는가?"*
