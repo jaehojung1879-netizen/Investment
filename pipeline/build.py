@@ -23,15 +23,21 @@ from pathlib import Path
 
 from . import direction as direction_mod
 from . import entry as entry_mod
+from . import evidence as evidence_mod
 from . import expert_consensus as expert_mod
 from . import features as F
 from . import fundamentals as fundamentals_mod
+from . import historical_calibration as histcal_mod
+from . import historical_outcomes as histout_mod
+from . import historical_replay as replay_mod
 from . import indices as indices_mod
 from . import ledger as ledger_mod
 from . import longterm as longterm_mod
 from . import kelly_portfolio as kelly_mod
 from . import macro as macro_mod
 from . import model as M
+from . import opportunity as opportunity_mod
+from . import pit_data
 from . import provenance as prov_mod
 from . import regime as regime_mod
 from . import risk as risk_mod
@@ -164,6 +170,191 @@ def _load_validation_status(path=None, min_paper_days: int = 126) -> dict:
     if int(status.get("paperDays") or 0) < min_paper_days:
         status["liveValidationEligible"] = False
     return status
+
+
+def _load_jsonl(path: str | None) -> list[dict]:
+    if not path:
+        return []
+    try:
+        return [json.loads(line) for line in Path(path).read_text(encoding="utf-8").splitlines()
+                if line.strip()]
+    except Exception:
+        return []
+
+
+def _load_historical_evidence(cfg) -> dict:
+    """Read the HISTORICAL_OOS ledger, kept strictly apart from the paper ledger.
+
+    CI supplies these from the ``signal-history`` branch, the same way the
+    prospective ledger is supplied. Absence is normal on a fresh clone and is
+    reported as a state, never as an error: the build still runs, Kelly simply
+    has no historical prior and says so.
+    """
+    signals = _load_jsonl(os.environ.get("HISTORICAL_SIGNALS_PATH"))
+    outcomes = _load_jsonl(os.environ.get("HISTORICAL_OUTCOMES_PATH"))
+    diagnostics = kelly_mod.load_json(os.environ.get("HISTORICAL_DIAGNOSTICS_PATH"), {}) or {}
+    model_spec = kelly_mod.load_json(os.environ.get("OPPORTUNITY_MODEL_PATH"), {}) or {}
+    warning_spec = kelly_mod.load_json(os.environ.get("WARNING_MODEL_PATH"), {}) or {}
+
+    # Records from an older replay generation describe a different model and
+    # must not be pooled with the current one.
+    expected = prov_mod.REPLAY_VERSION
+    mismatched = sum(1 for s in signals if s.get("replayVersion") not in (None, expected))
+    signals = [s for s in signals if s.get("replayVersion") in (None, expected)]
+    keep_ids = {s.get("id") for s in signals}
+    outcomes = [o for o in outcomes if o.get("id") in keep_ids] if keep_ids else []
+
+    cfg_replay = cfg.historical_replay or {}
+    horizon = int(cfg_replay.get("horizonDays", 126))
+    calibration = histcal_mod.calibrate(
+        outcomes, horizon=horizon,
+        buckets=cfg_replay.get("alphaPercentileBuckets",
+                               histcal_mod.DEFAULT_BUCKETS),
+        cfg={"minEffectiveDates": int(cfg_replay.get("minEffectiveDates", 30)),
+             "shrinkagePriorStrength": float(cfg_replay.get("shrinkagePriorStrength", 30))},
+        diagnostics=diagnostics,
+        cost_adjusted=bool(cfg_replay.get("costAdjusted", True)),
+        require_pit=bool(cfg_replay.get("requirePitQuality", True)),
+    ) if outcomes else {"available": False, "reason": "historical_ledger_unavailable",
+                        "regions": {}, "horizonDays": horizon}
+    coverage = (histout_mod.coverage_summary(signals, outcomes, horizon=horizon)
+                if signals else {})
+    dataset = opportunity_mod.build_dataset(signals, outcomes) if signals and outcomes else None
+    return {
+        "signals": signals, "outcomes": outcomes, "diagnostics": diagnostics,
+        "calibration": calibration, "coverage": coverage, "dataset": dataset,
+        "modelSpec": model_spec, "warningSpec": warning_spec,
+        "replayVersionMismatchedRecords": mismatched,
+    }
+
+
+def _historical_validation_block(historical: dict, cfg) -> dict:
+    """The Historical Validation panel — always visibly separate from paper."""
+    diagnostics = historical.get("diagnostics") or {}
+    coverage = historical.get("coverage") or {}
+    calibration = historical.get("calibration") or {}
+    spec = historical.get("modelSpec") or {}
+    available = bool(historical.get("signals"))
+    return {
+        "evidenceClass": "HISTORICAL_OOS",
+        "available": available,
+        "reason": None if available else "historical_replay_ledger_not_supplied",
+        "replayVersion": diagnostics.get("replayVersion") or prov_mod.REPLAY_VERSION,
+        "featureVersion": diagnostics.get("featureVersion") or prov_mod.FEATURE_VERSION,
+        "dataVersion": prov_mod.DATA_VERSION,
+        "modelVersion": diagnostics.get("modelVersion"),
+        "replayPeriod": [diagnostics.get("firstDate"), diagnostics.get("lastDate")],
+        "replayFrequency": diagnostics.get("frequency"),
+        "replayDates": diagnostics.get("replayDates"),
+        "oosSignals": coverage.get("signalsRecorded"),
+        "uniqueDates": coverage.get("uniqueDates"),
+        "maturedSignals": coverage.get("maturedSignals"),
+        "maturedByHorizon": coverage.get("maturedByHorizon"),
+        "pitCoveragePct": (round(float(diagnostics.get("meanPitCoverage") or 0) * 100, 1)
+                            if diagnostics.get("meanPitCoverage") is not None else None),
+        "pitQuality": pit_data.quality_label(diagnostics.get("meanPitCoverage")),
+        "survivorshipRisk": diagnostics.get("survivorshipRisk"),
+        "survivorshipNote": diagnostics.get("survivorshipNote"),
+        "fundamentalsPointInTime": diagnostics.get("fundamentalsPit"),
+        "macroPitStatus": diagnostics.get("macroPitStatus"),
+        "knownDeviationsFromProduction": diagnostics.get("knownDeviationsFromProduction") or [],
+        "replayVersionMismatchedRecords": historical.get("replayVersionMismatchedRecords", 0),
+        "alphaCalibration": calibration,
+        "finalHoldoutStart": (cfg.opportunity or {}).get("finalHoldoutStart"),
+        "walkForward": spec.get("walkForward"),
+        "overfittingDiagnostics": spec.get("diagnostics"),
+        "modelAcceptance": spec.get("acceptance"),
+        "holdoutResult": spec.get("holdout"),
+        "notLiveEvidenceKo": ("과거 재현 결과는 실시간 검증과 다른 종류의 증거입니다. "
+                               "두 값을 합산하거나 같은 표로 섞지 않습니다."),
+    }
+
+
+def _prospective_validation_block(validation_status: dict) -> dict:
+    """The paper-ledger panel, with tracking and maturity kept apart."""
+    status = validation_status or {}
+    return {
+        "evidenceClass": "PROSPECTIVE_PAPER",
+        "trackingSince": status.get("firstSignalDate"),
+        "trackingDays": status.get("trackingDays", status.get("paperDays", 0)),
+        "signalsRecorded": status.get("signalsRecorded"),
+        "uniqueDates": status.get("uniqueDates"),
+        "maturedObservationDays": status.get("maturedObservationDays", 0),
+        "maturedSignals": status.get("maturedSignals", 0),
+        "maturedByHorizon": status.get("maturedByHorizon") or {},
+        "eligibleDates": status.get("eligibleDates", 0),
+        "regionIC": status.get("regionIC") or {},
+        "costAdjustedExcessReturn": status.get("costAdjustedExcessReturn"),
+        "MDD": status.get("MDD"), "CVaR": status.get("CVaR"),
+        "liveValidated": False,
+        "reasons": status.get("reasons") or [],
+        "roleKo": ("모델을 더 이상 손대지 않은 상태에서 실제 미래에도 재현되는지를 "
+                    "확인하는 최종 증거입니다."),
+    }
+
+
+def _radar_candidates(live_rows: list[dict], holdings: set[str]) -> list[dict]:
+    """Attach core-holding membership so warnings on held names sort first."""
+    rows = []
+    for row in live_rows:
+        rows.append({**row, "isCoreHolding": row.get("ticker") in holdings})
+    return rows
+
+
+def _opportunity_transitions(current: dict | None, prior: dict,
+                             prior_status: dict) -> dict:
+    """What is NEW today, based on state transitions rather than levels.
+
+    A name that has been HIGH since Tuesday is not news on Friday. Alerting on
+    the level would re-fire the same alarm every day until the user stopped
+    reading it, so the comparison is against the last validated production
+    state and only transitions are surfaced.
+    """
+    if not prior_status.get("available"):
+        return {"available": False, "reason": prior_status.get("reason"),
+                "hasChanges": False,
+                "summaryKo": "비교 가능한 이전 운영 상태가 없어 신규 여부를 판단하지 않습니다."}
+    previous = prior.get("opportunityTiersByTicker") or {}
+    previous_warn = prior.get("warningTiersByTicker") or {}
+    current_tiers: dict[str, str] = {}
+    current_warn: dict[str, str] = {}
+    for region_rows in ((current or {}).get("opportunityRadar") or {}).get("regions", {}).values():
+        for row in region_rows:
+            current_tiers[row["ticker"]] = row["tier"]
+    for region_rows in ((current or {}).get("warningRadar") or {}).get("regions", {}).values():
+        for row in region_rows:
+            current_warn[row["ticker"]] = row["tier"]
+
+    def promoted(now: dict, before: dict, ladder: tuple) -> list[dict]:
+        rank = {tier: i for i, tier in enumerate(ladder)}
+        out = []
+        for ticker, tier in sorted(now.items()):
+            was = before.get(ticker)
+            if was == tier:
+                continue
+            if rank.get(tier, 0) > rank.get(was, -1):
+                out.append({"ticker": ticker, "before": was, "after": tier})
+        return out
+
+    new_opportunities = promoted(
+        current_tiers, previous,
+        ("WATCH", "EMERGING_OPPORTUNITY", "VALIDATED_OPPORTUNITY"))
+    new_warnings = promoted(
+        current_warn, previous_warn,
+        ("WATCH", "ELEVATED_WARNING", "CRITICAL_WARNING"))
+    resolved = [{"ticker": t, "before": previous[t]} for t in sorted(previous)
+                if t not in current_tiers or current_tiers[t] == "WATCH"
+                and previous[t] != "WATCH"]
+    has_changes = bool(new_opportunities or new_warnings or resolved)
+    return {
+        "available": True, "hasChanges": has_changes,
+        "newOpportunities": new_opportunities,
+        "newWarnings": new_warnings,
+        "resolvedOpportunities": resolved,
+        "basisKo": "이전 운영 상태 대비 등급이 올라간 종목만 신규로 표시합니다.",
+        "summaryKo": ("오늘 새로 발생한 변화가 있습니다." if has_changes
+                      else "기회·경고 등급에 신규 변화 없음"),
+    }
 
 
 def _attach_entry_states(long_term: dict | None, entry_feats: dict, cfg_lt: dict) -> dict | None:
@@ -462,6 +653,13 @@ def run(cfg) -> dict:
     )
     validation_status = _load_validation_status(
         min_paper_days=int(cfg.validation.get("minPaperDays", 126)))
+
+    # HISTORICAL_OOS evidence: the same model replayed against point-in-time
+    # data. Loaded from its own ledger files and never merged into the paper
+    # ledger above — the two answer different questions and are combined only
+    # inside the expected-return posterior, with their weights published.
+    historical = _load_historical_evidence(cfg)
+    historical_calibration = historical["calibration"]
     try:
         model_portfolio = kelly_mod.build_model_portfolio(
             long_term, prices, portfolio_outcomes, cfg.kelly_portfolio,
@@ -472,6 +670,7 @@ def run(cfg) -> dict:
             validation_status=validation_status,
             benchmarks=cfg.benchmarks,
             bench_by_region=benchmark_closes,
+            historical_calibration=historical_calibration,
         )
     except Exception as exc:
         print(f"  warning: Kelly portfolio engine failed: {exc}")
@@ -483,6 +682,57 @@ def run(cfg) -> dict:
             "fallbackReason": f"engine_error:{exc.__class__.__name__}",
             "warnings": ["EXPLICIT_ENGINE_FAILURE; NO_KELLY_WEIGHTS_PUBLISHED"],
         }
+
+    # Opportunity / Warning radars. Feature vectors come from the REPLAY engine
+    # (see historical_replay.live_features) so that today's inputs are built by
+    # the identical code that built the training set — the production long-term
+    # table would give subtly different numbers and silently break the model.
+    opportunity_radar = warning_radar = None
+    radar_diagnostics = {"status": "DISABLED"}
+    if (cfg.opportunity or {}).get("enabled", True) and not withhold:
+        try:
+            holdings = {t for blob in ((long_term or {}).get("regions") or {}).values()
+                        for t in ((blob or {}).get("holdings") or [])}
+            live = replay_mod.live_features(
+                prices, universe, benchmarks=cfg.benchmarks, cfg_lt=cfg.longterm,
+                as_of=latest_date, frequency=(cfg.historical_replay or {}).get("frequency", "W"),
+                macro=macro, vix=vix, model_version=prov_mod.MODEL_VERSION)
+            candidates = _radar_candidates(live["rows"], holdings)
+            if candidates:
+                opportunity_radar = opportunity_mod.build_radar(
+                    candidates, dataset=historical["dataset"],
+                    spec=historical["modelSpec"], cfg=cfg.opportunity,
+                    kind="opportunity",
+                    limit=int((cfg.opportunity or {}).get("limitPerRegion", 8)))
+                warning_radar = opportunity_mod.build_radar(
+                    candidates, dataset=historical["dataset"],
+                    spec=historical["warningSpec"], cfg=cfg.opportunity,
+                    kind="warning",
+                    limit=int((cfg.opportunity or {}).get("limitPerRegion", 8)))
+                # Explainability only: the closest historical setups and what
+                # followed. Never an input to sizing.
+                for rows in (opportunity_radar.get("regions") or {}).values():
+                    by_ticker = {c["ticker"]: c for c in candidates}
+                    for row in rows:
+                        row["historicalAnalogues"] = opportunity_mod.historical_analogues(
+                            by_ticker.get(row["ticker"]) or {}, historical["dataset"])
+                radar_diagnostics = {
+                    "status": "READY", "asOf": live["asOf"],
+                    "candidates": len(candidates),
+                    "featureSource": "HISTORICAL_REPLAY_ENGINE",
+                    "featureVersion": prov_mod.FEATURE_VERSION,
+                    "trainServeFeatureParityKo": ("오늘의 피처는 과거 학습 데이터와 동일한 "
+                                                   "replay 엔진으로 생성합니다."),
+                }
+            else:
+                radar_diagnostics = {"status": "NO_CANDIDATES"}
+        except Exception as exc:
+            print(f"  warning: opportunity radar failed: {exc}")
+            traceback.print_exc()
+            radar_diagnostics = {"status": "FAILED",
+                                 "reason": f"{exc.__class__.__name__}"}
+    elif withhold:
+        radar_diagnostics = {"status": "BLOCKED"}
 
     # Verified expert / house-view consensus (semi-automatic; nothing fabricated).
     try:
@@ -529,6 +779,53 @@ def run(cfg) -> dict:
         diag["dataInsufficientExcluded"] = len((blob or {}).get("dataInsufficient") or [])
         diag["rankedCount"] = int((blob or {}).get("universeRanked") or 0)
     changes = _changes_since_prior(long_term, model_portfolio, macro_regime, prior, prior_status)
+    radar_payload = {"opportunityRadar": opportunity_radar or {"regions": {}},
+                     "warningRadar": warning_radar or {"regions": {}}}
+    transitions = _opportunity_transitions(radar_payload, prior, prior_status)
+    changes["opportunityTransitions"] = transitions
+
+    kelly_evidence = (model_portfolio or {}).get("kellyEvidence") or {}
+    spec = historical["modelSpec"] or {}
+    model_comparison = {
+        # Champion = what is actually deciding today's weights. Challengers are
+        # measured in the same environment and are NOT allowed to change the
+        # portfolio until they win on both evidence classes.
+        "champion": {
+            "name": "CONVICTION_RISK_WEIGHTED",
+            "descriptionKo": "현재 운영 중인 컨빅션 위험가중 선정·비중",
+            "inProduction": True,
+            "allocationMethod": (model_portfolio or {}).get("method"),
+            "kellyApplied": (model_portfolio or {}).get("kellyApplied", False),
+        },
+        "challengers": [
+            {
+                "name": "HISTORICAL_KELLY_ENHANCED",
+                "descriptionKo": "과거 OOS calibration으로 기대수익 prior를 만든 Fractional Kelly",
+                "inProduction": False,
+                "evidenceClass": "HISTORICAL_OOS",
+                "status": (kelly_evidence.get("activation") or {}).get("code", "NO_EVIDENCE"),
+                "statusKo": (kelly_evidence.get("activation") or {}).get("labelKo"),
+                "historicalCalibrationAvailable": bool(historical_calibration.get("available")),
+                "promotionRuleKo": ("과거 OOS와 실시간 paper 양쪽에서 초과수익·rank IC·"
+                                     "calibration·회전율·MDD·CVaR·안정성이 모두 우세할 때만 승격합니다."),
+            },
+            {
+                "name": "ML_OPPORTUNITY_ENHANCED",
+                "descriptionKo": "Historical OOS로 학습한 기회 확률 모델",
+                "inProduction": False,
+                "evidenceClass": "HISTORICAL_OOS",
+                "status": spec.get("status", "NOT_TRAINED"),
+                "accepted": bool(spec.get("accepted")),
+                "acceptanceFailures": (spec.get("acceptance") or {}).get("failures") or [],
+                "scope": "OPPORTUNITY_RADAR_ONLY_NOT_CORE_PORTFOLIO",
+                "promotionRuleKo": ("Core Portfolio 선정기를 대체하지 않습니다. "
+                                     "A/B 비교에서 명확히 우세할 때만 승격 검토 대상이 됩니다."),
+            },
+        ],
+        "separationKo": ("Core Portfolio와 Opportunity는 하나의 점수로 합치지 않습니다. "
+                          "서로 다른 질문에 답하는 별개의 층입니다."),
+    }
+
     payload = {
         "portfolioName": cfg.portfolio_name,
         "primary": cfg.primary,
@@ -552,6 +849,13 @@ def run(cfg) -> dict:
         "recommendationsBlocked": False,
         "priorState": prior_status,
         "validationStatus": validation_status,
+        "historicalValidation": _historical_validation_block(historical, cfg),
+        "prospectiveValidation": _prospective_validation_block(validation_status),
+        "kellyEvidence": kelly_evidence,
+        "opportunityRadar": opportunity_radar,
+        "warningRadar": warning_radar,
+        "radarDiagnostics": radar_diagnostics,
+        "modelComparison": model_comparison,
         "runMode": cfg.run_mode,
         "screened": screen_table,
         "details": details,
@@ -613,6 +917,12 @@ def run(cfg) -> dict:
             "reason": "recommendations_blocked",
             "summaryKo": "안전 차단 상태에서는 이전 실행 대비 행동성 변화를 표시하지 않습니다.",
         }
+        # An opportunity or warning tier IS an actionable call, so the same rule
+        # that hides positions and entry states hides the radars.
+        for key in ("opportunityRadar", "warningRadar"):
+            payload[key] = {"regions": {}, "blocked": True,
+                            "reason": "recommendations_blocked"}
+        payload["radarDiagnostics"] = {"status": "BLOCKED"}
     payload["audit"] = audit
     return payload
 

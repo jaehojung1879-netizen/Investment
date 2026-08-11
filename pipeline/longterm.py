@@ -218,47 +218,65 @@ def _earnings_yield(trailing_pe, forward_pe, earnings_growth) -> tuple[float | N
     return ey_t, ey_f
 
 
-def build_region(tickers: list[str], prices: dict, fundamentals: dict, diags: dict,
-                 bench_close: pd.Series | None = None, cfg_lt: dict | None = None) -> pd.DataFrame | None:
+def raw_inputs(ticker: str, close: pd.Series, fundamentals_row: dict | None,
+               bench_close: pd.Series | None = None) -> dict:
+    """The per-name raw factor inputs, before any cross-sectional scoring.
+
+    Split out of ``build_region`` so the historical replay engine can assemble
+    the identical input row from point-in-time data and hand it to the same
+    scorer, instead of maintaining a second copy of the factor definitions that
+    could quietly drift away from production.
+    """
+    f = fundamentals_row or {}
+    ey_t, ey_f = _earnings_yield(f.get("trailingPE"), f.get("forwardPE"), f.get("earningsGrowth"))
+    return {
+        "sector": SECT.sector_of(ticker, f.get("sector")),
+        # momentum
+        "mom121": momentum_12_1(close),
+        "mom6": momentum_6m(close),
+        # value
+        "earningsYield": ey_t if ey_t is not None else f.get("earningsYield"),
+        "fwdEarningsYield": ey_f,
+        "bookYield": f.get("bookYield"),
+        "fcfYield": f.get("fcfYield"),
+        # quality
+        "roe": f.get("roe"),
+        "opMargin": f.get("operatingMargin"),
+        "profitMargin": f.get("profitMargin"),
+        "debtToEquity": f.get("debtToEquity"),
+        "earningsGrowth": f.get("earningsGrowth"),
+        "marketCap": f.get("marketCap"),
+        # risk (price-based)
+        "vol252": realized_vol_252(close),
+        "downsideVol": downside_vol_252(close),
+        "cvar95": cvar_95(close),
+        "maxDD252": max_drawdown_252(close),
+        "beta": beta_to(close, bench_close),
+    }
+
+
+RAW_INPUT_COLUMNS = (
+    "sector", "mom121", "mom6", "earningsYield", "fwdEarningsYield", "bookYield",
+    "fcfYield", "roe", "opMargin", "profitMargin", "debtToEquity", "earningsGrowth",
+    "marketCap", "vol252", "downsideVol", "cvar95", "maxDD252", "beta",
+)
+
+
+def score_cross_section(rows: dict[str, dict], cfg_lt: dict | None = None) -> pd.DataFrame | None:
+    """Sector-neutral factor scoring for one region's cross-section.
+
+    This is THE alpha definition. Production (``build_region``) and the
+    historical replay engine both call it with the same shaped input, so a
+    replayed 2019 alpha percentile is produced by the same code path as today's
+    — the only difference being which data was visible.
+    """
     cfg_lt = cfg_lt or {}
-    exclude = set(cfg_lt.get("excludeFromRanking", []))
-    rows = {}
-    for t in tickers:
-        if t in exclude or t not in prices:
-            continue
-        close = prices[t]["Close"]
-        f = fundamentals.get(t, {})
-        ey_t, ey_f = _earnings_yield(f.get("trailingPE"), f.get("forwardPE"), f.get("earningsGrowth"))
-        sector = SECT.sector_of(t, f.get("sector"))
-        rows[t] = {
-            "sector": sector,
-            # momentum
-            "mom121": momentum_12_1(close),
-            "mom6": momentum_6m(close),
-            # value
-            "earningsYield": ey_t,
-            "fwdEarningsYield": ey_f,
-            "bookYield": f.get("bookYield"),
-            "fcfYield": f.get("fcfYield"),
-            # quality
-            "roe": f.get("roe"),
-            "opMargin": f.get("operatingMargin"),
-            "profitMargin": f.get("profitMargin"),
-            "debtToEquity": f.get("debtToEquity"),
-            "earningsGrowth": f.get("earningsGrowth"),
-            "marketCap": f.get("marketCap"),
-            # risk (price-based)
-            "vol252": realized_vol_252(close),
-            "downsideVol": downside_vol_252(close),
-            "cvar95": cvar_95(close),
-            "maxDD252": max_drawdown_252(close),
-            "beta": beta_to(close, bench_close),
-        }
     if len(rows) < 5:
         return None
     # Canonicalize the cross-section before any ranking/group operation. The
     # source listing order must never become an investment input.
-    df = pd.DataFrame.from_dict(rows, orient="index").sort_index(kind="mergesort")
+    df = pd.DataFrame.from_dict(rows, orient="index").reindex(columns=list(RAW_INPUT_COLUMNS))
+    df = df.sort_index(kind="mergesort")
     sector = df["sector"]
     num = df.drop(columns=["sector"]).astype(float)
 
@@ -324,8 +342,6 @@ def build_region(tickers: list[str], prices: dict, fundamentals: dict, diags: di
     for c in ["vol252", "downsideVol", "cvar95", "maxDD252", "beta", "mom121"]:
         out[c] = num[c]
     out["marketCap"] = num["marketCap"]
-    out["aboveMA200"] = [bool((diags.get(t) or {}).get("aboveMA200")) for t in out.index]
-    out["regime"] = [(diags.get(t) or {}).get("regime") for t in out.index]
 
     # Classify research view / data sufficiency.
     min_sleeves = int(cfg_lt.get("minFactorSleeves", 3))
@@ -333,6 +349,22 @@ def build_region(tickers: list[str], prices: dict, fundamentals: dict, diags: di
     out["dataInsufficient"] = (out["sleevesPresent"] < min_sleeves) | (out["financialCoverage"] < min_fin)
     out = out.dropna(subset=["alpha"])
     return out if len(out) >= 5 else None
+
+
+def build_region(tickers: list[str], prices: dict, fundamentals: dict, diags: dict,
+                 bench_close: pd.Series | None = None, cfg_lt: dict | None = None) -> pd.DataFrame | None:
+    cfg_lt = cfg_lt or {}
+    exclude = set(cfg_lt.get("excludeFromRanking", []))
+    rows = {
+        t: raw_inputs(t, prices[t]["Close"], fundamentals.get(t, {}), bench_close)
+        for t in tickers if t not in exclude and t in prices
+    }
+    out = score_cross_section(rows, cfg_lt)
+    if out is None:
+        return None
+    out["aboveMA200"] = [bool((diags.get(t) or {}).get("aboveMA200")) for t in out.index]
+    out["regime"] = [(diags.get(t) or {}).get("regime") for t in out.index]
+    return out
 
 
 def region_risk_limits(table: pd.DataFrame) -> dict:

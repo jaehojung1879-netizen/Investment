@@ -53,7 +53,45 @@ const CONCENTRATION_KO = Object.freeze({
   EFFECTIVE_NAMES_BELOW_2_5: '유효 종목수 2.5 미만 — 사실상 2종목 포트폴리오에 가깝습니다',
   TOP_NAME_ABOVE_40PCT_OF_EQUITY: '1위 종목이 주식 비중의 40%를 넘습니다',
 });
-const statusLabel = (code, fallback = '검증 데이터 축적 중') => USER_STATUS[code] || fallback;
+// Kelly activation ladder. The code says which EVIDENCE CLASS is carrying the
+// expected return; the Korean label is what a person reads.
+const EVIDENCE_STATUS = Object.freeze({
+  NO_EVIDENCE: '검증 근거 없음',
+  HISTORICAL_PRIOR_ONLY: '과거 OOS 근거 준비 중',
+  HISTORICAL_OOS_SUPPORTED: '과거 OOS 검증 활용 중',
+  PROSPECTIVE_EARLY: '실시간 검증 축적 중',
+  PROSPECTIVE_CONFIRMED: '실시간 검증 우세',
+  ACTIVE_PAPER: 'Paper 운용 중',
+  ACTIVE_VALIDATED: '검증 완료',
+});
+const RADAR_TIER_KO = Object.freeze({
+  VALIDATED_OPPORTUNITY: '검증된 기회',
+  EMERGING_OPPORTUNITY: '관찰 필요한 변화',
+  CRITICAL_WARNING: '즉시 점검',
+  ELEVATED_WARNING: '악화 관찰',
+  WATCH: '관심 목록',
+});
+const RADAR_TIER_CLASS = Object.freeze({
+  VALIDATED_OPPORTUNITY: 'bull', EMERGING_OPPORTUNITY: 'gold',
+  CRITICAL_WARNING: 'bear', ELEVATED_WARNING: 'gold', WATCH: 'trans',
+});
+const RADAR_NOTE_KO = Object.freeze({
+  VOLUME_SURGE_WITH_PRICE_DECLINE_NOT_AN_OPPORTUNITY: '거래량은 늘었지만 가격이 밀리고 있어 기회로 보지 않습니다',
+  NO_RECENT_CHANGE_DETECTED: '최근 의미 있는 변화가 없습니다',
+  SINGLE_SIGNAL_ONLY: '단일 신호만 감지되어 확신이 낮습니다',
+  SIGNAL_CONVERGENCE_BELOW_VALIDATION_BAR: '신호는 모였지만 검증 기준에 미치지 못합니다',
+  HISTORICAL_MODEL_NOT_VALIDATED_RESEARCH_ONLY: '과거 검증 모델이 통과 기준을 넘지 못해 리서치 참고로만 표시합니다',
+  ENTRY_DOWNGRADE_WITH_TREND_BREAKDOWN: '진입상태 악화와 추세 이탈이 동시에 나타났습니다',
+  NO_DETERIORATION_DETECTED: '악화 신호가 없습니다',
+});
+const ML_STATUS_KO = Object.freeze({
+  ACTIVE: '과거 OOS 학습 모델 적용 중',
+  NOT_TRAINED: '학습 데이터 없음 — 규칙 기반 변화 점수 사용',
+  REJECTED_BY_ACCEPTANCE_GATE: '검증 기준 미달로 모델 미적용 — 규칙 기반 변화 점수 사용',
+  DATASET_INSUFFICIENT_FOR_REFIT: '재학습 표본 부족 — 규칙 기반 변화 점수 사용',
+  NO_MODEL_FOR_THIS_RADAR: '이 레이더용 학습 모델 없음 — 규칙 기반 변화 점수 사용',
+});
+const statusLabel = (code, fallback = '검증 데이터 축적 중') => USER_STATUS[code] || EVIDENCE_STATUS[code] || fallback;
 const modeLabel = (mode) => ({ live: '실데이터', seed: '예시 데이터', synthetic: '합성 데이터', stale: '지연 데이터' }[mode] || '상태 미상');
 const trendCue = (v) => v == null ? '→' : v > 0 ? '▲' : v < 0 ? '▼' : '→';
 
@@ -72,6 +110,9 @@ const ENTRY = {
   ACCUMULATE_GRADUALLY: ['분할 매수', 'bull'], WATCH: ['관찰', 'trans'],
   WAIT_FOR_PULLBACK: ['되돌림 대기', 'gold'], EVENT_RISK: ['이벤트 위험', 'bear'], AVOID: ['회피', 'bear'],
 };
+// Worst -> best, matching pipeline.entry.ENTRY_STATES reversed. Used to tell an
+// entry upgrade from a downgrade in the daily change bar.
+const ENTRY_RANK = { AVOID: 0, EVENT_RISK: 1, WAIT_FOR_PULLBACK: 2, WATCH: 3, ACCUMULATE_GRADUALLY: 4 };
 const REGIME_KO = {
   Goldilocks: '골디락스', Reflation: '리플레이션', Stagflation: '스태그플레이션',
   'Deflation/Slowdown': '디플레·둔화', 'Transition/Low confidence': '전환·저신뢰',
@@ -151,6 +192,15 @@ const EXPL = {
   conviction: ['컨빅션 점수', '(알파 백분위 − 50) ÷ 50 ÷ 하방변동성 × 근거 커버리지 × 진입상태 배율. <b>종목 순서를 정하는 랭킹 점수이며 기대수익률이나 샤프비율 예측이 아닙니다.</b> 알파는 횡단면 순위이지 수익률 추정치가 아니기 때문입니다.'],
   invalidation: ['무효화 조건', '이 종목의 논리가 <b>어디서 깨지는지</b>를 종목별 현재 수치와 함께 적습니다. 기준선은 설정된 편출 버퍼, 팩터 중앙값, 200일선·12-1M 모멘텀 정의, 해당 지역 위험 횡단면 분포, 데이터 충족 하한에서 각각 산출합니다.'],
   concentration2: ['집중도', '유효 종목수 = 1 ÷ 주식비중 허핀달지수. 5종목을 균등하게 담으면 5, 한 종목에 쏠릴수록 1에 가까워집니다.'],
+  radar: ['기회 · 경고 레이더', 'Core Portfolio가 “위험 대비 지금 안정적으로 보유할 종목”을 답한다면, 레이더는 <b>“최근 무엇이 달라졌는가”</b>를 답합니다. 두 층은 <b>하나의 점수로 합치지 않습니다</b>. 좋은 종목이라도 변화가 없으면 기회가 아니고, 순위가 낮아도 강한 변화가 생기면 관찰 대상입니다.'],
+  opportunity: ['기회 레이더', '알파 백분위 변화, 모멘텀 가속, 상대강도 개선, 거래량, 진입상태 전환, 섹터 로테이션 등 <b>변화(change) 피처</b>를 우선합니다. 등급은 <b>검증된 기회</b>(과거 OOS 검증 통과 + 신호 수렴), <b>관찰 필요한 변화</b>(변화는 강하나 검증 부족, 리서치 전용), <b>관심 목록</b>으로 나뉩니다. 거래량이 늘어도 가격이 밀리면 기회로 분류하지 않습니다.'],
+  warning: ['경고 레이더', '기존 논리가 깨지는 신호를 별도 모델로 봅니다: 알파 급락, 200일선 이탈, 상대강도 악화, 진입상태 하향, 변동성 급등, 하락 중 거래량 급증. <b>보유 종목의 경고를 최상단에 배치</b>합니다. 기회 점수의 반대값이 아니라 별도 점수입니다.'],
+  validationlab: ['Validation Lab', '<b>과거 OOS</b>는 “미래를 보지 않고 과거에 같은 모델을 돌렸다면 어땠는가”, <b>실시간 Paper</b>는 “모델을 더 손대지 않은 상태에서 실제 미래에도 재현되는가”입니다. <b>서로 다른 증거</b>이므로 합산하지 않고 나란히 보여주며, Kelly 기대수익은 두 증거를 정밀도 가중으로 결합한 posterior를 사용합니다.'],
+  pitquality: ['PIT 품질', '과거 재현에서 그 시점에 실제로 볼 수 있었던 데이터만 썼는지를 나타냅니다. 가격은 시점 정합적이지만 배당·액면 조정은 현재 기준이고(PIT_APPROXIMATE), 재무는 무료 데이터에 발표일 이력이 없어 과거에 소급 적용하지 않고 <b>제외</b>합니다. 매크로는 발표시차만 반영하고 개정 이전 값(vintage)은 확보하지 못해 REVISED_HISTORY입니다.'],
+  survivorship: ['생존편향', '현재 상장된 종목만으로 과거를 재현하면 이미 사라진 실패 사례가 빠져 성과가 좋아 보입니다. 과거 구성종목 파일이 없으면 <b>SURVIVORSHIP_BIAS_UNRESOLVED</b>로 기록하고 과거 증거의 가중치를 낮춥니다.'],
+  posterior: ['Kelly 기대수익 posterior', '과거 OOS prior와 실시간 paper 증거를 <b>역분산(정밀도) 가중</b>으로 결합하고, 0을 중심으로 하는 사전분포로 수축합니다. 실시간 표본이 쌓일수록 실시간 쪽 비중이 자동으로 커집니다. 과거 증거는 모델 설계 자체가 그 시기를 겪은 뒤 만들어졌다는 이유로 1.0보다 낮은 가중치를 받습니다.'],
+  drift: ['성과 괴리 감지', '과거 OOS 기대수익보다 실시간 성과가 크게 낮으면 Kelly 비중을 <b>축소</b>합니다. 반대 방향은 작동하지 않습니다 — 실시간 성과가 나쁘다고 기대수익을 올리는 일은 없습니다.'],
+  analogue: ['과거 유사 사례', '현재 관측치와 과거 특징 벡터의 거리로 가장 비슷했던 시점들을 찾아 그 이후 결과 분포를 보여줍니다. <b>예측 모델이 아니라 설명 도구</b>이며, 유사 사례가 미래를 보장하지 않습니다.'],
 };
 const pop = $('#pop');
 let popKey = null;
@@ -387,9 +437,185 @@ const renderMethodStatus = (d) => {
   host.innerHTML = `<div class="ms-head"><b>방법론 적용 현황</b><span class="muted">켜져 있는 층과 아직 아닌 층을 그대로 표시합니다</span></div>${rows}`;
 };
 
+// --- 3. Opportunity / Warning radars -------------------------------------
+// Kept visually and structurally apart from the Core Portfolio: they answer
+// "what changed recently", not "what should I hold".
+const analogueLine = (a) => {
+  if (!a) return '';
+  if (!a.sampleSufficient) {
+    return `<div class="rd-analogue thin">${term('analogue', '과거 유사 사례')} ${a.matches}건 — 표본이 적어 수치를 표시하지 않습니다</div>`;
+  }
+  return `<div class="rd-analogue">${term('analogue', '과거 유사 사례')} <b>${a.matches}건</b>
+    <span>${a.horizonDays}일 평균 ${sp(a.meanExcessPct)} · 중앙값 ${sp(a.medianExcessPct)}</span>
+    <span>양의 초과수익 ${Math.round((a.positiveExcessRatio || 0) * 100)}% · 하위 10% ${sp(a.worstDecileExcessPct)}</span>
+    <em>${a.disclaimerKo}</em></div>`;
+};
+const radarCard = (row, scoreKey) => {
+  const tier = row.tier || 'WATCH';
+  const cls = RADAR_TIER_CLASS[tier] || 'trans';
+  const signals = (row.signalsKo || []).map((s) => `<span class="rd-sig">${s}</span>`).join('');
+  const notes = (row.notes || []).map((n) => RADAR_NOTE_KO[n] || n).join(' · ');
+  return `<article class="radar-card t-${cls}">
+    <div class="rd-top">
+      <div>${tkLink(row.ticker)}<small>${row.region || ''} · ${row.sector || '미분류'}</small></div>
+      <span class="vbadge v-${cls}">${row.tierKo || RADAR_TIER_KO[tier] || tier}</span>
+    </div>
+    <div class="rd-score"><b>${fmt(row[scoreKey], '', 1)}</b>
+      <span>${row.historicalPercentile != null ? `과거 분포 상위 ${Math.max(1, Math.round(100 - row.historicalPercentile))}%` : '과거 분포 대조 불가'}</span>
+      ${row.isCoreHolding ? '<span class="rd-held">보유 종목</span>' : ''}
+    </div>
+    ${signals ? `<div class="rd-sigs">${signals}</div>` : ''}
+    ${notes ? `<p class="rd-note">${notes}</p>` : ''}
+    ${analogueLine(row.historicalAnalogues)}
+  </article>`;
+};
+const calibrationBandTable = (bands) => {
+  const usable = (bands || []).filter((b) => b.sampleSufficient);
+  if (!usable.length) return '';
+  const rows = usable.map((b) => `<tr><td>${b.scoreFrom}~${b.scoreTo}</td><td>${b.n}</td>
+    <td>${Math.round((b.positiveExcessHitRatio || 0) * 100)}%</td><td>${sp(b.meanExcessPct)}</td>
+    <td>${sp(b.medianExcessPct)}</td><td>${sp(b.worstDecileExcessPct)}</td></tr>`).join('');
+  return `<details class="rd-calib"><summary>점수 구간별 과거 OOS 실측</summary>
+    <table><thead><tr><th>점수</th><th>표본</th><th>양의 초과수익</th><th>평균</th><th>중앙값</th><th>하위 10%</th></tr></thead>
+    <tbody>${rows}</tbody></table>
+    <p class="muted">표본이 충분한 구간만 표시합니다. 과거 분포이며 미래 수익 보장이 아닙니다.</p></details>`;
+};
+const renderRadar = (d) => {
+  const oppHost = $('#opportunityRadarPanel'); const warnHost = $('#warningRadarPanel');
+  if (!oppHost || !warnHost) return;
+  const opp = d.opportunityRadar || {}; const warn = d.warningRadar || {};
+  const diag = d.radarDiagnostics || {};
+  const blocked = d.recommendationsBlocked || opp.blocked || warn.blocked;
+  if (blocked) {
+    $('#radarMeta').textContent = '안전 차단';
+    $('#radarBasis').textContent = COPY.blocked;
+    oppHost.innerHTML = `<div class="status-note warn">${COPY.blocked}</div>`;
+    warnHost.innerHTML = '';
+    return;
+  }
+  const mlNote = ML_STATUS_KO[opp.mlStatus] || opp.mlStatus || '상태 미상';
+  $('#radarMeta').textContent = diag.asOf ? `기준 ${diag.asOf} · 후보 ${diag.candidates ?? '—'}개` : '';
+  $('#radarBasis').innerHTML = `${mlNote}. 기회와 경고는 Core Portfolio와 <b>별도 층</b>이며 하나의 점수로 합치지 않습니다.
+    ${opp.targetDescriptionKo ? `학습 목표: ${opp.targetDescriptionKo}.` : ''} ${opp.notAGuaranteeKo || ''}`;
+  const render = (host, radar, scoreKey, emptyText) => {
+    const regions = radar.regions || {};
+    const blocks = Object.keys(regions).sort().map((region) => {
+      const rows = regions[region] || [];
+      if (!rows.length) return '';
+      return `<div class="rd-region"><div class="rd-region-h">${region}</div>
+        ${rows.map((r) => radarCard(r, scoreKey)).join('')}</div>`;
+    }).filter(Boolean).join('');
+    host.innerHTML = (blocks || `<div class="status-note info">${emptyText}</div>`)
+      + calibrationBandTable(radar.calibrationBands);
+  };
+  render(oppHost, opp, 'opportunityScore', '최근 두드러진 변화가 감지되지 않았습니다.');
+  render(warnHost, warn, 'warningScore', '기존 논리가 깨지는 신호가 감지되지 않았습니다.');
+};
+
+// --- 6. Validation Lab: two evidence classes, never merged ----------------
+const vlabRow = (label, value, hint = '') =>
+  `<div class="vl-row"><span>${label}</span><b>${value}</b>${hint ? `<small>${hint}</small>` : ''}</div>`;
+const renderValidationLab = (d) => {
+  const host = $('#validationLabPanel');
+  if (!host) return;
+  const hv = d.historicalValidation || {}; const pv = d.prospectiveValidation || {};
+  const ke = d.kellyEvidence || {}; const mp = d.modelPortfolio || {};
+  const mc = d.modelComparison || {};
+  const activation = ke.activation || {};
+  $('#validationLabMeta').textContent =
+    `${hv.available ? `과거 OOS ${hv.oosSignals ?? 0}건` : '과거 OOS 없음'} · ${pv.trackingDays ?? 0}일 실시간 추적`;
+
+  const historicalPanel = `<div class="vl-card">
+    <div class="vl-h">과거 OOS 검증 <span class="tag">HISTORICAL_OOS</span></div>
+    ${hv.available ? `
+      ${vlabRow('재현 기간', (hv.replayPeriod || []).filter(Boolean).join(' ~ ') || '—', `${hv.replayFrequency || ''} 그리드 · ${hv.replayDates ?? '—'}개 날짜`)}
+      ${vlabRow('OOS 신호', fmt(hv.oosSignals), `고유 날짜 ${hv.uniqueDates ?? '—'}`)}
+      ${vlabRow('만기 신호', fmt(hv.maturedSignals), Object.entries(hv.maturedByHorizon || {}).map(([h, n]) => `${h}D ${n}`).join(' · '))}
+      ${vlabRow(term('pitquality', 'PIT 커버리지'), fmt(hv.pitCoveragePct, '%', 1), `품질 ${hv.pitQuality || '—'}`)}
+      ${vlabRow(term('survivorship', '생존편향'), hv.survivorshipRisk || '—', hv.survivorshipNote || '')}
+      ${vlabRow('재무 point-in-time', hv.fundamentalsPointInTime ? '적용' : '미적용 (밸류·퀄리티 슬리브 제외)')}
+      ${vlabRow('매크로 vintage', hv.macroPitStatus || '—')}
+      ${vlabRow('최종 홀드아웃', hv.finalHoldoutStart || '—', '모델 확정 전까지 튜닝에 사용하지 않음')}
+      ${(hv.knownDeviationsFromProduction || []).length ? `<details class="vl-fold"><summary>운영 모델과의 알려진 차이 ${hv.knownDeviationsFromProduction.length}건</summary><ul>${hv.knownDeviationsFromProduction.map((x) => `<li>${x}</li>`).join('')}</ul></details>` : ''}
+    ` : `<div class="status-note info">${hv.reason === 'historical_replay_ledger_not_supplied' ? '과거 재현 ledger가 아직 생성되지 않았습니다.' : (hv.reason || '데이터 없음')}</div>`}
+    <p class="vl-foot">${hv.notLiveEvidenceKo || ''}</p>
+  </div>`;
+
+  const prospectivePanel = `<div class="vl-card">
+    <div class="vl-h">실시간 Paper 검증 <span class="tag">PROSPECTIVE_PAPER</span></div>
+    ${vlabRow('추적 시작', pv.trackingSince || '—')}
+    ${vlabRow('추적 일수', fmt(pv.trackingDays), '신호가 쌓인 기간 — 만기 여부와 무관')}
+    ${vlabRow('기록 신호', fmt(pv.signalsRecorded), `고유 날짜 ${pv.uniqueDates ?? '—'}`)}
+    ${vlabRow('만기 관측 일수', fmt(pv.maturedObservationDays), '결과가 확정된 구간')}
+    ${vlabRow('만기 신호', fmt(pv.maturedSignals), Object.entries(pv.maturedByHorizon || {}).map(([h, n]) => `${h}D ${n}`).join(' · ') || '—')}
+    ${vlabRow('비용 차감 초과수익', pv.costAdjustedExcessReturn ?? '—')}
+    ${vlabRow('MDD / CVaR', `${pv.MDD ?? '—'} / ${pv.CVaR ?? '—'}`)}
+    <p class="vl-foot">${pv.roleKo || ''}</p>
+  </div>`;
+
+  const regions = Object.entries(ke.byRegion || {});
+  const evidenceRows = regions.map(([region, blob]) => {
+    const h = blob.historical || {}; const p = blob.prospective || {}; const post = blob.posterior || {};
+    return `<tr><td>${region}</td>
+      <td>${h.expectedExcessReturnPct != null ? sp(h.expectedExcessReturnPct) : '—'}<small>${h.effectiveDates ?? 0}일 · w ${h.weight ?? '—'}</small></td>
+      <td>${p.expectedExcessReturnPct != null ? sp(p.expectedExcessReturnPct) : '—'}<small>${p.effectiveDates ?? 0}일</small></td>
+      <td><b>${sp(post.expectedExcessReturnPct)}</b><small>과거 ${post.historicalWeightPct ?? 0}% · 실시간 ${post.prospectiveWeightPct ?? 0}%</small></td></tr>`;
+  }).join('');
+  const drift = ke.drift || {};
+  const kellyPanel = `<div class="vl-card vl-kelly">
+    <div class="vl-h">${term('posterior', 'Kelly 증거 결합')} <span class="tag ${activation.code === 'ACTIVE_VALIDATED' ? 'ok' : ''}">${activation.labelKo || EVIDENCE_STATUS[activation.code] || '검증 근거 없음'}</span></div>
+    <p class="vl-lead">${activation.explainKo || 'Kelly 기대수익을 뒷받침할 증거가 아직 없습니다.'}</p>
+    ${regions.length ? `<table class="vl-table"><thead><tr><th>지역</th><th>과거 OOS</th><th>실시간</th><th>결합 posterior</th></tr></thead><tbody>${evidenceRows}</tbody></table>`
+      : `<div class="status-note info">과거·실시간 어느 쪽에서도 기대수익 근거가 없어 컨빅션 위험가중 비중을 유지합니다.</div>`}
+    <div class="vl-grid">
+      ${vlabRow('Base Kelly fraction', fmt((mp.baseKellyFraction ?? 0) * 100, '%', 1))}
+      ${vlabRow('매크로 조정 후', fmt((mp.appliedKellyFraction ?? 0) * 100, '%', 1))}
+      ${vlabRow('실제 배분 영향', mp.kellyApplied === true ? fmt(mp.kellyAllocationImpactPct, '%p', 1) : '미적용')}
+      ${vlabRow(term('drift', '성과 괴리'), drift.detected ? `감지 (Kelly ×${drift.kellyMultiplier})` : (drift.detected === false ? '허용 범위' : '표본 부족'), drift.summaryKo || '')}
+    </div>
+    <p class="vl-foot">${ke.evidenceSeparationKo || ''}</p>
+  </div>`;
+
+  const challengers = (mc.challengers || []).map((c) => `<div class="vl-chall">
+    <div><b>${c.name}</b><small>${c.descriptionKo || ''}</small></div>
+    <span class="tag">${c.statusKo || c.status || '—'}</span>
+    ${(c.acceptanceFailures || []).length ? `<em>미달: ${c.acceptanceFailures.join(', ')}</em>` : ''}
+    <p class="muted">${c.promotionRuleKo || ''}</p></div>`).join('');
+  const comparison = `<div class="vl-card">
+    <div class="vl-h">Champion / Challenger</div>
+    <div class="vl-chall champion"><div><b>${(mc.champion || {}).name || '—'}</b><small>${(mc.champion || {}).descriptionKo || ''}</small></div><span class="tag ok">운영 중</span></div>
+    ${challengers || '<div class="status-note info">비교 중인 challenger가 없습니다.</div>'}
+    <p class="vl-foot">${mc.separationKo || ''}</p>
+  </div>`;
+
+  host.innerHTML = `<div class="vl-two">${historicalPanel}${prospectivePanel}</div>${kellyPanel}${comparison}`;
+};
+
 const renderChanges = (d) => {
   const c = d.changesSincePrior || {}; const host = $('#changeSummary');
-  if (!c.available || !c.hasChanges) { host.innerHTML = `<span>→</span><b>${c.available ? COPY.noChange : (c.summaryKo || '이전 운영 상태 비교 대기')}</b>`; return; }
+  const t = c.opportunityTransitions || {};
+  // What is NEW today. Driven by state transitions against the last validated
+  // production state, so a name that has been HIGH since Tuesday does not
+  // re-announce itself every morning until the alert is ignored.
+  const alerts = [];
+  if (t.available) {
+    const newHigh = (t.newOpportunities || []).filter((x) => x.after !== 'WATCH');
+    const newWarn = (t.newWarnings || []).filter((x) => x.after !== 'WATCH');
+    if (newHigh.length) alerts.push(`<span class="ca ca-opp">🚨 신규 기회 ${newHigh.length}<em>${newHigh.map((x) => tkName(x.ticker)).join(', ')}</em></span>`);
+    if (newWarn.length) alerts.push(`<span class="ca ca-warn">⚠ 신규 경고 ${newWarn.length}<em>${newWarn.map((x) => tkName(x.ticker)).join(', ')}</em></span>`);
+  }
+  const entryUp = (c.entryStateChanged || []).filter((x) => ENTRY_RANK[x.after] > ENTRY_RANK[x.before]);
+  const entryDown = (c.entryStateChanged || []).filter((x) => ENTRY_RANK[x.after] < ENTRY_RANK[x.before]);
+  if (entryUp.length) alerts.push(`<span class="ca ca-up">↑ 진입 개선 ${entryUp.length}</span>`);
+  if (entryDown.length) alerts.push(`<span class="ca ca-down">↓ 진입 악화 ${entryDown.length}</span>`);
+  const holdingChanged = (c.added || []).length || (c.removed || []).length;
+  alerts.push(`<span class="ca ca-flat">↔ 보유 ${holdingChanged ? '변경' : '변경 없음'}</span>`);
+  const alertBar = alerts.length ? `<div class="change-alerts">${alerts.join('')}</div>` : '';
+
+  if (!c.available || !c.hasChanges) {
+    host.innerHTML = `${alertBar}<div class="change-line"><span>→</span><b>${c.available ? COPY.noChange : (c.summaryKo || '이전 운영 상태 비교 대기')}</b></div>`;
+    return;
+  }
   const bits = [];
   if ((c.added || []).length) bits.push(`신규 ${c.added.map((x) => tkName(x.ticker)).join(', ')}`);
   if ((c.removed || []).length) bits.push(`편출 ${c.removed.map((x) => tkName(x.ticker)).join(', ')}`);
@@ -397,7 +623,7 @@ const renderChanges = (d) => {
   if ((c.weightDecreased || []).length) bits.push(`비중 감소 ${c.weightDecreased.map((x) => tkName(x.ticker)).join(', ')}`);
   if ((c.entryStateChanged || []).length) bits.push(`진입상태 변경 ${c.entryStateChanged.map((x) => tkName(x.ticker)).join(', ')}`);
   if (c.regimeChanged) bits.push(`국면 ${REGIME_KO[c.regimeChanged.before] || c.regimeChanged.before} → ${REGIME_KO[c.regimeChanged.after] || c.regimeChanged.after}`);
-  host.innerHTML = `<span>↻</span><div><b>이전 실행 대비 주요 변화</b><p>${bits.join(' · ')}</p></div>`;
+  host.innerHTML = `${alertBar}<div class="change-line"><span>↻</span><div><b>이전 실행 대비 주요 변화</b><p>${bits.join(' · ')}</p></div></div>`;
 };
 const renderOverview = (d) => { renderDecisionHero(d); renderHoldings(d); renderChanges(d); };
 
@@ -936,8 +1162,10 @@ const render = (d) => {
   renderConsensus(d.expertConsensus);
   renderLongTerm(d);
   renderModelPortfolio(d);
+  renderRadar(d);
   renderEntry(d);
   renderConcentration(d);
+  renderValidationLab(d);
   renderPaper(d);
   renderIdeas(d);
   renderDirection(d.direction);

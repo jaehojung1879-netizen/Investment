@@ -1,0 +1,123 @@
+name: Historical point-in-time replay
+
+# Builds and extends the HISTORICAL_OOS evidence base on the same dedicated
+# `signal-history` branch the prospective paper ledger lives on — in SEPARATE
+# files, so the two evidence classes can never be confused for one another.
+#
+# Cost control: the replay is incremental. Only dates absent from the ledger are
+# computed, so the expensive full decade runs once (or when the replay logic
+# changes) and daily runs append a handful of new grid dates. The ML model is
+# retrained weekly rather than daily because a week of new observations cannot
+# move a walk-forward selection, and refitting is the expensive half.
+
+on:
+  schedule:
+    # 02:40 UTC daily, well after the 00:10 UTC ledger job has settled.
+    - cron: "40 2 * * *"
+  workflow_dispatch:
+    inputs:
+      full:
+        description: "Recompute every replay date (needed when replay logic changes)"
+        type: boolean
+        default: false
+      retrain:
+        description: "Force the opportunity/warning model retrain"
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+concurrency:
+  group: signal-history-and-pages
+  cancel-in-progress: false
+
+jobs:
+  replay:
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
+    steps:
+      - name: Checkout code (main)
+        uses: actions/checkout@v5
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Check out signal-history branch (orphan-safe)
+        run: |
+          git config user.name "historical-replay-bot"
+          git config user.email "actions@github.com"
+          if git ls-remote --exit-code --heads origin signal-history; then
+            git fetch origin signal-history
+            git worktree add replay-work origin/signal-history
+            git -C replay-work checkout -B signal-history
+          else
+            git worktree add --detach replay-work
+            git -C replay-work checkout --orphan signal-history
+            git -C replay-work rm -rf . || true
+          fi
+          mkdir -p replay-work/ledger
+
+      # A cached price panel keeps the incremental run cheap; a cache miss just
+      # refetches, it never changes the result.
+      - name: Restore price cache
+        uses: actions/cache@v4
+        with:
+          path: .cache/prices
+          key: replay-prices-${{ github.run_id }}
+          restore-keys: replay-prices-
+
+      - name: Extend the historical replay ledger
+        env:
+          FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
+          ECOS_API_KEY: ${{ secrets.ECOS_API_KEY }}
+        run: |
+          python scripts/run_replay.py replay-work/ledger \
+            ${{ (inputs.full && '--full') || '' }}
+
+      # Weekly (Sunday) or on demand. Selection is walk-forward and the sealed
+      # holdout is scored once, so more frequent retraining buys nothing and
+      # would multiply the effective number of trials.
+      - name: Train / validate the opportunity model
+        if: ${{ github.event.schedule == null || inputs.retrain || github.event_name == 'workflow_dispatch' }}
+        run: |
+          if [ "$(date -u +%u)" = "7" ] || [ "${{ inputs.retrain }}" = "true" ]; then
+            python scripts/train_opportunity.py replay-work/ledger
+            python scripts/train_opportunity.py replay-work/ledger --warning
+          else
+            echo "not a retrain day; keeping the existing model spec"
+          fi
+
+      - name: Commit & push to signal-history
+        run: |
+          cd replay-work
+          git add ledger
+          if git diff --cached --quiet; then
+            echo "no historical ledger changes"
+          else
+            git commit -m "replay: extend historical OOS ledger for $(date -u +%Y-%m-%d)"
+            git push origin signal-history
+          fi
+
+      - name: Summary
+        run: |
+          python - <<'PY'
+          import json, pathlib
+          path = pathlib.Path("replay-work/ledger/historical-diagnostics.json")
+          if not path.exists():
+              print("no diagnostics written"); raise SystemExit(0)
+          d = json.loads(path.read_text())
+          coverage = d.get("coverage") or {}
+          print(f"replay {d.get('firstDate')} .. {d.get('lastDate')} "
+                f"({d.get('replayDates')} dates, {d.get('frequency')})")
+          print(f"signals {coverage.get('signalsRecorded')} / matured 126D "
+                f"{(coverage.get('maturedByHorizon') or {}).get('126')}")
+          print(f"PIT coverage {d.get('meanPitCoverage')} | survivorship "
+                f"{d.get('survivorshipRisk')} | fundamentals PIT {d.get('fundamentalsPit')}")
+          PY

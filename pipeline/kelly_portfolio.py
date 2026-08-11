@@ -42,6 +42,9 @@ STATUSES = {
     "DISABLED", "SHADOW_INSUFFICIENT_HISTORY", "SHADOW_READY",
     "ACTIVE_PAPER", "ACTIVE_VALIDATED", "OPTIMIZATION_FAILED",
     "FALLBACK_RISK_WEIGHTED", "BLOCKED",
+    # Kelly is now driven by a posterior over two evidence classes, so "why is
+    # it not on yet" has more than one answer. These say which one applies.
+    "SHADOW_HISTORICAL_PRIOR", "SHADOW_POSTERIOR_READY",
 }
 
 # The baseline allocation used whether or not Kelly activates. It is a RANKING
@@ -222,12 +225,30 @@ def _isotonic_non_decreasing(values: list[float], weights: list[float]) -> list[
 
 
 def estimate_expected_returns(candidates: list[dict], outcomes: list[dict],
-                              cfg: dict, as_of: str | pd.Timestamp | None = None) -> list[dict]:
+                              cfg: dict, as_of: str | pd.Timestamp | None = None,
+                              historical_calibration: dict | None = None) -> list[dict]:
     """Estimate cost-adjusted 126d excess returns from matured OOS outcomes.
 
     Candidate alpha percentiles are used only to select a historical calibration
     bucket; the alpha score itself never enters a return formula.
+
+    Two evidence classes may contribute:
+
+    ``outcomes``                 the PROSPECTIVE paper ledger — signals recorded
+                                 going forward and left alone until they matured.
+    ``historical_calibration``   the HISTORICAL OOS ledger — the same model
+                                 replayed against point-in-time data, with the
+                                 evidence discount already applied per bucket.
+
+    With no ``historical_calibration`` the behaviour is exactly what it was: a
+    thin prospective ledger yields 0 and Kelly stays off. With one, the two are
+    combined by precision (``pipeline.evidence.combine``), so an empty
+    prospective ledger no longer forces the expected return to 0 — it forces it
+    to the discounted historical prior, which is a measured quantity rather than
+    an assumption of no edge.
     """
+    from . import evidence as evidence_mod
+
     horizon = int(cfg.get("horizonDays", 126))
     edges = [float(x) for x in cfg.get("alphaPercentileBuckets", [0, 60, 80, 90, 95, 100])]
     min_eff = int(cfg.get("minEffectiveDates", 30))
@@ -311,9 +332,46 @@ def estimate_expected_returns(candidates: list[dict], outcomes: list[dict],
         top_sector_share = float(sector_counts.iloc[0] / len(rows)) if len(rows) and len(sector_counts) else None
         market_cap_coverage = (sum(r.get("marketCap") is not None for r in rows) / len(rows)) if rows else 0.0
         lo, hi = target or (None, None)
+
+        # ---- Posterior over the two evidence classes -----------------------
+        # Without a historical calibration this block is inert and the legacy
+        # prospective-only estimate above stands unchanged.
+        historical_prior = evidence_mod.candidate_prior(
+            historical_calibration, region, candidate.get("alphaPercentile"))
+        evidence_block = None
+        posterior_expected = expected
+        posterior_status = "SHADOW" if sufficient else "SHADOW_INSUFFICIENT_HISTORY"
+        if historical_prior is not None:
+            # Feed the UNSHRUNK cost-adjusted mean and its standard error; the
+            # zero-mean prior inside combine() does the shrinking, so a thin
+            # sample is not penalized twice.
+            prospective_source = None
+            if eff > 0 and se is not None:
+                prospective_source = {
+                    "expectedExcessReturnPct": round(net * haircut * 100, 3),
+                    "standardErrorPct": round(float(se) * 100, 4),
+                    "effectiveDates": eff, "uniqueDates": ndates,
+                    "weight": 1.0, "evidenceClass": "PROSPECTIVE_PAPER",
+                }
+            evidence_block = evidence_mod.combine(
+                historical_prior, prospective_source,
+                prior_scale_pct=float(cfg.get("evidencePriorScalePct", 3.0)))
+            evidence_block["activation"] = evidence_mod.activation_status(
+                historical=historical_prior, prospective=prospective_source,
+                min_effective_dates=min_eff, gate_passed=bool(sufficient),
+                mode=cfg.get("mode", "shadow"))
+            evidence_block["drift"] = evidence_mod.drift_report(
+                historical_prior, prospective_source)
+            evidence_block["historicalBucket"] = historical_prior.get("bucket")
+            evidence_block["historicalQuality"] = historical_prior.get("quality")
+            posterior_expected = float(evidence_block["posterior"]["expectedExcessReturnPct"]) / 100.0
+            posterior_status = "SHADOW"
+
         result.append({
             "ticker": candidate["ticker"], "region": region, "horizonDays": horizon,
-            "expectedExcessReturnPct": round(expected * 100, 3),
+            "expectedExcessReturnPct": round(posterior_expected * 100, 3),
+            "prospectiveOnlyExpectedExcessReturnPct": round(expected * 100, 3),
+            "evidence": evidence_block,
             "rawObservedExcessReturnPct": round(raw * 100, 3),
             "estimatedTransactionCostPct": round(cost * 100, 3), "transactionCost": cost_detail,
             "recentPerformanceHaircut": haircut,
@@ -329,7 +387,8 @@ def estimate_expected_returns(candidates: list[dict], outcomes: list[dict],
                 "marketCapCoveragePct": round(market_cap_coverage * 100, 1),
                 "warning": "SECTOR_CONCENTRATION" if top_sector_share is not None and top_sector_share > 0.5 else None,
             },
-            "status": "SHADOW" if sufficient else "SHADOW_INSUFFICIENT_HISTORY",
+            "status": posterior_status,
+            "prospectiveGatePassed": bool(sufficient),
         })
     # Enforce a non-decreasing alpha-bucket calibration within each region.
     for region in sorted({r["region"] for r in result}):
@@ -742,6 +801,62 @@ def select_portfolio(candidates: list[dict], cfg: dict) -> tuple[list[dict], dic
     return [by_ticker[t] for t in chosen], meta
 
 
+def challenger_selection(candidates: list[dict], estimates: list[dict],
+                         cfg: dict) -> dict:
+    """A/B the production selector against a calibrated-expected-return selector.
+
+    Production (CHAMPION) ranks by ``alpha rank edge / downside risk``. Once the
+    historical calibration is trustworthy, an obvious alternative is to rank by
+    ``calibrated expected excess return / downside risk`` — an actual return per
+    unit of risk rather than a rank per unit of risk.
+
+    That alternative is NOT wired into production here, deliberately. Swapping
+    the selector the moment a calibration exists would make the portfolio a
+    function of a backtest, which is the failure mode this whole layer is built
+    to avoid. What this function does is publish both rankings and their overlap
+    so the two can be compared on the same evidence over time; promotion stays a
+    human decision gated on both evidence classes agreeing.
+    """
+    expected = {e["ticker"]: e for e in estimates}
+    champion = conviction_scores(candidates, cfg)
+    champion_order = [row["ticker"] for row in champion if row["eligible"]]
+
+    challenger_rows = []
+    for candidate in candidates:
+        ticker = candidate["ticker"]
+        estimate = expected.get(ticker) or {}
+        mu = estimate.get("expectedExcessReturnPct")
+        risk_unit = _risk_unit(candidate)
+        if mu is None or risk_unit is None or risk_unit <= 0:
+            continue
+        state_multiplier = _state_multiplier(candidate, cfg)
+        challenger_rows.append({
+            "ticker": ticker, "region": candidate.get("region") or "UNKNOWN",
+            "expectedExcessReturnPct": mu,
+            "downsideVolPct": round(risk_unit * 100, 1),
+            "entryStateMultiplier": round(state_multiplier, 3),
+            "score": round(float(mu) / (risk_unit * 100) * state_multiplier, 4),
+            "evidenceClass": ((estimate.get("evidence") or {}).get("posterior")
+                              and "POSTERIOR" or "PROSPECTIVE_ONLY"),
+        })
+    challenger_rows.sort(key=lambda r: (-r["score"], str(r["ticker"])))
+    target = int((cfg.get("selection") or {}).get("targetNames", 5))
+    champion_top = champion_order[:target]
+    challenger_top = [r["ticker"] for r in challenger_rows][:target]
+    overlap = sorted(set(champion_top) & set(challenger_top))
+    return {
+        "champion": {"method": SELECTION_METHOD, "top": champion_top},
+        "challenger": {"method": "CALIBRATED_EXPECTED_RETURN_PER_DOWNSIDE_RISK",
+                       "top": challenger_top, "ranking": challenger_rows[:12]},
+        "overlapCount": len(overlap), "overlap": overlap,
+        "agreementPct": round(100.0 * len(overlap) / max(1, len(champion_top)), 1),
+        "inProduction": "champion",
+        "promotionPolicyKo": ("challenger는 과거 OOS와 실시간 paper 양쪽에서 명확히 우세할 때만 "
+                               "승격 검토 대상이며, calibration이 생겼다는 이유만으로 "
+                               "production 선정기를 교체하지 않습니다."),
+    }
+
+
 def baseline_weights(selected: list[dict], cfg: dict) -> dict:
     """Conviction-tilted inverse-downside-volatility weights for the held set.
 
@@ -838,8 +953,11 @@ def build_model_portfolio(long_term: dict | None, prices: dict, outcomes: list[d
                           as_of: str | None = None, blocked: bool = False,
                           validation_status: dict | None = None,
                           benchmarks: dict | None = None,
-                          bench_by_region: dict | None = None) -> dict:
+                          bench_by_region: dict | None = None,
+                          historical_calibration: dict | None = None) -> dict:
     """Top-level assembly from calibrated returns through final blended weights."""
+    from . import evidence as evidence_mod
+
     cfg, themes, prior_weights = cfg or {}, themes or {}, prior_weights or {}
     benchmarks, bench_by_region = benchmarks or {}, bench_by_region or {}
     validation_status = validation_status or {}
@@ -894,10 +1012,38 @@ def build_model_portfolio(long_term: dict | None, prices: dict, outcomes: list[d
         skeleton["warnings"].append("SELECTION_EMPTY; ALL_CASH")
         return skeleton
     risk_weights = baseline_weights(candidates, local_cfg)
-    estimates = estimate_expected_returns(candidates, outcomes, local_cfg, as_of=as_of)
+    estimates = estimate_expected_returns(candidates, outcomes, local_cfg, as_of=as_of,
+                                          historical_calibration=historical_calibration)
     estimate_map = {e["ticker"]: e for e in estimates}
     sufficient = [e for e in estimates if e["status"] == "SHADOW"]
     skeleton["expectedReturnEstimates"] = estimates
+
+    # Evidence layer: which class of evidence is carrying the expected returns,
+    # and is the live world still reproducing the backtest?
+    region_evidence = {}
+    for estimate in estimates:
+        block = estimate.get("evidence")
+        if block:
+            region_evidence.setdefault(estimate["region"], block)
+    drift = evidence_mod.portfolio_drift(region_evidence) if region_evidence else None
+    if drift and drift.get("detected"):
+        # A live shortfall against history shrinks risk. It can never raise it.
+        applied *= float(drift["kellyMultiplier"])
+        warnings.append("MODEL_DRIFT_KELLY_REDUCED")
+    ladder = [block.get("activation") or {} for block in region_evidence.values()]
+    weakest = min(ladder, key=lambda a: a.get("ladderIndex", 0)) if ladder else None
+    skeleton["kellyEvidence"] = {
+        "byRegion": region_evidence,
+        "drift": drift,
+        "activation": weakest,
+        "historicalCalibrationAvailable": bool(
+            (historical_calibration or {}).get("available")),
+        "evidenceSeparationKo": ("과거 OOS 증거와 실시간 paper 증거는 별도로 집계한 뒤 "
+                                  "정밀도 가중으로 결합합니다. 하나로 섞어 보관하지 않습니다."),
+    }
+    skeleton["appliedKellyFraction"] = round(applied, 4)
+    # Published for comparison only — the champion still picks the holdings.
+    skeleton["selectionAbTest"] = challenger_selection(candidates, estimates, local_cfg)
 
     fallback_reason = None
     unconstrained: dict[str, float] = {}
@@ -976,6 +1122,13 @@ def build_model_portfolio(long_term: dict | None, prices: dict, outcomes: list[d
         final, bindings = _cap_portfolio(final, candidates, local_cfg, themes)
         skeleton["fallbackReason"] = fallback_reason
         skeleton["warnings"].append("KELLY_NOT_ACTIVATED; EXISTING_RISK_WEIGHTED_PORTFOLIO_RETAINED")
+        # "Not activated" now has more than one cause, and the difference
+        # matters to the reader: no evidence at all is a different situation
+        # from a usable historical prior that has not yet been joined by live
+        # confirmation.
+        activation_code = (weakest or {}).get("code")
+        if activation_code in {"HISTORICAL_PRIOR_ONLY", "HISTORICAL_OOS_SUPPORTED"}:
+            skeleton["status"] = "SHADOW_HISTORICAL_PRIOR"
     else:
         blended = blend_with_risk_weighted_portfolio(risk_weights, kelly_weights, candidates,
                                                        local_cfg, themes, prior_weights)

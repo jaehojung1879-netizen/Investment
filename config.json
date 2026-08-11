@@ -116,6 +116,49 @@
     "minPaperDays": 252,
     "ledgerBranch": "signal-history"
   },
+  "historicalReplay": {
+    "enabled": true,
+    "start": "2013-01-01",
+    "frequency": "W",
+    "horizonDays": 126,
+    "alphaPercentileBuckets": [0, 60, 80, 90, 95, 100],
+    "minEffectiveDates": 30,
+    "shrinkagePriorStrength": 30,
+    "costAdjusted": true,
+    "requirePitQuality": true,
+    "pitFundamentalsPath": null,
+    "universeHistoryPath": null,
+    "_notes": "frequency W = weekly rebalance-grid replay. D gives ~5x the signals at ~5x the cost and mostly adds overlapping observations; the HAC effective sample barely moves because neighbouring days share the same 126-day window. M is cheapest but thins the cross-section count below what bucket calibration needs. W is the chosen trade-off and is recorded in every replay diagnostic."
+  },
+  "evidence": {
+    "priorScalePct": 3.0,
+    "minEffectiveDates": 30,
+    "driftTriggerPct": 3.0,
+    "_notes": "priorScalePct is the zero-mean shrinkage prior on expected excess return. Historical OOS evidence enters at the discounted weight computed per bucket in pipeline.historical_calibration; prospective paper evidence enters at 1.0."
+  },
+  "opportunity": {
+    "enabled": true,
+    "highScoreThreshold": 70,
+    "topBucketPct": 0.1,
+    "limitPerRegion": 8,
+    "trainYears": 4.0,
+    "validationYears": 1.0,
+    "testYears": 1.0,
+    "embargoDays": 21,
+    "foldMode": "expanding",
+    "calibration": "isotonic",
+    "finalHoldoutStart": "2023-01-01",
+    "includeLightGbm": true,
+    "randomState": 42,
+    "acceptance": {
+      "minDecileMonotonicity": 0.6,
+      "minTopBucketNetExcessPct": 0.5,
+      "minPitCoverage": 0.6,
+      "maxRegimeSharePct": 80,
+      "maxSectorSharePct": 60
+    },
+    "_notes": "finalHoldoutStart is sealed during development and scored exactly once, after the winning model is frozen. If any acceptance check fails the ML radar is not published and the transparent rule-based change score is used instead."
+  },
   "model": {
     "minTrainDays": 252,
     "stepSize": 21,

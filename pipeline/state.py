@@ -61,6 +61,17 @@ def snapshot_from_payload(payload: dict, *, validation_passed: bool) -> dict:
             state = ((row.get("entry") or {}).get("entryState"))
             if state:
                 entry_states[row["ticker"]] = state
+    # Radar tiers are recorded so tomorrow's "what is new" is a genuine state
+    # transition. Without them the dashboard would re-announce the same HIGH
+    # opportunity every single day until it became noise.
+    def tiers(block: dict | None) -> dict[str, str]:
+        out: dict[str, str] = {}
+        for rows in ((block or {}).get("regions") or {}).values():
+            for row in rows or []:
+                if row.get("ticker") and row.get("tier"):
+                    out[row["ticker"]] = row["tier"]
+        return out
+
     return {
         "schemaVersion": payload.get("schemaVersion") or provenance.get("schemaVersion"),
         "modelVersion": payload.get("modelVersion") or provenance.get("modelVersion"),
@@ -71,6 +82,8 @@ def snapshot_from_payload(payload: dict, *, validation_passed: bool) -> dict:
         "holdingsByRegion": holdings,
         "modelPortfolioWeights": model_portfolio_weights,
         "entryStatesByTicker": entry_states,
+        "opportunityTiersByTicker": tiers(payload.get("opportunityRadar")),
+        "warningTiersByTicker": tiers(payload.get("warningRadar")),
         "dataMode": "live",
         "seed": False,
         "stale": False,

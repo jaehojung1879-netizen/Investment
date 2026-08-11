@@ -19,7 +19,11 @@ VALID_PORTFOLIO_STATUSES = {
     "DISABLED", "SHADOW_INSUFFICIENT_HISTORY", "SHADOW_READY",
     "ACTIVE_PAPER", "ACTIVE_VALIDATED", "OPTIMIZATION_FAILED",
     "FALLBACK_RISK_WEIGHTED", "BLOCKED",
+    "SHADOW_HISTORICAL_PRIOR", "SHADOW_POSTERIOR_READY",
 }
+VALID_EVIDENCE_CLASSES = {"HISTORICAL_OOS", "PROSPECTIVE_PAPER", "LIVE_VALIDATED", "NONE"}
+VALID_OPPORTUNITY_TIERS = {"VALIDATED_OPPORTUNITY", "EMERGING_OPPORTUNITY", "WATCH"}
+VALID_WARNING_TIERS = {"CRITICAL_WARNING", "ELEVATED_WARNING", "WATCH"}
 ACTIONABLE_REASON_TERMS = (
     "buy", "sell", "avoid", "wait", "accumulate", "entry", "매수", "매도",
     "진입", "대기", "회피", "되돌림", "편입", "비중",
@@ -70,6 +74,77 @@ def _has_blocked_entry_actions(obj) -> bool:
     elif isinstance(obj, list):
         return any(_has_blocked_entry_actions(item) for item in obj)
     return False
+
+
+def _validate_evidence_separation(data: dict) -> list[str]:
+    """Historical OOS and prospective paper evidence must stay distinguishable.
+
+    The whole point of this layer is that a backtest and a live track record are
+    different kinds of claim. If the artifact ever lets one be read as the
+    other — an unlabelled evidence class, a historical result presented as
+    liveValidated, a radar tier published from an unaccepted model without
+    saying so — the honesty guarantee is gone regardless of how careful the
+    maths was.
+    """
+    errors: list[str] = []
+    historical = data.get("historicalValidation")
+    prospective = data.get("prospectiveValidation")
+
+    if historical is not None:
+        if historical.get("evidenceClass") != "HISTORICAL_OOS":
+            errors.append("historical_validation_evidence_class_mismatch")
+        if historical.get("liveValidated"):
+            errors.append("historical_evidence_claims_live_validation")
+    if prospective is not None:
+        if prospective.get("evidenceClass") != "PROSPECTIVE_PAPER":
+            errors.append("prospective_validation_evidence_class_mismatch")
+        if prospective.get("liveValidated"):
+            errors.append("prospective_evidence_claims_live_validation")
+        # Tracking days and matured days are separate facts; a ledger that has
+        # recorded signals but matured none must not report zero tracking.
+        tracking = prospective.get("trackingDays")
+        matured_days = prospective.get("maturedObservationDays")
+        if (tracking is not None and matured_days is not None
+                and int(matured_days) > int(tracking)):
+            errors.append("matured_days_exceed_tracking_days")
+        if (prospective.get("signalsRecorded") and int(prospective["signalsRecorded"]) > 0
+                and tracking is not None and int(tracking) == 0):
+            errors.append("signals_recorded_but_tracking_days_zero")
+
+    evidence = data.get("kellyEvidence") or {}
+    for region, blob in (evidence.get("byRegion") or {}).items():
+        posterior = (blob or {}).get("posterior") or {}
+        historical_share = posterior.get("historicalWeightPct")
+        prospective_share = posterior.get("prospectiveWeightPct")
+        if historical_share is None or prospective_share is None:
+            errors.append(f"kelly_evidence_weights_missing:{region}")
+            continue
+        if abs(float(historical_share) + float(prospective_share)) > 0 and \
+                abs(float(historical_share) + float(prospective_share) - 100.0) > 0.5:
+            errors.append(f"kelly_evidence_weights_do_not_sum_to_100:{region}")
+        drift = (blob or {}).get("drift") or {}
+        if drift.get("detected") and float(drift.get("kellyMultiplier", 1.0)) > 1.0:
+            errors.append(f"drift_increased_kelly_fraction:{region}")
+
+    for key, valid in (("opportunityRadar", VALID_OPPORTUNITY_TIERS),
+                       ("warningRadar", VALID_WARNING_TIERS)):
+        radar = data.get(key)
+        if not radar:
+            continue
+        if radar.get("evidenceClass") not in VALID_EVIDENCE_CLASSES | {None}:
+            errors.append(f"{key}_invalid_evidence_class")
+        ml_active = radar.get("mlStatus") == "ACTIVE"
+        for rows in (radar.get("regions") or {}).values():
+            for row in rows or []:
+                if row.get("tier") not in valid:
+                    errors.append(f"{key}_invalid_tier:{row.get('tier')}")
+                    break
+                # A VALIDATED tier is a claim that the model cleared its
+                # acceptance gate. Without an accepted model it may not appear.
+                if row.get("tier") == "VALIDATED_OPPORTUNITY" and not ml_active:
+                    errors.append(f"{key}_validated_tier_without_accepted_model")
+                    break
+    return errors
 
 
 def validate(path: str | Path, production: bool = True) -> list[str]:
@@ -155,8 +230,14 @@ def validate(path: str | Path, production: bool = True) -> list[str]:
         if market_health.get("staleCritical"):
             errors.append("critical_indices_stale:" + ",".join(market_health["staleCritical"]))
 
+    errors.extend(_validate_evidence_separation(data))
+
     # A blocked artifact must not carry actionable output of ANY kind.
     if data.get("recommendationsBlocked"):
+        for key in ("opportunityRadar", "warningRadar"):
+            radar = data.get(key) or {}
+            if any((radar.get("regions") or {}).values()):
+                errors.append(f"blocked_artifact_contains_{key}")
         if any((data.get("tradeIdeas") or {}).get(r) for r in ("KR", "US")):
             errors.append("blocked_artifact_contains_trade_ideas")
         if _longterm_has_weights(data):

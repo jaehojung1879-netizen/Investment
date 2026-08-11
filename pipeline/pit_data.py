@@ -1,0 +1,501 @@
+"""Point-in-time (PIT) data access — the layer that makes a replay honest.
+
+The rule this module enforces is narrow and absolute:
+
+    A replay evaluated as of date T may only read values that a market
+    participant could actually have read on T.
+
+Not "values that are approximately right for T", and not "today's value applied
+retroactively". Every accessor here either returns data that was visible on T or
+returns nothing and records *why* — it never silently substitutes a current
+snapshot for a historical one.
+
+Four separate leak channels are handled separately because they fail
+differently:
+
+``prices``       A price series is genuinely point-in-time as published (splits
+                 and dividends are the caveat, see ``PriceView``). Truncation at
+                 T is therefore sufficient and exact.
+``fundamentals`` A filing has three distinct dates — the period it describes,
+                 the day it was filed, and the day the data vendor made it
+                 readable. Only the last one licenses use. Yahoo's free feed
+                 publishes *none* of them, so historical fundamentals are
+                 reported ``CURRENT_SNAPSHOT_ONLY`` and WITHHELD from replay
+                 rather than back-applied.
+``macro``        FRED serves the latest revision of history, not the number
+                 printed at the time. A fixed release lag prevents the crudest
+                 leak (using a print before it existed) but cannot undo a
+                 revision, so vintage-less series are marked
+                 ``REVISED_HISTORY`` and carry a reduced evidence weight.
+``universe``     Screening only names that exist today is survivorship bias.
+                 Without a historical constituent file the honest output is
+                 ``SURVIVORSHIP_BIAS_UNRESOLVED``, recorded on every affected
+                 observation, not a silent assumption.
+
+Nothing in this module fabricates a value it does not have.
+"""
+from __future__ import annotations
+
+import json
+from dataclasses import dataclass, field
+from pathlib import Path
+
+import pandas as pd
+
+# --------------------------------------------------------------------------- #
+# PIT quality vocabulary
+# --------------------------------------------------------------------------- #
+# Ordered best -> worst. The weight is how much a feature sourced this way is
+# allowed to contribute to the PIT coverage score that gates calibration.
+PIT_EXACT = "PIT_EXACT"                      # observed value, timestamped, unrevised
+PIT_APPROXIMATE = "PIT_APPROXIMATE"          # visible-by construction (fixed release lag)
+REVISED_HISTORY = "REVISED_HISTORY"          # right date, but a later revision of the value
+CURRENT_SNAPSHOT_ONLY = "CURRENT_SNAPSHOT_ONLY"  # only today's value exists — unusable in the past
+UNAVAILABLE = "UNAVAILABLE"                  # no value at all
+
+PIT_STATUSES = (PIT_EXACT, PIT_APPROXIMATE, REVISED_HISTORY,
+                CURRENT_SNAPSHOT_ONLY, UNAVAILABLE)
+
+PIT_WEIGHT = {
+    PIT_EXACT: 1.0,
+    PIT_APPROXIMATE: 0.85,
+    REVISED_HISTORY: 0.5,
+    CURRENT_SNAPSHOT_ONLY: 0.0,
+    UNAVAILABLE: 0.0,
+}
+
+# Coverage -> label. These thresholds also drive the calibration gate: an
+# observation below MIN_CALIBRATION_COVERAGE never reaches Kelly.
+PIT_QUALITY_BANDS = ((0.85, "HIGH"), (0.6, "MEDIUM"), (0.0, "LOW"))
+MIN_CALIBRATION_COVERAGE = 0.6
+
+SURVIVORSHIP_UNRESOLVED = "SURVIVORSHIP_BIAS_UNRESOLVED"
+
+
+class LookAheadError(RuntimeError):
+    """Raised when code asks a point-in-time view for data it cannot have.
+
+    This is deliberately an exception and not a warning: a replay that reads the
+    future is not a degraded replay, it is a void one.
+    """
+
+
+def quality_label(coverage: float | None) -> str:
+    if coverage is None:
+        return "LOW"
+    for floor, label in PIT_QUALITY_BANDS:
+        if coverage >= floor:
+            return label
+    return "LOW"
+
+
+# --------------------------------------------------------------------------- #
+# Prices
+# --------------------------------------------------------------------------- #
+class PriceView:
+    """Read-only price access truncated at ``as_of``.
+
+    The view owns the truncation so callers cannot forget it. ``close`` and
+    ``frame`` return copies that physically end at ``as_of``; asking for a later
+    date raises rather than returning a clipped answer, because a caller that
+    wanted the future has a bug and should be told.
+
+    Adjusted-close caveat: vendor history is adjusted for splits and dividends
+    known *today*, so a 2015 close read now is not byte-identical to the 2015
+    print. That affects levels, not the ordering of the ratio-based features
+    this pipeline uses, and it cannot import information about the future
+    direction of a stock. It is recorded as ``PIT_APPROXIMATE`` rather than
+    claimed as exact.
+    """
+
+    price_pit_status = PIT_APPROXIMATE
+
+    def __init__(self, frames: dict[str, pd.DataFrame], as_of):
+        self.as_of = pd.Timestamp(as_of).normalize()
+        self._frames = frames or {}
+        self._cache: dict[str, pd.DataFrame] = {}
+
+    def __contains__(self, ticker: str) -> bool:
+        return ticker in self._frames
+
+    def tickers(self) -> list[str]:
+        return sorted(self._frames)
+
+    def frame(self, ticker: str) -> pd.DataFrame | None:
+        if ticker in self._cache:
+            return self._cache[ticker]
+        raw = self._frames.get(ticker)
+        if raw is None:
+            return None
+        cut = raw.loc[raw.index <= self.as_of]
+        self._cache[ticker] = cut
+        return cut
+
+    def close(self, ticker: str) -> pd.Series | None:
+        frame = self.frame(ticker)
+        if frame is None or "Close" not in frame:
+            return None
+        return frame["Close"].dropna()
+
+    def last_close(self, ticker: str) -> float | None:
+        series = self.close(ticker)
+        if series is None or series.empty:
+            return None
+        return float(series.iloc[-1])
+
+    def has_history(self, ticker: str, min_rows: int) -> bool:
+        frame = self.frame(ticker)
+        return frame is not None and len(frame.dropna(how="all")) >= min_rows
+
+    def require(self, date) -> None:
+        """Assert that ``date`` is inside the visible window."""
+        stamp = pd.Timestamp(date).normalize()
+        if stamp > self.as_of:
+            raise LookAheadError(
+                f"point-in-time view as of {self.as_of.date()} asked for {stamp.date()}")
+
+
+def assert_no_future(series_or_frame, as_of, label: str = "series") -> None:
+    """Fail loudly if an index carries an observation after ``as_of``."""
+    if series_or_frame is None or not len(series_or_frame):
+        return
+    index = getattr(series_or_frame, "index", None)
+    if index is None or not len(index):
+        return
+    latest = pd.Timestamp(index.max())
+    cutoff = pd.Timestamp(as_of).normalize()
+    if latest.normalize() > cutoff:
+        raise LookAheadError(f"{label} extends to {latest.date()} beyond as-of {cutoff.date()}")
+
+
+# --------------------------------------------------------------------------- #
+# Fundamentals
+# --------------------------------------------------------------------------- #
+@dataclass(frozen=True)
+class FundamentalRecord:
+    """One filing, with its three dates kept apart on purpose.
+
+    ``report_period``  the fiscal period the numbers describe
+    ``filing_date``    the day the company filed
+    ``available_from`` the day the data was actually readable by us
+
+    Use is licensed by ``available_from`` only. A filing dated 2020-03-31 that
+    a vendor published on 2020-05-14 is invisible on 2020-04-01.
+    """
+
+    ticker: str
+    report_period: str
+    available_from: str
+    fields: dict
+    filing_date: str | None = None
+    source: str | None = None
+    pit_status: str = PIT_EXACT
+
+    def visible_on(self, as_of) -> bool:
+        return pd.Timestamp(self.available_from) <= pd.Timestamp(as_of)
+
+
+class FundamentalStore:
+    """Publication-aware fundamentals.
+
+    ``visible_as_of`` returns the newest record whose ``available_from`` has
+    passed — never a later filing, never today's snapshot stamped with an old
+    date. An empty store returns nothing and reports ``CURRENT_SNAPSHOT_ONLY``
+    so the caller can decide (the replay engine's decision is: omit the value
+    and let factor coverage fall).
+    """
+
+    def __init__(self, records: dict[str, list[FundamentalRecord]] | None = None):
+        self._records: dict[str, list[FundamentalRecord]] = {}
+        for ticker, rows in (records or {}).items():
+            self._records[ticker] = sorted(rows, key=lambda r: str(r.available_from))
+
+    def __len__(self) -> int:
+        return sum(len(v) for v in self._records.values())
+
+    @property
+    def available(self) -> bool:
+        return bool(self._records)
+
+    def tickers(self) -> list[str]:
+        return sorted(self._records)
+
+    def visible_as_of(self, ticker: str, as_of) -> tuple[dict, str]:
+        """Return (fields, pit_status) for the newest visible filing."""
+        rows = self._records.get(ticker)
+        if not rows:
+            return {}, (CURRENT_SNAPSHOT_ONLY if not self.available else UNAVAILABLE)
+        cutoff = pd.Timestamp(as_of)
+        visible = [r for r in rows if pd.Timestamp(r.available_from) <= cutoff]
+        if not visible:
+            return {}, UNAVAILABLE
+        latest = visible[-1]
+        return dict(latest.fields), latest.pit_status
+
+    def snapshot(self, as_of, tickers: list[str] | None = None) -> tuple[dict[str, dict], dict[str, str]]:
+        """PIT fundamentals for a whole cross-section at once."""
+        names = tickers if tickers is not None else self.tickers()
+        fields: dict[str, dict] = {}
+        statuses: dict[str, str] = {}
+        for ticker in names:
+            values, status = self.visible_as_of(ticker, as_of)
+            statuses[ticker] = status
+            if values:
+                fields[ticker] = values
+        return fields, statuses
+
+    @classmethod
+    def from_jsonl(cls, path: str | Path | None) -> "FundamentalStore":
+        """Load a PIT fundamentals store.
+
+        Expected one JSON object per line with at least ``ticker``,
+        ``reportPeriod``, ``availableFrom`` and ``fields``. A missing file is
+        not an error — it is the current reality of the free-data stack, and it
+        yields an empty store whose status is CURRENT_SNAPSHOT_ONLY.
+        """
+        if not path:
+            return cls({})
+        file = Path(path)
+        if not file.exists():
+            return cls({})
+        grouped: dict[str, list[FundamentalRecord]] = {}
+        for line in file.read_text(encoding="utf-8").splitlines():
+            line = line.strip()
+            if not line:
+                continue
+            try:
+                row = json.loads(line)
+            except ValueError:
+                continue
+            ticker, available = row.get("ticker"), row.get("availableFrom")
+            if not ticker or not available:
+                continue
+            grouped.setdefault(ticker, []).append(FundamentalRecord(
+                ticker=ticker,
+                report_period=str(row.get("reportPeriod") or ""),
+                available_from=str(available),
+                filing_date=row.get("filingDate"),
+                fields={k: v for k, v in (row.get("fields") or {}).items() if v is not None},
+                source=row.get("source"),
+                pit_status=row.get("pitStatus") or PIT_EXACT,
+            ))
+        return cls(grouped)
+
+
+# --------------------------------------------------------------------------- #
+# Macro vintages
+# --------------------------------------------------------------------------- #
+class MacroVintageView:
+    """Macro series with an explicit vintage claim.
+
+    Two different things are being tracked and they must not be conflated:
+
+    1. *Was this print public on T?* Handled by the fixed release lags already
+       encoded in ``pipeline.regime``; that gets us PIT_APPROXIMATE.
+    2. *Is this the number they printed, or a later revision?* Without ALFRED
+       vintages the answer is "a later revision", i.e. REVISED_HISTORY. GDP and
+       payrolls in particular are revised enough that a regime label built from
+       revised history is easier than the one available at the time.
+
+    A series listed in ``vintage_series`` is treated as genuinely vintaged;
+    everything else degrades to REVISED_HISTORY.
+    """
+
+    def __init__(self, macro: pd.DataFrame | None, vix: pd.Series | None = None,
+                 vintage_series: set[str] | None = None):
+        self._macro = macro
+        self._vix = vix
+        self._vintage_series = set(vintage_series or ())
+
+    @property
+    def available(self) -> bool:
+        return self._macro is not None and len(self._macro) > 0
+
+    def as_of(self, as_of) -> tuple[pd.DataFrame | None, pd.Series | None]:
+        """Truncate both frames at ``as_of`` (release lags applied downstream)."""
+        cutoff = pd.Timestamp(as_of).normalize()
+        macro = None
+        if self._macro is not None and len(self._macro):
+            macro = self._macro.loc[self._macro.index <= cutoff]
+            if macro.empty:
+                macro = None
+        vix = None
+        if self._vix is not None and len(self._vix):
+            vix = self._vix.loc[self._vix.index <= cutoff]
+            if vix.empty:
+                vix = None
+        return macro, vix
+
+    def pit_status(self, series_name: str | None = None) -> str:
+        if not self.available:
+            return UNAVAILABLE
+        if series_name is not None and series_name in self._vintage_series:
+            return PIT_EXACT
+        if self._vintage_series and series_name is None:
+            return PIT_APPROXIMATE
+        return REVISED_HISTORY
+
+
+# --------------------------------------------------------------------------- #
+# Universe / survivorship
+# --------------------------------------------------------------------------- #
+@dataclass
+class UniverseSnapshot:
+    """Who was investable on a date, and how confident we are about that."""
+
+    as_of: str
+    by_region: dict[str, list[str]]
+    survivorship_risk: str
+    notes: list[str] = field(default_factory=list)
+    reconstructed: bool = False
+
+    @property
+    def size(self) -> int:
+        return sum(len(v) for v in self.by_region.values())
+
+
+class UniverseHistory:
+    """Historical membership, when it can be established.
+
+    ``memberships`` maps ticker -> {"listed": date, "delisted": date|None,
+    "region": str}. With that file a replay can include names that later died
+    and exclude names that did not yet exist. Without it, a replay can only see
+    names that survived to today, and every observation carries
+    SURVIVORSHIP_BIAS_UNRESOLVED — recorded, never assumed away.
+    """
+
+    def __init__(self, memberships: dict[str, dict] | None = None):
+        self._memberships = memberships or {}
+
+    @property
+    def available(self) -> bool:
+        return bool(self._memberships)
+
+    @classmethod
+    def from_json(cls, path: str | Path | None) -> "UniverseHistory":
+        if not path:
+            return cls({})
+        file = Path(path)
+        if not file.exists():
+            return cls({})
+        try:
+            raw = json.loads(file.read_text(encoding="utf-8"))
+        except ValueError:
+            return cls({})
+        if not isinstance(raw, dict):
+            return cls({})
+        return cls({str(k): dict(v) for k, v in raw.items() if isinstance(v, dict)})
+
+    def _listed_on(self, ticker: str, as_of: pd.Timestamp) -> bool:
+        row = self._memberships.get(ticker)
+        if not row:
+            return False
+        listed = row.get("listed")
+        delisted = row.get("delisted")
+        if listed and pd.Timestamp(listed) > as_of:
+            return False
+        if delisted and pd.Timestamp(delisted) <= as_of:
+            return False
+        return True
+
+    def snapshot(self, as_of, current_universe: dict[str, list[str]],
+                 view=None, min_history: int = 0) -> UniverseSnapshot:
+        """Membership on ``as_of``.
+
+        Even with no membership file we can remove the crudest anachronism: a
+        ticker with no price history before T did not trade on T, so it is
+        dropped. That is a partial fix, not a cure, and the snapshot says so.
+
+        ``view`` is anything exposing ``has_history(ticker, min_rows)`` truncated
+        at ``as_of`` — the replay engine passes a NumPy-backed probe so this stays
+        cheap when called once per replay date.
+        """
+        cutoff = pd.Timestamp(as_of).normalize()
+        notes: list[str] = []
+        by_region: dict[str, list[str]] = {}
+        rows = max(int(min_history or 0), 1)
+
+        def tradable(ticker: str) -> bool:
+            return view is None or bool(view.has_history(ticker, rows))
+
+        if self.available:
+            for region in sorted(current_universe):
+                members = set(current_universe.get(region, []))
+                members |= {t for t, row in self._memberships.items()
+                            if row.get("region") == region}
+                by_region[region] = sorted(
+                    t for t in members if self._listed_on(t, cutoff) and tradable(t))
+            notes.append("historical_constituents_reconstructed_from_membership_file")
+            return UniverseSnapshot(cutoff.strftime("%Y-%m-%d"), by_region, "LOW", notes, True)
+
+        for region in sorted(current_universe):
+            by_region[region] = sorted(t for t in current_universe.get(region, []) if tradable(t))
+        notes.append(SURVIVORSHIP_UNRESOLVED)
+        notes.append("names_without_price_history_before_as_of_excluded")
+        return UniverseSnapshot(cutoff.strftime("%Y-%m-%d"), by_region, "HIGH", notes, False)
+
+
+# --------------------------------------------------------------------------- #
+# PIT quality scoring
+# --------------------------------------------------------------------------- #
+def coverage_score(statuses: dict[str, str], weights: dict[str, float] | None = None) -> float:
+    """Weighted share of the inputs a score *actually used* that were point-in-time.
+
+    The weighting is over sources that contributed, not over every source that
+    could conceivably exist. This distinction matters and was worth getting
+    right: if no fundamentals were available, the value and quality sleeves did
+    not enter the alpha at all, so the alpha that came out is pure
+    point-in-time price data. Scoring that as "40% PIT coverage" would be
+    measuring the absence of a sleeve, not a leak.
+
+    A missing sleeve is a real weakness — it just is not *this* weakness. It is
+    already carried by ``evidenceCoverage`` on the alpha itself and by the
+    ``fundamentals_not_point_in_time`` discount in
+    ``historical_calibration.evidence_weight``. Charging it here as well would
+    penalize the same defect three times and would leave a price-only Phase 1
+    replay permanently below the calibration floor, which is exactly the
+    "wait a year for new data" failure this project exists to remove.
+    """
+    if not statuses:
+        return 0.0
+    weights = weights or {}
+    total = 0.0
+    scored = 0.0
+    for group, status in statuses.items():
+        if status == UNAVAILABLE:
+            continue           # did not contribute; not evidence of a leak
+        w = float(weights.get(group, 1.0))
+        if w <= 0:
+            continue
+        total += w
+        scored += w * PIT_WEIGHT.get(status, 0.0)
+    return round(scored / total, 4) if total else 0.0
+
+
+def quality_report(statuses: dict[str, str], *, survivorship_risk: str,
+                   look_ahead_passed: bool = True,
+                   weights: dict[str, float] | None = None) -> dict:
+    """The PIT block stamped on every replay observation."""
+    coverage = coverage_score(statuses, weights)
+    return {
+        "pitCoverage": coverage,
+        "pitQuality": quality_label(coverage),
+        "lookAheadCheckPassed": bool(look_ahead_passed),
+        "survivorshipRisk": survivorship_risk,
+        "sourceStatus": dict(sorted(statuses.items())),
+        "usableForCalibration": bool(look_ahead_passed and coverage >= MIN_CALIBRATION_COVERAGE),
+    }
+
+
+def usable_for_calibration(observation: dict) -> bool:
+    """Gate used before an observation may influence Kelly.
+
+    A low-PIT observation is still recorded — it is evidence about the
+    machinery — but it must not price a position.
+    """
+    pit = (observation or {}).get("pit") or {}
+    if pit.get("lookAheadCheckPassed") is False:
+        return False
+    if "usableForCalibration" in pit:
+        return bool(pit["usableForCalibration"])
+    return float(pit.get("pitCoverage") or 0.0) >= MIN_CALIBRATION_COVERAGE
