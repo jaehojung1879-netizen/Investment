@@ -1,0 +1,3 @@
+# Historical ledger shards are gzip, not text. Without this git tries to diff
+# and normalize them, which is both useless and slow on a few hundred shards.
+*.jsonl.gz binary

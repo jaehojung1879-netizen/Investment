@@ -235,6 +235,66 @@ def horizon_frame(outcomes: list[dict], horizon: int, *,
     return pd.DataFrame(rows).sort_values(["date", "region", "ticker"], kind="mergesort")
 
 
+class CoverageAccumulator:
+    """Coverage counted one shard at a time.
+
+    The ledger is stored in month shards precisely so a run never has to hold
+    all of it at once; a coverage summary that demanded both full lists would
+    put it straight back into memory. This keeps only date sets and counters —
+    a few hundred dates regardless of how many records pass through.
+    """
+
+    def __init__(self, horizon: int = 126):
+        self.horizon = horizon
+        self.signals_recorded = 0
+        self.signal_dates: set[pd.Timestamp] = set()
+        self.matured_signals = 0
+        self.matured_dates: set[pd.Timestamp] = set()
+        self.matured_by_horizon: dict[str, int] = {str(h): 0 for h in HORIZONS}
+
+    def add_signals(self, signals: list[dict]) -> "CoverageAccumulator":
+        for signal in signals:
+            self.signals_recorded += 1
+            if signal.get("date"):
+                self.signal_dates.add(pd.Timestamp(signal["date"]).normalize())
+        return self
+
+    def add_outcomes(self, outcomes: list[dict]) -> "CoverageAccumulator":
+        target = str(self.horizon)
+        for outcome in outcomes:
+            horizons = outcome.get("horizons") or {}
+            for key in horizons:
+                if key in self.matured_by_horizon:
+                    self.matured_by_horizon[key] += 1
+            if target in horizons:
+                self.matured_signals += 1
+                if outcome.get("date"):
+                    self.matured_dates.add(pd.Timestamp(outcome["date"]).normalize())
+        return self
+
+    def summary(self) -> dict:
+        signal_dates = sorted(self.signal_dates)
+        matured_dates = sorted(self.matured_dates)
+        tracking_days = (len(pd.bdate_range(signal_dates[0], signal_dates[-1]))
+                         if signal_dates else 0)
+        matured_days = (len(pd.bdate_range(matured_dates[0], matured_dates[-1]))
+                        if matured_dates else 0)
+        return {
+            "signalsRecorded": self.signals_recorded,
+            "uniqueDates": len(signal_dates),
+            "trackingDays": tracking_days,
+            "firstSignalDate": signal_dates[0].strftime("%Y-%m-%d") if signal_dates else None,
+            "lastSignalDate": signal_dates[-1].strftime("%Y-%m-%d") if signal_dates else None,
+            "maturedSignals": self.matured_signals,
+            "maturedUniqueDates": len(matured_dates),
+            "maturedObservationDays": matured_days,
+            "lastMaturedSignalDate": (matured_dates[-1].strftime("%Y-%m-%d")
+                                      if matured_dates else None),
+            "horizon": self.horizon,
+            "maturedByHorizon": dict(self.matured_by_horizon),
+        }
+
+
 def coverage_summary(signals: list[dict], outcomes: list[dict],
                      horizon: int = 126) -> dict:
     """How much evidence exists, counted honestly.
@@ -244,27 +304,7 @@ def coverage_summary(signals: list[dict], outcomes: list[dict],
     Conflating them is what made the old dashboard report "0 days" while
     thousands of signals were already on disk.
     """
-    signal_dates = sorted({pd.Timestamp(s["date"]).normalize()
-                           for s in signals if s.get("date")})
-    matured = [o for o in outcomes if str(horizon) in (o.get("horizons") or {})]
-    matured_dates = sorted({pd.Timestamp(o["date"]).normalize() for o in matured})
-    tracking_days = (len(pd.bdate_range(signal_dates[0], signal_dates[-1]))
-                     if signal_dates else 0)
-    matured_days = (len(pd.bdate_range(matured_dates[0], matured_dates[-1]))
-                    if matured_dates else 0)
-    return {
-        "signalsRecorded": len(signals),
-        "uniqueDates": len(signal_dates),
-        "trackingDays": tracking_days,
-        "firstSignalDate": signal_dates[0].strftime("%Y-%m-%d") if signal_dates else None,
-        "lastSignalDate": signal_dates[-1].strftime("%Y-%m-%d") if signal_dates else None,
-        "maturedSignals": len(matured),
-        "maturedUniqueDates": len(matured_dates),
-        "maturedObservationDays": matured_days,
-        "lastMaturedSignalDate": matured_dates[-1].strftime("%Y-%m-%d") if matured_dates else None,
-        "horizon": horizon,
-        "maturedByHorizon": {
-            str(h): sum(1 for o in outcomes if str(h) in (o.get("horizons") or {}))
-            for h in HORIZONS
-        },
-    }
+    return (CoverageAccumulator(horizon)
+            .add_signals(signals)
+            .add_outcomes(outcomes)
+            .summary())

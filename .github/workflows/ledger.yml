@@ -45,11 +45,11 @@ jobs:
             if git show origin/signal-history:ledger/summary.json > .state/summary.json; then
               echo "PAPER_SUMMARY_PATH=$GITHUB_WORKSPACE/.state/summary.json" >> "$GITHUB_ENV"
             fi
-            if git show origin/signal-history:ledger/historical-signals.jsonl > .state/historical-signals.jsonl; then
-              echo "HISTORICAL_SIGNALS_PATH=$GITHUB_WORKSPACE/.state/historical-signals.jsonl" >> "$GITHUB_ENV"
-            fi
-            if git show origin/signal-history:ledger/historical-outcomes.jsonl > .state/historical-outcomes.jsonl; then
-              echo "HISTORICAL_OUTCOMES_PATH=$GITHUB_WORKSPACE/.state/historical-outcomes.jsonl" >> "$GITHUB_ENV"
+            # The historical ledger is a directory of gzipped month shards, not
+            # a single file, so it is extracted as a tree.
+            if git cat-file -e origin/signal-history:ledger/historical 2>/dev/null; then
+              git archive origin/signal-history ledger/historical | tar -x -C .state
+              echo "HISTORICAL_LEDGER_DIR=$GITHUB_WORKSPACE/.state/ledger" >> "$GITHUB_ENV"
             fi
             if git show origin/signal-history:ledger/historical-diagnostics.json > .state/historical-diagnostics.json; then
               echo "HISTORICAL_DIAGNOSTICS_PATH=$GITHUB_WORKSPACE/.state/historical-diagnostics.json" >> "$GITHUB_ENV"
