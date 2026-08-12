@@ -32,7 +32,7 @@ import pandas as pd
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 
-from pipeline import ledger as LG                   # noqa: E402
+from pipeline import historical_store as HS         # noqa: E402
 from pipeline import opportunity as OP              # noqa: E402
 from pipeline import provenance as prov_mod         # noqa: E402
 from pipeline import walkforward as WF              # noqa: E402
@@ -54,9 +54,10 @@ def main(argv=None) -> int:
         return 0
 
     ledger_dir = Path(args.ledger_dir)
-    signals = LG.load_jsonl(ledger_dir / "historical-signals.jsonl")
-    outcomes = LG.load_jsonl(ledger_dir / "historical-outcomes.jsonl")
-    signals = [s for s in signals if s.get("replayVersion") == prov_mod.REPLAY_VERSION]
+    # Reading one generation only: a spec trained across replay generations
+    # would be trained on two different definitions of the same feature.
+    signals = HS.load(ledger_dir, HS.SIGNALS, generation=prov_mod.REPLAY_VERSION)
+    outcomes = HS.load(ledger_dir, HS.OUTCOMES, generation=prov_mod.REPLAY_VERSION)
     if not signals or not outcomes:
         print("no historical ledger to train on — run scripts/run_replay.py first")
         return 0

@@ -94,6 +94,22 @@ jobs:
             echo "not a retrain day; keeping the existing model spec"
           fi
 
+      # The ledger is sharded and gzipped precisely so it fits under GitHub's
+      # 100 MB blob limit; check before committing so a regression in the shard
+      # key is reported here rather than as a pre-receive rejection after the
+      # expensive half of the job has already run.
+      - name: Check ledger fits the remote
+        run: |
+          python - <<'PY'
+          import sys
+          sys.path.insert(0, ".")
+          from pipeline import historical_store as HS
+          for row in HS.audit("replay-work/ledger")[:10]:
+              print(f"  {row['bytes'] / 1024 / 1024:8.2f} MB  {row['path']}")
+          HS.assert_pushable("replay-work/ledger")
+          print("ledger is within the pushable size limit")
+          PY
+
       - name: Commit & push to signal-history
         run: |
           cd replay-work

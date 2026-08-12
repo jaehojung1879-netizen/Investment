@@ -34,7 +34,9 @@ from pipeline import evidence as EV                      # noqa: E402
 from pipeline import historical_calibration as HC        # noqa: E402
 from pipeline import historical_outcomes as HO           # noqa: E402
 from pipeline import historical_replay as HR             # noqa: E402
+from pipeline import historical_store as HS              # noqa: E402
 from pipeline import opportunity as OP                   # noqa: E402
+from pipeline import provenance as prov_mod              # noqa: E402
 from pipeline import walkforward as WF                   # noqa: E402
 
 
@@ -186,16 +188,20 @@ def main(argv=None) -> int:
     if args.out:
         out = Path(args.out)
         out.mkdir(parents=True, exist_ok=True)
-        (out / "historical-signals.jsonl").write_text(
-            "\n".join(json.dumps(r, ensure_ascii=False) for r in signals) + "\n", encoding="utf-8")
-        (out / "historical-outcomes.jsonl").write_text(
-            "\n".join(json.dumps(r, ensure_ascii=False) for r in outcomes) + "\n", encoding="utf-8")
+        # Written through the real store so the demo bundle has the same shape
+        # as the CI ledger and can be fed straight to scripts/train_opportunity.py.
+        HS.append_signals(out, signals)
+        for _, key, path in HS.iter_shards(out, HS.SIGNALS):
+            shard_ids = {row["id"] for row in HS.read_jsonl(path)}
+            HS.write_outcomes_shard(out, prov_mod.REPLAY_VERSION, key,
+                                    [o for o in outcomes if o.get("id") in shard_ids])
+        HS.write_manifest(out, diagnostics=diagnostics)
         report = {"synthetic": True, "diagnostics": diagnostics, "coverage": coverage,
                   "calibration": calibration, "kellyEvidence": region_evidence,
                   "opportunityModel": {k: v for k, v in trained.items() if k != "variants"}}
         (out / "demo-report.json").write_text(
             json.dumps(report, ensure_ascii=False, indent=2, default=str) + "\n", encoding="utf-8")
-        print(f"\n    wrote {out}/historical-signals.jsonl, historical-outcomes.jsonl, demo-report.json")
+        print(f"\n    wrote {out}/historical/ shards and demo-report.json")
 
     print("\n" + "=" * 74)
     print("Reminder: synthetic prices. These numbers validate the code path only.")

@@ -79,7 +79,8 @@
 - **매크로**는 고정 발표시차로 "그날 공개됐는가"는 막지만 개정 이전 값(ALFRED vintage)은 확보하지 못해 `REVISED_HISTORY`입니다.
 - **유니버스**는 과거 구성종목 파일이 있으면 상장·상장폐지를 반영하고, 없으면 모든 관측치에 `SURVIVORSHIP_BIAS_UNRESOLVED`를 기록하고 증거 가중치를 낮춥니다.
 - 관측치마다 `pitCoverage`·`pitQuality`·`lookAheadCheckPassed`·`survivorshipRisk`를 남기고, PIT 품질이 낮은 관측치는 **Kelly calibration에서 제외**합니다. 다만 커버리지는 *실제로 사용된* 소스에 대해서만 계산합니다 — 쓰지 않은 슬리브의 부재는 leakage가 아니라 커버리지 문제이고, 그 페널티는 `evidenceCoverage`와 증거 가중치에서 별도로 부과합니다.
-- **ledger는 완전히 분리**합니다: `historical-signals.jsonl`·`historical-outcomes.jsonl`(HISTORICAL_OOS) vs `signals.jsonl`·`outcomes.jsonl`(PROSPECTIVE_PAPER). 두 증거는 절대 한 파일·한 표에 섞이지 않습니다.
+- **ledger는 완전히 분리**합니다: `ledger/historical/<replayVersion>/`(HISTORICAL_OOS) vs `signals.jsonl`·`outcomes.jsonl`(PROSPECTIVE_PAPER). 두 증거는 절대 한 파일·한 표에 섞이지 않습니다.
+- **historical ledger는 월 단위로 쪼개 gzip으로 저장**합니다(`signals-YYYY-MM.jsonl.gz`). 10년치 주간 단면은 단일 JSONL로 쓰면 900MB라 GitHub의 100MB blob 제한에 걸려 push 자체가 거부됩니다 — 실제로 replay 잡이 이틀 연속 계산을 마치고 전량 유실했습니다. 샤드는 결정적으로 직렬화되므로(gzip mtime 고정·행 정렬) 내용이 안 바뀐 샤드는 git이 변경으로 보지 않고, 매일 커밋되는 양은 새로 생긴 샤드뿐입니다. 크기 한계는 push 전에 `historical_store.assert_pushable`이 먼저 잡습니다.
 - 기록은 **append-only**이며 `modelVersion`·`replayVersion`·`featureVersion`·`dataVersion`을 함께 남깁니다. 모델을 바꾸면 새 세대가 별도로 쌓이고 기존 기록은 보존됩니다. CI는 **증분 실행**이라 이미 있는 날짜는 다시 계산하지 않습니다.
 - 재현에서 빠진 것도 숨기지 않습니다: 단기 LightGBM 점수는 비용 문제로 재현하지 않고 `null`, 실적 캘린더가 없어 `EVENT_RISK` 분기 일부가 비활성, 섹터 로테이션은 ETF RRG가 아닌 구성종목 상대강도 프록시입니다.
 

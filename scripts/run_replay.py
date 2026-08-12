@@ -5,9 +5,16 @@ Intended for CI against a checked-out ``signal-history`` branch, exactly like
 OOS evidence and prospective paper evidence are different claims and must never
 share a file:
 
-    ledger/historical-signals.jsonl    append-only, immutable, per replayVersion
-    ledger/historical-outcomes.jsonl   derived, recomputed as more future arrives
+    ledger/historical/<replayVersion>/signals-<YYYY-MM>.jsonl.gz
+        append-only, immutable, one shard per signal month
+    ledger/historical/<replayVersion>/outcomes-<YYYY-MM>.jsonl.gz
+        derived, recomputed as more future arrives
+    ledger/historical/manifest.json    shard index: counts and bytes
     ledger/historical-diagnostics.json PIT coverage, survivorship, deviations
+
+See ``pipeline/historical_store.py`` for why the ledger is sharded and gzipped:
+a decade of weekly cross-sections is far past the 100 MB blob limit as a single
+file, and a monolith would also have to be rewritten in full every night.
 
 INCREMENTAL BY DEFAULT
 ----------------------
@@ -35,26 +42,12 @@ sys.path.insert(0, str(ROOT))
 
 from pipeline import historical_outcomes as HO      # noqa: E402
 from pipeline import historical_replay as HR        # noqa: E402
-from pipeline import ledger as LG                   # noqa: E402
+from pipeline import historical_store as HS         # noqa: E402
 from pipeline import pit_data                       # noqa: E402
 from pipeline import provenance as prov_mod         # noqa: E402
 from pipeline import universe as universe_mod       # noqa: E402
 from pipeline.config import load_config             # noqa: E402
 from pipeline.datafeed import fetch_macro, fetch_prices, fetch_vix  # noqa: E402
-
-
-def append_only(existing: list[dict], new: list[dict]) -> tuple[list[dict], int, int]:
-    """Append unseen ids. An existing record is NEVER mutated or replaced."""
-    seen = {row.get("id") for row in existing}
-    merged = list(existing)
-    appended = 0
-    for row in new:
-        if row.get("id") in seen or not row.get("id"):
-            continue
-        merged.append(row)
-        seen.add(row["id"])
-        appended += 1
-    return merged, appended, len(new) - appended
 
 
 def main(argv=None) -> int:
@@ -75,17 +68,21 @@ def main(argv=None) -> int:
         return 0
 
     ledger_dir = Path(args.ledger_dir)
-    signals_path = ledger_dir / "historical-signals.jsonl"
-    outcomes_path = ledger_dir / "historical-outcomes.jsonl"
-    diagnostics_path = ledger_dir / "historical-diagnostics.json"
+    ledger_dir.mkdir(parents=True, exist_ok=True)
+    diagnostics_path = HS.diagnostics_path(ledger_dir)
 
-    existing = LG.load_jsonl(signals_path) if signals_path.exists() else []
-    current_generation = [row for row in existing
-                          if row.get("replayVersion") == prov_mod.REPLAY_VERSION]
-    stale_generation = len(existing) - len(current_generation)
-    existing_ids = set() if args.full else {row.get("id") for row in current_generation}
-    print(f"existing signals: {len(existing)} "
-          f"({len(current_generation)} current generation, {stale_generation} earlier)")
+    # A ledger written by the pre-shard layout is re-filed, not rewritten, so an
+    # existing decade of evidence survives the change intact.
+    migrated = HS.migrate_legacy(ledger_dir)
+    if any(migrated.values()):
+        print(f"migrated legacy ledger into shards: {migrated}")
+
+    ids = HS.ids_by_generation(ledger_dir, HS.SIGNALS)
+    current_ids = ids.get(prov_mod.REPLAY_VERSION, set())
+    stale_generation = sum(len(v) for k, v in ids.items() if k != prov_mod.REPLAY_VERSION)
+    existing_ids = set() if args.full else set(current_ids)
+    print(f"existing signals: {len(current_ids) + stale_generation} "
+          f"({len(current_ids)} current generation, {stale_generation} earlier)")
 
     universe, _ = universe_mod.resolve(cfg)
     download = list(dict.fromkeys(
@@ -132,34 +129,54 @@ def main(argv=None) -> int:
           f"{diagnostics['signalsGenerated']} new, "
           f"{diagnostics['signalsSkippedAlreadyPresent']} already present")
 
-    merged, appended, skipped = append_only(existing, replay["signals"])
     if args.dry_run:
-        print(f"dry run: would append {appended} signals ({skipped} skipped)")
+        fresh = sum(1 for row in replay["signals"] if row.get("id") not in existing_ids)
+        print(f"dry run: would append {fresh} signals "
+              f"({len(replay['signals']) - fresh} skipped)")
         return 0
 
-    LG.write_jsonl(signals_path, merged)
-    print(f"signals: +{appended} appended, {skipped} skipped, {len(merged)} total")
+    appended, skipped = HS.append_signals(ledger_dir, replay["signals"])
+    print(f"signals: +{appended} appended, {skipped} skipped")
 
-    # Outcomes are derived and safe to recompute in full — more future has
-    # arrived since the last run, so previously immature signals may now resolve.
+    # Outcomes are derived and safe to recompute — more future has arrived since
+    # the last run, so previously immature signals may now resolve. Recomputing
+    # shard by shard bounds memory to one month of records and leaves fully
+    # matured shards byte-identical, so git records no change for them.
     bench_closes = {ticker: prices[ticker]["Close"]
                     for ticker in cfg.benchmarks.values() if ticker in prices}
     cost_policy = (cfg.kelly_portfolio or {}).get("transactionCosts") or {}
-    current = [row for row in merged
-               if row.get("replayVersion") == prov_mod.REPLAY_VERSION]
-    outcomes = HO.compute_outcomes(current, prices, bench_closes, cost_policy=cost_policy)
-    LG.write_jsonl(outcomes_path, outcomes)
-    coverage = HO.coverage_summary(current, outcomes,
-                                   horizon=int(replay_cfg.get("horizonDays", 126)))
+    coverage_acc = HO.CoverageAccumulator(int(replay_cfg.get("horizonDays", 126)))
+    shards = HS.iter_shards(ledger_dir, HS.SIGNALS, prov_mod.REPLAY_VERSION)
+    outcome_records = rewritten = 0
+    for _, key, path in shards:
+        shard_signals = HS.read_jsonl(path)
+        shard_outcomes = HO.compute_outcomes(shard_signals, prices, bench_closes,
+                                             cost_policy=cost_policy)
+        if HS.write_outcomes_shard(ledger_dir, prov_mod.REPLAY_VERSION, key, shard_outcomes):
+            rewritten += 1
+        outcome_records += len(shard_outcomes)
+        coverage_acc.add_signals(shard_signals).add_outcomes(shard_outcomes)
+    HS.prune_orphan_outcomes(ledger_dir, prov_mod.REPLAY_VERSION,
+                             keep={key for _, key, _ in shards})
+
+    coverage = coverage_acc.summary()
     diagnostics["coverage"] = coverage
     diagnostics_path.write_text(
         json.dumps(diagnostics, ensure_ascii=False, indent=2, default=str) + "\n",
         encoding="utf-8")
-    print(f"outcomes: {len(outcomes)} records; "
-          f"{coverage['maturedByHorizon'].get('126', 0)} matured at 126D")
+    manifest = HS.write_manifest(ledger_dir, diagnostics=diagnostics)
+    print(f"outcomes: {outcome_records} records; "
+          f"{coverage['maturedByHorizon'].get('126', 0)} matured at 126D "
+          f"({rewritten}/{len(shards)} shards rewritten)")
+    print(f"ledger: {len(shards)} signal shards, "
+          f"{manifest['totalBytes'] / 1024 / 1024:.1f} MB on disk")
     print(f"PIT coverage {diagnostics['meanPitCoverage']} "
           f"({pit_data.quality_label(diagnostics['meanPitCoverage'])}), "
           f"survivorship risk {diagnostics['survivorshipRisk']}")
+
+    # Fail here — with the offending shard named — rather than at GitHub's
+    # pre-receive hook after the expensive half of the job has already run.
+    HS.assert_pushable(ledger_dir)
     return 0
 
 

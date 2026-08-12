@@ -30,6 +30,7 @@ from . import fundamentals as fundamentals_mod
 from . import historical_calibration as histcal_mod
 from . import historical_outcomes as histout_mod
 from . import historical_replay as replay_mod
+from . import historical_store as histstore_mod
 from . import indices as indices_mod
 from . import ledger as ledger_mod
 from . import longterm as longterm_mod
@@ -189,10 +190,22 @@ def _load_historical_evidence(cfg) -> dict:
     prospective ledger is supplied. Absence is normal on a fresh clone and is
     reported as a state, never as an error: the build still runs, Kelly simply
     has no historical prior and says so.
+
+    ``HISTORICAL_LEDGER_DIR`` points at the sharded store; the older
+    single-file env vars still work so a build can be pointed at an exported
+    ledger by hand.
     """
-    signals = _load_jsonl(os.environ.get("HISTORICAL_SIGNALS_PATH"))
-    outcomes = _load_jsonl(os.environ.get("HISTORICAL_OUTCOMES_PATH"))
-    diagnostics = kelly_mod.load_json(os.environ.get("HISTORICAL_DIAGNOSTICS_PATH"), {}) or {}
+    ledger_dir = os.environ.get("HISTORICAL_LEDGER_DIR")
+    if ledger_dir and Path(ledger_dir).is_dir():
+        signals = histstore_mod.load(ledger_dir, histstore_mod.SIGNALS)
+        outcomes = histstore_mod.load(ledger_dir, histstore_mod.OUTCOMES)
+        diagnostics_path = (os.environ.get("HISTORICAL_DIAGNOSTICS_PATH")
+                            or str(histstore_mod.diagnostics_path(ledger_dir)))
+    else:
+        signals = _load_jsonl(os.environ.get("HISTORICAL_SIGNALS_PATH"))
+        outcomes = _load_jsonl(os.environ.get("HISTORICAL_OUTCOMES_PATH"))
+        diagnostics_path = os.environ.get("HISTORICAL_DIAGNOSTICS_PATH")
+    diagnostics = kelly_mod.load_json(diagnostics_path, {}) or {}
     model_spec = kelly_mod.load_json(os.environ.get("OPPORTUNITY_MODEL_PATH"), {}) or {}
     warning_spec = kelly_mod.load_json(os.environ.get("WARNING_MODEL_PATH"), {}) or {}
 

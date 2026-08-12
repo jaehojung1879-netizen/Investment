@@ -19,6 +19,11 @@
 - Historical signals are immutable and stamped with `replayVersion`, `featureVersion`,
   `modelVersion` and `dataVersion`. A model change starts a new generation; it never
   rewrites or pools with an old one.
+- The historical ledger is stored as gzipped month shards under
+  `ledger/historical/<replayVersion>/`, never as one file: a decade of weekly
+  cross-sections is ~900 MB and GitHub rejects blobs over 100 MB. Shard writes must stay
+  byte-deterministic so an unchanged shard is not re-committed, and `assert_pushable`
+  must run before any push. If a shard outgrows the limit, shard finer — do not raise it.
 - Path-dependent statistics (drawdown, CVaR, Sharpe) are computed only on non-overlapping
   date samples. Means and hit ratios may use every date.
 - The final holdout stays sealed during development and raises on access; it is scored

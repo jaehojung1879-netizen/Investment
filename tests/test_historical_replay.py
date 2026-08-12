@@ -392,14 +392,19 @@ def test_signal_id_separates_model_and_replay_generations():
     assert len({a, b, c}) == 3
 
 
-def test_append_only_helper_refuses_to_mutate_existing_records():
-    from scripts.run_replay import append_only
-    existing = [{"id": "1", "alphaPercentile": 90}]
-    incoming = [{"id": "1", "alphaPercentile": 10}, {"id": "2", "alphaPercentile": 55}]
-    merged, appended, skipped = append_only(existing, incoming)
+def test_appending_refuses_to_mutate_existing_records(tmp_path):
+    from pipeline import historical_store as HS
+    stamps = {"replayVersion": "replay-v1", "date": "2019-05-15"}
+    HS.append_signals(tmp_path, [{"id": "1", "alphaPercentile": 90, **stamps}])
+    appended, skipped = HS.append_signals(tmp_path, [
+        {"id": "1", "alphaPercentile": 10, **stamps},
+        {"id": "2", "alphaPercentile": 55, **stamps},
+    ])
     assert appended == 1 and skipped == 1
+    stored = {row["id"]: row for row in HS.load(tmp_path, HS.SIGNALS)}
     # The original record keeps the value the model actually produced that day.
-    assert merged[0]["alphaPercentile"] == 90
+    assert stored["1"]["alphaPercentile"] == 90
+    assert stored["2"]["alphaPercentile"] == 55
 
 
 def test_every_record_carries_its_version_stamps(prices, universe):
