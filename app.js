@@ -242,6 +242,10 @@ const showTickerPop = (ticker, target) => {
 };
 
 document.addEventListener('click', (e) => {
+  const macroRange = e.target.closest('[data-macro-range]');
+  if (macroRange) { e.preventDefault(); setMacroRange(macroRange.dataset.macroRange); return; }
+  const macroIndicator = e.target.closest('[data-macro-indicator]');
+  if (macroIndicator) { e.preventDefault(); showMacroDialog(macroIndicator.dataset.macroIndicator); return; }
   const ixRange = e.target.closest('[data-index-range]');
   if (ixRange) { e.preventDefault(); setIndexRange(ixRange.dataset.indexRange); return; }
   const ix = e.target.closest('[data-index-symbol]');
@@ -675,7 +679,7 @@ const indicatorTrend = (i) => {
   const lines = [{ label: i.historyLabelKo || i.displayNameKo, points: i.history || [] }];
   if (i.trendHistory && i.trendHistory.length) lines.push({ label: i.trendLabelKo || '추세', points: i.trendHistory });
   const legend = lines.filter((x) => x.points.length).map((x, idx) => `<span><i class="chart-key chart-key-${idx}"></i>${x.label}</span>`).join('');
-  return `<div class="indicator-chart">${trendSvg(lines, i.referenceLines || [], { width: 520, height: 132, aria: `${i.displayNameKo || i.name} 추이` })}<div class="chart-legend">${legend}</div></div>`;
+  return `<button type="button" class="indicator-chart" data-macro-indicator="${i.name}" aria-label="${i.displayNameKo || i.name} 장기 시계열 열기">${trendSvg(lines, i.referenceLines || [], { width: 520, height: 132, aria: `${i.displayNameKo || i.name} 추이` })}<div class="chart-legend">${legend}</div><span class="macro-open">장기 시계열 보기 →</span></button>`;
 };
 const indicatorCard = (i, axis) => {
   const contribution = i.axisContribution ?? 0;
@@ -707,7 +711,7 @@ const axisRow = (a, key) => {
   const w = v == null ? 0 : Math.min(50, Math.abs(v) * 50);
   const direct = key === 'growth' || key === 'inflation';
   const indicators = (a.indicators || []).map((i) => indicatorCard(i, a)).join('') || '<div class="ax-none">사용 가능한 지표가 없습니다.</div>';
-  return `<details class="ax-detail">
+  return `<details class="ax-detail" open>
     <summary><div class="ax-row">
       <span class="ax-name">${a.ko}</span>
       <span class="ax-bar"><i class="${v >= 0 ? 'apos' : 'aneg'}" style="${v >= 0 ? 'left:50%' : 'right:50%'};width:${w}%"></i></span>
@@ -742,6 +746,20 @@ const regimeGuideCard = (r) => {
     <div class="cycle-wrap"><div class="cycle-caption">성장 × 물가 국면 지도</div><div class="cycle-grid">${cell('Goldilocks', '가속', '둔화')}${cell('Reflation', '가속', '가속')}${cell('Deflation/Slowdown', '둔화', '둔화')}${cell('Stagflation', '둔화', '가속')}</div><small>강조된 칸이 현재 판정입니다. 신호가 엇갈리면 전환·저신뢰로 보류합니다.</small></div>
   </div>`;
 };
+const findMacroIndicator = (name) => Object.values(DATA?.macroRegime?.axes || {}).flatMap((a) => a.indicators || []).find((i) => i.name === name);
+const macroPulseIndicator = (name, label) => {
+  const i = findMacroIndicator(name);
+  if (!i) return `<div class="macro-pulse-card missing"><span>${label}</span><b>데이터 대기</b><small>FRED 수집 상태 확인 필요</small></div>`;
+  return `<button type="button" class="macro-pulse-card" data-macro-indicator="${name}"><span>${label}</span><b>${macroNumber(i.transformedValue, i.valueUnit)}</b><small>3개월 연율 ${macroNumber(i.annualized3m, '%')} · ${i.observationDate || '—'} 기준</small><em>장기 추이 →</em></button>`;
+};
+const macroEnvironment = (r) => {
+  const e = r.environmentSummary || {};
+  const pulse = `${macroPulseIndicator('Headline_CPI', 'Headline CPI · 전년비')}${macroPulseIndicator('Core_CPI', 'Core CPI · 전년비')}`;
+  return `<section class="macro-cockpit">
+    <div class="macro-cockpit-copy"><span>MACRO ENVIRONMENT</span><h3>${e.headlineKo || '성장·물가·금융여건을 함께 확인합니다.'}</h3><div class="macro-takeaways">${(e.takeawaysKo || []).map((x) => `<p>${x}</p>`).join('')}</div><small>${e.methodKo || ''}</small></div>
+    <div class="macro-pulse">${pulse}<div class="macro-pulse-card axis"><span>성장 축</span><b>${r.axes?.growth?.labelKo || '—'}</b><small>점수 ${r.axes?.growth?.value ?? '—'} · 신뢰 ${Math.round((r.axes?.growth?.confidence ?? 0) * 100)}%</small></div><div class="macro-pulse-card axis"><span>금융여건 축</span><b>${r.axes?.financialConditions?.labelKo || '—'}</b><small>점수 ${r.axes?.financialConditions?.value ?? '—'} · 위험예산 보조</small></div></div>
+  </section>`;
+};
 const renderRegime = (r) => {
   const host = $('#regimePanel');
   if (!r) { host.innerHTML = '<div class="none">국면 판정 데이터 없음</div>'; return; }
@@ -758,6 +776,7 @@ const renderRegime = (r) => {
       ${r.note ? `<div class="status-note warn">${r.note}</div>` : ''}
       ${r.pointInTimeLimitations ? `<div class="status-note info">한계: ${r.pointInTimeLimitations}</div>` : ''}
     </div>
+    ${macroEnvironment(r)}
     ${regimeGuideCard(r)}
     ${regimeDecisionCard(r)}
     <div class="regime-axes">${axesHtml}</div>
@@ -769,6 +788,42 @@ const renderRegime = (r) => {
       </div>
       <div class="regime-ev"><div><span class="evh">근거</span>${support}</div><div><span class="evh">반대 근거</span>${contra}</div></div>
     </div>`;
+};
+
+let ACTIVE_MACRO = null;
+let MACRO_RANGE = '10Y';
+const MACRO_RANGES = { '1Y': 1, '3Y': 3, '5Y': 5, '10Y': 10, 'MAX': null };
+const sliceMacroRange = (points, range) => {
+  const rows = points || [];
+  if (!rows.length || MACRO_RANGES[range] == null) return rows;
+  const end = new Date(`${rows[rows.length - 1].date}T00:00:00Z`);
+  const cutoff = new Date(end); cutoff.setUTCFullYear(cutoff.getUTCFullYear() - MACRO_RANGES[range]);
+  return rows.filter((p) => new Date(`${p.date}T00:00:00Z`) >= cutoff);
+};
+const macroDialogMarkup = (i) => {
+  const history = sliceMacroRange(i.history, MACRO_RANGE);
+  const trend = sliceMacroRange(i.trendHistory, MACRO_RANGE);
+  const lines = [{ label: i.historyLabelKo || i.displayNameKo, points: history }];
+  if (trend.length) lines.push({ label: i.trendLabelKo || '추세', points: trend });
+  const buttons = Object.keys(MACRO_RANGES).map((r) => `<button type="button" data-macro-range="${r}" class="${MACRO_RANGE === r ? 'active' : ''}">${r}</button>`).join('');
+  const start = history[0]?.date || '—'; const end = history[history.length - 1]?.date || '—';
+  const g = i.guide || {};
+  return `<div class="ix-dialog-head"><div><span class="overline">${i.axis || 'MACRO'} · ${i.name}</span><h2>${i.displayNameKo || i.name} · ${MACRO_RANGE}</h2><p>${g.meaningKo || i.transformationKo || ''}</p></div><div class="ix-dialog-quote"><b>${macroNumber(i.transformedValue, i.valueUnit)}</b><span>${i.transformationKo || '최근 값'}</span><small>관측 ${i.observationDate || '—'}</small></div></div>
+    <div class="ix-range" aria-label="거시 차트 기간">${buttons}</div>
+    <div class="ix-big-chart">${trendSvg(lines, i.referenceLines || [], { width: 900, height: 330, aria: `${i.displayNameKo || i.name} ${MACRO_RANGE} 장기 시계열` })}</div>
+    <div class="ix-kpis macro-kpis"><div><span>전년비/변환값</span><b>${macroNumber(i.transformedValue, i.valueUnit)}</b></div><div><span>3개월 연율</span><b>${macroNumber(i.annualized3m, '%')}</b></div><div><span>최근 변화</span><b>${macroNumber(i.change, i.changeUnit)}</b></div><div><span>장기 z</span><b>${macroNumber(i.zscore)}</b></div><div><span>표시 구간</span><b>${start} ~ ${end}</b></div></div>
+    <div class="macro-detail-grid"><p><b>읽는 법</b>${g.readKo || i.signalSummaryKo || ''}</p><p><b>투자 환경에서</b>${g.useKo || ''}</p><p><b>주의</b>${g.cautionKo || ''}</p></div>
+    <div class="ix-data-note"><span>발표시차 <b>${i.releaseLagBdays ?? '—'}영업일</b></span><span>시계열 <b>${history.length}개 관측치</b></span>${i.source ? `<a href="${i.source}" target="_blank" rel="noopener">FRED 원자료 ↗</a>` : ''}</div>`;
+};
+const showMacroDialog = (name) => {
+  const i = findMacroIndicator(name); const dialog = $('#macroDialog'); const body = $('#macroDialogBody');
+  if (!i || !dialog || !body) return;
+  ACTIVE_MACRO = i; MACRO_RANGE = '10Y'; body.innerHTML = macroDialogMarkup(i);
+  if (typeof dialog.showModal === 'function') dialog.showModal(); else dialog.setAttribute('open', '');
+};
+const setMacroRange = (range) => {
+  if (!ACTIVE_MACRO || !(range in MACRO_RANGES)) return;
+  MACRO_RANGE = range; const body = $('#macroDialogBody'); if (body) body.innerHTML = macroDialogMarkup(ACTIVE_MACRO);
 };
 
 // =========================================================================
@@ -844,7 +899,7 @@ const f13Change = (kind, row) => {
   return `<span class="f13-change ${kind}"><i>${F13_CHANGE_KO[kind]}</i><b>${f13Esc(row.issuer)}</b>${f13Option(row)}<em>${pct}</em></span>`;
 };
 const f13ManagerCard = (m) => {
-  if (m.status !== 'AVAILABLE') return `<article class="f13-card unavailable">
+  if (!['AVAILABLE', 'CACHED_OFFICIAL'].includes(m.status)) return `<article class="f13-card unavailable">
     <div class="f13-head"><div><span>${f13Esc(m.managerKo)}</span><h3>${f13Esc(m.name)}</h3></div><em>원문 확인 불가</em></div>
     <p>${f13Esc(m.noteKo || 'SEC 원문을 불러오지 못해 이전 분기 수치를 대신 표시하지 않습니다.')}</p>
   </article>`;
@@ -854,8 +909,9 @@ const f13ManagerCard = (m) => {
     : '<em class="f13-recency">추적군 최신 분기</em>';
   const changeRows = ['new', 'increased', 'decreased', 'exited']
     .flatMap((kind) => (changes[kind] || []).slice(0, 2).map((row) => f13Change(kind, row))).join('');
-  return `<article class="f13-card">
-    <div class="f13-head"><div><span>${f13Esc(m.managerKo)}</span><h3>${f13Esc(m.name)}</h3></div><a href="${m.filingUrl}" target="_blank" rel="noopener">SEC 원문 ↗</a></div>
+  const sourceBadge = m.status === 'CACHED_OFFICIAL' ? '<em class="f13-cache">공식 캐시</em>' : '<em class="f13-live">SEC 확인</em>';
+  return `<article class="f13-card ${m.featured ? 'featured' : ''}">
+    <div class="f13-head"><div><span>${f13Esc(m.managerKo)} ${sourceBadge}</span><h3>${f13Esc(m.name)}</h3></div><a href="${m.filingUrl}" target="_blank" rel="noopener">SEC 원문 ↗</a></div>
     <div class="f13-dates"><div><b>${f13Esc(m.reportDate)} 기준</b>${recency}</div><span>${f13Esc(m.filingDate)} 제출 · 직전 ${f13Esc(m.previousReportDate)}</span></div>
     <div class="f13-kpis"><div><span>공시 평가액</span><b>${f13Money(m.totalValueUsd)}</b></div><div><span>포지션</span><b>${fmt(m.positionCount)}개</b></div><div><span>상위 5개 집중도</span><b>${fmt(m.top5WeightPct, '%', 1)}</b></div></div>
     <div class="f13-subhead"><b>상위 보유종목</b><span>공시 평가액 비중</span></div>
@@ -868,14 +924,21 @@ const renderInstitutional13F = (block) => {
   const sec = $('#institutional'); const host = $('#institutionalPanel');
   if (!sec || !host) return;
   const managers = block?.managers || [];
-  const available = managers.filter((x) => x.status === 'AVAILABLE');
-  $('#institutionalMeta').textContent = `최신 기준 ${block?.latestReportDate || '—'} · SEC 원문 확인 ${available.length}/${block?.managerCount ?? managers.length}곳${block?.laggedManagerCount ? ` · 이전 분기 ${block.laggedManagerCount}곳` : ''}`;
+  const available = managers.filter((x) => ['AVAILABLE', 'CACHED_OFFICIAL'].includes(x.status));
+  $('#institutionalMeta').textContent = `13F 최신 기준 ${block?.latestReportDate || '—'} · 표시 ${available.length}/${block?.managerCount ?? managers.length}곳 · 실시간 ${block?.liveCount ?? 0} · 공식 캐시 ${block?.cachedCount ?? 0}${block?.laggedManagerCount ? ` · 이전 분기 ${block.laggedManagerCount}곳` : ''}`;
   $('#institutionalCaveat').textContent = block?.limitationKo || '13F는 분기말 기준의 지연 공시이며 실시간 보유내역이 아닙니다.';
   if (!managers.length) {
     host.innerHTML = '<div class="none f13-empty">SEC 13F 원문을 불러오지 못했습니다. 이전 수치를 현재 값처럼 대신 표시하지 않습니다.</div>';
     return;
   }
   host.innerHTML = managers.map(f13ManagerCard).join('');
+};
+const renderNationalPension = (nps) => {
+  const host = $('#npsPanel'); if (!host) return;
+  if (!nps || !['AVAILABLE', 'CACHED_OFFICIAL'].includes(nps.status)) { host.innerHTML = `<div class="none nps-empty">${nps?.noteKo || '국민연금 공식 운용 현황을 불러오지 못했습니다.'}</div>`; return; }
+  const badge = nps.status === 'CACHED_OFFICIAL' ? '공식 캐시' : '공식 원문 확인';
+  const rows = (nps.allocations || []).map((x) => `<div class="nps-allocation"><div><b>${f13Esc(x.labelKo)}</b><span>${fmt(x.valueTrillionKrw, '조 원', 1)}</span></div><div class="nps-bar"><i style="width:${Math.min(100, Number(x.weightPct) || 0)}%"></i></div><strong>${fmt(x.weightPct, '%', 1)}</strong></div>`).join('');
+  host.innerHTML = `<section class="nps-card"><div class="nps-head"><div><span>NATIONAL PENSION SERVICE · ${badge}</span><h3>국민연금 전체 기금 자산배분</h3><p>${nps.scopeKo || ''}</p></div><a href="${nps.sourceUrl}" target="_blank" rel="noopener">기금운용본부 원문 ↗</a></div><div class="nps-stats"><div><span>기금 규모</span><b>${fmt(nps.totalFundTrillionKrw, '조 원', 1)}</b></div><div><span>주식 합계</span><b>${fmt(nps.equityWeightPct, '%', 1)}</b></div><div><span>해외주식</span><b>${fmt(nps.overseasEquityWeightPct, '%', 1)}</b></div><div><span>공시 기준</span><b>${nps.asOfLabelKo || nps.asOf || '—'}</b></div></div><div class="nps-allocations">${rows}</div><p class="nps-note">${nps.provisional ? '당해연도 수치는 잠정치입니다. ' : ''}${nps.limitationKo || ''}</p></section>`;
 };
 
 // =========================================================================
@@ -1218,6 +1281,7 @@ const render = (d) => {
   renderIndices(d);
   renderRegime(d.macroRegime);
   renderConsensus(d.expertConsensus);
+  renderNationalPension(d.nationalPensionService);
   renderInstitutional13F(d.institutionalHoldings13F);
   renderLongTerm(d);
   renderModelPortfolio(d);
@@ -1260,6 +1324,8 @@ $('#screenSearch')?.addEventListener('input', filterScreen);
 $('#refreshData')?.addEventListener('click', () => loadData(true));
 $('#indexDialogClose')?.addEventListener('click', () => $('#indexDialog')?.close());
 $('#indexDialog')?.addEventListener('click', (e) => { if (e.target.id === 'indexDialog') e.target.close(); });
+$('#macroDialogClose')?.addEventListener('click', () => $('#macroDialog')?.close());
+$('#macroDialog')?.addEventListener('click', (e) => { if (e.target.id === 'macroDialog') e.target.close(); });
 document.querySelectorAll('.nav a[href^="#"]').forEach((a) => a.addEventListener('click', (e) => {
   const t = document.querySelector(a.getAttribute('href')); if (!t) return;
   e.preventDefault();

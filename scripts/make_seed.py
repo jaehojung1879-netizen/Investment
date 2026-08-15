@@ -86,7 +86,7 @@ def main() -> int:
     macro["Yield_Curve"] = macro["Treasury_10Y"] - macro["Treasury_2Y"]
     # A few monthly macro series so the regime engine has >1 axis of coverage.
     mdates = pd.date_range(end=dates[-1], periods=60, freq="ME")
-    for name, base, slope, sd, sd_seed in [("CFNAI", 0.0, 0.002, 0.2, 21), ("Core_CPI", 300, 0.4, 0.3, 22),
+    for name, base, slope, sd, sd_seed in [("CFNAI", 0.0, 0.002, 0.2, 21), ("Headline_CPI", 297, 0.42, 0.45, 25), ("Core_CPI", 300, 0.4, 0.3, 22),
                                            ("Unemployment", 4.0, -0.005, 0.1, 23), ("Payrolls", 155000, 120, 400, 24)]:
         rng = np.random.default_rng(sd_seed)
         macro[name] = pd.Series(base + slope * np.arange(60) + rng.normal(0, sd, 60), index=mdates).reindex(dates).ffill()
@@ -204,6 +204,10 @@ def main() -> int:
             "status": "UNAVAILABLE", "availableCount": 0, "managerCount": 0, "managers": [],
             "source": "SEC EDGAR Form 13F-HR",
             "limitationKo": "합성 미리보기에는 실제 기관 보유내역을 섞지 않습니다. 실데이터 빌드에서 SEC 원문을 불러옵니다.",
+        },
+        "nationalPensionService": {
+            "status": "UNAVAILABLE", "allocations": [],
+            "noteKo": "합성 미리보기에는 실제 국민연금 운용 현황을 섞지 않습니다.",
         },
         "modelPortfolio": {
             "status": "BLOCKED", "method": "BLENDED_CONSTRAINED_FRACTIONAL_KELLY",

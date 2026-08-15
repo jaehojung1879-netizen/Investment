@@ -73,6 +73,23 @@ def test_market_graph_is_second_and_13f_has_a_full_render_contract():
     assert ".f13-wrap" in CSS and ".f13-holding" in CSS and ".f13-change" in CSS
 
 
+def test_macro_charts_open_to_long_history_and_headline_cpi_is_prominent():
+    assert 'id="macroDialog"' in HTML and 'id="macroDialogBody"' in HTML
+    assert "data-macro-indicator" in APP and "showMacroDialog" in APP
+    assert "const MACRO_RANGES = { '1Y': 1, '3Y': 3, '5Y': 5, '10Y': 10, 'MAX': null }" in APP
+    assert "Headline_CPI" in APP and "Core_CPI" in APP
+    assert "class=\"ax-detail\" open" in APP
+    assert ".macro-cockpit" in CSS and ".macro-pulse-card" in CSS
+
+
+def test_nps_allocation_and_13f_are_visually_separated():
+    assert 'id="npsPanel"' in HTML
+    assert "renderNationalPension" in APP and "nationalPensionService" in APP
+    assert "국민연금 전체 기금 자산배분" in APP
+    assert "SEC FORM 13F" in HTML
+    assert ".nps-allocations" in CSS and ".f13-section-head" in CSS
+
+
 def test_invalidation_is_rendered_per_name_from_pipeline_fields():
     # No hardcoded sentence may stand in for a name's own invalidation levels.
     assert "알파가 편출 버퍼 밖으로 밀리거나" not in APP

@@ -1,0 +1,47 @@
+{
+  "status": "AVAILABLE",
+  "sourceMode": "LIVE_NPS",
+  "source": "국민연금기금운용본부",
+  "sourceUrl": "https://fund.nps.or.kr/main.do",
+  "asOf": "2026-05-31",
+  "asOfLabelKo": "2026년 5월 말",
+  "totalFundTrillionKrw": 1848.7,
+  "allocations": [
+    {
+      "labelKo": "국내주식",
+      "valueTrillionKrw": 543.6,
+      "weightPct": 29.4
+    },
+    {
+      "labelKo": "국내채권",
+      "valueTrillionKrw": 289.6,
+      "weightPct": 15.7
+    },
+    {
+      "labelKo": "해외주식",
+      "valueTrillionKrw": 650.7,
+      "weightPct": 35.2
+    },
+    {
+      "labelKo": "해외채권",
+      "valueTrillionKrw": 107.0,
+      "weightPct": 5.8
+    },
+    {
+      "labelKo": "대체투자",
+      "valueTrillionKrw": 254.5,
+      "weightPct": 13.8
+    },
+    {
+      "labelKo": "단기자금",
+      "valueTrillionKrw": 4.2,
+      "weightPct": 0.2
+    }
+  ],
+  "equityWeightPct": 64.6,
+  "overseasEquityWeightPct": 35.2,
+  "provisional": true,
+  "scopeKo": "국민연금 전체 기금의 자산군별 잠정 운용 현황",
+  "limitationKo": "SEC 13F의 미국 보고대상 주식 범위와 다르며, 두 자료의 기준일도 서로 다를 수 있습니다.",
+  "retrievedAt": "2026-08-15T23:00:18.029683+00:00"
+}
