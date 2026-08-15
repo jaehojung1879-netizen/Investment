@@ -21,7 +21,7 @@
           <a href="#today">결론</a>
           <a href="#context">시장 그래프</a>
           <a href="#portfolio">포트폴리오</a>
-          <a href="#institutional">13F</a>
+          <a href="#institutional">13F·국민연금</a>
           <a href="#radar">기회·경고</a>
           <a href="#evidence">검증·방법론</a>
         </nav>
@@ -76,13 +76,15 @@
         <div id="modelPortfolioPanel" class="mp-wrap"></div>
       </section>
 
-      <!-- ── 4. 기관 13F ───────────────────────────────────────────── -->
+      <!-- ── 4. 기관 13F · 국민연금 ───────────────────────────────── -->
       <section id="institutional" class="block">
         <div class="block-head">
-          <div><span class="overline">SEC 13F 공시 <span class="ico qh" data-x="thirteenf">ⓘ</span></span><h2>대형 투자자의 분기별 보유 변화</h2></div>
+          <div><span class="overline">기관 공시 데이터 <span class="ico qh" data-x="thirteenf">ⓘ</span></span><h2>13F 보유 변화와 국민연금 자산배분</h2></div>
           <span id="institutionalMeta" class="muted"></span>
         </div>
-        <p class="section-intro">분기말 보유내역을 나란히 비교합니다. 실시간 포트폴리오나 매매 추천이 아닙니다.</p>
+        <p class="section-intro">국민연금 전체 기금의 월별 자산배분과 SEC에 신고된 기관별 미국 주식 보유내역을 구분해 봅니다. 두 자료 모두 실시간 포트폴리오나 매매 추천이 아닙니다.</p>
+        <div id="npsPanel" class="nps-wrap"></div>
+        <div class="f13-section-head"><div><span>SEC FORM 13F</span><h3>미국 보고대상 주식 분기 공시</h3></div><small>분기말 기준 · 통상 최대 45일 뒤 공개</small></div>
         <div id="institutionalPanel" class="f13-wrap"></div>
         <p id="institutionalCaveat" class="section-warning muted"></p>
       </section>
@@ -204,6 +206,10 @@
     <dialog id="indexDialog" class="index-dialog" aria-label="시장 지표 상세">
       <button id="indexDialogClose" class="dialog-close" type="button" aria-label="닫기">×</button>
       <div id="indexDialogBody"></div>
+    </dialog>
+    <dialog id="macroDialog" class="index-dialog macro-dialog" aria-label="거시 지표 장기 시계열">
+      <button id="macroDialogClose" class="dialog-close" type="button" aria-label="닫기">×</button>
+      <div id="macroDialogBody"></div>
     </dialog>
     <div id="pop" class="pop" hidden></div>
     <script src="app.js"></script>

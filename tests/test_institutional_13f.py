@@ -96,3 +96,23 @@ def test_build_marks_an_older_last_available_filing_without_hiding_its_date(tmp_
     assert got["laggedManagerCount"] == 1
     assert got["managers"][0]["reportRecency"] == "LATEST_TRACKED_QUARTER"
     assert got["managers"][1]["reportRecency"] == "OLDER_LAST_AVAILABLE"
+
+
+def test_build_uses_dated_official_cache_without_calling_it_live(tmp_path, monkeypatch):
+    registry = tmp_path / "managers.json"
+    registry.write_text(json.dumps([{"id": "cached", "name": "Cached", "cik": "0000000001"}]), encoding="utf-8")
+    cache = tmp_path / "cache.json"
+    cache.write_text(json.dumps({
+        "fetchedAt": "2026-05-15T00:00:00+00:00",
+        "managers": {"cached": {
+            "id": "cached", "name": "Cached", "cik": "0000000001", "status": "AVAILABLE",
+            "reportDate": "2026-03-31", "filingDate": "2026-05-10",
+            "filingUrl": "https://www.sec.gov/Archives/test.xml", "topHoldings": [],
+        }},
+    }), encoding="utf-8")
+    monkeypatch.setattr(F13, "REGISTRY_PATH", registry)
+    monkeypatch.setattr(F13, "_build_manager", lambda _: (_ for _ in ()).throw(TimeoutError()))
+    got = F13.build(registry, cache)
+    assert got["availableCount"] == 1 and got["liveCount"] == 0 and got["cachedCount"] == 1
+    assert got["managers"][0]["status"] == "CACHED_OFFICIAL"
+    assert got["managers"][0]["sourceMode"] == "CACHED_SEC"

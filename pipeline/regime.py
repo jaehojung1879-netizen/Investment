@@ -42,6 +42,7 @@ INDICATORS: dict[str, tuple] = {
     "Unemployment": ("growth", -1, 5, FRED + "UNRATE"),
     "Initial_Claims": ("growth", -1, 5, FRED + "ICSA"),
     # inflation
+    "Headline_CPI": ("inflation", +1, 12, FRED + "CPIAUCSL"),
     "Core_CPI": ("inflation", +1, 12, FRED + "CPILFESL"),
     "Core_PCE": ("inflation", +1, 28, FRED + "PCEPILFE"),
     "Breakeven_10Y": ("inflation", +1, 1, FRED + "T10YIE"),
@@ -79,6 +80,7 @@ DIRECTION_NEG = {"growth": "둔화", "inflation": "둔화", "liquidity": "축소
 # liquidity, spreads and market levels retain their economically appropriate
 # units. This registry intentionally replaces the old universal raw 3m change.
 TRANSFORMATIONS = {
+    "Headline_CPI": "inflation_rate_yoy_and_3m_annualized",
     "Core_CPI": "inflation_rate_yoy_and_3m_annualized",
     "Core_PCE": "inflation_rate_yoy_and_3m_annualized",
     "Payrolls": "monthly_change_3m_average",
@@ -98,6 +100,7 @@ INDICATOR_META = {
     "Payrolls": ("비농업 고용", "천 명/월", "천 명/월 변화"),
     "Unemployment": ("실업률", "%", "%p 변화"),
     "Initial_Claims": ("신규 실업수당 청구", "건", "건 변화"),
+    "Headline_CPI": ("소비자물가 (Headline CPI)", "%", "%p 변화"),
     "Core_CPI": ("근원 소비자물가", "%", "%p 변화"),
     "Core_PCE": ("근원 개인소비지출 물가", "%", "%p 변화"),
     "Breakeven_10Y": ("10년 기대인플레이션", "%", "%p 변화"),
@@ -119,6 +122,12 @@ INDICATOR_META = {
 # Short, plain-language guides shown next to each trend chart.  These are
 # descriptions of the indicator—not model-generated forecasts.
 INDICATOR_GUIDE = {
+    "Headline_CPI": {
+        "meaningKo": "식품·에너지를 포함해 미국 도시 소비자가 실제로 지불하는 대표 소비자물가의 전체 흐름입니다.",
+        "readKo": "전년 대비 상승률은 장기 물가 압력, 최근 3개월 연율은 단기 재가속·둔화를 보여줍니다.",
+        "useKo": "체감물가와 에너지 충격을 확인하고 근원 CPI·근원 PCE와 방향이 같은지 비교합니다.",
+        "cautionKo": "식품·에너지 가격 때문에 월별 변동이 커 한 번의 발표보다 3개월 흐름을 우선합니다.",
+    },
     "CFNAI": {
         "meaningKo": "미국 생산·고용·소비·주택·판매 등 85개 월간 지표를 한 숫자로 합친 경기 종합 온도계입니다.",
         "readKo": "0은 미국 경제가 역사적 평균 속도로 성장한다는 뜻입니다. 양수는 평균보다 빠른 성장, 음수는 평균보다 느린 성장입니다.",
@@ -315,10 +324,17 @@ def _display_history(name: str, visible: pd.Series) -> pd.Series:
     return s
 
 
-def _history_points(series: pd.Series, limit: int = 60) -> list[dict]:
+def _history_points(series: pd.Series, max_points: int = 720) -> list[dict]:
+    clean = series.dropna()
+    if len(clean) > max_points:
+        step = int(np.ceil(len(clean) / max_points))
+        sampled = clean.iloc[::step]
+        if sampled.index[-1] != clean.index[-1]:
+            sampled = pd.concat([sampled, clean.iloc[[-1]]])
+        clean = sampled
     return [
         {"date": pd.Timestamp(d).strftime("%Y-%m-%d"), "value": round(float(v), 4)}
-        for d, v in series.dropna().iloc[-limit:].items()
+        for d, v in clean.items()
         if np.isfinite(v)
     ]
 
@@ -468,6 +484,33 @@ def _regime_label(growth: dict, inflation: dict) -> tuple[str, float]:
     return decision["label"], decision["confidence"]
 
 
+def _environment_summary(axes: dict, decision: dict) -> dict:
+    """Plain-language macro read; descriptive context, never a forecast."""
+    growth, inflation = axes["growth"], axes["inflation"]
+    liquidity, conditions = axes["liquidity"], axes["financialConditions"]
+    label = decision.get("displayLabelKo") or decision.get("label")
+    growth_text = f"성장 신호는 {growth.get('labelKo', '확인 대기')}({growth.get('value') if growth.get('value') is not None else '—'})입니다."
+    inflation_text = f"Headline·Core CPI, Core PCE와 시장 기대를 합친 물가 신호는 {inflation.get('labelKo', '확인 대기')}({inflation.get('value') if inflation.get('value') is not None else '—'})입니다."
+    if conditions.get("value") is None:
+        conditions_text = "금융여건 데이터가 부족해 위험예산 보정은 제한적입니다."
+    elif conditions["value"] > 0.15:
+        conditions_text = "신용스프레드·실질금리·달러를 합친 금융여건은 완화 쪽입니다."
+    elif conditions["value"] < -0.15:
+        conditions_text = "신용스프레드·실질금리·달러를 합친 금융여건은 긴축 쪽입니다."
+    else:
+        conditions_text = "금융여건 신호는 서로 상쇄돼 중립권입니다."
+    if liquidity.get("value") is None:
+        liquidity_text = "유동성 축은 데이터 확인 대기입니다."
+    else:
+        liquidity_text = f"연준 자산·RRP·TGA·M2를 합친 유동성은 {liquidity.get('labelKo')} 쪽입니다."
+    return {
+        "headlineKo": f"현재 거시 판정은 ‘{label}’이며, 성장과 물가의 방향을 먼저 보고 금융여건·유동성으로 위험예산을 보정합니다.",
+        "takeawaysKo": [growth_text, inflation_text, conditions_text, liquidity_text],
+        "watchKo": decision.get("summaryKo"),
+        "methodKo": "Headline CPI를 체감·에너지 충격, Core CPI/PCE를 기조 물가로 구분해 함께 봅니다. 단일 발표로 국면을 확정하지 않습니다.",
+    }
+
+
 # Base equity risk budget by regime (percent range of a risk portfolio). This is
 # the SEPARATE allocation layer; it never touches single-stock alpha.
 _REGIME_BUDGET = {
@@ -558,6 +601,7 @@ def build(macro: pd.DataFrame | None, vix: pd.Series | None,
         "changed": bool(prior_regime and prior_regime != label),
         "confidence": conf,
         "regimeDecision": decision,
+        "environmentSummary": _environment_summary(axes, decision),
         "coverage": coverage,
         "axes": axes,
         "supporting": supporting[:8],

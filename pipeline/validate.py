@@ -213,7 +213,7 @@ def validate(path: str | Path, production: bool = True) -> list[str]:
     # mandatory so a delayed quarter can never be mistaken for live holdings.
     disclosure = data.get("institutionalHoldings13F") or {}
     managers = disclosure.get("managers") or []
-    available = [x for x in managers if x.get("status") == "AVAILABLE"]
+    available = [x for x in managers if x.get("status") in {"AVAILABLE", "CACHED_OFFICIAL"}]
     if disclosure.get("status") == "AVAILABLE" and not available:
         errors.append("13f_available_without_manager_data")
     if disclosure.get("availableCount") not in {None, len(available)}:
@@ -232,6 +232,16 @@ def validate(path: str | Path, production: bool = True) -> list[str]:
         if any(float(row.get("valueUsd") or 0) < 0 or float(row.get("shares") or 0) < 0 for row in holdings):
             errors.append("13f_negative_value_or_shares")
             break
+
+    nps = data.get("nationalPensionService") or {}
+    if nps.get("status") in {"AVAILABLE", "CACHED_OFFICIAL"}:
+        if not nps.get("asOf") or not str(nps.get("sourceUrl") or "").startswith("https://fund.nps.or.kr/"):
+            errors.append("nps_missing_official_source_or_asof")
+        allocations = nps.get("allocations") or []
+        if len(allocations) < 6:
+            errors.append("nps_allocation_rows_incomplete")
+        if any(float(x.get("valueTrillionKrw") or 0) < 0 or not 0 <= float(x.get("weightPct") or 0) <= 100 for x in allocations):
+            errors.append("nps_invalid_allocation_value")
 
     if production:
         if data.get("seed"):

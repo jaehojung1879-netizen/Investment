@@ -1,0 +1,2742 @@
+{
+  "source": "SEC EDGAR Form 13F-HR",
+  "fetchedAt": "2026-08-15T23:00:24.154860+00:00",
+  "managers": {
+    "nps": {
+      "id": "nps",
+      "name": "National Pension Service",
+      "managerKo": "국민연금",
+      "cik": "0001608046",
+      "featured": true,
+      "status": "AVAILABLE",
+      "sourceMode": "LIVE_SEC",
+      "reportDate": "2026-06-30",
+      "filingDate": "2026-08-13",
+      "previousReportDate": "2026-03-31",
+      "filingUrl": "https://www.sec.gov/Archives/edgar/data/1608046/000119312526347818/xslForm13F_X02/primary_doc.xml",
+      "totalValueUsd": 155079663358,
+      "positionCount": 552,
+      "top5WeightPct": 22.4,
+      "topHoldings": [
+        {
+          "issuer": "NVIDIA CORPORATION",
+          "titleClass": "COM",
+          "cusip": "67066G104",
+          "valueUsd": 10171499316,
+          "shares": 50834621,
+          "shareType": "SH",
+          "putCall": null,
+          "portfolioWeightPct": 6.56
+        },
+        {
+          "issuer": "APPLE INC",
+          "titleClass": "COM",
+          "cusip": "037833100",
+          "valueUsd": 9120026489,
+          "shares": 31517924,
+          "shareType": "SH",
+          "putCall": null,
+          "portfolioWeightPct": 5.88
+        },
+        {
+          "issuer": "MICROSOFT CORP",
+          "titleClass": "COM",
+          "cusip": "594918104",
+          "valueUsd": 5684729680,
+          "shares": 15239745,
+          "shareType": "SH",
+          "putCall": null,
+          "portfolioWeightPct": 3.67
+        },
+        {
+          "issuer": "AMAZON COM INC",
+          "titleClass": "COM",
+          "cusip": "023135106",
+          "valueUsd": 4998167363,
+          "shares": 20970745,
+          "shareType": "SH",
+          "putCall": null,
+          "portfolioWeightPct": 3.22
+        },
+        {
+          "issuer": "ALPHABET INC",
+          "titleClass": "CAP STK CL A",
+          "cusip": "02079K305",
+          "valueUsd": 4680938399,
+          "shares": 13098297,
+          "shareType": "SH",
+          "putCall": null,
+          "portfolioWeightPct": 3.02
+        },
+        {
+          "issuer": "ALPHABET INC",
+          "titleClass": "CAP STK CL C",
+          "cusip": "02079K107",
+          "valueUsd": 3727875298,
+          "shares": 10550690,
+          "shareType": "SH",
+          "putCall": null,
+          "portfolioWeightPct": 2.4
+        },
+        {
+          "issuer": "BROADCOM INC",
+          "titleClass": "COM",
+          "cusip": "11135F101",
+          "valueUsd": 3631259754,
+          "shares": 9612865,
+          "shareType": "SH",
+          "putCall": null,
+          "portfolioWeightPct": 2.34
+        },
+        {
+          "issuer": "INVESCO EXCH TRADED FD TR II",
+          "titleClass": "PURBTA MSCI US",
+          "cusip": "46138E461",
+          "valueUsd": 3546096271,
+          "shares": 47382366,
+          "shareType": "SH",
+          "putCall": null,
+          "portfolioWeightPct": 2.29
+        },
+        {
+          "issuer": "MICRON TECHNOLOGY INC",
+          "titleClass": "COM",
+          "cusip": "595112103",
+          "valueUsd": 3331465626,
+          "shares": 2886160,
+          "shareType": "SH",
+          "putCall": null,
+          "portfolioWeightPct": 2.15
+        },
+        {
+          "issuer": "ISHARES TR",
+          "titleClass": "CORE S&P500 ETF",
+          "cusip": "464287200",
+          "valueUsd": 3084943766,
+          "shares": 4119355,
+          "shareType": "SH",
+          "putCall": null,
+          "portfolioWeightPct": 1.99
+        }
+      ],
+      "changes": {
+        "new": [
+          {
+            "issuer": "HARBOR ETF TRUST",
+            "titleClass": "PANA DY CORE ETF",
+            "putCall": null,
+            "currentShares": 24565625,
+            "previousShares": 0,
+            "currentValueUsd": 668030237,
+            "previousValueUsd": 0,
+            "shareChangePct": null
+          },
+          {
+            "issuer": "SPACE EXPLORATION TECHN CORP",
+            "titleClass": "CLASS A COM STK",
+            "putCall": null,
+            "currentShares": 3500000,
+            "previousShares": 0,
+            "currentValueUsd": 598010000,
+            "previousValueUsd": 0,
+            "shareChangePct": null
+          },
+          {
+            "issuer": "T ROWE PRICE EXCHANGE-TRADED",
+            "titleClass": "US EQUI RESH ETF",
+            "putCall": null,
+            "currentShares": 9513375,
+            "previousShares": 0,
+            "currentValueUsd": 452170714,
+            "previousValueUsd": 0,
+            "shareChangePct": null
+          },
+          {
+            "issuer": "CUMMINS INC",
+            "titleClass": "COM",
+            "putCall": null,
+            "currentShares": 416179,
+            "previousShares": 0,
+            "currentValueUsd": 296823025,
+            "previousValueUsd": 0,
+            "shareChangePct": null
+          },
+          {
+            "issuer": "MARSH & MCLENNAN COS INC",
+            "titleClass": "COM",
+            "putCall": null,
+            "currentShares": 1128564,
+            "previousShares": 0,
+            "currentValueUsd": 188097762,
+            "previousValueUsd": 0,
+            "shareChangePct": null
+          },
+          {
+            "issuer": "HONEYWELL INTL INC",
+            "titleClass": "COM",
+            "putCall": null,
+            "currentShares": 750586,
+            "previousShares": 0,
+            "currentValueUsd": 168056205,
+            "previousValueUsd": 0,
+            "shareChangePct": null
+          },
+          {
+            "issuer": "HONEYWELL AEROSPACE INC",
+            "titleClass": "COM",
+            "putCall": null,
+            "currentShares": 750586,
+            "previousShares": 0,
+            "currentValueUsd": 165939553,
+            "previousValueUsd": 0,
+            "shareChangePct": null
+          },
+          {
+            "issuer": "CARNIVAL CORP LTD",
+            "titleClass": "COMMON SHARES",
+            "putCall": null,
+            "currentShares": 3228771,
+            "previousShares": 0,
+            "currentValueUsd": 92245987,
+            "previousValueUsd": 0,
+            "shareChangePct": null
+          }
+        ],
+        "increased": [
+          {
+            "issuer": "APPLE INC",
+            "titleClass": "COM",
+            "putCall": null,
+            "currentShares": 31517924,
+            "previousShares": 31019702,
+            "currentValueUsd": 9120026489,
+            "previousValueUsd": 7872490171,
+            "shareChangePct": 1.6
+          },
+          {
+            "issuer": "MICROSOFT CORP",
+            "titleClass": "COM",
+            "putCall": null,
+            "currentShares": 15239745,
+            "previousShares": 14917409,
+            "currentValueUsd": 5684729680,
+            "previousValueUsd": 5521977290,
+            "shareChangePct": 2.2
+          },
+          {
+            "issuer": "AMAZON COM INC",
+            "titleClass": "COM",
+            "putCall": null,
+            "currentShares": 20970745,
+            "previousShares": 20442324,
+            "currentValueUsd": 4998167363,
+            "previousValueUsd": 4257522819,
+            "shareChangePct": 2.6
+          },
+          {
+            "issuer": "ALPHABET INC",
+            "titleClass": "CAP STK CL A",
+            "putCall": null,
+            "currentShares": 13098297,
+            "previousShares": 12793377,
+            "currentValueUsd": 4680938399,
+            "previousValueUsd": 3678863490,
+            "shareChangePct": 2.4
+          },
+          {
+            "issuer": "BROADCOM INC",
+            "titleClass": "COM",
+            "putCall": null,
+            "currentShares": 9612865,
+            "previousShares": 9382706,
+            "currentValueUsd": 3631259754,
+            "previousValueUsd": 2904041334,
+            "shareChangePct": 2.5
+          },
+          {
+            "issuer": "META PLATFORMS INC",
+            "titleClass": "CL A",
+            "putCall": null,
+            "currentShares": 4850873,
+            "previousShares": 4695451,
+            "currentValueUsd": 2732448252,
+            "previousValueUsd": 2686408381,
+            "shareChangePct": 3.3
+          },
+          {
+            "issuer": "TESLA INC",
+            "titleClass": "COM",
+            "putCall": null,
+            "currentShares": 6022001,
+            "previousShares": 5890660,
+            "currentValueUsd": 2532853621,
+            "previousValueUsd": 2189852855,
+            "shareChangePct": 2.2
+          },
+          {
+            "issuer": "ADVANCED MICRO DEVICES INC",
+            "titleClass": "COM",
+            "putCall": null,
+            "currentShares": 3600765,
+            "previousShares": 3551712,
+            "currentValueUsd": 2091720396,
+            "previousValueUsd": 722524772,
+            "shareChangePct": 1.4
+          }
+        ],
+        "decreased": [
+          {
+            "issuer": "NVIDIA CORPORATION",
+            "titleClass": "COM",
+            "putCall": null,
+            "currentShares": 50834621,
+            "previousShares": 51274183,
+            "currentValueUsd": 10171499316,
+            "previousValueUsd": 8942217515,
+            "shareChangePct": -0.9
+          },
+          {
+            "issuer": "ALPHABET INC",
+            "titleClass": "CAP STK CL C",
+            "putCall": null,
+            "currentShares": 10550690,
+            "previousShares": 10612812,
+            "currentValueUsd": 3727875298,
+            "previousValueUsd": 3044391250,
+            "shareChangePct": -0.6
+          },
+          {
+            "issuer": "INTEL CORP",
+            "titleClass": "COM",
+            "putCall": null,
+            "currentShares": 9999492,
+            "previousShares": 10203663,
+            "currentValueUsd": 1396229068,
+            "previousValueUsd": 450287648,
+            "shareChangePct": -2.0
+          },
+          {
+            "issuer": "WESTERN DIGITAL CORP",
+            "titleClass": "COM",
+            "putCall": null,
+            "currentShares": 1380902,
+            "previousShares": 1437962,
+            "currentValueUsd": 882009725,
+            "previousValueUsd": 388954341,
+            "shareChangePct": -4.0
+          },
+          {
+            "issuer": "MARVELL TECHNOLOGY INC",
+            "titleClass": "COM",
+            "putCall": null,
+            "currentShares": 2796524,
+            "previousShares": 2868864,
+            "currentValueUsd": 833056534,
+            "previousValueUsd": 284160979,
+            "shareChangePct": -2.5
+          },
+          {
+            "issuer": "GOLDMAN SACHS GROUP INC",
+            "titleClass": "COM",
+            "putCall": null,
+            "currentShares": 670463,
+            "previousShares": 674837,
+            "currentValueUsd": 678086164,
+            "previousValueUsd": 570905354,
+            "shareChangePct": -0.6
+          },
+          {
+            "issuer": "PALO ALTO NETWORKS INC",
+            "titleClass": "COM",
+            "putCall": null,
+            "currentShares": 1955902,
+            "previousShares": 2151333,
+            "currentValueUsd": 667001700,
+            "previousValueUsd": 344901707,
+            "shareChangePct": -9.1
+          },
+          {
+            "issuer": "CITIGROUP INC",
+            "titleClass": "COM NEW",
+            "putCall": null,
+            "currentShares": 3959126,
+            "previousShares": 4051107,
+            "currentValueUsd": 554119275,
+            "previousValueUsd": 459436045,
+            "shareChangePct": -2.3
+          }
+        ],
+        "exited": [
+          {
+            "issuer": "HARBOR ETF TRUST",
+            "titleClass": "PANAGORA DYNAMIC",
+            "putCall": null,
+            "currentShares": 0,
+            "previousShares": 24565625,
+            "currentValueUsd": 0,
+            "previousValueUsd": 577046531,
+            "shareChangePct": -100.0
+          },
+          {
+            "issuer": "T ROWE PRICE ETF INC",
+            "titleClass": "US EQUITY RESEAR",
+            "putCall": null,
+            "currentShares": 0,
+            "previousShares": 9513375,
+            "currentValueUsd": 0,
+            "previousValueUsd": 389097038,
+            "shareChangePct": -100.0
+          },
+          {
+            "issuer": "HONEYWELL INTL INC",
+            "titleClass": "COM",
+            "putCall": null,
+            "currentShares": 0,
+            "previousShares": 1459138,
+            "currentValueUsd": 0,
+            "previousValueUsd": 329808962,
+            "shareChangePct": -100.0
+          },
+          {
+            "issuer": "CUMMINS INC",
+            "titleClass": "0",
+            "putCall": null,
+            "currentShares": 0,
+            "previousShares": 414469,
+            "currentValueUsd": 0,
+            "previousValueUsd": 222992611,
+            "shareChangePct": -100.0
+          },
+          {
+            "issuer": "CARNIVAL CORP",
+            "titleClass": "COMMON STOCK",
+            "putCall": null,
+            "currentShares": 0,
+            "previousShares": 2970311,
+            "currentValueUsd": 0,
+            "previousValueUsd": 76871649,
+            "shareChangePct": -100.0
+          },
+          {
+            "issuer": "COTERRA ENERGY INC",
+            "titleClass": "COM",
+            "putCall": null,
+            "currentShares": 0,
+            "previousShares": 457744,
+            "currentValueUsd": 0,
+            "previousValueUsd": 16085124,
+            "shareChangePct": -100.0
+          },
+          {
+            "issuer": "LOEWS CORP",
+            "titleClass": "COM",
+            "putCall": null,
+            "currentShares": 0,
+            "previousShares": 68545,
+            "currentValueUsd": 0,
+            "previousValueUsd": 7316493,
+            "shareChangePct": -100.0
+          },
+          {
+            "issuer": "PINTEREST INC",
+            "titleClass": "CL A",
+            "putCall": null,
+            "currentShares": 0,
+            "previousShares": 204782,
+            "currentValueUsd": 0,
+            "previousValueUsd": 3755702,
+            "shareChangePct": -100.0
+          }
+        ]
+      },
+      "retrievedAt": "2026-08-15T23:00:24.154860+00:00"
+    },
+    "berkshire": {
+      "id": "berkshire",
+      "name": "Berkshire Hathaway",
+      "managerKo": "워런 버핏",
+      "cik": "0001067983",
+      "status": "AVAILABLE",
+      "sourceMode": "LIVE_SEC",
+      "reportDate": "2026-06-30",
+      "filingDate": "2026-08-14",
+      "previousReportDate": "2026-03-31",
+      "filingUrl": "https://www.sec.gov/Archives/edgar/data/1067983/000119312526352200/xslForm13F_X02/primary_doc.xml",
+      "totalValueUsd": 299253556246,
+      "positionCount": 29,
+      "top5WeightPct": 68.7,
+      "topHoldings": [
+        {
+          "issuer": "APPLE INC",
+          "titleClass": "COM",
+          "cusip": "037833100",
+          "valueUsd": 65950296923,
+          "shares": 227917808,
+          "shareType": "SH",
+          "putCall": null,
+          "portfolioWeightPct": 22.04
+        },
+        {
+          "issuer": "AMERICAN EXPRESS CO",
+          "titleClass": "COM",
+          "cusip": "025816109",
+          "valueUsd": 51282319275,
+          "shares": 151610700,
+          "shareType": "SH",
+          "putCall": null,
+          "portfolioWeightPct": 17.14
+        },
+        {
+          "issuer": "COCA COLA CO",
+          "titleClass": "COM",
+          "cusip": "191216100",
+          "valueUsd": 32508000000,
+          "shares": 400000000,
+          "shareType": "SH",
+          "putCall": null,
+          "portfolioWeightPct": 10.86
+        },
+        {
+          "issuer": "ALPHABET INC",
+          "titleClass": "CAP STK CL A",
+          "cusip": "02079K305",
+          "valueUsd": 28157599351,
+          "shares": 78791167,
+          "shareType": "SH",
+          "putCall": null,
+          "portfolioWeightPct": 9.41
+        },
+        {
+          "issuer": "BANK OF AMER CORP",
+          "titleClass": "COM",
+          "cusip": "060505104",
+          "valueUsd": 27543790975,
+          "shares": 483394015,
+          "shareType": "SH",
+          "putCall": null,
+          "portfolioWeightPct": 9.2
+        },
+        {
+          "issuer": "CHEVRON CORPORATION",
+          "titleClass": "COM",
+          "cusip": "166764100",
+          "valueUsd": 13986141890,
+          "shares": 84375856,
+          "shareType": "SH",
+          "putCall": null,
+          "portfolioWeightPct": 4.67
+        },
+        {
+          "issuer": "OCCIDENTAL PETE CORP",
+          "titleClass": "COM",
+          "cusip": "674599105",
+          "valueUsd": 12868205304,
+          "shares": 264941431,
+          "shareType": "SH",
+          "putCall": null,
+          "portfolioWeightPct": 4.3
+        },
+        {
+          "issuer": "CHUBB LIMITED",
+          "titleClass": "COM",
+          "cusip": "H1467J104",
+          "valueUsd": 11670066615,
+          "shares": 34249183,
+          "shareType": "SH",
+          "putCall": null,
+          "portfolioWeightPct": 3.9
+        },
+        {
+          "issuer": "MOODYS CORP",
+          "titleClass": "COM",
+          "cusip": "615369105",
+          "valueUsd": 11173435852,
+          "shares": 24669778,
+          "shareType": "SH",
+          "putCall": null,
+          "portfolioWeightPct": 3.73
+        },
+        {
+          "issuer": "ALPHABET INC",
+          "titleClass": "CAP STK CL C",
+          "cusip": "02079K107",
+          "valueUsd": 9606489032,
+          "shares": 27188433,
+          "shareType": "SH",
+          "putCall": null,
+          "portfolioWeightPct": 3.21
+        }
+      ],
+      "changes": {
+        "new": [
+          {
+            "issuer": "D R HORTON INC",
+            "titleClass": "COM",
+            "putCall": null,
+            "currentShares": 3564,
+            "previousShares": 0,
+            "currentValueUsd": 580504,
+            "previousValueUsd": 0,
+            "shareChangePct": null
+          }
+        ],
+        "increased": [
+          {
+            "issuer": "ALPHABET INC",
+            "titleClass": "CAP STK CL A",
+            "putCall": null,
+            "currentShares": 78791167,
+            "previousShares": 54249798,
+            "currentValueUsd": 28157599351,
+            "previousValueUsd": 15600071913,
+            "shareChangePct": 45.2
+          },
+          {
+            "issuer": "ALPHABET INC",
+            "titleClass": "CAP STK CL C",
+            "putCall": null,
+            "currentShares": 27188433,
+            "previousShares": 3585215,
+            "currentValueUsd": 9606489032,
+            "previousValueUsd": 1028454775,
+            "shareChangePct": 658.3
+          },
+          {
+            "issuer": "DELTA AIR LINES INC",
+            "titleClass": "COM NEW",
+            "putCall": null,
+            "currentShares": 57320000,
+            "previousShares": 39809456,
+            "currentValueUsd": 5368591200,
+            "previousValueUsd": 2646532635,
+            "shareChangePct": 44.0
+          },
+          {
+            "issuer": "NEW YORK TIMES CO MTN BE",
+            "titleClass": "CL A",
+            "putCall": null,
+            "currentShares": 15700000,
+            "previousShares": 15146535,
+            "currentValueUsd": 1098686000,
+            "previousValueUsd": 1268219376,
+            "shareChangePct": 3.7
+          },
+          {
+            "issuer": "LENNAR CORP",
+            "titleClass": "CL A",
+            "putCall": null,
+            "currentShares": 13111741,
+            "previousShares": 10099642,
+            "currentValueUsd": 1186481443,
+            "previousValueUsd": 877052911,
+            "shareChangePct": 29.8
+          },
+          {
+            "issuer": "MACYS INC",
+            "titleClass": "COM",
+            "putCall": null,
+            "currentShares": 7347426,
+            "previousShares": 3038355,
+            "currentValueUsd": 173031882,
+            "previousValueUsd": 54963842,
+            "shareChangePct": 141.8
+          },
+          {
+            "issuer": "LENNAR CORP",
+            "titleClass": "CL B",
+            "putCall": null,
+            "currentShares": 298117,
+            "previousShares": 237703,
+            "currentValueUsd": 26445959,
+            "previousValueUsd": 19995576,
+            "shareChangePct": 25.4
+          }
+        ],
+        "decreased": [
+          {
+            "issuer": "BANK OF AMER CORP",
+            "titleClass": "COM",
+            "putCall": null,
+            "currentShares": 483394015,
+            "previousShares": 513624165,
+            "currentValueUsd": 27543790975,
+            "previousValueUsd": 25039178044,
+            "shareChangePct": -5.9
+          },
+          {
+            "issuer": "DAVITA INC",
+            "titleClass": "COM",
+            "putCall": null,
+            "currentShares": 28880209,
+            "previousShares": 30100585,
+            "currentValueUsd": 6425268898,
+            "previousValueUsd": 4626158909,
+            "shareChangePct": -4.1
+          },
+          {
+            "issuer": "KROGER CO",
+            "titleClass": "COM",
+            "putCall": null,
+            "currentShares": 39000000,
+            "previousShares": 50000000,
+            "currentValueUsd": 2165670000,
+            "previousValueUsd": 3618000000,
+            "shareChangePct": -22.0
+          },
+          {
+            "issuer": "CAPITAL ONE FINL CORP",
+            "titleClass": "COM",
+            "putCall": null,
+            "currentShares": 3000000,
+            "previousShares": 7150000,
+            "currentValueUsd": 601860000,
+            "previousValueUsd": 1304374500,
+            "shareChangePct": -58.0
+          },
+          {
+            "issuer": "ALLY FINL INC",
+            "titleClass": "COM",
+            "putCall": null,
+            "currentShares": 27000000,
+            "previousShares": 29000000,
+            "currentValueUsd": 1240650000,
+            "previousValueUsd": 1137670000,
+            "shareChangePct": -6.9
+          },
+          {
+            "issuer": "NUCOR CORP",
+            "titleClass": "COM",
+            "putCall": null,
+            "currentShares": 1857752,
+            "previousShares": 3907075,
+            "currentValueUsd": 413814258,
+            "previousValueUsd": 660686383,
+            "shareChangePct": -52.5
+          }
+        ],
+        "exited": [
+          {
+            "issuer": "CONSTELLATION BRANDS INC",
+            "titleClass": "CL A",
+            "putCall": null,
+            "currentShares": 0,
+            "previousShares": 632890,
+            "currentValueUsd": 0,
+            "previousValueUsd": 94933500,
+            "shareChangePct": -100.0
+          }
+        ]
+      },
+      "retrievedAt": "2026-08-15T23:00:24.154860+00:00"
+    },
+    "duquesne": {
+      "id": "duquesne",
+      "name": "Duquesne Family Office",
+      "managerKo": "스탠리 드러켄밀러",
+      "cik": "0001536411",
+      "status": "AVAILABLE",
+      "sourceMode": "LIVE_SEC",
+      "reportDate": "2026-06-30",
+      "filingDate": "2026-08-14",
+      "previousReportDate": "2026-03-31",
+      "filingUrl": "https://www.sec.gov/Archives/edgar/data/1536411/000153641126000006/xslForm13F_X02/primary_doc.xml",
+      "totalValueUsd": 5210856,
+      "positionCount": 95,
+      "top5WeightPct": 32.7,
+      "topHoldings": [
+        {
+          "issuer": "Natera Inc",
+          "titleClass": "COM",
+          "cusip": "632307104",
+          "valueUsd": 864923,
+          "shares": 3186306,
+          "shareType": "SH",
+          "putCall": null,
+          "portfolioWeightPct": 16.6
+        },
+        {
+          "issuer": "Taiwan Semiconductor Manufac",
+          "titleClass": "SPONSORED ADS",
+          "cusip": "874039100",
+          "valueUsd": 281613,
+          "shares": 589680,
+          "shareType": "SH",
+          "putCall": null,
+          "portfolioWeightPct": 5.4
+        },
+        {
+          "issuer": "Stmicroelectronics N V",
+          "titleClass": "NY REGISTRY",
+          "cusip": "861012102",
+          "valueUsd": 232375,
+          "shares": 3102880,
+          "shareType": "SH",
+          "putCall": null,
+          "portfolioWeightPct": 4.46
+        },
+        {
+          "issuer": "Invesco Exchange Traded Fd T",
+          "titleClass": "S&P500 EQL WGT",
+          "cusip": "46137V357",
+          "valueUsd": 174684,
+          "shares": 821000,
+          "shareType": "SH",
+          "putCall": "CALL",
+          "portfolioWeightPct": 3.35
+        },
+        {
+          "issuer": "Insmed Inc",
+          "titleClass": "COM PAR $.01",
+          "cusip": "457669307",
+          "valueUsd": 151900,
+          "shares": 1424690,
+          "shareType": "SH",
+          "putCall": null,
+          "portfolioWeightPct": 2.92
+        },
+        {
+          "issuer": "Ishares Inc",
+          "titleClass": "MSCI BRAZIL ETF",
+          "cusip": "464286400",
+          "valueUsd": 145866,
+          "shares": 4228000,
+          "shareType": "SH",
+          "putCall": "CALL",
+          "portfolioWeightPct": 2.8
+        },
+        {
+          "issuer": "Insmed Inc",
+          "titleClass": "COM PAR $.01",
+          "cusip": "457669307",
+          "valueUsd": 143937,
+          "shares": 1350000,
+          "shareType": "SH",
+          "putCall": "CALL",
+          "portfolioWeightPct": 2.76
+        },
+        {
+          "issuer": "Ypf Sociedad Anonima",
+          "titleClass": "SPON ADR CL D",
+          "cusip": "984245100",
+          "valueUsd": 142726,
+          "shares": 3138897,
+          "shareType": "SH",
+          "putCall": null,
+          "portfolioWeightPct": 2.74
+        },
+        {
+          "issuer": "Amazon Com Inc",
+          "titleClass": "COM",
+          "cusip": "023135106",
+          "valueUsd": 129085,
+          "shares": 541600,
+          "shareType": "SH",
+          "putCall": null,
+          "portfolioWeightPct": 2.48
+        },
+        {
+          "issuer": "Bbb Foods Inc",
+          "titleClass": "CL A COM",
+          "cusip": "G0896C103",
+          "valueUsd": 120915,
+          "shares": 2901733,
+          "shareType": "SH",
+          "putCall": null,
+          "portfolioWeightPct": 2.32
+        }
+      ],
+      "changes": {
+        "new": [
+          {
+            "issuer": "Insmed Inc",
+            "titleClass": "COM PAR $.01",
+            "putCall": "CALL",
+            "currentShares": 1350000,
+            "previousShares": 0,
+            "currentValueUsd": 143937,
+            "previousValueUsd": 0,
+            "shareChangePct": null
+          },
+          {
+            "issuer": "Alphabet Inc",
+            "titleClass": "CAP STK CL A",
+            "putCall": null,
+            "currentShares": 336300,
+            "previousShares": 0,
+            "currentValueUsd": 120184,
+            "previousValueUsd": 0,
+            "shareChangePct": null
+          },
+          {
+            "issuer": "Fox Corp",
+            "titleClass": "CL A COM",
+            "putCall": null,
+            "currentShares": 2204600,
+            "previousShares": 0,
+            "currentValueUsd": 114992,
+            "previousValueUsd": 0,
+            "shareChangePct": null
+          },
+          {
+            "issuer": "Cdw Corp",
+            "titleClass": "COM",
+            "putCall": null,
+            "currentShares": 743950,
+            "previousShares": 0,
+            "currentValueUsd": 104629,
+            "previousValueUsd": 0,
+            "shareChangePct": null
+          },
+          {
+            "issuer": "Bitdeer Technologies Group",
+            "titleClass": "CL A ORD SHS",
+            "putCall": null,
+            "currentShares": 4074993,
+            "previousShares": 0,
+            "currentValueUsd": 64670,
+            "previousValueUsd": 0,
+            "shareChangePct": null
+          },
+          {
+            "issuer": "Delta Air Lines Inc",
+            "titleClass": "COM NEW",
+            "putCall": null,
+            "currentShares": 603000,
+            "previousShares": 0,
+            "currentValueUsd": 56477,
+            "previousValueUsd": 0,
+            "shareChangePct": null
+          },
+          {
+            "issuer": "Tesla Inc",
+            "titleClass": "COM",
+            "putCall": "CALL",
+            "currentShares": 126000,
+            "previousShares": 0,
+            "currentValueUsd": 52996,
+            "previousValueUsd": 0,
+            "shareChangePct": null
+          },
+          {
+            "issuer": "Fluor Corp",
+            "titleClass": "COM",
+            "putCall": null,
+            "currentShares": 982200,
+            "previousShares": 0,
+            "currentValueUsd": 51457,
+            "previousValueUsd": 0,
+            "shareChangePct": null
+          }
+        ],
+        "increased": [
+          {
+            "issuer": "Natera Inc",
+            "titleClass": "COM",
+            "putCall": null,
+            "currentShares": 3186306,
+            "previousShares": 3063606,
+            "currentValueUsd": 864923,
+            "previousValueUsd": 612691,
+            "shareChangePct": 4.0
+          },
+          {
+            "issuer": "Taiwan Semiconductor Manufac",
+            "titleClass": "SPONSORED ADS",
+            "putCall": null,
+            "currentShares": 589680,
+            "previousShares": 495280,
+            "currentValueUsd": 281613,
+            "previousValueUsd": 167380,
+            "shareChangePct": 19.1
+          },
+          {
+            "issuer": "Stmicroelectronics N V",
+            "titleClass": "NY REGISTRY",
+            "putCall": null,
+            "currentShares": 3102880,
+            "previousShares": 2612880,
+            "currentValueUsd": 232375,
+            "previousValueUsd": 90275,
+            "shareChangePct": 18.8
+          },
+          {
+            "issuer": "Insmed Inc",
+            "titleClass": "COM PAR $.01",
+            "putCall": null,
+            "currentShares": 1424690,
+            "previousShares": 1154090,
+            "currentValueUsd": 151900,
+            "previousValueUsd": 188717,
+            "shareChangePct": 23.4
+          },
+          {
+            "issuer": "Amazon Com Inc",
+            "titleClass": "COM",
+            "putCall": null,
+            "currentShares": 541600,
+            "previousShares": 45800,
+            "currentValueUsd": 129085,
+            "previousValueUsd": 9539,
+            "shareChangePct": 1082.5
+          },
+          {
+            "issuer": "Seagate Technology Hldngs Pl",
+            "titleClass": "ORD SHS",
+            "putCall": null,
+            "currentShares": 122000,
+            "previousShares": 50700,
+            "currentValueUsd": 117730,
+            "previousValueUsd": 19862,
+            "shareChangePct": 140.6
+          },
+          {
+            "issuer": "Amazon Com Inc",
+            "titleClass": "COM",
+            "putCall": "CALL",
+            "currentShares": 459300,
+            "previousShares": 200000,
+            "currentValueUsd": 109470,
+            "previousValueUsd": 41654,
+            "shareChangePct": 129.7
+          },
+          {
+            "issuer": "United Airls Hldgs Inc",
+            "titleClass": "COM",
+            "putCall": null,
+            "currentShares": 794795,
+            "previousShares": 262495,
+            "currentValueUsd": 108084,
+            "previousValueUsd": 24168,
+            "shareChangePct": 202.8
+          }
+        ],
+        "decreased": [
+          {
+            "issuer": "Ypf Sociedad Anonima",
+            "titleClass": "SPON ADR CL D",
+            "putCall": null,
+            "currentShares": 3138897,
+            "previousShares": 3235962,
+            "currentValueUsd": 142726,
+            "previousValueUsd": 149566,
+            "shareChangePct": -3.0
+          },
+          {
+            "issuer": "Bbb Foods Inc",
+            "titleClass": "CL A COM",
+            "putCall": null,
+            "currentShares": 2901733,
+            "previousShares": 3109202,
+            "currentValueUsd": 120915,
+            "previousValueUsd": 109972,
+            "shareChangePct": -6.7
+          },
+          {
+            "issuer": "Alcoa Corp",
+            "titleClass": "COM",
+            "putCall": null,
+            "currentShares": 185640,
+            "previousShares": 1493390,
+            "currentValueUsd": 9679,
+            "previousValueUsd": 99057,
+            "shareChangePct": -87.6
+          },
+          {
+            "issuer": "Sandisk Corp",
+            "titleClass": "COM",
+            "putCall": null,
+            "currentShares": 34900,
+            "previousShares": 38155,
+            "currentValueUsd": 79353,
+            "previousValueUsd": 24241,
+            "shareChangePct": -8.5
+          },
+          {
+            "issuer": "Woodward Inc",
+            "titleClass": "COM",
+            "putCall": null,
+            "currentShares": 67194,
+            "previousShares": 211355,
+            "currentValueUsd": 28587,
+            "previousValueUsd": 75648,
+            "shareChangePct": -68.2
+          },
+          {
+            "issuer": "Teva Pharmaceutical Inds Ltd",
+            "titleClass": "SPONSORED ADS",
+            "putCall": null,
+            "currentShares": 624999,
+            "previousShares": 2377285,
+            "currentValueUsd": 21175,
+            "previousValueUsd": 71604,
+            "shareChangePct": -73.7
+          },
+          {
+            "issuer": "Roku Inc",
+            "titleClass": "COM CL A",
+            "putCall": null,
+            "currentShares": 184055,
+            "previousShares": 750190,
+            "currentValueUsd": 25425,
+            "previousValueUsd": 70983,
+            "shareChangePct": -75.5
+          },
+          {
+            "issuer": "Global X Fds",
+            "titleClass": "GB MSCI AR ETF",
+            "putCall": null,
+            "currentShares": 328800,
+            "previousShares": 387400,
+            "currentValueUsd": 30019,
+            "previousValueUsd": 36152,
+            "shareChangePct": -15.1
+          }
+        ],
+        "exited": [
+          {
+            "issuer": "Broadcom Inc",
+            "titleClass": "COM",
+            "putCall": null,
+            "currentShares": 0,
+            "previousShares": 195955,
+            "currentValueUsd": 0,
+            "previousValueUsd": 60650,
+            "shareChangePct": -100.0
+          },
+          {
+            "issuer": "Option Care Health Inc",
+            "titleClass": "COM NEW",
+            "putCall": null,
+            "currentShares": 0,
+            "previousShares": 1868550,
+            "currentValueUsd": 0,
+            "previousValueUsd": 50301,
+            "shareChangePct": -100.0
+          },
+          {
+            "issuer": "Figure Technology Solutio",
+            "titleClass": "COM CL A",
+            "putCall": null,
+            "currentShares": 0,
+            "previousShares": 1150415,
+            "currentValueUsd": 0,
+            "previousValueUsd": 39057,
+            "shareChangePct": -100.0
+          },
+          {
+            "issuer": "Restaurant Brands Intl Inc",
+            "titleClass": "COM",
+            "putCall": null,
+            "currentShares": 0,
+            "previousShares": 454435,
+            "currentValueUsd": 0,
+            "previousValueUsd": 33583,
+            "shareChangePct": -100.0
+          },
+          {
+            "issuer": "Lattice Semiconductor Corp",
+            "titleClass": "COM",
+            "putCall": null,
+            "currentShares": 0,
+            "previousShares": 323135,
+            "currentValueUsd": 0,
+            "previousValueUsd": 29974,
+            "shareChangePct": -100.0
+          },
+          {
+            "issuer": "Humana Inc",
+            "titleClass": "COM",
+            "putCall": null,
+            "currentShares": 0,
+            "previousShares": 137505,
+            "currentValueUsd": 0,
+            "previousValueUsd": 23842,
+            "shareChangePct": -100.0
+          },
+          {
+            "issuer": "Twilio Inc",
+            "titleClass": "CL A",
+            "putCall": null,
+            "currentShares": 0,
+            "previousShares": 181760,
+            "currentValueUsd": 0,
+            "previousValueUsd": 22869,
+            "shareChangePct": -100.0
+          },
+          {
+            "issuer": "Jabil Inc",
+            "titleClass": "COM",
+            "putCall": null,
+            "currentShares": 0,
+            "previousShares": 82200,
+            "currentValueUsd": 0,
+            "previousValueUsd": 21835,
+            "shareChangePct": -100.0
+          }
+        ]
+      },
+      "retrievedAt": "2026-08-15T23:00:24.154860+00:00"
+    },
+    "bridgewater": {
+      "id": "bridgewater",
+      "name": "Bridgewater Associates",
+      "managerKo": "브리지워터",
+      "cik": "0001350694",
+      "status": "AVAILABLE",
+      "sourceMode": "LIVE_SEC",
+      "reportDate": "2026-06-30",
+      "filingDate": "2026-08-14",
+      "previousReportDate": "2026-03-31",
+      "filingUrl": "https://www.sec.gov/Archives/edgar/data/1350694/000135069426000003/xslForm13F_X02/primary_doc.xml",
+      "totalValueUsd": 24376086530,
+      "positionCount": 997,
+      "top5WeightPct": 32.7,
+      "topHoldings": [
+        {
+          "issuer": "STATE STR SPDR S&P 500 ETF T",
+          "titleClass": "TR UNIT",
+          "cusip": "78462F103",
+          "valueUsd": 3973046405,
+          "shares": 5320308,
+          "shareType": "SH",
+          "putCall": null,
+          "portfolioWeightPct": 16.3
+        },
+        {
+          "issuer": "ISHARES TR",
+          "titleClass": "CORE S&P500 ETF",
+          "cusip": "464287200",
+          "valueUsd": 2248381963,
+          "shares": 3002286,
+          "shareType": "SH",
+          "putCall": null,
+          "portfolioWeightPct": 9.22
+        },
+        {
+          "issuer": "NVIDIA CORPORATION",
+          "titleClass": "COM",
+          "cusip": "67066G104",
+          "valueUsd": 773586958,
+          "shares": 3866195,
+          "shareType": "SH",
+          "putCall": null,
+          "portfolioWeightPct": 3.17
+        },
+        {
+          "issuer": "BROADCOM INC",
+          "titleClass": "COM",
+          "cusip": "11135F101",
+          "valueUsd": 497845413,
+          "shares": 1317923,
+          "shareType": "SH",
+          "putCall": null,
+          "portfolioWeightPct": 2.04
+        },
+        {
+          "issuer": "AMAZON COM INC",
+          "titleClass": "COM",
+          "cusip": "023135106",
+          "valueUsd": 482753142,
+          "shares": 2025481,
+          "shareType": "SH",
+          "putCall": null,
+          "portfolioWeightPct": 1.98
+        },
+        {
+          "issuer": "ALPHABET INC",
+          "titleClass": "CAP STK CL A",
+          "cusip": "02079K305",
+          "valueUsd": 472506037,
+          "shares": 1322176,
+          "shareType": "SH",
+          "putCall": null,
+          "portfolioWeightPct": 1.94
+        },
+        {
+          "issuer": "LAM RESEARCH CORP",
+          "titleClass": "COM NEW",
+          "cusip": "512807306",
+          "valueUsd": 406560606,
+          "shares": 938224,
+          "shareType": "SH",
+          "putCall": null,
+          "portfolioWeightPct": 1.67
+        },
+        {
+          "issuer": "VANGUARD INDEX FDS",
+          "titleClass": "S&P 500 ETF SHS",
+          "cusip": "922908363",
+          "valueUsd": 314820655,
+          "shares": 458381,
+          "shareType": "SH",
+          "putCall": null,
+          "portfolioWeightPct": 1.29
+        },
+        {
+          "issuer": "ADVANCED MICRO DEVICES INC",
+          "titleClass": "COM",
+          "cusip": "007903107",
+          "valueUsd": 312896715,
+          "shares": 538632,
+          "shareType": "SH",
+          "putCall": null,
+          "portfolioWeightPct": 1.28
+        },
+        {
+          "issuer": "ISHARES INC",
+          "titleClass": "MSCI STH KOR ETF",
+          "cusip": "464286772",
+          "valueUsd": 279585467,
+          "shares": 1384772,
+          "shareType": "SH",
+          "putCall": null,
+          "portfolioWeightPct": 1.15
+        }
+      ],
+      "changes": {
+        "new": [
+          {
+            "issuer": "EVERSOURCE ENERGY",
+            "titleClass": "COM",
+            "putCall": null,
+            "currentShares": 1195140,
+            "previousShares": 0,
+            "currentValueUsd": 86372768,
+            "previousValueUsd": 0,
+            "shareChangePct": null
+          },
+          {
+            "issuer": "APPLOVIN CORP",
+            "titleClass": "COM CL A",
+            "putCall": null,
+            "currentShares": 146602,
+            "previousShares": 0,
+            "currentValueUsd": 75533748,
+            "previousValueUsd": 0,
+            "shareChangePct": null
+          },
+          {
+            "issuer": "CONSOLIDATED EDISON INC",
+            "titleClass": "COM",
+            "putCall": null,
+            "currentShares": 623641,
+            "previousShares": 0,
+            "currentValueUsd": 68993404,
+            "previousValueUsd": 0,
+            "shareChangePct": null
+          },
+          {
+            "issuer": "NISOURCE INC",
+            "titleClass": "COM",
+            "putCall": null,
+            "currentShares": 1410001,
+            "previousShares": 0,
+            "currentValueUsd": 67045548,
+            "previousValueUsd": 0,
+            "shareChangePct": null
+          },
+          {
+            "issuer": "SERVICENOW INC",
+            "titleClass": "COM",
+            "putCall": null,
+            "currentShares": 635381,
+            "previousShares": 0,
+            "currentValueUsd": 63080626,
+            "previousValueUsd": 0,
+            "shareChangePct": null
+          },
+          {
+            "issuer": "DUKE ENERGY CORP NEW",
+            "titleClass": "COM NEW",
+            "putCall": null,
+            "currentShares": 442098,
+            "previousShares": 0,
+            "currentValueUsd": 55960765,
+            "previousValueUsd": 0,
+            "shareChangePct": null
+          },
+          {
+            "issuer": "NUTANIX INC",
+            "titleClass": "CL A",
+            "putCall": null,
+            "currentShares": 998761,
+            "previousShares": 0,
+            "currentValueUsd": 50896861,
+            "previousValueUsd": 0,
+            "shareChangePct": null
+          },
+          {
+            "issuer": "APA CORPORATION",
+            "titleClass": "COM",
+            "putCall": null,
+            "currentShares": 1444176,
+            "previousShares": 0,
+            "currentValueUsd": 47036812,
+            "previousValueUsd": 0,
+            "shareChangePct": null
+          }
+        ],
+        "increased": [
+          {
+            "issuer": "STATE STR SPDR S&P 500 ETF T",
+            "titleClass": "TR UNIT",
+            "putCall": null,
+            "currentShares": 5320308,
+            "previousShares": 4364862,
+            "currentValueUsd": 3973046405,
+            "previousValueUsd": 2838644353,
+            "shareChangePct": 21.9
+          },
+          {
+            "issuer": "ISHARES TR",
+            "titleClass": "CORE S&P500 ETF",
+            "putCall": null,
+            "currentShares": 3002286,
+            "previousShares": 2679084,
+            "currentValueUsd": 2248381963,
+            "previousValueUsd": 1750004460,
+            "shareChangePct": 12.1
+          },
+          {
+            "issuer": "VANGUARD INDEX FDS",
+            "titleClass": "S&P 500 ETF SHS",
+            "putCall": null,
+            "currentShares": 458381,
+            "previousShares": 158628,
+            "currentValueUsd": 314820655,
+            "previousValueUsd": 94788161,
+            "shareChangePct": 189.0
+          },
+          {
+            "issuer": "NEWMONT CORP",
+            "titleClass": "COM",
+            "putCall": null,
+            "currentShares": 2695170,
+            "previousShares": 2316641,
+            "currentValueUsd": 251728878,
+            "previousValueUsd": 250776388,
+            "shareChangePct": 16.3
+          },
+          {
+            "issuer": "VANGUARD INTL EQUITY INDEX F",
+            "titleClass": "FTSE EMR MKT ETF",
+            "putCall": null,
+            "currentShares": 2746819,
+            "previousShares": 2721740,
+            "currentValueUsd": 163957626,
+            "previousValueUsd": 147110047,
+            "shareChangePct": 0.9
+          },
+          {
+            "issuer": "KLA CORP",
+            "titleClass": "COM NEW",
+            "putCall": null,
+            "currentShares": 328070,
+            "previousShares": 108674,
+            "currentValueUsd": 98982000,
+            "previousValueUsd": 160012684,
+            "shareChangePct": 201.9
+          },
+          {
+            "issuer": "ISHARES TR",
+            "titleClass": "MBS ETF",
+            "putCall": null,
+            "currentShares": 1386800,
+            "previousShares": 1360000,
+            "currentValueUsd": 131080336,
+            "previousValueUsd": 129132000,
+            "shareChangePct": 2.0
+          },
+          {
+            "issuer": "BARRICK MNG CORP",
+            "titleClass": "COM SHS",
+            "putCall": null,
+            "currentShares": 3304836,
+            "previousShares": 3079243,
+            "currentValueUsd": 121387233,
+            "previousValueUsd": 125599704,
+            "shareChangePct": 7.3
+          }
+        ],
+        "decreased": [
+          {
+            "issuer": "AMAZON COM INC",
+            "titleClass": "COM",
+            "putCall": null,
+            "currentShares": 2025481,
+            "previousShares": 4388711,
+            "currentValueUsd": 482753142,
+            "previousValueUsd": 914036840,
+            "shareChangePct": -53.8
+          },
+          {
+            "issuer": "NVIDIA CORPORATION",
+            "titleClass": "COM",
+            "putCall": null,
+            "currentShares": 3866195,
+            "previousShares": 4693003,
+            "currentValueUsd": 773586958,
+            "previousValueUsd": 818459723,
+            "shareChangePct": -17.6
+          },
+          {
+            "issuer": "ALPHABET INC",
+            "titleClass": "CAP STK CL A",
+            "putCall": null,
+            "currentShares": 1322176,
+            "previousShares": 1997674,
+            "currentValueUsd": 472506037,
+            "previousValueUsd": 574451135,
+            "shareChangePct": -33.8
+          },
+          {
+            "issuer": "BROADCOM INC",
+            "titleClass": "COM",
+            "putCall": null,
+            "currentShares": 1317923,
+            "previousShares": 1835380,
+            "currentValueUsd": 497845413,
+            "previousValueUsd": 568068464,
+            "shareChangePct": -28.2
+          },
+          {
+            "issuer": "MICRON TECHNOLOGY INC",
+            "titleClass": "COM",
+            "putCall": null,
+            "currentShares": 116666,
+            "previousShares": 1475704,
+            "currentValueUsd": 134666397,
+            "previousValueUsd": 498551839,
+            "shareChangePct": -92.1
+          },
+          {
+            "issuer": "LAM RESEARCH CORP",
+            "titleClass": "COM NEW",
+            "putCall": null,
+            "currentShares": 938224,
+            "previousShares": 1571229,
+            "currentValueUsd": 406560606,
+            "previousValueUsd": 335708788,
+            "shareChangePct": -40.3
+          },
+          {
+            "issuer": "MICROSOFT CORP",
+            "titleClass": "COM",
+            "putCall": null,
+            "currentShares": 711896,
+            "previousShares": 1084979,
+            "currentValueUsd": 265551446,
+            "previousValueUsd": 401626676,
+            "shareChangePct": -34.4
+          },
+          {
+            "issuer": "GE VERNOVA INC",
+            "titleClass": "COM",
+            "putCall": null,
+            "currentShares": 122768,
+            "previousShares": 434897,
+            "currentValueUsd": 144235212,
+            "previousValueUsd": 379621591,
+            "shareChangePct": -71.8
+          }
+        ],
+        "exited": [
+          {
+            "issuer": "CISCO SYS INC",
+            "titleClass": "COM",
+            "putCall": null,
+            "currentShares": 0,
+            "previousShares": 822892,
+            "currentValueUsd": 0,
+            "previousValueUsd": 63848190,
+            "shareChangePct": -100.0
+          },
+          {
+            "issuer": "ASE TECHNOLOGY HLDG CO LTD",
+            "titleClass": "SPONSORED ADS",
+            "putCall": null,
+            "currentShares": 0,
+            "previousShares": 1547859,
+            "currentValueUsd": 0,
+            "previousValueUsd": 33557583,
+            "shareChangePct": -100.0
+          },
+          {
+            "issuer": "COREWEAVE INC",
+            "titleClass": "COM CL A",
+            "putCall": null,
+            "currentShares": 0,
+            "previousShares": 364025,
+            "currentValueUsd": 0,
+            "previousValueUsd": 28201017,
+            "shareChangePct": -100.0
+          },
+          {
+            "issuer": "PRIMORIS SVCS CORP",
+            "titleClass": "COM",
+            "putCall": null,
+            "currentShares": 0,
+            "previousShares": 136170,
+            "currentValueUsd": 0,
+            "previousValueUsd": 19477757,
+            "shareChangePct": -100.0
+          },
+          {
+            "issuer": "BROOKFIELD CORP",
+            "titleClass": "CL A LTD VT SH",
+            "putCall": null,
+            "currentShares": 0,
+            "previousShares": 477453,
+            "currentValueUsd": 0,
+            "previousValueUsd": 19286643,
+            "shareChangePct": -100.0
+          },
+          {
+            "issuer": "APPLIED OPTOELECTRONICS INC",
+            "titleClass": "COM",
+            "putCall": null,
+            "currentShares": 0,
+            "previousShares": 223935,
+            "currentValueUsd": 0,
+            "previousValueUsd": 18942662,
+            "shareChangePct": -100.0
+          },
+          {
+            "issuer": "PALANTIR TECHNOLOGIES INC",
+            "titleClass": "CL A",
+            "putCall": null,
+            "currentShares": 0,
+            "previousShares": 128186,
+            "currentValueUsd": 0,
+            "previousValueUsd": 18751048,
+            "shareChangePct": -100.0
+          },
+          {
+            "issuer": "NEBIUS GROUP N.V.",
+            "titleClass": "SHS CLASS A",
+            "putCall": null,
+            "currentShares": 0,
+            "previousShares": 157064,
+            "currentValueUsd": 0,
+            "previousValueUsd": 16296961,
+            "shareChangePct": -100.0
+          }
+        ]
+      },
+      "retrievedAt": "2026-08-15T23:00:24.154860+00:00"
+    },
+    "tiger-global": {
+      "id": "tiger-global",
+      "name": "Tiger Global Management",
+      "managerKo": "타이거 글로벌",
+      "cik": "0001167483",
+      "status": "AVAILABLE",
+      "sourceMode": "LIVE_SEC",
+      "reportDate": "2026-06-30",
+      "filingDate": "2026-08-14",
+      "previousReportDate": "2026-03-31",
+      "filingUrl": "https://www.sec.gov/Archives/edgar/data/1167483/000091957426005427/xslForm13F_X02/primary_doc.xml",
+      "totalValueUsd": 23981506027,
+      "positionCount": 46,
+      "top5WeightPct": 44.0,
+      "topHoldings": [
+        {
+          "issuer": "TAIWAN SEMICONDUCTOR MANUFAC",
+          "titleClass": "SPONSORED ADS",
+          "cusip": "874039100",
+          "valueUsd": 2331022991,
+          "shares": 4881008,
+          "shareType": "SH",
+          "putCall": null,
+          "portfolioWeightPct": 9.72
+        },
+        {
+          "issuer": "AMAZON COM INC",
+          "titleClass": "COM",
+          "cusip": "023135106",
+          "valueUsd": 2307979214,
+          "shares": 9683558,
+          "shareType": "SH",
+          "putCall": null,
+          "portfolioWeightPct": 9.62
+        },
+        {
+          "issuer": "NVIDIA CORPORATION",
+          "titleClass": "COM",
+          "cusip": "67066G104",
+          "valueUsd": 2240762490,
+          "shares": 11198773,
+          "shareType": "SH",
+          "putCall": null,
+          "portfolioWeightPct": 9.34
+        },
+        {
+          "issuer": "ALPHABET INC",
+          "titleClass": "CAP STK CL A",
+          "cusip": "02079K305",
+          "valueUsd": 2074778363,
+          "shares": 5805687,
+          "shareType": "SH",
+          "putCall": null,
+          "portfolioWeightPct": 8.65
+        },
+        {
+          "issuer": "META PLATFORMS INC",
+          "titleClass": "CL A",
+          "cusip": "30303M102",
+          "valueUsd": 1590269062,
+          "shares": 2823180,
+          "shareType": "SH",
+          "putCall": null,
+          "portfolioWeightPct": 6.63
+        },
+        {
+          "issuer": "LAM RESEARCH CORP",
+          "titleClass": "COM NEW",
+          "cusip": "512807306",
+          "valueUsd": 1370837288,
+          "shares": 3163495,
+          "shareType": "SH",
+          "putCall": null,
+          "portfolioWeightPct": 5.72
+        },
+        {
+          "issuer": "SEA LTD",
+          "titleClass": "SPONSORD ADS",
+          "cusip": "81141R100",
+          "valueUsd": 1203543536,
+          "shares": 12559152,
+          "shareType": "SH",
+          "putCall": null,
+          "portfolioWeightPct": 5.02
+        },
+        {
+          "issuer": "APPLIED MATLS INC",
+          "titleClass": "COM",
+          "cusip": "038222105",
+          "valueUsd": 1180087830,
+          "shares": 1632210,
+          "shareType": "SH",
+          "putCall": null,
+          "portfolioWeightPct": 4.92
+        },
+        {
+          "issuer": "GE VERNOVA INC",
+          "titleClass": "COM",
+          "cusip": "36828A101",
+          "valueUsd": 936963773,
+          "shares": 797511,
+          "shareType": "SH",
+          "putCall": null,
+          "portfolioWeightPct": 3.91
+        },
+        {
+          "issuer": "MICROSOFT CORP",
+          "titleClass": "COM",
+          "cusip": "594918104",
+          "valueUsd": 845603887,
+          "shares": 2266913,
+          "shareType": "SH",
+          "putCall": null,
+          "portfolioWeightPct": 3.53
+        }
+      ],
+      "changes": {
+        "new": [
+          {
+            "issuer": "CEREBRAS SYSTEMS INC",
+            "titleClass": "COM CL A",
+            "putCall": null,
+            "currentShares": 2999000,
+            "previousShares": 0,
+            "currentValueUsd": 662779000,
+            "previousValueUsd": 0,
+            "shareChangePct": null
+          },
+          {
+            "issuer": "ADVANCED MICRO DEVICES INC",
+            "titleClass": "COM",
+            "putCall": null,
+            "currentShares": 674727,
+            "previousShares": 0,
+            "currentValueUsd": 391955662,
+            "previousValueUsd": 0,
+            "shareChangePct": null
+          },
+          {
+            "issuer": "SEAGATE TECHNOLOGY HLDNGS PL",
+            "titleClass": "ORD SHS",
+            "putCall": null,
+            "currentShares": 285100,
+            "previousShares": 0,
+            "currentValueUsd": 275121500,
+            "previousValueUsd": 0,
+            "shareChangePct": null
+          },
+          {
+            "issuer": "VISA INC",
+            "titleClass": "COM CL A",
+            "putCall": null,
+            "currentShares": 798697,
+            "previousShares": 0,
+            "currentValueUsd": 274024954,
+            "previousValueUsd": 0,
+            "shareChangePct": null
+          },
+          {
+            "issuer": "DANAHER CORP DEL",
+            "titleClass": "COM",
+            "putCall": null,
+            "currentShares": 456000,
+            "previousShares": 0,
+            "currentValueUsd": 86858880,
+            "previousValueUsd": 0,
+            "shareChangePct": null
+          },
+          {
+            "issuer": "SPACE EXPLORATION TECHN CORP",
+            "titleClass": "CLASS A COM STK",
+            "putCall": null,
+            "currentShares": 375000,
+            "previousShares": 0,
+            "currentValueUsd": 64072500,
+            "previousValueUsd": 0,
+            "shareChangePct": null
+          },
+          {
+            "issuer": "APPLIED DIGITAL CORP",
+            "titleClass": "COM NEW",
+            "putCall": null,
+            "currentShares": 885000,
+            "previousShares": 0,
+            "currentValueUsd": 33010500,
+            "previousValueUsd": 0,
+            "shareChangePct": null
+          },
+          {
+            "issuer": "CIPHER DIGITAL INC",
+            "titleClass": "COM",
+            "putCall": null,
+            "currentShares": 927000,
+            "previousShares": 0,
+            "currentValueUsd": 22711500,
+            "previousValueUsd": 0,
+            "shareChangePct": null
+          }
+        ],
+        "increased": [
+          {
+            "issuer": "CORPAY INC",
+            "titleClass": "COM SHS",
+            "putCall": null,
+            "currentShares": 2149877,
+            "previousShares": 1752146,
+            "currentValueUsd": 716489508,
+            "previousValueUsd": 509856965,
+            "shareChangePct": 22.7
+          },
+          {
+            "issuer": "COUPANG INC",
+            "titleClass": "CL A",
+            "putCall": null,
+            "currentShares": 36467972,
+            "previousShares": 34595407,
+            "currentValueUsd": 633448674,
+            "previousValueUsd": 653161284,
+            "shareChangePct": 5.4
+          },
+          {
+            "issuer": "INTEL CORP",
+            "titleClass": "COM",
+            "putCall": null,
+            "currentShares": 4252690,
+            "previousShares": 1638700,
+            "currentValueUsd": 593803105,
+            "previousValueUsd": 72315831,
+            "shareChangePct": 159.5
+          },
+          {
+            "issuer": "REDDIT INC",
+            "titleClass": "CL A",
+            "putCall": null,
+            "currentShares": 2528819,
+            "previousShares": 2500000,
+            "currentValueUsd": 438952402,
+            "previousValueUsd": 336625000,
+            "shareChangePct": 1.2
+          },
+          {
+            "issuer": "BLOCK INC",
+            "titleClass": "CL A",
+            "putCall": null,
+            "currentShares": 4576007,
+            "previousShares": 4000000,
+            "currentValueUsd": 347776532,
+            "previousValueUsd": 240720000,
+            "shareChangePct": 14.4
+          },
+          {
+            "issuer": "MERCADOLIBRE INC",
+            "titleClass": "COM",
+            "putCall": null,
+            "currentShares": 153126,
+            "previousShares": 135006,
+            "currentValueUsd": 259914541,
+            "previousValueUsd": 233428074,
+            "shareChangePct": 13.4
+          }
+        ],
+        "decreased": [
+          {
+            "issuer": "ALPHABET INC",
+            "titleClass": "CAP STK CL A",
+            "putCall": null,
+            "currentShares": 5805687,
+            "previousShares": 10631402,
+            "currentValueUsd": 2074778363,
+            "previousValueUsd": 3057165959,
+            "shareChangePct": -45.4
+          },
+          {
+            "issuer": "TAIWAN SEMICONDUCTOR MANUFAC",
+            "titleClass": "SPONSORED ADS",
+            "putCall": null,
+            "currentShares": 4881008,
+            "previousShares": 5565074,
+            "currentValueUsd": 2331022991,
+            "previousValueUsd": 1880716758,
+            "shareChangePct": -12.3
+          },
+          {
+            "issuer": "AMAZON COM INC",
+            "titleClass": "COM",
+            "putCall": null,
+            "currentShares": 9683558,
+            "previousShares": 10000000,
+            "currentValueUsd": 2307979214,
+            "previousValueUsd": 2082700000,
+            "shareChangePct": -3.2
+          },
+          {
+            "issuer": "NVIDIA CORPORATION",
+            "titleClass": "COM",
+            "putCall": null,
+            "currentShares": 11198773,
+            "previousShares": 12011752,
+            "currentValueUsd": 2240762490,
+            "previousValueUsd": 2094849549,
+            "shareChangePct": -6.8
+          },
+          {
+            "issuer": "META PLATFORMS INC",
+            "titleClass": "CL A",
+            "putCall": null,
+            "currentShares": 2823180,
+            "previousShares": 3086864,
+            "currentValueUsd": 1590269062,
+            "previousValueUsd": 1766087500,
+            "shareChangePct": -8.5
+          },
+          {
+            "issuer": "LAM RESEARCH CORP",
+            "titleClass": "COM NEW",
+            "putCall": null,
+            "currentShares": 3163495,
+            "previousShares": 3900439,
+            "currentValueUsd": 1370837288,
+            "previousValueUsd": 833367797,
+            "shareChangePct": -18.9
+          },
+          {
+            "issuer": "SEA LTD",
+            "titleClass": "SPONSORD ADS",
+            "putCall": null,
+            "currentShares": 12559152,
+            "previousShares": 15415835,
+            "currentValueUsd": 1203543536,
+            "previousValueUsd": 1276585296,
+            "shareChangePct": -18.5
+          },
+          {
+            "issuer": "APPLIED MATLS INC",
+            "titleClass": "COM",
+            "putCall": null,
+            "currentShares": 1632210,
+            "previousShares": 1656900,
+            "currentValueUsd": 1180087830,
+            "previousValueUsd": 566311851,
+            "shareChangePct": -1.5
+          }
+        ],
+        "exited": [
+          {
+            "issuer": "APPLOVIN CORP",
+            "titleClass": "COM CL A",
+            "putCall": null,
+            "currentShares": 0,
+            "previousShares": 1000000,
+            "currentValueUsd": 0,
+            "previousValueUsd": 398000000,
+            "shareChangePct": -100.0
+          },
+          {
+            "issuer": "ZILLOW GROUP INC",
+            "titleClass": "CL C CAP STK",
+            "putCall": null,
+            "currentShares": 0,
+            "previousShares": 7368957,
+            "currentValueUsd": 0,
+            "previousValueUsd": 304927441,
+            "shareChangePct": -100.0
+          },
+          {
+            "issuer": "NETFLIX INC.",
+            "titleClass": "COM",
+            "putCall": null,
+            "currentShares": 0,
+            "previousShares": 2439000,
+            "currentValueUsd": 0,
+            "previousValueUsd": 234509850,
+            "shareChangePct": -100.0
+          },
+          {
+            "issuer": "ZSCALER INC",
+            "titleClass": "COM",
+            "putCall": null,
+            "currentShares": 0,
+            "previousShares": 1579766,
+            "currentValueUsd": 0,
+            "previousValueUsd": 221625372,
+            "shareChangePct": -100.0
+          },
+          {
+            "issuer": "PROCORE TECHNOLOGIES INC",
+            "titleClass": "COM",
+            "putCall": null,
+            "currentShares": 0,
+            "previousShares": 2339500,
+            "currentValueUsd": 0,
+            "previousValueUsd": 133351500,
+            "shareChangePct": -100.0
+          },
+          {
+            "issuer": "LUMENTUM HLDGS INC",
+            "titleClass": "COM",
+            "putCall": null,
+            "currentShares": 0,
+            "previousShares": 136800,
+            "currentValueUsd": 0,
+            "previousValueUsd": 96137568,
+            "shareChangePct": -100.0
+          },
+          {
+            "issuer": "COSTAR GROUP INC",
+            "titleClass": "COM",
+            "putCall": null,
+            "currentShares": 0,
+            "previousShares": 1500000,
+            "currentValueUsd": 0,
+            "previousValueUsd": 60510000,
+            "shareChangePct": -100.0
+          },
+          {
+            "issuer": "ZILLOW GROUP INC",
+            "titleClass": "CL A",
+            "putCall": null,
+            "currentShares": 0,
+            "previousShares": 1023733,
+            "currentValueUsd": 0,
+            "previousValueUsd": 42372309,
+            "shareChangePct": -100.0
+          }
+        ]
+      },
+      "retrievedAt": "2026-08-15T23:00:24.154860+00:00"
+    },
+    "appaloosa": {
+      "id": "appaloosa",
+      "name": "Appaloosa",
+      "managerKo": "데이비드 테퍼",
+      "cik": "0001656456",
+      "status": "AVAILABLE",
+      "sourceMode": "LIVE_SEC",
+      "reportDate": "2026-06-30",
+      "filingDate": "2026-08-14",
+      "previousReportDate": "2026-03-31",
+      "filingUrl": "https://www.sec.gov/Archives/edgar/data/1656456/000165645626000003/xslForm13F_X02/primary_doc.xml",
+      "totalValueUsd": 7725383349,
+      "positionCount": 27,
+      "top5WeightPct": 55.9,
+      "topHoldings": [
+        {
+          "issuer": "AMAZON COM INC",
+          "titleClass": "COM",
+          "cusip": "023135106",
+          "valueUsd": 1191700000,
+          "shares": 5000000,
+          "shareType": "SH",
+          "putCall": null,
+          "portfolioWeightPct": 15.43
+        },
+        {
+          "issuer": "MICRON TECHNOLOGY INC",
+          "titleClass": "COM",
+          "cusip": "595112103",
+          "valueUsd": 1125432750,
+          "shares": 975000,
+          "shareType": "SH",
+          "putCall": null,
+          "portfolioWeightPct": 14.57
+        },
+        {
+          "issuer": "TAIWAN SEMICONDUCTOR MANUFAC",
+          "titleClass": "SPONSORED ADS",
+          "cusip": "874039100",
+          "valueUsd": 787990500,
+          "shares": 1650000,
+          "shareType": "SH",
+          "putCall": null,
+          "portfolioWeightPct": 10.2
+        },
+        {
+          "issuer": "ALPHABET INC",
+          "titleClass": "CAP STK CL C",
+          "cusip": "02079K107",
+          "valueUsd": 653660500,
+          "shares": 1850000,
+          "shareType": "SH",
+          "putCall": null,
+          "portfolioWeightPct": 8.46
+        },
+        {
+          "issuer": "UBER TECHNOLOGIES INC",
+          "titleClass": "COM",
+          "cusip": "90353T100",
+          "valueUsd": 555204163,
+          "shares": 7694071,
+          "shareType": "SH",
+          "putCall": null,
+          "portfolioWeightPct": 7.19
+        },
+        {
+          "issuer": "ISHARES INC",
+          "titleClass": "MSCI STH KOR ETF",
+          "cusip": "464286772",
+          "valueUsd": 489607500,
+          "shares": 2425000,
+          "shareType": "SH",
+          "putCall": null,
+          "portfolioWeightPct": 6.34
+        },
+        {
+          "issuer": "META PLATFORMS INC",
+          "titleClass": "CL A",
+          "cusip": "30303M102",
+          "valueUsd": 380220750,
+          "shares": 675000,
+          "shareType": "SH",
+          "putCall": null,
+          "portfolioWeightPct": 4.92
+        },
+        {
+          "issuer": "VISTRA CORP",
+          "titleClass": "COM",
+          "cusip": "92840M102",
+          "valueUsd": 351408597,
+          "shares": 2215272,
+          "shareType": "SH",
+          "putCall": null,
+          "portfolioWeightPct": 4.55
+        },
+        {
+          "issuer": "NVIDIA CORPORATION",
+          "titleClass": "COM",
+          "cusip": "67066G104",
+          "valueUsd": 305137250,
+          "shares": 1525000,
+          "shareType": "SH",
+          "putCall": null,
+          "portfolioWeightPct": 3.95
+        },
+        {
+          "issuer": "NRG ENERGY INC",
+          "titleClass": "COM NEW",
+          "cusip": "629377508",
+          "valueUsd": 257065600,
+          "shares": 1760000,
+          "shareType": "SH",
+          "putCall": null,
+          "portfolioWeightPct": 3.33
+        }
+      ],
+      "changes": {
+        "new": [
+          {
+            "issuer": "APPLE INC",
+            "titleClass": "COM",
+            "putCall": "PUT",
+            "currentShares": 835000,
+            "previousShares": 0,
+            "currentValueUsd": 241615600,
+            "previousValueUsd": 0,
+            "shareChangePct": null
+          },
+          {
+            "issuer": "BOEING CO",
+            "titleClass": "COM",
+            "putCall": null,
+            "currentShares": 800000,
+            "previousShares": 0,
+            "currentValueUsd": 173176000,
+            "previousValueUsd": 0,
+            "shareChangePct": null
+          },
+          {
+            "issuer": "AMERICAN AIRLINES GROUP INC",
+            "titleClass": "COM",
+            "putCall": null,
+            "currentShares": 7500000,
+            "previousShares": 0,
+            "currentValueUsd": 135525000,
+            "previousValueUsd": 0,
+            "shareChangePct": null
+          },
+          {
+            "issuer": "COREWEAVE INC",
+            "titleClass": "COM CL A",
+            "putCall": null,
+            "currentShares": 1078248,
+            "previousShares": 0,
+            "currentValueUsd": 107328806,
+            "previousValueUsd": 0,
+            "shareChangePct": null
+          },
+          {
+            "issuer": "BROADCOM INC",
+            "titleClass": "COM",
+            "putCall": null,
+            "currentShares": 150000,
+            "previousShares": 0,
+            "currentValueUsd": 56662500,
+            "previousValueUsd": 0,
+            "shareChangePct": null
+          },
+          {
+            "issuer": "SPACE EXPLORATION TECHN CORP",
+            "titleClass": "CLASS A COM STK",
+            "putCall": null,
+            "currentShares": 225000,
+            "previousShares": 0,
+            "currentValueUsd": 38443500,
+            "previousValueUsd": 0,
+            "shareChangePct": null
+          },
+          {
+            "issuer": "BERKSHIRE HATHAWAY INC DEL",
+            "titleClass": "CL B NEW",
+            "putCall": "PUT",
+            "currentShares": 25000,
+            "previousShares": 0,
+            "currentValueUsd": 12509750,
+            "previousValueUsd": 0,
+            "shareChangePct": null
+          },
+          {
+            "issuer": "GOODYEAR TIRE & RUBR CO",
+            "titleClass": "COM",
+            "putCall": null,
+            "currentShares": 1508591,
+            "previousShares": 0,
+            "currentValueUsd": 9956701,
+            "previousValueUsd": 0,
+            "shareChangePct": null
+          }
+        ],
+        "increased": [
+          {
+            "issuer": "AMAZON COM INC",
+            "titleClass": "COM",
+            "putCall": null,
+            "currentShares": 5000000,
+            "previousShares": 4320000,
+            "currentValueUsd": 1191700000,
+            "previousValueUsd": 899726400,
+            "shareChangePct": 15.7
+          },
+          {
+            "issuer": "TAIWAN SEMICONDUCTOR MANUFAC",
+            "titleClass": "SPONSORED ADS",
+            "putCall": null,
+            "currentShares": 1650000,
+            "previousShares": 1327500,
+            "currentValueUsd": 787990500,
+            "previousValueUsd": 448628625,
+            "shareChangePct": 24.3
+          },
+          {
+            "issuer": "ALPHABET INC",
+            "titleClass": "CAP STK CL C",
+            "putCall": null,
+            "currentShares": 1850000,
+            "previousShares": 1732700,
+            "currentValueUsd": 653660500,
+            "previousValueUsd": 497042322,
+            "shareChangePct": 6.8
+          },
+          {
+            "issuer": "UBER TECHNOLOGIES INC",
+            "titleClass": "COM",
+            "putCall": null,
+            "currentShares": 7694071,
+            "previousShares": 6332720,
+            "currentValueUsd": 555204163,
+            "previousValueUsd": 455512550,
+            "shareChangePct": 21.5
+          },
+          {
+            "issuer": "ISHARES INC",
+            "titleClass": "MSCI STH KOR ETF",
+            "putCall": null,
+            "currentShares": 2425000,
+            "previousShares": 2400000,
+            "currentValueUsd": 489607500,
+            "previousValueUsd": 295224000,
+            "shareChangePct": 1.0
+          },
+          {
+            "issuer": "META PLATFORMS INC",
+            "titleClass": "CL A",
+            "putCall": null,
+            "currentShares": 675000,
+            "previousShares": 436500,
+            "currentValueUsd": 380220750,
+            "previousValueUsd": 249734745,
+            "shareChangePct": 54.6
+          },
+          {
+            "issuer": "VISTRA CORP",
+            "titleClass": "COM",
+            "putCall": null,
+            "currentShares": 2215272,
+            "previousShares": 2022332,
+            "currentValueUsd": 351408597,
+            "previousValueUsd": 304017170,
+            "shareChangePct": 9.5
+          },
+          {
+            "issuer": "NVIDIA CORPORATION",
+            "titleClass": "COM",
+            "putCall": null,
+            "currentShares": 1525000,
+            "previousShares": 1471500,
+            "currentValueUsd": 305137250,
+            "previousValueUsd": 256629600,
+            "shareChangePct": 3.6
+          }
+        ],
+        "decreased": [
+          {
+            "issuer": "MICRON TECHNOLOGY INC",
+            "titleClass": "COM",
+            "putCall": null,
+            "currentShares": 975000,
+            "previousShares": 1665000,
+            "currentValueUsd": 1125432750,
+            "previousValueUsd": 562503600,
+            "shareChangePct": -41.4
+          },
+          {
+            "issuer": "ALIBABA GROUP HLDG LTD",
+            "titleClass": "SPONSORED ADS",
+            "putCall": null,
+            "currentShares": 2000000,
+            "previousShares": 3465000,
+            "currentValueUsd": 191960000,
+            "previousValueUsd": 434718900,
+            "shareChangePct": -42.3
+          },
+          {
+            "issuer": "ADVANCED MICRO DEVICES INC",
+            "titleClass": "COM",
+            "putCall": null,
+            "currentShares": 197500,
+            "previousShares": 221400,
+            "currentValueUsd": 114729725,
+            "previousValueUsd": 45039402,
+            "shareChangePct": -10.8
+          },
+          {
+            "issuer": "WHIRLPOOL CORP",
+            "titleClass": "COM",
+            "putCall": null,
+            "currentShares": 715000,
+            "previousShares": 1950000,
+            "currentValueUsd": 28185300,
+            "previousValueUsd": 105144000,
+            "shareChangePct": -63.3
+          },
+          {
+            "issuer": "QUALCOMM INC",
+            "titleClass": "COM",
+            "putCall": null,
+            "currentShares": 250000,
+            "previousShares": 498613,
+            "currentValueUsd": 46197500,
+            "previousValueUsd": 64211382,
+            "shareChangePct": -49.9
+          }
+        ],
+        "exited": [
+          {
+            "issuer": "SANDISK CORP",
+            "titleClass": "COM",
+            "putCall": null,
+            "currentShares": 0,
+            "previousShares": 281250,
+            "currentValueUsd": 0,
+            "previousValueUsd": 178689375,
+            "shareChangePct": -100.0
+          },
+          {
+            "issuer": "CORNING INC",
+            "titleClass": "COM",
+            "putCall": null,
+            "currentShares": 0,
+            "previousShares": 1129500,
+            "currentValueUsd": 0,
+            "previousValueUsd": 153578115,
+            "shareChangePct": -100.0
+          },
+          {
+            "issuer": "PDD HOLDINGS INC",
+            "titleClass": "SPONSORED ADS",
+            "putCall": null,
+            "currentShares": 0,
+            "previousShares": 900000,
+            "currentValueUsd": 0,
+            "previousValueUsd": 91962000,
+            "shareChangePct": -100.0
+          },
+          {
+            "issuer": "L3HARRIS TECHNOLOGIES INC",
+            "titleClass": "COM",
+            "putCall": null,
+            "currentShares": 0,
+            "previousShares": 198000,
+            "currentValueUsd": 0,
+            "previousValueUsd": 68339700,
+            "shareChangePct": -100.0
+          },
+          {
+            "issuer": "RTX CORPORATION",
+            "titleClass": "COM",
+            "putCall": null,
+            "currentShares": 0,
+            "previousShares": 342000,
+            "currentValueUsd": 0,
+            "previousValueUsd": 65971800,
+            "shareChangePct": -100.0
+          },
+          {
+            "issuer": "BALL CORP",
+            "titleClass": "COM",
+            "putCall": null,
+            "currentShares": 0,
+            "previousShares": 837000,
+            "currentValueUsd": 0,
+            "previousValueUsd": 49475070,
+            "shareChangePct": -100.0
+          },
+          {
+            "issuer": "JD.COM INC",
+            "titleClass": "SPON ADS CL A",
+            "putCall": null,
+            "currentShares": 0,
+            "previousShares": 1305000,
+            "currentValueUsd": 0,
+            "previousValueUsd": 38588850,
+            "shareChangePct": -100.0
+          },
+          {
+            "issuer": "LYFT INC",
+            "titleClass": "CL A COM",
+            "putCall": null,
+            "currentShares": 0,
+            "previousShares": 2700000,
+            "currentValueUsd": 0,
+            "previousValueUsd": 35910000,
+            "shareChangePct": -100.0
+          }
+        ]
+      },
+      "retrievedAt": "2026-08-15T23:00:24.154860+00:00"
+    },
+    "scion": {
+      "id": "scion",
+      "name": "Scion Asset Management",
+      "managerKo": "마이클 버리",
+      "cik": "0001649339",
+      "status": "AVAILABLE",
+      "sourceMode": "LIVE_SEC",
+      "reportDate": "2025-09-30",
+      "filingDate": "2025-11-03",
+      "previousReportDate": "2025-06-30",
+      "filingUrl": "https://www.sec.gov/Archives/edgar/data/1649339/000164933925000007/xslForm13F_X02/primary_doc.xml",
+      "totalValueUsd": 1381198076,
+      "positionCount": 8,
+      "top5WeightPct": 96.8,
+      "topHoldings": [
+        {
+          "issuer": "PALANTIR TECHNOLOGIES INC",
+          "titleClass": "CL A",
+          "cusip": "69608A108",
+          "valueUsd": 912100000,
+          "shares": 5000000,
+          "shareType": "SH",
+          "putCall": "PUT",
+          "portfolioWeightPct": 66.04
+        },
+        {
+          "issuer": "NVIDIA CORPORATION",
+          "titleClass": "COM",
+          "cusip": "67066G104",
+          "valueUsd": 186580000,
+          "shares": 1000000,
+          "shareType": "SH",
+          "putCall": "PUT",
+          "portfolioWeightPct": 13.51
+        },
+        {
+          "issuer": "PFIZER INC",
+          "titleClass": "COM",
+          "cusip": "717081103",
+          "valueUsd": 152880000,
+          "shares": 6000000,
+          "shareType": "SH",
+          "putCall": "CALL",
+          "portfolioWeightPct": 11.07
+        },
+        {
+          "issuer": "HALLIBURTON CO",
+          "titleClass": "COM",
+          "cusip": "406216101",
+          "valueUsd": 61500000,
+          "shares": 2500000,
+          "shareType": "SH",
+          "putCall": "CALL",
+          "portfolioWeightPct": 4.45
+        },
+        {
+          "issuer": "MOLINA HEALTHCARE INC",
+          "titleClass": "COM",
+          "cusip": "60855R100",
+          "valueUsd": 23920000,
+          "shares": 125000,
+          "shareType": "SH",
+          "putCall": null,
+          "portfolioWeightPct": 1.73
+        },
+        {
+          "issuer": "LULULEMON ATHLETICA INC",
+          "titleClass": "COM",
+          "cusip": "550021109",
+          "valueUsd": 17793000,
+          "shares": 100000,
+          "shareType": "SH",
+          "putCall": null,
+          "portfolioWeightPct": 1.29
+        },
+        {
+          "issuer": "SLM CORP",
+          "titleClass": "COM",
+          "cusip": "78442P106",
+          "valueUsd": 13287895,
+          "shares": 480054,
+          "shareType": "SH",
+          "putCall": null,
+          "portfolioWeightPct": 0.96
+        },
+        {
+          "issuer": "BRUKER CORP",
+          "titleClass": "6.375 PREF SER A",
+          "cusip": "116794207",
+          "valueUsd": 13137181,
+          "shares": 48334,
+          "shareType": "SH",
+          "putCall": null,
+          "portfolioWeightPct": 0.95
+        }
+      ],
+      "changes": {
+        "new": [
+          {
+            "issuer": "PALANTIR TECHNOLOGIES INC",
+            "titleClass": "CL A",
+            "putCall": "PUT",
+            "currentShares": 5000000,
+            "previousShares": 0,
+            "currentValueUsd": 912100000,
+            "previousValueUsd": 0,
+            "shareChangePct": null
+          },
+          {
+            "issuer": "NVIDIA CORPORATION",
+            "titleClass": "COM",
+            "putCall": "PUT",
+            "currentShares": 1000000,
+            "previousShares": 0,
+            "currentValueUsd": 186580000,
+            "previousValueUsd": 0,
+            "shareChangePct": null
+          },
+          {
+            "issuer": "PFIZER INC",
+            "titleClass": "COM",
+            "putCall": "CALL",
+            "currentShares": 6000000,
+            "previousShares": 0,
+            "currentValueUsd": 152880000,
+            "previousValueUsd": 0,
+            "shareChangePct": null
+          },
+          {
+            "issuer": "HALLIBURTON CO",
+            "titleClass": "COM",
+            "putCall": "CALL",
+            "currentShares": 2500000,
+            "previousShares": 0,
+            "currentValueUsd": 61500000,
+            "previousValueUsd": 0,
+            "shareChangePct": null
+          },
+          {
+            "issuer": "MOLINA HEALTHCARE INC",
+            "titleClass": "COM",
+            "putCall": null,
+            "currentShares": 125000,
+            "previousShares": 0,
+            "currentValueUsd": 23920000,
+            "previousValueUsd": 0,
+            "shareChangePct": null
+          },
+          {
+            "issuer": "SLM CORP",
+            "titleClass": "COM",
+            "putCall": null,
+            "currentShares": 480054,
+            "previousShares": 0,
+            "currentValueUsd": 13287895,
+            "previousValueUsd": 0,
+            "shareChangePct": null
+          },
+          {
+            "issuer": "BRUKER CORP",
+            "titleClass": "6.375 PREF SER A",
+            "putCall": null,
+            "currentShares": 48334,
+            "previousShares": 0,
+            "currentValueUsd": 13137181,
+            "previousValueUsd": 0,
+            "shareChangePct": null
+          }
+        ],
+        "increased": [
+          {
+            "issuer": "LULULEMON ATHLETICA INC",
+            "titleClass": "COM",
+            "putCall": null,
+            "currentShares": 100000,
+            "previousShares": 50000,
+            "currentValueUsd": 17793000,
+            "previousValueUsd": 11879000,
+            "shareChangePct": 100.0
+          }
+        ],
+        "decreased": [],
+        "exited": [
+          {
+            "issuer": "UNITEDHEALTH GROUP INC",
+            "titleClass": "COM",
+            "putCall": "CALL",
+            "currentShares": 0,
+            "previousShares": 350000,
+            "currentValueUsd": 0,
+            "previousValueUsd": 109189500,
+            "shareChangePct": -100.0
+          },
+          {
+            "issuer": "REGENERON PHARMACEUTICALS",
+            "titleClass": "COM",
+            "putCall": "CALL",
+            "currentShares": 0,
+            "previousShares": 200000,
+            "currentValueUsd": 0,
+            "previousValueUsd": 105000000,
+            "shareChangePct": -100.0
+          },
+          {
+            "issuer": "LULULEMON ATHLETICA INC",
+            "titleClass": "COM",
+            "putCall": "CALL",
+            "currentShares": 0,
+            "previousShares": 400000,
+            "currentValueUsd": 0,
+            "previousValueUsd": 95032000,
+            "shareChangePct": -100.0
+          },
+          {
+            "issuer": "META PLATFORMS INC",
+            "titleClass": "CL A",
+            "putCall": "CALL",
+            "currentShares": 0,
+            "previousShares": 100000,
+            "currentValueUsd": 0,
+            "previousValueUsd": 73809000,
+            "shareChangePct": -100.0
+          },
+          {
+            "issuer": "LAUDER ESTEE COS INC",
+            "titleClass": "CL A",
+            "putCall": "CALL",
+            "currentShares": 0,
+            "previousShares": 500000,
+            "currentValueUsd": 0,
+            "previousValueUsd": 40400000,
+            "shareChangePct": -100.0
+          },
+          {
+            "issuer": "JD.COM INC",
+            "titleClass": "SPON ADS CL A",
+            "putCall": "CALL",
+            "currentShares": 0,
+            "previousShares": 1000000,
+            "currentValueUsd": 0,
+            "previousValueUsd": 32640000,
+            "shareChangePct": -100.0
+          },
+          {
+            "issuer": "ALIBABA GROUP HLDG LTD",
+            "titleClass": "SPONSORED ADS",
+            "putCall": "CALL",
+            "currentShares": 0,
+            "previousShares": 250000,
+            "currentValueUsd": 0,
+            "previousValueUsd": 28352500,
+            "shareChangePct": -100.0
+          },
+          {
+            "issuer": "ASML HOLDING N V",
+            "titleClass": "N Y REGISTRY SHS",
+            "putCall": "CALL",
+            "currentShares": 0,
+            "previousShares": 25000,
+            "currentValueUsd": 0,
+            "previousValueUsd": 20034750,
+            "shareChangePct": -100.0
+          }
+        ]
+      },
+      "retrievedAt": "2026-08-15T23:00:24.154860+00:00"
+    }
+  }
+}

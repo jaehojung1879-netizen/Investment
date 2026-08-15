@@ -37,6 +37,7 @@ from . import ledger as ledger_mod
 from . import longterm as longterm_mod
 from . import kelly_portfolio as kelly_mod
 from . import macro as macro_mod
+from . import national_pension as nps_mod
 from . import model as M
 from . import opportunity as opportunity_mod
 from . import pit_data
@@ -777,8 +778,8 @@ def run(cfg) -> dict:
         expert_consensus = None
 
     # SEC-filed institutional holdings are disclosure context, not a model
-    # feature or recommendation input.  A vendor failure leaves this panel
-    # explicitly unavailable and never reuses an older snapshot as if current.
+    # feature or recommendation input.  A vendor failure may use only a
+    # clearly-labelled, dated official SEC cache; it is never called current.
     try:
         institutional_13f = institutional_mod.build()
     except Exception as exc:
@@ -787,6 +788,14 @@ def run(cfg) -> dict:
             "status": "UNAVAILABLE", "availableCount": 0, "managerCount": 0,
             "managers": [],
             "limitationKo": "SEC 원문을 불러오지 못해 13F 수치를 표시하지 않습니다.",
+        }
+    try:
+        national_pension = nps_mod.build()
+    except Exception as exc:
+        print(f"  warning: NPS fund allocation reader failed: {exc}")
+        national_pension = {
+            "status": "UNAVAILABLE", "allocations": [],
+            "noteKo": "국민연금 공식 운용 현황을 불러오지 못했습니다.",
         }
 
     # Direction compass + sector/factor rotation are additive tools; a failed
@@ -894,6 +903,7 @@ def run(cfg) -> dict:
         "macroRegime": macro_regime,
         "expertConsensus": expert_consensus,
         "institutionalHoldings13F": institutional_13f,
+        "nationalPensionService": national_pension,
         "tradeIdeas": trade_mod.rank_ideas(ideas),
         "recommendationsBlocked": False,
         "priorState": prior_status,

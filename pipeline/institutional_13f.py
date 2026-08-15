@@ -11,6 +11,7 @@ from __future__ import annotations
 import json
 import os
 import time
+import urllib.error
 import urllib.request
 import xml.etree.ElementTree as ET
 from datetime import datetime, timezone
@@ -21,23 +22,45 @@ from .config import REPO_ROOT
 
 
 REGISTRY_PATH = REPO_ROOT / "data" / "institutional_managers.json"
+CACHE_PATH = REPO_ROOT / "data" / "institutional_13f_cache.json"
 SEC_DATA = "https://data.sec.gov"
 SEC_ARCHIVES = "https://www.sec.gov/Archives/edgar/data"
 DEFAULT_USER_AGENT = (
-    "InvestmentResearchDashboard/1.0 "
-    "https://github.com/jaehojung1879-netizen/Investment"
+    "InvestmentResearchDashboard/1.1 "
+    "jaehojung1879-netizen@users.noreply.github.com"
 )
+_LAST_REQUEST_AT = 0.0
+_MIN_REQUEST_INTERVAL = 0.16
 
 
 def _request(url: str) -> bytes:
+    """Fetch one SEC resource with fair-access pacing and bounded retries."""
+    global _LAST_REQUEST_AT
+    wait = _MIN_REQUEST_INTERVAL - (time.monotonic() - _LAST_REQUEST_AT)
+    if wait > 0:
+        time.sleep(wait)
     req = urllib.request.Request(
         url,
         headers={
             "User-Agent": os.environ.get("SEC_USER_AGENT", DEFAULT_USER_AGENT),
+            "Accept": "application/json, application/xml, text/xml, */*",
+            "Accept-Language": "en-US,en;q=0.8",
         },
     )
-    with urllib.request.urlopen(req, timeout=25) as response:
-        return response.read()
+    for attempt in range(3):
+        try:
+            with urllib.request.urlopen(req, timeout=30) as response:
+                body = response.read()
+            _LAST_REQUEST_AT = time.monotonic()
+            return body
+        except urllib.error.HTTPError as exc:
+            if exc.code not in {403, 429, 500, 502, 503, 504} or attempt == 2:
+                raise
+        except (TimeoutError, urllib.error.URLError):
+            if attempt == 2:
+                raise
+        time.sleep(1.5 * (2 ** attempt))
+    raise RuntimeError("SEC request retry loop exhausted")
 
 
 def _fetch_json(url: str) -> dict:
@@ -221,6 +244,7 @@ def _build_manager(manager: dict, fetch_json=_fetch_json, fetch_bytes=_request) 
     return {
         **manager,
         "status": "AVAILABLE",
+        "sourceMode": "LIVE_SEC",
         "reportDate": current_filing["reportDate"],
         "filingDate": current_filing["filingDate"],
         "previousReportDate": previous_filing.get("reportDate"),
@@ -233,18 +257,62 @@ def _build_manager(manager: dict, fetch_json=_fetch_json, fetch_bytes=_request) 
     }
 
 
-def build(registry_path: str | Path = REGISTRY_PATH) -> dict:
+def _read_cache(path: Path) -> dict:
+    try:
+        payload = json.loads(path.read_text(encoding="utf-8"))
+        return payload if isinstance(payload, dict) else {}
+    except (OSError, ValueError):
+        return {}
+
+
+def _write_cache(path: Path, managers: dict[str, dict], fetched_at: str) -> None:
+    payload = {
+        "source": "SEC EDGAR Form 13F-HR",
+        "fetchedAt": fetched_at,
+        "managers": managers,
+    }
+    path.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+
+
+def build(registry_path: str | Path = REGISTRY_PATH,
+          cache_path: str | Path | None = CACHE_PATH) -> dict:
     managers = json.loads(Path(registry_path).read_text(encoding="utf-8"))
+    use_cache = Path(registry_path).resolve() == REGISTRY_PATH.resolve() and cache_path is not None
+    cache_file = Path(cache_path) if cache_path is not None else CACHE_PATH
+    cache_doc = _read_cache(cache_file) if use_cache else {}
+    cached_managers = dict(cache_doc.get("managers") or {})
+    fetched_at = datetime.now(timezone.utc).isoformat()
     output = []
+    live_count = 0
+    cache_changed = False
     for manager in managers:
         try:
-            output.append(_build_manager(manager))
+            current = _build_manager(manager)
+            current["retrievedAt"] = fetched_at
+            output.append(current)
+            cached_managers[manager["id"]] = current
+            live_count += 1
+            cache_changed = True
         except Exception as exc:
-            output.append({
-                **manager, "status": "UNAVAILABLE", "error": type(exc).__name__,
-                "noteKo": "SEC 원문을 불러오지 못해 이전 수치를 대신 표시하지 않습니다.",
-            })
-    available = [m for m in output if m.get("status") == "AVAILABLE"]
+            cached = cached_managers.get(manager.get("id")) if use_cache else None
+            if cached and cached.get("reportDate") and cached.get("filingUrl"):
+                output.append({
+                    **cached,
+                    **{k: v for k, v in manager.items() if k in {"id", "name", "managerKo", "cik", "featured"}},
+                    "status": "CACHED_OFFICIAL",
+                    "sourceMode": "CACHED_SEC",
+                    "cacheFetchedAt": cached.get("retrievedAt") or cache_doc.get("fetchedAt"),
+                    "liveFetchError": type(exc).__name__,
+                    "noteKo": "SEC 실시간 호출이 실패해 마지막으로 검증된 공식 공시 스냅샷을 표시합니다.",
+                })
+            else:
+                output.append({
+                    **manager, "status": "UNAVAILABLE", "error": type(exc).__name__,
+                    "noteKo": "SEC 원문과 검증된 공식 캐시를 모두 불러오지 못했습니다.",
+                })
+    if use_cache and cache_changed:
+        _write_cache(cache_file, cached_managers, fetched_at)
+    available = [m for m in output if m.get("status") in {"AVAILABLE", "CACHED_OFFICIAL"}]
     latest_report = max((m["reportDate"] for m in available), default=None)
     for manager in available:
         manager["reportRecency"] = (
@@ -254,9 +322,11 @@ def build(registry_path: str | Path = REGISTRY_PATH) -> dict:
     return {
         "source": "SEC EDGAR Form 13F-HR",
         "sourceUrl": "https://www.sec.gov/edgar/search/",
-        "fetchedAt": datetime.now(timezone.utc).isoformat(),
+        "fetchedAt": fetched_at,
         "status": "AVAILABLE" if available else "UNAVAILABLE",
         "availableCount": len(available),
+        "liveCount": live_count,
+        "cachedCount": sum(m.get("status") == "CACHED_OFFICIAL" for m in available),
         "managerCount": len(output),
         "latestReportDate": latest_report,
         "laggedManagerCount": sum(m.get("reportRecency") == "OLDER_LAST_AVAILABLE" for m in available),

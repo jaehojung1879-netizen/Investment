@@ -37,6 +37,15 @@ def _pct_change(series: pd.Series | None, periods: int = 21):
     return float((s.iloc[-1] / s.iloc[-periods - 1] - 1) * 100)
 
 
+def _yoy(series: pd.Series | None):
+    if series is None:
+        return None
+    s = series.dropna()
+    if len(s) < 13 or s.iloc[-13] == 0:
+        return None
+    return float((s.iloc[-1] / s.iloc[-13] - 1) * 100)
+
+
 def _fmt(v, suffix="", digits=2):
     return "—" if v is None else f"{round(v, digits)}{suffix}"
 
@@ -49,6 +58,8 @@ def _us_indicators(macro, vix) -> list:
     t10, t2 = _col(macro, "Treasury_10Y"), _col(macro, "Treasury_2Y")
     curve = _col(macro, "Yield_Curve")
     return [
+        ["Headline CPI", _fmt(_yoy(_col(macro, "Headline_CPI")), "%"), "전년동월비 · 식품·에너지 포함"],
+        ["Core CPI", _fmt(_yoy(_col(macro, "Core_CPI")), "%"), "전년동월비 · 식품·에너지 제외"],
         ["10Y", _fmt(_last(t10), "%"), "미국 국채 10년"],
         ["2Y", _fmt(_last(t2), "%"), "미국 국채 2년"],
         ["금리차", _fmt(_last(curve), "%p"), "10Y−2Y"],
