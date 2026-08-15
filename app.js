@@ -13,7 +13,7 @@ const COPY = Object.freeze({
   entryWithheld: '안전 기준에 따라 진입 판단을 표시하지 않습니다.',
   signalWithheld: '안전 기준에 따라 단기 참고 신호를 표시하지 않습니다.',
   validationPending: '검증 데이터를 축적하고 있습니다.',
-  fallback: 'Kelly 기대수익 추정에 필요한 실측 이력이 아직 없어, 비중은 컨빅션 위험가중으로 정합니다.',
+  fallback: '모델 신호가 실제 이후 성과로 이어졌는지 확인한 표본이 아직 부족합니다. 현재 비중은 Kelly가 아니라 컨빅션 위험가중으로 정합니다.',
   noChange: '이전 실행 대비 주요 변화 없음',
   disclaimer: '개인 리서치·교육 목적의 정량 도구이며 투자 조언이나 개인화 추천이 아닙니다. 과거 성과는 미래를 보장하지 않습니다. 데이터 모드·검증 상태·출처를 함께 확인하세요.',
 });
@@ -169,10 +169,10 @@ const regBadgeCls = (s) => s == null ? 'trans' : s < 45 ? 'bear' : s < 55 ? 'tra
 const EXPL = {
   status: ['데이터 상태 · 검증 상태', '<b>runMode</b>(researchOnly·paperTrading·liveValidated)는 사용 방식, <b>dataMode</b>(live·seed·stale·synthetic)는 숫자의 실체를 나타냅니다. liveValidated는 config만으로 부여되지 않고 paper ledger 검증을 거쳐야 합니다. 빌드 커밋 SHA와 marketAsOf/sourceAsOf로 어느 코드가 언제 데이터로 만든 결과인지 추적합니다. 차단(blocked) 상태면 단기·장기 액션과 비중이 모두 숨겨집니다.'],
   regime: ['매크로 국면 · 위험예산', '<b>6축(성장·물가·유동성·금융여건·위험선호·이익/신용)</b>은 진단에 표시하며, 국면 라벨은 성장×물가로 판정하고 금융여건·위험선호로 위험예산만 보정합니다. 지표별 변환과 고정 발표시차를 적용하지만 실제 발표 달력·ALFRED vintage는 사용하지 않습니다. 매크로는 개별 종목 알파에 더하지 않습니다.'],
-  consensus: ['전문가 컨센서스', '공식 원문을 사람이 확인한 기관 전망은 <b>검증 완료</b>로 요약·집계하고, 새로 발견됐지만 아직 검토하지 않은 자료도 숨기지 않고 <b>모니터링 중</b>으로 분리해 보여줍니다. 집계는 weighted median과 의견 분산을 사용하며, 기관·연구팀별 최대 한 표만 반영합니다.'],
+  consensus: ['기관 리포트 컨센서스', '공식 원문과 발행일을 사람이 확인한 기관 전망만 <b>원문 검증 완료</b>로 집계합니다. 새로 발견했지만 아직 읽지 않은 자료는 <b>검토 대기</b>로 분리합니다. 방향의 중앙값과 의견 차이를 계산하며, 같은 기관·연구팀은 최대 한 표만 반영합니다.'],
   longterm: ['지역별 장기 리서치', 'KR·US를 <b>지역별로 독립 z-score</b> 산출하고(서로 직접 비교하지 않음), 팩터(모멘텀·밸류·퀄리티·저변동)는 <b>섹터 내 중립화</b>합니다. 알파 점수는 <b>신뢰도(팩터·재무 커버리지·소스 품질)로 페널티</b>를 받고, 위험지표·진입상태와 <b>분리 표기</b>됩니다. 3개 슬리브·최소 재무 커버리지 미달은 <b>DATA_INSUFFICIENT</b>로 분류돼 후보에서 제외됩니다.'],
   entry: ['진입상태', '‘좋은 종목’(장기 리서치 관점)과 ‘지금 살 종목’(진입상태)은 다릅니다. 추세(20·50·200일)·200일선 이격·<b>유니버스 내 과열 백분위</b>·변동성 급등·갭·실적 이벤트·섹터 집중도를 반영해 <b>분할매수/관찰/되돌림대기/이벤트위험/회피</b>로 구분합니다. 장기 팩터가 우수해도 과열·이벤트·급변동이면 되돌림 대기 또는 이벤트 위험이 됩니다.'],
-  concentration: ['모델 슬리브 집중도', '<b>modelSleeveWeight</b>는 완전 투자된 <b>가상 모델 슬리브</b> 내 비중이며, 개인 포트폴리오 추천 비중이 아닙니다. 8~12종목, 단일종목 상한, 업종 상한, 현금 하한을 지킵니다. 과거의 5종목×20%(사실상 등가중) 구조를 제거했습니다.'],
+  concentration: ['모델 포트폴리오 집중도', '리서치 후보는 넓게 보되 실제 모델 포트폴리오는 <b>3~5종목</b>으로 좁힙니다. 표시 비중은 연구용 가상 포트폴리오 안의 비중이며 개인 자산의 권장 비중이 아닙니다. 단일종목·업종 상한과 현금 하한을 함께 확인하세요.'],
   paper: ['Paper 성과 (signal ledger)', '오늘부터 생성되는 모든 종목선정 결과를 <b>변경 불가능한 ledger</b>에 누적합니다(과거 결과를 현재 모델로 덮어쓰지 않음). 21/63/126/252영업일 수익률·초과수익·MFE/MAE를 계산하고 hit rate뿐 아니라 <b>rank IC·초과수익</b>으로 평가합니다. 별도 history 브랜치에 저장됩니다. 검증 이력이 충분하기 전에는 “LIVE VALIDATED”라고 하지 않습니다.'],
   trade: ['단기 ML 참고자료', '단기 방향 예측은 동전던지기에 가깝고 수백 종목 스캔은 거짓 양성을 만듭니다. 주 판단은 위 장기 리서치·진입상태이며, 이 섹션은 타이밍 참고로만 보세요.'],
   macro: ['매크로 원지표', 'FRED(국외)·ECOS(국내) 원지표 값만 표시합니다. 국면·위험예산 판정은 상단 6축 방향 엔진이 담당합니다.'],
@@ -183,6 +183,7 @@ const EXPL = {
   factor: ['팩터 · 스타일 모멘텀', '모멘텀·가치·퀄리티·저변동·소형주 ETF의 S&P500 대비 초과수익입니다.'],
   flows: ['자금 흐름 (자체 프록시)', '거래량 급증 + 상승 종목. 기관/외국인 실제 수급이 아니라 자체 데이터로 만든 프록시입니다.'],
   indices: ['글로벌 마켓', '카드의 등락률은 1일, 스파크라인과 별도 수익률은 최근 3개월입니다. 카드 클릭 시 3개월 상세가 기본으로 열리며 1M·3M·6M·1Y를 바꿔 볼 수 있습니다.'],
+  thirteenf: ['SEC 13F 공시', '미국 기관투자자가 SEC에 제출한 <b>분기말 보유 공시</b>입니다. 공개 시점에는 최대 45일의 시차가 있고 현금·공매도·비상장·일부 해외자산은 보이지 않습니다. 따라서 현재 포트폴리오나 매매 신호로 해석하지 않고, 분기별 보유 주식 수 변화와 집중도만 비교합니다.'],
   evidence: ['근거 커버리지', '필요한 팩터 근거 중 실제로 계산 가능한 항목의 비율입니다. 값이 높아도 데이터가 최신이거나 원천 품질이 높다는 뜻은 아닙니다.'],
   completeness: ['데이터 완전성', '팩터·재무 입력이 빠짐없이 채워진 정도입니다. 근거의 방향이나 출처 신뢰도를 뜻하지 않습니다.'],
   source: ['소스 품질', '원천과 시점 확인 수준을 요약합니다. 입력 항목의 개수인 근거 커버리지·완전성과 별개입니다.'],
@@ -796,7 +797,7 @@ const awaitingCard = (a) => {
   return `<article class="cv-pending">
     <div class="cv-pending-head"><div><b>${a.institution}</b><small>${a.theme || '주제 미분류'} · ${a.horizon || '기간 미정'}</small></div><span>${a.statusKo || '원문 검증 대기'}</span></div>
     <p class="cv-title">${a.title || '기관 전망 원문'}</p>
-    <div class="cv-missing"><b>컨센서스 제외 사유</b>${missing.map((x) => `<em>${MISSING_FIELD_KO[x] || x} 없음</em>`).join('')}</div>
+    <div class="cv-missing"><b>집계에 넣지 않은 이유</b>${missing.map((x) => `<em>${MISSING_FIELD_KO[x] || x} 없음</em>`).join('')}</div>
     <div class="cv-watch"><div><b>검증할 위험요인</b>${risks}</div><div><b>확인할 지표</b>${signposts}</div></div>
     ${a.url ? `<a class="cv-source" href="${a.url}" target="_blank" rel="noopener">공식 원문 확인 →</a>` : ''}
   </article>`;
@@ -806,7 +807,7 @@ const renderConsensus = (c) => {
   if (!c) { sec.hidden = true; return; }
   sec.hidden = false;
   const candidates = c.candidateCount ?? (c.awaitingVerification || []).length + (c.verifiedCount || 0) + (c.staleCount || 0);
-  $('#consensusMeta').textContent = `검증 ${c.verifiedCount ?? 0}/${candidates}건 · 대기 ${c.awaitingCount ?? (c.awaitingVerification || []).length}건 · STALE ${c.staleCount ?? 0}건`;
+  $('#consensusMeta').textContent = `원문 검증 완료 ${c.verifiedCount ?? 0}/${candidates}건 · 검토 대기 ${c.awaitingCount ?? (c.awaitingVerification || []).length}건 · 기한 경과 ${c.staleCount ?? 0}건`;
   let html = '';
   if (c.themes && c.themes.length) html += `<div class="cv-method"><b>검증된 공식 전망 ${c.verifiedCount ?? 0}건</b><span>스탠스는 위험자산 관점 -2(방어적)~+2(건설적) 척도입니다. 요약은 원문을 대체하지 않으며, 기관 수가 1곳이면 ‘합의’로 보지 않습니다.</span></div>` + c.themes.map(themeCard).join('');
   else html += `<div class="cv-empty">
@@ -815,13 +816,70 @@ const renderConsensus = (c) => {
     <ol>${(c.verificationStepsKo || ['공식 원문과 발행일 확인', '스탠스·요약 기록', 'verified=true 승인', '기관 중복 제거 후 집계']).map((x) => `<li>${x}</li>`).join('')}</ol>
   </div>`;
   if (c.awaitingVerification && c.awaitingVerification.length) {
-    html += `<div class="cv-await"><div class="cv-await-title"><b>새 자료 모니터링 중 ${c.awaitingVerification.length}건</b><span>숨기지 않고 보여주되, 원문 검토 전에는 컨센서스 수치에 넣지 않습니다.</span></div><div class="cv-pending-grid">${c.awaitingVerification.map(awaitingCard).join('')}</div></div>`;
+    html += `<div class="cv-await"><div class="cv-await-title"><b>원문 검토 대기 ${c.awaitingVerification.length}건</b><span>자료가 있다는 사실은 보여주되, 내용을 확인하기 전에는 방향 집계에 넣지 않습니다.</span></div><div class="cv-pending-grid">${c.awaitingVerification.map(awaitingCard).join('')}</div></div>`;
   }
   host.innerHTML = html;
 };
 
 // =========================================================================
-// 4. Region long-term research + 5. entry states
+// 4. SEC 13F institutional disclosure snapshots
+// =========================================================================
+const f13Esc = (v) => String(v ?? '—').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const f13Money = (v) => {
+  if (v == null || Number.isNaN(Number(v))) return '—';
+  const n = Number(v); const abs = Math.abs(n);
+  if (abs >= 1e9) return `$${(n / 1e9).toFixed(abs >= 1e11 ? 0 : 1)}B`;
+  if (abs >= 1e6) return `$${(n / 1e6).toFixed(abs >= 1e8 ? 0 : 1)}M`;
+  return `$${Math.round(n).toLocaleString('en-US')}`;
+};
+const f13Option = (row) => row.putCall ? `<em class="f13-option ${row.putCall.toLowerCase()}">${f13Esc(row.putCall)}</em>` : '';
+const f13Holding = (row) => `<div class="f13-holding">
+  <div><b>${f13Esc(row.issuer)}</b><span>${f13Esc(row.titleClass)} ${f13Option(row)}</span></div>
+  <div class="f13-weight"><i style="width:${Math.min(100, Number(row.portfolioWeightPct) || 0)}%"></i></div>
+  <strong>${fmt(row.portfolioWeightPct, '%', 1)}</strong>
+</div>`;
+const F13_CHANGE_KO = { new: '신규', increased: '주식 수 확대', decreased: '주식 수 축소', exited: '공시에서 제외' };
+const f13Change = (kind, row) => {
+  const pct = row.shareChangePct == null ? '' : ` ${row.shareChangePct > 0 ? '+' : ''}${row.shareChangePct}%`;
+  return `<span class="f13-change ${kind}"><i>${F13_CHANGE_KO[kind]}</i><b>${f13Esc(row.issuer)}</b>${f13Option(row)}<em>${pct}</em></span>`;
+};
+const f13ManagerCard = (m) => {
+  if (m.status !== 'AVAILABLE') return `<article class="f13-card unavailable">
+    <div class="f13-head"><div><span>${f13Esc(m.managerKo)}</span><h3>${f13Esc(m.name)}</h3></div><em>원문 확인 불가</em></div>
+    <p>${f13Esc(m.noteKo || 'SEC 원문을 불러오지 못해 이전 분기 수치를 대신 표시하지 않습니다.')}</p>
+  </article>`;
+  const changes = m.changes || {};
+  const recency = m.reportRecency === 'OLDER_LAST_AVAILABLE'
+    ? '<em class="f13-recency lagged">최근 분기 제출 없음</em>'
+    : '<em class="f13-recency">추적군 최신 분기</em>';
+  const changeRows = ['new', 'increased', 'decreased', 'exited']
+    .flatMap((kind) => (changes[kind] || []).slice(0, 2).map((row) => f13Change(kind, row))).join('');
+  return `<article class="f13-card">
+    <div class="f13-head"><div><span>${f13Esc(m.managerKo)}</span><h3>${f13Esc(m.name)}</h3></div><a href="${m.filingUrl}" target="_blank" rel="noopener">SEC 원문 ↗</a></div>
+    <div class="f13-dates"><div><b>${f13Esc(m.reportDate)} 기준</b>${recency}</div><span>${f13Esc(m.filingDate)} 제출 · 직전 ${f13Esc(m.previousReportDate)}</span></div>
+    <div class="f13-kpis"><div><span>공시 평가액</span><b>${f13Money(m.totalValueUsd)}</b></div><div><span>포지션</span><b>${fmt(m.positionCount)}개</b></div><div><span>상위 5개 집중도</span><b>${fmt(m.top5WeightPct, '%', 1)}</b></div></div>
+    <div class="f13-subhead"><b>상위 보유종목</b><span>공시 평가액 비중</span></div>
+    <div class="f13-holdings">${(m.topHoldings || []).slice(0, 5).map(f13Holding).join('') || '<div class="none">보유내역 없음</div>'}</div>
+    <div class="f13-subhead"><b>직전 분기 대비</b><span>주식 수 기준</span></div>
+    <div class="f13-changes">${changeRows || '<span class="muted">비교 가능한 변화 없음</span>'}</div>
+  </article>`;
+};
+const renderInstitutional13F = (block) => {
+  const sec = $('#institutional'); const host = $('#institutionalPanel');
+  if (!sec || !host) return;
+  const managers = block?.managers || [];
+  const available = managers.filter((x) => x.status === 'AVAILABLE');
+  $('#institutionalMeta').textContent = `최신 기준 ${block?.latestReportDate || '—'} · SEC 원문 확인 ${available.length}/${block?.managerCount ?? managers.length}곳${block?.laggedManagerCount ? ` · 이전 분기 ${block.laggedManagerCount}곳` : ''}`;
+  $('#institutionalCaveat').textContent = block?.limitationKo || '13F는 분기말 기준의 지연 공시이며 실시간 보유내역이 아닙니다.';
+  if (!managers.length) {
+    host.innerHTML = '<div class="none f13-empty">SEC 13F 원문을 불러오지 못했습니다. 이전 수치를 현재 값처럼 대신 표시하지 않습니다.</div>';
+    return;
+  }
+  host.innerHTML = managers.map(f13ManagerCard).join('');
+};
+
+// =========================================================================
+// 5. Region long-term research + 6. entry states
 // =========================================================================
 const fBar = (label, v) => `<div class="fb"><span>${label}</span><div class="fb-bar"><i style="width:${v ?? 0}%"></i></div><b>${v != null ? v : '—'}</b></div>`;
 const prosCons = (p) => {
@@ -1160,6 +1218,7 @@ const render = (d) => {
   renderIndices(d);
   renderRegime(d.macroRegime);
   renderConsensus(d.expertConsensus);
+  renderInstitutional13F(d.institutionalHoldings13F);
   renderLongTerm(d);
   renderModelPortfolio(d);
   renderRadar(d);

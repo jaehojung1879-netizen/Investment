@@ -209,6 +209,30 @@ def validate(path: str | Path, production: bool = True) -> list[str]:
             if not (portfolio.get("currencyPolicy") or {}).get("baseCurrency"):
                 errors.append("kelly_currency_policy_missing")
 
+    # 13F is historical disclosure context.  Dates and the SEC source link are
+    # mandatory so a delayed quarter can never be mistaken for live holdings.
+    disclosure = data.get("institutionalHoldings13F") or {}
+    managers = disclosure.get("managers") or []
+    available = [x for x in managers if x.get("status") == "AVAILABLE"]
+    if disclosure.get("status") == "AVAILABLE" and not available:
+        errors.append("13f_available_without_manager_data")
+    if disclosure.get("availableCount") not in {None, len(available)}:
+        errors.append("13f_available_count_mismatch")
+    for manager in available:
+        if not manager.get("reportDate") or not manager.get("filingDate"):
+            errors.append("13f_manager_missing_report_or_filing_date")
+            break
+        if not str(manager.get("filingUrl") or "").startswith("https://www.sec.gov/"):
+            errors.append("13f_manager_non_sec_source")
+            break
+        holdings = manager.get("topHoldings") or []
+        if any(not 0 <= float(row.get("portfolioWeightPct") or 0) <= 100 for row in holdings):
+            errors.append("13f_invalid_portfolio_weight")
+            break
+        if any(float(row.get("valueUsd") or 0) < 0 or float(row.get("shares") or 0) < 0 for row in holdings):
+            errors.append("13f_negative_value_or_shares")
+            break
+
     if production:
         if data.get("seed"):
             errors.append("seed_artifact_not_allowed_for_production")

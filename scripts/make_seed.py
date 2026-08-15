@@ -200,6 +200,11 @@ def main() -> int:
                               "reason": "synthetic_preview", "summaryKo": "비교 가능한 이전 운영 상태가 없습니다."},
         "direction": direction,
         "rotation": rotation, "longTerm": long_term, "macroRegime": macro_regime, "expertConsensus": expert,
+        "institutionalHoldings13F": {
+            "status": "UNAVAILABLE", "availableCount": 0, "managerCount": 0, "managers": [],
+            "source": "SEC EDGAR Form 13F-HR",
+            "limitationKo": "합성 미리보기에는 실제 기관 보유내역을 섞지 않습니다. 실데이터 빌드에서 SEC 원문을 불러옵니다.",
+        },
         "modelPortfolio": {
             "status": "BLOCKED", "method": "BLENDED_CONSTRAINED_FRACTIONAL_KELLY",
             "positions": [], "finalWeights": {}, "riskWeightedWeights": {},

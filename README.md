@@ -62,6 +62,12 @@
 
 `data/expert_sources.json`(기관 레지스트리)와 `data/expert_views.json`(사람이 검증한 요약)에서 **verified=true**이고 stale 하지 않은 의견만 집계합니다. 단순 평균이 아닌 **weighted median + 의견 분산**을 계산하고, 기업 IR은 독립 의견으로 취급하지 않습니다(가중치 하향). 원문 검증 전에는 내용을 만들지 않고 “검증 대기”로만 표시합니다.
 
+## 기관 13F 보유내역(SEC 원문)
+
+`data/institutional_managers.json`에 명시한 운용사의 최신·직전 **Form 13F-HR**를 SEC EDGAR에서 직접 읽습니다. 화면에는 분기말 기준일, 실제 제출일, 공시 평가액, 상위 5개 집중도, 상위 보유종목, 직전 분기 대비 주식 수 변화가 함께 표시됩니다. 종목명에서 티커를 추정하지 않으며 공시의 CUSIP·주식 수·평가액을 그대로 사용합니다. 숫자 파일명으로 정보표를 제출하는 운용사도 SEC filing index에서 찾아 처리합니다.
+
+13F는 실시간 보유내역이 아닙니다. 통상 분기말 후 최대 45일 뒤 공개되고, 현금·공매도·비상장·일부 해외자산 및 공개 이후의 거래는 보이지 않습니다. 그래서 금액 변화는 매수·매도 판정에 쓰지 않고 **주식 수 변화**만 비교하며, 원문 수집 실패 시 과거 값을 현재 값처럼 대체하지 않습니다. SEC가 요청하는 식별용 User-Agent는 `SEC_USER_AGENT`로 덮어쓸 수 있습니다.
+
 ## 사후 검증(paper signal ledger)
 
 오늘부터 생성되는 검증용 **전체 eligible cross-section**(UI 상위 15개와 분리)을 변경 불가능한 ledger에 누적합니다. ID는 date×region×ticker×modelVersion이므로 새 모델이 과거 신호를 덮어쓰지 않습니다. US는 SPY, KR은 KOSPI200 계열 벤치마크를 사용하고 동일한 종료 달력일에서 초과수익을 계산합니다. rank IC는 non-overlapping 표본의 각 date×region 횡단면에서 Spearman으로 계산한 뒤 평균·중앙값·hit ratio를 집계합니다. GitHub Actions는 **별도 `signal-history` 브랜치**를 사용해 main 재귀 빌드를 유발하지 않습니다.
