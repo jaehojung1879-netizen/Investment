@@ -32,6 +32,7 @@ from . import historical_outcomes as histout_mod
 from . import historical_replay as replay_mod
 from . import historical_store as histstore_mod
 from . import indices as indices_mod
+from . import institutional_13f as institutional_mod
 from . import ledger as ledger_mod
 from . import longterm as longterm_mod
 from . import kelly_portfolio as kelly_mod
@@ -775,6 +776,19 @@ def run(cfg) -> dict:
         print(f"  warning: expert consensus failed: {exc}")
         expert_consensus = None
 
+    # SEC-filed institutional holdings are disclosure context, not a model
+    # feature or recommendation input.  A vendor failure leaves this panel
+    # explicitly unavailable and never reuses an older snapshot as if current.
+    try:
+        institutional_13f = institutional_mod.build()
+    except Exception as exc:
+        print(f"  warning: SEC 13F reader failed: {exc}")
+        institutional_13f = {
+            "status": "UNAVAILABLE", "availableCount": 0, "managerCount": 0,
+            "managers": [],
+            "limitationKo": "SEC 원문을 불러오지 못해 13F 수치를 표시하지 않습니다.",
+        }
+
     # Direction compass + sector/factor rotation are additive tools; a failed
     # download must never take the whole build down with it.
     try:
@@ -879,6 +893,7 @@ def run(cfg) -> dict:
         "modelPortfolio": model_portfolio,
         "macroRegime": macro_regime,
         "expertConsensus": expert_consensus,
+        "institutionalHoldings13F": institutional_13f,
         "tradeIdeas": trade_mod.rank_ideas(ideas),
         "recommendationsBlocked": False,
         "priorState": prior_status,

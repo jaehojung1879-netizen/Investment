@@ -51,14 +51,26 @@ def test_decision_first_structure_and_single_global_disclaimer():
     assert "개인화 투자 권고" not in APP
 
 
-def test_secondary_material_lives_behind_uniform_folds():
-    # Everything that is not the decision is one collapsed row, not a section.
+def test_secondary_material_uses_uniform_folds_that_start_open():
+    # Detail remains collapsible, but the first visit does not hide the content.
     assert HTML.count('class="fold"') >= 8
     assert 'class="fold-grid"' in HTML
     assert ".fold > summary" in CSS
+    assert HTML.count('class="fold" open') == HTML.count('class="fold"')
+    assert 'class="trust-fold" open' in HTML
     # The old always-expanded section chrome is gone.
     assert "secondary-summary" not in HTML and "secondary-summary" not in CSS
     assert 'class="section"' not in HTML
+
+
+def test_market_graph_is_second_and_13f_has_a_full_render_contract():
+    assert HTML.index('id="today"') < HTML.index('id="context"') < HTML.index('id="portfolio"')
+    for element_id in ("institutional", "institutionalPanel", "institutionalMeta", "institutionalCaveat"):
+        assert f'id="{element_id}"' in HTML
+    assert "renderInstitutional13F" in APP
+    assert "institutionalHoldings13F" in APP
+    assert "주식 수 기준" in APP
+    assert ".f13-wrap" in CSS and ".f13-holding" in CSS and ".f13-change" in CSS
 
 
 def test_invalidation_is_rendered_per_name_from_pipeline_fields():
