@@ -1,0 +1,319 @@
+{
+  "generatedAt": "2026-08-16T03:43:58.747930+00:00",
+  "replayVersion": "replay-v2",
+  "modelVersion": "longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3",
+  "evidenceClass": "HISTORICAL_OOS",
+  "outcomesRead": 379152,
+  "maturedTargetOutcomesRead": 366661,
+  "available": true,
+  "method": "MATURITY_AWARE_EXPANDING_BETA_BINOMIAL",
+  "target": "COST_ADJUSTED_REGIONAL_EXCESS_RETURN_GT_ZERO",
+  "reliabilityGate": {
+    "eligible": false,
+    "byRegion": {
+      "KR": {
+        "eligible": false,
+        "checks": {
+          "auditDates": true,
+          "independentAuditDates": true,
+          "brier": true,
+          "ece": true,
+          "logLoss": true,
+          "brierSkill": false,
+          "conditionalAuditImprovement": true
+        },
+        "failures": [
+          "brierSkill"
+        ],
+        "thresholds": {
+          "minAuditDates": 63,
+          "minIndependentAuditDates": 8,
+          "maxBrier": 0.255,
+          "maxEce": 0.1,
+          "maxLogLoss": 0.72,
+          "minBrierSkill": -0.01,
+          "minConditionBrierImprovement": 0.0025
+        },
+        "method": "MATURITY_AWARE_EXPANDING_WALK_FORWARD"
+      },
+      "US": {
+        "eligible": true,
+        "checks": {
+          "auditDates": true,
+          "independentAuditDates": true,
+          "brier": true,
+          "ece": true,
+          "logLoss": true,
+          "brierSkill": true,
+          "conditionalAuditImprovement": true
+        },
+        "failures": [],
+        "thresholds": {
+          "minAuditDates": 63,
+          "minIndependentAuditDates": 8,
+          "maxBrier": 0.255,
+          "maxEce": 0.1,
+          "maxLogLoss": 0.72,
+          "minBrierSkill": -0.01,
+          "minConditionBrierImprovement": 0.0025
+        },
+        "method": "MATURITY_AWARE_EXPANDING_WALK_FORWARD"
+      }
+    },
+    "failures": [
+      "KR",
+      "dataIntegrity"
+    ],
+    "requiredForKelly": true,
+    "statisticalEligible": false
+  },
+  "integrityGate": {
+    "eligible": false,
+    "checks": {
+      "pitCoverage": true,
+      "historicalUniverse": false,
+      "pointInTimeFundamentals": false,
+      "vintageMacroForConditionalProbability": true
+    },
+    "failures": [
+      "historicalUniverse",
+      "pointInTimeFundamentals"
+    ],
+    "policyKo": "확률 성능과 별도로 과거 구성종목·발표시점 재무·조건부 거시 vintage가 운영 모델과 같은지를 검사합니다. 데이터가 없으면 할인만 하지 않고 Kelly를 차단합니다."
+  },
+  "regions": {
+    "KR": {
+      "selectedVariant": "BASE",
+      "selectionPeriod": [
+        "2014-02-07",
+        "2021-11-18"
+      ],
+      "auditPeriod": [
+        "2021-11-19",
+        "2026-01-09"
+      ],
+      "audit": {
+        "available": true,
+        "predictions": 3435,
+        "dates": 217,
+        "independentDates": 9,
+        "brier": 0.14676,
+        "baselineBrier": 0.14506,
+        "brierSkill": -0.0117,
+        "ece": 0.03068,
+        "logLoss": 0.69591,
+        "baseVariantBrier": 0.14676,
+        "conditionalBrierImprovement": 0.0
+      },
+      "reliabilityGate": {
+        "eligible": false,
+        "checks": {
+          "auditDates": true,
+          "independentAuditDates": true,
+          "brier": true,
+          "ece": true,
+          "logLoss": true,
+          "brierSkill": false,
+          "conditionalAuditImprovement": true
+        },
+        "failures": [
+          "brierSkill"
+        ],
+        "thresholds": {
+          "minAuditDates": 63,
+          "minIndependentAuditDates": 8,
+          "maxBrier": 0.255,
+          "maxEce": 0.1,
+          "maxLogLoss": 0.72,
+          "minBrierSkill": -0.01,
+          "minConditionBrierImprovement": 0.0025
+        },
+        "method": "MATURITY_AWARE_EXPANDING_WALK_FORWARD"
+      },
+      "labelAvailabilityPolicy": "OUTCOME_END_DATE_LTE_PREDICTION_DATE",
+      "buckets": [
+        {
+          "bucket": "0-60",
+          "observations": 24278,
+          "dates": 677,
+          "effectiveDates": 27,
+          "upProbabilityPct": 47.15,
+          "downProbabilityPct": 52.85,
+          "averageUpsidePct": 26.259,
+          "averageDownsidePct": 17.97,
+          "payoffRatio": 1.4613,
+          "distributionExpectedExcessReturnPct": 2.882,
+          "binaryKellyFraction": 0.1098
+        },
+        {
+          "bucket": "60-80",
+          "observations": 8380,
+          "dates": 677,
+          "effectiveDates": 27,
+          "upProbabilityPct": 47.24,
+          "downProbabilityPct": 52.76,
+          "averageUpsidePct": 24.64,
+          "averageDownsidePct": 17.353,
+          "payoffRatio": 1.42,
+          "distributionExpectedExcessReturnPct": 2.484,
+          "binaryKellyFraction": 0.1008
+        },
+        {
+          "bucket": "80-90",
+          "observations": 4100,
+          "dates": 677,
+          "effectiveDates": 27,
+          "upProbabilityPct": 46.01,
+          "downProbabilityPct": 53.99,
+          "averageUpsidePct": 24.142,
+          "averageDownsidePct": 17.547,
+          "payoffRatio": 1.3758,
+          "distributionExpectedExcessReturnPct": 1.632,
+          "binaryKellyFraction": 0.0676
+        },
+        {
+          "bucket": "90-95",
+          "observations": 2043,
+          "dates": 677,
+          "effectiveDates": 27,
+          "upProbabilityPct": 46.95,
+          "downProbabilityPct": 53.05,
+          "averageUpsidePct": 23.344,
+          "averageDownsidePct": 17.655,
+          "payoffRatio": 1.3222,
+          "distributionExpectedExcessReturnPct": 1.594,
+          "binaryKellyFraction": 0.0683
+        },
+        {
+          "bucket": "95-100",
+          "observations": 2607,
+          "dates": 677,
+          "effectiveDates": 27,
+          "upProbabilityPct": 50.0,
+          "downProbabilityPct": 50.0,
+          "averageUpsidePct": 30.667,
+          "averageDownsidePct": 18.126,
+          "payoffRatio": 1.6918,
+          "distributionExpectedExcessReturnPct": 6.269,
+          "binaryKellyFraction": 0.2044
+        }
+      ]
+    },
+    "US": {
+      "selectedVariant": "BASE",
+      "selectionPeriod": [
+        "2014-01-31",
+        "2021-11-25"
+      ],
+      "auditPeriod": [
+        "2021-11-26",
+        "2026-02-06"
+      ],
+      "audit": {
+        "available": true,
+        "predictions": 3930,
+        "dates": 220,
+        "independentDates": 9,
+        "brier": 0.05747,
+        "baselineBrier": 0.05779,
+        "brierSkill": 0.0056,
+        "ece": 0.04018,
+        "logLoss": 0.69361,
+        "baseVariantBrier": 0.05747,
+        "conditionalBrierImprovement": 0.0
+      },
+      "reliabilityGate": {
+        "eligible": true,
+        "checks": {
+          "auditDates": true,
+          "independentAuditDates": true,
+          "brier": true,
+          "ece": true,
+          "logLoss": true,
+          "brierSkill": true,
+          "conditionalAuditImprovement": true
+        },
+        "failures": [],
+        "thresholds": {
+          "minAuditDates": 63,
+          "minIndependentAuditDates": 8,
+          "maxBrier": 0.255,
+          "maxEce": 0.1,
+          "maxLogLoss": 0.72,
+          "minBrierSkill": -0.01,
+          "minConditionBrierImprovement": 0.0025
+        },
+        "method": "MATURITY_AWARE_EXPANDING_WALK_FORWARD"
+      },
+      "labelAvailabilityPolicy": "OUTCOME_END_DATE_LTE_PREDICTION_DATE",
+      "buckets": [
+        {
+          "bucket": "0-60",
+          "observations": 192882,
+          "dates": 684,
+          "effectiveDates": 22,
+          "upProbabilityPct": 49.73,
+          "downProbabilityPct": 50.27,
+          "averageUpsidePct": 16.698,
+          "averageDownsidePct": 13.137,
+          "payoffRatio": 1.2711,
+          "distributionExpectedExcessReturnPct": 1.699,
+          "binaryKellyFraction": 0.1017
+        },
+        {
+          "bucket": "60-80",
+          "observations": 64978,
+          "dates": 684,
+          "effectiveDates": 27,
+          "upProbabilityPct": 48.36,
+          "downProbabilityPct": 51.64,
+          "averageUpsidePct": 14.609,
+          "averageDownsidePct": 12.23,
+          "payoffRatio": 1.1946,
+          "distributionExpectedExcessReturnPct": 0.75,
+          "binaryKellyFraction": 0.0513
+        },
+        {
+          "bucket": "80-90",
+          "observations": 32548,
+          "dates": 684,
+          "effectiveDates": 27,
+          "upProbabilityPct": 48.76,
+          "downProbabilityPct": 51.24,
+          "averageUpsidePct": 15.474,
+          "averageDownsidePct": 12.041,
+          "payoffRatio": 1.2851,
+          "distributionExpectedExcessReturnPct": 1.375,
+          "binaryKellyFraction": 0.0888
+        },
+        {
+          "bucket": "90-95",
+          "observations": 16128,
+          "dates": 684,
+          "effectiveDates": 27,
+          "upProbabilityPct": 48.02,
+          "downProbabilityPct": 51.98,
+          "averageUpsidePct": 15.117,
+          "averageDownsidePct": 12.038,
+          "payoffRatio": 1.2557,
+          "distributionExpectedExcessReturnPct": 1.003,
+          "binaryKellyFraction": 0.0663
+        },
+        {
+          "bucket": "95-100",
+          "observations": 18276,
+          "dates": 684,
+          "effectiveDates": 27,
+          "upProbabilityPct": 49.62,
+          "downProbabilityPct": 50.38,
+          "averageUpsidePct": 15.984,
+          "averageDownsidePct": 12.314,
+          "payoffRatio": 1.298,
+          "distributionExpectedExcessReturnPct": 1.726,
+          "binaryKellyFraction": 0.108
+        }
+      ]
+    }
+  },
+  "explainKo": "상승확률은 126일 비용 차감 지역 초과수익이 0보다 클 빈도입니다. 각 결과가 실제 만기된 뒤에만 다음 예측에 사용하며, 거시·진입상태 조건은 별도 시계열 감사 구간에서 Brier 점수를 개선할 때만 적용합니다."
+}
