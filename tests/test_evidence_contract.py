@@ -53,7 +53,7 @@ def _base_payload(**overrides) -> dict:
 # Schema
 # --------------------------------------------------------------------------- #
 def test_schema_version_was_raised_for_the_new_evidence_sections():
-    assert prov_mod.SCHEMA_VERSION == "2.5.0"
+    assert prov_mod.SCHEMA_VERSION == "2.6.0"
     assert prov_mod.REPLAY_VERSION and prov_mod.FEATURE_VERSION and prov_mod.DATA_VERSION
 
 

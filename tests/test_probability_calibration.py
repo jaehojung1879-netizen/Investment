@@ -71,6 +71,9 @@ def test_macro_condition_is_used_only_after_separate_audit_passes():
     assert region["selectedVariant"] == "MACRO"
     assert region["reliabilityGate"]["eligible"] is True
     assert region["audit"]["brier"] < region["audit"]["baselineBrier"]
+    assert region["audit"]["calibrationBins"]
+    assert all({"predictedPct", "realizedPct", "dates"} <= set(row)
+               for row in region["audit"]["calibrationBins"])
 
     goldilocks = PC.lookup_distribution(
         calibrated, "US", 97.0, macro_regime="Goldilocks", entry_state="WATCH")

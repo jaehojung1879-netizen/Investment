@@ -23,7 +23,7 @@ import os
 import subprocess
 from datetime import datetime, timezone
 
-SCHEMA_VERSION = "2.5.0"
+SCHEMA_VERSION = "2.6.0"
 MODEL_VERSION = "longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3"
 
 # Versions that identify a body of HISTORICAL evidence rather than the live

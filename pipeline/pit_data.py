@@ -37,6 +37,7 @@ Nothing in this module fabricates a value it does not have.
 from __future__ import annotations
 
 import json
+import math
 from dataclasses import dataclass, field
 from pathlib import Path
 
@@ -70,6 +71,14 @@ PIT_QUALITY_BANDS = ((0.85, "HIGH"), (0.6, "MEDIUM"), (0.0, "LOW"))
 MIN_CALIBRATION_COVERAGE = 0.6
 
 SURVIVORSHIP_UNRESOLVED = "SURVIVORSHIP_BIAS_UNRESOLVED"
+
+
+def _safe_number(value):
+    try:
+        out = float(value)
+    except (TypeError, ValueError):
+        return None
+    return out if math.isfinite(out) else None
 
 
 class LookAheadError(RuntimeError):
@@ -187,8 +196,13 @@ class FundamentalRecord:
     report_period: str
     available_from: str
     fields: dict
+    report_date: str | None = None
     filing_date: str | None = None
+    publication_date: str | None = None
+    currency: str | None = None
     source: str | None = None
+    source_as_of: str | None = None
+    revision_status: str | None = None
     pit_status: str = PIT_EXACT
 
     def visible_on(self, as_of) -> bool:
@@ -205,10 +219,21 @@ class FundamentalStore:
     and let factor coverage fall).
     """
 
-    def __init__(self, records: dict[str, list[FundamentalRecord]] | None = None):
+    REQUIRED_SOURCE_FIELDS = (
+        "trailingPE", "forwardPE", "bookValue", "bookYield", "fcf", "fcfYield",
+        "roe", "operatingMargin", "profitMargin", "debtToEquity", "earningsGrowth",
+    )
+    SOURCE_FIELD_ALIASES = {"FCF": "fcf", "FCFYield": "fcfYield", "ROE": "roe"}
+
+    def __init__(self, records: dict[str, list[FundamentalRecord]] | None = None,
+                 diagnostics: dict | None = None):
         self._records: dict[str, list[FundamentalRecord]] = {}
         for ticker, rows in (records or {}).items():
             self._records[ticker] = sorted(rows, key=lambda r: str(r.available_from))
+        self.diagnostics = diagnostics or {
+            "contract": "PIT_FUNDAMENTALS_V1", "rowsRead": len(self),
+            "rowsAccepted": len(self), "rowsRejected": 0, "errors": [],
+        }
 
     def __len__(self) -> int:
         return sum(len(v) for v in self._records.values())
@@ -248,38 +273,110 @@ class FundamentalStore:
     def from_jsonl(cls, path: str | Path | None) -> "FundamentalStore":
         """Load a PIT fundamentals store.
 
-        Expected one JSON object per line with at least ``ticker``,
-        ``reportPeriod``, ``availableFrom`` and ``fields``. A missing file is
-        not an error — it is the current reality of the free-data stack, and it
-        yields an empty store whose status is CURRENT_SNAPSHOT_ONLY.
+        Expected one JSON object per line following ``PIT_FUNDAMENTALS_V1``:
+        ticker, fiscal/report period and date, publication/available dates,
+        currency, nullable source fields, source/sourceAsOf and revisionStatus.
+        A missing file is not an error — it is the current reality of the
+        free-data stack, and it yields an empty store whose status is
+        CURRENT_SNAPSHOT_ONLY.
         """
         if not path:
-            return cls({})
+            return cls({}, {"contract": "PIT_FUNDAMENTALS_V1", "rowsRead": 0,
+                            "rowsAccepted": 0, "rowsRejected": 0,
+                            "errors": ["pit_fundamentals_path_not_configured"]})
         file = Path(path)
         if not file.exists():
-            return cls({})
+            return cls({}, {"contract": "PIT_FUNDAMENTALS_V1", "rowsRead": 0,
+                            "rowsAccepted": 0, "rowsRejected": 0,
+                            "errors": ["pit_fundamentals_file_missing"]})
         grouped: dict[str, list[FundamentalRecord]] = {}
-        for line in file.read_text(encoding="utf-8").splitlines():
+        errors = []
+        rows_read = accepted = 0
+        for line_number, line in enumerate(file.read_text(encoding="utf-8").splitlines(), 1):
             line = line.strip()
             if not line:
                 continue
+            rows_read += 1
             try:
                 row = json.loads(line)
             except ValueError:
+                errors.append(f"line_{line_number}:invalid_json")
                 continue
             ticker, available = row.get("ticker"), row.get("availableFrom")
             if not ticker or not available:
+                errors.append(f"line_{line_number}:ticker_or_availableFrom_missing")
                 continue
+            report_period = row.get("fiscalPeriod") or row.get("reportPeriod")
+            report_date = row.get("reportDate")
+            publication = row.get("publicationDate") or row.get("filingDate")
+            source = row.get("source")
+            source_as_of = row.get("sourceAsOf")
+            revision_status = row.get("revisionStatus") or row.get("revision status")
+            if (not report_period or not report_date or not publication or not source
+                    or not row.get("currency") or not source_as_of or not revision_status):
+                errors.append(
+                    f"line_{line_number}:fiscalPeriod_reportDate_publicationDate_currency_"
+                    "source_sourceAsOf_or_revisionStatus_missing")
+                continue
+            try:
+                report_stamp = pd.Timestamp(report_date)
+                publication_stamp = pd.Timestamp(publication)
+                available_stamp = pd.Timestamp(available)
+                pd.Timestamp(source_as_of)
+                if publication_stamp < report_stamp:
+                    errors.append(f"line_{line_number}:publicationDate_before_reportDate")
+                    continue
+                if available_stamp < publication_stamp:
+                    errors.append(f"line_{line_number}:availableFrom_before_publicationDate")
+                    continue
+            except Exception:
+                errors.append(f"line_{line_number}:invalid_date")
+                continue
+            fields = dict(row.get("fields") or {})
+            for key in cls.REQUIRED_SOURCE_FIELDS:
+                if key in row and key not in fields:
+                    fields[key] = row.get(key)
+            for source_key, internal_key in cls.SOURCE_FIELD_ALIASES.items():
+                if source_key in row and internal_key not in fields:
+                    fields[internal_key] = row.get(source_key)
+                if source_key in fields and internal_key not in fields:
+                    fields[internal_key] = fields.pop(source_key)
+            fields = {k: v for k, v in fields.items() if v is not None}
+            trailing_pe = _safe_number(fields.get("trailingPE"))
+            forward_pe = _safe_number(fields.get("forwardPE"))
+            if trailing_pe and trailing_pe > 0 and "earningsYield" not in fields:
+                fields["earningsYield"] = 1.0 / trailing_pe
+            if forward_pe and forward_pe > 0 and "fwdEarningsYield" not in fields:
+                fields["fwdEarningsYield"] = 1.0 / forward_pe
             grouped.setdefault(ticker, []).append(FundamentalRecord(
                 ticker=ticker,
-                report_period=str(row.get("reportPeriod") or ""),
+                report_period=str(report_period),
+                report_date=str(report_date),
                 available_from=str(available),
                 filing_date=row.get("filingDate"),
-                fields={k: v for k, v in (row.get("fields") or {}).items() if v is not None},
-                source=row.get("source"),
+                publication_date=str(publication),
+                currency=row.get("currency"),
+                fields=fields,
+                source=source,
+                source_as_of=source_as_of,
+                revision_status=revision_status,
                 pit_status=row.get("pitStatus") or PIT_EXACT,
             ))
-        return cls(grouped)
+            accepted += 1
+        return cls(grouped, {
+            "contract": "PIT_FUNDAMENTALS_V1", "rowsRead": rows_read,
+            "rowsAccepted": accepted, "rowsRejected": rows_read - accepted,
+            "errors": errors[:50],
+            "availabilityRule": "availableFrom <= replayDate",
+            "currentSnapshotBackfillAllowed": False,
+            "schema": [
+                "ticker", "fiscalPeriod", "reportDate", "publicationDate",
+                "availableFrom", "currency", "trailingPE", "forwardPE",
+                "bookValue", "bookYield", "FCF", "FCFYield", "ROE",
+                "operatingMargin", "profitMargin", "debtToEquity", "earningsGrowth",
+                "source", "sourceAsOf", "revisionStatus",
+            ],
+        })
 
 
 # --------------------------------------------------------------------------- #

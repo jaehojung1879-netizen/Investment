@@ -755,19 +755,21 @@ def conviction_scores(candidates: list[dict], cfg: dict) -> list[dict]:
     return rows
 
 
-def select_portfolio(candidates: list[dict], cfg: dict) -> tuple[list[dict], dict]:
-    """Cut the research candidate list down to a portfolio that can be held.
+def _select_scored(candidates: list[dict], scored: list[dict], cfg: dict,
+                   *, method: str, score_formula_ko: str,
+                   not_a_forecast_ko: str) -> tuple[list[dict], dict]:
+    """Apply the production name/sector/region constraints to a ranked list.
 
-    A 6–12 name research sleeve per region answers "what is interesting". A
-    portfolio has to answer "what do I own", so the selection is explicitly
-    concentrated and the reason each name did or did not make the cut is kept.
+    The ranking source is deliberately injected while every eligibility and
+    diversification rule stays in one place. Production passes conviction
+    scores; historical A/B may pass a maturity-safe expected-return ranking.
+    This prevents the challenger replay from quietly using looser caps.
     """
     selection = cfg.get("selection") or {}
     target = int(selection.get("targetNames", cfg.get("maxNames", 12)))
     min_names = int(selection.get("minNames", 1))
     per_sector = int(selection.get("maxNamesPerSector", target))
     per_region = int(selection.get("maxNamesPerRegion", target))
-    scored = conviction_scores(candidates, cfg)
     by_ticker = {c["ticker"]: c for c in candidates}
 
     chosen: list[str] = []
@@ -792,9 +794,9 @@ def select_portfolio(candidates: list[dict], cfg: dict) -> tuple[list[dict], dic
     for row in scored:
         row["selected"] = row["ticker"] in selected_set
     meta = {
-        "method": SELECTION_METHOD,
-        "scoreFormulaKo": "(알파 백분위 − 50) ÷ 50 ÷ 하방변동성 × 근거 커버리지 × 진입상태 배율",
-        "notAForecastKo": "종목을 고르기 위한 순위 점수이며 기대수익률·샤프비율 예측이 아닙니다.",
+        "method": method,
+        "scoreFormulaKo": score_formula_ko,
+        "notAForecastKo": not_a_forecast_ko,
         "targetNames": target, "minNames": min_names,
         "maxNamesPerSector": per_sector, "maxNamesPerRegion": per_region,
         "minAlphaPercentile": float(selection.get("minAlphaPercentile", 66)),
@@ -807,6 +809,51 @@ def select_portfolio(candidates: list[dict], cfg: dict) -> tuple[list[dict], dic
         "ranking": [r for r in scored if r["selected"]] + [r for r in scored if not r["selected"]][:8],
     }
     return [by_ticker[t] for t in chosen], meta
+
+
+def select_portfolio(candidates: list[dict], cfg: dict) -> tuple[list[dict], dict]:
+    """Cut the research candidate list down to a portfolio that can be held.
+
+    A 6–12 name research sleeve per region answers "what is interesting". A
+    portfolio has to answer "what do I own", so the selection is explicitly
+    concentrated and the reason each name did or did not make the cut is kept.
+    """
+    return _select_scored(
+        candidates, conviction_scores(candidates, cfg), cfg,
+        method=SELECTION_METHOD,
+        score_formula_ko=(
+            "(알파 백분위 − 50) ÷ 50 ÷ 하방변동성 × 근거 커버리지 × 진입상태 배율"),
+        not_a_forecast_ko=(
+            "종목을 고르기 위한 순위 점수이며 기대수익률·샤프비율 예측이 아닙니다."),
+    )
+
+
+def select_portfolio_by_scores(candidates: list[dict], scored: list[dict],
+                               cfg: dict, *, method: str) -> tuple[list[dict], dict]:
+    """Constraint-identical selector entry point for a named challenger.
+
+    Callers must supply rows with ``ticker``, ``region``, ``sector``, a numeric
+    score and an explicit ``eligible`` flag. The function is intentionally not
+    connected to production promotion.
+    """
+    normalized = []
+    for row in scored:
+        item = dict(row)
+        item.setdefault("convictionScore", item.get("score", 0.0))
+        item.setdefault("alphaPercentile", None)
+        item.setdefault("downsideVolPct", None)
+        item.setdefault("evidenceCoverage", 0.0)
+        item.setdefault("eligible", False)
+        item.setdefault("exclusionCodes", [])
+        normalized.append(item)
+    normalized.sort(key=lambda r: (-float(r.get("score") or r.get("convictionScore") or 0.0),
+                                   str(r.get("ticker") or "")))
+    return _select_scored(
+        candidates, normalized, cfg, method=method,
+        score_formula_ko="만기된 과거 기대 초과수익 ÷ 하방변동성 × 진입상태 배율",
+        not_a_forecast_ko=(
+            "해당 시점까지 만기된 과거 OOS만 사용한 challenger 순위이며 production을 바꾸지 않습니다."),
+    )
 
 
 def challenger_selection(candidates: list[dict], estimates: list[dict],
@@ -865,7 +912,8 @@ def challenger_selection(candidates: list[dict], estimates: list[dict],
     }
 
 
-def baseline_weights(selected: list[dict], cfg: dict) -> dict:
+def baseline_weights(selected: list[dict], cfg: dict,
+                     ranking_rows: list[dict] | None = None) -> dict:
     """Conviction-tilted inverse-downside-volatility weights for the held set.
 
     Inverse downside vol sets the risk-parity base; the conviction *rank* inside
@@ -876,8 +924,13 @@ def baseline_weights(selected: list[dict], cfg: dict) -> dict:
     if not selected:
         return {}
     tilt_range = float((cfg.get("selection") or {}).get("convictionTiltRange", 1.0))
-    scored = {row["ticker"]: row for row in conviction_scores(selected, cfg)}
-    order = sorted(selected, key=lambda c: -scored[c["ticker"]]["convictionScore"])
+    ranking_rows = ranking_rows or conviction_scores(selected, cfg)
+    score_by_ticker = {
+        row["ticker"]: float(row.get("score") or row.get("convictionScore") or 0.0)
+        for row in ranking_rows
+    }
+    order = sorted(selected, key=lambda c: (-score_by_ticker.get(c["ticker"], 0.0),
+                                             str(c["ticker"])))
     n = len(order)
     raw = {}
     for rank, candidate in enumerate(order):
@@ -890,6 +943,42 @@ def baseline_weights(selected: list[dict], cfg: dict) -> dict:
         raw = {t: w / total * budget for t, w in raw.items()}
     capped, _ = _cap_portfolio(pd.Series(raw, dtype=float), selected, cfg, {})
     return capped.to_dict()
+
+
+def selection_and_baseline(candidates: list[dict], cfg: dict,
+                           macro_regime: dict | None = None, *,
+                           scored: list[dict] | None = None,
+                           method: str = SELECTION_METHOD) -> dict:
+    """Pure production selection + baseline allocation decision.
+
+    Live construction and historical portfolio replay both call this function.
+    It owns the macro-implied cash floor, concentrated selection and the
+    conviction/ranking-tilted inverse-downside-volatility weights. Kelly is a
+    later allocation layer and is deliberately absent here.
+    """
+    _, _, regime_cash, macro_warnings = _regime_adjustment(macro_regime, cfg)
+    local_cfg = dict(cfg)
+    local_cfg["minCashPct"] = max(float(cfg.get("minCashPct", 10)), regime_cash)
+    if scored is None:
+        selected, selection = select_portfolio(candidates, local_cfg)
+        ranking = selection.get("ranking") or []
+    else:
+        selected, selection = select_portfolio_by_scores(
+            candidates, scored, local_cfg, method=method)
+        ranking = scored
+    weights = baseline_weights(selected, local_cfg, ranking_rows=ranking)
+    serialized, cash_pct = _serialize_allocation(pd.Series(weights, dtype=float))
+    return {
+        "selected": selected,
+        "selection": selection,
+        "rawWeights": weights,
+        "weights": serialized,
+        "cashPct": cash_pct,
+        "appliedMinCashPct": round(float(local_cfg["minCashPct"]), 2),
+        "macroWarnings": macro_warnings,
+        "method": method,
+        "baselineMethod": BASELINE_METHOD,
+    }
 
 
 def concentration_diagnostics(weights: pd.Series, cfg: dict) -> dict:
@@ -1064,14 +1153,18 @@ def build_model_portfolio(long_term: dict | None, prices: dict, outcomes: list[d
     if len(all_candidates) < int(local_cfg.get("minNames", 6)):
         skeleton["fallbackReason"] = "longterm_candidates_below_minimum"
         return skeleton
-    candidates, selection_meta = select_portfolio(all_candidates, local_cfg)
+    baseline_decision = selection_and_baseline(all_candidates, cfg, macro_regime)
+    candidates = baseline_decision["selected"]
+    selection_meta = baseline_decision["selection"]
+    local_cfg["minCashPct"] = baseline_decision["appliedMinCashPct"]
+    skeleton["appliedMinCashPct"] = baseline_decision["appliedMinCashPct"]
     skeleton["selection"] = selection_meta
     skeleton["baselineMethod"] = BASELINE_METHOD
     if not candidates:
         skeleton["fallbackReason"] = "no_candidate_passed_portfolio_selection"
         skeleton["warnings"].append("SELECTION_EMPTY; ALL_CASH")
         return skeleton
-    risk_weights = baseline_weights(candidates, local_cfg)
+    risk_weights = baseline_decision["rawWeights"]
     estimates = estimate_expected_returns(
         candidates, outcomes, local_cfg, as_of=as_of,
         historical_calibration=historical_calibration, macro_regime=macro_regime)
@@ -1238,6 +1331,8 @@ def build_model_portfolio(long_term: dict | None, prices: dict, outcomes: list[d
         positions.append({
             "ticker": ticker, "region": candidate.get("region"), "sector": candidate.get("sector") or "Unclassified",
             "themes": themes.get(ticker) or ["Unclassified"], "alphaPercentile": candidate.get("alphaPercentile"),
+            "factorPercentiles": candidate.get("factorPercentiles") or {},
+            "evidenceCoverage": candidate.get("evidenceCoverage"),
             "expectedExcessReturnPct": exp.get("expectedExcessReturnPct"),
             "expectedReturnSampleSize": exp.get("effectiveSampleSize", 0),
             "expectedReturnEffectiveDates": exp.get("effectiveDates", 0),
@@ -1256,11 +1351,17 @@ def build_model_portfolio(long_term: dict | None, prices: dict, outcomes: list[d
             "probabilityContext": {key: (exp.get("probabilityDistribution") or {}).get(key)
                                    for key in ("selectedVariant", "contextUsed", "macroRegime",
                                                "entryState", "fallbackReason", "reliabilityEligible")},
+            "historicalAlphaBucket": ((exp.get("evidence") or {}).get("historicalBucket")),
+            "probabilityReliabilityStatus": (
+                "PASS" if (exp.get("probabilityDistribution") or {}).get("reliabilityEligible")
+                else "FAIL_OR_WITHHELD"),
             "transactionCost": exp.get("transactionCost"),
             "expectedReturnStatus": exp.get("status"),
             "riskLevel": (candidate.get("risk") or {}).get("vol252Pct"),
             "convictionScore": rank_row.get("convictionScore"),
             "convictionRank": (selected_order.index(ticker) + 1) if ticker in selected_order else None,
+            "selectionRank": (selected_order.index(ticker) + 1) if ticker in selected_order else None,
+            "entryMultiplier": rank_row.get("entryStateMultiplier"),
             "downsideVolPct": rank_row.get("downsideVolPct"),
             "thesisKo": candidate.get("thesisKo"),
             "invalidation": candidate.get("invalidation") or [],

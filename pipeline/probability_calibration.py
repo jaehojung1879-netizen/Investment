@@ -117,12 +117,20 @@ def _metrics(rows: list[dict], variant: str, *, horizon: int) -> dict:
     calibration_y = calibration["actual"].to_numpy()
     labels = np.digitize(calibration_p, bins[1:-1], right=False)
     ece = 0.0
+    calibration_bins = []
     for idx in range(5):
         mask = labels == idx
         if not mask.any():
             continue
-        ece += float(mask.mean()) * abs(float(calibration_p[mask].mean())
-                                        - float(calibration_y[mask].mean()))
+        predicted = float(calibration_p[mask].mean())
+        realized = float(calibration_y[mask].mean())
+        ece += float(mask.mean()) * abs(predicted - realized)
+        calibration_bins.append({
+            "range": f"{int(bins[idx] * 100)}-{int(bins[idx + 1] * 100)}",
+            "predictedPct": round(predicted * 100, 3),
+            "realizedPct": round(realized * 100, 3),
+            "dates": int(mask.sum()),
+        })
 
     dates = sorted(pd.Timestamp(x).normalize() for x in loss.index)
     independent: list[pd.Timestamp] = []
@@ -139,6 +147,7 @@ def _metrics(rows: list[dict], variant: str, *, horizon: int) -> dict:
         "brierSkill": (round(1.0 - brier / base_brier, 4) if base_brier > 0 else None),
         "ece": round(float(ece), 5),
         "logLoss": round(float(loss["logLoss"].mean()), 5),
+        "calibrationBins": calibration_bins,
     }
 
 

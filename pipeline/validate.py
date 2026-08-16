@@ -95,6 +95,18 @@ def _validate_evidence_separation(data: dict) -> list[str]:
             errors.append("historical_validation_evidence_class_mismatch")
         if historical.get("liveValidated"):
             errors.append("historical_evidence_claims_live_validation")
+        replay = historical.get("portfolioReplay") or {}
+        integrity = historical.get("dataIntegrity") or {}
+        integrity_gate = integrity.get("integrityGate") or {}
+        promotion = replay.get("promotionEvidence") or {}
+        if replay.get("fullProductionFidelity") and (
+                not integrity.get("historicalUniverseAvailable")
+                or not (integrity.get("pitFundamentals") or {}).get("available")):
+            errors.append("full_fidelity_claim_without_pit_inputs")
+        if promotion.get("promotionEligible") and not integrity_gate.get("eligible"):
+            errors.append("selector_promotion_without_integrity_gate")
+        if promotion.get("promotionEligible") and promotion.get("humanApprovalRequired"):
+            errors.append("automatic_selector_promotion_forbidden")
     if prospective is not None:
         if prospective.get("evidenceClass") != "PROSPECTIVE_PAPER":
             errors.append("prospective_validation_evidence_class_mismatch")
@@ -116,6 +128,10 @@ def _validate_evidence_separation(data: dict) -> list[str]:
         if (prospective.get("signalsRecorded") and int(prospective["signalsRecorded"]) > 0
                 and tracking is not None and int(tracking) == 0):
             errors.append("signals_recorded_but_tracking_days_zero")
+        matured_126 = int(((prospective.get("maturedByHorizon") or {}).get("126") or 0))
+        gap = prospective.get("forecastGap") or {}
+        if matured_126 == 0 and gap and gap.get("status") != "NOT_YET_MATURED":
+            errors.append("prospective_126d_gap_fabricated_before_maturity")
 
     evidence = data.get("kellyEvidence") or {}
     for region, blob in (evidence.get("byRegion") or {}).items():

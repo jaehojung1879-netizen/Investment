@@ -211,6 +211,7 @@ def horizon_frame(outcomes: list[dict], horizon: int, *,
         if not payload or payload.get(key) is None:
             continue
         rows.append({
+            "id": outcome.get("id"),
             "date": pd.Timestamp(outcome["date"]).normalize(),
             # A forward label is not observable on the signal date.  Probability
             # calibration uses this timestamp to admit the label only after the
