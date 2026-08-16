@@ -78,6 +78,7 @@ def test_manager_snapshot_compares_shares_and_carries_both_dates(monkeypatch):
     assert got["totalValueUsd"] == 250000000
     assert got["topHoldings"][0]["portfolioWeightPct"] == 80.0
     assert got["changes"]["increased"][0]["shareChangePct"] == 100.0
+    assert got["changes"]["increased"][0]["cusip"] == "000000001"
     assert got["changes"]["new"][0]["issuer"] == "NEW INC"
     assert got["changes"]["exited"][0]["issuer"] == "EXIT INC"
 

@@ -206,7 +206,7 @@ const EXPL = {
 const pop = $('#pop');
 let popKey = null;
 const placePop = (target) => {
-  const r = target.getBoundingClientRect(); const w = Math.min(340, window.innerWidth - 24);
+  const r = target.getBoundingClientRect(); const w = Math.min(420, window.innerWidth - 24);
   pop.style.width = w + 'px';
   let left = Math.min(r.left + window.scrollX, window.scrollX + window.innerWidth - w - 12);
   pop.style.left = Math.max(window.scrollX + 12, left) + 'px';
@@ -227,8 +227,18 @@ const term = (k, l) => `<span class="term" data-x="${k}">${l}</span>`;
 const showTickerPop = (ticker, target) => {
   const d = DATA.details && DATA.details[ticker];
   if (!d) return;
+  const f = d.fundamentals || {};
   const m = (l, v) => `<div><span>${l}</span><b>${v}</b></div>`;
-  const grid = [
+  const marketCap = (v) => v == null ? '—' : v >= 1e12 ? `${(v / 1e12).toFixed(1)}T` : v >= 1e9 ? `${(v / 1e9).toFixed(1)}B` : v >= 1e6 ? `${(v / 1e6).toFixed(0)}M` : fmt(v);
+  const yieldPct = f.dividendYield == null ? null : (Math.abs(f.dividendYield) <= 1 ? f.dividendYield * 100 : f.dividendYield);
+  const valuation = [
+    m('PER · 최근 12개월', fmt(f.trailingPE, '배', 1)), m('PER · 예상', fmt(f.forwardPE, '배', 1)),
+    m('PBR', fmt(f.priceToBook, '배', 1)), m('배당률', fmt(yieldPct, '%', 2)),
+    m('시가총액', `${marketCap(f.marketCap)}${f.currency ? ` ${f.currency}` : ''}`), m('잉여현금흐름 수익률', fmt(f.fcfYield == null ? null : f.fcfYield * 100, '%', 1)),
+    m('ROE', fmt(f.roe == null ? null : f.roe * 100, '%', 1)), m('부채/자기자본', fmt(f.debtToEquity, '%', 1)),
+    m('영업이익률', fmt(f.operatingMargin == null ? null : f.operatingMargin * 100, '%', 1)), m('이익 성장률', fmt(f.earningsGrowth == null ? null : f.earningsGrowth * 100, '%', 1)),
+  ].join('');
+  const technical = [
     m('현재가', fmt(d.lastClose)), m('국면', regKo(d.regime)),
     m('10일 모델 점수', pct0(d.modelScore ?? d.probUp)), m('SMA50/200', `${fmt(d.ma50)} / ${fmt(d.ma200)}`),
     m('RSI(14)', fmt(d.rsi14)), m('실현변동성', fmt(d.realizedVol, '%')),
@@ -236,8 +246,24 @@ const showTickerPop = (ticker, target) => {
     m('60일 모멘텀', sp(d.mom63)), m('52주고점 대비', fmt(d.pct52wHigh, '%')),
   ].join('');
   const flags = (d.riskFlags && d.riskFlags.length) ? `<div class="dp-flags">${d.riskFlags.map((f) => `<span class="mflag">${f}</span>`).join('')}</div>` : '';
+  const fStatus = Object.keys(f).length
+    ? `<div class="dp-source">재무·밸류에이션은 ${f.asOf || '최근'} 현재 스냅샷입니다. 과거 시점 재무나 투자 권고가 아닙니다.</div>`
+    : '<div class="dp-source missing">현재 재무 스냅샷을 불러오지 못했습니다. 값을 추정해 채우지 않습니다.</div>';
   popKey = 'tk:' + ticker;
-  pop.innerHTML = `<div class="dp-head"><b>${tkName(ticker)}</b> <span class="tk">${ticker}</span> <span class="reg ${regCls(d.regime)}">${regKo(d.regime)}</span></div><div class="dp-grid">${grid}</div>${flags}`;
+  pop.innerHTML = `<div class="dp-head"><b>${tkName(ticker)}</b> <span class="tk">${ticker}</span> <span class="reg ${regCls(d.regime)}">${regKo(d.regime)}</span></div><div class="dp-sub">기본 정보 · ${f.sector || d.sector || '업종 미분류'}${f.industry ? ` / ${f.industry}` : ''}</div><div class="dp-grid">${valuation}</div>${fStatus}<div class="dp-sub">가격·모델 참고값</div><div class="dp-grid">${technical}</div>${flags}`;
+  pop.hidden = false; placePop(target);
+};
+
+const show13FPop = (managerId, identifier, target) => {
+  const manager = (DATA?.institutionalHoldings13F?.managers || []).find((m) => m.id === managerId);
+  const changeRows = Object.values(manager?.changes || {}).flat();
+  const row = [...(manager?.topHoldings || []), ...changeRows].find((h) => h.cusip === identifier || h.issuer === identifier);
+  if (!manager || !row) return;
+  const m = (l, v) => `<div><span>${l}</span><b>${v}</b></div>`;
+  const shares = row.shares ?? row.currentShares ?? row.previousShares;
+  const value = row.valueUsd ?? row.currentValueUsd ?? row.previousValueUsd;
+  popKey = `f13:${managerId}:${identifier}`;
+  pop.innerHTML = `<div class="dp-head"><b>${f13Esc(row.issuer)}</b><span class="tk">${f13Esc(row.titleClass)}</span>${f13Option(row)}</div><div class="dp-grid">${m('운용사', f13Esc(manager.name))}${m('CUSIP', f13Esc(row.cusip || '변화 요약에는 미포함'))}${m('공시 평가액', f13Money(value))}${m('보유 주식 수', shares == null ? '—' : Number(shares).toLocaleString('en-US'))}${m('포트폴리오 비중', fmt(row.portfolioWeightPct, '%', 2))}${m('분기말 기준', f13Esc(manager.reportDate))}</div><div class="dp-source">13F 원문에는 PER·PBR·배당률과 현재 티커가 없습니다. 발행사명으로 티커를 추측해 잘못 연결하지 않고 공시 원문 값만 표시합니다.</div>`;
   pop.hidden = false; placePop(target);
 };
 
@@ -250,6 +276,8 @@ document.addEventListener('click', (e) => {
   if (ixRange) { e.preventDefault(); setIndexRange(ixRange.dataset.indexRange); return; }
   const ix = e.target.closest('[data-index-symbol]');
   if (ix) { e.preventDefault(); showIndexDialog(ix.dataset.indexSymbol); return; }
+  const f13 = e.target.closest('[data-f13-id]');
+  if (f13) { e.preventDefault(); e.stopPropagation(); const key = `f13:${f13.dataset.f13Manager}:${f13.dataset.f13Id}`; if (popKey === key && !pop.hidden) return hidePop(); show13FPop(f13.dataset.f13Manager, f13.dataset.f13Id, f13); return; }
   const tk = e.target.closest('[data-tk]');
   if (tk) { e.preventDefault(); e.stopPropagation(); if (popKey === 'tk:' + tk.dataset.tk && !pop.hidden) return hidePop(); showTickerPop(tk.dataset.tk, tk); return; }
   const t = e.target.closest('[data-x]');
@@ -675,21 +703,30 @@ const trendSvg = (series, references = [], opts = {}) => {
   const dateLabel = (v) => v ? v.slice(2, 7).replace('-', '.') : '';
   return `<svg class="trend-chart" viewBox="0 0 ${width} ${height}" role="img" aria-label="${opts.aria || '기간별 추이 차트'}">${grid}${refLines}${lines}<text x="${pad.l}" y="${height - 5}" class="chart-axis">${dateLabel(first.date)}</text><text x="${width - pad.r}" y="${height - 5}" text-anchor="end" class="chart-axis">${dateLabel(last.date)}</text></svg>`;
 };
+const sliceRecentThreeMonths = (points) => {
+  const rows = points || [];
+  if (!rows.length) return rows;
+  const end = new Date(`${rows[rows.length - 1].date}T00:00:00Z`);
+  const cutoff = new Date(end); cutoff.setUTCMonth(cutoff.getUTCMonth() - 3);
+  const recent = rows.filter((p) => new Date(`${p.date}T00:00:00Z`) >= cutoff);
+  return recent.length >= Math.min(3, rows.length) ? recent : rows.slice(-Math.min(4, rows.length));
+};
 const indicatorTrend = (i) => {
-  const lines = [{ label: i.historyLabelKo || i.displayNameKo, points: i.history || [] }];
-  if (i.trendHistory && i.trendHistory.length) lines.push({ label: i.trendLabelKo || '추세', points: i.trendHistory });
+  const lines = [{ label: i.historyLabelKo || i.displayNameKo, points: sliceRecentThreeMonths(i.history) }];
+  if (i.trendHistory && i.trendHistory.length) lines.push({ label: i.trendLabelKo || '추세', points: sliceRecentThreeMonths(i.trendHistory) });
   const legend = lines.filter((x) => x.points.length).map((x, idx) => `<span><i class="chart-key chart-key-${idx}"></i>${x.label}</span>`).join('');
-  return `<button type="button" class="indicator-chart" data-macro-indicator="${i.name}" aria-label="${i.displayNameKo || i.name} 장기 시계열 열기">${trendSvg(lines, i.referenceLines || [], { width: 520, height: 132, aria: `${i.displayNameKo || i.name} 추이` })}<div class="chart-legend">${legend}</div><span class="macro-open">장기 시계열 보기 →</span></button>`;
+  return `<button type="button" class="indicator-chart" data-macro-indicator="${i.name}" aria-label="${i.displayNameKo || i.name} 최근 3개월 미리보기, 장기 시계열 열기"><span class="mini-range">최근 3개월</span>${trendSvg(lines, i.referenceLines || [], { width: 520, height: 132, aria: `${i.displayNameKo || i.name} 최근 3개월 추이` })}<div class="chart-legend">${legend}</div><span class="macro-open">클릭해 장기 시계열 보기 →</span></button>`;
 };
 const indicatorCard = (i, axis) => {
   const contribution = i.axisContribution ?? 0;
   const cls = contribution > 0 ? 'bull' : contribution < 0 ? 'bear' : 'trans';
   const stale = i.stale ? '<span class="ax-stale">STALE</span>' : '';
+  const context = i.contextOnly ? '<span class="ax-context">확인용 · 점수 미반영</span>' : '';
   const isReturn = i.transformation === 'three_month_price_return';
   const transformed = isReturn && i.transformedValue != null ? i.transformedValue * 100 : i.transformedValue;
   const change = isReturn && i.change != null ? i.change * 100 : i.change;
   return `<article class="ax-signal">
-    <div class="ax-signal-top"><div><b>${i.displayNameKo || i.name}</b><small>${i.name}</small></div><span class="reg ${cls}">${axis.ko} ${i.axisContributionKo || (contribution > 0 ? '긍정' : contribution < 0 ? '부정' : '중립')}</span></div>
+    <div class="ax-signal-top"><div><b>${i.displayNameKo || i.name}</b><small>${i.name}</small></div><span class="reg ${cls}">${axis.ko} ${i.axisContributionKo || (contribution > 0 ? '긍정' : contribution < 0 ? '부정' : '중립')}</span></div>${context}
     <p class="ax-method">${i.transformationKo || i.transformation || '최근 변화'}</p>
     <p class="ax-reading">${i.signalSummaryKo || '세부 판정 설명은 다음 빌드에서 제공됩니다.'}</p>
     ${indicatorTrend(i)}
@@ -717,7 +754,7 @@ const axisRow = (a, key) => {
       <span class="ax-bar"><i class="${v >= 0 ? 'apos' : 'aneg'}" style="${v >= 0 ? 'left:50%' : 'right:50%'};width:${w}%"></i></span>
       <span class="ax-lab reg ${dirCls}">${a.labelKo}</span>
       <span class="ax-conf muted">점수 ${v == null ? '—' : Number(v).toFixed(2)} · 커버 ${Math.round((a.coverage ?? 0) * 100)}% · 신선도 ${Math.round((a.freshness ?? 0) * 100)}% · 합의 ${Math.round((a.agreement ?? 0) * 100)}%</span>
-      <span class="ax-toggle">${direct ? '판정에 직접 사용' : '위험예산 보조'} · ${a.nIndicators ?? 0}개 ▾</span>
+      <span class="ax-toggle">${direct ? '판정에 직접 사용' : '위험예산 보조'} · ${a.nIndicators ?? 0}개${a.nContextIndicators ? ` + 확인용 ${a.nContextIndicators}개` : ''} ▾</span>
     </div></summary>
     <div class="ax-signals">${indicators}</div>
   </details>`;
@@ -754,7 +791,7 @@ const macroPulseIndicator = (name, label) => {
 };
 const macroEnvironment = (r) => {
   const e = r.environmentSummary || {};
-  const pulse = `${macroPulseIndicator('Headline_CPI', 'Headline CPI · 전년비')}${macroPulseIndicator('Core_CPI', 'Core CPI · 전년비')}`;
+  const pulse = `${macroPulseIndicator('Headline_CPI', 'Headline CPI · 전년비')}${macroPulseIndicator('Core_CPI', 'Core CPI · 전년비')}${macroPulseIndicator('Headline_PPI', 'Headline PPI · 생산단계')}${macroPulseIndicator('Core_PPI', 'Core PPI · 기조')}`;
   return `<section class="macro-cockpit">
     <div class="macro-cockpit-copy"><span>MACRO ENVIRONMENT</span><h3>${e.headlineKo || '성장·물가·금융여건을 함께 확인합니다.'}</h3><div class="macro-takeaways">${(e.takeawaysKo || []).map((x) => `<p>${x}</p>`).join('')}</div><small>${e.methodKo || ''}</small></div>
     <div class="macro-pulse">${pulse}<div class="macro-pulse-card axis"><span>성장 축</span><b>${r.axes?.growth?.labelKo || '—'}</b><small>점수 ${r.axes?.growth?.value ?? '—'} · 신뢰 ${Math.round((r.axes?.growth?.confidence ?? 0) * 100)}%</small></div><div class="macro-pulse-card axis"><span>금융여건 축</span><b>${r.axes?.financialConditions?.labelKo || '—'}</b><small>점수 ${r.axes?.financialConditions?.value ?? '—'} · 위험예산 보조</small></div></div>
@@ -888,15 +925,15 @@ const f13Money = (v) => {
   return `$${Math.round(n).toLocaleString('en-US')}`;
 };
 const f13Option = (row) => row.putCall ? `<em class="f13-option ${row.putCall.toLowerCase()}">${f13Esc(row.putCall)}</em>` : '';
-const f13Holding = (row) => `<div class="f13-holding">
+const f13Holding = (row, managerId) => `<button type="button" class="f13-holding" data-f13-manager="${f13Esc(managerId)}" data-f13-id="${f13Esc(row.cusip || row.issuer)}" aria-label="${f13Esc(row.issuer)} 13F 공시 상세 보기">
   <div><b>${f13Esc(row.issuer)}</b><span>${f13Esc(row.titleClass)} ${f13Option(row)}</span></div>
   <div class="f13-weight"><i style="width:${Math.min(100, Number(row.portfolioWeightPct) || 0)}%"></i></div>
   <strong>${fmt(row.portfolioWeightPct, '%', 1)}</strong>
-</div>`;
+</button>`;
 const F13_CHANGE_KO = { new: '신규', increased: '주식 수 확대', decreased: '주식 수 축소', exited: '공시에서 제외' };
-const f13Change = (kind, row) => {
+const f13Change = (kind, row, managerId) => {
   const pct = row.shareChangePct == null ? '' : ` ${row.shareChangePct > 0 ? '+' : ''}${row.shareChangePct}%`;
-  return `<span class="f13-change ${kind}"><i>${F13_CHANGE_KO[kind]}</i><b>${f13Esc(row.issuer)}</b>${f13Option(row)}<em>${pct}</em></span>`;
+  return `<button type="button" class="f13-change ${kind}" data-f13-manager="${f13Esc(managerId)}" data-f13-id="${f13Esc(row.cusip || row.issuer)}"><i>${F13_CHANGE_KO[kind]}</i><b>${f13Esc(row.issuer)}</b>${f13Option(row)}<em>${pct}</em></button>`;
 };
 const f13ManagerCard = (m) => {
   if (!['AVAILABLE', 'CACHED_OFFICIAL'].includes(m.status)) return `<article class="f13-card unavailable">
@@ -908,14 +945,14 @@ const f13ManagerCard = (m) => {
     ? '<em class="f13-recency lagged">최근 분기 제출 없음</em>'
     : '<em class="f13-recency">추적군 최신 분기</em>';
   const changeRows = ['new', 'increased', 'decreased', 'exited']
-    .flatMap((kind) => (changes[kind] || []).slice(0, 2).map((row) => f13Change(kind, row))).join('');
+    .flatMap((kind) => (changes[kind] || []).slice(0, 2).map((row) => f13Change(kind, row, m.id))).join('');
   const sourceBadge = m.status === 'CACHED_OFFICIAL' ? '<em class="f13-cache">공식 캐시</em>' : '<em class="f13-live">SEC 확인</em>';
   return `<article class="f13-card ${m.featured ? 'featured' : ''}">
     <div class="f13-head"><div><span>${f13Esc(m.managerKo)} ${sourceBadge}</span><h3>${f13Esc(m.name)}</h3></div><a href="${m.filingUrl}" target="_blank" rel="noopener">SEC 원문 ↗</a></div>
     <div class="f13-dates"><div><b>${f13Esc(m.reportDate)} 기준</b>${recency}</div><span>${f13Esc(m.filingDate)} 제출 · 직전 ${f13Esc(m.previousReportDate)}</span></div>
     <div class="f13-kpis"><div><span>공시 평가액</span><b>${f13Money(m.totalValueUsd)}</b></div><div><span>포지션</span><b>${fmt(m.positionCount)}개</b></div><div><span>상위 5개 집중도</span><b>${fmt(m.top5WeightPct, '%', 1)}</b></div></div>
     <div class="f13-subhead"><b>상위 보유종목</b><span>공시 평가액 비중</span></div>
-    <div class="f13-holdings">${(m.topHoldings || []).slice(0, 5).map(f13Holding).join('') || '<div class="none">보유내역 없음</div>'}</div>
+    <div class="f13-holdings">${(m.topHoldings || []).slice(0, 5).map((row) => f13Holding(row, m.id)).join('') || '<div class="none">보유내역 없음</div>'}</div>
     <div class="f13-subhead"><b>직전 분기 대비</b><span>주식 수 기준</span></div>
     <div class="f13-changes">${changeRows || '<span class="muted">비교 가능한 변화 없음</span>'}</div>
   </article>`;
@@ -925,7 +962,7 @@ const renderInstitutional13F = (block) => {
   if (!sec || !host) return;
   const managers = block?.managers || [];
   const available = managers.filter((x) => ['AVAILABLE', 'CACHED_OFFICIAL'].includes(x.status));
-  $('#institutionalMeta').textContent = `13F 최신 기준 ${block?.latestReportDate || '—'} · 표시 ${available.length}/${block?.managerCount ?? managers.length}곳 · 실시간 ${block?.liveCount ?? 0} · 공식 캐시 ${block?.cachedCount ?? 0}${block?.laggedManagerCount ? ` · 이전 분기 ${block.laggedManagerCount}곳` : ''}`;
+  $('#institutionalMeta').textContent = `13F 최신 기준 ${block?.latestReportDate || '—'} · 마지막 확인 ${block?.fetchedAt ? block.fetchedAt.slice(0, 16).replace('T', ' ') + ' UTC' : '—'} · 표시 ${available.length}/${block?.managerCount ?? managers.length}곳 · 실시간 ${block?.liveCount ?? 0} · 공식 캐시 ${block?.cachedCount ?? 0}${block?.laggedManagerCount ? ` · 이전 분기 ${block.laggedManagerCount}곳` : ''}`;
   $('#institutionalCaveat').textContent = block?.limitationKo || '13F는 분기말 기준의 지연 공시이며 실시간 보유내역이 아닙니다.';
   if (!managers.length) {
     host.innerHTML = '<div class="none f13-empty">SEC 13F 원문을 불러오지 못했습니다. 이전 수치를 현재 값처럼 대신 표시하지 않습니다.</div>';

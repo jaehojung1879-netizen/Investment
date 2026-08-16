@@ -45,6 +45,8 @@ INDICATORS: dict[str, tuple] = {
     "Headline_CPI": ("inflation", +1, 12, FRED + "CPIAUCSL"),
     "Core_CPI": ("inflation", +1, 12, FRED + "CPILFESL"),
     "Core_PCE": ("inflation", +1, 28, FRED + "PCEPILFE"),
+    "Headline_PPI": ("inflation", +1, 30, FRED + "PPIFIS"),
+    "Core_PPI": ("inflation", +1, 30, FRED + "WPSFD49116"),
     "Breakeven_10Y": ("inflation", +1, 1, FRED + "T10YIE"),
     "WTI": ("inflation", +1, 1, FRED + "DCOILWTICO"),
     # liquidity
@@ -65,6 +67,11 @@ INDICATORS: dict[str, tuple] = {
     "Yield_Curve": ("earningsCredit", +1, 0, FRED + "T10Y2Y"),
 }
 
+# PPI is useful upstream-price context, but directly adding both PPI series to
+# a CPI/PCE-heavy mean would double-count one release family.  They remain
+# visible without changing the established regime-decision weights.
+CONTEXT_ONLY_INDICATORS = {"Headline_PPI", "Core_PPI"}
+
 AXES = ["growth", "inflation", "liquidity", "financialConditions", "riskAppetite", "earningsCredit"]
 AXIS_KO = {
     "growth": "성장", "inflation": "물가", "liquidity": "유동성",
@@ -83,6 +90,8 @@ TRANSFORMATIONS = {
     "Headline_CPI": "inflation_rate_yoy_and_3m_annualized",
     "Core_CPI": "inflation_rate_yoy_and_3m_annualized",
     "Core_PCE": "inflation_rate_yoy_and_3m_annualized",
+    "Headline_PPI": "inflation_rate_yoy_and_3m_annualized",
+    "Core_PPI": "inflation_rate_yoy_and_3m_annualized",
     "Payrolls": "monthly_change_3m_average",
     "Unemployment": "three_month_average_change",
     "Initial_Claims": "four_week_average_change",
@@ -103,6 +112,8 @@ INDICATOR_META = {
     "Headline_CPI": ("소비자물가 (Headline CPI)", "%", "%p 변화"),
     "Core_CPI": ("근원 소비자물가", "%", "%p 변화"),
     "Core_PCE": ("근원 개인소비지출 물가", "%", "%p 변화"),
+    "Headline_PPI": ("생산자물가 (Headline PPI)", "%", "%p 변화"),
+    "Core_PPI": ("근원 생산자물가", "%", "%p 변화"),
     "Breakeven_10Y": ("10년 기대인플레이션", "%", "%p 변화"),
     "WTI": ("WTI 유가", "%", "% 변화"),
     "Fed_Assets": ("연준 총자산", "%", "%p 변화"),
@@ -163,6 +174,18 @@ INDICATOR_GUIDE = {
         "readKo": "상승률 둔화는 금리 부담 완화, 재가속은 긴축 장기화 위험 쪽 증거입니다.",
         "useKo": "CPI와 함께 물가 방향의 일관성을 확인합니다.",
         "cautionKo": "발표가 늦고 과거 수치가 수정될 수 있습니다.",
+    },
+    "Headline_PPI": {
+        "meaningKo": "미국 생산자가 최종수요 상품·서비스를 판매할 때 받는 가격의 전체 흐름입니다.",
+        "readKo": "전년 대비 상승률과 최근 3개월 연율로 생산단계 가격 압력의 재가속·둔화를 봅니다.",
+        "useKo": "소비자물가보다 앞단의 비용 압력을 확인하는 보조지표로 CPI와 함께 비교합니다.",
+        "cautionKo": "기업 마진·환율·유통비 때문에 생산자 가격이 소비자 가격으로 그대로 전가되지는 않습니다.",
+    },
+    "Core_PPI": {
+        "meaningKo": "식품·에너지·유통마진 성격의 무역서비스를 제외한 미국 최종수요 생산자물가입니다.",
+        "readKo": "변동성이 큰 항목을 덜어 생산단계의 기조적 가격 압력을 확인합니다.",
+        "useKo": "Headline PPI 움직임이 일시적 충격인지 더 넓은 비용 압력인지 교차 확인합니다.",
+        "cautionKo": "CPI·PCE와 조사 대상과 가중치가 달라 같은 물가율로 해석하면 안 됩니다.",
     },
     "NFCI": {
         "meaningKo": "시카고 연은이 금리·신용·레버리지 등 금융여건을 종합한 주간 지수입니다.",
@@ -347,7 +370,8 @@ def indicator_read(name: str, series: pd.Series, asof: pd.Timestamp | None = Non
     obs = pd.Timestamp(visible.index[-1])
     tr = _transform(name, visible)
     fresh_days = int((eval_asof.normalize() - obs.normalize()).days) if eval_asof is not None else None
-    contribution = (sign * tr["direction"]) if tr["direction"] else 0
+    context_only = name in CONTEXT_ONLY_INDICATORS
+    contribution = 0 if context_only else ((sign * tr["direction"]) if tr["direction"] else 0)
     display_name, value_unit, change_unit = INDICATOR_META.get(
         name, (name, "", "변화")
     )
@@ -362,7 +386,10 @@ def indicator_read(name: str, series: pd.Series, asof: pd.Timestamp | None = Non
         "useKo": f"{AXIS_KO[axis]} 축의 여러 근거 중 하나로만 사용합니다.",
         "cautionKo": "단일 지표만으로 국면이나 자산 가격을 예측하지 않습니다.",
     })
-    if contribution > 0:
+    if context_only:
+        contribution_ko = "판정 보조"
+        signal_summary = f"{TRANSFORMATION_KO.get(tr['method'], tr['method'])} → 생산단계 물가 확인용 · 국면 점수에 직접 가중하지 않음"
+    elif contribution > 0:
         contribution_ko = DIRECTION_POS[axis]
         signal_summary = f"{TRANSFORMATION_KO.get(tr['method'], tr['method'])} → {AXIS_KO[axis]} {contribution_ko} 기여"
     elif contribution < 0:
@@ -387,6 +414,7 @@ def indicator_read(name: str, series: pd.Series, asof: pd.Timestamp | None = Non
         "zscore": round(tr["z"], 2) if tr["z"] is not None else None,
         "direction": tr["direction"],
         "axisContribution": contribution,
+        "contextOnly": context_only,
         "axisContributionKo": contribution_ko,
         "signalSummaryKo": signal_summary,
         "history": _history_points(display_history),
@@ -409,22 +437,24 @@ def indicator_read(name: str, series: pd.Series, asof: pd.Timestamp | None = Non
 
 def _axis_summary(reads: list[dict], expected_count: int | None = None) -> dict:
     """Aggregate indicator reads into one axis value/direction/confidence."""
-    contribs = [r["axisContribution"] for r in reads if r["axisContribution"] != 0]
-    fresh = [r for r in reads if not r.get("stale")]
-    if not reads:
+    decision_reads = [r for r in reads if not r.get("contextOnly")]
+    contribs = [r["axisContribution"] for r in decision_reads if r["axisContribution"] != 0]
+    fresh = [r for r in decision_reads if not r.get("stale")]
+    if not decision_reads:
         return {"value": None, "direction": None, "confidence": 0.0,
                 "coverage": 0.0, "freshness": 0.0, "agreement": 0.0,
                 "nIndicators": 0}
     value = float(np.mean(contribs)) if contribs else 0.0
     expected_count = expected_count or 3
-    coverage = min(1.0, len(reads) / expected_count)
-    freshness = len(fresh) / len(reads) if reads else 0.0
+    coverage = min(1.0, len(decision_reads) / expected_count)
+    freshness = len(fresh) / len(decision_reads) if decision_reads else 0.0
     agreement = abs(float(np.mean(contribs))) if contribs else 0.0
     conf = round(coverage * freshness * (0.5 + 0.5 * agreement), 2)
     direction = "positive" if value > 0.15 else ("negative" if value < -0.15 else "flat")
     return {"value": round(value, 2), "direction": direction, "confidence": conf,
             "coverage": round(coverage, 2), "freshness": round(freshness, 2),
-            "agreement": round(agreement, 2), "nIndicators": len(reads)}
+            "agreement": round(agreement, 2), "nIndicators": len(decision_reads),
+            "nContextIndicators": len(reads) - len(decision_reads)}
 
 
 def _regime_decision(growth: dict, inflation: dict) -> dict:
@@ -490,7 +520,7 @@ def _environment_summary(axes: dict, decision: dict) -> dict:
     liquidity, conditions = axes["liquidity"], axes["financialConditions"]
     label = decision.get("displayLabelKo") or decision.get("label")
     growth_text = f"성장 신호는 {growth.get('labelKo', '확인 대기')}({growth.get('value') if growth.get('value') is not None else '—'})입니다."
-    inflation_text = f"Headline·Core CPI, Core PCE와 시장 기대를 합친 물가 신호는 {inflation.get('labelKo', '확인 대기')}({inflation.get('value') if inflation.get('value') is not None else '—'})입니다."
+    inflation_text = f"Headline·Core CPI, Core PCE와 시장 기대를 합친 물가 신호는 {inflation.get('labelKo', '확인 대기')}({inflation.get('value') if inflation.get('value') is not None else '—'})입니다. PPI는 생산단계 압력 확인용으로 별도 표시합니다."
     if conditions.get("value") is None:
         conditions_text = "금융여건 데이터가 부족해 위험예산 보정은 제한적입니다."
     elif conditions["value"] > 0.15:
@@ -507,7 +537,7 @@ def _environment_summary(axes: dict, decision: dict) -> dict:
         "headlineKo": f"현재 거시 판정은 ‘{label}’이며, 성장과 물가의 방향을 먼저 보고 금융여건·유동성으로 위험예산을 보정합니다.",
         "takeawaysKo": [growth_text, inflation_text, conditions_text, liquidity_text],
         "watchKo": decision.get("summaryKo"),
-        "methodKo": "Headline CPI를 체감·에너지 충격, Core CPI/PCE를 기조 물가로 구분해 함께 봅니다. 단일 발표로 국면을 확정하지 않습니다.",
+        "methodKo": "Headline CPI를 체감·에너지 충격, Core CPI/PCE를 기조 물가로 구분합니다. PPI는 중복 가중 없이 생산단계 압력을 교차 확인하며, 단일 발표로 국면을 확정하지 않습니다.",
     }
 
 
@@ -552,7 +582,8 @@ def build(macro: pd.DataFrame | None, vix: pd.Series | None,
     axes = {}
     for axis in AXES:
         axis_reads = [r for r in reads.values() if r["axis"] == axis]
-        expected_count = sum(1 for spec in INDICATORS.values() if spec[0] == axis)
+        expected_count = sum(1 for name, spec in INDICATORS.items()
+                             if spec[0] == axis and name not in CONTEXT_ONLY_INDICATORS)
         summ = _axis_summary(axis_reads, expected_count=expected_count)
         summ["ko"] = AXIS_KO[axis]
         if summ["direction"] == "positive":

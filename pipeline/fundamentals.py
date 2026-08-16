@@ -34,6 +34,14 @@ _FIELDS = {
     "dividendYield": "dividendYield",
 }
 
+# Descriptive fields are kept separate from numeric fields so a missing label
+# can never make an otherwise valid fundamentals row fail its coverage check.
+_TEXT_FIELDS = {
+    "sector": "sector",
+    "industry": "industry",
+    "currency": "currency",
+}
+
 FETCH_BUDGET_SEC = 300  # hard wall-clock budget so fundamentals can never stall the build
 _MAX_WORKERS = 6
 
@@ -57,6 +65,8 @@ def _fetch_one(ticker: str) -> dict | None:
     out = {ours: _clean(info.get(theirs)) for theirs, ours in _FIELDS.items()}
     if all(v is None for v in out.values()):
         return None
+    out.update({ours: info.get(theirs) for theirs, ours in _TEXT_FIELDS.items()
+                if info.get(theirs)})
     # Derived: FCF yield = free cash flow / market cap (both same currency).
     fcf, mcap = out.get("freeCashflow"), out.get("marketCap")
     out["fcfYield"] = round(fcf / mcap, 4) if fcf and mcap and mcap > 0 else None

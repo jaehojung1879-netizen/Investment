@@ -659,6 +659,16 @@ def run(cfg) -> dict:
         print(f"  fundamentals: {len(fundamentals)}/{len(all_tickers)} tickers")
     except Exception as exc:
         print(f"  warning: fundamentals fetch failed: {exc}")
+    # Ticker popovers use the same current-snapshot fundamentals as the
+    # long-horizon factor engine.  Keep the snapshot nested and explicitly
+    # dated: these fields are descriptive context, not point-in-time history.
+    fundamentals_asof = datetime.now(timezone.utc).strftime("%Y-%m-%d") if fundamentals else None
+    for ticker, detail in details.items():
+        row = fundamentals.get(ticker)
+        if row:
+            detail["fundamentals"] = {**row, "asOf": fundamentals_asof,
+                                      "pointInTime": False,
+                                      "source": "Yahoo Finance current snapshot"}
     bench_by_region = benchmark_closes
     # A pre-pass data-safety block so long-term weights/actions are withheld too.
     pre_block, _ = quality_mod.recommendations_blocked({
@@ -926,7 +936,7 @@ def run(cfg) -> dict:
             "modelsTrained": fits,
             "universeScreened": len(screened),
             "latestDataDate": latest_date.strftime("%Y-%m-%d") if latest_date is not None else None,
-            "sourceAsOf": datetime.now(timezone.utc).strftime("%Y-%m-%d") if fundamentals else None,
+            "sourceAsOf": fundamentals_asof,
             "fredEnabled": cfg.has_fred,
             "ecosEnabled": cfg.has_ecos,
             "macroCoverage": macro_regime.get("coverage") if macro_regime else 0.0,

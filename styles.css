@@ -289,7 +289,7 @@ a { color: inherit; text-decoration: none; }
 .term { cursor: pointer; border-bottom: 1px dashed rgba(78,168,255,0.6); }
 .tklink { cursor: pointer; border-bottom: 1px dotted rgba(255,255,255,0.28); }
 .tklink:hover { color: var(--accent); border-bottom-color: var(--accent); }
-.pop { position: absolute; z-index: 60; max-width: 340px; padding: 13px 15px; background: #0e1626; border: 1px solid rgba(78,168,255,0.4); border-radius: 12px; box-shadow: var(--shadow); }
+.pop { position: absolute; z-index: 60; max-width: 420px; padding: 13px 15px; background: #0e1626; border: 1px solid rgba(78,168,255,0.4); border-radius: 12px; box-shadow: var(--shadow); }
 .pop > b { color: var(--accent); font-size: 0.9rem; }
 .pop p { margin: 7px 0 0; color: var(--text); font-size: 0.82rem; line-height: 1.55; }
 .pop code { color: var(--green); }
@@ -306,6 +306,8 @@ a { color: inherit; text-decoration: none; }
 .dp-sig { font-size: 0.76rem; line-height: 1.5; margin-bottom: 4px; }
 .dp-sig b { color: var(--text); margin-right: 6px; }
 .dp-flags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 9px; }
+.dp-source { margin-top: 9px; padding: 7px 9px; border-radius: 7px; background: rgba(78,168,255,.07); color: var(--muted); font-size: .67rem; line-height: 1.45; }
+.dp-source.missing { background: rgba(245,196,81,.07); color: var(--gold); }
 
 /* search + caveat */
 .caveat { font-size: 0.8rem; line-height: 1.55; margin: -4px 0 14px; padding: 9px 12px; border: 1px solid rgba(245,196,81,0.3); background: rgba(245,196,81,0.06); border-radius: 10px; }
@@ -424,7 +426,9 @@ a { color: inherit; text-decoration: none; }
 .ax-numbers dd { margin: 1px 0 0; font-size: 0.72rem; font-weight: 700; }
 .indicator-chart { display: block; width: 100%; margin: 9px 0; padding: 7px; border: 1px solid var(--line); border-radius: 8px; color: inherit; background: rgba(7,11,21,.35); font: inherit; text-align: left; cursor: pointer; transition: border-color .16s ease, background .16s ease; }
 .indicator-chart:hover, .indicator-chart:focus-visible { border-color: rgba(78,168,255,.55); background: rgba(78,168,255,.06); outline: none; }
+.mini-range { display: inline-block; margin: 0 0 2px 3px; padding: 2px 5px; border-radius: 4px; background: rgba(255,255,255,.06); color: var(--muted); font-size: .56rem; font-weight: 800; }
 .macro-open { display: block; margin-top: 4px; color: var(--accent); font-size: .6rem; font-weight: 800; text-align: right; }
+.ax-context { display: inline-block; margin-top: 7px; padding: 3px 6px; border: 1px solid rgba(245,196,81,.25); border-radius: 5px; color: var(--gold); font-size: .58rem; font-weight: 800; }
 .indicator-guide { margin: 8px 0; border-top: 1px dashed var(--line-2); padding-top: 7px; }
 .indicator-guide summary { color: var(--accent); font-size: .68rem; font-weight: 700; cursor: pointer; }
 .indicator-guide > div { display: grid; grid-template-columns: 1fr 1fr; gap: 5px 12px; margin-top: 7px; }
@@ -576,7 +580,8 @@ button.macro-pulse-card:hover, button.macro-pulse-card:focus-visible { border-co
 .f13-subhead b { font-size: .73rem; }
 .f13-subhead span { color: var(--muted); font-size: .62rem; }
 .f13-holdings { display: grid; gap: 6px; }
-.f13-holding { display: grid; grid-template-columns: minmax(125px, 1fr) minmax(70px, .7fr) 42px; align-items: center; gap: 8px; }
+.f13-holding { display: grid; width: 100%; grid-template-columns: minmax(125px, 1fr) minmax(70px, .7fr) 42px; align-items: center; gap: 8px; padding: 2px 0; border: 0; color: inherit; background: none; font: inherit; text-align: left; cursor: pointer; }
+.f13-holding:hover b, .f13-holding:focus-visible b { color: var(--accent); }
 .f13-holding > div:first-child { min-width: 0; }
 .f13-holding b, .f13-holding span { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .f13-holding b { font-size: .7rem; }
@@ -584,6 +589,8 @@ button.macro-pulse-card:hover, button.macro-pulse-card:focus-visible { border-co
 .f13-weight { height: 6px; overflow: hidden; border-radius: 999px; background: rgba(255,255,255,.06); }
 .f13-weight i { display: block; height: 100%; border-radius: inherit; background: linear-gradient(90deg, var(--gold), var(--accent)); }
 .f13-holding strong { text-align: right; font-size: .68rem; font-variant-numeric: tabular-nums; }
+.f13-change { border: 0; color: inherit; font: inherit; cursor: pointer; text-align: left; }
+.f13-change:hover b, .f13-change:focus-visible b { color: var(--accent); }
 .f13-changes { display: flex; flex-wrap: wrap; gap: 6px; }
 .f13-change { display: inline-flex; align-items: center; gap: 4px; max-width: 100%; padding: 4px 7px; border: 1px solid var(--line); border-radius: 999px; background: rgba(7,11,21,.34); font-size: .61rem; }
 .f13-change i { font-style: normal; font-weight: 800; }
