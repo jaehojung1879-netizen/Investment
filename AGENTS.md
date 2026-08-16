@@ -9,7 +9,7 @@
 - After changes run `python -m compileall pipeline`, `pytest -q`, seed generation, and artifact validation.
 - Never merge directly to `main`.
 
-## Historical replay invariants (v2.4)
+## Historical replay invariants (v2.6)
 
 - HISTORICAL_OOS and PROSPECTIVE_PAPER evidence live in separate files, carry separate
   `evidenceClass` labels, and are never pooled into one table, one average, or one UI panel.
@@ -26,6 +26,12 @@
   must run before any push. If a shard outgrows the limit, shard finer — do not raise it.
 - Path-dependent statistics (drawdown, CVaR, Sharpe) are computed only on non-overlapping
   date samples. Means and hit ratios may use every date.
+- Historical portfolio replay and live construction share the production selection and
+  baseline-weighting functions. A copied backtest formula is forbidden.
+- A price-sleeve replay without PIT fundamentals is labelled
+  `PRICE_SLEEVES_ONLY_AUDIT_PROXY`; it may not claim full four-factor fidelity.
+- Challenger calibration admits a label only after `outcomeEndDate <= replayDate`, and no
+  historical result may automatically promote a selector or relax the Kelly gate.
 - The final holdout stays sealed during development and raises on access; it is scored
   once, after the winning model is frozen.
 - Model selection happens on validation blocks only. Test blocks are scored, never consulted.

@@ -70,6 +70,9 @@ jobs:
             if git show origin/signal-history:ledger/historical-diagnostics.json > .state/historical-diagnostics.json; then
               echo "HISTORICAL_DIAGNOSTICS_PATH=$GITHUB_WORKSPACE/.state/historical-diagnostics.json" >> "$GITHUB_ENV"
             fi
+            if git show origin/signal-history:ledger/historical-portfolio-validation.json > .state/historical-portfolio-validation.json; then
+              echo "HISTORICAL_PORTFOLIO_VALIDATION_PATH=$GITHUB_WORKSPACE/.state/historical-portfolio-validation.json" >> "$GITHUB_ENV"
+            fi
             if git show origin/signal-history:ledger/opportunity-model.json > .state/opportunity-model.json; then
               echo "OPPORTUNITY_MODEL_PATH=$GITHUB_WORKSPACE/.state/opportunity-model.json" >> "$GITHUB_ENV"
             fi

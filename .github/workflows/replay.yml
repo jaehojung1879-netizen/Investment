@@ -85,6 +85,10 @@ jobs:
         run: |
           python scripts/audit_probability.py replay-work/ledger
 
+      - name: Audit alpha ranking and concentrated portfolios
+        run: |
+          python scripts/audit_portfolio.py replay-work/ledger
+
       # Weekly (Sunday) or on demand. Selection is walk-forward and the sealed
       # holdout is scored once, so more frequent retraining buys nothing and
       # would multiply the effective number of trials.

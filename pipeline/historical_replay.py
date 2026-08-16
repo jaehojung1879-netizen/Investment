@@ -688,6 +688,15 @@ def replay_one_date(as_of, panel: PricePanel, universe_by_region: dict[str, list
                     "quality": _int(pct.loc[ticker, "quality"]),
                     "lowvol": _int(pct.loc[ticker, "lowvol"]),
                 },
+                "factorAvailability": {
+                    "sleevesAvailable": [key for key in ("momentum", "value", "quality", "lowvol")
+                                         if _finite(pct.loc[ticker, key]) is not None],
+                    "sleevesWithheld": [key for key in ("momentum", "value", "quality", "lowvol")
+                                        if _finite(pct.loc[ticker, key]) is None],
+                    "factorCoverage": _round(float(row.get("factorCoverage") or 0), 3),
+                    "sourceQuality": _round(float(row.get("sourceQuality") or 0), 3),
+                    "pitFundamentalsUsed": used_fundamentals,
+                },
                 "entryState": classification["entryState"],
                 "entryReasons": classification["reasons"],
                 "overheatPercentile": classification["overheatPercentile"],
@@ -823,6 +832,17 @@ def run_replay(prices: dict[str, pd.DataFrame], universe: dict[str, list[str]], 
         "survivorshipNote": (None if universe_history.available
                              else pit_data.SURVIVORSHIP_UNRESOLVED),
         "fundamentalsPit": bool(fundamental_store and fundamental_store.available),
+        "historicalUniverseAvailable": bool(universe_history.available),
+        "constituentCoveragePct": 100.0 if universe_history.available else None,
+        "universeSource": ("HISTORICAL_MEMBERSHIP_DATASET" if universe_history.available
+                           else "CURRENT_UNIVERSE_WITH_PRICE_HISTORY_FILTER_ONLY"),
+        "firstReliableUniverseDate": (grid[0].strftime("%Y-%m-%d")
+                                      if grid and universe_history.available else None),
+        "affectedObservationsPct": 0.0 if universe_history.available else 100.0,
+        "affectedRegions": [] if universe_history.available else sorted(universe),
+        "impactOnPromotionEligibility": ("NONE" if universe_history.available
+                                         else "KELLY_AND_SELECTOR_PROMOTION_BLOCKED"),
+        "fundamentalsContract": getattr(fundamental_store, "diagnostics", {}),
         "macroPitStatus": macro_view.pit_status(),
         "regimeDistribution": dict(sorted(regimes.items())),
         "shortTermModelReplayed": False,

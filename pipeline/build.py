@@ -254,6 +254,16 @@ def _load_historical_evidence(cfg) -> dict:
                        "reason": "current_replay_generation_not_available"}
     model_spec = _load_generation_spec(os.environ.get("OPPORTUNITY_MODEL_PATH"))
     warning_spec = _load_generation_spec(os.environ.get("WARNING_MODEL_PATH"))
+    portfolio_validation = kelly_mod.load_json(
+        os.environ.get("HISTORICAL_PORTFOLIO_VALIDATION_PATH"), {}) or {}
+    if (portfolio_validation.get("replayVersion") not in (None, expected)
+            or portfolio_validation.get("modelVersion") not in (None, prov_mod.MODEL_VERSION)):
+        portfolio_validation = {
+            "available": False,
+            "reason": "portfolio_validation_generation_mismatch",
+            "replayVersion": expected,
+            "modelVersion": prov_mod.MODEL_VERSION,
+        }
 
     # Records from an older replay generation describe a different model and
     # must not be pooled with the current one.
@@ -293,6 +303,7 @@ def _load_historical_evidence(cfg) -> dict:
         "calibration": calibration, "regimeInteraction": regime_interaction,
         "coverage": coverage, "dataset": dataset,
         "modelSpec": model_spec, "warningSpec": warning_spec,
+        "portfolioValidation": portfolio_validation,
         "replayVersionMismatchedRecords": mismatched,
     }
 
@@ -303,6 +314,11 @@ def _historical_validation_block(historical: dict, cfg) -> dict:
     coverage = historical.get("coverage") or {}
     calibration = historical.get("calibration") or {}
     spec = historical.get("modelSpec") or {}
+    validation_report = historical.get("portfolioValidation") or {}
+    alpha = validation_report.get("alphaDiagnostics") or {}
+    portfolio_replay = validation_report.get("portfolioReplay") or {}
+    integrity = validation_report.get("dataIntegrity") or {}
+    forecast_gap = validation_report.get("forecastGap") or {}
     available = bool(historical.get("signals"))
     return {
         "evidenceClass": "HISTORICAL_OOS",
@@ -330,6 +346,11 @@ def _historical_validation_block(historical: dict, cfg) -> dict:
         "replayVersionMismatchedRecords": historical.get("replayVersionMismatchedRecords", 0),
         "alphaCalibration": calibration,
         "probabilityCalibration": calibration.get("probabilityCalibration") or {},
+        "alphaDiagnostics": alpha,
+        "portfolioReplay": portfolio_replay,
+        "forecastGap": forecast_gap,
+        "dataIntegrity": integrity,
+        "validationClaims": validation_report.get("claims") or {},
         "regimeInteraction": historical.get("regimeInteraction"),
         "finalHoldoutStart": (cfg.opportunity or {}).get("finalHoldoutStart"),
         "walkForward": spec.get("walkForward"),
@@ -344,6 +365,7 @@ def _historical_validation_block(historical: dict, cfg) -> dict:
 def _prospective_validation_block(validation_status: dict) -> dict:
     """The paper-ledger panel, with tracking and maturity kept apart."""
     status = validation_status or {}
+    matured_126 = int(((status.get("maturedByHorizon") or {}).get("126") or 0))
     return {
         "evidenceClass": "PROSPECTIVE_PAPER",
         "trackingSince": status.get("firstSignalDate"),
@@ -357,6 +379,10 @@ def _prospective_validation_block(validation_status: dict) -> dict:
         "regionIC": status.get("regionIC") or {},
         "costAdjustedExcessReturn": status.get("costAdjustedExcessReturn"),
         "MDD": status.get("MDD"), "CVaR": status.get("CVaR"),
+        "forecastGap": (status.get("forecastGap") if matured_126 > 0 else {
+            "status": "NOT_YET_MATURED", "horizonDays": 126,
+            "messageKo": "126D 만기 관측치가 없어 0으로 표시하지 않습니다.",
+        }),
         "modelVersion": status.get("modelVersion"),
         "generationIsolated": bool(status.get("generationIsolated")),
         "excludedPriorModelSignals": status.get("excludedPriorModelSignals"),
