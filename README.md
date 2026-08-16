@@ -98,7 +98,7 @@
 |---|---|---|---|
 | **1. Replay Infrastructure** | time-safe replay engine, price-only PIT, historical signal ledger, outcomes, leakage 탐지 | **완료 · 가동** | — |
 | **2. PIT Fundamentals / Macro** | publication-aware 재무, vintage-aware 매크로, historical universe | **인터페이스 완료 · 데이터 대기** | 무료 소스에 발표일 이력·ALFRED vintage·과거 구성종목이 없음. `pit_data.FundamentalStore.from_jsonl` / `UniverseHistory.from_json`에 파일만 넣으면 즉시 활성화되고 PIT 커버리지가 올라갑니다. |
-| **3. Historical Calibration** | alpha bucket calibration, historical Kelly prior, shrinkage | **완료 · 가동** | 실데이터 replay ledger가 CI에서 채워지면 자동으로 켜집니다 |
+| **3. Historical Calibration** | alpha bucket 기대수익 + 만기 인지형 상승확률·상하방 분포 calibration, historical Kelly prior, shrinkage | **구현 완료 · replay-v2/데이터 gate 대기** | 새 세대 재현 후에도 Brier·ECE·log-loss와 과거 구성종목·PIT 재무·필요 시 vintage 거시 gate를 모두 통과해야 Kelly가 켜집니다 |
 | **4. ML Opportunity / Warning** | change feature dataset, walk-forward ML, calibrated probability, radar | **완료 · acceptance gate 대기** | gate 통과 전까지 규칙 기반 점수 사용 (설계된 동작) |
 | **5. Prospective Bayesian Update** | historical + live posterior, drift 감지, Kelly 영향도 적응 | **완료 · 가동** | prospective ledger가 쌓이면 자동으로 비중이 이동 |
 
@@ -114,6 +114,18 @@ Phase 2가 비어 있어도 Phase 1·3·5는 정상 동작합니다. price-only 
 - **결합은 정밀도 가중**입니다: `mu_post = Σ(w_i/se_i² · mu_i) / (Σ w_i/se_i² + 1/τ²)`. 0을 중심으로 하는 사전분포(τ=3%)가 얇은 추정치를 수축시킵니다. 실시간 표본이 쌓일수록 정밀도가 커져 **자동으로** 실시간 비중이 올라갑니다 — 전환 시점을 하드코딩하지 않습니다.
 - **비대칭이 의도적입니다.** 실시간 성과가 과거보다 크게 낮으면 Kelly fraction을 축소하고, 반대 방향은 작동하지 않습니다. 실시간 성과가 나쁘다고 기대수익을 올리는 일은 절대 없습니다.
 - Kelly 활성화 상태는 단일 코드가 아니라 **증거 사다리**입니다: `NO_EVIDENCE` → `HISTORICAL_PRIOR_ONLY` → `HISTORICAL_OOS_SUPPORTED` → `PROSPECTIVE_EARLY` → `PROSPECTIVE_CONFIRMED` → `ACTIVE_PAPER` → `ACTIVE_VALIDATED`. 화면에는 "과거 OOS 검증 활용 중", "실시간 검증 축적 중"처럼 표시합니다.
+
+## 상승확률·상하방 분포 calibration
+
+켈리 비중은 평균 기대수익 하나만 맞는다고 안전해지지 않습니다. 그래서 126일 비용 차감 지역 초과수익을 `상승(>0) / 하락(≤0)`으로 나눠 **상승확률, 평균 상승폭, 평균 하락폭, 손익비, 이진 Kelly 참고값**을 별도로 발표합니다. 이진 Kelly 값은 설명용이며 실제 포트폴리오 비중은 상관관계를 포함한 다변량 최적화가 결정합니다.
+
+- **만기 전 정답 사용 금지:** 1월 2일 신호의 126일 결과는 그 `endDate`가 지난 뒤에만 expanding 학습 상태에 들어갑니다. 신호일이 과거라는 이유로 아직 알 수 없던 미래 결과를 학습시키지 않습니다.
+- **시점외 확률 감사:** 앞쪽 구간에서 `BASE(지역×알파버킷)`와 `MACRO(거시 국면 조건부)`, `ENTRY(종목 진입상태 조건부)` 세 가지만 비교하고, 뒤쪽 감사 구간의 Brier score·ECE·log-loss·지역 기준 대비 Brier skill을 별도로 평가합니다.
+- **조건부 과최적화 제한:** 거시·진입상태 조건은 앞쪽 구간에서 최소 개선폭을 넘은 경우에만 후보가 되며, 뒤쪽 감사까지 통과하고 해당 셀의 유효 날짜가 충분해야 현재 종목 확률에 적용됩니다. 아니면 자동으로 지역×알파버킷 기본값으로 돌아갑니다.
+- **한 날짜는 한 군집:** 같은 날 수백 종목의 승패를 수백 개 독립 표본으로 세지 않습니다. 확률 손실과 payoff는 날짜 안에서 먼저 평균합니다.
+- **얇은 셀 수축:** Beta-Binomial 사전분포와 payoff prior가 얇은 조건부 확률·상승폭·하락폭을 부모 구간으로 수축합니다. 3개 사례의 100% 승률 같은 값이 비중을 지배하지 못합니다.
+- **Fail closed:** `probabilityGate.requiredForKelly=true`입니다. 어느 보유 지역이라도 확률 감사에 실패하거나 현재 종목의 분포를 찾지 못하면 `probability_calibration_unreliable`로 기록하고 Kelly 종목 비중을 숨긴 채 컨빅션 위험가중을 유지합니다.
+- **운영모델 동일성도 별도 gate:** Brier가 좋아도 현재 상장종목만 과거로 보낸 재현, 발표일 없는 재무, 개정된 매크로를 운영 모델 전체의 검증으로 인정하지 않습니다. 기본 설정은 과거 구성종목과 PIT 재무를 요구하고, 거시 조건부 확률을 쓸 때는 vintage 거시도 요구합니다. 지금 무료 데이터에 이 세 가지가 없으면 확률 성능과 무관하게 Kelly는 미적용이 정상 동작입니다.
 
 ## Opportunity · Warning Radar
 
@@ -139,6 +151,7 @@ Core Portfolio는 "위험 대비 지금 안정적으로 보유할 3~5종목"을 
 - 표본이 부족하거나 Ledoit–Wolf 공분산을 계산할 수 없으면 기대수익이나 상관관계를 임의로 만들지 않습니다. 상태를 `SHADOW_INSUFFICIENT_HISTORY`로 기록하고 컨빅션 기준 비중만 유지합니다. 다만 **지역 active covariance는 Kelly와 무관하게 추정**하므로 보유 포트폴리오의 tracking error는 그때도 표시됩니다.
 - 종목 30%, 업종 45%, 테마 45%, 지역 상한, 최소 현금 15%(국면·매크로 예산에 따라 상승), 최대 회전율 25%를 적용합니다. `EVENT_RISK`·`AVOID`·value trap은 신규 Kelly 비중 0, `WATCH`와 `WAIT_FOR_PULLBACK`은 각각 haircut을 받습니다. 제약 때문에 남은 금액은 다른 종목에 억지로 배분하지 않고 현금으로 둡니다.
 - 매크로는 종목 기대수익에 더하지 않고 Kelly fraction과 최소 현금만 조정합니다. 낮은 confidence는 Kelly 위험예산을 추가 축소합니다.
+- 거시와 개별 종목 환경은 두 단계로 반영합니다. 거시는 전체 Kelly fraction·현금 하한을 먼저 조정하고, 종목 진입상태는 개별 상한을 감쇠합니다. 별도의 조건부 상승확률은 시점외 Brier 감사에서 실제 개선이 확인된 경우에만 사용하며, 그렇지 않으면 환경을 확률에 억지로 더하지 않습니다.
 - 거래비용은 지역별 수수료·세금·스프레드, 예상 회전율, 리밸런싱 주기, 예상 거래대금을 구조화해 계산합니다. 종목별 유동성 자료가 없으면 config의 보수적 기본 스프레드를 사용하고 fallback 여부를 기록합니다.
 - 기준통화 기본값은 KRW입니다. 현재 종목 active covariance에는 환율 수익률과 환헤지를 넣지 않으므로 `currencyPolicy`와 화면에 이 한계를 명시하고 환율 위험은 지역 배분 레이어에서만 표시합니다.
 - 대시보드는 **Base Kelly fraction**, **매크로 조정 applied fraction**, **최종 blend weight**를 구분합니다. 실제 영향도는 최종 비중과 기준 비중(현금 포함)의 절대 배분 차이인 `kellyAllocationImpactPct`로 표시합니다. fallback이면 Kelly 종목 비중을 공개하지 않습니다.
@@ -171,7 +184,7 @@ python scripts/demo_replay.py --tickers 40 --years 9
 
 **계산비용.** 전체 재현은 종목수 × 재현 날짜 수에 비례합니다(주 단위 기준 550종목 × 13년 ≈ 수십 분). 그래서 `.github/workflows/replay.yml`은 **증분**으로 돌고, ML 재학습은 주 1회입니다. 일주일치 새 관측치가 walk-forward 선택을 바꿀 수 없는데 매일 재학습하면 비용만 늘고 **유효 시도 횟수만 부풀립니다**. 재현 주기 선택(`D`/`W`/`M`)의 trade-off는 `config.historicalReplay._notes`에 기록했습니다: 일 단위는 5배 비용에 대부분 겹치는 관측치만 추가되고 HAC 유효표본은 거의 늘지 않으며, 월 단위는 버킷 calibration에 필요한 횡단면 수를 밑돕니다.
 
-`data/site-data.json`과 `data/audit.json`은 workflow/로컬 명령이 만드는 생성물이며 Git에서 추적하지 않습니다. 테스트용 최소 예시는 `tests/fixtures/site-data.synthetic.json`에 있고 파일명과 내부 `dataMode` 모두 synthetic임을 명시합니다. regional active Kelly·universe diagnostics·run-to-run diff가 추가된 스키마는 `2.3.0`이었고, v3에서 `modelPortfolio.selection`, `modelPortfolio.concentration`, `longTerm.*.picks[].invalidation`, `longTerm.*.riskLimits`가 추가되었습니다. **현재 스키마는 `2.4.0`**이며 `historicalValidation`, `prospectiveValidation`, `kellyEvidence`, `opportunityRadar`, `warningRadar`, `radarDiagnostics`, `modelComparison`이 추가되고 `provenance`에 `replayVersion`·`featureVersion`·`dataVersion`이 붙었습니다. 기존 필드는 그대로 유지되므로 2.3.0 소비자는 새 섹션을 무시하면 계속 동작합니다.
+`data/site-data.json`과 `data/audit.json`은 workflow/로컬 명령이 만드는 생성물이며 Git에서 추적하지 않습니다. 테스트용 최소 예시는 `tests/fixtures/site-data.synthetic.json`에 있고 파일명과 내부 `dataMode` 모두 synthetic임을 명시합니다. regional active Kelly·universe diagnostics·run-to-run diff가 추가된 스키마는 `2.3.0`이었고, `2.4.0`에서 과거/실시간 증거 분리와 레이더가 추가되었습니다. **현재 스키마는 `2.5.0`**이며 `historicalValidation.probabilityCalibration`, `modelPortfolio.probabilityGate`, 종목별 상승·하락 확률과 상하방 payoff가 추가되었습니다. 기존 필드는 그대로 유지되므로 이전 소비자는 새 섹션을 무시하면 계속 동작합니다.
 
 `FRED_API_KEY`(및 KR 매크로용 `ECOS_API_KEY`)는 GitHub Actions Secret으로만 주입합니다. 네트워크가 막힌 환경에서는 실데이터 빌드가 불가능하며, 그 경우 seed로 성공한 척하지 않고 차단 원인을 보고합니다.
 

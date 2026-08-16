@@ -82,6 +82,7 @@ def main(argv=None) -> int:
     result["kind"] = "warning" if args.warning else "opportunity"
     result["replayVersion"] = prov_mod.REPLAY_VERSION
     result["featureVersion"] = prov_mod.FEATURE_VERSION
+    result["modelVersion"] = prov_mod.MODEL_VERSION
     print(f"training finished in {time.time() - started:.0f}s: status={result['status']}")
 
     if result.get("status") == "TRAINED":

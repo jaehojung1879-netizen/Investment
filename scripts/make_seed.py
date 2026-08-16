@@ -232,6 +232,8 @@ def main() -> int:
             "maturedSignals": 0, "maturedByHorizon": {}, "eligibleDates": 0, "regionIC": {},
             "costAdjustedExcessReturn": None, "MDD": None, "CVaR": None,
             "evidenceClass": "PROSPECTIVE_PAPER",
+            "modelVersion": prov_mod.MODEL_VERSION, "generationIsolated": True,
+            "excludedPriorModelSignals": 0, "excludedPriorModelOutcomes": 0,
             "liveValidationEligible": False, "liveValidated": False,
             "reasons": ["synthetic_data_not_eligible"],
         },
@@ -248,6 +250,8 @@ def main() -> int:
             "firstSignalDate": None, "trackingDays": 0, "signalsRecorded": 0,
             "uniqueDates": 0, "maturedObservationDays": 0, "maturedSignals": 0,
             "maturedByHorizon": {}, "eligibleDates": 0, "regionIC": {},
+            "modelVersion": prov_mod.MODEL_VERSION, "generationIsolated": True,
+            "excludedPriorModelSignals": 0, "excludedPriorModelOutcomes": 0,
             "reasons": ["synthetic_data_not_eligible"]}),
         "kellyEvidence": {
             "byRegion": {}, "drift": None, "activation": None,

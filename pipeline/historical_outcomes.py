@@ -212,6 +212,11 @@ def horizon_frame(outcomes: list[dict], horizon: int, *,
             continue
         rows.append({
             "date": pd.Timestamp(outcome["date"]).normalize(),
+            # A forward label is not observable on the signal date.  Probability
+            # calibration uses this timestamp to admit the label only after the
+            # full horizon has actually matured.
+            "outcomeEndDate": (pd.Timestamp(payload["endDate"]).normalize()
+                               if payload.get("endDate") else pd.NaT),
             "ticker": outcome.get("ticker"),
             "region": outcome.get("region") or "UNKNOWN",
             "sector": outcome.get("sector") or "Unclassified",

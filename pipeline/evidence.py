@@ -245,7 +245,9 @@ def drift_report(historical: dict | None, prospective: dict | None, *,
 
 
 def candidate_prior(calibration: dict | None, region: str,
-                    alpha_percentile: float | None) -> dict | None:
+                    alpha_percentile: float | None, *,
+                    macro_regime: str | None = None,
+                    entry_state: str | None = None) -> dict | None:
     """The historical prior for one live candidate, or None.
 
     Returns nothing rather than a zero when the bucket has no usable history —
@@ -255,6 +257,12 @@ def candidate_prior(calibration: dict | None, region: str,
     row = lookup_bucket(calibration, region, alpha_percentile)
     if not row or not row.get("usable"):
         return None
+    # Imported lazily to keep the evidence-combination module independent from
+    # the heavier replay calibration path during simple unit tests.
+    from . import probability_calibration as probability_mod
+    distribution = probability_mod.lookup_distribution(
+        (calibration or {}).get("probabilityCalibration"), region,
+        alpha_percentile, macro_regime=macro_regime, entry_state=entry_state)
     se = row.get("standardErrorPct")
     return {
         "expectedExcessReturnPct": row.get("calibratedExpectedExcessReturnPct",
@@ -271,6 +279,7 @@ def candidate_prior(calibration: dict | None, region: str,
         "positiveHitRatio": row.get("positiveHitRatio"),
         "mddPct": row.get("mddPct"),
         "cvar95Pct": row.get("cvar95Pct"),
+        "probabilityDistribution": distribution,
         "evidenceClass": "HISTORICAL_OOS",
     }
 

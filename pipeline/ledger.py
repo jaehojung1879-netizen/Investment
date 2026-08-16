@@ -31,6 +31,21 @@ import pandas as pd
 HORIZONS = [21, 63, 126, 252]
 
 
+def filter_model_generation(rows: list[dict], model_version: str | None) -> tuple[list[dict], int]:
+    """Return only rows produced by one exact model generation.
+
+    The append-only ledgers intentionally retain every historical generation.
+    That is useful for audit, but those generations are not statistically
+    interchangeable: pooling them would let an older formula validate a newer
+    one.  Missing ``modelVersion`` is therefore excluded when a generation is
+    requested rather than silently treated as compatible.
+    """
+    if model_version is None:
+        return list(rows), 0
+    selected = [row for row in rows if row.get("modelVersion") == model_version]
+    return selected, len(rows) - len(selected)
+
+
 def signal_id(date: str, ticker: str, region: str | None = None,
               model_version: str | None = None) -> str:
     return "|".join(str(v or "UNKNOWN") for v in (date, region, ticker, model_version))
@@ -437,7 +452,8 @@ def evaluate(outcomes: list[dict], horizon: int = 63) -> dict:
 
 
 def validation_status(outcomes: list[dict], min_paper_days: int = 126,
-                      signals: list[dict] | None = None) -> dict:
+                      signals: list[dict] | None = None,
+                      model_version: str | None = None) -> dict:
     """Prospective-ledger status.
 
     ``trackingDays`` and ``maturedObservationDays`` are DIFFERENT quantities and
@@ -447,8 +463,10 @@ def validation_status(outcomes: list[dict], min_paper_days: int = 126,
     been running the whole time. Tracking now measures the signal ledger's own
     span, and maturity measures how much of it has completed a horizon.
     """
+    outcomes, excluded_outcomes = filter_model_generation(outcomes, model_version)
+    filtered_signals, excluded_signals = filter_model_generation(signals or [], model_version)
     signal_dates = sorted({pd.Timestamp(s["date"]).normalize()
-                           for s in (signals or []) if s.get("date")})
+                           for s in filtered_signals if s.get("date")})
     outcome_dates = sorted({pd.Timestamp(o["date"]).normalize()
                             for o in outcomes if o.get("date")})
     span_dates = signal_dates or outcome_dates
@@ -472,7 +490,11 @@ def validation_status(outcomes: list[dict], min_paper_days: int = 126,
         "paperDays": tracking_days,
         "trackingDays": tracking_days,
         "maturedObservationDays": matured_days,
-        "signalsRecorded": len(signals) if signals is not None else None,
+        "modelVersion": model_version,
+        "generationIsolated": model_version is not None,
+        "excludedPriorModelSignals": excluded_signals if signals is not None else None,
+        "excludedPriorModelOutcomes": excluded_outcomes,
+        "signalsRecorded": len(filtered_signals) if signals is not None else None,
         "uniqueDates": len(signal_dates) if signal_dates else len(outcome_dates),
         "maturedUniqueDates": len(matured_dates),
         "firstSignalDate": span_dates[0].strftime("%Y-%m-%d") if span_dates else None,

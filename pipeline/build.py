@@ -152,12 +152,15 @@ def _load_prior(path=None) -> tuple[dict, dict]:
     )
 
 
-def _load_validation_status(path=None, min_paper_days: int = 126) -> dict:
+def _load_validation_status(path=None, min_paper_days: int = 126,
+                            expected_model_version: str | None = None) -> dict:
+    expected_model_version = expected_model_version or prov_mod.MODEL_VERSION
     fallback = {
         "paperDays": 0, "maturedSignals": 0, "eligibleDates": 0,
         "firstSignalDate": None, "lastSignalDate": None,
         "regionIC": {}, "costAdjustedExcessReturn": None, "MDD": None,
         "CVaR": None, "liveValidationEligible": False, "liveValidated": False,
+        "modelVersion": expected_model_version, "generationIsolated": True,
         "reasons": [f"paper_history_below_{min_paper_days}_business_days"],
     }
     summary_path = path or os.environ.get("PAPER_SUMMARY_PATH")
@@ -168,7 +171,16 @@ def _load_validation_status(path=None, min_paper_days: int = 126) -> dict:
     except Exception:
         fallback["reasons"].append("paper_summary_unavailable")
         return fallback
+    observed_model_version = (summary.get("modelVersion")
+                              or (summary.get("validationStatus") or {}).get("modelVersion"))
+    if observed_model_version != expected_model_version:
+        fallback["reasons"] = ["paper_summary_model_version_mismatch"]
+        fallback["observedModelVersion"] = observed_model_version
+        return fallback
     status = dict(summary.get("validationStatus") or fallback)
+    status["modelVersion"] = expected_model_version
+    status["generationIsolated"] = True
+    status["generationIsolation"] = summary.get("generationIsolation") or {}
     status["liveValidated"] = False
     if int(status.get("paperDays") or 0) < min_paper_days:
         status["liveValidationEligible"] = False
@@ -185,6 +197,21 @@ def _load_jsonl(path: str | None) -> list[dict]:
         return []
 
 
+def _load_generation_spec(path: str | None) -> dict:
+    """Load a trained challenger only for this exact replay/model contract."""
+    spec = kelly_mod.load_json(path, {}) or {}
+    if not spec:
+        return {}
+    expected = {
+        "replayVersion": prov_mod.REPLAY_VERSION,
+        "featureVersion": prov_mod.FEATURE_VERSION,
+        "modelVersion": prov_mod.MODEL_VERSION,
+    }
+    if any(spec.get(key) != value for key, value in expected.items()):
+        return {}
+    return spec
+
+
 def _load_historical_evidence(cfg) -> dict:
     """Read the HISTORICAL_OOS ledger, kept strictly apart from the paper ledger.
 
@@ -198,27 +225,38 @@ def _load_historical_evidence(cfg) -> dict:
     ledger by hand.
     """
     ledger_dir = os.environ.get("HISTORICAL_LEDGER_DIR")
+    expected = prov_mod.REPLAY_VERSION
     if ledger_dir and Path(ledger_dir).is_dir():
-        signals = histstore_mod.load(ledger_dir, histstore_mod.SIGNALS)
-        outcomes = histstore_mod.load(ledger_dir, histstore_mod.OUTCOMES)
+        # Read only the current generation.  Old generations remain on disk for
+        # auditability but materializing them would double memory after every
+        # model-version bump and creates an unnecessary opportunity to pool
+        # incompatible evidence.
+        signals = histstore_mod.load(ledger_dir, histstore_mod.SIGNALS, expected)
+        outcomes = histstore_mod.load(ledger_dir, histstore_mod.OUTCOMES, expected)
+        manifest = histstore_mod.read_manifest(ledger_dir)
+        mismatched = sum(
+            int((blob or {}).get("signalRecords") or 0)
+            for generation, blob in (manifest.get("generations") or {}).items()
+            if generation != expected)
         diagnostics_path = (os.environ.get("HISTORICAL_DIAGNOSTICS_PATH")
                             or str(histstore_mod.diagnostics_path(ledger_dir)))
     else:
         signals = _load_jsonl(os.environ.get("HISTORICAL_SIGNALS_PATH"))
         outcomes = _load_jsonl(os.environ.get("HISTORICAL_OUTCOMES_PATH"))
+        mismatched = sum(1 for s in signals if s.get("replayVersion") not in (None, expected))
+        signals = [s for s in signals if s.get("replayVersion") in (None, expected)]
+        keep_ids = {s.get("id") for s in signals}
+        outcomes = [o for o in outcomes if o.get("id") in keep_ids] if keep_ids else []
         diagnostics_path = os.environ.get("HISTORICAL_DIAGNOSTICS_PATH")
     diagnostics = kelly_mod.load_json(diagnostics_path, {}) or {}
-    model_spec = kelly_mod.load_json(os.environ.get("OPPORTUNITY_MODEL_PATH"), {}) or {}
-    warning_spec = kelly_mod.load_json(os.environ.get("WARNING_MODEL_PATH"), {}) or {}
+    if diagnostics.get("replayVersion") not in (None, expected):
+        diagnostics = {"replayVersion": expected,
+                       "reason": "current_replay_generation_not_available"}
+    model_spec = _load_generation_spec(os.environ.get("OPPORTUNITY_MODEL_PATH"))
+    warning_spec = _load_generation_spec(os.environ.get("WARNING_MODEL_PATH"))
 
     # Records from an older replay generation describe a different model and
     # must not be pooled with the current one.
-    expected = prov_mod.REPLAY_VERSION
-    mismatched = sum(1 for s in signals if s.get("replayVersion") not in (None, expected))
-    signals = [s for s in signals if s.get("replayVersion") in (None, expected)]
-    keep_ids = {s.get("id") for s in signals}
-    outcomes = [o for o in outcomes if o.get("id") in keep_ids] if keep_ids else []
-
     cfg_replay = cfg.historical_replay or {}
     horizon = int(cfg_replay.get("horizonDays", 126))
     calibration = histcal_mod.calibrate(
@@ -226,7 +264,9 @@ def _load_historical_evidence(cfg) -> dict:
         buckets=cfg_replay.get("alphaPercentileBuckets",
                                histcal_mod.DEFAULT_BUCKETS),
         cfg={"minEffectiveDates": int(cfg_replay.get("minEffectiveDates", 30)),
-             "shrinkagePriorStrength": float(cfg_replay.get("shrinkagePriorStrength", 30))},
+             "shrinkagePriorStrength": float(cfg_replay.get("shrinkagePriorStrength", 30)),
+             "probabilityCalibration": ((cfg.kelly_portfolio or {})
+                                        .get("probabilityCalibration") or {})},
         diagnostics=diagnostics,
         cost_adjusted=bool(cfg_replay.get("costAdjusted", True)),
         require_pit=bool(cfg_replay.get("requirePitQuality", True)),
@@ -289,6 +329,7 @@ def _historical_validation_block(historical: dict, cfg) -> dict:
         "knownDeviationsFromProduction": diagnostics.get("knownDeviationsFromProduction") or [],
         "replayVersionMismatchedRecords": historical.get("replayVersionMismatchedRecords", 0),
         "alphaCalibration": calibration,
+        "probabilityCalibration": calibration.get("probabilityCalibration") or {},
         "regimeInteraction": historical.get("regimeInteraction"),
         "finalHoldoutStart": (cfg.opportunity or {}).get("finalHoldoutStart"),
         "walkForward": spec.get("walkForward"),
@@ -316,6 +357,12 @@ def _prospective_validation_block(validation_status: dict) -> dict:
         "regionIC": status.get("regionIC") or {},
         "costAdjustedExcessReturn": status.get("costAdjustedExcessReturn"),
         "MDD": status.get("MDD"), "CVaR": status.get("CVaR"),
+        "modelVersion": status.get("modelVersion"),
+        "generationIsolated": bool(status.get("generationIsolated")),
+        "excludedPriorModelSignals": status.get("excludedPriorModelSignals"),
+        "excludedPriorModelOutcomes": status.get(
+            "excludedPriorModelOutcomesLoaded",
+            status.get("excludedPriorModelOutcomes")),
         "liveValidated": False,
         "reasons": status.get("reasons") or [],
         "roleKo": ("모델을 더 이상 손대지 않은 상태에서 실제 미래에도 재현되는지를 "
@@ -690,7 +737,9 @@ def run(cfg) -> dict:
     # only from matured immutable-ledger outcomes supplied by CI/local replay;
     # no outcome file means an explicit risk-weighted fallback, never a made-up
     # expected return derived from today's alpha score.
-    portfolio_outcomes = kelly_mod.load_jsonl(os.environ.get("PAPER_OUTCOMES_PATH"))
+    all_paper_outcomes = kelly_mod.load_jsonl(os.environ.get("PAPER_OUTCOMES_PATH"))
+    portfolio_outcomes, excluded_prior_model_outcomes = ledger_mod.filter_model_generation(
+        all_paper_outcomes, prov_mod.MODEL_VERSION)
     themes = kelly_mod.load_json(REPO_ROOT / "data" / "themes.json", {})
     prior_model_weights = (
         prior.get("modelPortfolioWeights")
@@ -699,6 +748,8 @@ def run(cfg) -> dict:
     )
     validation_status = _load_validation_status(
         min_paper_days=int(cfg.validation.get("minPaperDays", 126)))
+    validation_status["paperOutcomesLoaded"] = len(portfolio_outcomes)
+    validation_status["excludedPriorModelOutcomesLoaded"] = excluded_prior_model_outcomes
 
     # HISTORICAL_OOS evidence: the same model replayed against point-in-time
     # data. Loaded from its own ledger files and never merged into the paper

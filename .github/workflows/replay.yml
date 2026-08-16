@@ -81,6 +81,10 @@ jobs:
           python scripts/run_replay.py replay-work/ledger \
             ${{ (inputs.full && '--full') || '' }}
 
+      - name: Audit maturity-safe probability calibration
+        run: |
+          python scripts/audit_probability.py replay-work/ledger
+
       # Weekly (Sunday) or on demand. Selection is walk-forward and the sealed
       # holdout is scored once, so more frequent retraining buys nothing and
       # would multiply the effective number of trials.

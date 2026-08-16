@@ -49,6 +49,27 @@
     "minUniqueDates": 63,
     "timeDecayHalfLifeDays": 504,
     "shrinkagePriorStrength": 30,
+    "probabilityCalibration": {
+      "requiredForKelly": true,
+      "priorStrength": 20,
+      "payoffPriorStrength": 20,
+      "minTrainingDates": 30,
+      "minAuditDates": 63,
+      "minIndependentAuditDates": 8,
+      "minConditionDates": 20,
+      "selectionFraction": 0.65,
+      "minConditionBrierImprovement": 0.0025,
+      "maxBrier": 0.255,
+      "maxEce": 0.10,
+      "maxLogLoss": 0.72,
+      "minBrierSkill": -0.01,
+      "integrity": {
+        "minPitCoverage": 0.60,
+        "requireHistoricalUniverse": true,
+        "requirePointInTimeFundamentals": true,
+        "requireVintageMacroForConditionalProbability": true
+      }
+    },
     "covarianceLookbackDays": 504,
     "covarianceMinDays": 252,
     "useLedoitWolf": true,

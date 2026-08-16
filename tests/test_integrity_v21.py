@@ -166,6 +166,70 @@ def test_new_model_version_does_not_overwrite_same_historical_signal():
     assert appended == 1 and len(merged) == 2
 
 
+def test_prospective_validation_never_pools_prior_model_generation():
+    old_signals = [
+        {"date": "2025-01-02", "modelVersion": "old"},
+        {"date": "2025-12-31", "modelVersion": "old"},
+    ]
+    current_signals = [{"date": "2026-01-02", "modelVersion": "current"}]
+    old_outcome = {
+        "date": "2025-01-02", "modelVersion": "old", "region": "US",
+        "ticker": "OLD", "alpha": 1,
+        "horizons": {"63": {"excessReturn": .5}, "126": {"excessReturn": .5}},
+    }
+    current_outcome = {
+        "date": "2026-01-02", "modelVersion": "current", "region": "US",
+        "ticker": "NEW", "alpha": 1,
+        "horizons": {"63": {"excessReturn": .01}, "126": {"excessReturn": .01}},
+    }
+    status = LG.validation_status(
+        [old_outcome, current_outcome], min_paper_days=0,
+        signals=old_signals + current_signals, model_version="current")
+
+    assert status["generationIsolated"] is True
+    assert status["signalsRecorded"] == 1
+    assert status["maturedSignals"] == 1
+    assert status["trackingDays"] == 1
+    assert status["excludedPriorModelSignals"] == 2
+    assert status["excludedPriorModelOutcomes"] == 1
+
+
+def test_build_rejects_summary_from_a_different_model_generation(tmp_path):
+    from pipeline import build as B
+
+    path = tmp_path / "summary.json"
+    path.write_text(json.dumps({
+        "modelVersion": "old-model",
+        "validationStatus": {"paperDays": 999, "liveValidationEligible": True},
+    }), encoding="utf-8")
+    status = B._load_validation_status(
+        path, min_paper_days=126, expected_model_version="current-model")
+
+    assert status["liveValidationEligible"] is False
+    assert status["paperDays"] == 0
+    assert status["reasons"] == ["paper_summary_model_version_mismatch"]
+    assert status["observedModelVersion"] == "old-model"
+
+
+def test_build_ignores_challenger_spec_from_prior_generation(tmp_path):
+    from pipeline import build as B
+
+    path = tmp_path / "opportunity-model.json"
+    path.write_text(json.dumps({
+        "accepted": True, "replayVersion": "replay-v1",
+        "featureVersion": PV.FEATURE_VERSION, "modelVersion": PV.MODEL_VERSION,
+    }), encoding="utf-8")
+
+    assert B._load_generation_spec(path) == {}
+
+    current = {
+        "accepted": True, "replayVersion": PV.REPLAY_VERSION,
+        "featureVersion": PV.FEATURE_VERSION, "modelVersion": PV.MODEL_VERSION,
+    }
+    path.write_text(json.dumps(current), encoding="utf-8")
+    assert B._load_generation_spec(path) == current
+
+
 def test_unblocked_paper_research_keeps_entry_view():
     payload = {"weightsWithheld": False, "regions": {"US": {
         "picks": [], "researchTable": [{"ticker": "AAA", "sector": "Technology",
@@ -203,6 +267,18 @@ def test_synthetic_signal_is_not_written_to_real_ledger(tmp_path):
     artifact = _write(tmp_path, payload)
     ledger_dir = tmp_path / "real-ledger"
     assert update_ledger.main([str(artifact), str(ledger_dir)]) == 0
+    assert not ledger_dir.exists()
+
+
+def test_unversioned_signal_is_not_written_to_real_ledger(tmp_path):
+    from scripts import update_ledger
+
+    payload = _artifact()
+    payload.pop("modelVersion", None)
+    payload["provenance"].pop("modelVersion", None)
+    artifact = _write(tmp_path, payload)
+    ledger_dir = tmp_path / "real-ledger"
+    assert update_ledger.main([str(artifact), str(ledger_dir)]) == 1
     assert not ledger_dir.exists()
 
 

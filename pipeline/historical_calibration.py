@@ -43,6 +43,7 @@ import pandas as pd
 
 from . import kelly_portfolio as KP
 from . import pit_data
+from . import probability_calibration as probability_mod
 from .historical_outcomes import horizon_frame
 
 DEFAULT_BUCKETS = (0, 60, 80, 90, 95, 100)
@@ -320,6 +321,42 @@ def calibrate(outcomes: list[dict], *, horizon: int = 126,
             "usableBuckets": sum(1 for r in rows if r["usable"]),
         }
 
+    probability_cfg = cfg.get("probabilityCalibration") or {}
+    probability = probability_mod.calibrate(
+        outcomes, horizon=horizon, buckets=edges,
+        cfg=probability_cfg, require_pit=require_pit)
+    integrity_cfg = probability_cfg.get("integrity") or {}
+    conditional_macro_used = any(
+        blob.get("selectedVariant") == "MACRO"
+        for blob in (probability.get("regions") or {}).values())
+    integrity_checks = {
+        "pitCoverage": (integrity_cfg.get("minPitCoverage") is None
+                        or float(diagnostics.get("meanPitCoverage") or 0.0)
+                        >= float(integrity_cfg["minPitCoverage"])),
+        "historicalUniverse": (not integrity_cfg.get("requireHistoricalUniverse", False)
+                               or diagnostics.get("survivorshipRisk") == "LOW"),
+        "pointInTimeFundamentals": (
+            not integrity_cfg.get("requirePointInTimeFundamentals", False)
+            or bool(diagnostics.get("fundamentalsPit"))),
+        "vintageMacroForConditionalProbability": (
+            not conditional_macro_used
+            or not integrity_cfg.get("requireVintageMacroForConditionalProbability", False)
+            or diagnostics.get("macroPitStatus") not in {pit_data.REVISED_HISTORY, None}),
+    }
+    integrity_gate = {
+        "eligible": bool(all(integrity_checks.values())),
+        "checks": integrity_checks,
+        "failures": [key for key, passed in integrity_checks.items() if not passed],
+        "policyKo": ("확률 성능과 별도로 과거 구성종목·발표시점 재무·조건부 거시 vintage가 "
+                     "운영 모델과 같은지를 검사합니다. 데이터가 없으면 할인만 하지 않고 Kelly를 차단합니다."),
+    }
+    probability["integrityGate"] = integrity_gate
+    statistical_eligible = bool((probability.get("reliabilityGate") or {}).get("eligible"))
+    probability.setdefault("reliabilityGate", {})["statisticalEligible"] = statistical_eligible
+    probability["reliabilityGate"]["eligible"] = bool(
+        statistical_eligible and integrity_gate["eligible"])
+    if not integrity_gate["eligible"]:
+        probability["reliabilityGate"].setdefault("failures", []).append("dataIntegrity")
     return {
         "horizonDays": horizon,
         "available": bool(regions),
@@ -329,6 +366,7 @@ def calibrate(outcomes: list[dict], *, horizon: int = 126,
         "buckets": list(edges),
         "excludedLowPitObservations": excluded_low_pit,
         "regions": regions,
+        "probabilityCalibration": probability,
         "notAForecastKo": ("알파 백분위는 순위이며, 여기 수치는 과거 같은 순위 구간에서 실제로 "
                             "관측된 초과수익 분포입니다. 미래 수익 보장이 아닙니다."),
     }

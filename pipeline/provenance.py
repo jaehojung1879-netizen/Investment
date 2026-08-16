@@ -23,15 +23,15 @@ import os
 import subprocess
 from datetime import datetime, timezone
 
-SCHEMA_VERSION = "2.4.0"
-MODEL_VERSION = "longterm-v2.2+regime-v2.1+entry-v1+regional-active-kelly-v2"
+SCHEMA_VERSION = "2.5.0"
+MODEL_VERSION = "longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3"
 
 # Versions that identify a body of HISTORICAL evidence rather than the live
 # engine. A replay is only comparable to another replay run with the same
 # three, so every historical record carries them and evidence is never pooled
 # across versions. Changing one does not invalidate the old records — it starts
 # a new generation alongside them.
-REPLAY_VERSION = "replay-v1"
+REPLAY_VERSION = "replay-v2"
 FEATURE_VERSION = "hfeat-v1"
 DATA_VERSION = "yahoo-adjusted-close-v1"
 

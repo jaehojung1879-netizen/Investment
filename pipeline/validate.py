@@ -100,6 +100,12 @@ def _validate_evidence_separation(data: dict) -> list[str]:
             errors.append("prospective_validation_evidence_class_mismatch")
         if prospective.get("liveValidated"):
             errors.append("prospective_evidence_claims_live_validation")
+        prospective_model = prospective.get("modelVersion")
+        artifact_model = data.get("modelVersion") or (data.get("provenance") or {}).get("modelVersion")
+        if prospective_model is not None and prospective_model != artifact_model:
+            errors.append("prospective_model_generation_mismatch")
+        if prospective.get("generationIsolated") is False:
+            errors.append("prospective_model_generations_not_isolated")
         # Tracking days and matured days are separate facts; a ledger that has
         # recorded signals but matured none must not report zero tracking.
         tracking = prospective.get("trackingDays")
@@ -208,6 +214,26 @@ def validate(path: str | Path, production: bool = True) -> list[str]:
                 errors.append("kelly_expected_return_covariance_basis_mismatch")
             if not (portfolio.get("currencyPolicy") or {}).get("baseCurrency"):
                 errors.append("kelly_currency_policy_missing")
+            probability_gate = portfolio.get("probabilityGate") or {}
+            if probability_gate.get("requiredForKelly", False) and not probability_gate.get("eligible"):
+                errors.append("kelly_applied_without_reliable_probability_calibration")
+        for position in portfolio.get("positions") or []:
+            up = position.get("upProbabilityPct")
+            down = position.get("downProbabilityPct")
+            if up is None and down is None:
+                continue
+            if up is None or down is None or not 0 <= float(up) <= 100 or not 0 <= float(down) <= 100:
+                errors.append(f"invalid_probability_distribution:{position.get('ticker')}")
+                continue
+            if abs(float(up) + float(down) - 100.0) > 0.05:
+                errors.append(f"probabilities_do_not_sum_to_100:{position.get('ticker')}")
+            avg_up = position.get("averageUpsidePct")
+            avg_down = position.get("averageDownsidePct")
+            expected = position.get("distributionExpectedExcessReturnPct")
+            if avg_up is not None and avg_down is not None and expected is not None:
+                rebuilt = float(up) / 100.0 * float(avg_up) - float(down) / 100.0 * float(avg_down)
+                if abs(rebuilt - float(expected)) > 0.03:
+                    errors.append(f"probability_payoff_expectation_mismatch:{position.get('ticker')}")
 
     # 13F is historical disclosure context.  Dates and the SEC source link are
     # mandatory so a delayed quarter can never be mistaken for live holdings.

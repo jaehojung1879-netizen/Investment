@@ -56,7 +56,7 @@ from . import sectors as SECT
 
 # Bumped whenever the replay's own logic changes shape. Records carry it so two
 # generations of replay never pool into one evidence base.
-REPLAY_VERSION = "replay-v1"
+REPLAY_VERSION = "replay-v2"
 FEATURE_VERSION = "hfeat-v1"
 
 EVIDENCE_HISTORICAL = "HISTORICAL_OOS"

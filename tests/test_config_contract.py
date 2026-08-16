@@ -19,6 +19,17 @@ def test_kelly_config_has_one_live_sampling_and_cost_contract():
     for region in ("KR", "US"):
         assert {"commissionBps", "sellTaxBps", "spreadBps", "assumedTurnoverPct",
                 "rebalanceDays", "expectedTradeNotionalKrw"} <= set(cfg["transactionCosts"][region])
+    probability = cfg["probabilityCalibration"]
+    assert probability["requiredForKelly"] is True
+    assert 0 < probability["selectionFraction"] < 1
+    assert probability["minAuditDates"] > probability["minConditionDates"]
+    assert probability["maxBrier"] <= 0.255 and probability["maxEce"] <= 0.10
+    assert probability["integrity"] == {
+        "minPitCoverage": 0.60,
+        "requireHistoricalUniverse": True,
+        "requirePointInTimeFundamentals": True,
+        "requireVintageMacroForConditionalProbability": True,
+    }
 
 
 def test_every_kelly_config_key_is_connected_to_implementation_or_metadata():
