@@ -28,6 +28,8 @@ def main(argv=None) -> int:
         print("usage: python scripts/update_ledger.py <site-data.json> <ledger-dir>")
         return 2
     data = json.loads(Path(argv[0]).read_text(encoding="utf-8"))
+    current_model_version = (data.get("modelVersion")
+                             or (data.get("provenance") or {}).get("modelVersion"))
     ledger_dir = Path(argv[1])
     sig_path = ledger_dir / "signals.jsonl"
     out_path = ledger_dir / "outcomes.jsonl"
@@ -40,6 +42,9 @@ def main(argv=None) -> int:
     if data.get("seed") or data_mode in {"seed", "synthetic", "stale"} or (data.get("meta") or {}).get("syntheticData"):
         print("refusing to append seed/synthetic data to the ledger")
         return 0
+    if not current_model_version:
+        print("refusing to append an unversioned signal generation")
+        return 1
 
     today = (data.get("audit") or {}).get("todaySignals") or LG.records_from_payload(data)
     existing = LG.load_jsonl(sig_path)
@@ -74,16 +79,28 @@ def main(argv=None) -> int:
         LG.write_jsonl(out_path, outcomes)
         portfolio_outcomes = LG.compute_portfolio_outcomes(portfolio_merged, prices, benches)
         LG.write_jsonl(portfolio_out_path, portfolio_outcomes)
+        current_outcomes, excluded_outcomes = LG.filter_model_generation(
+            outcomes, current_model_version)
+        current_portfolio_outcomes, excluded_portfolios = LG.filter_model_generation(
+            portfolio_outcomes, current_model_version)
         summary = {
+            "modelVersion": current_model_version,
+            "generationIsolation": {
+                "method": "EXACT_MODEL_VERSION",
+                "excludedPriorModelOutcomes": excluded_outcomes,
+                "excludedPriorModelPortfolioOutcomes": excluded_portfolios,
+            },
             "validationStatus": LG.validation_status(
                 outcomes, min_paper_days=int(cfg.validation.get("minPaperDays", 126)),
-                signals=merged),
-            "horizons": {str(h): LG.evaluate(outcomes, horizon=h) for h in LG.HORIZONS},
-            "portfolioHorizons": {str(h): LG.evaluate_portfolios(portfolio_outcomes, horizon=h)
+                signals=merged, model_version=current_model_version),
+            "horizons": {str(h): LG.evaluate(current_outcomes, horizon=h) for h in LG.HORIZONS},
+            "portfolioHorizons": {str(h): LG.evaluate_portfolios(current_portfolio_outcomes, horizon=h)
                                    for h in LG.HORIZONS},
         }
         summ_path.write_text(json.dumps(summary, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-        print(f"outcomes: {len(outcomes)} signals / {len(portfolio_outcomes)} portfolios matured; summary written")
+        print(f"outcomes: {len(current_outcomes)} current signals / "
+              f"{len(current_portfolio_outcomes)} current portfolios matured; "
+              f"{excluded_outcomes + excluded_portfolios} prior-generation rows excluded from summary")
     except Exception as exc:  # pragma: no cover - network dependent
         print(f"outcome refresh skipped (network/data): {exc}")
     return 0

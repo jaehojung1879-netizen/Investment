@@ -53,7 +53,7 @@ def _base_payload(**overrides) -> dict:
 # Schema
 # --------------------------------------------------------------------------- #
 def test_schema_version_was_raised_for_the_new_evidence_sections():
-    assert prov_mod.SCHEMA_VERSION == "2.4.0"
+    assert prov_mod.SCHEMA_VERSION == "2.5.0"
     assert prov_mod.REPLAY_VERSION and prov_mod.FEATURE_VERSION and prov_mod.DATA_VERSION
 
 
@@ -62,6 +62,9 @@ def test_provenance_stamps_the_replay_and_feature_versions():
     provenance = prov_mod.stamp(payload, "paperTrading")
     for key in ("replayVersion", "featureVersion", "dataVersion"):
         assert provenance[key]
+    from pipeline import historical_replay as replay
+    assert replay.REPLAY_VERSION == prov_mod.REPLAY_VERSION
+    assert replay.FEATURE_VERSION == prov_mod.FEATURE_VERSION
 
 
 def test_config_carries_the_new_blocks_with_a_sealed_holdout():
@@ -102,6 +105,17 @@ def test_validator_rejects_matured_days_exceeding_tracking_days(tmp_path):
     assert "matured_days_exceed_tracking_days" in V.validate(_write(tmp_path, payload))
 
 
+def test_validator_rejects_mixed_prospective_model_generation(tmp_path):
+    payload = _base_payload(prospectiveValidation={
+        "evidenceClass": "PROSPECTIVE_PAPER", "trackingDays": 1,
+        "maturedObservationDays": 0, "modelVersion": "old-model",
+        "generationIsolated": False,
+    })
+    errors = V.validate(_write(tmp_path, payload))
+    assert "prospective_model_generation_mismatch" in errors
+    assert "prospective_model_generations_not_isolated" in errors
+
+
 def test_validator_rejects_evidence_weights_that_do_not_sum_to_100(tmp_path):
     payload = _base_payload(kellyEvidence={"byRegion": {"US": {
         "posterior": {"historicalWeightPct": 80.0, "prospectiveWeightPct": 40.0}}}})
@@ -115,6 +129,21 @@ def test_validator_rejects_drift_that_increases_the_kelly_fraction(tmp_path):
         "drift": {"detected": True, "kellyMultiplier": 1.4}}}})
     errors = V.validate(_write(tmp_path, payload))
     assert any(e.startswith("drift_increased_kelly_fraction") for e in errors)
+
+
+def test_validator_rejects_kelly_when_probability_audit_failed(tmp_path):
+    payload = _base_payload(modelPortfolio={
+        "status": "SHADOW_READY", "finalWeights": {"AAA": 0.5}, "cashPct": 50,
+        "kellyApplied": True, "constrainedKellyWeights": {"AAA": 0.5},
+        "kellyAllocationImpactPct": 1.0,
+        "constraints": {"maxPositionWeight": 0.8},
+        "covariance": {"returnBasis": "REGIONAL_ACTIVE", "crossRegionCovarianceUsed": False},
+        "currencyPolicy": {"baseCurrency": "KRW"},
+        "probabilityGate": {"requiredForKelly": True, "eligible": False},
+        "positions": [],
+    })
+    assert "kelly_applied_without_reliable_probability_calibration" in \
+        V.validate(_write(tmp_path, payload), production=False)
 
 
 def test_validator_rejects_a_validated_tier_without_an_accepted_model(tmp_path):

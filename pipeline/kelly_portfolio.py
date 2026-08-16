@@ -226,7 +226,8 @@ def _isotonic_non_decreasing(values: list[float], weights: list[float]) -> list[
 
 def estimate_expected_returns(candidates: list[dict], outcomes: list[dict],
                               cfg: dict, as_of: str | pd.Timestamp | None = None,
-                              historical_calibration: dict | None = None) -> list[dict]:
+                              historical_calibration: dict | None = None,
+                              macro_regime: dict | None = None) -> list[dict]:
     """Estimate cost-adjusted 126d excess returns from matured OOS outcomes.
 
     Candidate alpha percentiles are used only to select a historical calibration
@@ -337,7 +338,12 @@ def estimate_expected_returns(candidates: list[dict], outcomes: list[dict],
         # Without a historical calibration this block is inert and the legacy
         # prospective-only estimate above stands unchanged.
         historical_prior = evidence_mod.candidate_prior(
-            historical_calibration, region, candidate.get("alphaPercentile"))
+            historical_calibration, region, candidate.get("alphaPercentile"),
+            macro_regime=(macro_regime or {}).get("regime"),
+            entry_state=((candidate.get("entry") or {}).get("entryState")
+                         or candidate.get("entryState")))
+        probability_distribution = ((historical_prior or {})
+                                    .get("probabilityDistribution"))
         evidence_block = None
         posterior_expected = expected
         posterior_status = "SHADOW" if sufficient else "SHADOW_INSUFFICIENT_HISTORY"
@@ -364,6 +370,7 @@ def estimate_expected_returns(candidates: list[dict], outcomes: list[dict],
                 historical_prior, prospective_source)
             evidence_block["historicalBucket"] = historical_prior.get("bucket")
             evidence_block["historicalQuality"] = historical_prior.get("quality")
+            evidence_block["historical"]["probabilityDistribution"] = probability_distribution
             posterior_expected = float(evidence_block["posterior"]["expectedExcessReturnPct"]) / 100.0
             posterior_status = "SHADOW"
 
@@ -372,6 +379,7 @@ def estimate_expected_returns(candidates: list[dict], outcomes: list[dict],
             "expectedExcessReturnPct": round(posterior_expected * 100, 3),
             "prospectiveOnlyExpectedExcessReturnPct": round(expected * 100, 3),
             "evidence": evidence_block,
+            "probabilityDistribution": probability_distribution,
             "rawObservedExcessReturnPct": round(raw * 100, 3),
             "estimatedTransactionCostPct": round(cost * 100, 3), "transactionCost": cost_detail,
             "recentPerformanceHaircut": haircut,
@@ -940,6 +948,55 @@ def _regime_adjustment(macro_regime: dict | None, cfg: dict) -> tuple[str, float
     return label, multiplier, cash_floor, warnings
 
 
+def _probability_gate(estimates: list[dict], candidates: list[dict], cfg: dict) -> dict:
+    """Require an audited up/down distribution before Kelly can change weights.
+
+    Expected return and covariance are sufficient mathematical inputs to the
+    multivariate Kelly approximation.  They are not sufficient *evidence* for
+    this product: the user must also be able to see whether the corresponding
+    direction probability was calibrated out of time.  Missing or unreliable
+    probability evidence therefore preserves the baseline allocation.
+    """
+    policy = cfg.get("probabilityCalibration") or {}
+    # Backward-compatible for library callers that supply a minimal config;
+    # production config opts in explicitly and the artifact publishes the flag.
+    required = bool(policy.get("requiredForKelly", False))
+    by_region: dict[str, dict] = {}
+    expected = {row.get("ticker"): row for row in estimates}
+    for region in sorted({c.get("region") or "UNKNOWN" for c in candidates}):
+        names = [c.get("ticker") for c in candidates
+                 if (c.get("region") or "UNKNOWN") == region]
+        distributions = [
+            (expected.get(ticker) or {}).get("probabilityDistribution")
+            for ticker in names
+        ]
+        present = [row for row in distributions if row]
+        reliable = [row for row in present if row.get("reliabilityEligible")]
+        representative = reliable[0] if reliable else (present[0] if present else {})
+        eligible = bool(present) and len(present) == len(names) and len(reliable) == len(present)
+        statistical_failures = ((representative.get("reliabilityGate") or {}).get("failures") or [])
+        integrity_failures = ((representative.get("integrityGate") or {}).get("failures") or [])
+        by_region[region] = {
+            "eligible": eligible,
+            "candidates": len(names),
+            "distributionsAvailable": len(present),
+            "reliableDistributions": len(reliable),
+            "selectedVariant": representative.get("selectedVariant"),
+            "audit": representative.get("audit"),
+            "failures": (list(dict.fromkeys([*statistical_failures, *integrity_failures]))
+                         or (["probability_distribution_missing"] if not present else [])),
+        }
+    eligible = bool(by_region) and all(row["eligible"] for row in by_region.values())
+    return {
+        "requiredForKelly": required,
+        "eligible": bool(eligible or not required),
+        "byRegion": by_region,
+        "failures": [region for region, row in by_region.items() if not row["eligible"]],
+        "fallbackPolicyKo": ("상승확률이 만기 인지형 워크포워드 감사에서 신뢰도 기준을 "
+                             "통과하지 못하면 Kelly 비중은 공개하지 않고 기준 위험가중을 유지합니다."),
+    }
+
+
 def _serialize_allocation(weights: pd.Series) -> tuple[dict[str, float], float]:
     """Serialize weights first, then derive cash from those exact values."""
     final_weights = {k: round(float(v), 6) for k, v in weights.items()}
@@ -978,6 +1035,9 @@ def build_model_portfolio(long_term: dict | None, prices: dict, outcomes: list[d
         "riskWeightedBlendWeight": 1.0 - blend, "cashPct": 100.0,
         "expectedVolPct": None, "estimatedMaxDrawdownPct": None, "turnoverPct": 0.0,
         "expectedReturnStatus": "INSUFFICIENT", "fallbackReason": None,
+        "probabilityGate": {"requiredForKelly": bool(
+            (cfg.get("probabilityCalibration") or {}).get("requiredForKelly", False)),
+            "eligible": False, "byRegion": {}, "failures": ["not_evaluated"]},
         "kellyApplied": False, "kellyAllocationImpactPct": 0.0,
         "transactionCostPolicy": cfg.get("transactionCosts") or {},
         "positions": [], "riskWeightedWeights": {}, "constrainedKellyWeights": {},
@@ -1012,11 +1072,14 @@ def build_model_portfolio(long_term: dict | None, prices: dict, outcomes: list[d
         skeleton["warnings"].append("SELECTION_EMPTY; ALL_CASH")
         return skeleton
     risk_weights = baseline_weights(candidates, local_cfg)
-    estimates = estimate_expected_returns(candidates, outcomes, local_cfg, as_of=as_of,
-                                          historical_calibration=historical_calibration)
+    estimates = estimate_expected_returns(
+        candidates, outcomes, local_cfg, as_of=as_of,
+        historical_calibration=historical_calibration, macro_regime=macro_regime)
     estimate_map = {e["ticker"]: e for e in estimates}
     sufficient = [e for e in estimates if e["status"] == "SHADOW"]
     skeleton["expectedReturnEstimates"] = estimates
+    probability_gate = _probability_gate(estimates, candidates, local_cfg)
+    skeleton["probabilityGate"] = probability_gate
 
     # Evidence layer: which class of evidence is carrying the expected returns,
     # and is the live world still reproducing the backtest?
@@ -1064,6 +1127,9 @@ def build_model_portfolio(long_term: dict | None, prices: dict, outcomes: list[d
             covariance_matrices[region] = cov
     if len(sufficient) < int(local_cfg.get("minNames", 6)):
         fallback_reason = "expected_return_history_insufficient"
+    elif probability_gate.get("requiredForKelly") and not probability_gate.get("eligible"):
+        fallback_reason = "probability_calibration_unreliable"
+        warnings.append("PROBABILITY_GATE_FAILED; KELLY_WITHHELD")
     else:
         optimization_meta = {}
         min_region_names = int(local_cfg.get("minNamesPerRegion", 3))
@@ -1178,6 +1244,18 @@ def build_model_portfolio(long_term: dict | None, prices: dict, outcomes: list[d
             "expectedReturnUniqueDates": exp.get("uniqueDates", 0),
             "expectedReturnConfidence": exp.get("confidence"),
             "expectedReturnIntervalPct": exp.get("confidenceIntervalPct"),
+            "upProbabilityPct": (exp.get("probabilityDistribution") or {}).get("upProbabilityPct"),
+            "downProbabilityPct": (exp.get("probabilityDistribution") or {}).get("downProbabilityPct"),
+            "probabilityIntervalPct": (exp.get("probabilityDistribution") or {}).get("probabilityIntervalPct"),
+            "averageUpsidePct": (exp.get("probabilityDistribution") or {}).get("averageUpsidePct"),
+            "averageDownsidePct": (exp.get("probabilityDistribution") or {}).get("averageDownsidePct"),
+            "payoffRatio": (exp.get("probabilityDistribution") or {}).get("payoffRatio"),
+            "distributionExpectedExcessReturnPct": ((exp.get("probabilityDistribution") or {})
+                                                      .get("distributionExpectedExcessReturnPct")),
+            "binaryKellyFraction": (exp.get("probabilityDistribution") or {}).get("binaryKellyFraction"),
+            "probabilityContext": {key: (exp.get("probabilityDistribution") or {}).get(key)
+                                   for key in ("selectedVariant", "contextUsed", "macroRegime",
+                                               "entryState", "fallbackReason", "reliabilityEligible")},
             "transactionCost": exp.get("transactionCost"),
             "expectedReturnStatus": exp.get("status"),
             "riskLevel": (candidate.get("risk") or {}).get("vol252Pct"),

@@ -64,6 +64,12 @@ const EVIDENCE_STATUS = Object.freeze({
   ACTIVE_PAPER: 'Paper 운용 중',
   ACTIVE_VALIDATED: '검증 완료',
 });
+const PROB_VARIANT_KO = Object.freeze({
+  BASE: '지역·알파 구간', MACRO: '거시 국면 조건부', ENTRY: '종목 진입상태 조건부',
+});
+const fallbackCopy = (mp) => mp?.fallbackReason === 'probability_calibration_unreliable'
+  ? '상승·하락 확률이 시계열 감사 기준을 통과하지 못해 Kelly를 적용하지 않습니다. 현재 비중은 컨빅션 위험가중입니다.'
+  : COPY.fallback;
 const RADAR_TIER_KO = Object.freeze({
   VALIDATED_OPPORTUNITY: '검증된 기회',
   EMERGING_OPPORTUNITY: '관찰 필요한 변화',
@@ -200,6 +206,7 @@ const EXPL = {
   pitquality: ['PIT 품질', '과거 재현에서 그 시점에 실제로 볼 수 있었던 데이터만 썼는지를 나타냅니다. 가격은 시점 정합적이지만 배당·액면 조정은 현재 기준이고(PIT_APPROXIMATE), 재무는 무료 데이터에 발표일 이력이 없어 과거에 소급 적용하지 않고 <b>제외</b>합니다. 매크로는 발표시차만 반영하고 개정 이전 값(vintage)은 확보하지 못해 REVISED_HISTORY입니다.'],
   survivorship: ['생존편향', '현재 상장된 종목만으로 과거를 재현하면 이미 사라진 실패 사례가 빠져 성과가 좋아 보입니다. 과거 구성종목 파일이 없으면 <b>SURVIVORSHIP_BIAS_UNRESOLVED</b>로 기록하고 과거 증거의 가중치를 낮춥니다.'],
   posterior: ['Kelly 기대수익 posterior', '과거 OOS prior와 실시간 paper 증거를 <b>역분산(정밀도) 가중</b>으로 결합하고, 0을 중심으로 하는 사전분포로 수축합니다. 실시간 표본이 쌓일수록 실시간 쪽 비중이 자동으로 커집니다. 과거 증거는 모델 설계 자체가 그 시기를 겪은 뒤 만들어졌다는 이유로 1.0보다 낮은 가중치를 받습니다.'],
+  probabilitycal: ['상승확률 신뢰도 감사', '목표는 126일 뒤 <b>거래비용 차감 지역 초과수익이 0보다 클 확률</b>입니다. 과거 신호의 결과는 실제 만기일 이후에만 다음 예측 학습에 넣고, Brier score·ECE·log-loss를 뒤쪽 감사 구간에서 확인합니다. 거시 국면과 종목 진입상태 조건은 앞쪽 구간에서 개선된 경우에만 후보가 되고, 뒤쪽 감사도 통과해야 적용됩니다. 이 게이트가 실패하면 기대수익이 있어도 Kelly 비중을 적용하지 않습니다.'],
   drift: ['성과 괴리 감지', '과거 OOS 기대수익보다 실시간 성과가 크게 낮으면 Kelly 비중을 <b>축소</b>합니다. 반대 방향은 작동하지 않습니다 — 실시간 성과가 나쁘다고 기대수익을 올리는 일은 없습니다.'],
   analogue: ['과거 유사 사례', '현재 관측치와 과거 특징 벡터의 거리로 가장 비슷했던 시점들을 찾아 그 이후 결과 분포를 보여줍니다. <b>예측 모델이 아니라 설명 도구</b>이며, 유사 사례가 미래를 보장하지 않습니다.'],
 };
@@ -359,7 +366,7 @@ const renderDecisionHero = (d) => {
     : '자격을 통과한 종목이 없어 전액 현금입니다.';
   const kellyLine = mp.kellyApplied === true
     ? `Kelly 반영 — 기준 비중 대비 배분 변화 ${fmt(mp.kellyAllocationImpactPct, '%p', 1)}`
-    : `Kelly 미적용 — ${COPY.fallback}`;
+    : `Kelly 미적용 — ${fallbackCopy(mp)}`;
   host.innerHTML = `
     <div class="dh-verdict ${cue}">
       <span class="dh-badge">${statusLabel(mp.status)}</span>
@@ -452,6 +459,7 @@ const renderMethodStatus = (d) => {
   const host = $('#methodStatusPanel'); const mp = d.modelPortfolio || {};
   const lt = d.longTerm || {}; const r = d.macroRegime || {};
   const vs = d.validationStatus || {}; const gate = (mp.validation || {}).sampleGate || {};
+  const probabilityGate = mp.probabilityGate || {};
   const sel = mp.selection;
   const regionCount = Object.keys(lt.regions || {}).length;
   const rows = [
@@ -463,6 +471,10 @@ const renderMethodStatus = (d) => {
       r.regime ? `${REGIME_KO[r.regime] || r.regime} · 주식 예산 ${(mp.macroEquityRangePct || []).join('~') || '—'}% → 현금 하한 ${fmt(mp.appliedMinCashPct, '%', 0)} · Kelly 배율 ${fmt(mp.regimeMultiplier, '', 2)}` : '국면 판정 대기'),
     methodRow('종목 집중 (컨빅션 선정)', !!sel,
       sel ? `${sel.consideredCount}개 후보 → ${sel.selectedCount}종목` : '선정 결과 없음'),
+    methodRow('상승확률 시계열 감사', probabilityGate.eligible === true,
+      probabilityGate.eligible === true
+        ? `Brier·ECE·log-loss 통과 · ${Object.values(probabilityGate.byRegion || {}).map((x) => PROB_VARIANT_KO[x.selectedVariant] || x.selectedVariant).filter(Boolean).join(' · ')}`
+        : `미달 지역 ${(probabilityGate.failures || []).join(', ') || '산정 대기'} — Kelly 자동 차단`),
     methodRow('Kelly 기대수익 배분', mp.kellyApplied === true,
       mp.kellyApplied === true ? `실측 ledger 기준 · 배분 영향 ${fmt(mp.kellyAllocationImpactPct, '%p', 1)}`
         : `paper ${vs.paperDays ?? 0}/${gate.thresholds?.paperDays ?? 252}일 · 만기 신호 ${vs.maturedSignals ?? 0}/${gate.thresholds?.maturedSignals ?? 100}개 — 최초 검토 가능 ${mp.validation?.earliestReviewDate || '산정 대기'}`),
@@ -554,6 +566,15 @@ const renderValidationLab = (d) => {
   const hv = d.historicalValidation || {}; const pv = d.prospectiveValidation || {};
   const ke = d.kellyEvidence || {}; const mp = d.modelPortfolio || {};
   const mc = d.modelComparison || {};
+  const probability = hv.probabilityCalibration || {}; const probabilityGate = probability.reliabilityGate || {};
+  const probabilityIntegrity = probability.integrityGate || {};
+  const probabilityRows = Object.entries(probability.regions || {}).map(([region, blob]) => {
+    const audit = blob.audit || {}; const gate = blob.reliabilityGate || {};
+    return `<tr><td>${region}</td><td>${PROB_VARIANT_KO[blob.selectedVariant] || blob.selectedVariant || '—'}</td>
+      <td>${audit.brier == null ? '—' : fmt(audit.brier, '', 3)}<small>${blob.selectedVariant && blob.selectedVariant !== 'BASE' ? `BASE ${audit.baseVariantBrier == null ? '—' : fmt(audit.baseVariantBrier, '', 3)} · ` : ''}지역 기준 ${audit.baselineBrier == null ? '—' : fmt(audit.baselineBrier, '', 3)}</small></td>
+      <td>${audit.ece == null ? '—' : fmt(audit.ece * 100, '%', 1)}</td><td>${audit.logLoss == null ? '—' : fmt(audit.logLoss, '', 3)}</td>
+      <td><span class="tag ${gate.eligible ? 'ok' : ''}">${gate.eligible ? '통과' : '미달'}</span><small>${(gate.failures || []).join(', ')}</small></td></tr>`;
+  }).join('');
   const activation = ke.activation || {};
   $('#validationLabMeta').textContent =
     `${hv.available ? `과거 OOS ${hv.oosSignals ?? 0}건` : '과거 OOS 없음'} · ${pv.trackingDays ?? 0}일 실시간 추적`;
@@ -568,6 +589,9 @@ const renderValidationLab = (d) => {
       ${vlabRow(term('survivorship', '생존편향'), hv.survivorshipRisk || '—', hv.survivorshipNote || '')}
       ${vlabRow('재무 point-in-time', hv.fundamentalsPointInTime ? '적용' : '미적용 (밸류·퀄리티 슬리브 제외)')}
       ${vlabRow('매크로 vintage', hv.macroPitStatus || '—')}
+      ${vlabRow(term('probabilitycal', '상승확률 감사'), probabilityGate.eligible ? '통과' : '미달 · Kelly 차단', probability.explainKo || '')}
+      ${vlabRow('백테스트 데이터 동일성', probabilityIntegrity.eligible ? '통과' : '미달', probabilityIntegrity.eligible ? '과거 입력이 운영 모델 요구조건과 일치' : `부족: ${(probabilityIntegrity.failures || []).join(', ') || '산정 대기'}`)}
+      ${probabilityRows ? `<details class="vl-fold"><summary>지역별 확률 calibration</summary><table class="vl-table"><thead><tr><th>지역</th><th>적용 환경</th><th>Brier</th><th>ECE</th><th>log-loss</th><th>게이트</th></tr></thead><tbody>${probabilityRows}</tbody></table><p class="muted">Brier·ECE·log-loss는 뒤쪽 감사 구간의 시점외 값입니다. 같은 날 종목은 날짜 군집으로 평균합니다.</p></details>` : ''}
       ${vlabRow('최종 홀드아웃', hv.finalHoldoutStart || '—', '모델 확정 전까지 튜닝에 사용하지 않음')}
       ${(hv.knownDeviationsFromProduction || []).length ? `<details class="vl-fold"><summary>운영 모델과의 알려진 차이 ${hv.knownDeviationsFromProduction.length}건</summary><ul>${hv.knownDeviationsFromProduction.map((x) => `<li>${x}</li>`).join('')}</ul></details>` : ''}
     ` : `<div class="status-note info">${hv.reason === 'historical_replay_ledger_not_supplied' ? '과거 재현 ledger가 아직 생성되지 않았습니다.' : (hv.reason || '데이터 없음')}</div>`}
@@ -578,6 +602,7 @@ const renderValidationLab = (d) => {
     <div class="vl-h">실시간 Paper 검증 <span class="tag">PROSPECTIVE_PAPER</span></div>
     ${vlabRow('추적 시작', pv.trackingSince || '—')}
     ${vlabRow('추적 일수', fmt(pv.trackingDays), '신호가 쌓인 기간 — 만기 여부와 무관')}
+    ${vlabRow('모델 세대 격리', pv.generationIsolated ? '적용' : '확인 필요', pv.generationIsolated ? `현재 모델만 집계 · 이전 세대 신호 ${pv.excludedPriorModelSignals ?? 0}건 / 결과 ${pv.excludedPriorModelOutcomes ?? 0}건 제외` : '서로 다른 계산식의 성과를 합치지 않아야 함')}
     ${vlabRow('기록 신호', fmt(pv.signalsRecorded), `고유 날짜 ${pv.uniqueDates ?? '—'}`)}
     ${vlabRow('만기 관측 일수', fmt(pv.maturedObservationDays), '결과가 확정된 구간')}
     ${vlabRow('만기 신호', fmt(pv.maturedSignals), Object.entries(pv.maturedByHorizon || {}).map(([h, n]) => `${h}D ${n}`).join(' · ') || '—')}
@@ -603,6 +628,7 @@ const renderValidationLab = (d) => {
     <div class="vl-grid">
       ${vlabRow('Base Kelly fraction', fmt((mp.baseKellyFraction ?? 0) * 100, '%', 1))}
       ${vlabRow('매크로 조정 후', fmt((mp.appliedKellyFraction ?? 0) * 100, '%', 1))}
+      ${vlabRow(term('probabilitycal', '확률 신뢰도 게이트'), (mp.probabilityGate || {}).eligible ? '통과' : '미달', (mp.probabilityGate || {}).fallbackPolicyKo || '')}
       ${vlabRow('실제 배분 영향', mp.kellyApplied === true ? fmt(mp.kellyAllocationImpactPct, '%p', 1) : '미적용')}
       ${vlabRow(term('drift', '성과 괴리'), drift.detected ? `감지 (Kelly ×${drift.kellyMultiplier})` : (drift.detected === false ? '허용 범위' : '표본 부족'), drift.summaryKo || '')}
     </div>
@@ -1084,19 +1110,26 @@ const renderModelPortfolio = (d) => {
   const table = rows.length ? `<div class="mp-table" role="table"><div class="mp-row mp-head" role="row"><span>종목</span><span>최종 비중</span><span>기준 비중</span><span>${applied ? 'Kelly 조정' : '컨빅션 순위'}</span><span>진입상태</span><span>주요 제약</span></div>${rows.map((p) => {
     const bindingList = (p.bindingConstraints || []).map((x) => x.replaceAll('_', ' ')); const binding = bindingList[0] || '없음';
     const interval = p.expectedReturnIntervalPct || [];
+    const probabilityInterval = p.probabilityIntervalPct || []; const probabilityContext = p.probabilityContext || {};
     return `<details class="mp-position"><summary class="mp-row" role="row"><span data-label="종목">${tkLink(p.ticker)} <small>${p.region || ''}</small></span><span data-label="최종 비중"><b>${fmt(p.modelPortfolioWeightPct, '%', 1)}</b></span><span data-label="기준 비중">${fmt(p.riskWeightedWeightPct, '%', 1)}</span><span data-label="${applied ? 'Kelly 조정' : '컨빅션 순위'}" class="kelly-${(p.kellyAdjustment || '').toLowerCase()}">${applied ? dirKo(p.kellyAdjustment) : `${p.convictionRank ?? '—'}위 · ${fmt(p.convictionScore, '', 2)}`}</span><span data-label="진입상태">${p.entryState ? entryBadge(p.entryState) : '—'}</span><span data-label="주요 제약" class="mp-why">${binding}</span></summary>
       <div class="mp-position-detail">
-        <div><span>컨빅션 순위</span><b>${p.convictionRank ?? '—'}위 (${fmt(p.convictionScore, '', 2)})</b></div><div><span>하방변동성</span><b>${fmt(p.downsideVolPct, '%', 1)}</b></div><div><span>기대 초과수익</span><b>${p.expectedReturnStatus === 'SHADOW' ? sp(p.expectedExcessReturnPct) : '추정 보류'}</b></div><div><span>표본 / 유효 날짜</span><b>${p.expectedReturnSampleSize || 0} / ${p.expectedReturnEffectiveDates || 0}</b></div><div><span>독립 날짜</span><b>${p.expectedReturnUniqueDates || 0}</b></div><div><span>불확실성</span><b>${interval.length === 2 ? `${interval[0]}~${interval[1]}%` : '표본 부족'}</b></div><div><span>실현 변동성</span><b>${fmt(p.riskLevel, '%', 1)}</b></div><div><span>비제약 Kelly</span><b>${applied ? fmt(p.unconstrainedKellyWeightPct, '%', 1) : '미적용'}</b></div><div><span>제약 Kelly</span><b>${applied ? fmt(p.constrainedKellyWeightPct, '%', 1) : '미적용'}</b></div><div><span>거래비용 추정</span><b>${p.transactionCost ? fmt(p.transactionCost.estimatedCostPct, '%', 2) : '—'}</b></div><div><span>전체 제약</span><b>${bindingList.join(' · ') || '없음'}</b></div>
+        <div><span>컨빅션 순위</span><b>${p.convictionRank ?? '—'}위 (${fmt(p.convictionScore, '', 2)})</b></div><div><span>하방변동성</span><b>${fmt(p.downsideVolPct, '%', 1)}</b></div><div><span>기대 초과수익</span><b>${p.expectedReturnStatus === 'SHADOW' ? sp(p.expectedExcessReturnPct) : '추정 보류'}</b></div><div><span>${term('probabilitycal', '상승 / 하락 확률')}</span><b>${p.upProbabilityPct == null ? '감사 대기' : `${fmt(p.upProbabilityPct, '%', 1)} / ${fmt(p.downProbabilityPct, '%', 1)}`}</b></div><div><span>확률 구간</span><b>${probabilityInterval.length === 2 ? `${probabilityInterval[0]}~${probabilityInterval[1]}%` : '표본 부족'}</b></div><div><span>평균 상승 / 하락폭</span><b>${p.averageUpsidePct == null ? '—' : `+${fmt(p.averageUpsidePct, '%', 1)} / -${fmt(p.averageDownsidePct, '%', 1)}`}</b></div><div><span>확률 환경</span><b>${PROB_VARIANT_KO[probabilityContext.selectedVariant] || probabilityContext.selectedVariant || '기본 구간'}${probabilityContext.fallbackReason ? ' → 기본값' : ''}</b></div><div><span>이진 Kelly 참고값</span><b>${p.binaryKellyFraction == null ? '—' : fmt(p.binaryKellyFraction * 100, '%', 1)} · 배분 미사용</b></div><div><span>표본 / 유효 날짜</span><b>${p.expectedReturnSampleSize || 0} / ${p.expectedReturnEffectiveDates || 0}</b></div><div><span>독립 날짜</span><b>${p.expectedReturnUniqueDates || 0}</b></div><div><span>불확실성</span><b>${interval.length === 2 ? `${interval[0]}~${interval[1]}%` : '표본 부족'}</b></div><div><span>실현 변동성</span><b>${fmt(p.riskLevel, '%', 1)}</b></div><div><span>비제약 Kelly</span><b>${applied ? fmt(p.unconstrainedKellyWeightPct, '%', 1) : '미적용'}</b></div><div><span>제약 Kelly</span><b>${applied ? fmt(p.constrainedKellyWeightPct, '%', 1) : '미적용'}</b></div><div><span>거래비용 추정</span><b>${p.transactionCost ? fmt(p.transactionCost.estimatedCostPct, '%', 2) : '—'}</b></div><div><span>전체 제약</span><b>${bindingList.join(' · ') || '없음'}</b></div>
         <div class="mp-inval"><span>깨지는 지점</span><b>${invalidationLine(p.invalidation, 4) || '조건 산출 대기'}</b></div>
       </div></details>`;
   }).join('')}</div>` : '<div class="none">표시할 종목 비중이 없습니다.</div>';
   const exposure = (title, values) => `<div class="mp-exp"><b>${title}</b>${Object.entries(values || {}).sort((a, b) => b[1] - a[1]).map(([k, v]) => `<span>${k}<em>${v}%</em></span>`).join('') || '<span>데이터 없음</span>'}</div>`;
-  const reason = applied ? '' : `<div class="status-note info"><b>${COPY.fallback}</b><details><summary>기술 사유</summary><code>${mp.fallbackReason || 'kelly_not_activated'}</code></details></div>`;
+  const reason = applied ? '' : `<div class="status-note info"><b>${fallbackCopy(mp)}</b><details><summary>기술 사유</summary><code>${mp.fallbackReason || 'kelly_not_activated'}</code></details></div>`;
   const concNote = (conc.warnings || []).length
     ? `<div class="status-note warn"><b>집중도 경고</b><ul>${conc.warnings.map((w) => `<li>${CONCENTRATION_KO[w] || w}</li>`).join('')}</ul></div>` : '';
   const currency = mp.currencyPolicy || {}; const fxWarning = currency.warning ? '<span class="risk-cue">! 환율 위험은 지역 배분 레이어에서만 표시되며 종목 active covariance에는 미반영</span>' : '<span>● 환율 수익률 반영</span>';
+  const probabilityGate = mp.probabilityGate || {};
+  const probabilityGateRows = Object.entries(probabilityGate.byRegion || {}).map(([region, row]) => {
+    const audit = row.audit || {};
+    return `<div><span>${region} · ${PROB_VARIANT_KO[row.selectedVariant] || row.selectedVariant || '기본 구간'}</span><b>${row.eligible ? '통과' : `미달: ${(row.failures || []).join(', ') || '표본 없음'}`} · Brier ${audit.brier ?? '—'} · ECE ${audit.ece == null ? '—' : fmt(audit.ece * 100, '%', 1)}</b></div>`;
+  }).join('');
+  const probabilityFold = `<details class="mp-method"><summary>${term('probabilitycal', '상승확률·상하방 분포 감사')}</summary><p class="mp-method-lead">${probabilityGate.fallbackPolicyKo || '확률 신뢰도 감사 결과가 Kelly 적용 여부를 제한합니다.'}</p><div class="gate-grid">${probabilityGateRows || '<div><span>확률 감사</span><b>산정 대기</b></div>'}</div></details>`;
   const methodFold = `<details class="mp-method"><summary>배분 규칙 · Kelly 승격 조건 상세</summary><p class="mp-method-lead"><b>${method.name}</b> — ${method.how}</p><div class="mp-method-grid"><div><span>${term('concentration2', '유효 종목수')}</span><b>${conc.effectiveNames ?? '—'} / ${conc.names ?? 0}종목</b></div><div><span>상위 3종목 비중</span><b>${fmt(conc.top3WeightPct, '%', 1)}</b></div><div><span>단일종목 상한</span><b>${fmt((mp.constraints?.maxPositionWeight ?? 0) * 100, '%', 0)}</b></div><div><span>업종 상한</span><b>${fmt((mp.constraints?.maxSectorWeight ?? 0) * 100, '%', 0)}</b></div><div><span>Base Kelly fraction</span><b>${fmt((mp.baseKellyFraction ?? 0) * 100, '%', 1)}</b></div><div><span>매크로 조정 위험배율</span><b>${fmt((mp.appliedKellyFraction ?? 0) * 100, '%', 1)}</b></div><div><span>Kelly 혼합 비율</span><b>${applied ? fmt((mp.kellyBlendWeight ?? 0) * 100, '%', 1) : '미적용'}</b></div><div><span>기준통화 · 환헤지</span><b>${currency.baseCurrency || 'KRW'} · ${currency.fxHedged ? '반영' : '미적용'}</b></div></div><p>${fxWarning}</p><div class="gate-grid"><div><span>Paper days</span><b>${actual.paperDays ?? mp.validation?.currentPaperDays ?? 0} / ${threshold.paperDays ?? '—'}</b></div><div><span>만기 신호</span><b>${actual.maturedSignals ?? mp.validation?.currentMaturedSignals ?? 0} / ${threshold.maturedSignals ?? '—'}</b></div><div><span>유효 날짜</span><b>${actual.effectiveDates ?? mp.validation?.currentEffectiveDates ?? 0} / ${threshold.effectiveDates ?? '—'}</b></div><div><span>관측 날짜</span><b>${actual.uniqueDates ?? mp.validation?.currentUniqueDates ?? 0} / ${threshold.uniqueDates ?? '—'}</b></div><div><span>최초 검토 가능</span><b>${mp.validation?.earliestReviewDate || '산정 대기'}</b></div><div><span>미달 항목</span><b>${(mp.validation?.missing || []).join(', ') || '없음'}</b></div></div><p class="technical-code">기술 상태: ${status} · 표본법: ${gate.method || 'DATE_CLUSTERED_NEWEY_WEST_HAC'}</p></details>`;
-  host.innerHTML = `${kpis}${reason}${concNote}${table}${methodFold}<details class="mp-exposure-detail"><summary>지역·업종·테마 노출</summary><div class="mp-exposures">${exposure('지역', mp.regionExposure)}${exposure('업종', mp.sectorExposure)}${exposure('테마', mp.themeExposure)}</div></details>`;
+  host.innerHTML = `${kpis}${reason}${concNote}${table}${probabilityFold}${methodFold}<details class="mp-exposure-detail"><summary>지역·업종·테마 노출</summary><div class="mp-exposures">${exposure('지역', mp.regionExposure)}${exposure('업종', mp.sectorExposure)}${exposure('테마', mp.themeExposure)}</div></details>`;
 };
 
 // 6. Entry & risk warnings (aggregated)

@@ -136,6 +136,16 @@ def main(argv=None) -> int:
                   f"  hit={row['positiveHitRatio']}  w={row['evidenceWeight']}"
                   f"  {'USABLE' if row['usable'] else 'thin'}")
 
+    probability = calibration.get("probabilityCalibration") or {}
+    print(f"\n[3b] MATURITY-SAFE PROBABILITY AUDIT  "
+          f"eligible={(probability.get('reliabilityGate') or {}).get('eligible')}")
+    for region, blob in sorted((probability.get("regions") or {}).items()):
+        audit = blob.get("audit") or {}
+        print(f"    {region}: {blob.get('selectedVariant')}  "
+              f"Brier={audit.get('brier')} / baseline={audit.get('baselineBrier')}  "
+              f"ECE={audit.get('ece')}  log-loss={audit.get('logLoss')}  "
+              f"gate={(blob.get('reliabilityGate') or {}).get('eligible')}")
+
     print("\n[4] KELLY EVIDENCE (historical prior with an empty prospective ledger)")
     region_evidence = EV.summarize_region(calibration, {}, min_effective_dates=20,
                                           prior_scale_pct=3.0)

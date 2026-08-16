@@ -39,6 +39,15 @@ def test_fallback_does_not_render_kelly_weights_as_applied():
     assert "COPY.fallback" in APP
 
 
+def test_probability_calibration_is_visible_and_can_block_kelly():
+    for text in ("상승확률 시계열 감사", "Brier", "ECE", "log-loss",
+                 "probability_calibration_unreliable", "평균 상승 / 하락폭"):
+        assert text in APP
+    assert "mp.probabilityGate" in APP
+    assert "p.upProbabilityPct" in APP and "p.downProbabilityPct" in APP
+    assert "배분 미사용" in APP  # binary Kelly is explanatory, not the optimizer.
+
+
 def test_decision_first_structure_and_single_global_disclaimer():
     # The page opens on the answer: verdict, then the holdings themselves.
     for element_id in ("decisionHero", "holdingsPanel", "selectionPanel",
