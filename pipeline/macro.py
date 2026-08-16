@@ -60,6 +60,8 @@ def _us_indicators(macro, vix) -> list:
     return [
         ["Headline CPI", _fmt(_yoy(_col(macro, "Headline_CPI")), "%"), "전년동월비 · 식품·에너지 포함"],
         ["Core CPI", _fmt(_yoy(_col(macro, "Core_CPI")), "%"), "전년동월비 · 식품·에너지 제외"],
+        ["Headline PPI", _fmt(_yoy(_col(macro, "Headline_PPI")), "%"), "전년동월비 · 생산자 최종수요"],
+        ["Core PPI", _fmt(_yoy(_col(macro, "Core_PPI")), "%"), "전년동월비 · 식품·에너지·무역서비스 제외"],
         ["10Y", _fmt(_last(t10), "%"), "미국 국채 10년"],
         ["2Y", _fmt(_last(t2), "%"), "미국 국채 2년"],
         ["금리차", _fmt(_last(curve), "%p"), "10Y−2Y"],

@@ -187,6 +187,7 @@ def _changes(current: list[dict], previous: list[dict]) -> dict:
         template = cur or prev
         item = {
             "issuer": template["issuer"], "titleClass": template["titleClass"],
+            "cusip": template.get("cusip"),
             "putCall": template.get("putCall"),
             "currentShares": cur["shares"] if cur else 0,
             "previousShares": prev["shares"] if prev else 0,

@@ -82,6 +82,27 @@ def test_macro_charts_open_to_long_history_and_headline_cpi_is_prominent():
     assert ".macro-cockpit" in CSS and ".macro-pulse-card" in CSS
 
 
+def test_macro_minicharts_are_three_month_previews_and_ppi_is_visible():
+    assert "const sliceRecentThreeMonths" in APP
+    assert "points: sliceRecentThreeMonths(i.history)" in APP
+    assert "최근 3개월 미리보기" in APP
+    # The full-history dialog must continue to slice the original payload,
+    # rather than the three-month preview.
+    assert "const history = sliceMacroRange(i.history, MACRO_RANGE)" in APP
+    assert "Headline_PPI" in APP and "Core_PPI" in APP
+    assert "확인용 · 점수 미반영" in APP
+
+
+def test_ticker_and_13f_rows_open_honest_fundamental_details():
+    for label in ("PER · 최근 12개월", "PER · 예상", "PBR", "배당률", "시가총액", "ROE"):
+        assert label in APP
+    assert "d.fundamentals" in APP
+    assert "현재 재무 스냅샷" in APP
+    assert "data-f13-id" in APP and "show13FPop" in APP
+    assert "13F 원문에는 PER·PBR·배당률" in APP
+    assert "마지막 확인" in APP
+
+
 def test_nps_allocation_and_13f_are_visually_separated():
     assert 'id="npsPanel"' in HTML
     assert "renderNationalPension" in APP and "nationalPensionService" in APP

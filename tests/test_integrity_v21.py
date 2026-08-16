@@ -274,6 +274,22 @@ def test_single_indicator_axis_cannot_receive_high_confidence():
     assert axis["confidence"] < 0.5
 
 
+def test_ppi_is_displayed_as_context_without_double_counting_inflation_axis():
+    idx = pd.date_range("2020-01-31", periods=48, freq="ME")
+    values = pd.Series(100 * (1.003 ** np.arange(48)), index=idx)
+    read = RG.indicator_read("Headline_PPI", values, asof=idx[-1] + pd.Timedelta(days=60))
+    assert read["contextOnly"] is True
+    assert read["axisContribution"] == 0
+    assert "직접 가중하지 않음" in read["signalSummaryKo"]
+    axis = RG._axis_summary([
+        {"axisContribution": 1, "stale": False, "contextOnly": False},
+        read,
+    ], expected_count=1)
+    assert axis["value"] == 1.0
+    assert axis["nIndicators"] == 1
+    assert axis["nContextIndicators"] == 1
+
+
 def test_longterm_exposes_evidence_quality_not_prediction_confidence():
     frame = pd.DataFrame({
         "alpha": range(8), "rawAlpha": range(8), "sector": "Technology",

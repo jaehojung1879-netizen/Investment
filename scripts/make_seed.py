@@ -87,6 +87,7 @@ def main() -> int:
     # A few monthly macro series so the regime engine has >1 axis of coverage.
     mdates = pd.date_range(end=dates[-1], periods=60, freq="ME")
     for name, base, slope, sd, sd_seed in [("CFNAI", 0.0, 0.002, 0.2, 21), ("Headline_CPI", 297, 0.42, 0.45, 25), ("Core_CPI", 300, 0.4, 0.3, 22),
+                                           ("Headline_PPI", 150, 0.3, 0.35, 26), ("Core_PPI", 140, 0.25, 0.2, 27),
                                            ("Unemployment", 4.0, -0.005, 0.1, 23), ("Payrolls", 155000, 120, 400, 24)]:
         rng = np.random.default_rng(sd_seed)
         macro[name] = pd.Series(base + slope * np.arange(60) + rng.normal(0, sd, 60), index=mdates).reindex(dates).ffill()
@@ -125,7 +126,10 @@ def main() -> int:
                        "realizedVol": diag["realizedVol"], "maxDrawdown252d": diag["maxDrawdown252d"],
                        "relMomentum": diag["relMomentum"], "pct52wHigh": diag["pct52wHigh"],
                        "mom63": round(diag["mom63"] * 100, 1) if diag["mom63"] is not None else None,
-                       "riskFlags": [f["message"] for f in diag["riskFlags"]]}
+                       "riskFlags": [f["message"] for f in diag["riskFlags"]],
+                       "fundamentals": ({**fundamentals[tk], "asOf": dates[-1].strftime("%Y-%m-%d"),
+                                          "pointInTime": False, "source": "synthetic seed fixture"}
+                                         if tk in fundamentals else None)}
         screened.append({"ticker": tk, "region": region, "modelScore": None, "probUp": None,
                          "regime": diag["regime"], "qualifies": False, "aboveMA50": diag["aboveMA50"],
                          "aboveMA200": diag["aboveMA200"], "mom63": diag["mom63"], "volSurge": vsurge})
