@@ -14,19 +14,38 @@
   "firstDate": "2013-01-04",
   "lastDate": "2026-08-14",
   "replayDates": 711,
-  "signalsGenerated": 381992,
-  "signalsSkippedAlreadyPresent": 0,
+  "signalsGenerated": 33873,
+  "signalsSkippedAlreadyPresent": 377392,
   "meanPitCoverage": 0.7833,
   "survivorshipRisk": "HIGH",
   "survivorshipNote": "SURVIVORSHIP_BIAS_UNRESOLVED",
   "fundamentalsPit": false,
+  "historicalUniverseAvailable": false,
+  "constituentCoveragePct": null,
+  "universeSource": "CURRENT_UNIVERSE_WITH_PRICE_HISTORY_FILTER_ONLY",
+  "firstReliableUniverseDate": null,
+  "affectedObservationsPct": 100.0,
+  "affectedRegions": [
+    "KR",
+    "US"
+  ],
+  "impactOnPromotionEligibility": "KELLY_AND_SELECTOR_PROMOTION_BLOCKED",
+  "fundamentalsContract": {
+    "contract": "PIT_FUNDAMENTALS_V1",
+    "rowsRead": 0,
+    "rowsAccepted": 0,
+    "rowsRejected": 0,
+    "errors": [
+      "pit_fundamentals_path_not_configured"
+    ]
+  },
   "macroPitStatus": "REVISED_HISTORY",
   "regimeDistribution": {
-    "Deflation/Slowdown": 52656,
-    "Goldilocks": 60755,
-    "Reflation": 98231,
-    "Stagflation": 32923,
-    "Transition/Low confidence": 137427
+    "Deflation/Slowdown": 56802,
+    "Goldilocks": 65329,
+    "Reflation": 105678,
+    "Stagflation": 35452,
+    "Transition/Low confidence": 148004
   },
   "shortTermModelReplayed": false,
   "knownDeviationsFromProduction": [
@@ -36,21 +55,21 @@
     "entry_sector_concentration_overlay_not_applied_no_sleeve_in_replay"
   ],
   "coverage": {
-    "signalsRecorded": 381992,
+    "signalsRecorded": 415865,
     "uniqueDates": 711,
     "trackingDays": 3551,
     "firstSignalDate": "2013-01-04",
     "lastSignalDate": "2026-08-14",
-    "maturedSignals": 366661,
+    "maturedSignals": 394562,
     "maturedUniqueDates": 684,
     "maturedObservationDays": 3416,
     "lastMaturedSignalDate": "2026-02-06",
     "horizon": 126,
     "maturedByHorizon": {
-      "21": 379152,
-      "63": 374040,
-      "126": 366661,
-      "252": 351783
+      "21": 408170,
+      "63": 402599,
+      "126": 394562,
+      "252": 378291
     }
   }
 }
