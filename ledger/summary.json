@@ -1,12 +1,22 @@
 {
+  "modelVersion": "longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3",
+  "generationIsolation": {
+    "method": "EXACT_MODEL_VERSION",
+    "excludedPriorModelOutcomes": 0,
+    "excludedPriorModelPortfolioOutcomes": 0
+  },
   "validationStatus": {
-    "paperDays": 21,
-    "trackingDays": 21,
+    "paperDays": 1,
+    "trackingDays": 1,
     "maturedObservationDays": 0,
-    "signalsRecorded": 9957,
-    "uniqueDates": 21,
+    "modelVersion": "longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3",
+    "generationIsolated": true,
+    "excludedPriorModelSignals": 9957,
+    "excludedPriorModelOutcomes": 0,
+    "signalsRecorded": 611,
+    "uniqueDates": 1,
     "maturedUniqueDates": 0,
-    "firstSignalDate": "2026-07-17",
+    "firstSignalDate": "2026-08-14",
     "lastSignalDate": "2026-08-14",
     "maturedSignals": 0,
     "maturedByHorizon": {
