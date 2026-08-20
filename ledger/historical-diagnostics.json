@@ -3,7 +3,7 @@
     "2026-07-31",
     "2026-08-07",
     "2026-08-14",
-    "2026-08-19"
+    "2026-08-20"
   ],
   "replayVersion": "replay-v2",
   "featureVersion": "hfeat-v1",
@@ -12,10 +12,10 @@
   "requestedStart": "2013-01-01",
   "requestedEnd": null,
   "firstDate": "2013-01-04",
-  "lastDate": "2026-08-19",
+  "lastDate": "2026-08-20",
   "replayDates": 712,
-  "signalsGenerated": 1398,
-  "signalsSkippedAlreadyPresent": 409132,
+  "signalsGenerated": 10620,
+  "signalsSkippedAlreadyPresent": 399910,
   "meanPitCoverage": 0.7833,
   "survivorshipRisk": "HIGH",
   "survivorshipNote": "SURVIVORSHIP_BIAS_UNRESOLVED",
@@ -41,11 +41,11 @@
   },
   "macroPitStatus": "REVISED_HISTORY",
   "regimeDistribution": {
-    "Deflation/Slowdown": 56620,
-    "Goldilocks": 65726,
-    "Reflation": 105326,
+    "Deflation/Slowdown": 57165,
+    "Goldilocks": 66332,
+    "Reflation": 105893,
     "Stagflation": 35341,
-    "Transition/Low confidence": 147517
+    "Transition/Low confidence": 145799
   },
   "shortTermModelReplayed": false,
   "knownDeviationsFromProduction": [
@@ -55,21 +55,21 @@
     "entry_sector_concentration_overlay_not_applied_no_sleeve_in_replay"
   ],
   "coverage": {
-    "signalsRecorded": 417881,
-    "uniqueDates": 713,
-    "trackingDays": 3554,
+    "signalsRecorded": 428501,
+    "uniqueDates": 731,
+    "trackingDays": 3555,
     "firstSignalDate": "2013-01-04",
-    "lastSignalDate": "2026-08-19",
-    "maturedSignals": 393655,
-    "maturedUniqueDates": 685,
+    "lastSignalDate": "2026-08-20",
+    "maturedSignals": 401772,
+    "maturedUniqueDates": 699,
     "maturedObservationDays": 3421,
     "lastMaturedSignalDate": "2026-02-13",
     "horizon": 126,
     "maturedByHorizon": {
-      "21": 407360,
-      "63": 401798,
-      "126": 393655,
-      "252": 377502
+      "21": 417331,
+      "63": 410533,
+      "126": 401772,
+      "252": 385553
     }
   }
 }
