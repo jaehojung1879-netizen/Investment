@@ -142,3 +142,13 @@ def test_mobile_portfolio_is_card_layout_without_wide_minimum():
     assert ".mp-row > span::before" in CSS
     assert "grid-template-columns: repeat(2, minmax(0,1fr))" in CSS
     assert "min-width: 1040px" not in CSS
+
+
+def test_validation_lab_contains_mobile_safe_tables_and_plain_language_verdict():
+    assert APP.count('class="vl-table-scroll"') >= 5
+    assert 'role="region"' in APP and 'tabindex="0"' in APP
+    assert ".vl-table-scroll" in CSS and "overflow-x: auto" in CSS
+    assert ".vlab" in CSS and "min-width: 0" in CSS
+    assert "현재 모델 판정" in APP
+    assert "종목선정 우위 미확인" in APP
+    assert "매수 신호나 기대수익 보장으로 해석하면 안 됩니다." in APP
