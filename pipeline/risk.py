@@ -36,8 +36,14 @@ def diagnose(ticker: str, data: pd.DataFrame) -> dict:
     pos_52w = _last(data["price_52w_high"]) if "price_52w_high" in data else None
     mom63 = _last(data["momentum_60d"]) if "momentum_60d" in data else None
 
-    above_200 = last_close is not None and ma200 is not None and last_close > ma200
-    above_50 = last_close is not None and ma50 is not None and last_close > ma50
+    # None where the average could not be computed, not False. A rolling(200)
+    # mean is NaN for a name's first 199 sessions, and counting that as "below
+    # the 200-day line" both states a fact that was never measured and drags the
+    # market-breadth statistic in sentiment.py down by data availability.
+    above_200 = (None if (last_close is None or ma200 is None)
+                 else bool(last_close > ma200))
+    above_50 = (None if (last_close is None or ma50 is None)
+                else bool(last_close > ma50))
     golden = ma50 is not None and ma200 is not None and ma50 > ma200
     if above_200 and golden:
         regime = "Bull"

@@ -1117,11 +1117,13 @@ const prosCons = (p) => {
   if (fp.value >= 66) pros.push(`밸류 매력 (${fp.value}p)`);
   if (fp.quality >= 66) pros.push(`퀄리티 우수 (${fp.quality}p)`);
   if (fp.lowvol >= 66) pros.push(`저변동 (${fp.lowvol}p)`);
-  if (p.aboveMA200) pros.push('200일선 위 (추세 확인)');
+  if (p.aboveMA200 === true) pros.push('200일선 위 (추세 확인)');
   if (p.alphaPercentile >= 66) pros.push(`섹터중립 알파 ${topPct(p.alphaPercentile)}`);
   if (p.valueTrap) cons.push('가치함정 신호 (싼데 퀄리티·현금흐름 약함)');
   if (completeness < 0.6) cons.push(`데이터 완전성 낮음 (${Math.round(completeness * 100)}%)`);
-  if (!p.aboveMA200) cons.push('200일선 아래 (추세 미확인)');
+  // null = the average could not be computed, which is not the same as below it.
+  if (p.aboveMA200 === false) cons.push('200일선 아래 (추세 미확인)');
+  else if (p.aboveMA200 == null) cons.push('200일선 산출 불가 (가격 이력 부족)');
   if (fp.quality != null && fp.quality <= 33) cons.push(`퀄리티 하위 (${fp.quality}p)`);
   if (risk.maxDD252Pct != null && risk.maxDD252Pct <= -25) cons.push(`최근 낙폭 ${risk.maxDD252Pct}%`);
   if (risk.cvar95Pct != null && risk.cvar95Pct >= 4) cons.push(`꼬리위험 CVaR ${risk.cvar95Pct}%`);
