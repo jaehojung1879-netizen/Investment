@@ -63,6 +63,11 @@
   universe), never on the raw excess over the benchmark. An absolute bar met by a level
   is met by universe carry: on the production ledger a random pick earns +1.1% to +2.4%
   per 126 days and clears a 0.5% bar with no skill.
+- A skill threshold is never negative. `minBrierSkill` gates the probability distribution
+  that sizes a Kelly weight, and it is the only reliability check a zero-information
+  predictor cannot clear: a constant at the base rate has Brier <= 0.25 by construction,
+  near-zero ECE and log-loss ~0.69, so `maxBrier`, `maxEce` and `maxLogLoss` pass every
+  time. The floor is not a noise allowance — the simulated null has sd ~0.001.
 - An acceptance check that could not be assessed is `None`, not `True`. It stays
   non-blocking, but it is never reported as a pass.
 - Passing the gate is not one fact. A significant rank IC is `FULL_RANK`; a significant
