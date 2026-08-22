@@ -342,6 +342,86 @@ def test_ordering_gate_admits_a_ranking_that_actually_orders_returns():
     assert ordering["established"] is True
     assert ordering["topMinusBottomTStat"] >= ordering["minTStat"]
     assert ordering["meanRankIC"] > 0
+    assert ordering["scope"] in {"FULL_RANK", "EXTREMES_ONLY"}
+
+
+def _extremes_only_ledger(seed=13, slope=0.10, jump=0.13, n_dates=140,
+                          n_names=80, noise=0.05):
+    """A score that is sharp at the top and runs BACKWARDS through the middle.
+
+    A real and common shape. The rank IC is strongly negative because 95% of the
+    cross-section declines with the score, while the top 5% carries a large,
+    genuine premium that a concentrated long-only book collects.
+    """
+    rng = np.random.default_rng(seed)
+    rows = []
+    for date in pd.bdate_range("2015-01-02", periods=n_dates, freq="5B"):
+        stamp = date.strftime("%Y-%m-%d")
+        shared = float(rng.normal(0.03, 0.04))
+        for i, percentile in enumerate(rng.uniform(0, 100, n_names)):
+            value = -slope * (percentile / 100.0) + (jump if percentile >= 95 else 0.0)
+            rows.append(_outcome(stamp, percentile=float(percentile),
+                                 excess=shared + value + float(rng.normal(0, noise)),
+                                 ticker=f"T{i}"))
+    return rows
+
+
+def test_a_top_bucket_only_effect_is_admitted_but_not_called_full_ordering():
+    """Passing the gate is not one fact — the artifact has to say which one.
+
+    Rejecting this on the rank IC's sign would throw away a usable edge; calling
+    it full-range ordering would claim one that was never shown.
+    """
+    calibration = _calibrate(_extremes_only_ledger())
+    ordering = calibration["regions"]["US"]["ordering"]
+
+    assert ordering["meanRankIC"] < 0, "the middle really does run backwards"
+    assert ordering["topBucketSpreadTStat"] >= ordering["minTStat"]
+    assert ordering["established"] is True
+    assert ordering["reason"] == "TOP_MINUS_BOTTOM_SIGNIFICANT"
+    assert ordering["scope"] == "EXTREMES_ONLY"
+    assert "중간 구간까지" in ordering["scopeExplainKo"]
+    assert ordering["scopeKo"] != "전 구간 정렬 확인"
+
+    # The top bucket is the one the book holds from, and it is the one usable.
+    top = [r for r in calibration["regions"]["US"]["buckets"] if r["bucket"] == "95-100"][0]
+    assert top["usable"] is True
+    assert top["calibratedExpectedExcessReturnPct"] > 0
+
+
+def test_a_spread_over_a_falling_universe_is_not_credited_as_skill():
+    """The mirror image of the carry bug, and just as wrong.
+
+    Here the universe LAGGED its benchmark, so a bucket can sit far above the
+    universe while earning nothing at all against the index the book is actually
+    measured on. Publishing that spread would overstate the edge exactly as
+    publishing carry overstated it, pointing the other way.
+    """
+    rng = np.random.default_rng(29)
+    rows = []
+    for date in pd.bdate_range("2015-01-02", periods=140, freq="5B"):
+        stamp = date.strftime("%Y-%m-%d")
+        shared = float(rng.normal(0.0, 0.04))
+        for i, percentile in enumerate(rng.uniform(0, 100, 80)):
+            # The bottom third is punished, which drags the universe below the
+            # benchmark. Nothing else earns anything.
+            value = -0.10 if percentile < 30 else 0.0
+            rows.append(_outcome(stamp, percentile=float(percentile),
+                                 excess=shared + value + float(rng.normal(0, 0.05)),
+                                 ticker=f"T{i}"))
+    blob = _calibrate(rows)["regions"]["US"]
+    top = [r for r in blob["buckets"] if r["bucket"] == "95-100"][0]
+
+    assert blob["universeBaseline"]["meanExcessPct"] < 0, "the universe lagged"
+    assert top["spreadVsUniversePct"] > 2.0, "and the raw spread looks like an edge"
+    assert abs(top["levelExpectedExcessReturnPct"]) < 0.5, "but nothing was earned"
+
+    # The conservative side binds, so the flattering spread is never published.
+    assert top["conservativeBasis"] == "LEVEL_VS_BENCHMARK_BINDS"
+    assert top["expectedReturnBasis"] == "LEVEL_VS_BENCHMARK_BINDS"
+    assert top["calibratedExpectedExcessReturnPct"] < 0.5
+    assert blob["ordering"]["established"] is False
+    assert blob["ordering"]["reason"] == "TOP_BUCKET_SPREAD_NOT_SIGNIFICANT"
 
 
 def test_calibration_produces_an_increasing_bucket_ladder():

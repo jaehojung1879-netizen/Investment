@@ -140,7 +140,10 @@ def main(argv=None) -> int:
         print(f"    {region}: {blob['observations']} obs / {blob['uniqueDates']} dates"
               f"   universe carry {pct(carry, 5)}")
         print(f"      ordering {'ESTABLISHED' if ordering.get('established') else 'NOT ESTABLISHED'}"
-              f" [{ordering.get('reason')}]  top-bottom {pct(ordering.get('topMinusBottomPct'), 5)}"
+              f" scope={ordering.get('scope')}"
+              f"  top-bucket {pct(ordering.get('topBucketSpreadPct'), 5)}"
+              f" t={ordering.get('topBucketSpreadTStat')}")
+        print(f"      [{ordering.get('reason')}]  top-bottom {pct(ordering.get('topMinusBottomPct'), 5)}"
               f" t={ordering.get('topMinusBottomTStat')} | rankIC {ordering.get('meanRankIC')}"
               f" t={ordering.get('rankICTStat')} | bar t>={ordering.get('minTStat')}")
         for row in blob["buckets"]:
