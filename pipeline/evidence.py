@@ -339,6 +339,9 @@ def summarize_region(calibration: dict | None, prospective_by_region: dict | Non
             "alphaAttribution": {
                 "orderingEstablished": bool(ordering.get("established")),
                 "orderingReason": ordering.get("reason"),
+                "orderingScope": ordering.get("scope"),
+                "orderingScopeKo": ordering.get("scopeKo"),
+                "orderingScopeExplainKo": ordering.get("scopeExplainKo"),
                 "topMinusBottomPct": ordering.get("topMinusBottomPct"),
                 "topMinusBottomTStat": ordering.get("topMinusBottomTStat"),
                 "meanRankIC": ordering.get("meanRankIC"),
@@ -348,12 +351,8 @@ def summarize_region(calibration: dict | None, prospective_by_region: dict | Non
                                               .get("meanExcessPct")),
                 "levelExcessReturnPct": (historical or {}).get("levelExcessReturnPct"),
                 "spreadVsUniversePct": (historical or {}).get("spreadVsUniversePct"),
-                "explainKo": (
-                    "순위가 수익을 정렬했다는 증거가 확인되어 알파 스프레드를 기대수익으로 씁니다."
-                    if ordering.get("established")
-                    else "이 지역에서는 알파 순위가 수익을 정렬했다는 증거가 없어 과거 근거를 "
-                         "기대수익으로 쓰지 않습니다. 벤치마크 대비 초과수익은 대부분 유니버스 "
-                         "전체의 캐리이며 선정 모델의 성과가 아닙니다."),
+                # The scope text says what was shown, not merely that it passed.
+                "explainKo": ordering.get("scopeExplainKo"),
             },
         }
     for region, prospective in prospective_by_region.items():

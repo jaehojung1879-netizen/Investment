@@ -46,9 +46,22 @@
 
 ## Alpha attribution invariants (v2.7)
 
-- A bucket's excess return over the benchmark is `universe carry + alpha spread`. Only the
-  spread — the per-date excess over the whole replay universe of that region — may become
-  an expected return. The level is published alongside it and is never what Kelly is sized on.
+- A bucket's excess return over the benchmark is `universe carry + alpha spread`. The
+  expected return is the LESSER of the level and the spread, and the artifact records which
+  side bound. When the universe beat its benchmark the level is inflated by carry the
+  ranking did not produce, so the spread binds; when the universe LAGGED its benchmark the
+  spread flatters, because a bucket can sit far above a falling universe while earning
+  nothing against the index the book is measured on. Crediting either is the same error.
+- Ordering admission tests the same conservative quantity that will be published. The top
+  bucket's own spread must clear the threshold on its own — a top-minus-bottom spread that
+  is significant only because the bottom collapsed is not an edge a long-only book can
+  collect — and at least one corroborating reading (top-minus-bottom, or the rank IC) must
+  agree.
+- Passing the gate is not one fact. A significant rank IC is `FULL_RANK`; a significant
+  extreme spread with an unproven middle is `EXTREMES_ONLY`, which is usable for a book that
+  only holds the top bucket but must never be reported as full-range ordering. A score that
+  is sharp at the extreme while its middle runs backwards is real and is admitted on its
+  top-bucket spread, not rejected on the IC's sign.
 - Shrinkage, standard errors and effective-date counts attach to the SPREAD series, not the
   level. A level made precise by the universe moving together carries no information about
   the ranking.

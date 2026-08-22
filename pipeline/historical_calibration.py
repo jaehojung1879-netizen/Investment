@@ -130,6 +130,24 @@ DEFAULT_MIN_ORDERING_EFFECTIVE_DATES = 12
 # anything; below this the IC is dominated by the few names that happen to exist.
 MIN_NAMES_FOR_RANK_IC = 8
 
+# What the ordering test actually established. Passing is not one fact.
+ORDERING_SCOPE_KO = {
+    "FULL_RANK": "전 구간 정렬 확인",
+    "EXTREMES_ONLY": "최상위 구간만 유의",
+    "NONE": "정렬 미확인",
+}
+ORDERING_SCOPE_EXPLAIN_KO = {
+    "FULL_RANK": ("날짜별 Rank IC가 유의합니다. 알파 순위가 구간 전반에 걸쳐 수익을 "
+                   "정렬했다는 뜻입니다."),
+    "EXTREMES_ONLY": ("최상위−최하위 스프레드만 유의합니다. 최상위 구간이 유니버스를 "
+                       "이겼다는 근거는 있으나, 중간 구간까지 순위가 수익을 정렬했다는 "
+                       "근거는 아닙니다. 집중 포트폴리오는 최상위 구간에서만 담기 때문에 "
+                       "기대수익 산정에는 쓸 수 있지만, 사다리 전체를 근거로 제시하지 "
+                       "않습니다."),
+    "NONE": ("알파 순위가 수익을 정렬했다는 증거가 없습니다. 버킷 사다리를 발표하지 않고 "
+              "과거 근거를 Kelly 기대수익으로도 쓰지 않습니다."),
+}
+
 # Discount factors applied multiplicatively. Each is a named, checkable defect.
 PENALTY = {
     "survivorship_unresolved": 0.80,
@@ -230,31 +248,57 @@ def _t_stat(stats: dict | None) -> float | None:
     return float(stats["mean"]) / float(stats["se"])
 
 
-def _ordering_evidence(region_frame: pd.DataFrame, horizon: int, *,
+def _ordering_evidence(region_frame: pd.DataFrame, horizon: int,
+                       universe_gross: pd.Series | None = None, *,
                        min_t: float = DEFAULT_MIN_ORDERING_T,
                        min_effective_dates: int = DEFAULT_MIN_ORDERING_EFFECTIVE_DATES) -> dict:
-    """Did a higher alpha RANK actually earn more than a lower one?
+    """Did the ranking earn anything, and how much of it was shown?
 
-    Two independent readings of the same question, both HAC-corrected on the
-    date-clustered series:
+    Three HAC-corrected readings of the date-clustered series:
 
-    * top bucket minus bottom bucket, per date — the spread the ladder claims;
+    * the TOP bucket's own spread over the universe — the estimate that will
+      actually be used, since a long-only concentrated book holds from there and
+      nowhere else;
+    * top bucket minus bottom bucket — corroboration that the score separates;
     * mean per-date rank IC — whether the whole ordering, not just the extremes,
       lines up with realised returns.
 
-    Ordering is established when either statistic clears ``min_t`` *and* the
-    other agrees in sign. One significant reading with the other pointing the
-    opposite way is a subsample artefact, not an ordering.
+    Establishment requires the top bucket's own spread to clear ``min_t`` AND at
+    least one corroborating reading. Requiring the top spread is what rules out
+    the failure mode a top-minus-bottom test alone would pass: a bottom bucket
+    that collapsed while the top went nowhere produces a large, significant
+    spread that a long-only book cannot collect.
+
+    The rank IC decides *scope*, not admission. A score can be genuinely sharp at
+    the extreme while its middle runs backwards — a real and common shape — and
+    a book that never holds from the middle is not harmed by it. Rejecting that
+    on the IC's sign would discard a usable edge; reporting it as full-range
+    ordering would claim one that was not shown. So it is admitted, and labelled
+    ``EXTREMES_ONLY``.
     """
     labels = sorted(region_frame["bucket"].dropna().unique(),
                     key=lambda b: float(b.split("-")[0]))
     top_bottom_stats = None
-    if len(labels) >= 2:
+    top_spread_stats = None
+    if labels:
         hi = region_frame[region_frame["bucket"] == labels[-1]].groupby("date")["excessReturn"].mean()
-        lo = region_frame[region_frame["bucket"] == labels[0]].groupby("date")["excessReturn"].mean()
-        spread = (hi - lo).dropna().sort_index()
-        if len(spread):
-            top_bottom_stats = KP._newey_west_stats(spread, horizon)
+        if universe_gross is not None and len(universe_gross):
+            top_vs_universe = (hi - universe_gross).dropna().sort_index()
+            top_level = hi.dropna().sort_index()
+            if len(top_vs_universe):
+                # Test the conservative side — the same quantity that will be
+                # published — so the gate cannot admit an edge the estimate
+                # itself would then decline to claim.
+                spread_side = KP._newey_west_stats(top_vs_universe, horizon)
+                level_side = (KP._newey_west_stats(top_level, horizon)
+                              if len(top_level) else spread_side)
+                top_spread_stats = (spread_side if spread_side["mean"] <= level_side["mean"]
+                                    else level_side)
+        if len(labels) >= 2:
+            lo = region_frame[region_frame["bucket"] == labels[0]].groupby("date")["excessReturn"].mean()
+            spread = (hi - lo).dropna().sort_index()
+            if len(spread):
+                top_bottom_stats = KP._newey_west_stats(spread, horizon)
 
     ic_series = _rank_ic_series(region_frame)
     ic_stats = KP._newey_west_stats(ic_series, horizon) if len(ic_series) else None
@@ -266,34 +310,60 @@ def _ordering_evidence(region_frame: pd.DataFrame, horizon: int, *,
 
     spread_eff = int(top_bottom_stats["effectiveDates"]) if top_bottom_stats else 0
     ic_eff = int(ic_stats["effectiveDates"]) if ic_stats else 0
+    top_eff = int(top_spread_stats["effectiveDates"]) if top_spread_stats else 0
+    t_top = _t_stat(top_spread_stats)
+    mean_top = float(top_spread_stats["mean"]) if top_spread_stats else None
 
+    # The estimate that will be used has to stand on its own first.
+    top_carries = bool(t_top is not None and t_top >= min_t
+                       and top_eff >= min_effective_dates)
     by_spread = bool(t_spread is not None and t_spread >= min_t
-                     and spread_eff >= min_effective_dates
-                     and (mean_ic is None or mean_ic > 0))
+                     and spread_eff >= min_effective_dates)
     by_ic = bool(t_ic is not None and t_ic >= min_t
                  and ic_eff >= min_effective_dates
                  and (mean_spread is None or mean_spread > 0))
-    established = bool(by_spread or by_ic)
-    enough_sample = bool(max(spread_eff, ic_eff) >= min_effective_dates)
+    established = bool(top_carries and (by_spread or by_ic))
+    enough_sample = bool(max(spread_eff, ic_eff, top_eff) >= min_effective_dates)
 
     if len(labels) < 2:
         reason = "SINGLE_BUCKET_NO_ORDERING_TESTABLE"
     elif established:
-        reason = "TOP_MINUS_BOTTOM_SIGNIFICANT" if by_spread else "RANK_IC_SIGNIFICANT"
+        reason = "RANK_IC_SIGNIFICANT" if by_ic else "TOP_MINUS_BOTTOM_SIGNIFICANT"
     elif not enough_sample:
         reason = "INSUFFICIENT_EFFECTIVE_DATES_TO_TEST_ORDERING"
+    elif not top_carries and (by_spread or by_ic):
+        # The score separates, but not in a way a long-only book can collect.
+        reason = "TOP_BUCKET_SPREAD_NOT_SIGNIFICANT"
     else:
         reason = "ORDERING_NOT_DISTINGUISHABLE_FROM_NOISE"
+
+    # How much was actually shown, which is not the same as "it passed".
+    #
+    # A significant top-minus-bottom says the extreme buckets are separated. It
+    # does NOT say the ranking orders returns across its range, and on real data
+    # the two come apart: a ledger can clear the spread test at t=2.4 while its
+    # rank IC sits at t=1.0 and the middle buckets run backwards. That is a
+    # perfectly usable result — the concentrated book only ever holds from the
+    # top bucket, which is exactly what the spread test measures — but it must
+    # not be reported as evidence that the whole ladder means something.
+    scope = ("FULL_RANK" if by_ic else "EXTREMES_ONLY") if established else "NONE"
 
     return {
         "established": established,
         "reason": reason,
+        "scope": scope,
+        "scopeKo": ORDERING_SCOPE_KO[scope],
+        "scopeExplainKo": ORDERING_SCOPE_EXPLAIN_KO[scope],
         "minTStat": float(min_t),
         "minEffectiveDates": int(min_effective_dates),
         "topMinusBottomPct": round(mean_spread * 100, 3) if mean_spread is not None else None,
         "topMinusBottomTStat": round(t_spread, 3) if t_spread is not None else None,
         "topMinusBottomEffectiveDates": (int(top_bottom_stats["effectiveDates"])
                                          if top_bottom_stats else 0),
+        "topBucketSpreadPct": round(mean_top * 100, 3) if mean_top is not None else None,
+        "topBucketSpreadTStat": round(t_top, 3) if t_top is not None else None,
+        "topBucketSpreadEffectiveDates": top_eff,
+        "topBucketCarriesTheEstimate": top_carries,
         "topBucket": labels[-1] if labels else None,
         "bottomBucket": labels[0] if len(labels) >= 2 else None,
         "meanRankIC": round(mean_ic, 5) if mean_ic is not None else None,
@@ -446,9 +516,10 @@ def calibrate(outcomes: list[dict], *, horizon: int = 126,
         # Measured once per region, before any bucket is scored: the carry every
         # bucket inherits for free, and whether the ranking ordered anything.
         universe = _universe_baseline(region_frame, horizon)
-        ordering = _ordering_evidence(region_frame, horizon, min_t=min_ordering_t,
-                                      min_effective_dates=min_ordering_dates)
         universe_gross = universe["grossSeries"]
+        ordering = _ordering_evidence(region_frame, horizon, universe_gross,
+                                      min_t=min_ordering_t,
+                                      min_effective_dates=min_ordering_dates)
         universe_net = universe["netSeries"]
         rows: list[dict] = []
         for bucket in sorted(region_frame["bucket"].unique(), key=lambda b: float(b.split("-")[0])):
@@ -473,19 +544,37 @@ def calibrate(outcomes: list[dict], *, horizon: int = 126,
             spread_net_stats = (KP._newey_west_stats(spread_net, horizon)
                                 if len(spread_net) else spread_stats)
 
-            # Shrinkage rides on the effective sample of the SPREAD, because the
-            # spread is what is being estimated. A bucket whose level is precise
-            # only because the whole universe moved together has no more
-            # information about the ranking than its spread series carries.
-            eff = int(spread_stats["effectiveDates"]) if spread_stats else 0
-            level_eff = int(stats["effectiveDates"])
-            shrink = eff / (eff + prior_strength) if eff else 0.0
+            # What the book can actually expect is the LESSER of the two, and the
+            # asymmetry matters in both directions.
+            #
+            # When the universe beat the benchmark (the usual case) the level is
+            # inflated by carry the ranking did not produce, so the spread binds.
+            # But when the universe LAGGED the benchmark, the spread flatters:
+            # a bucket can sit well above a universe that fell while earning
+            # nothing at all against the index the book is measured on. Crediting
+            # that as skill is the same error as crediting carry, pointing the
+            # other way. So the conservative side binds, and the artifact records
+            # which one did.
             level_mean = float(net_stats["mean"] if cost_adjusted and len(net) else stats["mean"])
-            base_mean = float(
-                (spread_net_stats if cost_adjusted and len(net) else spread_stats)["mean"]
-            ) if spread_stats else 0.0
+            spread_source = (spread_net_stats if cost_adjusted and len(net) else spread_stats)
+            spread_mean = float(spread_source["mean"]) if spread_source else 0.0
+            level_eff = int(stats["effectiveDates"])
+            spread_eff = int(spread_stats["effectiveDates"]) if spread_stats else 0
+
+            if spread_stats is None:
+                basis, base_mean, eff, se = "NO_SPREAD_SERIES", 0.0, 0, None
+            elif spread_mean <= level_mean:
+                # Shrinkage and the standard error ride on the spread's own
+                # effective sample: a level made precise only because the whole
+                # universe moved together says nothing about the ranking.
+                basis, base_mean, eff = "ALPHA_SPREAD_VS_REPLAY_UNIVERSE", spread_mean, spread_eff
+                se = spread_stats.get("se")
+            else:
+                basis, base_mean, eff = "LEVEL_VS_BENCHMARK_BINDS", level_mean, level_eff
+                se = stats.get("se")
+
+            shrink = eff / (eff + prior_strength) if eff else 0.0
             shrunk = base_mean * shrink
-            se = spread_stats.get("se") if spread_stats else None
             level_se = stats.get("se")
             # Fold stability is asked of the attributable spread, not the level:
             # a level that is stable only because the universe rose in every fold
@@ -529,12 +618,13 @@ def calibrate(outcomes: list[dict], *, horizon: int = 126,
                                            if spread_stats and spread_stats.get("se") is not None
                                            else None),
                 "spreadTStat": round(spread_t, 3) if spread_t is not None else None,
+                "conservativeBasis": basis,
                 "spreadPositiveHitRatio": (round(float((spread_gross > 0).mean()), 4)
                                            if len(spread_gross) else None),
                 "attributableSharePct": (round(abs(base_mean) / abs(level_mean) * 100, 1)
                                          if level_mean else None),
                 # --- what leaves this module as an expected return ---
-                "expectedReturnBasis": "ALPHA_SPREAD_VS_REPLAY_UNIVERSE",
+                "expectedReturnBasis": basis,
                 "shrunkExpectedExcessReturnPct": round(shrunk * 100, 3),
                 "shrinkageFactor": round(shrink, 4),
                 "standardErrorPct": round(float(se) * 100, 4) if se is not None else None,

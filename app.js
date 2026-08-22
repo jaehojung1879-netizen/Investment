@@ -633,11 +633,14 @@ const renderValidationLab = (d) => {
       <td><b>${a.spreadVsUniversePct != null ? sp(a.spreadVsUniversePct) : '—'}</b></td>
       <td>${a.topMinusBottomPct != null ? sp(a.topMinusBottomPct) : '—'}<small>t ${fmt(a.topMinusBottomTStat, '', 2)} · 기준 ${fmt(a.minTStat, '', 2)}</small></td>
       <td>${a.meanRankIC != null ? fmt(a.meanRankIC, '', 4) : '—'}<small>t ${fmt(a.rankICTStat, '', 2)}</small></td>
-      <td><span class="tag ${ok ? 'ok' : ''}">${ok ? '정렬 확인' : '정렬 미확인'}</span></td></tr>`;
+      <td><span class="tag ${a.orderingScope === 'FULL_RANK' ? 'ok' : ''}">${a.orderingScopeKo || (ok ? '최상위 구간만 유의' : '정렬 미확인')}</span></td></tr>`;
   }).filter(Boolean).join('');
   const attributionNote = regions
-    .map(([, blob]) => (blob.alphaAttribution || {}).explainKo)
-    .find(Boolean) || '';
+    .map(([region, blob]) => {
+      const a = blob.alphaAttribution || {};
+      return a.explainKo ? `${region} — ${a.explainKo}` : '';
+    })
+    .filter(Boolean).join('<br>');
   const attributionPanel = attributionRows ? `<div class="vl-card">
     <div class="vl-h">알파 귀속 — 유니버스 캐리와 선정 알파의 분리</div>
     <p class="vl-lead">벤치마크 대비 초과수익 = 유니버스 전체가 벤치마크 대비 낸 캐리 + 순위가 만든 알파 스프레드입니다. 기대수익으로는 오른쪽의 알파 스프레드만 사용합니다.</p>
