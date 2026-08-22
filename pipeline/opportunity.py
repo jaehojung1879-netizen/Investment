@@ -165,6 +165,17 @@ def add_target(frame: pd.DataFrame, target: str,
     out["scoreExcess"] = pd.to_numeric(out.get(f"netExcess_{horizon}"), errors="coerce")
     out["grossExcess"] = excess
 
+    # The same decomposition the alpha calibration uses, for the same reason:
+    # excess over the BENCHMARK is universe carry plus what the score picked,
+    # and only the second is the model's. Measured per date x region, so the
+    # carry a model inherits for free on a given day is removed from that day.
+    if {"date", "region"} <= set(out.columns):
+        out["universeExcess"] = out.groupby(["date", "region"])["scoreExcess"].transform("mean")
+        out["scoreSpread"] = out["scoreExcess"] - out["universeExcess"]
+    else:
+        out["universeExcess"] = np.nan
+        out["scoreSpread"] = out["scoreExcess"]
+
     kind = spec["kind"]
     if kind == "excess_above":
         label = (excess > float(spec["threshold"])).astype(float)
@@ -397,10 +408,36 @@ def top_bucket_performance(frame: pd.DataFrame, *, top_pct: float = 0.1,
     series = _date_clustered(top, excess_column)
     arr = series.to_numpy(dtype=float)
     path = path_statistics(series, horizon)
+
+    # Level, carry and spread. The bar this feeds is an ABSOLUTE one, so the
+    # split is not cosmetic: on the real ledger a model picking at random earns
+    # +1.1% to +2.4% over the benchmark purely as universe carry, which clears
+    # a 0.5% "did the edge survive costs" bar without any skill at all.
+    carry = spread_mean = None
+    if "universeExcess" in work.columns:
+        universe = _date_clustered(work.dropna(subset=["universeExcess"]), "universeExcess")
+        joined = pd.concat([series.rename("top"), universe.rename("universe")],
+                           axis=1).dropna()
+        if len(joined):
+            carry = float(joined["universe"].mean())
+            spread_mean = float((joined["top"] - joined["universe"]).mean())
+
+    level_mean = float(np.mean(arr))
+    # The conservative side binds, exactly as in historical_calibration: carry
+    # flatters when the universe beat its benchmark, and the spread flatters
+    # when it lagged.
+    attributable = level_mean if spread_mean is None else min(level_mean, spread_mean)
+
     return {
         "n": int(len(top)),
         "dates": int(len(series)),
-        "meanExcessPct": round(float(np.mean(arr)) * 100, 3),
+        "meanExcessPct": round(level_mean * 100, 3),
+        "universeCarryPct": round(carry * 100, 3) if carry is not None else None,
+        "spreadVsUniversePct": (round(spread_mean * 100, 3)
+                                if spread_mean is not None else None),
+        "attributableExcessPct": round(attributable * 100, 3),
+        "attributionKo": ("벤치마크 대비 초과수익에서 유니버스 캐리를 뺀 값이 모델의 기여입니다. "
+                           "합격 판정은 둘 중 보수적인 쪽으로 합니다."),
         "medianExcessPct": round(float(np.median(arr)) * 100, 3),
         "hitRatio": round(float(np.mean(arr > 0)), 4),
         "topPct": float(top_pct),
@@ -722,16 +759,34 @@ def acceptance_report(winner: VariantResult | None, baseline: VariantResult | No
     base_top = ((baseline.test or {}).get("topBucket") or {}) if baseline else {}
     stability = test.get("foldStability") or {}
 
+    def attributable(bucket: dict) -> float:
+        """What the model earned, not what the universe handed it.
+
+        Falls back to the level only when no universe series was available;
+        `top_bucket_performance` already takes the conservative side of the two.
+        """
+        value = bucket.get("attributableExcessPct")
+        if value is None:
+            value = bucket.get("meanExcessPct")
+        return -99.0 if value is None else float(value)
+
     checks = {
         "beatsBaselineOutOfSample": bool(
-            baseline is None or (top.get("meanExcessPct") or -99)
-            > (base_top.get("meanExcessPct") or -99)),
+            baseline is None or attributable(top) > attributable(base_top)),
         "decileMonotonicity": bool((test.get("decileMonotonicity") or -1) >= min_monotonicity),
-        "netExcessSurvivesCost": bool((top.get("meanExcessPct") or -99) >= min_top_excess),
+        # An absolute bar has to be met by an attributable number. Measured
+        # against the benchmark, a random pick earns the universe carry — on the
+        # production ledger +1.1% to +2.4% per 126 days — and would clear this
+        # bar with no skill whatsoever.
+        "netExcessSurvivesCost": bool(attributable(top) >= min_top_excess),
         "foldStability": bool(stability.get("stable")),
         "pitCoverageSufficient": bool((pit_coverage or 0.0) >= min_pit_coverage),
-        "notRegimeConcentrated": True,
-        "notSectorConcentrated": True,
+        # None = could not be assessed, which is a different fact from "passed".
+        # It stays non-blocking (see `share` below) but must not be reported as
+        # a pass: the artifact is read by people deciding whether to trust the
+        # model, and "we could not tell" is the honest answer.
+        "notRegimeConcentrated": None,
+        "notSectorConcentrated": None,
         "holdoutHolds": True,
     }
     inconclusive: list[str] = []
@@ -769,11 +824,13 @@ def acceptance_report(winner: VariantResult | None, baseline: VariantResult | No
     if holdout:
         holdout_top = (holdout.get("topBucket") or {})
         checks["holdoutHolds"] = bool(
-            (holdout_top.get("meanExcessPct") or -99) >= min_top_excess
+            attributable(holdout_top) >= min_top_excess
             and (holdout.get("decileMonotonicity") or -1) >= min_monotonicity - 0.2)
 
+    # Only an explicit False blocks. A None was never assessed, and failing the
+    # gate on it would turn a concentration check into a data-coverage test.
     for key, ok in checks.items():
-        if not ok:
+        if ok is False:
             failures.append(key)
     return {
         "accepted": not failures,

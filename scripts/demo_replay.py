@@ -198,7 +198,10 @@ def main(argv=None) -> int:
         print(f"    OOS ROC-AUC           {test.get('rocAuc')}   PR-AUC lift {test.get('prAucLift')}")
         print(f"    OOS Brier / ECE       {test.get('brier')} / {test.get('calibrationError')}")
         print(f"    decile monotonicity   {test.get('decileMonotonicity')}")
-        print(f"    top-decile net excess {top.get('meanExcessPct')}%  MDD {top.get('mddPct')}%"
+        print(f"    top-decile level      {top.get('meanExcessPct')}%  "
+              f"carry {top.get('universeCarryPct')}%  spread {top.get('spreadVsUniversePct')}%"
+              f"  -> attributable {top.get('attributableExcessPct')}%")
+        print(f"    top-decile risk       MDD {top.get('mddPct')}%"
               f"  CVaR {top.get('cvar95Pct')}%  turnover {test.get('turnover')}")
         print(f"    fold stability        {(test.get('foldStability') or {}).get('signAgreement')}")
         print(f"    PBO                   {trained['diagnostics']['probabilityOfBacktestOverfitting'].get('probabilityOfBacktestOverfitting')}")
