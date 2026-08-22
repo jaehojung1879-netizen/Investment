@@ -244,6 +244,50 @@ def test_frontend_shows_effective_sample_and_price_sleeve_limitation():
     assert "Value/Quality" in app
 
 
+def test_bucket_diagnostics_separate_carry_from_the_ranking_contribution():
+    """Every bucket beating the benchmark is not every bucket being good.
+
+    On the production ledger the bottom 60% shows +1.6% to +2.2% against the
+    benchmark, which is carry, not a reason to trust the ranking. The panel has
+    to show the contribution column or a reader draws the wrong conclusion.
+    """
+    import numpy as np
+    import pandas as pd
+    rng = np.random.default_rng(3)
+    rows = []
+    for date in pd.bdate_range("2015-01-02", periods=80, freq="5B"):
+        carry = float(rng.normal(0.025, 0.03))          # the whole universe rises
+        for percentile in rng.uniform(0, 100, 50):
+            edge = 0.05 if percentile >= 95 else 0.0    # only the top 5% adds
+            noise = float(rng.normal(0, 0.04))
+            rows.append({
+                "date": date, "alphaPercentile": float(percentile),
+                "excessReturn": carry + edge + noise,
+                "costAdjustedExcessReturn": carry + edge + noise - 0.005,
+            })
+    buckets, monotonicity = PV._bucket_diagnostics(
+        pd.DataFrame(rows), 126, (0, 60, 80, 90, 95, 100))
+
+    by_label = {b["bucket"]: b for b in buckets}
+    bottom, top = by_label["0-60"], by_label["95-100"]
+
+    assert monotonicity["universeCarryPct"] > 1.0
+    # The bottom bucket looks good against the benchmark and contributes nothing.
+    assert bottom["meanCostAdjustedExcessPct"] > 1.0
+    assert abs(bottom["costAdjustedSpreadVsUniversePct"]) < 1.0
+    # The top bucket's contribution is real and smaller than its raw excess.
+    assert top["costAdjustedSpreadVsUniversePct"] > 2.0
+    assert top["costAdjustedSpreadVsUniversePct"] < top["meanCostAdjustedExcessPct"]
+    assert top["spreadHitRatePct"] > bottom["spreadHitRatePct"]
+
+
+def test_frontend_shows_the_contribution_column_not_only_benchmark_excess():
+    app = Path("app.js").read_text(encoding="utf-8")
+    assert "유니버스 캐리" in app
+    assert "유니버스 대비(기여)" in app
+    assert "하위 버킷도 양수로 보일 수 있습니다" in app
+
+
 def test_frontend_separates_universe_carry_from_selection_alpha():
     app = Path("app.js").read_text(encoding="utf-8")
     assert "알파 귀속" in app

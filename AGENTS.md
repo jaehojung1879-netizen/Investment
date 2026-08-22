@@ -57,6 +57,14 @@
   is significant only because the bottom collapsed is not an edge a long-only book can
   collect — and at least one corroborating reading (top-minus-bottom, or the rank IC) must
   agree.
+- The ML acceptance gate obeys the same attribution rule. `netExcessSurvivesCost`,
+  `beatsBaselineOutOfSample` and `holdoutHolds` are evaluated on the top bucket's
+  attributable excess (the conservative side of level and spread over the per-date
+  universe), never on the raw excess over the benchmark. An absolute bar met by a level
+  is met by universe carry: on the production ledger a random pick earns +1.1% to +2.4%
+  per 126 days and clears a 0.5% bar with no skill.
+- An acceptance check that could not be assessed is `None`, not `True`. It stays
+  non-blocking, but it is never reported as a pass.
 - Passing the gate is not one fact. A significant rank IC is `FULL_RANK`; a significant
   extreme spread with an unproven middle is `EXTREMES_ONLY`, which is usable for a book that
   only holds the top bucket but must never be reported as full-range ordering. A score that

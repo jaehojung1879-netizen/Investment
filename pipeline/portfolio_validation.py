@@ -149,12 +149,23 @@ def _bucket_diagnostics(frame: pd.DataFrame, horizon: int, edges) -> tuple[list[
     work = frame.copy()
     work["bucket"] = [_bucket(v, edges) for v in work["alphaPercentile"]]
     work = work.dropna(subset=["bucket"])
+
+    # The carry every bucket inherits for free. Without it this table reads as
+    # "even the bottom 60% beats the benchmark by 2%", which is true and says
+    # nothing about the ranking — see historical_calibration for the argument.
+    universe_gross = work.groupby("date")["excessReturn"].mean().sort_index()
+    universe_net = work.groupby("date")["costAdjustedExcessReturn"].mean().sort_index()
+    carry_gross = float(universe_gross.mean()) if len(universe_gross) else None
+    carry_net = float(universe_net.mean()) if len(universe_net) else None
+
     rows = []
     for label in [f"{float(edges[i]):g}-{float(edges[i + 1]):g}"
                   for i in range(len(edges) - 1)]:
         cell = work[work["bucket"] == label]
         gross = cell.groupby("date")["excessReturn"].mean().sort_index()
         net = cell.groupby("date")["costAdjustedExcessReturn"].mean().sort_index()
+        spread_gross = (gross - universe_gross).dropna().sort_index()
+        spread_net = (net - universe_net).dropna().sort_index()
         raw = cell["excessReturn"].dropna()
         up = raw[raw > 0]
         down = raw[raw <= 0]
@@ -167,6 +178,14 @@ def _bucket_diagnostics(frame: pd.DataFrame, horizon: int, edges) -> tuple[list[
             "meanGrossExcessPct": _r(gross.mean() * 100, 3) if len(gross) else None,
             "medianGrossExcessPct": _r(raw.median() * 100, 3) if len(raw) else None,
             "meanCostAdjustedExcessPct": _r(net.mean() * 100, 3) if len(net) else None,
+            "universeCarryPct": _r((carry_net if carry_net is not None else carry_gross) * 100, 3)
+                                 if (carry_net is not None or carry_gross is not None) else None,
+            "spreadVsUniversePct": (_r(spread_gross.mean() * 100, 3)
+                                    if len(spread_gross) else None),
+            "costAdjustedSpreadVsUniversePct": (_r(spread_net.mean() * 100, 3)
+                                                if len(spread_net) else None),
+            "spreadHitRatePct": (_r((spread_gross > 0).mean() * 100, 2)
+                                 if len(spread_gross) else None),
             "hitRatePct": _r((raw > 0).mean() * 100, 2) if len(raw) else None,
             "averageUpsidePct": _r(up.mean() * 100, 3) if len(up) else None,
             "averageDownsidePct": _r(abs(down.mean()) * 100, 3) if len(down) else None,
@@ -206,8 +225,13 @@ def _bucket_diagnostics(frame: pd.DataFrame, horizon: int, edges) -> tuple[list[
         "topDecileMinusBottomDecilePct": _r((decile_summary.get("mean") or 0) * 100, 3),
         "topDecileMinusBottomDecileCi95Pct": ([ _r(v * 100, 3) for v in decile_summary["ci95"]]
                                                if decile_summary.get("ci95") else None),
+        "universeCarryPct": _r((carry_net if carry_net is not None else carry_gross) * 100, 3)
+                             if (carry_net is not None or carry_gross is not None) else None,
         "plainLanguageKo": ("전체 bucket이 단조 증가하지 않으면 최상위 bucket의 양(+) 스프레드와 "
                             "전체 ranking alpha의 유효성을 같은 주장으로 표현하지 않습니다."),
+        "attributionKo": ("'평균 초과'는 벤치마크 대비 값이라 유니버스 캐리를 포함합니다. "
+                           "선정 모델의 기여는 '유니버스 대비' 열이며, 최상위−최하위 스프레드처럼 "
+                           "캐리가 상쇄되는 지표만 순위의 유효성을 말해줍니다."),
     }
     monotonicity["_topBottomSeries"] = top_bottom
     return rows, monotonicity

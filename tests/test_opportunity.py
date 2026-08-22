@@ -196,6 +196,84 @@ def test_warning_targets_capture_the_opposite_direction():
 # --------------------------------------------------------------------------- #
 # Metrics and overfitting diagnostics
 # --------------------------------------------------------------------------- #
+def _rising_universe(n_dates=120, n_names=60, carry=0.022, seed=5):
+    """A cross-section where the whole universe beats its benchmark.
+
+    Nothing here has any relationship to the score — the only thing on offer is
+    the carry every name inherits on a given date.
+    """
+    rng = np.random.default_rng(seed)
+    rows = []
+    for date in pd.bdate_range("2015-01-02", periods=n_dates, freq="5B"):
+        shared = float(rng.normal(carry, 0.03))
+        for i in range(n_names):
+            rows.append({
+                "date": date, "region": "US", "ticker": f"T{i}",
+                "score": float(rng.random()),          # pure noise
+                "scoreExcess": shared + float(rng.normal(0, 0.05)),
+                "targetHorizon": 126,
+            })
+    frame = pd.DataFrame(rows)
+    frame["universeExcess"] = frame.groupby(["date", "region"])["scoreExcess"].transform("mean")
+    return frame
+
+
+def test_a_zero_skill_model_cannot_clear_the_net_excess_bar_on_carry():
+    """The bar is absolute, so it has to be met by an attributable number.
+
+    A model picking at random in a universe that beat its benchmark earns the
+    carry and nothing else. Measured against the benchmark that clears a 0.5%
+    "did the edge survive costs" bar with no skill whatsoever, which is what
+    this gate exists to prevent.
+    """
+    performance = OP.top_bucket_performance(_rising_universe(), top_pct=0.10)
+
+    assert performance["meanExcessPct"] > 1.0, "the level looks like an edge"
+    assert performance["universeCarryPct"] > 1.0, "but it is all carry"
+    assert abs(performance["spreadVsUniversePct"]) < 0.5, "the score added nothing"
+    assert performance["attributableExcessPct"] < 0.5
+
+    winner = OP.VariantResult(
+        name="NOISE", family="noise", params={}, target="TARGET_B_STRONG_EXCESS_126D",
+        test={"topBucket": performance, "decileMonotonicity": 1.0,
+              "foldStability": {"stable": True}},
+    )
+    verdict = OP.acceptance_report(winner, None, cfg={"minTopBucketNetExcessPct": 0.5},
+                                   pit_coverage=0.9)
+    assert verdict["checks"]["netExcessSurvivesCost"] is False
+    assert "netExcessSurvivesCost" in verdict["failures"]
+    assert verdict["accepted"] is False
+
+
+def test_a_real_edge_over_the_universe_still_clears_the_bar():
+    frame = _rising_universe(seed=9)
+    # Give the top of the score a genuine premium over the universe.
+    frame.loc[frame.groupby("date")["score"].rank(pct=True) >= 0.9, "scoreExcess"] += 0.03
+    frame["universeExcess"] = frame.groupby(["date", "region"])["scoreExcess"].transform("mean")
+
+    performance = OP.top_bucket_performance(frame, top_pct=0.10)
+    assert performance["spreadVsUniversePct"] > 1.0
+    assert performance["attributableExcessPct"] > 0.5
+    # And it is sized on the spread, not the carry-inflated level.
+    assert performance["attributableExcessPct"] < performance["meanExcessPct"]
+
+
+def test_a_check_that_could_not_be_assessed_is_not_reported_as_a_pass():
+    """"We could not tell" and "it passed" must not render alike."""
+    winner = OP.VariantResult(
+        name="M", family="f", params={}, target="TARGET_B_STRONG_EXCESS_126D",
+        test={"topBucket": {"meanExcessPct": 4.0, "attributableExcessPct": 4.0},
+              "decileMonotonicity": 1.0, "foldStability": {"stable": True}},
+    )
+    verdict = OP.acceptance_report(winner, None, cfg={}, pit_coverage=0.9)
+    assert verdict["checks"]["notRegimeConcentrated"] is None
+    assert verdict["checks"]["notSectorConcentrated"] is None
+    # Non-blocking, so an unlabelled column cannot turn a concentration check
+    # into a data-coverage test.
+    assert verdict["failures"] == []
+    assert verdict["accepted"] is True
+
+
 def test_monotonicity_rewards_an_ordered_ladder_and_punishes_a_flat_one():
     ordered = [{"decile": i + 1, "meanExcessPct": i * 0.5} for i in range(10)]
     inverted = [{"decile": i + 1, "meanExcessPct": -i * 0.5} for i in range(10)]
