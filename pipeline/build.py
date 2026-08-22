@@ -401,6 +401,41 @@ def _prospective_validation_block(validation_status: dict) -> dict:
     }
 
 
+def _held_name_warnings(model_portfolio: dict | None, warning_radar: dict | None) -> dict:
+    """Which held names the warning radar is flagging, next to the weights.
+
+    The radar already sorts held names first, but it lives in a different panel
+    from the book. Nothing in the portfolio output said that one of the five
+    positions was on a critical warning, so a reader had to cross-reference two
+    sections to notice. This states it where the weights are.
+
+    It is reporting only — warning tiers do not size positions, and saying so
+    explicitly is part of the point.
+    """
+    weights = (model_portfolio or {}).get("finalWeights") or {}
+    tiers: dict[str, str] = {}
+    for region_rows in ((warning_radar or {}).get("regions") or {}).values():
+        for row in region_rows or []:
+            ticker, tier = row.get("ticker"), row.get("tier")
+            if ticker and tier:
+                tiers[ticker] = tier
+
+    flagged = [
+        {"ticker": ticker, "weightPct": round(float(weight) * 100, 2), "tier": tiers[ticker]}
+        for ticker, weight in sorted(weights.items(), key=lambda kv: -float(kv[1]))
+        if ticker in tiers and tiers[ticker] not in ("WATCH", None)
+    ]
+    return {
+        "flagged": flagged,
+        "heldNameCount": len(weights),
+        "flaggedWeightPct": round(sum(row["weightPct"] for row in flagged), 2),
+        "affectsWeights": False,
+        "policyKo": ("경고 등급은 보유 비중을 조정하지 않습니다. 비중은 컨빅션·위험·진입상태로 "
+                      "정해지며, 경고는 별도 모델의 관찰 신호입니다. 다만 보유 종목이 경고를 "
+                      "받고 있다는 사실은 비중 옆에서 바로 보이도록 함께 기록합니다."),
+    }
+
+
 def _radar_candidates(live_rows: list[dict], holdings: set[str]) -> list[dict]:
     """Attach core-holding membership so warnings on held names sort first."""
     rows = []
@@ -1005,6 +1040,7 @@ def run(cfg) -> dict:
         "kellyEvidence": kelly_evidence,
         "opportunityRadar": opportunity_radar,
         "warningRadar": warning_radar,
+        "heldNameWarnings": _held_name_warnings(model_portfolio, warning_radar),
         "radarDiagnostics": radar_diagnostics,
         "modelComparison": model_comparison,
         "runMode": cfg.run_mode,
