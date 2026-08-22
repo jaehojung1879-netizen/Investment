@@ -367,6 +367,12 @@ const renderDecisionHero = (d) => {
   const kellyLine = mp.kellyApplied === true
     ? `Kelly 반영 — 기준 비중 대비 배분 변화 ${fmt(mp.kellyAllocationImpactPct, '%p', 1)}`
     : `Kelly 미적용 — ${fallbackCopy(mp)}`;
+  // A held name on warning was only visible in the radar panel further down.
+  // State it beside the weights; it does not change them, and that is said too.
+  const hw = d.heldNameWarnings || {};
+  const warnLine = (hw.flagged || []).length
+    ? `<p class="status-note warn">보유 ${(hw.flagged || []).map((r) => `<b>${d.names?.[r.ticker] || r.ticker}</b> ${RADAR_TIER_KO[r.tier] || r.tier} (${fmt(r.weightPct, '%', 1)})`).join(' · ')} — 합계 ${fmt(hw.flaggedWeightPct, '%', 1)}. ${hw.policyKo || ''}</p>`
+    : '';
   host.innerHTML = `
     <div class="dh-verdict ${cue}">
       <span class="dh-badge">${statusLabel(mp.status)}</span>
@@ -374,6 +380,7 @@ const renderDecisionHero = (d) => {
       <p>${method.how}</p>
       <p class="dh-kelly ${mp.kellyApplied === true ? '' : 'risk-cue'}">${kellyLine}</p>
     </div>
+    ${warnLine}
     <div class="dh-kpis">
       ${chip('주식 비중', fmt(equity, '%', 1))}
       ${chip('현금', fmt(mp.cashPct, '%', 1))}

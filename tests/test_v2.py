@@ -481,3 +481,38 @@ def test_stamp_attaches_provenance_and_json_serializes():
     assert prov["schemaVersion"] and prov["modelVersion"] and prov["runMode"] == "paperTrading"
     assert payload["dataMode"] == "live"
     json.dumps(payload)  # must be serializable
+
+
+def test_a_held_name_on_warning_is_stated_beside_the_weights():
+    """It was only visible in the radar panel, a section away from the book.
+
+    The live book carries a CRITICAL_WARNING name at ~7% and an
+    ELEVATED_WARNING name at ~19%; nothing in the portfolio output said so.
+    """
+    from pipeline.build import _held_name_warnings
+    portfolio = {"finalWeights": {"ADM": 0.2343, "ALL": 0.1945, "SPG": 0.2213,
+                                  "021240.KS": 0.0815, "271560.KS": 0.0683}}
+    radar = {"regions": {
+        "US": [{"ticker": "ALL", "tier": "ELEVATED_WARNING"},
+               {"ticker": "ADM", "tier": "WATCH"},
+               {"ticker": "EIX", "tier": "CRITICAL_WARNING"}],
+        "KR": [{"ticker": "271560.KS", "tier": "CRITICAL_WARNING"},
+               {"ticker": "021240.KS", "tier": "WATCH"}]}}
+    blob = _held_name_warnings(portfolio, radar)
+
+    flagged = {row["ticker"]: row["tier"] for row in blob["flagged"]}
+    assert flagged == {"ALL": "ELEVATED_WARNING", "271560.KS": "CRITICAL_WARNING"}
+    # A critical name that is NOT held must not appear as a portfolio warning.
+    assert "EIX" not in flagged
+    # WATCH is the radar's baseline tier and is not a warning worth surfacing.
+    assert "ADM" not in flagged
+    assert blob["flaggedWeightPct"] == pytest.approx(26.28, abs=0.05)
+    # Reporting only — and the artifact says so rather than implying a linkage.
+    assert blob["affectsWeights"] is False
+
+
+def test_the_frontend_states_the_held_name_warning():
+    import pathlib
+    app = pathlib.Path("app.js").read_text(encoding="utf-8")
+    assert "heldNameWarnings" in app
+    assert "flaggedWeightPct" in app
