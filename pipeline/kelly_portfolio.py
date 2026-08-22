@@ -114,21 +114,67 @@ def _clustered_date_returns(rows: list[dict], horizon: int | None = None) -> pd.
     return frame.groupby("date", sort=True)["value"].mean().sort_index()
 
 
+def _sampling_step_days(index) -> int:
+    """Business days between consecutive observations, read off the index."""
+    try:
+        stamps = pd.DatetimeIndex(index)
+    except (TypeError, ValueError):
+        return 1
+    if len(stamps) < 2 or stamps.isna().any():
+        return 1
+    days = np.asarray(stamps.values, dtype="datetime64[D]")
+    steps = np.busday_count(days[:-1], days[1:])
+    steps = steps[steps > 0]
+    if not len(steps):
+        return 1
+    return max(1, int(round(float(np.median(steps)))))
+
+
+def _hac_lag(values: pd.Series, horizon: int) -> tuple[int, int, bool]:
+    """Bartlett bandwidth in units of the SERIES, not of the trading calendar.
+
+    ``horizon`` is a number of trading days, but the series handed to the HAC
+    estimator is indexed on the replay grid. On a weekly grid a 126-session
+    forward return overlaps about 26 observations, not 126 — so a lag of
+    horizon-1 spends 125 lags describing an overlap that spans 25. Those extra
+    lags are pure sampling noise, and because the Bartlett sum can only be
+    truncated at zero, the noise systematically *shrinks* the estimated long-run
+    variance. The t-statistic is then too large and the effective sample size too
+    optimistic: on independent weekly data the old convention rejected a true
+    null 20-45% of the time at a nominal 10%.
+
+    So the overlap is converted into grid steps first, and then capped at n/4 —
+    past that, each lag's autocovariance is an average of a handful of products
+    and the estimator stops being informative. When the cap binds the caller is
+    told, because a bandwidth-limited standard error is a floor, not a measurement.
+    """
+    n = len(values)
+    if n < 2:
+        return 0, 1, False
+    step = _sampling_step_days(values.index)
+    overlap = int(math.ceil(float(max(int(horizon), 1)) / step))
+    wanted = max(0, overlap - 1)
+    cap = int(min(max(1, n // 4), n - 1))
+    return int(min(wanted, cap)), step, bool(wanted > cap)
+
+
 def _newey_west_stats(values: pd.Series, horizon: int,
                        half_life_days: int | None = None) -> dict:
     """Date-clustered mean with Newey-West/HAC overlap correction.
 
-    Forward returns sampled daily overlap for roughly ``horizon`` sessions and
-    behave like an MA(horizon-1) series. Bartlett-kernel HAC with that explicit
-    lag is therefore the sampling rule rather than an arbitrary non-overlap
-    heuristic. Limited exponential decay may affect the point estimate, never
-    increase the effective sample size.
+    Forward returns overlap for roughly ``horizon`` sessions and behave like an
+    MA(overlap-1) series, so Bartlett-kernel HAC at that explicit lag is the
+    sampling rule rather than an arbitrary non-overlap heuristic. The lag is
+    measured in observations of THIS series — see ``_hac_lag``. Limited
+    exponential decay may affect the point estimate, never increase the
+    effective sample size.
     """
     s = pd.to_numeric(values, errors="coerce").dropna().sort_index()
     n = len(s)
     if not n:
         return {"mean": 0.0, "se": None, "effectiveDates": 0,
-                "uniqueDates": 0, "hacLag": 0}
+                "uniqueDates": 0, "hacLag": 0,
+                "samplingStepDays": 1, "bandwidthLimited": False}
     arr = s.to_numpy(dtype=float)
     if half_life_days and half_life_days > 0 and n > 1:
         age = np.arange(n - 1, -1, -1, dtype=float)
@@ -138,7 +184,7 @@ def _newey_west_stats(values: pd.Series, horizon: int,
     else:
         mean = float(arr.mean())
     centered = arr - mean
-    lag = min(max(0, int(horizon) - 1), n - 1)
+    lag, step_days, bandwidth_limited = _hac_lag(s, horizon)
     gamma0 = float(centered @ centered / n)
     long_run = gamma0
     for k in range(1, lag + 1):
@@ -148,7 +194,9 @@ def _newey_west_stats(values: pd.Series, horizon: int,
     se = math.sqrt(long_run / n) if n else None
     effective = n if long_run <= 1e-18 else int(max(1, min(n, math.floor(n * gamma0 / long_run))))
     return {"mean": mean, "se": se, "effectiveDates": effective,
-            "uniqueDates": n, "hacLag": lag}
+            "uniqueDates": n, "hacLag": lag,
+            "samplingStepDays": step_days,
+            "bandwidthLimited": bandwidth_limited}
 
 
 def _effective_sample_size(rows: list[dict], horizon: int) -> tuple[int, int]:

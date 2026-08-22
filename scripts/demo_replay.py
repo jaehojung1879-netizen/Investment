@@ -127,14 +127,24 @@ def main(argv=None) -> int:
     calibration = HC.calibrate(outcomes, horizon=126, diagnostics=diagnostics,
                                cfg={"minEffectiveDates": 20, "shrinkagePriorStrength": 20})
     print(f"\n[3] ALPHA CALIBRATION  available={calibration['available']}")
+    print("    level = universe carry + alpha spread. Only the SPREAD is the model's.")
     for region, blob in sorted((calibration.get("regions") or {}).items()):
-        print(f"    {region}: {blob['observations']} obs / {blob['uniqueDates']} dates")
+        ordering = blob.get("ordering") or {}
+        carry = (blob.get("universeBaseline") or {}).get("meanExcessPct")
+        print(f"    {region}: {blob['observations']} obs / {blob['uniqueDates']} dates"
+              f"   universe carry {carry:+.2f}%")
+        print(f"      ordering {'ESTABLISHED' if ordering.get('established') else 'NOT ESTABLISHED'}"
+              f" [{ordering.get('reason')}]  top-bottom {ordering.get('topMinusBottomPct'):+.2f}%"
+              f" t={ordering.get('topMinusBottomTStat')} | rankIC {ordering.get('meanRankIC')}"
+              f" t={ordering.get('rankICTStat')} | bar t>={ordering.get('minTStat')}")
         for row in blob["buckets"]:
-            print(f"      {row['bucket']:>7}p  n={row['observations']:<6} eff={row['effectiveDates']:<4}"
-                  f" raw={row['meanExcessReturnPct']:+7.2f}%  net={row['costAdjustedMeanExcessReturnPct'] or 0:+7.2f}%"
+            print(f"      {row['bucket']:>7}p  n={row['observations']:<6} effSpread={row['effectiveDates']:<4}"
+                  f" level={row['levelExpectedExcessReturnPct']:+7.2f}%"
+                  f"  spread={row['spreadVsUniversePct']:+7.2f}% (t={row['spreadTStat']:+5.2f})"
                   f"  calibrated={row['calibratedExpectedExcessReturnPct']:+7.2f}%"
-                  f"  hit={row['positiveHitRatio']}  w={row['evidenceWeight']}"
-                  f"  {'USABLE' if row['usable'] else 'thin'}")
+                  f"  hit_lvl={row['positiveHitRatio']} hit_sprd={row['spreadPositiveHitRatio']}"
+                  f"  w={row['evidenceWeight']}"
+                  f"  {'USABLE' if row['usable'] else (row.get('unusableReason') or 'thin')}")
 
     probability = calibration.get("probabilityCalibration") or {}
     print(f"\n[3b] MATURITY-SAFE PROBABILITY AUDIT  "

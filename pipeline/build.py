@@ -275,6 +275,11 @@ def _load_historical_evidence(cfg) -> dict:
                                histcal_mod.DEFAULT_BUCKETS),
         cfg={"minEffectiveDates": int(cfg_replay.get("minEffectiveDates", 30)),
              "shrinkagePriorStrength": float(cfg_replay.get("shrinkagePriorStrength", 30)),
+             "minOrderingTStat": float(cfg_replay.get(
+                 "minOrderingTStat", histcal_mod.DEFAULT_MIN_ORDERING_T)),
+             "minOrderingEffectiveDates": int(cfg_replay.get(
+                 "minOrderingEffectiveDates",
+                 histcal_mod.DEFAULT_MIN_ORDERING_EFFECTIVE_DATES)),
              "probabilityCalibration": ((cfg.kelly_portfolio or {})
                                         .get("probabilityCalibration") or {})},
         diagnostics=diagnostics,

@@ -265,8 +265,17 @@ def candidate_prior(calibration: dict | None, region: str,
         alpha_percentile, macro_regime=macro_regime, entry_state=entry_state)
     se = row.get("standardErrorPct")
     return {
+        # The spread over the replay universe, not the level over the benchmark —
+        # see historical_calibration. The level travels alongside it so the
+        # decomposition stays visible instead of being silently discarded.
         "expectedExcessReturnPct": row.get("calibratedExpectedExcessReturnPct",
                                            row.get("shrunkExpectedExcessReturnPct")),
+        "expectedReturnBasis": row.get("expectedReturnBasis",
+                                       "ALPHA_SPREAD_VS_REPLAY_UNIVERSE"),
+        "levelExcessReturnPct": row.get("levelExpectedExcessReturnPct"),
+        "universeBaselineExcessPct": row.get("universeBaselineExcessPct"),
+        "spreadVsUniversePct": row.get("spreadVsUniversePct"),
+        "spreadTStat": row.get("spreadTStat"),
         "standardErrorPct": se,
         "effectiveDates": int(row.get("effectiveDates") or 0),
         "uniqueDates": int(row.get("uniqueSignalDates") or 0),
@@ -305,11 +314,18 @@ def summarize_region(calibration: dict | None, prospective_by_region: dict | Non
                 "effectiveDates": top.get("effectiveDates"),
                 "weight": top.get("evidenceWeight"),
                 "bucket": top.get("bucket"),
+                "expectedReturnBasis": top.get("expectedReturnBasis",
+                                               "ALPHA_SPREAD_VS_REPLAY_UNIVERSE"),
+                "levelExcessReturnPct": top.get("levelExpectedExcessReturnPct"),
+                "universeBaselineExcessPct": top.get("universeBaselineExcessPct"),
+                "spreadVsUniversePct": top.get("spreadVsUniversePct"),
+                "spreadTStat": top.get("spreadTStat"),
                 "quality": ("HIGH" if (top.get("effectiveDates") or 0) >= 60
                              else "MEDIUM" if (top.get("effectiveDates") or 0) >= 30 else "LOW"),
             }
         prospective = prospective_by_region.get(region)
         combined = combine(historical, prospective, prior_scale_pct=prior_scale_pct)
+        ordering = blob.get("ordering") or {}
         out[region] = {
             **combined,
             "activation": activation_status(
@@ -317,6 +333,28 @@ def summarize_region(calibration: dict | None, prospective_by_region: dict | Non
                 min_effective_dates=min_effective_dates,
                 gate_passed=gate_passed, mode=mode),
             "drift": drift_report(historical, prospective),
+            # Why this region does or does not contribute a historical prior.
+            # Without it a region with a decade of clean replay and no ordering
+            # power is indistinguishable from a region with no replay at all.
+            "alphaAttribution": {
+                "orderingEstablished": bool(ordering.get("established")),
+                "orderingReason": ordering.get("reason"),
+                "topMinusBottomPct": ordering.get("topMinusBottomPct"),
+                "topMinusBottomTStat": ordering.get("topMinusBottomTStat"),
+                "meanRankIC": ordering.get("meanRankIC"),
+                "rankICTStat": ordering.get("rankICTStat"),
+                "minTStat": ordering.get("minTStat"),
+                "universeBaselineExcessPct": ((blob.get("universeBaseline") or {})
+                                              .get("meanExcessPct")),
+                "levelExcessReturnPct": (historical or {}).get("levelExcessReturnPct"),
+                "spreadVsUniversePct": (historical or {}).get("spreadVsUniversePct"),
+                "explainKo": (
+                    "순위가 수익을 정렬했다는 증거가 확인되어 알파 스프레드를 기대수익으로 씁니다."
+                    if ordering.get("established")
+                    else "이 지역에서는 알파 순위가 수익을 정렬했다는 증거가 없어 과거 근거를 "
+                         "기대수익으로 쓰지 않습니다. 벤치마크 대비 초과수익은 대부분 유니버스 "
+                         "전체의 캐리이며 선정 모델의 성과가 아닙니다."),
+            },
         }
     for region, prospective in prospective_by_region.items():
         if region in out:

@@ -149,6 +149,9 @@
     "requirePitQuality": true,
     "pitFundamentalsPath": null,
     "universeHistoryPath": null,
+    "minOrderingTStat": 1.96,
+    "minOrderingEffectiveDates": 12,
+    "_orderingNotes": "minOrderingTStat / minOrderingEffectiveDates gate the bucket ladder on evidence that alpha RANK ordered returns (HAC t on top-minus-bottom, or on the per-date rank IC). 1.96 is calibrated by simulating this exact gate under the null, where it realises a 3.6-5.0% rejection rate; it is not a textbook critical value. Below the gate no ladder is published and no historical prior reaches Kelly, because a bucket's excess over the benchmark is mostly universe carry rather than selection skill.",
     "_notes": "frequency W = weekly rebalance-grid replay. D gives ~5x the signals at ~5x the cost and mostly adds overlapping observations; the HAC effective sample barely moves because neighbouring days share the same 126-day window. M is cheapest but thins the cross-section count below what bucket calibration needs. W is the chosen trade-off and is recorded in every replay diagnostic."
   },
   "evidence": {
