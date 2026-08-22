@@ -1,10 +1,14 @@
 import copy
+import json
+from pathlib import Path
 
 import pandas as pd
 
 from pipeline import kelly_portfolio as KP
 from pipeline import historical_calibration as HC
 from pipeline import probability_calibration as PC
+
+ROOT = Path(__file__).resolve().parents[1]
 
 
 HORIZON = 1
@@ -157,3 +161,47 @@ def test_one_prediction_date_fails_closed_instead_of_indexing_past_split():
         _outcomes(periods=1), horizon=HORIZON, cfg=cfg, require_pit=True)
 
     assert calibrated["regions"]["US"]["reliabilityGate"]["eligible"] is False
+
+
+def test_a_zero_information_distribution_cannot_clear_the_reliability_gate():
+    """A constant predictor at the base rate must not be called reliable.
+
+    Brier, ECE and log-loss cannot catch it — a calibrated constant scores
+    Brier <= 0.25 by construction, near-zero ECE and log-loss ~0.69, clearing
+    all three thresholds every time. Brier skill is the only check that can,
+    and it is what gates a Kelly weight.
+    """
+    import numpy as np
+    rng = np.random.default_rng(0)
+    base_rate = 0.45
+    y = (rng.random(4000) < base_rate).astype(float)
+    p = np.full(len(y), base_rate)              # zero information
+
+    brier = float(((p - y) ** 2).mean())
+    baseline = float(((y.mean() - y) ** 2).mean())
+    metrics = {
+        "dates": 200, "independentDates": 30,
+        "brier": round(brier, 5), "baselineBrier": round(baseline, 5),
+        "brierSkill": round(1.0 - brier / baseline, 4),
+        "ece": round(abs(float(p.mean() - y.mean())), 5),
+        "logLoss": round(float(-(y * np.log(p) + (1 - y) * np.log(1 - p)).mean()), 5),
+    }
+    cfg = json.loads((ROOT / "config.json").read_text(encoding="utf-8"))
+    cfg = cfg["kellyPortfolio"]["probabilityCalibration"]
+
+    gate = PC._gate(metrics, cfg)
+    # The three absolute thresholds are all cleared, which is exactly the point.
+    assert gate["checks"]["brier"] is True
+    assert gate["checks"]["ece"] is True
+    assert gate["checks"]["logLoss"] is True
+    # And the gate still refuses, on skill alone.
+    assert gate["checks"]["brierSkill"] is False
+    assert gate["eligible"] is False
+    assert "brierSkill" in gate["failures"]
+
+
+def test_the_skill_floor_is_not_negative():
+    """A negative floor admits a distribution worse than the base rate."""
+    cfg = json.loads((ROOT / "config.json").read_text(encoding="utf-8"))
+    assert cfg["kellyPortfolio"]["probabilityCalibration"]["minBrierSkill"] >= 0.0
+    assert PC.DEFAULTS["minBrierSkill"] >= 0.0
