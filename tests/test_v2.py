@@ -483,6 +483,56 @@ def test_stamp_attaches_provenance_and_json_serializes():
     json.dumps(payload)  # must be serializable
 
 
+# --------------------------------------------------------------------------- #
+# Unmeasured is not "below"
+# --------------------------------------------------------------------------- #
+def _uptrend(n_sessions, seed=1):
+    """A steadily RISING series, so any bearish verdict is unambiguously wrong."""
+    import numpy as np
+    import pandas as pd
+    rng = np.random.default_rng(seed)
+    index = pd.bdate_range("2024-01-02", periods=n_sessions)
+    close = 100 * np.exp(np.cumsum(rng.normal(0.0010, 0.011, n_sessions)))
+    return pd.DataFrame({
+        "Open": close * 0.999, "High": close * 1.005, "Low": close * 0.995,
+        "Close": close, "Volume": rng.integers(1e6, 5e6, n_sessions).astype(float),
+    }, index=index)
+
+
+def test_an_uncomputable_moving_average_is_none_not_false():
+    from pipeline import entry as E
+    from pipeline import features as F
+    short = E.entry_features(F.build_features(_uptrend(150)))
+    long = E.entry_features(F.build_features(_uptrend(400)))
+    # 150 sessions cannot produce a 200-day mean; 400 can.
+    assert short["aboveMA200"] is None
+    assert long["aboveMA200"] is True
+
+
+def test_a_short_history_name_is_not_published_as_a_broken_trend():
+    """It used to come out AVOID, citing a 200-day line that never existed."""
+    from pipeline import entry as E
+    from pipeline import features as F
+    verdict = E.classify(E.entry_features(F.build_features(_uptrend(150))))
+
+    assert verdict["entryState"] != "AVOID"
+    assert verdict["trendMeasurable"] is False
+    assert any("산출 불가" in reason for reason in verdict["reasons"])
+    # And it must not assert a position relative to an average it never computed.
+    assert not any("200일선 하회" in reason or "200일선 아래" in reason
+                   for reason in verdict["reasons"])
+
+
+def test_market_breadth_is_measured_over_measurable_names_only():
+    """Otherwise breadth tracks how many names are newly listed."""
+    from pipeline import sentiment as S
+    rows = [{"aboveMA200": True, "aboveMA50": True, "regime": "Bull", "mom63": 0.05},
+            {"aboveMA200": True, "aboveMA50": True, "regime": "Bull", "mom63": 0.04},
+            {"aboveMA200": None, "aboveMA50": None, "regime": "Bull", "mom63": 0.03}]
+    blob = S._region("US", rows, None, None)
+    # Two of two measurable names are above; the unmeasurable one is excluded
+    # rather than counted as bearish (which would give 66.7%).
+    assert blob["breadth200"] == 100.0
 def test_a_held_name_on_warning_is_stated_beside_the_weights():
     """It was only visible in the radar panel, a section away from the book.
 

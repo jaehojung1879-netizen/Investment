@@ -53,8 +53,21 @@ def _region(name: str, rows: list[dict], macro: pd.DataFrame | None, vix) -> dic
     if not rows:
         return None
     n = len(rows)
-    breadth200 = 100 * sum(1 for r in rows if r.get("aboveMA200")) / n
-    breadth50 = 100 * sum(1 for r in rows if r.get("aboveMA50")) / n
+
+    def breadth(key: str) -> float:
+        """Share above the average, over names where it could be measured.
+
+        Counting an uncomputable average as "below" would make breadth a
+        function of how many names are newly listed rather than of the market.
+        """
+        measured = [r for r in rows if r.get(key) is not None]
+        if not measured:
+            return 0.0
+        return 100 * sum(1 for r in measured if r[key]) / len(measured)
+
+    breadth200 = breadth("aboveMA200")
+    breadth50 = breadth("aboveMA50")
+    breadthMeasured200 = sum(1 for r in rows if r.get("aboveMA200") is not None)
     bull_pct = 100 * sum(1 for r in rows if r.get("regime") == "Bull") / n
     moms = [r["mom63"] for r in rows if r.get("mom63") is not None]
     med_mom = statistics.median(moms) * 100 if moms else 0.0

@@ -59,10 +59,24 @@ def entry_features(feat: pd.DataFrame, volume_surge: float | None = None,
 
     dist200 = (last / ma200 - 1) * 100 if (last and ma200) else None
     vol_spike = (vol20 / vol60) if (vol20 and vol60 and vol60 > 0) else None
+    def above(level):
+        """True / False / None — and None is not False.
+
+        `bool(last and ma and last > ma)` collapsed three different situations
+        into False: price genuinely below the average, the average not
+        computable (a rolling(200) mean is NaN for a name's first 199 sessions),
+        and no price at all. `classify` then reported "below the 200-day line"
+        for a line that was never computed, and a short-history name in a clean
+        uptrend was published as AVOID with a trend-breakdown reason.
+        """
+        if last is None or level is None:
+            return None
+        return bool(last > level)
+
     return {
-        "aboveMA20": bool(last and ma20 and last > ma20),
-        "aboveMA50": bool(last and ma50 and last > ma50),
-        "aboveMA200": bool(last and ma200 and last > ma200),
+        "aboveMA20": above(ma20),
+        "aboveMA50": above(ma50),
+        "aboveMA200": above(ma200),
         "dist200Pct": round(dist200, 1) if dist200 is not None else None,
         "rsi14": round(rsi, 1) if rsi is not None else None,
         "vol20Pct": round(vol20 * 100, 1) if vol20 is not None else None,
@@ -99,7 +113,14 @@ def classify(f: dict, overheat_pct: float | None = None,
     """Return {'entryState', 'reasons', 'overheatPercentile'} for one name."""
     reasons: list[str] = []
 
-    broken = (not f.get("aboveMA200")) and (not f.get("aboveMA50")) and ((f.get("mom63Pct") or 0) < 0)
+    # A trend claim needs a measured trend. Where the moving averages could not
+    # be computed there is nothing to say about the trend, and saying it anyway
+    # is how a name with 150 sessions of history became AVOID.
+    above_200, above_50 = f.get("aboveMA200"), f.get("aboveMA50")
+    trend_unknown = above_200 is None or above_50 is None
+
+    broken = (above_200 is False and above_50 is False
+              and (f.get("mom63Pct") or 0) < 0)
 
     volatile_regime = (f.get("volSpike") or 0) >= 1.6 and ((f.get("gapDownPct") or 0) <= -4 or (f.get("maxAdversePct") or 0) <= -6)
     earnings_near = f.get("earningsInDays") is not None and 0 <= f["earningsInDays"] <= 7
@@ -110,9 +131,17 @@ def classify(f: dict, overheat_pct: float | None = None,
         or (f.get("dist200Pct") or 0) >= 25
     )
 
-    constructive = f.get("aboveMA50") and f.get("aboveMA200") and (f.get("mom63Pct") or 0) > -5
+    constructive = (above_50 is True and above_200 is True
+                    and (f.get("mom63Pct") or 0) > -5)
 
-    if broken:
+    if trend_unknown:
+        # Overheat still applies — it does not depend on the long average — but
+        # the verdict stays non-committal and says why.
+        state = "WAIT_FOR_PULLBACK" if overheated else "WATCH"
+        missing = [name for name, value in (("50일선", above_50), ("200일선", above_200))
+                   if value is None]
+        reasons.append(f"{' · '.join(missing)} 산출 불가(가격 이력 부족) — 추세 판단 보류")
+    elif broken:
         state = "AVOID"
         reasons.append("추세 훼손: 50·200일선 하회 + 음의 60일 모멘텀")
     elif earnings_near:
@@ -134,7 +163,7 @@ def classify(f: dict, overheat_pct: float | None = None,
         reasons.append("50·200일선 위 · 과열 아님 — 분할 매수 구간")
     else:
         state = "WATCH"
-        if not f.get("aboveMA50"):
+        if above_50 is False:
             reasons.append("50일선 아래 — 단기 추세 미확인")
         else:
             reasons.append("추세 혼조 — 확인 후 진입")
@@ -147,6 +176,7 @@ def classify(f: dict, overheat_pct: float | None = None,
 
     return {
         "entryState": state,
+        "trendMeasurable": not trend_unknown,
         "reasons": reasons,
         "overheatPercentile": round(overheat_pct) if overheat_pct is not None else None,
     }
