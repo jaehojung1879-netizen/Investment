@@ -620,6 +620,31 @@ const renderValidationLab = (d) => {
       <td><b>${sp(post.expectedExcessReturnPct)}</b><small>과거 ${post.historicalWeightPct ?? 0}% · 실시간 ${post.prospectiveWeightPct ?? 0}%</small></td></tr>`;
   }).join('');
   const drift = ke.drift || {};
+  // Alpha attribution. A bucket's excess over the benchmark is universe carry
+  // plus alpha spread, and only the spread is the selection model's doing — so
+  // the split is shown rather than left implied by a single number.
+  const attributionRows = regions.map(([region, blob]) => {
+    const a = blob.alphaAttribution || {};
+    if (a.orderingEstablished == null) return '';
+    const ok = a.orderingEstablished === true;
+    return `<tr><td>${region}</td>
+      <td>${a.levelExcessReturnPct != null ? sp(a.levelExcessReturnPct) : '—'}</td>
+      <td>${a.universeBaselineExcessPct != null ? sp(a.universeBaselineExcessPct) : '—'}</td>
+      <td><b>${a.spreadVsUniversePct != null ? sp(a.spreadVsUniversePct) : '—'}</b></td>
+      <td>${a.topMinusBottomPct != null ? sp(a.topMinusBottomPct) : '—'}<small>t ${fmt(a.topMinusBottomTStat, '', 2)} · 기준 ${fmt(a.minTStat, '', 2)}</small></td>
+      <td>${a.meanRankIC != null ? fmt(a.meanRankIC, '', 4) : '—'}<small>t ${fmt(a.rankICTStat, '', 2)}</small></td>
+      <td><span class="tag ${ok ? 'ok' : ''}">${ok ? '정렬 확인' : '정렬 미확인'}</span></td></tr>`;
+  }).filter(Boolean).join('');
+  const attributionNote = regions
+    .map(([, blob]) => (blob.alphaAttribution || {}).explainKo)
+    .find(Boolean) || '';
+  const attributionPanel = attributionRows ? `<div class="vl-card">
+    <div class="vl-h">알파 귀속 — 유니버스 캐리와 선정 알파의 분리</div>
+    <p class="vl-lead">벤치마크 대비 초과수익 = 유니버스 전체가 벤치마크 대비 낸 캐리 + 순위가 만든 알파 스프레드입니다. 기대수익으로는 오른쪽의 알파 스프레드만 사용합니다.</p>
+    <div class="vl-table-scroll" role="region" aria-label="지역별 알파 귀속 표" tabindex="0"><table class="vl-table"><thead><tr><th>지역</th><th>벤치마크 대비(총)</th><th>유니버스 캐리</th><th>알파 스프레드</th><th>최상위−최하위</th><th>Rank IC</th><th>순위 정렬</th></tr></thead><tbody>${attributionRows}</tbody></table></div>
+    <p class="muted">${attributionNote}</p>
+    <p class="vl-foot">순위가 수익을 정렬했다는 증거가 없으면 버킷 사다리를 발표하지 않고 과거 근거를 Kelly 기대수익으로도 쓰지 않습니다. 등온회귀는 어떤 입력에도 단조 결과를 만들기 때문에, 정렬 증거 없이 적용하면 잡음이 사다리처럼 보입니다.</p>
+  </div>` : '';
   const kellyPanel = `<div class="vl-card vl-kelly">
     <div class="vl-h">${term('posterior', 'Kelly 증거 결합')} <span class="tag ${activation.code === 'ACTIVE_VALIDATED' ? 'ok' : ''}">${activation.labelKo || EVIDENCE_STATUS[activation.code] || '검증 근거 없음'}</span></div>
     <p class="vl-lead">${activation.explainKo || 'Kelly 기대수익을 뒷받침할 증거가 아직 없습니다.'}</p>
@@ -704,7 +729,7 @@ const renderValidationLab = (d) => {
 
   const bucketRows = (row) => (row.buckets || []).map((b) => `<tr><td>${b.bucket}</td><td>${fmt(b.observations)}</td><td>${fmt(b.uniqueDates)} / ${fmt(b.effectiveIndependentDates)}</td><td>${sp(b.meanGrossExcessPct)}</td><td>${sp(b.meanCostAdjustedExcessPct)}</td><td>${fmt(b.hitRatePct, '%', 1)}</td><td>${fmt(b.payoffRatio, '', 2)}</td><td>${sp(b.cvar95Pct)}</td></tr>`).join('');
   const factorRows = (region) => { const rows=factorAttribution[`${region}:126`]||{}; const labels={momentum:'Momentum only',lowvol:'Low-vol',priceComposite:'Available price sleeves',fullComposite:'Full live 4-factor'}; return Object.entries(labels).map(([key,label])=>{const cell=rows[key]||{}; const ic=cell.rankIC||{}; return `<tr><td>${label}</td><td>${fmt(cell.availableObservations)}</td><td>${fmt(ic.mean,'',3)}</td><td>${fmt(ic.ir,'',2)}</td><td>${cell.claimEligible?'사용 가능':`WITHHELD · ${cell.withheldReason||'데이터 없음'}`}</td></tr>`;}).join(''); };
-  const alphaPanel = `<div class="vl-card"><div class="vl-h">Alpha diagnostics</div>${[['US',us126],['KR',kr126]].map(([region,row]) => `<details class="vl-fold" open><summary>${region} 126D · Rank IC ${fmt((row.rankIC||{}).mean,'',3)} · monotonicity ${(row.monotonicity||{}).status||'—'}</summary><div class="vl-table-scroll" role="region" aria-label="${region} 126D 알파 버킷 표" tabindex="0"><table class="vl-table"><thead><tr><th>alpha bucket</th><th>raw N</th><th>날짜 / 유효독립</th><th>평균 초과</th><th>비용차감</th><th>승률</th><th>손익비</th><th>CVaR</th></tr></thead><tbody>${bucketRows(row)}</tbody></table></div><div class="vl-table-scroll" role="region" aria-label="${region} 팩터 기여도 표" tabindex="0"><table class="vl-table"><thead><tr><th>Factor attribution</th><th>관측</th><th>Rank IC</th><th>IC IR</th><th>주장 자격</th></tr></thead><tbody>${factorRows(region)}</tbody></table></div><div class="vl-chart-grid"><section><b>Rolling Rank IC</b>${trendSvg([{label:'3Y IC',points:row.rolling3YRankIC||[]},{label:'5Y IC',points:row.rolling5YRankIC||[]}],[{value:0,labelKo:'0'}],{width:520,height:190,aria:`${region} rolling Rank IC`})}</section><section><b>Rolling Top5-Bottom50 spread (%p)</b>${trendSvg([{label:'3Y spread',points:(row.rolling3YTopBottomSpread||[]).map((x)=>({...x,value:Number(x.value)*100}))},{label:'5Y spread',points:(row.rolling5YTopBottomSpread||[]).map((x)=>({...x,value:Number(x.value)*100}))}],[{value:0,labelKo:'0'}],{width:520,height:190,aria:`${region} rolling top bottom spread`})}</section></div><p class="muted">raw N은 독립 표본이 아닙니다. 126D forward return은 중첩되므로 고유 신호일·유효 독립일·HAC lag 125를 함께 봅니다.</p></details>`).join('')}</div>`;
+  const alphaPanel = `<div class="vl-card"><div class="vl-h">Alpha diagnostics</div>${[['US',us126],['KR',kr126]].map(([region,row]) => `<details class="vl-fold" open><summary>${region} 126D · Rank IC ${fmt((row.rankIC||{}).mean,'',3)} · monotonicity ${(row.monotonicity||{}).status||'—'}</summary><div class="vl-table-scroll" role="region" aria-label="${region} 126D 알파 버킷 표" tabindex="0"><table class="vl-table"><thead><tr><th>alpha bucket</th><th>raw N</th><th>날짜 / 유효독립</th><th>평균 초과</th><th>비용차감</th><th>승률</th><th>손익비</th><th>CVaR</th></tr></thead><tbody>${bucketRows(row)}</tbody></table></div><div class="vl-table-scroll" role="region" aria-label="${region} 팩터 기여도 표" tabindex="0"><table class="vl-table"><thead><tr><th>Factor attribution</th><th>관측</th><th>Rank IC</th><th>IC IR</th><th>주장 자격</th></tr></thead><tbody>${factorRows(region)}</tbody></table></div><div class="vl-chart-grid"><section><b>Rolling Rank IC</b>${trendSvg([{label:'3Y IC',points:row.rolling3YRankIC||[]},{label:'5Y IC',points:row.rolling5YRankIC||[]}],[{value:0,labelKo:'0'}],{width:520,height:190,aria:`${region} rolling Rank IC`})}</section><section><b>Rolling Top5-Bottom50 spread (%p)</b>${trendSvg([{label:'3Y spread',points:(row.rolling3YTopBottomSpread||[]).map((x)=>({...x,value:Number(x.value)*100}))},{label:'5Y spread',points:(row.rolling5YTopBottomSpread||[]).map((x)=>({...x,value:Number(x.value)*100}))}],[{value:0,labelKo:'0'}],{width:520,height:190,aria:`${region} rolling top bottom spread`})}</section></div><p class="muted">raw N은 독립 표본이 아닙니다. 126D forward return은 중첩되므로 고유 신호일·유효 독립일을 함께 봅니다. HAC lag은 재현 그리드 간격에서 환산합니다 — 주간 그리드에서 126세션 중첩은 관측치 약 26개이며, lag을 125로 두면 표준오차가 과소평가됩니다.</p></details>`).join('')}</div>`;
 
   const combinedNav = [{label:'Champion',points:(champSummary.nav||[]).map((x)=>({date:x.date,value:x.nav}))},{label:'Challenger',points:(challengeSummary.nav||[]).map((x)=>({date:x.date,value:x.nav}))},{label:'Benchmark',points:(champSummary.nav||[]).map((x)=>({date:x.date,value:x.benchmarkNav}))}];
   const drawdownLines = [{label:'Champion',points:(champSummary.nav||[]).map((x)=>({date:x.date,value:x.drawdownPct}))},{label:'Challenger',points:(challengeSummary.nav||[]).map((x)=>({date:x.date,value:x.drawdownPct}))}];
@@ -720,7 +745,7 @@ const renderValidationLab = (d) => {
 
   const limitations = `<div class="vl-card"><div class="vl-h">Data-quality limitations</div><div class="vl-grid">${vlabRow('Historical constituents',universeReady?'READY':(integrity.historicalUniverseAvailable?'INCOMPLETE':'MISSING'))}${vlabRow('Constituent coverage',integrity.constituentCoveragePct==null?'산출 불가':fmt(integrity.constituentCoveragePct,'%',1))}${vlabRow('PIT fundamentals',integrity.pitFundamentals?.available?'READY':'MISSING')}${vlabRow('Macro vintage',integrity.macroVintage||'—')}${vlabRow('영향 관측치',fmt(integrity.affectedObservationsPct,'%',1))}${vlabRow('승격 자격',integrityGate.eligible?'가능':'불가',`${(integrityGate.failures||[]).join(', ')}`)}</div></div>`;
 
-  host.innerHTML = `${verdictPanel}${scorecard}${trustPanel}${alphaPanel}${portfolioPanel}${forecastPanel}<div class="vl-two">${historicalPanel}${prospectivePanel}</div>${kellyPanel}${comparison}${limitations}`;
+  host.innerHTML = `${verdictPanel}${scorecard}${trustPanel}${alphaPanel}${portfolioPanel}${forecastPanel}<div class="vl-two">${historicalPanel}${prospectivePanel}</div>${attributionPanel}${kellyPanel}${comparison}${limitations}`;
 };
 
 const renderChanges = (d) => {

@@ -240,7 +240,8 @@ def test_ui_never_presents_analogues_as_a_guarantee():
     # Every occurrence of "보장" (guarantee) must be part of a denial. Searching
     # for the bare word would flag "미래를 보장하지 않습니다", which is the copy we
     # want, so each hit is checked against an explicit allowlist of negations.
-    allowed_negations = ("보장하지 않", "보장이 아닙니다", "보장이 아니")
+    allowed_negations = ("보장하지 않", "보장이 아닙니다", "보장이 아니",
+                         "보장으로 해석하면 안", "보장이라고 해석하면 안")
     offenders = [
         APP[m.start():m.start() + 24]
         for m in re.finditer("보장", APP)

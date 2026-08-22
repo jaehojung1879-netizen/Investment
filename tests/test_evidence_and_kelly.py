@@ -130,6 +130,220 @@ def _ledger(n_dates=90, seed=3):
     return rows
 
 
+def test_hac_bandwidth_is_measured_in_observations_not_trading_days():
+    """A 126-session overlap spans ~26 weekly observations, not 126.
+
+    The lag has to be read off the series being estimated. Passing horizon-1
+    directly meant a weekly series was given 125 lags for an overlap that spans
+    25, and the extra lags are noise that can only shrink the estimated long-run
+    variance — inflating t and the effective sample size.
+    """
+    weekly = pd.Series(np.zeros(300), index=pd.bdate_range("2015-01-02", periods=300, freq="5B"))
+    daily = pd.Series(np.zeros(800), index=pd.bdate_range("2015-01-02", periods=800))
+
+    weekly_stats = KP._newey_west_stats(weekly + 0.01, 126)
+    daily_stats = KP._newey_west_stats(daily + 0.01, 126)
+
+    assert weekly_stats["samplingStepDays"] == 5
+    assert daily_stats["samplingStepDays"] == 1
+    # 126 sessions / 5 sessions per observation -> 26 overlapping observations.
+    assert weekly_stats["hacLag"] == 25
+    assert daily_stats["hacLag"] == 125
+
+
+def test_hac_does_not_invent_precision_on_independent_observations():
+    """Independent weekly draws must not report a near-full effective sample.
+
+    Under the old bandwidth this returned ~354 effective dates out of 374 and
+    rejected a true null four times as often as it should have.
+    """
+    rng = np.random.default_rng(20240718)
+    index = pd.bdate_range("2015-01-02", periods=374, freq="5B")
+    rejections = 0
+    trials = 200
+    for _ in range(trials):
+        series = pd.Series(rng.normal(0, 0.05, len(index)), index=index)
+        stats = KP._newey_west_stats(series, 126)
+        if abs(stats["mean"] / stats["se"]) >= 1.96:
+            rejections += 1
+    # Nominal 5%. The old convention sat above 13% here.
+    assert rejections / trials < 0.10, rejections / trials
+
+
+def test_bandwidth_limited_estimates_are_flagged():
+    """A series too short to carry its own overlap gets a floor, and says so."""
+    short = pd.Series(np.linspace(0, 0.02, 40),
+                      index=pd.bdate_range("2015-01-02", periods=40))
+    stats = KP._newey_west_stats(short, 126)
+    assert stats["bandwidthLimited"] is True
+    assert stats["hacLag"] == 10   # capped at n // 4
+
+
+def _carry_ledger(n_dates=90, seed=11, carry=0.08, spread_per_bucket=0.0,
+                  noise=0.05, region="US"):
+    """A ledger where the whole universe beat the benchmark by ``carry``.
+
+    ``spread_per_bucket`` is the only genuine ranking effect: 0.0 means the
+    ranking ordered nothing and every point of measured "excess" is carry.
+    """
+    rng = np.random.default_rng(seed)
+    dates = pd.bdate_range("2015-01-02", periods=n_dates, freq="5B")
+    rows = []
+    for date in dates:
+        stamp = date.strftime("%Y-%m-%d")
+        # One shared shock per date: the universe moves together, which is what
+        # makes the level look precise while saying nothing about the ranking.
+        shared = float(rng.normal(carry, 0.04))
+        for rank, percentile in enumerate((50, 70, 85, 92, 97)):
+            for k in range(3):
+                rows.append(_outcome(
+                    stamp, percentile=percentile, region=region,
+                    excess=shared + rank * spread_per_bucket + float(rng.normal(0, noise)),
+                    ticker=f"T{percentile}{k}"))
+    return rows
+
+
+def _calibrate(rows, **cfg):
+    settings = {"minEffectiveDates": 5, "shrinkagePriorStrength": 5}
+    settings.update(cfg)
+    return HC.calibrate(rows, horizon=126, cfg=settings,
+                        diagnostics={"survivorshipRisk": "HIGH",
+                                     "macroPitStatus": "REVISED_HISTORY",
+                                     "fundamentalsPit": False})
+
+
+def test_universe_carry_is_never_reported_as_model_alpha():
+    """A universe that beat its benchmark is not a selection edge.
+
+    Every bucket earns the same +8%: the ranking did nothing. The level must
+    still show +8% (it happened), the spread must be ~0, and nothing may reach
+    Kelly as an expected return.
+    """
+    calibration = _calibrate(_carry_ledger(spread_per_bucket=0.0))
+    region = calibration["regions"]["US"]
+
+    assert region["universeBaseline"]["meanExcessPct"] > 6.0
+    for row in region["buckets"]:
+        assert row["levelExpectedExcessReturnPct"] > 6.0, "the level really was earned"
+        assert abs(row["spreadVsUniversePct"]) < 1.5, "but none of it is attributable"
+        assert abs(row["calibratedExpectedExcessReturnPct"]) < 1.5
+
+    assert region["ordering"]["established"] is False
+    assert region["ordering"]["reason"] == "ORDERING_NOT_DISTINGUISHABLE_FROM_NOISE"
+    assert region["usableBuckets"] == 0
+    assert calibration["orderingEstablishedRegions"] == []
+
+    # And the whole way down to the number that would size a position.
+    assert EV.candidate_prior(calibration, "US", 97.0) is None
+    summary = EV.summarize_region(calibration, {}, min_effective_dates=5,
+                                  prior_scale_pct=3.0)
+    assert summary["US"]["posterior"]["expectedExcessReturnPct"] == 0.0
+    assert summary["US"]["alphaAttribution"]["orderingEstablished"] is False
+    assert summary["US"]["alphaAttribution"]["universeBaselineExcessPct"] > 6.0
+
+
+def test_isotonic_repair_never_manufactures_a_ladder_from_noise():
+    """Isotonic regression always returns a monotone fit — that is the danger."""
+    calibration = _calibrate(_carry_ledger(spread_per_bucket=0.0, seed=17))
+    rows = calibration["regions"]["US"]["buckets"]
+    assert all(r["monotonicityWarning"] == "ORDERING_NOT_ESTABLISHED_NO_LADDER_PUBLISHED"
+               for r in rows)
+    # No repair happened, so the published values are the measured ones.
+    for row in rows:
+        assert (row["calibratedExpectedExcessReturnPct"]
+                == row["preIsotonicExpectedExcessReturnPct"])
+    published = [r["calibratedExpectedExcessReturnPct"] for r in rows]
+    assert published != sorted(published), "noise was laundered into a rising ladder"
+
+
+def test_expected_return_is_the_spread_and_the_level_stays_visible():
+    """Real ordering on top of a large carry: only the spread may be capitalised."""
+    calibration = _calibrate(_carry_ledger(spread_per_bucket=0.02, seed=5))
+    region = calibration["regions"]["US"]
+    assert region["ordering"]["established"] is True
+    carry = region["universeBaseline"]["meanExcessPct"]
+    assert carry > 6.0
+
+    top = [r for r in region["buckets"] if r["bucket"] == "95-100"][0]
+    level = top["levelExpectedExcessReturnPct"]
+    spread = top["spreadVsUniversePct"]
+    assert level > spread + 4.0, "the level is inflated by the carry"
+    assert spread > 2.0, "the ranking genuinely paid"
+    # The published expectation tracks the spread, never the level.
+    assert top["expectedReturnBasis"] == "ALPHA_SPREAD_VS_REPLAY_UNIVERSE"
+    assert top["calibratedExpectedExcessReturnPct"] <= spread + 1e-9
+    assert top["calibratedExpectedExcessReturnPct"] < level
+
+    prior = EV.candidate_prior(calibration, "US", 97.0)
+    assert prior is not None
+    assert prior["expectedExcessReturnPct"] < prior["levelExcessReturnPct"]
+    assert prior["universeBaselineExcessPct"] == carry
+
+
+def test_attribution_survives_degenerate_ledgers_without_raising():
+    """Shapes the synthetic fixture never produces but a real ledger will.
+
+    Each must fall through to "no usable evidence" rather than raising inside
+    the daily production build.
+    """
+    def row(date, percentile, excess, cost=True):
+        horizon = {"excessReturn": excess, "absoluteReturn": excess,
+                   "costAdjustedExcessReturn": (excess - 0.005) if cost else None}
+        return {"id": f"{date}|US|T{percentile}", "date": date, "asOf": date,
+                "ticker": f"T{percentile}", "region": "US", "sector": "Tech",
+                "macroRegime": "Goldilocks", "alphaPercentile": percentile,
+                "evidenceClass": "HISTORICAL_OOS",
+                "pit": {"pitCoverage": 0.8, "usableForCalibration": True},
+                "horizons": {"126": horizon}}
+
+    dates = pd.bdate_range("2015-01-02", periods=40, freq="5B")
+    ledgers = {
+        "single_bucket": [row(d.strftime("%Y-%m-%d"), 97, 0.05) for d in dates],
+        "single_date": [row("2015-01-02", p, 0.05) for p in (50, 70, 85, 92, 97)],
+        "no_cost_column": [row(d.strftime("%Y-%m-%d"), p, 0.05, cost=False)
+                           for d in dates for p in (50, 97)],
+        "all_zero_excess": [row(d.strftime("%Y-%m-%d"), p, 0.0)
+                            for d in dates for p in (50, 97)],
+    }
+    for name, rows in ledgers.items():
+        calibration = _calibrate(rows)
+        blob = calibration["regions"]["US"]
+        assert blob["ordering"]["established"] is False, name
+        assert blob["usableBuckets"] == 0, name
+        summary = EV.summarize_region(calibration, {}, min_effective_dates=5,
+                                      prior_scale_pct=3.0)
+        assert summary["US"]["posterior"]["expectedExcessReturnPct"] == 0.0, name
+
+    single = _calibrate(ledgers["single_bucket"])["regions"]["US"]
+    assert single["ordering"]["reason"] == "SINGLE_BUCKET_NO_ORDERING_TESTABLE"
+    # None, not a fabricated zero — there is no top-minus-bottom to report.
+    assert single["ordering"]["topMinusBottomPct"] is None
+
+
+def test_hac_lag_falls_back_safely_on_a_non_date_index():
+    """Some callers hand over a positional index; it must not be read as dates."""
+    for index in (pd.RangeIndex(50), pd.Index([f"x{i}" for i in range(50)])):
+        stats = KP._newey_west_stats(pd.Series(np.linspace(0, 0.02, 50), index=index), 126)
+        assert stats["samplingStepDays"] == 1
+        assert stats["hacLag"] == 12          # capped at n // 4
+    # A string-date index is the shape the real ledger arrives in and must be
+    # recognised, not treated as opaque labels.
+    stamps = pd.Index([d.strftime("%Y-%m-%d")
+                       for d in pd.bdate_range("2015-01-02", periods=200, freq="5B")])
+    stats = KP._newey_west_stats(pd.Series(np.linspace(0, 0.02, 200), index=stamps), 126)
+    assert stats["samplingStepDays"] == 5
+    assert stats["hacLag"] == 25
+
+
+def test_ordering_gate_admits_a_ranking_that_actually_orders_returns():
+    calibration = _calibrate(_ledger())
+    assert calibration["orderingEstablishedRegions"] == ["US"]
+    ordering = calibration["regions"]["US"]["ordering"]
+    assert ordering["established"] is True
+    assert ordering["topMinusBottomTStat"] >= ordering["minTStat"]
+    assert ordering["meanRankIC"] > 0
+
+
 def test_calibration_produces_an_increasing_bucket_ladder():
     calibration = HC.calibrate(_ledger(), horizon=126,
                                cfg={"minEffectiveDates": 5, "shrinkagePriorStrength": 5},

@@ -234,9 +234,21 @@ def test_frontend_keeps_historical_and_prospective_gaps_visibly_separate():
 
 def test_frontend_shows_effective_sample_and_price_sleeve_limitation():
     app = Path("app.js").read_text(encoding="utf-8")
-    assert "유효독립" in app and "HAC lag 125" in app
+    assert "유효독립" in app
+    # The HAC lag is derived from the replay grid, not fixed at horizon-1: on a
+    # weekly grid a 126-session overlap spans ~26 observations. The UI has to
+    # say that rather than quoting a lag of 125 it no longer uses.
+    assert "HAC lag" in app and "재현 그리드 간격" in app
+    assert "HAC lag 125" not in app
     assert "PRICE_SLEEVES_ONLY_AUDIT_PROXY" in app
     assert "Value/Quality" in app
+
+
+def test_frontend_separates_universe_carry_from_selection_alpha():
+    app = Path("app.js").read_text(encoding="utf-8")
+    assert "알파 귀속" in app
+    assert "유니버스 캐리" in app and "알파 스프레드" in app
+    assert "정렬 미확인" in app
 
 
 def test_challenger_never_changes_production_selector():

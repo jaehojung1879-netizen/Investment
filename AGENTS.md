@@ -43,3 +43,23 @@
   share one feature definition. Do not build a second one in `build.py`.
 - `trackingDays` and `maturedObservationDays` are different quantities and are reported
   separately; a ledger with recorded signals must never report zero tracking days.
+
+## Alpha attribution invariants (v2.7)
+
+- A bucket's excess return over the benchmark is `universe carry + alpha spread`. Only the
+  spread — the per-date excess over the whole replay universe of that region — may become
+  an expected return. The level is published alongside it and is never what Kelly is sized on.
+- Shrinkage, standard errors and effective-date counts attach to the SPREAD series, not the
+  level. A level made precise by the universe moving together carries no information about
+  the ranking.
+- Isotonic monotonicity repair runs only where ordering is established. Isotonic regression
+  returns a monotone fit for any input, so running it ungated launders noise into a ladder.
+- Ordering is established only by a HAC t on the top-minus-bottom spread or on the per-date
+  rank IC clearing `minOrderingTStat` with sufficient effective dates. Where it is not
+  established, no bucket is usable and no historical prior reaches Kelly.
+- HAC bandwidth is measured in observations of the series being estimated, converted from
+  the horizon via the replay grid spacing — never fixed at `horizon - 1` trading days. On a
+  weekly grid a 126-session overlap spans ~26 observations, and using 125 lags inflates
+  every t-statistic and effective sample in the system.
+- Thresholds that gate a claim are calibrated against a simulated null of that same gate,
+  and the simulated rejection rates are recorded next to the constant.
