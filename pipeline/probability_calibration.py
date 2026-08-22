@@ -45,7 +45,25 @@ DEFAULTS = {
     "maxBrier": 0.255,
     "maxEce": 0.10,
     "maxLogLoss": 0.72,
-    "minBrierSkill": -0.01,
+    # Skill has to mean skill. A negative floor was letting through a
+    # distribution WORSE than simply predicting the regional base rate, and the
+    # other three checks cannot catch that: a constant predictor at the base
+    # rate has Brier <= 0.25 by construction, near-zero ECE, and log-loss ~0.69,
+    # so it clears maxBrier, maxEce and maxLogLoss every time. This is the only
+    # check standing between a zero-information distribution and a Kelly weight.
+    #
+    # The floor is not a noise allowance. Simulating the null directly — a
+    # constant predictor at the base rate, baseline estimated on the same audit
+    # sample — gives a skill distribution far tighter than the old tolerance:
+    #
+    #     audit dates    null sd     false-pass at -0.01   at 0.0
+    #             63     0.00113                    100%     1.9%
+    #            200     0.00035                    100%     0.9%
+    #            400     0.00017                    100%     1.0%
+    #
+    # -0.01 is roughly nine standard deviations of slack and admits every
+    # uninformative model. 0.0 is the honest bar and costs ~1-2% false rejection.
+    "minBrierSkill": 0.0,
 }
 
 VARIANTS = ("BASE", "MACRO", "ENTRY")
