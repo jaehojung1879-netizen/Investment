@@ -280,6 +280,61 @@ def test_expected_return_is_the_spread_and_the_level_stays_visible():
     assert prior["universeBaselineExcessPct"] == carry
 
 
+def test_attribution_survives_degenerate_ledgers_without_raising():
+    """Shapes the synthetic fixture never produces but a real ledger will.
+
+    Each must fall through to "no usable evidence" rather than raising inside
+    the daily production build.
+    """
+    def row(date, percentile, excess, cost=True):
+        horizon = {"excessReturn": excess, "absoluteReturn": excess,
+                   "costAdjustedExcessReturn": (excess - 0.005) if cost else None}
+        return {"id": f"{date}|US|T{percentile}", "date": date, "asOf": date,
+                "ticker": f"T{percentile}", "region": "US", "sector": "Tech",
+                "macroRegime": "Goldilocks", "alphaPercentile": percentile,
+                "evidenceClass": "HISTORICAL_OOS",
+                "pit": {"pitCoverage": 0.8, "usableForCalibration": True},
+                "horizons": {"126": horizon}}
+
+    dates = pd.bdate_range("2015-01-02", periods=40, freq="5B")
+    ledgers = {
+        "single_bucket": [row(d.strftime("%Y-%m-%d"), 97, 0.05) for d in dates],
+        "single_date": [row("2015-01-02", p, 0.05) for p in (50, 70, 85, 92, 97)],
+        "no_cost_column": [row(d.strftime("%Y-%m-%d"), p, 0.05, cost=False)
+                           for d in dates for p in (50, 97)],
+        "all_zero_excess": [row(d.strftime("%Y-%m-%d"), p, 0.0)
+                            for d in dates for p in (50, 97)],
+    }
+    for name, rows in ledgers.items():
+        calibration = _calibrate(rows)
+        blob = calibration["regions"]["US"]
+        assert blob["ordering"]["established"] is False, name
+        assert blob["usableBuckets"] == 0, name
+        summary = EV.summarize_region(calibration, {}, min_effective_dates=5,
+                                      prior_scale_pct=3.0)
+        assert summary["US"]["posterior"]["expectedExcessReturnPct"] == 0.0, name
+
+    single = _calibrate(ledgers["single_bucket"])["regions"]["US"]
+    assert single["ordering"]["reason"] == "SINGLE_BUCKET_NO_ORDERING_TESTABLE"
+    # None, not a fabricated zero — there is no top-minus-bottom to report.
+    assert single["ordering"]["topMinusBottomPct"] is None
+
+
+def test_hac_lag_falls_back_safely_on_a_non_date_index():
+    """Some callers hand over a positional index; it must not be read as dates."""
+    for index in (pd.RangeIndex(50), pd.Index([f"x{i}" for i in range(50)])):
+        stats = KP._newey_west_stats(pd.Series(np.linspace(0, 0.02, 50), index=index), 126)
+        assert stats["samplingStepDays"] == 1
+        assert stats["hacLag"] == 12          # capped at n // 4
+    # A string-date index is the shape the real ledger arrives in and must be
+    # recognised, not treated as opaque labels.
+    stamps = pd.Index([d.strftime("%Y-%m-%d")
+                       for d in pd.bdate_range("2015-01-02", periods=200, freq="5B")])
+    stats = KP._newey_west_stats(pd.Series(np.linspace(0, 0.02, 200), index=stamps), 126)
+    assert stats["samplingStepDays"] == 5
+    assert stats["hacLag"] == 25
+
+
 def test_ordering_gate_admits_a_ranking_that_actually_orders_returns():
     calibration = _calibrate(_ledger())
     assert calibration["orderingEstablishedRegions"] == ["US"]

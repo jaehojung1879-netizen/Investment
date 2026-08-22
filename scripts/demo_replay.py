@@ -131,17 +131,25 @@ def main(argv=None) -> int:
     for region, blob in sorted((calibration.get("regions") or {}).items()):
         ordering = blob.get("ordering") or {}
         carry = (blob.get("universeBaseline") or {}).get("meanExcessPct")
+
+        # A single-bucket or empty region leaves these unset, and "—" is the
+        # honest rendering of an untestable quantity.
+        def pct(value, width=7):
+            return f"{value:+{width}.2f}%" if value is not None else f"{'—':>{width + 1}}"
+
         print(f"    {region}: {blob['observations']} obs / {blob['uniqueDates']} dates"
-              f"   universe carry {carry:+.2f}%")
+              f"   universe carry {pct(carry, 5)}")
         print(f"      ordering {'ESTABLISHED' if ordering.get('established') else 'NOT ESTABLISHED'}"
-              f" [{ordering.get('reason')}]  top-bottom {ordering.get('topMinusBottomPct'):+.2f}%"
+              f" [{ordering.get('reason')}]  top-bottom {pct(ordering.get('topMinusBottomPct'), 5)}"
               f" t={ordering.get('topMinusBottomTStat')} | rankIC {ordering.get('meanRankIC')}"
               f" t={ordering.get('rankICTStat')} | bar t>={ordering.get('minTStat')}")
         for row in blob["buckets"]:
+            spread_t = row.get("spreadTStat")
             print(f"      {row['bucket']:>7}p  n={row['observations']:<6} effSpread={row['effectiveDates']:<4}"
-                  f" level={row['levelExpectedExcessReturnPct']:+7.2f}%"
-                  f"  spread={row['spreadVsUniversePct']:+7.2f}% (t={row['spreadTStat']:+5.2f})"
-                  f"  calibrated={row['calibratedExpectedExcessReturnPct']:+7.2f}%"
+                  f" level={pct(row.get('levelExpectedExcessReturnPct'))}"
+                  f"  spread={pct(row.get('spreadVsUniversePct'))}"
+                  f" (t={f'{spread_t:+5.2f}' if spread_t is not None else '    —'})"
+                  f"  calibrated={pct(row.get('calibratedExpectedExcessReturnPct'))}"
                   f"  hit_lvl={row['positiveHitRatio']} hit_sprd={row['spreadPositiveHitRatio']}"
                   f"  w={row['evidenceWeight']}"
                   f"  {'USABLE' if row['usable'] else (row.get('unusableReason') or 'thin')}")
