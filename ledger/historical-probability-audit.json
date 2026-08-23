@@ -1,41 +1,16 @@
 {
-  "generatedAt": "2026-08-22T03:32:01.461619+00:00",
+  "generatedAt": "2026-08-23T03:47:12.036538+00:00",
   "replayVersion": "replay-v2",
   "modelVersion": "longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3",
   "evidenceClass": "HISTORICAL_OOS",
-  "outcomesRead": 418149,
-  "maturedTargetOutcomesRead": 403065,
+  "outcomesRead": 418166,
+  "maturedTargetOutcomesRead": 403079,
   "available": true,
   "method": "MATURITY_AWARE_EXPANDING_BETA_BINOMIAL",
   "target": "COST_ADJUSTED_REGIONAL_EXCESS_RETURN_GT_ZERO",
   "reliabilityGate": {
     "eligible": false,
     "byRegion": {
-      "KR": {
-        "eligible": false,
-        "checks": {
-          "auditDates": true,
-          "independentAuditDates": true,
-          "brier": true,
-          "ece": true,
-          "logLoss": true,
-          "brierSkill": false,
-          "conditionalAuditImprovement": true
-        },
-        "failures": [
-          "brierSkill"
-        ],
-        "thresholds": {
-          "minAuditDates": 63,
-          "minIndependentAuditDates": 8,
-          "maxBrier": 0.255,
-          "maxEce": 0.1,
-          "maxLogLoss": 0.72,
-          "minBrierSkill": -0.01,
-          "minConditionBrierImprovement": 0.0025
-        },
-        "method": "MATURITY_AWARE_EXPANDING_WALK_FORWARD"
-      },
       "US": {
         "eligible": true,
         "checks": {
@@ -54,18 +29,17 @@
           "maxBrier": 0.255,
           "maxEce": 0.1,
           "maxLogLoss": 0.72,
-          "minBrierSkill": -0.01,
+          "minBrierSkill": 0.0,
           "minConditionBrierImprovement": 0.0025
         },
         "method": "MATURITY_AWARE_EXPANDING_WALK_FORWARD"
       }
     },
     "failures": [
-      "KR",
       "dataIntegrity"
     ],
     "requiredForKelly": true,
-    "statisticalEligible": false
+    "statisticalEligible": true
   },
   "integrityGate": {
     "eligible": false,
@@ -82,131 +56,6 @@
     "policyKo": "확률 성능과 별도로 과거 구성종목·발표시점 재무·조건부 거시 vintage가 운영 모델과 같은지를 검사합니다. 데이터가 없으면 할인만 하지 않고 Kelly를 차단합니다."
   },
   "regions": {
-    "KR": {
-      "selectedVariant": "BASE",
-      "selectionPeriod": [
-        "2014-02-07",
-        "2021-11-18"
-      ],
-      "auditPeriod": [
-        "2021-11-19",
-        "2026-01-09"
-      ],
-      "audit": {
-        "available": true,
-        "predictions": 3793,
-        "dates": 223,
-        "independentDates": 9,
-        "brier": 0.12481,
-        "baselineBrier": 0.12254,
-        "brierSkill": -0.0185,
-        "ece": 0.00773,
-        "logLoss": 0.70236,
-        "calibrationBins": [
-          {
-            "range": "40-60",
-            "predictedPct": 49.101,
-            "realizedPct": 49.874,
-            "dates": 223
-          }
-        ],
-        "baseVariantBrier": 0.12481,
-        "conditionalBrierImprovement": 0.0
-      },
-      "reliabilityGate": {
-        "eligible": false,
-        "checks": {
-          "auditDates": true,
-          "independentAuditDates": true,
-          "brier": true,
-          "ece": true,
-          "logLoss": true,
-          "brierSkill": false,
-          "conditionalAuditImprovement": true
-        },
-        "failures": [
-          "brierSkill"
-        ],
-        "thresholds": {
-          "minAuditDates": 63,
-          "minIndependentAuditDates": 8,
-          "maxBrier": 0.255,
-          "maxEce": 0.1,
-          "maxLogLoss": 0.72,
-          "minBrierSkill": -0.01,
-          "minConditionBrierImprovement": 0.0025
-        },
-        "method": "MATURITY_AWARE_EXPANDING_WALK_FORWARD"
-      },
-      "labelAvailabilityPolicy": "OUTCOME_END_DATE_LTE_PREDICTION_DATE",
-      "buckets": [
-        {
-          "bucket": "0-60",
-          "observations": 42003,
-          "dates": 691,
-          "effectiveDates": 27,
-          "upProbabilityPct": 47.87,
-          "downProbabilityPct": 52.13,
-          "averageUpsidePct": 27.96,
-          "averageDownsidePct": 17.631,
-          "payoffRatio": 1.5859,
-          "distributionExpectedExcessReturnPct": 4.192,
-          "binaryKellyFraction": 0.1499
-        },
-        {
-          "bucket": "60-80",
-          "observations": 14119,
-          "dates": 691,
-          "effectiveDates": 27,
-          "upProbabilityPct": 48.33,
-          "downProbabilityPct": 51.67,
-          "averageUpsidePct": 25.907,
-          "averageDownsidePct": 16.831,
-          "payoffRatio": 1.5393,
-          "distributionExpectedExcessReturnPct": 3.826,
-          "binaryKellyFraction": 0.1477
-        },
-        {
-          "bucket": "80-90",
-          "observations": 7114,
-          "dates": 691,
-          "effectiveDates": 27,
-          "upProbabilityPct": 47.74,
-          "downProbabilityPct": 52.26,
-          "averageUpsidePct": 25.239,
-          "averageDownsidePct": 17.272,
-          "payoffRatio": 1.4613,
-          "distributionExpectedExcessReturnPct": 3.021,
-          "binaryKellyFraction": 0.1197
-        },
-        {
-          "bucket": "90-95",
-          "observations": 3392,
-          "dates": 691,
-          "effectiveDates": 27,
-          "upProbabilityPct": 48.58,
-          "downProbabilityPct": 51.42,
-          "averageUpsidePct": 24.973,
-          "averageDownsidePct": 17.397,
-          "payoffRatio": 1.4355,
-          "distributionExpectedExcessReturnPct": 3.185,
-          "binaryKellyFraction": 0.1276
-        },
-        {
-          "bucket": "95-100",
-          "observations": 3818,
-          "dates": 692,
-          "effectiveDates": 27,
-          "upProbabilityPct": 52.04,
-          "downProbabilityPct": 47.96,
-          "averageUpsidePct": 30.984,
-          "averageDownsidePct": 17.515,
-          "payoffRatio": 1.769,
-          "distributionExpectedExcessReturnPct": 7.722,
-          "binaryKellyFraction": 0.2492
-        }
-      ]
-    },
     "US": {
       "selectedVariant": "BASE",
       "selectionPeriod": [
@@ -256,7 +105,7 @@
           "maxBrier": 0.255,
           "maxEce": 0.1,
           "maxLogLoss": 0.72,
-          "minBrierSkill": -0.01,
+          "minBrierSkill": 0.0,
           "minConditionBrierImprovement": 0.0025
         },
         "method": "MATURITY_AWARE_EXPANDING_WALK_FORWARD"
