@@ -161,6 +161,12 @@ def main(argv=None) -> int:
 
     coverage = coverage_acc.summary()
     diagnostics["coverage"] = coverage
+    coverage_gate = HO.benchmark_coverage_gate(
+        coverage,
+        horizon=int(replay_cfg.get("horizonDays", 126)),
+        min_coverage_pct=float(replay_cfg.get("minBenchmarkCoveragePct", 95.0)),
+    )
+    diagnostics["benchmarkCoverageGate"] = coverage_gate
     diagnostics_path.write_text(
         json.dumps(diagnostics, ensure_ascii=False, indent=2, default=str) + "\n",
         encoding="utf-8")
@@ -173,6 +179,24 @@ def main(argv=None) -> int:
     print(f"PIT coverage {diagnostics['meanPitCoverage']} "
           f"({pit_data.quality_label(diagnostics['meanPitCoverage'])}), "
           f"survivorship risk {diagnostics['survivorshipRisk']}")
+    for region in coverage_gate["assessedRegions"]:
+        row = ((coverage.get("benchmarkCoverageByRegion") or {}).get(region) or {}).get(
+            str(coverage_gate["horizon"]), {})
+        print(f"benchmark coverage {region} {coverage_gate['horizon']}D: "
+              f"{row.get('coveragePct')}% "
+              f"({row.get('matchedBenchmarkReturns')}/"
+              f"{row.get('maturedAbsoluteReturns')})")
+
+    if not coverage_gate["eligible"]:
+        print("ERROR: historical benchmark coverage gate failed; "
+              "refusing to publish misleading excess-return evidence.")
+        for failure in coverage_gate["failures"]:
+            print(f"  {failure['region']} {failure['horizon']}D: "
+                  f"{failure['coveragePct']}% < {failure['minimumCoveragePct']}% "
+                  f"({failure['missingBenchmarkReturns']} missing)")
+        if not coverage_gate["failures"]:
+            print(f"  {coverage_gate['reason']}")
+        return 1
 
     # Fail here — with the offending shard named — rather than at GitHub's
     # pre-receive hook after the expensive half of the job has already run.

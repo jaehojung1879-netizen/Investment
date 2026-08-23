@@ -309,6 +309,7 @@ def _load_historical_evidence(cfg) -> dict:
         "coverage": coverage, "dataset": dataset,
         "modelSpec": model_spec, "warningSpec": warning_spec,
         "portfolioValidation": portfolio_validation,
+        "ledgerCommitSha": os.environ.get("HISTORICAL_LEDGER_COMMIT_SHA"),
         "replayVersionMismatchedRecords": mismatched,
     }
 
@@ -340,6 +341,10 @@ def _historical_validation_block(historical: dict, cfg) -> dict:
         "uniqueDates": coverage.get("uniqueDates"),
         "maturedSignals": coverage.get("maturedSignals"),
         "maturedByHorizon": coverage.get("maturedByHorizon"),
+        "benchmarkCoverageByRegion": coverage.get("benchmarkCoverageByRegion") or {},
+        "benchmarkCoverageGate": diagnostics.get("benchmarkCoverageGate") or {},
+        "ledgerCommitSha": historical.get("ledgerCommitSha"),
+        "contractValidation": validation_report.get("contractValidation") or {},
         "pitCoveragePct": (round(float(diagnostics.get("meanPitCoverage") or 0) * 100, 1)
                             if diagnostics.get("meanPitCoverage") is not None else None),
         "pitQuality": pit_data.quality_label(diagnostics.get("meanPitCoverage")),

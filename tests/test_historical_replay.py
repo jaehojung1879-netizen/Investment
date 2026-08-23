@@ -349,6 +349,22 @@ def test_excess_return_requires_the_exact_same_benchmark_sessions(prices):
     assert horizon["absoluteReturn"] is not None
 
 
+def test_daily_session_normalization_preserves_asian_wall_dates():
+    dates = pd.bdate_range("2025-01-02", periods=40)
+    stock_dates = dates.tz_localize("Asia/Seoul")
+    stock = pd.DataFrame({"Close": np.arange(40, dtype=float) + 100}, index=stock_dates)
+    benchmark = pd.Series(np.arange(40, dtype=float) + 200, index=dates)
+    signal = {"id": "kr-tz", "date": "2025-01-02", "ticker": "005930.KS",
+              "region": "KR", "benchmark": "^KS200"}
+
+    outcome = HO.compute_outcomes(
+        [signal], {"005930.KS": stock}, {"^KS200": benchmark}, horizons=(21,))[0]
+
+    assert outcome["benchmark"] == "^KS200"
+    assert outcome["horizons"]["21"]["benchmarkReturn"] is not None
+    assert outcome["horizons"]["21"]["excessReturn"] is not None
+
+
 def test_outcome_metrics_cover_path_risk_not_just_the_endpoint(prices):
     signal = {"id": "w", "date": "2017-01-04", "ticker": "T00", "region": "US",
               "benchmark": "SPY"}
@@ -415,6 +431,7 @@ def test_every_record_carries_its_version_stamps(prices, universe):
     for record in replay["signals"]:
         assert record["replayVersion"] == HR.REPLAY_VERSION
         assert record["featureVersion"] == HR.FEATURE_VERSION
+        assert record["dataVersion"] == HR.DATA_VERSION
         assert record["modelVersion"] == "model-x"
         assert record["evidenceClass"] == "HISTORICAL_OOS"
 
@@ -458,3 +475,30 @@ def test_coverage_summary_separates_tracking_from_maturity(prices, universe):
     # Tracking spans the whole signal ledger; maturity only the resolved part.
     assert summary["maturedObservationDays"] <= summary["trackingDays"]
     assert summary["maturedSignals"] <= summary["signalsRecorded"]
+
+
+def test_benchmark_coverage_gate_is_regional_and_fail_closed():
+    outcomes = [{
+        "id": "kr-1", "date": "2020-01-02", "ticker": "005930.KS",
+        "region": "KR", "benchmark": "^KS200",
+        "horizons": {"126": {"absoluteReturn": .1, "benchmarkReturn": None,
+                              "endDate": "2020-07-01"}},
+    }, {
+        "id": "us-1", "date": "2020-01-02", "ticker": "AAPL",
+        "region": "US", "benchmark": "SPY",
+        "horizons": {"126": {"absoluteReturn": .1, "benchmarkReturn": .05,
+                              "endDate": "2020-07-01"}},
+    }]
+    coverage = HO.CoverageAccumulator(126).add_outcomes(outcomes).summary()
+    gate = HO.benchmark_coverage_gate(coverage, horizon=126, min_coverage_pct=95)
+
+    assert coverage["benchmarkCoverageByRegion"]["KR"]["126"]["coveragePct"] == 0
+    assert coverage["benchmarkCoverageByRegion"]["US"]["126"]["coveragePct"] == 100
+    assert gate["eligible"] is False
+    assert [row["region"] for row in gate["failures"]] == ["KR"]
+
+    no_outcomes = HO.coverage_summary(
+        [{"id": "kr-new", "date": "2025-01-02", "region": "KR"}], [], 126)
+    no_outcomes_gate = HO.benchmark_coverage_gate(no_outcomes, horizon=126)
+    assert no_outcomes_gate["eligible"] is False
+    assert no_outcomes_gate["failures"][0]["reason"] == "no_matured_absolute_returns"

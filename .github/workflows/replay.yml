@@ -93,7 +93,6 @@ jobs:
       # holdout is scored once, so more frequent retraining buys nothing and
       # would multiply the effective number of trials.
       - name: Train / validate the opportunity model
-        if: ${{ github.event.schedule == null || inputs.retrain || github.event_name == 'workflow_dispatch' }}
         run: |
           if [ "$(date -u +%u)" = "7" ] || [ "${{ inputs.retrain }}" = "true" ]; then
             python scripts/train_opportunity.py replay-work/ledger
@@ -144,4 +143,12 @@ jobs:
                 f"{(coverage.get('maturedByHorizon') or {}).get('126')}")
           print(f"PIT coverage {d.get('meanPitCoverage')} | survivorship "
                 f"{d.get('survivorshipRisk')} | fundamentals PIT {d.get('fundamentalsPit')}")
+          gate = d.get("benchmarkCoverageGate") or {}
+          for region in gate.get("assessedRegions") or []:
+              row = (((coverage.get("benchmarkCoverageByRegion") or {}).get(region) or {})
+                     .get(str(gate.get("horizon"))) or {})
+              print(f"benchmark {region} {gate.get('horizon')}D "
+                    f"{row.get('coveragePct')}% "
+                    f"({row.get('matchedBenchmarkReturns')}/"
+                    f"{row.get('maturedAbsoluteReturns')})")
           PY

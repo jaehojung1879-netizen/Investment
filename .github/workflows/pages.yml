@@ -11,6 +11,9 @@ on:
     # and FinanceDataReader publish final KOSPI/KOSDAQ rows before cross-check.
     - cron: "15 8 * * 1-5"
   workflow_dispatch:
+  workflow_run:
+    workflows: ["Historical point-in-time replay"]
+    types: [completed]
 
 permissions:
   contents: write
@@ -23,6 +26,7 @@ concurrency:
 
 jobs:
   build-and-deploy:
+    if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success' }}
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -50,6 +54,7 @@ jobs:
         run: |
           mkdir -p .state
           if git fetch origin signal-history; then
+            echo "HISTORICAL_LEDGER_COMMIT_SHA=$(git rev-parse origin/signal-history)" >> "$GITHUB_ENV"
             if git show origin/signal-history:state/latest.json > .state/latest.json; then
               echo "PRIOR_STATE_PATH=$GITHUB_WORKSPACE/.state/latest.json" >> "$GITHUB_ENV"
             fi

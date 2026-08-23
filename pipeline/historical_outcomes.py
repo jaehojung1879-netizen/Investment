@@ -23,6 +23,8 @@ import math
 import numpy as np
 import pandas as pd
 
+from .market_dates import normalize_daily_series
+
 HORIZONS = (21, 63, 126, 252)
 
 EVIDENCE_HISTORICAL = "HISTORICAL_OOS"
@@ -100,7 +102,7 @@ def compute_outcomes(signals: list[dict], prices: dict[str, pd.DataFrame],
         series = pd.to_numeric(frame["Close"], errors="coerce").dropna()
         if not len(series):
             continue
-        series = series[~series.index.duplicated(keep="last")].sort_index()
+        series = normalize_daily_series(series)
         closes[ticker] = series
         arrays[ticker] = (series.index.to_numpy(dtype="datetime64[ns]"),
                           series.to_numpy(dtype=float))
@@ -110,7 +112,7 @@ def compute_outcomes(signals: list[dict], prices: dict[str, pd.DataFrame],
             continue
         clean = pd.to_numeric(series, errors="coerce").dropna()
         if len(clean):
-            clean = clean[~clean.index.duplicated(keep="last")].sort_index()
+            clean = normalize_daily_series(clean)
             bench_arrays[name] = (clean.index.to_numpy(dtype="datetime64[ns]"),
                                   clean.to_numpy(dtype=float))
     cost_cache: dict[str, float] = {}
@@ -142,11 +144,13 @@ def compute_outcomes(signals: list[dict], prices: dict[str, pd.DataFrame],
             "asOf": signal.get("asOf") or date,
             "ticker": ticker,
             "region": region,
+            "benchmark": signal.get("benchmark"),
             "sector": signal.get("sector"),
             "evidenceClass": evidence_class,
             "modelVersion": signal.get("modelVersion"),
             "replayVersion": signal.get("replayVersion"),
             "featureVersion": signal.get("featureVersion"),
+            "dataVersion": signal.get("dataVersion"),
             "alphaPercentile": signal.get("alphaPercentile"),
             "longTermResearchView": signal.get("longTermResearchView"),
             "entryState": signal.get("entryState"),
@@ -254,13 +258,19 @@ class CoverageAccumulator:
         self.horizon = horizon
         self.signals_recorded = 0
         self.signal_dates: set[pd.Timestamp] = set()
+        self.signals_by_region: dict[str, int] = {}
         self.matured_signals = 0
         self.matured_dates: set[pd.Timestamp] = set()
         self.matured_by_horizon: dict[str, int] = {str(h): 0 for h in HORIZONS}
+        self.absolute_by_region_horizon: dict[tuple[str, str], int] = {}
+        self.benchmark_by_region_horizon: dict[tuple[str, str], int] = {}
+        self.missing_benchmark_samples: dict[tuple[str, str], list[dict]] = {}
 
     def add_signals(self, signals: list[dict]) -> "CoverageAccumulator":
         for signal in signals:
             self.signals_recorded += 1
+            region = signal.get("region") or "UNKNOWN"
+            self.signals_by_region[region] = self.signals_by_region.get(region, 0) + 1
             if signal.get("date"):
                 self.signal_dates.add(pd.Timestamp(signal["date"]).normalize())
         return self
@@ -269,9 +279,27 @@ class CoverageAccumulator:
         target = str(self.horizon)
         for outcome in outcomes:
             horizons = outcome.get("horizons") or {}
-            for key in horizons:
+            region = outcome.get("region") or "UNKNOWN"
+            for key, payload in horizons.items():
                 if key in self.matured_by_horizon:
                     self.matured_by_horizon[key] += 1
+                if payload.get("absoluteReturn") is not None:
+                    pair = (region, key)
+                    self.absolute_by_region_horizon[pair] = (
+                        self.absolute_by_region_horizon.get(pair, 0) + 1)
+                    if payload.get("benchmarkReturn") is not None:
+                        self.benchmark_by_region_horizon[pair] = (
+                            self.benchmark_by_region_horizon.get(pair, 0) + 1)
+                    else:
+                        samples = self.missing_benchmark_samples.setdefault(pair, [])
+                        if len(samples) < 5:
+                            samples.append({
+                                "id": outcome.get("id"),
+                                "date": outcome.get("date"),
+                                "endDate": payload.get("endDate"),
+                                "ticker": outcome.get("ticker"),
+                                "benchmark": outcome.get("benchmark"),
+                            })
             if target in horizons:
                 self.matured_signals += 1
                 if outcome.get("date"):
@@ -285,8 +313,23 @@ class CoverageAccumulator:
                          if signal_dates else 0)
         matured_days = (len(pd.bdate_range(matured_dates[0], matured_dates[-1]))
                         if matured_dates else 0)
+        coverage_by_region: dict[str, dict[str, dict]] = {}
+        all_pairs = sorted(set(self.absolute_by_region_horizon)
+                           | set(self.benchmark_by_region_horizon))
+        for region, horizon in all_pairs:
+            absolute = self.absolute_by_region_horizon.get((region, horizon), 0)
+            matched = self.benchmark_by_region_horizon.get((region, horizon), 0)
+            coverage_by_region.setdefault(region, {})[horizon] = {
+                "maturedAbsoluteReturns": absolute,
+                "matchedBenchmarkReturns": matched,
+                "missingBenchmarkReturns": max(0, absolute - matched),
+                "coveragePct": round(matched / absolute * 100, 4) if absolute else None,
+                "missingSamples": list(
+                    self.missing_benchmark_samples.get((region, horizon), [])),
+            }
         return {
             "signalsRecorded": self.signals_recorded,
+            "signalsByRegion": dict(sorted(self.signals_by_region.items())),
             "uniqueDates": len(signal_dates),
             "trackingDays": tracking_days,
             "firstSignalDate": signal_dates[0].strftime("%Y-%m-%d") if signal_dates else None,
@@ -298,6 +341,7 @@ class CoverageAccumulator:
                                       if matured_dates else None),
             "horizon": self.horizon,
             "maturedByHorizon": dict(self.matured_by_horizon),
+            "benchmarkCoverageByRegion": coverage_by_region,
         }
 
 
@@ -314,3 +358,60 @@ def coverage_summary(signals: list[dict], outcomes: list[dict],
             .add_signals(signals)
             .add_outcomes(outcomes)
             .summary())
+
+
+def benchmark_coverage_gate(coverage: dict, *, horizon: int = 126,
+                            min_coverage_pct: float = 95.0) -> dict:
+    """Require usable benchmark labels wherever absolute outcomes matured.
+
+    A small number of exact-session misses can be legitimate for halted names,
+    so the default is deliberately below 100%.  Zero or materially incomplete
+    regional coverage is never allowed to masquerade as a successful replay.
+    """
+    failures = []
+    assessed_regions = []
+    regions = sorted(set(coverage.get("signalsByRegion") or {})
+                     | set(coverage.get("benchmarkCoverageByRegion") or {}))
+    for region in regions:
+        horizons = ((coverage.get("benchmarkCoverageByRegion") or {}).get(region)
+                    or {})
+        row = (horizons or {}).get(str(horizon)) or {}
+        absolute = int(row.get("maturedAbsoluteReturns") or 0)
+        if absolute <= 0:
+            if int((coverage.get("signalsByRegion") or {}).get(region) or 0) > 0:
+                failures.append({
+                    "region": region,
+                    "horizon": int(horizon),
+                    "coveragePct": None,
+                    "minimumCoveragePct": float(min_coverage_pct),
+                    "maturedAbsoluteReturns": 0,
+                    "matchedBenchmarkReturns": 0,
+                    "missingBenchmarkReturns": 0,
+                    "missingSamples": [],
+                    "reason": "no_matured_absolute_returns",
+                })
+            continue
+        assessed_regions.append(region)
+        pct = row.get("coveragePct")
+        if pct is None or float(pct) < float(min_coverage_pct):
+            failures.append({
+                "region": region,
+                "horizon": int(horizon),
+                "coveragePct": pct,
+                "minimumCoveragePct": float(min_coverage_pct),
+                "maturedAbsoluteReturns": absolute,
+                "matchedBenchmarkReturns": int(row.get("matchedBenchmarkReturns") or 0),
+                "missingBenchmarkReturns": int(row.get("missingBenchmarkReturns") or 0),
+                "missingSamples": list(row.get("missingSamples") or []),
+            })
+    return {
+        "eligible": bool(assessed_regions) and not failures,
+        "horizon": int(horizon),
+        "minimumCoveragePct": float(min_coverage_pct),
+        "requiredRegions": regions,
+        "assessedRegions": assessed_regions,
+        "failures": failures,
+        "reason": (None if assessed_regions and not failures
+                   else "benchmark_coverage_below_threshold" if failures
+                   else "no_matured_regions_to_assess"),
+    }

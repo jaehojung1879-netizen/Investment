@@ -173,6 +173,35 @@ def test_turnover_and_transaction_cost_use_actual_weight_changes():
     assert detail["cost"] > 0
 
 
+def test_portfolio_outcome_explains_missing_benchmark_instead_of_silent_drop():
+    decision = {"date": "2020-01-02", "selector": PV.CHAMPION,
+                "weights": {"005930.KS": .8}, "cashPct": 20,
+                "transactionCost": 0, "turnover": 0,
+                "regionByTicker": {"005930.KS": "KR"}}
+    signals = {("2020-01-02", "005930.KS"): {"id": "kr"}}
+    outcomes = {"kr": {"horizons": {"126": {
+        "absoluteReturn": .1, "benchmarkReturn": None,
+        "endDate": "2020-07-01"}}}}
+
+    result, diagnostic = PV._outcome_for_decision_with_diagnostics(
+        decision, outcomes, signals, 126)
+
+    assert result is None
+    assert diagnostic["reasons"] == ["MISSING_BENCHMARK_RETURN"]
+    assert diagnostic["tickersByReason"] == {
+        "MISSING_BENCHMARK_RETURN": ["005930.KS"]}
+    assert diagnostic["affectedRegions"] == ["KR"]
+
+
+def test_validation_report_fails_closed_without_current_signals_or_coverage_gate():
+    report = PV.build_report(
+        [], [], cfg_lt=CFG_LT, cfg_pf=CFG_PF, diagnostics={},
+        replay_version="r", model_version="m")
+    assert report["contractValidation"]["status"] == "BLOCKED"
+    assert report["contractValidation"]["failures"] == [
+        "no_current_generation_signals", "benchmark_coverage_gate_not_assessed"]
+
+
 def test_missing_historical_constituents_fails_integrity_and_promotion():
     result = PV.data_integrity({"survivorshipRisk": "HIGH", "fundamentalsPit": False,
                                 "macroPitStatus": "REVISED_HISTORY"},
@@ -181,6 +210,8 @@ def test_missing_historical_constituents_fails_integrity_and_promotion():
     assert result["integrityGate"]["eligible"] is False
     assert result["historicalResultLabel"] == "SURVIVORSHIP_BIAS_UNRESOLVED"
     assert result["impactOnPromotionEligibility"] == "KELLY_AND_SELECTOR_PROMOTION_BLOCKED"
+    assert result["integrityGate"]["checks"]["benchmarkCoverage"] is None
+    assert "benchmarkCoverage" in result["integrityGate"]["unassessable"]
 
 
 def test_pit_fundamental_contract_blocks_publication_date_leakage(tmp_path):

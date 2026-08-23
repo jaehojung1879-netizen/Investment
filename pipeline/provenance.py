@@ -23,17 +23,17 @@ import os
 import subprocess
 from datetime import datetime, timezone
 
-SCHEMA_VERSION = "2.6.0"
-MODEL_VERSION = "longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3"
+SCHEMA_VERSION = "2.7.0"
+MODEL_VERSION = "longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2"
 
 # Versions that identify a body of HISTORICAL evidence rather than the live
 # engine. A replay is only comparable to another replay run with the same
 # three, so every historical record carries them and evidence is never pooled
 # across versions. Changing one does not invalidate the old records — it starts
 # a new generation alongside them.
-REPLAY_VERSION = "replay-v2"
+REPLAY_VERSION = "replay-v3"
 FEATURE_VERSION = "hfeat-v1"
-DATA_VERSION = "yahoo-adjusted-close-v1"
+DATA_VERSION = "yahoo-adjusted-close-v2-daily-session-normalized"
 
 RUN_MODES = ("researchOnly", "paperTrading", "liveValidated")
 DEFAULT_RUN_MODE = "paperTrading"

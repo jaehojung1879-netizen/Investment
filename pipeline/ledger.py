@@ -28,6 +28,8 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
+from .market_dates import normalize_daily_series
+
 HORIZONS = [21, 63, 126, 252]
 
 
@@ -57,6 +59,7 @@ def records_from_payload(payload: dict) -> list[dict]:
     default_date = (payload.get("meta") or {}).get("latestDataDate")
     model_version = payload.get("modelVersion") or provenance.get("modelVersion")
     schema_version = payload.get("schemaVersion") or provenance.get("schemaVersion")
+    data_version = provenance.get("dataVersion") or payload.get("dataVersion")
     macro = ((payload.get("macroRegime") or {}) or {}).get("regime")
     lt = payload.get("longTerm") or {}
     out: list[dict] = []
@@ -76,6 +79,7 @@ def records_from_payload(payload: dict) -> list[dict]:
                 "region": row_region,
                 "modelVersion": model_version,
                 "schemaVersion": schema_version,
+                "dataVersion": data_version,
                 "longTermResearchView": row.get("longTermResearchView"),
                 "alpha": row.get("alpha"),
                 "alphaPercentile": row.get("alphaPercentile"),
@@ -121,6 +125,7 @@ def portfolio_record_from_payload(payload: dict) -> dict | None:
         "date": date,
         "modelVersion": model_version,
         "schemaVersion": payload.get("schemaVersion") or provenance.get("schemaVersion"),
+        "dataVersion": provenance.get("dataVersion") or payload.get("dataVersion"),
         "portfolioStatus": portfolio.get("status"),
         "horizonDays": portfolio.get("horizonDays"),
         "positions": portfolio.get("positions") or [],
@@ -169,14 +174,15 @@ def compute_outcomes(signals: list[dict], prices: dict[str, pd.DataFrame],
     """For each matured signal compute forward returns, excess vs benchmark,
     and MFE/MAE. Only produces an outcome for a horizon that has fully elapsed
     in the price data — no partial/look-ahead outcomes."""
-    benchmarks = benchmarks or {}
+    benchmarks = {name: normalize_daily_series(series.dropna())
+                  for name, series in (benchmarks or {}).items() if series is not None}
     out = []
     for s in signals:
         tk = s["ticker"]
         px = prices.get(tk)
         if px is None or "Close" not in px:
             continue
-        close = px["Close"].dropna()
+        close = normalize_daily_series(px["Close"].dropna())
         try:
             entry_idx = close.index.get_indexer([pd.Timestamp(s["date"])], method="ffill")[0]
         except Exception:
@@ -186,7 +192,9 @@ def compute_outcomes(signals: list[dict], prices: dict[str, pd.DataFrame],
         entry_px = float(close.iloc[entry_idx])
         bench = benchmarks.get(s.get("benchmark"))
         rec = {"id": s["id"], "date": s["date"], "ticker": tk, "region": s.get("region"),
-               "modelVersion": s.get("modelVersion"), "longTermResearchView": s.get("longTermResearchView"),
+               "modelVersion": s.get("modelVersion"), "dataVersion": s.get("dataVersion"),
+               "benchmark": s.get("benchmark"),
+               "longTermResearchView": s.get("longTermResearchView"),
                "entryState": s.get("entryState"), "macroRegime": s.get("macroRegime"),
                "alpha": s.get("alpha"), "alphaPercentile": s.get("alphaPercentile"), "horizons": {}}
         for h in HORIZONS:
@@ -199,13 +207,13 @@ def compute_outcomes(signals: list[dict], prices: dict[str, pd.DataFrame],
             mae = float(path.min() / entry_px - 1)
             excess = None
             if bench is not None:
-                b = bench.dropna()
                 try:
                     start_date, end_date = close.index[entry_idx], close.index[j]
                     # The benchmark must share the exact start/end calendar
                     # dates. A nearby US session is not a valid KR comparison.
-                    if start_date in b.index and end_date in b.index:
-                        excess = round(fwd - float(b.loc[end_date] / b.loc[start_date] - 1), 4)
+                    if start_date in bench.index and end_date in bench.index:
+                        excess = round(
+                            fwd - float(bench.loc[end_date] / bench.loc[start_date] - 1), 4)
                 except Exception:
                     pass
             rec["horizons"][str(h)] = {
@@ -220,14 +228,15 @@ def compute_outcomes(signals: list[dict], prices: dict[str, pd.DataFrame],
 def compute_portfolio_outcomes(signals: list[dict], prices: dict[str, pd.DataFrame],
                                benchmarks: dict[str, pd.Series] | None = None) -> list[dict]:
     """Compute matured portfolio outcomes on a synchronized common calendar."""
-    benchmarks = benchmarks or {}
+    benchmarks = {name: normalize_daily_series(series.dropna())
+                  for name, series in (benchmarks or {}).items() if series is not None}
     results = []
     for signal in signals:
         weights = {k: float(v) for k, v in (signal.get("finalWeights") or {}).items() if float(v) > 0}
         if not weights or not signal.get("date"):
             continue
         closes = {
-            ticker: prices[ticker]["Close"].dropna()
+            ticker: normalize_daily_series(prices[ticker]["Close"].dropna())
             for ticker in weights if ticker in prices and "Close" in prices[ticker]
         }
         if set(closes) != set(weights):
@@ -241,7 +250,9 @@ def compute_portfolio_outcomes(signals: list[dict], prices: dict[str, pd.DataFra
             continue
         record = {
             "id": signal["id"], "date": signal["date"],
-            "modelVersion": signal.get("modelVersion"), "horizons": {},
+            "modelVersion": signal.get("modelVersion"),
+            "dataVersion": signal.get("dataVersion"),
+            "benchmarks": signal.get("benchmarks") or {}, "horizons": {},
         }
         for horizon in sorted({21, 63, 126, 252}):
             end = start + horizon

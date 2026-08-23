@@ -98,7 +98,13 @@ def _validate_evidence_separation(data: dict) -> list[str]:
         replay = historical.get("portfolioReplay") or {}
         integrity = historical.get("dataIntegrity") or {}
         integrity_gate = integrity.get("integrityGate") or {}
+        benchmark_gate = historical.get("benchmarkCoverageGate") or {}
+        contract = historical.get("contractValidation") or {}
         promotion = replay.get("promotionEvidence") or {}
+        if historical.get("available") and benchmark_gate.get("eligible") is not True:
+            errors.append("historical_benchmark_coverage_gate_failed")
+        if historical.get("available") and contract.get("eligible") is not True:
+            errors.append("historical_portfolio_contract_failed")
         if replay.get("fullProductionFidelity") and (
                 not integrity.get("historicalUniverseAvailable")
                 or not (integrity.get("pitFundamentals") or {}).get("available")):
