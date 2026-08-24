@@ -58,6 +58,21 @@ def test_regional_fetch_never_mixes_markets_and_isolates_benchmarks(monkeypatch)
     assert set(prices) == {"AAPL", "MSFT", "005930.KS", "SPY", "^KS200"}
 
 
+def test_regional_fetch_rejects_benchmark_without_close(monkeypatch):
+    def fake_fetch(tickers, start, batch=40):
+        dates = pd.bdate_range("2024-01-02", periods=3)
+        if tickers == ["^KS200"]:
+            return {"^KS200": pd.DataFrame({"Open": [1, 2, 3]}, index=dates)}
+        return {ticker: _frame(dates) for ticker in tickers}
+
+    monkeypatch.setattr(datafeed, "fetch_prices", fake_fetch)
+    prices = datafeed.fetch_regional_prices(
+        {"KR": ["005930.KS"]}, {"KR": "^KS200"}, "2020-01-01")
+
+    assert "005930.KS" in prices
+    assert "^KS200" not in prices
+
+
 def test_benchmark_session_preflight_accepts_timezone_equivalent_dates():
     dates = pd.bdate_range("2019-01-02", periods=500)
     prices = {

@@ -125,13 +125,15 @@ def fetch_regional_prices(universe: dict[str, list[str]], benchmarks: dict[str, 
     for region, ticker in benchmarks.items():
         print(f"  fetching {region} benchmark {ticker} in isolation ...")
         isolated = fetch_prices([ticker], start, batch=1)
-        if ticker not in isolated:
+        benchmark_frame = isolated.get(ticker)
+        if benchmark_frame is None or "Close" not in benchmark_frame:
             continue
-        out[ticker] = isolated[ticker]
-        close = pd.to_numeric(out[ticker].get("Close"), errors="coerce").dropna()
-        if len(close):
-            print(f"    {ticker}: {len(close)} sessions "
-                  f"{close.index[0].date()} .. {close.index[-1].date()}")
+        close = pd.to_numeric(benchmark_frame["Close"], errors="coerce").dropna()
+        if not len(close):
+            continue
+        out[ticker] = benchmark_frame
+        print(f"    {ticker}: {len(close)} sessions "
+              f"{close.index[0].date()} .. {close.index[-1].date()}")
     return out
 
 
