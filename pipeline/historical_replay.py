@@ -53,11 +53,13 @@ from . import longterm as longterm_mod
 from . import pit_data
 from . import regime as regime_mod
 from . import sectors as SECT
+from .market_dates import normalize_daily_frame
 
 # Bumped whenever the replay's own logic changes shape. Records carry it so two
 # generations of replay never pool into one evidence base.
-REPLAY_VERSION = "replay-v2"
+REPLAY_VERSION = "replay-v3"
 FEATURE_VERSION = "hfeat-v1"
+DATA_VERSION = "yahoo-adjusted-close-v2-daily-session-normalized"
 
 EVIDENCE_HISTORICAL = "HISTORICAL_OOS"
 
@@ -112,7 +114,7 @@ def _to_history(ticker: str, frame: pd.DataFrame) -> TickerHistory | None:
     data = data.dropna(subset=["Close"])
     if data.empty:
         return None
-    data = data[~data.index.duplicated(keep="last")].sort_index()
+    data = normalize_daily_frame(data)
     close = data["Close"].to_numpy(dtype=float)
     with np.errstate(divide="ignore", invalid="ignore"):
         returns = np.empty_like(close)
@@ -721,6 +723,7 @@ def replay_one_date(as_of, panel: PricePanel, universe_by_region: dict[str, list
                 "modelVersion": model_version,
                 "replayVersion": REPLAY_VERSION,
                 "featureVersion": FEATURE_VERSION,
+                "dataVersion": DATA_VERSION,
                 "futureDataUsed": False,
                 "pit": pit_block,
             })
@@ -818,6 +821,7 @@ def run_replay(prices: dict[str, pd.DataFrame], universe: dict[str, list[str]], 
         "gridDates": [d.strftime("%Y-%m-%d") for d in grid[-4:]],
         "replayVersion": REPLAY_VERSION,
         "featureVersion": FEATURE_VERSION,
+        "dataVersion": DATA_VERSION,
         "modelVersion": model_version,
         "frequency": frequency,
         "requestedStart": str(start) if start else None,

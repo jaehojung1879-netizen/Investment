@@ -13,6 +13,7 @@ import time
 import pandas as pd
 
 from .config import Config
+from .market_dates import normalize_daily_frame, normalize_daily_series
 
 
 OHLCV = ["Open", "High", "Low", "Close", "Volume"]
@@ -53,7 +54,7 @@ def _extract(df: pd.DataFrame, chunk: list[str], out: dict[str, pd.DataFrame]) -
             df.columns = df.columns.get_level_values(-1)
         keep = [c for c in OHLCV if c in df.columns]
         if keep:
-            sub = df[keep].dropna(how="all")
+            sub = normalize_daily_frame(df[keep].dropna(how="all"))
             if len(sub):
                 out[tk] = sub.copy()
         return
@@ -62,7 +63,7 @@ def _extract(df: pd.DataFrame, chunk: list[str], out: dict[str, pd.DataFrame]) -
             continue
         sub = df[tk]
         keep = [c for c in OHLCV if c in sub.columns]
-        sub = sub[keep].dropna(how="all")
+        sub = normalize_daily_frame(sub[keep].dropna(how="all"))
         if len(sub):
             out[tk] = sub.copy()
 
@@ -104,7 +105,7 @@ def fetch_vix(start: str) -> pd.Series | None:
         return None
     if isinstance(df.columns, pd.MultiIndex):
         df.columns = df.columns.get_level_values(0)
-    return df["Close"].rename("VIX")
+    return normalize_daily_series(df["Close"].rename("VIX"))
 
 
 def fetch_macro(cfg: Config, start: str) -> pd.DataFrame | None:

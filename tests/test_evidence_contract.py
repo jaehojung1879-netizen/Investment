@@ -53,7 +53,7 @@ def _base_payload(**overrides) -> dict:
 # Schema
 # --------------------------------------------------------------------------- #
 def test_schema_version_was_raised_for_the_new_evidence_sections():
-    assert prov_mod.SCHEMA_VERSION == "2.6.0"
+    assert prov_mod.SCHEMA_VERSION == "2.7.0"
     assert prov_mod.REPLAY_VERSION and prov_mod.FEATURE_VERSION and prov_mod.DATA_VERSION
 
 
@@ -65,10 +65,12 @@ def test_provenance_stamps_the_replay_and_feature_versions():
     from pipeline import historical_replay as replay
     assert replay.REPLAY_VERSION == prov_mod.REPLAY_VERSION
     assert replay.FEATURE_VERSION == prov_mod.FEATURE_VERSION
+    assert replay.DATA_VERSION == prov_mod.DATA_VERSION
 
 
 def test_config_carries_the_new_blocks_with_a_sealed_holdout():
     assert CONFIG["historicalReplay"]["enabled"] is True
+    assert CONFIG["historicalReplay"]["minBenchmarkCoveragePct"] >= 95
     assert CONFIG["evidence"]["priorScalePct"] > 0
     assert CONFIG["opportunity"]["finalHoldoutStart"]
     acceptance = CONFIG["opportunity"]["acceptance"]
@@ -88,6 +90,17 @@ def test_validator_rejects_historical_evidence_labelled_as_live(tmp_path):
     payload = _base_payload(historicalValidation={
         "evidenceClass": "HISTORICAL_OOS", "available": True, "liveValidated": True})
     assert "historical_evidence_claims_live_validation" in V.validate(_write(tmp_path, payload))
+
+
+def test_validator_blocks_available_historical_evidence_without_coverage_contract(tmp_path):
+    payload = _base_payload(historicalValidation={
+        "evidenceClass": "HISTORICAL_OOS", "available": True,
+        "benchmarkCoverageGate": {"eligible": False},
+        "contractValidation": {"eligible": False},
+    })
+    errors = V.validate(_write(tmp_path, payload), production=False)
+    assert "historical_benchmark_coverage_gate_failed" in errors
+    assert "historical_portfolio_contract_failed" in errors
 
 
 def test_validator_rejects_signals_recorded_with_zero_tracking_days(tmp_path):
@@ -165,7 +178,11 @@ def test_validator_rejects_radar_output_in_a_blocked_artifact(tmp_path):
 
 def test_validator_accepts_a_well_formed_evidence_block(tmp_path):
     payload = _base_payload(
-        historicalValidation={"evidenceClass": "HISTORICAL_OOS", "available": True},
+        historicalValidation={
+            "evidenceClass": "HISTORICAL_OOS", "available": True,
+            "benchmarkCoverageGate": {"eligible": True},
+            "contractValidation": {"eligible": True},
+        },
         prospectiveValidation={"evidenceClass": "PROSPECTIVE_PAPER", "trackingDays": 120,
                                "signalsRecorded": 900, "maturedObservationDays": 40},
         kellyEvidence={"byRegion": {"US": {

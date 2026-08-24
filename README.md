@@ -98,7 +98,7 @@
 |---|---|---|---|
 | **1. Replay Infrastructure** | time-safe replay engine, price-only PIT, historical signal ledger, outcomes, leakage 탐지 | **완료 · 가동** | — |
 | **2. PIT Fundamentals / Macro** | publication-aware 재무, vintage-aware 매크로, historical universe | **인터페이스 완료 · 데이터 대기** | 무료 소스에 발표일 이력·ALFRED vintage·과거 구성종목이 없음. `pit_data.FundamentalStore.from_jsonl` / `UniverseHistory.from_json`에 파일만 넣으면 즉시 활성화되고 PIT 커버리지가 올라갑니다. |
-| **3. Historical Calibration** | alpha bucket 기대수익 + 만기 인지형 상승확률·상하방 분포 calibration, historical Kelly prior, shrinkage | **구현 완료 · replay-v2/데이터 gate 대기** | 새 세대 재현 후에도 Brier·ECE·log-loss와 과거 구성종목·PIT 재무·필요 시 vintage 거시 gate를 모두 통과해야 Kelly가 켜집니다 |
+| **3. Historical Calibration** | alpha bucket 기대수익 + 만기 인지형 상승확률·상하방 분포 calibration, historical Kelly prior, shrinkage | **구현 완료 · replay-v3/데이터 gate 대기** | 새 세대 재현 후에도 지역별 벤치마크 커버리지, Brier·ECE·log-loss와 과거 구성종목·PIT 재무·필요 시 vintage 거시 gate를 모두 통과해야 Kelly가 켜집니다 |
 | **4. ML Opportunity / Warning** | change feature dataset, walk-forward ML, calibrated probability, radar | **완료 · acceptance gate 대기** | gate 통과 전까지 규칙 기반 점수 사용 (설계된 동작) |
 | **5. Prospective Bayesian Update** | historical + live posterior, drift 감지, Kelly 영향도 적응 | **완료 · 가동** | prospective ledger가 쌓이면 자동으로 비중이 이동 |
 
@@ -106,7 +106,7 @@ Phase 2가 비어 있어도 Phase 1·3·5는 정상 동작합니다. price-only 
 
 ## 최종 3~5종목 Historical Portfolio Replay
 
-개별 신호 성과와 별도로, 각 과거 리밸런싱 날짜에 실제 사용 가능했던 replay-v2 신호를 모아 `research candidate → entry state → candidate filter → concentrated selection → baseline weight → macro cash floor → final historical weight`를 다시 실행합니다. 라이브와 replay는 `selection_and_baseline`이라는 같은 순수 함수를 호출하므로 종목·업종·지역 상한과 기준 비중 공식이 따로 복사되지 않습니다. 날짜마다 선택 종목, 근접 탈락 사유, 팩터/PIT 커버리지, 컨빅션 순위, 현금, 국면, 비용 가정과 버전을 감사 표본에 남깁니다.
+개별 신호 성과와 별도로, 각 과거 리밸런싱 날짜에 실제 사용 가능했던 replay-v3 신호를 모아 `research candidate → entry state → candidate filter → concentrated selection → baseline weight → macro cash floor → final historical weight`를 다시 실행합니다. 라이브와 replay는 `selection_and_baseline`이라는 같은 순수 함수를 호출하므로 종목·업종·지역 상한과 기준 비중 공식이 따로 복사되지 않습니다. 날짜마다 선택 종목, 근접 탈락 사유, 팩터/PIT 커버리지, 컨빅션 순위, 현금, 국면, 비용 가정과 버전을 감사 표본에 남깁니다. 일별 바의 시장 달력 날짜를 먼저 정규화하며, 126일 지역별 벤치마크 커버리지가 95% 미만이면 초과수익 검증 원장을 게시하지 않습니다.
 
 - Production champion은 계속 `ALPHA_RANK_PER_DOWNSIDE_RISK`입니다. `CALIBRATED_EXPECTED_RETURN_PER_DOWNSIDE_RISK` challenger는 같은 날짜·후보·제약·비용에서만 비교하고, T일에는 `outcomeEndDate <= T`인 결과만 expanding calibration에 넣습니다.
 - 주간의 겹치는 21/63/126/252일 forward return을 CAGR이나 MDD로 이어 붙이지 않습니다. 자산곡선·CAGR·Sharpe·Sortino·MDD·CVaR·회전율은 실제 비용을 적용한 **겹치지 않는 리밸런싱 블록**으로 별도 구성합니다. 모든 날짜 평균은 이 경로 지표와 구분합니다.
@@ -199,7 +199,7 @@ python scripts/demo_replay.py --tickers 40 --years 9
 
 **계산비용.** 전체 재현은 종목수 × 재현 날짜 수에 비례합니다(주 단위 기준 550종목 × 13년 ≈ 수십 분). 그래서 `.github/workflows/replay.yml`은 **증분**으로 돌고, ML 재학습은 주 1회입니다. 일주일치 새 관측치가 walk-forward 선택을 바꿀 수 없는데 매일 재학습하면 비용만 늘고 **유효 시도 횟수만 부풀립니다**. 재현 주기 선택(`D`/`W`/`M`)의 trade-off는 `config.historicalReplay._notes`에 기록했습니다: 일 단위는 5배 비용에 대부분 겹치는 관측치만 추가되고 HAC 유효표본은 거의 늘지 않으며, 월 단위는 버킷 calibration에 필요한 횡단면 수를 밑돕니다.
 
-`data/site-data.json`과 `data/audit.json`은 workflow/로컬 명령이 만드는 생성물이며 Git에서 추적하지 않습니다. 테스트용 최소 예시는 `tests/fixtures/site-data.synthetic.json`에 있고 파일명과 내부 `dataMode` 모두 synthetic임을 명시합니다. regional active Kelly·universe diagnostics·run-to-run diff가 추가된 스키마는 `2.3.0`이었고, `2.4.0`에서 과거/실시간 증거 분리와 레이더, `2.5.0`에서 만기 인지형 확률 감사가 추가되었습니다. **현재 스키마는 `2.6.0`**이며 `historicalValidation.alphaDiagnostics`, `portfolioReplay`, `forecastGap`, `dataIntegrity`를 추가합니다. 기존 필드는 그대로 유지되므로 이전 소비자는 새 섹션을 무시하면 계속 동작합니다.
+`data/site-data.json`과 `data/audit.json`은 workflow/로컬 명령이 만드는 생성물이며 Git에서 추적하지 않습니다. 테스트용 최소 예시는 `tests/fixtures/site-data.synthetic.json`에 있고 파일명과 내부 `dataMode` 모두 synthetic임을 명시합니다. regional active Kelly·universe diagnostics·run-to-run diff가 추가된 스키마는 `2.3.0`이었고, `2.4.0`에서 과거/실시간 증거 분리와 레이더, `2.5.0`에서 만기 인지형 확률 감사, `2.6.0`에서 alpha·portfolio·integrity 진단이 추가되었습니다. **현재 스키마는 `2.7.0`**이며 일별 세션 정규화, 지역별 벤치마크 커버리지 gate, 검증 원장 commit provenance를 추가합니다. 기존 필드는 그대로 유지되므로 이전 소비자는 새 섹션을 무시하면 계속 동작합니다.
 
 `FRED_API_KEY`(및 KR 매크로용 `ECOS_API_KEY`)는 GitHub Actions Secret으로만 주입합니다. 네트워크가 막힌 환경에서는 실데이터 빌드가 불가능하며, 그 경우 seed로 성공한 척하지 않고 차단 원인을 보고합니다.
 

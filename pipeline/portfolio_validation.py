@@ -24,7 +24,7 @@ from . import longterm as LT
 from . import pit_data
 
 
-REPORT_VERSION = "portfolio-validation-v1"
+REPORT_VERSION = "portfolio-validation-v2"
 CHAMPION = KP.SELECTION_METHOD
 CHALLENGER = "CALIBRATED_EXPECTED_RETURN_PER_DOWNSIDE_RISK"
 HORIZONS = (21, 63, 126, 252)
@@ -465,21 +465,49 @@ def _turnover_cost(weights: dict, prior: dict, candidates: list[dict], cfg_pf: d
             "cost": cost, "buys": buys, "sells": sells}
 
 
-def _outcome_for_decision(decision: dict, outcome_by_id: dict, signal_by_key: dict,
-                          horizon: int) -> dict | None:
+def _outcome_for_decision_with_diagnostics(
+        decision: dict, outcome_by_id: dict, signal_by_key: dict,
+        horizon: int) -> tuple[dict | None, dict]:
     gross = benchmark = 0.0
     end_dates = []
+    reasons: dict[str, set[str]] = defaultdict(set)
+    regions: set[str] = set()
     for ticker, weight in decision["weights"].items():
         signal = signal_by_key.get((decision["date"], ticker))
+        region = (decision.get("regionByTicker") or {}).get(ticker) or "UNKNOWN"
+        regions.add(region)
+        if signal is None:
+            reasons["MISSING_SIGNAL"].add(ticker)
+            continue
         outcome = outcome_by_id.get((signal or {}).get("id"))
+        if outcome is None:
+            reasons["MISSING_OUTCOME"].add(ticker)
+            continue
         h = ((outcome or {}).get("horizons") or {}).get(str(horizon))
-        if not h or h.get("absoluteReturn") is None or h.get("benchmarkReturn") is None:
-            return None
+        if not h:
+            reasons["HORIZON_NOT_MATURED"].add(ticker)
+            continue
+        if h.get("absoluteReturn") is None:
+            reasons["MISSING_ABSOLUTE_RETURN"].add(ticker)
+        if h.get("benchmarkReturn") is None:
+            reasons["MISSING_BENCHMARK_RETURN"].add(ticker)
+        if (h.get("absoluteReturn") is None
+                or h.get("benchmarkReturn") is None):
+            continue
         gross += float(weight) * float(h["absoluteReturn"])
         benchmark += float(weight) * float(h["benchmarkReturn"])
         end_dates.append(h.get("endDate"))
-    if not decision["weights"] or not end_dates:
-        return None
+    if not decision["weights"]:
+        reasons["EMPTY_PORTFOLIO"].add("<none>")
+    diagnostic = {
+        "complete": not reasons and bool(end_dates),
+        "reasons": sorted(reasons),
+        "tickersByReason": {reason: sorted(tickers)
+                            for reason, tickers in sorted(reasons.items())},
+        "affectedRegions": sorted(regions),
+    }
+    if reasons or not end_dates:
+        return None, diagnostic
     return {
         "date": decision["date"], "endDate": max(end_dates),
         "selector": decision["selector"], "weights": decision["weights"],
@@ -496,7 +524,15 @@ def _outcome_for_decision(decision: dict, outcome_by_id: dict, signal_by_key: di
         "effectiveNames": (1 / sum((w / sum(decision["weights"].values())) ** 2
                                    for w in decision["weights"].values())
                            if sum(decision["weights"].values()) > 0 else None),
-    }
+    }, diagnostic
+
+
+def _outcome_for_decision(decision: dict, outcome_by_id: dict, signal_by_key: dict,
+                          horizon: int) -> dict | None:
+    """Backward-compatible value-only wrapper for one portfolio decision."""
+    outcome, _ = _outcome_for_decision_with_diagnostics(
+        decision, outcome_by_id, signal_by_key, horizon)
+    return outcome
 
 
 def _path_metrics(rows: list[dict], horizon: int, cfg_pf: dict) -> dict:
@@ -715,10 +751,28 @@ def portfolio_replay(signals: list[dict], outcomes: list[dict], *, cfg_lt: dict,
     for method, method_decisions in decisions.items():
         for horizon in HORIZONS:
             rows = []
+            dropped_by_reason: dict[str, int] = defaultdict(int)
+            affected_regions: set[str] = set()
+            affected_tickers: set[str] = set()
             for decision in method_decisions:
-                outcome = _outcome_for_decision(decision, outcome_by_id, signal_by_key, horizon)
+                outcome, diagnostic = _outcome_for_decision_with_diagnostics(
+                    decision, outcome_by_id, signal_by_key, horizon)
                 if outcome:
                     rows.append(outcome)
+                else:
+                    for reason in diagnostic["reasons"]:
+                        dropped_by_reason[reason] += 1
+                        affected_tickers.update(
+                            diagnostic["tickersByReason"].get(reason) or [])
+                    affected_regions.update(diagnostic["affectedRegions"])
+            outcome_coverage = {
+                "totalDecisions": len(method_decisions),
+                "completeOutcomes": len(rows),
+                "droppedDecisions": len(method_decisions) - len(rows),
+                "droppedByReason": dict(sorted(dropped_by_reason.items())),
+                "affectedRegions": sorted(affected_regions),
+                "affectedTickersSample": sorted(affected_tickers)[:20],
+            }
             horizon_results[method][str(horizon)] = {
                 "observations": len(rows),
                 "uniqueDates": len({row["date"] for row in rows}),
@@ -729,6 +783,7 @@ def portfolio_replay(signals: list[dict], outcomes: list[dict], *, cfg_lt: dict,
                 "meanGrossExcessPct": _r(np.mean([row["grossExcessReturn"] for row in rows]) * 100, 3) if rows else None,
                 "meanCostAdjustedReturnPct": _r(np.mean([row["costAdjustedReturn"] for row in rows]) * 100, 3) if rows else None,
                 "meanCostAdjustedExcessPct": _r(np.mean([row["costAdjustedExcessReturn"] for row in rows]) * 100, 3) if rows else None,
+                "outcomeCoverage": outcome_coverage,
                 "path": _path_metrics(rows, horizon, cfg_pf),
             }
         summaries[method] = horizon_results[method]["21"]["path"]
@@ -822,9 +877,13 @@ def data_integrity(diagnostics: dict, signals: list[dict]) -> dict:
     universe_ready = bool(universe_available and constituent_coverage == 100.0)
     fundamentals_ready = bool(diagnostics.get("fundamentalsPit"))
     macro_ready = diagnostics.get("macroPitStatus") == pit_data.PIT_EXACT
+    benchmark_gate = diagnostics.get("benchmarkCoverageGate") or {}
+    benchmark_ready = (bool(benchmark_gate.get("eligible"))
+                       if "eligible" in benchmark_gate else None)
     checks = {"historicalUniverse": universe_ready,
               "pointInTimeFundamentals": fundamentals_ready,
-              "vintageMacro": macro_ready}
+              "vintageMacro": macro_ready,
+              "benchmarkCoverage": benchmark_ready}
     return {
         "historicalUniverseAvailable": universe_available,
         "constituentCoveragePct": _r(constituent_coverage, 2),
@@ -844,8 +903,14 @@ def data_integrity(diagnostics: dict, signals: list[dict]) -> dict:
             "currentSnapshotBackfillAllowed": False,
         },
         "macroVintage": diagnostics.get("macroPitStatus"),
-        "integrityGate": {"eligible": all(checks.values()), "checks": checks,
-                          "failures": [key for key, ok in checks.items() if not ok]},
+        "benchmarkCoverageGate": benchmark_gate or {"eligible": None,
+                                                       "reason": "not_assessed"},
+        "integrityGate": {
+            "eligible": all(ok is True for ok in checks.values()),
+            "checks": checks,
+            "failures": [key for key, ok in checks.items() if ok is False],
+            "unassessable": [key for key, ok in checks.items() if ok is None],
+        },
         "historicalResultLabel": ("HISTORICAL_OOS" if universe_ready
                                   else "SURVIVORSHIP_BIAS_UNRESOLVED"),
     }
@@ -911,14 +976,38 @@ def build_report(signals: list[dict], outcomes: list[dict], *, cfg_lt: dict,
                                  diagnostics=diagnostics)
     integrity = data_integrity(diagnostics, signals)
     gap = expected_realized_gap(outcomes, horizon=int(cfg_pf.get("horizonDays", 126)))
+    contract_failures = []
+    if not signals:
+        contract_failures.append("no_current_generation_signals")
+    benchmark_gate = diagnostics.get("benchmarkCoverageGate") or {}
+    if benchmark_gate.get("eligible") is not True:
+        contract_failures.append(
+            "benchmark_coverage_gate_failed" if "eligible" in benchmark_gate
+            else "benchmark_coverage_gate_not_assessed")
+    target_horizon = str(int(cfg_pf.get("horizonDays", 126)))
+    for method, blob in (portfolio.get("selectors") or {}).items():
+        coverage = (((blob.get("horizons") or {}).get(target_horizon) or {})
+                    .get("outcomeCoverage") or {})
+        if (int(coverage.get("totalDecisions") or 0) > 0
+                and int(coverage.get("completeOutcomes") or 0) == 0
+                and int((coverage.get("droppedByReason") or {}).get(
+                    "MISSING_BENCHMARK_RETURN") or 0) > 0):
+            contract_failures.append(
+                f"{method}:{target_horizon}D_all_portfolios_dropped_for_missing_benchmark")
     return {
         "reportVersion": REPORT_VERSION,
         "evidenceClass": "HISTORICAL_OOS",
         "replayVersion": replay_version or diagnostics.get("replayVersion"),
+        "dataVersion": diagnostics.get("dataVersion"),
         "modelVersion": model_version or diagnostics.get("modelVersion"),
         "generationIsolation": {"method": "EXACT_REPLAY_AND_MODEL_VERSION",
                                 "excludedSignals": rejected_signals,
                                 "excludedOutcomes": rejected_outcomes},
+        "contractValidation": {
+            "eligible": not contract_failures,
+            "status": "VALID" if not contract_failures else "BLOCKED",
+            "failures": contract_failures,
+        },
         "alphaDiagnostics": alpha,
         "portfolioReplay": portfolio,
         "forecastGap": {"historicalOos": gap,
@@ -926,6 +1015,7 @@ def build_report(signals: list[dict], outcomes: list[dict], *, cfg_lt: dict,
         "dataIntegrity": integrity,
         "claims": {
             "actuallyValidated": [
+                "same-session regional benchmark coverage above the publication gate",
                 "price-based momentum and low-vol historical ranking diagnostics",
                 "price-sleeve audit proxy through production selection and baseline weighting code",
                 "maturity-aware historical probability and expected-return gaps",

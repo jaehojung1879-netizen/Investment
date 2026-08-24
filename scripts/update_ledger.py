@@ -30,6 +30,8 @@ def main(argv=None) -> int:
     data = json.loads(Path(argv[0]).read_text(encoding="utf-8"))
     current_model_version = (data.get("modelVersion")
                              or (data.get("provenance") or {}).get("modelVersion"))
+    current_data_version = ((data.get("provenance") or {}).get("dataVersion")
+                            or data.get("dataVersion"))
     ledger_dir = Path(argv[1])
     sig_path = ledger_dir / "signals.jsonl"
     out_path = ledger_dir / "outcomes.jsonl"
@@ -85,6 +87,7 @@ def main(argv=None) -> int:
             portfolio_outcomes, current_model_version)
         summary = {
             "modelVersion": current_model_version,
+            "dataVersion": current_data_version,
             "generationIsolation": {
                 "method": "EXACT_MODEL_VERSION",
                 "excludedPriorModelOutcomes": excluded_outcomes,

@@ -150,7 +150,8 @@ def test_ledger_records_full_cross_section_after_provenance_stamp():
     payload = _ledger_payload()
     records = LG.records_from_payload(payload)
     assert len(records) == 20
-    assert all(r["modelVersion"] and r["schemaVersion"] for r in records)
+    assert all(r["modelVersion"] and r["schemaVersion"] and r["dataVersion"]
+               for r in records)
     assert all(r["date"] == "2026-01-02" and r["refClose"] is not None for r in records)
     assert {r["benchmark"] for r in records if r["region"] == "KR"} == {"^KS200"}
     assert {r["benchmark"] for r in records if r["region"] == "US"} == {"SPY"}
@@ -248,7 +249,8 @@ def test_unblocked_paper_research_keeps_entry_view():
 
 def test_outcomes_use_exact_regional_benchmark_calendar_dates():
     dates = pd.bdate_range("2026-01-02", periods=30)
-    stock = pd.DataFrame({"Close": np.linspace(100, 130, 30)}, index=dates)
+    stock = pd.DataFrame({"Close": np.linspace(100, 130, 30)},
+                         index=dates.tz_localize("Asia/Seoul"))
     kr_benchmark = pd.Series(np.linspace(100, 110, 30), index=dates)
     signal = [{
         "id": "s", "date": dates[0].strftime("%Y-%m-%d"), "ticker": "005930.KS",
@@ -258,6 +260,7 @@ def test_outcomes_use_exact_regional_benchmark_calendar_dates():
     outcome = LG.compute_outcomes(signal, {"005930.KS": stock}, {"^KS200": kr_benchmark})[0]
     expected = (stock["Close"].iloc[21] / 100 - 1) - (kr_benchmark.iloc[21] / 100 - 1)
     assert outcome["horizons"]["21"]["excessReturn"] == round(float(expected), 4)
+    assert outcome["benchmark"] == "^KS200"
 
 
 def test_synthetic_signal_is_not_written_to_real_ledger(tmp_path):
@@ -398,6 +401,16 @@ def test_pages_state_workflow_is_post_deploy_and_non_recursive():
     assert "origin/signal-history:state/latest.json" in pages
     assert pages.index("Deploy to GitHub Pages") < pages.index("Publish last successful state")
     assert "state/latest.json" in pages
+    assert 'workflows: ["Historical point-in-time replay"]' in pages
+    assert "HISTORICAL_LEDGER_COMMIT_SHA" in pages
+
+
+def test_replay_weekly_training_reaches_the_sunday_shell_gate():
+    replay = (ROOT / ".github" / "workflows" / "replay.yml").read_text(encoding="utf-8")
+    step = replay[replay.index("- name: Train / validate the opportunity model"):]
+    step = step[:step.index("- name: Check ledger fits the remote")]
+    assert "date -u +%u" in step
+    assert "github.event.schedule == null" not in step
 
 
 def test_synthetic_fixture_is_explicit_and_generated_artifact_is_ignored():

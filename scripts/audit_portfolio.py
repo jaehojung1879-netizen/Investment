@@ -1,4 +1,4 @@
-"""Build alpha-ranking and concentrated-portfolio validation from replay-v2."""
+"""Build alpha-ranking and concentrated-portfolio validation for the active replay."""
 from __future__ import annotations
 
 import argparse
@@ -52,6 +52,12 @@ def main(argv=None) -> int:
         print(f"{method}: CAGR {summary.get('cagrPct')}% | excess "
               f"{summary.get('annualizedExcessPct')}%p | MDD {summary.get('mddPct')}% | "
               f"Sharpe {summary.get('sharpe')} | turnover {summary.get('averageTurnoverPct')}%")
+    contract = report.get("contractValidation") or {}
+    if not contract.get("eligible", False):
+        print("ERROR: portfolio validation contract failed; report is BLOCKED")
+        for failure in contract.get("failures") or []:
+            print(f"  {failure}")
+        return 1
     return 0
 
 
