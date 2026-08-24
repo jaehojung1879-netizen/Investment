@@ -1,22 +1,23 @@
 {
-  "modelVersion": "longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3",
+  "modelVersion": "longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
+  "dataVersion": "yahoo-adjusted-close-v2-daily-session-normalized",
   "generationIsolation": {
     "method": "EXACT_MODEL_VERSION",
     "excludedPriorModelOutcomes": 764,
     "excludedPriorModelPortfolioOutcomes": 0
   },
   "validationStatus": {
-    "paperDays": 6,
-    "trackingDays": 6,
+    "paperDays": 1,
+    "trackingDays": 1,
     "maturedObservationDays": 0,
-    "modelVersion": "longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3",
+    "modelVersion": "longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
     "generationIsolated": true,
-    "excludedPriorModelSignals": 9957,
+    "excludedPriorModelSignals": 13518,
     "excludedPriorModelOutcomes": 764,
-    "signalsRecorded": 3561,
-    "uniqueDates": 6,
+    "signalsRecorded": 617,
+    "uniqueDates": 1,
     "maturedUniqueDates": 0,
-    "firstSignalDate": "2026-08-14",
+    "firstSignalDate": "2026-08-21",
     "lastSignalDate": "2026-08-21",
     "maturedSignals": 0,
     "maturedByHorizon": {
