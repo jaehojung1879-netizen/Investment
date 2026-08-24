@@ -47,7 +47,7 @@ from pipeline import pit_data                       # noqa: E402
 from pipeline import provenance as prov_mod         # noqa: E402
 from pipeline import universe as universe_mod       # noqa: E402
 from pipeline.config import load_config             # noqa: E402
-from pipeline.datafeed import fetch_macro, fetch_prices, fetch_vix  # noqa: E402
+from pipeline.datafeed import fetch_macro, fetch_regional_prices, fetch_vix  # noqa: E402
 
 
 def main(argv=None) -> int:
@@ -91,8 +91,8 @@ def main(argv=None) -> int:
     # Fetch from well before the replay start: the first replay date still needs
     # 273 sessions of trailing history behind it, or every name is unrankable.
     fetch_start = (str(int(str(start)[:4]) - 2) + str(start)[4:]) if start else "2010-01-01"
-    print(f"fetching {len(download)} tickers from {fetch_start} ...")
-    prices = fetch_prices(download, fetch_start)
+    print(f"fetching {len(download)} tickers by region from {fetch_start} ...")
+    prices = fetch_regional_prices(universe, cfg.benchmarks, fetch_start)
     missing = [t for t in download if t not in prices]
     if missing:
         print(f"  warning: no price data for {len(missing)} tickers (e.g. {missing[:5]})")
@@ -101,6 +101,28 @@ def main(argv=None) -> int:
             print(f"ERROR: benchmark {ticker} for {region} unavailable; "
                   f"excess returns would be undefined. Refusing to write a ledger.")
             return 1
+
+    horizon = int(replay_cfg.get("horizonDays", 126))
+    minimum_benchmark_coverage = float(
+        replay_cfg.get("minBenchmarkCoveragePct", 95.0))
+    preflight = HO.benchmark_session_preflight(
+        prices, universe, cfg.benchmarks, start=start, end=args.end,
+        horizon=horizon, min_history_rows=HR.MIN_HISTORY_ROWS,
+        min_coverage_pct=minimum_benchmark_coverage,
+    )
+    for region, row in preflight["regions"].items():
+        print(f"benchmark preflight {region} {horizon}D: "
+              f"{row['coveragePct']}% ({row['matchedWindows']}/"
+              f"{row['candidateWindows']}; {row['benchmarkSessions']} benchmark sessions)")
+    if not preflight["eligible"]:
+        print("ERROR: benchmark session preflight failed; replay not started.")
+        for failure in preflight["failures"]:
+            print(f"  {failure['region']}: {failure['reason']} "
+                  f"({failure['coveragePct']}% < "
+                  f"{failure['minimumCoveragePct']}%)")
+            for sample in failure["missingSamples"]:
+                print(f"    {sample}")
+        return 1
 
     vix = fetch_vix(fetch_start)
     macro = fetch_macro(cfg, fetch_start)
@@ -145,7 +167,7 @@ def main(argv=None) -> int:
     bench_closes = {ticker: prices[ticker]["Close"]
                     for ticker in cfg.benchmarks.values() if ticker in prices}
     cost_policy = (cfg.kelly_portfolio or {}).get("transactionCosts") or {}
-    coverage_acc = HO.CoverageAccumulator(int(replay_cfg.get("horizonDays", 126)))
+    coverage_acc = HO.CoverageAccumulator(horizon)
     shards = HS.iter_shards(ledger_dir, HS.SIGNALS, prov_mod.REPLAY_VERSION)
     outcome_records = rewritten = 0
     for _, key, path in shards:
@@ -163,8 +185,8 @@ def main(argv=None) -> int:
     diagnostics["coverage"] = coverage
     coverage_gate = HO.benchmark_coverage_gate(
         coverage,
-        horizon=int(replay_cfg.get("horizonDays", 126)),
-        min_coverage_pct=float(replay_cfg.get("minBenchmarkCoveragePct", 95.0)),
+        horizon=horizon,
+        min_coverage_pct=minimum_benchmark_coverage,
     )
     diagnostics["benchmarkCoverageGate"] = coverage_gate
     diagnostics_path.write_text(
