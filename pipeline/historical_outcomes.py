@@ -78,6 +78,102 @@ def _round_trip_cost(region: str, cost_policy: dict | None) -> float:
     return (commission * 2.0 + spread * 2.0 + sell_tax) / 10_000.0
 
 
+def benchmark_session_preflight(prices: dict[str, pd.DataFrame],
+                                universe: dict[str, list[str]],
+                                benchmarks: dict[str, str], *,
+                                start: str, end: str | None = None,
+                                horizon: int = 126,
+                                min_history_rows: int = 273,
+                                min_coverage_pct: float = 95.0) -> dict:
+    """Check exact regional benchmark sessions before the expensive replay.
+
+    This evaluates every stock window that could mature inside the downloaded
+    panel, after the model's minimum-history boundary and within the requested
+    replay date range.  It deliberately uses the same normalized dates and
+    exact-match rule as :func:`compute_outcomes`.
+    """
+    start_date = np.datetime64(pd.Timestamp(start).normalize(), "ns")
+    end_date = (np.datetime64(pd.Timestamp(end).normalize(), "ns")
+                if end else None)
+    regions: dict[str, dict] = {}
+    failures = []
+
+    for region, tickers in universe.items():
+        benchmark = benchmarks.get(region)
+        benchmark_frame = prices.get(benchmark) if benchmark else None
+        benchmark_dates = np.array([], dtype="datetime64[ns]")
+        if benchmark_frame is not None and "Close" in benchmark_frame:
+            clean = pd.to_numeric(benchmark_frame["Close"], errors="coerce").dropna()
+            if len(clean):
+                clean = normalize_daily_series(clean)
+                benchmark_dates = clean.index.to_numpy(dtype="datetime64[ns]")
+
+        candidates = matched = 0
+        samples: list[dict] = []
+        for ticker in tickers:
+            frame = prices.get(ticker)
+            if frame is None or "Close" not in frame:
+                continue
+            close = pd.to_numeric(frame["Close"], errors="coerce").dropna()
+            if len(close) <= horizon:
+                continue
+            close = normalize_daily_series(close)
+            dates = close.index.to_numpy(dtype="datetime64[ns]")
+            first = max(0, int(min_history_rows) - 1)
+            last = len(dates) - int(horizon)
+            if first >= last:
+                continue
+            positions = np.arange(first, last)
+            starts = dates[positions]
+            ends = dates[positions + int(horizon)]
+            in_range = starts >= start_date
+            if end_date is not None:
+                in_range &= starts <= end_date
+            starts, ends = starts[in_range], ends[in_range]
+            if not len(starts):
+                continue
+            exact = np.isin(starts, benchmark_dates) & np.isin(ends, benchmark_dates)
+            candidates += int(len(exact))
+            matched += int(exact.sum())
+            if len(samples) < 5:
+                for idx in np.flatnonzero(~exact)[:5 - len(samples)]:
+                    samples.append({
+                        "ticker": ticker,
+                        "startDate": pd.Timestamp(starts[idx]).strftime("%Y-%m-%d"),
+                        "endDate": pd.Timestamp(ends[idx]).strftime("%Y-%m-%d"),
+                        "benchmarkHasStart": bool(np.isin(starts[idx], benchmark_dates)),
+                        "benchmarkHasEnd": bool(np.isin(ends[idx], benchmark_dates)),
+                    })
+
+        coverage_pct = round(matched / candidates * 100, 4) if candidates else None
+        row = {
+            "benchmark": benchmark,
+            "benchmarkSessions": int(len(benchmark_dates)),
+            "candidateWindows": candidates,
+            "matchedWindows": matched,
+            "missingWindows": max(0, candidates - matched),
+            "coveragePct": coverage_pct,
+            "missingSamples": samples,
+        }
+        regions[region] = row
+        if candidates <= 0 or coverage_pct is None or coverage_pct < min_coverage_pct:
+            failures.append({
+                "region": region,
+                **row,
+                "minimumCoveragePct": float(min_coverage_pct),
+                "reason": ("no_candidate_windows" if candidates <= 0
+                           else "benchmark_coverage_below_threshold"),
+            })
+
+    return {
+        "eligible": bool(regions) and not failures,
+        "horizon": int(horizon),
+        "minimumCoveragePct": float(min_coverage_pct),
+        "regions": regions,
+        "failures": failures,
+    }
+
+
 def compute_outcomes(signals: list[dict], prices: dict[str, pd.DataFrame],
                      benchmarks: dict[str, pd.Series] | None = None,
                      *, cost_policy: dict | None = None,

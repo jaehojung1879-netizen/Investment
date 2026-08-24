@@ -57,9 +57,9 @@ from .market_dates import normalize_daily_frame
 
 # Bumped whenever the replay's own logic changes shape. Records carry it so two
 # generations of replay never pool into one evidence base.
-REPLAY_VERSION = "replay-v3"
+REPLAY_VERSION = "replay-v4"
 FEATURE_VERSION = "hfeat-v1"
-DATA_VERSION = "yahoo-adjusted-close-v2-daily-session-normalized"
+DATA_VERSION = "yahoo-adjusted-close-v3-regional-session-download"
 
 EVIDENCE_HISTORICAL = "HISTORICAL_OOS"
 

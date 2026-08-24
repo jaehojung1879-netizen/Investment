@@ -27,6 +27,11 @@ def download_retry(tickers, start: str, retries: int = 3, **kwargs) -> pd.DataFr
     """
     import yfinance as yf
 
+    # A daily Yahoo bar is labelled with its exchange-local session date.  If
+    # yfinance combines timezone-aware frames first, an Asian midnight can be
+    # converted to the previous UTC date before our normalizer ever sees it.
+    # Remove the timezone while each ticker still owns its local calendar.
+    kwargs.setdefault("ignore_tz", True)
     delay = 2.0
     for attempt in range(retries):
         try:
@@ -96,6 +101,39 @@ def fetch_prices(tickers: list[str], start: str, batch: int = 40) -> dict[str, p
         missing = [t for t in tickers if t not in out]
     if missing:
         print(f"  warning: no data for {len(missing)} tickers (e.g. {missing[:5]})")
+    return out
+
+
+def fetch_regional_prices(universe: dict[str, list[str]], benchmarks: dict[str, str],
+                          start: str, batch: int = 40) -> dict[str, pd.DataFrame]:
+    """Fetch replay prices without mixing exchange calendars in one batch.
+
+    A single multi-market ``yf.download`` frame has one shared index.  Once US
+    and KR bars have been coerced onto that index, an exchange-local date can
+    already be lost and later normalization cannot reconstruct it.  Replay
+    comparisons require exact stock/benchmark sessions, so each region is
+    fetched independently and each benchmark is fetched once more in isolation.
+    """
+    out: dict[str, pd.DataFrame] = {}
+    for region, names in universe.items():
+        tickers = list(dict.fromkeys(names))
+        if not tickers:
+            continue
+        print(f"  fetching {region} universe: {len(tickers)} tickers ...")
+        out.update(fetch_prices(tickers, start, batch=batch))
+
+    for region, ticker in benchmarks.items():
+        print(f"  fetching {region} benchmark {ticker} in isolation ...")
+        isolated = fetch_prices([ticker], start, batch=1)
+        benchmark_frame = isolated.get(ticker)
+        if benchmark_frame is None or "Close" not in benchmark_frame:
+            continue
+        close = pd.to_numeric(benchmark_frame["Close"], errors="coerce").dropna()
+        if not len(close):
+            continue
+        out[ticker] = benchmark_frame
+        print(f"    {ticker}: {len(close)} sessions "
+              f"{close.index[0].date()} .. {close.index[-1].date()}")
     return out
 
 

@@ -1,0 +1,115 @@
+from types import SimpleNamespace
+
+import numpy as np
+import pandas as pd
+
+from pipeline import datafeed
+from pipeline import historical_outcomes as outcomes
+
+
+def _frame(index):
+    values = np.linspace(100.0, 120.0, len(index))
+    return pd.DataFrame({
+        "Open": values,
+        "High": values,
+        "Low": values,
+        "Close": values,
+        "Volume": np.full(len(index), 1_000),
+    }, index=index)
+
+
+def test_download_retry_forces_exchange_local_daily_labels(monkeypatch):
+    captured = {}
+
+    def fake_download(tickers, **kwargs):
+        captured.update(kwargs)
+        return _frame(pd.date_range("2024-01-02", periods=2))
+
+    monkeypatch.setitem(
+        __import__("sys").modules, "yfinance",
+        SimpleNamespace(download=fake_download),
+    )
+
+    assert datafeed.download_retry(["005930.KS"], "2024-01-01") is not None
+    assert captured["ignore_tz"] is True
+
+
+def test_regional_fetch_never_mixes_markets_and_isolates_benchmarks(monkeypatch):
+    calls = []
+
+    def fake_fetch(tickers, start, batch=40):
+        calls.append((list(tickers), start, batch))
+        dates = pd.bdate_range("2024-01-02", periods=3)
+        return {ticker: _frame(dates) for ticker in tickers}
+
+    monkeypatch.setattr(datafeed, "fetch_prices", fake_fetch)
+    prices = datafeed.fetch_regional_prices(
+        {"US": ["AAPL", "MSFT"], "KR": ["005930.KS"]},
+        {"US": "SPY", "KR": "^KS200"},
+        "2020-01-01",
+    )
+
+    assert calls == [
+        (["AAPL", "MSFT"], "2020-01-01", 40),
+        (["005930.KS"], "2020-01-01", 40),
+        (["SPY"], "2020-01-01", 1),
+        (["^KS200"], "2020-01-01", 1),
+    ]
+    assert set(prices) == {"AAPL", "MSFT", "005930.KS", "SPY", "^KS200"}
+
+
+def test_regional_fetch_rejects_benchmark_without_close(monkeypatch):
+    def fake_fetch(tickers, start, batch=40):
+        dates = pd.bdate_range("2024-01-02", periods=3)
+        if tickers == ["^KS200"]:
+            return {"^KS200": pd.DataFrame({"Open": [1, 2, 3]}, index=dates)}
+        return {ticker: _frame(dates) for ticker in tickers}
+
+    monkeypatch.setattr(datafeed, "fetch_prices", fake_fetch)
+    prices = datafeed.fetch_regional_prices(
+        {"KR": ["005930.KS"]}, {"KR": "^KS200"}, "2020-01-01")
+
+    assert "005930.KS" in prices
+    assert "^KS200" not in prices
+
+
+def test_benchmark_session_preflight_accepts_timezone_equivalent_dates():
+    dates = pd.bdate_range("2019-01-02", periods=500)
+    prices = {
+        "005930.KS": _frame(dates.tz_localize("Asia/Seoul")),
+        "^KS200": _frame(dates),
+    }
+
+    result = outcomes.benchmark_session_preflight(
+        prices, {"KR": ["005930.KS"]}, {"KR": "^KS200"},
+        start="2020-01-01", horizon=21, min_history_rows=20,
+    )
+
+    assert result["eligible"] is True
+    assert result["regions"]["KR"]["coveragePct"] == 100.0
+
+
+def test_benchmark_session_preflight_fails_with_actionable_samples():
+    stock_dates = pd.bdate_range("2019-01-02", periods=500)
+    benchmark_dates = pd.date_range("2019-01-06", periods=500, freq="W-SUN")
+    prices = {
+        "005930.KS": _frame(stock_dates),
+        "^KS200": _frame(benchmark_dates),
+    }
+
+    result = outcomes.benchmark_session_preflight(
+        prices, {"KR": ["005930.KS"]}, {"KR": "^KS200"},
+        start="2020-01-01", horizon=21, min_history_rows=20,
+    )
+
+    assert result["eligible"] is False
+    failure = result["failures"][0]
+    assert failure["region"] == "KR"
+    assert failure["coveragePct"] == 0.0
+    assert failure["missingSamples"][0] == {
+        "ticker": "005930.KS",
+        "startDate": "2020-01-01",
+        "endDate": "2020-01-30",
+        "benchmarkHasStart": False,
+        "benchmarkHasEnd": False,
+    }

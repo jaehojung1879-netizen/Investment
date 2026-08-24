@@ -31,9 +31,9 @@ MODEL_VERSION = "longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-a
 # three, so every historical record carries them and evidence is never pooled
 # across versions. Changing one does not invalidate the old records — it starts
 # a new generation alongside them.
-REPLAY_VERSION = "replay-v3"
+REPLAY_VERSION = "replay-v4"
 FEATURE_VERSION = "hfeat-v1"
-DATA_VERSION = "yahoo-adjusted-close-v2-daily-session-normalized"
+DATA_VERSION = "yahoo-adjusted-close-v3-regional-session-download"
 
 RUN_MODES = ("researchOnly", "paperTrading", "liveValidated")
 DEFAULT_RUN_MODE = "paperTrading"
