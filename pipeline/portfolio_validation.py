@@ -792,7 +792,7 @@ def selection_null(contexts: dict, priced_by_date: dict, rows: list[dict],
         rng = np.random.default_rng(seed + draw)
         prior: dict[str, float] = {}
         null_regions: dict[str, str] = {}
-        excess, returns = [], []
+        excess, returns, turnover = [], [], []
         reason = None
         for date in usable:
             candidates, macro = contexts[date]
@@ -818,14 +818,17 @@ def selection_null(contexts: dict, priced_by_date: dict, rows: list[dict],
                                  for row in candidates if row.get("region")})
             priced_names = [{"ticker": ticker, "region": null_regions.get(ticker)}
                             for ticker in set(weights) | set(prior)]
-            cost = _turnover_cost(weights, prior, priced_names, cfg_pf)["cost"]
+            leg = _turnover_cost(weights, prior, priced_names, cfg_pf)
             prior = dict(weights)
-            returns.append(priced["gross"] - cost)
-            excess.append(priced["gross"] - priced["benchmark"] - cost)
+            turnover.append(leg["turnover"])
+            returns.append(priced["gross"] - leg["cost"])
+            excess.append(priced["gross"] - priced["benchmark"] - leg["cost"])
         if len(excess) != len(usable):
             discarded[reason or "incomplete_path"] += 1
             continue
-        samples.append(_path_statistics(np.array(returns), np.array(excess), periods))
+        sample = _path_statistics(np.array(returns), np.array(excess), periods)
+        sample["turnoverPct"] = float(np.mean(turnover)) * 100
+        samples.append(sample)
 
     if not samples:
         return {"available": False, "reason": "no_complete_null_draw",
@@ -860,6 +863,20 @@ def selection_null(contexts: dict, priced_by_date: dict, rows: list[dict],
                       "distribution of conviction scores"],
         "varied": ["which name each conviction score is attached to",
                    "the alpha selection floor, which is itself a score decision"],
+        # A random ranking is not sticky, so it rebalances far harder than a
+        # persistent one and pays for it. That is a real cost of having no
+        # signal — but it also means a model could clear this null by being
+        # merely PERSISTENT rather than right. Publish both turnovers so the
+        # reader can see how much of any gap is selection and how much is churn.
+        "turnover": {
+            "actualPct": _r(float(np.mean([outcome_lookup[d]["turnover"]
+                                           for d in usable])) * 100, 2),
+            "nullMedianPct": _r(float(np.median([row["turnoverPct"]
+                                                 for row in samples])), 2),
+            "noteKo": ("무작위 순위는 지속성이 없어 회전율이 높고 비용을 더 냅니다. "
+                       "실제 책이 귀무를 이겼다면 그 일부는 '잘 골라서'가 아니라 "
+                       "'덜 바꿔서'일 수 있으므로 두 회전율을 함께 봅니다."),
+        },
         "statistics": statistics,
         "overall": SN.overall_verdict(statistics),
     }
