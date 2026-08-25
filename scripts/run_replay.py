@@ -37,9 +37,12 @@ import sys
 import time
 from pathlib import Path
 
+import pandas as pd
+
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 
+from pipeline import benchmark_source as BS         # noqa: E402
 from pipeline import historical_outcomes as HO      # noqa: E402
 from pipeline import historical_replay as HR        # noqa: E402
 from pipeline import historical_store as HS         # noqa: E402
@@ -92,15 +95,33 @@ def main(argv=None) -> int:
     # 273 sessions of trailing history behind it, or every name is unrankable.
     fetch_start = (str(int(str(start)[:4]) - 2) + str(start)[4:]) if start else "2010-01-01"
     print(f"fetching {len(download)} tickers by region from {fetch_start} ...")
-    prices = fetch_regional_prices(universe, cfg.benchmarks, fetch_start)
+    prices = fetch_regional_prices(universe, fetch_start)
+
+    # Benchmarks go through their own path: vendor redundancy, a plausibility
+    # check against the session calendar already on record, and the committed
+    # snapshot as the last resort. A truncated index panel is what silently
+    # erased the KR half of this ledger on 08-20, 08-23 and 08-24.
+    print("resolving regional benchmarks ...")
+    benchmark_series, benchmark_diagnostics = BS.resolve(
+        cfg.benchmarks, cfg.benchmark_sources, start=fetch_start, ledger_dir=ledger_dir)
+    for line in BS.describe(benchmark_diagnostics):
+        print(line)
+    for ticker, series in benchmark_series.items():
+        prices[ticker] = pd.DataFrame({"Close": series})
+
     missing = [t for t in download if t not in prices]
     if missing:
         print(f"  warning: no price data for {len(missing)} tickers (e.g. {missing[:5]})")
     for region, ticker in cfg.benchmarks.items():
         if ticker not in prices:
-            print(f"ERROR: benchmark {ticker} for {region} unavailable; "
-                  f"excess returns would be undefined. Refusing to write a ledger.")
+            print(f"ERROR: benchmark {ticker} for {region} unavailable from every "
+                  f"configured vendor and no snapshot is on record; excess returns "
+                  f"would be undefined. Refusing to write a ledger.")
             return 1
+    if benchmark_diagnostics["degradedRegions"]:
+        print(f"  NOTE: {', '.join(benchmark_diagnostics['degradedRegions'])} running on "
+              f"the committed snapshot; the newest grid dates will not extend until the "
+              f"vendor recovers. This is recorded as {BS.STATUS_SNAPSHOT} in diagnostics.")
 
     horizon = int(replay_cfg.get("horizonDays", 126))
     minimum_benchmark_coverage = float(
@@ -189,6 +210,24 @@ def main(argv=None) -> int:
         min_coverage_pct=minimum_benchmark_coverage,
     )
     diagnostics["benchmarkCoverageGate"] = coverage_gate
+    diagnostics["benchmarkPanel"] = benchmark_diagnostics
+
+    # A coverage trend, committed. The 08-19 -> 08-20 collapse left no trace in
+    # any artifact: finding it afterwards meant rewinding the branch and
+    # recounting shards by hand. From here it is a one-line diff per day.
+    run_date = str(diagnostics.get("lastDate")
+                   or coverage.get("lastSignalDate") or "")
+    history = BS.record_coverage(
+        ledger_dir, run_date=run_date, horizon=horizon,
+        coverage=coverage, benchmark_diagnostics=benchmark_diagnostics)
+    regressions = [r for r in (BS.coverage_regression(history, region=region)
+                               for region in coverage_gate["assessedRegions"]) if r]
+    diagnostics["benchmarkCoverageRegressions"] = regressions
+    for row in regressions:
+        print(f"  WARNING: {row['region']} benchmark coverage fell "
+              f"{row['dropPctPoints']}%p since {row['previousDate']} "
+              f"({row['previousCoveragePct']}% -> {row['coveragePct']}%)")
+
     diagnostics_path.write_text(
         json.dumps(diagnostics, ensure_ascii=False, indent=2, default=str) + "\n",
         encoding="utf-8")

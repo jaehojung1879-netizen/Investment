@@ -33,10 +33,17 @@ def test_kelly_config_has_one_live_sampling_and_cost_contract():
 
 
 def test_every_kelly_config_key_is_connected_to_implementation_or_metadata():
-    source = (ROOT / "pipeline" / "kelly_portfolio.py").read_text(encoding="utf-8")
+    # The kellyPortfolio block is read by the live sizer and by the historical
+    # validation that replays it, so both count as "connected". The point of the
+    # check is that no key is dead, not that one file owns them all.
+    source = "".join(
+        (ROOT / "pipeline" / name).read_text(encoding="utf-8")
+        for name in ("kelly_portfolio.py", "portfolio_validation.py"))
     cfg = json.loads((ROOT / "config.json").read_text(encoding="utf-8"))["kellyPortfolio"]
     ignored_structural = {"activation", "regimeMultipliers", "transactionCosts", "currency"}
     for key in set(cfg) - ignored_structural:
+        if key.startswith("_"):
+            continue                      # documentation, as the test name allows
         assert key in source, f"unused Kelly config key: {key}"
     for key in cfg["selection"]:
         assert key in source, f"unused selection config key: {key}"

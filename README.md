@@ -96,19 +96,27 @@
 
 | Phase | 내용 | 상태 | 무엇이 막고 있나 |
 |---|---|---|---|
-| **1. Replay Infrastructure** | time-safe replay engine, price-only PIT, historical signal ledger, outcomes, leakage 탐지 | **완료 · 가동** | — |
+| **1. Replay Infrastructure** | time-safe replay engine, price-only PIT, historical signal ledger, outcomes, leakage 탐지 | **구현 완료 · 벤더 결정성 복구 중** | 2026-08-20·23·24에 동일 커밋이 KR 벤치마크 커버리지 452/452와 0/452를 번갈아 산출했습니다. 원인은 코드가 아니라 `^KS200`의 간헐적 벤더 결측이며, outcomes가 매 실행 재계산되기 때문에 하룻밤 결측이 증거 기반 전체를 다시 씁니다. `pipeline/benchmark_source.py`의 벤더 이중화 + 커밋된 스냅샷이 이 경로를 닫습니다. |
 | **2. PIT Fundamentals / Macro** | publication-aware 재무, vintage-aware 매크로, historical universe | **인터페이스 완료 · 데이터 대기** | 무료 소스에 발표일 이력·ALFRED vintage·과거 구성종목이 없음. `pit_data.FundamentalStore.from_jsonl` / `UniverseHistory.from_json`에 파일만 넣으면 즉시 활성화되고 PIT 커버리지가 올라갑니다. |
-| **3. Historical Calibration** | alpha bucket 기대수익 + 만기 인지형 상승확률·상하방 분포 calibration, historical Kelly prior, shrinkage | **구현 완료 · replay-v3/데이터 gate 대기** | 새 세대 재현 후에도 지역별 벤치마크 커버리지, Brier·ECE·log-loss와 과거 구성종목·PIT 재무·필요 시 vintage 거시 gate를 모두 통과해야 Kelly가 켜집니다 |
+| **3. Historical Calibration** | alpha bucket 기대수익 + 만기 인지형 상승확률·상하방 분포 calibration, historical Kelly prior, shrinkage | **구현 완료 · 재현 세대 재생성/데이터 gate 대기** | 새 세대 재현 후에도 지역별 벤치마크 커버리지, Brier·ECE·log-loss와 과거 구성종목·PIT 재무·필요 시 vintage 거시 gate를 모두 통과해야 Kelly가 켜집니다 |
 | **4. ML Opportunity / Warning** | change feature dataset, walk-forward ML, calibrated probability, radar | **완료 · acceptance gate 대기** | gate 통과 전까지 규칙 기반 점수 사용 (설계된 동작) |
 | **5. Prospective Bayesian Update** | historical + live posterior, drift 감지, Kelly 영향도 적응 | **완료 · 가동** | prospective ledger가 쌓이면 자동으로 비중이 이동 |
+
+> **현재 상태 (2026-08-25).** `provenance.REPLAY_VERSION`이 요구하는 세대의 기록이 원장에 0건입니다.
+> 이전 두 세대(853,076건)는 보존돼 있지만 세대 격리 때문에 빌드가 읽지 않으므로, 화면의 과거 검증 패널은
+> 전부 비어 있습니다. 이는 "증거가 아직 없는 상태"가 아니라 재현 작업이 실패하고 있다는 뜻이며,
+> `historicalValidation.pipelineHealth`가 두 상태를 구분해 표시합니다.
 
 Phase 2가 비어 있어도 Phase 1·3·5는 정상 동작합니다. price-only 재현의 알파는 모멘텀·저변동 슬리브만으로 만들어지고, 빠진 밸류·퀄리티는 `evidenceCoverage` 축소와 증거 가중치 할인으로 이미 반영됩니다.
 
 ## 최종 3~5종목 Historical Portfolio Replay
 
-개별 신호 성과와 별도로, 각 과거 리밸런싱 날짜에 실제 사용 가능했던 replay-v3 신호를 모아 `research candidate → entry state → candidate filter → concentrated selection → baseline weight → macro cash floor → final historical weight`를 다시 실행합니다. 라이브와 replay는 `selection_and_baseline`이라는 같은 순수 함수를 호출하므로 종목·업종·지역 상한과 기준 비중 공식이 따로 복사되지 않습니다. 날짜마다 선택 종목, 근접 탈락 사유, 팩터/PIT 커버리지, 컨빅션 순위, 현금, 국면, 비용 가정과 버전을 감사 표본에 남깁니다. 일별 바의 시장 달력 날짜를 먼저 정규화하며, 126일 지역별 벤치마크 커버리지가 95% 미만이면 초과수익 검증 원장을 게시하지 않습니다.
+개별 신호 성과와 별도로, 각 과거 리밸런싱 날짜에 실제 사용 가능했던 현 세대 재현 신호를 모아 `research candidate → entry state → candidate filter → concentrated selection → baseline weight → macro cash floor → final historical weight`를 다시 실행합니다. 라이브와 replay는 `selection_and_baseline`이라는 같은 순수 함수를 호출하므로 종목·업종·지역 상한과 기준 비중 공식이 따로 복사되지 않습니다. 날짜마다 선택 종목, 근접 탈락 사유, 팩터/PIT 커버리지, 컨빅션 순위, 현금, 국면, 비용 가정과 버전을 감사 표본에 남깁니다. 일별 바의 시장 달력 날짜를 먼저 정규화하며, 126일 지역별 벤치마크 커버리지가 95% 미만이면 초과수익 검증 원장을 게시하지 않습니다. 벤치마크 시계열 자체는 벤더 이중화 → 세션 달력 타당성 검사 → 커밋된 스냅샷 순서로 확보하며(`pipeline/benchmark_source.py`), 스냅샷으로 재현한 지역은 `SNAPSHOT_FALLBACK`으로 표시됩니다.
 
 - Production champion은 계속 `ALPHA_RANK_PER_DOWNSIDE_RISK`입니다. `CALIBRATED_EXPECTED_RETURN_PER_DOWNSIDE_RISK` challenger는 같은 날짜·후보·제약·비용에서만 비교하고, T일에는 `outcomeEndDate <= T`인 결과만 expanding calibration에 넣습니다.
+- **무작위 순위 대비 검정.** 벤치마크 대비 초과수익은 유니버스 캐리와 제약·비중 규칙까지 함께 담고 있어서 "종목을 고른 것이 값어치를 했는가"에 답하지 못합니다. 그래서 동일 날짜·동일 후보군·동일 상한·동일 진입배율·동일 현금하한·동일 비중함수·동일 거래비용을 그대로 두고 **컨빅션 점수만 종목 사이에서 무작위로 재배치**한 분포를 만들어 비교합니다(`pipeline/selection_null.py`). 실제 점수를 섞으므로(노이즈 생성이 아님) 귀무 포트폴리오의 집중도·틸트 형태가 실제와 같습니다. 알파 선정 하한(`minAlphaPercentile`)은 그 자체가 점수 판단이므로 귀무에서는 해제하고, 데이터·진입상태 배제는 그대로 유지합니다. `BEATS_RANDOM` 판정은 **위험조정 지표(IR·Sharpe)** 를 통과해야 하며, 초과수익만 이기고 IR이 분포 안에 있으면 "위험을 더 져서 얻은 수익"이므로 우위로 보지 않습니다. 이 검정은 이미 alpha로 걸러진 후보군 **안에서의 순위·집중 단계**만 검증하며, 연구 스크리닝 자체는 측정하지 않습니다.
+- **동일 블록 쌍대 비교.** champion과 challenger는 두 selector 모두 측정 가능한 날짜에서 만든 **하나의 블록 스케줄**로 비교하고, 점추정 부등호가 아니라 부트스트랩 95% 구간이 붙은 쌍대 차이로 판정합니다. 서로 다른 기간(2013-01 vs 2013-11)과 서로 다른 벤치마크 구성으로 비교하던 이전 방식은 selector 차이가 아니라 기간 차이를 재고 있었습니다.
+- **완전성 하한.** 구성종목 중 하나라도 만기 벤치마크가 없으면 그 포트폴리오는 통째로 제외되는데, 제외되는 종목은 거래정지·상장폐지 쪽에 몰립니다. 따라서 측정 가능했던 것만 모아 만든 경로는 다른 전략입니다. `minPortfolioCompletenessPct` 미만이면 헤드라인을 발표하지 않으며, 남은 비중을 재정규화해 대신 싣지 않습니다.
 - 주간의 겹치는 21/63/126/252일 forward return을 CAGR이나 MDD로 이어 붙이지 않습니다. 자산곡선·CAGR·Sharpe·Sortino·MDD·CVaR·회전율은 실제 비용을 적용한 **겹치지 않는 리밸런싱 블록**으로 별도 구성합니다. 모든 날짜 평균은 이 경로 지표와 구분합니다.
 - 현재 구성종목 이력과 PIT 재무가 없으므로 결과의 근거는 `PRICE_SLEEVES_ONLY_AUDIT_PROXY`입니다. 모멘텀·저변동 가격 슬리브의 진단이지 Value/Quality를 포함한 현재 4-factor 실전 모델의 동일조건 검증이 아닙니다.
 - Validation Lab은 지역별 21/63/126/252일 Rank IC, bucket 단조성, rolling IC/spread, champion/challenger NAV, 예상-실제 괴리와 raw N·신호일·유효 독립일·HAC lag를 함께 표시합니다. Historical OOS와 prospective paper는 서로 다른 패널이며, 126일 prospective 결과가 없으면 `NOT_YET_MATURED`입니다.

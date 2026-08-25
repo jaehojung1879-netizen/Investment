@@ -21,6 +21,7 @@ from . import historical_calibration as HC
 from . import historical_outcomes as HO
 from . import kelly_portfolio as KP
 from . import longterm as LT
+from . import selection_null as SN
 from . import pit_data
 
 
@@ -28,6 +29,10 @@ REPORT_VERSION = "portfolio-validation-v2"
 CHAMPION = KP.SELECTION_METHOD
 CHALLENGER = "CALIBRATED_EXPECTED_RETURN_PER_DOWNSIDE_RISK"
 HORIZONS = (21, 63, 126, 252)
+# The path statistics are reported on the 21-day rebalance grid: it yields the
+# most non-overlapping blocks, so it is the only horizon where a difference has
+# any chance of clearing its own sampling error.
+HEADLINE_HORIZON = 21
 PRICE_SLEEVES = ("momentum", "lowvol")
 FULL_SLEEVES = ("momentum", "value", "quality", "lowvol")
 
@@ -535,21 +540,73 @@ def _outcome_for_decision(decision: dict, outcome_by_id: dict, signal_by_key: di
     return outcome
 
 
-def _path_metrics(rows: list[dict], horizon: int, cfg_pf: dict) -> dict:
-    selected = []
-    last_end = None
+def block_dates(rows: list[dict], horizon: int) -> list[str]:
+    """Greedy non-overlapping rebalance dates, in order."""
+    chosen, last_end = [], None
     for row in sorted(rows, key=lambda x: x["date"]):
         date = pd.Timestamp(row["date"])
         if last_end is None or date >= last_end:
-            selected.append(row)
+            chosen.append(row["date"])
             last_end = pd.Timestamp(row["endDate"])
+    return chosen
+
+
+def shared_block_dates(rows_by_method: dict[str, list[dict]], horizon: int) -> list[str]:
+    """One block schedule for every selector being compared.
+
+    Letting each selector pick its own blocks from its own measurable dates is
+    how the 08-22 report ended up comparing a champion starting 2013-01 against
+    a challenger starting 2013-11, over benchmark CAGRs of 8.41% and 12.03%. A
+    difference between two different periods is not a difference between two
+    selectors.
+    """
+    common = None
+    for rows in rows_by_method.values():
+        dates = {row["date"] for row in rows}
+        common = dates if common is None else (common & dates)
+    if not common:
+        return []
+    # Two selectors hold different names, so the same entry date can mature on
+    # different sessions. Take the later end so the schedule is non-overlapping
+    # for BOTH — the earlier one would let the other selector's blocks touch.
+    end_by_date: dict[str, str] = {}
+    for rows in rows_by_method.values():
+        for row in rows:
+            if row["date"] in common:
+                current = end_by_date.get(row["date"])
+                if current is None or row["endDate"] > current:
+                    end_by_date[row["date"]] = row["endDate"]
+    return block_dates([{"date": date, "endDate": end_by_date[date]}
+                        for date in sorted(common)], horizon)
+
+
+def _path_metrics(rows: list[dict], horizon: int, cfg_pf: dict,
+                  only_dates: list[str] | None = None) -> dict:
+    if only_dates is not None:
+        keep = set(only_dates)
+        selected = sorted((row for row in rows if row["date"] in keep),
+                          key=lambda x: x["date"])
+    else:
+        selected = []
+        last_end = None
+        for row in sorted(rows, key=lambda x: x["date"]):
+            date = pd.Timestamp(row["date"])
+            if last_end is None or date >= last_end:
+                selected.append(row)
+                last_end = pd.Timestamp(row["endDate"])
     if not selected:
         return {"available": False, "reason": "no_non_overlapping_matured_portfolios"}
     prior = {}
+    # A region map that ACCUMULATES across the path. Built from the current
+    # weights alone, a name being sold out of the book has no region, so
+    # _turnover_cost falls back to 0 bps and the exit leg — commission, spread
+    # and the 20bp KR sell tax — is charged nothing. On ~47% turnover that
+    # understates cost on every rebalance, for every selector.
+    region_map: dict[str, str] = {}
     for row in selected:
-        candidates = [{"ticker": ticker,
-                       "region": (row.get("regionByTicker") or {}).get(ticker)}
-                      for ticker in row["weights"]]
+        region_map.update({t: r for t, r in (row.get("regionByTicker") or {}).items() if r})
+        candidates = [{"ticker": ticker, "region": region_map.get(ticker)}
+                      for ticker in set(row["weights"]) | set(prior)]
         cost = _turnover_cost(row["weights"], prior, candidates, cfg_pf)
         row["transactionCost"] = cost["cost"]
         row["turnover"] = cost["turnover"]
@@ -630,6 +687,240 @@ def _path_metrics(rows: list[dict], horizon: int, cfg_pf: dict) -> dict:
     }
 
 
+def _bootstrap_ci(values: np.ndarray, *, draws: int = 2000, seed: int = 11) -> list[float]:
+    """Percentile CI over non-overlapping blocks, which are ~independent."""
+    if values.size < 2:
+        return [None, None]
+    rng = np.random.default_rng(seed)
+    idx = rng.integers(0, values.size, size=(draws, values.size))
+    means = values[idx].mean(axis=1)
+    return [_r(float(np.percentile(means, 2.5)) * 100, 3),
+            _r(float(np.percentile(means, 97.5)) * 100, 3)]
+
+
+def paired_comparison(rows_by_method: dict[str, list[dict]], dates: list[str],
+                      *, horizon: int) -> dict:
+    """Champion minus challenger on the same blocks, with an error bar.
+
+    The previous report decided "CHALLENGER_BETTER" by comparing two point
+    estimates with no uncertainty attached, on two different periods. On ~130
+    blocks the sampling error of an annualized excess is wider than any gap
+    either selector has ever shown, so a bare inequality is not a finding.
+    """
+    if not dates or len(rows_by_method) != 2:
+        return {"available": False, "reason": "no_shared_blocks"}
+    keep = set(dates)
+    series = {}
+    for method, rows in rows_by_method.items():
+        by_date = {row["date"]: row for row in rows if row["date"] in keep}
+        if len(by_date) != len(keep):
+            return {"available": False, "reason": "selectors_not_measurable_on_same_blocks"}
+        series[method] = np.array([by_date[date]["costAdjustedExcessReturn"]
+                                   for date in dates], dtype=float)
+    left, right = CHAMPION, CHALLENGER
+    diff = series[left] - series[right]
+    periods = 252 / horizon
+    per_method = {}
+    for method, values in series.items():
+        per_method[method] = {
+            "meanCostAdjustedExcessPct": _r(float(values.mean()) * 100, 3),
+            "ci95Pct": _bootstrap_ci(values),
+            "annualizedExcessPct": _r(float(values.mean()) * periods * 100, 3),
+        }
+    ci = _bootstrap_ci(diff)
+    separated = bool(ci[0] is not None and (ci[0] > 0 or ci[1] < 0))
+    return {
+        "available": True,
+        "blocks": len(dates),
+        "firstDate": dates[0], "lastDate": dates[-1],
+        "horizonDays": int(horizon),
+        "bySelector": per_method,
+        "championMinusChallengerPct": _r(float(diff.mean()) * 100, 3),
+        "championMinusChallengerCi95Pct": ci,
+        "separated": separated,
+        "verdict": ("CHAMPION_BETTER" if separated and ci[0] > 0 else
+                    "CHALLENGER_BETTER" if separated else "INDISTINGUISHABLE"),
+        "methodKo": ("동일 블록·동일 기간·동일 벤치마크 구성에서의 쌍대 차이입니다. "
+                     "95% 구간이 0을 포함하면 두 selector는 구분되지 않습니다."),
+    }
+
+
+def selection_null(contexts: dict, priced_by_date: dict, rows: list[dict],
+                   dates: list[str], *, cfg_pf: dict, horizon: int, draws: int,
+                   seed: int = 20260825) -> dict:
+    """Run the same construction with the conviction scores permuted across names.
+
+    Reuses ``KP.selection_and_baseline`` exactly as the live path does, so the
+    only difference between the real book and a draw is which name carries which
+    score. Each draw walks the same block schedule in order, so its turnover —
+    and therefore its cost — is built the same way the real path's is.
+    """
+    if not dates:
+        return {"available": False, "reason": "no_shared_blocks"}
+    # A block date is usable only when EVERY name in that date's pool has a
+    # matured outcome. Otherwise a draw that happens to pick the one unpriced
+    # name dies, and with ~150 dates per draw even a 1% per-date failure rate
+    # kills four draws in five — the null would quietly shrink to nothing.
+    # Restricting dates instead keeps every draw complete, and the real book is
+    # measured on exactly the same dates.
+    usable, pool_gaps = [], 0
+    for date in dates:
+        if date not in contexts:
+            continue
+        priced = priced_by_date.get(date) or {}
+        pool = [row["ticker"] for row in contexts[date][0]]
+        if pool and all(ticker in priced for ticker in pool):
+            usable.append(date)
+        else:
+            pool_gaps += 1
+    if len(usable) < 2:
+        return {"available": False, "reason": "no_fully_priced_block_dates",
+                "blocksDroppedForPoolCoverage": pool_gaps}
+    outcome_lookup = {row["date"]: row for row in rows}
+    missing = [date for date in usable if date not in outcome_lookup]
+    if missing:
+        return {"available": False, "reason": "actual_path_not_measurable_on_blocks"}
+
+    periods = 252 / horizon
+    # The real conviction rows per date, computed once. Each draw permutes these
+    # scores, so every draw faces the same eligibility facts the real book did.
+    base_scores = {date: KP.conviction_scores(contexts[date][0], cfg_pf)
+                   for date in usable}
+    samples: list[dict] = []
+    discarded: dict[str, int] = defaultdict(int)
+    for draw in range(int(draws)):
+        rng = np.random.default_rng(seed + draw)
+        prior: dict[str, float] = {}
+        null_regions: dict[str, str] = {}
+        excess, returns, turnover = [], [], []
+        reason = None
+        for date in usable:
+            candidates, macro = contexts[date]
+            if not candidates:
+                reason = "no_candidates"
+                break
+            blob = KP.selection_and_baseline(
+                candidates, cfg_pf, macro,
+                scored=SN.permuted_scores(base_scores[date], rng),
+                method=SN.NULL_METHOD)
+            weights = blob["weights"]
+            if not weights:
+                reason = "empty_portfolio"
+                break
+            # Priced on the same names' realised outcomes; a draw that picks a
+            # name whose outcome never matured is not measurable, and the draw
+            # is discarded rather than filled in.
+            priced = _null_return(weights, priced_by_date.get(date))
+            if priced is None:
+                reason = "drawn_name_outcome_not_matured"
+                break
+            null_regions.update({row["ticker"]: row.get("region")
+                                 for row in candidates if row.get("region")})
+            priced_names = [{"ticker": ticker, "region": null_regions.get(ticker)}
+                            for ticker in set(weights) | set(prior)]
+            leg = _turnover_cost(weights, prior, priced_names, cfg_pf)
+            prior = dict(weights)
+            turnover.append(leg["turnover"])
+            returns.append(priced["gross"] - leg["cost"])
+            excess.append(priced["gross"] - priced["benchmark"] - leg["cost"])
+        if len(excess) != len(usable):
+            discarded[reason or "incomplete_path"] += 1
+            continue
+        sample = _path_statistics(np.array(returns), np.array(excess), periods)
+        sample["turnoverPct"] = float(np.mean(turnover)) * 100
+        samples.append(sample)
+
+    if not samples:
+        return {"available": False, "reason": "no_complete_null_draw",
+                "discardedDraws": dict(sorted(discarded.items()))}
+
+    actual_returns = np.array([outcome_lookup[d]["costAdjustedReturn"] for d in usable])
+    actual_excess = np.array([outcome_lookup[d]["costAdjustedExcessReturn"] for d in usable])
+    observed = _path_statistics(actual_returns, actual_excess, periods)
+    statistics = {
+        name: SN.summarize(observed.get(name), [row.get(name) for row in samples],
+                           higher_is_better=True, label=name)
+        for name in ("annualizedExcessPct", "informationRatio", "sharpe")
+    }
+    return {
+        "available": True,
+        "method": SN.NULL_METHOD,
+        "draws": len(samples),
+        "requestedDraws": int(draws),
+        # A draw is discarded when a randomly picked name has no matured
+        # outcome. That is a coverage property, not a ranking property, so a
+        # high rate means the null is drawn from a narrower pool than the real
+        # book chose from and the comparison is weaker than it looks.
+        "discardedDraws": dict(sorted(discarded.items())),
+        "discardedDrawPct": _r(sum(discarded.values()) / max(1, int(draws)) * 100, 2),
+        "blocks": len(usable),
+        "blocksDroppedForPoolCoverage": pool_gaps,
+        "firstDate": usable[0], "lastDate": usable[-1],
+        "horizonDays": int(horizon),
+        "heldFixed": ["dates", "research candidate pool", "name/sector/region caps",
+                      "entry-state and evidence exclusions", "regime cash floor",
+                      "baseline weighting function", "transaction costs",
+                      "distribution of conviction scores"],
+        "varied": ["which name each conviction score is attached to",
+                   "the alpha selection floor, which is itself a score decision"],
+        # A random ranking is less sticky than a persistent one, so it churns
+        # more and pays more cost — which would mean a model could clear this
+        # null by being merely PERSISTENT rather than right. Measured on the
+        # synthetic ledger the gap is small (37.1% actual vs 41.1% null median),
+        # because the research pool is itself carried forward and five names out
+        # of a ~20 name pool under sector and region caps cannot diverge much.
+        # Small is not zero, and it is not guaranteed to stay small on another
+        # ledger, so both numbers are published rather than assumed away.
+        "turnover": {
+            "actualPct": _r(float(np.mean([outcome_lookup[d]["turnover"]
+                                           for d in usable])) * 100, 2),
+            "nullMedianPct": _r(float(np.median([row["turnoverPct"]
+                                                 for row in samples])), 2),
+            "noteKo": ("무작위 순위는 지속성이 약해 회전율이 높고 비용을 더 냅니다. "
+                       "실제 책이 귀무를 이겼다면 그 일부는 '잘 골라서'가 아니라 "
+                       "'덜 바꿔서'일 수 있습니다. 두 값의 차이가 작으면 이 경로로 "
+                       "설명되는 부분도 작습니다."),
+        },
+        "statistics": statistics,
+        "overall": SN.overall_verdict(statistics),
+    }
+
+
+def _null_return(weights: dict, priced: dict | None) -> dict | None:
+    """Realised gross and benchmark return for a randomly drawn book."""
+    if not priced:
+        return None
+    gross = benchmark = 0.0
+    for ticker, weight in weights.items():
+        cell = priced.get(ticker)
+        if cell is None:
+            return None
+        gross += float(weight) * cell["absoluteReturn"]
+        benchmark += float(weight) * cell["benchmarkReturn"]
+    return {"gross": gross, "benchmark": benchmark}
+
+
+def _path_statistics(returns: np.ndarray, excess: np.ndarray, periods: float) -> dict:
+    """The three headline statistics, computed identically for real and null."""
+    if returns.size < 2:
+        return {"annualizedExcessPct": None, "informationRatio": None, "sharpe": None}
+    nav = float(np.prod(1 + returns))
+    bench_nav = float(np.prod(1 + (returns - excess)))
+    years = returns.size / periods
+    cagr = nav ** (1 / years) - 1 if nav > 0 and years > 0 else None
+    bench_cagr = bench_nav ** (1 / years) - 1 if bench_nav > 0 and years > 0 else None
+    std = float(returns.std(ddof=1))
+    tracking = float(excess.std(ddof=1))
+    return {
+        "annualizedExcessPct": ((cagr - bench_cagr) * 100
+                                if cagr is not None and bench_cagr is not None else None),
+        "informationRatio": (float(excess.mean()) / tracking * math.sqrt(periods)
+                             if tracking > 0 else None),
+        "sharpe": (float(returns.mean()) / std * math.sqrt(periods)
+                   if std > 0 else None),
+    }
+
+
 def _decision_exposure(decision: dict, key: str) -> dict[str, float]:
     lookup = {row.get("ticker"): row.get(key) or "UNKNOWN"
               for row in decision.get("selected") or []}
@@ -658,6 +949,10 @@ def portfolio_replay(signals: list[dict], outcomes: list[dict], *, cfg_lt: dict,
     prior_research: dict[str, set[str]] = {}
     prior_weights = {CHAMPION: {}, CHALLENGER: {}}
     decisions = {CHAMPION: [], CHALLENGER: []}
+    # The research pool is already narrowed to ~10 names per region, so keeping
+    # every date's pool costs little and is what lets the null replay the same
+    # construction without a second walk over the ledger.
+    contexts: dict[str, tuple] = {}
     overlaps = []
     full_fidelity_dates = 0
     full_fidelity_ready = bool(
@@ -680,6 +975,7 @@ def portfolio_replay(signals: list[dict], outcomes: list[dict], *, cfg_lt: dict,
         macro_confidence = next((_finite(row.get("macroConfidence")) for row in rows
                                  if _finite(row.get("macroConfidence")) is not None), None)
         macro = {"regime": macro_label, "confidence": macro_confidence}
+        contexts[date] = (candidates, macro)
         champion = KP.selection_and_baseline(candidates, cfg_pf, macro)
         challenger_scores = _challenger_scores(candidates, calibrator, cfg_pf)
         challenger = KP.selection_and_baseline(
@@ -748,6 +1044,8 @@ def portfolio_replay(signals: list[dict], outcomes: list[dict], *, cfg_lt: dict,
 
     horizon_results = {method: {} for method in decisions}
     summaries = {}
+    rows_by_method_horizon: dict[int, dict[str, list[dict]]] = defaultdict(dict)
+    min_completeness = float(cfg_pf.get("minPortfolioCompletenessPct", 90.0))
     for method, method_decisions in decisions.items():
         for horizon in HORIZONS:
             rows = []
@@ -765,14 +1063,26 @@ def portfolio_replay(signals: list[dict], outcomes: list[dict], *, cfg_lt: dict,
                         affected_tickers.update(
                             diagnostic["tickersByReason"].get(reason) or [])
                     affected_regions.update(diagnostic["affectedRegions"])
+            completeness = (len(rows) / len(method_decisions) * 100
+                            if method_decisions else None)
             outcome_coverage = {
                 "totalDecisions": len(method_decisions),
                 "completeOutcomes": len(rows),
                 "droppedDecisions": len(method_decisions) - len(rows),
+                "completenessPct": _r(completeness, 2),
+                "minimumCompletenessPct": min_completeness,
+                # A dropped portfolio is not a random omission: a name without a
+                # matured benchmark is disproportionately a halted or delisted
+                # one, so a path built from the survivors is a different
+                # strategy. Publish the headline only when nearly all of the
+                # book was measurable, and say so rather than renormalizing.
+                "sufficientForPath": bool(completeness is not None
+                                          and completeness >= min_completeness),
                 "droppedByReason": dict(sorted(dropped_by_reason.items())),
                 "affectedRegions": sorted(affected_regions),
                 "affectedTickersSample": sorted(affected_tickers)[:20],
             }
+            rows_by_method_horizon[horizon][method] = rows
             horizon_results[method][str(horizon)] = {
                 "observations": len(rows),
                 "uniqueDates": len({row["date"] for row in rows}),
@@ -784,9 +1094,27 @@ def portfolio_replay(signals: list[dict], outcomes: list[dict], *, cfg_lt: dict,
                 "meanCostAdjustedReturnPct": _r(np.mean([row["costAdjustedReturn"] for row in rows]) * 100, 3) if rows else None,
                 "meanCostAdjustedExcessPct": _r(np.mean([row["costAdjustedExcessReturn"] for row in rows]) * 100, 3) if rows else None,
                 "outcomeCoverage": outcome_coverage,
-                "path": _path_metrics(rows, horizon, cfg_pf),
+                "path": (_path_metrics(rows, horizon, cfg_pf)
+                         if outcome_coverage["sufficientForPath"]
+                         else {"available": False,
+                               "reason": "portfolio_completeness_below_threshold",
+                               "completenessPct": _r(completeness, 2),
+                               "minimumCompletenessPct": min_completeness}),
             }
-        summaries[method] = horizon_results[method]["21"]["path"]
+
+    # One block schedule for both selectors, so the comparison is like for like.
+    shared = shared_block_dates(rows_by_method_horizon[HEADLINE_HORIZON], HEADLINE_HORIZON)
+    for method in decisions:
+        rows = rows_by_method_horizon[HEADLINE_HORIZON].get(method) or []
+        coverage = horizon_results[method][str(HEADLINE_HORIZON)]["outcomeCoverage"]
+        if not coverage["sufficientForPath"] or not shared:
+            summaries[method] = horizon_results[method][str(HEADLINE_HORIZON)]["path"]
+            continue
+        summary = _path_metrics(rows, HEADLINE_HORIZON, cfg_pf, only_dates=shared)
+        summary["blockScheduleShared"] = True
+        summary["blockScheduleBasis"] = "DATES_MEASURABLE_FOR_EVERY_SELECTOR"
+        summaries[method] = summary
+        horizon_results[method][str(HEADLINE_HORIZON)]["path"] = summary
 
     champion_summary = summaries.get(CHAMPION) or {}
     challenger_summary = summaries.get(CHALLENGER) or {}
@@ -810,6 +1138,31 @@ def portfolio_replay(signals: list[dict], outcomes: list[dict], *, cfg_lt: dict,
         sector_differences.append(_allocation_l1(
             _decision_exposure(champion_day, "sector"),
             _decision_exposure(challenger_day, "sector")) / 2)
+    # Every name's realised outcome at the headline horizon, so a randomly drawn
+    # book can be priced on exactly the returns the real one was priced on.
+    priced_by_date: dict[str, dict] = defaultdict(dict)
+    for date, (candidates, _macro) in contexts.items():
+        for candidate in candidates:
+            signal = signal_by_key.get((date, candidate["ticker"]))
+            cell = ((outcome_by_id.get((signal or {}).get("id")) or {})
+                    .get("horizons") or {}).get(str(HEADLINE_HORIZON)) or {}
+            if cell.get("absoluteReturn") is None or cell.get("benchmarkReturn") is None:
+                continue
+            priced_by_date[date][candidate["ticker"]] = {
+                "absoluteReturn": float(cell["absoluteReturn"]),
+                "benchmarkReturn": float(cell["benchmarkReturn"]),
+            }
+
+    comparison_paired = paired_comparison(
+        {method: rows_by_method_horizon[HEADLINE_HORIZON].get(method) or []
+         for method in decisions},
+        shared, horizon=HEADLINE_HORIZON)
+    null_report = selection_null(
+        contexts, priced_by_date,
+        rows_by_method_horizon[HEADLINE_HORIZON].get(CHAMPION) or [], shared,
+        cfg_pf=cfg_pf, horizon=HEADLINE_HORIZON,
+        draws=int(cfg_pf.get("selectionNullDraws", SN.DEFAULT_DRAWS)))
+
     integrity = data_integrity(diagnostics, signals)
     comparable = all(summary.get(key) is not None
                      for summary in (champion_summary, challenger_summary)
@@ -848,7 +1201,12 @@ def portfolio_replay(signals: list[dict], outcomes: list[dict], *, cfg_lt: dict,
             "historicalComparison": ("CHAMPION_BETTER" if champion_better else
                                      "CHALLENGER_BETTER" if challenger_better else "MIXED"),
             "productionSelector": CHAMPION,
+            # The point-estimate inequality above is kept for continuity, but it
+            # carries no uncertainty and is not what decides anything. This is.
+            "paired": comparison_paired,
+            "decisiveComparison": "paired",
         },
+        "selectionNull": null_report,
         "promotionEvidence": {
             "historicalChampionBetter": champion_better,
             "historicalChallengerBetter": challenger_better,

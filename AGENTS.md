@@ -44,6 +44,88 @@
 - `trackingDays` and `maturedObservationDays` are different quantities and are reported
   separately; a ledger with recorded signals must never report zero tracking days.
 
+## Benchmark acquisition invariants (v2.8)
+
+- A benchmark panel materially shorter than the span it was requested for is a FAILED
+  download, not a market with no sessions. It is rejected at the source. Outcomes are
+  recomputed from a fresh panel every run, so one truncated response silently rewrites
+  the whole evidence base — this happened on 2026-08-20, 08-23 and 08-24, and moved the
+  published headline from +1.96%/yr to -2.18%/yr on an unchanged ledger.
+- The last panel that passed that check is committed under `ledger/benchmarks/`. When no
+  vendor passes, the replay runs on that snapshot and the region is labelled
+  `SNAPSHOT_FALLBACK`. That is not a substitute value: it is the same vendor's own
+  observations, versioned in git and named in the artifact. An outage then costs the
+  newest grid dates — not yet matured at 126 days — instead of a decade.
+- A snapshot fallback never rewrites the snapshot. A run that could not reach the vendor
+  must not be able to shorten the record for the next one.
+- Benchmark redundancy is across VENDORS for the SAME instrument. Substituting a
+  different index, or a tracking ETF, when one is unavailable redefines what excess
+  return means halfway through the history — a quieter error than the outage. A second
+  vendor is only admissible when both quote the same series: `^KS200` qualifies because
+  a price index carries no dividend adjustment; `SPY` does not, because `auto_adjust`
+  returns total return and most alternative routes return raw close.
+- An accepted panel is used alone and never stitched to the snapshot. Adjusted closes are
+  rescaled retroactively on every dividend, so a series spliced from two fetch vintages
+  carries two adjustment factors and its returns across the join are wrong.
+- Regional benchmark coverage is appended to `ledger/benchmark-coverage-history.jsonl`
+  every run. A collapse must be visible as a one-line diff, not something that can only
+  be found by rewinding the branch and recounting shards.
+- Lowering `minBenchmarkCoveragePct`, or dropping a region from `benchmarks`, is never
+  the fix for a coverage failure. Both restore the pre-gate state where a run is green
+  and the evidence is silently gone.
+
+## Selection-edge invariants (v2.8)
+
+- A concentrated book's edge is a claim about CHOOSING, and it is tested against the
+  distribution the same construction produces when the conviction scores are permuted
+  across names. Dates, research pool, name/sector/region caps, entry-state and evidence
+  exclusions, cash floor, weighting function and transaction costs are all held fixed;
+  only which name carries which score changes. A benchmark comparison cannot make this
+  claim, because it bundles universe carry and the construction rules in with the
+  ranking.
+- The null permutes REAL scores rather than drawing noise, so the null book carries the
+  same conviction-tilt and concentration profile as the real one. Drawing fresh scores
+  would change the shape of the book and confound tilt with ordering.
+- The alpha selection floor is dropped inside the null, because it is itself a score
+  decision — a null bound by it could only ever pick names the score already approved.
+  Every other exclusion is a fact about the name, and the null stays subject to it.
+- `BEATS_RANDOM` requires clearing the null on a RISK-ADJUSTED statistic. Beating it on
+  raw excess while sitting inside it on information ratio means the extra return was
+  bought with extra risk, which is not what a 3-5 name book is for.
+- The null tests the ranking and concentration step WITHIN an already alpha-filtered
+  research pool. It does not test the research screen, and no artifact may describe it
+  as if it did.
+- Selectors are compared on ONE shared block schedule, over dates where every selector
+  is measurable, using the later maturity date so the blocks do not overlap for either.
+  Comparing two selectors over two different periods and two different benchmark blends
+  is not a comparison; the 2026-08-22 report ranked a champion from 2013-01 against a
+  challenger from 2013-11 that way.
+- A selector difference is decided by a paired difference with a published interval, not
+  by a bare inequality between two point estimates. On ~130 blocks the sampling error is
+  wider than any gap either selector has shown.
+- A path is published only when nearly every portfolio in it was measurable
+  (`minPortfolioCompletenessPct`). A dropped portfolio is not a random omission: a name
+  without a matured benchmark is disproportionately a halted or delisted one, so a path
+  built from the survivors is a different strategy. Refuse the headline; never
+  renormalize the covered weight and present it as the book.
+- A permutation p-value carries the +1 correction in both terms, so it is never zero and
+  never claims more evidence than the draw count supports.
+
+## Version generation policy (v2.8)
+
+- `dataVersion` covers acquisition: sources, batching, date normalization. `modelVersion`
+  covers scoring only. A download-shape change is not a scoring change, and bumping
+  `modelVersion` for one resets the prospective paper ledger to zero days.
+- A generation bump is a deletion. It strands every existing record behind a version
+  filter, and two bumps in two days stranded 853,076 historical signals and 13,518
+  prospective ones while the underlying defect was still unfixed. A PR that bumps any
+  generation version states, in its description: what changed that makes old records
+  incomparable, how many records are stranded, and when the replacement generation will
+  exist. Verify the fix works on real data BEFORE bumping.
+- A generation the code requires but no run has ever produced is a PIPELINE FAULT, not an
+  absence of evidence. `historicalValidation.pipelineHealth` must say which, and the
+  validator rejects an artifact that reports the fault as plain unavailability.
+
 ## Alpha attribution invariants (v2.7)
 
 - A bucket's excess return over the benchmark is `universe carry + alpha spread`. The

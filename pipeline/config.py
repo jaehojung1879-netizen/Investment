@@ -34,6 +34,7 @@ class Config:
     names: dict[str, str]           # ticker -> display name (mainly KR)
     benchmark: str
     benchmarks: dict[str, str]
+    benchmark_sources: dict[str, list[dict]]  # ticker -> ordered vendor list
     primary: str
     horizons: list[int]
     trade_horizon: int
@@ -95,6 +96,12 @@ def load_config(path: Path | str = CONFIG_PATH) -> tuple[Config, list[str]]:
     benchmark = raw.get("benchmark", "SPY")
     benchmarks = {"US": benchmark, "KR": "^KS200"}
     benchmarks.update(raw.get("benchmarks", {}))
+    # Vendor redundancy per benchmark. Every entry for one ticker must be the
+    # SAME index from a different vendor: substituting a different index when
+    # one is unavailable would redefine "excess return" mid-history.
+    benchmark_sources = {ticker: list(specs)
+                         for ticker, specs in (raw.get("benchmarkSources") or {}).items()
+                         if isinstance(specs, list)}
     primary = raw.get("primary", core[0] if core else "QQQ")
 
     # Every distinct ticker we need price data for (universe + core + benchmark).
@@ -118,6 +125,7 @@ def load_config(path: Path | str = CONFIG_PATH) -> tuple[Config, list[str]]:
         names=raw.get("names", {}),
         benchmark=benchmark,
         benchmarks=benchmarks,
+        benchmark_sources=benchmark_sources,
         primary=primary,
         horizons=raw.get("horizons", [21, 63, 126]),
         trade_horizon=raw.get("tradeHorizon", 10),
