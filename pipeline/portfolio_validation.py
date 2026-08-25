@@ -863,19 +863,23 @@ def selection_null(contexts: dict, priced_by_date: dict, rows: list[dict],
                       "distribution of conviction scores"],
         "varied": ["which name each conviction score is attached to",
                    "the alpha selection floor, which is itself a score decision"],
-        # A random ranking is not sticky, so it rebalances far harder than a
-        # persistent one and pays for it. That is a real cost of having no
-        # signal — but it also means a model could clear this null by being
-        # merely PERSISTENT rather than right. Publish both turnovers so the
-        # reader can see how much of any gap is selection and how much is churn.
+        # A random ranking is less sticky than a persistent one, so it churns
+        # more and pays more cost — which would mean a model could clear this
+        # null by being merely PERSISTENT rather than right. Measured on the
+        # synthetic ledger the gap is small (37.1% actual vs 41.1% null median),
+        # because the research pool is itself carried forward and five names out
+        # of a ~20 name pool under sector and region caps cannot diverge much.
+        # Small is not zero, and it is not guaranteed to stay small on another
+        # ledger, so both numbers are published rather than assumed away.
         "turnover": {
             "actualPct": _r(float(np.mean([outcome_lookup[d]["turnover"]
                                            for d in usable])) * 100, 2),
             "nullMedianPct": _r(float(np.median([row["turnoverPct"]
                                                  for row in samples])), 2),
-            "noteKo": ("무작위 순위는 지속성이 없어 회전율이 높고 비용을 더 냅니다. "
+            "noteKo": ("무작위 순위는 지속성이 약해 회전율이 높고 비용을 더 냅니다. "
                        "실제 책이 귀무를 이겼다면 그 일부는 '잘 골라서'가 아니라 "
-                       "'덜 바꿔서'일 수 있으므로 두 회전율을 함께 봅니다."),
+                       "'덜 바꿔서'일 수 있습니다. 두 값의 차이가 작으면 이 경로로 "
+                       "설명되는 부분도 작습니다."),
         },
         "statistics": statistics,
         "overall": SN.overall_verdict(statistics),
