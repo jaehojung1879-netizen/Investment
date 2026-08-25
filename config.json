@@ -25,6 +25,16 @@
   },
   "benchmark": "SPY",
   "benchmarks": { "US": "SPY", "KR": "^KS200" },
+  "benchmarkSources": {
+    "^KS200": [
+      { "kind": "yahoo", "symbol": "^KS200" },
+      { "kind": "fdr", "symbol": "KS200" }
+    ],
+    "SPY": [
+      { "kind": "yahoo", "symbol": "SPY" }
+    ],
+    "_notes": "Redundancy is across VENDORS for the SAME instrument, never across instruments. ^KS200 gets a FinanceDataReader route because a price index carries no dividend adjustment, so two vendors quote the same numbers. SPY deliberately has no second vendor: yfinance auto_adjust returns a total-return series while most alternative routes return raw close, and swapping between them mid-history would move 126D excess returns by roughly 0.65%p with nothing reporting an error. SPY relies on the committed snapshot under ledger/benchmarks/ instead."
+  },
   "primary": "QQQ",
   "runMode": "paperTrading",
   "coverageFloor": 95,

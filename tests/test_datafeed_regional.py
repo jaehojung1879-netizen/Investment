@@ -34,7 +34,15 @@ def test_download_retry_forces_exchange_local_daily_labels(monkeypatch):
     assert captured["ignore_tz"] is True
 
 
-def test_regional_fetch_never_mixes_markets_and_isolates_benchmarks(monkeypatch):
+def test_regional_fetch_never_mixes_market_calendars_in_one_batch(monkeypatch):
+    """Regions are downloaded separately; benchmarks are not fetched here at all.
+
+    Benchmark acquisition moved to ``pipeline.benchmark_source``, which adds the
+    two things this path could not provide: vendor redundancy and a plausibility
+    check against the session calendar already on record. Folding the benchmark
+    into the universe fetch is what let a one-row response pass for a decade of
+    index history on 08-20, 08-23 and 08-24.
+    """
     calls = []
 
     def fake_fetch(tickers, start, batch=40):
@@ -44,33 +52,13 @@ def test_regional_fetch_never_mixes_markets_and_isolates_benchmarks(monkeypatch)
 
     monkeypatch.setattr(datafeed, "fetch_prices", fake_fetch)
     prices = datafeed.fetch_regional_prices(
-        {"US": ["AAPL", "MSFT"], "KR": ["005930.KS"]},
-        {"US": "SPY", "KR": "^KS200"},
-        "2020-01-01",
-    )
+        {"US": ["AAPL", "MSFT"], "KR": ["005930.KS"]}, "2020-01-01")
 
     assert calls == [
         (["AAPL", "MSFT"], "2020-01-01", 40),
         (["005930.KS"], "2020-01-01", 40),
-        (["SPY"], "2020-01-01", 1),
-        (["^KS200"], "2020-01-01", 1),
     ]
-    assert set(prices) == {"AAPL", "MSFT", "005930.KS", "SPY", "^KS200"}
-
-
-def test_regional_fetch_rejects_benchmark_without_close(monkeypatch):
-    def fake_fetch(tickers, start, batch=40):
-        dates = pd.bdate_range("2024-01-02", periods=3)
-        if tickers == ["^KS200"]:
-            return {"^KS200": pd.DataFrame({"Open": [1, 2, 3]}, index=dates)}
-        return {ticker: _frame(dates) for ticker in tickers}
-
-    monkeypatch.setattr(datafeed, "fetch_prices", fake_fetch)
-    prices = datafeed.fetch_regional_prices(
-        {"KR": ["005930.KS"]}, {"KR": "^KS200"}, "2020-01-01")
-
-    assert "005930.KS" in prices
-    assert "^KS200" not in prices
+    assert set(prices) == {"AAPL", "MSFT", "005930.KS"}
 
 
 def test_benchmark_session_preflight_accepts_timezone_equivalent_dates():

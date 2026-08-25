@@ -81,6 +81,25 @@ jobs:
           python scripts/run_replay.py replay-work/ledger \
             ${{ (inputs.full && '--full') || '' }}
 
+      # A benchmark snapshot is observed vendor data that already passed the
+      # plausibility check. If the run then fails for another reason — the other
+      # region's vendor was down, the coverage gate tripped — discarding it means
+      # tomorrow starts from nothing again. Persist it, and only it.
+      - name: Preserve benchmark snapshots from a failed run
+        if: failure()
+        run: |
+          cd replay-work
+          if [ ! -d ledger/benchmarks ]; then
+            echo "no benchmark snapshot to preserve"; exit 0
+          fi
+          git add ledger/benchmarks
+          if git diff --cached --quiet; then
+            echo "benchmark snapshots unchanged"
+          else
+            git commit -m "replay: preserve benchmark snapshots from a failed run"
+            git push origin signal-history
+          fi
+
       - name: Audit maturity-safe probability calibration
         run: |
           python scripts/audit_probability.py replay-work/ledger
@@ -143,6 +162,16 @@ jobs:
                 f"{(coverage.get('maturedByHorizon') or {}).get('126')}")
           print(f"PIT coverage {d.get('meanPitCoverage')} | survivorship "
                 f"{d.get('survivorshipRisk')} | fundamentals PIT {d.get('fundamentalsPit')}")
+          panel = d.get("benchmarkPanel") or {}
+          for region, row in sorted((panel.get("byRegion") or {}).items()):
+              print(f"benchmark source {region} {row.get('ticker')}: {row.get('status')} "
+                    f"via {row.get('source')} ({row.get('sessions')} sessions "
+                    f"through {row.get('lastSession')})")
+          if panel.get("degradedRegions"):
+              print(f"DEGRADED (snapshot fallback): {panel['degradedRegions']}")
+          for row in d.get("benchmarkCoverageRegressions") or []:
+              print(f"COVERAGE REGRESSION {row['region']}: {row['previousCoveragePct']}% "
+                    f"({row['previousDate']}) -> {row['coveragePct']}%")
           gate = d.get("benchmarkCoverageGate") or {}
           for region in gate.get("assessedRegions") or []:
               row = (((coverage.get("benchmarkCoverageByRegion") or {}).get(region) or {})

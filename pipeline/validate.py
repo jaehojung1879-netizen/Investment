@@ -103,6 +103,16 @@ def _validate_evidence_separation(data: dict) -> list[str]:
         promotion = replay.get("promotionEvidence") or {}
         if historical.get("available") and benchmark_gate.get("eligible") is not True:
             errors.append("historical_benchmark_coverage_gate_failed")
+        # A missing generation is a broken pipeline, not an empty one. The
+        # artifact has to say which, or the screen shows the same blank panel
+        # for "no evidence yet" and "the replay has been failing for days".
+        health = historical.get("pipelineHealth") or {}
+        if not health.get("status"):
+            errors.append("historical_pipeline_health_missing")
+        elif (not historical.get("available")
+                and int(health.get("recordsInOtherGenerations") or 0) > 0
+                and not health.get("blocksEvidence")):
+            errors.append("historical_generation_gap_not_reported")
         if historical.get("available") and contract.get("eligible") is not True:
             errors.append("historical_portfolio_contract_failed")
         if replay.get("fullProductionFidelity") and (

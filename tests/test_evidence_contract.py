@@ -182,6 +182,8 @@ def test_validator_accepts_a_well_formed_evidence_block(tmp_path):
             "evidenceClass": "HISTORICAL_OOS", "available": True,
             "benchmarkCoverageGate": {"eligible": True},
             "contractValidation": {"eligible": True},
+            "pipelineHealth": {"status": "OK", "healthy": True, "blocksEvidence": False,
+                               "recordsInOtherGenerations": 0},
         },
         prospectiveValidation={"evidenceClass": "PROSPECTIVE_PAPER", "trackingDays": 120,
                                "signalsRecorded": 900, "maturedObservationDays": 40},
@@ -358,3 +360,52 @@ def test_transitions_are_withheld_without_a_prior_production_state():
                                                  "reason": "state_file_missing"})
     assert result["available"] is False
     assert result["hasChanges"] is False
+
+
+def test_a_missing_replay_generation_must_be_reported_as_a_pipeline_fault(tmp_path):
+    """The state main was in for three days: 853k records, none in this generation.
+
+    Reported as plain unavailability it is indistinguishable from a fresh clone
+    that has simply never run a replay, and that is exactly how it looked on
+    screen while the workflow failed every night.
+    """
+    payload = _base_payload(historicalValidation={
+        "evidenceClass": "HISTORICAL_OOS", "available": False,
+        "pipelineHealth": {"status": "OK", "healthy": True, "blocksEvidence": False,
+                           "recordsInCurrentGeneration": 0,
+                           "recordsInOtherGenerations": 853076},
+    })
+
+    errors = V.validate(_write(tmp_path, payload), production=False)
+    assert "historical_generation_gap_not_reported" in errors
+
+
+def test_the_same_state_passes_once_it_is_named(tmp_path):
+    payload = _base_payload(historicalValidation={
+        "evidenceClass": "HISTORICAL_OOS", "available": False,
+        "pipelineHealth": {"status": "GENERATION_NOT_PRODUCED", "healthy": False,
+                           "blocksEvidence": True, "recordsInCurrentGeneration": 0,
+                           "recordsInOtherGenerations": 853076},
+    })
+
+    errors = V.validate(_write(tmp_path, payload), production=False)
+    assert "historical_generation_gap_not_reported" not in errors
+    assert "historical_pipeline_health_missing" not in errors
+
+
+def test_pipeline_health_classifies_the_three_states():
+    from pipeline import build as B
+
+    never_run = B._pipeline_health({"signals": [], "replayVersionMismatchedRecords": 0}, {})
+    broken = B._pipeline_health(
+        {"signals": [], "replayVersionMismatchedRecords": 853076}, {})
+    degraded = B._pipeline_health(
+        {"signals": [{"id": "x"}], "replayVersionMismatchedRecords": 0},
+        {"benchmarkPanel": {"degradedRegions": ["KR"]}})
+
+    assert never_run["status"] == B.HEALTH_NEVER_RUN
+    assert never_run["blocksEvidence"] is False
+    assert broken["status"] == B.HEALTH_GENERATION_NOT_PRODUCED
+    assert broken["blocksEvidence"] is True
+    assert degraded["status"] == B.HEALTH_DEGRADED_SOURCE
+    assert degraded["degradedBenchmarkRegions"] == ["KR"]

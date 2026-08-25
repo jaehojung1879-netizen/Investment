@@ -104,15 +104,19 @@ def fetch_prices(tickers: list[str], start: str, batch: int = 40) -> dict[str, p
     return out
 
 
-def fetch_regional_prices(universe: dict[str, list[str]], benchmarks: dict[str, str],
+def fetch_regional_prices(universe: dict[str, list[str]],
                           start: str, batch: int = 40) -> dict[str, pd.DataFrame]:
-    """Fetch replay prices without mixing exchange calendars in one batch.
+    """Fetch the replay universe without mixing exchange calendars in one batch.
 
     A single multi-market ``yf.download`` frame has one shared index.  Once US
     and KR bars have been coerced onto that index, an exchange-local date can
-    already be lost and later normalization cannot reconstruct it.  Replay
-    comparisons require exact stock/benchmark sessions, so each region is
-    fetched independently and each benchmark is fetched once more in isolation.
+    already be lost and later normalization cannot reconstruct it, so each
+    region is downloaded independently.
+
+    Benchmarks are deliberately NOT fetched here.  They need vendor redundancy,
+    a plausibility check and a committed snapshot to fall back on — see
+    ``pipeline.benchmark_source`` — and folding that into the universe fetch is
+    what let a one-row vendor response pass for a decade of index history.
     """
     out: dict[str, pd.DataFrame] = {}
     for region, names in universe.items():
@@ -121,19 +125,6 @@ def fetch_regional_prices(universe: dict[str, list[str]], benchmarks: dict[str, 
             continue
         print(f"  fetching {region} universe: {len(tickers)} tickers ...")
         out.update(fetch_prices(tickers, start, batch=batch))
-
-    for region, ticker in benchmarks.items():
-        print(f"  fetching {region} benchmark {ticker} in isolation ...")
-        isolated = fetch_prices([ticker], start, batch=1)
-        benchmark_frame = isolated.get(ticker)
-        if benchmark_frame is None or "Close" not in benchmark_frame:
-            continue
-        close = pd.to_numeric(benchmark_frame["Close"], errors="coerce").dropna()
-        if not len(close):
-            continue
-        out[ticker] = benchmark_frame
-        print(f"    {ticker}: {len(close)} sessions "
-              f"{close.index[0].date()} .. {close.index[-1].date()}")
     return out
 
 

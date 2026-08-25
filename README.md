@@ -96,17 +96,22 @@
 
 | Phase | 내용 | 상태 | 무엇이 막고 있나 |
 |---|---|---|---|
-| **1. Replay Infrastructure** | time-safe replay engine, price-only PIT, historical signal ledger, outcomes, leakage 탐지 | **완료 · 가동** | — |
+| **1. Replay Infrastructure** | time-safe replay engine, price-only PIT, historical signal ledger, outcomes, leakage 탐지 | **구현 완료 · 벤더 결정성 복구 중** | 2026-08-20·23·24에 동일 커밋이 KR 벤치마크 커버리지 452/452와 0/452를 번갈아 산출했습니다. 원인은 코드가 아니라 `^KS200`의 간헐적 벤더 결측이며, outcomes가 매 실행 재계산되기 때문에 하룻밤 결측이 증거 기반 전체를 다시 씁니다. `pipeline/benchmark_source.py`의 벤더 이중화 + 커밋된 스냅샷이 이 경로를 닫습니다. |
 | **2. PIT Fundamentals / Macro** | publication-aware 재무, vintage-aware 매크로, historical universe | **인터페이스 완료 · 데이터 대기** | 무료 소스에 발표일 이력·ALFRED vintage·과거 구성종목이 없음. `pit_data.FundamentalStore.from_jsonl` / `UniverseHistory.from_json`에 파일만 넣으면 즉시 활성화되고 PIT 커버리지가 올라갑니다. |
-| **3. Historical Calibration** | alpha bucket 기대수익 + 만기 인지형 상승확률·상하방 분포 calibration, historical Kelly prior, shrinkage | **구현 완료 · replay-v3/데이터 gate 대기** | 새 세대 재현 후에도 지역별 벤치마크 커버리지, Brier·ECE·log-loss와 과거 구성종목·PIT 재무·필요 시 vintage 거시 gate를 모두 통과해야 Kelly가 켜집니다 |
+| **3. Historical Calibration** | alpha bucket 기대수익 + 만기 인지형 상승확률·상하방 분포 calibration, historical Kelly prior, shrinkage | **구현 완료 · 재현 세대 재생성/데이터 gate 대기** | 새 세대 재현 후에도 지역별 벤치마크 커버리지, Brier·ECE·log-loss와 과거 구성종목·PIT 재무·필요 시 vintage 거시 gate를 모두 통과해야 Kelly가 켜집니다 |
 | **4. ML Opportunity / Warning** | change feature dataset, walk-forward ML, calibrated probability, radar | **완료 · acceptance gate 대기** | gate 통과 전까지 규칙 기반 점수 사용 (설계된 동작) |
 | **5. Prospective Bayesian Update** | historical + live posterior, drift 감지, Kelly 영향도 적응 | **완료 · 가동** | prospective ledger가 쌓이면 자동으로 비중이 이동 |
+
+> **현재 상태 (2026-08-25).** `provenance.REPLAY_VERSION`이 요구하는 세대의 기록이 원장에 0건입니다.
+> 이전 두 세대(853,076건)는 보존돼 있지만 세대 격리 때문에 빌드가 읽지 않으므로, 화면의 과거 검증 패널은
+> 전부 비어 있습니다. 이는 "증거가 아직 없는 상태"가 아니라 재현 작업이 실패하고 있다는 뜻이며,
+> `historicalValidation.pipelineHealth`가 두 상태를 구분해 표시합니다.
 
 Phase 2가 비어 있어도 Phase 1·3·5는 정상 동작합니다. price-only 재현의 알파는 모멘텀·저변동 슬리브만으로 만들어지고, 빠진 밸류·퀄리티는 `evidenceCoverage` 축소와 증거 가중치 할인으로 이미 반영됩니다.
 
 ## 최종 3~5종목 Historical Portfolio Replay
 
-개별 신호 성과와 별도로, 각 과거 리밸런싱 날짜에 실제 사용 가능했던 replay-v3 신호를 모아 `research candidate → entry state → candidate filter → concentrated selection → baseline weight → macro cash floor → final historical weight`를 다시 실행합니다. 라이브와 replay는 `selection_and_baseline`이라는 같은 순수 함수를 호출하므로 종목·업종·지역 상한과 기준 비중 공식이 따로 복사되지 않습니다. 날짜마다 선택 종목, 근접 탈락 사유, 팩터/PIT 커버리지, 컨빅션 순위, 현금, 국면, 비용 가정과 버전을 감사 표본에 남깁니다. 일별 바의 시장 달력 날짜를 먼저 정규화하며, 126일 지역별 벤치마크 커버리지가 95% 미만이면 초과수익 검증 원장을 게시하지 않습니다.
+개별 신호 성과와 별도로, 각 과거 리밸런싱 날짜에 실제 사용 가능했던 현 세대 재현 신호를 모아 `research candidate → entry state → candidate filter → concentrated selection → baseline weight → macro cash floor → final historical weight`를 다시 실행합니다. 라이브와 replay는 `selection_and_baseline`이라는 같은 순수 함수를 호출하므로 종목·업종·지역 상한과 기준 비중 공식이 따로 복사되지 않습니다. 날짜마다 선택 종목, 근접 탈락 사유, 팩터/PIT 커버리지, 컨빅션 순위, 현금, 국면, 비용 가정과 버전을 감사 표본에 남깁니다. 일별 바의 시장 달력 날짜를 먼저 정규화하며, 126일 지역별 벤치마크 커버리지가 95% 미만이면 초과수익 검증 원장을 게시하지 않습니다. 벤치마크 시계열 자체는 벤더 이중화 → 세션 달력 타당성 검사 → 커밋된 스냅샷 순서로 확보하며(`pipeline/benchmark_source.py`), 스냅샷으로 재현한 지역은 `SNAPSHOT_FALLBACK`으로 표시됩니다.
 
 - Production champion은 계속 `ALPHA_RANK_PER_DOWNSIDE_RISK`입니다. `CALIBRATED_EXPECTED_RETURN_PER_DOWNSIDE_RISK` challenger는 같은 날짜·후보·제약·비용에서만 비교하고, T일에는 `outcomeEndDate <= T`인 결과만 expanding calibration에 넣습니다.
 - 주간의 겹치는 21/63/126/252일 forward return을 CAGR이나 MDD로 이어 붙이지 않습니다. 자산곡선·CAGR·Sharpe·Sortino·MDD·CVaR·회전율은 실제 비용을 적용한 **겹치지 않는 리밸런싱 블록**으로 별도 구성합니다. 모든 날짜 평균은 이 경로 지표와 구분합니다.

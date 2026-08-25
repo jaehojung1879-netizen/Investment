@@ -234,16 +234,20 @@ def _load_historical_evidence(cfg) -> dict:
         signals = histstore_mod.load(ledger_dir, histstore_mod.SIGNALS, expected)
         outcomes = histstore_mod.load(ledger_dir, histstore_mod.OUTCOMES, expected)
         manifest = histstore_mod.read_manifest(ledger_dir)
-        mismatched = sum(
-            int((blob or {}).get("signalRecords") or 0)
-            for generation, blob in (manifest.get("generations") or {}).items()
-            if generation != expected)
+        generation_records = {
+            generation: int((blob or {}).get("signalRecords") or 0)
+            for generation, blob in (manifest.get("generations") or {}).items()}
+        mismatched = sum(count for generation, count in generation_records.items()
+                         if generation != expected)
+        manifest_last_run = manifest.get("lastRun") or {}
         diagnostics_path = (os.environ.get("HISTORICAL_DIAGNOSTICS_PATH")
                             or str(histstore_mod.diagnostics_path(ledger_dir)))
     else:
         signals = _load_jsonl(os.environ.get("HISTORICAL_SIGNALS_PATH"))
         outcomes = _load_jsonl(os.environ.get("HISTORICAL_OUTCOMES_PATH"))
         mismatched = sum(1 for s in signals if s.get("replayVersion") not in (None, expected))
+        generation_records = {}
+        manifest_last_run = {}
         signals = [s for s in signals if s.get("replayVersion") in (None, expected)]
         keep_ids = {s.get("id") for s in signals}
         outcomes = [o for o in outcomes if o.get("id") in keep_ids] if keep_ids else []
@@ -311,6 +315,64 @@ def _load_historical_evidence(cfg) -> dict:
         "portfolioValidation": portfolio_validation,
         "ledgerCommitSha": os.environ.get("HISTORICAL_LEDGER_COMMIT_SHA"),
         "replayVersionMismatchedRecords": mismatched,
+        "generationRecords": generation_records,
+        "manifestLastRun": manifest_last_run,
+    }
+
+
+HEALTH_OK = "OK"
+HEALTH_NEVER_RUN = "LEDGER_NOT_SUPPLIED"
+HEALTH_GENERATION_NOT_PRODUCED = "GENERATION_NOT_PRODUCED"
+HEALTH_DEGRADED_SOURCE = "DEGRADED_BENCHMARK_SOURCE"
+
+_HEALTH_KO = {
+    HEALTH_OK: "과거 재현 파이프라인 정상.",
+    HEALTH_NEVER_RUN: "과거 재현 원장이 아직 공급되지 않았습니다. 증거 축적 전 단계입니다.",
+    HEALTH_GENERATION_NOT_PRODUCED: (
+        "코드가 요구하는 재현 세대의 기록이 한 건도 없습니다. 이전 세대 기록은 남아 있으므로 "
+        "이것은 '증거가 아직 없는 상태'가 아니라 재현 작업이 실패하고 있다는 뜻입니다."),
+    HEALTH_DEGRADED_SOURCE: (
+        "벤치마크를 벤더에서 받지 못해 커밋된 스냅샷으로 재현했습니다. 과거 구간은 그대로이지만 "
+        "최신 재현 날짜는 벤더 복구 전까지 늘어나지 않습니다."),
+}
+
+
+def _pipeline_health(historical: dict, diagnostics: dict) -> dict:
+    """Tell a broken replay apart from a replay that simply has no evidence yet.
+
+    Both states render as empty panels, and for three days they were the same
+    empty panel: the ledger held 853k records from two earlier generations while
+    the code asked for a third that no run had ever produced. A reader could not
+    see the difference, and neither workflow went red over it.
+    """
+    current = len(historical.get("signals") or [])
+    other = int(historical.get("replayVersionMismatchedRecords") or 0)
+    panel = (diagnostics or {}).get("benchmarkPanel") or {}
+    degraded = list(panel.get("degradedRegions") or [])
+
+    if current > 0:
+        status = HEALTH_DEGRADED_SOURCE if degraded else HEALTH_OK
+    elif other > 0:
+        status = HEALTH_GENERATION_NOT_PRODUCED
+    else:
+        status = HEALTH_NEVER_RUN
+
+    last_run = historical.get("manifestLastRun") or {}
+    return {
+        "status": status,
+        "healthy": status in (HEALTH_OK, HEALTH_NEVER_RUN),
+        "blocksEvidence": status == HEALTH_GENERATION_NOT_PRODUCED,
+        "currentGeneration": prov_mod.REPLAY_VERSION,
+        "recordsInCurrentGeneration": current,
+        "recordsInOtherGenerations": other,
+        "generationRecords": historical.get("generationRecords") or {},
+        "lastProducedGeneration": last_run.get("replayVersion"),
+        "lastProducedThrough": last_run.get("lastDate"),
+        "degradedBenchmarkRegions": degraded,
+        "unavailableBenchmarkRegions": list(panel.get("unavailableRegions") or []),
+        "benchmarkCoverageRegressions": (diagnostics or {}).get(
+            "benchmarkCoverageRegressions") or [],
+        "messageKo": _HEALTH_KO[status],
     }
 
 
@@ -326,10 +388,15 @@ def _historical_validation_block(historical: dict, cfg) -> dict:
     integrity = validation_report.get("dataIntegrity") or {}
     forecast_gap = validation_report.get("forecastGap") or {}
     available = bool(historical.get("signals"))
+    health = _pipeline_health(historical, diagnostics)
     return {
         "evidenceClass": "HISTORICAL_OOS",
         "available": available,
-        "reason": None if available else "historical_replay_ledger_not_supplied",
+        "reason": (None if available
+                   else ("historical_replay_generation_not_produced"
+                         if health["blocksEvidence"]
+                         else "historical_replay_ledger_not_supplied")),
+        "pipelineHealth": health,
         "replayVersion": diagnostics.get("replayVersion") or prov_mod.REPLAY_VERSION,
         "featureVersion": diagnostics.get("featureVersion") or prov_mod.FEATURE_VERSION,
         "dataVersion": prov_mod.DATA_VERSION,
@@ -343,6 +410,7 @@ def _historical_validation_block(historical: dict, cfg) -> dict:
         "maturedByHorizon": coverage.get("maturedByHorizon"),
         "benchmarkCoverageByRegion": coverage.get("benchmarkCoverageByRegion") or {},
         "benchmarkCoverageGate": diagnostics.get("benchmarkCoverageGate") or {},
+        "benchmarkPanel": diagnostics.get("benchmarkPanel") or {},
         "ledgerCommitSha": historical.get("ledgerCommitSha"),
         "contractValidation": validation_report.get("contractValidation") or {},
         "pitCoveragePct": (round(float(diagnostics.get("meanPitCoverage") or 0) * 100, 1)

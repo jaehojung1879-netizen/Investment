@@ -726,6 +726,23 @@ const renderValidationLab = (d) => {
     `실시간 126D 만기 ${fmt(live126Matured)}건 · ${integrityGate.eligible ? '데이터 무결성 통과' : '데이터 무결성 미달'}`,
     champSummary.available === true ? '운영 Champion 성과 경로 있음' : '운영 Champion 성과 경로 없음',
   ];
+  // A broken replay and a replay that has not run yet both render as empty
+  // panels. Say which one it is, or the screen looks identical for days.
+  const health = hv.pipelineHealth || {};
+  const benchPanel = hv.benchmarkPanel || {};
+  const benchRows = Object.entries(benchPanel.byRegion || {})
+    .map(([region, row]) => `${region} ${row.ticker || ''} · ${row.status || '—'}${row.source ? ` (${row.source})` : ''}`);
+  const healthPanel = (health.status && health.status !== 'OK' && health.status !== 'LEDGER_NOT_SUPPLIED')
+    ? `<div class="status-note ${health.blocksEvidence ? 'bad' : 'warn'}">
+        <b>재현 파이프라인 ${health.blocksEvidence ? '이상' : '주의'} · ${health.status}</b>
+        ${health.messageKo || ''}
+        <div class="muted">요구 세대 <span class="mono">${health.currentGeneration || '—'}</span> 기록 ${fmt(health.recordsInCurrentGeneration)}건${
+          Number(health.recordsInOtherGenerations) > 0
+            ? ` · 이전 세대 기록 ${fmt(health.recordsInOtherGenerations)}건 보존${health.lastProducedGeneration ? ` (마지막 생성 ${health.lastProducedGeneration} ~ ${health.lastProducedThrough || '—'})` : ''}`
+            : ''}${benchRows.length ? ` · 벤치마크 ${benchRows.join(' / ')}` : ''}</div>
+        ${(health.benchmarkCoverageRegressions || []).map((r) => `<div class="muted">${r.region} 커버리지 ${sp(-r.dropPctPoints)} 하락 · ${r.previousDate} ${fmt(r.previousCoveragePct, '%', 1)} → ${fmt(r.coveragePct, '%', 1)}</div>`).join('')}
+      </div>`
+    : '';
   const verdictPanel = `<div class="vl-verdict ${modelEdgeConfirmed ? 'ok' : ''}">
     <span>현재 모델 판정</span>
     <strong>${modelEdgeConfirmed ? '종목선정 우위 확인' : '종목선정 우위 미확인'}</strong>
@@ -767,7 +784,7 @@ const renderValidationLab = (d) => {
 
   const limitations = `<div class="vl-card"><div class="vl-h">Data-quality limitations</div><div class="vl-grid">${vlabRow('Historical constituents',universeReady?'READY':(integrity.historicalUniverseAvailable?'INCOMPLETE':'MISSING'))}${vlabRow('Constituent coverage',integrity.constituentCoveragePct==null?'산출 불가':fmt(integrity.constituentCoveragePct,'%',1))}${vlabRow('Benchmark coverage',benchmarkCoverageGate.eligible?'READY':'BLOCKED',benchmarkCoverageHint||benchmarkCoverageGate.reason||'산정 대기')}${vlabRow('PIT fundamentals',integrity.pitFundamentals?.available?'READY':'MISSING')}${vlabRow('Macro vintage',integrity.macroVintage||'—')}${vlabRow('영향 관측치',fmt(integrity.affectedObservationsPct,'%',1))}${vlabRow('승격 자격',integrityGate.eligible?'가능':'불가',`${[...(integrityGate.failures||[]), ...(integrityGate.unassessable||[]).map((x)=>`${x}:미산정`)].join(', ')}`)}</div></div>`;
 
-  host.innerHTML = `${verdictPanel}${scorecard}${trustPanel}${alphaPanel}${portfolioPanel}${forecastPanel}<div class="vl-two">${historicalPanel}${prospectivePanel}</div>${attributionPanel}${kellyPanel}${comparison}${limitations}`;
+  host.innerHTML = `${healthPanel}${verdictPanel}${scorecard}${trustPanel}${alphaPanel}${portfolioPanel}${forecastPanel}<div class="vl-two">${historicalPanel}${prospectivePanel}</div>${attributionPanel}${kellyPanel}${comparison}${limitations}`;
 };
 
 const renderChanges = (d) => {
