@@ -102,7 +102,10 @@
     "maxNames": 5,
     "watchWeightMultiplier": 0.5,
     "waitForPullbackWeightMultiplier": 0.25,
-    "turnoverPenalty": 0.002,
+    "minPortfolioCompletenessPct": 90,
+  "selectionNullDraws": 200,
+  "_selectionNullNotes": "The concentrated book is tested against the distribution the SAME construction produces when the conviction ranking is replaced by noise: same dates, same research pool, same name/sector/region caps, same entry multipliers, same cash floor, same turnover costs. Only the ordering varies, so the gap is what choosing was worth. It does NOT test the research screen, because the pool is already filtered by the alpha score. minPortfolioCompletenessPct refuses to publish a path built from the subset of portfolios that happened to be measurable - a dropped name is disproportionately a halted or delisted one, so the survivors are a different strategy.",
+  "turnoverPenalty": 0.002,
     "alphaPercentileBuckets": [0, 60, 80, 90, 95, 100],
     "regionCaps": { "KR": 0.65, "US": 0.65 },
     "currency": {

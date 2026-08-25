@@ -74,6 +74,43 @@
   the fix for a coverage failure. Both restore the pre-gate state where a run is green
   and the evidence is silently gone.
 
+## Selection-edge invariants (v2.8)
+
+- A concentrated book's edge is a claim about CHOOSING, and it is tested against the
+  distribution the same construction produces when the conviction scores are permuted
+  across names. Dates, research pool, name/sector/region caps, entry-state and evidence
+  exclusions, cash floor, weighting function and transaction costs are all held fixed;
+  only which name carries which score changes. A benchmark comparison cannot make this
+  claim, because it bundles universe carry and the construction rules in with the
+  ranking.
+- The null permutes REAL scores rather than drawing noise, so the null book carries the
+  same conviction-tilt and concentration profile as the real one. Drawing fresh scores
+  would change the shape of the book and confound tilt with ordering.
+- The alpha selection floor is dropped inside the null, because it is itself a score
+  decision — a null bound by it could only ever pick names the score already approved.
+  Every other exclusion is a fact about the name, and the null stays subject to it.
+- `BEATS_RANDOM` requires clearing the null on a RISK-ADJUSTED statistic. Beating it on
+  raw excess while sitting inside it on information ratio means the extra return was
+  bought with extra risk, which is not what a 3-5 name book is for.
+- The null tests the ranking and concentration step WITHIN an already alpha-filtered
+  research pool. It does not test the research screen, and no artifact may describe it
+  as if it did.
+- Selectors are compared on ONE shared block schedule, over dates where every selector
+  is measurable, using the later maturity date so the blocks do not overlap for either.
+  Comparing two selectors over two different periods and two different benchmark blends
+  is not a comparison; the 2026-08-22 report ranked a champion from 2013-01 against a
+  challenger from 2013-11 that way.
+- A selector difference is decided by a paired difference with a published interval, not
+  by a bare inequality between two point estimates. On ~130 blocks the sampling error is
+  wider than any gap either selector has shown.
+- A path is published only when nearly every portfolio in it was measurable
+  (`minPortfolioCompletenessPct`). A dropped portfolio is not a random omission: a name
+  without a matured benchmark is disproportionately a halted or delisted one, so a path
+  built from the survivors is a different strategy. Refuse the headline; never
+  renormalize the covered weight and present it as the book.
+- A permutation p-value carries the +1 correction in both terms, so it is never zero and
+  never claims more evidence than the draw count supports.
+
 ## Version generation policy (v2.8)
 
 - `dataVersion` covers acquisition: sources, batching, date normalization. `modelVersion`

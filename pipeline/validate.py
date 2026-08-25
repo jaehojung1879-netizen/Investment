@@ -121,6 +121,22 @@ def _validate_evidence_separation(data: dict) -> list[str]:
             errors.append("full_fidelity_claim_without_pit_inputs")
         if promotion.get("promotionEligible") and not integrity_gate.get("eligible"):
             errors.append("selector_promotion_without_integrity_gate")
+        # A selector edge is a claim about choosing. It has to clear the
+        # distribution the same construction produces from a random ranking,
+        # on a risk-adjusted statistic, before anything may be promoted on it.
+        null_report = replay.get("selectionNull") or {}
+        null_verdict = (null_report.get("overall") or {}).get("verdict")
+        if promotion.get("promotionEligible") and null_verdict != "BEATS_RANDOM":
+            errors.append("selector_promotion_without_selection_null_support")
+        # A published path must not be built from whichever portfolios happened
+        # to be measurable: the dropped ones are disproportionately halted names.
+        for selector, blob in (replay.get("selectors") or {}).items():
+            for horizon, cell in (blob.get("horizons") or {}).items():
+                coverage = cell.get("outcomeCoverage") or {}
+                path = cell.get("path") or {}
+                if path.get("available") and coverage.get("sufficientForPath") is False:
+                    errors.append(
+                        f"portfolio_path_below_completeness_floor:{selector}:{horizon}")
         if promotion.get("promotionEligible") and promotion.get("humanApprovalRequired"):
             errors.append("automatic_selector_promotion_forbidden")
     if prospective is not None:

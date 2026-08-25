@@ -713,8 +713,22 @@ const renderValidationLab = (d) => {
   const usSelectionPositive = Number.isFinite(usIcValue) && usIcValue > 0
     && Number.isFinite(usSpreadValue) && usSpreadValue > 0;
   const krSelectionAvailable = metricValue(krIc.mean) != null;
-  const modelEdgeConfirmed = usSelectionPositive && krSelectionAvailable
+  // The decisive test: the same construction with the ranking replaced by noise.
+  const nullReport = replay.selectionNull || {};
+  const nullOverall = nullReport.overall || {};
+  const nullStats = nullReport.statistics || {};
+  const nullBeaten = nullOverall.verdict === 'BEATS_RANDOM';
+  const paired = (replay.comparison || {}).paired || {};
+  const modelEdgeConfirmed = usSelectionPositive && krSelectionAvailable && nullBeaten
     && champSummary.available === true && pv.liveValidated === true && integrityGate.eligible;
+  const nullReasonText = nullReport.available !== true
+    ? '무작위 순위 대비 검정 미실행'
+    : `무작위 순위 대비 ${{
+        BEATS_RANDOM: '우위 확인',
+        WORSE_THAN_RANDOM: '열위',
+        INDISTINGUISHABLE_FROM_RANDOM: '구분되지 않음',
+        NOT_ASSESSED: '판정 불가',
+      }[nullOverall.verdict] || '판정 불가'} · IR p=${fmt((nullStats.informationRatio || {}).pValueBeatsRandom, '', 3)} (${fmt(nullReport.draws)}회 추출)`;
   const verdictReasons = [
     usIcValue != null
       ? `미국 126D Rank IC ${fmt(usIcValue, '', 3)} · Top5−Bottom50 ${sp(usSpreadValue)}`
@@ -725,6 +739,10 @@ const renderValidationLab = (d) => {
       : '팩터별 기여도 산출 대기',
     `실시간 126D 만기 ${fmt(live126Matured)}건 · ${integrityGate.eligible ? '데이터 무결성 통과' : '데이터 무결성 미달'}`,
     champSummary.available === true ? '운영 Champion 성과 경로 있음' : '운영 Champion 성과 경로 없음',
+    nullReasonText,
+    paired.available === true
+      ? `Champion−Challenger ${sp(paired.championMinusChallengerPct)} · 95% [${sp((paired.championMinusChallengerCi95Pct||[])[0])}, ${sp((paired.championMinusChallengerCi95Pct||[])[1])}] · ${paired.verdict}`
+      : '동일 블록 쌍대 비교 불가',
   ];
   // A broken replay and a replay that has not run yet both render as empty
   // panels. Say which one it is, or the screen looks identical for days.
@@ -756,6 +774,7 @@ const renderValidationLab = (d) => {
     <div class="vl-score-grid">
       <section><b>선정력</b>${vlabRow('US 126D Rank IC', fmt(usIc.mean, '', 3), `IR ${fmt(usIc.ir, '', 2)}`)}${vlabRow('KR 126D Rank IC', fmt(krIc.mean, '', 3), `IR ${fmt(krIc.ir, '', 2)}`)}${vlabRow('US Top5-Bottom50', sp(usMono.top5MinusBottom50Pct))}${vlabRow('KR Top5-Bottom50', sp(krMono.top5MinusBottom50Pct))}${vlabRow('Bucket 단조성', `US ${usMono.status || '—'} / KR ${krMono.status || '—'}`)}</section>
       <section><b>확률</b>${['KR','US'].map((region) => { const a=(probabilityRegion[region]||{}).audit||{}; return `${vlabRow(`${region} ECE`, a.ece == null ? '—' : fmt(a.ece*100, '%p', 1))}${vlabRow(`${region} Brier Skill`, a.brierSkill == null ? '—' : fmt(a.brierSkill, '', 3))}`; }).join('')}</section>
+      <section><b>무작위 순위 대비</b>${['annualizedExcessPct','informationRatio','sharpe'].map((key) => { const s = nullStats[key] || {}; const labels = {annualizedExcessPct:'연환산 초과', informationRatio:'IR', sharpe:'Sharpe'}; return vlabRow(labels[key], s.actual == null ? '—' : `${fmt(s.actual, '', 3)} vs 무작위 ${fmt(s.nullP50, '', 3)}`, s.pValueBeatsRandom == null ? (s.reason || '판정 불가') : `p=${fmt(s.pValueBeatsRandom, '', 3)} · 상위 ${fmt(s.percentileOfNull, '%', 0)}`); }).join('')}${vlabRow('판정', nullOverall.verdict || '—', nullReport.draws ? `${fmt(nullReport.draws)}회 추출` : '')}</section>
       <section><b>Portfolio</b>${vlabRow('Champion 연환산 초과', sp(champSummary.annualizedExcessPct))}${vlabRow('MDD / Sharpe', `${fmt(champSummary.mddPct, '%', 1)} / ${fmt(champSummary.sharpe, '', 2)}`)}${vlabRow('평균 turnover', fmt(champSummary.averageTurnoverPct, '%', 1))}${vlabRow('Challenger 연환산 초과', sp(challengeSummary.annualizedExcessPct))}</section>
       <section><b>Live validation</b>${vlabRow('추적 일수', fmt(pv.trackingDays))}${vlabRow('만기 126D', fmt((pv.maturedByHorizon || {})['126'] || 0))}${vlabRow('상태', (pv.forecastGap || {}).status === 'NOT_YET_MATURED' ? 'NOT_YET_MATURED' : (pv.liveValidated ? '검증 완료' : '축적 중'))}</section>
       <section><b>Data integrity</b>${vlabRow('과거 구성종목', universeReady ? 'ready' : (integrity.historicalUniverseAvailable ? 'incomplete' : 'missing'))}${vlabRow('PIT 재무', integrity.pitFundamentals?.available ? 'ready' : 'missing')}${vlabRow('매크로 vintage', integrity.macroVintage || '—')}${vlabRow('생존편향', integrity.survivorshipRisk || hv.survivorshipRisk || '—')}</section>
