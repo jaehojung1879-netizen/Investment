@@ -300,3 +300,103 @@ def test_selling_a_name_out_of_the_book_is_charged_not_free():
     sell = (5 + 20 + 12 / 2) / 10000
     assert rows[1]["transactionCost"] == pytest.approx(buy + sell, rel=1e-9)
     assert rows[1]["transactionCost"] > buy
+
+
+# --------------------------------------------------------------------------- #
+# The persistent null — the one that removes "the edge is just lower turnover"
+# --------------------------------------------------------------------------- #
+def test_a_persistent_draw_keeps_the_same_ordering_across_dates():
+    scored = _scored([(f"T{i}", "US", "S", float(i), []) for i in range(10)])
+    rng, keys = np.random.default_rng(1), {}
+
+    first = SN.persistent_scores(scored, rng, keys)
+    second = SN.persistent_scores(scored, rng, keys)
+
+    rank = lambda rows: [r["ticker"] for r in sorted(rows, key=lambda x: -x["score"])]
+    assert rank(first) == rank(second)
+
+
+def test_an_independent_draw_does_not():
+    scored = _scored([(f"T{i}", "US", "S", float(i), []) for i in range(10)])
+    rng = np.random.default_rng(1)
+    rank = lambda rows: [r["ticker"] for r in sorted(rows, key=lambda x: -x["score"])]
+
+    assert rank(SN.permuted_scores(scored, rng)) != rank(SN.permuted_scores(scored, rng))
+
+
+def test_a_name_seen_for_the_first_time_joins_the_existing_ordering():
+    """The pool changes over time; a new name must not reshuffle the old ones."""
+    early = _scored([(f"T{i}", "US", "S", float(i), []) for i in range(5)])
+    late = _scored([(f"T{i}", "US", "S", float(i), []) for i in range(6)])
+    rng, keys = np.random.default_rng(2), {}
+
+    SN.persistent_scores(early, rng, keys)
+    before = dict(keys)
+    SN.persistent_scores(late, rng, keys)
+
+    assert all(keys[t] == v for t, v in before.items())   # old opinions unchanged
+    assert "T5" in keys                                    # new name got one
+
+
+def test_the_persistent_null_holds_a_steadier_book_than_the_independent_one():
+    """The property the mode exists for, measured rather than asserted."""
+    from pipeline import kelly_portfolio as KP
+    candidates = [{"ticker": f"T{i}", "region": "US", "sector": f"S{i % 4}",
+                   "alphaPercentile": 70 + (i % 25), "evidenceCoverage": 0.8,
+                   "risk": {"downsideVolPct": 15.0 + i % 7},
+                   "entryState": "ACCUMULATE_GRADUALLY",
+                   "longTermResearchView": "POSITIVE"} for i in range(24)]
+    cfg = {"selection": {"targetNames": 5, "minNames": 3, "maxNamesPerSector": 2,
+                         "maxNamesPerRegion": 5, "minAlphaPercentile": 66},
+           "minCashPct": 10, "maxPositionWeight": 0.4}
+    base = KP.conviction_scores(candidates, cfg)
+
+    def churn(mode):
+        """Mean share of the book replaced at each rebalance."""
+        replaced = []
+        for draw in range(12):
+            rng, keys, prior = np.random.default_rng(draw), {}, set()
+            for _ in range(10):
+                scored = (SN.permuted_scores(base, rng) if mode == SN.INDEPENDENT
+                          else SN.persistent_scores(base, rng, keys))
+                selected, _meta = KP.select_portfolio_by_scores(
+                    candidates, scored, cfg, method="X")
+                held = {row["ticker"] for row in selected}
+                if prior and held:
+                    replaced.append(len(held - prior) / len(held))
+                prior = held
+        return float(np.mean(replaced))
+
+    assert churn(SN.PERSISTENT) < churn(SN.INDEPENDENT)
+
+
+# --------------------------------------------------------------------------- #
+# An edge has to survive both nulls
+# --------------------------------------------------------------------------- #
+def _mode(verdict):
+    return {"available": True, "overall": {"verdict": verdict}}
+
+
+def test_clearing_only_the_churny_null_is_not_an_edge():
+    """That is the shape of a strategy whose advantage is paying less commission."""
+    combined = SN.combined_verdict({SN.INDEPENDENT: _mode(SN.BEATS),
+                                    SN.PERSISTENT: _mode(SN.INDISTINGUISHABLE)})
+    assert combined["verdict"] == SN.INDISTINGUISHABLE
+
+
+def test_clearing_both_nulls_is_an_edge():
+    combined = SN.combined_verdict({SN.INDEPENDENT: _mode(SN.BEATS),
+                                    SN.PERSISTENT: _mode(SN.BEATS)})
+    assert combined["verdict"] == SN.BEATS
+
+
+def test_losing_to_either_null_is_worse_than_random():
+    combined = SN.combined_verdict({SN.INDEPENDENT: _mode(SN.BEATS),
+                                    SN.PERSISTENT: _mode(SN.WORSE)})
+    assert combined["verdict"] == SN.WORSE
+
+
+def test_a_missing_mode_is_not_assessed_rather_than_passed():
+    combined = SN.combined_verdict({SN.INDEPENDENT: _mode(SN.BEATS)})
+    assert combined["verdict"] == SN.NOT_ASSESSED
+    assert combined["reason"] == "not_every_null_mode_could_be_run"

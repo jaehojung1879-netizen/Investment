@@ -782,107 +782,102 @@ def selection_null(contexts: dict, priced_by_date: dict, rows: list[dict],
         return {"available": False, "reason": "actual_path_not_measurable_on_blocks"}
 
     periods = 252 / horizon
-    # The real conviction rows per date, computed once. Each draw permutes these
+    # The real conviction rows per date, computed once. Each draw reassigns these
     # scores, so every draw faces the same eligibility facts the real book did.
     base_scores = {date: KP.conviction_scores(contexts[date][0], cfg_pf)
                    for date in usable}
-    samples: list[dict] = []
-    discarded: dict[str, int] = defaultdict(int)
-    for draw in range(int(draws)):
-        rng = np.random.default_rng(seed + draw)
-        prior: dict[str, float] = {}
-        null_regions: dict[str, str] = {}
-        excess, returns, turnover = [], [], []
-        reason = None
-        for date in usable:
-            candidates, macro = contexts[date]
-            if not candidates:
-                reason = "no_candidates"
-                break
-            blob = KP.selection_and_baseline(
-                candidates, cfg_pf, macro,
-                scored=SN.permuted_scores(base_scores[date], rng),
-                method=SN.NULL_METHOD)
-            weights = blob["weights"]
-            if not weights:
-                reason = "empty_portfolio"
-                break
-            # Priced on the same names' realised outcomes; a draw that picks a
-            # name whose outcome never matured is not measurable, and the draw
-            # is discarded rather than filled in.
-            priced = _null_return(weights, priced_by_date.get(date))
-            if priced is None:
-                reason = "drawn_name_outcome_not_matured"
-                break
-            null_regions.update({row["ticker"]: row.get("region")
-                                 for row in candidates if row.get("region")})
-            priced_names = [{"ticker": ticker, "region": null_regions.get(ticker)}
-                            for ticker in set(weights) | set(prior)]
-            leg = _turnover_cost(weights, prior, priced_names, cfg_pf)
-            prior = dict(weights)
-            turnover.append(leg["turnover"])
-            returns.append(priced["gross"] - leg["cost"])
-            excess.append(priced["gross"] - priced["benchmark"] - leg["cost"])
-        if len(excess) != len(usable):
-            discarded[reason or "incomplete_path"] += 1
-            continue
-        sample = _path_statistics(np.array(returns), np.array(excess), periods)
-        sample["turnoverPct"] = float(np.mean(turnover)) * 100
-        samples.append(sample)
 
-    if not samples:
-        return {"available": False, "reason": "no_complete_null_draw",
-                "discardedDraws": dict(sorted(discarded.items()))}
+    def run_mode(mode: str) -> tuple[list[dict], dict]:
+        samples: list[dict] = []
+        discarded: dict[str, int] = defaultdict(int)
+        for draw in range(int(draws)):
+            rng = np.random.default_rng(seed + draw)
+            keys: dict[str, float] = {}
+            prior: dict[str, float] = {}
+            null_regions: dict[str, str] = {}
+            excess, returns, turnover = [], [], []
+            reason = None
+            for date in usable:
+                candidates, macro = contexts[date]
+                if not candidates:
+                    reason = "no_candidates"
+                    break
+                scored = (SN.permuted_scores(base_scores[date], rng)
+                          if mode == SN.INDEPENDENT
+                          else SN.persistent_scores(base_scores[date], rng, keys))
+                blob = KP.selection_and_baseline(
+                    candidates, cfg_pf, macro, scored=scored, method=SN.NULL_METHOD)
+                weights = blob["weights"]
+                if not weights:
+                    reason = "empty_portfolio"
+                    break
+                priced = _null_return(weights, priced_by_date.get(date))
+                if priced is None:
+                    reason = "drawn_name_outcome_not_matured"
+                    break
+                null_regions.update({row["ticker"]: row.get("region")
+                                     for row in candidates if row.get("region")})
+                names = [{"ticker": ticker, "region": null_regions.get(ticker)}
+                         for ticker in set(weights) | set(prior)]
+                leg = _turnover_cost(weights, prior, names, cfg_pf)
+                prior = dict(weights)
+                turnover.append(leg["turnover"])
+                returns.append(priced["gross"] - leg["cost"])
+                excess.append(priced["gross"] - priced["benchmark"] - leg["cost"])
+            if len(excess) != len(usable):
+                discarded[reason or "incomplete_path"] += 1
+                continue
+            sample = _path_statistics(np.array(returns), np.array(excess), periods)
+            sample["turnoverPct"] = float(np.mean(turnover)) * 100
+            samples.append(sample)
+        return samples, dict(sorted(discarded.items()))
 
     actual_returns = np.array([outcome_lookup[d]["costAdjustedReturn"] for d in usable])
     actual_excess = np.array([outcome_lookup[d]["costAdjustedExcessReturn"] for d in usable])
     observed = _path_statistics(actual_returns, actual_excess, periods)
-    statistics = {
-        name: SN.summarize(observed.get(name), [row.get(name) for row in samples],
-                           higher_is_better=True, label=name)
-        for name in ("annualizedExcessPct", "informationRatio", "sharpe")
-    }
+    actual_turnover = float(np.mean([outcome_lookup[d]["turnover"] for d in usable])) * 100
+
+    by_mode: dict[str, dict] = {}
+    for mode in SN.MODES:
+        samples, discarded = run_mode(mode)
+        if not samples:
+            by_mode[mode] = {"available": False, "reason": "no_complete_null_draw",
+                             "discardedDraws": discarded}
+            continue
+        statistics = {
+            name: SN.summarize(observed.get(name), [row.get(name) for row in samples],
+                               higher_is_better=True, label=name)
+            for name in ("annualizedExcessPct", "informationRatio", "sharpe")
+        }
+        by_mode[mode] = {
+            "available": True,
+            "draws": len(samples),
+            "discardedDraws": discarded,
+            "nullMedianTurnoverPct": _r(float(np.median(
+                [row["turnoverPct"] for row in samples])), 2),
+            "statistics": statistics,
+            "overall": SN.overall_verdict(statistics),
+        }
+
     return {
         "available": True,
         "method": SN.NULL_METHOD,
-        "draws": len(samples),
+        "modes": list(SN.MODES),
         "requestedDraws": int(draws),
-        # A draw is discarded when a randomly picked name has no matured
-        # outcome. That is a coverage property, not a ranking property, so a
-        # high rate means the null is drawn from a narrower pool than the real
-        # book chose from and the comparison is weaker than it looks.
-        "discardedDraws": dict(sorted(discarded.items())),
-        "discardedDrawPct": _r(sum(discarded.values()) / max(1, int(draws)) * 100, 2),
         "blocks": len(usable),
         "blocksDroppedForPoolCoverage": pool_gaps,
         "firstDate": usable[0], "lastDate": usable[-1],
         "horizonDays": int(horizon),
+        "actualTurnoverPct": _r(actual_turnover, 2),
+        "actual": {name: _r(observed.get(name), 4) for name in observed},
         "heldFixed": ["dates", "research candidate pool", "name/sector/region caps",
                       "entry-state and evidence exclusions", "regime cash floor",
                       "baseline weighting function", "transaction costs",
                       "distribution of conviction scores"],
         "varied": ["which name each conviction score is attached to",
                    "the alpha selection floor, which is itself a score decision"],
-        # A random ranking is less sticky than a persistent one, so it churns
-        # more and pays more cost — which would mean a model could clear this
-        # null by being merely PERSISTENT rather than right. Measured on the
-        # synthetic ledger the gap is small (37.1% actual vs 41.1% null median),
-        # because the research pool is itself carried forward and five names out
-        # of a ~20 name pool under sector and region caps cannot diverge much.
-        # Small is not zero, and it is not guaranteed to stay small on another
-        # ledger, so both numbers are published rather than assumed away.
-        "turnover": {
-            "actualPct": _r(float(np.mean([outcome_lookup[d]["turnover"]
-                                           for d in usable])) * 100, 2),
-            "nullMedianPct": _r(float(np.median([row["turnoverPct"]
-                                                 for row in samples])), 2),
-            "noteKo": ("무작위 순위는 지속성이 약해 회전율이 높고 비용을 더 냅니다. "
-                       "실제 책이 귀무를 이겼다면 그 일부는 '잘 골라서'가 아니라 "
-                       "'덜 바꿔서'일 수 있습니다. 두 값의 차이가 작으면 이 경로로 "
-                       "설명되는 부분도 작습니다."),
-        },
-        "statistics": statistics,
-        "overall": SN.overall_verdict(statistics),
+        "byMode": by_mode,
+        "overall": SN.combined_verdict(by_mode),
     }
 
 

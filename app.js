@@ -716,7 +716,11 @@ const renderValidationLab = (d) => {
   // The decisive test: the same construction with the ranking replaced by noise.
   const nullReport = replay.selectionNull || {};
   const nullOverall = nullReport.overall || {};
-  const nullStats = nullReport.statistics || {};
+  const nullModes = nullReport.byMode || {};
+  // The persistent null trades no more than the real book, so it is the one that
+  // rules out "the edge is just lower turnover". Show that one by default.
+  const nullHard = nullModes.PERSISTENT_PER_DRAW || {};
+  const nullStats = nullHard.statistics || {};
   const nullBeaten = nullOverall.verdict === 'BEATS_RANDOM';
   const paired = (replay.comparison || {}).paired || {};
   const modelEdgeConfirmed = usSelectionPositive && krSelectionAvailable && nullBeaten
@@ -728,7 +732,7 @@ const renderValidationLab = (d) => {
         WORSE_THAN_RANDOM: '열위',
         INDISTINGUISHABLE_FROM_RANDOM: '구분되지 않음',
         NOT_ASSESSED: '판정 불가',
-      }[nullOverall.verdict] || '판정 불가'} · IR p=${fmt((nullStats.informationRatio || {}).pValueBeatsRandom, '', 3)} (${fmt(nullReport.draws)}회 추출)`;
+      }[nullOverall.verdict] || '판정 불가'} · IR p=${fmt((nullStats.informationRatio || {}).pValueBeatsRandom, '', 3)} (${fmt(nullReport.requestedDraws)}회 추출 x ${(nullReport.modes || []).length}종)`;
   const verdictReasons = [
     usIcValue != null
       ? `미국 126D Rank IC ${fmt(usIcValue, '', 3)} · Top5−Bottom50 ${sp(usSpreadValue)}`
@@ -774,7 +778,7 @@ const renderValidationLab = (d) => {
     <div class="vl-score-grid">
       <section><b>선정력</b>${vlabRow('US 126D Rank IC', fmt(usIc.mean, '', 3), `IR ${fmt(usIc.ir, '', 2)}`)}${vlabRow('KR 126D Rank IC', fmt(krIc.mean, '', 3), `IR ${fmt(krIc.ir, '', 2)}`)}${vlabRow('US Top5-Bottom50', sp(usMono.top5MinusBottom50Pct))}${vlabRow('KR Top5-Bottom50', sp(krMono.top5MinusBottom50Pct))}${vlabRow('Bucket 단조성', `US ${usMono.status || '—'} / KR ${krMono.status || '—'}`)}</section>
       <section><b>확률</b>${['KR','US'].map((region) => { const a=(probabilityRegion[region]||{}).audit||{}; return `${vlabRow(`${region} ECE`, a.ece == null ? '—' : fmt(a.ece*100, '%p', 1))}${vlabRow(`${region} Brier Skill`, a.brierSkill == null ? '—' : fmt(a.brierSkill, '', 3))}`; }).join('')}</section>
-      <section><b>무작위 순위 대비</b>${['annualizedExcessPct','informationRatio','sharpe'].map((key) => { const s = nullStats[key] || {}; const labels = {annualizedExcessPct:'연환산 초과', informationRatio:'IR', sharpe:'Sharpe'}; return vlabRow(labels[key], s.actual == null ? '—' : `${fmt(s.actual, '', 3)} vs 무작위 ${fmt(s.nullP50, '', 3)}`, s.pValueBeatsRandom == null ? (s.reason || '판정 불가') : `p=${fmt(s.pValueBeatsRandom, '', 3)} · 상위 ${fmt(s.percentileOfNull, '%', 0)}`); }).join('')}${vlabRow('판정', nullOverall.verdict || '—', nullReport.draws ? `${fmt(nullReport.draws)}회 추출` : '')}</section>
+      <section><b>무작위 순위 대비</b>${['annualizedExcessPct','informationRatio','sharpe'].map((key) => { const s = nullStats[key] || {}; const labels = {annualizedExcessPct:'연환산 초과', informationRatio:'IR', sharpe:'Sharpe'}; return vlabRow(labels[key], s.actual == null ? '—' : `${fmt(s.actual, '', 3)} vs 무작위 ${fmt(s.nullP50, '', 3)}`, s.pValueBeatsRandom == null ? (s.reason || '판정 불가') : `p=${fmt(s.pValueBeatsRandom, '', 3)} · 상위 ${fmt(s.percentileOfNull, '%', 0)}`); }).join('')}${vlabRow('회전율', nullReport.actualTurnoverPct == null ? '—' : `실제 ${fmt(nullReport.actualTurnoverPct, '%', 1)}`, Object.entries(nullModes).map(([m, b]) => `${m === 'PERSISTENT_PER_DRAW' ? '지속' : '독립'} ${fmt(b.nullMedianTurnoverPct, '%', 1)}`).join(' / '))}${Object.entries(nullModes).map(([mode, blob]) => vlabRow(mode === 'PERSISTENT_PER_DRAW' ? '지속형 귀무' : '독립형 귀무', (blob.overall || {}).verdict || blob.reason || '—', blob.draws ? `${fmt(blob.draws)}회` : '')).join('')}${vlabRow('최종 판정', nullOverall.verdict || '—', nullOverall.requiresEveryMode ? '두 검정 모두 통과 필요' : '')}</section>
       <section><b>Portfolio</b>${vlabRow('Champion 연환산 초과', sp(champSummary.annualizedExcessPct))}${vlabRow('MDD / Sharpe', `${fmt(champSummary.mddPct, '%', 1)} / ${fmt(champSummary.sharpe, '', 2)}`)}${vlabRow('평균 turnover', fmt(champSummary.averageTurnoverPct, '%', 1))}${vlabRow('Challenger 연환산 초과', sp(challengeSummary.annualizedExcessPct))}</section>
       <section><b>Live validation</b>${vlabRow('추적 일수', fmt(pv.trackingDays))}${vlabRow('만기 126D', fmt((pv.maturedByHorizon || {})['126'] || 0))}${vlabRow('상태', (pv.forecastGap || {}).status === 'NOT_YET_MATURED' ? 'NOT_YET_MATURED' : (pv.liveValidated ? '검증 완료' : '축적 중'))}</section>
       <section><b>Data integrity</b>${vlabRow('과거 구성종목', universeReady ? 'ready' : (integrity.historicalUniverseAvailable ? 'incomplete' : 'missing'))}${vlabRow('PIT 재무', integrity.pitFundamentals?.available ? 'ready' : 'missing')}${vlabRow('매크로 vintage', integrity.macroVintage || '—')}${vlabRow('생존편향', integrity.survivorshipRisk || hv.survivorshipRisk || '—')}</section>
