@@ -38,6 +38,7 @@ import json
 import sys
 import time
 from collections import defaultdict
+from contextlib import contextmanager
 from pathlib import Path
 
 import pandas as pd
@@ -76,51 +77,67 @@ def _blend_for(name: str, region: str) -> dict | None:
     return VARIANTS.get(name)
 
 
-def rewrite_alpha(signals: list[dict], variant: str) -> list[dict]:
-    """Recompute alphaPercentile from the frozen sleeve percentiles.
+ALPHA_FIELDS = ("alphaPercentile", "longTermAlphaPercentile", "alpha", "rawAlpha")
 
-    The percentile is taken within each date x region cross-section, which is
-    the same scope the production composite is ranked in. ``alpha`` is set to a
-    monotone transform of it because the research screen re-ranks on alpha, so
-    only the ordering matters there.
 
-    A signal whose sleeves are missing keeps ``dataInsufficient`` and is left
-    alone — a variant may not resurrect a name the replay could not score.
+@contextmanager
+def alpha_variant(signals: list[dict], variant: str):
+    """Apply a variant's alpha in place for the duration of the block.
+
+    In place, and not on a copy, because copying is not affordable here: the
+    validation slice is ~295k signals whose nested feature blocks run to tens of
+    kilobytes each, and ``[dict(row) for row in signals]`` took 9.4 GB of a 16 GB
+    box and never finished. Only the four alpha fields change, so the originals
+    fit in a small side list and are put back on the way out — including if the
+    body raises, or the next variant would silently score the previous one's
+    alpha.
+
+    The percentile is taken within each date x region cross-section, the same
+    scope the production composite is ranked in. ``alpha`` is a monotone
+    transform of it because the research screen re-ranks on alpha, so only the
+    ordering matters there. A signal whose sleeves are missing is left alone: a
+    variant may not resurrect a name the replay could not score.
     """
     if variant == "V0_PRODUCTION":
-        return signals
+        yield signals
+        return
 
-    rows = [dict(row) for row in signals]
+    original = [tuple(row.get(field) for field in ALPHA_FIELDS) for row in signals]
     by_cell: dict[tuple, list[int]] = defaultdict(list)
-    for index, row in enumerate(rows):
+    for index, row in enumerate(signals):
         by_cell[(row.get("date"), row.get("region"))].append(index)
-
-    for (_date, region), indices in by_cell.items():
-        blend = _blend_for(variant, region or "US")
-        scores, scored_idx = [], []
-        for index in indices:
-            sleeves = rows[index].get("factorPercentiles") or {}
-            total = weight = 0.0
-            for sleeve, share in blend.items():
-                value = sleeves.get(sleeve)
-                if value is None:
+    try:
+        for (_date, region), indices in by_cell.items():
+            blend = _blend_for(variant, region or "US")
+            scores, scored_idx = [], []
+            for index in indices:
+                sleeves = signals[index].get("factorPercentiles") or {}
+                total = weight = 0.0
+                for sleeve, share in blend.items():
+                    value = sleeves.get(sleeve)
+                    if value is None:
+                        continue
+                    total += float(value) * float(share)
+                    weight += float(share)
+                if weight <= 0:
                     continue
-                total += float(value) * float(share)
-                weight += float(share)
-            if weight <= 0:
+                scores.append(total / weight)
+                scored_idx.append(index)
+            if not scored_idx:
                 continue
-            scores.append(total / weight)
-            scored_idx.append(index)
-        if not scored_idx:
-            continue
-        pct = pd.Series(scores).rank(method="average", pct=True) * 100
-        for slot, index in enumerate(scored_idx):
-            value = float(pct.iloc[slot])
-            rows[index]["alphaPercentile"] = round(value, 4)
-            rows[index]["longTermAlphaPercentile"] = round(value, 4)
-            rows[index]["alpha"] = round((value - 50.0) / 50.0, 6)
-            rows[index]["rawAlpha"] = rows[index]["alpha"]
-    return rows
+            pct = pd.Series(scores).rank(method="average", pct=True) * 100
+            for slot, index in enumerate(scored_idx):
+                value = round(float(pct.iloc[slot]), 4)
+                alpha = round((value - 50.0) / 50.0, 6)
+                signals[index]["alphaPercentile"] = value
+                signals[index]["longTermAlphaPercentile"] = value
+                signals[index]["alpha"] = alpha
+                signals[index]["rawAlpha"] = alpha
+        yield signals
+    finally:
+        for row, values in zip(signals, original):
+            for field, value in zip(ALPHA_FIELDS, values):
+                row[field] = value
 
 
 def summarize(report: dict) -> dict:
@@ -197,9 +214,10 @@ def main(argv=None) -> int:
     results = {}
     for name in names:
         started = time.time()
-        variant_signals = rewrite_alpha(kept, name)
-        report = PV.portfolio_replay(variant_signals, kept_outcomes, cfg_lt=cfg.longterm,
-                                     cfg_pf=cfg_pf, diagnostics=diagnostics)
+        with alpha_variant(kept, name) as variant_signals:
+            report = PV.portfolio_replay(variant_signals, kept_outcomes,
+                                         cfg_lt=cfg.longterm, cfg_pf=cfg_pf,
+                                         diagnostics=diagnostics)
         results[name] = {
             "summary": summarize(report.get("portfolioReplay") or report),
             "rankIC126": rank_ic(report),
