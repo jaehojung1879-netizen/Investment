@@ -2,7 +2,7 @@
   "schemaVersion": "2.7.0",
   "modelVersion": "longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
   "buildCommitSha": "461f8b048264",
-  "generatedAt": "2026-08-26T00:03:37.331835+00:00",
+  "generatedAt": "2026-08-26T04:33:10.062433+00:00",
   "marketAsOf": "2026-08-25",
   "macroRegime": "Transition/Low confidence",
   "holdingsByRegion": {
@@ -17,30 +17,30 @@
       "HST",
       "VTRS",
       "TRV",
-      "CNC",
-      "MU"
+      "MU",
+      "CNC"
     ],
     "KR": [
       "402340.KS",
       "078930.KS",
       "034730.KS",
       "000660.KS",
-      "021240.KS",
-      "002380.KS",
-      "005935.KS",
       "005490.KS",
-      "004170.KS",
-      "271560.KS",
+      "021240.KS",
+      "005935.KS",
+      "002380.KS",
       "001450.KS",
-      "005930.KS"
+      "271560.KS",
+      "004170.KS",
+      "032640.KS"
     ]
   },
   "modelPortfolioWeights": {
-    "TRV": 0.278216,
-    "ALL": 0.171784,
-    "NUE": 0.120165,
-    "271560.KS": 0.089836,
-    "021240.KS": 0.047458
+    "TRV": 0.279225,
+    "ALL": 0.170775,
+    "NUE": 0.119028,
+    "271560.KS": 0.089271,
+    "032640.KS": 0.053821
   },
   "entryStatesByTicker": {
     "EIX": "WAIT_FOR_PULLBACK",
@@ -53,8 +53,8 @@
     "HST": "WATCH",
     "VTRS": "ACCUMULATE_GRADUALLY",
     "TRV": "ACCUMULATE_GRADUALLY",
-    "CNC": "WAIT_FOR_PULLBACK",
     "MU": "WAIT_FOR_PULLBACK",
+    "CNC": "WAIT_FOR_PULLBACK",
     "CSX": "ACCUMULATE_GRADUALLY",
     "MPC": "WAIT_FOR_PULLBACK",
     "VLO": "WAIT_FOR_PULLBACK",
@@ -62,17 +62,17 @@
     "078930.KS": "WATCH",
     "034730.KS": "WATCH",
     "000660.KS": "WATCH",
-    "021240.KS": "WATCH",
-    "002380.KS": "WATCH",
-    "005935.KS": "WATCH",
     "005490.KS": "WATCH",
-    "004170.KS": "WATCH",
-    "271560.KS": "WATCH",
+    "021240.KS": "WATCH",
+    "005935.KS": "WATCH",
+    "002380.KS": "WATCH",
     "001450.KS": "WATCH",
+    "271560.KS": "WATCH",
+    "004170.KS": "WATCH",
+    "032640.KS": "WATCH",
     "005930.KS": "WATCH",
-    "009540.KS": "WATCH",
     "071050.KS": "WATCH",
-    "032640.KS": "WATCH"
+    "009540.KS": "WATCH"
   },
   "opportunityTiersByTicker": {
     "010130.KS": "EMERGING_OPPORTUNITY",
@@ -95,9 +95,9 @@
   "warningTiersByTicker": {
     "078930.KS": "WATCH",
     "271560.KS": "WATCH",
+    "032640.KS": "WATCH",
     "002380.KS": "WATCH",
     "021240.KS": "WATCH",
-    "005930.KS": "WATCH",
     "005935.KS": "WATCH",
     "034730.KS": "WATCH",
     "402340.KS": "WATCH",
@@ -115,7 +115,7 @@
   "stale": false,
   "productionValidation": {
     "passed": true,
-    "validatedAt": "2026-08-26T00:03:37.331835+00:00",
+    "validatedAt": "2026-08-26T04:33:10.062433+00:00",
     "errors": []
   }
 }
