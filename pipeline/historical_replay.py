@@ -524,20 +524,25 @@ def replay_one_date(as_of, panel: PricePanel, universe_by_region: dict[str, list
         raw_rows: dict[str, dict] = {}
         for ticker, pos in positions.items():
             history = histories[ticker]
+            # The filing supplies per-share numerators; the price that turns
+            # them into yields is the one on this replay date, not the one on
+            # the filing date. Anything the file states outright is kept as-is.
+            fundamentals = pit_data.derive_price_relative(
+                pit_fundamentals.get(ticker) or {}, history.close[pos])
             raw_rows[ticker] = {
-                "sector": SECT.sector_of(ticker, (pit_fundamentals.get(ticker) or {}).get("sector")),
+                "sector": SECT.sector_of(ticker, fundamentals.get("sector")),
                 "mom121": momentum_12_1(history, pos),
                 "mom6": momentum_6m(history, pos),
-                "earningsYield": (pit_fundamentals.get(ticker) or {}).get("earningsYield"),
-                "fwdEarningsYield": (pit_fundamentals.get(ticker) or {}).get("fwdEarningsYield"),
-                "bookYield": (pit_fundamentals.get(ticker) or {}).get("bookYield"),
-                "fcfYield": (pit_fundamentals.get(ticker) or {}).get("fcfYield"),
-                "roe": (pit_fundamentals.get(ticker) or {}).get("roe"),
-                "opMargin": (pit_fundamentals.get(ticker) or {}).get("operatingMargin"),
-                "profitMargin": (pit_fundamentals.get(ticker) or {}).get("profitMargin"),
-                "debtToEquity": (pit_fundamentals.get(ticker) or {}).get("debtToEquity"),
-                "earningsGrowth": (pit_fundamentals.get(ticker) or {}).get("earningsGrowth"),
-                "marketCap": (pit_fundamentals.get(ticker) or {}).get("marketCap"),
+                "earningsYield": fundamentals.get("earningsYield"),
+                "fwdEarningsYield": fundamentals.get("fwdEarningsYield"),
+                "bookYield": fundamentals.get("bookYield"),
+                "fcfYield": fundamentals.get("fcfYield"),
+                "roe": fundamentals.get("roe"),
+                "opMargin": fundamentals.get("operatingMargin"),
+                "profitMargin": fundamentals.get("profitMargin"),
+                "debtToEquity": fundamentals.get("debtToEquity"),
+                "earningsGrowth": fundamentals.get("earningsGrowth"),
+                "marketCap": fundamentals.get("marketCap"),
                 "vol252": realized_vol_252(history, pos),
                 "downsideVol": downside_vol_252(history, pos),
                 "cvar95": cvar_95(history, pos),

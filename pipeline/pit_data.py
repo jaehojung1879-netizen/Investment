@@ -222,6 +222,11 @@ class FundamentalStore:
     REQUIRED_SOURCE_FIELDS = (
         "trailingPE", "forwardPE", "bookValue", "bookYield", "fcf", "fcfYield",
         "roe", "operatingMargin", "profitMargin", "debtToEquity", "earningsGrowth",
+        # Per-share numerators. A filing can state these; it cannot state a
+        # yield, because a yield needs a price and the price moves every day
+        # after the filing. Supplying the numerator lets the consumer divide by
+        # the price it is actually standing on. See PRICE_RELATIVE_NUMERATORS.
+        "epsTtm", "bookValuePerShare", "fcfPerShare",
     )
     SOURCE_FIELD_ALIASES = {"FCF": "fcf", "FCFYield": "fcfYield", "ROE": "roe"}
 
@@ -374,9 +379,51 @@ class FundamentalStore:
                 "availableFrom", "currency", "trailingPE", "forwardPE",
                 "bookValue", "bookYield", "FCF", "FCFYield", "ROE",
                 "operatingMargin", "profitMargin", "debtToEquity", "earningsGrowth",
+                "epsTtm", "bookValuePerShare", "fcfPerShare",
                 "source", "sourceAsOf", "revisionStatus",
             ],
         })
+
+
+# Yield -> the per-share numerator that produces it once divided by a price.
+# The replay holds the point-in-time close; the filing holds the numerator.
+# Keeping them apart until the moment of use is what makes the value sleeve
+# point-in-time rather than "stale by up to a quarter".
+PRICE_RELATIVE_NUMERATORS = {
+    "earningsYield": "epsTtm",
+    "bookYield": "bookValuePerShare",
+    "fcfYield": "fcfPerShare",
+}
+
+# Production derives these from vendor ratios, and the vendor withholds a ratio
+# whose denominator is non-positive: trailingPE is absent for a loss-making
+# company, priceToBook for negative book value. Free cash flow carries no such
+# guard and is allowed to be negative. The replay mirrors that exactly, so a
+# name is scored the same way in both places rather than only in the backtest.
+POSITIVE_ONLY_NUMERATORS = ("epsTtm", "bookValuePerShare")
+
+
+def derive_price_relative(fields: dict, price) -> dict:
+    """Fill in price-relative fields from per-share numerators and ``price``.
+
+    An explicitly supplied yield always wins — the caller may have a vendor
+    ratio that is better than anything reconstructable here. Nothing is
+    derived without a usable positive price.
+    """
+    out = dict(fields or {})
+    close = _safe_number(price)
+    if not close or close <= 0:
+        return out
+    for yield_key, numerator_key in PRICE_RELATIVE_NUMERATORS.items():
+        if out.get(yield_key) is not None:
+            continue
+        numerator = _safe_number(out.get(numerator_key))
+        if numerator is None or numerator == 0:
+            continue
+        if numerator_key in POSITIVE_ONLY_NUMERATORS and numerator <= 0:
+            continue
+        out[yield_key] = numerator / close
+    return out
 
 
 # --------------------------------------------------------------------------- #

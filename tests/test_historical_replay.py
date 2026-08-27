@@ -7,6 +7,8 @@ here are hard equalities and explicit exceptions, not tolerance bands.
 """
 from __future__ import annotations
 
+import json
+
 import numpy as np
 import pandas as pd
 import pytest
@@ -197,6 +199,84 @@ def test_current_snapshot_fundamentals_are_never_back_applied(prices, universe):
         assert record["factorPercentiles"]["value"] is None
         assert record["factorPercentiles"]["quality"] is None
         assert record["pit"]["fundamentalsSleeveUsed"] is False
+
+
+def test_price_relative_fields_are_derived_against_the_price_of_the_day():
+    """A filing states a numerator; only the day's price makes it a yield."""
+    filing = {"epsTtm": 5.0, "bookValuePerShare": 40.0, "fcfPerShare": 2.0}
+    cheap = pit_data.derive_price_relative(filing, 50.0)
+    dear = pit_data.derive_price_relative(filing, 200.0)
+    assert cheap["earningsYield"] == pytest.approx(0.10)
+    assert cheap["bookYield"] == pytest.approx(0.80)
+    assert cheap["fcfYield"] == pytest.approx(0.04)
+    # Same filing, quadrupled price: the value sleeve must move, not sit still.
+    assert dear["earningsYield"] == pytest.approx(0.025)
+    assert dear["bookYield"] == pytest.approx(0.20)
+    # The numerators themselves are left untouched for the record.
+    assert cheap["epsTtm"] == 5.0
+
+
+def test_a_stated_yield_is_never_overwritten_by_a_derived_one():
+    out = pit_data.derive_price_relative(
+        {"epsTtm": 5.0, "earningsYield": 0.031, "bookValuePerShare": 40.0}, 50.0)
+    assert out["earningsYield"] == 0.031
+    assert out["bookYield"] == pytest.approx(0.80)
+
+
+def test_yields_production_withholds_are_not_invented_from_a_filing():
+    """Production has no trailingPE for a loss and no priceToBook below zero."""
+    out = pit_data.derive_price_relative(
+        {"epsTtm": -3.0, "bookValuePerShare": -10.0, "fcfPerShare": -1.5}, 50.0)
+    assert "earningsYield" not in out
+    assert "bookYield" not in out
+    # Free cash flow carries no such guard in production, so neither here.
+    assert out["fcfYield"] == pytest.approx(-0.03)
+
+
+def test_nothing_is_derived_without_a_usable_price():
+    filing = {"epsTtm": 5.0, "bookValuePerShare": 40.0}
+    for price in (None, 0.0, -12.0, float("nan"), "n/a"):
+        assert pit_data.derive_price_relative(filing, price) == filing
+
+
+def test_contract_accepts_per_share_numerators_at_the_top_level(tmp_path):
+    path = tmp_path / "fundamentals.jsonl"
+    path.write_text(json.dumps({
+        "ticker": "AAA", "fiscalPeriod": "2020Q1", "reportDate": "2020-03-31",
+        "publicationDate": "2020-05-14", "availableFrom": "2020-05-14",
+        "currency": "USD", "source": "sec-xbrl", "sourceAsOf": "2020-05-14",
+        "revisionStatus": "ORIGINAL",
+        "epsTtm": 5.0, "bookValuePerShare": 40.0, "fcfPerShare": 2.0,
+    }) + "\n", encoding="utf-8")
+    store = pit_data.FundamentalStore.from_jsonl(path)
+    assert store.diagnostics["rowsAccepted"] == 1
+    fields, status = store.visible_as_of("AAA", "2020-06-01")
+    assert fields["epsTtm"] == 5.0
+    assert fields["bookValuePerShare"] == 40.0
+    assert status == pit_data.PIT_EXACT
+    # Still no yield in the store itself — that is the consumer's job.
+    assert "earningsYield" not in fields
+
+
+def test_replay_builds_a_value_sleeve_from_per_share_numerators(prices, universe):
+    """The gap this closes: filings alone used to leave value permanently null."""
+    records = {}
+    for idx, ticker in enumerate(sorted(universe["US"])):
+        records[ticker] = [pit_data.FundamentalRecord(
+            ticker, "2016Q4", "2017-01-02",
+            {"epsTtm": 2.0 + idx, "bookValuePerShare": 20.0 + 4 * idx,
+             "fcfPerShare": 1.0 + idx * 0.5, "roe": 0.05 + idx * 0.01,
+             "operatingMargin": 0.1, "profitMargin": 0.08,
+             "debtToEquity": 40.0, "earningsGrowth": 0.03},
+            filing_date="2016-12-30")]
+    store = pit_data.FundamentalStore(records)
+    replay = HR.run_replay(prices, universe, benchmarks={"US": "SPY"},
+                           cfg_lt={"minFactorSleeves": 1, "minFinancialCoverage": 0.0},
+                           start="2017-01-01", end="2017-06-30", frequency="M",
+                           fundamental_store=store, model_version="test")
+    scored = [r for r in replay["signals"] if r["factorPercentiles"]["value"] is not None]
+    assert scored, "value sleeve stayed empty despite point-in-time numerators"
+    assert any(r["pit"]["fundamentalsSleeveUsed"] for r in replay["signals"])
 
 
 # --------------------------------------------------------------------------- #
