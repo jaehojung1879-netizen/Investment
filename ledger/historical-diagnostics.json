@@ -15,14 +15,16 @@
   "firstDate": "2013-01-04",
   "lastDate": "2026-08-27",
   "replayDates": 713,
-  "signalsGenerated": 1331,
-  "signalsSkippedAlreadyPresent": 410530,
+  "signalsGenerated": 0,
+  "signalsSkippedAlreadyPresent": 411861,
   "meanPitCoverage": 0.7833,
   "survivorshipRisk": "HIGH",
   "survivorshipNote": "SURVIVORSHIP_BIAS_UNRESOLVED",
   "fundamentalsPit": false,
   "historicalUniverseAvailable": false,
   "constituentCoveragePct": null,
+  "constituentsWithoutPriceHistory": [],
+  "constituentsWithoutPriceHistoryCount": 0,
   "universeSource": "CURRENT_UNIVERSE_WITH_PRICE_HISTORY_FILTER_ONLY",
   "firstReliableUniverseDate": null,
   "affectedObservationsPct": 100.0,
@@ -308,23 +310,23 @@
         "status": "VENDOR",
         "source": "yahoo",
         "symbol": "SPY",
-        "sessions": 3935,
+        "sessions": 3936,
         "firstSession": "2011-01-03",
-        "lastSession": "2026-08-26",
+        "lastSession": "2026-08-27",
         "candidates": [
           {
             "source": "yahoo",
             "symbol": "SPY",
             "accepted": true,
             "reason": null,
-            "sessions": 3935,
+            "sessions": 3936,
             "snapshotCoveragePct": 100.0,
             "minimumSessions": null,
             "firstSession": "2011-01-03",
-            "lastSession": "2026-08-26"
+            "lastSession": "2026-08-27"
           }
         ],
-        "snapshotSessions": 3934
+        "snapshotSessions": 3935
       },
       "KR": {
         "ticker": "^KS200",
@@ -336,17 +338,6 @@
         "lastSession": "2026-08-27",
         "candidates": [
           {
-            "source": "yahoo",
-            "symbol": "^KS200",
-            "accepted": false,
-            "reason": "below_known_session_calendar",
-            "sessions": 1,
-            "snapshotCoveragePct": 0.0,
-            "minimumSessions": null,
-            "firstSession": "2026-08-27",
-            "lastSession": "2026-08-27"
-          },
-          {
             "source": "fdr",
             "symbol": "KS200",
             "accepted": true,
@@ -356,9 +347,20 @@
             "minimumSessions": null,
             "firstSession": "2011-01-03",
             "lastSession": "2026-08-27"
+          },
+          {
+            "source": "yahoo",
+            "symbol": "^KS200",
+            "accepted": false,
+            "reason": "below_known_session_calendar",
+            "sessions": 1,
+            "snapshotCoveragePct": 0.026,
+            "minimumSessions": null,
+            "firstSession": "2026-08-27",
+            "lastSession": "2026-08-27"
           }
         ],
-        "snapshotSessions": 3847
+        "snapshotSessions": 3848
       }
     },
     "degradedRegions": [],
