@@ -2,23 +2,27 @@
   "modelVersion": "longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
   "dataVersion": "yahoo-adjusted-close-v3-regional-session-download",
   "generationIsolation": {
-    "method": "EXACT_MODEL_VERSION",
-    "excludedPriorModelOutcomes": 1565,
-    "excludedPriorModelPortfolioOutcomes": 0
+    "method": "EXACT_SCORING_VERSION",
+    "scoringVersion": "longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3",
+    "plumbingComponentsIgnored": [
+      "daily-session"
+    ],
+    "excludedPriorModelOutcomes": 2060,
+    "excludedPriorModelPortfolioOutcomes": 1
   },
   "validationStatus": {
-    "paperDays": 4,
-    "trackingDays": 4,
+    "paperDays": 10,
+    "trackingDays": 10,
     "maturedObservationDays": 0,
     "modelVersion": "longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
     "generationIsolated": true,
-    "excludedPriorModelSignals": 13518,
-    "excludedPriorModelOutcomes": 1565,
-    "signalsRecorded": 2468,
-    "uniqueDates": 4,
+    "excludedPriorModelSignals": 9957,
+    "excludedPriorModelOutcomes": 2060,
+    "signalsRecorded": 6597,
+    "uniqueDates": 10,
     "maturedUniqueDates": 0,
-    "firstSignalDate": "2026-08-21",
-    "lastSignalDate": "2026-08-26",
+    "firstSignalDate": "2026-08-14",
+    "lastSignalDate": "2026-08-27",
     "maturedSignals": 0,
     "maturedByHorizon": {
       "21": 0,
