@@ -27,13 +27,13 @@
   "benchmarks": { "US": "SPY", "KR": "^KS200" },
   "benchmarkSources": {
     "^KS200": [
-      { "kind": "yahoo", "symbol": "^KS200" },
-      { "kind": "fdr", "symbol": "KS200" }
+      { "kind": "fdr", "symbol": "KS200" },
+      { "kind": "yahoo", "symbol": "^KS200" }
     ],
     "SPY": [
       { "kind": "yahoo", "symbol": "SPY" }
     ],
-    "_notes": "Redundancy is across VENDORS for the SAME instrument, never across instruments. ^KS200 gets a FinanceDataReader route because a price index carries no dividend adjustment, so two vendors quote the same numbers. SPY deliberately has no second vendor: yfinance auto_adjust returns a total-return series while most alternative routes return raw close, and swapping between them mid-history would move 126D excess returns by roughly 0.65%p with nothing reporting an error. SPY relies on the committed snapshot under ledger/benchmarks/ instead."
+    "_notes": "Redundancy is across VENDORS for the SAME instrument, never across instruments. ^KS200 gets a FinanceDataReader route because a price index carries no dividend adjustment, so two vendors quote the same numbers. SPY deliberately has no second vendor: yfinance auto_adjust returns a total-return series while most alternative routes return raw close, and swapping between them mid-history would move 126D excess returns by roughly 0.65%p with nothing reporting an error. SPY relies on the committed snapshot under ledger/benchmarks/ instead. FinanceDataReader is listed first for ^KS200 because Yahoo returns a single session for that symbol on every run: it is rejected by below_known_session_calendar and the run falls through to FDR regardless, so trying it first only costs a request. Yahoo stays as the second route so the redundancy survives if FDR breaks."
   },
   "primary": "QQQ",
   "runMode": "paperTrading",

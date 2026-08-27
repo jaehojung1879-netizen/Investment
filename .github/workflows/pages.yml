@@ -20,8 +20,15 @@ permissions:
   pages: write
   id-token: write
 
+# The deploy gets its own group. Sharing one with the replay meant only a
+# single run could ever be pending, so a newer trigger cancelled whichever
+# queued run was already waiting — runs 168 and 169 died that way on 2026-08-27
+# and the merge commit that pushed them was never deployed by its own run. The
+# two jobs write disjoint paths on signal-history (state/ here, ledger/ there)
+# and each push below rebases and retries, so the shared lock bought nothing
+# that the retry does not.
 concurrency:
-  group: signal-history-and-pages
+  group: pages-deploy
   cancel-in-progress: false
 
 jobs:
@@ -158,7 +165,24 @@ jobs:
           git -C state-work add state/latest.json
           if git -C state-work diff --cached --quiet; then
             echo "production state unchanged"
-          else
-            git -C state-work commit -m "state: publish last successful production snapshot"
-            git -C state-work push origin signal-history
+            exit 0
           fi
+          git -C state-work commit -m "state: publish last successful production snapshot"
+          # The replay job writes ledger/ on this same branch and may land
+          # between our fetch and our push. Different paths, so a rebase always
+          # applies; retry rather than serialising the two workflows.
+          for attempt in 1 2 3 4 5; do
+            if git -C state-work push origin signal-history; then
+              exit 0
+            fi
+            echo "push rejected (attempt $attempt); rebasing onto the remote"
+            git -C state-work fetch origin signal-history
+            if ! git -C state-work rebase origin/signal-history; then
+              git -C state-work rebase --abort || true
+              echo "state snapshot could not be rebased onto signal-history"
+              exit 1
+            fi
+            sleep $((attempt * 3))
+          done
+          echo "state snapshot could not be pushed after 5 attempts"
+          exit 1
