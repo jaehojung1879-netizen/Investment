@@ -4,6 +4,7 @@ from pathlib import Path
 import pandas as pd
 
 from pipeline import kelly_portfolio as KP
+from pipeline import longterm as LT
 from pipeline import pit_data
 from pipeline import portfolio_validation as PV
 from pipeline import validate as V
@@ -366,3 +367,101 @@ def test_validator_rejects_fake_zero_prospective_gap_before_126d_maturity(tmp_pa
     path = tmp_path / "artifact.json"
     path.write_text(json.dumps(payload), encoding="utf-8")
     assert "prospective_126d_gap_fabricated_before_maturity" in V.validate(path)
+
+
+def _ic_row(mean, ci, effective=140):
+    return {"claimEligible": True, "availableObservations": 1000,
+            "rankIC": {"mean": mean, "ci95": list(ci), "positiveRate": .4,
+                       "effectiveIndependentDates": effective}}
+
+
+def test_sleeve_contradicting_its_live_weight_at_two_horizons_is_flagged():
+    attribution = {
+        "US:21": {"lowvol": _ic_row(-.04, (-.07, -.01)),
+                  "momentum": _ic_row(.005, (-.017, .027))},
+        "US:63": {"lowvol": _ic_row(-.066, (-.113, -.019), 54),
+                  "momentum": _ic_row(.008, (-.021, .038), 54)},
+    }
+    result = PV._sleeve_sign_consistency(attribution)
+    assert result["status"] == "CONTRADICTED"
+    assert result["contradicted"] == ["US:lowvol"]
+    flagged = result["byRegionSleeve"]["US:lowvol"]
+    assert flagged["status"] == "CONTRADICTED"
+    assert flagged["contradictedHorizons"] == [21, 63]
+    # The weight production is actually paying for is reported alongside it.
+    assert flagged["liveWeight"] == LT.FACTOR_WEIGHTS["lowvol"]
+    assert result["byRegionSleeve"]["US:momentum"]["status"] == "INCONCLUSIVE"
+
+
+def test_sleeve_sign_check_stays_silent_on_straddling_or_thin_evidence():
+    attribution = {
+        # Interval contains zero: weak, not contradicting.
+        "KR:21": {"lowvol": _ic_row(-.03, (-.07, .01))},
+        # Interval is below zero but rests on too few independent dates.
+        "KR:63": {"lowvol": _ic_row(-.09, (-.15, -.02), 4)},
+        # A sleeve the evidence actually supports.
+        "KR:126": {"lowvol": _ic_row(.05, (.02, .08), 27)},
+    }
+    result = PV._sleeve_sign_consistency(attribution)
+    assert result["status"] == "NO_CONTRADICTION_DETECTED"
+    assert result["contradicted"] == []
+    row = result["byRegionSleeve"]["KR:lowvol"]
+    assert row["contradictedHorizons"] == []
+    assert row["inconclusiveHorizons"] == [21, 63]
+    assert row["consistentHorizons"] == [126]
+    assert row["status"] == "CONSISTENT"
+
+
+def test_a_withheld_sleeve_is_never_judged_against_its_live_weight():
+    attribution = {"US:21": {"lowvol": {
+        "claimEligible": False, "availableObservations": 0,
+        "withheldReason": "PIT_FUNDAMENTALS_REQUIRED_FOR_FULL_LIVE_COMPOSITE",
+        "rankIC": {"mean": -.5, "ci95": [-.6, -.4], "effectiveIndependentDates": 140}}}}
+    assert PV._sleeve_sign_consistency(attribution)["byRegionSleeve"] == {}
+
+
+def _multi_horizon_outcome(identifier, date, ticker, alpha, excess, end_date):
+    return {
+        "id": identifier, "date": date, "region": "US", "ticker": ticker,
+        "sector": "Technology", "alphaPercentile": alpha,
+        "modelVersion": "m", "replayVersion": "r",
+        "pit": {"usableForCalibration": True, "pitCoverage": .8},
+        "horizons": {str(h): {
+            "absoluteReturn": excess + .01, "benchmarkReturn": .01,
+            "excessReturn": excess, "costAdjustedExcessReturn": excess - .001,
+            "endDate": end_date,
+        } for h in (21, 63)},
+    }
+
+
+def test_report_names_a_sign_contradicted_sleeve_in_not_validated_claims():
+    signals, outcomes = [], []
+    date = pd.Timestamp("2014-01-02")
+    for step in range(16):
+        flip = step % 2 == 0
+        stamp = date.strftime("%Y-%m-%d")
+        end = (date + pd.offsets.BDay(63)).strftime("%Y-%m-%d")
+        for idx in range(6):
+            identifier = f"{stamp}-{idx}"
+            # lowvol runs against realized excess every date; momentum flips
+            # its ordering date to date, so it averages out and stays unjudged.
+            signals.append({
+                "id": identifier, "modelVersion": "m", "replayVersion": "r",
+                "factorPercentiles": {
+                    "lowvol": idx * 20,
+                    "momentum": idx * 20 if flip else 100 - idx * 20}})
+            outcomes.append(_multi_horizon_outcome(
+                identifier, stamp, f"T{idx}", idx * 20, .05 - idx * .02, end))
+        date += pd.offsets.BDay(70)
+
+    report = PV.build_report(signals, outcomes, cfg_lt=CFG_LT, cfg_pf=CFG_PF,
+                             diagnostics={}, replay_version="r", model_version="m")
+    consistency = report["alphaDiagnostics"]["sleeveSignConsistency"]
+    assert consistency["contradicted"] == ["US:lowvol"]
+    assert consistency["actionPolicy"] == "REPORT_ONLY_NEVER_REWEIGHT_ON_THIS_SAMPLE"
+    claim = [row for row in report["claims"]["notValidated"] if "lowvol" in row]
+    assert len(claim) == 1
+    assert "contradicts its assumed positive sign" in claim[0]
+    # Detecting it must not quietly turn into acting on it.
+    assert report["claims"]["noModelShopping"] is True
+    assert LT.FACTOR_WEIGHTS["lowvol"] == .20

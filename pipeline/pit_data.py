@@ -222,6 +222,11 @@ class FundamentalStore:
     REQUIRED_SOURCE_FIELDS = (
         "trailingPE", "forwardPE", "bookValue", "bookYield", "fcf", "fcfYield",
         "roe", "operatingMargin", "profitMargin", "debtToEquity", "earningsGrowth",
+        # Per-share numerators. A filing can state these; it cannot state a
+        # yield, because a yield needs a price and the price moves every day
+        # after the filing. Supplying the numerator lets the consumer divide by
+        # the price it is actually standing on. See PRICE_RELATIVE_NUMERATORS.
+        "epsTtm", "bookValuePerShare", "fcfPerShare",
     )
     SOURCE_FIELD_ALIASES = {"FCF": "fcf", "FCFYield": "fcfYield", "ROE": "roe"}
 
@@ -374,14 +379,81 @@ class FundamentalStore:
                 "availableFrom", "currency", "trailingPE", "forwardPE",
                 "bookValue", "bookYield", "FCF", "FCFYield", "ROE",
                 "operatingMargin", "profitMargin", "debtToEquity", "earningsGrowth",
+                "epsTtm", "bookValuePerShare", "fcfPerShare",
                 "source", "sourceAsOf", "revisionStatus",
             ],
         })
 
 
+# Yield -> the per-share numerator that produces it once divided by a price.
+# The replay holds the point-in-time close; the filing holds the numerator.
+# Keeping them apart until the moment of use is what makes the value sleeve
+# point-in-time rather than "stale by up to a quarter".
+PRICE_RELATIVE_NUMERATORS = {
+    "earningsYield": "epsTtm",
+    "bookYield": "bookValuePerShare",
+    "fcfYield": "fcfPerShare",
+}
+
+# Production derives these from vendor ratios, and the vendor withholds a ratio
+# whose denominator is non-positive: trailingPE is absent for a loss-making
+# company, priceToBook for negative book value. Free cash flow carries no such
+# guard and is allowed to be negative. The replay mirrors that exactly, so a
+# name is scored the same way in both places rather than only in the backtest.
+POSITIVE_ONLY_NUMERATORS = ("epsTtm", "bookValuePerShare")
+
+
+def derive_price_relative(fields: dict, price) -> dict:
+    """Fill in price-relative fields from per-share numerators and ``price``.
+
+    An explicitly supplied yield always wins — the caller may have a vendor
+    ratio that is better than anything reconstructable here. Nothing is
+    derived without a usable positive price.
+    """
+    out = dict(fields or {})
+    close = _safe_number(price)
+    if not close or close <= 0:
+        return out
+    for yield_key, numerator_key in PRICE_RELATIVE_NUMERATORS.items():
+        if out.get(yield_key) is not None:
+            continue
+        numerator = _safe_number(out.get(numerator_key))
+        if numerator is None or numerator == 0:
+            continue
+        if numerator_key in POSITIVE_ONLY_NUMERATORS and numerator <= 0:
+            continue
+        out[yield_key] = numerator / close
+    return out
+
+
 # --------------------------------------------------------------------------- #
 # Macro vintages
 # --------------------------------------------------------------------------- #
+def vintage_column(releases: pd.DataFrame, as_of) -> pd.Series:
+    """One series as it stood on ``as_of``, from its release history.
+
+    ``releases`` is long-form: ``date`` (the period being described),
+    ``realtime_start`` (when that number was first published) and ``value``.
+    A print is usable only once published, so releases after ``as_of`` are
+    dropped before, for each period, the newest surviving print is taken.
+    That is the difference between the number they had and the number we have.
+    """
+    if releases is None or not len(releases):
+        return pd.Series(dtype=float)
+    frame = releases.dropna(subset=["date", "realtime_start"]).copy()
+    frame["date"] = pd.to_datetime(frame["date"], errors="coerce")
+    frame["realtime_start"] = pd.to_datetime(frame["realtime_start"], errors="coerce")
+    frame["value"] = pd.to_numeric(frame["value"], errors="coerce")
+    cutoff = pd.Timestamp(as_of).normalize()
+    frame = frame[(frame["realtime_start"] <= cutoff) & (frame["date"] <= cutoff)]
+    frame = frame.dropna(subset=["date", "realtime_start"])
+    if frame.empty:
+        return pd.Series(dtype=float)
+    frame = frame.sort_values(["date", "realtime_start"])
+    latest = frame.groupby("date", sort=True)["value"].last()
+    return latest.dropna()
+
+
 class MacroVintageView:
     """Macro series with an explicit vintage claim.
 
@@ -396,13 +468,30 @@ class MacroVintageView:
 
     A series listed in ``vintage_series`` is treated as genuinely vintaged;
     everything else degrades to REVISED_HISTORY.
+
+    ``vintages`` supplies the evidence for that claim: one long frame per
+    series with ``date`` (the period observed), ``realtime_start`` (the day
+    that value was first published) and ``value``. Given it, ``as_of`` rebuilds
+    each column out of the prints that had actually been published by then,
+    instead of the revised series everyone can see today.
     """
 
     def __init__(self, macro: pd.DataFrame | None, vix: pd.Series | None = None,
-                 vintage_series: set[str] | None = None):
+                 vintage_series: set[str] | None = None,
+                 vintages: dict | None = None):
         self._macro = macro
         self._vix = vix
-        self._vintage_series = set(vintage_series or ())
+        self._vintages = {name: frame for name, frame in (vintages or {}).items()
+                          if frame is not None and len(frame)}
+        # A name only counts as vintaged if releases were actually supplied for
+        # it; listing it without evidence would be the over-claim this guards.
+        self._vintage_series = (set(vintage_series) & set(self._vintages)
+                                if vintage_series is not None
+                                else set(self._vintages))
+
+    @property
+    def vintage_series(self) -> set[str]:
+        return set(self._vintage_series)
 
     @property
     def available(self) -> bool:
@@ -416,6 +505,13 @@ class MacroVintageView:
             macro = self._macro.loc[self._macro.index <= cutoff]
             if macro.empty:
                 macro = None
+            elif self._vintage_series:
+                macro = macro.copy()
+                for name in sorted(self._vintage_series):
+                    if name not in macro.columns:
+                        continue
+                    column = vintage_column(self._vintages[name], cutoff)
+                    macro[name] = column.reindex(macro.index) if len(column) else float("nan")
         vix = None
         if self._vix is not None and len(self._vix):
             vix = self._vix.loc[self._vix.index <= cutoff]
@@ -426,11 +522,16 @@ class MacroVintageView:
     def pit_status(self, series_name: str | None = None) -> str:
         if not self.available:
             return UNAVAILABLE
-        if series_name is not None and series_name in self._vintage_series:
-            return PIT_EXACT
-        if self._vintage_series and series_name is None:
-            return PIT_APPROXIMATE
-        return REVISED_HISTORY
+        if series_name is not None:
+            return PIT_EXACT if series_name in self._vintage_series else REVISED_HISTORY
+        if not self._vintage_series:
+            return REVISED_HISTORY
+        # The aggregate is only EXACT when nothing in the panel is still a
+        # later revision. One vintaged series among many is APPROXIMATE, and
+        # the integrity gate asks for EXACT.
+        columns = set(self._macro.columns) if self._macro is not None else set()
+        missing = columns - self._vintage_series
+        return PIT_APPROXIMATE if missing else PIT_EXACT
 
 
 # --------------------------------------------------------------------------- #
@@ -445,10 +546,22 @@ class UniverseSnapshot:
     survivorship_risk: str
     notes: list[str] = field(default_factory=list)
     reconstructed: bool = False
+    # Members the membership file says were listed on this date, against those
+    # we could actually price. A name that was in the index and has no price
+    # history here is precisely the name survivorship bias deletes, so the two
+    # counts are kept apart instead of being assumed equal.
+    expected_members: int = 0
+    missing_prices: list[str] = field(default_factory=list)
 
     @property
     def size(self) -> int:
         return sum(len(v) for v in self.by_region.values())
+
+    @property
+    def coverage_pct(self) -> float | None:
+        if not self.reconstructed or not self.expected_members:
+            return None
+        return 100.0 * (self.expected_members - len(self.missing_prices)) / self.expected_members
 
 
 class UniverseHistory:
@@ -516,14 +629,28 @@ class UniverseHistory:
             return view is None or bool(view.has_history(ticker, rows))
 
         if self.available:
+            expected = 0
+            missing: list[str] = []
             for region in sorted(current_universe):
                 members = set(current_universe.get(region, []))
                 members |= {t for t, row in self._memberships.items()
                             if row.get("region") == region}
-                by_region[region] = sorted(
-                    t for t in members if self._listed_on(t, cutoff) and tradable(t))
+                listed = sorted(t for t in members if self._listed_on(t, cutoff))
+                priced = [t for t in listed if tradable(t)]
+                expected += len(listed)
+                missing.extend(t for t in listed if t not in set(priced))
+                by_region[region] = priced
             notes.append("historical_constituents_reconstructed_from_membership_file")
-            return UniverseSnapshot(cutoff.strftime("%Y-%m-%d"), by_region, "LOW", notes, True)
+            # Holding a membership file is not the same as having the prices to
+            # replay it. A name listed then and unpriceable now is dropped, and
+            # dropping it silently would reinstate the bias the file was meant
+            # to remove — under a LOW risk label, which is worse than HIGH.
+            share_missing = (len(missing) / expected) if expected else 0.0
+            if missing:
+                notes.append("listed_members_without_price_history_excluded")
+            risk = "LOW" if not missing else "MEDIUM" if share_missing < 0.05 else "HIGH"
+            return UniverseSnapshot(cutoff.strftime("%Y-%m-%d"), by_region, risk, notes,
+                                    True, expected, sorted(set(missing)))
 
         for region in sorted(current_universe):
             by_region[region] = sorted(t for t in current_universe.get(region, []) if tradable(t))

@@ -7,6 +7,8 @@ here are hard equalities and explicit exceptions, not tolerance bands.
 """
 from __future__ import annotations
 
+import json
+
 import numpy as np
 import pandas as pd
 import pytest
@@ -199,9 +201,91 @@ def test_current_snapshot_fundamentals_are_never_back_applied(prices, universe):
         assert record["pit"]["fundamentalsSleeveUsed"] is False
 
 
+def test_price_relative_fields_are_derived_against_the_price_of_the_day():
+    """A filing states a numerator; only the day's price makes it a yield."""
+    filing = {"epsTtm": 5.0, "bookValuePerShare": 40.0, "fcfPerShare": 2.0}
+    cheap = pit_data.derive_price_relative(filing, 50.0)
+    dear = pit_data.derive_price_relative(filing, 200.0)
+    assert cheap["earningsYield"] == pytest.approx(0.10)
+    assert cheap["bookYield"] == pytest.approx(0.80)
+    assert cheap["fcfYield"] == pytest.approx(0.04)
+    # Same filing, quadrupled price: the value sleeve must move, not sit still.
+    assert dear["earningsYield"] == pytest.approx(0.025)
+    assert dear["bookYield"] == pytest.approx(0.20)
+    # The numerators themselves are left untouched for the record.
+    assert cheap["epsTtm"] == 5.0
+
+
+def test_a_stated_yield_is_never_overwritten_by_a_derived_one():
+    out = pit_data.derive_price_relative(
+        {"epsTtm": 5.0, "earningsYield": 0.031, "bookValuePerShare": 40.0}, 50.0)
+    assert out["earningsYield"] == 0.031
+    assert out["bookYield"] == pytest.approx(0.80)
+
+
+def test_yields_production_withholds_are_not_invented_from_a_filing():
+    """Production has no trailingPE for a loss and no priceToBook below zero."""
+    out = pit_data.derive_price_relative(
+        {"epsTtm": -3.0, "bookValuePerShare": -10.0, "fcfPerShare": -1.5}, 50.0)
+    assert "earningsYield" not in out
+    assert "bookYield" not in out
+    # Free cash flow carries no such guard in production, so neither here.
+    assert out["fcfYield"] == pytest.approx(-0.03)
+
+
+def test_nothing_is_derived_without_a_usable_price():
+    filing = {"epsTtm": 5.0, "bookValuePerShare": 40.0}
+    for price in (None, 0.0, -12.0, float("nan"), "n/a"):
+        assert pit_data.derive_price_relative(filing, price) == filing
+
+
+def test_contract_accepts_per_share_numerators_at_the_top_level(tmp_path):
+    path = tmp_path / "fundamentals.jsonl"
+    path.write_text(json.dumps({
+        "ticker": "AAA", "fiscalPeriod": "2020Q1", "reportDate": "2020-03-31",
+        "publicationDate": "2020-05-14", "availableFrom": "2020-05-14",
+        "currency": "USD", "source": "sec-xbrl", "sourceAsOf": "2020-05-14",
+        "revisionStatus": "ORIGINAL",
+        "epsTtm": 5.0, "bookValuePerShare": 40.0, "fcfPerShare": 2.0,
+    }) + "\n", encoding="utf-8")
+    store = pit_data.FundamentalStore.from_jsonl(path)
+    assert store.diagnostics["rowsAccepted"] == 1
+    fields, status = store.visible_as_of("AAA", "2020-06-01")
+    assert fields["epsTtm"] == 5.0
+    assert fields["bookValuePerShare"] == 40.0
+    assert status == pit_data.PIT_EXACT
+    # Still no yield in the store itself — that is the consumer's job.
+    assert "earningsYield" not in fields
+
+
+def test_replay_builds_a_value_sleeve_from_per_share_numerators(prices, universe):
+    """The gap this closes: filings alone used to leave value permanently null."""
+    records = {}
+    for idx, ticker in enumerate(sorted(universe["US"])):
+        records[ticker] = [pit_data.FundamentalRecord(
+            ticker, "2016Q4", "2017-01-02",
+            {"epsTtm": 2.0 + idx, "bookValuePerShare": 20.0 + 4 * idx,
+             "fcfPerShare": 1.0 + idx * 0.5, "roe": 0.05 + idx * 0.01,
+             "operatingMargin": 0.1, "profitMargin": 0.08,
+             "debtToEquity": 40.0, "earningsGrowth": 0.03},
+            filing_date="2016-12-30")]
+    store = pit_data.FundamentalStore(records)
+    replay = HR.run_replay(prices, universe, benchmarks={"US": "SPY"},
+                           cfg_lt={"minFactorSleeves": 1, "minFinancialCoverage": 0.0},
+                           start="2017-01-01", end="2017-06-30", frequency="M",
+                           fundamental_store=store, model_version="test")
+    scored = [r for r in replay["signals"] if r["factorPercentiles"]["value"] is not None]
+    assert scored, "value sleeve stayed empty despite point-in-time numerators"
+    assert any(r["pit"]["fundamentalsSleeveUsed"] for r in replay["signals"])
+
+
 # --------------------------------------------------------------------------- #
 # 3. Look-ahead: macro vintages
 # --------------------------------------------------------------------------- #
+def _releases(rows) -> pd.DataFrame:
+    return pd.DataFrame(rows, columns=["date", "realtime_start", "value"])
+
+
 def test_macro_view_truncates_and_declares_revised_history():
     index = pd.bdate_range("2015-01-01", periods=800)
     macro = pd.DataFrame({"Treasury_10Y": np.linspace(2.0, 4.0, 800)}, index=index)
@@ -212,8 +296,64 @@ def test_macro_view_truncates_and_declares_revised_history():
     assert view.pit_status() == pit_data.REVISED_HISTORY
     assert view.pit_status("Treasury_10Y") == pit_data.REVISED_HISTORY
 
-    vintaged = pit_data.MacroVintageView(macro, None, vintage_series={"Treasury_10Y"})
-    assert vintaged.pit_status("Treasury_10Y") == pit_data.PIT_EXACT
+
+def test_naming_a_series_vintaged_without_releases_proves_nothing():
+    """A label is not evidence — only a release history is."""
+    index = pd.bdate_range("2015-01-01", periods=50)
+    macro = pd.DataFrame({"Treasury_10Y": np.linspace(2.0, 4.0, 50)}, index=index)
+    claimed = pit_data.MacroVintageView(macro, None, vintage_series={"Treasury_10Y"})
+    assert claimed.pit_status("Treasury_10Y") == pit_data.REVISED_HISTORY
+    assert claimed.pit_status() == pit_data.REVISED_HISTORY
+    assert claimed.vintage_series == set()
+
+
+def test_vintage_column_returns_the_print_available_then_not_the_revision():
+    releases = _releases([
+        ("2015-01-01", "2015-02-10", 1.0),   # first print of January
+        ("2015-01-01", "2015-03-15", 1.8),   # revised a month later
+        ("2015-02-01", "2015-03-10", 2.0),
+        ("2015-03-01", "2015-04-12", 3.0),   # not published yet on 2015-03-20
+    ])
+    early = pit_data.vintage_column(releases, "2015-03-01")
+    assert early.loc[pd.Timestamp("2015-01-01")] == 1.0   # the number they had
+    assert pd.Timestamp("2015-03-01") not in early.index  # unpublished, unseen
+
+    later = pit_data.vintage_column(releases, "2015-03-20")
+    assert later.loc[pd.Timestamp("2015-01-01")] == 1.8   # the revision, once out
+    assert later.loc[pd.Timestamp("2015-02-01")] == 2.0
+    assert pd.Timestamp("2015-03-01") not in later.index
+
+
+def test_as_of_rebuilds_a_vintaged_column_and_leaves_the_others_alone():
+    index = pd.to_datetime(["2015-01-01", "2015-02-01", "2015-03-01"])
+    macro = pd.DataFrame({"Headline_CPI": [1.8, 2.0, 3.0],
+                          "Treasury_10Y": [2.1, 2.2, 2.3]}, index=index)
+    view = pit_data.MacroVintageView(macro, None, vintages={"Headline_CPI": _releases([
+        ("2015-01-01", "2015-02-10", 1.0),
+        ("2015-01-01", "2015-03-15", 1.8),
+        ("2015-02-01", "2015-03-10", 2.0),
+    ])})
+    rebuilt, _ = view.as_of("2015-03-01")
+    # The revised frame says 1.8 for January; on 2015-03-01 the print was 1.0.
+    assert rebuilt.loc[pd.Timestamp("2015-01-01"), "Headline_CPI"] == 1.0
+    assert rebuilt.loc[pd.Timestamp("2015-01-01"), "Treasury_10Y"] == 2.1
+    assert view.pit_status("Headline_CPI") == pit_data.PIT_EXACT
+    # One vintaged column out of two is not a vintage-clean panel.
+    assert view.pit_status() == pit_data.PIT_APPROXIMATE
+
+
+def test_aggregate_is_exact_only_when_every_column_is_vintaged():
+    index = pd.to_datetime(["2015-01-01", "2015-02-01"])
+    macro = pd.DataFrame({"Headline_CPI": [1.0, 2.0]}, index=index)
+    view = pit_data.MacroVintageView(macro, None, vintages={"Headline_CPI": _releases([
+        ("2015-01-01", "2015-01-20", 1.0),
+        ("2015-02-01", "2015-02-20", 2.0),
+    ])})
+    assert view.pit_status() == pit_data.PIT_EXACT
+    # And that is what the integrity gate is asking for.
+    from pipeline import portfolio_validation as PV
+    gate = PV.data_integrity({"macroPitStatus": view.pit_status()}, [])
+    assert gate["integrityGate"]["checks"]["vintageMacro"] is True
 
 
 def test_macro_view_reports_unavailable_when_absent():
@@ -250,6 +390,60 @@ def test_missing_constituent_history_records_survivorship_risk(prices, universe)
                            model_version="test")
     assert replay["diagnostics"]["survivorshipNote"] == pit_data.SURVIVORSHIP_UNRESOLVED
     assert all(r["pit"]["survivorshipRisk"] == "HIGH" for r in replay["signals"])
+
+
+def test_membership_file_without_prices_does_not_clear_survivorship(prices, universe):
+    """The trap: a file the replay cannot price used to report coverage 100%."""
+    memberships = {t: {"listed": "2010-01-01", "delisted": None, "region": "US"}
+                   for t in universe["US"]}
+    # Two names that were listed then and died before today, so the price panel
+    # — which is fetched from the CURRENT universe — has nothing for them.
+    memberships["DEAD1"] = {"listed": "2010-01-01", "delisted": "2018-01-01", "region": "US"}
+    memberships["DEAD2"] = {"listed": "2010-01-01", "delisted": "2018-01-01", "region": "US"}
+    history = pit_data.UniverseHistory(memberships)
+
+    snapshot = history.snapshot("2017-01-01", universe,
+                                view=HR.PricePanel(prices).membership_view("2017-01-01"),
+                                min_history=HR.MIN_HISTORY_ROWS)
+    assert "DEAD1" not in snapshot.by_region["US"]
+    assert snapshot.missing_prices == ["DEAD1", "DEAD2"]
+    assert snapshot.coverage_pct is not None and snapshot.coverage_pct < 100.0
+    assert snapshot.survivorship_risk != "LOW"
+
+    replay = HR.run_replay(prices, universe, benchmarks={"US": "SPY"},
+                           cfg_lt={"minFactorSleeves": 1, "minFinancialCoverage": 0.0},
+                           start="2017-01-01", end="2017-03-31", frequency="M",
+                           universe_history=history, model_version="test")
+    diagnostics = replay["diagnostics"]
+    assert diagnostics["constituentCoveragePct"] < 100.0
+    assert diagnostics["constituentsWithoutPriceHistoryCount"] == 2
+    assert diagnostics["survivorshipRisk"] != "LOW"
+    assert diagnostics["survivorshipNote"] == pit_data.SURVIVORSHIP_UNRESOLVED
+    assert diagnostics["impactOnPromotionEligibility"] == "KELLY_AND_SELECTOR_PROMOTION_BLOCKED"
+
+    from pipeline import portfolio_validation as PV
+    gate = PV.data_integrity(diagnostics, [{"region": "US"}])
+    assert gate["integrityGate"]["checks"]["historicalUniverse"] is False
+    assert gate["historicalResultLabel"] == "SURVIVORSHIP_BIAS_UNRESOLVED"
+
+
+def test_fully_priced_membership_file_does_clear_survivorship(prices, universe):
+    memberships = {t: {"listed": "2010-01-01", "delisted": None, "region": "US"}
+                   for t in universe["US"]}
+    history = pit_data.UniverseHistory(memberships)
+    replay = HR.run_replay(prices, universe, benchmarks={"US": "SPY"},
+                           cfg_lt={"minFactorSleeves": 1, "minFinancialCoverage": 0.0},
+                           start="2017-01-01", end="2017-03-31", frequency="M",
+                           universe_history=history, model_version="test")
+    diagnostics = replay["diagnostics"]
+    assert diagnostics["constituentCoveragePct"] == 100.0
+    assert diagnostics["survivorshipRisk"] == "LOW"
+    assert diagnostics["survivorshipNote"] is None
+    assert diagnostics["affectedObservationsPct"] == 0.0
+
+    from pipeline import portfolio_validation as PV
+    gate = PV.data_integrity(diagnostics, [{"region": "US"}])
+    assert gate["integrityGate"]["checks"]["historicalUniverse"] is True
 
 
 def test_names_without_history_before_as_of_are_dropped(prices):

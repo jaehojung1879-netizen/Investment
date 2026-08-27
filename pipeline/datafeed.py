@@ -156,3 +156,31 @@ def fetch_macro(cfg: Config, start: str) -> pd.DataFrame | None:
     if "Treasury_10Y" in macro and "Treasury_2Y" in macro:
         macro["Yield_Curve"] = macro["Treasury_10Y"] - macro["Treasury_2Y"]
     return macro
+
+
+def fetch_macro_vintages(cfg: Config, names) -> dict[str, pd.DataFrame]:
+    """ALFRED release history for the named FRED series.
+
+    Only the replay needs this: today's build wants today's number, while a
+    replay standing on 2015-03-02 wants the number that had been printed by
+    then. Series are opt-in because the full release history is far heavier
+    than the revised series, and a series nobody asked for stays REVISED_HISTORY
+    rather than quietly claiming a vintage it has no evidence for.
+    """
+    wanted = [name for name in (names or []) if name in cfg.fred_series]
+    if not cfg.has_fred or not wanted:
+        return {}
+    from fredapi import Fred
+
+    fred = Fred(api_key=cfg.fred_api_key)
+    out: dict[str, pd.DataFrame] = {}
+    for name in wanted:
+        series_id = cfg.fred_series[name]
+        try:
+            releases = fred.get_series_all_releases(series_id)
+        except Exception as exc:  # pragma: no cover - network dependent
+            print(f"  warning: ALFRED {series_id} vintages failed: {exc}")
+            continue
+        if releases is not None and len(releases):
+            out[name] = releases
+    return out

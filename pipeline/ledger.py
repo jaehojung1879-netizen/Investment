@@ -29,22 +29,31 @@ import numpy as np
 import pandas as pd
 
 from .market_dates import normalize_daily_series
+from .provenance import scoring_identity
 
 HORIZONS = [21, 63, 126, 252]
 
 
 def filter_model_generation(rows: list[dict], model_version: str | None) -> tuple[list[dict], int]:
-    """Return only rows produced by one exact model generation.
+    """Return only rows produced by one model generation.
 
     The append-only ledgers intentionally retain every historical generation.
     That is useful for audit, but those generations are not statistically
     interchangeable: pooling them would let an older formula validate a newer
     one.  Missing ``modelVersion`` is therefore excluded when a generation is
     requested rather than silently treated as compatible.
+
+    Generation is decided on the SCORING half of the version. A component that
+    only records how data was fetched does not make yesterday's signal a
+    different model's signal, and treating it as one throws away the paper
+    history that a 252-business-day validation clock is counting.
     """
     if model_version is None:
         return list(rows), 0
-    selected = [row for row in rows if row.get("modelVersion") == model_version]
+    wanted = scoring_identity(model_version)
+    selected = [row for row in rows
+                if row.get("modelVersion") is not None
+                and scoring_identity(row.get("modelVersion")) == wanted]
     return selected, len(rows) - len(selected)
 
 

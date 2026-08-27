@@ -524,20 +524,25 @@ def replay_one_date(as_of, panel: PricePanel, universe_by_region: dict[str, list
         raw_rows: dict[str, dict] = {}
         for ticker, pos in positions.items():
             history = histories[ticker]
+            # The filing supplies per-share numerators; the price that turns
+            # them into yields is the one on this replay date, not the one on
+            # the filing date. Anything the file states outright is kept as-is.
+            fundamentals = pit_data.derive_price_relative(
+                pit_fundamentals.get(ticker) or {}, history.close[pos])
             raw_rows[ticker] = {
-                "sector": SECT.sector_of(ticker, (pit_fundamentals.get(ticker) or {}).get("sector")),
+                "sector": SECT.sector_of(ticker, fundamentals.get("sector")),
                 "mom121": momentum_12_1(history, pos),
                 "mom6": momentum_6m(history, pos),
-                "earningsYield": (pit_fundamentals.get(ticker) or {}).get("earningsYield"),
-                "fwdEarningsYield": (pit_fundamentals.get(ticker) or {}).get("fwdEarningsYield"),
-                "bookYield": (pit_fundamentals.get(ticker) or {}).get("bookYield"),
-                "fcfYield": (pit_fundamentals.get(ticker) or {}).get("fcfYield"),
-                "roe": (pit_fundamentals.get(ticker) or {}).get("roe"),
-                "opMargin": (pit_fundamentals.get(ticker) or {}).get("operatingMargin"),
-                "profitMargin": (pit_fundamentals.get(ticker) or {}).get("profitMargin"),
-                "debtToEquity": (pit_fundamentals.get(ticker) or {}).get("debtToEquity"),
-                "earningsGrowth": (pit_fundamentals.get(ticker) or {}).get("earningsGrowth"),
-                "marketCap": (pit_fundamentals.get(ticker) or {}).get("marketCap"),
+                "earningsYield": fundamentals.get("earningsYield"),
+                "fwdEarningsYield": fundamentals.get("fwdEarningsYield"),
+                "bookYield": fundamentals.get("bookYield"),
+                "fcfYield": fundamentals.get("fcfYield"),
+                "roe": fundamentals.get("roe"),
+                "opMargin": fundamentals.get("operatingMargin"),
+                "profitMargin": fundamentals.get("profitMargin"),
+                "debtToEquity": fundamentals.get("debtToEquity"),
+                "earningsGrowth": fundamentals.get("earningsGrowth"),
+                "marketCap": fundamentals.get("marketCap"),
                 "vol252": realized_vol_252(history, pos),
                 "downsideVol": downside_vol_252(history, pos),
                 "cvar95": cvar_95(history, pos),
@@ -758,6 +763,7 @@ def run_replay(prices: dict[str, pd.DataFrame], universe: dict[str, list[str]], 
                start=None, end=None, frequency: str = "W",
                fundamental_store: pit_data.FundamentalStore | None = None,
                macro: pd.DataFrame | None = None, vix: pd.Series | None = None,
+               macro_vintages: dict | None = None,
                universe_history: pit_data.UniverseHistory | None = None,
                model_version: str = "unknown",
                existing_ids: set[str] | None = None,
@@ -771,7 +777,7 @@ def run_replay(prices: dict[str, pd.DataFrame], universe: dict[str, list[str]], 
     intent.
     """
     panel = PricePanel(prices)
-    macro_view = pit_data.MacroVintageView(macro, vix)
+    macro_view = pit_data.MacroVintageView(macro, vix, vintages=macro_vintages)
     universe_history = universe_history or pit_data.UniverseHistory({})
     existing_ids = existing_ids or set()
 
@@ -785,11 +791,18 @@ def run_replay(prices: dict[str, pd.DataFrame], universe: dict[str, list[str]], 
     dates_done = 0
     coverage_samples: list[float] = []
     regimes: dict[str, int] = {}
+    members_expected = 0
+    members_priced = 0
+    members_missing: set[str] = set()
 
     for stamp in grid:
         snapshot = universe_history.snapshot(stamp, universe,
                                              view=panel.membership_view(stamp),
                                              min_history=MIN_HISTORY_ROWS)
+        if snapshot.reconstructed:
+            members_expected += snapshot.expected_members
+            members_priced += snapshot.expected_members - len(snapshot.missing_prices)
+            members_missing.update(snapshot.missing_prices)
         macro_t, vix_t = macro_view.as_of(stamp)
         macro_read = None
         if macro_t is not None or vix_t is not None:
@@ -817,6 +830,21 @@ def run_replay(prices: dict[str, pd.DataFrame], universe: dict[str, list[str]], 
         if progress and dates_done % 25 == 0:
             print(f"  replay {stamp.date()} — {len(signals)} new signals")
 
+    # Coverage is measured across the grid, never asserted from the presence of
+    # a file: a membership list whose names cannot be priced leaves the bias
+    # exactly where it was, and the gate downstream wants a real 100.
+    constituent_coverage = (round(100.0 * members_priced / members_expected, 4)
+                            if members_expected else None)
+    if not universe_history.available:
+        constituent_risk = "HIGH"
+    elif constituent_coverage is None:
+        constituent_risk = "HIGH"
+    elif constituent_coverage >= 100.0:
+        constituent_risk = "LOW"
+    elif constituent_coverage >= 95.0:
+        constituent_risk = "MEDIUM"
+    else:
+        constituent_risk = "HIGH"
     diagnostics = {
         "gridDates": [d.strftime("%Y-%m-%d") for d in grid[-4:]],
         "replayVersion": REPLAY_VERSION,
@@ -832,19 +860,23 @@ def run_replay(prices: dict[str, pd.DataFrame], universe: dict[str, list[str]], 
         "signalsGenerated": len(signals),
         "signalsSkippedAlreadyPresent": skipped,
         "meanPitCoverage": round(float(np.mean(coverage_samples)), 4) if coverage_samples else 0.0,
-        "survivorshipRisk": "LOW" if universe_history.available else "HIGH",
-        "survivorshipNote": (None if universe_history.available
+        "survivorshipRisk": constituent_risk,
+        "survivorshipNote": (None if constituent_risk == "LOW"
                              else pit_data.SURVIVORSHIP_UNRESOLVED),
         "fundamentalsPit": bool(fundamental_store and fundamental_store.available),
         "historicalUniverseAvailable": bool(universe_history.available),
-        "constituentCoveragePct": 100.0 if universe_history.available else None,
+        "constituentCoveragePct": constituent_coverage,
+        "constituentsWithoutPriceHistory": sorted(members_missing)[:50],
+        "constituentsWithoutPriceHistoryCount": len(members_missing),
         "universeSource": ("HISTORICAL_MEMBERSHIP_DATASET" if universe_history.available
                            else "CURRENT_UNIVERSE_WITH_PRICE_HISTORY_FILTER_ONLY"),
         "firstReliableUniverseDate": (grid[0].strftime("%Y-%m-%d")
-                                      if grid and universe_history.available else None),
-        "affectedObservationsPct": 0.0 if universe_history.available else 100.0,
-        "affectedRegions": [] if universe_history.available else sorted(universe),
-        "impactOnPromotionEligibility": ("NONE" if universe_history.available
+                                      if grid and constituent_risk == "LOW" else None),
+        "affectedObservationsPct": (0.0 if constituent_risk == "LOW"
+                                    else round(100.0 - (constituent_coverage or 0.0), 4)
+                                    if constituent_coverage is not None else 100.0),
+        "affectedRegions": [] if constituent_risk == "LOW" else sorted(universe),
+        "impactOnPromotionEligibility": ("NONE" if constituent_risk == "LOW"
                                          else "KELLY_AND_SELECTOR_PROMOTION_BLOCKED"),
         "fundamentalsContract": getattr(fundamental_store, "diagnostics", {}),
         "macroPitStatus": macro_view.pit_status(),
