@@ -546,10 +546,22 @@ class UniverseSnapshot:
     survivorship_risk: str
     notes: list[str] = field(default_factory=list)
     reconstructed: bool = False
+    # Members the membership file says were listed on this date, against those
+    # we could actually price. A name that was in the index and has no price
+    # history here is precisely the name survivorship bias deletes, so the two
+    # counts are kept apart instead of being assumed equal.
+    expected_members: int = 0
+    missing_prices: list[str] = field(default_factory=list)
 
     @property
     def size(self) -> int:
         return sum(len(v) for v in self.by_region.values())
+
+    @property
+    def coverage_pct(self) -> float | None:
+        if not self.reconstructed or not self.expected_members:
+            return None
+        return 100.0 * (self.expected_members - len(self.missing_prices)) / self.expected_members
 
 
 class UniverseHistory:
@@ -617,14 +629,28 @@ class UniverseHistory:
             return view is None or bool(view.has_history(ticker, rows))
 
         if self.available:
+            expected = 0
+            missing: list[str] = []
             for region in sorted(current_universe):
                 members = set(current_universe.get(region, []))
                 members |= {t for t, row in self._memberships.items()
                             if row.get("region") == region}
-                by_region[region] = sorted(
-                    t for t in members if self._listed_on(t, cutoff) and tradable(t))
+                listed = sorted(t for t in members if self._listed_on(t, cutoff))
+                priced = [t for t in listed if tradable(t)]
+                expected += len(listed)
+                missing.extend(t for t in listed if t not in set(priced))
+                by_region[region] = priced
             notes.append("historical_constituents_reconstructed_from_membership_file")
-            return UniverseSnapshot(cutoff.strftime("%Y-%m-%d"), by_region, "LOW", notes, True)
+            # Holding a membership file is not the same as having the prices to
+            # replay it. A name listed then and unpriceable now is dropped, and
+            # dropping it silently would reinstate the bias the file was meant
+            # to remove — under a LOW risk label, which is worse than HIGH.
+            share_missing = (len(missing) / expected) if expected else 0.0
+            if missing:
+                notes.append("listed_members_without_price_history_excluded")
+            risk = "LOW" if not missing else "MEDIUM" if share_missing < 0.05 else "HIGH"
+            return UniverseSnapshot(cutoff.strftime("%Y-%m-%d"), by_region, risk, notes,
+                                    True, expected, sorted(set(missing)))
 
         for region in sorted(current_universe):
             by_region[region] = sorted(t for t in current_universe.get(region, []) if tradable(t))

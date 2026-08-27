@@ -392,6 +392,60 @@ def test_missing_constituent_history_records_survivorship_risk(prices, universe)
     assert all(r["pit"]["survivorshipRisk"] == "HIGH" for r in replay["signals"])
 
 
+def test_membership_file_without_prices_does_not_clear_survivorship(prices, universe):
+    """The trap: a file the replay cannot price used to report coverage 100%."""
+    memberships = {t: {"listed": "2010-01-01", "delisted": None, "region": "US"}
+                   for t in universe["US"]}
+    # Two names that were listed then and died before today, so the price panel
+    # — which is fetched from the CURRENT universe — has nothing for them.
+    memberships["DEAD1"] = {"listed": "2010-01-01", "delisted": "2018-01-01", "region": "US"}
+    memberships["DEAD2"] = {"listed": "2010-01-01", "delisted": "2018-01-01", "region": "US"}
+    history = pit_data.UniverseHistory(memberships)
+
+    snapshot = history.snapshot("2017-01-01", universe,
+                                view=HR.PricePanel(prices).membership_view("2017-01-01"),
+                                min_history=HR.MIN_HISTORY_ROWS)
+    assert "DEAD1" not in snapshot.by_region["US"]
+    assert snapshot.missing_prices == ["DEAD1", "DEAD2"]
+    assert snapshot.coverage_pct is not None and snapshot.coverage_pct < 100.0
+    assert snapshot.survivorship_risk != "LOW"
+
+    replay = HR.run_replay(prices, universe, benchmarks={"US": "SPY"},
+                           cfg_lt={"minFactorSleeves": 1, "minFinancialCoverage": 0.0},
+                           start="2017-01-01", end="2017-03-31", frequency="M",
+                           universe_history=history, model_version="test")
+    diagnostics = replay["diagnostics"]
+    assert diagnostics["constituentCoveragePct"] < 100.0
+    assert diagnostics["constituentsWithoutPriceHistoryCount"] == 2
+    assert diagnostics["survivorshipRisk"] != "LOW"
+    assert diagnostics["survivorshipNote"] == pit_data.SURVIVORSHIP_UNRESOLVED
+    assert diagnostics["impactOnPromotionEligibility"] == "KELLY_AND_SELECTOR_PROMOTION_BLOCKED"
+
+    from pipeline import portfolio_validation as PV
+    gate = PV.data_integrity(diagnostics, [{"region": "US"}])
+    assert gate["integrityGate"]["checks"]["historicalUniverse"] is False
+    assert gate["historicalResultLabel"] == "SURVIVORSHIP_BIAS_UNRESOLVED"
+
+
+def test_fully_priced_membership_file_does_clear_survivorship(prices, universe):
+    memberships = {t: {"listed": "2010-01-01", "delisted": None, "region": "US"}
+                   for t in universe["US"]}
+    history = pit_data.UniverseHistory(memberships)
+    replay = HR.run_replay(prices, universe, benchmarks={"US": "SPY"},
+                           cfg_lt={"minFactorSleeves": 1, "minFinancialCoverage": 0.0},
+                           start="2017-01-01", end="2017-03-31", frequency="M",
+                           universe_history=history, model_version="test")
+    diagnostics = replay["diagnostics"]
+    assert diagnostics["constituentCoveragePct"] == 100.0
+    assert diagnostics["survivorshipRisk"] == "LOW"
+    assert diagnostics["survivorshipNote"] is None
+    assert diagnostics["affectedObservationsPct"] == 0.0
+
+    from pipeline import portfolio_validation as PV
+    gate = PV.data_integrity(diagnostics, [{"region": "US"}])
+    assert gate["integrityGate"]["checks"]["historicalUniverse"] is True
+
+
 def test_names_without_history_before_as_of_are_dropped(prices):
     late = _frame(555, periods=300, start="2019-01-01")
     combined = {**prices, "LATE": late}
