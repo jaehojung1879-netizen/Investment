@@ -1,8 +1,8 @@
 {
   "schemaVersion": "2.7.0",
   "modelVersion": "longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
-  "buildCommitSha": "1b9b54d3b687",
-  "generatedAt": "2026-08-27T19:24:52.320305+00:00",
+  "buildCommitSha": "ec42b84a6123",
+  "generatedAt": "2026-08-27T21:22:02.176109+00:00",
   "marketAsOf": "2026-08-27",
   "macroRegime": "Transition/Low confidence",
   "holdingsByRegion": {
@@ -12,13 +12,13 @@
       "NUE",
       "VTRS",
       "TGT",
+      "MU",
       "SPG",
-      "HST",
       "ALL",
       "MO",
+      "HST",
       "CSX",
-      "CNC",
-      "MU"
+      "CNC"
     ],
     "KR": [
       "402340.KS",
@@ -36,25 +36,25 @@
     ]
   },
   "modelPortfolioWeights": {
-    "CSX": 0.292768,
-    "ALL": 0.188043,
-    "NUE": 0.122379,
-    "271560.KS": 0.09149,
-    "032640.KS": 0.05532
+    "CSX": 0.26431,
+    "ALL": 0.169764,
+    "SPG": 0.189836,
+    "271560.KS": 0.082597,
+    "021240.KS": 0.043494
   },
   "entryStatesByTicker": {
-    "EIX": "WATCH",
+    "EIX": "WAIT_FOR_PULLBACK",
     "CF": "WAIT_FOR_PULLBACK",
-    "NUE": "ACCUMULATE_GRADUALLY",
+    "NUE": "WAIT_FOR_PULLBACK",
     "VTRS": "WAIT_FOR_PULLBACK",
     "TGT": "WAIT_FOR_PULLBACK",
+    "MU": "WAIT_FOR_PULLBACK",
     "SPG": "WATCH",
-    "HST": "WATCH",
     "ALL": "ACCUMULATE_GRADUALLY",
     "MO": "WATCH",
+    "HST": "WATCH",
     "CSX": "ACCUMULATE_GRADUALLY",
     "CNC": "WAIT_FOR_PULLBACK",
-    "MU": "WAIT_FOR_PULLBACK",
     "GOOGL": "WATCH",
     "GOOG": "WATCH",
     "VLO": "WAIT_FOR_PULLBACK",
@@ -89,8 +89,8 @@
     "VEEV": "EMERGING_OPPORTUNITY",
     "SNPS": "EMERGING_OPPORTUNITY",
     "CAT": "EMERGING_OPPORTUNITY",
-    "INTC": "EMERGING_OPPORTUNITY",
-    "FLEX": "EMERGING_OPPORTUNITY"
+    "FLEX": "EMERGING_OPPORTUNITY",
+    "EXPD": "EMERGING_OPPORTUNITY"
   },
   "warningTiersByTicker": {
     "002380.KS": "ELEVATED_WARNING",
@@ -103,19 +103,19 @@
     "001450.KS": "WATCH",
     "CF": "CRITICAL_WARNING",
     "HST": "ELEVATED_WARNING",
+    "NUE": "ELEVATED_WARNING",
     "SPG": "ELEVATED_WARNING",
+    "EIX": "ELEVATED_WARNING",
     "ALL": "WATCH",
     "VTRS": "ELEVATED_WARNING",
-    "EIX": "WATCH",
-    "TGT": "WATCH",
-    "NUE": "WATCH"
+    "TGT": "WATCH"
   },
   "dataMode": "live",
   "seed": false,
   "stale": false,
   "productionValidation": {
     "passed": true,
-    "validatedAt": "2026-08-27T19:24:52.320305+00:00",
+    "validatedAt": "2026-08-27T21:22:02.176109+00:00",
     "errors": []
   }
 }
