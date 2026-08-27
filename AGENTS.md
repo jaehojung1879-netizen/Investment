@@ -111,6 +111,18 @@
 - A permutation p-value carries the +1 correction in both terms, so it is never zero and
   never claims more evidence than the draw count supports.
 
+- Rank IC is not the instrument for a concentrated book. It scores whether the whole
+  cross-section is ordered correctly on average; the production book holds five names,
+  and the two disagree in practice — on the validation period the composition with the
+  best US rank IC had a WORSE Sharpe than production, and the one with the worst IC had
+  the smallest drawdown. A sleeve may be there to hold down risk rather than to predict
+  return, and IC cannot tell the difference. Judge selection by the null-tested portfolio
+  path.
+- A factor attribution measured over the full ledger includes the sealed holdout. Any
+  number used to MOTIVATE a model change must be recomputed on the validation period
+  first: the KR rank IC that justified a region-specific rule was +0.019 over
+  2013-2026 and -0.001 over the validation period alone.
+
 ## Version generation policy (v2.8)
 
 - `dataVersion` covers acquisition: sources, batching, date normalization. `modelVersion`
