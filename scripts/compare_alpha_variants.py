@@ -224,6 +224,9 @@ def main(argv=None) -> int:
                         help="null draws per mode; screening needs fewer than publishing")
     parser.add_argument("--json", default=None)
     parser.add_argument("--only", default=None, help="comma-separated variant names")
+    parser.add_argument("--ic-only", action="store_true",
+                        help="rank IC per variant without the null; minutes rather than "
+                             "an hour, and enough to see which sleeve moved the ordering")
     args = parser.parse_args(argv)
 
     cfg, _ = load_config()
@@ -253,6 +256,19 @@ def main(argv=None) -> int:
              else [*VARIANTS, *REGION_VARIANTS])
     cfg_pf = dict(cfg.kelly_portfolio)
     cfg_pf["selectionNullDraws"] = int(args.draws)
+
+    if args.ic_only:
+        table = {}
+        for name in names:
+            started = time.time()
+            with alpha_variant(kept, name, kept_outcomes) as variant_signals:
+                table[name] = rank_ic(variant_signals, kept_outcomes)
+            print(f"{name:20s} {table[name]}   ({time.time() - started:.0f}s)", flush=True)
+        if args.json:
+            Path(args.json).write_text(
+                json.dumps({"holdoutStart": holdout, "rankIC126": table},
+                           ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+        return 0
 
     results = {}
     for name in names:
