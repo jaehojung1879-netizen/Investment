@@ -163,6 +163,8 @@
     "requirePitQuality": true,
     "pitFundamentalsPath": null,
     "universeHistoryPath": null,
+    "macroVintageSeries": [],
+    "_macroVintageNotes": "Names from macro.fredSeries whose ALFRED release history the replay should fetch, so the regime is conditioned on the number printed at the time rather than the number as revised since. Opt-in because the full release history is far heavier than the revised series. A series left off this list stays REVISED_HISTORY, and the vintageMacro integrity gate wants PIT_EXACT — which means every column in the macro panel, not just the revision-prone ones.",
     "_pitFundamentalsNotes": "PIT_FUNDAMENTALS_V1 JSONL, one filing per line. Required per line: ticker, fiscalPeriod, reportDate, publicationDate, availableFrom, currency, source, sourceAsOf, revisionStatus — availableFrom is the day WE could read it and is the only date that licenses use. Supply per-share numerators (epsTtm, bookValuePerShare, fcfPerShare) rather than yields: a yield needs a price, and the replay divides by the close of the date it is standing on. Ratios that need no price (roe, operatingMargin, profitMargin, debtToEquity, earningsGrowth) are stated directly. Filing dates come from SEC XBRL companyfacts (the per-fact `filed` field) for US and DART 접수일자 for KR; neither is bundled here, and while this stays null the value/quality sleeves are WITHHELD from the replay and the pointInTimeFundamentals integrity gate cannot pass.",
     "minOrderingTStat": 1.96,
     "minOrderingEffectiveDates": 12,

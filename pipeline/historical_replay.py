@@ -763,6 +763,7 @@ def run_replay(prices: dict[str, pd.DataFrame], universe: dict[str, list[str]], 
                start=None, end=None, frequency: str = "W",
                fundamental_store: pit_data.FundamentalStore | None = None,
                macro: pd.DataFrame | None = None, vix: pd.Series | None = None,
+               macro_vintages: dict | None = None,
                universe_history: pit_data.UniverseHistory | None = None,
                model_version: str = "unknown",
                existing_ids: set[str] | None = None,
@@ -776,7 +777,7 @@ def run_replay(prices: dict[str, pd.DataFrame], universe: dict[str, list[str]], 
     intent.
     """
     panel = PricePanel(prices)
-    macro_view = pit_data.MacroVintageView(macro, vix)
+    macro_view = pit_data.MacroVintageView(macro, vix, vintages=macro_vintages)
     universe_history = universe_history or pit_data.UniverseHistory({})
     existing_ids = existing_ids or set()
 

@@ -50,7 +50,8 @@ from pipeline import pit_data                       # noqa: E402
 from pipeline import provenance as prov_mod         # noqa: E402
 from pipeline import universe as universe_mod       # noqa: E402
 from pipeline.config import load_config             # noqa: E402
-from pipeline.datafeed import fetch_macro, fetch_regional_prices, fetch_vix  # noqa: E402
+from pipeline.datafeed import (  # noqa: E402
+    fetch_macro, fetch_macro_vintages, fetch_regional_prices, fetch_vix)
 
 
 def main(argv=None) -> int:
@@ -147,6 +148,10 @@ def main(argv=None) -> int:
 
     vix = fetch_vix(fetch_start)
     macro = fetch_macro(cfg, fetch_start)
+    macro_vintages = fetch_macro_vintages(cfg, replay_cfg.get("macroVintageSeries") or [])
+    if macro is not None and not macro_vintages:
+        print("  macro vintages unavailable -> regime conditioning reads REVISED_HISTORY "
+              "(the numbers as revised since, not as printed at the time)")
     fundamental_store = pit_data.FundamentalStore.from_jsonl(
         replay_cfg.get("pitFundamentalsPath"))
     universe_history = pit_data.UniverseHistory.from_json(
@@ -164,6 +169,7 @@ def main(argv=None) -> int:
         start=start, end=args.end,
         frequency=args.frequency or replay_cfg.get("frequency", "W"),
         fundamental_store=fundamental_store, macro=macro, vix=vix,
+        macro_vintages=macro_vintages,
         universe_history=universe_history, model_version=prov_mod.MODEL_VERSION,
         existing_ids=existing_ids, progress=True,
     )

@@ -282,6 +282,10 @@ def test_replay_builds_a_value_sleeve_from_per_share_numerators(prices, universe
 # --------------------------------------------------------------------------- #
 # 3. Look-ahead: macro vintages
 # --------------------------------------------------------------------------- #
+def _releases(rows) -> pd.DataFrame:
+    return pd.DataFrame(rows, columns=["date", "realtime_start", "value"])
+
+
 def test_macro_view_truncates_and_declares_revised_history():
     index = pd.bdate_range("2015-01-01", periods=800)
     macro = pd.DataFrame({"Treasury_10Y": np.linspace(2.0, 4.0, 800)}, index=index)
@@ -292,8 +296,64 @@ def test_macro_view_truncates_and_declares_revised_history():
     assert view.pit_status() == pit_data.REVISED_HISTORY
     assert view.pit_status("Treasury_10Y") == pit_data.REVISED_HISTORY
 
-    vintaged = pit_data.MacroVintageView(macro, None, vintage_series={"Treasury_10Y"})
-    assert vintaged.pit_status("Treasury_10Y") == pit_data.PIT_EXACT
+
+def test_naming_a_series_vintaged_without_releases_proves_nothing():
+    """A label is not evidence — only a release history is."""
+    index = pd.bdate_range("2015-01-01", periods=50)
+    macro = pd.DataFrame({"Treasury_10Y": np.linspace(2.0, 4.0, 50)}, index=index)
+    claimed = pit_data.MacroVintageView(macro, None, vintage_series={"Treasury_10Y"})
+    assert claimed.pit_status("Treasury_10Y") == pit_data.REVISED_HISTORY
+    assert claimed.pit_status() == pit_data.REVISED_HISTORY
+    assert claimed.vintage_series == set()
+
+
+def test_vintage_column_returns_the_print_available_then_not_the_revision():
+    releases = _releases([
+        ("2015-01-01", "2015-02-10", 1.0),   # first print of January
+        ("2015-01-01", "2015-03-15", 1.8),   # revised a month later
+        ("2015-02-01", "2015-03-10", 2.0),
+        ("2015-03-01", "2015-04-12", 3.0),   # not published yet on 2015-03-20
+    ])
+    early = pit_data.vintage_column(releases, "2015-03-01")
+    assert early.loc[pd.Timestamp("2015-01-01")] == 1.0   # the number they had
+    assert pd.Timestamp("2015-03-01") not in early.index  # unpublished, unseen
+
+    later = pit_data.vintage_column(releases, "2015-03-20")
+    assert later.loc[pd.Timestamp("2015-01-01")] == 1.8   # the revision, once out
+    assert later.loc[pd.Timestamp("2015-02-01")] == 2.0
+    assert pd.Timestamp("2015-03-01") not in later.index
+
+
+def test_as_of_rebuilds_a_vintaged_column_and_leaves_the_others_alone():
+    index = pd.to_datetime(["2015-01-01", "2015-02-01", "2015-03-01"])
+    macro = pd.DataFrame({"Headline_CPI": [1.8, 2.0, 3.0],
+                          "Treasury_10Y": [2.1, 2.2, 2.3]}, index=index)
+    view = pit_data.MacroVintageView(macro, None, vintages={"Headline_CPI": _releases([
+        ("2015-01-01", "2015-02-10", 1.0),
+        ("2015-01-01", "2015-03-15", 1.8),
+        ("2015-02-01", "2015-03-10", 2.0),
+    ])})
+    rebuilt, _ = view.as_of("2015-03-01")
+    # The revised frame says 1.8 for January; on 2015-03-01 the print was 1.0.
+    assert rebuilt.loc[pd.Timestamp("2015-01-01"), "Headline_CPI"] == 1.0
+    assert rebuilt.loc[pd.Timestamp("2015-01-01"), "Treasury_10Y"] == 2.1
+    assert view.pit_status("Headline_CPI") == pit_data.PIT_EXACT
+    # One vintaged column out of two is not a vintage-clean panel.
+    assert view.pit_status() == pit_data.PIT_APPROXIMATE
+
+
+def test_aggregate_is_exact_only_when_every_column_is_vintaged():
+    index = pd.to_datetime(["2015-01-01", "2015-02-01"])
+    macro = pd.DataFrame({"Headline_CPI": [1.0, 2.0]}, index=index)
+    view = pit_data.MacroVintageView(macro, None, vintages={"Headline_CPI": _releases([
+        ("2015-01-01", "2015-01-20", 1.0),
+        ("2015-02-01", "2015-02-20", 2.0),
+    ])})
+    assert view.pit_status() == pit_data.PIT_EXACT
+    # And that is what the integrity gate is asking for.
+    from pipeline import portfolio_validation as PV
+    gate = PV.data_integrity({"macroPitStatus": view.pit_status()}, [])
+    assert gate["integrityGate"]["checks"]["vintageMacro"] is True
 
 
 def test_macro_view_reports_unavailable_when_absent():

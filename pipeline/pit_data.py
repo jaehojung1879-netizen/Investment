@@ -429,6 +429,31 @@ def derive_price_relative(fields: dict, price) -> dict:
 # --------------------------------------------------------------------------- #
 # Macro vintages
 # --------------------------------------------------------------------------- #
+def vintage_column(releases: pd.DataFrame, as_of) -> pd.Series:
+    """One series as it stood on ``as_of``, from its release history.
+
+    ``releases`` is long-form: ``date`` (the period being described),
+    ``realtime_start`` (when that number was first published) and ``value``.
+    A print is usable only once published, so releases after ``as_of`` are
+    dropped before, for each period, the newest surviving print is taken.
+    That is the difference between the number they had and the number we have.
+    """
+    if releases is None or not len(releases):
+        return pd.Series(dtype=float)
+    frame = releases.dropna(subset=["date", "realtime_start"]).copy()
+    frame["date"] = pd.to_datetime(frame["date"], errors="coerce")
+    frame["realtime_start"] = pd.to_datetime(frame["realtime_start"], errors="coerce")
+    frame["value"] = pd.to_numeric(frame["value"], errors="coerce")
+    cutoff = pd.Timestamp(as_of).normalize()
+    frame = frame[(frame["realtime_start"] <= cutoff) & (frame["date"] <= cutoff)]
+    frame = frame.dropna(subset=["date", "realtime_start"])
+    if frame.empty:
+        return pd.Series(dtype=float)
+    frame = frame.sort_values(["date", "realtime_start"])
+    latest = frame.groupby("date", sort=True)["value"].last()
+    return latest.dropna()
+
+
 class MacroVintageView:
     """Macro series with an explicit vintage claim.
 
@@ -443,13 +468,30 @@ class MacroVintageView:
 
     A series listed in ``vintage_series`` is treated as genuinely vintaged;
     everything else degrades to REVISED_HISTORY.
+
+    ``vintages`` supplies the evidence for that claim: one long frame per
+    series with ``date`` (the period observed), ``realtime_start`` (the day
+    that value was first published) and ``value``. Given it, ``as_of`` rebuilds
+    each column out of the prints that had actually been published by then,
+    instead of the revised series everyone can see today.
     """
 
     def __init__(self, macro: pd.DataFrame | None, vix: pd.Series | None = None,
-                 vintage_series: set[str] | None = None):
+                 vintage_series: set[str] | None = None,
+                 vintages: dict | None = None):
         self._macro = macro
         self._vix = vix
-        self._vintage_series = set(vintage_series or ())
+        self._vintages = {name: frame for name, frame in (vintages or {}).items()
+                          if frame is not None and len(frame)}
+        # A name only counts as vintaged if releases were actually supplied for
+        # it; listing it without evidence would be the over-claim this guards.
+        self._vintage_series = (set(vintage_series) & set(self._vintages)
+                                if vintage_series is not None
+                                else set(self._vintages))
+
+    @property
+    def vintage_series(self) -> set[str]:
+        return set(self._vintage_series)
 
     @property
     def available(self) -> bool:
@@ -463,6 +505,13 @@ class MacroVintageView:
             macro = self._macro.loc[self._macro.index <= cutoff]
             if macro.empty:
                 macro = None
+            elif self._vintage_series:
+                macro = macro.copy()
+                for name in sorted(self._vintage_series):
+                    if name not in macro.columns:
+                        continue
+                    column = vintage_column(self._vintages[name], cutoff)
+                    macro[name] = column.reindex(macro.index) if len(column) else float("nan")
         vix = None
         if self._vix is not None and len(self._vix):
             vix = self._vix.loc[self._vix.index <= cutoff]
@@ -473,11 +522,16 @@ class MacroVintageView:
     def pit_status(self, series_name: str | None = None) -> str:
         if not self.available:
             return UNAVAILABLE
-        if series_name is not None and series_name in self._vintage_series:
-            return PIT_EXACT
-        if self._vintage_series and series_name is None:
-            return PIT_APPROXIMATE
-        return REVISED_HISTORY
+        if series_name is not None:
+            return PIT_EXACT if series_name in self._vintage_series else REVISED_HISTORY
+        if not self._vintage_series:
+            return REVISED_HISTORY
+        # The aggregate is only EXACT when nothing in the panel is still a
+        # later revision. One vintaged series among many is APPROXIMATE, and
+        # the integrity gate asks for EXACT.
+        columns = set(self._macro.columns) if self._macro is not None else set()
+        missing = columns - self._vintage_series
+        return PIT_APPROXIMATE if missing else PIT_EXACT
 
 
 # --------------------------------------------------------------------------- #
