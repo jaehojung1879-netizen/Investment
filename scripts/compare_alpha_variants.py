@@ -168,10 +168,18 @@ def summarize(report: dict) -> dict:
     }
 
 
-def rank_ic(report: dict) -> dict:
-    regions = ((report or {}).get("alphaDiagnostics") or {}).get("regions") or {}
+def rank_ic(signals: list[dict], outcomes: list[dict]) -> dict:
+    """126-day rank IC per region for the alpha currently written on the signals.
+
+    `portfolio_replay` does not compute this — `alpha_diagnostics` does, and it
+    is a separate call. Reading it off the replay report returned an empty dict
+    and quietly dropped the column that explains WHY a variant scored the way it
+    did, which is most of the value of running variants at all.
+    """
+    diagnostics = PV.alpha_diagnostics(signals, outcomes)
     return {key: (row.get("rankIC") or {}).get("mean")
-            for key, row in regions.items() if key.endswith(":126")}
+            for key, row in (diagnostics.get("regions") or {}).items()
+            if key.endswith(":126")}
 
 
 def main(argv=None) -> int:
@@ -218,9 +226,10 @@ def main(argv=None) -> int:
             report = PV.portfolio_replay(variant_signals, kept_outcomes,
                                          cfg_lt=cfg.longterm, cfg_pf=cfg_pf,
                                          diagnostics=diagnostics)
+            ic = rank_ic(variant_signals, kept_outcomes)
         results[name] = {
             "summary": summarize(report.get("portfolioReplay") or report),
-            "rankIC126": rank_ic(report),
+            "rankIC126": ic,
             "regionSpecific": name in REGION_VARIANTS,
             "seconds": round(time.time() - started, 1),
         }
