@@ -1,25 +1,43 @@
 """Score alternative alpha compositions against the selection null.
 
-WHY THIS EXISTS. The per-sleeve attribution on the production ledger says the
-two live price sleeves disagree sharply in the US over 2013-2026:
+WHAT THIS FOUND. Six compositions were run on the validation period. None beat
+the null, and the production blend was the best of them:
 
-    US 126D   momentum  rank IC +0.018
-              lowvol    rank IC -0.086
-              composite rank IC -0.023      <- what the model actually ranks on
+    variant              excess/yr   Sharpe      MDD   US IC    persistent p(IR)
+    V0 production           +7.27%    1.094   -15.4%  -0.039               0.119
+    V1 momentum only       +10.44%    0.930   -20.2%  -0.008               0.277
+    V2 lowvol only          +1.54%    0.729   -13.1%  -0.068               0.416
+    V3 blend 0.6/0.4        +4.01%    0.951   -12.5%  -0.035               0.386
+    V4 blend 0.85/0.15      +5.95%    0.705   -22.0%  -0.016               0.545
+    V5 regional split       +5.63%    0.822   -25.7%  -0.008               0.594
 
-    KR 126D   momentum  +0.007   lowvol +0.014   composite +0.010
+WHAT IT WAS BUILT TO TEST, AND WHY THAT PREMISE WAS WRONG. The starting claim was
+that the US composite is dragged negative by a 40%-weighted lowvol sleeve whose
+rank IC runs backwards, so removing it should help. Dropping lowvol does improve
+the US rank IC (-0.039 -> -0.008), and the portfolio still got worse: return rose
+3.2 points a year, drawdown widened by 4.8, Sharpe fell, and the p-value against
+the null more than doubled. Lowvol was not predicting returns badly; it was
+holding down risk, and the blend beats either sleeve alone on a risk-adjusted
+basis.
 
-So the US composite is negative because a 40%-weighted sleeve runs backwards,
-and the conviction score then divides by downside volatility as well — applying
-the same anti-predictive quantity twice. That is a specific, falsifiable claim
-about the model, and this script is how it gets tested rather than assumed.
+The general lesson is worth more than the specific one: RANK IC IS THE WRONG
+INSTRUMENT FOR THIS MODEL. It scores whether the whole cross-section is ordered
+correctly on average; this book holds five names. V1 has the best US IC and a
+worse Sharpe than V0; V2 has the worst US IC and the smallest drawdown. Judge a
+concentrated book by its null-tested portfolio path, not by IC.
 
-DISCIPLINE. These variants were written AFTER looking at that attribution, so
-they are in-sample by construction. Two rules keep that from becoming a lie:
+One more trap, recorded because it nearly set the direction: the attribution that
+motivated all this was measured over 2013-2026, which INCLUDES the sealed
+holdout. On the validation period alone the KR IC is -0.001, not the +0.019 that
+made a region-specific rule look reasonable. V5 existed because of a number that
+leaked from data no variant is allowed to be chosen on.
 
-  * Everything here runs on the VALIDATION period only — dates strictly before
-    ``opportunity.finalHoldoutStart``. The holdout is not read, not counted, and
-    not reported on.
+DISCIPLINE. Variants written after reading an attribution are in-sample by
+construction. Two rules keep that from becoming a lie:
+
+  * Everything runs on the VALIDATION period only — dates strictly before
+    ``opportunity.finalHoldoutStart``. The holdout is removed from the input, not
+    merely unreported, so nothing can be selected on it by accident.
   * A variant is judged by the selection null, not by its return. A composition
     that raises the headline while staying inside the null distribution has not
     been shown to pick better; it has been shown to be luckier in one sample.
