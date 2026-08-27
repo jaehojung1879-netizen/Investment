@@ -121,3 +121,57 @@ def test_the_regional_split_uses_a_different_blend_per_region():
 
     assert CAV._blend_for("V5_REGIONAL_SPLIT", "US") == {"momentum": 1.0}
     assert CAV._blend_for("V5_REGIONAL_SPLIT", "KR") == CAV.BASELINE_BLEND
+
+
+# --------------------------------------------------------------------------- #
+# The percentile-to-z recovery
+# --------------------------------------------------------------------------- #
+def test_probit_recovers_a_z_blend_far_better_than_a_percentile_blend():
+    """The V3 control failed because a percentile blend is not a z blend.
+
+    Production blends sector-neutral z-scores; the ledger only stores their
+    percentiles. Blending the percentiles directly returned Sharpe 0.325 where
+    production scored 1.094 on the same dates — a percentile throws away
+    magnitude, and momentum has a fat cross-sectional tail.
+
+    Build a cross-section with a KNOWN z blend, reduce it to percentiles the way
+    the ledger does, and check which reconstruction reproduces the true
+    ordering.
+    """
+    import numpy as np
+    from scipy.stats import rankdata
+
+    rng = np.random.default_rng(11)
+    n = 400
+    # Momentum with a fat tail, low-vol closer to normal: the shape that makes
+    # the two reconstructions disagree.
+    momentum_z = rng.standard_t(df=3, size=n)
+    lowvol_z = rng.normal(size=n)
+    truth = 0.6 * momentum_z + 0.4 * lowvol_z
+
+    to_pct = lambda z: rankdata(z) / len(z) * 100
+    mom_pct, low_pct = to_pct(momentum_z), to_pct(lowvol_z)
+
+    via_percentile = 0.6 * mom_pct + 0.4 * low_pct
+    via_probit = np.array([0.6 * CAV._to_z(m) + 0.4 * CAV._to_z(l)
+                           for m, l in zip(mom_pct, low_pct)])
+
+    corr = lambda a, b: float(np.corrcoef(rankdata(a), rankdata(b))[0, 1])
+    assert corr(via_probit, truth) > corr(via_percentile, truth)
+    assert corr(via_probit, truth) > 0.98
+
+
+def test_probit_leaves_a_single_sleeve_ordering_untouched():
+    """Monotone, so momentum-only must rank identically before and after."""
+    signals = _signals()
+    with CAV.alpha_variant(signals, "V1_MOMENTUM_ONLY"):
+        order = [r["ticker"] for r in sorted(signals, key=lambda r: -r["alphaPercentile"])]
+    assert order == [f"T{i}" for i in range(9, -1, -1)]
+
+
+def test_the_extremes_are_clipped_rather_than_infinite():
+    """A 0 or 100 percentile must not become -inf/+inf and poison the blend."""
+    import math
+    assert math.isfinite(CAV._to_z(0.0))
+    assert math.isfinite(CAV._to_z(100.0))
+    assert CAV._to_z(0.0) < CAV._to_z(50.0) < CAV._to_z(100.0)

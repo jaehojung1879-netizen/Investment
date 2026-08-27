@@ -41,7 +41,9 @@ from collections import defaultdict
 from contextlib import contextmanager
 from pathlib import Path
 
+import numpy as np
 import pandas as pd
+from scipy.stats import norm
 
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
@@ -78,6 +80,24 @@ def _blend_for(name: str, region: str) -> dict | None:
 
 
 ALPHA_FIELDS = ("alphaPercentile", "longTermAlphaPercentile", "alpha", "rawAlpha")
+
+# The ledger stores sleeve PERCENTILES; production blends sleeve Z-SCORES.
+# Those are not interchangeable, and the V3 control proved it: blending the
+# percentiles at production's own 0.6/0.4 weights returned Sharpe 0.325 against
+# production's 1.094 on the same dates. A percentile throws away magnitude — the
+# top name scores 100 whether it is one sigma or five above the mean — and with
+# a fat-tailed momentum cross-section that reorders the book.
+#
+# The sleeves are sector-neutral z-scores, so their cross-section is roughly
+# normal and the normal quantile of the percentile recovers the z up to a
+# monotone rescaling. Single-sleeve variants are unaffected either way: probit
+# is monotone, so momentum-only ranks identically before and after.
+_Z_CLIP = 1e-4
+
+
+def _to_z(percentile: float) -> float:
+    """Percentile (0-100) back to an approximate sector-neutral z-score."""
+    return float(norm.ppf(min(max(float(percentile) / 100.0, _Z_CLIP), 1 - _Z_CLIP)))
 
 
 @contextmanager
@@ -117,7 +137,7 @@ def alpha_variant(signals: list[dict], variant: str):
                     value = sleeves.get(sleeve)
                     if value is None:
                         continue
-                    total += float(value) * float(share)
+                    total += _to_z(value) * float(share)
                     weight += float(share)
                 if weight <= 0:
                     continue
