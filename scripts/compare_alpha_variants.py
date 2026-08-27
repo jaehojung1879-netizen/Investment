@@ -101,7 +101,8 @@ def _to_z(percentile: float) -> float:
 
 
 @contextmanager
-def alpha_variant(signals: list[dict], variant: str):
+def alpha_variant(signals: list[dict], variant: str,
+                  outcomes: list[dict] | None = None):
     """Apply a variant's alpha in place for the duration of the block.
 
     In place, and not on a copy, because copying is not affordable here: the
@@ -122,7 +123,14 @@ def alpha_variant(signals: list[dict], variant: str):
         yield signals
         return
 
+    # Outcomes carry their own copy of alphaPercentile, and the diagnostics read
+    # it from THERE, not from the signals — `_joined_frame` builds its table out
+    # of `horizon_frame(outcomes)`. Rewriting only the signals left every
+    # variant reporting production's rank IC under its own name, identical to
+    # six decimal places, which is how the bug was spotted.
+    outcomes = outcomes if outcomes is not None else []
     original = [tuple(row.get(field) for field in ALPHA_FIELDS) for row in signals]
+    original_outcomes = [row.get("alphaPercentile") for row in outcomes]
     by_cell: dict[tuple, list[int]] = defaultdict(list)
     for index, row in enumerate(signals):
         by_cell[(row.get("date"), row.get("region"))].append(index)
@@ -153,11 +161,18 @@ def alpha_variant(signals: list[dict], variant: str):
                 signals[index]["longTermAlphaPercentile"] = value
                 signals[index]["alpha"] = alpha
                 signals[index]["rawAlpha"] = alpha
+        if outcomes:
+            by_id = {row.get("id"): row.get("alphaPercentile") for row in signals}
+            for row in outcomes:
+                if row.get("id") in by_id:
+                    row["alphaPercentile"] = by_id[row["id"]]
         yield signals
     finally:
         for row, values in zip(signals, original):
             for field, value in zip(ALPHA_FIELDS, values):
                 row[field] = value
+        for row, value in zip(outcomes, original_outcomes):
+            row["alphaPercentile"] = value
 
 
 def summarize(report: dict) -> dict:
@@ -242,7 +257,7 @@ def main(argv=None) -> int:
     results = {}
     for name in names:
         started = time.time()
-        with alpha_variant(kept, name) as variant_signals:
+        with alpha_variant(kept, name, kept_outcomes) as variant_signals:
             report = PV.portfolio_replay(variant_signals, kept_outcomes,
                                          cfg_lt=cfg.longterm, cfg_pf=cfg_pf,
                                          diagnostics=diagnostics)

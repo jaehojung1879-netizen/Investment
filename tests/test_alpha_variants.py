@@ -175,3 +175,61 @@ def test_the_extremes_are_clipped_rather_than_infinite():
     assert math.isfinite(CAV._to_z(0.0))
     assert math.isfinite(CAV._to_z(100.0))
     assert CAV._to_z(0.0) < CAV._to_z(50.0) < CAV._to_z(100.0)
+
+
+# --------------------------------------------------------------------------- #
+# The outcomes carry their own copy of alphaPercentile
+# --------------------------------------------------------------------------- #
+def _outcomes(signals):
+    """Outcome rows as the ledger writes them: alphaPercentile copied across."""
+    return [{"id": row["id"], "date": row["date"], "region": row["region"],
+             "ticker": row["ticker"], "alphaPercentile": row["alphaPercentile"],
+             "horizons": {"126": {"excessReturn": 0.01}}}
+            for row in signals]
+
+
+def test_the_variant_reaches_the_outcomes_not_only_the_signals():
+    """`_joined_frame` reads alphaPercentile from the OUTCOMES.
+
+    Rewriting only the signals left every variant reporting production's rank IC
+    under its own name — identical to six decimal places across variants, which
+    is how it was caught.
+    """
+    signals = _signals()
+    outcomes = _outcomes(signals)
+
+    with CAV.alpha_variant(signals, "V1_MOMENTUM_ONLY", outcomes):
+        by_id = {row["id"]: row["alphaPercentile"] for row in signals}
+        assert all(row["alphaPercentile"] == by_id[row["id"]] for row in outcomes)
+        assert len({row["alphaPercentile"] for row in outcomes}) > 1   # actually varied
+
+
+def test_the_outcomes_are_restored_too():
+    signals = _signals()
+    outcomes = _outcomes(signals)
+    before = [row["alphaPercentile"] for row in outcomes]
+
+    with CAV.alpha_variant(signals, "V1_MOMENTUM_ONLY", outcomes):
+        pass
+
+    assert [row["alphaPercentile"] for row in outcomes] == before
+
+
+def test_the_outcomes_are_restored_when_the_body_raises():
+    signals = _signals()
+    outcomes = _outcomes(signals)
+    before = [row["alphaPercentile"] for row in outcomes]
+
+    with pytest.raises(RuntimeError):
+        with CAV.alpha_variant(signals, "V1_MOMENTUM_ONLY", outcomes):
+            raise RuntimeError("replay blew up")
+
+    assert [row["alphaPercentile"] for row in outcomes] == before
+
+
+def test_an_outcome_without_a_matching_signal_is_left_alone():
+    signals = _signals()
+    outcomes = _outcomes(signals) + [{"id": "orphan", "alphaPercentile": 42.0}]
+
+    with CAV.alpha_variant(signals, "V1_MOMENTUM_ONLY", outcomes):
+        assert outcomes[-1]["alphaPercentile"] == 42.0
