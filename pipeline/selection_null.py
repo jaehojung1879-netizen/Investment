@@ -37,6 +37,26 @@ import numpy as np
 
 NULL_METHOD = "RANDOM_RANK_WITHIN_RESEARCH_POOL"
 
+# Two nulls, because "random ranking" is ambiguous about persistence and the
+# ambiguity is worth a factor of two in turnover.
+#
+#   INDEPENDENT — a fresh permutation every date. Maximum churn: the book has no
+#   memory, so it rebalances into whatever the new draw likes. On the production
+#   ledger this runs 71.9% turnover against the real book's 55.5%.
+#
+#   PERSISTENT — each draw fixes one random preference ordering over tickers and
+#   keeps it for the whole path. Minimum churn: the book only moves when the
+#   candidate pool changes or a cap binds.
+#
+# The real book sits between the two, because a conviction score is a persistent
+# property of a name but not a permanent one. Reporting both brackets the
+# question: if the real book clears BOTH, its edge cannot be explained by
+# trading less than the null, because the persistent null trades no more than it
+# does. If it clears only the independent one, the "edge" is a cost artifact.
+INDEPENDENT = "INDEPENDENT_PER_DATE"
+PERSISTENT = "PERSISTENT_PER_DRAW"
+MODES = (INDEPENDENT, PERSISTENT)
+
 BEATS = "BEATS_RANDOM"
 WORSE = "WORSE_THAN_RANDOM"
 INDISTINGUISHABLE = "INDISTINGUISHABLE_FROM_RANDOM"
@@ -71,6 +91,45 @@ def permuted_scores(scored: list[dict], rng: np.random.Generator) -> list[dict]:
     Selection sorts on ``(-score, ticker)``, so ties break alphabetically and no
     part of the real ordering leaks back in through a tie-break.
     """
+    rows, pool, values = _prepare(scored)
+    order = rng.permutation(len(values))
+    for index, slot in zip(pool, order):
+        rows[index]["convictionScore"] = values[int(slot)]
+        rows[index]["score"] = values[int(slot)]
+    return rows
+
+
+def persistent_scores(scored: list[dict], rng: np.random.Generator,
+                      keys: dict[str, float]) -> list[dict]:
+    """The same reassignment, but the preference ordering is stable across dates.
+
+    ``keys`` is one draw's permanent opinion of every ticker, filled in the first
+    time a name is seen and reused afterwards. Each date the real scores are
+    handed out in that fixed order, so a name this draw "likes" keeps ranking
+    high for the whole path and the book stops churning for no reason.
+
+    This is deliberately MORE persistent than a real conviction score, which does
+    drift. Together with the independent null it brackets the real book rather
+    than trying to match its turnover exactly — a match would need a tuning knob,
+    and a knob chosen to make the answer come out is not a null.
+    """
+    rows, pool, values = _prepare(scored)
+    for index in pool:
+        keys.setdefault(rows[index]["ticker"], float(rng.random()))
+    # Smallest key takes the largest score, every date.
+    ranked = sorted(pool, key=lambda index: keys[rows[index]["ticker"]])
+    for slot, index in enumerate(ranked):
+        rows[index]["convictionScore"] = values[slot]
+        rows[index]["score"] = values[slot]
+    return rows
+
+
+def _prepare(scored: list[dict]) -> tuple[list[dict], list[int], list[float]]:
+    """Copy the rows, drop score-driven exclusions, and pull the score multiset.
+
+    Values come back sorted descending so a caller assigning them in order gives
+    the highest score to whichever name it ranked first.
+    """
     rows = []
     for row in scored:
         item = dict(row)
@@ -79,15 +138,11 @@ def permuted_scores(scored: list[dict], rng: np.random.Generator) -> list[dict]:
         item["exclusionCodes"] = codes
         item["eligible"] = not codes
         rows.append(item)
-
     pool = [index for index, row in enumerate(rows) if row["eligible"]]
-    values = [float(rows[index].get("convictionScore")
-                    or rows[index].get("score") or 0.0) for index in pool]
-    order = rng.permutation(len(values))
-    for index, slot in zip(pool, order):
-        rows[index]["convictionScore"] = values[int(slot)]
-        rows[index]["score"] = values[int(slot)]
-    return rows
+    values = sorted((float(rows[index].get("convictionScore")
+                           or rows[index].get("score") or 0.0) for index in pool),
+                    reverse=True)
+    return rows, pool, values
 
 
 def _finite(values) -> list[float]:
@@ -158,6 +213,43 @@ def summarize(actual, null_values, *, higher_is_better: bool = True,
         "draws": n,
         "higherIsBetter": bool(higher_is_better),
         "verdict": verdict,
+    }
+
+
+def combined_verdict(by_mode: dict) -> dict:
+    """One reading across both nulls. An edge has to survive the harder one.
+
+    The independent null trades far more than the real book and pays for it, so
+    clearing it alone is consistent with a strategy whose only advantage is that
+    it rebalances less. The persistent null trades no more than the real book,
+    so it removes that explanation. Requiring both is what separates "picked
+    better names" from "paid less commission".
+    """
+    assessed = {mode: blob for mode, blob in by_mode.items() if blob.get("available")}
+    if len(assessed) < len(MODES):
+        return {"verdict": NOT_ASSESSED,
+                "reason": "not_every_null_mode_could_be_run",
+                "modesAssessed": sorted(assessed)}
+    verdicts = {mode: (blob.get("overall") or {}).get("verdict") for mode, blob in assessed.items()}
+    if all(value == BEATS for value in verdicts.values()):
+        verdict = BEATS
+    elif any(value == WORSE for value in verdicts.values()):
+        verdict = WORSE
+    else:
+        verdict = INDISTINGUISHABLE
+    return {
+        "verdict": verdict,
+        "byMode": verdicts,
+        "requiresEveryMode": True,
+        "scope": NULL_METHOD,
+        "explainKo": ("두 종류의 무작위 순위를 모두 이겨야 우위로 봅니다. "
+                      f"'{INDEPENDENT}'는 매 시점 순위를 새로 뽑아 회전율이 높고 비용을 더 내므로, "
+                      "이것만 이기는 것은 '덜 사고팔아서'로 설명될 수 있습니다. "
+                      f"'{PERSISTENT}'는 한 번 정한 선호를 끝까지 유지해 실제보다 덜 바꾸므로, "
+                      "이쪽까지 이겨야 '종목을 잘 골랐다'가 됩니다."),
+        "scopeNoteKo": ("두 검정 모두 연구 후보군 안에서의 순위·집중 단계만 검증합니다. "
+                        "후보군 자체가 alpha 점수로 걸러지므로 연구 스크리닝의 기여는 "
+                        "여기서 측정되지 않습니다."),
     }
 
 
