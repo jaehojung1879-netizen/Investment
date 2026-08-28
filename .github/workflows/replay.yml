@@ -67,6 +67,27 @@ jobs:
           fi
           mkdir -p replay-work/ledger
 
+      # Refresh index membership before the replay. The committed file is
+      # US-only, built from the constituent repo's git history; this rebuild
+      # also picks up the Korean half, which needs FinanceDataReader's delisting
+      # list and therefore network. Best effort: on failure the replay falls
+      # back to the committed file, and `constituentCoveragePct` reports the
+      # smaller coverage rather than pretending the gap is not there.
+      - name: Refresh point-in-time index membership
+        run: |
+          python scripts/build_universe_history.py data/universe-history.json \
+            || echo "membership rebuild failed; using the committed file"
+          python - <<'PY'
+          import json, pathlib
+          rows = json.loads(pathlib.Path("data/universe-history.json").read_text())
+          by_region = {}
+          for row in rows.values():
+              key = row.get("region")
+              by_region[key] = by_region.get(key, 0) + 1
+          departed = sum(1 for r in rows.values() if r.get("delisted"))
+          print(f"membership: {len(rows)} names {by_region}; {departed} no longer members")
+          PY
+
       # There is deliberately no price cache here. Nothing in the pipeline reads
       # or writes one, so the step that used to sit here restored an empty
       # directory and saved an empty directory while its comment claimed to be

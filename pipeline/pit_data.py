@@ -552,6 +552,12 @@ class UniverseSnapshot:
     # counts are kept apart instead of being assumed equal.
     expected_members: int = 0
     missing_prices: list[str] = field(default_factory=list)
+    # Two different gaps, kept apart because they have different causes and
+    # different fixes. `missing_prices` is "the file says it was listed and we
+    # could not price it". These are "the file says nothing about this name at
+    # all" — a region the membership file does not cover.
+    membership_known: int = 0
+    membership_unknown: int = 0
 
     @property
     def size(self) -> int:
@@ -559,9 +565,20 @@ class UniverseSnapshot:
 
     @property
     def coverage_pct(self) -> float | None:
+        """Of the names the file says were listed, the share we could price."""
         if not self.reconstructed or not self.expected_members:
             return None
         return 100.0 * (self.expected_members - len(self.missing_prices)) / self.expected_members
+
+    @property
+    def membership_coverage_pct(self) -> float | None:
+        """Of the cross-section, the share whose membership was actually known.
+
+        Separate from `coverage_pct`: a file covering one region can price every
+        name it knows about and still leave the other region entirely unresolved.
+        """
+        total = self.membership_known + self.membership_unknown
+        return round(self.membership_known / total * 100, 4) if total else None
 
 
 class UniverseHistory:
@@ -581,6 +598,16 @@ class UniverseHistory:
     def available(self) -> bool:
         return bool(self._memberships)
 
+    @property
+    def memberships(self) -> dict[str, dict]:
+        """Read-only view of ticker -> {listed, delisted, region}.
+
+        The replay needs it to widen the DOWNLOAD list: `snapshot` can only put
+        a former member back into the cross-section if the price panel can serve
+        it, so the caller has to know which names to fetch.
+        """
+        return dict(self._memberships)
+
     @classmethod
     def from_json(cls, path: str | Path | None) -> "UniverseHistory":
         if not path:
@@ -596,10 +623,17 @@ class UniverseHistory:
             return cls({})
         return cls({str(k): dict(v) for k, v in raw.items() if isinstance(v, dict)})
 
-    def _listed_on(self, ticker: str, as_of: pd.Timestamp) -> bool:
+    def _listed_on(self, ticker: str, as_of: pd.Timestamp) -> bool | None:
+        """True/False when membership is known, None when the file says nothing.
+
+        The distinction is load-bearing. Returning False for an unknown ticker
+        silently deletes every name the file does not cover — a US-only
+        membership file empties the entire KR cross-section, and the replay
+        carries on reporting a Korean sleeve made of nothing.
+        """
         row = self._memberships.get(ticker)
         if not row:
-            return False
+            return None
         listed = row.get("listed")
         delisted = row.get("delisted")
         if listed and pd.Timestamp(listed) > as_of:
@@ -631,11 +665,26 @@ class UniverseHistory:
         if self.available:
             expected = 0
             missing: list[str] = []
+            known = unknown = 0
             for region in sorted(current_universe):
-                members = set(current_universe.get(region, []))
+                today = set(current_universe.get(region, []))
+                members = set(today)
                 members |= {t for t, row in self._memberships.items()
                             if row.get("region") == region}
-                listed = sorted(t for t in members if self._listed_on(t, cutoff))
+                listed = []
+                for ticker in sorted(members):
+                    state = self._listed_on(ticker, cutoff)
+                    if state is True:
+                        known += 1
+                    elif state is None and ticker in today:
+                        # Membership unknown. Dropping it erases the name;
+                        # asserting membership invents history. Keep it only
+                        # because today's list proves it exists, and count it
+                        # against membership coverage so the gap stays visible.
+                        unknown += 1
+                    else:
+                        continue
+                    listed.append(ticker)
                 priced = [t for t in listed if tradable(t)]
                 expected += len(listed)
                 missing.extend(t for t in listed if t not in set(priced))
@@ -648,9 +697,16 @@ class UniverseHistory:
             share_missing = (len(missing) / expected) if expected else 0.0
             if missing:
                 notes.append("listed_members_without_price_history_excluded")
-            risk = "LOW" if not missing else "MEDIUM" if share_missing < 0.05 else "HIGH"
+            if unknown:
+                notes.append(f"membership_unknown_for_{unknown}_names_kept_from_today")
+            share_unknown = (unknown / (known + unknown)) if (known + unknown) else 0.0
+            # The worse of the two gaps decides. Either one alone reinstates the
+            # bias the file was meant to remove, and a LOW label on that is worse
+            # than an honest HIGH.
+            worst = max(share_missing, share_unknown)
+            risk = "LOW" if worst <= 0 else "MEDIUM" if worst < 0.05 else "HIGH"
             return UniverseSnapshot(cutoff.strftime("%Y-%m-%d"), by_region, risk, notes,
-                                    True, expected, sorted(set(missing)))
+                                    True, expected, sorted(set(missing)), known, unknown)
 
         for region in sorted(current_universe):
             by_region[region] = sorted(t for t in current_universe.get(region, []) if tradable(t))

@@ -793,6 +793,7 @@ def run_replay(prices: dict[str, pd.DataFrame], universe: dict[str, list[str]], 
     regimes: dict[str, int] = {}
     members_expected = 0
     members_priced = 0
+    membership_coverage: list[float] = []
     members_missing: set[str] = set()
 
     for stamp in grid:
@@ -802,6 +803,8 @@ def run_replay(prices: dict[str, pd.DataFrame], universe: dict[str, list[str]], 
         if snapshot.reconstructed:
             members_expected += snapshot.expected_members
             members_priced += snapshot.expected_members - len(snapshot.missing_prices)
+            if snapshot.membership_coverage_pct is not None:
+                membership_coverage.append(snapshot.membership_coverage_pct)
             members_missing.update(snapshot.missing_prices)
         macro_t, vix_t = macro_view.as_of(stamp)
         macro_read = None
@@ -835,16 +838,28 @@ def run_replay(prices: dict[str, pd.DataFrame], universe: dict[str, list[str]], 
     # exactly where it was, and the gate downstream wants a real 100.
     constituent_coverage = (round(100.0 * members_priced / members_expected, 4)
                             if members_expected else None)
+    # A second, independent gap. `constituent_coverage` asks "of the names the
+    # file says were listed, how many could we price"; this asks "of the
+    # cross-section, how many does the file describe at all". A US-only
+    # membership file can price every US name it knows and still leave the whole
+    # KR sleeve unresolved, which the first number cannot see.
+    membership_pct = (round(float(np.mean(membership_coverage)), 4)
+                      if membership_coverage else None)
+
+    def _risk(value: float | None) -> str:
+        if value is None:
+            return "HIGH"
+        if value >= 100.0:
+            return "LOW"
+        return "MEDIUM" if value >= 95.0 else "HIGH"
+
     if not universe_history.available:
         constituent_risk = "HIGH"
-    elif constituent_coverage is None:
-        constituent_risk = "HIGH"
-    elif constituent_coverage >= 100.0:
-        constituent_risk = "LOW"
-    elif constituent_coverage >= 95.0:
-        constituent_risk = "MEDIUM"
     else:
-        constituent_risk = "HIGH"
+        # The worse of the two decides. Either gap alone reinstates the bias the
+        # file was meant to remove, and a LOW label over it is worse than HIGH.
+        constituent_risk = max((_risk(constituent_coverage), _risk(membership_pct)),
+                               key=lambda r: {"LOW": 0, "MEDIUM": 1, "HIGH": 2}[r])
     diagnostics = {
         "gridDates": [d.strftime("%Y-%m-%d") for d in grid[-4:]],
         "replayVersion": REPLAY_VERSION,
@@ -866,6 +881,7 @@ def run_replay(prices: dict[str, pd.DataFrame], universe: dict[str, list[str]], 
         "fundamentalsPit": bool(fundamental_store and fundamental_store.available),
         "historicalUniverseAvailable": bool(universe_history.available),
         "constituentCoveragePct": constituent_coverage,
+        "membershipCoveragePct": membership_pct,
         "constituentsWithoutPriceHistory": sorted(members_missing)[:50],
         "constituentsWithoutPriceHistoryCount": len(members_missing),
         "universeSource": ("HISTORICAL_MEMBERSHIP_DATASET" if universe_history.available
