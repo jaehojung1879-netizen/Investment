@@ -36,6 +36,7 @@ Nothing in this module fabricates a value it does not have.
 """
 from __future__ import annotations
 
+import hashlib
 import json
 import math
 from dataclasses import dataclass, field
@@ -71,6 +72,10 @@ PIT_QUALITY_BANDS = ((0.85, "HIGH"), (0.6, "MEDIUM"), (0.0, "LOW"))
 MIN_CALIBRATION_COVERAGE = 0.6
 
 SURVIVORSHIP_UNRESOLVED = "SURVIVORSHIP_BIAS_UNRESOLVED"
+# The universe identity of a replay that resolved its names from today's
+# constituent list. Every generation written before membership history
+# existed was this, whether or not it said so.
+SURVIVORS_ONLY_FINGERPRINT = "survivors-only"
 
 
 def _safe_number(value):
@@ -607,6 +612,30 @@ class UniverseHistory:
         it, so the caller has to know which names to fetch.
         """
         return dict(self._memberships)
+
+    @property
+    def fingerprint(self) -> str:
+        """Identity of the universe DEFINITION this replay would run against.
+
+        Adding a name to a date's cross-section re-ranks every other name on
+        that date: `alphaPercentile` is a rank within the cross-section and
+        selection applies a floor to it. So a record produced against 281 US
+        names in 2013 and one produced against the real 500 are not the same
+        measurement, and pooling them is not an extension of the evidence —
+        it is a contamination of it.
+
+        The fingerprint covers the definition, not the realized panel: a
+        vendor that drops forty names today must not read as a universe
+        change, or the guard would cry wolf on every flaky fetch.
+        """
+        if not self._memberships:
+            return SURVIVORS_ONLY_FINGERPRINT
+        canonical = json.dumps(
+            {t: {k: row.get(k) for k in ("listed", "delisted", "region")}
+             for t, row in sorted(self._memberships.items())},
+            sort_keys=True, separators=(",", ":"))
+        digest = hashlib.sha256(canonical.encode("utf-8")).hexdigest()[:16]
+        return f"pit-{len(self._memberships)}-{digest}"
 
     @classmethod
     def from_json(cls, path: str | Path | None) -> "UniverseHistory":

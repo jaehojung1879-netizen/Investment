@@ -88,6 +88,23 @@ def main(argv=None) -> int:
     print(f"existing signals: {len(current_ids) + stale_generation} "
           f"({len(current_ids)} current generation, {stale_generation} earlier)")
 
+    # Read and checked before the first network call. Widening the universe is
+    # not an extension of this generation, it is a new one: `alphaPercentile`
+    # is a rank inside the date's cross-section and selection floors it, so
+    # restoring 219 names to 2013 changes what every surviving name's 2013
+    # score meant — while those old records are skipped by id and keep the
+    # ranks they were given against a universe that no longer exists. Refusing
+    # after a forty-minute fetch would teach the same lesson at forty times
+    # the price.
+    universe_history = pit_data.UniverseHistory.from_json(
+        replay_cfg.get("universeHistoryPath"))
+    conflict = HS.universe_conflict(
+        ledger_dir, prov_mod.REPLAY_VERSION, universe_history.fingerprint,
+        survivors_only=pit_data.SURVIVORS_ONLY_FINGERPRINT)
+    if conflict and not args.full:
+        print(f"error: {conflict}", file=sys.stderr)
+        return 1
+
     universe, _ = universe_mod.resolve(cfg)
     start = args.start or replay_cfg.get("start", "2013-01-01")
 
@@ -98,8 +115,6 @@ def main(argv=None) -> int:
     # acquired or shrinking out of it. `UniverseHistory` decides membership per
     # date, but it can only include a name the PRICE PANEL can serve, so the
     # historical members have to be downloaded too or the fix is cosmetic.
-    universe_history = pit_data.UniverseHistory.from_json(
-        replay_cfg.get("universeHistoryPath"))
     fetch_universe = {region: list(names) for region, names in universe.items()}
     historical_only: dict[str, list[str]] = {}
     if universe_history.available:
@@ -219,6 +234,10 @@ def main(argv=None) -> int:
 
     appended, skipped = HS.append_signals(ledger_dir, replay["signals"])
     print(f"signals: +{appended} appended, {skipped} skipped")
+    HS.stamp_universe(
+        ledger_dir, prov_mod.REPLAY_VERSION, universe_history.fingerprint,
+        describedNames=len(universe_history.memberships),
+        source=replay_cfg.get("universeHistoryPath"))
 
     # Outcomes are derived and safe to recompute — more future has arrived since
     # the last run, so previously immature signals may now resolve. Recomputing
