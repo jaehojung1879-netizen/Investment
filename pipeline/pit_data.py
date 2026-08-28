@@ -76,6 +76,10 @@ SURVIVORSHIP_UNRESOLVED = "SURVIVORSHIP_BIAS_UNRESOLVED"
 # constituent list. Every generation written before membership history
 # existed was this, whether or not it said so.
 SURVIVORS_ONLY_FINGERPRINT = "survivors-only"
+# How a generation resolved its cross-section. The distinction that
+# actually decides whether two records are comparable.
+SURVIVORS_ONLY = "survivors-only"
+PIT_MEMBERSHIP = "pit-membership"
 
 
 def _safe_number(value):
@@ -615,18 +619,11 @@ class UniverseHistory:
 
     @property
     def fingerprint(self) -> str:
-        """Identity of the universe DEFINITION this replay would run against.
+        """Exact content hash of the universe definition. Diagnostic only.
 
-        Adding a name to a date's cross-section re-ranks every other name on
-        that date: `alphaPercentile` is a rank within the cross-section and
-        selection applies a floor to it. So a record produced against 281 US
-        names in 2013 and one produced against the real 500 are not the same
-        measurement, and pooling them is not an extension of the evidence —
-        it is a contamination of it.
-
-        The fingerprint covers the definition, not the realized panel: a
-        vendor that drops forty names today must not read as a universe
-        change, or the guard would cry wolf on every flaky fetch.
+        CI rebuilds the membership file on every replay run and the index gains
+        and loses names every month, so this moves legitimately. It is recorded
+        and reported; what is ENFORCED is `signature`.
         """
         if not self._memberships:
             return SURVIVORS_ONLY_FINGERPRINT
@@ -636,6 +633,36 @@ class UniverseHistory:
             sort_keys=True, separators=(",", ":"))
         digest = hashlib.sha256(canonical.encode("utf-8")).hexdigest()[:16]
         return f"pit-{len(self._memberships)}-{digest}"
+
+    @property
+    def signature(self) -> dict:
+        """The universe properties a generation's records depend on.
+
+        Adding a name to a date's cross-section re-ranks every other name on
+        that date: `alphaPercentile` is a rank within the cross-section and
+        selection applies a floor to it. So a record produced against 281 US
+        names in 2013 and one produced against the real 500 are not the same
+        measurement, and pooling them is not an extension of the evidence —
+        it is a contamination of it.
+
+        But not every change to the file is that. The index gains and loses
+        members every month and the file is rebuilt on every run, so an exact
+        hash would refuse the second run and every run after it. What actually
+        breaks comparability is a change of KIND — survivors-only becoming
+        point-in-time, a region gaining or LOSING membership coverage — so
+        that is what the signature carries, with the hash alongside it as a
+        recorded detail rather than a gate.
+        """
+        regions: dict[str, int] = {}
+        for row in self._memberships.values():
+            region = row.get("region")
+            if region:
+                regions[region] = regions.get(region, 0) + 1
+        return {
+            "mode": PIT_MEMBERSHIP if self._memberships else SURVIVORS_ONLY,
+            "regions": dict(sorted(regions.items())),
+            "fingerprint": self.fingerprint,
+        }
 
     @classmethod
     def from_json(cls, path: str | Path | None) -> "UniverseHistory":

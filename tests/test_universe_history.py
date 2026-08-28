@@ -181,3 +181,59 @@ def test_the_committed_membership_file_loads_and_covers_the_replay_start():
     listed = [r["listed"] for r in rows.values()
               if r.get("region") == "US" and r.get("listed")]
     assert min(listed) <= "2013-01-01"
+
+
+# --------------------------------------------------------------------------- #
+# The file is rebuilt on every replay run, so how it is WRITTEN matters
+# --------------------------------------------------------------------------- #
+def test_a_rebuild_keeps_names_the_new_build_did_not_return(tmp_path):
+    """A short day from the vendor must not erase names from the cross-section.
+
+    CI reruns `build_universe_history.py` on every replay run and the KR half
+    is a live FinanceDataReader call. Overwriting meant one bad response
+    silently removed names that were in the historical cross-section — which
+    changes what every past rank meant while looking like a routine refresh.
+
+    Membership history is monotone: a name that was ever in the index was ever
+    in the index. So the union is the correct semantics, not a workaround.
+    """
+    import json
+    from scripts import build_universe_history as B
+
+    out = tmp_path / "universe-history.json"
+    out.write_text(json.dumps({
+        "AA": {"listed": "2012-12-27", "delisted": "2016-11-01", "region": "US"},
+        "005930.KS": {"listed": None, "delisted": None, "region": "KR"},
+    }), encoding="utf-8")
+
+    assert B.main([str(out), "--skip-us", "--skip-kr"]) == 0
+
+    rows = json.loads(out.read_text(encoding="utf-8"))
+    assert "005930.KS" in rows, "a KR outage must not delete Korea"
+    assert rows["AA"]["delisted"] == "2016-11-01"
+
+
+def test_rebuild_overwrites_when_asked(tmp_path):
+    """The escape hatch, for when the file itself is believed wrong."""
+    import json
+    from scripts import build_universe_history as B
+
+    out = tmp_path / "universe-history.json"
+    out.write_text(json.dumps(
+        {"BOGUS": {"listed": "2012-12-27", "delisted": None, "region": "US"}}),
+        encoding="utf-8")
+
+    assert B.main([str(out), "--skip-us", "--skip-kr", "--rebuild"]) == 0
+
+    assert json.loads(out.read_text(encoding="utf-8")) == {}
+
+
+def test_an_unreadable_existing_file_does_not_abort_the_build(tmp_path):
+    import json
+    from scripts import build_universe_history as B
+
+    out = tmp_path / "universe-history.json"
+    out.write_text("{not json", encoding="utf-8")
+
+    assert B.main([str(out), "--skip-us", "--skip-kr"]) == 0
+    assert json.loads(out.read_text(encoding="utf-8")) == {}

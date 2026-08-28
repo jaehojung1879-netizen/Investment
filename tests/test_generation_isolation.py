@@ -36,27 +36,79 @@ def _seed(tmp_path, tickers=("AAA",)):
 # --------------------------------------------------------------------------- #
 # The guard
 # --------------------------------------------------------------------------- #
+def _sig(mode="pit-membership", **regions):
+    return {"mode": mode, "regions": regions, "fingerprint": "irrelevant"}
+
+
 def test_an_empty_generation_accepts_any_universe(tmp_path):
     """Nothing to contaminate: the first run defines the generation."""
-    assert HS.universe_conflict(tmp_path, GEN, "pit-829-abc") is None
+    assert HS.universe_conflict(tmp_path, GEN, _sig(US=829)) is None
 
 
 def test_extending_with_the_same_universe_is_allowed(tmp_path):
     _seed(tmp_path)
-    HS.stamp_universe(tmp_path, GEN, "pit-829-abc")
+    HS.stamp_universe(tmp_path, GEN, _sig(US=829))
 
-    assert HS.universe_conflict(tmp_path, GEN, "pit-829-abc") is None
+    assert HS.universe_conflict(tmp_path, GEN, _sig(US=829)) is None
 
 
-def test_widening_the_universe_is_refused(tmp_path):
+def test_a_universe_that_grew_is_allowed(tmp_path):
+    """The case that would have broken production on the second run.
+
+    CI rebuilds the membership file every replay run and the index gains
+    members every month. A guard keyed on the exact file contents would have
+    refused the second run and every run after it — and a guard that has to be
+    switched off to get any work done protects nothing.
+    """
     _seed(tmp_path)
-    HS.stamp_universe(tmp_path, GEN, "pit-829-abc")
+    HS.stamp_universe(tmp_path, GEN, _sig(US=829))
 
-    reason = HS.universe_conflict(tmp_path, GEN, "pit-905-def")
+    assert HS.universe_conflict(tmp_path, GEN, _sig(US=834)) is None
+
+
+def test_a_universe_that_shrank_is_refused(tmp_path):
+    """The KR half comes from a live vendor call. A short day is not a refresh."""
+    _seed(tmp_path)
+    HS.stamp_universe(tmp_path, GEN, _sig(US=829, KR=2450))
+
+    reason = HS.universe_conflict(tmp_path, GEN, _sig(US=829, KR=2100))
 
     assert reason is not None
-    assert "REPLAY_VERSION" in reason, "the message has to name the fix"
-    assert "pit-905-def" in reason and "pit-829-abc" in reason
+    assert "KR" in reason and "REPLAY_VERSION" in reason
+
+
+def test_losing_a_region_entirely_is_refused(tmp_path):
+    """A US-only rebuild over a US+KR file empties the Korean cross-section."""
+    _seed(tmp_path)
+    HS.stamp_universe(tmp_path, GEN, _sig(US=829, KR=2450))
+
+    reason = HS.universe_conflict(tmp_path, GEN, _sig(US=829))
+
+    assert reason is not None
+    assert "KR" in reason and "no longer has any" in reason
+
+
+def test_a_new_region_gaining_coverage_is_allowed(tmp_path):
+    """Korea gaining membership history does not invalidate the US records.
+
+    Only the region that changed has its cross-section redefined, and a region
+    going from no coverage to some is caught by the coverage measure, which
+    reports it rather than pretending the file describes what it does not.
+    """
+    _seed(tmp_path)
+    HS.stamp_universe(tmp_path, GEN, _sig(US=829))
+
+    assert HS.universe_conflict(tmp_path, GEN, _sig(US=829, KR=2450)) is None
+
+
+def test_switching_the_mode_is_refused(tmp_path):
+    _seed(tmp_path)
+    HS.stamp_universe(tmp_path, GEN, _sig(US=829))
+
+    reason = HS.universe_conflict(tmp_path, GEN, _sig(mode="survivors-only"))
+
+    assert reason is not None
+    assert "survivors-only" in reason
 
 
 def test_an_unstamped_generation_with_records_counts_as_survivors_only(tmp_path):
@@ -68,24 +120,16 @@ def test_an_unstamped_generation_with_records_counts_as_survivors_only(tmp_path)
     """
     _seed(tmp_path)
 
-    assert HS.universe_conflict(tmp_path, GEN, "pit-829-abc") is not None
+    assert HS.universe_conflict(tmp_path, GEN, _sig(US=829)) is not None
     assert HS.universe_conflict(
-        tmp_path, GEN, pit_data.SURVIVORS_ONLY_FINGERPRINT) is None
-
-
-def test_the_default_matches_the_universe_module(tmp_path):
-    """Two literals that must agree, pinned rather than trusted."""
-    _seed(tmp_path)
-    assert HS.universe_conflict(
-        tmp_path, GEN, pit_data.SURVIVORS_ONLY_FINGERPRINT) is None
+        tmp_path, GEN, _sig(mode=pit_data.SURVIVORS_ONLY)) is None
 
 
 def test_a_conflict_in_one_generation_does_not_block_another(tmp_path):
     HS.append_signals(tmp_path, [dict(_signal("AAA"), replayVersion="old-gen")])
-    HS.stamp_universe(tmp_path, "old-gen", pit_data.SURVIVORS_ONLY_FINGERPRINT)
 
-    assert HS.universe_conflict(tmp_path, "old-gen", "pit-829-abc") is not None
-    assert HS.universe_conflict(tmp_path, GEN, "pit-829-abc") is None
+    assert HS.universe_conflict(tmp_path, "old-gen", _sig(US=829)) is not None
+    assert HS.universe_conflict(tmp_path, GEN, _sig(US=829)) is None
 
 
 def test_an_unreadable_stamp_is_treated_as_absent_not_as_agreement(tmp_path):
@@ -94,16 +138,29 @@ def test_an_unreadable_stamp_is_treated_as_absent_not_as_agreement(tmp_path):
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text("{not json", encoding="utf-8")
 
-    assert HS.universe_conflict(tmp_path, GEN, "pit-829-abc") is not None
+    assert HS.universe_conflict(tmp_path, GEN, _sig(US=829)) is not None
 
 
 def test_the_stamp_round_trips_with_its_detail(tmp_path):
-    HS.stamp_universe(tmp_path, GEN, "pit-829-abc",
-                      describedNames=829, source="data/universe-history.json")
+    HS.stamp_universe(tmp_path, GEN, _sig(US=829),
+                      source="data/universe-history.json")
     stamp = HS.read_universe_stamp(tmp_path, GEN)
 
-    assert stamp["fingerprint"] == "pit-829-abc"
-    assert stamp["describedNames"] == 829
+    assert stamp["mode"] == "pit-membership"
+    assert stamp["regions"] == {"US": 829}
+    assert stamp["source"] == "data/universe-history.json"
+
+
+def test_the_shipped_history_produces_an_enforceable_signature():
+    from pathlib import Path
+    path = Path(__file__).resolve().parents[1] / "data" / "universe-history.json"
+    if not path.exists():
+        pytest.skip("membership file not built in this checkout")
+
+    signature = pit_data.UniverseHistory.from_json(path).signature
+
+    assert signature["mode"] == pit_data.PIT_MEMBERSHIP
+    assert signature["regions"].get("US", 0) > 500
 
 
 # --------------------------------------------------------------------------- #

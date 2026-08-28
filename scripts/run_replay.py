@@ -98,9 +98,10 @@ def main(argv=None) -> int:
     # the price.
     universe_history = pit_data.UniverseHistory.from_json(
         replay_cfg.get("universeHistoryPath"))
+    universe_signature = universe_history.signature
     conflict = HS.universe_conflict(
-        ledger_dir, prov_mod.REPLAY_VERSION, universe_history.fingerprint,
-        survivors_only=pit_data.SURVIVORS_ONLY_FINGERPRINT)
+        ledger_dir, prov_mod.REPLAY_VERSION, universe_signature,
+        survivors_only=pit_data.SURVIVORS_ONLY)
     if conflict and not args.full:
         print(f"error: {conflict}", file=sys.stderr)
         return 1
@@ -235,8 +236,7 @@ def main(argv=None) -> int:
     appended, skipped = HS.append_signals(ledger_dir, replay["signals"])
     print(f"signals: +{appended} appended, {skipped} skipped")
     HS.stamp_universe(
-        ledger_dir, prov_mod.REPLAY_VERSION, universe_history.fingerprint,
-        describedNames=len(universe_history.memberships),
+        ledger_dir, prov_mod.REPLAY_VERSION, universe_signature,
         source=replay_cfg.get("universeHistoryPath"))
 
     # Outcomes are derived and safe to recompute — more future has arrived since

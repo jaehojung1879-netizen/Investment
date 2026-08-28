@@ -442,14 +442,14 @@ def read_universe_stamp(ledger_dir: str | Path, generation: str | None) -> dict:
 
 
 def stamp_universe(ledger_dir: str | Path, generation: str | None,
-                   fingerprint: str, **detail) -> dict:
+                   signature: dict, **detail) -> dict:
     """Record the universe definition this generation's records were built on.
 
     A sidecar rather than a manifest field on purpose: the manifest is rebuilt
     from the shards on every run, so anything written there is only as durable
     as the code that rebuilds it. This has to outlive that.
     """
-    stamp = {"fingerprint": fingerprint, **detail}
+    stamp = {**dict(signature), **detail}
     path = universe_stamp_path(ledger_dir, generation)
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(stamp, ensure_ascii=False, indent=2) + "\n",
@@ -458,7 +458,7 @@ def stamp_universe(ledger_dir: str | Path, generation: str | None,
 
 
 def universe_conflict(ledger_dir: str | Path, generation: str | None,
-                      fingerprint: str, *,
+                      signature: dict, *,
                       survivors_only: str = "survivors-only") -> str | None:
     """The reason this generation must not be extended, or None if it may be.
 
@@ -469,22 +469,42 @@ def universe_conflict(ledger_dir: str | Path, generation: str | None,
     so they keep the ranks they were given against a universe that no longer
     exists. The result reads as one clean generation and is two.
 
+    Three things are refused, and only these three:
+
+      * the MODE changed — survivors-only became point-in-time, or back;
+      * a region that had membership coverage no longer has any;
+      * a region's membership SHRANK, which means the file lost names that
+        were in the historical cross-section.
+
+    Growth is not refused. The index gains members every month and CI rebuilds
+    the file on every run, so gating on the exact content hash would refuse the
+    second run and every run after it — a guard that has to be switched off to
+    get any work done protects nothing.
+
     An unstamped generation that already holds records predates this stamp, so
     it was necessarily built from today's constituent list. That is a conflict
-    with anything but ``survivors_only`` — not an unknown to wave through.
+    with anything but survivors-only — not an unknown to wave through.
     """
     existing = len(ids_by_generation(ledger_dir, SIGNALS).get(generation, set()))
     if not existing:
         return None
-    recorded = read_universe_stamp(ledger_dir, generation).get("fingerprint")
-    if recorded is None:
-        recorded = survivors_only
-    if recorded == fingerprint:
-        return None
-    return (f"generation {generation!r} holds {existing} signals built against "
-            f"universe {recorded!r}, but this run resolves {fingerprint!r}. "
-            "Cross-sectional ranks are not comparable across universes; bump "
+    recorded = read_universe_stamp(ledger_dir, generation)
+    was = recorded.get("mode") or survivors_only
+    now = signature.get("mode")
+    head = f"generation {generation!r} holds {existing} signals"
+    tail = ("Cross-sectional ranks are not comparable across universes; bump "
             "REPLAY_VERSION to start a new generation instead of mixing them.")
+    if was != now:
+        return f"{head} built with universe mode {was!r}, but this run resolves {now!r}. {tail}"
+    before = recorded.get("regions") or {}
+    for region, count in sorted(before.items()):
+        current = (signature.get("regions") or {}).get(region, 0)
+        if current < int(count or 0):
+            what = ("no longer has any" if not current
+                    else f"describes only {current} of {count}")
+            return (f"{head} whose {region} cross-section came from {count} "
+                    f"described names; this run {what}. {tail}")
+    return None
 
 
 def read_manifest(ledger_dir: str | Path) -> dict:
