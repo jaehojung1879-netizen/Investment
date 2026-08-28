@@ -27,13 +27,13 @@
   "benchmarks": { "US": "SPY", "KR": "^KS200" },
   "benchmarkSources": {
     "^KS200": [
-      { "kind": "yahoo", "symbol": "^KS200" },
-      { "kind": "fdr", "symbol": "KS200" }
+      { "kind": "fdr", "symbol": "KS200" },
+      { "kind": "yahoo", "symbol": "^KS200" }
     ],
     "SPY": [
       { "kind": "yahoo", "symbol": "SPY" }
     ],
-    "_notes": "Redundancy is across VENDORS for the SAME instrument, never across instruments. ^KS200 gets a FinanceDataReader route because a price index carries no dividend adjustment, so two vendors quote the same numbers. SPY deliberately has no second vendor: yfinance auto_adjust returns a total-return series while most alternative routes return raw close, and swapping between them mid-history would move 126D excess returns by roughly 0.65%p with nothing reporting an error. SPY relies on the committed snapshot under ledger/benchmarks/ instead."
+    "_notes": "Redundancy is across VENDORS for the SAME instrument, never across instruments. ^KS200 gets a FinanceDataReader route because a price index carries no dividend adjustment, so two vendors quote the same numbers. SPY deliberately has no second vendor: yfinance auto_adjust returns a total-return series while most alternative routes return raw close, and swapping between them mid-history would move 126D excess returns by roughly 0.65%p with nothing reporting an error. SPY relies on the committed snapshot under ledger/benchmarks/ instead. FinanceDataReader is listed first for ^KS200 because Yahoo returns a single session for that symbol on every run: it is rejected by below_known_session_calendar and the run falls through to FDR regardless, so trying it first only costs a request. Yahoo stays as the second route so the redundancy survives if FDR breaks."
   },
   "primary": "QQQ",
   "runMode": "paperTrading",
@@ -163,6 +163,9 @@
     "requirePitQuality": true,
     "pitFundamentalsPath": null,
     "universeHistoryPath": "data/universe-history.json",
+    "macroVintageSeries": [],
+    "_macroVintageNotes": "Names from macro.fredSeries whose ALFRED release history the replay should fetch, so the regime is conditioned on the number printed at the time rather than the number as revised since. Opt-in because the full release history is far heavier than the revised series. A series left off this list stays REVISED_HISTORY, and the vintageMacro integrity gate wants PIT_EXACT — which means every column in the macro panel, not just the revision-prone ones.",
+    "_pitFundamentalsNotes": "PIT_FUNDAMENTALS_V1 JSONL, one filing per line. Required per line: ticker, fiscalPeriod, reportDate, publicationDate, availableFrom, currency, source, sourceAsOf, revisionStatus — availableFrom is the day WE could read it and is the only date that licenses use. Supply per-share numerators (epsTtm, bookValuePerShare, fcfPerShare) rather than yields: a yield needs a price, and the replay divides by the close of the date it is standing on. Ratios that need no price (roe, operatingMargin, profitMargin, debtToEquity, earningsGrowth) are stated directly. Filing dates come from SEC XBRL companyfacts (the per-fact `filed` field) for US and DART 접수일자 for KR; neither is bundled here, and while this stays null the value/quality sleeves are WITHHELD from the replay and the pointInTimeFundamentals integrity gate cannot pass.",
     "minOrderingTStat": 1.96,
     "minOrderingEffectiveDates": 12,
     "_orderingNotes": "minOrderingTStat / minOrderingEffectiveDates gate the bucket ladder on evidence that alpha RANK ordered returns (HAC t on top-minus-bottom, or on the per-date rank IC). 1.96 is calibrated by simulating this exact gate under the null, where it realises a 3.6-5.0% rejection rate; it is not a textbook critical value. Below the gate no ladder is published and no historical prior reaches Kelly, because a bucket's excess over the benchmark is mostly universe carry rather than selection skill.",

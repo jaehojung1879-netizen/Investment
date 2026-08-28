@@ -20,6 +20,7 @@ ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 
 from pipeline import ledger as LG  # noqa: E402
+from pipeline import provenance as PROV  # noqa: E402
 
 
 def main(argv=None) -> int:
@@ -89,7 +90,9 @@ def main(argv=None) -> int:
             "modelVersion": current_model_version,
             "dataVersion": current_data_version,
             "generationIsolation": {
-                "method": "EXACT_MODEL_VERSION",
+                "method": "EXACT_SCORING_VERSION",
+                "scoringVersion": PROV.scoring_identity(current_model_version),
+                "plumbingComponentsIgnored": list(PROV.PLUMBING_COMPONENTS),
                 "excludedPriorModelOutcomes": excluded_outcomes,
                 "excludedPriorModelPortfolioOutcomes": excluded_portfolios,
             },

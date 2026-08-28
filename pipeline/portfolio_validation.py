@@ -242,6 +242,96 @@ def _bucket_diagnostics(frame: pd.DataFrame, horizon: int, edges) -> tuple[list[
     return rows, monotonicity
 
 
+# Every weight in the live composite is positive, so the blend assumes a
+# positive sign for every sleeve it carries. A sleeve whose regional rank IC
+# confidence interval sits entirely on the far side of zero is therefore not
+# "weak evidence" — it is evidence against a weight production is already
+# paying for, and it stays invisible if only the blended composite is reported.
+#
+# This is deliberately a detector and not a corrector. The replay it reads is
+# survivorship-affected on 100% of observations and carries no point-in-time
+# fundamentals, so refitting FACTOR_WEIGHTS on the same sample that surfaced
+# the contradiction would be exactly the model shopping the rest of this module
+# refuses to do. It reports; a human decides.
+SIGN_MIN_INDEPENDENT_DATES = 12
+SIGN_PERSISTENCE_HORIZONS = 2
+
+
+def _sleeve_sign_consistency(factor_attr: dict) -> dict:
+    """Flag sleeves whose historical rank IC contradicts their live sign."""
+    grouped: dict[str, dict] = {}
+    for key, sleeves in factor_attr.items():
+        region, _, horizon = key.partition(":")
+        if not horizon.isdigit():
+            continue
+        for sleeve in PRICE_SLEEVES:
+            row = sleeves.get(sleeve)
+            if not row or not row.get("claimEligible"):
+                continue
+            ic = row.get("rankIC") or {}
+            ci = ic.get("ci95")
+            effective = int(ic.get("effectiveIndependentDates") or 0)
+            bucket = grouped.setdefault(f"{region}:{sleeve}", {
+                "region": region,
+                "sleeve": sleeve,
+                "liveWeight": _r(LT.FACTOR_WEIGHTS.get(sleeve), 4),
+                "assumedSign": 1,
+                "contradictedHorizons": [],
+                "consistentHorizons": [],
+                "inconclusiveHorizons": [],
+                "evidence": [],
+            })
+            bucket["evidence"].append({
+                "horizonDays": int(horizon),
+                "rankICMean": ic.get("mean"),
+                "ci95": ci,
+                "positiveRate": ic.get("positiveRate"),
+                "effectiveIndependentDates": effective,
+            })
+            if ci is None or None in ci or effective < SIGN_MIN_INDEPENDENT_DATES:
+                bucket["inconclusiveHorizons"].append(int(horizon))
+            elif ci[1] < 0:
+                bucket["contradictedHorizons"].append(int(horizon))
+            elif ci[0] > 0:
+                bucket["consistentHorizons"].append(int(horizon))
+            else:
+                bucket["inconclusiveHorizons"].append(int(horizon))
+
+    contradicted = []
+    for key, bucket in grouped.items():
+        for field in ("contradictedHorizons", "consistentHorizons", "inconclusiveHorizons"):
+            bucket[field].sort()
+        bucket["evidence"].sort(key=lambda row: row["horizonDays"])
+        persistent = len(bucket["contradictedHorizons"]) >= SIGN_PERSISTENCE_HORIZONS
+        bucket["persistent"] = persistent
+        if persistent:
+            bucket["status"] = "CONTRADICTED"
+            contradicted.append(key)
+        elif bucket["contradictedHorizons"]:
+            bucket["status"] = "CONTRADICTED_AT_SINGLE_HORIZON"
+        elif bucket["consistentHorizons"]:
+            bucket["status"] = "CONSISTENT"
+        else:
+            bucket["status"] = "INCONCLUSIVE"
+    return {
+        "assumedSignPolicy": "ALL_LIVE_COMPOSITE_WEIGHTS_POSITIVE_SO_EVERY_SLEEVE_ASSUMES_POSITIVE_SIGN",
+        "actionPolicy": "REPORT_ONLY_NEVER_REWEIGHT_ON_THIS_SAMPLE",
+        "assessedSleeves": list(PRICE_SLEEVES),
+        "liveWeights": {sleeve: _r(LT.FACTOR_WEIGHTS.get(sleeve), 4) for sleeve in PRICE_SLEEVES},
+        "minIndependentDates": SIGN_MIN_INDEPENDENT_DATES,
+        "persistenceThresholdHorizons": SIGN_PERSISTENCE_HORIZONS,
+        "byRegionSleeve": dict(sorted(grouped.items())),
+        "contradicted": sorted(contradicted),
+        "status": "CONTRADICTED" if contradicted else "NO_CONTRADICTION_DETECTED",
+        "interpretationKo": (
+            "라이브 합성은 모든 슬리브에 양(+)의 가중치를 주므로 각 슬리브의 가정 부호는 +입니다. "
+            "어떤 지역·슬리브의 rank IC 95% 구간이 두 개 이상 horizon에서 0보다 완전히 아래에 있으면, "
+            "그 슬리브는 실전에서 부여받은 가중치와 반대 방향의 증거를 갖고 있다는 뜻입니다. "
+            "이 표본은 생존편향이 해소되지 않았고 시점별 재무가 없으므로, 이 신호는 가중치 재적합의 "
+            "근거가 아니라 사람이 판단해야 할 보고 항목입니다."),
+    }
+
+
 def alpha_diagnostics(signals: list[dict], outcomes: list[dict], *,
                       edges=(0, 60, 80, 90, 95, 100),
                       pit_fundamentals: bool = False) -> dict:
@@ -299,6 +389,7 @@ def alpha_diagnostics(signals: list[dict], outcomes: list[dict], *,
     return {
         "regions": regions,
         "factorAttribution": factor_attr,
+        "sleeveSignConsistency": _sleeve_sign_consistency(factor_attr),
         "poolingPolicy": "DATE_X_REGION_ONLY; KR_US_NEVER_POOLED",
         "effectiveSamplePolicy": "RAW_N_WITH_UNIQUE_DATES_EFFECTIVE_INDEPENDENT_DATES_AND_HAC_LAG",
         "fullCompositePolicy": "FULL_LIVE_COMPOSITE_ONLY_WHEN_PIT_FUNDAMENTALS_EXIST",
@@ -1347,6 +1438,17 @@ def build_report(signals: list[dict], outcomes: list[dict], *, cfg_lt: dict,
                     "MISSING_BENCHMARK_RETURN") or 0) > 0):
             contract_failures.append(
                 f"{method}:{target_horizon}D_all_portfolios_dropped_for_missing_benchmark")
+    # A sleeve carrying a live weight against its own historical evidence is a
+    # standing unvalidated claim, so it is named in the report rather than left
+    # for a reader to reconstruct from the per-horizon IC tables.
+    sign_contradiction_claims = [
+        f"live composite weight for the {row['region']} {row['sleeve']} sleeve, "
+        f"whose historical rank IC contradicts its assumed positive sign at "
+        f"{len(row['contradictedHorizons'])} of {len(row['evidence'])} horizons"
+        for row in ((alpha.get("sleeveSignConsistency") or {})
+                    .get("byRegionSleeve") or {}).values()
+        if row.get("status") == "CONTRADICTED"
+    ]
     return {
         "reportVersion": REPORT_VERSION,
         "evidenceClass": "HISTORICAL_OOS",
@@ -1378,6 +1480,7 @@ def build_report(signals: list[dict], outcomes: list[dict], *, cfg_lt: dict,
                 "historical universe free of survivorship bias",
                 "vintage-clean macro conditioning",
                 "prospective 126D performance before observations mature",
+                *sign_contradiction_claims,
             ],
             "noModelShopping": True,
         },

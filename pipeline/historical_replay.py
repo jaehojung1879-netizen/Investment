@@ -524,20 +524,25 @@ def replay_one_date(as_of, panel: PricePanel, universe_by_region: dict[str, list
         raw_rows: dict[str, dict] = {}
         for ticker, pos in positions.items():
             history = histories[ticker]
+            # The filing supplies per-share numerators; the price that turns
+            # them into yields is the one on this replay date, not the one on
+            # the filing date. Anything the file states outright is kept as-is.
+            fundamentals = pit_data.derive_price_relative(
+                pit_fundamentals.get(ticker) or {}, history.close[pos])
             raw_rows[ticker] = {
-                "sector": SECT.sector_of(ticker, (pit_fundamentals.get(ticker) or {}).get("sector")),
+                "sector": SECT.sector_of(ticker, fundamentals.get("sector")),
                 "mom121": momentum_12_1(history, pos),
                 "mom6": momentum_6m(history, pos),
-                "earningsYield": (pit_fundamentals.get(ticker) or {}).get("earningsYield"),
-                "fwdEarningsYield": (pit_fundamentals.get(ticker) or {}).get("fwdEarningsYield"),
-                "bookYield": (pit_fundamentals.get(ticker) or {}).get("bookYield"),
-                "fcfYield": (pit_fundamentals.get(ticker) or {}).get("fcfYield"),
-                "roe": (pit_fundamentals.get(ticker) or {}).get("roe"),
-                "opMargin": (pit_fundamentals.get(ticker) or {}).get("operatingMargin"),
-                "profitMargin": (pit_fundamentals.get(ticker) or {}).get("profitMargin"),
-                "debtToEquity": (pit_fundamentals.get(ticker) or {}).get("debtToEquity"),
-                "earningsGrowth": (pit_fundamentals.get(ticker) or {}).get("earningsGrowth"),
-                "marketCap": (pit_fundamentals.get(ticker) or {}).get("marketCap"),
+                "earningsYield": fundamentals.get("earningsYield"),
+                "fwdEarningsYield": fundamentals.get("fwdEarningsYield"),
+                "bookYield": fundamentals.get("bookYield"),
+                "fcfYield": fundamentals.get("fcfYield"),
+                "roe": fundamentals.get("roe"),
+                "opMargin": fundamentals.get("operatingMargin"),
+                "profitMargin": fundamentals.get("profitMargin"),
+                "debtToEquity": fundamentals.get("debtToEquity"),
+                "earningsGrowth": fundamentals.get("earningsGrowth"),
+                "marketCap": fundamentals.get("marketCap"),
                 "vol252": realized_vol_252(history, pos),
                 "downsideVol": downside_vol_252(history, pos),
                 "cvar95": cvar_95(history, pos),
@@ -753,26 +758,12 @@ def _rotation_direction(before: str | None, after: str | None) -> float | None:
 # --------------------------------------------------------------------------- #
 # Full replay
 # --------------------------------------------------------------------------- #
-def _survivorship_risk(universe_history, membership_coverage: list[float]) -> str:
-    """Risk follows MEASURED membership coverage, not the presence of a file.
-
-    A file that covers 60% of the cross-section leaves 40% of it survivors-only,
-    and calling that LOW because a path was configured is how a data gap becomes
-    a claim.
-    """
-    if not universe_history.available or not membership_coverage:
-        return "HIGH"
-    mean = float(np.mean(membership_coverage))
-    if mean >= 99.5:
-        return "LOW"
-    return "MEDIUM" if mean >= 80.0 else "HIGH"
-
-
 def run_replay(prices: dict[str, pd.DataFrame], universe: dict[str, list[str]], *,
                benchmarks: dict[str, str], cfg_lt: dict,
                start=None, end=None, frequency: str = "W",
                fundamental_store: pit_data.FundamentalStore | None = None,
                macro: pd.DataFrame | None = None, vix: pd.Series | None = None,
+               macro_vintages: dict | None = None,
                universe_history: pit_data.UniverseHistory | None = None,
                model_version: str = "unknown",
                existing_ids: set[str] | None = None,
@@ -786,7 +777,7 @@ def run_replay(prices: dict[str, pd.DataFrame], universe: dict[str, list[str]], 
     intent.
     """
     panel = PricePanel(prices)
-    macro_view = pit_data.MacroVintageView(macro, vix)
+    macro_view = pit_data.MacroVintageView(macro, vix, vintages=macro_vintages)
     universe_history = universe_history or pit_data.UniverseHistory({})
     existing_ids = existing_ids or set()
 
@@ -799,15 +790,22 @@ def run_replay(prices: dict[str, pd.DataFrame], universe: dict[str, list[str]], 
     skipped = 0
     dates_done = 0
     coverage_samples: list[float] = []
-    membership_coverage: list[float] = []
     regimes: dict[str, int] = {}
+    members_expected = 0
+    members_priced = 0
+    membership_coverage: list[float] = []
+    members_missing: set[str] = set()
 
     for stamp in grid:
         snapshot = universe_history.snapshot(stamp, universe,
                                              view=panel.membership_view(stamp),
                                              min_history=MIN_HISTORY_ROWS)
-        if snapshot.membership_coverage_pct is not None:
-            membership_coverage.append(snapshot.membership_coverage_pct)
+        if snapshot.reconstructed:
+            members_expected += snapshot.expected_members
+            members_priced += snapshot.expected_members - len(snapshot.missing_prices)
+            if snapshot.membership_coverage_pct is not None:
+                membership_coverage.append(snapshot.membership_coverage_pct)
+            members_missing.update(snapshot.missing_prices)
         macro_t, vix_t = macro_view.as_of(stamp)
         macro_read = None
         if macro_t is not None or vix_t is not None:
@@ -835,6 +833,33 @@ def run_replay(prices: dict[str, pd.DataFrame], universe: dict[str, list[str]], 
         if progress and dates_done % 25 == 0:
             print(f"  replay {stamp.date()} — {len(signals)} new signals")
 
+    # Coverage is measured across the grid, never asserted from the presence of
+    # a file: a membership list whose names cannot be priced leaves the bias
+    # exactly where it was, and the gate downstream wants a real 100.
+    constituent_coverage = (round(100.0 * members_priced / members_expected, 4)
+                            if members_expected else None)
+    # A second, independent gap. `constituent_coverage` asks "of the names the
+    # file says were listed, how many could we price"; this asks "of the
+    # cross-section, how many does the file describe at all". A US-only
+    # membership file can price every US name it knows and still leave the whole
+    # KR sleeve unresolved, which the first number cannot see.
+    membership_pct = (round(float(np.mean(membership_coverage)), 4)
+                      if membership_coverage else None)
+
+    def _risk(value: float | None) -> str:
+        if value is None:
+            return "HIGH"
+        if value >= 100.0:
+            return "LOW"
+        return "MEDIUM" if value >= 95.0 else "HIGH"
+
+    if not universe_history.available:
+        constituent_risk = "HIGH"
+    else:
+        # The worse of the two decides. Either gap alone reinstates the bias the
+        # file was meant to remove, and a LOW label over it is worse than HIGH.
+        constituent_risk = max((_risk(constituent_coverage), _risk(membership_pct)),
+                               key=lambda r: {"LOW": 0, "MEDIUM": 1, "HIGH": 2}[r])
     diagnostics = {
         "gridDates": [d.strftime("%Y-%m-%d") for d in grid[-4:]],
         "replayVersion": REPLAY_VERSION,
@@ -850,27 +875,25 @@ def run_replay(prices: dict[str, pd.DataFrame], universe: dict[str, list[str]], 
         "signalsGenerated": len(signals),
         "signalsSkippedAlreadyPresent": skipped,
         "meanPitCoverage": round(float(np.mean(coverage_samples)), 4) if coverage_samples else 0.0,
-        "survivorshipRisk": _survivorship_risk(universe_history, membership_coverage),
-        "survivorshipNote": (None if universe_history.available
+        "survivorshipRisk": constituent_risk,
+        "survivorshipNote": (None if constituent_risk == "LOW"
                              else pit_data.SURVIVORSHIP_UNRESOLVED),
         "fundamentalsPit": bool(fundamental_store and fundamental_store.available),
         "historicalUniverseAvailable": bool(universe_history.available),
-        # MEASURED, not asserted. The previous value was 100.0 whenever a
-        # membership file merely existed, so a file covering one region would
-        # have turned on full-fidelity claims for both.
-        "constituentCoveragePct": (round(float(np.mean(membership_coverage)), 4)
-                                   if membership_coverage else None),
+        "constituentCoveragePct": constituent_coverage,
+        "membershipCoveragePct": membership_pct,
+        "constituentsWithoutPriceHistory": sorted(members_missing)[:50],
+        "constituentsWithoutPriceHistoryCount": len(members_missing),
         "universeSource": ("HISTORICAL_MEMBERSHIP_DATASET" if universe_history.available
                            else "CURRENT_UNIVERSE_WITH_PRICE_HISTORY_FILTER_ONLY"),
         "firstReliableUniverseDate": (grid[0].strftime("%Y-%m-%d")
-                                      if grid and universe_history.available else None),
-        "affectedObservationsPct": (round(100.0 - float(np.mean(membership_coverage)), 4)
-                                    if membership_coverage else 100.0),
-        "affectedRegions": ([] if membership_coverage and float(np.mean(membership_coverage)) >= 100.0
-                            else sorted(universe)),
-        "impactOnPromotionEligibility": (
-            "NONE" if membership_coverage and float(np.mean(membership_coverage)) >= 100.0
-            else "KELLY_AND_SELECTOR_PROMOTION_BLOCKED"),
+                                      if grid and constituent_risk == "LOW" else None),
+        "affectedObservationsPct": (0.0 if constituent_risk == "LOW"
+                                    else round(100.0 - (constituent_coverage or 0.0), 4)
+                                    if constituent_coverage is not None else 100.0),
+        "affectedRegions": [] if constituent_risk == "LOW" else sorted(universe),
+        "impactOnPromotionEligibility": ("NONE" if constituent_risk == "LOW"
+                                         else "KELLY_AND_SELECTOR_PROMOTION_BLOCKED"),
         "fundamentalsContract": getattr(fundamental_store, "diagnostics", {}),
         "macroPitStatus": macro_view.pit_status(),
         "regimeDistribution": dict(sorted(regimes.items())),

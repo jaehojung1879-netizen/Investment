@@ -35,6 +35,41 @@ REPLAY_VERSION = "replay-v4"
 FEATURE_VERSION = "hfeat-v1"
 DATA_VERSION = "yahoo-adjusted-close-v3-regional-session-download"
 
+# MODEL_VERSION is a compound identity, and not every component of it is a
+# statement about how names are scored. "daily-session-v2" was appended by a
+# benchmark-download fix that left every scoring component byte-identical, and
+# because the prospective ledger isolates generations on the whole string, it
+# discarded 13,518 recorded signals and restarted a 252-business-day validation
+# clock from four days. A change in how prices are downloaded is real, but it
+# is what DATA_VERSION exists to record; it is not a new model.
+#
+# Components named here are plumbing: they stay in MODEL_VERSION so provenance
+# is complete, and they are stripped before the prospective ledger decides
+# which rows belong to the same generation.
+PLUMBING_COMPONENTS = ("daily-session",)
+
+
+def _component_name(component: str) -> str:
+    """"longterm-v2.2" -> "longterm"; a component with no version is its name."""
+    head, sep, tail = component.rpartition("-v")
+    return head if sep and head and tail[:1].isdigit() else component
+
+
+def scoring_identity(model_version: str | None) -> str | None:
+    """The part of a model version that actually claims something about scoring.
+
+    Order is preserved and unknown components are kept, so a new component is
+    treated as scoring until someone deliberately declares it plumbing — the
+    safe direction, since the cost of being wrong is pooling two generations
+    rather than splitting one.
+    """
+    if model_version is None:
+        return None
+    kept = [component for component in str(model_version).split("+")
+            if _component_name(component) not in PLUMBING_COMPONENTS]
+    return "+".join(kept) if kept else str(model_version)
+
+
 RUN_MODES = ("researchOnly", "paperTrading", "liveValidated")
 DEFAULT_RUN_MODE = "paperTrading"
 

@@ -566,3 +566,49 @@ def test_the_frontend_states_the_held_name_warning():
     app = pathlib.Path("app.js").read_text(encoding="utf-8")
     assert "heldNameWarnings" in app
     assert "flaggedWeightPct" in app
+
+
+def test_a_plumbing_version_bump_does_not_restart_the_paper_ledger():
+    """The bump that cost 13,518 signals changed no scoring component."""
+    from pipeline import provenance as PROV
+
+    before = "longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3"
+    after = before + "+daily-session-v2"
+    assert PROV.scoring_identity(before) == PROV.scoring_identity(after)
+
+    rows = [{"modelVersion": before, "date": "2026-08-01"},
+            {"modelVersion": after, "date": "2026-08-21"}]
+    kept, excluded = LG.filter_model_generation(rows, after)
+    assert excluded == 0
+    assert len(kept) == 2
+
+
+def test_a_scoring_version_bump_still_splits_the_generation():
+    from pipeline import provenance as PROV
+
+    old = "longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3"
+    new = "longterm-v2.3+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3"
+    assert PROV.scoring_identity(old) != PROV.scoring_identity(new)
+    kept, excluded = LG.filter_model_generation(
+        [{"modelVersion": old}, {"modelVersion": new}], new)
+    assert excluded == 1
+    assert kept == [{"modelVersion": new}]
+
+
+def test_an_undeclared_component_is_treated_as_scoring():
+    """Unknown means split, because pooling two models is the worse mistake."""
+    from pipeline import provenance as PROV
+
+    assert PROV.scoring_identity("longterm-v2.2+some-new-thing-v1") != \
+        PROV.scoring_identity("longterm-v2.2")
+    kept, excluded = LG.filter_model_generation(
+        [{"modelVersion": "longterm-v2.2"}], "longterm-v2.2+some-new-thing-v1")
+    assert excluded == 1
+    assert kept == []
+
+
+def test_rows_without_a_model_version_are_never_pooled_in():
+    kept, excluded = LG.filter_model_generation(
+        [{"modelVersion": None}, {"date": "2026-08-01"}], "longterm-v2.2")
+    assert kept == []
+    assert excluded == 2

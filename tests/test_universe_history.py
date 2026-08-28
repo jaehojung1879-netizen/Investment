@@ -119,7 +119,9 @@ def test_coverage_reflects_the_share_actually_covered():
 
     assert snap.membership_known == 1
     assert snap.membership_coverage_pct == pytest.approx(50.0)
-    assert snap.survivorship_risk == "MEDIUM"      # not LOW: half is unresolved
+    # Half the cross-section unresolved is HIGH, not MEDIUM: the risk takes the
+    # worse of the two gaps, and a 50% hole is far past the 5% MEDIUM band.
+    assert snap.survivorship_risk == "HIGH"
 
 
 def test_full_coverage_reports_low_risk():
