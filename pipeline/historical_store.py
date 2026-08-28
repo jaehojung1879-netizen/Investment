@@ -458,7 +458,7 @@ def stamp_universe(ledger_dir: str | Path, generation: str | None,
 
 
 def universe_conflict(ledger_dir: str | Path, generation: str | None,
-                      signature: dict, *,
+                      signature: dict, *, existing: int | None = None,
                       survivors_only: str = "survivors-only") -> str | None:
     """The reason this generation must not be extended, or None if it may be.
 
@@ -485,7 +485,11 @@ def universe_conflict(ledger_dir: str | Path, generation: str | None,
     it was necessarily built from today's constituent list. That is a conflict
     with anything but survivors-only — not an unknown to wave through.
     """
-    existing = len(ids_by_generation(ledger_dir, SIGNALS).get(generation, set()))
+    # `existing` is accepted because the caller has usually just counted the
+    # generation's ids; recounting means decompressing every shard a second
+    # time for an answer already in hand.
+    if existing is None:
+        existing = len(ids_by_generation(ledger_dir, SIGNALS).get(generation, set()))
     if not existing:
         return None
     recorded = read_universe_stamp(ledger_dir, generation)

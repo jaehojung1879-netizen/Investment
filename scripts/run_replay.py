@@ -101,7 +101,7 @@ def main(argv=None) -> int:
     universe_signature = universe_history.signature
     conflict = HS.universe_conflict(
         ledger_dir, prov_mod.REPLAY_VERSION, universe_signature,
-        survivors_only=pit_data.SURVIVORS_ONLY)
+        existing=len(current_ids), survivors_only=pit_data.SURVIVORS_ONLY)
     if conflict:
         # Not bypassable by --full. Signals are immutable (`append_signals`
         # skips an id already on disk), so --full recomputes the old dates and

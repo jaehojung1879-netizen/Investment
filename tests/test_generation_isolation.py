@@ -263,3 +263,15 @@ def test_a_recomputed_signal_cannot_overwrite_the_record_on_disk(tmp_path):
     assert (appended, skipped) == (0, 1)
     rows = HS.load(tmp_path, HS.SIGNALS, GEN)
     assert [row["alphaPercentile"] for row in rows] == [91.0]
+
+
+def test_a_supplied_record_count_is_used_instead_of_rescanning(tmp_path):
+    """The caller has usually just counted the ids; recounting decompresses
+    every shard again for an answer already in hand."""
+    HS.stamp_universe(tmp_path, GEN, _sig(US=829))
+
+    # Nothing on disk, but the caller says the generation holds records.
+    assert HS.universe_conflict(
+        tmp_path, GEN, _sig(mode="survivors-only"), existing=413049) is not None
+    assert HS.universe_conflict(
+        tmp_path, GEN, _sig(mode="survivors-only"), existing=0) is None
