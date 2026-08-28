@@ -162,7 +162,7 @@
     "costAdjusted": true,
     "requirePitQuality": true,
     "pitFundamentalsPath": null,
-    "universeHistoryPath": null,
+    "universeHistoryPath": "data/universe-history.json",
     "minOrderingTStat": 1.96,
     "minOrderingEffectiveDates": 12,
     "_orderingNotes": "minOrderingTStat / minOrderingEffectiveDates gate the bucket ladder on evidence that alpha RANK ordered returns (HAC t on top-minus-bottom, or on the per-date rank IC). 1.96 is calibrated by simulating this exact gate under the null, where it realises a 3.6-5.0% rejection rate; it is not a textbook critical value. Below the gate no ladder is published and no historical prior reaches Kelly, because a bucket's excess over the benchmark is mostly universe carry rather than selection skill.",

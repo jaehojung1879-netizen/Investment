@@ -445,10 +445,23 @@ class UniverseSnapshot:
     survivorship_risk: str
     notes: list[str] = field(default_factory=list)
     reconstructed: bool = False
+    membership_known: int = 0
+    membership_unknown: int = 0
 
     @property
     def size(self) -> int:
         return sum(len(v) for v in self.by_region.values())
+
+    @property
+    def membership_coverage_pct(self) -> float | None:
+        """Share of the cross-section whose index membership was actually known.
+
+        Measured, never assumed. A membership file that covers one region leaves
+        the other region's names unknown, and a run that reported 100% because a
+        file merely EXISTED would turn on full-fidelity claims it has not earned.
+        """
+        total = self.membership_known + self.membership_unknown
+        return round(self.membership_known / total * 100, 4) if total else None
 
 
 class UniverseHistory:
@@ -468,6 +481,16 @@ class UniverseHistory:
     def available(self) -> bool:
         return bool(self._memberships)
 
+    @property
+    def memberships(self) -> dict[str, dict]:
+        """Read-only view of ticker -> {listed, delisted, region}.
+
+        The replay needs it to widen the DOWNLOAD list: `snapshot` can only put
+        a former member back into the cross-section if the price panel can serve
+        it, so the caller has to know which names to fetch.
+        """
+        return dict(self._memberships)
+
     @classmethod
     def from_json(cls, path: str | Path | None) -> "UniverseHistory":
         if not path:
@@ -483,10 +506,17 @@ class UniverseHistory:
             return cls({})
         return cls({str(k): dict(v) for k, v in raw.items() if isinstance(v, dict)})
 
-    def _listed_on(self, ticker: str, as_of: pd.Timestamp) -> bool:
+    def _listed_on(self, ticker: str, as_of: pd.Timestamp) -> bool | None:
+        """True/False when membership is known, None when the file says nothing.
+
+        The distinction is load-bearing. Returning False for an unknown ticker
+        silently deletes every name the file does not cover — a US-only
+        membership file would empty the entire KR cross-section and the replay
+        would carry on reporting a Korean sleeve made of nothing.
+        """
         row = self._memberships.get(ticker)
         if not row:
-            return False
+            return None
         listed = row.get("listed")
         delisted = row.get("delisted")
         if listed and pd.Timestamp(listed) > as_of:
@@ -516,14 +546,36 @@ class UniverseHistory:
             return view is None or bool(view.has_history(ticker, rows))
 
         if self.available:
+            known = unknown = 0
             for region in sorted(current_universe):
-                members = set(current_universe.get(region, []))
+                today = set(current_universe.get(region, []))
+                members = set(today)
                 members |= {t for t, row in self._memberships.items()
                             if row.get("region") == region}
-                by_region[region] = sorted(
-                    t for t in members if self._listed_on(t, cutoff) and tradable(t))
+                kept = []
+                for ticker in members:
+                    state = self._listed_on(ticker, cutoff)
+                    if state is None:
+                        # Membership unknown. Dropping it would erase the name;
+                        # claiming it was a member would invent history. Keep it
+                        # only if it is in today's list — it demonstrably exists —
+                        # and count it against coverage so the gap is visible.
+                        if ticker not in today:
+                            continue
+                        unknown += 1
+                    elif state:
+                        known += 1
+                    else:
+                        continue
+                    if tradable(ticker):
+                        kept.append(ticker)
+                by_region[region] = sorted(kept)
             notes.append("historical_constituents_reconstructed_from_membership_file")
-            return UniverseSnapshot(cutoff.strftime("%Y-%m-%d"), by_region, "LOW", notes, True)
+            if unknown:
+                notes.append(f"membership_unknown_for_{unknown}_names_kept_from_today")
+            risk = "LOW" if not unknown else "MEDIUM"
+            return UniverseSnapshot(cutoff.strftime("%Y-%m-%d"), by_region, risk,
+                                    notes, True, known, unknown)
 
         for region in sorted(current_universe):
             by_region[region] = sorted(t for t in current_universe.get(region, []) if tradable(t))

@@ -88,14 +88,39 @@ def main(argv=None) -> int:
           f"({len(current_ids)} current generation, {stale_generation} earlier)")
 
     universe, _ = universe_mod.resolve(cfg)
-    download = list(dict.fromkeys(
-        [t for names in universe.values() for t in names] + list(cfg.benchmarks.values())))
     start = args.start or replay_cfg.get("start", "2013-01-01")
+
+    # Names that were index members at some point but are not today's list. The
+    # replay resolves its universe from TODAY, so without these it can only ever
+    # see survivors: 326 of the 829 names that have been in the S&P 500 since
+    # 2012 are absent from the current list, and they left mostly by being
+    # acquired or shrinking out of it. `UniverseHistory` decides membership per
+    # date, but it can only include a name the PRICE PANEL can serve, so the
+    # historical members have to be downloaded too or the fix is cosmetic.
+    universe_history = pit_data.UniverseHistory.from_json(
+        replay_cfg.get("universeHistoryPath"))
+    fetch_universe = {region: list(names) for region, names in universe.items()}
+    historical_only: dict[str, list[str]] = {}
+    if universe_history.available:
+        for ticker, row in universe_history.memberships.items():
+            region = row.get("region")
+            if not region or region not in fetch_universe:
+                continue
+            if ticker not in fetch_universe[region]:
+                fetch_universe[region].append(ticker)
+                historical_only.setdefault(region, []).append(ticker)
+        for region, extra in sorted(historical_only.items()):
+            print(f"  {region}: +{len(extra)} former index members to download "
+                  f"alongside {len(universe.get(region) or [])} current")
+
+    download = list(dict.fromkeys(
+        [t for names in fetch_universe.values() for t in names]
+        + list(cfg.benchmarks.values())))
     # Fetch from well before the replay start: the first replay date still needs
     # 273 sessions of trailing history behind it, or every name is unrankable.
     fetch_start = (str(int(str(start)[:4]) - 2) + str(start)[4:]) if start else "2010-01-01"
     print(f"fetching {len(download)} tickers by region from {fetch_start} ...")
-    prices = fetch_regional_prices(universe, fetch_start)
+    prices = fetch_regional_prices(fetch_universe, fetch_start)
 
     # Benchmarks go through their own path: vendor redundancy, a plausibility
     # check against the session calendar already on record, and the committed
@@ -127,7 +152,7 @@ def main(argv=None) -> int:
     minimum_benchmark_coverage = float(
         replay_cfg.get("minBenchmarkCoveragePct", 95.0))
     preflight = HO.benchmark_session_preflight(
-        prices, universe, cfg.benchmarks, start=start, end=args.end,
+        prices, fetch_universe, cfg.benchmarks, start=start, end=args.end,
         horizon=horizon, min_history_rows=HR.MIN_HISTORY_ROWS,
         min_coverage_pct=minimum_benchmark_coverage,
     )
@@ -149,8 +174,6 @@ def main(argv=None) -> int:
     macro = fetch_macro(cfg, fetch_start)
     fundamental_store = pit_data.FundamentalStore.from_jsonl(
         replay_cfg.get("pitFundamentalsPath"))
-    universe_history = pit_data.UniverseHistory.from_json(
-        replay_cfg.get("universeHistoryPath"))
     if not fundamental_store.available:
         print("  PIT fundamentals unavailable -> value/quality sleeves WITHHELD "
               "from the replay (today's snapshot is never back-applied)")
@@ -159,8 +182,18 @@ def main(argv=None) -> int:
               "recorded on every observation")
 
     started = time.time()
+    # How much of the survivorship fix actually landed: a former member with no
+    # price data is dropped by the snapshot, so membership alone proves nothing.
+    if historical_only:
+        priced = {region: sum(1 for t in extra if t in prices)
+                  for region, extra in historical_only.items()}
+        for region, count in sorted(priced.items()):
+            total = len(historical_only[region])
+            print(f"  former members with price history {region}: {count}/{total} "
+                  f"({round(count / total * 100, 1)}%)")
+
     replay = HR.run_replay(
-        prices, universe, benchmarks=cfg.benchmarks, cfg_lt=cfg.longterm,
+        prices, fetch_universe, benchmarks=cfg.benchmarks, cfg_lt=cfg.longterm,
         start=start, end=args.end,
         frequency=args.frequency or replay_cfg.get("frequency", "W"),
         fundamental_store=fundamental_store, macro=macro, vix=vix,

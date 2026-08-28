@@ -753,6 +753,21 @@ def _rotation_direction(before: str | None, after: str | None) -> float | None:
 # --------------------------------------------------------------------------- #
 # Full replay
 # --------------------------------------------------------------------------- #
+def _survivorship_risk(universe_history, membership_coverage: list[float]) -> str:
+    """Risk follows MEASURED membership coverage, not the presence of a file.
+
+    A file that covers 60% of the cross-section leaves 40% of it survivors-only,
+    and calling that LOW because a path was configured is how a data gap becomes
+    a claim.
+    """
+    if not universe_history.available or not membership_coverage:
+        return "HIGH"
+    mean = float(np.mean(membership_coverage))
+    if mean >= 99.5:
+        return "LOW"
+    return "MEDIUM" if mean >= 80.0 else "HIGH"
+
+
 def run_replay(prices: dict[str, pd.DataFrame], universe: dict[str, list[str]], *,
                benchmarks: dict[str, str], cfg_lt: dict,
                start=None, end=None, frequency: str = "W",
@@ -784,12 +799,15 @@ def run_replay(prices: dict[str, pd.DataFrame], universe: dict[str, list[str]], 
     skipped = 0
     dates_done = 0
     coverage_samples: list[float] = []
+    membership_coverage: list[float] = []
     regimes: dict[str, int] = {}
 
     for stamp in grid:
         snapshot = universe_history.snapshot(stamp, universe,
                                              view=panel.membership_view(stamp),
                                              min_history=MIN_HISTORY_ROWS)
+        if snapshot.membership_coverage_pct is not None:
+            membership_coverage.append(snapshot.membership_coverage_pct)
         macro_t, vix_t = macro_view.as_of(stamp)
         macro_read = None
         if macro_t is not None or vix_t is not None:
@@ -832,20 +850,27 @@ def run_replay(prices: dict[str, pd.DataFrame], universe: dict[str, list[str]], 
         "signalsGenerated": len(signals),
         "signalsSkippedAlreadyPresent": skipped,
         "meanPitCoverage": round(float(np.mean(coverage_samples)), 4) if coverage_samples else 0.0,
-        "survivorshipRisk": "LOW" if universe_history.available else "HIGH",
+        "survivorshipRisk": _survivorship_risk(universe_history, membership_coverage),
         "survivorshipNote": (None if universe_history.available
                              else pit_data.SURVIVORSHIP_UNRESOLVED),
         "fundamentalsPit": bool(fundamental_store and fundamental_store.available),
         "historicalUniverseAvailable": bool(universe_history.available),
-        "constituentCoveragePct": 100.0 if universe_history.available else None,
+        # MEASURED, not asserted. The previous value was 100.0 whenever a
+        # membership file merely existed, so a file covering one region would
+        # have turned on full-fidelity claims for both.
+        "constituentCoveragePct": (round(float(np.mean(membership_coverage)), 4)
+                                   if membership_coverage else None),
         "universeSource": ("HISTORICAL_MEMBERSHIP_DATASET" if universe_history.available
                            else "CURRENT_UNIVERSE_WITH_PRICE_HISTORY_FILTER_ONLY"),
         "firstReliableUniverseDate": (grid[0].strftime("%Y-%m-%d")
                                       if grid and universe_history.available else None),
-        "affectedObservationsPct": 0.0 if universe_history.available else 100.0,
-        "affectedRegions": [] if universe_history.available else sorted(universe),
-        "impactOnPromotionEligibility": ("NONE" if universe_history.available
-                                         else "KELLY_AND_SELECTOR_PROMOTION_BLOCKED"),
+        "affectedObservationsPct": (round(100.0 - float(np.mean(membership_coverage)), 4)
+                                    if membership_coverage else 100.0),
+        "affectedRegions": ([] if membership_coverage and float(np.mean(membership_coverage)) >= 100.0
+                            else sorted(universe)),
+        "impactOnPromotionEligibility": (
+            "NONE" if membership_coverage and float(np.mean(membership_coverage)) >= 100.0
+            else "KELLY_AND_SELECTOR_PROMOTION_BLOCKED"),
         "fundamentalsContract": getattr(fundamental_store, "diagnostics", {}),
         "macroPitStatus": macro_view.pit_status(),
         "regimeDistribution": dict(sorted(regimes.items())),
