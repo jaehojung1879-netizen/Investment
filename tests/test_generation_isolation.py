@@ -243,3 +243,23 @@ def test_the_replay_module_and_provenance_agree():
     assert HR.REPLAY_VERSION == provenance.REPLAY_VERSION
     assert HR.FEATURE_VERSION == provenance.FEATURE_VERSION
     assert HR.DATA_VERSION == provenance.DATA_VERSION
+
+
+def test_a_recomputed_signal_cannot_overwrite_the_record_on_disk(tmp_path):
+    """Why the guard is not bypassable by --full.
+
+    --full clears `existing_ids` so the replay computes every date instead of
+    skipping. But `append_signals` skips an id already on disk, so those
+    recomputed records are discarded as duplicates. --full therefore cannot
+    rewrite the old records under a new universe — it can only hide the check
+    that says they are stale. The one cure is a new generation.
+    """
+    first = dict(_signal("AAA"), alphaPercentile=91.0)
+    HS.append_signals(tmp_path, [first])
+
+    recomputed = dict(_signal("AAA"), alphaPercentile=54.0)
+    appended, skipped = HS.append_signals(tmp_path, [recomputed])
+
+    assert (appended, skipped) == (0, 1)
+    rows = HS.load(tmp_path, HS.SIGNALS, GEN)
+    assert [row["alphaPercentile"] for row in rows] == [91.0]

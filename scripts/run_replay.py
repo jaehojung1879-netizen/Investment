@@ -102,7 +102,12 @@ def main(argv=None) -> int:
     conflict = HS.universe_conflict(
         ledger_dir, prov_mod.REPLAY_VERSION, universe_signature,
         survivors_only=pit_data.SURVIVORS_ONLY)
-    if conflict and not args.full:
+    if conflict:
+        # Not bypassable by --full. Signals are immutable (`append_signals`
+        # skips an id already on disk), so --full recomputes the old dates and
+        # then discards every one of them as a duplicate: it cannot rewrite the
+        # existing records under the new universe, only hide the check that
+        # says they are stale. The one cure is a new generation.
         print(f"error: {conflict}", file=sys.stderr)
         return 1
 
