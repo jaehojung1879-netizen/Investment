@@ -1,0 +1,65 @@
+name: Tests
+
+# Nothing ran the suite before this. Every PR to date has claimed "N tests
+# pass" on the author's word alone, and the expensive workflows only discover
+# a broken import after the checkout, the install and the fetch — on the
+# replay, forty minutes in.
+#
+# This is deliberately the cheap half: unit tests and an import check, no
+# network, no secrets. The replay stays the place where real data is proved.
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: tests-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  pytest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run the suite
+        run: python -m pytest -q
+
+      # The scheduled jobs import these at the top of a run that has already
+      # paid for a checkout and an install. A NameError here costs seconds.
+      - name: Import every entry point
+        run: |
+          python - <<'PY'
+          import importlib, pathlib, sys
+          sys.path.insert(0, ".")
+          failed = []
+          for path in sorted(pathlib.Path("pipeline").glob("*.py")):
+              if path.stem == "__init__":
+                  continue
+              try:
+                  importlib.import_module(f"pipeline.{path.stem}")
+              except Exception as exc:
+                  failed.append(f"pipeline.{path.stem}: {exc!r}")
+          for path in sorted(pathlib.Path("scripts").glob("*.py")):
+              try:
+                  compile(path.read_text(encoding="utf-8"), str(path), "exec")
+              except SyntaxError as exc:
+                  failed.append(f"{path}: {exc!r}")
+          if failed:
+              print("\n".join(failed))
+              raise SystemExit(1)
+          print("all pipeline modules import and all scripts compile")
+          PY
