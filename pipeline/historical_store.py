@@ -231,9 +231,10 @@ def load(ledger_dir: str | Path, kind: str,
     matters at this size: 413k signals plus 409k outcomes hold 8.5 GB, and a
     signal's ``features`` block is 28 of its 37 keys while the audit path reads
     exactly one of them. Restoring former index members widens the cross-section
-    by half again, which without a projection lands around 12.8 GB before
-    `alpha_diagnostics` builds its frames — on a 16 GB runner that is an OOM,
+    by 1.31x (measured over the ledger's own date and region mix), which without
+    a projection lands at 11.2 GB before `alpha_diagnostics` builds its frames —
     and an OOM in the nightly job looks like the pipeline being broken again.
+    Projected, the same load measures 7.34 GB and 9.6 GB respectively.
     """
     shards = iter_shards(ledger_dir, kind, generation)
     if not shards:

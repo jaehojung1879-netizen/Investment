@@ -72,14 +72,16 @@ PIT_QUALITY_BANDS = ((0.85, "HIGH"), (0.6, "MEDIUM"), (0.0, "LOW"))
 MIN_CALIBRATION_COVERAGE = 0.6
 
 SURVIVORSHIP_UNRESOLVED = "SURVIVORSHIP_BIAS_UNRESOLVED"
-# The universe identity of a replay that resolved its names from today's
-# constituent list. Every generation written before membership history
-# existed was this, whether or not it said so.
-SURVIVORS_ONLY_FINGERPRINT = "survivors-only"
-# How a generation resolved its cross-section. The distinction that
-# actually decides whether two records are comparable.
+# How a generation resolved its cross-section — the distinction that decides
+# whether two records are comparable. Everything written before membership
+# history existed resolved its names from today's constituent list, whether
+# or not it said so, and is read as SURVIVORS_ONLY.
 SURVIVORS_ONLY = "survivors-only"
 PIT_MEMBERSHIP = "pit-membership"
+# A survivors-only universe has no content to hash, so its fingerprint IS its
+# mode. Aliased rather than repeated: two literals that must agree is how an
+# identity comes to disagree with itself.
+SURVIVORS_ONLY_FINGERPRINT = SURVIVORS_ONLY
 
 
 def _safe_number(value):
