@@ -228,6 +228,91 @@ def sample_gate(*, paper_days: int, matured_signals: int, effective_dates: int,
     }
 
 
+# How the turnover in a cost estimate was arrived at. The distinction matters
+# because the number drives position size: `net = raw - cost` feeds the
+# expected excess return that Kelly sizes on, so a turnover assumed lower than
+# the strategy's own measured behaviour inflates every candidate.
+TURNOVER_MEASURED = "MEASURED_REPLAY_TURNOVER"
+TURNOVER_ASSUMED = "CONFIG_ASSUMPTION"
+# A replay turnover outside this band is not believable as a rebalance rate and
+# is more likely a report from a different definition or a broken path.
+TURNOVER_BOUNDS = (1.0, 200.0)
+
+
+def measured_turnover_pct(portfolio_validation: dict | None,
+                          cfg: dict) -> tuple[float | None, str, dict]:
+    """What the replay actually turned over, at THIS rebalance frequency.
+
+    config.json assumes 25%. On the replay ledger the production selector
+    measured 59.3% at the 63-day horizon, which is also `rebalanceDays` — so
+    the cost hurdle every candidate had to clear was 42% of the real one.
+
+    The horizon has to match the rebalance frequency or the number means
+    something else: a 21-day path turns over less per rebalance and a 252-day
+    path more, and picking whichever exists would make the hurdle a function of
+    which horizons happened to mature. No match, no measurement.
+
+    The caller is responsible for the generation check — `build._load_historical
+    _evidence` already replaces a report from another replay generation with an
+    unavailable stub, which lands here as no measurement rather than as a stale
+    one.
+    """
+    detail: dict = {"turnoverSource": TURNOVER_ASSUMED}
+    replay = ((portfolio_validation or {}).get("portfolioReplay") or {})
+    selectors = replay.get("selectors") or {}
+    blob = selectors.get(SELECTION_METHOD) or {}
+    horizons = blob.get("horizons") or {}
+    regional = (cfg.get("transactionCosts") or {})
+    wanted = {int(row.get("rebalanceDays", 63))
+              for row in regional.values() if isinstance(row, dict)} or {63}
+    if len(wanted) != 1:
+        detail["turnoverNote"] = "REBALANCE_DAYS_DIFFER_BY_REGION"
+        return None, TURNOVER_ASSUMED, detail
+    horizon = next(iter(wanted))
+    path = ((horizons.get(str(horizon)) or horizons.get(horizon) or {}).get("path") or {})
+    if not path or path.get("available") is False:
+        detail["turnoverNote"] = f"NO_MEASURED_PATH_AT_{horizon}D"
+        return None, TURNOVER_ASSUMED, detail
+    value = path.get("averageTurnoverPct")
+    try:
+        value = float(value)
+    except (TypeError, ValueError):
+        detail["turnoverNote"] = f"NO_MEASURED_PATH_AT_{horizon}D"
+        return None, TURNOVER_ASSUMED, detail
+    low, high = TURNOVER_BOUNDS
+    if not (low <= value <= high):
+        detail["turnoverNote"] = "MEASURED_TURNOVER_IMPLAUSIBLE"
+        return None, TURNOVER_ASSUMED, detail
+    detail = {"turnoverSource": TURNOVER_MEASURED,
+              "turnoverMeasuredAtHorizonDays": horizon,
+              "turnoverMeasuredFromSelector": SELECTION_METHOD}
+    return value, TURNOVER_MEASURED, detail
+
+
+def with_measured_turnover(cfg: dict, portfolio_validation: dict | None) -> dict:
+    """cfg with each region's assumed turnover replaced by the measured one.
+
+    A copy, not a mutation: the config object is shared and a cost assumption
+    that silently changed underneath other callers would be its own bug.
+
+    The measurement is portfolio-level — the replay's book spans both regions
+    and its turnover is one number — so the same value is applied to every
+    region and `turnoverSource` says so. Splitting it per region would need
+    `_path_metrics` to report per-region turnover, which it does not.
+    """
+    value, source, detail = measured_turnover_pct(portfolio_validation, cfg)
+    out = dict(cfg)
+    costs = {}
+    for region, row in (cfg.get("transactionCosts") or {}).items():
+        row = dict(row) if isinstance(row, dict) else {}
+        if value is not None:
+            row["assumedTurnoverPct"] = value
+        row.update(detail)
+        costs[region] = row
+    out["transactionCosts"] = costs
+    return out
+
+
 def estimate_transaction_cost(candidate: dict, cfg: dict) -> dict:
     """Conservative, auditable cost estimate with an explicit fallback."""
     region = candidate.get("region") or "UNKNOWN"
@@ -250,6 +335,12 @@ def estimate_transaction_cost(candidate: dict, cfg: dict) -> dict:
         "rebalanceDays": rebalance_days, "cyclesInHorizon": round(cycles, 2),
         "expectedTradeNotionalKrw": regional.get("expectedTradeNotionalKrw"),
         "fallbackUsed": fallback or candidate.get("liquiditySpreadBps") is None,
+        # Whether that turnover was measured from the replay or assumed by
+        # config. It changes the number that gets subtracted from every
+        # candidate's expected return, so it is published rather than implied.
+        "turnoverSource": regional.get("turnoverSource", TURNOVER_ASSUMED),
+        "turnoverNote": regional.get("turnoverNote"),
+        "turnoverMeasuredAtHorizonDays": regional.get("turnoverMeasuredAtHorizonDays"),
     }
 
 
