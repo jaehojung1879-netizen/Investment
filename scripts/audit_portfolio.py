@@ -29,8 +29,12 @@ def _peak_gb() -> float | None:
     except ImportError:  # pragma: no cover - not POSIX
         return None
     peak = resource.getrusage(resource.RUSAGE_SELF).ru_maxrss
-    # Linux reports kilobytes, macOS bytes.
-    scale = 1024**2 if sys.platform == "darwin" else 1024
+    # ru_maxrss is KILOBYTES on Linux and BYTES on macOS. Both divisors here
+    # were one factor of 1024 short, so the first real run logged
+    # "peak RSS 6949.93 GB" for a 6.79 GB process. A number that wrong is not
+    # a rounding slip — it is the observability this was added for, reporting
+    # something no one can act on.
+    scale = 1024**3 if sys.platform == "darwin" else 1024**2
     return peak / scale
 
 
