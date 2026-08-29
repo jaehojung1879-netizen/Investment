@@ -5,9 +5,9 @@
     "2026-08-21",
     "2026-08-28"
   ],
-  "replayVersion": "replay-v4",
+  "replayVersion": "replay-v5",
   "featureVersion": "hfeat-v1",
-  "dataVersion": "yahoo-adjusted-close-v3-regional-session-download",
+  "dataVersion": "yahoo-adjusted-close-v3-regional-session-download+pit-index-membership",
   "modelVersion": "longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
   "frequency": "W",
   "requestedStart": "2013-01-01",
@@ -15,71 +15,71 @@
   "firstDate": "2013-01-04",
   "lastDate": "2026-08-28",
   "replayDates": 713,
-  "signalsGenerated": 33328,
-  "signalsSkippedAlreadyPresent": 340560,
-  "meanPitCoverage": 0.7845,
+  "signalsGenerated": 373316,
+  "signalsSkippedAlreadyPresent": 0,
+  "meanPitCoverage": 0.7833,
   "survivorshipRisk": "HIGH",
   "survivorshipNote": "SURVIVORSHIP_BIAS_UNRESOLVED",
   "fundamentalsPit": false,
   "historicalUniverseAvailable": true,
-  "constituentCoveragePct": 41.4554,
-  "membershipCoveragePct": 99.9139,
+  "constituentCoveragePct": 83.6079,
+  "membershipCoveragePct": 80.8738,
   "constituentsWithoutPriceHistory": [
-    "000030.KS",
-    "00004217.KS",
-    "000060.KS",
-    "000075.KS",
-    "00018015.KS",
-    "000327.KS",
-    "000360.KS",
-    "000365.KS",
-    "00040015.KS",
-    "000420.KS",
-    "000425.KS",
-    "00052018.KS",
-    "000547.KS",
-    "00064217.KS",
-    "000685.KS",
-    "000687.KS",
-    "000800.KS",
-    "00080211.KS",
-    "000830.KS",
-    "000835.KS",
-    "000885.KS",
-    "000895.KS",
-    "000995.KS",
-    "000997.KS",
-    "00102016.KS",
-    "00102017.KS",
-    "00102212.KS",
-    "00102213.KS",
-    "00102216.KS",
-    "001140.KS",
-    "00114017.KS",
-    "00120014.KS",
-    "00121218.KS",
-    "00123014.KS",
-    "00125016.KS",
-    "001300.KS",
-    "00134015.KS",
-    "00136016.KS",
-    "00136018.KS",
-    "00136212.KS",
-    "00136222.KS",
-    "001385.KS",
-    "00144211.KS",
-    "00151018.KS",
-    "001529.KS",
-    "00154013.KS",
-    "00162017.KS",
-    "001689.KS",
-    "001725.KS",
-    "001745.KS"
+    "018260.KS",
+    "028260.KS",
+    "062040.KS",
+    "064350.KS",
+    "064400.KS",
+    "079550.KS",
+    "161390.KS",
+    "161890.KS",
+    "180640.KS",
+    "207940.KS",
+    "241560.KS",
+    "259960.KS",
+    "267250.KS",
+    "267260.KS",
+    "267270.KS",
+    "271560.KS",
+    "272210.KS",
+    "278470.KS",
+    "298040.KS",
+    "307950.KS",
+    "316140.KS",
+    "323410.KS",
+    "326030.KS",
+    "329180.KS",
+    "352820.KS",
+    "353200.KS",
+    "373220.KS",
+    "377300.KS",
+    "402340.KS",
+    "443060.KS",
+    "454910.KS",
+    "ABBV",
+    "ABC",
+    "ABMD",
+    "ACE",
+    "ACT",
+    "ADS",
+    "ADT",
+    "AET",
+    "AGN",
+    "ALLE",
+    "ALTR",
+    "ALXN",
+    "AMTM",
+    "ANDV",
+    "ANR",
+    "ANSS",
+    "ANTM",
+    "APC",
+    "APOL"
   ],
-  "constituentsWithoutPriceHistoryCount": 1648,
+  "constituentsWithoutPriceHistoryCount": 292,
   "universeSource": "HISTORICAL_MEMBERSHIP_DATASET",
   "firstReliableUniverseDate": null,
-  "affectedObservationsPct": 58.5446,
+  "affectedObservationsPct": 16.3921,
   "affectedRegions": [
     "KR",
     "US"
@@ -96,11 +96,11 @@
   },
   "macroPitStatus": "REVISED_HISTORY",
   "regimeDistribution": {
-    "Deflation/Slowdown": 53730,
-    "Goldilocks": 55571,
-    "Reflation": 95008,
-    "Stagflation": 32327,
-    "Transition/Low confidence": 137252
+    "Deflation/Slowdown": 53626,
+    "Goldilocks": 55523,
+    "Reflation": 94884,
+    "Stagflation": 32264,
+    "Transition/Low confidence": 137019
   },
   "shortTermModelReplayed": false,
   "knownDeviationsFromProduction": [
@@ -110,64 +110,64 @@
     "entry_sector_concentration_overlay_not_applied_no_sleeve_in_replay"
   ],
   "coverage": {
-    "signalsRecorded": 446377,
+    "signalsRecorded": 373316,
     "signalsByRegion": {
-      "KR": 75240,
-      "US": 371137
+      "KR": 73149,
+      "US": 300167
     },
-    "uniqueDates": 715,
+    "uniqueDates": 713,
     "trackingDays": 3561,
     "firstSignalDate": "2013-01-04",
     "lastSignalDate": "2026-08-28",
-    "maturedSignals": 427493,
-    "maturedUniqueDates": 687,
-    "maturedObservationDays": 3431,
-    "lastMaturedSignalDate": "2026-02-27",
+    "maturedSignals": 356694,
+    "maturedUniqueDates": 686,
+    "maturedObservationDays": 3426,
+    "lastMaturedSignalDate": "2026-02-20",
     "horizon": 126,
     "maturedByHorizon": {
-      "21": 440750,
-      "63": 435641,
-      "126": 427493,
-      "252": 410208
+      "21": 370228,
+      "63": 364682,
+      "126": 356694,
+      "252": 340603
     },
     "benchmarkCoverageByRegion": {
       "KR": {
         "126": {
-          "maturedAbsoluteReturns": 70429,
-          "matchedBenchmarkReturns": 70338,
+          "maturedAbsoluteReturns": 69939,
+          "matchedBenchmarkReturns": 69848,
           "missingBenchmarkReturns": 91,
-          "coveragePct": 99.8708,
+          "coveragePct": 99.8699,
           "missingSamples": [
             {
-              "id": "2015-08-14|KR|000100.KS|replay-v4|longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
+              "id": "2015-08-14|KR|000100.KS|replay-v5|longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
               "date": "2015-08-14",
               "endDate": "2016-02-19",
               "ticker": "000100.KS",
               "benchmark": "^KS200"
             },
             {
-              "id": "2015-08-14|KR|000150.KS|replay-v4|longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
+              "id": "2015-08-14|KR|000150.KS|replay-v5|longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
               "date": "2015-08-14",
               "endDate": "2016-02-19",
               "ticker": "000150.KS",
               "benchmark": "^KS200"
             },
             {
-              "id": "2015-08-14|KR|000270.KS|replay-v4|longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
+              "id": "2015-08-14|KR|000270.KS|replay-v5|longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
               "date": "2015-08-14",
               "endDate": "2016-02-19",
               "ticker": "000270.KS",
               "benchmark": "^KS200"
             },
             {
-              "id": "2015-08-14|KR|000500.KS|replay-v4|longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
+              "id": "2015-08-14|KR|000500.KS|replay-v5|longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
               "date": "2015-08-14",
               "endDate": "2016-02-19",
               "ticker": "000500.KS",
               "benchmark": "^KS200"
             },
             {
-              "id": "2015-08-14|KR|000660.KS|replay-v4|longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
+              "id": "2015-08-14|KR|000660.KS|replay-v5|longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
               "date": "2015-08-14",
               "endDate": "2016-02-19",
               "ticker": "000660.KS",
@@ -176,41 +176,41 @@
           ]
         },
         "21": {
-          "maturedAbsoluteReturns": 73113,
-          "matchedBenchmarkReturns": 73022,
+          "maturedAbsoluteReturns": 72554,
+          "matchedBenchmarkReturns": 72463,
           "missingBenchmarkReturns": 91,
-          "coveragePct": 99.8755,
+          "coveragePct": 99.8746,
           "missingSamples": [
             {
-              "id": "2015-08-14|KR|000100.KS|replay-v4|longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
+              "id": "2015-08-14|KR|000100.KS|replay-v5|longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
               "date": "2015-08-14",
               "endDate": "2015-09-14",
               "ticker": "000100.KS",
               "benchmark": "^KS200"
             },
             {
-              "id": "2015-08-14|KR|000150.KS|replay-v4|longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
+              "id": "2015-08-14|KR|000150.KS|replay-v5|longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
               "date": "2015-08-14",
               "endDate": "2015-09-14",
               "ticker": "000150.KS",
               "benchmark": "^KS200"
             },
             {
-              "id": "2015-08-14|KR|000270.KS|replay-v4|longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
+              "id": "2015-08-14|KR|000270.KS|replay-v5|longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
               "date": "2015-08-14",
               "endDate": "2015-09-14",
               "ticker": "000270.KS",
               "benchmark": "^KS200"
             },
             {
-              "id": "2015-08-14|KR|000500.KS|replay-v4|longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
+              "id": "2015-08-14|KR|000500.KS|replay-v5|longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
               "date": "2015-08-14",
               "endDate": "2015-09-14",
               "ticker": "000500.KS",
               "benchmark": "^KS200"
             },
             {
-              "id": "2015-08-14|KR|000660.KS|replay-v4|longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
+              "id": "2015-08-14|KR|000660.KS|replay-v5|longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
               "date": "2015-08-14",
               "endDate": "2015-09-14",
               "ticker": "000660.KS",
@@ -219,41 +219,41 @@
           ]
         },
         "252": {
-          "maturedAbsoluteReturns": 67021,
-          "matchedBenchmarkReturns": 66930,
+          "maturedAbsoluteReturns": 66640,
+          "matchedBenchmarkReturns": 66549,
           "missingBenchmarkReturns": 91,
-          "coveragePct": 99.8642,
+          "coveragePct": 99.8634,
           "missingSamples": [
             {
-              "id": "2015-08-14|KR|000100.KS|replay-v4|longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
+              "id": "2015-08-14|KR|000100.KS|replay-v5|longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
               "date": "2015-08-14",
               "endDate": "2016-08-23",
               "ticker": "000100.KS",
               "benchmark": "^KS200"
             },
             {
-              "id": "2015-08-14|KR|000150.KS|replay-v4|longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
+              "id": "2015-08-14|KR|000150.KS|replay-v5|longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
               "date": "2015-08-14",
               "endDate": "2016-08-23",
               "ticker": "000150.KS",
               "benchmark": "^KS200"
             },
             {
-              "id": "2015-08-14|KR|000270.KS|replay-v4|longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
+              "id": "2015-08-14|KR|000270.KS|replay-v5|longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
               "date": "2015-08-14",
               "endDate": "2016-08-23",
               "ticker": "000270.KS",
               "benchmark": "^KS200"
             },
             {
-              "id": "2015-08-14|KR|000500.KS|replay-v4|longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
+              "id": "2015-08-14|KR|000500.KS|replay-v5|longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
               "date": "2015-08-14",
               "endDate": "2016-08-23",
               "ticker": "000500.KS",
               "benchmark": "^KS200"
             },
             {
-              "id": "2015-08-14|KR|000660.KS|replay-v4|longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
+              "id": "2015-08-14|KR|000660.KS|replay-v5|longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
               "date": "2015-08-14",
               "endDate": "2016-08-23",
               "ticker": "000660.KS",
@@ -262,41 +262,41 @@
           ]
         },
         "63": {
-          "maturedAbsoluteReturns": 72015,
-          "matchedBenchmarkReturns": 71924,
+          "maturedAbsoluteReturns": 71483,
+          "matchedBenchmarkReturns": 71392,
           "missingBenchmarkReturns": 91,
-          "coveragePct": 99.8736,
+          "coveragePct": 99.8727,
           "missingSamples": [
             {
-              "id": "2015-08-14|KR|000100.KS|replay-v4|longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
+              "id": "2015-08-14|KR|000100.KS|replay-v5|longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
               "date": "2015-08-14",
               "endDate": "2015-11-16",
               "ticker": "000100.KS",
               "benchmark": "^KS200"
             },
             {
-              "id": "2015-08-14|KR|000150.KS|replay-v4|longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
+              "id": "2015-08-14|KR|000150.KS|replay-v5|longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
               "date": "2015-08-14",
               "endDate": "2015-11-16",
               "ticker": "000150.KS",
               "benchmark": "^KS200"
             },
             {
-              "id": "2015-08-14|KR|000270.KS|replay-v4|longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
+              "id": "2015-08-14|KR|000270.KS|replay-v5|longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
               "date": "2015-08-14",
               "endDate": "2015-11-16",
               "ticker": "000270.KS",
               "benchmark": "^KS200"
             },
             {
-              "id": "2015-08-14|KR|000500.KS|replay-v4|longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
+              "id": "2015-08-14|KR|000500.KS|replay-v5|longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
               "date": "2015-08-14",
               "endDate": "2015-11-16",
               "ticker": "000500.KS",
               "benchmark": "^KS200"
             },
             {
-              "id": "2015-08-14|KR|000660.KS|replay-v4|longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
+              "id": "2015-08-14|KR|000660.KS|replay-v5|longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
               "date": "2015-08-14",
               "endDate": "2015-11-16",
               "ticker": "000660.KS",
@@ -307,29 +307,29 @@
       },
       "US": {
         "126": {
-          "maturedAbsoluteReturns": 357064,
-          "matchedBenchmarkReturns": 357064,
+          "maturedAbsoluteReturns": 286755,
+          "matchedBenchmarkReturns": 286755,
           "missingBenchmarkReturns": 0,
           "coveragePct": 100.0,
           "missingSamples": []
         },
         "21": {
-          "maturedAbsoluteReturns": 367637,
-          "matchedBenchmarkReturns": 367637,
+          "maturedAbsoluteReturns": 297674,
+          "matchedBenchmarkReturns": 297674,
           "missingBenchmarkReturns": 0,
           "coveragePct": 100.0,
           "missingSamples": []
         },
         "252": {
-          "maturedAbsoluteReturns": 343187,
-          "matchedBenchmarkReturns": 343187,
+          "maturedAbsoluteReturns": 273963,
+          "matchedBenchmarkReturns": 273963,
           "missingBenchmarkReturns": 0,
           "coveragePct": 100.0,
           "missingSamples": []
         },
         "63": {
-          "maturedAbsoluteReturns": 363626,
-          "matchedBenchmarkReturns": 363626,
+          "maturedAbsoluteReturns": 293199,
+          "matchedBenchmarkReturns": 293199,
           "missingBenchmarkReturns": 0,
           "coveragePct": 100.0,
           "missingSamples": []
@@ -362,23 +362,23 @@
         "status": "VENDOR",
         "source": "yahoo",
         "symbol": "SPY",
-        "sessions": 3937,
+        "sessions": 3936,
         "firstSession": "2011-01-03",
-        "lastSession": "2026-08-28",
+        "lastSession": "2026-08-27",
         "candidates": [
           {
             "source": "yahoo",
             "symbol": "SPY",
             "accepted": true,
             "reason": null,
-            "sessions": 3937,
+            "sessions": 3936,
             "snapshotCoveragePct": 100.0,
             "minimumSessions": null,
             "firstSession": "2011-01-03",
-            "lastSession": "2026-08-28"
+            "lastSession": "2026-08-27"
           }
         ],
-        "snapshotSessions": 3936
+        "snapshotSessions": 3937
       },
       "KR": {
         "ticker": "^KS200",
@@ -406,22 +406,82 @@
             "accepted": false,
             "reason": "below_known_session_calendar",
             "sessions": 1,
-            "snapshotCoveragePct": 0.0,
+            "snapshotCoveragePct": 0.026,
             "minimumSessions": null,
             "firstSession": "2026-08-28",
             "lastSession": "2026-08-28"
           }
         ],
-        "snapshotSessions": 3848
+        "snapshotSessions": 3849
       }
     },
     "degradedRegions": [],
     "unavailableRegions": [],
     "snapshotsUpdated": [
-      "SPY",
-      "^KS200"
+      "SPY"
     ],
     "indexMixingForbidden": true
+  },
+  "formerMemberRecovery": {
+    "US": {
+      "describedFormerMembers": 326,
+      "priced": 130,
+      "pricedPct": 39.88,
+      "byYearLeft": {
+        "2013": {
+          "priced": 6,
+          "described": 22
+        },
+        "2014": {
+          "priced": 7,
+          "described": 19
+        },
+        "2015": {
+          "priced": 3,
+          "described": 19
+        },
+        "2016": {
+          "priced": 12,
+          "described": 35
+        },
+        "2017": {
+          "priced": 5,
+          "described": 11
+        },
+        "2018": {
+          "priced": 10,
+          "described": 32
+        },
+        "2020": {
+          "priced": 20,
+          "described": 58
+        },
+        "2021": {
+          "priced": 13,
+          "described": 26
+        },
+        "2022": {
+          "priced": 9,
+          "described": 28
+        },
+        "2023": {
+          "priced": 10,
+          "described": 18
+        },
+        "2024": {
+          "priced": 12,
+          "described": 21
+        },
+        "2025": {
+          "priced": 5,
+          "described": 9
+        },
+        "2026": {
+          "priced": 18,
+          "described": 28
+        }
+      }
+    }
   },
   "benchmarkCoverageRegressions": []
 }
