@@ -36,6 +36,7 @@ Nothing in this module fabricates a value it does not have.
 """
 from __future__ import annotations
 
+import hashlib
 import json
 import math
 from dataclasses import dataclass, field
@@ -71,6 +72,16 @@ PIT_QUALITY_BANDS = ((0.85, "HIGH"), (0.6, "MEDIUM"), (0.0, "LOW"))
 MIN_CALIBRATION_COVERAGE = 0.6
 
 SURVIVORSHIP_UNRESOLVED = "SURVIVORSHIP_BIAS_UNRESOLVED"
+# How a generation resolved its cross-section — the distinction that decides
+# whether two records are comparable. Everything written before membership
+# history existed resolved its names from today's constituent list, whether
+# or not it said so, and is read as SURVIVORS_ONLY.
+SURVIVORS_ONLY = "survivors-only"
+PIT_MEMBERSHIP = "pit-membership"
+# A survivors-only universe has no content to hash, so its fingerprint IS its
+# mode. Aliased rather than repeated: two literals that must agree is how an
+# identity comes to disagree with itself.
+SURVIVORS_ONLY_FINGERPRINT = SURVIVORS_ONLY
 
 
 def _safe_number(value):
@@ -607,6 +618,53 @@ class UniverseHistory:
         it, so the caller has to know which names to fetch.
         """
         return dict(self._memberships)
+
+    @property
+    def fingerprint(self) -> str:
+        """Exact content hash of the universe definition. Diagnostic only.
+
+        CI rebuilds the membership file on every replay run and the index gains
+        and loses names every month, so this moves legitimately. It is recorded
+        and reported; what is ENFORCED is `signature`.
+        """
+        if not self._memberships:
+            return SURVIVORS_ONLY_FINGERPRINT
+        canonical = json.dumps(
+            {t: {k: row.get(k) for k in ("listed", "delisted", "region")}
+             for t, row in sorted(self._memberships.items())},
+            sort_keys=True, separators=(",", ":"))
+        digest = hashlib.sha256(canonical.encode("utf-8")).hexdigest()[:16]
+        return f"pit-{len(self._memberships)}-{digest}"
+
+    @property
+    def signature(self) -> dict:
+        """The universe properties a generation's records depend on.
+
+        Adding a name to a date's cross-section re-ranks every other name on
+        that date: `alphaPercentile` is a rank within the cross-section and
+        selection applies a floor to it. So a record produced against 281 US
+        names in 2013 and one produced against the real 500 are not the same
+        measurement, and pooling them is not an extension of the evidence —
+        it is a contamination of it.
+
+        But not every change to the file is that. The index gains and loses
+        members every month and the file is rebuilt on every run, so an exact
+        hash would refuse the second run and every run after it. What actually
+        breaks comparability is a change of KIND — survivors-only becoming
+        point-in-time, a region gaining or LOSING membership coverage — so
+        that is what the signature carries, with the hash alongside it as a
+        recorded detail rather than a gate.
+        """
+        regions: dict[str, int] = {}
+        for row in self._memberships.values():
+            region = row.get("region")
+            if region:
+                regions[region] = regions.get(region, 0) + 1
+        return {
+            "mode": PIT_MEMBERSHIP if self._memberships else SURVIVORS_ONLY,
+            "regions": dict(sorted(regions.items())),
+            "fingerprint": self.fingerprint,
+        }
 
     @classmethod
     def from_json(cls, path: str | Path | None) -> "UniverseHistory":

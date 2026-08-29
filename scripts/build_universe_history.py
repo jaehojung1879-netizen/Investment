@@ -168,12 +168,28 @@ def kr_memberships(current: list[str]) -> dict[str, dict]:
     return out
 
 
+def read_existing(path: Path) -> dict[str, dict]:
+    """Whatever membership is already recorded, or {} if there is none."""
+    if not path.exists():
+        return {}
+    try:
+        raw = json.loads(path.read_text(encoding="utf-8"))
+    except (ValueError, OSError):
+        return {}
+    if not isinstance(raw, dict):
+        return {}
+    return {str(k): dict(v) for k, v in raw.items() if isinstance(v, dict)}
+
+
 def main(argv=None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("out")
     parser.add_argument("--sp500-repo", default=SP500_REPO)
     parser.add_argument("--skip-kr", action="store_true")
     parser.add_argument("--skip-us", action="store_true")
+    parser.add_argument("--rebuild", action="store_true",
+                        help="overwrite instead of merging with the "
+                             "existing file")
     args = parser.parse_args(argv)
 
     memberships: dict[str, dict] = {}
@@ -207,13 +223,33 @@ def main(argv=None) -> int:
         memberships.update(kr_memberships(current_kr))
 
     out = Path(args.out)
+    # Merged with what is already on disk, never overwritten. CI rebuilds this
+    # file on every replay run, and the KR half comes from a live vendor call:
+    # a day when FinanceDataReader returns a shorter list would otherwise erase
+    # names from the historical cross-section, which changes what every past
+    # rank meant while looking like a routine refresh.
+    #
+    # Membership history is monotone — a name that was ever in the index was
+    # ever in the index — so a union is not a workaround for the failure, it is
+    # the correct semantics. --rebuild is there for when the file itself is
+    # believed wrong.
+    previous = read_existing(out) if not args.rebuild else {}
+    merged = dict(previous)
+    merged.update(memberships)
+    dropped = sorted(set(previous) - set(memberships))
+    if dropped and not args.rebuild:
+        print(f"  kept {len(dropped)} names this build did not return "
+              f"(e.g. {dropped[:5]})")
+
     out.parent.mkdir(parents=True, exist_ok=True)
-    out.write_text(json.dumps(dict(sorted(memberships.items())),
+    out.write_text(json.dumps(dict(sorted(merged.items())),
                               ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
     by_region: dict[str, int] = {}
-    for row in memberships.values():
-        by_region[row["region"]] = by_region.get(row["region"], 0) + 1
-    print(f"wrote {out} — {len(memberships)} names {by_region}")
+    for row in merged.values():
+        by_region[row.get("region")] = by_region.get(row.get("region"), 0) + 1
+    was = len(previous)
+    print(f"wrote {out} — {len(merged)} names {by_region}"
+          + (f" (was {was}, +{len(merged) - was})" if was else ""))
     return 0
 
 

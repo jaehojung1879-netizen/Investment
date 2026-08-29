@@ -254,7 +254,8 @@ def main(argv=None) -> int:
               "run without a sealed holdout boundary.")
         return 1
 
-    signals = HS.load(args.ledger_dir, HS.SIGNALS, prov_mod.REPLAY_VERSION)
+    signals = HS.load(args.ledger_dir, HS.SIGNALS, prov_mod.REPLAY_VERSION,
+                      project=HS.audit_projection)
     outcomes = HS.load(args.ledger_dir, HS.OUTCOMES, prov_mod.REPLAY_VERSION)
     diagnostics = json.loads(
         (Path(args.ledger_dir) / "historical-diagnostics.json").read_text(encoding="utf-8"))

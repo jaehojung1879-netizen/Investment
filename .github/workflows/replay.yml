@@ -70,13 +70,24 @@ jobs:
       # Refresh index membership before the replay. The committed file is
       # US-only, built from the constituent repo's git history; this rebuild
       # also picks up the Korean half, which needs FinanceDataReader's delisting
-      # list and therefore network. Best effort: on failure the replay falls
-      # back to the committed file, and `constituentCoveragePct` reports the
-      # smaller coverage rather than pretending the gap is not there.
+      # list and therefore network.
+      #
+      # The accumulated file lives on signal-history, next to the ledger it
+      # describes, and is restored here as the merge base. Without that the
+      # Korean half would be rebuilt from nothing on every run and one KRX
+      # outage would take the KR cross-section from ~2,500 described names to
+      # zero — which the universe guard correctly refuses, blocking the daily
+      # run for a reason that has nothing to do with the evidence. Carried
+      # forward, an outage costs that run's refresh and nothing else.
       - name: Refresh point-in-time index membership
         run: |
+          if [ -f replay-work/ledger/universe-history.json ]; then
+            cp replay-work/ledger/universe-history.json data/universe-history.json
+            echo "restored the accumulated membership file from signal-history"
+          fi
           python scripts/build_universe_history.py data/universe-history.json \
-            || echo "membership rebuild failed; using the committed file"
+            || echo "membership rebuild failed; using the carried-forward file"
+          cp data/universe-history.json replay-work/ledger/universe-history.json
           python - <<'PY'
           import json, pathlib
           rows = json.loads(pathlib.Path("data/universe-history.json").read_text())

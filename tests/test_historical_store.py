@@ -280,3 +280,57 @@ def test_outcomes_join_back_to_their_signals(tmp_path, replayed):
     for _, key, path in HS.iter_shards(tmp_path, HS.OUTCOMES):
         for row in HS.read_jsonl(path):
             assert HS.shard_key(row["date"]) == key
+
+
+# --------------------------------------------------------------------------- #
+# Load-time projection
+# --------------------------------------------------------------------------- #
+def test_the_audit_projection_keeps_the_one_feature_the_audit_reads():
+    """`features` is 28 of a signal's 37 keys; the audit path reads one of them.
+
+    413k signals plus 409k outcomes hold 8.5 GB, and restoring former index
+    members widens the cross-section by half again. Keeping 27 unused floats per
+    record is the difference between fitting a 16 GB runner and an OOM that
+    looks like the pipeline breaking again.
+    """
+    row = {
+        "id": "x", "ticker": "AAA", "date": "2020-01-06",
+        "factorPercentiles": {"momentum": 90},
+        "features": {"evidenceCoverage": 0.75, "rsi14": 51.0, "mom20Pct": 1.2,
+                     "volumeSurge": 0.9, "dist200Pct": -2.0},
+    }
+
+    out = HS.audit_projection(row)
+
+    assert out["features"] == {"evidenceCoverage": 0.75}
+    assert out["factorPercentiles"] == {"momentum": 90}   # everything else intact
+    assert out["id"] == "x" and out["ticker"] == "AAA"
+    assert row["features"]["rsi14"] == 51.0               # input not mutated
+
+
+def test_a_signal_without_features_survives_the_projection():
+    row = {"id": "x", "ticker": "AAA"}
+    assert HS.audit_projection(row) == row
+
+
+def test_projection_is_applied_while_loading_not_after(tmp_path):
+    rows = [{"id": f"s{i}", "date": "2020-01", "replayVersion": "v1",
+             "features": {"evidenceCoverage": 0.5, "junk": i}} for i in range(5)]
+    HS.write_shard(HS.shard_path(tmp_path, "v1", HS.SIGNALS, "2020-01"), rows)
+
+    loaded = HS.load(tmp_path, HS.SIGNALS, "v1", project=HS.audit_projection)
+
+    assert len(loaded) == 5
+    assert all(row["features"] == {"evidenceCoverage": 0.5} for row in loaded)
+    assert all("junk" not in row["features"] for row in loaded)
+
+
+def test_loading_without_a_projection_is_unchanged(tmp_path):
+    """The model trainer needs every feature, so the default must not trim."""
+    rows = [{"id": "s1", "date": "2020-01", "replayVersion": "v1",
+             "features": {"evidenceCoverage": 0.5, "rsi14": 44.0}}]
+    HS.write_shard(HS.shard_path(tmp_path, "v1", HS.SIGNALS, "2020-01"), rows)
+
+    loaded = HS.load(tmp_path, HS.SIGNALS, "v1")
+
+    assert loaded[0]["features"] == {"evidenceCoverage": 0.5, "rsi14": 44.0}

@@ -48,6 +48,7 @@ KINDS = (SIGNALS, OUTCOMES)
 STORE_DIR = "historical"
 MANIFEST_NAME = "manifest.json"
 DIAGNOSTICS_NAME = "historical-diagnostics.json"
+UNIVERSE_NAME = "universe.json"
 LEGACY_NAMES = {SIGNALS: "historical-signals.jsonl",
                 OUTCOMES: "historical-outcomes.jsonl"}
 
@@ -219,22 +220,53 @@ def _dedupe(rows: Iterable[dict]) -> list[dict]:
 # Reading
 # --------------------------------------------------------------------------- #
 def load(ledger_dir: str | Path, kind: str,
-         generation: str | None = None) -> list[dict]:
+         generation: str | None = None, project=None) -> list[dict]:
     """Every record of one kind, oldest shard first.
 
     Falls back to the legacy monolithic file when no shards exist, so a ledger
     written by the previous layout still reads.
+
+    ``project`` is applied to each record as it is read and only its result is
+    kept, so the discarded part never coexists with the rest of the ledger. That
+    matters at this size: 413k signals plus 409k outcomes hold 8.5 GB, and a
+    signal's ``features`` block is 28 of its 37 keys while the audit path reads
+    exactly one of them. Restoring former index members widens the cross-section
+    by 1.31x (measured over the ledger's own date and region mix), which without
+    a projection lands at 11.2 GB before `alpha_diagnostics` builds its frames —
+    and an OOM in the nightly job looks like the pipeline being broken again.
+    Projected, the same load measures 7.34 GB and 9.6 GB respectively.
     """
     shards = iter_shards(ledger_dir, kind, generation)
     if not shards:
         rows = read_jsonl(legacy_path(ledger_dir, kind))
-        if generation is None:
-            return rows
-        return [row for row in rows if row.get("replayVersion") == generation]
+        if generation is not None:
+            rows = [row for row in rows if row.get("replayVersion") == generation]
+        return [project(row) for row in rows] if project else rows
     out: list[dict] = []
     for _, _, path in shards:
-        out.extend(read_jsonl(path))
+        if project:
+            # Projected shard by shard so the full records are freed between
+            # shards instead of all being alive at the peak.
+            out.extend(project(row) for row in iter_jsonl(path))
+        else:
+            out.extend(read_jsonl(path))
     return out
+
+
+def audit_projection(row: dict) -> dict:
+    """Trim a signal to what the audit path actually reads.
+
+    `portfolio_validation` touches exactly one key inside `features`
+    (`evidenceCoverage`); the other 27 exist for `opportunity.build_dataset`,
+    which the audits never call. Keeping the block whole costs gigabytes for one
+    float.
+    """
+    features = row.get("features")
+    if not features:
+        return row
+    trimmed = dict(row)
+    trimmed["features"] = {"evidenceCoverage": features.get("evidenceCoverage")}
+    return trimmed
 
 
 def ids_by_generation(ledger_dir: str | Path, kind: str) -> dict[str, set[str]]:
@@ -390,6 +422,94 @@ def write_manifest(ledger_dir: str | Path, *, diagnostics: dict | None = None) -
     (root / MANIFEST_NAME).write_text(
         json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     return manifest
+
+
+# --------------------------------------------------------------------------- #
+# Which universe a generation's records were produced against
+# --------------------------------------------------------------------------- #
+def universe_stamp_path(ledger_dir: str | Path, generation: str | None) -> Path:
+    return generation_dir(ledger_dir, generation) / UNIVERSE_NAME
+
+
+def read_universe_stamp(ledger_dir: str | Path, generation: str | None) -> dict:
+    path = universe_stamp_path(ledger_dir, generation)
+    if not path.exists():
+        return {}
+    try:
+        stamp = json.loads(path.read_text(encoding="utf-8"))
+    except (ValueError, OSError):
+        return {}
+    return stamp if isinstance(stamp, dict) else {}
+
+
+def stamp_universe(ledger_dir: str | Path, generation: str | None,
+                   signature: dict, **detail) -> dict:
+    """Record the universe definition this generation's records were built on.
+
+    A sidecar rather than a manifest field on purpose: the manifest is rebuilt
+    from the shards on every run, so anything written there is only as durable
+    as the code that rebuilds it. This has to outlive that.
+    """
+    stamp = {**dict(signature), **detail}
+    path = universe_stamp_path(ledger_dir, generation)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(stamp, ensure_ascii=False, indent=2) + "\n",
+                    encoding="utf-8")
+    return stamp
+
+
+def universe_conflict(ledger_dir: str | Path, generation: str | None,
+                      signature: dict, *, existing: int | None = None,
+                      survivors_only: str = "survivors-only") -> str | None:
+    """The reason this generation must not be extended, or None if it may be.
+
+    Appending is safe only while the cross-section is defined the same way.
+    `alphaPercentile` is a rank WITHIN the date's cross-section and selection
+    puts a floor on it, so widening the universe silently rewrites what every
+    surviving name's old record meant — and the old records are skipped by id,
+    so they keep the ranks they were given against a universe that no longer
+    exists. The result reads as one clean generation and is two.
+
+    Three things are refused, and only these three:
+
+      * the MODE changed — survivors-only became point-in-time, or back;
+      * a region that had membership coverage no longer has any;
+      * a region's membership SHRANK, which means the file lost names that
+        were in the historical cross-section.
+
+    Growth is not refused. The index gains members every month and CI rebuilds
+    the file on every run, so gating on the exact content hash would refuse the
+    second run and every run after it — a guard that has to be switched off to
+    get any work done protects nothing.
+
+    An unstamped generation that already holds records predates this stamp, so
+    it was necessarily built from today's constituent list. That is a conflict
+    with anything but survivors-only — not an unknown to wave through.
+    """
+    # `existing` is accepted because the caller has usually just counted the
+    # generation's ids; recounting means decompressing every shard a second
+    # time for an answer already in hand.
+    if existing is None:
+        existing = len(ids_by_generation(ledger_dir, SIGNALS).get(generation, set()))
+    if not existing:
+        return None
+    recorded = read_universe_stamp(ledger_dir, generation)
+    was = recorded.get("mode") or survivors_only
+    now = signature.get("mode")
+    head = f"generation {generation!r} holds {existing} signals"
+    tail = ("Cross-sectional ranks are not comparable across universes; bump "
+            "REPLAY_VERSION to start a new generation instead of mixing them.")
+    if was != now:
+        return f"{head} built with universe mode {was!r}, but this run resolves {now!r}. {tail}"
+    before = recorded.get("regions") or {}
+    for region, count in sorted(before.items()):
+        current = (signature.get("regions") or {}).get(region, 0)
+        if current < int(count or 0):
+            what = ("no longer has any" if not current
+                    else f"describes only {current} of {count}")
+            return (f"{head} whose {region} cross-section came from {count} "
+                    f"described names; this run {what}. {tail}")
+    return None
 
 
 def read_manifest(ledger_dir: str | Path) -> dict:

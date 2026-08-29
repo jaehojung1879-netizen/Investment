@@ -51,15 +51,20 @@ import pandas as pd
 from . import entry as entry_mod
 from . import longterm as longterm_mod
 from . import pit_data
+from . import provenance
 from . import regime as regime_mod
 from . import sectors as SECT
 from .market_dates import normalize_daily_frame
 
 # Bumped whenever the replay's own logic changes shape. Records carry it so two
 # generations of replay never pool into one evidence base.
-REPLAY_VERSION = "replay-v4"
-FEATURE_VERSION = "hfeat-v1"
-DATA_VERSION = "yahoo-adjusted-close-v3-regional-session-download"
+#
+# Re-exported from provenance rather than redefined: these were two separate
+# literals that had to agree, and a generation identity that can silently
+# disagree with itself is worse than no identity at all.
+REPLAY_VERSION = provenance.REPLAY_VERSION
+FEATURE_VERSION = provenance.FEATURE_VERSION
+DATA_VERSION = provenance.DATA_VERSION
 
 EVIDENCE_HISTORICAL = "HISTORICAL_OOS"
 

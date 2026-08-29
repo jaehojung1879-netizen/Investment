@@ -15,6 +15,25 @@ from pipeline import provenance  # noqa: E402
 from pipeline.config import load_config  # noqa: E402
 
 
+def _peak_gb() -> float | None:
+    """Peak resident memory so far, in GB, or None where it is unavailable.
+
+    The ledger is loaded whole, so this step's footprint scales with the
+    cross-section. Restoring former index members widens it, and an audit
+    that OOMs on a hosted runner fails the whole replay after the expensive
+    part has already run. Printing the number every run makes the trend
+    visible in the logs before it becomes a crash.
+    """
+    try:
+        import resource
+    except ImportError:  # pragma: no cover - not POSIX
+        return None
+    peak = resource.getrusage(resource.RUSAGE_SELF).ru_maxrss
+    # Linux reports kilobytes, macOS bytes.
+    scale = 1024**2 if sys.platform == "darwin" else 1024
+    return peak / scale
+
+
 def main(argv=None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("ledger_dir")
@@ -28,8 +47,16 @@ def main(argv=None) -> int:
                    if diagnostics_path.exists() else {})
     replay_version = provenance.REPLAY_VERSION
     model_version = provenance.MODEL_VERSION
-    signals = HS.load(ledger, HS.SIGNALS, replay_version)
+    # Projected: this path reads one key inside `features` and the block is 28
+    # of a signal's 37 keys. Keeping it whole costs ~1.7 GB on the current
+    # ledger and more once former index members widen the cross-section.
+    signals = HS.load(ledger, HS.SIGNALS, replay_version,
+                      project=HS.audit_projection)
     outcomes = HS.load(ledger, HS.OUTCOMES, replay_version)
+    peak = _peak_gb()
+    if peak is not None:
+        print(f"  ledger loaded: {len(signals):,} signals, "
+              f"{len(outcomes):,} outcomes, peak RSS {peak:.2f} GB")
     report = PV.build_report(
         signals, outcomes, cfg_lt=cfg.longterm, cfg_pf=cfg.kelly_portfolio,
         diagnostics=diagnostics, replay_version=replay_version,

@@ -31,9 +31,15 @@ MODEL_VERSION = "longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-a
 # three, so every historical record carries them and evidence is never pooled
 # across versions. Changing one does not invalidate the old records — it starts
 # a new generation alongside them.
-REPLAY_VERSION = "replay-v4"
+# v5: the replay stopped resolving its universe from today's constituent
+# list. Against the 2012-12-27 S&P 500 the old universe saw 281 of 500
+# names, and a cross-sectional rank taken over 281 survivors is not the
+# same measurement as one taken over the real 500 — so v4's records are
+# kept as their own generation rather than extended.
+REPLAY_VERSION = "replay-v5"
 FEATURE_VERSION = "hfeat-v1"
-DATA_VERSION = "yahoo-adjusted-close-v3-regional-session-download"
+DATA_VERSION = ("yahoo-adjusted-close-v3-regional-session-download"
+                "+pit-index-membership")
 
 # MODEL_VERSION is a compound identity, and not every component of it is a
 # statement about how names are scored. "daily-session-v2" was appended by a
