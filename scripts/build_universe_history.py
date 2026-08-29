@@ -124,48 +124,43 @@ def memberships_from_snapshots(snapshots: list[tuple[str, set[str]]],
     return out
 
 
-def kr_memberships(current: list[str]) -> dict[str, dict]:
-    """Currently listed KOSPI names plus every delisted one FDR knows about."""
-    out: dict[str, dict] = {}
-    try:
-        import FinanceDataReader as fdr
-    except Exception as exc:                       # pragma: no cover - optional
-        print(f"  warning: FinanceDataReader unavailable ({exc}); KR skipped")
-        return out
+# Regions whose point-in-time membership cannot be established from the free
+# sources, and are therefore left UNDESCRIBED rather than guessed. `pit_data`
+# reads a ticker with no row as membership-unknown, keeps it if it is in
+# today's list, and counts it against `membershipCoveragePct` — so the gap is
+# reported instead of filled.
+UNRESOLVED_REGIONS = ("KR",)
 
-    for ticker in current:
-        out[ticker] = {"listed": None, "delisted": None, "region": "KR"}
 
-    try:
-        dead = fdr.StockListing("KRX-DELISTING")
-    except Exception as exc:                       # pragma: no cover - network
-        print(f"  warning: KRX-DELISTING listing failed ({exc}); "
-              f"KR keeps survivors only")
-        return out
+def kr_membership_is_not_available() -> str:
+    """Why the Korean half is not written, spelled out where it is skipped.
 
-    columns = {str(c).lower(): c for c in dead.columns}
-    symbol_col = columns.get("symbol") or columns.get("code")
-    date_col = next((columns[k] for k in ("delistingdate", "delisting_date", "date")
-                     if k in columns), None)
-    if not symbol_col or not date_col:
-        print(f"  warning: unexpected KRX-DELISTING columns {list(dead.columns)}")
-        return out
+    An earlier version of this script wrote two kinds of KR row, and both
+    claimed more than the data supports:
 
-    added = 0
-    for _, row in dead.iterrows():
-        symbol = str(row[symbol_col]).strip()
-        if not symbol or not symbol.isdigit():
-            continue
-        when = str(row[date_col])[:10]
-        if not when or when == "nan":
-            continue
-        ticker = f"{symbol}.KS"
-        if ticker in out:
-            continue
-        out[ticker] = {"listed": None, "delisted": when, "region": "KR"}
-        added += 1
-    print(f"  KR: {len(current)} listed + {added} delisted")
-    return out
+      * every name in `KRX-DELISTING` — but that is "was ever delisted from
+        KRX", not "was a member of the investable KOSPI universe". A 1998
+        KOSDAQ shell is not a former constituent of a book that holds ~119
+        large names, and there is no free source that says which delisted
+        names ever were.
+      * today's listed names with `listed: None`, meaning no lower bound —
+        which admits a name that entered the universe in 2020 into the 2013
+        cross-section. That is a look-ahead, not a survivorship fix.
+
+    Both rows read as KNOWN membership, so the file reported
+    membershipCoveragePct 100% and survivorship risk LOW over a Korean
+    cross-section it had invented. Nothing caught it because Yahoo serves
+    almost none of those tickers (17 of 3,010 in the first real run) — the
+    correctness was resting on a vendor's failure.
+
+    So: no KR rows. The replay then reads Korea as membership-unknown, keeps
+    today's names, and reports the hole. What would close it is a dated KOSPI
+    200 constituent history; until there is one, the honest state is a
+    measured gap.
+    """
+    return ("KR point-in-time index membership has no free source; "
+            "KRX-DELISTING is every delisted KRX name, not former index "
+            "members. Left undescribed so the gap is measured.")
 
 
 def read_existing(path: Path) -> dict[str, dict]:
@@ -208,19 +203,7 @@ def main(argv=None) -> int:
             memberships.update(us)
 
     if not args.skip_kr:
-        from pipeline.config import load_config
-        from pipeline import universe as universe_mod
-        cfg, _ = load_config()
-        # The replay resolves KR dynamically (~119 names), not from the ~44 in
-        # config. Building membership from the static list would leave the rest
-        # with unknown membership and drag measured coverage down for no reason.
-        try:
-            resolved, _diag = universe_mod.resolve(cfg)
-            current_kr = list(resolved.get("KR") or [])
-        except Exception as exc:
-            print(f"  warning: dynamic KR resolve failed ({exc}); using config list")
-            current_kr = list(cfg.universe.get("KR") or [])
-        memberships.update(kr_memberships(current_kr))
+        print(f"  KR: skipped — {kr_membership_is_not_available()}")
 
     out = Path(args.out)
     # Merged with what is already on disk, never overwritten. CI rebuilds this
@@ -241,6 +224,18 @@ def main(argv=None) -> int:
         print(f"  kept {len(dropped)} names this build did not return "
               f"(e.g. {dropped[:5]})")
 
+    # Deliberate prune, not a silent shrink: rows for a region this script no
+    # longer claims to describe are removed, including ones an earlier version
+    # wrote. The union above would otherwise preserve them forever, and they
+    # are the fabricated membership this refuses to assert.
+    invented = [t for t, row in merged.items()
+                if row.get("region") in UNRESOLVED_REGIONS]
+    for ticker in invented:
+        del merged[ticker]
+    if invented:
+        print(f"  removed {len(invented)} rows for undescribable regions "
+              f"{list(UNRESOLVED_REGIONS)}")
+
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(json.dumps(dict(sorted(merged.items())),
                               ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
@@ -249,7 +244,7 @@ def main(argv=None) -> int:
         by_region[row.get("region")] = by_region.get(row.get("region"), 0) + 1
     was = len(previous)
     print(f"wrote {out} — {len(merged)} names {by_region}"
-          + (f" (was {was}, +{len(merged) - was})" if was else ""))
+          + (f" (was {was}, {len(merged) - was:+d})" if was else ""))
     return 0
 
 

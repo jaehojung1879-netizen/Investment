@@ -203,13 +203,13 @@ def test_a_rebuild_keeps_names_the_new_build_did_not_return(tmp_path):
     out = tmp_path / "universe-history.json"
     out.write_text(json.dumps({
         "AA": {"listed": "2012-12-27", "delisted": "2016-11-01", "region": "US"},
-        "005930.KS": {"listed": None, "delisted": None, "region": "KR"},
+        "ANR": {"listed": "2012-12-27", "delisted": "2015-07-15", "region": "US"},
     }), encoding="utf-8")
 
     assert B.main([str(out), "--skip-us", "--skip-kr"]) == 0
 
     rows = json.loads(out.read_text(encoding="utf-8"))
-    assert "005930.KS" in rows, "a KR outage must not delete Korea"
+    assert set(rows) == {"AA", "ANR"}, "a short day must not delete names"
     assert rows["AA"]["delisted"] == "2016-11-01"
 
 
@@ -237,3 +237,73 @@ def test_an_unreadable_existing_file_does_not_abort_the_build(tmp_path):
 
     assert B.main([str(out), "--skip-us", "--skip-kr"]) == 0
     assert json.loads(out.read_text(encoding="utf-8")) == {}
+
+
+# --------------------------------------------------------------------------- #
+# What the file must NOT claim
+# --------------------------------------------------------------------------- #
+def test_a_name_with_no_listing_date_enters_dates_before_it_joined():
+    """Why KR rows are not written: `listed: None` is a look-ahead.
+
+    The earlier KR builder wrote today's names with no lower bound, which puts
+    a name that entered the universe in 2020 into the 2013 cross-section — a
+    name the strategy could not have picked then. Combined with the delisted
+    rows it also wrote, the file reported coverage 100% and survivorship LOW
+    over a Korean cross-section it had invented, and nothing caught it because
+    the price vendor served almost none of those tickers. Correctness was
+    resting on a vendor's failure.
+    """
+    history = _history(**{
+        "LATER.KS": {"listed": None, "delisted": None, "region": "KR"}})
+
+    snap = history.snapshot("2013-06-03", {"KR": ["LATER.KS"]},
+                            view=_Panel(["LATER.KS"]))
+
+    assert snap.by_region["KR"] == ["LATER.KS"]
+    assert snap.membership_coverage_pct == 100.0
+    assert snap.survivorship_risk == "LOW", (
+        "this is the false all-clear the builder must not manufacture")
+
+
+def test_an_undescribed_region_reports_the_gap_instead():
+    """With no KR rows the same name is kept, and the hole is measured."""
+    history = _history(MSFT={"listed": "2012-12-27", "delisted": None,
+                             "region": "US"})
+
+    snap = history.snapshot("2013-06-03",
+                            {"US": ["MSFT"], "KR": ["LATER.KS"]},
+                            view=_Panel(["MSFT", "LATER.KS"]))
+
+    assert snap.by_region["KR"] == ["LATER.KS"]
+    assert snap.membership_unknown == 1
+    assert snap.membership_coverage_pct == pytest.approx(50.0)
+    assert snap.survivorship_risk == "HIGH"
+
+
+def test_the_builder_writes_no_rows_for_an_undescribable_region(tmp_path):
+    import json
+    from scripts import build_universe_history as B
+
+    out = tmp_path / "universe-history.json"
+    out.write_text(json.dumps({
+        "AA": {"listed": "2012-12-27", "delisted": "2016-11-01", "region": "US"},
+        "005930.KS": {"listed": None, "delisted": None, "region": "KR"},
+        "DEAD98.KS": {"listed": None, "delisted": "1998-06-01", "region": "KR"},
+    }), encoding="utf-8")
+
+    assert B.main([str(out), "--skip-us", "--skip-kr"]) == 0
+
+    rows = json.loads(out.read_text(encoding="utf-8"))
+    assert "AA" in rows, "the US half is still carried forward"
+    assert not [t for t, r in rows.items() if r.get("region") == "KR"], (
+        "rows an earlier build invented are pruned, not preserved by the union")
+
+
+def test_the_shipped_file_describes_no_korean_membership():
+    from pathlib import Path
+    path = Path(__file__).resolve().parents[1] / "data" / "universe-history.json"
+    if not path.exists():
+        pytest.skip("membership file not built in this checkout")
+
+    rows = pit_data.UniverseHistory.from_json(path).memberships
+    assert not [t for t, r in rows.items() if r.get("region") == "KR"]
