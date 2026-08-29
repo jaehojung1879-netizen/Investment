@@ -761,6 +761,52 @@ def _rotation_direction(before: str | None, after: str | None) -> float | None:
 
 
 # --------------------------------------------------------------------------- #
+# Universe coverage bookkeeping
+# --------------------------------------------------------------------------- #
+COVERAGE_KEYS = ("expected", "priced", "membershipKnown", "unvouched")
+
+
+def _empty_coverage() -> dict:
+    return dict.fromkeys(COVERAGE_KEYS, 0)
+
+
+def _accumulate_coverage(total: dict, counts: dict) -> dict:
+    for key in COVERAGE_KEYS:
+        total[key] += int(counts.get(key, 0) or 0)
+    return total
+
+
+def _coverage_pct(part: int, whole: int) -> float | None:
+    return round(100.0 * part / whole, 4) if whole else None
+
+
+RISK_ORDER = {"LOW": 0, "MEDIUM": 1, "HIGH": 2}
+
+
+def _coverage_risk(unvouched: int, expected: int) -> str:
+    """Risk band for one bucket of name-dates.
+
+    Same bands the snapshot uses, applied to the union of the two gaps: LOW only
+    when every name in the bucket is both described and priceable.
+    """
+    if not expected:
+        return "HIGH"
+    share = unvouched / expected
+    return "LOW" if share <= 0 else "MEDIUM" if share < 0.05 else "HIGH"
+
+
+def _coverage_report(total: dict) -> dict:
+    expected = total["expected"]
+    return {
+        "nameDates": expected,
+        "constituentCoveragePct": _coverage_pct(total["priced"], expected),
+        "membershipCoveragePct": _coverage_pct(total["membershipKnown"], expected),
+        "affectedObservationsPct": _coverage_pct(total["unvouched"], expected),
+        "survivorshipRisk": _coverage_risk(total["unvouched"], expected),
+    }
+
+
+# --------------------------------------------------------------------------- #
 # Full replay
 # --------------------------------------------------------------------------- #
 def run_replay(prices: dict[str, pd.DataFrame], universe: dict[str, list[str]], *,
@@ -796,21 +842,29 @@ def run_replay(prices: dict[str, pd.DataFrame], universe: dict[str, list[str]], 
     dates_done = 0
     coverage_samples: list[float] = []
     regimes: dict[str, int] = {}
-    members_expected = 0
-    members_priced = 0
-    membership_coverage: list[float] = []
     members_missing: set[str] = set()
+    # Name-date counts, split by region and by calendar year and summed into one
+    # set of totals. Every published coverage figure is derived from these, so
+    # the headline and the breakdown cannot drift apart — and they are weighted
+    # the same way, by name-date, rather than one being a share of names and
+    # another an average over dates.
+    #
+    # The split is what answers "where" and "when", which is the half that
+    # decides whether a gap matters: the need is heavily front-loaded, and one
+    # region can be entirely unresolved while the pooled figure reads as a nick.
+    region_totals: dict[str, dict] = {}
+    year_totals: dict[int, dict] = {}
 
     for stamp in grid:
         snapshot = universe_history.snapshot(stamp, universe,
                                              view=panel.membership_view(stamp),
                                              min_history=MIN_HISTORY_ROWS)
         if snapshot.reconstructed:
-            members_expected += snapshot.expected_members
-            members_priced += snapshot.expected_members - len(snapshot.missing_prices)
-            if snapshot.membership_coverage_pct is not None:
-                membership_coverage.append(snapshot.membership_coverage_pct)
             members_missing.update(snapshot.missing_prices)
+            year_bucket = year_totals.setdefault(int(stamp.year), _empty_coverage())
+            for region, counts in snapshot.regions.items():
+                _accumulate_coverage(region_totals.setdefault(region, _empty_coverage()), counts)
+                _accumulate_coverage(year_bucket, counts)
         macro_t, vix_t = macro_view.as_of(stamp)
         macro_read = None
         if macro_t is not None or vix_t is not None:
@@ -838,33 +892,49 @@ def run_replay(prices: dict[str, pd.DataFrame], universe: dict[str, list[str]], 
         if progress and dates_done % 25 == 0:
             print(f"  replay {stamp.date()} — {len(signals)} new signals")
 
+    # Where and when the gap is, not just how big it is on average. Measured
+    # over the committed US membership file against a vendor serving only names
+    # still listed today, the share of the cross-section it cannot price runs
+    # from 43.8% in 2013 to 7.1% in 2025: the pooled 27.6% describes neither
+    # end, and it is the early cross-sections a decade-long backtest leans on
+    # hardest.
+    coverage_by_region = {region: _coverage_report(total)
+                          for region, total in sorted(region_totals.items())}
+    coverage_by_year = [{"year": year, **_coverage_report(year_totals[year])}
+                        for year in sorted(year_totals)]
+    # Every headline below is the same accumulator summed, so the pooled figure
+    # and the breakdown are the same measurement at two resolutions rather than
+    # two measurements that can disagree.
+    pooled = _empty_coverage()
+    for total in region_totals.values():
+        _accumulate_coverage(pooled, total)
     # Coverage is measured across the grid, never asserted from the presence of
     # a file: a membership list whose names cannot be priced leaves the bias
     # exactly where it was, and the gate downstream wants a real 100.
-    constituent_coverage = (round(100.0 * members_priced / members_expected, 4)
-                            if members_expected else None)
-    # A second, independent gap. `constituent_coverage` asks "of the names the
-    # file says were listed, how many could we price"; this asks "of the
-    # cross-section, how many does the file describe at all". A US-only
-    # membership file can price every US name it knows and still leave the whole
-    # KR sleeve unresolved, which the first number cannot see.
-    membership_pct = (round(float(np.mean(membership_coverage)), 4)
-                      if membership_coverage else None)
+    #
+    # `constituent_coverage` asks "of the names the file says were listed, how
+    # many could we price"; `membership_pct` asks "of the cross-section, how
+    # many does the file describe at all". A US-only membership file can price
+    # every US name it knows and still leave the whole KR sleeve unresolved,
+    # which the first number cannot see. `affected_pct` is their UNION — the
+    # share the replay cannot stand behind for ANY reason — where the published
+    # figure used to be `100 - constituent_coverage`, which answers only the
+    # pricing half and so reported 0.0% beside a HIGH risk.
+    pooled_report = _coverage_report(pooled)
+    constituent_coverage = pooled_report["constituentCoveragePct"]
+    membership_pct = pooled_report["membershipCoveragePct"]
+    affected_pct = pooled_report["affectedObservationsPct"]
 
-    def _risk(value: float | None) -> str:
-        if value is None:
-            return "HIGH"
-        if value >= 100.0:
-            return "LOW"
-        return "MEDIUM" if value >= 95.0 else "HIGH"
-
-    if not universe_history.available:
+    if not universe_history.available or not coverage_by_region:
         constituent_risk = "HIGH"
     else:
-        # The worse of the two decides. Either gap alone reinstates the bias the
-        # file was meant to remove, and a LOW label over it is worse than HIGH.
-        constituent_risk = max((_risk(constituent_coverage), _risk(membership_pct)),
-                               key=lambda r: {"LOW": 0, "MEDIUM": 1, "HIGH": 2}[r])
+        # The WORST REGION decides, not the pooled average. Pooling lets a large
+        # well-described region pay for a small unresolved one — 512 known US
+        # names beside 119 unknown Korean ones average to 81% described, which
+        # reads as a partial gap rather than as one whole region nobody can
+        # vouch for.
+        constituent_risk = max((row["survivorshipRisk"] for row in coverage_by_region.values()),
+                               key=lambda risk: RISK_ORDER[risk])
     diagnostics = {
         "gridDates": [d.strftime("%Y-%m-%d") for d in grid[-4:]],
         "replayVersion": REPLAY_VERSION,
@@ -889,14 +959,28 @@ def run_replay(prices: dict[str, pd.DataFrame], universe: dict[str, list[str]], 
         "membershipCoveragePct": membership_pct,
         "constituentsWithoutPriceHistory": sorted(members_missing)[:50],
         "constituentsWithoutPriceHistoryCount": len(members_missing),
+        "universeCoverageByRegion": coverage_by_region,
+        "universeCoverageByYear": coverage_by_year,
+        "worstCoveredRegion": (max(coverage_by_region,
+                                   key=lambda r: coverage_by_region[r]["affectedObservationsPct"] or 0.0)
+                               if coverage_by_region else None),
+        "worstCoveredYear": (max(coverage_by_year,
+                                 key=lambda row: row["affectedObservationsPct"] or 0.0)["year"]
+                             if coverage_by_year else None),
         "universeSource": ("HISTORICAL_MEMBERSHIP_DATASET" if universe_history.available
                            else "CURRENT_UNIVERSE_WITH_PRICE_HISTORY_FILTER_ONLY"),
         "firstReliableUniverseDate": (grid[0].strftime("%Y-%m-%d")
                                       if grid and constituent_risk == "LOW" else None),
         "affectedObservationsPct": (0.0 if constituent_risk == "LOW"
-                                    else round(100.0 - (constituent_coverage or 0.0), 4)
-                                    if constituent_coverage is not None else 100.0),
-        "affectedRegions": [] if constituent_risk == "LOW" else sorted(universe),
+                                    else affected_pct if affected_pct is not None
+                                    else 100.0),
+        # The regions that actually carry a gap. Naming every region whenever
+        # the label is not LOW is not conservatism, it is a refusal to say
+        # where the problem is when the file knows exactly where it is.
+        "affectedRegions": (sorted(region for region, row in coverage_by_region.items()
+                                   if (row["affectedObservationsPct"] or 0.0) > 0)
+                            if universe_history.available and coverage_by_region
+                            else [] if constituent_risk == "LOW" else sorted(universe)),
         "impactOnPromotionEligibility": ("NONE" if constituent_risk == "LOW"
                                          else "KELLY_AND_SELECTOR_PROMOTION_BLOCKED"),
         "fundamentalsContract": getattr(fundamental_store, "diagnostics", {}),
