@@ -1,0 +1,73 @@
+name: Measure KR delisting price coverage
+
+# A one-off measurement, not a scheduled job. It answers a single question —
+# can any free vendor price the Korean names the replay is missing? — and the
+# answer decides whether building a dated KOSPI 200 membership history is worth
+# doing at all. Nothing downstream consumes it, so it runs on demand and its
+# result is an artifact rather than a commit.
+#
+# Deliberately NOT a step in the daily replay: it is thousands of sequential
+# vendor requests, and a measurement that has to succeed for the evidence base
+# to be extended is a measurement that will be switched off the first time the
+# vendor has a bad afternoon.
+
+on:
+  workflow_dispatch:
+    inputs:
+      sample:
+        description: "Names to test (stratified by delisting year)"
+        type: string
+        default: "150"
+      all:
+        description: "Test every replay-relevant name instead of a sample (slow)"
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+jobs:
+  measure:
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Measure
+        run: |
+          set -euo pipefail
+          ARGS="--sample ${{ inputs.sample }}"
+          if [ "${{ inputs.all }}" = "true" ]; then ARGS="--all"; fi
+          python scripts/measure_kr_delisting_coverage.py \
+            --output kr-delisting-coverage.json $ARGS | tee measurement.log
+
+      - name: Upload the measurement
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: kr-delisting-coverage
+          path: |
+            kr-delisting-coverage.json
+            measurement.log
+          if-no-files-found: warn
+
+      - name: Summary
+        if: always()
+        run: |
+          {
+            echo '## KR delisting price coverage'
+            echo
+            echo '```'
+            tail -n 40 measurement.log 2>/dev/null || echo 'no measurement produced'
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
