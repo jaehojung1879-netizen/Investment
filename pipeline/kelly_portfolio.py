@@ -234,6 +234,15 @@ def sample_gate(*, paper_days: int, matured_signals: int, effective_dates: int,
 # the strategy's own measured behaviour inflates every candidate.
 TURNOVER_MEASURED = "MEASURED_REPLAY_TURNOVER"
 TURNOVER_ASSUMED = "CONFIG_ASSUMPTION"
+# The region's own measured replacement rate, as opposed to the portfolio-level
+# one applied to every region alike. Distinguished because they are different
+# quantities, not two estimates of one: see `measured_turnover_by_region`.
+TURNOVER_MEASURED_REGIONAL = "MEASURED_REPLAY_TURNOVER_REGIONAL"
+# A 3-5 name book split by region holds 2-3 names a side, so one name replaced
+# moves the rate 33-50 points. The mean over enough rebalances is still the
+# rate; a mean over a handful is one or two swaps wearing a decimal point. Below
+# this the region falls back to the portfolio measurement, which is quieter.
+MIN_REGIONAL_TURNOVER_REBALANCES = 20
 # A replay turnover outside this band is not believable as a rebalance rate and
 # is more likely a report from a different definition or a broken path.
 TURNOVER_BOUNDS = (1.0, 200.0)
@@ -289,25 +298,84 @@ def measured_turnover_pct(portfolio_validation: dict | None,
     return value, TURNOVER_MEASURED, detail
 
 
+def measured_turnover_by_region(portfolio_validation: dict | None,
+                                cfg: dict) -> dict[str, float]:
+    """Each region's own measured replacement rate, where the path measured one.
+
+    This is NOT the portfolio figure split up. `estimate_transaction_cost`
+    multiplies its turnover by ONE candidate's position, so the quantity it
+    needs is "of the weight held in this region, what share is traded per
+    rebalance" — a share of the sleeve, not of the book. The two differ by more
+    than bookkeeping: on the replay ledger the portfolio figure is 58.1% while
+    the sleeves measure 85.3% (US) and 63.1% (KR), because the book carries cash
+    and the position does not.
+
+    That the sleeves differ is established, not read off two point estimates:
+    the paired US-KR difference over the 50 shared rebalances is +22.20pp with
+    a 95% bootstrap interval of [+9.83, +34.09]pp, and US churned more in 34 of
+    them (3 tied). Had the interval spanned zero, one number would have been
+    adequate and this function should not exist.
+
+    Same admission rules as the portfolio measurement — production selector, a
+    horizon equal to `rebalanceDays`, a plausible value — plus a floor on how
+    many rebalances the region was actually measured over.
+    """
+    _, source, detail = measured_turnover_pct(portfolio_validation, cfg)
+    if source != TURNOVER_MEASURED:
+        return {}
+    horizon = detail["turnoverMeasuredAtHorizonDays"]
+    replay = ((portfolio_validation or {}).get("portfolioReplay") or {})
+    blob = (replay.get("selectors") or {}).get(SELECTION_METHOD) or {}
+    horizons = blob.get("horizons") or {}
+    path = ((horizons.get(str(horizon)) or horizons.get(horizon) or {}).get("path") or {})
+    by_region = path.get("averageTurnoverPctByRegion") or {}
+    counts = path.get("turnoverRebalancesByRegion") or {}
+    low, high = TURNOVER_BOUNDS
+    out: dict[str, float] = {}
+    for region, value in by_region.items():
+        try:
+            value = float(value)
+        except (TypeError, ValueError):
+            continue
+        if not (low <= value <= high):
+            continue
+        if int(counts.get(region, 0) or 0) < MIN_REGIONAL_TURNOVER_REBALANCES:
+            continue
+        out[region] = value
+    return out
+
+
 def with_measured_turnover(cfg: dict, portfolio_validation: dict | None) -> dict:
     """cfg with each region's assumed turnover replaced by the measured one.
 
     A copy, not a mutation: the config object is shared and a cost assumption
     that silently changed underneath other callers would be its own bug.
 
-    The measurement is portfolio-level — the replay's book spans both regions
-    and its turnover is one number — so the same value is applied to every
-    region and `turnoverSource` says so. Splitting it per region would need
-    `_path_metrics` to report per-region turnover, which it does not.
+    A region gets its OWN measured rate when the replay measured one over enough
+    rebalances, because the sleeves do not turn over alike — the US sleeve is
+    replaced whole in more than half of rebalances and the Korean one is not.
+    Where the region has no usable measurement the portfolio-level figure stands
+    in, and where there is none of either the configured assumption survives.
+    `turnoverSource` says which of the three each region got, so a hurdle is
+    never read as measured when it was inherited or assumed.
     """
     value, source, detail = measured_turnover_pct(portfolio_validation, cfg)
+    regional = measured_turnover_by_region(portfolio_validation, cfg)
     out = dict(cfg)
     costs = {}
     for region, row in (cfg.get("transactionCosts") or {}).items():
         row = dict(row) if isinstance(row, dict) else {}
-        if value is not None:
-            row["assumedTurnoverPct"] = value
         row.update(detail)
+        if region in regional:
+            row["assumedTurnoverPct"] = regional[region]
+            row["turnoverSource"] = TURNOVER_MEASURED_REGIONAL
+            row["turnoverNote"] = None
+        elif value is not None:
+            row["assumedTurnoverPct"] = value
+            # A region measured elsewhere but not here is wearing another
+            # sleeve's rate. Silence would read as its own.
+            if regional:
+                row["turnoverNote"] = "NO_REGIONAL_MEASUREMENT_PORTFOLIO_RATE_USED"
         costs[region] = row
     out["transactionCosts"] = costs
     return out

@@ -137,6 +137,35 @@
   first: the KR rank IC that justified a region-specific rule was +0.019 over
   2013-2026 and -0.001 over the validation period alone.
 
+## Transaction-cost invariants (v2.9)
+
+- The turnover in a cost estimate is a share of the SLEEVE, not of the book.
+  `estimate_transaction_cost` multiplies it by one candidate's position, so the
+  quantity is "of the weight held in this region, what fraction is traded per
+  rebalance". The portfolio-level figure divides by the whole book including
+  cash, so with a cash floor it is always the smaller number: on the replay
+  ledger it reads 58.1% while the sleeves measure 85.3% (US) and 63.1% (KR).
+  One number applied to both understated BOTH, most on the sleeve that churns
+  hardest. The sleeves differing is established by a paired difference with an
+  interval, not by the inequality between two point estimates: US-KR is
+  +22.20pp over the 50 shared rebalances, 95% bootstrap CI [+9.83, +34.09]pp.
+  A regional split whose interval spans zero is a split nobody measured, and
+  the portfolio figure stands.
+- A region held at neither end of a rebalance is absent from the measurement,
+  never a 0% observation. Counting it as one drags a region's hurdle down in
+  exactly the periods the strategy was avoiding that region.
+- Regional rates do not sum to the portfolio rate and are not expected to; cash
+  carries no region. Reconciling them by attributing cash to a region would
+  invent an allocation the book never made.
+- A 3-5 name book holds 2-3 names a side, so one name replaced moves a regional
+  rate 33-50 points. A regional rate is admitted only over
+  `MIN_REGIONAL_TURNOVER_REBALANCES`; below it the portfolio rate stands in and
+  `turnoverNote` says the region is wearing another sleeve's number. Silence
+  would read as its own measurement.
+- The initial build is not a rebalance. It is paid once and the rate it feeds is
+  multiplied by every cycle in the horizon, so it is excluded from both the
+  portfolio and the regional averages.
+
 ## Version generation policy (v2.8)
 
 - `dataVersion` covers acquisition: sources, batching, date normalization. `modelVersion`

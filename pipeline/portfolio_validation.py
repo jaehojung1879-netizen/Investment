@@ -543,8 +543,23 @@ def _turnover_cost(weights: dict, prior: dict, candidates: list[dict], cfg_pf: d
     region = {row["ticker"]: row.get("region") or "UNKNOWN" for row in candidates}
     tickers = sorted(set(weights) | set(prior))
     buys = sells = cost = 0.0
+    # Per-region traded weight and held weight, for the rate the cost estimator
+    # actually needs. `estimate_transaction_cost` multiplies its turnover by ONE
+    # candidate's position, so what it wants is "of the weight held in this
+    # region, what share is traded per rebalance" — not the region's share of
+    # portfolio turnover. A sleeve carrying 10% of the book that is replaced
+    # whole reads 5% on the portfolio measure and 100% on this one, and only the
+    # second is the cost that position pays.
+    traded: dict[str, float] = defaultdict(float)
+    held_now: dict[str, float] = defaultdict(float)
+    held_prev: dict[str, float] = defaultdict(float)
     for ticker in tickers:
-        delta = float(weights.get(ticker, 0)) - float(prior.get(ticker, 0))
+        now, was = float(weights.get(ticker, 0)), float(prior.get(ticker, 0))
+        delta = now - was
+        home = region.get(ticker) or "UNKNOWN"
+        traded[home] += abs(delta)
+        held_now[home] += now
+        held_prev[home] += was
         policy = ((cfg_pf.get("transactionCosts") or {}).get(region.get(ticker)) or {})
         if delta > 0:
             buys += delta
@@ -557,8 +572,27 @@ def _turnover_cost(weights: dict, prior: dict, candidates: list[dict], cfg_pf: d
             cost += -delta * bps / 10000
     old_cash = max(0.0, 1.0 - sum(float(x) for x in prior.values()))
     new_cash = max(0.0, 1.0 - sum(float(x) for x in weights.values()))
+    # Denominator is the region's weight averaged over the two ends. Either end
+    # alone breaks at a boundary: liquidating a sleeve divides by zero, and
+    # opening one divides by zero the other way. Averaged, a sleeve sold out
+    # reads 100% and a whole-sleeve name-for-name swap also reads 100%, which is
+    # what both cost.
+    #
+    # A region held at neither end is absent from the mapping rather than 0.0 —
+    # a rebalance that did not touch a region is not a 0% turnover observation
+    # for it, and counting it as one would drag the region's hurdle down exactly
+    # in the periods the strategy avoided it.
+    by_region: dict[str, float] = {}
+    for home in set(held_now) | set(held_prev):
+        anchor = .5 * (held_now[home] + held_prev[home])
+        if anchor > 1e-9:
+            by_region[home] = .5 * traded[home] / anchor
     return {"turnover": .5 * (buys + sells + abs(new_cash - old_cash)),
-            "cost": cost, "buys": buys, "sells": sells}
+            "cost": cost, "buys": buys, "sells": sells,
+            # Cash carries no region, so these never sum to `turnover`. That is
+            # a property of the question, not a rounding gap: `turnover` is a
+            # share of the whole book and these are shares of their own sleeve.
+            "turnoverByRegion": by_region}
 
 
 def _outcome_for_decision_with_diagnostics(
@@ -694,6 +728,13 @@ def _path_metrics(rows: list[dict], horizon: int, cfg_pf: dict,
     # and the 20bp KR sell tax — is charged nothing. On ~47% turnover that
     # understates cost on every rebalance, for every selector.
     region_map: dict[str, str] = {}
+    # Rebalance rates only. The first block has an empty prior, so it is an
+    # initial build — every position bought once — and a rate that will be
+    # multiplied by the number of rebalance cycles in the horizon must not carry
+    # an entry that is paid once. On the current ledger including it moves the
+    # portfolio figure from 58.08% to 58.52%.
+    rebalance_rates: dict[str, list[float]] = defaultdict(list)
+    portfolio_rates: list[float] = []
     for row in selected:
         region_map.update({t: r for t, r in (row.get("regionByTicker") or {}).items() if r})
         candidates = [{"ticker": ticker, "region": region_map.get(ticker)}
@@ -701,8 +742,13 @@ def _path_metrics(rows: list[dict], horizon: int, cfg_pf: dict,
         cost = _turnover_cost(row["weights"], prior, candidates, cfg_pf)
         row["transactionCost"] = cost["cost"]
         row["turnover"] = cost["turnover"]
+        row["turnoverByRegion"] = cost["turnoverByRegion"]
         row["costAdjustedReturn"] = row["grossReturn"] - cost["cost"]
         row["costAdjustedExcessReturn"] = row["grossExcessReturn"] - cost["cost"]
+        if prior:
+            portfolio_rates.append(cost["turnover"])
+            for home, rate in cost["turnoverByRegion"].items():
+                rebalance_rates[home].append(rate)
         prior = dict(row["weights"])
     returns = pd.Series([row["costAdjustedReturn"] for row in selected], dtype=float)
     benchmark = pd.Series([row["benchmarkReturn"] for row in selected], dtype=float)
@@ -767,7 +813,18 @@ def _path_metrics(rows: list[dict], horizon: int, cfg_pf: dict,
         "informationRatio": (_r(excess.mean() / tracking * math.sqrt(periods), 3)
                              if tracking and tracking > 0 else None),
         "trackingErrorPct": _r(tracking * math.sqrt(periods) * 100, 3) if tracking else None,
-        "averageTurnoverPct": _r(np.mean([row["turnover"] for row in selected]) * 100, 2),
+        "averageTurnoverPct": (_r(float(np.mean(portfolio_rates)) * 100, 2)
+                               if portfolio_rates else None),
+        # The same quantity per region, which is what sizes a position. Kept
+        # beside the portfolio figure rather than replacing it: the portfolio
+        # number is a share of the whole book and stays the fallback for a
+        # region the path could not measure.
+        "averageTurnoverPctByRegion": {
+            region: _r(float(np.mean(rates)) * 100, 2)
+            for region, rates in sorted(rebalance_rates.items())},
+        "turnoverRebalancesByRegion": {region: len(rates)
+                                       for region, rates in sorted(rebalance_rates.items())},
+        "turnoverRebalances": len(portfolio_rates),
         "averageTop1Pct": _r(np.mean([row["top1"] for row in selected]) * 100, 2),
         "averageTop3Pct": _r(np.mean([row["top3"] for row in selected]) * 100, 2),
         "averageEffectiveNames": _r(np.mean([row["effectiveNames"] for row in selected
