@@ -1,8 +1,8 @@
 {
   "schemaVersion": "2.7.0",
   "modelVersion": "longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
-  "buildCommitSha": "4dcc7b32178f",
-  "generatedAt": "2026-08-29T04:26:35.906841+00:00",
+  "buildCommitSha": "36836d94b754",
+  "generatedAt": "2026-08-29T05:51:22.946965+00:00",
   "marketAsOf": "2026-08-27",
   "macroRegime": "Deflation/Slowdown",
   "holdingsByRegion": {
@@ -21,26 +21,26 @@
       "CNC"
     ],
     "KR": [
-      "402340.KS",
       "078930.KS",
+      "402340.KS",
       "034730.KS",
       "000660.KS",
       "021240.KS",
       "001450.KS",
-      "271560.KS",
       "005935.KS",
+      "271560.KS",
       "005490.KS",
+      "032640.KS",
       "002380.KS",
-      "004170.KS",
-      "032640.KS"
+      "033780.KS"
     ]
   },
   "modelPortfolioWeights": {
-    "CSX": 0.193963,
-    "ALL": 0.124581,
-    "SPG": 0.139311,
-    "271560.KS": 0.060227,
-    "021240.KS": 0.031918
+    "CSX": 0.189454,
+    "ALL": 0.121685,
+    "SPG": 0.136072,
+    "033780.KS": 0.063696,
+    "271560.KS": 0.039094
   },
   "entryStatesByTicker": {
     "EIX": "WATCH",
@@ -58,20 +58,20 @@
     "GOOGL": "WATCH",
     "GOOG": "WATCH",
     "MPC": "WAIT_FOR_PULLBACK",
-    "402340.KS": "WATCH",
     "078930.KS": "WATCH",
+    "402340.KS": "WATCH",
     "034730.KS": "WATCH",
     "000660.KS": "WATCH",
     "021240.KS": "WATCH",
     "001450.KS": "WATCH",
-    "271560.KS": "WATCH",
     "005935.KS": "WATCH",
+    "271560.KS": "WATCH",
     "005490.KS": "WATCH",
-    "002380.KS": "WATCH",
-    "004170.KS": "WATCH",
     "032640.KS": "WATCH",
+    "002380.KS": "WATCH",
+    "033780.KS": "WATCH",
+    "161390.KS": "WATCH",
     "005930.KS": "WATCH",
-    "207940.KS": "WATCH",
     "009540.KS": "WATCH"
   },
   "opportunityTiersByTicker": {
@@ -94,13 +94,13 @@
   },
   "warningTiersByTicker": {
     "271560.KS": "WATCH",
+    "033780.KS": "WATCH",
     "032640.KS": "WATCH",
     "002380.KS": "ELEVATED_WARNING",
     "402340.KS": "WATCH",
     "005935.KS": "WATCH",
     "034730.KS": "WATCH",
     "000660.KS": "WATCH",
-    "078930.KS": "WATCH",
     "CF": "CRITICAL_WARNING",
     "HST": "ELEVATED_WARNING",
     "NUE": "ELEVATED_WARNING",
@@ -115,7 +115,7 @@
   "stale": false,
   "productionValidation": {
     "passed": true,
-    "validatedAt": "2026-08-29T04:26:35.906841+00:00",
+    "validatedAt": "2026-08-29T05:51:22.946965+00:00",
     "errors": []
   }
 }
