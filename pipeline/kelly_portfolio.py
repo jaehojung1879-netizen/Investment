@@ -310,6 +310,12 @@ def measured_turnover_by_region(portfolio_validation: dict | None,
     the sleeves measure 85.3% (US) and 63.1% (KR), because the book carries cash
     and the position does not.
 
+    That the sleeves differ is established, not read off two point estimates:
+    the paired US-KR difference over the 50 shared rebalances is +22.20pp with
+    a 95% bootstrap interval of [+9.83, +34.09]pp, and US churned more in 34 of
+    them (3 tied). Had the interval spanned zero, one number would have been
+    adequate and this function should not exist.
+
     Same admission rules as the portfolio measurement — production selector, a
     horizon equal to `rebalanceDays`, a plausible value — plus a floor on how
     many rebalances the region was actually measured over.

@@ -146,7 +146,11 @@
   cash, so with a cash floor it is always the smaller number: on the replay
   ledger it reads 58.1% while the sleeves measure 85.3% (US) and 63.1% (KR).
   One number applied to both understated BOTH, most on the sleeve that churns
-  hardest.
+  hardest. The sleeves differing is established by a paired difference with an
+  interval, not by the inequality between two point estimates: US-KR is
+  +22.20pp over the 50 shared rebalances, 95% bootstrap CI [+9.83, +34.09]pp.
+  A regional split whose interval spans zero is a split nobody measured, and
+  the portfolio figure stands.
 - A region held at neither end of a rebalance is absent from the measurement,
   never a 0% observation. Counting it as one drags a region's hurdle down in
   exactly the periods the strategy was avoiding that region.
