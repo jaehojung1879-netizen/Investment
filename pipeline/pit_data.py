@@ -569,6 +569,12 @@ class UniverseSnapshot:
     # all" — a region the membership file does not cover.
     membership_known: int = 0
     membership_unknown: int = 0
+    # The same counts split by region, because the pooled ones cannot answer
+    # WHERE the gap is. A US-only membership file leaves one region perfect and
+    # the other entirely unresolved, and a single average describes neither.
+    # region -> {expected, priced, missingPrices, membershipKnown,
+    #            membershipUnknown, unvouched}
+    regions: dict[str, dict] = field(default_factory=dict)
 
     @property
     def size(self) -> int:
@@ -590,6 +596,33 @@ class UniverseSnapshot:
         """
         total = self.membership_known + self.membership_unknown
         return round(self.membership_known / total * 100, 4) if total else None
+
+    @property
+    def unvouched(self) -> int:
+        """Name-slots the replay cannot stand behind, counted once each.
+
+        A name is unvouched when it was listed and could not be priced (a
+        survivorship deletion) or when its membership is unknown (a possible
+        anachronism). The UNION, not the sum: a name can be both, and adding
+        the two gaps overstates the damage as surely as reporting one of them
+        hides it.
+        """
+        if not self.reconstructed:
+            return 0
+        return sum(row.get("unvouched", 0) for row in self.regions.values())
+
+    @property
+    def unvouched_pct(self) -> float | None:
+        """The share of the cross-section that neither gap can vouch for.
+
+        This is the number that belongs next to `survivorshipRisk`. Reporting
+        `100 - coverage_pct` there answers only the pricing half, so a file
+        that prices everything it describes and describes only one region
+        reports a HIGH risk beside 0.0% affected observations.
+        """
+        if not self.reconstructed or not self.expected_members:
+            return None
+        return round(100.0 * self.unvouched / self.expected_members, 4)
 
 
 class UniverseHistory:
@@ -724,47 +757,68 @@ class UniverseHistory:
             expected = 0
             missing: list[str] = []
             known = unknown = 0
+            regions: dict[str, dict] = {}
             for region in sorted(current_universe):
                 today = set(current_universe.get(region, []))
                 members = set(today)
                 members |= {t for t, row in self._memberships.items()
                             if row.get("region") == region}
-                listed = []
+                listed: list[str] = []
+                unknown_here: set[str] = set()
                 for ticker in sorted(members):
                     state = self._listed_on(ticker, cutoff)
-                    if state is True:
-                        known += 1
-                    elif state is None and ticker in today:
+                    if state is None and ticker in today:
                         # Membership unknown. Dropping it erases the name;
                         # asserting membership invents history. Keep it only
                         # because today's list proves it exists, and count it
                         # against membership coverage so the gap stays visible.
-                        unknown += 1
-                    else:
+                        unknown_here.add(ticker)
+                    elif state is not True:
                         continue
                     listed.append(ticker)
                 priced = [t for t in listed if tradable(t)]
+                priced_set = set(priced)
+                missing_here = [t for t in listed if t not in priced_set]
+                known_here = len(listed) - len(unknown_here)
+                regions[region] = {
+                    "expected": len(listed),
+                    "priced": len(priced),
+                    "missingPrices": len(missing_here),
+                    "membershipKnown": known_here,
+                    "membershipUnknown": len(unknown_here),
+                    "unvouched": len(set(missing_here) | unknown_here),
+                }
                 expected += len(listed)
-                missing.extend(t for t in listed if t not in set(priced))
+                known += known_here
+                unknown += len(unknown_here)
+                missing.extend(missing_here)
                 by_region[region] = priced
             notes.append("historical_constituents_reconstructed_from_membership_file")
             # Holding a membership file is not the same as having the prices to
             # replay it. A name listed then and unpriceable now is dropped, and
             # dropping it silently would reinstate the bias the file was meant
             # to remove — under a LOW risk label, which is worse than HIGH.
-            share_missing = (len(missing) / expected) if expected else 0.0
             if missing:
                 notes.append("listed_members_without_price_history_excluded")
             if unknown:
                 notes.append(f"membership_unknown_for_{unknown}_names_kept_from_today")
-            share_unknown = (unknown / (known + unknown)) if (known + unknown) else 0.0
-            # The worse of the two gaps decides. Either one alone reinstates the
-            # bias the file was meant to remove, and a LOW label on that is worse
-            # than an honest HIGH.
-            worst = max(share_missing, share_unknown)
+            # The risk is the WORST REGION's, not the pooled average's. Pooling
+            # lets a large well-described region pay for a small unresolved one:
+            # 512 known US names beside 119 unknown Korean ones average to 81%
+            # described, which reads as a partial gap rather than as one whole
+            # region nobody can vouch for. Within a region the two gaps are
+            # combined as a union, so a name that is both unpriced and unknown
+            # counts once.
+            shares = {region: (row["unvouched"] / row["expected"])
+                      for region, row in regions.items() if row["expected"]}
+            worst_region = max(shares, key=shares.get) if shares else None
+            worst = shares.get(worst_region, 0.0) if worst_region else 0.0
+            if worst_region and worst > 0:
+                notes.append(f"worst_covered_region_{worst_region}_{worst * 100:.1f}pct_unvouched")
             risk = "LOW" if worst <= 0 else "MEDIUM" if worst < 0.05 else "HIGH"
             return UniverseSnapshot(cutoff.strftime("%Y-%m-%d"), by_region, risk, notes,
-                                    True, expected, sorted(set(missing)), known, unknown)
+                                    True, expected, sorted(set(missing)), known, unknown,
+                                    regions)
 
         for region in sorted(current_universe):
             by_region[region] = sorted(t for t in current_universe.get(region, []) if tradable(t))

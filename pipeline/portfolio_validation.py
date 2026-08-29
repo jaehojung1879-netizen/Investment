@@ -1021,6 +1021,37 @@ def _allocation_l1(left: dict, right: dict) -> float:
     return sum(abs(float(left.get(key, 0)) - float(right.get(key, 0))) for key in keys)
 
 
+def universe_ready(diagnostics: dict) -> bool | None:
+    """Whether the replay's cross-section can be vouched for. Tri-state.
+
+    Two gaps have to be closed, and they fail differently.
+    `constituentCoveragePct` asks "of the names the file describes, how many
+    could we price"; `membershipCoveragePct` asks "of the cross-section, how
+    much does the file describe at all". A membership file covering one region
+    prices everything it knows about and answers the first with 100.0 while the
+    other region is entirely undescribed — so reading only the first turns the
+    gate green precisely WHEN the pricing half gets fixed, which is the
+    direction this repo is moving.
+
+    Returns None when the second gap was never measured: priced but undescribed
+    is not the same as assessed and clean, and an acceptance check that could
+    not be assessed is None, never True.
+    """
+    # Same fallback `data_integrity` has always used for artifacts written
+    # before the flag existed; this function changes what the membership gap
+    # does, not what counts as having a membership file.
+    available = diagnostics.get("historicalUniverseAvailable",
+                                diagnostics.get("survivorshipRisk") == "LOW")
+    if not available:
+        return False
+    if _finite(diagnostics.get("constituentCoveragePct")) != 100.0:
+        return False
+    membership = _finite(diagnostics.get("membershipCoveragePct"))
+    if membership is None:
+        return None
+    return membership == 100.0
+
+
 def portfolio_replay(signals: list[dict], outcomes: list[dict], *, cfg_lt: dict,
                      cfg_pf: dict, diagnostics: dict) -> dict:
     """Replay champion/challenger on the same dates, candidates and constraints."""
@@ -1041,9 +1072,10 @@ def portfolio_replay(signals: list[dict], outcomes: list[dict], *, cfg_lt: dict,
     contexts: dict[str, tuple] = {}
     overlaps = []
     full_fidelity_dates = 0
+    # Same two gaps as the integrity gate: a cross-section whose membership is
+    # unknown is not full fidelity however completely it was priced.
     full_fidelity_ready = bool(
-        diagnostics.get("historicalUniverseAvailable")
-        and _finite(diagnostics.get("constituentCoveragePct")) == 100.0
+        universe_ready(diagnostics) is True
         and diagnostics.get("fundamentalsPit")
         and diagnostics.get("macroPitStatus") == pit_data.PIT_EXACT)
 
@@ -1318,28 +1350,35 @@ def data_integrity(diagnostics: dict, signals: list[dict]) -> dict:
     universe_available = bool(diagnostics.get(
         "historicalUniverseAvailable", diagnostics.get("survivorshipRisk") == "LOW"))
     constituent_coverage = _finite(diagnostics.get("constituentCoveragePct"))
-    universe_ready = bool(universe_available and constituent_coverage == 100.0)
+    membership_coverage = _finite(diagnostics.get("membershipCoveragePct"))
+    ready = universe_ready(diagnostics)
     fundamentals_ready = bool(diagnostics.get("fundamentalsPit"))
     macro_ready = diagnostics.get("macroPitStatus") == pit_data.PIT_EXACT
     benchmark_gate = diagnostics.get("benchmarkCoverageGate") or {}
     benchmark_ready = (bool(benchmark_gate.get("eligible"))
                        if "eligible" in benchmark_gate else None)
-    checks = {"historicalUniverse": universe_ready,
+    checks = {"historicalUniverse": ready,
               "pointInTimeFundamentals": fundamentals_ready,
               "vintageMacro": macro_ready,
               "benchmarkCoverage": benchmark_ready}
     return {
         "historicalUniverseAvailable": universe_available,
         "constituentCoveragePct": _r(constituent_coverage, 2),
+        "membershipCoveragePct": _r(membership_coverage, 2),
+        "universeCoverageByRegion": diagnostics.get("universeCoverageByRegion") or {},
+        "universeCoverageByYear": diagnostics.get("universeCoverageByYear") or [],
+        "worstCoveredRegion": diagnostics.get("worstCoveredRegion"),
+        "worstCoveredYear": diagnostics.get("worstCoveredYear"),
         "universeSource": (diagnostics.get("universeSource")
                            or ("HISTORICAL_MEMBERSHIP_DATASET" if universe_available
                                else "CURRENT_UNIVERSE_WITH_PRICE_HISTORY_FILTER_ONLY")),
         "firstReliableUniverseDate": diagnostics.get("firstReliableUniverseDate"),
         "survivorshipRisk": diagnostics.get("survivorshipRisk") or "HIGH",
         "affectedObservationsPct": _r(diagnostics.get(
-            "affectedObservationsPct", 0.0 if universe_ready else 100.0), 2),
-        "affectedRegions": diagnostics.get("affectedRegions", [] if universe_ready else regions),
-        "impactOnPromotionEligibility": ("NONE" if universe_ready
+            "affectedObservationsPct", 0.0 if ready is True else 100.0), 2),
+        "affectedRegions": diagnostics.get(
+            "affectedRegions", [] if ready is True else regions),
+        "impactOnPromotionEligibility": ("NONE" if ready is True
                                          else "KELLY_AND_SELECTOR_PROMOTION_BLOCKED"),
         "pitFundamentals": {
             "available": fundamentals_ready,
@@ -1355,7 +1394,7 @@ def data_integrity(diagnostics: dict, signals: list[dict]) -> dict:
             "failures": [key for key, ok in checks.items() if ok is False],
             "unassessable": [key for key, ok in checks.items() if ok is None],
         },
-        "historicalResultLabel": ("HISTORICAL_OOS" if universe_ready
+        "historicalResultLabel": ("HISTORICAL_OOS" if ready is True
                                   else "SURVIVORSHIP_BIAS_UNRESOLVED"),
     }
 

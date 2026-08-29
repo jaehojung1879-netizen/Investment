@@ -343,7 +343,23 @@ def main(argv=None) -> int:
           f"{manifest['totalBytes'] / 1024 / 1024:.1f} MB on disk")
     print(f"PIT coverage {diagnostics['meanPitCoverage']} "
           f"({pit_data.quality_label(diagnostics['meanPitCoverage'])}), "
-          f"survivorship risk {diagnostics['survivorshipRisk']}")
+          f"survivorship risk {diagnostics['survivorshipRisk']} "
+          f"({diagnostics['affectedObservationsPct']}% of name-dates unvouched)")
+    # A pooled coverage figure describes no cross-section in the span. The gap is
+    # concentrated in one region and front-loaded in time, and an operator
+    # deciding whether the evidence is usable needs to see which and when.
+    for region, row in (diagnostics.get("universeCoverageByRegion") or {}).items():
+        print(f"  universe {region}: priced {row['constituentCoveragePct']}%, "
+              f"membership known {row['membershipCoveragePct']}%, "
+              f"unvouched {row['affectedObservationsPct']}% "
+              f"({row['survivorshipRisk']}, {row['nameDates']} name-dates)")
+    worst_year = diagnostics.get("worstCoveredYear")
+    if worst_year is not None:
+        by_year = {row["year"]: row for row in diagnostics.get("universeCoverageByYear") or []}
+        best = min(by_year.values(), key=lambda r: r["affectedObservationsPct"] or 0.0)
+        print(f"  universe worst year {worst_year}: "
+              f"{by_year[worst_year]['affectedObservationsPct']}% unvouched "
+              f"vs best {best['year']}: {best['affectedObservationsPct']}%")
     for region in coverage_gate["assessedRegions"]:
         row = ((coverage.get("benchmarkCoverageByRegion") or {}).get(region) or {}).get(
             str(coverage_gate["horizon"]), {})

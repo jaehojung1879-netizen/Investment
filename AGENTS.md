@@ -30,6 +30,20 @@
   baseline-weighting functions. A copied backtest formula is forbidden.
 - A price-sleeve replay without PIT fundamentals is labelled
   `PRICE_SLEEVES_ONLY_AUDIT_PROXY`; it may not claim full four-factor fidelity.
+- Survivorship has two gaps and they are counted separately: names the membership
+  file describes but the vendor cannot price (`constituentCoveragePct`), and names
+  the file does not describe at all (`membershipCoveragePct`). A gate that reads one
+  of them turns green when the other is wide open — a US-only membership file prices
+  everything it knows about and answers the first with 100.0 while an entire region
+  is undescribed. `portfolio_validation.universe_ready` is the single predicate for
+  both; the published `affectedObservationsPct` is their UNION, never one of them and
+  never their sum. Measured-on-one-side is `None`, not a pass.
+- Coverage is reported by region and by year, and the risk band is the WORST region's,
+  not the pooled average's. The gap is concentrated: one region can be entirely
+  unresolved while the pooled figure reads as a nick, and the need is front-loaded in
+  time — the 2013 S&P 500 is missing 219 of 500 names before any vendor is asked
+  against 34 in 2025. A decade-averaged coverage figure describes no cross-section
+  inside it.
 - Challenger calibration admits a label only after `outcomeEndDate <= replayDate`, and no
   historical result may automatically promote a selector or relax the Kelly gate.
 - The final holdout stays sealed during development and raises on access; it is scored
