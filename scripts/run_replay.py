@@ -54,6 +54,42 @@ from pipeline.datafeed import (  # noqa: E402
     fetch_macro, fetch_macro_vintages, fetch_regional_prices, fetch_vix)
 
 
+def former_member_recovery(historical_only: dict, prices: dict,
+                           memberships: dict) -> dict:
+    """How much of the survivorship fix actually landed, and WHERE.
+
+    A former member the price panel cannot serve is dropped by the snapshot, so
+    membership alone proves nothing. But a single percentage hides the thing
+    that decides whether the fix helped: the year the recovered names left.
+    2013 needs 219 of the 326 departed US names and 2023 needs 71, so a vendor
+    that serves only recent delistings can report 40% recovered while leaving
+    the early cross-sections exactly as biased as before.
+    """
+    out: dict[str, dict] = {}
+    for region, extra in sorted((historical_only or {}).items()):
+        total = len(extra)
+        if not total:
+            continue
+        priced = sum(1 for ticker in extra if ticker in prices)
+        by_year: dict[str, list[int]] = {}
+        for ticker in extra:
+            left = (memberships.get(ticker) or {}).get("delisted")
+            if not left:
+                continue
+            row = by_year.setdefault(str(left)[:4], [0, 0])
+            row[1] += 1
+            if ticker in prices:
+                row[0] += 1
+        out[region] = {
+            "describedFormerMembers": total,
+            "priced": priced,
+            "pricedPct": round(priced / total * 100, 2),
+            "byYearLeft": {year: {"priced": got, "described": want}
+                           for year, (got, want) in sorted(by_year.items())},
+        }
+    return out
+
+
 def main(argv=None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("ledger_dir")
@@ -210,13 +246,15 @@ def main(argv=None) -> int:
     started = time.time()
     # How much of the survivorship fix actually landed: a former member with no
     # price data is dropped by the snapshot, so membership alone proves nothing.
-    if historical_only:
-        priced = {region: sum(1 for t in extra if t in prices)
-                  for region, extra in historical_only.items()}
-        for region, count in sorted(priced.items()):
-            total = len(historical_only[region])
-            print(f"  former members with price history {region}: {count}/{total} "
-                  f"({round(count / total * 100, 1)}%)")
+    recovery = former_member_recovery(
+        historical_only, prices, universe_history.memberships)
+    for region, row in sorted(recovery.items()):
+        print(f"  former members with price history {region}: "
+              f"{row['priced']}/{row['describedFormerMembers']} ({row['pricedPct']}%)")
+        if row["byYearLeft"]:
+            print("    by year left: " + ", ".join(
+                f"{year} {cell['priced']}/{cell['described']}"
+                for year, cell in row["byYearLeft"].items()))
 
     replay = HR.run_replay(
         prices, fetch_universe, benchmarks=cfg.benchmarks, cfg_lt=cfg.longterm,
@@ -274,6 +312,9 @@ def main(argv=None) -> int:
     )
     diagnostics["benchmarkCoverageGate"] = coverage_gate
     diagnostics["benchmarkPanel"] = benchmark_diagnostics
+    # Recorded, not only logged: whether the survivorship fix reached the years
+    # that need it is an evidence-quality fact, and a log line scrolls away.
+    diagnostics["formerMemberRecovery"] = recovery
 
     # A coverage trend, committed. The 08-19 -> 08-20 collapse left no trace in
     # any artifact: finding it afterwards meant rewinding the branch and
