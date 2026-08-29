@@ -147,3 +147,100 @@ def test_an_unresolved_config_still_reports_a_source():
     """Silence would read as "measured" to anyone auditing the output."""
     detail = KP.estimate_transaction_cost({"region": "US"}, BASE)
     assert detail["turnoverSource"] == KP.TURNOVER_ASSUMED
+
+
+# --------------------------------------------------------------------------- #
+# Per-region turnover
+#
+# The sleeves do not turn over alike. Measured on the v5 replay ledger over 50
+# rebalances at the 63-day horizon, the production selector replaced 85.3% of
+# its US sleeve per rebalance (median 100% — more than half the time, whole)
+# against 63.1% of its Korean one, while the portfolio-level figure was 58.1%.
+# Both sleeves are ABOVE the portfolio figure, because the book carries cash and
+# a position does not, so one number applied to both understated both.
+# --------------------------------------------------------------------------- #
+def _regional_report(by_region, counts, *, portfolio=58.08, horizon="63",
+                     selector=KP.SELECTION_METHOD):
+    return {"portfolioReplay": {"selectors": {selector: {"horizons": {
+        horizon: {"path": {"available": True,
+                           "averageTurnoverPct": portfolio,
+                           "averageTurnoverPctByRegion": by_region,
+                           "turnoverRebalancesByRegion": counts}}}}}}}
+
+
+def test_each_region_gets_its_own_measured_rate():
+    resolved = KP.with_measured_turnover(
+        BASE, _regional_report({"US": 85.28, "KR": 63.07}, {"US": 50, "KR": 50}))
+    costs = resolved["transactionCosts"]
+
+    assert costs["US"]["assumedTurnoverPct"] == pytest.approx(85.28)
+    assert costs["KR"]["assumedTurnoverPct"] == pytest.approx(63.07)
+    for region in ("US", "KR"):
+        assert costs[region]["turnoverSource"] == KP.TURNOVER_MEASURED_REGIONAL
+
+
+def test_the_us_hurdle_rises_by_half_again_on_its_own_rate():
+    """The whole point: the sleeve that churns hardest was charged the least."""
+    pooled = KP.estimate_transaction_cost(
+        {"region": "US"}, KP.with_measured_turnover(BASE, _report(58.08)))
+    regional = KP.estimate_transaction_cost(
+        {"region": "US"},
+        KP.with_measured_turnover(
+            BASE, _regional_report({"US": 85.28, "KR": 63.07}, {"US": 50, "KR": 50})))
+
+    # US round trip 33bps over 126/63 = 2 cycles.
+    assert pooled["estimatedCostPct"] == pytest.approx(0.383, abs=1e-3)
+    assert regional["estimatedCostPct"] == pytest.approx(0.563, abs=1e-3)
+    assert regional["estimatedCost"] > pooled["estimatedCost"]
+
+
+def test_a_thin_regional_sample_falls_back_to_the_portfolio_rate():
+    """2-3 names a side: a handful of rebalances is one swap wearing a decimal."""
+    resolved = KP.with_measured_turnover(
+        BASE, _regional_report({"US": 85.28, "KR": 100.0},
+                               {"US": 50, "KR": 3}))
+    costs = resolved["transactionCosts"]
+
+    assert costs["US"]["assumedTurnoverPct"] == pytest.approx(85.28)
+    assert costs["KR"]["assumedTurnoverPct"] == pytest.approx(58.08), "portfolio rate"
+    assert costs["KR"]["turnoverSource"] == KP.TURNOVER_MEASURED
+    assert costs["KR"]["turnoverNote"] == "NO_REGIONAL_MEASUREMENT_PORTFOLIO_RATE_USED"
+
+
+def test_a_region_wearing_another_sleeves_rate_says_so():
+    """Silence would read as its own measurement."""
+    resolved = KP.with_measured_turnover(
+        BASE, _regional_report({"US": 85.28}, {"US": 50}))
+
+    assert resolved["transactionCosts"]["KR"]["turnoverNote"] == (
+        "NO_REGIONAL_MEASUREMENT_PORTFOLIO_RATE_USED")
+    assert resolved["transactionCosts"]["US"]["turnoverNote"] is None
+
+
+def test_an_implausible_regional_rate_is_refused_like_the_portfolio_one():
+    resolved = KP.with_measured_turnover(
+        BASE, _regional_report({"US": 900.0, "KR": 63.07}, {"US": 50, "KR": 50}))
+    costs = resolved["transactionCosts"]
+
+    assert costs["US"]["assumedTurnoverPct"] == pytest.approx(58.08)
+    assert costs["KR"]["assumedTurnoverPct"] == pytest.approx(63.07)
+
+
+def test_a_challengers_regional_turnover_is_not_used():
+    assert KP.measured_turnover_by_region(
+        _regional_report({"US": 85.28}, {"US": 50}, selector="SOME_CHALLENGER"),
+        BASE) == {}
+
+
+def test_the_wrong_horizon_disqualifies_the_regional_rate_too():
+    assert KP.measured_turnover_by_region(
+        _regional_report({"US": 85.28}, {"US": 50}, horizon="21"), BASE) == {}
+
+
+def test_regions_on_different_clocks_get_no_regional_rate_either():
+    cfg = {"horizonDays": 126, "transactionCosts": {
+        "US": dict(BASE["transactionCosts"]["US"], rebalanceDays=63),
+        "KR": dict(BASE["transactionCosts"]["KR"], rebalanceDays=21)}}
+
+    assert KP.measured_turnover_by_region(
+        _regional_report({"US": 85.28}, {"US": 50}), cfg) == {}
