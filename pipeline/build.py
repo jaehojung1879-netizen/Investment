@@ -896,9 +896,18 @@ def run(cfg) -> dict:
     # inside the expected-return posterior, with their weights published.
     historical = _load_historical_evidence(cfg)
     historical_calibration = historical["calibration"]
+    # The cost hurdle is subtracted from every candidate's expected return
+    # before Kelly sizes it, and config assumed a 25% turnover the strategy
+    # has never run at — the replay measures 59.3% at the same 63-day
+    # rebalance frequency, so the hurdle was 42% of the real one and every
+    # position was sized against it. Use the measurement where there is one;
+    # the report is already generation-gated above, so a stale one arrives
+    # here as no measurement rather than as the wrong one.
+    kelly_cfg = kelly_mod.with_measured_turnover(
+        cfg.kelly_portfolio, historical.get("portfolioValidation"))
     try:
         model_portfolio = kelly_mod.build_model_portfolio(
-            long_term, prices, portfolio_outcomes, cfg.kelly_portfolio,
+            long_term, prices, portfolio_outcomes, kelly_cfg,
             macro_regime=macro_regime, themes=themes,
             prior_weights=prior_model_weights,
             as_of=latest_date.strftime("%Y-%m-%d") if latest_date is not None else None,
