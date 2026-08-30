@@ -15,15 +15,15 @@
   "firstDate": "2013-01-04",
   "lastDate": "2026-08-28",
   "replayDates": 713,
-  "signalsGenerated": 373316,
-  "signalsSkippedAlreadyPresent": 0,
+  "signalsGenerated": 0,
+  "signalsSkippedAlreadyPresent": 373316,
   "meanPitCoverage": 0.7833,
   "survivorshipRisk": "HIGH",
   "survivorshipNote": "SURVIVORSHIP_BIAS_UNRESOLVED",
   "fundamentalsPit": false,
   "historicalUniverseAvailable": true,
   "constituentCoveragePct": 83.6079,
-  "membershipCoveragePct": 80.8738,
+  "membershipCoveragePct": 80.8745,
   "constituentsWithoutPriceHistory": [
     "018260.KS",
     "028260.KS",
@@ -77,9 +77,141 @@
     "APOL"
   ],
   "constituentsWithoutPriceHistoryCount": 292,
+  "universeCoverageByRegion": {
+    "KR": {
+      "nameDates": 84847,
+      "constituentCoveragePct": 86.2128,
+      "membershipCoveragePct": 0.0,
+      "affectedObservationsPct": 100.0,
+      "survivorshipRisk": "HIGH"
+    },
+    "US": {
+      "nameDates": 362514,
+      "constituentCoveragePct": 82.9982,
+      "membershipCoveragePct": 99.8033,
+      "affectedObservationsPct": 17.1985,
+      "survivorshipRisk": "HIGH"
+    }
+  },
+  "universeCoverageByYear": [
+    {
+      "year": 2013,
+      "nameDates": 32252,
+      "constituentCoveragePct": 68.3337,
+      "membershipCoveragePct": 80.6524,
+      "affectedObservationsPct": 46.053,
+      "survivorshipRisk": "HIGH"
+    },
+    {
+      "year": 2014,
+      "nameDates": 32412,
+      "constituentCoveragePct": 70.0512,
+      "membershipCoveragePct": 80.7479,
+      "affectedObservationsPct": 44.5853,
+      "survivorshipRisk": "HIGH"
+    },
+    {
+      "year": 2015,
+      "nameDates": 33042,
+      "constituentCoveragePct": 71.7693,
+      "membershipCoveragePct": 80.7518,
+      "affectedObservationsPct": 43.1905,
+      "survivorshipRisk": "HIGH"
+    },
+    {
+      "year": 2016,
+      "nameDates": 32643,
+      "constituentCoveragePct": 75.1585,
+      "membershipCoveragePct": 80.8841,
+      "affectedObservationsPct": 39.9902,
+      "survivorshipRisk": "HIGH"
+    },
+    {
+      "year": 2017,
+      "nameDates": 32751,
+      "constituentCoveragePct": 77.5244,
+      "membershipCoveragePct": 80.9471,
+      "affectedObservationsPct": 37.724,
+      "survivorshipRisk": "HIGH"
+    },
+    {
+      "year": 2018,
+      "nameDates": 32838,
+      "constituentCoveragePct": 80.5408,
+      "membershipCoveragePct": 80.9976,
+      "affectedObservationsPct": 35.2823,
+      "survivorshipRisk": "HIGH"
+    },
+    {
+      "year": 2019,
+      "nameDates": 32864,
+      "constituentCoveragePct": 81.7034,
+      "membershipCoveragePct": 81.0127,
+      "affectedObservationsPct": 34.4937,
+      "survivorshipRisk": "HIGH"
+    },
+    {
+      "year": 2020,
+      "nameDates": 33496,
+      "constituentCoveragePct": 85.455,
+      "membershipCoveragePct": 81.0127,
+      "affectedObservationsPct": 31.0783,
+      "survivorshipRisk": "HIGH"
+    },
+    {
+      "year": 2021,
+      "nameDates": 32817,
+      "constituentCoveragePct": 89.1002,
+      "membershipCoveragePct": 80.9855,
+      "affectedObservationsPct": 27.8697,
+      "survivorshipRisk": "HIGH"
+    },
+    {
+      "year": 2022,
+      "nameDates": 32807,
+      "constituentCoveragePct": 90.1302,
+      "membershipCoveragePct": 80.9797,
+      "affectedObservationsPct": 27.2747,
+      "survivorshipRisk": "HIGH"
+    },
+    {
+      "year": 2023,
+      "nameDates": 32582,
+      "constituentCoveragePct": 94.4264,
+      "membershipCoveragePct": 80.8483,
+      "affectedObservationsPct": 23.8997,
+      "survivorshipRisk": "HIGH"
+    },
+    {
+      "year": 2024,
+      "nameDates": 32536,
+      "constituentCoveragePct": 95.445,
+      "membershipCoveragePct": 80.8212,
+      "affectedObservationsPct": 22.9561,
+      "survivorshipRisk": "HIGH"
+    },
+    {
+      "year": 2025,
+      "nameDates": 32498,
+      "constituentCoveragePct": 97.1075,
+      "membershipCoveragePct": 80.7988,
+      "affectedObservationsPct": 21.7029,
+      "survivorshipRisk": "HIGH"
+    },
+    {
+      "year": 2026,
+      "nameDates": 21823,
+      "constituentCoveragePct": 98.6895,
+      "membershipCoveragePct": 80.7543,
+      "affectedObservationsPct": 20.5059,
+      "survivorshipRisk": "HIGH"
+    }
+  ],
+  "worstCoveredRegion": "KR",
+  "worstCoveredYear": 2013,
   "universeSource": "HISTORICAL_MEMBERSHIP_DATASET",
   "firstReliableUniverseDate": null,
-  "affectedObservationsPct": 16.3921,
+  "affectedObservationsPct": 32.9027,
   "affectedRegions": [
     "KR",
     "US"
@@ -119,15 +251,15 @@
     "trackingDays": 3561,
     "firstSignalDate": "2013-01-04",
     "lastSignalDate": "2026-08-28",
-    "maturedSignals": 356694,
-    "maturedUniqueDates": 686,
-    "maturedObservationDays": 3426,
-    "lastMaturedSignalDate": "2026-02-20",
+    "maturedSignals": 357185,
+    "maturedUniqueDates": 687,
+    "maturedObservationDays": 3431,
+    "lastMaturedSignalDate": "2026-02-27",
     "horizon": 126,
     "maturedByHorizon": {
       "21": 370228,
-      "63": 364682,
-      "126": 356694,
+      "63": 365179,
+      "126": 357185,
       "252": 340603
     },
     "benchmarkCoverageByRegion": {
@@ -307,8 +439,8 @@
       },
       "US": {
         "126": {
-          "maturedAbsoluteReturns": 286755,
-          "matchedBenchmarkReturns": 286755,
+          "maturedAbsoluteReturns": 287246,
+          "matchedBenchmarkReturns": 287246,
           "missingBenchmarkReturns": 0,
           "coveragePct": 100.0,
           "missingSamples": []
@@ -328,8 +460,8 @@
           "missingSamples": []
         },
         "63": {
-          "maturedAbsoluteReturns": 293199,
-          "matchedBenchmarkReturns": 293199,
+          "maturedAbsoluteReturns": 293696,
+          "matchedBenchmarkReturns": 293696,
           "missingBenchmarkReturns": 0,
           "coveragePct": 100.0,
           "missingSamples": []
@@ -362,23 +494,23 @@
         "status": "VENDOR",
         "source": "yahoo",
         "symbol": "SPY",
-        "sessions": 3936,
+        "sessions": 3937,
         "firstSession": "2011-01-03",
-        "lastSession": "2026-08-27",
+        "lastSession": "2026-08-28",
         "candidates": [
           {
             "source": "yahoo",
             "symbol": "SPY",
             "accepted": true,
             "reason": null,
-            "sessions": 3936,
+            "sessions": 3937,
             "snapshotCoveragePct": 100.0,
             "minimumSessions": null,
             "firstSession": "2011-01-03",
-            "lastSession": "2026-08-27"
+            "lastSession": "2026-08-28"
           }
         ],
-        "snapshotSessions": 3937
+        "snapshotSessions": 3936
       },
       "KR": {
         "ticker": "^KS200",
