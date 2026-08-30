@@ -18,7 +18,7 @@
       "brier": 0.19712,
       "brierSkillScore": 0.1434,
       "calibrationError": 3e-05,
-      "precisionAtTop10Pct": 0.7243,
+      "precisionAtTop10Pct": 0.7246,
       "deciles": [
         {
           "decile": 1,
@@ -121,7 +121,7 @@
       "brier": 0.2758,
       "brierSkillScore": -0.1333,
       "calibrationError": 0.1715,
-      "precisionAtTop10Pct": 0.5845,
+      "precisionAtTop10Pct": 0.5832,
       "deciles": [
         {
           "decile": 1,
@@ -508,7 +508,7 @@
       "brier": 0.19715,
       "brierSkillScore": 0.1433,
       "calibrationError": 3e-05,
-      "precisionAtTop10Pct": 0.7232,
+      "precisionAtTop10Pct": 0.7242,
       "deciles": [
         {
           "decile": 1,
@@ -611,7 +611,7 @@
       "brier": 0.27554,
       "brierSkillScore": -0.1323,
       "calibrationError": 0.17138,
-      "precisionAtTop10Pct": 0.563,
+      "precisionAtTop10Pct": 0.5634,
       "deciles": [
         {
           "decile": 1,
@@ -652,7 +652,7 @@
           "decile": 6,
           "n": 12899,
           "meanExcessPct": -1.402,
-          "medianExcessPct": -1.965,
+          "medianExcessPct": -1.964,
           "hitRatio": 0.4241
         },
         {
@@ -991,7 +991,7 @@
     "brier": 0.21113,
     "brierSkillScore": 0.1003,
     "calibrationError": 0.0458,
-    "precisionAtTop10Pct": 0.6878,
+    "precisionAtTop10Pct": 0.6888,
     "deciles": [
       {
         "decile": 1,
@@ -1102,10 +1102,10 @@
       "validation": {
         "n": 138523,
         "baseRate": 0.4014,
-        "rocAuc": 0.5824,
-        "prAuc": 0.4654,
-        "prAucLift": 0.064,
-        "brier": 0.23476,
+        "rocAuc": 0.5825,
+        "prAuc": 0.4655,
+        "prAucLift": 0.0642,
+        "brier": 0.23478,
         "brierSkillScore": 0.0229,
         "calibrationError": 0.0,
         "precisionAtTop10Pct": 0.5225,
@@ -1113,210 +1113,210 @@
           {
             "decile": 1,
             "n": 13853,
-            "meanExcessPct": 2.671,
-            "medianExcessPct": 2.276,
-            "hitRatio": 0.5653
+            "meanExcessPct": 2.437,
+            "medianExcessPct": 2.167,
+            "hitRatio": 0.5616
           },
           {
             "decile": 2,
             "n": 13852,
-            "meanExcessPct": 2.223,
-            "medianExcessPct": 0.984,
-            "hitRatio": 0.5261
+            "meanExcessPct": 2.649,
+            "medianExcessPct": 1.275,
+            "hitRatio": 0.5334
           },
           {
             "decile": 3,
             "n": 13852,
-            "meanExcessPct": -0.453,
-            "medianExcessPct": -0.345,
-            "hitRatio": 0.4905
+            "meanExcessPct": -0.571,
+            "medianExcessPct": -0.333,
+            "hitRatio": 0.4917
           },
           {
             "decile": 4,
             "n": 13852,
-            "meanExcessPct": 7.402,
-            "medianExcessPct": 2.132,
-            "hitRatio": 0.5404
+            "meanExcessPct": 6.721,
+            "medianExcessPct": 1.699,
+            "hitRatio": 0.5325
           },
           {
             "decile": 5,
             "n": 13853,
-            "meanExcessPct": 3.283,
-            "medianExcessPct": -0.045,
-            "hitRatio": 0.4989
+            "meanExcessPct": 3.972,
+            "medianExcessPct": 0.333,
+            "hitRatio": 0.5075
           },
           {
             "decile": 6,
             "n": 13852,
-            "meanExcessPct": 0.034,
-            "medianExcessPct": -1.813,
-            "hitRatio": 0.4531
+            "meanExcessPct": 0.175,
+            "medianExcessPct": -1.924,
+            "hitRatio": 0.4505
           },
           {
             "decile": 7,
             "n": 13852,
-            "meanExcessPct": -0.254,
-            "medianExcessPct": -1.992,
-            "hitRatio": 0.4496
+            "meanExcessPct": -0.222,
+            "medianExcessPct": -2.017,
+            "hitRatio": 0.4489
           },
           {
             "decile": 8,
             "n": 13852,
-            "meanExcessPct": -0.588,
-            "medianExcessPct": -2.874,
-            "hitRatio": 0.4372
+            "meanExcessPct": -0.862,
+            "medianExcessPct": -2.892,
+            "hitRatio": 0.4352
           },
           {
             "decile": 9,
             "n": 13852,
-            "meanExcessPct": -5.934,
-            "medianExcessPct": -6.118,
-            "hitRatio": 0.3472
+            "meanExcessPct": -5.939,
+            "medianExcessPct": -6.111,
+            "hitRatio": 0.3475
           },
           {
             "decile": 10,
             "n": 13853,
-            "meanExcessPct": -2.706,
-            "medianExcessPct": -6.499,
-            "hitRatio": 0.397
+            "meanExcessPct": -2.683,
+            "medianExcessPct": -6.512,
+            "hitRatio": 0.3967
           }
         ],
-        "decileMonotonicity": -0.7212,
+        "decileMonotonicity": -0.7091,
         "topBucket": {
-          "n": 5844,
-          "dates": 204,
-          "meanExcessPct": -2.252,
-          "universeCarryPct": 0.801,
-          "spreadVsUniversePct": -3.053,
-          "attributableExcessPct": -3.053,
+          "n": 5876,
+          "dates": 206,
+          "meanExcessPct": -3.203,
+          "universeCarryPct": 0.67,
+          "spreadVsUniversePct": -3.873,
+          "attributableExcessPct": -3.873,
           "attributionKo": "벤치마크 대비 초과수익에서 유니버스 캐리를 뺀 값이 모델의 기여입니다. 합격 판정은 둘 중 보수적인 쪽으로 합니다.",
-          "medianExcessPct": -2.135,
-          "hitRatio": 0.4069,
+          "medianExcessPct": -3.231,
+          "hitRatio": 0.3544,
           "topPct": 0.1,
           "horizonDays": 126,
           "pathBasisKo": "낙폭·CVaR·샤프는 겹치지 않는 날짜 표본에서만 계산합니다.",
-          "mddPct": -64.63,
+          "mddPct": -78.633,
           "cvar95Pct": -70.133,
-          "sharpe": -0.2192,
+          "sharpe": -0.3553,
           "nonOverlappingDates": 9
         },
-        "turnover": 0.3928
+        "turnover": 0.3877
       },
       "test": {
         "n": 119741,
         "baseRate": 0.4064,
-        "rocAuc": 0.485,
-        "prAuc": 0.3927,
-        "prAucLift": -0.0137,
-        "brier": 0.24988,
-        "brierSkillScore": -0.0358,
-        "calibrationError": 0.06135,
-        "precisionAtTop10Pct": 0.3791,
+        "rocAuc": 0.4812,
+        "prAuc": 0.3914,
+        "prAucLift": -0.015,
+        "brier": 0.25043,
+        "brierSkillScore": -0.0381,
+        "calibrationError": 0.06048,
+        "precisionAtTop10Pct": 0.3646,
         "deciles": [
           {
             "decile": 1,
             "n": 11975,
-            "meanExcessPct": -5.042,
-            "medianExcessPct": -7.12,
-            "hitRatio": 0.3595
+            "meanExcessPct": -5.846,
+            "medianExcessPct": -7.756,
+            "hitRatio": 0.347
           },
           {
             "decile": 2,
             "n": 11974,
-            "meanExcessPct": 3.329,
-            "medianExcessPct": 0.878,
-            "hitRatio": 0.5192
+            "meanExcessPct": 3.67,
+            "medianExcessPct": 1.047,
+            "hitRatio": 0.522
           },
           {
             "decile": 3,
             "n": 11974,
-            "meanExcessPct": 2.545,
-            "medianExcessPct": 1.277,
-            "hitRatio": 0.5345
+            "meanExcessPct": 2.497,
+            "medianExcessPct": 1.261,
+            "hitRatio": 0.5342
           },
           {
             "decile": 4,
             "n": 11974,
-            "meanExcessPct": 2.766,
-            "medianExcessPct": 1.539,
-            "hitRatio": 0.5389
+            "meanExcessPct": 2.57,
+            "medianExcessPct": 1.341,
+            "hitRatio": 0.5351
           },
           {
             "decile": 5,
             "n": 11974,
-            "meanExcessPct": -1.956,
-            "medianExcessPct": -1.315,
-            "hitRatio": 0.467
+            "meanExcessPct": -2.082,
+            "medianExcessPct": -1.473,
+            "hitRatio": 0.4632
           },
           {
             "decile": 6,
             "n": 11974,
-            "meanExcessPct": -4.142,
-            "medianExcessPct": -4.235,
-            "hitRatio": 0.3783
+            "meanExcessPct": -4.445,
+            "medianExcessPct": -4.487,
+            "hitRatio": 0.3741
           },
           {
             "decile": 7,
             "n": 11974,
-            "meanExcessPct": -1.418,
-            "medianExcessPct": -4.987,
-            "hitRatio": 0.4145
+            "meanExcessPct": -0.383,
+            "medianExcessPct": -4.053,
+            "hitRatio": 0.4288
           },
           {
             "decile": 8,
             "n": 11974,
-            "meanExcessPct": 6.09,
-            "medianExcessPct": 1.329,
-            "hitRatio": 0.5277
+            "meanExcessPct": 5.841,
+            "medianExcessPct": 1.372,
+            "hitRatio": 0.5271
           },
           {
             "decile": 9,
             "n": 11974,
-            "meanExcessPct": -0.883,
-            "medianExcessPct": -3.013,
-            "hitRatio": 0.4249
+            "meanExcessPct": -0.378,
+            "medianExcessPct": -2.676,
+            "hitRatio": 0.4324
           },
           {
             "decile": 10,
             "n": 11974,
-            "meanExcessPct": 6.036,
-            "medianExcessPct": 2.238,
-            "hitRatio": 0.5477
+            "meanExcessPct": 5.881,
+            "medianExcessPct": 2.191,
+            "hitRatio": 0.5484
           }
         ],
-        "decileMonotonicity": 0.3697,
+        "decileMonotonicity": 0.3939,
         "topBucket": {
-          "n": 3381,
-          "dates": 134,
-          "meanExcessPct": 2.527,
-          "universeCarryPct": -0.061,
-          "spreadVsUniversePct": 2.588,
-          "attributableExcessPct": 2.527,
+          "n": 4181,
+          "dates": 136,
+          "meanExcessPct": 3.848,
+          "universeCarryPct": -0.025,
+          "spreadVsUniversePct": 3.874,
+          "attributableExcessPct": 3.848,
           "attributionKo": "벤치마크 대비 초과수익에서 유니버스 캐리를 뺀 값이 모델의 기여입니다. 합격 판정은 둘 중 보수적인 쪽으로 합니다.",
-          "medianExcessPct": -1.974,
-          "hitRatio": 0.4776,
+          "medianExcessPct": 0.767,
+          "hitRatio": 0.5294,
           "topPct": 0.1,
           "horizonDays": 126,
           "pathBasisKo": "낙폭·CVaR·샤프는 겹치지 않는 날짜 표본에서만 계산합니다.",
-          "mddPct": -33.614,
-          "cvar95Pct": -27.27,
-          "sharpe": 0.0858,
+          "mddPct": -41.471,
+          "cvar95Pct": -37.388,
+          "sharpe": -0.0064,
           "nonOverlappingDates": 8
         },
-        "turnover": 0.4413,
+        "turnover": 0.3816,
         "foldStability": {
           "folds": 5,
-          "positiveFolds": 2,
-          "signAgreement": 0.4,
+          "positiveFolds": 3,
+          "signAgreement": 0.6,
           "meanByFoldPct": [
-            -7.523,
-            6.415,
-            13.364,
+            1.536,
+            6.194,
+            6.311,
             -1.634,
-            -9.945
+            -11.245
           ],
-          "worstFoldPct": -9.945,
-          "stable": false
+          "worstFoldPct": -11.245,
+          "stable": true
         }
       },
       "folds": [
@@ -1336,40 +1336,40 @@
           "validation": {
             "n": 25636,
             "baseRate": 0.3971,
-            "rocAuc": 0.5068,
-            "prAuc": 0.4004,
-            "prAucLift": 0.0034,
-            "brier": 0.23929,
-            "brierSkillScore": 0.0005,
+            "rocAuc": 0.5064,
+            "prAuc": 0.4003,
+            "prAucLift": 0.0032,
+            "brier": 0.2393,
+            "brierSkillScore": 0.0004,
             "calibrationError": 0.0
           },
           "test": {
             "n": 27305,
             "baseRate": 0.4408,
-            "rocAuc": 0.5045,
-            "prAuc": 0.4431,
-            "prAucLift": 0.0023,
-            "brier": 0.24804,
-            "brierSkillScore": -0.0063,
-            "calibrationError": 0.0413
+            "rocAuc": 0.5049,
+            "prAuc": 0.4432,
+            "prAucLift": 0.0024,
+            "brier": 0.24802,
+            "brierSkillScore": -0.0062,
+            "calibrationError": 0.04164
           },
           "testTopBucket": {
-            "n": 98,
-            "dates": 42,
-            "meanExcessPct": -7.523,
-            "universeCarryPct": -2.792,
-            "spreadVsUniversePct": -4.731,
-            "attributableExcessPct": -7.523,
+            "n": 75,
+            "dates": 39,
+            "meanExcessPct": 1.536,
+            "universeCarryPct": -2.613,
+            "spreadVsUniversePct": 4.149,
+            "attributableExcessPct": 1.536,
             "attributionKo": "벤치마크 대비 초과수익에서 유니버스 캐리를 뺀 값이 모델의 기여입니다. 합격 판정은 둘 중 보수적인 쪽으로 합니다.",
-            "medianExcessPct": -10.402,
-            "hitRatio": 0.3333,
+            "medianExcessPct": -3.494,
+            "hitRatio": 0.4872,
             "topPct": 0.1,
             "horizonDays": 126,
             "pathBasisKo": "낙폭·CVaR·샤프는 겹치지 않는 날짜 표본에서만 계산합니다.",
-            "mddPct": -27.27,
-            "cvar95Pct": -27.27,
-            "sharpe": -0.0224,
-            "nonOverlappingDates": 3
+            "mddPct": null,
+            "cvar95Pct": null,
+            "sharpe": null,
+            "nonOverlappingDates": 2
           }
         },
         {
@@ -1388,39 +1388,39 @@
           "validation": {
             "n": 27258,
             "baseRate": 0.3731,
-            "rocAuc": 0.5847,
-            "prAuc": 0.437,
-            "prAucLift": 0.0639,
-            "brier": 0.22807,
-            "brierSkillScore": 0.0249,
+            "rocAuc": 0.5826,
+            "prAuc": 0.4331,
+            "prAucLift": 0.06,
+            "brier": 0.22825,
+            "brierSkillScore": 0.0241,
             "calibrationError": 0.0
           },
           "test": {
             "n": 28208,
             "baseRate": 0.4621,
-            "rocAuc": 0.4377,
-            "prAuc": 0.4192,
-            "prAucLift": -0.0429,
-            "brier": 0.27131,
-            "brierSkillScore": -0.0915,
-            "calibrationError": 0.12861
+            "rocAuc": 0.4205,
+            "prAuc": 0.409,
+            "prAucLift": -0.0531,
+            "brier": 0.27329,
+            "brierSkillScore": -0.0995,
+            "calibrationError": 0.13003
           },
           "testTopBucket": {
-            "n": 2958,
+            "n": 3296,
             "dates": 53,
-            "meanExcessPct": 6.415,
+            "meanExcessPct": 6.194,
             "universeCarryPct": 0.785,
-            "spreadVsUniversePct": 5.63,
-            "attributableExcessPct": 5.63,
+            "spreadVsUniversePct": 5.409,
+            "attributableExcessPct": 5.409,
             "attributionKo": "벤치마크 대비 초과수익에서 유니버스 캐리를 뺀 값이 모델의 기여입니다. 합격 판정은 둘 중 보수적인 쪽으로 합니다.",
-            "medianExcessPct": 7.756,
-            "hitRatio": 0.5472,
+            "medianExcessPct": 8.242,
+            "hitRatio": 0.5849,
             "topPct": 0.1,
             "horizonDays": 126,
             "pathBasisKo": "낙폭·CVaR·샤프는 겹치지 않는 날짜 표본에서만 계산합니다.",
             "mddPct": 0.0,
-            "cvar95Pct": -13.317,
-            "sharpe": 0.328,
+            "cvar95Pct": -12.431,
+            "sharpe": 0.3881,
             "nonOverlappingDates": 3
           }
         },
@@ -1440,33 +1440,33 @@
           "validation": {
             "n": 27455,
             "baseRate": 0.5175,
-            "rocAuc": 0.5002,
-            "prAuc": 0.5177,
-            "prAucLift": 0.0002,
+            "rocAuc": 0.5004,
+            "prAuc": 0.5178,
+            "prAucLift": 0.0003,
             "brier": 0.24968,
-            "brierSkillScore": 0.0,
+            "brierSkillScore": 0.0001,
             "calibrationError": 0.0
           },
           "test": {
             "n": 29054,
             "baseRate": 0.3836,
-            "rocAuc": 0.4987,
-            "prAuc": 0.3833,
-            "prAucLift": -0.0003,
-            "brier": 0.25454,
-            "brierSkillScore": -0.0766,
-            "calibrationError": 0.1343
+            "rocAuc": 0.4978,
+            "prAuc": 0.3826,
+            "prAucLift": -0.001,
+            "brier": 0.25501,
+            "brierSkillScore": -0.0785,
+            "calibrationError": 0.13529
           },
           "testTopBucket": {
-            "n": 262,
-            "dates": 31,
-            "meanExcessPct": 13.364,
-            "universeCarryPct": 2.918,
-            "spreadVsUniversePct": 10.446,
-            "attributableExcessPct": 10.446,
+            "n": 643,
+            "dates": 35,
+            "meanExcessPct": 6.311,
+            "universeCarryPct": 2.498,
+            "spreadVsUniversePct": 3.813,
+            "attributableExcessPct": 3.813,
             "attributionKo": "벤치마크 대비 초과수익에서 유니버스 캐리를 뺀 값이 모델의 기여입니다. 합격 판정은 둘 중 보수적인 쪽으로 합니다.",
-            "medianExcessPct": 16.241,
-            "hitRatio": 0.6452,
+            "medianExcessPct": 1.964,
+            "hitRatio": 0.6,
             "topPct": 0.1,
             "horizonDays": 126,
             "pathBasisKo": "낙폭·CVaR·샤프는 겹치지 않는 날짜 표본에서만 계산합니다.",
@@ -1492,22 +1492,22 @@
           "validation": {
             "n": 28791,
             "baseRate": 0.3781,
-            "rocAuc": 0.5001,
-            "prAuc": 0.3782,
-            "prAucLift": 0.0001,
-            "brier": 0.23513,
+            "rocAuc": 0.5003,
+            "prAuc": 0.3784,
+            "prAucLift": 0.0003,
+            "brier": 0.23511,
             "brierSkillScore": 0.0001,
             "calibrationError": 0.0
           },
           "test": {
             "n": 29458,
             "baseRate": 0.3187,
-            "rocAuc": 0.5,
-            "prAuc": 0.3187,
-            "prAucLift": 0.0,
-            "brier": 0.22065,
-            "brierSkillScore": -0.0163,
-            "calibrationError": 0.05942
+            "rocAuc": 0.5004,
+            "prAuc": 0.3188,
+            "prAucLift": 0.0002,
+            "brier": 0.22061,
+            "brierSkillScore": -0.0161,
+            "calibrationError": 0.0593
           },
           "testTopBucket": {
             "n": 1,
@@ -1544,33 +1544,33 @@
           "validation": {
             "n": 29383,
             "baseRate": 0.3457,
-            "rocAuc": 0.565,
-            "prAuc": 0.3918,
-            "prAucLift": 0.0461,
-            "brier": 0.22273,
-            "brierSkillScore": 0.0153,
+            "rocAuc": 0.5657,
+            "prAuc": 0.3932,
+            "prAucLift": 0.0475,
+            "brier": 0.22267,
+            "brierSkillScore": 0.0155,
             "calibrationError": 0.0
           },
           "test": {
             "n": 5716,
             "baseRate": 0.5352,
-            "rocAuc": 0.4751,
-            "prAuc": 0.5189,
-            "prAucLift": -0.0163,
-            "brier": 0.27978,
-            "brierSkillScore": -0.1247,
-            "calibrationError": 0.1626
+            "rocAuc": 0.4762,
+            "prAuc": 0.5205,
+            "prAucLift": -0.0146,
+            "brier": 0.27949,
+            "brierSkillScore": -0.1235,
+            "calibrationError": 0.16142
           },
           "testTopBucket": {
-            "n": 18,
+            "n": 115,
             "dates": 8,
-            "meanExcessPct": -9.945,
+            "meanExcessPct": -11.245,
             "universeCarryPct": -4.173,
-            "spreadVsUniversePct": -5.772,
-            "attributableExcessPct": -9.945,
+            "spreadVsUniversePct": -7.071,
+            "attributableExcessPct": -11.245,
             "attributionKo": "벤치마크 대비 초과수익에서 유니버스 캐리를 뺀 값이 모델의 기여입니다. 합격 판정은 둘 중 보수적인 쪽으로 합니다.",
-            "medianExcessPct": -13.896,
-            "hitRatio": 0.25,
+            "medianExcessPct": -8.411,
+            "hitRatio": 0.125,
             "topPct": 0.1,
             "horizonDays": 126,
             "pathBasisKo": "낙폭·CVaR·샤프는 겹치지 않는 날짜 표본에서만 계산합니다.",
@@ -1596,218 +1596,218 @@
       "validation": {
         "n": 138523,
         "baseRate": 0.4014,
-        "rocAuc": 0.5879,
-        "prAuc": 0.468,
-        "prAucLift": 0.0666,
-        "brier": 0.23398,
-        "brierSkillScore": 0.0262,
+        "rocAuc": 0.5865,
+        "prAuc": 0.4672,
+        "prAucLift": 0.0659,
+        "brier": 0.23407,
+        "brierSkillScore": 0.0258,
         "calibrationError": 0.0,
-        "precisionAtTop10Pct": 0.4778,
+        "precisionAtTop10Pct": 0.467,
         "deciles": [
           {
             "decile": 1,
             "n": 13853,
-            "meanExcessPct": 3.242,
-            "medianExcessPct": 3.081,
-            "hitRatio": 0.5906
+            "meanExcessPct": 3.322,
+            "medianExcessPct": 3.102,
+            "hitRatio": 0.5897
           },
           {
             "decile": 2,
             "n": 13852,
-            "meanExcessPct": 2.098,
-            "medianExcessPct": 0.985,
-            "hitRatio": 0.5247
+            "meanExcessPct": 2.013,
+            "medianExcessPct": 0.981,
+            "hitRatio": 0.5253
           },
           {
             "decile": 3,
             "n": 13852,
-            "meanExcessPct": 1.246,
-            "medianExcessPct": -0.25,
-            "hitRatio": 0.4942
+            "meanExcessPct": 1.806,
+            "medianExcessPct": -0.26,
+            "hitRatio": 0.4944
           },
           {
             "decile": 4,
             "n": 13852,
-            "meanExcessPct": 8.533,
-            "medianExcessPct": 3.235,
-            "hitRatio": 0.5565
+            "meanExcessPct": 8.239,
+            "medianExcessPct": 3.071,
+            "hitRatio": 0.5574
           },
           {
             "decile": 5,
             "n": 13853,
-            "meanExcessPct": 0.053,
-            "medianExcessPct": -1.929,
-            "hitRatio": 0.4508
+            "meanExcessPct": -0.278,
+            "medianExcessPct": -2.114,
+            "hitRatio": 0.4447
           },
           {
             "decile": 6,
             "n": 13852,
-            "meanExcessPct": 0.606,
-            "medianExcessPct": -1.285,
-            "hitRatio": 0.4651
+            "meanExcessPct": 0.634,
+            "medianExcessPct": -1.311,
+            "hitRatio": 0.4643
           },
           {
             "decile": 7,
             "n": 13852,
-            "meanExcessPct": 0.034,
-            "medianExcessPct": -1.731,
-            "hitRatio": 0.4569
+            "meanExcessPct": -0.365,
+            "medianExcessPct": -1.821,
+            "hitRatio": 0.4518
           },
           {
             "decile": 8,
             "n": 13852,
-            "meanExcessPct": -1.434,
-            "medianExcessPct": -3.555,
-            "hitRatio": 0.4215
+            "meanExcessPct": -1.016,
+            "medianExcessPct": -3.14,
+            "hitRatio": 0.4321
           },
           {
             "decile": 9,
             "n": 13852,
-            "meanExcessPct": -5.928,
-            "medianExcessPct": -6.116,
+            "meanExcessPct": -5.91,
+            "medianExcessPct": -6.114,
             "hitRatio": 0.3487
           },
           {
             "decile": 10,
             "n": 13853,
-            "meanExcessPct": -2.772,
-            "medianExcessPct": -6.534,
-            "hitRatio": 0.3967
+            "meanExcessPct": -2.766,
+            "medianExcessPct": -6.523,
+            "hitRatio": 0.397
           }
         ],
         "decileMonotonicity": -0.903,
         "topBucket": {
-          "n": 6501,
-          "dates": 126,
-          "meanExcessPct": -8.666,
-          "universeCarryPct": 0.863,
-          "spreadVsUniversePct": -9.529,
-          "attributableExcessPct": -9.529,
+          "n": 3735,
+          "dates": 125,
+          "meanExcessPct": -10.525,
+          "universeCarryPct": 0.84,
+          "spreadVsUniversePct": -11.365,
+          "attributableExcessPct": -11.365,
           "attributionKo": "벤치마크 대비 초과수익에서 유니버스 캐리를 뺀 값이 모델의 기여입니다. 합격 판정은 둘 중 보수적인 쪽으로 합니다.",
-          "medianExcessPct": -3.375,
-          "hitRatio": 0.246,
+          "medianExcessPct": -5.741,
+          "hitRatio": 0.192,
           "topPct": 0.1,
           "horizonDays": 126,
           "pathBasisKo": "낙폭·CVaR·샤프는 겹치지 않는 날짜 표본에서만 계산합니다.",
-          "mddPct": -18.663,
+          "mddPct": -19.813,
           "cvar95Pct": -70.133,
-          "sharpe": -0.2613,
+          "sharpe": -0.3342,
           "nonOverlappingDates": 7
         },
-        "turnover": 0.3361
+        "turnover": 0.3656
       },
       "test": {
         "n": 119741,
         "baseRate": 0.4064,
-        "rocAuc": 0.4798,
-        "prAuc": 0.3908,
-        "prAucLift": -0.0156,
-        "brier": 0.25177,
-        "brierSkillScore": -0.0436,
-        "calibrationError": 0.06812,
-        "precisionAtTop10Pct": 0.3142,
+        "rocAuc": 0.4816,
+        "prAuc": 0.3906,
+        "prAucLift": -0.0158,
+        "brier": 0.25173,
+        "brierSkillScore": -0.0435,
+        "calibrationError": 0.06649,
+        "precisionAtTop10Pct": 0.385,
         "deciles": [
           {
             "decile": 1,
             "n": 11975,
-            "meanExcessPct": -6.886,
-            "medianExcessPct": -8.301,
-            "hitRatio": 0.3277
+            "meanExcessPct": -5.987,
+            "medianExcessPct": -7.476,
+            "hitRatio": 0.3438
           },
           {
             "decile": 2,
             "n": 11974,
-            "meanExcessPct": 4.4,
-            "medianExcessPct": 2.214,
-            "hitRatio": 0.5493
+            "meanExcessPct": 4.31,
+            "medianExcessPct": 2.189,
+            "hitRatio": 0.5501
           },
           {
             "decile": 3,
             "n": 11974,
-            "meanExcessPct": 3.331,
-            "medianExcessPct": 2.183,
-            "hitRatio": 0.5568
+            "meanExcessPct": 3.471,
+            "medianExcessPct": 2.382,
+            "hitRatio": 0.5624
           },
           {
             "decile": 4,
             "n": 11974,
-            "meanExcessPct": 0.696,
-            "medianExcessPct": -0.11,
-            "hitRatio": 0.4976
+            "meanExcessPct": 0.284,
+            "medianExcessPct": -0.842,
+            "hitRatio": 0.4795
           },
           {
             "decile": 5,
             "n": 11974,
-            "meanExcessPct": -2.783,
-            "medianExcessPct": -2.002,
-            "hitRatio": 0.4433
+            "meanExcessPct": -2.832,
+            "medianExcessPct": -2.068,
+            "hitRatio": 0.4416
           },
           {
             "decile": 6,
             "n": 11974,
-            "meanExcessPct": -4.677,
-            "medianExcessPct": -5.566,
-            "hitRatio": 0.3596
+            "meanExcessPct": -4.939,
+            "medianExcessPct": -5.665,
+            "hitRatio": 0.3589
           },
           {
             "decile": 7,
             "n": 11974,
-            "meanExcessPct": -0.217,
-            "medianExcessPct": -3.375,
-            "hitRatio": 0.4467
+            "meanExcessPct": -0.152,
+            "medianExcessPct": -3.318,
+            "hitRatio": 0.4485
           },
           {
             "decile": 8,
             "n": 11974,
-            "meanExcessPct": 7.771,
-            "medianExcessPct": 2.705,
-            "hitRatio": 0.5491
+            "meanExcessPct": 6.148,
+            "medianExcessPct": 1.567,
+            "hitRatio": 0.5322
           },
           {
             "decile": 9,
             "n": 11974,
-            "meanExcessPct": -0.225,
-            "medianExcessPct": -2.61,
-            "hitRatio": 0.433
+            "meanExcessPct": -0.638,
+            "medianExcessPct": -2.889,
+            "hitRatio": 0.4271
           },
           {
             "decile": 10,
             "n": 11974,
-            "meanExcessPct": 5.916,
-            "medianExcessPct": 2.167,
-            "hitRatio": 0.5492
+            "meanExcessPct": 7.659,
+            "medianExcessPct": 3.138,
+            "hitRatio": 0.5681
           }
         ],
-        "decileMonotonicity": 0.3333,
+        "decileMonotonicity": 0.3576,
         "topBucket": {
-          "n": 3908,
-          "dates": 80,
-          "meanExcessPct": 9.142,
-          "universeCarryPct": -0.626,
-          "spreadVsUniversePct": 9.768,
-          "attributableExcessPct": 9.142,
+          "n": 3213,
+          "dates": 93,
+          "meanExcessPct": 12.552,
+          "universeCarryPct": -0.616,
+          "spreadVsUniversePct": 13.169,
+          "attributableExcessPct": 12.552,
           "attributionKo": "벤치마크 대비 초과수익에서 유니버스 캐리를 뺀 값이 모델의 기여입니다. 합격 판정은 둘 중 보수적인 쪽으로 합니다.",
-          "medianExcessPct": 13.356,
-          "hitRatio": 0.6,
+          "medianExcessPct": 17.824,
+          "hitRatio": 0.6882,
           "topPct": 0.1,
           "horizonDays": 126,
           "pathBasisKo": "낙폭·CVaR·샤프는 겹치지 않는 날짜 표본에서만 계산합니다.",
-          "mddPct": -5.923,
-          "cvar95Pct": -5.923,
-          "sharpe": 0.8089,
-          "nonOverlappingDates": 5
+          "mddPct": -5.488,
+          "cvar95Pct": -5.488,
+          "sharpe": 1.2642,
+          "nonOverlappingDates": 6
         },
-        "turnover": 0.27,
+        "turnover": 0.2211,
         "foldStability": {
           "folds": 3,
-          "positiveFolds": 2,
-          "signAgreement": 0.667,
+          "positiveFolds": 3,
+          "signAgreement": 1.0,
           "meanByFoldPct": [
-            17.89,
-            8.822,
-            -4.444
+            22.276,
+            9.079,
+            1.229
           ],
-          "worstFoldPct": -4.444,
+          "worstFoldPct": 1.229,
           "stable": true
         }
       },
@@ -1828,40 +1828,40 @@
           "validation": {
             "n": 25636,
             "baseRate": 0.3971,
-            "rocAuc": 0.5021,
-            "prAuc": 0.3986,
+            "rocAuc": 0.5019,
+            "prAuc": 0.3985,
             "prAucLift": 0.0015,
-            "brier": 0.23903,
+            "brier": 0.23901,
             "brierSkillScore": 0.0016,
             "calibrationError": 1e-05
           },
           "test": {
             "n": 27305,
             "baseRate": 0.4408,
-            "rocAuc": 0.5029,
-            "prAuc": 0.4425,
-            "prAucLift": 0.0017,
-            "brier": 0.24922,
-            "brierSkillScore": -0.011,
-            "calibrationError": 0.04766
+            "rocAuc": 0.5027,
+            "prAuc": 0.4426,
+            "prAucLift": 0.0018,
+            "brier": 0.24991,
+            "brierSkillScore": -0.0139,
+            "calibrationError": 0.04918
           },
           "testTopBucket": {
-            "n": 17,
-            "dates": 17,
-            "meanExcessPct": 17.89,
-            "universeCarryPct": -2.782,
-            "spreadVsUniversePct": 20.672,
-            "attributableExcessPct": 17.89,
+            "n": 30,
+            "dates": 30,
+            "meanExcessPct": 22.276,
+            "universeCarryPct": -1.817,
+            "spreadVsUniversePct": 24.093,
+            "attributableExcessPct": 22.276,
             "attributionKo": "벤치마크 대비 초과수익에서 유니버스 캐리를 뺀 값이 모델의 기여입니다. 합격 판정은 둘 중 보수적인 쪽으로 합니다.",
-            "medianExcessPct": 19.262,
-            "hitRatio": 0.8824,
+            "medianExcessPct": 25.042,
+            "hitRatio": 0.9333,
             "topPct": 0.1,
             "horizonDays": 126,
             "pathBasisKo": "낙폭·CVaR·샤프는 겹치지 않는 날짜 표본에서만 계산합니다.",
             "mddPct": null,
             "cvar95Pct": null,
             "sharpe": null,
-            "nonOverlappingDates": 1
+            "nonOverlappingDates": 2
           }
         },
         {
@@ -1880,39 +1880,39 @@
           "validation": {
             "n": 27258,
             "baseRate": 0.3731,
-            "rocAuc": 0.6098,
-            "prAuc": 0.4503,
-            "prAucLift": 0.0772,
-            "brier": 0.22471,
-            "brierSkillScore": 0.0393,
+            "rocAuc": 0.6064,
+            "prAuc": 0.4483,
+            "prAucLift": 0.0752,
+            "brier": 0.22508,
+            "brierSkillScore": 0.0377,
             "calibrationError": 0.0
           },
           "test": {
             "n": 28208,
             "baseRate": 0.4621,
-            "rocAuc": 0.394,
-            "prAuc": 0.4054,
-            "prAucLift": -0.0567,
-            "brier": 0.27752,
-            "brierSkillScore": -0.1165,
-            "calibrationError": 0.14406
+            "rocAuc": 0.4012,
+            "prAuc": 0.4133,
+            "prAucLift": -0.0488,
+            "brier": 0.27699,
+            "brierSkillScore": -0.1144,
+            "calibrationError": 0.13677
           },
           "testTopBucket": {
-            "n": 3122,
+            "n": 2923,
             "dates": 53,
-            "meanExcessPct": 8.822,
+            "meanExcessPct": 9.079,
             "universeCarryPct": 0.785,
-            "spreadVsUniversePct": 8.037,
-            "attributableExcessPct": 8.037,
+            "spreadVsUniversePct": 8.294,
+            "attributableExcessPct": 8.294,
             "attributionKo": "벤치마크 대비 초과수익에서 유니버스 캐리를 뺀 값이 모델의 기여입니다. 합격 판정은 둘 중 보수적인 쪽으로 합니다.",
-            "medianExcessPct": 14.073,
-            "hitRatio": 0.6226,
+            "medianExcessPct": 14.01,
+            "hitRatio": 0.6038,
             "topPct": 0.1,
             "horizonDays": 126,
             "pathBasisKo": "낙폭·CVaR·샤프는 겹치지 않는 날짜 표본에서만 계산합니다.",
             "mddPct": 0.0,
-            "cvar95Pct": -10.058,
-            "sharpe": 0.6035,
+            "cvar95Pct": -11.079,
+            "sharpe": 0.5888,
             "nonOverlappingDates": 3
           }
         },
@@ -1932,9 +1932,9 @@
           "validation": {
             "n": 27455,
             "baseRate": 0.5175,
-            "rocAuc": 0.5008,
+            "rocAuc": 0.5007,
             "prAuc": 0.5179,
-            "prAucLift": 0.0004,
+            "prAucLift": 0.0003,
             "brier": 0.24965,
             "brierSkillScore": 0.0002,
             "calibrationError": 0.0
@@ -1942,12 +1942,12 @@
           "test": {
             "n": 29054,
             "baseRate": 0.3836,
-            "rocAuc": 0.5008,
+            "rocAuc": 0.5007,
             "prAuc": 0.3839,
-            "prAucLift": 0.0004,
-            "brier": 0.25437,
-            "brierSkillScore": -0.0758,
-            "calibrationError": 0.13403
+            "prAucLift": 0.0003,
+            "brier": 0.25438,
+            "brierSkillScore": -0.0759,
+            "calibrationError": 0.13407
           },
           "testTopBucket": {
             "n": 0,
@@ -1986,12 +1986,12 @@
           "test": {
             "n": 29458,
             "baseRate": 0.3187,
-            "rocAuc": 0.502,
-            "prAuc": 0.3195,
-            "prAucLift": 0.0009,
-            "brier": 0.22051,
-            "brierSkillScore": -0.0156,
-            "calibrationError": 0.05911
+            "rocAuc": 0.5016,
+            "prAuc": 0.3194,
+            "prAucLift": 0.0007,
+            "brier": 0.22045,
+            "brierSkillScore": -0.0153,
+            "calibrationError": 0.05878
           },
           "testTopBucket": {
             "n": 0,
@@ -2020,33 +2020,33 @@
           "validation": {
             "n": 29383,
             "baseRate": 0.3457,
-            "rocAuc": 0.5706,
-            "prAuc": 0.3984,
-            "prAucLift": 0.0527,
-            "brier": 0.22242,
-            "brierSkillScore": 0.0166,
+            "rocAuc": 0.5683,
+            "prAuc": 0.3946,
+            "prAucLift": 0.049,
+            "brier": 0.22252,
+            "brierSkillScore": 0.0162,
             "calibrationError": 0.0
           },
           "test": {
             "n": 5716,
             "baseRate": 0.5352,
-            "rocAuc": 0.4664,
-            "prAuc": 0.5107,
-            "prAucLift": -0.0245,
-            "brier": 0.28469,
-            "brierSkillScore": -0.1444,
-            "calibrationError": 0.17744
+            "rocAuc": 0.4601,
+            "prAuc": 0.5087,
+            "prAucLift": -0.0264,
+            "brier": 0.28341,
+            "brierSkillScore": -0.1393,
+            "calibrationError": 0.17399
           },
           "testTopBucket": {
-            "n": 702,
+            "n": 191,
             "dates": 10,
-            "meanExcessPct": -4.444,
+            "meanExcessPct": 1.229,
             "universeCarryPct": -4.442,
-            "spreadVsUniversePct": -0.002,
-            "attributableExcessPct": -4.444,
+            "spreadVsUniversePct": 5.671,
+            "attributableExcessPct": 1.229,
             "attributionKo": "벤치마크 대비 초과수익에서 유니버스 캐리를 뺀 값이 모델의 기여입니다. 합격 판정은 둘 중 보수적인 쪽으로 합니다.",
-            "medianExcessPct": -3.993,
-            "hitRatio": 0.0,
+            "medianExcessPct": -0.463,
+            "hitRatio": 0.4,
             "topPct": 0.1,
             "horizonDays": 126,
             "pathBasisKo": "낙폭·CVaR·샤프는 겹치지 않는 날짜 표본에서만 계산합니다.",
@@ -2077,218 +2077,221 @@
       "validation": {
         "n": 138523,
         "baseRate": 0.4014,
-        "rocAuc": 0.5778,
-        "prAuc": 0.4636,
-        "prAucLift": 0.0622,
-        "brier": 0.23525,
+        "rocAuc": 0.5775,
+        "prAuc": 0.4634,
+        "prAucLift": 0.0621,
+        "brier": 0.23526,
         "brierSkillScore": 0.0209,
         "calibrationError": 0.0,
-        "precisionAtTop10Pct": 0.5113,
+        "precisionAtTop10Pct": 0.5155,
         "deciles": [
           {
             "decile": 1,
             "n": 13853,
-            "meanExcessPct": 2.674,
-            "medianExcessPct": 2.283,
-            "hitRatio": 0.5621
+            "meanExcessPct": 2.635,
+            "medianExcessPct": 2.201,
+            "hitRatio": 0.5593
           },
           {
             "decile": 2,
             "n": 13852,
-            "meanExcessPct": 1.746,
-            "medianExcessPct": 0.86,
-            "hitRatio": 0.5225
+            "meanExcessPct": 1.982,
+            "medianExcessPct": 0.891,
+            "hitRatio": 0.5244
           },
           {
             "decile": 3,
             "n": 13852,
-            "meanExcessPct": -0.328,
-            "medianExcessPct": -0.392,
-            "hitRatio": 0.4896
+            "meanExcessPct": -0.406,
+            "medianExcessPct": -0.233,
+            "hitRatio": 0.4941
           },
           {
             "decile": 4,
             "n": 13852,
-            "meanExcessPct": 8.391,
-            "medianExcessPct": 3.111,
-            "hitRatio": 0.5508
+            "meanExcessPct": 6.652,
+            "medianExcessPct": 1.718,
+            "hitRatio": 0.5321
           },
           {
             "decile": 5,
             "n": 13853,
-            "meanExcessPct": 2.183,
-            "medianExcessPct": -0.802,
-            "hitRatio": 0.4793
+            "meanExcessPct": 4.458,
+            "medianExcessPct": 0.603,
+            "hitRatio": 0.513
           },
           {
             "decile": 6,
             "n": 13852,
-            "meanExcessPct": 0.316,
-            "medianExcessPct": -1.421,
-            "hitRatio": 0.4653
+            "meanExcessPct": -0.867,
+            "medianExcessPct": -2.151,
+            "hitRatio": 0.4454
           },
           {
             "decile": 7,
             "n": 13852,
-            "meanExcessPct": 0.289,
-            "medianExcessPct": -1.671,
-            "hitRatio": 0.455
+            "meanExcessPct": 0.227,
+            "medianExcessPct": -1.758,
+            "hitRatio": 0.4524
           },
           {
             "decile": 8,
             "n": 13852,
-            "meanExcessPct": -0.831,
-            "medianExcessPct": -2.477,
-            "hitRatio": 0.4396
+            "meanExcessPct": -0.308,
+            "medianExcessPct": -2.448,
+            "hitRatio": 0.4433
           },
           {
             "decile": 9,
             "n": 13852,
-            "meanExcessPct": -6.065,
-            "medianExcessPct": -6.322,
-            "hitRatio": 0.3441
+            "meanExcessPct": -5.934,
+            "medianExcessPct": -6.119,
+            "hitRatio": 0.3473
           },
           {
             "decile": 10,
             "n": 13853,
-            "meanExcessPct": -2.697,
-            "medianExcessPct": -6.396,
-            "hitRatio": 0.3972
+            "meanExcessPct": -2.761,
+            "medianExcessPct": -6.602,
+            "hitRatio": 0.3944
           }
         ],
-        "decileMonotonicity": -0.7697,
+        "decileMonotonicity": -0.6606,
         "topBucket": {
-          "n": 5603,
-          "dates": 121,
-          "meanExcessPct": -2.769,
-          "universeCarryPct": 0.705,
-          "spreadVsUniversePct": -3.474,
-          "attributableExcessPct": -3.474,
+          "n": 5555,
+          "dates": 125,
+          "meanExcessPct": -1.274,
+          "universeCarryPct": 0.603,
+          "spreadVsUniversePct": -1.877,
+          "attributableExcessPct": -1.877,
           "attributionKo": "벤치마크 대비 초과수익에서 유니버스 캐리를 뺀 값이 모델의 기여입니다. 합격 판정은 둘 중 보수적인 쪽으로 합니다.",
-          "medianExcessPct": -1.755,
-          "hitRatio": 0.314,
+          "medianExcessPct": -2.067,
+          "hitRatio": 0.368,
           "topPct": 0.1,
           "horizonDays": 126,
           "pathBasisKo": "낙폭·CVaR·샤프는 겹치지 않는 날짜 표본에서만 계산합니다.",
-          "mddPct": -13.606,
-          "cvar95Pct": -6.694,
-          "sharpe": -0.1604,
-          "nonOverlappingDates": 6
+          "mddPct": -29.004,
+          "cvar95Pct": -11.213,
+          "sharpe": -0.3184,
+          "nonOverlappingDates": 7
         },
-        "turnover": 0.4657
+        "turnover": 0.4869
       },
       "test": {
         "n": 119741,
         "baseRate": 0.4064,
-        "rocAuc": 0.4832,
-        "prAuc": 0.3925,
-        "prAucLift": -0.0139,
-        "brier": 0.25188,
-        "brierSkillScore": -0.0441,
-        "calibrationError": 0.06656,
-        "precisionAtTop10Pct": 0.3929,
+        "rocAuc": 0.48,
+        "prAuc": 0.3909,
+        "prAucLift": -0.0155,
+        "brier": 0.25124,
+        "brierSkillScore": -0.0415,
+        "calibrationError": 0.066,
+        "precisionAtTop10Pct": 0.3888,
         "deciles": [
           {
             "decile": 1,
             "n": 11975,
-            "meanExcessPct": -4.304,
-            "medianExcessPct": -6.31,
-            "hitRatio": 0.3746
+            "meanExcessPct": -4.737,
+            "medianExcessPct": -6.565,
+            "hitRatio": 0.3678
           },
           {
             "decile": 2,
             "n": 11974,
-            "meanExcessPct": 2.102,
-            "medianExcessPct": -0.639,
-            "hitRatio": 0.4871
+            "meanExcessPct": 1.757,
+            "medianExcessPct": -0.821,
+            "hitRatio": 0.4842
           },
           {
             "decile": 3,
             "n": 11974,
-            "meanExcessPct": 2.502,
-            "medianExcessPct": 1.116,
-            "hitRatio": 0.5301
+            "meanExcessPct": 2.539,
+            "medianExcessPct": 1.162,
+            "hitRatio": 0.5306
           },
           {
             "decile": 4,
             "n": 11974,
-            "meanExcessPct": 3.036,
-            "medianExcessPct": 2.031,
-            "hitRatio": 0.55
+            "meanExcessPct": 3.284,
+            "medianExcessPct": 2.225,
+            "hitRatio": 0.5563
           },
           {
             "decile": 5,
             "n": 11974,
-            "meanExcessPct": -1.719,
-            "medianExcessPct": -1.676,
-            "hitRatio": 0.4605
+            "meanExcessPct": -1.569,
+            "medianExcessPct": -1.685,
+            "hitRatio": 0.4628
           },
           {
             "decile": 6,
             "n": 11974,
-            "meanExcessPct": -3.249,
-            "medianExcessPct": -3.256,
-            "hitRatio": 0.4037
+            "meanExcessPct": -3.161,
+            "medianExcessPct": -3.161,
+            "hitRatio": 0.4059
           },
           {
             "decile": 7,
             "n": 11974,
-            "meanExcessPct": -1.555,
-            "medianExcessPct": -4.726,
-            "hitRatio": 0.4114
+            "meanExcessPct": -2.114,
+            "medianExcessPct": -5.249,
+            "hitRatio": 0.3949
           },
           {
             "decile": 8,
             "n": 11974,
-            "meanExcessPct": 6.165,
-            "medianExcessPct": 1.858,
-            "hitRatio": 0.538
+            "meanExcessPct": 6.42,
+            "medianExcessPct": 2.343,
+            "hitRatio": 0.5444
           },
           {
             "decile": 9,
             "n": 11974,
-            "meanExcessPct": -0.929,
-            "medianExcessPct": -3.069,
-            "hitRatio": 0.4235
+            "meanExcessPct": -0.895,
+            "medianExcessPct": -3.039,
+            "hitRatio": 0.4238
           },
           {
             "decile": 10,
             "n": 11974,
-            "meanExcessPct": 5.276,
-            "medianExcessPct": 1.647,
-            "hitRatio": 0.5332
+            "meanExcessPct": 5.8,
+            "medianExcessPct": 1.976,
+            "hitRatio": 0.5417
           }
         ],
-        "decileMonotonicity": 0.4061,
+        "decileMonotonicity": 0.3818,
         "topBucket": {
-          "n": 3406,
-          "dates": 63,
-          "meanExcessPct": 4.832,
-          "universeCarryPct": -0.045,
-          "spreadVsUniversePct": 4.877,
-          "attributableExcessPct": 4.832,
+          "n": 3249,
+          "dates": 73,
+          "meanExcessPct": 4.888,
+          "universeCarryPct": 0.372,
+          "spreadVsUniversePct": 4.515,
+          "attributableExcessPct": 4.515,
           "attributionKo": "벤치마크 대비 초과수익에서 유니버스 캐리를 뺀 값이 모델의 기여입니다. 합격 판정은 둘 중 보수적인 쪽으로 합니다.",
-          "medianExcessPct": -2.53,
-          "hitRatio": 0.4444,
+          "medianExcessPct": -1.813,
+          "hitRatio": 0.4384,
           "topPct": 0.1,
           "horizonDays": 126,
           "pathBasisKo": "낙폭·CVaR·샤프는 겹치지 않는 날짜 표본에서만 계산합니다.",
-          "mddPct": -4.29,
-          "cvar95Pct": -4.813,
-          "sharpe": 0.2933,
-          "nonOverlappingDates": 4
+          "mddPct": -0.081,
+          "cvar95Pct": -27.305,
+          "sharpe": 0.1869,
+          "nonOverlappingDates": 5
         },
-        "turnover": 0.4937,
+        "turnover": 0.4641,
         "foldStability": {
-          "folds": 2,
-          "positiveFolds": 1,
-          "signAgreement": 0.5,
+          "folds": 5,
+          "positiveFolds": 3,
+          "signAgreement": 0.6,
           "meanByFoldPct": [
-            7.073,
-            -6.871
+            -11.694,
+            7.694,
+            2.349,
+            14.075,
+            -7.548
           ],
-          "worstFoldPct": -6.871,
-          "stable": false
+          "worstFoldPct": -11.694,
+          "stable": true
         }
       },
       "folds": [
@@ -2308,32 +2311,40 @@
           "validation": {
             "n": 25636,
             "baseRate": 0.3971,
-            "rocAuc": 0.5065,
-            "prAuc": 0.4003,
-            "prAucLift": 0.0033,
-            "brier": 0.23925,
+            "rocAuc": 0.507,
+            "prAuc": 0.4006,
+            "prAucLift": 0.0036,
+            "brier": 0.23923,
             "brierSkillScore": 0.0007,
             "calibrationError": 0.0
           },
           "test": {
             "n": 27305,
             "baseRate": 0.4408,
-            "rocAuc": 0.508,
-            "prAuc": 0.4448,
-            "prAucLift": 0.004,
-            "brier": 0.24798,
-            "brierSkillScore": -0.006,
-            "calibrationError": 0.04312
+            "rocAuc": 0.5052,
+            "prAuc": 0.4434,
+            "prAucLift": 0.0026,
+            "brier": 0.248,
+            "brierSkillScore": -0.0061,
+            "calibrationError": 0.0426
           },
           "testTopBucket": {
-            "n": 0,
-            "meanExcessPct": null,
-            "hitRatio": null,
+            "n": 2,
+            "dates": 2,
+            "meanExcessPct": -11.694,
+            "universeCarryPct": -5.088,
+            "spreadVsUniversePct": -6.606,
+            "attributableExcessPct": -11.694,
+            "attributionKo": "벤치마크 대비 초과수익에서 유니버스 캐리를 뺀 값이 모델의 기여입니다. 합격 판정은 둘 중 보수적인 쪽으로 합니다.",
+            "medianExcessPct": -11.694,
+            "hitRatio": 0.5,
+            "topPct": 0.1,
+            "horizonDays": 126,
+            "pathBasisKo": "낙폭·CVaR·샤프는 겹치지 않는 날짜 표본에서만 계산합니다.",
             "mddPct": null,
             "cvar95Pct": null,
-            "dates": 0,
             "sharpe": null,
-            "nonOverlappingDates": 0
+            "nonOverlappingDates": 2
           }
         },
         {
@@ -2352,39 +2363,39 @@
           "validation": {
             "n": 27258,
             "baseRate": 0.3731,
-            "rocAuc": 0.5663,
-            "prAuc": 0.4254,
-            "prAucLift": 0.0523,
-            "brier": 0.22986,
-            "brierSkillScore": 0.0173,
+            "rocAuc": 0.5642,
+            "prAuc": 0.4265,
+            "prAucLift": 0.0534,
+            "brier": 0.23001,
+            "brierSkillScore": 0.0166,
             "calibrationError": 0.0
           },
           "test": {
             "n": 28208,
             "baseRate": 0.4621,
-            "rocAuc": 0.4396,
-            "prAuc": 0.4174,
-            "prAucLift": -0.0447,
-            "brier": 0.27981,
-            "brierSkillScore": -0.1257,
-            "calibrationError": 0.13667
+            "rocAuc": 0.4294,
+            "prAuc": 0.4106,
+            "prAucLift": -0.0515,
+            "brier": 0.27693,
+            "brierSkillScore": -0.1141,
+            "calibrationError": 0.14011
           },
           "testTopBucket": {
-            "n": 2831,
+            "n": 2576,
             "dates": 53,
-            "meanExcessPct": 7.073,
+            "meanExcessPct": 7.694,
             "universeCarryPct": 0.785,
-            "spreadVsUniversePct": 6.288,
-            "attributableExcessPct": 6.288,
+            "spreadVsUniversePct": 6.909,
+            "attributableExcessPct": 6.909,
             "attributionKo": "벤치마크 대비 초과수익에서 유니버스 캐리를 뺀 값이 모델의 기여입니다. 합격 판정은 둘 중 보수적인 쪽으로 합니다.",
-            "medianExcessPct": 2.589,
-            "hitRatio": 0.5094,
+            "medianExcessPct": -0.081,
+            "hitRatio": 0.4906,
             "topPct": 0.1,
             "horizonDays": 126,
             "pathBasisKo": "낙폭·CVaR·샤프는 겹치지 않는 날짜 표본에서만 계산합니다.",
-            "mddPct": -0.884,
-            "cvar95Pct": -3.053,
-            "sharpe": 0.4669,
+            "mddPct": 0.0,
+            "cvar95Pct": -10.865,
+            "sharpe": 0.3324,
             "nonOverlappingDates": 3
           }
         },
@@ -2405,31 +2416,39 @@
             "n": 27455,
             "baseRate": 0.5175,
             "rocAuc": 0.5002,
-            "prAuc": 0.5176,
+            "prAuc": 0.5177,
             "prAucLift": 0.0001,
-            "brier": 0.24966,
-            "brierSkillScore": 0.0001,
+            "brier": 0.24964,
+            "brierSkillScore": 0.0002,
             "calibrationError": 0.0
           },
           "test": {
             "n": 29054,
             "baseRate": 0.3836,
-            "rocAuc": 0.5,
+            "rocAuc": 0.4998,
             "prAuc": 0.3835,
             "prAucLift": -0.0,
-            "brier": 0.25443,
-            "brierSkillScore": -0.0761,
-            "calibrationError": 0.13412
+            "brier": 0.25454,
+            "brierSkillScore": -0.0765,
+            "calibrationError": 0.13417
           },
           "testTopBucket": {
-            "n": 0,
-            "meanExcessPct": null,
-            "hitRatio": null,
+            "n": 6,
+            "dates": 6,
+            "meanExcessPct": 2.349,
+            "universeCarryPct": 4.501,
+            "spreadVsUniversePct": -2.151,
+            "attributableExcessPct": -2.151,
+            "attributionKo": "벤치마크 대비 초과수익에서 유니버스 캐리를 뺀 값이 모델의 기여입니다. 합격 판정은 둘 중 보수적인 쪽으로 합니다.",
+            "medianExcessPct": 2.158,
+            "hitRatio": 0.5,
+            "topPct": 0.1,
+            "horizonDays": 126,
+            "pathBasisKo": "낙폭·CVaR·샤프는 겹치지 않는 날짜 표본에서만 계산합니다.",
             "mddPct": null,
             "cvar95Pct": null,
-            "dates": 0,
             "sharpe": null,
-            "nonOverlappingDates": 0
+            "nonOverlappingDates": 1
           }
         },
         {
@@ -2448,10 +2467,10 @@
           "validation": {
             "n": 28791,
             "baseRate": 0.3781,
-            "rocAuc": 0.5,
-            "prAuc": 0.3781,
-            "prAucLift": 0.0,
-            "brier": 0.23514,
+            "rocAuc": 0.5001,
+            "prAuc": 0.3782,
+            "prAucLift": 0.0001,
+            "brier": 0.23513,
             "brierSkillScore": 0.0,
             "calibrationError": 0.0
           },
@@ -2461,19 +2480,27 @@
             "rocAuc": 0.5,
             "prAuc": 0.3187,
             "prAucLift": 0.0,
-            "brier": 0.22065,
+            "brier": 0.22066,
             "brierSkillScore": -0.0163,
-            "calibrationError": 0.05945
+            "calibrationError": 0.05943
           },
           "testTopBucket": {
-            "n": 0,
-            "meanExcessPct": null,
-            "hitRatio": null,
+            "n": 2,
+            "dates": 2,
+            "meanExcessPct": 14.075,
+            "universeCarryPct": 6.587,
+            "spreadVsUniversePct": 7.488,
+            "attributableExcessPct": 7.488,
+            "attributionKo": "벤치마크 대비 초과수익에서 유니버스 캐리를 뺀 값이 모델의 기여입니다. 합격 판정은 둘 중 보수적인 쪽으로 합니다.",
+            "medianExcessPct": 14.075,
+            "hitRatio": 1.0,
+            "topPct": 0.1,
+            "horizonDays": 126,
+            "pathBasisKo": "낙폭·CVaR·샤프는 겹치지 않는 날짜 표본에서만 계산합니다.",
             "mddPct": null,
             "cvar95Pct": null,
-            "dates": 0,
             "sharpe": null,
-            "nonOverlappingDates": 0
+            "nonOverlappingDates": 1
           }
         },
         {
@@ -2492,33 +2519,33 @@
           "validation": {
             "n": 29383,
             "baseRate": 0.3457,
-            "rocAuc": 0.5593,
-            "prAuc": 0.3881,
-            "prAucLift": 0.0425,
-            "brier": 0.2234,
-            "brierSkillScore": 0.0123,
+            "rocAuc": 0.5579,
+            "prAuc": 0.3879,
+            "prAucLift": 0.0423,
+            "brier": 0.22337,
+            "brierSkillScore": 0.0124,
             "calibrationError": 0.0
           },
           "test": {
             "n": 5716,
             "baseRate": 0.5352,
-            "rocAuc": 0.488,
-            "prAuc": 0.5286,
-            "prAucLift": -0.0066,
-            "brier": 0.28062,
-            "brierSkillScore": -0.1281,
-            "calibrationError": 0.17128
+            "rocAuc": 0.4869,
+            "prAuc": 0.5277,
+            "prAucLift": -0.0075,
+            "brier": 0.28071,
+            "brierSkillScore": -0.1284,
+            "calibrationError": 0.17175
           },
           "testTopBucket": {
-            "n": 540,
+            "n": 639,
             "dates": 10,
-            "meanExcessPct": -6.871,
+            "meanExcessPct": -7.548,
             "universeCarryPct": -4.442,
-            "spreadVsUniversePct": -2.429,
-            "attributableExcessPct": -6.871,
+            "spreadVsUniversePct": -3.107,
+            "attributableExcessPct": -7.548,
             "attributionKo": "벤치마크 대비 초과수익에서 유니버스 캐리를 뺀 값이 모델의 기여입니다. 합격 판정은 둘 중 보수적인 쪽으로 합니다.",
-            "medianExcessPct": -6.187,
-            "hitRatio": 0.1,
+            "medianExcessPct": -5.441,
+            "hitRatio": 0.0,
             "topPct": 0.1,
             "horizonDays": 126,
             "pathBasisKo": "낙폭·CVaR·샤프는 겹치지 않는 날짜 표본에서만 계산합니다.",
@@ -2543,216 +2570,216 @@
         "rocAuc": 0.5804,
         "prAuc": 0.4654,
         "prAucLift": 0.064,
-        "brier": 0.23495,
+        "brier": 0.23496,
         "brierSkillScore": 0.0221,
         "calibrationError": 0.0,
-        "precisionAtTop10Pct": 0.5362,
+        "precisionAtTop10Pct": 0.5071,
         "deciles": [
           {
             "decile": 1,
             "n": 13853,
-            "meanExcessPct": 1.106,
-            "medianExcessPct": 1.257,
-            "hitRatio": 0.5374
+            "meanExcessPct": 0.902,
+            "medianExcessPct": 1.097,
+            "hitRatio": 0.5333
           },
           {
             "decile": 2,
             "n": 13852,
-            "meanExcessPct": 3.409,
-            "medianExcessPct": 1.505,
-            "hitRatio": 0.5373
+            "meanExcessPct": 3.392,
+            "medianExcessPct": 1.621,
+            "hitRatio": 0.5405
           },
           {
             "decile": 3,
             "n": 13852,
-            "meanExcessPct": 2.442,
-            "medianExcessPct": 0.509,
-            "hitRatio": 0.5132
+            "meanExcessPct": 2.661,
+            "medianExcessPct": 0.528,
+            "hitRatio": 0.5139
           },
           {
             "decile": 4,
             "n": 13852,
-            "meanExcessPct": 4.869,
-            "medianExcessPct": 0.798,
-            "hitRatio": 0.5171
+            "meanExcessPct": 4.881,
+            "medianExcessPct": 0.801,
+            "hitRatio": 0.5172
           },
           {
             "decile": 5,
             "n": 13853,
-            "meanExcessPct": 5.578,
-            "medianExcessPct": 1.104,
+            "meanExcessPct": 5.574,
+            "medianExcessPct": 1.096,
             "hitRatio": 0.5251
           },
           {
             "decile": 6,
             "n": 13852,
-            "meanExcessPct": -0.496,
-            "medianExcessPct": -2.108,
-            "hitRatio": 0.4456
+            "meanExcessPct": -0.506,
+            "medianExcessPct": -2.112,
+            "hitRatio": 0.4451
           },
           {
             "decile": 7,
             "n": 13852,
-            "meanExcessPct": 0.089,
-            "medianExcessPct": -1.753,
-            "hitRatio": 0.4525
+            "meanExcessPct": 0.093,
+            "medianExcessPct": -1.75,
+            "hitRatio": 0.4527
           },
           {
             "decile": 8,
             "n": 13852,
-            "meanExcessPct": -2.284,
-            "medianExcessPct": -2.609,
-            "hitRatio": 0.4362
+            "meanExcessPct": -2.288,
+            "medianExcessPct": -2.589,
+            "hitRatio": 0.4368
           },
           {
             "decile": 9,
             "n": 13852,
-            "meanExcessPct": -6.248,
-            "medianExcessPct": -6.507,
-            "hitRatio": 0.3408
+            "meanExcessPct": -6.229,
+            "medianExcessPct": -6.487,
+            "hitRatio": 0.341
           },
           {
             "decile": 10,
             "n": 13853,
-            "meanExcessPct": -2.786,
-            "medianExcessPct": -6.442,
-            "hitRatio": 0.4003
+            "meanExcessPct": -2.803,
+            "medianExcessPct": -6.479,
+            "hitRatio": 0.3998
           }
         ],
         "decileMonotonicity": -0.7455,
         "topBucket": {
-          "n": 5450,
-          "dates": 206,
-          "meanExcessPct": -2.744,
-          "universeCarryPct": -0.236,
-          "spreadVsUniversePct": -2.508,
-          "attributableExcessPct": -2.744,
+          "n": 5488,
+          "dates": 204,
+          "meanExcessPct": -3.169,
+          "universeCarryPct": -0.249,
+          "spreadVsUniversePct": -2.92,
+          "attributableExcessPct": -3.169,
           "attributionKo": "벤치마크 대비 초과수익에서 유니버스 캐리를 뺀 값이 모델의 기여입니다. 합격 판정은 둘 중 보수적인 쪽으로 합니다.",
-          "medianExcessPct": -2.047,
-          "hitRatio": 0.4223,
+          "medianExcessPct": -2.21,
+          "hitRatio": 0.3971,
           "topPct": 0.1,
           "horizonDays": 126,
           "pathBasisKo": "낙폭·CVaR·샤프는 겹치지 않는 날짜 표본에서만 계산합니다.",
-          "mddPct": -23.166,
+          "mddPct": -23.083,
           "cvar95Pct": -45.028,
-          "sharpe": 0.2732,
+          "sharpe": 0.3315,
           "nonOverlappingDates": 10
         },
-        "turnover": 0.3295
+        "turnover": 0.3204
       },
       "test": {
         "n": 119741,
         "baseRate": 0.4064,
         "rocAuc": 0.4685,
-        "prAuc": 0.3858,
-        "prAucLift": -0.0205,
-        "brier": 0.25258,
-        "brierSkillScore": -0.047,
-        "calibrationError": 0.06543,
-        "precisionAtTop10Pct": 0.3544,
+        "prAuc": 0.386,
+        "prAucLift": -0.0204,
+        "brier": 0.25259,
+        "brierSkillScore": -0.0471,
+        "calibrationError": 0.06556,
+        "precisionAtTop10Pct": 0.3896,
         "deciles": [
           {
             "decile": 1,
             "n": 11975,
-            "meanExcessPct": -6.665,
-            "medianExcessPct": -7.895,
-            "hitRatio": 0.3214
+            "meanExcessPct": -6.675,
+            "medianExcessPct": -7.903,
+            "hitRatio": 0.3211
           },
           {
             "decile": 2,
             "n": 11974,
-            "meanExcessPct": 1.061,
-            "medianExcessPct": -1.081,
-            "hitRatio": 0.4782
+            "meanExcessPct": 1.073,
+            "medianExcessPct": -1.07,
+            "hitRatio": 0.4786
           },
           {
             "decile": 3,
             "n": 11974,
-            "meanExcessPct": 2.465,
-            "medianExcessPct": 1.133,
+            "meanExcessPct": 2.463,
+            "medianExcessPct": 1.13,
             "hitRatio": 0.5301
           },
           {
             "decile": 4,
             "n": 11974,
-            "meanExcessPct": 2.718,
-            "medianExcessPct": 1.539,
-            "hitRatio": 0.5398
+            "meanExcessPct": 2.727,
+            "medianExcessPct": 1.561,
+            "hitRatio": 0.5399
           },
           {
             "decile": 5,
             "n": 11974,
-            "meanExcessPct": -1.378,
-            "medianExcessPct": -0.829,
-            "hitRatio": 0.4811
+            "meanExcessPct": -1.392,
+            "medianExcessPct": -0.842,
+            "hitRatio": 0.4806
           },
           {
             "decile": 6,
             "n": 11974,
-            "meanExcessPct": -3.787,
-            "medianExcessPct": -3.955,
-            "hitRatio": 0.3832
+            "meanExcessPct": -3.83,
+            "medianExcessPct": -3.97,
+            "hitRatio": 0.3828
           },
           {
             "decile": 7,
             "n": 11974,
-            "meanExcessPct": -1.594,
-            "medianExcessPct": -4.32,
-            "hitRatio": 0.4322
+            "meanExcessPct": -1.477,
+            "medianExcessPct": -4.21,
+            "hitRatio": 0.4334
           },
           {
             "decile": 8,
             "n": 11974,
-            "meanExcessPct": 7.861,
-            "medianExcessPct": 3.585,
-            "hitRatio": 0.5686
+            "meanExcessPct": 7.858,
+            "medianExcessPct": 3.622,
+            "hitRatio": 0.5687
           },
           {
             "decile": 9,
             "n": 11974,
-            "meanExcessPct": -0.814,
-            "medianExcessPct": -3.013,
-            "hitRatio": 0.4246
+            "meanExcessPct": -0.743,
+            "medianExcessPct": -3.007,
+            "hitRatio": 0.4252
           },
           {
             "decile": 10,
             "n": 11974,
-            "meanExcessPct": 7.458,
-            "medianExcessPct": 2.461,
-            "hitRatio": 0.553
+            "meanExcessPct": 7.319,
+            "medianExcessPct": 2.366,
+            "hitRatio": 0.5518
           }
         ],
         "decileMonotonicity": 0.3818,
         "topBucket": {
-          "n": 3970,
+          "n": 3885,
           "dates": 131,
-          "meanExcessPct": 3.542,
+          "meanExcessPct": 3.364,
           "universeCarryPct": -0.662,
-          "spreadVsUniversePct": 4.203,
-          "attributableExcessPct": 3.542,
+          "spreadVsUniversePct": 4.026,
+          "attributableExcessPct": 3.364,
           "attributionKo": "벤치마크 대비 초과수익에서 유니버스 캐리를 뺀 값이 모델의 기여입니다. 합격 판정은 둘 중 보수적인 쪽으로 합니다.",
-          "medianExcessPct": -5.092,
+          "medianExcessPct": -4.735,
           "hitRatio": 0.4198,
           "topPct": 0.1,
           "horizonDays": 126,
           "pathBasisKo": "낙폭·CVaR·샤프는 겹치지 않는 날짜 표본에서만 계산합니다.",
           "mddPct": -35.852,
           "cvar95Pct": -29.808,
-          "sharpe": 0.0299,
+          "sharpe": 0.0198,
           "nonOverlappingDates": 7
         },
-        "turnover": 0.3786,
+        "turnover": 0.3655,
         "foldStability": {
           "folds": 4,
           "positiveFolds": 3,
           "signAgreement": 0.75,
           "meanByFoldPct": [
-            -13.685,
-            12.098,
+            -13.819,
+            11.853,
             32.655,
-            2.963
+            2.599
           ],
-          "worstFoldPct": -13.685,
+          "worstFoldPct": -13.819,
           "stable": true
         }
       },
@@ -2773,8 +2800,8 @@
           "validation": {
             "n": 25636,
             "baseRate": 0.3971,
-            "rocAuc": 0.5072,
-            "prAuc": 0.4006,
+            "rocAuc": 0.5073,
+            "prAuc": 0.4007,
             "prAucLift": 0.0036,
             "brier": 0.23923,
             "brierSkillScore": 0.0007,
@@ -2783,29 +2810,29 @@
           "test": {
             "n": 27305,
             "baseRate": 0.4408,
-            "rocAuc": 0.5089,
-            "prAuc": 0.4468,
-            "prAucLift": 0.006,
-            "brier": 0.2478,
-            "brierSkillScore": -0.0053,
-            "calibrationError": 0.0399
+            "rocAuc": 0.508,
+            "prAuc": 0.4462,
+            "prAucLift": 0.0054,
+            "brier": 0.24784,
+            "brierSkillScore": -0.0055,
+            "calibrationError": 0.03991
           },
           "testTopBucket": {
-            "n": 597,
+            "n": 542,
             "dates": 53,
-            "meanExcessPct": -13.685,
+            "meanExcessPct": -13.819,
             "universeCarryPct": -3.339,
-            "spreadVsUniversePct": -10.346,
-            "attributableExcessPct": -13.685,
+            "spreadVsUniversePct": -10.48,
+            "attributableExcessPct": -13.819,
             "attributionKo": "벤치마크 대비 초과수익에서 유니버스 캐리를 뺀 값이 모델의 기여입니다. 합격 판정은 둘 중 보수적인 쪽으로 합니다.",
-            "medianExcessPct": -12.211,
-            "hitRatio": 0.0943,
+            "medianExcessPct": -13.056,
+            "hitRatio": 0.0755,
             "topPct": 0.1,
             "horizonDays": 126,
             "pathBasisKo": "낙폭·CVaR·샤프는 겹치지 않는 날짜 표본에서만 계산합니다.",
             "mddPct": -29.808,
             "cvar95Pct": -29.808,
-            "sharpe": -0.4144,
+            "sharpe": -0.455,
             "nonOverlappingDates": 3
           }
         },
@@ -2826,8 +2853,8 @@
             "n": 27258,
             "baseRate": 0.3731,
             "rocAuc": 0.6083,
-            "prAuc": 0.4615,
-            "prAucLift": 0.0884,
+            "prAuc": 0.4618,
+            "prAucLift": 0.0887,
             "brier": 0.22546,
             "brierSkillScore": 0.0361,
             "calibrationError": 0.0
@@ -2835,29 +2862,29 @@
           "test": {
             "n": 28208,
             "baseRate": 0.4621,
-            "rocAuc": 0.3798,
-            "prAuc": 0.3865,
-            "prAucLift": -0.0756,
-            "brier": 0.28247,
-            "brierSkillScore": -0.1364,
-            "calibrationError": 0.15665
+            "rocAuc": 0.3797,
+            "prAuc": 0.3864,
+            "prAucLift": -0.0757,
+            "brier": 0.28251,
+            "brierSkillScore": -0.1366,
+            "calibrationError": 0.15663
           },
           "testTopBucket": {
-            "n": 2871,
+            "n": 2823,
             "dates": 53,
-            "meanExcessPct": 12.098,
+            "meanExcessPct": 11.853,
             "universeCarryPct": 0.785,
-            "spreadVsUniversePct": 11.314,
-            "attributableExcessPct": 11.314,
+            "spreadVsUniversePct": 11.068,
+            "attributableExcessPct": 11.068,
             "attributionKo": "벤치마크 대비 초과수익에서 유니버스 캐리를 뺀 값이 모델의 기여입니다. 합격 판정은 둘 중 보수적인 쪽으로 합니다.",
-            "medianExcessPct": 15.644,
+            "medianExcessPct": 18.279,
             "hitRatio": 0.6226,
             "topPct": 0.1,
             "horizonDays": 126,
             "pathBasisKo": "낙폭·CVaR·샤프는 겹치지 않는 날짜 표본에서만 계산합니다.",
             "mddPct": 0.0,
-            "cvar95Pct": -9.83,
-            "sharpe": 0.5675,
+            "cvar95Pct": -10.38,
+            "sharpe": 0.5565,
             "nonOverlappingDates": 3
           }
         },
@@ -2940,11 +2967,11 @@
             "n": 29458,
             "baseRate": 0.3187,
             "rocAuc": 0.503,
-            "prAuc": 0.3199,
+            "prAuc": 0.32,
             "prAucLift": 0.0013,
-            "brier": 0.22038,
-            "brierSkillScore": -0.015,
-            "calibrationError": 0.05868
+            "brier": 0.22036,
+            "brierSkillScore": -0.0149,
+            "calibrationError": 0.05867
           },
           "testTopBucket": {
             "n": 0,
@@ -2973,33 +3000,33 @@
           "validation": {
             "n": 29383,
             "baseRate": 0.3457,
-            "rocAuc": 0.5055,
-            "prAuc": 0.3497,
-            "prAucLift": 0.004,
-            "brier": 0.22612,
-            "brierSkillScore": 0.0003,
+            "rocAuc": 0.5052,
+            "prAuc": 0.3496,
+            "prAucLift": 0.0039,
+            "brier": 0.22613,
+            "brierSkillScore": 0.0002,
             "calibrationError": 0.0
           },
           "test": {
             "n": 5716,
             "baseRate": 0.5352,
-            "rocAuc": 0.4436,
-            "prAuc": 0.507,
-            "prAucLift": -0.0282,
-            "brier": 0.28473,
-            "brierSkillScore": -0.1446,
-            "calibrationError": 0.18861
+            "rocAuc": 0.4418,
+            "prAuc": 0.5055,
+            "prAucLift": -0.0296,
+            "brier": 0.28472,
+            "brierSkillScore": -0.1445,
+            "calibrationError": 0.18709
           },
           "testTopBucket": {
-            "n": 437,
+            "n": 454,
             "dates": 10,
-            "meanExcessPct": 2.963,
+            "meanExcessPct": 2.599,
             "universeCarryPct": -4.442,
-            "spreadVsUniversePct": 7.405,
-            "attributableExcessPct": 2.963,
+            "spreadVsUniversePct": 7.041,
+            "attributableExcessPct": 2.599,
             "attributionKo": "벤치마크 대비 초과수익에서 유니버스 캐리를 뺀 값이 모델의 기여입니다. 합격 판정은 둘 중 보수적인 쪽으로 합니다.",
-            "medianExcessPct": 1.574,
-            "hitRatio": 0.6,
+            "medianExcessPct": 1.483,
+            "hitRatio": 0.7,
             "topPct": 0.1,
             "horizonDays": 126,
             "pathBasisKo": "낙폭·CVaR·샤프는 겹치지 않는 날짜 표본에서만 계산합니다.",
@@ -3021,219 +3048,219 @@
       "validation": {
         "n": 138523,
         "baseRate": 0.4014,
-        "rocAuc": 0.5805,
+        "rocAuc": 0.5806,
         "prAuc": 0.4655,
         "prAucLift": 0.0641,
-        "brier": 0.23494,
+        "brier": 0.23493,
         "brierSkillScore": 0.0222,
         "calibrationError": 0.0,
-        "precisionAtTop10Pct": 0.5074,
+        "precisionAtTop10Pct": 0.5104,
         "deciles": [
           {
             "decile": 1,
             "n": 13853,
-            "meanExcessPct": 0.868,
-            "medianExcessPct": 1.106,
+            "meanExcessPct": 0.891,
+            "medianExcessPct": 1.123,
             "hitRatio": 0.5335
           },
           {
             "decile": 2,
             "n": 13852,
-            "meanExcessPct": 3.433,
-            "medianExcessPct": 1.656,
-            "hitRatio": 0.5419
+            "meanExcessPct": 3.43,
+            "medianExcessPct": 1.653,
+            "hitRatio": 0.5417
           },
           {
             "decile": 3,
             "n": 13852,
-            "meanExcessPct": 2.305,
-            "medianExcessPct": 0.24,
-            "hitRatio": 0.5062
+            "meanExcessPct": 2.279,
+            "medianExcessPct": 0.243,
+            "hitRatio": 0.5066
           },
           {
             "decile": 4,
             "n": 13852,
-            "meanExcessPct": 5.61,
-            "medianExcessPct": 1.282,
-            "hitRatio": 0.5263
+            "meanExcessPct": 5.145,
+            "medianExcessPct": 1.062,
+            "hitRatio": 0.5227
           },
           {
             "decile": 5,
             "n": 13853,
-            "meanExcessPct": 5.21,
-            "medianExcessPct": 0.871,
-            "hitRatio": 0.5202
+            "meanExcessPct": 5.628,
+            "medianExcessPct": 1.175,
+            "hitRatio": 0.5258
           },
           {
             "decile": 6,
             "n": 13852,
-            "meanExcessPct": -0.589,
-            "medianExcessPct": -2.073,
-            "hitRatio": 0.4467
+            "meanExcessPct": -0.495,
+            "medianExcessPct": -2.118,
+            "hitRatio": 0.4449
           },
           {
             "decile": 7,
             "n": 13852,
-            "meanExcessPct": 0.111,
-            "medianExcessPct": -1.726,
-            "hitRatio": 0.4531
+            "meanExcessPct": 0.05,
+            "medianExcessPct": -1.75,
+            "hitRatio": 0.4525
           },
           {
             "decile": 8,
             "n": 13852,
-            "meanExcessPct": -2.232,
-            "medianExcessPct": -2.619,
-            "hitRatio": 0.4365
+            "meanExcessPct": -2.215,
+            "medianExcessPct": -2.601,
+            "hitRatio": 0.4368
           },
           {
             "decile": 9,
             "n": 13852,
-            "meanExcessPct": -6.248,
-            "medianExcessPct": -6.499,
+            "meanExcessPct": -6.245,
+            "medianExcessPct": -6.504,
             "hitRatio": 0.341
           },
           {
             "decile": 10,
             "n": 13853,
-            "meanExcessPct": -2.792,
-            "medianExcessPct": -6.46,
+            "meanExcessPct": -2.791,
+            "medianExcessPct": -6.469,
             "hitRatio": 0.4001
           }
         ],
-        "decileMonotonicity": -0.7576,
+        "decileMonotonicity": -0.7455,
         "topBucket": {
-          "n": 5488,
+          "n": 5428,
           "dates": 203,
-          "meanExcessPct": -0.559,
+          "meanExcessPct": -0.538,
           "universeCarryPct": -0.157,
-          "spreadVsUniversePct": -0.402,
-          "attributableExcessPct": -0.559,
+          "spreadVsUniversePct": -0.381,
+          "attributableExcessPct": -0.538,
           "attributionKo": "벤치마크 대비 초과수익에서 유니버스 캐리를 뺀 값이 모델의 기여입니다. 합격 판정은 둘 중 보수적인 쪽으로 합니다.",
           "medianExcessPct": -1.195,
-          "hitRatio": 0.4483,
+          "hitRatio": 0.4384,
           "topPct": 0.1,
           "horizonDays": 126,
           "pathBasisKo": "낙폭·CVaR·샤프는 겹치지 않는 날짜 표본에서만 계산합니다.",
-          "mddPct": -21.096,
+          "mddPct": -21.627,
           "cvar95Pct": -45.028,
-          "sharpe": 0.2741,
+          "sharpe": 0.2722,
           "nonOverlappingDates": 10
         },
-        "turnover": 0.3667
+        "turnover": 0.3665
       },
       "test": {
         "n": 119741,
         "baseRate": 0.4064,
-        "rocAuc": 0.4691,
-        "prAuc": 0.3857,
-        "prAucLift": -0.0207,
-        "brier": 0.25268,
-        "brierSkillScore": -0.0475,
-        "calibrationError": 0.06602,
-        "precisionAtTop10Pct": 0.3395,
+        "rocAuc": 0.4682,
+        "prAuc": 0.3854,
+        "prAucLift": -0.021,
+        "brier": 0.25271,
+        "brierSkillScore": -0.0476,
+        "calibrationError": 0.06596,
+        "precisionAtTop10Pct": 0.3817,
         "deciles": [
           {
             "decile": 1,
             "n": 11975,
-            "meanExcessPct": -6.696,
-            "medianExcessPct": -7.863,
+            "meanExcessPct": -6.702,
+            "medianExcessPct": -7.852,
             "hitRatio": 0.3213
           },
           {
             "decile": 2,
             "n": 11974,
-            "meanExcessPct": 1.341,
-            "medianExcessPct": -0.756,
-            "hitRatio": 0.4846
+            "meanExcessPct": 1.025,
+            "medianExcessPct": -1.133,
+            "hitRatio": 0.4777
           },
           {
             "decile": 3,
             "n": 11974,
-            "meanExcessPct": 2.501,
-            "medianExcessPct": 1.226,
-            "hitRatio": 0.5328
+            "meanExcessPct": 2.464,
+            "medianExcessPct": 1.13,
+            "hitRatio": 0.5301
           },
           {
             "decile": 4,
             "n": 11974,
-            "meanExcessPct": 2.352,
-            "medianExcessPct": 1.143,
-            "hitRatio": 0.5288
+            "meanExcessPct": 2.727,
+            "medianExcessPct": 1.522,
+            "hitRatio": 0.5393
           },
           {
             "decile": 5,
             "n": 11974,
-            "meanExcessPct": -1.239,
-            "medianExcessPct": -0.731,
-            "hitRatio": 0.4833
+            "meanExcessPct": -1.27,
+            "medianExcessPct": -0.743,
+            "hitRatio": 0.4827
           },
           {
             "decile": 6,
             "n": 11974,
-            "meanExcessPct": -3.899,
-            "medianExcessPct": -4.046,
-            "hitRatio": 0.3816
+            "meanExcessPct": -3.952,
+            "medianExcessPct": -4.114,
+            "hitRatio": 0.3801
           },
           {
             "decile": 7,
             "n": 11974,
-            "meanExcessPct": -1.694,
-            "medianExcessPct": -4.308,
-            "hitRatio": 0.4325
+            "meanExcessPct": -1.525,
+            "medianExcessPct": -4.201,
+            "hitRatio": 0.4339
           },
           {
             "decile": 8,
             "n": 11974,
-            "meanExcessPct": 7.88,
-            "medianExcessPct": 3.547,
-            "hitRatio": 0.5674
+            "meanExcessPct": 7.784,
+            "medianExcessPct": 3.542,
+            "hitRatio": 0.5675
           },
           {
             "decile": 9,
             "n": 11974,
-            "meanExcessPct": -0.896,
-            "medianExcessPct": -3.042,
+            "meanExcessPct": -0.894,
+            "medianExcessPct": -3.039,
             "hitRatio": 0.4243
           },
           {
             "decile": 10,
             "n": 11974,
-            "meanExcessPct": 7.675,
-            "medianExcessPct": 2.634,
-            "hitRatio": 0.5555
+            "meanExcessPct": 7.669,
+            "medianExcessPct": 2.619,
+            "hitRatio": 0.5553
           }
         ],
-        "decileMonotonicity": 0.3697,
+        "decileMonotonicity": 0.3818,
         "topBucket": {
-          "n": 4293,
+          "n": 4306,
           "dates": 128,
-          "meanExcessPct": 3.16,
+          "meanExcessPct": 3.162,
           "universeCarryPct": -0.801,
-          "spreadVsUniversePct": 3.96,
-          "attributableExcessPct": 3.16,
+          "spreadVsUniversePct": 3.963,
+          "attributableExcessPct": 3.162,
           "attributionKo": "벤치마크 대비 초과수익에서 유니버스 캐리를 뺀 값이 모델의 기여입니다. 합격 판정은 둘 중 보수적인 쪽으로 합니다.",
-          "medianExcessPct": -3.616,
-          "hitRatio": 0.3984,
+          "medianExcessPct": -3.655,
+          "hitRatio": 0.4062,
           "topPct": 0.1,
           "horizonDays": 126,
           "pathBasisKo": "낙폭·CVaR·샤프는 겹치지 않는 날짜 표본에서만 계산합니다.",
-          "mddPct": -33.221,
+          "mddPct": -31.716,
           "cvar95Pct": -26.778,
-          "sharpe": 0.03,
+          "sharpe": 0.0528,
           "nonOverlappingDates": 7
         },
-        "turnover": 0.3809,
+        "turnover": 0.3763,
         "foldStability": {
           "folds": 4,
           "positiveFolds": 3,
           "signAgreement": 0.75,
           "meanByFoldPct": [
-            -11.777,
-            12.157,
+            -11.636,
+            11.985,
             29.21,
-            1.298
+            1.281
           ],
-          "worstFoldPct": -11.777,
+          "worstFoldPct": -11.636,
           "stable": true
         }
       },
@@ -3264,23 +3291,23 @@
           "test": {
             "n": 27305,
             "baseRate": 0.4408,
-            "rocAuc": 0.5134,
+            "rocAuc": 0.5133,
             "prAuc": 0.4497,
             "prAucLift": 0.0089,
-            "brier": 0.24784,
+            "brier": 0.24786,
             "brierSkillScore": -0.0055,
-            "calibrationError": 0.03989
+            "calibrationError": 0.0399
           },
           "testTopBucket": {
-            "n": 1038,
+            "n": 1064,
             "dates": 53,
-            "meanExcessPct": -11.777,
+            "meanExcessPct": -11.636,
             "universeCarryPct": -3.339,
-            "spreadVsUniversePct": -8.438,
-            "attributableExcessPct": -11.777,
+            "spreadVsUniversePct": -8.297,
+            "attributableExcessPct": -11.636,
             "attributionKo": "벤치마크 대비 초과수익에서 유니버스 캐리를 뺀 값이 모델의 기여입니다. 합격 판정은 둘 중 보수적인 쪽으로 합니다.",
             "medianExcessPct": -12.572,
-            "hitRatio": 0.0943,
+            "hitRatio": 0.1132,
             "topPct": 0.1,
             "horizonDays": 126,
             "pathBasisKo": "낙폭·CVaR·샤프는 겹치지 않는 날짜 표본에서만 계산합니다.",
@@ -3306,30 +3333,30 @@
           "validation": {
             "n": 27258,
             "baseRate": 0.3731,
-            "rocAuc": 0.6086,
-            "prAuc": 0.4615,
-            "prAucLift": 0.0884,
-            "brier": 0.2254,
-            "brierSkillScore": 0.0363,
+            "rocAuc": 0.6088,
+            "prAuc": 0.4616,
+            "prAucLift": 0.0885,
+            "brier": 0.22537,
+            "brierSkillScore": 0.0365,
             "calibrationError": 0.0
           },
           "test": {
             "n": 28208,
             "baseRate": 0.4621,
-            "rocAuc": 0.3782,
-            "prAuc": 0.3859,
-            "prAucLift": -0.0762,
-            "brier": 0.28288,
-            "brierSkillScore": -0.138,
-            "calibrationError": 0.15879
+            "rocAuc": 0.3781,
+            "prAuc": 0.3858,
+            "prAucLift": -0.0763,
+            "brier": 0.283,
+            "brierSkillScore": -0.1385,
+            "calibrationError": 0.15875
           },
           "testTopBucket": {
-            "n": 2802,
+            "n": 2784,
             "dates": 53,
-            "meanExcessPct": 12.157,
+            "meanExcessPct": 11.985,
             "universeCarryPct": 0.785,
-            "spreadVsUniversePct": 11.372,
-            "attributableExcessPct": 11.372,
+            "spreadVsUniversePct": 11.2,
+            "attributableExcessPct": 11.2,
             "attributionKo": "벤치마크 대비 초과수익에서 유니버스 캐리를 뺀 값이 모델의 기여입니다. 합격 판정은 둘 중 보수적인 쪽으로 합니다.",
             "medianExcessPct": 15.95,
             "hitRatio": 0.6226,
@@ -3337,8 +3364,8 @@
             "horizonDays": 126,
             "pathBasisKo": "낙폭·CVaR·샤프는 겹치지 않는 날짜 표본에서만 계산합니다.",
             "mddPct": 0.0,
-            "cvar95Pct": -10.258,
-            "sharpe": 0.5323,
+            "cvar95Pct": -10.349,
+            "sharpe": 0.5539,
             "nonOverlappingDates": 3
           }
         },
@@ -3425,7 +3452,7 @@
             "prAucLift": 0.0013,
             "brier": 0.22037,
             "brierSkillScore": -0.015,
-            "calibrationError": 0.05862
+            "calibrationError": 0.05863
           },
           "testTopBucket": {
             "n": 0,
@@ -3454,8 +3481,8 @@
           "validation": {
             "n": 29383,
             "baseRate": 0.3457,
-            "rocAuc": 0.5058,
-            "prAuc": 0.3498,
+            "rocAuc": 0.506,
+            "prAuc": 0.3499,
             "prAucLift": 0.0042,
             "brier": 0.22612,
             "brierSkillScore": 0.0003,
@@ -3464,22 +3491,22 @@
           "test": {
             "n": 5716,
             "baseRate": 0.5352,
-            "rocAuc": 0.4425,
-            "prAuc": 0.5068,
-            "prAucLift": -0.0284,
-            "brier": 0.28471,
-            "brierSkillScore": -0.1445,
-            "calibrationError": 0.18712
+            "rocAuc": 0.443,
+            "prAuc": 0.5069,
+            "prAucLift": -0.0282,
+            "brier": 0.28465,
+            "brierSkillScore": -0.1443,
+            "calibrationError": 0.18706
           },
           "testTopBucket": {
-            "n": 394,
+            "n": 399,
             "dates": 10,
-            "meanExcessPct": 1.298,
+            "meanExcessPct": 1.281,
             "universeCarryPct": -4.442,
-            "spreadVsUniversePct": 5.74,
-            "attributableExcessPct": 1.298,
+            "spreadVsUniversePct": 5.723,
+            "attributableExcessPct": 1.281,
             "attributionKo": "벤치마크 대비 초과수익에서 유니버스 캐리를 뺀 값이 모델의 기여입니다. 합격 판정은 둘 중 보수적인 쪽으로 합니다.",
-            "medianExcessPct": 0.093,
+            "medianExcessPct": -0.004,
             "hitRatio": 0.5,
             "topPct": 0.1,
             "horizonDays": 126,
@@ -3502,69 +3529,69 @@
       "validation": {
         "n": 138523,
         "baseRate": 0.4014,
-        "rocAuc": 0.5805,
-        "prAuc": 0.4654,
+        "rocAuc": 0.5804,
+        "prAuc": 0.4655,
         "prAucLift": 0.0641,
         "brier": 0.23495,
         "brierSkillScore": 0.0221,
         "calibrationError": 0.0,
-        "precisionAtTop10Pct": 0.5091,
+        "precisionAtTop10Pct": 0.5074,
         "deciles": [
           {
             "decile": 1,
             "n": 13853,
-            "meanExcessPct": 1.109,
-            "medianExcessPct": 1.251,
-            "hitRatio": 0.5374
+            "meanExcessPct": 1.101,
+            "medianExcessPct": 1.246,
+            "hitRatio": 0.5371
           },
           {
             "decile": 2,
             "n": 13852,
-            "meanExcessPct": 3.218,
-            "medianExcessPct": 1.442,
-            "hitRatio": 0.5369
+            "meanExcessPct": 3.37,
+            "medianExcessPct": 1.481,
+            "hitRatio": 0.5367
           },
           {
             "decile": 3,
             "n": 13852,
-            "meanExcessPct": 2.637,
-            "medianExcessPct": 0.517,
-            "hitRatio": 0.5136
+            "meanExcessPct": 2.504,
+            "medianExcessPct": 0.584,
+            "hitRatio": 0.5149
           },
           {
             "decile": 4,
             "n": 13852,
-            "meanExcessPct": 4.878,
-            "medianExcessPct": 0.797,
-            "hitRatio": 0.517
+            "meanExcessPct": 4.844,
+            "medianExcessPct": 0.758,
+            "hitRatio": 0.5163
           },
           {
             "decile": 5,
             "n": 13853,
-            "meanExcessPct": 5.578,
+            "meanExcessPct": 5.585,
             "medianExcessPct": 1.096,
             "hitRatio": 0.5251
           },
           {
             "decile": 6,
             "n": 13852,
-            "meanExcessPct": -0.521,
-            "medianExcessPct": -2.111,
-            "hitRatio": 0.4452
+            "meanExcessPct": -0.482,
+            "medianExcessPct": -2.11,
+            "hitRatio": 0.4455
           },
           {
             "decile": 7,
             "n": 13852,
-            "meanExcessPct": 0.052,
+            "meanExcessPct": 0.068,
             "medianExcessPct": -1.762,
             "hitRatio": 0.4521
           },
           {
             "decile": 8,
             "n": 13852,
-            "meanExcessPct": -2.236,
-            "medianExcessPct": -2.577,
-            "hitRatio": 0.4369
+            "meanExcessPct": -2.276,
+            "medianExcessPct": -2.589,
+            "hitRatio": 0.4367
           },
           {
             "decile": 9,
@@ -3583,138 +3610,138 @@
         ],
         "decileMonotonicity": -0.7455,
         "topBucket": {
-          "n": 5534,
-          "dates": 208,
-          "meanExcessPct": -2.255,
-          "universeCarryPct": -0.222,
-          "spreadVsUniversePct": -2.033,
-          "attributableExcessPct": -2.255,
+          "n": 5497,
+          "dates": 206,
+          "meanExcessPct": -3.117,
+          "universeCarryPct": -0.236,
+          "spreadVsUniversePct": -2.881,
+          "attributableExcessPct": -3.117,
           "attributionKo": "벤치마크 대비 초과수익에서 유니버스 캐리를 뺀 값이 모델의 기여입니다. 합격 판정은 둘 중 보수적인 쪽으로 합니다.",
-          "medianExcessPct": -2.148,
-          "hitRatio": 0.4231,
+          "medianExcessPct": -2.181,
+          "hitRatio": 0.3981,
           "topPct": 0.1,
           "horizonDays": 126,
           "pathBasisKo": "낙폭·CVaR·샤프는 겹치지 않는 날짜 표본에서만 계산합니다.",
           "mddPct": -23.166,
           "cvar95Pct": -45.028,
-          "sharpe": 0.236,
+          "sharpe": 0.326,
           "nonOverlappingDates": 10
         },
-        "turnover": 0.3341
+        "turnover": 0.3182
       },
       "test": {
         "n": 119741,
         "baseRate": 0.4064,
-        "rocAuc": 0.4686,
+        "rocAuc": 0.4684,
         "prAuc": 0.3858,
-        "prAucLift": -0.0206,
+        "prAucLift": -0.0205,
         "brier": 0.25259,
         "brierSkillScore": -0.0471,
-        "calibrationError": 0.06549,
-        "precisionAtTop10Pct": 0.3425,
+        "calibrationError": 0.06548,
+        "precisionAtTop10Pct": 0.381,
         "deciles": [
           {
             "decile": 1,
             "n": 11975,
-            "meanExcessPct": -6.644,
-            "medianExcessPct": -7.903,
+            "meanExcessPct": -6.664,
+            "medianExcessPct": -7.902,
             "hitRatio": 0.3213
           },
           {
             "decile": 2,
             "n": 11974,
-            "meanExcessPct": 1.036,
-            "medianExcessPct": -1.081,
+            "meanExcessPct": 1.062,
+            "medianExcessPct": -1.079,
             "hitRatio": 0.4783
           },
           {
             "decile": 3,
             "n": 11974,
-            "meanExcessPct": 2.464,
-            "medianExcessPct": 1.133,
+            "meanExcessPct": 2.463,
+            "medianExcessPct": 1.13,
             "hitRatio": 0.5301
           },
           {
             "decile": 4,
             "n": 11974,
             "meanExcessPct": 2.746,
-            "medianExcessPct": 1.58,
-            "hitRatio": 0.5404
+            "medianExcessPct": 1.586,
+            "hitRatio": 0.5405
           },
           {
             "decile": 5,
             "n": 11974,
-            "meanExcessPct": -1.329,
-            "medianExcessPct": -0.819,
-            "hitRatio": 0.4816
+            "meanExcessPct": -1.393,
+            "medianExcessPct": -0.842,
+            "hitRatio": 0.4806
           },
           {
             "decile": 6,
             "n": 11974,
-            "meanExcessPct": -3.834,
-            "medianExcessPct": -3.978,
-            "hitRatio": 0.3827
+            "meanExcessPct": -3.828,
+            "medianExcessPct": -3.971,
+            "hitRatio": 0.3828
           },
           {
             "decile": 7,
             "n": 11974,
-            "meanExcessPct": -1.65,
-            "medianExcessPct": -4.435,
-            "hitRatio": 0.4314
+            "meanExcessPct": -1.585,
+            "medianExcessPct": -4.282,
+            "hitRatio": 0.4324
           },
           {
             "decile": 8,
             "n": 11974,
-            "meanExcessPct": 7.885,
-            "medianExcessPct": 3.575,
-            "hitRatio": 0.5687
+            "meanExcessPct": 7.868,
+            "medianExcessPct": 3.579,
+            "hitRatio": 0.5683
           },
           {
             "decile": 9,
             "n": 11974,
-            "meanExcessPct": -0.822,
+            "meanExcessPct": -0.815,
             "medianExcessPct": -3.013,
             "hitRatio": 0.4245
           },
           {
             "decile": 10,
             "n": 11974,
-            "meanExcessPct": 7.473,
-            "medianExcessPct": 2.509,
-            "hitRatio": 0.5533
+            "meanExcessPct": 7.471,
+            "medianExcessPct": 2.515,
+            "hitRatio": 0.5534
           }
         ],
         "decileMonotonicity": 0.3818,
         "topBucket": {
-          "n": 4141,
+          "n": 3888,
           "dates": 131,
-          "meanExcessPct": 3.533,
+          "meanExcessPct": 3.546,
           "universeCarryPct": -0.662,
-          "spreadVsUniversePct": 4.194,
-          "attributableExcessPct": 3.533,
+          "spreadVsUniversePct": 4.208,
+          "attributableExcessPct": 3.546,
           "attributionKo": "벤치마크 대비 초과수익에서 유니버스 캐리를 뺀 값이 모델의 기여입니다. 합격 판정은 둘 중 보수적인 쪽으로 합니다.",
-          "medianExcessPct": -5.001,
-          "hitRatio": 0.4122,
+          "medianExcessPct": -4.735,
+          "hitRatio": 0.4275,
           "topPct": 0.1,
           "horizonDays": 126,
           "pathBasisKo": "낙폭·CVaR·샤프는 겹치지 않는 날짜 표본에서만 계산합니다.",
           "mddPct": -35.852,
           "cvar95Pct": -29.808,
-          "sharpe": 0.0148,
+          "sharpe": 0.0226,
           "nonOverlappingDates": 7
         },
-        "turnover": 0.3672,
+        "turnover": 0.3635,
         "foldStability": {
           "folds": 4,
           "positiveFolds": 3,
           "signAgreement": 0.75,
           "meanByFoldPct": [
-            -13.42,
-            12.032,
+            -13.78,
+            12.105,
             32.655,
-            1.748
+            3.308
           ],
-          "worstFoldPct": -13.42,
+          "worstFoldPct": -13.78,
           "stable": true
         }
       },
@@ -3735,9 +3762,9 @@
           "validation": {
             "n": 25636,
             "baseRate": 0.3971,
-            "rocAuc": 0.5073,
-            "prAuc": 0.4007,
-            "prAucLift": 0.0037,
+            "rocAuc": 0.5072,
+            "prAuc": 0.4006,
+            "prAucLift": 0.0036,
             "brier": 0.23923,
             "brierSkillScore": 0.0007,
             "calibrationError": 0.0
@@ -3745,29 +3772,29 @@
           "test": {
             "n": 27305,
             "baseRate": 0.4408,
-            "rocAuc": 0.5107,
-            "prAuc": 0.4479,
-            "prAucLift": 0.0071,
-            "brier": 0.24783,
-            "brierSkillScore": -0.0054,
-            "calibrationError": 0.03989
+            "rocAuc": 0.5081,
+            "prAuc": 0.4463,
+            "prAucLift": 0.0055,
+            "brier": 0.24781,
+            "brierSkillScore": -0.0053,
+            "calibrationError": 0.03992
           },
           "testTopBucket": {
-            "n": 695,
+            "n": 551,
             "dates": 53,
-            "meanExcessPct": -13.42,
+            "meanExcessPct": -13.78,
             "universeCarryPct": -3.339,
-            "spreadVsUniversePct": -10.081,
-            "attributableExcessPct": -13.42,
+            "spreadVsUniversePct": -10.44,
+            "attributableExcessPct": -13.78,
             "attributionKo": "벤치마크 대비 초과수익에서 유니버스 캐리를 뺀 값이 모델의 기여입니다. 합격 판정은 둘 중 보수적인 쪽으로 합니다.",
-            "medianExcessPct": -13.663,
+            "medianExcessPct": -13.056,
             "hitRatio": 0.0755,
             "topPct": 0.1,
             "horizonDays": 126,
             "pathBasisKo": "낙폭·CVaR·샤프는 겹치지 않는 날짜 표본에서만 계산합니다.",
             "mddPct": -29.808,
             "cvar95Pct": -29.808,
-            "sharpe": -0.4519,
+            "sharpe": -0.4547,
             "nonOverlappingDates": 3
           }
         },
@@ -3787,9 +3814,9 @@
           "validation": {
             "n": 27258,
             "baseRate": 0.3731,
-            "rocAuc": 0.6082,
-            "prAuc": 0.4615,
-            "prAucLift": 0.0884,
+            "rocAuc": 0.6083,
+            "prAuc": 0.4616,
+            "prAucLift": 0.0885,
             "brier": 0.22547,
             "brierSkillScore": 0.036,
             "calibrationError": 0.0
@@ -3797,29 +3824,29 @@
           "test": {
             "n": 28208,
             "baseRate": 0.4621,
-            "rocAuc": 0.3799,
-            "prAuc": 0.3867,
-            "prAucLift": -0.0754,
-            "brier": 0.28247,
-            "brierSkillScore": -0.1364,
-            "calibrationError": 0.15635
+            "rocAuc": 0.3798,
+            "prAuc": 0.3864,
+            "prAucLift": -0.0757,
+            "brier": 0.28251,
+            "brierSkillScore": -0.1366,
+            "calibrationError": 0.15639
           },
           "testTopBucket": {
-            "n": 2865,
+            "n": 2808,
             "dates": 53,
-            "meanExcessPct": 12.032,
+            "meanExcessPct": 12.105,
             "universeCarryPct": 0.785,
-            "spreadVsUniversePct": 11.247,
-            "attributableExcessPct": 11.247,
+            "spreadVsUniversePct": 11.32,
+            "attributableExcessPct": 11.32,
             "attributionKo": "벤치마크 대비 초과수익에서 유니버스 캐리를 뺀 값이 모델의 기여입니다. 합격 판정은 둘 중 보수적인 쪽으로 합니다.",
-            "medianExcessPct": 15.9,
-            "hitRatio": 0.6226,
+            "medianExcessPct": 17.88,
+            "hitRatio": 0.6415,
             "topPct": 0.1,
             "horizonDays": 126,
             "pathBasisKo": "낙폭·CVaR·샤프는 겹치지 않는 날짜 표본에서만 계산합니다.",
             "mddPct": 0.0,
-            "cvar95Pct": -9.83,
-            "sharpe": 0.5464,
+            "cvar95Pct": -11.664,
+            "sharpe": 0.5373,
             "nonOverlappingDates": 3
           }
         },
@@ -3902,11 +3929,11 @@
             "n": 29458,
             "baseRate": 0.3187,
             "rocAuc": 0.503,
-            "prAuc": 0.3199,
+            "prAuc": 0.32,
             "prAucLift": 0.0013,
-            "brier": 0.22038,
-            "brierSkillScore": -0.015,
-            "calibrationError": 0.05868
+            "brier": 0.22036,
+            "brierSkillScore": -0.0149,
+            "calibrationError": 0.05867
           },
           "testTopBucket": {
             "n": 0,
@@ -3935,33 +3962,33 @@
           "validation": {
             "n": 29383,
             "baseRate": 0.3457,
-            "rocAuc": 0.5055,
-            "prAuc": 0.3499,
-            "prAucLift": 0.0042,
-            "brier": 0.22612,
-            "brierSkillScore": 0.0003,
+            "rocAuc": 0.5052,
+            "prAuc": 0.3496,
+            "prAucLift": 0.0039,
+            "brier": 0.22613,
+            "brierSkillScore": 0.0002,
             "calibrationError": 0.0
           },
           "test": {
             "n": 5716,
             "baseRate": 0.5352,
-            "rocAuc": 0.4434,
-            "prAuc": 0.5066,
-            "prAucLift": -0.0285,
-            "brier": 0.28472,
+            "rocAuc": 0.4428,
+            "prAuc": 0.5062,
+            "prAucLift": -0.029,
+            "brier": 0.28473,
             "brierSkillScore": -0.1446,
-            "calibrationError": 0.18861
+            "calibrationError": 0.18712
           },
           "testTopBucket": {
-            "n": 517,
+            "n": 462,
             "dates": 10,
-            "meanExcessPct": 1.748,
+            "meanExcessPct": 3.308,
             "universeCarryPct": -4.442,
-            "spreadVsUniversePct": 6.19,
-            "attributableExcessPct": 1.748,
+            "spreadVsUniversePct": 7.75,
+            "attributableExcessPct": 3.308,
             "attributionKo": "벤치마크 대비 초과수익에서 유니버스 캐리를 뺀 값이 모델의 기여입니다. 합격 판정은 둘 중 보수적인 쪽으로 합니다.",
-            "medianExcessPct": 1.314,
-            "hitRatio": 0.6,
+            "medianExcessPct": 1.825,
+            "hitRatio": 0.7,
             "topPct": 0.1,
             "horizonDays": 126,
             "pathBasisKo": "낙폭·CVaR·샤프는 겹치지 않는 날짜 표본에서만 계산합니다.",
@@ -3992,211 +4019,211 @@
         "brier": 0.23372,
         "brierSkillScore": 0.0273,
         "calibrationError": 0.0,
-        "precisionAtTop10Pct": 0.4795,
+        "precisionAtTop10Pct": 0.4741,
         "deciles": [
           {
             "decile": 1,
             "n": 13853,
-            "meanExcessPct": 3.122,
-            "medianExcessPct": 3.125,
-            "hitRatio": 0.5898
+            "meanExcessPct": 3.132,
+            "medianExcessPct": 3.144,
+            "hitRatio": 0.5906
           },
           {
             "decile": 2,
             "n": 13852,
-            "meanExcessPct": 2.243,
-            "medianExcessPct": 0.917,
-            "hitRatio": 0.5253
+            "meanExcessPct": 2.251,
+            "medianExcessPct": 0.886,
+            "hitRatio": 0.5248
           },
           {
             "decile": 3,
             "n": 13852,
-            "meanExcessPct": 3.602,
-            "medianExcessPct": 0.653,
-            "hitRatio": 0.5149
+            "meanExcessPct": 3.319,
+            "medianExcessPct": 0.582,
+            "hitRatio": 0.5131
           },
           {
             "decile": 4,
             "n": 13852,
-            "meanExcessPct": 7.154,
-            "medianExcessPct": 2.294,
-            "hitRatio": 0.5453
+            "meanExcessPct": 7.471,
+            "medianExcessPct": 2.563,
+            "hitRatio": 0.5497
           },
           {
             "decile": 5,
             "n": 13853,
-            "meanExcessPct": -0.814,
-            "medianExcessPct": -2.294,
-            "hitRatio": 0.4393
+            "meanExcessPct": -0.854,
+            "medianExcessPct": -2.383,
+            "hitRatio": 0.4364
           },
           {
             "decile": 6,
             "n": 13852,
-            "meanExcessPct": 0.627,
-            "medianExcessPct": -1.272,
-            "hitRatio": 0.4661
+            "meanExcessPct": 0.642,
+            "medianExcessPct": -1.263,
+            "hitRatio": 0.4665
           },
           {
             "decile": 7,
             "n": 13852,
-            "meanExcessPct": 0.274,
-            "medianExcessPct": -1.815,
-            "hitRatio": 0.4545
+            "meanExcessPct": 0.251,
+            "medianExcessPct": -1.83,
+            "hitRatio": 0.4538
           },
           {
             "decile": 8,
             "n": 13852,
-            "meanExcessPct": -1.82,
-            "medianExcessPct": -3.346,
+            "meanExcessPct": -1.831,
+            "medianExcessPct": -3.34,
             "hitRatio": 0.4271
           },
           {
             "decile": 9,
             "n": 13852,
-            "meanExcessPct": -5.897,
-            "medianExcessPct": -6.085,
+            "meanExcessPct": -5.896,
+            "medianExcessPct": -6.084,
             "hitRatio": 0.3483
           },
           {
             "decile": 10,
             "n": 13853,
-            "meanExcessPct": -2.812,
-            "medianExcessPct": -6.597,
+            "meanExcessPct": -2.806,
+            "medianExcessPct": -6.592,
             "hitRatio": 0.3951
           }
         ],
         "decileMonotonicity": -0.8424,
         "topBucket": {
-          "n": 5657,
-          "dates": 121,
-          "meanExcessPct": -5.057,
-          "universeCarryPct": 0.707,
-          "spreadVsUniversePct": -5.764,
-          "attributableExcessPct": -5.764,
+          "n": 5720,
+          "dates": 119,
+          "meanExcessPct": -4.918,
+          "universeCarryPct": 0.719,
+          "spreadVsUniversePct": -5.638,
+          "attributableExcessPct": -5.638,
           "attributionKo": "벤치마크 대비 초과수익에서 유니버스 캐리를 뺀 값이 모델의 기여입니다. 합격 판정은 둘 중 보수적인 쪽으로 합니다.",
-          "medianExcessPct": -4.381,
-          "hitRatio": 0.2149,
+          "medianExcessPct": -4.09,
+          "hitRatio": 0.2185,
           "topPct": 0.1,
           "horizonDays": 126,
           "pathBasisKo": "낙폭·CVaR·샤프는 겹치지 않는 날짜 표본에서만 계산합니다.",
-          "mddPct": -29.068,
-          "cvar95Pct": -18.84,
-          "sharpe": 0.0197,
+          "mddPct": -28.647,
+          "cvar95Pct": -17.004,
+          "sharpe": 0.0286,
           "nonOverlappingDates": 6
         },
-        "turnover": 0.3085
+        "turnover": 0.3051
       },
       "test": {
         "n": 119741,
         "baseRate": 0.4064,
-        "rocAuc": 0.485,
-        "prAuc": 0.3933,
-        "prAucLift": -0.0131,
-        "brier": 0.25427,
-        "brierSkillScore": -0.054,
-        "calibrationError": 0.07293,
-        "precisionAtTop10Pct": 0.3316,
+        "rocAuc": 0.4846,
+        "prAuc": 0.3931,
+        "prAucLift": -0.0132,
+        "brier": 0.25428,
+        "brierSkillScore": -0.0541,
+        "calibrationError": 0.07301,
+        "precisionAtTop10Pct": 0.3299,
         "deciles": [
           {
             "decile": 1,
             "n": 11975,
-            "meanExcessPct": -4.825,
-            "medianExcessPct": -6.323,
-            "hitRatio": 0.3645
+            "meanExcessPct": -5.104,
+            "medianExcessPct": -6.567,
+            "hitRatio": 0.3583
           },
           {
             "decile": 2,
             "n": 11974,
-            "meanExcessPct": 3.692,
-            "medianExcessPct": 1.797,
-            "hitRatio": 0.5427
+            "meanExcessPct": 3.828,
+            "medianExcessPct": 1.899,
+            "hitRatio": 0.5453
           },
           {
             "decile": 3,
             "n": 11974,
-            "meanExcessPct": 3.56,
-            "medianExcessPct": 2.491,
-            "hitRatio": 0.5646
+            "meanExcessPct": 3.583,
+            "medianExcessPct": 2.512,
+            "hitRatio": 0.5653
           },
           {
             "decile": 4,
             "n": 11974,
-            "meanExcessPct": -1.65,
-            "medianExcessPct": -1.906,
-            "hitRatio": 0.4574
+            "meanExcessPct": -1.536,
+            "medianExcessPct": -1.799,
+            "hitRatio": 0.46
           },
           {
             "decile": 5,
             "n": 11974,
-            "meanExcessPct": -2.866,
-            "medianExcessPct": -2.198,
-            "hitRatio": 0.4367
+            "meanExcessPct": -2.856,
+            "medianExcessPct": -2.196,
+            "hitRatio": 0.4369
           },
           {
             "decile": 6,
             "n": 11974,
-            "meanExcessPct": -5.191,
-            "medianExcessPct": -6.002,
-            "hitRatio": 0.3525
+            "meanExcessPct": -5.201,
+            "medianExcessPct": -6.0,
+            "hitRatio": 0.3526
           },
           {
             "decile": 7,
             "n": 11974,
-            "meanExcessPct": 1.72,
-            "medianExcessPct": -2.242,
-            "hitRatio": 0.4673
+            "meanExcessPct": 1.727,
+            "medianExcessPct": -2.252,
+            "hitRatio": 0.4672
           },
           {
             "decile": 8,
             "n": 11974,
-            "meanExcessPct": 8.982,
+            "meanExcessPct": 8.983,
             "medianExcessPct": 3.965,
             "hitRatio": 0.5703
           },
           {
             "decile": 9,
             "n": 11974,
-            "meanExcessPct": -0.005,
-            "medianExcessPct": -2.488,
-            "hitRatio": 0.436
+            "meanExcessPct": -0.003,
+            "medianExcessPct": -2.481,
+            "hitRatio": 0.4361
           },
           {
             "decile": 10,
             "n": 11974,
-            "meanExcessPct": 3.908,
-            "medianExcessPct": 0.894,
-            "hitRatio": 0.5202
+            "meanExcessPct": 3.904,
+            "medianExcessPct": 0.89,
+            "hitRatio": 0.5201
           }
         ],
         "decileMonotonicity": 0.3697,
         "topBucket": {
-          "n": 2440,
+          "n": 2474,
           "dates": 63,
-          "meanExcessPct": 8.697,
+          "meanExcessPct": 8.72,
           "universeCarryPct": -0.045,
-          "spreadVsUniversePct": 8.742,
-          "attributableExcessPct": 8.697,
+          "spreadVsUniversePct": 8.765,
+          "attributableExcessPct": 8.72,
           "attributionKo": "벤치마크 대비 초과수익에서 유니버스 캐리를 뺀 값이 모델의 기여입니다. 합격 판정은 둘 중 보수적인 쪽으로 합니다.",
-          "medianExcessPct": -3.152,
+          "medianExcessPct": -2.416,
           "hitRatio": 0.4444,
           "topPct": 0.1,
           "horizonDays": 126,
           "pathBasisKo": "낙폭·CVaR·샤프는 겹치지 않는 날짜 표본에서만 계산합니다.",
           "mddPct": 0.0,
-          "cvar95Pct": -7.126,
-          "sharpe": 0.4998,
+          "cvar95Pct": -6.601,
+          "sharpe": 0.5029,
           "nonOverlappingDates": 4
         },
-        "turnover": 0.3464,
+        "turnover": 0.345,
         "foldStability": {
           "folds": 2,
           "positiveFolds": 1,
           "signAgreement": 0.5,
           "meanByFoldPct": [
-            10.888,
-            -3.252
+            10.855,
+            -2.99
           ],
-          "worstFoldPct": -3.252,
+          "worstFoldPct": -2.99,
           "stable": false
         }
       },
@@ -4218,7 +4245,7 @@
             "n": 25636,
             "baseRate": 0.3971,
             "rocAuc": 0.5018,
-            "prAuc": 0.3983,
+            "prAuc": 0.3982,
             "prAucLift": 0.0012,
             "brier": 0.23926,
             "brierSkillScore": 0.0006,
@@ -4227,12 +4254,12 @@
           "test": {
             "n": 27305,
             "baseRate": 0.4408,
-            "rocAuc": 0.4997,
+            "rocAuc": 0.4996,
             "prAuc": 0.4406,
             "prAucLift": -0.0002,
             "brier": 0.24863,
             "brierSkillScore": -0.0087,
-            "calibrationError": 0.04373
+            "calibrationError": 0.04372
           },
           "testTopBucket": {
             "n": 0,
@@ -4261,30 +4288,30 @@
           "validation": {
             "n": 27258,
             "baseRate": 0.3731,
-            "rocAuc": 0.6176,
-            "prAuc": 0.4587,
-            "prAucLift": 0.0856,
-            "brier": 0.22321,
+            "rocAuc": 0.6178,
+            "prAuc": 0.4586,
+            "prAucLift": 0.0855,
+            "brier": 0.2232,
             "brierSkillScore": 0.0457,
             "calibrationError": 1e-05
           },
           "test": {
             "n": 28208,
             "baseRate": 0.4621,
-            "rocAuc": 0.3979,
-            "prAuc": 0.4074,
-            "prAucLift": -0.0547,
-            "brier": 0.28891,
-            "brierSkillScore": -0.1623,
-            "calibrationError": 0.16267
+            "rocAuc": 0.3977,
+            "prAuc": 0.4075,
+            "prAucLift": -0.0546,
+            "brier": 0.28895,
+            "brierSkillScore": -0.1625,
+            "calibrationError": 0.16293
           },
           "testTopBucket": {
-            "n": 2018,
+            "n": 2019,
             "dates": 53,
-            "meanExcessPct": 10.888,
+            "meanExcessPct": 10.855,
             "universeCarryPct": 0.785,
-            "spreadVsUniversePct": 10.103,
-            "attributableExcessPct": 10.103,
+            "spreadVsUniversePct": 10.07,
+            "attributableExcessPct": 10.07,
             "attributionKo": "벤치마크 대비 초과수익에서 유니버스 캐리를 뺀 값이 모델의 기여입니다. 합격 판정은 둘 중 보수적인 쪽으로 합니다.",
             "medianExcessPct": 2.859,
             "hitRatio": 0.5094,
@@ -4402,31 +4429,31 @@
             "n": 29383,
             "baseRate": 0.3457,
             "rocAuc": 0.5697,
-            "prAuc": 0.3928,
-            "prAucLift": 0.0471,
-            "brier": 0.22232,
-            "brierSkillScore": 0.0171,
+            "prAuc": 0.393,
+            "prAucLift": 0.0473,
+            "brier": 0.22233,
+            "brierSkillScore": 0.017,
             "calibrationError": 0.0
           },
           "test": {
             "n": 5716,
             "baseRate": 0.5352,
-            "rocAuc": 0.4602,
-            "prAuc": 0.5064,
-            "prAucLift": -0.0288,
-            "brier": 0.28288,
-            "brierSkillScore": -0.1371,
-            "calibrationError": 0.17067
+            "rocAuc": 0.46,
+            "prAuc": 0.5058,
+            "prAucLift": -0.0294,
+            "brier": 0.28282,
+            "brierSkillScore": -0.1369,
+            "calibrationError": 0.17062
           },
           "testTopBucket": {
-            "n": 350,
+            "n": 396,
             "dates": 10,
-            "meanExcessPct": -3.252,
+            "meanExcessPct": -2.99,
             "universeCarryPct": -4.442,
-            "spreadVsUniversePct": 1.189,
-            "attributableExcessPct": -3.252,
+            "spreadVsUniversePct": 1.452,
+            "attributableExcessPct": -2.99,
             "attributionKo": "벤치마크 대비 초과수익에서 유니버스 캐리를 뺀 값이 모델의 기여입니다. 합격 판정은 둘 중 보수적인 쪽으로 합니다.",
-            "medianExcessPct": -3.376,
+            "medianExcessPct": -3.461,
             "hitRatio": 0.1,
             "topPct": 0.1,
             "horizonDays": 126,
@@ -4459,7 +4486,7 @@
         "brier": 0.19785,
         "brierSkillScore": 0.1402,
         "calibrationError": 3e-05,
-        "precisionAtTop10Pct": 0.71,
+        "precisionAtTop10Pct": 0.7107,
         "deciles": [
           {
             "decile": 1,
@@ -4562,7 +4589,7 @@
         "brier": 0.28284,
         "brierSkillScore": -0.1623,
         "calibrationError": 0.17762,
-        "precisionAtTop10Pct": 0.5417,
+        "precisionAtTop10Pct": 0.5426,
         "deciles": [
           {
             "decile": 1,
@@ -4823,7 +4850,7 @@
             "pathBasisKo": "낙폭·CVaR·샤프는 겹치지 않는 날짜 표본에서만 계산합니다.",
             "mddPct": 0.0,
             "cvar95Pct": -2.597,
-            "sharpe": 0.7248,
+            "sharpe": 0.7249,
             "nonOverlappingDates": 4
           }
         },
@@ -5056,7 +5083,7 @@
         "brier": 0.28975,
         "brierSkillScore": -0.1907,
         "calibrationError": 0.19334,
-        "precisionAtTop10Pct": 0.5118,
+        "precisionAtTop10Pct": 0.5121,
         "deciles": [
           {
             "decile": 1,
@@ -5711,7 +5738,7 @@
             "horizonDays": 63,
             "pathBasisKo": "낙폭·CVaR·샤프는 겹치지 않는 날짜 표본에서만 계산합니다.",
             "mddPct": -15.735,
-            "cvar95Pct": -8.061,
+            "cvar95Pct": -8.062,
             "sharpe": -0.7687,
             "nonOverlappingDates": 5
           }
@@ -5942,7 +5969,7 @@
         "brier": 0.19715,
         "brierSkillScore": 0.1433,
         "calibrationError": 3e-05,
-        "precisionAtTop10Pct": 0.7232,
+        "precisionAtTop10Pct": 0.7242,
         "deciles": [
           {
             "decile": 1,
@@ -6045,7 +6072,7 @@
         "brier": 0.27554,
         "brierSkillScore": -0.1323,
         "calibrationError": 0.17138,
-        "precisionAtTop10Pct": 0.563,
+        "precisionAtTop10Pct": 0.5634,
         "deciles": [
           {
             "decile": 1,
@@ -6086,7 +6113,7 @@
             "decile": 6,
             "n": 12899,
             "meanExcessPct": -1.402,
-            "medianExcessPct": -1.965,
+            "medianExcessPct": -1.964,
             "hitRatio": 0.4241
           },
           {
@@ -6432,7 +6459,7 @@
         "brier": 0.19712,
         "brierSkillScore": 0.1434,
         "calibrationError": 3e-05,
-        "precisionAtTop10Pct": 0.7243,
+        "precisionAtTop10Pct": 0.7246,
         "deciles": [
           {
             "decile": 1,
@@ -6535,7 +6562,7 @@
         "brier": 0.2758,
         "brierSkillScore": -0.1333,
         "calibrationError": 0.1715,
-        "precisionAtTop10Pct": 0.5845,
+        "precisionAtTop10Pct": 0.5832,
         "deciles": [
           {
             "decile": 1,
@@ -6922,7 +6949,7 @@
         "brier": 0.19715,
         "brierSkillScore": 0.1433,
         "calibrationError": 3e-05,
-        "precisionAtTop10Pct": 0.725,
+        "precisionAtTop10Pct": 0.7242,
         "deciles": [
           {
             "decile": 1,
@@ -6956,7 +6983,7 @@
             "decile": 5,
             "n": 13782,
             "meanExcessPct": 1.423,
-            "medianExcessPct": 0.481,
+            "medianExcessPct": 0.48,
             "hitRatio": 0.5162
           },
           {
@@ -7025,7 +7052,7 @@
         "brier": 0.27554,
         "brierSkillScore": -0.1322,
         "calibrationError": 0.17141,
-        "precisionAtTop10Pct": 0.5635,
+        "precisionAtTop10Pct": 0.5638,
         "deciles": [
           {
             "decile": 1,
@@ -7038,7 +7065,7 @@
             "decile": 2,
             "n": 12899,
             "meanExcessPct": 0.519,
-            "medianExcessPct": 0.404,
+            "medianExcessPct": 0.405,
             "hitRatio": 0.5138
           },
           {
@@ -7415,7 +7442,7 @@
         "brier": 0.19649,
         "brierSkillScore": 0.1462,
         "calibrationError": 7e-05,
-        "precisionAtTop10Pct": 0.7253,
+        "precisionAtTop10Pct": 0.7254,
         "deciles": [
           {
             "decile": 1,
@@ -7435,7 +7462,7 @@
             "decile": 3,
             "n": 13782,
             "meanExcessPct": 0.321,
-            "medianExcessPct": -0.285,
+            "medianExcessPct": -0.286,
             "hitRatio": 0.4878
           },
           {
@@ -7518,7 +7545,7 @@
         "brier": 0.28902,
         "brierSkillScore": -0.1877,
         "calibrationError": 0.18768,
-        "precisionAtTop10Pct": 0.5613,
+        "precisionAtTop10Pct": 0.5569,
         "deciles": [
           {
             "decile": 1,
@@ -7899,7 +7926,7 @@
     },
     "probabilityOfBacktestOverfitting": {
       "available": true,
-      "probabilityOfBacktestOverfitting": 0.1,
+      "probabilityOfBacktestOverfitting": 0.3,
       "splitsEvaluated": 10,
       "variantsCompared": 14,
       "interpretationKo": "검증 1위 모델이 다른 기간에서도 상위를 유지하는지의 비율 기반 추정치입니다."
@@ -8021,7 +8048,7 @@
   "developmentRows": 258592,
   "developmentDates": 522,
   "meanPitCoverage": 0.7833,
-  "trainedAt": "2026-08-30T02:27:33.671055+00:00",
+  "trainedAt": "2026-08-30T10:30:14.636156+00:00",
   "kind": "warning",
   "replayVersion": "replay-v5",
   "featureVersion": "hfeat-v1",
