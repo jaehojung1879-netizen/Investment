@@ -1,0 +1,71 @@
+name: Probe DART fundamentals
+
+# Measure before building. The replay has tested the production model on 0 of
+# its 713 dates because value and quality need point-in-time financial
+# statements and none are wired in. DART could close the Korean half — but the
+# plan rests on assumptions about an API that cannot be reached from a dev
+# sandbox, and writing a parser against a guessed response shape is how a week
+# disappears. This calls the real API with the real key and reports what
+# actually comes back.
+#
+# On demand, like the KR coverage measurement: nothing downstream consumes it,
+# and a probe that the daily jobs depend on is a probe that breaks them.
+
+on:
+  workflow_dispatch:
+    inputs:
+      samples:
+        description: "종목코드 (쉼표 구분)"
+        type: string
+        default: "005930,000660,035420"
+      from_year:
+        description: "조회 시작 연도"
+        type: string
+        default: "2013"
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+
+      - name: Probe
+        env:
+          DART_API_KEY: ${{ secrets.DART }}
+        run: |
+          set -euo pipefail
+          python scripts/probe_dart_fundamentals.py \
+            --output dart-probe.json \
+            --samples "${{ inputs.samples }}" \
+            --from-year "${{ inputs.from_year }}" | tee probe.log
+
+      - name: Upload the probe
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: dart-probe
+          path: |
+            dart-probe.json
+            probe.log
+          if-no-files-found: warn
+
+      - name: Summary
+        if: always()
+        run: |
+          {
+            echo '## DART 재무 데이터 프로브'
+            echo
+            echo '```'
+            tail -n 60 probe.log 2>/dev/null || echo '프로브 출력 없음'
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
