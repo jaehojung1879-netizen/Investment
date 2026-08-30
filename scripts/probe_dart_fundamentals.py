@@ -57,9 +57,16 @@ sys.path.insert(0, str(ROOT))
 import urllib.request  # noqa: E402
 import urllib.error  # noqa: E402
 
+from pipeline import dart_fundamentals as DF  # noqa: E402
+
 BASE = "https://opendart.fss.or.kr/api"
-# Quarterly report codes: Q1, H1, Q3, annual.
-REPORT_CODES = {"11013": "1분기", "11012": "반기", "11014": "3분기", "11011": "사업"}
+# One definition each, shared with the collector this probe cleared the way for.
+# Two copies of "what is a receipt date" is how the probe and the thing it
+# validated come to disagree about the answer it was run to establish.
+REPORT_CODES = DF.REPORT_CODES
+STATUS_MEANING = DF.STATUS_MEANING
+describe = DF.describe_status
+WANTED_ACCOUNTS = DF.WANTED_ACCOUNTS
 
 # What each production factor needs, and the statement line items it is built
 # from. Written out because "DART has financial statements" is not the same
@@ -74,18 +81,6 @@ FACTOR_INPUTS = {
     "quality · debtToEquity": ["부채총계", "자본총계"],
     "quality · earningsGrowth": ["당기순이익", "전기 당기순이익"],
 }
-
-# Account names as DART labels them, with the aliases seen across filers.
-WANTED_ACCOUNTS = {
-    "매출액": ("매출액", "수익(매출액)", "영업수익"),
-    "영업이익": ("영업이익", "영업이익(손실)"),
-    "당기순이익": ("당기순이익", "당기순이익(손실)", "당기순이익(손실)귀속"),
-    "자본총계": ("자본총계",),
-    "부채총계": ("부채총계",),
-    "자산총계": ("자산총계",),
-    "영업활동현금흐름": ("영업활동현금흐름", "영업활동으로인한현금흐름"),
-}
-
 
 def call(path: str, params: dict, timeout: int = 30) -> tuple[dict | None, str]:
     query = "&".join(f"{k}={v}" for k, v in params.items())
@@ -103,38 +98,15 @@ def call(path: str, params: dict, timeout: int = 30) -> tuple[dict | None, str]:
         return None, f"non-JSON response ({len(raw)} bytes)"
 
 
-# DART status codes worth naming, because "000이 아님"은 진단이 아니다.
-STATUS_MEANING = {
-    "000": "정상",
-    "010": "등록되지 않은 키",
-    "011": "사용할 수 없는 키 (등록 대기/정지)",
-    "012": "접근할 수 없는 IP",
-    "013": "조회된 데이터 없음",
-    "014": "파일이 존재하지 않음",
-    "020": "요청 제한 초과 (일일 한도)",
-    "021": "조회 가능한 회사 개수 초과",
-    "100": "필드의 부적절한 값",
-    "800": "시스템 점검 중",
-    "900": "정의되지 않은 오류",
-    "901": "사용자 계정의 개인정보 보유기간 만료",
-}
-
-
-def describe(status: str | None) -> str:
-    return f"{status} ({STATUS_MEANING.get(str(status), '알 수 없는 코드')})"
-
-
 def receipt_date(row: dict) -> str | None:
     """The date the filing was received — the only thing that licenses use.
 
-    DART states it in `rcept_no`, whose first 8 digits are YYYYMMDD. That is
-    the field the whole plan hangs on: without it a filing has a period but no
-    visibility date, and the replay would be reading Q1 numbers in April that
-    nobody could see until May.
+    Delegates to `dart_fundamentals` so the probe and the collector cannot
+    disagree about the field the whole plan hangs on. Kept returning the raw
+    YYYYMMDD the probe reports, rather than the store's ISO form.
     """
-    number = str(row.get("rcept_no") or "")
-    head = number[:8]
-    return head if len(head) == 8 and head.isdigit() else None
+    iso = DF.receipt_date(row.get("rcept_no"))
+    return iso.replace("-", "") if iso else None
 
 
 def probe_statements(key: str, corp_code: str, year: int, code: str) -> dict:
