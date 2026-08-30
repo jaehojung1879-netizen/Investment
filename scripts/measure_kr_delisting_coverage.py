@@ -58,6 +58,13 @@ from pipeline.config import load_config  # noqa: E402
 from pipeline.longterm import MIN_HISTORY  # noqa: E402
 
 FDR_DELISTING_EXCHANGE = "KRX-DELISTING"
+# The market the replay's Korean universe is drawn from — `universe.resolve`
+# screens `fdr.StockListing("KOSPI")` and nothing else. Coverage on any other
+# market is context, never the headline: the first run measured 53.33% pooled
+# against 34.55% on KOSPI alone, because 95 of the 150 names sampled were
+# KOSDAQ or KONEX and the replay never sees them. A pooled figure answered the
+# decision question with the opposite sign to the real one.
+REPLAY_MARKET = "KOSPI"
 
 
 def wilson(successes: int, trials: int, z: float = 1.96) -> tuple[float, float] | None:
@@ -213,6 +220,10 @@ def main(argv=None) -> int:
     parser.add_argument("--all", action="store_true",
                         help="test every replay-relevant name instead of a sample")
     parser.add_argument("--seed", type=int, default=11)
+    parser.add_argument("--market", default=REPLAY_MARKET,
+                        help="market the headline is measured on; ALL to pool "
+                             "(pooling answers a different question than the "
+                             "replay asks)")
     args = parser.parse_args(argv)
 
     cfg, _ = load_config()
@@ -232,6 +243,17 @@ def main(argv=None) -> int:
     print(f"  delisted on or after the replay start ({replay_start}): {len(relevant):,}")
     print(f"  irrelevant to the replay (already gone before it began): "
           f"{len(rows) - len(relevant):,}")
+    # Second narrowing, and the one the first run got wrong. The replay screens
+    # KOSPI; a KOSDAQ name it never ranks cannot be a hole in its cross-section,
+    # and counting it answers a question nobody asked.
+    market = args.market.upper()
+    if market != "ALL":
+        on_market = [row for row in relevant
+                     if (row["market"] or "").upper() == market]
+        print(f"  on {market}, the market the replay screens: {len(on_market):,} "
+              f"(other markets: {len(relevant) - len(on_market):,}, sampled for "
+              f"context only)")
+        relevant = on_market
     if not relevant:
         print("nothing in the replay window; no coverage to measure.")
         return 0
@@ -258,6 +280,7 @@ def main(argv=None) -> int:
     report = {
         "measuredAt": pd.Timestamp.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ"),
         "replayStart": replay_start,
+        "market": market,
         "minHistorySessions": MIN_HISTORY,
         "listedNames": len(rows),
         "replayRelevantNames": len(relevant),
@@ -275,7 +298,7 @@ def main(argv=None) -> int:
     Path(args.output).write_text(
         json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
-    print(f"\n=== usable price history for replay-relevant delisted KR names ===")
+    print(f"\n=== usable price history, {market} delisted names in the replay window ===")
     print(f"  FinanceDataReader : {fdr_ok}/{tested} = {report['fdrUsablePct']}%  "
           f"95% CI {report['fdrUsableCI']}")
     print(f"  Yahoo (the panel) : {yahoo_ok}/{tested} = {report['yahooUsablePct']}%  "
@@ -296,7 +319,13 @@ def main(argv=None) -> int:
     # that serves most of these can.
     print("\nreading: a dated KOSPI 200 membership history is worth building only "
           "if a vendor can price the names it restores. Below ~50% the Korean "
-          "cross-section stays materially incomplete whatever the membership file says.")
+          "cross-section stays materially incomplete whatever the membership file "
+          "says — and it is the UPPER bound of the interval that has to clear it, "
+          "not the point estimate.")
+    if market != "ALL":
+        print(f"the figure above is {market} only, because that is the list "
+              f"`universe.resolve` screens. Pooling markets the replay never "
+              f"ranks reported 53.33% where {market} alone was 34.55%.")
     return 0
 
 

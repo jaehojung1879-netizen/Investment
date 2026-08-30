@@ -155,3 +155,48 @@ def test_the_summary_reports_both_vendors_per_bucket():
     assert by_year["2013"]["yahooUsablePct"] == 0.0
     assert by_year["2020"]["fdrUsablePct"] == 100.0
     assert by_year["2013"]["fdrUsableCI"] is not None
+
+
+# --------------------------------------------------------------------------- #
+# The market filter
+#
+# The first real run pooled markets and reported 53.33% where KOSPI alone —
+# the only list `universe.resolve` screens — was 34.55%. The pooled figure sat
+# above the ~50% decision threshold and the real one sat entirely below it, so
+# the headline answered the question with the opposite sign.
+# --------------------------------------------------------------------------- #
+def test_the_replay_market_is_the_one_the_universe_is_drawn_from():
+    """If `universe.resolve` ever screens a different list this must move with it."""
+    source = (ROOT / "pipeline" / "universe.py").read_text(encoding="utf-8")
+    assert f'StockListing("{M.REPLAY_MARKET}")' in source
+
+
+def test_other_markets_are_context_not_denominator():
+    rows = M.candidates(_listing([
+        {"Symbol": "000010", "DelistingDate": "2017-01-01", "Market": "KOSPI"},
+        {"Symbol": "000011", "DelistingDate": "2017-01-01", "Market": "KOSDAQ"},
+        {"Symbol": "000012", "DelistingDate": "2017-01-01", "Market": "KONEX"},
+    ]), "2013-01-01")
+
+    on_market = [r for r in rows
+                 if (r["market"] or "").upper() == M.REPLAY_MARKET]
+
+    assert [r["symbol"] for r in on_market] == ["000010"]
+    assert len(rows) == 3, "the others are still read, just not counted"
+
+
+def test_the_pooled_and_market_figures_can_disagree_about_the_decision():
+    """The exact shape of the first run, in miniature.
+
+    Two markets, one of them irrelevant and much better served. Pooled clears a
+    50% bar; the market the replay screens does not.
+    """
+    results = ([{"market": "KOSPI", "fdrUsable": False, "yahooUsable": False}] * 13
+               + [{"market": "KOSPI", "fdrUsable": True, "yahooUsable": False}] * 7
+               + [{"market": "KOSDAQ", "fdrUsable": True, "yahooUsable": False}] * 20)
+    by_market = M.summarise(results, lambda r: r["market"])
+    pooled = M.summarise(results, lambda r: "ALL")
+
+    assert by_market["KOSPI"]["fdrUsablePct"] == 35.0
+    assert pooled["ALL"]["fdrUsablePct"] == 67.5
+    assert by_market["KOSPI"]["fdrUsablePct"] < 50 < pooled["ALL"]["fdrUsablePct"]
