@@ -1,0 +1,116 @@
+name: Collect DART fundamentals
+
+# Korean point-in-time financial statements, one budgeted slice per run.
+#
+# The probe established this is worth doing: receipt dates are present on every
+# response, all seven statement accounts the factors need come back, and
+# quarterly reports are served. It also established why this cannot be one job —
+# a DART call takes ~9.4 seconds, and 120 names x 2015-2025 x 4 reports is
+# 5,280 calls, about fourteen hours.
+#
+# So it runs daily, spends a budget, and resumes. The first backfill takes a few
+# unattended days; after that a quarter's new filings are minutes. The schedule
+# is 03:40 UTC — after the replay (02:40) so the two are not competing for the
+# runner, and long before the next day's Pages build reads anything.
+
+on:
+  schedule:
+    - cron: "40 3 * * *"
+  workflow_dispatch:
+    inputs:
+      max_calls:
+        description: "이번 실행의 최대 호출 수"
+        type: string
+        default: "1500"
+      max_minutes:
+        description: "이번 실행의 최대 분"
+        type: string
+        default: "240"
+
+permissions:
+  contents: write
+
+# Its own group, like the other three writers. All push to signal-history on
+# disjoint paths and each rebases and retries, so queueing behind one another
+# would only mean a waiting run gets cancelled by the next trigger.
+concurrency:
+  group: signal-history-fundamentals
+  cancel-in-progress: false
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 330
+    steps:
+      - name: Checkout code (main)
+        uses: actions/checkout@v5
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Check out signal-history branch (orphan-safe)
+        run: |
+          git config user.name "dart-fundamentals-bot"
+          git config user.email "actions@github.com"
+          mkdir -p fundamentals-work
+          if git ls-remote --exit-code --heads origin signal-history; then
+            git fetch origin signal-history
+            git worktree add fundamentals-work origin/signal-history
+            git -C fundamentals-work checkout -B signal-history
+          else
+            git worktree add --detach fundamentals-work
+            git -C fundamentals-work checkout --orphan signal-history
+            git -C fundamentals-work rm -rf . || true
+          fi
+          mkdir -p fundamentals-work/ledger/fundamentals/kr
+
+      - name: Collect a slice
+        env:
+          DART_API_KEY: ${{ secrets.DART }}
+        run: |
+          python scripts/collect_dart_fundamentals.py \
+            fundamentals-work/ledger/fundamentals/kr \
+            --max-calls "${{ inputs.max_calls || '1500' }}" \
+            --max-minutes "${{ inputs.max_minutes || '240' }}" \
+            | tee collect.log
+
+      - name: Commit & push to signal-history
+        run: |
+          cd fundamentals-work
+          git add ledger/fundamentals
+          if git diff --cached --quiet; then
+            echo "no new filings"
+            exit 0
+          fi
+          git commit -m "fundamentals: DART slice for $(date -u +%Y-%m-%d)"
+          for attempt in 1 2 3 4 5; do
+            if git push origin signal-history; then
+              exit 0
+            fi
+            echo "push rejected (attempt $attempt); rebasing onto the remote"
+            git fetch origin signal-history
+            if ! git rebase origin/signal-history; then
+              git rebase --abort || true
+              echo "could not rebase onto signal-history"
+              exit 1
+            fi
+          done
+          echo "push failed after 5 attempts"
+          exit 1
+
+      - name: Summary
+        if: always()
+        run: |
+          {
+            echo '## DART 재무 수집'
+            echo
+            echo '```'
+            tail -n 30 collect.log 2>/dev/null || echo '수집 출력 없음'
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"

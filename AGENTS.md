@@ -58,6 +58,39 @@
 - `trackingDays` and `maturedObservationDays` are different quantities and are reported
   separately; a ledger with recorded signals must never report zero tracking days.
 
+## PIT fundamentals invariants (v2.9)
+
+- A filing's `availableFrom` comes from its receipt date and from nothing else. The
+  period it describes ended long before it was submitted — on the 2023 samples the
+  quarterlies landed 45 days after period end and the annual report 71 — so reading
+  it from the period end is a look-ahead of exactly that gap. A filing whose receipt
+  date is missing is REFUSED, never stored with a substitute: a row that cannot say
+  when it became visible looks like coverage and is not.
+- Filings are stored RAW — the accounts as DART states them, under DART's own amount
+  column names. Deriving TTM figures, per-share numerators and ratios is a separate
+  step, because a derivation found wrong must be fixable without re-fetching a
+  backfill that took fourteen hours.
+- Both amount columns are kept. `thstrm_amount` is the period and `thstrm_add_amount`
+  the year-to-date running total; an income figure in a Q3 report is nine months
+  cumulative, not three, and a TTM built from the wrong column is wrong all the way
+  down to the position size.
+- Consolidated and separate statements are different definitions of the same company.
+  Consolidated is preferred, the separate one is the only statement some filers have,
+  and which answered is RECORDED on the record — a book that mixes them without
+  saying so ranks companies against each other on two different bases.
+- Account labels are matched EXACTLY against a filer-alias list. A substring rule
+  folds `영업이익률` into `영업이익` and ranks a percentage against a currency amount
+  without erroring.
+- A blank line item is `None`, never `0.0`. Zero is a number a filer stated; blank is
+  a line they did not, and a fabricated zero propagates into every ratio built on it.
+- Collection is append-only and identified by ticker x fiscal year x report code. A
+  restatement arrives as its own filing with its own receipt date rather than
+  overwriting the number that was actually visible at the time.
+- DART serves from 2015 and the replay starts 2013, so Korean value and quality are
+  dark for the first two years however complete the collection is. That gap is
+  reported per year, not averaged away, and it is not a reason to move the replay
+  start: it would trade two years of price-sleeve evidence for uniformity.
+
 ## Benchmark acquisition invariants (v2.8)
 
 - A benchmark panel materially shorter than the span it was requested for is a FAILED
