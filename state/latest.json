@@ -2,7 +2,7 @@
   "schemaVersion": "2.7.0",
   "modelVersion": "longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
   "buildCommitSha": "96bcfdf82092",
-  "generatedAt": "2026-08-31T01:42:40.161601+00:00",
+  "generatedAt": "2026-08-31T09:41:13.573286+00:00",
   "marketAsOf": "2026-08-28",
   "macroRegime": "Deflation/Slowdown",
   "holdingsByRegion": {
@@ -31,16 +31,16 @@
       "001450.KS",
       "005490.KS",
       "002380.KS",
-      "032640.KS",
-      "161390.KS"
+      "161390.KS",
+      "032640.KS"
     ]
   },
   "modelPortfolioWeights": {
-    "ALL": 0.170178,
-    "NUE": 0.11574,
-    "SPG": 0.159463,
-    "271560.KS": 0.068559,
-    "021240.KS": 0.03606
+    "ALL": 0.170302,
+    "NUE": 0.115823,
+    "SPG": 0.159579,
+    "271560.KS": 0.068391,
+    "021240.KS": 0.035905
   },
   "entryStatesByTicker": {
     "EIX": "WATCH",
@@ -68,8 +68,8 @@
     "001450.KS": "WATCH",
     "005490.KS": "WATCH",
     "002380.KS": "WATCH",
-    "032640.KS": "WATCH",
     "161390.KS": "WATCH",
+    "032640.KS": "WATCH",
     "009540.KS": "WATCH",
     "005930.KS": "WATCH",
     "004170.KS": "WATCH"
@@ -115,7 +115,7 @@
   "stale": false,
   "productionValidation": {
     "passed": true,
-    "validatedAt": "2026-08-31T01:42:40.161601+00:00",
+    "validatedAt": "2026-08-31T09:41:13.573286+00:00",
     "errors": []
   }
 }
