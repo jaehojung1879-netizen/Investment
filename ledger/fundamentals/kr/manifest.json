@@ -1,6 +1,6 @@
 {
   "contract": "DART_RAW_FILINGS_V1",
-  "updatedAt": "2026-08-30T23:09:27Z",
+  "updatedAt": "2026-08-31T10:09:28Z",
   "universeSize": 119,
   "years": [
     2015,
@@ -8,34 +8,34 @@
   ],
   "firstServedYear": 2015,
   "progress": {
-    "collected": 766,
-    "pending": 4946,
+    "collected": 1316,
+    "pending": 4396,
     "total": 5712,
-    "completePct": 13.41
+    "completePct": 23.04
   },
   "thisRun": {
     "calls": 1500,
-    "recordsWritten": 766,
-    "shardsChanged": 4,
+    "recordsWritten": 550,
+    "shardsChanged": 2,
     "stopReason": "CALL_BUDGET_SPENT",
     "statuses": {
-      "000": 766,
-      "013": 734
+      "013": 950,
+      "000": 550
     },
     "refused": {
-      "EMPTY_RESPONSE": 734,
-      "NO_CORP_CODE": 48
+      "EMPTY_RESPONSE": 950,
+      "NO_CORP_CODE": 60
     },
     "fsDiv": {
-      "CFS": 753,
-      "OFS": 13
+      "CFS": 529,
+      "OFS": 21
     },
     "amountFieldsSeen": {
-      "thstrm_amount": 143601,
-      "frmtrm_amount": 109332,
-      "bfefrmtrm_amount": 104445,
-      "thstrm_add_amount": 16003,
-      "frmtrm_add_amount": 15843
+      "thstrm_amount": 100280,
+      "frmtrm_amount": 46047,
+      "bfefrmtrm_amount": 25406,
+      "thstrm_add_amount": 11818,
+      "frmtrm_add_amount": 11669
     }
   }
 }
