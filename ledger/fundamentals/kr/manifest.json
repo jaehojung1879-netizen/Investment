@@ -1,0 +1,41 @@
+{
+  "contract": "DART_RAW_FILINGS_V1",
+  "updatedAt": "2026-08-30T23:09:27Z",
+  "universeSize": 119,
+  "years": [
+    2015,
+    2026
+  ],
+  "firstServedYear": 2015,
+  "progress": {
+    "collected": 766,
+    "pending": 4946,
+    "total": 5712,
+    "completePct": 13.41
+  },
+  "thisRun": {
+    "calls": 1500,
+    "recordsWritten": 766,
+    "shardsChanged": 4,
+    "stopReason": "CALL_BUDGET_SPENT",
+    "statuses": {
+      "000": 766,
+      "013": 734
+    },
+    "refused": {
+      "EMPTY_RESPONSE": 734,
+      "NO_CORP_CODE": 48
+    },
+    "fsDiv": {
+      "CFS": 753,
+      "OFS": 13
+    },
+    "amountFieldsSeen": {
+      "thstrm_amount": 143601,
+      "frmtrm_amount": 109332,
+      "bfefrmtrm_amount": 104445,
+      "thstrm_add_amount": 16003,
+      "frmtrm_add_amount": 15843
+    }
+  }
+}
