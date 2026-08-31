@@ -206,7 +206,8 @@ def test_the_work_list_is_oldest_first_and_stable():
 
 def test_progress_is_reported_against_the_whole_job_not_the_slice():
     assert DF.progress(300, 100) == {
-        "collected": 300, "pending": 100, "total": 400, "completePct": 75.0}
+        "collected": 300, "absent": 0, "pending": 100,
+        "total": 400, "completePct": 75.0}
     assert DF.progress(0, 0)["completePct"] is None
 
 
@@ -227,3 +228,71 @@ def test_an_unknown_status_is_named_as_unknown():
 
 def test_a_shard_is_one_fiscal_year():
     assert DF.shard_path("/tmp/store", 2019).name == "dart-2019.jsonl.gz"
+
+
+# --------------------------------------------------------------------------- #
+# Absences
+#
+# The first two real runs spent 950 of every 1,500 calls on filings that do not
+# exist, and the work list did not shrink by a single one of them: an absence
+# leaves no record, so its id stays missing and the next run asks again. Left
+# alone the pending list converges to nothing but known absences and the
+# backfill never finishes.
+# --------------------------------------------------------------------------- #
+def test_a_recorded_absence_leaves_the_work_list():
+    absent = {DF.record_id("A.KS", 2016, "11013")}
+    pending = DF.work_list(["A.KS"], [2016], set(), report_codes=["11013", "11012"],
+                           absent_ids=absent)
+
+    assert [code for _, _, code in pending] == ["11012"]
+
+
+def test_the_deadline_separates_never_filed_from_not_filed_yet():
+    """DART answers 013 for both, and they need opposite handling."""
+    # 2016 Q1 was due 2016-05-15; long settled by 2026.
+    assert DF.absence_is_settled(2016, "11013", "2026-08-31") is True
+    # 2026 Q3 is due 2026-11-14 — it has not been filed because it cannot be.
+    assert DF.absence_is_settled(2026, "11014", "2026-08-31") is False
+    # The annual report falls in the following year.
+    assert DF.absence_is_settled(2025, "11011", "2026-08-31") is True
+    assert DF.absence_is_settled(2026, "11011", "2026-08-31") is False
+
+
+def test_a_late_filer_is_given_grace_before_the_absence_is_permanent():
+    """Recording it permanently the day after the deadline skips a late
+    submission for good."""
+    assert DF.absence_is_settled(2026, "11013", "2026-05-16") is False
+    assert DF.absence_is_settled(2026, "11013", "2026-07-20") is True
+
+
+def test_the_deadlines_match_the_filings_the_probe_actually_saw():
+    """2023 samples landed 05-15, 08-14, 11-14 and 03-12 of the next year."""
+    assert DF.filing_deadline(2023, "11013") == "2023-05-15"
+    assert DF.filing_deadline(2023, "11012") == "2023-08-14"
+    assert DF.filing_deadline(2023, "11014") == "2023-11-14"
+    assert DF.filing_deadline(2023, "11011") == "2024-03-31"
+
+
+def test_only_settled_absences_are_skipped():
+    absent = {
+        DF.record_id("A.KS", 2016, "11013"): {"fiscalYear": 2016, "reportCode": "11013"},
+        DF.record_id("A.KS", 2026, "11014"): {"fiscalYear": 2026, "reportCode": "11014"},
+    }
+    settled = DF.settled_absences(absent, "2026-08-31")
+
+    assert settled == {DF.record_id("A.KS", 2016, "11013")}
+
+
+def test_a_malformed_absence_entry_is_not_skipped():
+    """A row that cannot say which filing it is must not silence a fetch."""
+    assert DF.settled_absences({"junk": {}}, "2026-08-31") == set()
+    assert DF.settled_absences({"junk": {"fiscalYear": None,
+                                         "reportCode": "11013"}}, "2026-08-31") == set()
+
+
+def test_progress_counts_a_settled_absence_as_done_not_as_pending():
+    """DART has answered. Leaving it pending reports a backfill that can
+    never reach 100%."""
+    assert DF.progress(1316, 3446, absent=950) == {
+        "collected": 1316, "absent": 950, "pending": 3446,
+        "total": 5712, "completePct": 39.67}
