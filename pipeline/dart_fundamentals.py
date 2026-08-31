@@ -237,37 +237,122 @@ def build_record(*, ticker: str, stock_code: str, corp_code: str,
     }, ""
 
 
+# When a filing was legally due, as (month, day, years after the fiscal year).
+# Korea gives 45 days for quarterly and half-year reports and 90 for the annual
+# one; the probe's 2023 samples landed on 05-15, 08-14, 11-14 and 03-12, inside
+# each. This is what separates "not filed yet" from "never filed".
+FILING_DEADLINE: dict[str, tuple[int, int, int]] = {
+    "11013": (5, 15, 0),    # 1분기 — 3/31 마감 +45일
+    "11012": (8, 14, 0),    # 반기 — 6/30 +45일
+    "11014": (11, 14, 0),   # 3분기 — 9/30 +45일
+    "11011": (3, 31, 1),    # 사업 — 12/31 +90일, 이듬해
+}
+# Slack past the deadline before an absence is called permanent. A filer can be
+# late, and a re-listing or a late submission would otherwise be recorded as
+# "never exists" and skipped for good.
+ABSENCE_GRACE_DAYS = 60
+
+
+def filing_deadline(fiscal_year: int, report_code: str) -> str | None:
+    """The day this filing was due, or None for a report code with no rule."""
+    rule = FILING_DEADLINE.get(report_code)
+    if not rule:
+        return None
+    month, day, offset = rule
+    return f"{int(fiscal_year) + offset:04d}-{month:02d}-{day:02d}"
+
+
+def absence_is_settled(fiscal_year: int, report_code: str, today: str,
+                       grace_days: int = ABSENCE_GRACE_DAYS) -> bool:
+    """Whether "no data" for this filing means never, rather than not yet.
+
+    DART answers 013 both for a report a company never filed and for one whose
+    period has not closed. Treating the two alike is a choice between two
+    failures: forget the absence and every run re-asks the same thousand
+    non-existent filings forever, which is what the first two runs did; record
+    it permanently and a filing that simply had not been submitted yet is
+    skipped for good.
+
+    So an absence settles only once the legal deadline plus a grace period has
+    passed. Before that it is re-checked.
+    """
+    import datetime as _dt
+
+    due = filing_deadline(fiscal_year, report_code)
+    if due is None:
+        return False
+    try:
+        deadline = _dt.date.fromisoformat(due)
+        now = _dt.date.fromisoformat(str(today)[:10])
+    except ValueError:
+        return False
+    return now > deadline + _dt.timedelta(days=grace_days)
+
+
+def settled_absences(absent: dict[str, dict], today: str) -> set[str]:
+    """The recorded absences that may be skipped, by their own deadline.
+
+    An entry keeps its fiscal year and report code so the rule is applied to
+    the filing rather than to when we happened to look.
+    """
+    out: set[str] = set()
+    for record_key, row in (absent or {}).items():
+        year, code = row.get("fiscalYear"), row.get("reportCode")
+        if year is None or code is None:
+            continue
+        if absence_is_settled(int(year), str(code), today):
+            out.add(record_key)
+    return out
+
+
 def shard_path(root: str | Path, fiscal_year: int) -> Path:
     """One shard per fiscal year — ~480 rows at 120 names x 4 reports."""
     return Path(root) / f"dart-{int(fiscal_year)}.jsonl.gz"
 
 
 def work_list(tickers: list[str], years: list[int], existing_ids: set[str],
-              report_codes: list[str] | None = None) -> list[tuple[str, int, str]]:
+              report_codes: list[str] | None = None,
+              absent_ids: set[str] | None = None) -> list[tuple[str, int, str]]:
     """What is still to fetch, oldest first and stable in order.
 
     Oldest first because the early years are the ones the replay is thinnest on
     and a run that dies halfway should have bought the scarcer end. Stable order
     because a resumed backfill that reshuffles its work list re-fetches what it
     already holds.
+
+    ``absent_ids`` are filings DART has said do not exist and whose deadline has
+    passed. Without them the list never shrinks by an absence: a filing that was
+    never submitted leaves no record, so it stays pending and is re-fetched
+    every run — 950 of the first 1,500 calls went that way, and as the store
+    fills the pending list becomes nothing but known absences and the backfill
+    stops converging.
     """
     codes = report_codes or sorted(REPORT_CODES)
+    skip = set(existing_ids) | set(absent_ids or ())
     pending: list[tuple[str, int, str]] = []
     for year in sorted(years):
         if year < FIRST_SERVED_YEAR:
             continue
         for ticker in sorted(tickers):
             for code in codes:
-                if record_id(ticker, year, code) not in existing_ids:
+                if record_id(ticker, year, code) not in skip:
                     pending.append((ticker, year, code))
     return pending
 
 
-def progress(collected: int, pending: int) -> dict:
-    total = collected + pending
+def progress(collected: int, pending: int, absent: int = 0) -> dict:
+    """Where the backfill stands, with absences counted as settled work.
+
+    An absence is not a hole to come back to — DART has answered and the answer
+    was that the filing does not exist. Leaving it in `pending` reports a
+    backfill that can never finish.
+    """
+    total = collected + pending + absent
+    done = collected + absent
     return {
         "collected": collected,
+        "absent": absent,
         "pending": pending,
         "total": total,
-        "completePct": round(100.0 * collected / total, 2) if total else None,
+        "completePct": round(100.0 * done / total, 2) if total else None,
     }

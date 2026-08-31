@@ -83,6 +83,16 @@
   without erroring.
 - A blank line item is `None`, never `0.0`. Zero is a number a filer stated; blank is
   a line they did not, and a fabricated zero propagates into every ratio built on it.
+- An absence is an ANSWER and is recorded. DART returns 013 both for a filing a
+  company never made and for one whose period has not closed, and a run that
+  forgets either re-asks it forever: the first two real runs spent 950 of every
+  1,500 calls on filings that do not exist, and the work list did not shrink by
+  one of them. An absence settles only once the filing's legal deadline plus a
+  grace period has passed — permanent for a 2016 quarter, still open for a 2026
+  one — and settled absences count as done, because a backfill that reports them
+  as pending can never reach 100%.
+- Absences live beside the shards, never inside them. `FundamentalStore` would
+  read an absence row as a filing with no accounts.
 - Collection is append-only and identified by ticker x fiscal year x report code. A
   restatement arrives as its own filing with its own receipt date rather than
   overwriting the number that was actually visible at the time.

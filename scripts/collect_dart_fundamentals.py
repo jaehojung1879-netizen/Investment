@@ -94,6 +94,23 @@ def corp_code_map(key: str) -> dict[str, str]:
     return out
 
 
+def load_absent(store: Path) -> dict[str, dict]:
+    """Filings DART has said do not exist, by id.
+
+    Kept beside the shards rather than inside them: an absence is not a filing
+    and must never reach `FundamentalStore`, which would read it as a record
+    with no accounts.
+    """
+    path = store / "absent.json"
+    if not path.exists():
+        return {}
+    try:
+        raw = json.loads(path.read_text(encoding="utf-8"))
+    except ValueError:
+        return {}
+    return raw if isinstance(raw, dict) else {}
+
+
 def load_existing(store: Path) -> tuple[set[str], dict[int, list[dict]]]:
     """Everything already collected, by shard. Ids drive the skip."""
     ids: set[str] = set()
@@ -166,12 +183,17 @@ def main(argv=None) -> int:
     print(f"corp_code 매핑 {len(codes):,}개")
 
     existing_ids, shards = load_existing(store)
+    absent = load_absent(store)
+    today = time.strftime("%Y-%m-%d", time.gmtime())
+    settled = DF.settled_absences(absent, today)
     years = list(range(max(args.from_year, DF.FIRST_SERVED_YEAR), args.to_year + 1))
-    pending = DF.work_list(kr, years, existing_ids)
-    before = DF.progress(len(existing_ids), len(pending))
-    print(f"진행률 {before['collected']:,}/{before['total']:,} "
-          f"({before['completePct']}%) · 이번 예산 {args.max_calls}콜 / "
-          f"{args.max_minutes}분\n")
+    pending = DF.work_list(kr, years, existing_ids, absent_ids=settled)
+    before = DF.progress(len(existing_ids), len(pending), len(settled))
+    print(f"진행률 {before['collected']:,} 수집 + {before['absent']:,} 부재확정 "
+          f"/ {before['total']:,} ({before['completePct']}%) · 남음 {before['pending']:,}")
+    if len(absent) > len(settled):
+        print(f"  부재 {len(absent) - len(settled):,}건은 마감 전이라 다시 확인합니다")
+    print(f"  이번 예산 {args.max_calls}콜 / {args.max_minutes}분\n")
 
     deadline = time.time() + args.max_minutes * 60
     collected_at = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
@@ -207,10 +229,16 @@ def main(argv=None) -> int:
             stop_reason = "DAILY_QUOTA"
             break
 
+        # Split by report code and statement, because the pooled count cannot
+        # answer the question the next step turns on. The first run reported
+        # `thstrm_add_amount` on 12% of rows, which tells you nothing about
+        # WHICH rows — and whether a Q3 revenue figure is three months or nine
+        # is exactly what a TTM is built from.
         for row in rows:
+            statement = str(row.get("sj_div") or "?")
             for field in DF.AMOUNT_FIELDS:
                 if row.get(field) not in (None, ""):
-                    fields_seen[field] += 1
+                    fields_seen[f"{DF.REPORT_CODES.get(code, code)}|{statement}|{field}"] += 1
 
         record, reason = DF.build_record(
             ticker=ticker, stock_code=ticker.split(".")[0], corp_code=corp,
@@ -218,6 +246,16 @@ def main(argv=None) -> int:
             fs_div=fs_div, collected_at=collected_at)
         if record is None:
             refused[reason] += 1
+            # Remember that DART answered "no such filing". Without this the
+            # work list never shrinks by an absence and every future run
+            # re-asks the same thousand filings that do not exist — which is
+            # what the first two runs did, 950 calls of 1,500 apiece.
+            if reason == "EMPTY_RESPONSE":
+                absent[DF.record_id(ticker, year, code)] = {
+                    "fiscalYear": year, "reportCode": code, "ticker": ticker,
+                    "status": status, "checkedAt": collected_at,
+                    "dueBy": DF.filing_deadline(year, code),
+                }
             continue
         fs_used[fs_div] += 1
         fresh.setdefault(year, []).append(record)
@@ -237,9 +275,14 @@ def main(argv=None) -> int:
             changed += 1
         written += len(rows)
 
+    (store / "absent.json").write_text(
+        json.dumps(absent, ensure_ascii=False, indent=1, sort_keys=True) + "\n",
+        encoding="utf-8")
+
     total_ids = existing_ids | {r["id"] for rows in fresh.values() for r in rows}
-    remaining = DF.work_list(kr, years, total_ids)
-    after = DF.progress(len(total_ids), len(remaining))
+    settled_after = DF.settled_absences(absent, today)
+    remaining = DF.work_list(kr, years, total_ids, absent_ids=settled_after)
+    after = DF.progress(len(total_ids), len(remaining), len(settled_after))
 
     manifest = {
         "contract": "DART_RAW_FILINGS_V1",
@@ -248,6 +291,11 @@ def main(argv=None) -> int:
         "years": [years[0], years[-1]] if years else None,
         "firstServedYear": DF.FIRST_SERVED_YEAR,
         "progress": after,
+        "absences": {
+            "recorded": len(absent),
+            "settled": len(settled_after),
+            "awaitingDeadline": len(absent) - len(settled_after),
+        },
         "thisRun": {
             "calls": calls, "recordsWritten": written, "shardsChanged": changed,
             "stopReason": stop_reason,
@@ -273,9 +321,9 @@ def main(argv=None) -> int:
         print(f"  재무제표 구분 {dict(fs_used)}  (CFS=연결 · OFS=별도)")
     if fields_seen:
         print(f"  금액 컬럼    {dict(fields_seen)}")
-    print(f"\n진행률 {after['collected']:,}/{after['total']:,} ({after['completePct']}%)")
+    print(f"\n진행률 {after['collected']:,} 수집 + {after['absent']:,} 부재확정 "
+          f"/ {after['total']:,} ({after['completePct']}%)")
     if remaining:
-        rate = calls / max(1, args.max_calls)
         print(f"  남은 {len(remaining):,}건 — 이 예산으로 약 "
               f"{-(-len(remaining) // max(1, args.max_calls))}회 더 실행하면 완료")
     else:
