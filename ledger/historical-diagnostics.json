@@ -15,8 +15,8 @@
   "firstDate": "2013-01-04",
   "lastDate": "2026-09-01",
   "replayDates": 714,
-  "signalsGenerated": 619,
-  "signalsSkippedAlreadyPresent": 375353,
+  "signalsGenerated": 0,
+  "signalsSkippedAlreadyPresent": 375972,
   "meanPitCoverage": 0.7833,
   "survivorshipRisk": "HIGH",
   "survivorshipNote": "SURVIVORSHIP_BIAS_UNRESOLVED",
@@ -257,10 +257,10 @@
     "lastMaturedSignalDate": "2026-02-27",
     "horizon": 126,
     "maturedByHorizon": {
-      "21": 372835,
+      "21": 372836,
       "63": 367224,
       "126": 359008,
-      "252": 342339
+      "252": 342829
     },
     "benchmarkCoverageByRegion": {
       "KR": {
@@ -446,15 +446,15 @@
           "missingSamples": []
         },
         "21": {
-          "maturedAbsoluteReturns": 300162,
-          "matchedBenchmarkReturns": 300162,
+          "maturedAbsoluteReturns": 300163,
+          "matchedBenchmarkReturns": 300163,
           "missingBenchmarkReturns": 0,
           "coveragePct": 100.0,
           "missingSamples": []
         },
         "252": {
-          "maturedAbsoluteReturns": 275583,
-          "matchedBenchmarkReturns": 275583,
+          "maturedAbsoluteReturns": 276073,
+          "matchedBenchmarkReturns": 276073,
           "missingBenchmarkReturns": 0,
           "coveragePct": 100.0,
           "missingSamples": []
@@ -494,23 +494,23 @@
         "status": "VENDOR",
         "source": "yahoo",
         "symbol": "SPY",
-        "sessions": 3938,
+        "sessions": 3939,
         "firstSession": "2011-01-03",
-        "lastSession": "2026-08-31",
+        "lastSession": "2026-09-01",
         "candidates": [
           {
             "source": "yahoo",
             "symbol": "SPY",
             "accepted": true,
             "reason": null,
-            "sessions": 3938,
+            "sessions": 3939,
             "snapshotCoveragePct": 100.0,
             "minimumSessions": null,
             "firstSession": "2011-01-03",
-            "lastSession": "2026-08-31"
+            "lastSession": "2026-09-01"
           }
         ],
-        "snapshotSessions": 3937
+        "snapshotSessions": 3938
       },
       "KR": {
         "ticker": "^KS200",
@@ -537,14 +537,14 @@
             "symbol": "^KS200",
             "accepted": true,
             "reason": null,
-            "sessions": 3782,
-            "snapshotCoveragePct": 98.2078,
+            "sessions": 3781,
+            "snapshotCoveragePct": 98.9791,
             "minimumSessions": null,
             "firstSession": "2011-01-03",
-            "lastSession": "2026-09-01"
+            "lastSession": "2026-07-16"
           }
         ],
-        "snapshotSessions": 3850
+        "snapshotSessions": 3851
       }
     },
     "degradedRegions": [],
