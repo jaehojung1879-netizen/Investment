@@ -1,10 +1,10 @@
 {
-  "generatedAt": "2026-08-31T09:15:51.091705+00:00",
+  "generatedAt": "2026-09-01T08:29:33.763823+00:00",
   "replayVersion": "replay-v5",
   "modelVersion": "longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
   "evidenceClass": "HISTORICAL_OOS",
-  "outcomesRead": 372220,
-  "maturedTargetOutcomesRead": 359007,
+  "outcomesRead": 372835,
+  "maturedTargetOutcomesRead": 359008,
   "available": true,
   "method": "MATURITY_AWARE_EXPANDING_BETA_BINOMIAL",
   "target": "COST_ADJUSTED_REGIONAL_EXCESS_RETURN_GT_ZERO",
@@ -317,16 +317,16 @@
         },
         {
           "bucket": "95-100",
-          "observations": 16219,
+          "observations": 16220,
           "dates": 687,
           "effectiveDates": 27,
           "upProbabilityPct": 45.64,
           "downProbabilityPct": 54.36,
           "averageUpsidePct": 14.029,
-          "averageDownsidePct": 12.868,
-          "payoffRatio": 1.0903,
-          "distributionExpectedExcessReturnPct": -0.592,
-          "binaryKellyFraction": -0.0422
+          "averageDownsidePct": 12.869,
+          "payoffRatio": 1.0901,
+          "distributionExpectedExcessReturnPct": -0.593,
+          "binaryKellyFraction": -0.0423
         }
       ]
     }
