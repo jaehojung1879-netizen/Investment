@@ -14,6 +14,9 @@ name: Collect DART fundamentals
 # runner, and long before the next day's Pages build reads anything.
 
 on:
+  # The daily run takes `auto` — the statements first, then whatever budget is
+  # left on share counts. Nothing here needs a human to pick a mode, which
+  # matters because the mobile app cannot pass workflow inputs at all.
   schedule:
     - cron: "40 3 * * *"
   workflow_dispatch:
@@ -27,10 +30,10 @@ on:
         type: string
         default: "240"
       target:
-        description: "statements=재무제표, shares=주식수(밸류 팩터에 필요)"
+        description: "auto=재무제표 후 주식수까지 / statements / shares"
         type: choice
-        options: ["statements", "shares"]
-        default: "statements"
+        options: ["auto", "statements", "shares"]
+        default: "auto"
 
 permissions:
   contents: write
@@ -81,7 +84,7 @@ jobs:
         run: |
           python scripts/collect_dart_fundamentals.py \
             fundamentals-work/ledger/fundamentals/kr \
-            --target "${{ inputs.target || 'statements' }}" \
+            --target "${{ inputs.target || 'auto' }}" \
             --max-calls "${{ inputs.max_calls || '1500' }}" \
             --max-minutes "${{ inputs.max_minutes || '240' }}" \
             | tee collect.log
@@ -94,7 +97,7 @@ jobs:
             echo "no new filings"
             exit 0
           fi
-          git commit -m "fundamentals: DART ${{ inputs.target || 'statements' }} slice for $(date -u +%Y-%m-%d)"
+          git commit -m "fundamentals: DART ${{ inputs.target || 'auto' }} slice for $(date -u +%Y-%m-%d)"
           for attempt in 1 2 3 4 5; do
             if git push origin signal-history; then
               exit 0

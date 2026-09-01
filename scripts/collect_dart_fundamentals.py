@@ -180,9 +180,14 @@ def fetch_shares(key: str, corp: str, year: int, code: str) -> tuple[float | Non
     return best, ("000" if best else "013")
 
 
-def collect_shares(key: str, codes: dict, kr: list[str], years: list[int],
-                   store: Path, args) -> int:
-    """The share pass. Same budget discipline, its own work list and file."""
+def collect_shares(key: str, codes: dict, store: Path,
+                   max_calls: int, deadline: float) -> int:
+    """The share pass. Same budget discipline, its own work list and file.
+
+    Takes what is left of the run's budget rather than a fresh one, so a run
+    that finishes the statements early spends the remainder here instead of
+    stopping with hours unused.
+    """
     path = store / "shares.jsonl.gz"
     held = HS.read_jsonl(path)
     have = {(str(r["ticker"]), int(r["fiscalYear"]), str(r["reportCode"])) for r in held}
@@ -199,12 +204,11 @@ def collect_shares(key: str, codes: dict, kr: list[str], years: list[int],
     print(f"주식수 대상 {len(filings):,}건 (보유 공시 기준) · "
           f"이미 확보 {len(have):,}건\n")
 
-    deadline = time.time() + args.max_minutes * 60
     collected_at = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
     fresh, calls = [], 0
     statuses: Counter = Counter()
     for ticker, year, code in filings:
-        if calls >= args.max_calls or time.time() >= deadline:
+        if calls >= max_calls or time.time() >= deadline:
             break
         corp = codes.get(ticker.split(".")[0])
         if not corp:
@@ -239,9 +243,10 @@ def collect_shares(key: str, codes: dict, kr: list[str], years: list[int],
 def main(argv=None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("store_dir")
-    parser.add_argument("--target", choices=("statements", "shares"),
-                        default="statements",
-                        help="statements=재무제표, shares=주식수(밸류 팩터에 필요)")
+    parser.add_argument("--target", choices=("auto", "statements", "shares"),
+                        default="auto",
+                        help="auto=재무제표를 끝내고 남은 예산으로 주식수까지, "
+                             "statements=재무제표만, shares=주식수만")
     parser.add_argument("--universe-size", type=int, default=None)
     parser.add_argument("--from-year", type=int, default=DF.FIRST_SERVED_YEAR)
     parser.add_argument("--to-year", type=int, default=time.gmtime().tm_year)
@@ -273,8 +278,9 @@ def main(argv=None) -> int:
     print(f"corp_code 매핑 {len(codes):,}개")
 
     years = list(range(max(args.from_year, DF.FIRST_SERVED_YEAR), args.to_year + 1))
+    run_deadline = time.time() + args.max_minutes * 60
     if args.target == "shares":
-        return collect_shares(key, codes, kr, years, store, args)
+        return collect_shares(key, codes, store, args.max_calls, run_deadline)
 
     existing_ids, shards = load_existing(store)
     absent = load_absent(store)
@@ -288,7 +294,7 @@ def main(argv=None) -> int:
         print(f"  부재 {len(absent) - len(settled):,}건은 마감 전이라 다시 확인합니다")
     print(f"  이번 예산 {args.max_calls}콜 / {args.max_minutes}분\n")
 
-    deadline = time.time() + args.max_minutes * 60
+    deadline = run_deadline
     collected_at = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
     fresh: dict[int, list[dict]] = {}
     calls = 0
@@ -420,7 +426,18 @@ def main(argv=None) -> int:
         print(f"  남은 {len(remaining):,}건 — 이 예산으로 약 "
               f"{-(-len(remaining) // max(1, args.max_calls))}회 더 실행하면 완료")
     else:
-        print("  백필 완료")
+        print("  재무제표 백필 완료")
+
+    # The share pass is not a second thing to remember to run. Once the
+    # statements are in hand a scheduled run would otherwise spend its budget
+    # discovering there is nothing to fetch, while the value sleeve stays dark
+    # for want of a share count — so the remainder of this run goes there.
+    if args.target == "auto":
+        left = args.max_calls - calls
+        if left > 0 and time.time() < run_deadline:
+            print(f"\n남은 예산 {left}콜을 주식수 수집에 씁니다.\n")
+            return collect_shares(key, codes, store, left, run_deadline)
+        print("\n예산을 다 썼습니다. 다음 실행이 주식수를 이어받습니다.")
     return 0
 
 

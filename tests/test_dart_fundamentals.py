@@ -296,3 +296,37 @@ def test_progress_counts_a_settled_absence_as_done_not_as_pending():
     assert DF.progress(1316, 3446, absent=950) == {
         "collected": 1316, "absent": 950, "pending": 3446,
         "total": 5712, "completePct": 39.67}
+
+
+# --------------------------------------------------------------------------- #
+# The share pass must not be a thing to remember
+#
+# `target` was a manual choice, and the GitHub mobile app cannot pass workflow
+# inputs at all — so the pass the entire value sleeve depends on was reachable
+# only from a desktop. Once the statements are in hand a scheduled run would
+# also spend its whole budget discovering there is nothing left to fetch.
+# --------------------------------------------------------------------------- #
+def test_the_collector_defaults_to_finishing_both_passes():
+    """No mode has to be chosen for the value sleeve to get its share counts."""
+    from pathlib import Path as _Path
+
+    source = (_Path(__file__).resolve().parent.parent / "scripts" /
+              "collect_dart_fundamentals.py").read_text(encoding="utf-8")
+
+    assert '"auto", "statements", "shares"' in source
+    assert 'default="auto"' in source
+    # And the fall-through actually exists rather than the flag merely naming it.
+    assert 'if args.target == "auto":' in source
+    assert "return collect_shares(key, codes, store, left, run_deadline)" in source
+
+
+def test_the_scheduled_workflow_passes_no_mode_of_its_own():
+    """A schedule supplies no inputs, so the default has to be the useful one."""
+    from pathlib import Path as _Path
+
+    root = _Path(__file__).resolve().parent.parent
+    workflow = (root / ".github" / "workflows" / "dart-fundamentals.yml").read_text(
+        encoding="utf-8")
+
+    assert "inputs.target || 'auto'" in workflow
+    assert 'default: "auto"' in workflow
