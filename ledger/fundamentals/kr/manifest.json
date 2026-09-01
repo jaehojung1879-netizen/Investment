@@ -1,6 +1,6 @@
 {
   "contract": "DART_RAW_FILINGS_V1",
-  "updatedAt": "2026-09-01T10:50:38Z",
+  "updatedAt": "2026-09-01T22:33:28Z",
   "universeSize": 119,
   "years": [
     2015,
@@ -20,77 +20,18 @@
     "awaitingDeadline": 233
   },
   "thisRun": {
-    "calls": 1252,
-    "recordsWritten": 1007,
-    "shardsChanged": 3,
+    "calls": 233,
+    "recordsWritten": 0,
+    "shardsChanged": 0,
     "stopReason": "WORK_LIST_EXHAUSTED",
     "statuses": {
-      "000": 1007,
-      "013": 245
+      "013": 233
     },
     "refused": {
       "NO_CORP_CODE": 144,
-      "EMPTY_RESPONSE": 245
+      "EMPTY_RESPONSE": 233
     },
-    "fsDiv": {
-      "CFS": 987,
-      "OFS": 20
-    },
-    "amountFieldsSeen": {
-      "사업|BS|thstrm_amount": 9552,
-      "사업|BS|frmtrm_amount": 9554,
-      "사업|BS|bfefrmtrm_amount": 9565,
-      "사업|CIS|thstrm_amount": 5591,
-      "사업|CIS|frmtrm_amount": 5604,
-      "사업|CIS|bfefrmtrm_amount": 5599,
-      "사업|CF|thstrm_amount": 10570,
-      "사업|CF|frmtrm_amount": 10553,
-      "사업|CF|bfefrmtrm_amount": 10510,
-      "사업|SCE|thstrm_amount": 21966,
-      "사업|SCE|frmtrm_amount": 21946,
-      "사업|SCE|bfefrmtrm_amount": 21947,
-      "반기|BS|thstrm_amount": 14974,
-      "반기|BS|frmtrm_amount": 14960,
-      "반기|BS|bfefrmtrm_amount": 562,
-      "반기|CIS|thstrm_amount": 8553,
-      "반기|CIS|thstrm_add_amount": 8545,
-      "반기|CIS|frmtrm_add_amount": 8549,
-      "반기|CF|thstrm_amount": 15172,
-      "반기|SCE|thstrm_amount": 29784,
-      "반기|SCE|frmtrm_amount": 356,
-      "1분기|BS|thstrm_amount": 14888,
-      "1분기|BS|frmtrm_amount": 14888,
-      "1분기|BS|bfefrmtrm_amount": 531,
-      "1분기|CIS|thstrm_amount": 8515,
-      "1분기|CIS|thstrm_add_amount": 8509,
-      "1분기|CIS|frmtrm_add_amount": 8510,
-      "1분기|CF|thstrm_amount": 14007,
-      "1분기|SCE|thstrm_amount": 27450,
-      "1분기|SCE|frmtrm_amount": 350,
-      "3분기|BS|thstrm_amount": 9417,
-      "3분기|BS|frmtrm_amount": 9413,
-      "3분기|BS|bfefrmtrm_amount": 346,
-      "3분기|CIS|thstrm_amount": 5349,
-      "3분기|CIS|thstrm_add_amount": 5347,
-      "3분기|CIS|frmtrm_add_amount": 5366,
-      "3분기|CF|thstrm_amount": 9838,
-      "3분기|SCE|thstrm_amount": 19530,
-      "3분기|SCE|frmtrm_amount": 214,
-      "사업|IS|thstrm_amount": 1066,
-      "사업|IS|frmtrm_amount": 1066,
-      "사업|IS|bfefrmtrm_amount": 1071,
-      "반기|IS|thstrm_amount": 1648,
-      "반기|IS|thstrm_add_amount": 1648,
-      "반기|IS|frmtrm_add_amount": 1648,
-      "1분기|IS|thstrm_amount": 1633,
-      "1분기|IS|thstrm_add_amount": 1633,
-      "1분기|IS|frmtrm_add_amount": 1636,
-      "3분기|IS|thstrm_amount": 1035,
-      "3분기|IS|thstrm_add_amount": 1035,
-      "3분기|IS|frmtrm_add_amount": 1035,
-      "반기|SCE|bfefrmtrm_amount": 26,
-      "1분기|SCE|bfefrmtrm_amount": 28,
-      "3분기|SCE|bfefrmtrm_amount": 12
-    }
+    "fsDiv": {},
+    "amountFieldsSeen": {}
   }
 }
