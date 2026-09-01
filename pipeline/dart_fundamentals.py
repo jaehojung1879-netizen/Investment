@@ -43,7 +43,23 @@ WANTED_ACCOUNTS: dict[str, tuple[str, ...]] = {
     "부채총계": ("부채총계",),
     "자산총계": ("자산총계",),
     "영업활동현금흐름": ("영업활동현금흐름", "영업활동으로인한현금흐름"),
+    # Free cash flow is operating cash flow less the spend needed to stay in
+    # business. Without this line `fcfPerShare` cannot exist and the value
+    # sleeve runs on three inputs of four — so it is collected even though
+    # filers label it several ways and some omit it entirely.
+    "유형자산의취득": ("유형자산의취득", "유형자산의증가", "유형자산의취득으로인한현금유출",
+                  "유형자산의취득으로인한현금유출액"),
 }
+
+# Share counts do not come from the statement endpoint. Per-share numerators —
+# and so the entire value sleeve — need them, which is why they are a second
+# collection pass rather than a footnote.
+SHARE_ENDPOINT = "stockTotqySttus"
+# The fields that endpoint may state a share count under. All are kept and the
+# choice is made on read, for the same reason the amount columns are: guessing
+# which one DART returns is how a per-share figure comes out wrong by the size
+# of the treasury holding.
+SHARE_FIELDS = ("istc_totqy", "distb_stock_co", "tesstk_co", "now_to_isu_stock_totqy")
 
 # The amount columns a statement row can carry. All that are present are kept,
 # under DART's own names, because they mean different things and picking one
@@ -303,6 +319,28 @@ def settled_absences(absent: dict[str, dict], today: str) -> set[str]:
         if absence_is_settled(int(year), str(code), today):
             out.add(record_key)
     return out
+
+
+def share_count(row: dict) -> float | None:
+    """Shares outstanding from one 주식총수 row, treasury stock removed.
+
+    `istc_totqy` is everything issued; `tesstk_co` is what the company holds of
+    itself. A per-share figure computed on the issued total understates every
+    company with a buyback behind it, and understates it by exactly the amount
+    that made the buyback worth doing.
+    """
+    issued = parse_amount(row.get("istc_totqy"))
+    if issued is None:
+        issued = parse_amount(row.get("now_to_isu_stock_totqy"))
+    if issued is None or issued <= 0:
+        return None
+    treasury = parse_amount(row.get("tesstk_co")) or 0.0
+    outstanding = issued - max(0.0, treasury)
+    return outstanding if outstanding > 0 else None
+
+
+def share_record_id(ticker: str, fiscal_year: int, report_code: str) -> str:
+    return f"shares:{record_id(ticker, fiscal_year, report_code)}"
 
 
 def shard_path(root: str | Path, fiscal_year: int) -> Path:

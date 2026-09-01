@@ -149,9 +149,99 @@ def fetch_one(key: str, corp: str, year: int, code: str) -> tuple[list[dict], st
     return [], DF.FS_SEPARATE, "013"
 
 
+def fetch_shares(key: str, corp: str, year: int, code: str) -> tuple[float | None, str]:
+    """Shares outstanding as stated in one filing's 주식총수 현황.
+
+    A second endpoint, because the statement endpoint does not carry it — and
+    without it every per-share numerator, and so the entire value sleeve, stays
+    dark. Collected per filing rather than once a year: buybacks and issuance
+    move the count, and a per-share figure standing on last January's count is
+    wrong by however much the company did in between.
+    """
+    payload, error = call(DF.SHARE_ENDPOINT + ".json", {
+        "crtfc_key": key, "corp_code": corp,
+        "bsns_year": str(year), "reprt_code": code})
+    if payload is None:
+        return None, error or "REQUEST_FAILED"
+    status = str(payload.get("status"))
+    if status != "000":
+        return None, status
+    # A company can file several classes of stock. Ordinary shares are what a
+    # price quotes, so the largest ordinary line is taken and preferred shares
+    # are left out rather than summed into a denominator the price never had.
+    best = None
+    for row in payload.get("list") or []:
+        kind = str(row.get("se") or "")
+        if "우선주" in kind:
+            continue
+        count = DF.share_count(row)
+        if count and (best is None or count > best):
+            best = count
+    return best, ("000" if best else "013")
+
+
+def collect_shares(key: str, codes: dict, kr: list[str], years: list[int],
+                   store: Path, args) -> int:
+    """The share pass. Same budget discipline, its own work list and file."""
+    path = store / "shares.jsonl.gz"
+    held = HS.read_jsonl(path)
+    have = {(str(r["ticker"]), int(r["fiscalYear"]), str(r["reportCode"])) for r in held}
+    # Only filings we actually hold need a share count; asking for one against
+    # a filing that does not exist spends the budget on the answer we already
+    # recorded as an absence.
+    filings = []
+    for shard in sorted(store.glob("dart-*.jsonl.gz")):
+        for row in HS.read_jsonl(shard):
+            keyed = (str(row["ticker"]), int(row["fiscalYear"]), str(row["reportCode"]))
+            if keyed not in have:
+                filings.append(keyed)
+    filings.sort()
+    print(f"주식수 대상 {len(filings):,}건 (보유 공시 기준) · "
+          f"이미 확보 {len(have):,}건\n")
+
+    deadline = time.time() + args.max_minutes * 60
+    collected_at = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
+    fresh, calls = [], 0
+    statuses: Counter = Counter()
+    for ticker, year, code in filings:
+        if calls >= args.max_calls or time.time() >= deadline:
+            break
+        corp = codes.get(ticker.split(".")[0])
+        if not corp:
+            continue
+        shares, status = fetch_shares(key, corp, year, code)
+        calls += 1
+        statuses[status] += 1
+        if status in DF.FATAL_STATUSES:
+            print(f"중단: {DF.describe_status(status)}")
+            break
+        if status == DF.QUOTA_STATUS:
+            print(f"중단: {DF.describe_status(status)} — 다음 실행이 이어받습니다.")
+            break
+        if shares:
+            fresh.append({"id": DF.share_record_id(ticker, year, code),
+                          "ticker": ticker, "fiscalYear": year, "reportCode": code,
+                          "sharesOutstanding": shares, "collectedAt": collected_at,
+                          "source": f"DART:{DF.SHARE_ENDPOINT}"})
+        time.sleep(PACE_SECONDS)
+        if calls % 100 == 0:
+            print(f"  {calls}콜 · 확보 {len(fresh)}")
+
+    if fresh:
+        HS.write_shard(path, held + fresh)
+    print(f"\n=== 주식수 ===\n  호출 {calls} · 확보 {len(fresh)}건 · "
+          f"누적 {len(have) + len(fresh):,}건")
+    print(f"  상태 {dict(statuses)}")
+    print(f"  남음 {len(filings) - len(fresh):,}건")
+    return 0
+
+
 def main(argv=None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("store_dir")
+    parser.add_argument("--target", choices=("statements", "shares"),
+                        default="statements",
+                        help="statements=재무제표, shares=주식수(밸류 팩터에 필요)")
     parser.add_argument("--universe-size", type=int, default=None)
     parser.add_argument("--from-year", type=int, default=DF.FIRST_SERVED_YEAR)
     parser.add_argument("--to-year", type=int, default=time.gmtime().tm_year)
@@ -182,11 +272,14 @@ def main(argv=None) -> int:
         return 1
     print(f"corp_code 매핑 {len(codes):,}개")
 
+    years = list(range(max(args.from_year, DF.FIRST_SERVED_YEAR), args.to_year + 1))
+    if args.target == "shares":
+        return collect_shares(key, codes, kr, years, store, args)
+
     existing_ids, shards = load_existing(store)
     absent = load_absent(store)
     today = time.strftime("%Y-%m-%d", time.gmtime())
     settled = DF.settled_absences(absent, today)
-    years = list(range(max(args.from_year, DF.FIRST_SERVED_YEAR), args.to_year + 1))
     pending = DF.work_list(kr, years, existing_ids, absent_ids=settled)
     before = DF.progress(len(existing_ids), len(pending), len(settled))
     print(f"진행률 {before['collected']:,} 수집 + {before['absent']:,} 부재확정 "
