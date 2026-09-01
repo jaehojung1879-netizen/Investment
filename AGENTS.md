@@ -101,6 +101,34 @@
   reported per year, not averaged away, and it is not a reason to move the replay
   start: it would trade two years of price-sleeve evidence for uniformity.
 
+- A trailing twelve months is a ROLLFORWARD, never an annualisation. Multiplying
+  a nine-month figure by 4/3 invents a quarter nobody reported:
+  `TTM(Y,Q3) = FY(Y-1) - cum(Y-1,Q3) + cum(Y,Q3)`. When either prior-year filing
+  is missing the answer is None — a factor that is absent costs coverage, and a
+  factor that is invented costs the whole claim.
+- Income and cash flow are read by DIFFERENT rules, established from the data and
+  not from memory. The income statement states the quarter in `thstrm_amount` and
+  the year-to-date in `thstrm_add_amount` (measured present on ~100% of quarterly
+  IS rows, 0% of annual ones). The cash flow statement states ONE column at every
+  report and it is the report period's cumulative figure — settled by value over
+  84 companies: Q3/FY median 0.68 against the 0.75 cumulative implies, while
+  (Q1+H1+Q3)/FY of 1.31 rules out standalone quarters, which would give 0.75.
+  Reading a Q3 operating cash flow as three months and annualising it inflates
+  free cash flow fourfold with nothing raising an error.
+- Balance-sheet items are levels and are never rolled forward or averaged.
+- A ratio whose denominator must be positive to mean anything returns None when
+  it is not. A ROE on negative equity is a number with the wrong sign that ranks
+  a distressed company as a quality name.
+- Per-share numerators, not yields, are what a filing may state: a yield needs a
+  price and the price moves every day after the filing. `pit_data.
+  derive_price_relative` divides them by the close on the replay date.
+- Share counts are a SECOND collection pass and net of treasury stock. Without
+  them the entire value sleeve is dark, and computing per-share figures on the
+  issued total understates every company with a buyback behind it by exactly the
+  amount that made the buyback worth doing. Quality coverage and value coverage
+  are reported separately, so "we collected fundamentals" is never read as "the
+  value sleeve works".
+
 ## Benchmark acquisition invariants (v2.8)
 
 - A benchmark panel materially shorter than the span it was requested for is a FAILED

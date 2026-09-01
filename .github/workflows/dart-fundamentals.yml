@@ -26,6 +26,11 @@ on:
         description: "이번 실행의 최대 분"
         type: string
         default: "240"
+      target:
+        description: "statements=재무제표, shares=주식수(밸류 팩터에 필요)"
+        type: choice
+        options: ["statements", "shares"]
+        default: "statements"
 
 permissions:
   contents: write
@@ -76,6 +81,7 @@ jobs:
         run: |
           python scripts/collect_dart_fundamentals.py \
             fundamentals-work/ledger/fundamentals/kr \
+            --target "${{ inputs.target || 'statements' }}" \
             --max-calls "${{ inputs.max_calls || '1500' }}" \
             --max-minutes "${{ inputs.max_minutes || '240' }}" \
             | tee collect.log
@@ -88,7 +94,7 @@ jobs:
             echo "no new filings"
             exit 0
           fi
-          git commit -m "fundamentals: DART slice for $(date -u +%Y-%m-%d)"
+          git commit -m "fundamentals: DART ${{ inputs.target || 'statements' }} slice for $(date -u +%Y-%m-%d)"
           for attempt in 1 2 3 4 5; do
             if git push origin signal-history; then
               exit 0
