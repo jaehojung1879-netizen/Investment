@@ -105,12 +105,24 @@ jobs:
       # keeping the run cheap. What actually keeps it cheap is the incremental
       # ledger: dates already recorded are skipped, not recomputed.
 
+      # Value and quality need statements as they were visible on the date.
+      # The filings are collected on their own schedule onto signal-history;
+      # this turns whatever has arrived into the file the replay reads. An
+      # empty store is not an error — it is the state the replay has been in
+      # since it started, and it says so rather than failing the run.
+      - name: Derive PIT fundamentals from the collected filings
+        run: |
+          python scripts/build_pit_fundamentals.py \
+            replay-work/ledger/fundamentals/kr \
+            --output replay-work/ledger/fundamentals/pit-kr.jsonl
+
       - name: Extend the historical replay ledger
         env:
           FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
           ECOS_API_KEY: ${{ secrets.ECOS_API_KEY }}
         run: |
           python scripts/run_replay.py replay-work/ledger \
+            --pit-fundamentals replay-work/ledger/fundamentals/pit-kr.jsonl \
             ${{ (inputs.full && '--full') || '' }}
 
       # A benchmark snapshot is observed vendor data that already passed the

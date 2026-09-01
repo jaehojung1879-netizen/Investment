@@ -63,8 +63,11 @@ def main(argv=None) -> int:
     filings = load_filings(store)
     shares = load_shares(store)
     if not filings:
-        print(f"ERROR: {store} 에 수집된 공시가 없습니다.")
-        return 1
+        # Not an error. The collection runs on its own schedule, and a replay
+        # that fails because the fundamentals have not arrived yet would be a
+        # daily red build over a file nobody promised for today.
+        print(f"{store} 에 수집된 공시가 없습니다 — PIT 파일 없이 진행합니다.")
+        return 0
     print(f"공시 {sum(len(v) for v in filings.values()):,}건 · {len(filings)}종목")
     print(f"주식수 {sum(len(v) for v in shares.values()):,}건 · {len(shares)}종목")
 
