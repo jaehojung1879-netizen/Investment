@@ -1,8 +1,8 @@
 {
   "schemaVersion": "2.7.0",
   "modelVersion": "longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
-  "buildCommitSha": "96bcfdf82092",
-  "generatedAt": "2026-08-31T16:31:26.075837+00:00",
+  "buildCommitSha": "00299b568518",
+  "generatedAt": "2026-09-01T00:00:33.645806+00:00",
   "marketAsOf": "2026-08-31",
   "macroRegime": "Deflation/Slowdown",
   "holdingsByRegion": {
@@ -14,11 +14,11 @@
       "SPG",
       "HST",
       "GOOGL",
+      "CF",
       "GOOG",
       "ALL",
-      "CF",
       "MO",
-      "SNDK"
+      "CNC"
     ],
     "KR": [
       "078930.KS",
@@ -28,19 +28,19 @@
       "021240.KS",
       "001450.KS",
       "005935.KS",
-      "271560.KS",
       "005490.KS",
       "002380.KS",
-      "032640.KS",
-      "161390.KS"
+      "271560.KS",
+      "161390.KS",
+      "032640.KS"
     ]
   },
   "modelPortfolioWeights": {
-    "ALL": 0.172299,
-    "NUE": 0.117182,
-    "SPG": 0.160558,
-    "032640.KS": 0.06336,
-    "021240.KS": 0.036601
+    "ALL": 0.170218,
+    "NUE": 0.115766,
+    "SPG": 0.1595,
+    "271560.KS": 0.068357,
+    "021240.KS": 0.036159
   },
   "entryStatesByTicker": {
     "NUE": "ACCUMULATE_GRADUALLY",
@@ -50,28 +50,28 @@
     "SPG": "WATCH",
     "HST": "WATCH",
     "GOOGL": "WATCH",
+    "CF": "WAIT_FOR_PULLBACK",
     "GOOG": "WATCH",
     "ALL": "ACCUMULATE_GRADUALLY",
-    "CF": "WAIT_FOR_PULLBACK",
     "MO": "WATCH",
-    "SNDK": "WAIT_FOR_PULLBACK",
     "CNC": "WAIT_FOR_PULLBACK",
+    "SNDK": "WAIT_FOR_PULLBACK",
     "CSX": "ACCUMULATE_GRADUALLY",
-    "GM": "ACCUMULATE_GRADUALLY",
-    "078930.KS": "WAIT_FOR_PULLBACK",
-    "402340.KS": "WAIT_FOR_PULLBACK",
-    "034730.KS": "WAIT_FOR_PULLBACK",
-    "000660.KS": "WAIT_FOR_PULLBACK",
-    "021240.KS": "ACCUMULATE_GRADUALLY",
-    "001450.KS": "WAIT_FOR_PULLBACK",
-    "005935.KS": "WAIT_FOR_PULLBACK",
-    "271560.KS": "WATCH",
+    "ROST": "WATCH",
+    "078930.KS": "WATCH",
+    "402340.KS": "WATCH",
+    "034730.KS": "WATCH",
+    "000660.KS": "WATCH",
+    "021240.KS": "WATCH",
+    "001450.KS": "WATCH",
+    "005935.KS": "WATCH",
     "005490.KS": "WATCH",
     "002380.KS": "WATCH",
-    "032640.KS": "ACCUMULATE_GRADUALLY",
+    "271560.KS": "WATCH",
     "161390.KS": "WATCH",
-    "033780.KS": "ACCUMULATE_GRADUALLY",
-    "009540.KS": "AVOID",
+    "032640.KS": "WATCH",
+    "033780.KS": "WATCH",
+    "009540.KS": "WATCH",
     "005930.KS": "WATCH"
   },
   "opportunityTiersByTicker": {
@@ -84,13 +84,13 @@
     "003490.KS": "WATCH",
     "005490.KS": "WATCH",
     "MRK": "EMERGING_OPPORTUNITY",
-    "YUM": "EMERGING_OPPORTUNITY",
-    "MAR": "EMERGING_OPPORTUNITY",
-    "AMGN": "EMERGING_OPPORTUNITY",
-    "TSLA": "EMERGING_OPPORTUNITY",
-    "GILD": "EMERGING_OPPORTUNITY",
     "VRTX": "EMERGING_OPPORTUNITY",
-    "VEEV": "EMERGING_OPPORTUNITY"
+    "AMGN": "EMERGING_OPPORTUNITY",
+    "GILD": "EMERGING_OPPORTUNITY",
+    "MRNA": "EMERGING_OPPORTUNITY",
+    "KMI": "EMERGING_OPPORTUNITY",
+    "WMB": "EMERGING_OPPORTUNITY",
+    "ABBV": "EMERGING_OPPORTUNITY"
   },
   "warningTiersByTicker": {
     "032640.KS": "WATCH",
@@ -101,8 +101,8 @@
     "000660.KS": "WATCH",
     "402340.KS": "WATCH",
     "078930.KS": "WATCH",
-    "GOOGL": "ELEVATED_WARNING",
     "TGT": "ELEVATED_WARNING",
+    "GOOGL": "ELEVATED_WARNING",
     "GOOG": "ELEVATED_WARNING",
     "HST": "WATCH",
     "NUE": "WATCH",
@@ -115,7 +115,7 @@
   "stale": false,
   "productionValidation": {
     "passed": true,
-    "validatedAt": "2026-08-31T16:31:26.075837+00:00",
+    "validatedAt": "2026-09-01T00:00:33.645806+00:00",
     "errors": []
   }
 }
