@@ -99,6 +99,8 @@ def main(argv=None) -> int:
     parser.add_argument("--full", action="store_true",
                         help="recompute every date instead of only new ones")
     parser.add_argument("--dry-run", action="store_true")
+    parser.add_argument("--pit-fundamentals", default=None,
+                        help="PIT_FUNDAMENTALS_V1 jsonl (없으면 config 값)")
     args = parser.parse_args(argv)
 
     cfg, _ = load_config()
@@ -234,8 +236,17 @@ def main(argv=None) -> int:
     if macro is not None and not macro_vintages:
         print("  macro vintages unavailable -> regime conditioning reads REVISED_HISTORY "
               "(the numbers as revised since, not as printed at the time)")
+    # The PIT fundamentals file is derived from the collected filings on
+    # signal-history, so its path is known to the job rather than to config.
+    # An explicit argument wins; config remains the fallback for a local run.
     fundamental_store = pit_data.FundamentalStore.from_jsonl(
-        replay_cfg.get("pitFundamentalsPath"))
+        args.pit_fundamentals or replay_cfg.get("pitFundamentalsPath"))
+    if fundamental_store.available:
+        print(f"PIT 재무 {len(fundamental_store):,}건 · "
+              f"{len(fundamental_store.tickers())}종목")
+    else:
+        print("PIT 재무 없음 — 밸류·퀄리티 슬리브는 이번에도 비어 있습니다 "
+              f"({(fundamental_store.diagnostics.get('errors') or ['-'])[0]})")
     if not fundamental_store.available:
         print("  PIT fundamentals unavailable -> value/quality sleeves WITHHELD "
               "from the replay (today's snapshot is never back-applied)")

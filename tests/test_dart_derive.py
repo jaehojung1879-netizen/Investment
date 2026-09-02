@@ -13,11 +13,25 @@ import pytest
 from pipeline import dart_derive as D
 
 
+# When each report actually reaches the reader, from the probe's 2023 samples:
+# the quarterlies 45 days after period end, the annual one the following March.
+# The fixture uses real dates because the contract checks the ordering — a
+# filing cannot have been readable before the period it reports on ended.
+RECEIPT = {"11013": (0, "05-15"), "11012": (0, "08-14"),
+           "11014": (0, "11-14"), "11011": (1, "03-15")}
+
+
 def _filing(year, code, **accounts):
     """One stored filing. `accounts` maps name -> (statement, amounts dict)."""
+    offset, day = RECEIPT[code]
     return {
         "ticker": "005930.KS", "fiscalYear": year, "reportCode": code,
-        "availableFrom": f"{year}-05-15", "currency": "KRW",
+        "availableFrom": f"{year + offset}-{day}", "currency": "KRW",
+        # The provenance the collector attaches and the contract requires.
+        # A fixture missing it passes the derivation and is rejected by the
+        # store — which is exactly the failure these tests exist to catch.
+        "source": "DART:fnlttSinglAcntAll:CFS", "fsDiv": "CFS",
+        "collectedAt": "2026-09-01T00:00:00Z",
         "accounts": {name: {"statement": stmt, "amounts": amounts}
                      for name, (stmt, amounts) in accounts.items()},
     }
@@ -220,7 +234,7 @@ def test_the_visibility_date_is_carried_through_untouched():
     fields, basis = D.derive_fields(by_key, 2023, "11011")
     row = D.pit_record(by_key[(2023, "11011")], fields, basis)
 
-    assert row["availableFrom"] == "2023-05-15"
+    assert row["availableFrom"] == "2024-03-15", "사업보고서는 이듬해 3월"
     assert row["ticker"] == "005930.KS"
     assert row["currency"] == "KRW"
 
@@ -270,3 +284,67 @@ def test_an_unusable_share_count_is_none_rather_than_zero():
     for row in ({}, {"istc_totqy": "0"}, {"istc_totqy": "-5"},
                 {"istc_totqy": "1,000", "tesstk_co": "1,000"}):
         assert DF.share_count(row) is None
+
+
+# --------------------------------------------------------------------------- #
+# The contract round trip
+#
+# The emitted rows were rejected wholesale by `FundamentalStore.from_jsonl` for
+# want of `reportDate` — 2,897 written, 0 loaded, and no error anywhere. In
+# production that would have read as "PIT 재무 없음" and the value and quality
+# sleeves would have stayed dark for a reason nobody could see.
+# --------------------------------------------------------------------------- #
+def test_an_emitted_row_is_accepted_by_the_store_that_reads_it(tmp_path):
+    import json
+
+    from pipeline import pit_data
+
+    rows = D.build_for_ticker([_full(2022, "11011"), _full(2023, "11011")])
+    path = tmp_path / "pit.jsonl"
+    path.write_text("".join(json.dumps(r, ensure_ascii=False) + "\n" for r in rows),
+                    encoding="utf-8")
+
+    store = pit_data.FundamentalStore.from_jsonl(path)
+
+    assert store.diagnostics["rowsRead"] == len(rows)
+    assert store.diagnostics["rowsRejected"] == 0, store.diagnostics["errors"][:3]
+    assert store.available
+
+
+def test_the_period_end_is_emitted_and_precedes_the_visibility_date():
+    """The contract refuses a filing that claims to have been readable before
+    the period it reports on had ended — which is the look-ahead itself."""
+    rows = D.build_for_ticker([_full(2023, "11011")])
+    row = rows[0]
+
+    assert row["reportDate"] == "2023-12-31"
+    assert row["reportDate"] <= row["publicationDate"] <= row["availableFrom"]
+
+
+def test_every_report_code_has_a_period_end():
+    from pipeline import dart_fundamentals as DF
+
+    for code in DF.REPORT_CODES:
+        assert DF.period_end(2023, code) is not None
+    assert DF.period_end(2023, "11013") == "2023-03-31"
+    assert DF.period_end(2023, "11014") == "2023-09-30"
+
+
+def test_a_filing_is_invisible_before_it_was_filed(tmp_path):
+    """The whole point, end to end: the 2023 annual report is not readable in
+    January 2023, whatever period it describes."""
+    import json
+
+    from pipeline import pit_data
+
+    rows = D.build_for_ticker([_full(2022, "11011"), _full(2023, "11011")])
+    path = tmp_path / "pit.jsonl"
+    path.write_text("".join(json.dumps(r, ensure_ascii=False) + "\n" for r in rows),
+                    encoding="utf-8")
+    store = pit_data.FundamentalStore.from_jsonl(path)
+
+    early, early_status = store.visible_as_of("005930.KS", "2021-01-01")
+    later, later_status = store.visible_as_of("005930.KS", "2023-12-31")
+
+    assert early == {} and early_status == pit_data.UNAVAILABLE
+    assert later.get("roe") is not None and later_status == pit_data.PIT_EXACT

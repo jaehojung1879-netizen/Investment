@@ -210,6 +210,10 @@ def pit_record(filing: dict, fields: dict, basis: dict) -> dict:
     return {
         "ticker": filing["ticker"],
         "reportPeriod": f"{filing['fiscalYear']}-{filing['reportCode']}",
+        # The period the numbers describe, which the contract requires ALONGSIDE
+        # the visibility date so it can refuse a filing that claims to have been
+        # readable before the period it reports on had ended.
+        "reportDate": DF.period_end(filing["fiscalYear"], filing["reportCode"]),
         "availableFrom": filing["availableFrom"],
         "filingDate": filing["availableFrom"],
         "publicationDate": filing["availableFrom"],

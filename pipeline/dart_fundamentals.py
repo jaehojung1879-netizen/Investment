@@ -269,6 +269,24 @@ FILING_DEADLINE: dict[str, tuple[int, int, int]] = {
 ABSENCE_GRACE_DAYS = 60
 
 
+# The last day of the period each report describes. Distinct from the receipt
+# date by construction — the gap between them IS the look-ahead a point-in-time
+# replay exists to prevent, and `PIT_FUNDAMENTALS_V1` refuses a row that cannot
+# state both.
+PERIOD_END: dict[str, tuple[int, int]] = {
+    "11013": (3, 31), "11012": (6, 30), "11014": (9, 30), "11011": (12, 31),
+}
+
+
+def period_end(fiscal_year: int, report_code: str) -> str | None:
+    """The last day of the period a filing describes."""
+    rule = PERIOD_END.get(str(report_code))
+    if not rule:
+        return None
+    month, day = rule
+    return f"{int(fiscal_year):04d}-{month:02d}-{day:02d}"
+
+
 def filing_deadline(fiscal_year: int, report_code: str) -> str | None:
     """The day this filing was due, or None for a report code with no rule."""
     rule = FILING_DEADLINE.get(report_code)
