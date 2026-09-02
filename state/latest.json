@@ -2,7 +2,7 @@
   "schemaVersion": "2.7.0",
   "modelVersion": "longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
   "buildCommitSha": "c761a1427c6f",
-  "generatedAt": "2026-09-02T08:24:14.484449+00:00",
+  "generatedAt": "2026-09-02T13:11:54.208634+00:00",
   "marketAsOf": "2026-09-02",
   "macroRegime": "Deflation/Slowdown",
   "holdingsByRegion": {
@@ -16,8 +16,8 @@
       "GOOG",
       "SPG",
       "CF",
-      "MO",
       "CNC",
+      "MO",
       "SNDK"
     ],
     "KR": [
@@ -52,8 +52,8 @@
     "GOOG": "AVOID",
     "SPG": "WATCH",
     "CF": "WAIT_FOR_PULLBACK",
-    "MO": "WATCH",
     "CNC": "WAIT_FOR_PULLBACK",
+    "MO": "WATCH",
     "SNDK": "WAIT_FOR_PULLBACK",
     "HST": "WATCH",
     "CSX": "WATCH",
@@ -115,7 +115,7 @@
   "stale": false,
   "productionValidation": {
     "passed": true,
-    "validatedAt": "2026-09-02T08:24:14.484449+00:00",
+    "validatedAt": "2026-09-02T13:11:54.208634+00:00",
     "errors": []
   }
 }
