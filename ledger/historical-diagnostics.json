@@ -3,7 +3,7 @@
     "2026-08-14",
     "2026-08-21",
     "2026-08-28",
-    "2026-09-01"
+    "2026-09-02"
   ],
   "replayVersion": "replay-v5",
   "featureVersion": "hfeat-v1",
@@ -13,14 +13,14 @@
   "requestedStart": "2013-01-01",
   "requestedEnd": null,
   "firstDate": "2013-01-04",
-  "lastDate": "2026-09-01",
+  "lastDate": "2026-09-02",
   "replayDates": 714,
-  "signalsGenerated": 0,
-  "signalsSkippedAlreadyPresent": 375972,
-  "meanPitCoverage": 0.7833,
+  "signalsGenerated": 618,
+  "signalsSkippedAlreadyPresent": 375348,
+  "meanPitCoverage": 0.7888,
   "survivorshipRisk": "HIGH",
   "survivorshipNote": "SURVIVORSHIP_BIAS_UNRESOLVED",
-  "fundamentalsPit": false,
+  "fundamentalsPit": true,
   "historicalUniverseAvailable": true,
   "constituentCoveragePct": 84.1923,
   "membershipCoveragePct": 80.8743,
@@ -219,20 +219,45 @@
   "impactOnPromotionEligibility": "KELLY_AND_SELECTOR_PROMOTION_BLOCKED",
   "fundamentalsContract": {
     "contract": "PIT_FUNDAMENTALS_V1",
-    "rowsRead": 0,
-    "rowsAccepted": 0,
+    "rowsRead": 3902,
+    "rowsAccepted": 3902,
     "rowsRejected": 0,
-    "errors": [
-      "pit_fundamentals_path_not_configured"
+    "errors": [],
+    "availabilityRule": "availableFrom <= replayDate",
+    "currentSnapshotBackfillAllowed": false,
+    "schema": [
+      "ticker",
+      "fiscalPeriod",
+      "reportDate",
+      "publicationDate",
+      "availableFrom",
+      "currency",
+      "trailingPE",
+      "forwardPE",
+      "bookValue",
+      "bookYield",
+      "FCF",
+      "FCFYield",
+      "ROE",
+      "operatingMargin",
+      "profitMargin",
+      "debtToEquity",
+      "earningsGrowth",
+      "epsTtm",
+      "bookValuePerShare",
+      "fcfPerShare",
+      "source",
+      "sourceAsOf",
+      "revisionStatus"
     ]
   },
   "macroPitStatus": "REVISED_HISTORY",
   "regimeDistribution": {
-    "Deflation/Slowdown": 54379,
+    "Deflation/Slowdown": 54377,
     "Goldilocks": 55948,
     "Reflation": 95526,
     "Stagflation": 32450,
-    "Transition/Low confidence": 137669
+    "Transition/Low confidence": 137665
   },
   "shortTermModelReplayed": false,
   "knownDeviationsFromProduction": [
@@ -242,33 +267,33 @@
     "entry_sector_concentration_overlay_not_applied_no_sleeve_in_replay"
   ],
   "coverage": {
-    "signalsRecorded": 376591,
+    "signalsRecorded": 377209,
     "signalsByRegion": {
-      "KR": 73387,
-      "US": 303204
+      "KR": 73506,
+      "US": 303703
     },
-    "uniqueDates": 715,
-    "trackingDays": 3563,
+    "uniqueDates": 716,
+    "trackingDays": 3564,
     "firstSignalDate": "2013-01-04",
-    "lastSignalDate": "2026-09-01",
-    "maturedSignals": 359008,
+    "lastSignalDate": "2026-09-02",
+    "maturedSignals": 359119,
     "maturedUniqueDates": 687,
     "maturedObservationDays": 3431,
     "lastMaturedSignalDate": "2026-02-27",
     "horizon": 126,
     "maturedByHorizon": {
-      "21": 372836,
-      "63": 367224,
-      "126": 359008,
-      "252": 342829
+      "21": 372829,
+      "63": 367217,
+      "126": 359119,
+      "252": 342822
     },
     "benchmarkCoverageByRegion": {
       "KR": {
         "126": {
-          "maturedAbsoluteReturns": 69939,
-          "matchedBenchmarkReturns": 69848,
+          "maturedAbsoluteReturns": 70057,
+          "matchedBenchmarkReturns": 69966,
           "missingBenchmarkReturns": 91,
-          "coveragePct": 99.8699,
+          "coveragePct": 99.8701,
           "missingSamples": [
             {
               "id": "2015-08-14|KR|000100.KS|replay-v5|longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
@@ -439,29 +464,29 @@
       },
       "US": {
         "126": {
-          "maturedAbsoluteReturns": 289069,
-          "matchedBenchmarkReturns": 289069,
+          "maturedAbsoluteReturns": 289062,
+          "matchedBenchmarkReturns": 289062,
           "missingBenchmarkReturns": 0,
           "coveragePct": 100.0,
           "missingSamples": []
         },
         "21": {
-          "maturedAbsoluteReturns": 300163,
-          "matchedBenchmarkReturns": 300163,
+          "maturedAbsoluteReturns": 300156,
+          "matchedBenchmarkReturns": 300156,
           "missingBenchmarkReturns": 0,
           "coveragePct": 100.0,
           "missingSamples": []
         },
         "252": {
-          "maturedAbsoluteReturns": 276073,
-          "matchedBenchmarkReturns": 276073,
+          "maturedAbsoluteReturns": 276066,
+          "matchedBenchmarkReturns": 276066,
           "missingBenchmarkReturns": 0,
           "coveragePct": 100.0,
           "missingSamples": []
         },
         "63": {
-          "maturedAbsoluteReturns": 295622,
-          "matchedBenchmarkReturns": 295622,
+          "maturedAbsoluteReturns": 295615,
+          "matchedBenchmarkReturns": 295615,
           "missingBenchmarkReturns": 0,
           "coveragePct": 100.0,
           "missingSamples": []
@@ -510,38 +535,38 @@
             "lastSession": "2026-09-01"
           }
         ],
-        "snapshotSessions": 3938
+        "snapshotSessions": 3939
       },
       "KR": {
         "ticker": "^KS200",
         "status": "VENDOR",
         "source": "fdr",
         "symbol": "KS200",
-        "sessions": 3851,
+        "sessions": 3852,
         "firstSession": "2011-01-03",
-        "lastSession": "2026-09-01",
+        "lastSession": "2026-09-02",
         "candidates": [
           {
             "source": "fdr",
             "symbol": "KS200",
             "accepted": true,
             "reason": null,
-            "sessions": 3851,
+            "sessions": 3852,
             "snapshotCoveragePct": 100.0,
             "minimumSessions": null,
             "firstSession": "2011-01-03",
-            "lastSession": "2026-09-01"
+            "lastSession": "2026-09-02"
           },
           {
             "source": "yahoo",
             "symbol": "^KS200",
             "accepted": true,
             "reason": null,
-            "sessions": 3781,
-            "snapshotCoveragePct": 98.9791,
+            "sessions": 3782,
+            "snapshotCoveragePct": 98.1823,
             "minimumSessions": null,
             "firstSession": "2011-01-03",
-            "lastSession": "2026-07-16"
+            "lastSession": "2026-09-02"
           }
         ],
         "snapshotSessions": 3851
