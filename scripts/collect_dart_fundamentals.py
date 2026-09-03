@@ -303,6 +303,11 @@ def main(argv=None) -> int:
     fs_used: Counter = Counter()
     fields_seen: Counter = Counter()
     stop_reason = "WORK_LIST_EXHAUSTED"
+    # `refused["NO_CORP_CODE"]` alone is a call count across years and report
+    # codes, not a ticker list — 144 refusals could be one stuck name or forty.
+    # Without the identity there is nothing to look up on DART's own site, so
+    # every run just repeats the same unreadable number.
+    no_corp_code_tickers: set[str] = set()
 
     for ticker, year, code in pending:
         if calls >= args.max_calls:
@@ -314,6 +319,7 @@ def main(argv=None) -> int:
         corp = codes.get(ticker.split(".")[0])
         if not corp:
             refused["NO_CORP_CODE"] += 1
+            no_corp_code_tickers.add(ticker)
             continue
 
         rows, fs_div, status = fetch_one(key, corp, year, code)
@@ -399,6 +405,9 @@ def main(argv=None) -> int:
             "calls": calls, "recordsWritten": written, "shardsChanged": changed,
             "stopReason": stop_reason,
             "statuses": dict(statuses), "refused": dict(refused),
+            # The tickers behind `refused["NO_CORP_CODE"]`, so the number is
+            # something a person can act on rather than only watch.
+            "noCorpCodeTickers": sorted(no_corp_code_tickers),
             "fsDiv": dict(fs_used),
             # Which amount columns DART actually returned. The next step turns
             # these into TTM figures, and the period column and the
@@ -416,6 +425,9 @@ def main(argv=None) -> int:
     print(f"  종료 사유    {stop_reason}")
     if refused:
         print(f"  거부        {dict(refused)}")
+    if no_corp_code_tickers:
+        print(f"  corp_code 없음 ({len(no_corp_code_tickers)}종목): "
+              f"{', '.join(sorted(no_corp_code_tickers))}")
     if fs_used:
         print(f"  재무제표 구분 {dict(fs_used)}  (CFS=연결 · OFS=별도)")
     if fields_seen:
