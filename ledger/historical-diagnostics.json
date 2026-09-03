@@ -15,9 +15,9 @@
   "firstDate": "2013-01-04",
   "lastDate": "2026-09-03",
   "replayDates": 714,
-  "signalsGenerated": 1332,
-  "signalsSkippedAlreadyPresent": 374333,
-  "meanPitCoverage": 0.7887,
+  "signalsGenerated": 0,
+  "signalsSkippedAlreadyPresent": 375665,
+  "meanPitCoverage": 0.7888,
   "survivorshipRisk": "HIGH",
   "survivorshipNote": "SURVIVORSHIP_BIAS_UNRESOLVED",
   "fundamentalsPit": true,
@@ -219,8 +219,8 @@
   "impactOnPromotionEligibility": "KELLY_AND_SELECTOR_PROMOTION_BLOCKED",
   "fundamentalsContract": {
     "contract": "PIT_FUNDAMENTALS_V1",
-    "rowsRead": 3904,
-    "rowsAccepted": 3904,
+    "rowsRead": 3947,
+    "rowsAccepted": 3947,
     "rowsRejected": 0,
     "errors": [],
     "availabilityRule": "availableFrom <= replayDate",
@@ -535,7 +535,7 @@
             "lastSession": "2026-09-02"
           }
         ],
-        "snapshotSessions": 3939
+        "snapshotSessions": 3940
       },
       "KR": {
         "ticker": "^KS200",
@@ -563,20 +563,19 @@
             "accepted": true,
             "reason": null,
             "sessions": 3782,
-            "snapshotCoveragePct": 98.1568,
+            "snapshotCoveragePct": 98.1573,
             "minimumSessions": null,
             "firstSession": "2011-01-03",
             "lastSession": "2026-09-03"
           }
         ],
-        "snapshotSessions": 3852
+        "snapshotSessions": 3853
       }
     },
     "degradedRegions": [],
     "unavailableRegions": [],
     "snapshotsUpdated": [
-      "SPY",
-      "^KS200"
+      "SPY"
     ],
     "indexMixingForbidden": true
   },
