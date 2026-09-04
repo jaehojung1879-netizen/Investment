@@ -162,3 +162,55 @@ def test_a_failed_input_leaves_the_derived_column_failed_too():
     resolved = P.resolve_derived({"Treasury_10Y": {"verdict": P.FAILED},
                                   "Treasury_2Y": {"verdict": P.FAILED}})
     assert resolved["Yield_Curve"]["verdict"] == P.FAILED
+
+
+# --------------------------------------------------------------------------- #
+# "Never vintaged" is an answer, and a different one from "not measured"
+#
+# ALFRED replies "The series does not exist in ALFRED but may exist in FRED"
+# for 10 of the 28 panel columns. That is categorically worse than TRUNCATED
+# and must be told apart from it: a truncated series is served by a later
+# replay start, and this one is served by no start date at all. Filed as
+# FETCH_FAILED it would keep looking like something a retry could fix.
+# --------------------------------------------------------------------------- #
+def test_not_vintaged_is_ranked_worse_than_truncated():
+    order = P.VERDICT_ORDER
+    assert order.index(P.NOT_VINTAGED) > order.index(P.TRUNCATED)
+    assert order.index(P.TRUNCATED) > order.index(P.USABLE)
+
+
+def test_a_derived_column_inherits_never_vintaged_from_an_input():
+    resolved = P.resolve_derived({"Treasury_10Y": {"verdict": P.USABLE},
+                                  "Treasury_2Y": {"verdict": P.NOT_VINTAGED}})
+    assert resolved["Yield_Curve"]["verdict"] == P.NOT_VINTAGED
+
+
+def test_a_never_vintaged_column_blocks_the_panel():
+    panel = P.panel_verdict({"A": {"verdict": P.USABLE},
+                             "B": {"verdict": P.NOT_VINTAGED}})
+    assert panel["pitExactReachable"] is False
+    assert panel["blocking"] == ["B"]
+
+
+# --------------------------------------------------------------------------- #
+# A vintage that outruns today's series is a redefinition, not a good column
+# --------------------------------------------------------------------------- #
+def test_a_vintage_carrying_more_than_todays_series_is_flagged():
+    # Observed on TGA (WTREGEN): 1,408 periods served to 2013 against 524 in
+    # today's frame. Unflagged it reads as a healthy column; it means the id
+    # was reused for a different definition, and a replay conditioning on it
+    # would be using a series that no longer exists.
+    summary = P.summarize_series(
+        _vintages("2008-12-18"), {START: _dates("2005-01-01", 2000, freq="D")},
+        _dates("2005-01-01", 60, freq="MS"), start=START, as_of_dates=[START])
+    cell = summary["asOf"][0]
+    assert cell["periodsServed"] > cell["periodsInRevisedHistory"]
+    assert cell["redefinedUnderSameId"] is True
+    assert "different" in cell["note"]
+
+
+def test_a_normal_column_carries_no_redefinition_flag():
+    summary = P.summarize_series(
+        _vintages("2009-01-01"), {START: _dates("2009-01-01", 20)},
+        _dates("2009-01-01", 200), start=START, as_of_dates=[START])
+    assert "redefinedUnderSameId" not in summary["asOf"][0]

@@ -1,4 +1,4 @@
-"""Does KRX serve DATED KOSPI 200 membership, or just today's list on any date?
+"""What can the KRX Open API key actually reach, and does it describe history?
 
 WHY THIS EXISTS. `dataIntegrity` reports KR `membershipCoveragePct` 0.0 and
 `survivorshipRisk` HIGH, because `build_universe_history.py` deliberately
@@ -6,65 +6,67 @@ writes no Korean rows: KRX-DELISTING is "every KRX name ever delisted", which
 is not "was a member of the investable universe", and today's listed names
 with no lower bound would admit a 2020 arrival into the 2013 cross-section.
 Both were tried, both read as KNOWN membership, and the file reported 100%
-coverage over a Korean cross-section it had invented. What would actually
-close the gap is a dated KOSPI 200 constituent history. This measures whether
-KRX's own public data portal is one.
+coverage over a Korean cross-section it had invented.
 
-WHAT THE ENDPOINT CLAIMS TO BE. `data.krx.co.kr`'s statistics loader serves
-지수구성종목 (index constituents) under `MDCSTAT00601`, taking a trade date
-(`trdDd`) and an index (KOSPI 200 is series 1, index 028). If it answers for
-2013 with the names that were members in 2013, the Korean half of the
-membership file follows directly and this is the whole fix.
+WHAT WAS TRIED BEFORE THIS, AND WHY IT IS GONE. The public portal's statistics
+loader (`data.krx.co.kr/comm/bldAttendant/getJsonData.cmd`, bld
+`MDCSTAT00601`). Measured twice: every date answered HTTP 400 with the body
+`LOGOUT`, first with no cookies and then with a real portal session
+(`JSESSIONID` and `__smVisitorID` both set). The session was not the gate and
+that route is not pursued further — it was scraping the screen when KRX
+publishes an authenticated API for exactly this data.
+
+WHAT THIS ASKS INSTEAD. The KRX Open API, with `KRX_API_KEY` in the
+`AUTH_KEY` header. Two questions, in order of what they would buy:
+
+  1. DATED INDEX MEMBERSHIP. Is there an endpoint giving KOSPI 200
+     constituents as of a date? That is the literal thing
+     `build_universe_history.py` says would close the Korean gap.
+
+  2. DATED PER-ISSUE TRADING DATA — which may be worth MORE. The daily
+     per-issue endpoints carry `MKTCAP` and `LIST_SHRS` for every issue that
+     traded that day. The replay's KR universe is not literally the KOSPI 200;
+     it is ~119 large names. A dated market-cap cross-section reconstructs
+     that universe directly, by the rule the universe actually uses, instead
+     of approximating it with an index's membership. And because it lists what
+     TRADED that day, it carries issues that have since delisted — which is
+     the pricing half of the gap (measured at 34.55% coverage from
+     FinanceDataReader, 0.67% from Yahoo), not just the membership half.
+
+THE ENDPOINT PATHS ARE A HYPOTHESIS, AND THAT IS THE POINT. This cannot be
+tested from the dev container (`data.krx.co.kr` and `openapi.krx.co.kr` are
+both outside the network allowlist), so rather than guess one path and report
+its failure as the source's answer, it tries a CANDIDATE LIST and reports what
+each one returned — status, shape, columns, sample. A 404 on a guessed path is
+a fact about the guess; the run tells us which guesses were right.
 
 THE TRAP, AND THE CHECK THAT CATCHES IT. A date-parameterised endpoint that
-quietly ignores its date parameter — or falls back to the latest available
-list for any date it does not hold — returns a plausible 200-name list for
-2013 that is TODAY'S list. That is not a survivorship fix, it is survivorship
-bias with a date stamped on it, and it would sail through every count-based
-check: right size, right format, right tickers. It is the same failure the
-KRX-DELISTING attempt made, and nothing caught that one either, because the
-correctness was resting on a vendor's failure rather than on a measurement.
+quietly ignores its date parameter returns a plausible list for 2013 that is
+TODAY'S list. That is not a survivorship fix, it is survivorship bias with a
+date stamped on it, and it sails through every count and format check. So the
+decisive measurement is never "did a date return rows" but "do two dates ten
+years apart return DIFFERENT issues, and does the older one hold issues the
+newer one has lost". `membership_evidence` decides on exactly that.
 
-So the decisive measurement here is not "did a date return 200 names" but
-"do two dates ten years apart return DIFFERENT names". `membership_evidence`
-reports the pairwise overlap, and a source whose oldest and newest lists are
-identical is REFUSED here rather than discovered later in a replay.
-
-A second, positive check: names present in an old list and ABSENT from the
-newest one. Those are precisely the departed members survivorship deletes —
-if the source has none of them it is not describing history, whatever its
-overlap says.
-
-WHAT A YES WOULD AND WOULD NOT BUY. Not a green integrity gate. The KR
-delisting-coverage measurement (2026-08-30, README) already settled the other
-half: of the KOSPI names that left after the replay start, FinanceDataReader
-prices 34.55% (19/55, 95% CI [23.36, 47.75]) and Yahoo 0.67%. A restored
-former member the panel cannot price is `membership known - no price`, which
-drops out of the cross-section exactly as before, so perfect membership takes
-KR unvouched from 100% to roughly 40% and stops. `universe_ready` wants both
-coverages at 100.0, so this does not open promotion and must not be reported
-as if it might.
-
-What it does buy is the OTHER thing the repo currently cannot say. Today the
-Korean half is undescribed, so every KR observation carries
-SURVIVORSHIP_BIAS_UNRESOLVED and the size of the bias is unknown. With dated
-membership the gap becomes a counted set of named companies, which is what any
-bias BOUND has to be built on. `build_universe_history.py` states the open
-question as "what would close it is a dated KOSPI 200 constituent history;
-until there is one, the honest state is a measured gap" — this answers whether
-there is one.
+WHAT A YES WOULD AND WOULD NOT BUY. Not a green integrity gate.
+`universe_ready` wants both coverages at exactly 100.0 and neither reaches it
+on free vendors, so this does not open promotion and must not be reported as
+if it might. What it buys is that the Korean gap stops being unknown and
+becomes a counted set of named companies — which is what any bias BOUND has to
+be built on.
 
 Nothing is written to the membership file. This reports.
 
-Usage:  python scripts/probe_krx_index_membership.py [--output krx-probe.json]
+Usage:  KRX_API_KEY=... python scripts/probe_krx_index_membership.py
+        [--output krx-probe.json]
         [--dates 2013-01-02,2016-01-04,2020-01-02,2026-09-01]
-        [--index-series 1 --index-code 028]
+        [--base https://data-dbg.krx.co.kr/svc/apis]
 """
 from __future__ import annotations
 
 import argparse
-import http.cookiejar
 import json
+import os
 import sys
 import time
 import urllib.error
@@ -75,120 +77,94 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 
-BASE = "http://data.krx.co.kr/comm/bldAttendant/getJsonData.cmd"
-LOADER = ("http://data.krx.co.kr/contents/MDC/MDI/mdiLoader/index.cmd"
-          "?menuId=MDC0201020506")
-BLD = "dbms/MDC/STAT/standard/MDCSTAT00601"
-# A browser User-Agent is not a disguise here: the portal's loader sets the
-# session this endpoint reads, and a bare urllib default is answered with the
-# HTML shell instead of JSON. The probe records exactly what came back either
-# way rather than pretending the shape was fine.
-USER_AGENT = ("Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 "
-              "(KHTML, like Gecko) Chrome/124.0 Safari/537.36")
+# The service root KRX publishes for the Open API. Overridable, because this
+# is the one thing a wrong guess would make every endpoint look dead.
+DEFAULT_BASE = "https://data-dbg.krx.co.kr/svc/apis"
 
-# MEASURED, not guessed. The first run sent a Referer and no cookies, and every
-# one of the five dates came back HTTP 400 with the body `LOGOUT` — the portal's
-# answer to a request carrying no session, not a statement about the dates. The
-# session is established by loading the statistics page the endpoint belongs to,
-# which sets the cookies this then replays. A probe that reported that 400 as
-# "KRX has no dated membership" would have retired a usable source on its own
-# bug, so the session is opened first and the probe says whether it was.
-LOGOUT_MARKERS = ("LOGOUT", "로그아웃")
+# Candidates, most valuable first. `kind` says how the run should read a
+# success: "issues" rows are a per-issue cross-section the membership check can
+# be run on; "index" rows are index-level and only interesting if they carry
+# constituents.
+ENDPOINTS = [
+    ("sto/stk_bydd_trd", "유가증권 일별매매정보 (종목별)", "issues"),
+    ("sto/ksq_bydd_trd", "코스닥 일별매매정보 (종목별)", "issues"),
+    ("sto/stk_isu_base_info", "유가증권 종목기본정보", "issues"),
+    ("idx/kospi_dd_trd", "KOSPI 시리즈 지수 일별시세", "index"),
+    ("idx/krx_dd_trd", "KRX 시리즈 지수 일별시세", "index"),
+    ("idx/kosdaq_dd_trd", "KOSDAQ 시리즈 지수 일별시세", "index"),
+]
+
+# Columns that would carry the issue code, the name, and the two figures that
+# make a dated market-cap universe possible. Checked by presence, not assumed.
+CODE_KEYS = ("ISU_SRT_CD", "ISU_CD", "ISU_SRT_CD7")
+NAME_KEYS = ("ISU_ABBRV", "ISU_NM", "ISU_KOR_NM")
+MKTCAP_KEYS = ("MKTCAP", "MKT_CAP", "MKTCAP_AMT")
+SHARES_KEYS = ("LIST_SHRS", "LIST_SHRS_CNT")
 
 
-def open_session(timeout: int = 30) -> tuple[urllib.request.OpenerDirector, dict]:
-    """Load the portal page so the data endpoint sees a session.
-
-    Returns the opener and what happened, because "the session could not be
-    opened" and "the endpoint refused a session it had" are different findings
-    and only the second says anything about the data.
-    """
-    jar = http.cookiejar.CookieJar()
-    opener = urllib.request.build_opener(urllib.request.HTTPCookieProcessor(jar))
-    opener.addheaders = [("User-Agent", USER_AGENT),
-                         ("Accept-Language", "ko-KR,ko;q=0.9,en;q=0.8")]
-    request = urllib.request.Request(LOADER)
-    try:
-        with opener.open(request, timeout=timeout) as response:
-            status = response.status
-            response.read(2048)
-    except Exception as exc:  # pragma: no cover - network dependent
-        return opener, {"opened": False, "error": f"{type(exc).__name__}: {exc}"}
-    names = sorted(cookie.name for cookie in jar)
-    return opener, {"opened": bool(names), "status": status, "cookies": names}
-
-# KRX serves codes without a suffix; the pipeline's KR tickers carry `.KS`
-# because that is what the price vendor answers to. The membership file is
-# keyed by the pipeline's ticker, so the conversion belongs with the source.
 def to_pipeline_ticker(code: str) -> str:
-    """`005930` -> `005930.KS`, the form `universe-history.json` is keyed by."""
+    """`005930` -> `005930.KS`, the form `universe-history.json` is keyed by.
+
+    KRX serves a bare six-digit code; the pipeline's KR tickers carry `.KS`
+    because that is what the price vendor answers to, and the membership file
+    is keyed by the pipeline's ticker. The conversion belongs with the source.
+    """
     code = (code or "").strip()
     return f"{code}.KS" if code else ""
 
 
-def fetch_constituents(date: str, *, index_series: str = "1",
-                       index_code: str = "028", timeout: int = 30,
-                       opener: urllib.request.OpenerDirector | None = None) -> dict:
-    """One dated constituent list, or the reason there is none.
+def _first(row: dict, keys) -> str | None:
+    for key in keys:
+        if row.get(key) not in (None, ""):
+            return str(row[key]).strip()
+    return None
 
-    Returns the raw shape as well as the parse, because "it answered with an
-    HTML block page" and "it answered with an empty list" are different facts
-    about the source and only one of them is fixable by asking differently.
+
+def call(base: str, path: str, params: dict, auth_key: str,
+         timeout: int = 40) -> dict:
+    """One Open API call. What came back is recorded either way.
+
+    A guessed path that 404s and a real path that refuses the key are
+    different findings, and only the second says anything about the key.
     """
-    trd = date.replace("-", "")
-    body = urllib.parse.urlencode({
-        "bld": BLD,
-        "locale": "ko_KR",
-        "indIdx": index_series,
-        "indIdx2": index_code,
-        "trdDd": trd,
-        "money": "1",
-        "csvxls_isNo": "false",
-    }).encode("utf-8")
-    request = urllib.request.Request(BASE, data=body, headers={
-        "User-Agent": USER_AGENT,
-        "Referer": LOADER,
-        "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
-        "Accept": "application/json, text/javascript, */*; q=0.01",
-        "X-Requested-With": "XMLHttpRequest",
+    url = f"{base.rstrip('/')}/{path}?{urllib.parse.urlencode(params)}"
+    request = urllib.request.Request(url, headers={
+        "AUTH_KEY": auth_key,
+        "Accept": "application/json",
+        "User-Agent": "InvestmentResearchDashboard/1.0",
     })
-    send = (opener.open if opener is not None else urllib.request.urlopen)
     try:
-        with send(request, timeout=timeout) as response:
-            status = response.status
-            raw = response.read()
+        with urllib.request.urlopen(request, timeout=timeout) as response:
+            return {"status": response.status, "raw": response.read()}
     except urllib.error.HTTPError as exc:
-        body = exc.read()[:400].decode("utf-8", "replace")
-        # Name this one rather than leaving it as a bare 400. It is the portal
-        # saying "no session", which is a fact about the request, not the date.
-        no_session = any(marker in body for marker in LOGOUT_MARKERS)
-        return {"date": date,
-                "error": ("no session — the portal answered LOGOUT"
-                          if no_session else f"HTTP {exc.code}"),
-                "httpStatus": exc.code, "noSession": no_session,
-                "bodyHead": body}
+        return {"status": exc.code,
+                "error": f"HTTP {exc.code}",
+                "bodyHead": exc.read()[:400].decode("utf-8", "replace")}
     except Exception as exc:  # pragma: no cover - network dependent
-        return {"date": date, "error": f"{type(exc).__name__}: {exc}"}
-    return parse_constituents(date, status, raw)
+        return {"status": None, "error": f"{type(exc).__name__}: {exc}"}
 
 
 def parse_constituents(date: str, status: int, raw: bytes) -> dict:
-    """Turn one response into codes, or into the reason it holds none."""
+    """Turn one response into issue codes, or into the reason it holds none."""
     text = raw.decode("utf-8", "replace")
     try:
         payload = json.loads(text)
     except ValueError:
         return {"date": date, "status": status,
-                "error": "response was not JSON (block page or HTML shell?)",
+                "error": "response was not JSON",
                 "bodyHead": text[:400]}
-    key = next((k for k in ("output", "OutBlock_1") if k in payload), None)
+    if not isinstance(payload, dict):
+        return {"date": date, "status": status,
+                "error": f"payload was {type(payload).__name__}, not an object",
+                "bodyHead": text[:400]}
+    key = next((k for k in ("OutBlock_1", "output", "OutBlock1") if k in payload), None)
     # A payload with no rows key at all is a DIFFERENT fact from one holding an
     # empty list: the first says the request was not understood, the second
-    # that the index had no members on that date. Reading the first as zero
-    # constituents would report a working endpoint as a market with no names.
+    # that nothing traded that date. Reading the first as zero issues would
+    # report a working endpoint as a market with no names.
     if key is None:
         return {"date": date, "status": status,
-                "error": f"no constituent rows in payload keys {sorted(payload)[:8]}",
+                "error": f"no rows key in payload keys {sorted(payload)[:8]}",
                 "bodyHead": text[:400]}
     rows = payload.get(key)
     if not isinstance(rows, list):
@@ -200,50 +176,48 @@ def parse_constituents(date: str, status: int, raw: bytes) -> dict:
     for row in rows:
         if not isinstance(row, dict):
             continue
-        code = str(row.get("ISU_SRT_CD") or row.get("ISU_CD") or "").strip()
+        code = _first(row, CODE_KEYS)
         if not code or code in names:
             continue
         codes.append(code)
-        names[code] = str(row.get("ISU_ABBRV") or row.get("ISU_NM") or "").strip()
+        names[code] = _first(row, NAME_KEYS) or ""
+    columns = sorted({k for row in rows if isinstance(row, dict) for k in row})
     # `count` and `codes` must describe the same set, or every overlap the
     # verdict rests on is computed against a number that counted duplicates.
     codes = sorted(set(codes))
-    return {"date": date, "status": status, "count": len(codes),
-            "codes": codes, "names": names,
-            "payloadKeys": sorted(payload)[:8]}
+    return {
+        "date": date, "status": status, "count": len(codes),
+        "codes": codes, "names": names,
+        "rowsReturned": len(rows),
+        "columns": columns,
+        # The two that decide whether a dated market-cap universe is possible.
+        "hasMarketCap": any(k in columns for k in MKTCAP_KEYS),
+        "hasSharesOutstanding": any(k in columns for k in SHARES_KEYS),
+        "payloadKeys": sorted(payload)[:8],
+    }
 
 
 def membership_evidence(snapshots: list[dict]) -> dict:
-    """Is this history, or one list wearing several dates?
+    """Is this history, or one cross-section wearing several dates?
 
     Two readings decide it and they fail differently:
 
     * ``oldestNewestOverlapPct`` — the share of the oldest list still in the
       newest. A date-parameterised endpoint that ignores its date returns
       100.0 here, with every count and format check passing.
-    * ``departedMembers`` — names in an old list and absent from the newest.
+    * ``departedMembers`` — issues in an old list and absent from the newest.
       These are the names survivorship bias deletes, so a source that offers
       none of them describes no history whatever its overlap.
 
     A source is only usable when the overlap is BELOW 100 and there is at
-    least one departed member; the verdict says which reading refused it, so
-    a partial answer is not read as a failure of the other half.
+    least one departed name; the verdict says which reading refused it, so a
+    partial answer is not read as a failure of the other half.
     """
     usable = [s for s in snapshots if not s.get("error") and s.get("count")]
     if len(usable) < 2:
-        # A run that never held a session measured the request, not the source.
-        # Reporting it as INSUFFICIENT_SNAPSHOTS would read as "KRX could not
-        # answer", and the next person would drop a usable source on our bug.
-        failed = [s for s in snapshots if s.get("error")]
-        if failed and all(s.get("noSession") for s in failed):
-            return {"verdict": "NOT_MEASURED_NO_SESSION",
-                    "reason": "every request was answered LOGOUT — the probe "
-                              "held no portal session, so nothing here is a "
-                              "finding about KRX's dated membership",
-                    "snapshotsUsable": len(usable)}
         return {"verdict": "INSUFFICIENT_SNAPSHOTS",
-                "reason": f"{len(usable)} dated lists answered; two are needed "
-                          "to tell history from a repeated snapshot",
+                "reason": f"{len(usable)} dated cross-sections answered; two "
+                          "are needed to tell history from a repeated snapshot",
                 "snapshotsUsable": len(usable)}
     usable.sort(key=lambda s: s["date"])
     oldest, newest = set(usable[0]["codes"]), set(usable[-1]["codes"])
@@ -263,12 +237,12 @@ def membership_evidence(snapshots: list[dict]) -> dict:
     if overlap == 100.0 and not departed:
         verdict, reason = "NOT_POINT_IN_TIME", (
             f"{usable[0]['date']} and {usable[-1]['date']} returned the same "
-            "names — the date parameter is not changing the answer, so this is "
-            "today's list with a date stamped on it")
+            "issues — the date parameter is not changing the answer, so this is "
+            "today's cross-section with a date stamped on it")
     elif not departed:
         verdict, reason = "NOT_POINT_IN_TIME", (
-            "no name in the oldest list is absent from the newest; a real "
-            "membership history always loses members")
+            "no issue in the oldest cross-section is absent from the newest; a "
+            "real history always loses names")
     else:
         verdict, reason = "POINT_IN_TIME", None
     return {
@@ -286,11 +260,11 @@ def membership_evidence(snapshots: list[dict]) -> dict:
 
 
 def universe_reach(snapshots: list[dict], universe: list[str]) -> dict:
-    """How much of the replay's KR universe the oldest list can vouch for.
+    """How much of the replay's KR universe each dated cross-section holds.
 
-    Not a pass/fail — a name the oldest list does not hold may simply not have
-    been a member then, which is the answer the replay wants. It is reported so
-    the size of the KR membership fix is visible before it is attempted.
+    Not a pass/fail — a name the oldest cross-section does not hold may simply
+    not have been listed then, which is the answer the replay wants. It is
+    reported so the size of the KR fix is visible before it is attempted.
     """
     usable = sorted((s for s in snapshots if not s.get("error") and s.get("count")),
                     key=lambda s: s["date"])
@@ -301,7 +275,7 @@ def universe_reach(snapshots: list[dict], universe: list[str]) -> dict:
     for snap in usable:
         held = {to_pipeline_ticker(c) for c in snap["codes"]} & wanted
         out["byDate"].append({
-            "date": snap["date"], "constituents": snap["count"],
+            "date": snap["date"], "issues": snap["count"],
             "universeNamesHeld": len(held),
             "universeNamesHeldPct": (round(100.0 * len(held) / len(wanted), 2)
                                      if wanted else None),
@@ -312,71 +286,92 @@ def universe_reach(snapshots: list[dict], universe: list[str]) -> dict:
 def main(argv=None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", default="krx-probe.json")
+    parser.add_argument("--base", default=DEFAULT_BASE)
     parser.add_argument("--dates",
-                        default="2013-01-02,2016-01-04,2020-01-02,2024-01-02,2026-09-01")
-    parser.add_argument("--index-series", default="1")
-    parser.add_argument("--index-code", default="028")
-    parser.add_argument("--sleep", type=float, default=1.5,
-                        help="pause between calls; this is a public portal")
+                        default="2013-01-02,2016-01-04,2020-01-02,2026-09-01")
+    parser.add_argument("--sleep", type=float, default=1.0)
     args = parser.parse_args(argv)
 
     from pipeline import universe_lists
 
-    dates = [d.strip() for d in args.dates.split(",") if d.strip()]
-    print(f"KRX 지수구성종목 (series {args.index_series} / index "
-          f"{args.index_code}) on {len(dates)} dates")
-    opener, session = open_session()
-    if session.get("opened"):
-        print(f"  session cookies: {session['cookies']}")
-    else:
-        print(f"  WARNING: no session cookie ({session.get('error') or session}); "
-              "the endpoint will answer LOGOUT and nothing below is about the data")
-    snapshots = []
-    for i, date in enumerate(dates):
-        if i:
-            time.sleep(args.sleep)
-        snap = fetch_constituents(date, index_series=args.index_series,
-                                  index_code=args.index_code, opener=opener)
-        snapshots.append(snap)
-        if snap.get("error"):
-            print(f"  {date}  ERROR {snap['error']}")
-            if snap.get("bodyHead"):
-                print(f"    {snap['bodyHead'][:200]}")
-        else:
-            sample = ", ".join(snap["codes"][:5])
-            print(f"  {date}  {snap['count']:>4} names  [{sample}]")
+    auth_key = os.environ.get("KRX_API_KEY")
+    if not auth_key:
+        print("KRX_API_KEY is not set — the Open API cannot be reached. "
+              "Nothing measured.")
+        return 2
 
-    evidence = membership_evidence(snapshots)
-    reach = universe_reach(snapshots, universe_lists.KR)
+    dates = [d.strip() for d in args.dates.split(",") if d.strip()]
+    print(f"KRX Open API at {args.base}")
+    print(f"  {len(ENDPOINTS)} candidate endpoints x {len(dates)} dates")
+
+    results: dict[str, dict] = {}
+    for path, label, kind in ENDPOINTS:
+        snapshots = []
+        for i, date in enumerate(dates):
+            if i or results:
+                time.sleep(args.sleep)
+            answer = call(args.base, path, {"basDd": date.replace("-", "")},
+                          auth_key)
+            if answer.get("error"):
+                snap = {"date": date, "error": answer["error"],
+                        "status": answer.get("status"),
+                        "bodyHead": answer.get("bodyHead")}
+            else:
+                snap = parse_constituents(date, answer["status"], answer["raw"])
+            snapshots.append(snap)
+            if snap.get("error"):
+                print(f"  {path:<24} {date}  ERROR {snap['error']}")
+                if snap.get("bodyHead"):
+                    print(f"      {snap['bodyHead'][:180]}")
+            else:
+                flags = []
+                if snap.get("hasMarketCap"):
+                    flags.append("MKTCAP")
+                if snap.get("hasSharesOutstanding"):
+                    flags.append("LIST_SHRS")
+                print(f"  {path:<24} {date}  {snap['count']:>5} issues"
+                      + (f"  [{' '.join(flags)}]" if flags else ""))
+        answered = [s for s in snapshots if not s.get("error") and s.get("count")]
+        results[path] = {
+            "label": label, "kind": kind,
+            "snapshots": [{k: v for k, v in s.items() if k != "names"}
+                          for s in snapshots],
+            "evidence": membership_evidence(snapshots) if kind == "issues" else None,
+            "universeReach": (universe_reach(snapshots, universe_lists.KR)
+                              if kind == "issues" else None),
+            "columnsSeen": (answered[0].get("columns") if answered else []),
+        }
+
     report = {
-        "probe": "krx-index-membership",
-        "endpoint": BASE, "bld": BLD,
-        "indexSeries": args.index_series, "indexCode": args.index_code,
+        "probe": "krx-open-api",
+        "base": args.base,
         "dates": dates,
-        "session": session,
-        # Names are large and not what the decision turns on; the codes are.
-        "snapshots": [{k: v for k, v in s.items() if k != "names"} for s in snapshots],
-        "evidence": evidence,
-        "universeReach": reach,
+        "endpoints": results,
     }
     Path(args.output).write_text(json.dumps(report, indent=1, ensure_ascii=False) + "\n",
                                  encoding="utf-8")
 
     print()
-    print(f"verdict: {evidence['verdict']}")
-    if evidence.get("reason"):
-        print(f"  {evidence['reason']}")
-    if evidence.get("oldestNewestOverlapPct") is not None:
-        print(f"  {evidence['oldest']} vs {evidence['newest']}: "
-              f"{evidence['oldestNewestOverlapPct']}% overlap, "
-              f"{evidence['departedMembers']} departed, "
-              f"{evidence['joinedMembers']} joined")
-        if evidence.get("departedSample"):
-            print(f"  departed sample: {evidence['departedSample']}")
-    for row in reach.get("byDate") or []:
-        print(f"  {row['date']}: {row['constituents']} constituents, "
-              f"{row['universeNamesHeld']}/{reach['universeSize']} "
-              f"({row['universeNamesHeldPct']}%) of the replay's KR universe")
+    for path, row in results.items():
+        evidence = row.get("evidence") or {}
+        verdict = evidence.get("verdict") or "—"
+        print(f"  {path:<24} {verdict}")
+        if evidence.get("reason"):
+            print(f"      {evidence['reason']}")
+        if evidence.get("oldestNewestOverlapPct") is not None:
+            print(f"      {evidence['oldest']} vs {evidence['newest']}: "
+                  f"{evidence['oldestNewestOverlapPct']}% overlap, "
+                  f"{evidence['departedMembers']} departed, "
+                  f"{evidence['joinedMembers']} joined")
+            if evidence.get("departedSample"):
+                print(f"      departed sample: {evidence['departedSample']}")
+        for cell in (row.get("universeReach") or {}).get("byDate") or []:
+            print(f"      {cell['date']}: {cell['issues']} issues, "
+                  f"{cell['universeNamesHeld']}/"
+                  f"{row['universeReach']['universeSize']} "
+                  f"({cell['universeNamesHeldPct']}%) of the replay's KR universe")
+        if row.get("columnsSeen"):
+            print(f"      columns: {row['columnsSeen']}")
     print(f"wrote {args.output}")
     return 0
 

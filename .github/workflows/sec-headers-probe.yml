@@ -1,0 +1,69 @@
+name: Probe SEC header isolation
+
+# The US PIT fundamentals route was parked on "SEC blocks the GitHub Actions IP
+# pool site-wide". That conclusion skipped a check: SEC's access policy asks for
+# a declaring User-Agent AND `Accept-Encoding: gzip, deflate`, and neither SEC
+# probe sent the second — nor does pipeline/institutional_13f, whose same-day
+# fallback was cited as corroboration, so the corroborating observation shares
+# the suspect header set instead of being independent of it.
+#
+# "Undeclared Automated Tool" is what SEC serves for a non-compliant header set
+# AND what an IP refusal looks like from outside. This separates them: one
+# endpoint per host, four header sets, everything else held fixed — same runner,
+# same minute, same pacing — with the shipped headers included as the baseline,
+# because without it a later success is not attributable to the change.
+#
+# A pass here is not a backfill. It says which door opens.
+
+on:
+  workflow_dispatch:
+    inputs:
+      user_agent:
+        description: "연락처 문자열 (비우면 리포에 이미 있는 주소를 씁니다)"
+        type: string
+        default: ""
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+
+      - name: Probe
+        run: |
+          set -euo pipefail
+          python scripts/probe_sec_headers.py \
+            --output sec-headers-probe.json \
+            ${{ inputs.user_agent && format('--user-agent "{0}"', inputs.user_agent) || '' }} \
+            | tee probe.log
+
+      - name: Upload the probe
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: sec-headers-probe
+          path: |
+            sec-headers-probe.json
+            probe.log
+          if-no-files-found: warn
+
+      - name: Summary
+        if: always()
+        run: |
+          {
+            echo '## SEC 헤더 분리 프로브'
+            echo
+            echo '```'
+            tail -n 80 probe.log 2>/dev/null || echo '프로브 출력 없음'
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"

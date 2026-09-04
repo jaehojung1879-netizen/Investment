@@ -137,6 +137,30 @@
   sharesBasis` and tallied in the coverage report, the same discipline as the TTM
   basis.
 
+## Vendor refusal invariants (v2.9)
+
+- A vendor's refusal is attributed only after OUR side of the request has been
+  ruled out. The SEC conclusion — "the Actions IP pool is blocked site-wide",
+  which parked the US fundamentals work — was reached while sending a header
+  set that does not meet SEC's stated policy: it asks for a declaring
+  User-Agent AND `Accept-Encoding: gzip, deflate`, and neither probe sent the
+  second. "Undeclared Automated Tool" is what SEC serves for a non-compliant
+  header set and what an IP refusal looks like from outside; the two were
+  never separated.
+- Corroboration must be INDEPENDENT of the suspect. `institutional_13f`
+  falling back to cache on the same day was cited as evidence for the IP
+  reading, and it sends the same headers — so it corroborated the shared
+  suspect rather than the conclusion.
+- Isolating a refusal means one variable at a time, in ONE run: the shipped
+  request is included as the baseline, everything else is held fixed (host,
+  endpoint, pacing, runner, minute), and only the header set moves. Without
+  the baseline in the same run a later success is attributable to the day
+  rather than to the change.
+- A block page is not data whatever status it wears. SEC serves its refusals
+  with 403 and sometimes with 200, so the body decides, never the status code.
+  And a request that asks for `gzip` must decompress before it judges: reading
+  compressed bytes as text turns a served response into an apparent refusal.
+
 ## Macro vintage invariants (v2.9)
 
 - A panel column that is COMPUTED from other columns has no vendor series id, so
@@ -162,13 +186,25 @@
   replay's own `vintage_column`, not a re-implementation.
 - The panel verdict is all-or-nothing because PIT_EXACT is. One usable series
   among many is not partial credit.
-- MEASURED 2026-09-04, and it settles the gate rather than the probe: at the
-  2013-01-01 replay start at least 8 of the 28 panel columns have no ALFRED
-  vintage reaching it, and `HY_Spread`/`IG_Spread` have none before 2023-09-05.
-  `vintageMacro` is therefore ALSO unreachable at the current start date, and
-  the derived-column fix was necessary without being sufficient. Moving the
-  replay start would recover six of the eight and is a separate decision with
-  its own cost, taken by a human, not folded into a macro change.
+- MEASURED 2026-09-04 and it settles the gate: 10 of the 28 panel columns have
+  NO ALFRED vintages at all — `series/vintagedates` refuses them with "The
+  series does not exist in ALFRED but may exist in FRED". FRED serves the
+  numbers and keeps no pre-revision history of them. So `vintageMacro` is
+  unreachable at EVERY start date, not merely at 2013-01-01, and moving the
+  replay start buys nothing: the first run read those series' `realtime_start`
+  values (2014, 2019, 2023) as first vintages when they are the dates FRED
+  began carrying the series, and the "move the start and six recover" reading
+  built on that is withdrawn. Never vintaged is an ANSWER and gets its own
+  verdict; filed as a fetch failure it looks like something a retry fixes.
+- Both integrity gates are therefore permanently closed as defined, for
+  different reasons, and neither opens by collecting more. The only remaining
+  moves are to change what the macro panel contains (a model change) or what
+  the gate requires, and both belong to a human.
+- A vintage that carries MORE of a span than today's series does is a series
+  redefined under its own id, not a healthy column — measured on TGA
+  (`WTREGEN`), 1,408 periods served to 2013 against 524 today. Conditioning a
+  replay on it would use a definition that no longer exists, so it is flagged
+  rather than published as coverage or dropped in silence.
 - A vintage source is asked for the FIRST VINTAGE DATE, never for the whole
   release matrix. ALFRED caps a request at 2,000 vintage dates and 100,000
   rows, and a daily series blows both: the first run lost DGS10, DGS2, DFF,
