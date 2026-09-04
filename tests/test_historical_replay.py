@@ -696,3 +696,70 @@ def test_benchmark_coverage_gate_is_regional_and_fail_closed():
     no_outcomes_gate = HO.benchmark_coverage_gate(no_outcomes, horizon=126)
     assert no_outcomes_gate["eligible"] is False
     assert no_outcomes_gate["failures"][0]["reason"] == "no_matured_absolute_returns"
+
+
+# --------------------------------------------------------------------------- #
+# Derived panel columns and the vintage claim
+#
+# `Yield_Curve` is computed from two fetched series, so ALFRED can never return
+# release history under that name. Before this was handled the aggregate
+# pit_status subtracted the vintaged names from the panel's columns, always
+# found the curve missing, and capped the panel at PIT_APPROXIMATE — while the
+# vintageMacro integrity gate asks for PIT_EXACT. The gate was unreachable by
+# construction, not because of anything in the data.
+# --------------------------------------------------------------------------- #
+def _curve_panel(periods=40):
+    index = pd.bdate_range("2015-01-01", periods=periods)
+    macro = pd.DataFrame({"Treasury_10Y": np.linspace(2.0, 3.0, periods),
+                          "Treasury_2Y": np.linspace(1.0, 1.5, periods)}, index=index)
+    return pit_data.derive_macro_columns(macro), index
+
+
+def _flat_releases(index, value):
+    return _releases([(stamp, stamp, value) for stamp in index])
+
+
+def test_a_derived_column_alone_no_longer_caps_the_panel_at_approximate():
+    macro, index = _curve_panel()
+    view = pit_data.MacroVintageView(
+        macro, None,
+        vintages={"Treasury_10Y": _flat_releases(index, 2.5),
+                  "Treasury_2Y": _flat_releases(index, 1.5)})
+    assert "Yield_Curve" in macro.columns
+    assert view.pit_status() == pit_data.PIT_EXACT
+    assert view.pit_status("Yield_Curve") == pit_data.PIT_EXACT
+
+
+def test_a_derived_column_is_rebuilt_from_the_vintaged_inputs():
+    macro, index = _curve_panel()
+    # Today's revised panel ends far from 1.0; the prints available at the time
+    # said 2.5 and 1.5, so the curve as of then is exactly 1.0.
+    assert abs(float(macro["Yield_Curve"].iloc[-1]) - 1.0) > 0.1
+    view = pit_data.MacroVintageView(
+        macro, None,
+        vintages={"Treasury_10Y": _flat_releases(index, 2.5),
+                  "Treasury_2Y": _flat_releases(index, 1.5)})
+    truncated, _ = view.as_of(index[-1])
+    assert truncated["Yield_Curve"].dropna().eq(1.0).all()
+
+
+def test_one_vintaged_input_does_not_vintage_the_difference():
+    macro, index = _curve_panel()
+    view = pit_data.MacroVintageView(
+        macro, None, vintages={"Treasury_10Y": _flat_releases(index, 2.5)})
+    assert view.derived_vintaged == set()
+    assert view.pit_status("Yield_Curve") == pit_data.REVISED_HISTORY
+    assert view.pit_status() == pit_data.PIT_APPROXIMATE
+    # And the revised arithmetic is left where it was rather than half-rebuilt.
+    truncated, _ = view.as_of(index[-1])
+    assert not truncated["Yield_Curve"].dropna().eq(1.0).all()
+
+
+def test_an_unvintaged_series_still_holds_the_panel_below_exact():
+    macro, index = _curve_panel()
+    macro["FedFunds"] = 5.0
+    view = pit_data.MacroVintageView(
+        macro, None,
+        vintages={"Treasury_10Y": _flat_releases(index, 2.5),
+                  "Treasury_2Y": _flat_releases(index, 1.5)})
+    assert view.pit_status() == pit_data.PIT_APPROXIMATE

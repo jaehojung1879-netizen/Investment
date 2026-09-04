@@ -1,0 +1,79 @@
+name: Probe ALFRED macro vintages
+
+# `integrityGate.vintageMacro` fails because macroPitStatus reads
+# REVISED_HISTORY: historicalReplay.macroVintageSeries is empty, so the replay
+# conditions its regime on numbers as revised since rather than as printed at
+# the time. The machinery to fix it already exists and nothing has opted in.
+#
+# Opting everything in blind is the wrong move, and quietly so. vintage_column
+# keeps only the prints published by the as-of date, so a series whose ALFRED
+# history begins in 2019 returns an EMPTY column on a 2013 replay date — that
+# column goes dark for six years while pit_status UPGRADES the panel to
+# PIT_EXACT and the gate turns green. This measures, per series, whether the
+# release history actually reaches the replay start before anything is opted in.
+#
+# Needs FRED_API_KEY, the same secret the nightly replay already uses.
+
+on:
+  workflow_dispatch:
+    inputs:
+      start:
+        description: "리플레이 시작일 (비우면 config historicalReplay.start)"
+        type: string
+        default: ""
+      series:
+        description: "확인할 시리즈 (쉼표 구분, 비우면 패널 전체)"
+        type: string
+        default: ""
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Probe
+        env:
+          FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
+        run: |
+          set -euo pipefail
+          python scripts/probe_alfred_macro_vintages.py \
+            --output alfred-probe.json \
+            ${{ inputs.start && format('--start {0}', inputs.start) || '' }} \
+            ${{ inputs.series && format('--series {0}', inputs.series) || '' }} \
+            | tee probe.log
+
+      - name: Upload the probe
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: alfred-macro-vintages-probe
+          path: |
+            alfred-probe.json
+            probe.log
+          if-no-files-found: warn
+
+      - name: Summary
+        if: always()
+        run: |
+          {
+            echo '## ALFRED 매크로 빈티지 프로브'
+            echo
+            echo '```'
+            tail -n 80 probe.log 2>/dev/null || echo '프로브 출력 없음'
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"

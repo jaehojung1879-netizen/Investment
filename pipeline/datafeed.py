@@ -12,6 +12,7 @@ import time
 
 import pandas as pd
 
+from . import pit_data
 from .config import Config
 from .market_dates import normalize_daily_frame, normalize_daily_series
 
@@ -152,10 +153,9 @@ def fetch_macro(cfg: Config, start: str) -> pd.DataFrame | None:
             print(f"  warning: FRED {series_id} failed: {exc}")
     if not frame:
         return None
-    macro = pd.DataFrame(frame)
-    if "Treasury_10Y" in macro and "Treasury_2Y" in macro:
-        macro["Yield_Curve"] = macro["Treasury_10Y"] - macro["Treasury_2Y"]
-    return macro
+    # Derived columns come from pit_data so the replay, which rebuilds them
+    # from vintaged inputs, cannot drift from the definition used here.
+    return pit_data.derive_macro_columns(pd.DataFrame(frame))
 
 
 def fetch_macro_vintages(cfg: Config, names) -> dict[str, pd.DataFrame]:

@@ -137,6 +137,32 @@
   sharesBasis` and tallied in the coverage report, the same discipline as the TTM
   basis.
 
+## Macro vintage invariants (v2.9)
+
+- A panel column that is COMPUTED from other columns has no vendor series id, so
+  no vintage source can ever answer for it by name. Subtracting the vintaged
+  names from the panel's columns therefore finds it missing forever, and the
+  aggregate `pit_status` is capped below PIT_EXACT however many series are opted
+  in — the `vintageMacro` gate was unreachable by construction, not by anything
+  in the data. A derived column is neither exempted nor fetched: it is
+  RECOMPUTED from its vintaged inputs, and it counts as vintaged only when
+  EVERY input is. One vintaged input and one revised one is a revised column.
+- The derivation lives in one place (`pit_data.DERIVED_MACRO_COLUMNS` /
+  `derive_macro_columns`) and the fetch site imports it. Two copies of the
+  arithmetic is how a replay silently stops replaying the production panel.
+- Opting a series into `macroVintageSeries` is measured before it is done.
+  `vintage_column` keeps only the prints published by the as-of date, so a
+  series whose release history begins after the replay start returns an EMPTY
+  column on early replay dates: that column goes dark for years while
+  `pit_status` UPGRADES to PIT_EXACT and the gate turns green. Trading a
+  revised number for no number and receiving a better label for it is the
+  failure this measurement exists to prevent. Row counts and a first-observation
+  date cannot see it; only reconstructing the column on the replay's own start
+  date can, and that is what `probe_alfred_macro_vintages` runs — with the
+  replay's own `vintage_column`, not a re-implementation.
+- The panel verdict is all-or-nothing because PIT_EXACT is. One usable series
+  among many is not partial credit.
+
 ## Benchmark acquisition invariants (v2.8)
 
 - A benchmark panel materially shorter than the span it was requested for is a FAILED
@@ -166,6 +192,28 @@
 - Lowering `minBenchmarkCoveragePct`, or dropping a region from `benchmarks`, is never
   the fix for a coverage failure. Both restore the pre-gate state where a run is green
   and the evidence is silently gone.
+
+## Promotion gate invariants (v2.9)
+
+- `universe_ready` requires `constituentCoveragePct` AND `membershipCoveragePct`
+  at exactly 100.0. On the free vendors available that is not a bar more
+  collection reaches: the US half is at 99.80% membership and 83.02% pricing
+  because the panel cannot price 17% of the name-dates the membership file
+  describes, and Korean membership, if it were built, would stop near 40%
+  unvouched because only 34.55% of departed KOSPI names can be priced at all
+  (measured 2026-08-30). The gate is unreachable, and that fact is published
+  rather than worked around.
+- Lowering the bar is not the answer, and neither is leaving it undescribed. If
+  there is an answer it is to BOUND the bias rather than demand it be zero:
+  whether the paired selector difference keeps its sign when the missing
+  name-dates are assigned their worst plausible outcome. Until that is measured,
+  no promotion claim is made in either direction, and the favourable reading is
+  not taken on the strength of the gap being unmeasured.
+- A challenger separating from the champion is not a promotion trigger and is
+  never reported as one. On `replay-v6` the paired difference cleared zero for
+  the first time (-0.684pp, 95% CI [-1.127, -0.225] over 132 shared blocks)
+  while `promotionEligible` stayed false — both facts are published together or
+  neither is.
 
 ## Selection-edge invariants (v2.8)
 

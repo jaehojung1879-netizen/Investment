@@ -29,6 +29,7 @@ from pipeline import features as F  # noqa: E402
 from pipeline import longterm as longterm_mod  # noqa: E402
 from pipeline import ledger as LG  # noqa: E402
 from pipeline import macro as macro_mod  # noqa: E402
+from pipeline import pit_data  # noqa: E402
 from pipeline import provenance as prov_mod  # noqa: E402
 from pipeline import regime as regime_mod  # noqa: E402
 from pipeline import risk as risk_mod  # noqa: E402
@@ -83,7 +84,7 @@ def main() -> int:
         "Korea_10Y": 3.3 + np.cumsum(np.random.default_rng(6).normal(0, 0.006, n)),
         "Korea_3M": 3.4 + np.cumsum(np.random.default_rng(8).normal(0, 0.004, n)),
     }, index=dates)
-    macro["Yield_Curve"] = macro["Treasury_10Y"] - macro["Treasury_2Y"]
+    pit_data.derive_macro_columns(macro)
     # A few monthly macro series so the regime engine has >1 axis of coverage.
     mdates = pd.date_range(end=dates[-1], periods=60, freq="ME")
     for name, base, slope, sd, sd_seed in [("CFNAI", 0.0, 0.002, 0.2, 21), ("Headline_CPI", 297, 0.42, 0.45, 25), ("Core_CPI", 300, 0.4, 0.3, 22),

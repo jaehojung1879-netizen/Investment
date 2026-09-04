@@ -440,6 +440,49 @@ def derive_price_relative(fields: dict, price) -> dict:
 # --------------------------------------------------------------------------- #
 # Macro vintages
 # --------------------------------------------------------------------------- #
+# Panel columns computed FROM other columns rather than fetched from a vendor.
+#
+# They are not a detail of how the panel is assembled; they decide whether the
+# vintage claim can ever be made. `fetch_macro_vintages` can only return
+# release history for a name that has a FRED series id, and a derived column
+# has none — so `pit_status` subtracting the vintaged names from the panel's
+# columns finds this one missing no matter how many series are opted in, and
+# the aggregate is capped at PIT_APPROXIMATE forever. The vintageMacro
+# integrity gate asks for PIT_EXACT, so the gate was unreachable by
+# construction rather than by any property of the data.
+#
+# The fix is not to exempt it. A difference of two vintaged series is exactly
+# as vintaged as they are, so it is RECOMPUTED from them — the panel then
+# carries the curve the market could compute that day, not the one today's
+# revisions imply. Each entry is (minuend, subtrahend); a derivation that is
+# not a difference needs more than this table.
+DERIVED_MACRO_COLUMNS: dict[str, tuple[str, str]] = {
+    "Yield_Curve": ("Treasury_10Y", "Treasury_2Y"),
+}
+
+
+def derive_macro_columns(macro: pd.DataFrame | None,
+                         only: set[str] | None = None) -> pd.DataFrame | None:
+    """(Re)compute the derived panel columns in place.
+
+    Defined here, and imported by the fetch site, so a replay rebuilding a
+    column from vintaged inputs uses the SAME definition today's build used.
+    Two copies of the arithmetic is how a replay silently stops replaying the
+    production panel.
+
+    ``only`` restricts the work to named columns; a column whose inputs are
+    absent is left alone rather than filled with NaN.
+    """
+    if macro is None or not len(macro):
+        return macro
+    for name, (left, right) in DERIVED_MACRO_COLUMNS.items():
+        if only is not None and name not in only:
+            continue
+        if left in macro.columns and right in macro.columns:
+            macro[name] = macro[left] - macro[right]
+    return macro
+
+
 def vintage_column(releases: pd.DataFrame, as_of) -> pd.Series:
     """One series as it stood on ``as_of``, from its release history.
 
@@ -502,7 +545,28 @@ class MacroVintageView:
 
     @property
     def vintage_series(self) -> set[str]:
+        """Names with actual release evidence behind them. Fetched only."""
         return set(self._vintage_series)
+
+    @property
+    def derived_vintaged(self) -> set[str]:
+        """Derived columns every input of which is vintaged.
+
+        A difference of two vintaged series carries their vintage; a difference
+        with one revised input does not, and stays out.
+        """
+        return {name for name, inputs in DERIVED_MACRO_COLUMNS.items()
+                if inputs and all(part in self._vintage_series for part in inputs)}
+
+    @property
+    def vintaged_columns(self) -> set[str]:
+        """Every panel column the view can serve as of a date, fetched or derived.
+
+        Distinct from ``vintage_series`` on purpose: that one answers "what did
+        ALFRED supply", this one answers "what is PIT_EXACT", and only the
+        second is what the integrity gate is asking about.
+        """
+        return self.vintage_series | self.derived_vintaged
 
     @property
     def available(self) -> bool:
@@ -523,6 +587,12 @@ class MacroVintageView:
                         continue
                     column = vintage_column(self._vintages[name], cutoff)
                     macro[name] = column.reindex(macro.index) if len(column) else float("nan")
+                # The inputs just changed underneath them, so the derived
+                # columns still hold today's revised arithmetic until they are
+                # rebuilt. Only the ones whose inputs are ALL vintaged are
+                # touched — rebuilding a column from revised inputs would
+                # reproduce the value already there and claim more than that.
+                derive_macro_columns(macro, only=self.derived_vintaged)
         vix = None
         if self._vix is not None and len(self._vix):
             vix = self._vix.loc[self._vix.index <= cutoff]
@@ -533,15 +603,16 @@ class MacroVintageView:
     def pit_status(self, series_name: str | None = None) -> str:
         if not self.available:
             return UNAVAILABLE
+        vintaged = self.vintaged_columns
         if series_name is not None:
-            return PIT_EXACT if series_name in self._vintage_series else REVISED_HISTORY
+            return PIT_EXACT if series_name in vintaged else REVISED_HISTORY
         if not self._vintage_series:
             return REVISED_HISTORY
         # The aggregate is only EXACT when nothing in the panel is still a
         # later revision. One vintaged series among many is APPROXIMATE, and
         # the integrity gate asks for EXACT.
         columns = set(self._macro.columns) if self._macro is not None else set()
-        missing = columns - self._vintage_series
+        missing = columns - vintaged
         return PIT_APPROXIMATE if missing else PIT_EXACT
 
 
