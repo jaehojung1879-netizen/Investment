@@ -41,6 +41,10 @@ from __future__ import annotations
 import argparse
 import json
 import sys
+import time
+import urllib.error
+import urllib.parse
+import urllib.request
 from pathlib import Path
 
 import pandas as pd
@@ -49,7 +53,30 @@ ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 
 from pipeline import pit_data  # noqa: E402
-from pipeline.config import Config, load_config  # noqa: E402
+from pipeline.config import load_config  # noqa: E402
+
+# WHY NOT fredapi's get_series_all_releases. Measured on the first real run: it
+# asks ALFRED for the whole real-time period at once and six of the panel's
+# series came back
+#
+#   Bad Request. There are 5103 vintage dates in the specified real-time
+#   period: 1776-07-04 to 9999-12-31. This exceeds the maximum number of
+#   vintage dates allowed for this file type (2000).
+#
+# — DGS10, DGS2, DFF, DFII10, T10YIE, RRPONTSYD, and with them Yield_Curve,
+# which is derived from the first two. Those are daily series ALFRED stamps a
+# new vintage for on every business day, so the cap is structural and no retry
+# clears it. Two others (NFCI, ANFCI) returned exactly 100,000 rows, which is
+# the row cap rather than their length, so those answers were silently clipped.
+#
+# The decisive question does not need the whole matrix. "Does this series'
+# release history reach the replay start" is answered by its FIRST vintage
+# date, and `series/vintagedates` lists vintage dates directly. "What would the
+# column serve on date T" is answered by pinning the request to that one
+# vintage — `realtime_start = realtime_end = T` returns the series exactly as
+# it stood that day. Both are one small call and neither can hit either cap.
+FRED_BASE = "https://api.stlouisfed.org/fred"
+VINTAGE_PAGE = 10000
 
 # Verdicts, worst last. The panel takes the worst of its columns because
 # PIT_EXACT is an all-or-nothing claim about the whole frame.
@@ -65,78 +92,105 @@ def _stamp(value):
     return None if pd.isna(ts) else ts.date().isoformat()
 
 
-def summarize_releases(releases: pd.DataFrame | None, *, start: str,
-                       as_of_dates: list[str]) -> dict:
-    """What one series' ALFRED history can and cannot serve.
+def api(path: str, params: dict, api_key: str, *, timeout: int = 60) -> dict:
+    """One FRED call. A refusal is raised with what FRED actually said.
 
-    ``releases`` is ALFRED long form: ``date`` (period described),
-    ``realtime_start`` (when that print first appeared), ``value``.
-
-    The decisive field is ``asOf[*].periodsServed``. A series can have tens of
-    thousands of rows and still serve nothing on an early replay date, because
-    every one of those rows was published later. Row counts and a first
-    observation date do not answer that; reconstructing the column does, so
-    that is what this runs — the same `vintage_column` the replay uses, not a
-    re-implementation of it.
+    The first run recorded six failures as "the ALFRED call did not return",
+    which is the shape of absence this repo refuses everywhere else: the reason
+    was a specific, actionable message about a vintage-date cap, and throwing it
+    away cost a whole run to rediscover.
     """
-    if releases is None or not len(releases):
-        return {"verdict": EMPTY, "rows": 0,
-                "reason": "ALFRED returned no release rows"}
+    query = dict(params)
+    query.update({"api_key": api_key, "file_type": "json"})
+    url = f"{FRED_BASE}/{path}?{urllib.parse.urlencode(query)}"
+    try:
+        with urllib.request.urlopen(url, timeout=timeout) as response:
+            return json.loads(response.read())
+    except urllib.error.HTTPError as exc:
+        body = exc.read().decode("utf-8", "replace")
+        try:
+            message = json.loads(body).get("error_message") or body
+        except ValueError:
+            message = body
+        raise RuntimeError(f"HTTP {exc.code}: {message.strip()[:300]}") from None
 
-    frame = releases.copy()
-    frame["date"] = pd.to_datetime(frame.get("date"), errors="coerce")
-    frame["realtime_start"] = pd.to_datetime(frame.get("realtime_start"),
-                                             errors="coerce")
-    frame = frame.dropna(subset=["date", "realtime_start"])
-    if frame.empty:
-        return {"verdict": EMPTY, "rows": int(len(releases)),
-                "reason": "no rows carried both a period and a publication date"}
 
-    start_ts = pd.Timestamp(start)
-    first_published = frame["realtime_start"].min()
-    # A period observed at or before the replay start, published at or before
-    # it. Without at least one of these the first replay dates have nothing.
-    visible_at_start = frame[(frame["realtime_start"] <= start_ts)
-                             & (frame["date"] <= start_ts)]
+def vintage_dates(series_id: str, api_key: str) -> list[str]:
+    """Every date ALFRED holds a vintage of this series for, oldest first."""
+    out: list[str] = []
+    offset = 0
+    while True:
+        payload = api("series/vintagedates", {"series_id": series_id,
+                                              "limit": VINTAGE_PAGE,
+                                              "offset": offset}, api_key)
+        page = payload.get("vintage_dates") or []
+        out.extend(page)
+        if len(page) < VINTAGE_PAGE:
+            break
+        offset += VINTAGE_PAGE
+    return sorted(set(out))
 
+
+def vintage_observations(series_id: str, api_key: str, as_of: str | None) -> list[str]:
+    """Observation dates the series carried on ``as_of`` (None = latest).
+
+    Pinning `realtime_start = realtime_end = as_of` is ALFRED's own way of
+    asking "what did this series look like that day", so this is the same
+    quantity `pit_data.vintage_column` reconstructs, obtained from the vendor
+    rather than rebuilt — and it costs one small request instead of the whole
+    release matrix the cap refuses to serve.
+    """
+    params = {"series_id": series_id}
+    if as_of is not None:
+        params["realtime_start"] = as_of
+        params["realtime_end"] = as_of
+    payload = api("series/observations", params, api_key)
+    return [row["date"] for row in (payload.get("observations") or [])
+            if row.get("value") not in (None, "", ".")]
+
+
+def summarize_series(vintages: list[str], served: dict[str, list[str]],
+                     revised: list[str], *, start: str,
+                     as_of_dates: list[str]) -> dict:
+    """What one series' release history can and cannot serve. Pure.
+
+    ``vintages`` are its vintage dates, ``served[T]`` the observation dates it
+    carried on T, ``revised`` the observation dates it carries today.
+
+    The verdict turns on the FIRST vintage date against the replay start, and
+    nothing else — not row counts, not how many periods exist. A series with
+    decades of observations whose first vintage is 2023 serves NOTHING on a
+    2013 replay date while `pit_status` upgrades the panel to PIT_EXACT, and
+    that is the trade this exists to make visible.
+    """
+    if not vintages:
+        return {"verdict": EMPTY, "vintages": 0,
+                "reason": "ALFRED holds no vintage dates for this series"}
+    first, last = vintages[0], vintages[-1]
     per_as_of = []
     for as_of in as_of_dates:
-        column = pit_data.vintage_column(frame, as_of)
-        revised = frame.groupby("date", sort=True)["value"].last()
-        revised = revised[revised.index <= pd.Timestamp(as_of)]
+        cutoff = pd.Timestamp(as_of)
+        held = [d for d in served.get(as_of, []) if pd.Timestamp(d) <= cutoff]
+        today = [d for d in revised if pd.Timestamp(d) <= cutoff]
         per_as_of.append({
             "asOf": as_of,
-            "periodsServed": int(len(column)),
-            # What the same span looks like using every print regardless of
-            # when it appeared — i.e. what REVISED_HISTORY would have shown.
-            "periodsInRevisedHistory": int(len(revised)),
-            "lastPeriodServed": _stamp(column.index.max()) if len(column) else None,
+            "periodsServed": len(held),
+            # What the same span looks like using the numbers as revised since,
+            # i.e. what REVISED_HISTORY shows today. The gap between the two is
+            # the cost of opting this series in.
+            "periodsInRevisedHistory": len(today),
+            "lastPeriodServed": max(held) if held else None,
         })
-
-    # Revisions are why this matters at all: a series ALFRED never revised is
-    # already the number that was printed, and vintaging it changes nothing
-    # except the label it may honestly carry.
-    per_period = frame.groupby("date")["realtime_start"].nunique()
-    revised_periods = int((per_period > 1).sum())
-
-    verdict = USABLE if len(visible_at_start) else TRUNCATED
-    if verdict == TRUNCATED:
-        reason = (f"earliest print {_stamp(first_published)} is after the replay "
-                  f"start {start}; opting in would blank this column until then")
-    else:
-        reason = None
+    usable = first <= start
     return {
-        "verdict": verdict,
-        "rows": int(len(frame)),
-        "firstPublished": _stamp(first_published),
-        "lastPublished": _stamp(frame["realtime_start"].max()),
-        "firstPeriod": _stamp(frame["date"].min()),
-        "lastPeriod": _stamp(frame["date"].max()),
-        "periodsVisibleAtReplayStart": int(len(visible_at_start)),
-        "periodsEverRevised": revised_periods,
-        "periodsTotal": int(len(per_period)),
+        "verdict": USABLE if usable else TRUNCATED,
+        "vintages": len(vintages),
+        "firstVintage": first,
+        "lastVintage": last,
         "asOf": per_as_of,
-        "reason": reason,
+        "reason": (None if usable else
+                   f"earliest vintage {first} is after the replay start {start}; "
+                   "opting in would blank this column until then"),
     }
 
 
@@ -184,21 +238,28 @@ def panel_verdict(summaries: dict[str, dict]) -> dict:
     }
 
 
-def fetch_all(cfg: Config, names: list[str]) -> dict[str, pd.DataFrame | None]:
-    """One ALFRED call per series. Failures are recorded, never swallowed."""
-    from fredapi import Fred
-
-    fred = Fred(api_key=cfg.fred_api_key)
-    out: dict[str, pd.DataFrame | None] = {}
-    for name in names:
-        series_id = cfg.fred_series[name]
+def probe_all(series_ids: dict[str, str], api_key: str, *, start: str,
+              as_of_dates: list[str], sleep: float = 0.15) -> dict[str, dict]:
+    """One summary per panel series. A failure keeps its reason."""
+    out: dict[str, dict] = {}
+    for name, series_id in series_ids.items():
         try:
-            out[name] = fred.get_series_all_releases(series_id)
-            rows = 0 if out[name] is None else len(out[name])
-            print(f"  {name:<16} {series_id:<14} {rows:>8,} release rows", flush=True)
+            vintages = vintage_dates(series_id, api_key)
+            time.sleep(sleep)
+            revised = vintage_observations(series_id, api_key, None)
+            served = {}
+            for as_of in as_of_dates:
+                time.sleep(sleep)
+                served[as_of] = vintage_observations(series_id, api_key, as_of)
+            out[name] = summarize_series(vintages, served, revised, start=start,
+                                         as_of_dates=as_of_dates)
+            row = out[name]
+            print(f"  {name:<16} {series_id:<16} {row.get('vintages', 0):>6,} vintages "
+                  f"from {row.get('firstVintage') or '—'}", flush=True)
         except Exception as exc:  # pragma: no cover - network dependent
-            out[name] = None
-            print(f"  {name:<16} {series_id:<14} FAILED: {exc}", flush=True)
+            out[name] = {"verdict": FAILED, "vintages": 0, "reason": str(exc)}
+            print(f"  {name:<16} {series_id:<16} FAILED: {exc}", flush=True)
+        time.sleep(sleep)
     return out
 
 
@@ -223,26 +284,24 @@ def main(argv=None) -> int:
     if not as_of_dates:
         # The first replay date is the one that decides the answer; a later one
         # is there to show a truncated series recovering rather than failing.
-        as_of_dates = [start, (pd.Timestamp(start) + pd.DateOffset(years=5)).date().isoformat()]
+        as_of_dates = [start,
+                       (pd.Timestamp(start) + pd.DateOffset(years=5)).date().isoformat()]
 
     wanted = [s.strip() for s in (args.series or "").split(",") if s.strip()]
-    names = [n for n in cfg.fred_series if not wanted or n in wanted]
-    print(f"ALFRED vintages for {len(names)} panel series, replay start {start}")
+    series_ids = {n: sid for n, sid in cfg.fred_series.items()
+                  if not wanted or n in wanted}
+    print(f"ALFRED vintages for {len(series_ids)} panel series, replay start {start}")
 
-    releases = fetch_all(cfg, names)
-    summaries = {name: summarize_releases(frame, start=start, as_of_dates=as_of_dates)
-                 for name, frame in releases.items()}
-    for name, frame in releases.items():
-        if frame is None:
-            summaries[name] = {"verdict": FAILED, "rows": 0,
-                               "reason": "the ALFRED call did not return"}
+    summaries = probe_all(series_ids, cfg.fred_api_key, start=start,
+                          as_of_dates=as_of_dates)
     summaries.update(resolve_derived(summaries))
 
     report = {
         "probe": "alfred-macro-vintages",
+        "method": "VINTAGE_DATES_PLUS_PINNED_SNAPSHOTS",
         "replayStart": start,
         "asOfDates": as_of_dates,
-        "seriesIds": {n: cfg.fred_series[n] for n in names},
+        "seriesIds": series_ids,
         "derivedColumns": {k: list(v) for k, v in pit_data.DERIVED_MACRO_COLUMNS.items()},
         "series": summaries,
         "panel": panel_verdict(summaries),
@@ -256,9 +315,8 @@ def main(argv=None) -> int:
         served = ", ".join(f"{s['asOf']}:{s['periodsServed']}/{s['periodsInRevisedHistory']}"
                            for s in row.get("asOf") or [])
         print(f"  {row['verdict']:<18} {name:<16} "
-              f"first print {row.get('firstPublished') or '—'} "
-              f"revised {row.get('periodsEverRevised', 0)}/{row.get('periodsTotal', 0)} "
-              f"periods | served {served or '—'}")
+              f"first vintage {row.get('firstVintage') or '—'} "
+              f"({row.get('vintages', 0):,} vintages) | served {served or '—'}")
         if row.get("reason"):
             print(f"    {row['reason']}")
     panel = report["panel"]

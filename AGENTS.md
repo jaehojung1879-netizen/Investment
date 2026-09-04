@@ -162,6 +162,21 @@
   replay's own `vintage_column`, not a re-implementation.
 - The panel verdict is all-or-nothing because PIT_EXACT is. One usable series
   among many is not partial credit.
+- MEASURED 2026-09-04, and it settles the gate rather than the probe: at the
+  2013-01-01 replay start at least 8 of the 28 panel columns have no ALFRED
+  vintage reaching it, and `HY_Spread`/`IG_Spread` have none before 2023-09-05.
+  `vintageMacro` is therefore ALSO unreachable at the current start date, and
+  the derived-column fix was necessary without being sufficient. Moving the
+  replay start would recover six of the eight and is a separate decision with
+  its own cost, taken by a human, not folded into a macro change.
+- A vintage source is asked for the FIRST VINTAGE DATE, never for the whole
+  release matrix. ALFRED caps a request at 2,000 vintage dates and 100,000
+  rows, and a daily series blows both: the first run lost DGS10, DGS2, DFF,
+  DFII10, T10YIE and RRPONTSYD to the first cap and silently clipped NFCI and
+  ANFCI at the second. `series/vintagedates` answers the verdict, and a request
+  pinned to `realtime_start = realtime_end = T` answers what the column served
+  on T — both are small, neither can be capped, and the second is the vendor's
+  own reconstruction rather than a second implementation of ours.
 
 ## Benchmark acquisition invariants (v2.8)
 
