@@ -36,10 +36,21 @@ MODEL_VERSION = "longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-a
 # names, and a cross-sectional rank taken over 281 survivors is not the
 # same measurement as one taken over the real 500 — so v4's records are
 # kept as their own generation rather than extended.
-REPLAY_VERSION = "replay-v5"
+# v6: Korean value and quality stopped being empty. Every KR name in v5 was
+# ranked on price alone — `FundamentalStore` held nothing, so earningsYield,
+# bookYield, roe and the rest were None for all of them — and the DART
+# collection now supplies 116 of the 119 KR names (the three absent are
+# preferred shares, which have no corp_code of their own and never will).
+# `alphaPercentile` is a rank inside the date's cross-section: a KR
+# cross-section scored on two sleeves is not the same measurement as one
+# scored on four, so v5's 379,873 signals and 372,883 outcomes are kept as
+# their own generation rather than extended. MODEL_VERSION is deliberately
+# unchanged — `longterm.score_cross_section` is byte-identical; what changed
+# is which of its inputs are present, which is what DATA_VERSION records.
+REPLAY_VERSION = "replay-v6"
 FEATURE_VERSION = "hfeat-v1"
 DATA_VERSION = ("yahoo-adjusted-close-v3-regional-session-download"
-                "+pit-index-membership")
+                "+pit-index-membership+dart-pit-fundamentals-kr")
 
 # MODEL_VERSION is a compound identity, and not every component of it is a
 # statement about how names are scored. "daily-session-v2" was appended by a
