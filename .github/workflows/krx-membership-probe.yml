@@ -3,19 +3,29 @@ name: Probe KRX point-in-time index membership
 # `dataIntegrity` reports KR membershipCoveragePct 0.0: build_universe_history
 # deliberately writes no Korean rows, because KRX-DELISTING is "every delisted
 # KRX name" rather than "was an index member", and the one attempt to fill the
-# gap invented a Korean cross-section that read as 100% covered. What would
-# close it is a DATED KOSPI 200 constituent list, which KRX's own data portal
-# claims to serve.
+# gap invented a Korean cross-section that read as 100% covered.
 #
-# The probe's job is not to confirm that a date returns 200 names — an endpoint
-# that ignores its date parameter does that too, and its answer is today's list
-# with a date stamped on it. It is to check the dates DISAGREE.
+# The public portal route is dead and measured: `getJsonData.cmd` answered HTTP
+# 400 `LOGOUT` on every date, first with no cookies and then with a real portal
+# session (JSESSIONID and __smVisitorID both set). This uses the Open API and
+# the KRX_API_KEY secret instead.
 #
-# A yes does not open the integrity gate and is not proposed as if it does. The
-# 2026-08-30 delisting measurement already showed only 34.55% of departed KOSPI
-# names can be priced at all, so perfect membership takes KR unvouched from
-# 100% to about 40% and stops, while `universe_ready` asks for 100.0. What it
-# would buy is a COUNTED gap of named companies in place of an unknown one.
+# Two things it is looking for, in order of what they would buy:
+#   1. dated index membership — the literal thing that would close the gap;
+#   2. dated per-issue trading data carrying MKTCAP and LIST_SHRS, which may be
+#      worth more: the replay's KR universe is ~119 large names rather than the
+#      KOSPI 200, so a dated market-cap cross-section rebuilds it by the rule it
+#      actually uses, and it lists what TRADED that day, which reaches issues
+#      that have since delisted.
+#
+# The endpoint paths are a hypothesis. This cannot be reached from the dev
+# container, so rather than guess one and report its failure as the source's
+# answer, it tries a candidate list and reports what each returned.
+#
+# A yes still does not open the integrity gate: `universe_ready` wants both
+# coverages at exactly 100.0 and the 2026-08-30 measurement put delisted-KOSPI
+# price coverage at 34.55%. What it buys is a counted gap in place of an
+# unknown one.
 #
 # On demand, like the other probes: nothing downstream consumes this, and a
 # probe the daily jobs depend on is a probe that breaks them.
@@ -26,15 +36,11 @@ on:
       dates:
         description: "확인할 날짜 (쉼표 구분) — 리플레이 시작(2013) 부터 현재까지"
         type: string
-        default: "2013-01-02,2016-01-04,2020-01-02,2024-01-02,2026-09-01"
-      index_series:
-        description: "지수 계열 (KOSPI=1, KOSDAQ=2)"
+        default: "2013-01-02,2016-01-04,2020-01-02,2026-09-01"
+      base:
+        description: "Open API 서비스 루트 (경로가 틀렸다고 판단되면 바꿔서 재실행)"
         type: string
-        default: "1"
-      index_code:
-        description: "지수 코드 (KOSPI 200=028)"
-        type: string
-        default: "028"
+        default: "https://data-dbg.krx.co.kr/svc/apis"
 
 permissions:
   contents: read
@@ -53,13 +59,14 @@ jobs:
           python-version: "3.11"
 
       - name: Probe
+        env:
+          KRX_API_KEY: ${{ secrets.KRX_API_KEY }}
         run: |
           set -euo pipefail
           python scripts/probe_krx_index_membership.py \
             --output krx-probe.json \
             --dates "${{ inputs.dates }}" \
-            --index-series "${{ inputs.index_series }}" \
-            --index-code "${{ inputs.index_code }}" | tee probe.log
+            --base "${{ inputs.base }}" | tee probe.log
 
       - name: Upload the probe
         if: always()

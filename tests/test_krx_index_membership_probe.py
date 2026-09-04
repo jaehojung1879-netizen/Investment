@@ -2,11 +2,15 @@
 
 Only one thing here really matters, and it is the thing that would otherwise
 be discovered years into a replay: an endpoint that takes a date and ignores
-it returns a perfectly shaped 200-name list for 2013 that is TODAY'S list.
-Every count, format and ticker check passes on it. So the probe's verdict must
-turn on whether the dates DISAGREE, and these tests hold it to that — a
-repeated snapshot is refused even when it is complete and well formed, which
-is exactly when it is most convincing.
+it returns a perfectly shaped cross-section for 2013 that is TODAY'S. Every
+count, format and ticker check passes on it. So the probe's verdict must turn
+on whether the dates DISAGREE, and these tests hold it to that — a repeated
+snapshot is refused even when it is complete and well formed, which is exactly
+when it is most convincing.
+
+The transport moved to the KRX Open API (`AUTH_KEY`) after the public portal
+answered `LOGOUT` to every request, with and without a real session. The
+judgement below is transport-agnostic and did not move with it.
 """
 from __future__ import annotations
 
@@ -25,8 +29,8 @@ _spec.loader.exec_module(P)
 
 
 def _payload(codes) -> bytes:
-    return json.dumps({"output": [{"ISU_SRT_CD": c, "ISU_ABBRV": f"name-{c}"}
-                                  for c in codes]}).encode("utf-8")
+    return json.dumps({"OutBlock_1": [{"ISU_SRT_CD": c, "ISU_ABBRV": f"name-{c}"}
+                                      for c in codes]}).encode("utf-8")
 
 
 def _snap(date, codes):
@@ -120,34 +124,32 @@ def test_universe_reach_says_so_when_nothing_answered():
 
 
 # --------------------------------------------------------------------------- #
-# The session, measured on the first real run
+# What the rows carry decides whether a dated market-cap universe is possible
 #
-# Every date came back HTTP 400 with the body `LOGOUT`. That is the portal
-# answering a request that carries no session — a fact about the request, not
-# about whether KRX holds dated membership. Reporting it as "KRX could not
-# answer" would retire a possibly usable source on the probe's own bug.
+# The replay's KR universe is ~119 large names, not literally the KOSPI 200.
+# A per-issue cross-section carrying MKTCAP reconstructs that universe by the
+# rule it actually uses, so the probe reports the columns rather than assuming
+# them.
 # --------------------------------------------------------------------------- #
-def _logout(date):
-    return {"date": date, "error": "no session — the portal answered LOGOUT",
-            "httpStatus": 400, "noSession": True, "bodyHead": "LOGOUT"}
+def test_market_cap_and_share_columns_are_reported_when_present():
+    raw = json.dumps({"OutBlock_1": [
+        {"ISU_SRT_CD": "005930", "ISU_ABBRV": "삼성전자",
+         "MKTCAP": "400000000", "LIST_SHRS": "5969782550"}]}).encode("utf-8")
+    entry = P.parse_constituents("2013-01-02", 200, raw)
+    assert entry["hasMarketCap"] is True
+    assert entry["hasSharesOutstanding"] is True
+    assert "MKTCAP" in entry["columns"]
 
 
-def test_an_all_logout_run_is_not_a_finding_about_the_source():
-    evidence = P.membership_evidence([_logout("2013-01-02"), _logout("2026-09-01")])
-    assert evidence["verdict"] == "NOT_MEASURED_NO_SESSION"
-    assert "not a finding" in evidence["reason"] or "nothing here is a finding" in evidence["reason"]
+def test_their_absence_is_reported_rather_than_assumed():
+    entry = _snap("2013-01-02", ["005930"])
+    assert entry["hasMarketCap"] is False
+    assert entry["hasSharesOutstanding"] is False
 
 
-def test_a_mixed_failure_is_still_reported_as_insufficient_snapshots():
-    # One real answer and one non-session error is a different situation: the
-    # endpoint does talk to us, so the shortfall is about the dates.
-    evidence = P.membership_evidence([
-        _snap("2013-01-02", ["005930"]),
-        {"date": "2026-09-01", "error": "HTTP 500", "noSession": False}])
-    assert evidence["verdict"] == "INSUFFICIENT_SNAPSHOTS"
-
-
-def test_a_logout_body_is_recognised_from_the_response_not_the_status():
-    # A 400 alone says nothing; the body is what identifies the cause, and it
-    # is kept on the record either way.
-    assert "LOGOUT" in P.LOGOUT_MARKERS
+def test_the_open_api_rows_key_is_read():
+    # OutBlock_1 is what the Open API returns; the portal's `output` is kept
+    # so an older captured response still parses.
+    entry = P.parse_constituents("2013-01-02", 200,
+                                 json.dumps({"output": [{"ISU_CD": "000660"}]}).encode())
+    assert entry["count"] == 1
