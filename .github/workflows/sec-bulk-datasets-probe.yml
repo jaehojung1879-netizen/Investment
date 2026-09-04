@@ -1,0 +1,71 @@
+name: Probe SEC bulk financial statement datasets
+
+# The XBRL companyfacts probe measured two live SEC block pages — "Undeclared
+# Automated Tool" on data.sec.gov, "Request Rate Threshold Exceeded" on
+# www.sec.gov's company_tickers.json — which reads as a site-wide bot policy
+# rather than one tied to a specific endpoint. SEC also publishes the same
+# underlying filing data as a handful of large quarterly ZIP downloads
+# (Financial Statement Data Sets) instead of ~500 scripted API calls. That is
+# a different traffic shape, sometimes treated differently by the same bot
+# policy, and it is still sec.gov — so this measures whether it is, rather
+# than assuming either way.
+#
+# On demand, like the other probes: nothing downstream consumes this, and a
+# probe the daily jobs depend on is a probe that breaks them.
+
+on:
+  workflow_dispatch:
+    inputs:
+      quarters:
+        description: "확인할 분기 (쉼표 구분) — 최근 + 리플레이 시작(2013) 근방"
+        type: string
+        default: "2025q2,2013q1"
+      samples:
+        description: "티커 (쉼표 구분)"
+        type: string
+        default: "AAPL,JPM,XOM,KO,O"
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+
+      - name: Probe
+        run: |
+          set -euo pipefail
+          python scripts/probe_sec_bulk_datasets.py \
+            --output bulk-probe.json \
+            --quarters "${{ inputs.quarters }}" \
+            --samples "${{ inputs.samples }}" | tee probe.log
+
+      - name: Upload the probe
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: sec-bulk-datasets-probe
+          path: |
+            bulk-probe.json
+            probe.log
+          if-no-files-found: warn
+
+      - name: Summary
+        if: always()
+        run: |
+          {
+            echo '## SEC 대량 데이터셋 프로브 (미국)'
+            echo
+            echo '```'
+            tail -n 80 probe.log 2>/dev/null || echo '프로브 출력 없음'
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
