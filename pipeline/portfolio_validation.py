@@ -602,6 +602,13 @@ def _outcome_for_decision_with_diagnostics(
     end_dates = []
     reasons: dict[str, set[str]] = defaultdict(set)
     regions: set[str] = set()
+    # Weight and excess split by region, accumulated here rather than
+    # reconstructed later: the survivorship bound has to replace a share of ONE
+    # region's book, and the gap it replaces is measured per region (KR is
+    # entirely undescribed while US is 17% unpriced). A pooled figure would
+    # stress both sleeves by an amount neither of them has.
+    weight_by_region: dict[str, float] = defaultdict(float)
+    excess_by_region: dict[str, float] = defaultdict(float)
     for ticker, weight in decision["weights"].items():
         signal = signal_by_key.get((decision["date"], ticker))
         region = (decision.get("regionByTicker") or {}).get(ticker) or "UNKNOWN"
@@ -626,6 +633,9 @@ def _outcome_for_decision_with_diagnostics(
             continue
         gross += float(weight) * float(h["absoluteReturn"])
         benchmark += float(weight) * float(h["benchmarkReturn"])
+        weight_by_region[region] += float(weight)
+        excess_by_region[region] += float(weight) * (float(h["absoluteReturn"])
+                                                     - float(h["benchmarkReturn"]))
         end_dates.append(h.get("endDate"))
     if not decision["weights"]:
         reasons["EMPTY_PORTFOLIO"].add("<none>")
@@ -648,6 +658,10 @@ def _outcome_for_decision_with_diagnostics(
         "costAdjustedReturn": gross - decision["transactionCost"],
         "costAdjustedExcessReturn": gross - benchmark - decision["transactionCost"],
         "turnover": decision["turnover"],
+        "weightByRegion": dict(weight_by_region),
+        # Sums to grossExcessReturn by construction, which is what lets the
+        # bound reduce to the observed number at zero stress.
+        "excessByRegion": dict(excess_by_region),
         "regionByTicker": decision.get("regionByTicker") or {},
         "top1": max(decision["weights"].values(), default=0),
         "top3": sum(sorted(decision["weights"].values(), reverse=True)[:3]),
@@ -890,6 +904,227 @@ def paired_comparison(rows_by_method: dict[str, list[dict]], dates: list[str],
                     "CHALLENGER_BETTER" if separated else "INDISTINGUISHABLE"),
         "methodKo": ("동일 블록·동일 기간·동일 벤치마크 구성에서의 쌍대 차이입니다. "
                      "95% 구간이 0을 포함하면 두 selector는 구분되지 않습니다."),
+    }
+
+
+# --------------------------------------------------------------------------- #
+# Survivorship bound
+#
+# `universe_ready` asks for `constituentCoveragePct` and `membershipCoveragePct`
+# both at exactly 100.0, and on the free vendors neither half can get there: the
+# US panel cannot price 17% of the name-dates its membership file describes, and
+# Korean membership, if it were built, would stop near 40% unvouched because
+# only 34.55% of departed KOSPI names can be priced at all. So `historicalUniverse`
+# is not a bar more collection reaches, and lowering it is not the fix.
+#
+# What CAN be answered is the question the gate is a proxy for: could the gap
+# have produced this result? Not "is the ledger clean" but "does the paired
+# selector difference keep its sign when the missing name-dates take their worst
+# plausible outcome". That is a bound, and a bound is a claim a human can act on
+# where an unreachable gate is not.
+# --------------------------------------------------------------------------- #
+# Below this many names a region-date has no tail to speak of, and a 5th
+# percentile of four names is the minimum of four names wearing a quantile's
+# name. Such a cell is unmeasurable, and a block holding it is dropped rather
+# than stressed with a substitute.
+MIN_TAIL_CROSS_SECTION = 10
+# The share of the measured gap applied at each step. 1.0 is the whole measured
+# gap; the sweep exists to locate where separation is lost, which is more
+# informative than a single pass/fail at one point.
+BOUND_SCALES = (0.0, 0.1, 0.25, 0.5, 0.75, 1.0)
+
+
+def worst_case_excess(outcomes: list[dict], *, horizon: int,
+                      quantile: float = 0.05) -> dict[tuple[str, str], float]:
+    """The bad outcome a real name in that region actually delivered that date.
+
+    Keyed by (date, region) -> the ``quantile`` percentile of per-name excess
+    return across that date's cross-section.
+
+    Drawn from observed returns rather than invented, for the same reason the
+    selection null permutes real scores instead of drawing noise: a fabricated
+    worst case can be made to say anything, and the number it produces is a
+    property of the fabrication. This one is a return some name in that region
+    on that date genuinely earned.
+
+    It is a WORST PLAUSIBLE outcome, not a worst possible one. A delisted name
+    can go to -100% and the 5th percentile of the survivors will not say so, so
+    the bound this feeds is a bound under a stated assumption, and the artifact
+    publishes the quantile beside the verdict rather than only the verdict.
+    """
+    frame = HO.horizon_frame(outcomes, horizon)
+    if frame.empty:
+        return {}
+    frame = frame.dropna(subset=["excessReturn"])
+    out: dict[tuple[str, str], float] = {}
+    for (date, region), group in frame.groupby(["date", "region"], sort=True):
+        if len(group) < MIN_TAIL_CROSS_SECTION:
+            continue
+        key = (pd.Timestamp(date).date().isoformat(), str(region))
+        out[key] = float(np.quantile(group["excessReturn"].to_numpy(), quantile))
+    return out
+
+
+def _stressed_excess(row: dict, gap_by_region: dict[str, float],
+                     worst: dict[tuple[str, str], float], scale: float):
+    """One block's cost-adjusted excess with part of each sleeve replaced.
+
+    A fraction `scale * gap_r` of the weight held in region r is treated as
+    having been a name the replay could not see, earning that region-date's
+    worst plausible excess instead of what the held names earned. At scale 0
+    this reduces exactly to `costAdjustedExcessReturn`, which is what makes the
+    sweep a stress of the published number rather than a different statistic.
+
+    Returns None when a held region has no measurable tail on that date; a
+    block that cannot be stressed is dropped from every scale, never stressed
+    by a substitute.
+    """
+    total = 0.0
+    for region, weight in (row.get("weightByRegion") or {}).items():
+        held_excess = float((row.get("excessByRegion") or {}).get(region, 0.0))
+        fraction = min(1.0, max(0.0, scale * float(gap_by_region.get(region, 0.0))))
+        if fraction <= 0:
+            total += held_excess
+            continue
+        tail = worst.get((row["date"], region))
+        if tail is None:
+            return None
+        total += (1 - fraction) * held_excess + fraction * float(weight) * tail
+    return total - float(row.get("transactionCost") or 0.0)
+
+
+def _bound_step(rows_by_method: dict[str, list[dict]], dates: list[str],
+                gap_by_region: dict[str, float],
+                worst: dict[tuple[str, str], float], scale: float) -> dict | None:
+    """The paired difference at one stress level, on the blocks both survive."""
+    stressed: dict[str, dict[str, float]] = {}
+    for method, rows in rows_by_method.items():
+        by_date = {}
+        for row in rows:
+            if row["date"] not in set(dates):
+                continue
+            value = _stressed_excess(row, gap_by_region, worst, scale)
+            if value is not None:
+                by_date[row["date"]] = value
+        stressed[method] = by_date
+    usable = [d for d in dates
+              if all(d in stressed[method] for method in rows_by_method)]
+    if len(usable) < 2:
+        return None
+    series = {method: np.array([stressed[method][d] for d in usable], dtype=float)
+              for method in rows_by_method}
+    diff = series[CHAMPION] - series[CHALLENGER]
+    ci = _bootstrap_ci(diff)
+    separated = bool(ci[0] is not None and (ci[0] > 0 or ci[1] < 0))
+    return {
+        "stressScale": round(float(scale), 4),
+        "blocks": len(usable),
+        "championMinusChallengerPct": _r(float(diff.mean()) * 100, 3),
+        "championMinusChallengerCi95Pct": ci,
+        "separated": separated,
+        "verdict": ("CHAMPION_BETTER" if separated and ci[0] > 0 else
+                    "CHALLENGER_BETTER" if separated else "INDISTINGUISHABLE"),
+    }
+
+
+def survivorship_bound(rows_by_method: dict[str, list[dict]], dates: list[str],
+                       outcomes: list[dict], diagnostics: dict, *,
+                       horizon: int, quantile: float = 0.05) -> dict:
+    """Does the selector difference survive the survivorship gap it sits on?
+
+    The gap is not hypothetical and not uniform: it is
+    `universeCoverageByRegion[r].affectedObservationsPct`, the share of that
+    region's name-dates the replay can vouch for neither by price nor by
+    membership. The bound replaces that share of each sleeve with the region's
+    worst plausible outcome and asks whether the paired difference still clears
+    zero.
+
+    Two readings are published and they answer different questions.
+    `atMeasuredGap` is the direct one: at the gap actually measured, does the
+    verdict hold. `breakdownScale` is the robustness one: the smallest share of
+    that gap at which the verdict stops holding — by losing its separation or
+    by reversing — which says how much room the finding has rather than only
+    whether it has any.
+
+    WHAT THIS IS NOT. It is not a clean ledger and it does not open
+    `historicalUniverse`; `promotionEligible` is unaffected. It cannot see a
+    name that left at -100%, because its worst case comes from the survivors'
+    own left tail. A bound that holds is evidence the gap did not manufacture
+    the result; it is not evidence the gap is closed.
+    """
+    if not dates or len(rows_by_method) != 2:
+        return {"available": False, "reason": "no_shared_blocks"}
+    by_region = diagnostics.get("universeCoverageByRegion") or {}
+    gap_by_region = {}
+    for region, row in by_region.items():
+        share = _finite((row or {}).get("affectedObservationsPct"))
+        if share is None:
+            return {"available": False, "reason": "universe_gap_not_measured",
+                    "region": region}
+        gap_by_region[str(region)] = share / 100.0
+    if not gap_by_region:
+        return {"available": False, "reason": "universe_gap_not_measured"}
+
+    worst = worst_case_excess(outcomes, horizon=horizon, quantile=quantile)
+    if not worst:
+        return {"available": False, "reason": "no_measurable_regional_tail"}
+
+    sweep = [step for step in
+             (_bound_step(rows_by_method, dates, gap_by_region, worst, scale)
+              for scale in BOUND_SCALES) if step is not None]
+    if not sweep:
+        return {"available": False, "reason": "no_block_survived_the_stress"}
+
+    baseline = next((s for s in sweep if s["stressScale"] == 0.0), None)
+    at_gap = next((s for s in sweep if s["stressScale"] == 1.0), None)
+    # The first scale at which the unstressed VERDICT no longer holds — not
+    # merely the first that loses separation. A stress that flips the sign
+    # while staying separated has broken the finding harder than one that
+    # widens the interval past zero, and keying on `separated` alone reported
+    # that reversal as None, which reads as "never broke". None here means the
+    # verdict held at every scale in the sweep, and nothing else.
+    breakdown = None
+    if baseline and baseline["separated"]:
+        breakdown = next((s["stressScale"] for s in sweep
+                          if s["stressScale"] > 0
+                          and s["verdict"] != baseline["verdict"]), None)
+
+    if baseline is None or not baseline["separated"]:
+        verdict = "NOTHING_TO_BOUND"
+        note = ("the unstressed comparison does not separate the selectors, so "
+                "there is no finding for the gap to overturn")
+    elif at_gap is None:
+        verdict = "NOT_ASSESSED"
+        note = "the measured gap could not be applied to any shared block"
+    elif at_gap["verdict"] == baseline["verdict"]:
+        verdict = "SURVIVES_MEASURED_GAP"
+        note = ("the paired difference keeps its sign and its separation with "
+                "the whole measured gap replaced by its worst plausible outcome")
+    elif at_gap["separated"]:
+        verdict = "REVERSES_UNDER_MEASURED_GAP"
+        note = "the stressed comparison separates the other way"
+    else:
+        verdict = "FAILS_MEASURED_GAP"
+        note = ("the separation does not survive the gap, so the unstressed "
+                "verdict cannot be attributed to the selector")
+    return {
+        "available": True,
+        "verdict": verdict,
+        "noteKo": ("생존편향 결손을 0으로 만드는 대신, 결손이 결론을 뒤집을 수 있는지를 "
+                   "한계까지 재는 방식입니다. 지역별로 측정된 unvouched 비중만큼의 비중이 "
+                   "그 지역·그 날짜 단면의 하위 "
+                   f"{round(quantile * 100)}% 초과수익을 냈다고 가정하고 쌍대 차이를 "
+                   "다시 계산합니다. 이 검정을 통과해도 integrity gate는 열리지 않습니다."),
+        "note": note,
+        "horizonDays": int(horizon),
+        "worstCaseQuantile": quantile,
+        "gapByRegion": {region: _r(share * 100, 2)
+                        for region, share in sorted(gap_by_region.items())},
+        "baseline": baseline,
+        "atMeasuredGap": at_gap,
+        "breakdownScale": breakdown,
+        "sweep": sweep,
+        "opensIntegrityGate": False,
     }
 
 
@@ -1328,10 +1563,17 @@ def portfolio_replay(signals: list[dict], outcomes: list[dict], *, cfg_lt: dict,
                 "benchmarkReturn": float(cell["benchmarkReturn"]),
             }
 
+    headline_rows = {method: rows_by_method_horizon[HEADLINE_HORIZON].get(method) or []
+                     for method in decisions}
     comparison_paired = paired_comparison(
-        {method: rows_by_method_horizon[HEADLINE_HORIZON].get(method) or []
-         for method in decisions},
-        shared, horizon=HEADLINE_HORIZON)
+        headline_rows, shared, horizon=HEADLINE_HORIZON)
+    # `historicalUniverse` cannot be opened by collecting more, so the question
+    # it stands for is answered directly instead: could the measured gap have
+    # produced this difference. It never relaxes the gate.
+    bound = survivorship_bound(
+        headline_rows, shared, outcomes, diagnostics,
+        horizon=HEADLINE_HORIZON,
+        quantile=float(cfg_pf.get("survivorshipBoundQuantile", 0.05)))
     null_report = selection_null(
         contexts, priced_by_date,
         rows_by_method_horizon[HEADLINE_HORIZON].get(CHAMPION) or [], shared,
@@ -1380,6 +1622,9 @@ def portfolio_replay(signals: list[dict], outcomes: list[dict], *, cfg_lt: dict,
             # carries no uncertainty and is not what decides anything. This is.
             "paired": comparison_paired,
             "decisiveComparison": "paired",
+            # Whether the paired verdict survives the survivorship gap it was
+            # computed on. Published beside the verdict, never instead of it.
+            "survivorshipBound": bound,
         },
         "selectionNull": null_report,
         "promotionEvidence": {
@@ -1390,6 +1635,10 @@ def portfolio_replay(signals: list[dict], outcomes: list[dict], *, cfg_lt: dict,
             "prospectiveChampionBetter": "NOT_YET_MATURED",
             "prospectiveChallengerBetter": "NOT_YET_MATURED",
             "integrityGate": integrity["integrityGate"],
+            # A bound that holds is evidence the gap did not manufacture the
+            # result. It is not a clean ledger, so it moves nothing here — the
+            # gate stays the gate and a human still decides.
+            "survivorshipBoundVerdict": bound.get("verdict") if bound.get("available") else None,
             "enoughIndependentPeriods": bool(
                 (champion_summary.get("periods") or 0) >= 30
                 and (challenger_summary.get("periods") or 0) >= 30),
