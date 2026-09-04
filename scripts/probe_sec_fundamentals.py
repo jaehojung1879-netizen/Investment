@@ -141,7 +141,16 @@ def _request(url: str, timeout: int = 30) -> tuple[bytes | None, str]:
             with urllib.request.urlopen(req, timeout=timeout) as response:
                 return response.read(), ""
         except urllib.error.HTTPError as exc:
-            last_error = f"HTTP {exc.code}"
+            # The status code alone does not say WHO is refusing: SEC's own
+            # bot policy, a CDN challenge page, and a network-level block all
+            # answer 403, and only the body tells them apart. A 403 that
+            # survives every retry is worth that extra read.
+            body = ""
+            try:
+                body = exc.read(300).decode("utf-8", errors="replace").strip()
+            except Exception:                          # pragma: no cover - network
+                pass
+            last_error = f"HTTP {exc.code}" + (f" — {body}" if body else "")
             if exc.code not in {403, 429, 500, 502, 503, 504} or attempt == 2:
                 return None, last_error
         except Exception as exc:                      # pragma: no cover - network

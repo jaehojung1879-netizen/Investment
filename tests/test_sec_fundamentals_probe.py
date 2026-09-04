@@ -173,6 +173,26 @@ def test_a_persistent_403_is_reported_after_the_retry_budget_is_spent(monkeypatc
     assert raw is None and error == "HTTP 403"
 
 
+def test_a_403_that_survives_retries_reports_its_body_not_just_the_code(monkeypatch):
+    """The status code alone does not say WHO is refusing — SEC's own bot
+    policy, a CDN challenge page, and a network block all answer 403."""
+    import io
+    import urllib.error
+
+    def fake_urlopen(req, timeout=30):
+        raise urllib.error.HTTPError(
+            "https://example.invalid/x", 403, "err", {},
+            io.BytesIO(b"Your Request Originates from an Undeclared Automated Tool"))
+
+    monkeypatch.setattr(P.urllib.request, "urlopen", fake_urlopen)
+    monkeypatch.setattr(P.time, "sleep", lambda s: None)
+
+    raw, error = P._request("https://example.invalid/x")
+    assert raw is None
+    assert "Undeclared Automated Tool" in error, \
+        "차단 메시지가 있으면 상태코드만 말고 그 내용을 담아야 진단이 된다"
+
+
 def test_a_non_retryable_status_fails_on_the_first_attempt(monkeypatch):
     calls = {"n": 0}
 
