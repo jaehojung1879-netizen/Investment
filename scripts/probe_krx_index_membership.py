@@ -137,9 +137,21 @@ def call(base: str, path: str, params: dict, auth_key: str,
         with urllib.request.urlopen(request, timeout=timeout) as response:
             return {"status": response.status, "raw": response.read()}
     except urllib.error.HTTPError as exc:
+        body = exc.read()[:400].decode("utf-8", "replace")
+        # MEASURED: every endpoint answered
+        # `{"respMsg":"Unauthorized Key","respCode":"401"}`. That is the
+        # service replying in its OWN protocol, which settles two things a
+        # bare status could not — the base URL and the path are right (a wrong
+        # path gives 404, not structured KRX JSON), and the key was READ and
+        # rejected rather than missing. Named here so it is never rolled up
+        # into "the source could not answer", which is what the portal's
+        # LOGOUT was wrongly reported as before.
+        unauthorized = "unauthorized key" in body.lower() or exc.code == 401
         return {"status": exc.code,
-                "error": f"HTTP {exc.code}",
-                "bodyHead": exc.read()[:400].decode("utf-8", "replace")}
+                "error": ("key refused — the service answered Unauthorized Key"
+                          if unauthorized else f"HTTP {exc.code}"),
+                "unauthorizedKey": unauthorized,
+                "bodyHead": body}
     except Exception as exc:  # pragma: no cover - network dependent
         return {"status": None, "error": f"{type(exc).__name__}: {exc}"}
 
@@ -215,6 +227,17 @@ def membership_evidence(snapshots: list[dict]) -> dict:
     """
     usable = [s for s in snapshots if not s.get("error") and s.get("count")]
     if len(usable) < 2:
+        # A key the service refuses measured our credentials, not the data.
+        # Reporting it as INSUFFICIENT_SNAPSHOTS would read as "KRX has no
+        # dated cross-section" and retire a source that was never asked.
+        failed = [s for s in snapshots if s.get("error")]
+        if failed and all(s.get("unauthorizedKey") for s in failed):
+            return {"verdict": "NOT_MEASURED_UNAUTHORIZED_KEY",
+                    "reason": "the service answered Unauthorized Key on every "
+                              "request — the path and base are right and the "
+                              "key was read and rejected, so nothing here is a "
+                              "finding about KRX's dated data",
+                    "snapshotsUsable": len(usable)}
         return {"verdict": "INSUFFICIENT_SNAPSHOTS",
                 "reason": f"{len(usable)} dated cross-sections answered; two "
                           "are needed to tell history from a repeated snapshot",
