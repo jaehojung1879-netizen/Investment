@@ -119,10 +119,14 @@
 | **4. ML Opportunity / Warning** | change feature dataset, walk-forward ML, calibrated probability, radar | **완료 · acceptance gate 대기** | gate 통과 전까지 규칙 기반 점수 사용 (설계된 동작) |
 | **5. Prospective Bayesian Update** | historical + live posterior, drift 감지, Kelly 영향도 적응 | **완료 · 가동** | prospective ledger가 쌓이면 자동으로 비중이 이동 |
 
-> **현재 상태 (2026-08-25).** `provenance.REPLAY_VERSION`이 요구하는 세대의 기록이 원장에 0건입니다.
-> 이전 두 세대(853,076건)는 보존돼 있지만 세대 격리 때문에 빌드가 읽지 않으므로, 화면의 과거 검증 패널은
-> 전부 비어 있습니다. 이는 "증거가 아직 없는 상태"가 아니라 재현 작업이 실패하고 있다는 뜻이며,
-> `historicalValidation.pipelineHealth`가 두 상태를 구분해 표시합니다.
+> **현재 상태 (2026-09-04).** `replay-v6`을 방금 열었기 때문에 현 세대 기록이 0건입니다. 이번에는
+> 실패가 아니라 **의도된 전환**입니다: DART 수집으로 한국 116종목(나머지 3종목은 고유 corp_code가 없는
+> 우선주)에 PIT 재무가 들어오면서, v5까지 가격 팩터만으로 매겨지던 KR 단면에 밸류·퀄리티가 처음 반영됩니다.
+> `alphaPercentile`은 그날 단면 안의 순위이므로 2개 슬리브로 매긴 순위와 4개로 매긴 순위는 같은 측정이
+> 아니고, 그래서 v5의 379,873 신호·372,883 결과는 덮어쓰지 않고 자기 세대로 보존됩니다(이전 네 세대 합계
+> 1,679,326건). 일일 재현이 v6을 다시 채울 때까지 과거 검증 패널은 비어 있으며, 그동안
+> `historicalValidation.pipelineHealth`는 `historical_replay_generation_not_produced`로 표시됩니다 —
+> 세대를 새로 여는 값이지, 파이프라인 고장이 아닙니다.
 
 Phase 2가 비어 있어도 Phase 1·3·5는 정상 동작합니다. price-only 재현의 알파는 모멘텀·저변동 슬리브만으로 만들어지고, 빠진 밸류·퀄리티는 `evidenceCoverage` 축소와 증거 가중치 할인으로 이미 반영됩니다.
 
@@ -135,7 +139,7 @@ Phase 2가 비어 있어도 Phase 1·3·5는 정상 동작합니다. price-only 
 - **동일 블록 쌍대 비교.** champion과 challenger는 두 selector 모두 측정 가능한 날짜에서 만든 **하나의 블록 스케줄**로 비교하고, 점추정 부등호가 아니라 부트스트랩 95% 구간이 붙은 쌍대 차이로 판정합니다. 서로 다른 기간(2013-01 vs 2013-11)과 서로 다른 벤치마크 구성으로 비교하던 이전 방식은 selector 차이가 아니라 기간 차이를 재고 있었습니다.
 - **완전성 하한.** 구성종목 중 하나라도 만기 벤치마크가 없으면 그 포트폴리오는 통째로 제외되는데, 제외되는 종목은 거래정지·상장폐지 쪽에 몰립니다. 따라서 측정 가능했던 것만 모아 만든 경로는 다른 전략입니다. `minPortfolioCompletenessPct` 미만이면 헤드라인을 발표하지 않으며, 남은 비중을 재정규화해 대신 싣지 않습니다.
 - 주간의 겹치는 21/63/126/252일 forward return을 CAGR이나 MDD로 이어 붙이지 않습니다. 자산곡선·CAGR·Sharpe·Sortino·MDD·CVaR·회전율은 실제 비용을 적용한 **겹치지 않는 리밸런싱 블록**으로 별도 구성합니다. 모든 날짜 평균은 이 경로 지표와 구분합니다.
-- 현재 구성종목 이력과 PIT 재무가 없으므로 결과의 근거는 `PRICE_SLEEVES_ONLY_AUDIT_PROXY`입니다. 모멘텀·저변동 가격 슬리브의 진단이지 Value/Quality를 포함한 현재 4-factor 실전 모델의 동일조건 검증이 아닙니다.
+- PIT 재무는 `replay-v6`부터 한국 116종목에 들어왔고 미국은 아직 없습니다(SEC는 GitHub Actions IP를 사이트 차원에서 차단하고, FMP는 재무제표 엔드포인트를 무료 티어에서 제외했습니다 — 둘 다 실측). 미국 절반이 여전히 가격 슬리브뿐이므로 전체 결과의 근거는 계속 `PRICE_SLEEVES_ONLY_AUDIT_PROXY`이며, 한국 단면에 한해 4-factor로 매겨집니다. 지역을 합친 헤드라인을 4-factor 실전 모델의 동일조건 검증으로 읽으면 안 됩니다.
 - Validation Lab은 지역별 21/63/126/252일 Rank IC, bucket 단조성, rolling IC/spread, champion/challenger NAV, 예상-실제 괴리와 raw N·신호일·유효 독립일·HAC lag를 함께 표시합니다. Historical OOS와 prospective paper는 서로 다른 패널이며, 126일 prospective 결과가 없으면 `NOT_YET_MATURED`입니다.
 - 과거 구성종목·PIT 재무·vintage macro 중 하나라도 없으면 integrity gate가 실패합니다. 이때 `SURVIVORSHIP_BIAS_UNRESOLVED`를 표시하고 Kelly 및 selector 승격은 금지됩니다. 과거 challenger가 좋아 보여도 production은 자동 교체되지 않습니다.
 
