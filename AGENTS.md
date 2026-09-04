@@ -137,6 +137,30 @@
   sharesBasis` and tallied in the coverage report, the same discipline as the TTM
   basis.
 
+## Vendor refusal invariants (v2.9)
+
+- A vendor's refusal is attributed only after OUR side of the request has been
+  ruled out. The SEC conclusion — "the Actions IP pool is blocked site-wide",
+  which parked the US fundamentals work — was reached while sending a header
+  set that does not meet SEC's stated policy: it asks for a declaring
+  User-Agent AND `Accept-Encoding: gzip, deflate`, and neither probe sent the
+  second. "Undeclared Automated Tool" is what SEC serves for a non-compliant
+  header set and what an IP refusal looks like from outside; the two were
+  never separated.
+- Corroboration must be INDEPENDENT of the suspect. `institutional_13f`
+  falling back to cache on the same day was cited as evidence for the IP
+  reading, and it sends the same headers — so it corroborated the shared
+  suspect rather than the conclusion.
+- Isolating a refusal means one variable at a time, in ONE run: the shipped
+  request is included as the baseline, everything else is held fixed (host,
+  endpoint, pacing, runner, minute), and only the header set moves. Without
+  the baseline in the same run a later success is attributable to the day
+  rather than to the change.
+- A block page is not data whatever status it wears. SEC serves its refusals
+  with 403 and sometimes with 200, so the body decides, never the status code.
+  And a request that asks for `gzip` must decompress before it judges: reading
+  compressed bytes as text turns a served response into an apparent refusal.
+
 ## Macro vintage invariants (v2.9)
 
 - A panel column that is COMPUTED from other columns has no vendor series id, so
