@@ -15,9 +15,9 @@
   "firstDate": "2013-01-04",
   "lastDate": "2026-09-04",
   "replayDates": 714,
-  "signalsGenerated": 373982,
-  "signalsSkippedAlreadyPresent": 0,
-  "meanPitCoverage": 0.7887,
+  "signalsGenerated": 714,
+  "signalsSkippedAlreadyPresent": 373268,
+  "meanPitCoverage": 0.7888,
   "survivorshipRisk": "HIGH",
   "survivorshipNote": "SURVIVORSHIP_BIAS_UNRESOLVED",
   "fundamentalsPit": true,
@@ -267,9 +267,9 @@
     "entry_sector_concentration_overlay_not_applied_no_sleeve_in_replay"
   ],
   "coverage": {
-    "signalsRecorded": 373982,
+    "signalsRecorded": 374696,
     "signalsByRegion": {
-      "KR": 73315,
+      "KR": 74029,
       "US": 300667
     },
     "uniqueDates": 714,
@@ -535,7 +535,7 @@
             "lastSession": "2026-09-02"
           }
         ],
-        "snapshotSessions": 3941
+        "snapshotSessions": 3940
       },
       "KR": {
         "ticker": "^KS200",
@@ -575,7 +575,8 @@
     "degradedRegions": [],
     "unavailableRegions": [],
     "snapshotsUpdated": [
-      "SPY"
+      "SPY",
+      "^KS200"
     ],
     "indexMixingForbidden": true
   },
