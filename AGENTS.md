@@ -140,17 +140,28 @@
 ## Vendor refusal invariants (v2.9)
 
 - A vendor's refusal is attributed only after OUR side of the request has been
-  ruled out. The SEC conclusion — "the Actions IP pool is blocked site-wide",
-  which parked the US fundamentals work — was reached while sending a header
-  set that does not meet SEC's stated policy: it asks for a declaring
-  User-Agent AND `Accept-Encoding: gzip, deflate`, and neither probe sent the
-  second. "Undeclared Automated Tool" is what SEC serves for a non-compliant
-  header set and what an IP refusal looks like from outside; the two were
-  never separated.
+  ruled out. The SEC conclusion — "the Actions IP pool is blocked site-wide" —
+  was first reached while sending a header set that does not meet SEC's stated
+  policy, so it was an assumption; the isolation run then measured it and the
+  assumption turned out to be RIGHT. Ruling our side out is not a way of
+  overturning a conclusion, it is how one stops being a guess.
+- What settled it was byte identity, not the status code. Four header sets
+  across two hosts returned the same 403 with the same body length every time
+  (4,819B on data.sec.gov, 1,925B on www.sec.gov). A refusal that does not
+  change when the request changes is not reading the request. That is the
+  reading a status code alone cannot support, and it is why the probe records
+  body size per variant.
 - Corroboration must be INDEPENDENT of the suspect. `institutional_13f`
   falling back to cache on the same day was cited as evidence for the IP
   reading, and it sends the same headers — so it corroborated the shared
   suspect rather than the conclusion.
+- An authenticated service refusing a KEY is a third thing again, distinct
+  from both a blocked address and a wrong path. KRX's Open API answered every
+  endpoint with `{"respMsg":"Unauthorized Key","respCode":"401"}` — structured
+  JSON in the service's own protocol, which establishes that the base and the
+  paths are right (a wrong path answers 404, not this) and that the key was
+  read rather than missing. It gets its own verdict; rolled into "the source
+  could not answer" it would retire a source that was never actually asked.
 - Isolating a refusal means one variable at a time, in ONE run: the shipped
   request is included as the baseline, everything else is held fixed (host,
   endpoint, pacing, runner, minute), and only the header set moves. Without

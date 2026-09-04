@@ -153,3 +153,47 @@ def test_the_open_api_rows_key_is_read():
     entry = P.parse_constituents("2013-01-02", 200,
                                  json.dumps({"output": [{"ISU_CD": "000660"}]}).encode())
     assert entry["count"] == 1
+
+
+# --------------------------------------------------------------------------- #
+# A refused key measured our credentials, not the data
+#
+# MEASURED: every endpoint answered
+# `{"respMsg":"Unauthorized Key","respCode":"401"}`. That settles two things a
+# bare status could not — the base and path are right (a wrong path gives 404,
+# not structured KRX JSON) and the key was READ and rejected rather than
+# missing. Rolled up into INSUFFICIENT_SNAPSHOTS it would read as "KRX has no
+# dated cross-section" and retire a source that was never actually asked.
+# --------------------------------------------------------------------------- #
+def _unauthorized(date):
+    return {"date": date,
+            "error": "key refused — the service answered Unauthorized Key",
+            "status": 401, "unauthorizedKey": True,
+            "bodyHead": '{"respMsg":"Unauthorized Key","respCode":"401"}'}
+
+
+def test_an_all_unauthorized_run_is_not_a_finding_about_the_source():
+    evidence = P.membership_evidence([_unauthorized("2013-01-02"),
+                                      _unauthorized("2026-09-01")])
+    assert evidence["verdict"] == "NOT_MEASURED_UNAUTHORIZED_KEY"
+    assert "nothing here is a finding" in evidence["reason"]
+    # The two facts the 401 establishes, both worth keeping in the reason.
+    assert "path and base are right" in evidence["reason"]
+
+
+def test_a_mixed_failure_is_still_insufficient_snapshots():
+    # A 404 alongside a real answer is a different situation: the service does
+    # serve us, so the shortfall is about the paths or the dates.
+    evidence = P.membership_evidence([
+        _snap("2013-01-02", ["005930"]),
+        {"date": "2026-09-01", "error": "HTTP 404", "unauthorizedKey": False}])
+    assert evidence["verdict"] == "INSUFFICIENT_SNAPSHOTS"
+
+
+def test_a_served_pair_still_reaches_a_real_verdict():
+    # The unauthorized branch must not swallow runs that actually answered.
+    old = [f"{i:06d}" for i in range(200)]
+    new = [f"{i:06d}" for i in range(20, 220)]
+    evidence = P.membership_evidence([_snap("2013-01-02", old),
+                                      _snap("2026-09-01", new)])
+    assert evidence["verdict"] == "POINT_IN_TIME"
