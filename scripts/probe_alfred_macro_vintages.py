@@ -82,9 +82,18 @@ VINTAGE_PAGE = 10000
 # PIT_EXACT is an all-or-nothing claim about the whole frame.
 USABLE = "VINTAGE_USABLE"
 TRUNCATED = "VINTAGE_TRUNCATED"
+# MEASURED, and it is an ANSWER rather than a failure: ALFRED replies
+# "The series does not exist in ALFRED but may exist in FRED" for a series it
+# holds no vintages of at all. That is categorically worse than TRUNCATED and
+# has to be told apart from it, because the two have different remedies —
+# a truncated series is served by a later replay start, and this one is served
+# by no start date at all. Reading it as FETCH_FAILED would have left it
+# looking like something a retry could fix.
+NOT_VINTAGED = "NOT_VINTAGED_BY_ALFRED"
 EMPTY = "NO_VINTAGES"
 FAILED = "FETCH_FAILED"
-VERDICT_ORDER = (USABLE, TRUNCATED, EMPTY, FAILED)
+VERDICT_ORDER = (USABLE, TRUNCATED, NOT_VINTAGED, EMPTY, FAILED)
+NOT_IN_ALFRED = "does not exist in ALFRED"
 
 
 def _stamp(value):
@@ -172,7 +181,7 @@ def summarize_series(vintages: list[str], served: dict[str, list[str]],
         cutoff = pd.Timestamp(as_of)
         held = [d for d in served.get(as_of, []) if pd.Timestamp(d) <= cutoff]
         today = [d for d in revised if pd.Timestamp(d) <= cutoff]
-        per_as_of.append({
+        row = {
             "asOf": as_of,
             "periodsServed": len(held),
             # What the same span looks like using the numbers as revised since,
@@ -180,7 +189,20 @@ def summarize_series(vintages: list[str], served: dict[str, list[str]],
             # the cost of opting this series in.
             "periodsInRevisedHistory": len(today),
             "lastPeriodServed": max(held) if held else None,
-        })
+        }
+        # A vintage cannot carry more of a span than the series carries today
+        # unless the series was redefined under its own id — observed on TGA
+        # (WTREGEN), which served 1,408 periods to 2013 against 524 in today's
+        # frame. Left unflagged it reads as a healthy column; what it actually
+        # means is that the vintage and the current series are not the same
+        # series, and a replay would be conditioning on a definition that no
+        # longer exists. Surfaced, not silently published or silently dropped.
+        if len(held) > len(today):
+            row["redefinedUnderSameId"] = True
+            row["note"] = ("the vintage carries more of this span than today's "
+                           "series does; the id was reused for a different "
+                           "definition")
+        per_as_of.append(row)
     usable = first <= start
     return {
         "verdict": USABLE if usable else TRUNCATED,
@@ -257,8 +279,10 @@ def probe_all(series_ids: dict[str, str], api_key: str, *, start: str,
             print(f"  {name:<16} {series_id:<16} {row.get('vintages', 0):>6,} vintages "
                   f"from {row.get('firstVintage') or '—'}", flush=True)
         except Exception as exc:  # pragma: no cover - network dependent
-            out[name] = {"verdict": FAILED, "vintages": 0, "reason": str(exc)}
-            print(f"  {name:<16} {series_id:<16} FAILED: {exc}", flush=True)
+            message = str(exc)
+            verdict = NOT_VINTAGED if NOT_IN_ALFRED in message else FAILED
+            out[name] = {"verdict": verdict, "vintages": 0, "reason": message}
+            print(f"  {name:<16} {series_id:<16} {verdict}: {message}", flush=True)
         time.sleep(sleep)
     return out
 
@@ -314,11 +338,22 @@ def main(argv=None) -> int:
         row = summaries[name]
         served = ", ".join(f"{s['asOf']}:{s['periodsServed']}/{s['periodsInRevisedHistory']}"
                            for s in row.get("asOf") or [])
-        print(f"  {row['verdict']:<18} {name:<16} "
-              f"first vintage {row.get('firstVintage') or '—'} "
-              f"({row.get('vintages', 0):,} vintages) | served {served or '—'}")
+        if row.get("derivedFrom"):
+            # A derived column has no vintages of its own, and printing
+            # "0 vintages" beside VINTAGE_USABLE reads as a claim with no
+            # evidence. Say where its verdict came from instead.
+            print(f"  {row['verdict']:<22} {name:<16} "
+                  f"derived from {', '.join(row['derivedFrom'])}")
+        else:
+            print(f"  {row['verdict']:<22} {name:<16} "
+                  f"first vintage {row.get('firstVintage') or '—'} "
+                  f"({row.get('vintages', 0):,} vintages) | served {served or '—'}")
         if row.get("reason"):
             print(f"    {row['reason']}")
+        for cell in row.get("asOf") or []:
+            if cell.get("redefinedUnderSameId"):
+                print(f"    {cell['asOf']}: {cell['note']} "
+                      f"({cell['periodsServed']} vs {cell['periodsInRevisedHistory']})")
     panel = report["panel"]
     print()
     print(f"panel: {len(panel['usable'])}/{panel['columns']} columns usable -> "
