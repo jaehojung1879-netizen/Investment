@@ -197,3 +197,61 @@ def test_a_served_pair_still_reaches_a_real_verdict():
     evidence = P.membership_evidence([_snap("2013-01-02", old),
                                       _snap("2026-09-01", new)])
     assert evidence["verdict"] == "POINT_IN_TIME"
+
+
+# --------------------------------------------------------------------------- #
+# How the key is presented is a variable, not an inference
+#
+# The 401 said "Unauthorized Key", and I read that as proof the AUTH_KEY header
+# name was right — a service that never saw a key would say "missing". That is
+# an inference about someone else's error strings, and inferring from a
+# vendor's wording is what cost two rounds on the portal. The transport is
+# resolved by trying it now.
+# --------------------------------------------------------------------------- #
+def test_the_header_name_is_not_the_only_transport_tried():
+    names = [name for name, _, _ in P.AUTH_TRANSPORTS]
+    assert names[0] == "header:AUTH_KEY"          # what was already measured
+    assert any(n.startswith("query:") for n in names)
+    assert len(set(names)) == len(names)
+
+
+def test_a_query_transport_puts_the_key_in_the_url_not_the_headers(monkeypatch):
+    seen = {}
+
+    class _Resp:
+        status = 200
+        def read(self): return b'{"OutBlock_1": []}'
+        def __enter__(self): return self
+        def __exit__(self, *a): return False
+
+    def _fake(request, timeout=None):
+        seen["url"] = request.full_url
+        seen["headers"] = dict(request.headers)
+        return _Resp()
+
+    monkeypatch.setattr(P.urllib.request, "urlopen", _fake)
+    P.call("https://x/svc", "sto/stk_bydd_trd", {"basDd": "20130102"}, "SECRET",
+           transport=("query:authKey", "query", "authKey"))
+    assert "authKey=SECRET" in seen["url"]
+    assert not any(v == "SECRET" for v in seen["headers"].values())
+
+
+def test_a_header_transport_keeps_the_key_out_of_the_url(monkeypatch):
+    seen = {}
+
+    class _Resp:
+        status = 200
+        def read(self): return b'{"OutBlock_1": []}'
+        def __enter__(self): return self
+        def __exit__(self, *a): return False
+
+    def _fake(request, timeout=None):
+        seen["url"] = request.full_url
+        seen["headers"] = dict(request.headers)
+        return _Resp()
+
+    monkeypatch.setattr(P.urllib.request, "urlopen", _fake)
+    P.call("https://x/svc", "sto/stk_bydd_trd", {"basDd": "20130102"}, "SECRET",
+           transport=("header:AUTH_KEY", "header", "AUTH_KEY"))
+    assert "SECRET" not in seen["url"]
+    assert any(v == "SECRET" for v in seen["headers"].values())

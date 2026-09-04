@@ -41,19 +41,22 @@ Usage:  python scripts/probe_sec_headers.py [--output sec-headers-probe.json]
 from __future__ import annotations
 
 import argparse
-import gzip
-import io
 import json
 import os
 import sys
 import time
 import urllib.error
 import urllib.request
-import zlib
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
+
+# One definition of "was this served", shared with the egress probe. Two
+# copies of that judgement is how two probes end up disagreeing about the
+# same response.
+from pipeline.sec_access import (  # noqa: E402
+    BLOCK_MARKERS, classify, decode_body)
 
 # Same address the repo already uses. A probe does not invent a contact.
 DEFAULT_CONTACT = "jaehojung1879-netizen@users.noreply.github.com"
@@ -67,17 +70,6 @@ TARGETS = [
     ("www.sec.gov company_tickers",
      "https://www.sec.gov/files/company_tickers.json"),
 ]
-
-# The phrases SEC's own refusal pages carry. Matched on the body, because SEC
-# serves them with a 403 AND sometimes with a 200, and a status code alone
-# cannot tell a block page from data.
-BLOCK_MARKERS = (
-    "Undeclared Automated Tool",
-    "Request Rate Threshold Exceeded",
-    "Your Request Originates from",
-    "automated tool",
-)
-
 
 def header_variants(contact: str) -> list[tuple[str, dict, str]]:
     """(name, headers, what this variant is testing).
@@ -110,44 +102,6 @@ def header_variants(contact: str) -> list[tuple[str, dict, str]]:
             "Accept-Encoding": "gzip, deflate",
         }, "only what the policy names, nothing else"),
     ]
-
-
-def decode_body(raw: bytes, encoding: str | None) -> bytes:
-    """Undo the content coding we asked for.
-
-    Asking for gzip and then reading the bytes as text is its own silent
-    failure: the body becomes unparseable and reads as a hostile response.
-    urllib does not decompress for us, so this does.
-    """
-    if not raw:
-        return raw
-    coding = (encoding or "").lower()
-    try:
-        if "gzip" in coding:
-            return gzip.GzipFile(fileobj=io.BytesIO(raw)).read()
-        if "deflate" in coding:
-            return zlib.decompress(raw, -zlib.MAX_WBITS)
-    except Exception:
-        # Report what came back rather than pretending it decoded.
-        return raw
-    return raw
-
-
-def classify(status: int | None, body: bytes) -> tuple[str, str | None]:
-    """SERVED, BLOCKED or ERROR, plus the marker that decided it."""
-    text = body[:2000].decode("utf-8", "replace") if body else ""
-    for marker in BLOCK_MARKERS:
-        if marker.lower() in text.lower():
-            return "BLOCKED", marker
-    if status is None:
-        return "ERROR", None
-    if status != 200:
-        return "ERROR", None
-    stripped = text.lstrip()
-    if stripped.startswith("{") or stripped.startswith("["):
-        return "SERVED", None
-    # A 200 that is neither JSON nor a known marker is still not data.
-    return "BLOCKED", "200 with a non-JSON body"
 
 
 def attempt(url: str, headers: dict, timeout: int = 30) -> dict:
