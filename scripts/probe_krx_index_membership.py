@@ -120,19 +120,42 @@ def _first(row: dict, keys) -> str | None:
     return None
 
 
+# HOW THE KEY IS PRESENTED. Measured: every endpoint answered
+# `{"respMsg":"Unauthorized Key","respCode":"401"}` with the key in an
+# `AUTH_KEY` header. I read that as proof the header name was right — a
+# service that never saw a key would say "missing", not "unauthorized" — but
+# that is an inference about someone else's error strings, not a measurement,
+# and it is exactly the kind of inference that cost two rounds on the portal.
+# So the transport is a variable now: the same request goes out under each of
+# these until one is served, and the run reports which. If they all fail
+# identically the key really is unsubscribed and the answer is on the account
+# side; if one differs, the transport was the bug.
+AUTH_TRANSPORTS = (
+    ("header:AUTH_KEY", "header", "AUTH_KEY"),
+    ("header:authKey", "header", "authKey"),
+    ("header:apiKey", "header", "apiKey"),
+    ("query:AUTH_KEY", "query", "AUTH_KEY"),
+    ("query:authKey", "query", "authKey"),
+)
+
+
 def call(base: str, path: str, params: dict, auth_key: str,
-         timeout: int = 40) -> dict:
+         timeout: int = 40, transport: tuple = AUTH_TRANSPORTS[0]) -> dict:
     """One Open API call. What came back is recorded either way.
 
     A guessed path that 404s and a real path that refuses the key are
     different findings, and only the second says anything about the key.
     """
-    url = f"{base.rstrip('/')}/{path}?{urllib.parse.urlencode(params)}"
-    request = urllib.request.Request(url, headers={
-        "AUTH_KEY": auth_key,
-        "Accept": "application/json",
-        "User-Agent": "InvestmentResearchDashboard/1.0",
-    })
+    _, kind, name = transport
+    query = dict(params)
+    headers = {"Accept": "application/json",
+               "User-Agent": "InvestmentResearchDashboard/1.0"}
+    if kind == "query":
+        query[name] = auth_key
+    else:
+        headers[name] = auth_key
+    url = f"{base.rstrip('/')}/{path}?{urllib.parse.urlencode(query)}"
+    request = urllib.request.Request(url, headers=headers)
     try:
         with urllib.request.urlopen(request, timeout=timeout) as response:
             return {"status": response.status, "raw": response.read()}
@@ -327,6 +350,30 @@ def main(argv=None) -> int:
     print(f"KRX Open API at {args.base}")
     print(f"  {len(ENDPOINTS)} candidate endpoints x {len(dates)} dates")
 
+    # Settle the transport on ONE endpoint and ONE date before spending the
+    # whole matrix on it. Whichever is served wins; if none is, the first is
+    # used so the run still reports the endpoints and their errors.
+    probe_path = ENDPOINTS[0][0]
+    probe_date = dates[-1].replace("-", "")
+    transport = AUTH_TRANSPORTS[0]
+    transport_results = {}
+    print("  resolving how the key is presented:")
+    for candidate in AUTH_TRANSPORTS:
+        time.sleep(args.sleep)
+        answer = call(args.base, probe_path, {"basDd": probe_date}, auth_key,
+                      transport=candidate)
+        served = not answer.get("error")
+        transport_results[candidate[0]] = (
+            {"served": True} if served else
+            {"served": False, "error": answer.get("error"),
+             "bodyHead": (answer.get("bodyHead") or "")[:120]})
+        print(f"    {candidate[0]:<18} "
+              + ("SERVED" if served else f"{answer.get('error')}"))
+        if served:
+            transport = candidate
+            break
+    print(f"  using {transport[0]}\n")
+
     results: dict[str, dict] = {}
     for path, label, kind in ENDPOINTS:
         snapshots = []
@@ -334,7 +381,7 @@ def main(argv=None) -> int:
             if i or results:
                 time.sleep(args.sleep)
             answer = call(args.base, path, {"basDd": date.replace("-", "")},
-                          auth_key)
+                          auth_key, transport=transport)
             if answer.get("error"):
                 snap = {"date": date, "error": answer["error"],
                         "status": answer.get("status"),
@@ -369,6 +416,8 @@ def main(argv=None) -> int:
         "probe": "krx-open-api",
         "base": args.base,
         "dates": dates,
+        "authTransport": transport[0],
+        "authTransportsTried": transport_results,
         "endpoints": results,
     }
     Path(args.output).write_text(json.dumps(report, indent=1, ensure_ascii=False) + "\n",

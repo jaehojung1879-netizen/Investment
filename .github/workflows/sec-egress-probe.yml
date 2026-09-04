@@ -1,0 +1,122 @@
+name: Probe SEC egress addresses
+
+# SEC served this repository on 2026-08-15 — data/institutional_13f_cache.json
+# carries sourceMode LIVE_SEC and fetchedAt 2026-08-15T23:00:24Z, from
+# data.sec.gov, the host that now refuses every request. So this is not a
+# standing policy against the project; something changed.
+#
+# The header-isolation run ruled out the request shape (four header sets, two
+# hosts, eight identical block pages) and in doing so held the runner — and
+# therefore the egress address — fixed. One address refused eight times is one
+# observation repeated eight times.
+#
+# This varies that. Actions runners come from a shared rotating address pool
+# that many other projects also point at SEC, and SEC blocks by address. If
+# some addresses are served and others are not, "SEC blocks GitHub Actions" is
+# the wrong description and a backfill that retries across runners is viable.
+#
+# The fan-out is what buys the addresses, so the shards must not share a
+# runner: each matrix job gets its own, and the summary refuses a verdict if
+# fewer than two DISTINCT addresses actually turned up.
+
+on:
+  workflow_dispatch:
+    inputs:
+      shards:
+        description: "병렬 러너 수 (각각 다른 IP를 받을 가능성)"
+        type: choice
+        options: ["4", "8", "12"]
+        default: "8"
+
+permissions:
+  contents: read
+
+jobs:
+  fan-out:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+    steps:
+      - name: Stop shards above the requested count
+        id: gate
+        run: |
+          if [ "${{ matrix.shard }}" -gt "${{ inputs.shards }}" ]; then
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Checkout code
+        if: steps.gate.outputs.skip == 'false'
+        uses: actions/checkout@v5
+
+      - name: Set up Python
+        if: steps.gate.outputs.skip == 'false'
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+
+      - name: Probe from this runner
+        if: steps.gate.outputs.skip == 'false'
+        env:
+          SHARD_ID: ${{ matrix.shard }}
+        run: |
+          set -euo pipefail
+          python scripts/probe_sec_egress.py --output "shard-${{ matrix.shard }}.json"
+
+      - name: Upload this shard
+        if: steps.gate.outputs.skip == 'false'
+        uses: actions/upload-artifact@v4
+        with:
+          name: sec-egress-shard-${{ matrix.shard }}
+          path: shard-${{ matrix.shard }}.json
+          if-no-files-found: warn
+
+  summarize:
+    needs: fan-out
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+
+      - name: Collect the shards
+        uses: actions/download-artifact@v4
+        with:
+          path: shards
+          pattern: sec-egress-shard-*
+          merge-multiple: true
+
+      - name: Summarize
+        run: |
+          set -euo pipefail
+          python scripts/probe_sec_egress.py \
+            --summarize shards --output sec-egress-probe.json | tee probe.log
+
+      - name: Upload the summary
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: sec-egress-probe
+          path: |
+            sec-egress-probe.json
+            probe.log
+          if-no-files-found: warn
+
+      - name: Summary
+        if: always()
+        run: |
+          {
+            echo '## SEC 송신 주소 분리 프로브'
+            echo
+            echo '```'
+            tail -n 60 probe.log 2>/dev/null || echo '프로브 출력 없음'
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"

@@ -162,6 +162,23 @@
   paths are right (a wrong path answers 404, not this) and that the key was
   read rather than missing. It gets its own verdict; rolled into "the source
   could not answer" it would retire a source that was never actually asked.
+- Isolating one variable FIXES the others, which makes them untested rather
+  than ruled out. The header run held the runner constant and so held the
+  egress address constant; one address refused eight times is one observation
+  repeated eight times, and reading it as "the pool is blocked" mistook the
+  constant for a control. A vendor that once served us and no longer does
+  (SEC did, on 2026-08-15, `sourceMode: LIVE_SEC`) has a variable nobody has
+  moved yet — find it before concluding.
+- A fan-out only buys the axis it was meant to buy if the axis actually
+  varied. Parallel runners usually get distinct addresses and sometimes do
+  not, so the summary counts DISTINCT addresses first and refuses a verdict
+  below two. "Every address refused" from one address is the same error the
+  fan-out exists to correct.
+- How a credential is PRESENTED is a variable too, not something to infer from
+  an error string. KRX's "Unauthorized Key" was read as proof the header name
+  was right, on the reasoning that a missing key would say "missing" — an
+  inference about someone else's wording. The transport is now resolved by
+  trying header and query forms and reporting which was served.
 - Isolating a refusal means one variable at a time, in ONE run: the shipped
   request is included as the baseline, everything else is held fixed (host,
   endpoint, pacing, runner, minute), and only the header set moves. Without
