@@ -117,3 +117,37 @@ def test_universe_reach_counts_only_names_the_snapshot_actually_holds():
 def test_universe_reach_says_so_when_nothing_answered():
     assert P.universe_reach([{"date": "2013-01-02", "error": "HTTP 403"}],
                             ["005930.KS"]) == {"measured": False}
+
+
+# --------------------------------------------------------------------------- #
+# The session, measured on the first real run
+#
+# Every date came back HTTP 400 with the body `LOGOUT`. That is the portal
+# answering a request that carries no session — a fact about the request, not
+# about whether KRX holds dated membership. Reporting it as "KRX could not
+# answer" would retire a possibly usable source on the probe's own bug.
+# --------------------------------------------------------------------------- #
+def _logout(date):
+    return {"date": date, "error": "no session — the portal answered LOGOUT",
+            "httpStatus": 400, "noSession": True, "bodyHead": "LOGOUT"}
+
+
+def test_an_all_logout_run_is_not_a_finding_about_the_source():
+    evidence = P.membership_evidence([_logout("2013-01-02"), _logout("2026-09-01")])
+    assert evidence["verdict"] == "NOT_MEASURED_NO_SESSION"
+    assert "not a finding" in evidence["reason"] or "nothing here is a finding" in evidence["reason"]
+
+
+def test_a_mixed_failure_is_still_reported_as_insufficient_snapshots():
+    # One real answer and one non-session error is a different situation: the
+    # endpoint does talk to us, so the shortfall is about the dates.
+    evidence = P.membership_evidence([
+        _snap("2013-01-02", ["005930"]),
+        {"date": "2026-09-01", "error": "HTTP 500", "noSession": False}])
+    assert evidence["verdict"] == "INSUFFICIENT_SNAPSHOTS"
+
+
+def test_a_logout_body_is_recognised_from_the_response_not_the_status():
+    # A 400 alone says nothing; the body is what identifies the cause, and it
+    # is kept on the record either way.
+    assert "LOGOUT" in P.LOGOUT_MARKERS

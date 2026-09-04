@@ -63,6 +63,7 @@ Usage:  python scripts/probe_krx_index_membership.py [--output krx-probe.json]
 from __future__ import annotations
 
 import argparse
+import http.cookiejar
 import json
 import sys
 import time
@@ -85,6 +86,37 @@ BLD = "dbms/MDC/STAT/standard/MDCSTAT00601"
 USER_AGENT = ("Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 "
               "(KHTML, like Gecko) Chrome/124.0 Safari/537.36")
 
+# MEASURED, not guessed. The first run sent a Referer and no cookies, and every
+# one of the five dates came back HTTP 400 with the body `LOGOUT` — the portal's
+# answer to a request carrying no session, not a statement about the dates. The
+# session is established by loading the statistics page the endpoint belongs to,
+# which sets the cookies this then replays. A probe that reported that 400 as
+# "KRX has no dated membership" would have retired a usable source on its own
+# bug, so the session is opened first and the probe says whether it was.
+LOGOUT_MARKERS = ("LOGOUT", "로그아웃")
+
+
+def open_session(timeout: int = 30) -> tuple[urllib.request.OpenerDirector, dict]:
+    """Load the portal page so the data endpoint sees a session.
+
+    Returns the opener and what happened, because "the session could not be
+    opened" and "the endpoint refused a session it had" are different findings
+    and only the second says anything about the data.
+    """
+    jar = http.cookiejar.CookieJar()
+    opener = urllib.request.build_opener(urllib.request.HTTPCookieProcessor(jar))
+    opener.addheaders = [("User-Agent", USER_AGENT),
+                         ("Accept-Language", "ko-KR,ko;q=0.9,en;q=0.8")]
+    request = urllib.request.Request(LOADER)
+    try:
+        with opener.open(request, timeout=timeout) as response:
+            status = response.status
+            response.read(2048)
+    except Exception as exc:  # pragma: no cover - network dependent
+        return opener, {"opened": False, "error": f"{type(exc).__name__}: {exc}"}
+    names = sorted(cookie.name for cookie in jar)
+    return opener, {"opened": bool(names), "status": status, "cookies": names}
+
 # KRX serves codes without a suffix; the pipeline's KR tickers carry `.KS`
 # because that is what the price vendor answers to. The membership file is
 # keyed by the pipeline's ticker, so the conversion belongs with the source.
@@ -95,7 +127,8 @@ def to_pipeline_ticker(code: str) -> str:
 
 
 def fetch_constituents(date: str, *, index_series: str = "1",
-                       index_code: str = "028", timeout: int = 30) -> dict:
+                       index_code: str = "028", timeout: int = 30,
+                       opener: urllib.request.OpenerDirector | None = None) -> dict:
     """One dated constituent list, or the reason there is none.
 
     Returns the raw shape as well as the parse, because "it answered with an
@@ -119,13 +152,21 @@ def fetch_constituents(date: str, *, index_series: str = "1",
         "Accept": "application/json, text/javascript, */*; q=0.01",
         "X-Requested-With": "XMLHttpRequest",
     })
+    send = (opener.open if opener is not None else urllib.request.urlopen)
     try:
-        with urllib.request.urlopen(request, timeout=timeout) as response:
+        with send(request, timeout=timeout) as response:
             status = response.status
             raw = response.read()
     except urllib.error.HTTPError as exc:
-        return {"date": date, "error": f"HTTP {exc.code}",
-                "bodyHead": exc.read()[:400].decode("utf-8", "replace")}
+        body = exc.read()[:400].decode("utf-8", "replace")
+        # Name this one rather than leaving it as a bare 400. It is the portal
+        # saying "no session", which is a fact about the request, not the date.
+        no_session = any(marker in body for marker in LOGOUT_MARKERS)
+        return {"date": date,
+                "error": ("no session — the portal answered LOGOUT"
+                          if no_session else f"HTTP {exc.code}"),
+                "httpStatus": exc.code, "noSession": no_session,
+                "bodyHead": body}
     except Exception as exc:  # pragma: no cover - network dependent
         return {"date": date, "error": f"{type(exc).__name__}: {exc}"}
     return parse_constituents(date, status, raw)
@@ -190,6 +231,16 @@ def membership_evidence(snapshots: list[dict]) -> dict:
     """
     usable = [s for s in snapshots if not s.get("error") and s.get("count")]
     if len(usable) < 2:
+        # A run that never held a session measured the request, not the source.
+        # Reporting it as INSUFFICIENT_SNAPSHOTS would read as "KRX could not
+        # answer", and the next person would drop a usable source on our bug.
+        failed = [s for s in snapshots if s.get("error")]
+        if failed and all(s.get("noSession") for s in failed):
+            return {"verdict": "NOT_MEASURED_NO_SESSION",
+                    "reason": "every request was answered LOGOUT — the probe "
+                              "held no portal session, so nothing here is a "
+                              "finding about KRX's dated membership",
+                    "snapshotsUsable": len(usable)}
         return {"verdict": "INSUFFICIENT_SNAPSHOTS",
                 "reason": f"{len(usable)} dated lists answered; two are needed "
                           "to tell history from a repeated snapshot",
@@ -274,12 +325,18 @@ def main(argv=None) -> int:
     dates = [d.strip() for d in args.dates.split(",") if d.strip()]
     print(f"KRX 지수구성종목 (series {args.index_series} / index "
           f"{args.index_code}) on {len(dates)} dates")
+    opener, session = open_session()
+    if session.get("opened"):
+        print(f"  session cookies: {session['cookies']}")
+    else:
+        print(f"  WARNING: no session cookie ({session.get('error') or session}); "
+              "the endpoint will answer LOGOUT and nothing below is about the data")
     snapshots = []
     for i, date in enumerate(dates):
         if i:
             time.sleep(args.sleep)
         snap = fetch_constituents(date, index_series=args.index_series,
-                                  index_code=args.index_code)
+                                  index_code=args.index_code, opener=opener)
         snapshots.append(snap)
         if snap.get("error"):
             print(f"  {date}  ERROR {snap['error']}")
@@ -296,6 +353,7 @@ def main(argv=None) -> int:
         "endpoint": BASE, "bld": BLD,
         "indexSeries": args.index_series, "indexCode": args.index_code,
         "dates": dates,
+        "session": session,
         # Names are large and not what the decision turns on; the codes are.
         "snapshots": [{k: v for k, v in s.items() if k != "names"} for s in snapshots],
         "evidence": evidence,
