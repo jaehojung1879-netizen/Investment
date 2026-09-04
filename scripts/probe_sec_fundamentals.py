@@ -108,20 +108,46 @@ FACTOR_INPUTS = {
     "quality · earningsGrowth": ["netIncome (prior period)"],
 }
 
+# A fallback for the probe's default samples, in case `company_tickers.json`
+# (served from www.sec.gov, not the data.sec.gov API host `companyfacts` lives
+# on) stays blocked even after retries. This does not scale to the full ~500-
+# name universe a real collector would need, but it lets the probe still
+# measure the endpoint that actually matters — companyfacts — instead of
+# failing before ever calling it. CIKs are public record, from SEC's own
+# EDGAR full-text search.
+KNOWN_CIKS = {
+    "AAPL": "0000320193", "JPM": "0000019617", "XOM": "0000034088",
+    "KO": "0000021344", "O": "0000726728",
+}
+
 
 def _request(url: str, timeout: int = 30) -> tuple[bytes | None, str]:
+    """Fetch one SEC resource with bounded retries.
+
+    The 13F reader (`pipeline.institutional_13f`) already established that SEC
+    answers a live, working request with an occasional 403 and clears it on
+    retry — its own `_request` retries {403, 429, 500, 502, 503, 504} three
+    times. A probe that gives up on the first 403 would report "SEC blocks
+    this" about a request that a retry would have served.
+    """
     req = urllib.request.Request(url, headers={
         "User-Agent": os.environ.get("SEC_USER_AGENT", DEFAULT_USER_AGENT),
-        "Accept": "application/json",
+        "Accept": "application/json, text/plain, */*",
         "Accept-Language": "en-US,en;q=0.8",
     })
-    try:
-        with urllib.request.urlopen(req, timeout=timeout) as response:
-            return response.read(), ""
-    except urllib.error.HTTPError as exc:
-        return None, f"HTTP {exc.code}"
-    except Exception as exc:                          # pragma: no cover - network
-        return None, f"{type(exc).__name__}: {exc}"
+    last_error = ""
+    for attempt in range(3):
+        try:
+            with urllib.request.urlopen(req, timeout=timeout) as response:
+                return response.read(), ""
+        except urllib.error.HTTPError as exc:
+            last_error = f"HTTP {exc.code}"
+            if exc.code not in {403, 429, 500, 502, 503, 504} or attempt == 2:
+                return None, last_error
+        except Exception as exc:                      # pragma: no cover - network
+            return None, f"{type(exc).__name__}: {exc}"
+        time.sleep(1.5 * (2 ** attempt))
+    return None, last_error
 
 
 def _fetch_json(url: str, timeout: int = 30) -> tuple[dict | None, str]:
@@ -134,18 +160,30 @@ def _fetch_json(url: str, timeout: int = 30) -> tuple[dict | None, str]:
         return None, f"non-JSON response ({len(raw)} bytes)"
 
 
-def ticker_to_cik(tickers: list[str]) -> tuple[dict[str, str], str]:
-    """Ticker -> zero-padded 10-digit CIK, from SEC's own published map."""
-    payload, error = _fetch_json(f"{WWW_SEC}/files/company_tickers.json", timeout=60)
-    if payload is None:
-        return {}, error
+def ticker_to_cik(tickers: list[str]) -> tuple[dict[str, str], dict[str, str], str]:
+    """Ticker -> zero-padded 10-digit CIK, and how each was resolved.
+
+    Tries SEC's own published map first — the only source that would scale to
+    a real collector's ~500 names. `KNOWN_CIKS` fills in only what the live
+    fetch could not, so a `company_tickers.json` outage does not also block
+    measuring the endpoint that actually matters (`companyfacts`), while still
+    reporting honestly that the map itself did not resolve.
+    """
     wanted = {t.upper() for t in tickers}
     out: dict[str, str] = {}
-    for row in payload.values():
-        sym = str(row.get("ticker") or "").upper()
-        if sym in wanted:
-            out[sym] = f"{int(row['cik_str']):010d}"
-    return out, ""
+    source: dict[str, str] = {}
+    payload, error = _fetch_json(f"{WWW_SEC}/files/company_tickers.json", timeout=60)
+    if payload is not None:
+        for row in payload.values():
+            sym = str(row.get("ticker") or "").upper()
+            if sym in wanted:
+                out[sym] = f"{int(row['cik_str']):010d}"
+                source[sym] = "company_tickers.json"
+    for sym in wanted - out.keys():
+        if sym in KNOWN_CIKS:
+            out[sym] = KNOWN_CIKS[sym]
+            source[sym] = "KNOWN_CIKS fallback"
+    return out, source, ("" if payload is not None else error)
 
 
 def parse_companyfacts(payload: dict) -> dict:
@@ -233,8 +271,12 @@ def main(argv=None) -> int:
     print(f"User-Agent: {os.environ.get('SEC_USER_AGENT', DEFAULT_USER_AGENT)}\n")
 
     # --- 1. ticker -> CIK --------------------------------------------------- #
-    cik_map, error = ticker_to_cik(samples)
+    cik_map, cik_source, error = ticker_to_cik(samples)
     report["cikMap"] = cik_map
+    report["cikSource"] = cik_source
+    if error:
+        print(f"경고: company_tickers.json 실패 — {error} "
+              f"(www.sec.gov, companyfacts가 사는 data.sec.gov와는 다른 호스트)")
     if not cik_map:
         print(f"ERROR: could not resolve any CIK — {error}")
         report["reachable"] = False
@@ -244,7 +286,7 @@ def main(argv=None) -> int:
     report["reachable"] = True
     print(f"1. CIK 매핑         {len(cik_map)}/{len(samples)}개 확보")
     for t in samples:
-        print(f"   {t:<6} {cik_map.get(t, '없음')}")
+        print(f"   {t:<6} {cik_map.get(t, '없음')}  ({cik_source.get(t, '-')})")
 
     # --- 2. companyfacts per sample ------------------------------------------ #
     print("\n2. companyfacts — 계정, 접수일, 기간 형태")
@@ -289,6 +331,11 @@ def main(argv=None) -> int:
         print("  → filed가 없으면 point-in-time이 성립하지 않습니다. 여기서 멈춥니다.")
     elif earliest and earliest > 2013:
         print(f"  → 2013~{earliest - 1}년 미국 밸류·퀄리티는 비어 있게 됩니다.")
+    if error:
+        print(f"  → company_tickers.json이 막혀 있었습니다({error}). companyfacts"
+              f"(data.sec.gov)가 위에서 정상이었다면, 실제 컬렉터는 전체 500종목의 "
+              f"CIK를 다른 방법으로 확보해야 합니다 — 이 프로브가 쓴 하드코딩은 "
+              f"5종목까지만 통합니다.")
     print(f"\nwrote {args.output}")
     return 0
 

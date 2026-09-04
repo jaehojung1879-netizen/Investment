@@ -121,3 +121,97 @@ def test_every_factor_input_the_production_model_needs_is_probed():
 def test_multiple_tag_aliases_are_checked_where_filers_disagree():
     assert len(P.CANDIDATE_TAGS["revenue"]) > 1
     assert len(P.CANDIDATE_TAGS["netIncome"]) > 1
+
+
+# --------------------------------------------------------------------------- #
+# Retries — found live: the probe's first real run reported "SEC blocks this"
+# about a request the already-working 13F reader would have retried past.
+# `_request` must match that reader's retry behaviour, not its own guess.
+# --------------------------------------------------------------------------- #
+class _FakeResponse:
+    def __init__(self, data: bytes):
+        self._data = data
+
+    def read(self):
+        return self._data
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, *args):
+        return False
+
+
+def _http_error(code):
+    import urllib.error
+    return urllib.error.HTTPError("https://example.invalid/x", code, "err", {}, None)
+
+
+def test_a_403_is_retried_and_a_later_success_is_returned(monkeypatch):
+    calls = {"n": 0}
+
+    def fake_urlopen(req, timeout=30):
+        calls["n"] += 1
+        if calls["n"] < 3:
+            raise _http_error(403)
+        return _FakeResponse(b'{"ok": true}')
+
+    monkeypatch.setattr(P.urllib.request, "urlopen", fake_urlopen)
+    monkeypatch.setattr(P.time, "sleep", lambda s: None)
+
+    raw, error = P._request("https://example.invalid/x")
+    assert raw == b'{"ok": true}' and error == ""
+    assert calls["n"] == 3, "세 번째 시도에서 성공했어야 한다"
+
+
+def test_a_persistent_403_is_reported_after_the_retry_budget_is_spent(monkeypatch):
+    monkeypatch.setattr(P.urllib.request, "urlopen",
+                        lambda req, timeout=30: (_ for _ in ()).throw(_http_error(403)))
+    monkeypatch.setattr(P.time, "sleep", lambda s: None)
+
+    raw, error = P._request("https://example.invalid/x")
+    assert raw is None and error == "HTTP 403"
+
+
+def test_a_non_retryable_status_fails_on_the_first_attempt(monkeypatch):
+    calls = {"n": 0}
+
+    def fake_urlopen(req, timeout=30):
+        calls["n"] += 1
+        raise _http_error(404)
+
+    monkeypatch.setattr(P.urllib.request, "urlopen", fake_urlopen)
+    monkeypatch.setattr(P.time, "sleep", lambda s: None)
+
+    raw, error = P._request("https://example.invalid/x")
+    assert raw is None and error == "HTTP 404"
+    assert calls["n"] == 1, "재시도해도 소용없는 상태코드를 세 번 두드리면 안 된다"
+
+
+# --------------------------------------------------------------------------- #
+# CIK resolution — a blocked ticker map must not also block measuring the
+# endpoint that actually matters (companyfacts, a different host)
+# --------------------------------------------------------------------------- #
+def test_a_blocked_ticker_map_falls_back_to_known_ciks_for_default_samples(monkeypatch):
+    monkeypatch.setattr(P.urllib.request, "urlopen",
+                        lambda req, timeout=30: (_ for _ in ()).throw(_http_error(403)))
+    monkeypatch.setattr(P.time, "sleep", lambda s: None)
+
+    cik_map, source, error = P.ticker_to_cik(["AAPL", "ZZZZ"])
+    assert cik_map["AAPL"] == P.KNOWN_CIKS["AAPL"]
+    assert source["AAPL"] == "KNOWN_CIKS fallback"
+    assert "ZZZZ" not in cik_map, "폴백에도 없는 티커를 지어내면 안 된다"
+    assert error == "HTTP 403"
+
+
+def test_a_working_ticker_map_is_preferred_over_the_fallback(monkeypatch):
+    import json as _json
+    payload = _json.dumps(
+        {"0": {"cik_str": 999999, "ticker": "AAPL", "title": "Apple"}}).encode()
+    monkeypatch.setattr(P.urllib.request, "urlopen",
+                        lambda req, timeout=30: _FakeResponse(payload))
+
+    cik_map, source, error = P.ticker_to_cik(["AAPL"])
+    assert cik_map["AAPL"] == "0000999999"
+    assert source["AAPL"] == "company_tickers.json"
+    assert error == ""
