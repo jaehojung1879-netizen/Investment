@@ -1,0 +1,76 @@
+name: Probe FMP fundamentals
+
+# SEC itself is off the table: two probes (XBRL companyfacts, the bulk
+# Financial Statement Data Sets — two hosts, two traffic shapes) both came
+# back with live SEC block pages, and a screenshot confirmed the already-
+# shipped 13F reader falling back to its cache the same day on the same
+# GitHub Actions IP pool. That reads as a site-wide policy against this IP
+# pool, not a fixable request pattern.
+#
+# Financial Modeling Prep is not sec.gov — different host, per-key daily
+# quota instead of per-IP. This calls the real API with the real key and
+# reports what actually comes back: whether `fillingDate` is present (the
+# point-in-time field, same standard as DART's receipt date and SEC's
+# `filed`), how many calls one ticker's full history costs, and which
+# fields the free tier actually returns non-null.
+#
+# On demand, like every other probe. Nothing downstream consumes this.
+
+on:
+  workflow_dispatch:
+    inputs:
+      samples:
+        description: "티커 (쉼표 구분)"
+        type: string
+        default: "AAPL,JPM,XOM,KO,O"
+      limit:
+        description: "요청당 분기 수 (무료 티어가 얼마나 주는지 측정)"
+        type: string
+        default: "400"
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+
+      - name: Probe
+        env:
+          FMP_API_KEY: ${{ secrets.FMP }}
+        run: |
+          set -euo pipefail
+          python scripts/probe_fmp_fundamentals.py \
+            --output fmp-probe.json \
+            --samples "${{ inputs.samples }}" \
+            --limit "${{ inputs.limit }}" | tee probe.log
+
+      - name: Upload the probe
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fmp-fundamentals-probe
+          path: |
+            fmp-probe.json
+            probe.log
+          if-no-files-found: warn
+
+      - name: Summary
+        if: always()
+        run: |
+          {
+            echo '## FMP 재무 데이터 프로브 (미국)'
+            echo
+            echo '```'
+            tail -n 80 probe.log 2>/dev/null || echo '프로브 출력 없음'
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
