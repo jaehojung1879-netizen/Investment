@@ -5,9 +5,9 @@
     "2026-08-28",
     "2026-09-04"
   ],
-  "replayVersion": "replay-v5",
+  "replayVersion": "replay-v6",
   "featureVersion": "hfeat-v1",
-  "dataVersion": "yahoo-adjusted-close-v3-regional-session-download+pit-index-membership",
+  "dataVersion": "yahoo-adjusted-close-v3-regional-session-download+pit-index-membership+dart-pit-fundamentals-kr",
   "modelVersion": "longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
   "frequency": "W",
   "requestedStart": "2013-01-01",
@@ -15,14 +15,14 @@
   "firstDate": "2013-01-04",
   "lastDate": "2026-09-04",
   "replayDates": 714,
-  "signalsGenerated": 1332,
-  "signalsSkippedAlreadyPresent": 374687,
+  "signalsGenerated": 373982,
+  "signalsSkippedAlreadyPresent": 0,
   "meanPitCoverage": 0.7887,
   "survivorshipRisk": "HIGH",
   "survivorshipNote": "SURVIVORSHIP_BIAS_UNRESOLVED",
   "fundamentalsPit": true,
   "historicalUniverseAvailable": true,
-  "constituentCoveragePct": 84.2028,
+  "constituentCoveragePct": 83.6405,
   "membershipCoveragePct": 80.8743,
   "constituentsWithoutPriceHistory": [
     "018260.KS",
@@ -62,21 +62,21 @@
     "ACT",
     "ADS",
     "ADT",
+    "AET",
     "AGN",
     "ALLE",
     "ALTR",
     "ALXN",
     "AMTM",
+    "ANDV",
     "ANR",
     "ANSS",
     "ANTM",
     "APC",
     "APOL",
-    "ARG",
-    "ARNC",
-    "ATVI"
+    "ARG"
   ],
-  "constituentsWithoutPriceHistoryCount": 280,
+  "constituentsWithoutPriceHistoryCount": 291,
   "universeCoverageByRegion": {
     "KR": {
       "nameDates": 84966,
@@ -87,9 +87,9 @@
     },
     "US": {
       "nameDates": 363018,
-      "constituentCoveragePct": 83.7149,
+      "constituentCoveragePct": 83.021,
       "membershipCoveragePct": 99.8033,
-      "affectedObservationsPct": 16.4818,
+      "affectedObservationsPct": 17.1757,
       "survivorshipRisk": "HIGH"
     }
   },
@@ -97,65 +97,65 @@
     {
       "year": 2013,
       "nameDates": 32252,
-      "constituentCoveragePct": 69.6112,
+      "constituentCoveragePct": 68.4795,
       "membershipCoveragePct": 80.6524,
-      "affectedObservationsPct": 44.9212,
+      "affectedObservationsPct": 46.053,
       "survivorshipRisk": "HIGH"
     },
     {
       "year": 2014,
       "nameDates": 32412,
-      "constituentCoveragePct": 71.0015,
+      "constituentCoveragePct": 70.0512,
       "membershipCoveragePct": 80.7479,
-      "affectedObservationsPct": 43.6351,
+      "affectedObservationsPct": 44.5853,
       "survivorshipRisk": "HIGH"
     },
     {
       "year": 2015,
       "nameDates": 33042,
-      "constituentCoveragePct": 72.6863,
+      "constituentCoveragePct": 71.7693,
       "membershipCoveragePct": 80.7518,
-      "affectedObservationsPct": 42.2735,
+      "affectedObservationsPct": 43.1905,
       "survivorshipRisk": "HIGH"
     },
     {
       "year": 2016,
       "nameDates": 32643,
-      "constituentCoveragePct": 76.1327,
+      "constituentCoveragePct": 75.1585,
       "membershipCoveragePct": 80.8841,
-      "affectedObservationsPct": 39.016,
+      "affectedObservationsPct": 39.9902,
       "survivorshipRisk": "HIGH"
     },
     {
       "year": 2017,
       "nameDates": 32751,
-      "constituentCoveragePct": 78.6358,
+      "constituentCoveragePct": 77.5244,
       "membershipCoveragePct": 80.9471,
-      "affectedObservationsPct": 36.6126,
+      "affectedObservationsPct": 37.724,
       "survivorshipRisk": "HIGH"
     },
     {
       "year": 2018,
       "nameDates": 32838,
-      "constituentCoveragePct": 81.6493,
+      "constituentCoveragePct": 80.5408,
       "membershipCoveragePct": 80.9976,
-      "affectedObservationsPct": 34.1738,
+      "affectedObservationsPct": 35.2823,
       "survivorshipRisk": "HIGH"
     },
     {
       "year": 2019,
       "nameDates": 32864,
-      "constituentCoveragePct": 82.811,
+      "constituentCoveragePct": 81.7034,
       "membershipCoveragePct": 81.0127,
-      "affectedObservationsPct": 33.3861,
+      "affectedObservationsPct": 34.4937,
       "survivorshipRisk": "HIGH"
     },
     {
       "year": 2020,
       "nameDates": 33496,
-      "constituentCoveragePct": 85.852,
+      "constituentCoveragePct": 85.455,
       "membershipCoveragePct": 81.0127,
-      "affectedObservationsPct": 30.6813,
+      "affectedObservationsPct": 31.0783,
       "survivorshipRisk": "HIGH"
     },
     {
@@ -211,7 +211,7 @@
   "worstCoveredYear": 2013,
   "universeSource": "HISTORICAL_MEMBERSHIP_DATASET",
   "firstReliableUniverseDate": null,
-  "affectedObservationsPct": 32.3221,
+  "affectedObservationsPct": 32.8844,
   "affectedRegions": [
     "KR",
     "US"
@@ -253,11 +253,11 @@
   },
   "macroPitStatus": "REVISED_HISTORY",
   "regimeDistribution": {
-    "Deflation/Slowdown": 54383,
-    "Goldilocks": 55964,
-    "Reflation": 95540,
-    "Stagflation": 32451,
-    "Transition/Low confidence": 137681
+    "Deflation/Slowdown": 54249,
+    "Goldilocks": 55539,
+    "Reflation": 94898,
+    "Stagflation": 32265,
+    "Transition/Low confidence": 137031
   },
   "shortTermModelReplayed": false,
   "knownDeviationsFromProduction": [
@@ -267,25 +267,25 @@
     "entry_sector_concentration_overlay_not_applied_no_sleeve_in_replay"
   ],
   "coverage": {
-    "signalsRecorded": 379873,
+    "signalsRecorded": 373982,
     "signalsByRegion": {
-      "KR": 75170,
-      "US": 304703
+      "KR": 73315,
+      "US": 300667
     },
-    "uniqueDates": 718,
+    "uniqueDates": 714,
     "trackingDays": 3566,
     "firstSignalDate": "2013-01-04",
     "lastSignalDate": "2026-09-04",
-    "maturedSignals": 359173,
+    "maturedSignals": 357351,
     "maturedUniqueDates": 687,
     "maturedObservationDays": 3431,
     "lastMaturedSignalDate": "2026-02-27",
     "horizon": 126,
     "maturedByHorizon": {
-      "21": 372883,
-      "63": 367390,
-      "126": 359173,
-      "252": 342879
+      "21": 370891,
+      "63": 365465,
+      "126": 357351,
+      "252": 341259
     },
     "benchmarkCoverageByRegion": {
       "KR": {
@@ -296,35 +296,35 @@
           "coveragePct": 99.8702,
           "missingSamples": [
             {
-              "id": "2015-08-14|KR|000100.KS|replay-v5|longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
+              "id": "2015-08-14|KR|000100.KS|replay-v6|longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
               "date": "2015-08-14",
               "endDate": "2016-02-19",
               "ticker": "000100.KS",
               "benchmark": "^KS200"
             },
             {
-              "id": "2015-08-14|KR|000150.KS|replay-v5|longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
+              "id": "2015-08-14|KR|000150.KS|replay-v6|longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
               "date": "2015-08-14",
               "endDate": "2016-02-19",
               "ticker": "000150.KS",
               "benchmark": "^KS200"
             },
             {
-              "id": "2015-08-14|KR|000270.KS|replay-v5|longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
+              "id": "2015-08-14|KR|000270.KS|replay-v6|longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
               "date": "2015-08-14",
               "endDate": "2016-02-19",
               "ticker": "000270.KS",
               "benchmark": "^KS200"
             },
             {
-              "id": "2015-08-14|KR|000500.KS|replay-v5|longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
+              "id": "2015-08-14|KR|000500.KS|replay-v6|longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
               "date": "2015-08-14",
               "endDate": "2016-02-19",
               "ticker": "000500.KS",
               "benchmark": "^KS200"
             },
             {
-              "id": "2015-08-14|KR|000660.KS|replay-v5|longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
+              "id": "2015-08-14|KR|000660.KS|replay-v6|longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
               "date": "2015-08-14",
               "endDate": "2016-02-19",
               "ticker": "000660.KS",
@@ -339,35 +339,35 @@
           "coveragePct": 99.8749,
           "missingSamples": [
             {
-              "id": "2015-08-14|KR|000100.KS|replay-v5|longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
+              "id": "2015-08-14|KR|000100.KS|replay-v6|longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
               "date": "2015-08-14",
               "endDate": "2015-09-14",
               "ticker": "000100.KS",
               "benchmark": "^KS200"
             },
             {
-              "id": "2015-08-14|KR|000150.KS|replay-v5|longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
+              "id": "2015-08-14|KR|000150.KS|replay-v6|longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
               "date": "2015-08-14",
               "endDate": "2015-09-14",
               "ticker": "000150.KS",
               "benchmark": "^KS200"
             },
             {
-              "id": "2015-08-14|KR|000270.KS|replay-v5|longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
+              "id": "2015-08-14|KR|000270.KS|replay-v6|longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
               "date": "2015-08-14",
               "endDate": "2015-09-14",
               "ticker": "000270.KS",
               "benchmark": "^KS200"
             },
             {
-              "id": "2015-08-14|KR|000500.KS|replay-v5|longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
+              "id": "2015-08-14|KR|000500.KS|replay-v6|longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
               "date": "2015-08-14",
               "endDate": "2015-09-14",
               "ticker": "000500.KS",
               "benchmark": "^KS200"
             },
             {
-              "id": "2015-08-14|KR|000660.KS|replay-v5|longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
+              "id": "2015-08-14|KR|000660.KS|replay-v6|longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
               "date": "2015-08-14",
               "endDate": "2015-09-14",
               "ticker": "000660.KS",
@@ -382,35 +382,35 @@
           "coveragePct": 99.8638,
           "missingSamples": [
             {
-              "id": "2015-08-14|KR|000100.KS|replay-v5|longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
+              "id": "2015-08-14|KR|000100.KS|replay-v6|longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
               "date": "2015-08-14",
               "endDate": "2016-08-23",
               "ticker": "000100.KS",
               "benchmark": "^KS200"
             },
             {
-              "id": "2015-08-14|KR|000150.KS|replay-v5|longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
+              "id": "2015-08-14|KR|000150.KS|replay-v6|longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
               "date": "2015-08-14",
               "endDate": "2016-08-23",
               "ticker": "000150.KS",
               "benchmark": "^KS200"
             },
             {
-              "id": "2015-08-14|KR|000270.KS|replay-v5|longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
+              "id": "2015-08-14|KR|000270.KS|replay-v6|longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
               "date": "2015-08-14",
               "endDate": "2016-08-23",
               "ticker": "000270.KS",
               "benchmark": "^KS200"
             },
             {
-              "id": "2015-08-14|KR|000500.KS|replay-v5|longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
+              "id": "2015-08-14|KR|000500.KS|replay-v6|longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
               "date": "2015-08-14",
               "endDate": "2016-08-23",
               "ticker": "000500.KS",
               "benchmark": "^KS200"
             },
             {
-              "id": "2015-08-14|KR|000660.KS|replay-v5|longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
+              "id": "2015-08-14|KR|000660.KS|replay-v6|longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
               "date": "2015-08-14",
               "endDate": "2016-08-23",
               "ticker": "000660.KS",
@@ -425,35 +425,35 @@
           "coveragePct": 99.8732,
           "missingSamples": [
             {
-              "id": "2015-08-14|KR|000100.KS|replay-v5|longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
+              "id": "2015-08-14|KR|000100.KS|replay-v6|longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
               "date": "2015-08-14",
               "endDate": "2015-11-16",
               "ticker": "000100.KS",
               "benchmark": "^KS200"
             },
             {
-              "id": "2015-08-14|KR|000150.KS|replay-v5|longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
+              "id": "2015-08-14|KR|000150.KS|replay-v6|longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
               "date": "2015-08-14",
               "endDate": "2015-11-16",
               "ticker": "000150.KS",
               "benchmark": "^KS200"
             },
             {
-              "id": "2015-08-14|KR|000270.KS|replay-v5|longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
+              "id": "2015-08-14|KR|000270.KS|replay-v6|longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
               "date": "2015-08-14",
               "endDate": "2015-11-16",
               "ticker": "000270.KS",
               "benchmark": "^KS200"
             },
             {
-              "id": "2015-08-14|KR|000500.KS|replay-v5|longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
+              "id": "2015-08-14|KR|000500.KS|replay-v6|longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
               "date": "2015-08-14",
               "endDate": "2015-11-16",
               "ticker": "000500.KS",
               "benchmark": "^KS200"
             },
             {
-              "id": "2015-08-14|KR|000660.KS|replay-v5|longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
+              "id": "2015-08-14|KR|000660.KS|replay-v6|longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
               "date": "2015-08-14",
               "endDate": "2015-11-16",
               "ticker": "000660.KS",
@@ -464,29 +464,29 @@
       },
       "US": {
         "126": {
-          "maturedAbsoluteReturns": 289069,
-          "matchedBenchmarkReturns": 289069,
+          "maturedAbsoluteReturns": 287247,
+          "matchedBenchmarkReturns": 287247,
           "missingBenchmarkReturns": 0,
           "coveragePct": 100.0,
           "missingSamples": []
         },
         "21": {
-          "maturedAbsoluteReturns": 300163,
-          "matchedBenchmarkReturns": 300163,
+          "maturedAbsoluteReturns": 298171,
+          "matchedBenchmarkReturns": 298171,
           "missingBenchmarkReturns": 0,
           "coveragePct": 100.0,
           "missingSamples": []
         },
         "252": {
-          "maturedAbsoluteReturns": 276075,
-          "matchedBenchmarkReturns": 276075,
+          "maturedAbsoluteReturns": 274455,
+          "matchedBenchmarkReturns": 274455,
           "missingBenchmarkReturns": 0,
           "coveragePct": 100.0,
           "missingSamples": []
         },
         "63": {
-          "maturedAbsoluteReturns": 295622,
-          "matchedBenchmarkReturns": 295622,
+          "maturedAbsoluteReturns": 293697,
+          "matchedBenchmarkReturns": 293697,
           "missingBenchmarkReturns": 0,
           "coveragePct": 100.0,
           "missingSamples": []
@@ -519,23 +519,23 @@
         "status": "VENDOR",
         "source": "yahoo",
         "symbol": "SPY",
-        "sessions": 3941,
+        "sessions": 3940,
         "firstSession": "2011-01-03",
-        "lastSession": "2026-09-03",
+        "lastSession": "2026-09-02",
         "candidates": [
           {
             "source": "yahoo",
             "symbol": "SPY",
             "accepted": true,
             "reason": null,
-            "sessions": 3941,
+            "sessions": 3940,
             "snapshotCoveragePct": 100.0,
             "minimumSessions": null,
             "firstSession": "2011-01-03",
-            "lastSession": "2026-09-03"
+            "lastSession": "2026-09-02"
           }
         ],
-        "snapshotSessions": 3940
+        "snapshotSessions": 3941
       },
       "KR": {
         "ticker": "^KS200",
@@ -560,58 +560,57 @@
           {
             "source": "yahoo",
             "symbol": "^KS200",
-            "accepted": true,
-            "reason": null,
-            "sessions": 3782,
-            "snapshotCoveragePct": 98.1313,
+            "accepted": false,
+            "reason": "below_known_session_calendar",
+            "sessions": 1,
+            "snapshotCoveragePct": 0.0259,
             "minimumSessions": null,
-            "firstSession": "2011-01-03",
+            "firstSession": "2026-09-04",
             "lastSession": "2026-09-04"
           }
         ],
-        "snapshotSessions": 3853
+        "snapshotSessions": 3854
       }
     },
     "degradedRegions": [],
     "unavailableRegions": [],
     "snapshotsUpdated": [
-      "SPY",
-      "^KS200"
+      "SPY"
     ],
     "indexMixingForbidden": true
   },
   "formerMemberRecovery": {
     "US": {
       "describedFormerMembers": 326,
-      "priced": 148,
-      "pricedPct": 45.4,
+      "priced": 130,
+      "pricedPct": 39.88,
       "byYearLeft": {
         "2013": {
-          "priced": 11,
+          "priced": 6,
           "described": 22
         },
         "2014": {
-          "priced": 8,
+          "priced": 7,
           "described": 19
         },
         "2015": {
-          "priced": 5,
+          "priced": 3,
           "described": 19
         },
         "2016": {
-          "priced": 13,
+          "priced": 12,
           "described": 35
         },
         "2017": {
-          "priced": 6,
+          "priced": 5,
           "described": 11
         },
         "2018": {
-          "priced": 11,
+          "priced": 10,
           "described": 32
         },
         "2020": {
-          "priced": 27,
+          "priced": 20,
           "described": 58
         },
         "2021": {
