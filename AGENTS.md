@@ -128,6 +128,14 @@
   amount that made the buyback worth doing. Quality coverage and value coverage
   are reported separately, so "we collected fundamentals" is never read as "the
   value sleeve works".
+- A missing quarterly share count may be CARRIED FORWARD from the nearest earlier
+  filing, never a later one. Measured against the real store: Q1/Q3 filings
+  answered 013 at a rising rate from 2022 (0% in 2015-21 to 77-78% by 2025) while
+  half-year and annual filings stayed at 0% — Korean quarterly reports may omit
+  restating 주식총수 현황 when it has not changed, not a coverage gap. Which each
+  row got — `AS_FILED` or `CARRIED_FORWARD` — is published on `derivation.
+  sharesBasis` and tallied in the coverage report, the same discipline as the TTM
+  basis.
 
 ## Benchmark acquisition invariants (v2.8)
 
