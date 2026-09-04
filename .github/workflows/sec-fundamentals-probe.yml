@@ -1,0 +1,69 @@
+name: Probe SEC fundamentals
+
+# Measure before building — the same discipline the DART probe used before
+# any Korean collector was written. US value and quality are dark for all
+# ~500 US names today: `historical_replay.py` reads every ticker's
+# fundamentals from one `FundamentalStore`, and the only file wired into it
+# is the Korean one. This calls SEC EDGAR's real XBRL API and reports what
+# actually comes back — filing dates, which US-GAAP tags filers actually
+# used, and how far back each sample's own history goes — before any of it
+# is assumed.
+#
+# No API key: SEC EDGAR asks only for a contact-identifying User-Agent
+# (fair-access policy), which the 13F reader already sends by default.
+#
+# On demand, like the DART and KR coverage probes: nothing downstream
+# consumes this, and a probe the daily jobs depend on is a probe that
+# breaks them.
+
+on:
+  workflow_dispatch:
+    inputs:
+      samples:
+        description: "티커 (쉼표 구분) — 태깅 관례가 다른 업종을 섞어서"
+        type: string
+        default: "AAPL,JPM,XOM,KO,O"
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+
+      - name: Probe
+        run: |
+          set -euo pipefail
+          python scripts/probe_sec_fundamentals.py \
+            --output sec-probe.json \
+            --samples "${{ inputs.samples }}" | tee probe.log
+
+      - name: Upload the probe
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: sec-fundamentals-probe
+          path: |
+            sec-probe.json
+            probe.log
+          if-no-files-found: warn
+
+      - name: Summary
+        if: always()
+        run: |
+          {
+            echo '## SEC 재무 데이터 프로브 (미국)'
+            echo
+            echo '```'
+            tail -n 80 probe.log 2>/dev/null || echo '프로브 출력 없음'
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
