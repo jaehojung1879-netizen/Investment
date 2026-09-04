@@ -1,24 +1,24 @@
 {
   "schemaVersion": "2.7.0",
   "modelVersion": "longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
-  "buildCommitSha": "48a5fe264314",
-  "generatedAt": "2026-09-04T05:18:27.571490+00:00",
-  "marketAsOf": "2026-09-02",
+  "buildCommitSha": "c2a8ee336f89",
+  "generatedAt": "2026-09-04T06:05:37.569040+00:00",
+  "marketAsOf": "2026-09-03",
   "macroRegime": "Deflation/Slowdown",
   "holdingsByRegion": {
     "US": [
       "NUE",
       "MU",
-      "VTRS",
       "TGT",
+      "VTRS",
       "ALL",
       "SPG",
       "HST",
       "CNC",
       "GOOGL",
       "MO",
-      "SNDK",
-      "GOOG"
+      "GOOG",
+      "SNDK"
     ],
     "KR": [
       "078930.KS",
@@ -45,16 +45,16 @@
   "entryStatesByTicker": {
     "NUE": "WAIT_FOR_PULLBACK",
     "MU": "WAIT_FOR_PULLBACK",
-    "VTRS": "ACCUMULATE_GRADUALLY",
     "TGT": "WAIT_FOR_PULLBACK",
+    "VTRS": "ACCUMULATE_GRADUALLY",
     "ALL": "ACCUMULATE_GRADUALLY",
     "SPG": "WATCH",
     "HST": "WATCH",
     "CNC": "WAIT_FOR_PULLBACK",
     "GOOGL": "WATCH",
     "MO": "WATCH",
-    "SNDK": "WAIT_FOR_PULLBACK",
     "GOOG": "AVOID",
+    "SNDK": "WAIT_FOR_PULLBACK",
     "GM": "ACCUMULATE_GRADUALLY",
     "CSX": "WATCH",
     "BNY": "ACCUMULATE_GRADUALLY",
@@ -115,7 +115,7 @@
   "stale": false,
   "productionValidation": {
     "passed": true,
-    "validatedAt": "2026-09-04T05:18:27.571490+00:00",
+    "validatedAt": "2026-09-04T06:05:37.569040+00:00",
     "errors": []
   }
 }
