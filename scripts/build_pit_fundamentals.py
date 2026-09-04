@@ -85,6 +85,7 @@ def main(argv=None) -> int:
     for key, pct in report["fieldCoveragePct"].items():
         print(f"    {key:<20} {pct:>6.1f}%")
     print(f"\n  TTM 산출 방식 {report['netIncomeBasis']}")
+    print(f"  주식수 산출 방식 {report['sharesBasis']}")
     print(f"  퀄리티 슬리브  {'가능' if report['qualityComplete'] else '불가'}")
     print(f"  밸류 슬리브    {'가능' if report['valueComplete'] else '불가 — 주식수 필요'}")
     print(f"\nwrote {args.output}")

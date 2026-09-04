@@ -287,6 +287,66 @@ def test_an_unusable_share_count_is_none_rather_than_zero():
 
 
 # --------------------------------------------------------------------------- #
+# Share counts carried forward
+#
+# Measured against the real store once the share pass ran past 2021: Q1/Q3
+# filings answered 013 at a rising rate (0% in 2015-21, 77-78% by 2025) while
+# half-year and annual filings stayed at 0% missing — the signature of a
+# quarterly report omitting a share count that has not changed, not of a
+# coverage gap.
+# --------------------------------------------------------------------------- #
+def test_a_filed_share_count_is_used_as_is():
+    shares = {(2023, "11011"): 10.0}
+    value, basis = D.carried_shares(shares, 2023, "11011")
+    assert value == 10.0
+    assert basis == D.SHARES_AS_FILED
+
+
+def test_a_missing_quarterly_count_is_carried_from_the_nearest_earlier_filing():
+    """Q1 2023 (03-31) restated nothing since the 2022 annual (12-31) — the
+    nearest filing before it, not the half-year that follows."""
+    shares = {(2022, "11011"): 900.0, (2022, "11014"): 850.0}
+    value, basis = D.carried_shares(shares, 2023, "11013")
+    assert value == 900.0
+    assert basis == D.SHARES_CARRIED_FORWARD
+
+
+def test_nothing_later_is_ever_carried_backward():
+    """A count filed after this quarter would be a look-ahead."""
+    shares = {(2023, "11012"): 900.0}
+    value, basis = D.carried_shares(shares, 2023, "11013")
+    assert value is None and basis is None
+
+
+def test_no_prior_share_count_leaves_it_dark():
+    value, basis = D.carried_shares({}, 2023, "11013")
+    assert value is None and basis is None
+
+
+def test_build_for_ticker_records_which_shares_were_carried():
+    rows = D.build_for_ticker(
+        [_full(2022, "11011"), _full(2023, "11013")],
+        shares_by_key={(2022, "11011"): 10.0})
+
+    by_period = {r["reportPeriod"]: r for r in rows}
+    assert by_period["2022-11011"]["derivation"]["sharesBasis"] == D.SHARES_AS_FILED
+    assert (by_period["2023-11013"]["derivation"]["sharesBasis"]
+            == D.SHARES_CARRIED_FORWARD)
+    assert by_period["2023-11013"]["fields"]["bookValuePerShare"] is not None, \
+        "이월된 주식수로도 밸류 필드가 채워져야 한다"
+
+
+def test_coverage_reports_the_shares_basis_split():
+    rows = D.build_for_ticker(
+        [_full(2022, "11011"), _full(2023, "11013")],
+        shares_by_key={(2022, "11011"): 10.0})
+    report = D.coverage(rows)
+
+    assert report["sharesBasis"] == {D.SHARES_AS_FILED: 1,
+                                     D.SHARES_CARRIED_FORWARD: 1}
+
+
+# --------------------------------------------------------------------------- #
 # The contract round trip
 #
 # The emitted rows were rejected wholesale by `FundamentalStore.from_jsonl` for

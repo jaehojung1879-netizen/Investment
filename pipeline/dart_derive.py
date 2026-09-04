@@ -44,6 +44,24 @@ whole claim.
 BALANCE SHEET ITEMS ARE NOT TTM. Equity and debt are levels at a date, and
 averaging or rolling them forward would answer a question nobody asked. They are
 taken from the filing as stated.
+
+A QUARTERLY REPORT CAN OMIT THE SHARE COUNT ON PURPOSE. Once the share pass had
+run past 2021, the DART share endpoint answered 013 — "no data" — for a rising
+share of Q1 and Q3 filings while the half-year and annual ones stayed complete:
+
+    연도      1분기 누락률   3분기 누락률   반기·사업보고서
+    2015-21   0%             0%             0%
+    2022      14%            26%            0%
+    2023      46%            57%            0%
+    2024      72%            73%            0%
+    2025      77%            78%            0%
+
+Not a coverage gap: Korean quarterly reports may skip restating 주식총수 현황
+when the count has not changed since the last half-year or annual filing, and
+that practice grew from 2022. So a missing quarterly count is carried forward
+from the nearest earlier filing that has one — the same number a reader on
+that quarter's date would have known — never from a later one, which would be
+a look-ahead.
 """
 from __future__ import annotations
 
@@ -62,6 +80,11 @@ PERIOD_AND_CUMULATIVE_STATEMENTS = ("IS", "CIS")
 BASIS_ANNUAL = "ANNUAL_AS_FILED"
 BASIS_ROLLFORWARD = "TTM_ROLLFORWARD"
 BASIS_INCOMPLETE = "INCOMPLETE_CHAIN"
+
+# Same publishing discipline for a carried-forward share count: filed and
+# carried are both trustworthy, and a reader deserves to know which this is.
+SHARES_AS_FILED = "AS_FILED"
+SHARES_CARRIED_FORWARD = "CARRIED_FORWARD"
 
 
 def cumulative_amount(record: dict, account: str) -> float | None:
@@ -138,6 +161,39 @@ def _ratio(numerator: float | None, denominator: float | None,
     if denominator == 0 or (positive_denominator and denominator < 0):
         return None
     return numerator / denominator
+
+
+def carried_shares(shares_by_key: dict[tuple[int, str], float] | None,
+                   year: int, code: str) -> tuple[float | None, str | None]:
+    """The share count as of this filing: filed, or carried from the last one.
+
+    A quarterly report that has not changed its share count since the last
+    half-year or annual filing may omit restating 주식총수 현황, and DART
+    answers 013 for it — not because the count is unknown, but because it has
+    not moved. The nearest EARLIER filing's count is still the number a reader
+    on this filing's date would have known, so it is used rather than leaving
+    the value sleeve dark for a count that in fact has not changed. Nothing
+    later is ever considered: that would be a look-ahead.
+    """
+    if not shares_by_key:
+        return None, None
+    exact = shares_by_key.get((year, code))
+    if exact is not None:
+        return exact, SHARES_AS_FILED
+    target = DF.period_end(year, code)
+    if target is None:
+        return None, None
+    best_end: str | None = None
+    best_value: float | None = None
+    for (y, c), value in shares_by_key.items():
+        end = DF.period_end(y, c)
+        if end is None or end > target:
+            continue
+        if best_end is None or end > best_end:
+            best_end, best_value = end, value
+    if best_value is None:
+        return None, None
+    return best_value, SHARES_CARRIED_FORWARD
 
 
 def derive_fields(by_key: dict[tuple[int, str], dict], year: int, code: str,
@@ -239,8 +295,10 @@ def build_for_ticker(records: list[dict],
     shares_by_key = shares_by_key or {}
     out: list[dict] = []
     for (year, code), filing in sorted(by_key.items()):
-        fields, basis = derive_fields(by_key, year, code,
-                                      shares_by_key.get((year, code)))
+        shares, shares_basis = carried_shares(shares_by_key, year, code)
+        fields, basis = derive_fields(by_key, year, code, shares)
+        if shares_basis:
+            basis["sharesBasis"] = shares_basis
         if not fields:
             continue
         out.append(pit_record(filing, fields, basis))
@@ -259,6 +317,7 @@ def coverage(rows: list[dict]) -> dict:
                 ("roe", "operatingMargin", "profitMargin", "debtToEquity",
                  "earningsGrowth", "epsTtm", "bookValuePerShare", "fcfPerShare")}
     bases: dict[str, int] = {}
+    share_bases: dict[str, int] = {}
     for row in rows:
         for key in counters:
             if (row.get("fields") or {}).get(key) is not None:
@@ -266,12 +325,16 @@ def coverage(rows: list[dict]) -> dict:
         basis = (row.get("derivation") or {}).get("netIncome")
         if basis:
             bases[basis] = bases.get(basis, 0) + 1
+        shares_basis = (row.get("derivation") or {}).get("sharesBasis")
+        if shares_basis:
+            share_bases[shares_basis] = share_bases.get(shares_basis, 0) + 1
     total = len(rows) or 1
     return {
         "rows": len(rows),
         "fieldCoveragePct": {k: round(100.0 * v / total, 2)
                              for k, v in sorted(counters.items())},
         "netIncomeBasis": bases,
+        "sharesBasis": share_bases,
         "qualityComplete": all(counters[k] for k in
                                ("roe", "operatingMargin", "profitMargin",
                                 "debtToEquity")),
