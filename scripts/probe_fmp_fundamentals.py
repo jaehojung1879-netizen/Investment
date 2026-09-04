@@ -57,7 +57,12 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 
-BASE = "https://financialmodelingprep.com/api/v3"
+# FMP retired its `/api/v3/...` statement endpoints on 2025-08-31 — found
+# live, not from documentation: the first real run got "Legacy Endpoint"
+# on all three, HTTP 403, for an account created well after that date. The
+# `/stable/...` endpoints are the replacement; `symbol` moves from the URL
+# path to a query parameter.
+BASE = "https://financialmodelingprep.com/stable"
 PACE_SECONDS = 0.3
 
 STATEMENT_PATHS = {
@@ -170,8 +175,8 @@ def probe_ticker(key: str, ticker: str, limit: int) -> dict:
     calls = 0
     for kind, path in STATEMENT_PATHS.items():
         params = urllib.parse.urlencode(
-            {"period": "quarter", "limit": limit, "apikey": key})
-        url = f"{BASE}/{path}/{ticker}?{params}"
+            {"symbol": ticker, "period": "quarter", "limit": limit, "apikey": key})
+        url = f"{BASE}/{path}?{params}"
         status, body, error = _request(url)
         calls += 1
         time.sleep(PACE_SECONDS)
