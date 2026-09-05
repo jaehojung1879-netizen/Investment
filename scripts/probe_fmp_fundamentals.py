@@ -109,6 +109,24 @@ FACTOR_INPUTS = {
 # 200 status — a response that LOOKS like success until the body is read.
 ERROR_BODY_KEYS = ("Error Message", "error", "message")
 
+# The filing date under BOTH spellings FMP has shipped. `/api/v3` carried a
+# misspelt `fillingDate` for years; the `/stable` replacement spells it
+# `filingDate`, and the first served response in this repo proved it — a
+# probe that knew only the v3 spelling would have counted zero filing dates
+# on a response that carried one in every row, and reported "no point-in-time"
+# about a source that has it. Both are accepted; which one answered is
+# reported rather than assumed.
+FILING_DATE_FIELDS = ("filingDate", "fillingDate")
+
+
+def filing_date_of(row: dict) -> tuple[str | None, str | None]:
+    """(value, field name) for whichever filing-date spelling this row uses."""
+    for field in FILING_DATE_FIELDS:
+        value = row.get(field)
+        if value:
+            return str(value), field
+    return None, None
+
 
 def _request(url: str, timeout: int = 30) -> tuple[int | None, bytes | None, str]:
     """One GET with bounded retries on transient failures. Returns
@@ -194,6 +212,53 @@ def check_bases(key: str, ticker: str = "AAPL") -> dict:
     return out
 
 
+# How much history one call may ask for. The first run that got a 200 asked
+# for 4 quarters and the run that got 402 on every ticker asked for 400 — the
+# SAME endpoint, same key, same minute. That makes `limit` the variable, and
+# a cap is a number to find, not a tier to infer from a status code.
+LIMIT_LADDER = (4, 20, 50, 100, 200, 400)
+
+
+def find_limit_cap(key: str, ticker: str = "AAPL",
+                   ladder: tuple[int, ...] = LIMIT_LADDER) -> dict:
+    """The largest `limit` this key is actually served, measured.
+
+    Walks the ladder upward and stops at the first refusal: FMP's caps are
+    monotonic (a plan that refuses 200 does not serve 400), so continuing
+    past a refusal only spends quota. Reports the refusal's own body, because
+    the vendor's sentence is the finding — the status code alone is what
+    turned an unread 402 into "the free tier dropped statements".
+    """
+    rungs = []
+    largest = None
+    for limit in ladder:
+        params = urllib.parse.urlencode(
+            {"symbol": ticker, "period": "quarter", "limit": limit, "apikey": key})
+        url = f"{BASE}/income-statement?{params}"
+        status, body, error = _request(url)
+        time.sleep(PACE_SECONDS)
+        served = status == 200 and bool(body) and body.lstrip()[:1] in (b"[", b"{")
+        periods = None
+        if served:
+            try:
+                payload = json.loads(body.decode("utf-8"))
+            except ValueError:
+                payload = None
+            if isinstance(payload, list):
+                periods = len(payload)
+            elif isinstance(payload, dict):
+                served = False           # a 200 carrying an error body
+        rungs.append({"limit": limit, "httpStatus": status, "served": served,
+                      "periodsReturned": periods,
+                      "error": error or None, "bodyHead": body_head(body)})
+        if not served:
+            break
+        largest = limit
+    return {"ladder": list(ladder), "rungs": rungs, "largestServed": largest,
+            "refusedAt": next((r["limit"] for r in rungs if not r["served"]), None),
+            "refusalBody": next((r["bodyHead"] for r in rungs if not r["served"]), None)}
+
+
 def diagnose(liveness: dict, bases: dict) -> dict:
     """What the two checks together say the next move is.
 
@@ -245,7 +310,10 @@ def parse_statement_response(kind: str, payload) -> dict:
     dates = sorted(str(row.get("date")) for row in payload if row.get("date"))
     if dates:
         entry["dateRange"] = [dates[0], dates[-1]]
-    entry["fillingDateCoverage"] = sum(1 for row in payload if row.get("fillingDate"))
+    filing_hits = [filing_date_of(row) for row in payload]
+    entry["fillingDateCoverage"] = sum(1 for value, _ in filing_hits if value)
+    entry["fillingDateField"] = next((f for _, f in filing_hits if f), None)
+    entry["acceptedDateCoverage"] = sum(1 for row in payload if row.get("acceptedDate"))
 
     fields_found: dict[str, dict] = {}
     for concept, candidates in CANDIDATE_FIELDS.get(kind, {}).items():
@@ -254,7 +322,8 @@ def parse_statement_response(kind: str, payload) -> dict:
         fields_found[concept] = {"field": hit}
     entry["fieldsFound"] = fields_found
     entry["sampleRow"] = {k: payload[0].get(k) for k in
-                          ("date", "period", "fillingDate", "acceptedDate")
+                          ("date", "period", "filingDate", "fillingDate",
+                           "acceptedDate")
                           if k in payload[0]}
     return entry
 
@@ -322,16 +391,42 @@ def main(argv=None) -> int:
     print(f"\n  판정: {verdict['verdict']}")
     print(f"  {verdict['meaning']}\n")
 
+    # The 402s and the 200 in the previous run came from the same endpoint in
+    # the same minute and differed only in `limit`. So the cap is measured
+    # before the sample is spent, and the sample then asks for what the key is
+    # actually served rather than re-buying the same refusal five times.
+    limit = args.limit
+    cap = None
+    if verdict["verdict"] == "STATEMENTS_AVAILABLE":
+        cap = find_limit_cap(key)
+        print("=== limit 상한 ===")
+        for rung in cap["rungs"]:
+            mark = "SERVED" if rung["served"] else "refused"
+            tail = (f"{rung['periodsReturned']}개 기간" if rung["served"]
+                    else rung["bodyHead"][:160])
+            print(f"  limit={rung['limit']:<4} {str(rung['httpStatus']):<5} "
+                  f"{mark:<8} {tail}")
+        if cap["largestServed"] is None:
+            print("  → 어떤 limit 도 응답하지 않았습니다.\n")
+        else:
+            print(f"  → 서비스되는 최대 limit: {cap['largestServed']}"
+                  + (f" (limit={cap['refusedAt']} 에서 거절)"
+                     if cap["refusedAt"] else "") + "\n")
+            if args.limit > cap["largestServed"]:
+                print(f"  요청 limit {args.limit} → {cap['largestServed']} 로 낮춰서 "
+                      f"샘플을 받습니다.\n")
+                limit = cap["largestServed"]
+
 
     samples = [s.strip().upper() for s in args.samples.split(",") if s.strip()]
     report: dict = {"probedAt": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
                     "factorInputs": FACTOR_INPUTS, "requestedLimit": args.limit,
-                    "samples": {}}
+                    "effectiveLimit": limit, "limitCap": cap, "samples": {}}
 
     total_calls = 0
     for ticker in samples:
         print(f"=== {ticker} ===")
-        entry = probe_ticker(key, ticker, args.limit)
+        entry = probe_ticker(key, ticker, limit)
         report["samples"][ticker] = entry
         total_calls += entry["calls"]
         for kind in STATEMENT_PATHS:
@@ -339,10 +434,16 @@ def main(argv=None) -> int:
             if info.get("error") or info.get("errorBody"):
                 print(f"  {kind:<9} 실패 — {info.get('error') or info.get('errorBody')}"
                       f" (HTTP {info.get('httpStatus')})")
+                # The body was already captured; printing it is what makes the
+                # refusal readable from the run log instead of only from the
+                # uploaded JSON, which is where the last one went unread.
+                if info.get("bodyHead"):
+                    print(f"            {info['bodyHead'][:200]}")
                 continue
             print(f"  {kind:<9} {info.get('periodCount')}개 기간 · "
                   f"범위 {info.get('dateRange')} · "
-                  f"filed일 {info.get('fillingDateCoverage')}/{info.get('periodCount')}")
+                  f"filed일 {info.get('fillingDateCoverage')}/{info.get('periodCount')}"
+                  f" ({info.get('fillingDateField')})")
             missing = [k for k, v in (info.get("fieldsFound") or {}).items() if not v.get("field")]
             if missing:
                 print(f"            누락: {', '.join(missing)}")
@@ -370,6 +471,7 @@ def main(argv=None) -> int:
     report["keyLiveness"] = liveness
     report["urlShapes"] = bases
     report["diagnosis"] = verdict
+    report["limitCap"] = cap
     Path(args.output).write_text(
         json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(f"\nwrote {args.output}")

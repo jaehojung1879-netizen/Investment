@@ -349,15 +349,38 @@ def universe_reach(snapshots: list[dict], universe: list[str]) -> dict:
     if not usable:
         return {"measured": False}
     wanted = set(universe)
+    held_by_date = {s["date"]: {to_pipeline_ticker(c) for c in s["codes"]} & wanted
+                    for s in usable}
+
+    # Which snapshot first carries each name. A name absent early and present
+    # later was LISTED later — the cross-section is right and the replay's
+    # universe is what is anachronistic. A name absent from every snapshot is
+    # a genuine gap: wrong market, wrong code, or a source that does not carry
+    # it at all. Those two need opposite fixes, so they are never pooled.
+    first_seen: dict[str, str] = {}
+    for snap in usable:
+        for ticker in held_by_date[snap["date"]]:
+            first_seen.setdefault(ticker, snap["date"])
+
     out = {"measured": True, "universeSize": len(wanted), "byDate": []}
     for snap in usable:
-        held = {to_pipeline_ticker(c) for c in snap["codes"]} & wanted
+        held = held_by_date[snap["date"]]
+        missing = sorted(wanted - held)
+        arrives_later = sorted(t for t in missing
+                               if first_seen.get(t, "") > snap["date"])
+        never = sorted(t for t in missing if t not in first_seen)
         out["byDate"].append({
             "date": snap["date"], "issues": snap["count"],
             "universeNamesHeld": len(held),
             "universeNamesHeldPct": (round(100.0 * len(held) / len(wanted), 2)
                                      if wanted else None),
+            "missing": len(missing),
+            "missingListedLater": len(arrives_later),
+            "missingNeverHeld": len(never),
+            "missingNeverHeldSample": never[:10],
         })
+    out["neverHeldAnyDate"] = sorted(wanted - set(first_seen))
+    out["accountedFor"] = not out["neverHeldAnyDate"]
     return out
 
 
@@ -470,11 +493,22 @@ def main(argv=None) -> int:
                   f"{evidence['joinedMembers']} joined")
             if evidence.get("departedSample"):
                 print(f"      departed sample: {evidence['departedSample']}")
-        for cell in (row.get("universeReach") or {}).get("byDate") or []:
-            print(f"      {cell['date']}: {cell['issues']} issues, "
-                  f"{cell['universeNamesHeld']}/"
-                  f"{row['universeReach']['universeSize']} "
-                  f"({cell['universeNamesHeldPct']}%) of the replay's KR universe")
+        reach = row.get("universeReach") or {}
+        for cell in reach.get("byDate") or []:
+            line = (f"      {cell['date']}: {cell['issues']} issues, "
+                    f"{cell['universeNamesHeld']}/{reach['universeSize']} "
+                    f"({cell['universeNamesHeldPct']}%) of the replay's KR universe")
+            if cell.get("missing"):
+                line += (f" — {cell['missingListedLater']} listed later, "
+                         f"{cell['missingNeverHeld']} never held")
+            print(line)
+        if reach.get("measured"):
+            if reach.get("accountedFor"):
+                print("      every KR universe name is held on some date; the "
+                      "shortfall on older dates is later listings, not a gap")
+            else:
+                print(f"      NOT ACCOUNTED FOR: {len(reach['neverHeldAnyDate'])} "
+                      f"name(s) held on no date — {reach['neverHeldAnyDate'][:10]}")
         if row.get("columnsSeen"):
             print(f"      columns: {row['columnsSeen']}")
     print(f"wrote {args.output}")
