@@ -136,6 +136,95 @@ def _request(url: str, timeout: int = 30) -> tuple[int | None, bytes | None, str
     return None, None, last_error
 
 
+def body_head(body: bytes | None, limit: int = 300) -> str:
+    """What the vendor actually said, trimmed. Never dropped."""
+    if not body:
+        return ""
+    return body[:limit].decode("utf-8", "replace").replace("\n", " ").strip()
+
+
+# The same statement, asked for under both URL shapes. `/api/v3` was retired
+# for statements on 2025-08-31 and `/stable` is the replacement, but a plan
+# can expose them differently and "the path is wrong" and "the plan excludes
+# it" are different problems with different fixes. Asked, not assumed.
+BASES = {
+    "stable": "https://financialmodelingprep.com/stable",
+    "v3": "https://financialmodelingprep.com/api/v3",
+}
+
+# Endpoints a key on ANY live plan answers. Without one of these the probe
+# cannot tell a dead key from a plan that excludes statements — and those
+# point at completely different next moves.
+LIVENESS = (
+    ("profile", "stable", "profile", {"symbol": "AAPL"}),
+    ("quote", "stable", "quote", {"symbol": "AAPL"}),
+)
+
+
+def check_liveness(key: str) -> dict:
+    """Does this key work at all? Separates a dead key from a limited plan."""
+    out = {}
+    for name, base, path, params in LIVENESS:
+        query = dict(params)
+        query["apikey"] = key
+        url = f"{BASES[base]}/{path}?{urllib.parse.urlencode(query)}"
+        status, body, error = _request(url)
+        time.sleep(PACE_SECONDS)
+        served = status == 200 and bool(body) and body.lstrip()[:1] in (b"[", b"{")
+        out[name] = {"httpStatus": status, "served": served,
+                     "error": error or None, "bodyHead": body_head(body)}
+    return out
+
+
+def check_bases(key: str, ticker: str = "AAPL") -> dict:
+    """One statement under each URL shape, so a path problem is ruled out."""
+    out = {}
+    for name, base in BASES.items():
+        if name == "v3":
+            url = (f"{base}/income-statement/{ticker}"
+                   f"?{urllib.parse.urlencode({'period': 'quarter', 'limit': 4, 'apikey': key})}")
+        else:
+            url = (f"{base}/income-statement"
+                   f"?{urllib.parse.urlencode({'symbol': ticker, 'period': 'quarter', 'limit': 4, 'apikey': key})}")
+        status, body, error = _request(url)
+        time.sleep(PACE_SECONDS)
+        served = status == 200 and bool(body) and body.lstrip()[:1] in (b"[", b"{")
+        out[name] = {"httpStatus": status, "served": served,
+                     "error": error or None, "bodyHead": body_head(body)}
+    return out
+
+
+def diagnose(liveness: dict, bases: dict) -> dict:
+    """What the two checks together say the next move is.
+
+    The distinction that matters: a key that works everywhere except the
+    statement endpoints is a PLAN limit and the fix is a subscription; a key
+    that works nowhere is a KEY problem and no subscription helps. A bare 402
+    on statements alone cannot tell those apart, which is why the earlier run
+    could only guess.
+    """
+    key_live = any(row.get("served") for row in liveness.values())
+    statements_served = [name for name, row in bases.items() if row.get("served")]
+    refused = {name: row.get("bodyHead") for name, row in bases.items()
+               if not row.get("served")}
+    if statements_served:
+        return {"verdict": "STATEMENTS_AVAILABLE",
+                "meaning": f"served under {statements_served}; the US route is open",
+                "servedBases": statements_served}
+    if key_live:
+        return {"verdict": "KEY_LIVE_PLAN_EXCLUDES_STATEMENTS",
+                "meaning": ("the key is answered on other endpoints and refused "
+                            "on every statement URL shape, so this is the plan "
+                            "rather than the key or the path — the refusal body "
+                            "names what it wants"),
+                "refusalBodies": refused}
+    return {"verdict": "KEY_NOT_LIVE",
+            "meaning": ("no endpoint answered, statement or otherwise, so the "
+                        "key itself is the problem and no subscription changes "
+                        "that"),
+            "refusalBodies": refused}
+
+
 def parse_statement_response(kind: str, payload) -> dict:
     """Everything the probe reports about one statement's response, from the
     already-decoded JSON payload.
@@ -186,7 +275,14 @@ def probe_ticker(key: str, ticker: str, limit: int) -> dict:
         try:
             payload = json.loads(body.decode("utf-8"))
         except ValueError:
-            entry[kind] = {"httpStatus": status, "error": "non-JSON response"}
+            # The body was READ and then thrown away here, which is how a
+            # bare "HTTP 402" became "FMP dropped statements from the free
+            # tier" — an inference from a status code with the vendor's own
+            # explanation discarded. FMP says which plan an endpoint needs;
+            # that sentence is the finding, so it is kept.
+            entry[kind] = {"httpStatus": status,
+                           "error": f"non-JSON response (HTTP {status})",
+                           "bodyHead": body_head(body)}
             continue
         parsed = parse_statement_response(kind, payload)
         parsed["httpStatus"] = status
@@ -209,6 +305,23 @@ def main(argv=None) -> int:
         print("ERROR: FMP_API_KEY not in the environment; nothing probed.")
         return 1
     print(f"key present, {len(key)} chars\n")
+
+    # Before spending the sample: does the key work at all, and is the refusal
+    # about the plan or about the path? A bare 402 on statements cannot say.
+    liveness = check_liveness(key)
+    print("=== 키 자체 확인 ===")
+    for name, row in liveness.items():
+        print(f"  {name:<9} {str(row['httpStatus']):<5} "
+              f"{'SERVED' if row['served'] else 'refused'}  {row['bodyHead'][:120]}")
+    bases = check_bases(key)
+    print("\n=== URL 형태별 손익계산서 ===")
+    for name, row in bases.items():
+        print(f"  {name:<9} {str(row['httpStatus']):<5} "
+              f"{'SERVED' if row['served'] else 'refused'}  {row['bodyHead'][:160]}")
+    verdict = diagnose(liveness, bases)
+    print(f"\n  판정: {verdict['verdict']}")
+    print(f"  {verdict['meaning']}\n")
+
 
     samples = [s.strip().upper() for s in args.samples.split(",") if s.strip()]
     report: dict = {"probedAt": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
@@ -236,8 +349,6 @@ def main(argv=None) -> int:
         print()
 
     report["totalCalls"] = total_calls
-    Path(args.output).write_text(
-        json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
     print("=== 판정 ===")
     print(f"  이번 프로브 호출 수 : {total_calls} (종목당 {total_calls // max(1, len(samples))})")
@@ -256,6 +367,11 @@ def main(argv=None) -> int:
               f"하루 250회면 약 {est_days}일")
     if not ok_incomes:
         print("  → 전부 실패했습니다. 키 또는 무료 티어 제한을 확인하십시오.")
+    report["keyLiveness"] = liveness
+    report["urlShapes"] = bases
+    report["diagnosis"] = verdict
+    Path(args.output).write_text(
+        json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(f"\nwrote {args.output}")
     return 0 if ok_incomes else 1
 

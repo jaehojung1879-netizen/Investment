@@ -174,6 +174,17 @@
   not, so the summary counts DISTINCT addresses first and refuses a verdict
   below two. "Every address refused" from one address is the same error the
   fan-out exists to correct.
+- A refusal body is read and KEPT, never read and dropped. The FMP probe
+  fetched the 402 body and then replaced it with "non-JSON response" in an
+  `except ValueError`, and that empty status became "FMP dropped statements
+  from the free tier" — a third conclusion inferred from a bare status code
+  with the vendor's own explanation discarded. FMP's 402 names the plan the
+  endpoint needs; that sentence was the finding.
+- A credential that fails on the endpoints you want is not evidence about the
+  credential until it has been tried on one you already expect to work. A dead
+  key and a plan that excludes an endpoint produce the same failure on that
+  endpoint and have completely different fixes, so the probe asks a liveness
+  endpoint first and reports the two apart.
 - A vendor's own error text is REPORTED, never paraphrased into our own label.
   The KRX probe hardcoded "Unauthorized Key" for any 401 while the service was
   actually answering `Unauthorized API Call` — two different statements
