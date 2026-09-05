@@ -166,3 +166,106 @@ def test_both_url_shapes_are_asked_rather_than_assumed():
     # differently, and "wrong path" and "excluded by plan" have different fixes.
     assert set(P.BASES) == {"stable", "v3"}
     assert P.BASES["v3"].endswith("/api/v3")
+
+
+# --------------------------------------------------------------------------- #
+# The filing date under both spellings FMP has shipped
+#
+# `/api/v3` carried a misspelt `fillingDate`; the `/stable` replacement spells
+# it `filingDate`. The first response this repo was ever served came from
+# `/stable`, so a probe that knew only the v3 spelling would have counted zero
+# filing dates on rows that all carried one — and reported "no point-in-time"
+# about the one source that has it.
+# --------------------------------------------------------------------------- #
+def test_the_stable_spelling_of_the_filing_date_is_counted():
+    rows = [{"date": "2026-06-27", "filingDate": "2026-07-31"},
+            {"date": "2026-03-28", "filingDate": "2026-05-01"}]
+    entry = P.parse_statement_response("income", rows)
+    assert entry["fillingDateCoverage"] == 2
+    assert entry["fillingDateField"] == "filingDate"
+
+
+def test_the_legacy_spelling_is_still_counted():
+    rows = [{"date": "2023-12-31", "fillingDate": "2024-02-01"}]
+    entry = P.parse_statement_response("income", rows)
+    assert entry["fillingDateCoverage"] == 1
+    assert entry["fillingDateField"] == "fillingDate"
+
+
+def test_rows_with_no_filing_date_under_either_spelling_report_no_field():
+    entry = P.parse_statement_response("income", [{"date": "2023-12-31"}])
+    assert entry["fillingDateCoverage"] == 0
+    assert entry["fillingDateField"] is None
+
+
+def test_accepted_date_is_counted_separately_from_the_filing_date():
+    rows = [{"date": "2026-06-27", "filingDate": "2026-07-31",
+             "acceptedDate": "2026-07-31 18:04:19"},
+            {"date": "2026-03-28", "filingDate": "2026-05-01"}]
+    entry = P.parse_statement_response("income", rows)
+    assert entry["acceptedDateCoverage"] == 1
+
+
+# --------------------------------------------------------------------------- #
+# The limit cap — the measurement that separates "the plan excludes
+# statements" from "we asked for more history than the plan serves"
+#
+# The run that produced this test got HTTP 200 for limit=4 and HTTP 402 for
+# limit=400, same endpoint, same key, same minute. Only `limit` varied, so
+# only `limit` can be blamed — and the cap is a number to find.
+# --------------------------------------------------------------------------- #
+def _fake_requests(script):
+    """Replaces P._request with a canned status/body per call, in order."""
+    calls = []
+
+    def fake(url, timeout=30):
+        calls.append(url)
+        status, body = script[min(len(calls) - 1, len(script) - 1)]
+        return status, body, "" if status == 200 else f"HTTP {status}"
+
+    return fake, calls
+
+
+def test_the_ladder_stops_at_the_first_refusal_instead_of_spending_quota(monkeypatch):
+    fake, calls = _fake_requests([
+        (200, b'[{"date": "2026-06-27"}]'),
+        (402, b'{"Error Message": "Special Endpoint : upgrade your plan"}'),
+    ])
+    monkeypatch.setattr(P, "_request", fake)
+    monkeypatch.setattr(P.time, "sleep", lambda *_: None)
+    cap = P.find_limit_cap("k", ladder=(4, 20, 50, 100))
+    assert cap["largestServed"] == 4
+    assert cap["refusedAt"] == 20
+    assert len(calls) == 2          # 50 and 100 were never bought
+
+
+def test_the_refusal_body_survives_into_the_cap_report(monkeypatch):
+    fake, _ = _fake_requests([
+        (200, b'[{"date": "2026-06-27"}]'),
+        (402, b'{"Error Message": "Special Endpoint : upgrade your plan"}'),
+    ])
+    monkeypatch.setattr(P, "_request", fake)
+    monkeypatch.setattr(P.time, "sleep", lambda *_: None)
+    cap = P.find_limit_cap("k", ladder=(4, 20))
+    assert "Special Endpoint" in cap["refusalBody"]
+
+
+def test_a_two_hundred_carrying_an_error_body_is_a_refusal_not_a_served_rung(monkeypatch):
+    # FMP answers some limits with 200 and an error object. Counting that as
+    # served is exactly the mistake the whole probe exists to avoid.
+    fake, _ = _fake_requests([(200, b'{"Error Message": "Limit Reach"}')])
+    monkeypatch.setattr(P, "_request", fake)
+    monkeypatch.setattr(P.time, "sleep", lambda *_: None)
+    cap = P.find_limit_cap("k", ladder=(4, 20))
+    assert cap["largestServed"] is None
+    assert cap["refusedAt"] == 4
+
+
+def test_a_ladder_served_all_the_way_up_reports_no_refusal(monkeypatch):
+    fake, _ = _fake_requests([(200, b'[{"date": "2026-06-27"}]')])
+    monkeypatch.setattr(P, "_request", fake)
+    monkeypatch.setattr(P.time, "sleep", lambda *_: None)
+    cap = P.find_limit_cap("k", ladder=(4, 20, 50))
+    assert cap["largestServed"] == 50
+    assert cap["refusedAt"] is None
+    assert cap["refusalBody"] is None

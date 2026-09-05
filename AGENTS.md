@@ -162,6 +162,41 @@
   paths are right (a wrong path answers 404, not this) and that the key was
   read rather than missing. It gets its own verdict; rolled into "the source
   could not answer" it would retire a source that was never actually asked.
+- A status code is not the variable that produced it. FMP answered
+  `limit=4` with HTTP 200 and real statements, and `limit=400` with HTTP 402,
+  on the same endpoint with the same key in the same minute. Only `limit`
+  differed, so only `limit` could be blamed — yet the 402 alone had already
+  been written up as "the free tier excludes statements", a claim about the
+  PLAN made from a run that had also, in its own log, been served. When two
+  calls to one endpoint disagree, the difference between them is the finding;
+  look for it before attributing the refusal to the vendor's product.
+- A cap is a number to measure, not a tier to infer. `find_limit_cap()` walks
+  the request upward until the first refusal and stops there, because FMP's
+  caps are monotonic and buying rungs above a refusal only spends quota. The
+  answer is "served up to N", which is actionable; "the free tier is
+  insufficient" is not.
+- A vendor renaming a field is indistinguishable from the field being absent,
+  and reads as the WORSE finding. FMP's `/api/v3` shipped a misspelt
+  `fillingDate` for years and `/stable` corrected it to `filingDate`; a probe
+  that knew only the old spelling would have counted zero filing dates on a
+  response carrying one in every row, and reported "no point-in-time" about
+  the source that has it. Field names get candidate lists for the same reason
+  endpoint paths do — and which name answered is recorded, not assumed.
+- A name missing from an old cross-section is two different findings that
+  need opposite fixes: it was LISTED LATER (the dated cross-section is right
+  and the fixed universe list is the anachronism), or the source never
+  carries it at all (wrong market, wrong code, a real gap). KRX held 51 of
+  the replay's 68 KR names at 2013 and all 68 today. Pooled, that reads as a
+  25% hole in the source; split by first-seen date it reads as a source
+  behaving exactly as a point-in-time source must. `universe_reach()` reports
+  `missingListedLater` and `missingNeverHeld` separately and never sums them.
+- Access granted per service is measured per service. The KRX approval opened
+  `sto/stk_bydd_trd` and left `sto/ksq_bydd_trd`, `sto/stk_isu_base_info` and
+  `idx/kosdaq_dd_trd` answering the same `Unauthorized API Call` as before.
+  "KRX works now" and "KRX still refuses" were both true in one run, so the
+  verdict is per endpoint; whether a still-refused service MATTERS is a
+  separate question answered from the universe (all 68 KR names are `.KS`,
+  so the KOSDAQ refusal does not touch this one).
 - Isolating one variable FIXES the others, which makes them untested rather
   than ruled out. The header run held the runner constant and so held the
   egress address constant; one address refused eight times is one observation

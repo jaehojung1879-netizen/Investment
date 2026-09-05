@@ -123,6 +123,55 @@ def test_universe_reach_says_so_when_nothing_answered():
                             ["005930.KS"]) == {"measured": False}
 
 
+# A name the oldest cross-section does not hold is one of two completely
+# different things, and they need opposite fixes: it was LISTED LATER (the
+# cross-section is right and the replay's fixed universe is the anachronism),
+# or the source never carries it at all (wrong market, wrong code, real gap).
+# The first KRX run showed 51/68 at 2013 and 68/68 today, and pooling those
+# two readings is how a correct point-in-time answer gets misread as a hole.
+def test_a_name_absent_early_and_present_later_is_reported_as_listed_later():
+    reach = P.universe_reach([_snap("2013-01-02", ["005930"]),
+                              _snap("2026-09-01", ["005930", "000660"])],
+                             ["005930.KS", "000660.KS"])
+    early = reach["byDate"][0]
+    assert early["missing"] == 1
+    assert early["missingListedLater"] == 1
+    assert early["missingNeverHeld"] == 0
+    assert reach["accountedFor"] is True
+
+
+def test_a_name_no_snapshot_ever_holds_is_reported_as_a_real_gap():
+    reach = P.universe_reach([_snap("2013-01-02", ["005930"]),
+                              _snap("2026-09-01", ["005930"])],
+                             ["005930.KS", "035720.KQ"])
+    assert reach["byDate"][0]["missingNeverHeld"] == 1
+    assert reach["byDate"][0]["missingListedLater"] == 0
+    assert reach["neverHeldAnyDate"] == ["035720.KQ"]
+    assert reach["accountedFor"] is False
+
+
+def test_a_delisted_name_held_early_and_gone_later_is_not_called_a_gap():
+    # Held at 2013, absent at 2026 — the departure a point-in-time source is
+    # supposed to show. It must not count as "listed later" (it wasn't) nor as
+    # "never held" (it was), so the later date reports it as neither.
+    reach = P.universe_reach([_snap("2013-01-02", ["005930", "000060"]),
+                              _snap("2026-09-01", ["005930"])],
+                             ["005930.KS", "000060.KS"])
+    late = reach["byDate"][1]
+    assert late["missing"] == 1
+    assert late["missingListedLater"] == 0
+    assert late["missingNeverHeld"] == 0
+    assert reach["accountedFor"] is True
+
+
+def test_every_name_present_everywhere_leaves_nothing_missing():
+    reach = P.universe_reach([_snap("2013-01-02", ["005930"]),
+                              _snap("2026-09-01", ["005930"])],
+                             ["005930.KS"])
+    assert [cell["missing"] for cell in reach["byDate"]] == [0, 0]
+    assert reach["neverHeldAnyDate"] == []
+
+
 # --------------------------------------------------------------------------- #
 # What the rows carry decides whether a dated market-cap universe is possible
 #
