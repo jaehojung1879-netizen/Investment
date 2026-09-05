@@ -139,6 +139,22 @@ AUTH_TRANSPORTS = (
 )
 
 
+def resp_message(body: str) -> str | None:
+    """KRX's own `respMsg`, or None when the body does not carry one.
+
+    Reported as it came. The two messages seen so far mean different things
+    and only the service can tell them apart for us.
+    """
+    try:
+        payload = json.loads(body)
+    except ValueError:
+        return None
+    if not isinstance(payload, dict):
+        return None
+    message = payload.get("respMsg")
+    return str(message).strip() if message else None
+
+
 def call(base: str, path: str, params: dict, auth_key: str,
          timeout: int = 40, transport: tuple = AUTH_TRANSPORTS[0]) -> dict:
     """One Open API call. What came back is recorded either way.
@@ -161,19 +177,26 @@ def call(base: str, path: str, params: dict, auth_key: str,
             return {"status": response.status, "raw": response.read()}
     except urllib.error.HTTPError as exc:
         body = exc.read()[:400].decode("utf-8", "replace")
-        # MEASURED: every endpoint answered
-        # `{"respMsg":"Unauthorized Key","respCode":"401"}`. That is the
-        # service replying in its OWN protocol, which settles two things a
-        # bare status could not — the base URL and the path are right (a wrong
-        # path gives 404, not structured KRX JSON), and the key was READ and
-        # rejected rather than missing. Named here so it is never rolled up
-        # into "the source could not answer", which is what the portal's
-        # LOGOUT was wrongly reported as before.
-        unauthorized = "unauthorized key" in body.lower() or exc.code == 401
+        # CARRY WHAT THE SERVICE SAID, VERBATIM. The first run's label was
+        # hardcoded to "Unauthorized Key" for any 401, and the second run's
+        # bodies actually read `Unauthorized API Call` — a different statement
+        # that the label was overwriting. The two are not the same finding:
+        #
+        #   respMsg "Unauthorized Key"        the key is not recognised
+        #   respMsg "Unauthorized API Call"   the key IS recognised, and this
+        #                                     call is not authorised for it
+        #
+        # Replacing a vendor's own words with our guess at them is how a
+        # solved problem goes on looking unsolved, so the message is parsed
+        # out of the body and reported as it came.
+        message = resp_message(body)
         return {"status": exc.code,
-                "error": ("key refused — the service answered Unauthorized Key"
-                          if unauthorized else f"HTTP {exc.code}"),
-                "unauthorizedKey": unauthorized,
+                "error": (f"refused — {message}" if message
+                          else f"HTTP {exc.code}"),
+                "respMsg": message,
+                "keyNotRecognised": bool(message and "key" in message.lower()),
+                "serviceNotAuthorised": bool(
+                    message and "api call" in message.lower()),
                 "bodyHead": body}
     except Exception as exc:  # pragma: no cover - network dependent
         return {"status": None, "error": f"{type(exc).__name__}: {exc}"}
@@ -254,12 +277,21 @@ def membership_evidence(snapshots: list[dict]) -> dict:
         # Reporting it as INSUFFICIENT_SNAPSHOTS would read as "KRX has no
         # dated cross-section" and retire a source that was never asked.
         failed = [s for s in snapshots if s.get("error")]
-        if failed and all(s.get("unauthorizedKey") for s in failed):
-            return {"verdict": "NOT_MEASURED_UNAUTHORIZED_KEY",
+        if failed and all(s.get("keyNotRecognised") for s in failed):
+            return {"verdict": "NOT_MEASURED_KEY_NOT_RECOGNISED",
                     "reason": "the service answered Unauthorized Key on every "
-                              "request — the path and base are right and the "
-                              "key was read and rejected, so nothing here is a "
-                              "finding about KRX's dated data",
+                              "request — it does not recognise the key, so "
+                              "nothing here is a finding about KRX's dated data",
+                    "respMsg": failed[0].get("respMsg"),
+                    "snapshotsUsable": len(usable)}
+        if failed and all(s.get("serviceNotAuthorised") for s in failed):
+            return {"verdict": "NOT_MEASURED_SERVICE_NOT_AUTHORISED",
+                    "reason": "the service answered Unauthorized API Call on "
+                              "every request — the key is recognised and these "
+                              "calls are not authorised for it, so the next "
+                              "move is subscribing the key to these services, "
+                              "not changing this code",
+                    "respMsg": failed[0].get("respMsg"),
                     "snapshotsUsable": len(usable)}
         return {"verdict": "INSUFFICIENT_SNAPSHOTS",
                 "reason": f"{len(usable)} dated cross-sections answered; two "
@@ -368,7 +400,8 @@ def main(argv=None) -> int:
             {"served": False, "error": answer.get("error"),
              "bodyHead": (answer.get("bodyHead") or "")[:120]})
         print(f"    {candidate[0]:<18} "
-              + ("SERVED" if served else f"{answer.get('error')}"))
+              + ("SERVED" if served
+                 else f"{answer.get('error')}  {(answer.get('bodyHead') or '')[:80]}"))
         if served:
             transport = candidate
             break

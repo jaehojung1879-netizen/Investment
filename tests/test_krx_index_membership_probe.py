@@ -165,20 +165,19 @@ def test_the_open_api_rows_key_is_read():
 # missing. Rolled up into INSUFFICIENT_SNAPSHOTS it would read as "KRX has no
 # dated cross-section" and retire a source that was never actually asked.
 # --------------------------------------------------------------------------- #
-def _unauthorized(date):
-    return {"date": date,
-            "error": "key refused — the service answered Unauthorized Key",
-            "status": 401, "unauthorizedKey": True,
-            "bodyHead": '{"respMsg":"Unauthorized Key","respCode":"401"}'}
+def _unauthorized(date, message="Unauthorized Key"):
+    return {"date": date, "error": f"refused — {message}", "status": 401,
+            "respMsg": message,
+            "keyNotRecognised": "key" in message.lower(),
+            "serviceNotAuthorised": "api call" in message.lower(),
+            "bodyHead": '{"respMsg":"%s","respCode":"401"}' % message}
 
 
 def test_an_all_unauthorized_run_is_not_a_finding_about_the_source():
     evidence = P.membership_evidence([_unauthorized("2013-01-02"),
                                       _unauthorized("2026-09-01")])
-    assert evidence["verdict"] == "NOT_MEASURED_UNAUTHORIZED_KEY"
+    assert evidence["verdict"] == "NOT_MEASURED_KEY_NOT_RECOGNISED"
     assert "nothing here is a finding" in evidence["reason"]
-    # The two facts the 401 establishes, both worth keeping in the reason.
-    assert "path and base are right" in evidence["reason"]
 
 
 def test_a_mixed_failure_is_still_insufficient_snapshots():
@@ -186,7 +185,7 @@ def test_a_mixed_failure_is_still_insufficient_snapshots():
     # serve us, so the shortfall is about the paths or the dates.
     evidence = P.membership_evidence([
         _snap("2013-01-02", ["005930"]),
-        {"date": "2026-09-01", "error": "HTTP 404", "unauthorizedKey": False}])
+        {"date": "2026-09-01", "error": "HTTP 404"}])
     assert evidence["verdict"] == "INSUFFICIENT_SNAPSHOTS"
 
 
@@ -255,3 +254,56 @@ def test_a_header_transport_keeps_the_key_out_of_the_url(monkeypatch):
            transport=("header:AUTH_KEY", "header", "AUTH_KEY"))
     assert "SECRET" not in seen["url"]
     assert any(v == "SECRET" for v in seen["headers"].values())
+
+
+# --------------------------------------------------------------------------- #
+# The vendor's own words, not our guess at them
+#
+# The first run's label was hardcoded to "Unauthorized Key" for any 401. The
+# second run's bodies actually read `Unauthorized API Call`, and the label was
+# overwriting that — two different statements collapsed into one. They are not
+# the same finding: the first says the key is not recognised, the second says
+# it IS and the call is not authorised for it. Only the second points at a
+# subscription rather than at the key.
+# --------------------------------------------------------------------------- #
+def test_the_service_message_is_parsed_out_of_the_body():
+    assert P.resp_message('{"respMsg":"Unauthorized API Call","respCode":"401"}') \
+        == "Unauthorized API Call"
+    assert P.resp_message("<html>not json</html>") is None
+    assert P.resp_message('{"respCode":"401"}') is None
+
+
+def test_an_unrecognised_key_and_an_unauthorised_call_are_different_verdicts():
+    key = P.membership_evidence([_unauthorized("2013-01-02", "Unauthorized Key"),
+                                 _unauthorized("2026-09-01", "Unauthorized Key")])
+    call = P.membership_evidence([_unauthorized("2013-01-02", "Unauthorized API Call"),
+                                  _unauthorized("2026-09-01", "Unauthorized API Call")])
+    assert key["verdict"] == "NOT_MEASURED_KEY_NOT_RECOGNISED"
+    assert call["verdict"] == "NOT_MEASURED_SERVICE_NOT_AUTHORISED"
+    assert key["verdict"] != call["verdict"]
+
+
+def test_the_unauthorised_call_verdict_points_at_the_subscription_not_the_code():
+    report = P.membership_evidence([
+        _unauthorized("2013-01-02", "Unauthorized API Call"),
+        _unauthorized("2026-09-01", "Unauthorized API Call")])
+    assert "subscribing the key" in report["reason"]
+    assert "not changing this code" in report["reason"]
+    assert report["respMsg"] == "Unauthorized API Call"
+
+
+def test_the_message_is_carried_onto_the_snapshot_verbatim(monkeypatch):
+    import urllib.error
+
+    def _fake(request, timeout=None):
+        raise urllib.error.HTTPError(
+            request.full_url, 401, "Unauthorized", {},
+            __import__("io").BytesIO(
+                b'{"respMsg":"Unauthorized API Call","respCode":"401"}'))
+
+    monkeypatch.setattr(P.urllib.request, "urlopen", _fake)
+    answer = P.call("https://x/svc", "sto/stk_bydd_trd", {"basDd": "20130102"}, "K")
+    assert answer["respMsg"] == "Unauthorized API Call"
+    assert answer["serviceNotAuthorised"] is True
+    assert answer["keyNotRecognised"] is False
+    assert "Unauthorized API Call" in answer["error"]

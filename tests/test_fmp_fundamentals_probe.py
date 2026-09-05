@@ -109,3 +109,60 @@ def test_every_factor_input_the_production_model_needs_is_probed():
                   "cashflow.operatingCashFlow", "cashflow.capex",
                   "income.sharesOutstanding"):
         assert needed in covered, f"{needed} 없이는 만들 수 없는 팩터가 있다"
+
+
+# --------------------------------------------------------------------------- #
+# The vendor's refusal is evidence, not noise
+#
+# The first run reported every statement call as "non-JSON response (HTTP 402)"
+# — the body was read and then discarded — and that bare status became "FMP
+# dropped statements from the free tier". FMP's 402 body names the plan an
+# endpoint needs, so the sentence it sent IS the finding.
+# --------------------------------------------------------------------------- #
+def test_the_refusal_body_is_kept_and_trimmed():
+    assert P.body_head(b'{"Error Message": "Exclusive Endpoint"}') \
+        == '{"Error Message": "Exclusive Endpoint"}'
+    assert P.body_head(b"a" * 500, limit=10) == "a" * 10
+    assert P.body_head(None) == ""
+    assert P.body_head(b"line one\nline two") == "line one line two"
+
+
+# --------------------------------------------------------------------------- #
+# A dead key and a limited plan are different problems with different fixes
+# --------------------------------------------------------------------------- #
+def _check(served, status=200, body=""):
+    """One endpoint check's result. Named apart from this module's other
+    `_row`, which builds a statement PERIOD — two different shapes."""
+    return {"served": served, "httpStatus": status, "bodyHead": body}
+
+
+def test_a_live_key_refused_only_on_statements_is_a_plan_limit():
+    report = P.diagnose(
+        {"profile": _check(True), "quote": _check(True)},
+        {"stable": _check(False, 402, "Exclusive Endpoint: upgrade to Starter"),
+         "v3": _check(False, 402, "Exclusive Endpoint: upgrade to Starter")})
+    assert report["verdict"] == "KEY_LIVE_PLAN_EXCLUDES_STATEMENTS"
+    assert "Starter" in report["refusalBodies"]["stable"]
+
+
+def test_a_key_refused_everywhere_is_the_key_not_the_plan():
+    report = P.diagnose(
+        {"profile": _check(False, 401), "quote": _check(False, 401)},
+        {"stable": _check(False, 401), "v3": _check(False, 401)})
+    assert report["verdict"] == "KEY_NOT_LIVE"
+    assert "no subscription changes that" in report["meaning"]
+
+
+def test_statements_served_under_either_shape_opens_the_route():
+    report = P.diagnose(
+        {"profile": _check(True), "quote": _check(True)},
+        {"stable": _check(False, 402), "v3": _check(True)})
+    assert report["verdict"] == "STATEMENTS_AVAILABLE"
+    assert report["servedBases"] == ["v3"]
+
+
+def test_both_url_shapes_are_asked_rather_than_assumed():
+    # /api/v3 was retired for statements, but a plan can expose them
+    # differently, and "wrong path" and "excluded by plan" have different fixes.
+    assert set(P.BASES) == {"stable", "v3"}
+    assert P.BASES["v3"].endswith("/api/v3")
