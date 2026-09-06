@@ -23,6 +23,7 @@ from . import kelly_portfolio as KP
 from . import longterm as LT
 from . import selection_null as SN
 from . import pit_data
+from . import replay_determinism
 
 
 REPORT_VERSION = "portfolio-validation-v2"
@@ -717,6 +718,30 @@ def shared_block_dates(rows_by_method: dict[str, list[dict]], horizon: int) -> l
                     end_by_date[row["date"]] = row["endDate"]
     return block_dates([{"date": date, "endDate": end_by_date[date]}
                         for date in sorted(common)], horizon)
+
+
+def shared_block_schedule(rows_by_method: dict[str, list[dict]],
+                          horizon: int) -> list[dict]:
+    """The shared schedule as (date, endDate) pairs, not dates alone.
+
+    The determinism guard has to pin both halves. `shared_block_dates` takes
+    the LATER of the selectors' end dates, so a block's end can move while its
+    entry date does not — and because the next block is anchored on that end,
+    one moved end date shifts every block after it. A fingerprint of entry
+    dates alone would call that stable.
+    """
+    chosen = set(shared_block_dates(rows_by_method, horizon))
+    if not chosen:
+        return []
+    end_by_date: dict[str, str] = {}
+    for rows in rows_by_method.values():
+        for row in rows:
+            if row["date"] in chosen:
+                current = end_by_date.get(row["date"])
+                if current is None or row["endDate"] > current:
+                    end_by_date[row["date"]] = row["endDate"]
+    return [{"date": date, "endDate": end_by_date[date]}
+            for date in sorted(chosen) if date in end_by_date]
 
 
 def _path_metrics(rows: list[dict], horizon: int, cfg_pf: dict,
@@ -1513,7 +1538,9 @@ def portfolio_replay(signals: list[dict], outcomes: list[dict], *, cfg_lt: dict,
             }
 
     # One block schedule for both selectors, so the comparison is like for like.
-    shared = shared_block_dates(rows_by_method_horizon[HEADLINE_HORIZON], HEADLINE_HORIZON)
+    shared_schedule = shared_block_schedule(
+        rows_by_method_horizon[HEADLINE_HORIZON], HEADLINE_HORIZON)
+    shared = [row["date"] for row in shared_schedule]
     for method in decisions:
         rows = rows_by_method_horizon[HEADLINE_HORIZON].get(method) or []
         coverage = horizon_results[method][str(HEADLINE_HORIZON)]["outcomeCoverage"]
@@ -1647,6 +1674,11 @@ def portfolio_replay(signals: list[dict], outcomes: list[dict], *, cfg_lt: dict,
         },
         # Keep the artifact compact. Per-date rows are useful for audit, not UI.
         "replayDateCount": len(decisions[CHAMPION]),
+        # The calendar the headline was graded on, carried out so the next run
+        # can check it against this one. The ledger stores outcomes but never
+        # stored the schedule, which is how two runs published different
+        # scorecards with nothing to compare.
+        "blockSchedule": shared_schedule,
         "auditSample": {method: rows[-3:] for method, rows in decisions.items()},
     }
 
@@ -1750,7 +1782,8 @@ def expected_realized_gap(outcomes: list[dict], *, horizon=126) -> dict:
 
 def build_report(signals: list[dict], outcomes: list[dict], *, cfg_lt: dict,
                  cfg_pf: dict, diagnostics: dict, replay_version: str | None = None,
-                 model_version: str | None = None) -> dict:
+                 model_version: str | None = None,
+                 previous_report: dict | None = None) -> dict:
     signals, rejected_signals = _generation_filter(
         signals, replay_version=replay_version, model_version=model_version)
     valid_ids = {row.get("id") for row in signals}
@@ -1794,9 +1827,25 @@ def build_report(signals: list[dict], outcomes: list[dict], *, cfg_lt: dict,
                     .get("byRegionSleeve") or {}).values()
         if row.get("status") == "CONTRADICTED"
     ]
+    # Is this the same replay the last run published, or a different one
+    # wearing the same version string? Nothing checked before, and two runs
+    # from one commit disagreed on the headline without either noticing.
+    determinism = replay_determinism.assess(
+        previous_report,
+        schedule=replay_determinism.schedule_fingerprint(
+            portfolio.get("blockSchedule") or []),
+        cross_section=replay_determinism.cross_section_fingerprint(signals),
+        replay_version=replay_version or diagnostics.get("replayVersion"))
+    if not determinism["reproducible"]:
+        # Not a note. A scorecard computed over a past that moved is not
+        # evidence about a strategy, so it blocks the report the same way a
+        # missing benchmark does.
+        contract_failures.append("replay_not_reproducible_past_changed")
+
     return {
         "reportVersion": REPORT_VERSION,
         "evidenceClass": "HISTORICAL_OOS",
+        "replayDeterminism": determinism,
         "replayVersion": replay_version or diagnostics.get("replayVersion"),
         "dataVersion": diagnostics.get("dataVersion"),
         "modelVersion": model_version or diagnostics.get("modelVersion"),

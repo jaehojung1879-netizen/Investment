@@ -137,6 +137,40 @@
   sharesBasis` and tallied in the coverage report, the same discipline as the TTM
   basis.
 
+## Replay determinism invariants (v2.10)
+
+- A backtest that is not reproducible is not evidence. Two runs from one
+  commit over one set of replay dates published CAGRs of 19.47% and 16.77%
+  and drawdowns of -13.35% and -9.85%, and nothing in either report said they
+  disagreed. Both looked plausible alone; only side by side was either wrong.
+  So the check is not optional reporting — a divergence blocks the report.
+- The invariant is PREFIX STABILITY, never immutability. The ledger must grow
+  daily, so "nothing changed" would fail every night and get switched off.
+  What must hold is that everything already published is still there,
+  unchanged, and new work only appends after it.
+- Fingerprint what the schedule is ANCHORED on, not just what it is indexed
+  by. `shared_block_dates` chains each block off the previous block's end and
+  takes the later of the two selectors' ends, so an end date can move while
+  its entry date does not — and that alone shifts every later block. Entry
+  dates alone would have called the 2026-09-05 divergence stable.
+- A tiny input change is not a tiny output change when selection is greedy.
+  250 added rows out of 120,371 (0.2%) turned over 84% of the evaluation
+  dates, because one added date re-anchors every block after it. Never reason
+  about the size of a result change from the size of the input change.
+- When two runs disagree, find the variable in the INPUTS before theorising
+  about the model. The benchmark's own CAGR moving is what ruled out a model
+  change; diffing the ledger commits then named three tickers. Existing rows
+  being byte-identical is as much of a finding as the added ones — it is what
+  says the recomputation was deterministic and the UNIVERSE was not.
+- Floating-point drift is not the finding, and mistaking it for one hides the
+  real one. 2,386 of 2,470 outcome rows "changed" between the two runs, all at
+  the sixth decimal. Rank a diff by magnitude before reading meaning into its
+  row count.
+- The baseline has to be read before it is overwritten. The ledger records
+  outcomes but never recorded the calendar they were graded on, which is why
+  two runs could disagree with nothing to compare; the previous report is now
+  read at the top of `audit_portfolio.py`, before the write.
+
 ## Vendor refusal invariants (v2.9)
 
 - A vendor's refusal is attributed only after OUR side of the request has been

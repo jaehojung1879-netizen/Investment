@@ -162,7 +162,17 @@ jobs:
         run: |
           python scripts/audit_probability.py replay-work/ledger
 
+      # Deliberately NOT fatal here. A blocked report — a failed benchmark
+      # gate, or the determinism guard finding the published past changed — is
+      # the most important artifact the run produces, and it lives in the
+      # ledger that gets pushed 30 lines below. Exiting here would kill the job
+      # before that push, discard the whole day's replay, and leave the
+      # divergence unrecorded and unreadable: the guard would erase the
+      # evidence it exists to surface, then re-run tomorrow and do it again.
+      # So: record first, fail after the push.
       - name: Audit alpha ranking and concentrated portfolios
+        id: portfolio_audit
+        continue-on-error: true
         run: |
           python scripts/audit_portfolio.py replay-work/ledger
 
@@ -217,6 +227,20 @@ jobs:
             sleep $((attempt * 3))
           done
           echo "could not push after 5 attempts"
+          exit 1
+
+      # The job still goes red — after the divergent report is safely in the
+      # ledger. Downstream publication is already blocked by
+      # contractValidation, which pipeline/validate.py and app.js both honour.
+      - name: Fail the run if the portfolio audit blocked the report
+        if: steps.portfolio_audit.outcome == 'failure'
+        run: |
+          echo "::error::the portfolio audit blocked the report — see the" \
+               "'Audit alpha ranking and concentrated portfolios' step." \
+               "The blocked report has been pushed to signal-history so the" \
+               "failure can be read: check replayDeterminism.verdict and" \
+               "contractValidation.failures in" \
+               "ledger/historical-portfolio-validation.json"
           exit 1
 
       - name: Summary

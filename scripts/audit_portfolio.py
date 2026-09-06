@@ -61,11 +61,21 @@ def main(argv=None) -> int:
     if peak is not None:
         print(f"  ledger loaded: {len(signals):,} signals, "
               f"{len(outcomes):,} outcomes, peak RSS {peak:.2f} GB")
+    output = Path(args.output) if args.output else ledger / "historical-portfolio-validation.json"
+    # The report this run is about to overwrite is the only record of the
+    # evaluation calendar the last run graded on — the ledger stores outcomes,
+    # never the schedule. Read it BEFORE writing, or the baseline is gone.
+    previous = None
+    if output.exists():
+        try:
+            previous = json.loads(output.read_text(encoding="utf-8"))
+        except ValueError:
+            print(f"  WARNING: {output} is not readable JSON; "
+                  f"determinism has no baseline this run")
     report = PV.build_report(
         signals, outcomes, cfg_lt=cfg.longterm, cfg_pf=cfg.kelly_portfolio,
         diagnostics=diagnostics, replay_version=replay_version,
-        model_version=model_version)
-    output = Path(args.output) if args.output else ledger / "historical-portfolio-validation.json"
+        model_version=model_version, previous_report=previous)
     output.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
     alpha = report["alphaDiagnostics"]["regions"]
@@ -83,6 +93,25 @@ def main(argv=None) -> int:
         print(f"{method}: CAGR {summary.get('cagrPct')}% | excess "
               f"{summary.get('annualizedExcessPct')}%p | MDD {summary.get('mddPct')}% | "
               f"Sharpe {summary.get('sharpe')} | turnover {summary.get('averageTurnoverPct')}%")
+    determinism = report.get("replayDeterminism") or {}
+    print(f"determinism: {determinism.get('verdict')} "
+          f"(schedule {(determinism.get('scheduleCheck') or {}).get('verdict')}, "
+          f"cross-section {(determinism.get('crossSectionCheck') or {}).get('verdict')})")
+    if not determinism.get("reproducible", True):
+        sched = determinism.get("scheduleCheck") or {}
+        cross = determinism.get("crossSectionCheck") or {}
+        print("ERROR: the replay is not reproducible — the already-published "
+              "past changed under this run")
+        if sched.get("verdict") == "SCHEDULE_DIVERGED":
+            print(f"  schedule: block #{sched.get('firstDivergenceIndex')} "
+                  f"expected {sched.get('expected')} got {sched.get('actual')}")
+        if cross.get("verdict") == "SCHEDULE_DIVERGED":
+            print(f"  cross-section: {cross.get('driftedDates')} past dates "
+                  f"changed membership from {cross.get('firstDriftedDate')} "
+                  f"(net {cross.get('netNameChange'):+d} names)")
+            for row in (cross.get("driftedSample") or [])[:5]:
+                print(f"    {row['date']}: {row['was']} -> {row['now']} names")
+
     contract = report.get("contractValidation") or {}
     if not contract.get("eligible", False):
         print("ERROR: portfolio validation contract failed; report is BLOCKED")
