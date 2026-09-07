@@ -1,9 +1,9 @@
 {
   "gridDates": [
-    "2026-08-14",
     "2026-08-21",
     "2026-08-28",
-    "2026-09-04"
+    "2026-09-04",
+    "2026-09-07"
   ],
   "replayVersion": "replay-v6",
   "featureVersion": "hfeat-v1",
@@ -13,17 +13,17 @@
   "requestedStart": "2013-01-01",
   "requestedEnd": null,
   "firstDate": "2013-01-04",
-  "lastDate": "2026-09-04",
-  "replayDates": 714,
-  "signalsGenerated": 0,
+  "lastDate": "2026-09-07",
+  "replayDates": 715,
+  "signalsGenerated": 619,
   "signalsSkippedAlreadyPresent": 375144,
-  "meanPitCoverage": 0.7888,
+  "meanPitCoverage": 0.7887,
   "survivorshipRisk": "HIGH",
   "survivorshipNote": "SURVIVORSHIP_BIAS_UNRESOLVED",
   "fundamentalsPit": true,
   "historicalUniverseAvailable": true,
-  "constituentCoveragePct": 84.0063,
-  "membershipCoveragePct": 80.8743,
+  "constituentCoveragePct": 84.0279,
+  "membershipCoveragePct": 80.8741,
   "constituentsWithoutPriceHistory": [
     "018260.KS",
     "028260.KS",
@@ -79,17 +79,17 @@
   "constituentsWithoutPriceHistoryCount": 286,
   "universeCoverageByRegion": {
     "KR": {
-      "nameDates": 84966,
-      "constituentCoveragePct": 86.2875,
+      "nameDates": 85085,
+      "constituentCoveragePct": 86.3066,
       "membershipCoveragePct": 0.0,
       "affectedObservationsPct": 100.0,
       "survivorshipRisk": "HIGH"
     },
     "US": {
-      "nameDates": 363018,
-      "constituentCoveragePct": 83.4724,
+      "nameDates": 363522,
+      "constituentCoveragePct": 83.4945,
       "membershipCoveragePct": 99.8033,
-      "affectedObservationsPct": 16.7242,
+      "affectedObservationsPct": 16.7022,
       "survivorshipRisk": "HIGH"
     }
   },
@@ -200,10 +200,10 @@
     },
     {
       "year": 2026,
-      "nameDates": 22446,
-      "constituentCoveragePct": 98.7125,
-      "membershipCoveragePct": 80.7538,
-      "affectedObservationsPct": 20.4847,
+      "nameDates": 23069,
+      "constituentCoveragePct": 98.7342,
+      "membershipCoveragePct": 80.7534,
+      "affectedObservationsPct": 20.4647,
       "survivorshipRisk": "HIGH"
     }
   ],
@@ -211,7 +211,7 @@
   "worstCoveredYear": 2013,
   "universeSource": "HISTORICAL_MEMBERSHIP_DATASET",
   "firstReliableUniverseDate": null,
-  "affectedObservationsPct": 32.5186,
+  "affectedObservationsPct": 32.5008,
   "affectedRegions": [
     "KR",
     "US"
@@ -253,7 +253,7 @@
   },
   "macroPitStatus": "REVISED_HISTORY",
   "regimeDistribution": {
-    "Deflation/Slowdown": 54320,
+    "Deflation/Slowdown": 54939,
     "Goldilocks": 55783,
     "Reflation": 95269,
     "Stagflation": 32382,
@@ -267,15 +267,15 @@
     "entry_sector_concentration_overlay_not_applied_no_sleeve_in_replay"
   ],
   "coverage": {
-    "signalsRecorded": 376629,
+    "signalsRecorded": 377248,
     "signalsByRegion": {
-      "KR": 74029,
-      "US": 302600
+      "KR": 74148,
+      "US": 303100
     },
-    "uniqueDates": 714,
-    "trackingDays": 3566,
+    "uniqueDates": 715,
+    "trackingDays": 3567,
     "firstSignalDate": "2013-01-04",
-    "lastSignalDate": "2026-09-04",
+    "lastSignalDate": "2026-09-07",
     "maturedSignals": 358820,
     "maturedUniqueDates": 688,
     "maturedObservationDays": 3436,
@@ -285,7 +285,7 @@
       "21": 372014,
       "63": 367026,
       "126": 358820,
-      "252": 342054
+      "252": 342170
     },
     "benchmarkCoverageByRegion": {
       "KR": {
@@ -376,10 +376,10 @@
           ]
         },
         "252": {
-          "maturedAbsoluteReturns": 66804,
-          "matchedBenchmarkReturns": 66713,
+          "maturedAbsoluteReturns": 66920,
+          "matchedBenchmarkReturns": 66829,
           "missingBenchmarkReturns": 91,
-          "coveragePct": 99.8638,
+          "coveragePct": 99.864,
           "missingSamples": [
             {
               "id": "2015-08-14|KR|000100.KS|replay-v6|longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
@@ -542,31 +542,31 @@
         "status": "VENDOR",
         "source": "fdr",
         "symbol": "KS200",
-        "sessions": 3854,
+        "sessions": 3855,
         "firstSession": "2011-01-03",
-        "lastSession": "2026-09-04",
+        "lastSession": "2026-09-07",
         "candidates": [
           {
             "source": "fdr",
             "symbol": "KS200",
             "accepted": true,
             "reason": null,
-            "sessions": 3854,
+            "sessions": 3855,
             "snapshotCoveragePct": 100.0,
             "minimumSessions": null,
             "firstSession": "2011-01-03",
-            "lastSession": "2026-09-04"
+            "lastSession": "2026-09-07"
           },
           {
             "source": "yahoo",
             "symbol": "^KS200",
             "accepted": true,
             "reason": null,
-            "sessions": 3781,
-            "snapshotCoveragePct": 98.9791,
+            "sessions": 3782,
+            "snapshotCoveragePct": 98.1059,
             "minimumSessions": null,
             "firstSession": "2011-01-03",
-            "lastSession": "2026-07-16"
+            "lastSession": "2026-09-07"
           }
         ],
         "snapshotSessions": 3854
@@ -575,7 +575,8 @@
     "degradedRegions": [],
     "unavailableRegions": [],
     "snapshotsUpdated": [
-      "SPY"
+      "SPY",
+      "^KS200"
     ],
     "indexMixingForbidden": true
   },
