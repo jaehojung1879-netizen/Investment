@@ -39,6 +39,12 @@ class ValuationData:
         result = source.reindex(source.index.union(dates)).sort_index().ffill().reindex(dates)
         return result.to_numpy(float) if result.notna().all() and (result > 0).all() else None
 
+    def missing_sessions(self, ticker, region, dates):
+        required = dates.intersection(RC.sessions(str(dates[0].date()), str(dates[-1].date()), region))
+        source = self.prices.get(ticker, pd.Series(dtype=float)).reindex(required)
+        bad = source.isna() | (source <= 0) | ~np.isfinite(source)
+        return [str(d.date()) for d in required[bad]]
+
     def risk_free_path(self, dates):
         key = (str(dates[0]), str(dates[-1]))
         if key in self._rf_cache:
@@ -62,6 +68,7 @@ class ValuationData:
     def window(self, decision, block):
         date, end = block["date"], block["endDate"]
         reasons = []
+        gaps = []
         if end > self.through:
             return None, {"status":"HORIZON_NOT_MATURED", "reasons":["HORIZON_NOT_MATURED"]}
         if decision is None:
@@ -77,6 +84,8 @@ class ValuationData:
         fx = self.fx.reindex(dates).to_numpy(float) if us else np.ones(len(dates))
         if us and (not np.isfinite(fx).all() or np.any(fx <= 0)):
             reasons.append("MISSING_USDKRW_FX")
+            gaps.append({"input":"FX", "ticker":"USD_KRW", "dates":[str(d.date())
+                         for d, value in zip(dates, fx) if not np.isfinite(value) or value <= 0]})
         for ticker, weight in decision["weights"].items():
             region = decision["regionByTicker"].get(ticker)
             if region not in ("KR", "US"):
@@ -86,8 +95,12 @@ class ValuationData:
             b = self.marks(self.benchmarks.get(region), region, dates)
             if p is None:
                 reasons.append("MISSING_PRICE_SESSION:" + ticker)
+                gaps.append({"input":"PRICE", "ticker":ticker,
+                             "dates":self.missing_sessions(ticker, region, dates)})
             if b is None:
                 reasons.append("MISSING_BENCHMARK_SESSION:" + region)
+                gaps.append({"input":"BENCHMARK", "ticker":self.benchmarks.get(region),
+                             "dates":self.missing_sessions(self.benchmarks.get(region), region, dates)})
             if p is None or b is None:
                 continue
             currency = fx / fx[0] if region == "US" else 1.0
@@ -98,7 +111,9 @@ class ValuationData:
             weight_by_region[region] = weight_by_region.get(region, 0) + weight
             excess_by_region[region] = excess_by_region.get(region, 0) + weight * (stock_growth[-1] - bench_growth[-1])
         if reasons:
-            return None, {"status":"INCOMPLETE", "reasons":sorted(set(reasons))}
+            unique_gaps = {(g["input"], g["ticker"]):g for g in gaps}
+            return None, {"status":"INCOMPLETE", "reasons":sorted(set(reasons)),
+                          "inputGaps":list(unique_gaps.values())}
         cash = 1 - sum(decision["weights"].values())
         if cash < -1e-8:
             raise ValueError("portfolio weights exceed NAV")

@@ -322,3 +322,43 @@ def test_rolling_annualization_uses_actual_leap_year_span():
         for window in stats[key]:
             assert window["annualizedExcessPct"]==pytest.approx(6)
             assert window["calendarYears"]==pytest.approx(RV.span_years(window["firstDate"],window["date"]))
+
+
+@pytest.mark.parametrize('day', ['2026-05-25', '2026-06-03', '2026-07-17'])
+def test_confirmed_2026_kr_closures_are_not_required_prices(day):
+    assert RC.sessions(day, day, 'KR').empty
+    assert RC.sessions(day, day).empty
+    if day != '2026-05-25':
+        assert not RC.sessions(day, day, 'US').empty
+        assert not RC.sessions(day, day, 'UNION').empty
+
+
+def test_closure_carry_and_genuine_open_gap_are_distinguished():
+    dates=RC.sessions('2026-06-02','2026-06-04','UNION')
+    series=pd.Series([100.,102.],index=pd.to_datetime(['2026-06-02','2026-06-04']))
+    view=RV.ValuationData({'KR':series.to_frame('Close')},{'KR':'KR'},None,[],through='2026-06-04')
+    assert list(view.marks('KR','KR',dates))==[100.,100.,102.]
+    assert view.missing_sessions('KR','KR',dates)==[]
+    view.prices['KR']=view.prices['KR'].drop(pd.Timestamp('2026-06-04'))
+    assert view.marks('KR','KR',dates) is None
+    assert view.missing_sessions('KR','KR',dates)==['2026-06-04']
+
+
+def test_missing_input_report_names_exact_observation_date():
+    view,decision,block=valuation_fixture()
+    missing=RC.sessions(block['date'],block['endDate'],'US')[4]
+    view.prices['A']=view.prices['A'].drop(missing)
+    row,status=view.window(decision,block)
+    assert row is None
+    assert {'input':'PRICE','ticker':'A','dates':[str(missing.date())]} in status['inputGaps']
+
+
+def test_observed_v7_benchmark_gap_is_not_reclassified_as_a_holiday():
+    data=json.loads((Path(__file__).parent/'fixtures/replay-v7-kr-benchmark-2013-02.observed.json').read_text())
+    rows=[r for r in data['rows'] if r['ticker']=='^KS200']
+    frame=pd.DataFrame(rows).set_index('date')
+    frame.index=pd.to_datetime(frame.index)
+    view=RV.ValuationData({'^KS200':frame},{'KR':'^KS200'},None,[],through='2013-02-28')
+    dates=RC.sessions('2013-02-01','2013-02-28','UNION')
+    assert view.missing_sessions('^KS200','KR',dates)==['2013-02-19']
+    assert view.marks('^KS200','KR',dates) is None
