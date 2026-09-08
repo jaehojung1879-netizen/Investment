@@ -1,29 +1,29 @@
 {
   "gridDates": [
+    "2026-08-14",
     "2026-08-21",
     "2026-08-28",
-    "2026-09-04",
-    "2026-09-08"
+    "2026-09-04"
   ],
-  "replayVersion": "replay-v6",
+  "replayVersion": "replay-v7",
   "featureVersion": "hfeat-v1",
-  "dataVersion": "yahoo-adjusted-close-v3-regional-session-download+pit-index-membership+dart-pit-fundamentals-kr",
+  "dataVersion": "yahoo-adjusted-close-v3-regional-session-download+pit-index-membership+dart-pit-fundamentals-kr+immutable-inputs-v1+common-calendar-v1+usdkrw-bok-rf-v1",
   "modelVersion": "longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
   "frequency": "W",
   "requestedStart": "2013-01-01",
-  "requestedEnd": null,
+  "requestedEnd": "2026-09-07",
   "firstDate": "2013-01-04",
-  "lastDate": "2026-09-08",
-  "replayDates": 715,
-  "signalsGenerated": 6844,
-  "signalsSkippedAlreadyPresent": 339442,
+  "lastDate": "2026-09-04",
+  "replayDates": 714,
+  "signalsGenerated": 345956,
+  "signalsSkippedAlreadyPresent": 0,
   "meanPitCoverage": 0.7867,
   "survivorshipRisk": "HIGH",
   "survivorshipNote": "SURVIVORSHIP_BIAS_UNRESOLVED",
   "fundamentalsPit": true,
   "historicalUniverseAvailable": true,
-  "constituentCoveragePct": 84.3103,
-  "membershipCoveragePct": 88.0296,
+  "constituentCoveragePct": 84.347,
+  "membershipCoveragePct": 88.0297,
   "constituentsWithoutPriceHistory": [
     "018260.KS",
     "028260.KS",
@@ -76,20 +76,20 @@
     "BXLT",
     "CA"
   ],
-  "constituentsWithoutPriceHistoryCount": 270,
+  "constituentsWithoutPriceHistoryCount": 269,
   "universeCoverageByRegion": {
     "KR": {
-      "nameDates": 48620,
-      "constituentCoveragePct": 90.4093,
+      "nameDates": 48552,
+      "constituentCoveragePct": 90.3959,
       "membershipCoveragePct": 0.0,
       "affectedObservationsPct": 100.0,
       "survivorshipRisk": "HIGH"
     },
     "US": {
-      "nameDates": 363522,
-      "constituentCoveragePct": 83.4945,
+      "nameDates": 363018,
+      "constituentCoveragePct": 83.538,
       "membershipCoveragePct": 99.8033,
-      "affectedObservationsPct": 16.7022,
+      "affectedObservationsPct": 16.6587,
       "survivorshipRisk": "HIGH"
     }
   },
@@ -97,49 +97,49 @@
     {
       "year": 2013,
       "nameDates": 29600,
-      "constituentCoveragePct": 69.0236,
+      "constituentCoveragePct": 69.1014,
       "membershipCoveragePct": 87.8784,
-      "affectedObservationsPct": 40.6385,
+      "affectedObservationsPct": 40.5608,
       "survivorshipRisk": "HIGH"
     },
     {
       "year": 2014,
       "nameDates": 29760,
-      "constituentCoveragePct": 70.672,
+      "constituentCoveragePct": 70.8233,
       "membershipCoveragePct": 87.9435,
-      "affectedObservationsPct": 38.9483,
+      "affectedObservationsPct": 38.797,
       "survivorshipRisk": "HIGH"
     },
     {
       "year": 2015,
       "nameDates": 30339,
-      "constituentCoveragePct": 72.3491,
+      "constituentCoveragePct": 72.5238,
       "membershipCoveragePct": 87.9462,
-      "affectedObservationsPct": 37.4798,
+      "affectedObservationsPct": 37.3051,
       "survivorshipRisk": "HIGH"
     },
     {
       "year": 2016,
       "nameDates": 29991,
-      "constituentCoveragePct": 76.0762,
+      "constituentCoveragePct": 76.2495,
       "membershipCoveragePct": 88.0364,
-      "affectedObservationsPct": 33.9702,
+      "affectedObservationsPct": 33.7968,
       "survivorshipRisk": "HIGH"
     },
     {
       "year": 2017,
       "nameDates": 30099,
-      "constituentCoveragePct": 78.6538,
+      "constituentCoveragePct": 78.8265,
       "membershipCoveragePct": 88.0793,
-      "affectedObservationsPct": 31.3731,
+      "affectedObservationsPct": 31.2004,
       "survivorshipRisk": "HIGH"
     },
     {
       "year": 2018,
       "nameDates": 30186,
-      "constituentCoveragePct": 81.7995,
+      "constituentCoveragePct": 81.8426,
       "membershipCoveragePct": 88.1137,
-      "affectedObservationsPct": 28.606,
+      "affectedObservationsPct": 28.5629,
       "survivorshipRisk": "HIGH"
     },
     {
@@ -200,10 +200,10 @@
     },
     {
       "year": 2026,
-      "nameDates": 21182,
-      "constituentCoveragePct": 98.6734,
-      "membershipCoveragePct": 87.9473,
-      "affectedObservationsPct": 13.3793,
+      "nameDates": 20610,
+      "constituentCoveragePct": 98.6511,
+      "membershipCoveragePct": 87.9476,
+      "affectedObservationsPct": 13.4013,
       "survivorshipRisk": "HIGH"
     }
   ],
@@ -211,7 +211,7 @@
   "worstCoveredYear": 2013,
   "universeSource": "HISTORICAL_MEMBERSHIP_DATASET",
   "firstReliableUniverseDate": null,
-  "affectedObservationsPct": 26.5287,
+  "affectedObservationsPct": 26.4903,
   "affectedRegions": [
     "KR",
     "US"
@@ -222,42 +222,15 @@
     "rowsRead": 3992,
     "rowsAccepted": 3992,
     "rowsRejected": 0,
-    "errors": [],
-    "availabilityRule": "availableFrom <= replayDate",
-    "currentSnapshotBackfillAllowed": false,
-    "schema": [
-      "ticker",
-      "fiscalPeriod",
-      "reportDate",
-      "publicationDate",
-      "availableFrom",
-      "currency",
-      "trailingPE",
-      "forwardPE",
-      "bookValue",
-      "bookYield",
-      "FCF",
-      "FCFYield",
-      "ROE",
-      "operatingMargin",
-      "profitMargin",
-      "debtToEquity",
-      "earningsGrowth",
-      "epsTtm",
-      "bookValuePerShare",
-      "fcfPerShare",
-      "source",
-      "sourceAsOf",
-      "revisionStatus"
-    ]
+    "errors": []
   },
   "macroPitStatus": "REVISED_HISTORY",
   "regimeDistribution": {
-    "Deflation/Slowdown": 50640,
-    "Goldilocks": 51362,
-    "Reflation": 87822,
-    "Stagflation": 29853,
-    "Transition/Low confidence": 126609
+    "Deflation/Slowdown": 50085,
+    "Goldilocks": 51412,
+    "Reflation": 87898,
+    "Stagflation": 29876,
+    "Transition/Low confidence": 126685
   },
   "shortTermModelReplayed": false,
   "knownDeviationsFromProduction": [
@@ -266,108 +239,1446 @@
     "sector_rotation_is_member_relative_strength_proxy_not_etf_rrg",
     "entry_sector_concentration_overlay_not_applied_no_sleeve_in_replay"
   ],
+  "evaluationCalendar": {
+    "version": "xkrx-xnys-4.11.1-v1",
+    "origin": "2013-01-01",
+    "through": "2026-09-07",
+    "strideSessions": 21,
+    "sessionRule": "XKRX_INTERSECTION_XNYS",
+    "signalFrequency": "W",
+    "signalRule": "PREVIOUS_COMPLETED_PERIOD_STRICTLY_BEFORE_ANCHOR",
+    "anchors": [
+      {
+        "date": "2013-01-07",
+        "endDate": "2013-02-06",
+        "signalDate": "2013-01-04",
+        "anchorIndex": 0
+      },
+      {
+        "date": "2013-02-06",
+        "endDate": "2013-03-12",
+        "signalDate": "2013-02-01",
+        "anchorIndex": 1
+      },
+      {
+        "date": "2013-03-12",
+        "endDate": "2013-04-11",
+        "signalDate": "2013-03-08",
+        "anchorIndex": 2
+      },
+      {
+        "date": "2013-04-11",
+        "endDate": "2013-05-13",
+        "signalDate": "2013-04-05",
+        "anchorIndex": 3
+      },
+      {
+        "date": "2013-05-13",
+        "endDate": "2013-06-14",
+        "signalDate": "2013-05-10",
+        "anchorIndex": 4
+      },
+      {
+        "date": "2013-06-14",
+        "endDate": "2013-07-16",
+        "signalDate": "2013-06-07",
+        "anchorIndex": 5
+      },
+      {
+        "date": "2013-07-16",
+        "endDate": "2013-08-14",
+        "signalDate": "2013-07-12",
+        "anchorIndex": 6
+      },
+      {
+        "date": "2013-08-14",
+        "endDate": "2013-09-16",
+        "signalDate": "2013-08-09",
+        "anchorIndex": 7
+      },
+      {
+        "date": "2013-09-16",
+        "endDate": "2013-10-22",
+        "signalDate": "2013-09-13",
+        "anchorIndex": 8
+      },
+      {
+        "date": "2013-10-22",
+        "endDate": "2013-11-20",
+        "signalDate": "2013-10-18",
+        "anchorIndex": 9
+      },
+      {
+        "date": "2013-11-20",
+        "endDate": "2013-12-20",
+        "signalDate": "2013-11-15",
+        "anchorIndex": 10
+      },
+      {
+        "date": "2013-12-20",
+        "endDate": "2014-01-24",
+        "signalDate": "2013-12-13",
+        "anchorIndex": 11
+      },
+      {
+        "date": "2014-01-24",
+        "endDate": "2014-02-27",
+        "signalDate": "2014-01-17",
+        "anchorIndex": 12
+      },
+      {
+        "date": "2014-02-27",
+        "endDate": "2014-03-28",
+        "signalDate": "2014-02-21",
+        "anchorIndex": 13
+      },
+      {
+        "date": "2014-03-28",
+        "endDate": "2014-04-29",
+        "signalDate": "2014-03-21",
+        "anchorIndex": 14
+      },
+      {
+        "date": "2014-04-29",
+        "endDate": "2014-06-03",
+        "signalDate": "2014-04-25",
+        "anchorIndex": 15
+      },
+      {
+        "date": "2014-06-03",
+        "endDate": "2014-07-07",
+        "signalDate": "2014-05-30",
+        "anchorIndex": 16
+      },
+      {
+        "date": "2014-07-07",
+        "endDate": "2014-08-05",
+        "signalDate": "2014-07-04",
+        "anchorIndex": 17
+      },
+      {
+        "date": "2014-08-05",
+        "endDate": "2014-09-05",
+        "signalDate": "2014-08-01",
+        "anchorIndex": 18
+      },
+      {
+        "date": "2014-09-05",
+        "endDate": "2014-10-13",
+        "signalDate": "2014-08-29",
+        "anchorIndex": 19
+      },
+      {
+        "date": "2014-10-13",
+        "endDate": "2014-11-11",
+        "signalDate": "2014-10-10",
+        "anchorIndex": 20
+      },
+      {
+        "date": "2014-11-11",
+        "endDate": "2014-12-11",
+        "signalDate": "2014-11-07",
+        "anchorIndex": 21
+      },
+      {
+        "date": "2014-12-11",
+        "endDate": "2015-01-14",
+        "signalDate": "2014-12-05",
+        "anchorIndex": 22
+      },
+      {
+        "date": "2015-01-14",
+        "endDate": "2015-02-13",
+        "signalDate": "2015-01-09",
+        "anchorIndex": 23
+      },
+      {
+        "date": "2015-02-13",
+        "endDate": "2015-03-20",
+        "signalDate": "2015-02-06",
+        "anchorIndex": 24
+      },
+      {
+        "date": "2015-03-20",
+        "endDate": "2015-04-21",
+        "signalDate": "2015-03-13",
+        "anchorIndex": 25
+      },
+      {
+        "date": "2015-04-21",
+        "endDate": "2015-05-22",
+        "signalDate": "2015-04-17",
+        "anchorIndex": 26
+      },
+      {
+        "date": "2015-05-22",
+        "endDate": "2015-06-23",
+        "signalDate": "2015-05-15",
+        "anchorIndex": 27
+      },
+      {
+        "date": "2015-06-23",
+        "endDate": "2015-07-23",
+        "signalDate": "2015-06-19",
+        "anchorIndex": 28
+      },
+      {
+        "date": "2015-07-23",
+        "endDate": "2015-08-24",
+        "signalDate": "2015-07-17",
+        "anchorIndex": 29
+      },
+      {
+        "date": "2015-08-24",
+        "endDate": "2015-09-23",
+        "signalDate": "2015-08-21",
+        "anchorIndex": 30
+      },
+      {
+        "date": "2015-09-23",
+        "endDate": "2015-10-27",
+        "signalDate": "2015-09-18",
+        "anchorIndex": 31
+      },
+      {
+        "date": "2015-10-27",
+        "endDate": "2015-11-25",
+        "signalDate": "2015-10-23",
+        "anchorIndex": 32
+      },
+      {
+        "date": "2015-11-25",
+        "endDate": "2015-12-28",
+        "signalDate": "2015-11-20",
+        "anchorIndex": 33
+      },
+      {
+        "date": "2015-12-28",
+        "endDate": "2016-01-29",
+        "signalDate": "2015-12-24",
+        "anchorIndex": 34
+      },
+      {
+        "date": "2016-01-29",
+        "endDate": "2016-03-07",
+        "signalDate": "2016-01-22",
+        "anchorIndex": 35
+      },
+      {
+        "date": "2016-03-07",
+        "endDate": "2016-04-06",
+        "signalDate": "2016-03-04",
+        "anchorIndex": 36
+      },
+      {
+        "date": "2016-04-06",
+        "endDate": "2016-05-10",
+        "signalDate": "2016-04-01",
+        "anchorIndex": 37
+      },
+      {
+        "date": "2016-05-10",
+        "endDate": "2016-06-10",
+        "signalDate": "2016-05-06",
+        "anchorIndex": 38
+      },
+      {
+        "date": "2016-06-10",
+        "endDate": "2016-07-12",
+        "signalDate": "2016-06-03",
+        "anchorIndex": 39
+      },
+      {
+        "date": "2016-07-12",
+        "endDate": "2016-08-10",
+        "signalDate": "2016-07-08",
+        "anchorIndex": 40
+      },
+      {
+        "date": "2016-08-10",
+        "endDate": "2016-09-12",
+        "signalDate": "2016-08-05",
+        "anchorIndex": 41
+      },
+      {
+        "date": "2016-09-12",
+        "endDate": "2016-10-17",
+        "signalDate": "2016-09-09",
+        "anchorIndex": 42
+      },
+      {
+        "date": "2016-10-17",
+        "endDate": "2016-11-15",
+        "signalDate": "2016-10-14",
+        "anchorIndex": 43
+      },
+      {
+        "date": "2016-11-15",
+        "endDate": "2016-12-15",
+        "signalDate": "2016-11-11",
+        "anchorIndex": 44
+      },
+      {
+        "date": "2016-12-15",
+        "endDate": "2017-01-19",
+        "signalDate": "2016-12-09",
+        "anchorIndex": 45
+      },
+      {
+        "date": "2017-01-19",
+        "endDate": "2017-02-22",
+        "signalDate": "2017-01-13",
+        "anchorIndex": 46
+      },
+      {
+        "date": "2017-02-22",
+        "endDate": "2017-03-24",
+        "signalDate": "2017-02-17",
+        "anchorIndex": 47
+      },
+      {
+        "date": "2017-03-24",
+        "endDate": "2017-04-25",
+        "signalDate": "2017-03-17",
+        "anchorIndex": 48
+      },
+      {
+        "date": "2017-04-25",
+        "endDate": "2017-05-31",
+        "signalDate": "2017-04-21",
+        "anchorIndex": 49
+      },
+      {
+        "date": "2017-05-31",
+        "endDate": "2017-06-30",
+        "signalDate": "2017-05-26",
+        "anchorIndex": 50
+      },
+      {
+        "date": "2017-06-30",
+        "endDate": "2017-08-01",
+        "signalDate": "2017-06-23",
+        "anchorIndex": 51
+      },
+      {
+        "date": "2017-08-01",
+        "endDate": "2017-08-31",
+        "signalDate": "2017-07-28",
+        "anchorIndex": 52
+      },
+      {
+        "date": "2017-08-31",
+        "endDate": "2017-10-10",
+        "signalDate": "2017-08-25",
+        "anchorIndex": 53
+      },
+      {
+        "date": "2017-10-10",
+        "endDate": "2017-11-08",
+        "signalDate": "2017-10-06",
+        "anchorIndex": 54
+      },
+      {
+        "date": "2017-11-08",
+        "endDate": "2017-12-08",
+        "signalDate": "2017-11-03",
+        "anchorIndex": 55
+      },
+      {
+        "date": "2017-12-08",
+        "endDate": "2018-01-11",
+        "signalDate": "2017-12-01",
+        "anchorIndex": 56
+      },
+      {
+        "date": "2018-01-11",
+        "endDate": "2018-02-12",
+        "signalDate": "2018-01-05",
+        "anchorIndex": 57
+      },
+      {
+        "date": "2018-02-12",
+        "endDate": "2018-03-19",
+        "signalDate": "2018-02-09",
+        "anchorIndex": 58
+      },
+      {
+        "date": "2018-03-19",
+        "endDate": "2018-04-18",
+        "signalDate": "2018-03-16",
+        "anchorIndex": 59
+      },
+      {
+        "date": "2018-04-18",
+        "endDate": "2018-05-21",
+        "signalDate": "2018-04-13",
+        "anchorIndex": 60
+      },
+      {
+        "date": "2018-05-21",
+        "endDate": "2018-06-25",
+        "signalDate": "2018-05-18",
+        "anchorIndex": 61
+      },
+      {
+        "date": "2018-06-25",
+        "endDate": "2018-07-25",
+        "signalDate": "2018-06-22",
+        "anchorIndex": 62
+      },
+      {
+        "date": "2018-07-25",
+        "endDate": "2018-08-24",
+        "signalDate": "2018-07-20",
+        "anchorIndex": 63
+      },
+      {
+        "date": "2018-08-24",
+        "endDate": "2018-09-28",
+        "signalDate": "2018-08-17",
+        "anchorIndex": 64
+      },
+      {
+        "date": "2018-09-28",
+        "endDate": "2018-10-31",
+        "signalDate": "2018-09-21",
+        "anchorIndex": 65
+      },
+      {
+        "date": "2018-10-31",
+        "endDate": "2018-11-30",
+        "signalDate": "2018-10-26",
+        "anchorIndex": 66
+      },
+      {
+        "date": "2018-11-30",
+        "endDate": "2019-01-04",
+        "signalDate": "2018-11-23",
+        "anchorIndex": 67
+      },
+      {
+        "date": "2019-01-04",
+        "endDate": "2019-02-08",
+        "signalDate": "2018-12-28",
+        "anchorIndex": 68
+      },
+      {
+        "date": "2019-02-08",
+        "endDate": "2019-03-13",
+        "signalDate": "2019-02-01",
+        "anchorIndex": 69
+      },
+      {
+        "date": "2019-03-13",
+        "endDate": "2019-04-11",
+        "signalDate": "2019-03-08",
+        "anchorIndex": 70
+      },
+      {
+        "date": "2019-04-11",
+        "endDate": "2019-05-15",
+        "signalDate": "2019-04-05",
+        "anchorIndex": 71
+      },
+      {
+        "date": "2019-05-15",
+        "endDate": "2019-06-17",
+        "signalDate": "2019-05-10",
+        "anchorIndex": 72
+      },
+      {
+        "date": "2019-06-17",
+        "endDate": "2019-07-17",
+        "signalDate": "2019-06-14",
+        "anchorIndex": 73
+      },
+      {
+        "date": "2019-07-17",
+        "endDate": "2019-08-16",
+        "signalDate": "2019-07-12",
+        "anchorIndex": 74
+      },
+      {
+        "date": "2019-08-16",
+        "endDate": "2019-09-19",
+        "signalDate": "2019-08-09",
+        "anchorIndex": 75
+      },
+      {
+        "date": "2019-09-19",
+        "endDate": "2019-10-22",
+        "signalDate": "2019-09-13",
+        "anchorIndex": 76
+      },
+      {
+        "date": "2019-10-22",
+        "endDate": "2019-11-20",
+        "signalDate": "2019-10-18",
+        "anchorIndex": 77
+      },
+      {
+        "date": "2019-11-20",
+        "endDate": "2019-12-20",
+        "signalDate": "2019-11-15",
+        "anchorIndex": 78
+      },
+      {
+        "date": "2019-12-20",
+        "endDate": "2020-01-28",
+        "signalDate": "2019-12-13",
+        "anchorIndex": 79
+      },
+      {
+        "date": "2020-01-28",
+        "endDate": "2020-02-27",
+        "signalDate": "2020-01-24",
+        "anchorIndex": 80
+      },
+      {
+        "date": "2020-02-27",
+        "endDate": "2020-03-27",
+        "signalDate": "2020-02-21",
+        "anchorIndex": 81
+      },
+      {
+        "date": "2020-03-27",
+        "endDate": "2020-04-29",
+        "signalDate": "2020-03-20",
+        "anchorIndex": 82
+      },
+      {
+        "date": "2020-04-29",
+        "endDate": "2020-06-03",
+        "signalDate": "2020-04-24",
+        "anchorIndex": 83
+      },
+      {
+        "date": "2020-06-03",
+        "endDate": "2020-07-02",
+        "signalDate": "2020-05-29",
+        "anchorIndex": 84
+      },
+      {
+        "date": "2020-07-02",
+        "endDate": "2020-08-03",
+        "signalDate": "2020-06-26",
+        "anchorIndex": 85
+      },
+      {
+        "date": "2020-08-03",
+        "endDate": "2020-09-02",
+        "signalDate": "2020-07-31",
+        "anchorIndex": 86
+      },
+      {
+        "date": "2020-09-02",
+        "endDate": "2020-10-07",
+        "signalDate": "2020-08-28",
+        "anchorIndex": 87
+      },
+      {
+        "date": "2020-10-07",
+        "endDate": "2020-11-06",
+        "signalDate": "2020-10-02",
+        "anchorIndex": 88
+      },
+      {
+        "date": "2020-11-06",
+        "endDate": "2020-12-08",
+        "signalDate": "2020-10-30",
+        "anchorIndex": 89
+      },
+      {
+        "date": "2020-12-08",
+        "endDate": "2021-01-11",
+        "signalDate": "2020-12-04",
+        "anchorIndex": 90
+      },
+      {
+        "date": "2021-01-11",
+        "endDate": "2021-02-10",
+        "signalDate": "2021-01-08",
+        "anchorIndex": 91
+      },
+      {
+        "date": "2021-02-10",
+        "endDate": "2021-03-17",
+        "signalDate": "2021-02-05",
+        "anchorIndex": 92
+      },
+      {
+        "date": "2021-03-17",
+        "endDate": "2021-04-16",
+        "signalDate": "2021-03-12",
+        "anchorIndex": 93
+      },
+      {
+        "date": "2021-04-16",
+        "endDate": "2021-05-18",
+        "signalDate": "2021-04-09",
+        "anchorIndex": 94
+      },
+      {
+        "date": "2021-05-18",
+        "endDate": "2021-06-18",
+        "signalDate": "2021-05-14",
+        "anchorIndex": 95
+      },
+      {
+        "date": "2021-06-18",
+        "endDate": "2021-07-20",
+        "signalDate": "2021-06-11",
+        "anchorIndex": 96
+      },
+      {
+        "date": "2021-07-20",
+        "endDate": "2021-08-19",
+        "signalDate": "2021-07-16",
+        "anchorIndex": 97
+      },
+      {
+        "date": "2021-08-19",
+        "endDate": "2021-09-23",
+        "signalDate": "2021-08-13",
+        "anchorIndex": 98
+      },
+      {
+        "date": "2021-09-23",
+        "endDate": "2021-10-26",
+        "signalDate": "2021-09-17",
+        "anchorIndex": 99
+      },
+      {
+        "date": "2021-10-26",
+        "endDate": "2021-11-24",
+        "signalDate": "2021-10-22",
+        "anchorIndex": 100
+      },
+      {
+        "date": "2021-11-24",
+        "endDate": "2021-12-27",
+        "signalDate": "2021-11-19",
+        "anchorIndex": 101
+      },
+      {
+        "date": "2021-12-27",
+        "endDate": "2022-01-27",
+        "signalDate": "2021-12-24",
+        "anchorIndex": 102
+      },
+      {
+        "date": "2022-01-27",
+        "endDate": "2022-03-04",
+        "signalDate": "2022-01-21",
+        "anchorIndex": 103
+      },
+      {
+        "date": "2022-03-04",
+        "endDate": "2022-04-05",
+        "signalDate": "2022-02-25",
+        "anchorIndex": 104
+      },
+      {
+        "date": "2022-04-05",
+        "endDate": "2022-05-06",
+        "signalDate": "2022-04-01",
+        "anchorIndex": 105
+      },
+      {
+        "date": "2022-05-06",
+        "endDate": "2022-06-09",
+        "signalDate": "2022-04-29",
+        "anchorIndex": 106
+      },
+      {
+        "date": "2022-06-09",
+        "endDate": "2022-07-12",
+        "signalDate": "2022-06-03",
+        "anchorIndex": 107
+      },
+      {
+        "date": "2022-07-12",
+        "endDate": "2022-08-10",
+        "signalDate": "2022-07-08",
+        "anchorIndex": 108
+      },
+      {
+        "date": "2022-08-10",
+        "endDate": "2022-09-14",
+        "signalDate": "2022-08-05",
+        "anchorIndex": 109
+      },
+      {
+        "date": "2022-09-14",
+        "endDate": "2022-10-17",
+        "signalDate": "2022-09-09",
+        "anchorIndex": 110
+      },
+      {
+        "date": "2022-10-17",
+        "endDate": "2022-11-15",
+        "signalDate": "2022-10-14",
+        "anchorIndex": 111
+      },
+      {
+        "date": "2022-11-15",
+        "endDate": "2022-12-15",
+        "signalDate": "2022-11-11",
+        "anchorIndex": 112
+      },
+      {
+        "date": "2022-12-15",
+        "endDate": "2023-01-19",
+        "signalDate": "2022-12-09",
+        "anchorIndex": 113
+      },
+      {
+        "date": "2023-01-19",
+        "endDate": "2023-02-22",
+        "signalDate": "2023-01-13",
+        "anchorIndex": 114
+      },
+      {
+        "date": "2023-02-22",
+        "endDate": "2023-03-24",
+        "signalDate": "2023-02-17",
+        "anchorIndex": 115
+      },
+      {
+        "date": "2023-03-24",
+        "endDate": "2023-04-25",
+        "signalDate": "2023-03-17",
+        "anchorIndex": 116
+      },
+      {
+        "date": "2023-04-25",
+        "endDate": "2023-05-26",
+        "signalDate": "2023-04-21",
+        "anchorIndex": 117
+      },
+      {
+        "date": "2023-05-26",
+        "endDate": "2023-06-29",
+        "signalDate": "2023-05-19",
+        "anchorIndex": 118
+      },
+      {
+        "date": "2023-06-29",
+        "endDate": "2023-07-31",
+        "signalDate": "2023-06-23",
+        "anchorIndex": 119
+      },
+      {
+        "date": "2023-07-31",
+        "endDate": "2023-08-30",
+        "signalDate": "2023-07-28",
+        "anchorIndex": 120
+      },
+      {
+        "date": "2023-08-30",
+        "endDate": "2023-10-05",
+        "signalDate": "2023-08-25",
+        "anchorIndex": 121
+      },
+      {
+        "date": "2023-10-05",
+        "endDate": "2023-11-06",
+        "signalDate": "2023-09-29",
+        "anchorIndex": 122
+      },
+      {
+        "date": "2023-11-06",
+        "endDate": "2023-12-06",
+        "signalDate": "2023-11-03",
+        "anchorIndex": 123
+      },
+      {
+        "date": "2023-12-06",
+        "endDate": "2024-01-09",
+        "signalDate": "2023-12-01",
+        "anchorIndex": 124
+      },
+      {
+        "date": "2024-01-09",
+        "endDate": "2024-02-08",
+        "signalDate": "2024-01-05",
+        "anchorIndex": 125
+      },
+      {
+        "date": "2024-02-08",
+        "endDate": "2024-03-14",
+        "signalDate": "2024-02-02",
+        "anchorIndex": 126
+      },
+      {
+        "date": "2024-03-14",
+        "endDate": "2024-04-16",
+        "signalDate": "2024-03-08",
+        "anchorIndex": 127
+      },
+      {
+        "date": "2024-04-16",
+        "endDate": "2024-05-20",
+        "signalDate": "2024-04-12",
+        "anchorIndex": 128
+      },
+      {
+        "date": "2024-05-20",
+        "endDate": "2024-06-21",
+        "signalDate": "2024-05-17",
+        "anchorIndex": 129
+      },
+      {
+        "date": "2024-06-21",
+        "endDate": "2024-07-23",
+        "signalDate": "2024-06-14",
+        "anchorIndex": 130
+      },
+      {
+        "date": "2024-07-23",
+        "endDate": "2024-08-22",
+        "signalDate": "2024-07-19",
+        "anchorIndex": 131
+      },
+      {
+        "date": "2024-08-22",
+        "endDate": "2024-09-26",
+        "signalDate": "2024-08-16",
+        "anchorIndex": 132
+      },
+      {
+        "date": "2024-09-26",
+        "endDate": "2024-10-30",
+        "signalDate": "2024-09-20",
+        "anchorIndex": 133
+      },
+      {
+        "date": "2024-10-30",
+        "endDate": "2024-11-29",
+        "signalDate": "2024-10-25",
+        "anchorIndex": 134
+      },
+      {
+        "date": "2024-11-29",
+        "endDate": "2025-01-02",
+        "signalDate": "2024-11-22",
+        "anchorIndex": 135
+      },
+      {
+        "date": "2025-01-02",
+        "endDate": "2025-02-10",
+        "signalDate": "2024-12-27",
+        "anchorIndex": 136
+      },
+      {
+        "date": "2025-02-10",
+        "endDate": "2025-03-13",
+        "signalDate": "2025-02-07",
+        "anchorIndex": 137
+      },
+      {
+        "date": "2025-03-13",
+        "endDate": "2025-04-11",
+        "signalDate": "2025-03-07",
+        "anchorIndex": 138
+      },
+      {
+        "date": "2025-04-11",
+        "endDate": "2025-05-16",
+        "signalDate": "2025-04-04",
+        "anchorIndex": 139
+      },
+      {
+        "date": "2025-05-16",
+        "endDate": "2025-06-20",
+        "signalDate": "2025-05-09",
+        "anchorIndex": 140
+      },
+      {
+        "date": "2025-06-20",
+        "endDate": "2025-07-22",
+        "signalDate": "2025-06-13",
+        "anchorIndex": 141
+      },
+      {
+        "date": "2025-07-22",
+        "endDate": "2025-08-21",
+        "signalDate": "2025-07-18",
+        "anchorIndex": 142
+      },
+      {
+        "date": "2025-08-21",
+        "endDate": "2025-09-22",
+        "signalDate": "2025-08-15",
+        "anchorIndex": 143
+      },
+      {
+        "date": "2025-09-22",
+        "endDate": "2025-10-28",
+        "signalDate": "2025-09-19",
+        "anchorIndex": 144
+      },
+      {
+        "date": "2025-10-28",
+        "endDate": "2025-11-26",
+        "signalDate": "2025-10-24",
+        "anchorIndex": 145
+      },
+      {
+        "date": "2025-11-26",
+        "endDate": "2025-12-29",
+        "signalDate": "2025-11-21",
+        "anchorIndex": 146
+      },
+      {
+        "date": "2025-12-29",
+        "endDate": "2026-01-30",
+        "signalDate": "2025-12-26",
+        "anchorIndex": 147
+      },
+      {
+        "date": "2026-01-30",
+        "endDate": "2026-03-06",
+        "signalDate": "2026-01-23",
+        "anchorIndex": 148
+      },
+      {
+        "date": "2026-03-06",
+        "endDate": "2026-04-07",
+        "signalDate": "2026-02-27",
+        "anchorIndex": 149
+      },
+      {
+        "date": "2026-04-07",
+        "endDate": "2026-05-08",
+        "signalDate": "2026-04-03",
+        "anchorIndex": 150
+      },
+      {
+        "date": "2026-05-08",
+        "endDate": "2026-06-09",
+        "signalDate": "2026-05-01",
+        "anchorIndex": 151
+      },
+      {
+        "date": "2026-06-09",
+        "endDate": "2026-07-10",
+        "signalDate": "2026-06-05",
+        "anchorIndex": 152
+      },
+      {
+        "date": "2026-07-10",
+        "endDate": "2026-08-10",
+        "signalDate": "2026-07-03",
+        "anchorIndex": 153
+      },
+      {
+        "date": "2026-08-10",
+        "endDate": "2026-09-10",
+        "signalDate": "2026-08-07",
+        "anchorIndex": 154
+      }
+    ],
+    "sha256": "2aa304e0f86fecd06034a01e8fd82d7c03446166de3105d639a0876fa6aae272"
+  },
+  "evaluationAsOf": "2026-09-07",
+  "inputSnapshot": {
+    "sha256": "93d94ce0a024b87d64f57e47928117eeb3179f23ddece0c29f3396f753c821e3",
+    "through": "2026-09-07",
+    "manifest": "historical/replay-v7/inputs.json",
+    "schema": "REPLAY_INPUTS_V1",
+    "componentHashes": {
+      "benchmark/2011-01": "3c73853ca5019289acdd3aa633d8bf14173a699d978a778ba692a05b424d7d28",
+      "benchmark/2011-02": "f180b13928044aa4ecb0ae1b93623614acfaa2529fb9dd86cce3102a34f32e26",
+      "benchmark/2011-03": "b1831dcac9bd36b49b020c2d27339075316fb80b0e171d8b5ba216ec73ed2642",
+      "benchmark/2011-04": "ec11b367f82bc83901e58ca32f843430c1b12f5ba0e0bdfc31279f17354cbcbd",
+      "benchmark/2011-05": "78d49df2edaec7b79be47c40f75c26a474709a429b661cef33c301b72f2e9975",
+      "benchmark/2011-06": "a016e5d7badddd768923d86711272be468d339ce3e8fe99fd1f0fdc4fd3a441a",
+      "benchmark/2011-07": "07587dc532e3ecc0245d48ecdb8373dbd1487b8964030c42a57193a91169dce8",
+      "benchmark/2011-08": "4fac479c086e5be6b0ade9c1a789ea868dc25c2e81fa0233af603b5fcb72e329",
+      "benchmark/2011-09": "59e89bb9645fe50e4a2d91faf0c89575c6d17eedaf69c67debfce0fd762e163d",
+      "benchmark/2011-10": "f8c28a18b09b2f363836c4f6d04ace0fcdbf1bafbc04fd3e5ba167018e145591",
+      "benchmark/2011-11": "43fe6f48e27a9681a0eeeb8e5953f6f7c05fa427326fa1a8a1da43dfcafb94b5",
+      "benchmark/2011-12": "d2d6788406a69dbf569f8788918f575a7bf60ab735ac705c7bf51df668c6cbec",
+      "benchmark/2012-01": "909d0978042dae493b12ab344a1781bb3a81b19dbdab9bf2a122b003f85d2225",
+      "benchmark/2012-02": "6b8c7fc2a6c6923cd4fda441a0cbcdadc27a223b071d90989228d5231a178d63",
+      "benchmark/2012-03": "291dbf0f21da438d7b540c074b25dc8b106002916290a100baa492c18e8a3475",
+      "benchmark/2012-04": "b573b5bd9d54f395344fe7cc2310ad36b6aa26c1680965e24da26a1c1158a348",
+      "benchmark/2012-05": "e2610a2d26eff479235845cd5befbf6bd773d64fddc08995dbd0ae14705441dc",
+      "benchmark/2012-06": "afd83a846be84a6ee5deb1fe472c7dd301fb445fd1f41e26dd2bd28fe3ae6acd",
+      "benchmark/2012-07": "06f8c5acf5cb174aacb3da1555f6e89baf090de5cf88819590ee8e5269250f5d",
+      "benchmark/2012-08": "284e6d90e81c4a3c3ef234f66dcd06b126ea37b4472499916d5f9c988e400f07",
+      "benchmark/2012-09": "7f40b3b49376e3a3b5bf22d7ddb6ce1eac933d97be795039cf69fad4f2d890d3",
+      "benchmark/2012-10": "fe2cd05ee5d9fae4ac55ff40a203f1d81948525ea477da2dbd6fdb1d8887686b",
+      "benchmark/2012-11": "8489ab5965e605c97ea15f306a407f72b5c79a73d947b24083944afc4dedca05",
+      "benchmark/2012-12": "6ee8949056f0c0da74ffa57c4dd5e8cea1ea1843e02a9fc0c9e471544124aaa5",
+      "benchmark/2013-01": "2dfce25ca8e152d62507f8d45228dc774c6f20e4bca2d984edcfe8e9f6f5e067",
+      "benchmark/2013-02": "6ccecb052e87dc96cf8c8c034bc2527b1b04c4c39d692121c0efc84aa29bde92",
+      "benchmark/2013-03": "fba101182fb37057d1b8fb006c08f3685cb118b5af4fb016167143bfbba0bdba",
+      "benchmark/2013-04": "cb3d433a4e1415706822012d0ba0d358fd15dd95f77c1ac1271337f5c28dd535",
+      "benchmark/2013-05": "f811327f16c79bc1a47562c9b9d6ee9c52ba9174069b05ded91d64d5fb9a102f",
+      "benchmark/2013-06": "2c3c73e75f4e8d24d21aa4e69128e19f6cf964013d5f6d0953278cc866184679",
+      "benchmark/2013-07": "2bd67c9586c2af279446be81bb80c4d63b9b5285044aee64dc815940218642a9",
+      "benchmark/2013-08": "6237ac4ad18e23a16588d4819af69bdf6bd0ae10bb75d92743ad518f65878419",
+      "benchmark/2013-09": "7ca0bed274b60bd9f1c358f5e680a561aacf290e107c2cbe048956090fe664e9",
+      "benchmark/2013-10": "49493c8ab51c575a543545a4a7789cf6a28ad6c5d87c26cdc392509194a59f82",
+      "benchmark/2013-11": "952a441f28eb137596f84651c1f1b0e85c947b2a026e9c89f243711951524cb6",
+      "benchmark/2013-12": "81bc99a06b400cf67507f6a5630ebe2ffd2a449ced077899d03cc69851f63899",
+      "benchmark/2014-01": "160ca2c372da72d062121a7e832d15569f32adfa87ccbb49a0784a4995c34719",
+      "benchmark/2014-02": "0e0d8d575904c2e1f7eb7b551e1bf258a9f56e426d553e2a99232ccc3217bfcb",
+      "benchmark/2014-03": "3155ed3a37b0595f46db12df0cd983b43f8c35a7cf6d716b908739b626daa765",
+      "benchmark/2014-04": "bc75499b7703f58cf599d4676598bf9448795596b37bb98f381043d9de32d34f",
+      "benchmark/2014-05": "07d4881da7373aab60b7144fd5007168bd28eeeceae59a48b1b978478f1a2693",
+      "benchmark/2014-06": "a953ec7fde80fd87ceeaf9a6fc32b88fd895550008735ba0714c8b9ec064bff0",
+      "benchmark/2014-07": "985bc360c14161f407d817432c7ca58491ea4b884defa9624fef4ce8aa46bacd",
+      "benchmark/2014-08": "a7b3a00fa6152078600a05905e2a35d64282fc56ca82ba0413cb0caed186107f",
+      "benchmark/2014-09": "f74bc597ec346c68c14a245ee6b314e0affd9ea61af36e55a906249ac7550a15",
+      "benchmark/2014-10": "0daf477a322fe63f88f3e87d963c723f2810d8d36cfe897ffc1533a768094605",
+      "benchmark/2014-11": "8389752469f22a5c7b2798680156db9ba21b49a79d16db844053a908d0c684ff",
+      "benchmark/2014-12": "ab811c4004f8ae1e1df829f7393c798585698749e18d8d9ff398c1f0548182c5",
+      "benchmark/2015-01": "6c9f73c5f42afffa62184e64e89889fc597a31a25b6a5bab8b6fc63a7c54b708",
+      "benchmark/2015-02": "f4eb0256f950f89d9bc450f3f672ea56f4cfe4df32a176c9663f9599019866c0",
+      "benchmark/2015-03": "6cea6f61de6922b828ab8581f9d3eb40459c2f6a56a1553f8b26106dd5627198",
+      "benchmark/2015-04": "34991000c6b0d9bcb050bc507cc1dcb7be0c492b419eface0913452e37c510fd",
+      "benchmark/2015-05": "563ebd722e958e32c60f585b5f1784b020f1e10ca9dafedea5600d226f162259",
+      "benchmark/2015-06": "99fdf847e052d31f9ae3fb7a6fc4a17563e04f75ea9039b6fbcc2dce12af7f7a",
+      "benchmark/2015-07": "471ce3b9239d0e8fb3d41c45de8d1c15a64773bff623819ddf8c9f97c5256c96",
+      "benchmark/2015-08": "3ee6f8894e86fb038d000ea650b274535c242df87b9087fcaa7ba1449cc50694",
+      "benchmark/2015-09": "d9d48d77194fc1a33d7df04b461dc63297c32a28d7b89ed32683c168183104fd",
+      "benchmark/2015-10": "7b96c2d33bdc77ac1e3ce409b682a985c6a65f278b210d1df4b685e1d7a2a17d",
+      "benchmark/2015-11": "1853bdd026e44b23bfdcae8be124efe91394dea58fb0c11ee211dbcb5d80e09b",
+      "benchmark/2015-12": "eeed674c3183c8e19ff9cec970152ed3a85ca5fc9126b1a19fab7b307e503b80",
+      "benchmark/2016-01": "b9ebfa77db7111294b3bab58719d3892b56d0c896104a998402fa82f3271a170",
+      "benchmark/2016-02": "df4e6013ea8ab022771345bbb368c8b5501afd7da1c5bef96ae4dc186705e4b9",
+      "benchmark/2016-03": "d99448511b5e9a8c4b971097a585fa854ad21a978659855639df5eb454908d99",
+      "benchmark/2016-04": "5b1dfabd07e8651e3cec108beb2d123c8dbd2379a40bcee0682338da7ad23edc",
+      "benchmark/2016-05": "f7b7fcd0719b9d4266ac837ecb7178a379a728005cc8b2f6a5ecb48897f5d0d0",
+      "benchmark/2016-06": "465c85c10547872b6870f16ea4d345f56350aa7ee29955be2adbb961cc4fc06d",
+      "benchmark/2016-07": "b1df91863ef9e043983cd19c86dddacbe7dfa736b5df9cf0d07be91939187535",
+      "benchmark/2016-08": "c46e6452271d44fabc9e9baf6d06606825796f619c842feeb3ede55042f0eefe",
+      "benchmark/2016-09": "5ce55a588bff49659bb3af5635a4eb63f1fd157adda6cae34d71de165a135b3b",
+      "benchmark/2016-10": "34dc8b2cb828715949b7c9885a79cea48853deba645f1aa140657ec7bcb27c15",
+      "benchmark/2016-11": "100a75394e24801a1ef736bff71027a229a6cd6153895ab7e884d2c41af916c0",
+      "benchmark/2016-12": "4e56bce3f442475d6afcae41abf6d5ebabc32571de81c0bef0aae96cea3c66a7",
+      "benchmark/2017-01": "77f12ac265b107140159331fe2fb440260935fab508c73dfa1445a107506922e",
+      "benchmark/2017-02": "c07b0d1181f9d68be3fb3b6da1703ceef0f2aa23165c53b5a736f16a0f2bce2b",
+      "benchmark/2017-03": "01d0072060a6fed126bdc301146f72d263e04b7fe54d02b5e4544d4f9ea3d87b",
+      "benchmark/2017-04": "0c4ed17f982a0f62f5397a8be0be7b6784ea490ade5fba3cd375e70a19bece61",
+      "benchmark/2017-05": "d44593a836301e62d7a84a6a07537abe24573fae8bf9ed1d9dde67436f72dbf9",
+      "benchmark/2017-06": "5e9130b825fb7287cdb92c37153f147126e883de08954f1772d11857300de3e5",
+      "benchmark/2017-07": "18fe301bf084a6d70fd48f227300696a2c71f83b11119fc10996810f3bd90953",
+      "benchmark/2017-08": "ce6a4b9dfb7cf17e118c9cc0058d3b02942cdd4d7432a99b1c2d2a8a48f51f39",
+      "benchmark/2017-09": "67aa11c6f6640481cfb4779ed17a7422ce56e804b0615acc9f2d3cb5f33f1240",
+      "benchmark/2017-10": "d82bd68d9ec1cb31464fc512aa76739ebb992d5943fa01911fbf72c2fd4a262d",
+      "benchmark/2017-11": "06a170f6cc53c53f28ca6b4cc82903fcc033cc37a180a6271a409ca7e318740f",
+      "benchmark/2017-12": "cc0c2606edb773772ff23ce32fa694d5cb746c65ad7184467308bff3377d0883",
+      "benchmark/2018-01": "839b6737606e8ae607b7af58e81fe6593c8fa7c9ed341780953bd05c331f8f79",
+      "benchmark/2018-02": "a5d4bb8c3da256a8b324678988f8b445a177e7340ca62278542c250375877b06",
+      "benchmark/2018-03": "1fab928bc1c51eaa21e8cea262ebbdd56d8e6533310768023aa53764bb5ec0e6",
+      "benchmark/2018-04": "1885cde0b2edc1b80dc488e48e2899f51b4c5c670b78b5c6f20f0ca2143b5eea",
+      "benchmark/2018-05": "694b3c3ca1956a3ecccfc8ef73a6f683235c2cea4962b020ce08981a7a7d2629",
+      "benchmark/2018-06": "7e0b1ff306f4c5dc65ddee929f8cac2d15ae6013768140298d82a21892638fb8",
+      "benchmark/2018-07": "28317636e0828af47bf35b400389df02a214efaab21b54eaafd4fdb4d8bc33db",
+      "benchmark/2018-08": "20f71d8c7861a54c028bf71426d15046553052449fb5101ab9fca2e44396ffc5",
+      "benchmark/2018-09": "a3891fc764cbb8013c32cf59c7637d5f37094227a2c46e80c164f1692a10deec",
+      "benchmark/2018-10": "ebf9afc5037a0223a861abf9d96db1c31dbf12813cab90aa769eccad6c046735",
+      "benchmark/2018-11": "2d20932a5dc52bcdb98ddbc1cead1be9445ef1d916c564220f9d0106576403dc",
+      "benchmark/2018-12": "3d7ae802663a505c46fc049570907a88614310cfa721974ee4054104b06e163b",
+      "benchmark/2019-01": "d95e040e615ab90f41404ba089b2959b5c329132ce6f7995b1fcb6b82bf8bf09",
+      "benchmark/2019-02": "8e432ebc2d9a5c4931ad2c70319f5254fb5da5b21cb0de58bb24340ba0b0ccb2",
+      "benchmark/2019-03": "d2a43b9fcd30ae0538788c0cb5968840449000da3848f90bada2a1feb695cfe9",
+      "benchmark/2019-04": "6c5f96b78fa6a541908e909df5b7d8a7650b028fce468c7ed548cacfefe9a324",
+      "benchmark/2019-05": "7421b1724419da832938dda032684e74be3b87c9900c24135f64b928575fd74a",
+      "benchmark/2019-06": "21caf2cf08b3d3231cd561986555b3af7140d440fae91b88f7d161c10c0022f0",
+      "benchmark/2019-07": "df0f0b4f9e7d473ef474522732ee906e8ed81bede7c70022122caf12f1004b12",
+      "benchmark/2019-08": "6e10060f8629976c99ca1bb16a9ce416d3aa08dacba5ec4548f4b380feed4756",
+      "benchmark/2019-09": "abb72dfb079548dd20ee0462051dd2875306a9b03ccfbc1cb2eb331cb6703939",
+      "benchmark/2019-10": "8ee652ec5d38a2d9c415a1c62901004aa50b5c6b00a01cb7cecc9bc0f6456743",
+      "benchmark/2019-11": "f9edb0ea0faca26baabc5580375c8cf28f6d5fc7325bdfd080365a62dfe73610",
+      "benchmark/2019-12": "0084be6dc6597de6e75bb6d884ee14b7215e5e5035a184574959318f1c819da8",
+      "benchmark/2020-01": "8d946c21f2e012bfd36e326c1647df1431d41ac98aaa2542ab2d370bfd959818",
+      "benchmark/2020-02": "bfc467feeec1f997b7b3e29616068fec7a5313857c0837f27fef4b9621401e17",
+      "benchmark/2020-03": "ac3f95aa06ccb1943ab0d3a9ca1907840157396c1efd32b0d4e841c1e41a284b",
+      "benchmark/2020-04": "e7cc4bc4cae996b1f3976730db940d86ea47293717bbe8fb7fd882e72f79d50c",
+      "benchmark/2020-05": "55958be10df43e4a2a96a0b6deafbedd444586caa6fef0fb41201e6b0b0e5bc6",
+      "benchmark/2020-06": "c77afe5888a5fe85c139e2415afbb16a71c8b205bbff5af8abf5c882b3075b67",
+      "benchmark/2020-07": "1e5bf7bb16e74df6aecd6e243ba0e96e83c3d04f6f065eb220fedb0dc3992d16",
+      "benchmark/2020-08": "48b95f86e06b7d5facaa4d51775deaa4b71c35855b9fa15c021dbd1d3cf22e59",
+      "benchmark/2020-09": "0a3fa1f81c90411f7338768d0596bd5c8924285df865ae5bd8a19f7c06dc77fc",
+      "benchmark/2020-10": "4366c1286fd4624bbac5ac122197746688724e57ee0a3a50ee89fed0ef502135",
+      "benchmark/2020-11": "e76d587771fa1f70bd7fa9f722643c675640ff96878a2d02f32034ec97384b37",
+      "benchmark/2020-12": "5f21d6143520d1a95f87ff02e08b273d99a9924a8cfd0317e3d08f0d3574f9b2",
+      "benchmark/2021-01": "c1f5b4fe09d45e364cd99da9141e96a18b854fda8cfa4bbb6d4354e1f63b2019",
+      "benchmark/2021-02": "2a2e29ac043f1db4c7bdc32ab38566af5357cfc521476175e170070ce4bb0972",
+      "benchmark/2021-03": "7a8d3060ead993fe1cc1df651c5ae7088a1b9a699089956a757f87635845655e",
+      "benchmark/2021-04": "32100f8f8a1239001ee7f851255a945aeda46b38cd833b4de8e283f0e44d2c43",
+      "benchmark/2021-05": "88e1b31dce7d200012e1cc33d99b3b236e06f2cf77fe12183c1742333aa6575c",
+      "benchmark/2021-06": "d1d6a298b9ef00b75865684471ce409d07a0bc51214cb8ac51591a18efef5ac5",
+      "benchmark/2021-07": "101bc66018c97df3fc0857615b37faa4d6c53d4c1e6357b2a3bd5423ec261668",
+      "benchmark/2021-08": "77bf9d203c68c474da2ba41dc1fdb40c8c6f18e486a97f803d809050a6604697",
+      "benchmark/2021-09": "5eed90e01a140d0132a34f39a14079e9b45d4b3646a35f8ad538c018fcddb8bd",
+      "benchmark/2021-10": "5ed53cc44fc2c1a289ebb54982c7f1f03e2928764e85ebc3d0e2881ae55aa376",
+      "benchmark/2021-11": "4dfbaa9695c8a44d792170076a415c66e5ef7b9ce22aed22591143c5eed54416",
+      "benchmark/2021-12": "dc19be4e18913c054c49b4cca49c3af81662e18f4a0f17ee68caacf34ac9d860",
+      "benchmark/2022-01": "a055edc405c02b913653752ac82bf69b30af923746207710b095ac125a3a3721",
+      "benchmark/2022-02": "6a4c207a33968aa9ec587bde2f67362bf5ea02d6cd696704f68ed3e35593d628",
+      "benchmark/2022-03": "e3ce375f1cfbd429e839068a6ccf83b4982c4f81e3fed6e9bcc0b95cf78519db",
+      "benchmark/2022-04": "c6f30d7f55e45dd50b4b7cc0291a6facd0db31b4a21217014464cf4169693843",
+      "benchmark/2022-05": "24bfcba9f32816bf264ad279e51cc33e1cd292a283b4ba52294b79ad16c615bd",
+      "benchmark/2022-06": "838dfe6ccd5f625358383f668475844e12acb771c3979d77f8b99380626a79ca",
+      "benchmark/2022-07": "f888fb56a9a9f318e0707825f07f987cc6f9763dee3c2a214410a436d29f0bcf",
+      "benchmark/2022-08": "191b6b94bbd92232d7a98ae7d47cf5903e88e1646368c1678b3af64daa3e1c9f",
+      "benchmark/2022-09": "a235df944cf899a40bf775fdd74b8389a18ca6c792f7c40a3e718669d959b31c",
+      "benchmark/2022-10": "affd138e5e9bd4b455ac49638590d33ddaae5e799afec0dbe3e569af1841b4b5",
+      "benchmark/2022-11": "5f09bb902a69780621d9f91d5734ccbf08a13d5d5405ccf704fa48a50fd2f68d",
+      "benchmark/2022-12": "f9e69ce7b4387890e3a1b38e41378c5bb3f0970fe54e7b49e8a73c4b22d5e352",
+      "benchmark/2023-01": "bce4a68dcdd63053aa8d4f52fc974f3a423992e9eda983a73446fe2a3cece483",
+      "benchmark/2023-02": "60c37e1a1cbd159da2c331af4c9ba217c8cc4eb2e9b2a5237f288026b577c7c9",
+      "benchmark/2023-03": "6effb82585e261a31321da8a639506104c373bb17827d009afcc9ae692edaf2c",
+      "benchmark/2023-04": "97164a3874fb525c88532280d9d540c9fc8b94b24a7cb3a38a08fea8770e27a6",
+      "benchmark/2023-05": "0bd15f433dcad57a9befa51d4138d10dc97e70ca82f955e37b9d259408ac7449",
+      "benchmark/2023-06": "280237d214a570791846c369c9f6a6c9745c8cee2f0150684ed0162ddb9fede4",
+      "benchmark/2023-07": "981e5a49078d53c16959abc693c5cb76ae5fc7945255d4db524ca0c654a565b4",
+      "benchmark/2023-08": "46fadda7e057cdb101615510eaa0b72fe7928c5bbf340cb5ce507b025fa6ae63",
+      "benchmark/2023-09": "52862de853020e1a7426d72db33b7463ec59e7fe976eaa2c389af8ef4958b226",
+      "benchmark/2023-10": "8471ba0f4b595687a7f00f40f112d8b8e6657bbe5ea374232de4c4ccbda20acf",
+      "benchmark/2023-11": "f6293e7cb25f42d8ec722834b3d3de0a39042f077d4ba0130bc017041317717f",
+      "benchmark/2023-12": "37d0455a63f6d503f9f84010ad86f289b2af038999fde5f9dfb884d758dcc492",
+      "benchmark/2024-01": "71f5d369d0174bdbb1a1161aff1e425f4234b5e78619943ab650a57eb92fcf29",
+      "benchmark/2024-02": "9045dd7d3fd317075821d57f49bf54d35ebe1a85f575066506984e6261220c68",
+      "benchmark/2024-03": "6ed0f68ede26cb4a591e0e9f18026aa2d451f32857d15b4e7d8a1695d4cad3ff",
+      "benchmark/2024-04": "808526f3242ef491353691500ed90069fbe48a76d8a4c503379d25294810da07",
+      "benchmark/2024-05": "5834f4d3db4a0eab5528079969279b6a27ba751b8865d921af29bde1ab5c0ed1",
+      "benchmark/2024-06": "986f577a042c89242044aa408b95eb0258bdd5974d0f131dcb597b77f805643c",
+      "benchmark/2024-07": "a0ea8481149bdf486820e006313a1f328ad37ec1ff7ab19ef71d0b049b48a1de",
+      "benchmark/2024-08": "d0b41f4da859d80237ed2b620e0d53f7db75b331ee48cb546b23a8fbf393fc7d",
+      "benchmark/2024-09": "1799f29c11262b51e6c393104335259842c27e1591ffd58ec46b77177ef0195e",
+      "benchmark/2024-10": "295bb1d3b1e27a2b24124971e1e3c796b45416d80051861145d260ee2d1de0c0",
+      "benchmark/2024-11": "bdd3c1ab17bebc5dec7093140b19b17d217ee41c5e464b413d489f8911d5316f",
+      "benchmark/2024-12": "6c255e4abd586603b7b4284891fce307af3496375e567a5b207a27e6066d30fe",
+      "benchmark/2025-01": "6281b74fb5e71aef6870b35d13370de19c6d7f751a86f218059ba851121cfe95",
+      "benchmark/2025-02": "3aaa15d06c32d3fd24d3d057c6f3109c9a6420ef2715b9c8e1175c05354fe822",
+      "benchmark/2025-03": "3bf45ece7e71067132ba25153963403ee6d7c561304d60e2dc3221a23e5376fa",
+      "benchmark/2025-04": "6ab607b2f9138795b0d1c33a57f94c6d5a8a5f15822e944a8661e18f076314aa",
+      "benchmark/2025-05": "ff2972be804b391a1c8bcfd6fc9bcf6490e32079eb88a6e1c9eb65dd8aef9a99",
+      "benchmark/2025-06": "93ef5dc6799755a74aff6e9af9b0451621dd7a340299af40d028ab2fee6cc0b5",
+      "benchmark/2025-07": "fa38469877fafc38563ac68d36455af8d26a3dcd1e03c9755c171949ce6074d0",
+      "benchmark/2025-08": "6ea5e0667537f211790fe2822236317a795c16ef3e85d6394ce13cca587252cb",
+      "benchmark/2025-09": "a98519a339267d5c2502fda2a91ac425a088595c1a2b486e89254ffaef2644d9",
+      "benchmark/2025-10": "50f90b02fdb301fc882c8d21eb963809891d62896415a9713bb0bb15a7224f95",
+      "benchmark/2025-11": "eaf346c213123e8406dd649d0fcc326a7aa3e7325b51f5b11530e3cb8a330050",
+      "benchmark/2025-12": "a2d39ba8dbee3d6e4455ab3bdcc61275e0e0915d66e2ba6b9a3905de29ff4366",
+      "benchmark/2026-01": "3a6009b4aa242058b779e8247c3f1752989e5b939bb61a59bb92f188f134a9cd",
+      "benchmark/2026-02": "f933827896f4cce31f8e8e450fd23aa21dd46e6739f80e1abfa33a629a80beaa",
+      "benchmark/2026-03": "290a13b33bf4d89ea7b5a0af151995e8ce227c81ab61ae293f66bb76db06d382",
+      "benchmark/2026-04": "f9b6bd65076d63a1068375880751f192274e9bf0f22c8eef51e824b0b04a97c2",
+      "benchmark/2026-05": "08f76ef9615eb2aa7c125096d6166324268c486a580a3775fe974b44a62cf054",
+      "benchmark/2026-06": "6dde8e6ccf8e79e5d1dab4d19cf316c2c9d8930b9e840a52cef2d73e578eb6ba",
+      "benchmark/2026-07": "16f9a0026bcd000ddf24e0237420ed70912629c23b4eebab49e25aceee3aa76d",
+      "benchmark/2026-08": "81059dbf6c43965851f5cfe24488cd14e9c94e4104962a5f039f875bab1cd381",
+      "benchmark/2026-09": "e99c6e1b12c0898254a6034b488489ef7d959656fe61514b8650d3e0f711e328",
+      "calendar": "191ea19b63b6e887a6b688700b9d8302c690a5e6a2f109a7abd579a6c8d96db7",
+      "fundamentals": "5ab9d00b5c8d014d53df37418afeb7c39e90dd70ccb6b3b62c3ea436006a76b8",
+      "fx/USD_KRW": "e7b6ef7f632a52064c6c081cd3100f92a8f1c76ecbe91a63853b668579761a5d",
+      "macro": "1e351c0a46043e7058b2459a5f4219933a03569f5648a598aa5998db1e66d935",
+      "price/2011-01": "e0210fa35412d7a85ac31fa3b5f4c5ffad7a12c21998fe4eda3e5ba902181108",
+      "price/2011-02": "4e83ffd2b63008bba4fe98425572799279ed4f777bcde7789603b3de32b815aa",
+      "price/2011-03": "6c2535ceabda27b78ee1f0bd61d7e27bea378a651e848fcf261f2a5eeff3c5dd",
+      "price/2011-04": "d132cf6bb542281782f54677c1652ed9055ddaba5166bf6d2893722648fdcb63",
+      "price/2011-05": "c9e6939b9b55e936c1583ddc6ddf5f78a7defd8ae0fa986ee2b31dbe9dcec576",
+      "price/2011-06": "038c7bd45abd2003e5d413b5cbacf27525c7fa1eed964cc2322342f28ff468ef",
+      "price/2011-07": "095487bff78d4893a888f3b8ea281b43a2ae13cd926930539a8be52f508b66fa",
+      "price/2011-08": "446c863917eb7963780a29788c0190c20844b78285d4ed73f6edd3b53eb3361c",
+      "price/2011-09": "03b5fc6f88f439aebb49789019e0416302822da4a0ec19d3048281a71c4b3b7c",
+      "price/2011-10": "46ed0def4b76bf46f3ef6730f545c9dc60b6e58840bf8cd1115545315598653f",
+      "price/2011-11": "dd321d2ee2decc4a84153651cbb0fe10e81cefba106dc4f3829e0ec2cbcb4f16",
+      "price/2011-12": "183916d2082618be4abd9cd21eaee1a1def2d620f3a01db22b538419632882d4",
+      "price/2012-01": "7b850b739eb4afc0eef06c302c3ff1af8f7e5ace78f224bc2ba2530c8bb5def5",
+      "price/2012-02": "d77393656cc5fd0c9930beb9158c9d9e875f4bffedd6f4725da33f05a76e5c23",
+      "price/2012-03": "766ff2d51ab496e84d99c5f584075875f3510e9dac2022a879fcc2d18a954c02",
+      "price/2012-04": "e1b44d33d49ac8983a93b48da10661bf55cd24f5c0ee8f114567fbb6f0a8a987",
+      "price/2012-05": "3972d15655b00cdffb7ea11546458d6a8c7fe4f64eb448e55571fb663dbedffd",
+      "price/2012-06": "1a8571e8d58333056f9f2513eb4e32d5d5a71b2eee370f0dbad25f23f60070c7",
+      "price/2012-07": "b78ec5a23a6d99671f45dd3bde1f788808f9a2ab8e807cd295f162b429faa858",
+      "price/2012-08": "07d4413fd21ffcc45278b39a5e54a77b3bf4ce324448f806af5f22e3fc1fdcdf",
+      "price/2012-09": "226288f25929b8866f51686c5617b6f9ef4da84c7e72601b88410700238a3f1f",
+      "price/2012-10": "822633fc59ae543435fdc3f8dd2b8c7a675fddc2fd85ccf580566487cffe77b2",
+      "price/2012-11": "92095c5bc84b485f0f45386674fd206970bf333866a2952de7a04d6c2c280d10",
+      "price/2012-12": "e522f4df44456afdb58addca415dc70b66db3d7864938beaf9d120cd7014f3d5",
+      "price/2013-01": "995ae8693ef9c2046c8c1927147e4deb1bceeab388f45ca0def26a97e3c4a0c6",
+      "price/2013-02": "72ea97919da916c921e537736bf2847d1a1da4a1a5f938d65253cdbfaa6fb673",
+      "price/2013-03": "2754d924352d3da046d86d0244ded34e3362fa11c4bf086056aa64a5d0d8a011",
+      "price/2013-04": "79af77989b3acd923b13049c2a72d8e02d3213a124381c1eab15c9460c583428",
+      "price/2013-05": "ef85bea3a551604c2375be458b0dac2e38fd4689c2eac84d38504efbab1942f7",
+      "price/2013-06": "73b19e15318bf65e36ef60cb6f06246501332918d9a18a184f85f51712c053b8",
+      "price/2013-07": "9ae769dbc5c67ff4a995423de4ed6c04c51c04cfe05eb1b8f6396cab35608d40",
+      "price/2013-08": "a920663d1a64a02134b205696ce8d54357ab99a7d6fde6c82fc33821396f4458",
+      "price/2013-09": "77758b9d9c6730dd42e887fda61f22cbc13194dc07da34b9d0673fe77e29e3c8",
+      "price/2013-10": "70d6a06c20a06eb77006b0c2308697d064300c79a77df708d84ada861bf1a3d4",
+      "price/2013-11": "9c9490fb115fe57052a4ce35c42ce58f17709168d2800e203e1b4ce0ea014766",
+      "price/2013-12": "d0bb924ce6f55cfce7fd268faac6923d4507ef3dc5a388d70b92a83c96bbd953",
+      "price/2014-01": "49cb4fbe645480430874a4030a29b94c3218071117403d3ee15f09e5cdb69a8c",
+      "price/2014-02": "d0dbbb643669f7e384a8fd55c9cb97c37b5e8950c4d80a8a99f468aea366c0c9",
+      "price/2014-03": "0433941c76d2bd8e588be3e04f61e05a23a93a627670766b2e8de663905bac8a",
+      "price/2014-04": "986a04b6ce58e39156f7e997a84be200a3dc2ab4b93102ced5a8332fd6b957af",
+      "price/2014-05": "799a2dde34e9c744d59abceac77c605bf9cd0dedb19de7037782630e478b0411",
+      "price/2014-06": "c8978616ec07aaea5c482ed03f02af30aa51f3b76ead7ebc8579593114f21afa",
+      "price/2014-07": "88a7e91d3698520ffc30fc612bfcd60cf4c9df757e83ab1848c5c92a85d80c50",
+      "price/2014-08": "52900f9a3c6e97c5f44b44e25312afd0e9b301637a9a3c01a797df31e63c1b01",
+      "price/2014-09": "d1f2c408d3164b2ccb362b7c52adcc93a2147c686f749a9063191940d177e86a",
+      "price/2014-10": "daaf5f4bd81262d862a2b916aeaf673efc196e495a3f0ba1eb67e0735dc179be",
+      "price/2014-11": "853b57b99d0aaa2b2cc8cbefa5a5c194ac8ca84dd32b79edf19b7f8ac4f85f9b",
+      "price/2014-12": "fee2ad0662264a891688d1b0fa6da4ec5cb3afa12c4ccb44646f24d8872ba94c",
+      "price/2015-01": "2b3e9823f862fe4f377319531ec112712fd39e49a930e888d9cebb393cf92334",
+      "price/2015-02": "c5ce5329ba1b2da0e455dec4d75c28467681d03303ff7ce101d9ce48e0001007",
+      "price/2015-03": "5314f9b094dad8a7f7210e7630fb026d366019932eefb3ea0ed13d3d4897fcfd",
+      "price/2015-04": "46daaf94873e2df9f47cda5f722079aeabc45fd6d50e7ef159649792a2090b5b",
+      "price/2015-05": "4b1ab58d73a0cc2116f6730503c4a43a28d5a9f215bc2d8fb1c2805ac9eb43f4",
+      "price/2015-06": "408abaea29882a53a94827a49476ced413775494f28ec815793df8dfa1cd7b10",
+      "price/2015-07": "09e869471445f93441d12d3c6757c7bf2414207fdcc8b4b0551694fc4b8eb8f3",
+      "price/2015-08": "cf5dc9be8689e150f805574bf44026df9953001e18018e93ec096dd33e02a3a5",
+      "price/2015-09": "6a1079ec90fedb223584efdb0c17e814beb4924186afb9e86413527f6e927e3b",
+      "price/2015-10": "68036db38f04c35f2b1263e9697ee002814dcb85b99e133e074e60401b36b9ee",
+      "price/2015-11": "d73eb6c9b2c803bfde44f1797aa93d3828e6847d24a5d233cccaa14ed8b07d37",
+      "price/2015-12": "da345dd2ee4572a547c39278e13d39520650dc860aee30e90eac4b26db776dd1",
+      "price/2016-01": "add1c054ba709493f3a6ea84b6fcd20c369d29a0d055494ec3d38e47cd084a08",
+      "price/2016-02": "340b575dcdbd9aa4ba525b9031a51e7fc9926b3c0fa0056602212cdd160e37f6",
+      "price/2016-03": "87555b69c5a4b6ed76101979646d3679e3a9242222bd6cae040233768aea3144",
+      "price/2016-04": "42d32c5e5403059d4f0e4d003fe13f1b4e805185b7879f0a4eb533f497e66680",
+      "price/2016-05": "17ffbf61f52fe7ab6f0879d6da14933bf01b47b66e0d7af1cf0f557e206b2ecf",
+      "price/2016-06": "17849efbbd1ff5330cf481d38f52266426a4f90837c2717e24a7e054118f3933",
+      "price/2016-07": "385cca3c2ec6d53323dadf8af429e0d127272586313d0313a18a6a10827e4125",
+      "price/2016-08": "ebe05a8f9f0e2c2ced964f51d16fb00c86b94afbb84f1702a53a19311f8499e1",
+      "price/2016-09": "6c153768587202371c0e6705312a3c9b87692e6c765aef3658492c948bae2121",
+      "price/2016-10": "46e2f088f8eab174cf90f8b28fdc16e9fcf15067ee9d598ace1910e4a2cf7bc2",
+      "price/2016-11": "1ace3747b45e7681abbe17db19e5eeacdf003eb01b927f0fa2f7fb99c4c0bf38",
+      "price/2016-12": "ae17af547ceca21161c433e509f207056f2b967e8647f9b042d11ef2fdb0e2c7",
+      "price/2017-01": "ae5bf1c509b8f8cc7a5aaf7253b944ed3d1ea3a125b9f0d1a4e45af7f07b86d8",
+      "price/2017-02": "d8f0e121cf16539e75c4b869213029619a6ab31cf239e7872c24bc32aa1fb021",
+      "price/2017-03": "cbb17808fe569b0e7d435e7c1db1ca61505c0b9cf2325c6956977ace6a453201",
+      "price/2017-04": "0335bc2e3819494493548830c357d60f61ee1059ee78e549851f1d771dd2e1f4",
+      "price/2017-05": "02d738aaa30119b8b470b984a7d2748a4a6b16f1426302867dfe840a9de416c8",
+      "price/2017-06": "1f15e492d71ebb16b7027f881e1959a42e5de4a8ddfed32f3bb4aa1bc96d82b2",
+      "price/2017-07": "7bf172dfe6cdd1c8cd0db27408efc3aeaaa47bc68634772ec661f0beb3208912",
+      "price/2017-08": "129c782f8cc4268e4c959bb533de71168c6ae3fde3a5999818842d57455484d5",
+      "price/2017-09": "2afd090d152d96977eea63287b48360ae37f72e7239b8c2054001cea72a5e2cd",
+      "price/2017-10": "8d92580662c7df8a8f3ccb25ebbf66798f88ac831eba922ca62957f6ad12d043",
+      "price/2017-11": "86e1013190811c204eacc1e7b2c36da4a5c00823b86657a0720b970c1e0c0add",
+      "price/2017-12": "47c5997399c45e376a83387b30f07e3825721e3c8126cbe270526864d47e4c36",
+      "price/2018-01": "16841b98211d6e2b1e72bbaaeb3c9fabd445666b70ab94493b69d196c672bb40",
+      "price/2018-02": "35889dd566b5efe3fb5b48d5495131afd1279af07cb54140d07e0b1c3cb186ca",
+      "price/2018-03": "63b7b942bd7208fcefd95f0597139fdeb23a143fbc42469bfcdcca61bc4618ee",
+      "price/2018-04": "630e81201967da80c2e7f38e2b0daaeb2ffa9900c792eb9c419b45ff0aad8dea",
+      "price/2018-05": "fdf00ae4760fa13b8e5d624567a00263665f21ee8e89d9aba6fe6d6093cc439e",
+      "price/2018-06": "f411f5069582f3d50b039c0aea29fc19c73bdfa57a5cb49118be41646ace76c7",
+      "price/2018-07": "22daa67985b6f48ae295c480d5c463a9cfdb6119752fb999b1e6abdb3ed43fc9",
+      "price/2018-08": "a8e75808f36987ccf30f86f32b0928f2f47be7323ec0aa460299ffd8fe7d0cc5",
+      "price/2018-09": "a3769999867d14e8bc472d158029521272da702502b1c916caa4e106c79c9532",
+      "price/2018-10": "6684277f9a404e511d0c0e5d1f2f3e91248713746cd2843029bb7cedeee3c393",
+      "price/2018-11": "3e7c491ed903481f352309182b5d469b205be59fa9f5c78cee6df9b9caa5d209",
+      "price/2018-12": "edd578447f1c2e44e3607d0190194fa7f34804892d265ba398a824748af83ae3",
+      "price/2019-01": "16aa4c25f91e65afcd4ccaee36f6ddbb911a0ac357e051af76ca46123d733745",
+      "price/2019-02": "28fcf127a7ac0b8777bfce94f1409edf837d20b319b60b7604e42c9486671871",
+      "price/2019-03": "657f248d5c3dc0eda4e4b05b67751c5fb1b9983be705ce4d4826bd5923f14617",
+      "price/2019-04": "53fd341a77fee23f439243f922d15cde2d987265a856b3e5271ce1d282804600",
+      "price/2019-05": "107eef73023fd99cc884c632fc7d40c5442c13a39185101a01c6f6d6177db6e2",
+      "price/2019-06": "114798ce17af17804b3aae8c4ee168e69c25d5ecaa1c30f2db9c72cd0bc7794a",
+      "price/2019-07": "c6440c541ac3a6b2461b15ead44d5fc117effc2f267659edf5ec66d3e72be21f",
+      "price/2019-08": "a1c91035c2d44a959eca2a06740fda4ec62f9ab3531bd61688f39955e58b2db6",
+      "price/2019-09": "f85a5754bf67ab9ed71d67e3b306becdb83246a32c64341750fe3a7e88812798",
+      "price/2019-10": "8658f914895f4b77917dc961025d057044234b558ccb754ab6c345d7f1e8a4d4",
+      "price/2019-11": "60b54031c92454b8fbd742df2ca8633149b0f1755b4e86eb100251bd299ba80a",
+      "price/2019-12": "756b1cc1c610366964af228f1a714d9cc5b197860528aaf42178c2b51dc6641a",
+      "price/2020-01": "d32c0ec80bf4e879f4e6762a165fb22255a5c041c5a445b16d2672aaf289be03",
+      "price/2020-02": "cbd6897ad2c052b55d7a38e3fe566ecf4ee8840ace13b60340287a8b10b5577a",
+      "price/2020-03": "71c0409e994b134e4aeca79dc7b79fb7e753c047d2270c2174b4ad59777dcb22",
+      "price/2020-04": "af80c728ecbf813fd195596e4125a678679be3e0bda4297a84a698521653d5b8",
+      "price/2020-05": "f4ec017bd380d1b9df2e28a5f60b4196263ff295a3d7216907eae54c8e1f1c9a",
+      "price/2020-06": "2e3b75154107aec022a959c72234f24c2b439dd4b88150bd062a8bbd63c1a00e",
+      "price/2020-07": "2fed1fb41d031c2d6cead2e60e5f0a0ba7092727f013c4e714ba6de799782e6b",
+      "price/2020-08": "f0d9db3ad78b0eceed7b50004ff475a70fcbc6587d455cdbda8f06599fe14783",
+      "price/2020-09": "b493f1d09403deaf3d560b64224fdbe8b2a04858793e13d235fe82f4afb22133",
+      "price/2020-10": "c1622b66a4f75b16c94cc652fbe12e3c0392bd340cba6d219a7df1e0e698780e",
+      "price/2020-11": "9afda54bd5de00da27d208c1733f4397675a9d156b49572de3e2f5efb5412c19",
+      "price/2020-12": "6ae7e086d0df41e719d674bcc4f0a0b9560d5ee576b5d93d60c8d4157f6cdfb8",
+      "price/2021-01": "4c469418e419abff25ecfc615c10db76072b102cce48080da9742604545d3644",
+      "price/2021-02": "c040be2cda8523b9815ac515d2f72408246087db7f940cf4c8bae977baff54d2",
+      "price/2021-03": "3dc23a134e2e97d4f21663f474f8daff9920d753f32bb71089fb32f7704a1ffa",
+      "price/2021-04": "d006d04acab0a28704f41c4d526151cb99b5ec7e3729049465440aef1eb15d79",
+      "price/2021-05": "a33f3c7c58c4950d147537ffd5f6afce1c8681cefaa40be9481db38c05d73839",
+      "price/2021-06": "339a546454e34e66250b409bff56caffc4760398503a528cd4d2cb1effb0d6e8",
+      "price/2021-07": "658bcd24610346959c2902676ce12b9a531038ee3237a82a9e471c003aaf7095",
+      "price/2021-08": "a17747027810b0b610b95903bf174b2d0e11ae7cb20f7feed07e16e41add138b",
+      "price/2021-09": "0ae04fdb85ee1519e49b2cf3ef6a409dc9e8bb43c716093a41cdf9371794543b",
+      "price/2021-10": "ed9a2b960986eb53f9f1d35f6050386863616b159821783015d617e229358682",
+      "price/2021-11": "c2a4aaaa85ef333442bd2ff28ea00b9f7c7b8c8a58839b18145faca432a06438",
+      "price/2021-12": "7258fc04c437dee06de1b6c29e0640ea25a7fae7fc857fe9c6ad329f7eb50760",
+      "price/2022-01": "5a11557ee298e32b2cec0657fecb712f7e4bbc8404d152226ba4b8eac0ab608f",
+      "price/2022-02": "e5f871c820e2ef571c9075774dc8a1e5130da4a8f3a3d02c091903bb12d33473",
+      "price/2022-03": "b7942bf8dce887a85d86390327feecfa785b347f0d3b6ef0e3335b811250c025",
+      "price/2022-04": "9a81db1be0d8a69350f7661c2352952cf50258ba48be75e3a1d02c43f96825e3",
+      "price/2022-05": "0178d6ad862883669c44da1e714256dc56ee33fb6bed85f598384140c9af4e3b",
+      "price/2022-06": "0355959bbbb094957f36b79618041878425dde16c847862ec61b18b5602c2a5b",
+      "price/2022-07": "1d36c5d406de303a8d9a286daabf1d8cfb100a8d02c00f213ae2e5bb34639569",
+      "price/2022-08": "8ad48d80aa111a26285f9543babed1170ac4a02bc832bc1b62366e3b2606bad9",
+      "price/2022-09": "7236dd668e53eadd17c813d22755330c5f0d2e1c419ab7b77937d3d7fb501975",
+      "price/2022-10": "289903e05cebcd3a8bd0a92317ebff458c68e7e82950c4fa4b9cb8de43e499b2",
+      "price/2022-11": "dc206d8d2d931f20e645c90dc71fba58a7cd82ec6de45122df34708d91207c05",
+      "price/2022-12": "9822597786824341181df7a9359fe81db9fafcaea2ca706cf84c29d6bfc8ab21",
+      "price/2023-01": "370b34470110ac726e8ec76cb3bec25f8676d7caff8e7b5cbab08be34f0299bc",
+      "price/2023-02": "63443eb3eebe7a26b5e530ab1acc1e25a1b806f4665c4461b520dc99c34debc1",
+      "price/2023-03": "f3ffce5fd47f4cf9bad6176cc526e2e5622dd8f6464a6bdb71da8f4129319487",
+      "price/2023-04": "7efc2466f9c1328a48f2b73bb952b7c77a5878fc183cd550bcd82fbf49d913cb",
+      "price/2023-05": "dd67aff1fd4c145eb345e60de1ae7b147479020c4dabf33a8844e7bcbbfd6c39",
+      "price/2023-06": "11addcf9454635db49f6c317b1aaa7663dcb7d0ed859e9b951ef82abc5bee49c",
+      "price/2023-07": "7a30d3ab6582f837152f3cb1ef6d27f13fce3baedd86063b443aa605d30ff2ef",
+      "price/2023-08": "df92f85ce1ebc7feaba60d78412f6b582a8793c63eb87a035e2d1cb4c5313557",
+      "price/2023-09": "2af6de4a0bc082bad2e8a87ceedf9492540a2f3597555cb0f392fd37b4bd4a5e",
+      "price/2023-10": "5822aa75b25b07365cee8a2d33fd9788e092b3662756de127bc7b6aa10acc7b4",
+      "price/2023-11": "8bd60ecea0b3400ee83db647b0329a8ef6574d6c1553a55a082f4998cd663c0e",
+      "price/2023-12": "f3b972b587bdce5b6549b10b343002a657f5a320c2735f2a257e744334bdeab7",
+      "price/2024-01": "64bb22d49a77951ee1cdf0e081162abb946b66c1c5b11fe04d13a4c1cd632fac",
+      "price/2024-02": "79b2c67a98360c7890a43ce438cc4961cbe21c1eeca7af86cd3d2619eabf23f5",
+      "price/2024-03": "c058f313ded6d12fc4511d30599bae515f09cf9205ad0b9f4ae0661926d5e503",
+      "price/2024-04": "826ee3bbc4a4778a058253243701718d9b840b0515ab5a72ce2c5ae5fe2b9f70",
+      "price/2024-05": "bc03ae651b697d1881797f717d5e5711d5b1a8835b90e306cb30ff30b82ec808",
+      "price/2024-06": "c25b773ef44e09d0ac0caa6cb8214cb9d93c374f8b0253ac78a9d744485f4270",
+      "price/2024-07": "65e62da00348c28d03fd4f1fb85c12b79af6a31f44e61dd80155d4a92366510c",
+      "price/2024-08": "942e8bdf5e3fb185cebe6e00ecf322beb6c1d6cfdef2ec5534ead5e8ae991f10",
+      "price/2024-09": "815099936a030d18aab088043ed253fa0b05ce541b2b7b2cec5d5ce5caa035f0",
+      "price/2024-10": "18d71c524a8ed00f2844e54a874dd4f84c776b55b43d575bfbd3ad8df7d58c85",
+      "price/2024-11": "8edc826ed389df2fc83c828175468dbf62dfe082ae7d068bfa3189f6d0d41c82",
+      "price/2024-12": "1b95e5126c110fb34f629b4b248e996d36aec3cf792cc887c00ab3b8aca43443",
+      "price/2025-01": "7f54eb714936755e5d214ba3e9d21bc648b8cade26b3e9df47e446076af9e86f",
+      "price/2025-02": "ff224131fe711cd6ede982e35830fa1eaf282cb82719deb41fdbeedf1cadef0c",
+      "price/2025-03": "2ab0a419e0721e58aad994316e16f8411bdb102cf7288b834ce0b3dcdfebf7e7",
+      "price/2025-04": "3e3efd450be5b969833044cd4ec86a68bfc60d45d30f9e515442d03d4a29eba0",
+      "price/2025-05": "c39ee0509bcacb0646f1e63ed327c442510229f426888a9d1cd8a186afbec22e",
+      "price/2025-06": "b39af7d46caf16df07816121046d8a16cd483ff0e185c639c5080014bb2ee943",
+      "price/2025-07": "58c02d3806fd3c5fd03fb23d3d26c7510f6beb30bac084d56557d47cf199b851",
+      "price/2025-08": "2c1e755095e781c8825df69ce472fbecd5fdd39388e54f1f86b52e753e8eaf38",
+      "price/2025-09": "c1b10a670a0596cf1ac8120479b2e4ba78d36743de59f3e668e701190dadc1f5",
+      "price/2025-10": "b9a2af60069b3c942097778fc46659e06c3e78b1674dd26f69f9cbffdde64a61",
+      "price/2025-11": "8cc99ea9a090ba315f063fa50ab5213d680745b2bcd07707829732553de4923b",
+      "price/2025-12": "9afd9f00202523ee59c731f56bb8c37e8c34662902a7fb0751cbdebd4d6b268a",
+      "price/2026-01": "ae86dfcb36d47f5fbd86aaf692a3881168ed565e10361ef1c32998c074b2bbc6",
+      "price/2026-02": "4bf84f5c75f51b3a2beb2b3cc09a6254bf5d4114e1e440abd1506b519d2a18d8",
+      "price/2026-03": "35e4bc0b34c3e482613f9431816fa890ff8199e32043bab233842ca16fe31d29",
+      "price/2026-04": "d199ee003a510383395f5d4cd56d031a9539ff705d4cca51a33ea9d5ff3b9784",
+      "price/2026-05": "c264a584f6482edf016ef4545b15810caff45908b5df5d0f02646597661afe1e",
+      "price/2026-06": "fd1fba69d54ba13cc735d8d753b90d414014aa4dc20457ee9a25cd39ede5937b",
+      "price/2026-07": "b45caef7f729a683784ca32d6bbc9f58f9103bf942970eca21517d8598637a3a",
+      "price/2026-08": "61a4ed620ca8b75f21b017ac16ae3ecf1ff3c665de821c501faa734da7b4d780",
+      "price/2026-09": "620a7970003f7c3bcba710bb535f8b435876456589b49c9a86faa5586a81f5fe",
+      "risk-free/KRW": "f2c0d517e08056f6055d2b7705105c28e094c801f3fe969ed5c407824635b876",
+      "risk-free/coverage": "1661d46cb0b434fce8d8a44c3640f213c36ccd08fb0a182bbb8ff1e3fc3e31df",
+      "risk-free/source": "5daa22244c6b8ccc6a51ff850b5acb91beb6340847bbdff333af30decbd5c9d6",
+      "universe": "bf2477fe6ad9684565162af6c7b9fd40131e30eb21ef6d4b6c06e0d68a58b129",
+      "vix": "8b4d130281658ae92cd6057a801c3d990dc72c85e5eb828f666c19d04312930f"
+    }
+  },
   "coverage": {
-    "signalsRecorded": 384092,
+    "signalsRecorded": 345956,
     "signalsByRegion": {
-      "KR": 79042,
-      "US": 305050
+      "KR": 43889,
+      "US": 302067
     },
-    "uniqueDates": 720,
-    "trackingDays": 3568,
+    "uniqueDates": 714,
+    "trackingDays": 3566,
     "firstSignalDate": "2013-01-04",
-    "lastSignalDate": "2026-09-08",
-    "maturedSignals": 332489,
-    "maturedUniqueDates": 692,
+    "lastSignalDate": "2026-09-04",
+    "maturedSignals": 331007,
+    "maturedUniqueDates": 688,
     "maturedObservationDays": 3436,
     "lastMaturedSignalDate": "2026-03-06",
     "horizon": 126,
     "maturedByHorizon": {
-      "21": 344563,
-      "63": 339915,
-      "126": 332489,
-      "252": 317119
+      "21": 343081,
+      "63": 338501,
+      "126": 331007,
+      "252": 315705
     },
     "benchmarkCoverageByRegion": {
       "KR": {
         "126": {
-          "maturedAbsoluteReturns": 42323,
-          "matchedBenchmarkReturns": 41476,
-          "missingBenchmarkReturns": 847,
-          "coveragePct": 97.9987,
+          "maturedAbsoluteReturns": 42053,
+          "matchedBenchmarkReturns": 41186,
+          "missingBenchmarkReturns": 867,
+          "coveragePct": 97.9383,
           "missingSamples": [
             {
-              "id": "2013-03-29|KR|000100.KS|replay-v6|longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
+              "id": "2013-03-29|KR|000080.KS|replay-v7|longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
+              "date": "2013-03-29",
+              "endDate": "2013-10-02",
+              "ticker": "000080.KS",
+              "benchmark": "^KS200"
+            },
+            {
+              "id": "2013-03-29|KR|000100.KS|replay-v7|longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
               "date": "2013-03-29",
               "endDate": "2013-10-02",
               "ticker": "000100.KS",
               "benchmark": "^KS200"
             },
             {
-              "id": "2013-03-29|KR|000270.KS|replay-v6|longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
+              "id": "2013-03-29|KR|000270.KS|replay-v7|longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
               "date": "2013-03-29",
               "endDate": "2013-10-02",
               "ticker": "000270.KS",
               "benchmark": "^KS200"
             },
             {
-              "id": "2013-03-29|KR|000660.KS|replay-v6|longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
+              "id": "2013-03-29|KR|000660.KS|replay-v7|longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
               "date": "2013-03-29",
               "endDate": "2013-10-02",
               "ticker": "000660.KS",
               "benchmark": "^KS200"
             },
             {
-              "id": "2013-03-29|KR|000810.KS|replay-v6|longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
+              "id": "2013-03-29|KR|000810.KS|replay-v7|longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
               "date": "2013-03-29",
               "endDate": "2013-10-02",
               "ticker": "000810.KS",
-              "benchmark": "^KS200"
-            },
-            {
-              "id": "2013-03-29|KR|001040.KS|replay-v6|longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
-              "date": "2013-03-29",
-              "endDate": "2013-10-02",
-              "ticker": "001040.KS",
               "benchmark": "^KS200"
             }
           ]
         },
         "21": {
-          "maturedAbsoluteReturns": 43819,
-          "matchedBenchmarkReturns": 42799,
-          "missingBenchmarkReturns": 1020,
-          "coveragePct": 97.6722,
+          "maturedAbsoluteReturns": 43549,
+          "matchedBenchmarkReturns": 42577,
+          "missingBenchmarkReturns": 972,
+          "coveragePct": 97.768,
           "missingSamples": [
             {
-              "id": "2013-01-18|KR|000080.KS|replay-v6|longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
+              "id": "2013-01-18|KR|000080.KS|replay-v7|longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
               "date": "2013-01-18",
               "endDate": "2013-02-19",
               "ticker": "000080.KS",
               "benchmark": "^KS200"
             },
             {
-              "id": "2013-01-18|KR|000100.KS|replay-v6|longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
+              "id": "2013-01-18|KR|000100.KS|replay-v7|longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
               "date": "2013-01-18",
               "endDate": "2013-02-19",
               "ticker": "000100.KS",
               "benchmark": "^KS200"
             },
             {
-              "id": "2013-01-18|KR|000270.KS|replay-v6|longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
+              "id": "2013-01-18|KR|000270.KS|replay-v7|longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
               "date": "2013-01-18",
               "endDate": "2013-02-19",
               "ticker": "000270.KS",
               "benchmark": "^KS200"
             },
             {
-              "id": "2013-01-18|KR|000660.KS|replay-v6|longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
+              "id": "2013-01-18|KR|000660.KS|replay-v7|longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
               "date": "2013-01-18",
               "endDate": "2013-02-19",
               "ticker": "000660.KS",
               "benchmark": "^KS200"
             },
             {
-              "id": "2013-01-18|KR|000810.KS|replay-v6|longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
+              "id": "2013-01-18|KR|000810.KS|replay-v7|longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
               "date": "2013-01-18",
               "endDate": "2013-02-19",
               "ticker": "000810.KS",
@@ -376,84 +1687,84 @@
           ]
         },
         "252": {
-          "maturedAbsoluteReturns": 40419,
-          "matchedBenchmarkReturns": 39449,
-          "missingBenchmarkReturns": 970,
-          "coveragePct": 97.6001,
+          "maturedAbsoluteReturns": 40217,
+          "matchedBenchmarkReturns": 39227,
+          "missingBenchmarkReturns": 990,
+          "coveragePct": 97.5384,
           "missingSamples": [
             {
-              "id": "2013-03-29|KR|000100.KS|replay-v6|longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
+              "id": "2013-03-29|KR|000080.KS|replay-v7|longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
+              "date": "2013-03-29",
+              "endDate": "2014-04-07",
+              "ticker": "000080.KS",
+              "benchmark": "^KS200"
+            },
+            {
+              "id": "2013-03-29|KR|000100.KS|replay-v7|longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
               "date": "2013-03-29",
               "endDate": "2014-04-07",
               "ticker": "000100.KS",
               "benchmark": "^KS200"
             },
             {
-              "id": "2013-03-29|KR|000270.KS|replay-v6|longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
+              "id": "2013-03-29|KR|000270.KS|replay-v7|longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
               "date": "2013-03-29",
               "endDate": "2014-04-07",
               "ticker": "000270.KS",
               "benchmark": "^KS200"
             },
             {
-              "id": "2013-03-29|KR|000660.KS|replay-v6|longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
+              "id": "2013-03-29|KR|000660.KS|replay-v7|longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
               "date": "2013-03-29",
               "endDate": "2014-04-07",
               "ticker": "000660.KS",
               "benchmark": "^KS200"
             },
             {
-              "id": "2013-03-29|KR|000810.KS|replay-v6|longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
+              "id": "2013-03-29|KR|000810.KS|replay-v7|longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
               "date": "2013-03-29",
               "endDate": "2014-04-07",
               "ticker": "000810.KS",
-              "benchmark": "^KS200"
-            },
-            {
-              "id": "2013-03-29|KR|001040.KS|replay-v6|longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
-              "date": "2013-03-29",
-              "endDate": "2014-04-07",
-              "ticker": "001040.KS",
               "benchmark": "^KS200"
             }
           ]
         },
         "63": {
-          "maturedAbsoluteReturns": 43207,
-          "matchedBenchmarkReturns": 42242,
-          "missingBenchmarkReturns": 965,
-          "coveragePct": 97.7666,
+          "maturedAbsoluteReturns": 43005,
+          "matchedBenchmarkReturns": 42020,
+          "missingBenchmarkReturns": 985,
+          "coveragePct": 97.7096,
           "missingSamples": [
             {
-              "id": "2013-02-22|KR|000080.KS|replay-v6|longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
+              "id": "2013-02-22|KR|000080.KS|replay-v7|longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
               "date": "2013-02-22",
               "endDate": "2013-05-27",
               "ticker": "000080.KS",
               "benchmark": "^KS200"
             },
             {
-              "id": "2013-02-22|KR|000100.KS|replay-v6|longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
+              "id": "2013-02-22|KR|000100.KS|replay-v7|longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
               "date": "2013-02-22",
               "endDate": "2013-05-27",
               "ticker": "000100.KS",
               "benchmark": "^KS200"
             },
             {
-              "id": "2013-02-22|KR|000270.KS|replay-v6|longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
+              "id": "2013-02-22|KR|000270.KS|replay-v7|longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
               "date": "2013-02-22",
               "endDate": "2013-05-27",
               "ticker": "000270.KS",
               "benchmark": "^KS200"
             },
             {
-              "id": "2013-02-22|KR|000660.KS|replay-v6|longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
+              "id": "2013-02-22|KR|000660.KS|replay-v7|longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
               "date": "2013-02-22",
               "endDate": "2013-05-27",
               "ticker": "000660.KS",
               "benchmark": "^KS200"
             },
             {
-              "id": "2013-02-22|KR|000810.KS|replay-v6|longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
+              "id": "2013-02-22|KR|000810.KS|replay-v7|longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
               "date": "2013-02-22",
               "endDate": "2013-05-27",
               "ticker": "000810.KS",
@@ -464,29 +1775,29 @@
       },
       "US": {
         "126": {
-          "maturedAbsoluteReturns": 290166,
-          "matchedBenchmarkReturns": 290166,
+          "maturedAbsoluteReturns": 288954,
+          "matchedBenchmarkReturns": 288954,
           "missingBenchmarkReturns": 0,
           "coveragePct": 100.0,
           "missingSamples": []
         },
         "21": {
-          "maturedAbsoluteReturns": 300744,
-          "matchedBenchmarkReturns": 300744,
+          "maturedAbsoluteReturns": 299532,
+          "matchedBenchmarkReturns": 299532,
           "missingBenchmarkReturns": 0,
           "coveragePct": 100.0,
           "missingSamples": []
         },
         "252": {
-          "maturedAbsoluteReturns": 276700,
-          "matchedBenchmarkReturns": 276700,
+          "maturedAbsoluteReturns": 275488,
+          "matchedBenchmarkReturns": 275488,
           "missingBenchmarkReturns": 0,
           "coveragePct": 100.0,
           "missingSamples": []
         },
         "63": {
-          "maturedAbsoluteReturns": 296708,
-          "matchedBenchmarkReturns": 296708,
+          "maturedAbsoluteReturns": 295496,
+          "matchedBenchmarkReturns": 295496,
           "missingBenchmarkReturns": 0,
           "coveragePct": 100.0,
           "missingSamples": []
@@ -563,31 +1874,30 @@
             "accepted": true,
             "reason": null,
             "sessions": 3782,
-            "snapshotCoveragePct": 98.0804,
+            "snapshotCoveragePct": 100.0,
             "minimumSessions": null,
             "firstSession": "2011-01-03",
             "lastSession": "2026-09-08"
           }
         ],
-        "snapshotSessions": 3855
+        "snapshotSessions": 3782
       }
     },
     "degradedRegions": [],
     "unavailableRegions": [],
     "snapshotsUpdated": [
-      "SPY",
-      "^KS200"
+      "SPY"
     ],
     "indexMixingForbidden": true
   },
   "formerMemberRecovery": {
     "US": {
       "describedFormerMembers": 326,
-      "priced": 139,
-      "pricedPct": 42.64,
+      "priced": 142,
+      "pricedPct": 43.56,
       "byYearLeft": {
         "2013": {
-          "priced": 6,
+          "priced": 7,
           "described": 22
         },
         "2014": {
@@ -599,7 +1909,7 @@
           "described": 19
         },
         "2016": {
-          "priced": 12,
+          "priced": 13,
           "described": 35
         },
         "2017": {
@@ -607,7 +1917,7 @@
           "described": 11
         },
         "2018": {
-          "priced": 10,
+          "priced": 11,
           "described": 32
         },
         "2020": {
