@@ -53,11 +53,18 @@ MODEL_VERSION = "longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-a
 # Preserve all v6 shards; a full v7 run produces its own snapshot and signals.
 # v8 corrects three source-confirmed 2026 KRX closures missing in the pinned
 # library. The resulting anchors must not overwrite the committed v7 calendar.
-REPLAY_VERSION = "replay-v8"
+# v9 changes historical valuation inputs: one official H.10 USD/KRW vintage
+# replaces the incomplete Yahoo panel, independently observed FDR returns may
+# repair only validated market-wide Korean holes, and a reviewed merger ledger
+# values held securities through cash-and-stock actions. Those changes can alter
+# past outcomes, so v8 stays immutable and v9 is a new full experiment.
+REPLAY_VERSION = "replay-v9"
 FEATURE_VERSION = "hfeat-v1"
 DATA_VERSION = ("yahoo-adjusted-close-v3-regional-session-download"
                 "+pit-index-membership+dart-pit-fundamentals-kr"
-                "+immutable-inputs-v1+common-calendar-v2-kr-2026-closures+usdkrw-bok-rf-v1")
+                "+immutable-inputs-v1+common-calendar-v2-kr-2026-closures"
+                "+fred-h10-usdkrw-fixing-v1+fdr-systemic-gap-return-v1"
+                "+corporate-actions-v1+bok-rf-v1")
 
 # MODEL_VERSION is a compound identity, and not every component of it is a
 # statement about how names are scored. "daily-session-v2" was appended by a

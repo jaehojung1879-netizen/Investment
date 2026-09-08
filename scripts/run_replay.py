@@ -48,6 +48,7 @@ from pipeline import historical_replay as HR        # noqa: E402
 from pipeline import historical_store as HS         # noqa: E402
 from pipeline import replay_calendar as RC
 from pipeline import replay_inputs as RI
+from pipeline import replay_recovery as RR
 from pipeline import replay_rates
 from pipeline import pit_data                       # noqa: E402
 from pipeline import provenance as prov_mod         # noqa: E402
@@ -108,6 +109,7 @@ def _run(argv=None) -> int:
     args = parser.parse_args(argv)
 
     cfg, _ = load_config()
+    corporate_actions = RR.load_corporate_actions()
     replay_cfg = cfg.historical_replay or {}
     if not replay_cfg.get("enabled", True):
         print("historical replay disabled in config")
@@ -139,7 +141,9 @@ def _run(argv=None) -> int:
     through = args.end or (pd.Timestamp.now(tz="UTC").normalize() - pd.Timedelta(days=1)).strftime("%Y-%m-%d")
     policy = {"start":start, "frequency":frequency, "calendarVersion":RC.CALENDAR_VERSION,
               "modelVersion":prov_mod.MODEL_VERSION, "featureVersion":prov_mod.FEATURE_VERSION,
-              "configSha256":RI.digest(json.loads((ROOT / "config.json").read_text()))}
+              "configSha256":RI.digest(json.loads((ROOT / "config.json").read_text())),
+              "recoveryVersion":RR.RECOVERY_VERSION,
+              "corporateActionsSha256":RI.digest(corporate_actions)}
     if args.frozen_inputs:
         if not prior_inputs:
             raise RI.InputVersionConflict("no frozen inputs; first run must acquire a snapshot")
@@ -202,12 +206,21 @@ def _run(argv=None) -> int:
 
         download = list(dict.fromkeys(
             [t for names in fetch_universe.values() for t in names]
-            + list(cfg.benchmarks.values())))
+            + list(cfg.benchmarks.values())
+            + [t for names in RR.successor_dependencies(corporate_actions).values()
+               for t in names]))
         # Fetch from well before the replay start: the first replay date still needs
         # 273 sessions of trailing history behind it, or every name is unrankable.
         fetch_start = (str(int(str(start)[:4]) - 2) + str(start)[4:]) if start else "2010-01-01"
         print(f"fetching {len(download)} tickers by region from {fetch_start} ...")
         prices = fetch_regional_prices(fetch_universe, fetch_start)
+        # Successor securities value a held pre-merger position but must never
+        # be added to the historical selection universe merely for that reason.
+        dependencies = [ticker for names in RR.successor_dependencies(corporate_actions).values()
+                        for ticker in names if ticker not in prices]
+        if dependencies:
+            print(f"  fetching {len(dependencies)} corporate-action price dependencies ...")
+            prices.update(fetch_prices(dependencies, fetch_start))
 
         # Benchmarks go through their own path: vendor redundancy, a plausibility
         # check against the session calendar already on record, and the committed
@@ -234,6 +247,13 @@ def _run(argv=None) -> int:
             print(f"  NOTE: {', '.join(benchmark_diagnostics['degradedRegions'])} running on "
                   f"the committed snapshot; the newest grid dates will not extend until the "
                   f"vendor recovers. This is recorded as {BS.STATUS_SNAPSHOT} in diagnostics.")
+
+        price_recovery = RR.recover_systemic_kr_gaps(
+            prices, fetch_universe.get("KR") or [], cfg.benchmarks["KR"],
+            start=start, through=through)
+        print(f"  KR systemic price recovery: {len(price_recovery['accepted'])} accepted, "
+              f"{len(price_recovery['rejected'])} rejected across "
+              f"{len(price_recovery['systemicDates'])} market-wide gap dates")
 
         horizon = int(replay_cfg.get("horizonDays", 126))
         minimum_benchmark_coverage = float(
@@ -281,8 +301,9 @@ def _run(argv=None) -> int:
             print(f"  historical constituents unavailable -> {pit_data.SURVIVORSHIP_UNRESOLVED} "
                   "recorded on every observation")
 
-        fx_frame = fetch_prices(["KRW=X"], fetch_start).get("KRW=X")
-        fx = fx_frame["Close"].rename("USD_KRW") if fx_frame is not None else None
+        fx_observations = RR.fetch_fred_usdkrw(cfg.fred_api_key, fetch_start)
+        fx, fx_source_map = RR.resolve_fx_fixings(
+            fx_observations, RC.sessions(start, through, "UNION"))
         rates = replay_rates.fetch_rates(through)
         calendar_rows = [{"date":d.strftime("%Y-%m-%d"), "KR":d in RC.sessions(start, through,"KR"),
                           "US":d in RC.sessions(start, through,"US")}
@@ -290,7 +311,9 @@ def _run(argv=None) -> int:
         components = RI.pack(prices=prices, benchmarks=cfg.benchmarks, universe=fetch_universe,
             universe_history=universe_history, fundamentals=fundamental_store, macro=macro,
             vix=vix, vintages=macro_vintages, fx=fx, rates=rates, through=through,
-            calendar_rows=calendar_rows)
+            calendar_rows=calendar_rows, fx_observations=fx_observations,
+            fx_source_map=fx_source_map, price_recovery=price_recovery,
+            corporate_actions=corporate_actions)
         if args.dry_run:
             frozen = RI.unpack(components)
             manifest = {"sha256":RI.digest(components), "through":through, "policy":policy}
@@ -336,6 +359,12 @@ def _run(argv=None) -> int:
     diagnostics["inputSnapshot"] = {"sha256":manifest["sha256"], "through":through,
         "manifest":str(store.path.relative_to(ledger_dir)), "schema":RI.SCHEMA,
         "componentHashes":manifest.get("componentHashes", {})}
+    diagnostics["inputRecovery"] = {
+        "version":RR.RECOVERY_VERSION,
+        "fx":frozen.get("fx_source"),
+        "krPriceRows":frozen.get("price_recovery") or [],
+        "corporateActionVersion":(frozen.get("corporate_actions") or {}).get("version"),
+    }
     for row in replay["signals"]:
         row["inputSnapshotSha256"] = manifest["sha256"]
     print(f"replay finished in {time.time() - started:.0f}s: "
@@ -460,13 +489,17 @@ def _run(argv=None) -> int:
 def main(argv=None) -> int:
     try:
         return _run(argv)
-    except RI.InputVersionConflict as exc:
+    except (RI.InputVersionConflict, RR.RecoveryError) as exc:
         arguments = list(sys.argv[1:] if argv is None else argv)
         if arguments:
             ledger = Path(arguments[0])
-            record = {"status":"INPUT_VERSION_CONFLICT", "replayVersion":prov_mod.REPLAY_VERSION,
+            conflict = isinstance(exc, RI.InputVersionConflict)
+            record = {"status":("INPUT_VERSION_CONFLICT" if conflict
+                                else "INPUT_RECOVERY_FAILED"),
+                      "replayVersion":prov_mod.REPLAY_VERSION,
                       "dataVersion":prov_mod.DATA_VERSION, "reason":str(exc),
-                      "requiresNewExperiment":True}
+                      "requiresNewExperiment":conflict,
+                      "retrySameGeneration":not conflict}
             folder = ledger / "replay-input-conflicts"
             folder.mkdir(parents=True, exist_ok=True)
             (folder / (RI.digest(record) + ".json")).write_text(json.dumps(record, indent=2) + "\n")

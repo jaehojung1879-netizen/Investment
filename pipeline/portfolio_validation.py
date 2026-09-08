@@ -740,6 +740,7 @@ def _path_metrics(rows: list[dict], horizon: int, cfg_pf: dict,
     portfolio_rates: list[float] = []
     for row in selected:
         region_map.update({t: r for t, r in (row.get("regionByTicker") or {}).items() if r})
+        region_map.update({t: r for t, r in (row.get("terminalRegionByTicker") or {}).items() if r})
         candidates = [{"ticker": ticker, "region": region_map.get(ticker)}
                       for ticker in set(row["weights"]) | set(prior)]
         cost = _turnover_cost(row["weights"], prior, candidates, cfg_pf)
@@ -1559,9 +1560,11 @@ def portfolio_replay(signals: list[dict], outcomes: list[dict], *, cfg_lt: dict,
                 "path": (_path_metrics(rows, horizon, cfg_pf)
                          if outcome_coverage["sufficientForPath"] and len(rows) == outcome_coverage["eligibleDecisions"]
                          else {"available": False,
-                               "reason": "portfolio_completeness_below_threshold",
+                               "reason": "continuous_nav_has_unknown_intervals",
                                "completenessPct": _r(completeness, 2),
-                               "minimumCompletenessPct": min_completeness}),
+                               "blockEvidenceSufficient":outcome_coverage["sufficientForBlockEvidence"],
+                               "minimumBlockCompletenessPct": min_completeness,
+                               "continuousPathRequiredPct":100.0}),
             }
 
     # One block schedule for both selectors, so the comparison is like for like.
@@ -1571,8 +1574,12 @@ def portfolio_replay(signals: list[dict], outcomes: list[dict], *, cfg_lt: dict,
         rows = rows_by_method_horizon[HEADLINE_HORIZON].get(method) or []
         coverage = horizon_results[method][str(HEADLINE_HORIZON)]["outcomeCoverage"]
         if not coverage["sufficientForPath"] or not shared or len(rows) != len(shared):
-            summaries[method] = {"available":False, "reason":"incomplete_fixed_schedule" if shared else "HORIZON_NOT_MATURED",
-                                 "missingMaturedBlocks":len(shared)-len(rows)}
+            summaries[method] = {"available":False,
+                                 "reason":"continuous_nav_has_unknown_intervals" if shared else "HORIZON_NOT_MATURED",
+                                 "missingMaturedBlocks":len(shared)-len(rows),
+                                 "blockEvidenceSufficient":coverage.get("sufficientForBlockEvidence"),
+                                 "minimumBlockCompletenessPct":min_completeness,
+                                 "continuousPathRequiredPct":100.0}
             horizon_results[method][str(HEADLINE_HORIZON)]["path"] = summaries[method]
             continue
         summary = _path_metrics(rows, HEADLINE_HORIZON, cfg_pf, only_dates=shared)
@@ -1718,8 +1725,12 @@ def portfolio_replay(signals: list[dict], outcomes: list[dict], *, cfg_lt: dict,
         "blockSchedule": shared_schedule,
         "metricDefinition": {"version":RV.METRIC_VERSION, "baseCurrency":"KRW",
                              "fxReturnsIncluded":True, "directlyComparableToLegacy":False,
+                             "fxSource":"FEDERAL_RESERVE_H10_DEXKOUS_PRIOR_FIXING",
+                             "corporateActions":"VERSIONED_CASH_AND_STOCK_LEDGER",
                              "emptyPortfolioTreatment":"100_PERCENT_KRW_CASH_WITH_RISK_FREE_PROXY",
-                             "benchmark":"SAME_INITIAL_REGIONAL_WEIGHTS_AND_CASH_AS_EACH_PORTFOLIO"},
+                             "benchmark":"SAME_INITIAL_REGIONAL_WEIGHTS_AND_CASH_AS_EACH_PORTFOLIO",
+                             "blockEvidenceFloorPct":min_completeness,
+                             "continuousHeadlineRequiredPct":100.0},
         "emptyPortfolioDiagnostics": empty_portfolio_diagnostics(decisions, through),
         "auditSample": {method: rows[-3:] for method, rows in decisions.items()},
     }
@@ -1855,8 +1866,14 @@ def build_report(signals: list[dict], outcomes: list[dict], *, cfg_lt: dict,
             else "benchmark_coverage_gate_not_assessed")
     for method, blob in (portfolio.get("selectors") or {}).items():
         coverage = blob.get("horizons", {}).get(str(HEADLINE_HORIZON), {}).get("outcomeCoverage", {})
-        if int(coverage.get("droppedDecisions") or 0):
-            contract_failures.append(f"{method}:genuine_missing_fixed_blocks")
+        # Pending horizons are not evidence of either completeness or a gap.
+        # Gate only once at least one scheduled block has actually matured.
+        if not int(coverage.get("eligibleDecisions") or 0):
+            continue
+        if coverage.get("sufficientForBlockEvidence") is not True:
+            contract_failures.append(f"{method}:block_completeness_below_floor")
+        elif coverage.get("sufficientForContinuousPath") is not True:
+            contract_failures.append(f"{method}:continuous_nav_has_unknown_intervals")
     target_horizon = str(int(cfg_pf.get("horizonDays", 126)))
     for method, blob in (portfolio.get("selectors") or {}).items():
         coverage = (((blob.get("horizons") or {}).get(target_horizon) or {})
@@ -1900,6 +1917,7 @@ def build_report(signals: list[dict], outcomes: list[dict], *, cfg_lt: dict,
         "replayVersion": replay_version or diagnostics.get("replayVersion"),
         "dataVersion": diagnostics.get("dataVersion"),
         "inputSnapshot": diagnostics.get("inputSnapshot"),
+        "inputRecovery": diagnostics.get("inputRecovery"),
         "evaluationCalendar": diagnostics.get("evaluationCalendar"),
         "metricDefinition": portfolio.get("metricDefinition"),
         "modelVersion": model_version or diagnostics.get("modelVersion"),
@@ -1910,6 +1928,10 @@ def build_report(signals: list[dict], outcomes: list[dict], *, cfg_lt: dict,
             "eligible": not contract_failures,
             "status": "VALID" if not contract_failures else "BLOCKED",
             "failures": contract_failures,
+            "gateDefinitions": {
+                "blockEvidence":"configured completeness floor; missing blocks remain disclosed",
+                "continuousHeadline":"100% of matured fixed blocks; unknown intervals are never joined",
+            },
         },
         "alphaDiagnostics": alpha,
         "portfolioReplay": portfolio,

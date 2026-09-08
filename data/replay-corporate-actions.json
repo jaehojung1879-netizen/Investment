@@ -1,0 +1,20 @@
+{
+  "schema": "REPLAY_CORPORATE_ACTIONS_V1",
+  "version": "corporate-actions-v1",
+  "actions": [
+    {
+      "ticker": "ESRX",
+      "region": "US",
+      "type": "CASH_AND_STOCK_MERGER",
+      "effectiveDate": "2018-12-20",
+      "cashPerShare": 48.75,
+      "successorTicker": "CI",
+      "successorSharesPerShare": 0.2434,
+      "cashYieldPolicy": "ZERO_UNTIL_NEXT_REBALANCE",
+      "sources": [
+        "https://www.sec.gov/Archives/edgar/data/1532063/000119312518074974/d549178dex991.htm",
+        "https://newsroom.thecignagroup.com/Cigna-Completes-Combination-with-Express-Scripts-Establishing-a-Blueprint-to-Transform-the-Health-Care-System"
+      ]
+    }
+  ]
+}

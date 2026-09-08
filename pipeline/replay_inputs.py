@@ -82,7 +82,8 @@ class InputStore:
             raise InputVersionConflict("no frozen inputs in this generation; first run must acquire inputs")
         result = {}
         for name, refs in manifest["components"].items():
-            if valuation_only and not name.startswith(("price/", "benchmark/", "fx/", "risk-free/")):
+            if valuation_only and not (name.startswith(("price/", "benchmark/", "fx/", "risk-free/"))
+                                       or name == "corporate-actions"):
                 continue
             rows = []
             for ref in refs:
@@ -147,7 +148,8 @@ class InputStore:
 
 
 def pack(*, prices, benchmarks, universe, universe_history, fundamentals, macro,
-         vix, vintages, fx, rates, through, calendar_rows):
+         vix, vintages, fx, rates, through, calendar_rows, fx_observations=None,
+         fx_source_map=None, price_recovery=None, corporate_actions=None):
     components = {}
     for name, frame in sorted(prices.items()):
         kind = "benchmark" if name in benchmarks.values() else "price"
@@ -156,6 +158,11 @@ def pack(*, prices, benchmarks, universe, universe_history, fundamentals, macro,
     components["macro"] = frame_rows(macro, through)
     components["vix"] = frame_rows(vix, through)
     components["fx/USD_KRW"] = frame_rows(fx, through)
+    components["fx/observations"] = frame_rows(fx_observations, through)
+    components["fx/source-map"] = [r for r in (fx_source_map or []) if r["date"] <= through]
+    components["fx/source"] = [{"vendor":"FEDERAL_RESERVE_H10", "seriesId":"DEXKOUS",
+                                "units":"KRW_PER_USD",
+                                "resolution":"LATEST_PUBLISHED_FIXING_ON_OR_BEFORE_SESSION"}]
     components["risk-free/KRW"] = [r for r in rates["events"] if r["date"] <= through]
     components["risk-free/source"] = [{k:v for k,v in rates.items() if k not in ("events", "verifiedThrough")}]
     components["risk-free/coverage"] = [{"date":d.strftime("%Y-%m-%d")} for d in
@@ -174,6 +181,15 @@ def pack(*, prices, benchmarks, universe, universe_history, fundamentals, macro,
                              "value":float(record["value"]) if pd.notna(record["value"]) else None})
         components["macro-vintage/"+name] = sorted(rows, key=lambda r:(r["date"],r["observationDate"]))
     components["calendar"] = calendar_rows
+    components["recovery/kr-systemic"] = [
+        {"date":row.get("date") or (row.get("dates") or [""])[0], "kind":kind, **row}
+        for kind in ("systemicDates", "accepted", "rejected")
+        for row in ((price_recovery or {}).get(kind) or [])]
+    components["recovery/source"] = [{
+        "version":(price_recovery or {}).get("version"),
+        "policy":"ONLY_SYSTEMIC_PRIMARY_GAPS_WITH_VALIDATED_INDEPENDENT_RETURN_BRIDGE"}]
+    components["corporate-actions"] = ([{"book":corporate_actions}]
+                                        if corporate_actions is not None else [])
     return components
 
 
@@ -200,6 +216,12 @@ def unpack(components):
             "risk_free":components["risk-free/KRW"],
             "risk_free_source":{**components["risk-free/source"][0],
                                 "verifiedThrough":components["risk-free/coverage"][-1]["date"] if components["risk-free/coverage"] else "1900-01-01"},
+            "fx_observations":rows_frame(components.get("fx/observations", []), series=True),
+            "fx_source_map":components.get("fx/source-map", []),
+            "fx_source":(components.get("fx/source") or [{}])[0],
+            "price_recovery":components.get("recovery/kr-systemic", []),
+            "corporate_actions":((components.get("corporate-actions") or [{"book":{"actions":[]}}])[0]
+                                  .get("book", {"actions":[]})),
             "universe":universe["universe"],
             "universe_history":pit_data.UniverseHistory(universe["memberships"]),
             "fundamental_store":fundamentals}
