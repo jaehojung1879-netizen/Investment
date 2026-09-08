@@ -402,8 +402,10 @@
 - The null tests the ranking and concentration step WITHIN an already alpha-filtered
   research pool. It does not test the research screen, and no artifact may describe it
   as if it did.
-- Selectors are compared on ONE shared block schedule, over dates where every selector
-  is measurable, using the later maturity date so the blocks do not overlap for either.
+- Selectors are compared on ONE precomputed common KRX/NYSE session schedule, with
+  a 21-session stride for the primary horizon. Data availability and actual portfolio
+  end dates MUST NOT move anchors. Missing matured blocks block headline publication;
+  unmatured blocks are pending, and empty portfolios are disclosed KRW cash windows.
   Comparing two selectors over two different periods and two different benchmark blends
   is not a comparison; the 2026-08-22 report ranked a champion from 2013-01 against a
   challenger from 2013-11 that way.

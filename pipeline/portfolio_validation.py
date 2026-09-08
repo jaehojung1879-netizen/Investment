@@ -24,9 +24,11 @@ from . import longterm as LT
 from . import selection_null as SN
 from . import pit_data
 from . import replay_determinism
+from . import replay_calendar as RC
+from . import replay_valuation as RV
 
 
-REPORT_VERSION = "portfolio-validation-v2"
+REPORT_VERSION = "portfolio-validation-v3"
 CHAMPION = KP.SELECTION_METHOD
 CHALLENGER = "CALIBRATED_EXPECTED_RETURN_PER_DOWNSIDE_RISK"
 HORIZONS = (21, 63, 126, 252)
@@ -598,7 +600,11 @@ def _turnover_cost(weights: dict, prior: dict, candidates: list[dict], cfg_pf: d
 
 def _outcome_for_decision_with_diagnostics(
         decision: dict, outcome_by_id: dict, signal_by_key: dict,
-        horizon: int) -> tuple[dict | None, dict]:
+        horizon: int, *, evaluation_end: str | None = None,
+        as_of: str | None = None) -> tuple[dict | None, dict]:
+    if evaluation_end and as_of and evaluation_end > as_of:
+        return None, {"complete":False, "status":"HORIZON_NOT_MATURED",
+                      "reasons":["HORIZON_NOT_MATURED"], "tickersByReason":{}, "affectedRegions":[]}
     gross = benchmark = 0.0
     end_dates = []
     reasons: dict[str, set[str]] = defaultdict(set)
@@ -623,7 +629,7 @@ def _outcome_for_decision_with_diagnostics(
             continue
         h = ((outcome or {}).get("horizons") or {}).get(str(horizon))
         if not h:
-            reasons["HORIZON_NOT_MATURED"].add(ticker)
+            reasons["MISSING_HORIZON_OUTCOME"].add(ticker)
             continue
         if h.get("absoluteReturn") is None:
             reasons["MISSING_ABSOLUTE_RETURN"].add(ticker)
@@ -680,68 +686,26 @@ def _outcome_for_decision(decision: dict, outcome_by_id: dict, signal_by_key: di
     return outcome
 
 
-def block_dates(rows: list[dict], horizon: int) -> list[str]:
-    """Greedy non-overlapping rebalance dates, in order."""
-    chosen, last_end = [], None
-    for row in sorted(rows, key=lambda x: x["date"]):
-        date = pd.Timestamp(row["date"])
-        if last_end is None or date >= last_end:
-            chosen.append(row["date"])
-            last_end = pd.Timestamp(row["endDate"])
-    return chosen
+def block_dates(rows: list[dict], horizon: int, *, start: str = RC.ORIGIN,
+                through: str | None = None) -> list[str]:
+    return shared_block_dates({"portfolio":rows}, horizon, start=start, through=through)
 
 
-def shared_block_dates(rows_by_method: dict[str, list[dict]], horizon: int) -> list[str]:
-    """One block schedule for every selector being compared.
+def shared_block_dates(rows_by_method: dict[str, list[dict]], horizon: int, *,
+                       start: str = RC.ORIGIN, through: str | None = None) -> list[str]:
+    return [r["date"] for r in shared_block_schedule(rows_by_method, horizon,
+                                                    start=start, through=through)]
 
-    Letting each selector pick its own blocks from its own measurable dates is
-    how the 08-22 report ended up comparing a champion starting 2013-01 against
-    a challenger starting 2013-11, over benchmark CAGRs of 8.41% and 12.03%. A
-    difference between two different periods is not a difference between two
-    selectors.
+
+def shared_block_schedule(rows_by_method: dict[str, list[dict]], horizon: int, *,
+                          start: str = RC.ORIGIN, through: str | None = None) -> list[dict]:
+    """Calendar anchors never consult portfolio availability or actual end dates.
+
+    Production passes the pinned cutoff. The inferred cutoff is only a compatibility
+    convenience for callers inspecting old rows; it cannot move an existing anchor.
     """
-    common = None
-    for rows in rows_by_method.values():
-        dates = {row["date"] for row in rows}
-        common = dates if common is None else (common & dates)
-    if not common:
-        return []
-    # Two selectors hold different names, so the same entry date can mature on
-    # different sessions. Take the later end so the schedule is non-overlapping
-    # for BOTH — the earlier one would let the other selector's blocks touch.
-    end_by_date: dict[str, str] = {}
-    for rows in rows_by_method.values():
-        for row in rows:
-            if row["date"] in common:
-                current = end_by_date.get(row["date"])
-                if current is None or row["endDate"] > current:
-                    end_by_date[row["date"]] = row["endDate"]
-    return block_dates([{"date": date, "endDate": end_by_date[date]}
-                        for date in sorted(common)], horizon)
-
-
-def shared_block_schedule(rows_by_method: dict[str, list[dict]],
-                          horizon: int) -> list[dict]:
-    """The shared schedule as (date, endDate) pairs, not dates alone.
-
-    The determinism guard has to pin both halves. `shared_block_dates` takes
-    the LATER of the selectors' end dates, so a block's end can move while its
-    entry date does not — and because the next block is anchored on that end,
-    one moved end date shifts every block after it. A fingerprint of entry
-    dates alone would call that stable.
-    """
-    chosen = set(shared_block_dates(rows_by_method, horizon))
-    if not chosen:
-        return []
-    end_by_date: dict[str, str] = {}
-    for rows in rows_by_method.values():
-        for row in rows:
-            if row["date"] in chosen:
-                current = end_by_date.get(row["date"])
-                if current is None or row["endDate"] > current:
-                    end_by_date[row["date"]] = row["endDate"]
-    return [{"date": date, "endDate": end_by_date[date]}
-            for date in sorted(chosen) if date in end_by_date]
+    through = through or max((r["date"] for rows in rows_by_method.values() for r in rows), default=start)
+    return RC.schedule(start, through, horizon)
 
 
 def _path_metrics(rows: list[dict], horizon: int, cfg_pf: dict,
@@ -782,21 +746,22 @@ def _path_metrics(rows: list[dict], horizon: int, cfg_pf: dict,
         row["transactionCost"] = cost["cost"]
         row["turnover"] = cost["turnover"]
         row["turnoverByRegion"] = cost["turnoverByRegion"]
-        row["costAdjustedReturn"] = row["grossReturn"] - cost["cost"]
-        row["costAdjustedExcessReturn"] = row["grossExcessReturn"] - cost["cost"]
+        row["costAdjustedReturn"] = ((1 + row["grossReturn"]) * (1 - cost["cost"]) - 1
+                                     if "dailyGrossNav" in row else row["grossReturn"] - cost["cost"])
+        row["costAdjustedExcessReturn"] = row["costAdjustedReturn"] - row["benchmarkReturn"]
         if prior:
             portfolio_rates.append(cost["turnover"])
             for home, rate in cost["turnoverByRegion"].items():
                 rebalance_rates[home].append(rate)
-        prior = dict(row["weights"])
+        prior = dict(row.get("terminalWeights", row["weights"]))
     returns = pd.Series([row["costAdjustedReturn"] for row in selected], dtype=float)
     benchmark = pd.Series([row["benchmarkReturn"] for row in selected], dtype=float)
     excess = returns - benchmark
     nav = (1 + returns).cumprod()
     bench_nav = (1 + benchmark).cumprod()
-    drawdown = nav / nav.cummax() - 1
-    periods = 252 / horizon
-    years = len(selected) / periods
+    drawdown = nav / nav.cummax().clip(lower=1.0) - 1
+    years = RV.span_years(selected[0]["date"], selected[-1]["endDate"])
+    periods = len(selected) / years if years > 0 else 0
     cagr = float(nav.iloc[-1] ** (1 / years) - 1) if years > 0 and nav.iloc[-1] > 0 else None
     bench_cagr = (float(bench_nav.iloc[-1] ** (1 / years) - 1)
                   if years > 0 and bench_nav.iloc[-1] > 0 else None)
@@ -817,12 +782,11 @@ def _path_metrics(rows: list[dict], horizon: int, cfg_pf: dict,
         for stamp, _ in dated:
             start = stamp - pd.DateOffset(years=years_back)
             window = [row for end, row in dated if start < end <= stamp]
-            expected_blocks = years_back * periods
-            if len(window) < max(2, math.ceil(expected_blocks * .8)):
+            if len(window) < 2 or RV.span_years(window[0]["date"], window[-1]["endDate"]) < years_back * .8:
                 continue
             portfolio_growth = float(np.prod([1 + row["costAdjustedReturn"] for row in window]))
             benchmark_growth = float(np.prod([1 + row["benchmarkReturn"] for row in window]))
-            span_years = len(window) / periods
+            span_years = RV.span_years(window[0]["date"], window[-1]["endDate"])
             if portfolio_growth <= 0 or benchmark_growth <= 0 or span_years <= 0:
                 continue
             p_cagr = portfolio_growth ** (1 / span_years) - 1
@@ -832,7 +796,7 @@ def _path_metrics(rows: list[dict], horizon: int, cfg_pf: dict,
         compact = {row["date"][:7]: row for row in points}
         return list(compact.values())
 
-    return {
+    result = {
         "available": True, "pathMethod": f"NON_OVERLAPPING_{horizon}D_REBALANCE_BLOCKS",
         "periods": len(selected), "firstDate": selected[0]["date"],
         "lastEndDate": selected[-1]["endDate"],
@@ -840,9 +804,8 @@ def _path_metrics(rows: list[dict], horizon: int, cfg_pf: dict,
         "benchmarkCagrPct": _r(bench_cagr * 100, 3) if bench_cagr is not None else None,
         "annualizedExcessPct": (_r((cagr - bench_cagr) * 100, 3)
                                 if cagr is not None and bench_cagr is not None else None),
-        "sharpe": _r(returns.mean() / std * math.sqrt(periods), 3) if std and std > 0 else None,
-        "sortino": (_r(returns.mean() / downside_std * math.sqrt(periods), 3)
-                    if downside_std and downside_std > 0 else None),
+        "sharpe": None,
+        "sortino": None,
         "annualizedRealizedVolPct": _r(std * math.sqrt(periods) * 100, 3) if std else None,
         "annualizedDownsideVolPct": (_r(downside_std * math.sqrt(periods) * 100, 3)
                                       if downside_std else None),
@@ -866,12 +829,22 @@ def _path_metrics(rows: list[dict], horizon: int, cfg_pf: dict,
         "turnoverRebalances": len(portfolio_rates),
         "averageTop1Pct": _r(np.mean([row["top1"] for row in selected]) * 100, 2),
         "averageTop3Pct": _r(np.mean([row["top3"] for row in selected]) * 100, 2),
-        "averageEffectiveNames": _r(np.mean([row["effectiveNames"] for row in selected
-                                              if row["effectiveNames"] is not None]), 2),
+        "averageEffectiveNames": (_r(np.mean([row["effectiveNames"] for row in selected
+                                              if row["effectiveNames"] is not None]), 2)
+                                  if any(row["effectiveNames"] is not None for row in selected) else None),
         "rolling3YAnnualizedExcess": rolling_annualized_excess(3),
         "rolling5YAnnualizedExcess": rolling_annualized_excess(5),
         "nav": nav_points,
+        "calendarYears": years, "metricVersion": "LEGACY_ENDPOINTS_CALENDAR_SPAN",
+        "riskFreeStatus": "UNAVAILABLE", "mddBasis": "BLOCK_ENDPOINT_LOWER_BOUND",
+        "directlyComparableToLegacy": False,
     }
+    if all("dailyGrossNav" in row for row in selected):
+        daily = RV.daily_statistics(selected)
+        if not daily.get("available"):
+            return daily
+        result.update(daily)
+    return result
 
 
 def _bootstrap_ci(values: np.ndarray, *, draws: int = 2000, seed: int = 11) -> list[float]:
@@ -906,7 +879,9 @@ def paired_comparison(rows_by_method: dict[str, list[dict]], dates: list[str],
                                    for date in dates], dtype=float)
     left, right = CHAMPION, CHALLENGER
     diff = series[left] - series[right]
-    periods = 252 / horizon
+    ends = [r["endDate"] for rows in rows_by_method.values() for r in rows if r["date"] in keep]
+    years = RV.span_years(dates[0], max(ends))
+    periods = len(dates) / years if years > 0 else 0
     per_method = {}
     for method, values in series.items():
         per_method[method] = {
@@ -927,7 +902,7 @@ def paired_comparison(rows_by_method: dict[str, list[dict]], dates: list[str],
         "separated": separated,
         "verdict": ("CHAMPION_BETTER" if separated and ci[0] > 0 else
                     "CHALLENGER_BETTER" if separated else "INDISTINGUISHABLE"),
-        "methodKo": ("동일 블록·동일 기간·동일 벤치마크 구성에서의 쌍대 차이입니다. "
+        "methodKo": ("동일 블록·동일 원화 평가기간에서 각 포트폴리오의 지역·현금 비중을 맞춘 벤치마크 대비 쌍대 차이입니다. "
                      "95% 구간이 0을 포함하면 두 selector는 구분되지 않습니다."),
     }
 
@@ -1015,7 +990,9 @@ def _stressed_excess(row: dict, gap_by_region: dict[str, float],
         if tail is None:
             return None
         total += (1 - fraction) * held_excess + fraction * float(weight) * tail
-    return total - float(row.get("transactionCost") or 0.0)
+    cost = (float(row["grossReturn"]) - float(row["costAdjustedReturn"])
+            if "dailyGrossNav" in row else float(row.get("transactionCost") or 0.0))
+    return total - cost
 
 
 def _bound_step(rows_by_method: dict[str, list[dict]], dates: list[str],
@@ -1034,7 +1011,7 @@ def _bound_step(rows_by_method: dict[str, list[dict]], dates: list[str],
         stressed[method] = by_date
     usable = [d for d in dates
               if all(d in stressed[method] for method in rows_by_method)]
-    if len(usable) < 2:
+    if len(usable) != len(dates) or len(usable) < 2:
         return None
     series = {method: np.array([stressed[method][d] for d in usable], dtype=float)
               for method in rows_by_method}
@@ -1079,6 +1056,8 @@ def survivorship_bound(rows_by_method: dict[str, list[dict]], dates: list[str],
     """
     if not dates or len(rows_by_method) != 2:
         return {"available": False, "reason": "no_shared_blocks"}
+    if any(not set(dates).issubset({r["date"] for r in rows}) for rows in rows_by_method.values()):
+        return {"available":False, "reason":"incomplete_fixed_schedule"}
     by_region = diagnostics.get("universeCoverageByRegion") or {}
     gap_by_region = {}
     for region, row in by_region.items():
@@ -1114,6 +1093,24 @@ def survivorship_bound(rows_by_method: dict[str, list[dict]], dates: list[str],
                           if s["stressScale"] > 0
                           and s["verdict"] != baseline["verdict"]), None)
 
+    interval = None
+    refinement_steps = 0
+    if breakdown is not None:
+        low = max(s["stressScale"] for s in sweep if s["stressScale"] < breakdown)
+        high = breakdown
+        while high - low > .001 and refinement_steps < 12:
+            mid = (low + high) / 2
+            step = _bound_step(rows_by_method, dates, gap_by_region, worst, mid)
+            if step is None:
+                break
+            if step["verdict"] == baseline["verdict"]:
+                low = mid
+            else:
+                high = mid
+            refinement_steps += 1
+        interval = [round(low, 6), round(high, 6)]
+        breakdown = round((low + high) / 2, 6)
+
     if baseline is None or not baseline["separated"]:
         verdict = "NOTHING_TO_BOUND"
         note = ("the unstressed comparison does not separate the selectors, so "
@@ -1148,6 +1145,11 @@ def survivorship_bound(rows_by_method: dict[str, list[dict]], dates: list[str],
         "baseline": baseline,
         "atMeasuredGap": at_gap,
         "breakdownScale": breakdown,
+        "breakdownInterval": interval,
+        "breakdownAbsoluteError": round((interval[1]-interval[0])/2, 6) if interval else None,
+        "breakdownRefinementSteps": refinement_steps,
+        "breakdownMethod": "BISECTION_FIRST_COARSE_VERDICT_CHANGE_INTERVAL",
+        "precisionNote": "Numerical bracket conditional on fixed bootstrap draws and tail assumption; not a statistical confidence interval.",
         "sweep": sweep,
         "opensIntegrityGate": False,
     }
@@ -1181,6 +1183,8 @@ def selection_null(contexts: dict, priced_by_date: dict, rows: list[dict],
             usable.append(date)
         else:
             pool_gaps += 1
+    if len(usable) != len(dates):
+        return {"available":False, "reason":"incomplete_fixed_null_pool", "blocksDroppedForPoolCoverage":pool_gaps}
     if len(usable) < 2:
         return {"available": False, "reason": "no_fully_priced_block_dates",
                 "blocksDroppedForPoolCoverage": pool_gaps}
@@ -1189,7 +1193,9 @@ def selection_null(contexts: dict, priced_by_date: dict, rows: list[dict],
     if missing:
         return {"available": False, "reason": "actual_path_not_measurable_on_blocks"}
 
-    periods = 252 / horizon
+    years = RV.span_years(usable[0], outcome_lookup[usable[-1]]["endDate"])
+    periods = len(usable) / years if years > 0 else 0
+    risk_free = np.array([outcome_lookup[d].get("riskFreeReturn", np.nan) for d in usable])
     # The real conviction rows per date, computed once. Each draw reassigns these
     # scores, so every draw faces the same eligibility facts the real book did.
     base_scores = {date: KP.conviction_scores(contexts[date][0], cfg_pf)
@@ -1216,9 +1222,6 @@ def selection_null(contexts: dict, priced_by_date: dict, rows: list[dict],
                 blob = KP.selection_and_baseline(
                     candidates, cfg_pf, macro, scored=scored, method=SN.NULL_METHOD)
                 weights = blob["weights"]
-                if not weights:
-                    reason = "empty_portfolio"
-                    break
                 priced = _null_return(weights, priced_by_date.get(date))
                 if priced is None:
                     reason = "drawn_name_outcome_not_matured"
@@ -1228,21 +1231,23 @@ def selection_null(contexts: dict, priced_by_date: dict, rows: list[dict],
                 names = [{"ticker": ticker, "region": null_regions.get(ticker)}
                          for ticker in set(weights) | set(prior)]
                 leg = _turnover_cost(weights, prior, names, cfg_pf)
-                prior = dict(weights)
+                prior = {t:w * (1 + priced_by_date[date][t]["absoluteReturn"]) / (1 + priced["gross"])
+                         for t,w in weights.items()}
                 turnover.append(leg["turnover"])
-                returns.append(priced["gross"] - leg["cost"])
-                excess.append(priced["gross"] - priced["benchmark"] - leg["cost"])
+                net = (1 + priced["gross"]) * (1 - leg["cost"]) - 1
+                returns.append(net)
+                excess.append(net - priced["benchmark"])
             if len(excess) != len(usable):
                 discarded[reason or "incomplete_path"] += 1
                 continue
-            sample = _path_statistics(np.array(returns), np.array(excess), periods)
+            sample = _path_statistics(np.array(returns), np.array(excess), periods, risk_free)
             sample["turnoverPct"] = float(np.mean(turnover)) * 100
             samples.append(sample)
         return samples, dict(sorted(discarded.items()))
 
     actual_returns = np.array([outcome_lookup[d]["costAdjustedReturn"] for d in usable])
     actual_excess = np.array([outcome_lookup[d]["costAdjustedExcessReturn"] for d in usable])
-    observed = _path_statistics(actual_returns, actual_excess, periods)
+    observed = _path_statistics(actual_returns, actual_excess, periods, risk_free)
     actual_turnover = float(np.mean([outcome_lookup[d]["turnover"] for d in usable])) * 100
 
     by_mode: dict[str, dict] = {}
@@ -1270,6 +1275,8 @@ def selection_null(contexts: dict, priced_by_date: dict, rows: list[dict],
     return {
         "available": True,
         "method": SN.NULL_METHOD,
+        "metricBasis":"FIXED_BLOCK_RETURNS_CALENDAR_SPAN_WITH_KRW_RISK_FREE",
+        "directlyComparableToDailySharpe":False,
         "modes": list(SN.MODES),
         "requestedDraws": int(draws),
         "blocks": len(usable),
@@ -1300,26 +1307,32 @@ def _null_return(weights: dict, priced: dict | None) -> dict | None:
             return None
         gross += float(weight) * cell["absoluteReturn"]
         benchmark += float(weight) * cell["benchmarkReturn"]
+    rf = next(iter(priced.values())).get("riskFreeReturn")
+    if rf is not None:
+        gross += (1 - sum(weights.values())) * rf
+        benchmark += (1 - sum(weights.values())) * rf
     return {"gross": gross, "benchmark": benchmark}
 
 
-def _path_statistics(returns: np.ndarray, excess: np.ndarray, periods: float) -> dict:
+def _path_statistics(returns: np.ndarray, excess: np.ndarray, periods: float,
+                     risk_free: np.ndarray | None = None) -> dict:
     """The three headline statistics, computed identically for real and null."""
     if returns.size < 2:
         return {"annualizedExcessPct": None, "informationRatio": None, "sharpe": None}
     nav = float(np.prod(1 + returns))
     bench_nav = float(np.prod(1 + (returns - excess)))
-    years = returns.size / periods
+    years = returns.size / periods if periods > 0 else 0
     cagr = nav ** (1 / years) - 1 if nav > 0 and years > 0 else None
     bench_cagr = bench_nav ** (1 / years) - 1 if bench_nav > 0 and years > 0 else None
-    std = float(returns.std(ddof=1))
+    rf_excess = returns - risk_free if risk_free is not None and np.isfinite(risk_free).all() else None
+    std = float(rf_excess.std(ddof=1)) if rf_excess is not None else 0
     tracking = float(excess.std(ddof=1))
     return {
         "annualizedExcessPct": ((cagr - bench_cagr) * 100
                                 if cagr is not None and bench_cagr is not None else None),
         "informationRatio": (float(excess.mean()) / tracking * math.sqrt(periods)
                              if tracking > 0 else None),
-        "sharpe": (float(returns.mean()) / std * math.sqrt(periods)
+        "sharpe": (float(rf_excess.mean()) / std * math.sqrt(periods)
                    if std > 0 else None),
     }
 
@@ -1369,8 +1382,36 @@ def universe_ready(diagnostics: dict) -> bool | None:
     return membership == 100.0
 
 
+def empty_portfolio_diagnostics(decisions: dict, through: str) -> dict:
+    challenger = sorted(decisions.get(CHALLENGER, []), key=lambda r:r["date"])
+    champion = {r["date"]:r for r in decisions.get(CHAMPION, [])}
+    intervals, pending = [], []
+    def close(end, ongoing):
+        if not pending:
+            return
+        days = (pd.Timestamp(end) - pd.Timestamp(pending[0]["date"])).days
+        intervals.append({"startDate":pending[0]["date"], "endDate":end,
+            "durationCalendarDays":days, "endExclusive":not ongoing, "ongoing":ongoing,
+            "signalObservations":len(pending), "atLeast45Days":days >= 45,
+            "reasons":sorted({reason for r in pending for reason in r.get("emptyReasons", [])}),
+            "championPortfolioDates":sum(bool(champion.get(r["date"], {}).get("weights")) for r in pending),
+            "championObservedDates":sum(r["date"] in champion for r in pending),
+            "exclusionCouldFavorChallenger":True, "includedAsKrwCash":True,
+            "noteKo":"빈 포트폴리오 기간을 제외하면 challenger 성과가 유리해질 수 있습니다. 고정 일정에서는 원화 현금 수익을 포함합니다."})
+        pending.clear()
+    for row in challenger:
+        if not row["weights"]:
+            pending.append(row)
+        else:
+            close(row["date"], False)
+    close(through, True)
+    return {"thresholdCalendarDays":45, "intervals":intervals,
+            "longIntervals":[r for r in intervals if r["atLeast45Days"]],
+            "emptySignalDates":sum(r["signalObservations"] for r in intervals)}
+
+
 def portfolio_replay(signals: list[dict], outcomes: list[dict], *, cfg_lt: dict,
-                     cfg_pf: dict, diagnostics: dict) -> dict:
+                     cfg_pf: dict, diagnostics: dict, valuation: RV.ValuationData | None = None) -> dict:
     """Replay champion/challenger on the same dates, candidates and constraints."""
     by_date: dict[str, list[dict]] = defaultdict(list)
     for row in signals:
@@ -1404,8 +1445,6 @@ def portfolio_replay(signals: list[dict], outcomes: list[dict], *, cfg_lt: dict,
                     for sleeve in FULL_SLEEVES) for row in rows):
             full_fidelity_dates += 1
         candidates = _research_candidates(rows, cfg_lt, prior_research, price_proxy=True)
-        if not candidates:
-            continue
         macro_label = next((row.get("macroRegime") for row in rows if row.get("macroRegime")), None)
         macro_confidence = next((_finite(row.get("macroConfidence")) for row in rows
                                  if _finite(row.get("macroConfidence")) is not None), None)
@@ -1452,6 +1491,8 @@ def portfolio_replay(signals: list[dict], outcomes: list[dict], *, cfg_lt: dict,
                     "baselineWeight": weights[ticker], "finalHistoricalReplayWeight": weights[ticker],
                 } for ticker in weights],
                 "weights": weights, "cashPct": blob["cashPct"],
+                "emptyReasons": (sorted({code for r in ranking for code in r.get("exclusionCodes", [])})
+                                 or ["NO_RESEARCH_CANDIDATES" if not candidates else "NO_POSITIVE_BASELINE_WEIGHT"]) if not weights else [],
                 "regionByTicker": {ticker: selected[ticker].get("region") for ticker in weights},
                 "sectorByTicker": {ticker: selected[ticker].get("sector") for ticker in weights},
                 "benchmarkByTicker": {ticker: selected[ticker].get("benchmark") for ticker in weights},
@@ -1481,42 +1522,28 @@ def portfolio_replay(signals: list[dict], outcomes: list[dict], *, cfg_lt: dict,
     summaries = {}
     rows_by_method_horizon: dict[int, dict[str, list[dict]]] = defaultdict(dict)
     min_completeness = float(cfg_pf.get("minPortfolioCompletenessPct", 90.0))
+    schedule_meta = diagnostics.get("evaluationCalendar") or {}
+    origin = schedule_meta.get("origin") or diagnostics.get("requestedStart") or RC.ORIGIN
+    through = schedule_meta.get("through") or diagnostics.get("evaluationAsOf") or diagnostics.get("lastDate") or max((d for d in by_date if d), default=origin)
+    frequency = schedule_meta.get("signalFrequency", "W")
+    schedules = {h: RC.schedule(origin, through, h, frequency) for h in HORIZONS}
     for method, method_decisions in decisions.items():
+        decision_lookup = {r["date"]:r for r in method_decisions}
         for horizon in HORIZONS:
-            rows = []
-            dropped_by_reason: dict[str, int] = defaultdict(int)
-            affected_regions: set[str] = set()
-            affected_tickers: set[str] = set()
-            for decision in method_decisions:
-                outcome, diagnostic = _outcome_for_decision_with_diagnostics(
-                    decision, outcome_by_id, signal_by_key, horizon)
-                if outcome:
-                    rows.append(outcome)
+            rows, statuses = [], []
+            for block in schedules[horizon]:
+                decision = decision_lookup.get(block["signalDate"])
+                if valuation is not None:
+                    outcome, diagnostic = valuation.window(decision, block)
+                elif block["endDate"] > through:
+                    outcome, diagnostic = None, {"status":"HORIZON_NOT_MATURED", "reasons":["HORIZON_NOT_MATURED"]}
                 else:
-                    for reason in diagnostic["reasons"]:
-                        dropped_by_reason[reason] += 1
-                        affected_tickers.update(
-                            diagnostic["tickersByReason"].get(reason) or [])
-                    affected_regions.update(diagnostic["affectedRegions"])
-            completeness = (len(rows) / len(method_decisions) * 100
-                            if method_decisions else None)
-            outcome_coverage = {
-                "totalDecisions": len(method_decisions),
-                "completeOutcomes": len(rows),
-                "droppedDecisions": len(method_decisions) - len(rows),
-                "completenessPct": _r(completeness, 2),
-                "minimumCompletenessPct": min_completeness,
-                # A dropped portfolio is not a random omission: a name without a
-                # matured benchmark is disproportionately a halted or delisted
-                # one, so a path built from the survivors is a different
-                # strategy. Publish the headline only when nearly all of the
-                # book was measurable, and say so rather than renormalizing.
-                "sufficientForPath": bool(completeness is not None
-                                          and completeness >= min_completeness),
-                "droppedByReason": dict(sorted(dropped_by_reason.items())),
-                "affectedRegions": sorted(affected_regions),
-                "affectedTickersSample": sorted(affected_tickers)[:20],
-            }
+                    outcome, diagnostic = None, {"status":"INCOMPLETE", "reasons":["INPUT_SNAPSHOT_UNAVAILABLE"]}
+                statuses.append({**block, **diagnostic})
+                if outcome is not None:
+                    rows.append(outcome)
+            outcome_coverage = RV.coverage(statuses, min_completeness)
+            completeness = outcome_coverage["completenessPct"]
             rows_by_method_horizon[horizon][method] = rows
             horizon_results[method][str(horizon)] = {
                 "observations": len(rows),
@@ -1530,7 +1557,7 @@ def portfolio_replay(signals: list[dict], outcomes: list[dict], *, cfg_lt: dict,
                 "meanCostAdjustedExcessPct": _r(np.mean([row["costAdjustedExcessReturn"] for row in rows]) * 100, 3) if rows else None,
                 "outcomeCoverage": outcome_coverage,
                 "path": (_path_metrics(rows, horizon, cfg_pf)
-                         if outcome_coverage["sufficientForPath"]
+                         if outcome_coverage["sufficientForPath"] and len(rows) == outcome_coverage["eligibleDecisions"]
                          else {"available": False,
                                "reason": "portfolio_completeness_below_threshold",
                                "completenessPct": _r(completeness, 2),
@@ -1538,18 +1565,19 @@ def portfolio_replay(signals: list[dict], outcomes: list[dict], *, cfg_lt: dict,
             }
 
     # One block schedule for both selectors, so the comparison is like for like.
-    shared_schedule = shared_block_schedule(
-        rows_by_method_horizon[HEADLINE_HORIZON], HEADLINE_HORIZON)
-    shared = [row["date"] for row in shared_schedule]
+    shared_schedule = schedules[HEADLINE_HORIZON]
+    shared = [row["date"] for row in shared_schedule if row["endDate"] <= through]
     for method in decisions:
         rows = rows_by_method_horizon[HEADLINE_HORIZON].get(method) or []
         coverage = horizon_results[method][str(HEADLINE_HORIZON)]["outcomeCoverage"]
-        if not coverage["sufficientForPath"] or not shared:
-            summaries[method] = horizon_results[method][str(HEADLINE_HORIZON)]["path"]
+        if not coverage["sufficientForPath"] or not shared or len(rows) != len(shared):
+            summaries[method] = {"available":False, "reason":"incomplete_fixed_schedule" if shared else "HORIZON_NOT_MATURED",
+                                 "missingMaturedBlocks":len(shared)-len(rows)}
+            horizon_results[method][str(HEADLINE_HORIZON)]["path"] = summaries[method]
             continue
         summary = _path_metrics(rows, HEADLINE_HORIZON, cfg_pf, only_dates=shared)
         summary["blockScheduleShared"] = True
-        summary["blockScheduleBasis"] = "DATES_MEASURABLE_FOR_EVERY_SELECTOR"
+        summary["blockScheduleBasis"] = "FIXED_COMMON_SESSIONS_PREVIOUS_WEEKLY_SIGNAL"
         summaries[method] = summary
         horizon_results[method][str(HEADLINE_HORIZON)]["path"] = summary
 
@@ -1578,17 +1606,26 @@ def portfolio_replay(signals: list[dict], outcomes: list[dict], *, cfg_lt: dict,
     # Every name's realised outcome at the headline horizon, so a randomly drawn
     # book can be priced on exactly the returns the real one was priced on.
     priced_by_date: dict[str, dict] = defaultdict(dict)
-    for date, (candidates, _macro) in contexts.items():
-        for candidate in candidates:
-            signal = signal_by_key.get((date, candidate["ticker"]))
-            cell = ((outcome_by_id.get((signal or {}).get("id")) or {})
-                    .get("horizons") or {}).get(str(HEADLINE_HORIZON)) or {}
-            if cell.get("absoluteReturn") is None or cell.get("benchmarkReturn") is None:
+    fixed_contexts, fixed_outcomes = {}, []
+    if valuation is not None:
+        for block in shared_schedule:
+            context = contexts.get(block["signalDate"])
+            if context is None or block["date"] not in shared:
                 continue
-            priced_by_date[date][candidate["ticker"]] = {
-                "absoluteReturn": float(cell["absoluteReturn"]),
-                "benchmarkReturn": float(cell["benchmarkReturn"]),
-            }
+            fixed_contexts[block["date"]] = context
+            # Regional tail is the full signal cross-section, not the alpha-filtered pool.
+            for signal in by_date.get(block["signalDate"], []):
+                ticker, region = signal["ticker"], signal["region"]
+                single = {"weights":{ticker:1.0}, "regionByTicker":{ticker:region}}
+                row, _ = valuation.window(single, block)
+                if row is None:
+                    continue
+                cell = {"absoluteReturn":row["grossReturn"], "benchmarkReturn":row["benchmarkReturn"],
+                        "excessReturn":row["grossExcessReturn"], "endDate":block["endDate"],
+                        "riskFreeReturn":row["riskFreeReturn"]}
+                priced_by_date[block["date"]][ticker] = cell
+                fixed_outcomes.append({"date":block["date"], "id":block["date"]+"|"+ticker,
+                                       "ticker":ticker, "region":region, "horizons":{"21":cell}})
 
     headline_rows = {method: rows_by_method_horizon[HEADLINE_HORIZON].get(method) or []
                      for method in decisions}
@@ -1598,11 +1635,11 @@ def portfolio_replay(signals: list[dict], outcomes: list[dict], *, cfg_lt: dict,
     # it stands for is answered directly instead: could the measured gap have
     # produced this difference. It never relaxes the gate.
     bound = survivorship_bound(
-        headline_rows, shared, outcomes, diagnostics,
+        headline_rows, shared, fixed_outcomes, diagnostics,
         horizon=HEADLINE_HORIZON,
         quantile=float(cfg_pf.get("survivorshipBoundQuantile", 0.05)))
     null_report = selection_null(
-        contexts, priced_by_date,
+        fixed_contexts, priced_by_date,
         rows_by_method_horizon[HEADLINE_HORIZON].get(CHAMPION) or [], shared,
         cfg_pf=cfg_pf, horizon=HEADLINE_HORIZON,
         draws=int(cfg_pf.get("selectionNullDraws", SN.DEFAULT_DRAWS)))
@@ -1679,6 +1716,11 @@ def portfolio_replay(signals: list[dict], outcomes: list[dict], *, cfg_lt: dict,
         # stored the schedule, which is how two runs published different
         # scorecards with nothing to compare.
         "blockSchedule": shared_schedule,
+        "metricDefinition": {"version":RV.METRIC_VERSION, "baseCurrency":"KRW",
+                             "fxReturnsIncluded":True, "directlyComparableToLegacy":False,
+                             "emptyPortfolioTreatment":"100_PERCENT_KRW_CASH_WITH_RISK_FREE_PROXY",
+                             "benchmark":"SAME_INITIAL_REGIONAL_WEIGHTS_AND_CASH_AS_EACH_PORTFOLIO"},
+        "emptyPortfolioDiagnostics": empty_portfolio_diagnostics(decisions, through),
         "auditSample": {method: rows[-3:] for method, rows in decisions.items()},
     }
 
@@ -1783,7 +1825,8 @@ def expected_realized_gap(outcomes: list[dict], *, horizon=126) -> dict:
 def build_report(signals: list[dict], outcomes: list[dict], *, cfg_lt: dict,
                  cfg_pf: dict, diagnostics: dict, replay_version: str | None = None,
                  model_version: str | None = None,
-                 previous_report: dict | None = None) -> dict:
+                 previous_report: dict | None = None,
+                 valuation: RV.ValuationData | None = None) -> dict:
     signals, rejected_signals = _generation_filter(
         signals, replay_version=replay_version, model_version=model_version)
     valid_ids = {row.get("id") for row in signals}
@@ -1794,11 +1837,15 @@ def build_report(signals: list[dict], outcomes: list[dict], *, cfg_lt: dict,
         signals, outcomes,
         edges=cfg_pf.get("alphaPercentileBuckets") or (0, 60, 80, 90, 95, 100),
         pit_fundamentals=bool(diagnostics.get("fundamentalsPit")))
+    alpha["returnBasis"] = "LOCAL_CURRENCY_REGIONAL_SIGNAL_HORIZONS_SEPARATE_FROM_KRW_PORTFOLIO"
     portfolio = portfolio_replay(signals, outcomes, cfg_lt=cfg_lt, cfg_pf=cfg_pf,
-                                 diagnostics=diagnostics)
+                                 diagnostics=diagnostics, valuation=valuation)
     integrity = data_integrity(diagnostics, signals)
     gap = expected_realized_gap(outcomes, horizon=int(cfg_pf.get("horizonDays", 126)))
+    gap["returnBasis"] = "LOCAL_CURRENCY_REGIONAL_SIGNAL_HORIZONS"
     contract_failures = []
+    if valuation is None:
+        contract_failures.append("input_snapshot_unavailable")
     if not signals:
         contract_failures.append("no_current_generation_signals")
     benchmark_gate = diagnostics.get("benchmarkCoverageGate") or {}
@@ -1806,6 +1853,10 @@ def build_report(signals: list[dict], outcomes: list[dict], *, cfg_lt: dict,
         contract_failures.append(
             "benchmark_coverage_gate_failed" if "eligible" in benchmark_gate
             else "benchmark_coverage_gate_not_assessed")
+    for method, blob in (portfolio.get("selectors") or {}).items():
+        coverage = blob.get("horizons", {}).get(str(HEADLINE_HORIZON), {}).get("outcomeCoverage", {})
+        if int(coverage.get("droppedDecisions") or 0):
+            contract_failures.append(f"{method}:genuine_missing_fixed_blocks")
     target_horizon = str(int(cfg_pf.get("horizonDays", 126)))
     for method, blob in (portfolio.get("selectors") or {}).items():
         coverage = (((blob.get("horizons") or {}).get(target_horizon) or {})
@@ -1848,6 +1899,9 @@ def build_report(signals: list[dict], outcomes: list[dict], *, cfg_lt: dict,
         "replayDeterminism": determinism,
         "replayVersion": replay_version or diagnostics.get("replayVersion"),
         "dataVersion": diagnostics.get("dataVersion"),
+        "inputSnapshot": diagnostics.get("inputSnapshot"),
+        "evaluationCalendar": diagnostics.get("evaluationCalendar"),
+        "metricDefinition": portfolio.get("metricDefinition"),
         "modelVersion": model_version or diagnostics.get("modelVersion"),
         "generationIsolation": {"method": "EXACT_REPLAY_AND_MODEL_VERSION",
                                 "excludedSignals": rejected_signals,

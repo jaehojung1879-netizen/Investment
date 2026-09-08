@@ -818,7 +818,7 @@ def run_replay(prices: dict[str, pd.DataFrame], universe: dict[str, list[str]], 
                universe_history: pit_data.UniverseHistory | None = None,
                model_version: str = "unknown",
                existing_ids: set[str] | None = None,
-               progress: bool = False) -> dict:
+               progress: bool = False, fixed_grid: list[str] | None = None) -> dict:
     """Walk the grid forward and freeze one cross-section per date.
 
     ``existing_ids`` makes the run incremental: a signal already in the ledger
@@ -834,7 +834,8 @@ def run_replay(prices: dict[str, pd.DataFrame], universe: dict[str, list[str]], 
 
     bench_tickers = [t for t in (benchmarks or {}).values() if t in panel]
     calendar = panel.trading_days(bench_tickers or None)
-    grid = replay_dates(calendar, start=start, end=end, frequency=frequency)
+    grid = ([pd.Timestamp(d) for d in fixed_grid] if fixed_grid is not None
+            else replay_dates(calendar, start=start, end=end, frequency=frequency))
 
     signals: list[dict] = []
     previous: dict[str, dict] = {}
