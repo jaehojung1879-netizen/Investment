@@ -9,8 +9,12 @@ import json
 
 import pandas as pd
 
-CALENDAR_VERSION = "xkrx-xnys-4.11.1-v1"
+CALENDAR_VERSION = "xkrx-xnys-4.11.1-v2-kr-2026-closures"
 ORIGIN = "2013-01-01"
+# Published exchange closures omitted by the pinned library. This is a
+# source-backed calendar correction, never inferred from absent price rows.
+# https://corp.tossinvest.com/en/post?category=52&id=21740&type=notice
+KR_CLOSURES = ("2026-05-25", "2026-06-03", "2026-07-17")
 
 
 @lru_cache(maxsize=64)
@@ -22,6 +26,8 @@ def sessions(start: str, end: str, region: str = "COMMON") -> pd.DatetimeIndex:
              "UNION": ("XKRX", "XNYS")}[region]
     calendars = [xc.get_calendar(n, start="1990-01-01", end="2035-12-31").sessions
                  .tz_localize(None).normalize() for n in names]
+    calendars = [c.difference(pd.to_datetime(KR_CLOSURES)) if n == "XKRX" else c
+                 for n, c in zip(names, calendars)]
     result = calendars[0]
     for other in calendars[1:]:
         result = result.union(other) if region == "UNION" else result.intersection(other)
@@ -69,5 +75,5 @@ def metadata(start: str, through: str, frequency: str = "W") -> dict:
     return {"version": CALENDAR_VERSION, "origin": start, "through": through,
             "strideSessions": 21, "sessionRule": "XKRX_INTERSECTION_XNYS",
             "signalFrequency": frequency, "signalRule": "PREVIOUS_COMPLETED_PERIOD_STRICTLY_BEFORE_ANCHOR",
-            "anchors": rows,
+            "anchors": rows, "krClosureOverrides": list(KR_CLOSURES),
             "sha256": hashlib.sha256(json.dumps(rows, sort_keys=True).encode()).hexdigest()}

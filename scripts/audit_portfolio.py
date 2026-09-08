@@ -139,6 +139,15 @@ def main(argv=None) -> int:
         print("ERROR: portfolio validation contract failed; report is BLOCKED")
         for failure in contract.get("failures") or []:
             print(f"  {failure}")
+        for method, blob in portfolio.items():
+            coverage = ((blob.get("horizons") or {}).get("21") or {}).get("outcomeCoverage") or {}
+            print(f"  {method}: {coverage.get('completeOutcomes', 0)}/{coverage.get('eligibleDecisions', 0)} "
+                  f"matured blocks complete; {coverage.get('notMaturedDecisions', 0)} pending")
+            for block in [b for b in coverage.get("blocks", []) if b.get("status") == "INCOMPLETE"][:8]:
+                print(f"    {block['date']}..{block['endDate']}: {', '.join(block.get('reasons', []))}")
+                for gap in block.get("inputGaps", []):
+                    print(f"      {gap['input']} {gap['ticker']}: {', '.join(gap['dates'][:8])} "
+                          f"({len(gap['dates'])} missing sessions)")
         return 1
     return 0
 
