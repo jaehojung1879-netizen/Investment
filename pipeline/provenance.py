@@ -47,10 +47,15 @@ MODEL_VERSION = "longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-a
 # their own generation rather than extended. MODEL_VERSION is deliberately
 # unchanged — `longterm.score_cross_section` is byte-identical; what changed
 # is which of its inputs are present, which is what DATA_VERSION records.
-REPLAY_VERSION = "replay-v6"
+# v7: immutable acquired input prefixes, completed weekly signal calendar,
+# fixed common-session evaluation windows, daily KRW NAV and risk-free cash.
+# v6 cannot be reconstructed from its ledger: source prices/FX were not saved.
+# Preserve all v6 shards; a full v7 run produces its own snapshot and signals.
+REPLAY_VERSION = "replay-v7"
 FEATURE_VERSION = "hfeat-v1"
 DATA_VERSION = ("yahoo-adjusted-close-v3-regional-session-download"
-                "+pit-index-membership+dart-pit-fundamentals-kr")
+                "+pit-index-membership+dart-pit-fundamentals-kr"
+                "+immutable-inputs-v1+common-calendar-v1+usdkrw-bok-rf-v1")
 
 # MODEL_VERSION is a compound identity, and not every component of it is a
 # statement about how names are scored. "daily-session-v2" was appended by a

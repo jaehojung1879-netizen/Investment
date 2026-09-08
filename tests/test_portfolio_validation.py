@@ -200,7 +200,7 @@ def test_validation_report_fails_closed_without_current_signals_or_coverage_gate
         replay_version="r", model_version="m")
     assert report["contractValidation"]["status"] == "BLOCKED"
     assert report["contractValidation"]["failures"] == [
-        "no_current_generation_signals", "benchmark_coverage_gate_not_assessed"]
+        "input_snapshot_unavailable", "no_current_generation_signals", "benchmark_coverage_gate_not_assessed"]
 
 
 def test_missing_historical_constituents_fails_integrity_and_promotion():

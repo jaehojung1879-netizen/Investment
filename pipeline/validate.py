@@ -101,6 +101,25 @@ def _validate_evidence_separation(data: dict) -> list[str]:
         benchmark_gate = historical.get("benchmarkCoverageGate") or {}
         contract = historical.get("contractValidation") or {}
         promotion = replay.get("promotionEvidence") or {}
+        if historical.get("reportVersion") == "portfolio-validation-v3" and historical.get("available"):
+            definition = historical.get("metricDefinition") or {}
+            if not (historical.get("inputSnapshot") or {}).get("sha256"):
+                errors.append("historical_input_snapshot_missing")
+            if definition.get("baseCurrency") != "KRW" or definition.get("fxReturnsIncluded") is not True:
+                errors.append("historical_currency_definition_invalid")
+            for method, blob in (replay.get("selectors") or {}).items():
+                for horizon, cell in (blob.get("horizons") or {}).items():
+                    cov = cell.get("outcomeCoverage") or {}
+                    total = int(cov.get("totalDecisions") or 0)
+                    eligible = int(cov.get("eligibleDecisions") or 0)
+                    waiting = int(cov.get("notMaturedDecisions") or 0)
+                    if total != eligible + waiting:
+                        errors.append(f"historical_maturity_denominator_invalid:{method}:{horizon}")
+                    if "HORIZON_NOT_MATURED" in (cov.get("droppedByReason") or {}):
+                        errors.append(f"historical_waiting_counted_as_missing:{method}:{horizon}")
+                    if (cell.get("path") or {}).get("available") and int(cov.get("droppedDecisions") or 0):
+                        errors.append(f"historical_path_omitted_fixed_blocks:{method}:{horizon}")
+
         if historical.get("available") and benchmark_gate.get("eligible") is not True:
             errors.append("historical_benchmark_coverage_gate_failed")
         # A missing generation is a broken pipeline, not an empty one. The

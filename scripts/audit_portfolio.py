@@ -11,6 +11,8 @@ sys.path.insert(0, str(ROOT))
 
 from pipeline import historical_store as HS  # noqa: E402
 from pipeline import portfolio_validation as PV  # noqa: E402
+from pipeline import replay_inputs as RI
+from pipeline import replay_valuation as RV
 from pipeline import provenance  # noqa: E402
 from pipeline.config import load_config  # noqa: E402
 
@@ -72,10 +74,30 @@ def main(argv=None) -> int:
         except ValueError:
             print(f"  WARNING: {output} is not readable JSON; "
                   f"determinism has no baseline this run")
+    valuation = None
+    store = RI.InputStore(ledger, replay_version, provenance.DATA_VERSION)
+    manifest = store.manifest()
+    if manifest:
+        config_hash = RI.digest(json.loads((ROOT / "config.json").read_text()))
+        if manifest["policy"].get("configSha256") != config_hash:
+            raise RI.InputVersionConflict("audit config differs from frozen replay config")
+        frozen = RI.unpack(store.load(manifest, valuation_only=True))
+        if (diagnostics.get("inputSnapshot") or {}).get("sha256") != manifest["sha256"]:
+            raise RI.InputVersionConflict("diagnostics and input manifest disagree")
+        valuation = RV.ValuationData(frozen["prices"], cfg.benchmarks, frozen["fx"], frozen["risk_free"],
+            through=manifest["through"], risk_free_through=frozen["risk_free_source"]["verifiedThrough"])
+    if previous and previous.get("replayVersion") != replay_version:
+        archive = ledger / "historical" / previous["replayVersion"] / "portfolio-validation.json"
+        archive.parent.mkdir(parents=True, exist_ok=True)
+        if not archive.exists():
+            archive.write_text(json.dumps(previous, ensure_ascii=False, indent=2) + "\n")
     report = PV.build_report(
         signals, outcomes, cfg_lt=cfg.longterm, cfg_pf=cfg.kelly_portfolio,
         diagnostics=diagnostics, replay_version=replay_version,
-        model_version=model_version, previous_report=previous)
+        model_version=model_version, previous_report=previous, valuation=valuation)
+    archived = ledger / "historical" / replay_version / "reports"
+    archived.mkdir(parents=True, exist_ok=True)
+    (archived / (RI.digest(report) + ".json")).write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n")
     output.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
     alpha = report["alphaDiagnostics"]["regions"]

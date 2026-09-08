@@ -196,14 +196,16 @@ def test_the_block_carries_the_fingerprint_forward_for_the_next_run():
 # --------------------------------------------------------------------------- #
 # The shared schedule must expose end dates, or the guard checks half the thing
 # --------------------------------------------------------------------------- #
-def test_shared_block_schedule_carries_the_later_end_of_the_two_selectors():
+def test_shared_block_schedule_ignores_actual_ends_of_both_selectors():
     from pipeline import portfolio_validation as PV
     rows = {
         "champion": [{"date": "2013-11-15", "endDate": "2013-12-16"}],
         "challenger": [{"date": "2013-11-15", "endDate": "2013-12-18"}],
     }
     schedule = PV.shared_block_schedule(rows, 21)
-    assert schedule == [{"date": "2013-11-15", "endDate": "2013-12-18"}]
+    rows["challenger"][0]["endDate"] = "2014-06-30"
+    assert schedule == PV.shared_block_schedule(rows, 21)
+    assert schedule[0]["date"] == "2013-01-07"
 
 
 def test_shared_block_schedule_agrees_with_shared_block_dates():
@@ -220,8 +222,10 @@ def test_shared_block_schedule_agrees_with_shared_block_dates():
     assert [row["date"] for row in PV.shared_block_schedule(rows, 21)] == dates
 
 
-def test_shared_block_schedule_is_empty_when_the_selectors_share_no_dates():
+def test_shared_block_schedule_exists_when_selectors_share_no_measurable_dates():
     from pipeline import portfolio_validation as PV
     rows = {"champion": [{"date": "2013-11-15", "endDate": "2013-12-16"}],
             "challenger": [{"date": "2014-01-02", "endDate": "2014-02-03"}]}
-    assert PV.shared_block_schedule(rows, 21) == []
+    assert PV.shared_block_schedule(rows, 21)
+    assert PV.shared_block_schedule(rows, 21) == PV.shared_block_schedule({}, 21, through="2014-01-02")
+

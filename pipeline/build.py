@@ -413,6 +413,11 @@ def _historical_validation_block(historical: dict, cfg) -> dict:
         "benchmarkPanel": diagnostics.get("benchmarkPanel") or {},
         "ledgerCommitSha": historical.get("ledgerCommitSha"),
         "contractValidation": validation_report.get("contractValidation") or {},
+        "reportVersion": validation_report.get("reportVersion"),
+        "inputSnapshot": validation_report.get("inputSnapshot"),
+        "evaluationCalendar": validation_report.get("evaluationCalendar"),
+        "metricDefinition": validation_report.get("metricDefinition"),
+        "replayDeterminism": validation_report.get("replayDeterminism"),
         "pitCoveragePct": (round(float(diagnostics.get("meanPitCoverage") or 0) * 100, 1)
                             if diagnostics.get("meanPitCoverage") is not None else None),
         "pitQuality": pit_data.quality_label(diagnostics.get("meanPitCoverage")),

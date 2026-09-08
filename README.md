@@ -2,6 +2,8 @@
 
 출처가 분명하고 시점이 일치하며 사후 검증 가능한 투자 **리서치** 대시보드입니다. 종목을 많이 추천하는 사이트가 아니라, 세계적 자산운용사·매크로 전략가가 쓰는 방식(국면→위험예산→지역별 팩터 리서치→진입상태→사후검증)에 가깝게 설계했습니다.
 
+Replay v7의 고정 평가 달력, 입력 스냅샷, 성과 정의와 실행 순서는 [replay 평가 문서](docs/replay-v7-evaluation.md)를 참고하세요. 기존 v6 headline과 직접 비교할 수 없습니다.
+
 ## 실행 상태(runMode)와 데이터 모드(dataMode)
 
 - **runMode**: `researchOnly` · `paperTrading`(기본) · `liveValidated`. 기본값은 `paperTrading`이며, **`liveValidated`는 config만으로 절대 부여되지 않습니다** — paper signal ledger에 충분한 검증 이력이 쌓여야 합니다.
@@ -255,3 +257,4 @@ python scripts/demo_replay.py --tickers 40 --years 9
 ## 실전(liveValidated) 활성화 조건
 
 최소 1년(252영업일) paper tracking과 공통 표본 gate, 시간순 신호 축적, 비용 차감 후 양의 rank IC/초과수익, 벤치마크 대비 개선, 허용 가능한 MDD/CVaR, 섹터·기간 집중도 완화가 확인되기 전까지 `liveValidated`는 부여되지 않습니다.
+

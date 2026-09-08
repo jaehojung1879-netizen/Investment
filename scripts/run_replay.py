@@ -46,12 +46,15 @@ from pipeline import benchmark_source as BS         # noqa: E402
 from pipeline import historical_outcomes as HO      # noqa: E402
 from pipeline import historical_replay as HR        # noqa: E402
 from pipeline import historical_store as HS         # noqa: E402
+from pipeline import replay_calendar as RC
+from pipeline import replay_inputs as RI
+from pipeline import replay_rates
 from pipeline import pit_data                       # noqa: E402
 from pipeline import provenance as prov_mod         # noqa: E402
 from pipeline import universe as universe_mod       # noqa: E402
 from pipeline.config import load_config             # noqa: E402
 from pipeline.datafeed import (  # noqa: E402
-    fetch_macro, fetch_macro_vintages, fetch_regional_prices, fetch_vix)
+    fetch_macro, fetch_macro_vintages, fetch_regional_prices, fetch_vix, fetch_prices)
 
 
 def former_member_recovery(historical_only: dict, prices: dict,
@@ -90,7 +93,7 @@ def former_member_recovery(historical_only: dict, prices: dict,
     return out
 
 
-def main(argv=None) -> int:
+def _run(argv=None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("ledger_dir")
     parser.add_argument("--start", default=None)
@@ -99,6 +102,7 @@ def main(argv=None) -> int:
     parser.add_argument("--full", action="store_true",
                         help="recompute every date instead of only new ones")
     parser.add_argument("--dry-run", action="store_true")
+    parser.add_argument("--frozen-inputs", action="store_true", help="reproduce committed inputs without any network access")
     parser.add_argument("--pit-fundamentals", default=None,
                         help="PIT_FUNDAMENTALS_V1 jsonl (없으면 config 값)")
     args = parser.parse_args(argv)
@@ -126,134 +130,183 @@ def main(argv=None) -> int:
     print(f"existing signals: {len(current_ids) + stale_generation} "
           f"({len(current_ids)} current generation, {stale_generation} earlier)")
 
-    # Read and checked before the first network call. Widening the universe is
-    # not an extension of this generation, it is a new one: `alphaPercentile`
-    # is a rank inside the date's cross-section and selection floors it, so
-    # restoring 219 names to 2013 changes what every surviving name's 2013
-    # score meant — while those old records are skipped by id and keep the
-    # ranks they were given against a universe that no longer exists. Refusing
-    # after a forty-minute fetch would teach the same lesson at forty times
-    # the price.
-    universe_history = pit_data.UniverseHistory.from_json(
-        replay_cfg.get("universeHistoryPath"))
-    universe_signature = universe_history.signature
-    conflict = HS.universe_conflict(
-        ledger_dir, prov_mod.REPLAY_VERSION, universe_signature,
-        existing=len(current_ids), survivors_only=pit_data.SURVIVORS_ONLY)
-    if conflict:
-        # Not bypassable by --full. Signals are immutable (`append_signals`
-        # skips an id already on disk), so --full recomputes the old dates and
-        # then discards every one of them as a duplicate: it cannot rewrite the
-        # existing records under the new universe, only hide the check that
-        # says they are stale. The one cure is a new generation.
-        print(f"error: {conflict}", file=sys.stderr)
-        return 1
-
-    universe, _ = universe_mod.resolve(cfg)
     start = args.start or replay_cfg.get("start", "2013-01-01")
-
-    # Names that were index members at some point but are not today's list. The
-    # replay resolves its universe from TODAY, so without these it can only ever
-    # see survivors: 326 of the 829 names that have been in the S&P 500 since
-    # 2012 are absent from the current list, and they left mostly by being
-    # acquired or shrinking out of it. `UniverseHistory` decides membership per
-    # date, but it can only include a name the PRICE PANEL can serve, so the
-    # historical members have to be downloaded too or the fix is cosmetic.
-    fetch_universe = {region: list(names) for region, names in universe.items()}
-    historical_only: dict[str, list[str]] = {}
-    if universe_history.available:
-        for ticker, row in universe_history.memberships.items():
-            region = row.get("region")
-            if not region or region not in fetch_universe:
-                continue
-            if ticker not in fetch_universe[region]:
-                fetch_universe[region].append(ticker)
-                historical_only.setdefault(region, []).append(ticker)
-        for region, extra in sorted(historical_only.items()):
-            print(f"  {region}: +{len(extra)} former index members to download "
-                  f"alongside {len(universe.get(region) or [])} current")
-
-    download = list(dict.fromkeys(
-        [t for names in fetch_universe.values() for t in names]
-        + list(cfg.benchmarks.values())))
-    # Fetch from well before the replay start: the first replay date still needs
-    # 273 sessions of trailing history behind it, or every name is unrankable.
-    fetch_start = (str(int(str(start)[:4]) - 2) + str(start)[4:]) if start else "2010-01-01"
-    print(f"fetching {len(download)} tickers by region from {fetch_start} ...")
-    prices = fetch_regional_prices(fetch_universe, fetch_start)
-
-    # Benchmarks go through their own path: vendor redundancy, a plausibility
-    # check against the session calendar already on record, and the committed
-    # snapshot as the last resort. A truncated index panel is what silently
-    # erased the KR half of this ledger on 08-20, 08-23 and 08-24.
-    print("resolving regional benchmarks ...")
-    benchmark_series, benchmark_diagnostics = BS.resolve(
-        cfg.benchmarks, cfg.benchmark_sources, start=fetch_start, ledger_dir=ledger_dir)
-    for line in BS.describe(benchmark_diagnostics):
-        print(line)
-    for ticker, series in benchmark_series.items():
-        prices[ticker] = pd.DataFrame({"Close": series})
-
-    missing = [t for t in download if t not in prices]
-    if missing:
-        print(f"  warning: no price data for {len(missing)} tickers (e.g. {missing[:5]})")
-    for region, ticker in cfg.benchmarks.items():
-        if ticker not in prices:
-            print(f"ERROR: benchmark {ticker} for {region} unavailable from every "
-                  f"configured vendor and no snapshot is on record; excess returns "
-                  f"would be undefined. Refusing to write a ledger.")
-            return 1
-    if benchmark_diagnostics["degradedRegions"]:
-        print(f"  NOTE: {', '.join(benchmark_diagnostics['degradedRegions'])} running on "
-              f"the committed snapshot; the newest grid dates will not extend until the "
-              f"vendor recovers. This is recorded as {BS.STATUS_SNAPSHOT} in diagnostics.")
-
-    horizon = int(replay_cfg.get("horizonDays", 126))
-    minimum_benchmark_coverage = float(
-        replay_cfg.get("minBenchmarkCoveragePct", 95.0))
-    preflight = HO.benchmark_session_preflight(
-        prices, fetch_universe, cfg.benchmarks, start=start, end=args.end,
-        horizon=horizon, min_history_rows=HR.MIN_HISTORY_ROWS,
-        min_coverage_pct=minimum_benchmark_coverage,
-    )
-    for region, row in preflight["regions"].items():
-        print(f"benchmark preflight {region} {horizon}D: "
-              f"{row['coveragePct']}% ({row['matchedWindows']}/"
-              f"{row['candidateWindows']}; {row['benchmarkSessions']} benchmark sessions)")
-    if not preflight["eligible"]:
-        print("ERROR: benchmark session preflight failed; replay not started.")
-        for failure in preflight["failures"]:
-            print(f"  {failure['region']}: {failure['reason']} "
-                  f"({failure['coveragePct']}% < "
-                  f"{failure['minimumCoveragePct']}%)")
-            for sample in failure["missingSamples"]:
-                print(f"    {sample}")
-        return 1
-
-    vix = fetch_vix(fetch_start)
-    macro = fetch_macro(cfg, fetch_start)
-    macro_vintages = fetch_macro_vintages(cfg, replay_cfg.get("macroVintageSeries") or [])
-    if macro is not None and not macro_vintages:
-        print("  macro vintages unavailable -> regime conditioning reads REVISED_HISTORY "
-              "(the numbers as revised since, not as printed at the time)")
-    # The PIT fundamentals file is derived from the collected filings on
-    # signal-history, so its path is known to the job rather than to config.
-    # An explicit argument wins; config remains the fallback for a local run.
-    fundamental_store = pit_data.FundamentalStore.from_jsonl(
-        args.pit_fundamentals or replay_cfg.get("pitFundamentalsPath"))
-    if fundamental_store.available:
-        print(f"PIT 재무 {len(fundamental_store):,}건 · "
-              f"{len(fundamental_store.tickers())}종목")
+    frequency = args.frequency or replay_cfg.get("frequency", "W")
+    store = RI.InputStore(ledger_dir, prov_mod.REPLAY_VERSION, prov_mod.DATA_VERSION)
+    prior_inputs = store.manifest()
+    if current_ids and not prior_inputs:
+        raise RI.InputVersionConflict("existing signals have no input snapshot; new DATA_VERSION/REPLAY_VERSION required")
+    through = args.end or (pd.Timestamp.now(tz="UTC").normalize() - pd.Timedelta(days=1)).strftime("%Y-%m-%d")
+    policy = {"start":start, "frequency":frequency, "calendarVersion":RC.CALENDAR_VERSION,
+              "modelVersion":prov_mod.MODEL_VERSION, "featureVersion":prov_mod.FEATURE_VERSION,
+              "configSha256":RI.digest(json.loads((ROOT / "config.json").read_text()))}
+    if args.frozen_inputs:
+        if not prior_inputs:
+            raise RI.InputVersionConflict("no frozen inputs; first run must acquire a snapshot")
+        if args.end and args.end != prior_inputs["through"]:
+            raise RI.InputVersionConflict("--frozen-inputs must use its recorded cutoff")
+        if policy != prior_inputs["policy"]:
+            raise RI.InputVersionConflict("frozen replay policy/config differs from snapshot")
+        through = prior_inputs["through"]
+        manifest = prior_inputs
+        frozen = RI.unpack(store.load(manifest))
+        benchmark_diagnostics = {"byRegion":{}, "degradedRegions":[], "unavailableRegions":[],
+                                 "policy":"FROZEN_INPUT_SNAPSHOT", "snapshotsUpdated":[]}
+        historical_only = {}
     else:
-        print("PIT 재무 없음 — 밸류·퀄리티 슬리브는 이번에도 비어 있습니다 "
-              f"({(fundamental_store.diagnostics.get('errors') or ['-'])[0]})")
-    if not fundamental_store.available:
-        print("  PIT fundamentals unavailable -> value/quality sleeves WITHHELD "
-              "from the replay (today's snapshot is never back-applied)")
-    if not universe_history.available:
-        print(f"  historical constituents unavailable -> {pit_data.SURVIVORSHIP_UNRESOLVED} "
-              "recorded on every observation")
+        # Read and checked before the first network call. Widening the universe is
+        # not an extension of this generation, it is a new one: `alphaPercentile`
+        # is a rank inside the date's cross-section and selection floors it, so
+        # restoring 219 names to 2013 changes what every surviving name's 2013
+        # score meant — while those old records are skipped by id and keep the
+        # ranks they were given against a universe that no longer exists. Refusing
+        # after a forty-minute fetch would teach the same lesson at forty times
+        # the price.
+        universe_history = pit_data.UniverseHistory.from_json(
+            replay_cfg.get("universeHistoryPath"))
+        universe_signature = universe_history.signature
+        conflict = HS.universe_conflict(
+            ledger_dir, prov_mod.REPLAY_VERSION, universe_signature,
+            existing=len(current_ids), survivors_only=pit_data.SURVIVORS_ONLY)
+        if conflict:
+            # Not bypassable by --full. Signals are immutable (`append_signals`
+            # skips an id already on disk), so --full recomputes the old dates and
+            # then discards every one of them as a duplicate: it cannot rewrite the
+            # existing records under the new universe, only hide the check that
+            # says they are stale. The one cure is a new generation.
+            print(f"error: {conflict}", file=sys.stderr)
+            return 1
 
+        universe, _ = universe_mod.resolve(cfg)
+
+        # Names that were index members at some point but are not today's list. The
+        # replay resolves its universe from TODAY, so without these it can only ever
+        # see survivors: 326 of the 829 names that have been in the S&P 500 since
+        # 2012 are absent from the current list, and they left mostly by being
+        # acquired or shrinking out of it. `UniverseHistory` decides membership per
+        # date, but it can only include a name the PRICE PANEL can serve, so the
+        # historical members have to be downloaded too or the fix is cosmetic.
+        fetch_universe = {region: list(names) for region, names in universe.items()}
+        historical_only: dict[str, list[str]] = {}
+        if universe_history.available:
+            for ticker, row in universe_history.memberships.items():
+                region = row.get("region")
+                if not region or region not in fetch_universe:
+                    continue
+                if ticker not in fetch_universe[region]:
+                    fetch_universe[region].append(ticker)
+                    historical_only.setdefault(region, []).append(ticker)
+            for region, extra in sorted(historical_only.items()):
+                print(f"  {region}: +{len(extra)} former index members to download "
+                      f"alongside {len(universe.get(region) or [])} current")
+
+        download = list(dict.fromkeys(
+            [t for names in fetch_universe.values() for t in names]
+            + list(cfg.benchmarks.values())))
+        # Fetch from well before the replay start: the first replay date still needs
+        # 273 sessions of trailing history behind it, or every name is unrankable.
+        fetch_start = (str(int(str(start)[:4]) - 2) + str(start)[4:]) if start else "2010-01-01"
+        print(f"fetching {len(download)} tickers by region from {fetch_start} ...")
+        prices = fetch_regional_prices(fetch_universe, fetch_start)
+
+        # Benchmarks go through their own path: vendor redundancy, a plausibility
+        # check against the session calendar already on record, and the committed
+        # snapshot as the last resort. A truncated index panel is what silently
+        # erased the KR half of this ledger on 08-20, 08-23 and 08-24.
+        print("resolving regional benchmarks ...")
+        benchmark_series, benchmark_diagnostics = BS.resolve(
+            cfg.benchmarks, cfg.benchmark_sources, start=fetch_start, ledger_dir=ledger_dir)
+        for line in BS.describe(benchmark_diagnostics):
+            print(line)
+        for ticker, series in benchmark_series.items():
+            prices[ticker] = pd.DataFrame({"Close": series})
+
+        missing = [t for t in download if t not in prices]
+        if missing:
+            print(f"  warning: no price data for {len(missing)} tickers (e.g. {missing[:5]})")
+        for region, ticker in cfg.benchmarks.items():
+            if ticker not in prices:
+                print(f"ERROR: benchmark {ticker} for {region} unavailable from every "
+                      f"configured vendor and no snapshot is on record; excess returns "
+                      f"would be undefined. Refusing to write a ledger.")
+                return 1
+        if benchmark_diagnostics["degradedRegions"]:
+            print(f"  NOTE: {', '.join(benchmark_diagnostics['degradedRegions'])} running on "
+                  f"the committed snapshot; the newest grid dates will not extend until the "
+                  f"vendor recovers. This is recorded as {BS.STATUS_SNAPSHOT} in diagnostics.")
+
+        horizon = int(replay_cfg.get("horizonDays", 126))
+        minimum_benchmark_coverage = float(
+            replay_cfg.get("minBenchmarkCoveragePct", 95.0))
+        preflight = HO.benchmark_session_preflight(
+            prices, fetch_universe, cfg.benchmarks, start=start, end=through,
+            horizon=horizon, min_history_rows=HR.MIN_HISTORY_ROWS,
+            min_coverage_pct=minimum_benchmark_coverage,
+        )
+        for region, row in preflight["regions"].items():
+            print(f"benchmark preflight {region} {horizon}D: "
+                  f"{row['coveragePct']}% ({row['matchedWindows']}/"
+                  f"{row['candidateWindows']}; {row['benchmarkSessions']} benchmark sessions)")
+        if not preflight["eligible"]:
+            print("ERROR: benchmark session preflight failed; replay not started.")
+            for failure in preflight["failures"]:
+                print(f"  {failure['region']}: {failure['reason']} "
+                      f"({failure['coveragePct']}% < "
+                      f"{failure['minimumCoveragePct']}%)")
+                for sample in failure["missingSamples"]:
+                    print(f"    {sample}")
+            return 1
+
+        vix = fetch_vix(fetch_start)
+        macro = fetch_macro(cfg, fetch_start)
+        macro_vintages = fetch_macro_vintages(cfg, replay_cfg.get("macroVintageSeries") or [])
+        if macro is not None and not macro_vintages:
+            print("  macro vintages unavailable -> regime conditioning reads REVISED_HISTORY "
+                  "(the numbers as revised since, not as printed at the time)")
+        # The PIT fundamentals file is derived from the collected filings on
+        # signal-history, so its path is known to the job rather than to config.
+        # An explicit argument wins; config remains the fallback for a local run.
+        fundamental_store = pit_data.FundamentalStore.from_jsonl(
+            args.pit_fundamentals or replay_cfg.get("pitFundamentalsPath"))
+        if fundamental_store.available:
+            print(f"PIT 재무 {len(fundamental_store):,}건 · "
+                  f"{len(fundamental_store.tickers())}종목")
+        else:
+            print("PIT 재무 없음 — 밸류·퀄리티 슬리브는 이번에도 비어 있습니다 "
+                  f"({(fundamental_store.diagnostics.get('errors') or ['-'])[0]})")
+        if not fundamental_store.available:
+            print("  PIT fundamentals unavailable -> value/quality sleeves WITHHELD "
+                  "from the replay (today's snapshot is never back-applied)")
+        if not universe_history.available:
+            print(f"  historical constituents unavailable -> {pit_data.SURVIVORSHIP_UNRESOLVED} "
+                  "recorded on every observation")
+
+        fx_frame = fetch_prices(["KRW=X"], fetch_start).get("KRW=X")
+        fx = fx_frame["Close"].rename("USD_KRW") if fx_frame is not None else None
+        rates = replay_rates.fetch_rates(through)
+        calendar_rows = [{"date":d.strftime("%Y-%m-%d"), "KR":d in RC.sessions(start, through,"KR"),
+                          "US":d in RC.sessions(start, through,"US")}
+                         for d in RC.sessions(start, through,"UNION")]
+        components = RI.pack(prices=prices, benchmarks=cfg.benchmarks, universe=fetch_universe,
+            universe_history=universe_history, fundamentals=fundamental_store, macro=macro,
+            vix=vix, vintages=macro_vintages, fx=fx, rates=rates, through=through,
+            calendar_rows=calendar_rows)
+        if args.dry_run:
+            frozen = RI.unpack(components)
+            manifest = {"sha256":RI.digest(components), "through":through, "policy":policy}
+        else:
+            manifest = store.commit(components, through=through, policy=policy)
+            # Always consume the canonical snapshot, including on the acquisition run.
+            frozen = RI.unpack(store.load(manifest))
+        del components
+    prices, macro, vix = frozen["prices"], frozen["macro"], frozen["vix"]
+    macro_vintages = frozen["macro_vintages"]
+    fundamental_store, universe_history = frozen["fundamental_store"], frozen["universe_history"]
+    fetch_universe = frozen["universe"]
+    universe_signature = universe_history.signature
+    horizon = int(replay_cfg.get("horizonDays", 126))
+    minimum_benchmark_coverage = float(replay_cfg.get("minBenchmarkCoveragePct", 95.0))
+    calendar = RC.metadata(start, through, frequency)
     started = time.time()
     # How much of the survivorship fix actually landed: a former member with no
     # price data is dropped by the snapshot, so membership alone proves nothing.
@@ -269,7 +322,8 @@ def main(argv=None) -> int:
 
     replay = HR.run_replay(
         prices, fetch_universe, benchmarks=cfg.benchmarks, cfg_lt=cfg.longterm,
-        start=start, end=args.end,
+        start=start, end=through,
+        fixed_grid=RC.signal_grid(start, through, frequency),
         frequency=args.frequency or replay_cfg.get("frequency", "W"),
         fundamental_store=fundamental_store, macro=macro, vix=vix,
         macro_vintages=macro_vintages,
@@ -277,6 +331,13 @@ def main(argv=None) -> int:
         existing_ids=existing_ids, progress=True,
     )
     diagnostics = replay["diagnostics"]
+    diagnostics["evaluationCalendar"] = calendar
+    diagnostics["evaluationAsOf"] = through
+    diagnostics["inputSnapshot"] = {"sha256":manifest["sha256"], "through":through,
+        "manifest":str(store.path.relative_to(ledger_dir)), "schema":RI.SCHEMA,
+        "componentHashes":manifest.get("componentHashes", {})}
+    for row in replay["signals"]:
+        row["inputSnapshotSha256"] = manifest["sha256"]
     print(f"replay finished in {time.time() - started:.0f}s: "
           f"{diagnostics['signalsGenerated']} new, "
           f"{diagnostics['signalsSkippedAlreadyPresent']} already present")
@@ -394,6 +455,23 @@ def main(argv=None) -> int:
     # pre-receive hook after the expensive half of the job has already run.
     HS.assert_pushable(ledger_dir)
     return 0
+
+
+def main(argv=None) -> int:
+    try:
+        return _run(argv)
+    except RI.InputVersionConflict as exc:
+        arguments = list(sys.argv[1:] if argv is None else argv)
+        if arguments:
+            ledger = Path(arguments[0])
+            record = {"status":"INPUT_VERSION_CONFLICT", "replayVersion":prov_mod.REPLAY_VERSION,
+                      "dataVersion":prov_mod.DATA_VERSION, "reason":str(exc),
+                      "requiresNewExperiment":True}
+            folder = ledger / "replay-input-conflicts"
+            folder.mkdir(parents=True, exist_ok=True)
+            (folder / (RI.digest(record) + ".json")).write_text(json.dumps(record, indent=2) + "\n")
+        print(f"ERROR: {exc}", file=sys.stderr)
+        return 1
 
 
 if __name__ == "__main__":

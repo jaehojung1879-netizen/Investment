@@ -217,10 +217,10 @@ def test_selectors_are_compared_on_one_shared_block_schedule():
     champion = _rows(all_dates, np.zeros(len(all_dates)))
     challenger = _rows(all_dates[40:], np.zeros(len(all_dates) - 40))
 
-    shared = PV.shared_block_dates({"C": champion, "H": challenger}, 21)
+    shared = PV.shared_block_dates({"C": champion, "H": challenger}, 21, start="2020-01-01")
 
-    assert shared[0] == all_dates[40]          # starts where BOTH are measurable
-    assert set(shared) <= set(d["date"] for d in challenger)
+    assert shared[0] < all_dates[40]          # Missing challenger never moves the origin.
+    assert shared == PV.shared_block_dates({}, 21, start="2020-01-01", through=all_dates[-1])
 
 
 def test_a_tiny_edge_on_130_blocks_is_reported_as_indistinguishable():
