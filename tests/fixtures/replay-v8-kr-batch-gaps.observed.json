@@ -1,0 +1,13 @@
+{
+  "source": "signal-history replay-v8 input snapshot",
+  "inputManifestSha256": "6e6d88cc6fbcea2b976ae5332a3442629202fde1283e885db902e82c656cfe3b",
+  "workflowRun": "https://github.com/jaehojung1879-netizen/Investment/actions/runs/34270332885",
+  "method": "names present on both adjacent KRX sessions but absent on the middle session",
+  "dates": [
+    {"date": "2017-09-22", "activeNames": 638, "missingNames": 61},
+    {"date": "2017-12-20", "activeNames": 640, "missingNames": 62},
+    {"date": "2022-01-03", "activeNames": 667, "missingNames": 67},
+    {"date": "2022-05-09", "activeNames": 670, "missingNames": 68},
+    {"date": "2025-09-19", "activeNames": 686, "missingNames": 68}
+  ]
+}

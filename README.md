@@ -4,7 +4,10 @@
 
 Replay #39·#40 실패 원인과 v8 달력 보완은 [Actions 진단 문서](docs/replay-actions-39-40.md)를 참고하세요.
 
-Replay v7의 고정 평가 달력, 입력 스냅샷, 성과 정의와 실행 순서는 [replay 평가 문서](docs/replay-v7-evaluation.md)를 참고하세요. 기존 v6 headline과 직접 비교할 수 없습니다.
+Replay v7의 고정 평가 달력과 성과 정의는 [v7 평가 문서](docs/replay-v7-evaluation.md),
+공식 FX fixing·검증형 KR 가격 복구·corporate action 및 v9 실행 순서는
+[v9 입력 복구 문서](docs/replay-v9-input-recovery.md)를 참고하세요. 입력과 계산
+정의가 달라 세대 간 headline은 직접 비교할 수 없습니다.
 
 ## 실행 상태(runMode)와 데이터 모드(dataMode)
 
@@ -259,4 +262,3 @@ python scripts/demo_replay.py --tickers 40 --years 9
 ## 실전(liveValidated) 활성화 조건
 
 최소 1년(252영업일) paper tracking과 공통 표본 gate, 시간순 신호 축적, 비용 차감 후 양의 rank IC/초과수익, 벤치마크 대비 개선, 허용 가능한 MDD/CVaR, 섹터·기간 집중도 완화가 확인되기 전까지 `liveValidated`는 부여되지 않습니다.
-

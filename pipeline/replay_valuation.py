@@ -14,7 +14,8 @@ METRIC_VERSION = "calendar-span-daily-krw-rf-v1"
 
 
 class ValuationData:
-    def __init__(self, prices, benchmarks, fx, risk_free, *, through, risk_free_through=None):
+    def __init__(self, prices, benchmarks, fx, risk_free, *, through, risk_free_through=None,
+                 corporate_actions=None):
         self.prices = {k: normalize_daily_series(v["Close"]).loc[:through]
                        for k,v in prices.items() if v is not None and "Close" in v}
         self.benchmarks = benchmarks
@@ -23,9 +24,11 @@ class ValuationData:
         self.rates = sorted(risk_free, key=lambda r:r["date"])
         self.through = through
         self.risk_free_through = risk_free_through or through
+        self.corporate_actions = {
+            row["ticker"]:row for row in ((corporate_actions or {}).get("actions") or [])}
         self._rf_cache = {}
 
-    def marks(self, ticker, region, dates):
+    def _plain_marks(self, ticker, region, dates):
         source = self.prices.get(ticker)
         if source is None:
             return None
@@ -39,7 +42,34 @@ class ValuationData:
         result = source.reindex(source.index.union(dates)).sort_index().ffill().reindex(dates)
         return result.to_numpy(float) if result.notna().all() and (result > 0).all() else None
 
+    def marks(self, ticker, region, dates):
+        action = self.corporate_actions.get(ticker)
+        if not action:
+            return self._plain_marks(ticker, region, dates)
+        effective = pd.Timestamp(action["effectiveDate"])
+        # A corporate-action entitlement belongs only to a holding that existed
+        # before the event.  It may not make a delisted name newly purchasable.
+        if dates[0] >= effective or dates[-1] < effective:
+            return self._plain_marks(ticker, region, dates)
+        pre_dates = dates[dates < effective]
+        post_dates = dates[dates >= effective]
+        pre = self._plain_marks(ticker, region, pre_dates)
+        successor = self._plain_marks(action["successorTicker"], region, post_dates)
+        if pre is None or successor is None:
+            return None
+        consideration = (float(action["cashPerShare"])
+                         + float(action["successorSharesPerShare"]) * successor)
+        return np.concatenate([pre, consideration])
+
     def missing_sessions(self, ticker, region, dates):
+        action = self.corporate_actions.get(ticker)
+        if action:
+            effective = pd.Timestamp(action["effectiveDate"])
+            if dates[0] < effective <= dates[-1]:
+                before = dates[dates < effective]
+                after = dates[dates >= effective]
+                return (self.missing_sessions(ticker, region, before)
+                        + self.missing_sessions(action["successorTicker"], region, after))
         required = dates.intersection(RC.sessions(str(dates[0].date()), str(dates[-1].date()), region))
         source = self.prices.get(ticker, pd.Series(dtype=float)).reindex(required)
         bad = source.isna() | (source <= 0) | ~np.isfinite(source)
@@ -80,6 +110,7 @@ class ValuationData:
         gross = np.zeros(len(dates))
         benchmark = np.zeros(len(dates))
         excess_by_region, weight_by_region, terminal_values = {}, {}, {}
+        terminal_regions, actions_applied = {}, []
         us = any((decision.get("regionByTicker") or {}).get(t) == "US" for t in decision["weights"])
         fx = self.fx.reindex(dates).to_numpy(float) if us else np.ones(len(dates))
         if us and (not np.isfinite(fx).all() or np.any(fx <= 0)):
@@ -105,7 +136,28 @@ class ValuationData:
                 continue
             currency = fx / fx[0] if region == "US" else 1.0
             stock_growth, bench_growth = p / p[0] * currency, b / b[0] * currency
-            terminal_values[ticker] = weight * stock_growth[-1]
+            action = self.corporate_actions.get(ticker)
+            effective = pd.Timestamp(action["effectiveDate"]) if action else None
+            if action and dates[0] < effective <= dates[-1]:
+                successor = action["successorTicker"]
+                successor_marks = self._plain_marks(successor, region, dates[dates >= effective])
+                entry = p[0]
+                terminal_currency = currency[-1] if region == "US" else 1.0
+                successor_value = (weight * float(action["successorSharesPerShare"])
+                                   * successor_marks[-1] / entry * terminal_currency)
+                # Merger cash remains in the transaction currency through the
+                # end of this block, so its KRW value moves with USD/KRW too.
+                # At the next scheduled rebalance it becomes ordinary cash.
+                terminal_values[successor] = terminal_values.get(successor, 0) + successor_value
+                terminal_regions[successor] = region
+                actions_applied.append({"ticker":ticker, "type":action["type"],
+                    "effectiveDate":action["effectiveDate"], "successorTicker":successor,
+                    "cashPerShare":float(action["cashPerShare"]),
+                    "successorSharesPerShare":float(action["successorSharesPerShare"]),
+                    "cashYieldPolicy":action.get("cashYieldPolicy")})
+            else:
+                terminal_values[ticker] = terminal_values.get(ticker, 0) + weight * stock_growth[-1]
+                terminal_regions[ticker] = region
             gross += weight * stock_growth
             benchmark += weight * bench_growth
             weight_by_region[region] = weight_by_region.get(region, 0) + weight
@@ -123,6 +175,8 @@ class ValuationData:
         total = sum(weights.values())
         row = {**decision, "date":date, "endDate":end, "signalDate":block["signalDate"],
                "terminalWeights":{t:float(v/gross[-1]) for t,v in terminal_values.items()},
+               "terminalRegionByTicker":terminal_regions,
+               "corporateActionsApplied":actions_applied,
                "cashWeight":cash, "grossReturn":float(gross[-1] - 1),
                "benchmarkReturn":float(benchmark[-1] - 1),
                "grossExcessReturn":float(gross[-1] - benchmark[-1]),
@@ -149,10 +203,19 @@ def coverage(statuses, minimum):
     pct = complete / eligible * 100 if eligible else None
     reasons = Counter(reason.split(":")[0] for row in statuses
                       if row["status"] not in ("HORIZON_NOT_MATURED", "EMPTY_PORTFOLIO", "COMPLETE") for reason in row["reasons"])
+    block_sufficient = pct is not None and pct >= minimum
+    continuous_sufficient = eligible > 0 and complete == eligible
     return {"totalDecisions":len(statuses), "eligibleDecisions":eligible,
             "completeOutcomes":complete, "notMaturedDecisions":counts["HORIZON_NOT_MATURED"],
             "droppedDecisions":eligible - complete, "completenessPct":pct,
-            "minimumCompletenessPct":minimum, "sufficientForPath":pct is not None and pct >= minimum,
+            "minimumCompletenessPct":minimum,
+            "sufficientForBlockEvidence":block_sufficient,
+            "sufficientForContinuousPath":continuous_sufficient,
+            # Compatibility key for existing consumers. A path is continuous,
+            # so its threshold is necessarily 100%; the configured floor is for
+            # block-distribution diagnostics, not permission to join gaps.
+            "sufficientForPath":continuous_sufficient,
+            "continuousPathRequiredPct":100.0,
             "droppedByReason":dict(reasons), "statusCounts":dict(counts),
             "blocks":statuses}
 

@@ -85,7 +85,8 @@ def main(argv=None) -> int:
         if (diagnostics.get("inputSnapshot") or {}).get("sha256") != manifest["sha256"]:
             raise RI.InputVersionConflict("diagnostics and input manifest disagree")
         valuation = RV.ValuationData(frozen["prices"], cfg.benchmarks, frozen["fx"], frozen["risk_free"],
-            through=manifest["through"], risk_free_through=frozen["risk_free_source"]["verifiedThrough"])
+            through=manifest["through"], risk_free_through=frozen["risk_free_source"]["verifiedThrough"],
+            corporate_actions=frozen.get("corporate_actions"))
     if previous and previous.get("replayVersion") != replay_version:
         archive = ledger / "historical" / previous["replayVersion"] / "portfolio-validation.json"
         archive.parent.mkdir(parents=True, exist_ok=True)

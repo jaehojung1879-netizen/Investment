@@ -9,6 +9,7 @@ import pytest
 
 from pipeline import replay_calendar as RC
 from pipeline import replay_inputs as RI
+from pipeline import replay_recovery as RR
 from pipeline import replay_valuation as RV
 from pipeline import replay_determinism as RD
 from pipeline import portfolio_validation as PV
@@ -82,6 +83,73 @@ def test_snapshot_corruption_is_not_a_new_valid_baseline(tmp_path):
         store.load()
 
 
+def test_official_fx_resolution_uses_only_latest_prior_fixing_and_records_age():
+    observations=pd.Series([1300.,1310.],index=pd.to_datetime(["2024-03-28","2024-04-01"]))
+    dates=pd.to_datetime(["2024-03-28","2024-03-29","2024-04-01"])
+    resolved,mapping=RR.resolve_fx_fixings(observations,dates)
+    assert resolved.tolist()==[1300.,1300.,1310.]
+    assert [row["observationDate"] for row in mapping]==[
+        "2024-03-28","2024-03-28","2024-04-01"]
+    assert mapping[1]["ageCalendarDays"]==1
+    with pytest.raises(RR.RecoveryError,match="timely prior"):
+        RR.resolve_fx_fixings(observations,pd.to_datetime(["2024-04-08"]),max_staleness_days=3)
+
+
+def test_kr_gap_recovery_requires_market_wide_hole_and_validated_return_bridge():
+    sessions=RC.sessions("2020-01-02","2020-01-10","KR")
+    gap=sessions[2]
+    fallback=pd.DataFrame({"Open":np.arange(len(sessions))+100.,
+        "High":np.arange(len(sessions))+101.,"Low":np.arange(len(sessions))+99.,
+        "Close":np.arange(len(sessions))+100.,"Volume":1000.},index=sessions)
+    tickers=[f"{i:06d}.KS" for i in range(20)]
+    prices={ticker:(fallback*pd.Series({"Open":2,"High":2,"Low":2,"Close":2,"Volume":1})).drop(gap)
+            for ticker in tickers}
+    late="999999.KS"
+    prices[late]=fallback.loc[fallback.index > gap].copy()
+    prices["^KS200"]=pd.DataFrame({"Close":200.},index=sessions)
+    report=RR.recover_systemic_kr_gaps(prices,tickers+[late],"^KS200",
+        start="2020-01-02",through="2020-01-10",fetcher=lambda *args:fallback)
+    assert len(report["systemicDates"])==1
+    assert len(report["accepted"])==20 and not report["rejected"]
+    assert all(prices[ticker].at[gap,"Close"]==pytest.approx(fallback.at[gap,"Close"]*2)
+               for ticker in tickers)
+    assert gap not in prices[late].index  # no pre-listing backfill
+
+    # A lone missing name is consistent with a suspension, not a failed market
+    # data session, and must remain missing.
+    lone={ticker:fallback.mul(2) for ticker in tickers}
+    lone[tickers[0]]=lone[tickers[0]].drop(gap)
+    lone["^KS200"]=pd.DataFrame({"Close":200.},index=sessions)
+    report=RR.recover_systemic_kr_gaps(lone,tickers,"^KS200",
+        start="2020-01-02",through="2020-01-10",fetcher=lambda *args:fallback)
+    assert not report["systemicDates"] and gap not in lone[tickers[0]].index
+
+
+def test_kr_gap_recovery_rejects_adjustment_bridge_mismatch():
+    sessions=RC.sessions("2020-01-02","2020-01-10","KR")
+    gap=sessions[2]
+    tickers=[f"{i:06d}.KS" for i in range(20)]
+    base=pd.DataFrame({"Close":np.arange(len(sessions))+100.},index=sessions)
+    prices={ticker:base.mul(2).drop(gap) for ticker in tickers}
+    prices["^KS200"]=pd.DataFrame({"Close":200.},index=sessions)
+    broken=base.copy()
+    broken.loc[sessions[3]:,"Close"]*=1.1
+    report=RR.recover_systemic_kr_gaps(prices,tickers,"^KS200",
+        start="2020-01-02",through="2020-01-10",fetcher=lambda *args:broken)
+    assert not report["accepted"]
+    assert {row["reason"] for row in report["rejected"]}=={"ADJUSTED_RETURN_BRIDGE_MISMATCH"}
+    assert all(gap not in prices[ticker].index for ticker in tickers)
+
+
+def test_observed_v8_batch_holes_meet_systemic_not_individual_threshold():
+    fixture=json.loads((Path(__file__).parent/"fixtures/replay-v8-kr-batch-gaps.observed.json").read_text())
+    for row in fixture["dates"]:
+        threshold=max(RR.KR_MIN_MISSING_NAMES,
+                      int(np.ceil(row["activeNames"]*RR.KR_SYSTEMIC_MISSING_SHARE)))
+        assert row["missingNames"] >= threshold
+        assert .09 <= row["missingNames"]/row["activeNames"] <= .11
+
+
 def valuation_fixture(end="2020-03-31"):
     days=RC.sessions("2020-01-01",end,"UNION")
     prices={}
@@ -153,6 +221,44 @@ def test_empty_portfolio_remains_measured_cash_not_a_missing_or_deleted_period()
     assert cov["completeOutcomes"]==1 and cov["completenessPct"]==100
 
 
+def test_block_evidence_floor_does_not_authorize_a_gapped_nav_path():
+    statuses=[{"status":"COMPLETE","reasons":[],"measured":True} for _ in range(9)]
+    statuses.append({"status":"INCOMPLETE","reasons":["MISSING_PRICE_SESSION:A"]})
+    cov=RV.coverage(statuses,90)
+    assert cov["completenessPct"]==90
+    assert cov["sufficientForBlockEvidence"]
+    assert not cov["sufficientForContinuousPath"]
+    assert not cov["sufficientForPath"]
+    assert cov["continuousPathRequiredPct"]==100
+
+
+def test_cash_and_stock_merger_values_held_position_without_buying_delisted_name():
+    start,end="2018-12-17","2019-01-04"
+    union=RC.sessions(start,end,"UNION")
+    us=RC.sessions(start,end,"US")
+    pre=us[us < pd.Timestamp("2018-12-20")]
+    prices={
+        "ESRX":pd.DataFrame({"Close":90.},index=pre),
+        "CI":pd.DataFrame({"Close":180.},index=us),
+        "SPY":pd.DataFrame({"Close":100.},index=us),
+    }
+    actions=RR.load_corporate_actions()
+    view=RV.ValuationData(prices,{"US":"SPY"},pd.Series(1000.,index=union),
+        [{"date":"2018-01-01","annualRatePct":0}],through=end,
+        corporate_actions=actions)
+    block={"date":start,"endDate":end,"signalDate":"2018-12-14"}
+    decision={"weights":{"ESRX":1.0},"regionByTicker":{"ESRX":"US"}}
+    row,status=view.window(decision,block)
+    consideration=48.75+.2434*180
+    assert status["status"]=="COMPLETE"
+    assert row["grossReturn"]==pytest.approx(consideration/90-1)
+    assert row["corporateActionsApplied"][0]["successorTicker"]=="CI"
+    assert row["terminalRegionByTicker"]=={"CI":"US"}
+    assert row["terminalWeights"]["CI"]==pytest.approx((.2434*180)/consideration)
+    dead,dead_status=view.window(decision,{**block,"date":"2018-12-20"})
+    assert dead is None and dead_status["status"]=="INCOMPLETE"
+
+
 def test_daily_drawdown_detects_intrablock_crash_and_includes_initial_nav():
     view,decision,block=valuation_fixture()
     decision["weights"]={"A":1.0}
@@ -220,13 +326,14 @@ def test_pack_roundtrip_preserves_inputs_and_bounds_asof(tmp_path):
         universe_history=pit_data.UniverseHistory({}), fundamentals=pit_data.FundamentalStore(),
         macro=pd.DataFrame({"x":[1.,np.nan]},index=pd.to_datetime(["2020-01-01","2020-01-02"])),
         vix=None,vintages={},fx=view.fx,rates={"events":view.rates,"source":"observed fixture","verifiedThrough":view.through},
-        through=view.through,calendar_rows=[])
+        through=view.through,calendar_rows=[],corporate_actions=RR.load_corporate_actions())
     store=RI.InputStore(tmp_path,"r","d")
     store.commit(data,through=view.through,policy={})
     frozen=RI.unpack(store.load())
     assert set(frozen["prices"])==set(view.prices)
     pd.testing.assert_series_equal(frozen["fx"],view.fx.rename("value"),check_freq=False,check_names=False)
     assert pd.isna(frozen["macro"].iloc[1,0])
+    assert frozen["corporate_actions"]["version"]=="corporate-actions-v1"
     audit=RI.unpack(store.load(valuation_only=True))
     assert set(audit["prices"])==set(view.prices)
 
