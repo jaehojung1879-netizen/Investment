@@ -94,6 +94,16 @@ class InputStore:
             result[name] = rows
         return result
 
+    def load_component(self, name: str, manifest=None) -> list[dict]:
+        """Load one component without inflating the full multi-GB snapshot."""
+        manifest = manifest or self.manifest()
+        if not manifest:
+            raise InputVersionConflict("no frozen inputs in this generation; first run must acquire inputs")
+        rows = []
+        for ref in manifest["components"].get(name, []):
+            rows.extend(self._read(ref))
+        return rows
+
     def commit(self, components: dict[str, list[dict]], *, through: str, policy: dict):
         prior = self.manifest()
         if prior:
@@ -149,12 +159,18 @@ class InputStore:
 
 def pack(*, prices, benchmarks, universe, universe_history, fundamentals, macro,
          vix, vintages, fx, rates, through, calendar_rows, fx_observations=None,
-         fx_source_map=None, price_recovery=None, corporate_actions=None):
+         fx_source_map=None, price_recovery=None, corporate_actions=None,
+         benchmark_lineage=None):
     components = {}
     for name, frame in sorted(prices.items()):
         kind = "benchmark" if name in benchmarks.values() else "price"
         for row in frame_rows(frame, through):
             components.setdefault(f"{kind}/{row['date'][:7]}", []).append({"ticker":name, **row})
+    # Static, generation-local identity.  Benchmark snapshots are shared as an
+    # operational cache, so their global index cannot be the authority for an
+    # already-started replay generation.
+    components["benchmark/source"] = sorted(
+        benchmark_lineage or [], key=lambda row: (row.get("region", ""), row.get("ticker", "")))
     components["macro"] = frame_rows(macro, through)
     components["vix"] = frame_rows(vix, through)
     components["fx/USD_KRW"] = frame_rows(fx, through)
@@ -196,7 +212,7 @@ def pack(*, prices, benchmarks, universe, universe_history, fundamentals, macro,
 def unpack(components):
     prices, vintages, by_ticker = {}, {}, {}
     for name, rows in components.items():
-        if name.startswith(("price/", "benchmark/")):
+        if name.startswith(("price/", "benchmark/")) and name != "benchmark/source":
             for row in rows:
                 by_ticker.setdefault(row["ticker"], []).append({k:v for k,v in row.items() if k != "ticker"})
         elif name.startswith("macro-vintage/") and rows:
@@ -222,6 +238,7 @@ def unpack(components):
             "price_recovery":components.get("recovery/kr-systemic", []),
             "corporate_actions":((components.get("corporate-actions") or [{"book":{"actions":[]}}])[0]
                                   .get("book", {"actions":[]})),
+            "benchmark_lineage":components.get("benchmark/source", []),
             "universe":universe["universe"],
             "universe_history":pit_data.UniverseHistory(universe["memberships"]),
             "fundamental_store":fundamentals}

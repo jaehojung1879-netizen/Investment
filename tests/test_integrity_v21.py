@@ -413,6 +413,15 @@ def test_replay_weekly_training_reaches_the_sunday_shell_gate():
     assert "github.event.schedule == null" not in step
 
 
+def test_replay_schedule_reproduces_frozen_inputs_instead_of_refreshing_vendor_prefixes():
+    replay = (ROOT / ".github" / "workflows" / "replay.yml").read_text(encoding="utf-8")
+    extend = replay[replay.index("- name: Extend the historical replay ledger"):]
+    extend = extend[:extend.index("- name: Preserve benchmark snapshots")]
+    assert '[ "${{ github.event_name }}" = "schedule" ]' in extend
+    assert 'FROZEN_ARG="--frozen-inputs"' in extend
+    assert "github.event_name != 'schedule' && inputs.frozen_inputs != true" in replay
+
+
 def test_synthetic_fixture_is_explicit_and_generated_artifact_is_ignored():
     fixture = ROOT / "tests" / "fixtures" / "site-data.synthetic.json"
     assert fixture.exists()

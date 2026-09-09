@@ -6,9 +6,10 @@ Recovery is deliberately narrower than generic missing-value filling:
   valuation session uses the latest fixing published on or before that date;
   it never reads a future observation and it refuses a stale fixing.
 * Korean equity rows are recovered only for a market-wide hole in the primary
-  Yahoo panel.  The independent FDR return is applied to the preceding Yahoo
-  adjusted close, and the bridge to the next Yahoo close must agree.  An
-  individual suspension/delisting is therefore never filled by this path.
+  Yahoo panel.  A targeted Yahoo adjusted-price retry is preferred.  Otherwise
+  the independent FDR raw return is checked against Yahoo raw anchors before it
+  is mapped into the adjusted-price basis.  An individual suspension/delisting
+  is therefore never filled by this path.
 * Corporate actions are a reviewed static ledger, content-addressed with every
   other input.  They are not inferred from a missing terminal quote.
 """
@@ -24,13 +25,17 @@ import pandas as pd
 from . import replay_calendar as RC
 from .market_dates import normalize_daily_frame, normalize_daily_series
 
-RECOVERY_VERSION = "fred-h10-fx-v1+fdr-systemic-gap-v1+corporate-actions-v1"
+RECOVERY_VERSION = "fred-h10-fx-v1+fdr-systemic-gap-v2+corporate-actions-v1"
 FX_SERIES_ID = "DEXKOUS"  # Korean won per US dollar, Federal Reserve H.10
 FX_MAX_STALENESS_DAYS = 7
 KR_MIN_MISSING_NAMES = 20
 KR_SYSTEMIC_MISSING_SHARE = 0.05
 KR_MAX_GAP_SESSIONS = 3
 KR_BRIDGE_TOLERANCE_BPS = 25.0
+# A larger adjusted/raw basis move is no longer an ordinary cash-distribution
+# adjustment.  It needs a reviewed corporate-action row, not a generic gap
+# bridge.  The production incident peaked at 227.11 bps.
+KR_MAX_UNVOUCHED_ADJUSTMENT_BPS = 500.0
 CORPORATE_ACTIONS_PATH = Path(__file__).resolve().parents[1] / "data" / "replay-corporate-actions.json"
 
 
@@ -73,7 +78,7 @@ def fetch_fred_usdkrw(api_key: str | None, start: str, *, retries: int = 3,
                       fetcher=None) -> pd.Series:
     """Fetch the official H.10 DEXKOUS observations as one unspliced vintage."""
     if not api_key and fetcher is None:
-        raise RecoveryError("FRED_API_KEY is required for replay-v9 USD/KRW inputs")
+        raise RecoveryError("FRED_API_KEY is required for source-backed replay USD/KRW inputs")
     if fetcher is None:
         from fredapi import Fred
 
@@ -138,6 +143,18 @@ def _fdr_frame(ticker: str, start: str, end: str, retries: int = 3) -> pd.DataFr
     return None
 
 
+def _yahoo_targeted_frames(tickers: list[str], start: str, end: str, *,
+                           adjusted: bool) -> dict[str, pd.DataFrame]:
+    """Small-window retry used only after a market-wide batch hole is proven."""
+    from .datafeed import OHLCV, UNADJUSTED_WITH_ACTIONS, fetch_prices
+
+    return fetch_prices(
+        tickers, start, end=end, batch=20, auto_adjust=adjusted,
+        actions=not adjusted,
+        columns=OHLCV if adjusted else UNADJUSTED_WITH_ACTIONS,
+    )
+
+
 def _systemic_dates(prices: dict[str, pd.DataFrame], tickers: list[str],
                     benchmark: pd.Series, start: str, through: str) -> tuple[dict[pd.Timestamp, set[str]], list[dict]]:
     sessions = RC.sessions(start, through, "KR")
@@ -181,7 +198,8 @@ def _groups(index: pd.DatetimeIndex, selected: set[pd.Timestamp]) -> list[list[p
 
 def recover_systemic_kr_gaps(prices: dict[str, pd.DataFrame], tickers: list[str],
                              benchmark_ticker: str, *, start: str, through: str,
-                             fetcher=None) -> dict:
+                             fetcher=None, targeted_primary_fetcher=None,
+                             raw_primary_fetcher=None) -> dict:
     """Recover only validated, market-wide missing Korean primary-vendor bars.
 
     ``prices`` is updated in place.  The returned audit rows are snapshotted,
@@ -197,8 +215,30 @@ def recover_systemic_kr_gaps(prices: dict[str, pd.DataFrame], tickers: list[str]
               "accepted":[], "rejected":[]}
     if not systemic:
         return result
+    live_sources = fetcher is None
     fetcher = fetcher or _fdr_frame
     kr_sessions = RC.sessions(start, through, "KR")
+    affected = sorted(set().union(*systemic.values()))
+    narrow_start = str((min(systemic) - pd.Timedelta(days=14)).date())
+    narrow_end = str((max(systemic) + pd.Timedelta(days=14)).date())
+    # A focused same-vendor retry is the highest-fidelity recovery: when it
+    # succeeds it restores the exact Yahoo-adjusted observation that the large
+    # batch dropped.  The unadjusted retry is not substituted into valuation;
+    # it validates FDR raw returns without confusing dividends with vendor
+    # disagreement.
+    if targeted_primary_fetcher is None:
+        targeted_primary = (_yahoo_targeted_frames(
+            affected, narrow_start, narrow_end, adjusted=True)
+            if live_sources else {})
+    else:
+        targeted_primary = targeted_primary_fetcher(affected, narrow_start, narrow_end) or {}
+    if raw_primary_fetcher is None:
+        raw_primary = (_yahoo_targeted_frames(
+            affected, narrow_start, narrow_end, adjusted=False)
+            if live_sources else {})
+    else:
+        raw_primary = raw_primary_fetcher(affected, narrow_start, narrow_end) or {}
+
     for ticker in tickers:
         frame = prices.get(ticker)
         if frame is None or "Close" not in frame:
@@ -210,14 +250,12 @@ def recover_systemic_kr_gaps(prices: dict[str, pd.DataFrame], tickers: list[str]
         missing = {date for date, affected in systemic.items() if ticker in affected}
         if not missing:
             continue
-        fallback = fetcher(ticker,
-                           str((min(missing) - pd.Timedelta(days=14)).date()),
-                           str((max(missing) + pd.Timedelta(days=14)).date()))
-        if fallback is None or "Close" not in fallback:
-            result["rejected"].append({"ticker":ticker, "dates":sorted(str(d.date()) for d in missing),
-                                       "reason":"FDR_NO_DATA"})
-            continue
-        fallback = normalize_daily_frame(fallback)
+        fallback = None
+        fallback_fetched = False
+        targeted = normalize_daily_frame(targeted_primary[ticker]) \
+            if ticker in targeted_primary else None
+        raw = normalize_daily_frame(raw_primary[ticker]) \
+            if ticker in raw_primary else None
         for group in _groups(kr_sessions, missing):
             if len(group) > KR_MAX_GAP_SESSIONS:
                 result["rejected"].append({"ticker":ticker,
@@ -231,38 +269,149 @@ def recover_systemic_kr_gaps(prices: dict[str, pd.DataFrame], tickers: list[str]
                 continue
             left, right = kr_sessions[first_pos - 1], kr_sessions[last_pos + 1]
             needed = [left, *group, right]
-            if (left not in primary.index or right not in primary.index
-                    or any(date not in fallback.index for date in needed)):
+            if left not in primary.index or right not in primary.index:
                 result["rejected"].append({"ticker":ticker,
-                    "dates":[str(d.date()) for d in group], "reason":"NO_PRIMARY_OR_FDR_BRIDGE"})
+                    "dates":[str(d.date()) for d in group], "reason":"NO_PRIMARY_BRIDGE"})
                 continue
             p_left, p_right = float(primary.at[left,"Close"]), float(primary.at[right,"Close"])
-            f_left, f_right = float(fallback.at[left,"Close"]), float(fallback.at[right,"Close"])
-            if min(p_left,p_right,f_left,f_right) <= 0:
+            if not all(np.isfinite(value) and value > 0 for value in (p_left, p_right)):
                 result["rejected"].append({"ticker":ticker,
                     "dates":[str(d.date()) for d in group], "reason":"NON_POSITIVE_BRIDGE"})
                 continue
-            bridge_bps = abs((p_right/p_left)/(f_right/f_left)-1) * 10000
-            if bridge_bps > KR_BRIDGE_TOLERANCE_BPS:
+
+            # First choice: exact adjusted observations from a narrow retry of
+            # the same source.  The anchors prove it is the same adjustment
+            # vintage before it is joined to the primary panel.
+            if (targeted is not None and "Close" in targeted
+                    and all(date in targeted.index for date in needed)
+                    and all(pd.notna(targeted.at[date, "Close"])
+                            and np.isfinite(float(targeted.at[date, "Close"]))
+                            and float(targeted.at[date, "Close"]) > 0 for date in needed)
+                    and min(float(targeted.at[left, "Close"]),
+                            float(targeted.at[right, "Close"])) > 0):
+                t_left = float(targeted.at[left, "Close"])
+                t_right = float(targeted.at[right, "Close"])
+                retry_bridge_bps = abs((p_right/p_left)/(t_right/t_left)-1) * 10000
+                if retry_bridge_bps <= KR_BRIDGE_TOLERANCE_BPS:
+                    scale = p_left / t_left
+                    columns = [column for column in ("Open","High","Low","Close","Volume")
+                               if column in targeted.columns]
+                    for date in group:
+                        for column in columns:
+                            value = targeted.at[date, column]
+                            if pd.isna(value):
+                                continue
+                            primary.loc[date, column] = (float(value) if column == "Volume"
+                                                        else float(value) * scale)
+                    primary.sort_index(inplace=True)
+                    result["accepted"].append({"ticker":ticker,
+                        "date":str(group[0].date()),
+                        "dates":[str(d.date()) for d in group],
+                        "primaryVendor":"YAHOO_AUTO_ADJUSTED",
+                        "fallbackVendor":"YAHOO_TARGETED_RETRY",
+                        "method":"SAME_VENDOR_ADJUSTED_RETURN_BRIDGE",
+                        "leftAnchor":str(left.date()), "rightAnchor":str(right.date()),
+                        "bridgeDifferenceBps":float(retry_bridge_bps),
+                        "scale":float(scale), "pathUncertaintyBps":0.0})
+                    continue
+
+            if not fallback_fetched:
+                candidate = fetcher(
+                    ticker, str((min(missing) - pd.Timedelta(days=14)).date()),
+                    str((max(missing) + pd.Timedelta(days=14)).date()))
+                fallback = (normalize_daily_frame(candidate)
+                            if candidate is not None and "Close" in candidate else None)
+                fallback_fetched = True
+            if fallback is None:
                 result["rejected"].append({"ticker":ticker,
-                    "dates":[str(d.date()) for d in group], "reason":"ADJUSTED_RETURN_BRIDGE_MISMATCH",
-                    "bridgeDifferenceBps":float(bridge_bps)})
+                    "dates":[str(d.date()) for d in group], "reason":"FDR_NO_DATA"})
                 continue
-            scale = p_left / f_left
-            columns = [column for column in ("Open","High","Low","Close","Volume")
-                       if column in fallback.columns]
-            for date in group:
-                for column in columns:
-                    value = fallback.at[date,column]
-                    if pd.isna(value):
-                        continue
-                    primary.loc[date,column] = float(value) if column == "Volume" else float(value) * scale
+            if (any(date not in fallback.index for date in needed)
+                    or any(pd.isna(fallback.at[date, "Close"])
+                           or not np.isfinite(float(fallback.at[date, "Close"]))
+                           or float(fallback.at[date, "Close"]) <= 0 for date in needed)):
+                result["rejected"].append({"ticker":ticker,
+                    "dates":[str(d.date()) for d in group],
+                    "reason":"NO_PRIMARY_OR_FDR_BRIDGE"})
+                continue
+            f_left, f_right = float(fallback.at[left,"Close"]), float(fallback.at[right,"Close"])
+            if not all(np.isfinite(value) and value > 0 for value in (f_left, f_right)):
+                result["rejected"].append({"ticker":ticker,
+                    "dates":[str(d.date()) for d in group], "reason":"NON_POSITIVE_BRIDGE"})
+                continue
+            adjusted_bridge_bps = abs((p_right/p_left)/(f_right/f_left)-1) * 10000
+
+            if adjusted_bridge_bps <= KR_BRIDGE_TOLERANCE_BPS:
+                scale = p_left / f_left
+                columns = [column for column in ("Open","High","Low","Close","Volume")
+                           if column in fallback.columns]
+                for date in group:
+                    for column in columns:
+                        value = fallback.at[date,column]
+                        if pd.isna(value):
+                            continue
+                        primary.loc[date,column] = (float(value) if column == "Volume"
+                                                    else float(value) * scale)
+                method = "FDR_RETURN_ANCHORED_TO_PREVIOUS_PRIMARY_CLOSE"
+                raw_bridge_bps = None
+                basis_shift_bps = 0.0
+                path_uncertainty_bps = float(adjusted_bridge_bps)
+            else:
+                if (raw is None or "Close" not in raw
+                        or left not in raw.index or right not in raw.index):
+                    result["rejected"].append({"ticker":ticker,
+                        "dates":[str(d.date()) for d in group],
+                        "reason":"NO_UNADJUSTED_PRIMARY_BRIDGE",
+                        "adjustedBridgeDifferenceBps":float(adjusted_bridge_bps)})
+                    continue
+                y_left, y_right = float(raw.at[left,"Close"]), float(raw.at[right,"Close"])
+                if not all(np.isfinite(value) and value > 0 for value in (y_left, y_right)):
+                    result["rejected"].append({"ticker":ticker,
+                        "dates":[str(d.date()) for d in group],
+                        "reason":"NON_POSITIVE_UNADJUSTED_BRIDGE"})
+                    continue
+                raw_bridge_bps = abs((y_right/y_left)/(f_right/f_left)-1) * 10000
+                if raw_bridge_bps > KR_BRIDGE_TOLERANCE_BPS:
+                    result["rejected"].append({"ticker":ticker,
+                        "dates":[str(d.date()) for d in group],
+                        "reason":"RAW_RETURN_BRIDGE_MISMATCH",
+                        "adjustedBridgeDifferenceBps":float(adjusted_bridge_bps),
+                        "rawBridgeDifferenceBps":float(raw_bridge_bps)})
+                    continue
+                left_factor, right_factor = p_left/y_left, p_right/y_right
+                basis_shift_bps = abs(right_factor/left_factor-1) * 10000
+                if basis_shift_bps > KR_MAX_UNVOUCHED_ADJUSTMENT_BPS:
+                    result["rejected"].append({"ticker":ticker,
+                        "dates":[str(d.date()) for d in group],
+                        "reason":"UNVOUCHED_ADJUSTMENT_TOO_LARGE",
+                        "adjustedBridgeDifferenceBps":float(adjusted_bridge_bps),
+                        "rawBridgeDifferenceBps":float(raw_bridge_bps),
+                        "adjustmentBasisShiftBps":float(basis_shift_bps)})
+                    continue
+                raw_scale = y_left/f_left
+                # The two observed adjustment factors bound the unavailable
+                # session's adjusted close.  For this long-only audit, retain
+                # the lower bound rather than choose the value that flatters
+                # the daily NAV.  Both bounds and their width are snapshotted.
+                for date in group:
+                    raw_value = float(fallback.at[date,"Close"])
+                    left_bound = raw_value * raw_scale * left_factor
+                    right_bound = raw_value * raw_scale * right_factor
+                    primary.loc[date,"Close"] = min(left_bound, right_bound)
+                scale = p_left/f_left
+                method = "FDR_RAW_RETURN_WITH_OBSERVED_ADJUSTMENT_BOUNDS_LOWER_NAV"
+                path_uncertainty_bps = float(basis_shift_bps)
             primary.sort_index(inplace=True)
             result["accepted"].append({"ticker":ticker,
                 "date":str(group[0].date()), "dates":[str(d.date()) for d in group],
                 "primaryVendor":"YAHOO_AUTO_ADJUSTED", "fallbackVendor":"FINANCE_DATA_READER",
-                "method":"FDR_RETURN_ANCHORED_TO_PREVIOUS_PRIMARY_CLOSE",
+                "method":method,
                 "leftAnchor":str(left.date()), "rightAnchor":str(right.date()),
-                "bridgeDifferenceBps":float(bridge_bps), "scale":float(scale)})
+                "bridgeDifferenceBps":float(adjusted_bridge_bps),
+                "rawBridgeDifferenceBps":(float(raw_bridge_bps)
+                                           if raw_bridge_bps is not None else None),
+                "adjustmentBasisShiftBps":float(basis_shift_bps),
+                "pathUncertaintyBps":path_uncertainty_bps,
+                "scale":float(scale)})
         prices[ticker] = primary
     return result

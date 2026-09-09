@@ -58,12 +58,18 @@ MODEL_VERSION = "longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-a
 # repair only validated market-wide Korean holes, and a reviewed merger ledger
 # values held securities through cash-and-stock actions. Those changes can alter
 # past outcomes, so v8 stays immutable and v9 is a new full experiment.
-REPLAY_VERSION = "replay-v9"
+# v10 repairs two defects observed on the first v9 production run.  Benchmark
+# resolution now pins one vendor lineage per generation instead of selecting
+# whichever source is one session fresher, and systemic Korean gaps compare
+# FDR raw returns with Yahoo raw anchors before mapping them back to the
+# adjusted basis.  Both can change historical inputs, so v9 remains sealed.
+REPLAY_VERSION = "replay-v10"
 FEATURE_VERSION = "hfeat-v1"
 DATA_VERSION = ("yahoo-adjusted-close-v3-regional-session-download"
                 "+pit-index-membership+dart-pit-fundamentals-kr"
                 "+immutable-inputs-v1+common-calendar-v2-kr-2026-closures"
-                "+fred-h10-usdkrw-fixing-v1+fdr-systemic-gap-return-v1"
+                "+fred-h10-usdkrw-fixing-v1+benchmark-vendor-lineage-v1"
+                "+fdr-systemic-gap-basis-aware-v2"
                 "+corporate-actions-v1+bok-rf-v1")
 
 # MODEL_VERSION is a compound identity, and not every component of it is a

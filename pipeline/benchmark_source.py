@@ -268,11 +268,23 @@ def evaluate_candidate(candidate: pd.Series | None, snapshot: pd.Series | None, 
     }
 
 
+def _source_identity(row: dict | None) -> tuple[str | None, str | None]:
+    row = row or {}
+    return row.get("source") or row.get("kind"), row.get("symbol")
+
+
 def resolve_one(ticker: str, specs: list[dict], *, start: str,
-                snapshot: pd.Series | None,
+                snapshot: pd.Series | None, pinned_source: dict | None = None,
+                snapshot_fallback_allowed: bool = True,
                 min_coverage_pct: float = MIN_SNAPSHOT_COVERAGE_PCT,
                 fetchers: dict | None = None) -> dict:
-    """Pick a trustworthy series for one benchmark, or fall back to the snapshot."""
+    """Pick one benchmark lineage, or fall back to that lineage's snapshot.
+
+    Once a generation has selected a vendor, a fresher response from another
+    vendor is diagnostic evidence only.  Switching the whole history because
+    the other source printed one extra session changes every sealed monthly
+    benchmark shard; replay #43 exposed exactly that failure mode.
+    """
     fetchers = fetchers or FETCHERS
     candidates: list[dict] = []
     accepted: list[tuple[dict, pd.Series]] = []
@@ -300,22 +312,36 @@ def resolve_one(ticker: str, specs: list[dict], *, start: str,
         if verdict["accepted"]:
             accepted.append((row, series))
 
-    if accepted:
-        # Same rule the market-tape fetcher uses: freshest first, then longest.
-        row, series = max(accepted, key=lambda item: (item[1].index[-1], len(item[1])))
+    selected = None
+    if pinned_source:
+        wanted = _source_identity(pinned_source)
+        selected = next((item for item in accepted
+                         if _source_identity(item[0]) == wanted), None)
+    elif accepted:
+        # Configuration order is part of the data definition.  "Freshest"
+        # cannot be the tie-breaker: it made replay #43 jump from FDR to Yahoo
+        # for the complete KOSPI 200 history because Yahoo was one day ahead.
+        selected = accepted[0]
+
+    if selected:
+        row, series = selected
         return {
             "ticker": ticker, "status": STATUS_VENDOR, "series": series,
             "source": row["source"], "symbol": row["symbol"],
+            "lineageSource": row["source"], "lineageSymbol": row["symbol"],
             "sessions": int(len(series)),
             "firstSession": series.index[0].strftime("%Y-%m-%d"),
             "lastSession": series.index[-1].strftime("%Y-%m-%d"),
             "candidates": candidates,
         }
 
-    if snapshot is not None and len(snapshot):
+    if snapshot_fallback_allowed and snapshot is not None and len(snapshot):
+        lineage = pinned_source or {}
         return {
             "ticker": ticker, "status": STATUS_SNAPSHOT, "series": snapshot,
             "source": STATUS_SNAPSHOT, "symbol": None,
+            "lineageSource": lineage.get("source"),
+            "lineageSymbol": lineage.get("symbol"),
             "sessions": int(len(snapshot)),
             "firstSession": snapshot.index[0].strftime("%Y-%m-%d"),
             "lastSession": snapshot.index[-1].strftime("%Y-%m-%d"),
@@ -325,13 +351,52 @@ def resolve_one(ticker: str, specs: list[dict], *, start: str,
     return {
         "ticker": ticker, "status": STATUS_UNAVAILABLE, "series": None,
         "source": None, "symbol": None, "sessions": 0,
+        "lineageSource": (pinned_source or {}).get("source"),
+        "lineageSymbol": (pinned_source or {}).get("symbol"),
         "firstSession": None, "lastSession": None,
         "candidates": candidates,
     }
 
 
+def persist_selected(ledger_dir: str | Path, series_by_ticker: dict[str, pd.Series],
+                     diagnostics: dict) -> list[str]:
+    """Commit selected snapshots only after the immutable input commit passes."""
+    index = read_snapshot_index(ledger_dir)
+    changed = []
+    for row in (diagnostics.get("byRegion") or {}).values():
+        ticker = row["ticker"]
+        series = series_by_ticker.get(ticker)
+        if row.get("status") != STATUS_VENDOR or series is None or not len(series):
+            continue
+        if write_snapshot(ledger_dir, ticker, series):
+            changed.append(ticker)
+        index[ticker] = {
+            "source": row["lineageSource"], "symbol": row["lineageSymbol"],
+            "sessions": row["sessions"],
+            "firstSession": row["firstSession"],
+            "lastSession": row["lastSession"],
+        }
+    write_snapshot_index(ledger_dir, index)
+    diagnostics["snapshotsUpdated"] = sorted(changed)
+    return sorted(changed)
+
+
+def source_lineage(diagnostics: dict) -> list[dict]:
+    """Stable static rows stored inside the generation's input manifest."""
+    rows = []
+    for region, row in sorted((diagnostics.get("byRegion") or {}).items()):
+        if not row.get("lineageSource") or not row.get("lineageSymbol"):
+            continue
+        rows.append({"region": region, "ticker": row["ticker"],
+                     "source": row["lineageSource"],
+                     "symbol": row["lineageSymbol"],
+                     "policy": "PINNED_FOR_GENERATION"})
+    return rows
+
+
 def resolve(benchmarks: dict[str, str], sources: dict | None, *, start: str,
-            ledger_dir: str | Path,
+            ledger_dir: str | Path, pinned_sources: dict | None = None,
+            persist: bool = True,
             min_coverage_pct: float = MIN_SNAPSHOT_COVERAGE_PCT,
             fetchers: dict | None = None) -> tuple[dict[str, pd.Series], dict]:
     """Resolve every regional benchmark. Returns (series by ticker, diagnostics).
@@ -343,44 +408,47 @@ def resolve(benchmarks: dict[str, str], sources: dict | None, *, start: str,
     series_by_ticker: dict[str, pd.Series] = {}
     by_region: dict[str, dict] = {}
     index = read_snapshot_index(ledger_dir)
-    degraded, unavailable, changed = [], [], []
+    # None preserves the standalone resolver's historical behavior.  The
+    # replay passes an explicit generation lineage (including {} on bootstrap)
+    # so a snapshot shared by an older generation cannot choose the new one's
+    # vendor for it.
+    lineage = index if pinned_sources is None else pinned_sources
+    degraded, unavailable = [], []
 
     for region, ticker in (benchmarks or {}).items():
         snapshot = read_snapshot(ledger_dir, ticker)
+        pinned = lineage.get(ticker)
+        snapshot_lineage_matches = (not pinned or
+            _source_identity(index.get(ticker)) == _source_identity(pinned))
         result = resolve_one(
             ticker, source_specs(ticker, sources), start=start, snapshot=snapshot,
+            pinned_source=pinned,
+            snapshot_fallback_allowed=snapshot_lineage_matches,
             min_coverage_pct=min_coverage_pct, fetchers=fetchers)
         series = result.pop("series")
         result["snapshotSessions"] = int(len(snapshot)) if snapshot is not None else 0
 
         if series is not None and len(series):
             series_by_ticker[ticker] = series
-            if result["status"] == STATUS_VENDOR and write_snapshot(ledger_dir, ticker, series):
-                changed.append(ticker)
-            if result["status"] == STATUS_VENDOR:
-                index[ticker] = {
-                    "source": result["source"], "symbol": result["symbol"],
-                    "sessions": result["sessions"],
-                    "firstSession": result["firstSession"],
-                    "lastSession": result["lastSession"],
-                }
         if result["status"] == STATUS_SNAPSHOT:
             degraded.append(region)
         elif result["status"] == STATUS_UNAVAILABLE:
             unavailable.append(region)
         by_region[region] = result
 
-    write_snapshot_index(ledger_dir, index)
-    return series_by_ticker, {
-        "policy": "VENDOR_REDUNDANCY_THEN_COMMITTED_SNAPSHOT",
+    diagnostics = {
+        "policy": "PINNED_VENDOR_LINEAGE_THEN_MATCHING_COMMITTED_SNAPSHOT",
         "minSnapshotCoveragePct": float(min_coverage_pct),
         "minSessionsPerYearForBootstrap": MIN_SESSIONS_PER_YEAR,
         "byRegion": by_region,
         "degradedRegions": sorted(degraded),
         "unavailableRegions": sorted(unavailable),
-        "snapshotsUpdated": sorted(changed),
+        "snapshotsUpdated": [],
         "indexMixingForbidden": True,
     }
+    if persist:
+        persist_selected(ledger_dir, series_by_ticker, diagnostics)
+    return series_by_ticker, diagnostics
 
 
 def describe(diagnostics: dict) -> list[str]:

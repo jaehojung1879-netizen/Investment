@@ -18,6 +18,7 @@ from .market_dates import normalize_daily_frame, normalize_daily_series
 
 
 OHLCV = ["Open", "High", "Low", "Close", "Volume"]
+UNADJUSTED_WITH_ACTIONS = OHLCV + ["Adj Close", "Dividends", "Stock Splits"]
 
 
 def download_retry(tickers, start: str, retries: int = 3, **kwargs) -> pd.DataFrame | None:
@@ -33,11 +34,12 @@ def download_retry(tickers, start: str, retries: int = 3, **kwargs) -> pd.DataFr
     # converted to the previous UTC date before our normalizer ever sees it.
     # Remove the timezone while each ticker still owns its local calendar.
     kwargs.setdefault("ignore_tz", True)
+    auto_adjust = kwargs.pop("auto_adjust", True)
     delay = 2.0
     for attempt in range(retries):
         try:
             df = yf.download(
-                tickers, start=start, progress=False, auto_adjust=True,
+                tickers, start=start, progress=False, auto_adjust=auto_adjust,
                 threads=True, **kwargs,
             )
             if df is not None and len(df):
@@ -51,14 +53,16 @@ def download_retry(tickers, start: str, retries: int = 3, **kwargs) -> pd.DataFr
     return None
 
 
-def _extract(df: pd.DataFrame, chunk: list[str], out: dict[str, pd.DataFrame]) -> None:
+def _extract(df: pd.DataFrame, chunk: list[str], out: dict[str, pd.DataFrame],
+             columns: list[str] | None = None) -> None:
     """Split a (possibly multi-ticker) download frame into per-ticker OHLCV."""
+    columns = columns or OHLCV
     if len(chunk) == 1:
         tk = chunk[0]
         if isinstance(df.columns, pd.MultiIndex):
             df = df.copy()
             df.columns = df.columns.get_level_values(-1)
-        keep = [c for c in OHLCV if c in df.columns]
+        keep = [c for c in columns if c in df.columns]
         if keep:
             sub = normalize_daily_frame(df[keep].dropna(how="all"))
             if len(sub):
@@ -68,13 +72,16 @@ def _extract(df: pd.DataFrame, chunk: list[str], out: dict[str, pd.DataFrame]) -
         if tk not in df.columns.get_level_values(0):
             continue
         sub = df[tk]
-        keep = [c for c in OHLCV if c in sub.columns]
+        keep = [c for c in columns if c in sub.columns]
         sub = normalize_daily_frame(sub[keep].dropna(how="all"))
         if len(sub):
             out[tk] = sub.copy()
 
 
-def fetch_prices(tickers: list[str], start: str, batch: int = 40) -> dict[str, pd.DataFrame]:
+def fetch_prices(tickers: list[str], start: str, batch: int = 40, *,
+                 end: str | None = None, auto_adjust: bool = True,
+                 actions: bool = False,
+                 columns: list[str] | None = None) -> dict[str, pd.DataFrame]:
     """Return {ticker: DataFrame[Open, High, Low, Close, Volume]} indexed by date.
 
     Downloads in threaded batches (much faster for a large universe), retries
@@ -85,10 +92,11 @@ def fetch_prices(tickers: list[str], start: str, batch: int = 40) -> dict[str, p
     out: dict[str, pd.DataFrame] = {}
     for i in range(0, len(tickers), batch):
         chunk = tickers[i : i + batch]
-        df = download_retry(chunk, start=start, group_by="ticker")
+        df = download_retry(chunk, start=start, end=end, group_by="ticker",
+                            auto_adjust=auto_adjust, actions=actions)
         if df is None or len(df) == 0:
             continue
-        _extract(df, chunk, out)
+        _extract(df, chunk, out, columns)
 
     missing = [t for t in tickers if t not in out]
     if missing:
@@ -96,9 +104,11 @@ def fetch_prices(tickers: list[str], start: str, batch: int = 40) -> dict[str, p
         small = 10
         for i in range(0, len(missing), small):
             chunk = missing[i : i + small]
-            df = download_retry(chunk, start=start, retries=2, group_by="ticker")
+            df = download_retry(chunk, start=start, end=end, retries=2,
+                                group_by="ticker", auto_adjust=auto_adjust,
+                                actions=actions)
             if df is not None and len(df):
-                _extract(df, chunk, out)
+                _extract(df, chunk, out, columns)
         missing = [t for t in tickers if t not in out]
     if missing:
         print(f"  warning: no data for {len(missing)} tickers (e.g. {missing[:5]})")

@@ -1,5 +1,10 @@
 # Replay v9: source-backed input recovery and continuous-path gates
 
+> Post-merge runs #42 and #43 exposed two remaining acquisition defects. Their
+> evidence and the intentionally new v10 generation are documented in
+> [Replay v10 Actions repair](replay-v10-actions-repair.md). This document is
+> retained as the definition of the sealed v9 experiment.
+
 Replay v9 is a new experiment generation. It does not alter production scoring.
 It changes historical valuation inputs and can change portfolio outcomes, so v8
 objects and reports remain under their existing generation and are never relabelled.

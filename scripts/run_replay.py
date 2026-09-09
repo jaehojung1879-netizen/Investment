@@ -136,6 +136,12 @@ def _run(argv=None) -> int:
     frequency = args.frequency or replay_cfg.get("frequency", "W")
     store = RI.InputStore(ledger_dir, prov_mod.REPLAY_VERSION, prov_mod.DATA_VERSION)
     prior_inputs = store.manifest()
+    prior_benchmark_lineage = {
+        row["ticker"]: row
+        for row in (store.load_component("benchmark/source", prior_inputs)
+                    if prior_inputs else [])
+        if row.get("ticker") and row.get("source") and row.get("symbol")
+    }
     if current_ids and not prior_inputs:
         raise RI.InputVersionConflict("existing signals have no input snapshot; new DATA_VERSION/REPLAY_VERSION required")
     through = args.end or (pd.Timestamp.now(tz="UTC").normalize() - pd.Timedelta(days=1)).strftime("%Y-%m-%d")
@@ -228,9 +234,18 @@ def _run(argv=None) -> int:
         # erased the KR half of this ledger on 08-20, 08-23 and 08-24.
         print("resolving regional benchmarks ...")
         benchmark_series, benchmark_diagnostics = BS.resolve(
-            cfg.benchmarks, cfg.benchmark_sources, start=fetch_start, ledger_dir=ledger_dir)
+            cfg.benchmarks, cfg.benchmark_sources, start=fetch_start,
+            ledger_dir=ledger_dir, pinned_sources=prior_benchmark_lineage,
+            persist=False)
         for line in BS.describe(benchmark_diagnostics):
             print(line)
+        if not prior_inputs and any(
+                row.get("status") == BS.STATUS_SNAPSHOT
+                for row in benchmark_diagnostics["byRegion"].values()):
+            print("ERROR: a new replay generation must establish its own benchmark "
+                  "vendor lineage; an older generation's shared snapshot is fallback "
+                  "evidence, not a bootstrap source.")
+            return 1
         for ticker, series in benchmark_series.items():
             prices[ticker] = pd.DataFrame({"Close": series})
 
@@ -313,12 +328,18 @@ def _run(argv=None) -> int:
             vix=vix, vintages=macro_vintages, fx=fx, rates=rates, through=through,
             calendar_rows=calendar_rows, fx_observations=fx_observations,
             fx_source_map=fx_source_map, price_recovery=price_recovery,
-            corporate_actions=corporate_actions)
+            corporate_actions=corporate_actions,
+            benchmark_lineage=BS.source_lineage(benchmark_diagnostics))
         if args.dry_run:
             frozen = RI.unpack(components)
             manifest = {"sha256":RI.digest(components), "through":through, "policy":policy}
         else:
             manifest = store.commit(components, through=through, policy=policy)
+            # Benchmark cache/index are operational state shared across replay
+            # generations.  Update them only after the immutable generation
+            # snapshot accepted the candidate; a conflict must leave no side
+            # effect for the next run to inherit.
+            BS.persist_selected(ledger_dir, benchmark_series, benchmark_diagnostics)
             # Always consume the canonical snapshot, including on the acquisition run.
             frozen = RI.unpack(store.load(manifest))
         del components
@@ -359,10 +380,26 @@ def _run(argv=None) -> int:
     diagnostics["inputSnapshot"] = {"sha256":manifest["sha256"], "through":through,
         "manifest":str(store.path.relative_to(ledger_dir)), "schema":RI.SCHEMA,
         "componentHashes":manifest.get("componentHashes", {})}
+    kr_recovery_rows = frozen.get("price_recovery") or []
+    recovered_rows = [row for row in kr_recovery_rows if row.get("kind") == "accepted"]
     diagnostics["inputRecovery"] = {
         "version":RR.RECOVERY_VERSION,
         "fx":frozen.get("fx_source"),
-        "krPriceRows":frozen.get("price_recovery") or [],
+        "benchmarkLineage":frozen.get("benchmark_lineage") or [],
+        "krPriceRows":kr_recovery_rows,
+        "krPriceSummary": {
+            "accepted":len(recovered_rows),
+            "rejected":sum(row.get("kind") == "rejected" for row in kr_recovery_rows),
+            "targetedYahooRetries":sum(row.get("fallbackVendor") == "YAHOO_TARGETED_RETRY"
+                                       for row in recovered_rows),
+            "basisBoundReconstructions":sum(
+                row.get("method") == "FDR_RAW_RETURN_WITH_OBSERVED_ADJUSTMENT_BOUNDS_LOWER_NAV"
+                for row in recovered_rows),
+            "maximumPathUncertaintyBps":max(
+                [float(row.get("pathUncertaintyBps") or 0) for row in recovered_rows],
+                default=0.0),
+            "valuationPolicy":"LOWER_OBSERVED_ADJUSTMENT_BOUND_FOR_LONG_ONLY_NAV",
+        },
         "corporateActionVersion":(frozen.get("corporate_actions") or {}).get("version"),
     }
     for row in replay["signals"]:
