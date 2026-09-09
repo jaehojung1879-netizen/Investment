@@ -8,6 +8,7 @@ import pandas as pd
 import pytest
 
 from pipeline import replay_calendar as RC
+from pipeline import benchmark_source as BS
 from pipeline import replay_inputs as RI
 from pipeline import replay_recovery as RR
 from pipeline import replay_valuation as RV
@@ -71,6 +72,17 @@ def test_snapshot_data_version_cannot_change_inside_same_replay_directory(tmp_pa
     with pytest.raises(RI.InputVersionConflict):
         RI.InputStore(tmp_path,"r","new-d").manifest()
     assert RI.InputStore(tmp_path,"new-r","new-d").manifest() is None
+
+
+def test_generation_benchmark_lineage_is_loaded_without_full_snapshot(tmp_path):
+    store=RI.InputStore(tmp_path,"r","d")
+    lineage=[{"region":"KR","ticker":"^KS200","source":"fdr",
+              "symbol":"KS200","policy":"PINNED_FOR_GENERATION"}]
+    manifest=store.commit({"benchmark/source":lineage,
+                           "price/2020-01":[{"date":"2020-01-02","ticker":"A","Close":1.0}]},
+                          through="2020-01-02",policy={})
+
+    assert store.load_component("benchmark/source",manifest)==lineage
 
 
 def test_snapshot_corruption_is_not_a_new_valid_baseline(tmp_path):
@@ -137,8 +149,87 @@ def test_kr_gap_recovery_rejects_adjustment_bridge_mismatch():
     report=RR.recover_systemic_kr_gaps(prices,tickers,"^KS200",
         start="2020-01-02",through="2020-01-10",fetcher=lambda *args:broken)
     assert not report["accepted"]
-    assert {row["reason"] for row in report["rejected"]}=={"ADJUSTED_RETURN_BRIDGE_MISMATCH"}
+    assert {row["reason"] for row in report["rejected"]}=={"NO_UNADJUSTED_PRIMARY_BRIDGE"}
     assert all(gap not in prices[ticker].index for ticker in tickers)
+
+
+def test_kr_gap_recovery_compares_raw_returns_then_uses_lower_adjusted_bound():
+    """Replay #42 confused Yahoo total return with FDR raw price return.
+
+    The two raw series agree exactly.  A 2.04% adjustment-factor transition is
+    therefore not vendor disagreement; the unavailable adjusted close is
+    bounded by the two observed factors and the lower long-only NAV is used.
+    """
+    sessions=RC.sessions("2020-01-02","2020-01-10","KR")
+    gap=sessions[2]
+    right=sessions[3]
+    tickers=[f"{i:06d}.KS" for i in range(20)]
+    raw=pd.DataFrame({"Close":np.arange(len(sessions))+100.},index=sessions)
+    adjusted=raw.mul(.98)
+    adjusted.loc[right:,"Close"]=raw.loc[right:,"Close"]
+    prices={ticker:adjusted.drop(gap).copy() for ticker in tickers}
+    prices["^KS200"]=pd.DataFrame({"Close":200.},index=sessions)
+    raw_frames={ticker:raw.copy() for ticker in tickers}
+
+    report=RR.recover_systemic_kr_gaps(
+        prices,tickers,"^KS200",start="2020-01-02",through="2020-01-10",
+        fetcher=lambda *args:raw,
+        targeted_primary_fetcher=lambda *args:{},
+        raw_primary_fetcher=lambda *args:raw_frames)
+
+    assert len(report["accepted"])==20 and not report["rejected"]
+    assert {row["method"] for row in report["accepted"]}=={
+        "FDR_RAW_RETURN_WITH_OBSERVED_ADJUSTMENT_BOUNDS_LOWER_NAV"}
+    assert all(prices[ticker].at[gap,"Close"]==pytest.approx(raw.at[gap,"Close"]*.98)
+               for ticker in tickers)
+    assert all(row["rawBridgeDifferenceBps"]==pytest.approx(0)
+               for row in report["accepted"])
+    assert all(200 < row["pathUncertaintyBps"] < 205
+               for row in report["accepted"])
+
+
+def test_kr_gap_recovery_prefers_exact_targeted_yahoo_retry():
+    sessions=RC.sessions("2020-01-02","2020-01-10","KR")
+    gap=sessions[2]
+    tickers=[f"{i:06d}.KS" for i in range(20)]
+    full=pd.DataFrame({"Close":np.arange(len(sessions))+100.},index=sessions)
+    prices={ticker:full.drop(gap).copy() for ticker in tickers}
+    prices["^KS200"]=pd.DataFrame({"Close":200.},index=sessions)
+    targeted={ticker:full.copy() for ticker in tickers}
+
+    report=RR.recover_systemic_kr_gaps(
+        prices,tickers,"^KS200",start="2020-01-02",through="2020-01-10",
+        fetcher=lambda *args:None,
+        targeted_primary_fetcher=lambda *args:targeted,
+        raw_primary_fetcher=lambda *args:{})
+
+    assert len(report["accepted"])==20 and not report["rejected"]
+    assert {row["fallbackVendor"] for row in report["accepted"]}=={
+        "YAHOO_TARGETED_RETRY"}
+    assert all(prices[ticker].at[gap,"Close"]==full.at[gap,"Close"] for ticker in tickers)
+
+
+def test_kr_gap_recovery_still_rejects_disagreeing_raw_vendor_returns():
+    sessions=RC.sessions("2020-01-02","2020-01-10","KR")
+    gap=sessions[2]
+    tickers=[f"{i:06d}.KS" for i in range(20)]
+    raw=pd.DataFrame({"Close":np.arange(len(sessions))+100.},index=sessions)
+    adjusted=raw.mul(.98)
+    adjusted.loc[sessions[3]:,"Close"]=raw.loc[sessions[3]:,"Close"]
+    prices={ticker:adjusted.drop(gap).copy() for ticker in tickers}
+    prices["^KS200"]=pd.DataFrame({"Close":200.},index=sessions)
+    disagreeing=raw.copy()
+    disagreeing.loc[sessions[3]:,"Close"]*=1.05
+
+    report=RR.recover_systemic_kr_gaps(
+        prices,tickers,"^KS200",start="2020-01-02",through="2020-01-10",
+        fetcher=lambda *args:disagreeing,
+        targeted_primary_fetcher=lambda *args:{},
+        raw_primary_fetcher=lambda *args:{ticker:raw for ticker in tickers})
+
+    assert not report["accepted"]
+    assert {row["reason"] for row in report["rejected"]}=={
+        "RAW_RETURN_BRIDGE_MISMATCH"}
 
 
 def test_observed_v8_batch_holes_meet_systemic_not_individual_threshold():
@@ -148,6 +239,54 @@ def test_observed_v8_batch_holes_meet_systemic_not_individual_threshold():
                       int(np.ceil(row["activeNames"]*RR.KR_SYSTEMIC_MISSING_SHARE)))
         assert row["missingNames"] >= threshold
         assert .09 <= row["missingNames"]/row["activeNames"] <= .11
+
+
+@pytest.mark.parametrize("held_ticker", ["024110.KS", "271560.KS"])
+def test_observed_v9_held_gap_is_not_rejected_for_adjusted_vs_raw_basis(held_ticker):
+    fixture=json.loads((Path(__file__).parent/"fixtures/replay-v9-actions-42-43.observed.json").read_text())
+    observed=fixture["run42"]["systemicGap"]
+    bridge_bps=observed["heldRejectedNames"][held_ticker]
+    assert bridge_bps > RR.KR_BRIDGE_TOLERANCE_BPS
+    assert bridge_bps < RR.KR_MAX_UNVOUCHED_ADJUSTMENT_BPS
+
+    sessions=RC.sessions("2020-01-02","2020-01-10","KR")
+    gap=sessions[2]
+    tickers=[held_ticker]+[f"{i:06d}.KS" for i in range(19)]
+    raw=pd.DataFrame({"Close":np.arange(len(sessions))+100.},index=sessions)
+    adjusted=raw.copy()
+    adjusted.loc[sessions[3]:,"Close"]*=1+bridge_bps/10000
+    prices={ticker:adjusted.drop(gap).copy() for ticker in tickers}
+    prices["^KS200"]=pd.DataFrame({"Close":200.},index=sessions)
+
+    report=RR.recover_systemic_kr_gaps(
+        prices,tickers,"^KS200",start="2020-01-02",through="2020-01-10",
+        fetcher=lambda *args:raw,
+        targeted_primary_fetcher=lambda *args:{},
+        raw_primary_fetcher=lambda *args:{ticker:raw for ticker in tickers})
+
+    target=next(row for row in report["accepted"] if row["ticker"]==held_ticker)
+    assert target["method"]=="FDR_RAW_RETURN_WITH_OBSERVED_ADJUSTMENT_BOUNDS_LOWER_NAV"
+    assert target["rawBridgeDifferenceBps"]==pytest.approx(0)
+    assert target["pathUncertaintyBps"]==pytest.approx(bridge_bps)
+
+
+def test_observed_run43_lineage_incident_requires_fdr_even_when_yahoo_is_newer(tmp_path):
+    fixture=json.loads((Path(__file__).parent/"fixtures/replay-v9-actions-42-43.observed.json").read_text())
+    incident=fixture["run43"]
+    assert incident["selectedBenchmark"]["lastSession"] > incident["priorBenchmark"]["lastSession"]
+    dates=pd.bdate_range("2020-01-01", periods=40)
+    fdr=pd.Series(np.linspace(100,110,len(dates)-1),index=dates[:-1])
+    yahoo=pd.Series(np.linspace(90,120,len(dates)),index=dates)
+
+    chosen=BS.resolve_one(
+        "^KS200", [{"kind":"fdr","symbol":"KS200"},
+                    {"kind":"yahoo","symbol":"^KS200"}],
+        start="2020-01-01", snapshot=None,
+        pinned_source={"source":"fdr","symbol":"KS200"},
+        fetchers={"fdr":lambda *_:fdr,"yahoo":lambda *_:yahoo})
+
+    assert chosen["source"]==incident["priorBenchmark"]["source"]
+    assert chosen["symbol"]==incident["priorBenchmark"]["symbol"]
 
 
 def valuation_fixture(end="2020-03-31"):

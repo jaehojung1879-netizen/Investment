@@ -34,6 +34,26 @@ def test_download_retry_forces_exchange_local_daily_labels(monkeypatch):
     assert captured["ignore_tz"] is True
 
 
+def test_download_retry_can_request_unadjusted_action_bridge(monkeypatch):
+    captured = {}
+
+    def fake_download(tickers, **kwargs):
+        captured.update(kwargs)
+        return _frame(pd.date_range("2024-01-02", periods=2))
+
+    monkeypatch.setitem(
+        __import__("sys").modules, "yfinance",
+        SimpleNamespace(download=fake_download),
+    )
+
+    assert datafeed.download_retry(
+        ["005930.KS"], "2024-01-01", auto_adjust=False,
+        actions=True, end="2024-01-10") is not None
+    assert captured["auto_adjust"] is False
+    assert captured["actions"] is True
+    assert captured["end"] == "2024-01-10"
+
+
 def test_regional_fetch_never_mixes_market_calendars_in_one_batch(monkeypatch):
     """Regions are downloaded separately; benchmarks are not fetched here at all.
 

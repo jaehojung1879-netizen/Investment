@@ -1,0 +1,43 @@
+{
+  "source": "signal-history artifacts and GitHub Actions logs",
+  "run42": {
+    "runId": 34290401952,
+    "inputThrough": "2026-09-07",
+    "systemicGap": {
+      "date": "2025-09-19",
+      "activeNames": 68,
+      "missingNames": 68,
+      "acceptedByV9": 26,
+      "rejectedByV9": 42,
+      "bridgeDifferenceBps": {
+        "minimum": 0.0,
+        "median": 34.30615357465694,
+        "maximum": 227.1063721665345
+      },
+      "heldRejectedNames": {
+        "024110.KS": 50.37818585377663,
+        "271560.KS": 120.03616603057932
+      }
+    },
+    "contractFailures": [
+      "ALPHA_RANK_PER_DOWNSIDE_RISK:continuous_nav_has_unknown_intervals",
+      "CALIBRATED_EXPECTED_RETURN_PER_DOWNSIDE_RISK:continuous_nav_has_unknown_intervals"
+    ]
+  },
+  "run43": {
+    "runId": 34324402902,
+    "conflict": "benchmark/2011-01: published input prefix changed/recovered; new DATA_VERSION/REPLAY_VERSION required",
+    "priorBenchmark": {
+      "source": "fdr",
+      "symbol": "KS200",
+      "sessions": 3855,
+      "lastSession": "2026-09-07"
+    },
+    "selectedBenchmark": {
+      "source": "yahoo",
+      "symbol": "^KS200",
+      "sessions": 3782,
+      "lastSession": "2026-09-09"
+    }
+  }
+}

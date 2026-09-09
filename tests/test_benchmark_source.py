@@ -113,6 +113,63 @@ def test_second_vendor_rescues_a_truncated_first_vendor(tmp_path):
     assert diagnostics["degradedRegions"] == []
 
 
+def test_generation_lineage_never_switches_to_a_one_day_fresher_vendor(tmp_path):
+    """Replay #43 switched FDR -> Yahoo and rewrote benchmark/2011-01."""
+    fdr = _series(FULL[:-1], base=100.0)
+    yahoo = _series(FULL, base=97.0)
+    sources = {"^KS200": [{"kind": "fdr", "symbol": "KS200"},
+                           {"kind": "yahoo", "symbol": "^KS200"}]}
+    pinned = {"^KS200": {"source": "fdr", "symbol": "KS200"}}
+
+    series, diagnostics = BS.resolve(
+        {"KR": "^KS200"}, sources, start="2013-01-01", ledger_dir=tmp_path,
+        pinned_sources=pinned,
+        fetchers=_fetchers(**{"fdr:KS200": fdr, "yahoo:^KS200": yahoo}))
+
+    assert series["^KS200"].equals(fdr)
+    assert diagnostics["byRegion"]["KR"]["source"] == "fdr"
+    assert BS.source_lineage(diagnostics) == [{
+        "region": "KR", "ticker": "^KS200", "source": "fdr",
+        "symbol": "KS200", "policy": "PINNED_FOR_GENERATION"}]
+
+
+def test_pinned_vendor_outage_uses_matching_snapshot_not_other_vendor(tmp_path):
+    sources = {"^KS200": [{"kind": "fdr", "symbol": "KS200"},
+                           {"kind": "yahoo", "symbol": "^KS200"}]}
+    first, first_diag = BS.resolve(
+        {"KR": "^KS200"}, sources, start="2013-01-01", ledger_dir=tmp_path,
+        pinned_sources={}, fetchers=_fetchers(**{"fdr:KS200": _series(FULL)}))
+    pinned = {row["ticker"]: row for row in BS.source_lineage(first_diag)}
+    alternate = _series(FULL.append(pd.DatetimeIndex(["2026-08-25"])), base=90.0)
+
+    second, diagnostics = BS.resolve(
+        {"KR": "^KS200"}, sources, start="2013-01-01", ledger_dir=tmp_path,
+        pinned_sources=pinned,
+        fetchers=_fetchers(**{"yahoo:^KS200": alternate}))
+
+    assert second["^KS200"].equals(first["^KS200"])
+    assert diagnostics["byRegion"]["KR"]["status"] == BS.STATUS_SNAPSHOT
+    assert diagnostics["byRegion"]["KR"]["lineageSource"] == "fdr"
+
+
+def test_uncommitted_candidate_does_not_mutate_shared_snapshot(tmp_path):
+    BS.resolve({"KR": "^KS200"}, None, start="2013-01-01",
+               ledger_dir=tmp_path,
+               fetchers=_fetchers(**{"yahoo:^KS200": _series(FULL)}))
+    before_index = BS.read_snapshot_index(tmp_path)
+    before_bytes = BS.snapshot_path(tmp_path, "^KS200").read_bytes()
+
+    candidate = _series(FULL, base=140.0)
+    _, diagnostics = BS.resolve(
+        {"KR": "^KS200"}, None, start="2013-01-01", ledger_dir=tmp_path,
+        pinned_sources={}, persist=False,
+        fetchers=_fetchers(**{"yahoo:^KS200": candidate}))
+
+    assert diagnostics["snapshotsUpdated"] == []
+    assert BS.read_snapshot_index(tmp_path) == before_index
+    assert BS.snapshot_path(tmp_path, "^KS200").read_bytes() == before_bytes
+
+
 def test_every_vendor_down_falls_back_to_the_committed_snapshot(tmp_path):
     good = _fetchers(**{"yahoo:^KS200": _series(FULL)})
     BS.resolve({"KR": "^KS200"}, None, start="2013-01-01",
