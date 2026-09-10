@@ -5,6 +5,7 @@ import argparse
 import json
 from pathlib import Path
 import sys
+import traceback
 
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
@@ -153,5 +154,29 @@ def main(argv=None) -> int:
     return 0
 
 
+# Exit codes are the only thing the workflow can tell apart, and the two
+# failures mean opposite things. 1 is a COMPLETED audit whose contract failed:
+# the report it just wrote is this run's verdict and is worth reading. Anything
+# else is an audit that never finished, so the report still on disk belongs to
+# an EARLIER run. Conflating them is what made the first replay-v10 run report
+# a stale replay-v9 `continuous_nav_has_unknown_intervals` as its own reason,
+# hiding a KeyError that had nothing to do with the evidence.
+BLOCKED = 1
+INCOMPLETE = 2
+
+
+def run(argv=None) -> int:
+    """`main` with its failure mode made legible to the caller."""
+    try:
+        return main(argv)
+    except Exception:
+        traceback.print_exc()
+        print("ERROR: the portfolio audit could not run to completion, so it "
+              "wrote no validation report for this generation. Any report "
+              "already in the ledger is an EARLIER run's and must not be read "
+              "as this run's verdict.", file=sys.stderr)
+        return INCOMPLETE
+
+
 if __name__ == "__main__":
-    raise SystemExit(main())
+    raise SystemExit(run())

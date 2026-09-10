@@ -181,7 +181,16 @@ jobs:
         id: portfolio_audit
         continue-on-error: true
         run: |
+          set +e
           python scripts/audit_portfolio.py replay-work/ledger
+          code=$?
+          set -e
+          # `outcome` only says failed/not. The exit code says WHICH failure,
+          # and the two mean opposite things: 1 is a completed audit whose
+          # contract failed, anything else is an audit that never wrote a
+          # report at all.
+          echo "exit_code=$code" >> "$GITHUB_OUTPUT"
+          exit $code
 
       # Weekly (Sunday) or on demand. Selection is walk-forward and the sealed
       # holdout is scored once, so more frequent retraining buys nothing and
@@ -239,15 +248,50 @@ jobs:
       # The job still goes red — after the divergent report is safely in the
       # ledger. Downstream publication is already blocked by
       # contractValidation, which pipeline/validate.py and app.js both honour.
-      - name: Fail the run if the portfolio audit blocked the report
+      #
+      # But only a COMPLETED audit produces a verdict worth quoting. When the
+      # audit itself dies, the report file is the previous run's, and naming
+      # its failures here reports an old generation's evidence as this run's
+      # reason — which is exactly what hid a KeyError behind a replay-v9
+      # `continuous_nav_has_unknown_intervals` on the first replay-v10 run. So
+      # check which generation the report on disk actually belongs to, and say
+      # so.
+      - name: Fail the run if the portfolio audit did not pass
         if: steps.portfolio_audit.outcome == 'failure'
         run: |
-          echo "::error::the portfolio audit blocked the report — see the" \
-               "'Audit alpha ranking and concentrated portfolios' step." \
-               "The blocked report has been pushed to signal-history so the" \
-               "failure can be read: check replayDeterminism.verdict and" \
-               "contractValidation.failures in" \
-               "ledger/historical-portfolio-validation.json"
+          python - <<'PY'
+          import json, pathlib, sys
+          sys.path.insert(0, ".")
+          from pipeline import provenance
+          report = pathlib.Path(
+              "replay-work/ledger/historical-portfolio-validation.json")
+          on_disk = None
+          if report.exists():
+              try:
+                  on_disk = json.loads(report.read_text()).get("replayVersion")
+              except ValueError:
+                  on_disk = "UNREADABLE"
+          print(f"current generation      : {provenance.REPLAY_VERSION}")
+          print(f"report on signal-history: {on_disk}")
+          if on_disk != provenance.REPLAY_VERSION:
+              print("::warning::the validation report in the ledger is NOT from "
+                    "this generation; it is stale evidence, not this run's verdict")
+          PY
+          if [ "${{ steps.portfolio_audit.outputs.exit_code }}" = "1" ]; then
+            echo "::error::the portfolio audit blocked the report — see the" \
+                 "'Audit alpha ranking and concentrated portfolios' step." \
+                 "The blocked report has been pushed to signal-history so the" \
+                 "failure can be read: check replayDeterminism.verdict and" \
+                 "contractValidation.failures in" \
+                 "ledger/historical-portfolio-validation.json"
+          else
+            echo "::error::the portfolio audit itself failed (exit" \
+                 "${{ steps.portfolio_audit.outputs.exit_code }}) and wrote no" \
+                 "report for this generation. Read the traceback in the" \
+                 "'Audit alpha ranking and concentrated portfolios' step — NOT" \
+                 "ledger/historical-portfolio-validation.json, which is an" \
+                 "earlier run's verdict and says nothing about this one."
+          fi
           exit 1
 
       - name: Summary

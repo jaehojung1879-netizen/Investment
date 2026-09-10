@@ -19,6 +19,21 @@ from . import historical_store as HS
 from . import pit_data
 
 SCHEMA = "REPLAY_INPUTS_V1"
+# Dated price panels are keyed "price/<YYYY-MM>" and "benchmark/<YYYY-MM>", but
+# one "benchmark/..." component is not a panel at all: this is the generation's
+# static vendor lineage, and its rows carry neither a date nor a Close. Every
+# prefix test over the panels has to exclude it BY NAME, or code written for
+# panel rows walks straight into it. `unpack` was taught that when the lineage
+# component was added and `load` was not, so the audit died with KeyError:
+# 'date' on the first replay-v10 run — before it could write a report, which
+# left the previous generation's report on disk to be read as this run's
+# verdict. One predicate now serves both.
+BENCHMARK_SOURCE = "benchmark/source"
+
+
+def is_price_panel(name: str) -> bool:
+    """True for a dated price/benchmark panel, false for the static lineage."""
+    return name.startswith(("price/", "benchmark/")) and name != BENCHMARK_SOURCE
 
 
 class InputVersionConflict(RuntimeError):
@@ -88,7 +103,7 @@ class InputStore:
             rows = []
             for ref in refs:
                 part = self._read(ref)
-                if valuation_only and name.startswith(("price/", "benchmark/")):
+                if valuation_only and is_price_panel(name):
                     part = [{k:r[k] for k in ("date", "ticker", "Close")} for r in part]
                 rows.extend(part)
             result[name] = rows
@@ -169,7 +184,7 @@ def pack(*, prices, benchmarks, universe, universe_history, fundamentals, macro,
     # Static, generation-local identity.  Benchmark snapshots are shared as an
     # operational cache, so their global index cannot be the authority for an
     # already-started replay generation.
-    components["benchmark/source"] = sorted(
+    components[BENCHMARK_SOURCE] = sorted(
         benchmark_lineage or [], key=lambda row: (row.get("region", ""), row.get("ticker", "")))
     components["macro"] = frame_rows(macro, through)
     components["vix"] = frame_rows(vix, through)
@@ -212,7 +227,7 @@ def pack(*, prices, benchmarks, universe, universe_history, fundamentals, macro,
 def unpack(components):
     prices, vintages, by_ticker = {}, {}, {}
     for name, rows in components.items():
-        if name.startswith(("price/", "benchmark/")) and name != "benchmark/source":
+        if is_price_panel(name):
             for row in rows:
                 by_ticker.setdefault(row["ticker"], []).append({k:v for k,v in row.items() if k != "ticker"})
         elif name.startswith("macro-vintage/") and rows:
@@ -238,7 +253,7 @@ def unpack(components):
             "price_recovery":components.get("recovery/kr-systemic", []),
             "corporate_actions":((components.get("corporate-actions") or [{"book":{"actions":[]}}])[0]
                                   .get("book", {"actions":[]})),
-            "benchmark_lineage":components.get("benchmark/source", []),
+            "benchmark_lineage":components.get(BENCHMARK_SOURCE, []),
             "universe":universe["universe"],
             "universe_history":pit_data.UniverseHistory(universe["memberships"]),
             "fundamental_store":fundamentals}
