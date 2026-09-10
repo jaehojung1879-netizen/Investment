@@ -219,14 +219,14 @@ def _run(argv=None) -> int:
         # 273 sessions of trailing history behind it, or every name is unrankable.
         fetch_start = (str(int(str(start)[:4]) - 2) + str(start)[4:]) if start else "2010-01-01"
         print(f"fetching {len(download)} tickers by region from {fetch_start} ...")
-        prices = fetch_regional_prices(fetch_universe, fetch_start)
+        prices = fetch_regional_prices(fetch_universe, fetch_start, total_return=True)
         # Successor securities value a held pre-merger position but must never
         # be added to the historical selection universe merely for that reason.
         dependencies = [ticker for names in RR.successor_dependencies(corporate_actions).values()
                         for ticker in names if ticker not in prices]
         if dependencies:
             print(f"  fetching {len(dependencies)} corporate-action price dependencies ...")
-            prices.update(fetch_prices(dependencies, fetch_start))
+            prices.update(fetch_prices(dependencies, fetch_start, total_return=True))
 
         # Benchmarks go through their own path: vendor redundancy, a plausibility
         # check against the session calendar already on record, and the committed
@@ -401,6 +401,18 @@ def _run(argv=None) -> int:
             "valuationPolicy":"LOWER_OBSERVED_ADJUSTMENT_BOUND_FOR_LONG_ONLY_NAV",
         },
         "corporateActionVersion":(frozen.get("corporate_actions") or {}).get("version"),
+    }
+    events = frozen.get("corporate_events") or []
+    diagnostics["inputAdjustment"] = {
+        **(frozen.get("adjustment") or {}),
+        "dividends":sum(1 for row in events if float(row.get("dividend") or 0) > 0),
+        "splits":sum(1 for row in events if float(row.get("split") or 1) != 1.0),
+        "tickersWithEvents":len({row.get("ticker") for row in events}),
+        "firstEvent":min((row["date"] for row in events), default=None),
+        "lastEvent":max((row["date"] for row in events), default=None),
+        # The point of the basis change: a dividend paid after the cutoff
+        # appends, it does not rewrite a published session.
+        "sealedPrefixStableUnderNewDistributions":True,
     }
     for row in replay["signals"]:
         row["inputSnapshotSha256"] = manifest["sha256"]

@@ -1726,6 +1726,9 @@ def portfolio_replay(signals: list[dict], outcomes: list[dict], *, cfg_lt: dict,
         "metricDefinition": {"version":RV.METRIC_VERSION, "baseCurrency":"KRW",
                              "fxReturnsIncluded":True, "directlyComparableToLegacy":False,
                              "fxSource":"FEDERAL_RESERVE_H10_DEXKOUS_PRIOR_FIXING",
+                             "priceBasis":"AS_TRADED_CLOSE_WITH_FORWARD_ACCUMULATED_"
+                                          "TOTAL_RETURN; PROPORTIONAL_TO_THE_VENDOR_"
+                                          "ADJUSTED_CLOSE_SO_EVERY_RATIO_IS_UNCHANGED",
                              "recoveredKrDailyPath":"SOURCE_BACKED; EXACT_TARGETED_RETRY_OR_"
                                                     "LOWER_OBSERVED_ADJUSTMENT_BOUND",
                              "corporateActions":"VERSIONED_CASH_AND_STOCK_LEDGER",

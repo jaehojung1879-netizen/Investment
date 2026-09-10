@@ -15,6 +15,7 @@ from pipeline import replay_valuation as RV
 from pipeline import replay_determinism as RD
 from pipeline import portfolio_validation as PV
 from pipeline import pit_data
+from pipeline import price_adjustment as PA
 
 
 def test_schedule_is_a_prefix_across_cutoffs_and_does_not_read_prices():
@@ -643,3 +644,170 @@ def test_incomplete_audit_is_not_reported_as_a_blocked_report(monkeypatch, capsy
 
     monkeypatch.setattr(audit, "main", lambda argv=None: audit.BLOCKED)
     assert audit.run([]) == audit.BLOCKED
+
+
+def _yahoo_panel(closes, dividends=None, splits=None, volumes=None,
+                 start="2020-01-01"):
+    """A Yahoo `auto_adjust=False, actions=True` panel: split-adjusted bars.
+
+    Split-adjusted in both directions — a 2:1 halves every earlier close AND
+    doubles every earlier volume — which is why the caller states the volumes
+    when it is modelling a split.
+    """
+    index = pd.bdate_range(start, periods=len(closes))
+    return pd.DataFrame({"Open": closes, "High": closes, "Low": closes,
+                         "Close": closes,
+                         "Volume": volumes or [100.0] * len(closes),
+                         "Dividends": dividends or [0.0] * len(closes),
+                         "Stock Splits": splits or [0.0] * len(closes)}, index=index)
+
+
+def test_forward_total_return_is_proportional_to_yahoos_backward_adjustment():
+    """The basis change must move the level and nothing that is measured."""
+    closes = [100.0, 101.0, 99.0, 102.0, 103.0]
+    dividends = [0.0, 0.0, 1.0, 0.0, 0.0]
+    frame = _yahoo_panel(closes, dividends)
+    forward, events = PA.to_total_return(frame)
+
+    # Yahoo's own back-anchored adjustment of the same rows.
+    factor = 1 - dividends[2] / closes[1]
+    backward = np.array([c * (factor if i < 2 else 1.0) for i, c in enumerate(closes)])
+
+    ratio = forward["Close"].to_numpy() / backward
+    assert np.allclose(ratio, ratio[0])          # one constant factor, no more
+    assert [row["date"] for row in events] == ["2020-01-03"]
+    assert events[0]["applied"] and events[0]["dividend"] == 1.0
+
+
+def test_a_split_leaves_the_as_traded_close_and_the_index_continuous():
+    """A 2:1 split halves every earlier close in Yahoo's panel, which is the
+    other half of why the sealed prefix moves. Undoing it recovers the prices
+    that printed — 100, 101, 102 before the split — and the index steps only by
+    the day's real return."""
+    frame = _yahoo_panel([50.0, 50.5, 51.0, 51.5, 52.0],
+                         splits=[0.0, 0.0, 0.0, 2.0, 0.0],
+                         volumes=[200.0, 200.0, 200.0, 100.0, 100.0])
+    forward, events = PA.to_total_return(frame)
+    close = forward["Close"].to_numpy()
+    assert close == pytest.approx([100.0, 101.0, 102.0, 103.0, 104.0], rel=1e-12)
+    assert close[3] / close[2] == pytest.approx(103.0 / 102.0, rel=1e-12)
+    assert any(row.get("split") == 2.0 for row in events)
+
+
+def test_a_dividend_paid_after_the_cutoff_cannot_rewrite_a_sealed_session(tmp_path):
+    """The whole reason for the basis change, as the input store sees it.
+
+    Yahoo's adjusted close rescales the published past on every ex-dividend, so
+    `commit` refused every acquisition run after a generation's first one and
+    replay v7..v10 each lasted one or two runs. On the as-traded forward basis
+    the same event is an append.
+    """
+    closes = [100.0, 101.0, 102.0, 103.0]
+    monday = _yahoo_panel(closes)
+    # One day later the vendor reports the same sessions plus a fresh ex-date.
+    tuesday = _yahoo_panel(closes + [104.0], dividends=[0.0] * 4 + [2.0])
+
+    def pack(frame, through):
+        rebased, _ = PA.to_total_return(frame)
+        return RI.pack(prices={"A": rebased}, benchmarks={},
+                       universe={"US": ["A"]},
+                       universe_history=pit_data.UniverseHistory({}),
+                       fundamentals=pit_data.FundamentalStore(), macro=None,
+                       vix=None, vintages={}, fx=None,
+                       rates={"events": [], "verifiedThrough": through},
+                       through=through, calendar_rows=[])
+
+    store = RI.InputStore(tmp_path, "r", "d")
+    first = pack(monday, "2020-01-06")
+    store.commit(first, through="2020-01-06", policy={})
+    # Extending the cutoff over the new ex-date must be accepted, not refused.
+    store.commit(pack(tuesday, "2020-01-07"), through="2020-01-07", policy={})
+
+    sealed = store.load()
+    assert [r["Close"] for r in sealed["price/2020-01"] if r["date"] <= "2020-01-06"] == \
+           [r["Close"] for r in first["price/2020-01"]]
+    assert sealed["corporate-events/2020-01"] == [
+        {"date": "2020-01-07", "ticker": "A", "dividend": 2.0, "split": 1.0}]
+
+
+def test_yahoos_adjusted_close_would_have_been_refused_by_the_same_store(tmp_path):
+    """The control: the basis v10 sealed fails where the new one passes."""
+    closes = [100.0, 101.0, 102.0, 103.0]
+    factor = 1 - 2.0 / 103.0
+    store = RI.InputStore(tmp_path, "r", "d")
+    store.commit({"price/2020-01": [
+        {"date": d, "ticker": "A", "Close": c}
+        for d, c in zip(pd.bdate_range("2020-01-01", periods=4).strftime("%Y-%m-%d"), closes)]},
+        through="2020-01-06", policy={})
+    with pytest.raises(RI.InputVersionConflict, match="prefix changed"):
+        store.commit({"price/2020-01": [
+            {"date": d, "ticker": "A", "Close": c * factor}
+            for d, c in zip(pd.bdate_range("2020-01-01", periods=4).strftime("%Y-%m-%d"), closes)]
+            + [{"date": "2020-01-07", "ticker": "A", "Close": 104.0}]},
+            through="2020-01-07", policy={})
+
+
+def test_targeted_retry_window_is_per_gap_cluster_not_the_whole_span():
+    """The retry that is meant to be focused must not span the generation.
+
+    replay-v10 built one window from min(systemic) to max(systemic). On its
+    first production run those were 2017-09-22 and 2025-09-19, so the "small
+    window" became an eight-year bulk download of every affected name, twice —
+    the same shape of request that dropped the rows. It reported
+    targetedYahooRetries: 0.
+    """
+    sessions = RC.sessions("2020-01-02", "2020-06-30", "KR")
+    early, late = sessions[3], sessions[80]
+    tickers = [f"{i:06d}.KS" for i in range(20)]
+    full = pd.DataFrame({"Close": np.arange(len(sessions)) + 100.}, index=sessions)
+    prices = {ticker: full.drop([early, late]).copy() for ticker in tickers}
+    prices["^KS200"] = pd.DataFrame({"Close": 200.}, index=sessions)
+
+    windows = []
+
+    def targeted(names, start, end):
+        windows.append((start, end))
+        return {ticker: full.copy() for ticker in names}
+
+    report = RR.recover_systemic_kr_gaps(
+        prices, tickers, "^KS200", start="2020-01-02", through="2020-06-30",
+        fetcher=lambda *args: None, targeted_primary_fetcher=targeted,
+        raw_primary_fetcher=lambda *args: {})
+
+    assert len(windows) == 2, "one narrow window per market-wide gap cluster"
+    for (start, end), day in zip(sorted(windows), (early, late)):
+        assert pd.Timestamp(end) - pd.Timestamp(start) <= pd.Timedelta(days=29)
+        assert pd.Timestamp(start) <= day <= pd.Timestamp(end)
+    assert len(report["accepted"]) == 40 and not report["rejected"]
+    assert all(prices[ticker].at[day, "Close"] == pytest.approx(full.at[day, "Close"])
+               for ticker in tickers for day in (early, late))
+
+
+def test_a_split_after_the_cutoff_cannot_rewrite_a_sealed_session(tmp_path):
+    """The more violent half: a 2:1 split halves Yahoo's whole published past."""
+    monday = _yahoo_panel([100.0, 101.0, 102.0, 103.0])
+    tuesday = _yahoo_panel([50.0, 50.5, 51.0, 51.5, 26.0],
+                           splits=[0.0, 0.0, 0.0, 0.0, 2.0],
+                           volumes=[200.0, 200.0, 200.0, 200.0, 100.0])
+    assert monday["Close"].tolist() != tuesday["Close"].tolist()[:4]
+    assert monday["Volume"].tolist() != tuesday["Volume"].tolist()[:4]
+
+    def sealed(frame):
+        rebased, _ = PA.to_total_return(frame)
+        return rebased["Close"].round(10).tolist()
+
+    assert sealed(monday) == sealed(tuesday)[:4]
+
+    store = RI.InputStore(tmp_path, "r", "d")
+    for frame, through in ((monday, "2020-01-06"), (tuesday, "2020-01-07")):
+        rebased, _ = PA.to_total_return(frame)
+        store.commit(RI.pack(prices={"A": rebased}, benchmarks={},
+                             universe={"US": ["A"]},
+                             universe_history=pit_data.UniverseHistory({}),
+                             fundamentals=pit_data.FundamentalStore(), macro=None,
+                             vix=None, vintages={}, fx=None,
+                             rates={"events": [], "verifiedThrough": through},
+                             through=through, calendar_rows=[]),
+                     through=through, policy={})
+    assert store.load()["corporate-events/2020-01"] == [
+        {"date": "2020-01-07", "ticker": "A", "dividend": 0.0, "split": 2.0}]
