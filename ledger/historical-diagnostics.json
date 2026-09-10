@@ -15,8 +15,8 @@
   "firstDate": "2013-01-04",
   "lastDate": "2026-09-04",
   "replayDates": 714,
-  "signalsGenerated": 345720,
-  "signalsSkippedAlreadyPresent": 0,
+  "signalsGenerated": 0,
+  "signalsSkippedAlreadyPresent": 345720,
   "meanPitCoverage": 0.7871,
   "survivorshipRisk": "HIGH",
   "survivorshipNote": "SURVIVORSHIP_BIAS_UNRESOLVED",
@@ -7483,140 +7483,12 @@
     "reason": null
   },
   "benchmarkPanel": {
-    "policy": "PINNED_VENDOR_LINEAGE_THEN_MATCHING_COMMITTED_SNAPSHOT",
-    "minSnapshotCoveragePct": 98.0,
-    "minSessionsPerYearForBootstrap": 180,
-    "byRegion": {
-      "US": {
-        "ticker": "SPY",
-        "status": "VENDOR",
-        "source": "yahoo",
-        "symbol": "SPY",
-        "lineageSource": "yahoo",
-        "lineageSymbol": "SPY",
-        "sessions": 3944,
-        "firstSession": "2011-01-03",
-        "lastSession": "2026-09-09",
-        "candidates": [
-          {
-            "source": "yahoo",
-            "symbol": "SPY",
-            "accepted": true,
-            "reason": null,
-            "sessions": 3944,
-            "snapshotCoveragePct": 100.0,
-            "minimumSessions": null,
-            "firstSession": "2011-01-03",
-            "lastSession": "2026-09-09"
-          }
-        ],
-        "snapshotSessions": 3943
-      },
-      "KR": {
-        "ticker": "^KS200",
-        "status": "VENDOR",
-        "source": "fdr",
-        "symbol": "KS200",
-        "lineageSource": "fdr",
-        "lineageSymbol": "KS200",
-        "sessions": 3855,
-        "firstSession": "2011-01-03",
-        "lastSession": "2026-09-07",
-        "candidates": [
-          {
-            "source": "fdr",
-            "symbol": "KS200",
-            "accepted": true,
-            "reason": null,
-            "sessions": 3855,
-            "snapshotCoveragePct": 100.0,
-            "minimumSessions": null,
-            "firstSession": "2011-01-03",
-            "lastSession": "2026-09-07"
-          },
-          {
-            "source": "yahoo",
-            "symbol": "^KS200",
-            "accepted": true,
-            "reason": null,
-            "sessions": 3781,
-            "snapshotCoveragePct": 100.0,
-            "minimumSessions": null,
-            "firstSession": "2011-01-03",
-            "lastSession": "2026-07-16"
-          }
-        ],
-        "snapshotSessions": 3782
-      }
-    },
+    "byRegion": {},
     "degradedRegions": [],
     "unavailableRegions": [],
-    "snapshotsUpdated": [
-      "SPY",
-      "^KS200"
-    ],
-    "indexMixingForbidden": true
+    "policy": "FROZEN_INPUT_SNAPSHOT",
+    "snapshotsUpdated": []
   },
-  "formerMemberRecovery": {
-    "US": {
-      "describedFormerMembers": 326,
-      "priced": 139,
-      "pricedPct": 42.64,
-      "byYearLeft": {
-        "2013": {
-          "priced": 6,
-          "described": 22
-        },
-        "2014": {
-          "priced": 7,
-          "described": 19
-        },
-        "2015": {
-          "priced": 4,
-          "described": 19
-        },
-        "2016": {
-          "priced": 12,
-          "described": 35
-        },
-        "2017": {
-          "priced": 6,
-          "described": 11
-        },
-        "2018": {
-          "priced": 10,
-          "described": 32
-        },
-        "2020": {
-          "priced": 27,
-          "described": 58
-        },
-        "2021": {
-          "priced": 13,
-          "described": 26
-        },
-        "2022": {
-          "priced": 9,
-          "described": 28
-        },
-        "2023": {
-          "priced": 10,
-          "described": 18
-        },
-        "2024": {
-          "priced": 12,
-          "described": 21
-        },
-        "2025": {
-          "priced": 5,
-          "described": 9
-        },
-        "2026": {
-          "priced": 18,
-          "described": 28
-        }
-      }
-    }
-  },
+  "formerMemberRecovery": {},
   "benchmarkCoverageRegressions": []
 }
