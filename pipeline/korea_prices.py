@@ -43,7 +43,16 @@ import pandas as pd
 from . import price_adjustment as PA
 from .market_dates import normalize_daily_frame
 
-SOURCE_VERSION = "krx-fdr-sessions-with-yahoo-distributions-v1"
+SOURCE_VERSION = "krx-native-sessions-with-yahoo-distributions-v2"
+
+# How much later than the cross-check vendor the primary's history may start
+# before the run refuses to seal it. replay-v12 sealed a Korean panel whose 56
+# of 68 names began on 2014-06-23 instead of 2011-01-03, because
+# FinanceDataReader's default Naver endpoint ignores `start` and returns a fixed
+# trailing window. Nothing failed: the contract passed on 154/154 matured
+# blocks while three and a half years of the Korean cross-section had quietly
+# gone. A truncated primary is not allowed to be silent twice.
+TRUNCATION_TOLERANCE_SESSIONS = 21
 
 
 def _agreement(primary: pd.DataFrame, secondary: pd.DataFrame | None) -> dict | None:
@@ -60,9 +69,18 @@ def _agreement(primary: pd.DataFrame, secondary: pd.DataFrame | None) -> dict | 
     if not usable.any():
         return None
     difference = np.abs((b[usable] / a[usable] - 1).to_numpy(float)) * 10000
+    # How much of the second vendor's history the primary is missing from the
+    # FRONT. Sessions the primary lacks in the middle are a hole; sessions it
+    # lacks at the start are a truncated download, and they look identical in a
+    # row count.
+    primary_start, secondary_start = left.dropna().index[0], right.dropna().index[0]
+    starts_later = int((right.dropna().index < primary_start).sum())
     return {"sharedSessions": int(usable.sum()),
             "onlyPrimarySessions": int(len(left.dropna()) - usable.sum()),
             "onlySecondarySessions": int(len(right.dropna().index.difference(shared))),
+            "primaryFirstSession": primary_start.strftime("%Y-%m-%d"),
+            "secondaryFirstSession": secondary_start.strftime("%Y-%m-%d"),
+            "primaryStartsLaterSessions": starts_later,
             "medianDifferenceBps": float(np.median(difference)),
             "p99DifferenceBps": float(np.percentile(difference, 99)),
             "maxDifferenceBps": float(difference.max())}
@@ -107,6 +125,30 @@ def acquire(tickers: list[str], start: str, *, end: str | None = None,
     return {"prices": prices, "events": events, "agreement": agreement,
             "missing": [t for t in tickers if t not in prices],
             "source": SOURCE_VERSION}
+
+
+def coverage_shortfall(rows: list[dict]) -> dict:
+    """Names whose primary history starts materially after the cross-check's.
+
+    This is the check replay-v12 did not have. A vendor that answers with a
+    short window answers successfully, so nothing downstream can tell the
+    difference between "this name listed in 2014" and "this download stopped at
+    2014" — except the other vendor, which has the earlier sessions.
+    """
+    late = sorted((row for row in rows
+                   if row.get("primaryStartsLaterSessions", 0)
+                   > TRUNCATION_TOLERANCE_SESSIONS),
+                  key=lambda row: -row["primaryStartsLaterSessions"])
+    return {
+        "tickers": len(late),
+        "toleranceSessions": TRUNCATION_TOLERANCE_SESSIONS,
+        "missingSessions": int(sum(row["primaryStartsLaterSessions"] for row in late)),
+        "worst": [{"ticker": row["ticker"],
+                   "primaryFirstSession": row["primaryFirstSession"],
+                   "secondaryFirstSession": row["secondaryFirstSession"],
+                   "sessions": row["primaryStartsLaterSessions"]}
+                  for row in late[:8]],
+    }
 
 
 def agreement_summary(rows: list[dict]) -> dict:

@@ -136,8 +136,8 @@ def fetch_fdr_prices(tickers: list[str], start: str, *, end: str | None = None,
                      retries: int = 3) -> dict[str, pd.DataFrame]:
     """Korean sessions from FinanceDataReader, keyed by their Yahoo ticker.
 
-    KRX bars, quoted the way Naver quotes them: split-adjusted and
-    dividend-unadjusted, the same shape as Yahoo's `auto_adjust=False` close, so
+    KRX bars, split-adjusted and dividend-unadjusted (`adjStkPrc: 2`), the same
+    shape as Yahoo's `auto_adjust=False` close, so
     `price_adjustment.to_total_return` treats them identically.
 
     This is the exchange-native route. Yahoo's Korean history is missing 73 of
@@ -146,18 +146,31 @@ def fetch_fdr_prices(tickers: list[str], start: str, *, end: str | None = None,
     2025-09-19 — and the narrow same-vendor retry recovered none of them on the
     replay-v11 run. Sessions Yahoo does not have cannot be retried into
     existence.
+
+    It asks KRX directly rather than taking FinanceDataReader's default. That
+    default is Naver's `fchart` endpoint, which takes NO date argument: it
+    returns a fixed trailing window and the reader then slices it, so `start` is
+    silently ignored. On the replay-v12 run it returned about 3,000 sessions per
+    name and 56 of the 68 Korean names began on 2014-06-23 instead of
+    2011-01-03 — 46,356 rows of history dropped without a single error. The KRX
+    route pages in two-year windows from the date actually requested.
     """
     import FinanceDataReader as fdr
 
     out: dict[str, pd.DataFrame] = {}
     for ticker in tickers:
-        symbol = ticker.removesuffix(".KS").removesuffix(".KQ")
+        code = ticker.removesuffix(".KS").removesuffix(".KQ")
         delay = 1.0
         for attempt in range(retries):
             try:
-                frame = fdr.DataReader(symbol, start, end)
+                frame = fdr.DataReader(f"KRX:{code}", start, end)
                 if frame is not None and not frame.empty:
-                    out[ticker] = normalize_daily_frame(frame)
+                    # KRX serves derived columns too (Change, MarCap, Shares).
+                    # Only the bar itself is an input; a vendor's own pct_change
+                    # is computed on the pre-adjustment basis and would be
+                    # sealed beside a Close that no longer matches it.
+                    keep = [c for c in OHLCV if c in frame.columns]
+                    out[ticker] = normalize_daily_frame(frame[keep])
                     break
             except Exception as exc:  # pragma: no cover - network dependent
                 print(f"    warning: FinanceDataReader {ticker} "

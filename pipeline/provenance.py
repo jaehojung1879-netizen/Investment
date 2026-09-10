@@ -86,10 +86,21 @@ MODEL_VERSION = "longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-a
 # sessions from the exchange-native vendor and keeps Yahoo for the
 # distributions FDR does not publish, with Yahoo's closes recorded as a
 # cross-check rather than silently preferred away.
-REPLAY_VERSION = "replay-v12"
+# v13 repairs v12's Korean acquisition. v12 went green — contractValidation
+# VALID on 154/154 matured blocks, the first continuous NAV path this ledger has
+# had — while quietly sealing 46,356 FEWER Korean rows than v11: 56 of its 68
+# names began on 2014-06-23 instead of 2011-01-03. FinanceDataReader's default
+# route is Naver's `fchart` endpoint, which takes no date argument, returns a
+# fixed trailing window of about 3,000 sessions and lets the reader slice it, so
+# `start` was silently ignored. A short answer is still a successful answer, and
+# nothing in the pipeline could tell it from a late listing. v13 asks KRX
+# directly, which pages from the date actually requested, seals only the bar
+# instead of the vendor's derived columns, and refuses to seal at all when the
+# cross-check vendor proves the primary's history is truncated.
+REPLAY_VERSION = "replay-v13"
 FEATURE_VERSION = "hfeat-v1"
 DATA_VERSION = ("as-traded-close-forward-total-return-v1-regional-session-download"
-                "+krx-fdr-sessions-with-yahoo-distributions-v1"
+                "+krx-native-sessions-with-yahoo-distributions-v2"
                 "+pit-index-membership+dart-pit-fundamentals-kr"
                 "+immutable-inputs-v1+common-calendar-v2-kr-2026-closures"
                 "+fred-h10-usdkrw-fixing-v1+benchmark-vendor-lineage-v1"

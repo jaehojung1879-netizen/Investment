@@ -238,6 +238,21 @@ def _run(argv=None) -> int:
         if korea["missing"]:
             print(f"  warning: no Korean sessions for {len(korea['missing'])} "
                   f"tickers (e.g. {korea['missing'][:5]})")
+        # A vendor that answers with a short window answers successfully, and
+        # replay-v12 sealed 46,356 fewer Korean rows than v11 without one error
+        # — the contract still passed on 154/154 matured blocks. Refuse to seal
+        # a primary the cross-check proves is truncated.
+        shortfall = KR.coverage_shortfall(korea["agreement"])
+        if shortfall["tickers"]:
+            print(f"ERROR: the Korean primary vendor returned a truncated history for "
+                  f"{shortfall['tickers']} tickers ({shortfall['missingSessions']} "
+                  f"sessions short of the cross-check vendor). Refusing to seal a "
+                  f"generation on a partial download.")
+            for row in shortfall["worst"]:
+                print(f"    {row['ticker']}: starts {row['primaryFirstSession']} "
+                      f"vs {row['secondaryFirstSession']} "
+                      f"({row['sessions']} sessions late)")
+            return 1
         # Successor securities value a held pre-merger position but must never
         # be added to the historical selection universe merely for that reason.
         by_region = RR.successor_dependencies(corporate_actions)
@@ -367,7 +382,7 @@ def _run(argv=None) -> int:
             price_lineage=[
                 {"region":"KR", "vendor":"FINANCE_DATA_READER",
                  "distributions":"YAHOO_ACTIONS", "source":korea["source"],
-                 "crossCheck":korea_agreement},
+                 "crossCheck":korea_agreement, "coverageShortfall":shortfall},
                 {"region":"US", "vendor":"YAHOO_UNADJUSTED_WITH_ACTIONS",
                  "distributions":"YAHOO_ACTIONS", "crossCheck":None},
             ])
