@@ -17,6 +17,7 @@ import pandas as pd
 from .market_dates import normalize_daily_frame
 from . import historical_store as HS
 from . import pit_data
+from . import price_adjustment as PA
 
 SCHEMA = "REPLAY_INPUTS_V1"
 # Dated price panels are keyed "price/<YYYY-MM>" and "benchmark/<YYYY-MM>", but
@@ -180,7 +181,24 @@ def pack(*, prices, benchmarks, universe, universe_history, fundamentals, macro,
     for name, frame in sorted(prices.items()):
         kind = "benchmark" if name in benchmarks.values() else "price"
         for row in frame_rows(frame, through):
+            # The dividend and split that produced this session's total-return
+            # level are evidence in their own right, and they are zero on all
+            # but a handful of sessions. Sealing them sparsely in their own
+            # component keeps the price shards the size the 100 MB blob limit
+            # was sharded for, and makes the adjustment auditable row by row.
+            event = {key: row.pop(key) for key in PA.EVENT_COLUMNS if key in row}
             components.setdefault(f"{kind}/{row['date'][:7]}", []).append({"ticker":name, **row})
+            dividend = float(event.get(PA.DIVIDEND) or 0.0)
+            split = float(event.get(PA.SPLIT) or 1.0)
+            if dividend > 0 or split != 1.0:
+                components.setdefault(f"corporate-events/{row['date'][:7]}", []).append(
+                    {"date":row["date"], "ticker":name,
+                     "dividend":dividend, "split":split})
+    components["corporate-events/source"] = [{
+        "vendor":"YAHOO_UNADJUSTED_WITH_ACTIONS",
+        "adjustment":PA.ADJUSTMENT_VERSION,
+        "basis":"AS_TRADED_CLOSE_WITH_FORWARD_ACCUMULATED_TOTAL_RETURN",
+        "anchor":"FIRST_OBSERVED_SESSION"}]
     # Static, generation-local identity.  Benchmark snapshots are shared as an
     # operational cache, so their global index cannot be the authority for an
     # already-started replay generation.
@@ -254,6 +272,11 @@ def unpack(components):
             "corporate_actions":((components.get("corporate-actions") or [{"book":{"actions":[]}}])[0]
                                   .get("book", {"actions":[]})),
             "benchmark_lineage":components.get(BENCHMARK_SOURCE, []),
+            "corporate_events":[row for name, rows in sorted(components.items())
+                                if name.startswith("corporate-events/")
+                                and name != "corporate-events/source"
+                                for row in rows],
+            "adjustment":(components.get("corporate-events/source") or [{}])[0],
             "universe":universe["universe"],
             "universe_history":pit_data.UniverseHistory(universe["memberships"]),
             "fundamental_store":fundamentals}

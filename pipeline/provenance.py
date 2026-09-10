@@ -63,13 +63,25 @@ MODEL_VERSION = "longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-a
 # whichever source is one session fresher, and systemic Korean gaps compare
 # FDR raw returns with Yahoo raw anchors before mapping them back to the
 # adjusted basis.  Both can change historical inputs, so v9 remains sealed.
-REPLAY_VERSION = "replay-v10"
+# v11 changes what the generation seals, because v10's seal could not hold.
+# Yahoo's auto-adjusted close is a BACK-anchored total return: every value in it
+# is rescaled by the dividends that come after it. Between v9's seal and v10's,
+# one day apart, 17 of 567 names moved 3-86 bps in JANUARY 2011 for that reason
+# and 550 more moved one float32 step, so `InputStore.commit`'s byte-exact
+# prefix check refused every acquisition run after a generation's first. v7, v8,
+# v9 and v10 each died that way rather than of anything to do with the evidence.
+# v11 seals the as-traded close and the dividend/split events instead, and
+# accumulates the total return FORWARD from the first session, so a dividend
+# paid tomorrow appends and never rewrites a published value. The series stays
+# proportional to Yahoo's adjusted close, so nothing that is measured changes —
+# but v10's inputs cannot be reinterpreted on the new basis, so it stays sealed.
+REPLAY_VERSION = "replay-v11"
 FEATURE_VERSION = "hfeat-v1"
-DATA_VERSION = ("yahoo-adjusted-close-v3-regional-session-download"
+DATA_VERSION = ("yahoo-as-traded-close-forward-total-return-v1-regional-session-download"
                 "+pit-index-membership+dart-pit-fundamentals-kr"
                 "+immutable-inputs-v1+common-calendar-v2-kr-2026-closures"
                 "+fred-h10-usdkrw-fixing-v1+benchmark-vendor-lineage-v1"
-                "+fdr-systemic-gap-basis-aware-v2"
+                "+fdr-systemic-gap-clustered-retry-v3"
                 "+corporate-actions-v1+bok-rf-v1")
 
 # MODEL_VERSION is a compound identity, and not every component of it is a

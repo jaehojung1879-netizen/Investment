@@ -65,8 +65,8 @@ def test_regional_fetch_never_mixes_market_calendars_in_one_batch(monkeypatch):
     """
     calls = []
 
-    def fake_fetch(tickers, start, batch=40):
-        calls.append((list(tickers), start, batch))
+    def fake_fetch(tickers, start, batch=40, total_return=False):
+        calls.append((list(tickers), start, batch, total_return))
         dates = pd.bdate_range("2024-01-02", periods=3)
         return {ticker: _frame(dates) for ticker in tickers}
 
@@ -75,10 +75,37 @@ def test_regional_fetch_never_mixes_market_calendars_in_one_batch(monkeypatch):
         {"US": ["AAPL", "MSFT"], "KR": ["005930.KS"]}, "2020-01-01")
 
     assert calls == [
-        (["AAPL", "MSFT"], "2020-01-01", 40),
-        (["005930.KS"], "2020-01-01", 40),
+        (["AAPL", "MSFT"], "2020-01-01", 40, False),
+        (["005930.KS"], "2020-01-01", 40, False),
     ]
     assert set(prices) == {"AAPL", "MSFT", "005930.KS"}
+
+    # The replay asks for the basis its input store can seal, region by region.
+    calls.clear()
+    datafeed.fetch_regional_prices(
+        {"US": ["AAPL"], "KR": ["005930.KS"]}, "2020-01-01", total_return=True)
+    assert [row[-1] for row in calls] == [True, True]
+
+
+def test_total_return_acquisition_asks_for_events_not_the_adjusted_close(monkeypatch):
+    """`auto_adjust=True` is the column that rewrites the sealed past."""
+    seen = {}
+
+    def fake_download(tickers, start=None, end=None, retries=3, **kwargs):
+        seen.update(kwargs)
+        dates = pd.bdate_range("2024-01-02", periods=3)
+        frame = _frame(dates)
+        frame["Dividends"] = [0.0, 0.5, 0.0]
+        frame["Stock Splits"] = [0.0, 0.0, 0.0]
+        frame.columns = pd.MultiIndex.from_product([["AAPL"], frame.columns])
+        return frame
+
+    monkeypatch.setattr(datafeed, "download_retry", fake_download)
+    prices = datafeed.fetch_prices(["AAPL"], "2020-01-01", total_return=True)
+
+    assert seen["auto_adjust"] is False and seen["actions"] is True
+    assert "Adj Close" not in datafeed.AS_TRADED_WITH_ACTIONS
+    assert set(datafeed.AS_TRADED_WITH_ACTIONS) - set(prices["AAPL"].columns) == set()
 
 
 def test_benchmark_session_preflight_accepts_timezone_equivalent_dates():

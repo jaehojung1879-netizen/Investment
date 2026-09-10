@@ -98,10 +98,15 @@ def source_specs(ticker: str, configured: dict | None) -> list[dict]:
 
 
 def _yahoo_close(symbol: str, start: str) -> pd.Series | None:
-    """Yahoo via the same retrying path the universe uses, so one policy."""
+    """Yahoo via the same retrying path the universe uses, so one policy.
+
+    On the as-traded forward total-return basis, like the universe panel it is
+    compared against: an ETF benchmark pays dividends, and Yahoo's adjusted
+    close would rewrite the whole sealed index history on each of them.
+    """
     from .datafeed import fetch_prices
 
-    frame = fetch_prices([symbol], start, batch=1).get(symbol)
+    frame = fetch_prices([symbol], start, batch=1, total_return=True).get(symbol)
     if frame is None or "Close" not in frame:
         return None
     return _clean(frame["Close"])

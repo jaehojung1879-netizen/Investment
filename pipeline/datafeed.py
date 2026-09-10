@@ -19,6 +19,10 @@ from .market_dates import normalize_daily_frame, normalize_daily_series
 
 OHLCV = ["Open", "High", "Low", "Close", "Volume"]
 UNADJUSTED_WITH_ACTIONS = OHLCV + ["Adj Close", "Dividends", "Stock Splits"]
+# What the replay acquires. Deliberately WITHOUT "Adj Close": that column is
+# the back-anchored total return whose every value is rewritten by the next
+# dividend, which no immutable input prefix can hold. See price_adjustment.
+AS_TRADED_WITH_ACTIONS = OHLCV + ["Dividends", "Stock Splits"]
 
 
 def download_retry(tickers, start: str, retries: int = 3, **kwargs) -> pd.DataFrame | None:
@@ -80,7 +84,7 @@ def _extract(df: pd.DataFrame, chunk: list[str], out: dict[str, pd.DataFrame],
 
 def fetch_prices(tickers: list[str], start: str, batch: int = 40, *,
                  end: str | None = None, auto_adjust: bool = True,
-                 actions: bool = False,
+                 actions: bool = False, total_return: bool = False,
                  columns: list[str] | None = None) -> dict[str, pd.DataFrame]:
     """Return {ticker: DataFrame[Open, High, Low, Close, Volume]} indexed by date.
 
@@ -88,7 +92,16 @@ def fetch_prices(tickers: list[str], start: str, batch: int = 40, *,
     transient batch failures, then makes one smaller-batch second pass over
     anything still missing so a single throttled batch can't silently drop 40
     names from the universe.
+
+    ``total_return`` asks for the acquisition the replay needs: unadjusted bars
+    plus the dividend and split events, rebased onto the as-traded, FORWARD
+    total-return basis of ``pipeline.price_adjustment``. The prospective daily
+    build keeps Yahoo's auto-adjusted close, which is fine there because it
+    seals nothing.
     """
+    if total_return:
+        auto_adjust, actions = False, True
+        columns = columns or AS_TRADED_WITH_ACTIONS
     out: dict[str, pd.DataFrame] = {}
     for i in range(0, len(tickers), batch):
         chunk = tickers[i : i + batch]
@@ -112,11 +125,16 @@ def fetch_prices(tickers: list[str], start: str, batch: int = 40, *,
         missing = [t for t in tickers if t not in out]
     if missing:
         print(f"  warning: no data for {len(missing)} tickers (e.g. {missing[:5]})")
+    if total_return:
+        from .price_adjustment import rebase_frames
+
+        out, _ = rebase_frames(out)
     return out
 
 
-def fetch_regional_prices(universe: dict[str, list[str]],
-                          start: str, batch: int = 40) -> dict[str, pd.DataFrame]:
+def fetch_regional_prices(universe: dict[str, list[str]], start: str,
+                          batch: int = 40, *, total_return: bool = False
+                          ) -> dict[str, pd.DataFrame]:
     """Fetch the replay universe without mixing exchange calendars in one batch.
 
     A single multi-market ``yf.download`` frame has one shared index.  Once US
@@ -135,7 +153,8 @@ def fetch_regional_prices(universe: dict[str, list[str]],
         if not tickers:
             continue
         print(f"  fetching {region} universe: {len(tickers)} tickers ...")
-        out.update(fetch_prices(tickers, start, batch=batch))
+        out.update(fetch_prices(tickers, start, batch=batch,
+                                total_return=total_return))
     return out
 
 

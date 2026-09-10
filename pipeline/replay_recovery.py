@@ -25,7 +25,7 @@ import pandas as pd
 from . import replay_calendar as RC
 from .market_dates import normalize_daily_frame, normalize_daily_series
 
-RECOVERY_VERSION = "fred-h10-fx-v1+fdr-systemic-gap-v2+corporate-actions-v1"
+RECOVERY_VERSION = "fred-h10-fx-v1+fdr-systemic-gap-clustered-retry-v3+corporate-actions-v1"
 FX_SERIES_ID = "DEXKOUS"  # Korean won per US dollar, Federal Reserve H.10
 FX_MAX_STALENESS_DAYS = 7
 KR_MIN_MISSING_NAMES = 20
@@ -146,12 +146,16 @@ def _fdr_frame(ticker: str, start: str, end: str, retries: int = 3) -> pd.DataFr
 def _yahoo_targeted_frames(tickers: list[str], start: str, end: str, *,
                            adjusted: bool) -> dict[str, pd.DataFrame]:
     """Small-window retry used only after a market-wide batch hole is proven."""
-    from .datafeed import OHLCV, UNADJUSTED_WITH_ACTIONS, fetch_prices
+    from .datafeed import UNADJUSTED_WITH_ACTIONS, fetch_prices
 
+    if adjusted:
+        # Same basis as the panel it will be spliced into: as-traded closes
+        # carried forward on their own dividends, never Yahoo's back-anchored
+        # adjusted close.
+        return fetch_prices(tickers, start, end=end, batch=20, total_return=True)
     return fetch_prices(
-        tickers, start, end=end, batch=20, auto_adjust=adjusted,
-        actions=not adjusted,
-        columns=OHLCV if adjusted else UNADJUSTED_WITH_ACTIONS,
+        tickers, start, end=end, batch=20, auto_adjust=False, actions=True,
+        columns=UNADJUSTED_WITH_ACTIONS,
     )
 
 
@@ -218,26 +222,38 @@ def recover_systemic_kr_gaps(prices: dict[str, pd.DataFrame], tickers: list[str]
     live_sources = fetcher is None
     fetcher = fetcher or _fdr_frame
     kr_sessions = RC.sessions(start, through, "KR")
-    affected = sorted(set().union(*systemic.values()))
-    narrow_start = str((min(systemic) - pd.Timedelta(days=14)).date())
-    narrow_end = str((max(systemic) + pd.Timedelta(days=14)).date())
     # A focused same-vendor retry is the highest-fidelity recovery: when it
-    # succeeds it restores the exact Yahoo-adjusted observation that the large
-    # batch dropped.  The unadjusted retry is not substituted into valuation;
-    # it validates FDR raw returns without confusing dividends with vendor
-    # disagreement.
-    if targeted_primary_fetcher is None:
-        targeted_primary = (_yahoo_targeted_frames(
-            affected, narrow_start, narrow_end, adjusted=True)
-            if live_sources else {})
-    else:
-        targeted_primary = targeted_primary_fetcher(affected, narrow_start, narrow_end) or {}
-    if raw_primary_fetcher is None:
-        raw_primary = (_yahoo_targeted_frames(
-            affected, narrow_start, narrow_end, adjusted=False)
-            if live_sources else {})
-    else:
-        raw_primary = raw_primary_fetcher(affected, narrow_start, narrow_end) or {}
+    # succeeds it restores the exact observation that the large batch dropped.
+    # The unadjusted retry is not substituted into valuation; it validates FDR
+    # raw returns without confusing dividends with vendor disagreement.
+    #
+    # "Focused" has to mean it. One window spanning min(systemic)..max(systemic)
+    # covered 2017-09-22 to 2025-09-19 on the first replay-v10 run — an
+    # eight-year bulk download of the whole affected list, twice, which is the
+    # same shape of request that dropped the rows in the first place. It
+    # reported targetedYahooRetries: 0, so the designed first choice never once
+    # succeeded. Each contiguous run of market-wide gap dates gets its own
+    # window over only the names that are missing in it.
+    clusters = _groups(kr_sessions, set(systemic))
+    cluster_of = {date: index for index, dates in enumerate(clusters) for date in dates}
+    targeted_by_cluster: list[dict] = []
+    raw_by_cluster: list[dict] = []
+    for dates in clusters:
+        names = sorted(set().union(*(systemic[date] for date in dates)))
+        window_start = str((dates[0] - pd.Timedelta(days=14)).date())
+        window_end = str((dates[-1] + pd.Timedelta(days=14)).date())
+        if targeted_primary_fetcher is None:
+            targeted_by_cluster.append(_yahoo_targeted_frames(
+                names, window_start, window_end, adjusted=True) if live_sources else {})
+        else:
+            targeted_by_cluster.append(
+                targeted_primary_fetcher(names, window_start, window_end) or {})
+        if raw_primary_fetcher is None:
+            raw_by_cluster.append(_yahoo_targeted_frames(
+                names, window_start, window_end, adjusted=False) if live_sources else {})
+        else:
+            raw_by_cluster.append(
+                raw_primary_fetcher(names, window_start, window_end) or {})
 
     for ticker in tickers:
         frame = prices.get(ticker)
@@ -252,11 +268,14 @@ def recover_systemic_kr_gaps(prices: dict[str, pd.DataFrame], tickers: list[str]
             continue
         fallback = None
         fallback_fetched = False
-        targeted = normalize_daily_frame(targeted_primary[ticker]) \
-            if ticker in targeted_primary else None
-        raw = normalize_daily_frame(raw_primary[ticker]) \
-            if ticker in raw_primary else None
         for group in _groups(kr_sessions, missing):
+            # A contiguous run of this ticker's missing dates lies inside one
+            # market-wide cluster, so it reads that cluster's narrow retry.
+            index = cluster_of[group[0]]
+            targeted = normalize_daily_frame(targeted_by_cluster[index][ticker]) \
+                if ticker in targeted_by_cluster[index] else None
+            raw = normalize_daily_frame(raw_by_cluster[index][ticker]) \
+                if ticker in raw_by_cluster[index] else None
             if len(group) > KR_MAX_GAP_SESSIONS:
                 result["rejected"].append({"ticker":ticker,
                     "dates":[str(d.date()) for d in group], "reason":"GAP_TOO_LONG"})
@@ -307,7 +326,7 @@ def recover_systemic_kr_gaps(prices: dict[str, pd.DataFrame], tickers: list[str]
                     result["accepted"].append({"ticker":ticker,
                         "date":str(group[0].date()),
                         "dates":[str(d.date()) for d in group],
-                        "primaryVendor":"YAHOO_AUTO_ADJUSTED",
+                        "primaryVendor":"YAHOO_AS_TRADED_FORWARD_TOTAL_RETURN",
                         "fallbackVendor":"YAHOO_TARGETED_RETRY",
                         "method":"SAME_VENDOR_ADJUSTED_RETURN_BRIDGE",
                         "leftAnchor":str(left.date()), "rightAnchor":str(right.date()),
@@ -404,7 +423,7 @@ def recover_systemic_kr_gaps(prices: dict[str, pd.DataFrame], tickers: list[str]
             primary.sort_index(inplace=True)
             result["accepted"].append({"ticker":ticker,
                 "date":str(group[0].date()), "dates":[str(d.date()) for d in group],
-                "primaryVendor":"YAHOO_AUTO_ADJUSTED", "fallbackVendor":"FINANCE_DATA_READER",
+                "primaryVendor":"YAHOO_AS_TRADED_FORWARD_TOTAL_RETURN", "fallbackVendor":"FINANCE_DATA_READER",
                 "method":method,
                 "leftAnchor":str(left.date()), "rightAnchor":str(right.date()),
                 "bridgeDifferenceBps":float(adjusted_bridge_bps),
