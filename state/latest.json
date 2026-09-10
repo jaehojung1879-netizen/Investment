@@ -2,7 +2,7 @@
   "schemaVersion": "2.7.0",
   "modelVersion": "longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
   "buildCommitSha": "7d3ccb2cce7c",
-  "generatedAt": "2026-09-10T15:31:04.346117+00:00",
+  "generatedAt": "2026-09-10T16:21:33.030451+00:00",
   "marketAsOf": "2026-09-10",
   "macroRegime": "Deflation/Slowdown",
   "holdingsByRegion": {
@@ -12,8 +12,8 @@
       "MU",
       "SPG",
       "HST",
-      "VTRS",
       "TGT",
+      "VTRS",
       "ALL",
       "SNDK",
       "GM",
@@ -47,16 +47,16 @@
     "MU": "WAIT_FOR_PULLBACK",
     "SPG": "WATCH",
     "HST": "WATCH",
-    "VTRS": "WATCH",
     "TGT": "WAIT_FOR_PULLBACK",
+    "VTRS": "WATCH",
     "ALL": "WATCH",
     "SNDK": "WAIT_FOR_PULLBACK",
     "GM": "ACCUMULATE_GRADUALLY",
     "KO": "ACCUMULATE_GRADUALLY",
     "CSX": "WATCH",
-    "STT": "WAIT_FOR_PULLBACK",
     "MPC": "WAIT_FOR_PULLBACK",
-    "GOOGL": "AVOID",
+    "STT": "WAIT_FOR_PULLBACK",
+    "SWK": "WATCH",
     "011780.KS": "ACCUMULATE_GRADUALLY",
     "078930.KS": "WAIT_FOR_PULLBACK",
     "034730.KS": "WAIT_FOR_PULLBACK",
@@ -82,14 +82,14 @@
     "047040.KS": "EMERGING_OPPORTUNITY",
     "034020.KS": "EMERGING_OPPORTUNITY",
     "267260.KS": "EMERGING_OPPORTUNITY",
-    "TSLA": "EMERGING_OPPORTUNITY",
     "KDP": "EMERGING_OPPORTUNITY",
+    "TSLA": "EMERGING_OPPORTUNITY",
     "WELL": "EMERGING_OPPORTUNITY",
     "VMRK": "EMERGING_OPPORTUNITY",
     "EBAY": "EMERGING_OPPORTUNITY",
-    "AAPL": "EMERGING_OPPORTUNITY",
     "KHC": "EMERGING_OPPORTUNITY",
-    "PM": "EMERGING_OPPORTUNITY"
+    "AAPL": "EMERGING_OPPORTUNITY",
+    "TPL": "EMERGING_OPPORTUNITY"
   },
   "warningTiersByTicker": {
     "036570.KS": "ELEVATED_WARNING",
@@ -107,14 +107,14 @@
     "VTRS": "WATCH",
     "SPG": "WATCH",
     "CSX": "WATCH",
-    "CNC": "ELEVATED_WARNING"
+    "KO": "WATCH"
   },
   "dataMode": "live",
   "seed": false,
   "stale": false,
   "productionValidation": {
     "passed": true,
-    "validatedAt": "2026-09-10T15:31:04.346117+00:00",
+    "validatedAt": "2026-09-10T16:21:33.030451+00:00",
     "errors": []
   }
 }
