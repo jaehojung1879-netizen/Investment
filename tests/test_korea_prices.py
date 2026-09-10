@@ -127,3 +127,72 @@ def test_fdr_bars_take_the_same_forward_total_return_treatment_as_yahoo():
     assert rebased["Close"].to_numpy() == pytest.approx(
         [100.0, 101.0, 102.0, 103.0], rel=1e-12)
     assert any(row.get("split") == 2.0 for row in rows)
+
+
+def test_a_truncated_primary_download_is_caught_by_the_cross_check():
+    """The check replay-v12 did not have.
+
+    FinanceDataReader's default Naver endpoint takes no date argument: it
+    returns a fixed trailing window and the reader slices it, so `start` is
+    ignored. v12 sealed a Korean panel where 56 of 68 names began on 2014-06-23
+    instead of 2011-01-03 — 46,356 rows gone — and nothing failed, because a
+    short answer is still a successful answer. Only the other vendor knows.
+    """
+    full = pd.bdate_range("2011-01-03", periods=400)
+    truncated = full[300:]
+    primary = {"A.KS": _sessions(full.strftime("%Y-%m-%d"), [100.0] * len(full)),
+               "B.KS": _sessions(truncated.strftime("%Y-%m-%d"),
+                                 [100.0] * len(truncated))}
+    yahoo = {ticker: _yahoo(full.strftime("%Y-%m-%d"), [100.0] * len(full))
+             for ticker in primary}
+
+    result = KR.acquire(["A.KS", "B.KS"], "2011-01-01",
+                        session_fetcher=lambda names: primary,
+                        action_fetcher=lambda names: yahoo)
+    shortfall = KR.coverage_shortfall(result["agreement"])
+
+    assert shortfall["tickers"] == 1
+    assert shortfall["worst"][0]["ticker"] == "B.KS"
+    assert shortfall["worst"][0]["sessions"] == 300
+    assert shortfall["worst"][0]["secondaryFirstSession"] == "2011-01-03"
+
+
+def test_a_genuinely_late_listing_is_not_a_truncated_download():
+    """Both vendors start late together, so the difference is zero."""
+    late = pd.bdate_range("2020-01-01", periods=100).strftime("%Y-%m-%d")
+    result = KR.acquire(["A.KS"], "2011-01-01",
+                        session_fetcher=lambda names: {
+                            "A.KS": _sessions(late, [100.0] * len(late))},
+                        action_fetcher=lambda names: {
+                            "A.KS": _yahoo(late, [100.0] * len(late))})
+    assert KR.coverage_shortfall(result["agreement"])["tickers"] == 0
+
+
+def test_only_the_bar_is_sealed_not_the_vendors_derived_columns():
+    """KRX serves Change, MarCap and Shares beside the bar; Naver serves Change.
+
+    v12 sealed that Change column into every Korean price row — a pct_change
+    computed on the pre-adjustment basis, stored next to a Close that no longer
+    matches it, and absent from the US rows.
+    """
+    from pipeline import datafeed
+
+    dates = pd.bdate_range("2025-09-01", periods=3)
+    served = pd.DataFrame({"Open": 1.0, "High": 1.0, "Low": 1.0, "Close": 1.0,
+                           "Volume": 10.0, "Change": 0.01, "MarCap": 1e12,
+                           "Shares": 1e8}, index=dates)
+
+    class _Reader:
+        @staticmethod
+        def DataReader(symbol, start, end=None):
+            assert symbol.startswith("KRX:"), "must ask KRX, not the capped default"
+            return served
+
+    import sys
+    sys.modules["FinanceDataReader"] = _Reader
+    try:
+        out = datafeed.fetch_fdr_prices(["005930.KS"], "2011-01-01")
+    finally:
+        del sys.modules["FinanceDataReader"]
+
+    assert sorted(out["005930.KS"].columns) == sorted(datafeed.OHLCV)
