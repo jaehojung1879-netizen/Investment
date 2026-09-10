@@ -30,11 +30,13 @@ SCHEMA = "REPLAY_INPUTS_V1"
 # left the previous generation's report on disk to be read as this run's
 # verdict. One predicate now serves both.
 BENCHMARK_SOURCE = "benchmark/source"
+PRICE_SOURCE = "price/source"
+STATIC_SOURCES = (BENCHMARK_SOURCE, PRICE_SOURCE)
 
 
 def is_price_panel(name: str) -> bool:
     """True for a dated price/benchmark panel, false for the static lineage."""
-    return name.startswith(("price/", "benchmark/")) and name != BENCHMARK_SOURCE
+    return name.startswith(("price/", "benchmark/")) and name not in STATIC_SOURCES
 
 
 class InputVersionConflict(RuntimeError):
@@ -176,7 +178,7 @@ class InputStore:
 def pack(*, prices, benchmarks, universe, universe_history, fundamentals, macro,
          vix, vintages, fx, rates, through, calendar_rows, fx_observations=None,
          fx_source_map=None, price_recovery=None, corporate_actions=None,
-         benchmark_lineage=None):
+         benchmark_lineage=None, price_lineage=None):
     components = {}
     for name, frame in sorted(prices.items()):
         kind = "benchmark" if name in benchmarks.values() else "price"
@@ -194,6 +196,12 @@ def pack(*, prices, benchmarks, universe, universe_history, fundamentals, macro,
                 components.setdefault(f"corporate-events/{row['date'][:7]}", []).append(
                     {"date":row["date"], "ticker":name,
                      "dividend":dividend, "split":split})
+    # Which vendor served each region's sessions, and how far the second vendor
+    # disagreed on the ones they both quote. Static and generation-local, for
+    # the same reason the benchmark lineage is: a later run may not quietly
+    # re-source a region whose history is already sealed.
+    components[PRICE_SOURCE] = sorted(
+        price_lineage or [], key=lambda row: str(row.get("region", "")))
     components["corporate-events/source"] = [{
         "vendor":"YAHOO_UNADJUSTED_WITH_ACTIONS",
         "adjustment":PA.ADJUSTMENT_VERSION,
@@ -272,6 +280,7 @@ def unpack(components):
             "corporate_actions":((components.get("corporate-actions") or [{"book":{"actions":[]}}])[0]
                                   .get("book", {"actions":[]})),
             "benchmark_lineage":components.get(BENCHMARK_SOURCE, []),
+            "price_lineage":components.get(PRICE_SOURCE, []),
             "corporate_events":[row for name, rows in sorted(components.items())
                                 if name.startswith("corporate-events/")
                                 and name != "corporate-events/source"

@@ -71,11 +71,54 @@ def future_split_factor(splits: pd.Series) -> np.ndarray:
     return np.concatenate([inclusive[1:], [1.0]])   # product over j >  i
 
 
-def to_total_return(frame: pd.DataFrame) -> tuple[pd.DataFrame, list[dict]]:
+def event_columns(frame: pd.DataFrame) -> pd.DataFrame:
+    """The dividend and split columns of a vendor actions panel, on its index.
+
+    Kept separate from the prices so a second vendor's bars can carry them:
+    FinanceDataReader serves the Korean sessions Yahoo is missing but publishes
+    no distributions, while Yahoo publishes the distributions for the very names
+    whose sessions it drops. Both vendors quote a split-adjusted,
+    dividend-unadjusted close, so the events transfer between them unchanged.
+    """
+    if frame is None or not len(frame):
+        return pd.DataFrame(columns=[DIVIDEND, SPLIT], index=pd.DatetimeIndex([]))
+    clean = normalize_daily_frame(frame)
+    return pd.DataFrame({DIVIDEND: _series(clean, DIVIDEND, 0.0),
+                         SPLIT: _series(clean, SPLIT, 0.0)}, index=clean.index)
+
+
+def _aligned_events(index: pd.DatetimeIndex, events) -> tuple[pd.Series, pd.Series]:
+    """Place each event on the first session of ``index`` at or after its date.
+
+    A vendor can date an event on a day the other vendor does not quote. Snapping
+    forward keeps the event inside the series it is being applied to instead of
+    dropping it.
+    """
+    dividends = pd.Series(0.0, index=index)
+    ratios = pd.Series(1.0, index=index)
+    if events is None or not len(events):
+        return dividends, ratios
+    for stamp, row in events.iterrows():
+        position = index.searchsorted(stamp, side="left")
+        if position >= len(index):
+            continue
+        amount = float(row.get(DIVIDEND) or 0.0)
+        ratio = float(row.get(SPLIT) or 0.0)
+        if amount > 0:
+            dividends.iloc[position] += amount
+        if ratio > 0 and ratio != 1.0:
+            ratios.iloc[position] *= ratio
+    return dividends, ratios
+
+
+def to_total_return(frame: pd.DataFrame, events=None) -> tuple[pd.DataFrame, list[dict]]:
     """Rebase one vendor frame onto the as-traded, forward total-return basis.
 
-    ``frame`` is a Yahoo panel fetched with ``auto_adjust=False, actions=True``:
-    a split-adjusted OHLCV plus ``Dividends`` and ``Stock Splits`` columns.
+    ``frame`` is a split-adjusted, dividend-unadjusted OHLCV — Yahoo fetched
+    with ``auto_adjust=False, actions=True``, or FinanceDataReader's Korean
+    bars. ``events`` supplies the dividends and splits when the frame does not
+    carry them itself, which is how Korean sessions from one vendor are joined
+    to distributions from the other.
 
     Returns the rebased frame — ``Dividends`` and ``Stock Splits`` carried on it
     in AS-TRADED terms so they can be sealed as their own evidence — and the
@@ -87,9 +130,13 @@ def to_total_return(frame: pd.DataFrame) -> tuple[pd.DataFrame, list[dict]]:
     if not len(clean):
         return clean, []
 
-    raw_splits = _series(clean, SPLIT, 0.0)
-    # Yahoo writes 0.0 for "no split here"; a real ratio is strictly positive.
-    ratios = raw_splits.where(raw_splits > 0, 1.0)
+    if events is None:
+        raw_dividends = _series(clean, DIVIDEND, 0.0)
+        # Yahoo writes 0.0 for "no split here"; a real ratio is strictly positive.
+        raw_splits = _series(clean, SPLIT, 0.0)
+        ratios = raw_splits.where(raw_splits > 0, 1.0)
+    else:
+        raw_dividends, ratios = _aligned_events(clean.index, events)
     after = future_split_factor(ratios)
 
     # As traded: the numbers that actually printed on the day.
@@ -97,7 +144,7 @@ def to_total_return(frame: pd.DataFrame) -> tuple[pd.DataFrame, list[dict]]:
     for column in SCALED_COLUMNS:
         if column in as_traded.columns:
             as_traded[column] = _series(clean, column, np.nan) * after
-    dividends = _series(clean, DIVIDEND, 0.0) * after
+    dividends = raw_dividends * after
     if "Volume" in as_traded.columns:
         # Share counts move inversely to price through a split.
         as_traded["Volume"] = _series(clean, "Volume", np.nan) / after
@@ -147,16 +194,18 @@ def to_total_return(frame: pd.DataFrame) -> tuple[pd.DataFrame, list[dict]]:
     return result, events
 
 
-def rebase_frames(frames: dict[str, pd.DataFrame]
+def rebase_frames(frames: dict[str, pd.DataFrame],
+                  events: dict[str, pd.DataFrame] | None = None
                   ) -> tuple[dict[str, pd.DataFrame], dict[str, list[dict]]]:
     """``to_total_return`` over a whole panel, keeping each ticker's events."""
     prices: dict[str, pd.DataFrame] = {}
-    events: dict[str, list[dict]] = {}
+    out_events: dict[str, list[dict]] = {}
     for ticker, frame in (frames or {}).items():
-        rebased, rows = to_total_return(frame)
+        rebased, rows = to_total_return(
+            frame, None if events is None else events.get(ticker))
         if rebased is None or not len(rebased):
             continue
         prices[ticker] = rebased
         if rows:
-            events[ticker] = rows
-    return prices, events
+            out_events[ticker] = rows
+    return prices, out_events

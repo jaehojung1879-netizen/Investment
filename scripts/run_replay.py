@@ -46,6 +46,7 @@ from pipeline import benchmark_source as BS         # noqa: E402
 from pipeline import historical_outcomes as HO      # noqa: E402
 from pipeline import historical_replay as HR        # noqa: E402
 from pipeline import historical_store as HS         # noqa: E402
+from pipeline import korea_prices as KR            # noqa: E402
 from pipeline import replay_calendar as RC
 from pipeline import replay_inputs as RI
 from pipeline import replay_recovery as RR
@@ -219,14 +220,41 @@ def _run(argv=None) -> int:
         # 273 sessions of trailing history behind it, or every name is unrankable.
         fetch_start = (str(int(str(start)[:4]) - 2) + str(start)[4:]) if start else "2010-01-01"
         print(f"fetching {len(download)} tickers by region from {fetch_start} ...")
-        prices = fetch_regional_prices(fetch_universe, fetch_start, total_return=True)
+        # Korean sessions come from the exchange-native vendor; every other
+        # region stays on Yahoo. See pipeline/korea_prices.py for the measured
+        # reason, and note the two are NOT spliced into one panel per ticker:
+        # a name is served whole by one vendor or not at all.
+        yahoo_regions = {region: names for region, names in fetch_universe.items()
+                         if region != "KR"}
+        prices = fetch_regional_prices(yahoo_regions, fetch_start, total_return=True)
+        korea = KR.acquire(fetch_universe.get("KR") or [], fetch_start)
+        prices.update(korea["prices"])
+        korea_agreement = KR.agreement_summary(korea["agreement"])
+        if korea["prices"]:
+            print(f"  KR sessions via {korea['source']}: {len(korea['prices'])} tickers, "
+                  f"vendor cross-check median {korea_agreement.get('medianOfMedianDifferenceBps')} bps, "
+                  f"worst {korea_agreement.get('worstTicker')} "
+                  f"{korea_agreement.get('worstDifferenceBps')} bps")
+        if korea["missing"]:
+            print(f"  warning: no Korean sessions for {len(korea['missing'])} "
+                  f"tickers (e.g. {korea['missing'][:5]})")
         # Successor securities value a held pre-merger position but must never
         # be added to the historical selection universe merely for that reason.
-        dependencies = [ticker for names in RR.successor_dependencies(corporate_actions).values()
-                        for ticker in names if ticker not in prices]
+        by_region = RR.successor_dependencies(corporate_actions)
+        dependencies = {region: [t for t in names if t not in prices]
+                        for region, names in by_region.items()}
+        dependencies = {region: names for region, names in dependencies.items() if names}
         if dependencies:
-            print(f"  fetching {len(dependencies)} corporate-action price dependencies ...")
-            prices.update(fetch_prices(dependencies, fetch_start, total_return=True))
+            total = sum(len(names) for names in dependencies.values())
+            print(f"  fetching {total} corporate-action price dependencies ...")
+            for region, names in dependencies.items():
+                # A successor is valued on the same vendor as the region it
+                # trades in, or the held position's terminal mark comes from a
+                # different price basis than the position itself.
+                if region == "KR":
+                    prices.update(KR.acquire(names, fetch_start)["prices"])
+                else:
+                    prices.update(fetch_prices(names, fetch_start, total_return=True))
 
         # Benchmarks go through their own path: vendor redundancy, a plausibility
         # check against the session calendar already on record, and the committed
@@ -263,12 +291,18 @@ def _run(argv=None) -> int:
                   f"the committed snapshot; the newest grid dates will not extend until the "
                   f"vendor recovers. This is recorded as {BS.STATUS_SNAPSHOT} in diagnostics.")
 
-        price_recovery = RR.recover_systemic_kr_gaps(
+        # The recovery existed to bridge Yahoo's market-wide Korean holes. The
+        # exchange-native vendor does not have them, so the detector still runs
+        # — a market-wide hole in the PRIMARY must be visible — but nothing is
+        # reconstructed. A genuine outage now fails the coverage gate loudly
+        # instead of being bridged from a vendor that disagrees with it.
+        price_recovery = RR.detect_systemic_kr_gaps(
             prices, fetch_universe.get("KR") or [], cfg.benchmarks["KR"],
             start=start, through=through)
-        print(f"  KR systemic price recovery: {len(price_recovery['accepted'])} accepted, "
-              f"{len(price_recovery['rejected'])} rejected across "
-              f"{len(price_recovery['systemicDates'])} market-wide gap dates")
+        print(f"  KR market-wide gap dates in the primary vendor: "
+              f"{len(price_recovery['systemicDates'])}")
+        for row in price_recovery["systemicDates"]:
+            print(f"    {row['date']}: {row['missingNames']}/{row['activeNames']} names")
 
         horizon = int(replay_cfg.get("horizonDays", 126))
         minimum_benchmark_coverage = float(
@@ -329,7 +363,14 @@ def _run(argv=None) -> int:
             calendar_rows=calendar_rows, fx_observations=fx_observations,
             fx_source_map=fx_source_map, price_recovery=price_recovery,
             corporate_actions=corporate_actions,
-            benchmark_lineage=BS.source_lineage(benchmark_diagnostics))
+            benchmark_lineage=BS.source_lineage(benchmark_diagnostics),
+            price_lineage=[
+                {"region":"KR", "vendor":"FINANCE_DATA_READER",
+                 "distributions":"YAHOO_ACTIONS", "source":korea["source"],
+                 "crossCheck":korea_agreement},
+                {"region":"US", "vendor":"YAHOO_UNADJUSTED_WITH_ACTIONS",
+                 "distributions":"YAHOO_ACTIONS", "crossCheck":None},
+            ])
         if args.dry_run:
             frozen = RI.unpack(components)
             manifest = {"sha256":RI.digest(components), "through":through, "policy":policy}
@@ -402,6 +443,7 @@ def _run(argv=None) -> int:
         },
         "corporateActionVersion":(frozen.get("corporate_actions") or {}).get("version"),
     }
+    diagnostics["priceLineage"] = frozen.get("price_lineage") or []
     events = frozen.get("corporate_events") or []
     diagnostics["inputAdjustment"] = {
         **(frozen.get("adjustment") or {}),

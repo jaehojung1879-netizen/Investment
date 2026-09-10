@@ -75,13 +75,25 @@ MODEL_VERSION = "longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-a
 # paid tomorrow appends and never rewrites a published value. The series stays
 # proportional to Yahoo's adjusted close, so nothing that is measured changes —
 # but v10's inputs cannot be reinterpreted on the new basis, so it stays sealed.
-REPLAY_VERSION = "replay-v11"
+# v12 changes where Korean prices come from. v11 proved the point that made
+# the change unavoidable: with the same-vendor retry finally narrowed to one
+# window per gap cluster, it recovered NOTHING — targetedYahooRetries: 0 across
+# all five market-wide holes — because Yahoo does not have those KRX sessions
+# at all. It serves 3,782 KOSPI 200 sessions against FinanceDataReader's 3,855.
+# The 42 names the bridge then refused on 2025-09-19 were refused against
+# Yahoo's own anchors, which differ from FDR's by a median 55 bps with no
+# relation to each name's volatility (r = -0.07). So the replay reads Korean
+# sessions from the exchange-native vendor and keeps Yahoo for the
+# distributions FDR does not publish, with Yahoo's closes recorded as a
+# cross-check rather than silently preferred away.
+REPLAY_VERSION = "replay-v12"
 FEATURE_VERSION = "hfeat-v1"
-DATA_VERSION = ("yahoo-as-traded-close-forward-total-return-v1-regional-session-download"
+DATA_VERSION = ("as-traded-close-forward-total-return-v1-regional-session-download"
+                "+krx-fdr-sessions-with-yahoo-distributions-v1"
                 "+pit-index-membership+dart-pit-fundamentals-kr"
                 "+immutable-inputs-v1+common-calendar-v2-kr-2026-closures"
                 "+fred-h10-usdkrw-fixing-v1+benchmark-vendor-lineage-v1"
-                "+fdr-systemic-gap-clustered-retry-v3"
+                "+kr-systemic-gap-detect-only-v4"
                 "+corporate-actions-v1+bok-rf-v1")
 
 # MODEL_VERSION is a compound identity, and not every component of it is a

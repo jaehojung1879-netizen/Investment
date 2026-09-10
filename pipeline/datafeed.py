@@ -132,6 +132,46 @@ def fetch_prices(tickers: list[str], start: str, batch: int = 40, *,
     return out
 
 
+def fetch_fdr_prices(tickers: list[str], start: str, *, end: str | None = None,
+                     retries: int = 3) -> dict[str, pd.DataFrame]:
+    """Korean sessions from FinanceDataReader, keyed by their Yahoo ticker.
+
+    KRX bars, quoted the way Naver quotes them: split-adjusted and
+    dividend-unadjusted, the same shape as Yahoo's `auto_adjust=False` close, so
+    `price_adjustment.to_total_return` treats them identically.
+
+    This is the exchange-native route. Yahoo's Korean history is missing 73 of
+    the 3,855 KRX sessions FDR serves, including five that are absent for the
+    WHOLE cross-section — 2017-09-22, 2017-12-20, 2022-01-03, 2022-05-09 and
+    2025-09-19 — and the narrow same-vendor retry recovered none of them on the
+    replay-v11 run. Sessions Yahoo does not have cannot be retried into
+    existence.
+    """
+    import FinanceDataReader as fdr
+
+    out: dict[str, pd.DataFrame] = {}
+    for ticker in tickers:
+        symbol = ticker.removesuffix(".KS").removesuffix(".KQ")
+        delay = 1.0
+        for attempt in range(retries):
+            try:
+                frame = fdr.DataReader(symbol, start, end)
+                if frame is not None and not frame.empty:
+                    out[ticker] = normalize_daily_frame(frame)
+                    break
+            except Exception as exc:  # pragma: no cover - network dependent
+                print(f"    warning: FinanceDataReader {ticker} "
+                      f"attempt {attempt + 1} failed: {exc}")
+            if attempt < retries - 1:
+                time.sleep(delay)
+                delay *= 2
+    missing = [t for t in tickers if t not in out]
+    if missing:
+        print(f"  warning: FinanceDataReader served no data for {len(missing)} "
+              f"tickers (e.g. {missing[:5]})")
+    return out
+
+
 def fetch_regional_prices(universe: dict[str, list[str]], start: str,
                           batch: int = 40, *, total_return: bool = False
                           ) -> dict[str, pd.DataFrame]:
