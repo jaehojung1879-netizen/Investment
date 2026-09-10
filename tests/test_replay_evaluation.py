@@ -84,6 +84,15 @@ def test_generation_benchmark_lineage_is_loaded_without_full_snapshot(tmp_path):
 
     assert store.load_component("benchmark/source",manifest)==lineage
 
+    # The audit loads the valuation slice, which projects every dated panel down
+    # to (date, ticker, Close). The lineage rows share the "benchmark/" prefix
+    # and have none of those keys, so a prefix test alone walks into them: this
+    # is the KeyError that killed the first replay-v10 audit before it could
+    # write a report, leaving replay-v9's report to be quoted as the reason.
+    slice_=store.load(manifest,valuation_only=True)
+    assert slice_["price/2020-01"]==[{"date":"2020-01-02","ticker":"A","Close":1.0}]
+    assert slice_[RI.BENCHMARK_SOURCE]==lineage
+
 
 def test_snapshot_corruption_is_not_a_new_valid_baseline(tmp_path):
     store=RI.InputStore(tmp_path,"r","d")
@@ -465,7 +474,9 @@ def test_pack_roundtrip_preserves_inputs_and_bounds_asof(tmp_path):
         universe_history=pit_data.UniverseHistory({}), fundamentals=pit_data.FundamentalStore(),
         macro=pd.DataFrame({"x":[1.,np.nan]},index=pd.to_datetime(["2020-01-01","2020-01-02"])),
         vix=None,vintages={},fx=view.fx,rates={"events":view.rates,"source":"observed fixture","verifiedThrough":view.through},
-        through=view.through,calendar_rows=[],corporate_actions=RR.load_corporate_actions())
+        through=view.through,calendar_rows=[],corporate_actions=RR.load_corporate_actions(),
+        benchmark_lineage=[{"region":"KR","ticker":"^KS200","source":"fdr",
+                            "symbol":"KS200","policy":"PINNED_FOR_GENERATION"}])
     store=RI.InputStore(tmp_path,"r","d")
     store.commit(data,through=view.through,policy={})
     frozen=RI.unpack(store.load())
@@ -608,3 +619,27 @@ def test_observed_v7_benchmark_gap_is_not_reclassified_as_a_holiday():
     dates=RC.sessions('2013-02-01','2013-02-28','UNION')
     assert view.missing_sessions('^KS200','KR',dates)==['2013-02-19']
     assert view.marks('^KS200','KR',dates) is None
+
+
+def test_incomplete_audit_is_not_reported_as_a_blocked_report(monkeypatch, capsys):
+    """A crashed audit and a blocked report must not share an exit code.
+
+    The workflow can only read the exit code, and it decides from that whether
+    to quote `ledger/historical-portfolio-validation.json` as this run's
+    verdict. On the first replay-v10 run the audit died in `InputStore.load`
+    and the workflow named replay-v9's `continuous_nav_has_unknown_intervals`
+    as the reason — an entirely different generation's evidence.
+    """
+    import importlib.util
+
+    spec = importlib.util.spec_from_file_location(
+        "audit_portfolio", Path(__file__).resolve().parent.parent / "scripts" / "audit_portfolio.py")
+    audit = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(audit)
+
+    monkeypatch.setattr(audit, "main", lambda argv=None: (_ for _ in ()).throw(KeyError("date")))
+    assert audit.run([]) == audit.INCOMPLETE != audit.BLOCKED
+    assert "wrote no validation report" in capsys.readouterr().err
+
+    monkeypatch.setattr(audit, "main", lambda argv=None: audit.BLOCKED)
+    assert audit.run([]) == audit.BLOCKED
