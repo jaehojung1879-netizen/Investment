@@ -25,7 +25,7 @@ import pandas as pd
 from . import replay_calendar as RC
 from .market_dates import normalize_daily_frame, normalize_daily_series
 
-RECOVERY_VERSION = "fred-h10-fx-v1+fdr-systemic-gap-clustered-retry-v3+corporate-actions-v1"
+RECOVERY_VERSION = "fred-h10-fx-v1+kr-systemic-gap-detect-only-v4+corporate-actions-v1"
 FX_SERIES_ID = "DEXKOUS"  # Korean won per US dollar, Federal Reserve H.10
 FX_MAX_STALENESS_DAYS = 7
 KR_MIN_MISSING_NAMES = 20
@@ -198,6 +198,27 @@ def _groups(index: pd.DatetimeIndex, selected: set[pd.Timestamp]) -> list[list[p
         else:
             groups[-1].append(index[position])
     return groups
+
+
+def detect_systemic_kr_gaps(prices: dict[str, pd.DataFrame], tickers: list[str],
+                            benchmark_ticker: str, *, start: str, through: str) -> dict:
+    """Report market-wide Korean holes without reconstructing anything.
+
+    Recovery was built for Yahoo's Korean panel, which is missing 73 KRX
+    sessions and five whole cross-sections. The replay now reads those sessions
+    from the exchange-native vendor, so there is nothing left to bridge — but a
+    market-wide hole in the PRIMARY source must still be visible, and it must
+    fail the coverage gate rather than be filled from a vendor that disagrees
+    with it by a median 55 bps.
+    """
+    benchmark_frame = prices.get(benchmark_ticker)
+    if benchmark_frame is None or "Close" not in benchmark_frame:
+        raise RecoveryError("KR benchmark is required before systemic-gap detection")
+    _, population = _systemic_dates(
+        prices, tickers, benchmark_frame["Close"], start, through)
+    return {"version": RECOVERY_VERSION, "systemicDates": population,
+            "accepted": [], "rejected": [],
+            "policy": "DETECT_ONLY; PRIMARY_VENDOR_SERVES_EVERY_SESSION"}
 
 
 def recover_systemic_kr_gaps(prices: dict[str, pd.DataFrame], tickers: list[str],
