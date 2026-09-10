@@ -50,13 +50,26 @@ matches it, and absent from the US rows.
 
 ## What v13 changes
 
-* **Ask KRX directly.** `fdr.DataReader("KRX:005930", start, end)` hits
-  `MDCSTAT01701` with the requested `strtDd`/`endDd` and pages in two-year
-  windows, so the history goes as deep as it is asked to. It serves the same
-  basis Naver and Yahoo do — split-adjusted, dividend-unadjusted
-  (`adjStkPrc: 2`) — so `price_adjustment.to_total_return` is unchanged.
+* **Ask an endpoint that takes the date.** Naver's `siseJson` endpoint accepts
+  `startTime`/`endTime` and returns the whole span, so the history goes as deep
+  as it is asked to. Same basis as before — split-adjusted,
+  dividend-unadjusted — so `price_adjustment.to_total_return` is unchanged.
+  FinanceDataReader's default route stays as a fallback, and the truncation
+  guard below means it can never quietly become the record again.
+
+  This is the second attempt. The first went to KRX's own `getJsonData`
+  (`MDCSTAT01701`, which does take `strtDd`/`endDd` and pages in two-year
+  windows) and it answered **every one of 119 Korean tickers with
+  `400 Bad Request`** from the CI runner — run #49. Only routes proven to
+  answer from CI are used.
 * **Seal only the bar.** Open, High, Low, Close, Volume. KRX also serves
   `Change`, `MarCap` and `Shares`; none of them is an input.
+* **Stop where the failure is.** Run #49 lost every Korean ticker in the fetch
+  and carried on for fifteen more minutes, to die at the benchmark preflight
+  with `KR 126D: None% (0/0)` — a message about the benchmark, for a failure in
+  the price fetch. The run now refuses to start when the Korean vendor serves
+  fewer than 90% of the requested names, and says so with the vendor and the
+  count.
 * **Refuse to seal a truncated primary.** The cross-check now records each
   name's first session in both vendors. If the primary starts more than a month
   after the cross-check for any name, the run prints what is short and exits
@@ -90,9 +103,12 @@ Alpha diagnostics from the same generation point the same way: 126-day Rank IC
 
 v13 is a new generation; v12's inputs stay sealed beside it.
 
-1. `full=true`, `frozen_inputs=false`, `retrain=false`. Check that no
-   `truncated history` error appears, that `KR market-wide gap dates in the
-   primary vendor` is 0, and that the Korean panel now reaches 2011-01-03.
+1. `full=true`, `frozen_inputs=false`, `retrain=false`. Check that neither the
+   `served only ... of ...` nor the `truncated history` error appears, that
+   `KR market-wide gap dates in the primary vendor` is 0, and that the Korean
+   panel now reaches 2011-01-03. `priceLineage[KR].routes` should read
+   `naver-range` for every name; any `fdr-default` there is a name that fell
+   back and whose depth the truncation guard then had to vouch for.
 2. `full=false`, `frozen_inputs=true` — identical input hash, schedule and
    sealed cross-sections.
 3. `full=false`, `frozen_inputs=false` — replay-v11's seal fix under test: it

@@ -168,31 +168,64 @@ def test_a_genuinely_late_listing_is_not_a_truncated_download():
     assert KR.coverage_shortfall(result["agreement"])["tickers"] == 0
 
 
-def test_only_the_bar_is_sealed_not_the_vendors_derived_columns():
-    """KRX serves Change, MarCap and Shares beside the bar; Naver serves Change.
+def test_the_date_ranged_endpoint_is_asked_first_and_only_the_bar_is_kept(monkeypatch):
+    """The route must carry the requested start, and derived columns must not
+    reach the seal.
 
-    v12 sealed that Change column into every Korean price row — a pct_change
-    computed on the pre-adjustment basis, stored next to a Close that no longer
-    matches it, and absent from the US rows.
+    v12 asked FinanceDataReader's default, whose endpoint takes no date at all,
+    and sealed Naver's derived `Change` column into every Korean price row — a
+    pct_change computed on the pre-adjustment basis, stored next to a Close that
+    no longer matches it, and absent from the US rows.
     """
     from pipeline import datafeed
 
-    dates = pd.bdate_range("2025-09-01", periods=3)
-    served = pd.DataFrame({"Open": 1.0, "High": 1.0, "Low": 1.0, "Close": 1.0,
-                           "Volume": 10.0, "Change": 0.01, "MarCap": 1e12,
-                           "Shares": 1e8}, index=dates)
+    asked = {}
 
-    class _Reader:
+    class _Response:
+        status_code = 200
+
         @staticmethod
-        def DataReader(symbol, start, end=None):
-            assert symbol.startswith("KRX:"), "must ask KRX, not the capped default"
-            return served
+        def raise_for_status():
+            return None
 
-    import sys
-    sys.modules["FinanceDataReader"] = _Reader
-    try:
-        out = datafeed.fetch_fdr_prices(["005930.KS"], "2011-01-01")
-    finally:
-        del sys.modules["FinanceDataReader"]
+        text = ("[['날짜','시가','고가','저가','종가','거래량','외국인소진율'],\n"
+                '["20110103", 19060, 19140, 18800, 18960, 249200, 0.00],\n'
+                '["20110104", 19100, 19200, 18900, 19000, 240000, 0.00]]')
 
-    assert sorted(out["005930.KS"].columns) == sorted(datafeed.OHLCV)
+    def fake_get(url, **kwargs):
+        asked["url"] = url
+        return _Response()
+
+    monkeypatch.setattr("requests.get", fake_get)
+    routes = {}
+    out = datafeed.fetch_krx_sessions(["005930.KS"], "2011-01-01",
+                                      end="2026-09-10", routes=routes)
+
+    assert "startTime=20110101" in asked["url"] and "endTime=20260910" in asked["url"]
+    assert routes == {"005930.KS": "naver-range"}
+    frame = out["005930.KS"]
+    assert sorted(frame.columns) == sorted(datafeed.OHLCV)
+    assert frame.index[0].strftime("%Y-%m-%d") == "2011-01-03"
+    assert frame["Close"].tolist() == [18960.0, 19000.0]
+
+
+def test_a_vendor_that_serves_nothing_stops_the_run(monkeypatch):
+    """replay-v13's first attempt lost all 119 Korean names to 400 Bad Request
+    and ran on for fifteen more minutes, to die at the benchmark preflight with
+    "KR 126D: None% (0/0)" — a message about the benchmark, for a failure in the
+    price fetch."""
+    empty = KR.acquire(["A.KS", "B.KS"], "2011-01-01",
+                       session_fetcher=lambda names: {},
+                       action_fetcher=lambda names: {})
+    assert "served no sessions at all" in KR.acquisition_failure(empty)
+
+    served = _sessions(SESSIONS, [1.0] * 5)
+    partial = KR.acquire([f"{i:06d}.KS" for i in range(10)], "2011-01-01",
+                         session_fetcher=lambda names: {names[0]: served},
+                         action_fetcher=lambda names: {})
+    assert "served only 1 of 10" in KR.acquisition_failure(partial)
+
+    whole = KR.acquire(["A.KS"], "2011-01-01",
+                       session_fetcher=lambda names: {"A.KS": served},
+                       action_fetcher=lambda names: {})
+    assert KR.acquisition_failure(whole) is None

@@ -8,6 +8,7 @@ tested with synthetic frames.
 """
 from __future__ import annotations
 
+import json
 import time
 
 import pandas as pd
@@ -132,56 +133,109 @@ def fetch_prices(tickers: list[str], start: str, batch: int = 40, *,
     return out
 
 
-def fetch_fdr_prices(tickers: list[str], start: str, *, end: str | None = None,
-                     retries: int = 3) -> dict[str, pd.DataFrame]:
-    """Korean sessions from FinanceDataReader, keyed by their Yahoo ticker.
+NAVER_RANGE_URL = ("https://api.finance.naver.com/siseJson.naver"
+                   "?symbol={code}&requestType=1&startTime={start}"
+                   "&endTime={end}&timeframe=day")
 
-    KRX bars, split-adjusted and dividend-unadjusted (`adjStkPrc: 2`), the same
-    shape as Yahoo's `auto_adjust=False` close, so
+
+def _naver_range_frame(code: str, start: str, end: str,
+                       timeout: int = 30) -> pd.DataFrame | None:
+    """KRX daily bars for an explicit date range.
+
+    Naver's `siseJson` endpoint takes startTime/endTime and returns the whole
+    span. The `fchart` endpoint FinanceDataReader defaults to takes no date at
+    all: it answers with a fixed trailing window of about 3,000 sessions and the
+    reader slices the requested start off what came back, which is how
+    replay-v12 sealed a Korean panel starting 2014-06-23 instead of 2011-01-03.
+    """
+    import requests
+
+    url = NAVER_RANGE_URL.format(code=code, start=start.replace("-", ""),
+                                 end=end.replace("-", ""))
+    response = requests.get(url, timeout=timeout,
+                            headers={"User-Agent": "Mozilla/5.0"})
+    response.raise_for_status()
+    # The payload is JSON-shaped but quotes its header row with apostrophes.
+    rows = json.loads(response.text.strip().replace("'", '"'))
+    if not isinstance(rows, list) or len(rows) < 2:
+        return None
+    # Positional, not by name: the header is Korean and has changed before.
+    frame = pd.DataFrame([row[:6] for row in rows[1:]],
+                         columns=["Date"] + OHLCV)
+    frame["Date"] = pd.to_datetime(frame["Date"].astype(str), format="%Y%m%d",
+                                   errors="coerce")
+    frame = frame.dropna(subset=["Date"]).set_index("Date")
+    for column in OHLCV:
+        frame[column] = pd.to_numeric(frame[column], errors="coerce")
+    frame = frame.dropna(subset=["Close"])
+    return normalize_daily_frame(frame) if len(frame) else None
+
+
+def _fdr_default_frame(code: str, start: str, end: str | None) -> pd.DataFrame | None:
+    """FinanceDataReader's own route, kept only as a fallback.
+
+    It answers, but with a capped trailing window. `korea_prices` compares every
+    name's first session against the cross-check vendor and refuses to seal a
+    truncated one, so this route can never quietly become the record again.
+    """
+    import FinanceDataReader as fdr
+
+    frame = fdr.DataReader(code, start, end)
+    if frame is None or frame.empty:
+        return None
+    keep = [c for c in OHLCV if c in frame.columns]
+    return normalize_daily_frame(frame[keep])
+
+
+def fetch_krx_sessions(tickers: list[str], start: str, *, end: str | None = None,
+                       retries: int = 3, routes: dict | None = None
+                       ) -> dict[str, pd.DataFrame]:
+    """Korean sessions, keyed by their Yahoo ticker.
+
+    KRX bars as Naver quotes them: split-adjusted and dividend-unadjusted, the
+    same shape as Yahoo's `auto_adjust=False` close, so
     `price_adjustment.to_total_return` treats them identically.
 
     This is the exchange-native route. Yahoo's Korean history is missing 73 of
-    the 3,855 KRX sessions FDR serves, including five that are absent for the
+    the 3,855 KRX sessions it serves, including five that are absent for the
     WHOLE cross-section — 2017-09-22, 2017-12-20, 2022-01-03, 2022-05-09 and
     2025-09-19 — and the narrow same-vendor retry recovered none of them on the
     replay-v11 run. Sessions Yahoo does not have cannot be retried into
     existence.
 
-    It asks KRX directly rather than taking FinanceDataReader's default. That
-    default is Naver's `fchart` endpoint, which takes NO date argument: it
-    returns a fixed trailing window and the reader then slices it, so `start` is
-    silently ignored. On the replay-v12 run it returned about 3,000 sessions per
-    name and 56 of the 68 Korean names began on 2014-06-23 instead of
-    2011-01-03 — 46,356 rows of history dropped without a single error. The KRX
-    route pages in two-year windows from the date actually requested.
+    KRX's own `getJsonData` endpoint answered every Korean ticker with
+    `400 Bad Request` from the CI runner on replay-v13's first attempt, so it is
+    not used. Only routes proven to answer from CI are, in order of how much
+    history they will give.
     """
-    import FinanceDataReader as fdr
-
+    stop = end or pd.Timestamp.today().strftime("%Y-%m-%d")
     out: dict[str, pd.DataFrame] = {}
     for ticker in tickers:
         code = ticker.removesuffix(".KS").removesuffix(".KQ")
-        delay = 1.0
-        for attempt in range(retries):
-            try:
-                frame = fdr.DataReader(f"KRX:{code}", start, end)
-                if frame is not None and not frame.empty:
-                    # KRX serves derived columns too (Change, MarCap, Shares).
-                    # Only the bar itself is an input; a vendor's own pct_change
-                    # is computed on the pre-adjustment basis and would be
-                    # sealed beside a Close that no longer matches it.
-                    keep = [c for c in OHLCV if c in frame.columns]
-                    out[ticker] = normalize_daily_frame(frame[keep])
-                    break
-            except Exception as exc:  # pragma: no cover - network dependent
-                print(f"    warning: FinanceDataReader {ticker} "
-                      f"attempt {attempt + 1} failed: {exc}")
-            if attempt < retries - 1:
-                time.sleep(delay)
-                delay *= 2
+        for name, route in (("naver-range", _naver_range_frame),
+                            ("fdr-default", _fdr_default_frame)):
+            delay = 1.0
+            for attempt in range(retries):
+                try:
+                    frame = (route(code, start, stop) if name == "naver-range"
+                             else route(code, start, end))
+                    if frame is not None and len(frame):
+                        out[ticker] = frame
+                        if routes is not None:
+                            routes[ticker] = name
+                        break
+                except Exception as exc:  # pragma: no cover - network dependent
+                    print(f"    warning: {name} {ticker} attempt "
+                          f"{attempt + 1} failed: {exc}")
+                if attempt < retries - 1:
+                    time.sleep(delay)
+                    delay *= 2
+            if ticker in out:
+                break
     missing = [t for t in tickers if t not in out]
     if missing:
-        print(f"  warning: FinanceDataReader served no data for {len(missing)} "
-              f"tickers (e.g. {missing[:5]})")
+        print(f"  warning: no Korean sessions for {len(missing)} tickers "
+              f"(e.g. {missing[:5]})")
     return out
 
 

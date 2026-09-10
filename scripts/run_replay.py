@@ -32,6 +32,7 @@ Usage:
 from __future__ import annotations
 
 import argparse
+import collections
 import json
 import sys
 import time
@@ -235,6 +236,17 @@ def _run(argv=None) -> int:
                   f"vendor cross-check median {korea_agreement.get('medianOfMedianDifferenceBps')} bps, "
                   f"worst {korea_agreement.get('worstTicker')} "
                   f"{korea_agreement.get('worstDifferenceBps')} bps")
+        # Fail where the failure is, not fifteen minutes later in a message
+        # about the benchmark. replay-v13's first attempt lost every Korean
+        # ticker to `400 Bad Request` and reported it as
+        # "benchmark preflight KR 126D: None% (0/0)".
+        unusable = KR.acquisition_failure(korea)
+        if unusable:
+            print(f"ERROR: {unusable}. Refusing to start a replay without the "
+                  f"Korean cross-section.")
+            for ticker in korea["missing"][:8]:
+                print(f"    no sessions: {ticker}")
+            return 1
         if korea["missing"]:
             print(f"  warning: no Korean sessions for {len(korea['missing'])} "
                   f"tickers (e.g. {korea['missing'][:5]})")
@@ -382,7 +394,9 @@ def _run(argv=None) -> int:
             price_lineage=[
                 {"region":"KR", "vendor":"FINANCE_DATA_READER",
                  "distributions":"YAHOO_ACTIONS", "source":korea["source"],
-                 "crossCheck":korea_agreement, "coverageShortfall":shortfall},
+                 "crossCheck":korea_agreement, "coverageShortfall":shortfall,
+                 "routes":dict(collections.Counter(
+                     (korea.get("routes") or {}).values()))},
                 {"region":"US", "vendor":"YAHOO_UNADJUSTED_WITH_ACTIONS",
                  "distributions":"YAHOO_ACTIONS", "crossCheck":None},
             ])
