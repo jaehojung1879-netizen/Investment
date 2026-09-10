@@ -89,14 +89,15 @@ def _agreement(primary: pd.DataFrame, secondary: pd.DataFrame | None) -> dict | 
 def acquire(tickers: list[str], start: str, *, end: str | None = None,
             session_fetcher=None, action_fetcher=None) -> dict:
     """Korean total-return bars, plus the evidence for how they were built."""
-    from .datafeed import AS_TRADED_WITH_ACTIONS, fetch_fdr_prices, fetch_prices
+    from .datafeed import AS_TRADED_WITH_ACTIONS, fetch_krx_sessions, fetch_prices
 
     tickers = list(dict.fromkeys(tickers))
     if not tickers:
         return {"prices": {}, "events": {}, "agreement": [], "missing": [],
-                "source": SOURCE_VERSION}
+                "routes": {}, "source": SOURCE_VERSION}
+    routes: dict[str, str] = {}
     session_fetcher = session_fetcher or (
-        lambda names: fetch_fdr_prices(names, start, end=end))
+        lambda names: fetch_krx_sessions(names, start, end=end, routes=routes))
     action_fetcher = action_fetcher or (
         lambda names: fetch_prices(names, start, end=end, auto_adjust=False,
                                    actions=True, columns=AS_TRADED_WITH_ACTIONS))
@@ -124,7 +125,32 @@ def acquire(tickers: list[str], start: str, *, end: str | None = None,
             agreement.append({"ticker": ticker, **row})
     return {"prices": prices, "events": events, "agreement": agreement,
             "missing": [t for t in tickers if t not in prices],
+            "requested": len(tickers), "routes": routes,
             "source": SOURCE_VERSION}
+
+
+# How much of the Korean universe the primary may fail to serve at all before
+# the run stops. replay-v13's first attempt got `400 Bad Request` from KRX for
+# every one of 119 names and carried on for fifteen more minutes, to die at the
+# benchmark preflight with "KR 126D: None% (0/0)" — a message about the
+# benchmark, for a failure in the price fetch.
+MINIMUM_SERVED_SHARE = 0.90
+
+
+def acquisition_failure(result: dict) -> str | None:
+    """Why the Korean acquisition cannot be used, in one line, or None."""
+    requested = int(result.get("requested") or 0)
+    if not requested:
+        return None
+    served = requested - len(result.get("missing") or [])
+    if served == 0:
+        return (f"the Korean price vendor served no sessions at all for any of "
+                f"{requested} tickers")
+    if served < requested * MINIMUM_SERVED_SHARE:
+        return (f"the Korean price vendor served only {served} of {requested} "
+                f"tickers ({served / requested:.1%}, floor "
+                f"{MINIMUM_SERVED_SHARE:.0%})")
+    return None
 
 
 def coverage_shortfall(rows: list[dict]) -> dict:
