@@ -145,3 +145,69 @@ enter every outcome, so nothing from v13 can be reinterpreted on this basis.
    raise `INPUT_VERSION_CONFLICT`.
 4. Only if all three pass and `contractValidation` is eligible, run **Build
    insight data and deploy Pages**.
+
+---
+
+# Run #53: what the honest benchmark cost
+
+v14's first production run went green — `contractValidation` VALID, `eligible:
+true`, no failures, 154 matured blocks, and `benchmark source KR 069500.KS:
+VENDOR via krx-total-return (3859 sessions through 2026-09-11)`, the primary
+route with no fallback. KR and US 126D benchmark coverage both 100.0%.
+
+The excess numbers fell, as predicted:
+
+| selector | CAGR | benchmark CAGR | annualised excess | Sharpe | MDD |
+|---|---|---|---|---|---|
+| `ALPHA_RANK_PER_DOWNSIDE_RISK` | 8.31% | 13.19% | −4.87%p (was −3.09) | 0.58 | −29.46% |
+| `CALIBRATED_EXPECTED_RETURN_PER_DOWNSIDE_RISK` | 14.22% | 13.14% | **+1.08%p (was +4.62)** | 1.06 | −25.42% |
+
+The benchmark CAGR rose **+1.39%p** for the champion's weights and **+2.51%p**
+for the challenger's — the challenger carries more KR, so it lost more of its
+apparent edge. The challenger's headline excess fell by **3.55 percentage
+points**, which is what a price-index benchmark had been worth.
+
+Portfolio CAGR moved too (15.26% → 14.22%), so the drop is not purely the
+benchmark: the run also refreshed point-in-time index membership and recorded
+324 more signals (375,084 → 375,408), which changes cross-sections and therefore
+selections. The benchmark effect is the benchmark CAGR column; the rest is the
+universe.
+
+## The consequence that matters
+
+On the paired block test — the comparison `decisiveComparison` has always named
+— the two selectors stopped being distinguishable:
+
+```
+v13:  champion − challenger  -0.567%   CI95 [-1.132, -0.101]   separated: True    CHALLENGER_BETTER
+v14:  champion − challenger  -0.427%   CI95 [-1.006, +0.042]   separated: False   INDISTINGUISHABLE
+```
+
+Each selector against its own benchmark is the same story: the challenger is
++0.048% per block with CI **[−0.495, 0.551]**, the champion −0.379% with
+**[−0.995, 0.179]**. Both contain zero, on 27 effective independent dates.
+
+`survivorshipBound` consequently reports `NOTHING_TO_BOUND` — there is no longer
+a sign for the gap to reverse. That is not an improvement in the evidence; it is
+the evidence admitting it was never there.
+
+## A verdict bug this exposed
+
+With the paired test unseparated for the first time, `historicalComparison` kept
+reporting **CHALLENGER_BETTER** — in `comparison` *and* in `promotionEvidence` —
+because those fields were computed from three point-estimate inequalities
+(excess, Sharpe, MDD) with no interval around them, while `decisiveComparison`
+pointed at the paired test beside them. Until v14 the paired test happened to
+separate every time, so the two had never disagreed and nothing caught it.
+
+`promotionEligible` is hardcoded `False`, so nothing was promoted on it. But the
+integrity gate is the next piece of work, and the moment it opens a promotion
+record would have named a winner its own decisive test cannot tell apart.
+
+`comparison_verdict()` now derives the verdict from the paired test whenever it
+ran, publishes `historicalComparisonBasis` so a reader knows which comparison
+answered, and keeps the point estimate under `pointEstimateComparison` rather
+than letting it wear the verdict's name. Report version
+`portfolio-validation-v4`. No `REPLAY_VERSION` bump: this changes how a verdict
+is labelled, not any input or any computed outcome, so v14's seal stands and no
+reacquisition is needed.
