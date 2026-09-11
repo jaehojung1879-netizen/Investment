@@ -24,16 +24,16 @@
     "KR": ["005930.KS", "000660.KS", "373220.KS", "207940.KS", "005380.KS", "000270.KS", "068270.KS", "105560.KS", "035420.KS", "012330.KS", "028260.KS", "055550.KS", "035720.KS", "051910.KS", "006400.KS", "000810.KS", "015760.KS", "032830.KS", "003670.KS", "086790.KS", "138040.KS", "010130.KS", "009150.KS", "011200.KS", "034020.KS", "033780.KS", "066570.KS", "316140.KS", "024110.KS", "010120.KS", "047040.KS", "018260.KS", "030200.KS", "009540.KS", "051900.KS", "097950.KS", "271560.KS", "004020.KS", "267260.KS", "042660.KS", "010140.KS", "329180.KS", "012450.KS", "064350.KS"]
   },
   "benchmark": "SPY",
-  "benchmarks": { "US": "SPY", "KR": "^KS200" },
+  "benchmarks": { "US": "SPY", "KR": "069500.KS" },
   "benchmarkSources": {
-    "^KS200": [
-      { "kind": "fdr", "symbol": "KS200" },
-      { "kind": "yahoo", "symbol": "^KS200" }
+    "069500.KS": [
+      { "kind": "krx-total-return", "symbol": "069500.KS" },
+      { "kind": "yahoo", "symbol": "069500.KS" }
     ],
     "SPY": [
       { "kind": "yahoo", "symbol": "SPY" }
     ],
-    "_notes": "Redundancy is across VENDORS for the SAME instrument, never across instruments. ^KS200 gets a FinanceDataReader route because a price index carries no dividend adjustment, so two vendors quote the same numbers. SPY deliberately has no second vendor: yfinance auto_adjust returns a total-return series while most alternative routes return raw close, and swapping between them mid-history would move 126D excess returns by roughly 0.65%p with nothing reporting an error. SPY relies on the committed snapshot under ledger/benchmarks/ instead. FinanceDataReader is listed first for ^KS200 because Yahoo returns a single session for that symbol on every run: it is rejected by below_known_session_calendar and the run falls through to FDR regardless, so trying it first only costs a request. Yahoo stays as the second route so the redundancy survives if FDR breaks."
+    "_notes": "Redundancy is across VENDORS for the SAME instrument, never across instruments. The KR benchmark is 069500.KS (KODEX 200), a KOSPI 200 tracking ETF, and NOT the ^KS200 index: ^KS200 is a price index that excludes its constituents' dividends, while the US benchmark SPY is an ETF whose history includes them, so KR excess return was measured against a benchmark short by roughly the KOSPI 200 dividend yield and was flattered by that much. An ETF is quoted like any listed name, so it gets the identical as-traded forward total-return basis SPY gets and the two legs finally mean the same thing. The cost is the ETF wrapper: about 0.15%/yr of fees and tracking error sits in the KR benchmark against SPY's 0.09%, which is an order of magnitude smaller than the dividend yield it removes. The primary route is krx-total-return, which takes exchange-native sessions from FinanceDataReader and distributions from Yahoo through pipeline/korea_prices: Yahoo serves 3,782 KOSPI 200 sessions against FDR's 3,855 and five of the missing ones are absent for the whole Korean cross-section, so a Yahoo-only benchmark would reintroduce the defect replay-v12 was built to fix. Yahoo stays second so the redundancy survives if the primary breaks, and both routes quote the same instrument on the same basis. SPY deliberately has no second vendor: yfinance auto_adjust returns a total-return series while most alternative routes return raw close, and swapping between them mid-history would move 126D excess returns by roughly 0.65%p with nothing reporting an error. SPY relies on the committed snapshot under ledger/benchmarks/ instead."
   },
   "primary": "QQQ",
   "runMode": "paperTrading",

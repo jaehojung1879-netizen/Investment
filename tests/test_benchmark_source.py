@@ -14,6 +14,8 @@ that cannot fail on the observed defect is not covering it.
 """
 from __future__ import annotations
 
+from pathlib import Path
+
 import numpy as np
 import pandas as pd
 import pytest
@@ -35,7 +37,7 @@ def _fetchers(**by_symbol):
         def fetch(symbol, start):
             return by_symbol.get(f"{kind}:{symbol}")
         return fetch
-    return {kind: make(kind) for kind in ("yahoo", "fdr")}
+    return {kind: make(kind) for kind in ("yahoo", "fdr", "krx-total-return")}
 
 
 # --------------------------------------------------------------------------- #
@@ -332,3 +334,91 @@ def test_rerunning_the_same_day_replaces_rather_than_duplicates(tmp_path):
 
     assert len(history) == 1
     assert history[0]["coveragePct"] == 99.0
+
+
+# --------------------------------------------------------------------------- #
+# replay-v14: the KR benchmark is a TOTAL RETURN series
+#
+# Through replay-v13 the US leg was SPY (an ETF, dividends included) and the KR
+# leg was ^KS200 (a price index, dividends excluded), so KR excess return was
+# measured against a benchmark short by the KOSPI 200 yield and was flattered by
+# it. These run the real chain — `_krx_total_return_close` -> `korea_prices`
+# -> `price_adjustment.to_total_return` — with only the vendor calls stubbed, so
+# they fail if any link stops carrying the distributions.
+# --------------------------------------------------------------------------- #
+KR_SESSIONS = pd.bdate_range("2020-01-01", "2020-06-30")
+
+
+def _flat_bar(index, close=10000.0):
+    """A benchmark that does not move, so only a dividend can lift it."""
+    return pd.DataFrame({"Open": close, "High": close, "Low": close,
+                         "Close": close, "Volume": 1000.0}, index=index)
+
+
+def _stub_kr_vendors(monkeypatch, *, sessions, actions):
+    from pipeline import datafeed
+
+    monkeypatch.setattr(datafeed, "fetch_krx_sessions",
+                        lambda names, start, **kw: {n: sessions for n in names})
+    monkeypatch.setattr(datafeed, "fetch_prices",
+                        lambda names, start, **kw: {n: actions for n in names})
+
+
+def test_kr_benchmark_accumulates_dividends_a_price_index_would_drop(monkeypatch):
+    """A flat-price benchmark that pays a dividend must still gain."""
+    paid = KR_SESSIONS[60]
+    actions = _flat_bar(KR_SESSIONS)
+    actions["Dividends"] = 0.0
+    actions.loc[paid, "Dividends"] = 200.0          # 2% of a 10,000 close
+    actions["Stock Splits"] = 0.0
+
+    _stub_kr_vendors(monkeypatch, sessions=_flat_bar(KR_SESSIONS), actions=actions)
+    series = BS._krx_total_return_close("069500.KS", "2020-01-01")
+
+    assert series is not None and len(series) == len(KR_SESSIONS)
+    # Flat prices: the price index ends where it started. Total return does not.
+    assert series.iloc[0] == pytest.approx(10000.0)
+    assert series.iloc[-1] == pytest.approx(10000.0 / (1 - 200.0 / 10000.0), rel=1e-9)
+    assert series.iloc[-1] > series.iloc[0] * 1.019
+    # And it steps exactly once, on the ex-date, not smeared across the series.
+    steps = series.pct_change().dropna().round(12)
+    assert (steps != 0).sum() == 1
+
+
+def test_kr_benchmark_sessions_come_from_the_exchange_not_the_actions_vendor(monkeypatch):
+    """Yahoo is missing KRX sessions; the benchmark must not inherit that.
+
+    Yahoo serves 3,782 KOSPI 200 sessions against FinanceDataReader's 3,855, and
+    five of the missing ones are absent for the whole Korean cross-section. The
+    benchmark takes its calendar from the exchange-native vendor, so a hole in
+    the distributions vendor costs no sessions.
+    """
+    holed = KR_SESSIONS.delete([10, 11, 12])
+    actions = _flat_bar(holed)
+    actions["Dividends"] = 0.0
+    actions["Stock Splits"] = 0.0
+
+    _stub_kr_vendors(monkeypatch, sessions=_flat_bar(KR_SESSIONS), actions=actions)
+    series = BS._krx_total_return_close("069500.KS", "2020-01-01")
+
+    assert len(series) == len(KR_SESSIONS)
+    for stamp in KR_SESSIONS[[10, 11, 12]]:
+        assert stamp in series.index
+
+
+def test_kr_benchmark_reports_nothing_when_the_exchange_vendor_is_empty(monkeypatch):
+    """No sessions is None, so `evaluate_candidate` rejects and the snapshot holds."""
+    _stub_kr_vendors(monkeypatch, sessions=None, actions=_flat_bar(KR_SESSIONS))
+    assert BS._krx_total_return_close("069500.KS", "2020-01-01") is None
+
+
+def test_kr_total_return_route_is_registered_and_preferred():
+    """The config's primary KR route must exist, or every run silently uses Yahoo."""
+    import json
+
+    assert "krx-total-return" in BS.FETCHERS
+    config = json.loads(Path("config.json").read_text())
+    assert config["benchmarks"]["KR"] == "069500.KS"
+    specs = BS.source_specs("069500.KS", config["benchmarkSources"])
+    assert [s["kind"] for s in specs] == ["krx-total-return", "yahoo"]
+    assert all(s["symbol"] == "069500.KS" for s in specs)

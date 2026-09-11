@@ -94,7 +94,10 @@ def load_config(path: Path | str = CONFIG_PATH) -> tuple[Config, list[str]]:
     universe = {region: list(dict.fromkeys(names)) for region, names in universe.items()}
     core = list(dict.fromkeys(raw.get("core", universe.get("US", ["QQQ"])[:3])))
     benchmark = raw.get("benchmark", "SPY")
-    benchmarks = {"US": benchmark, "KR": "^KS200"}
+    # KODEX 200, not ^KS200: the index is a PRICE index and SPY is an ETF, so
+    # pairing them measured KR excess against a benchmark short by the
+    # KOSPI 200 dividend yield. See pipeline/benchmark_source.
+    benchmarks = {"US": benchmark, "KR": "069500.KS"}
     benchmarks.update(raw.get("benchmarks", {}))
     # Vendor redundancy per benchmark. Every entry for one ticker must be the
     # SAME index from a different vendor: substituting a different index when

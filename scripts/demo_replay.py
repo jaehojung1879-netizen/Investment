@@ -74,7 +74,7 @@ def synthetic_market(n_tickers: int, years: int, seed: int = 20240211) -> dict:
         suffix = ".KS" if region == "KR" else ""
         prices[f"{prefix}{i:03d}{suffix}"] = frame(returns)
 
-    for benchmark in ("SPY", "^KS200"):
+    for benchmark in ("SPY", "069500.KS"):
         prices[benchmark] = frame(market, volume_scale=8.0)
     return prices
 
@@ -96,7 +96,7 @@ def main(argv=None) -> int:
         "KR": sorted(t for t in prices if t.startswith("KR")),
         "US": sorted(t for t in prices if t.startswith("US")),
     }
-    benchmarks = {"US": "SPY", "KR": "^KS200"}
+    benchmarks = {"US": "SPY", "KR": "069500.KS"}
     cfg_lt = {"minFactorSleeves": 1, "minFinancialCoverage": 0.0,
               "excludeFromRanking": []}
 
@@ -114,7 +114,7 @@ def main(argv=None) -> int:
 
     started = time.time()
     bench_closes = {name: prices[ticker]["Close"]
-                    for name, ticker in (("SPY", "SPY"), ("^KS200", "^KS200"))}
+                    for name, ticker in (("SPY", "SPY"), ("069500.KS", "069500.KS"))}
     cost_policy = {"US": {"commissionBps": 5, "spreadBps": 10, "sellTaxBps": 3},
                    "KR": {"commissionBps": 5, "spreadBps": 12, "sellTaxBps": 20}}
     outcomes = HO.compute_outcomes(signals, prices, bench_closes, cost_policy=cost_policy)
