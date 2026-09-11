@@ -1734,6 +1734,15 @@ def portfolio_replay(signals: list[dict], outcomes: list[dict], *, cfg_lt: dict,
                              "corporateActions":"VERSIONED_CASH_AND_STOCK_LEDGER",
                              "emptyPortfolioTreatment":"100_PERCENT_KRW_CASH_WITH_RISK_FREE_PROXY",
                              "benchmark":"SAME_INITIAL_REGIONAL_WEIGHTS_AND_CASH_AS_EACH_PORTFOLIO",
+                             # Through replay-v13 the US leg was SPY (an ETF, so
+                             # total return) and the KR leg was ^KS200 (a price
+                             # index, so no dividends): KR excess was flattered
+                             # by roughly the KOSPI 200 yield. Both legs are now
+                             # tracking ETFs on one basis, so the two sides of
+                             # the portfolio finally measure the same thing.
+                             "benchmarkBasis":"BOTH_LEGS_TOTAL_RETURN; US_SPY_AND_KR_KOSPI200_"
+                                              "TRACKING_ETF_ON_THE_SAME_AS_TRADED_FORWARD_BASIS; "
+                                              "REPLACES_THE_KR_PRICE_INDEX_USED_THROUGH_REPLAY_V13",
                              "blockEvidenceFloorPct":min_completeness,
                              "continuousHeadlineRequiredPct":100.0},
         "emptyPortfolioDiagnostics": empty_portfolio_diagnostics(decisions, through),

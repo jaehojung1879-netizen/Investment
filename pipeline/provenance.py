@@ -97,7 +97,26 @@ MODEL_VERSION = "longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-a
 # directly, which pages from the date actually requested, seals only the bar
 # instead of the vendor's derived columns, and refuses to seal at all when the
 # cross-check vendor proves the primary's history is truncated.
-REPLAY_VERSION = "replay-v13"
+# v14 changes what "excess return" MEANS, which is why it cannot extend v13.
+# The US benchmark is SPY — an ETF, so its history carries the dividends its
+# holdings pay. The KR benchmark was `^KS200`, which is a PRICE index and
+# carries none of them. So every KR excess return this ledger has ever
+# published was measured against a benchmark short by roughly the KOSPI 200
+# dividend yield, and was FLATTERED by that much; v12 and v13 both recorded the
+# asymmetry as a known limitation without closing it. v14 pairs SPY with a
+# KOSPI 200 tracking ETF (069500.KS), which is quoted like any listed name and
+# therefore gets the identical as-traded forward total-return basis, so the two
+# legs of the portfolio finally measure the same thing. The ETF wrapper costs
+# about 0.15%/yr of fees and tracking error against SPY's 0.09% — an order of
+# magnitude less than the yield it stops omitting, and no KOSPI 200 total-return
+# INDEX is reachable: the FinanceDataReader cache serves only ks11, kq11 and
+# ks200, all price indices, and KRX's own index endpoint requires
+# authentication. The ETF is acquired through `korea_prices`, not from Yahoo
+# alone, because Yahoo serves 3,782 KOSPI 200 sessions against FDR's 3,855 with
+# five absent for the whole cross-section: a Yahoo-only benchmark would walk the
+# v12 defect back in through the benchmark. Benchmark returns enter every
+# outcome, so v13's records stay sealed and v14 is a new full experiment.
+REPLAY_VERSION = "replay-v14"
 FEATURE_VERSION = "hfeat-v1"
 DATA_VERSION = ("as-traded-close-forward-total-return-v1-regional-session-download"
                 "+krx-native-sessions-with-yahoo-distributions-v2"
@@ -105,6 +124,7 @@ DATA_VERSION = ("as-traded-close-forward-total-return-v1-regional-session-downlo
                 "+immutable-inputs-v1+common-calendar-v2-kr-2026-closures"
                 "+fred-h10-usdkrw-fixing-v1+benchmark-vendor-lineage-v1"
                 "+kr-systemic-gap-detect-only-v4"
+                "+kr-benchmark-kospi200-tracking-etf-total-return-v1"
                 "+corporate-actions-v1+bok-rf-v1")
 
 # MODEL_VERSION is a compound identity, and not every component of it is a

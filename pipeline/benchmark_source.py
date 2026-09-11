@@ -30,10 +30,18 @@ Two mechanisms close that hole. They are different jobs and both are needed:
    for a fresh fetch. A vendor outage then costs the newest grid dates — which
    have not matured at 126 days anyway — instead of costing a decade.
 
-Redundancy is across **vendors, never across indices**. Two sources for
-``^KS200`` must both be KOSPI 200. Substituting KOSPI, or a tracking ETF, when
-the index is unavailable would change what "excess return" means halfway through
-the history — a quieter and worse error than the outage itself.
+Redundancy is across **vendors, never across instruments**. Two sources for one
+benchmark must be the same instrument. Substituting KOSPI, or a tracking ETF,
+*when the configured one is unavailable* would change what "excess return" means
+halfway through the history — a quieter and worse error than the outage itself.
+
+That rule governs FALLBACK, not the choice of benchmark. Choosing a different
+instrument deliberately is a different act: it redefines the measure for the
+whole history at once, under a new REPLAY_VERSION, with the old generation left
+sealed beside it — which is exactly how the KR benchmark moved from ``^KS200``
+to a KOSPI 200 tracking ETF in replay-v14. The failure mode this paragraph
+forbids is a series that means one thing before a vendor outage and another
+after it, and a versioned redefinition is the opposite of that.
 
 An accepted candidate is used *alone*, never merged with the snapshot. Adjusted
 closes are rescaled retroactively on every dividend, so a series stitched from
@@ -126,7 +134,40 @@ def _fdr_close(symbol: str, start: str) -> pd.Series | None:
     return _clean(frame["Close"])
 
 
-FETCHERS = {"yahoo": _yahoo_close, "fdr": _fdr_close}
+def _krx_total_return_close(symbol: str, start: str) -> pd.Series | None:
+    """A Korean listed benchmark on the SAME basis as the Korean universe panel.
+
+    The KR benchmark used to be ``^KS200``, and that is a PRICE index: it
+    excludes every distribution its constituents pay, while the US benchmark
+    (SPY) is an ETF whose history includes them. "Excess return" therefore meant
+    two different things on either side of the portfolio, and the KR side was
+    measured against a benchmark missing roughly the KOSPI 200 dividend yield —
+    so reported KR excess was FLATTERED by that much. replay-v12 and v13 both
+    recorded the asymmetry as a known limitation without closing it.
+
+    A tracking ETF closes it, because it is quoted like any other listed name:
+    ``price_adjustment.to_total_return`` gives it the identical as-traded
+    forward total-return basis SPY already gets, so the two legs finally mean
+    the same thing.
+
+    It is acquired through ``korea_prices`` rather than from Yahoo alone, and
+    that is the whole point of routing it here. Yahoo serves 3,782 KOSPI 200
+    sessions against FinanceDataReader's 3,855, and five of the missing ones are
+    absent for the entire Korean cross-section. Taking the benchmark from Yahoo
+    by itself would walk the v12 defect straight back in through the benchmark:
+    exchange-native sessions, Yahoo distributions, one basis.
+    """
+    from . import korea_prices as KR
+
+    result = KR.acquire([symbol], start)
+    frame = (result.get("prices") or {}).get(symbol)
+    if frame is None or "Close" not in frame:
+        return None
+    return _clean(frame["Close"])
+
+
+FETCHERS = {"yahoo": _yahoo_close, "fdr": _fdr_close,
+            "krx-total-return": _krx_total_return_close}
 
 
 def _clean(series: pd.Series | None) -> pd.Series | None:
