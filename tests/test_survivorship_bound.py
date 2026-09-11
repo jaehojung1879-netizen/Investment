@@ -216,3 +216,78 @@ def test_a_reversal_is_a_breakdown_and_not_reported_as_never_broke():
     assert report["atMeasuredGap"]["verdict"] == "CHAMPION_BETTER"
     assert report["atMeasuredGap"]["separated"] is True
     assert report["breakdownScale"] is not None
+
+
+# --------------------------------------------------------------------------- #
+# replay-v14: the verdict must follow the decisive test
+#
+# Observed on run #53. Correcting the KR benchmark to total return widened the
+# paired 95% interval to [-1.006, +0.042] — it contains zero, so the paired test
+# returned INDISTINGUISHABLE — while all three point-estimate inequalities still
+# favoured the challenger and `historicalComparison` went on reporting
+# CHALLENGER_BETTER in both `comparison` and `promotionEvidence`. Until v14 the
+# paired test happened to separate every time, so the two had never disagreed
+# and nothing caught it. `promotionEligible` is hardcoded False today, but the
+# integrity gate is live work: the moment it opens, that field would name a
+# winner the decisive test says cannot be told apart.
+# --------------------------------------------------------------------------- #
+CHALLENGER_ON_POINTS = {"champion_better": False, "challenger_better": True}
+
+
+def test_an_unseparated_paired_test_publishes_no_winner():
+    seen = PV.comparison_verdict(
+        {"available": True, "verdict": "INDISTINGUISHABLE", "separated": False,
+         "championMinusChallengerPct": -0.427,
+         "championMinusChallengerCi95Pct": [-1.006, 0.042]},
+        **CHALLENGER_ON_POINTS)
+
+    assert seen["historicalComparison"] == "INDISTINGUISHABLE"
+    assert seen["historicalComparisonBasis"] == "PAIRED_BLOCK_TEST_95PCT"
+    assert seen["historicalChallengerBetter"] is False
+    assert seen["historicalChampionBetter"] is False
+    # The point estimate is not deleted, only stripped of the verdict's name.
+    assert seen["pointEstimateComparison"] == "CHALLENGER_BETTER"
+    assert seen["pointEstimateChallengerBetter"] is True
+
+
+def test_a_separated_paired_test_still_names_its_winner():
+    """The fix must not flatten a real, separated result into a shrug."""
+    seen = PV.comparison_verdict(
+        {"available": True, "verdict": "CHALLENGER_BETTER", "separated": True,
+         "championMinusChallengerPct": -0.567,
+         "championMinusChallengerCi95Pct": [-1.132, -0.101]},
+        **CHALLENGER_ON_POINTS)
+
+    assert seen["historicalComparison"] == "CHALLENGER_BETTER"
+    assert seen["historicalChallengerBetter"] is True
+    assert seen["historicalComparisonBasis"] == "PAIRED_BLOCK_TEST_95PCT"
+
+
+def test_the_paired_test_overrides_the_point_estimate_not_the_reverse():
+    """Where they disagree on WHICH selector won, the interval wins."""
+    seen = PV.comparison_verdict(
+        {"available": True, "verdict": "CHAMPION_BETTER", "separated": True},
+        **CHALLENGER_ON_POINTS)
+
+    assert seen["historicalComparison"] == "CHAMPION_BETTER"
+    assert seen["historicalChampionBetter"] is True
+    assert seen["historicalChallengerBetter"] is False
+    assert seen["pointEstimateComparison"] == "CHALLENGER_BETTER"
+
+
+@pytest.mark.parametrize("paired", [None, {}, {"available": False},
+                                    {"available": False, "verdict": "CHAMPION_BETTER"}])
+def test_without_a_paired_test_the_weaker_basis_is_labelled(paired):
+    """Too few blocks to pair: fall back, but never silently."""
+    seen = PV.comparison_verdict(paired, **CHALLENGER_ON_POINTS)
+
+    assert seen["historicalComparison"] == "CHALLENGER_BETTER"
+    assert seen["historicalComparisonBasis"] == (
+        "POINT_ESTIMATE_INEQUALITY_CARRIES_NO_UNCERTAINTY")
+
+
+def test_neither_selector_dominating_on_points_is_mixed():
+    seen = PV.comparison_verdict(None, champion_better=False,
+                                 challenger_better=False)
+    assert seen["historicalComparison"] == "MIXED"
+    assert seen["historicalChallengerBetter"] is False

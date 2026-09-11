@@ -28,7 +28,7 @@ from . import replay_calendar as RC
 from . import replay_valuation as RV
 
 
-REPORT_VERSION = "portfolio-validation-v3"
+REPORT_VERSION = "portfolio-validation-v4"
 CHAMPION = KP.SELECTION_METHOD
 CHALLENGER = "CALIBRATED_EXPECTED_RETURN_PER_DOWNSIDE_RISK"
 HORIZONS = (21, 63, 126, 252)
@@ -859,6 +859,48 @@ def _bootstrap_ci(values: np.ndarray, *, draws: int = 2000, seed: int = 11) -> l
             _r(float(np.percentile(means, 97.5)) * 100, 3)]
 
 
+def comparison_verdict(paired: dict | None, *, champion_better: bool,
+                       challenger_better: bool) -> dict:
+    """Which selector history favours, decided by the test that has an interval.
+
+    Two comparisons live in this report and they can disagree. Three
+    point-estimate inequalities (excess, Sharpe, MDD) carry no uncertainty; the
+    paired block test carries a 95% interval and is what `decisiveComparison`
+    has always named. replay-v14 is where they first parted: correcting the KR
+    benchmark from a price index to total return widened the paired interval to
+    [-1.006, +0.042] — it CONTAINS ZERO, so the paired verdict was
+    INDISTINGUISHABLE — while all three point estimates still favoured the
+    challenger, and `historicalComparison` in both `comparison` and
+    `promotionEvidence` went on reporting CHALLENGER_BETTER.
+
+    Until v14 the paired test happened to separate every time, so nothing had
+    ever exercised the disagreement. `promotionEligible` is hardcoded False
+    today, but the integrity gate is live work: the moment it opens, a promotion
+    record would name a winner its own decisive test cannot tell apart.
+
+    So the verdict follows the paired test whenever it ran, the point estimate
+    is published beside it under its own name rather than wearing the verdict's,
+    and the basis says which of the two produced the answer.
+    """
+    point_estimate = ("CHAMPION_BETTER" if champion_better else
+                      "CHALLENGER_BETTER" if challenger_better else "MIXED")
+    decisive = ((paired or {}).get("verdict")
+                if (paired or {}).get("available") else None)
+    return {
+        "historicalComparison": decisive or point_estimate,
+        "historicalComparisonBasis": (
+            "PAIRED_BLOCK_TEST_95PCT" if decisive else
+            "POINT_ESTIMATE_INEQUALITY_CARRIES_NO_UNCERTAINTY"),
+        "historicalChampionBetter": (decisive or point_estimate) == "CHAMPION_BETTER",
+        "historicalChallengerBetter": (decisive or point_estimate) == "CHALLENGER_BETTER",
+        # Kept for continuity with v3 reports, under a name that says what it
+        # is: three inequalities with nothing around them.
+        "pointEstimateComparison": point_estimate,
+        "pointEstimateChampionBetter": champion_better,
+        "pointEstimateChallengerBetter": challenger_better,
+    }
+
+
 def paired_comparison(rows_by_method: dict[str, list[dict]], dates: list[str],
                       *, horizon: int) -> dict:
     """Champion minus challenger on the same blocks, with an error bar.
@@ -1663,6 +1705,9 @@ def portfolio_replay(signals: list[dict], outcomes: list[dict], *, cfg_lt: dict,
         and champion_summary["annualizedExcessPct"] > challenger_summary["annualizedExcessPct"]
         and champion_summary["sharpe"] >= challenger_summary["sharpe"]
         and champion_summary["mddPct"] >= challenger_summary["mddPct"])
+    verdict = comparison_verdict(comparison_paired,
+                                 champion_better=champion_better,
+                                 challenger_better=challenger_better)
     return {
         "available": bool(decisions[CHAMPION]),
         "basis": "PRICE_SLEEVES_ONLY_AUDIT_PROXY",
@@ -1684,10 +1729,7 @@ def portfolio_replay(signals: list[dict], outcomes: list[dict], *, cfg_lt: dict,
                                                     if region_differences else None),
             "averageSectorExposureDifferencePct": (_r(np.mean(sector_differences) * 100, 2)
                                                     if sector_differences else None),
-            "historicalChampionBetter": champion_better,
-            "historicalChallengerBetter": challenger_better,
-            "historicalComparison": ("CHAMPION_BETTER" if champion_better else
-                                     "CHALLENGER_BETTER" if challenger_better else "MIXED"),
+            **verdict,
             "productionSelector": CHAMPION,
             # The point-estimate inequality above is kept for continuity, but it
             # carries no uncertainty and is not what decides anything. This is.
@@ -1699,10 +1741,7 @@ def portfolio_replay(signals: list[dict], outcomes: list[dict], *, cfg_lt: dict,
         },
         "selectionNull": null_report,
         "promotionEvidence": {
-            "historicalChampionBetter": champion_better,
-            "historicalChallengerBetter": challenger_better,
-            "historicalComparison": ("CHAMPION_BETTER" if champion_better else
-                                     "CHALLENGER_BETTER" if challenger_better else "MIXED"),
+            **verdict,
             "prospectiveChampionBetter": "NOT_YET_MATURED",
             "prospectiveChallengerBetter": "NOT_YET_MATURED",
             "integrityGate": integrity["integrityGate"],
