@@ -2,7 +2,7 @@
   "schemaVersion": "2.7.0",
   "modelVersion": "longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
   "buildCommitSha": "30692644a276",
-  "generatedAt": "2026-09-11T23:06:03.607778+00:00",
+  "generatedAt": "2026-09-11T23:52:35.706763+00:00",
   "marketAsOf": "2026-09-11",
   "macroRegime": "Transition/Low confidence",
   "holdingsByRegion": {
@@ -10,8 +10,8 @@
       "NUE",
       "CNC",
       "SPG",
-      "HST",
       "VTRS",
+      "HST",
       "MU",
       "TGT",
       "ALL",
@@ -32,7 +32,7 @@
       "005935.KS",
       "005490.KS",
       "005930.KS",
-      "032640.KS"
+      "009540.KS"
     ]
   },
   "modelPortfolioWeights": {
@@ -46,8 +46,8 @@
     "NUE": "WAIT_FOR_PULLBACK",
     "CNC": "WAIT_FOR_PULLBACK",
     "SPG": "WATCH",
-    "HST": "WATCH",
     "VTRS": "WATCH",
+    "HST": "WATCH",
     "MU": "WAIT_FOR_PULLBACK",
     "TGT": "WAIT_FOR_PULLBACK",
     "ALL": "WATCH",
@@ -55,9 +55,9 @@
     "GOOG": "WATCH",
     "KO": "ACCUMULATE_GRADUALLY",
     "GM": "ACCUMULATE_GRADUALLY",
-    "MPC": "WAIT_FOR_PULLBACK",
     "STT": "WAIT_FOR_PULLBACK",
     "MO": "WATCH",
+    "MPC": "WAIT_FOR_PULLBACK",
     "078930.KS": "WAIT_FOR_PULLBACK",
     "402340.KS": "WAIT_FOR_PULLBACK",
     "034730.KS": "WAIT_FOR_PULLBACK",
@@ -69,9 +69,9 @@
     "005935.KS": "WAIT_FOR_PULLBACK",
     "005490.KS": "WATCH",
     "005930.KS": "WATCH",
-    "032640.KS": "WATCH",
     "009540.KS": "WATCH",
     "004170.KS": "AVOID",
+    "032640.KS": "WATCH",
     "028050.KS": "WAIT_FOR_PULLBACK"
   },
   "opportunityTiersByTicker": {
@@ -115,7 +115,7 @@
   "stale": false,
   "productionValidation": {
     "passed": true,
-    "validatedAt": "2026-09-11T23:06:03.607778+00:00",
+    "validatedAt": "2026-09-11T23:52:35.706763+00:00",
     "errors": []
   }
 }
