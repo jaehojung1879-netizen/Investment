@@ -70,11 +70,20 @@ matches it, and absent from the US rows.
   the price fetch. The run now refuses to start when the Korean vendor serves
   fewer than 90% of the requested names, and says so with the vendor and the
   count.
-* **Refuse to seal a truncated primary.** The cross-check now records each
-  name's first session in both vendors. If the primary starts more than a month
-  after the cross-check for any name, the run prints what is short and exits
-  before committing the generation. A genuinely late listing starts late in both
-  vendors, so its difference is zero and it passes.
+* **Refuse to seal a truncated primary — by shape, not by count.** The
+  cross-check records each name's first session in both vendors. A capped
+  download cuts many names to the SAME boundary, because the cap is a row count
+  measured back from today: v12 cut 56 of 68 to 2014-06-23 exactly. So the run
+  fails only when at least three names share one late start date, and reports
+  the idiosyncratic ones instead of refusing them.
+
+  The first version failed on any name the cross-check quoted earlier, and run
+  #50 showed why that is wrong: it flagged `175330.KS` at 2013-07-18 and
+  `018260.KS` at 2014-11-14 — two unrelated dates, each the day that stock began
+  trading. Yahoo quotes both earlier because it back-fills a holding company
+  with its predecessor's record and carries some names before they listed.
+  "The other vendor has more history" is not the same claim as "this download
+  was cut short".
 
 ## About those headline numbers
 
@@ -102,6 +111,16 @@ Alpha diagnostics from the same generation point the same way: 126-day Rank IC
 ## Operator sequence
 
 v13 is a new generation; v12's inputs stay sealed beside it.
+
+Run #50 is where the route was proven: **119 of 119** Korean tickers served
+through `naver-range`, with the vendor cross-check median at **0.0 bps** —
+Naver and Yahoo agree exactly on every session both quote. The run stopped only
+on the guard described above, which was the part that needed fixing.
+
+One number from that cross-check is worth watching rather than acting on:
+`001440.KS` differs from Yahoo by up to 19,177 bps. Against a median of 0.0 that
+is one name's split or capital-reduction basis, not a panel-wide problem, and it
+is recorded in `priceLineage[KR].crossCheck` for whoever looks next.
 
 1. `full=true`, `frozen_inputs=false`, `retrain=false`. Check that neither the
    `served only ... of ...` nor the `truncated history` error appears, that
