@@ -137,24 +137,56 @@ def test_a_truncated_primary_download_is_caught_by_the_cross_check():
     ignored. v12 sealed a Korean panel where 56 of 68 names began on 2014-06-23
     instead of 2011-01-03 — 46,356 rows gone — and nothing failed, because a
     short answer is still a successful answer. Only the other vendor knows.
+
+    A cap is a row count measured back from today, so it cuts every name to the
+    SAME boundary. That shared date is the signature.
     """
     full = pd.bdate_range("2011-01-03", periods=400)
-    truncated = full[300:]
-    primary = {"A.KS": _sessions(full.strftime("%Y-%m-%d"), [100.0] * len(full)),
-               "B.KS": _sessions(truncated.strftime("%Y-%m-%d"),
-                                 [100.0] * len(truncated))}
+    capped = full[300:]
+    primary = {"A.KS": _sessions(full.strftime("%Y-%m-%d"), [100.0] * len(full))}
+    for ticker in ("B.KS", "C.KS", "D.KS"):
+        primary[ticker] = _sessions(capped.strftime("%Y-%m-%d"),
+                                    [100.0] * len(capped))
     yahoo = {ticker: _yahoo(full.strftime("%Y-%m-%d"), [100.0] * len(full))
              for ticker in primary}
 
-    result = KR.acquire(["A.KS", "B.KS"], "2011-01-01",
+    result = KR.acquire(sorted(primary), "2011-01-01",
                         session_fetcher=lambda names: primary,
                         action_fetcher=lambda names: yahoo)
     shortfall = KR.coverage_shortfall(result["agreement"])
 
-    assert shortfall["tickers"] == 1
-    assert shortfall["worst"][0]["ticker"] == "B.KS"
-    assert shortfall["worst"][0]["sessions"] == 300
-    assert shortfall["worst"][0]["secondaryFirstSession"] == "2011-01-03"
+    assert shortfall["tickers"] == 3
+    assert shortfall["sharedStartDates"] == [capped[0].strftime("%Y-%m-%d")]
+    assert shortfall["missingSessions"] == 900
+    assert not shortfall["lateStartsWithoutSharedBoundary"]
+
+
+def test_two_names_with_their_own_start_dates_are_listings_not_a_cut_off():
+    """replay-v13's first working fetch flagged exactly this and was wrong.
+
+    175330.KS started 2013-07-18 and 018260.KS started 2014-11-14 — two
+    unrelated dates, each the day that stock began trading. Yahoo quotes both
+    earlier because it back-fills a holding company with its predecessor's
+    record and carries some names before they listed. Refusing the panel for
+    that would refuse a correct Korean history forever.
+    """
+    full = pd.bdate_range("2011-01-03", periods=400)
+    primary = {
+        "A.KS": _sessions(full.strftime("%Y-%m-%d"), [100.0] * len(full)),
+        "175330.KS": _sessions(full[200:].strftime("%Y-%m-%d"), [100.0] * 200),
+        "018260.KS": _sessions(full[300:].strftime("%Y-%m-%d"), [100.0] * 100),
+    }
+    yahoo = {ticker: _yahoo(full.strftime("%Y-%m-%d"), [100.0] * len(full))
+             for ticker in primary}
+
+    result = KR.acquire(sorted(primary), "2011-01-01",
+                        session_fetcher=lambda names: primary,
+                        action_fetcher=lambda names: yahoo)
+    shortfall = KR.coverage_shortfall(result["agreement"])
+
+    assert shortfall["tickers"] == 0, "two unrelated dates are not a boundary"
+    assert {row["ticker"] for row in shortfall["lateStartsWithoutSharedBoundary"]} \
+        == {"175330.KS", "018260.KS"}
 
 
 def test_a_genuinely_late_listing_is_not_a_truncated_download():

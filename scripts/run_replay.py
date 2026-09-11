@@ -255,11 +255,20 @@ def _run(argv=None) -> int:
         # — the contract still passed on 154/154 matured blocks. Refuse to seal
         # a primary the cross-check proves is truncated.
         shortfall = KR.coverage_shortfall(korea["agreement"])
+        for row in shortfall["lateStartsWithoutSharedBoundary"]:
+            # One name, its own date: a listing, not a cut-off. Said out loud
+            # because the cross-check vendor quoting it earlier is worth seeing.
+            print(f"  note: {row['ticker']} starts {row['primaryFirstSession']}, "
+                  f"{row['sessions']} sessions after the cross-check vendor's "
+                  f"{row['secondaryFirstSession']} — no shared boundary, read as "
+                  f"a listing date")
         if shortfall["tickers"]:
             print(f"ERROR: the Korean primary vendor returned a truncated history for "
-                  f"{shortfall['tickers']} tickers ({shortfall['missingSessions']} "
-                  f"sessions short of the cross-check vendor). Refusing to seal a "
-                  f"generation on a partial download.")
+                  f"{shortfall['tickers']} tickers sharing "
+                  f"{shortfall['sharedStartDates']} as a start date "
+                  f"({shortfall['missingSessions']} sessions short of the "
+                  f"cross-check vendor). A shared boundary is a capped download, "
+                  f"not a listing. Refusing to seal it.")
             for row in shortfall["worst"]:
                 print(f"    {row['ticker']}: starts {row['primaryFirstSession']} "
                       f"vs {row['secondaryFirstSession']} "

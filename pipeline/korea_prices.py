@@ -54,6 +54,20 @@ SOURCE_VERSION = "krx-native-sessions-with-yahoo-distributions-v2"
 # gone. A truncated primary is not allowed to be silent twice.
 TRUNCATION_TOLERANCE_SESSIONS = 21
 
+# How many names must share one late start date before it counts as a truncated
+# download rather than a listing date.
+#
+# A capped download cuts every name to the SAME boundary, because the cap is a
+# row count measured back from today: replay-v12 truncated 56 of 68 Korean names
+# to 2014-06-23 exactly. A real listing date is idiosyncratic — replay-v13's
+# first working fetch flagged two names, 175330.KS at 2013-07-18 and 018260.KS
+# at 2014-11-14, two unrelated dates, each the day that stock actually began
+# trading. Yahoo's earlier history for those is its own artifact: it back-fills
+# a holding company with its predecessor's record and quotes some names before
+# they listed. Treating "the cross-check has more history" as proof the primary
+# is short gets that backwards, and would refuse a correct Korean panel forever.
+TRUNCATION_CLUSTER_NAMES = 3
+
 
 def _agreement(primary: pd.DataFrame, secondary: pd.DataFrame | None) -> dict | None:
     """How far apart the two vendors are on the sessions they both quote."""
@@ -153,27 +167,50 @@ def acquisition_failure(result: dict) -> str | None:
     return None
 
 
+def _late_row(row: dict) -> dict:
+    return {"ticker": row["ticker"],
+            "primaryFirstSession": row["primaryFirstSession"],
+            "secondaryFirstSession": row["secondaryFirstSession"],
+            "sessions": row["primaryStartsLaterSessions"]}
+
+
 def coverage_shortfall(rows: list[dict]) -> dict:
-    """Names whose primary history starts materially after the cross-check's.
+    """Evidence that the primary's history was cut short by the download.
 
     This is the check replay-v12 did not have. A vendor that answers with a
     short window answers successfully, so nothing downstream can tell the
     difference between "this name listed in 2014" and "this download stopped at
     2014" — except the other vendor, which has the earlier sessions.
+
+    But "the other vendor has more" is not the same claim. What separates the
+    two is the SHAPE: a capped download cuts many names to one shared boundary,
+    a listing date belongs to one name. So only a shared late start counts as a
+    truncation; the idiosyncratic ones are reported and allowed through.
     """
     late = sorted((row for row in rows
                    if row.get("primaryStartsLaterSessions", 0)
                    > TRUNCATION_TOLERANCE_SESSIONS),
                   key=lambda row: -row["primaryStartsLaterSessions"])
+    shared: dict[str, list[dict]] = {}
+    for row in late:
+        shared.setdefault(row["primaryFirstSession"], []).append(row)
+    clustered = [group for group in shared.values()
+                 if len(group) >= TRUNCATION_CLUSTER_NAMES]
+    truncated = [row for group in clustered for row in group]
+    idiosyncratic = [row for row in late if row not in truncated]
     return {
-        "tickers": len(late),
+        "tickers": len(truncated),
         "toleranceSessions": TRUNCATION_TOLERANCE_SESSIONS,
-        "missingSessions": int(sum(row["primaryStartsLaterSessions"] for row in late)),
-        "worst": [{"ticker": row["ticker"],
-                   "primaryFirstSession": row["primaryFirstSession"],
-                   "secondaryFirstSession": row["secondaryFirstSession"],
-                   "sessions": row["primaryStartsLaterSessions"]}
-                  for row in late[:8]],
+        "clusterNames": TRUNCATION_CLUSTER_NAMES,
+        "missingSessions": int(sum(row["primaryStartsLaterSessions"]
+                                   for row in truncated)),
+        "sharedStartDates": sorted(group[0]["primaryFirstSession"]
+                                   for group in clustered),
+        "worst": [_late_row(row) for row in truncated[:8]],
+        # Not a failure: one name starting later than the cross-check is what a
+        # listing date looks like from here.
+        "lateStartsWithoutSharedBoundary": [_late_row(row)
+                                            for row in idiosyncratic[:8]],
     }
 
 
