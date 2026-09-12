@@ -2,7 +2,7 @@
   "schemaVersion": "2.7.0",
   "modelVersion": "longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
   "buildCommitSha": "e2d6aa023471",
-  "generatedAt": "2026-09-12T01:12:23.770868+00:00",
+  "generatedAt": "2026-09-12T01:31:45.586647+00:00",
   "marketAsOf": "2026-09-11",
   "macroRegime": "Transition/Low confidence",
   "holdingsByRegion": {
@@ -15,8 +15,8 @@
       "TGT",
       "VTRS",
       "ALL",
-      "SNDK",
       "GM",
+      "SNDK",
       "KO",
       "CSX"
     ],
@@ -32,7 +32,7 @@
       "005935.KS",
       "005490.KS",
       "005930.KS",
-      "009540.KS"
+      "032640.KS"
     ]
   },
   "modelPortfolioWeights": {
@@ -51,8 +51,8 @@
     "TGT": "WAIT_FOR_PULLBACK",
     "VTRS": "WATCH",
     "ALL": "WATCH",
-    "SNDK": "WAIT_FOR_PULLBACK",
     "GM": "ACCUMULATE_GRADUALLY",
+    "SNDK": "WAIT_FOR_PULLBACK",
     "KO": "ACCUMULATE_GRADUALLY",
     "CSX": "WATCH",
     "SWK": "WATCH",
@@ -69,9 +69,9 @@
     "005935.KS": "WAIT_FOR_PULLBACK",
     "005490.KS": "WATCH",
     "005930.KS": "WATCH",
+    "032640.KS": "WATCH",
     "009540.KS": "WATCH",
     "004170.KS": "AVOID",
-    "032640.KS": "WATCH",
     "028050.KS": "WAIT_FOR_PULLBACK"
   },
   "opportunityTiersByTicker": {
@@ -115,7 +115,7 @@
   "stale": false,
   "productionValidation": {
     "passed": true,
-    "validatedAt": "2026-09-12T01:12:23.770868+00:00",
+    "validatedAt": "2026-09-12T01:31:45.586647+00:00",
     "errors": []
   }
 }
