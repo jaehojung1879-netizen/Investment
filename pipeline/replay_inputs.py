@@ -71,12 +71,88 @@ def rows_frame(rows: list[dict], series=False):
     return result["value"] if series else result
 
 
+def _by_ticker(rows: list[dict]) -> dict[str, list[dict]]:
+    out: dict[str, list[dict]] = {}
+    for row in rows:
+        out.setdefault(row.get("ticker"), []).append(row)
+    return out
+
+
+def reconcile_prefix(name: str, sealed: list[dict], fresh: list[dict],
+                     sealed_tickers: set) -> tuple[list[str], list[str]]:
+    """Which tickers the vendor failed to serve, and which it served too many of.
+
+    Raises if the vendor CONTRADICTS a sealed row, which is the only difference
+    that means the published evidence would move.
+
+    WHY THIS IS NOT A WEAKENING OF THE SEAL
+    ---------------------------------------
+    Yahoo answers differently on different days for the same delisted ticker.
+    Measured across two production acquisitions of the same generation one hour
+    apart, `constituentsWithoutPriceHistoryCount` moved 286 -> 282: four of the
+    326 former index members flipped, with no code change between the runs. The
+    errors are `YFTzMissingError('possibly delisted; no timezone found')` and
+    `YFPricesMissingError(...)`, and they are intermittent.
+
+    A ticker that vanishes takes its whole decade of rows out of every monthly
+    shard it appeared in, so the byte-exact prefix check then refuses the run —
+    replay-v14 run #55 died on `corporate-events/2015-03` for exactly that. The
+    check was right that the bytes changed and wrong about what it meant: no
+    published NUMBER moved, a vendor simply declined to repeat itself.
+
+    Left unfixed this is the disease that killed v7 through v10 in a new form.
+    A generation could be acquired once and never extended, because acquisition
+    is how new replay dates enter, so the evidence base would be frozen at its
+    first cutoff and every further date would need a fresh, incomparable
+    generation.
+
+    So within a generation the SEALED rows are the authority:
+
+    * a sealed ticker the vendor did not serve is restored from the store — the
+      rows are immutable, re-downloading them can only reproduce them;
+    * a ticker that was never sealed contributes nothing before the cutoff, so
+      it cannot write history it was absent from;
+    * a sealed ticker whose values come back DIFFERENT is still a conflict, and
+      still stops the run.
+
+    The restored prefix is safe to splice onto a freshly fetched suffix only
+    because of replay-v11: on the as-traded forward total-return basis a
+    published value never moves, so the two vintages are on one basis. On
+    Yahoo's back-anchored adjusted close it would have been wrong.
+    """
+    sealed_by, fresh_by = _by_ticker(sealed), _by_ticker(fresh)
+    restored, ignored = [], []
+    for ticker in sorted(set(sealed_by) | set(fresh_by), key=lambda t: (t is None, t)):
+        if ticker not in sealed_tickers:
+            ignored.append(ticker)
+            continue
+        if ticker not in fresh_by:
+            restored.append(ticker)
+            continue
+        if digest(fresh_by[ticker]) != digest(sealed_by.get(ticker, [])):
+            raise InputVersionConflict(
+                f"{name}: {ticker} contradicts the sealed prefix; "
+                f"new DATA_VERSION/REPLAY_VERSION required")
+    return restored, ignored
+
+
+# Components whose rows carry both a date and a ticker, and so can be
+# reconciled per name. Everything else - macro, fx, calendar, the static
+# lineages - is frozen whole, because a change there is a change of policy.
+def is_reconcilable(name: str) -> bool:
+    return is_price_panel(name) or (name.startswith("corporate-events/")
+                                    and name != "corporate-events/source")
+
+
 class InputStore:
     def __init__(self, ledger, replay_version: str, data_version: str):
         self.ledger = Path(ledger)
         self.root = self.ledger / "replay-inputs"
         self.path = self.ledger / "historical" / replay_version / "inputs.json"
         self.replay_version, self.data_version = replay_version, data_version
+        # What the last commit had to repair, for the diagnostics to publish.
+        self.reconciliation = {"restored": set(), "ignored": set(),
+                               "components": []}
 
     def manifest(self):
         if not self.path.exists():
@@ -130,13 +206,39 @@ class InputStore:
             old = self.load(prior)
             if policy != prior["policy"]:
                 raise InputVersionConflict("replay policy changed; new DATA_VERSION/REPLAY_VERSION required")
+            # The generation's universe, pinned at its first acquisition. A name
+            # outside it cannot write rows into an already-published month.
+            sealed_tickers = {row["ticker"] for name, rows in old.items()
+                              if is_reconcilable(name)
+                              for row in rows if row.get("ticker")}
+            components = dict(components)
             for key in sorted(set(old) | set(components)):
                 # Undated/static inputs are frozen whole; dated inputs may only
                 # append beyond the global sealed cutoff. Missing rows are sealed too.
-                prefix = [r for r in components.get(key, [])
+                rows = components.get(key, [])
+                prefix = [r for r in rows
                           if str(r.get("date") or "") <= prior["through"]]
-                if digest(prefix) != digest(old.get(key, [])):
+                sealed = old.get(key, [])
+                if digest(prefix) == digest(sealed):
+                    continue
+                if not is_reconcilable(key):
                     raise InputVersionConflict(f"{key}: published input prefix changed/recovered; new DATA_VERSION/REPLAY_VERSION required")
+                # A vendor that declines to repeat itself has not changed the
+                # evidence. One that contradicts it has, and still raises here.
+                restored, ignored = reconcile_prefix(key, sealed, prefix,
+                                                     sealed_tickers)
+                self.reconciliation["restored"].update(restored)
+                self.reconciliation["ignored"].update(ignored)
+                if restored or ignored:
+                    self.reconciliation["components"].append(key)
+                suffix = [r for r in rows
+                          if str(r.get("date") or "") > prior["through"]]
+                # pack() emits each month ticker-major, date-ascending; the
+                # spliced month must come back in that same order or the next
+                # run's byte-exact check fails on ordering alone.
+                components[key] = sorted(
+                    sealed + suffix,
+                    key=lambda r: (str(r.get("ticker") or ""), str(r.get("date") or "")))
         refs = {}
         objects = {}
         for key, rows in sorted(components.items()):

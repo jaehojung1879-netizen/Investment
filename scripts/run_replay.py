@@ -458,7 +458,18 @@ def _run(argv=None) -> int:
     diagnostics["evaluationAsOf"] = through
     diagnostics["inputSnapshot"] = {"sha256":manifest["sha256"], "through":through,
         "manifest":str(store.path.relative_to(ledger_dir)), "schema":RI.SCHEMA,
-        "componentHashes":manifest.get("componentHashes", {})}
+        "componentHashes":manifest.get("componentHashes", {}),
+        # What the seal had to repair because the vendor answered differently
+        # this run than at the generation's first acquisition. Never silent: a
+        # restored name is one whose sealed rows were used because the vendor
+        # declined to serve it, an ignored one is a name that was never sealed
+        # and so may not write into an already-published month.
+        "prefixReconciliation":{
+            "restoredTickers":sorted(store.reconciliation["restored"]),
+            "ignoredTickers":sorted(t for t in store.reconciliation["ignored"] if t),
+            "components":len(store.reconciliation["components"]),
+            "policy":"SEALED_ROWS_ARE_AUTHORITATIVE; "
+                     "A_CONTRADICTED_VALUE_STILL_CONFLICTS"}}
     kr_recovery_rows = frozen.get("price_recovery") or []
     recovered_rows = [row for row in kr_recovery_rows if row.get("kind") == "accepted"]
     diagnostics["inputRecovery"] = {
