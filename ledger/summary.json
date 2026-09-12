@@ -1,14 +1,14 @@
 {
   "modelVersion": "longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
-  "dataVersion": "as-traded-close-forward-total-return-v1-regional-session-download+krx-native-sessions-with-yahoo-distributions-v2+pit-index-membership+dart-pit-fundamentals-kr+immutable-inputs-v1+common-calendar-v2-kr-2026-closures+fred-h10-usdkrw-fixing-v1+benchmark-vendor-lineage-v1+kr-systemic-gap-detect-only-v4+corporate-actions-v1+bok-rf-v1",
+  "dataVersion": "as-traded-close-forward-total-return-v1-regional-session-download+krx-native-sessions-with-yahoo-distributions-v2+pit-index-membership+dart-pit-fundamentals-kr+immutable-inputs-v1+common-calendar-v2-kr-2026-closures+fred-h10-usdkrw-fixing-v1+benchmark-vendor-lineage-v1+kr-systemic-gap-detect-only-v4+kr-benchmark-kospi200-tracking-etf-total-return-v1+corporate-actions-v1+bok-rf-v1",
   "generationIsolation": {
     "method": "EXACT_SCORING_VERSION",
     "scoringVersion": "longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3",
     "plumbingComponentsIgnored": [
       "daily-session"
     ],
-    "excludedPriorModelOutcomes": 8204,
-    "excludedPriorModelPortfolioOutcomes": 10
+    "excludedPriorModelOutcomes": 8702,
+    "excludedPriorModelPortfolioOutcomes": 11
   },
   "validationStatus": {
     "paperDays": 41,
@@ -17,8 +17,8 @@
     "modelVersion": "longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
     "generationIsolated": true,
     "excludedPriorModelSignals": 9957,
-    "excludedPriorModelOutcomes": 8204,
-    "signalsRecorded": 10498,
+    "excludedPriorModelOutcomes": 8702,
+    "signalsRecorded": 10997,
     "uniqueDates": 21,
     "maturedUniqueDates": 0,
     "firstSignalDate": "2026-07-17",
