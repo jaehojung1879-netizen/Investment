@@ -44,7 +44,17 @@ def test_common_calendar_excludes_both_countries_holidays():
     assert pd.Timestamp("2024-08-15") not in common
 
 
-def test_snapshot_reuses_objects_and_refuses_revision_recovery_and_removal(tmp_path):
+def test_snapshot_reuses_objects_and_refuses_a_revised_value(tmp_path):
+    """A sealed NUMBER may never move; which names a vendor served may.
+
+    This used to refuse any prefix difference at all, including a name the
+    vendor simply failed to serve on the second run. replay-v14 run #55 showed
+    what that costs: Yahoo drops delisted tickers intermittently (measured
+    286 -> 282 missing across two acquisitions an hour apart, no code change),
+    and every flip refused the run. See
+    tests/test_input_prefix_reconciliation.py for the availability cases; what
+    is pinned HERE is that the teeth are still in.
+    """
     store = RI.InputStore(tmp_path, "r", "d")
     data = {"price/2020-01":[{"date":"2020-01-02", "ticker":"A", "Close":100.0}],
             "macro":[], "universe":[{"names":["A","B"]}]}
@@ -53,9 +63,12 @@ def test_snapshot_reuses_objects_and_refuses_revision_recovery_and_removal(tmp_p
     assert store.commit(data, through="2020-01-31", policy={"fixed":True}) == m1
     assert before == {p.name:p.read_bytes() for p in (tmp_path / "replay-inputs/objects").iterdir()}
     for changed in [
+        # A sealed name coming back with a different close.
         {**data,"price/2020-01":[{"date":"2020-01-02", "ticker":"A", "Close":101.0}]},
-        {**data,"price/2020-01":data["price/2020-01"]+[{"date":"2020-01-03","ticker":"B","Close":50}]},
-        {**data,"price/2020-01":[]},
+        # A sealed name growing an extra session inside a published month.
+        {**data,"price/2020-01":data["price/2020-01"]
+                                + [{"date":"2020-01-03","ticker":"A","Close":50}]},
+        # An undated input is frozen whole: a change there is policy drift.
         {**data,"macro":[{"date":"2020-01-15","value":2}]},
     ]:
         with pytest.raises(RI.InputVersionConflict):
@@ -739,7 +752,7 @@ def test_yahoos_adjusted_close_would_have_been_refused_by_the_same_store(tmp_pat
         {"date": d, "ticker": "A", "Close": c}
         for d, c in zip(pd.bdate_range("2020-01-01", periods=4).strftime("%Y-%m-%d"), closes)]},
         through="2020-01-06", policy={})
-    with pytest.raises(RI.InputVersionConflict, match="prefix changed"):
+    with pytest.raises(RI.InputVersionConflict, match="contradicts the sealed prefix"):
         store.commit({"price/2020-01": [
             {"date": d, "ticker": "A", "Close": c * factor}
             for d, c in zip(pd.bdate_range("2020-01-01", periods=4).strftime("%Y-%m-%d"), closes)]
