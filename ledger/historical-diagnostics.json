@@ -15,8 +15,8 @@
   "firstDate": "2013-01-04",
   "lastDate": "2026-09-04",
   "replayDates": 714,
-  "signalsGenerated": 375408,
-  "signalsSkippedAlreadyPresent": 0,
+  "signalsGenerated": 0,
+  "signalsSkippedAlreadyPresent": 375408,
   "meanPitCoverage": 0.7888,
   "survivorshipRisk": "HIGH",
   "survivorshipNote": "SURVIVORSHIP_BIAS_UNRESOLVED",
@@ -1976,140 +1976,12 @@
     "reason": null
   },
   "benchmarkPanel": {
-    "policy": "PINNED_VENDOR_LINEAGE_THEN_MATCHING_COMMITTED_SNAPSHOT",
-    "minSnapshotCoveragePct": 98.0,
-    "minSessionsPerYearForBootstrap": 180,
-    "byRegion": {
-      "US": {
-        "ticker": "SPY",
-        "status": "VENDOR",
-        "source": "yahoo",
-        "symbol": "SPY",
-        "lineageSource": "yahoo",
-        "lineageSymbol": "SPY",
-        "sessions": 3946,
-        "firstSession": "2011-01-03",
-        "lastSession": "2026-09-11",
-        "candidates": [
-          {
-            "source": "yahoo",
-            "symbol": "SPY",
-            "accepted": true,
-            "reason": null,
-            "sessions": 3946,
-            "snapshotCoveragePct": 100.0,
-            "minimumSessions": null,
-            "firstSession": "2011-01-03",
-            "lastSession": "2026-09-11"
-          }
-        ],
-        "snapshotSessions": 3945
-      },
-      "KR": {
-        "ticker": "069500.KS",
-        "status": "VENDOR",
-        "source": "krx-total-return",
-        "symbol": "069500.KS",
-        "lineageSource": "krx-total-return",
-        "lineageSymbol": "069500.KS",
-        "sessions": 3859,
-        "firstSession": "2011-01-03",
-        "lastSession": "2026-09-11",
-        "candidates": [
-          {
-            "source": "krx-total-return",
-            "symbol": "069500.KS",
-            "accepted": true,
-            "reason": null,
-            "sessions": 3859,
-            "snapshotCoveragePct": null,
-            "minimumSessions": 1412,
-            "firstSession": "2011-01-03",
-            "lastSession": "2026-09-11"
-          },
-          {
-            "source": "yahoo",
-            "symbol": "069500.KS",
-            "accepted": true,
-            "reason": null,
-            "sessions": 3827,
-            "snapshotCoveragePct": null,
-            "minimumSessions": 1412,
-            "firstSession": "2011-01-03",
-            "lastSession": "2026-09-11"
-          }
-        ],
-        "snapshotSessions": 0
-      }
-    },
+    "byRegion": {},
     "degradedRegions": [],
     "unavailableRegions": [],
-    "snapshotsUpdated": [
-      "069500.KS",
-      "SPY"
-    ],
-    "indexMixingForbidden": true
+    "policy": "FROZEN_INPUT_SNAPSHOT",
+    "snapshotsUpdated": []
   },
-  "formerMemberRecovery": {
-    "US": {
-      "describedFormerMembers": 326,
-      "priced": 148,
-      "pricedPct": 45.4,
-      "byYearLeft": {
-        "2013": {
-          "priced": 11,
-          "described": 22
-        },
-        "2014": {
-          "priced": 8,
-          "described": 19
-        },
-        "2015": {
-          "priced": 5,
-          "described": 19
-        },
-        "2016": {
-          "priced": 13,
-          "described": 35
-        },
-        "2017": {
-          "priced": 6,
-          "described": 11
-        },
-        "2018": {
-          "priced": 11,
-          "described": 32
-        },
-        "2020": {
-          "priced": 27,
-          "described": 58
-        },
-        "2021": {
-          "priced": 13,
-          "described": 26
-        },
-        "2022": {
-          "priced": 9,
-          "described": 28
-        },
-        "2023": {
-          "priced": 10,
-          "described": 18
-        },
-        "2024": {
-          "priced": 12,
-          "described": 21
-        },
-        "2025": {
-          "priced": 5,
-          "described": 9
-        },
-        "2026": {
-          "priced": 18,
-          "described": 28
-        }
-      }
-    }
-  },
+  "formerMemberRecovery": {},
   "benchmarkCoverageRegressions": []
 }
