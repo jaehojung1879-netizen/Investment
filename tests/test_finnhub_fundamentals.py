@@ -535,3 +535,173 @@ def test_an_empty_store_is_an_error_rather_than_a_verdict(tmp_path):
     store = tmp_path / "us"
     store.mkdir()
     assert M.main([str(store)]) == 1
+
+
+# --------------------------------------------------------------------------- #
+# A transition 10-K is not a year
+# --------------------------------------------------------------------------- #
+def test_a_ten_k_covering_one_quarter_is_not_read_as_the_year():
+    """LYB filed a 10-K for 2012-10-01..12-31 — 91 days — when it moved its
+    fiscal year end. Taking that as the annual term of
+    `FY(Y-1) − cum(Y-1,Q) + cum(Y,Q)` understates the year roughly fourfold,
+    and the result looks like an ordinary number all the way down."""
+    record = _flow("LYB", 2012, "Q1", 1.0)
+    record["form"] = "10-K"
+    assert FF.quarter_stage(record) == FF.Q1
+
+
+def test_a_ten_k_covering_three_quarters_is_not_read_as_the_year():
+    """DRI's transition report: 2013-05-01..12-31, 244 days."""
+    record = _flow("DRI", 2013, "Q3", 1.0)
+    record["form"] = "10-K"
+    assert FF.quarter_stage(record) == FF.Q3
+
+
+def test_a_filing_stating_no_span_is_given_no_stage():
+    """One 10-K states a zero-day period. A zero-day span is as unusable as a
+    missing one, and a guess here enters the rollforward as a real term."""
+    record = _flow("GEN", 2013, "FY", 1.0)
+    record["periodDays"] = 0
+    assert FF.quarter_stage(record) is None
+    record["periodDays"] = None
+    assert FF.quarter_stage(record) is None
+    record["periodDays"] = 420
+    assert FF.quarter_stage(record) is None
+
+
+def test_an_ordinary_annual_report_is_still_the_full_year():
+    record = _flow("AAPL", 2012, "FY", 1.0)
+    record["form"] = "10-K"
+    assert FF.quarter_stage(record) == FF.FY
+
+
+# --------------------------------------------------------------------------- #
+# Units that only mean something inside the filing that used them
+# --------------------------------------------------------------------------- #
+def _opaque_filing():
+    """AMD's 2012 10-Q, in the shape the store holds it: every dollar figure
+    under `unit1`, both EPS figures under `unit14`."""
+    return {"ticker": "AMD", "fiscalYear": 2012, "form": "10-Q", "periodDays": 90,
+            "statements": {
+                "ic": [
+                    {"concept": "us-gaap_NetIncomeLoss", "unit": "unit1", "value": -590e6},
+                    {"concept": "us-gaap_CostOfGoodsSold", "unit": "unit1", "value": 1558e6},
+                    {"concept": "us-gaap_EarningsPerShareBasic", "unit": "unit14", "value": -0.79},
+                    {"concept": "us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
+                     "unit": "unit3", "value": 745e6},
+                ],
+                "bs": [{"concept": "us-gaap_Assets", "unit": "unit1", "value": 4000e6}],
+                "cf": []}}
+
+
+def test_a_filers_own_unit_id_is_resolved_from_the_concepts_it_carries():
+    resolved = FF.resolve_units(_opaque_filing())
+    assert resolved["unit1"] == FF.CURRENCY
+    assert resolved["unit14"] == FF.PER_SHARE
+    assert resolved["unit3"] == FF.SHARES
+
+
+def test_the_same_label_can_mean_different_things_in_different_filings():
+    """`unit1` carries dollars in one filing and a share count in another, so
+    no table mapping the label to a meaning can exist — it resolves per
+    filing or not at all."""
+    money = _opaque_filing()
+    shares = {"ticker": "X", "statements": {"ic": [
+        {"concept": "us-gaap_WeightedAverageNumberOfSharesOutstandingBasic",
+         "unit": "unit1", "value": 1e6}], "bs": [], "cf": []}}
+    assert FF.resolve_units(money)["unit1"] == FF.CURRENCY
+    assert FF.resolve_units(shares)["unit1"] == FF.SHARES
+
+
+def test_a_label_with_no_anchor_stays_unclassified():
+    """Guessing from how many values a label holds, or from what the other
+    labels turned out to be, invents a unit for a number we would then spend."""
+    record = {"ticker": "X", "statements": {"ic": [
+        {"concept": "AcmeCorp_SomethingUnusual", "unit": "unit9", "value": 1.0}],
+        "bs": [], "cf": []}}
+    assert FF.resolve_units(record)["unit9"] == FF.UNCLASSIFIED
+
+
+def test_resolution_never_overrides_a_label_that_reads_on_its_own():
+    """`usd/shares` is per-share whatever concepts happen to sit under it."""
+    record = {"ticker": "X", "statements": {"ic": [
+        {"concept": "us-gaap_Assets", "unit": "usd/shares", "value": 1.0}],
+        "bs": [], "cf": []}}
+    assert FF.resolve_units(record)["usd/shares"] == FF.PER_SHARE
+
+
+def test_a_per_share_anchor_wins_over_a_currency_one_on_the_same_label():
+    """If both anchors sit under one label, one of them is wrong, and reading a
+    per-share figure as money is the error nothing downstream can see."""
+    record = {"ticker": "X", "statements": {"ic": [
+        {"concept": "us-gaap_Assets", "unit": "unitQ", "value": 1.0},
+        {"concept": "us-gaap_EarningsPerShareBasic", "unit": "unitQ", "value": 2.0}],
+        "bs": [], "cf": []}}
+    assert FF.resolve_units(record)["unitQ"] == FF.PER_SHARE
+
+
+def test_the_measurement_reads_values_under_a_filers_own_unit_id():
+    """17,573 stored values sit under such labels. A measurement that skipped
+    them would be answering from a smaller sample than it has."""
+    rows = []
+    for i in range(FF.MIN_RATIOS + 5):
+        for stage, value in (("Q1", 100e6), ("Q2", 200e6), ("Q3", 300e6), ("FY", 400e6)):
+            row = _flow(f"O{i:03d}", 2012, stage, value)
+            row["statements"]["ic"][0]["unit"] = "unit1"
+            row["statements"]["ic"].append(
+                {"concept": "us-gaap_Assets", "unit": "unit1", "value": 1e9})
+            rows.append(row)
+    result = FF.period_semantics(rows)
+    assert result["counts"]["tickerYears"] == FF.MIN_RATIOS + 5
+    assert result["verdict"] == FF.CUMULATIVE
+
+
+def test_the_inventory_reports_both_readings_of_the_units():
+    """The gap between them is how many values a label-only derivation drops,
+    and a report that showed only one reading could not say there was a gap."""
+    inv = FF.inventory([_opaque_filing()])
+    assert inv["unitClasses"][FF.UNCLASSIFIED] == 5
+    assert inv["unitClassesResolved"][FF.CURRENCY] == 3
+    assert inv["unitClassesResolved"][FF.PER_SHARE] == 1
+    assert inv["unitClassesResolved"][FF.SHARES] == 1
+    assert FF.UNCLASSIFIED not in inv["unitClassesResolved"]
+
+
+def test_a_unit_that_is_not_money_is_left_alone_rather_than_spent():
+    """`number`, `pure` and `store` survive resolution as unclassified, and so
+    does `eur` — a euro figure counted as currency would be added to dollars."""
+    record = {"ticker": "X", "statements": {"ic": [
+        {"concept": "us-gaap_ConcentrationRiskPercentage", "unit": "pure", "value": 0.3},
+        {"concept": "Acme_NumberOfStores", "unit": "store", "value": 120},
+        {"concept": "us-gaap_Revenues", "unit": "eur", "value": 5e6}],
+        "bs": [], "cf": []}}
+    resolved = FF.resolve_units(record)
+    assert resolved["pure"] == FF.UNCLASSIFIED
+    assert resolved["store"] == FF.UNCLASSIFIED
+    assert resolved["eur"] == FF.UNCLASSIFIED, "유로를 달러에 더할 수는 없다"
+
+
+def test_a_named_unit_never_becomes_dollars_on_the_strength_of_an_anchor():
+    """An anchor says a label holds a monetary amount. It cannot say the amount
+    is in dollars, and `currency` means dollars everywhere below this."""
+    record = {"ticker": "X", "statements": {"ic": [
+        {"concept": "us-gaap_Revenues", "unit": "eur", "value": 5e6}],
+        "bs": [], "cf": []}}
+    assert FF.resolve_units(record)["eur"] == FF.UNCLASSIFIED
+
+
+def test_a_generated_label_still_resolves_to_dollars():
+    """The 17,573 values this whole mechanism exists for."""
+    record = {"ticker": "X", "statements": {"ic": [
+        {"concept": "us-gaap_NetIncomeLoss", "unit": "unit12", "value": 5e6}],
+        "bs": [], "cf": []}}
+    assert FF.resolve_units(record)["unit12"] == FF.CURRENCY
+
+
+def test_a_named_label_can_still_be_per_share_or_shares():
+    """A per-share figure has no denomination to get wrong, so `eps` — 163
+    values in the store, all under EPS tags — resolves."""
+    record = {"ticker": "X", "statements": {"ic": [
+        {"concept": "us-gaap_EarningsPerShareBasic", "unit": "eps", "value": 1.2}],
+        "bs": [], "cf": []}}
+    assert FF.resolve_units(record)["eps"] == FF.PER_SHARE
