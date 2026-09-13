@@ -427,3 +427,28 @@ def test_the_scheduled_us_budget_can_finish_the_backfill_unattended():
     # the call ceiling to mean anything.
     assert minutes * 60 >= 13_580 * FF.PACE_SECONDS, \
         "남은 창을 1.1초 간격으로 도는 데 필요한 시간보다 분 예산이 짧다"
+
+
+def test_the_shared_budget_inputs_default_to_empty():
+    """A non-empty default is SENT on every dispatch, so it overrides the
+    per-region ceiling and makes every hand-started run a small one. The mobile
+    app cannot pass inputs at all, so from a phone there is no way to override
+    that override — the run just silently collects a slice instead of the
+    backfill it was pressed for."""
+    import re
+
+    workflow = _fundamentals_workflow()
+    inputs = workflow[workflow.index("  workflow_dispatch:"):workflow.index("\npermissions:")]
+    for name in ("max_calls", "max_minutes"):
+        block = inputs[inputs.index(f"      {name}:"):]
+        default = re.search(r'default: "(.*)"', block).group(1)
+        assert default == "", \
+            f"{name} 기본값 {default!r} 이 지역별 상한을 덮어쓴다"
+
+
+def test_a_typed_budget_still_wins_over_the_region_ceiling():
+    """Emptying the defaults must not remove the override itself: a short run
+    has to stay possible for anyone who wants one."""
+    workflow = _fundamentals_workflow()
+    for ceiling in ("1500", "16600"):
+        assert f"inputs.max_calls || '{ceiling}'" in workflow
