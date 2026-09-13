@@ -50,12 +50,16 @@ probe asked, plus one this project has never asked and needs:
      concept, and which one answered is recorded.
   5. THE NAMES THAT ARE GONE. 219 of the 829 US names in
      `data/universe-history.json` were members before 2013 and have since
-     been delisted — SHLD, ANR, LXK, PCS. A vendor that serves only currently
-     listed tickers reproduces, in the US fundamentals, exactly the
-     survivorship hole this replay spent v12-v13 closing in Korean prices.
-     Living and departed names are measured as SEPARATE cohorts and never
-     pooled: pooled, a vendor that drops every dead name looks like a vendor
-     with a coverage percentage.
+     left the universe. A vendor that serves only currently listed tickers
+     reproduces, in the US fundamentals, exactly the survivorship hole this
+     replay spent v12-v13 closing in Korean prices. Living and departed names
+     are measured as SEPARATE cohorts and never pooled: pooled, a vendor that
+     drops every dead name looks like a vendor with a coverage percentage.
+     The departed cohort is the names that left EARLIEST — those are the ones
+     the replay's first cross-sections actually held, and the most likely to
+     be genuinely retired rather than merely dropped from the index. That
+     distinction is measured, not assumed: see `departed_samples` and the
+     `DEPARTED_REFUSED` verdict.
 
 WHAT THIS IS NOT. It is not a backfill and writes nothing to the ledger. It
 reports. A vendor with no key in the environment is reported as exactly that
@@ -587,6 +591,7 @@ KEY_REFUSED = "KEY_REFUSED"
 NO_POINT_IN_TIME = "NO_POINT_IN_TIME"
 TOO_SHALLOW = "TOO_SHALLOW"
 LIVING_ONLY = "LIVING_ONLY"
+DEPARTED_REFUSED = "DEPARTED_REFUSED"
 OPEN = "OPEN"
 
 
@@ -603,6 +608,16 @@ def vendor_verdict(reach: str, key_present: bool, living: dict, departed: dict) 
     reports as "73% coverage", when what it actually has is a survivorship
     hole in exactly the shape v12-v13 spent two generations closing in Korean
     prices.
+
+    `DEPARTED_REFUSED` splits that verdict in two, and run #1 is why. FMP
+    refused all four departed names with `Special Endpoint : This value set
+    for 'symbol' is not available under your current subscription` — and one
+    of those four, `AA`, is a name that still trades today. A sentence about
+    a SUBSCRIPTION is not evidence that the vendor lacks retired tickers; it
+    says the plan's symbol universe is cut, which a paid plan may fix. An
+    EMPTY answer for the same name is the other finding: the vendor was
+    willing to answer and had nothing. Those point at a price and at a
+    survivorship hole respectively, so they do not share a verdict.
     """
     if reach == BLOCK_PAGE:
         return {"verdict": HOST_REFUSED,
@@ -644,11 +659,23 @@ def vendor_verdict(reach: str, key_present: bool, living: dict, departed: dict) 
                             f"닿지 않습니다"),
                 "depths": sorted({d for d in depths})}
     if departed and not departed_ok:
+        departed_depths = [row["depth"] for row in departed.values()]
+        if all(d == REFUSED for d in departed_depths):
+            return {"verdict": DEPARTED_REFUSED,
+                    "meaning": ("살아 있는 이름은 2013년까지 닿지만 유니버스를 떠난 "
+                                "이름은 벤더가 종목 단위로 거절했습니다. 거절 문장이 "
+                                "구독 문제인지 미보유인지를 말해 줍니다 — 아직 "
+                                "생존 편향이라고 단정하면 안 됩니다"),
+                    "livingServed": living_ok,
+                    "refusals": sorted({str(r.get("detail"))[:200]
+                                        for r in departed.values() if r.get("detail")})}
         return {"verdict": LIVING_ONLY,
-                "meaning": ("상장 중인 이름은 2013년까지 닿지만 상장폐지된 이름은 "
-                            "하나도 오지 않았습니다 — 생존 편향이 있는 미국 재무 "
+                "meaning": ("살아 있는 이름은 2013년까지 닿는데 유니버스를 떠난 "
+                            "이름에는 빈 응답이 왔습니다 — 벤더가 답할 의사는 있었고 "
+                            "가진 게 없었다는 뜻이므로, 생존 편향이 있는 미국 재무 "
                             "패널이 됩니다"),
-                "livingServed": living_ok}
+                "livingServed": living_ok,
+                "departedDepths": sorted(set(departed_depths))}
     return {"verdict": OPEN,
             "meaning": ("살아 있는 이름과 사라진 이름 모두 공시일이 붙은 2013년 "
                         "재무를 돌려줬습니다 — 미국 경로가 열립니다"),
@@ -831,22 +858,34 @@ def probe_sec_hosts() -> dict:
 # ---------------------------------------------------------------------------
 def departed_samples(path: Path = UNIVERSE_HISTORY, count: int = 4,
                      before: str = REPLAY_START) -> list[str]:
-    """Names the replay HELD before it starts and that no longer exist.
+    """Names the replay HELD before it starts and that left the universe.
 
-    Read from the membership file rather than hardcoded, so the cohort cannot
-    drift away from the universe it is supposed to represent. Sorted, so the
-    same four names are asked every run and two runs are comparable.
+    WHAT `delisted` IN THAT FILE ACTUALLY MEANS, because run #1 showed the
+    difference matters: it is the day the name left the SCREENING UNIVERSE,
+    not the day its ticker stopped trading. `AA` left on 2017-03-08 and Alcoa
+    trades under it today; `AET` left in 2020 because CVS bought Aetna and the
+    ticker is genuinely retired. Both are in this cohort and they pose
+    different questions to a vendor, so the cohort is named for what the file
+    says (left the universe) and the vendor's own answer per name — refused,
+    or empty — is what separates them. See `vendor_verdict`.
+
+    Ordered by WHEN THEY LEFT, earliest first. Alphabetical order picked AA,
+    ABC, ACE, AET — an accident of spelling that put a still-trading name at
+    the front of a cohort meant to ask about names that are gone. The ones
+    that left first are both the most likely to be genuinely retired and the
+    ones the replay's earliest cross-sections actually held. Ties break
+    alphabetically so two runs stay comparable.
     """
     try:
         rows = json.loads(Path(path).read_text(encoding="utf-8"))
     except Exception:
         return list(DEFAULT_DEPARTED[:count])
     eligible = sorted(
-        ticker for ticker, row in rows.items()
+        (str(row.get("delisted")), ticker) for ticker, row in rows.items()
         if row.get("region") == "US" and row.get("delisted")
         and str(row.get("listed") or "9999") < before
     )
-    return eligible[:count] or list(DEFAULT_DEPARTED[:count])
+    return [ticker for _, ticker in eligible[:count]] or list(DEFAULT_DEPARTED[:count])
 
 
 # ---------------------------------------------------------------------------
@@ -1012,8 +1051,10 @@ def main(argv=None) -> int:
 
     print(f"리플레이 시작 {REPLAY_START} · 창 {WINDOW_START}..{WINDOW_END}")
     print(f"살아 있는 표본 {living}")
-    print(f"사라진 표본   {departed}   "
-          f"(data/universe-history.json 의 미국 이름 {universe}개 중 상장폐지분)")
+    # "상장폐지"가 아니라 "유니버스 이탈"입니다 — 그 둘을 같은 말로 쓴 것이
+    # run #1에서 아직 거래되는 AA 를 사라진 이름으로 읽게 만들 뻔했습니다.
+    print(f"유니버스 이탈 표본 {departed}   "
+          f"(data/universe-history.json 의 미국 이름 {universe}개 중, 먼저 떠난 순)")
     print()
 
     report: dict = {"contract": "US_PIT_SOURCE_PROBE_V1", "replayStart": REPLAY_START,
@@ -1049,14 +1090,15 @@ def main(argv=None) -> int:
             print(f"  키 {entry['keyChars']}자 · {vendor['keyEnv']}")
         else:
             print(f"  키 없음 · {vendor['keyEnv']} (발급: {vendor['signup']})")
-        for cohort, rows in (("살아있음", entry["living"]), ("사라짐", entry["departed"])):
+        for cohort, rows in (("살아있음", entry["living"]),
+                             ("유니버스이탈", entry["departed"])):
             for ticker, row in rows.items():
                 served = f"[{row['servedBy']}]" if row.get("servedBy") else ""
                 print(f"    {cohort:<8} {ticker:<6} {row['depth']:<24} "
                       f"{served} {str(row.get('detail'))[:120]}")
         print(f"  판정: {entry['verdict']}")
         print(f"  {entry['meaning']}")
-        if entry["verdict"] in (OPEN, LIVING_ONLY):
+        if entry["verdict"] in (OPEN, LIVING_ONLY, DEPARTED_REFUSED):
             entry["backfill"] = backfill_cost(vendor, universe)
             cost = entry["backfill"]
             print(f"  전체 백필: 종목당 {cost['callsPerTicker']}회 × "
@@ -1074,8 +1116,10 @@ def main(argv=None) -> int:
     shallow = [n for n, e in vendors.items() if e["verdict"] == TOO_SHALLOW]
     needs_key = [n for n, e in vendors.items() if e["verdict"] == KEY_MISSING]
     living_only = [n for n, e in vendors.items() if e["verdict"] == LIVING_ONLY]
+    departed_refused = [n for n, e in vendors.items() if e["verdict"] == DEPARTED_REFUSED]
     silent = [n for n, e in vendors.items() if e["verdict"] == NO_ANSWER_FROM_HOST]
     report["summary"] = {"open": open_routes, "livingOnly": living_only,
+                         "departedRefused": departed_refused,
                          "tooShallow": shallow, "needsKey": needs_key,
                          "noAnswer": silent}
 
@@ -1085,7 +1129,10 @@ def main(argv=None) -> int:
     else:
         print("  2013년까지·사라진 이름까지 닿은 소스는 이번 실행에 없습니다.")
     if living_only:
-        print(f"  상장 중인 이름만 돌려준 소스(생존 편향): {living_only}")
+        print(f"  살아 있는 이름만 돌려준 소스(생존 편향): {living_only}")
+    if departed_refused:
+        print(f"  떠난 이름을 종목 단위로 거절한 소스: {departed_refused} — 거절 "
+              f"문장을 읽으십시오. 구독 제한이면 돈으로 풀리고, 미보유면 안 풀립니다.")
     if shallow:
         print(f"  도달은 하지만 2013년에 닿지 않는 소스: {shallow}")
     if silent:

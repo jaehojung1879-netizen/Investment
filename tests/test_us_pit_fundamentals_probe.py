@@ -151,12 +151,40 @@ def _empty():
     return {"depth": P.NO_ROWS}
 
 
-def test_a_vendor_serving_only_listed_names_is_a_survivorship_hole():
+def test_a_vendor_answering_but_holding_nothing_is_a_survivorship_hole():
     verdict = P.vendor_verdict(P.ANSWERED, True,
                                living={"AAPL": _confirmed(), "KO": _confirmed()},
                                departed={"SHLD": _empty(), "ANR": _empty()})
     assert verdict["verdict"] == P.LIVING_ONLY
     assert verdict["verdict"] != P.OPEN, "살아 있는 이름만으로 경로를 열면 안 된다"
+
+
+def test_departed_names_refused_per_symbol_are_not_called_a_coverage_hole():
+    """FMP refused all four departed names with a SUBSCRIPTION sentence, and
+    one of them (`AA`) still trades. A paywall and an absent history point at
+    a price and at survivorship bias respectively, so they cannot share a
+    verdict."""
+    refusal = {"depth": P.REFUSED,
+               "detail": "Special Endpoint : This value set for 'symbol' is "
+                         "not available under your current subscription"}
+    verdict = P.vendor_verdict(P.ANSWERED, True,
+                               living={"AAPL": _confirmed()},
+                               departed={"ANR": dict(refusal), "BIG": dict(refusal)})
+    assert verdict["verdict"] == P.DEPARTED_REFUSED
+    assert verdict["verdict"] != P.LIVING_ONLY
+    assert verdict["verdict"] != P.OPEN
+    assert "current subscription" in " ".join(verdict["refusals"]), \
+        "구독 제한이라는 벤더의 문장이 판정에 남아야 돈으로 풀리는지 알 수 있다"
+
+
+def test_a_mix_of_refusal_and_emptiness_is_read_as_the_coverage_hole():
+    """One refused name does not turn an otherwise empty cohort into a
+    billing question."""
+    verdict = P.vendor_verdict(P.ANSWERED, True,
+                               living={"AAPL": _confirmed()},
+                               departed={"ANR": {"depth": P.REFUSED, "detail": "nope"},
+                                         "BIG": _empty()})
+    assert verdict["verdict"] == P.LIVING_ONLY
 
 
 def test_both_cohorts_served_opens_the_route():
@@ -309,19 +337,40 @@ def test_every_production_value_and_quality_factor_is_covered():
 # --------------------------------------------------------------------------- #
 # The samples and the size come from the replay's own membership file
 # --------------------------------------------------------------------------- #
-def test_departed_samples_are_names_the_replay_held_before_it_starts(tmp_path):
+def _history(tmp_path):
     history = tmp_path / "universe-history.json"
     history.write_text(json.dumps({
-        "SHLD": {"listed": "2012-12-27", "delisted": "2018-10-15", "region": "US"},
+        # `AA` sorts first alphabetically and left the universe LAST — and it
+        # is the real trap: Alcoa still trades under that ticker, so an
+        # alphabetical cohort leads with a name that is not gone at all.
+        "AA":   {"listed": "2012-12-27", "delisted": "2017-03-08", "region": "US"},
+        "SHLD": {"listed": "2012-12-27", "delisted": "2014-10-15", "region": "US"},
         "ANR":  {"listed": "2012-12-27", "delisted": "2013-05-05", "region": "US"},
         "NEWCO": {"listed": "2021-01-04", "delisted": "2023-01-04", "region": "US"},
         "AAPL": {"listed": "2012-12-27", "delisted": None, "region": "US"},
         "005930.KS": {"listed": "2012-12-27", "delisted": "2019-01-01", "region": "KR"},
     }))
-    picked = P.departed_samples(history, count=4)
-    assert picked == ["ANR", "SHLD"], "정렬돼야 두 실행이 비교 가능하다"
+    return history
+
+
+def test_departed_samples_are_names_the_replay_held_before_it_starts(tmp_path):
+    picked = P.departed_samples(_history(tmp_path), count=4)
     assert "NEWCO" not in picked, "리플레이 시작 뒤 상장한 이름은 깊이를 말해주지 못한다"
-    assert "AAPL" not in picked and "005930.KS" not in picked
+    assert "AAPL" not in picked, "아직 유니버스에 있는 이름은 이 코호트가 아니다"
+    assert "005930.KS" not in picked, "미국 코호트에 한국 이름이 섞이면 안 된다"
+
+
+def test_departed_samples_lead_with_the_names_that_left_earliest(tmp_path):
+    """Alphabetical order put AA — a ticker that still trades — at the head of
+    a cohort whose whole job is to ask about names that are gone."""
+    picked = P.departed_samples(_history(tmp_path), count=3)
+    assert picked == ["ANR", "SHLD", "AA"]
+    assert picked[0] == "ANR", "가장 먼저 떠난 이름이 앞에 와야 한다"
+
+
+def test_departed_samples_stay_stable_across_runs(tmp_path):
+    assert P.departed_samples(_history(tmp_path), count=2) == \
+        P.departed_samples(_history(tmp_path), count=2)
 
 
 def test_departed_samples_fall_back_rather_than_crash_on_a_missing_file(tmp_path):

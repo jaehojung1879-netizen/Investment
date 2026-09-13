@@ -27,6 +27,9 @@ route to use.
 | SEC bulk ZIP datasets | block page | `Probe SEC bulk financial statement datasets` |
 | FMP `/stable`, current key | serves statements **with `filingDate`** | `Probe FMP fundamentals` run #4, 2026-09-05 |
 | FMP `/stable`, current key | `limit` capped at **4 periods** | same run |
+| `efts.sec.gov`, apex `sec.gov` | `REFUSED_ON_EVERY_SEC_HOST` | US PIT probe run #1, 2026-09-13 |
+| finnhub, polygon, simfin, alphavantage | host **answers** the Actions pool | same run |
+| FMP, asked by date | `TOO_SHALLOW` — 5 quarters, ends 2025-06 | same run |
 
 The SEC verdict is as firm as this repository's evidence gets. Eight parallel
 runners took eight **distinct** Azure addresses — `4.154.40.4`,
@@ -59,20 +62,88 @@ other vendor as a route right now would be exactly the move that produced run
 #49, where an unproven KRX endpoint answered 119 of 119 Korean tickers with
 `400 Bad Request`.
 
-## What has never been asked
+## Run #1, 2026-09-13 — what the probe measured
 
-Two things, and both are cheap.
+Dispatched with no vendor secrets except the FMP key that already existed.
 
-**SEC has two more hosts.** The verdict was reached on `data.sec.gov` and
-`www.sec.gov`. Access is measured per service — the KRX approval opened
-`sto/stk_bydd_trd` and left three other endpoints refusing exactly as before —
-so `efts.sec.gov` and the apex `sec.gov` (no `www`) are not covered by a
-finding about two other hostnames. They are probably refused too. "Probably"
-is the word this repository has learned to spend ten minutes removing.
+### SEC is closed on all four hosts, and the block pages pair up
+
+```
+data.sec.gov   403  BLOCKED  4819B   baseline
+www.sec.gov    403  BLOCKED  1925B   baseline
+efts.sec.gov   403  BLOCKED  4819B   never asked before
+sec.gov        403  BLOCKED  1925B   never asked before
+```
+
+The byte counts are the finding. `efts.sec.gov` returns the same 4,819-byte
+page as `data.sec.gov`, and the apex `sec.gov` the same 1,925-byte page as
+`www.sec.gov` — two block pages across four hostnames, not four independent
+refusals. That is a domain-wide policy rather than a per-host one, and the two
+baseline hosts refused in the same run, so it is attributable to SEC and not
+to the day. `REFUSED_ON_EVERY_SEC_HOST`. The "probably" is now measured;
+changing hostname is not a way in.
+
+### Every non-SEC vendor answers the Actions pool
+
+```
+finnhub       401  ANSWERED  {"error":"Please use an API key."}
+polygon       401  ANSWERED  {"status":"ERROR",...,"error":"API Key was not provided"}
+simfin        401  ANSWERED  {"error":"Full authentication is required..."}
+fmp           401  ANSWERED  {"Error Message":"Invalid API KEY..."}
+alphavantage  200  ANSWERED  {"Error Message":"the parameter apikey is invalid or missing..."}
+```
+
+Not one `HOST_REFUSED`, not one `NO_ANSWER_FROM_HOST`. Every host replied in
+its own protocol, which settles both halves of the question: the credential is
+the only thing missing, and SEC's refusal is sec.gov's policy rather than
+anything about the GitHub Actions address range.
+
+Alpha Vantage answered **HTTP 200 carrying an error body**. A reader that
+judged on the status code would have recorded that as data. Deciding on the
+body's shape instead of the status earned its place on the first real run.
+
+### FMP, asked by date: `TOO_SHALLOW`
+
+All four living samples came back `NO_DATE_WINDOW_ENDPOINT` with earliest
+periods of 2025-06-27 … 2025-06-30. The `limit` cap of 5 buys five quarters —
+about fifteen months. The replay needs roughly **54** quarters. One quarter
+deeper than run #4's 2025-09-26, for the same wall.
+
+### The departed cohort, and a correction to this probe
+
+All four departed names were refused with one sentence:
+
+> `Special Endpoint : This value set for 'symbol' is not available under your
+> current subscription`
+
+That is **not** evidence that FMP lacks retired tickers, and the first version
+of this probe would have let it read that way. One of the four, `AA`, still
+trades today: `delisted` in `data/universe-history.json` means *left the
+screening universe*, not *stopped trading*, and Alcoa left the index in 2017.
+A live large-cap refused by the same sentence makes this a **subscription
+symbol restriction** — FMP's free tier serves a cut universe — which is a
+different problem, with a different fix, from a vendor that has no history for
+dead tickers.
+
+Two things changed as a result:
+
+* `vendor_verdict` now splits the old `LIVING_ONLY` in two. Departed names
+  that are **refused** get `DEPARTED_REFUSED` and the vendor's sentence is
+  carried with it, because a paywall may be answerable with money. Departed
+  names that come back **empty** keep `LIVING_ONLY`, because a vendor willing
+  to answer and holding nothing is the actual survivorship hole.
+* `departed_samples` now picks the names that left **earliest** rather than
+  the alphabetically first. Alphabetical order chose `AA, ABC, ACE, AET` —
+  spelling put a still-trading name at the head of a cohort meant to ask about
+  names that are gone. Earliest-left gives `ANR, BIG, CBE, DV`: names the
+  replay's very first cross-sections held, and mostly tickers that genuinely
+  retired.
+
+## What was asked and still needs a credential
 
 **Four vendors that are not sec.gov.** Each re-serves filings from a different
-host under a different access model, and each either carries a publication
-date or does not:
+host under a different access model, each is now proven reachable, and each
+either carries a publication date or does not:
 
 | Vendor | What would make it the answer | What would kill it |
 |---|---|---|
@@ -83,9 +154,10 @@ date or does not:
 
 ## The probe
 
-`scripts/probe_us_pit_fundamentals.py`, run by
-`.github/workflows/us-pit-fundamentals-probe.yml`. It writes nothing to the
-ledger; **`replay-v14` stays sealed and no re-acquisition is triggered.**
+`scripts/probe_us_pit_fundamentals.py`, run by the **Probes** workflow
+(`.github/workflows/probes.yml`) with `probe: us-pit-fundamentals`. It writes
+nothing to the ledger; **`replay-v14` stays sealed and no re-acquisition is
+triggered.**
 
 Every key is optional, and that is the point. Reachability is asked **without
 a credential**, so a run with no secrets at all still answers the question run
@@ -140,33 +212,37 @@ Each rule below is a mistake this repository has already paid for.
 
 ### Running it
 
-GitHub registers a `workflow_dispatch` workflow only once the file is on the
-default branch, so this one cannot be dispatched from the PR branch — merge
-first, then run it. (`Tests` runs on the pull request either way, so the 49
-unit tests are proved in CI before the merge.)
+Actions → **Probes** → Run workflow, `probe: us-pit-fundamentals`, `args`
+empty. GitHub registers a `workflow_dispatch` workflow only once the file is
+on the default branch, so a change to this workflow has to merge before it can
+be dispatched. (`Tests` runs on the pull request either way.)
 
-1. Run **Probe US PIT fundamentals sources** with no secrets added yet.
-   That alone settles the two unasked SEC hosts and tells you which of the
-   four vendors answers the Actions IP pool at all. Cost: about a minute.
-2. For every vendor that came back `KEY_MISSING` rather than
-   `NO_ANSWER_FROM_HOST`, take a free key and add it as a repository secret:
-   `FINNHUB`, `POLYGON`, `SIMFIN`, `ALPHAVANTAGE`. The workflow already
-   passes all four through; nothing else needs editing.
-3. Run it again. Read the per-vendor verdict:
+The secrets it reads, and the names they are stored under:
 
-   | Verdict | What it means for the next move |
-   |---|---|
-   | `OPEN` | living **and** departed names returned 2013 filings with publication dates — write the collector against this vendor |
-   | `LIVING_ONLY` | depth is there but the dead names are not; usable only if the survivorship hole is quantified and declared |
-   | `TOO_SHALLOW` | reachable, but does not reach 2013 — same shape as FMP's free tier |
-   | `NO_POINT_IN_TIME` | data without a publication date; retire it |
-   | `KEY_REFUSED` | the vendor's sentence in the report says whether a subscription or a different key is the fix |
-   | `HOST_REFUSED` | the SEC shape; a key changes nothing |
-   | `NO_ANSWER_FROM_HOST` | not attributable to the vendor yet — check whether other hosts answered in the same run |
+| Vendor | Secret | Note |
+|---|---|---|
+| finnhub | `FINNHUB` | |
+| polygon | `MASSIVE` | the name Polygon's own signup handed out; the repository keeps the vendor's spelling rather than inventing a matching one |
+| simfin | `SIMFIN` | |
+| fmp | `FMP` | already present since the earlier FMP probe |
+| alphavantage | `ALPHAVANTAGE` | optional — probed to confirm the ABSENCE of a publication date |
 
-4. Only a vendor reported `OPEN` gets a collector written against it, and the
-   verdict goes in this document with its run number before any collector is
-   merged.
+Read the per-vendor verdict:
+
+| Verdict | What it means for the next move |
+|---|---|
+| `OPEN` | living **and** departed names returned 2013 filings with publication dates — write the collector against this vendor |
+| `DEPARTED_REFUSED` | depth is there; the departed names were refused per symbol. Read the sentence — a subscription limit is answerable with money, "no such symbol" is not |
+| `LIVING_ONLY` | depth is there and the departed names came back **empty** — the vendor was willing and had nothing. Usable only if the survivorship hole is quantified and declared |
+| `TOO_SHALLOW` | reachable, but does not reach 2013 — same shape as FMP's free tier |
+| `NO_POINT_IN_TIME` | data without a publication date; retire it |
+| `KEY_REFUSED` | the vendor's sentence in the report says whether a subscription or a different key is the fix |
+| `HOST_REFUSED` | the SEC shape; a key changes nothing |
+| `NO_ANSWER_FROM_HOST` | not attributable to the vendor yet — check whether other hosts answered in the same run |
+
+Only a vendor reported `OPEN` gets a collector written against it, and the
+verdict goes in this document with its run number before any collector is
+merged.
 
 ## If every vendor fails
 
