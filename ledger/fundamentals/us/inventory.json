@@ -1,0 +1,72 @@
+{
+  "filings": 4971,
+  "periodLengthByForm": {
+    "10-Q": {
+      "quarter (46-135d)": 1801,
+      "half (136-225d)": 1615,
+      "three quarters (226-315d)": 1553,
+      ">400d": 1,
+      "<=45d": 1
+    }
+  },
+  "filingsWithNoPeriodLength": 0,
+  "conceptsBySection": {
+    "bs": 3667,
+    "ic": 4958,
+    "cf": 6310
+  },
+  "topConcepts": {
+    "bs": [
+      "Assets",
+      "LiabilitiesAndStockholdersEquity",
+      "us-gaap_Assets",
+      "us-gaap_LiabilitiesAndStockholdersEquity",
+      "RetainedEarningsAccumulatedDeficit",
+      "CashAndCashEquivalentsAtCarryingValue",
+      "AccumulatedOtherComprehensiveIncomeLossNetOfTax",
+      "us-gaap_RetainedEarningsAccumulatedDeficit",
+      "PropertyPlantAndEquipmentNet",
+      "StockholdersEquity",
+      "us-gaap_CashAndCashEquivalentsAtCarryingValue",
+      "us-gaap_AccumulatedOtherComprehensiveIncomeLossNetOfTax"
+    ],
+    "ic": [
+      "IncomeTaxExpenseBenefit",
+      "us-gaap_IncomeTaxExpenseBenefit",
+      "EarningsPerShareDiluted",
+      "EarningsPerShareBasic",
+      "us-gaap_EarningsPerShareBasic",
+      "us-gaap_EarningsPerShareDiluted",
+      "NetIncomeLoss",
+      "us-gaap_ComprehensiveIncomeNetOfTax",
+      "us-gaap_NetIncomeLoss",
+      "ComprehensiveIncomeNetOfTax",
+      "OperatingIncomeLoss",
+      "WeightedAverageNumberOfDilutedSharesOutstanding"
+    ],
+    "cf": [
+      "CashAndCashEquivalentsPeriodIncreaseDecrease",
+      "us-gaap_CashAndCashEquivalentsPeriodIncreaseDecrease",
+      "NetCashProvidedByUsedInInvestingActivities",
+      "NetCashProvidedByUsedInOperatingActivities",
+      "NetCashProvidedByUsedInFinancingActivities",
+      "us-gaap_ShareBasedCompensation",
+      "us-gaap_NetCashProvidedByUsedInInvestingActivities",
+      "us-gaap_NetCashProvidedByUsedInOperatingActivities",
+      "us-gaap_NetCashProvidedByUsedInFinancingActivities",
+      "PaymentsToAcquirePropertyPlantAndEquipment",
+      "ShareBasedCompensation",
+      "us-gaap_PaymentsToAcquirePropertyPlantAndEquipment"
+    ]
+  },
+  "units": {
+    "usd": 388484,
+    "_usd": 36280,
+    "usd/shares": 8789,
+    "shares": 7725,
+    "unit12": 7185,
+    "usd/share": 5976,
+    "usdollar": 3128,
+    "_usd_/_shares": 1372
+  }
+}
