@@ -1,0 +1,119 @@
+{
+  "agreement": "판정을 낸 4개 계정이 모두 같은 답을 냈습니다",
+  "byConcept": {
+    "netIncome": {
+      "concept": "netIncome",
+      "counts": {
+        "halfOverFirst": 1427,
+        "threeQuartersOverFirst": 1316,
+        "threeQuartersOverYear": 1239,
+        "tickerYears": 1841
+      },
+      "expected": {
+        "cumulative": {
+          "halfOverFirst": 2.0,
+          "threeQuartersOverFirst": 3.0,
+          "threeQuartersOverYear": 0.75
+        },
+        "discreteQuarters": {
+          "halfOverFirst": 1.0,
+          "threeQuartersOverFirst": 1.0,
+          "threeQuartersOverYear": 0.25
+        }
+      },
+      "meaning": "반기가 1분기의 약 2배, 3분기 누계가 약 3배 — 회계연도 시작부터의 누계입니다. TTM은 rollforward로 만들어야 합니다: FY(Y-1) − cum(Y-1,Q) + cum(Y,Q)",
+      "medians": {
+        "halfOverFirst": 2.0464247598719316,
+        "threeQuartersOverFirst": 3.122772090922776,
+        "threeQuartersOverYear": 0.7455715421878389
+      },
+      "verdict": "CUMULATIVE"
+    },
+    "operatingCashFlow": {
+      "concept": "operatingCashFlow",
+      "counts": {
+        "halfOverFirst": 1453,
+        "threeQuartersOverFirst": 1338,
+        "threeQuartersOverYear": 1255,
+        "tickerYears": 1880
+      },
+      "expected": {
+        "cumulative": {
+          "halfOverFirst": 2.0,
+          "threeQuartersOverFirst": 3.0,
+          "threeQuartersOverYear": 0.75
+        },
+        "discreteQuarters": {
+          "halfOverFirst": 1.0,
+          "threeQuartersOverFirst": 1.0,
+          "threeQuartersOverYear": 0.25
+        }
+      },
+      "meaning": "반기가 1분기의 약 2배, 3분기 누계가 약 3배 — 회계연도 시작부터의 누계입니다. TTM은 rollforward로 만들어야 합니다: FY(Y-1) − cum(Y-1,Q) + cum(Y,Q)",
+      "medians": {
+        "halfOverFirst": 1.9560323996667868,
+        "threeQuartersOverFirst": 3.123717352415027,
+        "threeQuartersOverYear": 0.7010452294960415
+      },
+      "verdict": "CUMULATIVE"
+    },
+    "operatingIncome": {
+      "concept": "operatingIncome",
+      "counts": {
+        "halfOverFirst": 1065,
+        "threeQuartersOverFirst": 978,
+        "threeQuartersOverYear": 917,
+        "tickerYears": 1397
+      },
+      "expected": {
+        "cumulative": {
+          "halfOverFirst": 2.0,
+          "threeQuartersOverFirst": 3.0,
+          "threeQuartersOverYear": 0.75
+        },
+        "discreteQuarters": {
+          "halfOverFirst": 1.0,
+          "threeQuartersOverFirst": 1.0,
+          "threeQuartersOverYear": 0.25
+        }
+      },
+      "meaning": "반기가 1분기의 약 2배, 3분기 누계가 약 3배 — 회계연도 시작부터의 누계입니다. TTM은 rollforward로 만들어야 합니다: FY(Y-1) − cum(Y-1,Q) + cum(Y,Q)",
+      "medians": {
+        "halfOverFirst": 2.067828529727948,
+        "threeQuartersOverFirst": 3.1392843866670086,
+        "threeQuartersOverYear": 0.7459921487400897
+      },
+      "verdict": "CUMULATIVE"
+    },
+    "revenue": {
+      "concept": "revenue",
+      "counts": {
+        "halfOverFirst": 1170,
+        "threeQuartersOverFirst": 1079,
+        "threeQuartersOverYear": 1015,
+        "tickerYears": 1530
+      },
+      "expected": {
+        "cumulative": {
+          "halfOverFirst": 2.0,
+          "threeQuartersOverFirst": 3.0,
+          "threeQuartersOverYear": 0.75
+        },
+        "discreteQuarters": {
+          "halfOverFirst": 1.0,
+          "threeQuartersOverFirst": 1.0,
+          "threeQuartersOverYear": 0.25
+        }
+      },
+      "meaning": "반기가 1분기의 약 2배, 3분기 누계가 약 3배 — 회계연도 시작부터의 누계입니다. TTM은 rollforward로 만들어야 합니다: FY(Y-1) − cum(Y-1,Q) + cum(Y,Q)",
+      "medians": {
+        "halfOverFirst": 2.035521983235772,
+        "threeQuartersOverFirst": 3.0797866277611874,
+        "threeQuartersOverYear": 0.7420291129777035
+      },
+      "verdict": "CUMULATIVE"
+    }
+  },
+  "filings": 6632,
+  "verdict": "CUMULATIVE"
+}
