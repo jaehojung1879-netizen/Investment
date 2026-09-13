@@ -25,12 +25,19 @@ ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 
 from pipeline import finnhub_fundamentals as FF  # noqa: E402
+from pipeline import historical_store as HS  # noqa: E402
 
 _spec = importlib.util.spec_from_file_location(
     "collect_finnhub_fundamentals", ROOT / "scripts" / "collect_finnhub_fundamentals.py")
 C = importlib.util.module_from_spec(_spec)
 sys.modules[_spec.name] = C
 _spec.loader.exec_module(C)
+
+_mspec = importlib.util.spec_from_file_location(
+    "measure_us_period_semantics", ROOT / "scripts" / "measure_us_period_semantics.py")
+M = importlib.util.module_from_spec(_mspec)
+sys.modules[_mspec.name] = M
+_mspec.loader.exec_module(M)
 
 
 def _filing(**kw):
@@ -184,7 +191,10 @@ def test_a_served_window_is_marked_done_even_when_it_held_nothing(monkeypatch, t
     monkeypatch.setattr(C, "fetch_window", lambda *a, **k: ([], "SERVED"))
     C.main([str(tmp_path), "--tickers", "AAPL", "--from-year", "2012",
             "--through", "2013-06-30", "--pace", "0"])
-    assert C.load_done_windows(tmp_path) == {("AAPL", "2012-01-01", "2013-06-30")}
+    assert C.load_done_windows(tmp_path) == {
+        ("AAPL", "2012-01-01", "2013-06-30", FF.QUARTERLY),
+        ("AAPL", "2012-01-01", "2013-06-30", FF.ANNUAL),
+    }
 
 
 # --------------------------------------------------------------------------- #
@@ -214,8 +224,11 @@ def test_the_work_list_spends_the_budget_on_the_oldest_windows_first():
 
 def test_the_work_list_skips_windows_already_asked():
     spans = FF.windows(2012, "2013-06-30")
-    done = {("AAPL", spans[0][0], spans[0][1])}
-    assert FF.work_list(["AAPL", "KO"], spans, done) == [("KO", spans[0][0], spans[0][1])]
+    done = {("AAPL", spans[0][0], spans[0][1], freq) for freq in FF.FREQUENCIES}
+    assert FF.work_list(["AAPL", "KO"], spans, done) == [
+        ("KO", spans[0][0], spans[0][1], FF.ANNUAL),
+        ("KO", spans[0][0], spans[0][1], FF.QUARTERLY),
+    ]
 
 
 def test_a_shard_is_keyed_by_the_period_reported_on_not_the_filing_date():
@@ -246,3 +259,279 @@ def test_the_collection_universe_includes_the_names_that_have_left(tmp_path):
 
 def test_the_real_universe_is_every_us_member_not_todays_list():
     assert len(C.us_members()) > 500
+
+
+# --------------------------------------------------------------------------- #
+# Two tag spellings, one account
+# --------------------------------------------------------------------------- #
+def test_the_two_spellings_of_a_gaap_tag_are_the_same_account():
+    """`us-gaap_Assets` and `Assets` both arrive from this vendor."""
+    assert FF.strip_namespace("us-gaap_Assets") == "Assets"
+    assert FF.strip_namespace("us-gaap:NetIncomeLoss") == "NetIncomeLoss"
+    assert FF.strip_namespace("Assets") == "Assets"
+
+
+def test_a_filers_own_extension_tag_is_not_collapsed():
+    """The failure this guards is silent: `AcmeCorp_SpecialCharge` collapsed to
+    `SpecialCharge` merges one company's bespoke line into an account that
+    means something else, and nothing downstream can tell."""
+    assert FF.strip_namespace("AcmeCorp_SpecialCharge") == "AcmeCorp_SpecialCharge"
+    assert FF.strip_namespace("XYZ_Revenues") == "XYZ_Revenues"
+
+
+def test_the_other_real_namespaces_are_stripped_too():
+    assert FF.strip_namespace("dei_EntityCommonStockSharesOutstanding") == \
+        "EntityCommonStockSharesOutstanding"
+    assert FF.strip_namespace("ifrs-full_Assets") == "Assets"
+
+
+def test_a_missing_concept_survives_stripping():
+    assert FF.strip_namespace(None) == ""
+
+
+# --------------------------------------------------------------------------- #
+# Eight unit spellings, three meanings
+# --------------------------------------------------------------------------- #
+def test_every_currency_spelling_seen_classifies_as_currency():
+    for unit in ("usd", "USD", "_usd", "usdollar"):
+        assert FF.unit_class(unit) == FF.CURRENCY, unit
+
+
+def test_every_per_share_spelling_classifies_as_per_share_not_currency():
+    """Per-share is tested before currency on purpose: `usd/shares` contains
+    `usd`, and reading an EPS as a dollar amount produces a number nothing
+    downstream can tell apart from a real one."""
+    for unit in ("usd/shares", "usd/share", "_usd_/_shares", "USD/shares"):
+        assert FF.unit_class(unit) == FF.PER_SHARE, unit
+
+
+def test_a_share_count_is_neither_money_nor_per_share():
+    assert FF.unit_class("shares") == FF.SHARES
+
+
+def test_an_unrecognised_unit_is_named_rather_than_guessed():
+    assert FF.unit_class("unit12") == FF.UNCLASSIFIED
+    assert FF.unit_class(None) == FF.UNCLASSIFIED
+
+
+# --------------------------------------------------------------------------- #
+# The annual pass, and not re-buying the quarterly one
+# --------------------------------------------------------------------------- #
+def test_the_work_list_covers_both_frequencies():
+    work = FF.work_list(["AAPL"], [("2012-01-01", "2013-06-30")], set())
+    assert [item[3] for item in work] == [FF.ANNUAL, FF.QUARTERLY], \
+        "FY 항이 없으면 rollforward TTM 자체가 불가능하므로 연간이 먼저다"
+
+
+def test_a_window_already_bought_quarterly_is_not_re_bought(tmp_path):
+    """The 1,500 quarterly calls of the first slice are already paid for."""
+    # Through the migration, not around it: in the real run the done set is
+    # whatever `windows.json` from the first slice normalises to.
+    done = FF.normalise_done([["AAPL", "2012-01-01", "2013-06-30"]])
+    work = FF.work_list(["AAPL"], [("2012-01-01", "2013-06-30")], done)
+    assert [item[3] for item in work] == [FF.ANNUAL]
+
+
+def test_a_legacy_done_entry_means_the_pass_it_was_written_by():
+    """`windows.json` from the first slice holds three-item entries. Reading
+    them as 'both frequencies done' would skip every annual call; reading them
+    as 'nothing done' would re-buy 1,500 windows."""
+    migrated = FF.normalise_done([["AAPL", "2012-01-01", "2013-06-30"]])
+    assert migrated == {("AAPL", "2012-01-01", "2013-06-30", FF.QUARTERLY)}
+
+
+def test_a_record_remembers_which_pass_fetched_it():
+    record, _ = FF.build_record("AAPL", _filing(), "z", FF.ANNUAL)
+    assert record["requestedFreq"] == FF.ANNUAL
+
+
+# --------------------------------------------------------------------------- #
+# Is a 10-Q's income statement the quarter, or the year to date?
+# --------------------------------------------------------------------------- #
+def _flow(ticker, year, stage, value, concept="us-gaap_NetIncomeLoss",
+          unit="usd", section="ic"):
+    days = {"Q1": 90, "Q2": 181, "Q3": 273, "FY": 365}[stage]
+    statements = {"ic": [], "bs": [], "cf": []}
+    statements[section] = [{"concept": concept, "unit": unit, "value": value,
+                            "label": "x"}]
+    return {"id": f"{ticker}-{year}-{stage}", "ticker": ticker, "fiscalYear": year,
+            "form": "10-K" if stage == "FY" else "10-Q", "periodDays": days,
+            "statements": statements}
+
+
+def _year_of(ticker, year, quarters, cumulative, **kw):
+    running, rows = 0.0, []
+    for stage, amount in zip(("Q1", "Q2", "Q3"), quarters[:3]):
+        running += amount
+        rows.append(_flow(ticker, year, stage, running if cumulative else amount, **kw))
+    rows.append(_flow(ticker, year, "FY", sum(quarters), **kw))
+    return rows
+
+
+def _population(cumulative, n=40, seasonal=True, **kw):
+    rows = []
+    for i in range(n):
+        # Deliberately uneven quarters, and a DIFFERENT shape per company: a
+        # method that only works on firms earning evenly through the year is
+        # not a method, and one shared seasonal shape would give every firm the
+        # identical ratio, which a median cannot then improve on.
+        shape = [0.6, 1.4, 0.8, 1.2] if seasonal else [1.0] * 4
+        turn = i % 4
+        swing = shape[turn:] + shape[:turn]
+        quarters = [100e6 * s * (1 + i / 50) for s in swing]
+        rows += _year_of(f"T{i:03d}", 2012, quarters, cumulative, **kw)
+    return rows
+
+
+def test_cumulative_filings_are_read_as_cumulative():
+    result = FF.period_semantics(_population(cumulative=True))
+    assert result["verdict"] == FF.CUMULATIVE
+    assert 1.6 <= result["medians"]["halfOverFirst"] <= 2.4
+
+
+def test_independent_quarters_are_read_as_independent_quarters():
+    """The same instrument has to be able to return the other answer, or it is
+    not measuring anything."""
+    result = FF.period_semantics(_population(cumulative=False))
+    assert result["verdict"] == FF.DISCRETE_QUARTERS
+    assert 0.7 <= result["medians"]["halfOverFirst"] <= 1.3
+
+
+def test_a_seasonal_company_does_not_decide_on_its_own():
+    """One firm earning everything in Q4 sits opposite whichever reading it
+    happens to contradict. The median across companies is the statistic."""
+    rows = _year_of("SEASONAL", 2012, [1e6, 1e6, 1e6, 400e6], cumulative=True)
+    result = FF.period_semantics(rows)
+    assert result["verdict"] == FF.INCONCLUSIVE
+    assert "표본" in result["meaning"]
+
+
+def test_a_handful_of_companies_does_not_earn_a_verdict():
+    """Ratios dead on 2.0 and 3.0, so the only thing that can withhold the
+    verdict is the sample floor itself."""
+    rows = _population(cumulative=True, n=FF.MIN_RATIOS - 1, seasonal=False)
+    result = FF.period_semantics(rows)
+    assert result["medians"]["halfOverFirst"] == 2.0
+    assert result["verdict"] == FF.INCONCLUSIVE, \
+        "벤더 전체를 판정하는 답이 소수 기업에 얹혀서는 안 된다"
+
+
+def test_enough_companies_does():
+    """The same population one company larger — seasonal, as real ones are."""
+    result = FF.period_semantics(_population(cumulative=True, n=FF.MIN_RATIOS))
+    assert result["verdict"] == FF.CUMULATIVE
+
+
+def test_one_wild_company_cannot_move_the_answer():
+    """Why the statistic is a median and not a mean. Five companies whose first
+    quarter was near break-even produce ratios in the thousands; a mean of the
+    whole population is then a number no company has, and the verdict flips."""
+    rows = _population(cumulative=True, seasonal=False)
+    for i in range(5):
+        rows += _year_of(f"WILD{i}", 2012, [100.0, 1e6, 1e6, 1e6], cumulative=True)
+    result = FF.period_semantics(rows)
+    assert result["medians"]["halfOverFirst"] == 2.0
+    assert result["verdict"] == FF.CUMULATIVE
+
+
+def test_ratios_that_land_between_the_two_readings_decide_nothing():
+    """1.5 is neither 2.0 nor 1.0. Naming that is the point; picking the
+    nearer band would turn an unexplained result into a confident sentence."""
+    rows = []
+    for i in range(40):
+        rows += _year_of(f"T{i:03d}", 2012, [100e6, 50e6, 0.0, 100e6],
+                         cumulative=True)
+    result = FF.period_semantics(rows)
+    assert result["verdict"] == FF.INCONCLUSIVE
+
+
+def test_a_near_zero_first_quarter_is_not_used_as_a_denominator():
+    """A company that broke even in Q1 produces a ratio in the millions, and a
+    median is moved by enough of them."""
+    rows = _population(cumulative=True)
+    rows += _year_of("BREAKEVEN", 2012, [0.4, 200e6, 200e6, 200e6], cumulative=True)
+    result = FF.period_semantics(rows)
+    assert result["counts"]["halfOverFirst"] == 40
+    assert result["verdict"] == FF.CUMULATIVE
+
+
+def test_a_balance_sheet_level_is_not_asked_the_question():
+    """Total assets is a stock at a date; its ratio across quarters says
+    nothing about whether an income statement is cumulative."""
+    assert "assets" not in FF.FLOW_CONCEPTS
+    rows = _population(cumulative=True, concept="us-gaap_Assets", section="bs")
+    assert FF.period_semantics(rows)["counts"]["tickerYears"] == 0
+
+
+def test_the_account_is_found_under_either_tag_spelling():
+    plain = FF.period_semantics(_population(True, concept="NetIncomeLoss"))
+    prefixed = FF.period_semantics(_population(True, concept="us-gaap_NetIncomeLoss"))
+    assert plain["verdict"] == prefixed["verdict"] == FF.CUMULATIVE
+
+
+def test_a_per_share_figure_is_never_divided_by_a_dollar_one():
+    """EPS arrives under an income-statement tag too. Mixing the two produces a
+    ratio that is not a ratio of anything."""
+    rows = _population(cumulative=True, unit="usd/shares")
+    assert FF.period_semantics(rows)["counts"]["tickerYears"] == 0
+
+
+def test_the_stage_comes_from_the_period_length_not_the_quarter_number():
+    """`fiscalQuarter` says which report it is; what decides the ratio is how
+    much of the year the numbers cover."""
+    record = _flow("AAPL", 2012, "Q3", 1.0)
+    record["fiscalQuarter"] = 1
+    assert FF.quarter_stage(record) == FF.Q3
+
+
+def test_an_annual_report_is_the_full_year_stage():
+    assert FF.quarter_stage(_flow("AAPL", 2012, "FY", 1.0)) == FF.FY
+
+
+# --------------------------------------------------------------------------- #
+# The measurement, read across accounts
+# --------------------------------------------------------------------------- #
+def test_accounts_that_disagree_are_reported_as_a_finding_not_averaged():
+    """Net income cumulative and cash flow quarterly would mean the vendor
+    flattens the two statements differently. Averaging that into one verdict
+    would produce a confident sentence over a contradiction."""
+    rows = _population(cumulative=True)
+    rows += _population(cumulative=False,
+                        concept="NetCashProvidedByUsedInOperatingActivities",
+                        section="cf")
+    result = M.report(rows)
+    assert result["verdict"] == FF.INCONCLUSIVE
+    assert result["byConcept"]["netIncome"]["verdict"] == FF.CUMULATIVE
+    assert result["byConcept"]["operatingCashFlow"]["verdict"] == FF.DISCRETE_QUARTERS
+    assert "평균" in result["agreement"]
+
+
+def test_agreement_counts_the_accounts_that_decided_not_all_of_them():
+    """Two of the four accounts here have no data at all. Calling that
+    unanimity would make one measurement read like four."""
+    result = M.report(_population(cumulative=True))
+    assert result["verdict"] == FF.CUMULATIVE
+    assert "1개 계정" in result["agreement"]
+
+
+def test_a_run_that_could_not_decide_does_not_exit_green(tmp_path, capsys):
+    """A green check on an undecided measurement is a green check that implies
+    an answer."""
+    store = tmp_path / "us"
+    store.mkdir()
+    HS.write_shard(store / "finnhub-2012.jsonl.gz",
+                   _year_of("SOLO", 2012, [1e6, 2e6, 3e6, 4e6], cumulative=True))
+    assert M.main([str(store)]) == 2
+
+
+def test_a_decided_run_exits_green(tmp_path):
+    store = tmp_path / "us"
+    store.mkdir()
+    HS.write_shard(store / "finnhub-2012.jsonl.gz", _population(cumulative=True))
+    assert M.main([str(store)]) == 0
+
+
+def test_an_empty_store_is_an_error_rather_than_a_verdict(tmp_path):
+    store = tmp_path / "us"
+    store.mkdir()
+    assert M.main([str(store)]) == 1

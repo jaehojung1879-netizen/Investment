@@ -78,7 +78,7 @@ def us_members(path: Path = UNIVERSE_HISTORY) -> list[str]:
 
 
 def fetch_window(key: str, ticker: str, start: str, end: str,
-                 timeout: int = 45) -> tuple[list[dict], str]:
+                 freq: str = FF.QUARTERLY, timeout: int = 45) -> tuple[list[dict], str]:
     """One window for one ticker. Returns (filings, status).
 
     The status vocabulary is deliberately small and each value points at a
@@ -86,7 +86,7 @@ def fetch_window(key: str, ticker: str, start: str, end: str,
     an absence, HTTP_* and ERROR are ours to investigate, SERVED is data.
     """
     url = BASE + "?" + urllib.parse.urlencode(
-        {"symbol": ticker, "freq": "quarterly", "from": start, "to": end,
+        {"symbol": ticker, "freq": freq, "from": start, "to": end,
          "token": key})
     try:
         with urllib.request.urlopen(url, timeout=timeout) as response:
@@ -148,7 +148,7 @@ def load_done_windows(store: Path) -> set[tuple[str, str, str]]:
         raw = json.loads(path.read_text(encoding="utf-8"))
     except ValueError:
         return set()
-    return {tuple(entry) for entry in raw if isinstance(entry, list) and len(entry) == 3}
+    return FF.normalise_done(raw)
 
 
 def save_done_windows(store: Path, done: set[tuple[str, str, str]]) -> None:
@@ -168,6 +168,8 @@ def main(argv=None) -> int:
     parser.add_argument("--max-calls", type=int, default=2000)
     parser.add_argument("--max-minutes", type=int, default=240)
     parser.add_argument("--pace", type=float, default=FF.PACE_SECONDS)
+    parser.add_argument("--freq", default=",".join(FF.FREQUENCIES),
+                        help="쉼표 구분. 기본은 annual 먼저, 그 다음 quarterly")
     args = parser.parse_args(argv)
 
     key = os.environ.get("FINNHUB_API_KEY", "").strip()
@@ -184,13 +186,20 @@ def main(argv=None) -> int:
         print("ERROR: 미국 유니버스를 확보하지 못했습니다.")
         return 1
 
+    frequencies = tuple(f.strip() for f in args.freq.split(",") if f.strip())
+    unknown = [f for f in frequencies if f not in FF.FREQUENCIES]
+    if unknown:
+        print(f"ERROR: 모르는 freq {unknown}; 가능한 값 {list(FF.FREQUENCIES)}")
+        return 2
+
     spans = FF.windows(args.from_year, args.through)
     done_windows = load_done_windows(store)
     existing_ids, shards = load_existing(store)
-    pending = FF.work_list(tickers, spans, done_windows)
+    pending = FF.work_list(tickers, spans, done_windows, frequencies)
 
     state = FF.progress(len(done_windows), len(pending))
-    print(f"미국 유니버스 {len(tickers)}종목 (한때 멤버였던 이름 전부) × 창 {len(spans)}개")
+    print(f"미국 유니버스 {len(tickers)}종목 (한때 멤버였던 이름 전부) × 창 {len(spans)}개 "
+          f"× 빈도 {list(frequencies)}")
     print(f"진행률 {state['collected']:,} / {state['total']:,} 창 "
           f"({state['completePct']}%) · 남음 {state['pending']:,}")
     print(f"이미 저장된 공시 {len(existing_ids):,}건")
@@ -201,11 +210,12 @@ def main(argv=None) -> int:
     fresh: dict[int, list[dict]] = {}
     statuses: Counter = Counter()
     refused: Counter = Counter()
+    seen_again: Counter = Counter()
     fresh_records: list[dict] = []
     calls = 0
     stop_reason = "WORK_LIST_EXHAUSTED"
 
-    for ticker, start, end in pending:
+    for ticker, start, end, freq in pending:
         if calls >= args.max_calls:
             stop_reason = "CALL_BUDGET_SPENT"
             break
@@ -213,7 +223,7 @@ def main(argv=None) -> int:
             stop_reason = "TIME_BUDGET_SPENT"
             break
 
-        rows, status = fetch_window(key, ticker, start, end)
+        rows, status = fetch_window(key, ticker, start, end, freq)
         calls += 1
         statuses[status] += 1
         time.sleep(args.pace)
@@ -230,16 +240,19 @@ def main(argv=None) -> int:
             continue
 
         for filing in rows:
-            record, reason = FF.build_record(ticker, filing, collected_at)
+            record, reason = FF.build_record(ticker, filing, collected_at, freq)
             if record is None:
                 refused[reason] += 1
                 continue
             if record["id"] in existing_ids:
+                # The same 10-K can arrive from both passes. First write wins,
+                # which keeps the store byte-stable across re-runs.
+                seen_again[freq] += 1
                 continue
             existing_ids.add(record["id"])
             fresh.setdefault(FF.shard_year(record), []).append(record)
             fresh_records.append(record)
-        done_windows.add((ticker, start, end))
+        done_windows.add((ticker, start, end, freq))
 
     # Write before reporting. A run that spends its budget and then dies in the
     # summary must not lose what it paid for.
@@ -263,6 +276,10 @@ def main(argv=None) -> int:
         print("  저장하지 않은 것")
         for reason, count in refused.most_common():
             print(f"    {reason:<20} {count:,}")
+    if seen_again:
+        print("  이미 갖고 있어 건너뛴 것 (두 빈도가 같은 공시를 줄 수 있습니다)")
+        for freq, count in seen_again.most_common():
+            print(f"    {freq:<20} {count:,}")
     print(f"  새 공시 {len(fresh_records):,}건 · 샤드 {', '.join(written) or '없음'}")
 
     after = FF.progress(len(done_windows), len(pending) - calls if pending else 0)
@@ -275,13 +292,21 @@ def main(argv=None) -> int:
               f"{report['filingsWithNoPeriodLength']:,}건")
         for form, buckets in report["periodLengthByForm"].items():
             print(f"    {form:<10} " + " · ".join(f"{k} {v:,}" for k, v in buckets.items()))
-        print("  계정과목 수")
+        print(f"  빈도별 공시 수 {report['filingsByFreq']}")
+        for freq, forms in report["formsByFreq"].items():
+            print(f"    {freq:<10} {forms}")
+        print("  계정과목 수 (원본 → 네임스페이스 통합)")
         for section, count in report["conceptsBySection"].items():
-            print(f"    {section:<4} {count:,}")
-        for section, names in report["topConcepts"].items():
+            merged = report["conceptsBySectionCollapsed"].get(section, count)
+            print(f"    {section:<4} {count:,} → {merged:,}"
+                  + (f"   (두 벌 철자 {count - merged:,}개)" if count > merged else ""))
+        for section, names in report["topConceptsCollapsed"].items():
             if names:
                 print(f"    {section} 상위: {names[:6]}")
-        print(f"  단위 {report['units']}")
+        print(f"  단위 분류 {report['unitClasses']}")
+        if report["unclassifiedUnits"]:
+            print(f"  분류 못 한 단위 {report['unclassifiedUnits']} "
+                  f"— 버리지 않고 남겨 두었습니다")
         (store / "inventory.json").write_text(
             json.dumps(report, indent=2, ensure_ascii=False), encoding="utf-8")
         print(f"\n  → {store / 'inventory.json'} 에 기록했습니다. 10-Q 의 손익계산서가 "
