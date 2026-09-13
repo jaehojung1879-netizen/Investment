@@ -121,7 +121,7 @@ def reconcile_prefix(name: str, sealed: list[dict], fresh: list[dict],
     Yahoo's back-anchored adjusted close it would have been wrong.
     """
     sealed_by, fresh_by = _by_ticker(sealed), _by_ticker(fresh)
-    restored, ignored = [], []
+    restored, ignored, contradicted = [], [], []
     for ticker in sorted(set(sealed_by) | set(fresh_by), key=lambda t: (t is None, t)):
         if ticker not in sealed_tickers:
             ignored.append(ticker)
@@ -130,10 +130,37 @@ def reconcile_prefix(name: str, sealed: list[dict], fresh: list[dict],
             restored.append(ticker)
             continue
         if digest(fresh_by[ticker]) != digest(sealed_by.get(ticker, [])):
-            raise InputVersionConflict(
-                f"{name}: {ticker} contradicts the sealed prefix; "
-                f"new DATA_VERSION/REPLAY_VERSION required")
+            contradicted.append((ticker, first_difference(sealed_by.get(ticker, []),
+                                                          fresh_by[ticker])))
+    if contradicted:
+        # Every contradicting name, not just the first. One ticker is a
+        # corporate action; hundreds is the vendor revising recent bars, and
+        # the two need opposite responses — reporting only the alphabetically
+        # first name cannot tell them apart, which is exactly the hole run #57
+        # left: "price/2026-09: HUBB contradicts" said nothing about scope.
+        shown = "; ".join(f"{ticker} {detail}" for ticker, detail in contradicted[:5])
+        more = f" (+{len(contradicted) - 5} more)" if len(contradicted) > 5 else ""
+        raise InputVersionConflict(
+            f"{name}: {len(contradicted)} of {len(sealed_by)} sealed tickers "
+            f"contradict the sealed prefix: {shown}{more}; "
+            f"new DATA_VERSION/REPLAY_VERSION required")
     return restored, ignored
+
+
+def first_difference(sealed: list[dict], fresh: list[dict]) -> str:
+    """The first session and field where two vintages of one ticker disagree."""
+    by_date = {row.get("date"): row for row in sealed}
+    for row in fresh:
+        was = by_date.pop(row.get("date"), None)
+        if was is None:
+            return f"gained {row.get('date')}"
+        for field in sorted(set(was) | set(row)):
+            if was.get(field) != row.get(field):
+                return (f"{row.get('date')} {field} "
+                        f"{was.get(field)} -> {row.get(field)}")
+    if by_date:
+        return f"lost {sorted(by_date)[0]}"
+    return "differs"
 
 
 # Components whose rows carry both a date and a ticker, and so can be

@@ -57,7 +57,8 @@ def test_a_name_that_was_never_sealed_cannot_write_a_published_month():
 def test_a_contradicted_value_still_conflicts():
     """The teeth of the seal: a sealed number coming back different."""
     fresh = _rows("AAA", MARCH) + _rows("SIVB", MARCH, close=101.0) + _rows("ZZZ", MARCH)
-    with pytest.raises(RI.InputVersionConflict, match="SIVB contradicts"):
+    with pytest.raises(RI.InputVersionConflict,
+                       match=r"1 of 3 sealed tickers contradict"):
         RI.reconcile_prefix("price/2015-03", SEALED, fresh, SEALED_TICKERS)
 
 
@@ -65,7 +66,8 @@ def test_an_extra_session_for_a_sealed_name_conflicts():
     """Not an availability flip: the vendor revised that name's history."""
     fresh = (_rows("AAA", MARCH) + _rows("SIVB", MARCH + ["2015-03-04"])
              + _rows("ZZZ", MARCH))
-    with pytest.raises(RI.InputVersionConflict, match="SIVB contradicts"):
+    with pytest.raises(RI.InputVersionConflict,
+                       match=r"SIVB gained 2015-03-04"):
         RI.reconcile_prefix("price/2015-03", SEALED, fresh, SEALED_TICKERS)
 
 
@@ -74,7 +76,7 @@ def test_a_new_dividend_on_a_sealed_name_conflicts():
     sealed = [{"date": "2015-03-02", "ticker": "AAA", "dividend": 0.5, "split": 1.0}]
     fresh = sealed + [{"date": "2015-03-05", "ticker": "SIVB",
                        "dividend": 0.2, "split": 1.0}]
-    with pytest.raises(RI.InputVersionConflict, match="SIVB contradicts"):
+    with pytest.raises(RI.InputVersionConflict, match="SIVB gained 2015-03-05"):
         RI.reconcile_prefix("corporate-events/2015-03", sealed, fresh,
                             SEALED_TICKERS)
 
@@ -173,7 +175,8 @@ def test_a_name_returning_with_different_numbers_still_stops_the_run(tmp_path):
     store = RI.InputStore(tmp_path, "r", "d")
     store.commit(_pack(["A", "SIVB"], "2020-01-06"),
                  through="2020-01-06", policy={})
-    with pytest.raises(RI.InputVersionConflict, match="contradicts the sealed prefix"):
+    with pytest.raises(RI.InputVersionConflict,
+                       match=r"2 of 2 sealed tickers contradict"):
         store.commit(_pack(["A", "SIVB"], "2020-01-09", bump=5.0),
                      through="2020-01-09", policy={})
 
@@ -199,3 +202,45 @@ def test_a_static_component_is_still_frozen_whole(tmp_path):
     with pytest.raises(RI.InputVersionConflict, match="universe: published input prefix"):
         store.commit(_pack(["A"], "2020-01-09", universe=["A", "B"]),
                      through="2020-01-09", policy={})
+
+
+# --------------------------------------------------------------------------- #
+# The report has to say how BIG the contradiction is
+#
+# Run #57 failed with "price/2026-09: HUBB contradicts the sealed prefix" and
+# that sentence cannot be acted on: one ticker is a corporate action to look up,
+# hundreds is the vendor revising recent bars and needs the opposite response.
+# The message named the alphabetically first offender and stopped.
+# --------------------------------------------------------------------------- #
+def test_the_conflict_names_every_contradicting_ticker_and_the_scope():
+    fresh = (_rows("AAA", MARCH, close=101.0) + _rows("SIVB", MARCH, close=101.0)
+             + _rows("ZZZ", MARCH))
+    with pytest.raises(RI.InputVersionConflict) as caught:
+        RI.reconcile_prefix("price/2015-03", SEALED, fresh, SEALED_TICKERS)
+
+    message = str(caught.value)
+    assert "2 of 3 sealed tickers contradict" in message
+    assert "AAA" in message and "SIVB" in message
+    # ...and what actually moved, so the cause is diagnosable from the record.
+    assert "2015-03-02 Close 100.0 -> 101.0" in message
+
+
+def test_the_conflict_summarises_rather_than_listing_hundreds():
+    many = [t for t in (f"T{i:03d}" for i in range(40))]
+    sealed = [r for t in many for r in _rows(t, MARCH)]
+    fresh = [r for t in many for r in _rows(t, MARCH, close=101.0)]
+    with pytest.raises(RI.InputVersionConflict) as caught:
+        RI.reconcile_prefix("price/2015-03", sealed, fresh, set(many))
+
+    message = str(caught.value)
+    assert "40 of 40 sealed tickers contradict" in message
+    assert "(+35 more)" in message
+
+
+@pytest.mark.parametrize("sealed_rows,fresh_rows,expected", [
+    (_rows("A", MARCH), _rows("A", MARCH + ["2015-03-04"]), "gained 2015-03-04"),
+    (_rows("A", MARCH + ["2015-03-04"]), _rows("A", MARCH), "lost 2015-03-04"),
+    (_rows("A", MARCH), _rows("A", MARCH, close=1.0), "2015-03-02 Close 100.0 -> 1.0"),
+])
+def test_first_difference_names_the_session_and_the_field(sealed_rows, fresh_rows, expected):
+    assert RI.first_difference(sealed_rows, fresh_rows) == expected

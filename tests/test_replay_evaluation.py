@@ -752,7 +752,7 @@ def test_yahoos_adjusted_close_would_have_been_refused_by_the_same_store(tmp_pat
         {"date": d, "ticker": "A", "Close": c}
         for d, c in zip(pd.bdate_range("2020-01-01", periods=4).strftime("%Y-%m-%d"), closes)]},
         through="2020-01-06", policy={})
-    with pytest.raises(RI.InputVersionConflict, match="contradicts the sealed prefix"):
+    with pytest.raises(RI.InputVersionConflict, match="sealed tickers contradict"):
         store.commit({"price/2020-01": [
             {"date": d, "ticker": "A", "Close": c * factor}
             for d, c in zip(pd.bdate_range("2020-01-01", periods=4).strftime("%Y-%m-%d"), closes)]
