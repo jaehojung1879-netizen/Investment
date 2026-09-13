@@ -301,6 +301,7 @@ def inventory(records: list[dict]) -> dict:
     collapsed: dict[str, Counter] = {"bs": Counter(), "ic": Counter(), "cf": Counter()}
     units: Counter = Counter()
     unit_classes: Counter = Counter()
+    resolved_classes: Counter = Counter()
     unclassified_units: Counter = Counter()
     missing_days = 0
     for record in records:
@@ -313,6 +314,10 @@ def inventory(records: list[dict]) -> dict:
         per_form.setdefault(form, Counter())[bucket] += 1
         per_freq[freq] += 1
         forms_by_freq.setdefault(freq, Counter())[form] += 1
+        # Units are counted twice on purpose: once as the label reads on its
+        # own, and once resolved inside this filing. The gap between the two is
+        # how many values a label-only reading would drop.
+        resolved = resolve_units(record)
         for section, entries in (record.get("statements") or {}).items():
             for entry in entries or []:
                 concept = entry.get("concept")
@@ -324,7 +329,9 @@ def inventory(records: list[dict]) -> dict:
                     units[str(unit)] += 1
                     kind = unit_class(unit)
                     unit_classes[kind] += 1
-                    if kind == UNCLASSIFIED:
+                    settled = resolved.get(str(unit), UNCLASSIFIED)
+                    resolved_classes[settled] += 1
+                    if settled == UNCLASSIFIED:
                         unclassified_units[str(unit)] += 1
     return {
         "filings": len(records),
@@ -348,6 +355,10 @@ def inventory(records: list[dict]) -> dict:
                                  for section, counts in collapsed.items()},
         "units": dict(units.most_common(12)),
         "unitClasses": dict(unit_classes.most_common()),
+        # What the labels mean once each filing settles its own: 259 filings in
+        # the first annual pass state their amounts under the filer's own XBRL
+        # unit ids, and a label-only reading drops them.
+        "unitClassesResolved": dict(resolved_classes.most_common()),
         # Anything the classifier could not place, kept by name so it stays a
         # question someone can answer instead of a silently dropped value.
         "unclassifiedUnits": dict(unclassified_units.most_common(8)),
@@ -438,10 +449,14 @@ def concept_value(record: dict, concept_key: str) -> float | None:
     wanted = FLOW_CONCEPTS.get(concept_key, ())
     if not section:
         return None
+    # Resolved inside the filing, not from the label alone: 259 filings state
+    # their amounts under the filer's own unit ids, and reading only the labels
+    # a table knows drops 17,573 values that are ordinary dollar figures.
+    resolved = resolve_units(record)
     for entry in (record.get("statements") or {}).get(section) or []:
         if strip_namespace(entry.get("concept")) not in wanted:
             continue
-        if unit_class(entry.get("unit")) != CURRENCY:
+        if value_class(record, entry, resolved) != CURRENCY:
             continue
         value = entry.get("value")
         if isinstance(value, (int, float)):
@@ -452,15 +467,25 @@ def concept_value(record: dict, concept_key: str) -> float | None:
 def quarter_stage(record: dict) -> str | None:
     """Which stage of the fiscal year this filing's period reaches.
 
-    Read from the stated period length rather than from `fiscalQuarter`: the
-    quarter number says which report it is, and what this needs to know is how
-    much of the year the numbers cover.
+    Read from the stated period length, and from nothing else. `fiscalQuarter`
+    says which report it is; the form says what the SEC calls the document; what
+    a rollforward needs to know is how much of the year the NUMBERS cover.
+
+    The form was trusted here at first — a 10-K was taken to be a year by
+    definition — and the first annual pass showed why that is wrong. Four of
+    1,661 10-K filings state a period that is not a year: LYB's 91 days,
+    TTWO's 89, DRI's 244, and one that states no span at all. Those are
+    transition reports, filed when a company moves its fiscal year end. Feeding
+    LYB's 91-day figure into `FY(Y-1) − cum(Y-1,Q) + cum(Y,Q)` as the annual
+    term understates the year roughly fourfold, and produces a number that
+    looks entirely ordinary on the way through.
+
+    A period that is not one of the four stages returns None rather than a
+    guess: a 0-day span and a >400-day one are as unusable as a missing one.
     """
-    bucket = period_bucket(record.get("periodDays"))
-    if str(record.get("form") or "").upper().startswith("10-K") or bucket == "year (316-400d)":
-        return FY
     return {"quarter (46-135d)": Q1, "half (136-225d)": Q2,
-            "three quarters (226-315d)": Q3}.get(bucket)
+            "three quarters (226-315d)": Q3,
+            "year (316-400d)": FY}.get(period_bucket(record.get("periodDays")))
 
 
 def _median(values: list[float]) -> float | None:
@@ -552,3 +577,112 @@ def _read_ratios(medians: dict, counts: dict) -> tuple[str, str]:
     return INCONCLUSIVE, (f"중앙값이 두 밴드 어디에도 들지 않습니다 "
                           f"(반기/1분기 {half:.2f}, 3분기/1분기 {three:.2f}) — "
                           f"단정하지 말고 원인을 보십시오")
+
+
+# ---------------------------------------------------------------------------
+# Units that only mean something inside the filing that used them
+# ---------------------------------------------------------------------------
+# The first annual pass turned up 5,353 values under labels that are not units
+# at all: `unit12`, `unit1`, `unit13`, `u001`, `u002`, `unit14`, `unit15`. They
+# are the filer's own XBRL unit ids, passed through untranslated, and the
+# concepts underneath them are ordinary — `NetIncomeLoss`, `Assets`,
+# `OperatingIncomeLoss`, `WeightedAverageNumberOfDilutedSharesOutstanding`.
+#
+# Two things were measured before writing this, and both matter:
+#
+#   * the same label means different things in different filings. `unit1`
+#     carries dollars in one and a share count in another, so no table mapping
+#     `unit1` to a meaning can exist. `unit_class` is right to refuse it.
+#   * inside ONE filing the labels are consistent, and there are only two to
+#     four of them. AMD's 2012 10-Q puts every dollar figure under `unit1` and
+#     both EPS figures under `unit14`.
+#
+# So the label resolves per filing, from the concepts that carry it: a label
+# holding `EarningsPerShareBasic` is that filing's per-share unit. 186 filings
+# are entirely opaque this way and 133 partly; dropping them would lose those
+# names from the US store for the periods involved.
+#
+# Where a label carries no anchor at all it stays unclassified. Guessing from
+# how many values it holds, or from what the other labels turned out to be,
+# would be inventing a unit for a number we would then treat as money.
+UNIT_ANCHORS = {
+    PER_SHARE: ("EarningsPerShareBasic", "EarningsPerShareDiluted",
+                "EarningsPerShareBasicAndDiluted",
+                "CommonStockDividendsPerShareDeclared",
+                "IncomeLossFromContinuingOperationsPerBasicShare",
+                "IncomeLossFromContinuingOperationsPerDilutedShare"),
+    SHARES: ("WeightedAverageNumberOfSharesOutstandingBasic",
+             "WeightedAverageNumberOfDilutedSharesOutstanding",
+             "WeightedAverageNumberOfBasicSharesOutstanding",
+             "CommonStockSharesOutstanding", "CommonStockSharesIssued",
+             "EntityCommonStockSharesOutstanding"),
+    CURRENCY: ("Assets", "Liabilities", "StockholdersEquity",
+               "LiabilitiesAndStockholdersEquity", "NetIncomeLoss",
+               "ProfitLoss", "Revenues", "OperatingIncomeLoss",
+               "CashAndCashEquivalentsAtCarryingValue",
+               "NetCashProvidedByUsedInOperatingActivities"),
+}
+# Per-share first, for the same reason `unit_class` tests it first: an EPS tag
+# and a dollar tag can share a label only if one of them is wrong, and reading
+# a per-share figure as money is the error that cannot be seen downstream.
+ANCHOR_ORDER = (PER_SHARE, SHARES, CURRENCY)
+
+
+def _looks_generated(label: str) -> bool:
+    """Is this an XBRL unit id the filer made up, rather than a named unit?
+
+    Every label the anchors promoted to currency across the first 6,632 filings
+    was of the first kind — `unit12`, `unit1`, `u001`, `u002`, `unit13`,
+    `unit14` — and every named one (`pure`, `number`, `store`, `eur`) was of
+    the second. The digit is what separates them. It is a rule about the shape
+    of the labels this vendor actually sends, not a law about XBRL, and it
+    fails to the safe side: a named unit nobody recognises stays unclassified
+    instead of becoming dollars.
+    """
+    return any(ch.isdigit() for ch in label)
+
+
+def resolve_units(record: dict) -> dict[str, str]:
+    """What each unit label means IN THIS FILING.
+
+    Labels `unit_class` can read on their own are taken from it. The rest are
+    decided by the anchors above, and left unclassified when no anchor carries
+    them.
+    """
+    carried: dict[str, set[str]] = {}
+    for section in ("bs", "ic", "cf"):
+        for entry in (record.get("statements") or {}).get(section) or []:
+            label = str(entry.get("unit") or "")
+            carried.setdefault(label, set()).add(strip_namespace(entry.get("concept")))
+
+    resolved: dict[str, str] = {}
+    for label, concepts in carried.items():
+        known = unit_class(label)
+        if known != UNCLASSIFIED:
+            resolved[label] = known
+            continue
+        for meaning in ANCHOR_ORDER:
+            if not (concepts & set(UNIT_ANCHORS[meaning])):
+                continue
+            if meaning == CURRENCY and not _looks_generated(label):
+                # An anchor says what KIND of quantity a label holds. It cannot
+                # say which currency, and `CURRENCY` means US dollars
+                # everywhere below this. `Revenues` under a label spelled `eur`
+                # is a revenue figure, and adding it to dollars is the kind of
+                # error that leaves every number looking ordinary. Per-share and
+                # share counts have no denomination, so they promote freely.
+                break
+            resolved[label] = meaning
+            break
+        else:
+            resolved[label] = UNCLASSIFIED
+        resolved.setdefault(label, UNCLASSIFIED)
+    return resolved
+
+
+def value_class(record: dict, entry: dict,
+                resolved: dict[str, str] | None = None) -> str:
+    """One value's unit, resolved against the filing it came from."""
+    if resolved is None:
+        resolved = resolve_units(record)
+    return resolved.get(str(entry.get("unit") or ""), UNCLASSIFIED)

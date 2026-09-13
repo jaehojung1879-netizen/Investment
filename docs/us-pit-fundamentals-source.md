@@ -379,6 +379,79 @@ and classifying it as currency turns an EPS into a dollar amount nothing
 downstream can tell apart from a real one. `unit12` is named rather than
 guessed.
 
+## Collection run #2, 2026-09-13 — the question is answered: **CUMULATIVE**
+
+The annual pass ran, 1,500 more calls, 1,661 new filings, all 10-K. The store
+is now 6,632 filings and the ratio measurement decided, on every flow account,
+with between 1,018 and 1,393 ticker-years behind each:
+
+| account | half / Q1 | three quarters / Q1 | three quarters / year | ratios | verdict |
+|---|---|---|---|---|---|
+| net income | 2.05 | 3.13 | 0.75 | 1,368 | CUMULATIVE |
+| revenue | 2.04 | 3.08 | 0.74 | 1,122 | CUMULATIVE |
+| operating income | 2.07 | 3.15 | 0.75 | 1,018 | CUMULATIVE |
+| operating cash flow | 1.96 | 3.12 | 0.70 | 1,393 | CUMULATIVE |
+
+Cumulative predicts 2.0 and 3.0; independent quarters predict 1.0 and 1.0.
+Every account landed on the first, none between the bands, and the four agree.
+
+**So a 10-Q's income statement runs from the fiscal year start, and TTM must be
+built by rollforward: `TTM(Y,Q) = FY(Y-1) − cum(Y-1,Q) + cum(Y,Q)`.** Summing
+four quarterly figures — the obvious reading, and the one a derivation written
+from memory would have used — would have counted the first quarter four times,
+the second three, and produced free cash flow roughly two and a half times too
+large with every number still looking ordinary.
+
+### Two defects the same data found
+
+**A 10-K is not always a year.** Four of the 1,661 annual filings state a
+period that is not: LYB 91 days, TTWO 89, DRI 244, and one stating no span at
+all. They are transition reports, filed when a company moves its fiscal year
+end. The stage was being read from the form — a 10-K taken to be a year by
+definition — so LYB's 91-day figure would have entered the rollforward as the
+FY term and understated that year roughly fourfold. The stage now comes from
+the stated period length and from nothing else; a span that is not one of the
+four stages yields no stage rather than a guess.
+
+**5,353 values sit under labels that are not units.** `unit12`, `unit1`,
+`u001`, `u002`, `unit13`, `unit14`, `unit15` — the filer's own XBRL unit ids,
+passed through untranslated, carrying ordinary concepts: `NetIncomeLoss`,
+`Assets`, `OperatingIncomeLoss`, `WeightedAverageNumberOfDilutedSharesOutstanding`.
+Two measurements decided what to do:
+
+* the same label means different things in different filings (`unit1` is
+  dollars in one and a share count in another), so no table from label to
+  meaning can exist — `unit_class` is right to refuse it;
+* inside one filing the labels are consistent and there are only two to four
+  of them. AMD's 2012 10-Q puts every dollar figure under `unit1` and both EPS
+  figures under `unit14`.
+
+So a label resolves **per filing**, from the concepts carrying it: a label
+holding `EarningsPerShareBasic` is that filing's per-share unit. Measured over
+the store, 17,931 unclassified values become 358, across 259 filings, and no
+label that already read on its own changed meaning.
+
+One guard, added because a test caught it rather than because it had happened:
+an anchor says what KIND of quantity a label holds, never which currency.
+`Revenues` under a label spelled `eur` is a revenue figure, and `currency`
+means US dollars everywhere downstream. Promotion to currency is therefore
+limited to labels shaped like generated ids — every one the anchors promoted
+across 6,632 filings contained a digit, and every named unit (`pure`, `number`,
+`store`, `eur`) did not. Per-share and share counts have no denomination to get
+wrong, so they promote freely, which is what recovers the 163 values spelled
+`eps`.
+
+What is left unclassified is now visible by name: `number` 216, `pure` 83,
+`store` 2, `eur` 1, and 30 values under generated ids that carried no anchor.
+None of them is money this pipeline can spend.
+
+### Where the collection stands
+
+3,000 of 16,580 windows (18.1%). Roughly nine more slices at the present
+budget. Nothing is wired into the replay until the backfill is complete —
+a derivation over 18% of the universe would be a survivorship hole with a
+different name.
+
 ## Primary and backup, once the backups are real
 
 finnhub is the primary because it is the only vendor measured end to end:
