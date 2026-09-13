@@ -30,6 +30,9 @@ route to use.
 | `efts.sec.gov`, apex `sec.gov` | `REFUSED_ON_EVERY_SEC_HOST` | US PIT probe run #1, 2026-09-13 |
 | finnhub, polygon, simfin, alphavantage | host **answers** the Actions pool | same run |
 | FMP, asked by date | `TOO_SHALLOW` — 5 quarters, ends 2025-06 | same run |
+| **finnhub** | **`OPEN`** — 2012-13 filings with `filedDate`, all 7 production factors computable | Probes run #1 (`us-pit-fundamentals`), 2026-09-13 |
+| polygon | depth confirmed, accounts not found — **unresolved**, see run #2 | same run |
+| simfin | empty on every sample including AAPL — **unresolved**, our query not ruled out | same run |
 
 The SEC verdict is as firm as this repository's evidence gets. Eight parallel
 runners took eight **distinct** Azure addresses — `4.154.40.4`,
@@ -139,6 +142,113 @@ Two things changed as a result:
   replay's very first cross-sections held, and mostly tickers that genuinely
   retired.
 
+## Run #2, 2026-09-13 — the US route opens
+
+The first run with `FINNHUB`, `MASSIVE` (Polygon) and `SIMFIN` in the
+environment, and therefore the first measurement of **depth** rather than
+reachability.
+
+### finnhub — `OPEN`, and this is the route
+
+| cohort | sample | result |
+|---|---|---|
+| living | AAPL, JPM, XOM, KO | `PIT_DEPTH_CONFIRMED` — 5 periods each inside the window |
+| departed | ANR | `PIT_DEPTH_CONFIRMED` — 7 periods |
+| departed | BIG | `PIT_DEPTH_CONFIRMED` — 4 periods |
+| departed | CBE | `PIT_DEPTH_CONFIRMED` — 3 periods |
+| departed | DV | `NO_ROWS` |
+
+Every one of the seven production value and quality factors is computable from
+what came back — `earningsYield`, `bookYield`, `fcfYield`, `roe`, `opMargin`,
+`profitMargin`, `debtToEquity`. That is the half of the model the US leg has
+never been evaluated on, closed by one vendor, with `filedDate` on the rows.
+
+Full backfill: **10 calls per ticker × 829 names = 8,290 calls.**
+
+### polygon — the key works; the verdict did not
+
+The `MASSIVE` secret authenticated (32 chars) and the depth is, if anything,
+better than finnhub's: six periods per living name, and three of the four
+departed names including `DV`, which finnhub missed. The probe called it
+`OPEN`.
+
+It should not have. In the same report, **not one of the nine production
+accounts was found** — every factor came back `불가`. A source we cannot
+compute a single factor from is not an open route, and a verdict that says it
+is would send someone to write a collector against nothing.
+
+The likely cause is this probe, not Polygon: `read_polygon` looked for the
+filer's own US-GAAP tags (`NetIncomeLoss`) in a response from a vendor that
+NORMALISES filings, and a normalised statement does not keep the filer's
+spelling. That is the `fillingDate` lesson arrived at from the other side —
+a renamed field and an absent field produce the same output, and the output
+reads as the worse finding. Polygon's status is **unresolved pending a
+re-measurement**, not `OPEN` and not a failure.
+
+### simfin — reported `TOO_SHALLOW`, and that was not a finding about simfin
+
+All eight samples returned zero rows. **AAPL included**, for a window in which
+AAPL certainly filed. A 200 carrying an empty list, across an entire panel, is
+far more likely our query than the vendor's coverage — wrong parameter names,
+wrong casing, wrong period spelling. Access is measured per service, and a
+vendor's refusal is attributed only after our side of the request has been
+ruled out. Ours had not been. simfin is **unresolved**, not shallow.
+
+### fmp — `TOO_SHALLOW`, confirmed
+
+Earliest period 2025-06-27 … 06-30 on the `limit=5` cap; five quarters against
+the roughly fifty-four the replay needs. All four departed names refused on
+the subscription sentence.
+
+### What run #2 changed in the probe
+
+Three defects, all of which produced a confident sentence the evidence did not
+support:
+
+1. **`OPEN` did not look at the accounts.** It now does: depth and a filing
+   date with no computable factor is `ACCOUNTS_NOT_FOUND`.
+2. **A miss named only what we looked for.** The readers now carry
+   `fieldsSeen` — the vendor's own field names — so "missing `netIncome`"
+   becomes "carries `net_income_loss`", which is a name to add rather than a
+   vendor to retire. Polygon's normalised keys are candidates alongside the
+   US-GAAP tags; neither list is asserted to be right.
+3. **An empty answer had no control.** When the historical window comes back
+   empty, the probe now asks the same vendor for `2025-01-01..2026-06-30`,
+   a window where the answer is not in doubt. Empty there too and the verdict
+   is `REQUEST_NOT_RULED_OUT`, which points at our query rather than at the
+   vendor's history.
+
+## Primary and backup, once the backups are real
+
+finnhub is the primary because it is the only vendor measured end to end:
+depth, publication dates, and every production account. The backups exist for
+the failure this project has already lived through once — a vendor that served
+us in August and refused in September.
+
+The shape is the one the Korean price leg already uses: one vendor of record,
+a second read alongside it, and a cross-check that has to agree before either
+is sealed. What run #2 adds is the reason it is worth the second call —
+**finnhub missed `DV` and polygon missed `ANR`.** The gaps are not the same
+gaps, so the pair covers cross-sections neither covers alone.
+
+Three rules carry over from the price leg, and they are not optional:
+
+* **The vendor of record is recorded per row.** `PIT_FUNDAMENTALS_V1` already
+  carries `source` and `sourceAsOf`; a panel mixing vendors without saying
+  which answered where is a panel nobody can audit later.
+* **A fallback never silently replaces the primary mid-history.** A ticker
+  whose 2013 comes from one vendor and whose 2020 comes from another has a
+  seam, and a seam that nothing reports is the v12 truncation in new clothes —
+  46,356 rows went missing that way and no gate noticed. The seam is recorded
+  and, where it matters, it fails the run.
+* **The cross-check compares the publication date, not just the value.** Two
+  vendors can agree on a quarter's net income and disagree by weeks on when it
+  became visible. The second number is the one point-in-time depends on.
+
+None of that gets built against polygon or simfin until they have a verdict
+that survived a re-measurement. The next run decides whether the backup is
+polygon, simfin, both, or neither — and finnhub does not wait for it.
+
 ## What was asked and still needs a credential
 
 **Four vendors that are not sec.gov.** Each re-serves filings from a different
@@ -231,7 +341,9 @@ Read the per-vendor verdict:
 
 | Verdict | What it means for the next move |
 |---|---|
-| `OPEN` | living **and** departed names returned 2013 filings with publication dates — write the collector against this vendor |
+| `OPEN` | living **and** departed names returned 2013 filings with publication dates, **and** at least one production factor is computable — write the collector against this vendor |
+| `ACCOUNTS_NOT_FOUND` | depth and filing dates arrived but no production account was found under any candidate name. The report's `fieldsSeen` lists what the vendor actually sent; add those names and re-measure |
+| `REQUEST_NOT_RULED_OUT` | the historical window came back empty **and so did a recent control window**. Our query is the suspect, not the vendor's history |
 | `DEPARTED_REFUSED` | depth is there; the departed names were refused per symbol. Read the sentence — a subscription limit is answerable with money, "no such symbol" is not |
 | `LIVING_ONLY` | depth is there and the departed names came back **empty** — the vendor was willing and had nothing. Usable only if the survivorship hole is quantified and declared |
 | `TOO_SHALLOW` | reachable, but does not reach 2013 — same shape as FMP's free tier |
