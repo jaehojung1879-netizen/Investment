@@ -164,6 +164,21 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
+      # WHY THE SCHEDULED BUDGET IS THE WHOLE BACKFILL. A budget is a ceiling,
+      # not a target: once the store has caught up the work list is empty and
+      # the run ends in seconds, so a large ceiling costs nothing on an ordinary
+      # day. What it buys is the days before that. At the 1,500 calls the first
+      # two slices used, the remaining 13,580 windows would take nine more
+      # nights of someone remembering to press the button; at 1.1s of pacing
+      # they are 249 minutes, which fits in one scheduled run.
+      #
+      # The pacing is what the rate limit cares about (54 calls a minute, under
+      # finnhub's 60), and that does not change. What is untested is whether a
+      # run this long meets a daily quota the two shorter ones never reached.
+      # If it does, the collector stops on the refusal and does NOT mark the
+      # window done, so the next night resumes where it stopped and we will
+      # have measured where the real cap is. Nothing is lost either way.
+
       - name: Check out signal-history branch (orphan-safe)
         run: |
           git config user.name "us-fundamentals-bot"
@@ -186,8 +201,8 @@ jobs:
         run: |
           python scripts/collect_finnhub_fundamentals.py \
             us-fundamentals-work/ledger/fundamentals/us \
-            --max-calls "${{ inputs.max_calls || '2000' }}" \
-            --max-minutes "${{ inputs.max_minutes || '240' }}" \
+            --max-calls "${{ inputs.max_calls || '16600' }}" \
+            --max-minutes "${{ inputs.max_minutes || '300' }}" \
             | tee us-collect.log
 
       # A US 10-Q states both a three-month and a year-to-date figure, and the
