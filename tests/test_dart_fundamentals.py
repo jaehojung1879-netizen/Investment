@@ -355,17 +355,17 @@ def test_each_region_writes_its_own_path_under_the_shared_branch():
 
 def test_the_period_measurement_runs_before_the_commit():
     """Its JSON is committed with the shards it describes; running it after the
-    push would leave the answer on a machine that is about to be thrown away."""
-    import yaml
+    push would leave the answer on a machine that is about to be thrown away.
 
-    from pathlib import Path as _Path
-    root = _Path(__file__).resolve().parent.parent
-    workflow = yaml.safe_load(
-        (root / ".github" / "workflows" / "fundamentals.yml").read_text(encoding="utf-8"))
-    names = [step.get("name", "") for step in workflow["jobs"]["us"]["steps"]]
-    measure = next(i for i, n in enumerate(names) if n.startswith("Measure"))
-    collect = next(i for i, n in enumerate(names) if n.startswith("Collect"))
-    commit = next(i for i, n in enumerate(names) if n.startswith("Commit"))
+    Read as text, not through a YAML parser: `pyyaml` is not a dependency of
+    this repository, and a test is not a reason to add one to the runtime
+    requirements.
+    """
+    workflow = _fundamentals_workflow()
+    us_job = workflow[workflow.index("\n  us:"):]
+    collect = us_job.index("- name: Collect a slice")
+    measure = us_job.index("- name: Measure what a 10-Q period means")
+    commit = us_job.index("- name: Commit & push to signal-history")
     assert collect < measure < commit
 
 
