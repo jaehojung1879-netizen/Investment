@@ -1,0 +1,100 @@
+name: Probe US PIT fundamentals sources
+
+# The 13-year replay measures a model that is not the production model. In the
+# US, `fullComposite` has ZERO observations and `claimEligible: false`, because
+# the only file wired into the `FundamentalStore` is the Korean one — so half
+# the production weight (value 0.3 + quality 0.2) has never been tested on a US
+# name. Closing that needs a US point-in-time fundamentals source.
+#
+# SEC is measured and closed: `REFUSED_ON_EVERY_HEADER_SET` (4 header sets x 2
+# hosts, byte-identical block pages) and `REFUSED_ON_EVERY_ADDRESS` (8 distinct
+# Azure addresses, 16 requests, all 403 on 2026-09-04). This asks the two SEC
+# hosts nobody has actually asked yet — with the two known-refused ones in the
+# same run as the baseline — and then measures the non-SEC vendors.
+#
+# Every key is OPTIONAL. Reachability is asked WITHOUT a credential, so a run
+# with no secrets at all still answers the question run #49 skipped: does this
+# host answer the Actions IP pool? A vendor with no key is reported as exactly
+# that, and nothing is claimed about its depth.
+#
+# No requirements are installed on purpose: the probe uses only the standard
+# library, so it cannot be broken by a dependency it does not need.
+#
+# On demand, like every other probe. Nothing downstream consumes this, and a
+# probe the daily jobs depend on is a probe that breaks them.
+
+on:
+  workflow_dispatch:
+    inputs:
+      vendors:
+        description: "벤더 (쉼표 구분)"
+        type: string
+        default: "finnhub,polygon,simfin,fmp,alphavantage"
+      living:
+        description: "상장 중인 표본 — 2013년 훨씬 전부터 있던 이름으로"
+        type: string
+        default: "AAPL,JPM,XOM,KO"
+      departed:
+        description: "사라진 표본 (비우면 universe-history.json 에서 고릅니다)"
+        type: string
+        default: ""
+      skip_sec:
+        description: "SEC 호스트 baseline 을 건너뜁니다"
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+
+      - name: Probe
+        env:
+          # Present today. The others are declared so that adding the secret is
+          # the ONLY step needed to measure that vendor — an absent secret
+          # arrives as an empty string and is reported as KEY_MISSING.
+          FMP_API_KEY: ${{ secrets.FMP }}
+          FINNHUB_API_KEY: ${{ secrets.FINNHUB }}
+          POLYGON_API_KEY: ${{ secrets.POLYGON }}
+          SIMFIN_API_KEY: ${{ secrets.SIMFIN }}
+          ALPHAVANTAGE_API_KEY: ${{ secrets.ALPHAVANTAGE }}
+        run: |
+          set -euo pipefail
+          python scripts/probe_us_pit_fundamentals.py \
+            --output us-pit-probe.json \
+            --vendors "${{ inputs.vendors }}" \
+            --living "${{ inputs.living }}" \
+            --departed "${{ inputs.departed }}" \
+            ${{ inputs.skip_sec && '--skip-sec' || '' }} | tee probe.log
+
+      - name: Upload the probe
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: us-pit-fundamentals-probe
+          path: |
+            us-pit-probe.json
+            probe.log
+          if-no-files-found: warn
+
+      - name: Summary
+        if: always()
+        run: |
+          {
+            echo '## 미국 PIT 재무 소스 프로브'
+            echo
+            echo '```'
+            tail -n 120 probe.log 2>/dev/null || echo '프로브 출력 없음'
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
