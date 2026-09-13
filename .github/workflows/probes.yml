@@ -1,0 +1,239 @@
+name: Probes
+
+# Ten separate workflow_dispatch entries, all doing the same three things —
+# check out, run one script, upload what it wrote — had crowded the Actions
+# list to the point where the five jobs that actually RUN the system (replay,
+# pages, ledger, tests, the DART collector) were hard to find among them.
+# They are one entry now, chosen by a dropdown.
+#
+# Nothing is retired by this. Every probe stays runnable in CI, because a
+# probe that cannot be re-run is a measurement that turns back into a belief
+# the moment the vendor changes. SEC is closed today on all four hosts, and
+# that is exactly the sort of fact that wants re-measuring rather than
+# remembering.
+#
+# Each script keeps its own argparse defaults, so `args` is empty for a normal
+# run and the defaults ARE the documented sample. Pass `args` to vary one
+# thing — the same discipline the probes themselves use: change one variable,
+# hold the rest.
+#
+# On demand only. Nothing downstream consumes a probe, and a probe the daily
+# jobs depend on is a probe that breaks them.
+
+on:
+  workflow_dispatch:
+    inputs:
+      probe:
+        description: "무엇을 잴지"
+        type: choice
+        default: us-pit-fundamentals
+        options:
+          - us-pit-fundamentals
+          - sec-egress
+          - sec-headers
+          - sec-fundamentals
+          - sec-bulk-datasets
+          - fmp-fundamentals
+          - dart-fundamentals
+          - krx-index-membership
+          - alfred-macro-vintages
+          - kr-delisting-coverage
+      args:
+        description: "스크립트에 그대로 넘길 인자 (비우면 스크립트 기본값)"
+        type: string
+        default: ""
+      egress_shards:
+        description: "sec-egress 전용 — 병렬 러너 수 (각각 다른 IP를 받을 가능성)"
+        type: choice
+        options: ["4", "8", "12"]
+        default: "8"
+
+permissions:
+  contents: read
+
+jobs:
+  # Every probe except the egress fan-out, which needs many runners and so
+  # cannot share this shape.
+  probe:
+    if: inputs.probe != 'sec-egress'
+    runs-on: ubuntu-latest
+    # The KR delisting measurement walks the whole Korean panel and is the
+    # only one that needs hours; the rest finish in minutes.
+    timeout-minutes: ${{ inputs.probe == 'kr-delisting-coverage' && 300 || 30 }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+
+      - name: Resolve the probe
+        id: pick
+        run: |
+          set -euo pipefail
+          case "${{ inputs.probe }}" in
+            us-pit-fundamentals)   script=probe_us_pit_fundamentals.py;    deps=no  ;;
+            sec-headers)           script=probe_sec_headers.py;            deps=no  ;;
+            sec-fundamentals)      script=probe_sec_fundamentals.py;       deps=no  ;;
+            sec-bulk-datasets)     script=probe_sec_bulk_datasets.py;      deps=no  ;;
+            fmp-fundamentals)      script=probe_fmp_fundamentals.py;       deps=no  ;;
+            dart-fundamentals)     script=probe_dart_fundamentals.py;      deps=no  ;;
+            krx-index-membership)  script=probe_krx_index_membership.py;   deps=no  ;;
+            alfred-macro-vintages) script=probe_alfred_macro_vintages.py;  deps=yes ;;
+            kr-delisting-coverage) script=measure_kr_delisting_coverage.py; deps=yes ;;
+            *) echo "unknown probe: ${{ inputs.probe }}" >&2; exit 2 ;;
+          esac
+          echo "script=$script" >> "$GITHUB_OUTPUT"
+          echo "deps=$deps" >> "$GITHUB_OUTPUT"
+
+      # Most probes are standard-library only and must stay that way: a probe
+      # cannot be broken by a dependency it does not use. Two read the
+      # replay's own code and so need the replay's own requirements.
+      - name: Install dependencies
+        if: steps.pick.outputs.deps == 'yes'
+        run: pip install -r requirements.txt
+
+      - name: Probe
+        env:
+          # One key per probe, not the whole drawer: a run that does not need a
+          # credential does not get one. An absent secret arrives as an empty
+          # string and every probe reports that as a missing key rather than
+          # as a vendor that failed.
+          FMP_API_KEY: ${{ (inputs.probe == 'us-pit-fundamentals' || inputs.probe == 'fmp-fundamentals') && secrets.FMP || '' }}
+          # `MASSIVE` is Polygon's key. The secret carries the name the vendor
+          # itself handed out at signup, and renaming it here to match our
+          # variable would mean the repository and the vendor's dashboard
+          # disagree about what the same string is called.
+          POLYGON_API_KEY: ${{ inputs.probe == 'us-pit-fundamentals' && secrets.MASSIVE || '' }}
+          FINNHUB_API_KEY: ${{ inputs.probe == 'us-pit-fundamentals' && secrets.FINNHUB || '' }}
+          SIMFIN_API_KEY: ${{ inputs.probe == 'us-pit-fundamentals' && secrets.SIMFIN || '' }}
+          ALPHAVANTAGE_API_KEY: ${{ inputs.probe == 'us-pit-fundamentals' && secrets.ALPHAVANTAGE || '' }}
+          DART_API_KEY: ${{ inputs.probe == 'dart-fundamentals' && secrets.DART || '' }}
+          KRX_API_KEY: ${{ inputs.probe == 'krx-index-membership' && secrets.KRX_API_KEY || '' }}
+          FRED_API_KEY: ${{ inputs.probe == 'alfred-macro-vintages' && secrets.FRED_API_KEY || '' }}
+          # Read as an env var rather than interpolated into the command, so a
+          # dispatch input cannot become shell.
+          ARGS: ${{ inputs.args }}
+        run: |
+          set -euo pipefail
+          # `--output` first and $ARGS after, so an explicit --output in the
+          # input still wins. Unquoted on purpose: argparse wants words.
+          # shellcheck disable=SC2086
+          python "scripts/${{ steps.pick.outputs.script }}" \
+            --output probe-output.json $ARGS | tee probe.log
+
+      - name: Upload the probe
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: probe-${{ inputs.probe }}
+          path: |
+            probe-output.json
+            probe.log
+          if-no-files-found: warn
+
+      - name: Summary
+        if: always()
+        run: |
+          {
+            echo "## 프로브: ${{ inputs.probe }}"
+            echo
+            echo '```'
+            tail -n 120 probe.log 2>/dev/null || echo '프로브 출력 없음'
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  # SEC blocks by address, so this one has to vary the address — which means
+  # many runners, not one. The shards must not share a runner: one address
+  # refused eight times is one observation repeated eight times.
+  egress-fan-out:
+    if: inputs.probe == 'sec-egress'
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+    steps:
+      - name: Stop shards above the requested count
+        id: gate
+        run: |
+          if [ "${{ matrix.shard }}" -gt "${{ inputs.egress_shards }}" ]; then
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Checkout code
+        if: steps.gate.outputs.skip == 'false'
+        uses: actions/checkout@v5
+
+      - name: Set up Python
+        if: steps.gate.outputs.skip == 'false'
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+
+      - name: Probe from this runner
+        if: steps.gate.outputs.skip == 'false'
+        env:
+          SHARD_ID: ${{ matrix.shard }}
+        run: |
+          set -euo pipefail
+          python scripts/probe_sec_egress.py --output "shard-${{ matrix.shard }}.json"
+
+      - name: Upload this shard
+        if: steps.gate.outputs.skip == 'false'
+        uses: actions/upload-artifact@v4
+        with:
+          name: sec-egress-shard-${{ matrix.shard }}
+          path: shard-${{ matrix.shard }}.json
+          if-no-files-found: warn
+
+  egress-summary:
+    needs: egress-fan-out
+    if: always() && inputs.probe == 'sec-egress'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+
+      - name: Collect the shards
+        uses: actions/download-artifact@v4
+        with:
+          path: shards
+          pattern: sec-egress-shard-*
+          merge-multiple: true
+
+      - name: Summarize
+        run: |
+          set -euo pipefail
+          python scripts/probe_sec_egress.py \
+            --summarize shards --output probe-output.json | tee probe.log
+
+      - name: Upload the summary
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: probe-sec-egress
+          path: |
+            probe-output.json
+            probe.log
+          if-no-files-found: warn
+
+      - name: Summary
+        if: always()
+        run: |
+          {
+            echo '## 프로브: sec-egress'
+            echo
+            echo '```'
+            tail -n 60 probe.log 2>/dev/null || echo '프로브 출력 없음'
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
