@@ -1,9 +1,9 @@
 {
   "gridDates": [
-    "2026-08-14",
     "2026-08-21",
     "2026-08-28",
-    "2026-09-04"
+    "2026-09-04",
+    "2026-09-11"
   ],
   "replayVersion": "replay-v14",
   "featureVersion": "hfeat-v1",
@@ -11,19 +11,19 @@
   "modelVersion": "longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
   "frequency": "W",
   "requestedStart": "2013-01-01",
-  "requestedEnd": "2026-09-10",
+  "requestedEnd": "2026-09-12",
   "firstDate": "2013-01-04",
-  "lastDate": "2026-09-04",
-  "replayDates": 714,
-  "signalsGenerated": 0,
+  "lastDate": "2026-09-11",
+  "replayDates": 715,
+  "signalsGenerated": 619,
   "signalsSkippedAlreadyPresent": 375408,
   "meanPitCoverage": 0.7888,
   "survivorshipRisk": "HIGH",
   "survivorshipNote": "SURVIVORSHIP_BIAS_UNRESOLVED",
   "fundamentalsPit": true,
   "historicalUniverseAvailable": true,
-  "constituentCoveragePct": 84.0664,
-  "membershipCoveragePct": 80.8743,
+  "constituentCoveragePct": 84.0879,
+  "membershipCoveragePct": 80.8741,
   "constituentsWithoutPriceHistory": [
     "018260.KS",
     "028260.KS",
@@ -79,17 +79,17 @@
   "constituentsWithoutPriceHistoryCount": 282,
   "universeCoverageByRegion": {
     "KR": {
-      "nameDates": 84966,
-      "constituentCoveragePct": 86.1815,
+      "nameDates": 85085,
+      "constituentCoveragePct": 86.2009,
       "membershipCoveragePct": 0.0,
       "affectedObservationsPct": 100.0,
       "survivorshipRisk": "HIGH"
     },
     "US": {
-      "nameDates": 363018,
-      "constituentCoveragePct": 83.5713,
+      "nameDates": 363522,
+      "constituentCoveragePct": 83.5933,
       "membershipCoveragePct": 99.8033,
-      "affectedObservationsPct": 16.6253,
+      "affectedObservationsPct": 16.6034,
       "survivorshipRisk": "HIGH"
     }
   },
@@ -200,10 +200,10 @@
     },
     {
       "year": 2026,
-      "nameDates": 22446,
-      "constituentCoveragePct": 98.7125,
-      "membershipCoveragePct": 80.7538,
-      "affectedObservationsPct": 20.4847,
+      "nameDates": 23069,
+      "constituentCoveragePct": 98.7342,
+      "membershipCoveragePct": 80.7534,
+      "affectedObservationsPct": 20.4647,
       "survivorshipRisk": "HIGH"
     }
   ],
@@ -211,7 +211,7 @@
   "worstCoveredYear": 2013,
   "universeSource": "HISTORICAL_MEMBERSHIP_DATASET",
   "firstReliableUniverseDate": null,
-  "affectedObservationsPct": 32.4384,
+  "affectedObservationsPct": 32.4208,
   "affectedRegions": [
     "KR",
     "US"
@@ -230,7 +230,7 @@
     "Goldilocks": 55841,
     "Reflation": 95349,
     "Stagflation": 32408,
-    "Transition/Low confidence": 137476
+    "Transition/Low confidence": 138095
   },
   "shortTermModelReplayed": false,
   "knownDeviationsFromProduction": [
@@ -242,7 +242,7 @@
   "evaluationCalendar": {
     "version": "xkrx-xnys-4.11.1-v2-kr-2026-closures",
     "origin": "2013-01-01",
-    "through": "2026-09-10",
+    "through": "2026-09-12",
     "strideSessions": 21,
     "sessionRule": "XKRX_INTERSECTION_XNYS",
     "signalFrequency": "W",
@@ -1186,10 +1186,10 @@
     ],
     "sha256": "bf79689a13b756cbdb223f0d9cdd821f1418fbc2aecd329bd102a18be78227ce"
   },
-  "evaluationAsOf": "2026-09-10",
+  "evaluationAsOf": "2026-09-12",
   "inputSnapshot": {
-    "sha256": "943b46ef90a4fc2e67f5c57854cf1ede017afb5c2ae41cfd4a77165fc2fc2c00",
-    "through": "2026-09-10",
+    "sha256": "3154afde30648ba9cbcd7a129ee9856f6f047c14db3aaed3bbb17ee2e5c24c05",
+    "through": "2026-09-12",
     "manifest": "historical/replay-v14/inputs.json",
     "schema": "REPLAY_INPUTS_V1",
     "componentHashes": {
@@ -1381,9 +1381,9 @@
       "benchmark/2026-06": "5dcb445ecd007926b02cd0222c772a0343e2234abf0755db7ecd6680b8bad31b",
       "benchmark/2026-07": "d378fb1272882ea6b2fa5ec3afe9d4e8ef493c50d7d37fdbe35db25301ee34c7",
       "benchmark/2026-08": "8f29c203890a1b091b9704bcc9be6b5207f402a798b4f7ea52ec1450647ab121",
-      "benchmark/2026-09": "3a4207cfb5445dc9235076f4f857b26a94ceeb240daedf827b9f33d32d570c48",
+      "benchmark/2026-09": "1ccf4acaa790a4321f3bd10873571188c764e55b5360b6728ff96378bf1d746d",
       "benchmark/source": "4d217d50d797502b68efa97bd7e5a31d77f1ddadf63f63c9db4a71885fdf44df",
-      "calendar": "cd315accc55b0a571704f7bd7759b1154245bd2e259d2c389044ed8bf1766cb9",
+      "calendar": "540563b5d0874eaf9e7645173e9a4a7df71481994d3248a6dfcfbfa0432865bd",
       "corporate-actions": "346a1fd1b7a9e434b82949214c206b68997605ecac000241ba321f76fe984618",
       "corporate-events/2011-01": "c82b206c0074209ce3d4929dd4598bdf87053f2b49bdd4ba3f3715340d4bdeae",
       "corporate-events/2011-02": "9e8a03455402b60ef5e0ddaf205fd01131ffb42fb1dcc50b3b7ed81042ef7d5a",
@@ -1573,14 +1573,14 @@
       "corporate-events/2026-06": "2e131df99a0520594a2c9340deb7f8125bd98cf89125045b27eeac0995b3b5a6",
       "corporate-events/2026-07": "7b78b4940fa7af2d596a87f48b0ebe5ace3f0cb80118529c211f7371a2162744",
       "corporate-events/2026-08": "8332195dea5242420e8de471a678bdc9b21c014201b10c37999a3cfc5059f4fd",
-      "corporate-events/2026-09": "d1dbef511550869319c6ffd2f2d0d26ee152fb18531a100b7d1d633e7d212053",
+      "corporate-events/2026-09": "ac5d8d6b2a33dbd1c0418724e840739fe31e2c5b0b4fa341b825172c308a970a",
       "corporate-events/source": "761ec7792f31a40c7f363895eed772640b3ff5971260e48d4acc8040f8e2508f",
       "fundamentals": "8d2c8b0f575ba08963e2ebd92c9634b08a270ed28414b8c86aff2d95c29de6a1",
-      "fx/USD_KRW": "e50d67421f7619500ae9007e47c1a6ef71483f3f760ce478d38def3ea629fb2a",
+      "fx/USD_KRW": "e2319e41fd9873600e723c7cc7e57147c3a529af8b041426fafc2f2d1a68afbd",
       "fx/observations": "aeef6370840b41c8207a3a6f495c1ca1bc44fc5be408df01361a20a03e5d1100",
       "fx/source": "c4bdfbc226d7167c461577c92835cbee9f729bbf68d395ceb2e518609a702cb0",
-      "fx/source-map": "957a79d94295523fcf28651695d4ae8da5d4c5f08d11e4fd242cf3e141dbbdb6",
-      "macro": "58686d1223d7baea6e6273845c2579a180a0695ade5aec9ffd4c90c1faea8e7c",
+      "fx/source-map": "8db95310188031f5b04dcb0dbe8655326d14bde685b5b980a669024eb0f4ac01",
+      "macro": "5224fb031bedcfb6a3b4e7feac7586d867d77cbec804e31d782dbe3b9190d6a2",
       "price/2011-01": "404105f126a44573fe15750614df38fa9fd6e9bba21b1319257df0e53f23b546",
       "price/2011-02": "4f92ada82d81165b0ee2de25ef931faa90c93c98187089ae73fd855ec65b3443",
       "price/2011-03": "5b87e175808b0fb36291bb660ac0a84470cba152436d08eac027f46ab1d64737",
@@ -1769,15 +1769,26 @@
       "price/2026-06": "1159ea11c8a6eb8585a1a1036e00b24c0144e9c275ab1ebcb4c7aece2eb1536c",
       "price/2026-07": "0fbd2ce9b269b8443d2b1f94f69c7beec3ca8512c4caf336389ed364a1611f4b",
       "price/2026-08": "5930d585ea4f3b70d4dbb2558846db1b193c970525b72f49b5d33623675c74e7",
-      "price/2026-09": "2d78966eb2642a646b5ec3ea0895ce9988632b639e4d6ecc1c0f023c15c1b4b3",
+      "price/2026-09": "9271eb108847f28dea0739911240c289b6e8287c6af708a09143d78ffa259f93",
       "price/source": "e189a040236c707f1f86e385dad290b9b717811bed675863f1088b3bd6e81c40",
       "recovery/kr-systemic": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "recovery/source": "f2391f5ecfee44ab49a88977153bb1454deeac166f8d156535d37ca003a76330",
       "risk-free/KRW": "f2c0d517e08056f6055d2b7705105c28e094c801f3fe969ed5c407824635b876",
-      "risk-free/coverage": "2b32cf7974103d3655dafc192c13c2c94e58436a30f51652fad70db356d6bbe7",
+      "risk-free/coverage": "076bf645f04dabd259cbe6e16cbcabb68bd50b269321bdf24995c8807105080a",
       "risk-free/source": "5daa22244c6b8ccc6a51ff850b5acb91beb6340847bbdff333af30decbd5c9d6",
       "universe": "fd885f7fbfef17c24e9ecace2ac47ae12d8f510635a8bcf495200e398f8a2bb3",
-      "vix": "04867c3a4b1c00363b978d7bb811a00a1a93e95f7822aff5f4ff2ca48a71e58d"
+      "vix": "d624725ca5cb2de111301cf21fb5413fb921a6dbb4e58bc1b71534f0d9880434"
+    },
+    "prefixReconciliation": {
+      "restoredTickers": [],
+      "ignoredTickers": [],
+      "revisedAfterSealing": [
+        "price/2026-09 HUBB 2026-09-10 Volume 569872.0 -> 570129.0",
+        "price/2026-09 UA 2026-09-10 Volume 2386964.3272054954 -> 2400827.9233997087"
+      ],
+      "revisedAfterSealingCount": 2,
+      "components": 1,
+      "policy": "SEALED_ROWS_ARE_AUTHORITATIVE; A_CONTRADICTED_VALUE_STILL_CONFLICTS"
     }
   },
   "inputRecovery": {
@@ -1869,23 +1880,23 @@
     "anchor": "FIRST_OBSERVED_SESSION",
     "basis": "AS_TRADED_CLOSE_WITH_FORWARD_ACCUMULATED_TOTAL_RETURN",
     "vendor": "YAHOO_UNADJUSTED_WITH_ACTIONS",
-    "dividends": 28296,
+    "dividends": 28311,
     "splits": 373,
     "tickersWithEvents": 662,
     "firstEvent": "2011-01-03",
-    "lastEvent": "2026-09-10",
+    "lastEvent": "2026-09-11",
     "sealedPrefixStableUnderNewDistributions": true
   },
   "coverage": {
-    "signalsRecorded": 375408,
+    "signalsRecorded": 376027,
     "signalsByRegion": {
-      "KR": 73225,
-      "US": 302183
+      "KR": 73344,
+      "US": 302683
     },
-    "uniqueDates": 714,
-    "trackingDays": 3566,
+    "uniqueDates": 715,
+    "trackingDays": 3571,
     "firstSignalDate": "2013-01-04",
-    "lastSignalDate": "2026-09-04",
+    "lastSignalDate": "2026-09-11",
     "maturedSignals": 359175,
     "maturedUniqueDates": 688,
     "maturedObservationDays": 3436,
@@ -1893,9 +1904,9 @@
     "horizon": 126,
     "maturedByHorizon": {
       "21": 372889,
-      "63": 367276,
+      "63": 367395,
       "126": 359175,
-      "252": 342876
+      "252": 342993
     },
     "benchmarkCoverageByRegion": {
       "KR": {
@@ -1914,15 +1925,15 @@
           "missingSamples": []
         },
         "252": {
-          "maturedAbsoluteReturns": 66830,
-          "matchedBenchmarkReturns": 66830,
+          "maturedAbsoluteReturns": 66947,
+          "matchedBenchmarkReturns": 66947,
           "missingBenchmarkReturns": 0,
           "coveragePct": 100.0,
           "missingSamples": []
         },
         "63": {
-          "maturedAbsoluteReturns": 71678,
-          "matchedBenchmarkReturns": 71678,
+          "maturedAbsoluteReturns": 71797,
+          "matchedBenchmarkReturns": 71797,
           "missingBenchmarkReturns": 0,
           "coveragePct": 100.0,
           "missingSamples": []
@@ -1976,12 +1987,137 @@
     "reason": null
   },
   "benchmarkPanel": {
-    "byRegion": {},
+    "policy": "PINNED_VENDOR_LINEAGE_THEN_MATCHING_COMMITTED_SNAPSHOT",
+    "minSnapshotCoveragePct": 98.0,
+    "minSessionsPerYearForBootstrap": 180,
+    "byRegion": {
+      "US": {
+        "ticker": "SPY",
+        "status": "VENDOR",
+        "source": "yahoo",
+        "symbol": "SPY",
+        "lineageSource": "yahoo",
+        "lineageSymbol": "SPY",
+        "sessions": 3946,
+        "firstSession": "2011-01-03",
+        "lastSession": "2026-09-11",
+        "candidates": [
+          {
+            "source": "yahoo",
+            "symbol": "SPY",
+            "accepted": true,
+            "reason": null,
+            "sessions": 3946,
+            "snapshotCoveragePct": 100.0,
+            "minimumSessions": null,
+            "firstSession": "2011-01-03",
+            "lastSession": "2026-09-11"
+          }
+        ],
+        "snapshotSessions": 3946
+      },
+      "KR": {
+        "ticker": "069500.KS",
+        "status": "VENDOR",
+        "source": "krx-total-return",
+        "symbol": "069500.KS",
+        "lineageSource": "krx-total-return",
+        "lineageSymbol": "069500.KS",
+        "sessions": 3859,
+        "firstSession": "2011-01-03",
+        "lastSession": "2026-09-11",
+        "candidates": [
+          {
+            "source": "krx-total-return",
+            "symbol": "069500.KS",
+            "accepted": true,
+            "reason": null,
+            "sessions": 3859,
+            "snapshotCoveragePct": 100.0,
+            "minimumSessions": null,
+            "firstSession": "2011-01-03",
+            "lastSession": "2026-09-11"
+          },
+          {
+            "source": "yahoo",
+            "symbol": "069500.KS",
+            "accepted": true,
+            "reason": null,
+            "sessions": 3827,
+            "snapshotCoveragePct": 99.1708,
+            "minimumSessions": null,
+            "firstSession": "2011-01-03",
+            "lastSession": "2026-09-11"
+          }
+        ],
+        "snapshotSessions": 3859
+      }
+    },
     "degradedRegions": [],
     "unavailableRegions": [],
-    "policy": "FROZEN_INPUT_SNAPSHOT",
-    "snapshotsUpdated": []
+    "snapshotsUpdated": [],
+    "indexMixingForbidden": true
   },
-  "formerMemberRecovery": {},
+  "formerMemberRecovery": {
+    "US": {
+      "describedFormerMembers": 326,
+      "priced": 148,
+      "pricedPct": 45.4,
+      "byYearLeft": {
+        "2013": {
+          "priced": 11,
+          "described": 22
+        },
+        "2014": {
+          "priced": 8,
+          "described": 19
+        },
+        "2015": {
+          "priced": 5,
+          "described": 19
+        },
+        "2016": {
+          "priced": 13,
+          "described": 35
+        },
+        "2017": {
+          "priced": 6,
+          "described": 11
+        },
+        "2018": {
+          "priced": 11,
+          "described": 32
+        },
+        "2020": {
+          "priced": 27,
+          "described": 58
+        },
+        "2021": {
+          "priced": 13,
+          "described": 26
+        },
+        "2022": {
+          "priced": 9,
+          "described": 28
+        },
+        "2023": {
+          "priced": 10,
+          "described": 18
+        },
+        "2024": {
+          "priced": 12,
+          "described": 21
+        },
+        "2025": {
+          "priced": 5,
+          "described": 9
+        },
+        "2026": {
+          "priced": 18,
+          "described": 28
+        }
+      }
+    }
+  },
   "benchmarkCoverageRegressions": []
 }
