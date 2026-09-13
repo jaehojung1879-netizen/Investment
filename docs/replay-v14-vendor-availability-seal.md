@@ -134,3 +134,57 @@ Nothing to re-acquire. Re-run the third operator step on the existing v14 seal:
    long `restoredTickers` list is the fix working, not a warning.
 2. Only if that passes and `contractValidation` is eligible, run **Build insight
    data and deploy Pages**.
+
+---
+
+# Run #57: the availability cases cleared, and a different one surfaced
+
+The fix worked on what it was built for. Run #57 no longer mentions
+`corporate-events/2015-03`, and the nightly cron (#56, frozen) went green on the
+sealed v14 generation. What stopped #57 was the reconciliation's teeth:
+
+```
+ERROR: price/2026-09: HUBB contradicts the sealed prefix;
+       new DATA_VERSION/REPLAY_VERSION required
+```
+
+`price/2026-09` is the month that straddles the cutoff (`through: 2026-09-10`),
+so those are the NEWEST sealed rows — the ones a vendor is most likely to revise.
+HUBB has no sealed corporate event in that month (checked: 90 events in
+`corporate-events/2026-09`, none for HUBB), and its seven sealed sessions are
+2026-09-01 through 09-10 with 09-07 correctly absent for Labor Day.
+
+## Why that message could not be acted on
+
+It names one ticker and stops, and the scope is the whole diagnosis:
+
+* **one** contradicting ticker is a corporate action to look up;
+* **hundreds** is the vendor revising recent bars, which needs the opposite
+  response.
+
+`reconcile_prefix` raised on the alphabetically first offender, so "HUBB" could
+have meant either. It now collects every contradicting name and reports the
+count, the first five with the exact session and field that moved, and a
+`(+N more)` tail:
+
+```
+price/2026-09: 37 of 503 sealed tickers contradict the sealed prefix:
+  HUBB 2026-09-08 Close 643.55 -> 644.01; ...(+32 more);
+  new DATA_VERSION/REPLAY_VERSION required
+```
+
+`first_difference` distinguishes a gained session, a lost session, and a changed
+field, so the record says what kind of disagreement it is, not merely that there
+was one. The conflict record under `ledger/replay-input-conflicts/` carries the
+message verbatim (`reason: str(exc)`), so the evidence survives the run.
+
+This is a diagnostic change only — the same runs conflict, and the same runs
+pass. It is what the next run needs in order to be decidable.
+
+## Tests
+
+`pytest tests/` — **859 passed** (same known sandbox-only pandas dtype failure).
+
+Five added or tightened: every contradicting ticker and the scope are named; the
+list summarises rather than printing hundreds; and `first_difference` is
+parametrised over gained, lost and changed.
