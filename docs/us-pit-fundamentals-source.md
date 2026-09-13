@@ -33,6 +33,8 @@ route to use.
 | **finnhub** | **`OPEN`** — 2012-13 filings with `filedDate`, all 7 production factors computable | Probes run #1 (`us-pit-fundamentals`), 2026-09-13 |
 | polygon | depth confirmed, accounts not found — **unresolved**, see run #2 | same run |
 | simfin | empty on every sample including AAPL — **unresolved**, our query not ruled out | same run |
+| polygon | all 7 factors computable once the normalised keys were candidates; departed cohort **rate-limited**, not measured | Probes run #2, 2026-09-13 |
+| simfin | `TOO_SHALLOW` — the recent-window control was served, so the history really is absent on this key | same run |
 
 The SEC verdict is as firm as this repository's evidence gets. Eight parallel
 runners took eight **distinct** Azure addresses — `4.154.40.4`,
@@ -217,6 +219,84 @@ support:
    a window where the answer is not in doubt. Empty there too and the verdict
    is `REQUEST_NOT_RULED_OUT`, which points at our query rather than at the
    vendor's history.
+
+## Probes run #2, 2026-09-13 — the fixes land, and one more mis-read
+
+Same workflow, after the three corrections above shipped.
+
+**finnhub — `OPEN`, unchanged and now under a stricter rule.** Same eight
+samples, same depths, all seven factors. `fieldsSeen` confirms what it is:
+`AccountsPayableCurrent`, `AdditionalPaidInCapital`, `AccumulatedOther
+ComprehensiveIncomeLossNetOfTax` — the filer's own US-GAAP tags, re-served.
+
+**polygon — the parser was the problem, and the fix worked.** All seven factors
+are now computable, and `fieldsSeen` says why: `accounts_payable`, `assets`,
+`basic_average_shares`, `cost_of_revenue` — normalised snake_case, exactly the
+vocabulary run #2's report could not name before. The hypothesis held.
+
+**And the verdict was wrong again, for a new reason.** polygon came back
+`LIVING_ONLY` — a survivorship hole — on a cohort where three of the four names
+were refused with:
+
+> `You've exceeded the maximum requests per minute, please wait or upgrade your
+> subscription to continue.`
+
+Those same three names — `BIG`, `CBE`, `DV` — had been served with three to six
+periods each one run earlier. polygon has them. What the probe measured was its
+own pacing, and it wrote the result down as the vendor's coverage. A refusal
+that says *slow down* is not an observation about the data; it means the
+question was never asked. `RATE_LIMITED` is now its own outcome, it ranks below
+every real answer so another candidate always wins, and a cohort containing one
+is `RATE_LIMITED_BEFORE_MEASURED` rather than any verdict about coverage.
+
+**simfin — `TOO_SHALLOW`, and this time the control says so.** The control
+window fired as designed and simfin answered it, which is what separates "no
+such history" from "you did not understand the question". The control's result
+was not printed, though, so the evidence for the verdict was invisible in the
+log; it is printed now. On the current reading simfin genuinely lacks 2012-13
+depth on this key.
+
+## The collector
+
+`scripts/collect_finnhub_fundamentals.py`, run by the `us` job of **Collect
+fundamentals**, writing `ledger/fundamentals/us/finnhub-YYYY.jsonl.gz` on the
+`signal-history` branch — the same shape, branch and budgeting the Korean
+collector uses.
+
+* **The universe is every US name that was ever a member** (829), not the
+  seventy in today's config. 219 of them left before the replay starts.
+* **Ten windows per ticker** from 2012-01-01, gapless and non-overlapping, so a
+  resumed run cannot ask for a different span than the one already stored. It
+  starts a year before the replay because a trailing-twelve-month figure at
+  2013-01 needs the four quarters behind it.
+* **A filing with no `filedDate` is refused.** Same rule as DART's receipt date.
+* **Concepts are stored under the filer's own tags.** A normalisation applied at
+  collection time cannot be revisited without re-fetching, and probe run #2 is
+  the standing reminder that a tag vocabulary is measured, not assumed.
+* **A rate limit stops the run and does not close the window.** The next run
+  asks it again.
+* **Windows asked are recorded separately from filings stored**, because a
+  window that genuinely held nothing is, from the shards alone, indistinguish-
+  able from one never asked — and re-buying it every run spends the budget on
+  nothing.
+
+### What it deliberately does not do yet
+
+**There is no derivation.** `dart_derive` could only be written after the
+Korean collector's field inventory had measured, over 2,927 filings, whether a
+Q3 income figure was three months or nine — and reading a cumulative cash flow
+as a quarterly one would have inflated free cash flow fourfold with nothing
+raising an error. The same question is open here and the answer is not in
+anyone's memory: a US 10-Q is filed with both a three-month and a year-to-date
+context, and which one finnhub flattens into `report.ic` is a fact about the
+vendor.
+
+So this run measures it. The collector reports, and writes to
+`inventory.json`, the distribution of stated period lengths **per form type** —
+because a pooled count cannot answer the question a TTM is built from. The
+derivation is a separate change, written against that answer, and until it
+exists nothing is wired into the replay: `build_pit_fundamentals.py` still
+knows only the Korean store, and `replay.yml` still passes only `pit-kr.jsonl`.
 
 ## Primary and backup, once the backups are real
 

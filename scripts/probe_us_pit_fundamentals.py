@@ -87,6 +87,7 @@ ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 
 from pipeline import sec_access                                    # noqa: E402
+from pipeline.finnhub_fundamentals import is_rate_limited          # noqa: E402
 
 # The replay's own first date. Copied rather than imported: the probe
 # workflows install no requirements, and `pipeline.replay_calendar` pulls in
@@ -570,6 +571,13 @@ def read_alphavantage(payload) -> dict:
 # One standard, applied to every vendor's reading
 # ---------------------------------------------------------------------------
 REFUSED = "REFUSED"
+# A refusal that says "slow down" is not an answer about the data. Probes run #2
+# is why it has its own name: polygon's free tier refused three of four departed
+# names with "You've exceeded the maximum requests per minute", the cohort was
+# read as empty, and the verdict came out LIVING_ONLY — a survivorship hole
+# reported about a vendor that had served those same three names one run
+# earlier. An unasked question has no answer to record.
+RATE_LIMITED = "RATE_LIMITED"
 NO_ROWS = "NO_ROWS"
 NO_FILING_DATE = "NO_FILING_DATE"
 WINDOW_NOT_HONOURED = "WINDOW_NOT_HONOURED"
@@ -599,7 +607,10 @@ def assess_window(reading: dict, takes_date_window: bool,
     of it would blame the data for the endpoint.
     """
     if reading.get("errorBody"):
-        return {"depth": REFUSED, "detail": reading["errorBody"]}
+        body = str(reading["errorBody"])
+        if is_rate_limited(None, body):
+            return {"depth": RATE_LIMITED, "detail": body}
+        return {"depth": REFUSED, "detail": body}
     if not reading.get("rowCount"):
         return {"depth": NO_ROWS, "detail": "응답은 왔지만 행이 없음"}
 
@@ -643,6 +654,7 @@ NO_ANSWER_FROM_HOST = "NO_ANSWER_FROM_HOST"
 KEY_MISSING = "KEY_MISSING"
 KEY_REFUSED = "KEY_REFUSED"
 NO_POINT_IN_TIME = "NO_POINT_IN_TIME"
+RATE_LIMITED_BEFORE_MEASURED = "RATE_LIMITED_BEFORE_MEASURED"
 ACCOUNTS_NOT_FOUND = "ACCOUNTS_NOT_FOUND"
 REQUEST_NOT_RULED_OUT = "REQUEST_NOT_RULED_OUT"
 TOO_SHALLOW = "TOO_SHALLOW"
@@ -754,6 +766,15 @@ def vendor_verdict(reach: str, key_present: bool, living: dict, departed: dict,
                     "fieldsSeen": accounts.get("_fieldsSeen", [])}
     if departed and not departed_ok:
         departed_depths = [row["depth"] for row in departed.values()]
+        # Before any reading of the cohort: were we actually allowed to ask?
+        if any(d == RATE_LIMITED for d in departed_depths):
+            return {"verdict": RATE_LIMITED_BEFORE_MEASURED,
+                    "meaning": ("떠난 이름 코호트를 다 묻기 전에 속도 제한에 걸렸습니다. "
+                                "이건 커버리지에 대한 관측이 아니라 우리가 너무 빨리 "
+                                "물었다는 뜻입니다 — 간격을 늘려 다시 재십시오"),
+                    "livingServed": living_ok,
+                    "rateLimited": sorted(t for t, r in departed.items()
+                                          if r.get("depth") == RATE_LIMITED)}
         if all(d == REFUSED for d in departed_depths):
             return {"verdict": DEPARTED_REFUSED,
                     "meaning": ("살아 있는 이름은 2013년까지 닿지만 유니버스를 떠난 "
@@ -992,7 +1013,10 @@ def departed_samples(path: Path = UNIVERSE_HISTORY, count: int = 4,
 # about a transport we simply presented wrong.
 DEPTH_RANK = {PIT_DEPTH_CONFIRMED: 0, WINDOW_NOT_HONOURED: 1,
               NO_DATE_WINDOW_ENDPOINT: 1, NO_FILING_DATE: 2, NO_ROWS: 3,
-              REFUSED: 4}
+              REFUSED: 4,
+              # Last on purpose: it is the one outcome that says nothing about
+              # the vendor, so any real answer from another candidate wins.
+              RATE_LIMITED: 5}
 
 
 def probe_sample(vendor: dict, ticker: str, key: str,
@@ -1210,6 +1234,11 @@ def main(argv=None) -> int:
                 served = f"[{row['servedBy']}]" if row.get("servedBy") else ""
                 print(f"    {cohort:<8} {ticker:<6} {row['depth']:<24} "
                       f"{served} {str(row.get('detail'))[:120]}")
+        control = entry.get("control")
+        if control:
+            print(f"    대조창 {control['window'][0]}..{control['window'][1]} "
+                  f"{control['ticker']:<6} {control['depth']:<24} "
+                  f"{str(control.get('detail'))[:90]}")
         print(f"  판정: {entry['verdict']}")
         print(f"  {entry['meaning']}")
         if entry["verdict"] in (OPEN, LIVING_ONLY, DEPARTED_REFUSED,
@@ -1238,12 +1267,15 @@ def main(argv=None) -> int:
     departed_refused = [n for n, e in vendors.items() if e["verdict"] == DEPARTED_REFUSED]
     silent = [n for n, e in vendors.items() if e["verdict"] == NO_ANSWER_FROM_HOST]
     no_accounts = [n for n, e in vendors.items() if e["verdict"] == ACCOUNTS_NOT_FOUND]
+    throttled = [n for n, e in vendors.items()
+                 if e["verdict"] == RATE_LIMITED_BEFORE_MEASURED]
     our_request = [n for n, e in vendors.items() if e["verdict"] == REQUEST_NOT_RULED_OUT]
     report["summary"] = {"open": open_routes, "livingOnly": living_only,
                          "departedRefused": departed_refused,
                          "tooShallow": shallow, "needsKey": needs_key,
                          "noAnswer": silent, "accountsNotFound": no_accounts,
-                         "requestNotRuledOut": our_request}
+                         "requestNotRuledOut": our_request,
+                         "rateLimited": throttled}
 
     print("=== 판정 ===")
     if open_routes:
@@ -1255,6 +1287,9 @@ def main(argv=None) -> int:
     if departed_refused:
         print(f"  떠난 이름을 종목 단위로 거절한 소스: {departed_refused} — 거절 "
               f"문장을 읽으십시오. 구독 제한이면 돈으로 풀리고, 미보유면 안 풀립니다.")
+    if throttled:
+        print(f"  코호트를 다 묻기 전에 속도 제한에 걸린 소스: {throttled} — 커버리지 "
+              f"관측이 아닙니다. `--pace` 를 늘려 다시 재십시오.")
     if no_accounts:
         print(f"  깊이는 있으나 계정과목을 못 찾은 소스: {no_accounts} — 벤더가 보낸 "
               f"필드명이 리포트의 fieldsSeen 에 있습니다. 후보에 넣고 다시 재십시오.")

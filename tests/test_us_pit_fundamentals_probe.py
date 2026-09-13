@@ -666,3 +666,65 @@ def test_the_seen_field_list_is_capped_so_a_report_stays_readable():
 def test_the_seen_fields_survive_into_the_readiness_report():
     served = [{"fieldsFound": {}, "fieldsSeen": ["net_income_loss"]}]
     assert P.factor_readiness(served)["_fieldsSeen"] == ["net_income_loss"]
+
+
+# --------------------------------------------------------------------------- #
+# A refusal that says "slow down" is not an observation about coverage — probes
+# run #2 read polygon's rate limit as a survivorship hole in a vendor that had
+# served the same three names one run earlier
+# --------------------------------------------------------------------------- #
+_THROTTLE = ("You've exceeded the maximum requests per minute, please wait or "
+             "upgrade your subscription to continue.")
+
+
+def test_a_rate_limit_body_is_not_an_ordinary_refusal():
+    assessed = P.assess_window({"errorBody": _THROTTLE}, takes_date_window=True)
+    assert assessed["depth"] == P.RATE_LIMITED
+    assert assessed["depth"] != P.REFUSED
+    assert "maximum requests" in assessed["detail"], "벤더의 문장은 남아야 한다"
+
+
+def test_a_plan_refusal_is_still_an_ordinary_refusal():
+    assessed = P.assess_window(
+        {"errorBody": "Special Endpoint : not available under your current subscription"},
+        takes_date_window=True)
+    assert assessed["depth"] == P.REFUSED
+
+
+def test_a_throttled_cohort_is_not_reported_as_a_coverage_hole():
+    verdict = P.vendor_verdict(
+        P.ANSWERED, True, living={"AAPL": _confirmed()},
+        departed={"ANR": _empty(), "BIG": {"depth": P.RATE_LIMITED, "detail": _THROTTLE}})
+    assert verdict["verdict"] == P.RATE_LIMITED_BEFORE_MEASURED
+    assert verdict["verdict"] != P.LIVING_ONLY
+    assert verdict["rateLimited"] == ["BIG"]
+
+
+def test_a_throttled_cohort_is_not_reported_as_a_paywall_either():
+    verdict = P.vendor_verdict(
+        P.ANSWERED, True, living={"AAPL": _confirmed()},
+        departed={"ANR": {"depth": P.RATE_LIMITED, "detail": _THROTTLE},
+                  "BIG": {"depth": P.RATE_LIMITED, "detail": _THROTTLE}})
+    assert verdict["verdict"] == P.RATE_LIMITED_BEFORE_MEASURED
+    assert verdict["verdict"] != P.DEPARTED_REFUSED
+
+
+def test_a_departed_name_that_answered_still_opens_the_route():
+    """A throttle on one name does not erase another name's real answer."""
+    verdict = P.vendor_verdict(
+        P.ANSWERED, True, living={"AAPL": _confirmed()},
+        departed={"ANR": _confirmed(),
+                  "BIG": {"depth": P.RATE_LIMITED, "detail": _THROTTLE}})
+    assert verdict["verdict"] == P.OPEN
+
+
+def test_a_rate_limited_candidate_never_beats_a_real_answer(monkeypatch):
+    fake, _ = _scripted_requests([
+        (429, b'{"error": "You\'ve exceeded the maximum requests per minute"}'),
+        (200, _ROW),
+    ])
+    monkeypatch.setattr(P, "_request", fake)
+    monkeypatch.setattr(P.time, "sleep", lambda *_: None)
+    result = P.probe_sample(_vendor(), "AAPL", "KEY")
+    assert result["depth"] == P.PIT_DEPTH_CONFIRMED
+    assert result["servedBy"] == "second"

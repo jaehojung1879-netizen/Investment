@@ -1,5 +1,20 @@
-name: Collect DART fundamentals
+name: Collect fundamentals
 
+# Point-in-time financial statements, one budgeted slice per run per region.
+# Two jobs in one entry rather than two entries: they do the same three things
+# — fetch a slice, shard it, push to `signal-history` — and the Actions list
+# has already been trimmed once for exactly this reason.
+#
+# They run in parallel and push to disjoint paths under `ledger/fundamentals`,
+# which the rebase-and-retry below is there to absorb.
+#
+# US (finnhub) is the newer half. SEC refuses the Actions address range on all
+# four of its hosts, measured across request shape, egress address and traffic
+# shape; finnhub is the vendor probe run #2 measured end to end — 2012-13
+# filings with `filedDate`, for living AND departed names, and every one of the
+# seven production value and quality factors computable from the concepts that
+# arrived. `docs/us-pit-fundamentals-source.md` carries the run numbers.
+#
 # Korean point-in-time financial statements, one budgeted slice per run.
 #
 # The probe established this is worth doing: receipt dates are present on every
@@ -30,10 +45,15 @@ on:
         type: string
         default: "240"
       target:
-        description: "auto=재무제표 후 주식수까지 / statements / shares"
+        description: "KR 전용 — auto=재무제표 후 주식수까지 / statements / shares"
         type: choice
         options: ["auto", "statements", "shares"]
         default: "auto"
+      region:
+        description: "어느 쪽을 수집할지 (예약 실행은 항상 둘 다)"
+        type: choice
+        options: ["both", "kr", "us"]
+        default: "both"
 
 permissions:
   contents: write
@@ -46,7 +66,8 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  collect:
+  kr:
+    if: github.event_name == 'schedule' || inputs.region == 'both' || inputs.region == 'kr'
     runs-on: ubuntu-latest
     timeout-minutes: 330
     steps:
@@ -121,5 +142,85 @@ jobs:
             echo
             echo '```'
             tail -n 30 collect.log 2>/dev/null || echo '수집 출력 없음'
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  us:
+    if: github.event_name == 'schedule' || inputs.region == 'both' || inputs.region == 'us'
+    runs-on: ubuntu-latest
+    timeout-minutes: 330
+    steps:
+      - name: Checkout code (main)
+        uses: actions/checkout@v5
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      # The collector is standard-library only, but `historical_store` — which
+      # writes the byte-deterministic shards — is shared with the replay.
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Check out signal-history branch (orphan-safe)
+        run: |
+          git config user.name "us-fundamentals-bot"
+          git config user.email "actions@github.com"
+          mkdir -p us-fundamentals-work
+          if git ls-remote --exit-code --heads origin signal-history; then
+            git fetch origin signal-history
+            git worktree add us-fundamentals-work origin/signal-history
+            git -C us-fundamentals-work checkout -B signal-history
+          else
+            git worktree add --detach us-fundamentals-work
+            git -C us-fundamentals-work checkout --orphan signal-history
+            git -C us-fundamentals-work rm -rf . || true
+          fi
+          mkdir -p us-fundamentals-work/ledger/fundamentals/us
+
+      - name: Collect a slice
+        env:
+          FINNHUB_API_KEY: ${{ secrets.FINNHUB }}
+        run: |
+          python scripts/collect_finnhub_fundamentals.py \
+            us-fundamentals-work/ledger/fundamentals/us \
+            --max-calls "${{ inputs.max_calls || '2000' }}" \
+            --max-minutes "${{ inputs.max_minutes || '240' }}" \
+            | tee us-collect.log
+
+      - name: Commit & push to signal-history
+        run: |
+          cd us-fundamentals-work
+          git add ledger/fundamentals
+          if git diff --cached --quiet; then
+            echo "no new filings"
+            exit 0
+          fi
+          git commit -m "fundamentals: finnhub US slice for $(date -u +%Y-%m-%d)"
+          for attempt in 1 2 3 4 5; do
+            if git push origin signal-history; then
+              exit 0
+            fi
+            echo "push rejected (attempt $attempt); rebasing onto the remote"
+            git fetch origin signal-history
+            if ! git rebase origin/signal-history; then
+              git rebase --abort || true
+              echo "could not rebase onto signal-history"
+              exit 1
+            fi
+          done
+          echo "push still rejected after five attempts"
+          exit 1
+
+      - name: Summary
+        if: always()
+        run: |
+          {
+            echo '## 미국 PIT 재무 수집 (finnhub)'
+            echo
+            echo '```'
+            tail -n 60 us-collect.log 2>/dev/null || echo '수집 출력 없음'
             echo '```'
           } >> "$GITHUB_STEP_SUMMARY"
