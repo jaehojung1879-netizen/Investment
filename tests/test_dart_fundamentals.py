@@ -320,6 +320,9 @@ def test_the_collector_defaults_to_finishing_both_passes():
     assert "return collect_shares(key, codes, store, left, run_deadline)" in source
 
 
+from pipeline import finnhub_fundamentals as FF  # noqa: E402
+
+
 def _fundamentals_workflow() -> str:
     from pathlib import Path as _Path
 
@@ -375,3 +378,52 @@ def test_an_undecided_measurement_does_not_fail_the_collection():
     workflow = _fundamentals_workflow()
     assert "set +e" in workflow
     assert "status=${PIPESTATUS[0]}" in workflow
+
+
+def _scheduled_budget(job: str) -> tuple[int, int, int]:
+    """(call ceiling, minute ceiling, job timeout) for a scheduled run.
+
+    A cron passes no inputs, so what a scheduled run actually spends is the
+    `||` fallback, not the dispatch default beside it.
+    """
+    import re
+
+    workflow = _fundamentals_workflow()
+    start = workflow.index(f"\n  {job}:")
+    nxt = workflow.find("\n  ", start + 4 + len(job))
+    while nxt != -1 and not re.match(r"\n  [a-z-]+:\n", workflow[nxt:nxt + 40]):
+        nxt = workflow.find("\n  ", nxt + 1)
+    body = workflow[start:nxt if nxt != -1 else len(workflow)]
+    calls = int(re.search(r"--max-calls \"\$\{\{ inputs\.max_calls \|\| '(\d+)'", body).group(1))
+    minutes = int(re.search(r"--max-minutes \"\$\{\{ inputs\.max_minutes \|\| '(\d+)'", body).group(1))
+    timeout = int(re.search(r"timeout-minutes: (\d+)", body).group(1))
+    return calls, minutes, timeout
+
+
+# A slice is only kept if the job survives long enough to push it. Checkout,
+# install, the worktree, the measurement and the push have each taken about a
+# minute or two; thirty is generous and still catches a budget set to the
+# timeout itself.
+PUSH_MARGIN_MINUTES = 30
+
+
+def test_a_collection_budget_leaves_time_to_push_what_it_collected():
+    """The collector's minute ceiling and the job's timeout are coupled and
+    nothing enforced it. A budget set at or above the timeout means the runner
+    kills the job mid-slice, before the commit step — and every filing that run
+    paid for is thrown away with the container."""
+    for job in ("kr", "us"):
+        _, minutes, timeout = _scheduled_budget(job)
+        assert minutes + PUSH_MARGIN_MINUTES <= timeout, \
+            f"{job}: 예산 {minutes}분이 타임아웃 {timeout}분에 너무 붙어 있다"
+
+
+def test_the_scheduled_us_budget_can_finish_the_backfill_unattended():
+    """829 names x 10 windows x 2 frequencies is 16,580 calls. A ceiling below
+    that is a ceiling that needs someone to press the button again."""
+    calls, minutes, _ = _scheduled_budget("us")
+    assert calls >= 16_580, "예약 실행이 전체 백필을 덮지 못하면 자동이 아니다"
+    # The pacing is the real limit, and it has to fit in the minute ceiling for
+    # the call ceiling to mean anything.
+    assert minutes * 60 >= 13_580 * FF.PACE_SECONDS, \
+        "남은 창을 1.1초 간격으로 도는 데 필요한 시간보다 분 예산이 짧다"

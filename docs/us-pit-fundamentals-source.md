@@ -447,10 +447,35 @@ None of them is money this pipeline can spend.
 
 ### Where the collection stands
 
-3,000 of 16,580 windows (18.1%). Roughly nine more slices at the present
-budget. Nothing is wired into the replay until the backfill is complete —
-a derivation over 18% of the universe would be a survivorship hole with a
-different name.
+3,000 of 16,580 windows (18.1%). Nothing is wired into the replay until the
+backfill is complete — a derivation over 18% of the universe would be a
+survivorship hole with a different name.
+
+**It finishes itself.** The workflow already runs on a cron at 03:40 UTC and
+the `us` job's gate admits a scheduled event, so no one has to press anything;
+what was missing was the budget. The first two slices spent 1,500 calls each,
+which at that rate left nine more nights of remembering. The remaining 13,580
+windows are 249 minutes at the collector's 1.1-second pacing, so the scheduled
+ceiling is now the whole backfill (16,600 calls, 300 minutes) and one run
+covers it.
+
+A budget is a ceiling, not a target. Once the store has caught up the work
+list is empty and the run ends in seconds, so the large ceiling costs nothing
+on an ordinary day — it only removes the button.
+
+Two things this does not change, and one it might. The pacing is what a rate
+limit cares about, and 54 calls a minute stays under finnhub's 60. The
+resumption rules are untouched: a refusal stops the run and does not mark the
+window done. What is genuinely untested is whether a run this long meets a
+daily quota that two shorter ones never reached — if it does, the run stops
+there, the next night resumes from it, and we will have measured where the cap
+actually is. That is the same standard every other claim in this document was
+held to, and nothing is lost either way.
+
+The budget is also now coupled to the job timeout by a test rather than by
+someone remembering: a minute ceiling set at or near the 330-minute timeout
+means the runner kills the job before the commit step, and every filing that
+run paid for is thrown away with the container.
 
 ## Primary and backup, once the backups are real
 
