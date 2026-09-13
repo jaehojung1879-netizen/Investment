@@ -78,8 +78,51 @@ def _by_ticker(rows: list[dict]) -> dict[str, list[dict]]:
     return out
 
 
+# How close to the sealed cutoff a disagreement may sit and still count as the
+# vendor's own record settling rather than the evidence changing.
+#
+# Measured on replay-v14 run #58, the first run whose conflict reported scope:
+#
+#     price/2026-09: 2 of 749 sealed tickers contradict the sealed prefix:
+#       HUBB 2026-09-10 Volume 569872.0 -> 570129.0;
+#       UA   2026-09-10 Volume 2386964.3272054954 -> 2400827.9233997087
+#
+# Two names out of 749, one field, and BOTH on 2026-09-10 — the cutoff itself.
+# No price moved. That is the consolidated tape: late and off-exchange prints
+# are folded into a session's volume over the following day or two.
+#
+# Contrast the failure the seal exists to catch. Between the v9 and v10 seals,
+# one day apart on Yahoo's back-anchored adjusted close, 17 of 567 names moved
+# 3-86 bps in JANUARY 2011 and 550 more moved a float32 step: every name, and
+# fourteen years deep. A basis change reaches the whole history; a revision sits
+# at the tail. Five calendar days covers a weekend plus settling and comes
+# nowhere near January 2011.
+SETTLING_WINDOW_DAYS = 5
+
+
+def _settling(date: str, cutoff: str) -> bool:
+    """Is this session recent enough that the vendor may still be settling it?"""
+    try:
+        gap = (pd.Timestamp(cutoff) - pd.Timestamp(date)).days
+    except (TypeError, ValueError):
+        return False
+    return 0 <= gap <= SETTLING_WINDOW_DAYS
+
+
+def differing_dates(sealed: list[dict], fresh: list[dict]) -> list[str]:
+    """Every session on which two vintages of one ticker disagree."""
+    by_date = {row.get("date"): row for row in sealed}
+    dates = set()
+    for row in fresh:
+        was = by_date.pop(row.get("date"), None)
+        if was is None or any(was.get(f) != row.get(f)
+                              for f in set(was) | set(row)):
+            dates.add(row.get("date"))
+    return sorted(dates | set(by_date))
+
+
 def reconcile_prefix(name: str, sealed: list[dict], fresh: list[dict],
-                     sealed_tickers: set) -> tuple[list[str], list[str]]:
+                     sealed_tickers: set, *, cutoff: str = "") -> tuple:
     """Which tickers the vendor failed to serve, and which it served too many of.
 
     Raises if the vendor CONTRADICTS a sealed row, which is the only difference
@@ -121,7 +164,7 @@ def reconcile_prefix(name: str, sealed: list[dict], fresh: list[dict],
     Yahoo's back-anchored adjusted close it would have been wrong.
     """
     sealed_by, fresh_by = _by_ticker(sealed), _by_ticker(fresh)
-    restored, ignored, contradicted = [], [], []
+    restored, ignored, contradicted, revised = [], [], [], []
     for ticker in sorted(set(sealed_by) | set(fresh_by), key=lambda t: (t is None, t)):
         if ticker not in sealed_tickers:
             ignored.append(ticker)
@@ -129,9 +172,20 @@ def reconcile_prefix(name: str, sealed: list[dict], fresh: list[dict],
         if ticker not in fresh_by:
             restored.append(ticker)
             continue
-        if digest(fresh_by[ticker]) != digest(sealed_by.get(ticker, [])):
-            contradicted.append((ticker, first_difference(sealed_by.get(ticker, []),
-                                                          fresh_by[ticker])))
+        was = sealed_by.get(ticker, [])
+        if digest(fresh_by[ticker]) == digest(was):
+            continue
+        detail = first_difference(was, fresh_by[ticker])
+        dates = differing_dates(was, fresh_by[ticker])
+        # A point-in-time ledger keeps what was observable when it sealed, so
+        # the sealed row wins either way. The only question is whether the
+        # disagreement is small and recent enough to be the vendor settling its
+        # own record, or deep enough that the two vintages are on different
+        # bases and splicing a fresh suffix onto this prefix would be wrong.
+        if dates and all(_settling(date, cutoff) for date in dates):
+            revised.append((ticker, detail))
+        else:
+            contradicted.append((ticker, detail))
     if contradicted:
         # Every contradicting name, not just the first. One ticker is a
         # corporate action; hundreds is the vendor revising recent bars, and
@@ -144,7 +198,7 @@ def reconcile_prefix(name: str, sealed: list[dict], fresh: list[dict],
             f"{name}: {len(contradicted)} of {len(sealed_by)} sealed tickers "
             f"contradict the sealed prefix: {shown}{more}; "
             f"new DATA_VERSION/REPLAY_VERSION required")
-    return restored, ignored
+    return restored, ignored, revised
 
 
 def first_difference(sealed: list[dict], fresh: list[dict]) -> str:
@@ -179,7 +233,7 @@ class InputStore:
         self.replay_version, self.data_version = replay_version, data_version
         # What the last commit had to repair, for the diagnostics to publish.
         self.reconciliation = {"restored": set(), "ignored": set(),
-                               "components": []}
+                               "revised": [], "components": []}
 
     def manifest(self):
         if not self.path.exists():
@@ -252,11 +306,14 @@ class InputStore:
                     raise InputVersionConflict(f"{key}: published input prefix changed/recovered; new DATA_VERSION/REPLAY_VERSION required")
                 # A vendor that declines to repeat itself has not changed the
                 # evidence. One that contradicts it has, and still raises here.
-                restored, ignored = reconcile_prefix(key, sealed, prefix,
-                                                     sealed_tickers)
+                restored, ignored, revised = reconcile_prefix(
+                    key, sealed, prefix, sealed_tickers,
+                    cutoff=prior["through"])
                 self.reconciliation["restored"].update(restored)
                 self.reconciliation["ignored"].update(ignored)
-                if restored or ignored:
+                self.reconciliation["revised"].extend(
+                    f"{key} {ticker} {detail}" for ticker, detail in revised)
+                if restored or ignored or revised:
                     self.reconciliation["components"].append(key)
                 suffix = [r for r in rows
                           if str(r.get("date") or "") > prior["through"]]

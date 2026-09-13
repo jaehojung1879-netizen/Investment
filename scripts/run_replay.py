@@ -467,6 +467,12 @@ def _run(argv=None) -> int:
         "prefixReconciliation":{
             "restoredTickers":sorted(store.reconciliation["restored"]),
             "ignoredTickers":sorted(t for t in store.reconciliation["ignored"] if t),
+            # Sessions the vendor settled after they were sealed — late and
+            # off-exchange prints folded into a volume, and the like. The
+            # SEALED row is what the replay used; this is the record of what
+            # the vendor would say now, which a point-in-time ledger keeps out.
+            "revisedAfterSealing":sorted(store.reconciliation["revised"])[:20],
+            "revisedAfterSealingCount":len(store.reconciliation["revised"]),
             "components":len(store.reconciliation["components"]),
             "policy":"SEALED_ROWS_ARE_AUTHORITATIVE; "
                      "A_CONTRADICTED_VALUE_STILL_CONFLICTS"}}

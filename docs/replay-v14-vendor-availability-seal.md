@@ -188,3 +188,70 @@ pass. It is what the next run needs in order to be decidable.
 Five added or tightened: every contradicting ticker and the scope are named; the
 list summarises rather than printing hundreds; and `first_difference` is
 parametrised over gained, lost and changed.
+
+---
+
+# Run #58: two tickers, one field, the cutoff date
+
+The scope report earned its keep immediately:
+
+```
+price/2026-09: 2 of 749 sealed tickers contradict the sealed prefix:
+  HUBB 2026-09-10 Volume 569872.0 -> 570129.0;
+  UA   2026-09-10 Volume 2386964.3272054954 -> 2400827.9233997087
+```
+
+**Two names out of 749. One field. Both on 2026-09-10 — the cutoff itself. No
+price moved at all.** That is the consolidated tape: late and off-exchange
+prints are folded into a session's volume over the following day or two. HUBB
+gained 257 shares (+0.045%), UA 13,864 (+0.58%).
+
+Set that beside the failure the seal exists to catch. Between the v9 and v10
+seals, one day apart on Yahoo's back-anchored adjusted close, 17 of 567 names
+moved 3-86 bps in **January 2011** and 550 more moved a float32 step — every
+name, fourteen years deep.
+
+**A basis change reaches the whole published history. A revision sits at the
+tail.** That is the discriminator, and it is the same kind of shape argument
+that separated a truncated download from a listing date in replay-v13.
+
+## What v14 does with it
+
+A point-in-time ledger keeps what was observable when it sealed, so the sealed
+row wins either way — the only question was whether to stop the run. Now:
+
+* a disagreement whose every session falls within `SETTLING_WINDOW_DAYS = 5` of
+  the sealed cutoff is the vendor settling its own record: the **sealed** value
+  is kept and the revision is published under
+  `inputSnapshot.prefixReconciliation.revisedAfterSealing`;
+* a disagreement reaching any session older than that still **stops the run**.
+
+Five calendar days covers a weekend plus settling and comes nowhere near
+January 2011. One old session is enough to refuse: the tolerance is not a
+per-ticker amnesty, and a name revised both recently and deeply still conflicts.
+
+Volume is not cosmetic — it reaches the opportunity model through
+`volumeSurge`, a 5-day over 60-day average that carries a weight in the score.
+That is the reason the sealed value is kept rather than the fresh one: the
+replay must score what was knowable on the day, not what the tape said
+afterwards.
+
+## Tests
+
+`pytest tests/` — **868 passed** (same known sandbox-only pandas dtype failure).
+
+Seven added, and the two that carry the change fail when the tolerance is
+reverted: a volume settled on the cutoff date is kept, a January-2011-shaped
+revision still refuses, a ticker revised both recently and deeply still
+refuses, the window is parametrised on its two edges, a session *after* the
+cutoff is not settling, and end to end the sealed row is what survives.
+
+`test_yahoos_adjusted_close_would_have_been_refused_by_the_same_store` — the
+v11 control — was a four-day fixture, so every row sat inside the settling
+window and it stopped refusing. It now runs a **year** of sessions, which is
+the real shape of the defect it stands for: an ex-dividend rescaling the whole
+published past. It refuses again, for the right reason.
+
+## Still no new generation
+
+No sealed value changes; v14's snapshot stays byte-identical.
