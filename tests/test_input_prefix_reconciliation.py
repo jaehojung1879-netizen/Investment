@@ -35,21 +35,24 @@ def _rows(ticker, dates, close=100.0):
 MARCH = ["2015-03-02", "2015-03-03"]
 SEALED = _rows("AAA", MARCH) + _rows("SIVB", MARCH) + _rows("ZZZ", MARCH)
 SEALED_TICKERS = {"AAA", "SIVB", "ZZZ"}
+# Far past the settling window, so these cases exercise the refusal, not the
+# tolerance — the tolerance gets its own tests below.
+CUTOFF = "2026-09-10"
 
 
 def test_a_name_the_vendor_did_not_serve_is_restored_not_refused():
     """The exact shape of run #55: one delisted name simply absent."""
     fresh = _rows("AAA", MARCH) + _rows("ZZZ", MARCH)
-    restored, ignored = RI.reconcile_prefix(
-        "price/2015-03", SEALED, fresh, SEALED_TICKERS)
+    restored, ignored, _ = RI.reconcile_prefix(
+        "price/2015-03", SEALED, fresh, SEALED_TICKERS, cutoff=CUTOFF)
     assert restored == ["SIVB"]
     assert ignored == []
 
 
 def test_a_name_that_was_never_sealed_cannot_write_a_published_month():
     fresh = SEALED + _rows("NEWCO", MARCH)
-    restored, ignored = RI.reconcile_prefix(
-        "price/2015-03", SEALED, fresh, SEALED_TICKERS)
+    restored, ignored, _ = RI.reconcile_prefix(
+        "price/2015-03", SEALED, fresh, SEALED_TICKERS, cutoff=CUTOFF)
     assert ignored == ["NEWCO"]
     assert restored == []
 
@@ -59,7 +62,7 @@ def test_a_contradicted_value_still_conflicts():
     fresh = _rows("AAA", MARCH) + _rows("SIVB", MARCH, close=101.0) + _rows("ZZZ", MARCH)
     with pytest.raises(RI.InputVersionConflict,
                        match=r"1 of 3 sealed tickers contradict"):
-        RI.reconcile_prefix("price/2015-03", SEALED, fresh, SEALED_TICKERS)
+        RI.reconcile_prefix("price/2015-03", SEALED, fresh, SEALED_TICKERS, cutoff=CUTOFF)
 
 
 def test_an_extra_session_for_a_sealed_name_conflicts():
@@ -68,7 +71,7 @@ def test_an_extra_session_for_a_sealed_name_conflicts():
              + _rows("ZZZ", MARCH))
     with pytest.raises(RI.InputVersionConflict,
                        match=r"SIVB gained 2015-03-04"):
-        RI.reconcile_prefix("price/2015-03", SEALED, fresh, SEALED_TICKERS)
+        RI.reconcile_prefix("price/2015-03", SEALED, fresh, SEALED_TICKERS, cutoff=CUTOFF)
 
 
 def test_a_new_dividend_on_a_sealed_name_conflicts():
@@ -78,7 +81,7 @@ def test_a_new_dividend_on_a_sealed_name_conflicts():
                        "dividend": 0.2, "split": 1.0}]
     with pytest.raises(RI.InputVersionConflict, match="SIVB gained 2015-03-05"):
         RI.reconcile_prefix("corporate-events/2015-03", sealed, fresh,
-                            SEALED_TICKERS)
+                            SEALED_TICKERS, cutoff=CUTOFF)
 
 
 @pytest.mark.parametrize("name,reconcilable", [
@@ -101,8 +104,12 @@ import pandas as pd
 from pipeline import pit_data
 
 
-SESSIONS = ["2020-01-02", "2020-01-03", "2020-01-06",
+# December is here so the fixture has sessions far enough behind the cutoff to
+# exercise the refusal; January straddles it and exercises the splice.
+SESSIONS = ["2019-12-02", "2019-12-03",
+            "2020-01-02", "2020-01-03", "2020-01-06",
             "2020-01-07", "2020-01-08", "2020-01-09"]
+JANUARY = [d for d in SESSIONS if d.startswith("2020-01")]
 
 
 def _panel(tickers, through, bump=0.0):
@@ -143,7 +150,7 @@ def test_a_second_acquisition_missing_a_name_extends_instead_of_refusing(tmp_pat
     kept = [r for r in sealed if r["ticker"] == "SIVB"]
     assert [r["date"] for r in kept] == ["2020-01-02", "2020-01-03", "2020-01-06"]
     # ...and the name that WAS served carried the generation forward.
-    assert [r["date"] for r in sealed if r["ticker"] == "A"] == SESSIONS
+    assert [r["date"] for r in sealed if r["ticker"] == "A"] == JANUARY
     assert store.reconciliation["restored"] == {"SIVB"}
 
 
@@ -175,6 +182,8 @@ def test_a_name_returning_with_different_numbers_still_stops_the_run(tmp_path):
     store = RI.InputStore(tmp_path, "r", "d")
     store.commit(_pack(["A", "SIVB"], "2020-01-06"),
                  through="2020-01-06", policy={})
+    # A December session is weeks behind the cutoff, so this is the evidence
+    # moving, not the vendor settling its own tape.
     with pytest.raises(RI.InputVersionConflict,
                        match=r"2 of 2 sealed tickers contradict"):
         store.commit(_pack(["A", "SIVB"], "2020-01-09", bump=5.0),
@@ -216,7 +225,7 @@ def test_the_conflict_names_every_contradicting_ticker_and_the_scope():
     fresh = (_rows("AAA", MARCH, close=101.0) + _rows("SIVB", MARCH, close=101.0)
              + _rows("ZZZ", MARCH))
     with pytest.raises(RI.InputVersionConflict) as caught:
-        RI.reconcile_prefix("price/2015-03", SEALED, fresh, SEALED_TICKERS)
+        RI.reconcile_prefix("price/2015-03", SEALED, fresh, SEALED_TICKERS, cutoff=CUTOFF)
 
     message = str(caught.value)
     assert "2 of 3 sealed tickers contradict" in message
@@ -230,7 +239,7 @@ def test_the_conflict_summarises_rather_than_listing_hundreds():
     sealed = [r for t in many for r in _rows(t, MARCH)]
     fresh = [r for t in many for r in _rows(t, MARCH, close=101.0)]
     with pytest.raises(RI.InputVersionConflict) as caught:
-        RI.reconcile_prefix("price/2015-03", sealed, fresh, set(many))
+        RI.reconcile_prefix("price/2015-03", sealed, fresh, set(many), cutoff=CUTOFF)
 
     message = str(caught.value)
     assert "40 of 40 sealed tickers contradict" in message
@@ -244,3 +253,82 @@ def test_the_conflict_summarises_rather_than_listing_hundreds():
 ])
 def test_first_difference_names_the_session_and_the_field(sealed_rows, fresh_rows, expected):
     assert RI.first_difference(sealed_rows, fresh_rows) == expected
+
+
+# --------------------------------------------------------------------------- #
+# A vendor settling its own record is not the evidence changing
+#
+# Run #58, the first conflict to report scope:
+#
+#     price/2026-09: 2 of 749 sealed tickers contradict the sealed prefix:
+#       HUBB 2026-09-10 Volume 569872.0 -> 570129.0;
+#       UA   2026-09-10 Volume 2386964.3272054954 -> 2400827.9233997087
+#
+# Two of 749, one field, both on the cutoff date itself, no price moved: the
+# consolidated tape folding in late and off-exchange prints. Against that, the
+# failure the seal exists to catch moved every one of 567 names in JANUARY 2011.
+# A basis change reaches the whole history; a revision sits at the tail.
+# --------------------------------------------------------------------------- #
+TAPE = [{"date": "2026-09-10", "ticker": "HUBB", "Close": 626.46, "Volume": 569872.0}]
+
+
+def test_a_volume_settled_on_the_cutoff_date_is_kept_not_refused():
+    fresh = [{**TAPE[0], "Volume": 570129.0}]
+    restored, ignored, revised = RI.reconcile_prefix(
+        "price/2026-09", TAPE, fresh, {"HUBB"}, cutoff="2026-09-10")
+
+    assert revised == [("HUBB", "2026-09-10 Volume 569872.0 -> 570129.0")]
+    assert restored == [] and ignored == []
+
+
+def test_a_revision_deep_in_the_published_history_still_refuses():
+    """January 2011 moving is the v9->v10 basis change, not a late print."""
+    sealed = [{"date": "2011-01-03", "ticker": "SWK", "Close": 100.0}]
+    fresh = [{"date": "2011-01-03", "ticker": "SWK", "Close": 100.86}]
+    with pytest.raises(RI.InputVersionConflict, match="1 of 1 sealed tickers contradict"):
+        RI.reconcile_prefix("price/2011-01", sealed, fresh, {"SWK"},
+                            cutoff="2026-09-10")
+
+
+def test_a_ticker_settling_recently_and_revised_deeply_still_refuses():
+    """One old session is enough; the tolerance is not a per-ticker amnesty."""
+    sealed = [{"date": "2026-06-01", "ticker": "X", "Close": 10.0},
+              {"date": "2026-09-10", "ticker": "X", "Close": 11.0, "Volume": 5.0}]
+    fresh = [{"date": "2026-06-01", "ticker": "X", "Close": 10.5},
+             {"date": "2026-09-10", "ticker": "X", "Close": 11.0, "Volume": 6.0}]
+    with pytest.raises(RI.InputVersionConflict, match="contradict"):
+        RI.reconcile_prefix("price/2026", sealed, fresh, {"X"}, cutoff="2026-09-10")
+
+
+@pytest.mark.parametrize("date,settling", [
+    ("2026-09-10", True),    # the cutoff itself — run #58's case
+    ("2026-09-05", True),    # the far edge of the window
+    ("2026-09-04", False),   # one day past it
+    ("2011-01-03", False),   # the v9 -> v10 basis change
+])
+def test_the_settling_window_is_anchored_on_the_sealed_cutoff(date, settling):
+    assert RI._settling(date, "2026-09-10") is settling
+
+
+def test_a_session_after_the_cutoff_is_not_settling():
+    """Only the sealed prefix is at stake; the suffix is fetched fresh anyway."""
+    assert RI._settling("2026-09-11", "2026-09-10") is False
+
+
+def test_the_sealed_row_is_what_survives_a_settled_revision(tmp_path):
+    """End to end: the run continues, and on the POINT-IN-TIME value."""
+    store = RI.InputStore(tmp_path, "r", "d")
+    store.commit(_pack(["A", "SIVB"], "2020-01-06"), through="2020-01-06", policy={})
+    sealed_before = store.load()["price/2020-01"]
+
+    revised = _pack(["A", "SIVB"], "2020-01-09")
+    for row in revised["price/2020-01"]:
+        if row["date"] == "2020-01-06":
+            row["Close"] = row["Close"] + 1.0        # settled on the cutoff
+    store.commit(revised, through="2020-01-09", policy={})
+
+    after = store.load()["price/2020-01"]
+    kept = {(r["ticker"], r["date"]): r["Close"] for r in after}
+    for row in sealed_before:
+        assert kept[(row["ticker"], row["date"])] == row["Close"]
+    assert len(store.reconciliation["revised"]) == 2

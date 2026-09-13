@@ -744,20 +744,36 @@ def test_a_dividend_paid_after_the_cutoff_cannot_rewrite_a_sealed_session(tmp_pa
 
 
 def test_yahoos_adjusted_close_would_have_been_refused_by_the_same_store(tmp_path):
-    """The control: the basis v10 sealed fails where the new one passes."""
-    closes = [100.0, 101.0, 102.0, 103.0]
-    factor = 1 - 2.0 / 103.0
+    """The control: the basis v10 sealed fails where the new one passes.
+
+    The history runs back a year rather than four days, because that is the
+    shape of the failure: between the v9 and v10 seals one day apart, Yahoo's
+    back-anchored adjusted close moved values in JANUARY 2011. A basis change
+    rescales the whole published past, which is exactly what distinguishes it
+    from a vendor settling its newest session (see replay_inputs.SETTLING_
+    WINDOW_DAYS) — so a fixture confined to the last few days before the cutoff
+    would not be reproducing it.
+    """
+    sessions = pd.bdate_range("2019-01-02", "2020-01-06").strftime("%Y-%m-%d")
+    closes = [100.0 + i * 0.01 for i in range(len(sessions))]
+    factor = 1 - 2.0 / closes[-1]
+
+    def month(rows):
+        out = {}
+        for row in rows:
+            out.setdefault(f"price/{row['date'][:7]}", []).append(row)
+        return out
+
     store = RI.InputStore(tmp_path, "r", "d")
-    store.commit({"price/2020-01": [
-        {"date": d, "ticker": "A", "Close": c}
-        for d, c in zip(pd.bdate_range("2020-01-01", periods=4).strftime("%Y-%m-%d"), closes)]},
-        through="2020-01-06", policy={})
+    store.commit(month([{"date": d, "ticker": "A", "Close": c}
+                        for d, c in zip(sessions, closes)]),
+                 through="2020-01-06", policy={})
+    # One ex-dividend, and every published close in the series moves with it.
     with pytest.raises(RI.InputVersionConflict, match="sealed tickers contradict"):
-        store.commit({"price/2020-01": [
-            {"date": d, "ticker": "A", "Close": c * factor}
-            for d, c in zip(pd.bdate_range("2020-01-01", periods=4).strftime("%Y-%m-%d"), closes)]
-            + [{"date": "2020-01-07", "ticker": "A", "Close": 104.0}]},
-            through="2020-01-07", policy={})
+        store.commit(month([{"date": d, "ticker": "A", "Close": c * factor}
+                            for d, c in zip(sessions, closes)]
+                           + [{"date": "2020-01-07", "ticker": "A", "Close": 104.0}]),
+                     through="2020-01-07", policy={})
 
 
 def test_targeted_retry_window_is_per_gap_cluster_not_the_whole_span():
