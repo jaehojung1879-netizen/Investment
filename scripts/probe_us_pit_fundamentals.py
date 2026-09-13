@@ -103,6 +103,15 @@ TIMEOUT_SECONDS = 30
 WINDOW_START = "2012-01-01"
 WINDOW_END = "2013-06-30"
 
+# A window where the answer is not in doubt. AAPL filed 10-Qs throughout it, so
+# an EMPTY response here is a statement about our request rather than about the
+# vendor's history — which is the control run #1 did not have: simfin answered
+# all eight samples with zero rows, AAPL included, and that was written up as
+# `TOO_SHALLOW`. "A vendor's refusal is attributed only after OUR side of the
+# request has been ruled out", and an empty list is a refusal wearing a 200.
+CONTROL_START = "2025-01-01"
+CONTROL_END = "2026-06-30"
+
 # Sample cohorts. The living names repeat the earlier probes' samples so the
 # results are comparable across probes; the departed ones come from the
 # replay's own membership file (see `departed_samples`).
@@ -258,9 +267,25 @@ def _first_date(row: dict, candidates: tuple[str, ...]) -> tuple[str | None, str
     return None, None
 
 
+# How many of the vendor's own field names to carry back when a concept is not
+# found. run #1 is the reason this exists: polygon was reported as missing
+# every production account, and the report could say WHICH names it had looked
+# for but not which names the vendor had actually sent. "Missing netIncome" and
+# "carries net_income_loss under a different spelling" are the same line of
+# output and opposite findings — the FMP `fillingDate` lesson, arrived at from
+# the other direction.
+FIELDS_SEEN_CAP = 40
+
+
 def empty_reading() -> dict:
     return {"rowCount": 0, "periodEnds": [], "filingDates": [],
-            "filingDateField": None, "fieldsFound": {}, "sampleRow": {}}
+            "filingDateField": None, "fieldsFound": {}, "fieldsSeen": [],
+            "sampleRow": {}}
+
+
+def _seen(names) -> list[str]:
+    """The vendor's own field names, trimmed to a readable number."""
+    return sorted({str(n) for n in names if n})[:FIELDS_SEEN_CAP]
 
 
 # ---------------------------------------------------------------------------
@@ -312,6 +337,7 @@ def read_finnhub(payload) -> dict:
     for item in tagged:
         flat.update({k: v for k, v in item.items() if k})
     out["fieldsFound"] = {c: _first_populated([flat], GAAP_TAGS[c]) for c in CONCEPTS}
+    out["fieldsSeen"] = _seen(flat)
     first = rows[0]
     out["sampleRow"] = {k: first.get(k) for k in
                         ("symbol", "cik", "year", "quarter", "form", "startDate",
@@ -321,6 +347,21 @@ def read_finnhub(payload) -> dict:
 
 POLYGON_FILING_FIELDS = ("filing_date", "acceptance_datetime")
 POLYGON_PERIOD_FIELDS = ("end_date", "period_of_report_date")
+
+# Candidates for a NORMALISED statement key, tried alongside the filer's own
+# US-GAAP tag rather than instead of it. Neither list is asserted to be right;
+# `fieldsSeen` says which one the vendor actually used.
+POLYGON_NORMALISED = {
+    "revenue": ["revenues", "revenue"],
+    "netIncome": ["net_income_loss", "net_income_loss_attributable_to_parent"],
+    "operatingIncome": ["operating_income_loss"],
+    "equity": ["equity", "equity_attributable_to_parent"],
+    "liabilities": ["liabilities"],
+    "assets": ["assets"],
+    "operatingCashFlow": ["net_cash_flow_from_operating_activities"],
+    "capex": ["net_cash_flow_from_investing_activities"],
+    "sharesOutstanding": ["basic_average_shares", "diluted_average_shares"],
+}
 
 
 def read_polygon(payload) -> dict:
@@ -347,8 +388,14 @@ def read_polygon(payload) -> dict:
         if field and not out["filingDateField"]:
             out["filingDateField"] = field
 
-    # Polygon nests the statements under `financials.<statement>.<tag>.value`,
-    # keyed by the filer's own XBRL tag.
+    # Polygon nests the statements under `financials.<statement>.<key>.value`.
+    # WHICH key, though, was an assumption this probe got wrong: run #1 read
+    # the filer's own XBRL tags (`NetIncomeLoss`) and found not one of the nine
+    # production accounts across four tickers that had returned six periods
+    # each. A vendor that NORMALISES the filing does not keep the filer's
+    # spelling, so both are candidates now and `fieldsSeen` reports whatever
+    # actually arrived — the answer is measured next run rather than guessed
+    # at twice.
     flat: dict = {}
     for row in rows:
         for statement in (row.get("financials") or {}).values():
@@ -356,7 +403,10 @@ def read_polygon(payload) -> dict:
                 for tag, cell in statement.items():
                     if isinstance(cell, dict) and cell.get("value") not in (None, ""):
                         flat.setdefault(tag, cell.get("value"))
-    out["fieldsFound"] = {c: _first_populated([flat], GAAP_TAGS[c]) for c in CONCEPTS}
+    out["fieldsFound"] = {
+        c: _first_populated([flat], GAAP_TAGS[c] + POLYGON_NORMALISED.get(c, []))
+        for c in CONCEPTS}
+    out["fieldsSeen"] = _seen(flat)
     first = rows[0]
     out["sampleRow"] = {k: first.get(k) for k in
                         ("start_date", "end_date", "filing_date", "acceptance_datetime",
@@ -422,6 +472,7 @@ def read_simfin(payload) -> dict:
             out["filingDateField"] = field
     out["fieldsFound"] = {c: _first_populated(rows, SIMFIN_FIELD_COLUMNS.get(c, []))
                           for c in CONCEPTS}
+    out["fieldsSeen"] = _seen(k for row in rows for k in row)
     out["sampleRow"] = {k: rows[0].get(k) for k in
                         list(SIMFIN_FILING_COLUMNS) + list(SIMFIN_PERIOD_COLUMNS)
                         if k in rows[0]}
@@ -469,6 +520,7 @@ def read_fmp(payload) -> dict:
             out["filingDateField"] = field
     out["fieldsFound"] = {c: _first_populated(payload, FMP_FIELD_NAMES.get(c, []))
                           for c in CONCEPTS}
+    out["fieldsSeen"] = _seen(k for row in payload for k in row)
     out["sampleRow"] = {k: payload[0].get(k) for k in
                         ("date", "period", "filingDate", "fillingDate", "acceptedDate")
                         if k in payload[0]}
@@ -508,6 +560,7 @@ def read_alphavantage(payload) -> dict:
         "equity": None, "liabilities": None, "assets": None,
         "operatingCashFlow": None, "capex": None, "sharesOutstanding": None,
     }
+    out["fieldsSeen"] = _seen(k for row in rows for k in row)
     out["sampleRow"] = {k: rows[0].get(k) for k in
                         ("fiscalDateEnding", "reportedCurrency") if k in rows[0]}
     return out
@@ -529,7 +582,7 @@ def _in_window(value: str | None, start: str, end: str) -> bool:
 
 
 def assess_window(reading: dict, takes_date_window: bool,
-                  start: str = WINDOW_START, end: str = WINDOW_END) -> dict:
+                  start: str = WINDOW_START, end: str = WINDOW_END) -> dict:  # noqa: E501
     """What one sample's response says about point-in-time depth.
 
     The order is deliberate. The filing date is decided FIRST, because depth
@@ -558,7 +611,8 @@ def assess_window(reading: dict, takes_date_window: bool,
             "filingDateCoverage": len(filings),
             # Carried forward so `factor_readiness` can answer from the samples
             # that were actually SERVED rather than from the vendor's docs.
-            "fieldsFound": reading.get("fieldsFound") or {}}
+            "fieldsFound": reading.get("fieldsFound") or {},
+            "fieldsSeen": reading.get("fieldsSeen") or []}
 
     if not filings:
         return {**base, "depth": NO_FILING_DATE,
@@ -589,13 +643,16 @@ NO_ANSWER_FROM_HOST = "NO_ANSWER_FROM_HOST"
 KEY_MISSING = "KEY_MISSING"
 KEY_REFUSED = "KEY_REFUSED"
 NO_POINT_IN_TIME = "NO_POINT_IN_TIME"
+ACCOUNTS_NOT_FOUND = "ACCOUNTS_NOT_FOUND"
+REQUEST_NOT_RULED_OUT = "REQUEST_NOT_RULED_OUT"
 TOO_SHALLOW = "TOO_SHALLOW"
 LIVING_ONLY = "LIVING_ONLY"
 DEPARTED_REFUSED = "DEPARTED_REFUSED"
 OPEN = "OPEN"
 
 
-def vendor_verdict(reach: str, key_present: bool, living: dict, departed: dict) -> dict:
+def vendor_verdict(reach: str, key_present: bool, living: dict, departed: dict,
+                   accounts: dict | None = None, control: dict | None = None) -> dict:
     """The one line this vendor earns, and what it means for the next move.
 
     `KEY_MISSING` exists so that a vendor nobody has a credential for is never
@@ -608,6 +665,19 @@ def vendor_verdict(reach: str, key_present: bool, living: dict, departed: dict) 
     reports as "73% coverage", when what it actually has is a survivorship
     hole in exactly the shape v12-v13 spent two generations closing in Korean
     prices.
+
+    `ACCOUNTS_NOT_FOUND` exists because run #1 called polygon `OPEN` while
+    reporting that not one of the nine production accounts had been found in
+    it. Depth and a publication date make a source POINT-IN-TIME; they do not
+    make it USABLE. A verdict that says "the US route opens" about a response
+    we cannot compute a single factor from is a verdict that would send
+    someone to write a collector against nothing.
+
+    `REQUEST_NOT_RULED_OUT` is the other half of the same run. simfin answered
+    every sample with zero rows — AAPL included, for a window in which AAPL
+    certainly filed — and that became `TOO_SHALLOW`, a claim about simfin's
+    history made from a request simfin may never have understood. When the
+    control window comes back empty too, the suspect is our query.
 
     `DEPARTED_REFUSED` splits that verdict in two, and run #1 is why. FMP
     refused all four departed names with `Special Endpoint : This value set
@@ -653,11 +723,35 @@ def vendor_verdict(reach: str, key_present: bool, living: dict, departed: dict) 
     living_ok = [t for t, r in living.items() if r["depth"] == PIT_DEPTH_CONFIRMED]
     departed_ok = [t for t, r in departed.items() if r["depth"] == PIT_DEPTH_CONFIRMED]
     if not living_ok:
+        if control and control.get("depth") in (NO_ROWS, REFUSED):
+            return {"verdict": REQUEST_NOT_RULED_OUT,
+                    "meaning": (f"과거 창이 비었는데 {CONTROL_START}..{CONTROL_END} "
+                                f"대조 창도 비었습니다. 그 창에는 답이 있어야 하므로 "
+                                f"이건 벤더의 과거가 아니라 우리 요청이 용의자입니다 "
+                                f"— 파라미터 이름과 대소문자부터 보십시오"),
+                    "control": {k: control.get(k) for k in
+                                ("depth", "detail", "servedBy", "rowCount")}}
         return {"verdict": TOO_SHALLOW,
                 "meaning": (f"살아 있는 표본 중 어느 것도 {WINDOW_START}..{WINDOW_END} "
                             f"창을 채우지 못했습니다 — 리플레이 시작 {REPLAY_START} 에 "
                             f"닿지 않습니다"),
-                "depths": sorted({d for d in depths})}
+                "depths": sorted({d for d in depths}),
+                "control": ({k: control.get(k) for k in ("depth", "detail")}
+                            if control else None)}
+
+    # Depth and a filing date are not the same claim as usable numbers.
+    if accounts is not None:
+        computable = [f for f, state in accounts.items()
+                      if not f.startswith("_") and state["computable"]]
+        if not computable:
+            return {"verdict": ACCOUNTS_NOT_FOUND,
+                    "meaning": ("공시일이 붙은 2013년 행은 오는데 실전 팩터를 하나도 "
+                                "계산할 수 없습니다 — 계정과목을 우리가 아는 어떤 "
+                                "이름으로도 못 찾았습니다. 벤더가 실제로 보낸 필드명이 "
+                                "아래 fieldsSeen 에 있으니, 이름을 후보에 넣고 다시 "
+                                "재는 것이 다음 수입니다"),
+                    "livingServed": living_ok,
+                    "fieldsSeen": accounts.get("_fieldsSeen", [])}
     if departed and not departed_ok:
         departed_depths = [row["depth"] for row in departed.values()]
         if all(d == REFUSED for d in departed_depths):
@@ -901,7 +995,8 @@ DEPTH_RANK = {PIT_DEPTH_CONFIRMED: 0, WINDOW_NOT_HONOURED: 1,
               REFUSED: 4}
 
 
-def probe_sample(vendor: dict, ticker: str, key: str) -> dict:
+def probe_sample(vendor: dict, ticker: str, key: str,
+                 start: str = WINDOW_START, end: str = WINDOW_END) -> dict:
     """One sample against one vendor, trying each candidate request in turn.
 
     Stops early only on a confirmed result; otherwise every candidate is asked
@@ -917,8 +1012,7 @@ def probe_sample(vendor: dict, ticker: str, key: str) -> dict:
     attempts: list[dict] = []
     best: dict | None = None
     best_label: str | None = None
-    for label, url, headers in vendor["requests_for"](
-            ticker, key, WINDOW_START, WINDOW_END):
+    for label, url, headers in vendor["requests_for"](ticker, key, start, end):
         status, body, error = _request(url, headers=headers)
         time.sleep(PACE_SECONDS)
         try:
@@ -929,7 +1023,7 @@ def probe_sample(vendor: dict, ticker: str, key: str) -> dict:
                              "bodyHead": body_head(body)})
             continue
         reading = vendor["read"](payload)
-        assessment = assess_window(reading, vendor["takesDateWindow"])
+        assessment = assess_window(reading, vendor["takesDateWindow"], start, end)
         attempts.append({"candidate": label, "httpStatus": status,
                          "error": error or None, "bodyHead": body_head(body, 160),
                          **assessment})
@@ -971,12 +1065,26 @@ def probe_vendor(name: str, vendor: dict, living: list[str],
             departed_rows[ticker] = probe_sample(vendor, ticker, key)
     entry["living"] = living_rows
     entry["departed"] = departed_rows
-    entry.update(vendor_verdict(reach, bool(key), living_rows, departed_rows))
 
     served = [r for r in list(living_rows.values()) + list(departed_rows.values())
               if r.get("depth") == PIT_DEPTH_CONFIRMED]
-    if served:
-        entry["factorInputs"] = factor_readiness(served)
+    readiness = factor_readiness(served) if served else None
+    if readiness:
+        entry["factorInputs"] = readiness
+
+    # The control is bought only when it can change the answer: nothing in the
+    # historical window came back, and at least one sample came back EMPTY
+    # rather than refused. An empty answer is the one that cannot tell "the
+    # vendor has no such history" from "the vendor did not understand us".
+    control = None
+    if reach == ANSWERED and key and not served and living:
+        if any(r.get("depth") == NO_ROWS for r in living_rows.values()):
+            control = probe_sample(vendor, living[0], key, CONTROL_START, CONTROL_END)
+            entry["control"] = {"ticker": living[0],
+                                "window": [CONTROL_START, CONTROL_END], **control}
+
+    entry.update(vendor_verdict(reach, bool(key), living_rows, departed_rows,
+                                readiness, control))
     return entry
 
 
@@ -992,11 +1100,17 @@ def factor_readiness(served: list[dict]) -> dict:
         for concept, field in (row.get("fieldsFound") or {}).items():
             if field and not found.get(concept):
                 found[concept] = field
+    seen: set[str] = set()
+    for row in served:
+        seen.update(row.get("fieldsSeen") or [])
     out = {}
     for factor, needs in FACTOR_INPUTS.items():
         missing = [c for c in needs if not found.get(c)]
         out[factor] = {"computable": not missing, "missing": missing}
     out["_fieldsFound"] = found
+    # What the vendor DID send, so a miss is a name to add rather than a
+    # vendor to retire.
+    out["_fieldsSeen"] = sorted(seen)[:FIELDS_SEEN_CAP]
     return out
 
 
@@ -1098,7 +1212,8 @@ def main(argv=None) -> int:
                       f"{served} {str(row.get('detail'))[:120]}")
         print(f"  판정: {entry['verdict']}")
         print(f"  {entry['meaning']}")
-        if entry["verdict"] in (OPEN, LIVING_ONLY, DEPARTED_REFUSED):
+        if entry["verdict"] in (OPEN, LIVING_ONLY, DEPARTED_REFUSED,
+                                ACCOUNTS_NOT_FOUND):
             entry["backfill"] = backfill_cost(vendor, universe)
             cost = entry["backfill"]
             print(f"  전체 백필: 종목당 {cost['callsPerTicker']}회 × "
@@ -1108,6 +1223,10 @@ def main(argv=None) -> int:
                     continue
                 mark = "가능" if state["computable"] else f"불가 — 부족: {state['missing']}"
                 print(f"    {factor:<26} {mark}")
+            seen = (entry.get("factorInputs") or {}).get("_fieldsSeen") or []
+            if seen:
+                print(f"    벤더가 실제로 보낸 필드: {seen[:12]}"
+                      + (f" … 외 {len(seen) - 12}개" if len(seen) > 12 else ""))
         print()
         vendors[name] = entry
 
@@ -1118,10 +1237,13 @@ def main(argv=None) -> int:
     living_only = [n for n, e in vendors.items() if e["verdict"] == LIVING_ONLY]
     departed_refused = [n for n, e in vendors.items() if e["verdict"] == DEPARTED_REFUSED]
     silent = [n for n, e in vendors.items() if e["verdict"] == NO_ANSWER_FROM_HOST]
+    no_accounts = [n for n, e in vendors.items() if e["verdict"] == ACCOUNTS_NOT_FOUND]
+    our_request = [n for n, e in vendors.items() if e["verdict"] == REQUEST_NOT_RULED_OUT]
     report["summary"] = {"open": open_routes, "livingOnly": living_only,
                          "departedRefused": departed_refused,
                          "tooShallow": shallow, "needsKey": needs_key,
-                         "noAnswer": silent}
+                         "noAnswer": silent, "accountsNotFound": no_accounts,
+                         "requestNotRuledOut": our_request}
 
     print("=== 판정 ===")
     if open_routes:
@@ -1133,6 +1255,12 @@ def main(argv=None) -> int:
     if departed_refused:
         print(f"  떠난 이름을 종목 단위로 거절한 소스: {departed_refused} — 거절 "
               f"문장을 읽으십시오. 구독 제한이면 돈으로 풀리고, 미보유면 안 풀립니다.")
+    if no_accounts:
+        print(f"  깊이는 있으나 계정과목을 못 찾은 소스: {no_accounts} — 벤더가 보낸 "
+              f"필드명이 리포트의 fieldsSeen 에 있습니다. 후보에 넣고 다시 재십시오.")
+    if our_request:
+        print(f"  대조 창까지 비어서 우리 요청이 용의자인 소스: {our_request} — "
+              f"벤더의 과거가 얕다고 읽지 마십시오.")
     if shallow:
         print(f"  도달은 하지만 2013년에 닿지 않는 소스: {shallow}")
     if silent:

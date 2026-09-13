@@ -530,3 +530,139 @@ def test_the_most_informative_answer_wins_when_none_is_confirmed(monkeypatch):
     result = P.probe_sample(_vendor(), "AAPL", "KEY")
     assert result["depth"] == P.WINDOW_NOT_HONOURED
     assert result["servedBy"] == "first"
+
+
+# --------------------------------------------------------------------------- #
+# Depth and a filing date are not the same claim as usable numbers — run #1
+# called polygon OPEN while finding none of the nine production accounts in it
+# --------------------------------------------------------------------------- #
+def _readiness(**found):
+    served = [{"fieldsFound": found, "fieldsSeen": ["net_income_loss", "revenues"]}]
+    return P.factor_readiness(served)
+
+
+def test_depth_without_a_single_computable_factor_is_not_an_open_route():
+    verdict = P.vendor_verdict(P.ANSWERED, True,
+                               living={"AAPL": _confirmed()},
+                               departed={"ANR": _confirmed()},
+                               accounts=_readiness())
+    assert verdict["verdict"] == P.ACCOUNTS_NOT_FOUND
+    assert verdict["verdict"] != P.OPEN, "계산할 수 없는 소스로 수집기를 쓰게 하면 안 된다"
+
+
+def test_the_vendors_own_field_names_ride_along_so_the_next_move_is_visible():
+    verdict = P.vendor_verdict(P.ANSWERED, True,
+                               living={"AAPL": _confirmed()},
+                               departed={"ANR": _confirmed()},
+                               accounts=_readiness())
+    assert "net_income_loss" in verdict["fieldsSeen"], \
+        "못 찾은 이름만 말하고 실제로 온 이름을 숨기면 다음 수가 안 보인다"
+
+
+def test_accounts_that_compute_at_least_one_factor_still_open_the_route():
+    verdict = P.vendor_verdict(
+        P.ANSWERED, True,
+        living={"AAPL": _confirmed()}, departed={"ANR": _confirmed()},
+        accounts=_readiness(netIncome="NetIncomeLoss", equity="StockholdersEquity"))
+    assert verdict["verdict"] == P.OPEN
+
+
+def test_a_vendor_probed_without_an_accounts_reading_is_judged_as_before():
+    """`accounts=None` means the caller did not measure them; that is not the
+    same as measuring them and finding none."""
+    verdict = P.vendor_verdict(P.ANSWERED, True,
+                               living={"AAPL": _confirmed()},
+                               departed={"ANR": _confirmed()}, accounts=None)
+    assert verdict["verdict"] == P.OPEN
+
+
+# --------------------------------------------------------------------------- #
+# An empty answer is a refusal wearing a 200 — the control window is what tells
+# "no such history" from "you did not understand the question"
+# --------------------------------------------------------------------------- #
+def test_an_empty_history_with_an_empty_control_indicts_our_request():
+    """simfin answered all eight samples with zero rows, AAPL included, and
+    that was written up as the vendor being shallow."""
+    verdict = P.vendor_verdict(P.ANSWERED, True,
+                               living={"AAPL": _empty(), "KO": _empty()},
+                               departed={"ANR": _empty()},
+                               control={"depth": P.NO_ROWS, "detail": "행이 없음"})
+    assert verdict["verdict"] == P.REQUEST_NOT_RULED_OUT
+    assert verdict["verdict"] != P.TOO_SHALLOW
+
+
+def test_an_empty_history_with_a_served_control_is_genuinely_shallow():
+    verdict = P.vendor_verdict(P.ANSWERED, True,
+                               living={"AAPL": _empty()}, departed={"ANR": _empty()},
+                               control={"depth": P.PIT_DEPTH_CONFIRMED})
+    assert verdict["verdict"] == P.TOO_SHALLOW
+
+
+def test_without_a_control_an_empty_history_stays_the_cautious_old_verdict():
+    verdict = P.vendor_verdict(P.ANSWERED, True,
+                               living={"AAPL": _empty()}, departed={"ANR": _empty()})
+    assert verdict["verdict"] == P.TOO_SHALLOW
+
+
+def test_a_refused_control_also_indicts_our_side():
+    verdict = P.vendor_verdict(P.ANSWERED, True,
+                               living={"AAPL": _empty()}, departed={"ANR": _empty()},
+                               control={"depth": P.REFUSED, "detail": "bad request"})
+    assert verdict["verdict"] == P.REQUEST_NOT_RULED_OUT
+
+
+def test_the_control_window_is_one_where_the_answer_is_not_in_doubt():
+    assert P.CONTROL_START > P.WINDOW_END, "대조 창은 최근이어야 한다"
+    assert P.CONTROL_START < P.CONTROL_END
+
+
+# --------------------------------------------------------------------------- #
+# A renamed field reads as an absent one — so report what actually arrived
+# --------------------------------------------------------------------------- #
+def test_polygon_normalised_statement_keys_are_candidates_too():
+    """run #1 looked only for the filer's US-GAAP tags and found none of the
+    nine accounts in four tickers that had each returned six periods."""
+    payload = {"results": [{"end_date": "2012-09-29", "filing_date": "2012-10-31",
+                            "financials": {"income_statement": {
+                                "net_income_loss": {"value": 41733},
+                                "revenues": {"value": 156508}}}}]}
+    reading = P.read_polygon(payload)
+    assert reading["fieldsFound"]["netIncome"] == "net_income_loss"
+    assert reading["fieldsFound"]["revenue"] == "revenues"
+
+
+def test_polygon_still_reads_the_filers_own_tag_when_that_is_what_arrives():
+    payload = {"results": [{"end_date": "2012-09-29", "filing_date": "2012-10-31",
+                            "financials": {"income_statement": {
+                                "NetIncomeLoss": {"value": 41733}}}}]}
+    assert P.read_polygon(payload)["fieldsFound"]["netIncome"] == "NetIncomeLoss"
+
+
+def test_every_reader_reports_the_field_names_it_actually_saw():
+    polygon = P.read_polygon({"results": [{"end_date": "2012-09-29",
+                                           "filing_date": "2012-10-31",
+                                           "financials": {"x": {"mystery_key":
+                                                                {"value": 1}}}}]})
+    assert "mystery_key" in polygon["fieldsSeen"], \
+        "벤더가 보낸 이름을 기록하지 않으면 '없음'과 '이름이 다름'을 구분할 수 없다"
+
+    finnhub = P.read_finnhub({"data": [{"endDate": "2012-09-29",
+                                        "filedDate": "2012-10-31",
+                                        "report": {"ic": [{"concept": "OddTag",
+                                                           "value": 1}]}}]})
+    assert "OddTag" in finnhub["fieldsSeen"]
+
+    fmp = P.read_fmp([{"date": "2012-09-29", "filingDate": "2012-10-31",
+                       "surpriseField": 1}])
+    assert "surpriseField" in fmp["fieldsSeen"]
+
+
+def test_the_seen_field_list_is_capped_so_a_report_stays_readable():
+    rows = [{f"field_{i}": i for i in range(200)} | {"date": "2012-09-29",
+                                                     "filingDate": "2012-10-31"}]
+    assert len(P.read_fmp(rows)["fieldsSeen"]) <= P.FIELDS_SEEN_CAP
+
+
+def test_the_seen_fields_survive_into_the_readiness_report():
+    served = [{"fieldsFound": {}, "fieldsSeen": ["net_income_loss"]}]
+    assert P.factor_readiness(served)["_fieldsSeen"] == ["net_income_loss"]
