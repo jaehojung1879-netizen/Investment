@@ -320,13 +320,34 @@ def test_the_collector_defaults_to_finishing_both_passes():
     assert "return collect_shares(key, codes, store, left, run_deadline)" in source
 
 
-def test_the_scheduled_workflow_passes_no_mode_of_its_own():
-    """A schedule supplies no inputs, so the default has to be the useful one."""
+def _fundamentals_workflow() -> str:
     from pathlib import Path as _Path
 
     root = _Path(__file__).resolve().parent.parent
-    workflow = (root / ".github" / "workflows" / "dart-fundamentals.yml").read_text(
+    return (root / ".github" / "workflows" / "fundamentals.yml").read_text(
         encoding="utf-8")
+
+
+def test_the_scheduled_workflow_passes_no_mode_of_its_own():
+    """A schedule supplies no inputs, so the default has to be the useful one."""
+    workflow = _fundamentals_workflow()
 
     assert "inputs.target || 'auto'" in workflow
     assert 'default: "auto"' in workflow
+
+
+def test_the_schedule_collects_both_regions_without_being_asked():
+    """A cron passes no inputs at all, so a region gate that only reads
+    `inputs.region` would silently collect nothing on the nightly run."""
+    workflow = _fundamentals_workflow()
+    for region in ("kr", "us"):
+        assert (f"github.event_name == 'schedule' || inputs.region == 'both' "
+                f"|| inputs.region == '{region}'") in workflow
+
+
+def test_each_region_writes_its_own_path_under_the_shared_branch():
+    """Both jobs push to `signal-history`; overlapping paths would make two
+    parallel collectors fight over the same shards."""
+    workflow = _fundamentals_workflow()
+    assert "ledger/fundamentals/kr" in workflow
+    assert "ledger/fundamentals/us" in workflow
