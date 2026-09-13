@@ -59,6 +59,75 @@ NO_FILING_DATE = "NO_FILING_DATE"
 NO_ACCESSION = "NO_ACCESSION"
 NO_PERIOD = "NO_PERIOD"
 
+# `freq=quarterly` returns 10-Q only — measured, not assumed: the first slice
+# stored 4,971 filings and every one of them was a 10-Q. That matters because a
+# trailing-twelve-month figure built by rollforward needs the ANNUAL filing as
+# its anchor, and Q4 exists nowhere else (it is the year minus the nine-month
+# cumulative). So both frequencies are collected.
+QUARTERLY = "quarterly"
+ANNUAL = "annual"
+FREQUENCIES = (QUARTERLY, ANNUAL)
+
+# finnhub emits the filer's US-GAAP tag under TWO spellings, and which one
+# arrives varies by filing: the first slice carried `Assets` 및 `us-gaap_Assets`,
+# `NetIncomeLoss` and `us-gaap_NetIncomeLoss`, and so on down the list. A reader
+# that knows one spelling reports the other as absent — the third time this
+# repository has met that shape, after FMP's `fillingDate` and polygon's
+# normalised keys. The raw tag is what gets STORED; this is for reading.
+NAMESPACE_SEPARATORS = ("_", ":")
+KNOWN_NAMESPACES = ("us-gaap", "usgaap", "dei", "srt", "ifrs-full", "invest")
+
+
+def strip_namespace(concept: str | None) -> str:
+    """`us-gaap_Assets` and `Assets` are the same account, so they compare equal.
+
+    Only a KNOWN namespace is stripped. A filer's own extension tag can contain
+    an underscore too, and collapsing `AcmeCorp_SpecialCharge` to
+    `SpecialCharge` would merge two accounts that are not the same thing.
+    """
+    if not concept:
+        return ""
+    text = str(concept)
+    for separator in NAMESPACE_SEPARATORS:
+        head, found, tail = text.partition(separator)
+        if found and head.lower() in KNOWN_NAMESPACES and tail:
+            return tail
+    return text
+
+
+# Eight spellings arrived in the first slice for what are really three units:
+# `usd` 388,484 · `_usd` 36,280 · `usdollar` 3,128 · `usd/shares` 8,789 ·
+# `usd/share` 5,976 · `_usd_/_shares` 1,372 · `shares` 7,725 · `unit12` 7,185.
+# A derivation that filtered on `unit == "usd"` would have dropped 39,408
+# currency values without a word. `unit12` is deliberately NOT guessed at — it
+# gets its own class so it stays visible until someone measures what it is.
+CURRENCY = "currency"
+PER_SHARE = "perShare"
+SHARES = "shares"
+UNCLASSIFIED = "unclassified"
+
+
+def unit_class(unit: str | None) -> str:
+    """Which of the three units a spelling means, or that we do not know.
+
+    Per-share is tested before currency on purpose: `usd/shares` contains
+    `usd`, and classifying it as currency would turn an EPS into a dollar
+    amount that nothing downstream could tell apart from one.
+    """
+    if not unit:
+        return UNCLASSIFIED
+    text = "".join(ch for ch in str(unit).lower() if ch.isalnum() or ch == "/")
+    if "/" in text or text.endswith("pershare") or text.endswith("pershares"):
+        left, _, right = text.partition("/")
+        if right.startswith("share") and left.startswith(("usd", "usdollar")):
+            return PER_SHARE
+        return PER_SHARE if right.startswith("share") else UNCLASSIFIED
+    if text.startswith("share"):
+        return SHARES
+    if text.startswith("usd") or text.startswith("usdollar"):
+        return CURRENCY
+    return UNCLASSIFIED
+
 
 def is_rate_limited(status: int | None, body_text: str) -> bool:
     """Did the vendor ask us to slow down, rather than answer about the data?"""
@@ -92,18 +161,43 @@ def windows(from_year: int = FIRST_YEAR, through: str | None = None,
 
 
 def work_list(tickers: list[str], spans: list[tuple[str, str]],
-              done: set[tuple[str, str, str]]) -> list[tuple[str, str, str]]:
-    """(ticker, window start, window end) still to fetch, oldest window first.
+              done: set[tuple[str, str, str, str]],
+              frequencies: tuple[str, ...] = FREQUENCIES
+              ) -> list[tuple[str, str, str, str]]:
+    """(ticker, window start, window end, freq) still to fetch.
 
-    Oldest first on purpose. The early cross-sections are the ones the replay
-    cannot currently score at all, and a budget that runs out should have spent
-    itself on the years that are dark rather than on the years prices already
-    cover.
+    Oldest window first, and ANNUAL before quarterly within a window. Both
+    orderings are about what a spent budget leaves behind: the early
+    cross-sections are the ones the replay cannot score at all, and the annual
+    filing is the anchor a rollforward needs — a store full of quarters with no
+    year in it cannot produce a single trailing-twelve-month figure, so the
+    cheap half (one 10-K a year) is bought first.
     """
-    return [(ticker, start, end)
+    order = {ANNUAL: 0, QUARTERLY: 1}
+    return [(ticker, start, end, freq)
             for start, end in spans
+            for freq in sorted(frequencies, key=lambda f: order.get(f, 9))
             for ticker in sorted(tickers)
-            if (ticker, start, end) not in done]
+            if (ticker, start, end, freq) not in done]
+
+
+def normalise_done(entries) -> set[tuple[str, str, str, str]]:
+    """Windows already asked for, read from a file that may predate `freq`.
+
+    The first slice stored three-item entries and every one of them was a
+    quarterly call. Dropping them would re-buy 1,500 windows; guessing they
+    covered both frequencies would skip 1,500 annual calls that never happened.
+    So a three-item entry means exactly what it did: the quarterly pass.
+    """
+    done: set[tuple[str, str, str, str]] = set()
+    for entry in entries or []:
+        if not isinstance(entry, (list, tuple)):
+            continue
+        if len(entry) == 3:
+            done.add((str(entry[0]), str(entry[1]), str(entry[2]), QUARTERLY))
+        elif len(entry) == 4:
+            done.add(tuple(str(part) for part in entry))       # type: ignore[arg-type]
+    return done
 
 
 def filing_id(ticker: str, accession: str) -> str:
@@ -128,7 +222,8 @@ def period_days(start: str | None, end: str | None) -> int | None:
         return None
 
 
-def build_record(ticker: str, filing: dict, collected_at: str) -> tuple[dict | None, str]:
+def build_record(ticker: str, filing: dict, collected_at: str,
+                 freq: str = QUARTERLY) -> tuple[dict | None, str]:
     """One raw filing, stored as the vendor stated it, or a refusal reason.
 
     Nothing is derived here. The concepts are kept under the filer's own
@@ -172,6 +267,10 @@ def build_record(ticker: str, filing: dict, collected_at: str) -> tuple[dict | N
         "acceptedDate": str(filing.get("acceptedDate") or "") or None,
         "statements": statements,
         "source": "finnhub/financials-reported",
+        # Which pass fetched it. The same 10-K can come back from both
+        # frequencies, and `filing_id` already dedupes on the accession, so
+        # this is a note about provenance rather than part of the identity.
+        "requestedFreq": freq,
         "collectedAt": collected_at,
     }, ""
 
@@ -196,31 +295,62 @@ def inventory(records: list[dict]) -> dict:
     map onto quarters, and the concepts are counted per statement section.
     """
     per_form: dict[str, Counter] = {}
-    concepts: dict[str, Counter] = {"bs": Counter(), "ic": Counter(), "cf": Counter()}
+    per_freq: Counter = Counter()
+    forms_by_freq: dict[str, Counter] = {}
+    raw_concepts: dict[str, Counter] = {"bs": Counter(), "ic": Counter(), "cf": Counter()}
+    collapsed: dict[str, Counter] = {"bs": Counter(), "ic": Counter(), "cf": Counter()}
     units: Counter = Counter()
+    unit_classes: Counter = Counter()
+    unclassified_units: Counter = Counter()
     missing_days = 0
     for record in records:
         form = str(record.get("form") or "?")
+        freq = str(record.get("requestedFreq") or "?")
         days = record.get("periodDays")
         bucket = period_bucket(days)
         if days is None:
             missing_days += 1
         per_form.setdefault(form, Counter())[bucket] += 1
+        per_freq[freq] += 1
+        forms_by_freq.setdefault(freq, Counter())[form] += 1
         for section, entries in (record.get("statements") or {}).items():
             for entry in entries or []:
-                if entry.get("concept"):
-                    concepts.setdefault(section, Counter())[entry["concept"]] += 1
-                if entry.get("unit"):
-                    units[str(entry["unit"])] += 1
+                concept = entry.get("concept")
+                if concept:
+                    raw_concepts.setdefault(section, Counter())[concept] += 1
+                    collapsed.setdefault(section, Counter())[strip_namespace(concept)] += 1
+                unit = entry.get("unit")
+                if unit:
+                    units[str(unit)] += 1
+                    kind = unit_class(unit)
+                    unit_classes[kind] += 1
+                    if kind == UNCLASSIFIED:
+                        unclassified_units[str(unit)] += 1
     return {
         "filings": len(records),
         "periodLengthByForm": {form: dict(counts.most_common())
                                for form, counts in sorted(per_form.items())},
         "filingsWithNoPeriodLength": missing_days,
-        "conceptsBySection": {section: len(counts) for section, counts in concepts.items()},
+        # Which pass produced which form. `freq=quarterly` returned nothing but
+        # 10-Q in the first slice, and that is the fact the annual pass exists
+        # to change — so it is reported rather than assumed to have changed.
+        "filingsByFreq": dict(per_freq.most_common()),
+        "formsByFreq": {freq: dict(counts.most_common())
+                        for freq, counts in sorted(forms_by_freq.items())},
+        "conceptsBySection": {section: len(counts) for section, counts in raw_concepts.items()},
+        # The same count after `us-gaap_Assets` and `Assets` stop being two
+        # accounts. The gap between the two numbers IS the double-spelling.
+        "conceptsBySectionCollapsed": {section: len(counts)
+                                       for section, counts in collapsed.items()},
         "topConcepts": {section: [c for c, _ in counts.most_common(12)]
-                        for section, counts in concepts.items()},
-        "units": dict(units.most_common(8)),
+                        for section, counts in raw_concepts.items()},
+        "topConceptsCollapsed": {section: [c for c, _ in counts.most_common(12)]
+                                 for section, counts in collapsed.items()},
+        "units": dict(units.most_common(12)),
+        "unitClasses": dict(unit_classes.most_common()),
+        # Anything the classifier could not place, kept by name so it stays a
+        # question someone can answer instead of a silently dropped value.
+        "unclassifiedUnits": dict(unclassified_units.most_common(8)),
     }
 
 
@@ -249,3 +379,176 @@ def progress(collected: int, pending: int) -> dict:
     total = collected + pending
     return {"collected": collected, "pending": pending, "total": total,
             "completePct": round(100.0 * collected / total, 2) if total else 100.0}
+
+
+# ---------------------------------------------------------------------------
+# Is a 10-Q's income statement the quarter, or the year to date?
+# ---------------------------------------------------------------------------
+# The first slice answered half of this: every 10-Q states a FILING period, and
+# those periods fall into three near-equal groups — 1,801 at a quarter, 1,615 at
+# a half, 1,553 at three quarters. That is the signature of a period running
+# from the fiscal year start, not of three independent quarters.
+#
+# But `report.ic` entries carry no dates of their own, so the filing's period
+# being cumulative is evidence about the VALUES, not proof. DART faced exactly
+# this and settled it by value ratios over 84 companies rather than by field
+# presence. The same method applies here and the stored filings already support
+# it: if the values are cumulative, the half-year figure is about twice the
+# first quarter's and the nine-month figure about three times it. If they are
+# independent quarters, all three are about equal.
+#
+# The median across many companies is the statistic, never one company's ratio:
+# no single firm earns evenly through the year, and a seasonal one would
+# "disprove" whichever reading it happened to contradict.
+Q1, Q2, Q3, FY = "Q1", "Q2", "Q3", "FY"
+
+CUMULATIVE = "CUMULATIVE"
+DISCRETE_QUARTERS = "DISCRETE_QUARTERS"
+INCONCLUSIVE = "INCONCLUSIVE"
+
+# Flow accounts only. A balance-sheet level is a stock at a date and its ratio
+# across quarters says nothing about period semantics.
+FLOW_CONCEPTS = {
+    "netIncome": ("NetIncomeLoss", "ProfitLoss"),
+    "revenue": ("Revenues", "RevenueFromContractWithCustomerExcludingAssessedTax",
+                "SalesRevenueNet", "RevenueFromContractWithCustomerIncludingAssessedTax"),
+    "operatingIncome": ("OperatingIncomeLoss",),
+    "operatingCashFlow": ("NetCashProvidedByUsedInOperatingActivities",
+                          "NetCashProvidedByUsedInOperatingActivitiesContinuingOperations"),
+}
+SECTION_OF = {"netIncome": "ic", "revenue": "ic", "operatingIncome": "ic",
+              "operatingCashFlow": "cf"}
+
+# How far from the ideal a median may sit and still decide. Cumulative predicts
+# 2.0 and 3.0; independent quarters predict 1.0 and 1.0. The bands are wide
+# because real firms are seasonal, and they do not overlap, so a median inside
+# one is outside the other.
+CUMULATIVE_BAND = ((1.6, 2.4), (2.4, 3.6))
+DISCRETE_BAND = ((0.7, 1.3), (0.7, 1.3))
+
+
+def concept_value(record: dict, concept_key: str) -> float | None:
+    """One flow account from one filing, under either tag spelling.
+
+    Only currency units are accepted: an EPS carries the same account name in
+    some filings and dividing a per-share figure by a dollar one would produce
+    a ratio that means nothing.
+    """
+    section = SECTION_OF.get(concept_key)
+    wanted = FLOW_CONCEPTS.get(concept_key, ())
+    if not section:
+        return None
+    for entry in (record.get("statements") or {}).get(section) or []:
+        if strip_namespace(entry.get("concept")) not in wanted:
+            continue
+        if unit_class(entry.get("unit")) != CURRENCY:
+            continue
+        value = entry.get("value")
+        if isinstance(value, (int, float)):
+            return float(value)
+    return None
+
+
+def quarter_stage(record: dict) -> str | None:
+    """Which stage of the fiscal year this filing's period reaches.
+
+    Read from the stated period length rather than from `fiscalQuarter`: the
+    quarter number says which report it is, and what this needs to know is how
+    much of the year the numbers cover.
+    """
+    bucket = period_bucket(record.get("periodDays"))
+    if str(record.get("form") or "").upper().startswith("10-K") or bucket == "year (316-400d)":
+        return FY
+    return {"quarter (46-135d)": Q1, "half (136-225d)": Q2,
+            "three quarters (226-315d)": Q3}.get(bucket)
+
+
+def _median(values: list[float]) -> float | None:
+    if not values:
+        return None
+    ordered = sorted(values)
+    middle = len(ordered) // 2
+    if len(ordered) % 2:
+        return ordered[middle]
+    return (ordered[middle - 1] + ordered[middle]) / 2.0
+
+
+def period_semantics(records: list[dict], concept_key: str = "netIncome") -> dict:
+    """Cumulative or independent quarters, decided by value ratios.
+
+    Ratios are taken WITHIN one ticker-year, so a company's size never enters.
+    A year contributes only if the stage it needs is present and the first
+    quarter is far enough from zero to divide by — a near-zero denominator
+    produces an enormous ratio that would move a mean and does move a small
+    median.
+    """
+    by_year: dict[tuple[str, object], dict[str, float]] = {}
+    for record in records:
+        stage = quarter_stage(record)
+        value = concept_value(record, concept_key)
+        if stage is None or value is None:
+            continue
+        key = (str(record.get("ticker")), record.get("fiscalYear"))
+        # First writer wins, matching the store's own dedupe rule.
+        by_year.setdefault(key, {}).setdefault(stage, value)
+
+    half_over_first: list[float] = []
+    three_over_first: list[float] = []
+    three_over_year: list[float] = []
+    for stages in by_year.values():
+        first = stages.get(Q1)
+        if first is None or abs(first) < 1.0:
+            continue
+        if stages.get(Q2) is not None:
+            half_over_first.append(stages[Q2] / first)
+        if stages.get(Q3) is not None:
+            three_over_first.append(stages[Q3] / first)
+        if stages.get(Q3) is not None and stages.get(FY) not in (None, 0):
+            three_over_year.append(stages[Q3] / stages[FY])
+
+    medians = {
+        "halfOverFirst": _median(half_over_first),
+        "threeQuartersOverFirst": _median(three_over_first),
+        "threeQuartersOverYear": _median(three_over_year),
+    }
+    counts = {"halfOverFirst": len(half_over_first),
+              "threeQuartersOverFirst": len(three_over_first),
+              "threeQuartersOverYear": len(three_over_year),
+              "tickerYears": len(by_year)}
+
+    verdict, meaning = _read_ratios(medians, counts)
+    return {"concept": concept_key, "medians": medians, "counts": counts,
+            "verdict": verdict, "meaning": meaning,
+            "expected": {"cumulative": {"halfOverFirst": 2.0,
+                                        "threeQuartersOverFirst": 3.0,
+                                        "threeQuartersOverYear": 0.75},
+                         "discreteQuarters": {"halfOverFirst": 1.0,
+                                              "threeQuartersOverFirst": 1.0,
+                                              "threeQuartersOverYear": 0.25}}}
+
+
+# A median of one ratio is one company. Below this the answer is not reported,
+# because a verdict about how an entire vendor states its filings should not
+# rest on a handful of firms that might all be in one industry.
+MIN_RATIOS = 30
+
+
+def _read_ratios(medians: dict, counts: dict) -> tuple[str, str]:
+    half, three = medians["halfOverFirst"], medians["threeQuartersOverFirst"]
+    if half is None or three is None:
+        return INCONCLUSIVE, "비율을 만들 수 있는 티커-연도가 없습니다"
+    if min(counts["halfOverFirst"], counts["threeQuartersOverFirst"]) < MIN_RATIOS:
+        return INCONCLUSIVE, (f"비율 표본이 {MIN_RATIOS}개 미만입니다 — 수집을 더 "
+                              f"채운 뒤에 다시 재십시오")
+    (half_lo, half_hi), (three_lo, three_hi) = CUMULATIVE_BAND
+    if half_lo <= half <= half_hi and three_lo <= three <= three_hi:
+        return CUMULATIVE, ("반기가 1분기의 약 2배, 3분기 누계가 약 3배 — 회계연도 "
+                            "시작부터의 누계입니다. TTM은 rollforward로 만들어야 "
+                            "합니다: FY(Y-1) − cum(Y-1,Q) + cum(Y,Q)")
+    (dhalf_lo, dhalf_hi), (dthree_lo, dthree_hi) = DISCRETE_BAND
+    if dhalf_lo <= half <= dhalf_hi and dthree_lo <= three <= dthree_hi:
+        return DISCRETE_QUARTERS, ("세 분기가 서로 비슷한 크기 — 각각 독립된 3개월 "
+                                   "수치입니다. TTM은 네 분기 합입니다")
+    return INCONCLUSIVE, (f"중앙값이 두 밴드 어디에도 들지 않습니다 "
+                          f"(반기/1분기 {half:.2f}, 3분기/1분기 {three:.2f}) — "
+                          f"단정하지 말고 원인을 보십시오")

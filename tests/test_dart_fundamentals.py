@@ -351,3 +351,27 @@ def test_each_region_writes_its_own_path_under_the_shared_branch():
     workflow = _fundamentals_workflow()
     assert "ledger/fundamentals/kr" in workflow
     assert "ledger/fundamentals/us" in workflow
+
+
+def test_the_period_measurement_runs_before_the_commit():
+    """Its JSON is committed with the shards it describes; running it after the
+    push would leave the answer on a machine that is about to be thrown away.
+
+    Read as text, not through a YAML parser: `pyyaml` is not a dependency of
+    this repository, and a test is not a reason to add one to the runtime
+    requirements.
+    """
+    workflow = _fundamentals_workflow()
+    us_job = workflow[workflow.index("\n  us:"):]
+    collect = us_job.index("- name: Collect a slice")
+    measure = us_job.index("- name: Measure what a 10-Q period means")
+    commit = us_job.index("- name: Commit & push to signal-history")
+    assert collect < measure < commit
+
+
+def test_an_undecided_measurement_does_not_fail_the_collection():
+    """Exit 2 means the data does not yet decide. Failing the job on it would
+    throw away a slice of filings that were paid for and did arrive."""
+    workflow = _fundamentals_workflow()
+    assert "set +e" in workflow
+    assert "status=${PIPESTATUS[0]}" in workflow

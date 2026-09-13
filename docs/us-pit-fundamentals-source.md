@@ -298,6 +298,87 @@ derivation is a separate change, written against that answer, and until it
 exists nothing is wired into the replay: `build_pit_fundamentals.py` still
 knows only the Korean store, and `replay.yml` still passes only `pit-kr.jsonl`.
 
+## Collection run #1, 2026-09-13 — what 4,971 filings said, and what they did not
+
+The first slice bought 1,500 windows and stored **4,971 filings, none refused**:
+every one carried a `filedDate`, which is the single field the whole collection
+exists for. Shards landed for 2011–2015. Four things the run measured, and the
+change each one forced:
+
+### The filing periods are cumulative — but that is evidence, not proof
+
+Period lengths split almost evenly three ways: **1,801 at a quarter, 1,615 at a
+half, 1,553 at three quarters**. Three independent quarters would not produce a
+half and a three-quarter bucket at all, so the *filing envelope* runs from the
+fiscal year start.
+
+That is a fact about the envelope. The entries inside `report.ic` carry no dates
+of their own, so it is evidence about the values rather than proof. DART faced
+exactly this question and settled it by **value ratios over 84 companies**, not
+by field names, and the same method settles it here on data already bought:
+
+* within one ticker-year, half-year over first-quarter and three-quarter over
+  first-quarter;
+* cumulative predicts ≈2.0 and ≈3.0, independent quarters ≈1.0 and ≈1.0;
+* the statistic is the **median across companies**, never one company's ratio —
+  no firm earns evenly through the year, and a seasonal one appears to
+  contradict whichever reading it happens to sit opposite;
+* four flow accounts are measured separately (net income, revenue, operating
+  income, operating cash flow). Four agreeing is the claim. Four disagreeing is
+  a finding to look at, not to average — the report says so and withholds the
+  verdict;
+* fewer than 30 ratios, or a median between the two bands, reports
+  `INCONCLUSIVE` and **exits non-zero**, so a green check never implies an
+  answer the data did not give.
+
+`scripts/measure_us_period_semantics.py`, run as a step of the `us` job and
+committed beside the shards as `period-semantics.json`.
+
+### The FY term was never being collected
+
+The rollforward a cumulative store needs is `TTM(Y,Q) = FY(Y-1) − cum(Y-1,Q) +
+cum(Y,Q)`. Every term but one was in the store: the collector only ever asked
+`freq=quarterly`. **Without the annual filing there is no TTM at all**, not a
+less accurate one.
+
+So the collector now runs both passes, annual first — one 10-K a year is the
+cheap half and the anchor everything else hangs off. The 1,500 quarterly
+windows already paid for are **not re-bought**: `windows.json` from the first
+slice holds three-item entries, and a three-item entry means exactly what it
+did, the quarterly pass. Reading those as "both frequencies done" would skip
+1,500 annual calls that never happened; dropping them would re-buy 1,500
+windows.
+
+### Every GAAP tag arrives in two spellings
+
+Both `Assets` and `us-gaap_Assets` are in the store, for the same account. A
+derivation matching one spelling silently halves its own coverage.
+
+Only a **known** namespace is stripped (`us-gaap`, `dei`, `srt`, `ifrs-full`,
+`invest`, on either `_` or `:`). A filer's own extension tag contains an
+underscore too, and collapsing `AcmeCorp_SpecialCharge` to `SpecialCharge`
+would merge one company's bespoke line into an account that means something
+else — with nothing downstream able to tell.
+
+### Eight unit spellings, three meanings
+
+| spelling | count | means |
+|---|---|---|
+| `usd` | 388,484 | currency |
+| `_usd` | 36,280 | currency |
+| `usdollar` | 3,128 | currency |
+| `usd/shares` | 8,789 | per share |
+| `usd/share` | 5,976 | per share |
+| `_usd_/_shares` | 1,372 | per share |
+| `shares` | 7,725 | share count |
+| `unit12` | 7,185 | unclassified |
+
+A derivation filtering on `unit == "usd"` drops 39,408 currency values. Worse,
+per-share is tested **before** currency, because `usd/shares` contains `usd`
+and classifying it as currency turns an EPS into a dollar amount nothing
+downstream can tell apart from a real one. `unit12` is named rather than
+guessed.
+
 ## Primary and backup, once the backups are real
 
 finnhub is the primary because it is the only vendor measured end to end:

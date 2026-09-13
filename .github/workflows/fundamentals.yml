@@ -190,6 +190,25 @@ jobs:
             --max-minutes "${{ inputs.max_minutes || '240' }}" \
             | tee us-collect.log
 
+      # A US 10-Q states both a three-month and a year-to-date figure, and the
+      # vendor flattens one of them into `report.ic`. Which one decides how TTM
+      # has to be built, and reading a year-to-date cash flow as a quarterly one
+      # inflates free cash flow fourfold with nothing raising an error. So it is
+      # measured from the collected values — the median half-over-first and
+      # three-quarters-over-first ratio across companies — exactly as the Korean
+      # side settled the same question. Exit 2 means the data does not yet
+      # decide; that is an honest outcome and not a broken run, so the step
+      # records it instead of failing the collection that just succeeded.
+      - name: Measure what a 10-Q period means
+        id: semantics
+        run: |
+          set +e
+          python scripts/measure_us_period_semantics.py \
+            us-fundamentals-work/ledger/fundamentals/us \
+            --json us-fundamentals-work/ledger/fundamentals/us/period-semantics.json \
+            | tee us-semantics.log
+          echo "status=${PIPESTATUS[0]}" >> "$GITHUB_OUTPUT"
+
       - name: Commit & push to signal-history
         run: |
           cd us-fundamentals-work
@@ -222,5 +241,11 @@ jobs:
             echo
             echo '```'
             tail -n 60 us-collect.log 2>/dev/null || echo '수집 출력 없음'
+            echo '```'
+            echo
+            echo '### 10-Q 기간 의미 (누계인가 독립 분기인가)'
+            echo
+            echo '```'
+            cat us-semantics.log 2>/dev/null || echo '측정 출력 없음'
             echo '```'
           } >> "$GITHUB_STEP_SUMMARY"
