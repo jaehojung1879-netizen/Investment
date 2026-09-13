@@ -140,6 +140,11 @@ Each rule below is a mistake this repository has already paid for.
 
 ### Running it
 
+GitHub registers a `workflow_dispatch` workflow only once the file is on the
+default branch, so this one cannot be dispatched from the PR branch — merge
+first, then run it. (`Tests` runs on the pull request either way, so the 49
+unit tests are proved in CI before the merge.)
+
 1. Run **Probe US PIT fundamentals sources** with no secrets added yet.
    That alone settles the two unasked SEC hosts and tells you which of the
    four vendors answers the Actions IP pool at all. Cost: about a minute.

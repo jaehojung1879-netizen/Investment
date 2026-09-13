@@ -628,7 +628,8 @@ def vendor_verdict(reach: str, key_present: bool, living: dict, departed: dict) 
                 "meaning": ("호스트는 답하고 키는 전달됐지만 모든 표본이 거절됐습니다 "
                             "— 벤더의 거절 문장이 다음 수를 말해 줍니다"),
                 "refusals": sorted({str(r.get("detail"))[:200]
-                                    for r in living.values() if r.get("detail")})}
+                                    for r in list(living.values()) + list(departed.values())
+                                    if r.get("detail")})}
     if any(d == NO_FILING_DATE for d in depths) and \
             not any(d == PIT_DEPTH_CONFIRMED for d in depths):
         return {"verdict": NO_POINT_IN_TIME,
@@ -851,15 +852,32 @@ def departed_samples(path: Path = UNIVERSE_HISTORY, count: int = 4,
 # ---------------------------------------------------------------------------
 # Driving one vendor
 # ---------------------------------------------------------------------------
+# How informative each outcome is, best first. A candidate that answers with
+# an EMPTY list has answered, but it is not a reason to stop asking: an
+# authentication form that does not take can look exactly like a company with
+# no filings, and stopping there would report "this vendor has no 2013 rows"
+# about a transport we simply presented wrong.
+DEPTH_RANK = {PIT_DEPTH_CONFIRMED: 0, WINDOW_NOT_HONOURED: 1,
+              NO_DATE_WINDOW_ENDPOINT: 1, NO_FILING_DATE: 2, NO_ROWS: 3,
+              REFUSED: 4}
+
+
 def probe_sample(vendor: dict, ticker: str, key: str) -> dict:
     """One sample against one vendor, trying each candidate request in turn.
 
-    Stops at the first candidate whose body reads as this vendor's data. Every
-    attempt is recorded — including the refusals and their bodies — because
-    "the path is wrong", "the credential is presented wrong" and "the plan
-    excludes this" produce the same failure and have different fixes.
+    Stops early only on a confirmed result; otherwise every candidate is asked
+    and the most informative answer is returned. Two variables live in that
+    candidate list and neither is safe to assume — the URL shape and how the
+    credential is PRESENTED — and KRX is the reason: its header-vs-query form
+    was inferred from an error string and inferred wrong.
+
+    Every attempt is recorded, refusal bodies included, because "the path is
+    wrong", "the credential is presented wrong" and "the plan excludes this"
+    produce the same failure and have completely different fixes.
     """
-    attempts = []
+    attempts: list[dict] = []
+    best: dict | None = None
+    best_label: str | None = None
     for label, url, headers in vendor["requests_for"](
             ticker, key, WINDOW_START, WINDOW_END):
         status, body, error = _request(url, headers=headers)
@@ -876,8 +894,14 @@ def probe_sample(vendor: dict, ticker: str, key: str) -> dict:
         attempts.append({"candidate": label, "httpStatus": status,
                          "error": error or None, "bodyHead": body_head(body, 160),
                          **assessment})
-        if assessment["depth"] != REFUSED:
-            return {"servedBy": label, "attempts": attempts, **assessment}
+        rank = DEPTH_RANK.get(assessment["depth"], 5)
+        if best is None or rank < DEPTH_RANK.get(best["depth"], 5):
+            best, best_label = assessment, label
+        if rank == 0:
+            break
+    if best is not None:
+        served = best_label if best["depth"] != REFUSED else None
+        return {"servedBy": served, "attempts": attempts, **best}
     last = attempts[-1] if attempts else {}
     return {"servedBy": None, "attempts": attempts, "depth": REFUSED,
             "detail": last.get("bodyHead") or last.get("error") or "응답 없음"}
@@ -951,7 +975,7 @@ def us_universe_size(path: Path = UNIVERSE_HISTORY) -> int:
     return sum(1 for row in rows.values() if row.get("region") == "US")
 
 
-def backfill_cost(vendor: dict, entry: dict, universe: int) -> dict:
+def backfill_cost(vendor: dict, universe: int) -> dict:
     """What a full 2012→today backfill would cost this vendor, in calls.
 
     Calls only. A duration needs a rate limit, and this probe has not measured
@@ -1033,7 +1057,7 @@ def main(argv=None) -> int:
         print(f"  판정: {entry['verdict']}")
         print(f"  {entry['meaning']}")
         if entry["verdict"] in (OPEN, LIVING_ONLY):
-            entry["backfill"] = backfill_cost(vendor, entry, universe)
+            entry["backfill"] = backfill_cost(vendor, universe)
             cost = entry["backfill"]
             print(f"  전체 백필: 종목당 {cost['callsPerTicker']}회 × "
                   f"{cost['universeNames']}종목 = {cost['callsForFullBackfill']:,}회")

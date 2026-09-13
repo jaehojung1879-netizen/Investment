@@ -336,7 +336,7 @@ def test_the_backfill_is_sized_off_every_name_that_was_ever_a_member():
 
 
 def test_backfill_cost_reports_calls_and_refuses_to_invent_a_duration():
-    cost = P.backfill_cost(P.VENDORS["finnhub"], {}, 829)
+    cost = P.backfill_cost(P.VENDORS["finnhub"], 829)
     assert cost["callsForFullBackfill"] == cost["callsPerTicker"] * 829
     assert "측정하지" in cost["rateLimit"]
 
@@ -403,3 +403,81 @@ def test_sec_targets_keep_the_known_refused_hosts_as_the_baseline():
 def test_sec_requests_send_the_policy_compliant_header_set():
     assert P.SEC_HEADERS["Accept-Encoding"] == "gzip, deflate"
     assert "@" in P.SEC_HEADERS["User-Agent"]
+
+
+# --------------------------------------------------------------------------- #
+# Candidate requests — the URL shape and how the credential is presented are
+# both variables, and KRX's transport was inferred from an error string and
+# inferred wrong
+# --------------------------------------------------------------------------- #
+def _scripted_requests(script):
+    """Replaces P._request with a canned (status, body) per call, in order."""
+    calls = []
+
+    def fake(url, headers=None, timeout=30):
+        calls.append((url, headers or {}))
+        status, body = script[min(len(calls) - 1, len(script) - 1)]
+        return status, body, "" if status == 200 else f"HTTP {status}"
+
+    return fake, calls
+
+
+def _vendor(takes_window=True):
+    return {"takesDateWindow": takes_window, "read": P.read_finnhub,
+            "requests_for": lambda t, key, start, end: [
+                ("first", f"https://example.test/a?token={key}", {}),
+                ("second", "https://example.test/b", {"X-Token": key}),
+            ]}
+
+
+_ROW = (b'{"data": [{"endDate": "2012-09-29", "filedDate": "2012-10-31", '
+        b'"report": {"ic": [{"concept": "NetIncomeLoss", "value": 1}]}}]}')
+
+
+def test_an_empty_first_candidate_does_not_stop_the_second_being_asked(monkeypatch):
+    """An auth form that does not take looks exactly like a company with no
+    filings. Stopping on the empty answer would report "no 2013 rows" about a
+    transport we simply presented wrong."""
+    fake, calls = _scripted_requests([(200, b'{"data": []}'), (200, _ROW)])
+    monkeypatch.setattr(P, "_request", fake)
+    monkeypatch.setattr(P.time, "sleep", lambda *_: None)
+    result = P.probe_sample(_vendor(), "AAPL", "KEY")
+    assert len(calls) == 2
+    assert result["servedBy"] == "second"
+    assert result["depth"] == P.PIT_DEPTH_CONFIRMED
+
+
+def test_a_confirmed_first_candidate_stops_the_run_instead_of_spending_quota(monkeypatch):
+    fake, calls = _scripted_requests([(200, _ROW), (200, _ROW)])
+    monkeypatch.setattr(P, "_request", fake)
+    monkeypatch.setattr(P.time, "sleep", lambda *_: None)
+    result = P.probe_sample(_vendor(), "AAPL", "KEY")
+    assert len(calls) == 1, "확정된 뒤에도 계속 물으면 쿼터만 씁니다"
+    assert result["servedBy"] == "first"
+
+
+def test_every_candidates_refusal_body_is_kept(monkeypatch):
+    fake, _ = _scripted_requests([
+        (401, b'{"error": "Invalid API key"}'),
+        (403, b'{"error": "You do not have access to this resource"}'),
+    ])
+    monkeypatch.setattr(P, "_request", fake)
+    monkeypatch.setattr(P.time, "sleep", lambda *_: None)
+    result = P.probe_sample(_vendor(), "AAPL", "KEY")
+    assert result["servedBy"] is None
+    assert result["depth"] == P.REFUSED
+    bodies = " ".join(str(a.get("detail", "")) for a in result["attempts"])
+    assert "Invalid API key" in bodies and "do not have access" in bodies
+
+
+def test_the_most_informative_answer_wins_when_none_is_confirmed(monkeypatch):
+    """A refusal and an answered-but-shallow response are not equal findings,
+    and reporting the last one asked would make the order decide."""
+    recent = (b'{"data": [{"endDate": "2026-06-30", "filedDate": "2026-07-31", '
+              b'"report": {}}]}')
+    fake, _ = _scripted_requests([(200, recent), (401, b'{"error": "no"}')])
+    monkeypatch.setattr(P, "_request", fake)
+    monkeypatch.setattr(P.time, "sleep", lambda *_: None)
+    result = P.probe_sample(_vendor(), "AAPL", "KEY")
+    assert result["depth"] == P.WINDOW_NOT_HONOURED
+    assert result["servedBy"] == "first"
