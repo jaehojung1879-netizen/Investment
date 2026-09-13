@@ -463,6 +463,15 @@ A budget is a ceiling, not a target. Once the store has caught up the work
 list is empty and the run ends in seconds, so the large ceiling costs nothing
 on an ordinary day — it only removes the button.
 
+The dispatch inputs are empty for the same reason. A `workflow_dispatch` input
+with a default SENDS that default on every run, so a `default: "1500"` beside a
+16,600 ceiling is not a suggestion — it is an override that fires every time
+someone presses the button, and the mobile app cannot pass inputs at all, so
+from a phone there is no way to override the override. Left empty, both the
+scheduled path and the hand-started one fall through to the ceiling each region
+set for itself, and typing a number still wins for anyone who deliberately
+wants a short run.
+
 Two things this does not change, and one it might. The pacing is what a rate
 limit cares about, and 54 calls a minute stays under finnhub's 60. The
 resumption rules are untouched: a refusal stops the run and does not mark the

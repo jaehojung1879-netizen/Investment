@@ -36,14 +36,21 @@ on:
     - cron: "40 3 * * *"
   workflow_dispatch:
     inputs:
+      # Empty on purpose, and this is the whole point of them. A non-empty
+      # default is sent on every dispatch, so it overrides the per-region
+      # ceiling below and quietly makes every hand-started run a small one —
+      # and the mobile app cannot pass inputs at all, so there is no way to
+      # override the override from a phone. Left empty, both paths fall through
+      # to the ceiling each region set for itself, and typing a number here
+      # still wins when someone deliberately wants a short run.
       max_calls:
-        description: "이번 실행의 최대 호출 수"
+        description: "최대 호출 수 (비우면 지역별 기본 상한)"
         type: string
-        default: "1500"
+        default: ""
       max_minutes:
-        description: "이번 실행의 최대 분"
+        description: "최대 분 (비우면 지역별 기본 상한)"
         type: string
-        default: "240"
+        default: ""
       target:
         description: "KR 전용 — auto=재무제표 후 주식수까지 / statements / shares"
         type: choice
