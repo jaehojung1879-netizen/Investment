@@ -621,6 +621,56 @@ input, and it needs a new `REPLAY_VERSION` generation and the 50-minute
 re-acquisition that comes with it — so it is its own change, made deliberately,
 not a side effect of adding a derivation.
 
+## replay-v15, 2026-09-14 — the seal opens
+
+`replay.yml` now builds both regions and passes both files. `provenance.py`
+carries `REPLAY_VERSION = "replay-v15"` and a `DATA_VERSION` that names
+`finnhub-pit-fundamentals-us-v1`.
+
+**Why it is a new generation and not an extension.** Through v14 the only
+fundamentals file wired into the replay was `pit-kr.jsonl`. `fullComposite` had
+zero observations on any US name and `claimEligible` was false there: half the
+production weight — value 0.3 plus quality 0.2 — had never once been computed on
+a US ticker in thirteen years, and every US signal v14 recorded came from
+momentum and the remaining sleeves alone. v15 scores those names from five
+sleeves instead of three. Cross-sectional ranks built from different inputs are
+not comparable, so splicing v15 onto v14 would compare a five-sleeve score
+against a three-sleeve one. v14's records stay sealed.
+
+**What the replay will see that it could not before**, measured on the merged
+store:
+
+| date | US names with PIT fundamentals | of which roe | of which epsTtm |
+|---|---|---|---|
+| 2013-06-28 | **676** | 595 | 484 |
+| 2018-06-29 | 726 | 640 | 547 |
+| 2025-06-30 | 778 | 590 | 542 |
+
+Under v14 every one of those cells was zero.
+
+**The two regions are loaded apart and merged.** They come from different
+vendors under different account names and they fail separately: DART going
+quiet is not finnhub going quiet, and a single `rowsAccepted` would let a
+Korean parse failure read as a US coverage number. `perSource` carries what
+each file contributed, and a ticker appearing in both is reported rather than
+buried — it cannot happen today, since Korean names carry a `.KS`/`.KQ` suffix
+and US ones do not, but one region's history quietly burying the other's is
+invisible from the outside, so it is checked.
+
+**One thing this does not fix, and it is not new.** The Korean store begins in
+2015, so the KR value and quality sleeves are empty for 2013 and 2014 exactly
+as they were under v14. The US half now covers the whole window; the Korean
+half still does not, and that asymmetry is a known limitation of both
+generations rather than something v15 introduced.
+
+**The cost, stated plainly.** The first v15 run re-acquires every input — about
+fifty minutes — and recomputes the thirteen-year backtest. The v14 result
+(ALPHA_RANK −4.87%p, CALIBRATED +1.08%p against the benchmark, pairwise CI
+[−1.006, +0.042] → INDISTINGUISHABLE) was measured with the US value and
+quality sleeves empty. Whatever v15 returns is the first measurement of that
+strategy with both halves of its weight actually carrying data, and it is a
+different experiment rather than a correction of the old number.
+
 ## Primary and backup, once the backups are real
 
 finnhub is the primary because it is the only vendor measured end to end:
