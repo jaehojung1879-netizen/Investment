@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-09-14T08:50:10.386340+00:00",
-  "replayVersion": "replay-v14",
+  "generatedAt": "2026-09-14T11:50:08.028584+00:00",
+  "replayVersion": "replay-v15",
   "modelVersion": "longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
   "evidenceClass": "HISTORICAL_OOS",
   "outcomesRead": 372889,
@@ -218,23 +218,23 @@
       ],
       "audit": {
         "available": true,
-        "predictions": 3966,
+        "predictions": 4161,
         "dates": 222,
         "independentDates": 9,
-        "brier": 0.05791,
-        "baselineBrier": 0.05799,
-        "brierSkill": 0.0013,
-        "ece": 0.03893,
-        "logLoss": 0.68559,
+        "brier": 0.05979,
+        "baselineBrier": 0.0601,
+        "brierSkill": 0.0051,
+        "ece": 0.04739,
+        "logLoss": 0.68435,
         "calibrationBins": [
           {
             "range": "40-60",
-            "predictedPct": 46.049,
-            "realizedPct": 42.156,
+            "predictedPct": 46.512,
+            "realizedPct": 41.773,
             "dates": 222
           }
         ],
-        "baseVariantBrier": 0.05791,
+        "baseVariantBrier": 0.05979,
         "conditionalBrierImprovement": 0.0
       },
       "reliabilityGate": {
@@ -264,68 +264,68 @@
       "buckets": [
         {
           "bucket": "0-60",
-          "observations": 171618,
+          "observations": 171609,
           "dates": 688,
           "effectiveDates": 27,
-          "upProbabilityPct": 46.56,
-          "downProbabilityPct": 53.44,
-          "averageUpsidePct": 15.069,
-          "averageDownsidePct": 14.258,
-          "payoffRatio": 1.0569,
-          "distributionExpectedExcessReturnPct": -0.603,
-          "binaryKellyFraction": -0.04
+          "upProbabilityPct": 46.5,
+          "downProbabilityPct": 53.5,
+          "averageUpsidePct": 15.151,
+          "averageDownsidePct": 14.274,
+          "payoffRatio": 1.0615,
+          "distributionExpectedExcessReturnPct": -0.59,
+          "binaryKellyFraction": -0.0389
         },
         {
           "bucket": "60-80",
-          "observations": 57894,
-          "dates": 688,
-          "effectiveDates": 27,
-          "upProbabilityPct": 46.15,
-          "downProbabilityPct": 53.85,
-          "averageUpsidePct": 13.211,
-          "averageDownsidePct": 12.913,
-          "payoffRatio": 1.0231,
-          "distributionExpectedExcessReturnPct": -0.856,
-          "binaryKellyFraction": -0.0648
-        },
-        {
-          "bucket": "80-90",
-          "observations": 28879,
+          "observations": 57897,
           "dates": 688,
           "effectiveDates": 27,
           "upProbabilityPct": 45.95,
           "downProbabilityPct": 54.05,
-          "averageUpsidePct": 13.125,
-          "averageDownsidePct": 12.625,
-          "payoffRatio": 1.0396,
-          "distributionExpectedExcessReturnPct": -0.793,
-          "binaryKellyFraction": -0.0605
+          "averageUpsidePct": 13.128,
+          "averageDownsidePct": 12.942,
+          "payoffRatio": 1.0144,
+          "distributionExpectedExcessReturnPct": -0.964,
+          "binaryKellyFraction": -0.0734
+        },
+        {
+          "bucket": "80-90",
+          "observations": 28878,
+          "dates": 688,
+          "effectiveDates": 27,
+          "upProbabilityPct": 45.8,
+          "downProbabilityPct": 54.2,
+          "averageUpsidePct": 12.83,
+          "averageDownsidePct": 12.647,
+          "payoffRatio": 1.0144,
+          "distributionExpectedExcessReturnPct": -0.978,
+          "binaryKellyFraction": -0.0762
         },
         {
           "bucket": "90-95",
-          "observations": 14407,
+          "observations": 14394,
           "dates": 688,
           "effectiveDates": 27,
-          "upProbabilityPct": 45.38,
-          "downProbabilityPct": 54.62,
-          "averageUpsidePct": 13.254,
-          "averageDownsidePct": 12.586,
-          "payoffRatio": 1.0531,
-          "distributionExpectedExcessReturnPct": -0.858,
-          "binaryKellyFraction": -0.0648
+          "upProbabilityPct": 45.71,
+          "downProbabilityPct": 54.29,
+          "averageUpsidePct": 13.074,
+          "averageDownsidePct": 12.703,
+          "payoffRatio": 1.0292,
+          "distributionExpectedExcessReturnPct": -0.92,
+          "binaryKellyFraction": -0.0704
         },
         {
           "bucket": "95-100",
-          "observations": 16245,
+          "observations": 16265,
           "dates": 688,
           "effectiveDates": 27,
-          "upProbabilityPct": 45.81,
-          "downProbabilityPct": 54.19,
-          "averageUpsidePct": 14.224,
-          "averageDownsidePct": 12.98,
-          "payoffRatio": 1.0959,
-          "distributionExpectedExcessReturnPct": -0.518,
-          "binaryKellyFraction": -0.0364
+          "upProbabilityPct": 47.08,
+          "downProbabilityPct": 52.92,
+          "averageUpsidePct": 14.197,
+          "averageDownsidePct": 12.627,
+          "payoffRatio": 1.1243,
+          "distributionExpectedExcessReturnPct": 0.003,
+          "binaryKellyFraction": 0.0002
         }
       ]
     }
