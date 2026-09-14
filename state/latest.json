@@ -1,8 +1,8 @@
 {
   "schemaVersion": "2.7.0",
   "modelVersion": "longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
-  "buildCommitSha": "7d254d57b92a",
-  "generatedAt": "2026-09-14T07:39:07.274143+00:00",
+  "buildCommitSha": "158e6417601e",
+  "generatedAt": "2026-09-14T08:04:05.498055+00:00",
   "marketAsOf": "2026-09-14",
   "macroRegime": "Transition/Low confidence",
   "holdingsByRegion": {
@@ -36,11 +36,11 @@
     ]
   },
   "modelPortfolioWeights": {
-    "KO": 0.3,
-    "SPG": 0.222737,
-    "021240.KS": 0.081318,
-    "HST": 0.103629,
-    "005490.KS": 0.03274
+    "KO": 0.268299,
+    "SPG": 0.193039,
+    "021240.KS": 0.070476,
+    "HST": 0.089812,
+    "005490.KS": 0.028374
   },
   "entryStatesByTicker": {
     "NUE": "WAIT_FOR_PULLBACK",
@@ -115,7 +115,7 @@
   "stale": false,
   "productionValidation": {
     "passed": true,
-    "validatedAt": "2026-09-14T07:39:07.274143+00:00",
+    "validatedAt": "2026-09-14T08:04:05.498055+00:00",
     "errors": []
   }
 }
