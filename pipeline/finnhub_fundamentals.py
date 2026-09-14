@@ -95,36 +95,83 @@ def strip_namespace(concept: str | None) -> str:
     return text
 
 
-# Eight spellings arrived in the first slice for what are really three units:
-# `usd` 388,484 · `_usd` 36,280 · `usdollar` 3,128 · `usd/shares` 8,789 ·
-# `usd/share` 5,976 · `_usd_/_shares` 1,372 · `shares` 7,725 · `unit12` 7,185.
-# A derivation that filtered on `unit == "usd"` would have dropped 39,408
-# currency values without a word. `unit12` is deliberately NOT guessed at — it
-# gets its own class so it stays visible until someone measures what it is.
+# Eight spellings arrived in the first slice for what are really three units,
+# and the first rule written here read them as PREFIXES: a label starting with
+# `usd` was money, one starting with `share` was a count. The completed backfill
+# showed how badly that generalised. Across 34,327 filings the store holds 47
+# spellings the prefix rule could not read, and 85,820 of their 88,407 values
+# sit under labels that say `usd` somewhere other than the front:
+#
+#   `u_usd` 66,767 · `unit_usd` 17,614 · `unit_standard_usd_<hash>` x19
+#
+# all of them carrying `Assets`, `ProfitLoss`, `NetIncomeLoss` — ordinary dollar
+# figures under a name the filer generated. A derivation on the prefix rule
+# would have dropped every one of them.
+#
+# So the label is read as WORDS, not as a prefix. That is not a looser rule, it
+# is the vendor's own sentence: `u_usd` says usd, `unit_divide_usd_shares_<hash>`
+# says it divides usd by shares, and `eur` says something this pipeline must not
+# add to dollars. What says nothing — `unit12`, `number`, `pure`, `store`, the
+# empty string — still says nothing, and falls to `resolve_units` to settle from
+# the concepts, or stays unclassified.
 CURRENCY = "currency"
 PER_SHARE = "perShare"
 SHARES = "shares"
 UNCLASSIFIED = "unclassified"
 
+CURRENCY_WORDS = ("usd", "usdollar", "usdollars")
+SHARE_WORDS = ("share", "shares")
+# `divide` and `per` are whole words, never prefixes: `dividend` is a payment,
+# not a division, and it appears in this store as its own unit label.
+DIVIDE_WORDS = ("divide", "per")
+
+
+def unit_words(unit: str | None) -> list[str]:
+    """A unit label as the words it is built from, lowercased."""
+    if not unit:
+        return []
+    word, words = "", []
+    for ch in str(unit).lower():
+        if ch.isalnum():
+            word += ch
+        elif word:
+            words.append(word)
+            word = ""
+    if word:
+        words.append(word)
+    return words
+
 
 def unit_class(unit: str | None) -> str:
     """Which of the three units a spelling means, or that we do not know.
 
-    Per-share is tested before currency on purpose: `usd/shares` contains
-    `usd`, and classifying it as currency would turn an EPS into a dollar
-    amount that nothing downstream could tell apart from one.
+    Per-share is decided before either of the others on purpose: every
+    per-share label in this store also says `usd` or `shares`, and reading one
+    as money turns an EPS into a dollar amount that nothing downstream could
+    tell apart from a real one.
     """
-    if not unit:
+    words = unit_words(unit)
+    if not words:
         return UNCLASSIFIED
-    text = "".join(ch for ch in str(unit).lower() if ch.isalnum() or ch == "/")
-    if "/" in text or text.endswith("pershare") or text.endswith("pershares"):
-        left, _, right = text.partition("/")
-        if right.startswith("share") and left.startswith(("usd", "usdollar")):
-            return PER_SHARE
-        return PER_SHARE if right.startswith("share") else UNCLASSIFIED
-    if text.startswith("share"):
+    text = "".join(words)
+    divides = "/" in str(unit) or any(w in DIVIDE_WORDS for w in words)
+    money = any(w in CURRENCY_WORDS for w in words)
+    counts = any(w in SHARE_WORDS for w in words)
+
+    if text.endswith("pershare") or text.endswith("pershares"):
+        return PER_SHARE
+    if money and counts:
+        # Both words and no division sign between them: `usd_shares` carries
+        # `EarningsPerShareDiluted` 1,853 times in this store. The two words
+        # together only mean one thing — dollars per share — because a count of
+        # shares never needs to say `usd`, and a dollar amount never needs to
+        # say `shares`.
+        return PER_SHARE
+    if divides and (money or counts):
+        return PER_SHARE
+    if counts:
         return SHARES
-    if text.startswith("usd") or text.startswith("usdollar"):
+    if money:
         return CURRENCY
     return UNCLASSIFIED
 
@@ -680,9 +727,27 @@ def resolve_units(record: dict) -> dict[str, str]:
     return resolved
 
 
+# The tag is a definition; the label is a string the filer typed beside it.
+# `EarningsPerShareDiluted` is per-share whatever unit sits next to it, and the
+# completed store has 1,329 EPS values labelled `shares` and 39 labelled `usd`
+# — a derivation taking those as share counts or as dollars would be reading
+# the filer's typo instead of the account.
+#
+# Only the two denomination-free kinds win this way. A CURRENCY anchor never
+# overrides a label, because a tag says the value is money and cannot say which
+# money: `Revenues` under `eur` is a revenue figure that must not be added to
+# dollars, and that judgement stays with `resolve_units`.
+TAG_DECIDES = {concept: meaning
+               for meaning in (PER_SHARE, SHARES)
+               for concept in UNIT_ANCHORS[meaning]}
+
+
 def value_class(record: dict, entry: dict,
                 resolved: dict[str, str] | None = None) -> str:
-    """One value's unit, resolved against the filing it came from."""
+    """One value's unit: what its tag defines, else what its filing settled."""
+    decided = TAG_DECIDES.get(strip_namespace(entry.get("concept")))
+    if decided:
+        return decided
     if resolved is None:
         resolved = resolve_units(record)
     return resolved.get(str(entry.get("unit") or ""), UNCLASSIFIED)
