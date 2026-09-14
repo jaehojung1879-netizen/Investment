@@ -298,6 +298,19 @@ def membership_evidence(snapshots: list[dict]) -> dict:
                           "are needed to tell history from a repeated snapshot",
                 "snapshotsUsable": len(usable)}
     usable.sort(key=lambda s: s["date"])
+    # How far back the source ANSWERED, against how far back it was ASKED. The
+    # Korean gap this probe exists to close is 2013 onward, and a service that
+    # refuses 2013 but serves 2016 produces a perfectly valid POINT_IN_TIME
+    # verdict over a window that leaves the gap open. Reported here because the
+    # verdict is what gets read; the per-date detail was already in `snapshots`
+    # and nobody would look at it once the headline said the source works.
+    requested_oldest = min(s["date"] for s in snapshots)
+    reach_short_by = (None if usable[0]["date"] == requested_oldest
+                      else {"requested": requested_oldest,
+                            "answered": usable[0]["date"],
+                            "refusedDates": sorted(
+                                s["date"] for s in snapshots
+                                if s.get("error") and s["date"] < usable[0]["date"])})
     oldest, newest = set(usable[0]["codes"]), set(usable[-1]["codes"])
     departed = sorted(oldest - newest)
     joined = sorted(newest - oldest)
@@ -321,11 +334,21 @@ def membership_evidence(snapshots: list[dict]) -> dict:
         verdict, reason = "NOT_POINT_IN_TIME", (
             "no issue in the oldest cross-section is absent from the newest; a "
             "real history always loses names")
+    elif reach_short_by:
+        # Real history, but not over the window that was asked for. Saying
+        # POINT_IN_TIME here would be true of the answered dates and wrong
+        # about the question.
+        verdict, reason = "POINT_IN_TIME_SHORT_OF_REQUESTED_REACH", (
+            f"the dated cross-sections are real history, but the oldest one "
+            f"answered is {usable[0]['date']} and {requested_oldest} was asked "
+            f"for — the window before {usable[0]['date']} stays unmeasured")
     else:
         verdict, reason = "POINT_IN_TIME", None
     return {
         "verdict": verdict,
         "reason": reason,
+        "requestedOldest": requested_oldest,
+        "reachShortBy": reach_short_by,
         "snapshotsUsable": len(usable),
         "oldest": usable[0]["date"], "newest": usable[-1]["date"],
         "oldestCount": len(oldest), "newestCount": len(newest),

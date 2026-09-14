@@ -356,3 +356,47 @@ def test_the_message_is_carried_onto_the_snapshot_verbatim(monkeypatch):
     assert answer["serviceNotAuthorised"] is True
     assert answer["keyNotRecognised"] is False
     assert "Unauthorized API Call" in answer["error"]
+
+
+# --------------------------------------------------------------------------- #
+# Real history over the wrong window is not an answer to this question
+# --------------------------------------------------------------------------- #
+def test_history_that_starts_after_the_date_asked_for_says_so():
+    """The Korean gap this probe exists to close runs from 2013. A source that
+    refuses 2013 and serves 2016 produces genuine history — departed names and
+    all — over a window that leaves the gap open, and `POINT_IN_TIME` would be
+    true of what it answered and wrong about what was asked."""
+    evidence = P.membership_evidence([
+        _unauthorized("2013-01-02", "Unauthorized API Call"),
+        _snap("2016-01-04", ["A", "B", "C"]),
+        _snap("2026-09-01", ["B", "C", "D"]),
+    ])
+    assert evidence["verdict"] == "POINT_IN_TIME_SHORT_OF_REQUESTED_REACH"
+    assert evidence["requestedOldest"] == "2013-01-02"
+    assert evidence["reachShortBy"]["answered"] == "2016-01-04"
+    assert evidence["reachShortBy"]["refusedDates"] == ["2013-01-02"]
+    # The history itself is still described, because the shortfall is about
+    # the window and not about whether the source has history at all.
+    assert evidence["departedMembers"] == 1
+
+
+def test_history_over_the_whole_window_asked_for_is_just_point_in_time():
+    evidence = P.membership_evidence([
+        _snap("2013-01-02", ["A", "B", "C"]),
+        _snap("2026-09-01", ["B", "C", "D"]),
+    ])
+    assert evidence["verdict"] == "POINT_IN_TIME"
+    assert evidence["reachShortBy"] is None
+    assert evidence["requestedOldest"] == "2013-01-02"
+
+
+def test_a_source_with_no_history_is_still_reported_as_no_history():
+    """The reach check must not outrank the one that matters more: a date
+    parameter being ignored is a worse finding than a short window, and it
+    keeps its own verdict."""
+    evidence = P.membership_evidence([
+        _unauthorized("2013-01-02", "Unauthorized API Call"),
+        _snap("2016-01-04", ["A", "B"]),
+        _snap("2026-09-01", ["A", "B"]),
+    ])
+    assert evidence["verdict"] == "NOT_POINT_IN_TIME"
