@@ -2,7 +2,7 @@
   "schemaVersion": "2.7.0",
   "modelVersion": "longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
   "buildCommitSha": "7b829f464564",
-  "generatedAt": "2026-09-14T11:20:35.625735+00:00",
+  "generatedAt": "2026-09-14T12:24:24.120133+00:00",
   "marketAsOf": "2026-09-14",
   "macroRegime": "Transition/Low confidence",
   "holdingsByRegion": {
@@ -31,8 +31,8 @@
       "161390.KS",
       "005935.KS",
       "005490.KS",
-      "032640.KS",
-      "005930.KS"
+      "005930.KS",
+      "009540.KS"
     ]
   },
   "modelPortfolioWeights": {
@@ -68,9 +68,9 @@
     "161390.KS": "AVOID",
     "005935.KS": "WATCH",
     "005490.KS": "WATCH",
-    "032640.KS": "ACCUMULATE_GRADUALLY",
     "005930.KS": "WATCH",
     "009540.KS": "WATCH",
+    "032640.KS": "ACCUMULATE_GRADUALLY",
     "004170.KS": "AVOID",
     "241560.KS": "AVOID"
   },
@@ -99,8 +99,8 @@
     "402340.KS": "ELEVATED_WARNING",
     "005935.KS": "ELEVATED_WARNING",
     "005490.KS": "WATCH",
+    "009540.KS": "WATCH",
     "161390.KS": "WATCH",
-    "001450.KS": "WATCH",
     "TGT": "WATCH",
     "NUE": "WATCH",
     "GM": "WATCH",
@@ -115,7 +115,7 @@
   "stale": false,
   "productionValidation": {
     "passed": true,
-    "validatedAt": "2026-09-14T11:20:35.625735+00:00",
+    "validatedAt": "2026-09-14T12:24:24.120133+00:00",
     "errors": []
   }
 }
