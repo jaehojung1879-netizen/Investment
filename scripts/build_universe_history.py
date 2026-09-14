@@ -16,9 +16,15 @@ WHERE THE DATA COMES FROM, AND WHAT IT COSTS. Nothing new is purchased.
   start. Each commit is a point-in-time snapshot; walking them gives membership
   by date directly.
 
-  KR — FinanceDataReader is already a dependency and exposes
-  `StockListing('KRX-DELISTING')`: every delisted Korean name since 1960 with its
-  delisting date, plus price history under `exchange='KRX-DELISTING'`.
+  KR — the KRX Open API's `sto/stk_bydd_trd` (유가증권 일별매매정보), collected
+  by `collect_krx_universe_snapshots.py` and read here via `--krx-snapshots`.
+  It serves a dated per-issue cross-section of every KOSPI issue that traded
+  on a date, carrying `MKTCAP` — so the universe is rebuilt by the same rule
+  `universe._kr_kospi` applies today, at the older date. Probes run #4
+  measured it POINT_IN_TIME back to 2013-01-02: 77.42% overlap with today and
+  210 issues departed. Without that flag the Korean half is still refused;
+  `kr_membership_is_not_available` says why, and that refusal is what the two
+  earlier Korean sources earned.
 
 WHAT THE DATES MEAN, INCLUDING WHERE THEY ARE WRONG.
 
@@ -62,6 +68,9 @@ ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 
 from pipeline.universe import _us_symbol  # noqa: E402
+
+from pipeline import historical_store as HS  # noqa: E402
+from pipeline import krx_universe as KU  # noqa: E402
 
 SP500_REPO = "https://github.com/datasets/s-and-p-500-companies"
 SP500_PATH = "data/constituents.csv"
@@ -153,14 +162,69 @@ def kr_membership_is_not_available() -> str:
     almost none of those tickers (17 of 3,010 in the first real run) — the
     correctness was resting on a vendor's failure.
 
-    So: no KR rows. The replay then reads Korea as membership-unknown, keeps
-    today's names, and reports the hole. What would close it is a dated KOSPI
-    200 constituent history; until there is one, the honest state is a
-    measured gap.
+    So: no KR rows, unless `--krx-snapshots` supplies collected KRX
+    cross-sections. The replay then reads Korea as membership-unknown, keeps
+    today's names, and reports the hole. This message is what a build with no
+    such shards still prints, because a source that has not been collected
+    closes nothing.
     """
     return ("KR point-in-time index membership has no free source; "
             "KRX-DELISTING is every delisted KRX name, not former index "
             "members. Left undescribed so the gap is measured.")
+
+
+def kr_snapshots(store: Path, size: int,
+                 current_universe: list[str] | None) -> list[tuple[str, set[str]]]:
+    """Dated Korean cross-sections from collected KRX shards, or [] if none.
+
+    `collect_krx_universe_snapshots.py` writes what KRX served; the universe
+    RULE is applied here, by `krx_universe.members_on_date`, so changing it is
+    a rebuild of this file rather than a re-collection of a decade of dates.
+
+    Returning [] when the store is absent or empty is what keeps the refusal
+    below intact: no shards means no Korean rows, exactly as before.
+    """
+    rows: list[dict] = []
+    for path in sorted(store.glob("krx-universe-*.jsonl.gz")):
+        rows.extend(HS.read_jsonl(path))
+    if not rows:
+        return []
+    return KU.snapshots_from_rows(rows, size, current_universe)
+
+
+def configured_kr(config_path: Path) -> list[str]:
+    """Today's Korean universe, for the half of the rule that protects it.
+
+    Read from the same `config.json` the replay reads. An unreadable config
+    yields [], which costs only the protective half of `members_on_date` — the
+    market-cap ranking still runs — so a missing file degrades the result
+    rather than inventing one.
+    """
+    try:
+        raw = json.loads(config_path.read_text(encoding="utf-8"))
+    except (ValueError, OSError):
+        return []
+    universe = raw.get("universe") if isinstance(raw, dict) else None
+    names = (universe or {}).get("KR") if isinstance(universe, dict) else None
+    return [str(t) for t in names] if isinstance(names, list) else []
+
+
+def configured_universe_size(config_path: Path, fallback: int = 120) -> int:
+    """`universeSize` from config — the same cap `universe._kr_kospi` applies.
+
+    The reconstruction is only the universe's own rule if it uses the
+    universe's own number, so it is read rather than repeated here.
+    """
+    try:
+        raw = json.loads(config_path.read_text(encoding="utf-8"))
+    except (ValueError, OSError):
+        return fallback
+    size = raw.get("universeSize") if isinstance(raw, dict) else None
+    try:
+        size = int(size)
+    except (TypeError, ValueError):
+        return fallback
+    return size if size > 0 else fallback
 
 
 def read_existing(path: Path) -> dict[str, dict]:
@@ -181,6 +245,13 @@ def main(argv=None) -> int:
     parser.add_argument("out")
     parser.add_argument("--sp500-repo", default=SP500_REPO)
     parser.add_argument("--skip-kr", action="store_true")
+    parser.add_argument("--krx-snapshots", default=None,
+                        help="collect_krx_universe_snapshots.py가 쓴 샤드 디렉터리. "
+                             "없으면 KR은 지금까지처럼 기술되지 않은 채 남는다.")
+    parser.add_argument("--config", default=str(ROOT / "config.json"),
+                        help="universeSize와 오늘의 KR 유니버스를 읽을 설정 파일")
+    parser.add_argument("--kr-universe-size", type=int, default=None,
+                        help="기본값: config의 universeSize (universe._kr_kospi와 같은 수)")
     parser.add_argument("--skip-us", action="store_true")
     parser.add_argument("--rebuild", action="store_true",
                         help="overwrite instead of merging with the "
@@ -202,8 +273,27 @@ def main(argv=None) -> int:
                   f"{len(us) - alive} left the index")
             memberships.update(us)
 
+    described_regions: set[str] = {"US"} if not args.skip_us else set()
     if not args.skip_kr:
-        print(f"  KR: skipped — {kr_membership_is_not_available()}")
+        config_path = Path(args.config)
+        size = (args.kr_universe_size if args.kr_universe_size
+                else configured_universe_size(config_path))
+        snapshots = (kr_snapshots(Path(args.krx_snapshots), size,
+                                  configured_kr(config_path))
+                     if args.krx_snapshots else [])
+        if not snapshots:
+            # Unchanged behaviour, and the reason is unchanged too: with no
+            # dated source the only Korean rows available are ones that claim
+            # more than the data supports.
+            print(f"  KR: skipped — {kr_membership_is_not_available()}")
+        else:
+            kr = memberships_from_snapshots(snapshots, "KR")
+            alive = sum(1 for row in kr.values() if row["delisted"] is None)
+            print(f"  KR: {len(snapshots)} snapshots {snapshots[0][0]} .. "
+                  f"{snapshots[-1][0]}; {len(kr)} names ever, {alive} current, "
+                  f"{len(kr) - alive} left the universe (top {size} by market cap)")
+            memberships.update(kr)
+            described_regions.add("KR")
 
     out = Path(args.out)
     # Merged with what is already on disk, never overwritten. CI rebuilds this
@@ -228,13 +318,18 @@ def main(argv=None) -> int:
     # longer claims to describe are removed, including ones an earlier version
     # wrote. The union above would otherwise preserve them forever, and they
     # are the fabricated membership this refuses to assert.
+    # Only regions this build did NOT describe. A KR row written from collected
+    # KRX cross-sections is the opposite of the fabricated membership this
+    # prune exists to remove, and deleting it here would leave the collector
+    # writing a decade of shards the file silently discards.
+    unresolved = tuple(r for r in UNRESOLVED_REGIONS if r not in described_regions)
     invented = [t for t, row in merged.items()
-                if row.get("region") in UNRESOLVED_REGIONS]
+                if row.get("region") in unresolved]
     for ticker in invented:
         del merged[ticker]
     if invented:
         print(f"  removed {len(invented)} rows for undescribable regions "
-              f"{list(UNRESOLVED_REGIONS)}")
+              f"{list(unresolved)}")
 
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(json.dumps(dict(sorted(merged.items())),

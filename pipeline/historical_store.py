@@ -470,17 +470,48 @@ def universe_conflict(ledger_dir: str | Path, generation: str | None,
     so they keep the ranks they were given against a universe that no longer
     exists. The result reads as one clean generation and is two.
 
-    Three things are refused, and only these three:
+    Four things are refused, and only these four:
 
       * the MODE changed — survivors-only became point-in-time, or back;
       * a region that had membership coverage no longer has any;
       * a region's membership SHRANK, which means the file lost names that
-        were in the historical cross-section.
+        were in the historical cross-section;
+      * a region APPEARED that this generation's stamp does not describe.
 
-    Growth is not refused. The index gains members every month and CI rebuilds
-    the file on every run, so gating on the exact content hash would refuse the
-    second run and every run after it — a guard that has to be switched off to
-    get any work done protects nothing.
+    The fourth is the per-region form of the first, and it used to be allowed
+    deliberately — on the reasoning that "only the region that changed has its
+    cross-section redefined", so the other region's records stay valid. That
+    half is right and is not what the rule turns on. What it missed is the
+    CHANGED region's OWN records.
+
+    `historical_replay` ranks inside one region at a time — `alpha_pct` is
+    computed per region, on that region's table — so a Korean record's
+    `alphaPercentile` is its place among Korean names. The global `mode` flips
+    only when the membership file goes from empty to non-empty, so a file
+    describing the US alone already reads PIT_MEMBERSHIP while Korea is
+    resolved by `snapshot` as membership-unknown: today's names, kept, ranked
+    against each other. Writing Korean rows turns that into a point-in-time
+    cross-section that re-admits the names which left the universe — and every
+    Korean record already in the generation was ranked against a set of
+    companies that no longer exists. That is a change of KIND, identical in
+    effect to survivors-only becoming point-in-time, and the count loop below
+    could not see it: a region with no recorded entry is compared to nothing.
+
+    The rule is deliberately CONSERVATIVE. It refuses on the region appearing,
+    without asking whether the generation holds any record for that region,
+    because nothing on disk answers that question cheaply — ids are
+    `date:ticker` and the stamp records the membership file, not the records.
+    The false refusal it can produce is a region added to the universe and to
+    the membership file at once, where there is nothing old to contaminate;
+    the answer there is a REPLAY_VERSION bump, which is what adding a whole
+    region calls for anyway. The false ACCEPT it prevents is silent.
+
+    Growth WITHIN a described region is still not refused. The index gains
+    members every month and CI rebuilds the file on every run, so gating on the
+    exact content hash would refuse the second run and every run after it — a
+    guard that has to be switched off to get any work done protects nothing.
+    The distinction is between a region gaining members and a region gaining
+    membership.
 
     An unstamped generation that already holds records predates this stamp, so
     it was necessarily built from today's constituent list. That is a conflict
@@ -509,6 +540,20 @@ def universe_conflict(ledger_dir: str | Path, generation: str | None,
                     else f"describes only {current} of {count}")
             return (f"{head} whose {region} cross-section came from {count} "
                     f"described names; this run {what}. {tail}")
+    # A stamp that describes no region at all predates per-region recording, and
+    # reading every region as new there would refuse a generation over a change
+    # of stamp format rather than a change of universe. The mode check above
+    # already covers that case.
+    if before:
+        appeared = sorted(set(signature.get("regions") or {}) - set(before))
+        if appeared:
+            gained = ", ".join(
+                f"{region} ({(signature.get('regions') or {}).get(region)} names)"
+                for region in appeared)
+            return (f"{head} whose cross-section described only "
+                    f"{sorted(before)}; this run also describes {gained}, so "
+                    f"those names were ranked against a different set of "
+                    f"companies than the records on disk. {tail}")
     return None
 
 
