@@ -400,3 +400,44 @@ def test_a_source_with_no_history_is_still_reported_as_no_history():
         _snap("2026-09-01", ["A", "B"]),
     ])
     assert evidence["verdict"] == "NOT_POINT_IN_TIME"
+
+
+# --------------------------------------------------------------------------- #
+# A KOSDAQ code is not a KOSPI ticker
+# --------------------------------------------------------------------------- #
+def test_each_market_gets_its_own_ticker_suffix():
+    """The replay's KR universe is 68 tickers and all 68 are KOSPI, so the
+    suffix was hardcoded `.KS`. That is right for every name the replay holds
+    and wrong for anything the KOSDAQ endpoint returns."""
+    assert P.to_pipeline_ticker("005930", "sto/stk_bydd_trd") == "005930.KS"
+    assert P.to_pipeline_ticker("247540", "sto/ksq_bydd_trd") == "247540.KQ"
+    assert P.to_pipeline_ticker("005930", "sto/stk_isu_base_info") == "005930.KS"
+
+
+def test_an_unknown_endpoint_still_gets_the_market_the_universe_uses():
+    assert P.to_pipeline_ticker("005930", "idx/kospi_dd_trd") == "005930.KS"
+    assert P.to_pipeline_ticker("005930") == "005930.KS"
+    assert P.to_pipeline_ticker("") == ""
+
+
+def test_a_departed_kosdaq_name_is_not_reported_as_a_kospi_ticker():
+    """This is the whole cost of the hardcoded suffix: it could never produce a
+    false universe match, because KRX issue codes are unique across both
+    markets, but it would print a label nobody could act on."""
+    evidence = P.membership_evidence(
+        [_snap("2013-01-02", ["247540", "005930"]), _snap("2026-09-01", ["005930"])],
+        "sto/ksq_bydd_trd")
+    assert evidence["departedSample"] == ["247540.KQ"]
+
+
+def test_a_kosdaq_code_never_matches_the_kospi_universe():
+    """Unique codes mean the mislabelling was a reporting fault and not a
+    correctness one — this pins that, so the fix is not mistaken for closing a
+    hole it never opened."""
+    snaps = [_snap("2013-01-02", ["005930"]), _snap("2026-09-01", ["005930"])]
+    as_kospi = P.universe_reach(snaps, ["005930.KS"], "sto/stk_bydd_trd")
+    as_kosdaq = P.universe_reach(snaps, ["005930.KS"], "sto/ksq_bydd_trd")
+    # Samsung, read under its own market and under the other one.
+    assert as_kospi["byDate"][0]["universeNamesHeldPct"] == 100.0
+    assert as_kosdaq["byDate"][0]["universeNamesHeldPct"] == 0.0
+    assert as_kosdaq["byDate"][0]["missingNeverHeld"] == 1

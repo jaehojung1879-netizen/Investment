@@ -102,15 +102,28 @@ MKTCAP_KEYS = ("MKTCAP", "MKT_CAP", "MKTCAP_AMT")
 SHARES_KEYS = ("LIST_SHRS", "LIST_SHRS_CNT")
 
 
-def to_pipeline_ticker(code: str) -> str:
-    """`005930` -> `005930.KS`, the form `universe-history.json` is keyed by.
+# Which suffix each per-issue endpoint's codes carry. KRX serves a bare
+# six-digit code; the pipeline's KR tickers carry the market suffix the price
+# vendor answers to, and the membership file is keyed by the pipeline's ticker.
+#
+# The suffix used to be hardcoded `.KS`, which was right for every name the
+# replay actually holds — its KR universe is 68 tickers and all 68 are KOSPI —
+# and wrong for anything the KOSDAQ endpoint returns. That could not produce a
+# false universe match, because KRX issue codes are unique across both markets
+# so a KOSDAQ code simply fails to match a `.KS` list. What it could do is
+# print a departed KOSDAQ name as `123456.KS` in the evidence, which is a label
+# nobody could act on.
+MARKET_SUFFIX = {"sto/stk_bydd_trd": ".KS", "sto/stk_isu_base_info": ".KS",
+                 "sto/ksq_bydd_trd": ".KQ"}
+DEFAULT_SUFFIX = ".KS"
 
-    KRX serves a bare six-digit code; the pipeline's KR tickers carry `.KS`
-    because that is what the price vendor answers to, and the membership file
-    is keyed by the pipeline's ticker. The conversion belongs with the source.
-    """
+
+def to_pipeline_ticker(code: str, path: str | None = None) -> str:
+    """`005930` -> `005930.KS`, the form `universe-history.json` is keyed by."""
     code = (code or "").strip()
-    return f"{code}.KS" if code else ""
+    if not code:
+        return ""
+    return code + MARKET_SUFFIX.get(path or "", DEFAULT_SUFFIX)
 
 
 def _first(row: dict, keys) -> str | None:
@@ -255,7 +268,7 @@ def parse_constituents(date: str, status: int, raw: bytes) -> dict:
     }
 
 
-def membership_evidence(snapshots: list[dict]) -> dict:
+def membership_evidence(snapshots: list[dict], path: str | None = None) -> dict:
     """Is this history, or one cross-section wearing several dates?
 
     Two readings decide it and they fail differently:
@@ -354,13 +367,14 @@ def membership_evidence(snapshots: list[dict]) -> dict:
         "oldestCount": len(oldest), "newestCount": len(newest),
         "oldestNewestOverlapPct": overlap,
         "departedMembers": len(departed),
-        "departedSample": [to_pipeline_ticker(c) for c in departed[:10]],
+        "departedSample": [to_pipeline_ticker(c, path) for c in departed[:10]],
         "joinedMembers": len(joined),
         "pairwise": pairwise,
     }
 
 
-def universe_reach(snapshots: list[dict], universe: list[str]) -> dict:
+def universe_reach(snapshots: list[dict], universe: list[str],
+                   path: str | None = None) -> dict:
     """How much of the replay's KR universe each dated cross-section holds.
 
     Not a pass/fail — a name the oldest cross-section does not hold may simply
@@ -372,7 +386,7 @@ def universe_reach(snapshots: list[dict], universe: list[str]) -> dict:
     if not usable:
         return {"measured": False}
     wanted = set(universe)
-    held_by_date = {s["date"]: {to_pipeline_ticker(c) for c in s["codes"]} & wanted
+    held_by_date = {s["date"]: {to_pipeline_ticker(c, path) for c in s["codes"]} & wanted
                     for s in usable}
 
     # Which snapshot first carries each name. A name absent early and present
@@ -485,8 +499,9 @@ def main(argv=None) -> int:
             "label": label, "kind": kind,
             "snapshots": [{k: v for k, v in s.items() if k != "names"}
                           for s in snapshots],
-            "evidence": membership_evidence(snapshots) if kind == "issues" else None,
-            "universeReach": (universe_reach(snapshots, universe_lists.KR)
+            "evidence": (membership_evidence(snapshots, path)
+                         if kind == "issues" else None),
+            "universeReach": (universe_reach(snapshots, universe_lists.KR, path)
                               if kind == "issues" else None),
             "columnsSeen": (answered[0].get("columns") if answered else []),
         }
