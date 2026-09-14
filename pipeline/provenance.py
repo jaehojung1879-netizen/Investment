@@ -116,7 +116,30 @@ MODEL_VERSION = "longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-a
 # five absent for the whole cross-section: a Yahoo-only benchmark would walk the
 # v12 defect back in through the benchmark. Benchmark returns enter every
 # outcome, so v13's records stay sealed and v14 is a new full experiment.
-REPLAY_VERSION = "replay-v14"
+# v15 opens the value and quality sleeves on the US half, and that is why it
+# cannot extend v14. Through v14 the only fundamentals file wired into the
+# replay was `pit-kr.jsonl`: `fullComposite` had ZERO observations on any US
+# name and `claimEligible` was false there, so half of the production weight —
+# value 0.3 plus quality 0.2 — had never once been computed on a US ticker in
+# thirteen years of replay. Every US signal v14 recorded was built from momentum
+# and the remaining sleeves alone.
+#
+# v15 adds `pit-us.jsonl`: 33,832 point-in-time rows over 779 of the 829 names
+# that were ever US members, derived from 34,327 finnhub filings whose
+# publication dates are SEC's own. Every US cross-section from 2013 on is now
+# scored from different inputs, so the ranks are not comparable with v14's and
+# splicing them would compare a five-sleeve score against a three-sleeve one.
+# v14's records stay sealed; v15 is a new full experiment and pays the
+# re-acquisition that comes with one.
+#
+# What the derivation refuses is part of this identity, because it decides which
+# names score at all: a trailing-twelve-month figure is rolled forward
+# (`FY(Y-1) - cum(Y-1,Q) + cum(Y,Q)`) from filings measured to be cumulative,
+# never summed and never annualised, and a missing prior year yields no value
+# rather than an estimate. `docs/us-pit-fundamentals-source.md` carries the
+# measurements, and Apple's FY2012 10-K is the check: all seven factors equal
+# the ratios of the published figures to four decimal places.
+REPLAY_VERSION = "replay-v15"
 FEATURE_VERSION = "hfeat-v1"
 DATA_VERSION = ("as-traded-close-forward-total-return-v1-regional-session-download"
                 "+krx-native-sessions-with-yahoo-distributions-v2"
@@ -125,7 +148,8 @@ DATA_VERSION = ("as-traded-close-forward-total-return-v1-regional-session-downlo
                 "+fred-h10-usdkrw-fixing-v1+benchmark-vendor-lineage-v1"
                 "+kr-systemic-gap-detect-only-v4"
                 "+kr-benchmark-kospi200-tracking-etf-total-return-v1"
-                "+corporate-actions-v1+bok-rf-v1")
+                "+corporate-actions-v1+bok-rf-v1"
+                "+finnhub-pit-fundamentals-us-v1")
 
 # MODEL_VERSION is a compound identity, and not every component of it is a
 # statement about how names are scored. "daily-session-v2" was appended by a

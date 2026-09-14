@@ -106,8 +106,11 @@ def _run(argv=None) -> int:
                         help="recompute every date instead of only new ones")
     parser.add_argument("--dry-run", action="store_true")
     parser.add_argument("--frozen-inputs", action="store_true", help="reproduce committed inputs without any network access")
-    parser.add_argument("--pit-fundamentals", default=None,
-                        help="PIT_FUNDAMENTALS_V1 jsonl (없으면 config 값)")
+    # Repeatable: one file per region. They are loaded apart and merged, so a
+    # Korean parse failure cannot read as a US coverage number.
+    parser.add_argument("--pit-fundamentals", action="append", default=None,
+                        help="PIT_FUNDAMENTALS_V1 jsonl (여러 번 지정 가능, "
+                             "없으면 config 값)")
     args = parser.parse_args(argv)
 
     cfg, _ = load_config()
@@ -371,11 +374,20 @@ def _run(argv=None) -> int:
         # The PIT fundamentals file is derived from the collected filings on
         # signal-history, so its path is known to the job rather than to config.
         # An explicit argument wins; config remains the fallback for a local run.
-        fundamental_store = pit_data.FundamentalStore.from_jsonl(
-            args.pit_fundamentals or replay_cfg.get("pitFundamentalsPath"))
+        fundamental_store = pit_data.FundamentalStore.from_many(
+            args.pit_fundamentals
+            or [replay_cfg.get("pitFundamentalsPath")])
         if fundamental_store.available:
             print(f"PIT 재무 {len(fundamental_store):,}건 · "
                   f"{len(fundamental_store.tickers())}종목")
+            # Per file, because the regions fail separately and a single total
+            # would let one vendor's silence hide inside the other's coverage.
+            for label, counts in sorted(
+                    (fundamental_store.diagnostics.get("perSource") or {}).items()):
+                print(f"    {label}: {counts.get('rowsAccepted', 0):,}건 · "
+                      f"{counts.get('tickers', 0)}종목"
+                      + (f" · 거절 {counts['rowsRejected']:,}"
+                         if counts.get("rowsRejected") else ""))
         else:
             print("PIT 재무 없음 — 밸류·퀄리티 슬리브는 이번에도 비어 있습니다 "
                   f"({(fundamental_store.diagnostics.get('errors') or ['-'])[0]})")

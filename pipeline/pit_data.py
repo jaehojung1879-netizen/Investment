@@ -395,6 +395,65 @@ class FundamentalStore:
             ],
         })
 
+    @classmethod
+    def merge(cls, stores: list["FundamentalStore"],
+              labels: list[str] | None = None) -> "FundamentalStore":
+        """Several regional stores as one, with each file's own diagnostics kept.
+
+        The replay reads a single store, but the filings come from different
+        vendors under different account names and they fail separately: DART
+        going quiet is not finnhub going quiet. Concatenating the files before
+        loading would give one rowsAccepted for both and let a Korean parse
+        failure read as a US coverage number, so the stores are loaded apart and
+        joined here with `perSource` carrying what each contributed.
+
+        Tickers cannot collide — Korean names carry a `.KS`/`.KQ` suffix and US
+        ones do not — but the join is written to notice if that ever stops being
+        true rather than to silently let one region's history bury the other's.
+        """
+        records: dict[str, list[FundamentalRecord]] = {}
+        per_source: dict[str, dict] = {}
+        overlapping: set[str] = set()
+        totals = {"rowsRead": 0, "rowsAccepted": 0, "rowsRejected": 0}
+        errors: list[str] = []
+        names = labels or [str(i) for i in range(len(stores))]
+        for label, store in zip(names, stores):
+            diagnostics = dict(store.diagnostics or {})
+            per_source[label] = {k: diagnostics.get(k) for k in
+                                 ("rowsRead", "rowsAccepted", "rowsRejected")}
+            per_source[label]["tickers"] = len(store.tickers())
+            per_source[label]["errors"] = (diagnostics.get("errors") or [])[:5]
+            for key in totals:
+                totals[key] += int(diagnostics.get(key) or 0)
+            errors.extend(f"{label}:{e}" for e in (diagnostics.get("errors") or [])[:10])
+            for ticker, rows in store._records.items():
+                if ticker in records:
+                    overlapping.add(ticker)
+                records.setdefault(ticker, []).extend(rows)
+        if overlapping:
+            errors.append(
+                f"tickers_in_more_than_one_source:{','.join(sorted(overlapping)[:5])}")
+        merged = cls(records, {
+            "contract": "PIT_FUNDAMENTALS_V1",
+            **totals,
+            "errors": errors[:50],
+            "availabilityRule": "availableFrom <= replayDate",
+            "currentSnapshotBackfillAllowed": False,
+            "perSource": per_source,
+            "overlappingTickers": sorted(overlapping),
+        })
+        return merged
+
+    @classmethod
+    def from_many(cls, paths) -> "FundamentalStore":
+        """Load several PIT files, keyed by their own filenames."""
+        pairs = [(Path(p).stem, cls.from_jsonl(p)) for p in paths if p]
+        if not pairs:
+            return cls.from_jsonl(None)
+        if len(pairs) == 1:
+            return pairs[0][1]
+        return cls.merge([s for _, s in pairs], [name for name, _ in pairs])
+
 
 # Yield -> the per-share numerator that produces it once divided by a price.
 # The replay holds the point-in-time close; the filing holds the numerator.
