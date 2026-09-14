@@ -154,3 +154,22 @@ def test_the_version_bump_is_explained_where_the_versions_live():
     head = text[:text.index("REPLAY_VERSION = ")]
     assert "v15" in head
     assert "pit-us.jsonl" in head or "pit-us" in head
+
+
+# --------------------------------------------------------------------------- #
+# The first failure after a version bump
+# --------------------------------------------------------------------------- #
+def test_the_frozen_refusal_names_the_remedy():
+    """Run #62 of replay-v15 died four minutes in with `no frozen inputs; first
+    run must acquire a snapshot`. That was the guard working — a new generation
+    has nothing to reproduce — but the message did not say that the fix is one
+    unchecked box, and scheduled runs are always frozen so the same failure
+    repeats nightly until a human does the acquiring run. It says so now."""
+    source = (ROOT / "scripts" / "run_replay.py").read_text(encoding="utf-8")
+    start = source.index("if args.frozen_inputs:")
+    message = source[start:start + 1400]
+    assert "WITHOUT --frozen-inputs" in message
+    assert "scheduled runs are" in message and "frozen" in message
+    # The generation is named, because "this generation has none yet" is only
+    # actionable if the reader can see which generation that is.
+    assert "prov_mod.REPLAY_VERSION" in message

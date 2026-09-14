@@ -157,7 +157,17 @@ def _run(argv=None) -> int:
               "corporateActionsSha256":RI.digest(corporate_actions)}
     if args.frozen_inputs:
         if not prior_inputs:
-            raise RI.InputVersionConflict("no frozen inputs; first run must acquire a snapshot")
+            # The first thing anyone hits after a REPLAY_VERSION bump, and the
+            # remedy is one checkbox — so the message names it. A new generation
+            # has nothing to reproduce yet: the acquiring run has to come from a
+            # human, because a cron that could start a new experiment on its own
+            # would be a cron that can silently replace the sealed one.
+            raise RI.InputVersionConflict(
+                f"no frozen inputs for generation {prov_mod.REPLAY_VERSION}; "
+                "--frozen-inputs reproduces a snapshot and this generation has "
+                "none yet. Run once WITHOUT --frozen-inputs (workflow_dispatch "
+                "with frozen_inputs unchecked) to acquire it; scheduled runs are "
+                "always frozen and will keep failing until that has happened.")
         if args.end and args.end != prior_inputs["through"]:
             raise RI.InputVersionConflict("--frozen-inputs must use its recorded cutoff")
         if policy != prior_inputs["policy"]:
