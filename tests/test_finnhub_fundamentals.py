@@ -705,3 +705,92 @@ def test_a_named_label_can_still_be_per_share_or_shares():
         {"concept": "us-gaap_EarningsPerShareBasic", "unit": "eps", "value": 1.2}],
         "bs": [], "cf": []}}
     assert FF.resolve_units(record)["eps"] == FF.PER_SHARE
+
+
+# --------------------------------------------------------------------------- #
+# A unit label is words, not a prefix
+# --------------------------------------------------------------------------- #
+def test_usd_is_read_wherever_it_appears_in_the_label():
+    """The completed backfill holds 85,820 values under labels that say `usd`
+    somewhere other than the front. A prefix rule drops every one of them."""
+    for unit in ("usd", "_usd", "-usd", "u_usd", "unit_usd", "usdollar",
+                 "unit_standard_usd_ptzwnlofiesrwplspgyx_q"):
+        assert FF.unit_class(unit) == FF.CURRENCY, unit
+
+
+def test_a_share_count_is_read_wherever_shares_appears():
+    for unit in ("shares", "share", "-shares", "u_shares", "unit_shares",
+                 "unit_standard_shares_g9kpxrkjh0cw3nlgneqspw"):
+        assert FF.unit_class(unit) == FF.SHARES, unit
+
+
+def test_a_label_saying_both_money_and_shares_is_dollars_per_share():
+    """`usd_shares` carries `EarningsPerShareDiluted` 1,853 times. A count of
+    shares never needs to say `usd`, and a dollar amount never needs to say
+    `shares` — together they can only mean the ratio."""
+    for unit in ("usd_shares", "usd/shares", "usd/share", "_usd_/_shares",
+                 "unit_usd_/_share", "unit_divide_usd_shares_qqu5mdgnoegq73nveqainw"):
+        assert FF.unit_class(unit) == FF.PER_SHARE, unit
+
+
+def test_a_division_sign_makes_a_per_unit_amount_even_of_something_else():
+    """`usd_/_partnership_unit` is income per LP unit — not a dollar total."""
+    assert FF.unit_class("usd_/_partnership_unit") == FF.PER_SHARE
+
+
+def test_a_dividend_is_not_a_division():
+    """`divide` and `per` are matched as whole words, never as prefixes.
+
+    This guards a shape the store does not hold yet, and says so rather than
+    implying otherwise: the only near-miss among its 2,345 labels is a bare
+    `dividend` (6 values), which reads as unclassified either way because it
+    names no money and no count. `usd_dividend` is where the two rules part —
+    a prefix rule sees a division and calls a dollar figure per-share."""
+    assert "divide" not in FF.unit_words("dividend")
+    assert FF.unit_class("dividend") == FF.UNCLASSIFIED
+    assert FF.unit_class("usd_dividend") == FF.CURRENCY
+    assert FF.unit_class("dividend_per_share_usd") == FF.PER_SHARE
+
+
+def test_a_foreign_currency_is_still_never_dollars():
+    for unit in ("eur", "brl"):
+        assert FF.unit_class(unit) == FF.UNCLASSIFIED, unit
+
+
+def test_a_label_that_says_nothing_still_says_nothing():
+    for unit in ("unit12", "number", "pure", "store", "", None):
+        assert FF.unit_class(unit) == FF.UNCLASSIFIED, unit
+
+
+# --------------------------------------------------------------------------- #
+# The tag defines the account; the label is what the filer typed beside it
+# --------------------------------------------------------------------------- #
+def _one(concept, unit, section="ic"):
+    statements = {"ic": [], "bs": [], "cf": []}
+    statements[section] = [{"concept": concept, "unit": unit, "value": 1.23}]
+    return {"ticker": "X", "statements": statements}
+
+
+def test_an_eps_mislabelled_as_a_share_count_is_still_per_share():
+    """1,329 EPS values in the store carry the unit `shares`. Reading those as
+    counts is reading the filer's typo instead of the account."""
+    record = _one("us-gaap_EarningsPerShareDiluted", "shares")
+    assert FF.value_class(record, record["statements"]["ic"][0]) == FF.PER_SHARE
+
+
+def test_an_eps_mislabelled_as_dollars_is_still_per_share():
+    record = _one("us-gaap_EarningsPerShareBasic", "usd")
+    assert FF.value_class(record, record["statements"]["ic"][0]) == FF.PER_SHARE
+
+
+def test_a_share_count_mislabelled_as_per_share_is_still_a_count():
+    record = _one("us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
+                  "unit_standard_shares_kncjf8rqqus/3b5quy_q")
+    assert FF.value_class(record, record["statements"]["ic"][0]) == FF.SHARES
+
+
+def test_a_tag_never_decides_which_currency_a_value_is_in():
+    """`Revenues` under `eur` is a revenue figure, and a tag cannot say which
+    money it is. Letting the tag win here would add euros to dollars."""
+    record = _one("us-gaap_Revenues", "eur")
+    assert FF.value_class(record, record["statements"]["ic"][0]) == FF.UNCLASSIFIED

@@ -486,6 +486,68 @@ someone remembering: a minute ceiling set at or near the 330-minute timeout
 means the runner kills the job before the commit step, and every filing that
 run paid for is thrown away with the container.
 
+## The backfill is complete, 2026-09-14 — and it broke the unit rule
+
+16,579 of 16,580 windows. **34,327 filings, 779 of the 829 names, every fiscal
+year from 2011 to 2027, and not one filing without a publication date.** 25,829
+10-Qs and 8,498 10-Ks; between 2,270 and 2,503 filings in every year of the
+replay window.
+
+The verdict held all the way up, on a sample that grew sevenfold: net income
+2.03/3.09 over 7,774 ticker-years, revenue 2.04/3.09, operating income
+2.06/3.13, operating cash flow 1.98/3.17. **CUMULATIVE**, four accounts, no
+account between the bands.
+
+### The rule that 18% of the data had validated was wrong
+
+The unit rule was written against the eight spellings the first slice
+contained, and it read them as PREFIXES — a label starting with `usd` was
+money. The completed store holds **2,345 distinct unit labels**, and the prefix
+rule could not read 47 of them covering 88,407 values. 85,820 of those say
+`usd` somewhere other than the front:
+
+| label | values | carries |
+|---|---|---|
+| `u_usd` | 66,767 | `ProfitLoss`, `NetIncomeLoss`, `Assets` |
+| `unit_usd` | 17,614 | `ProfitLoss`, `LiabilitiesAndStockholdersEquity` |
+| `unit_standard_usd_<hash>` (×19) | ~1,400 | `GainLossOnInvestments`, `CashAndCashEquivalents…` |
+
+Ordinary dollar figures under names the filer generated. **A derivation on the
+prefix rule would have dropped every one of them** — and would have done it
+silently, because a missing value and a value under an unreadable label are the
+same absence downstream.
+
+So a label is now read as the WORDS it is built from. That is not a looser
+rule; it is the vendor's own sentence. `u_usd` says usd. `u_shares` says
+shares. `unit_divide_usd_shares_<hash>` says it divides one by the other.
+`eur` — 8 values — says something this pipeline must never add to dollars, and
+still resolves to nothing.
+
+Two refinements the measurement forced, each found by asking the data rather
+than by reasoning about it:
+
+**A label saying both `usd` and `shares` is a ratio, not a count.** `usd_shares`
+holds 1,853 values and they are `EarningsPerShareDiluted`,
+`EarningsPerShareBasic`, `CommonStockDividendsPerShareDeclared`. A count of
+shares never needs to say `usd`; a dollar total never needs to say `shares`.
+
+**The tag defines the account; the label is a string the filer typed beside
+it.** A cross-check of every value against its concept found 1,329 EPS values
+labelled `shares` and 39 labelled `usd`. `EarningsPerShareDiluted` is per-share
+whatever sits next to it, so for the two denomination-free kinds the tag now
+wins. A CURRENCY anchor never wins that way: a tag can say a value is money and
+cannot say which money, so `Revenues` under `eur` stays unresolved.
+
+After both, the cross-check finds **no value whose unit contradicts its
+account**, and 2,517 of 3,285,946 values — 0.08% — remain unclassified. They are
+`number`, `pure`, `store`, the empty label, two foreign currencies, and a
+handful of generated ids carrying no anchor. None of them is money.
+
+One rule here guards a shape the store does not contain: `divide` and `per` are
+matched as whole words, so `usd_dividend` stays a dollar figure. The only
+near-miss among the 2,345 labels is a bare `dividend`, which reads the same
+either way. That is written down rather than implied.
+
 ## Primary and backup, once the backups are real
 
 finnhub is the primary because it is the only vendor measured end to end:
