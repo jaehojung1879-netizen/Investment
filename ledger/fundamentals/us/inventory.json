@@ -1,74 +1,80 @@
 {
-  "filings": 1661,
+  "filings": 2442,
   "periodLengthByForm": {
     "10-K": {
-      "year (316-400d)": 1657,
-      "quarter (46-135d)": 2,
-      "three quarters (226-315d)": 1,
-      "<=45d": 1
+      "year (316-400d)": 865
+    },
+    "10-Q": {
+      "quarter (46-135d)": 562,
+      "half (136-225d)": 550,
+      "three quarters (226-315d)": 465
     }
   },
   "filingsWithNoPeriodLength": 0,
   "filingsByFreq": {
-    "annual": 1661
+    "quarterly": 1577,
+    "annual": 865
   },
   "formsByFreq": {
     "annual": {
-      "10-K": 1661
+      "10-K": 865
+    },
+    "quarterly": {
+      "10-Q": 1577
     }
   },
   "conceptsBySection": {
-    "bs": 3291,
-    "ic": 4477,
-    "cf": 6080
+    "bs": 2417,
+    "ic": 3236,
+    "cf": 4626
   },
   "conceptsBySectionCollapsed": {
-    "bs": 2616,
-    "ic": 3752,
-    "cf": 5263
+    "bs": 1953,
+    "ic": 2735,
+    "cf": 4061
   },
   "topConcepts": {
     "bs": [
-      "Assets",
-      "LiabilitiesAndStockholdersEquity",
-      "RetainedEarningsAccumulatedDeficit",
-      "AccumulatedOtherComprehensiveIncomeLossNetOfTax",
-      "CashAndCashEquivalentsAtCarryingValue",
-      "PropertyPlantAndEquipmentNet",
-      "StockholdersEquity",
-      "AssetsCurrent",
-      "LiabilitiesCurrent",
-      "CommonStockValue",
-      "OtherAssetsNoncurrent",
-      "Goodwill"
+      "us-gaap_Assets",
+      "us-gaap_LiabilitiesAndStockholdersEquity",
+      "us-gaap_RetainedEarningsAccumulatedDeficit",
+      "us-gaap_CashAndCashEquivalentsAtCarryingValue",
+      "us-gaap_PropertyPlantAndEquipmentNet",
+      "us-gaap_AccumulatedOtherComprehensiveIncomeLossNetOfTax",
+      "us-gaap_StockholdersEquity",
+      "us-gaap_CommonStockValue",
+      "us-gaap_AssetsCurrent",
+      "us-gaap_LiabilitiesCurrent",
+      "us-gaap_OtherAssetsNoncurrent",
+      "us-gaap_Goodwill"
     ],
     "ic": [
-      "IncomeTaxExpenseBenefit",
-      "EarningsPerShareDiluted",
-      "EarningsPerShareBasic",
-      "NetIncomeLoss",
-      "ComprehensiveIncomeNetOfTax",
-      "OperatingIncomeLoss",
-      "WeightedAverageNumberOfDilutedSharesOutstanding",
-      "WeightedAverageNumberOfSharesOutstandingBasic",
-      "InterestExpense",
-      "IncomeLossFromContinuingOperationsBeforeIncomeTaxesMinorityInterestAndIncomeLossFromEquityMethodInvestments",
       "us-gaap_IncomeTaxExpenseBenefit",
-      "OtherComprehensiveIncomeLossNetOfTax"
+      "us-gaap_EarningsPerShareBasic",
+      "us-gaap_EarningsPerShareDiluted",
+      "us-gaap_ComprehensiveIncomeNetOfTax",
+      "us-gaap_NetIncomeLoss",
+      "us-gaap_OperatingIncomeLoss",
+      "us-gaap_WeightedAverageNumberOfSharesOutstandingBasic",
+      "us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
+      "us-gaap_InterestExpense",
+      "us-gaap_OtherComprehensiveIncomeLossNetOfTax",
+      "us-gaap_SellingGeneralAndAdministrativeExpense",
+      "us-gaap_IncomeLossFromContinuingOperationsBeforeIncomeTaxesMinorityInterestAndIncomeLossFromEquityMethodInvestments"
     ],
     "cf": [
-      "CashAndCashEquivalentsPeriodIncreaseDecrease",
-      "NetCashProvidedByUsedInInvestingActivities",
-      "NetCashProvidedByUsedInFinancingActivities",
-      "NetCashProvidedByUsedInOperatingActivities",
-      "ShareBasedCompensation",
-      "PaymentsForRepurchaseOfCommonStock",
-      "PaymentsToAcquirePropertyPlantAndEquipment",
-      "IncreaseDecreaseInInventories",
-      "EffectOfExchangeRateOnCashAndCashEquivalents",
-      "DeferredIncomeTaxExpenseBenefit",
-      "PaymentsForProceedsFromOtherInvestingActivities",
-      "us-gaap_CashAndCashEquivalentsPeriodIncreaseDecrease"
+      "us-gaap_CashAndCashEquivalentsPeriodIncreaseDecrease",
+      "us-gaap_ShareBasedCompensation",
+      "us-gaap_PaymentsToAcquirePropertyPlantAndEquipment",
+      "us-gaap_PaymentsForRepurchaseOfCommonStock",
+      "us-gaap_NetCashProvidedByUsedInOperatingActivities",
+      "us-gaap_NetCashProvidedByUsedInInvestingActivities",
+      "us-gaap_NetCashProvidedByUsedInFinancingActivities",
+      "us-gaap_EffectOfExchangeRateOnCashAndCashEquivalents",
+      "us-gaap_ExcessTaxBenefitFromShareBasedCompensationFinancingActivities",
+      "us-gaap_PaymentsForProceedsFromOtherInvestingActivities",
+      "us-gaap_IncreaseDecreaseInInventories",
+      "us-gaap_ProfitLoss"
     ]
   },
   "topConceptsCollapsed": {
@@ -78,71 +84,77 @@
       "RetainedEarningsAccumulatedDeficit",
       "CashAndCashEquivalentsAtCarryingValue",
       "AccumulatedOtherComprehensiveIncomeLossNetOfTax",
-      "StockholdersEquity",
       "PropertyPlantAndEquipmentNet",
+      "StockholdersEquity",
+      "CommonStockValue",
       "AssetsCurrent",
       "LiabilitiesCurrent",
-      "CommonStockValue",
       "OtherAssetsNoncurrent",
       "Goodwill"
     ],
     "ic": [
       "IncomeTaxExpenseBenefit",
-      "EarningsPerShareDiluted",
       "EarningsPerShareBasic",
-      "NetIncomeLoss",
+      "EarningsPerShareDiluted",
       "ComprehensiveIncomeNetOfTax",
+      "NetIncomeLoss",
       "OperatingIncomeLoss",
       "WeightedAverageNumberOfSharesOutstandingBasic",
       "WeightedAverageNumberOfDilutedSharesOutstanding",
       "InterestExpense",
-      "IncomeLossFromContinuingOperationsBeforeIncomeTaxesMinorityInterestAndIncomeLossFromEquityMethodInvestments",
       "OtherComprehensiveIncomeLossNetOfTax",
-      "SellingGeneralAndAdministrativeExpense"
+      "SellingGeneralAndAdministrativeExpense",
+      "ProfitLoss"
     ],
     "cf": [
       "CashAndCashEquivalentsPeriodIncreaseDecrease",
-      "NetCashProvidedByUsedInInvestingActivities",
-      "NetCashProvidedByUsedInOperatingActivities",
-      "NetCashProvidedByUsedInFinancingActivities",
       "ShareBasedCompensation",
-      "PaymentsForRepurchaseOfCommonStock",
       "PaymentsToAcquirePropertyPlantAndEquipment",
-      "IncreaseDecreaseInInventories",
+      "NetCashProvidedByUsedInOperatingActivities",
+      "NetCashProvidedByUsedInInvestingActivities",
+      "NetCashProvidedByUsedInFinancingActivities",
+      "PaymentsForRepurchaseOfCommonStock",
       "EffectOfExchangeRateOnCashAndCashEquivalents",
-      "DeferredIncomeTaxExpenseBenefit",
       "PaymentsForProceedsFromOtherInvestingActivities",
-      "PaymentsToAcquireBusinessesNetOfCashAcquired"
+      "IncreaseDecreaseInInventories",
+      "ProfitLoss",
+      "ExcessTaxBenefitFromShareBasedCompensationFinancingActivities"
     ]
   },
   "units": {
-    "usd": 146549,
-    "_usd": 8562,
-    "unit12": 4022,
-    "usd/shares": 3801,
-    "shares": 2609,
-    "usd/share": 1451,
-    "unit1": 745,
-    "usdollar": 611,
-    "_usd_/_shares": 290,
-    "unit13": 210,
-    "u001": 173,
-    "u002": 91
+    "usd": 184991,
+    "_usd": 22251,
+    "unit12": 10187,
+    "usd/share": 5339,
+    "unit1": 4803,
+    "shares": 3617,
+    "usdollar": 2195,
+    "-usd": 1267,
+    "unit13": 1072,
+    "usd/shares": 927,
+    "_usd_/_shares": 746,
+    "u001": 564
   },
   "unitClasses": {
-    "currency": 155790,
-    "perShare": 5614,
-    "unclassified": 5469,
-    "shares": 2609
+    "currency": 210967,
+    "unclassified": 18223,
+    "perShare": 7350,
+    "shares": 3691
+  },
+  "unitClassesResolved": {
+    "currency": 227935,
+    "perShare": 8097,
+    "shares": 4153,
+    "unclassified": 46
   },
   "unclassifiedUnits": {
-    "unit12": 4022,
-    "unit1": 745,
-    "unit13": 210,
-    "u001": 173,
-    "u002": 91,
-    "eps": 38,
-    "unit14": 37,
-    "unit15": 37
+    "usd_/_partnership_unit": 10,
+    "u_shares": 7,
+    "unit14": 7,
+    "unit15": 5,
+    "unit16": 4,
+    "dividend": 4,
+    "number": 3,
+    "unit1": 3
   }
 }
