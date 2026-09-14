@@ -1,0 +1,172 @@
+name: Collect universe history
+
+# Dated KOSPI market-cap cross-sections, so the Korean half of the replay stops
+# being survivors-only.
+#
+# WHY IT IS ITS OWN ENTRY. The Actions list has been trimmed twice for good
+# reason, so a new entry needs an argument. This is a WRITER — it pushes to
+# `signal-history` — with a cadence and an output path that both differ from
+# every other writer: monthly rather than daily, into `ledger/universe/kr`
+# rather than `ledger/fundamentals`. Folding it into "Collect fundamentals"
+# would put index membership under a name that means financial statements, and
+# it cannot go under "Probes", which by design writes nothing.
+#
+# WHAT IT COSTS. 165 monthly dates from 2013-01 to today, plus a call for each
+# closed session walked past — well under 400. The first run is the whole
+# backfill; every run after it asks for the months that have appeared since and
+# finishes in seconds. The budget is a ceiling rather than a target, so a large
+# one costs nothing on an ordinary day and buys the backfill on the first.
+#
+# WHAT IT DOES NOT DO. Nothing reads these shards yet. `build_universe_history`
+# only looks at them when handed `--krx-snapshots`, and `replay.yml` does not
+# pass it. That is deliberate: Korean membership rows redefine the Korean
+# cross-section, which `universe_conflict` correctly refuses to mix into a
+# generation that already holds Korean records. Wiring the flag therefore
+# belongs in the same commit as the REPLAY_VERSION bump, so the new generation
+# is a decision rather than a surprise on a nightly run.
+
+on:
+  schedule:
+    # Monthly, on the 1st — the grain the snapshots themselves use. 04:20 UTC
+    # is after the fundamentals collectors (03:40) so the two are not competing
+    # for a runner.
+    - cron: "20 4 1 * *"
+  workflow_dispatch:
+    inputs:
+      # Empty on purpose. A non-empty default is SENT on every dispatch, which
+      # would override the ceiling below and quietly make every hand-started
+      # run a small one — and the mobile app cannot pass inputs at all, so
+      # there would be no way to override the override from a phone.
+      max_calls:
+        description: "최대 호출 수 (비우면 기본 상한 400)"
+        type: string
+        default: ""
+      max_minutes:
+        description: "최대 분 (비우면 기본 상한 60)"
+        type: string
+        default: ""
+      frequency:
+        description: "스냅샷 간격 — monthly면 상장폐지 시점 오차가 최대 한 달"
+        type: choice
+        options: ["monthly", "weekly"]
+        default: "monthly"
+      top:
+        description: "날짜별로 시가총액 상위 몇 종목까지 기록할지"
+        type: string
+        default: ""
+      start:
+        description: "가장 오래된 날짜 (비우면 2013-01-01, 리플레이 시작)"
+        type: string
+        default: ""
+
+permissions:
+  contents: write
+
+# Its own group. It pushes to `signal-history` on a path no other writer
+# touches and rebases on rejection, so queueing behind the fundamentals
+# collectors would only mean a waiting run gets cancelled by the next trigger.
+concurrency:
+  group: signal-history-universe
+  cancel-in-progress: false
+
+jobs:
+  kr:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - name: Checkout code (main)
+        uses: actions/checkout@v5
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      # The collector's own transport is standard-library only, but
+      # `historical_store` — which writes the byte-deterministic shards — is
+      # shared with the replay.
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Check out signal-history branch (orphan-safe)
+        run: |
+          git config user.name "krx-universe-bot"
+          git config user.email "actions@github.com"
+          mkdir -p universe-work
+          if git ls-remote --exit-code --heads origin signal-history; then
+            git fetch origin signal-history
+            git worktree add universe-work origin/signal-history
+            git -C universe-work checkout -B signal-history
+          else
+            git worktree add --detach universe-work
+            git -C universe-work checkout --orphan signal-history
+            git -C universe-work rm -rf . || true
+          fi
+          mkdir -p universe-work/ledger/universe/kr
+
+      - name: Collect a slice
+        env:
+          KRX_API_KEY: ${{ secrets.KRX_API_KEY }}
+        run: |
+          python scripts/collect_krx_universe_snapshots.py \
+            universe-work/ledger/universe/kr \
+            --frequency "${{ inputs.frequency || 'monthly' }}" \
+            --start "${{ inputs.start || '2013-01-01' }}" \
+            --top "${{ inputs.top || '300' }}" \
+            --max-calls "${{ inputs.max_calls || '400' }}" \
+            --max-minutes "${{ inputs.max_minutes || '60' }}" \
+            | tee collect.log
+
+      # What the shards would produce if the replay read them today. Printed,
+      # not written: the point is to see the departed names by name and count
+      # before a generation is spent on them, and the file the replay reads is
+      # still built by `replay.yml` from its own inputs.
+      - name: What this membership would say
+        if: always()
+        run: |
+          python scripts/build_universe_history.py /tmp/universe-preview.json \
+            --skip-us --rebuild \
+            --krx-snapshots universe-work/ledger/universe/kr \
+            | tee preview.log || echo "preview failed; the shards are still committed"
+
+      - name: Commit & push to signal-history
+        run: |
+          cd universe-work
+          git add ledger/universe
+          if git diff --cached --quiet; then
+            echo "no new cross-sections"
+            exit 0
+          fi
+          git commit -m "universe: KRX KOSPI cross-sections for $(date -u +%Y-%m-%d)"
+          for attempt in 1 2 3 4 5; do
+            if git push origin signal-history; then
+              exit 0
+            fi
+            echo "push rejected (attempt $attempt); rebasing onto the remote"
+            git fetch origin signal-history
+            if ! git rebase origin/signal-history; then
+              git rebase --abort || true
+              echo "could not rebase onto signal-history"
+              exit 1
+            fi
+          done
+          echo "push still rejected after five attempts"
+          exit 1
+
+      - name: Summary
+        if: always()
+        run: |
+          {
+            echo '## KRX 코스피 일별 시가총액 단면 수집'
+            echo
+            echo '```'
+            tail -n 40 collect.log 2>/dev/null || echo '수집 출력 없음'
+            echo '```'
+            echo
+            echo '### 이 스냅샷이 말하는 멤버십 (미리보기 — 아직 리플레이는 읽지 않음)'
+            echo
+            echo '```'
+            tail -n 20 preview.log 2>/dev/null || echo '미리보기 출력 없음'
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"

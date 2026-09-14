@@ -88,17 +88,58 @@ def test_losing_a_region_entirely_is_refused(tmp_path):
     assert "KR" in reason and "no longer has any" in reason
 
 
-def test_a_new_region_gaining_coverage_is_allowed(tmp_path):
-    """Korea gaining membership history does not invalidate the US records.
+def test_a_new_region_gaining_coverage_is_refused(tmp_path):
+    """Korea gaining membership history DOES invalidate the Korean records.
 
-    Only the region that changed has its cross-section redefined, and a region
-    going from no coverage to some is caught by the coverage measure, which
-    reports it rather than pretending the file describes what it does not.
+    This assertion used to read `is None`, on the reasoning that "only the
+    region that changed has its cross-section redefined" — so the US records
+    survive. That half is true and is not the half that decides.
+
+    `historical_replay` computes `alpha_pct` inside one region at a time, so a
+    Korean record's `alphaPercentile` is its rank among Korean names. While
+    Korea has no membership rows, `snapshot` resolves it as membership-unknown
+    and keeps today's names, and every Korean record in the generation was
+    ranked against that survivors-only set. Writing Korean rows re-admits the
+    names that left the universe — 210 of them between 2013 and today, per
+    Probes run #4 — so the next Korean record is ranked against a different
+    set of companies and lands in the same generation as the old ones. The
+    global `mode` never flips, because the file was already non-empty for the
+    US, and the count loop never sees it, because KR had no recorded count.
+
+    The old test passed because `_signal` stamps every seeded record `US`,
+    so the generation it built had no Korean records for the rule to protect.
     """
     _seed(tmp_path)
     HS.stamp_universe(tmp_path, GEN, _sig(US=829))
 
+    reason = HS.universe_conflict(tmp_path, GEN, _sig(US=829, KR=2450))
+
+    assert reason is not None
+    assert "KR" in reason and "REPLAY_VERSION" in reason
+
+
+def test_an_empty_generation_still_accepts_a_new_region(tmp_path):
+    """The refusal is about contaminating records, not about the file changing.
+
+    With nothing on disk there is nothing that was ranked against the old
+    cross-section, so the first run of a generation may define any universe.
+    """
+    HS.stamp_universe(tmp_path, GEN, _sig(US=829))
+
     assert HS.universe_conflict(tmp_path, GEN, _sig(US=829, KR=2450)) is None
+
+
+def test_a_stamp_that_records_no_regions_is_not_read_as_every_region_new(tmp_path):
+    """A stamp written before per-region recording must not refuse on format.
+
+    Its `mode` still answers the question that matters, and the check above it
+    is what catches a genuine change there.
+    """
+    _seed(tmp_path)
+    HS.stamp_universe(tmp_path, GEN, {"mode": "pit-membership",
+                                      "regions": {}, "fingerprint": "x"})
+
+    assert HS.universe_conflict(tmp_path, GEN, _sig(US=829)) is None
 
 
 def test_switching_the_mode_is_refused(tmp_path):
