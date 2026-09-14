@@ -548,6 +548,79 @@ matched as whole words, so `usd_dividend` stays a dollar figure. The only
 near-miss among the 2,345 labels is a bare `dividend`, which reads the same
 either way. That is written down rather than implied.
 
+## The derivation, 2026-09-14 — and Apple's 10-K as the check
+
+`pipeline/finnhub_derive.py`, the mirror of `dart_derive`, and
+`scripts/build_pit_fundamentals.py --region us` which writes the
+`PIT_FUNDAMENTALS_V1` file `FundamentalStore.from_jsonl` reads. **33,832 rows
+over 779 names, all 33,832 accepted by the contract, none rejected.**
+
+### What checks it
+
+Not its own output. Apple's FY2012 10-K — period ended 2012-09-29, filed
+2012-10-31, before the 2014 seven-for-one split — states net income $41.733B,
+revenue $156.508B, operating income $55.241B, equity $118.210B, liabilities
+$57.854B, operating cash flow $50.856B, capex $8.295B and 945.355M diluted
+shares. Every one of the seven factors comes out of the derivation equal to the
+ratio of those published figures to four decimal places:
+
+| factor | from the 10-K | derived |
+|---|---|---|
+| roe | 0.3530 | 0.3530 |
+| operatingMargin | 0.3530 | 0.3530 |
+| profitMargin | 0.2667 | 0.2667 |
+| debtToEquity | 0.4894 | 0.4894 |
+| epsTtm | 44.1453 | 44.1453 |
+| bookValuePerShare | 125.0430 | 125.0430 |
+| fcfPerShare | 45.0212 | 45.0212 |
+
+And the point-in-time property, checked on the loaded store: **on 2012-10-30
+Apple has no FY2012 numbers at all; on 2012-10-31, the filing date, it has all
+of them.** The rollforward arithmetic is visible in the same store — twelve
+months to 2013 Q2 is 41.733 − 24.686 + 22.625 = 39.672B, which over the share
+count is the epsTtm of 41.91 the store returns for 2013-06-30.
+
+### The rules, and what each one refuses
+
+* **TTM is a rollforward**, `FY(Y-1) − cum(Y-1,stage) + cum(Y,stage)`, because
+  the filings were measured cumulative. Summing four stages counts the first
+  quarter four times; on these filings it inflates free cash flow about two and
+  a half fold and every number it produces looks ordinary.
+* **A missing prior year yields nothing.** No annualisation, no nearest-year
+  substitute. 10% of rows have an incomplete chain — almost all of them 2012,
+  where there is no prior year to roll from — and they carry balance-sheet
+  fields only.
+* **Accounts are chains chosen by counting filings**, never by recalling
+  US-GAAP: net income 99.5%, revenue 93.7% (one tag alone is 41.6%), operating
+  income 87.7%, operating cash flow 99.0%, capex 88.9%, equity 98.7%.
+* **Liabilities come off the balance sheet when not stated.** 68.5% state
+  `Liabilities`; assets minus equity is the filer's own arithmetic and lifts it
+  to 99.2%.
+* **Nothing later than the filing is ever consulted** — for the rollforward, for
+  the share count carried forward to a filing that does not restate it, or for
+  an amendment. 286 periods of 33,986 are filed twice and the EARLIEST is kept:
+  letting a restatement win would put corrected numbers into a window that
+  ended before the correction existed.
+* **Negative equity yields no ratio.** A ROE on it has the wrong sign and ranks
+  a distressed company as a quality name.
+
+### Coverage, and what it does not yet say
+
+Across the replay window (rows visible from 2013-01-01): roe 89.2%,
+profitMargin 88.7%, earningsGrowth 84.2%, bookValuePerShare 81.1%,
+operatingMargin 79.1%, epsTtm 78.1%, fcfPerShare 69.7%, debtToEquity 93.9%.
+
+Quality and value are reported separately because they fail separately: quality
+comes out of the statements alone, and value needs a share count that 25.3% of
+filings do not state (carried forward from the nearest earlier filing where one
+exists, which recovers 2,184 rows).
+
+**Nothing is connected to the replay yet.** `replay.yml` still passes only
+`pit-kr.jsonl`. Wiring the US file in is the change that touches a sealed
+input, and it needs a new `REPLAY_VERSION` generation and the 50-minute
+re-acquisition that comes with it — so it is its own change, made deliberately,
+not a side effect of adding a derivation.
+
 ## Primary and backup, once the backups are real
 
 finnhub is the primary because it is the only vendor measured end to end:
