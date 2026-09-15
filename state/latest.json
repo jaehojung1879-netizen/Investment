@@ -1,8 +1,8 @@
 {
   "schemaVersion": "2.7.0",
   "modelVersion": "longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
-  "buildCommitSha": "63187d052db6",
-  "generatedAt": "2026-09-15T09:23:22.449350+00:00",
+  "buildCommitSha": "e9aa627ada5f",
+  "generatedAt": "2026-09-15T13:19:52.257152+00:00",
   "marketAsOf": "2026-09-15",
   "macroRegime": "Transition/Low confidence",
   "holdingsByRegion": {
@@ -31,8 +31,8 @@
       "005935.KS",
       "161390.KS",
       "005490.KS",
-      "032640.KS",
-      "005930.KS"
+      "005930.KS",
+      "326030.KS"
     ]
   },
   "modelPortfolioWeights": {
@@ -68,10 +68,10 @@
     "005935.KS": "WATCH",
     "161390.KS": "AVOID",
     "005490.KS": "WATCH",
-    "032640.KS": "WATCH",
     "005930.KS": "WATCH",
     "326030.KS": "AVOID",
     "009540.KS": "AVOID",
+    "032640.KS": "WATCH",
     "028050.KS": "WAIT_FOR_PULLBACK"
   },
   "opportunityTiersByTicker": {
@@ -100,7 +100,7 @@
     "005930.KS": "WATCH",
     "034730.KS": "ELEVATED_WARNING",
     "161390.KS": "WATCH",
-    "005935.KS": "WATCH",
+    "326030.KS": "WATCH",
     "MU": "ELEVATED_WARNING",
     "NUE": "WATCH",
     "GM": "WATCH",
@@ -115,7 +115,7 @@
   "stale": false,
   "productionValidation": {
     "passed": true,
-    "validatedAt": "2026-09-15T09:23:22.449350+00:00",
+    "validatedAt": "2026-09-15T13:19:52.257152+00:00",
     "errors": []
   }
 }
