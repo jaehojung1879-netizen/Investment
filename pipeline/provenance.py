@@ -139,7 +139,47 @@ MODEL_VERSION = "longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-a
 # rather than an estimate. `docs/us-pit-fundamentals-source.md` carries the
 # measurements, and Apple's FY2012 10-K is the check: all seven factors equal
 # the ratios of the published figures to four decimal places.
-REPLAY_VERSION = "replay-v15"
+#
+# v16 opens the KOREAN half's survivorship gap, and that is why it cannot extend
+# v15. Through v15 `universe-history.json` held NO KR rows at all — the two
+# sources tried before both described a Korean cross-section they had invented,
+# so the file said nothing and `snapshot` resolved Korea as membership-unknown:
+# today's names, kept, on every date back to 2013. KR `membershipCoveragePct`
+# read 0.0 and `unvouched` read 100%, and v15's own survivorshipBound came back
+# REVERSES_UNDER_MEASURED_GAP with Korea stressed at the whole of its weight —
+# the only powered measurement in the run, overturned by a file that did not
+# exist.
+#
+# v16 wires two collected stores, both from KRX's own Open API under a
+# subscribed key, both measured POINT_IN_TIME back to 2013-01-02:
+#
+#   membership  164 monthly market-cap cross-sections. 260 names were ever in
+#               the Korean top-120 universe and 139 have left it — 38 to 41% of
+#               every cross-section from 2013 to 2017, by name and by date.
+#               Reconstructed by the universe's OWN rule, `_kr_kospi`'s sort by
+#               market cap capped at `universe_size`, applied at the older date.
+#   prices      3,364 daily sessions. FinanceDataReader serves 34.55% of
+#               delisted Korean names and the Open API lists what TRADED, so it
+#               has all 139; 84.2% survive the adjustment audit and the rest are
+#               refused by name rather than adjusted on a guess.
+#
+# Both redefine the Korean cross-section, and `alphaPercentile` is a rank WITHIN
+# the date's cross-section computed per region. Every Korean record v15 holds
+# was ranked against a survivors-only set that no longer exists, so v15's
+# records stay sealed and v16 is a new full experiment.
+#
+# What the price derivation refuses is part of this identity for the same reason
+# the US one is. KRX quotes as-traded, so the bars are converted to the
+# split-adjusted basis `price_adjustment` expects rather than handed over raw; a
+# split is booked only where the price ratio lands on a par-value ratio AND the
+# share count moved towards it within seventy-five days, because `LIST_SHRS` is
+# a registry figure that lags the ex-date by weeks; suspended sessions carry the
+# last close at zero volume and are not sessions; and a move the share counts
+# cannot explain refuses its ticker outright. `docs/kr-universe-history-source.md`
+# carries the measurements, and Samsung Electronics' 2018 one-for-fifty is the
+# check: as-traded 2,650,000 in, 2,650,000 back, and a split-day return of
+# +0.0000% where the raw series says -98.02%.
+REPLAY_VERSION = "replay-v16"
 FEATURE_VERSION = "hfeat-v1"
 DATA_VERSION = ("as-traded-close-forward-total-return-v1-regional-session-download"
                 "+krx-native-sessions-with-yahoo-distributions-v2"
@@ -148,6 +188,7 @@ DATA_VERSION = ("as-traded-close-forward-total-return-v1-regional-session-downlo
                 "+fred-h10-usdkrw-fixing-v1+benchmark-vendor-lineage-v1"
                 "+kr-systemic-gap-detect-only-v4"
                 "+kr-benchmark-kospi200-tracking-etf-total-return-v1"
+                "+krx-pit-universe-and-prices-kr-v1"
                 "+corporate-actions-v1+bok-rf-v1"
                 "+finnhub-pit-fundamentals-us-v1")
 

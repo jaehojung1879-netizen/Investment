@@ -48,6 +48,7 @@ from pipeline import historical_outcomes as HO      # noqa: E402
 from pipeline import historical_replay as HR        # noqa: E402
 from pipeline import historical_store as HS         # noqa: E402
 from pipeline import korea_prices as KR            # noqa: E402
+from pipeline import krx_prices as KP             # noqa: E402
 from pipeline import replay_calendar as RC
 from pipeline import replay_inputs as RI
 from pipeline import replay_recovery as RR
@@ -111,6 +112,15 @@ def _run(argv=None) -> int:
     parser.add_argument("--pit-fundamentals", action="append", default=None,
                         help="PIT_FUNDAMENTALS_V1 jsonl (여러 번 지정 가능, "
                              "없으면 config 값)")
+    # The KRX price store lives on signal-history and is restored by the job,
+    # so its path is known to the workflow rather than to config — the same
+    # reason `--pit-fundamentals` is a flag. Config remains the local fallback.
+    # The membership store has no flag here because nothing in this script
+    # reads it: `build_universe_history.py --krx-snapshots` turns it into
+    # `universe-history.json` before the replay starts, and that file is what
+    # the universe signature is computed from.
+    parser.add_argument("--krx-prices", default=None,
+                        help="KRX 일별 시세 샤드 디렉터리 (없으면 config 값)")
     args = parser.parse_args(argv)
 
     cfg, _ = load_config()
@@ -241,9 +251,26 @@ def _run(argv=None) -> int:
         yahoo_regions = {region: names for region, names in fetch_universe.items()
                          if region != "KR"}
         prices = fetch_regional_prices(yahoo_regions, fetch_start, total_return=True)
-        korea = KR.acquire(fetch_universe.get("KR") or [], fetch_start)
+        # Collected KRX Open API bars, for the Korean names FinanceDataReader
+        # serves nothing for — which is most of the ones that LEFT the
+        # universe, measured at 34.55% coverage there against 100% here. Read
+        # lazily and filtered to the names actually wanted; an absent path or
+        # an empty store leaves the acquisition exactly as it was.
+        krx_names = list(fetch_universe.get("KR") or [])
+        krx_fallback, krx_refused = ({}, {})
+        krx_store = args.krx_prices or replay_cfg.get("krxPricesPath")
+        if krx_store and krx_names:
+            krx_fallback, krx_refused = KP.load_panel(krx_store, krx_names)
+            if krx_fallback or krx_refused:
+                print(f"  KRX open-api bars available for {len(krx_fallback)} "
+                      f"KR names; {len(krx_refused)} refused by the adjustment "
+                      f"audit and left unvouched")
+        korea = KR.acquire(krx_names, fetch_start, fallback=krx_fallback)
         prices.update(korea["prices"])
         korea_agreement = KR.agreement_summary(korea["agreement"])
+        if korea.get("fallbackTickers"):
+            print(f"  {len(korea['fallbackTickers'])} KR names served from the "
+                  f"KRX open-api store (e.g. {korea['fallbackTickers'][:5]})")
         if korea["prices"]:
             print(f"  KR sessions via {korea['source']}: {len(korea['prices'])} tickers, "
                   f"vendor cross-check median {korea_agreement.get('medianOfMedianDifferenceBps')} bps, "
@@ -301,7 +328,10 @@ def _run(argv=None) -> int:
                 # trades in, or the held position's terminal mark comes from a
                 # different price basis than the position itself.
                 if region == "KR":
-                    prices.update(KR.acquire(names, fetch_start)["prices"])
+                    spare, _ = (KP.load_panel(krx_store, names)
+                                if krx_store else ({}, {}))
+                    prices.update(KR.acquire(names, fetch_start,
+                                             fallback=spare)["prices"])
                 else:
                     prices.update(fetch_prices(names, fetch_start, total_return=True))
 

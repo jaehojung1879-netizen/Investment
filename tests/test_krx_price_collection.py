@@ -334,25 +334,32 @@ def test_the_audit_runs_even_when_the_collection_stopped_early():
     assert "if: always()" in audit
 
 
-def test_no_kr_point_in_time_input_is_wired_while_replay_v15_stands():
-    """The seal, covering both halves this time.
+def test_every_kr_point_in_time_store_is_wired_exactly_when_the_marker_claims_it():
+    """The seal, binding each store rather than "at least one of them".
 
-    Membership rows redefine the Korean cross-section; KRX bars change which
-    Korean names can be priced into it, which redefines it again. Either wired
-    into `replay.yml` makes the Korean records already in the generation
-    incomparable with the ones that follow, and `universe_conflict` refuses
-    exactly that. So both must land in the same commit as the version bump.
+    Korean membership rows redefine which names are in the cross-section; KRX
+    bars redefine which of them can be priced into it. Either reaching
+    `replay.yml` makes the Korean records already in the generation
+    incomparable with the ones that follow, so both land with the version bump
+    — and `DATA_VERSION` names both in one marker, which is the claim this
+    checks against.
 
-    Today neither is wired: the collectors write shards nothing reads, which is
-    why this branch leaves v15 intact and costs no reacquisition.
+    An "at least one is wired" test passes while the price store is silently
+    dropped, leaving a generation whose provenance says it read bars it never
+    opened. Each store is bound to the marker on its own.
     """
     from pipeline import provenance
 
     replay = _wf("replay.yml")
-    wired = [flag for flag in ("--krx-snapshots", "--krx-prices",
-                               "ledger/prices/kr", "ledger/universe/kr")
-             if flag in replay]
-    assert bool(wired) == (provenance.REPLAY_VERSION != "replay-v15"), (
-        f"replay.yml wires {wired or 'nothing'} while REPLAY_VERSION is "
-        f"{provenance.REPLAY_VERSION!r}; Korean point-in-time inputs need a new "
-        f"generation, not an extension of v15")
+    claimed = "krx-pit-universe-and-prices-kr-v1" in provenance.DATA_VERSION
+    wiring = {"--krx-snapshots": "membership cross-sections",
+              "--krx-prices": "daily bars"}
+    for flag, what in wiring.items():
+        assert (flag in replay) == claimed, (
+            f"replay.yml {'passes' if flag in replay else 'does not pass'} "
+            f"{flag} ({what}) while DATA_VERSION "
+            f"{'claims' if claimed else 'does not claim'} the KRX stores")
+    assert claimed == (provenance.REPLAY_VERSION != "replay-v15"), (
+        f"DATA_VERSION {'claims' if claimed else 'does not claim'} the KRX "
+        f"stores while REPLAY_VERSION is {provenance.REPLAY_VERSION!r}; Korean "
+        f"point-in-time inputs need a new generation, not an extension of v15")
