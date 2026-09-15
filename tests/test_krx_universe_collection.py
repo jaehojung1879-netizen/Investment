@@ -265,22 +265,41 @@ def test_the_workflow_collects_into_the_path_the_replay_would_read():
     assert "secrets.KRX_API_KEY" in run
 
 
-def test_every_dispatch_input_defaults_to_empty():
+def test_every_free_text_dispatch_input_defaults_to_empty():
     """A non-empty default is SENT on every dispatch and overrides the ceiling.
 
     The fundamentals workflow learned this the expensive way: a default in the
     box makes every hand-started run a small one, and the mobile app cannot
     pass inputs at all, so there is no way to override the override.
+
+    `type: choice` inputs are exempt and cannot be otherwise — GitHub requires
+    a default from the option list. They are exempt because they pick a SHAPE,
+    not a ceiling: nothing downstream falls back to a larger value when one is
+    left blank, so there is no override to override.
     """
     text = _text("universe.yml")
     inputs = text.split("workflow_dispatch:", 1)[1].split("permissions:", 1)[0]
-    defaults = [line.split("default:", 1)[1].strip()
-                for line in inputs.splitlines() if "default:" in line]
-    assert defaults, "no dispatch inputs found — the parse is wrong, not the file"
-    overridable = [d for d in defaults if d not in ('""', "''")]
-    # `frequency` is a choice, not a ceiling: its default picks a shape rather
-    # than capping a budget, and a choice input cannot be left empty.
-    assert overridable == ['"monthly"'], overridable
+
+    blocks, current = {}, None
+    for line in inputs.splitlines():
+        stripped = line.strip()
+        if stripped.endswith(":") and line.startswith(" " * 6) and not line.startswith(" " * 8):
+            current = stripped[:-1]
+            blocks[current] = []
+        elif current and stripped:
+            blocks[current].append(stripped)
+    blocks.pop("inputs", None)
+    assert blocks, "no dispatch inputs found — the parse is wrong, not the file"
+
+    offenders = {}
+    for name, lines in blocks.items():
+        kind = next((l.split(":", 1)[1].strip() for l in lines
+                     if l.startswith("type:")), None)
+        default = next((l.split(":", 1)[1].strip() for l in lines
+                        if l.startswith("default:")), None)
+        if kind != "choice" and default not in ('""', "''"):
+            offenders[name] = default
+    assert offenders == {}, offenders
 
 
 def test_reading_the_korean_shards_and_keeping_replay_v15_cannot_both_be_true():
