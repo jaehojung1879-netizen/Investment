@@ -469,3 +469,26 @@ def panel_from_rows(rows: list[dict], refuse_unexplained: bool = True
         else:
             out[ticker] = vendor
     return out, refused
+
+
+def load_panel(store, tickers=None) -> tuple[dict[str, pd.DataFrame], dict[str, list[dict]]]:
+    """(panel, refused) read from collected shards, filtered to ``tickers``.
+
+    Filtered while READING, not after: the store is 1.7 million rows and the
+    replay usually wants the handful its primary vendor could not serve, so
+    building 624 frames to keep twenty is 90 seconds spent for nothing.
+    """
+    from pathlib import Path as _Path
+
+    from . import historical_store as HS
+
+    store = _Path(store)
+    wanted = set(tickers) if tickers is not None else None
+    rows: list[dict] = []
+    for shard in sorted(store.glob("krx-prices-*.jsonl.gz")):
+        for row in HS.read_jsonl(shard):
+            if wanted is None or row.get("ticker") in wanted:
+                rows.append(row)
+    if not rows:
+        return {}, {}
+    return panel_from_rows(rows)

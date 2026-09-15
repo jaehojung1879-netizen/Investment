@@ -43,7 +43,8 @@ import pandas as pd
 from . import price_adjustment as PA
 from .market_dates import normalize_daily_frame
 
-SOURCE_VERSION = "krx-native-sessions-with-yahoo-distributions-v2"
+SOURCE_VERSION = ("krx-native-sessions-with-yahoo-distributions-"
+                  "and-open-api-fallback-v3")
 
 # How much later than the cross-check vendor the primary's history may start
 # before the run refuses to seal it. replay-v12 sealed a Korean panel whose 56
@@ -101,8 +102,28 @@ def _agreement(primary: pd.DataFrame, secondary: pd.DataFrame | None) -> dict | 
 
 
 def acquire(tickers: list[str], start: str, *, end: str | None = None,
-            session_fetcher=None, action_fetcher=None) -> dict:
-    """Korean total-return bars, plus the evidence for how they were built."""
+            session_fetcher=None, action_fetcher=None, fallback=None) -> dict:
+    """Korean total-return bars, plus the evidence for how they were built.
+
+    ``fallback`` is a panel of collected KRX Open API bars — see
+    `krx_prices.load_panel` — used ONLY for tickers the primary vendor served
+    nothing for. FinanceDataReader was measured at 34.55% coverage on delisted
+    Korean names, and the 139 names that left the universe are exactly the ones
+    a survivorship correction needs; the Open API lists what TRADED, so it has
+    all of them, and 84.2% survive the adjustment audit.
+
+    A name is served WHOLE by one vendor or not at all, which is the rule the
+    Yahoo/FDR split already follows. Splicing two vendors' sessions into one
+    ticker's history would put two price bases in one series, and the seam
+    would read as a return.
+
+    The fallback's own splits travel with it. `to_total_return` takes explicit
+    events in preference to the frame's columns, and Yahoo publishes nothing
+    for a delisted Korean name, so passing only Yahoo's would silently discard
+    every split `krx_prices.detect_splits` found — measured: the returns come
+    out the same either way, but the level lands on a different basis than the
+    rest of the cross-section and the split vanishes from the evidence.
+    """
     from .datafeed import AS_TRADED_WITH_ACTIONS, fetch_krx_sessions, fetch_prices
 
     tickers = list(dict.fromkeys(tickers))
@@ -119,6 +140,20 @@ def acquire(tickers: list[str], start: str, *, end: str | None = None,
     sessions = session_fetcher(tickers) or {}
     actions = action_fetcher(tickers) or {}
 
+    # Only what the primary served nothing for. A short history is NOT a gap
+    # here — `coverage_shortfall` is what judges those, and replacing a
+    # truncated series with another vendor's would hide the truncation.
+    from_fallback: set[str] = set()
+    for ticker in tickers:
+        frame = sessions.get(ticker)
+        if frame is not None and "Close" in frame and len(frame):
+            continue
+        spare = (fallback or {}).get(ticker)
+        if spare is not None and len(spare):
+            sessions[ticker] = spare
+            from_fallback.add(ticker)
+            routes[ticker] = "krx-open-api"
+
     prices: dict[str, pd.DataFrame] = {}
     events: dict[str, list[dict]] = {}
     agreement: list[dict] = []
@@ -127,8 +162,8 @@ def acquire(tickers: list[str], start: str, *, end: str | None = None,
         if frame is None or "Close" not in frame or not len(frame):
             continue
         clean = normalize_daily_frame(frame)
-        rebased, rows = PA.to_total_return(
-            clean, PA.event_columns(actions.get(ticker)))
+        rebased, rows = PA.to_total_return(clean, _events_for(
+            clean, actions.get(ticker), ticker in from_fallback))
         if rebased is None or not len(rebased):
             continue
         prices[ticker] = rebased
@@ -140,7 +175,32 @@ def acquire(tickers: list[str], start: str, *, end: str | None = None,
     return {"prices": prices, "events": events, "agreement": agreement,
             "missing": [t for t in tickers if t not in prices],
             "requested": len(tickers), "routes": routes,
+            "fallbackTickers": sorted(from_fallback & set(prices)),
             "source": SOURCE_VERSION}
+
+
+def _events_for(frame, vendor_actions, is_fallback: bool):
+    """The dividends and splits to apply to one ticker's sessions.
+
+    For a primary-vendor ticker this is Yahoo's actions panel, unchanged. For a
+    fallback ticker it is the frame's OWN splits — the ones derived from
+    `LIST_SHRS` — plus Yahoo's dividends if Yahoo happens to carry the name,
+    because the Open API publishes none. That makes those names a PRICE return
+    rather than a total return, which understates them by their yield: the
+    conservative direction for a survivorship correction, and stated rather
+    than hidden.
+    """
+    vendor = PA.event_columns(vendor_actions)
+    if not is_fallback:
+        return vendor
+    own = PA.event_columns(frame)
+    if vendor is None or not len(vendor):
+        return own
+    # Yahoo's dividends only. Its splits would double-apply against the ones
+    # the share counts already established.
+    dividends = vendor.copy()
+    dividends[PA.SPLIT] = 0.0
+    return pd.concat([own, dividends]).sort_index()
 
 
 # How much of the Korean universe the primary may fail to serve at all before
