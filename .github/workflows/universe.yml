@@ -33,6 +33,11 @@ on:
     - cron: "20 4 1 * *"
   workflow_dispatch:
     inputs:
+      what:
+        description: "무엇을 수집할지 — membership=월간 시총 단면 / prices=일별 시세"
+        type: choice
+        options: ["membership", "prices", "both"]
+        default: "both"
       # Empty on purpose. A non-empty default is SENT on every dispatch, which
       # would override the ceiling below and quietly make every hand-started
       # run a small one — and the mobile app cannot pass inputs at all, so
@@ -71,6 +76,7 @@ concurrency:
 
 jobs:
   kr:
+    if: github.event_name == 'schedule' || inputs.what != 'prices'
     runs-on: ubuntu-latest
     timeout-minutes: 90
     steps:
@@ -168,5 +174,114 @@ jobs:
             echo
             echo '```'
             tail -n 20 preview.log 2>/dev/null || echo '미리보기 출력 없음'
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  # The pricing half. Membership put 139 departed names back into the Korean
+  # cross-section; `unvouched` counts a described-but-unpriceable name exactly
+  # as it counts an unknown one, and FinanceDataReader serves 34.55% of
+  # delisted Korean names. This is the same endpoint, the same key, answering
+  # for whatever actually traded.
+  #
+  # It runs after `kr` rather than beside it, because the ticker filter is read
+  # from the membership shards that job writes — and because both push to
+  # `signal-history`, where a needless race costs a rebase.
+  kr-prices:
+    needs: kr
+    if: always() && (github.event_name == 'schedule' || inputs.what != 'membership')
+    runs-on: ubuntu-latest
+    timeout-minutes: 330
+    steps:
+      - name: Checkout code (main)
+        uses: actions/checkout@v5
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Check out signal-history branch (orphan-safe)
+        run: |
+          git config user.name "krx-prices-bot"
+          git config user.email "actions@github.com"
+          mkdir -p prices-work
+          if git ls-remote --exit-code --heads origin signal-history; then
+            git fetch origin signal-history
+            git worktree add prices-work origin/signal-history
+            git -C prices-work checkout -B signal-history
+          else
+            git worktree add --detach prices-work
+            git -C prices-work checkout --orphan signal-history
+            git -C prices-work rm -rf . || true
+          fi
+          mkdir -p prices-work/ledger/prices/kr
+
+      - name: Collect a slice
+        env:
+          KRX_API_KEY: ${{ secrets.KRX_API_KEY }}
+        run: |
+          python scripts/collect_krx_daily_prices.py \
+            prices-work/ledger/prices/kr \
+            --universe prices-work/ledger/universe/kr \
+            --start "${{ inputs.start || '2013-01-01' }}" \
+            --max-calls "${{ inputs.max_calls || '4000' }}" \
+            --max-minutes "${{ inputs.max_minutes || '300' }}" \
+            | tee prices.log
+
+      # WHAT THE BARS SAY BEFORE A GENERATION IS SPENT ON THEM. KRX quotes the
+      # price that printed, and `price_adjustment` expects a split-adjusted
+      # frame, so the conversion between the two is the one place a silent
+      # factor of fifty can enter — and a fifty would read as a decade of
+      # momentum rather than as a bug. This prints the splits the share counts
+      # imply and the largest surviving daily moves, so an undetected one is
+      # visible in the run summary instead of in a sealed ledger.
+      - name: What these bars say
+        if: always()
+        run: |
+          python scripts/audit_krx_prices.py prices-work/ledger/prices/kr \
+            | tee price-audit.log || echo "audit failed; the bars are still committed"
+
+      - name: Commit & push to signal-history
+        run: |
+          cd prices-work
+          git add ledger/prices
+          if git diff --cached --quiet; then
+            echo "no new sessions"
+            exit 0
+          fi
+          git commit -m "prices: KRX KOSPI daily bars for $(date -u +%Y-%m-%d)"
+          for attempt in 1 2 3 4 5; do
+            if git push origin signal-history; then
+              exit 0
+            fi
+            echo "push rejected (attempt $attempt); rebasing onto the remote"
+            git fetch origin signal-history
+            if ! git rebase origin/signal-history; then
+              git rebase --abort || true
+              echo "could not rebase onto signal-history"
+              exit 1
+            fi
+          done
+          echo "push still rejected after five attempts"
+          exit 1
+
+      - name: Summary
+        if: always()
+        run: |
+          {
+            echo '## KRX 코스피 일별 시세 수집'
+            echo
+            echo '```'
+            tail -n 30 prices.log 2>/dev/null || echo '수집 출력 없음'
+            echo '```'
+            echo
+            echo '### 이 시세가 말하는 것 (분할 검출 · 남은 극단 변동)'
+            echo
+            echo '```'
+            tail -n 45 price-audit.log 2>/dev/null || echo '감사 출력 없음'
             echo '```'
           } >> "$GITHUB_STEP_SUMMARY"
