@@ -206,61 +206,95 @@ def test_the_price_collector_reuses_the_membership_collector_s_transport():
 import audit_krx_prices as AP  # noqa: E402
 
 
-def _write_bars(store: Path, ticker: str, sessions: list[tuple[str, float, float]]):
+def _write_bars(store: Path, ticker: str, sessions, volume=10.0):
     """sessions: [(date, close, listed shares)]"""
     by_year: dict[int, list[dict]] = {}
     for date, close, shares in sessions:
         by_year.setdefault(int(date[:4]), []).append({
             "id": f"krx-price:{date}:{ticker[:6]}", "date": date, "region": "KR",
             "ticker": ticker, "open": close, "high": close, "low": close,
-            "close": close, "volume": 10.0, "listedShares": shares})
+            "close": close, "volume": volume, "listedShares": shares})
     store.mkdir(parents=True, exist_ok=True)
     for year, rows in by_year.items():
         HS.write_shard(store / f"krx-prices-{year}.jsonl.gz", rows)
 
 
-def test_the_audit_reports_a_detected_split_and_no_leftover_extreme(
-        tmp_path, capsys):
-    _write_bars(tmp_path, "005930.KS", [
-        ("2018-04-30", 2650000.0, 128386494.0),
-        ("2018-05-02", 2678000.0, 128386494.0),
-        ("2018-05-04", 53000.0, 6419324700.0),
-        ("2018-05-08", 52900.0, 6419324700.0)])
+def _quiet(start_date: str, close: float, shares: float, periods: int):
+    import pandas as pd
+    return [(d.strftime("%Y-%m-%d"), close, shares)
+            for d in pd.bdate_range(start_date, periods=periods)]
+
+
+def test_the_audit_reports_a_detected_split_and_refuses_nothing(tmp_path, capsys):
+    _write_bars(tmp_path, "005930.KS",
+                [("2018-04-30", 2650000.0, 128386494.0),
+                 ("2018-05-02", 2678000.0, 128386494.0),
+                 ("2018-05-04", 53000.0, 6419324700.0)]
+                + _quiet("2018-05-08", 52900.0, 6419324700.0, 20))
     assert AP.main([str(tmp_path)]) == 0
     out = capsys.readouterr().out
     assert "액면분할 x50" in out
-    assert "없음 — 검출되지 않은 분할" in out
+    assert "검출되지 않은 기업행위의 지문이 남아 있지 않습니다" in out
 
 
-def test_an_undetected_split_shows_up_as_a_leftover_extreme(tmp_path, capsys):
-    """The fingerprint the audit exists to surface.
+def test_a_suspended_stretch_is_counted_and_excluded(tmp_path, capsys):
+    """The rows stay in the store; the audit says how many are not sessions."""
+    _write_bars(tmp_path, "071970.KS",
+                [("2017-03-27", 2765.0, 10.0), ("2017-03-28", 2765.0, 10.0)],
+                volume=0.0)
+    AP.main([str(tmp_path)])
+    # Asserted on the whole line: "2행" also appears in the header, so a
+    # substring check passes even when the count is never computed.
+    line = next(l for l in capsys.readouterr().out.splitlines()
+                if l.startswith("거래량 0"))
+    assert "2행 (100.0%)" in line
 
-    Share counts unchanged across a 50x price drop means the split was not
-    described by `LIST_SHRS`, so `detect_splits` cannot see it — and the
-    adjusted series carries a -98% session. That is the one thing a sealed
-    generation must not hide, so it is printed by name and date.
+
+def test_an_unexplained_collapse_refuses_the_ticker_by_name(tmp_path, capsys):
+    """The fingerprint the audit exists to surface, and the cost of it.
+
+    A capital reduction or a re-listing moves the printed price with no share
+    movement to explain it. The ticker is left out of the panel and named, so
+    the gap is measured rather than filled with a fabricated return.
     """
-    _write_bars(tmp_path, "005930.KS", [
-        ("2018-04-30", 2650000.0, 128386494.0),
-        ("2018-05-04", 53000.0, 128386494.0)])
+    import pandas as pd
+
+    dates = list(pd.bdate_range("2013-01-02", periods=40))
+    _write_bars(tmp_path, "001260.KS",
+                [(d.strftime("%Y-%m-%d"), 900.0 if i < 20 else 30600.0,
+                  18787617.0) for i, d in enumerate(dates)])
     assert AP.main([str(tmp_path)]) == 0
     out = capsys.readouterr().out
-    assert "005930.KS" in out and "-98.00%" in out
-    assert "잔여 변동: 1건" in out
-
-
-def test_an_ordinary_panel_reports_nothing_alarming(tmp_path, capsys):
-    _write_bars(tmp_path, "000001.KS", [
-        ("2013-01-02", 1000.0, 1000.0), ("2013-01-03", 1050.0, 1000.0),
-        ("2013-01-04", 980.0, 1000.0)])
-    assert AP.main([str(tmp_path)]) == 0
-    out = capsys.readouterr().out
-    assert "검출된 분할 0건" in out and "잔여 변동: 0건" in out
+    assert "001260.KS" in out and "설명되지 않는 변동" in out
+    assert "거부 1종목" in out
 
 
 def test_the_audit_on_an_empty_store_is_not_a_failure(tmp_path, capsys):
     assert AP.main([str(tmp_path)]) == 0
     assert "시세 샤드가 없습니다" in capsys.readouterr().out
+
+
+def test_the_audit_reports_departed_name_coverage_when_given_membership(
+        tmp_path, capsys):
+    """The number that decides whether the path was worth finishing."""
+    universe = tmp_path / "universe"
+    universe.mkdir()
+    rows = []
+    for date, issues in (("2013-01-02", [("000001", 300.0), ("000002", 200.0)]),
+                         ("2016-01-04", [("000001", 300.0)])):
+        ranked = KU.rank_issues([{"code": c, "name": c, "marketCap": m}
+                                 for c, m in issues])
+        rows += KU.snapshot_rows(date, ranked)
+    HS.write_shard(universe / "krx-universe-2013.jsonl.gz", rows)
+
+    prices = tmp_path / "prices"
+    for ticker in ("000001.KS", "000002.KS"):
+        _write_bars(prices, ticker, _quiet("2013-01-02", 1000.0, 10.0, 25))
+
+    assert AP.main([str(prices), "--universe", str(universe)]) == 0
+    out = capsys.readouterr().out
+    assert "떠난 종목" in out and "FinanceDataReader" in out
+
 
 
 # ---------------------------------------------------------- the workflow
