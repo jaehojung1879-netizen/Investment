@@ -1,0 +1,988 @@
+{
+ "schema": "US_UNPRICED_MEMBERS_V1",
+ "measuredFrom": {
+  "replayVersion": "replay-v16",
+  "inputSnapshotThrough": "2026-09-14",
+  "method": "every US ticker in the sealed universe memberships, checked against the tickers the sealed price panel actually carries"
+ },
+ "usMembers": 829,
+ "servedByPanel": 633,
+ "unpriced": 194,
+ "unpricedAllHaveDelistedDate": true,
+ "malformedMembershipKeys": [
+  "AMERICAN AIRLINES GROUP",
+  "RVTY (PREVIOUSLY PKI)"
+ ],
+ "members": [
+  {
+   "ticker": "ABC",
+   "listed": "2012-12-27",
+   "delisted": "2023-09-03"
+  },
+  {
+   "ticker": "ABMD",
+   "listed": "2020-05-10",
+   "delisted": "2022-12-24"
+  },
+  {
+   "ticker": "ACE",
+   "listed": "2012-12-27",
+   "delisted": "2016-02-23"
+  },
+  {
+   "ticker": "ADS",
+   "listed": "2014-01-19",
+   "delisted": "2020-07-17"
+  },
+  {
+   "ticker": "AET",
+   "listed": "2012-12-27",
+   "delisted": "2020-05-10"
+  },
+  {
+   "ticker": "AGN",
+   "listed": "2012-12-27",
+   "delisted": "2020-05-25"
+  },
+  {
+   "ticker": "ALTR",
+   "listed": "2012-12-27",
+   "delisted": "2016-02-23"
+  },
+  {
+   "ticker": "ALXN",
+   "listed": "2012-12-27",
+   "delisted": "2021-07-22"
+  },
+  {
+   "ticker": "ANDV",
+   "listed": "2018-04-02",
+   "delisted": "2020-05-10"
+  },
+  {
+   "ticker": "ANR",
+   "listed": "2012-12-27",
+   "delisted": "2013-05-05"
+  },
+  {
+   "ticker": "ANSS",
+   "listed": "2018-04-02",
+   "delisted": "2025-07-18"
+  },
+  {
+   "ticker": "ANTM",
+   "listed": "2015-09-22",
+   "delisted": "2022-12-24"
+  },
+  {
+   "ticker": "APOL",
+   "listed": "2012-12-27",
+   "delisted": "2013-10-05"
+  },
+  {
+   "ticker": "ARG",
+   "listed": "2012-12-27",
+   "delisted": "2016-06-12"
+  },
+  {
+   "ticker": "ARNC",
+   "listed": "2017-03-08",
+   "delisted": "2020-05-10"
+  },
+  {
+   "ticker": "ATVI",
+   "listed": "2016-02-23",
+   "delisted": "2023-10-15"
+  },
+  {
+   "ticker": "AVP",
+   "listed": "2012-12-27",
+   "delisted": "2015-09-22"
+  },
+  {
+   "ticker": "BCR",
+   "listed": "2012-12-27",
+   "delisted": "2018-04-02"
+  },
+  {
+   "ticker": "BHGE",
+   "listed": "2018-04-02",
+   "delisted": "2020-05-10"
+  },
+  {
+   "ticker": "BHI",
+   "listed": "2012-12-27",
+   "delisted": "2018-04-02"
+  },
+  {
+   "ticker": "BIG",
+   "listed": "2012-12-27",
+   "delisted": "2013-05-05"
+  },
+  {
+   "ticker": "BK",
+   "listed": "2012-12-27",
+   "delisted": "2026-05-22"
+  },
+  {
+   "ticker": "BLL",
+   "listed": "2012-12-27",
+   "delisted": "2022-12-24"
+  },
+  {
+   "ticker": "BMC",
+   "listed": "2012-12-27",
+   "delisted": "2013-10-05"
+  },
+  {
+   "ticker": "BMS",
+   "listed": "2012-12-27",
+   "delisted": "2015-09-22"
+  },
+  {
+   "ticker": "BRCM",
+   "listed": "2012-12-27",
+   "delisted": "2016-02-23"
+  },
+  {
+   "ticker": "BXLT",
+   "listed": "2016-02-23",
+   "delisted": "2016-06-12"
+  },
+  {
+   "ticker": "CA",
+   "listed": "2012-12-27",
+   "delisted": "2020-05-10"
+  },
+  {
+   "ticker": "CBE",
+   "listed": "2012-12-27",
+   "delisted": "2013-05-05"
+  },
+  {
+   "ticker": "CBG",
+   "listed": "2012-12-27",
+   "delisted": "2018-04-02"
+  },
+  {
+   "ticker": "CBS",
+   "listed": "2012-12-27",
+   "delisted": "2020-05-10"
+  },
+  {
+   "ticker": "CCE",
+   "listed": "2012-12-27",
+   "delisted": "2016-06-12"
+  },
+  {
+   "ticker": "CDAY",
+   "listed": "2021-09-23",
+   "delisted": "2024-02-03"
+  },
+  {
+   "ticker": "CELG",
+   "listed": "2012-12-27",
+   "delisted": "2020-05-10"
+  },
+  {
+   "ticker": "CERN",
+   "listed": "2012-12-27",
+   "delisted": "2022-12-24"
+  },
+  {
+   "ticker": "CFN",
+   "listed": "2012-12-27",
+   "delisted": "2015-09-22"
+  },
+  {
+   "ticker": "CHK",
+   "listed": "2012-12-27",
+   "delisted": "2018-04-02"
+  },
+  {
+   "ticker": "CMA",
+   "listed": "2012-12-27",
+   "delisted": "2024-06-24"
+  },
+  {
+   "ticker": "COG",
+   "listed": "2012-12-27",
+   "delisted": "2021-10-04"
+  },
+  {
+   "ticker": "COH",
+   "listed": "2012-12-27",
+   "delisted": "2018-04-02"
+  },
+  {
+   "ticker": "COL",
+   "listed": "2012-12-27",
+   "delisted": "2020-05-10"
+  },
+  {
+   "ticker": "COV",
+   "listed": "2012-12-27",
+   "delisted": "2015-09-22"
+  },
+  {
+   "ticker": "CPGX",
+   "listed": "2016-02-23",
+   "delisted": "2016-07-06"
+  },
+  {
+   "ticker": "CSC",
+   "listed": "2012-12-27",
+   "delisted": "2016-02-23"
+  },
+  {
+   "ticker": "CTL",
+   "listed": "2012-12-27",
+   "delisted": "2021-02-11"
+  },
+  {
+   "ticker": "CTLT",
+   "listed": "2021-02-11",
+   "delisted": "2024-12-19"
+  },
+  {
+   "ticker": "CTRA",
+   "listed": "2021-10-04",
+   "delisted": "2026-05-08"
+  },
+  {
+   "ticker": "CTXS",
+   "listed": "2012-12-27",
+   "delisted": "2022-12-24"
+  },
+  {
+   "ticker": "CVC",
+   "listed": "2012-12-27",
+   "delisted": "2016-06-23"
+  },
+  {
+   "ticker": "CVH",
+   "listed": "2012-12-27",
+   "delisted": "2013-06-08"
+  },
+  {
+   "ticker": "CXO",
+   "listed": "2016-02-23",
+   "delisted": "2021-02-11"
+  },
+  {
+   "ticker": "DAY",
+   "listed": "2024-02-03",
+   "delisted": "2026-03-04"
+  },
+  {
+   "ticker": "DF",
+   "listed": "2012-12-27",
+   "delisted": "2013-06-08"
+  },
+  {
+   "ticker": "DFS",
+   "listed": "2012-12-27",
+   "delisted": "2025-05-18"
+  },
+  {
+   "ticker": "DISCA",
+   "listed": "2012-12-27",
+   "delisted": "2022-12-24"
+  },
+  {
+   "ticker": "DISCK",
+   "listed": "2016-02-23",
+   "delisted": "2022-12-24"
+  },
+  {
+   "ticker": "DISH",
+   "listed": "2018-04-02",
+   "delisted": "2023-06-20"
+  },
+  {
+   "ticker": "DLPH",
+   "listed": "2013-05-05",
+   "delisted": "2018-04-02"
+  },
+  {
+   "ticker": "DNB",
+   "listed": "2012-12-27",
+   "delisted": "2018-04-02"
+  },
+  {
+   "ticker": "DNR",
+   "listed": "2012-12-27",
+   "delisted": "2015-09-22"
+  },
+  {
+   "ticker": "DO",
+   "listed": "2012-12-27",
+   "delisted": "2017-03-08"
+  },
+  {
+   "ticker": "DPS",
+   "listed": "2012-12-27",
+   "delisted": "2020-05-10"
+  },
+  {
+   "ticker": "DRE",
+   "listed": "2018-04-02",
+   "delisted": "2022-12-24"
+  },
+  {
+   "ticker": "DTV",
+   "listed": "2012-12-27",
+   "delisted": "2016-02-23"
+  },
+  {
+   "ticker": "DWDP",
+   "listed": "2018-04-02",
+   "delisted": "2020-05-10"
+  },
+  {
+   "ticker": "ENDP",
+   "listed": "2015-09-22",
+   "delisted": "2017-03-08"
+  },
+  {
+   "ticker": "ESRX",
+   "listed": "2012-12-27",
+   "delisted": "2020-05-10"
+  },
+  {
+   "ticker": "ESV",
+   "listed": "2012-12-27",
+   "delisted": "2016-06-12"
+  },
+  {
+   "ticker": "ETFC",
+   "listed": "2012-12-27",
+   "delisted": "2021-02-11"
+  },
+  {
+   "ticker": "EVHC",
+   "listed": "2017-03-08",
+   "delisted": "2020-05-10"
+  },
+  {
+   "ticker": "FBHS",
+   "listed": "2016-06-23",
+   "delisted": "2022-12-24"
+  },
+  {
+   "ticker": "FDO",
+   "listed": "2012-12-27",
+   "delisted": "2016-02-23"
+  },
+  {
+   "ticker": "FI",
+   "listed": "2023-06-08",
+   "delisted": "2026-03-04"
+  },
+  {
+   "ticker": "FII",
+   "listed": "2012-12-27",
+   "delisted": "2013-05-05"
+  },
+  {
+   "ticker": "FL",
+   "listed": "2016-06-12",
+   "delisted": "2020-05-10"
+  },
+  {
+   "ticker": "FLIR",
+   "listed": "2012-12-27",
+   "delisted": "2021-05-20"
+  },
+  {
+   "ticker": "FLT",
+   "listed": "2020-05-10",
+   "delisted": "2024-03-26"
+  },
+  {
+   "ticker": "FRC",
+   "listed": "2020-05-10",
+   "delisted": "2023-05-03"
+  },
+  {
+   "ticker": "FRX",
+   "listed": "2012-12-27",
+   "delisted": "2014-12-07"
+  },
+  {
+   "ticker": "FTR",
+   "listed": "2012-12-27",
+   "delisted": "2018-04-02"
+  },
+  {
+   "ticker": "GAS",
+   "listed": "2012-12-27",
+   "delisted": "2016-07-02"
+  },
+  {
+   "ticker": "GCI",
+   "listed": "2012-12-27",
+   "delisted": "2015-09-22"
+  },
+  {
+   "ticker": "GGP",
+   "listed": "2014-01-19",
+   "delisted": "2020-05-10"
+  },
+  {
+   "ticker": "GMCR",
+   "listed": "2014-05-01",
+   "delisted": "2016-06-12"
+  },
+  {
+   "ticker": "GPS",
+   "listed": "2012-12-27",
+   "delisted": "2022-12-24"
+  },
+  {
+   "ticker": "HAR",
+   "listed": "2012-12-27",
+   "delisted": "2018-04-02"
+  },
+  {
+   "ticker": "HBI",
+   "listed": "2015-09-22",
+   "delisted": "2022-12-24"
+  },
+  {
+   "ticker": "HCBK",
+   "listed": "2012-12-27",
+   "delisted": "2016-02-23"
+  },
+  {
+   "ticker": "HCN",
+   "listed": "2012-12-27",
+   "delisted": "2018-04-02"
+  },
+  {
+   "ticker": "HCP",
+   "listed": "2012-12-27",
+   "delisted": "2020-05-10"
+  },
+  {
+   "ticker": "HES",
+   "listed": "2012-12-27",
+   "delisted": "2025-07-23"
+  },
+  {
+   "ticker": "HFC",
+   "listed": "2020-05-10",
+   "delisted": "2021-06-05"
+  },
+  {
+   "ticker": "HNZ",
+   "listed": "2012-12-27",
+   "delisted": "2013-06-08"
+  },
+  {
+   "ticker": "HOLX",
+   "listed": "2016-06-12",
+   "delisted": "2026-04-09"
+  },
+  {
+   "ticker": "HOT",
+   "listed": "2012-12-27",
+   "delisted": "2017-03-08"
+  },
+  {
+   "ticker": "HRS",
+   "listed": "2012-12-27",
+   "delisted": "2020-05-10"
+  },
+  {
+   "ticker": "HSP",
+   "listed": "2012-12-27",
+   "delisted": "2016-02-23"
+  },
+  {
+   "ticker": "IGT",
+   "listed": "2012-12-27",
+   "delisted": "2014-07-28"
+  },
+  {
+   "ticker": "IPG",
+   "listed": "2012-12-27",
+   "delisted": "2026-03-04"
+  },
+  {
+   "ticker": "JCP",
+   "listed": "2012-12-27",
+   "delisted": "2014-01-19"
+  },
+  {
+   "ticker": "JDSU",
+   "listed": "2012-12-27",
+   "delisted": "2014-01-19"
+  },
+  {
+   "ticker": "JEC",
+   "listed": "2012-12-27",
+   "delisted": "2020-05-10"
+  },
+  {
+   "ticker": "JNPR",
+   "listed": "2012-12-27",
+   "delisted": "2025-07-04"
+  },
+  {
+   "ticker": "JOY",
+   "listed": "2012-12-27",
+   "delisted": "2016-02-23"
+  },
+  {
+   "ticker": "JWN",
+   "listed": "2012-12-27",
+   "delisted": "2020-07-17"
+  },
+  {
+   "ticker": "K",
+   "listed": "2012-12-27",
+   "delisted": "2026-03-04"
+  },
+  {
+   "ticker": "KFT",
+   "listed": "2012-12-27",
+   "delisted": "2013-05-05"
+  },
+  {
+   "ticker": "KORS",
+   "listed": "2014-01-19",
+   "delisted": "2020-05-10"
+  },
+  {
+   "ticker": "KRFT",
+   "listed": "2013-05-05",
+   "delisted": "2016-02-23"
+  },
+  {
+   "ticker": "KSU",
+   "listed": "2013-06-08",
+   "delisted": "2022-12-24"
+  },
+  {
+   "ticker": "LLL",
+   "listed": "2012-12-27",
+   "delisted": "2020-05-10"
+  },
+  {
+   "ticker": "LLTC",
+   "listed": "2012-12-27",
+   "delisted": "2018-04-02"
+  },
+  {
+   "ticker": "LM",
+   "listed": "2012-12-27",
+   "delisted": "2017-03-08"
+  },
+  {
+   "ticker": "LO",
+   "listed": "2012-12-27",
+   "delisted": "2015-09-22"
+  },
+  {
+   "ticker": "LSI",
+   "listed": "2012-12-27",
+   "delisted": "2014-07-28"
+  },
+  {
+   "ticker": "LTD",
+   "listed": "2012-12-27",
+   "delisted": "2014-01-19"
+  },
+  {
+   "ticker": "LUK",
+   "listed": "2012-12-27",
+   "delisted": "2020-05-10"
+  },
+  {
+   "ticker": "LVLT",
+   "listed": "2015-09-22",
+   "delisted": "2018-04-02"
+  },
+  {
+   "ticker": "LXK",
+   "listed": "2012-12-27",
+   "delisted": "2013-05-05"
+  },
+  {
+   "ticker": "MHFI",
+   "listed": "2013-06-08",
+   "delisted": "2016-06-12"
+  },
+  {
+   "ticker": "MHP",
+   "listed": "2012-12-27",
+   "delisted": "2013-06-08"
+  },
+  {
+   "ticker": "MJN",
+   "listed": "2012-12-27",
+   "delisted": "2018-04-02"
+  },
+  {
+   "ticker": "MMC",
+   "listed": "2012-12-27",
+   "delisted": "2026-03-04"
+  },
+  {
+   "ticker": "MNK",
+   "listed": "2014-12-07",
+   "delisted": "2018-04-02"
+  },
+  {
+   "ticker": "MOLX",
+   "listed": "2012-12-27",
+   "delisted": "2014-01-19"
+  },
+  {
+   "ticker": "MON",
+   "listed": "2012-12-27",
+   "delisted": "2020-05-10"
+  },
+  {
+   "ticker": "MRO",
+   "listed": "2012-12-27",
+   "delisted": "2024-11-24"
+  },
+  {
+   "ticker": "MWV",
+   "listed": "2012-12-27",
+   "delisted": "2015-09-22"
+  },
+  {
+   "ticker": "MXIM",
+   "listed": "2020-05-10",
+   "delisted": "2021-08-29"
+  },
+  {
+   "ticker": "MYL",
+   "listed": "2012-12-27",
+   "delisted": "2021-02-11"
+  },
+  {
+   "ticker": "NBL",
+   "listed": "2012-12-27",
+   "delisted": "2021-02-11"
+  },
+  {
+   "ticker": "NLOK",
+   "listed": "2020-05-10",
+   "delisted": "2022-12-24"
+  },
+  {
+   "ticker": "NLSN",
+   "listed": "2013-10-05",
+   "delisted": "2022-12-24"
+  },
+  {
+   "ticker": "NYX",
+   "listed": "2012-12-27",
+   "delisted": "2014-01-19"
+  },
+  {
+   "ticker": "PBCT",
+   "listed": "2012-12-27",
+   "delisted": "2022-12-24"
+  },
+  {
+   "ticker": "PCP",
+   "listed": "2012-12-27",
+   "delisted": "2016-02-23"
+  },
+  {
+   "ticker": "PDCO",
+   "listed": "2012-12-27",
+   "delisted": "2018-04-02"
+  },
+  {
+   "ticker": "PEAK",
+   "listed": "2020-05-10",
+   "delisted": "2024-03-05"
+  },
+  {
+   "ticker": "PETM",
+   "listed": "2013-05-05",
+   "delisted": "2015-09-22"
+  },
+  {
+   "ticker": "PKI",
+   "listed": "2012-12-27",
+   "delisted": "2023-05-18"
+  },
+  {
+   "ticker": "PLL",
+   "listed": "2012-12-27",
+   "delisted": "2015-09-22"
+  },
+  {
+   "ticker": "PX",
+   "listed": "2012-12-27",
+   "delisted": "2020-05-10"
+  },
+  {
+   "ticker": "PXD",
+   "listed": "2012-12-27",
+   "delisted": "2024-05-05"
+  },
+  {
+   "ticker": "QEP",
+   "listed": "2012-12-27",
+   "delisted": "2016-02-23"
+  },
+  {
+   "ticker": "RAI",
+   "listed": "2012-12-27",
+   "delisted": "2018-04-02"
+  },
+  {
+   "ticker": "RDC",
+   "listed": "2012-12-27",
+   "delisted": "2014-12-07"
+  },
+  {
+   "ticker": "RE",
+   "listed": "2018-04-02",
+   "delisted": "2023-07-12"
+  },
+  {
+   "ticker": "RHT",
+   "listed": "2012-12-27",
+   "delisted": "2020-05-10"
+  },
+  {
+   "ticker": "RRD",
+   "listed": "2012-12-27",
+   "delisted": "2013-05-05"
+  },
+  {
+   "ticker": "RTN",
+   "listed": "2012-12-27",
+   "delisted": "2020-05-10"
+  },
+  {
+   "ticker": "SAI",
+   "listed": "2012-12-27",
+   "delisted": "2013-10-05"
+  },
+  {
+   "ticker": "SATS",
+   "listed": "2026-03-25",
+   "delisted": "2026-06-25"
+  },
+  {
+   "ticker": "SCG",
+   "listed": "2012-12-27",
+   "delisted": "2020-05-10"
+  },
+  {
+   "ticker": "SEE",
+   "listed": "2012-12-27",
+   "delisted": "2023-12-18"
+  },
+  {
+   "ticker": "SIAL",
+   "listed": "2012-12-27",
+   "delisted": "2016-02-23"
+  },
+  {
+   "ticker": "SIVB",
+   "listed": "2018-04-02",
+   "delisted": "2023-04-13"
+  },
+  {
+   "ticker": "SNI",
+   "listed": "2012-12-27",
+   "delisted": "2018-04-02"
+  },
+  {
+   "ticker": "SRCL",
+   "listed": "2012-12-27",
+   "delisted": "2020-05-10"
+  },
+  {
+   "ticker": "STJ",
+   "listed": "2012-12-27",
+   "delisted": "2017-03-08"
+  },
+  {
+   "ticker": "SWN",
+   "listed": "2012-12-27",
+   "delisted": "2018-04-02"
+  },
+  {
+   "ticker": "SWY",
+   "listed": "2012-12-27",
+   "delisted": "2015-09-22"
+  },
+  {
+   "ticker": "SYMC",
+   "listed": "2012-12-27",
+   "delisted": "2020-05-10"
+  },
+  {
+   "ticker": "TEG",
+   "listed": "2012-12-27",
+   "delisted": "2015-09-22"
+  },
+  {
+   "ticker": "TGNA",
+   "listed": "2015-09-22",
+   "delisted": "2018-04-02"
+  },
+  {
+   "ticker": "TIE",
+   "listed": "2012-12-27",
+   "delisted": "2013-05-05"
+  },
+  {
+   "ticker": "TIF",
+   "listed": "2012-12-27",
+   "delisted": "2021-02-11"
+  },
+  {
+   "ticker": "TMK",
+   "listed": "2012-12-27",
+   "delisted": "2020-05-10"
+  },
+  {
+   "ticker": "TSO",
+   "listed": "2012-12-27",
+   "delisted": "2018-04-02"
+  },
+  {
+   "ticker": "TSS",
+   "listed": "2012-12-27",
+   "delisted": "2020-05-10"
+  },
+  {
+   "ticker": "TWC",
+   "listed": "2012-12-27",
+   "delisted": "2016-06-12"
+  },
+  {
+   "ticker": "TWTR",
+   "listed": "2020-05-10",
+   "delisted": "2022-12-24"
+  },
+  {
+   "ticker": "TWX",
+   "listed": "2012-12-27",
+   "delisted": "2020-05-10"
+  },
+  {
+   "ticker": "TYC",
+   "listed": "2012-12-27",
+   "delisted": "2017-03-08"
+  },
+  {
+   "ticker": "UTX",
+   "listed": "2012-12-27",
+   "delisted": "2020-05-10"
+  },
+  {
+   "ticker": "VAR",
+   "listed": "2012-12-27",
+   "delisted": "2021-04-23"
+  },
+  {
+   "ticker": "VIAB",
+   "listed": "2012-12-27",
+   "delisted": "2020-05-10"
+  },
+  {
+   "ticker": "VIAC",
+   "listed": "2020-05-10",
+   "delisted": "2022-12-24"
+  },
+  {
+   "ticker": "WAG",
+   "listed": "2012-12-27",
+   "delisted": "2015-09-22"
+  },
+  {
+   "ticker": "WBA",
+   "listed": "2015-09-22",
+   "delisted": "2026-03-04"
+  },
+  {
+   "ticker": "WFM",
+   "listed": "2012-12-27",
+   "delisted": "2018-04-02"
+  },
+  {
+   "ticker": "WIN",
+   "listed": "2012-12-27",
+   "delisted": "2015-09-22"
+  },
+  {
+   "ticker": "WLP",
+   "listed": "2012-12-27",
+   "delisted": "2015-09-22"
+  },
+  {
+   "ticker": "WLTW",
+   "listed": "2016-02-23",
+   "delisted": "2022-12-24"
+  },
+  {
+   "ticker": "WPI",
+   "listed": "2012-12-27",
+   "delisted": "2013-05-05"
+  },
+  {
+   "ticker": "WPO",
+   "listed": "2012-12-27",
+   "delisted": "2014-01-19"
+  },
+  {
+   "ticker": "WPX",
+   "listed": "2012-12-27",
+   "delisted": "2014-05-01"
+  },
+  {
+   "ticker": "WRK",
+   "listed": "2016-02-23",
+   "delisted": "2024-07-09"
+  },
+  {
+   "ticker": "WYN",
+   "listed": "2012-12-27",
+   "delisted": "2020-05-10"
+  },
+  {
+   "ticker": "X",
+   "listed": "2012-12-27",
+   "delisted": "2014-12-07"
+  },
+  {
+   "ticker": "XEC",
+   "listed": "2014-07-28",
+   "delisted": "2020-05-10"
+  },
+  {
+   "ticker": "XL",
+   "listed": "2012-12-27",
+   "delisted": "2020-05-10"
+  },
+  {
+   "ticker": "XLNX",
+   "listed": "2012-12-27",
+   "delisted": "2022-12-24"
+  },
+  {
+   "ticker": "YHOO",
+   "listed": "2012-12-27",
+   "delisted": "2018-04-02"
+  },
+  {
+   "ticker": "ZMH",
+   "listed": "2012-12-27",
+   "delisted": "2015-09-22"
+  }
+ ]
+}

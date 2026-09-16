@@ -36,6 +36,7 @@ on:
           - fmp-fundamentals
           - dart-fundamentals
           - krx-index-membership
+          - us-delisted-prices
           - alfred-macro-vintages
           - kr-delisting-coverage
       args:
@@ -81,6 +82,7 @@ jobs:
             fmp-fundamentals)      script=probe_fmp_fundamentals.py;       deps=no  ;;
             dart-fundamentals)     script=probe_dart_fundamentals.py;      deps=no  ;;
             krx-index-membership)  script=probe_krx_index_membership.py;   deps=no  ;;
+            us-delisted-prices)    script=probe_us_delisted_prices.py;     deps=no  ;;
             alfred-macro-vintages) script=probe_alfred_macro_vintages.py;  deps=yes ;;
             kr-delisting-coverage) script=measure_kr_delisting_coverage.py; deps=yes ;;
             *) echo "unknown probe: ${{ inputs.probe }}" >&2; exit 2 ;;
@@ -101,15 +103,15 @@ jobs:
           # credential does not get one. An absent secret arrives as an empty
           # string and every probe reports that as a missing key rather than
           # as a vendor that failed.
-          FMP_API_KEY: ${{ (inputs.probe == 'us-pit-fundamentals' || inputs.probe == 'fmp-fundamentals') && secrets.FMP || '' }}
+          FMP_API_KEY: ${{ (inputs.probe == 'us-pit-fundamentals' || inputs.probe == 'fmp-fundamentals' || inputs.probe == 'us-delisted-prices') && secrets.FMP || '' }}
           # `MASSIVE` is Polygon's key. The secret carries the name the vendor
           # itself handed out at signup, and renaming it here to match our
           # variable would mean the repository and the vendor's dashboard
           # disagree about what the same string is called.
-          POLYGON_API_KEY: ${{ inputs.probe == 'us-pit-fundamentals' && secrets.MASSIVE || '' }}
-          FINNHUB_API_KEY: ${{ inputs.probe == 'us-pit-fundamentals' && secrets.FINNHUB || '' }}
+          POLYGON_API_KEY: ${{ (inputs.probe == 'us-pit-fundamentals' || inputs.probe == 'us-delisted-prices') && secrets.MASSIVE || '' }}
+          FINNHUB_API_KEY: ${{ (inputs.probe == 'us-pit-fundamentals' || inputs.probe == 'us-delisted-prices') && secrets.FINNHUB || '' }}
           SIMFIN_API_KEY: ${{ inputs.probe == 'us-pit-fundamentals' && secrets.SIMFIN || '' }}
-          ALPHAVANTAGE_API_KEY: ${{ inputs.probe == 'us-pit-fundamentals' && secrets.ALPHAVANTAGE || '' }}
+          ALPHAVANTAGE_API_KEY: ${{ (inputs.probe == 'us-pit-fundamentals' || inputs.probe == 'us-delisted-prices') && secrets.ALPHAVANTAGE || '' }}
           DART_API_KEY: ${{ inputs.probe == 'dart-fundamentals' && secrets.DART || '' }}
           KRX_API_KEY: ${{ inputs.probe == 'krx-index-membership' && secrets.KRX_API_KEY || '' }}
           FRED_API_KEY: ${{ inputs.probe == 'alfred-macro-vintages' && secrets.FRED_API_KEY || '' }}
