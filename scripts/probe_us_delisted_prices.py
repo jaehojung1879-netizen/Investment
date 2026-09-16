@@ -29,9 +29,18 @@ and that the sealed panel already serves. A vendor that misses the control has
 told us about our account, not about delisting, and its verdict says so:
 
   OPEN                served the departed cohort AND the control
-  DEPARTED_REFUSED    served the control, served nothing departed — a real finding
+  PLAN_LIMITED        has the names and quotes a price for them — a budget
+                      question, not a vendor search
+  DEPARTED_REFUSED    served the control, served nothing departed, and said
+                      nothing about a plan — a real finding
   VENDOR_UNUSABLE     missed the control too; nothing is proven about delisting
   NO_KEY              no credential was passed, so it was never asked
+
+PLAN_LIMITED is the distinction run #1 lacked, and lacking it produced a wrong
+verdict: polygon answered every departed name with `NOT_AUTHORIZED — "Your plan
+doesn't include this data timeframe"` and the probe filed all twelve as errors,
+so the vendor read DEPARTED_REFUSED. Polygon had not refused the tickers; it had
+quoted a price. "Find another vendor" and "pay this one" are opposite moves.
 
 COVERAGE IS NOT "DID IT ANSWER". A vendor can answer with a two-year window and
 look served. Each response is scored against the name's OWN membership span
@@ -86,16 +95,34 @@ SERVED_FULL = "FULL"
 SERVED_PARTIAL = "PARTIAL"
 SERVED_EMPTY = "EMPTY"
 RATE_LIMITED = "RATE_LIMITED"
+# The vendor has the name and will not serve it on this plan. Run #1 recorded
+# every one of these as ERROR, which made polygon read DEPARTED_REFUSED when
+# what it actually said was "Your plan doesn't include this data timeframe" —
+# a sentence about our account, not about the ticker being dead. The two want
+# opposite next moves (change vendor / pay the vendor), so they are separate.
+PLAN_LIMITED = "PLAN_LIMITED"
 ERROR = "ERROR"
 
 TIMEOUT = 30
 
+# urllib announces itself as `Python-urllib/3.11`, which a good many sites
+# answer with 404 or 403 regardless of the path. Run #1 got a 404 HTML page
+# from stooq for AAPL, JPM and XOM — names stooq certainly has — so the header
+# is a candidate explanation that had not been ruled out. Asking as a browser
+# does not make a refusal go away; it removes one reason for a false one.
+USER_AGENT = ("Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 "
+              "(KHTML, like Gecko) Chrome/124.0 Safari/537.36")
 
-# --------------------------------------------------------------------------- #
-# Vendors
-# --------------------------------------------------------------------------- #
+# Payment-required and plan-scope refusals, as each vendor spells them.
+PLAN_STATUSES = (402, 403)
+PLAN_PHRASES = ("not_authorized", "doesn't include", "does not include",
+                "upgrade", "payment required", "premium", "subscription",
+                "your plan", "exclusive endpoint", "special endpoint")
+
+
 def _get(url: str, *, headers: dict | None = None) -> tuple[int, bytes]:
-    request = urllib.request.Request(url, headers=headers or {})
+    request = urllib.request.Request(
+        url, headers={"User-Agent": USER_AGENT, **(headers or {})})
     try:
         with urllib.request.urlopen(request, timeout=TIMEOUT) as response:
             return response.status, response.read()
@@ -103,6 +130,27 @@ def _get(url: str, *, headers: dict | None = None) -> tuple[int, bytes]:
         return exc.code, exc.read()[:2000]
     except Exception as exc:  # pragma: no cover - network dependent
         return 0, f"{type(exc).__name__}: {exc}".encode()
+
+
+def _text(body: bytes, limit: int = 200) -> str:
+    """What the vendor actually said, always — never 'unparseable body'.
+
+    Run #1 printed `HTTP 402: unparseable body` twelve times because the error
+    path only described bodies that were JSON. The status code alone cannot
+    tell a paywall from an outage, and the sentence that can was thrown away.
+    """
+    text = body.decode("utf-8", "replace").strip().replace("\n", " ")
+    return text[:limit] if text else "(empty body)"
+
+
+def _is_plan_refusal(status: int, body_text: str) -> bool:
+    """A refusal about our account rather than about the ticker."""
+    if status not in PLAN_STATUSES:
+        return False
+    lowered = body_text.lower()
+    # 402 is Payment Required and means it on its own; 403 is also used for
+    # plain auth failures, so it has to say something about the plan.
+    return status == 402 or any(phrase in lowered for phrase in PLAN_PHRASES)
 
 
 def _dates_from_csv(body: bytes) -> list[str]:
@@ -121,16 +169,35 @@ def _dates_from_csv(body: bytes) -> list[str]:
     return out
 
 
+def _classify_http(status: int, body: bytes) -> tuple[str, str] | None:
+    """The failure this response is, or None when it is a body worth parsing.
+
+    Every vendor shares this: the shape of the payload differs, the meaning of
+    429 / 402 / a plan-scoped 403 does not, and every one of them keeps the
+    vendor's own sentence rather than a paraphrase of its status code.
+    """
+    text = _text(body)
+    if status == 429:
+        return RATE_LIMITED, f"HTTP 429: {text}"
+    if _is_plan_refusal(status, text):
+        return PLAN_LIMITED, f"HTTP {status}: {text}"
+    if status != 200:
+        return ERROR, f"HTTP {status}: {text}"
+    return None
+
+
 def stooq(ticker: str, start: str, end: str, key: str) -> tuple[str, list[str], str]:
     """Stooq's CSV export. No credential, which is the point of asking it first."""
     url = ("https://stooq.com/q/d/l/?s=" + urllib.parse.quote(ticker.lower() + ".us")
            + f"&d1={start.replace('-', '')}&d2={end.replace('-', '')}&i=d")
     status, body = _get(url)
-    if status == 429:
-        return RATE_LIMITED, [], "429"
-    if status != 200:
-        return ERROR, [], f"HTTP {status}: {body[:120].decode('utf-8', 'replace')}"
-    return "", _dates_from_csv(body), ""
+    failure = _classify_http(status, body)
+    if failure:
+        return failure[0], [], failure[1]
+    dates = _dates_from_csv(body)
+    # Stooq answers 200 with a one-line body when it has nothing, so an empty
+    # parse here is a real absence rather than a shape this parser missed.
+    return "", dates, "" if dates else f"200 but no rows: {_text(body, 120)}"
 
 
 def polygon(ticker: str, start: str, end: str, key: str) -> tuple[str, list[str], str]:
@@ -139,14 +206,13 @@ def polygon(ticker: str, start: str, end: str, key: str) -> tuple[str, list[str]
            f"/range/1/day/{start}/{end}?adjusted=true&sort=asc&limit=50000"
            f"&apiKey={urllib.parse.quote(key)}")
     status, body = _get(url)
-    if status == 429:
-        return RATE_LIMITED, [], "429"
+    failure = _classify_http(status, body)
+    if failure:
+        return failure[0], [], failure[1]
     try:
         payload = json.loads(body)
     except ValueError:
-        return ERROR, [], f"HTTP {status}: unparseable body"
-    if status != 200:
-        return ERROR, [], f"HTTP {status}: {str(payload)[:160]}"
+        return ERROR, [], f"HTTP {status}: {_text(body)}"
     dates = [time.strftime("%Y-%m-%d", time.gmtime(row["t"] / 1000))
              for row in (payload.get("results") or []) if row.get("t")]
     return "", dates, ""
@@ -159,14 +225,13 @@ def finnhub(ticker: str, start: str, end: str, key: str) -> tuple[str, list[str]
     url = (f"https://finnhub.io/api/v1/stock/candle?symbol={urllib.parse.quote(ticker)}"
            f"&resolution=D&from={frm}&to={to}&token={urllib.parse.quote(key)}")
     status, body = _get(url)
-    if status == 429:
-        return RATE_LIMITED, [], "429"
+    failure = _classify_http(status, body)
+    if failure:
+        return failure[0], [], failure[1]
     try:
         payload = json.loads(body)
     except ValueError:
-        return ERROR, [], f"HTTP {status}: unparseable body"
-    if status != 200:
-        return ERROR, [], f"HTTP {status}: {str(payload)[:160]}"
+        return ERROR, [], f"HTTP {status}: {_text(body)}"
     if payload.get("s") == "no_data":
         return "", [], ""
     stamps = payload.get("t") or []
@@ -179,15 +244,21 @@ def fmp(ticker: str, start: str, end: str, key: str) -> tuple[str, list[str], st
            + urllib.parse.quote(ticker)
            + f"&from={start}&to={end}&apikey={urllib.parse.quote(key)}")
     status, body = _get(url)
-    if status == 429:
-        return RATE_LIMITED, [], "429"
+    failure = _classify_http(status, body)
+    if failure:
+        return failure[0], [], failure[1]
     try:
         payload = json.loads(body)
     except ValueError:
-        return ERROR, [], f"HTTP {status}: unparseable body"
-    if status != 200:
-        return ERROR, [], f"HTTP {status}: {str(payload)[:160]}"
+        return ERROR, [], f"HTTP {status}: {_text(body)}"
     rows = payload if isinstance(payload, list) else (payload.get("historical") or [])
+    # FMP says some refusals in a 200 body, the way it does for statements.
+    if isinstance(payload, dict) and not rows:
+        message = str(payload.get("Error Message") or payload.get("message") or "")
+        if message:
+            plan = _is_plan_refusal(402, message) or any(
+                phrase in message.lower() for phrase in PLAN_PHRASES)
+            return (PLAN_LIMITED if plan else ERROR), [], f"200: {message[:200]}"
     return "", [row["date"] for row in rows if isinstance(row, dict) and row.get("date")], ""
 
 
@@ -196,15 +267,22 @@ def alphavantage(ticker: str, start: str, end: str, key: str) -> tuple[str, list
     url = ("https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&outputsize=full"
            f"&symbol={urllib.parse.quote(ticker)}&apikey={urllib.parse.quote(key)}")
     status, body = _get(url)
+    failure = _classify_http(status, body)
+    if failure:
+        return failure[0], [], failure[1]
     try:
         payload = json.loads(body)
     except ValueError:
-        return ERROR, [], f"HTTP {status}: unparseable body"
+        return ERROR, [], f"HTTP {status}: {_text(body)}"
     for field in ("Error Message", "Information", "Note"):
         if field in payload:
-            text = str(payload[field])[:160]
-            limited = "limit" in text.lower() or "frequency" in text.lower()
-            return (RATE_LIMITED if limited else ERROR), [], text
+            text = str(payload[field])[:200]
+            lowered = text.lower()
+            if "limit" in lowered or "frequency" in lowered:
+                return RATE_LIMITED, [], text
+            if any(phrase in lowered for phrase in PLAN_PHRASES):
+                return PLAN_LIMITED, [], text
+            return ERROR, [], text
     series = payload.get("Time Series (Daily)") or {}
     return "", [d for d in series if start <= d <= end], ""
 
@@ -267,14 +345,26 @@ def classify_rows(dates: list[str], listed: str, delisted: str) -> tuple[str, fl
 
 
 def vendor_verdict(departed: list[dict], control: list[dict]) -> str:
-    """What the two cohorts together say about this vendor."""
+    """What the two cohorts together say about this vendor.
+
+    The order matters and run #1 got it wrong by not having the middle case:
+    polygon answered every departed name with "Your plan doesn't include this
+    data timeframe" and was recorded as having REFUSED them. It had not. A
+    vendor that names its price is a vendor that has the data, and that is a
+    budget decision rather than a reason to go looking for another vendor.
+    """
     control_served = [r for r in control if r["status"] in (SERVED_FULL, SERVED_PARTIAL)]
+    control_plan_limited = [r for r in control if r["status"] == PLAN_LIMITED]
     if not control_served:
-        return "VENDOR_UNUSABLE"
+        # A control that is itself behind the paywall still says something: the
+        # vendor is reachable and the plan is the obstacle, for live names too.
+        return "PLAN_LIMITED" if control_plan_limited else "VENDOR_UNUSABLE"
     served = [r for r in departed if r["status"] in (SERVED_FULL, SERVED_PARTIAL)]
-    if not served:
-        return "DEPARTED_REFUSED"
-    return "OPEN"
+    if served:
+        return "OPEN"
+    if any(r["status"] == PLAN_LIMITED for r in departed):
+        return "PLAN_LIMITED"
+    return "DEPARTED_REFUSED"
 
 
 # --------------------------------------------------------------------------- #
@@ -364,15 +454,20 @@ def main(argv=None) -> int:
         verdict = vendor_verdict(departed, control)
         served = [r for r in departed if r["status"] in (SERVED_FULL, SERVED_PARTIAL)]
         full = [r for r in departed if r["status"] == SERVED_FULL]
+        priced = [r for r in departed if r["status"] == PLAN_LIMITED]
         vendors[name] = {
             "verdict": verdict, "keyEnv": env,
             "departedAsked": len(departed), "departedServed": len(served),
-            "departedFullSpan": len(full),
+            "departedFullSpan": len(full), "departedPlanLimited": len(priced),
             "departedServedPct": round(100.0 * len(served) / len(departed), 2) if departed else None,
+            # The sentence the vendor used to quote its price, kept verbatim:
+            # it is the difference between a paywall and an outage.
+            "planMessage": next((r["note"] for r in priced if r.get("note")), None),
             "control": control, "departed": departed,
         }
         print(f"  {name}: {verdict} — {len(served)}/{len(departed)} served, "
-              f"{len(full)} with the full membership span")
+              f"{len(full)} with the full membership span"
+              + (f", {len(priced)} behind the plan" if priced else ""))
 
     report = {
         "probe": "us-delisted-prices",
@@ -383,11 +478,17 @@ def main(argv=None) -> int:
         "controls": list(CONTROL),
         "vendors": vendors,
         "openVendors": sorted(n for n, v in vendors.items() if v["verdict"] == "OPEN"),
+        # Vendors that have the data and want paying for it. Reported beside
+        # the open ones because they are the answer to a different question,
+        # and because a run with none of either means something else again.
+        "payableVendors": sorted(n for n, v in vendors.items()
+                                 if v["verdict"] == "PLAN_LIMITED"),
     }
     Path(args.output).write_text(
         json.dumps(report, indent=1, ensure_ascii=False) + "\n", encoding="utf-8")
     print(f"\nwrote {args.output}")
     print("open vendors:", ", ".join(report["openVendors"]) or "none")
+    print("behind a plan:", ", ".join(report["payableVendors"]) or "none")
     return 0
 
 

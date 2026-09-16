@@ -181,3 +181,144 @@ def test_every_vendor_declares_whether_it_needs_a_credential(vendor):
     fetch, env = P.VENDORS[vendor]
     assert callable(fetch)
     assert env is None or env.endswith("_API_KEY")
+
+
+# --------------------------------------------------------------------------- #
+# Run #1 taught these three. Each is a defect the first probe shipped with.
+# --------------------------------------------------------------------------- #
+def test_a_paywall_is_not_a_refusal():
+    # Run #1's mistake in one assertion: polygon said "Your plan doesn't
+    # include this data timeframe" for all twelve departed names and the probe
+    # filed it as DEPARTED_REFUSED. That sentence is a price, not an absence.
+    control = [{"ticker": "AAPL", "status": P.SERVED_PARTIAL}]
+    departed = [{"ticker": "ANR", "status": P.PLAN_LIMITED},
+                {"ticker": "JCP", "status": P.PLAN_LIMITED}]
+    assert P.vendor_verdict(departed, control) == "PLAN_LIMITED"
+
+
+def test_a_real_refusal_still_reads_as_one():
+    # The distinction only earns its place if it does not swallow the finding
+    # it was carved out of: a vendor that serves live names and answers
+    # nothing at all for dead ones has told us about delisting.
+    control = [{"ticker": "AAPL", "status": P.SERVED_FULL}]
+    departed = [{"ticker": "YHOO", "status": P.SERVED_EMPTY},
+                {"ticker": "DTV", "status": P.SERVED_EMPTY}]
+    assert P.vendor_verdict(departed, control) == "DEPARTED_REFUSED"
+
+
+def test_one_served_departed_name_outranks_a_paywall_on_the_others():
+    control = [{"ticker": "AAPL", "status": P.SERVED_FULL}]
+    departed = [{"ticker": "VIAC", "status": P.SERVED_PARTIAL},
+                {"ticker": "ANR", "status": P.PLAN_LIMITED}]
+    assert P.vendor_verdict(departed, control) == "OPEN"
+
+
+def test_a_paywalled_control_is_a_plan_verdict_not_an_unusable_vendor():
+    control = [{"ticker": "AAPL", "status": P.PLAN_LIMITED}]
+    departed = [{"ticker": "ANR", "status": P.PLAN_LIMITED}]
+    assert P.vendor_verdict(departed, control) == "PLAN_LIMITED"
+
+
+def test_an_unreachable_vendor_is_still_unusable():
+    control = [{"ticker": "AAPL", "status": P.ERROR}]
+    departed = [{"ticker": "ANR", "status": P.ERROR}]
+    assert P.vendor_verdict(departed, control) == "VENDOR_UNUSABLE"
+
+
+@pytest.mark.parametrize("status,body,expected", [
+    # FMP's actual answer for a name outside the plan's lookback.
+    (402, b'{"message":"Payment Required"}', P.PLAN_LIMITED),
+    # Payment Required means it even with a body no parser understands.
+    (402, b"<html>upgrade</html>", P.PLAN_LIMITED),
+    # And even when the body says nothing about a plan at all. This is the
+    # real run #1 case: FMP answered 402 twelve times and the probe threw the
+    # body away, so what it said is still unknown — the status alone has to
+    # carry the verdict, or an unknown body silently becomes an "error".
+    (402, b'{"error":"none"}', P.PLAN_LIMITED),
+    (402, b"", P.PLAN_LIMITED),
+    # Polygon's actual answer, verbatim from run #1.
+    (403, b'{"status":"NOT_AUTHORIZED","message":"Your plan doesn\'t include '
+          b'this data timeframe. Please upgrade your plan"}', P.PLAN_LIMITED),
+    # finnhub's actual answer: a 403 that says nothing about a plan is a plain
+    # auth failure, and calling that a paywall would invent a price.
+    (403, b'{"error":"You don\'t have access to this resource."}', P.ERROR),
+    (429, b"slow down", P.RATE_LIMITED),
+    (404, b"<html>not found</html>", P.ERROR),
+])
+def test_http_failures_are_classified_by_what_the_vendor_said(status, body, expected):
+    failure = P._classify_http(status, body)
+    assert failure is not None
+    assert failure[0] == expected
+
+
+def test_a_200_is_not_a_failure():
+    assert P._classify_http(200, b"Date,Close\n2013-01-02,10\n") is None
+
+
+def test_the_vendors_sentence_is_always_kept():
+    # `HTTP 402: unparseable body` was printed twelve times in run #1 and threw
+    # away the only text that could tell a paywall from an outage.
+    _, note = P._classify_http(402, b'{"message":"Payment Required"}')
+    assert "Payment Required" in note
+    _, note = P._classify_http(500, b"<html>gateway</html>")
+    assert "gateway" in note
+    assert "unparseable" not in note
+    _, note = P._classify_http(503, b"")
+    assert "(empty body)" in note
+
+
+def test_requests_do_not_announce_themselves_as_a_script():
+    # Run #1 got 404 from stooq for AAPL, JPM and XOM — names it certainly
+    # has. A default urllib User-Agent is a candidate cause that had not been
+    # ruled out, and a probe must not leave a false refusal on the table.
+    assert "Mozilla" in P.USER_AGENT
+    assert "urllib" not in P.USER_AGENT.lower()
+
+
+def test_the_browser_user_agent_actually_reaches_the_request(monkeypatch):
+    # Asserting the constant proves nothing about what is sent; this catches a
+    # header that is defined and then not attached.
+    seen = {}
+
+    class _Response:
+        status = 200
+
+        def read(self):
+            return b"Date,Close\n2013-01-02,10\n"
+
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *exc):
+            return False
+
+    def _fake_urlopen(request, timeout=None):
+        seen["ua"] = request.get_header("User-agent")
+        return _Response()
+
+    monkeypatch.setattr(P.urllib.request, "urlopen", _fake_urlopen)
+    status, body = P._get("https://example.invalid/x")
+    assert status == 200
+    assert seen["ua"] == P.USER_AGENT
+
+
+def test_an_explicit_header_can_override_the_default_agent(monkeypatch):
+    seen = {}
+
+    class _Response:
+        status = 200
+
+        def read(self):
+            return b""
+
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *exc):
+            return False
+
+    monkeypatch.setattr(P.urllib.request, "urlopen",
+                        lambda request, timeout=None: (
+                            seen.update(ua=request.get_header("User-agent")) or _Response()))
+    P._get("https://example.invalid/x", headers={"User-Agent": "custom/1.0"})
+    assert seen["ua"] == "custom/1.0"
