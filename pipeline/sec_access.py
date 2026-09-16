@@ -16,6 +16,8 @@ from __future__ import annotations
 
 import gzip
 import io
+import json
+import urllib.request
 import zlib
 
 # The phrases SEC's own refusal pages carry. Matched on the BODY, because the
@@ -63,3 +65,28 @@ def classify(status: int | None, body: bytes) -> tuple[str, str | None]:
         return SERVED, None
     # A 200 that is neither JSON nor a known marker is still not data.
     return BLOCKED, "200 with a non-JSON body"
+
+
+# Where a runner asks what address it is. Not SEC, deliberately: asking SEC
+# would spend the very request being measured. Shared by every probe that
+# needs to correlate its verdict with the egress address it ran from, so
+# there is one implementation of "what IP did this request leave from"
+# rather than one per probe script.
+IP_SERVICES = ("https://checkip.amazonaws.com", "https://api.ipify.org")
+
+
+def egress_ip(timeout: int = 15) -> str | None:
+    for url in IP_SERVICES:
+        try:
+            with urllib.request.urlopen(url, timeout=timeout) as response:
+                text = response.read(200).decode("utf-8", "replace").strip()
+        except Exception:
+            continue
+        if text.startswith("{"):
+            try:
+                return str(json.loads(text).get("ip") or "").strip() or None
+            except ValueError:
+                continue
+        if text:
+            return text
+    return None

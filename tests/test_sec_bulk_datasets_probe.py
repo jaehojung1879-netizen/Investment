@@ -119,3 +119,142 @@ def test_no_relevant_facts_reports_an_empty_distribution_not_a_guess():
     assert entry["relevantFacts"] == 0
     assert entry["qtrsDistribution"] == {}
     assert "sampleFact" not in entry
+
+
+# --------------------------------------------------------------------------- #
+# Body classification — a block page cannot forge a ZIP's magic bytes, so
+# that is checked first and text markers are the fallback, not the rule
+# --------------------------------------------------------------------------- #
+def test_zip_magic_bytes_are_recognised_regardless_of_status():
+    kind, marker = P.classify_body(200, b"PK\x03\x04rest of a real zip...")
+    assert kind == "ZIP"
+    assert marker is None
+
+
+def test_sec_block_page_is_recognised_by_its_own_sentence():
+    body = b"<html><title>SEC.gov | Request Rate Threshold Exceeded</title></html>"
+    kind, marker = P.classify_body(403, body)
+    assert kind == "BLOCK_PAGE"
+    assert "Request Rate Threshold Exceeded" in marker
+
+
+def test_undeclared_automated_tool_page_is_also_recognised():
+    body = b"<html>Your Request Originates from an Undeclared Automated Tool</html>"
+    kind, marker = P.classify_body(403, body)
+    assert kind == "BLOCK_PAGE"
+
+
+def test_json_body_is_told_apart_from_a_block_page():
+    kind, marker = P.classify_body(200, b'{"cik": 320193, "name": "Apple Inc."}')
+    assert kind == "JSON"
+    assert marker is None
+
+
+def test_html_that_is_not_a_known_block_marker_is_still_reported_as_html():
+    # A refusal this probe has never seen must not be misread as data.
+    kind, marker = P.classify_body(403, b"<html><body>Access Denied</body></html>")
+    assert kind == "HTML"
+    assert marker is None
+
+
+def test_empty_body_is_unknown_not_crashed_on():
+    kind, marker = P.classify_body(None, b"")
+    assert kind == "UNKNOWN"
+
+
+# --------------------------------------------------------------------------- #
+# The judgement — A/B/C exactly as the task defines them
+# --------------------------------------------------------------------------- #
+def _bulk(no_ua_kind, fair_kind, fallback_kind=None):
+    row = {"bodyKind": no_ua_kind}
+    return {
+        "requestNoUserAgent": {"bodyKind": no_ua_kind},
+        "requestFairAccessUserAgent": {"bodyKind": fair_kind},
+        "requestFallbackQuarter": {"bodyKind": fallback_kind} if fallback_kind else None,
+    }
+
+
+def test_a_served_zip_on_the_fair_access_ua_is_viable():
+    bulk = _bulk("BLOCK_PAGE", "ZIP")
+    verdict = P.judge(bulk, {"data.sec.gov": {"bodyKind": "BLOCK_PAGE"},
+                             "www.sec.gov/Archives": {"bodyKind": "BLOCK_PAGE"}})
+    assert verdict["verdict"] == "VIABLE"
+
+
+def test_a_served_zip_on_the_bare_request_alone_is_also_viable():
+    # The fair-access request can fail (rate-limited a beat later, say) while
+    # the bare first request still answered with the ZIP — that must still
+    # count, or the verdict silently depends on request order.
+    bulk = _bulk("ZIP", "BLOCK_PAGE")
+    verdict = P.judge(bulk, {"data.sec.gov": {"bodyKind": "BLOCK_PAGE"},
+                             "www.sec.gov/Archives": {"bodyKind": "BLOCK_PAGE"}})
+    assert verdict["verdict"] == "VIABLE"
+
+
+def test_a_served_fallback_quarter_is_also_viable():
+    bulk = _bulk("BLOCK_PAGE", "BLOCK_PAGE", fallback_kind="ZIP")
+    verdict = P.judge(bulk, {})
+    assert verdict["verdict"] == "VIABLE"
+
+
+def test_zip_blocked_but_data_sec_or_archives_open_is_partially_viable():
+    bulk = _bulk("BLOCK_PAGE", "BLOCK_PAGE")
+    verdict = P.judge(bulk, {"data.sec.gov": {"bodyKind": "JSON"},
+                             "www.sec.gov/Archives": {"bodyKind": "BLOCK_PAGE"}})
+    assert verdict["verdict"] == "PARTIALLY_VIABLE"
+
+
+def test_everything_refused_from_the_first_request_is_blocked():
+    bulk = _bulk("BLOCK_PAGE", "BLOCK_PAGE")
+    verdict = P.judge(bulk, {"data.sec.gov": {"bodyKind": "BLOCK_PAGE"},
+                             "www.sec.gov/Archives": {"bodyKind": "BLOCK_PAGE"}})
+    assert verdict["verdict"] == "BLOCKED"
+    assert "self-hosted" in verdict["meaning"] or "local" in verdict["meaning"]
+
+
+# --------------------------------------------------------------------------- #
+# Redirect-chain capture — the caller must see every hop, not just the last
+# --------------------------------------------------------------------------- #
+def test_no_redirect_handler_stops_urllib_from_following_silently():
+    # If this ever followed silently, the probe would report only the final
+    # host and misattribute a redirect-time refusal to whichever host
+    # happened to answer last. `req` is a non-None sentinel so a mutation
+    # that returns it instead of None cannot pass by coincidence.
+    handler = P._NoRedirect()
+    sentinel_request = object()
+    result = handler.redirect_request(sentinel_request, None, 302, "Found", {}, "https://x")
+    assert result is None
+    assert result is not sentinel_request
+
+
+# --------------------------------------------------------------------------- #
+# expectedFiles / fileSizes — additive to the existing sub.txt/num.txt gate
+# --------------------------------------------------------------------------- #
+def test_expected_files_reports_all_four_not_just_the_matching_pair():
+    raw = _zip_bytes(sub_rows=[AAPL_SUB], num_rows=[],
+                     extra_files={"tag.txt": "a\tb\n", "pre.txt": "c\td\n"})
+    entry = P.parse_quarter_zip(raw, {"AAPL": 320193})
+    assert entry["expectedFiles"] == {"sub.txt": True, "num.txt": True,
+                                      "tag.txt": True, "pre.txt": True}
+    assert entry["fileSizes"]["tag.txt"] > 0
+    assert entry["zipIntegrityOk"] is True
+
+
+def test_a_corrupted_zip_entry_is_reported_as_failing_integrity():
+    raw = bytearray(_zip_bytes(sub_rows=[AAPL_SUB], num_rows=[],
+                               extra_files={"tag.txt": "a\tb\n" * 50}))
+    # Flip bytes in the middle of the archive, past the local file headers,
+    # so the ZIP still opens (namelist works) but a member fails its CRC.
+    mid = len(raw) // 2
+    for i in range(mid, mid + 20):
+        raw[i] ^= 0xFF
+    entry = P.parse_quarter_zip(bytes(raw), {"AAPL": 320193})
+    assert entry.get("zipIntegrityOk") is False or "error" in entry
+
+
+def test_a_quarter_zip_missing_tag_and_pre_still_reports_which_ones():
+    raw = _zip_bytes(sub_rows=[AAPL_SUB], num_rows=[])
+    entry = P.parse_quarter_zip(raw, {"AAPL": 320193})
+    assert entry["expectedFiles"]["tag.txt"] is False
+    assert entry["expectedFiles"]["pre.txt"] is False
+    assert "tag.txt" not in entry["fileSizes"]
