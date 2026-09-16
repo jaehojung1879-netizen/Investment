@@ -251,11 +251,16 @@ def _bucket_diagnostics(frame: pd.DataFrame, horizon: int, edges) -> tuple[list[
 # "weak evidence" — it is evidence against a weight production is already
 # paying for, and it stays invisible if only the blended composite is reported.
 #
+# All four live sleeves are assessed, not just the two the price-only replay
+# used to carry. `claimEligible` already gates value/quality (and fullComposite)
+# on point-in-time fundamentals being present for that row, so a sleeve with no
+# PIT coverage yet contributes no evidence here rather than a false negative.
+#
 # This is deliberately a detector and not a corrector. The replay it reads is
-# survivorship-affected on 100% of observations and carries no point-in-time
-# fundamentals, so refitting FACTOR_WEIGHTS on the same sample that surfaced
-# the contradiction would be exactly the model shopping the rest of this module
-# refuses to do. It reports; a human decides.
+# still survivorship-affected — most heavily for US, closed for KR as of v16 —
+# so refitting FACTOR_WEIGHTS on the same sample that surfaced a contradiction
+# would be exactly the model shopping the rest of this module refuses to do.
+# It reports; a human decides.
 SIGN_MIN_INDEPENDENT_DATES = 12
 SIGN_PERSISTENCE_HORIZONS = 2
 
@@ -267,7 +272,7 @@ def _sleeve_sign_consistency(factor_attr: dict) -> dict:
         region, _, horizon = key.partition(":")
         if not horizon.isdigit():
             continue
-        for sleeve in PRICE_SLEEVES:
+        for sleeve in FULL_SLEEVES:
             row = sleeves.get(sleeve)
             if not row or not row.get("claimEligible"):
                 continue
@@ -319,8 +324,8 @@ def _sleeve_sign_consistency(factor_attr: dict) -> dict:
     return {
         "assumedSignPolicy": "ALL_LIVE_COMPOSITE_WEIGHTS_POSITIVE_SO_EVERY_SLEEVE_ASSUMES_POSITIVE_SIGN",
         "actionPolicy": "REPORT_ONLY_NEVER_REWEIGHT_ON_THIS_SAMPLE",
-        "assessedSleeves": list(PRICE_SLEEVES),
-        "liveWeights": {sleeve: _r(LT.FACTOR_WEIGHTS.get(sleeve), 4) for sleeve in PRICE_SLEEVES},
+        "assessedSleeves": list(FULL_SLEEVES),
+        "liveWeights": {sleeve: _r(LT.FACTOR_WEIGHTS.get(sleeve), 4) for sleeve in FULL_SLEEVES},
         "minIndependentDates": SIGN_MIN_INDEPENDENT_DATES,
         "persistenceThresholdHorizons": SIGN_PERSISTENCE_HORIZONS,
         "byRegionSleeve": dict(sorted(grouped.items())),
@@ -330,8 +335,9 @@ def _sleeve_sign_consistency(factor_attr: dict) -> dict:
             "라이브 합성은 모든 슬리브에 양(+)의 가중치를 주므로 각 슬리브의 가정 부호는 +입니다. "
             "어떤 지역·슬리브의 rank IC 95% 구간이 두 개 이상 horizon에서 0보다 완전히 아래에 있으면, "
             "그 슬리브는 실전에서 부여받은 가중치와 반대 방향의 증거를 갖고 있다는 뜻입니다. "
-            "이 표본은 생존편향이 해소되지 않았고 시점별 재무가 없으므로, 이 신호는 가중치 재적합의 "
-            "근거가 아니라 사람이 판단해야 할 보고 항목입니다."),
+            "value·quality는 시점별 재무가 없는 날짜의 행에서는 claimEligible이 꺼져 있어 그 행이 "
+            "증거에 들어오지 않습니다. 이 표본은 생존편향이 해소되지 않았으므로(특히 미국), 이 신호는 "
+            "가중치 재적합의 근거가 아니라 사람이 판단해야 할 보고 항목입니다."),
     }
 
 
@@ -368,7 +374,7 @@ def alpha_diagnostics(signals: list[dict], outcomes: list[dict], *,
                 "rolling5YTopBottomSpread": _rolling(top_bottom, 5),
             }
             sleeve_rows = {}
-            for sleeve in (*PRICE_SLEEVES, "priceComposite", "fullComposite"):
+            for sleeve in (*FULL_SLEEVES, "priceComposite", "fullComposite"):
                 series = []
                 if sleeve not in part:
                     continue
