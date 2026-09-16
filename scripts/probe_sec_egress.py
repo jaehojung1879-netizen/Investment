@@ -46,11 +46,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 
-from pipeline.sec_access import SERVED, classify, decode_body  # noqa: E402
-
-# Where the runner asks what address it is. Not SEC, deliberately: asking SEC
-# would spend the very request being measured.
-IP_SERVICES = ("https://checkip.amazonaws.com", "https://api.ipify.org")
+from pipeline.sec_access import SERVED, classify, decode_body, egress_ip  # noqa: E402
 
 # One per host, because the two answer with different block pages and a fix
 # that reaches one may not reach the other. AAPL's CIK is public record.
@@ -70,23 +66,6 @@ def headers(contact: str) -> dict:
 
 
 DEFAULT_CONTACT = "jaehojung1879-netizen@users.noreply.github.com"
-
-
-def egress_ip(timeout: int = 15) -> str | None:
-    for url in IP_SERVICES:
-        try:
-            with urllib.request.urlopen(url, timeout=timeout) as response:
-                text = response.read(200).decode("utf-8", "replace").strip()
-        except Exception:
-            continue
-        if text.startswith("{"):
-            try:
-                return str(json.loads(text).get("ip") or "").strip() or None
-            except ValueError:
-                continue
-        if text:
-            return text
-    return None
 
 
 def attempt(url: str, contact: str, timeout: int = 30) -> dict:

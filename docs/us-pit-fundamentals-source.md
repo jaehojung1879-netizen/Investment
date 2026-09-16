@@ -24,7 +24,7 @@ route to use.
 | `data.sec.gov` | `REFUSED_ON_EVERY_ADDRESS` | `Probe SEC egress addresses` run #1, 2026-09-04 |
 | `www.sec.gov` | `REFUSED_ON_EVERY_ADDRESS` | same run |
 | SEC, any header set | `REFUSED_ON_EVERY_HEADER_SET` | `Probe SEC header isolation` |
-| SEC bulk ZIP datasets | block page | `Probe SEC bulk financial statement datasets` |
+| SEC bulk ZIP datasets, `2025q2`/`2013q1` | `HTTP 403 Request Rate Threshold Exceeded` | `Probe SEC bulk financial statement datasets`, 2026-09-04 04:50 UTC |
 | FMP `/stable`, current key | serves statements **with `filingDate`** | `Probe FMP fundamentals` run #4, 2026-09-05 |
 | FMP `/stable`, current key | `limit` capped at **4 periods** | same run |
 | `efts.sec.gov`, apex `sec.gov` | `REFUSED_ON_EVERY_SEC_HOST` | US PIT probe run #1, 2026-09-13 |
@@ -816,12 +816,17 @@ label is that it **deliberately does not run in CI**.
 
 SEC publishes the same filing data as quarterly **Financial Statement Data
 Sets** — `sub.txt` carries the accession's `filed` date, `num.txt` the tagged
-values. They are refused from the Actions IP pool like everything else on
-`sec.gov`, but they are ordinary downloads from any address that is not in
-that pool. Fetched once from a laptop, filtered to the 829 US names, converted
-to `PIT_FUNDAMENTALS_V1` rows and committed to the `signal-history` branch,
-they would give the US half exactly what DART gave the Korean half — from the
-authoritative source, free, with the real filing date.
+values. Measured once, 2026-09-04, both a recent and an old quarter came back
+`403 Request Rate Threshold Exceeded` from the Actions pool — the same page
+`www.sec.gov` gives everywhere else, not a wall specific to this path. That
+measurement is twelve days old and never captured a redirect chain, response
+headers, or the runner's egress address; `docs/sec-bulk-datasets-egress-check.md`
+re-measures it with those. Whatever it finds, the ZIP downloads are ordinary
+requests from any address that is not in the Actions pool. Fetched once from a
+laptop, filtered to the 829 US names, converted to `PIT_FUNDAMENTALS_V1` rows
+and committed to the `signal-history` branch, they would give the US half
+exactly what DART gave the Korean half — from the authoritative source, free,
+with the real filing date.
 
 The trade-off is that it is a manual quarterly refresh instead of a scheduled
 job, and that has to be stated in `metricDefinition` rather than discovered
