@@ -129,11 +129,33 @@ Probes → us-delisted-prices
    답한다. 브라우저 User-Agent를 붙인다고 거부가 사라지지는 않지만, **거짓 거부의
    이유 하나는 제거된다.** 붙이고 다시 잰다.
 
+## Run #2, 2026-09-16 — 답이 나왔다: 둘 다 판다
+
+같은 표본 12개 + 대조군 3개. `PLAN_LIMITED` 판정과 본문 보존을 넣은 뒤 재실행. 11분.
+
+| 벤더 | run #2 판정 | 벤더가 실제로 한 말 |
+|---|---|---|
+| `stooq` | `VENDOR_UNUSABLE` | 브라우저 UA를 붙여도 AAPL·JPM·XOM 전부 200 + `<noscript>` 페이지 — 봇 차단벽이지 데이터 부재가 아니다 |
+| `polygon` | **`PLAN_LIMITED`** | 대조군 그대로 서빙(2년치). 떠난 12개 전부 403 `NOT_AUTHORIZED` — *"Your plan doesn't include this data timeframe. Please upgrade your plan at https://polygon.io/pricing"* |
+| `finnhub` | `VENDOR_UNUSABLE` | 대조군까지 403 `"You don't have access to this resource."` — 플랜 언급이 없어 `ERROR`로 남는다. candle 엔드포인트 자체가 이 키로는 안 닿는다 |
+| `fmp` | `OPEN` | 대조군 FULL(3,437행). 떠난 12개 중 11개가 402 — *"Premium Query Parameter: Special Endpoint... not available under your current subscription... upgrade your plan"*. VIAC 하나만 PARTIAL(67.4%, 448행) — 무료 조회창 안에 걸친 비교적 최근 종목 |
+| `alphavantage` | `NO_KEY` | 시크릿 비어 있음, 안 물어봄 |
+
+**두 벤더 다 데이터를 갖고 있고, 값을 직접 부른다.** polygon은 URL(`polygon.io/pricing`)까지
+주면서 업그레이드를 안내하고, fmp는 상태 코드 402(Payment Required)로 같은 말을 한다.
+VIAC가 부분적으로 뚫린 것도 이 해석과 정확히 맞는다 — fmp 무료 티어의 조회 가능 기간
+안에 있는, 비교적 최근에 떠난 이름이기 때문이다.
+
+**이건 이제 기술 문제가 아니라 예산 문제다.** 더 찾아볼 무료 벤더가 남아있지 않다 —
+stooq는 봇 차단, finnhub는 이 키로 엔드포인트 자체가 안 열린다. polygon과 fmp,
+둘 중 하나(또는 둘 다)의 유료 플랜이 유일하게 확인된 경로다.
+
 ## 아직 측정되지 않은 것
 
-run #2는 아직 돌지 않았다. 그때까지 확정된 것은 두 가지다 — **야후는 주지 않는다**,
-그리고 **fmp는 살아 있는 이름의 13년치를 실제로 서빙한다**(대조군 3,437행). polygon과
-fmp가 떠난 이름에 대해 "없다"고 한 것인지 "사라"고 한 것인지는 run #2가 답한다.
+**얼마면 되는지.** 두 벤더 다 194개 코호트 전체·13년 전체 구간을 **어느 요금제부터**
+커버하는지는 안 쟀다. polygon.io/pricing과 financialmodelingprep 구독 페이지를 직접
+확인해야 한다. 그다음이 결정이다: 두 유료 벤더 중 하나에 얼마를 낼지는 이 리포지토리가
+아니라 사람이 정할 일이다.
 
-수집기도, 배선도, 새 `REPLAY_VERSION`도 그 뒤의 일이다. `replay-v16`은 그대로 봉인돼
-있다.
+수집기도, 배선도, 새 `REPLAY_VERSION`도 그 결정 뒤의 일이다. `replay-v16`은 그대로
+봉인돼 있다.
