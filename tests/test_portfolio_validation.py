@@ -141,6 +141,46 @@ def test_full_live_factor_attribution_is_withheld_without_pit_fundamentals():
     assert ready["factorAttribution"]["US:126"]["fullComposite"]["claimEligible"] is True
 
 
+def test_value_and_quality_get_their_own_rank_ic_not_just_the_blend():
+    # Only the momentum/lowvol composite existed in the price-only replay;
+    # value and quality now have their own PIT-backed evidence and must be
+    # judged on their own rank IC rather than disappearing into fullComposite.
+    signals = []
+    outcomes = []
+    for idx in range(6):
+        identifier = f"US-{idx}"
+        signals.append({"id": identifier, "factorPercentiles": {
+            "momentum": idx * 10, "lowvol": 100 - idx * 10,
+            "value": idx * 20, "quality": 100 - idx * 20}})
+        outcomes.append(_outcome(identifier, "2020-01-02", "US", identifier,
+                                 idx * 10, idx / 100, "2020-07-01"))
+    # pit_fundamentals only gates fullComposite; a per-sleeve claim just needs
+    # that sleeve's own column to carry a value for the row.
+    diag = PV.alpha_diagnostics(signals, outcomes, pit_fundamentals=False)
+    attr = diag["factorAttribution"]["US:126"]
+    assert attr["value"]["claimEligible"] is True
+    assert attr["value"]["rankIC"]["mean"] == 1.0
+    assert attr["quality"]["claimEligible"] is True
+    assert attr["quality"]["rankIC"]["mean"] == -1.0
+
+
+def test_value_sleeve_contradicting_its_live_weight_is_flagged():
+    attribution = {
+        "US:21": {"value": _ic_row(-.05, (-.08, -.02))},
+        "US:63": {"value": _ic_row(-.07, (-.12, -.02), 54)},
+    }
+    result = PV._sleeve_sign_consistency(attribution)
+    assert result["contradicted"] == ["US:value"]
+    assert result["byRegionSleeve"]["US:value"]["liveWeight"] == LT.FACTOR_WEIGHTS["value"]
+
+
+def test_sign_consistency_assesses_all_four_live_sleeves():
+    result = PV._sleeve_sign_consistency({})
+    assert result["assessedSleeves"] == ["momentum", "value", "quality", "lowvol"]
+    assert result["liveWeights"] == {
+        "momentum": .3, "value": .25, "quality": .25, "lowvol": .2}
+
+
 def test_overlapping_forward_returns_are_not_chained_as_sequential_nav():
     rows = [
         {"date": "2020-01-02", "endDate": "2020-07-01", "costAdjustedReturn": .10,
