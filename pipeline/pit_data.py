@@ -83,6 +83,41 @@ PIT_MEMBERSHIP = "pit-membership"
 # identity comes to disagree with itself.
 SURVIVORS_ONLY_FINGERPRINT = SURVIVORS_ONLY
 
+# `historicalUniverse` used to require this share at exactly 0: every
+# name-date either priced or membership-known, no exceptions. On the free
+# vendors that bar was permanently unreachable — US price coverage floors
+# near 17.3% unvouched (194 delisted names Yahoo never serves at all) and KR
+# membership floors near 2.29% even after KRX's own membership and price
+# feeds were wired in (replay-v16) — so nothing left to collect would have
+# closed it.
+#
+# The bar was replaced with this tolerance, not removed, and only after two
+# things were checked, not assumed: every one of the unpriced US names was
+# confirmed to be a real delisting (not a fetch bug — `data/us-unpriced-
+# members.json`), and `portfolio_validation.survivorship_bound` was run at
+# the full measured gap (17.3% US, 2.29% KR) without the champion-challenger
+# finding reversing sign (replay-v16: NOTHING_TO_BOUND — there was no
+# separated finding for the gap to threaten in the first place, and stressing
+# it toward the region's own worst 5th percentile moved the comparison
+# further from reversal, not closer). A tolerance is still a human call, not
+# a measurement — the bound cannot see a name that left at -100%, and this
+# number does not track "how much gap is actually safe" the way the bound
+# does. It exists so `historicalUniverse` is reachable at all, and the bound
+# stays the per-run check for whether a specific finding survives it.
+HISTORICAL_UNIVERSE_GAP_TOLERANCE_PCT = 20.0
+
+
+def survivorship_risk_band(unvouched: int, expected: int) -> str:
+    """LOW/MEDIUM/HIGH for one bucket of name-dates — the one place this is
+    decided, so `UniverseHistory.snapshot` and `historical_replay`'s pooled
+    and per-region reports cannot drift apart on what counts as tolerable."""
+    if not expected:
+        return "HIGH"
+    share_pct = 100.0 * unvouched / expected
+    tolerance = HISTORICAL_UNIVERSE_GAP_TOLERANCE_PCT
+    return ("LOW" if share_pct <= tolerance
+            else "MEDIUM" if share_pct < 2 * tolerance else "HIGH")
+
 
 def _safe_number(value):
     try:
@@ -945,7 +980,9 @@ class UniverseHistory:
             worst = shares.get(worst_region, 0.0) if worst_region else 0.0
             if worst_region and worst > 0:
                 notes.append(f"worst_covered_region_{worst_region}_{worst * 100:.1f}pct_unvouched")
-            risk = "LOW" if worst <= 0 else "MEDIUM" if worst < 0.05 else "HIGH"
+            worst_row = regions.get(worst_region) if worst_region else None
+            risk = (survivorship_risk_band(worst_row["unvouched"], worst_row["expected"])
+                    if worst_row else "LOW")
             return UniverseSnapshot(cutoff.strftime("%Y-%m-%d"), by_region, risk, notes,
                                     True, expected, sorted(set(missing)), known, unknown,
                                     regions)

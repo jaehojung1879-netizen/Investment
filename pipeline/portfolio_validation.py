@@ -959,18 +959,24 @@ def paired_comparison(rows_by_method: dict[str, list[dict]], dates: list[str],
 # --------------------------------------------------------------------------- #
 # Survivorship bound
 #
-# `universe_ready` asks for `constituentCoveragePct` and `membershipCoveragePct`
-# both at exactly 100.0, and on the free vendors neither half can get there: the
-# US panel cannot price 17% of the name-dates its membership file describes, and
-# Korean membership, if it were built, would stop near 40% unvouched because
-# only 34.55% of departed KOSPI names can be priced at all. So `historicalUniverse`
-# is not a bar more collection reaches, and lowering it is not the fix.
+# `universe_ready` used to ask for `constituentCoveragePct` and
+# `membershipCoveragePct` both at exactly 100.0, and on the free vendors
+# neither half could get there: the US panel cannot price 17.3% of the
+# name-dates its membership file describes, and Korean membership floors near
+# 2.29% unvouched even with KRX's own feeds wired in (replay-v16). Exact 100
+# was not a bar more collection would reach.
 #
-# What CAN be answered is the question the gate is a proxy for: could the gap
-# have produced this result? Not "is the ledger clean" but "does the paired
-# selector difference keep its sign when the missing name-dates take their worst
-# plausible outcome". That is a bound, and a bound is a claim a human can act on
-# where an unreachable gate is not.
+# `pit_data.HISTORICAL_UNIVERSE_GAP_TOLERANCE_PCT` replaced it — a bounded
+# amount of unvouched name-dates is now accepted rather than none — but that
+# replacement was made only after the bound below was run at the full
+# measured gap and did not reverse the champion-challenger finding (replay-
+# v16: NOTHING_TO_BOUND, and every list of unpriced US names was confirmed a
+# real delisting, not a fetch bug, before the gap was accepted rather than
+# chased further). The tolerance answers "is the ledger clean enough to use
+# at all"; the bound below still answers the sharper, per-run question a
+# fixed percentage cannot: could THIS gap have produced THIS result. Passing
+# the tolerance does not exempt a future run from also being checked against
+# the bound — it only means the gate is reachable for the bound to matter at.
 # --------------------------------------------------------------------------- #
 # Below this many names a region-date has no tail to speak of, and a 5th
 # percentile of four names is the minimum of four names wearing a quantile's
@@ -1400,10 +1406,10 @@ def _allocation_l1(left: dict, right: dict) -> float:
     return sum(abs(float(left.get(key, 0)) - float(right.get(key, 0))) for key in keys)
 
 
-def universe_ready(diagnostics: dict) -> bool | None:
+def universe_ready(diagnostics: dict, *, tolerance_pct: float | None = None) -> bool | None:
     """Whether the replay's cross-section can be vouched for. Tri-state.
 
-    Two gaps have to be closed, and they fail differently.
+    Two gaps have to be closed within tolerance, and they fail differently.
     `constituentCoveragePct` asks "of the names the file describes, how many
     could we price"; `membershipCoveragePct` asks "of the cross-section, how
     much does the file describe at all". A membership file covering one region
@@ -1412,9 +1418,19 @@ def universe_ready(diagnostics: dict) -> bool | None:
     gate green precisely WHEN the pricing half gets fixed, which is the
     direction this repo is moving.
 
-    Returns None when the second gap was never measured: priced but undescribed
-    is not the same as assessed and clean, and an acceptance check that could
-    not be assessed is None, never True.
+    Neither has to reach exactly 100.0 any more — each may fall short by up to
+    `pit_data.HISTORICAL_UNIVERSE_GAP_TOLERANCE_PCT` by default — but both
+    still have to be MEASURED. Returns None when the second gap was never
+    measured: priced but undescribed is not the same as assessed and within
+    tolerance, and an acceptance check that could not be assessed is None,
+    never True.
+
+    `tolerance_pct=0.0` restores the original exact-100 reading for a caller
+    that needs it regardless of the gate's own tolerance — `portfolio_replay`
+    passes it for `fullProductionFidelity`, a narrower claim than "the gate is
+    reachable": that flag says a run reproduces production exactly, and a run
+    still missing 17% of its US name-dates does not, whatever this gate now
+    accepts as good enough to promote on.
     """
     # Same fallback `data_integrity` has always used for artifacts written
     # before the flag existed; this function changes what the membership gap
@@ -1423,12 +1439,16 @@ def universe_ready(diagnostics: dict) -> bool | None:
                                 diagnostics.get("survivorshipRisk") == "LOW")
     if not available:
         return False
-    if _finite(diagnostics.get("constituentCoveragePct")) != 100.0:
+    tolerance = (pit_data.HISTORICAL_UNIVERSE_GAP_TOLERANCE_PCT if tolerance_pct is None
+                else tolerance_pct)
+    floor = 100.0 - tolerance
+    constituent = _finite(diagnostics.get("constituentCoveragePct"))
+    if constituent is None or constituent < floor:
         return False
     membership = _finite(diagnostics.get("membershipCoveragePct"))
     if membership is None:
         return None
-    return membership == 100.0
+    return membership >= floor
 
 
 def empty_portfolio_diagnostics(decisions: dict, through: str) -> dict:
@@ -1479,10 +1499,13 @@ def portfolio_replay(signals: list[dict], outcomes: list[dict], *, cfg_lt: dict,
     contexts: dict[str, tuple] = {}
     overlaps = []
     full_fidelity_dates = 0
-    # Same two gaps as the integrity gate: a cross-section whose membership is
-    # unknown is not full fidelity however completely it was priced.
+    # Same two gaps as the integrity gate, but at zero tolerance: a claim that
+    # a run reproduces production EXACTLY does not get the gate's tolerance
+    # for "good enough to promote on" — a cross-section still missing 17.3% of
+    # its US name-dates is not full fidelity however completely the rest of
+    # it was priced.
     full_fidelity_ready = bool(
-        universe_ready(diagnostics) is True
+        universe_ready(diagnostics, tolerance_pct=0.0) is True
         and diagnostics.get("fundamentalsPit")
         and diagnostics.get("macroPitStatus") == pit_data.PIT_EXACT)
 

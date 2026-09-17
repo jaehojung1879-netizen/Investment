@@ -784,15 +784,10 @@ RISK_ORDER = {"LOW": 0, "MEDIUM": 1, "HIGH": 2}
 
 
 def _coverage_risk(unvouched: int, expected: int) -> str:
-    """Risk band for one bucket of name-dates.
-
-    Same bands the snapshot uses, applied to the union of the two gaps: LOW only
-    when every name in the bucket is both described and priceable.
-    """
-    if not expected:
-        return "HIGH"
-    share = unvouched / expected
-    return "LOW" if share <= 0 else "MEDIUM" if share < 0.05 else "HIGH"
+    """Risk band for one bucket of name-dates — `pit_data.survivorship_risk_band`,
+    the one place the tolerance is defined, so the pooled/per-region reports
+    here cannot drift from what `UniverseHistory.snapshot` calls LOW."""
+    return pit_data.survivorship_risk_band(unvouched, expected)
 
 
 def _coverage_report(total: dict) -> dict:
@@ -972,9 +967,10 @@ def run_replay(prices: dict[str, pd.DataFrame], universe: dict[str, list[str]], 
                            else "CURRENT_UNIVERSE_WITH_PRICE_HISTORY_FILTER_ONLY"),
         "firstReliableUniverseDate": (grid[0].strftime("%Y-%m-%d")
                                       if grid and constituent_risk == "LOW" else None),
-        "affectedObservationsPct": (0.0 if constituent_risk == "LOW"
-                                    else affected_pct if affected_pct is not None
-                                    else 100.0),
+        # The real measured share, always — LOW is now "within tolerance," not
+        # "zero," so reporting 0.0 whenever risk clears LOW would hide the
+        # 17.3%/2.29% gaps the tolerance was built to accept, not to un-measure.
+        "affectedObservationsPct": (affected_pct if affected_pct is not None else 100.0),
         # The regions that actually carry a gap. Naming every region whenever
         # the label is not LOW is not conservatism, it is a refusal to say
         # where the problem is when the file knows exactly where it is.
