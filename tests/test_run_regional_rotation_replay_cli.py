@@ -1,7 +1,10 @@
-"""Two bugs from the real run #1 that no other test caught: the CLI rejected
-the exact input shape GitHub Actions actually sends, and the workflow
-reported that rejection as a success. Both are pinned directly so they can't
-silently come back the same way.
+"""Bugs from real runs that no other test caught, each pinned directly so it
+cannot silently come back the same way: run #1's CLI rejected the exact
+input shape GitHub Actions actually sends and its failure was invisible in
+the workflow's own conclusion; run #2's `main()` crashed on its very first
+line of real work, `load_config()`, because nothing had ever called it the
+way `main()` does (`cfg, _ = load_config()` — it returns a
+`(Config, warnings)` tuple, not a bare `Config`).
 """
 from __future__ import annotations
 
@@ -9,6 +12,8 @@ import sys
 from pathlib import Path
 
 import pytest
+
+from pipeline import replay_inputs as RI
 
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "scripts"))
@@ -56,3 +61,16 @@ def test_the_workflow_sets_pipefail_before_piping_into_tee():
     assert "set -o pipefail" in block
     # Order matters: pipefail has to take effect before the pipeline it protects.
     assert block.index("set -o pipefail") < block.index("| tee")
+
+
+def test_main_gets_past_config_loading_on_a_real_config(tmp_path):
+    """Run #2's actual crash, reproduced without needing real frozen replay
+    data: point `main()` at an empty ledger dir so `_load_frozen` raises its
+    own clean "no frozen inputs" error, and confirm `main()` reaches that
+    error rather than dying on `cfg.historical_replay` first. This exercises
+    `load_config()` for real (the repo's own `config.json`, not a stub), the
+    same call `main()` makes, so an unpacking mistake in that specific line
+    is caught here instead of only in a run against real data.
+    """
+    with pytest.raises(RI.InputVersionConflict, match="no frozen inputs"):
+        RUNNER.main([str(tmp_path)])
