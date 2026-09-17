@@ -25,6 +25,7 @@ route to use.
 | `www.sec.gov` | `REFUSED_ON_EVERY_ADDRESS` | same run |
 | SEC, any header set | `REFUSED_ON_EVERY_HEADER_SET` | `Probe SEC header isolation` |
 | SEC bulk ZIP datasets, `2025q2`/`2013q1` | `HTTP 403 Request Rate Threshold Exceeded` | `Probe SEC bulk financial statement datasets`, 2026-09-04 04:50 UTC |
+| SEC bulk ZIP datasets, `2026q2`/`2025q4`, both UA shapes, + `data.sec.gov`/Archives comparison | `BLOCKED` on all five, no redirects, sub-second | Probes `sec-bulk-datasets`, 2026-09-17 00:01 UTC |
 | FMP `/stable`, current key | serves statements **with `filingDate`** | `Probe FMP fundamentals` run #4, 2026-09-05 |
 | FMP `/stable`, current key | `limit` capped at **4 periods** | same run |
 | `efts.sec.gov`, apex `sec.gov` | `REFUSED_ON_EVERY_SEC_HOST` | US PIT probe run #1, 2026-09-13 |
@@ -816,17 +817,21 @@ label is that it **deliberately does not run in CI**.
 
 SEC publishes the same filing data as quarterly **Financial Statement Data
 Sets** — `sub.txt` carries the accession's `filed` date, `num.txt` the tagged
-values. Measured once, 2026-09-04, both a recent and an old quarter came back
-`403 Request Rate Threshold Exceeded` from the Actions pool — the same page
-`www.sec.gov` gives everywhere else, not a wall specific to this path. That
-measurement is twelve days old and never captured a redirect chain, response
-headers, or the runner's egress address; `docs/sec-bulk-datasets-egress-check.md`
-re-measures it with those. Whatever it finds, the ZIP downloads are ordinary
-requests from any address that is not in the Actions pool. Fetched once from a
-laptop, filtered to the 829 US names, converted to `PIT_FUNDAMENTALS_V1` rows
-and committed to the `signal-history` branch, they would give the US half
-exactly what DART gave the Korean half — from the authoritative source, free,
-with the real filing date.
+values. Measured twice now. 2026-09-04: both a recent and an old quarter came
+back `403 Request Rate Threshold Exceeded`. 2026-09-17, re-measured with full
+diagnostics (redirect chain, response headers, egress address, two
+User-Agent shapes, a same-run comparison against `data.sec.gov` and
+Archives) — see `docs/sec-bulk-datasets-egress-check.md` for the run — and
+the answer is the same: `BLOCKED` on all five requests, no redirects,
+under 0.4s combined, the block page arriving before SEC could have read the
+request body. The block is not specific to this path, this quarter, this
+User-Agent, or this JSON-vs-ZIP shape; it is the same wall `www.sec.gov` and
+`data.sec.gov` give everywhere else from the Actions pool. The ZIP downloads
+are ordinary requests from any address that is *not* in that pool. Fetched
+once from a laptop, filtered to the 829 US names, converted to
+`PIT_FUNDAMENTALS_V1` rows and committed to the `signal-history` branch,
+they would give the US half exactly what DART gave the Korean half — from
+the authoritative source, free, with the real filing date.
 
 The trade-off is that it is a manual quarterly refresh instead of a scheduled
 job, and that has to be stated in `metricDefinition` rather than discovered

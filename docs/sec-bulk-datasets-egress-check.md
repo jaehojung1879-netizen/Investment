@@ -56,4 +56,27 @@ fair-access User-Agent(`InvestmentResearchDashboard/1.1 jaehojung1879-netizen@us
 
 ## 결과
 
-*(이 아래는 실제 워크플로 실행 후 채워진다 — PR 본문에도 같은 요약이 있다.)*
+**2026-09-17T00:01Z, Probes 워크플로 run #8 (`main`, `sec-bulk-datasets`)에서 실제로 측정됨.**
+egress IP `20.168.93.149`, fair-access UA
+`InvestmentResearchDashboard/1.1 jaehojung1879-netizen@users.noreply.github.com`.
+
+| 요청 | 최종 URL | 상태 | 바이트 | 소요 | 판정 |
+|---|---|---|---|---|---|
+| `2026q2.zip`, UA 없음, 재시도 없음 | `.../financial-statement-data-sets/2026q2.zip` (리다이렉트 없음) | 403 | 1,925B | 0.127s | BLOCK_PAGE |
+| `2026q2.zip`, fair-access UA, 재시도 없음 | 동일 (리다이렉트 없음) | 403 | 1,925B | 0.038s | BLOCK_PAGE |
+| `2025q4.zip`, fair-access UA, 교차검증 | — | 403 | 1,925B | 0.062s | BLOCK_PAGE |
+| `data.sec.gov/submissions/CIK0000320193.json` | — | 403 | 4,819B | 0.079s | BLOCK_PAGE |
+| `www.sec.gov/Archives/edgar/.../index.json` | — | 403 | 4,819B | 0.064s | BLOCK_PAGE |
+
+다섯 요청 모두 리다이렉트 없이 요청한 URL에서 바로 403 차단 페이지를 받았다(1,925B는 ZIP 경로용, 4,819B는
+JSON 경로용 차단 페이지 — 경로별로 다른 템플릿이지만 둘 다 `pipeline.sec_access.BLOCK_MARKERS`에 걸림).
+UA 유무는 결과를 바꾸지 않았고, 분기(`2026q2` vs `2025q4`)도 바꾸지 않았다. 전체 5요청이 8초 워크플로 실행
+시간 중 0.4초 미만에 끝났다 — SEC 쪽에서 바디를 조립하지 않고 엣지에서 즉시 거부한다는 뜻이다(레이턴시로도
+구분됨).
+
+**판정: C. BLOCKED.** 분기 ZIP, `data.sec.gov`, Archives 세 경로 모두 첫 요청부터 막혔다. 이 워크플로 파일의
+`판정` 로직이 BLOCKED를 exit code 1로 반환하도록 설계되어 있어 GitHub Actions UI에는 이 실행이 "failure"로
+표시되지만, 이건 스크립트 오류가 아니라 **의도된 종료 코드로 보고된 실제 측정 결과**다 — Probe 스텝 로그에
+전체 진단이 그대로 찍혀 있다.
+
+PR 본문에도 같은 요약이 있다.
