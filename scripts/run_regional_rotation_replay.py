@@ -109,15 +109,28 @@ def _region_champion_rows(region: str, names: list[str], frozen: dict, *, cfg, r
     return rows, diagnostics
 
 
-def main(argv=None) -> int:
+def _int_from_possibly_float_string(value: str) -> int:
+    """GitHub Actions' workflow_dispatch `type: number` inputs arrive as
+    strings shaped like "252.0", not "252" — plain `int(value)` rejects that
+    (observed in run #1: "invalid int value: '252.0'"). `int(float(value))`
+    reads both shapes."""
+    return int(float(value))
+
+
+def build_arg_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description=__doc__,
                                      formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("ledger_dir")
     parser.add_argument("--output", default="regional-rotation-report.json")
-    parser.add_argument("--lookback-days", type=int, default=RR.DEFAULT_LOOKBACK_DAYS)
+    parser.add_argument("--lookback-days", type=_int_from_possibly_float_string,
+                        default=RR.DEFAULT_LOOKBACK_DAYS)
     parser.add_argument("--temperature", type=float, default=RR.DEFAULT_TEMPERATURE)
     parser.add_argument("--floor", type=float, default=RR.DEFAULT_FLOOR)
-    args = parser.parse_args(argv)
+    return parser
+
+
+def main(argv=None) -> int:
+    args = build_arg_parser().parse_args(argv)
 
     ledger_dir = Path(args.ledger_dir)
     cfg = load_config()

@@ -52,6 +52,11 @@ jobs:
 
       - name: Run the regional rotation analysis
         run: |
+          # Without pipefail, a python failure piped into `tee` reports the
+          # step (and the whole job) as successful, because bash's -e only
+          # sees tee's exit code — observed in run #1, where an argparse
+          # error was silently swallowed and the workflow still went green.
+          set -o pipefail
           python scripts/run_regional_rotation_replay.py replay-work/ledger \
             --output regional-rotation-report.json \
             --lookback-days ${{ inputs.lookback_days }} \
