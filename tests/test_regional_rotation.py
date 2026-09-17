@@ -4,10 +4,15 @@ boundaries. These are the properties a look-ahead bug would violate silently.
 """
 from __future__ import annotations
 
+import numpy as np
+import pandas as pd
 import pytest
 
+from pipeline import historical_outcomes as HO
+from pipeline import historical_replay as HR
 from pipeline import portfolio_validation as PV
 from pipeline import regional_rotation as RR
+from pipeline import replay_valuation as RV
 
 
 def _row(date, end_date, excess, *, weight_ticker="A", region_weight=1.0):
@@ -224,5 +229,73 @@ def test_blended_rows_score_through_the_existing_path_metrics_machinery():
     blended = RR.apply_schedule({"US": us, "KR": kr}, schedule)
     assert blended, "the fixture must produce at least one blended block"
     metrics = PV._path_metrics(blended, horizon=7, cfg_pf={})
+    assert metrics["available"] is True
+    assert metrics["cagrPct"] is not None
+
+
+# --------------------------------------------------------------------------- #
+# End to end, for real: two real single-region replays through
+# `portfolio_validation.portfolio_replay`'s own `headlineRows`, not a
+# hand-built fixture — this is the exact chain
+# `scripts/run_regional_rotation_replay.py` runs against `replay-v16`'s
+# frozen inputs, checked here against synthetic data this session CAN run.
+# --------------------------------------------------------------------------- #
+def _synthetic_frame(seed, periods=900, start="2015-01-01"):
+    rng = np.random.default_rng(seed)
+    index = pd.bdate_range(start, periods=periods)
+    close = 100 * np.exp(np.cumsum(rng.normal(0.0004, 0.014, periods)))
+    return pd.DataFrame({"Open": close, "High": close * 1.01, "Low": close * 0.99,
+                         "Close": close, "Volume": rng.lognormal(14, 0.4, periods)},
+                        index=index)
+
+
+def _region_champion_headline_rows(region, tickers, prices, universe, valuation):
+    replay = HR.run_replay(
+        prices, {region: tickers}, benchmarks={"US": "SPY", "KR": "KS200"},
+        cfg_lt={"minFactorSleeves": 1, "minFinancialCoverage": 0.0},
+        start="2018-01-05", end="2018-04-30", frequency="W", model_version="test")
+    signals, diagnostics = replay["signals"], replay["diagnostics"]
+    bench_closes = {"SPY": prices["SPY"]["Close"], "KS200": prices["KS200"]["Close"]}
+    outcomes = HO.compute_outcomes(signals, prices, bench_closes)
+    portfolio = PV.portfolio_replay(signals, outcomes, cfg_lt={"minFactorSleeves": 1},
+                                    cfg_pf={}, diagnostics=diagnostics, valuation=valuation)
+    return portfolio["headlineRows"].get(PV.CHAMPION) or []
+
+
+def test_real_single_region_replays_blend_through_the_full_runner_chain():
+    # Small and short on purpose — this test's job is to check the WIRING
+    # (does a real `portfolio_replay` output actually flow through
+    # `regional_rotation`), not to produce a meaningful backtest. Below 5
+    # names the research pool is too thin to select from at all (signals=0);
+    # 6 names and 4 months is the smallest fixture that still clears every
+    # gate and matures real headline blocks, keeping this well under the
+    # cost of `scripts/run_replay.py`'s own decade-long run.
+    prices = {f"T{i:02d}": _synthetic_frame(200 + i) for i in range(6)}
+    prices.update({f"K{i:02d}": _synthetic_frame(300 + i) for i in range(6)})
+    prices["SPY"] = _synthetic_frame(999)
+    prices["KS200"] = _synthetic_frame(998)
+    universe = {"US": [t for t in prices if t.startswith("T")],
+               "KR": [t for t in prices if t.startswith("K")]}
+
+    days = pd.bdate_range("2015-01-01", periods=900)
+    fx = pd.Series(1200.0, index=days)
+    rates = [{"date": "2015-01-01", "annualRatePct": 3.0}]
+    valuation = RV.ValuationData(prices, {"US": "SPY", "KR": "KS200"}, fx, rates,
+                                 through="2018-04-30")
+
+    us_rows = _region_champion_headline_rows("US", universe["US"], prices, universe, valuation)
+    kr_rows = _region_champion_headline_rows("KR", universe["KR"], prices, universe, valuation)
+    assert us_rows and kr_rows, (
+        "the fixture must actually produce matured CHAMPION headline rows for "
+        "both regions, or this test is not exercising the real chain")
+    for row in us_rows + kr_rows:
+        for key in ("date", "endDate", "grossReturn", "benchmarkReturn", "weights",
+                   "regionByTicker", "top1", "top3"):
+            assert key in row, f"headlineRows lost {key!r} — regional_rotation reads it"
+
+    schedule = RR.regional_weight_schedule({"US": us_rows, "KR": kr_rows})
+    blended = RR.apply_schedule({"US": us_rows, "KR": kr_rows}, schedule)
+    assert blended, "real headline rows from both regions must produce blended blocks"
+    metrics = PV._path_metrics(blended, PV.HEADLINE_HORIZON, {})
     assert metrics["available"] is True
     assert metrics["cagrPct"] is not None

@@ -1,0 +1,81 @@
+name: Regional rotation analysis
+
+# Exploratory only: two standalone US-only/KR-only replays from replay-v16's
+# ALREADY-SEALED frozen inputs, blended by pipeline.regional_rotation and
+# scored against the sealed combined-region CHAMPION path. Manual dispatch
+# only — this never runs on a schedule and never writes to signal-history;
+# it reproduces a snapshot and writes its own report as a workflow artifact.
+# See scripts/run_regional_rotation_replay.py for why frozen-only.
+
+on:
+  workflow_dispatch:
+    inputs:
+      lookback_days:
+        description: "Trailing window for each quarterly re-decision (days)"
+        type: number
+        default: 252
+      temperature:
+        description: "Softmax temperature (points of trailing excess that roughly e-fold the odds ratio)"
+        type: number
+        default: 0.05
+      floor:
+        description: "Minimum weight either region always keeps"
+        type: number
+        default: 0.15
+
+permissions:
+  contents: read
+
+jobs:
+  regional-rotation:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - name: Checkout code (main)
+        uses: actions/checkout@v5
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      # Read-only worktree of the sealed inputs this analysis reproduces —
+      # never a branch, never pushed back to.
+      - name: Check out signal-history branch (read-only)
+        run: |
+          git fetch origin signal-history
+          git worktree add --detach replay-work origin/signal-history
+
+      - name: Run the regional rotation analysis
+        run: |
+          python scripts/run_regional_rotation_replay.py replay-work/ledger \
+            --output regional-rotation-report.json \
+            --lookback-days ${{ inputs.lookback_days }} \
+            --temperature ${{ inputs.temperature }} \
+            --floor ${{ inputs.floor }} \
+            | tee regional-rotation.log
+
+      - name: Upload the report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: regional-rotation-report
+          path: |
+            regional-rotation-report.json
+            regional-rotation.log
+          if-no-files-found: warn
+
+      - name: Summary
+        if: always()
+        run: |
+          {
+            echo "## Regional rotation analysis"
+            echo
+            echo '```'
+            tail -n 120 regional-rotation.log 2>/dev/null || echo "no output"
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
