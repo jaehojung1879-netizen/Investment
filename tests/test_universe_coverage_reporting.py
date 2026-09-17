@@ -219,6 +219,27 @@ def test_headline_and_breakdown_are_the_same_measurement(two_region_prices,
 
 
 # --------------------------------------------------------------------------- #
+# 2b. The tolerance boundary itself
+# --------------------------------------------------------------------------- #
+def test_the_tolerance_boundary_is_exactly_where_it_is_documented():
+    """`HISTORICAL_UNIVERSE_GAP_TOLERANCE_PCT` is 20.0 — pinned directly so a
+    change to the number is a deliberate edit here, not a side effect noticed
+    only through an unrelated fixture failing somewhere else."""
+    tolerance = pit_data.HISTORICAL_UNIVERSE_GAP_TOLERANCE_PCT
+    assert tolerance == 20.0
+    # At the boundary: <= tolerance is LOW, a hair over is not.
+    assert pit_data.survivorship_risk_band(20, 100) == "LOW"
+    assert pit_data.survivorship_risk_band(21, 100) == "MEDIUM"
+    # Today's actual measured gaps (replay-v16): both clear it.
+    assert pit_data.survivorship_risk_band(1730, 10000) == "LOW"   # US 17.3%
+    assert pit_data.survivorship_risk_band(229, 10000) == "LOW"    # KR 2.29%
+    # MEDIUM/HIGH boundary at twice the tolerance.
+    assert pit_data.survivorship_risk_band(39, 100) == "MEDIUM"
+    assert pit_data.survivorship_risk_band(40, 100) == "HIGH"
+    assert pit_data.survivorship_risk_band(0, 0) == "HIGH"  # nothing expected, nothing vouched
+
+
+# --------------------------------------------------------------------------- #
 # 3. The gate has to clear both gaps
 # --------------------------------------------------------------------------- #
 def _diagnostics(**overrides) -> dict:
@@ -238,8 +259,8 @@ def test_priced_but_undescribed_does_not_pass_the_integrity_gate():
     HISTORICAL_OOS while `survivorshipRisk` in the same dict said HIGH.
     """
     gate = PV.data_integrity(
-        _diagnostics(membershipCoveragePct=81.14, survivorshipRisk="HIGH",
-                     affectedObservationsPct=18.86, affectedRegions=["KR"]),
+        _diagnostics(membershipCoveragePct=70.0, survivorshipRisk="HIGH",
+                     affectedObservationsPct=30.0, affectedRegions=["KR"]),
         [{"region": "US"}, {"region": "KR"}])
     assert gate["integrityGate"]["checks"]["historicalUniverse"] is False
     assert gate["integrityGate"]["eligible"] is False
@@ -267,17 +288,26 @@ def test_an_unmeasured_membership_gap_is_unassessable_not_a_pass():
 
 
 def test_full_fidelity_and_the_gate_read_the_same_predicate():
-    """One definition of "the cross-section can be vouched for", not two.
-
-    `portfolio_replay` gates the full-fidelity claim on it and `data_integrity`
-    gates promotion on it. Two copies of a four-clause condition is how one of
-    them comes to be fixed and the other not.
+    """One function, not two — `portfolio_replay`'s full-fidelity claim and
+    `data_integrity`'s promotion gate both read `universe_ready`, so a fix to
+    one cannot silently miss the other. They may still ask it different
+    questions: the gate accepts `HISTORICAL_UNIVERSE_GAP_TOLERANCE_PCT` by
+    default, full-fidelity pins `tolerance_pct=0.0` because "reproduces
+    production exactly" is a stronger claim than "good enough to promote on".
+    That divergence is deliberate and pinned below, not the drift this test
+    used to guard only by keeping the two calls identical.
     """
     assert PV.universe_ready(_diagnostics()) is True
-    assert PV.universe_ready(_diagnostics(membershipCoveragePct=81.14)) is False
+    assert PV.universe_ready(_diagnostics(membershipCoveragePct=70.0)) is False
     assert PV.universe_ready(_diagnostics(constituentCoveragePct=72.41)) is False
     assert PV.universe_ready(_diagnostics(historicalUniverseAvailable=False)) is False
 
     unmeasured = _diagnostics()
     unmeasured.pop("membershipCoveragePct")
     assert PV.universe_ready(unmeasured) is None
+
+    # Within the gate's tolerance (15% gap) but not within full-fidelity's
+    # zero tolerance — the two calls now genuinely disagree, on purpose.
+    within_tolerance = _diagnostics(membershipCoveragePct=85.0)
+    assert PV.universe_ready(within_tolerance) is True
+    assert PV.universe_ready(within_tolerance, tolerance_pct=0.0) is False

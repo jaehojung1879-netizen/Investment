@@ -393,20 +393,26 @@ def test_missing_constituent_history_records_survivorship_risk(prices, universe)
 
 
 def test_membership_file_without_prices_does_not_clear_survivorship(prices, universe):
-    """The trap: a file the replay cannot price used to report coverage 100%."""
+    """The trap: a file the replay cannot price used to report coverage 100%.
+
+    Four dead names against the 12-ticker universe (25% unvouched) rather than
+    two (14.3%) — `HISTORICAL_UNIVERSE_GAP_TOLERANCE_PCT` now accepts a gap up
+    to 20%, and this test's point is that a gap BEYOND tolerance still blocks,
+    not that any gap at all does.
+    """
     memberships = {t: {"listed": "2010-01-01", "delisted": None, "region": "US"}
                    for t in universe["US"]}
-    # Two names that were listed then and died before today, so the price panel
-    # — which is fetched from the CURRENT universe — has nothing for them.
-    memberships["DEAD1"] = {"listed": "2010-01-01", "delisted": "2018-01-01", "region": "US"}
-    memberships["DEAD2"] = {"listed": "2010-01-01", "delisted": "2018-01-01", "region": "US"}
+    # Four names that were listed then and died before today, so the price
+    # panel — which is fetched from the CURRENT universe — has nothing for them.
+    for i in range(1, 5):
+        memberships[f"DEAD{i}"] = {"listed": "2010-01-01", "delisted": "2018-01-01", "region": "US"}
     history = pit_data.UniverseHistory(memberships)
 
     snapshot = history.snapshot("2017-01-01", universe,
                                 view=HR.PricePanel(prices).membership_view("2017-01-01"),
                                 min_history=HR.MIN_HISTORY_ROWS)
     assert "DEAD1" not in snapshot.by_region["US"]
-    assert snapshot.missing_prices == ["DEAD1", "DEAD2"]
+    assert snapshot.missing_prices == ["DEAD1", "DEAD2", "DEAD3", "DEAD4"]
     assert snapshot.coverage_pct is not None and snapshot.coverage_pct < 100.0
     assert snapshot.survivorship_risk != "LOW"
 
@@ -416,7 +422,7 @@ def test_membership_file_without_prices_does_not_clear_survivorship(prices, univ
                            universe_history=history, model_version="test")
     diagnostics = replay["diagnostics"]
     assert diagnostics["constituentCoveragePct"] < 100.0
-    assert diagnostics["constituentsWithoutPriceHistoryCount"] == 2
+    assert diagnostics["constituentsWithoutPriceHistoryCount"] == 4
     assert diagnostics["survivorshipRisk"] != "LOW"
     assert diagnostics["survivorshipNote"] == pit_data.SURVIVORSHIP_UNRESOLVED
     assert diagnostics["impactOnPromotionEligibility"] == "KELLY_AND_SELECTOR_PROMOTION_BLOCKED"
