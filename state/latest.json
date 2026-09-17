@@ -1,8 +1,8 @@
 {
   "schemaVersion": "2.7.0",
   "modelVersion": "longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
-  "buildCommitSha": "c8ac5324bd37",
-  "generatedAt": "2026-09-16T23:50:43.648435+00:00",
+  "buildCommitSha": "80c929c0ad2e",
+  "generatedAt": "2026-09-17T00:16:34.239409+00:00",
   "marketAsOf": "2026-09-16",
   "macroRegime": "Transition/Low confidence",
   "holdingsByRegion": {
@@ -14,8 +14,8 @@
       "SPG",
       "VTRS",
       "KO",
-      "TGT",
       "MO",
+      "TGT",
       "HST",
       "SWK",
       "MU"
@@ -31,8 +31,8 @@
       "005490.KS",
       "161390.KS",
       "005935.KS",
-      "032640.KS",
-      "005930.KS"
+      "005930.KS",
+      "009540.KS"
     ]
   },
   "modelPortfolioWeights": {
@@ -50,13 +50,13 @@
     "SPG": "WATCH",
     "VTRS": "WAIT_FOR_PULLBACK",
     "KO": "ACCUMULATE_GRADUALLY",
-    "TGT": "WAIT_FOR_PULLBACK",
     "MO": "ACCUMULATE_GRADUALLY",
+    "TGT": "WAIT_FOR_PULLBACK",
     "HST": "WATCH",
     "SWK": "WATCH",
     "MU": "WAIT_FOR_PULLBACK",
-    "MPC": "WAIT_FOR_PULLBACK",
     "CSX": "WATCH",
+    "MPC": "WAIT_FOR_PULLBACK",
     "GOOGL": "WATCH",
     "078930.KS": "WAIT_FOR_PULLBACK",
     "402340.KS": "WATCH",
@@ -68,10 +68,10 @@
     "005490.KS": "WATCH",
     "161390.KS": "AVOID",
     "005935.KS": "WAIT_FOR_PULLBACK",
-    "032640.KS": "WATCH",
     "005930.KS": "WATCH",
     "009540.KS": "AVOID",
     "326030.KS": "AVOID",
+    "032640.KS": "WATCH",
     "271560.KS": "AVOID"
   },
   "opportunityTiersByTicker": {
@@ -93,10 +93,10 @@
     "KR": "EMERGING_OPPORTUNITY"
   },
   "warningTiersByTicker": {
+    "009540.KS": "CRITICAL_WARNING",
     "161390.KS": "ELEVATED_WARNING",
     "001450.KS": "ELEVATED_WARNING",
     "078930.KS": "ELEVATED_WARNING",
-    "032640.KS": "ELEVATED_WARNING",
     "005490.KS": "WATCH",
     "002380.KS": "ELEVATED_WARNING",
     "034730.KS": "WATCH",
@@ -115,7 +115,7 @@
   "stale": false,
   "productionValidation": {
     "passed": true,
-    "validatedAt": "2026-09-16T23:50:43.648435+00:00",
+    "validatedAt": "2026-09-17T00:16:34.239409+00:00",
     "errors": []
   }
 }
