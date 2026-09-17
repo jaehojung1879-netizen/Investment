@@ -1748,6 +1748,15 @@ def portfolio_replay(signals: list[dict], outcomes: list[dict], *, cfg_lt: dict,
                                   "horizons": horizon_results[CHAMPION]},
                       CHALLENGER: {"summary": challenger_summary,
                                    "horizons": horizon_results[CHALLENGER]}},
+        # The per-date rows `champion_summary`/`challenger_summary` were built
+        # from — already in `_path_metrics`' own input shape (date, endDate,
+        # grossReturn, benchmarkReturn, weights, regionByTicker, top1, top3,
+        # effectiveNames). Exposed so a caller that wants to recombine or
+        # re-score a selector's path (`regional_rotation` blends two regions'
+        # CHAMPION rows) reads the rows this function already computed rather
+        # than re-deriving them from `signals`/`outcomes`/`valuation` a second
+        # time under a second set of assumptions.
+        "headlineRows": headline_rows,
         "comparison": {
             "averagePortfolioJaccardPct": _r(np.mean(overlaps) * 100, 2) if overlaps else None,
             "averageNameAllocationDifferencePct": (_r(np.mean(allocation_differences) * 100, 2)
