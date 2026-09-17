@@ -133,7 +133,7 @@ def main(argv=None) -> int:
     args = build_arg_parser().parse_args(argv)
 
     ledger_dir = Path(args.ledger_dir)
-    cfg = load_config()
+    cfg, _config_warnings = load_config()
     replay_cfg = cfg.historical_replay or {}
 
     manifest, frozen = _load_frozen(ledger_dir)
