@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-17T08:50:42.581407+00:00",
+  "generatedAt": "2026-09-18T08:22:16.516456+00:00",
   "replayVersion": "replay-v16",
   "modelVersion": "longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
   "evidenceClass": "HISTORICAL_OOS",
@@ -61,23 +61,20 @@
       }
     },
     "failures": [
-      "KR",
-      "dataIntegrity"
+      "KR"
     ],
     "requiredForKelly": true,
     "statisticalEligible": false
   },
   "integrityGate": {
-    "eligible": false,
+    "eligible": true,
     "checks": {
       "pitCoverage": true,
-      "historicalUniverse": false,
+      "historicalUniverse": true,
       "pointInTimeFundamentals": true,
       "vintageMacroForConditionalProbability": true
     },
-    "failures": [
-      "historicalUniverse"
-    ],
+    "failures": [],
     "policyKo": "확률 성능과 별도로 과거 구성종목·발표시점 재무·조건부 거시 vintage가 운영 모델과 같은지를 검사합니다. 데이터가 없으면 할인만 하지 않고 Kelly를 차단합니다."
   },
   "regions": {

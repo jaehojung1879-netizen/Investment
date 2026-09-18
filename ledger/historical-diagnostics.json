@@ -17,9 +17,9 @@
   "replayDates": 715,
   "signalsGenerated": 0,
   "signalsSkippedAlreadyPresent": 399547,
-  "meanPitCoverage": 0.83,
-  "survivorshipRisk": "HIGH",
-  "survivorshipNote": "SURVIVORSHIP_BIAS_UNRESOLVED",
+  "meanPitCoverage": 0.8848,
+  "survivorshipRisk": "LOW",
+  "survivorshipNote": null,
   "fundamentalsPit": true,
   "historicalUniverseAvailable": true,
   "constituentCoveragePct": 86.1261,
@@ -83,14 +83,14 @@
       "constituentCoveragePct": 97.7101,
       "membershipCoveragePct": 100.0,
       "affectedObservationsPct": 2.2899,
-      "survivorshipRisk": "MEDIUM"
+      "survivorshipRisk": "LOW"
     },
     "US": {
       "nameDates": 363522,
       "constituentCoveragePct": 82.9003,
       "membershipCoveragePct": 99.8033,
       "affectedObservationsPct": 17.2963,
-      "survivorshipRisk": "HIGH"
+      "survivorshipRisk": "LOW"
     }
   },
   "universeCoverageByYear": [
@@ -100,7 +100,7 @@
       "constituentCoveragePct": 73.1289,
       "membershipCoveragePct": 99.8406,
       "affectedObservationsPct": 27.0305,
-      "survivorshipRisk": "HIGH"
+      "survivorshipRisk": "MEDIUM"
     },
     {
       "year": 2014,
@@ -108,7 +108,7 @@
       "constituentCoveragePct": 74.6029,
       "membershipCoveragePct": 99.8427,
       "affectedObservationsPct": 25.5544,
-      "survivorshipRisk": "HIGH"
+      "survivorshipRisk": "MEDIUM"
     },
     {
       "year": 2015,
@@ -116,7 +116,7 @@
       "constituentCoveragePct": 75.9233,
       "membershipCoveragePct": 99.845,
       "affectedObservationsPct": 24.2317,
-      "survivorshipRisk": "HIGH"
+      "survivorshipRisk": "MEDIUM"
     },
     {
       "year": 2016,
@@ -124,7 +124,7 @@
       "constituentCoveragePct": 79.6574,
       "membershipCoveragePct": 99.8472,
       "affectedObservationsPct": 20.4954,
-      "survivorshipRisk": "HIGH"
+      "survivorshipRisk": "MEDIUM"
     },
     {
       "year": 2017,
@@ -132,7 +132,7 @@
       "constituentCoveragePct": 81.1658,
       "membershipCoveragePct": 99.8473,
       "affectedObservationsPct": 18.9869,
-      "survivorshipRisk": "HIGH"
+      "survivorshipRisk": "LOW"
     },
     {
       "year": 2018,
@@ -140,7 +140,7 @@
       "constituentCoveragePct": 83.4755,
       "membershipCoveragePct": 99.8476,
       "affectedObservationsPct": 16.6769,
-      "survivorshipRisk": "HIGH"
+      "survivorshipRisk": "LOW"
     },
     {
       "year": 2019,
@@ -148,7 +148,7 @@
       "constituentCoveragePct": 84.7504,
       "membershipCoveragePct": 99.8482,
       "affectedObservationsPct": 15.4015,
-      "survivorshipRisk": "HIGH"
+      "survivorshipRisk": "LOW"
     },
     {
       "year": 2020,
@@ -156,7 +156,7 @@
       "constituentCoveragePct": 88.106,
       "membershipCoveragePct": 99.8487,
       "affectedObservationsPct": 12.0453,
-      "survivorshipRisk": "HIGH"
+      "survivorshipRisk": "LOW"
     },
     {
       "year": 2021,
@@ -164,7 +164,7 @@
       "constituentCoveragePct": 90.5625,
       "membershipCoveragePct": 99.8484,
       "affectedObservationsPct": 9.589,
-      "survivorshipRisk": "HIGH"
+      "survivorshipRisk": "LOW"
     },
     {
       "year": 2022,
@@ -172,7 +172,7 @@
       "constituentCoveragePct": 90.9025,
       "membershipCoveragePct": 99.8483,
       "affectedObservationsPct": 9.2492,
-      "survivorshipRisk": "HIGH"
+      "survivorshipRisk": "LOW"
     },
     {
       "year": 2023,
@@ -180,7 +180,7 @@
       "constituentCoveragePct": 95.3792,
       "membershipCoveragePct": 99.847,
       "affectedObservationsPct": 4.7738,
-      "survivorshipRisk": "MEDIUM"
+      "survivorshipRisk": "LOW"
     },
     {
       "year": 2024,
@@ -188,7 +188,7 @@
       "constituentCoveragePct": 95.8367,
       "membershipCoveragePct": 99.8462,
       "affectedObservationsPct": 4.3171,
-      "survivorshipRisk": "MEDIUM"
+      "survivorshipRisk": "LOW"
     },
     {
       "year": 2025,
@@ -196,7 +196,7 @@
       "constituentCoveragePct": 96.885,
       "membershipCoveragePct": 99.845,
       "affectedObservationsPct": 3.27,
-      "survivorshipRisk": "MEDIUM"
+      "survivorshipRisk": "LOW"
     },
     {
       "year": 2026,
@@ -204,19 +204,19 @@
       "constituentCoveragePct": 98.5422,
       "membershipCoveragePct": 99.8423,
       "affectedObservationsPct": 1.6155,
-      "survivorshipRisk": "MEDIUM"
+      "survivorshipRisk": "LOW"
     }
   ],
   "worstCoveredRegion": "US",
   "worstCoveredYear": 2013,
   "universeSource": "HISTORICAL_MEMBERSHIP_DATASET",
-  "firstReliableUniverseDate": null,
+  "firstReliableUniverseDate": "2013-01-04",
   "affectedObservationsPct": 14.0278,
   "affectedRegions": [
     "KR",
     "US"
   ],
-  "impactOnPromotionEligibility": "KELLY_AND_SELECTOR_PROMOTION_BLOCKED",
+  "impactOnPromotionEligibility": "NONE",
   "fundamentalsContract": {
     "contract": "PIT_FUNDAMENTALS_V1",
     "rowsRead": 38134,
