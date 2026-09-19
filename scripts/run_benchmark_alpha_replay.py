@@ -46,11 +46,16 @@ def _digest_tree(root: Path) -> str:
 def _summary_fields(row: dict) -> dict:
     keys = ("cagrPct", "benchmarkCagrPct", "annualizedExcessPct", "sharpe", "sortino",
             "mddPct", "cvar95Pct", "informationRatio", "averageTurnoverPct",
-            "turnoverRebalances", "calendarYears")
+            "turnoverRebalances", "calendarYears", "annualOneWayTurnoverX",
+            "grossCagrPct", "costDragCagrPp", "averageCashPct")
     out = {key: row.get(key) for key in keys}
     if row.get("mddPct") is not None and row["mddPct"] < 0:
         out["calmar"] = row.get("cagrPct") / abs(row["mddPct"])
     out["sumTransactionCostPct"] = row.get("sumTransactionCostPct")
+    out["grossBenchmarkGapPp"] = (
+        row.get("grossCagrPct") - row.get("benchmarkCagrPct")
+        if row.get("grossCagrPct") is not None and row.get("benchmarkCagrPct") is not None
+        else None)
     return out
 
 
@@ -73,6 +78,8 @@ def _annotate_costs(summary: dict, rows: list[dict], cfg_pf: dict) -> dict:
     measured["costDragCagrPp"] = (
         measured["grossCagrPct"] - measured["cagrPct"]
         if measured["grossCagrPct"] is not None and measured.get("cagrPct") is not None else None)
+    measured["averageCashPct"] = float(np.mean([
+        1 - sum(float(weight) for weight in row["weights"].values()) for row in copied])) * 100
     return measured
 
 
@@ -101,10 +108,12 @@ def markdown(report: dict) -> str:
     lines = ["# Benchmark-relative alpha v1", "",
              "> Research-only CHALLENGER. Production selector and sealed replay are unchanged.", "",
              "## Headline", "",
-             "| Portfolio | CAGR | Matched benchmark | Net excess | Sharpe | MDD | Avg turnover | Annual turnover |",
-             "|---|---:|---:|---:|---:|---:|---:|---:|"]
+             "| Portfolio | Gross CAGR | Cost drag | Net CAGR | Matched benchmark | Net excess | Sharpe | MDD | Avg turnover | Annual turnover |",
+             "|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|"]
     for name, row in report["comparison"].items():
-        lines.append(f"| {name} | {_fmt(row.get('cagrPct'), '%')} | "
+        lines.append(f"| {name} | {_fmt(row.get('grossCagrPct'), '%')} | "
+                     f"{_fmt(row.get('costDragCagrPp'), 'pp')} | "
+                     f"{_fmt(row.get('cagrPct'), '%')} | "
                      f"{_fmt(row.get('benchmarkCagrPct'), '%')} | "
                      f"{_fmt(row.get('annualizedExcessPct'), 'pp')} | "
                      f"{_fmt(row.get('sharpe'))} | {_fmt(row.get('mddPct'), '%')} | "
@@ -115,11 +124,14 @@ def markdown(report: dict) -> str:
               f"The Combined CHAMPION was evaluated every 21 sessions and made "
               f"{costs['realistic']['turnoverRebalances']} rebalances. Average one-way turnover was "
               f"{_fmt(costs['realistic']['averageTurnoverPct'], '%')}, approximately "
-              f"{_fmt(costs['realistic']['annualOneWayTurnoverX'], 'x')} NAV per year.", "",
+              f"{_fmt(costs['realistic'].get('annualOneWayTurnoverX'), 'x')} NAV per year.", "",
               f"Correcting the cost model changes estimated CAGR drag from "
-              f"{_fmt(costs['legacy']['costDragCagrPp'], 'pp')} to "
-              f"{_fmt(costs['realistic']['costDragCagrPp'], 'pp')}; it does not rescue a selector "
+              f"{_fmt(costs['legacy'].get('costDragCagrPp'), 'pp')} to "
+              f"{_fmt(costs['realistic'].get('costDragCagrPp'), 'pp')}; it does not rescue a selector "
               "whose gross stock picks trail the matched index.", "",
+              f"Before costs, Combined CHAMPION trails its matched index by "
+              f"{_fmt(costs['realistic'].get('grossBenchmarkGapPp'), 'pp')} per year. "
+              "That is a stock-selection problem, not a fee-estimation problem.", "",
               "## New rule", "",
               "- Rank on matured, shrunk regional-benchmark excess return after a realistic round-trip cost.",
               "- Require expected net benchmark alpha to be positive.",
@@ -211,6 +223,12 @@ def main(argv=None) -> int:
                           "realistic": _summary_fields(champion)},
         "newChallengerVsBenchmarkBootstrap": _block_alpha_ci(new["rows"], research_cfg),
         "pairedComparisons": pairs,
+        "decisionDiagnostics": {
+            "quarterlyDecisions": sum(d["rebalanceDecision"] for d in new["decisions"]),
+            "emptyQuarterlyDecisions": sum(
+                d["rebalanceDecision"] and not d["selectedTickers"] for d in new["decisions"]),
+            "averageCashPct": fresh.get("averageCashPct"),
+        },
         "decisionAudit": new["decisions"],
         "sealedInvariant": {"before": before, "after": _digest_tree(ledger)},
         "productionChanged": False,
@@ -228,4 +246,3 @@ def main(argv=None) -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-
