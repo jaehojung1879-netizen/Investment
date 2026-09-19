@@ -1,38 +1,39 @@
 name: Regional rotation analysis
 
-# Exploratory only: two standalone US-only/KR-only replays from replay-v16's
-# ALREADY-SEALED frozen inputs, blended by pipeline.regional_rotation and
-# scored against the sealed combined-region CHAMPION path. Manual dispatch
-# only — this never runs on a schedule and never writes to signal-history;
-# it reproduces a snapshot and writes its own report as a workflow artifact.
-# See scripts/run_regional_rotation_replay.py for why frozen-only.
-
+# Read-only research validation. Pin the ledger revision as well as v1 rules.
+# Branch pushes validate before opening the Draft PR; no schedule or ledger writes.
 on:
   workflow_dispatch:
     inputs:
-      lookback_days:
-        description: "Trailing window for each quarterly re-decision (days)"
-        type: number
-        default: 252
-      temperature:
-        description: "Softmax temperature (points of trailing excess that roughly e-fold the odds ratio)"
-        type: number
-        default: 0.05
-      floor:
-        description: "Minimum weight either region always keeps"
-        type: number
-        default: 0.15
+      recompute_standalone:
+        description: Recompute standalone regional selection instead of verified checkpoint
+        type: boolean
+        default: true
+  push:
+    branches: [research/regional-rotation-validation-v1]
+    paths:
+      - 'pipeline/regional*.py'
+      - 'scripts/run_regional_rotation_replay.py'
+      - '.github/workflows/regional-rotation.yml'
+      - 'tests/test_regional*.py'
+      - 'docs/results/**'
 
 permissions:
   contents: read
+
+concurrency:
+  group: regional-validation-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   regional-rotation:
     runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
-      - name: Checkout code (main)
+      - name: Checkout research code
         uses: actions/checkout@v5
+        with:
+          persist-credentials: false
 
       - name: Set up Python
         uses: actions/setup-python@v6
@@ -43,44 +44,57 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
-      # Read-only worktree of the sealed inputs this analysis reproduces —
-      # never a branch, never pushed back to.
-      - name: Check out signal-history branch (read-only)
-        run: |
-          git fetch origin signal-history
-          git worktree add --detach replay-work origin/signal-history
+      - name: Test validation semantics
+        run: python -m pytest -q tests/test_regional_validation.py tests/test_regional_rotation.py tests/test_run_regional_rotation_replay_cli.py
+
+      - name: Check out pinned sealed inputs (read-only)
+        uses: actions/checkout@v5
+        with:
+          ref: b71d8cb5ce21815980d28b606852f9294d43cc53
+          path: replay-work
+          persist-credentials: false
 
       - name: Run the regional rotation analysis
+        env:
+          RECOMPUTE_STANDALONE: ${{ github.event_name == 'workflow_dispatch' && inputs.recompute_standalone }}
         run: |
-          # Without pipefail, a python failure piped into `tee` reports the
-          # step (and the whole job) as successful, because bash's -e only
-          # sees tee's exit code — observed in run #1, where an argparse
-          # error was silently swallowed and the workflow still went green.
           set -o pipefail
-          python scripts/run_regional_rotation_replay.py replay-work/ledger \
+          if [ "$RECOMPUTE_STANDALONE" = "true" ]; then
+            path_args=(--paths-output regional-standalone-paths.json.gz)
+          else
+            path_args=(--paths-input docs/results/regional-standalone-paths.json.gz)
+          fi
+          python -u scripts/run_regional_rotation_replay.py replay-work/ledger \
             --output regional-rotation-report.json \
-            --lookback-days ${{ inputs.lookback_days }} \
-            --temperature ${{ inputs.temperature }} \
-            --floor ${{ inputs.floor }} \
+            --markdown regional-rotation-report.md \
+            "${path_args[@]}" \
             | tee regional-rotation.log
+
+      - name: Verify checked-in deterministic result
+        run: |
+          cmp regional-rotation-report.json docs/results/regional-rotation-report.json
+          cmp regional-rotation-report.md docs/results/regional-rotation-report.md
+
+      - name: Verify sealed checkout unchanged
+        run: test -z "$(git -C replay-work status --porcelain)"
 
       - name: Upload the report
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: regional-rotation-report
+          name: regional-rotation-validation-v1
           path: |
             regional-rotation-report.json
+            regional-rotation-report.md
+            regional-standalone-paths.json.gz
             regional-rotation.log
-          if-no-files-found: warn
+          if-no-files-found: error
 
       - name: Summary
         if: always()
         run: |
-          {
-            echo "## Regional rotation analysis"
-            echo
-            echo '```'
-            tail -n 120 regional-rotation.log 2>/dev/null || echo "no output"
-            echo '```'
-          } >> "$GITHUB_STEP_SUMMARY"
+          if test -f regional-rotation-report.md; then
+            cat regional-rotation-report.md >> "$GITHUB_STEP_SUMMARY"
+          else
+            tail -n 80 regional-rotation.log >> "$GITHUB_STEP_SUMMARY"
+          fi

@@ -11,7 +11,7 @@ name: Tests
 on:
   pull_request:
   push:
-    branches: [main]
+    branches: [main, research/regional-rotation-validation-v1]
 
 permissions:
   contents: read

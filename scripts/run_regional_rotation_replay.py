@@ -1,48 +1,14 @@
-"""Two standalone replays — US-only, KR-only — from the ALREADY-SEALED
-`replay-v16` frozen inputs, blended by `pipeline.regional_rotation` into a
-walk-forward rotated portfolio, scored against the real combined-region
-CHAMPION path with the exact same cost/CAGR/drawdown machinery.
+"""Validate frozen regional-rotation-v1 against static controls, from read-only replay-v16.
 
-WHY FROZEN-ONLY. This is an exploratory analysis of an already-sealed
-generation, not a new experiment: it must never fetch vendors, never touch
-`ledger/historical/replay-v16/signals-*.jsonl.gz` (append-only, immutable,
-one universe per REPLAY_VERSION — writing signals for a US-ONLY or KR-ONLY
-universe under that REPLAY_VERSION would violate the exact invariant this
-project enforces everywhere else), and never write anything back to the
-ledger. Its own report is a separate file, `regional-rotation-report.json`,
-that carries the frozen input's own hash so it can always be tied back to
-the exact snapshot it was computed from.
-
-WHY TWO FRESH RUNS RATHER THAN READING THE SEALED SIGNALS. The sealed
-combined-region signals rank US and KR names in ONE cross-section together
-(`alphaPercentile` is a rank inside that combined pool). A US-only or
-KR-only "what if we had only ever invested here" question needs each
-region's names ranked in a pool of ONLY that region — a different
-cross-section, and therefore a different (freshly computed, never persisted)
-set of signals from the same underlying prices/fundamentals/macro.
-
-WHAT THIS PRODUCES. For each region: a CHAMPION-only path (the production
-selector, applied to a single-region universe). The two paths are combined
-by `regional_rotation`'s quarterly walk-forward blend and scored through
-`portfolio_validation._path_metrics` — the same function the sealed report
-scores every other path with. Printed and written alongside the sealed
-combined-region CHAMPION path (from the ledger's own committed report, no
-recomputation) as the comparison baseline this is trying to beat.
-
-WHAT THIS DOES NOT ESTABLISH. Whether a CAGR or Sharpe gap here is real or
-noise — no bootstrap confidence interval is computed for the
-rotated-vs-combined comparison the way `portfolio_validation.paired_comparison`
-does for champion-vs-challenger. Point estimates only; treat a difference
-smaller than the champion-vs-challenger CI width this project already
-measures elsewhere as not yet a finding.
-
-Usage: python scripts/run_regional_rotation_replay.py <ledger_dir>
-       [--output regional-rotation-report.json]
-       [--lookback-days 252] [--temperature 0.05] [--floor 0.15]
+No vendor calls, no sealed writes, no production promotion. Outputs are research
+artifacts outside the ledger. A content-checked standalone-path checkpoint avoids
+re-running unchanged regional selection during report development.
 """
 from __future__ import annotations
 
 import argparse
+import gzip
+import hashlib
 import json
 import sys
 from pathlib import Path
@@ -58,6 +24,7 @@ from pipeline import regional_rotation as RR            # noqa: E402
 from pipeline import replay_calendar as RC               # noqa: E402
 from pipeline import replay_inputs as RI                # noqa: E402
 from pipeline import replay_valuation as RV              # noqa: E402
+from pipeline import regional_validation as VALIDATION
 from pipeline.config import load_config                 # noqa: E402
 
 REGIONS = ("US", "KR")
@@ -126,117 +93,134 @@ def build_arg_parser() -> argparse.ArgumentParser:
                         default=RR.DEFAULT_LOOKBACK_DAYS)
     parser.add_argument("--temperature", type=float, default=RR.DEFAULT_TEMPERATURE)
     parser.add_argument("--floor", type=float, default=RR.DEFAULT_FLOOR)
+    parser.add_argument("--markdown", default="regional-rotation-report.md")
+    parser.add_argument("--paths-output", default=None)
+    parser.add_argument("--paths-input", default=None)
     return parser
+
+
+def ledger_digest(ledger_dir):
+    """Hash ALL sealed ledger bytes, not only the input manifest."""
+    digest = hashlib.sha256()
+    for path in sorted(ledger_dir.rglob("*")):
+        if path.is_file():
+            digest.update(str(path.relative_to(ledger_dir)).encode())
+            with path.open("rb") as stream:
+                digest.update(hashlib.file_digest(stream, "sha256").digest())
+    return digest.hexdigest()
+
+
+def guard_output(path, ledger_dir):
+    resolved = Path(path).resolve()
+    if resolved == ledger_dir.resolve() or ledger_dir.resolve() in resolved.parents:
+        raise ValueError("research output must be outside sealed ledger")
+    if resolved.exists():
+        raise FileExistsError(f"refusing to overwrite existing artifact: {resolved}")
+    return resolved
+
+
+def _engine_hash():
+    files = [ROOT / "pipeline" / f for f in (
+        "historical_replay.py", "historical_outcomes.py", "portfolio_validation.py",
+        "replay_valuation.py", "replay_calendar.py", "longterm.py", "kelly_portfolio.py")]
+    return RI.digest({str(p.relative_to(ROOT)):hashlib.sha256(p.read_bytes()).hexdigest() for p in files})
 
 
 def main(argv=None) -> int:
     args = build_arg_parser().parse_args(argv)
-
+    params = dict(lookback_days=args.lookback_days, temperature=args.temperature, floor=args.floor)
+    if params != dict(VALIDATION.BASELINE):
+        raise ValueError("v1 is frozen; use only the pre-specified OFAT diagnostics")
     ledger_dir = Path(args.ledger_dir)
+    output = guard_output(args.output,ledger_dir)
+    markdown = guard_output(args.markdown,ledger_dir)
+    checkpoint = guard_output(args.paths_output,ledger_dir) if args.paths_output else None
     cfg, _config_warnings = load_config()
     replay_cfg = cfg.historical_replay or {}
-
-    manifest, frozen = _load_frozen(ledger_dir)
+    before = ledger_digest(ledger_dir)
+    store = RI.InputStore(ledger_dir, prov_mod.REPLAY_VERSION, prov_mod.DATA_VERSION)
+    manifest = store.manifest()
+    if not manifest:
+        raise RI.InputVersionConflict("no frozen inputs; validation never acquires them")
+    if prov_mod.REPLAY_VERSION != "replay-v16":
+        raise ValueError("this v1 validation is pinned to replay-v16")
     through = manifest["through"]
-    print(f"frozen inputs: replay-v16 through {through}, sha256 {manifest['sha256'][:12]}...")
-
-    valuation = RV.ValuationData(
-        frozen["prices"], cfg.benchmarks, frozen["fx"], frozen["risk_free"],
-        through=through, risk_free_through=frozen["risk_free_source"]["verifiedThrough"],
-        corporate_actions=frozen.get("corporate_actions"))
-
-    fetch_universe = frozen["universe"]
-    decisions_by_region: dict[str, list[dict]] = {}
-    region_diagnostics: dict[str, dict] = {}
-    for region in REGIONS:
-        names = fetch_universe.get(region) or []
-        if not names:
-            print(f"  {region}: no names in the frozen universe, skipping")
-            continue
-        print(f"=== {region}-only replay ===")
-        rows, diagnostics = _region_champion_rows(
-            region, names, frozen, cfg=cfg, replay_cfg=replay_cfg,
-            through=through, valuation=valuation)
-        decisions_by_region[region] = rows
-        region_diagnostics[region] = {
-            "names": len(names), "matureBlocks": len(rows),
-            "survivorshipRisk": diagnostics.get("survivorshipRisk"),
-        }
-
-    if len(decisions_by_region) < 2:
-        print("ERROR: fewer than two regions produced a CHAMPION path; nothing to blend",
-             file=sys.stderr)
-        return 1
-
-    print("=== standalone single-region paths ===")
-    standalone_metrics = {}
-    for region, rows in decisions_by_region.items():
-        metrics = PV._path_metrics(rows, PV.HEADLINE_HORIZON, cfg.kelly_portfolio)
-        standalone_metrics[region] = metrics
-        if metrics.get("available"):
-            print(f"  {region} alone: CAGR {metrics['cagrPct']}% | excess "
-                 f"{metrics['annualizedExcessPct']}%p | Sharpe {metrics['sharpe']} | "
-                 f"MDD {metrics['mddPct']}%")
-        else:
-            print(f"  {region} alone: unavailable ({metrics.get('reason')})")
-
-    print("=== walk-forward regional rotation ===")
-    schedule = RR.regional_weight_schedule(
-        decisions_by_region, lookback_days=args.lookback_days,
-        temperature=args.temperature, floor=args.floor)
-    blended = RR.apply_schedule(decisions_by_region, schedule)
-    rotated_metrics = (PV._path_metrics(blended, PV.HEADLINE_HORIZON, cfg.kelly_portfolio)
-                       if blended else {"available": False, "reason": "no_blended_blocks"})
-    if rotated_metrics.get("available"):
-        print(f"  rotated: CAGR {rotated_metrics['cagrPct']}% | excess "
-             f"{rotated_metrics['annualizedExcessPct']}%p | Sharpe {rotated_metrics['sharpe']} | "
-             f"MDD {rotated_metrics['mddPct']}%")
-    else:
-        print(f"  rotated: unavailable ({rotated_metrics.get('reason')})")
-    print(f"  {len(schedule)} quarterly decisions, {len(blended)} blended blocks")
-    for row in schedule[:4] + (["..."] if len(schedule) > 8 else []) + schedule[-4:]:
-        if row == "...":
-            print("    ...")
-            continue
-        print(f"    {row['date']}  trailing {row['trailingExcessPct']}  -> weights {row['weights']}")
-
-    print("=== sealed combined-region CHAMPION path (comparison baseline) ===")
+    print(f"frozen replay-v16 through {through}, input {manifest['sha256']}", flush=True)
     sealed_path = ledger_dir / "historical-portfolio-validation.json"
-    combined_metrics = None
-    if sealed_path.exists():
-        try:
-            sealed = json.loads(sealed_path.read_text(encoding="utf-8"))
-            combined_metrics = (((sealed.get("portfolioReplay") or {}).get("selectors") or {})
-                                .get(PV.CHAMPION, {}).get("summary"))
-        except ValueError:
-            print(f"  WARNING: {sealed_path} is not readable JSON")
-    if combined_metrics and combined_metrics.get("available"):
-        print(f"  sealed combined: CAGR {combined_metrics['cagrPct']}% | excess "
-             f"{combined_metrics['annualizedExcessPct']}%p | Sharpe {combined_metrics['sharpe']} | "
-             f"MDD {combined_metrics['mddPct']}%")
+    sealed = json.loads(sealed_path.read_text())
+    if (sealed.get("inputSnapshot",{}).get("sha256") != manifest["sha256"] or
+            sealed.get("replayVersion") != prov_mod.REPLAY_VERSION):
+        raise ValueError("sealed CHAMPION and frozen inputs have different lineage")
+    combined = sealed["portfolioReplay"].get("headlineRows",{}).get(PV.CHAMPION)
+    if not combined:
+        raise ValueError("sealed CHAMPION daily rows unavailable; never regenerate sealed report")
+    provenance = dict(inputSha256=manifest["sha256"], configSha256=RI.digest(
+        dict(longterm=cfg.longterm,kelly=cfg.kelly_portfolio,replay=replay_cfg,benchmarks=cfg.benchmarks)),
+        engineSha256=_engine_hash())
+    if args.paths_input:
+        cached = json.loads(gzip.decompress(Path(args.paths_input).read_bytes()))
+        content = {k:v for k,v in cached.items() if k != "sha256"}
+        if RI.digest(content) != cached["sha256"] or cached["provenance"] != provenance:
+            raise ValueError("standalone path checkpoint hash or lineage mismatch")
+        regional, diagnostics = cached["regional"],cached["diagnostics"]
     else:
-        print(f"  sealed combined path not available at {sealed_path} — "
-             "run scripts/audit_portfolio.py first if a comparison baseline is needed")
-
-    report = {
-        "reportVersion": "regional-rotation-v1",
-        "replayVersion": prov_mod.REPLAY_VERSION,
-        "inputSnapshot": {"sha256": manifest["sha256"], "through": through},
-        "parameters": {"lookbackDays": args.lookback_days, "temperature": args.temperature,
-                       "floor": args.floor},
-        "regionDiagnostics": region_diagnostics,
-        "standalone": standalone_metrics,
-        "rotated": rotated_metrics,
-        "rotationSchedule": schedule,
-        "sealedCombinedChampion": combined_metrics,
-        "caveat": ("Point estimates only — no bootstrap confidence interval computed for "
-                  "rotated-vs-combined. A difference smaller than this project's own "
-                  "champion-vs-challenger paired CI width is not yet a finding."),
-    }
-    output = Path(args.output)
-    output.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    print(f"wrote {output}")
-    return 0
+        _, frozen = _load_frozen(ledger_dir)
+        valuation = RV.ValuationData(
+            frozen["prices"], cfg.benchmarks, frozen["fx"], frozen["risk_free"],
+            through=through, risk_free_through=frozen["risk_free_source"]["verifiedThrough"],
+            corporate_actions=frozen.get("corporate_actions"))
+        regional, diagnostics = {}, {}
+        for region in REGIONS:
+            names = frozen["universe"].get(region) or []
+            if not names:
+                raise ValueError("frozen universe missing region: " + region)
+            print(f"=== {region}-only replay ===",flush=True)
+            rows, diag = _region_champion_rows(region,names,frozen,cfg=cfg,replay_cfg=replay_cfg,
+                                               through=through,valuation=valuation)
+            regional[region] = rows
+            diagnostics[region] = {k:diag.get(k) for k in (
+                "survivorshipRisk", "fundamentalsPit", "macroPitStatus", "replayDates")}
+        if checkpoint:
+            cached = dict(provenance=provenance,regional=regional,diagnostics=diagnostics)
+            cached["sha256"] = RI.digest(cached)
+            checkpoint.parent.mkdir(parents=True,exist_ok=True)
+            checkpoint.write_bytes(gzip.compress(RI.canonical(cached),mtime=0))
+    # Fresh and cached paths use identical key order, including multi-name
+    # sums. The checkpoint's canonical JSON must not change floating reduction order.
+    regional = json.loads(RI.canonical(regional))
+    calendar = [r for r in RC.schedule(replay_cfg.get("start",RC.ORIGIN),through,PV.HEADLINE_HORIZON,
+                                      replay_cfg.get("frequency","W")) if r["endDate"] <= through]
+    report = VALIDATION.build_validation(regional,combined,calendar,cfg.kelly_portfolio)
+    report["inputSnapshot"] = dict(sha256=manifest["sha256"],through=through)
+    report["regionDiagnostics"] = diagnostics
+    report["sourceProvenance"] = provenance
+    report["regionalPathHashes"] = {r:RI.digest(rows) for r,rows in regional.items()}
+    report["sameRegionalPathsForStaticAndDynamic"] = True
+    report["sealedCombinedPublishedSummary"] = sealed["portfolioReplay"]["selectors"][PV.CHAMPION]["summary"]
+    # Recalculation must reproduce the published CHAMPION; keep original result intact.
+    original = report["sealedCombinedPublishedSummary"]
+    recalculated = report["baselineComparison"][VALIDATION.PORTFOLIOS[0]]
+    if report["matching"]["complete"]:
+        for key in VALIDATION.METRICS:
+            if key == "calmar":
+                continue
+            if original.get(key) != recalculated.get(key):
+                raise ValueError(f"sealed CHAMPION metric mismatch: {key}")
+    report["sealedCombinedPublishedSummary"] = {k:v for k,v in original.items()
+        if k not in ("nav","rolling3YAnnualizedExcess","rolling5YAnnualizedExcess")}
+    after = ledger_digest(ledger_dir)
+    if before != after:
+        raise ValueError("SEALED_LEDGER_CHANGED")
+    report["sealedInvariant"] = dict(before=before,after=after,unchanged=True)
+    for path in (output,markdown):
+        path.parent.mkdir(parents=True,exist_ok=True)
+    report = VALIDATION.report_values(report)
+    output.write_text(json.dumps(report,ensure_ascii=False,indent=2,allow_nan=False,sort_keys=True)+"\n")
+    markdown.write_text(VALIDATION.markdown_report(report))
+    for name,m in report["baselineComparison"].items():
+        print(name, {k:m.get(k) for k in VALIDATION.METRICS},flush=True)
+    print(f"wrote {output} and {markdown}; sealed bytes unchanged",flush=True)
+    return 0 if report["matching"]["complete"] else 1
 
 
 if __name__ == "__main__":
