@@ -185,6 +185,9 @@ def main(argv=None) -> int:
             cached["sha256"] = RI.digest(cached)
             checkpoint.parent.mkdir(parents=True,exist_ok=True)
             checkpoint.write_bytes(gzip.compress(RI.canonical(cached),mtime=0))
+    # Fresh and cached paths use identical key order, including multi-name
+    # sums. The checkpoint's canonical JSON must not change floating reduction order.
+    regional = json.loads(RI.canonical(regional))
     calendar = [r for r in RC.schedule(replay_cfg.get("start",RC.ORIGIN),through,PV.HEADLINE_HORIZON,
                                       replay_cfg.get("frequency","W")) if r["endDate"] <= through]
     report = VALIDATION.build_validation(regional,combined,calendar,cfg.kelly_portfolio)
@@ -211,6 +214,7 @@ def main(argv=None) -> int:
     report["sealedInvariant"] = dict(before=before,after=after,unchanged=True)
     for path in (output,markdown):
         path.parent.mkdir(parents=True,exist_ok=True)
+    report = VALIDATION.report_values(report)
     output.write_text(json.dumps(report,ensure_ascii=False,indent=2,allow_nan=False,sort_keys=True)+"\n")
     markdown.write_text(VALIDATION.markdown_report(report))
     for name,m in report["baselineComparison"].items():

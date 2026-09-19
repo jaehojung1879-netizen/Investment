@@ -4,6 +4,11 @@ name: Regional rotation analysis
 # Branch pushes validate before opening the Draft PR; no schedule or ledger writes.
 on:
   workflow_dispatch:
+    inputs:
+      recompute_standalone:
+        description: Recompute standalone regional selection instead of verified checkpoint
+        type: boolean
+        default: true
   push:
     branches: [research/regional-rotation-validation-v1]
     paths:
@@ -11,6 +16,7 @@ on:
       - 'scripts/run_regional_rotation_replay.py'
       - '.github/workflows/regional-rotation.yml'
       - 'tests/test_regional*.py'
+      - 'docs/results/**'
 
 permissions:
   contents: read
@@ -49,13 +55,25 @@ jobs:
           persist-credentials: false
 
       - name: Run the regional rotation analysis
+        env:
+          RECOMPUTE_STANDALONE: ${{ github.event_name == 'workflow_dispatch' && inputs.recompute_standalone }}
         run: |
           set -o pipefail
+          if [ "$RECOMPUTE_STANDALONE" = "true" ]; then
+            path_args=(--paths-output regional-standalone-paths.json.gz)
+          else
+            path_args=(--paths-input docs/results/regional-standalone-paths.json.gz)
+          fi
           python -u scripts/run_regional_rotation_replay.py replay-work/ledger \
             --output regional-rotation-report.json \
             --markdown regional-rotation-report.md \
-            --paths-output regional-standalone-paths.json.gz \
+            "${path_args[@]}" \
             | tee regional-rotation.log
+
+      - name: Verify checked-in deterministic result
+        run: |
+          cmp regional-rotation-report.json docs/results/regional-rotation-report.json
+          cmp regional-rotation-report.md docs/results/regional-rotation-report.md
 
       - name: Verify sealed checkout unchanged
         run: test -z "$(git -C replay-work status --porcelain)"

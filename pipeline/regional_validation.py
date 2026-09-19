@@ -99,6 +99,7 @@ def metrics(rows, cfg_pf):
                               only_dates=[r['date'] for r in copied])
     if not result.get('available'):
         return result
+    result['riskFreeStatus'] = 'AVAILABLE_POLICY_RATE_PROXY'
     result['calmar'] = (result['cagrPct'] / abs(result['mddPct']) if result['mddPct'] < 0 else None)
     result['metricUnavailableReasons'] = {}
     for key, reason in (('sharpe', 'INSUFFICIENT_OR_ZERO_VARIANCE_DAILY_RF_EXCESS'),
@@ -300,6 +301,9 @@ def markdown_report(report):
     fields = METRICS+('annualizedRealizedVolPct','averageTurnoverPct','averageCashPct','sumTransactionCostPct')
     for name,m in report['baselineComparison'].items():
         lines.append('| '+name+' | '+' | '.join(fmt(m.get(k)) for k in fields)+' |')
+    for name,m in report['baselineComparison'].items():
+        for key,reason in m.get('metricUnavailableReasons',{}).items():
+            lines.append(f'{name} / {key}: {reason}')
     lines += ['', 'CAGR is cost-adjusted. Excess = portfolio CAGR minus its own equity/cash-matched benchmark CAGR. '
               'Sharpe and Sortino use daily BOK risk-free excess. CVaR is the mean worst 5% daily net returns. '
               'Turnover excludes the initial purchase; sum cost is the sum of entry cost fractions, not annualized drag.', '',
@@ -328,6 +332,9 @@ def markdown_report(report):
         for metric,ci in c.get('meanPairedBlockMetricDifferenceCI',{}).items():
             lines.append(f"| {metric} | {fmt(ci['pointEstimate'])} | {fmt(ci['bootstrapMean'])} | "
                          f"[{fmt(ci['ci95'][0])}, {fmt(ci['ci95'][1])}] | {ci['pairedBlocks']} | {ci['seed']} | {ci['samples']} |")
+        for metric,ci in c.get('meanPairedBlockMetricDifferenceCI',{}).items():
+            if ci['reason']:
+                lines.append(f"{metric}: {ci['reason']}")
         lines.append('')
     lines += ['## Robustness', '', 'Pre-specified OFAT; no winner or default selection.', '',
               '| Variant | Lookback calendar days | Temperature | Floor | ΔCAGR vs static pp | ΔMDD vs static pp | ΔSharpe | US weight min–max | Max quarterly change |',
@@ -352,3 +359,20 @@ def markdown_report(report):
               f"Sealed ledger SHA-256 tree before/after: `{report['sealedInvariant']['before']}` / `{report['sealedInvariant']['after']}`.",
               'Sealed CHAMPION rows are read-only; production selector, Kelly, macro, runMode and liveValidated are unchanged.', '']
     return '\n'.join(lines)
+
+
+def report_values(value):
+    """Publish finite derived decimals at the existing daily metric precision.
+
+    This avoids encoding insignificant cross-Python float summation noise in
+    result artifacts. Calculations/bootstrap retain full precision throughout.
+    """
+    if isinstance(value, dict):
+        return {k:report_values(v) for k,v in value.items()}
+    if isinstance(value, (list,tuple)):
+        return [report_values(v) for v in value]
+    if isinstance(value, float):
+        if not math.isfinite(value):
+            raise ValueError('non-finite report metric')
+        return round(float(value),6)
+    return value

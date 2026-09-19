@@ -25,6 +25,9 @@ Replay v7의 고정 평가 달력과 성과 정의는 [v7 평가 문서](docs/re
 paired bootstrap CI와 사전 정의 OFAT를 별도 연구 보고서로 만듭니다.
 
 재현 명령·방법과 한계는 [검증 설계](docs/regional-rotation-validation-v1.md)를 참고하세요.
+[실측 보고서](docs/results/regional-rotation-report.md): 155개 공통 블록에서 Dynamic−Static
+CAGR +0.277%p, MDD -0.861%p(더 깊은 낙폭)이며, timing 7개 지표의 95% CI는 모두 0을 포함합니다.
+낙폭 감소는 지역 분산·재선발·현금비중 변화 쪽의 설명이 우세하며, 동적 timing의 추가 가치는 불확실합니다.
 역사적 검증은 prospective 검증을 대체하지 않으며 CHAMPION·production selector·Kelly·macro·
 `paperTrading` 정책·`liveValidated`를 변경하지 않습니다.
 

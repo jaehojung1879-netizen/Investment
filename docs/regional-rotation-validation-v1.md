@@ -138,10 +138,19 @@ content-hashed checkpoint only when input, relevant config and replay-engine
 hashes agree. It still reads the sealed CHAMPION and verifies the ledger invariant.
 The checkpoint is an analysis cache, never a replacement sealed input or ledger.
 
-The existing **Regional rotation analysis** workflow runs the full standalone
-replays on pushes to the research branch or manual dispatch, with read-only
-permissions and a pinned ledger checkout. Reports/checkpoints are uploaded as
-Actions artifacts. The ordinary Tests workflow remains intact.
+The existing **Regional rotation analysis** workflow completed the full standalone
+replays in [run 35409650292](https://github.com/jaehojung1879-netizen/Investment/actions/runs/35409650292).
+Its content-hashed checkpoint is retained in `docs/results/`. Branch pushes now
+recompute all metrics, CIs and sensitivities from that verified checkpoint and
+require byte-identical JSON/Markdown against the checked-in report. Manual
+workflow dispatch defaults to recomputing both standalone regional selections.
+Both modes retain read-only permissions, the pinned ledger checkout and complete
+sealed-byte verification. The ordinary Tests workflow remains intact.
+
+The research metric wrapper corrects the inherited `riskFreeStatus=UNAVAILABLE`
+label left by the legacy endpoint result dictionary, after validating the actual
+daily risk-free path. Published sealed metadata remains untouched. This is a
+status correction, not a change to the production Sharpe calculation.
 
 ## Results
 
@@ -149,3 +158,42 @@ The generated JSON and Markdown reports in `docs/results/` contain the actual
 A/B/C estimates, both CI estimands, OFAT table and allocation history. Historical
 validation does not authorize production promotion; new prospective periods are
 still needed under the frozen rules.
+
+
+## Observed interpretation (155 matched blocks, 2013-01-07–2026-09-14)
+
+| Portfolio | Net CAGR % | Excess pp/yr | Sharpe | MDD % | Average cash % |
+|---|---:|---:|---:|---:|---:|
+| Combined CHAMPION | 10.338 | -3.635 | 0.744 | -29.264 | 22.461 |
+| Static 50/50 | 8.661 | -2.349 | 0.801 | -19.095 | 38.662 |
+| Dynamic v1 | 8.938 | -1.917 | 0.817 | -19.956 | 38.725 |
+
+Static versus combined reduces observed drawdown by **10.168pp**, while dynamic
+versus static makes it **0.861pp deeper**. Total dynamic-versus-combined reduction
+is therefore **9.308pp**. The drawdown improvement appears primarily attributable
+to the regional diversification/reranking architecture, rather than dynamic
+regional timing. This is not pure diversification: average cash rises by about
+**16.2pp**, effective holdings increase, and turnover falls. A/B/C alone cannot
+separate those structural components. Static's own ΔMDD CI includes zero.
+
+Dynamic versus static adds **0.277pp CAGR** (95% CI **[-0.557, +1.135]**),
+**0.431pp annualized benchmark excess** (CI **[-0.540, +1.457]**) and **0.015 Sharpe**
+(CI **[-0.071, +0.107]**). ΔMDD is **-0.861pp** (CI **[-2.565, +1.542]**).
+All seven dynamic-versus-static path-difference intervals include zero:
+**historical evidence is inconclusive**. The apparent gain in benchmark excess
+is larger than the CAGR gain partly because the dynamic benchmark CAGR is lower.
+
+Across baseline plus six OFAT variants, **all seven have deeper MDD than static**
+(by 0.121–1.433pp). Six have positive CAGR deltas, but 126-day lookback changes the
+sign (-0.025pp). Short lookback has a maximum quarterly US-weight change of 37.6pp;
+low temperature reaches the 85% ceiling. There is no stable incremental drawdown
+advantage and no parameter is selected as a winner. Static's CVaR improvement
+versus combined excludes zero under this bootstrap, but that is evidence about
+the structural blend, not timing alpha, and the tests are not multiplicity-adjusted.
+
+The previously reported dynamic MDD around -13.1% was a block-endpoint lower
+bound. Correct daily valuation gives **-19.956%**. It must not be compared with
+CHAMPION's daily MDD as though both had identical semantics.
+
+Decision: preserve the frozen v1 **CHALLENGER** for prospective shadow evidence;
+do not replace CHAMPION or enable production/live execution.

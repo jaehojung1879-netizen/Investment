@@ -1,0 +1,2916 @@
+{
+  "baselineComparison": {
+    "Combined CHAMPION": {
+      "annualizedDownsideVolPct": 7.951093,
+      "annualizedExcessPct": -3.634654,
+      "annualizedRealizedVolPct": 11.446462,
+      "available": true,
+      "averageCashPct": 22.46069,
+      "averageEffectiveNames": 3.99,
+      "averageEquityPct": 77.53931,
+      "averageTop1Pct": 27.13,
+      "averageTop3Pct": 61.8,
+      "averageTurnoverPct": 56.1,
+      "averageTurnoverPctByRegion": {
+        "KR": 61.88,
+        "US": 74.57
+      },
+      "baseCurrency": "KRW",
+      "benchmarkCagrPct": 13.972256,
+      "cagrPct": 10.337602,
+      "calendarYears": 13.684059,
+      "calmar": 0.353258,
+      "costAdjustedCagrPct": 10.337602,
+      "costDragCagrPp": 1.904244,
+      "cvar95Pct": -1.565111,
+      "directlyComparableToLegacy": false,
+      "firstDate": "2013-01-07",
+      "fxReturnsIncluded": true,
+      "grossCagrPct": 12.241846,
+      "hitRatePct": 47.74,
+      "informationRatio": -0.33216,
+      "lastEndDate": "2026-09-14",
+      "mddBasis": "DAILY_UNION_SESSIONS_WITH_ENTRY_COSTS",
+      "mddPct": -29.263624,
+      "metricUnavailableReasons": {},
+      "metricVersion": "calendar-span-daily-krw-rf-v1",
+      "observationsPerYear": 259.133634,
+      "pathMethod": "FIXED_COMMON_SESSION_BLOCKS_DAILY_KRW_NAV",
+      "periods": 155,
+      "riskFreeBasis": "BOK_POLICY_RATE_PROXY_ACT_365_DAILY",
+      "riskFreeReturnPct": 31.008746,
+      "riskFreeStatus": "AVAILABLE_POLICY_RATE_PROXY",
+      "sharpe": 0.744288,
+      "sortino": 1.071643,
+      "sumTransactionCostPct": 23.395293,
+      "trackingErrorPct": 9.599495,
+      "turnoverRebalances": 154,
+      "turnoverRebalancesByRegion": {
+        "KR": 154,
+        "US": 154
+      }
+    },
+    "Dynamic Regional Rotation v1": {
+      "annualizedDownsideVolPct": 5.797093,
+      "annualizedExcessPct": -1.917374,
+      "annualizedRealizedVolPct": 8.508619,
+      "available": true,
+      "averageCashPct": 38.725223,
+      "averageEffectiveNames": 5.08,
+      "averageEquityPct": 61.274777,
+      "averageTop1Pct": 16.21,
+      "averageTop3Pct": 41.38,
+      "averageTurnoverPct": 42.11,
+      "averageTurnoverPctByRegion": {
+        "KR": 57.7,
+        "US": 74.62
+      },
+      "baseCurrency": "KRW",
+      "benchmarkCagrPct": 10.855805,
+      "cagrPct": 8.93843,
+      "calendarYears": 13.684059,
+      "calmar": 0.44791,
+      "costAdjustedCagrPct": 8.93843,
+      "costDragCagrPp": 1.585778,
+      "cvar95Pct": -1.158909,
+      "directlyComparableToLegacy": false,
+      "firstDate": "2013-01-07",
+      "fxReturnsIncluded": true,
+      "grossCagrPct": 10.524208,
+      "hitRatePct": 48.39,
+      "informationRatio": -0.213621,
+      "lastEndDate": "2026-09-14",
+      "mddBasis": "DAILY_UNION_SESSIONS_WITH_ENTRY_COSTS",
+      "mddPct": -19.955847,
+      "metricUnavailableReasons": {},
+      "metricVersion": "calendar-span-daily-krw-rf-v1",
+      "observationsPerYear": 259.133634,
+      "pathMethod": "FIXED_COMMON_SESSION_BLOCKS_DAILY_KRW_NAV",
+      "periods": 155,
+      "riskFreeBasis": "BOK_POLICY_RATE_PROXY_ACT_365_DAILY",
+      "riskFreeReturnPct": 31.008746,
+      "riskFreeStatus": "AVAILABLE_POLICY_RATE_PROXY",
+      "sharpe": 0.816668,
+      "sortino": 1.198973,
+      "sumTransactionCostPct": 19.761899,
+      "trackingErrorPct": 8.02203,
+      "turnoverRebalances": 154,
+      "turnoverRebalancesByRegion": {
+        "KR": 154,
+        "US": 154
+      }
+    },
+    "Static 50/50": {
+      "annualizedDownsideVolPct": 5.712482,
+      "annualizedExcessPct": -2.348692,
+      "annualizedRealizedVolPct": 8.333589,
+      "available": true,
+      "averageCashPct": 38.662171,
+      "averageEffectiveNames": 5.22,
+      "averageEquityPct": 61.337829,
+      "averageTop1Pct": 14.71,
+      "averageTop3Pct": 40.66,
+      "averageTurnoverPct": 42.37,
+      "averageTurnoverPctByRegion": {
+        "KR": 57.22,
+        "US": 74.27
+      },
+      "baseCurrency": "KRW",
+      "benchmarkCagrPct": 11.009735,
+      "cagrPct": 8.661043,
+      "calendarYears": 13.684059,
+      "calmar": 0.453572,
+      "costAdjustedCagrPct": 8.661043,
+      "costDragCagrPp": 1.568482,
+      "cvar95Pct": -1.132365,
+      "directlyComparableToLegacy": false,
+      "firstDate": "2013-01-07",
+      "fxReturnsIncluded": true,
+      "grossCagrPct": 10.229525,
+      "hitRatePct": 48.39,
+      "informationRatio": -0.254115,
+      "lastEndDate": "2026-09-14",
+      "mddBasis": "DAILY_UNION_SESSIONS_WITH_ENTRY_COSTS",
+      "mddPct": -19.095209,
+      "metricUnavailableReasons": {},
+      "metricVersion": "calendar-span-daily-krw-rf-v1",
+      "observationsPerYear": 259.133634,
+      "pathMethod": "FIXED_COMMON_SESSION_BLOCKS_DAILY_KRW_NAV",
+      "periods": 155,
+      "riskFreeBasis": "BOK_POLICY_RATE_PROXY_ACT_365_DAILY",
+      "riskFreeReturnPct": 31.008746,
+      "riskFreeStatus": "AVAILABLE_POLICY_RATE_PROXY",
+      "sharpe": 0.801438,
+      "sortino": 1.169532,
+      "sumTransactionCostPct": 19.597577,
+      "trackingErrorPct": 8.610089,
+      "turnoverRebalances": 154,
+      "turnoverRebalancesByRegion": {
+        "KR": 154,
+        "US": 154
+      }
+    }
+  },
+  "comparisons": {
+    "diversificationRegionalReranking": {
+      "available": true,
+      "cashAndCostDeltas": {
+        "averageCashPct": 16.201482,
+        "averageEquityPct": -16.201482,
+        "averageTurnoverPct": -13.73,
+        "benchmarkCagrPct": -2.962521,
+        "costDragCagrPp": -0.335762,
+        "sumTransactionCostPct": -3.797716
+      },
+      "delta": {
+        "annualizedExcessPct": 1.285962,
+        "cagrPct": -1.676559,
+        "calmar": 0.100314,
+        "cvar95Pct": 0.432746,
+        "mddPct": 10.168415,
+        "sharpe": 0.05715,
+        "sortino": 0.097889
+      },
+      "estimandNote": "Path deltas recompute nonlinear statistics on jointly resampled net daily blocks. Mean block-metric deltas are a separate estimand, not the full-path delta. Costs and allocations are fixed at their original chronological values. Blocks are treated as exchangeable; serial regime dependence is not removed.",
+      "mddDescription": "+10.168pp shallower drawdown",
+      "meanPairedBlockMetricDifferenceCI": {
+        "annualizedExcessPct": {
+          "bootstrapMean": 0.746854,
+          "ci95": [
+            -2.378284,
+            3.795973
+          ],
+          "evidence": "historical evidence is inconclusive",
+          "pairedBlocks": 155,
+          "pointEstimate": 0.775947,
+          "reason": null,
+          "samples": 2000,
+          "seed": 11,
+          "validSamples": 2000
+        },
+        "cagrPct": {
+          "bootstrapMean": -4.518915,
+          "ci95": [
+            -7.663303,
+            -1.481078
+          ],
+          "evidence": "historical interval excludes zero; prospective evidence still required",
+          "pairedBlocks": 155,
+          "pointEstimate": -4.484902,
+          "reason": null,
+          "samples": 2000,
+          "seed": 11,
+          "validSamples": 2000
+        },
+        "calmar": {
+          "bootstrapMean": -0.066148,
+          "ci95": [
+            -2.169045,
+            1.994517
+          ],
+          "evidence": "historical evidence is inconclusive",
+          "pairedBlocks": 155,
+          "pointEstimate": -0.061942,
+          "reason": null,
+          "samples": 2000,
+          "seed": 11,
+          "validSamples": 2000
+        },
+        "cvar95Pct": {
+          "bootstrapMean": 0.263868,
+          "ci95": [
+            0.206644,
+            0.332704
+          ],
+          "evidence": "historical interval excludes zero; prospective evidence still required",
+          "pairedBlocks": 155,
+          "pointEstimate": 0.265426,
+          "reason": null,
+          "samples": 2000,
+          "seed": 11,
+          "validSamples": 2000
+        },
+        "mddPct": {
+          "bootstrapMean": 0.619415,
+          "ci95": [
+            0.460404,
+            0.809402
+          ],
+          "evidence": "historical interval excludes zero; prospective evidence still required",
+          "pairedBlocks": 155,
+          "pointEstimate": 0.623579,
+          "reason": null,
+          "samples": 2000,
+          "seed": 11,
+          "validSamples": 2000
+        },
+        "sharpe": {
+          "bootstrapMean": -0.061882,
+          "ci95": [
+            -0.286911,
+            0.158553
+          ],
+          "evidence": "historical evidence is inconclusive",
+          "pairedBlocks": 155,
+          "pointEstimate": -0.059336,
+          "reason": null,
+          "samples": 2000,
+          "seed": 11,
+          "validSamples": 2000
+        },
+        "sortino": {
+          "bootstrapMean": -0.119585,
+          "ci95": [
+            -0.525726,
+            0.304725
+          ],
+          "evidence": "historical evidence is inconclusive",
+          "pairedBlocks": 155,
+          "pointEstimate": -0.11567,
+          "reason": null,
+          "samples": 2000,
+          "seed": 11,
+          "validSamples": 2000
+        }
+      },
+      "method": "PAIRED_WHOLE_EVALUATION_BLOCK_PERCENTILE_BOOTSTRAP",
+      "pathDifferenceCI": {
+        "annualizedExcessPct": {
+          "bootstrapMean": 1.269179,
+          "ci95": [
+            -1.187828,
+            3.713981
+          ],
+          "evidence": "historical evidence is inconclusive",
+          "pairedBlocks": 155,
+          "pointEstimate": 1.285962,
+          "reason": null,
+          "samples": 2000,
+          "seed": 11,
+          "validSamples": 2000
+        },
+        "cagrPct": {
+          "bootstrapMean": -1.745716,
+          "ci95": [
+            -4.592719,
+            0.955456
+          ],
+          "evidence": "historical evidence is inconclusive",
+          "pairedBlocks": 155,
+          "pointEstimate": -1.676559,
+          "reason": null,
+          "samples": 2000,
+          "seed": 11,
+          "validSamples": 2000
+        },
+        "calmar": {
+          "bootstrapMean": 0.075775,
+          "ci95": [
+            -0.310899,
+            0.308197
+          ],
+          "evidence": "historical evidence is inconclusive",
+          "pairedBlocks": 155,
+          "pointEstimate": 0.100314,
+          "reason": null,
+          "samples": 2000,
+          "seed": 11,
+          "validSamples": 2000
+        },
+        "cvar95Pct": {
+          "bootstrapMean": 0.429047,
+          "ci95": [
+            0.282238,
+            0.656325
+          ],
+          "evidence": "historical interval excludes zero; prospective evidence still required",
+          "pairedBlocks": 155,
+          "pointEstimate": 0.432746,
+          "reason": null,
+          "samples": 2000,
+          "seed": 11,
+          "validSamples": 2000
+        },
+        "mddPct": {
+          "bootstrapMean": 7.901819,
+          "ci95": [
+            -0.780327,
+            16.258547
+          ],
+          "evidence": "historical evidence is inconclusive",
+          "pairedBlocks": 155,
+          "pointEstimate": 10.168415,
+          "reason": null,
+          "samples": 2000,
+          "seed": 11,
+          "validSamples": 2000
+        },
+        "sharpe": {
+          "bootstrapMean": 0.039862,
+          "ci95": [
+            -0.19232,
+            0.250886
+          ],
+          "evidence": "historical evidence is inconclusive",
+          "pairedBlocks": 155,
+          "pointEstimate": 0.05715,
+          "reason": null,
+          "samples": 2000,
+          "seed": 11,
+          "validSamples": 2000
+        },
+        "sortino": {
+          "bootstrapMean": 0.066197,
+          "ci95": [
+            -0.305719,
+            0.399148
+          ],
+          "evidence": "historical evidence is inconclusive",
+          "pairedBlocks": 155,
+          "pointEstimate": 0.097889,
+          "reason": null,
+          "samples": 2000,
+          "seed": 11,
+          "validSamples": 2000
+        }
+      }
+    },
+    "dynamicTiming": {
+      "available": true,
+      "cashAndCostDeltas": {
+        "averageCashPct": 0.063052,
+        "averageEquityPct": -0.063052,
+        "averageTurnoverPct": -0.26,
+        "benchmarkCagrPct": -0.15393,
+        "costDragCagrPp": 0.017295,
+        "sumTransactionCostPct": 0.164321
+      },
+      "delta": {
+        "annualizedExcessPct": 0.431318,
+        "cagrPct": 0.277387,
+        "calmar": -0.005661,
+        "cvar95Pct": -0.026544,
+        "mddPct": -0.860638,
+        "sharpe": 0.01523,
+        "sortino": 0.029441
+      },
+      "estimandNote": "Path deltas recompute nonlinear statistics on jointly resampled net daily blocks. Mean block-metric deltas are a separate estimand, not the full-path delta. Costs and allocations are fixed at their original chronological values. Blocks are treated as exchangeable; serial regime dependence is not removed.",
+      "mddDescription": "-0.861pp deeper drawdown",
+      "meanPairedBlockMetricDifferenceCI": {
+        "annualizedExcessPct": {
+          "bootstrapMean": 1.345307,
+          "ci95": [
+            -0.468509,
+            4.001306
+          ],
+          "evidence": "historical evidence is inconclusive",
+          "pairedBlocks": 155,
+          "pointEstimate": 1.299403,
+          "reason": null,
+          "samples": 2000,
+          "seed": 11,
+          "validSamples": 2000
+        },
+        "cagrPct": {
+          "bootstrapMean": 0.473197,
+          "ci95": [
+            -0.373722,
+            1.3616
+          ],
+          "evidence": "historical evidence is inconclusive",
+          "pairedBlocks": 155,
+          "pointEstimate": 0.485804,
+          "reason": null,
+          "samples": 2000,
+          "seed": 11,
+          "validSamples": 2000
+        },
+        "calmar": {
+          "bootstrapMean": 0.137956,
+          "ci95": [
+            -0.510539,
+            0.793051
+          ],
+          "evidence": "historical evidence is inconclusive",
+          "pairedBlocks": 155,
+          "pointEstimate": 0.135514,
+          "reason": null,
+          "samples": 2000,
+          "seed": 11,
+          "validSamples": 2000
+        },
+        "cvar95Pct": {
+          "bootstrapMean": -0.009368,
+          "ci95": [
+            -0.024149,
+            0.005843
+          ],
+          "evidence": "historical evidence is inconclusive",
+          "pairedBlocks": 155,
+          "pointEstimate": -0.009323,
+          "reason": null,
+          "samples": 2000,
+          "seed": 11,
+          "validSamples": 2000
+        },
+        "mddPct": {
+          "bootstrapMean": -0.027174,
+          "ci95": [
+            -0.067364,
+            0.013809
+          ],
+          "evidence": "historical evidence is inconclusive",
+          "pairedBlocks": 155,
+          "pointEstimate": -0.026839,
+          "reason": null,
+          "samples": 2000,
+          "seed": 11,
+          "validSamples": 2000
+        },
+        "sharpe": {
+          "bootstrapMean": 0.021067,
+          "ci95": [
+            -0.071272,
+            0.107857
+          ],
+          "evidence": "historical evidence is inconclusive",
+          "pairedBlocks": 155,
+          "pointEstimate": 0.02156,
+          "reason": null,
+          "samples": 2000,
+          "seed": 11,
+          "validSamples": 2000
+        },
+        "sortino": {
+          "bootstrapMean": 0.087758,
+          "ci95": [
+            -0.073304,
+            0.257696
+          ],
+          "evidence": "historical evidence is inconclusive",
+          "pairedBlocks": 155,
+          "pointEstimate": 0.089064,
+          "reason": null,
+          "samples": 2000,
+          "seed": 11,
+          "validSamples": 2000
+        }
+      },
+      "method": "PAIRED_WHOLE_EVALUATION_BLOCK_PERCENTILE_BOOTSTRAP",
+      "pathDifferenceCI": {
+        "annualizedExcessPct": {
+          "bootstrapMean": 0.443082,
+          "ci95": [
+            -0.539829,
+            1.45675
+          ],
+          "evidence": "historical evidence is inconclusive",
+          "pairedBlocks": 155,
+          "pointEstimate": 0.431318,
+          "reason": null,
+          "samples": 2000,
+          "seed": 11,
+          "validSamples": 2000
+        },
+        "cagrPct": {
+          "bootstrapMean": 0.270644,
+          "ci95": [
+            -0.557174,
+            1.13497
+          ],
+          "evidence": "historical evidence is inconclusive",
+          "pairedBlocks": 155,
+          "pointEstimate": 0.277387,
+          "reason": null,
+          "samples": 2000,
+          "seed": 11,
+          "validSamples": 2000
+        },
+        "calmar": {
+          "bootstrapMean": 0.004423,
+          "ci95": [
+            -0.129559,
+            0.181493
+          ],
+          "evidence": "historical evidence is inconclusive",
+          "pairedBlocks": 155,
+          "pointEstimate": -0.005661,
+          "reason": null,
+          "samples": 2000,
+          "seed": 11,
+          "validSamples": 2000
+        },
+        "cvar95Pct": {
+          "bootstrapMean": -0.026743,
+          "ci95": [
+            -0.060489,
+            0.002849
+          ],
+          "evidence": "historical evidence is inconclusive",
+          "pairedBlocks": 155,
+          "pointEstimate": -0.026544,
+          "reason": null,
+          "samples": 2000,
+          "seed": 11,
+          "validSamples": 2000
+        },
+        "mddPct": {
+          "bootstrapMean": -0.598738,
+          "ci95": [
+            -2.564675,
+            1.542141
+          ],
+          "evidence": "historical evidence is inconclusive",
+          "pairedBlocks": 155,
+          "pointEstimate": -0.860638,
+          "reason": null,
+          "samples": 2000,
+          "seed": 11,
+          "validSamples": 2000
+        },
+        "sharpe": {
+          "bootstrapMean": 0.01598,
+          "ci95": [
+            -0.070892,
+            0.106669
+          ],
+          "evidence": "historical evidence is inconclusive",
+          "pairedBlocks": 155,
+          "pointEstimate": 0.01523,
+          "reason": null,
+          "samples": 2000,
+          "seed": 11,
+          "validSamples": 2000
+        },
+        "sortino": {
+          "bootstrapMean": 0.032397,
+          "ci95": [
+            -0.104126,
+            0.186179
+          ],
+          "evidence": "historical evidence is inconclusive",
+          "pairedBlocks": 155,
+          "pointEstimate": 0.029441,
+          "reason": null,
+          "samples": 2000,
+          "seed": 11,
+          "validSamples": 2000
+        }
+      }
+    },
+    "totalArchitecture": {
+      "available": true,
+      "cashAndCostDeltas": {
+        "averageCashPct": 16.264534,
+        "averageEquityPct": -16.264534,
+        "averageTurnoverPct": -13.99,
+        "benchmarkCagrPct": -3.116451,
+        "costDragCagrPp": -0.318467,
+        "sumTransactionCostPct": -3.633394
+      },
+      "delta": {
+        "annualizedExcessPct": 1.71728,
+        "cagrPct": -1.399172,
+        "calmar": 0.094653,
+        "cvar95Pct": 0.406202,
+        "mddPct": 9.307777,
+        "sharpe": 0.07238,
+        "sortino": 0.12733
+      },
+      "estimandNote": "Path deltas recompute nonlinear statistics on jointly resampled net daily blocks. Mean block-metric deltas are a separate estimand, not the full-path delta. Costs and allocations are fixed at their original chronological values. Blocks are treated as exchangeable; serial regime dependence is not removed.",
+      "mddDescription": "+9.308pp shallower drawdown",
+      "meanPairedBlockMetricDifferenceCI": {
+        "annualizedExcessPct": {
+          "bootstrapMean": 2.09216,
+          "ci95": [
+            -1.48584,
+            5.693983
+          ],
+          "evidence": "historical evidence is inconclusive",
+          "pairedBlocks": 155,
+          "pointEstimate": 2.07535,
+          "reason": null,
+          "samples": 2000,
+          "seed": 11,
+          "validSamples": 2000
+        },
+        "cagrPct": {
+          "bootstrapMean": -4.045718,
+          "ci95": [
+            -7.192285,
+            -0.846813
+          ],
+          "evidence": "historical interval excludes zero; prospective evidence still required",
+          "pairedBlocks": 155,
+          "pointEstimate": -3.999098,
+          "reason": null,
+          "samples": 2000,
+          "seed": 11,
+          "validSamples": 2000
+        },
+        "calmar": {
+          "bootstrapMean": 0.071807,
+          "ci95": [
+            -2.130522,
+            2.370613
+          ],
+          "evidence": "historical evidence is inconclusive",
+          "pairedBlocks": 155,
+          "pointEstimate": 0.073572,
+          "reason": null,
+          "samples": 2000,
+          "seed": 11,
+          "validSamples": 2000
+        },
+        "cvar95Pct": {
+          "bootstrapMean": 0.2545,
+          "ci95": [
+            0.19355,
+            0.324918
+          ],
+          "evidence": "historical interval excludes zero; prospective evidence still required",
+          "pairedBlocks": 155,
+          "pointEstimate": 0.256103,
+          "reason": null,
+          "samples": 2000,
+          "seed": 11,
+          "validSamples": 2000
+        },
+        "mddPct": {
+          "bootstrapMean": 0.592241,
+          "ci95": [
+            0.429689,
+            0.778281
+          ],
+          "evidence": "historical interval excludes zero; prospective evidence still required",
+          "pairedBlocks": 155,
+          "pointEstimate": 0.59674,
+          "reason": null,
+          "samples": 2000,
+          "seed": 11,
+          "validSamples": 2000
+        },
+        "sharpe": {
+          "bootstrapMean": -0.040815,
+          "ci95": [
+            -0.285542,
+            0.197552
+          ],
+          "evidence": "historical evidence is inconclusive",
+          "pairedBlocks": 155,
+          "pointEstimate": -0.037777,
+          "reason": null,
+          "samples": 2000,
+          "seed": 11,
+          "validSamples": 2000
+        },
+        "sortino": {
+          "bootstrapMean": -0.031827,
+          "ci95": [
+            -0.484617,
+            0.442773
+          ],
+          "evidence": "historical evidence is inconclusive",
+          "pairedBlocks": 155,
+          "pointEstimate": -0.026606,
+          "reason": null,
+          "samples": 2000,
+          "seed": 11,
+          "validSamples": 2000
+        }
+      },
+      "method": "PAIRED_WHOLE_EVALUATION_BLOCK_PERCENTILE_BOOTSTRAP",
+      "pathDifferenceCI": {
+        "annualizedExcessPct": {
+          "bootstrapMean": 1.71226,
+          "ci95": [
+            -0.783146,
+            4.193934
+          ],
+          "evidence": "historical evidence is inconclusive",
+          "pairedBlocks": 155,
+          "pointEstimate": 1.71728,
+          "reason": null,
+          "samples": 2000,
+          "seed": 11,
+          "validSamples": 2000
+        },
+        "cagrPct": {
+          "bootstrapMean": -1.475072,
+          "ci95": [
+            -4.357728,
+            1.309537
+          ],
+          "evidence": "historical evidence is inconclusive",
+          "pairedBlocks": 155,
+          "pointEstimate": -1.399172,
+          "reason": null,
+          "samples": 2000,
+          "seed": 11,
+          "validSamples": 2000
+        },
+        "calmar": {
+          "bootstrapMean": 0.080198,
+          "ci95": [
+            -0.317844,
+            0.394187
+          ],
+          "evidence": "historical evidence is inconclusive",
+          "pairedBlocks": 155,
+          "pointEstimate": 0.094653,
+          "reason": null,
+          "samples": 2000,
+          "seed": 11,
+          "validSamples": 2000
+        },
+        "cvar95Pct": {
+          "bootstrapMean": 0.402303,
+          "ci95": [
+            0.25624,
+            0.609875
+          ],
+          "evidence": "historical interval excludes zero; prospective evidence still required",
+          "pairedBlocks": 155,
+          "pointEstimate": 0.406202,
+          "reason": null,
+          "samples": 2000,
+          "seed": 11,
+          "validSamples": 2000
+        },
+        "mddPct": {
+          "bootstrapMean": 7.303081,
+          "ci95": [
+            -1.231279,
+            15.276759
+          ],
+          "evidence": "historical evidence is inconclusive",
+          "pairedBlocks": 155,
+          "pointEstimate": 9.307777,
+          "reason": null,
+          "samples": 2000,
+          "seed": 11,
+          "validSamples": 2000
+        },
+        "sharpe": {
+          "bootstrapMean": 0.055842,
+          "ci95": [
+            -0.182976,
+            0.282897
+          ],
+          "evidence": "historical evidence is inconclusive",
+          "pairedBlocks": 155,
+          "pointEstimate": 0.07238,
+          "reason": null,
+          "samples": 2000,
+          "seed": 11,
+          "validSamples": 2000
+        },
+        "sortino": {
+          "bootstrapMean": 0.098594,
+          "ci95": [
+            -0.284,
+            0.469001
+          ],
+          "evidence": "historical evidence is inconclusive",
+          "pairedBlocks": 155,
+          "pointEstimate": 0.12733,
+          "reason": null,
+          "samples": 2000,
+          "seed": 11,
+          "validSamples": 2000
+        }
+      }
+    }
+  },
+  "freeze": {
+    "coldStart": "EQUAL_WEIGHT_IF_ANY_SCORE_MISSING",
+    "decisionRule": "FIRST_FIXED_EVALUATION_ANCHOR_IN_EACH_CALENDAR_QUARTER",
+    "effectiveRule": "DECISION_DATE_INCLUSIVE",
+    "id": "regional-rotation-v1",
+    "liveValidated": false,
+    "lookbackUnit": "CALENDAR_DAYS",
+    "maturityRule": "windowStart <= endDate < decisionDate",
+    "parameters": {
+      "floor": 0.15,
+      "lookback_days": 252,
+      "temperature": 0.05
+    },
+    "promotionEligible": false,
+    "prospectiveStatus": "NOT_YET_COLLECTED",
+    "score": "MEAN_GROSS_EXCESS_OF_MATURED_21_COMMON_SESSION_BLOCKS",
+    "status": "CHALLENGER",
+    "weightRule": "SOFTMAX_THEN_FLOOR_WITH_SIX_DECIMAL_TARGETS"
+  },
+  "historicalStatus": "HISTORICAL_ONLY_NO_PROMOTION",
+  "inputSnapshot": {
+    "sha256": "f0781292f508a123c234ded6d28aa8e84a0dc3cc29500e14989dc0b68f53b4d2",
+    "through": "2026-09-14"
+  },
+  "interpretation": "Dynamic minus static isolates allocation-rule changes on identical sleeves, including induced cash, benchmark and trading-cost changes. Static minus combined bundles independent reranking, regional diversification, concentration and cash/risk-budget effects; these components are not separately identified by three portfolios.",
+  "limitations": [
+    "Historical post-design replay, not prospective evidence.",
+    "No parameter optimization or automatic promotion.",
+    "Individual portfolio benchmarks vary with regional equity and cash weights.",
+    "IID block bootstrap may understate persistent-regime uncertainty.",
+    "OFAT results include previously observed history and are stability diagnostics only."
+  ],
+  "matching": {
+    "complete": true,
+    "expectedBlocks": 155,
+    "matchedBlocks": [
+      {
+        "date": "2013-01-07",
+        "endDate": "2013-02-06"
+      },
+      {
+        "date": "2013-02-06",
+        "endDate": "2013-03-12"
+      },
+      {
+        "date": "2013-03-12",
+        "endDate": "2013-04-11"
+      },
+      {
+        "date": "2013-04-11",
+        "endDate": "2013-05-13"
+      },
+      {
+        "date": "2013-05-13",
+        "endDate": "2013-06-14"
+      },
+      {
+        "date": "2013-06-14",
+        "endDate": "2013-07-16"
+      },
+      {
+        "date": "2013-07-16",
+        "endDate": "2013-08-14"
+      },
+      {
+        "date": "2013-08-14",
+        "endDate": "2013-09-16"
+      },
+      {
+        "date": "2013-09-16",
+        "endDate": "2013-10-22"
+      },
+      {
+        "date": "2013-10-22",
+        "endDate": "2013-11-20"
+      },
+      {
+        "date": "2013-11-20",
+        "endDate": "2013-12-20"
+      },
+      {
+        "date": "2013-12-20",
+        "endDate": "2014-01-24"
+      },
+      {
+        "date": "2014-01-24",
+        "endDate": "2014-02-27"
+      },
+      {
+        "date": "2014-02-27",
+        "endDate": "2014-03-28"
+      },
+      {
+        "date": "2014-03-28",
+        "endDate": "2014-04-29"
+      },
+      {
+        "date": "2014-04-29",
+        "endDate": "2014-06-03"
+      },
+      {
+        "date": "2014-06-03",
+        "endDate": "2014-07-07"
+      },
+      {
+        "date": "2014-07-07",
+        "endDate": "2014-08-05"
+      },
+      {
+        "date": "2014-08-05",
+        "endDate": "2014-09-05"
+      },
+      {
+        "date": "2014-09-05",
+        "endDate": "2014-10-13"
+      },
+      {
+        "date": "2014-10-13",
+        "endDate": "2014-11-11"
+      },
+      {
+        "date": "2014-11-11",
+        "endDate": "2014-12-11"
+      },
+      {
+        "date": "2014-12-11",
+        "endDate": "2015-01-14"
+      },
+      {
+        "date": "2015-01-14",
+        "endDate": "2015-02-13"
+      },
+      {
+        "date": "2015-02-13",
+        "endDate": "2015-03-20"
+      },
+      {
+        "date": "2015-03-20",
+        "endDate": "2015-04-21"
+      },
+      {
+        "date": "2015-04-21",
+        "endDate": "2015-05-22"
+      },
+      {
+        "date": "2015-05-22",
+        "endDate": "2015-06-23"
+      },
+      {
+        "date": "2015-06-23",
+        "endDate": "2015-07-23"
+      },
+      {
+        "date": "2015-07-23",
+        "endDate": "2015-08-24"
+      },
+      {
+        "date": "2015-08-24",
+        "endDate": "2015-09-23"
+      },
+      {
+        "date": "2015-09-23",
+        "endDate": "2015-10-27"
+      },
+      {
+        "date": "2015-10-27",
+        "endDate": "2015-11-25"
+      },
+      {
+        "date": "2015-11-25",
+        "endDate": "2015-12-28"
+      },
+      {
+        "date": "2015-12-28",
+        "endDate": "2016-01-29"
+      },
+      {
+        "date": "2016-01-29",
+        "endDate": "2016-03-07"
+      },
+      {
+        "date": "2016-03-07",
+        "endDate": "2016-04-06"
+      },
+      {
+        "date": "2016-04-06",
+        "endDate": "2016-05-10"
+      },
+      {
+        "date": "2016-05-10",
+        "endDate": "2016-06-10"
+      },
+      {
+        "date": "2016-06-10",
+        "endDate": "2016-07-12"
+      },
+      {
+        "date": "2016-07-12",
+        "endDate": "2016-08-10"
+      },
+      {
+        "date": "2016-08-10",
+        "endDate": "2016-09-12"
+      },
+      {
+        "date": "2016-09-12",
+        "endDate": "2016-10-17"
+      },
+      {
+        "date": "2016-10-17",
+        "endDate": "2016-11-15"
+      },
+      {
+        "date": "2016-11-15",
+        "endDate": "2016-12-15"
+      },
+      {
+        "date": "2016-12-15",
+        "endDate": "2017-01-19"
+      },
+      {
+        "date": "2017-01-19",
+        "endDate": "2017-02-22"
+      },
+      {
+        "date": "2017-02-22",
+        "endDate": "2017-03-24"
+      },
+      {
+        "date": "2017-03-24",
+        "endDate": "2017-04-25"
+      },
+      {
+        "date": "2017-04-25",
+        "endDate": "2017-05-31"
+      },
+      {
+        "date": "2017-05-31",
+        "endDate": "2017-06-30"
+      },
+      {
+        "date": "2017-06-30",
+        "endDate": "2017-08-01"
+      },
+      {
+        "date": "2017-08-01",
+        "endDate": "2017-08-31"
+      },
+      {
+        "date": "2017-08-31",
+        "endDate": "2017-10-10"
+      },
+      {
+        "date": "2017-10-10",
+        "endDate": "2017-11-08"
+      },
+      {
+        "date": "2017-11-08",
+        "endDate": "2017-12-08"
+      },
+      {
+        "date": "2017-12-08",
+        "endDate": "2018-01-11"
+      },
+      {
+        "date": "2018-01-11",
+        "endDate": "2018-02-12"
+      },
+      {
+        "date": "2018-02-12",
+        "endDate": "2018-03-19"
+      },
+      {
+        "date": "2018-03-19",
+        "endDate": "2018-04-18"
+      },
+      {
+        "date": "2018-04-18",
+        "endDate": "2018-05-21"
+      },
+      {
+        "date": "2018-05-21",
+        "endDate": "2018-06-25"
+      },
+      {
+        "date": "2018-06-25",
+        "endDate": "2018-07-25"
+      },
+      {
+        "date": "2018-07-25",
+        "endDate": "2018-08-24"
+      },
+      {
+        "date": "2018-08-24",
+        "endDate": "2018-09-28"
+      },
+      {
+        "date": "2018-09-28",
+        "endDate": "2018-10-31"
+      },
+      {
+        "date": "2018-10-31",
+        "endDate": "2018-11-30"
+      },
+      {
+        "date": "2018-11-30",
+        "endDate": "2019-01-04"
+      },
+      {
+        "date": "2019-01-04",
+        "endDate": "2019-02-08"
+      },
+      {
+        "date": "2019-02-08",
+        "endDate": "2019-03-13"
+      },
+      {
+        "date": "2019-03-13",
+        "endDate": "2019-04-11"
+      },
+      {
+        "date": "2019-04-11",
+        "endDate": "2019-05-15"
+      },
+      {
+        "date": "2019-05-15",
+        "endDate": "2019-06-17"
+      },
+      {
+        "date": "2019-06-17",
+        "endDate": "2019-07-17"
+      },
+      {
+        "date": "2019-07-17",
+        "endDate": "2019-08-16"
+      },
+      {
+        "date": "2019-08-16",
+        "endDate": "2019-09-19"
+      },
+      {
+        "date": "2019-09-19",
+        "endDate": "2019-10-22"
+      },
+      {
+        "date": "2019-10-22",
+        "endDate": "2019-11-20"
+      },
+      {
+        "date": "2019-11-20",
+        "endDate": "2019-12-20"
+      },
+      {
+        "date": "2019-12-20",
+        "endDate": "2020-01-28"
+      },
+      {
+        "date": "2020-01-28",
+        "endDate": "2020-02-27"
+      },
+      {
+        "date": "2020-02-27",
+        "endDate": "2020-03-27"
+      },
+      {
+        "date": "2020-03-27",
+        "endDate": "2020-04-29"
+      },
+      {
+        "date": "2020-04-29",
+        "endDate": "2020-06-03"
+      },
+      {
+        "date": "2020-06-03",
+        "endDate": "2020-07-02"
+      },
+      {
+        "date": "2020-07-02",
+        "endDate": "2020-08-03"
+      },
+      {
+        "date": "2020-08-03",
+        "endDate": "2020-09-02"
+      },
+      {
+        "date": "2020-09-02",
+        "endDate": "2020-10-07"
+      },
+      {
+        "date": "2020-10-07",
+        "endDate": "2020-11-06"
+      },
+      {
+        "date": "2020-11-06",
+        "endDate": "2020-12-08"
+      },
+      {
+        "date": "2020-12-08",
+        "endDate": "2021-01-11"
+      },
+      {
+        "date": "2021-01-11",
+        "endDate": "2021-02-10"
+      },
+      {
+        "date": "2021-02-10",
+        "endDate": "2021-03-17"
+      },
+      {
+        "date": "2021-03-17",
+        "endDate": "2021-04-16"
+      },
+      {
+        "date": "2021-04-16",
+        "endDate": "2021-05-18"
+      },
+      {
+        "date": "2021-05-18",
+        "endDate": "2021-06-18"
+      },
+      {
+        "date": "2021-06-18",
+        "endDate": "2021-07-20"
+      },
+      {
+        "date": "2021-07-20",
+        "endDate": "2021-08-19"
+      },
+      {
+        "date": "2021-08-19",
+        "endDate": "2021-09-23"
+      },
+      {
+        "date": "2021-09-23",
+        "endDate": "2021-10-26"
+      },
+      {
+        "date": "2021-10-26",
+        "endDate": "2021-11-24"
+      },
+      {
+        "date": "2021-11-24",
+        "endDate": "2021-12-27"
+      },
+      {
+        "date": "2021-12-27",
+        "endDate": "2022-01-27"
+      },
+      {
+        "date": "2022-01-27",
+        "endDate": "2022-03-04"
+      },
+      {
+        "date": "2022-03-04",
+        "endDate": "2022-04-05"
+      },
+      {
+        "date": "2022-04-05",
+        "endDate": "2022-05-06"
+      },
+      {
+        "date": "2022-05-06",
+        "endDate": "2022-06-09"
+      },
+      {
+        "date": "2022-06-09",
+        "endDate": "2022-07-12"
+      },
+      {
+        "date": "2022-07-12",
+        "endDate": "2022-08-10"
+      },
+      {
+        "date": "2022-08-10",
+        "endDate": "2022-09-14"
+      },
+      {
+        "date": "2022-09-14",
+        "endDate": "2022-10-17"
+      },
+      {
+        "date": "2022-10-17",
+        "endDate": "2022-11-15"
+      },
+      {
+        "date": "2022-11-15",
+        "endDate": "2022-12-15"
+      },
+      {
+        "date": "2022-12-15",
+        "endDate": "2023-01-19"
+      },
+      {
+        "date": "2023-01-19",
+        "endDate": "2023-02-22"
+      },
+      {
+        "date": "2023-02-22",
+        "endDate": "2023-03-24"
+      },
+      {
+        "date": "2023-03-24",
+        "endDate": "2023-04-25"
+      },
+      {
+        "date": "2023-04-25",
+        "endDate": "2023-05-26"
+      },
+      {
+        "date": "2023-05-26",
+        "endDate": "2023-06-29"
+      },
+      {
+        "date": "2023-06-29",
+        "endDate": "2023-07-31"
+      },
+      {
+        "date": "2023-07-31",
+        "endDate": "2023-08-30"
+      },
+      {
+        "date": "2023-08-30",
+        "endDate": "2023-10-05"
+      },
+      {
+        "date": "2023-10-05",
+        "endDate": "2023-11-06"
+      },
+      {
+        "date": "2023-11-06",
+        "endDate": "2023-12-06"
+      },
+      {
+        "date": "2023-12-06",
+        "endDate": "2024-01-09"
+      },
+      {
+        "date": "2024-01-09",
+        "endDate": "2024-02-08"
+      },
+      {
+        "date": "2024-02-08",
+        "endDate": "2024-03-14"
+      },
+      {
+        "date": "2024-03-14",
+        "endDate": "2024-04-16"
+      },
+      {
+        "date": "2024-04-16",
+        "endDate": "2024-05-20"
+      },
+      {
+        "date": "2024-05-20",
+        "endDate": "2024-06-21"
+      },
+      {
+        "date": "2024-06-21",
+        "endDate": "2024-07-23"
+      },
+      {
+        "date": "2024-07-23",
+        "endDate": "2024-08-22"
+      },
+      {
+        "date": "2024-08-22",
+        "endDate": "2024-09-26"
+      },
+      {
+        "date": "2024-09-26",
+        "endDate": "2024-10-30"
+      },
+      {
+        "date": "2024-10-30",
+        "endDate": "2024-11-29"
+      },
+      {
+        "date": "2024-11-29",
+        "endDate": "2025-01-02"
+      },
+      {
+        "date": "2025-01-02",
+        "endDate": "2025-02-10"
+      },
+      {
+        "date": "2025-02-10",
+        "endDate": "2025-03-13"
+      },
+      {
+        "date": "2025-03-13",
+        "endDate": "2025-04-11"
+      },
+      {
+        "date": "2025-04-11",
+        "endDate": "2025-05-16"
+      },
+      {
+        "date": "2025-05-16",
+        "endDate": "2025-06-20"
+      },
+      {
+        "date": "2025-06-20",
+        "endDate": "2025-07-22"
+      },
+      {
+        "date": "2025-07-22",
+        "endDate": "2025-08-21"
+      },
+      {
+        "date": "2025-08-21",
+        "endDate": "2025-09-22"
+      },
+      {
+        "date": "2025-09-22",
+        "endDate": "2025-10-28"
+      },
+      {
+        "date": "2025-10-28",
+        "endDate": "2025-11-26"
+      },
+      {
+        "date": "2025-11-26",
+        "endDate": "2025-12-29"
+      },
+      {
+        "date": "2025-12-29",
+        "endDate": "2026-01-30"
+      },
+      {
+        "date": "2026-01-30",
+        "endDate": "2026-03-06"
+      },
+      {
+        "date": "2026-03-06",
+        "endDate": "2026-04-07"
+      },
+      {
+        "date": "2026-04-07",
+        "endDate": "2026-05-08"
+      },
+      {
+        "date": "2026-05-08",
+        "endDate": "2026-06-10"
+      },
+      {
+        "date": "2026-06-10",
+        "endDate": "2026-07-13"
+      },
+      {
+        "date": "2026-07-13",
+        "endDate": "2026-08-12"
+      },
+      {
+        "date": "2026-08-12",
+        "endDate": "2026-09-14"
+      }
+    ],
+    "missingByPortfolio": {
+      "Combined CHAMPION": [],
+      "Dynamic Regional Rotation v1": [],
+      "Static 50/50": []
+    },
+    "pairedBlocks": 155
+  },
+  "regionDiagnostics": {
+    "KR": {
+      "fundamentalsPit": true,
+      "macroPitStatus": "REVISED_HISTORY",
+      "replayDates": 715,
+      "survivorshipRisk": "LOW"
+    },
+    "US": {
+      "fundamentalsPit": true,
+      "macroPitStatus": "REVISED_HISTORY",
+      "replayDates": 715,
+      "survivorshipRisk": "LOW"
+    }
+  },
+  "regionalPathHashes": {
+    "KR": "a4686e226e52f2f18c28a09af4967f9535432288433c559fced068a0587b7326",
+    "US": "d461b830862d0315a902755a381691b0a3290195415f33c1f996236aa29e05c4"
+  },
+  "reportVersion": "regional-validation-v1",
+  "robustness": [
+    {
+      "dynamicMinusStatic": {
+        "annualizedExcessPct": 0.431318,
+        "cagrPct": 0.277387,
+        "calmar": -0.005661,
+        "cvar95Pct": -0.026544,
+        "mddPct": -0.860638,
+        "sharpe": 0.01523,
+        "sortino": 0.029441
+      },
+      "id": "baseline",
+      "maxQuarterlyWeightChange": 0.183424,
+      "maxUsWeight": 0.8034,
+      "metrics": {
+        "annualizedDownsideVolPct": 5.797093,
+        "annualizedExcessPct": -1.917374,
+        "annualizedRealizedVolPct": 8.508619,
+        "available": true,
+        "averageCashPct": 38.725223,
+        "averageEffectiveNames": 5.08,
+        "averageEquityPct": 61.274777,
+        "averageTop1Pct": 16.21,
+        "averageTop3Pct": 41.38,
+        "averageTurnoverPct": 42.11,
+        "averageTurnoverPctByRegion": {
+          "KR": 57.7,
+          "US": 74.62
+        },
+        "baseCurrency": "KRW",
+        "benchmarkCagrPct": 10.855805,
+        "cagrPct": 8.93843,
+        "calendarYears": 13.684059,
+        "calmar": 0.44791,
+        "costAdjustedCagrPct": 8.93843,
+        "costDragCagrPp": 1.585778,
+        "cvar95Pct": -1.158909,
+        "directlyComparableToLegacy": false,
+        "firstDate": "2013-01-07",
+        "fxReturnsIncluded": true,
+        "grossCagrPct": 10.524208,
+        "hitRatePct": 48.39,
+        "informationRatio": -0.213621,
+        "lastEndDate": "2026-09-14",
+        "mddBasis": "DAILY_UNION_SESSIONS_WITH_ENTRY_COSTS",
+        "mddPct": -19.955847,
+        "metricUnavailableReasons": {},
+        "metricVersion": "calendar-span-daily-krw-rf-v1",
+        "observationsPerYear": 259.133634,
+        "pathMethod": "FIXED_COMMON_SESSION_BLOCKS_DAILY_KRW_NAV",
+        "periods": 155,
+        "riskFreeBasis": "BOK_POLICY_RATE_PROXY_ACT_365_DAILY",
+        "riskFreeReturnPct": 31.008746,
+        "riskFreeStatus": "AVAILABLE_POLICY_RATE_PROXY",
+        "sharpe": 0.816668,
+        "sortino": 1.198973,
+        "sumTransactionCostPct": 19.761899,
+        "trackingErrorPct": 8.02203,
+        "turnoverRebalances": 154,
+        "turnoverRebalancesByRegion": {
+          "KR": 154,
+          "US": 154
+        }
+      },
+      "minUsWeight": 0.316576,
+      "parameters": {
+        "floor": 0.15,
+        "lookback_days": 252,
+        "temperature": 0.05
+      },
+      "role": "STABILITY_DIAGNOSTIC_NOT_MODEL_SELECTION"
+    },
+    {
+      "dynamicMinusStatic": {
+        "annualizedExcessPct": 0.70328,
+        "cagrPct": -0.024701,
+        "calmar": -0.012281,
+        "cvar95Pct": -0.023472,
+        "mddPct": -0.475457,
+        "sharpe": -0.012172,
+        "sortino": -0.011359
+      },
+      "id": "lookback-126",
+      "maxQuarterlyWeightChange": 0.3759,
+      "maxUsWeight": 0.825042,
+      "metrics": {
+        "annualizedDownsideVolPct": 5.756853,
+        "annualizedExcessPct": -1.645412,
+        "annualizedRealizedVolPct": 8.445334,
+        "available": true,
+        "averageCashPct": 38.747346,
+        "averageEffectiveNames": 5.0,
+        "averageEquityPct": 61.252654,
+        "averageTop1Pct": 16.75,
+        "averageTop3Pct": 41.84,
+        "averageTurnoverPct": 42.3,
+        "averageTurnoverPctByRegion": {
+          "KR": 58.01,
+          "US": 74.9
+        },
+        "baseCurrency": "KRW",
+        "benchmarkCagrPct": 10.281754,
+        "cagrPct": 8.636342,
+        "calendarYears": 13.684059,
+        "calmar": 0.44129,
+        "costAdjustedCagrPct": 8.636342,
+        "costDragCagrPp": 1.589952,
+        "cvar95Pct": -1.155837,
+        "directlyComparableToLegacy": false,
+        "firstDate": "2013-01-07",
+        "fxReturnsIncluded": true,
+        "grossCagrPct": 10.226294,
+        "hitRatePct": 49.68,
+        "informationRatio": -0.185267,
+        "lastEndDate": "2026-09-14",
+        "mddBasis": "DAILY_UNION_SESSIONS_WITH_ENTRY_COSTS",
+        "mddPct": -19.570666,
+        "metricUnavailableReasons": {},
+        "metricVersion": "calendar-span-daily-krw-rf-v1",
+        "observationsPerYear": 259.133634,
+        "pathMethod": "FIXED_COMMON_SESSION_BLOCKS_DAILY_KRW_NAV",
+        "periods": 155,
+        "riskFreeBasis": "BOK_POLICY_RATE_PROXY_ACT_365_DAILY",
+        "riskFreeReturnPct": 31.008746,
+        "riskFreeStatus": "AVAILABLE_POLICY_RATE_PROXY",
+        "sharpe": 0.789266,
+        "sortino": 1.158173,
+        "sumTransactionCostPct": 19.868073,
+        "trackingErrorPct": 7.902365,
+        "turnoverRebalances": 154,
+        "turnoverRebalancesByRegion": {
+          "KR": 154,
+          "US": 154
+        }
+      },
+      "minUsWeight": 0.15,
+      "parameters": {
+        "floor": 0.15,
+        "lookback_days": 126,
+        "temperature": 0.05
+      },
+      "role": "STABILITY_DIAGNOSTIC_NOT_MODEL_SELECTION"
+    },
+    {
+      "dynamicMinusStatic": {
+        "annualizedExcessPct": 0.276609,
+        "cagrPct": 0.170336,
+        "calmar": 0.006015,
+        "cvar95Pct": -0.00785,
+        "mddPct": -0.120719,
+        "sharpe": 0.01404,
+        "sortino": 0.022122
+      },
+      "id": "lookback-504",
+      "maxQuarterlyWeightChange": 0.183424,
+      "maxUsWeight": 0.655089,
+      "metrics": {
+        "annualizedDownsideVolPct": 5.741741,
+        "annualizedExcessPct": -2.072083,
+        "annualizedRealizedVolPct": 8.387841,
+        "available": true,
+        "averageCashPct": 38.769659,
+        "averageEffectiveNames": 5.14,
+        "averageEquityPct": 61.230341,
+        "averageTop1Pct": 15.77,
+        "averageTop3Pct": 40.9,
+        "averageTurnoverPct": 42.03,
+        "averageTurnoverPctByRegion": {
+          "KR": 57.42,
+          "US": 74.46
+        },
+        "baseCurrency": "KRW",
+        "benchmarkCagrPct": 10.903462,
+        "cagrPct": 8.831379,
+        "calendarYears": 13.684059,
+        "calmar": 0.459586,
+        "costAdjustedCagrPct": 8.831379,
+        "costDragCagrPp": 1.587431,
+        "cvar95Pct": -1.140215,
+        "directlyComparableToLegacy": false,
+        "firstDate": "2013-01-07",
+        "fxReturnsIncluded": true,
+        "grossCagrPct": 10.41881,
+        "hitRatePct": 47.1,
+        "informationRatio": -0.226931,
+        "lastEndDate": "2026-09-14",
+        "mddBasis": "DAILY_UNION_SESSIONS_WITH_ENTRY_COSTS",
+        "mddPct": -19.215928,
+        "metricUnavailableReasons": {},
+        "metricVersion": "calendar-span-daily-krw-rf-v1",
+        "observationsPerYear": 259.133634,
+        "pathMethod": "FIXED_COMMON_SESSION_BLOCKS_DAILY_KRW_NAV",
+        "periods": 155,
+        "riskFreeBasis": "BOK_POLICY_RATE_PROXY_ACT_365_DAILY",
+        "riskFreeReturnPct": 31.008746,
+        "riskFreeStatus": "AVAILABLE_POLICY_RATE_PROXY",
+        "sharpe": 0.815478,
+        "sortino": 1.191654,
+        "sumTransactionCostPct": 19.80162,
+        "trackingErrorPct": 8.409911,
+        "turnoverRebalances": 154,
+        "turnoverRebalancesByRegion": {
+          "KR": 154,
+          "US": 154
+        }
+      },
+      "minUsWeight": 0.316576,
+      "parameters": {
+        "floor": 0.15,
+        "lookback_days": 504,
+        "temperature": 0.05
+      },
+      "role": "STABILITY_DIAGNOSTIC_NOT_MODEL_SELECTION"
+    },
+    {
+      "dynamicMinusStatic": {
+        "annualizedExcessPct": 0.431318,
+        "cagrPct": 0.277387,
+        "calmar": -0.005661,
+        "cvar95Pct": -0.026544,
+        "mddPct": -0.860638,
+        "sharpe": 0.01523,
+        "sortino": 0.029441
+      },
+      "id": "floor-0.10",
+      "maxQuarterlyWeightChange": 0.183424,
+      "maxUsWeight": 0.8034,
+      "metrics": {
+        "annualizedDownsideVolPct": 5.797093,
+        "annualizedExcessPct": -1.917374,
+        "annualizedRealizedVolPct": 8.508619,
+        "available": true,
+        "averageCashPct": 38.725223,
+        "averageEffectiveNames": 5.08,
+        "averageEquityPct": 61.274777,
+        "averageTop1Pct": 16.21,
+        "averageTop3Pct": 41.38,
+        "averageTurnoverPct": 42.11,
+        "averageTurnoverPctByRegion": {
+          "KR": 57.7,
+          "US": 74.62
+        },
+        "baseCurrency": "KRW",
+        "benchmarkCagrPct": 10.855805,
+        "cagrPct": 8.93843,
+        "calendarYears": 13.684059,
+        "calmar": 0.44791,
+        "costAdjustedCagrPct": 8.93843,
+        "costDragCagrPp": 1.585778,
+        "cvar95Pct": -1.158909,
+        "directlyComparableToLegacy": false,
+        "firstDate": "2013-01-07",
+        "fxReturnsIncluded": true,
+        "grossCagrPct": 10.524208,
+        "hitRatePct": 48.39,
+        "informationRatio": -0.213621,
+        "lastEndDate": "2026-09-14",
+        "mddBasis": "DAILY_UNION_SESSIONS_WITH_ENTRY_COSTS",
+        "mddPct": -19.955847,
+        "metricUnavailableReasons": {},
+        "metricVersion": "calendar-span-daily-krw-rf-v1",
+        "observationsPerYear": 259.133634,
+        "pathMethod": "FIXED_COMMON_SESSION_BLOCKS_DAILY_KRW_NAV",
+        "periods": 155,
+        "riskFreeBasis": "BOK_POLICY_RATE_PROXY_ACT_365_DAILY",
+        "riskFreeReturnPct": 31.008746,
+        "riskFreeStatus": "AVAILABLE_POLICY_RATE_PROXY",
+        "sharpe": 0.816668,
+        "sortino": 1.198973,
+        "sumTransactionCostPct": 19.761899,
+        "trackingErrorPct": 8.02203,
+        "turnoverRebalances": 154,
+        "turnoverRebalancesByRegion": {
+          "KR": 154,
+          "US": 154
+        }
+      },
+      "minUsWeight": 0.316576,
+      "parameters": {
+        "floor": 0.1,
+        "lookback_days": 252,
+        "temperature": 0.05
+      },
+      "role": "STABILITY_DIAGNOSTIC_NOT_MODEL_SELECTION"
+    },
+    {
+      "dynamicMinusStatic": {
+        "annualizedExcessPct": 0.426906,
+        "cagrPct": 0.293586,
+        "calmar": -0.004849,
+        "cvar95Pct": -0.025427,
+        "mddPct": -0.860638,
+        "sharpe": 0.017253,
+        "sortino": 0.032642
+      },
+      "id": "floor-0.25",
+      "maxQuarterlyWeightChange": 0.183424,
+      "maxUsWeight": 0.75,
+      "metrics": {
+        "annualizedDownsideVolPct": 5.793801,
+        "annualizedExcessPct": -1.921786,
+        "annualizedRealizedVolPct": 8.505405,
+        "available": true,
+        "averageCashPct": 38.731618,
+        "averageEffectiveNames": 5.08,
+        "averageEquityPct": 61.268382,
+        "averageTop1Pct": 16.19,
+        "averageTop3Pct": 41.34,
+        "averageTurnoverPct": 42.1,
+        "averageTurnoverPctByRegion": {
+          "KR": 57.66,
+          "US": 74.63
+        },
+        "baseCurrency": "KRW",
+        "benchmarkCagrPct": 10.876415,
+        "cagrPct": 8.954629,
+        "calendarYears": 13.684059,
+        "calmar": 0.448722,
+        "costAdjustedCagrPct": 8.954629,
+        "costDragCagrPp": 1.585687,
+        "cvar95Pct": -1.157792,
+        "directlyComparableToLegacy": false,
+        "firstDate": "2013-01-07",
+        "fxReturnsIncluded": true,
+        "grossCagrPct": 10.540316,
+        "hitRatePct": 47.74,
+        "informationRatio": -0.213082,
+        "lastEndDate": "2026-09-14",
+        "mddBasis": "DAILY_UNION_SESSIONS_WITH_ENTRY_COSTS",
+        "mddPct": -19.955847,
+        "metricUnavailableReasons": {},
+        "metricVersion": "calendar-span-daily-krw-rf-v1",
+        "observationsPerYear": 259.133634,
+        "pathMethod": "FIXED_COMMON_SESSION_BLOCKS_DAILY_KRW_NAV",
+        "periods": 155,
+        "riskFreeBasis": "BOK_POLICY_RATE_PROXY_ACT_365_DAILY",
+        "riskFreeReturnPct": 31.008746,
+        "riskFreeStatus": "AVAILABLE_POLICY_RATE_PROXY",
+        "sharpe": 0.818691,
+        "sortino": 1.202174,
+        "sumTransactionCostPct": 19.757871,
+        "trackingErrorPct": 8.076859,
+        "turnoverRebalances": 154,
+        "turnoverRebalancesByRegion": {
+          "KR": 154,
+          "US": 154
+        }
+      },
+      "minUsWeight": 0.316576,
+      "parameters": {
+        "floor": 0.25,
+        "lookback_days": 252,
+        "temperature": 0.05
+      },
+      "role": "STABILITY_DIAGNOSTIC_NOT_MODEL_SELECTION"
+    },
+    {
+      "dynamicMinusStatic": {
+        "annualizedExcessPct": 0.616782,
+        "cagrPct": 0.46132,
+        "calmar": -0.009189,
+        "cvar95Pct": -0.057291,
+        "mddPct": -1.432981,
+        "sharpe": 0.016056,
+        "sortino": 0.035685
+      },
+      "id": "temperature-0.03",
+      "maxQuarterlyWeightChange": 0.287727,
+      "maxUsWeight": 0.85,
+      "metrics": {
+        "annualizedDownsideVolPct": 5.922812,
+        "annualizedExcessPct": -1.73191,
+        "annualizedRealizedVolPct": 8.729821,
+        "available": true,
+        "averageCashPct": 38.784399,
+        "averageEffectiveNames": 4.93,
+        "averageEquityPct": 61.215601,
+        "averageTop1Pct": 17.23,
+        "averageTop3Pct": 42.28,
+        "averageTurnoverPct": 41.98,
+        "averageTurnoverPctByRegion": {
+          "KR": 57.96,
+          "US": 74.97
+        },
+        "baseCurrency": "KRW",
+        "benchmarkCagrPct": 10.854273,
+        "cagrPct": 9.122363,
+        "calendarYears": 13.684059,
+        "calmar": 0.444382,
+        "costAdjustedCagrPct": 9.122363,
+        "costDragCagrPp": 1.598365,
+        "cvar95Pct": -1.189656,
+        "directlyComparableToLegacy": false,
+        "firstDate": "2013-01-07",
+        "fxReturnsIncluded": true,
+        "grossCagrPct": 10.720728,
+        "hitRatePct": 48.39,
+        "informationRatio": -0.18781,
+        "lastEndDate": "2026-09-14",
+        "mddBasis": "DAILY_UNION_SESSIONS_WITH_ENTRY_COSTS",
+        "mddPct": -20.52819,
+        "metricUnavailableReasons": {},
+        "metricVersion": "calendar-span-daily-krw-rf-v1",
+        "observationsPerYear": 259.133634,
+        "pathMethod": "FIXED_COMMON_SESSION_BLOCKS_DAILY_KRW_NAV",
+        "periods": 155,
+        "riskFreeBasis": "BOK_POLICY_RATE_PROXY_ACT_365_DAILY",
+        "riskFreeReturnPct": 31.008746,
+        "riskFreeStatus": "AVAILABLE_POLICY_RATE_PROXY",
+        "sharpe": 0.817494,
+        "sortino": 1.205217,
+        "sumTransactionCostPct": 19.884185,
+        "trackingErrorPct": 8.089236,
+        "turnoverRebalances": 154,
+        "turnoverRebalancesByRegion": {
+          "KR": 154,
+          "US": 154
+        }
+      },
+      "minUsWeight": 0.21711,
+      "parameters": {
+        "floor": 0.15,
+        "lookback_days": 252,
+        "temperature": 0.03
+      },
+      "role": "STABILITY_DIAGNOSTIC_NOT_MODEL_SELECTION"
+    },
+    {
+      "dynamicMinusStatic": {
+        "annualizedExcessPct": 0.228914,
+        "cagrPct": 0.141895,
+        "calmar": -0.002621,
+        "cvar95Pct": -0.008081,
+        "mddPct": -0.425637,
+        "sharpe": 0.011042,
+        "sortino": 0.019821
+      },
+      "id": "temperature-0.10",
+      "maxQuarterlyWeightChange": 0.095025,
+      "maxUsWeight": 0.669039,
+      "metrics": {
+        "annualizedDownsideVolPct": 5.730693,
+        "annualizedExcessPct": -2.119778,
+        "annualizedRealizedVolPct": 8.386484,
+        "available": true,
+        "averageCashPct": 38.691826,
+        "averageEffectiveNames": 5.17,
+        "averageEquityPct": 61.308174,
+        "averageTop1Pct": 15.39,
+        "averageTop3Pct": 40.84,
+        "averageTurnoverPct": 42.22,
+        "averageTurnoverPctByRegion": {
+          "KR": 57.44,
+          "US": 74.41
+        },
+        "baseCurrency": "KRW",
+        "benchmarkCagrPct": 10.922715,
+        "cagrPct": 8.802938,
+        "calendarYears": 13.684059,
+        "calmar": 0.450951,
+        "costAdjustedCagrPct": 8.802938,
+        "costDragCagrPp": 1.576664,
+        "cvar95Pct": -1.140446,
+        "directlyComparableToLegacy": false,
+        "firstDate": "2013-01-07",
+        "fxReturnsIncluded": true,
+        "grossCagrPct": 10.379602,
+        "hitRatePct": 47.74,
+        "informationRatio": -0.235531,
+        "lastEndDate": "2026-09-14",
+        "mddBasis": "DAILY_UNION_SESSIONS_WITH_ENTRY_COSTS",
+        "mddPct": -19.520846,
+        "metricUnavailableReasons": {},
+        "metricVersion": "calendar-span-daily-krw-rf-v1",
+        "observationsPerYear": 259.133634,
+        "pathMethod": "FIXED_COMMON_SESSION_BLOCKS_DAILY_KRW_NAV",
+        "periods": 155,
+        "riskFreeBasis": "BOK_POLICY_RATE_PROXY_ACT_365_DAILY",
+        "riskFreeReturnPct": 31.008746,
+        "riskFreeStatus": "AVAILABLE_POLICY_RATE_PROXY",
+        "sharpe": 0.81248,
+        "sortino": 1.189353,
+        "sumTransactionCostPct": 19.673521,
+        "trackingErrorPct": 8.202541,
+        "turnoverRebalances": 154,
+        "turnoverRebalancesByRegion": {
+          "KR": 154,
+          "US": 154
+        }
+      },
+      "minUsWeight": 0.404975,
+      "parameters": {
+        "floor": 0.15,
+        "lookback_days": 252,
+        "temperature": 0.1
+      },
+      "role": "STABILITY_DIAGNOSTIC_NOT_MODEL_SELECTION"
+    }
+  ],
+  "robustnessStability": {
+    "cagrPct": {
+      "maxDelta": 0.46132,
+      "minDelta": -0.024701,
+      "negative": 1,
+      "positive": 6,
+      "variants": 7,
+      "zero": 0
+    },
+    "mddPct": {
+      "maxDelta": -0.120719,
+      "minDelta": -1.432981,
+      "negative": 7,
+      "positive": 0,
+      "variants": 7,
+      "zero": 0
+    },
+    "sharpe": {
+      "maxDelta": 0.017253,
+      "minDelta": -0.012172,
+      "negative": 1,
+      "positive": 6,
+      "variants": 7,
+      "zero": 0
+    }
+  },
+  "rotationSchedule": [
+    {
+      "date": "2013-01-07",
+      "rawWeights": {
+        "KR": 0.5,
+        "US": 0.5
+      },
+      "trailingExcessPct": {
+        "KR": null,
+        "US": null
+      },
+      "weights": {
+        "KR": 0.5,
+        "US": 0.5
+      }
+    },
+    {
+      "date": "2013-04-11",
+      "rawWeights": {
+        "KR": 0.683424,
+        "US": 0.316576
+      },
+      "trailingExcessPct": {
+        "KR": 2.0749,
+        "US": -1.7728
+      },
+      "weights": {
+        "KR": 0.683424,
+        "US": 0.316576
+      }
+    },
+    {
+      "date": "2013-07-16",
+      "rawWeights": {
+        "KR": 0.606236,
+        "US": 0.393764
+      },
+      "trailingExcessPct": {
+        "KR": 1.6263,
+        "US": -0.5313
+      },
+      "weights": {
+        "KR": 0.606236,
+        "US": 0.393764
+      }
+    },
+    {
+      "date": "2013-10-22",
+      "rawWeights": {
+        "KR": 0.515827,
+        "US": 0.484173
+      },
+      "trailingExcessPct": {
+        "KR": 0.5055,
+        "US": 0.1889
+      },
+      "weights": {
+        "KR": 0.515827,
+        "US": 0.484173
+      }
+    },
+    {
+      "date": "2014-01-24",
+      "rawWeights": {
+        "KR": 0.559868,
+        "US": 0.440132
+      },
+      "trailingExcessPct": {
+        "KR": 0.5603,
+        "US": -0.6428
+      },
+      "weights": {
+        "KR": 0.559868,
+        "US": 0.440132
+      }
+    },
+    {
+      "date": "2014-04-29",
+      "rawWeights": {
+        "KR": 0.531706,
+        "US": 0.468294
+      },
+      "trailingExcessPct": {
+        "KR": -0.2695,
+        "US": -0.9044
+      },
+      "weights": {
+        "KR": 0.531706,
+        "US": 0.468294
+      }
+    },
+    {
+      "date": "2014-07-07",
+      "rawWeights": {
+        "KR": 0.578341,
+        "US": 0.421659
+      },
+      "trailingExcessPct": {
+        "KR": 0.4671,
+        "US": -1.1127
+      },
+      "weights": {
+        "KR": 0.578341,
+        "US": 0.421659
+      }
+    },
+    {
+      "date": "2014-10-13",
+      "rawWeights": {
+        "KR": 0.620617,
+        "US": 0.379383
+      },
+      "trailingExcessPct": {
+        "KR": 1.9178,
+        "US": -0.5431
+      },
+      "weights": {
+        "KR": 0.620617,
+        "US": 0.379383
+      }
+    },
+    {
+      "date": "2015-01-14",
+      "rawWeights": {
+        "KR": 0.623843,
+        "US": 0.376157
+      },
+      "trailingExcessPct": {
+        "KR": 2.1179,
+        "US": -0.4116
+      },
+      "weights": {
+        "KR": 0.623843,
+        "US": 0.376157
+      }
+    },
+    {
+      "date": "2015-04-21",
+      "rawWeights": {
+        "KR": 0.57642,
+        "US": 0.42358
+      },
+      "trailingExcessPct": {
+        "KR": 1.6045,
+        "US": 0.064
+      },
+      "weights": {
+        "KR": 0.57642,
+        "US": 0.42358
+      }
+    },
+    {
+      "date": "2015-07-23",
+      "rawWeights": {
+        "KR": 0.555468,
+        "US": 0.444532
+      },
+      "trailingExcessPct": {
+        "KR": 1.1036,
+        "US": -0.0103
+      },
+      "weights": {
+        "KR": 0.555468,
+        "US": 0.444532
+      }
+    },
+    {
+      "date": "2015-10-27",
+      "rawWeights": {
+        "KR": 0.539931,
+        "US": 0.460069
+      },
+      "trailingExcessPct": {
+        "KR": 0.595,
+        "US": -0.2053
+      },
+      "weights": {
+        "KR": 0.539931,
+        "US": 0.460069
+      }
+    },
+    {
+      "date": "2016-01-29",
+      "rawWeights": {
+        "KR": 0.510117,
+        "US": 0.489883
+      },
+      "trailingExcessPct": {
+        "KR": 0.7285,
+        "US": 0.5261
+      },
+      "weights": {
+        "KR": 0.510117,
+        "US": 0.489883
+      }
+    },
+    {
+      "date": "2016-04-06",
+      "rawWeights": {
+        "KR": 0.46718,
+        "US": 0.53282
+      },
+      "trailingExcessPct": {
+        "KR": 0.1315,
+        "US": 0.7889
+      },
+      "weights": {
+        "KR": 0.46718,
+        "US": 0.53282
+      }
+    },
+    {
+      "date": "2016-07-12",
+      "rawWeights": {
+        "KR": 0.500751,
+        "US": 0.499249
+      },
+      "trailingExcessPct": {
+        "KR": 0.1828,
+        "US": 0.1677
+      },
+      "weights": {
+        "KR": 0.500751,
+        "US": 0.499249
+      }
+    },
+    {
+      "date": "2016-10-17",
+      "rawWeights": {
+        "KR": 0.448558,
+        "US": 0.551442
+      },
+      "trailingExcessPct": {
+        "KR": -0.2608,
+        "US": 0.7717
+      },
+      "weights": {
+        "KR": 0.448558,
+        "US": 0.551442
+      }
+    },
+    {
+      "date": "2017-01-19",
+      "rawWeights": {
+        "KR": 0.506435,
+        "US": 0.493565
+      },
+      "trailingExcessPct": {
+        "KR": -0.2337,
+        "US": -0.3624
+      },
+      "weights": {
+        "KR": 0.506435,
+        "US": 0.493565
+      }
+    },
+    {
+      "date": "2017-04-25",
+      "rawWeights": {
+        "KR": 0.565998,
+        "US": 0.434002
+      },
+      "trailingExcessPct": {
+        "KR": -0.4277,
+        "US": -1.7555
+      },
+      "weights": {
+        "KR": 0.565998,
+        "US": 0.434002
+      }
+    },
+    {
+      "date": "2017-08-01",
+      "rawWeights": {
+        "KR": 0.513276,
+        "US": 0.486724
+      },
+      "trailingExcessPct": {
+        "KR": -0.2684,
+        "US": -0.534
+      },
+      "weights": {
+        "KR": 0.513276,
+        "US": 0.486724
+      }
+    },
+    {
+      "date": "2017-10-10",
+      "rawWeights": {
+        "KR": 0.476002,
+        "US": 0.523998
+      },
+      "trailingExcessPct": {
+        "KR": -0.7243,
+        "US": -0.2439
+      },
+      "weights": {
+        "KR": 0.476002,
+        "US": 0.523998
+      }
+    },
+    {
+      "date": "2018-01-11",
+      "rawWeights": {
+        "KR": 0.465532,
+        "US": 0.534468
+      },
+      "trailingExcessPct": {
+        "KR": -1.1572,
+        "US": -0.4667
+      },
+      "weights": {
+        "KR": 0.465532,
+        "US": 0.534468
+      }
+    },
+    {
+      "date": "2018-04-18",
+      "rawWeights": {
+        "KR": 0.488024,
+        "US": 0.511976
+      },
+      "trailingExcessPct": {
+        "KR": 0.0845,
+        "US": 0.3241
+      },
+      "weights": {
+        "KR": 0.488024,
+        "US": 0.511976
+      }
+    },
+    {
+      "date": "2018-07-25",
+      "rawWeights": {
+        "KR": 0.604911,
+        "US": 0.395089
+      },
+      "trailingExcessPct": {
+        "KR": 2.394,
+        "US": 0.2641
+      },
+      "weights": {
+        "KR": 0.604911,
+        "US": 0.395089
+      }
+    },
+    {
+      "date": "2018-10-31",
+      "rawWeights": {
+        "KR": 0.528642,
+        "US": 0.471358
+      },
+      "trailingExcessPct": {
+        "KR": 1.1018,
+        "US": 0.5284
+      },
+      "weights": {
+        "KR": 0.528642,
+        "US": 0.471358
+      }
+    },
+    {
+      "date": "2019-01-04",
+      "rawWeights": {
+        "KR": 0.507881,
+        "US": 0.492119
+      },
+      "trailingExcessPct": {
+        "KR": 1.0633,
+        "US": 0.9057
+      },
+      "weights": {
+        "KR": 0.507881,
+        "US": 0.492119
+      }
+    },
+    {
+      "date": "2019-04-11",
+      "rawWeights": {
+        "KR": 0.517302,
+        "US": 0.482698
+      },
+      "trailingExcessPct": {
+        "KR": 0.4039,
+        "US": 0.0578
+      },
+      "weights": {
+        "KR": 0.517302,
+        "US": 0.482698
+      }
+    },
+    {
+      "date": "2019-07-17",
+      "rawWeights": {
+        "KR": 0.523063,
+        "US": 0.476937
+      },
+      "trailingExcessPct": {
+        "KR": 0.1586,
+        "US": -0.303
+      },
+      "weights": {
+        "KR": 0.523063,
+        "US": 0.476937
+      }
+    },
+    {
+      "date": "2019-10-22",
+      "rawWeights": {
+        "KR": 0.472301,
+        "US": 0.527699
+      },
+      "trailingExcessPct": {
+        "KR": -0.2479,
+        "US": 0.3066
+      },
+      "weights": {
+        "KR": 0.472301,
+        "US": 0.527699
+      }
+    },
+    {
+      "date": "2020-01-28",
+      "rawWeights": {
+        "KR": 0.424064,
+        "US": 0.575936
+      },
+      "trailingExcessPct": {
+        "KR": -1.3594,
+        "US": 0.1712
+      },
+      "weights": {
+        "KR": 0.424064,
+        "US": 0.575936
+      }
+    },
+    {
+      "date": "2020-04-29",
+      "rawWeights": {
+        "KR": 0.514618,
+        "US": 0.485382
+      },
+      "trailingExcessPct": {
+        "KR": -0.9169,
+        "US": -1.2093
+      },
+      "weights": {
+        "KR": 0.514618,
+        "US": 0.485382
+      }
+    },
+    {
+      "date": "2020-07-02",
+      "rawWeights": {
+        "KR": 0.535821,
+        "US": 0.464179
+      },
+      "trailingExcessPct": {
+        "KR": -0.9397,
+        "US": -1.6574
+      },
+      "weights": {
+        "KR": 0.535821,
+        "US": 0.464179
+      }
+    },
+    {
+      "date": "2020-10-07",
+      "rawWeights": {
+        "KR": 0.587765,
+        "US": 0.412235
+      },
+      "trailingExcessPct": {
+        "KR": -0.3369,
+        "US": -2.1106
+      },
+      "weights": {
+        "KR": 0.587765,
+        "US": 0.412235
+      }
+    },
+    {
+      "date": "2021-01-11",
+      "rawWeights": {
+        "KR": 0.501238,
+        "US": 0.498762
+      },
+      "trailingExcessPct": {
+        "KR": -1.103,
+        "US": -1.1278
+      },
+      "weights": {
+        "KR": 0.501238,
+        "US": 0.498762
+      }
+    },
+    {
+      "date": "2021-04-16",
+      "rawWeights": {
+        "KR": 0.54035,
+        "US": 0.45965
+      },
+      "trailingExcessPct": {
+        "KR": -0.7432,
+        "US": -1.552
+      },
+      "weights": {
+        "KR": 0.54035,
+        "US": 0.45965
+      }
+    },
+    {
+      "date": "2021-07-20",
+      "rawWeights": {
+        "KR": 0.534081,
+        "US": 0.465919
+      },
+      "trailingExcessPct": {
+        "KR": -0.8672,
+        "US": -1.5499
+      },
+      "weights": {
+        "KR": 0.534081,
+        "US": 0.465919
+      }
+    },
+    {
+      "date": "2021-10-26",
+      "rawWeights": {
+        "KR": 0.560503,
+        "US": 0.439497
+      },
+      "trailingExcessPct": {
+        "KR": 1.0657,
+        "US": -0.1503
+      },
+      "weights": {
+        "KR": 0.560503,
+        "US": 0.439497
+      }
+    },
+    {
+      "date": "2022-01-27",
+      "rawWeights": {
+        "KR": 0.548995,
+        "US": 0.451005
+      },
+      "trailingExcessPct": {
+        "KR": 1.349,
+        "US": 0.3659
+      },
+      "weights": {
+        "KR": 0.548995,
+        "US": 0.451005
+      }
+    },
+    {
+      "date": "2022-04-05",
+      "rawWeights": {
+        "KR": 0.481011,
+        "US": 0.518989
+      },
+      "trailingExcessPct": {
+        "KR": 1.1937,
+        "US": 1.5737
+      },
+      "weights": {
+        "KR": 0.481011,
+        "US": 0.518989
+      }
+    },
+    {
+      "date": "2022-07-12",
+      "rawWeights": {
+        "KR": 0.519262,
+        "US": 0.480738
+      },
+      "trailingExcessPct": {
+        "KR": 1.0163,
+        "US": 0.6308
+      },
+      "weights": {
+        "KR": 0.519262,
+        "US": 0.480738
+      }
+    },
+    {
+      "date": "2022-10-17",
+      "rawWeights": {
+        "KR": 0.45674,
+        "US": 0.54326
+      },
+      "trailingExcessPct": {
+        "KR": 0.9052,
+        "US": 1.7725
+      },
+      "weights": {
+        "KR": 0.45674,
+        "US": 0.54326
+      }
+    },
+    {
+      "date": "2023-01-19",
+      "rawWeights": {
+        "KR": 0.450932,
+        "US": 0.549068
+      },
+      "trailingExcessPct": {
+        "KR": 0.9475,
+        "US": 1.932
+      },
+      "weights": {
+        "KR": 0.450932,
+        "US": 0.549068
+      }
+    },
+    {
+      "date": "2023-04-25",
+      "rawWeights": {
+        "KR": 0.468188,
+        "US": 0.531812
+      },
+      "trailingExcessPct": {
+        "KR": 0.0434,
+        "US": 0.6805
+      },
+      "weights": {
+        "KR": 0.468188,
+        "US": 0.531812
+      }
+    },
+    {
+      "date": "2023-07-31",
+      "rawWeights": {
+        "KR": 0.428156,
+        "US": 0.571844
+      },
+      "trailingExcessPct": {
+        "KR": -1.5094,
+        "US": -0.0625
+      },
+      "weights": {
+        "KR": 0.428156,
+        "US": 0.571844
+      }
+    },
+    {
+      "date": "2023-10-05",
+      "rawWeights": {
+        "KR": 0.455758,
+        "US": 0.544242
+      },
+      "trailingExcessPct": {
+        "KR": -1.5258,
+        "US": -0.6387
+      },
+      "weights": {
+        "KR": 0.455758,
+        "US": 0.544242
+      }
+    },
+    {
+      "date": "2024-01-09",
+      "rawWeights": {
+        "KR": 0.548723,
+        "US": 0.451277
+      },
+      "trailingExcessPct": {
+        "KR": -0.2728,
+        "US": -1.2504
+      },
+      "weights": {
+        "KR": 0.548723,
+        "US": 0.451277
+      }
+    },
+    {
+      "date": "2024-04-16",
+      "rawWeights": {
+        "KR": 0.657469,
+        "US": 0.342531
+      },
+      "trailingExcessPct": {
+        "KR": 2.2613,
+        "US": -0.9989
+      },
+      "weights": {
+        "KR": 0.657469,
+        "US": 0.342531
+      }
+    },
+    {
+      "date": "2024-07-23",
+      "rawWeights": {
+        "KR": 0.610428,
+        "US": 0.389572
+      },
+      "trailingExcessPct": {
+        "KR": 0.0036,
+        "US": -2.2419
+      },
+      "weights": {
+        "KR": 0.610428,
+        "US": 0.389572
+      }
+    },
+    {
+      "date": "2024-10-30",
+      "rawWeights": {
+        "KR": 0.515423,
+        "US": 0.484577
+      },
+      "trailingExcessPct": {
+        "KR": -0.5225,
+        "US": -0.831
+      },
+      "weights": {
+        "KR": 0.515423,
+        "US": 0.484577
+      }
+    },
+    {
+      "date": "2025-01-02",
+      "rawWeights": {
+        "KR": 0.609426,
+        "US": 0.390574
+      },
+      "trailingExcessPct": {
+        "KR": 1.7627,
+        "US": -0.4618
+      },
+      "weights": {
+        "KR": 0.609426,
+        "US": 0.390574
+      }
+    },
+    {
+      "date": "2025-04-11",
+      "rawWeights": {
+        "KR": 0.64265,
+        "US": 0.35735
+      },
+      "trailingExcessPct": {
+        "KR": 3.7903,
+        "US": 0.8559
+      },
+      "weights": {
+        "KR": 0.64265,
+        "US": 0.35735
+      }
+    },
+    {
+      "date": "2025-07-22",
+      "rawWeights": {
+        "KR": 0.591468,
+        "US": 0.408532
+      },
+      "trailingExcessPct": {
+        "KR": 2.1756,
+        "US": 0.3254
+      },
+      "weights": {
+        "KR": 0.591468,
+        "US": 0.408532
+      }
+    },
+    {
+      "date": "2025-10-28",
+      "rawWeights": {
+        "KR": 0.552097,
+        "US": 0.447903
+      },
+      "trailingExcessPct": {
+        "KR": 0.2942,
+        "US": -0.7515
+      },
+      "weights": {
+        "KR": 0.552097,
+        "US": 0.447903
+      }
+    },
+    {
+      "date": "2026-01-30",
+      "rawWeights": {
+        "KR": 0.374598,
+        "US": 0.625402
+      },
+      "trailingExcessPct": {
+        "KR": -3.2485,
+        "US": -0.6858
+      },
+      "weights": {
+        "KR": 0.374598,
+        "US": 0.625402
+      }
+    },
+    {
+      "date": "2026-04-07",
+      "rawWeights": {
+        "KR": 0.248931,
+        "US": 0.751069
+      },
+      "trailingExcessPct": {
+        "KR": -5.3764,
+        "US": 0.1452
+      },
+      "weights": {
+        "KR": 0.248931,
+        "US": 0.751069
+      }
+    },
+    {
+      "date": "2026-07-13",
+      "rawWeights": {
+        "KR": 0.1966,
+        "US": 0.8034
+      },
+      "trailingExcessPct": {
+        "KR": -6.5496,
+        "US": 0.4888
+      },
+      "weights": {
+        "KR": 0.1966,
+        "US": 0.8034
+      }
+    }
+  ],
+  "sameRegionalPathsForStaticAndDynamic": true,
+  "sealedCombinedPublishedSummary": {
+    "annualizedDownsideVolPct": 7.951093,
+    "annualizedExcessPct": -3.634654,
+    "annualizedRealizedVolPct": 11.446462,
+    "available": true,
+    "averageEffectiveNames": 3.99,
+    "averageTop1Pct": 27.13,
+    "averageTop3Pct": 61.8,
+    "averageTurnoverPct": 56.1,
+    "averageTurnoverPctByRegion": {
+      "KR": 61.88,
+      "US": 74.57
+    },
+    "baseCurrency": "KRW",
+    "benchmarkCagrPct": 13.972256,
+    "blockScheduleBasis": "FIXED_COMMON_SESSIONS_PREVIOUS_WEEKLY_SIGNAL",
+    "blockScheduleShared": true,
+    "cagrPct": 10.337602,
+    "calendarYears": 13.684059,
+    "cvar95Pct": -1.565111,
+    "directlyComparableToLegacy": false,
+    "firstDate": "2013-01-07",
+    "fxReturnsIncluded": true,
+    "hitRatePct": 47.74,
+    "informationRatio": -0.33216,
+    "lastEndDate": "2026-09-14",
+    "mddBasis": "DAILY_UNION_SESSIONS_WITH_ENTRY_COSTS",
+    "mddPct": -29.263624,
+    "metricVersion": "calendar-span-daily-krw-rf-v1",
+    "observationsPerYear": 259.133634,
+    "pathMethod": "FIXED_COMMON_SESSION_BLOCKS_DAILY_KRW_NAV",
+    "periods": 155,
+    "riskFreeBasis": "BOK_POLICY_RATE_PROXY_ACT_365_DAILY",
+    "riskFreeReturnPct": 31.008746,
+    "riskFreeStatus": "UNAVAILABLE",
+    "sharpe": 0.744288,
+    "sortino": 1.071643,
+    "trackingErrorPct": 9.599495,
+    "turnoverRebalances": 154,
+    "turnoverRebalancesByRegion": {
+      "KR": 154,
+      "US": 154
+    }
+  },
+  "sealedInvariant": {
+    "after": "365dddb1387f1644693c8d458dd824ed8c039d850a4227de5756570664b9a7cc",
+    "before": "365dddb1387f1644693c8d458dd824ed8c039d850a4227de5756570664b9a7cc",
+    "unchanged": true
+  },
+  "sharpeRepair": "The old blend discarded dailyDates/dailyGrossNav/dailyBenchmarkNav/dailyRiskFreeNav and terminal holdings, falling back to legacy endpoint metrics with Sharpe/Sortino=None. Daily NAV and drifted terminal holdings now survive blending; all portfolios use PV._path_metrics.",
+  "sourceProvenance": {
+    "configSha256": "1154e1b97f16004a675c54a044d654001dada5ca2722d6c1dca2c89eeaf271dc",
+    "engineSha256": "5d74112107ce26f05bd4b9bd276676832545951af8ec48a6446d9938bddd4aef",
+    "inputSha256": "f0781292f508a123c234ded6d28aa8e84a0dc3cc29500e14989dc0b68f53b4d2"
+  }
+}

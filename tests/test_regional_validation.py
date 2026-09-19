@@ -143,6 +143,7 @@ def test_abc_use_shared_calculator_and_normal_sharpe_is_measured(inputs,monkeypa
         result = V.metrics(rows,CFG)
         assert result['available'] and result['sharpe'] is not None
         assert result['metricVersion'] == 'calendar-span-daily-krw-rf-v1'
+        assert result['riskFreeStatus'] == 'AVAILABLE_POLICY_RATE_PROXY'
         assert rows == before
     assert calls == [8,8,8]
 
