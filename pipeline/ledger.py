@@ -314,7 +314,7 @@ def compute_portfolio_outcomes(signals: list[dict], prices: dict[str, pd.DataFra
                         break
                     round_trip_bps = (
                         float(regional.get("commissionBps", 5.0)) * 2.0
-                        + float(regional.get("spreadBps", 12.0)) * 2.0
+                        + float(regional.get("spreadBps", 12.0))
                         + float(regional.get("sellTaxBps", 20.0 if region == "KR" else 3.0))
                     )
                     weighted_bps += float(exposure_pct) / invested_region * round_trip_bps

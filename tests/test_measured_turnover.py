@@ -127,10 +127,10 @@ def test_the_hurdle_more_than_doubles_on_the_real_turnover():
     measured = KP.estimate_transaction_cost(
         {"region": "US"}, KP.with_measured_turnover(BASE, _report(59.33)))
 
-    # US round trip: 5*2 commission + 10*2 spread + 3 sell tax = 33bps,
+    # US round trip: 5*2 commission + one full 10bp spread + 3 sell tax = 23bps,
     # over 126/63 = 2 cycles.
-    assert assumed["estimatedCostPct"] == pytest.approx(0.165, abs=1e-3)
-    assert measured["estimatedCostPct"] == pytest.approx(0.392, abs=1e-3)
+    assert assumed["estimatedCostPct"] == pytest.approx(0.115, abs=1e-3)
+    assert measured["estimatedCostPct"] == pytest.approx(0.273, abs=1e-3)
     assert measured["estimatedCost"] > assumed["estimatedCost"]
 
 
@@ -188,9 +188,9 @@ def test_the_us_hurdle_rises_by_half_again_on_its_own_rate():
         KP.with_measured_turnover(
             BASE, _regional_report({"US": 85.28, "KR": 63.07}, {"US": 50, "KR": 50})))
 
-    # US round trip 33bps over 126/63 = 2 cycles.
-    assert pooled["estimatedCostPct"] == pytest.approx(0.383, abs=1e-3)
-    assert regional["estimatedCostPct"] == pytest.approx(0.563, abs=1e-3)
+    # US round trip 23bps over 126/63 = 2 cycles.
+    assert pooled["estimatedCostPct"] == pytest.approx(0.267, abs=1e-3)
+    assert regional["estimatedCostPct"] == pytest.approx(0.392, abs=1e-3)
     assert regional["estimatedCost"] > pooled["estimatedCost"]
 
 

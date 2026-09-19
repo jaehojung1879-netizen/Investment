@@ -31,6 +31,35 @@ CAGR +0.277%p, MDD -0.861%p(더 깊은 낙폭)이며, timing 7개 지표의 95% 
 역사적 검증은 prospective 검증을 대체하지 않으며 CHAMPION·production selector·Kelly·macro·
 `paperTrading` 정책·`liveValidated`를 변경하지 않습니다.
 
+### 벤치마크 상대 알파 / 현실 비용 검증
+
+`benchmark-relative-alpha-v1`도 **research-only CHALLENGER**입니다. replay-v16의 같은 155개
+고정 블록에서 비용 가정을 현실화하고, 종목의 지역 total-return benchmark 대비 만기 초과수익을
+직접 수축 추정한 뒤 순알파가 양수일 때만 담는 규칙을 검증했습니다. 정규 교체는 분기 첫 anchor에서만
+허용하고 그 사이에는 drifted 보유비중을 그대로 이어가며, 기존 보유종목은 즉시 매도+대체매수 비용만큼의
+retention credit을 받습니다. production selector나 CHAMPION은 바꾸지 않습니다.
+
+실측 결과는 “비용만 고치면 해결된다”는 가설을 기각합니다.
+
+- Combined CHAMPION은 21거래일마다 평가되어 154회 리밸런싱, 평균 one-way turnover 56.10%,
+  연환산 약 **6.31× NAV**를 거래했습니다. 현실 비용에서 비용 drag는 1.904%p/년에서
+  **1.463%p/년**으로 낮아지지만, 비용 전에도 matched benchmark에 **−1.730%p/년** 뒤집니다.
+- 기존 calibrated challenger는 비용 전 matched benchmark보다 **+0.340%p/년** 앞섰지만,
+  연 4.56× 회전과 1.386%p 비용 drag 때문에 순초과수익은 **−1.046%p/년**입니다.
+- 새 분기형 v1은 연 회전율을 **1.30×**, 비용 drag를 **0.423%p**까지 낮췄지만 gross selection
+  수익을 잃어 순초과수익 **−1.488%p/년**이었습니다. 155개 paired block의 평균 순알파 95% CI도
+  0을 포함합니다.
+
+따라서 현재 판단은 **BENCHMARK_NOT_BEATEN**입니다. 지수보다 나은 공식이 검증됐다고 주장하지 않으며,
+지금 단계의 투자 대안은 active selector보다 저비용 benchmark가 우선입니다. 다음 연구 방향은 새로운
+팩터나 최적 parameter 탐색이 아니라, 기존 calibrated benchmark-relative signal을 유지하면서
+교체 후보가 보유종목을 거래비용+사전 고정 문턱만큼 이길 때만 바꾸는 hysteresis 규칙입니다.
+이 규칙은 새 prospective shadow 기간 전에 고정해야 하며 이번 결과로 production 승격하지 않습니다.
+
+재현 실행은 `scripts/run_benchmark_alpha_replay.py`, CI는
+`.github/workflows/benchmark-alpha.yml`, 결과는
+`docs/results/benchmark-alpha-report.md`와 machine-readable JSON에 기록합니다.
+
 ## 실행 상태(runMode)와 데이터 모드(dataMode)
 
 - **runMode**: `researchOnly` · `paperTrading`(기본) · `liveValidated`. 기본값은 `paperTrading`이며, **`liveValidated`는 config만으로 절대 부여되지 않습니다** — paper signal ledger에 충분한 검증 이력이 쌓여야 합니다.
@@ -88,6 +117,14 @@ CAGR +0.277%p, MDD -0.861%p(더 깊은 낙폭)이며, timing 7개 지표의 95% 
 월별·분기 지표에는 보수적인 고정 발표시차를 적용하지만 이는 실제 release calendar를 완전히 재현하지 않습니다. 과거 판정은 ALFRED vintage가 아닌 최신 개정 시계열을 사용할 수 있으므로 완전한 실시간 빈티지 백테스트를 주장하지 않습니다.
 
 ## 거래비용 허들 — 지역별 실측 회전율
+
+`spreadBps`는 **full spread**입니다. 매수에서 절반, 매도에서 절반을 부담하므로 왕복 비용식은
+`2 × commission + 1 × spread + sell tax`입니다. 과거 기대수익 비용식이 spread를 두 번 더해
+실제 path 계산과 불일치하던 오류는 benchmark-alpha-v1에서 수정했습니다. 연구 base case는
+US 5bp/side commission + 6bp full spread + 0.30bp sell levy, KR 1.5bp/side commission +
+8bp full spread + 시점별 법정 sell tax를 사용합니다. 이는 1천만원 예상 거래대금의 명시적
+검증 가정이며 특정 증권사의 수수료 보장이 아닙니다. matched benchmark는 비용 0으로 두어 active
+알파 주장에 보수적으로 적용하고, ETF 보수는 total-return 가격에 이미 반영됩니다.
 
 비용 추정은 후보 **한 종목**의 기대수익에서 차감되므로(`net = raw - cost`), 여기 들어가는 회전율은 책 전체가 아니라 **그 지역 슬리브의 교체율**이어야 합니다: "이 지역에 들고 있던 비중 중 리밸런스마다 몇 %를 교체하는가". 포트폴리오 수치는 현금을 포함한 책 전체로 나누므로 현금 하한이 있는 한 항상 더 작고, 실제로 리플레이 원장에서 포트폴리오 58.1%인 반면 슬리브는 US 85.3% · KR 63.1%였습니다. 하나의 숫자를 두 지역에 쓰면 **양쪽 다 과소평가**되고, 가장 심하게 도는 슬리브가 가장 적게 부담합니다. 두 슬리브가 실제로 다르다는 것은 점추정 부등호가 아니라 짝지은 차이와 구간으로 확인했습니다: 공통 리밸런스 50회에서 US−KR = **+22.20%p, 95% 부트스트랩 구간 [+9.83, +34.09]%p** (US가 더 많이 회전한 블록 34회, 동률 3회). 구간이 0을 걸쳤다면 하나의 숫자로 충분하다는 뜻이고 지역별 분리는 하지 않는 것이 맞습니다.
 

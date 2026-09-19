@@ -1,0 +1,98 @@
+name: Benchmark-relative alpha analysis
+
+# Read-only research replay.  It consumes the same pinned replay-v16 ledger as
+# the regional validation and writes only job artifacts in the code checkout.
+on:
+  workflow_dispatch:
+  push:
+    branches: [research/benchmark-relative-alpha-v1]
+    paths:
+      - 'pipeline/benchmark_alpha.py'
+      - 'pipeline/historical_outcomes.py'
+      - 'pipeline/kelly_portfolio.py'
+      - 'pipeline/ledger.py'
+      - 'pipeline/portfolio_validation.py'
+      - 'scripts/run_benchmark_alpha_replay.py'
+      - 'tests/test_benchmark_alpha.py'
+      - '.github/workflows/benchmark-alpha.yml'
+      - 'docs/results/benchmark-alpha-*'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: benchmark-alpha-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  benchmark-alpha:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - name: Checkout research code
+        uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Test cost and challenger semantics
+        run: >-
+          python -m pytest -q
+          tests/test_benchmark_alpha.py
+          tests/test_kelly_portfolio.py
+          tests/test_measured_turnover.py
+          tests/test_portfolio_validation.py
+
+      - name: Check out pinned sealed inputs (read-only)
+        uses: actions/checkout@v5
+        with:
+          ref: b71d8cb5ce21815980d28b606852f9294d43cc53
+          path: replay-work
+          persist-credentials: false
+
+      - name: Run benchmark-relative alpha replay
+        run: |
+          set -o pipefail
+          python -u scripts/run_benchmark_alpha_replay.py replay-work/ledger \
+            --output benchmark-alpha-report.json \
+            --markdown benchmark-alpha-report.md \
+            | tee benchmark-alpha.log
+
+      - name: Verify sealed checkout unchanged
+        run: test -z "$(git -C replay-work status --porcelain)"
+
+      - name: Verify checked-in deterministic result when present
+        run: |
+          if test -f docs/results/benchmark-alpha-report.json; then
+            cmp benchmark-alpha-report.json docs/results/benchmark-alpha-report.json
+            cmp benchmark-alpha-report.md docs/results/benchmark-alpha-report.md
+          fi
+
+      - name: Upload analysis
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: benchmark-relative-alpha-v1
+          path: |
+            benchmark-alpha-report.json
+            benchmark-alpha-report.md
+            benchmark-alpha.log
+          if-no-files-found: warn
+
+      - name: Summary
+        if: always()
+        run: |
+          if test -f benchmark-alpha-report.md; then
+            cat benchmark-alpha-report.md >> "$GITHUB_STEP_SUMMARY"
+          else
+            tail -n 100 benchmark-alpha.log >> "$GITHUB_STEP_SUMMARY"
+          fi
+

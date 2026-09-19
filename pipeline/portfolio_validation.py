@@ -414,15 +414,18 @@ class ExpandingBucketCalibration:
 
     def __init__(self, outcomes: list[dict], *, horizon=126,
                  edges=(0, 60, 80, 90, 95, 100), prior_strength=30,
-                 min_dates=20):
+                 min_dates=20, cost_adjusted=True):
         self.edges = tuple(float(value) for value in edges)
-        frame = HO.horizon_frame(outcomes, horizon, cost_adjusted=False)
+        frame = HO.horizon_frame(outcomes, horizon, cost_adjusted=cost_adjusted)
         if len(frame):
             frame = frame.dropna(subset=["outcomeEndDate", "alphaPercentile"])
             frame = frame.copy()
             frame["bucket"] = [_bucket(v, edges) for v in frame["alphaPercentile"]]
+            value_column = ("costAdjustedExcessReturn" if cost_adjusted
+                            else "excessReturn")
             grouped = (frame.groupby(["outcomeEndDate", "date", "region", "bucket"], dropna=True)
-                       ["costAdjustedExcessReturn"].mean().reset_index())
+                       [value_column].mean().reset_index()
+                       .rename(columns={value_column: "calibrationReturn"}))
             self.events = grouped.sort_values(["outcomeEndDate", "date", "region", "bucket"])
         else:
             self.events = pd.DataFrame()
@@ -431,6 +434,8 @@ class ExpandingBucketCalibration:
         self.prior_strength = float(prior_strength)
         self.min_dates = int(min_dates)
         self.horizon = int(horizon)
+        self.return_basis = ("COST_ADJUSTED_EXCESS_RETURN" if cost_adjusted
+                             else "GROSS_EXCESS_RETURN")
 
     def advance(self, as_of) -> None:
         cutoff = pd.Timestamp(as_of).normalize()
@@ -439,7 +444,7 @@ class ExpandingBucketCalibration:
             if pd.Timestamp(row["outcomeEndDate"]).normalize() > cutoff:
                 break
             self.values[(row["region"], row["bucket"])].append(
-                (pd.Timestamp(row["date"]).normalize(), float(row["costAdjustedExcessReturn"])))
+                (pd.Timestamp(row["date"]).normalize(), float(row["calibrationReturn"])))
             self.pointer += 1
 
     def expected(self, region: str, alpha_percentile) -> dict | None:
@@ -457,6 +462,7 @@ class ExpandingBucketCalibration:
             "uniqueDates": int(series.index.nunique()),
             "effectiveIndependentDates": eff,
             "shrinkageFactor": _r(shrink, 4),
+            "returnBasis": self.return_basis,
             "labelAvailabilityPolicy": "OUTCOME_END_DATE_LTE_REPLAY_DATE",
         }
 
@@ -548,7 +554,27 @@ def _challenger_scores(candidates: list[dict], calibration: ExpandingBucketCalib
     return rows
 
 
-def _turnover_cost(weights: dict, prior: dict, candidates: list[dict], cfg_pf: dict) -> dict:
+def _dated_cost_policy(policy: dict, as_of: str | None) -> dict:
+    """Resolve an optional point-in-time sell-tax schedule.
+
+    Research cost models may describe taxes that actually changed during a
+    long replay.  Production's existing scalar policy remains untouched.  A
+    schedule is an ordered list of ``{"effectiveDate", "sellTaxBps"}``; only
+    entries already effective on ``as_of`` are visible.
+    """
+    resolved = dict(policy or {})
+    if not as_of:
+        return resolved
+    effective = [row for row in resolved.get("sellTaxSchedule", [])
+                 if row.get("effectiveDate") and row["effectiveDate"] <= as_of]
+    if effective:
+        resolved["sellTaxBps"] = float(max(effective, key=lambda row: row["effectiveDate"])
+                                       ["sellTaxBps"])
+    return resolved
+
+
+def _turnover_cost(weights: dict, prior: dict, candidates: list[dict], cfg_pf: dict,
+                   *, as_of: str | None = None) -> dict:
     region = {row["ticker"]: row.get("region") or "UNKNOWN" for row in candidates}
     tickers = sorted(set(weights) | set(prior))
     buys = sells = cost = 0.0
@@ -569,7 +595,8 @@ def _turnover_cost(weights: dict, prior: dict, candidates: list[dict], cfg_pf: d
         traded[home] += abs(delta)
         held_now[home] += now
         held_prev[home] += was
-        policy = ((cfg_pf.get("transactionCosts") or {}).get(region.get(ticker)) or {})
+        policy = _dated_cost_policy(
+            ((cfg_pf.get("transactionCosts") or {}).get(region.get(ticker)) or {}), as_of)
         if delta > 0:
             buys += delta
             bps = float(policy.get("commissionBps", 0)) + float(policy.get("spreadBps", 0)) / 2
@@ -749,7 +776,8 @@ def _path_metrics(rows: list[dict], horizon: int, cfg_pf: dict,
         region_map.update({t: r for t, r in (row.get("terminalRegionByTicker") or {}).items() if r})
         candidates = [{"ticker": ticker, "region": region_map.get(ticker)}
                       for ticker in set(row["weights"]) | set(prior)]
-        cost = _turnover_cost(row["weights"], prior, candidates, cfg_pf)
+        cost = _turnover_cost(row["weights"], prior, candidates, cfg_pf,
+                              as_of=row.get("date"))
         row["transactionCost"] = cost["cost"]
         row["turnover"] = cost["turnover"]
         row["turnoverByRegion"] = cost["turnoverByRegion"]
