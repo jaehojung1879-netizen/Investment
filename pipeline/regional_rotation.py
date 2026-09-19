@@ -14,8 +14,7 @@ the look-ahead this project's `LookAheadError` exists to catch everywhere
 else — it uses information (the full-sample winner) that was not available
 on any of the dates being scored. Every weight decided here uses only
 decisions whose outcome had already matured strictly before the decision
-date; `apply_schedule` applies a weight only from the quarter after it was
-decided, never the one it was decided in.
+date; `apply_schedule` applies it from that decision date, never retroactively.
 
 WHY SOFTMAX, NOT A RAW RETURN RATIO. A ratio of two trailing returns is
 undefined or sign-flipped the moment either is zero or negative, which a
@@ -42,7 +41,7 @@ import math
 
 import pandas as pd
 
-DEFAULT_LOOKBACK_DAYS = 252     # ~1 trading year of matured decisions
+DEFAULT_LOOKBACK_DAYS = 252     # CALENDAR days (frozen v1 semantics, not trading sessions)
 DEFAULT_TEMPERATURE = 0.05      # 5pp of trailing excess return e-folds the odds ratio
 DEFAULT_FLOOR = 0.15            # neither region ever falls below this share
 
@@ -87,7 +86,12 @@ def softmax_weights(scores: dict[str, float], *, temperature: float = DEFAULT_TE
         return {regions[0]: 1.0}
     if floor * len(regions) > 1.0:
         raise ValueError(f"floor {floor} leaves no room for {len(regions)} regions")
-    exps = {r: math.exp(scores[r] / temperature) for r in regions}
+    if not math.isfinite(temperature) or temperature <= 0 or not 0 <= floor <= 1 / len(regions):
+        raise ValueError("invalid temperature or floor")
+    if not all(math.isfinite(s) for s in scores.values()):
+        raise ValueError("non-finite regional score")
+    offset = max(scores.values())
+    exps = {r: math.exp((scores[r] - offset) / temperature) for r in regions}
     total = sum(exps.values())
     raw = {r: exps[r] / total for r in regions}
 
@@ -110,7 +114,7 @@ def softmax_weights(scores: dict[str, float], *, temperature: float = DEFAULT_TE
     remaining = 1.0 - sum(pinned.values())
     free_raw_total = sum(raw[r] for r in free)
     result = dict(pinned)
-    for r in free:
+    for r in sorted(free):
         result[r] = remaining * (raw[r] / free_raw_total)
     return result
 
@@ -135,7 +139,8 @@ def quarterly_decision_dates(all_dates: list[str]) -> list[str]:
 def regional_weight_schedule(decisions_by_region: dict[str, list[dict]], *,
                              lookback_days: int = DEFAULT_LOOKBACK_DAYS,
                              temperature: float = DEFAULT_TEMPERATURE,
-                             floor: float = DEFAULT_FLOOR) -> list[dict]:
+                             floor: float = DEFAULT_FLOOR,
+                             evaluation_dates: list[str] | None = None) -> list[dict]:
     """One row per quarterly re-decision date: each region's trailing score
     (`None` where unmeasurable) and the resulting weight.
 
@@ -143,7 +148,10 @@ def regional_weight_schedule(decisions_by_region: dict[str, list[dict]], *,
     as equal weight across every region, not a one-region default: an
     unmeasured region is not evidence against it.
     """
-    all_dates = [row["date"] for rows in decisions_by_region.values() for row in rows]
+    if lookback_days <= 0:
+        raise ValueError("lookback must be positive")
+    all_dates = (evaluation_dates if evaluation_dates is not None else
+                 [row["date"] for rows in decisions_by_region.values() for row in rows])
     regions = sorted(decisions_by_region)
     schedule = []
     for as_of in quarterly_decision_dates(all_dates):
@@ -155,10 +163,13 @@ def regional_weight_schedule(decisions_by_region: dict[str, list[dict]], *,
             weights = {r: 1.0 / len(regions) for r in regions} if regions else {}
         else:
             weights = softmax_weights(measured, temperature=temperature, floor=floor)
+        raw = (softmax_weights(measured, temperature=temperature, floor=0.0)
+               if len(measured) == len(regions) else dict(weights))
         schedule.append({
             "date": as_of,
             "trailingExcessPct": {r: (None if s is None else round(s * 100, 4))
                                   for r, s in scores.items()},
+            "rawWeights": {r: round(w, 6) for r, w in raw.items()},
             "weights": {r: round(w, 6) for r, w in weights.items()},
         })
     return schedule
@@ -176,6 +187,9 @@ def apply_schedule(decisions_by_region: dict[str, list[dict]],
     `weights`, `regionByTicker`), so the blended path is scored by the same
     cost/CAGR/drawdown machinery any other path is — not a second copy of it.
     """
+    for region, rows in decisions_by_region.items():
+        if len({r["date"] for r in rows}) != len(rows):
+            raise ValueError(f"duplicate block dates: {region}")
     by_date_region = {(row["date"], region): row
                       for region, rows in decisions_by_region.items() for row in rows}
     all_dates = sorted({row["date"] for rows in decisions_by_region.values() for row in rows})
@@ -193,15 +207,13 @@ def apply_schedule(decisions_by_region: dict[str, list[dict]],
             continue  # before the first quarterly decision: nothing to blend yet
         present = {region: by_date_region[(date, region)] for region in active_weights
                   if (date, region) in by_date_region}
-        if not present:
+        # A missing sleeve is unknown, never permission to invest 100% in the other.
+        if set(present) != set(decisions_by_region) or set(active_weights) != set(present):
             continue
-        # Renormalize over the regions actually present on this date — one
-        # region missing a signal (a holiday mismatch) should not silently
-        # zero the whole blended portfolio for that date.
-        w_total = sum(active_weights[r] for r in present)
-        if w_total <= 0:
-            continue
-        w = {r: active_weights[r] / w_total for r in present}
+        if (any(not math.isfinite(v) or v < 0 for v in active_weights.values())
+                or not math.isclose(sum(active_weights.values()), 1.0, abs_tol=1e-6)):
+            raise ValueError("regional weights must sum to one")
+        w = dict(active_weights)
         end_dates = {present[r]["endDate"] for r in present}
         # One blended block must mature on one date, or "excess return" would
         # mix returns measured over different horizons under one label.
@@ -220,14 +232,52 @@ def apply_schedule(decisions_by_region: dict[str, list[dict]],
         # case a blended row to report top1/top3/effectiveNames for it.
         values = list(weights_by_ticker.values())
         book = sum(values)
-        blended.append({
+        result = {
             "date": date, "endDate": end_dates.pop(),
             "grossReturn": gross, "benchmarkReturn": bench,
+            "grossExcessReturn": gross - bench,
+            "cashWeight": 1 - book,
             "weights": weights_by_ticker, "regionByTicker": region_by_ticker,
             "regionalWeights": dict(w),
             "top1": max(values, default=0),
             "top3": sum(sorted(values, reverse=True)[:3]),
             "effectiveNames": (1 / sum((v / book) ** 2 for v in values)
                                if book > 0 else None),
-        })
+        }
+        daily = ["dailyDates" in row for row in present.values()]
+        if any(daily):
+            if not all(daily):
+                raise ValueError("mixed daily and endpoint regional paths")
+            first = next(iter(present.values()))
+            dates = first["dailyDates"]
+            if any(row["dailyDates"] != dates for row in present.values()):
+                raise ValueError("regional daily dates do not align")
+            if any(row["dailyRiskFreeNav"] != first["dailyRiskFreeNav"] for row in present.values()):
+                raise ValueError("regional risk-free paths differ")
+            result.update({
+                "dailyDates": list(dates),
+                "dailyGrossNav": [sum(w[r] * present[r]["dailyGrossNav"][i] for r in present)
+                                  for i in range(len(dates))],
+                "dailyBenchmarkNav": [sum(w[r] * present[r]["dailyBenchmarkNav"][i] for r in present)
+                                      for i in range(len(dates))],
+                "dailyRiskFreeNav": list(first["dailyRiskFreeNav"]),
+                "terminalWeights": {}, "terminalRegionByTicker": {},
+            })
+            # Sleeve capital drifts inside a block. Use end-of-block VALUE shares,
+            # not the entry split, when pricing the next rebalance's trades.
+            for r, row in present.items():
+                share = w[r] * (1 + row["grossReturn"]) / (1 + gross)
+                for ticker, value in row["terminalWeights"].items():
+                    result["terminalWeights"][ticker] = result["terminalWeights"].get(ticker, 0) + share * value
+                result["terminalRegionByTicker"].update(row["terminalRegionByTicker"])
+        blended.append(result)
     return blended
+
+
+def static_blend(decisions_by_region: dict[str, list[dict]]) -> list[dict]:
+    """Constant 50/50 capital targets at the same existing rebalance anchors."""
+    if set(decisions_by_region) != {"US", "KR"}:
+        raise ValueError("static control requires US and KR")
+    dates = [r["date"] for rows in decisions_by_region.values() for r in rows]
+    return apply_schedule(decisions_by_region, [
+        {"date": min(dates), "weights": {"US": 0.5, "KR": 0.5}}]) if dates else []

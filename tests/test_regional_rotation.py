@@ -202,14 +202,12 @@ def test_apply_schedule_drops_a_block_with_mismatched_end_dates():
     assert RR.apply_schedule({"US": us, "KR": kr}, schedule) == []
 
 
-def test_apply_schedule_renormalizes_when_one_region_is_missing_that_date():
+def test_apply_schedule_omits_when_one_region_is_missing_that_date():
     us = [_row("2020-01-06", "2020-01-13", 0.10, weight_ticker="A")]
     # KR has no row on this date at all (e.g. a holiday mismatch).
     schedule = [{"date": "2020-01-06", "weights": {"US": 0.5, "KR": 0.5}}]
     blended = RR.apply_schedule({"US": us, "KR": []}, schedule)
-    assert len(blended) == 1
-    assert blended[0]["grossReturn"] == pytest.approx(0.11)  # US alone, renormalized to 100%
-    assert blended[0]["regionalWeights"] == {"US": pytest.approx(1.0)}
+    assert blended == []  # Unknown KR sleeve must never become a 100% US portfolio.
 
 
 # --------------------------------------------------------------------------- #
