@@ -190,7 +190,7 @@ class KellyPortfolioTests(unittest.TestCase):
         outcomes = LG.compute_portfolio_outcomes(
             [signal], {"A": pd.DataFrame({"Close": close})}, {"SPY": close})
         metrics = outcomes[0]["horizons"]["21"]
-        expected_cost = .25 * (4 * 2 + 8 * 2 + 2) / 10_000
+        expected_cost = .25 * (4 * 2 + 8 + 2) / 10_000
         assert metrics["transactionCost"] == round(expected_cost, 6)
         assert metrics["transactionCostFallbackUsed"] is False
 
@@ -277,7 +277,7 @@ class KellyPortfolioTests(unittest.TestCase):
             "expectedTradeNotionalKrw": 5000000,
         }}}
         detail = KP.estimate_transaction_cost({"ticker": "A", "region": "US"}, cfg)
-        expected = 0.30 * (4 * 2 + 8 * 2 + 2) / 10_000 * 2
+        expected = 0.30 * (4 * 2 + 8 + 2) / 10_000 * 2
         assert detail["estimatedCost"] == expected
         assert detail["assumedTurnoverPct"] == 30
         assert detail["rebalanceDays"] == 63

@@ -75,7 +75,9 @@ def _round_trip_cost(region: str, cost_policy: dict | None) -> float:
     commission = float(policy.get("commissionBps", 5.0))
     spread = float(policy.get("spreadBps", 12.0))
     sell_tax = float(policy.get("sellTaxBps", 20.0 if region == "KR" else 3.0))
-    return (commission * 2.0 + spread * 2.0 + sell_tax) / 10_000.0
+    # ``spreadBps`` is a full spread: half is crossed on entry and half on
+    # exit.  Keep single-name outcome costs identical to the portfolio path.
+    return (commission * 2.0 + spread + sell_tax) / 10_000.0
 
 
 def benchmark_session_preflight(prices: dict[str, pd.DataFrame],

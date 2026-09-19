@@ -393,8 +393,12 @@ def estimate_transaction_cost(candidate: dict, cfg: dict) -> dict:
     rebalance_days = max(1, int(regional.get("rebalanceDays", 63)))
     horizon = max(1, int(cfg.get("horizonDays", 126)))
     cycles = max(1.0, horizon / rebalance_days)
-    # Commission and spread are paid on entry and exit; sell tax once.
-    round_trip_bps = commission * 2.0 + spread * 2.0 + sell_tax
+    # ``spreadBps`` is the FULL quoted/effective spread.  A marketable buy
+    # crosses half of it and the later sell crosses the other half, so one
+    # round trip pays ONE spread, not two.  The realised path calculator has
+    # always used this convention (spread / 2 on each leg); using two spreads
+    # here made the ranking hurdle inconsistent with the return being graded.
+    round_trip_bps = commission * 2.0 + spread + sell_tax
     cost = turnover * round_trip_bps / 10_000.0 * cycles
     return {
         "estimatedCost": cost, "estimatedCostPct": round(cost * 100, 3),
