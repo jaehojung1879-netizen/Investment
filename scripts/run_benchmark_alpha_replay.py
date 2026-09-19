@@ -156,8 +156,36 @@ def markdown(report: dict) -> str:
               "require converting the whole sleeve; cross-region FX implementation should be evaluated separately.", "",
               "US Section 31 fees vary over time; the base case uses a conservative 0.30bp sell levy. "
               "KR statutory sell tax is applied by historical effective-date schedule. Commissions/spreads are "
-              "explicit research assumptions, not a claim about every broker.", ""]
+              "explicit research assumptions, not a claim about every broker.", "",
+              "## Decision", ""]
+    finding = report["finding"]
+    lines += [
+        f"**{finding['verdict']}** — {finding['summary']}", "",
+        finding["nextDirection"], "",
+        "This is a historical design diagnostic, not evidence to promote a selector. "
+        "The next rule must be frozen before prospective shadow observations arrive.", ""]
     return "\n".join(lines)
+
+
+def _compact_decisions(decisions: list[dict]) -> list[dict]:
+    """Keep quarterly auditability without publishing repeated monthly bulk."""
+    fields = ("ticker", "region", "sector", "score", "alphaPercentile",
+              "expectedGrossBenchmarkExcessPct", "estimatedRoundTripCostPct",
+              "expectedNetBenchmarkExcessPct", "incumbent", "retentionCreditPct",
+              "eligible", "exclusionCodes")
+    compact = []
+    for decision in decisions:
+        if not decision["rebalanceDecision"]:
+            continue
+        compact.append({
+            "date": decision["date"], "signalDate": decision["signalDate"],
+            "selectedTickers": decision["selectedTickers"],
+            "weights": decision["weights"],
+            "topScores": [{key: row.get(key) for key in fields}
+                          for row in decision["topScores"][:8]],
+            "valuationStatus": decision["valuationStatus"],
+        })
+    return compact
 
 
 def main(argv=None) -> int:
@@ -210,6 +238,7 @@ def main(argv=None) -> int:
         "New minus Existing calibrated challenger": RVL.paired_bootstrap(
             new["rows"], old_challenger_rows, research_cfg),
     }
+    old_gross_gap = old["grossCagrPct"] - old["benchmarkCagrPct"]
     report = {
         "version": BA.VERSION, "status": "CHALLENGER",
         "freezeManifest": BA.freeze_manifest(),
@@ -229,7 +258,23 @@ def main(argv=None) -> int:
                 d["rebalanceDecision"] and not d["selectedTickers"] for d in new["decisions"]),
             "averageCashPct": fresh.get("averageCashPct"),
         },
-        "decisionAudit": new["decisions"],
+        "decisionAudit": _compact_decisions(new["decisions"]),
+        "finding": {
+            "verdict": "BENCHMARK_NOT_BEATEN",
+            "summary": (
+                "Realistic costs improve every active path, but no tested selector has positive "
+                "net annualized excess. The quarterly integrated rule reduces implementation drag "
+                "but gives up too much gross selection return."),
+            "existingChallengerGrossBenchmarkGapPp": old_gross_gap,
+            "existingChallengerNetBenchmarkGapPp": old["annualizedExcessPct"],
+            "newChallengerGrossBenchmarkGapPp": fresh["grossCagrPct"] - fresh["benchmarkCagrPct"],
+            "newChallengerNetBenchmarkGapPp": fresh["annualizedExcessPct"],
+            "nextDirection": (
+                "The evidence points to retaining the existing calibrated benchmark-relative signal "
+                "and adding a pre-frozen incumbent replacement hurdle/hysteresis, rather than a blunt "
+                "quarterly freeze or another factor search. This is a prospective challenger proposal, "
+                "not a winner selected from this history."),
+        },
         "sealedInvariant": {"before": before, "after": _digest_tree(ledger)},
         "productionChanged": False,
     }

@@ -4,6 +4,7 @@ import pytest
 
 from pipeline import benchmark_alpha as BA
 from pipeline import portfolio_validation as PV
+from scripts import run_benchmark_alpha_replay as RUN
 
 
 class _Calibration:
@@ -101,3 +102,37 @@ def test_freeze_manifest_never_promotes_the_challenger():
     assert manifest["promotionEligible"] is False
     assert manifest["liveValidated"] is False
 
+
+def test_report_summary_keeps_cost_and_turnover_diagnostics():
+    summary = RUN._summary_fields({
+        "cagrPct": 8.0,
+        "benchmarkCagrPct": 9.5,
+        "grossCagrPct": 9.0,
+        "costDragCagrPp": 1.0,
+        "annualOneWayTurnoverX": 2.5,
+        "mddPct": -20.0,
+    })
+    assert summary["grossBenchmarkGapPp"] == pytest.approx(-0.5)
+    assert summary["annualOneWayTurnoverX"] == pytest.approx(2.5)
+    assert summary["calmar"] == pytest.approx(0.4)
+
+
+def test_decision_audit_is_quarterly_and_retains_cost_evidence():
+    decisions = [
+        {"date": "2024-01-02", "signalDate": "2024-01-02",
+         "rebalanceDecision": True, "selectedTickers": ["A"],
+         "weights": {"A": 0.4}, "valuationStatus": "COMPLETE",
+         "topScores": [{"ticker": "A", "region": "US", "sector": "Tech",
+                         "score": 1.0, "estimatedRoundTripCostPct": 0.163,
+                         "expectedNetBenchmarkExcessPct": 1.2,
+                         "irrelevantBulkField": "drop"}]},
+        {"date": "2024-02-01", "signalDate": "2024-02-01",
+         "rebalanceDecision": False, "selectedTickers": ["A"],
+         "weights": {"A": 0.39}, "valuationStatus": "COMPLETE",
+         "topScores": []},
+    ]
+    audit = RUN._compact_decisions(decisions)
+    assert len(audit) == 1
+    assert audit[0]["date"] == "2024-01-02"
+    assert audit[0]["topScores"][0]["estimatedRoundTripCostPct"] == pytest.approx(0.163)
+    assert "irrelevantBulkField" not in audit[0]["topScores"][0]
