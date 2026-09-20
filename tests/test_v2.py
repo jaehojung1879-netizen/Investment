@@ -533,6 +533,36 @@ def test_market_breadth_is_measured_over_measurable_names_only():
     # Two of two measurable names are above; the unmeasurable one is excluded
     # rather than counted as bearish (which would give 66.7%).
     assert blob["breadth200"] == 100.0
+    # And the artifact says what that 100% was measured on. 100% over two names
+    # and 100% over five hundred are not the same reading.
+    assert blob["breadth200MeasuredNames"] == 2
+    assert blob["universeNames"] == 3
+    assert "산출 2/3종목" in blob["components"][0][2]
+
+
+def test_an_unmeasurable_breadth_is_not_published_as_maximum_fear():
+    """Exclusion taken to its limit: no measurable name is not 0% breadth.
+
+    200-day breadth carries 0.4 of this score and 50-day another 0.1, so
+    returning 0.0 for an empty measured set drove the index 25 points toward
+    fear plus 8 more for an absent momentum median — a "극도의 공포" reading
+    built from a cross-section that stated nothing. The component is dropped
+    instead, and which ones were dropped is published.
+    """
+    from pipeline import sentiment as S
+    rows = [{"aboveMA200": None, "aboveMA50": None, "regime": "Transition", "mom63": None}
+            for _ in range(3)]
+    blob = S._region("US", rows, None, None)
+
+    assert blob["breadth200"] is None
+    assert blob["breadth200MeasuredNames"] == 0
+    assert blob["unmeasuredComponents"] == ["breadth200", "breadth50", "medianMomentum63"]
+    # Only the one thing that WAS measured moves the score: nothing is Bull, so
+    # 0% bull weighs -5. Everything else abstains.
+    assert blob["score"] == 45
+    assert blob["fearGreed"] == "중립"
+    # No component may show a number it never computed.
+    assert [row[1] for row in blob["components"]] == ["—", "—", "0%", "—"]
 def test_a_held_name_on_warning_is_stated_beside_the_weights():
     """It was only visible in the radar panel, a section away from the book.
 

@@ -55,8 +55,7 @@ sys.path.insert(0, str(ROOT))
 # One definition of "was this served", shared with the egress probe. Two
 # copies of that judgement is how two probes end up disagreeing about the
 # same response.
-from pipeline.sec_access import (  # noqa: E402
-    BLOCK_MARKERS, classify, decode_body)
+from pipeline.sec_access import classify, decode_body  # noqa: E402
 
 # Same address the repo already uses. A probe does not invent a contact.
 DEFAULT_CONTACT = "jaehojung1879-netizen@users.noreply.github.com"

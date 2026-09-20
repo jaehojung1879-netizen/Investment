@@ -6,8 +6,43 @@
 - Do not claim point-in-time behavior unless release visibility and vintage limitations are verified and documented.
 - `liveValidated` is forbidden until real ledger requirements are met; builds never auto-promote it.
 - Keep generated `data/site-data.json` separate from explicit synthetic fixtures.
-- After changes run `python -m compileall pipeline`, `pytest -q`, seed generation, and artifact validation.
+- After changes run `ruff check .`, `python -m compileall pipeline`, `pytest -q`, seed
+  generation, and artifact validation.
 - Never merge directly to `main`.
+
+## Measurement-absence invariants (v2.11)
+
+- A statistic with nothing measurable behind it is `None`, never its most extreme
+  value. Excluding unmeasurable names from a ratio and then returning `0.0` when the
+  measurable set is EMPTY is the same defect the exclusion exists to prevent, wearing
+  the strongest reading the scale allows: `sentiment` published 0% 200-day breadth for
+  a cross-section that stated nothing, and that component carries 0.4 of the fear/greed
+  index, so a silent universe read as 극도의 공포. An unmeasured component abstains
+  from the score; a component that is measured but wrong is a different bug with a
+  different fix, and collapsing them costs the ability to tell which one happened.
+- A share is published with what it was measured ON. 100% breadth over two names and
+  over five hundred are not the same reading and an artifact carrying only the ratio
+  cannot tell them apart. The denominator and the universe size travel with it.
+- A classification that has a verdict for the unresolvable case is not a missing
+  measurement. `risk.diagnose` answers "Transition" for a name whose 200-day mean does
+  not exist yet, so `bull_pct` has no absence to handle — only the statistics that
+  return `None` get an abstention branch, and inventing one for the others would hide
+  a real reading.
+
+## Lint gate invariants (v2.11)
+
+- The enabled rule set reports ZERO findings on `main`. A rule is turned on in the
+  same change that fixes its existing instances; a gate with a standing backlog is a
+  warning nobody reads and then a gate somebody switches off.
+- The set is defect-finding, not style-enforcing. The first full run over this
+  repository reported 455 findings, and almost all of them were opinions this code
+  deliberately disagrees with. `ruff.toml` argues each rule that is on; a rule that
+  needs arguing with on every pull request does not belong there.
+- Lint runs BEFORE the suite in `Tests`, because it catches a class the suite
+  structurally cannot: a name no test reaches, an import two modules disagree about, a
+  value computed and then dropped. Both of the defects the first run found —
+  `sentiment`'s discarded coverage count and two whole-ledger index passes in
+  `portfolio_replay` that nothing read — were invisible to 1,345 passing tests.
 
 ## Historical replay invariants (v2.6)
 

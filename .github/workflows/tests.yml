@@ -33,7 +33,15 @@ jobs:
           cache: pip
 
       - name: Install dependencies
-        run: pip install -r requirements.txt
+        run: pip install -r requirements.txt -r requirements-dev.txt
+
+      # Cheapest first, and it catches a class the suite structurally cannot:
+      # a name the tests never reach, an import two modules disagree about, a
+      # value computed and then dropped. `ruff.toml` argues the rule set; it is
+      # narrow on purpose and reports zero findings today, so any output here
+      # is a regression rather than a backlog.
+      - name: Lint
+        run: ruff check --output-format=github .
 
       - name: Run the suite
         run: python -m pytest -q

@@ -166,7 +166,6 @@ def test_empty_body_is_unknown_not_crashed_on():
 # The judgement — A/B/C exactly as the task defines them
 # --------------------------------------------------------------------------- #
 def _bulk(no_ua_kind, fair_kind, fallback_kind=None):
-    row = {"bodyKind": no_ua_kind}
     return {
         "requestNoUserAgent": {"bodyKind": no_ua_kind},
         "requestFairAccessUserAgent": {"bodyKind": fair_kind},

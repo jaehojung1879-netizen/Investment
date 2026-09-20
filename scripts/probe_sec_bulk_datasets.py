@@ -377,7 +377,7 @@ def main(argv=None) -> int:
     fallback = args.fallback_quarter.strip() or None
 
     print(f"Fair-access User-Agent: {FAIR_ACCESS_USER_AGENT}")
-    print(f"Runner egress IP: ", end="", flush=True)
+    print("Runner egress IP: ", end="", flush=True)
     ip = egress_ip()
     print(ip or "(could not determine)")
     print()

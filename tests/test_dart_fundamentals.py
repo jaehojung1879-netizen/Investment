@@ -8,7 +8,6 @@ rather than an overwrite of what was actually visible at the time.
 """
 from __future__ import annotations
 
-import pytest
 
 from pipeline import dart_fundamentals as DF
 

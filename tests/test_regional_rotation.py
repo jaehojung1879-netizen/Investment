@@ -75,6 +75,49 @@ def test_softmax_weights_handles_negative_and_zero_scores_without_error():
     assert weights["US"] + weights["KR"] == pytest.approx(1.0)
 
 
+def test_softmax_weights_holds_the_floor_for_a_region_pushed_under_it_by_the_refill():
+    """The share a region RECEIVES is what has to clear the floor, not its raw
+    softmax share — and pinning another region is what moves the two apart.
+
+    Raw shares here are about (0.01, 0.31, 0.68). Pinning the 0.01 region at
+    0.30 spends more than its raw share, so the survivors are scaled down and
+    the 0.31 region — comfortably above the floor before the pass — receives
+    0.70 x 0.31/0.99 = 0.219. A loop that re-reads the raw share cannot see
+    that, because the raw share never changes.
+    """
+    weights = RR.softmax_weights({"A": -0.211, "B": -0.0393, "C": 0.0},
+                                 temperature=0.05, floor=0.30)
+    assert min(weights.values()) >= 0.30 - 1e-12
+    assert sum(weights.values()) == pytest.approx(1.0)
+    assert weights["C"] > weights["B"]  # ordering survives the water-fill
+
+
+@pytest.mark.parametrize("seed", range(25))
+def test_softmax_weights_holds_the_floor_on_any_score_vector(seed):
+    rng = np.random.default_rng(seed)
+    count = int(rng.integers(2, 6))
+    floor = float(rng.uniform(0.0, 1.0 / count))
+    scores = {f"R{i}": float(rng.uniform(-1.0, 1.0)) for i in range(count)}
+    weights = RR.softmax_weights(scores, temperature=0.05, floor=floor)
+    assert sum(weights.values()) == pytest.approx(1.0)
+    assert min(weights.values()) >= floor - 1e-12
+
+
+def test_softmax_weights_two_region_split_is_exactly_the_frozen_v1_assignment():
+    """`regional-rotation-v1` freezes two regions and nothing else, so the
+    water-fill must be a no-op there: with one region pinned the other takes
+    exactly `1 - floor`, and with neither pinned the raw softmax shares stand
+    unchanged. A floor fix that moved these would be a model change.
+    """
+    pinned = RR.softmax_weights({"US": 1000.0, "KR": -1000.0},
+                                temperature=RR.DEFAULT_TEMPERATURE, floor=RR.DEFAULT_FLOOR)
+    assert pinned["KR"] == RR.DEFAULT_FLOOR
+    assert pinned["US"] == 1.0 - RR.DEFAULT_FLOOR
+    scores = {"US": 0.08, "KR": 0.02}
+    assert (RR.softmax_weights(scores, temperature=0.05, floor=RR.DEFAULT_FLOOR)
+            == RR.softmax_weights(scores, temperature=0.05, floor=0.0))
+
+
 def test_softmax_weights_refuses_an_unreachable_floor():
     with pytest.raises(ValueError):
         RR.softmax_weights({"A": 0.0, "B": 0.0, "C": 0.0}, floor=0.4)

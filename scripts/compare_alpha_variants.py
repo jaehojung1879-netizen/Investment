@@ -59,7 +59,6 @@ from collections import defaultdict
 from contextlib import contextmanager
 from pathlib import Path
 
-import numpy as np
 import pandas as pd
 from scipy.stats import norm
 

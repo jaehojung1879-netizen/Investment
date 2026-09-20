@@ -11,7 +11,6 @@ Run: python3 scripts/make_seed.py
 """
 from __future__ import annotations
 
-import json
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
