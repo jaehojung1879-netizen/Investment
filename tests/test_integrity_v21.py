@@ -419,7 +419,35 @@ def test_replay_schedule_reproduces_frozen_inputs_instead_of_refreshing_vendor_p
     extend = extend[:extend.index("- name: Preserve benchmark snapshots")]
     assert '[ "${{ github.event_name }}" = "schedule" ]' in extend
     assert 'FROZEN_ARG="--frozen-inputs"' in extend
-    assert "github.event_name != 'schedule' && inputs.frozen_inputs != true" in replay
+    live_gate = (
+        "github.event_name != 'schedule' && inputs.frozen_inputs != true "
+        "&& inputs.confirm_new_generation == true"
+    )
+    assert replay.count(live_gate) == 2
+
+
+def test_replay_manual_dispatch_is_frozen_and_safe_by_default():
+    replay = (ROOT / ".github" / "workflows" / "replay.yml").read_text(encoding="utf-8")
+    inputs = replay[replay.index("  workflow_dispatch:"):replay.index("\npermissions:")]
+
+    frozen = inputs[inputs.index("      frozen_inputs:"):]
+    frozen = frozen[:frozen.index("      confirm_new_generation:")]
+    assert "default: true" in frozen
+
+    confirmation = inputs[inputs.index("      confirm_new_generation:"):]
+    confirmation = confirmation[:confirmation.index("      retrain:")]
+    assert "default: false" in confirmation
+
+
+def test_replay_live_inputs_require_explicit_full_new_generation_confirmation():
+    replay = (ROOT / ".github" / "workflows" / "replay.yml").read_text(encoding="utf-8")
+    gate = replay[replay.index("- name: Validate manual replay mode"):]
+    gate = gate[:gate.index("- name: Set up Python")]
+
+    assert 'if [ "$frozen" != "true" ] && [ "$confirmed" != "true" ]' in gate
+    assert 'if [ "$confirmed" = "true" ] && [ "$full" != "true" ]' in gate
+    assert 'if [ "$frozen" = "true" ] && [ "$confirmed" = "true" ]' in gate
+    assert gate.count("exit 1") == 3
 
 
 def test_synthetic_fixture_is_explicit_and_generated_artifact_is_ignored():
