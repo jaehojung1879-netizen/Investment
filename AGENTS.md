@@ -29,6 +29,47 @@
   return `None` get an abstention branch, and inventing one for the others would hide
   a real reading.
 
+## Selection-value invariants (v2.11)
+
+- A CAGR gap is not a selection edge until it has been SPLIT. Geometric =
+  arithmetic + compounding, and a book less volatile than its matched benchmark
+  earns the second term without picking a single better name. The calibrated
+  challenger's headline +0.340pp/yr is +0.040pp of arithmetic stock selection
+  and +0.300pp of compounding at 0.83x the benchmark's block volatility — 88% of
+  the only positive number in the benchmark-alpha report is a low-volatility
+  tilt. `selection_value.decompose_edge` reports both terms or neither.
+- Turnover is reported as names REPLACED and weights RETARGETED separately,
+  because the remedies are opposite: carrying a drifted book removes the second
+  at zero change in what is held, while the first means holding different names.
+  Both published books are 92-93% name replacement, so a no-retarget band was
+  never going to be the lever.
+- A permutation null belongs to ONE selector and says which. It permutes one
+  ranking, so BEATS_RANDOM is a statement about that ranking and no other. The
+  report published a single unlabelled null built from the champion's conviction
+  score while a promotion would move the CHALLENGER — whose arithmetic selection
+  edge is +0.040pp/yr against the champion's -1.589pp. `selection_null` stamps
+  `selector` on every return including the unavailable ones, `promotionEvidence`
+  names `promotedSelector`, and the validator refuses a mismatch or a blank.
+- Beating the null and beating the benchmark are DIFFERENT BARS and are never
+  reported as one. Choosing is worth about +2.9pp/yr against a permuted ranking
+  on replay-v16 and the book still trails its matched benchmark by 1.378pp: the
+  null says the ordering carries information, the benchmark says the
+  construction does not yet pay for itself.
+- An ablation ladder is specified BEFORE its result and each rung moves exactly
+  one thing. `benchmark-relative-alpha-v1` moved cadence, a cash gate and the
+  weighting rule together, and its 1.4pp gross loss could not be attributed to
+  any of them. A rung is a fixed point on a design axis, never a tuned variant,
+  and the neutral setting is the ABSENCE of a component rather than a fitted
+  value for it.
+- A hypothesis refuted by its own pre-specified test is REPORTED and the
+  reasoning that produced it is left standing next to the refutation. "The
+  ranking is not worth its bill, so hold what the screen approved" lost to the
+  concentrated book by 1.683pp/yr and the arithmetic edge rose monotonically
+  with how much of the ranking was used. Re-specifying the ladder until the
+  hypothesis survives is the failure this repository's discipline exists to
+  prevent; deleting the module afterwards loses the instrument that produced
+  the answer.
+
 ## Lint gate invariants (v2.11)
 
 - The enabled rule set reports ZERO findings on `main`. A rule is turned on in the

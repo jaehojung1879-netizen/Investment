@@ -147,6 +147,18 @@ def _validate_evidence_separation(data: dict) -> list[str]:
         null_verdict = (null_report.get("overall") or {}).get("verdict")
         if promotion.get("promotionEligible") and null_verdict != "BEATS_RANDOM":
             errors.append("selector_promotion_without_selection_null_support")
+        # A null permutes ONE ranking, so BEATS_RANDOM is a statement about that
+        # ranking and no other. The report used to publish a single unlabelled
+        # null computed from the champion's conviction scores, so a challenger
+        # promotion would have been waved through on evidence about the selector
+        # it was replacing — and the two do not rank alike (champion arithmetic
+        # selection edge -1.589pp/yr against the challenger's +0.040pp on
+        # replay-v16). The verdict now has to be about the selector being
+        # promoted, and an unlabelled null cannot satisfy it.
+        if promotion.get("promotionEligible"):
+            promoted = promotion.get("promotedSelector")
+            if not promoted or null_report.get("selector") != promoted:
+                errors.append("selection_null_describes_a_different_selector")
         # A published path must not be built from whichever portfolios happened
         # to be measurable: the dropped ones are disproportionately halted names.
         for selector, blob in (replay.get("selectors") or {}).items():

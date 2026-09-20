@@ -1237,18 +1237,80 @@ def survivorship_bound(rows_by_method: dict[str, list[dict]], dates: list[str],
     }
 
 
+def priced_cross_section(contexts: dict, by_date: dict, schedule: list[dict],
+                         shared, valuation) -> tuple[dict, dict, list[dict]]:
+    """Every name's realised outcome on each shared block, at the headline horizon.
+
+    A randomly drawn book — or any research book built on these same blocks —
+    has to be priced on exactly the returns the real one was priced on, or the
+    comparison measures the pricing and not the choosing. This is the one place
+    that cross-section is assembled, so a research runner that needs it imports
+    it instead of rebuilding a second definition beside the production one.
+
+    The cross-section is the FULL signal set for the date, not the alpha-filtered
+    research pool: the regional tail used by `survivorship_bound` needs names the
+    pool excluded, and a null that could only price pool members could not price
+    a draw that reaches outside it.
+    """
+    priced_by_date: dict[str, dict] = defaultdict(dict)
+    fixed_contexts: dict[str, tuple] = {}
+    fixed_outcomes: list[dict] = []
+    if valuation is None:
+        return fixed_contexts, priced_by_date, fixed_outcomes
+    keep = set(shared)
+    for block in schedule:
+        context = contexts.get(block["signalDate"])
+        if context is None or block["date"] not in keep:
+            continue
+        fixed_contexts[block["date"]] = context
+        for signal in by_date.get(block["signalDate"], []):
+            ticker, region = signal["ticker"], signal["region"]
+            single = {"weights": {ticker: 1.0}, "regionByTicker": {ticker: region}}
+            row, _ = valuation.window(single, block)
+            if row is None:
+                continue
+            cell = {"absoluteReturn": row["grossReturn"], "benchmarkReturn": row["benchmarkReturn"],
+                    "excessReturn": row["grossExcessReturn"], "endDate": block["endDate"],
+                    "riskFreeReturn": row["riskFreeReturn"]}
+            priced_by_date[block["date"]][ticker] = cell
+            fixed_outcomes.append({"date": block["date"], "id": block["date"] + "|" + ticker,
+                                   "ticker": ticker, "region": region,
+                                   "horizons": {str(HEADLINE_HORIZON): cell}})
+    return fixed_contexts, priced_by_date, fixed_outcomes
+
+
 def selection_null(contexts: dict, priced_by_date: dict, rows: list[dict],
                    dates: list[str], *, cfg_pf: dict, horizon: int, draws: int,
-                   seed: int = 20260825) -> dict:
+                   seed: int = 20260825, selector: str = CHAMPION,
+                   score_fn=None) -> dict:
     """Run the same construction with the conviction scores permuted across names.
 
     Reuses ``KP.selection_and_baseline`` exactly as the live path does, so the
     only difference between the real book and a draw is which name carries which
     score. Each draw walks the same block schedule in order, so its turnover —
     and therefore its cost — is built the same way the real path's is.
+
+    A NULL BELONGS TO ONE SELECTOR AND SAYS SO. It permutes one particular
+    ranking, so its verdict is about that ranking and no other — and the two
+    selectors in this report do not rank alike: on the sealed replay-v16 blocks
+    the champion's arithmetic selection edge is -1.589pp/yr against the
+    challenger's +0.040pp. The result used to carry no selector at all, so a
+    reader could not tell whose ranking had been tested and the promotion gate
+    in `pipeline.validate` was reading the champion's verdict whatever selector
+    a promotion concerned. `selector` names the ranking, travels on every
+    return including the unavailable ones, and is what the gate matches
+    against `promotionEvidence.promotedSelector`.
+
+    `score_fn(candidates, date)` supplies that ranking and defaults to the
+    production conviction score, which is the champion's. A challenger whose
+    score depends on an expanding calibration passes its own function so the
+    scores stay maturity-safe per date.
     """
+    stamp = {"selector": selector,
+             "scoreSource": ("PRODUCTION_CONVICTION_SCORE" if score_fn is None
+                             else "INJECTED_SELECTOR_SCORE")}
     if not dates:
-        return {"available": False, "reason": "no_shared_blocks"}
+        return {**stamp, "available": False, "reason": "no_shared_blocks"}
     # A block date is usable only when EVERY name in that date's pool has a
     # matured outcome. Otherwise a draw that happens to pick the one unpriced
     # name dies, and with ~150 dates per draw even a 1% per-date failure rate
@@ -1266,22 +1328,24 @@ def selection_null(contexts: dict, priced_by_date: dict, rows: list[dict],
         else:
             pool_gaps += 1
     if len(usable) != len(dates):
-        return {"available":False, "reason":"incomplete_fixed_null_pool", "blocksDroppedForPoolCoverage":pool_gaps}
+        return {**stamp, "available": False, "reason": "incomplete_fixed_null_pool",
+                "blocksDroppedForPoolCoverage": pool_gaps}
     if len(usable) < 2:
-        return {"available": False, "reason": "no_fully_priced_block_dates",
+        return {**stamp, "available": False, "reason": "no_fully_priced_block_dates",
                 "blocksDroppedForPoolCoverage": pool_gaps}
     outcome_lookup = {row["date"]: row for row in rows}
     missing = [date for date in usable if date not in outcome_lookup]
     if missing:
-        return {"available": False, "reason": "actual_path_not_measurable_on_blocks"}
+        return {**stamp, "available": False,
+                "reason": "actual_path_not_measurable_on_blocks"}
 
     years = RV.span_years(usable[0], outcome_lookup[usable[-1]]["endDate"])
     periods = len(usable) / years if years > 0 else 0
     risk_free = np.array([outcome_lookup[d].get("riskFreeReturn", np.nan) for d in usable])
     # The real conviction rows per date, computed once. Each draw reassigns these
     # scores, so every draw faces the same eligibility facts the real book did.
-    base_scores = {date: KP.conviction_scores(contexts[date][0], cfg_pf)
-                   for date in usable}
+    scorer = score_fn or (lambda candidates, date: KP.conviction_scores(candidates, cfg_pf))
+    base_scores = {date: scorer(contexts[date][0], date) for date in usable}
 
     def run_mode(mode: str) -> tuple[list[dict], dict]:
         samples: list[dict] = []
@@ -1355,6 +1419,7 @@ def selection_null(contexts: dict, priced_by_date: dict, rows: list[dict],
         }
 
     return {
+        **stamp,
         "available": True,
         "method": SN.NULL_METHOD,
         "metricBasis":"FIXED_BLOCK_RETURNS_CALENDAR_SPAN_WITH_KRW_RISK_FREE",
@@ -1710,29 +1775,8 @@ def portfolio_replay(signals: list[dict], outcomes: list[dict], *, cfg_lt: dict,
         sector_differences.append(_allocation_l1(
             _decision_exposure(champion_day, "sector"),
             _decision_exposure(challenger_day, "sector")) / 2)
-    # Every name's realised outcome at the headline horizon, so a randomly drawn
-    # book can be priced on exactly the returns the real one was priced on.
-    priced_by_date: dict[str, dict] = defaultdict(dict)
-    fixed_contexts, fixed_outcomes = {}, []
-    if valuation is not None:
-        for block in shared_schedule:
-            context = contexts.get(block["signalDate"])
-            if context is None or block["date"] not in shared:
-                continue
-            fixed_contexts[block["date"]] = context
-            # Regional tail is the full signal cross-section, not the alpha-filtered pool.
-            for signal in by_date.get(block["signalDate"], []):
-                ticker, region = signal["ticker"], signal["region"]
-                single = {"weights":{ticker:1.0}, "regionByTicker":{ticker:region}}
-                row, _ = valuation.window(single, block)
-                if row is None:
-                    continue
-                cell = {"absoluteReturn":row["grossReturn"], "benchmarkReturn":row["benchmarkReturn"],
-                        "excessReturn":row["grossExcessReturn"], "endDate":block["endDate"],
-                        "riskFreeReturn":row["riskFreeReturn"]}
-                priced_by_date[block["date"]][ticker] = cell
-                fixed_outcomes.append({"date":block["date"], "id":block["date"]+"|"+ticker,
-                                       "ticker":ticker, "region":region, "horizons":{"21":cell}})
+    fixed_contexts, priced_by_date, fixed_outcomes = priced_cross_section(
+        contexts, by_date, shared_schedule, shared, valuation)
 
     headline_rows = {method: rows_by_method_horizon[HEADLINE_HORIZON].get(method) or []
                      for method in decisions}
@@ -1745,10 +1789,13 @@ def portfolio_replay(signals: list[dict], outcomes: list[dict], *, cfg_lt: dict,
         headline_rows, shared, fixed_outcomes, diagnostics,
         horizon=HEADLINE_HORIZON,
         quantile=float(cfg_pf.get("survivorshipBoundQuantile", 0.05)))
+    # Stamped with the selector whose ranking was permuted. A promotion moves
+    # the CHALLENGER into production, so this champion null cannot support one;
+    # `pipeline.validate` enforces that rather than leaving it to a reader.
     null_report = selection_null(
         fixed_contexts, priced_by_date,
         rows_by_method_horizon[HEADLINE_HORIZON].get(CHAMPION) or [], shared,
-        cfg_pf=cfg_pf, horizon=HEADLINE_HORIZON,
+        cfg_pf=cfg_pf, horizon=HEADLINE_HORIZON, selector=CHAMPION,
         draws=int(cfg_pf.get("selectionNullDraws", SN.DEFAULT_DRAWS)))
 
     integrity = data_integrity(diagnostics, signals)
@@ -1821,6 +1868,10 @@ def portfolio_replay(signals: list[dict], outcomes: list[dict], *, cfg_lt: dict,
                 and (challenger_summary.get("periods") or 0) >= 30),
             "promotionEligible": False,
             "humanApprovalRequired": True,
+            # Which selector a promotion would move into production. The
+            # selection null has to be about THIS ranking; naming it here is
+            # what lets the validator check that rather than assume it.
+            "promotedSelector": CHALLENGER,
         },
         # Keep the artifact compact. Per-date rows are useful for audit, not UI.
         "replayDateCount": len(decisions[CHAMPION]),
