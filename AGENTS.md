@@ -108,6 +108,44 @@
   several rungs across two studies, with no multiplicity correction — all of
   which is published with the number, and none of which makes it a promotion.
 
+## Signal-persistence invariants (v2.12)
+
+- WHEN A RULE WORKS FOR THE WRONG REASON, THE REASON IS THE NEXT STUDY. The
+  switch hurdle saved 0.270pp of cost drag and gained 2.157pp of arithmetic
+  stock selection; holding a name longer cannot make the name better, so the
+  finding was about the signal. Banking the headline and moving on would have
+  left the actual mechanism unmeasured.
+- A SMOOTHER LOOKS BACKWARD ONLY, over a name's OWN prior appearances, and never
+  invents the history it lacks. A name seen for the first time carries its raw
+  percentile, so every window agrees on it. Reaching forward would hand the
+  ranking information it did not have and would do it invisibly — the path would
+  simply look better.
+- Scoring and selection are handed the SAME number. Ranking on a smoothed
+  percentile while capping on the raw one ranks names by one quantity and
+  constrains them by another, and nothing in the output shows the disagreement.
+- An ADDED-versus-RETAINED comparison is paired WITHIN a rebalance. Both groups
+  were chosen by the same ranking on the same date under the same constraints,
+  so the within-date difference carries no market-timing term; pooled across
+  dates it would measure which months were kind. Measured: -1.331% per block,
+  95% CI [-3.029%, +0.174%], which CONTAINS zero on 131 paired rebalances.
+- THE AXIS IS MEASURED BEFORE THE LADDER IS READ. A name's alpha percentile
+  moves a mean of 1.146 points between consecutive blocks and is integer
+  rounded, so the axis being varied is narrow. That a one-point input change
+  produces a multi-point output change is the greedy-selection property the
+  determinism invariants already name — it makes the mechanism plausible AND
+  the estimate fragile, and both halves are published.
+- Two levers that move DIFFERENT quantities are reported as different findings.
+  Smoothing raises arithmetic stock selection from +0.315pp to +2.994pp at
+  essentially unchanged turnover (4.679x to 4.625x); the hurdle cut turnover to
+  3.567x holding the same kind of names longer. They stack because they are
+  orthogonal, and the stacked path moves TWO axes and is attributable to
+  neither, so it is reported outside the ladder.
+- A LADDER THAT DOES NOT SEPARATE SAYS SO IN ITS OWN VERDICT.
+  `separatedFromControl` is empty here: every point estimate moves one way, the
+  rungs are monotone in k, and no interval clears zero. Consistency across
+  angles is corroboration and is reported as corroboration — never as a
+  rejection of the null, and never as grounds to promote.
+
 ## Lint gate invariants (v2.11)
 
 - The enabled rule set reports ZERO findings on `main`. A rule is turned on in the
