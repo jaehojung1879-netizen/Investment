@@ -1,0 +1,43 @@
+# Lint configuration for the `Tests` workflow.
+#
+# WHY A NARROW RULE SET. Nothing static-checked this repository before, and the
+# first full run reported 455 findings — almost all of them style opinions this
+# code deliberately disagrees with: long explanatory lines, `sys.path` shims
+# that force imports below the top of a script, semicolon-packed fixture setup
+# in tests, `dict()` where a literal would do. A gate that has to be argued
+# with on every pull request gets switched off, so the enabled set is only
+# checks that find things that are WRONG rather than things that are unlike
+# someone's house style. Every rule below reports ZERO findings on this
+# commit, which is the bar for adding one: a rule is turned on together with
+# the change that fixes its existing instances, never left warning at people.
+#
+#   F     pyflakes — undefined names, unused imports, a value computed and
+#         then dropped, an import shadowed by a later one. The first run found
+#         `sentiment.breadthMeasured200` (a measurement-coverage figure
+#         computed and never published, so a breadth over two names and a
+#         breadth over five hundred read identically) and two whole-ledger
+#         index passes in `portfolio_validation.portfolio_replay` that nothing
+#         read.
+#   E9    syntax and IO errors the parser itself refuses.
+#   E711/E712/E713/E714  `== None`, `== True`, `not x in y`, `not x is y`.
+#         `is`/`is not` and `not in` are what these mean; the comparison forms
+#         are wrong on anything that overloads `__eq__`, which includes every
+#         pandas object this pipeline passes around.
+#   E721  `type(x) == type(y)` instead of `isinstance`.
+#   E722  a bare `except:`, which swallows KeyboardInterrupt and SystemExit —
+#         in a workflow that budgets API calls against a wall clock, that is
+#         the difference between a run that stops and a run that cannot be.
+#   B002/B012/B017  `++x`, `break`/`return` inside `finally` (it discards the
+#         exception), and `assert ... raises Exception` (which passes on a
+#         typo in the code under test).
+#   B006  a mutable default argument, shared across every call.
+#   B904  `raise` inside `except` without `from`, which loses the original
+#         traceback — the vendor-refusal probes exist to report exactly the
+#         cause that would be thrown away.
+line-length = 120
+target-version = "py311"
+extend-exclude = ["ledger", "ledger-work", "state-work"]
+
+[lint]
+select = ["F", "E9", "E711", "E712", "E713", "E714", "E721", "E722",
+          "B002", "B006", "B012", "B017", "B904"]

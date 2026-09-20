@@ -1,4 +1,4 @@
-"""Turning a rank into a number: alpha percentile -> expected excess return.
+r"""Turning a rank into a number: alpha percentile -> expected excess return.
 
 ``alpha``, ``rawAlpha`` and ``alphaPercentile`` are cross-sectional *ranks*. They
 have never been expected returns and this module does not change that. What it

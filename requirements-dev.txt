@@ -1,0 +1,6 @@
+# Checks, not runtime. Kept out of requirements.txt so the scheduled replay,
+# ledger, fundamentals and Pages jobs do not install a linter they never run.
+# Pinned for the same reason every other dependency here is: a lint gate whose
+# rule set moves under the repository stops being a gate and starts being
+# weather.
+ruff==0.15.8

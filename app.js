@@ -2,7 +2,14 @@
 const $ = (s) => document.querySelector(s);
 const fmt = (v, suf = '', d) => (v === null || v === undefined || Number.isNaN(v)) ? '—' : `${typeof v === 'number' && d !== undefined ? v.toFixed(d) : v}${suf}`;
 const sp = (v) => (v === null || v === undefined || Number.isNaN(v)) ? '—' : `${v >= 0 ? '+' : ''}${v}%`;
-const pct0 = (v) => fmt((v ?? 0) * 100, '%', 0);
+// `?? 0` would render a name the model never scored as "0%" — the lowest
+// score on the scale, stated as confidently as a measured one, in the one
+// column the screener is read as a ranking by. `build.py` sets `modelScore`
+// to null whenever the ticker has no trained signal and `probUp` to null
+// beside it, so this is the ordinary case for a newly listed name, not a
+// defensive branch. An absent score renders as an em dash like every other
+// absent number on the page.
+const pct0 = (v) => (v === null || v === undefined) ? '—' : fmt(v * 100, '%', 0);
 const regCls = (r) => r === 'Bull' ? 'bull' : r === 'Bear' ? 'bear' : 'trans';
 const regKo = (r) => r === 'Bull' ? '상승' : r === 'Bear' ? '하락' : '전환';
 const mean = (a) => a.length ? a.reduce((x, y) => x + y, 0) / a.length : null;

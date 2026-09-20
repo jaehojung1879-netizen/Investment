@@ -14,7 +14,6 @@ from __future__ import annotations
 import sys
 from pathlib import Path
 
-import pytest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from scripts.run_replay import former_member_recovery  # noqa: E402

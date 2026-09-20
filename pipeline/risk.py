@@ -5,7 +5,6 @@ a name is risky, alongside the model's probability.
 """
 from __future__ import annotations
 
-import numpy as np
 import pandas as pd
 
 

@@ -32,6 +32,23 @@ def test_technical_statuses_are_mapped_to_korean_user_labels():
     assert "기술 상태" in APP
 
 
+def test_an_absent_model_score_renders_as_an_em_dash_not_as_zero():
+    """`?? 0` made "never scored" indistinguishable from "scored lowest".
+
+    `build.py` sets `modelScore` to null whenever a ticker has no trained
+    signal and `probUp` to null beside it, so `pct0(d.modelScore ?? d.probUp)`
+    received null for every such name and rendered it "0%" — the bottom of the
+    scale, stated as confidently as a measured score, in the screener column
+    the table is ranked on.
+    """
+    assert "const pct0 = (v) => (v === null || v === undefined) ? '—' : fmt(v * 100, '%', 0);" in APP
+    assert "pct0 = (v) => fmt((v ?? 0) * 100" not in APP
+    # Every call site reads a score the pipeline may withhold, so none of them
+    # may reintroduce a default of its own.
+    assert "pct0((v ?? 0)" not in APP
+    assert "pct0(d.modelScore ?? d.probUp)" in APP
+
+
 def test_fallback_does_not_render_kelly_weights_as_applied():
     assert "const applied = mp.kellyApplied === true" in APP
     assert "applied ? fmt(p.constrainedKellyWeightPct" in APP

@@ -197,7 +197,6 @@ def test_a_rebuild_keeps_names_the_new_build_did_not_return(tmp_path):
     Membership history is monotone: a name that was ever in the index was ever
     in the index. So the union is the correct semantics, not a workaround.
     """
-    import json
     from scripts import build_universe_history as B
 
     out = tmp_path / "universe-history.json"
@@ -215,7 +214,6 @@ def test_a_rebuild_keeps_names_the_new_build_did_not_return(tmp_path):
 
 def test_rebuild_overwrites_when_asked(tmp_path):
     """The escape hatch, for when the file itself is believed wrong."""
-    import json
     from scripts import build_universe_history as B
 
     out = tmp_path / "universe-history.json"
@@ -229,7 +227,6 @@ def test_rebuild_overwrites_when_asked(tmp_path):
 
 
 def test_an_unreadable_existing_file_does_not_abort_the_build(tmp_path):
-    import json
     from scripts import build_universe_history as B
 
     out = tmp_path / "universe-history.json"
@@ -281,7 +278,6 @@ def test_an_undescribed_region_reports_the_gap_instead():
 
 
 def test_the_builder_writes_no_rows_for_an_undescribable_region(tmp_path):
-    import json
     from scripts import build_universe_history as B
 
     out = tmp_path / "universe-history.json"

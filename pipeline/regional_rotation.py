@@ -71,13 +71,26 @@ def softmax_weights(scores: dict[str, float], *, temperature: float = DEFAULT_TE
     """Trailing scores -> portfolio weights, bounded away from 0 and 1.
 
     Softmax the scores first (well-defined on any sign, unlike a raw return
-    ratio), then water-fill: any region under `floor` is PINNED there and the
-    remaining weight is split among the rest by their relative softmax
-    shares, repeating until no free region sits under the floor. A single
-    lift-then-globally-renormalize pass does not actually guarantee the
-    floor — renormalizing after lifting one region back down can push it
-    below `floor` again when another region's raw share dominates — so this
-    pins each floored region at exactly `floor` and never revisits it.
+    ratio), then water-fill: any region whose SHARE would land under `floor`
+    is PINNED there and the remaining weight is split among the rest by their
+    relative softmax shares, repeating until no free region sits under the
+    floor. A single lift-then-globally-renormalize pass does not actually
+    guarantee the floor — renormalizing after lifting one region back down can
+    push it below `floor` again when another region's raw share dominates — so
+    this pins each floored region at exactly `floor` and never revisits it.
+
+    THE TEST IS THE REDISTRIBUTED SHARE, NEVER THE RAW ONE. Pinning a region at
+    `floor` spends more than its raw share, so every surviving region is scaled
+    DOWN by the pass that pinned it — and a region comfortably above `floor` on
+    `raw` can land below it afterwards. Re-reading `raw` cannot see that, because
+    `raw` does not change; such a loop runs one effective pass and calls it a
+    water-fill. Measured on three regions at `floor=0.30` with raw shares
+    (0.01, 0.31, 0.68): the 0.31 region is left free and receives
+    0.70 x 0.31/0.99 = 0.219, under the floor the function exists to hold.
+    Two regions — the only shape `regional-rotation-v1` runs — cannot reach that
+    case, so this is a latent correctness fix and not a change to frozen v1
+    weights: with one free region left the redistributed share is `1 - floor`,
+    which is `>= floor` for every admissible floor.
     """
     regions = sorted(scores)
     if not regions:
@@ -97,26 +110,24 @@ def softmax_weights(scores: dict[str, float], *, temperature: float = DEFAULT_TE
 
     pinned: dict[str, float] = {}
     free = set(regions)
-    while True:
-        below = {r for r in free if raw[r] <= floor}
-        if not below:
+    while free:
+        remaining = 1.0 - sum(pinned.values())
+        free_raw_total = sum(raw[r] for r in free)
+        if free_raw_total <= 0:
             break
+        # Association kept exactly as the single-pass version had it, so the
+        # two-region path this module actually runs is bit-identical.
+        share = {r: remaining * (raw[r] / free_raw_total) for r in free}
+        below = {r for r in free if share[r] <= floor}
+        if not below:
+            return {**pinned, **{r: share[r] for r in sorted(free)}}
         for r in below:
             pinned[r] = floor
         free -= below
-        if not free:
-            break
-    if not free:
-        # Every region pinned — only when the floor exactly fills the
-        # simplex or every raw share ties at it. Equal split is the only
-        # assignment left that still sums to 1.
-        return {r: 1.0 / len(regions) for r in regions}
-    remaining = 1.0 - sum(pinned.values())
-    free_raw_total = sum(raw[r] for r in free)
-    result = dict(pinned)
-    for r in sorted(free):
-        result[r] = remaining * (raw[r] / free_raw_total)
-    return result
+    # Every region pinned — only when the floor exactly fills the simplex or
+    # every raw share ties at it. Equal split is the only assignment left that
+    # still sums to 1.
+    return {r: 1.0 / len(regions) for r in regions}
 
 
 def quarterly_decision_dates(all_dates: list[str]) -> list[str]:

@@ -17,7 +17,6 @@ import math
 import numpy as np
 import pandas as pd
 
-from . import historical_calibration as HC
 from . import historical_outcomes as HO
 from . import kelly_portfolio as KP
 from . import longterm as LT
@@ -1513,8 +1512,10 @@ def portfolio_replay(signals: list[dict], outcomes: list[dict], *, cfg_lt: dict,
     by_date: dict[str, list[dict]] = defaultdict(list)
     for row in signals:
         by_date[row.get("date")].append(row)
-    outcome_by_id = {row.get("id"): row for row in outcomes}
-    signal_by_key = {(row.get("date"), row.get("ticker")): row for row in signals}
+    # `_outcome_for_decision_with_diagnostics` builds the per-date maps it
+    # needs from the rows it is handed. Two more, over the WHOLE ledger, were
+    # built here and never read — a full pass over every outcome and every
+    # signal on a decade of weekly cross-sections, for nothing.
     calibrator = ExpandingBucketCalibration(
         outcomes, horizon=int(cfg_pf.get("horizonDays", 126)),
         prior_strength=float(cfg_pf.get("shrinkagePriorStrength", 30)), min_dates=20)

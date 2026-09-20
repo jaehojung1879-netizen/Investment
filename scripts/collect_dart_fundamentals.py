@@ -419,7 +419,7 @@ def main(argv=None) -> int:
     (store / "manifest.json").write_text(
         json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
-    print(f"\n=== 이번 실행 ===")
+    print("\n=== 이번 실행 ===")
     print(f"  호출        {calls}")
     print(f"  수집        {written}건 · 샤드 {changed}개 변경")
     print(f"  종료 사유    {stop_reason}")

@@ -23,7 +23,6 @@ from pathlib import Path
 
 from . import direction as direction_mod
 from . import entry as entry_mod
-from . import evidence as evidence_mod
 from . import expert_consensus as expert_mod
 from . import features as F
 from . import fundamentals as fundamentals_mod

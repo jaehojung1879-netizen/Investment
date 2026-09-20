@@ -1,5 +1,4 @@
 """The Korean price vendor: exchange-native sessions, Yahoo's distributions."""
-import numpy as np
 import pandas as pd
 import pytest
 

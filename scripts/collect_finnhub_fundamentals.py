@@ -268,7 +268,7 @@ def main(argv=None) -> int:
             written.append(f"{path.name}({len(merged):,})")
     save_done_windows(store, done_windows)
 
-    print(f"\n=== 이번 실행 ===")
+    print("\n=== 이번 실행 ===")
     print(f"  호출 {calls:,} · 중단 사유 {stop_reason}")
     for status, count in statuses.most_common():
         print(f"    {status:<20} {count:,}")
@@ -287,7 +287,7 @@ def main(argv=None) -> int:
 
     if fresh_records:
         report = FF.inventory(fresh_records)
-        print(f"\n=== 기간 인벤토리 (파생을 쓰기 전에 재야 하는 것) ===")
+        print("\n=== 기간 인벤토리 (파생을 쓰기 전에 재야 하는 것) ===")
         print(f"  공시 {report['filings']:,}건 · 기간 길이 미기재 "
               f"{report['filingsWithNoPeriodLength']:,}건")
         for form, buckets in report["periodLengthByForm"].items():
