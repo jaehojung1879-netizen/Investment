@@ -70,6 +70,44 @@
   prevent; deleting the module afterwards loses the instrument that produced
   the answer.
 
+## Switch-hurdle invariants (v2.12)
+
+- A LADDER CARRIES ITS OWN CONTROL, and the control is the baseline. A research
+  loop is not `portfolio_replay` however carefully it is written: this one
+  builds its calibration on gross rather than cost-adjusted excess, and its
+  no-hurdle rung lands at -0.684pp against the published challenger's -1.046pp.
+  Paired against the published path the hurdle would have been credited +3.119pp,
+  0.362pp of which is a scoring difference it did not make. Every rung is paired
+  against the rung that differs from it in ONE thing, and the control's own gap
+  to the published path is published beside it as a harness difference.
+- Turnover costs are regional because the tax is. A buy pays commission plus
+  half the spread; a sell pays that plus the statutory transaction tax, which
+  in Korea has run 30bp down to 15bp and makes a Korean round trip cost 1.6x to
+  2.5x an American one. A pooled rate under-protects the expensive market and
+  over-protects the cheap one, and the hurdle a decision clears is priced from
+  the same dated schedule `_turnover_cost` charges the realised path.
+- A HURDLE IS SPENT AGAINST THE GAP BETWEEN COMPETING NAMES, not against zero,
+  so the size of a credit does not predict how often it binds. Korea's credit is
+  three times America's and American retention still rose four times as much
+  (41.2% -> 88.0% against 53.2% -> 62.9%): what decides it is the dispersion of
+  expected alpha inside the region, plus how many of its pool names the region
+  cap lets the book hold. Predicting where a rule will bite is not measuring it.
+- WHERE THE GAIN CAME FROM IS PART OF THE RESULT. The cost hurdle saves 0.270pp
+  of cost drag and gains 2.157pp of arithmetic stock selection, so eight times
+  more of it is the book holding names longer than the fees it avoids. A rule
+  that works for a reason its author did not predict is weaker evidence than one
+  that works for the stated reason, and the report says so rather than banking
+  the headline. Here it points at a different hypothesis — that last month's
+  ranking is noisier than the position it displaces — which is a claim about the
+  signal and has not been tested.
+- More hysteresis is not monotonically better and the ladder must be able to
+  show it. The one-standard-error rung trades least (2.814x) and gives back most
+  of the gain at a -35.0% drawdown, deeper than every other path measured.
+- A first interval that clears zero is reported with what makes it thin. The
+  cost rung's lower bound clears by 0.122pp, on one historical sample, after
+  several rungs across two studies, with no multiplicity correction — all of
+  which is published with the number, and none of which makes it a promotion.
+
 ## Lint gate invariants (v2.11)
 
 - The enabled rule set reports ZERO findings on `main`. A rule is turned on in the

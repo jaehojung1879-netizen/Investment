@@ -454,10 +454,21 @@ class ExpandingBucketCalibration:
         series = pd.Series({date: value for date, value in rows}, dtype=float).sort_index()
         eff = _non_overlapping_count(series.index, self.horizon)
         shrink = eff / (eff + self.prior_strength) if eff else 0.0
+        # How precisely the bucket mean is known, on the NON-OVERLAPPING count
+        # rather than the raw one: consecutive 126-session outcomes share most
+        # of their window, so dividing by every date would understate the error
+        # by about the overlap. A rule that has to decide whether one name's
+        # estimate really beats another's needs this; the point estimate alone
+        # cannot say whether the gap is a difference or a rounding of noise.
+        sd = float(series.std(ddof=1)) if len(series) > 1 else None
+        se = sd / math.sqrt(eff) if sd is not None and eff > 0 else None
         return {
             "bucket": label,
             "expectedExcessReturnPct": _r(series.mean() * shrink * 100, 4),
             "rawMeanExcessReturnPct": _r(series.mean() * 100, 4),
+            # On the RAW mean. A consumer comparing shrunk estimates scales it
+            # by `shrinkageFactor`, which is published beside it.
+            "standardErrorPct": _r(se * 100, 4) if se is not None else None,
             "uniqueDates": int(series.index.nunique()),
             "effectiveIndependentDates": eff,
             "shrinkageFactor": _r(shrink, 4),

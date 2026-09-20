@@ -1,0 +1,1146 @@
+{
+  "controlFidelity": {
+    "controlNetExcessPp": -0.684262,
+    "knownCause": "`portfolio_replay` builds its ExpandingBucketCalibration on cost-adjusted excess returns (the constructor default); this runner follows `benchmark_alpha` and builds it on GROSS excess returns, because a rule that subtracts costs itself must not be handed an alpha that already has them removed. The two therefore rank on different quantities and the control is NOT expected to reproduce the published path byte for byte. It is the baseline for the hurdle regardless, and the gap below is what a reader must not attribute to the hurdle.",
+    "measured": {
+      "available": true,
+      "cashAndCostDeltas": {
+        "averageCashPct": -0.09846193548386495,
+        "averageEquityPct": 0.09846193548385429,
+        "averageTurnoverPct": 1.0900000000000034,
+        "benchmarkCagrPct": 0.2057979999999997,
+        "costDragCagrPp": 0.017211277217374032,
+        "sumTransactionCostPct": 0.12217658962969224
+      },
+      "delta": {
+        "annualizedExcessPct": 0.36196099999999987,
+        "cagrPct": 0.5677599999999998,
+        "calmar": 0.011399556634016594,
+        "cvar95Pct": 0.21190599999999993,
+        "mddPct": -0.5953149999999994,
+        "sharpe": 0.09559499999999999,
+        "sortino": 0.16721300000000006
+      },
+      "estimandNote": "Path deltas recompute nonlinear statistics on jointly resampled net daily blocks. Mean block-metric deltas are a separate estimand, not the full-path delta. Costs and allocations are fixed at their original chronological values. Blocks are treated as exchangeable; serial regime dependence is not removed.",
+      "mddDescription": "-0.595pp deeper drawdown",
+      "meanPairedBlockMetricDifferenceCI": {
+        "annualizedExcessPct": {
+          "bootstrapMean": -0.37712266003419664,
+          "ci95": [
+            -2.03679584189849,
+            1.102631102656576
+          ],
+          "evidence": "historical evidence is inconclusive",
+          "pairedBlocks": 155,
+          "pointEstimate": -0.3801706829217381,
+          "reason": null,
+          "samples": 2000,
+          "seed": 11,
+          "validSamples": 2000
+        },
+        "cagrPct": {
+          "bootstrapMean": -0.3518487796368156,
+          "ci95": [
+            -2.2547042849302366,
+            1.5531803152898545
+          ],
+          "evidence": "historical evidence is inconclusive",
+          "pairedBlocks": 155,
+          "pointEstimate": -0.3685819353425899,
+          "reason": null,
+          "samples": 2000,
+          "seed": 11,
+          "validSamples": 2000
+        },
+        "calmar": {
+          "bootstrapMean": null,
+          "ci95": [
+            null,
+            null
+          ],
+          "evidence": "historical evidence is inconclusive",
+          "pairedBlocks": 155,
+          "pointEstimate": null,
+          "reason": "INSUFFICIENT_PAIRS_OR_UNDEFINED_METRIC_IN_RESAMPLES",
+          "samples": 2000,
+          "seed": 11,
+          "validSamples": 0
+        },
+        "cvar95Pct": {
+          "bootstrapMean": 0.06916486616680467,
+          "ci95": [
+            0.014817074940386697,
+            0.1464264208128144
+          ],
+          "evidence": "historical interval excludes zero; prospective evidence still required",
+          "pairedBlocks": 155,
+          "pointEstimate": 0.068980398532824,
+          "reason": null,
+          "samples": 2000,
+          "seed": 11,
+          "validSamples": 2000
+        },
+        "mddPct": {
+          "bootstrapMean": 0.17390028365145915,
+          "ci95": [
+            0.0003887392337576568,
+            0.44166989271078566
+          ],
+          "evidence": "historical interval excludes zero; prospective evidence still required",
+          "pairedBlocks": 155,
+          "pointEstimate": 0.17176638679237946,
+          "reason": null,
+          "samples": 2000,
+          "seed": 11,
+          "validSamples": 2000
+        },
+        "sharpe": {
+          "bootstrapMean": null,
+          "ci95": [
+            null,
+            null
+          ],
+          "evidence": "historical evidence is inconclusive",
+          "pairedBlocks": 155,
+          "pointEstimate": null,
+          "reason": "INSUFFICIENT_PAIRS_OR_UNDEFINED_METRIC_IN_RESAMPLES",
+          "samples": 2000,
+          "seed": 11,
+          "validSamples": 0
+        },
+        "sortino": {
+          "bootstrapMean": null,
+          "ci95": [
+            null,
+            null
+          ],
+          "evidence": "historical evidence is inconclusive",
+          "pairedBlocks": 155,
+          "pointEstimate": null,
+          "reason": "INSUFFICIENT_PAIRS_OR_UNDEFINED_METRIC_IN_RESAMPLES",
+          "samples": 2000,
+          "seed": 11,
+          "validSamples": 0
+        }
+      },
+      "method": "PAIRED_WHOLE_EVALUATION_BLOCK_PERCENTILE_BOOTSTRAP",
+      "pathDifferenceCI": {
+        "annualizedExcessPct": {
+          "bootstrapMean": 0.3742630416328084,
+          "ci95": [
+            -1.4127782101016255,
+            2.3188221988128435
+          ],
+          "evidence": "historical evidence is inconclusive",
+          "pairedBlocks": 155,
+          "pointEstimate": 0.36196099999999987,
+          "reason": null,
+          "samples": 2000,
+          "seed": 11,
+          "validSamples": 2000
+        },
+        "cagrPct": {
+          "bootstrapMean": 0.5910118737685546,
+          "ci95": [
+            -1.4596222520640227,
+            3.0785414852980044
+          ],
+          "evidence": "historical evidence is inconclusive",
+          "pairedBlocks": 155,
+          "pointEstimate": 0.5677599999999998,
+          "reason": null,
+          "samples": 2000,
+          "seed": 11,
+          "validSamples": 2000
+        },
+        "calmar": {
+          "bootstrapMean": 0.12196270739259782,
+          "ci95": [
+            -0.1219073643874705,
+            0.6434154905297245
+          ],
+          "evidence": "historical evidence is inconclusive",
+          "pairedBlocks": 155,
+          "pointEstimate": 0.011399556634016594,
+          "reason": null,
+          "samples": 2000,
+          "seed": 11,
+          "validSamples": 2000
+        },
+        "cvar95Pct": {
+          "bootstrapMean": 0.21358374590140874,
+          "ci95": [
+            -0.0021860342984709124,
+            0.53414724757153
+          ],
+          "evidence": "historical evidence is inconclusive",
+          "pairedBlocks": 155,
+          "pointEstimate": 0.21190599999999993,
+          "reason": null,
+          "samples": 2000,
+          "seed": 11,
+          "validSamples": 2000
+        },
+        "mddPct": {
+          "bootstrapMean": 3.5819875250676048,
+          "ci95": [
+            -3.374240947090328,
+            14.880854988476562
+          ],
+          "evidence": "historical evidence is inconclusive",
+          "pairedBlocks": 155,
+          "pointEstimate": -0.5953149999999994,
+          "reason": null,
+          "samples": 2000,
+          "seed": 11,
+          "validSamples": 2000
+        },
+        "sharpe": {
+          "bootstrapMean": 0.09488959779068303,
+          "ci95": [
+            -0.09696188576048516,
+            0.3258503741153132
+          ],
+          "evidence": "historical evidence is inconclusive",
+          "pairedBlocks": 155,
+          "pointEstimate": 0.09559499999999999,
+          "reason": null,
+          "samples": 2000,
+          "seed": 11,
+          "validSamples": 2000
+        },
+        "sortino": {
+          "bootstrapMean": 0.1669049218529122,
+          "ci95": [
+            -0.1505127919048779,
+            0.5683240156580298
+          ],
+          "evidence": "historical evidence is inconclusive",
+          "pairedBlocks": 155,
+          "pointEstimate": 0.16721300000000006,
+          "reason": null,
+          "samples": 2000,
+          "seed": 11,
+          "validSamples": 2000
+        }
+      }
+    },
+    "publishedNetExcessPp": -1.046223,
+    "reproducesPublished": false
+  },
+  "costSchedule": [
+    {
+      "krRoundTripPct": 0.41,
+      "ratio": 2.515337423312883,
+      "usRoundTripPct": 0.163,
+      "year": 2013
+    },
+    {
+      "krRoundTripPct": 0.36,
+      "ratio": 2.2085889570552144,
+      "usRoundTripPct": 0.163,
+      "year": 2019
+    },
+    {
+      "krRoundTripPct": 0.34,
+      "ratio": 2.085889570552147,
+      "usRoundTripPct": 0.163,
+      "year": 2021
+    },
+    {
+      "krRoundTripPct": 0.31,
+      "ratio": 1.901840490797546,
+      "usRoundTripPct": 0.163,
+      "year": 2023
+    },
+    {
+      "krRoundTripPct": 0.26,
+      "ratio": 1.5950920245398772,
+      "usRoundTripPct": 0.163,
+      "year": 2025
+    },
+    {
+      "krRoundTripPct": 0.31,
+      "ratio": 1.901840490797546,
+      "usRoundTripPct": 0.163,
+      "year": 2026
+    }
+  ],
+  "finding": {
+    "baselineNetExcessPp": -0.684262,
+    "bestNetExcessPp": 2.072371,
+    "bestPath": "SWITCH_HURDLE_ROUND_TRIP_COST",
+    "mechanism": {
+      "SWITCH_HURDLE_ROUND_TRIP_COST": {
+        "arithmeticSelectionGainedPp": 2.1568,
+        "costDragSavedPp": 0.2703
+      },
+      "SWITCH_HURDLE_ROUND_TRIP_COST_PLUS_ONE_STANDARD_ERROR": {
+        "arithmeticSelectionGainedPp": 1.4407,
+        "costDragSavedPp": 0.5898
+      }
+    },
+    "nextDirection": "A path with positive net excess on sealed history is a hypothesis for prospective shadow collection, not a promotion. Freeze it and judge forward.",
+    "separatedFromControl": [
+      "SWITCH_HURDLE_ROUND_TRIP_COST"
+    ],
+    "summary": "Against its own no-hurdle control, which shares every other part of this loop, hurdling the replacement decision moves net excess from -0.684pp to 2.072pp (SWITCH_HURDLE_ROUND_TRIP_COST), 0.500pp (SWITCH_HURDLE_ROUND_TRIP_COST_PLUS_ONE_STANDARD_ERROR), with annual one-way turnover going from 4.679x to 3.567x, 2.814x. The published challenger sits at -1.046pp, but it is not the baseline for this comparison: see controlFidelity.",
+    "verdict": "BENCHMARK_BEATEN"
+  },
+  "freezeManifest": {
+    "costSource": "SAME_DATED_SCHEDULE_THE_REALISED_PATH_PAYS",
+    "decisionCadence": "EVERY_FIXED_21D_EVALUATION_BLOCK",
+    "heldFixedAgainstThePublishedChallenger": [
+      "fixed 21-session evaluation blocks and their cadence",
+      "PIT research candidate pool",
+      "calibrated expected-benchmark-excess ranking",
+      "entry-state and research-view exclusions",
+      "name/sector/region caps, maxPositionWeight, cash floor",
+      "conviction-tilted inverse-downside-volatility weights",
+      "realistic dated transaction cost schedule"
+    ],
+    "hurdle": "INCUMBENT_CREDITED_ITS_REGION_SELL_COST_CHALLENGER_CHARGED_ITS_REGION_BUY_COST",
+    "id": "regional-switch-hurdle-v1",
+    "ladder": [
+      "NO_HURDLE_CONTROL_SAME_LOOP",
+      "SWITCH_HURDLE_ROUND_TRIP_COST",
+      "SWITCH_HURDLE_ROUND_TRIP_COST_PLUS_ONE_STANDARD_ERROR"
+    ],
+    "liveValidated": false,
+    "positiveAlphaCashGate": false,
+    "productionChanged": false,
+    "promotionEligible": false,
+    "rankingSource": "CALIBRATED_EXPECTED_BENCHMARK_EXCESS_PER_DOWNSIDE_RISK",
+    "seMultiple": 1.0,
+    "status": "CHALLENGER",
+    "varied": [
+      "whether replacing an incumbent must clear the swap's own friction",
+      "whether it must additionally clear one standard error"
+    ]
+  },
+  "inputSnapshot": {
+    "sha256": "f0781292f508a123c234ded6d28aa8e84a0dc3cc29500e14989dc0b68f53b4d2",
+    "through": "2026-09-14"
+  },
+  "ladder": {
+    "NO_HURDLE_CONTROL_SAME_LOOP": {
+      "annualOneWayTurnoverX": 4.678611806628428,
+      "annualizedExcessPct": -0.684262,
+      "averageCashPct": 30.41651741935484,
+      "averageTurnoverPct": 44.46,
+      "benchmarkCagrPct": 12.844837,
+      "cagrPct": 12.160575,
+      "calendarYears": 13.684059,
+      "costDragCagrPp": 1.4036321599751513,
+      "edgeDecomposition": {
+        "arithmeticSelectionEdgePp": 0.3145,
+        "available": true,
+        "benchmarkBlockSdPct": 4.1402,
+        "blockSdRatio": 0.7839,
+        "blocks": 155,
+        "bookBlockSdPct": 3.2455,
+        "compoundingEdgePp": 0.4048,
+        "geometricGrossEdgePp": 0.7194,
+        "note": "GEOMETRIC = ARITHMETIC + COMPOUNDING. A book less volatile than its matched benchmark earns a positive compounding term without picking a single better name."
+      },
+      "grossBenchmarkGapPp": 0.719370159975151,
+      "grossCagrPct": 13.564207159975151,
+      "informationRatio": -0.053538,
+      "mddPct": -25.158189,
+      "sharpe": 0.852951,
+      "sortino": 1.245037,
+      "sumTransactionCostPct": 17.00625049900659,
+      "turnoverDecomposition": {
+        "available": true,
+        "averageNamesHeld": 4.66,
+        "averageOneWayTurnoverPct": 42.1699,
+        "fromNameReplacementPct": 39.4175,
+        "fromWeightRetargetPct": 2.7524,
+        "nameReplacementSharePct": 93.47,
+        "namesCarriedToNextBlockPct": 37.92,
+        "rebalances": 144
+      },
+      "turnoverRebalances": 144
+    },
+    "PUBLISHED_CHALLENGER_NO_HURDLE": {
+      "annualOneWayTurnoverX": 4.563908998053867,
+      "annualizedExcessPct": -1.046223,
+      "averageCashPct": 30.514979354838704,
+      "averageTurnoverPct": 43.37,
+      "benchmarkCagrPct": 12.639039,
+      "cagrPct": 11.592815,
+      "calendarYears": 13.684059,
+      "costDragCagrPp": 1.3864208827577773,
+      "edgeDecomposition": {
+        "arithmeticSelectionEdgePp": 0.0397,
+        "available": true,
+        "benchmarkBlockSdPct": 4.1695,
+        "blockSdRatio": 0.8255,
+        "blocks": 155,
+        "bookBlockSdPct": 3.442,
+        "compoundingEdgePp": 0.3005,
+        "geometricGrossEdgePp": 0.3402,
+        "note": "GEOMETRIC = ARITHMETIC + COMPOUNDING. A book less volatile than its matched benchmark earns a positive compounding term without picking a single better name."
+      },
+      "grossBenchmarkGapPp": 0.3401968827577768,
+      "grossCagrPct": 12.979235882757777,
+      "informationRatio": -0.07265,
+      "mddPct": -24.562874,
+      "sharpe": 0.757356,
+      "sortino": 1.077824,
+      "sumTransactionCostPct": 16.884073909376898,
+      "turnoverDecomposition": {
+        "available": true,
+        "averageNamesHeld": 4.66,
+        "averageOneWayTurnoverPct": 41.0729,
+        "fromNameReplacementPct": 38.224,
+        "fromWeightRetargetPct": 2.8489,
+        "nameReplacementSharePct": 93.06,
+        "namesCarriedToNextBlockPct": 39.81,
+        "rebalances": 144
+      },
+      "turnoverRebalances": 144
+    },
+    "SWITCH_HURDLE_ROUND_TRIP_COST": {
+      "annualOneWayTurnoverX": 3.5673625786033223,
+      "annualizedExcessPct": 2.072371,
+      "averageCashPct": 30.793497419354843,
+      "averageTurnoverPct": 33.9,
+      "benchmarkCagrPct": 12.757159,
+      "cagrPct": 14.82953,
+      "calendarYears": 13.684059,
+      "costDragCagrPp": 1.1333048085104611,
+      "edgeDecomposition": {
+        "arithmeticSelectionEdgePp": 2.4713,
+        "available": true,
+        "benchmarkBlockSdPct": 4.1954,
+        "blockSdRatio": 0.766,
+        "blocks": 155,
+        "bookBlockSdPct": 3.2135,
+        "compoundingEdgePp": 0.7343,
+        "geometricGrossEdgePp": 3.2057,
+        "note": "GEOMETRIC = ARITHMETIC + COMPOUNDING. A book less volatile than its matched benchmark earns a positive compounding term without picking a single better name."
+      },
+      "grossBenchmarkGapPp": 3.2056758085104615,
+      "grossCagrPct": 15.962834808510461,
+      "informationRatio": 0.146199,
+      "mddPct": -22.311175,
+      "sharpe": 1.056844,
+      "sortino": 1.591243,
+      "sumTransactionCostPct": 13.43092787626537,
+      "turnoverDecomposition": {
+        "available": true,
+        "averageNamesHeld": 4.66,
+        "averageOneWayTurnoverPct": 31.6613,
+        "fromNameReplacementPct": 27.5489,
+        "fromWeightRetargetPct": 4.1123,
+        "nameReplacementSharePct": 87.01,
+        "namesCarriedToNextBlockPct": 56.25,
+        "rebalances": 144
+      },
+      "turnoverRebalances": 144
+    },
+    "SWITCH_HURDLE_ROUND_TRIP_COST_PLUS_ONE_STANDARD_ERROR": {
+      "annualOneWayTurnoverX": 2.8139019277832693,
+      "annualizedExcessPct": 0.500287,
+      "averageCashPct": 29.391470967741938,
+      "averageTurnoverPct": 26.74,
+      "benchmarkCagrPct": 13.552739,
+      "cagrPct": 14.053026,
+      "calendarYears": 13.684059,
+      "costDragCagrPp": 0.8138741704946355,
+      "edgeDecomposition": {
+        "arithmeticSelectionEdgePp": 1.7552,
+        "available": true,
+        "benchmarkBlockSdPct": 3.9179,
+        "blockSdRatio": 1.3248,
+        "blocks": 155,
+        "bookBlockSdPct": 5.1903,
+        "compoundingEdgePp": -0.4411,
+        "geometricGrossEdgePp": 1.3142,
+        "note": "GEOMETRIC = ARITHMETIC + COMPOUNDING. A book less volatile than its matched benchmark earns a positive compounding term without picking a single better name."
+      },
+      "grossBenchmarkGapPp": 1.3141611704946339,
+      "grossCagrPct": 14.866900170494635,
+      "informationRatio": 0.061737,
+      "mddPct": -35.035652,
+      "sharpe": 0.848226,
+      "sortino": 1.254059,
+      "sumTransactionCostPct": 9.725653559741028,
+      "turnoverDecomposition": {
+        "available": true,
+        "averageNamesHeld": 4.66,
+        "averageOneWayTurnoverPct": 24.5846,
+        "fromNameReplacementPct": 17.0644,
+        "fromWeightRetargetPct": 7.5203,
+        "nameReplacementSharePct": 69.41,
+        "namesCarriedToNextBlockPct": 71.6,
+        "rebalances": 144
+      },
+      "turnoverRebalances": 144
+    }
+  },
+  "pairedComparisons": {
+    "SWITCH_HURDLE_ROUND_TRIP_COST minus NO_HURDLE_CONTROL_SAME_LOOP": {
+      "available": true,
+      "cashAndCostDeltas": {
+        "averageCashPct": 0.3769800000000032,
+        "averageEquityPct": -0.3769800000000032,
+        "averageTurnoverPct": -10.560000000000002,
+        "benchmarkCagrPct": -0.08767800000000037,
+        "costDragCagrPp": -0.2703273514646902,
+        "sumTransactionCostPct": -3.5753226227412203
+      },
+      "delta": {
+        "annualizedExcessPct": 2.756633,
+        "cagrPct": 2.6689550000000004,
+        "calmar": 0.18130378377789869,
+        "cvar95Pct": 0.06601600000000007,
+        "mddPct": 2.8470140000000015,
+        "sharpe": 0.20389299999999988,
+        "sortino": 0.346206
+      },
+      "estimandNote": "Path deltas recompute nonlinear statistics on jointly resampled net daily blocks. Mean block-metric deltas are a separate estimand, not the full-path delta. Costs and allocations are fixed at their original chronological values. Blocks are treated as exchangeable; serial regime dependence is not removed.",
+      "mddDescription": "+2.847pp shallower drawdown",
+      "meanPairedBlockMetricDifferenceCI": {
+        "annualizedExcessPct": {
+          "bootstrapMean": 1.7687203722950184,
+          "ci95": [
+            -2.884986933795788,
+            6.283713155462945
+          ],
+          "evidence": "historical evidence is inconclusive",
+          "pairedBlocks": 155,
+          "pointEstimate": 1.7815486101134037,
+          "reason": null,
+          "samples": 2000,
+          "seed": 11,
+          "validSamples": 2000
+        },
+        "cagrPct": {
+          "bootstrapMean": 2.9577671533661904,
+          "ci95": [
+            -0.610062910327284,
+            6.813589399601235
+          ],
+          "evidence": "historical evidence is inconclusive",
+          "pairedBlocks": 155,
+          "pointEstimate": 2.929286779750324,
+          "reason": null,
+          "samples": 2000,
+          "seed": 11,
+          "validSamples": 2000
+        },
+        "calmar": {
+          "bootstrapMean": null,
+          "ci95": [
+            null,
+            null
+          ],
+          "evidence": "historical evidence is inconclusive",
+          "pairedBlocks": 155,
+          "pointEstimate": null,
+          "reason": "INSUFFICIENT_PAIRS_OR_UNDEFINED_METRIC_IN_RESAMPLES",
+          "samples": 2000,
+          "seed": 11,
+          "validSamples": 0
+        },
+        "cvar95Pct": {
+          "bootstrapMean": 0.0321807336238444,
+          "ci95": [
+            -0.024606532981691267,
+            0.10487508194347325
+          ],
+          "evidence": "historical evidence is inconclusive",
+          "pairedBlocks": 155,
+          "pointEstimate": 0.03219843806526057,
+          "reason": null,
+          "samples": 2000,
+          "seed": 11,
+          "validSamples": 2000
+        },
+        "mddPct": {
+          "bootstrapMean": 0.1209452739216689,
+          "ci95": [
+            -0.013103940670427134,
+            0.2896914185420763
+          ],
+          "evidence": "historical evidence is inconclusive",
+          "pairedBlocks": 155,
+          "pointEstimate": 0.1208877838424344,
+          "reason": null,
+          "samples": 2000,
+          "seed": 11,
+          "validSamples": 2000
+        },
+        "sharpe": {
+          "bootstrapMean": null,
+          "ci95": [
+            null,
+            null
+          ],
+          "evidence": "historical evidence is inconclusive",
+          "pairedBlocks": 155,
+          "pointEstimate": null,
+          "reason": "INSUFFICIENT_PAIRS_OR_UNDEFINED_METRIC_IN_RESAMPLES",
+          "samples": 2000,
+          "seed": 11,
+          "validSamples": 0
+        },
+        "sortino": {
+          "bootstrapMean": null,
+          "ci95": [
+            null,
+            null
+          ],
+          "evidence": "historical evidence is inconclusive",
+          "pairedBlocks": 155,
+          "pointEstimate": null,
+          "reason": "INSUFFICIENT_PAIRS_OR_UNDEFINED_METRIC_IN_RESAMPLES",
+          "samples": 2000,
+          "seed": 11,
+          "validSamples": 0
+        }
+      },
+      "method": "PAIRED_WHOLE_EVALUATION_BLOCK_PERCENTILE_BOOTSTRAP",
+      "pathDifferenceCI": {
+        "annualizedExcessPct": {
+          "bootstrapMean": 2.7719059513635513,
+          "ci95": [
+            0.12203916192007287,
+            5.732458793183224
+          ],
+          "evidence": "historical interval excludes zero; prospective evidence still required",
+          "pairedBlocks": 155,
+          "pointEstimate": 2.756633,
+          "reason": null,
+          "samples": 2000,
+          "seed": 11,
+          "validSamples": 2000
+        },
+        "cagrPct": {
+          "bootstrapMean": 2.6786759519736143,
+          "ci95": [
+            -0.20288214724609202,
+            5.7845399095534376
+          ],
+          "evidence": "historical evidence is inconclusive",
+          "pairedBlocks": 155,
+          "pointEstimate": 2.6689550000000004,
+          "reason": null,
+          "samples": 2000,
+          "seed": 11,
+          "validSamples": 2000
+        },
+        "calmar": {
+          "bootstrapMean": 0.22938787395071886,
+          "ci95": [
+            -0.07045369124152269,
+            0.6877596178148674
+          ],
+          "evidence": "historical evidence is inconclusive",
+          "pairedBlocks": 155,
+          "pointEstimate": 0.18130378377789869,
+          "reason": null,
+          "samples": 2000,
+          "seed": 11,
+          "validSamples": 2000
+        },
+        "cvar95Pct": {
+          "bootstrapMean": 0.06563393918250679,
+          "ci95": [
+            -0.035996532585160876,
+            0.19221054857414696
+          ],
+          "evidence": "historical evidence is inconclusive",
+          "pairedBlocks": 155,
+          "pointEstimate": 0.06601600000000007,
+          "reason": null,
+          "samples": 2000,
+          "seed": 11,
+          "validSamples": 2000
+        },
+        "mddPct": {
+          "bootstrapMean": 2.718993061979034,
+          "ci95": [
+            -2.567765574225029,
+            10.310681883170883
+          ],
+          "evidence": "historical evidence is inconclusive",
+          "pairedBlocks": 155,
+          "pointEstimate": 2.8470140000000015,
+          "reason": null,
+          "samples": 2000,
+          "seed": 11,
+          "validSamples": 2000
+        },
+        "sharpe": {
+          "bootstrapMean": 0.20529860384998375,
+          "ci95": [
+            -0.022171515725273434,
+            0.4558813104138638
+          ],
+          "evidence": "historical evidence is inconclusive",
+          "pairedBlocks": 155,
+          "pointEstimate": 0.20389299999999988,
+          "reason": null,
+          "samples": 2000,
+          "seed": 11,
+          "validSamples": 2000
+        },
+        "sortino": {
+          "bootstrapMean": 0.3496467255077119,
+          "ci95": [
+            -0.02348934566599384,
+            0.7793434275845313
+          ],
+          "evidence": "historical evidence is inconclusive",
+          "pairedBlocks": 155,
+          "pointEstimate": 0.346206,
+          "reason": null,
+          "samples": 2000,
+          "seed": 11,
+          "validSamples": 2000
+        }
+      }
+    },
+    "SWITCH_HURDLE_ROUND_TRIP_COST_PLUS_ONE_STANDARD_ERROR minus NO_HURDLE_CONTROL_SAME_LOOP": {
+      "available": true,
+      "cashAndCostDeltas": {
+        "averageCashPct": -1.0250464516129014,
+        "averageEquityPct": 1.0250464516129085,
+        "averageTurnoverPct": -17.720000000000002,
+        "benchmarkCagrPct": 0.7079020000000007,
+        "costDragCagrPp": -0.5897579894805158,
+        "sumTransactionCostPct": -7.280596939265562
+      },
+      "delta": {
+        "annualizedExcessPct": 1.184549,
+        "cagrPct": 1.8924509999999994,
+        "calmar": -0.0822580321555863,
+        "cvar95Pct": -0.3968689999999999,
+        "mddPct": -9.877462999999999,
+        "sharpe": -0.004724999999999979,
+        "sortino": 0.009022000000000086
+      },
+      "estimandNote": "Path deltas recompute nonlinear statistics on jointly resampled net daily blocks. Mean block-metric deltas are a separate estimand, not the full-path delta. Costs and allocations are fixed at their original chronological values. Blocks are treated as exchangeable; serial regime dependence is not removed.",
+      "mddDescription": "-9.877pp deeper drawdown",
+      "meanPairedBlockMetricDifferenceCI": {
+        "annualizedExcessPct": {
+          "bootstrapMean": 34.38895870668096,
+          "ci95": [
+            -1.1185410387662498,
+            93.94085031220999
+          ],
+          "evidence": "historical evidence is inconclusive",
+          "pairedBlocks": 155,
+          "pointEstimate": 33.288637173938554,
+          "reason": null,
+          "samples": 2000,
+          "seed": 11,
+          "validSamples": 2000
+        },
+        "cagrPct": {
+          "bootstrapMean": 31.337046864609764,
+          "ci95": [
+            -0.10419707867173121,
+            83.58718975061501
+          ],
+          "evidence": "historical evidence is inconclusive",
+          "pairedBlocks": 155,
+          "pointEstimate": 30.36876090187972,
+          "reason": null,
+          "samples": 2000,
+          "seed": 11,
+          "validSamples": 2000
+        },
+        "calmar": {
+          "bootstrapMean": null,
+          "ci95": [
+            null,
+            null
+          ],
+          "evidence": "historical evidence is inconclusive",
+          "pairedBlocks": 155,
+          "pointEstimate": null,
+          "reason": "INSUFFICIENT_PAIRS_OR_UNDEFINED_METRIC_IN_RESAMPLES",
+          "samples": 2000,
+          "seed": 11,
+          "validSamples": 0
+        },
+        "cvar95Pct": {
+          "bootstrapMean": -0.2283331721164533,
+          "ci95": [
+            -0.35435086364240864,
+            -0.11701272979836447
+          ],
+          "evidence": "historical interval excludes zero; prospective evidence still required",
+          "pairedBlocks": 155,
+          "pointEstimate": -0.2289854634101325,
+          "reason": null,
+          "samples": 2000,
+          "seed": 11,
+          "validSamples": 2000
+        },
+        "mddPct": {
+          "bootstrapMean": -0.5286964641986649,
+          "ci95": [
+            -0.8669580721211003,
+            -0.23641563386218734
+          ],
+          "evidence": "historical interval excludes zero; prospective evidence still required",
+          "pairedBlocks": 155,
+          "pointEstimate": -0.5313931538784831,
+          "reason": null,
+          "samples": 2000,
+          "seed": 11,
+          "validSamples": 2000
+        },
+        "sharpe": {
+          "bootstrapMean": null,
+          "ci95": [
+            null,
+            null
+          ],
+          "evidence": "historical evidence is inconclusive",
+          "pairedBlocks": 155,
+          "pointEstimate": null,
+          "reason": "INSUFFICIENT_PAIRS_OR_UNDEFINED_METRIC_IN_RESAMPLES",
+          "samples": 2000,
+          "seed": 11,
+          "validSamples": 0
+        },
+        "sortino": {
+          "bootstrapMean": null,
+          "ci95": [
+            null,
+            null
+          ],
+          "evidence": "historical evidence is inconclusive",
+          "pairedBlocks": 155,
+          "pointEstimate": null,
+          "reason": "INSUFFICIENT_PAIRS_OR_UNDEFINED_METRIC_IN_RESAMPLES",
+          "samples": 2000,
+          "seed": 11,
+          "validSamples": 0
+        }
+      },
+      "method": "PAIRED_WHOLE_EVALUATION_BLOCK_PERCENTILE_BOOTSTRAP",
+      "pathDifferenceCI": {
+        "annualizedExcessPct": {
+          "bootstrapMean": 1.3663376919841148,
+          "ci95": [
+            -6.81350236551351,
+            10.262845474341288
+          ],
+          "evidence": "historical evidence is inconclusive",
+          "pairedBlocks": 155,
+          "pointEstimate": 1.184549,
+          "reason": null,
+          "samples": 2000,
+          "seed": 11,
+          "validSamples": 2000
+        },
+        "cagrPct": {
+          "bootstrapMean": 2.0828726492665,
+          "ci95": [
+            -5.9728301459547275,
+            10.334188159421203
+          ],
+          "evidence": "historical evidence is inconclusive",
+          "pairedBlocks": 155,
+          "pointEstimate": 1.8924509999999994,
+          "reason": null,
+          "samples": 2000,
+          "seed": 11,
+          "validSamples": 2000
+        },
+        "calmar": {
+          "bootstrapMean": -0.05091086093084534,
+          "ci95": [
+            -0.726680546104494,
+            0.5181239136887421
+          ],
+          "evidence": "historical evidence is inconclusive",
+          "pairedBlocks": 155,
+          "pointEstimate": -0.0822580321555863,
+          "reason": null,
+          "samples": 2000,
+          "seed": 11,
+          "validSamples": 2000
+        },
+        "cvar95Pct": {
+          "bootstrapMean": -0.39708407078500363,
+          "ci95": [
+            -0.6455165880588867,
+            -0.16751381075797955
+          ],
+          "evidence": "historical interval excludes zero; prospective evidence still required",
+          "pairedBlocks": 155,
+          "pointEstimate": -0.3968689999999999,
+          "reason": null,
+          "samples": 2000,
+          "seed": 11,
+          "validSamples": 2000
+        },
+        "mddPct": {
+          "bootstrapMean": -6.421779982097625,
+          "ci95": [
+            -23.57490071430479,
+            5.849762209320252
+          ],
+          "evidence": "historical evidence is inconclusive",
+          "pairedBlocks": 155,
+          "pointEstimate": -9.877462999999999,
+          "reason": null,
+          "samples": 2000,
+          "seed": 11,
+          "validSamples": 2000
+        },
+        "sharpe": {
+          "bootstrapMean": -0.0015448355493471162,
+          "ci95": [
+            -0.5205125610225294,
+            0.45728513147554334
+          ],
+          "evidence": "historical evidence is inconclusive",
+          "pairedBlocks": 155,
+          "pointEstimate": -0.004724999999999979,
+          "reason": null,
+          "samples": 2000,
+          "seed": 11,
+          "validSamples": 2000
+        },
+        "sortino": {
+          "bootstrapMean": 0.020952496891932553,
+          "ci95": [
+            -0.804805334747543,
+            0.8129501420964572
+          ],
+          "evidence": "historical evidence is inconclusive",
+          "pairedBlocks": 155,
+          "pointEstimate": 0.009022000000000086,
+          "reason": null,
+          "samples": 2000,
+          "seed": 11,
+          "validSamples": 2000
+        }
+      }
+    }
+  },
+  "productionChanged": false,
+  "regionalAttribution": {
+    "NO_HURDLE_CONTROL_SAME_LOOP": {
+      "available": true,
+      "byRegion": {
+        "KR": {
+          "averageWeightPct": 49.79,
+          "blocks": 155,
+          "blocksHeld": 144,
+          "contributionCi95Pp": [
+            -7.272,
+            5.7428
+          ],
+          "contributionPpPerYear": -0.4667,
+          "sleeveExcessCi95Pp": [
+            -9.2183,
+            12.933
+          ],
+          "sleeveExcessPpPerYear": 1.9349,
+          "sleeveWinRatePct": 57.64
+        },
+        "US": {
+          "averageWeightPct": 19.793,
+          "blocks": 155,
+          "blocksHeld": 145,
+          "contributionCi95Pp": [
+            -1.178,
+            2.9224
+          ],
+          "contributionPpPerYear": 0.7812,
+          "sleeveExcessCi95Pp": [
+            -4.7577,
+            22.4959
+          ],
+          "sleeveExcessPpPerYear": 8.3636,
+          "sleeveWinRatePct": 46.9
+        }
+      },
+      "note": "`excessByRegion` sums to `grossExcessReturn`, so the contributions reconstruct the headline. Sleeve figures are weight-normalised and their intervals are wide; they locate the question, not the answer."
+    },
+    "PUBLISHED_CHALLENGER_NO_HURDLE": {
+      "available": true,
+      "byRegion": {
+        "KR": {
+          "averageWeightPct": 50.954,
+          "blocks": 155,
+          "blocksHeld": 144,
+          "contributionCi95Pp": [
+            -8.5746,
+            5.1651
+          ],
+          "contributionPpPerYear": -1.4569,
+          "sleeveExcessCi95Pp": [
+            -12.4595,
+            10.9862
+          ],
+          "sleeveExcessPpPerYear": -0.5794,
+          "sleeveWinRatePct": 55.56
+        },
+        "US": {
+          "averageWeightPct": 18.531,
+          "blocks": 155,
+          "blocksHeld": 145,
+          "contributionCi95Pp": [
+            -0.6343,
+            3.7606
+          ],
+          "contributionPpPerYear": 1.4965,
+          "sleeveExcessCi95Pp": [
+            -2.5431,
+            24.6151
+          ],
+          "sleeveExcessPpPerYear": 10.4878,
+          "sleeveWinRatePct": 48.28
+        }
+      },
+      "note": "`excessByRegion` sums to `grossExcessReturn`, so the contributions reconstruct the headline. Sleeve figures are weight-normalised and their intervals are wide; they locate the question, not the answer."
+    },
+    "SWITCH_HURDLE_ROUND_TRIP_COST": {
+      "available": true,
+      "byRegion": {
+        "KR": {
+          "averageWeightPct": 50.668,
+          "blocks": 155,
+          "blocksHeld": 144,
+          "contributionCi95Pp": [
+            -6.0713,
+            6.3092
+          ],
+          "contributionPpPerYear": 0.3348,
+          "sleeveExcessCi95Pp": [
+            -9.2288,
+            12.1543
+          ],
+          "sleeveExcessPpPerYear": 1.6512,
+          "sleeveWinRatePct": 55.56
+        },
+        "US": {
+          "averageWeightPct": 18.538,
+          "blocks": 155,
+          "blocksHeld": 145,
+          "contributionCi95Pp": [
+            -0.2605,
+            4.5988
+          ],
+          "contributionPpPerYear": 2.1365,
+          "sleeveExcessCi95Pp": [
+            0.7311,
+            27.7622
+          ],
+          "sleeveExcessPpPerYear": 14.0572,
+          "sleeveWinRatePct": 52.41
+        }
+      },
+      "note": "`excessByRegion` sums to `grossExcessReturn`, so the contributions reconstruct the headline. Sleeve figures are weight-normalised and their intervals are wide; they locate the question, not the answer."
+    },
+    "SWITCH_HURDLE_ROUND_TRIP_COST_PLUS_ONE_STANDARD_ERROR": {
+      "available": true,
+      "byRegion": {
+        "KR": {
+          "averageWeightPct": 47.155,
+          "blocks": 155,
+          "blocksHeld": 144,
+          "contributionCi95Pp": [
+            -8.5519,
+            5.3124
+          ],
+          "contributionPpPerYear": -1.377,
+          "sleeveExcessCi95Pp": [
+            -14.4483,
+            11.3335
+          ],
+          "sleeveExcessPpPerYear": -1.6303,
+          "sleeveWinRatePct": 46.53
+        },
+        "US": {
+          "averageWeightPct": 23.453,
+          "blocks": 155,
+          "blocksHeld": 145,
+          "contributionCi95Pp": [
+            -0.4418,
+            7.2946
+          ],
+          "contributionPpPerYear": 3.1323,
+          "sleeveExcessCi95Pp": [
+            -0.3709,
+            28.9702
+          ],
+          "sleeveExcessPpPerYear": 13.8328,
+          "sleeveWinRatePct": 50.34
+        }
+      },
+      "note": "`excessByRegion` sums to `grossExcessReturn`, so the contributions reconstruct the headline. Sleeve figures are weight-normalised and their intervals are wide; they locate the question, not the answer."
+    }
+  },
+  "retentionByRegion": {
+    "NO_HURDLE_CONTROL_SAME_LOOP": {
+      "KR": {
+        "replaced": 170,
+        "retained": 193,
+        "retentionRatePct": 53.17
+      },
+      "UNKNOWN": {
+        "replaced": 160,
+        "retained": 0,
+        "retentionRatePct": 0.0
+      },
+      "US": {
+        "replaced": 114,
+        "retained": 80,
+        "retentionRatePct": 41.24
+      }
+    },
+    "SWITCH_HURDLE_ROUND_TRIP_COST": {
+      "KR": {
+        "replaced": 138,
+        "retained": 234,
+        "retentionRatePct": 62.9
+      },
+      "UNKNOWN": {
+        "replaced": 153,
+        "retained": 0,
+        "retentionRatePct": 0.0
+      },
+      "US": {
+        "replaced": 23,
+        "retained": 169,
+        "retentionRatePct": 88.02
+      }
+    },
+    "SWITCH_HURDLE_ROUND_TRIP_COST_PLUS_ONE_STANDARD_ERROR": {
+      "KR": {
+        "replaced": 37,
+        "retained": 315,
+        "retentionRatePct": 89.49
+      },
+      "UNKNOWN": {
+        "replaced": 159,
+        "retained": 0,
+        "retentionRatePct": 0.0
+      },
+      "US": {
+        "replaced": 8,
+        "retained": 198,
+        "retentionRatePct": 96.12
+      }
+    }
+  },
+  "sealedInvariant": {
+    "after": "365dddb1387f1644693c8d458dd824ed8c039d850a4227de5756570664b9a7cc",
+    "before": "365dddb1387f1644693c8d458dd824ed8c039d850a4227de5756570664b9a7cc",
+    "unchanged": true
+  },
+  "status": "CHALLENGER",
+  "version": "regional-switch-hurdle-v1"
+}
