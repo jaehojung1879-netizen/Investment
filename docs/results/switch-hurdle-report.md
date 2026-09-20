@@ -8,8 +8,9 @@
 One thing: the replacement decision. Cadence stays at every 21-session block,
 caps and the cash floor stay production, and there is no positive-alpha cash
 gate. An incumbent is credited the sell cost of its own region and a challenger
-charged the buy cost of its own region, so Korean positions become stickier
-than American ones without anyone choosing that ratio — the sell tax does it.
+charged the buy cost of its own region, with nobody choosing the ratio between
+them — the statutory sell tax sets it. Whether that made the expensive market
+the stickier one is measured below, not asserted here; it did not.
 
 ## Cost of a swap, by region and year
 
@@ -31,7 +32,14 @@ than American ones without anyone choosing that ratio — the sell tax does it.
 | SWITCH_HURDLE_ROUND_TRIP_COST | 15.963% | 1.133pp | 14.830% | 12.757% | 2.072pp | 1.057 | -22.311% | 3.567x | 30.793% |
 | SWITCH_HURDLE_ROUND_TRIP_COST_PLUS_ONE_STANDARD_ERROR | 14.867% | 0.814pp | 14.053% | 13.553% | 0.500pp | 0.848 | -35.036% | 2.814x | 29.391% |
 
-## Did the hurdle bite harder where it costs more?
+## Did the hurdle bite harder where it costs more? No.
+
+Korea's credit is three times America's, so Korean positions should have
+become the stickier ones. Against the control they did the opposite. A credit
+is spent against the GAP between the names competing for a slot, not against
+zero, so what decides whether it flips an ordering is the dispersion of
+expected alpha inside the region and how many of its pool names the region
+cap lets the book hold — not the size of the credit.
 
 | Path | US retention | KR retention |
 |---|---:|---:|
