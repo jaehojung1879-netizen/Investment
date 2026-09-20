@@ -321,6 +321,14 @@ python scripts/train_opportunity.py <ledger-dir> --warning  # 경고 모델 학�
 python scripts/demo_replay.py --tickers 40 --years 9
 ```
 
+GitHub Actions의 **Historical point-in-time replay**를 수동 실행할 때 일반 검증은
+기본값 그대로 `full=false`, `frozen_inputs=true`, `confirm_new_generation=false`,
+`retrain=false`를 사용합니다. 이 모드는 커밋된 frozen input만 읽습니다. 벤더에서 새 입력을
+받는 작업은 단순 검증이 아니라 새 replay 세대 생성입니다. `DATA_VERSION`과
+`REPLAY_VERSION`을 먼저 의도적으로 올린 뒤에만 `full=true`, `frozen_inputs=false`,
+`confirm_new_generation=true`를 함께 선택해야 하며, 그렇지 않으면 workflow가 비싼 작업을
+시작하기 전에 중단합니다.
+
 빌드는 다음 환경변수로 과거 ledger를 읽습니다(CI가 `signal-history` 브랜치에서 주입): `HISTORICAL_SIGNALS_PATH`, `HISTORICAL_OUTCOMES_PATH`, `HISTORICAL_DIAGNOSTICS_PATH`, `OPPORTUNITY_MODEL_PATH`, `WARNING_MODEL_PATH`. 없으면 과거 prior 없이 정상 동작하며 그 상태를 artifact에 기록합니다.
 
 **계산비용.** 전체 재현은 종목수 × 재현 날짜 수에 비례합니다(주 단위 기준 550종목 × 13년 ≈ 수십 분). 그래서 `.github/workflows/replay.yml`은 **증분**으로 돌고, ML 재학습은 주 1회입니다. 일주일치 새 관측치가 walk-forward 선택을 바꿀 수 없는데 매일 재학습하면 비용만 늘고 **유효 시도 횟수만 부풀립니다**. 재현 주기 선택(`D`/`W`/`M`)의 trade-off는 `config.historicalReplay._notes`에 기록했습니다: 일 단위는 5배 비용에 대부분 겹치는 관측치만 추가되고 HAC 유효표본은 거의 늘지 않으며, 월 단위는 버킷 calibration에 필요한 횡단면 수를 밑돕니다.
