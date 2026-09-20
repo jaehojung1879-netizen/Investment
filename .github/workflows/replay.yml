@@ -17,11 +17,15 @@ on:
   workflow_dispatch:
     inputs:
       full:
-        description: "Recompute every replay date (needed when replay logic changes)"
+        description: "Recompute all dates from the selected snapshot"
         type: boolean
         default: false
       frozen_inputs:
-        description: "Reproduce the committed input snapshot without fetching vendors"
+        description: "SAFE DEFAULT: reproduce committed inputs; use for ordinary validation"
+        type: boolean
+        default: true
+      confirm_new_generation:
+        description: "DANGER: fetch new inputs only after DATA_VERSION and REPLAY_VERSION are bumped"
         type: boolean
         default: false
       retrain:
@@ -46,6 +50,32 @@ jobs:
     steps:
       - name: Checkout code (main)
         uses: actions/checkout@v5
+
+      # Ordinary manual validation must reproduce the committed snapshot. Live
+      # acquisition changes the replay inputs and therefore belongs to a new,
+      # fully recomputed DATA_VERSION/REPLAY_VERSION generation. Requiring all
+      # three switches makes that semantic change deliberate and fails before
+      # the expensive vendor/replay work if the UI was configured incorrectly.
+      - name: Validate manual replay mode
+        if: github.event_name == 'workflow_dispatch'
+        run: |
+          frozen="${{ inputs.frozen_inputs }}"
+          confirmed="${{ inputs.confirm_new_generation }}"
+          full="${{ inputs.full }}"
+
+          if [ "$frozen" = "true" ] && [ "$confirmed" = "true" ]; then
+            echo "::error::Choose one replay mode: frozen validation OR confirmed new-generation acquisition."
+            exit 1
+          fi
+          if [ "$frozen" != "true" ] && [ "$confirmed" != "true" ]; then
+            echo "::error::Live-input acquisition is blocked without confirm_new_generation=true. For ordinary validation keep frozen_inputs=true."
+            exit 1
+          fi
+          if [ "$confirmed" = "true" ] && [ "$full" != "true" ]; then
+            echo "::error::A new input generation must recompute the full replay: set full=true."
+            exit 1
+          fi
+          echo "Replay mode accepted: frozen_inputs=$frozen, confirm_new_generation=$confirmed, full=$full"
 
       - name: Set up Python
         uses: actions/setup-python@v6
@@ -84,7 +114,7 @@ jobs:
       # run for a reason that has nothing to do with the evidence. Carried
       # forward, an outage costs that run's refresh and nothing else.
       - name: Refresh point-in-time index membership
-        if: github.event_name != 'schedule' && inputs.frozen_inputs != true
+        if: github.event_name != 'schedule' && inputs.frozen_inputs != true && inputs.confirm_new_generation == true
         run: |
           if [ -f replay-work/ledger/universe-history.json ]; then
             cp replay-work/ledger/universe-history.json data/universe-history.json
@@ -123,7 +153,7 @@ jobs:
       # that has not been collected yet yields an empty file and says so; it is
       # not an error, and it is the state the US half was in until v15.
       - name: Derive PIT fundamentals from the collected filings
-        if: github.event_name != 'schedule' && inputs.frozen_inputs != true
+        if: github.event_name != 'schedule' && inputs.frozen_inputs != true && inputs.confirm_new_generation == true
         run: |
           python scripts/build_pit_fundamentals.py \
             replay-work/ledger/fundamentals/kr \
@@ -214,7 +244,7 @@ jobs:
       # would multiply the effective number of trials.
       - name: Train / validate the opportunity model
         run: |
-          if { [ "${{ github.event_name }}" != "schedule" ] && [ "$(date -u +%u)" = "7" ] && [ "${{ inputs.frozen_inputs }}" != "true" ]; } || [ "${{ inputs.retrain }}" = "true" ]; then
+          if { [ "${{ github.event_name }}" != "schedule" ] && [ "$(date -u +%u)" = "7" ] && [ "${{ inputs.frozen_inputs }}" != "true" ] && [ "${{ inputs.confirm_new_generation }}" = "true" ]; } || [ "${{ inputs.retrain }}" = "true" ]; then
             python scripts/train_opportunity.py replay-work/ledger
             python scripts/train_opportunity.py replay-work/ledger --warning
           else
