@@ -1,0 +1,849 @@
+{
+  "challengerSelectionNull": {
+    "actual": {
+      "annualizedExcessPct": -1.3777,
+      "informationRatio": -0.1217,
+      "sharpe": 0.814
+    },
+    "actualTurnoverPct": 40.71,
+    "available": true,
+    "blocks": 155,
+    "blocksDroppedForPoolCoverage": 0,
+    "byMode": {
+      "INDEPENDENT_PER_DATE": {
+        "available": true,
+        "discardedDraws": {},
+        "draws": 200,
+        "nullMedianTurnoverPct": 66.2,
+        "overall": {
+          "assessed": [
+            "annualizedExcessPct",
+            "informationRatio",
+            "sharpe"
+          ],
+          "beatsRandomOn": [],
+          "riskAdjustedRequired": true,
+          "riskAdjustedStatistics": [
+            "informationRatio",
+            "sharpe"
+          ],
+          "scope": "RANDOM_RANK_WITHIN_RESEARCH_POOL",
+          "scopeNoteKo": "이 검정은 연구 후보군 안에서의 '순위·집중' 단계만 검증합니다. 후보군 자체가 alpha 점수로 걸러지므로, 연구 스크리닝의 기여는 여기서 측정되지 않습니다.",
+          "verdict": "INDISTINGUISHABLE_FROM_RANDOM",
+          "worseThanRandomOn": []
+        },
+        "statistics": {
+          "annualizedExcessPct": {
+            "actual": -1.3777,
+            "alpha": 0.05,
+            "draws": 200,
+            "higherIsBetter": true,
+            "nullMean": -4.3242,
+            "nullP05": -8.3163,
+            "nullP50": -4.3982,
+            "nullP95": 0.0701,
+            "nullSd": 2.603,
+            "pValueBeatsRandom": 0.1343,
+            "pValueWorseThanRandom": 0.8706,
+            "percentileOfNull": 87.0,
+            "statistic": "annualizedExcessPct",
+            "verdict": "INDISTINGUISHABLE_FROM_RANDOM"
+          },
+          "informationRatio": {
+            "actual": -0.1217,
+            "alpha": 0.05,
+            "draws": 200,
+            "higherIsBetter": true,
+            "nullMean": -0.3463,
+            "nullP05": -0.7123,
+            "nullP50": -0.341,
+            "nullP95": 0.0466,
+            "nullSd": 0.2252,
+            "pValueBeatsRandom": 0.1642,
+            "pValueWorseThanRandom": 0.8408,
+            "percentileOfNull": 84.0,
+            "statistic": "informationRatio",
+            "verdict": "INDISTINGUISHABLE_FROM_RANDOM"
+          },
+          "sharpe": {
+            "actual": 0.814,
+            "alpha": 0.05,
+            "draws": 200,
+            "higherIsBetter": true,
+            "nullMean": 0.5207,
+            "nullP05": 0.1942,
+            "nullP50": 0.5171,
+            "nullP95": 0.8225,
+            "nullSd": 0.182,
+            "pValueBeatsRandom": 0.0647,
+            "pValueWorseThanRandom": 0.9403,
+            "percentileOfNull": 94.0,
+            "statistic": "sharpe",
+            "verdict": "INDISTINGUISHABLE_FROM_RANDOM"
+          }
+        }
+      },
+      "PERSISTENT_PER_DRAW": {
+        "available": true,
+        "discardedDraws": {},
+        "draws": 200,
+        "nullMedianTurnoverPct": 37.71,
+        "overall": {
+          "assessed": [
+            "annualizedExcessPct",
+            "informationRatio",
+            "sharpe"
+          ],
+          "beatsRandomOn": [],
+          "riskAdjustedRequired": true,
+          "riskAdjustedStatistics": [
+            "informationRatio",
+            "sharpe"
+          ],
+          "scope": "RANDOM_RANK_WITHIN_RESEARCH_POOL",
+          "scopeNoteKo": "이 검정은 연구 후보군 안에서의 '순위·집중' 단계만 검증합니다. 후보군 자체가 alpha 점수로 걸러지므로, 연구 스크리닝의 기여는 여기서 측정되지 않습니다.",
+          "verdict": "INDISTINGUISHABLE_FROM_RANDOM",
+          "worseThanRandomOn": []
+        },
+        "statistics": {
+          "annualizedExcessPct": {
+            "actual": -1.3777,
+            "alpha": 0.05,
+            "draws": 200,
+            "higherIsBetter": true,
+            "nullMean": -2.9392,
+            "nullP05": -7.5343,
+            "nullP50": -2.8754,
+            "nullP95": 1.857,
+            "nullSd": 3.0419,
+            "pValueBeatsRandom": 0.2935,
+            "pValueWorseThanRandom": 0.7114,
+            "percentileOfNull": 71.0,
+            "statistic": "annualizedExcessPct",
+            "verdict": "INDISTINGUISHABLE_FROM_RANDOM"
+          },
+          "informationRatio": {
+            "actual": -0.1217,
+            "alpha": 0.05,
+            "draws": 200,
+            "higherIsBetter": true,
+            "nullMean": -0.2251,
+            "nullP05": -0.6427,
+            "nullP50": -0.2214,
+            "nullP95": 0.1744,
+            "nullSd": 0.2502,
+            "pValueBeatsRandom": 0.3483,
+            "pValueWorseThanRandom": 0.6567,
+            "percentileOfNull": 65.5,
+            "statistic": "informationRatio",
+            "verdict": "INDISTINGUISHABLE_FROM_RANDOM"
+          },
+          "sharpe": {
+            "actual": 0.814,
+            "alpha": 0.05,
+            "draws": 200,
+            "higherIsBetter": true,
+            "nullMean": 0.6104,
+            "nullP05": 0.2659,
+            "nullP50": 0.6269,
+            "nullP95": 0.8918,
+            "nullSd": 0.1917,
+            "pValueBeatsRandom": 0.1343,
+            "pValueWorseThanRandom": 0.8706,
+            "percentileOfNull": 87.0,
+            "statistic": "sharpe",
+            "verdict": "INDISTINGUISHABLE_FROM_RANDOM"
+          }
+        }
+      }
+    },
+    "directlyComparableToDailySharpe": false,
+    "firstDate": "2013-01-07",
+    "heldFixed": [
+      "dates",
+      "research candidate pool",
+      "name/sector/region caps",
+      "entry-state and evidence exclusions",
+      "regime cash floor",
+      "baseline weighting function",
+      "transaction costs",
+      "distribution of conviction scores"
+    ],
+    "horizonDays": 21,
+    "lastDate": "2026-08-12",
+    "method": "RANDOM_RANK_WITHIN_RESEARCH_POOL",
+    "metricBasis": "FIXED_BLOCK_RETURNS_CALENDAR_SPAN_WITH_KRW_RISK_FREE",
+    "modes": [
+      "INDEPENDENT_PER_DATE",
+      "PERSISTENT_PER_DRAW"
+    ],
+    "overall": {
+      "byMode": {
+        "INDEPENDENT_PER_DATE": "INDISTINGUISHABLE_FROM_RANDOM",
+        "PERSISTENT_PER_DRAW": "INDISTINGUISHABLE_FROM_RANDOM"
+      },
+      "explainKo": "두 종류의 무작위 순위를 모두 이겨야 우위로 봅니다. 'INDEPENDENT_PER_DATE'는 매 시점 순위를 새로 뽑아 회전율이 높고 비용을 더 내므로, 이것만 이기는 것은 '덜 사고팔아서'로 설명될 수 있습니다. 'PERSISTENT_PER_DRAW'는 한 번 정한 선호를 끝까지 유지해 실제보다 덜 바꾸므로, 이쪽까지 이겨야 '종목을 잘 골랐다'가 됩니다.",
+      "requiresEveryMode": true,
+      "scope": "RANDOM_RANK_WITHIN_RESEARCH_POOL",
+      "scopeNoteKo": "두 검정 모두 연구 후보군 안에서의 순위·집중 단계만 검증합니다. 후보군 자체가 alpha 점수로 걸러지므로 연구 스크리닝의 기여는 여기서 측정되지 않습니다.",
+      "verdict": "INDISTINGUISHABLE_FROM_RANDOM"
+    },
+    "requestedDraws": 200,
+    "scoreSource": "INJECTED_SELECTOR_SCORE",
+    "selector": "CALIBRATED_EXPECTED_RETURN_PER_DOWNSIDE_RISK",
+    "varied": [
+      "which name each conviction score is attached to",
+      "the alpha selection floor, which is itself a score decision"
+    ]
+  },
+  "championSelectionNull": {
+    "actualTurnoverPct": 56.28,
+    "note": "Copied from the sealed report for side-by-side reading. It permutes the champion's conviction score and is not evidence about the challenger.",
+    "overall": {
+      "byMode": {
+        "INDEPENDENT_PER_DATE": "INDISTINGUISHABLE_FROM_RANDOM",
+        "PERSISTENT_PER_DRAW": "INDISTINGUISHABLE_FROM_RANDOM"
+      },
+      "explainKo": "두 종류의 무작위 순위를 모두 이겨야 우위로 봅니다. 'INDEPENDENT_PER_DATE'는 매 시점 순위를 새로 뽑아 회전율이 높고 비용을 더 내므로, 이것만 이기는 것은 '덜 사고팔아서'로 설명될 수 있습니다. 'PERSISTENT_PER_DRAW'는 한 번 정한 선호를 끝까지 유지해 실제보다 덜 바꾸므로, 이쪽까지 이겨야 '종목을 잘 골랐다'가 됩니다.",
+      "requiresEveryMode": true,
+      "scope": "RANDOM_RANK_WITHIN_RESEARCH_POOL",
+      "scopeNoteKo": "두 검정 모두 연구 후보군 안에서의 순위·집중 단계만 검증합니다. 후보군 자체가 alpha 점수로 걸러지므로 연구 스크리닝의 기여는 여기서 측정되지 않습니다.",
+      "verdict": "INDISTINGUISHABLE_FROM_RANDOM"
+    },
+    "selector": "ALPHA_RANK_PER_DOWNSIDE_RISK"
+  },
+  "finding": {
+    "arithmeticEdgeByRung": {
+      "SCREEN_ONLY_RISK_WEIGHTED_NO_RANKING": -1.7711,
+      "SCREEN_PLUS_CONCENTRATION_PUBLISHED_BOOK": 0.0397,
+      "SCREEN_PLUS_CONVICTION_TILT_NO_CONCENTRATION": -1.5009
+    },
+    "bestRung": "SCREEN_PLUS_CONCENTRATION_PUBLISHED_BOOK",
+    "bestRungNetExcessPp": -1.046223,
+    "challengerNullVerdict": "INDISTINGUISHABLE_FROM_RANDOM",
+    "concentratedNetExcessPp": -1.046223,
+    "hypothesisRefuted": true,
+    "nextDirection": "The challenger's own null — never computed before, because the sealed report permutes the champion's score — returns INDISTINGUISHABLE_FROM_RANDOM at best p=0.065, so the ranking does not clear the pre-registered 5% bar on any statistic even though it sits far above the champion's. Two bars are being confused if that is read as the whole answer: choosing beats a permuted ranking here and the book still trails its matched benchmark, so the remaining deficit is implementation rather than ordering. Breadth is now ruled out as the remedy, which leaves the hurdle/hysteresis proposal `benchmark-relative-alpha-v1` already named — supported now by a measurement rather than by an unsplit CAGR gap. It must still be frozen before prospective observations and judged forward.",
+    "rankingConcentrationValuePp": 1.682989,
+    "screenOnlyNetExcessPp": -2.729212,
+    "selectionNullNote": "The sealed report already tests the champion ranking against the book the same construction builds from a permuted ranking: INDISTINGUISHABLE_FROM_RANDOM on annualizedExcessPct, informationRatio, sharpe. The null book also churns more than the real one, so the real book is not a null that merely trades less.",
+    "summary": "The published concentrated book's 0.340pp gross edge is 0.040pp of arithmetic stock selection and 0.300pp of compounding at 0.826x the benchmark's block volatility, and 93.060% of its turnover is names being replaced rather than weights retargeted. The hypothesis that followed — that the ranking is not worth that bill, so hold what the screen approved — is REFUTED by this ladder: holding the pool broadly lands at -2.729pp against the concentrated book's -1.046pp, and the arithmetic selection edge rises monotonically with how much of the ranking is used (-1.771pp -> -1.501pp -> 0.040pp).",
+    "verdict": "BENCHMARK_NOT_BEATEN"
+  },
+  "freezeManifest": {
+    "heldFixedAcrossRungs": [
+      "fixed 21-session evaluation blocks",
+      "PIT research candidate pool and its own membership hysteresis",
+      "retarget on every block",
+      "entry-state and research-view exclusions",
+      "maxPositionWeight / maxSectorWeight / maxThemeWeight",
+      "regime cash floor and minCashPct",
+      "realistic transaction cost schedule"
+    ],
+    "id": "selection-value-decomposition-v1",
+    "ladder": [
+      "SCREEN_ONLY_RISK_WEIGHTED_NO_RANKING",
+      "SCREEN_PLUS_CONVICTION_TILT_NO_CONCENTRATION",
+      "SCREEN_PLUS_CONCENTRATION_PUBLISHED_BOOK"
+    ],
+    "liveValidated": false,
+    "note": "A ladder of ablations on sealed inputs. Each rung is a fixed point on how much of the ranking is used, specified before the result was seen. No rung is a tuned variant and no rung may promote a selector.",
+    "poolSizeObserved": [
+      24
+    ],
+    "productionChanged": false,
+    "promotionEligible": false,
+    "rankingSource": "CALIBRATED_EXPECTED_RETURN_PER_DOWNSIDE_RISK",
+    "status": "DIAGNOSTIC",
+    "tiltOff": 0.0,
+    "variedAcrossRungs": [
+      "whether the ranking sizes positions (conviction tilt)",
+      "whether the ranking excludes names (concentration)"
+    ]
+  },
+  "inputSnapshot": {
+    "sha256": "f0781292f508a123c234ded6d28aa8e84a0dc3cc29500e14989dc0b68f53b4d2",
+    "through": "2026-09-14"
+  },
+  "ladder": {
+    "SCREEN_ONLY_RISK_WEIGHTED_NO_RANKING": {
+      "annualOneWayTurnoverX": 3.675546853459196,
+      "annualizedExcessPct": -2.729212,
+      "averageCashPct": 20.417269677419355,
+      "averageTurnoverPct": 32.66,
+      "benchmarkCagrPct": 13.303369,
+      "cagrPct": 10.574157,
+      "calendarYears": 13.684059,
+      "calmar": 0.3799238280921582,
+      "costDragCagrPp": 0.9020802417597018,
+      "cvar95Pct": -1.510966,
+      "edgeDecomposition": {
+        "arithmeticSelectionEdgePp": -1.7711,
+        "available": true,
+        "benchmarkBlockSdPct": 3.4047,
+        "blockSdRatio": 0.8853,
+        "blocks": 155,
+        "bookBlockSdPct": 3.0141,
+        "compoundingEdgePp": -0.0561,
+        "geometricGrossEdgePp": -1.8271,
+        "note": "GEOMETRIC = ARITHMETIC + COMPOUNDING. A book less volatile than its matched benchmark earns a positive compounding term without picking a single better name."
+      },
+      "grossBenchmarkGapPp": -1.8271317582402986,
+      "grossCagrPct": 11.476237241759701,
+      "informationRatio": -0.324838,
+      "mddPct": -27.832308,
+      "sharpe": 0.818038,
+      "sortino": 1.141486,
+      "sumTransactionCostPct": 11.113911510750734,
+      "turnoverDecomposition": {
+        "available": true,
+        "averageNamesHeld": 21.08,
+        "averageOneWayTurnoverPct": 30.2922,
+        "fromNameReplacementPct": 26.6931,
+        "fromWeightRetargetPct": 3.5992,
+        "nameReplacementSharePct": 88.12,
+        "namesCarriedToNextBlockPct": 64.97,
+        "rebalances": 154
+      },
+      "turnoverRebalances": 154
+    },
+    "SCREEN_PLUS_CONCENTRATION_PUBLISHED_BOOK": {
+      "annualOneWayTurnoverX": 4.563908998053867,
+      "annualizedExcessPct": -1.046223,
+      "averageCashPct": 30.514979354838704,
+      "averageTurnoverPct": 43.37,
+      "benchmarkCagrPct": 12.639039,
+      "cagrPct": 11.592815,
+      "calendarYears": 13.684059,
+      "calmar": 0.47196492560276126,
+      "costDragCagrPp": 1.3864208827577773,
+      "cvar95Pct": -1.859577,
+      "edgeDecomposition": {
+        "arithmeticSelectionEdgePp": 0.0397,
+        "available": true,
+        "benchmarkBlockSdPct": 4.1695,
+        "blockSdRatio": 0.8255,
+        "blocks": 155,
+        "bookBlockSdPct": 3.442,
+        "compoundingEdgePp": 0.3005,
+        "geometricGrossEdgePp": 0.3402,
+        "note": "GEOMETRIC = ARITHMETIC + COMPOUNDING. A book less volatile than its matched benchmark earns a positive compounding term without picking a single better name."
+      },
+      "grossBenchmarkGapPp": 0.3401968827577768,
+      "grossCagrPct": 12.979235882757777,
+      "informationRatio": -0.07265,
+      "mddPct": -24.562874,
+      "sharpe": 0.757356,
+      "sortino": 1.077824,
+      "sumTransactionCostPct": 16.884073909376898,
+      "turnoverDecomposition": {
+        "available": true,
+        "averageNamesHeld": 4.66,
+        "averageOneWayTurnoverPct": 41.0729,
+        "fromNameReplacementPct": 38.224,
+        "fromWeightRetargetPct": 2.8489,
+        "nameReplacementSharePct": 93.06,
+        "namesCarriedToNextBlockPct": 39.81,
+        "rebalances": 144
+      },
+      "turnoverRebalances": 144
+    },
+    "SCREEN_PLUS_CONVICTION_TILT_NO_CONCENTRATION": {
+      "annualOneWayTurnoverX": 3.7959643406974495,
+      "annualizedExcessPct": -2.47575,
+      "averageCashPct": 20.549854193548384,
+      "averageTurnoverPct": 33.73,
+      "benchmarkCagrPct": 13.670894,
+      "cagrPct": 11.195144,
+      "calendarYears": 13.684059,
+      "calmar": 0.422409137171292,
+      "costDragCagrPp": 0.988241142456447,
+      "cvar95Pct": -1.484768,
+      "edgeDecomposition": {
+        "arithmeticSelectionEdgePp": -1.5009,
+        "available": true,
+        "benchmarkBlockSdPct": 3.5858,
+        "blockSdRatio": 0.8617,
+        "blocks": 155,
+        "bookBlockSdPct": 3.09,
+        "compoundingEdgePp": 0.0134,
+        "geometricGrossEdgePp": -1.4875,
+        "note": "GEOMETRIC = ARITHMETIC + COMPOUNDING. A book less volatile than its matched benchmark earns a positive compounding term without picking a single better name."
+      },
+      "grossBenchmarkGapPp": -1.4875088575435527,
+      "grossCagrPct": 12.183385142456448,
+      "informationRatio": -0.285522,
+      "mddPct": -26.503082,
+      "sharpe": 0.886018,
+      "sortino": 1.23839,
+      "sumTransactionCostPct": 12.102668891830731,
+      "turnoverDecomposition": {
+        "available": true,
+        "averageNamesHeld": 21.08,
+        "averageOneWayTurnoverPct": 31.3401,
+        "fromNameReplacementPct": 24.9846,
+        "fromWeightRetargetPct": 6.3555,
+        "nameReplacementSharePct": 79.72,
+        "namesCarriedToNextBlockPct": 64.97,
+        "rebalances": 154
+      },
+      "turnoverRebalances": 154
+    }
+  },
+  "pairedComparisons": {
+    "SCREEN_PLUS_CONCENTRATION_PUBLISHED_BOOK minus SCREEN_PLUS_CONVICTION_TILT_NO_CONCENTRATION": {
+      "available": true,
+      "cashAndCostDeltas": {
+        "averageCashPct": 9.96512516129032,
+        "averageEquityPct": -9.965125161290317,
+        "averageTurnoverPct": 9.64,
+        "benchmarkCagrPct": -1.0318550000000002,
+        "costDragCagrPp": 0.3981797403013303,
+        "sumTransactionCostPct": 4.781405017546167
+      },
+      "delta": {
+        "annualizedExcessPct": 1.4295270000000002,
+        "cagrPct": 0.397670999999999,
+        "calmar": 0.04955578843146924,
+        "cvar95Pct": -0.37480899999999995,
+        "mddPct": 1.9402079999999984,
+        "sharpe": -0.12866199999999994,
+        "sortino": -0.1605660000000002
+      },
+      "estimandNote": "Path deltas recompute nonlinear statistics on jointly resampled net daily blocks. Mean block-metric deltas are a separate estimand, not the full-path delta. Costs and allocations are fixed at their original chronological values. Blocks are treated as exchangeable; serial regime dependence is not removed.",
+      "mddDescription": "+1.940pp shallower drawdown",
+      "meanPairedBlockMetricDifferenceCI": {
+        "annualizedExcessPct": {
+          "bootstrapMean": -3.7525609035107923,
+          "ci95": [
+            -16.627771106927785,
+            6.452205280720088
+          ],
+          "evidence": "historical evidence is inconclusive",
+          "pairedBlocks": 155,
+          "pointEstimate": -3.5060757896359047,
+          "reason": null,
+          "samples": 2000,
+          "seed": 11,
+          "validSamples": 2000
+        },
+        "cagrPct": {
+          "bootstrapMean": 2.1072086613156853,
+          "ci95": [
+            -3.0143563841822596,
+            7.574556056030946
+          ],
+          "evidence": "historical evidence is inconclusive",
+          "pairedBlocks": 155,
+          "pointEstimate": 2.2383551474802568,
+          "reason": null,
+          "samples": 2000,
+          "seed": 11,
+          "validSamples": 2000
+        },
+        "calmar": {
+          "bootstrapMean": null,
+          "ci95": [
+            null,
+            null
+          ],
+          "evidence": "historical evidence is inconclusive",
+          "pairedBlocks": 155,
+          "pointEstimate": null,
+          "reason": "INSUFFICIENT_PAIRS_OR_UNDEFINED_METRIC_IN_RESAMPLES",
+          "samples": 2000,
+          "seed": 11,
+          "validSamples": 0
+        },
+        "cvar95Pct": {
+          "bootstrapMean": -0.1217643819576795,
+          "ci95": [
+            -0.23306159669293686,
+            -0.020222755535372946
+          ],
+          "evidence": "historical interval excludes zero; prospective evidence still required",
+          "pairedBlocks": 155,
+          "pointEstimate": -0.12133623281135489,
+          "reason": null,
+          "samples": 2000,
+          "seed": 11,
+          "validSamples": 2000
+        },
+        "mddPct": {
+          "bootstrapMean": -0.2932867986111772,
+          "ci95": [
+            -0.6457531632677438,
+            0.012233861171248635
+          ],
+          "evidence": "historical evidence is inconclusive",
+          "pairedBlocks": 155,
+          "pointEstimate": -0.287391633625557,
+          "reason": null,
+          "samples": 2000,
+          "seed": 11,
+          "validSamples": 2000
+        },
+        "sharpe": {
+          "bootstrapMean": null,
+          "ci95": [
+            null,
+            null
+          ],
+          "evidence": "historical evidence is inconclusive",
+          "pairedBlocks": 155,
+          "pointEstimate": null,
+          "reason": "INSUFFICIENT_PAIRS_OR_UNDEFINED_METRIC_IN_RESAMPLES",
+          "samples": 2000,
+          "seed": 11,
+          "validSamples": 0
+        },
+        "sortino": {
+          "bootstrapMean": null,
+          "ci95": [
+            null,
+            null
+          ],
+          "evidence": "historical evidence is inconclusive",
+          "pairedBlocks": 155,
+          "pointEstimate": null,
+          "reason": "INSUFFICIENT_PAIRS_OR_UNDEFINED_METRIC_IN_RESAMPLES",
+          "samples": 2000,
+          "seed": 11,
+          "validSamples": 0
+        }
+      },
+      "method": "PAIRED_WHOLE_EVALUATION_BLOCK_PERCENTILE_BOOTSTRAP",
+      "pathDifferenceCI": {
+        "annualizedExcessPct": {
+          "bootstrapMean": 1.3147720732292305,
+          "ci95": [
+            -3.762330179707145,
+            6.353933407022663
+          ],
+          "evidence": "historical evidence is inconclusive",
+          "pairedBlocks": 155,
+          "pointEstimate": 1.4295270000000002,
+          "reason": null,
+          "samples": 2000,
+          "seed": 11,
+          "validSamples": 2000
+        },
+        "cagrPct": {
+          "bootstrapMean": 0.26739683479483073,
+          "ci95": [
+            -4.757353122915532,
+            5.285669852606389
+          ],
+          "evidence": "historical evidence is inconclusive",
+          "pairedBlocks": 155,
+          "pointEstimate": 0.397670999999999,
+          "reason": null,
+          "samples": 2000,
+          "seed": 11,
+          "validSamples": 2000
+        },
+        "calmar": {
+          "bootstrapMean": -0.09309360091318761,
+          "ci95": [
+            -0.7891530342369159,
+            0.3476373960244843
+          ],
+          "evidence": "historical evidence is inconclusive",
+          "pairedBlocks": 155,
+          "pointEstimate": 0.04955578843146924,
+          "reason": null,
+          "samples": 2000,
+          "seed": 11,
+          "validSamples": 2000
+        },
+        "cvar95Pct": {
+          "bootstrapMean": -0.3765194497002106,
+          "ci95": [
+            -0.7274224295629863,
+            -0.10194798416990007
+          ],
+          "evidence": "historical interval excludes zero; prospective evidence still required",
+          "pairedBlocks": 155,
+          "pointEstimate": -0.37480899999999995,
+          "reason": null,
+          "samples": 2000,
+          "seed": 11,
+          "validSamples": 2000
+        },
+        "mddPct": {
+          "bootstrapMean": -3.2774825750953824,
+          "ci95": [
+            -18.000861581822477,
+            8.093691284085587
+          ],
+          "evidence": "historical evidence is inconclusive",
+          "pairedBlocks": 155,
+          "pointEstimate": 1.9402079999999984,
+          "reason": null,
+          "samples": 2000,
+          "seed": 11,
+          "validSamples": 2000
+        },
+        "sharpe": {
+          "bootstrapMean": -0.14906497460520526,
+          "ci95": [
+            -0.6007558818470208,
+            0.2901820469647666
+          ],
+          "evidence": "historical evidence is inconclusive",
+          "pairedBlocks": 155,
+          "pointEstimate": -0.12866199999999994,
+          "reason": null,
+          "samples": 2000,
+          "seed": 11,
+          "validSamples": 2000
+        },
+        "sortino": {
+          "bootstrapMean": -0.1882732357417363,
+          "ci95": [
+            -0.8981746572288365,
+            0.4787142729108323
+          ],
+          "evidence": "historical evidence is inconclusive",
+          "pairedBlocks": 155,
+          "pointEstimate": -0.1605660000000002,
+          "reason": null,
+          "samples": 2000,
+          "seed": 11,
+          "validSamples": 2000
+        }
+      }
+    },
+    "SCREEN_PLUS_CONVICTION_TILT_NO_CONCENTRATION minus SCREEN_ONLY_RISK_WEIGHTED_NO_RANKING": {
+      "available": true,
+      "cashAndCostDeltas": {
+        "averageCashPct": 0.13258451612902888,
+        "averageEquityPct": -0.13258451612902888,
+        "averageTurnoverPct": 1.0700000000000003,
+        "benchmarkCagrPct": 0.36752500000000055,
+        "costDragCagrPp": 0.0861609006967452,
+        "sumTransactionCostPct": 0.9887573810799974
+      },
+      "delta": {
+        "annualizedExcessPct": 0.25346199999999985,
+        "cagrPct": 0.6209870000000013,
+        "calmar": 0.04248530907913384,
+        "cvar95Pct": 0.026197999999999944,
+        "mddPct": 1.329226000000002,
+        "sharpe": 0.06797999999999993,
+        "sortino": 0.0969040000000001
+      },
+      "estimandNote": "Path deltas recompute nonlinear statistics on jointly resampled net daily blocks. Mean block-metric deltas are a separate estimand, not the full-path delta. Costs and allocations are fixed at their original chronological values. Blocks are treated as exchangeable; serial regime dependence is not removed.",
+      "mddDescription": "+1.329pp shallower drawdown",
+      "meanPairedBlockMetricDifferenceCI": {
+        "annualizedExcessPct": {
+          "bootstrapMean": -0.8446011113753995,
+          "ci95": [
+            -2.7246496040613315,
+            0.7353426945315529
+          ],
+          "evidence": "historical evidence is inconclusive",
+          "pairedBlocks": 155,
+          "pointEstimate": -0.8035703861756556,
+          "reason": null,
+          "samples": 2000,
+          "seed": 11,
+          "validSamples": 2000
+        },
+        "cagrPct": {
+          "bootstrapMean": 1.2744627592420157,
+          "ci95": [
+            -0.5119333975090079,
+            3.505811749301858
+          ],
+          "evidence": "historical evidence is inconclusive",
+          "pairedBlocks": 155,
+          "pointEstimate": 1.2812042154544725,
+          "reason": null,
+          "samples": 2000,
+          "seed": 11,
+          "validSamples": 2000
+        },
+        "calmar": {
+          "bootstrapMean": 1.4039003454393273,
+          "ci95": [
+            -0.43806345607944097,
+            3.4736744647877615
+          ],
+          "evidence": "historical evidence is inconclusive",
+          "pairedBlocks": 155,
+          "pointEstimate": 1.4093332136551628,
+          "reason": null,
+          "samples": 2000,
+          "seed": 11,
+          "validSamples": 2000
+        },
+        "cvar95Pct": {
+          "bootstrapMean": 0.0165449536348295,
+          "ci95": [
+            -0.009826416426942632,
+            0.04148339482008318
+          ],
+          "evidence": "historical evidence is inconclusive",
+          "pairedBlocks": 155,
+          "pointEstimate": 0.016548403147603037,
+          "reason": null,
+          "samples": 2000,
+          "seed": 11,
+          "validSamples": 2000
+        },
+        "mddPct": {
+          "bootstrapMean": 0.0189123398185585,
+          "ci95": [
+            -0.048920410712547435,
+            0.08839205974023699
+          ],
+          "evidence": "historical evidence is inconclusive",
+          "pairedBlocks": 155,
+          "pointEstimate": 0.019485517129449816,
+          "reason": null,
+          "samples": 2000,
+          "seed": 11,
+          "validSamples": 2000
+        },
+        "sharpe": {
+          "bootstrapMean": 0.04249681227192582,
+          "ci95": [
+            -0.08240884366874443,
+            0.16630203190797838
+          ],
+          "evidence": "historical evidence is inconclusive",
+          "pairedBlocks": 155,
+          "pointEstimate": 0.04514677574125499,
+          "reason": null,
+          "samples": 2000,
+          "seed": 11,
+          "validSamples": 2000
+        },
+        "sortino": {
+          "bootstrapMean": 0.20040791770395935,
+          "ci95": [
+            -0.0630808652583504,
+            0.46968653491088236
+          ],
+          "evidence": "historical evidence is inconclusive",
+          "pairedBlocks": 155,
+          "pointEstimate": 0.20535576377621692,
+          "reason": null,
+          "samples": 2000,
+          "seed": 11,
+          "validSamples": 2000
+        }
+      },
+      "method": "PAIRED_WHOLE_EVALUATION_BLOCK_PERCENTILE_BOOTSTRAP",
+      "pathDifferenceCI": {
+        "annualizedExcessPct": {
+          "bootstrapMean": 0.23573087992388708,
+          "ci95": [
+            -0.7889660611821947,
+            1.2741592168824354
+          ],
+          "evidence": "historical evidence is inconclusive",
+          "pairedBlocks": 155,
+          "pointEstimate": 0.25346199999999985,
+          "reason": null,
+          "samples": 2000,
+          "seed": 11,
+          "validSamples": 2000
+        },
+        "cagrPct": {
+          "bootstrapMean": 0.5971873624256534,
+          "ci95": [
+            -0.5954095681121522,
+            1.800269117282852
+          ],
+          "evidence": "historical evidence is inconclusive",
+          "pairedBlocks": 155,
+          "pointEstimate": 0.6209870000000013,
+          "reason": null,
+          "samples": 2000,
+          "seed": 11,
+          "validSamples": 2000
+        },
+        "calmar": {
+          "bootstrapMean": 0.04016459638235122,
+          "ci95": [
+            -0.11598380821060697,
+            0.19203908538900394
+          ],
+          "evidence": "historical evidence is inconclusive",
+          "pairedBlocks": 155,
+          "pointEstimate": 0.04248530907913384,
+          "reason": null,
+          "samples": 2000,
+          "seed": 11,
+          "validSamples": 2000
+        },
+        "cvar95Pct": {
+          "bootstrapMean": 0.02605456730218439,
+          "ci95": [
+            -0.023765261900961936,
+            0.07501729229298913
+          ],
+          "evidence": "historical evidence is inconclusive",
+          "pairedBlocks": 155,
+          "pointEstimate": 0.026197999999999944,
+          "reason": null,
+          "samples": 2000,
+          "seed": 11,
+          "validSamples": 2000
+        },
+        "mddPct": {
+          "bootstrapMean": 0.7916861762910523,
+          "ci95": [
+            -2.331764912536227,
+            3.3095583946166696
+          ],
+          "evidence": "historical evidence is inconclusive",
+          "pairedBlocks": 155,
+          "pointEstimate": 1.329226000000002,
+          "reason": null,
+          "samples": 2000,
+          "seed": 11,
+          "validSamples": 2000
+        },
+        "sharpe": {
+          "bootstrapMean": 0.06339190071785224,
+          "ci95": [
+            -0.049405892972432926,
+            0.1722981257334473
+          ],
+          "evidence": "historical evidence is inconclusive",
+          "pairedBlocks": 155,
+          "pointEstimate": 0.06797999999999993,
+          "reason": null,
+          "samples": 2000,
+          "seed": 11,
+          "validSamples": 2000
+        },
+        "sortino": {
+          "bootstrapMean": 0.09191442278336508,
+          "ci95": [
+            -0.07635306346735883,
+            0.26087903487631814
+          ],
+          "evidence": "historical evidence is inconclusive",
+          "pairedBlocks": 155,
+          "pointEstimate": 0.0969040000000001,
+          "reason": null,
+          "samples": 2000,
+          "seed": 11,
+          "validSamples": 2000
+        }
+      }
+    }
+  },
+  "productionChanged": false,
+  "sealedInvariant": {
+    "after": "365dddb1387f1644693c8d458dd824ed8c039d850a4227de5756570664b9a7cc",
+    "before": "365dddb1387f1644693c8d458dd824ed8c039d850a4227de5756570664b9a7cc",
+    "unchanged": true
+  },
+  "status": "DIAGNOSTIC",
+  "version": "selection-value-decomposition-v1"
+}

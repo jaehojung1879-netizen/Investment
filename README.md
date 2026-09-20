@@ -60,6 +60,38 @@ retention credit을 받습니다. production selector나 CHAMPION은 바꾸지 �
 `.github/workflows/benchmark-alpha.yml`, 결과는
 `docs/results/benchmark-alpha-report.md`와 machine-readable JSON에 기록합니다.
 
+### 구성 층별 기여도 분해 / selector별 selection null
+
+`selection-value-decomposition-v1`은 **read-only DIAGNOSTIC**입니다. 위 +0.340%p가
+종목 선택인지, benchmark 대비 gap이 screen의 몫인지 ranking의 몫인지는 측정된 적이
+없었습니다. 같은 155개 고정 블록·같은 PIT 리서치 풀·같은 production 선택/가중 함수·같은
+현실 비용에서, ranking을 한 단계씩 더 쓰는 세 rung을 결과를 보기 전에 고정해 비교합니다.
+[설계와 한계](docs/selection-value-decomposition-v1.md), [실측 보고서](docs/results/selection-value-report.md).
+
+- **CAGR gap은 분해 전까지 selection edge가 아닙니다.** calibrated challenger의
+  +0.340%p는 산술 종목선택 **+0.040%p**와 복리 효과 **+0.300%p**로 갈립니다. 책의 블록
+  변동성이 matched benchmark의 **0.83×**라 분산 손실이 작을 뿐이며, 88%가 저변동성
+  틸트입니다. 회전율도 92~93%가 **종목 교체**이고 비중 재조정이 아닙니다.
+- **"랭킹은 비용값을 못 한다"는 가설은 자기 검정에서 기각됐습니다.** 풀을 넓게 보유하면
+  순초과수익 **−2.729%p**로 집중 책(−1.046%p)보다 나쁘고, 산술 선택 엣지는 ranking을 쓸수록
+  단조 증가합니다(−1.771 → −1.501 → +0.040%p). 다만 rung 간 paired CI는 0을 포함합니다.
+- **selection null은 selector 하나에 귀속됩니다.** sealed 리포트의 null은 CHAMPION의
+  conviction score를 치환한 것이고 selector 표기가 없었습니다. 승격은 CHALLENGER를 옮기는
+  일이므로 게이트가 다른 selector의 증거를 읽고 있었습니다. CHALLENGER의 null을 처음으로
+  계산하면 자기 null의 **87/84/94 백분위**(p=0.134 / 0.164 / **0.065**)로 CHAMPION(61/54/91.5)보다
+  훨씬 강하지만 사전 등록된 5% 기준은 **넘지 못합니다**.
+- **null을 이기는 것과 benchmark를 이기는 것은 다른 기준입니다.** 여기서 "고르는 행위"는
+  치환 랭킹 대비 약 **+2.9%p/년**의 가치가 있는데도 책은 여전히 matched benchmark에 뒤집니다.
+  남은 적자는 ordering이 아니라 implementation입니다.
+
+`selection_null`은 이제 모든 반환에 `selector`·`scoreSource`를 찍고, `promotionEvidence`는
+`promotedSelector`를 명시하며, validator는 다른 selector의 null(또는 무표기 null)에 기댄 승격을
+거부합니다. `promotionEligible`은 여전히 `False`이므로 오늘 바뀌는 동작은 없습니다.
+
+따라서 폭(breadth)은 해법에서 배제되고, 남은 지렛대는 위에서 이미 지목한 hysteresis
+규칙뿐입니다 — 이번에는 분해되지 않은 CAGR gap이 아니라 측정에 근거합니다. 이 결과로
+production·CHAMPION·Kelly·macro·`paperTrading`·`liveValidated`는 바뀌지 않습니다.
+
 ## 실행 상태(runMode)와 데이터 모드(dataMode)
 
 - **runMode**: `researchOnly` · `paperTrading`(기본) · `liveValidated`. 기본값은 `paperTrading`이며, **`liveValidated`는 config만으로 절대 부여되지 않습니다** — paper signal ledger에 충분한 검증 이력이 쌓여야 합니다.
