@@ -149,8 +149,8 @@ def markdown(report: dict) -> str:
               f"| `{ES.ENTRY_AT_WEIGHT}` | removed from selection/tilt, applied once "
               "to the held name's weight |", "", "## The ladder", "",
               "| Rung | Gross CAGR | Cost drag | Net CAGR | Matched benchmark | Net excess | "
-              "Vol | Sharpe | MDD | Turnover |",
-              "|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|"]
+              "Vol | Sharpe | MDD | Turnover | Avg cash |",
+              "|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|"]
     for rung in ES.LADDER:
         row = report["ladder"][rung]
         lines.append(
@@ -160,7 +160,8 @@ def markdown(report: dict) -> str:
             f"{_fmt(row.get('annualizedExcessPct'), 'pp')} | "
             f"{_fmt(row.get('annualizedRealizedVolPct'), '%')} | "
             f"{_fmt(row.get('sharpe'))} | {_fmt(row.get('mddPct'), '%')} | "
-            f"{_fmt(row.get('annualOneWayTurnoverX'), 'x')} |")
+            f"{_fmt(row.get('annualOneWayTurnoverX'), 'x')} | "
+            f"{_fmt(row.get('averageCashPct'), '%')} |")
 
     lines += ["", "### Where the gross gap comes from", "",
               "| Rung | Arithmetic selection | Compounding | Geometric gross edge | Block sd ratio |",
@@ -327,11 +328,17 @@ def main(argv=None) -> int:
 
     inc = report["entryStateIncidence"]
     throttle = report["weightThrottle"]
+    control_cash = report["ladder"][ES.CONTROL].get("averageCashPct")
+    entry_cash = report["ladder"][ES.ENTRY_AT_WEIGHT].get("averageCashPct")
+    control_edge = (report["ladder"][ES.CONTROL].get("edgeDecomposition") or {})
+    entry_edge = (report["ladder"][ES.ENTRY_AT_WEIGHT].get("edgeDecomposition") or {})
     report["finding"] = {
         "verdict": ("BENCHMARK_BEATEN" if (challenger_excess or 0) > 0
                     else "BENCHMARK_NOT_BEATEN"),
         "controlNetExcessPp": control_excess,
         "entryAtWeightNetExcessPp": challenger_excess,
+        "controlAverageCashPct": control_cash,
+        "entryAtWeightAverageCashPct": entry_cash,
         "separated": bool(sep),
         "separationDirection": (sep or {}).get("direction"),
         "promotionEligible": False,
@@ -341,13 +348,26 @@ def main(argv=None) -> int:
             f"{inc['rebalancesWhereSelectionWouldChangePct']}% of control rebalances "
             f"({inc['rebalancesWhereSelectionWouldChange']} of {inc['measuredRebalances']}). "
             f"On the new rung, {_fmt(throttle['throttledNameDatesPct'], '%')} of held "
-            f"name-dates carried a throttled weight. Net excess moves from "
-            f"{_fmt(control_excess, 'pp')} (state discounts selection) to "
-            f"{_fmt(challenger_excess, 'pp')} (state throttles weight only). Paired "
-            f"difference {_fmt((_pair(report['pairedVsControl'])[0]), 'pp')}, 95% CI "
-            f"[{_fmt((_pair(report['pairedVsControl'])[1]), 'pp')}, "
+            f"name-dates carried a throttled weight, and average cash held rose from "
+            f"{_fmt(control_cash, '%')} to {_fmt(entry_cash, '%')} -- a much larger share "
+            f"of the book than the throttle's own direct effect, since alpha-only "
+            f"selection also holds many more of the WATCH/WAIT_FOR_PULLBACK names the "
+            f"discount used to keep out, and most of those are the ones then throttled. "
+            f"Net excess moves from {_fmt(control_excess, 'pp')} (state discounts "
+            f"selection) to {_fmt(challenger_excess, 'pp')} (state throttles weight "
+            f"only). Paired difference {_fmt((_pair(report['pairedVsControl'])[0]), 'pp')}, "
+            f"95% CI [{_fmt((_pair(report['pairedVsControl'])[1]), 'pp')}, "
             f"{_fmt((_pair(report['pairedVsControl'])[2]), 'pp')}], which "
-            + ("EXCLUDES zero." if sep else "CONTAINS zero.")),
+            + ("EXCLUDES zero." if sep else "CONTAINS zero.")
+            + f" The gross gap is overwhelmingly arithmetic stock selection "
+            f"({_fmt(control_edge.get('arithmeticSelectionEdgePp'), 'pp')} -> "
+            f"{_fmt(entry_edge.get('arithmeticSelectionEdgePp'), 'pp')}), not "
+            f"compounding ({_fmt(control_edge.get('compoundingEdgePp'), 'pp')} -> "
+            f"{_fmt(entry_edge.get('compoundingEdgePp'), 'pp')}): on this sample the "
+            f"names the discount used to exclude realised BETTER excess returns than "
+            f"the ones it favoured, not merely lower volatility from holding more "
+            f"cash. That is a claim about THIS historical sample's realised outcomes, "
+            f"not a mechanism this study tested."),
         "nextDirection": (
             "This axis is the continuous throttle only; a state whose multiplier is "
             "0 stays a full eligibility exclusion on both rungs, for incumbents and "
