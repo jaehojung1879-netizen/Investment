@@ -352,6 +352,55 @@
   Exactly one dynamic rule, specified before the result, is compared against
   the fixed-five control.
 
+## Region-quota-removal invariants (v2.16)
+
+- THE PREREQUISITE IS MEASURED, NOT ASSUMED AWAY. `alpha-reliability-v1`
+  named a prerequisite for removing the region cap: within-region alpha
+  percentiles need a common cross-region scale first. That scale already
+  exists — `ExpandingBucketCalibration.expected()` returns a region-specific
+  calibrated expected benchmark excess in pp, the same quantity every rung
+  already ranks on — so `calibration_comparability` measures whether it is
+  comparable IN PRACTICE rather than inventing a second normalization. On
+  this sample the US-minus-KR shrinkage gap is -0.002: the comparability
+  artefact the prerequisite warned about (thinner history pulling one
+  region's alpha harder toward zero) is not present.
+- A COMPARABLE SCALE CAN STILL DISAGREE ON THE LEVEL, AND THAT IS A
+  DIFFERENT FINDING. Shrinkage and effective-date counts are nearly
+  identical between regions, but the calibrated alpha LEVEL is not: the pool
+  assigns Korean names a mean of 0.645pp against 0.041pp for American names,
+  roughly 16x. An unconstrained ranking is not exploiting a scale artefact
+  when it piles into the higher-level region — it is reading the
+  calibration's own belief about opportunity, correctly.
+- OPENING THE CAP REPRODUCES THE EARLIER CAP-LIFTED MEASUREMENT
+  INDEPENDENTLY. `alpha-reliability-v1`'s own diagnostic measured KR 640 /
+  US 82 held name-dates with the caps notionally lifted, from a
+  within-block reading that valued nothing. This study's actual replayed,
+  valued path lands at KR 639 / US 85 — two independently built
+  measurements of "what the ranking wants without the region cap" agree to
+  within one name-date, and only the second one is a realised return.
+- REMOVING THE CAP MADE THE POINT ESTIMATE WORSE, AND THE INTERVAL DOES NOT
+  SEPARATE. Net excess moves from -0.684pp (3-cap control) to -2.314pp
+  (quota opened), paired difference -1.630pp, 95% CI [-4.462pp, +0.961pp]
+  over 155 blocks. CONTAINS ZERO — reported as such, not folded into "no
+  result" and not read as a refutation either, since the interval does not
+  clear zero in the other direction.
+- THE GROSS GAP IS ARITHMETIC SELECTION, NOT A VOLATILITY TILT. Control:
+  +0.315pp arithmetic / +0.405pp compounding. Quota opened: -1.351pp
+  arithmetic / +0.260pp compounding. The KR-concentrated book is choosing
+  names that underperform their own region's benchmark by more than the
+  diversified book's names do — the loss is in WHICH names, not in a
+  changed risk profile.
+- THIS STUDY QUANTIFIES THE TRADE, IT DOES NOT ADJUDICATE IT. The region cap
+  costing turnover (`alpha-reliability-v1`) and the region cap providing
+  diversification value the ranking's own opinion would forgo (this study)
+  are BOTH true on this sample and are not in tension: a constraint can be a
+  large source of turnover and still pay for itself. Neither this result nor
+  any prior one in this line makes a claim about which effect dominates
+  going forward.
+- NO PERMUTATION NULL WAS RUN. Only `maxNamesPerRegion` moved; `targetNames`,
+  `maxNamesPerSector`, breadth and every cost assumption are unchanged from
+  `alpha_reliability.CONTROL`, called directly rather than reimplemented.
+
 ## Lint gate invariants (v2.11)
 
 - The enabled rule set reports ZERO findings on `main`. A rule is turned on in the
