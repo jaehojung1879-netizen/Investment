@@ -78,6 +78,24 @@ def _pair(blob, key="annualizedExcessPct"):
     return delta["pointEstimate"], lo, hi
 
 
+def _separation(blob, key="annualizedExcessPct"):
+    """Does this interval exclude zero, and on WHICH side?
+
+    Reading separation as "the lower bound cleared zero" makes an interval that
+    excludes zero from BELOW invisible, and an axis that separates in the wrong
+    direction is the most informative result a ladder can produce. Both sides
+    are the same fact about the same interval and both are reported.
+    """
+    point, low, high = _pair(blob, key)
+    if low is None or high is None:
+        return None
+    if low > 0:
+        return {"direction": "BETTER", "pointEstimatePp": point, "ci95Pp": [low, high]}
+    if high < 0:
+        return {"direction": "WORSE", "pointEstimatePp": point, "ci95Pp": [low, high]}
+    return None
+
+
 def selection_behaviour(decisions: list[dict]) -> dict:
     """How many names each rebalance kept, added and dropped."""
     retained = [len(d.get("retained") or []) for d in decisions]
@@ -286,16 +304,28 @@ def markdown(report: dict) -> str:
               f"[{_fmt(s_lo, 'pp')}, {_fmt(s_hi, 'pp')}].", ""]
 
     finding = report["finding"]
-    lines += ["## Reading", "", f"**{finding['verdict']}**", "", finding["summary"], "",
-              "### What separated and what did not", ""]
-    lines.append(f"- Separated from the rung below (interval excludes zero): "
-                 f"{finding['separatedFromRungBelow'] or 'none'}.")
-    lines.append(f"- Separated from the ladder control: "
-                 f"{finding['separatedFromControl'] or 'none'}.")
-    lines += ["", "### Refuted along the way", ""]
+    lines += ["## Reading", "", f"**{finding['verdict']}** — {finding['verdictNote']}",
+              "", finding["summary"], "",
+              "### What separated, and in which direction", "",
+              "An interval that excludes zero from BELOW is as much a separation as one",
+              "that excludes it from above, and it is the more informative of the two:",
+              "it means a pre-specified axis made the path measurably worse.", ""]
+    for label, key in (("against the rung below", "separatedFromRungBelow"),
+                       ("against the ladder control", "separatedFromControl")):
+        blob = finding[key]
+        if not blob:
+            lines.append(f"- Nothing separated {label}.")
+            continue
+        for rung, entry in blob.items():
+            lines.append(
+                f"- {rung} separated {label}, **{entry['direction']}**: "
+                f"{_fmt(entry['pointEstimatePp'], 'pp')}, 95% CI "
+                f"[{_fmt(entry['ci95Pp'][0], 'pp')}, {_fmt(entry['ci95Pp'][1], 'pp')}].")
+    lines += ["", "### Refuted", ""]
     for item in finding["refuted"]:
         lines.append(f"- {item}")
     lines += ["", "### Frozen candidate for prospective validation", "",
+              f"**{finding['frozenCandidate'] or 'NONE — see below'}**", "",
               finding["frozenCandidateNote"], "",
               "A rung ending higher than another is a point estimate on sealed history,",
               "after several rungs across four studies, with no multiplicity correction.",
@@ -433,23 +463,92 @@ def main(argv=None) -> int:
     if not report["sealedInvariant"]["unchanged"]:
         raise ValueError("SEALED_LEDGER_CHANGED")
 
-    separated_adjacent = [rung for rung in AR.LADDER[1:]
-                          if (_pair(report["pairedAdjacent"][rung])[1] or 0) > 0]
-    separated_control = [rung for rung in AR.LADDER[1:]
-                         if (_pair(report["pairedVsControl"][rung])[1] or 0) > 0]
+    separated_adjacent = {rung: blob for rung in AR.LADDER[1:]
+                          if (blob := _separation(report["pairedAdjacent"][rung]))}
+    separated_control = {rung: blob for rung in AR.LADDER[1:]
+                         if (blob := _separation(report["pairedVsControl"][rung]))}
     control_excess = summaries[AR.CONTROL].get("annualizedExcessPct")
     best = max(AR.LADDER, key=lambda r: summaries[r].get("annualizedExcessPct") or -1e9)
     anat = report["replacementAnatomy"]["control"]
     axes = report["axisDiagnostics"]
 
+    # A CANDIDATE IS FROZEN ONLY IF ITS OWN PRE-SPECIFIED TEST DID NOT REFUTE IT.
+    # PROVENANCE OF THIS RULE, because it matters more than the rule. The design
+    # named the last rung as the candidate unconditionally. The first full run
+    # returned that rung's confidence axis separated from the rung below it in
+    # the WRONG direction, and freezing a candidate its own paired test had just
+    # refuted would have made the test decorative. So the freeze was made
+    # conditional AFTER that run. No rung, parameter, window or scoring rule
+    # changed, and the condition can only ever REMOVE a candidate — it cannot
+    # promote one, and it cannot make a refuted axis look better. That asymmetry
+    # is what separates it from re-specifying a ladder until the hypothesis
+    # survives, which is the failure this repository's discipline exists to
+    # prevent.
+    refuted_axes = [rung for rung, blob in separated_adjacent.items()
+                    if blob["direction"] == "WORSE"]
+    hysteresis_rung_refuted = [rung for rung in refuted_axes
+                               if AR.LADDER.index(rung) <= AR.LADDER.index(hysteresis_rung)]
+    frozen = None if hysteresis_rung_refuted else hysteresis_rung
+    refuted_notes = []
+    for rung in refuted_axes:
+        blob = separated_adjacent[rung]
+        refuted_notes.append(
+            f"{rung}: the axis this rung adds made the path WORSE than the rung below "
+            f"it by {_fmt(blob['pointEstimatePp'], 'pp')} of annualized net excess, 95% "
+            f"CI [{_fmt(blob['ci95Pp'][0], 'pp')}, {_fmt(blob['ci95Pp'][1], 'pp')}], which "
+            "EXCLUDES zero. The hypothesis behind it is refuted by its own "
+            "pre-specified test and the rule is kept, not deleted, so the instrument "
+            "that produced the answer survives.")
+    if frozen is None:
+        frozen_note = (
+            "NOTHING IS FROZEN. The freeze rule is that a candidate is carried into "
+            "prospective validation only if no axis it contains was refuted by its own "
+            "paired test. "
+            + " ".join(refuted_notes)
+            + " That condition was NOT in the original design, which named the last "
+            "rung unconditionally; it was added after the first full run returned this "
+            "refutation, and the record says so rather than pretending otherwise. What "
+            "makes it a tightening rather than a re-specification: no rung, parameter, "
+            "window or scoring rule changed, every number here is what that run "
+            "produced, and the condition can only ever REMOVE a candidate — it cannot "
+            "promote one and it cannot make a refuted axis look better. So this study "
+            "freezes no new candidate, the `signal-persistence-v1` k=6 rung stands as "
+            "the one already frozen, and the refuted rule is kept rather than deleted. "
+            "What the boundary diagnostic established is independent of the ladder and "
+            "stands whatever the rungs did.")
+    else:
+        frozen_note = (
+            f"`{frozen}` is the candidate this study freezes: k=6 backward persistence "
+            "inherited from `signal-persistence-v1`, a confidence weight built only "
+            "from a name's own percentile stability and its cross-sleeve agreement, and "
+            "an incumbent/challenger comparison that requires the two "
+            "uncertainty-adjusted readings not to overlap. It introduces no new "
+            "parameter, adds no factor, and carries no transaction-cost term. What "
+            "prospective data must check: benchmark excess, turnover, retained-versus-"
+            "added realised excess, replacement success rate, ranking stability and "
+            "whether the confidence weight is calibrated — that names it scores as "
+            "low-confidence really do realise noisier outcomes.")
+
+    best_interval = (_separation(report["pairedVsControl"][best])
+                     if best != AR.CONTROL else None)
     report["finding"] = {
         "verdict": ("BENCHMARK_BEATEN" if (summaries[best].get("annualizedExcessPct") or 0) > 0
                     else "BENCHMARK_NOT_BEATEN"),
+        "verdictNote": (
+            "The verdict reads the best rung's POINT ESTIMATE against its matched "
+            "benchmark and says nothing about whether that rung is distinguishable "
+            "from the control. "
+            + ("It is not: its paired interval against the control contains zero."
+               if best_interval is None else
+               f"Its paired interval against the control excludes zero, "
+               f"{best_interval['direction']}.")),
         "bestRung": best,
         "bestNetExcessPp": summaries[best].get("annualizedExcessPct"),
         "controlNetExcessPp": control_excess,
         "separatedFromRungBelow": separated_adjacent,
         "separatedFromControl": separated_control,
+        "refutedAxes": refuted_axes,
+        "frozenCandidate": frozen,
         "promotionEligible": False,
         "summary": (
             f"The pool occupies {axes.get('distinctBucketsOccupied')} calibration buckets "
@@ -463,7 +562,7 @@ def main(argv=None) -> int:
             f"{_fmt(control_excess, 'pp')} at the control to "
             + ", ".join(f"{_fmt(summaries[r].get('annualizedExcessPct'), 'pp')} ({r})"
                         for r in AR.LADDER[1:]) + "."),
-        "refuted": [
+        "refuted": refuted_notes + [
             ("Shrinking the alpha PERCENTILE toward a neutral percentile: the pool sits "
              "at 91-100, so shrinking toward the pool mean moves weak names UP into the "
              "top bucket and shrinking toward 50 collapses every name into one bucket. "
@@ -477,17 +576,7 @@ def main(argv=None) -> int:
              "most one-point moves change nothing and most swaps happen between names "
              "with no alpha difference at all."),
         ],
-        "frozenCandidateNote": (
-            f"`{hysteresis_rung}` is the candidate this study freezes: k=6 backward "
-            "persistence inherited from `signal-persistence-v1`, a confidence weight "
-            "built only from a name's own percentile stability and its cross-sleeve "
-            "agreement, and an incumbent/challenger comparison that requires the two "
-            "uncertainty-adjusted readings not to overlap. It introduces no new "
-            "parameter, adds no factor, and carries no transaction-cost term. What "
-            "prospective data must check: benchmark excess, turnover, retained-versus-"
-            "added realised excess, replacement success rate, ranking stability and "
-            "whether the confidence weight is calibrated — that names it scores as "
-            "low-confidence really do realise noisier outcomes."),
+        "frozenCandidateNote": frozen_note,
         "nextDirection": (
             "The binding constraint measured here is RESOLUTION, not information: the "
             "calibration maps an already alpha-filtered pool onto two buckets, so the "

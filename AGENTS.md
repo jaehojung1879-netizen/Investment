@@ -146,6 +146,74 @@
   angles is corroboration and is reported as corroboration — never as a
   rejection of the null, and never as grounds to promote.
 
+## Alpha-reliability invariants (v2.13)
+
+- A RANKING CANNOT BE SPENT BETTER THAN IT CAN BE REPRESENTED, and how much it
+  can represent is measured before anything is built on it. The research pool is
+  already alpha-filtered: its percentiles run 91-100 (mean 97.4, sd 2.33) and
+  the calibration's edges are (0, 60, 80, 90, 95, 100), so exactly TWO buckets
+  are ever occupied and 83.55% of 3,720 pool name-dates sit in one of them.
+  Names inside a bucket are handed the SAME expected excess, so for most of the
+  pool the alpha term is a constant and the ordering falls to realised downside
+  volatility. Every study that proposed to refine the percentile was proposing
+  to refine something the decision layer cannot see.
+- THE BOOK SWAPS NAMES IT HAS NO ALPHA REASON TO SWAP, and this is measured, not
+  inferred. 81.32% of the control's top-5 cuts and 29.77% of its swaps are
+  between names the calibration scores IDENTICALLY. Of 412 held names whose raw
+  percentile moved one point or less since their previous appearance, 47.82%
+  were replaced anyway. The relative score gap at the cut has a median of 0.075
+  and a p10 of 0.009 — the boundary is decided by a rounding of the risk
+  estimate far more often than by the signal.
+- THE SWAPS THE CALIBRATION CANNOT JUSTIFY ARE THE ONES THAT LOSE. Arriving
+  minus departing realised 21-session excess is -2.601% per block on the 39
+  swaps tied on expected alpha (38.5% win rate, 95% CI [-5.510%, +0.024%]) and
+  +1.845% on the 92 that were separated (55.4%, [-1.075%, +5.005%]). Pooled the
+  two read +0.521% and say nothing. This is the strongest statement this
+  programme has about WHICH replacements are worth making, and both intervals
+  still contain zero.
+- A NAME EXCLUDED BY A CAP IS NOT THE RANKING'S MARGINAL REJECT. `_select_scored`
+  stamps `BELOW_TARGET_COUNT_CUTOFF` on what the book was too full to reach and
+  a cap code on what it refused earlier, and those are different facts: on 54 of
+  145 control rebalances every near miss was cap-blocked, so comparing the last
+  held name against the first non-held one would have measured the
+  diversification rules on a third of the sample. Cap-bound rebalances are
+  counted, never silently folded into the boundary statistic.
+- A CONFIDENCE WEIGHT IS A CONTRACTION OR IT IS A FACTOR. `reliable_alpha =
+  confidence x alpha` keeps |reliable| <= |alpha| with the sign preserved, so it
+  can only ever reduce what a name is credited with; `contraction_holds` is
+  asserted on every row of every block and raises. The alternative shapes were
+  refused for cause, not for taste: shrinking the PERCENTILE toward the pool
+  mean moves a weak name at 93 UP into the top bucket, shrinking it toward 50
+  collapses the whole pool into one bucket, and `evidenceCoverage` is
+  unavailable entirely because `longterm` already computes
+  `alpha = rawAlpha x evidenceCoverage` before the percentile is taken.
+- SEPARATION IS READ IN BOTH DIRECTIONS, and the downside one is the more
+  informative. Reading it as "the lower bound cleared zero" is how a ladder
+  reports `separatedFromControl: []` while one of its own rungs has been
+  refuted. The confidence axis is the first interval in four studies on this
+  ledger to exclude zero against its own control — at -3.984pp, 95% CI
+  [-8.144, -0.214], in the WRONG direction. `separatedFromRungBelow` carries a
+  `direction`, never a bare list of names.
+- A CANDIDATE ITS OWN PRE-SPECIFIED TEST REFUTED IS NOT FROZEN, and the
+  provenance of that rule is published with it. The design named the last rung
+  unconditionally; the condition was added after the first full run produced the
+  refutation above. What makes that a tightening and not a re-specification: no
+  rung, parameter, window or scoring rule changed, every number is what that run
+  produced, and the condition can only ever REMOVE a candidate. A rule that can
+  only subtract cannot launder a result.
+- A RULE CAN DO EXACTLY WHAT IT WAS DESIGNED TO DO AND STILL NOT PAY. Signal
+  hysteresis moved incumbent retention 39.3% -> 67.1%, one-way turnover 4.535x
+  -> 2.955x and cost drag 1.330pp -> 0.847pp, and it removed the losing tied
+  swaps it was aimed at — the tied population's realised difference goes -2.601%
+  (n=39) to +1.149% (n=24). Its paired difference against the rung below is
+  +0.288pp, 95% CI [-4.430, +5.416]. Behaviour changing as predicted is
+  mechanism evidence and is reported as mechanism evidence; it is not a result.
+- THE BOTTLENECK NAMED BY THIS STUDY IS RESOLUTION, NOT INFORMATION. Before any
+  new factor is collected, the open question is whether a finer or pool-relative
+  calibration of the SAME percentile recovers orderings the current five-edge
+  bucket map discards. Adding a factor to a decision layer that can express two
+  states would add it to the same two states.
+
 ## Lint gate invariants (v2.11)
 
 - The enabled rule set reports ZERO findings on `main`. A rule is turned on in the

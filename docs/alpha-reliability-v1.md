@@ -242,22 +242,49 @@ repository's existing PIT limitations and does not worsen them.
 * Nothing here changes `CHAMPION`, the production selector, production weights,
   Kelly, macro policy, regional rotation, `paperTrading` or `liveValidated`.
 
-## The frozen candidate
+## Separation is read in BOTH directions
 
-`PERSISTENT_ALPHA_X_CONFIDENCE_PLUS_SIGNAL_HYSTERESIS` is what this study
-freezes for prospective validation: k=6 backward persistence inherited from
-`signal-persistence-v1`, a confidence weight built only from a name's own
-percentile stability and its cross-sleeve agreement, and an
-incumbent/challenger comparison that requires the two uncertainty-adjusted
-readings not to overlap. It introduces no new parameter, adds no factor and
-carries no transaction-cost term — which is what makes it checkable on arriving
-data rather than only on this sample.
+An interval that excludes zero from **below** is as much a separation as one
+that excludes it from above, and it is the more informative of the two: it
+means a pre-specified axis made the path measurably worse. Reading separation
+as "the lower bound cleared zero" would make that invisible, which is how a
+ladder ends up reporting "nothing separated" while one of its own rungs has
+been refuted. `separatedFromRungBelow` and `separatedFromControl` therefore
+carry a `direction` rather than a bare list of names.
 
-What prospective paper trading must check: benchmark excess, turnover,
-retained-versus-added realised excess, the replacement success rate, ranking
-stability, and whether the confidence weight is **calibrated** — that names it
-scores low-confidence really do realise noisier outcomes. That last one is the
-only check that can falsify the mechanism rather than the result.
+## The freeze rule, and where it came from
+
+**A candidate is frozen for prospective validation only if no axis it contains
+was refuted by its own paired test** — that is, only if no rung at or below it
+separated from the rung beneath it in the `WORSE` direction.
+
+That condition was **not** in the original design, and the record says so
+rather than pretending otherwise. The design named
+`PERSISTENT_ALPHA_X_CONFIDENCE_PLUS_SIGNAL_HYSTERESIS` as the candidate
+unconditionally. The first full run returned the confidence axis separated from
+the rung below it in the wrong direction, and freezing a candidate whose own
+pre-specified test had just refuted it would have made the test decorative. So
+the freeze was made conditional afterwards.
+
+What makes that a tightening rather than a re-specification: **no rung,
+parameter, window or scoring rule changed**, the ladder and every measured
+number are exactly what the first run produced, and the condition can only ever
+*remove* a candidate. It cannot promote one, it cannot make a refuted axis look
+better, and it cannot turn a contained interval into a separated one.
+Re-specifying a ladder until the hypothesis survives is the failure this
+repository's discipline exists to prevent; this moves in the opposite
+direction.
+
+A refuted rung is **kept, not deleted**. The ladder that refutes a hypothesis
+is the same instrument that would have confirmed it, and the reasoning that
+produced the hypothesis is left standing next to the refutation.
+
+If a candidate is frozen, what prospective paper trading must check is:
+benchmark excess, turnover, retained-versus-added realised excess, the
+replacement success rate, ranking stability, and whether the confidence weight
+is **calibrated** — that names it scores low-confidence really do realise
+noisier outcomes. That last one is the only check that can falsify the
+mechanism rather than the result.
 
 ## Reproducing
 
