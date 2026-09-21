@@ -455,6 +455,52 @@
   `alpha_reliability.CONTROL` is called directly rather than reimplemented,
   exactly as in every prior study in this line.
 
+## Alpha-risk-separation diagnostic-extension invariants (v2.18)
+
+- A DIAGNOSTIC ADDED AFTER A LADDER IS SCORED MAY ONLY READ IT, AND HERE THAT
+  IS PROVEN MECHANICALLY RATHER THAN ASSERTED. The frozen
+  `alpha-risk-separation-v1` rungs are re-run by CALLING that study's own
+  functions, and the runner recomputes all TEN of its scored blocks and
+  compares them canonically against the checked-in
+  `docs/results/alpha-risk-separation-report.json`. A mismatch raises
+  `FROZEN_LADDER_MOVED` and refuses to publish. The runner's `_guard` also
+  refuses the frozen report's own path as an output, so it cannot be
+  overwritten by mistake, and the workflow runs `git diff --exit-code` on it.
+- RE-RUNNING A SETTLED LADDER IS HOW A PROGRAMME TALKS ITSELF INTO A RESULT.
+  The study this extends is scored, merged and CONTAINS ZERO; the correct
+  response to a request to redo it was to establish that it already exists,
+  say so, and extend only what it never measured.
+- `risk_dominance` COMPARES HELD AGAINST REJECTED WITHIN A RUNG, WHICH CANNOT
+  SAY WHAT REMOVING THE DENOMINATOR BOUGHT. Only the names the two rungs
+  DISAGREE about can answer that. `set_difference_profiles` pairs the rungs
+  by date and profiles `selectedByChallengerNotControl` against
+  `selectedByControlNotChallenger`; paired WITHIN a rebalance, so it carries
+  no market-timing term, and factor facts are read from ONE source (the
+  control's own rows) so a profile gap cannot come from the source.
+- THE DENOMINATOR WAS NOT HOLDING BACK HIGH-MOMENTUM OR HIGH-QUALITY NAMES,
+  AND THAT REFRAMES THE AXIS. On the 233 name-dates the rungs disagree about,
+  momentum separates them by +0.687 and quality by +0.626 — well under a
+  percentile point — while `lowvol` moves -9.725 and realised downside
+  volatility +5.157pp. Alpha percentile is 98.163 against 98.039. Removing
+  the denominator did not buy different alpha; it bought THE SAME ALPHA MORE
+  RISKILY, which is what a risk denominator is supposed to prevent.
+- AND THOSE NAMES DID NOT GO ON TO DO BETTER. Challenger-only names realised
+  0.587% mean forward block excess at a 46.78% win rate against
+  control-only's 0.799% and 51.93% — a difference of -0.212pp. Descriptive
+  only: a difference of two group means, not a paired test, with no
+  multiplicity correction, read off the same priced cross-section
+  `replacement_anatomy` reads, and entering no score, ranking or rule.
+- A STACK THAT MOVES TWO AXES IS REPORTED OUTSIDE THE LADDER AND NAMED AS
+  SUCH. k=6 persistence plus the denominator removal lands at -0.231pp
+  against the control's -0.684pp (+0.454pp, 95% CI [-4.235, +5.570]). It is
+  attributable to NEITHER axis alone and is never paired into the primary
+  ladder — the same status `signal-persistence-v1` gave its own stacked path.
+- A DIAGNOSTIC THAT PRINTS `n/a` FOR EVERY ROW LOOKS LIKE A MEASUREMENT.
+  The observational region/entry table was first written against guessed key
+  names (`rebalancesWhereRegionCapBoundPct`) that `region_cap_binding` does
+  not emit. Read the function's actual output keys before formatting them;
+  a silently blank row is worse than a missing section.
+
 ## Lint gate invariants (v2.11)
 
 - The enabled rule set reports ZERO findings on `main`. A rule is turned on in the
