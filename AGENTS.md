@@ -146,6 +146,124 @@
   angles is corroboration and is reported as corroboration — never as a
   rejection of the null, and never as grounds to promote.
 
+## Alpha-reliability invariants (v2.13)
+
+- A RANKING CANNOT BE SPENT BETTER THAN IT CAN BE REPRESENTED, and how much it
+  can represent is measured before anything is built on it. The research pool is
+  already alpha-filtered: its percentiles run 91-100 (mean 97.4, sd 2.33) and
+  the calibration's edges are (0, 60, 80, 90, 95, 100), so exactly TWO buckets
+  are ever occupied and 83.55% of 3,720 pool name-dates sit in one of them.
+  Names inside a bucket are handed the SAME expected excess, so for most of the
+  pool the alpha term is a constant and the ordering falls to realised downside
+  volatility. Every study that proposed to refine the percentile was proposing
+  to refine something the decision layer cannot see.
+- THE BOOK SWAPS NAMES IT HAS NO ALPHA REASON TO SWAP, and this is measured, not
+  inferred. 86.71% of the control's top-5 cuts and 29.77% of its swaps are
+  between names the calibration scores IDENTICALLY. Of 412 held names whose raw
+  percentile moved one point or less since their previous appearance, 47.82%
+  were replaced anyway. The relative score gap at the cut has a median of 0.086
+  and a p10 of 0.010 — the boundary is decided by a rounding of the risk
+  estimate far more often than by the signal.
+- THE SWAPS THE CALIBRATION CANNOT JUSTIFY ARE THE ONES THAT LOSE. Arriving
+  minus departing realised 21-session excess is -2.601% per block on the 39
+  swaps tied on expected alpha (38.5% win rate, 95% CI [-5.510%, +0.024%]) and
+  +1.845% on the 92 that were separated (55.4%, [-1.075%, +5.005%]). Pooled the
+  two read +0.521% and say nothing. This is the strongest statement this
+  programme has about WHICH replacements are worth making, and both intervals
+  still contain zero.
+- A NAME EXCLUDED BY A CAP IS NOT THE RANKING'S MARGINAL REJECT. `_select_scored`
+  stamps `BELOW_TARGET_COUNT_CUTOFF` on what the book was too full to reach and
+  a cap code on what it refused earlier, and those are different facts:
+  comparing the last held name against the first non-held one would measure the
+  diversification rules instead of the ranking. Cap-bound rebalances are
+  counted, never silently folded into the boundary statistic — on the control
+  path 2 of 145.
+- A DIAGNOSTIC BUILT ON AN AUDIT WINDOW MEASURES THE WINDOW. `selection.ranking`
+  publishes the selected names plus EIGHT near misses, so every name below that
+  carries no cut reason at all — and the first boundary statistic read a missing
+  reason as "not excluded by rank" and dropped the rebalance. It reported 91 of
+  145 measured and 54 cap-bound; re-running production's own `_select_scored`
+  over the whole cross-section gives 143 and 2. The conclusion did not move
+  (81.32% -> 86.71% tied) but a third of the sample had been silently
+  unobservable, and a truncated audit view is not a measurement of the thing it
+  is a view of.
+- PRODUCTION MUTATES THE ROWS A CALLER HANDS IT, and a research module that
+  keeps them has to know. `select_portfolio_by_scores` shallow copies each row,
+  so `item["exclusionCodes"]` IS the caller's list and `_select_scored` appends
+  `BELOW_TARGET_COUNT_CUTOFF` and the cap codes straight into it. Departure
+  attribution read those back as facts about the name and called 244 of 444
+  departures "ineligible on its own facts"; against an immutable
+  `eligibilityCodes` captured at build time the real split is 160 pool exits,
+  150 outranked, 84 region cap, 40 entry state and 10 sector cap, and none
+  ineligible. The two lists answer different questions and are kept apart.
+- A CONFIDENCE WEIGHT IS A CONTRACTION OR IT IS A FACTOR. `reliable_alpha =
+  confidence x alpha` keeps |reliable| <= |alpha| with the sign preserved, so it
+  can only ever reduce what a name is credited with; `contraction_holds` is
+  asserted on every row of every block and raises. The alternative shapes were
+  refused for cause, not for taste: shrinking the PERCENTILE toward the pool
+  mean moves a weak name at 93 UP into the top bucket, shrinking it toward 50
+  collapses the whole pool into one bucket, and `evidenceCoverage` is
+  unavailable entirely because `longterm` already computes
+  `alpha = rawAlpha x evidenceCoverage` before the percentile is taken.
+- SEPARATION IS READ IN BOTH DIRECTIONS, and the downside one is the more
+  informative. Reading it as "the lower bound cleared zero" is how a ladder
+  reports `separatedFromControl: []` while one of its own rungs has been
+  refuted. The confidence axis is the first interval in four studies on this
+  ledger to exclude zero against its own control — at -3.984pp, 95% CI
+  [-8.144, -0.214], in the WRONG direction. `separatedFromRungBelow` carries a
+  `direction`, never a bare list of names.
+- A CANDIDATE ITS OWN PRE-SPECIFIED TEST REFUTED IS NOT FROZEN, and the
+  provenance of that rule is published with it. The design named the last rung
+  unconditionally; the condition was added after the first full run produced the
+  refutation above. What makes that a tightening and not a re-specification: no
+  rung, parameter, window or scoring rule changed, every number is what that run
+  produced, and the condition can only ever REMOVE a candidate. A rule that can
+  only subtract cannot launder a result.
+- A RULE CAN DO EXACTLY WHAT IT WAS DESIGNED TO DO AND STILL NOT PAY. Signal
+  hysteresis moved incumbent retention 39.3% -> 67.1%, one-way turnover 4.535x
+  -> 2.955x and cost drag 1.330pp -> 0.847pp, and it removed the losing tied
+  swaps it was aimed at — the tied population's realised difference goes -2.601%
+  (n=39) to +1.149% (n=24). Its paired difference against the rung below is
+  +0.288pp, 95% CI [-4.430, +5.416]. Behaviour changing as predicted is
+  mechanism evidence and is reported as mechanism evidence; it is not a result.
+- WHERE THE ALPHA TERM ORDERS AND WHERE IT DOES NOT ARE DIFFERENT PLACES, and
+  only one of them decides anything. Across the whole cross-section the score's
+  rank correlation with the calibrated alpha is 0.758 against 0.075 with
+  downside volatility, so the alpha term orders most PAIRS — but a five-name
+  book is decided at its margin, and 86.71% of cuts have both sides in the same
+  bucket. The held set matches an alpha-only top-N 30.07% of the time and 37.52%
+  of held-against-not-held pairs are ordered the other way by the alpha
+  percentile. Quoting either number alone describes a different system.
+- THE DEFENSIVE TILT IS IN WHAT IS HELD, NOT IN A RANK CORRELATION. Held names
+  carry 24.45% downside volatility against 27.17% for rejected ones and a
+  `lowvol` sleeve percentile of 74.37 against 63.81, and `lowvol` is among a
+  held name's top two sleeves 58.86% of the time. So part of the tilt arrives
+  through the ALPHA itself and would survive deleting the score's
+  downside-volatility denominator — which is why `alpha-risk-separation-v1`
+  moves the denominator alone and leaves the 0.20 sleeve weight to the study
+  after it. Two risk channels moved together are attributable to neither.
+- THE DIVERSIFICATION GUARD IS A LARGER SOURCE OF TURNOVER THAN THE RANKING'S
+  OPINION IS. The region cap stopped a name on 93.10% of control rebalances and
+  on 134 of 145 the capped name outscored one the book took, median decision
+  alpha gap 0.856pp; held name-dates split KR 421 / US 301 where the same count
+  with the caps lifted wanted KR 640 / US 82, and the book is KR:3/US:2 on 132
+  of 145. Caps account for 21.17% of every replacement and the entry-state step
+  for a further 9.01%, against 33.78% the ranking actually outranked. A rule
+  that produces a fifth of the turnover is not a side constraint.
+- A DIAGNOSTIC ADDED AFTER A LADDER IS SCORED MAY ONLY READ IT. The structural
+  diagnostics landed after this study's rungs were final; they changed no score,
+  added no rung, moved no constraint, and the ladder, its paired intervals and
+  the stacked path are byte-identical with and without them. A within-block
+  reading with a constraint notionally lifted — "the top-N on alpha alone", "the
+  top-N with the caps off" — is a count of how often two rules disagree, never
+  an estimate of what disagreeing would have earned: nothing is valued, carried
+  forward or compounded, and no realised return enters one.
+- THE BOTTLENECK NAMED BY THIS STUDY IS RESOLUTION, NOT INFORMATION. Before any
+  new factor is collected, the open question is whether a finer or pool-relative
+  calibration of the SAME percentile recovers orderings the current five-edge
+  bucket map discards. Adding a factor to a decision layer that can express two
+  states would add it to the same two states.
+
 ## Lint gate invariants (v2.11)
 
 - The enabled rule set reports ZERO findings on `main`. A rule is turned on in the

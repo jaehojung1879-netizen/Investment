@@ -117,6 +117,20 @@ class PercentileSmoother:
     def depth(self, ticker: str) -> int:
         return len(self.history.get(ticker) or ())
 
+    def dispersion(self, ticker: str):
+        """Sample sd of what the window holds, or `None` below two observations.
+
+        The same backward-only window the mean is taken over, so a consumer that
+        needs to know how noisy a name's own signal has been reads it from here
+        rather than rebuilding a second history beside this one. One observation
+        has no dispersion to report, and reporting 0.0 for it would read as the
+        most stable name in the cross-section.
+        """
+        values = self.history.get(ticker)
+        if not values or len(values) < 2:
+            return None
+        return float(np.std(list(values), ddof=1))
+
 
 def smoothed_candidates(candidates: list[dict], smoother: PercentileSmoother,
                         date: str) -> list[dict]:
