@@ -122,8 +122,26 @@ def _verdict(sep) -> str:
 
 
 def _combined_case(report: dict) -> dict:
-    """Map the measured outcome onto the pre-specified Case A/B/C grid (section 21)."""
+    """Map the measured outcome onto the pre-specified Case A/B/C grid (section 21).
+
+    The pre-registration named three cases: favourable-and-separated (A),
+    doesn't-help (B), and directionally-GOOD-but-uncertain (C). It did not name
+    a fourth case -- directionally UNFAVOURABLE but not statistically
+    separated -- so that reading is routed to B on point-estimate sign rather
+    than stretched to fit C, which would misrepresent a negative point
+    estimate as "directionally good."
+    """
     sep = report["separation"]
+    point = _pair(report["pairedVsControl"])[0]
+    stage_b = report["withinCalibrationInformation"]
+    concordance = (stage_b["pairwiseConcordance"] or {}).get("higherPercentileRealisedBetterPct")
+    near_chance = concordance is not None and 45.0 <= concordance <= 55.0
+    concordance_note = (
+        f" Stage B's pairwise concordance of {_fmt(concordance, '%')} is near chance, "
+        "corroborating this reading: the discarded percentile does not appear to order "
+        "forward outcomes even within a tied group." if near_chance else
+        f" Stage B's pairwise concordance is {_fmt(concordance, '%')}.")
+
     if sep and sep["direction"] == "BETTER":
         case = "CASE A — ordinal rescue improves and separates"
         reading = (
@@ -131,27 +149,33 @@ def _combined_case(report: dict) -> dict:
             "on this sample. `continuous-alpha-calibration-v1` is proposed as the next "
             "study, NOT run here. One sample with no multiplicity correction and no "
             "permutation null is a finding to replicate, not a promotion.")
-    elif sep and sep["direction"] == "WORSE":
-        case = "CASE B — ordinal rescue does not help (refuted in this direction)"
+    elif (sep and sep["direction"] == "WORSE") or (point is not None and point < 0):
+        case = "CASE B — ordinal rescue does not help"
+        separated_clause = (
+            f", separated in the unfavourable direction (95% CI "
+            f"[{_fmt(sep['ci95Pp'][0], 'pp')}, {_fmt(sep['ci95Pp'][1], 'pp')}])"
+            if sep and sep["direction"] == "WORSE" else
+            ", not statistically separated from control (the interval contains zero)")
         reading = (
-            "Restoring within-group ordinal information did not improve, and separated "
-            "unfavourably. Finer bucketing is unlikely to be the answer either, since "
-            "the ordinal information the finer bucketing would expose is exactly what "
-            "was restored here and tested directly. Research attention moves to alpha "
-            "signal discrimination, persistence and entry structure rather than "
-            "calibration resolution.")
+            f"Point estimate {_fmt(point, 'pp')}{separated_clause}.{concordance_note} "
+            "Finer bucketing is unlikely to be the answer either, since the ordinal "
+            "information finer bucketing would expose is exactly what was restored "
+            "here and tested directly. Research attention moves to alpha signal "
+            "discrimination, persistence and entry structure rather than calibration "
+            "resolution.")
     else:
         case = "CASE C — directionally suggestive but not statistically separated"
         reading = (
-            "The paired interval contains zero. Before proposing continuous or "
-            "monotonic calibration, a prospective or independent-sample validation of "
-            "this same axis is the next step, NOT a jump straight to a finer "
-            "calibration built on the same historical sample that produced this "
-            "estimate.")
+            f"Point estimate {_fmt(point, 'pp')}, favourable but the paired interval "
+            f"contains zero.{concordance_note} Before proposing continuous or monotonic "
+            "calibration, a prospective or independent-sample validation of this same "
+            "axis is the next step, NOT a jump straight to a finer calibration built on "
+            "the same historical sample that produced this estimate.")
     return {"case": case, "reading": reading,
             "note": ("Cases A/B/C were specified before the result was seen (section 21 "
                      "of the pre-registration); this maps the measured outcome onto that "
-                     "grid and does not re-specify it.")}
+                     "grid on point-estimate sign and statistical separation, and does "
+                     "not re-specify the grid itself.")}
 
 
 def _q6(cascade: dict) -> str:
@@ -274,15 +298,33 @@ def _answers(report: dict) -> list[dict]:
          "a": _q9(report)},
         {"q": "Q10. 현재 bottleneck은 calibration RESOLUTION인가, Alpha DISCRIMINATION "
               "자체인가?",
-         "a": (f"Stage B answers this before the ladder does: pairwise concordance of "
-               f"{_fmt((stage_b['pairwiseConcordance'] or {}).get('higherPercentileRealisedBetterPct'), '%')} "
-               "is the discriminating fact. Concordance materially above 50% with the "
-               f"ladder still separating ({_verdict(sep)}) would point at RESOLUTION — the "
-               "information is there and finer buckets could use it. Concordance near 50% "
-               "regardless of the ladder's result would point at DISCRIMINATION — the "
-               "percentile itself does not order forward outcomes even where the "
-               "calibration agrees, and no amount of finer bucketing would help.")},
+         "a": _q10_conclusion(stage_b)},
     ]
+
+
+def _q10_conclusion(stage_b: dict) -> str:
+    concordance = (stage_b["pairwiseConcordance"] or {}).get("higherPercentileRealisedBetterPct")
+    near_chance = concordance is not None and 45.0 <= concordance <= 55.0
+    if near_chance:
+        conclusion = (
+            "near chance. That points at ALPHA DISCRIMINATION rather than calibration "
+            "resolution: the percentile itself does not order forward outcomes even "
+            "where the calibration already agrees they are equal, so no amount of "
+            "finer bucketing would recover value that is not there.")
+    elif concordance is not None and concordance > 55.0:
+        conclusion = (
+            "materially above chance. That points at RESOLUTION: the information is "
+            "there and a finer, monotonic calibration could plausibly use it.")
+    elif concordance is not None:
+        conclusion = (
+            "materially BELOW chance, which is not the reading either hypothesis "
+            "predicted and is not evidence for RESOLUTION and warrants independent "
+            "replication before any interpretation is drawn from it.")
+    else:
+        conclusion = "unavailable on this sample."
+    return (f"Stage B answers this before the ladder does: pairwise concordance "
+            f"(higher percentile realised better) is {_fmt(concordance, '%')}, which is "
+            f"{conclusion}")
 
 
 def markdown(report: dict) -> str:
