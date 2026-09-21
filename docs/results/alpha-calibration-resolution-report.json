@@ -1,0 +1,1486 @@
+{
+  "answers": [
+    {
+      "a": "3028 eligible candidate name-dates fall into 3 distinct (region, bucket) levels; the largest single level holds 53.700% of them. Within a level, alphaPercentile still ranges 2.979 points (sd 1.197) on average — real ordinal spread the calibration throws away.",
+      "q": "Q1. Calibration이 production의 alpha ordering을 얼마나 압축하는가?"
+    },
+    {
+      "a": "Pairwise concordance (higher percentile realised better) 49.060% over 9375 within-group pairs; mean within-group Spearman 0.006; top-half minus bottom-half (median rank split) forward excess 0.075pp. Concordance near 50% and a near-zero Spearman would mean the discarded percentile is NOT informative even within a tied group, before the ladder is read at all.",
+      "q": "Q2. Tied group 내에서 더 높은 alphaPercentile이 실제 forward excess를 예측하는가?"
+    },
+    {
+      "a": "-0.684pp -> -1.865pp. Paired difference -1.181pp, 95% CI [-6.207pp, 3.955pp] over 155 blocks. Verdict: **DIRECTIONAL_BUT_NOT_STATISTICALLY_SEPARATED**.",
+      "q": "Q3. Ordinal rescue가 net benchmark excess를 개선했는가?"
+    },
+    {
+      "a": "Arithmetic stock selection 0.315pp -> -0.402pp; compounding 0.405pp -> -0.158pp; block sd ratio 0.784x -> 1.033x. This is the primary mechanism metric in this line of studies.",
+      "q": "Q4. 그 변화는 arithmetic stock selection 개선인가, volatility/compounding effect인가?"
+    },
+    {
+      "a": "On the 431 disagreed name-dates — challenger-only vs control-only: alpha percentile 99.443 vs 97.339, calibrated expected excess 0.449pp vs 0.449pp (should be the SAME level unless cascade explains the gap — see Q6), downside volatility 27.590% vs 25.428%.",
+      "q": "Q5. Control/Challenger가 서로 다르게 선택한 종목들의 특징은 무엇인가?"
+    },
+    {
+      "a": "Of 862 changed name-dates: 853 (99.0%) are the DIRECT within-calibration reorder itself, 9 (1.0%) are a downstream SECTOR-cap cascade the reorder triggered, and 0 are unattributed. The region cap is structurally unable to cascade from this axis (a swap only ever exchanges two eligible names from the SAME region) and this is measured directly: the held set's regional shape differed on 0 of the rebalances that had at least one swap.",
+      "q": "Q6. 이 결과 중 direct within-calibration reorder와 downstream cascade의 비중은 어떻게 되는가?"
+    },
+    {
+      "a": "Same pairing definition, before vs after the rescue: 39 tied swaps at -2.601% mean arriving-minus-departing excess (control) vs 57 tied swaps at 2.558% (rescue rung). `alpha-reliability-v1` published -2.601% on n=39 tied swaps as its own reference point for this population.",
+      "q": "Q7. alpha-reliability-v1이 측정한, calibration에서 tied된 채 손실을 낸 swap population이 줄어들었는가?"
+    },
+    {
+      "a": "Incumbent retention 38.080% -> 49.510%; one-way turnover 4.679x -> 4.361x; cuts tied on expected alpha 86.710% -> 86.010% (this rate is a property of the calibration's bucket edges, which this axis never touches, so it would be surprising for it to move much).",
+      "q": "Q8. Turnover와 incumbent retention은 어떻게 변했는가?"
+    },
+    {
+      "a": "Read directly from production/sealed fields (alphaPercentile, calibrationBucket, expectedGrossBenchmarkExcessPct) with no reconstruction, so this study carries none of lowvol-alpha-separation-v1's harness-fidelity gap. Combined interpretation: **CASE B — ordinal rescue does not help**.",
+      "q": "Q9. 이 결과가 continuous-alpha-calibration-v1을 정당화하는가?"
+    },
+    {
+      "a": "Stage B answers this before the ladder does: pairwise concordance (higher percentile realised better) is 49.060%, which is near chance. That points at ALPHA DISCRIMINATION rather than calibration resolution: the percentile itself does not order forward outcomes even where the calibration already agrees they are equal, so no amount of finer bucketing would recover value that is not there.",
+      "q": "Q10. 현재 bottleneck은 calibration RESOLUTION인가, Alpha DISCRIMINATION 자체인가?"
+    }
+  ],
+  "boundaryInstability": {
+    "LATEST_ALPHA_NO_CONFIDENCE_NO_HYSTERESIS": {
+      "alphaPercentileGapAtCut": {
+        "available": true,
+        "max": 7.0,
+        "mean": 0.3007,
+        "median": 0.0,
+        "min": -4.0,
+        "observations": 143,
+        "p10": -2.0,
+        "p90": 2.0,
+        "sd": 1.9538
+      },
+      "available": true,
+      "confidenceGapAtCut": {
+        "available": true,
+        "max": 0.0,
+        "mean": 0.0,
+        "median": 0.0,
+        "min": 0.0,
+        "observations": 143,
+        "p10": 0.0,
+        "p90": 0.0,
+        "sd": 0.0
+      },
+      "expectedAlphaGapAtCutPp": {
+        "available": true,
+        "max": 0.2181,
+        "mean": -0.0658,
+        "median": 0.0,
+        "min": -0.953,
+        "observations": 143,
+        "p10": -0.0918,
+        "p90": 0.0,
+        "sd": 0.2146
+      },
+      "note": "The marginal held name against the first excluded one, on the rung's own ordering. A tie on expected alpha means the calibration could not tell the two apart and the cut was made by downside volatility.",
+      "rebalancesMeasured": 143,
+      "rebalancesWhereEveryNearMissWasCapped": 2,
+      "relativeScoreGapAtCut": {
+        "available": true,
+        "max": 0.6585,
+        "mean": 0.1234,
+        "median": 0.0856,
+        "min": 0.0005,
+        "observations": 143,
+        "p10": 0.0096,
+        "p90": 0.2806,
+        "sd": 0.1282
+      },
+      "tiedOnExpectedAlphaPct": 86.71
+    },
+    "WITHIN_CALIBRATION_ORDINAL_RESCUE": {
+      "alphaPercentileGapAtCut": {
+        "available": true,
+        "max": 7.0,
+        "mean": 0.8531,
+        "median": 0.0,
+        "min": -4.0,
+        "observations": 143,
+        "p10": 0.0,
+        "p90": 2.8,
+        "sd": 1.5057
+      },
+      "available": true,
+      "confidenceGapAtCut": {
+        "available": true,
+        "max": 0.0,
+        "mean": 0.0,
+        "median": 0.0,
+        "min": 0.0,
+        "observations": 143,
+        "p10": 0.0,
+        "p90": 0.0,
+        "sd": 0.0
+      },
+      "expectedAlphaGapAtCutPp": {
+        "available": true,
+        "max": 0.7523,
+        "mean": -0.0622,
+        "median": 0.0,
+        "min": -0.953,
+        "observations": 143,
+        "p10": -0.089,
+        "p90": 0.0,
+        "sd": 0.2464
+      },
+      "note": "The marginal held name against the first excluded one, on the rung's own ordering. A tie on expected alpha means the calibration could not tell the two apart and the cut was made by downside volatility.",
+      "rebalancesMeasured": 143,
+      "rebalancesWhereEveryNearMissWasCapped": 2,
+      "relativeScoreGapAtCut": {
+        "available": true,
+        "max": 0.761,
+        "mean": 0.137,
+        "median": 0.0842,
+        "min": 0.0,
+        "observations": 143,
+        "p10": 0.0143,
+        "p90": 0.307,
+        "sd": 0.1478
+      },
+      "tiedOnExpectedAlphaPct": 86.01
+    }
+  },
+  "cascadeAttribution": {
+    "directWithinCalibrationReorder": 853,
+    "note": "A name is DIRECT if it was itself one end of a swap. REGION_CAP_CASCADE is predicted to be zero by construction (swaps are always within one region); it is measured, not assumed. Remaining changes with at least one swap on that date are attributed to SECTOR_CAP_CASCADE; changes on a date with no swap at all (should not occur) are OTHER.",
+    "otherConstraintCascade": 0,
+    "regionCapCascade": 0,
+    "sectorCapCascade": 9,
+    "totalNameDatesChanged": 862
+  },
+  "combinedCase": {
+    "case": "CASE B — ordinal rescue does not help",
+    "note": "Cases A/B/C were specified before the result was seen (section 21 of the pre-registration); this maps the measured outcome onto that grid on point-estimate sign and statistical separation, and does not re-specify the grid itself.",
+    "reading": "Point estimate -1.181pp, not statistically separated from control (the interval contains zero). Stage B's pairwise concordance of 49.060% is near chance, corroborating this reading: the discarded percentile does not appear to order forward outcomes even within a tied group. Finer bucketing is unlikely to be the answer either, since the ordinal information finer bucketing would expose is exactly what was restored here and tested directly. Research attention moves to alpha signal discrimination, persistence and entry structure rather than calibration resolution."
+  },
+  "exploratoryStacks": [
+    {
+      "available": true,
+      "axesMoved": 2,
+      "ci95Pp": [
+        -9.344445114502756,
+        4.293210333120032
+      ],
+      "note": "Moves more than one axis; attributable to none of them individually and never paired into the primary ladder.",
+      "pointEstimatePp": -2.310702,
+      "rung": "EXPLORATORY_ORDINAL_RESCUE_PLUS_PERSISTENCE_K6",
+      "selectionBehaviour": {
+        "averageAdded": 1.826,
+        "averageNamesHeld": 4.658,
+        "averageReplaced": 1.794,
+        "averageRetained": 2.832,
+        "incumbentRetentionRatePct": 61.23,
+        "rebalances": 155
+      },
+      "summary": {
+        "annualOneWayTurnoverX": 3.3937298867243997,
+        "annualizedDownsideVolPct": 9.841887,
+        "annualizedExcessPct": -2.994964,
+        "annualizedRealizedVolPct": 13.762616,
+        "averageCashPct": 28.976103870967744,
+        "averageTurnoverPct": 32.25,
+        "benchmarkCagrPct": 12.368074,
+        "cagrPct": 9.373111,
+        "calendarYears": 13.684059,
+        "costDragCagrPp": 0.9781325099105462,
+        "cvar95Pct": -1.916923,
+        "edgeDecomposition": {
+          "arithmeticSelectionEdgePp": -1.5357,
+          "available": true,
+          "benchmarkBlockSdPct": 3.7666,
+          "blockSdRatio": 1.1402,
+          "blocks": 155,
+          "bookBlockSdPct": 4.2945,
+          "compoundingEdgePp": -0.4811,
+          "geometricGrossEdgePp": -2.0168,
+          "note": "GEOMETRIC = ARITHMETIC + COMPOUNDING. A book less volatile than its matched benchmark earns a positive compounding term without picking a single better name."
+        },
+        "grossBenchmarkGapPp": -2.016830490089454,
+        "grossCagrPct": 10.351243509910546,
+        "hitRatePct": 42.58,
+        "informationRatio": -0.17993,
+        "mddPct": -38.90211,
+        "sharpe": 0.576865,
+        "sortino": 0.806871,
+        "trackingErrorPct": 13.290511,
+        "turnoverDecomposition": {
+          "available": true,
+          "averageNamesHeld": 4.66,
+          "averageOneWayTurnoverPct": 29.7967,
+          "fromNameReplacementPct": 25.5692,
+          "fromWeightRetargetPct": 4.2275,
+          "nameReplacementSharePct": 85.81,
+          "namesCarriedToNextBlockPct": 61.16,
+          "rebalances": 144
+        },
+        "turnoverRebalances": 144
+      }
+    },
+    {
+      "available": true,
+      "axesMoved": 2,
+      "ci95Pp": [
+        -5.354368815004223,
+        4.916690424232165
+      ],
+      "note": "Moves more than one axis; attributable to none of them individually and never paired into the primary ladder.",
+      "pointEstimatePp": -0.13300299999999998,
+      "rung": "EXPLORATORY_ORDINAL_RESCUE_PLUS_ENTRY_AT_WEIGHT",
+      "selectionBehaviour": {
+        "averageAdded": 2.69,
+        "averageNamesHeld": 4.658,
+        "averageReplaced": 2.658,
+        "averageRetained": 1.968,
+        "incumbentRetentionRatePct": 42.54,
+        "rebalances": 155
+      },
+      "summary": {
+        "annualOneWayTurnoverX": 3.0959235121684294,
+        "annualizedDownsideVolPct": 4.367415,
+        "annualizedExcessPct": -0.817265,
+        "annualizedRealizedVolPct": 6.297604,
+        "averageCashPct": 66.09936145161292,
+        "averageTurnoverPct": 29.42,
+        "benchmarkCagrPct": 6.244941,
+        "cagrPct": 5.427676,
+        "calendarYears": 13.684059,
+        "costDragCagrPp": 0.7187413091868136,
+        "cvar95Pct": -0.895382,
+        "edgeDecomposition": {
+          "arithmeticSelectionEdgePp": -0.0493,
+          "available": true,
+          "benchmarkBlockSdPct": 1.75,
+          "blockSdRatio": 1.1174,
+          "blocks": 155,
+          "bookBlockSdPct": 1.9554,
+          "compoundingEdgePp": -0.0493,
+          "geometricGrossEdgePp": -0.0985,
+          "note": "GEOMETRIC = ARITHMETIC + COMPOUNDING. A book less volatile than its matched benchmark earns a positive compounding term without picking a single better name."
+        },
+        "grossBenchmarkGapPp": -0.09852369081318635,
+        "grossCagrPct": 6.1464173091868135,
+        "hitRatePct": 39.35,
+        "informationRatio": -0.116788,
+        "mddPct": -14.197975,
+        "sharpe": 0.557218,
+        "sortino": 0.803793,
+        "trackingErrorPct": 6.207382,
+        "turnoverDecomposition": {
+          "available": true,
+          "averageNamesHeld": 4.66,
+          "averageOneWayTurnoverPct": 23.6983,
+          "fromNameReplacementPct": 19.1671,
+          "fromWeightRetargetPct": 4.5311,
+          "nameReplacementSharePct": 80.88,
+          "namesCarriedToNextBlockPct": 42.49,
+          "rebalances": 144
+        },
+        "turnoverRebalances": 144
+      }
+    },
+    {
+      "available": true,
+      "axesMoved": 3,
+      "ci95Pp": [
+        -5.348433837039408,
+        6.378462967758145
+      ],
+      "note": "Moves more than one axis; attributable to none of them individually and never paired into the primary ladder.",
+      "pointEstimatePp": 0.579899,
+      "rung": "EXPLORATORY_ORDINAL_RESCUE_PLUS_PERSISTENCE_K6_PLUS_ENTRY_AT_WEIGHT",
+      "selectionBehaviour": {
+        "averageAdded": 2.484,
+        "averageNamesHeld": 4.658,
+        "averageReplaced": 2.452,
+        "averageRetained": 2.174,
+        "incumbentRetentionRatePct": 47.0,
+        "rebalances": 155
+      },
+      "summary": {
+        "annualOneWayTurnoverX": 2.8275820792646393,
+        "annualizedDownsideVolPct": 4.13787,
+        "annualizedExcessPct": -0.104363,
+        "annualizedRealizedVolPct": 5.849451,
+        "averageCashPct": 66.34322580645161,
+        "averageTurnoverPct": 26.87,
+        "benchmarkCagrPct": 6.125695,
+        "cagrPct": 6.021332,
+        "calendarYears": 13.684059,
+        "costDragCagrPp": 0.6445386286188972,
+        "cvar95Pct": -0.849016,
+        "edgeDecomposition": {
+          "arithmeticSelectionEdgePp": 0.5318,
+          "available": true,
+          "benchmarkBlockSdPct": 1.6861,
+          "blockSdRatio": 1.065,
+          "blocks": 155,
+          "bookBlockSdPct": 1.7956,
+          "compoundingEdgePp": 0.0083,
+          "geometricGrossEdgePp": 0.5402,
+          "note": "GEOMETRIC = ARITHMETIC + COMPOUNDING. A book less volatile than its matched benchmark earns a positive compounding term without picking a single better name."
+        },
+        "grossBenchmarkGapPp": 0.540175628618897,
+        "grossCagrPct": 6.665870628618897,
+        "hitRatePct": 49.68,
+        "informationRatio": -0.012279,
+        "mddPct": -13.589662,
+        "sharpe": 0.691295,
+        "sortino": 0.977573,
+        "trackingErrorPct": 5.969843,
+        "turnoverDecomposition": {
+          "available": true,
+          "averageNamesHeld": 4.66,
+          "averageOneWayTurnoverPct": 21.6488,
+          "fromNameReplacementPct": 16.9391,
+          "fromWeightRetargetPct": 4.7097,
+          "nameReplacementSharePct": 78.25,
+          "namesCarriedToNextBlockPct": 47.03,
+          "rebalances": 144
+        },
+        "turnoverRebalances": 144
+      }
+    }
+  ],
+  "freezeManifest": {
+    "axis": "WHETHER_ORDINAL_INFORMATION_DISCARDED_WITHIN_A_CALIBRATION_LEVEL_HAS_VALUE",
+    "bucketEdgesUnchanged": true,
+    "calibrationTableUnchanged": true,
+    "controlSource": "alpha_reliability.run_rung(alpha_reliability.CONTROL, ...), unmodified",
+    "downsideVolDenominatorUnchanged": true,
+    "eligibleRowsOnly": true,
+    "entryLogicUnchanged": true,
+    "factorWeightsUnchanged": true,
+    "heldFixedAcrossRungs": [
+      "fixed 21-session evaluation blocks and their cadence",
+      "PIT research candidate pool",
+      "four-factor alpha and its 0.30/0.25/0.25/0.20 sleeve weights",
+      "alphaPercentile, exactly as production/sealed data computed it",
+      "expanding bucket calibration of percentile to expected excess, edges unchanged",
+      "the selection score's downside-volatility denominator",
+      "entry-state logic and the entry multiplier",
+      "targetNames = 5, maxNamesPerSector, maxNamesPerRegion, cash floor",
+      "inverse-downside-volatility sizing and the conviction tilt BASE",
+      "no persistence, no confidence contraction, no hysteresis, no cost hurdle on the primary ladder"
+    ],
+    "id": "alpha-calibration-resolution-v1",
+    "implementationChoice": "Score-value-at-position reassignment through the UNMODIFIED select_portfolio_by_scores/_select_scored path, not a post-selection swap operator: chosen because it lets production's own re-sort, caps and eligibility logic run byte-for-byte unmodified, and verify_reproduces_control proves this mechanically on every block rather than by argument.",
+    "ladder": [
+      "LATEST_ALPHA_NO_CONFIDENCE_NO_HYSTERESIS",
+      "WITHIN_CALIBRATION_ORDINAL_RESCUE"
+    ],
+    "liveValidated": false,
+    "neverCrossesCalibrationLevels": true,
+    "noNewParameters": true,
+    "noThresholdTuning": true,
+    "permutationNullRun": false,
+    "productionChanged": false,
+    "promotionEligible": false,
+    "regionSectorCapsUnchanged": true,
+    "status": "CHALLENGER",
+    "targetNamesUnchanged": 5
+  },
+  "informationLossDiagnostic": {
+    "distinctCalibrationLevels": 3,
+    "largestLevelShare": 53.7,
+    "levelSizeDistribution": {
+      "available": true,
+      "mean": 1009.3333,
+      "median": 952.0,
+      "observations": 3,
+      "p10": 550.4,
+      "p90": 1491.2,
+      "sd": 590.0926
+    },
+    "note": "A group is one (date, region, calibrationBucket) among ELIGIBLE candidates only. `largestLevelShare` is the biggest single group's share of every eligible candidate name-date measured, pooled across the whole replay -- not per rebalance.",
+    "totalEligibleNameDates": 3028,
+    "uniqueLevelsPerRebalance": {
+      "available": true,
+      "mean": 2.9793,
+      "median": 3.0,
+      "observations": 145,
+      "p10": 3.0,
+      "p90": 3.0,
+      "sd": 0.1852
+    },
+    "withinLevelPercentileRange": {
+      "available": true,
+      "mean": 2.9789,
+      "median": 3.0,
+      "observations": 426,
+      "p10": 2.0,
+      "p90": 5.0,
+      "sd": 1.3203
+    },
+    "withinLevelPercentileSd": {
+      "available": true,
+      "mean": 1.1974,
+      "median": 1.0,
+      "observations": 426,
+      "p10": 0.7637,
+      "p90": 1.8323,
+      "sd": 0.4349
+    }
+  },
+  "inputSnapshot": {
+    "sha256": "f0781292f508a123c234ded6d28aa8e84a0dc3cc29500e14989dc0b68f53b4d2",
+    "through": "2026-09-14"
+  },
+  "ladder": {
+    "LATEST_ALPHA_NO_CONFIDENCE_NO_HYSTERESIS": {
+      "annualOneWayTurnoverX": 4.678611806628428,
+      "annualizedDownsideVolPct": 8.212611,
+      "annualizedExcessPct": -0.684262,
+      "annualizedRealizedVolPct": 11.985257,
+      "averageCashPct": 30.41651741935484,
+      "averageTurnoverPct": 44.46,
+      "benchmarkCagrPct": 12.844837,
+      "cagrPct": 12.160575,
+      "calendarYears": 13.684059,
+      "costDragCagrPp": 1.4036321599751513,
+      "cvar95Pct": -1.647671,
+      "edgeDecomposition": {
+        "arithmeticSelectionEdgePp": 0.3145,
+        "available": true,
+        "benchmarkBlockSdPct": 4.1402,
+        "blockSdRatio": 0.7839,
+        "blocks": 155,
+        "bookBlockSdPct": 3.2455,
+        "compoundingEdgePp": 0.4048,
+        "geometricGrossEdgePp": 0.7194,
+        "note": "GEOMETRIC = ARITHMETIC + COMPOUNDING. A book less volatile than its matched benchmark earns a positive compounding term without picking a single better name."
+      },
+      "grossBenchmarkGapPp": 0.719370159975151,
+      "grossCagrPct": 13.564207159975151,
+      "hitRatePct": 47.74,
+      "informationRatio": -0.053538,
+      "mddPct": -25.158189,
+      "sharpe": 0.852951,
+      "sortino": 1.245037,
+      "trackingErrorPct": 11.981285,
+      "turnoverDecomposition": {
+        "available": true,
+        "averageNamesHeld": 4.66,
+        "averageOneWayTurnoverPct": 42.1699,
+        "fromNameReplacementPct": 39.4175,
+        "fromWeightRetargetPct": 2.7524,
+        "nameReplacementSharePct": 93.47,
+        "namesCarriedToNextBlockPct": 37.92,
+        "rebalances": 144
+      },
+      "turnoverRebalances": 144
+    },
+    "WITHIN_CALIBRATION_ORDINAL_RESCUE": {
+      "annualOneWayTurnoverX": 4.360811364522763,
+      "annualizedDownsideVolPct": 9.819401,
+      "annualizedExcessPct": -1.865299,
+      "annualizedRealizedVolPct": 14.025526,
+      "averageCashPct": 27.94401548387097,
+      "averageTurnoverPct": 41.44,
+      "benchmarkCagrPct": 13.370587,
+      "cagrPct": 11.505288,
+      "calendarYears": 13.684059,
+      "costDragCagrPp": 1.3056175440815068,
+      "cvar95Pct": -1.878733,
+      "edgeDecomposition": {
+        "arithmeticSelectionEdgePp": -0.402,
+        "available": true,
+        "benchmarkBlockSdPct": 4.0389,
+        "blockSdRatio": 1.0329,
+        "blocks": 155,
+        "bookBlockSdPct": 4.1719,
+        "compoundingEdgePp": -0.1577,
+        "geometricGrossEdgePp": -0.5597,
+        "note": "GEOMETRIC = ARITHMETIC + COMPOUNDING. A book less volatile than its matched benchmark earns a positive compounding term without picking a single better name."
+      },
+      "grossBenchmarkGapPp": -0.5596814559184935,
+      "grossCagrPct": 12.810905544081507,
+      "hitRatePct": 41.29,
+      "informationRatio": -0.10275,
+      "mddPct": -28.419348,
+      "sharpe": 0.70632,
+      "sortino": 1.009131,
+      "trackingErrorPct": 13.318546,
+      "turnoverDecomposition": {
+        "available": true,
+        "averageNamesHeld": 4.66,
+        "averageOneWayTurnoverPct": 38.7212,
+        "fromNameReplacementPct": 34.7667,
+        "fromWeightRetargetPct": 3.9546,
+        "nameReplacementSharePct": 89.79,
+        "namesCarriedToNextBlockPct": 49.43,
+        "rebalances": 144
+      },
+      "turnoverRebalances": 144
+    }
+  },
+  "pairedBlocks": 155,
+  "pairedVsControl": {
+    "available": true,
+    "cashAndCostDeltas": {
+      "averageCashPct": -2.4725019354838693,
+      "averageEquityPct": 2.4725019354838764,
+      "averageTurnoverPct": -3.020000000000003,
+      "benchmarkCagrPct": 0.5257500000000004,
+      "costDragCagrPp": -0.09801461589364457,
+      "sumTransactionCostPct": -1.08782609880965
+    },
+    "delta": {
+      "annualizedExcessPct": -1.181037,
+      "cagrPct": -0.6552869999999995,
+      "calmar": -0.07852451194611532,
+      "cvar95Pct": -0.23106199999999988,
+      "mddPct": -3.2611589999999993,
+      "sharpe": -0.14663100000000007,
+      "sortino": -0.23590599999999995
+    },
+    "estimandNote": "Path deltas recompute nonlinear statistics on jointly resampled net daily blocks. Mean block-metric deltas are a separate estimand, not the full-path delta. Costs and allocations are fixed at their original chronological values. Blocks are treated as exchangeable; serial regime dependence is not removed.",
+    "mddDescription": "-3.261pp deeper drawdown",
+    "meanPairedBlockMetricDifferenceCI": {
+      "annualizedExcessPct": {
+        "bootstrapMean": 4.344186350421843,
+        "ci95": [
+          -4.11288602955144,
+          14.200258588727973
+        ],
+        "evidence": "historical evidence is inconclusive",
+        "pairedBlocks": 155,
+        "pointEstimate": 4.6047028241976005,
+        "reason": null,
+        "samples": 2000,
+        "seed": 11,
+        "validSamples": 2000
+      },
+      "cagrPct": {
+        "bootstrapMean": 4.451198369380532,
+        "ci95": [
+          -3.5821796990510952,
+          13.962741173088194
+        ],
+        "evidence": "historical evidence is inconclusive",
+        "pairedBlocks": 155,
+        "pointEstimate": 4.675830028255218,
+        "reason": null,
+        "samples": 2000,
+        "seed": 11,
+        "validSamples": 2000
+      },
+      "calmar": {
+        "bootstrapMean": null,
+        "ci95": [
+          null,
+          null
+        ],
+        "evidence": "historical evidence is inconclusive",
+        "pairedBlocks": 155,
+        "pointEstimate": null,
+        "reason": "INSUFFICIENT_PAIRS_OR_UNDEFINED_METRIC_IN_RESAMPLES",
+        "samples": 2000,
+        "seed": 11,
+        "validSamples": 0
+      },
+      "cvar95Pct": {
+        "bootstrapMean": -0.18997178985690993,
+        "ci95": [
+          -0.29255566778934566,
+          -0.10024643989330041
+        ],
+        "evidence": "historical interval excludes zero; prospective evidence still required",
+        "pairedBlocks": 155,
+        "pointEstimate": -0.19192883820489476,
+        "reason": null,
+        "samples": 2000,
+        "seed": 11,
+        "validSamples": 2000
+      },
+      "mddPct": {
+        "bootstrapMean": -0.5017928335927816,
+        "ci95": [
+          -0.7570835136694417,
+          -0.2535576803896468
+        ],
+        "evidence": "historical interval excludes zero; prospective evidence still required",
+        "pairedBlocks": 155,
+        "pointEstimate": -0.5046166405999115,
+        "reason": null,
+        "samples": 2000,
+        "seed": 11,
+        "validSamples": 2000
+      },
+      "sharpe": {
+        "bootstrapMean": null,
+        "ci95": [
+          null,
+          null
+        ],
+        "evidence": "historical evidence is inconclusive",
+        "pairedBlocks": 155,
+        "pointEstimate": null,
+        "reason": "INSUFFICIENT_PAIRS_OR_UNDEFINED_METRIC_IN_RESAMPLES",
+        "samples": 2000,
+        "seed": 11,
+        "validSamples": 0
+      },
+      "sortino": {
+        "bootstrapMean": null,
+        "ci95": [
+          null,
+          null
+        ],
+        "evidence": "historical evidence is inconclusive",
+        "pairedBlocks": 155,
+        "pointEstimate": null,
+        "reason": "INSUFFICIENT_PAIRS_OR_UNDEFINED_METRIC_IN_RESAMPLES",
+        "samples": 2000,
+        "seed": 11,
+        "validSamples": 0
+      }
+    },
+    "method": "PAIRED_WHOLE_EVALUATION_BLOCK_PERCENTILE_BOOTSTRAP",
+    "pathDifferenceCI": {
+      "annualizedExcessPct": {
+        "bootstrapMean": -1.2366349711555946,
+        "ci95": [
+          -6.206747874042431,
+          3.9545183172504035
+        ],
+        "evidence": "historical evidence is inconclusive",
+        "pairedBlocks": 155,
+        "pointEstimate": -1.181037,
+        "reason": null,
+        "samples": 2000,
+        "seed": 11,
+        "validSamples": 2000
+      },
+      "cagrPct": {
+        "bootstrapMean": -0.7077553903667608,
+        "ci95": [
+          -5.769373902325322,
+          4.61088843761511
+        ],
+        "evidence": "historical evidence is inconclusive",
+        "pairedBlocks": 155,
+        "pointEstimate": -0.6552869999999995,
+        "reason": null,
+        "samples": 2000,
+        "seed": 11,
+        "validSamples": 2000
+      },
+      "calmar": {
+        "bootstrapMean": -0.15807750585866692,
+        "ci95": [
+          -0.6269077585027485,
+          0.16924144575804778
+        ],
+        "evidence": "historical evidence is inconclusive",
+        "pairedBlocks": 155,
+        "pointEstimate": -0.07852451194611532,
+        "reason": null,
+        "samples": 2000,
+        "seed": 11,
+        "validSamples": 2000
+      },
+      "cvar95Pct": {
+        "bootstrapMean": -0.2300727400651682,
+        "ci95": [
+          -0.41187550113880333,
+          -0.07716552887464544
+        ],
+        "evidence": "historical interval excludes zero; prospective evidence still required",
+        "pairedBlocks": 155,
+        "pointEstimate": -0.23106199999999988,
+        "reason": null,
+        "samples": 2000,
+        "seed": 11,
+        "validSamples": 2000
+      },
+      "mddPct": {
+        "bootstrapMean": -6.010339124152011,
+        "ci95": [
+          -18.510891165122807,
+          2.633511440272964
+        ],
+        "evidence": "historical evidence is inconclusive",
+        "pairedBlocks": 155,
+        "pointEstimate": -3.2611589999999993,
+        "reason": null,
+        "samples": 2000,
+        "seed": 11,
+        "validSamples": 2000
+      },
+      "sharpe": {
+        "bootstrapMean": -0.15282047094399637,
+        "ci95": [
+          -0.4983587115873451,
+          0.1772200908983932
+        ],
+        "evidence": "historical evidence is inconclusive",
+        "pairedBlocks": 155,
+        "pointEstimate": -0.14663100000000007,
+        "reason": null,
+        "samples": 2000,
+        "seed": 11,
+        "validSamples": 2000
+      },
+      "sortino": {
+        "bootstrapMean": -0.24397005959238235,
+        "ci95": [
+          -0.7903781715714515,
+          0.25923215891063733
+        ],
+        "evidence": "historical evidence is inconclusive",
+        "pairedBlocks": 155,
+        "pointEstimate": -0.23590599999999995,
+        "reason": null,
+        "samples": 2000,
+        "seed": 11,
+        "validSamples": 2000
+      }
+    }
+  },
+  "productionChanged": false,
+  "regionalAttribution": {
+    "LATEST_ALPHA_NO_CONFIDENCE_NO_HYSTERESIS": {
+      "available": true,
+      "byRegion": {
+        "KR": {
+          "averageWeightPct": 49.79,
+          "blocks": 155,
+          "blocksHeld": 144,
+          "contributionCi95Pp": [
+            -7.272,
+            5.7428
+          ],
+          "contributionPpPerYear": -0.4667,
+          "sleeveExcessCi95Pp": [
+            -9.2183,
+            12.933
+          ],
+          "sleeveExcessPpPerYear": 1.9349,
+          "sleeveWinRatePct": 57.64
+        },
+        "US": {
+          "averageWeightPct": 19.793,
+          "blocks": 155,
+          "blocksHeld": 145,
+          "contributionCi95Pp": [
+            -1.178,
+            2.9224
+          ],
+          "contributionPpPerYear": 0.7812,
+          "sleeveExcessCi95Pp": [
+            -4.7577,
+            22.4959
+          ],
+          "sleeveExcessPpPerYear": 8.3636,
+          "sleeveWinRatePct": 46.9
+        }
+      },
+      "note": "`excessByRegion` sums to `grossExcessReturn`, so the contributions reconstruct the headline. Sleeve figures are weight-normalised and their intervals are wide; they locate the question, not the answer."
+    },
+    "WITHIN_CALIBRATION_ORDINAL_RESCUE": {
+      "available": true,
+      "byRegion": {
+        "KR": {
+          "averageWeightPct": 48.359,
+          "blocks": 155,
+          "blocksHeld": 144,
+          "contributionCi95Pp": [
+            -8.3933,
+            7.4419
+          ],
+          "contributionPpPerYear": -0.0566,
+          "sleeveExcessCi95Pp": [
+            -12.5436,
+            17.3738
+          ],
+          "sleeveExcessPpPerYear": 2.257,
+          "sleeveWinRatePct": 49.31
+        },
+        "US": {
+          "averageWeightPct": 23.697,
+          "blocks": 155,
+          "blocksHeld": 145,
+          "contributionCi95Pp": [
+            -2.1861,
+            1.5518
+          ],
+          "contributionPpPerYear": -0.3454,
+          "sleeveExcessCi95Pp": [
+            -10.7128,
+            5.3511
+          ],
+          "sleeveExcessPpPerYear": -2.5411,
+          "sleeveWinRatePct": 45.52
+        }
+      },
+      "note": "`excessByRegion` sums to `grossExcessReturn`, so the contributions reconstruct the headline. Sleeve figures are weight-normalised and their intervals are wide; they locate the question, not the answer."
+    }
+  },
+  "replacementAnatomy": {
+    "LATEST_ALPHA_NO_CONFIDENCE_NO_HYSTERESIS": {
+      "alphaPercentileGapAtReplacement": {
+        "available": true,
+        "max": 8.0,
+        "mean": 0.9389,
+        "median": 1.0,
+        "min": -4.0,
+        "observations": 131,
+        "p10": -2.0,
+        "p90": 5.0,
+        "sd": 2.694
+      },
+      "arrivingMinusDepartingExcess": {
+        "available": true,
+        "ci95Pct": [
+          -1.756,
+          2.924
+        ],
+        "meanPct": 0.521,
+        "medianPct": 0.282,
+        "observations": 131,
+        "winRatePct": 50.38
+      },
+      "available": true,
+      "confidenceGapAtReplacement": {
+        "available": true,
+        "max": 0.0,
+        "mean": 0.0,
+        "median": 0.0,
+        "min": 0.0,
+        "observations": 131,
+        "p10": 0.0,
+        "p90": 0.0,
+        "sd": 0.0
+      },
+      "expectedAlphaGapAtReplacementPp": {
+        "available": true,
+        "max": 1.205,
+        "mean": -0.4759,
+        "median": -0.5773,
+        "min": -1.4572,
+        "observations": 131,
+        "p10": -1.2048,
+        "p90": 0.0,
+        "sd": 0.5613
+      },
+      "incumbentsWhosePercentileMovedOnePointOrLess": 412,
+      "note": "One pair per rebalance: the weakest arrival against the strongest departure, which is the pair the decision turned on. The realised figure is the forward 21-session benchmark excess of the arriving name minus the departing one, read off the same priced cross-section the book was valued on.",
+      "ofThoseReplacedPct": 47.82,
+      "replacementsMeasured": 131,
+      "tiedOnExpectedAlphaPct": 29.77,
+      "whenSeparatedOnExpectedAlpha": {
+        "available": true,
+        "ci95Pct": [
+          -1.075,
+          5.005
+        ],
+        "meanPct": 1.8446,
+        "medianPct": 1.2921,
+        "observations": 92,
+        "winRatePct": 55.43
+      },
+      "whenTiedOnExpectedAlpha": {
+        "available": true,
+        "ci95Pct": [
+          -5.51,
+          0.024
+        ],
+        "meanPct": -2.6014,
+        "medianPct": -1.8411,
+        "observations": 39,
+        "winRatePct": 38.46
+      }
+    },
+    "WITHIN_CALIBRATION_ORDINAL_RESCUE": {
+      "alphaPercentileGapAtReplacement": {
+        "available": true,
+        "max": 7.0,
+        "mean": 1.7899,
+        "median": 2.0,
+        "min": -6.0,
+        "observations": 138,
+        "p10": 0.0,
+        "p90": 4.0,
+        "sd": 1.9387
+      },
+      "arrivingMinusDepartingExcess": {
+        "available": true,
+        "ci95Pct": [
+          -0.713,
+          4.537
+        ],
+        "meanPct": 1.7348,
+        "medianPct": 1.3099,
+        "observations": 138,
+        "winRatePct": 52.9
+      },
+      "available": true,
+      "confidenceGapAtReplacement": {
+        "available": true,
+        "max": 0.0,
+        "mean": 0.0,
+        "median": 0.0,
+        "min": 0.0,
+        "observations": 138,
+        "p10": 0.0,
+        "p90": 0.0,
+        "sd": 0.0
+      },
+      "expectedAlphaGapAtReplacementPp": {
+        "available": true,
+        "max": 1.2731,
+        "mean": -0.4802,
+        "median": -0.525,
+        "min": -1.488,
+        "observations": 138,
+        "p10": -1.1508,
+        "p90": 0.0,
+        "sd": 0.5198
+      },
+      "incumbentsWhosePercentileMovedOnePointOrLess": 528,
+      "note": "One pair per rebalance: the weakest arrival against the strongest departure, which is the pair the decision turned on. The realised figure is the forward 21-session benchmark excess of the arriving name minus the departing one, read off the same priced cross-section the book was valued on.",
+      "ofThoseReplacedPct": 35.98,
+      "replacementsMeasured": 138,
+      "tiedOnExpectedAlphaPct": 41.3,
+      "whenSeparatedOnExpectedAlpha": {
+        "available": true,
+        "ci95Pct": [
+          -2.157,
+          5.42
+        ],
+        "meanPct": 1.1557,
+        "medianPct": -0.036,
+        "observations": 81,
+        "winRatePct": 48.15
+      },
+      "whenTiedOnExpectedAlpha": {
+        "available": true,
+        "ci95Pct": [
+          -0.583,
+          6.133
+        ],
+        "meanPct": 2.5577,
+        "medianPct": 1.5347,
+        "observations": 57,
+        "winRatePct": 59.65
+      }
+    }
+  },
+  "riskDominance": {
+    "LATEST_ALPHA_NO_CONFIDENCE_NO_HYSTERESIS": {
+      "available": true,
+      "downsideVolPctRejected": {
+        "available": true,
+        "max": 71.7,
+        "mean": 27.1725,
+        "median": 24.645,
+        "min": 7.52,
+        "observations": 2306,
+        "p10": 16.075,
+        "p90": 42.4,
+        "sd": 10.6178
+      },
+      "downsideVolPctSelected": {
+        "available": true,
+        "max": 92.17,
+        "mean": 24.4452,
+        "median": 23.385,
+        "min": 4.78,
+        "observations": 722,
+        "p10": 11.798,
+        "p90": 37.134,
+        "sd": 11.1266
+      },
+      "droppedDespiteTopAlphaAndAboveMedianRisk": 102,
+      "droppedRiskGapToMedianPp": {
+        "available": true,
+        "max": 36.51,
+        "mean": 7.833,
+        "median": 5.0175,
+        "min": 0.01,
+        "observations": 102,
+        "p10": 0.523,
+        "p90": 17.11,
+        "sd": 8.3041
+      },
+      "heldDespiteLowerAlphaAndBelowMedianRisk": 262,
+      "heldMatchingAlphaOnlyTopNPct": 30.07,
+      "heldNameSleeveRows": 722,
+      "lowvolIsInTheTopTwoSleevesPct": 58.86,
+      "lowvolIsTheHighestSleevePct": 32.69,
+      "lowvolSleevePercentileRejected": {
+        "available": true,
+        "max": 100.0,
+        "mean": 63.8083,
+        "median": 70.0,
+        "min": 1.0,
+        "observations": 2306,
+        "p10": 21.0,
+        "p90": 98.0,
+        "sd": 28.3116
+      },
+      "lowvolSleevePercentileSelected": {
+        "available": true,
+        "max": 100.0,
+        "mean": 74.374,
+        "median": 85.0,
+        "min": 4.0,
+        "observations": 722,
+        "p10": 27.0,
+        "p90": 100.0,
+        "sd": 27.899
+      },
+      "note": "Read off the rows each rebalance actually scored. The alpha-only top-N is a within-block reading of the same cross-section, never a path: nothing is valued or carried forward, and no realised return enters any figure here. Names a sector or region cap stopped are excluded from the risk-drop count, because a cap is not volatility.",
+      "pairwiseOrderingInversionsPct": {
+        "available": true,
+        "max": 68.5714,
+        "mean": 37.5214,
+        "median": 36.4706,
+        "min": 0.0,
+        "observations": 145,
+        "p10": 21.2,
+        "p90": 53.9706,
+        "sd": 12.8772
+      },
+      "promotedRiskGapToMedianPp": {
+        "available": true,
+        "max": -0.01,
+        "mean": -6.5618,
+        "median": -5.895,
+        "min": -24.16,
+        "observations": 262,
+        "p10": -13.735,
+        "p90": -0.9835,
+        "sd": 4.8631
+      },
+      "rebalancesMeasured": 145,
+      "scoreVsAlphaPercentileSpearman": {
+        "available": true,
+        "max": 0.6987,
+        "mean": -0.0345,
+        "median": -0.0377,
+        "min": -0.6325,
+        "observations": 145,
+        "p10": -0.4125,
+        "p90": 0.3308,
+        "sd": 0.2995
+      },
+      "scoreVsCalibratedAlphaSpearman": {
+        "available": true,
+        "max": 0.9274,
+        "mean": 0.7585,
+        "median": 0.8113,
+        "min": 0.0811,
+        "observations": 144,
+        "p10": 0.5474,
+        "p90": 0.9096,
+        "sd": 0.1534
+      },
+      "scoreVsDownsideVolSpearman": {
+        "available": true,
+        "max": 0.8301,
+        "mean": 0.075,
+        "median": 0.1334,
+        "min": -0.8,
+        "observations": 145,
+        "p10": -0.4061,
+        "p90": 0.5564,
+        "sd": 0.3906
+      }
+    },
+    "WITHIN_CALIBRATION_ORDINAL_RESCUE": {
+      "available": true,
+      "downsideVolPctRejected": {
+        "available": true,
+        "max": 92.17,
+        "mean": 26.7684,
+        "median": 24.57,
+        "min": 4.78,
+        "observations": 2306,
+        "p10": 15.785,
+        "p90": 41.62,
+        "sd": 10.5889
+      },
+      "downsideVolPctSelected": {
+        "available": true,
+        "max": 80.46,
+        "mean": 25.7357,
+        "median": 23.905,
+        "min": 6.1,
+        "observations": 722,
+        "p10": 13.357,
+        "p90": 39.889,
+        "sd": 11.429
+      },
+      "droppedDespiteTopAlphaAndAboveMedianRisk": 24,
+      "droppedRiskGapToMedianPp": {
+        "available": true,
+        "max": 20.67,
+        "mean": 7.4077,
+        "median": 5.315,
+        "min": 0.09,
+        "observations": 24,
+        "p10": 1.6005,
+        "p90": 13.7815,
+        "sd": 5.9868
+      },
+      "heldDespiteLowerAlphaAndBelowMedianRisk": 68,
+      "heldMatchingAlphaOnlyTopNPct": 77.7,
+      "heldNameSleeveRows": 722,
+      "lowvolIsInTheTopTwoSleevesPct": 49.72,
+      "lowvolIsTheHighestSleevePct": 23.27,
+      "lowvolSleevePercentileRejected": {
+        "available": true,
+        "max": 100.0,
+        "mean": 64.5286,
+        "median": 71.0,
+        "min": 1.0,
+        "observations": 2306,
+        "p10": 21.0,
+        "p90": 98.0,
+        "sd": 28.3896
+      },
+      "lowvolSleevePercentileSelected": {
+        "available": true,
+        "max": 100.0,
+        "mean": 72.0734,
+        "median": 83.0,
+        "min": 2.0,
+        "observations": 722,
+        "p10": 26.1,
+        "p90": 100.0,
+        "sd": 28.3892
+      },
+      "note": "Read off the rows each rebalance actually scored. The alpha-only top-N is a within-block reading of the same cross-section, never a path: nothing is valued or carried forward, and no realised return enters any figure here. Names a sector or region cap stopped are excluded from the risk-drop count, because a cap is not volatility.",
+      "pairwiseOrderingInversionsPct": {
+        "available": true,
+        "max": 37.5,
+        "mean": 8.218,
+        "median": 6.1538,
+        "min": 0.0,
+        "observations": 145,
+        "p10": 0.0,
+        "p90": 18.7608,
+        "sd": 8.3249
+      },
+      "promotedRiskGapToMedianPp": {
+        "available": true,
+        "max": -0.01,
+        "mean": -6.0049,
+        "median": -5.265,
+        "min": -18.27,
+        "observations": 68,
+        "p10": -11.561,
+        "p90": -0.9245,
+        "sd": 4.5314
+      },
+      "rebalancesMeasured": 145,
+      "scoreVsAlphaPercentileSpearman": {
+        "available": true,
+        "max": 0.9694,
+        "mean": 0.3251,
+        "median": 0.3461,
+        "min": -0.3678,
+        "observations": 145,
+        "p10": -0.0781,
+        "p90": 0.7099,
+        "sd": 0.3066
+      },
+      "scoreVsCalibratedAlphaSpearman": {
+        "available": true,
+        "max": 0.9274,
+        "mean": 0.7585,
+        "median": 0.8113,
+        "min": 0.0811,
+        "observations": 144,
+        "p10": 0.5474,
+        "p90": 0.9096,
+        "sd": 0.1534
+      },
+      "scoreVsDownsideVolSpearman": {
+        "available": true,
+        "max": 0.8045,
+        "mean": 0.1256,
+        "median": 0.1765,
+        "min": -0.6491,
+        "observations": 145,
+        "p10": -0.2686,
+        "p90": 0.5066,
+        "sd": 0.3081
+      }
+    }
+  },
+  "sealedInvariant": {
+    "after": "365dddb1387f1644693c8d458dd824ed8c039d850a4227de5756570664b9a7cc",
+    "before": "365dddb1387f1644693c8d458dd824ed8c039d850a4227de5756570664b9a7cc",
+    "unchanged": true
+  },
+  "selectionBehaviour": {
+    "LATEST_ALPHA_NO_CONFIDENCE_NO_HYSTERESIS": {
+      "averageAdded": 2.897,
+      "averageNamesHeld": 4.658,
+      "averageReplaced": 2.865,
+      "averageRetained": 1.761,
+      "incumbentRetentionRatePct": 38.08,
+      "rebalances": 155
+    },
+    "WITHIN_CALIBRATION_ORDINAL_RESCUE": {
+      "averageAdded": 2.368,
+      "averageNamesHeld": 4.658,
+      "averageReplaced": 2.335,
+      "averageRetained": 2.29,
+      "incumbentRetentionRatePct": 49.51,
+      "rebalances": 155
+    }
+  },
+  "separation": null,
+  "setDifferenceProfiles": {
+    "available": true,
+    "heldNameDatesAgreed": 291,
+    "heldNameDatesDisagreed": 431,
+    "heldSetOverlapPct": {
+      "available": true,
+      "mean": 27.4614,
+      "median": 25.0,
+      "observations": 145,
+      "p10": 11.1111,
+      "p90": 42.8571,
+      "sd": 17.4818
+    },
+    "note": "Paired within a rebalance: both sides were chosen on the same date from the same cross-section under the same caps, so the within-date difference carries no market-timing term. Factor and risk facts are read from the CONTROL rung's own scored rows for BOTH groups — both rungs score the same cross-section and differ only in the score formula, so one source removes any doubt a profile gap came from the source rather than the group. The realised forward excess is EVALUATION ONLY: it is read off the same priced cross-section `replacement_anatomy` reads, and it enters no score, no ranking and no rule. `realisedForwardExcessDifferencePp` is a difference of two group means, not a paired test, and its sign is descriptive.",
+    "realisedForwardExcessDifferencePp": -0.16,
+    "rebalancesMeasured": 145,
+    "selectedByChallengerNotControl": {
+      "alphaPercentile": {
+        "available": true,
+        "mean": 99.4432,
+        "median": 100.0,
+        "observations": 431,
+        "p10": 98.0,
+        "p90": 100.0,
+        "sd": 0.9625
+      },
+      "downsideVolPct": {
+        "available": true,
+        "mean": 27.5901,
+        "median": 24.44,
+        "observations": 431,
+        "p10": 15.78,
+        "p90": 43.66,
+        "sd": 11.5141
+      },
+      "expectedGrossBenchmarkExcessPct": {
+        "available": true,
+        "mean": 0.4492,
+        "median": 0.2521,
+        "observations": 431,
+        "p10": -0.1151,
+        "p90": 1.171,
+        "sd": 0.5039
+      },
+      "lowvol": {
+        "available": true,
+        "mean": 65.8353,
+        "median": 75.0,
+        "observations": 431,
+        "p10": 21.0,
+        "p90": 99.0,
+        "sd": 29.4011
+      },
+      "momentum": {
+        "available": true,
+        "mean": 86.4432,
+        "median": 94.0,
+        "observations": 431,
+        "p10": 67.0,
+        "p90": 99.0,
+        "sd": 20.0123
+      },
+      "nameDates": 431,
+      "quality": {
+        "available": true,
+        "mean": 80.6073,
+        "median": 92.0,
+        "observations": 354,
+        "p10": 34.3,
+        "p90": 100.0,
+        "sd": 25.634
+      },
+      "realisedForwardBenchmarkExcessPct": {
+        "available": true,
+        "ci95Pct": [
+          -0.977,
+          0.759
+        ],
+        "meanPct": -0.1226,
+        "medianPct": -0.8717,
+        "observations": 431,
+        "winRatePct": 44.78
+      },
+      "value": {
+        "available": true,
+        "mean": 72.0122,
+        "median": 91.0,
+        "observations": 327,
+        "p10": 12.0,
+        "p90": 100.0,
+        "sd": 33.3099
+      }
+    },
+    "selectedByControlNotChallenger": {
+      "alphaPercentile": {
+        "available": true,
+        "mean": 97.3387,
+        "median": 98.0,
+        "observations": 431,
+        "p10": 95.0,
+        "p90": 99.0,
+        "sd": 1.46
+      },
+      "downsideVolPct": {
+        "available": true,
+        "mean": 25.4282,
+        "median": 23.69,
+        "observations": 431,
+        "p10": 14.22,
+        "p90": 38.24,
+        "sd": 11.282
+      },
+      "expectedGrossBenchmarkExcessPct": {
+        "available": true,
+        "mean": 0.4487,
+        "median": 0.2521,
+        "observations": 431,
+        "p10": -0.1151,
+        "p90": 1.171,
+        "sd": 0.5027
+      },
+      "lowvol": {
+        "available": true,
+        "mean": 69.6891,
+        "median": 80.0,
+        "observations": 431,
+        "p10": 23.0,
+        "p90": 99.0,
+        "sd": 29.3319
+      },
+      "momentum": {
+        "available": true,
+        "mean": 80.2552,
+        "median": 88.0,
+        "observations": 431,
+        "p10": 48.0,
+        "p90": 99.0,
+        "sd": 21.9153
+      },
+      "nameDates": 431,
+      "quality": {
+        "available": true,
+        "mean": 73.7881,
+        "median": 82.0,
+        "observations": 335,
+        "p10": 32.0,
+        "p90": 98.0,
+        "sd": 25.8307
+      },
+      "realisedForwardBenchmarkExcessPct": {
+        "available": true,
+        "ci95Pct": [
+          -0.743,
+          0.813
+        ],
+        "meanPct": 0.0374,
+        "medianPct": 0.0328,
+        "observations": 431,
+        "winRatePct": 50.58
+      },
+      "value": {
+        "available": true,
+        "mean": 62.6453,
+        "median": 71.5,
+        "observations": 296,
+        "p10": 15.0,
+        "p90": 98.0,
+        "sd": 31.5489
+      }
+    }
+  },
+  "status": "CHALLENGER",
+  "tiedSwapOrdinalDetail": {
+    "LATEST_ALPHA_NO_CONFIDENCE_NO_HYSTERESIS": {
+      "available": true,
+      "note": "Same pairing `alpha_reliability.replacement_anatomy` uses (weakest arrival vs strongest departure by score), restricted to swaps tied on expectedGrossBenchmarkExcessPct. realisedExcessDifference is arriving minus departing forward block excess, evaluation only.",
+      "percentileGap": {
+        "available": true,
+        "mean": -0.641,
+        "median": -1.0,
+        "observations": 39,
+        "p10": -3.0,
+        "p90": 1.0,
+        "sd": 1.5975
+      },
+      "percentileGapVsOutcomeSpearman": -0.010586446215340757,
+      "realisedExcessDifferencePct": {
+        "available": true,
+        "mean": -2.6014,
+        "median": -1.8411,
+        "observations": 39,
+        "p10": -13.4055,
+        "p90": 6.6237,
+        "sd": 9.1746
+      },
+      "swapsMeasured": 39
+    },
+    "WITHIN_CALIBRATION_ORDINAL_RESCUE": {
+      "available": true,
+      "note": "Same pairing `alpha_reliability.replacement_anatomy` uses (weakest arrival vs strongest departure by score), restricted to swaps tied on expectedGrossBenchmarkExcessPct. realisedExcessDifference is arriving minus departing forward block excess, evaluation only.",
+      "percentileGap": {
+        "available": true,
+        "mean": 0.9649,
+        "median": 1.0,
+        "observations": 57,
+        "p10": 0.0,
+        "p90": 2.4,
+        "sd": 1.2672
+      },
+      "percentileGapVsOutcomeSpearman": -0.20171638101212325,
+      "realisedExcessDifferencePct": {
+        "available": true,
+        "mean": 2.5577,
+        "median": 1.5347,
+        "observations": 57,
+        "p10": -10.5465,
+        "p90": 14.0829,
+        "sd": 12.9331
+      },
+      "swapsMeasured": 57
+    }
+  },
+  "verdict": "DIRECTIONAL_BUT_NOT_STATISTICALLY_SEPARATED",
+  "version": "alpha-calibration-resolution-v1",
+  "withinCalibrationInformation": {
+    "available": true,
+    "bottomHalfMeanForwardExcessPct": -0.0588,
+    "note": "EVALUATION ONLY: percentile and forward excess are read from the control's own scored candidates and the same priced cross-section `replacement_anatomy` reads. `pairwiseConcordance` compares every same-group pair with distinct percentiles; the half-split is a median rank split within each group, not a chosen threshold.",
+    "pairwiseConcordance": {
+      "higherPercentileRealisedBetterPct": 49.06,
+      "pairsCompared": 9375
+    },
+    "topHalfMeanForwardExcessPct": 0.0159,
+    "topMinusBottomPp": 0.0746,
+    "withinGroupSpearman": {
+      "available": true,
+      "mean": 0.0063,
+      "median": 0.0,
+      "observations": 398,
+      "p10": -0.6325,
+      "p90": 0.6516,
+      "sd": 0.4759
+    }
+  }
+}

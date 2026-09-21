@@ -582,6 +582,76 @@
   point estimate is reported as CONTAINS ZERO, never softened toward "no
   effect either way."
 
+## Alpha-calibration-resolution invariants (v2.20)
+
+- A SCORE CANNOT BE REORDERED BY REORDERING ROWS, ONLY BY MOVING ITS VALUE.
+  `select_portfolio_by_scores` always re-sorts candidates by `(-score,
+  ticker)` before selecting, so handing it candidate rows in a new order
+  changes nothing — the re-sort erases any ordering not carried in the
+  SCORE FIELD itself. `rescue_scores` therefore never permutes rows: it
+  keeps the exact score VALUE Control computed at a given sort position and
+  reassigns which candidate's identity carries it. `select_portfolio_by_
+  scores` and `_select_scored` run completely unmodified as a result, and
+  this is proved mechanically rather than argued: `assert_noop_blocks_
+  match_control` checks, on every one of 155 real blocks, that an EMPTY
+  swap list reproduces Control's held set exactly — a mathematical
+  necessity of the construction, not a tolerance-based check.
+- GROUPING BY ELIGIBLE ROWS ONLY MAKES A REGION-CAP CASCADE STRUCTURALLY
+  IMPOSSIBLE, AND THIS IS MEASURED RATHER THAN ASSUMED. A group is
+  `(region, calibrationBucket)` among `eligible=True` rows, so every
+  member shares one region by construction — a swap can change which
+  SECTOR occupies a position but never how many eligible names from a
+  region reached the ordering. Measured: of 862 changed name-dates, 0 of
+  the swap-bearing rebalances showed a changed regional shape in the held
+  set; 853 (99.0%) are the direct reorder itself and 9 (1.0%) are a
+  sector-cap cascade.
+- THIS STUDY CARRIES NONE OF `lowvol-alpha-separation-v1`'S HARNESS-
+  FIDELITY GAP, BECAUSE IT NEVER RECONSTRUCTS THE INPUT. `alphaPercentile`,
+  `calibrationBucket` and `expectedGrossBenchmarkExcessPct` are read
+  DIRECTLY from `alpha_reliability.reliability_scores`'s own sealed output,
+  the exact fields production computed. There is no percentile rebuild and
+  therefore no fidelity gap to publish.
+- THE DISCARDED ORDINAL INFORMATION IS MEASURED BEFORE THE LADDER IS READ,
+  AND IT IS NOT INFORMATIVE. Within a `(date, region, calibrationBucket)`
+  group, pairwise concordance (higher `alphaPercentile` realised the better
+  forward excess) is 49.06% over 9,375 pairs, mean within-group Spearman is
+  0.006, and a parameter-free median-rank half split reads +0.075pp — all
+  three at essentially CHANCE. This is measured on the CONTROL path's own
+  scored candidates and enters no score, ranking or rule.
+- THE POINT ESTIMATE IS UNFAVOURABLE AND THE INTERVAL CONTAINS ZERO — BOTH
+  ARE PUBLISHED, NEITHER IS SOFTENED. Net excess moves -0.684pp (control) to
+  -1.865pp (ordinal rescue), paired difference -1.181pp, 95% CI [-6.207pp,
+  +3.955pp] over 155 blocks. Arithmetic stock selection moves +0.315pp to
+  -0.402pp and compounding +0.405pp to -0.158pp — both terms unfavourable,
+  not a volatility-drag story. Verdict:
+  `DIRECTIONAL_BUT_NOT_STATISTICALLY_SEPARATED`.
+- A THREE-CASE PRE-REGISTRATION DID NOT NAME A FOURTH CASE, AND THE FOURTH
+  CASE IS NOT STRETCHED TO FIT ONE OF THE THREE. The design specified
+  favourable-and-separated (A), doesn't-help (B), and directionally-good-
+  but-uncertain (C) before the result was seen. A negative point estimate
+  that does not statistically separate is not "directionally good," so it
+  is routed to B on point-estimate sign rather than reported as C — which
+  would have misrepresented an unfavourable reading as a promising one.
+  Verdict: **CASE B — ordinal rescue does not help**, corroborated
+  independently by Stage B's near-chance concordance.
+- THE BOTTLENECK NAMED BY `alpha-reliability-v1` WAS RESOLUTION; THIS STUDY
+  TESTED IT DIRECTLY AND FOUND DISCRIMINATION INSTEAD. The two-occupied-
+  bucket calibration compresses production's ordering hard (3,028 eligible
+  name-dates into 3 levels, the largest holding 53.70%), and there is real
+  ordinal spread inside a level (mean range 2.979 points) for a rescue to
+  use — but Stage B's near-chance concordance shows that spread does not
+  order forward outcomes. A finer or continuous calibration would not be
+  expected to recover value that Stage B shows is not there.
+- NO BUCKET-COUNT SWEEP, NO PERCENTILE-COEFFICIENT OPTIMISATION, NO SPLINE
+  OR ISOTONIC FIT, NO THRESHOLD SEARCH. One binary mechanistic test,
+  specified before the result: does restoring discarded ordinal information
+  inside a tied group help, yes or no. It does not, and re-specifying the
+  calibration until it does would be the exact failure this repository's
+  discipline exists to prevent.
+- NO PERMUTATION NULL WAS RUN, so no rung here may be described as beating
+  random, and this remains one historical sample after ten studies on this
+  ledger, with no multiplicity correction.
+
 ## Lint gate invariants (v2.11)
 
 - The enabled rule set reports ZERO findings on `main`. A rule is turned on in the
