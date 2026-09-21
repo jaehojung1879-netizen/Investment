@@ -294,6 +294,50 @@ full run 이후에 추가됐고 그 사실을 그대로 기록했습니다 — r
 있는가입니다. 두 가지 상태만 표현할 수 있는 결정층에 팩터를 더해도 그 두 가지 상태에 더해질
 뿐입니다.
 
+### 알파-리스크 분리 (Study 1) — 분모를 빼면 방어적 틸트가 사라지는가
+
+`alpha-risk-separation-v1`도 **research-only CHALLENGER**입니다. `alpha-reliability-v1`이
+사전 등록한 4개 후속 연구 중 첫 번째입니다.
+[설계와 한계](docs/alpha-risk-separation-v1.md), [실측 보고서](docs/results/alpha-risk-separation-report.md).
+
+**질문.** 하방변동성은 이 시스템에서 세 군데에 쓰입니다: ① 4-팩터 알파의 lowvol 슬리브
+(20%), ② 선정 점수의 **분모**(`기대초과수익 ÷ 하방변동성`), ③ 포지션 사이징의 base
+(`1 / 하방변동성`, inverse-vol). `alpha-reliability-v1`은 held 종목에서 방어적 틸트를
+측정했습니다(하방변동성 24.45% vs 27.17%, lowvol 슬리브 백분위 74.37 vs 63.81). 이번
+연구는 **②만** 제거합니다 — lowvol 슬리브 가중치와 inverse-vol 사이징 base는 그대로.
+
+**대조군은 재구현하지 않고 직접 호출합니다.** `alpha_risk_separation.CONTROL`은
+`alpha_reliability.CONTROL` 그 자체이고, `alpha_reliability.run_rung(...)`을 그대로
+불러 씁니다 — 두 번째 구현이 생기면 첫 번째와 어긋날 여지가 생기기 때문입니다.
+`DOWNSIDE_RISK_UNAVAILABLE` 제외는 두 rung 모두에 그대로 남습니다: 랭킹이 무엇으로
+나누든 사이징에는 risk unit이 필요하다는 사실 자체는 변하지 않습니다.
+
+**결과.**
+
+| 단계 | 순 초과 | Sharpe | MDD | 회전율 |
+|---|---:|---:|---:|---:|
+| 대조군(분모 있음) | -0.684%p | 0.853 | -25.158% | 4.679× |
+| Alpha-only(분모 제거) | **-1.586%p** | 0.747 | -28.958% | **5.744×** |
+
+대조군 대비: Δ -0.902%p, 95% CI [-5.068, +3.210] — **구간이 0을 포함**합니다. 점추정은
+더 나빠졌고, Sharpe도 낮아졌고, MDD도 깊어졌습니다.
+
+**틸트는 살아남았습니다.** 분모를 제거해도 held 종목의 하방변동성은 +1.664%p, lowvol이
+최상위 슬리브인 비율은 -7.76%p(32.69%→24.93%)만 움직였습니다 — 사라지지 않고 줄었을
+뿐입니다. 즉 틸트의 일부는 **알파 항 자체**(lowvol 슬리브)를 통해 들어오고 있고, 랭킹의
+분모는 그 채널이 아니었습니다. 그래서 슬리브를 알파 레이어에서 리스크 레이어로 옮기는
+문제는 사전 등록대로 **별도 연구**로 남습니다 — 이번에 넓히지 않습니다.
+
+**회전율이 오히려 오른 이유도 측정했습니다.** 점수에서 유일하게 연속적으로 변하던 항
+(하방변동성)을 빼면 동률은 늘어날 수밖에 없습니다: 컷에서 기대알파 동률 비율이
+86.71%→**94.41%**, 컷 지점 상대 점수 격차 중앙값이 0.086→**0.000**으로 무너졌습니다.
+`alpha_reliability`의 `boundary_instability`/`replacement_anatomy`를 재구현 없이 그대로
+불러 측정한 결과이며, 회전율 상승(4.679×→5.744×)의 메커니즘으로 보고합니다.
+
+승격하지 않습니다. `promotionEligible`은 `False`이고, 순열 null은 돌리지 않았으므로 어느
+rung도 "무작위를 이겼다"고 말할 수 없습니다. 두 번의 sealed replay가 byte-identical했고
+sealed ledger digest는 변하지 않았습니다.
+
 ## 실행 상태(runMode)와 데이터 모드(dataMode)
 
 - **runMode**: `researchOnly` · `paperTrading`(기본) · `liveValidated`. 기본값은 `paperTrading`이며, **`liveValidated`는 config만으로 절대 부여되지 않습니다** — paper signal ledger에 충분한 검증 이력이 쌓여야 합니다.

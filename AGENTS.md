@@ -264,6 +264,52 @@
   bucket map discards. Adding a factor to a decision layer that can express two
   states would add it to the same two states.
 
+## Alpha-risk-separation invariants (v2.14)
+
+- A CONTROL THAT IS CALLED IS SAFER THAN A CONTROL THAT IS REPRODUCED.
+  `alpha_risk_separation.CONTROL` is literally `alpha_reliability.CONTROL`,
+  and the control path is produced by calling
+  `alpha_reliability.run_rung(alpha_reliability.CONTROL, ...)` directly rather
+  than re-implementing its candidate assembly and scoring. A second
+  implementation is a second place for a control to drift from the path it is
+  supposed to be.
+- REMOVING A DENOMINATOR IS NOT REMOVING AN ELIGIBILITY FACT.
+  `DOWNSIDE_RISK_UNAVAILABLE` excludes a name on BOTH rungs, because
+  inverse-downside-volatility position SIZING still needs a risk unit
+  whatever the selection SCORE divides by. Relaxing the exclusion along with
+  the score change would let the study claim a benefit that actually came
+  from sizing names the control could not size at all.
+- THE SAME SCORE SERVES SELECTION AND THE CONVICTION TILT, so removing its
+  denominator changes both. `selection_and_baseline` hands one `scored` list
+  to `select_portfolio_by_scores` (which five names) and to `baseline_weights`
+  (the 0.5x-1.5x tilt among them, by the same rank). What the axis leaves
+  UNTOUCHED is the tilt's BASE, `1 / max(risk_unit, 0.05)`, computed
+  identically on both rungs — inverse-volatility sizing is exactly as it was;
+  only the ranking that decides who receives it no longer divides by risk.
+- REMOVING THE SCORE'S ONE CONTINUOUSLY-VARYING TERM CAN ONLY MAKE TIES AT
+  THE MARGIN MORE COMMON. Measured: cuts tied on expected alpha rise from
+  86.71% to 94.41%, the median relative score gap at the cut collapses from
+  0.086 to 0.000, and one-way turnover rises from 4.679x to 5.744x. This is
+  reported as the MECHANISM behind the turnover change, not left as an
+  unexplained side effect — `boundary_instability` and `replacement_anatomy`
+  (`alpha_reliability`) are run unmodified on the new rung's own decisions,
+  exactly as `risk_dominance` is, rather than re-derived.
+- A DEFENSIVE TILT CAN SURVIVE THE CHANNEL THAT WAS MEASURED FIRST. Removing
+  the denominator moves downside volatility held by +1.664pp and `lowvol`
+  being a held name's highest sleeve by -7.76pp (32.69% -> 24.93%) — present
+  but reduced, not collapsed. The tilt LARGELY SURVIVES, which means part of
+  it arrives through the alpha term itself (the `lowvol` sleeve, 0.20 weight)
+  and not through the ranking denominator this rung removed. That is why the
+  sleeve move is its OWN study and was never widened into this one.
+- THE PAIRED INTERVAL CONTAINS ZERO AND THE POINT ESTIMATE IS WORSE. Net
+  excess moves from -0.684pp (control) to -1.586pp (alpha only), paired
+  difference -0.902pp, 95% CI [-5.068, +3.210] over 155 blocks. Sharpe falls
+  0.853 -> 0.747 and MDD deepens -25.158% -> -28.958%. Removing the
+  denominator is not shown to help, and the interval does not clear zero in
+  either direction — reported as CONTAINS ZERO, not folded into "no result".
+- NO PERMUTATION NULL WAS RUN. No rung in this ladder may be described as
+  beating random, and the freeze manifest says so explicitly.
+
 ## Lint gate invariants (v2.11)
 
 - The enabled rule set reports ZERO findings on `main`. A rule is turned on in the
