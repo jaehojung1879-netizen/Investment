@@ -286,6 +286,118 @@ is **calibrated** — that names it scores low-confidence really do realise
 noisier outcomes. That last one is the only check that can falsify the
 mechanism rather than the result.
 
+## Structural diagnostics, added after the ladder was scored
+
+**Nothing in this section is a rung.** The ladder, its four rungs, `k = 6`, the
+uncertainty multiple, the confidence form, the stacked reference path and every
+number they produced are exactly as the study ran them. These read those paths
+afterwards, to interpret this study and pre-register the next one. The `lowvol`
+sleeve weight (0.20), the downside-volatility denominator in the selection
+score, inverse-downside-volatility sizing, the entry-state multipliers,
+`maxNamesPerRegion = 3`, `maxNamesPerSector = 2` and `targetNames = 5` are all
+unchanged, and the freeze manifest records that in
+`constraintsHeldFixedByTheseDiagnostics`.
+
+Two of them contain a **within-block reading with a constraint notionally
+lifted** — "what the top-N would be on the alpha term alone", "what the top-N
+would be with the caps off". Those are readings of one rebalance's own
+ordering. Nothing is valued, carried forward, compounded or scored, no path is
+run, and **no realised return enters any of them**. They are counts of how
+often the ranking and the guard disagree, not estimates of what disagreeing
+would have earned.
+
+### A. `risk_dominance` — alpha or low volatility?
+
+The score is `expected excess ÷ downside volatility × entry multiplier`, and
+the axis diagnostic already established that the calibration hands most of this
+pool one expected excess. When the numerator is constant across five names in
+six, what remains ordering them is the denominator. Measured: the score's rank
+correlation with the alpha percentile, with the calibrated alpha and with
+downside volatility; downside volatility and `lowvol` sleeve percentile held
+against rejected; how often `lowvol` is a name's highest or second-highest
+sleeve; the overlap between the held set and an alpha-only top-N; and the two
+counts that name the mechanism — held below the alpha top-N on below-median
+risk, and in the alpha top-N but dropped on above-median risk. **A name a cap
+stopped is excluded from the second count**, because a cap is not a volatility
+estimate.
+
+### B. `entry_state_dynamics` — the step function
+
+The multiplier is 1.0 / 0.5 / 0.25 / 0.0 and it scales the whole score, so a
+technical trigger is a cliff. Measured: the observed state distribution, every
+transition by from→to pair, which of them landed on a name the rebalance moved
+in or out, transitions into a blocking state, and the figure that matters —
+departures where the multiplier fell while the name's own alpha percentile
+moved **one point or less**, the same unit the boundary diagnostic uses.
+
+### C. `region_cap_binding` — does the guard override the ranking?
+
+A five-name book under a three-per-region cap can only be 3:2 or thinner, so
+the constraint is close to binding by construction — which is why it is
+measured rather than assumed. Measured: how often each cap stopped a name, how
+often a capped name outscored the lowest-scoring name the book took and by how
+much in score, decision alpha and percentile, the held region mix and its most
+common shapes, and the same-count top-N by score with the caps lifted.
+
+### D. `breadth_readiness` — preparation only
+
+`targetNames` stays at five and **no breadth rule is implemented or scored**.
+Recorded for a later study: decision alpha by rank 1–10, the gaps at 3↔4, 5↔6,
+8↔9 and 10↔11, the dispersion inside the top five and top ten, tied pairs
+inside the top five, ranks 6–10 the calibration cannot separate from the fifth,
+and the count of top-ten names whose **own discarded uncertainty exceeds their
+own reliable alpha** — the module's existing quantity read against itself, not
+a threshold chosen here. That last column is meaningful only where confidence
+is on; on the control the margin is zero by construction.
+
+### `departure_causes`
+
+One mutually exclusive reason per name that left the book, asked in the order
+the machinery applies them, so the shares sum to the departures: left the pool,
+became ineligible on its own facts (split further by which code), entry state
+turned blocking, sector cap, region cap, outranked at the cut. For the
+outranked ones the name's own signed move since its previous appearance —
+percentile, reliable alpha, confidence — is reported, so a reader can see which
+of them moved instead of being told.
+
+## Pre-registered next studies
+
+Specified here before any of them is run, in this order, and none is
+implemented, scored or parameterised by this PR. They are recorded in the
+machine-readable report under `nextStudies`.
+
+**Study 1 — `alpha-risk-separation-v1`.** Is downside risk spent twice, once
+deciding a name's expected alpha and again deciding its capital? The first
+ladder moves **one** axis: remove only the downside-volatility denominator from
+the selection ranking. The `lowvol` sleeve keeps its 0.20 weight inside the
+four-factor alpha, and inverse-downside-volatility sizing and every portfolio
+constraint stay as they are — risk is still managed, it just stops deciding
+*which* name. Moving the sleeve out of the alpha layer is explicitly **not** in
+that ladder: if a defensive tilt survives the denominator's removal, that is the
+next study's axis, because two risk channels moved together are attributable to
+neither.
+
+**Study 2 — `dynamic-breadth-v1`.** Breadth follows signal strength between a
+floor of 3 and a ceiling of 10 with no fixed target: hold the names whose edge
+is distinguishable, hold cash when it is not. The hypothesis is that a
+strength-dependent breadth loses less information and churns less at the
+boundary than *any* fixed count — so picking whichever of 3/5/7/10 scored best
+on this sample would answer a different question and is forbidden.
+
+**Study 3 — `region-quota-removal-v1`.** Replace `maxNamesPerRegion` with a
+portfolio-level risk / covariance / concentration budget, so US 8 / KR 0 or
+KR 7 / US 1 becomes expressible. **Prerequisite:** alpha percentiles are
+computed *within* a region, so a Korean 90th and an American 90th are not the
+same claim. A common cross-region scale has to exist first, or the quota is
+merely replaced by an artefact of the percentile's construction.
+
+**Study 4 — `entry-selection-separation-v1`.** Separate the roles: alpha
+decides the held set, entry state decides how fast the target weight is
+approached — ACCUMULATE to full weight, WATCH to part, WAIT_FOR_PULLBACK
+throttles new entry, EVENT_RISK holds new entry. Whether an *incumbent* should
+be sold on a technical overheat trigger at all is a separate claim about exits
+and gets its own test.
+
 ## Reproducing
 
 ```

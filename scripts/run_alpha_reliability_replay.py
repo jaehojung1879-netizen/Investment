@@ -124,6 +124,275 @@ def selection_behaviour(decisions: list[dict]) -> dict:
     }
 
 
+NEXT_STUDIES = (
+    {
+        "order": 1,
+        "id": "alpha-risk-separation-v1",
+        "question": ("Is downside risk being spent twice — once deciding a name's "
+                     "expected alpha and again deciding its capital?"),
+        "firstAxis": ("Remove ONLY the downside-volatility denominator from the "
+                      "selection ranking. The lowvol sleeve keeps its 0.20 weight "
+                      "inside the four-factor alpha, and inverse-downside-volatility "
+                      "sizing and every portfolio constraint stay exactly as they are, "
+                      "so risk is still managed — it just stops deciding WHICH name."),
+        "notInTheFirstLadder": ("Moving the lowvol sleeve out of the alpha layer. If a "
+                                "defensive tilt survives the denominator's removal, that "
+                                "is the NEXT study's axis, not this one's — two risk "
+                                "channels moved together would be attributable to "
+                                "neither."),
+    },
+    {
+        "order": 2,
+        "id": "dynamic-breadth-v1",
+        "question": ("Does a fixed count of five cut an ordering that does not have "
+                     "five distinguishable names in it?"),
+        "firstAxis": ("Breadth follows signal strength between a floor of 3 and a "
+                      "ceiling of 10, with no fixed target: hold the names whose edge "
+                      "is distinguishable and hold cash when it is not."),
+        "notInTheFirstLadder": ("Choosing whichever of 3/5/7/10 scored best on this "
+                                "sample. The hypothesis is that a strength-dependent "
+                                "breadth loses less information and churns less at the "
+                                "boundary than ANY fixed count, and a fitted count "
+                                "would answer a different question."),
+    },
+    {
+        "order": 3,
+        "id": "region-quota-removal-v1",
+        "question": ("Should regional diversification be a name quota at all, or a "
+                     "risk budget?"),
+        "firstAxis": ("Replace `maxNamesPerRegion` with a portfolio-level risk / "
+                      "covariance / concentration budget, so US 8 / KR 0 or KR 7 / "
+                      "US 1 becomes expressible when that is what the ordering says."),
+        "prerequisite": ("Alpha percentiles are computed WITHIN a region, so a Korean "
+                         "90th and an American 90th are not the same claim. A common "
+                         "cross-region scale has to exist before the quota comes off, "
+                         "or the quota is simply replaced by an artefact of the "
+                         "percentile's construction."),
+    },
+    {
+        "order": 4,
+        "id": "entry-selection-separation-v1",
+        "question": ("Should the entry state decide WHAT is owned, or only how fast a "
+                     "target weight is approached?"),
+        "firstAxis": ("Separate the roles: alpha decides the held set, entry state "
+                      "decides the path to the target weight — ACCUMULATE to full "
+                      "weight, WATCH to part of it, WAIT_FOR_PULLBACK throttles new "
+                      "entry, EVENT_RISK holds new entry."),
+        "notInTheFirstLadder": ("Whether an INCUMBENT should be sold on a technical "
+                                "overheat trigger at all. That is a separate claim "
+                                "about exits and gets its own test."),
+    },
+)
+
+
+def closing_answers(report: dict, summaries: dict) -> dict:
+    """The five interpretation questions, answered from measured rows only."""
+    risk_c = report["structuralDiagnostics"]["riskDominance"]["control"]
+    risk_h = report["structuralDiagnostics"]["riskDominance"]["hysteresis"]
+    entry_c = report["structuralDiagnostics"]["entryStateDynamics"]["control"]
+    region_c = report["structuralDiagnostics"]["regionCapBinding"]["control"]
+    breadth_c = report["structuralDiagnostics"]["breadthReadiness"]["control"]
+    causes_c = report["structuralDiagnostics"]["departureCauses"]["control"]
+    boundary_c = report["boundaryInstability"]["control"]
+
+    def mean(blob, key):
+        return ((blob.get(key) or {}).get("mean"))
+
+    return {
+        "whatExplainsTheFinalOrdering": (
+            "BOTH, at different places, and only one of them is where the decision "
+            f"happens. Across the whole cross-section the score's rank correlation with "
+            f"the calibrated alpha averages "
+            f"{_fmt(mean(risk_c, 'scoreVsCalibratedAlphaSpearman'))} against "
+            f"{_fmt(mean(risk_c, 'scoreVsDownsideVolSpearman'))} with downside volatility, "
+            "so the alpha term orders most PAIRS. But a five-name book is decided at its "
+            f"margin, and there {_fmt(boundary_c.get('tiedOnExpectedAlphaPct'), '%')} of "
+            "cuts are between two names the calibration scores identically — the alpha "
+            "term has two levels and both sides of the cut are almost always on the same "
+            "one. What settles those is the risk-and-entry product in the denominator. "
+            f"The held set matches an alpha-only top-N only "
+            f"{_fmt(risk_c.get('heldMatchingAlphaOnlyTopNPct'), '%')} of the time and "
+            f"{_fmt(mean(risk_c, 'pairwiseOrderingInversionsPct'), '%')} of held against "
+            "not-held pairs are ordered the other way by the alpha percentile."),
+        "doesLowVolatilityDominanceSurviveTheStudy": (
+            "The tilt is visible in what is HELD rather than in a large rank correlation, "
+            "and it narrows without going away. Names held carry downside volatility of "
+            f"{_fmt(mean(risk_c, 'downsideVolPctSelected'), '%')} against "
+            f"{_fmt(mean(risk_c, 'downsideVolPctRejected'), '%')} rejected on the control, "
+            f"and {_fmt(mean(risk_h, 'downsideVolPctSelected'), '%')} against "
+            f"{_fmt(mean(risk_h, 'downsideVolPctRejected'), '%')} on the "
+            "confidence-plus-hysteresis rung; the `lowvol` sleeve percentile of held names "
+            f"goes {_fmt(mean(risk_c, 'lowvolSleevePercentileSelected'))} to "
+            f"{_fmt(mean(risk_h, 'lowvolSleevePercentileSelected'))} against "
+            f"{_fmt(mean(risk_h, 'lowvolSleevePercentileRejected'))} for the rejected. "
+            f"`lowvol` is among a held name's top two sleeves "
+            f"{_fmt(risk_c.get('lowvolIsInTheTopTwoSleevesPct'), '%')} of the time, so part "
+            "of the tilt arrives through the ALPHA itself and would survive removing the "
+            "denominator — which is why the pre-registered first study moves the "
+            "denominator alone and leaves the sleeve for the one after it."),
+        "whatDroveTheReplacements": (
+            f"Of {causes_c.get('departuresMeasured')} departures on the control path: "
+            + ", ".join(f"{cause} {_fmt(share, '%')}"
+                        for cause, share in (causes_c.get("bySharePct") or {}).items())
+            + ". The diversification guard alone — sector and region caps — accounts for "
+            f"{_fmt((causes_c.get('bySharePct') or {}).get('REGION_CAP', 0) + (causes_c.get('bySharePct') or {}).get('SECTOR_CAP', 0), '%')} "
+            "of every name this book replaced, and the entry-state step for "
+            f"{_fmt((causes_c.get('bySharePct') or {}).get('ENTRY_OR_RESEARCH_STATE_TURNED_BLOCKING', 0), '%')}; "
+            f"{entry_c.get('departuresWhereTheStepFellAndAlphaMovedOnePointOrLess')} of "
+            "those had the multiplier fall while the name's own percentile moved a point "
+            "or less. Where the ranking did outrank a name, its own percentile had moved "
+            f"{_fmt(mean(causes_c, 'outrankedOwnPercentileMove'))} points and its reliable "
+            f"alpha {_fmt(mean(causes_c, 'outrankedOwnReliableAlphaMovePp'), 'pp')}."),
+        "doFixedFiveAndTheRegionQuotaOverrideTheSignal": (
+            f"Yes, and the region quota is the larger of the two. It stopped a name on "
+            f"{_fmt(region_c.get('regionCapBindingPct'), '%')} of rebalances and on "
+            f"{region_c.get('rebalancesWhereACappedNameOutscoredOneTaken')} of "
+            f"{region_c.get('rebalancesMeasured')} the capped name outscored one the book "
+            f"took, by a median decision-alpha gap of "
+            f"{_fmt((region_c.get('decisionAlphaGapAtTheOverridePp') or {}).get('median'), 'pp')}. "
+            f"Held name-dates split {region_c.get('heldNameDatesByRegion')}; at the same "
+            f"count with the caps lifted the ordering wanted "
+            f"{region_c.get('topNByScoreWithCapsLiftedByRegion')}. On breadth, "
+            f"{_fmt(mean(breadth_c, 'tiedPairsInsideTheTopFive'))} tied pairs sit inside the "
+            f"top five and {_fmt(mean(breadth_c, 'ranksSixToTenTiedWithTheFifthName'))} of "
+            "ranks 6-10 cannot be separated from the fifth name, so a fixed five is "
+            "cutting an ordering that does not have five distinguishable names in it."),
+        "whatToSeparateFirst": (
+            "Two structural problems are now measured and they are not the same one. The "
+            "BIGGEST override is the region quota, which binds on almost every rebalance "
+            "and turns an ordering that wants one region into a near-fixed 3:2 — but it "
+            "cannot be lifted yet, because alpha percentiles are computed WITHIN a region "
+            "and there is no common scale to compare them across one. The problem that "
+            "can be worked NOW is the double use of downside risk: it sets part of the "
+            "alpha through the 0.20 lowvol sleeve, divides that alpha to make the score, "
+            "and then sizes the position. `alpha-risk-separation-v1` removes only the "
+            "middle use and is the pre-registered first study; the cross-region scale is "
+            "the prerequisite the quota study has to build before it can run."),
+    }
+
+
+def structural_markdown(report: dict) -> list[str]:
+    """The observational diagnostics: what actually decides this book.
+
+    None of these added a rung or changed a number above. They read the paths
+    the ladder produced, to interpret this study and pre-register the next one.
+    """
+    diag = report["structuralDiagnostics"]
+    lines = ["", "## What actually decides the book (observational)", "",
+             "None of this section added a rung, changed a score or moved a constraint.",
+             "The `lowvol` sleeve weight, the downside-volatility denominator, the",
+             "inverse-downside-volatility sizing, the entry multipliers, the region and",
+             "sector caps and `targetNames = 5` are all exactly as the ladder ran them.", ""]
+
+    lines += ["### A. Alpha or low volatility?", "",
+              "| Reading | Control | + confidence + hysteresis |", "|---|---:|---:|"]
+    a_c, a_h = diag["riskDominance"]["control"], diag["riskDominance"]["hysteresis"]
+    for label, key, sub in (
+            ("Spearman(score, alpha percentile)", "scoreVsAlphaPercentileSpearman", "mean"),
+            ("Spearman(score, calibrated alpha)", "scoreVsCalibratedAlphaSpearman", "mean"),
+            ("Spearman(score, downside vol)", "scoreVsDownsideVolSpearman", "mean"),
+            ("Downside vol of names held", "downsideVolPctSelected", "mean"),
+            ("Downside vol of names rejected", "downsideVolPctRejected", "mean"),
+            ("`lowvol` sleeve percentile, held", "lowvolSleevePercentileSelected", "mean"),
+            ("`lowvol` sleeve percentile, rejected", "lowvolSleevePercentileRejected", "mean")):
+        lines.append(f"| {label} | {_fmt((a_c.get(key) or {}).get(sub))} | "
+                     f"{_fmt((a_h.get(key) or {}).get(sub))} |")
+    for label, key in (("`lowvol` is the name's highest sleeve", "lowvolIsTheHighestSleevePct"),
+                       ("`lowvol` is in its top two sleeves", "lowvolIsInTheTopTwoSleevesPct"),
+                       ("Held set matching an alpha-only top-N", "heldMatchingAlphaOnlyTopNPct")):
+        lines.append(f"| {label} | {_fmt(a_c.get(key), '%')} | {_fmt(a_h.get(key), '%')} |")
+    lines.append(f"| Held below the alpha top-N with below-median risk | "
+                 f"{a_c.get('heldDespiteLowerAlphaAndBelowMedianRisk')} | "
+                 f"{a_h.get('heldDespiteLowerAlphaAndBelowMedianRisk')} |")
+    lines.append(f"| In the alpha top-N but dropped with above-median risk | "
+                 f"{a_c.get('droppedDespiteTopAlphaAndAboveMedianRisk')} | "
+                 f"{a_h.get('droppedDespiteTopAlphaAndAboveMedianRisk')} |")
+    lines.append(f"| Held/not-held pairs the alpha term orders the other way | "
+                 f"{_fmt((a_c.get('pairwiseOrderingInversionsPct') or {}).get('mean'), '%')} | "
+                 f"{_fmt((a_h.get('pairwiseOrderingInversionsPct') or {}).get('mean'), '%')} |")
+
+    b_c = diag["entryStateDynamics"]["control"]
+    lines += ["", "### B. The entry state's step function", "",
+              f"- States observed: `{b_c.get('observedStates')}`.",
+              f"- {b_c.get('transitionsObserved')} state transitions, "
+              f"**{_fmt(b_c.get('transitionsCoincidingWithASwapPct'), '%')}** of them on a "
+              "name this rebalance moved in or out.",
+              f"- {b_c.get('transitionsIntoABlockingState')} transitions into a state that "
+              "blocks sizing outright; "
+              f"{b_c.get('departuresWhoseStateHadTurnedBlocking')} departures had one.",
+              f"- **{b_c.get('departuresWhereTheStepFellAndAlphaMovedOnePointOrLess')}** "
+              "departures where the multiplier fell while the name's own alpha percentile "
+              "moved a point or less — the step function, not the signal, deciding.", ""]
+    if b_c.get("byTransition"):
+        lines += ["| Transition | Count | Of those, on a name moved in or out |",
+                  "|---|---:|---:|"]
+        swaps = b_c.get("byTransitionCoincidingWithASwap") or {}
+        for label, count in list(b_c["byTransition"].items())[:8]:
+            lines.append(f"| `{label}` | {count} | {swaps.get(label, 0)} |")
+
+    c_c = diag["regionCapBinding"]["control"]
+    lines += ["", "### C. Does the diversification guard override the ranking?", "",
+              f"- `maxNamesPerRegion = {c_c.get('maxNamesPerRegion')}`, "
+              f"`maxNamesPerSector = {c_c.get('maxNamesPerSector')}`, on "
+              f"{c_c.get('rebalancesMeasured')} rebalances.",
+              f"- The region cap stopped a name on **{_fmt(c_c.get('regionCapBindingPct'), '%')}** "
+              f"of them; the sector cap on {_fmt(c_c.get('sectorCapBindingPct'), '%')}.",
+              f"- On **{c_c.get('rebalancesWhereACappedNameOutscoredOneTaken')}** rebalances a "
+              "capped name outscored the lowest-scoring name the book took, by a median "
+              f"decision-alpha gap of "
+              f"{_fmt((c_c.get('decisionAlphaGapAtTheOverridePp') or {}).get('median'), 'pp')}.",
+              f"- Name-dates held by region: `{c_c.get('heldNameDatesByRegion')}`.",
+              f"- Same count, caps lifted, by region: "
+              f"`{c_c.get('topNByScoreWithCapsLiftedByRegion')}`.",
+              f"- Most common held shapes: "
+              f"`{dict(list((c_c.get('heldRegionShapeCounts') or {}).items())[:4])}`."]
+
+    d_c = diag["breadthReadiness"]["control"]
+    lines += ["", "### D. What a breadth rule would have to work with", "",
+              "`targetNames` stays at five and no breadth rule is implemented or scored.", "",
+              "The near-neutral count is meaningful only where confidence is ON: the",
+              "control discards no uncertainty, so its margin is zero by construction",
+              "and the count is zero for that reason rather than as a reading.", "",
+              "| Reading | Control | + confidence + hysteresis |", "|---|---:|---:|"]
+    d_h = diag["breadthReadiness"]["hysteresis"]
+    for label, key in (("Eligible candidates per rebalance", "eligibleCandidates"),
+                       ("Top-ten names whose doubt exceeds their claim",
+                        "namesInTopTenWhoseDoubtExceedsTheirClaim"),
+                       ("Tied pairs inside the top five", "tiedPairsInsideTheTopFive"),
+                       ("Ranks 6-10 tied with the fifth name", "ranksSixToTenTiedWithTheFifthName"),
+                       ("Decision-alpha dispersion, top five", "decisionAlphaDispersionTopFivePp"),
+                       ("Decision-alpha dispersion, top ten", "decisionAlphaDispersionTopTenPp")):
+        lines.append(f"| {label} (mean) | {_fmt((d_c.get(key) or {}).get('mean'))} | "
+                     f"{_fmt((d_h.get(key) or {}).get('mean'))} |")
+    lines += ["", "| Gap in decision alpha | Control mean | Control median |",
+              "|---|---:|---:|"]
+    for label, blob in (d_c.get("decisionAlphaGapsPp") or {}).items():
+        lines.append(f"| {label} | {_fmt(blob.get('mean'), 'pp')} | "
+                     f"{_fmt(blob.get('median'), 'pp')} |")
+
+    e_c = diag["departureCauses"]["control"]
+    lines += ["", "### Why each departure happened", "",
+              f"{e_c.get('departuresMeasured')} departures on the control path, attributed "
+              "once each in the order the machinery applies them.", "",
+              "| Cause | Count | Share |", "|---|---:|---:|"]
+    for cause, count in (e_c.get("byCause") or {}).items():
+        lines.append(f"| {cause} | {count} | "
+                     f"{_fmt((e_c.get('bySharePct') or {}).get(cause), '%')} |")
+    if e_c.get("ineligibilityByCode"):
+        lines += ["", "The ineligible ones, split by the fact that disqualified them "
+                  "(a calibration that has not matured yet is an early-history artefact, "
+                  "not a selection decision):", ""]
+        for code, count in (e_c["ineligibilityByCode"]).items():
+            lines.append(f"- `{code}`: {count}")
+    lines += ["", "For the ones the ranking outranked, the departing name's own move since "
+              "its previous appearance: percentile "
+              f"{_fmt((e_c.get('outrankedOwnPercentileMove') or {}).get('mean'))}, reliable "
+              f"alpha {_fmt((e_c.get('outrankedOwnReliableAlphaMovePp') or {}).get('mean'), 'pp')}, "
+              f"confidence {_fmt((e_c.get('outrankedOwnConfidenceMove') or {}).get('mean'))} "
+              "(means, signed)."]
+    return lines
+
+
 def markdown(report: dict) -> str:
     axes = report["axisDiagnostics"]
     lines = [
@@ -211,6 +480,7 @@ def markdown(report: dict) -> str:
                      f"[{_fmt(ci[0], '%')}, {_fmt(ci[1], '%')}] | "
                      f"{blob.get('observations')} |")
 
+    lines += structural_markdown(report)
     lines += ["", "## The ladder", "",
               "One axis per rung. No transaction-cost hurdle anywhere in the ladder.", "",
               "| Rung | Gross CAGR | Cost drag | Net CAGR | Matched benchmark | Net excess | "
@@ -324,7 +594,33 @@ def markdown(report: dict) -> str:
     lines += ["", "### Refuted", ""]
     for item in finding["refuted"]:
         lines.append(f"- {item}")
-    lines += ["", "### Frozen candidate for prospective validation", "",
+    answers = finding["closingAnswers"]
+    lines += ["", "### Five questions this study was asked to answer", ""]
+    for number, (label, key) in enumerate((
+            ("What explains the final ordering — alpha or downside risk?",
+             "whatExplainsTheFinalOrdering"),
+            ("Does low-volatility dominance survive persistence and confidence?",
+             "doesLowVolatilityDominanceSurviveTheStudy"),
+            ("What drove the actual replacements?", "whatDroveTheReplacements"),
+            ("Do a fixed five and the region quota override the signal?",
+             "doFixedFiveAndTheRegionQuotaOverrideTheSignal"),
+            ("What should the next study separate first?", "whatToSeparateFirst")), start=1):
+        lines += [f"**{number}. {label}**", "", answers[key], ""]
+
+    lines += ["### Pre-registered next studies", "",
+              "Specified here, before any of them is run, and in this order. None is",
+              "implemented, scored or parameterised by this PR.", ""]
+    for study in report["nextStudies"]:
+        lines += [f"**Study {study['order']} — `{study['id']}`**", "",
+                  f"- Question: {study['question']}",
+                  f"- First axis: {study['firstAxis']}"]
+        if study.get("prerequisite"):
+            lines.append(f"- Prerequisite: {study['prerequisite']}")
+        if study.get("notInTheFirstLadder"):
+            lines.append(f"- Deliberately NOT in the first ladder: {study['notInTheFirstLadder']}")
+        lines.append("")
+
+    lines += ["### Frozen candidate for prospective validation", "",
               f"**{finding['frozenCandidate'] or 'NONE — see below'}**", "",
               finding["frozenCandidateNote"], "",
               "A rung ending higher than another is a point estimate on sealed history,",
@@ -428,6 +724,33 @@ def main(argv=None) -> int:
             "hysteresis": AR.replacement_anatomy(paths[hysteresis_rung]["decisions"],
                                                  priced_by_date),
         },
+        # Observational only, added after the ladder was scored. Each one READS
+        # the paths above; none adds a rung, changes a score or moves a
+        # constraint, and the ladder's numbers are identical with and without
+        # them. They exist to interpret this study and pre-register the next.
+        "structuralDiagnostics": {
+            "riskDominance": {
+                "control": AR.risk_dominance(paths[AR.CONTROL]["decisions"]),
+                "hysteresis": AR.risk_dominance(paths[hysteresis_rung]["decisions"]),
+            },
+            "entryStateDynamics": {
+                "control": AR.entry_state_dynamics(paths[AR.CONTROL]["decisions"]),
+                "hysteresis": AR.entry_state_dynamics(paths[hysteresis_rung]["decisions"]),
+            },
+            "regionCapBinding": {
+                "control": AR.region_cap_binding(paths[AR.CONTROL]["decisions"], research_cfg),
+                "hysteresis": AR.region_cap_binding(paths[hysteresis_rung]["decisions"],
+                                                    research_cfg),
+            },
+            "breadthReadiness": {
+                "control": AR.breadth_readiness(paths[AR.CONTROL]["decisions"]),
+                "hysteresis": AR.breadth_readiness(paths[hysteresis_rung]["decisions"]),
+            },
+            "departureCauses": {
+                "control": AR.departure_causes(paths[AR.CONTROL]["decisions"]),
+                "hysteresis": AR.departure_causes(paths[hysteresis_rung]["decisions"]),
+            },
+        },
         "ladder": {rung: _fields(summaries[rung]) for rung in AR.LADDER},
         "selectionBehaviour": {rung: selection_behaviour(paths[rung]["decisions"])
                                for rung in AR.LADDER},
@@ -455,6 +778,7 @@ def main(argv=None) -> int:
                      "rung, so it moves two axes and is attributable to neither. Not a "
                      "ladder rung and not promotion evidence."),
         },
+        "nextStudies": [dict(study) for study in NEXT_STUDIES],
         "sealedInvariant": {"before": before, "after": _digest_tree(ledger)},
         "productionChanged": False,
     }
@@ -549,6 +873,7 @@ def main(argv=None) -> int:
         "separatedFromControl": separated_control,
         "refutedAxes": refuted_axes,
         "frozenCandidate": frozen,
+        "closingAnswers": closing_answers(report, summaries),
         "promotionEligible": False,
         "summary": (
             f"The pool occupies {axes.get('distinctBucketsOccupied')} calibration buckets "

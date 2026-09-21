@@ -413,7 +413,22 @@ def reliability_scores(rows: list[dict], calibration: PV.ExpandingBucketCalibrat
             "smoothingDepth": row.get("smoothingDepth"),
             "incumbent": incumbent,
             "decisionAlphaPct": decision,
+            # Carried for the structural diagnostics only. Nothing below reads
+            # them, so a rung's ordering is exactly what it was without them.
+            "factorPercentiles": dict(row.get("factorPercentiles") or {}),
+            "entryState": ((row.get("entry") or {}).get("entryState")
+                           or row.get("entryState")),
+            "entryStateMultiplier": state,
             "eligible": not excluded, "exclusionCodes": excluded,
+            # THE SAME LIST, IMMUTABLY. `select_portfolio_by_scores` shallow
+            # copies each row, so `item["exclusionCodes"]` IS this list object
+            # and `_select_scored` appends its cut codes straight into it. The
+            # rows a caller keeps therefore come back carrying
+            # BELOW_TARGET_COUNT_CUTOFF and the cap codes mixed in with the
+            # facts that made the name ineligible in the first place, and
+            # nothing in the output says which is which. A tuple cannot be
+            # appended to, so this is the copy the diagnostics read.
+            "eligibilityCodes": tuple(excluded),
             "calibration": estimate,
         })
     return out
@@ -472,13 +487,19 @@ def run_rung(rung: str, *, contexts: dict, calibrator, calendar: list[dict],
         weights = allocation["weights"]
         selected = {c["ticker"]: c for c in allocation["selected"]}
         held = set(weights)
-        # `select_portfolio_by_scores` sorts and annotates a COPY, so the reason
-        # a name did not make the cut lives there and not on the rows above. The
-        # boundary diagnostic has to tell "ranked below the fifth name" from
-        # "blocked by a sector or region cap" — they are different facts and
-        # only one of them is the ranking making a choice.
-        cut_reasons = {row["ticker"]: list(row.get("exclusionCodes") or [])
-                       for row in (allocation["selection"].get("ranking") or [])}
+        # `select_portfolio_by_scores` sorts and annotates a COPY and publishes
+        # only the selected names plus eight near misses, so the reason a name
+        # did not make the cut is missing for everything below that window. The
+        # structural diagnostics need it for the WHOLE cross-section — "ranked
+        # below the fifth name", "blocked by a sector cap" and "blocked by a
+        # region cap" are different facts and only the first is the ranking
+        # making a choice. `annotate_selection` re-runs PRODUCTION's own
+        # `_select_scored` on copies to recover all of them, and asserts it
+        # reproduces the set this block actually held.
+        cut_reasons, chosen = annotate_selection(candidates, scored, research_cfg,
+                                                 method=rung)
+        if not held <= chosen:
+            raise ValueError(f"SELECTION_ANNOTATION_DISAGREES_WITH_PATH at {block['date']}")
         for row in scored:
             row["selectionExclusionCodes"] = cut_reasons.get(row["ticker"])
         decision = {
@@ -777,6 +798,550 @@ def _excluded_by_rank(row: dict) -> bool:
     return "BELOW_TARGET_COUNT_CUTOFF" in codes
 
 
+def annotate_selection(candidates: list[dict], scored: list[dict], cfg_pf: dict, *,
+                       method: str) -> tuple[dict[str, list[str]], set[str]]:
+    """Why each name did or did not make the cut, for the WHOLE cross-section.
+
+    Calls PRODUCTION's `_select_scored` on copies rather than re-deriving the
+    rule, so the annotation cannot drift from the selection it describes: a
+    second implementation of the caps would eventually disagree with the one
+    that picked the book and the diagnostic would be measuring itself. The
+    caller asserts the returned set contains what the path actually held.
+    """
+    normalized = []
+    for row in scored:
+        item = dict(row)
+        # From the pristine eligibility facts, never from a list an earlier
+        # selection pass has already appended its own cut codes to.
+        item["exclusionCodes"] = list(row.get("eligibilityCodes") or ())
+        normalized.append(item)
+    normalized.sort(key=lambda r: (-float(r.get("score") or 0.0), str(r.get("ticker") or "")))
+    selected, _ = KP._select_scored(
+        candidates, normalized, cfg_pf, method=method,
+        score_formula_ko="진단 전용 재현", not_a_forecast_ko="진단 전용 재현")
+    reasons = {row["ticker"]: list(row.get("exclusionCodes") or []) for row in normalized}
+    return reasons, {row["ticker"] for row in selected}
+
+
+def _average_ranks(values: np.ndarray) -> np.ndarray:
+    """Ranks with ties averaged, which is what a rank correlation needs.
+
+    The calibration hands most of this pool one expected alpha, so ties are the
+    common case rather than the edge case; breaking them arbitrarily would
+    invent an ordering and then measure how well the score reproduces it.
+    """
+    order = np.argsort(values, kind="stable")
+    ranks = np.empty(values.size, dtype=float)
+    ranks[order] = np.arange(values.size, dtype=float)
+    sorted_values = values[order]
+    start = 0
+    for index in range(1, values.size + 1):
+        if index == values.size or sorted_values[index] != sorted_values[start]:
+            ranks[order[start:index]] = ranks[order[start:index]].mean()
+            start = index
+    return ranks
+
+
+def _spearman(left, right):
+    """Rank correlation, or `None` when either side has no spread to correlate."""
+    x = np.asarray(left, dtype=float)
+    y = np.asarray(right, dtype=float)
+    if x.size < 3 or x.size != y.size:
+        return None
+    rx, ry = _average_ranks(x), _average_ranks(y)
+    if rx.std() <= 0 or ry.std() <= 0:
+        return None
+    return float(np.corrcoef(rx, ry)[0, 1])
+
+
+def _eligible_rows(decision: dict) -> list[dict]:
+    return [row for row in (decision.get("scored") or []) if row.get("eligible")]
+
+
+def _held_of(decision: dict) -> set[str]:
+    return set(decision.get("retained") or []) | set(decision.get("added") or [])
+
+
+# --------------------------------------------------------------------------- #
+# A. Is this a model that picks alpha, or one that picks low volatility?
+# --------------------------------------------------------------------------- #
+def risk_dominance(decisions: list[dict]) -> dict:
+    """How much of the final ordering is the alpha term and how much is the risk term.
+
+    The score is `expected excess / downside volatility x entry multiplier`, and
+    the axis diagnostic already established that the calibration hands most of
+    this pool ONE expected excess. When the numerator is a constant across five
+    names in six, the ordering that remains is the denominator's. This measures
+    that directly on the path's own rows rather than inferring it.
+
+    Nothing counterfactual is run and no return is read. Every figure is the
+    cross-section the rebalance actually scored, read three ways: what the score
+    correlates with, which names the ranking would have held on alpha alone, and
+    which ones the risk term moved across the cut.
+    """
+    alpha_corr, vol_corr, calibrated_corr = [], [], []
+    lowvol_selected, lowvol_rejected = [], []
+    vol_selected, vol_rejected = [], []
+    overlap, inversions = [], []
+    lowvol_is_top_driver = lowvol_top_two = driver_rows = 0
+    promoted_by_low_risk = dropped_by_high_risk = 0
+    promoted_examples, dropped_examples = [], []
+    measured = 0
+
+    for decision in sorted(decisions, key=lambda d: d["date"]):
+        rows = _eligible_rows(decision)
+        if len(rows) < 3:
+            continue
+        held = _held_of(decision)
+        if not held:
+            continue
+        measured += 1
+        score = np.array([float(r["score"]) for r in rows])
+        percentile = np.array([PV._finite(r.get("alphaPercentile")) or np.nan for r in rows])
+        vol = np.array([PV._finite(r.get("downsideVolPct")) or np.nan for r in rows])
+        calibrated = np.array([PV._finite(r.get("expectedGrossBenchmarkExcessPct")) or np.nan
+                               for r in rows])
+        usable = ~np.isnan(percentile) & ~np.isnan(vol) & ~np.isnan(calibrated)
+        if usable.sum() >= 3:
+            alpha_corr.append(_spearman(percentile[usable], score[usable]))
+            vol_corr.append(_spearman(vol[usable], score[usable]))
+            calibrated_corr.append(_spearman(calibrated[usable], score[usable]))
+
+        for row in rows:
+            sleeves = {k: PV._finite(v) for k, v in (row.get("factorPercentiles") or {}).items()}
+            sleeves = {k: v for k, v in sleeves.items() if v is not None}
+            unit = PV._finite(row.get("downsideVolPct"))
+            inside = row["ticker"] in held
+            if unit is not None:
+                (vol_selected if inside else vol_rejected).append(unit)
+            if "lowvol" in sleeves:
+                (lowvol_selected if inside else lowvol_rejected).append(sleeves["lowvol"])
+            if inside and len(sleeves) >= 2:
+                driver_rows += 1
+                ordered = sorted(sleeves, key=lambda k: -sleeves[k])
+                lowvol_is_top_driver += int(ordered[0] == "lowvol")
+                lowvol_top_two += int("lowvol" in ordered[:2])
+
+        # What the ranking would hold on the ALPHA term alone, at the same count
+        # and under no other change. This is a reading of one block's own rows,
+        # not a path: nothing is valued, carried forward or compounded.
+        count = len(held)
+        by_alpha = sorted(rows, key=lambda r: (-(PV._finite(r.get("alphaPercentile")) or -1e9),
+                                               str(r["ticker"])))[:count]
+        alpha_top = {r["ticker"] for r in by_alpha}
+        overlap.append(len(alpha_top & held) / count)
+        inversions.append(_ordering_inversions(rows, held))
+
+        median_vol = float(np.nanmedian(vol)) if np.isfinite(vol).any() else None
+        if median_vol is not None:
+            for row in rows:
+                unit = PV._finite(row.get("downsideVolPct"))
+                if unit is None:
+                    continue
+                inside, top = row["ticker"] in held, row["ticker"] in alpha_top
+                if inside and not top and unit < median_vol:
+                    promoted_by_low_risk += 1
+                    promoted_examples.append(unit - median_vol)
+                if top and not inside and unit > median_vol:
+                    # A name a CAP stopped was not dropped by its volatility.
+                    codes = row.get("selectionExclusionCodes") or []
+                    if not ({"SECTOR_NAME_LIMIT", "REGION_NAME_LIMIT"} & set(codes)):
+                        dropped_by_high_risk += 1
+                        dropped_examples.append(unit - median_vol)
+
+    return {
+        "available": bool(measured), "rebalancesMeasured": measured,
+        "scoreVsAlphaPercentileSpearman": _spread([c for c in alpha_corr if c is not None]),
+        "scoreVsCalibratedAlphaSpearman": _spread([c for c in calibrated_corr if c is not None]),
+        "scoreVsDownsideVolSpearman": _spread([c for c in vol_corr if c is not None]),
+        "downsideVolPctSelected": _spread(vol_selected),
+        "downsideVolPctRejected": _spread(vol_rejected),
+        "lowvolSleevePercentileSelected": _spread(lowvol_selected),
+        "lowvolSleevePercentileRejected": _spread(lowvol_rejected),
+        "heldNameSleeveRows": driver_rows,
+        "lowvolIsTheHighestSleevePct": (round(lowvol_is_top_driver / driver_rows * 100, 2)
+                                        if driver_rows else None),
+        "lowvolIsInTheTopTwoSleevesPct": (round(lowvol_top_two / driver_rows * 100, 2)
+                                          if driver_rows else None),
+        "heldMatchingAlphaOnlyTopNPct": (round(float(np.mean(overlap)) * 100, 2)
+                                         if overlap else None),
+        "pairwiseOrderingInversionsPct": _spread(inversions),
+        "heldDespiteLowerAlphaAndBelowMedianRisk": promoted_by_low_risk,
+        "droppedDespiteTopAlphaAndAboveMedianRisk": dropped_by_high_risk,
+        "promotedRiskGapToMedianPp": _spread(promoted_examples),
+        "droppedRiskGapToMedianPp": _spread(dropped_examples),
+        "note": ("Read off the rows each rebalance actually scored. The alpha-only "
+                 "top-N is a within-block reading of the same cross-section, never a "
+                 "path: nothing is valued or carried forward, and no realised return "
+                 "enters any figure here. Names a sector or region cap stopped are "
+                 "excluded from the risk-drop count, because a cap is not volatility."),
+    }
+
+
+def _ordering_inversions(rows: list[dict], held: set[str]) -> float:
+    """Share of held/not-held pairs the alpha term orders the other way.
+
+    One pair, one vote: for every name inside the book against every name
+    outside it, does the alpha percentile agree that the inside one ranks
+    higher? A tie counts as no inversion, because a tie is the calibration
+    declining to order them rather than disagreeing.
+    """
+    inside = [PV._finite(r.get("alphaPercentile")) for r in rows if r["ticker"] in held]
+    outside = [PV._finite(r.get("alphaPercentile")) for r in rows if r["ticker"] not in held]
+    inside = [v for v in inside if v is not None]
+    outside = [v for v in outside if v is not None]
+    pairs = len(inside) * len(outside)
+    if not pairs:
+        return 0.0
+    flipped = sum(1 for a in inside for b in outside if a < b)
+    return flipped / pairs * 100.0
+
+
+# --------------------------------------------------------------------------- #
+# B. What the entry state's step function does to the ordering
+# --------------------------------------------------------------------------- #
+def entry_state_dynamics(decisions: list[dict]) -> dict:
+    """Entry state moves the score in STEPS, so a technical trigger is a cliff.
+
+    The multiplier is 1.0 / 0.5 / 0.25 / 0.0 by state, and it multiplies the
+    whole score. A name crossing from `ACCUMULATE_GRADUALLY` into `WATCH` has
+    its score halved with nothing about its alpha having changed, and a name
+    crossing into `EVENT_RISK` or `AVOID` leaves the book outright. This counts
+    how often that happened and how often it coincided with a swap.
+
+    The key figure is the last one: transitions where the name's own alpha
+    percentile moved a point or less — the same unit the boundary diagnostic
+    uses — and its held status flipped anyway. That is the step function, not
+    the signal, deciding what is owned.
+    """
+    transitions: dict[str, int] = defaultdict(int)
+    with_action: dict[str, int] = defaultdict(int)
+    state_counts: dict[str, int] = defaultdict(int)
+    previous: dict[str, tuple[str | None, float | None, float | None]] = {}
+    total = coincident = flat_alpha_flips = 0
+    forced_out = 0
+    blocking_departures = 0
+
+    for decision in sorted(decisions, key=lambda d: d["date"]):
+        rows = decision.get("scored") or []
+        replaced = set(decision.get("replaced") or [])
+        added = set(decision.get("added") or [])
+        for row in rows:
+            ticker = row["ticker"]
+            state = row.get("entryState")
+            multiplier = PV._finite(row.get("entryStateMultiplier"))
+            percentile = PV._finite(row.get("rawAlphaPercentile"))
+            state_counts[str(state)] += 1
+            before = previous.get(ticker)
+            previous[ticker] = (state, multiplier, percentile)
+            if before is None:
+                continue
+            prior_state, prior_multiplier, prior_percentile = before
+            if prior_state == state:
+                continue
+            total += 1
+            label = f"{prior_state} -> {state}"
+            transitions[label] += 1
+            # "Coincided with a swap" means this rebalance moved this name in
+            # or out, which is the only way a state change can have touched the
+            # book at all. A state that moved on a name the book neither took
+            # nor dropped changed nothing.
+            if ticker in replaced or ticker in added:
+                coincident += 1
+                with_action[label] += 1
+            if multiplier is not None and multiplier <= 0:
+                forced_out += 1
+                if ticker in replaced:
+                    blocking_departures += 1
+            # The step moved, the signal did not, and the book changed anyway.
+            moved = (abs(percentile - prior_percentile)
+                     if percentile is not None and prior_percentile is not None else None)
+            if (moved is not None and moved <= 1.0 and ticker in replaced
+                    and multiplier is not None and prior_multiplier is not None
+                    and multiplier < prior_multiplier):
+                flat_alpha_flips += 1
+
+    grouped = {
+        "intoOrOutOfEventRiskOrAvoid": sum(
+            count for label, count in transitions.items()
+            if "EVENT_RISK" in label or "AVOID" in label),
+        "watchAgainstWaitForPullback": sum(
+            count for label, count in transitions.items()
+            if "WATCH" in label and "WAIT_FOR_PULLBACK" in label),
+    }
+    return {
+        "available": bool(total), "transitionsObserved": total,
+        "observedStates": dict(sorted(state_counts.items())),
+        "byTransition": dict(sorted(transitions.items(), key=lambda kv: -kv[1])),
+        "byTransitionCoincidingWithASwap": dict(
+            sorted(with_action.items(), key=lambda kv: -kv[1])),
+        "groupedTransitions": grouped,
+        "transitionsCoincidingWithASwapPct": (round(coincident / total * 100, 2)
+                                              if total else None),
+        "transitionsIntoABlockingState": forced_out,
+        "departuresWhoseStateHadTurnedBlocking": blocking_departures,
+        "departuresWhereTheStepFellAndAlphaMovedOnePointOrLess": flat_alpha_flips,
+        "note": ("A transition is a name's own state changing between two blocks it "
+                 "appeared in. The last figure is the one that matters: the entry "
+                 "multiplier fell, the name left the book, and its own alpha percentile "
+                 "had moved a point or less. Entry logic is NOT changed by this study."),
+    }
+
+
+# --------------------------------------------------------------------------- #
+# C. How often the diversification guard overrides the ranking
+# --------------------------------------------------------------------------- #
+def region_cap_binding(decisions: list[dict], cfg_pf: dict) -> dict:
+    """Does `maxNamesPerRegion` decide the book more often than the signal does?
+
+    A five-name book under a three-per-region cap can only ever be 3:2 or
+    thinner, so the constraint is close to binding by construction — which is
+    exactly why it has to be measured rather than assumed. For every name the
+    cap stopped, this asks whether it outscored a name that was taken, and by
+    how much in score, decision alpha and percentile.
+
+    The unconstrained mix is the region composition of the top-N eligible names
+    by the block's OWN score with the caps lifted. It is a reading of one
+    block's ordering, not a path: nothing is valued and no return is read. The
+    constraint is not removed anywhere in this study.
+    """
+    selection = cfg_pf.get("selection") or {}
+    per_region = int(selection.get("maxNamesPerRegion", 0))
+    per_sector = int(selection.get("maxNamesPerSector", 0))
+    region_bound = sector_bound = measured = 0
+    outscoring_blocks = 0
+    score_gaps, alpha_gaps, percentile_gaps = [], [], []
+    held_mix: dict[str, int] = defaultdict(int)
+    free_mix: dict[str, int] = defaultdict(int)
+    held_by_region_counts: dict[str, int] = defaultdict(int)
+
+    for decision in sorted(decisions, key=lambda d: d["date"]):
+        rows = _eligible_rows(decision)
+        held = _held_of(decision)
+        if not rows or not held:
+            continue
+        measured += 1
+        ordered = sorted(rows, key=lambda r: (-float(r["score"]), str(r["ticker"])))
+        inside = [r for r in ordered if r["ticker"] in held]
+        region_of = decision.get("regionByTicker") or {}
+        shape = "/".join(f"{region}:{count}" for region, count in sorted(
+            _count_values(region_of[t] for t in held if t in region_of).items()))
+        held_by_region_counts[shape] += 1
+        for ticker in held:
+            held_mix[str(region_of.get(ticker) or "UNKNOWN")] += 1
+
+        blocked_region = [r for r in ordered
+                          if "REGION_NAME_LIMIT" in (r.get("selectionExclusionCodes") or [])]
+        blocked_sector = [r for r in ordered
+                          if "SECTOR_NAME_LIMIT" in (r.get("selectionExclusionCodes") or [])]
+        region_bound += int(bool(blocked_region))
+        sector_bound += int(bool(blocked_sector))
+        if blocked_region and inside:
+            marginal = inside[-1]
+            better = [r for r in blocked_region if float(r["score"]) > float(marginal["score"])]
+            if better:
+                outscoring_blocks += 1
+                best = better[0]
+                score_gaps.append(_relative_gap(best["score"], marginal["score"]))
+                gap = _difference(best.get("decisionAlphaPct"), marginal.get("decisionAlphaPct"))
+                if gap is not None:
+                    alpha_gaps.append(gap)
+                gap = _difference(best.get("alphaPercentile"), marginal.get("alphaPercentile"))
+                if gap is not None:
+                    percentile_gaps.append(gap)
+        for row in ordered[:len(held)]:
+            free_mix[str(row.get("region") or "UNKNOWN")] += 1
+
+    return {
+        "available": bool(measured), "rebalancesMeasured": measured,
+        "maxNamesPerRegion": per_region, "maxNamesPerSector": per_sector,
+        "rebalancesWhereTheRegionCapStoppedAName": region_bound,
+        "rebalancesWhereTheSectorCapStoppedAName": sector_bound,
+        "regionCapBindingPct": (round(region_bound / measured * 100, 2) if measured else None),
+        "sectorCapBindingPct": (round(sector_bound / measured * 100, 2) if measured else None),
+        "rebalancesWhereACappedNameOutscoredOneTaken": outscoring_blocks,
+        "relativeScoreGapAtTheOverride": _spread(score_gaps),
+        "decisionAlphaGapAtTheOverridePp": _spread(alpha_gaps),
+        "alphaPercentileGapAtTheOverride": _spread(percentile_gaps),
+        "heldNameDatesByRegion": dict(sorted(held_mix.items())),
+        "heldRegionShapeCounts": dict(sorted(held_by_region_counts.items(),
+                                             key=lambda kv: -kv[1])),
+        "topNByScoreWithCapsLiftedByRegion": dict(sorted(free_mix.items())),
+        "note": ("The capped-name comparison is against the LOWEST-scoring name the "
+                 "book took, which is the one a lifted cap would have displaced. The "
+                 "caps-lifted mix is a reading of each block's own ordering; no path is "
+                 "run without the constraint and no realised return is used."),
+    }
+
+
+def _count_values(values) -> dict[str, int]:
+    out: dict[str, int] = defaultdict(int)
+    for value in values:
+        out[str(value or "UNKNOWN")] += 1
+    return dict(out)
+
+
+# --------------------------------------------------------------------------- #
+# D. What a breadth rule would have to work with
+# --------------------------------------------------------------------------- #
+def breadth_readiness(decisions: list[dict]) -> dict:
+    """The shape of the ordering a fixed count of five is currently cutting.
+
+    Preparation only. `targetNames` is NOT changed by this study and no breadth
+    rule is implemented or scored. What is recorded is what a later one would
+    need: where the ordering actually separates, how many of the names a fixed
+    five takes are indistinguishable from each other, and how many just outside
+    it are indistinguishable from the fifth.
+
+    "Near neutral" is a name whose reliable alpha is smaller than the
+    uncertainty the contraction discarded from it — its own doubt is larger than
+    its own claim. That is the module's existing quantity read against itself,
+    not a threshold chosen for this diagnostic.
+    """
+    by_rank: dict[int, list[float]] = defaultdict(list)
+    gaps: dict[str, list[float]] = defaultdict(list)
+    near_neutral_top10, tied_in_top5, indistinct_6_to_10 = [], [], []
+    dispersion_top5, dispersion_top10 = [], []
+    eligible_counts = []
+    measured = 0
+
+    for decision in sorted(decisions, key=lambda d: d["date"]):
+        rows = _eligible_rows(decision)
+        if len(rows) < 2:
+            continue
+        measured += 1
+        eligible_counts.append(len(rows))
+        ordered = sorted(rows, key=lambda r: (-float(r["score"]), str(r["ticker"])))
+        alpha = [PV._finite(r.get("decisionAlphaPct")) for r in ordered]
+        for rank in range(1, 11):
+            if rank <= len(alpha) and alpha[rank - 1] is not None:
+                by_rank[rank].append(alpha[rank - 1])
+        for label, (high, low) in (("rank3MinusRank4", (3, 4)), ("rank5MinusRank6", (5, 6)),
+                                   ("rank8MinusRank9", (8, 9)), ("rank10MinusRank11", (10, 11))):
+            if low <= len(alpha) and alpha[high - 1] is not None and alpha[low - 1] is not None:
+                gaps[label].append(alpha[high - 1] - alpha[low - 1])
+
+        window = ordered[:10]
+        near_neutral_top10.append(sum(
+            1 for r in window
+            if (PV._finite(r.get("reliableAlphaPct")) is not None
+                and PV._finite(r.get("uncertaintyMarginPct")) is not None
+                and abs(float(r["reliableAlphaPct"])) <= float(r["uncertaintyMarginPct"]))))
+
+        top5 = ordered[:5]
+        expected5 = [PV._finite(r.get("expectedGrossBenchmarkExcessPct")) for r in top5]
+        expected5 = [v for v in expected5 if v is not None]
+        tied_in_top5.append(len(expected5) - len(set(round(v, 10) for v in expected5)))
+        fifth = expected5[-1] if len(expected5) == len(top5) and expected5 else None
+        tail = ordered[5:10]
+        if fifth is not None:
+            indistinct_6_to_10.append(sum(
+                1 for r in tail
+                if PV._finite(r.get("expectedGrossBenchmarkExcessPct")) is not None
+                and abs(float(r["expectedGrossBenchmarkExcessPct"]) - fifth) <= 1e-12))
+        for target, values in ((dispersion_top5, [PV._finite(r.get("decisionAlphaPct")) for r in top5]),
+                               (dispersion_top10, [PV._finite(r.get("decisionAlphaPct")) for r in window])):
+            clean = [v for v in values if v is not None]
+            if len(clean) > 1:
+                target.append(float(np.std(clean, ddof=1)))
+
+    return {
+        "available": bool(measured), "rebalancesMeasured": measured,
+        "targetNamesUnchanged": 5,
+        "eligibleCandidates": _spread(eligible_counts),
+        "decisionAlphaByRankPp": {str(rank): _spread(values)
+                                  for rank, values in sorted(by_rank.items())},
+        "decisionAlphaGapsPp": {label: _spread(values) for label, values in sorted(gaps.items())},
+        "namesInTopTenWhoseDoubtExceedsTheirClaim": _spread(near_neutral_top10),
+        "tiedPairsInsideTheTopFive": _spread(tied_in_top5),
+        "ranksSixToTenTiedWithTheFifthName": _spread(indistinct_6_to_10),
+        "decisionAlphaDispersionTopFivePp": _spread(dispersion_top5),
+        "decisionAlphaDispersionTopTenPp": _spread(dispersion_top10),
+        "note": ("Preparation for a later study and nothing more: `targetNames` stays "
+                 "at five here, no breadth rule is implemented, and no rung was added. "
+                 "Near-neutral is a name whose own discarded uncertainty exceeds its "
+                 "own reliable alpha, which is the module's existing quantity read "
+                 "against itself rather than a threshold chosen here."),
+    }
+
+
+# --------------------------------------------------------------------------- #
+# Why each departure actually happened
+# --------------------------------------------------------------------------- #
+def departure_causes(decisions: list[dict]) -> dict:
+    """One mutually exclusive reason per name that left the book.
+
+    Asked in the order the machinery applies them, so a name is attributed to
+    the FIRST thing that would have removed it: the screen dropped it, its own
+    facts made it ineligible, a cap refused it, or the ranking put it below the
+    cut. Without the ordering the same departure would be counted under several
+    headings and the shares would not add up to the departures.
+
+    For the ones the ranking outranked, the name's own movement since its
+    previous appearance is reported — percentile, reliable alpha and confidence
+    — so a reader can see which of them moved rather than being told.
+    """
+    causes: dict[str, int] = defaultdict(int)
+    ineligibility: dict[str, int] = defaultdict(int)
+    percentile_moves, alpha_moves, confidence_moves = [], [], []
+    previous: dict[str, dict] = {}
+    departures = 0
+
+    for decision in sorted(decisions, key=lambda d: d["date"]):
+        rows = {row["ticker"]: row for row in (decision.get("scored") or [])}
+        for ticker in sorted(decision.get("replaced") or []):
+            departures += 1
+            row = rows.get(ticker)
+            if row is None:
+                causes["LEFT_THE_RESEARCH_POOL"] += 1
+                continue
+            codes = set(row.get("eligibilityCodes") or ())
+            cut = set(row.get("selectionExclusionCodes") or ())
+            if "ENTRY_OR_RESEARCH_STATE_BLOCKS_SIZING" in codes:
+                causes["ENTRY_OR_RESEARCH_STATE_TURNED_BLOCKING"] += 1
+            elif codes:
+                causes["BECAME_INELIGIBLE_ON_ITS_OWN_FACTS"] += 1
+                # "Ineligible" pools three very different facts — a calibration
+                # that has not matured yet, a missing risk unit, and an
+                # unmeasurable confidence — and only the last two are about the
+                # name. Reported apart so an early-history artefact cannot read
+                # as a selection decision.
+                for code in sorted(codes):
+                    ineligibility[code] += 1
+            elif "SECTOR_NAME_LIMIT" in cut:
+                causes["SECTOR_CAP"] += 1
+            elif "REGION_NAME_LIMIT" in cut:
+                causes["REGION_CAP"] += 1
+            else:
+                causes["OUTRANKED_AT_THE_CUT"] += 1
+                before = previous.get(ticker)
+                if before is not None:
+                    for key, target in (("rawAlphaPercentile", percentile_moves),
+                                        ("reliableAlphaPct", alpha_moves),
+                                        ("signalConfidence", confidence_moves)):
+                        move = _difference(row.get(key), before.get(key))
+                        if move is not None:
+                            target.append(move)
+        for ticker, row in rows.items():
+            previous[ticker] = row
+
+    return {
+        "available": bool(departures), "departuresMeasured": departures,
+        "byCause": dict(sorted(causes.items(), key=lambda kv: -kv[1])),
+        "ineligibilityByCode": dict(sorted(ineligibility.items(), key=lambda kv: -kv[1])),
+        "bySharePct": {cause: round(count / departures * 100, 2)
+                       for cause, count in sorted(causes.items(), key=lambda kv: -kv[1])}
+        if departures else {},
+        "outrankedOwnPercentileMove": _spread(percentile_moves),
+        "outrankedOwnReliableAlphaMovePp": _spread(alpha_moves),
+        "outrankedOwnConfidenceMove": _spread(confidence_moves),
+        "note": ("Causes are asked in the order the machinery applies them, so each "
+                 "departure is attributed once and the shares sum to the departures. "
+                 "The movement figures are the departing name's own change since its "
+                 "previous appearance, signed."),
+    }
+
+
 def _outcome_block(values) -> dict:
     array = np.asarray(list(values), dtype=float)
     if not array.size:
@@ -842,6 +1407,24 @@ def freeze_manifest() -> dict:
         "maxPercentileDispersion": MAX_PERCENTILE_DISPERSION,
         "transactionCostHurdleInLadder": False,
         "permutationNullRun": False,
+        # Added after the ladder was run and scored. Each one READS the paths
+        # the ladder already produced; none adds a rung, changes a score, moves
+        # a constraint or touches production. The ladder's numbers are the same
+        # with them present and absent, which is what makes them safe to add to
+        # a finished study.
+        "structuralDiagnosticsAreObservationalOnly": True,
+        "structuralDiagnostics": [
+            "risk_dominance", "entry_state_dynamics", "region_cap_binding",
+            "breadth_readiness", "departure_causes",
+        ],
+        "constraintsHeldFixedByTheseDiagnostics": [
+            "lowvol sleeve weight stays 0.20 inside the four-factor alpha",
+            "the downside-volatility denominator stays in the selection score",
+            "inverse-downside-volatility baseline sizing is unchanged",
+            "entry-state multipliers are unchanged",
+            "maxNamesPerRegion stays 3 and maxNamesPerSector stays 2",
+            "targetNames stays 5",
+        ],
         "factorsAdded": [],
         "factorWeightsChanged": False,
         "parametersIntroduced": [],

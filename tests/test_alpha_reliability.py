@@ -481,3 +481,196 @@ def test_run_rung_refuses_a_name_it_does_not_know():
     with pytest.raises(ValueError):
         AR.run_rung("NOT_A_RUNG", contexts={}, calibrator=None, calendar=[],
                     cfg_pf={}, valuation=None)
+
+
+# --------------------------------------------------------------------------- #
+# Structural diagnostics: observational only, and they must stay that way
+# --------------------------------------------------------------------------- #
+def _scored(ticker, score, *, alpha=3.0, percentile=97.0, vol=20.0, confidence=0.5,
+            sleeves=None, region="US", sector="Tech", state="ACCUMULATE_GRADUALLY",
+            multiplier=1.0, cut=None, codes=None, decision=None, reliable=None,
+            margin=None):
+    return {
+        "ticker": ticker, "region": region, "sector": sector, "score": score,
+        "eligible": not codes, "exclusionCodes": list(codes or []),
+        "selectionExclusionCodes": cut,
+        "expectedGrossBenchmarkExcessPct": alpha,
+        "decisionAlphaPct": alpha if decision is None else decision,
+        "reliableAlphaPct": alpha * confidence if reliable is None else reliable,
+        "uncertaintyMarginPct": (abs(alpha) * (1 - confidence) if margin is None else margin),
+        "alphaPercentile": percentile, "rawAlphaPercentile": percentile,
+        "downsideVolPct": vol, "signalConfidence": confidence,
+        "factorPercentiles": dict(sleeves or {"momentum": 80, "value": 70,
+                                              "quality": 75, "lowvol": 60}),
+        "entryState": state, "entryStateMultiplier": multiplier,
+        "eligibilityCodes": tuple(codes or ()),
+    }
+
+
+def test_spearman_averages_ties_and_abstains_without_spread():
+    """The calibration hands most of this pool one alpha, so ties are the norm."""
+    assert AR._spearman([1, 2, 3, 4], [1, 2, 3, 4]) == pytest.approx(1.0)
+    assert AR._spearman([1, 2, 3, 4], [4, 3, 2, 1]) == pytest.approx(-1.0)
+    assert AR._spearman([5, 5, 5, 5], [1, 2, 3, 4]) is None
+    assert AR._spearman([1, 2], [1, 2]) is None
+    tied = AR._average_ranks(np.array([10.0, 10.0, 20.0, 30.0]))
+    assert list(tied) == [0.5, 0.5, 2.0, 3.0]
+
+
+def test_risk_dominance_sees_the_denominator_when_alpha_is_a_constant():
+    """Every name shares one bucket, so only downside volatility can order them."""
+    rows = [_scored("A", 0.20, alpha=3.0, vol=15.0), _scored("B", 0.15, alpha=3.0, vol=20.0),
+            _scored("C", 0.12, alpha=3.0, vol=25.0), _scored("D", 0.10, alpha=3.0, vol=30.0)]
+    blob = AR.risk_dominance([_decision("2020-01-01", retained=[], added=["A", "B"],
+                                        replaced=[], scored=rows)])
+    assert blob["available"]
+    assert blob["scoreVsCalibratedAlphaSpearman"]["available"] is False
+    assert blob["scoreVsDownsideVolSpearman"]["mean"] == pytest.approx(-1.0)
+    assert blob["downsideVolPctSelected"]["mean"] < blob["downsideVolPctRejected"]["mean"]
+
+
+def test_a_name_a_cap_stopped_is_not_counted_as_dropped_by_its_volatility():
+    """A cap is not a risk estimate and must not be attributed to one."""
+    rows = [_scored("TOP", 0.05, percentile=100.0, vol=40.0,
+                    cut=["REGION_NAME_LIMIT"]),
+            _scored("MID", 0.08, percentile=95.0, vol=25.0,
+                    cut=["BELOW_TARGET_COUNT_CUTOFF"]),
+            _scored("HELD", 0.20, percentile=91.0, vol=10.0)]
+    blob = AR.risk_dominance([_decision("2020-01-01", retained=[], added=["HELD"],
+                                        replaced=[], scored=rows)])
+    assert blob["droppedDespiteTopAlphaAndAboveMedianRisk"] == 0
+    assert blob["heldDespiteLowerAlphaAndBelowMedianRisk"] == 1
+
+
+def test_entry_state_transitions_are_counted_per_name_across_blocks():
+    first = [_scored("A", 0.2, state="ACCUMULATE_GRADUALLY", multiplier=1.0, percentile=97.0)]
+    second = [_scored("A", 0.1, state="WATCH", multiplier=0.5, percentile=96.5)]
+    blob = AR.entry_state_dynamics([
+        _decision("2020-01-01", retained=[], added=["A"], replaced=[], scored=first),
+        _decision("2020-02-01", retained=[], added=["B"], replaced=["A"], scored=second)])
+    assert blob["transitionsObserved"] == 1
+    assert blob["byTransition"]["ACCUMULATE_GRADUALLY -> WATCH"] == 1
+    # The step halved while the name's own percentile moved half a point.
+    assert blob["departuresWhereTheStepFellAndAlphaMovedOnePointOrLess"] == 1
+
+
+def test_a_state_that_moves_on_an_untouched_name_changed_nothing():
+    first = [_scored("A", 0.2, state="WATCH", multiplier=0.5)]
+    second = [_scored("A", 0.2, state="ACCUMULATE_GRADUALLY", multiplier=1.0)]
+    blob = AR.entry_state_dynamics([
+        _decision("2020-01-01", retained=[], added=["A"], replaced=[], scored=first),
+        _decision("2020-02-01", retained=["A"], added=[], replaced=[], scored=second)])
+    assert blob["transitionsObserved"] == 1
+    assert blob["transitionsCoincidingWithASwapPct"] == pytest.approx(0.0)
+
+
+def test_region_cap_binding_measures_the_override_against_the_marginal_holding():
+    rows = [_scored("KR1", 0.30, region="KR", decision=4.0),
+            _scored("KR2", 0.25, region="KR", decision=3.5),
+            _scored("KR3", 0.20, region="KR", decision=3.0),
+            _scored("KR4", 0.18, region="KR", decision=2.8, cut=["REGION_NAME_LIMIT"]),
+            _scored("US1", 0.10, region="US", decision=1.0)]
+    decision = _decision("2020-01-01", retained=[], added=["KR1", "KR2", "KR3", "US1"],
+                         replaced=[], scored=rows)
+    decision["regionByTicker"] = {"KR1": "KR", "KR2": "KR", "KR3": "KR", "US1": "US"}
+    blob = AR.region_cap_binding([decision], CFG)
+    assert blob["rebalancesWhereTheRegionCapStoppedAName"] == 1
+    assert blob["rebalancesWhereACappedNameOutscoredOneTaken"] == 1
+    assert blob["decisionAlphaGapAtTheOverridePp"]["mean"] == pytest.approx(1.8)
+    # A region absent from the top-N is absent from the tally, not a zero
+    # reading: it was never in the ordering this figure describes.
+    assert blob["topNByScoreWithCapsLiftedByRegion"] == {"KR": 4}
+    assert blob["heldNameDatesByRegion"] == {"KR": 3, "US": 1}
+
+
+def test_breadth_readiness_counts_names_whose_doubt_exceeds_their_claim():
+    rows = [_scored("A", 0.30, alpha=4.0, confidence=0.9),
+            _scored("B", 0.20, alpha=4.0, confidence=0.4),
+            _scored("C", 0.10, alpha=4.0, confidence=0.4)]
+    blob = AR.breadth_readiness([_decision("2020-01-01", retained=[], added=["A"],
+                                           replaced=[], scored=rows)])
+    # 0.4 x 4.0 = 1.6 against a discarded 2.4, so B and C are near neutral.
+    assert blob["namesInTopTenWhoseDoubtExceedsTheirClaim"]["mean"] == pytest.approx(2.0)
+    assert blob["targetNamesUnchanged"] == 5
+
+
+def test_breadth_readiness_counts_ties_inside_and_just_below_the_top_five():
+    rows = [_scored(name, 1.0 - index / 100, alpha=3.0)
+            for index, name in enumerate("ABCDEFG")]
+    blob = AR.breadth_readiness([_decision("2020-01-01", retained=[],
+                                           added=list("ABCDE"), replaced=[], scored=rows)])
+    assert blob["tiedPairsInsideTheTopFive"]["mean"] == pytest.approx(4.0)
+    assert blob["ranksSixToTenTiedWithTheFifthName"]["mean"] == pytest.approx(2.0)
+
+
+def test_departure_causes_attribute_each_name_once_and_sum_to_the_departures():
+    rows = [_scored("BLOCKED", 0.1, codes=["ENTRY_OR_RESEARCH_STATE_BLOCKS_SIZING"]),
+            _scored("CAPPED", 0.2, cut=["REGION_NAME_LIMIT"]),
+            _scored("OUTRANKED", 0.05, cut=["BELOW_TARGET_COUNT_CUTOFF"])]
+    blob = AR.departure_causes([_decision(
+        "2020-01-01", retained=[], added=[],
+        replaced=["BLOCKED", "CAPPED", "OUTRANKED", "GONE"], scored=rows)])
+    assert blob["departuresMeasured"] == 4
+    assert sum(blob["byCause"].values()) == 4
+    assert blob["byCause"]["LEFT_THE_RESEARCH_POOL"] == 1
+    assert blob["byCause"]["ENTRY_OR_RESEARCH_STATE_TURNED_BLOCKING"] == 1
+    assert blob["byCause"]["REGION_CAP"] == 1
+    assert blob["byCause"]["OUTRANKED_AT_THE_CUT"] == 1
+
+
+def test_production_selection_cannot_contaminate_the_eligibility_facts():
+    """`select_portfolio_by_scores` shallow copies each row, so its cut codes
+    land in the CALLER's `exclusionCodes` list. Without a copy that cannot be
+    appended to, a name the book was simply too full to reach comes back
+    looking like a name that was ineligible on its own facts."""
+    from pipeline import kelly_portfolio as KP
+
+    state = AR.ReliabilityState()
+    candidates = [_candidate(name, percentile=97, vol=10.0 + index)
+                  for index, name in enumerate("ABCDEFGH")]
+    rows = AR.confidence_rows(candidates, state, "d1", persistence=True, confidence=True)
+    scored = AR.reliability_scores(rows, _Calibration({("US", "95-100"): 3.0}), CFG,
+                                   as_of="2020-01-01")
+    KP.selection_and_baseline(rows, CFG, None, scored=scored, method="TEST")
+
+    contaminated = {code for row in scored for code in row["exclusionCodes"]}
+    pristine = {code for row in scored for code in row["eligibilityCodes"]}
+    selection_codes = {"BELOW_TARGET_COUNT_CUTOFF", "SECTOR_NAME_LIMIT", "REGION_NAME_LIMIT"}
+    assert contaminated & selection_codes                    # production appended into ours
+    assert pristine == set()                                 # the facts stayed facts
+    assert all(isinstance(row["eligibilityCodes"], tuple) for row in scored)
+
+
+def test_a_name_the_book_was_too_full_to_reach_is_not_called_ineligible():
+    rows = [dict(_scored("FULL", 0.05, cut=["BELOW_TARGET_COUNT_CUTOFF"]),
+                 exclusionCodes=["BELOW_TARGET_COUNT_CUTOFF"], eligibilityCodes=())]
+    blob = AR.departure_causes([_decision("2020-01-01", retained=[], added=[],
+                                          replaced=["FULL"], scored=rows)])
+    assert blob["byCause"] == {"OUTRANKED_AT_THE_CUT": 1}
+
+
+def test_the_diagnostics_never_touch_the_constraints_they_measure():
+    """They read the paths the ladder produced; they do not relax anything."""
+    manifest = AR.freeze_manifest()
+    assert manifest["structuralDiagnosticsAreObservationalOnly"] is True
+    assert set(manifest["structuralDiagnostics"]) == {
+        "risk_dominance", "entry_state_dynamics", "region_cap_binding",
+        "breadth_readiness", "departure_causes"}
+    held = " ".join(manifest["constraintsHeldFixedByTheseDiagnostics"])
+    for token in ("lowvol", "downside-volatility denominator", "maxNamesPerRegion",
+                  "targetNames", "entry-state"):
+        assert token in held
+
+
+def test_adding_the_diagnostics_did_not_add_a_rung_or_a_parameter():
+    manifest = AR.freeze_manifest()
+    assert list(manifest["ladder"]) == list(AR.LADDER)
+    assert manifest["parametersIntroduced"] == []
+    assert manifest["promotionEligible"] is False
+
+
+def test_every_diagnostic_reports_absence_rather_than_a_zero_reading():
+    for blob in (AR.risk_dominance([]), AR.entry_state_dynamics([]),
+                 AR.region_cap_binding([], CFG), AR.breadth_readiness([]),
+                 AR.departure_causes([])):
+        assert blob["available"] is False

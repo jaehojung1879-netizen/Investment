@@ -82,13 +82,13 @@
       "alphaPercentileGapAtCut": {
         "available": true,
         "max": 7.0,
-        "mean": 0.4396,
+        "mean": 0.3007,
         "median": 0.0,
-        "min": -3.0,
-        "observations": 91,
+        "min": -4.0,
+        "observations": 143,
         "p10": -2.0,
-        "p90": 3.0,
-        "sd": 2.0342
+        "p90": 2.0,
+        "sd": 1.9538
       },
       "available": true,
       "confidenceGapAtCut": {
@@ -97,93 +97,100 @@
         "mean": 0.0,
         "median": 0.0,
         "min": 0.0,
-        "observations": 91,
+        "observations": 143,
         "p10": 0.0,
         "p90": 0.0,
         "sd": 0.0
       },
       "expectedAlphaGapAtCutPp": {
         "available": true,
-        "max": 0.0474,
-        "mean": -0.1056,
+        "max": 0.2181,
+        "mean": -0.0658,
         "median": 0.0,
         "min": -0.953,
-        "observations": 91,
-        "p10": -0.6563,
+        "observations": 143,
+        "p10": -0.0918,
         "p90": 0.0,
-        "sd": 0.2602
+        "sd": 0.2146
       },
       "note": "The marginal held name against the first excluded one, on the rung's own ordering. A tie on expected alpha means the calibration could not tell the two apart and the cut was made by downside volatility.",
-      "rebalancesMeasured": 91,
-      "rebalancesWhereEveryNearMissWasCapped": 54,
+      "rebalancesMeasured": 143,
+      "rebalancesWhereEveryNearMissWasCapped": 2,
       "relativeScoreGapAtCut": {
         "available": true,
         "max": 0.6585,
-        "mean": 0.116,
-        "median": 0.0751,
+        "mean": 0.1234,
+        "median": 0.0856,
         "min": 0.0005,
-        "observations": 91,
-        "p10": 0.0086,
-        "p90": 0.2415,
-        "sd": 0.1272
+        "observations": 143,
+        "p10": 0.0096,
+        "p90": 0.2806,
+        "sd": 0.1282
       },
-      "tiedOnExpectedAlphaPct": 81.32
+      "tiedOnExpectedAlphaPct": 86.71
     },
     "hysteresis": {
       "alphaPercentileGapAtCut": {
         "available": true,
         "max": 6.5,
-        "mean": 0.9266,
-        "median": 0.3333,
+        "mean": 0.7246,
+        "median": 0.25,
         "min": -5.1667,
-        "observations": 118,
+        "observations": 143,
         "p10": -1.3333,
-        "p90": 4.6667,
-        "sd": 2.3073
+        "p90": 4.2933,
+        "sd": 2.2167
       },
       "available": true,
       "confidenceGapAtCut": {
         "available": true,
-        "max": 0.4686,
-        "mean": 0.0057,
-        "median": 0.0116,
+        "max": 0.4699,
+        "mean": 0.0141,
+        "median": 0.012,
         "min": -0.5513,
-        "observations": 118,
-        "p10": -0.2742,
-        "p90": 0.2667,
-        "sd": 0.2172
+        "observations": 143,
+        "p10": -0.2729,
+        "p90": 0.2702,
+        "sd": 0.2206
       },
       "expectedAlphaGapAtCutPp": {
         "available": true,
-        "max": 1.0143,
-        "mean": -0.1251,
+        "max": 1.0418,
+        "mean": -0.098,
         "median": 0.0,
         "min": -1.1985,
-        "observations": 118,
-        "p10": -0.7989,
+        "observations": 143,
+        "p10": -0.704,
         "p90": 0.0,
-        "sd": 0.3752
+        "sd": 0.357
       },
       "note": "The marginal held name against the first excluded one, on the rung's own ordering. A tie on expected alpha means the calibration could not tell the two apart and the cut was made by downside volatility.",
-      "rebalancesMeasured": 118,
-      "rebalancesWhereEveryNearMissWasCapped": 27,
+      "rebalancesMeasured": 143,
+      "rebalancesWhereEveryNearMissWasCapped": 2,
       "relativeScoreGapAtCut": {
         "available": true,
-        "max": 1.7493,
-        "mean": 0.4274,
-        "median": 0.2609,
+        "max": 1.7897,
+        "mean": 0.4138,
+        "median": 0.2521,
         "min": 0.0008,
-        "observations": 118,
-        "p10": 0.0598,
-        "p90": 1.0633,
-        "sd": 0.4184
+        "observations": 143,
+        "p10": 0.0492,
+        "p90": 1.0243,
+        "sd": 0.417
       },
-      "tiedOnExpectedAlphaPct": 66.1
+      "tiedOnExpectedAlphaPct": 68.53
     }
   },
   "finding": {
     "bestNetExcessPp": 2.289348,
     "bestRung": "PERSISTENT_ALPHA_ONLY",
+    "closingAnswers": {
+      "doFixedFiveAndTheRegionQuotaOverrideTheSignal": "Yes, and the region quota is the larger of the two. It stopped a name on 93.100% of rebalances and on 134 of 145 the capped name outscored one the book took, by a median decision-alpha gap of 0.856pp. Held name-dates split {'KR': 421, 'US': 301}; at the same count with the caps lifted the ordering wanted {'KR': 640, 'US': 82}. On breadth, 3.559 tied pairs sit inside the top five and 2.034 of ranks 6-10 cannot be separated from the fifth name, so a fixed five is cutting an ordering that does not have five distinguishable names in it.",
+      "doesLowVolatilityDominanceSurviveTheStudy": "The tilt is visible in what is HELD rather than in a large rank correlation, and it narrows without going away. Names held carry downside volatility of 24.445% against 27.172% rejected on the control, and 25.379% against 26.880% on the confidence-plus-hysteresis rung; the `lowvol` sleeve percentile of held names goes 74.374 to 70.505 against 65.019 for the rejected. `lowvol` is among a held name's top two sleeves 58.860% of the time, so part of the tilt arrives through the ALPHA itself and would survive removing the denominator — which is why the pre-registered first study moves the denominator alone and leaves the sleeve for the one after it.",
+      "whatDroveTheReplacements": "Of 444 departures on the control path: LEFT_THE_RESEARCH_POOL 36.040%, OUTRANKED_AT_THE_CUT 33.780%, REGION_CAP 18.920%, ENTRY_OR_RESEARCH_STATE_TURNED_BLOCKING 9.010%, SECTOR_CAP 2.250%. The diversification guard alone — sector and region caps — accounts for 21.170% of every name this book replaced, and the entry-state step for 9.010%; 114 of those had the multiplier fall while the name's own percentile moved a point or less. Where the ranking did outrank a name, its own percentile had moved -0.627 points and its reliable alpha -0.183pp.",
+      "whatExplainsTheFinalOrdering": "BOTH, at different places, and only one of them is where the decision happens. Across the whole cross-section the score's rank correlation with the calibrated alpha averages 0.758 against 0.075 with downside volatility, so the alpha term orders most PAIRS. But a five-name book is decided at its margin, and there 86.710% of cuts are between two names the calibration scores identically — the alpha term has two levels and both sides of the cut are almost always on the same one. What settles those is the risk-and-entry product in the denominator. The held set matches an alpha-only top-N only 30.070% of the time and 37.521% of held against not-held pairs are ordered the other way by the alpha percentile.",
+      "whatToSeparateFirst": "Two structural problems are now measured and they are not the same one. The BIGGEST override is the region quota, which binds on almost every rebalance and turns an ordering that wants one region into a near-fixed 3:2 — but it cannot be lifted yet, because alpha percentiles are computed WITHIN a region and there is no common scale to compare them across one. The problem that can be worked NOW is the double use of downside risk: it sets part of the alpha through the 0.20 lowvol sleeve, divides that alpha to make the score, and then sizes the position. `alpha-risk-separation-v1` removes only the middle use and is the pre-registered first study; the cross-region scale is the prerequisite the quota study has to build before it can run."
+    },
     "controlNetExcessPp": -0.684262,
     "frozenCandidate": null,
     "frozenCandidateNote": "NOTHING IS FROZEN. The freeze rule is that a candidate is carried into prospective validation only if no axis it contains was refuted by its own paired test. PERSISTENT_ALPHA_X_SIGNAL_CONFIDENCE: the axis this rung adds made the path WORSE than the rung below it by -3.984pp of annualized net excess, 95% CI [-8.144pp, -0.214pp], which EXCLUDES zero. The hypothesis behind it is refuted by its own pre-specified test and the rule is kept, not deleted, so the instrument that produced the answer survives. That condition was NOT in the original design, which named the last rung unconditionally; it was added after the first full run returned this refutation, and the record says so rather than pretending otherwise. What makes it a tightening rather than a re-specification: no rung, parameter, window or scoring rule changed, every number here is what that run produced, and the condition can only ever REMOVE a candidate — it cannot promote one and it cannot make a refuted axis look better. So this study freezes no new candidate, the `signal-persistence-v1` k=6 rung stands as the one already frozen, and the refuted rule is kept rather than deleted. What the boundary diagnostic established is independent of the ladder and stands whatever the rungs did.",
@@ -209,7 +216,7 @@
         "pointEstimatePp": -3.984024
       }
     },
-    "summary": "The pool occupies 2 calibration buckets and 83.550% of its name-dates sit in one of them, so 81.320% of the control's top-5 cuts and 29.770% of its swaps are between names the calibration scores IDENTICALLY — ordered by realised downside volatility, not by alpha. Net excess moves from -0.684pp at the control to 2.289pp (PERSISTENT_ALPHA_ONLY), -1.695pp (PERSISTENT_ALPHA_X_SIGNAL_CONFIDENCE), -1.406pp (PERSISTENT_ALPHA_X_CONFIDENCE_PLUS_SIGNAL_HYSTERESIS).",
+    "summary": "The pool occupies 2 calibration buckets and 83.550% of its name-dates sit in one of them, so 86.710% of the control's top-5 cuts and 29.770% of its swaps are between names the calibration scores IDENTICALLY — ordered by realised downside volatility, not by alpha. Net excess moves from -0.684pp at the control to 2.289pp (PERSISTENT_ALPHA_ONLY), -1.695pp (PERSISTENT_ALPHA_X_SIGNAL_CONFIDENCE), -1.406pp (PERSISTENT_ALPHA_X_CONFIDENCE_PLUS_SIGNAL_HYSTERESIS).",
     "verdict": "BENCHMARK_BEATEN",
     "verdictNote": "The verdict reads the best rung's POINT ESTIMATE against its matched benchmark and says nothing about whether that rung is distinguishable from the control. It is not: its paired interval against the control contains zero."
   },
@@ -230,6 +237,14 @@
     },
     "confidenceForm": "RELIABLE_ALPHA_EQUALS_CONFIDENCE_TIMES_CALIBRATED_ALPHA",
     "confidenceIsAContraction": true,
+    "constraintsHeldFixedByTheseDiagnostics": [
+      "lowvol sleeve weight stays 0.20 inside the four-factor alpha",
+      "the downside-volatility denominator stays in the selection score",
+      "inverse-downside-volatility baseline sizing is unchanged",
+      "entry-state multipliers are unchanged",
+      "maxNamesPerRegion stays 3 and maxNamesPerSector stays 2",
+      "targetNames stays 5"
+    ],
     "factorWeightsChanged": false,
     "factorsAdded": [],
     "heldFixedAcrossRungs": [
@@ -258,6 +273,14 @@
     "promotionEligible": false,
     "reportedSeparately": "PERSISTENT_ALPHA_X_CONFIDENCE_PLUS_SIGNAL_HYSTERESIS_PLUS_COST_HURDLE",
     "status": "CHALLENGER",
+    "structuralDiagnostics": [
+      "risk_dominance",
+      "entry_state_dynamics",
+      "region_cap_binding",
+      "breadth_readiness",
+      "departure_causes"
+    ],
+    "structuralDiagnosticsAreObservationalOnly": true,
     "transactionCostHurdleInLadder": false,
     "uncertaintyMultiple": 1.0,
     "windowBlocks": 6,
@@ -442,6 +465,36 @@
       "turnoverRebalances": 144
     }
   },
+  "nextStudies": [
+    {
+      "firstAxis": "Remove ONLY the downside-volatility denominator from the selection ranking. The lowvol sleeve keeps its 0.20 weight inside the four-factor alpha, and inverse-downside-volatility sizing and every portfolio constraint stay exactly as they are, so risk is still managed — it just stops deciding WHICH name.",
+      "id": "alpha-risk-separation-v1",
+      "notInTheFirstLadder": "Moving the lowvol sleeve out of the alpha layer. If a defensive tilt survives the denominator's removal, that is the NEXT study's axis, not this one's — two risk channels moved together would be attributable to neither.",
+      "order": 1,
+      "question": "Is downside risk being spent twice — once deciding a name's expected alpha and again deciding its capital?"
+    },
+    {
+      "firstAxis": "Breadth follows signal strength between a floor of 3 and a ceiling of 10, with no fixed target: hold the names whose edge is distinguishable and hold cash when it is not.",
+      "id": "dynamic-breadth-v1",
+      "notInTheFirstLadder": "Choosing whichever of 3/5/7/10 scored best on this sample. The hypothesis is that a strength-dependent breadth loses less information and churns less at the boundary than ANY fixed count, and a fitted count would answer a different question.",
+      "order": 2,
+      "question": "Does a fixed count of five cut an ordering that does not have five distinguishable names in it?"
+    },
+    {
+      "firstAxis": "Replace `maxNamesPerRegion` with a portfolio-level risk / covariance / concentration budget, so US 8 / KR 0 or KR 7 / US 1 becomes expressible when that is what the ordering says.",
+      "id": "region-quota-removal-v1",
+      "order": 3,
+      "prerequisite": "Alpha percentiles are computed WITHIN a region, so a Korean 90th and an American 90th are not the same claim. A common cross-region scale has to exist before the quota comes off, or the quota is simply replaced by an artefact of the percentile's construction.",
+      "question": "Should regional diversification be a name quota at all, or a risk budget?"
+    },
+    {
+      "firstAxis": "Separate the roles: alpha decides the held set, entry state decides the path to the target weight — ACCUMULATE to full weight, WATCH to part of it, WAIT_FOR_PULLBACK throttles new entry, EVENT_RISK holds new entry.",
+      "id": "entry-selection-separation-v1",
+      "notInTheFirstLadder": "Whether an INCUMBENT should be sold on a technical overheat trigger at all. That is a separate claim about exits and gets its own test.",
+      "order": 4,
+      "question": "Should the entry state decide WHAT is owned, or only how fast a target weight is approached?"
+    }
+  ],
   "pairedAdjacent": {
     "PERSISTENT_ALPHA_ONLY": {
       "available": true,
@@ -2710,5 +2763,1047 @@
     }
   },
   "status": "CHALLENGER",
+  "structuralDiagnostics": {
+    "breadthReadiness": {
+      "control": {
+        "available": true,
+        "decisionAlphaByRankPp": {
+          "1": {
+            "available": true,
+            "max": 1.4347,
+            "mean": 0.8918,
+            "median": 0.9504,
+            "min": 0.0005,
+            "observations": 145,
+            "p10": 0.4461,
+            "p90": 1.2429,
+            "sd": 0.3297
+          },
+          "10": {
+            "available": true,
+            "max": 1.4221,
+            "mean": 0.2298,
+            "median": 0.1426,
+            "min": -0.3239,
+            "observations": 144,
+            "p10": -0.1492,
+            "p90": 0.9603,
+            "sd": 0.4058
+          },
+          "2": {
+            "available": true,
+            "max": 1.4347,
+            "mean": 0.8726,
+            "median": 0.937,
+            "min": 0.0005,
+            "observations": 145,
+            "p10": 0.305,
+            "p90": 1.2382,
+            "sd": 0.3432
+          },
+          "3": {
+            "available": true,
+            "max": 1.4347,
+            "mean": 0.8488,
+            "median": 0.9038,
+            "min": 0.0005,
+            "observations": 145,
+            "p10": 0.2583,
+            "p90": 1.2429,
+            "sd": 0.3565
+          },
+          "4": {
+            "available": true,
+            "max": 1.4221,
+            "mean": 0.7852,
+            "median": 0.8637,
+            "min": -0.2005,
+            "observations": 145,
+            "p10": 0.2252,
+            "p90": 1.2117,
+            "sd": 0.3841
+          },
+          "5": {
+            "available": true,
+            "max": 1.4347,
+            "mean": 0.7362,
+            "median": 0.8261,
+            "min": -0.1772,
+            "observations": 144,
+            "p10": 0.0438,
+            "p90": 1.227,
+            "sd": 0.4352
+          },
+          "6": {
+            "available": true,
+            "max": 1.3869,
+            "mean": 0.592,
+            "median": 0.6277,
+            "min": -0.3169,
+            "observations": 144,
+            "p10": 0.0007,
+            "p90": 1.1743,
+            "sd": 0.4651
+          },
+          "7": {
+            "available": true,
+            "max": 1.4347,
+            "mean": 0.5017,
+            "median": 0.3474,
+            "min": -0.3165,
+            "observations": 144,
+            "p10": -0.0984,
+            "p90": 1.1147,
+            "sd": 0.4988
+          },
+          "8": {
+            "available": true,
+            "max": 1.4221,
+            "mean": 0.3801,
+            "median": 0.2393,
+            "min": -0.2376,
+            "observations": 144,
+            "p10": -0.1289,
+            "p90": 1.1196,
+            "sd": 0.4863
+          },
+          "9": {
+            "available": true,
+            "max": 1.4221,
+            "mean": 0.2724,
+            "median": 0.1651,
+            "min": -0.2376,
+            "observations": 144,
+            "p10": -0.1431,
+            "p90": 1.09,
+            "sd": 0.4495
+          }
+        },
+        "decisionAlphaDispersionTopFivePp": {
+          "available": true,
+          "max": 0.7183,
+          "mean": 0.1112,
+          "median": 0.0,
+          "min": 0.0,
+          "observations": 145,
+          "p10": 0.0,
+          "p90": 0.3944,
+          "sd": 0.1689
+        },
+        "decisionAlphaDispersionTopTenPp": {
+          "available": true,
+          "max": 0.6766,
+          "mean": 0.368,
+          "median": 0.3885,
+          "min": 0.0,
+          "observations": 145,
+          "p10": 0.1136,
+          "p90": 0.5844,
+          "sd": 0.1644
+        },
+        "decisionAlphaGapsPp": {
+          "rank10MinusRank11": {
+            "available": true,
+            "max": 0.9424,
+            "mean": 0.0314,
+            "median": 0.0,
+            "min": -0.9546,
+            "observations": 144,
+            "p10": -0.1046,
+            "p90": 0.3048,
+            "sd": 0.3155
+          },
+          "rank3MinusRank4": {
+            "available": true,
+            "max": 1.3291,
+            "mean": 0.0636,
+            "median": 0.0,
+            "min": -0.3517,
+            "observations": 145,
+            "p10": 0.0,
+            "p90": 0.2508,
+            "sd": 0.2327
+          },
+          "rank5MinusRank6": {
+            "available": true,
+            "max": 1.2426,
+            "mean": 0.1442,
+            "median": 0.0,
+            "min": -0.9493,
+            "observations": 144,
+            "p10": 0.0,
+            "p90": 0.7951,
+            "sd": 0.3991
+          },
+          "rank8MinusRank9": {
+            "available": true,
+            "max": 1.1235,
+            "mean": 0.1077,
+            "median": 0.0,
+            "min": -0.9493,
+            "observations": 144,
+            "p10": 0.0,
+            "p90": 0.8018,
+            "sd": 0.4014
+          }
+        },
+        "eligibleCandidates": {
+          "available": true,
+          "max": 24.0,
+          "mean": 20.8828,
+          "median": 21.0,
+          "min": 4.0,
+          "observations": 145,
+          "p10": 18.0,
+          "p90": 23.6,
+          "sd": 2.6887
+        },
+        "namesInTopTenWhoseDoubtExceedsTheirClaim": {
+          "available": true,
+          "max": 0.0,
+          "mean": 0.0,
+          "median": 0.0,
+          "min": 0.0,
+          "observations": 145,
+          "p10": 0.0,
+          "p90": 0.0,
+          "sd": 0.0
+        },
+        "note": "Preparation for a later study and nothing more: `targetNames` stays at five here, no breadth rule is implemented, and no rung was added. Near-neutral is a name whose own discarded uncertainty exceeds its own reliable alpha, which is the module's existing quantity read against itself rather than a threshold chosen here.",
+        "ranksSixToTenTiedWithTheFifthName": {
+          "available": true,
+          "max": 5.0,
+          "mean": 2.0345,
+          "median": 2.0,
+          "min": 0.0,
+          "observations": 145,
+          "p10": 0.0,
+          "p90": 4.0,
+          "sd": 1.3965
+        },
+        "rebalancesMeasured": 145,
+        "targetNamesUnchanged": 5,
+        "tiedPairsInsideTheTopFive": {
+          "available": true,
+          "max": 4.0,
+          "mean": 3.5586,
+          "median": 4.0,
+          "min": 2.0,
+          "observations": 145,
+          "p10": 3.0,
+          "p90": 4.0,
+          "sd": 0.5512
+        }
+      },
+      "hysteresis": {
+        "available": true,
+        "decisionAlphaByRankPp": {
+          "1": {
+            "available": true,
+            "max": 1.4347,
+            "mean": 0.8459,
+            "median": 0.9291,
+            "min": 0.0001,
+            "observations": 145,
+            "p10": 0.1573,
+            "p90": 1.2429,
+            "sd": 0.3792
+          },
+          "10": {
+            "available": true,
+            "max": 0.1625,
+            "mean": -0.0543,
+            "median": -0.0365,
+            "min": -0.5454,
+            "observations": 144,
+            "p10": -0.1617,
+            "p90": 0.0197,
+            "sd": 0.0863
+          },
+          "2": {
+            "available": true,
+            "max": 1.4347,
+            "mean": 0.6993,
+            "median": 0.7924,
+            "min": -0.094,
+            "observations": 145,
+            "p10": 0.0521,
+            "p90": 1.1973,
+            "sd": 0.4352
+          },
+          "3": {
+            "available": true,
+            "max": 1.3869,
+            "mean": 0.5173,
+            "median": 0.392,
+            "min": -0.094,
+            "observations": 145,
+            "p10": 0.0208,
+            "p90": 1.1083,
+            "sd": 0.4412
+          },
+          "4": {
+            "available": true,
+            "max": 1.373,
+            "mean": 0.25,
+            "median": 0.1372,
+            "min": -0.3169,
+            "observations": 145,
+            "p10": -0.0016,
+            "p90": 0.755,
+            "sd": 0.3227
+          },
+          "5": {
+            "available": true,
+            "max": 0.9915,
+            "mean": 0.1474,
+            "median": 0.0851,
+            "min": -0.2484,
+            "observations": 144,
+            "p10": -0.093,
+            "p90": 0.5063,
+            "sd": 0.2316
+          },
+          "6": {
+            "available": true,
+            "max": 1.0026,
+            "mean": 0.0694,
+            "median": 0.0284,
+            "min": -0.2681,
+            "observations": 144,
+            "p10": -0.1222,
+            "p90": 0.2701,
+            "sd": 0.1872
+          },
+          "7": {
+            "available": true,
+            "max": 0.5481,
+            "mean": 0.0167,
+            "median": 0.0015,
+            "min": -0.4833,
+            "observations": 144,
+            "p10": -0.1446,
+            "p90": 0.1928,
+            "sd": 0.1529
+          },
+          "8": {
+            "available": true,
+            "max": 0.7341,
+            "mean": -0.0181,
+            "median": -0.0047,
+            "min": -0.4376,
+            "observations": 144,
+            "p10": -0.1683,
+            "p90": 0.0899,
+            "sd": 0.1315
+          },
+          "9": {
+            "available": true,
+            "max": 0.6793,
+            "mean": -0.0416,
+            "median": -0.0243,
+            "min": -0.479,
+            "observations": 144,
+            "p10": -0.1746,
+            "p90": 0.0511,
+            "sd": 0.126
+          }
+        },
+        "decisionAlphaDispersionTopFivePp": {
+          "available": true,
+          "max": 0.6564,
+          "mean": 0.3663,
+          "median": 0.3999,
+          "min": 0.0003,
+          "observations": 145,
+          "p10": 0.1155,
+          "p90": 0.5492,
+          "sd": 0.1502
+        },
+        "decisionAlphaDispersionTopTenPp": {
+          "available": true,
+          "max": 0.6369,
+          "mean": 0.3706,
+          "median": 0.3854,
+          "min": 0.0003,
+          "observations": 145,
+          "p10": 0.1299,
+          "p90": 0.558,
+          "sd": 0.1526
+        },
+        "decisionAlphaGapsPp": {
+          "rank10MinusRank11": {
+            "available": true,
+            "max": 0.3744,
+            "mean": 0.0168,
+            "median": 0.0018,
+            "min": -0.4548,
+            "observations": 144,
+            "p10": -0.0156,
+            "p90": 0.0824,
+            "sd": 0.0704
+          },
+          "rank3MinusRank4": {
+            "available": true,
+            "max": 1.1985,
+            "mean": 0.2673,
+            "median": 0.1363,
+            "min": -0.7683,
+            "observations": 145,
+            "p10": -0.1799,
+            "p90": 0.8684,
+            "sd": 0.4188
+          },
+          "rank5MinusRank6": {
+            "available": true,
+            "max": 0.8487,
+            "mean": 0.078,
+            "median": 0.0322,
+            "min": -0.4646,
+            "observations": 144,
+            "p10": -0.0539,
+            "p90": 0.2682,
+            "sd": 0.1913
+          },
+          "rank8MinusRank9": {
+            "available": true,
+            "max": 0.4127,
+            "mean": 0.0235,
+            "median": 0.005,
+            "min": -0.2758,
+            "observations": 144,
+            "p10": -0.0151,
+            "p90": 0.093,
+            "sd": 0.0804
+          }
+        },
+        "eligibleCandidates": {
+          "available": true,
+          "max": 24.0,
+          "mean": 20.8828,
+          "median": 21.0,
+          "min": 4.0,
+          "observations": 145,
+          "p10": 18.0,
+          "p90": 23.6,
+          "sd": 2.6887
+        },
+        "namesInTopTenWhoseDoubtExceedsTheirClaim": {
+          "available": true,
+          "max": 10.0,
+          "mean": 4.2759,
+          "median": 4.0,
+          "min": 0.0,
+          "observations": 145,
+          "p10": 0.0,
+          "p90": 8.0,
+          "sd": 2.6783
+        },
+        "note": "Preparation for a later study and nothing more: `targetNames` stays at five here, no breadth rule is implemented, and no rung was added. Near-neutral is a name whose own discarded uncertainty exceeds its own reliable alpha, which is the module's existing quantity read against itself rather than a threshold chosen here.",
+        "ranksSixToTenTiedWithTheFifthName": {
+          "available": true,
+          "max": 5.0,
+          "mean": 2.2552,
+          "median": 2.0,
+          "min": 0.0,
+          "observations": 145,
+          "p10": 0.0,
+          "p90": 5.0,
+          "sd": 1.6616
+        },
+        "rebalancesMeasured": 145,
+        "targetNamesUnchanged": 5,
+        "tiedPairsInsideTheTopFive": {
+          "available": true,
+          "max": 4.0,
+          "mean": 2.9448,
+          "median": 3.0,
+          "min": 1.0,
+          "observations": 145,
+          "p10": 2.0,
+          "p90": 4.0,
+          "sd": 0.5372
+        }
+      }
+    },
+    "departureCauses": {
+      "control": {
+        "available": true,
+        "byCause": {
+          "ENTRY_OR_RESEARCH_STATE_TURNED_BLOCKING": 40,
+          "LEFT_THE_RESEARCH_POOL": 160,
+          "OUTRANKED_AT_THE_CUT": 150,
+          "REGION_CAP": 84,
+          "SECTOR_CAP": 10
+        },
+        "bySharePct": {
+          "ENTRY_OR_RESEARCH_STATE_TURNED_BLOCKING": 9.01,
+          "LEFT_THE_RESEARCH_POOL": 36.04,
+          "OUTRANKED_AT_THE_CUT": 33.78,
+          "REGION_CAP": 18.92,
+          "SECTOR_CAP": 2.25
+        },
+        "departuresMeasured": 444,
+        "ineligibilityByCode": {},
+        "note": "Causes are asked in the order the machinery applies them, so each departure is attributed once and the shares sum to the departures. The movement figures are the departing name's own change since its previous appearance, signed.",
+        "outrankedOwnConfidenceMove": {
+          "available": true,
+          "max": 0.0,
+          "mean": 0.0,
+          "median": 0.0,
+          "min": 0.0,
+          "observations": 150,
+          "p10": 0.0,
+          "p90": 0.0,
+          "sd": 0.0
+        },
+        "outrankedOwnPercentileMove": {
+          "available": true,
+          "max": 5.0,
+          "mean": -0.6267,
+          "median": 0.0,
+          "min": -8.0,
+          "observations": 150,
+          "p10": -3.0,
+          "p90": 1.0,
+          "sd": 2.0743
+        },
+        "outrankedOwnReliableAlphaMovePp": {
+          "available": true,
+          "max": 0.2832,
+          "mean": -0.1832,
+          "median": -0.0101,
+          "min": -1.2918,
+          "observations": 150,
+          "p10": -0.9949,
+          "p90": 0.0312,
+          "sd": 0.41
+        }
+      },
+      "hysteresis": {
+        "available": true,
+        "byCause": {
+          "ENTRY_OR_RESEARCH_STATE_TURNED_BLOCKING": 34,
+          "LEFT_THE_RESEARCH_POOL": 169,
+          "OUTRANKED_AT_THE_CUT": 16,
+          "REGION_CAP": 13,
+          "SECTOR_CAP": 4
+        },
+        "bySharePct": {
+          "ENTRY_OR_RESEARCH_STATE_TURNED_BLOCKING": 14.41,
+          "LEFT_THE_RESEARCH_POOL": 71.61,
+          "OUTRANKED_AT_THE_CUT": 6.78,
+          "REGION_CAP": 5.51,
+          "SECTOR_CAP": 1.69
+        },
+        "departuresMeasured": 236,
+        "ineligibilityByCode": {},
+        "note": "Causes are asked in the order the machinery applies them, so each departure is attributed once and the shares sum to the departures. The movement figures are the departing name's own change since its previous appearance, signed.",
+        "outrankedOwnConfidenceMove": {
+          "available": true,
+          "max": 0.1264,
+          "mean": 0.009,
+          "median": 0.0254,
+          "min": -0.1855,
+          "observations": 16,
+          "p10": -0.0823,
+          "p90": 0.0906,
+          "sd": 0.08
+        },
+        "outrankedOwnPercentileMove": {
+          "available": true,
+          "max": 2.0,
+          "mean": 0.1875,
+          "median": 0.0,
+          "min": -3.0,
+          "observations": 16,
+          "p10": -1.0,
+          "p90": 1.0,
+          "sd": 1.1673
+        },
+        "outrankedOwnReliableAlphaMovePp": {
+          "available": true,
+          "max": 0.032,
+          "mean": -0.0697,
+          "median": -0.0018,
+          "min": -1.0842,
+          "observations": 16,
+          "p10": -0.0455,
+          "p90": 0.0236,
+          "sd": 0.2716
+        }
+      }
+    },
+    "entryStateDynamics": {
+      "control": {
+        "available": true,
+        "byTransition": {
+          "ACCUMULATE_GRADUALLY -> AVOID": 49,
+          "ACCUMULATE_GRADUALLY -> WAIT_FOR_PULLBACK": 267,
+          "ACCUMULATE_GRADUALLY -> WATCH": 235,
+          "AVOID -> ACCUMULATE_GRADUALLY": 58,
+          "AVOID -> WAIT_FOR_PULLBACK": 49,
+          "AVOID -> WATCH": 57,
+          "EVENT_RISK -> ACCUMULATE_GRADUALLY": 1,
+          "EVENT_RISK -> WAIT_FOR_PULLBACK": 2,
+          "WAIT_FOR_PULLBACK -> ACCUMULATE_GRADUALLY": 312,
+          "WAIT_FOR_PULLBACK -> AVOID": 24,
+          "WAIT_FOR_PULLBACK -> EVENT_RISK": 1,
+          "WAIT_FOR_PULLBACK -> WATCH": 229,
+          "WATCH -> ACCUMULATE_GRADUALLY": 178,
+          "WATCH -> AVOID": 98,
+          "WATCH -> WAIT_FOR_PULLBACK": 180
+        },
+        "byTransitionCoincidingWithASwap": {
+          "ACCUMULATE_GRADUALLY -> AVOID": 11,
+          "ACCUMULATE_GRADUALLY -> WAIT_FOR_PULLBACK": 82,
+          "ACCUMULATE_GRADUALLY -> WATCH": 56,
+          "AVOID -> ACCUMULATE_GRADUALLY": 22,
+          "AVOID -> WAIT_FOR_PULLBACK": 9,
+          "AVOID -> WATCH": 14,
+          "EVENT_RISK -> ACCUMULATE_GRADUALLY": 1,
+          "WAIT_FOR_PULLBACK -> ACCUMULATE_GRADUALLY": 108,
+          "WAIT_FOR_PULLBACK -> AVOID": 3,
+          "WAIT_FOR_PULLBACK -> WATCH": 38,
+          "WATCH -> ACCUMULATE_GRADUALLY": 54,
+          "WATCH -> AVOID": 25,
+          "WATCH -> WAIT_FOR_PULLBACK": 35
+        },
+        "departuresWhereTheStepFellAndAlphaMovedOnePointOrLess": 114,
+        "departuresWhoseStateHadTurnedBlocking": 39,
+        "groupedTransitions": {
+          "intoOrOutOfEventRiskOrAvoid": 339,
+          "watchAgainstWaitForPullback": 409
+        },
+        "note": "A transition is a name's own state changing between two blocks it appeared in. The last figure is the one that matters: the entry multiplier fell, the name left the book, and its own alpha percentile had moved a point or less. Entry logic is NOT changed by this study.",
+        "observedStates": {
+          "ACCUMULATE_GRADUALLY": 996,
+          "AVOID": 299,
+          "EVENT_RISK": 3,
+          "WAIT_FOR_PULLBACK": 1676,
+          "WATCH": 746
+        },
+        "transitionsCoincidingWithASwapPct": 26.32,
+        "transitionsIntoABlockingState": 260,
+        "transitionsObserved": 1740
+      },
+      "hysteresis": {
+        "available": true,
+        "byTransition": {
+          "ACCUMULATE_GRADUALLY -> AVOID": 49,
+          "ACCUMULATE_GRADUALLY -> WAIT_FOR_PULLBACK": 267,
+          "ACCUMULATE_GRADUALLY -> WATCH": 235,
+          "AVOID -> ACCUMULATE_GRADUALLY": 58,
+          "AVOID -> WAIT_FOR_PULLBACK": 49,
+          "AVOID -> WATCH": 57,
+          "EVENT_RISK -> ACCUMULATE_GRADUALLY": 1,
+          "EVENT_RISK -> WAIT_FOR_PULLBACK": 2,
+          "WAIT_FOR_PULLBACK -> ACCUMULATE_GRADUALLY": 312,
+          "WAIT_FOR_PULLBACK -> AVOID": 24,
+          "WAIT_FOR_PULLBACK -> EVENT_RISK": 1,
+          "WAIT_FOR_PULLBACK -> WATCH": 229,
+          "WATCH -> ACCUMULATE_GRADUALLY": 178,
+          "WATCH -> AVOID": 98,
+          "WATCH -> WAIT_FOR_PULLBACK": 180
+        },
+        "byTransitionCoincidingWithASwap": {
+          "ACCUMULATE_GRADUALLY -> AVOID": 7,
+          "ACCUMULATE_GRADUALLY -> WAIT_FOR_PULLBACK": 28,
+          "ACCUMULATE_GRADUALLY -> WATCH": 14,
+          "AVOID -> ACCUMULATE_GRADUALLY": 8,
+          "AVOID -> WAIT_FOR_PULLBACK": 11,
+          "AVOID -> WATCH": 5,
+          "EVENT_RISK -> ACCUMULATE_GRADUALLY": 1,
+          "WAIT_FOR_PULLBACK -> ACCUMULATE_GRADUALLY": 27,
+          "WAIT_FOR_PULLBACK -> AVOID": 6,
+          "WAIT_FOR_PULLBACK -> WATCH": 10,
+          "WATCH -> ACCUMULATE_GRADUALLY": 21,
+          "WATCH -> AVOID": 21,
+          "WATCH -> WAIT_FOR_PULLBACK": 17
+        },
+        "departuresWhereTheStepFellAndAlphaMovedOnePointOrLess": 27,
+        "departuresWhoseStateHadTurnedBlocking": 34,
+        "groupedTransitions": {
+          "intoOrOutOfEventRiskOrAvoid": 339,
+          "watchAgainstWaitForPullback": 409
+        },
+        "note": "A transition is a name's own state changing between two blocks it appeared in. The last figure is the one that matters: the entry multiplier fell, the name left the book, and its own alpha percentile had moved a point or less. Entry logic is NOT changed by this study.",
+        "observedStates": {
+          "ACCUMULATE_GRADUALLY": 996,
+          "AVOID": 299,
+          "EVENT_RISK": 3,
+          "WAIT_FOR_PULLBACK": 1676,
+          "WATCH": 746
+        },
+        "transitionsCoincidingWithASwapPct": 10.11,
+        "transitionsIntoABlockingState": 260,
+        "transitionsObserved": 1740
+      }
+    },
+    "regionCapBinding": {
+      "control": {
+        "alphaPercentileGapAtTheOverride": {
+          "available": true,
+          "max": 4.0,
+          "mean": -1.1866,
+          "median": -1.0,
+          "min": -7.0,
+          "observations": 134,
+          "p10": -4.0,
+          "p90": 1.0,
+          "sd": 2.298
+        },
+        "available": true,
+        "decisionAlphaGapAtTheOverridePp": {
+          "available": true,
+          "max": 1.4572,
+          "mean": 0.8212,
+          "median": 0.8561,
+          "min": -0.7087,
+          "observations": 134,
+          "p10": 0.3347,
+          "p90": 1.2667,
+          "sd": 0.3748
+        },
+        "heldNameDatesByRegion": {
+          "KR": 421,
+          "US": 301
+        },
+        "heldRegionShapeCounts": {
+          "KR:2/US:3": 11,
+          "KR:3/US:1": 1,
+          "KR:3/US:2": 132,
+          "US:3": 1
+        },
+        "maxNamesPerRegion": 3,
+        "maxNamesPerSector": 2,
+        "note": "The capped-name comparison is against the LOWEST-scoring name the book took, which is the one a lifted cap would have displaced. The caps-lifted mix is a reading of each block's own ordering; no path is run without the constraint and no realised return is used.",
+        "rebalancesMeasured": 145,
+        "rebalancesWhereACappedNameOutscoredOneTaken": 134,
+        "rebalancesWhereTheRegionCapStoppedAName": 135,
+        "rebalancesWhereTheSectorCapStoppedAName": 35,
+        "regionCapBindingPct": 93.1,
+        "relativeScoreGapAtTheOverride": {
+          "available": true,
+          "max": 1.9254,
+          "mean": 0.8448,
+          "median": 1.0013,
+          "min": 0.0021,
+          "observations": 134,
+          "p10": 0.2471,
+          "p90": 1.2095,
+          "sd": 0.386
+        },
+        "sectorCapBindingPct": 24.14,
+        "topNByScoreWithCapsLiftedByRegion": {
+          "KR": 640,
+          "US": 82
+        }
+      },
+      "hysteresis": {
+        "alphaPercentileGapAtTheOverride": {
+          "available": true,
+          "max": 6.5,
+          "mean": -1.7368,
+          "median": -2.1667,
+          "min": -6.3333,
+          "observations": 86,
+          "p10": -4.5833,
+          "p90": 1.4167,
+          "sd": 2.6397
+        },
+        "available": true,
+        "decisionAlphaGapAtTheOverridePp": {
+          "available": true,
+          "max": 1.4272,
+          "mean": 0.3626,
+          "median": 0.2403,
+          "min": -0.0992,
+          "observations": 86,
+          "p10": 0.0269,
+          "p90": 0.8363,
+          "sd": 0.3418
+        },
+        "heldNameDatesByRegion": {
+          "KR": 411,
+          "US": 311
+        },
+        "heldRegionShapeCounts": {
+          "KR:2/US:3": 21,
+          "KR:3/US:1": 1,
+          "KR:3/US:2": 122,
+          "US:3": 1
+        },
+        "maxNamesPerRegion": 3,
+        "maxNamesPerSector": 2,
+        "note": "The capped-name comparison is against the LOWEST-scoring name the book took, which is the one a lifted cap would have displaced. The caps-lifted mix is a reading of each block's own ordering; no path is run without the constraint and no realised return is used.",
+        "rebalancesMeasured": 145,
+        "rebalancesWhereACappedNameOutscoredOneTaken": 86,
+        "rebalancesWhereTheRegionCapStoppedAName": 87,
+        "rebalancesWhereTheSectorCapStoppedAName": 33,
+        "regionCapBindingPct": 60.0,
+        "relativeScoreGapAtTheOverride": {
+          "available": true,
+          "max": 1.993,
+          "mean": 0.9686,
+          "median": 0.998,
+          "min": 0.054,
+          "observations": 86,
+          "p10": 0.3666,
+          "p90": 1.4524,
+          "sd": 0.3967
+        },
+        "sectorCapBindingPct": 22.76,
+        "topNByScoreWithCapsLiftedByRegion": {
+          "KR": 509,
+          "US": 213
+        }
+      }
+    },
+    "riskDominance": {
+      "control": {
+        "available": true,
+        "downsideVolPctRejected": {
+          "available": true,
+          "max": 71.7,
+          "mean": 27.1725,
+          "median": 24.645,
+          "min": 7.52,
+          "observations": 2306,
+          "p10": 16.075,
+          "p90": 42.4,
+          "sd": 10.6178
+        },
+        "downsideVolPctSelected": {
+          "available": true,
+          "max": 92.17,
+          "mean": 24.4452,
+          "median": 23.385,
+          "min": 4.78,
+          "observations": 722,
+          "p10": 11.798,
+          "p90": 37.134,
+          "sd": 11.1266
+        },
+        "droppedDespiteTopAlphaAndAboveMedianRisk": 102,
+        "droppedRiskGapToMedianPp": {
+          "available": true,
+          "max": 36.51,
+          "mean": 7.833,
+          "median": 5.0175,
+          "min": 0.01,
+          "observations": 102,
+          "p10": 0.523,
+          "p90": 17.11,
+          "sd": 8.3041
+        },
+        "heldDespiteLowerAlphaAndBelowMedianRisk": 262,
+        "heldMatchingAlphaOnlyTopNPct": 30.07,
+        "heldNameSleeveRows": 722,
+        "lowvolIsInTheTopTwoSleevesPct": 58.86,
+        "lowvolIsTheHighestSleevePct": 32.69,
+        "lowvolSleevePercentileRejected": {
+          "available": true,
+          "max": 100.0,
+          "mean": 63.8083,
+          "median": 70.0,
+          "min": 1.0,
+          "observations": 2306,
+          "p10": 21.0,
+          "p90": 98.0,
+          "sd": 28.3116
+        },
+        "lowvolSleevePercentileSelected": {
+          "available": true,
+          "max": 100.0,
+          "mean": 74.374,
+          "median": 85.0,
+          "min": 4.0,
+          "observations": 722,
+          "p10": 27.0,
+          "p90": 100.0,
+          "sd": 27.899
+        },
+        "note": "Read off the rows each rebalance actually scored. The alpha-only top-N is a within-block reading of the same cross-section, never a path: nothing is valued or carried forward, and no realised return enters any figure here. Names a sector or region cap stopped are excluded from the risk-drop count, because a cap is not volatility.",
+        "pairwiseOrderingInversionsPct": {
+          "available": true,
+          "max": 68.5714,
+          "mean": 37.5214,
+          "median": 36.4706,
+          "min": 0.0,
+          "observations": 145,
+          "p10": 21.2,
+          "p90": 53.9706,
+          "sd": 12.8772
+        },
+        "promotedRiskGapToMedianPp": {
+          "available": true,
+          "max": -0.01,
+          "mean": -6.5618,
+          "median": -5.895,
+          "min": -24.16,
+          "observations": 262,
+          "p10": -13.735,
+          "p90": -0.9835,
+          "sd": 4.8631
+        },
+        "rebalancesMeasured": 145,
+        "scoreVsAlphaPercentileSpearman": {
+          "available": true,
+          "max": 0.6987,
+          "mean": -0.0345,
+          "median": -0.0377,
+          "min": -0.6325,
+          "observations": 145,
+          "p10": -0.4125,
+          "p90": 0.3308,
+          "sd": 0.2995
+        },
+        "scoreVsCalibratedAlphaSpearman": {
+          "available": true,
+          "max": 0.9274,
+          "mean": 0.7585,
+          "median": 0.8113,
+          "min": 0.0811,
+          "observations": 144,
+          "p10": 0.5474,
+          "p90": 0.9096,
+          "sd": 0.1534
+        },
+        "scoreVsDownsideVolSpearman": {
+          "available": true,
+          "max": 0.8301,
+          "mean": 0.075,
+          "median": 0.1334,
+          "min": -0.8,
+          "observations": 145,
+          "p10": -0.4061,
+          "p90": 0.5564,
+          "sd": 0.3906
+        }
+      },
+      "hysteresis": {
+        "available": true,
+        "downsideVolPctRejected": {
+          "available": true,
+          "max": 71.7,
+          "mean": 26.8799,
+          "median": 24.55,
+          "min": 4.78,
+          "observations": 2306,
+          "p10": 15.785,
+          "p90": 42.245,
+          "sd": 10.6537
+        },
+        "downsideVolPctSelected": {
+          "available": true,
+          "max": 92.17,
+          "mean": 25.3794,
+          "median": 23.97,
+          "min": 6.1,
+          "observations": 722,
+          "p10": 12.485,
+          "p90": 37.057,
+          "sd": 11.1944
+        },
+        "droppedDespiteTopAlphaAndAboveMedianRisk": 132,
+        "droppedRiskGapToMedianPp": {
+          "available": true,
+          "max": 36.51,
+          "mean": 7.7958,
+          "median": 6.0075,
+          "min": 0.01,
+          "observations": 132,
+          "p10": 0.7955,
+          "p90": 16.043,
+          "sd": 7.1426
+        },
+        "heldDespiteLowerAlphaAndBelowMedianRisk": 230,
+        "heldMatchingAlphaOnlyTopNPct": 30.71,
+        "heldNameSleeveRows": 722,
+        "lowvolIsInTheTopTwoSleevesPct": 53.88,
+        "lowvolIsTheHighestSleevePct": 28.53,
+        "lowvolSleevePercentileRejected": {
+          "available": true,
+          "max": 100.0,
+          "mean": 65.0195,
+          "median": 72.0,
+          "min": 1.0,
+          "observations": 2306,
+          "p10": 21.0,
+          "p90": 99.0,
+          "sd": 28.4283
+        },
+        "lowvolSleevePercentileSelected": {
+          "available": true,
+          "max": 100.0,
+          "mean": 70.5055,
+          "median": 81.0,
+          "min": 2.0,
+          "observations": 722,
+          "p10": 25.1,
+          "p90": 99.0,
+          "sd": 28.6246
+        },
+        "note": "Read off the rows each rebalance actually scored. The alpha-only top-N is a within-block reading of the same cross-section, never a path: nothing is valued or carried forward, and no realised return enters any figure here. Names a sector or region cap stopped are excluded from the risk-drop count, because a cap is not volatility.",
+        "pairwiseOrderingInversionsPct": {
+          "available": true,
+          "max": 73.8462,
+          "mean": 40.6913,
+          "median": 41.3333,
+          "min": 0.0,
+          "observations": 145,
+          "p10": 26.4167,
+          "p90": 55.3333,
+          "sd": 11.5999
+        },
+        "promotedRiskGapToMedianPp": {
+          "available": true,
+          "max": -0.02,
+          "mean": -5.7973,
+          "median": -4.44,
+          "min": -19.295,
+          "observations": 230,
+          "p10": -13.6155,
+          "p90": -0.659,
+          "sd": 4.7746
+        },
+        "rebalancesMeasured": 145,
+        "scoreVsAlphaPercentileSpearman": {
+          "available": true,
+          "max": 0.8114,
+          "mean": 0.0632,
+          "median": 0.0549,
+          "min": -0.7182,
+          "observations": 145,
+          "p10": -0.2264,
+          "p90": 0.3748,
+          "sd": 0.2489
+        },
+        "scoreVsCalibratedAlphaSpearman": {
+          "available": true,
+          "max": 0.9023,
+          "mean": 0.2902,
+          "median": 0.2881,
+          "min": -0.6213,
+          "observations": 144,
+          "p10": -0.0478,
+          "p90": 0.6344,
+          "sd": 0.2778
+        },
+        "scoreVsDownsideVolSpearman": {
+          "available": true,
+          "max": 0.6002,
+          "mean": 0.0442,
+          "median": 0.0338,
+          "min": -0.5392,
+          "observations": 145,
+          "p10": -0.2837,
+          "p90": 0.4245,
+          "sd": 0.2682
+        }
+      }
+    }
+  },
   "version": "alpha-reliability-v1"
 }
