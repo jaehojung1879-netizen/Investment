@@ -84,12 +84,12 @@ def _cfg():
 
 
 def test_incidence_reports_eligible_and_held_state_distribution():
-    # A (ACCUMULATE, score 1.0, selected) and B (WATCH, discounted score 0.4,
-    # not selected) under a target of 1 name.
+    # A (ACCUMULATE, score 1.0, held) and B (WATCH, discounted score 0.4,
+    # not held) under a target of 1 name. Held is read from retained/added,
+    # never from a `selected` flag on the scored rows themselves.
     a = _row("A", score=1.0, state=1.0, entry_state="ACCUMULATE")
     b = _row("B", score=0.4, state=0.5, entry_state="WATCH")
-    a["selected"], b["selected"] = True, False
-    decisions = [{"scored": [a, b]}]
+    decisions = [{"scored": [a, b], "retained": [], "added": ["A"]}]
     blob = ES.entry_state_incidence(decisions, _cfg())
     assert blob["measuredRebalances"] == 1
     assert blob["eligibleByState"] == {"ACCUMULATE": 1, "WATCH": 1}
@@ -98,13 +98,12 @@ def test_incidence_reports_eligible_and_held_state_distribution():
 
 def test_incidence_detects_when_alpha_only_selection_would_flip():
     # A's discounted score (1.0) beats B's discounted score (0.6) today, so A
-    # is selected. But B's OWN alpha (score / state = 0.6 / 0.5 = 1.2) exceeds
+    # is held. But B's OWN alpha (score / state = 0.6 / 0.5 = 1.2) exceeds
     # A's (1.0 / 1.0 = 1.0) once the throttle is removed -- alpha-only flips
     # the winner to B.
     a = _row("A", score=1.0, state=1.0, entry_state="ACCUMULATE")
     b = _row("B", score=0.6, state=0.5, entry_state="WATCH")
-    a["selected"], b["selected"] = True, False
-    decisions = [{"scored": [a, b]}]
+    decisions = [{"scored": [a, b], "retained": [], "added": ["A"]}]
     blob = ES.entry_state_incidence(decisions, _cfg())
     assert blob["rebalancesWhereSelectionWouldChange"] == 1
     assert blob["namesTheDiscountKeptOutOfTheBook"] == 1
@@ -114,8 +113,7 @@ def test_incidence_detects_when_alpha_only_selection_would_flip():
 def test_incidence_does_not_mutate_the_control_decisions_it_reads():
     a = _row("A", score=1.0, state=1.0, entry_state="ACCUMULATE")
     b = _row("B", score=0.6, state=0.5, entry_state="WATCH")
-    a["selected"], b["selected"] = True, False
-    decisions = [{"scored": [a, b]}]
+    decisions = [{"scored": [a, b], "retained": [], "added": ["A"]}]
     ES.entry_state_incidence(decisions, _cfg())
     assert a["exclusionCodes"] == [] and b["exclusionCodes"] == []
     assert a["score"] == 1.0 and b["score"] == 0.6
@@ -129,11 +127,9 @@ def test_incidence_on_no_decisions_reports_zero_measured():
 
 def test_incidence_ineligible_rows_are_excluded_from_the_distribution():
     a = _row("A", score=1.0, state=1.0, entry_state="ACCUMULATE")
-    a["selected"] = True
     blocked = _row("Z", score=-1e12, state=0.0, eligible=False,
                    exclusion=["ENTRY_OR_RESEARCH_STATE_BLOCKS_SIZING"], entry_state="EVENT_RISK")
-    blocked["selected"] = False
-    decisions = [{"scored": [a, blocked]}]
+    decisions = [{"scored": [a, blocked], "retained": [], "added": ["A"]}]
     blob = ES.entry_state_incidence(decisions, _cfg())
     assert blob["eligibleByState"] == {"ACCUMULATE": 1}
     assert "EVENT_RISK" not in blob["eligibleByState"]

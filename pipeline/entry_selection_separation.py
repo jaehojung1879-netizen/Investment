@@ -200,6 +200,13 @@ def entry_state_incidence(control_decisions: list[dict], cfg_pf: dict) -> dict:
     among eligible and held names, and how often the two selected sets
     disagree, so a reader can see whether this axis has any bite BEFORE the
     ladder's performance numbers are read.
+
+    The ACTUAL held set is read from `retained`/`added` on the decision
+    itself, never from a `selected` flag on `scored`'s own rows:
+    `select_portfolio_by_scores` builds and mutates its OWN internal row
+    copies, so the rows a caller is handed back never carry a reliable
+    `selected` flag — reading one here would silently compare the alpha-only
+    set against an empty set on every block.
     """
     eligible_states: dict[str, int] = {}
     held_states: dict[str, int] = {}
@@ -212,14 +219,20 @@ def entry_state_incidence(control_decisions: list[dict], cfg_pf: dict) -> dict:
         if not scored:
             continue
         measured += 1
+        original_selected = (set(decision.get("retained") or [])
+                             | set(decision.get("added") or []))
+        by_ticker = {row["ticker"]: row for row in scored}
         for row in scored:
             if not row.get("eligible"):
                 continue
             label = _state_label(row)
             eligible_states[label] = eligible_states.get(label, 0) + 1
-            if row.get("selected"):
-                held_states[label] = held_states.get(label, 0) + 1
-        original_selected = {r["ticker"] for r in scored if r.get("selected")}
+        for ticker in original_selected:
+            row = by_ticker.get(ticker)
+            if row is None:
+                continue
+            label = _state_label(row)
+            held_states[label] = held_states.get(label, 0) + 1
         alpha_only = entry_weighted_scores(scored)
         alpha_only_chosen, _ = KP.select_portfolio_by_scores(
             alpha_only, alpha_only, cfg_pf, method=ENTRY_AT_WEIGHT)
