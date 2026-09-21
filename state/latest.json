@@ -1,8 +1,8 @@
 {
   "schemaVersion": "2.7.0",
   "modelVersion": "longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
-  "buildCommitSha": "e53c3174a56e",
-  "generatedAt": "2026-09-21T22:14:43.460474+00:00",
+  "buildCommitSha": "350875eec80c",
+  "generatedAt": "2026-09-21T23:46:55.438934+00:00",
   "marketAsOf": "2026-09-21",
   "macroRegime": "Transition/Low confidence",
   "holdingsByRegion": {
@@ -56,8 +56,8 @@
     "KO": "ACCUMULATE_GRADUALLY",
     "TRV": "WAIT_FOR_PULLBACK",
     "SWK": "WATCH",
-    "MPC": "WAIT_FOR_PULLBACK",
     "VTRS": "WAIT_FOR_PULLBACK",
+    "MPC": "WAIT_FOR_PULLBACK",
     "078930.KS": "WAIT_FOR_PULLBACK",
     "402340.KS": "WAIT_FOR_PULLBACK",
     "034730.KS": "WAIT_FOR_PULLBACK",
@@ -70,8 +70,8 @@
     "005490.KS": "AVOID",
     "005930.KS": "WATCH",
     "009540.KS": "AVOID",
-    "032640.KS": "WATCH",
     "326030.KS": "AVOID",
+    "032640.KS": "WATCH",
     "028050.KS": "WAIT_FOR_PULLBACK"
   },
   "opportunityTiersByTicker": {
@@ -115,7 +115,7 @@
   "stale": false,
   "productionValidation": {
     "passed": true,
-    "validatedAt": "2026-09-21T22:14:43.460474+00:00",
+    "validatedAt": "2026-09-21T23:46:55.438934+00:00",
     "errors": []
   }
 }
