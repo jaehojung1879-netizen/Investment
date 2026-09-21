@@ -338,6 +338,47 @@ full run 이후에 추가됐고 그 사실을 그대로 기록했습니다 — r
 rung도 "무작위를 이겼다"고 말할 수 없습니다. 두 번의 sealed replay가 byte-identical했고
 sealed ledger digest는 변하지 않았습니다.
 
+### 동적 breadth (Study 2) — 고정 5종목이 구분 안 되는 순서를 자르고 있나
+
+`dynamic-breadth-v1`도 **research-only CHALLENGER**입니다. `alpha-reliability-v1`이
+사전 등록한 4개 후속 연구 중 두 번째입니다.
+[설계와 한계](docs/dynamic-breadth-v1.md), [실측 보고서](docs/results/dynamic-breadth-report.md).
+
+**질문.** `alpha-reliability-v1`은 상위 5 안에서 평균 3.56쌍이 기대알파 동률, 6~10위 중
+평균 2.03종목이 5위와 구분 불가라고 측정했습니다. 이번 연구는 랭킹 자체(점수 공식)는
+전혀 바꾸지 않고, **몇 종목을 담을지**만 신호의 정밀도에 따라 결정합니다.
+
+**축은 결과를 보기 전에 고정했습니다.** breadth는 `[floor, ceiling] = [3, 10]` —
+`alpha-reliability-v1`이 사전 등록한 숫자 그대로이고, floor=3은 production의 기존
+`minNames`와 같습니다. floor를 넘는 자리마다, 그 종목 자신의 보정 알파가 **자기 표준오차의
+1.0배**(`switch_hurdle.SE_MULTIPLE`을 그대로 import — 여기서 새로 정하지 않음)를 0 위로
+넘을 때만 하나씩 추가합니다. 랭킹 순서대로 걷다가 **처음 못 넘는 지점에서 멈춥니다** — 그
+뒤에 우연히 통과하는 종목이 있어도 추가하지 않습니다(더 이상 "경계"가 아니므로).
+distinguishability는 리스크로 나눈 점수가 아니라 **알파 추정치 자체**로 검정합니다.
+
+**region/sector 상한은 건드리지 않았고, 그래서 생기는 상호작용을 측정했습니다.** 지역이
+2개뿐이고 `maxNamesPerRegion=3`이 그대로이므로, 이 책이 실제로 담을 수 있는 최댓값은
+2×3=6입니다 — 사전 등록된 ceiling 10은 이 유니버스에서 구조적으로 도달 불가능에
+가깝습니다. 실측: SE 판정 walk 자체가 계산한 목표는 평균 **4.290종목**인데, 그중
+**17.42%**의 리밸런스에서 지역/섹터 상한이 그 목표보다 적게 잘랐습니다. ceiling(10)에
+도달한 비율은 **4.52%**뿐입니다. 상한을 넓히는 건 `region-quota-removal-v1`의 몫입니다.
+
+**결과.**
+
+| 단계 | 순 초과 | 보유 종목 수(평균) | 회전율 | MDD |
+|---|---:|---:|---:|---:|
+| 고정 5종목 | -0.684%p | 4.658 | 4.679× | -25.158% |
+| 동적 3~10 | -1.001%p | **3.910** | 4.416× | **-21.336%** |
+
+대조군 대비: Δ -0.317%p, 95% CI [-2.133, +1.425] — **구간이 0을 포함**합니다.
+
+**이 표본에서는 walk가 대부분 floor 바로 위에서 멈췄습니다.** 155회 리밸런스 중
+**138회**가 "기대알파가 0과 구분 안 됨"으로 멈췄습니다 — `alpha-reliability-v1`이 측정한
+"풀이 보정 버킷 2개에 몰려 있고 연속 순위 간 알파 격차가 0 근처"라는 사실과 일치합니다.
+
+승격하지 않습니다. `promotionEligible`은 `False`이고, 3/5/7/10 중 최고 성과를 찾는 탐색은
+하지 않았습니다(사전 등록이 금지). 두 번의 sealed replay가 byte-identical했습니다.
+
 ## 실행 상태(runMode)와 데이터 모드(dataMode)
 
 - **runMode**: `researchOnly` · `paperTrading`(기본) · `liveValidated`. 기본값은 `paperTrading`이며, **`liveValidated`는 config만으로 절대 부여되지 않습니다** — paper signal ledger에 충분한 검증 이력이 쌓여야 합니다.
