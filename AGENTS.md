@@ -501,6 +501,87 @@
   not emit. Read the function's actual output keys before formatting them;
   a silently blank row is worse than a missing section.
 
+## Lowvol-alpha-separation invariants (v2.19)
+
+- A SEALED LEDGER'S SCHEMA IS MEASURED BEFORE A STUDY IS DESIGNED, NOT
+  ASSUMED FROM THE PRODUCTION CODE THAT WROTE IT. Production blends sleeve
+  Z-SCORES; the replay-v16 ledger stores each sleeve's PERCENTILE
+  (`factorPercentiles`) and `rawAlpha` as a single scalar, never the
+  z-scores, so production's exact alpha arithmetic is UNREACHABLE from
+  sealed inputs. Both rungs therefore blend percentiles, which keeps the
+  axis between them exactly one thing but makes the harness's own control
+  a DIFFERENT path from production's, at a measured rank correlation of
+  0.906 to the published `alphaPercentile` over 1,430 cross-sections. That
+  gap is published, not hidden, per `switch-hurdle-v1`'s rule that a ladder
+  carries its own control.
+- A CONSTRUCTION CHOICE MADE BEFORE A RUNG IS VALUED IS NOT THE SAME AS ONE
+  MADE AFTER. `evidenceCoverage` shrinks production's SIGNED `rawAlpha`
+  toward zero; a percentile blend is strictly positive, so multiplying it
+  by coverage uncentred would push every weakly-covered name DOWN
+  regardless of sign. Centring the blend at 50 before applying coverage was
+  selected on fidelity to the PUBLISHED ranking (0.929 centred vs 0.746
+  uncentred, measured against the sealed ledger's own `alphaPercentile`),
+  before any rung's performance was computed.
+- REMOVING A SLEEVE IS NOT A MISSING-DATA EVENT, AND THE DIFFERENCE COSTS
+  ABOUT 14 POINTS OF COVERAGE IF CONFUSED. `longterm.factorCoverage =
+  sleevesPresent / len(FACTOR_WEIGHTS)` and source quality is averaged over
+  the sleeves a name HAS; naively deleting `lowvol` would drop coverage
+  from 4/4 to 3/4 and source quality 0.80 -> 0.733 for a name that lost
+  nothing but a factor DEFINITION. This study never recomputes coverage —
+  it reads the sealed value, identical on both rungs — so the penalty
+  cannot arise. Zero of 399,547 name-dates lack a three-factor sleeve, so
+  no eligibility diverges between the rungs either.
+- THE CHALLENGER'S WEIGHTS ARE DERIVED FROM PRODUCTION'S, NEVER FITTED.
+  `THREE_FACTOR` is computed from `longterm.FACTOR_WEIGHTS` at import by
+  renormalizing over the three non-`lowvol` sleeves, preserving the
+  30:25:25 ratio exactly (momentum/value = 1.2 on both rungs). No weight
+  sweep was performed.
+- THE HYPOTHESIS'S OWN PREDICTED SHIFT HAPPENED, AND THE PORTFOLIO LOST
+  ANYWAY. On the 336 name-dates the two rungs disagree about, the
+  challenger's picks carry momentum +7.875, value +13.870, downside
+  volatility +7.536pp and `lowvol` -25.411 against the control's, and held
+  Technology exposure rose 4.570% -> 7.890% (+3.32pp) while Consumer
+  Staples fell 14.130% -> 10.940% (-3.19pp). The higher-momentum,
+  higher-volatility, more-technology book the hypothesis predicted is
+  exactly what got built.
+- AND IT WAS BUILT ON A WORSE CALIBRATED READING. The challenger-only
+  names' own calibrated expected excess is 0.268pp against the
+  control-only names' 0.565pp, at an alpha percentile of 92.461 against
+  94.696 — LOWER on both counts, not higher. Net excess moves -1.647pp ->
+  -4.556pp, arithmetic stock selection -0.355pp -> -2.565pp: the loss is
+  concentrated in SELECTION, not compounding (0.190pp -> -0.282pp), so it
+  is not a volatility-drag story either. Paired difference -2.909pp, 95%
+  CI [-9.194pp, +3.417pp] — CONTAINS ZERO, verdict
+  `DIRECTIONAL_BUT_NOT_STATISTICALLY_SEPARATED`, but the point estimate is
+  unfavourable on every reading measured.
+- THE NEWLY SELECTED NAMES DID NOT REALISE BETTER FORWARD RETURNS EITHER.
+  Challenger-only mean forward block excess is -0.076% (47.02% win rate)
+  against control-only's -0.077% (49.40%) — indistinguishable, and if
+  anything the challenger's win rate is lower. Descriptive only, fitted to
+  nothing, but it corroborates rather than complicates the calibrated
+  reading.
+- THREE STACKS THAT MOVE MORE THAN ONE AXIS ALL LAND WORSE, AND NONE MAY BE
+  READ AS THE SLEEVE'S EFFECT. `+persistence k=6` (2 axes): -3.528pp,
+  MDD -41.035%. `+entry-at-weight` (2 axes): -2.259pp. `+both` (3 axes):
+  -1.878pp. Each is attributable to none of its own axes individually, and
+  none is paired into the primary ladder — the same status
+  `signal-persistence-v1` gave its own stacked path.
+- THE COMBINED READING IS CASE D: KEEP THE SLEEVE. Of the five cases
+  specified before the result (a favourable separation; no effect alone
+  but a better persistence stack; no effect alone but a better
+  entry-separation stack; both other axes strong while this one adds
+  nothing; and a selection improvement bought with worse drawdown), what
+  was measured matches none of the favourable ones — net excess worsens,
+  arithmetic selection worsens, MDD worsens (-27.651% -> -31.733%), and
+  every stacked path is worse still. Research attention belongs on signal
+  persistence, role separation, and the calibration bucket RESOLUTION
+  `alpha-reliability-v1` named as the bottleneck — not on the alpha's
+  factor composition.
+- NO PERMUTATION NULL WAS RUN, so no rung in this ladder may be described
+  as beating random, and a CI containing zero on an already-unfavourable
+  point estimate is reported as CONTAINS ZERO, never softened toward "no
+  effect either way."
+
 ## Lint gate invariants (v2.11)
 
 - The enabled rule set reports ZERO findings on `main`. A rule is turned on in the
