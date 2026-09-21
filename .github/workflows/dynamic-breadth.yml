@@ -1,0 +1,110 @@
+name: Dynamic breadth
+
+# Read-only research CHALLENGER. Consumes the same pinned replay-v16 ledger
+# the other research analyses do, and writes only job artifacts in the code
+# checkout — never inside the sealed ledger.
+#
+# `alpha-reliability-v1` measured that a fixed count of five cuts an ordering
+# that does not have five distinguishable names in it. This lets breadth
+# follow the ranking's own precision, bounded between a pre-registered floor
+# of 3 and ceiling of 10, and measures whether that loses less information
+# than the fixed count.
+on:
+  workflow_dispatch:
+  push:
+    branches: [research/dynamic-breadth-v1]
+    paths:
+      - 'pipeline/dynamic_breadth.py'
+      - 'pipeline/alpha_reliability.py'
+      - 'pipeline/signal_persistence.py'
+      - 'pipeline/switch_hurdle.py'
+      - 'pipeline/benchmark_alpha.py'
+      - 'pipeline/kelly_portfolio.py'
+      - 'pipeline/portfolio_validation.py'
+      - 'pipeline/selection_value.py'
+      - 'scripts/run_dynamic_breadth_replay.py'
+      - 'tests/test_dynamic_breadth.py'
+      - '.github/workflows/dynamic-breadth.yml'
+      - 'docs/results/dynamic-breadth-*'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: dynamic-breadth-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  dynamic-breadth:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    steps:
+      - name: Checkout research code
+        uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Test the floor/walk/ceiling and that the score never moves
+        run: >-
+          python -m pytest -q
+          tests/test_dynamic_breadth.py
+          tests/test_alpha_risk_separation.py
+          tests/test_alpha_reliability.py
+          tests/test_signal_persistence.py
+          tests/test_switch_hurdle.py
+          tests/test_selection_value.py
+          tests/test_portfolio_validation.py
+
+      - name: Check out pinned sealed inputs (read-only)
+        uses: actions/checkout@v5
+        with:
+          ref: b71d8cb5ce21815980d28b606852f9294d43cc53
+          path: replay-work
+          persist-credentials: false
+
+      - name: Run the dynamic-breadth ladder
+        run: |
+          set -o pipefail
+          python -u scripts/run_dynamic_breadth_replay.py replay-work/ledger \
+            --output dynamic-breadth-report.json \
+            --markdown dynamic-breadth-report.md \
+            | tee dynamic-breadth.log
+
+      - name: Verify sealed checkout unchanged
+        run: test -z "$(git -C replay-work status --porcelain)"
+
+      - name: Verify checked-in deterministic result when present
+        run: |
+          if test -f docs/results/dynamic-breadth-report.json; then
+            cmp dynamic-breadth-report.json docs/results/dynamic-breadth-report.json
+            cmp dynamic-breadth-report.md docs/results/dynamic-breadth-report.md
+          fi
+
+      - name: Upload analysis
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: dynamic-breadth-v1
+          path: |
+            dynamic-breadth-report.json
+            dynamic-breadth-report.md
+            dynamic-breadth.log
+          if-no-files-found: warn
+
+      - name: Summary
+        if: always()
+        run: |
+          if test -f dynamic-breadth-report.md; then
+            cat dynamic-breadth-report.md >> "$GITHUB_STEP_SUMMARY"
+          else
+            tail -n 100 dynamic-breadth.log >> "$GITHUB_STEP_SUMMARY"
+          fi

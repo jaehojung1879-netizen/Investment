@@ -1,0 +1,493 @@
+{
+  "breadthDistribution": {
+    "available": true,
+    "computedTargetMean": 4.29,
+    "namesHeld": {
+      "max": 6,
+      "mean": 3.91,
+      "median": 3.0,
+      "min": 0
+    },
+    "note": "`computedTarget` is what the SE-distinguishability walk defended before any cap was applied; `heldNames` is what the book actually holds after sector/region caps and cash-floor sizing. The gap between them is the region-cap interaction this study does not resolve: with two regions and maxNamesPerRegion=3 unchanged, ten names can never actually be held.",
+    "reachedCeilingPct": 4.52,
+    "rebalances": 155,
+    "rebalancesCappedByDiversification": 27,
+    "rebalancesCappedByDiversificationPct": 17.42,
+    "stopReasonCounts": {
+      "ALPHA_NOT_DISTINGUISHABLE_FROM_ZERO": 138,
+      "FEWER_THAN_FLOOR_ELIGIBLE": 10,
+      "REACHED_CEILING": 7
+    }
+  },
+  "finding": {
+    "controlNetExcessPp": -0.684262,
+    "dynamicBreadthNetExcessPp": -1.000981,
+    "nextDirection": "The region-cap interaction measured here is itself evidence for `region-quota-removal-v1`: a breadth rule that wants more names than two regions at a cap of three each can hold is being trimmed by a constraint neither this study nor `alpha-risk-separation-v1` touches. `region-quota-removal-v1` and `entry-selection-separation-v1` remain pre-registered and untouched by this result.",
+    "promotionEligible": false,
+    "refuted": [],
+    "separated": false,
+    "separationDirection": null,
+    "summary": "Net excess moves from -0.684pp (fixed five) to -1.001pp (dynamic 3-10). Paired difference -0.317pp, 95% CI [-2.133pp, 1.425pp], which CONTAINS zero. The book held a mean of 3.91 names (range [0, 6]) against the control's fixed five, and 17.420% of rebalances were trimmed below their computed target by the unchanged region/sector caps — the ceiling of 10 was rarely if ever the binding constraint in a two-region universe.",
+    "verdict": "BENCHMARK_NOT_BEATEN"
+  },
+  "freezeManifest": {
+    "axis": "HOW_MANY_NAMES_A_DISTINGUISHABLE_ORDERING_DEFENDS_BETWEEN_A_FLOOR_AND_A_CEILING",
+    "ceiling": 10,
+    "ceilingSource": "PRE_REGISTERED_BY_ALPHA_RELIABILITY_V1",
+    "controlSource": "alpha_reliability.run_rung(alpha_reliability.CONTROL, ...), unmodified",
+    "distinguishabilityTestedOn": "CALIBRATION_ALPHA_AND_ITS_OWN_STANDARD_ERROR_NOT_THE_RISK_ADJUSTED_SCORE",
+    "floor": 3,
+    "floorSource": "PRE_REGISTERED_BY_ALPHA_RELIABILITY_V1_AND_EQUAL_TO_PRODUCTION_MIN_NAMES",
+    "heldFixedAcrossRungs": [
+      "fixed 21-session evaluation blocks and their cadence",
+      "PIT research candidate pool",
+      "0.30/0.25/0.25/0.20 momentum/value/quality/low-vol sleeve weights",
+      "expanding bucket calibration of percentile to expected excess",
+      "entry-state and research-view exclusions",
+      "score formula: calibrated alpha / downside volatility x entry multiplier",
+      "maxPositionWeight, maxNamesPerSector, maxNamesPerRegion, cash floor",
+      "inverse-downside-volatility conviction-tilted position sizing",
+      "no backward-percentile smoothing, no confidence contraction, no signal hysteresis, no transaction-cost hurdle"
+    ],
+    "id": "dynamic-breadth-v1",
+    "ladder": [
+      "LATEST_ALPHA_NO_CONFIDENCE_NO_HYSTERESIS",
+      "DYNAMIC_BREADTH_3_TO_10_SE_DISTINGUISHABLE"
+    ],
+    "liveValidated": false,
+    "parametersIntroduced": [],
+    "permutationNullRun": false,
+    "productionChanged": false,
+    "promotionEligible": false,
+    "regionAndSectorCapsUnchangedFromProduction": true,
+    "scoreUnchangedFromControl": true,
+    "seMultiple": 1.0,
+    "seMultipleSource": "IMPORTED_FROM_SWITCH_HURDLE_SE_MULTIPLE_NOT_RE_DERIVED",
+    "status": "CHALLENGER"
+  },
+  "inputSnapshot": {
+    "sha256": "f0781292f508a123c234ded6d28aa8e84a0dc3cc29500e14989dc0b68f53b4d2",
+    "through": "2026-09-14"
+  },
+  "ladder": {
+    "DYNAMIC_BREADTH_3_TO_10_SE_DISTINGUISHABLE": {
+      "annualOneWayTurnoverX": 4.415531970448242,
+      "annualizedDownsideVolPct": 8.15251,
+      "annualizedExcessPct": -1.000981,
+      "annualizedRealizedVolPct": 12.02455,
+      "averageCashPct": 37.18736516129032,
+      "averageTurnoverPct": 41.96,
+      "benchmarkCagrPct": 11.396271,
+      "cagrPct": 10.39529,
+      "calendarYears": 13.684059,
+      "costDragCagrPp": 1.3327498373635684,
+      "cvar95Pct": -1.633187,
+      "edgeDecomposition": {
+        "arithmeticSelectionEdgePp": -0.0095,
+        "available": true,
+        "benchmarkBlockSdPct": 3.9106,
+        "blockSdRatio": 0.7704,
+        "blocks": 155,
+        "bookBlockSdPct": 3.0127,
+        "compoundingEdgePp": 0.3413,
+        "geometricGrossEdgePp": 0.3318,
+        "note": "GEOMETRIC = ARITHMETIC + COMPOUNDING. A book less volatile than its matched benchmark earns a positive compounding term without picking a single better name."
+      },
+      "grossBenchmarkGapPp": 0.3317688373635672,
+      "grossCagrPct": 11.728039837363568,
+      "hitRatePct": 49.03,
+      "informationRatio": -0.073229,
+      "mddPct": -21.336357,
+      "sharpe": 0.718529,
+      "sortino": 1.060035,
+      "trackingErrorPct": 12.19331,
+      "turnoverDecomposition": {
+        "available": true,
+        "averageNamesHeld": 3.91,
+        "averageOneWayTurnoverPct": 38.5518,
+        "fromNameReplacementPct": 35.3121,
+        "fromWeightRetargetPct": 3.2397,
+        "nameReplacementSharePct": 91.6,
+        "namesCarriedToNextBlockPct": 39.28,
+        "rebalances": 144
+      },
+      "turnoverRebalances": 144
+    },
+    "LATEST_ALPHA_NO_CONFIDENCE_NO_HYSTERESIS": {
+      "annualOneWayTurnoverX": 4.678611806628428,
+      "annualizedDownsideVolPct": 8.212611,
+      "annualizedExcessPct": -0.684262,
+      "annualizedRealizedVolPct": 11.985257,
+      "averageCashPct": 30.41651741935484,
+      "averageTurnoverPct": 44.46,
+      "benchmarkCagrPct": 12.844837,
+      "cagrPct": 12.160575,
+      "calendarYears": 13.684059,
+      "costDragCagrPp": 1.4036321599751513,
+      "cvar95Pct": -1.647671,
+      "edgeDecomposition": {
+        "arithmeticSelectionEdgePp": 0.3145,
+        "available": true,
+        "benchmarkBlockSdPct": 4.1402,
+        "blockSdRatio": 0.7839,
+        "blocks": 155,
+        "bookBlockSdPct": 3.2455,
+        "compoundingEdgePp": 0.4048,
+        "geometricGrossEdgePp": 0.7194,
+        "note": "GEOMETRIC = ARITHMETIC + COMPOUNDING. A book less volatile than its matched benchmark earns a positive compounding term without picking a single better name."
+      },
+      "grossBenchmarkGapPp": 0.719370159975151,
+      "grossCagrPct": 13.564207159975151,
+      "hitRatePct": 47.74,
+      "informationRatio": -0.053538,
+      "mddPct": -25.158189,
+      "sharpe": 0.852951,
+      "sortino": 1.245037,
+      "trackingErrorPct": 11.981285,
+      "turnoverDecomposition": {
+        "available": true,
+        "averageNamesHeld": 4.66,
+        "averageOneWayTurnoverPct": 42.1699,
+        "fromNameReplacementPct": 39.4175,
+        "fromWeightRetargetPct": 2.7524,
+        "nameReplacementSharePct": 93.47,
+        "namesCarriedToNextBlockPct": 37.92,
+        "rebalances": 144
+      },
+      "turnoverRebalances": 144
+    }
+  },
+  "pairedBlocks": 155,
+  "pairedVsControl": {
+    "available": true,
+    "cashAndCostDeltas": {
+      "averageCashPct": 6.7708477419354836,
+      "averageEquityPct": -6.7708477419354764,
+      "averageTurnoverPct": -2.5,
+      "benchmarkCagrPct": -1.4485659999999996,
+      "costDragCagrPp": -0.07088232261158289,
+      "sumTransactionCostPct": -0.596759404845173
+    },
+    "delta": {
+      "annualizedExcessPct": -0.31671899999999986,
+      "cagrPct": -1.7652850000000004,
+      "calmar": 0.0038456820850882867,
+      "cvar95Pct": 0.014484000000000163,
+      "mddPct": 3.8218320000000006,
+      "sharpe": -0.13442200000000004,
+      "sortino": -0.1850019999999999
+    },
+    "estimandNote": "Path deltas recompute nonlinear statistics on jointly resampled net daily blocks. Mean block-metric deltas are a separate estimand, not the full-path delta. Costs and allocations are fixed at their original chronological values. Blocks are treated as exchangeable; serial regime dependence is not removed.",
+    "mddDescription": "+3.822pp shallower drawdown",
+    "meanPairedBlockMetricDifferenceCI": {
+      "annualizedExcessPct": {
+        "bootstrapMean": 1.286826017380945,
+        "ci95": [
+          -1.4833483565462315,
+          4.488831369887904
+        ],
+        "evidence": "historical evidence is inconclusive",
+        "pairedBlocks": 155,
+        "pointEstimate": 1.2186148630581473,
+        "reason": null,
+        "samples": 2000,
+        "seed": 11,
+        "validSamples": 2000
+      },
+      "cagrPct": {
+        "bootstrapMean": -3.4335502620817087,
+        "ci95": [
+          -7.404260068784675,
+          -0.235575783532652
+        ],
+        "evidence": "historical interval excludes zero; prospective evidence still required",
+        "pairedBlocks": 155,
+        "pointEstimate": -3.3869808974688524,
+        "reason": null,
+        "samples": 2000,
+        "seed": 11,
+        "validSamples": 2000
+      },
+      "calmar": {
+        "bootstrapMean": null,
+        "ci95": [
+          null,
+          null
+        ],
+        "evidence": "historical evidence is inconclusive",
+        "pairedBlocks": 155,
+        "pointEstimate": null,
+        "reason": "INSUFFICIENT_PAIRS_OR_UNDEFINED_METRIC_IN_RESAMPLES",
+        "samples": 2000,
+        "seed": 11,
+        "validSamples": 0
+      },
+      "cvar95Pct": {
+        "bootstrapMean": 0.017415748969650636,
+        "ci95": [
+          -0.018356798045761114,
+          0.0564427901646599
+        ],
+        "evidence": "historical evidence is inconclusive",
+        "pairedBlocks": 155,
+        "pointEstimate": 0.018173220612395447,
+        "reason": null,
+        "samples": 2000,
+        "seed": 11,
+        "validSamples": 2000
+      },
+      "mddPct": {
+        "bootstrapMean": 0.07138304531644311,
+        "ci95": [
+          -0.035093225321533035,
+          0.17733353668582866
+        ],
+        "evidence": "historical evidence is inconclusive",
+        "pairedBlocks": 155,
+        "pointEstimate": 0.07304930555534218,
+        "reason": null,
+        "samples": 2000,
+        "seed": 11,
+        "validSamples": 2000
+      },
+      "sharpe": {
+        "bootstrapMean": null,
+        "ci95": [
+          null,
+          null
+        ],
+        "evidence": "historical evidence is inconclusive",
+        "pairedBlocks": 155,
+        "pointEstimate": null,
+        "reason": "INSUFFICIENT_PAIRS_OR_UNDEFINED_METRIC_IN_RESAMPLES",
+        "samples": 2000,
+        "seed": 11,
+        "validSamples": 0
+      },
+      "sortino": {
+        "bootstrapMean": null,
+        "ci95": [
+          null,
+          null
+        ],
+        "evidence": "historical evidence is inconclusive",
+        "pairedBlocks": 155,
+        "pointEstimate": null,
+        "reason": "INSUFFICIENT_PAIRS_OR_UNDEFINED_METRIC_IN_RESAMPLES",
+        "samples": 2000,
+        "seed": 11,
+        "validSamples": 0
+      }
+    },
+    "method": "PAIRED_WHOLE_EVALUATION_BLOCK_PERCENTILE_BOOTSTRAP",
+    "pathDifferenceCI": {
+      "annualizedExcessPct": {
+        "bootstrapMean": -0.3193829702480802,
+        "ci95": [
+          -2.1329727046216536,
+          1.4253619029290818
+        ],
+        "evidence": "historical evidence is inconclusive",
+        "pairedBlocks": 155,
+        "pointEstimate": -0.31671899999999986,
+        "reason": null,
+        "samples": 2000,
+        "seed": 11,
+        "validSamples": 2000
+      },
+      "cagrPct": {
+        "bootstrapMean": -1.8049088231556498,
+        "ci95": [
+          -4.192184349515127,
+          0.3366181127338884
+        ],
+        "evidence": "historical evidence is inconclusive",
+        "pairedBlocks": 155,
+        "pointEstimate": -1.7652850000000004,
+        "reason": null,
+        "samples": 2000,
+        "seed": 11,
+        "validSamples": 2000
+      },
+      "calmar": {
+        "bootstrapMean": -0.06631938750567361,
+        "ci95": [
+          -0.3842111690295853,
+          0.14376422295967356
+        ],
+        "evidence": "historical evidence is inconclusive",
+        "pairedBlocks": 155,
+        "pointEstimate": 0.0038456820850882867,
+        "reason": null,
+        "samples": 2000,
+        "seed": 11,
+        "validSamples": 2000
+      },
+      "cvar95Pct": {
+        "bootstrapMean": 0.013234354294441576,
+        "ci95": [
+          -0.07206056895525506,
+          0.10491617463854204
+        ],
+        "evidence": "historical evidence is inconclusive",
+        "pairedBlocks": 155,
+        "pointEstimate": 0.014484000000000163,
+        "reason": null,
+        "samples": 2000,
+        "seed": 11,
+        "validSamples": 2000
+      },
+      "mddPct": {
+        "bootstrapMean": 1.186773089101121,
+        "ci95": [
+          -5.403195830212692,
+          6.028023156278368
+        ],
+        "evidence": "historical evidence is inconclusive",
+        "pairedBlocks": 155,
+        "pointEstimate": 3.8218320000000006,
+        "reason": null,
+        "samples": 2000,
+        "seed": 11,
+        "validSamples": 2000
+      },
+      "sharpe": {
+        "bootstrapMean": -0.14061538443001895,
+        "ci95": [
+          -0.3275337310898202,
+          0.029954581713200933
+        ],
+        "evidence": "historical evidence is inconclusive",
+        "pairedBlocks": 155,
+        "pointEstimate": -0.13442200000000004,
+        "reason": null,
+        "samples": 2000,
+        "seed": 11,
+        "validSamples": 2000
+      },
+      "sortino": {
+        "bootstrapMean": -0.1970363650160028,
+        "ci95": [
+          -0.49672648362611543,
+          0.06772626109013893
+        ],
+        "evidence": "historical evidence is inconclusive",
+        "pairedBlocks": 155,
+        "pointEstimate": -0.1850019999999999,
+        "reason": null,
+        "samples": 2000,
+        "seed": 11,
+        "validSamples": 2000
+      }
+    }
+  },
+  "productionChanged": false,
+  "regionalAttribution": {
+    "DYNAMIC_BREADTH_3_TO_10_SE_DISTINGUISHABLE": {
+      "available": true,
+      "byRegion": {
+        "KR": {
+          "averageWeightPct": 49.431,
+          "blocks": 155,
+          "blocksHeld": 140,
+          "contributionCi95Pp": [
+            -6.6263,
+            6.2412
+          ],
+          "contributionPpPerYear": 0.0433,
+          "sleeveExcessCi95Pp": [
+            -9.883,
+            13.382
+          ],
+          "sleeveExcessPpPerYear": 2.0354,
+          "sleeveWinRatePct": 56.43
+        },
+        "US": {
+          "averageWeightPct": 13.382,
+          "blocks": 155,
+          "blocksHeld": 83,
+          "contributionCi95Pp": [
+            -1.4159,
+            1.3139
+          ],
+          "contributionPpPerYear": -0.0528,
+          "sleeveExcessCi95Pp": [
+            -4.6219,
+            7.3149
+          ],
+          "sleeveExcessPpPerYear": 1.5042,
+          "sleeveWinRatePct": 49.4
+        }
+      },
+      "note": "`excessByRegion` sums to `grossExcessReturn`, so the contributions reconstruct the headline. Sleeve figures are weight-normalised and their intervals are wide; they locate the question, not the answer."
+    },
+    "LATEST_ALPHA_NO_CONFIDENCE_NO_HYSTERESIS": {
+      "available": true,
+      "byRegion": {
+        "KR": {
+          "averageWeightPct": 49.79,
+          "blocks": 155,
+          "blocksHeld": 144,
+          "contributionCi95Pp": [
+            -7.272,
+            5.7428
+          ],
+          "contributionPpPerYear": -0.4667,
+          "sleeveExcessCi95Pp": [
+            -9.2183,
+            12.933
+          ],
+          "sleeveExcessPpPerYear": 1.9349,
+          "sleeveWinRatePct": 57.64
+        },
+        "US": {
+          "averageWeightPct": 19.793,
+          "blocks": 155,
+          "blocksHeld": 145,
+          "contributionCi95Pp": [
+            -1.178,
+            2.9224
+          ],
+          "contributionPpPerYear": 0.7812,
+          "sleeveExcessCi95Pp": [
+            -4.7577,
+            22.4959
+          ],
+          "sleeveExcessPpPerYear": 8.3636,
+          "sleeveWinRatePct": 46.9
+        }
+      },
+      "note": "`excessByRegion` sums to `grossExcessReturn`, so the contributions reconstruct the headline. Sleeve figures are weight-normalised and their intervals are wide; they locate the question, not the answer."
+    }
+  },
+  "sealedInvariant": {
+    "after": "365dddb1387f1644693c8d458dd824ed8c039d850a4227de5756570664b9a7cc",
+    "before": "365dddb1387f1644693c8d458dd824ed8c039d850a4227de5756570664b9a7cc",
+    "unchanged": true
+  },
+  "selectionBehaviour": {
+    "DYNAMIC_BREADTH_3_TO_10_SE_DISTINGUISHABLE": {
+      "averageAdded": 2.419,
+      "averageNamesHeld": 3.91,
+      "averageReplaced": 2.4,
+      "averageRetained": 1.49,
+      "incumbentReplacementRatePct": 61.69,
+      "incumbentRetentionRatePct": 38.31,
+      "rebalances": 155,
+      "rebalancesWithIncumbents": 144
+    },
+    "LATEST_ALPHA_NO_CONFIDENCE_NO_HYSTERESIS": {
+      "averageAdded": 2.897,
+      "averageNamesHeld": 4.658,
+      "averageReplaced": 2.865,
+      "averageRetained": 1.761,
+      "incumbentReplacementRatePct": 61.92,
+      "incumbentRetentionRatePct": 38.08,
+      "rebalances": 155,
+      "rebalancesWithIncumbents": 144
+    }
+  },
+  "separation": null,
+  "status": "CHALLENGER",
+  "version": "dynamic-breadth-v1"
+}

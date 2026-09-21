@@ -310,6 +310,97 @@
 - NO PERMUTATION NULL WAS RUN. No rung in this ladder may be described as
   beating random, and the freeze manifest says so explicitly.
 
+## Dynamic-breadth invariants (v2.15)
+
+- A FLOOR, A CEILING AND A MULTIPLE ARE ALL INHERITED, NONE INVENTED HERE.
+  `[FLOOR, CEILING] = [3, 10]` are the exact numbers `alpha-reliability-v1`
+  pre-registered for this study; `FLOOR` also equals production's existing
+  `selection.minNames`. `SE_MULTIPLE = 1.0` is `switch_hurdle.SE_MULTIPLE`,
+  imported rather than re-declared, so the two studies that use it cannot
+  silently diverge on the unit.
+- DISTINGUISHABILITY IS TESTED ON THE ALPHA CLAIM, NOT THE RISK-ADJUSTED
+  SCORE. The selection score blends three questions (alpha, risk, entry
+  state); breadth is specifically about the alpha estimate's own precision,
+  so the walk reads `expectedExcessReturnPct` and `standardErrorPct x
+  shrinkageFactor` directly from the calibration — the same scaling
+  `switch_hurdle.hurdle_scores` already uses for its own margin. The SCORE
+  used to RANK names never moves from `alpha_reliability.CONTROL`'s.
+- THE WALK IS MONOTONIC AND STOPS AT THE FIRST FAILURE. A later name clearing
+  the bar after an earlier one failed it is not additional distinguishable
+  breadth, it is the tail of a ranking whose head already said stop. Below
+  the floor no test is applied — the floor is unconditional, matching
+  production's own `minNames`.
+- A CAP OUT OF SCOPE FOR THIS STUDY STILL BINDS, AND THAT IS MEASURED RATHER
+  THAN ABSORBED. `maxNamesPerRegion = 3` is unchanged and this is a
+  two-region universe, so the hard ceiling this book can ever actually hold
+  is 6, not the pre-registered 10. Measured: the SE-distinguishability walk
+  computed a target averaging 4.290 names before any cap; 17.42% of
+  rebalances were trimmed below that computed target by the region or sector
+  cap; the walk reached the ceiling of 10 on only 4.52% of rebalances.
+  Widening those caps is `region-quota-removal-v1`'s axis, not this one's.
+- ON THIS SAMPLE THE WALK MOSTLY STOPS RIGHT AT THE FLOOR. 138 of 155
+  rebalances stopped on `ALPHA_NOT_DISTINGUISHABLE_FROM_ZERO`, most of them
+  at or near rank 4 — consistent with `alpha-reliability-v1`'s finding that
+  the pool occupies two calibration buckets and consecutive-rank alpha gaps
+  cluster near zero. Mean names held fell from the fixed 4.658 to 3.910.
+- THE PAIRED INTERVAL CONTAINS ZERO. Net excess moves from -0.684pp (fixed
+  five) to -1.001pp (dynamic 3-10), paired difference -0.317pp, 95% CI
+  [-2.133, +1.425] over 155 blocks. Turnover fell 4.679x -> 4.416x and MDD
+  shallowed -25.158% -> -21.336%, but the excess comparison does not
+  separate in either direction — reported as CONTAINS ZERO, not as a result.
+- NO PERMUTATION NULL WAS RUN, and no search over 3/5/7/10 was performed.
+  Exactly one dynamic rule, specified before the result, is compared against
+  the fixed-five control.
+
+## Region-quota-removal invariants (v2.16)
+
+- THE PREREQUISITE IS MEASURED, NOT ASSUMED AWAY. `alpha-reliability-v1`
+  named a prerequisite for removing the region cap: within-region alpha
+  percentiles need a common cross-region scale first. That scale already
+  exists — `ExpandingBucketCalibration.expected()` returns a region-specific
+  calibrated expected benchmark excess in pp, the same quantity every rung
+  already ranks on — so `calibration_comparability` measures whether it is
+  comparable IN PRACTICE rather than inventing a second normalization. On
+  this sample the US-minus-KR shrinkage gap is -0.002: the comparability
+  artefact the prerequisite warned about (thinner history pulling one
+  region's alpha harder toward zero) is not present.
+- A COMPARABLE SCALE CAN STILL DISAGREE ON THE LEVEL, AND THAT IS A
+  DIFFERENT FINDING. Shrinkage and effective-date counts are nearly
+  identical between regions, but the calibrated alpha LEVEL is not: the pool
+  assigns Korean names a mean of 0.645pp against 0.041pp for American names,
+  roughly 16x. An unconstrained ranking is not exploiting a scale artefact
+  when it piles into the higher-level region — it is reading the
+  calibration's own belief about opportunity, correctly.
+- OPENING THE CAP REPRODUCES THE EARLIER CAP-LIFTED MEASUREMENT
+  INDEPENDENTLY. `alpha-reliability-v1`'s own diagnostic measured KR 640 /
+  US 82 held name-dates with the caps notionally lifted, from a
+  within-block reading that valued nothing. This study's actual replayed,
+  valued path lands at KR 639 / US 85 — two independently built
+  measurements of "what the ranking wants without the region cap" agree to
+  within one name-date, and only the second one is a realised return.
+- REMOVING THE CAP MADE THE POINT ESTIMATE WORSE, AND THE INTERVAL DOES NOT
+  SEPARATE. Net excess moves from -0.684pp (3-cap control) to -2.314pp
+  (quota opened), paired difference -1.630pp, 95% CI [-4.462pp, +0.961pp]
+  over 155 blocks. CONTAINS ZERO — reported as such, not folded into "no
+  result" and not read as a refutation either, since the interval does not
+  clear zero in the other direction.
+- THE GROSS GAP IS ARITHMETIC SELECTION, NOT A VOLATILITY TILT. Control:
+  +0.315pp arithmetic / +0.405pp compounding. Quota opened: -1.351pp
+  arithmetic / +0.260pp compounding. The KR-concentrated book is choosing
+  names that underperform their own region's benchmark by more than the
+  diversified book's names do — the loss is in WHICH names, not in a
+  changed risk profile.
+- THIS STUDY QUANTIFIES THE TRADE, IT DOES NOT ADJUDICATE IT. The region cap
+  costing turnover (`alpha-reliability-v1`) and the region cap providing
+  diversification value the ranking's own opinion would forgo (this study)
+  are BOTH true on this sample and are not in tension: a constraint can be a
+  large source of turnover and still pay for itself. Neither this result nor
+  any prior one in this line makes a claim about which effect dominates
+  going forward.
+- NO PERMUTATION NULL WAS RUN. Only `maxNamesPerRegion` moved; `targetNames`,
+  `maxNamesPerSector`, breadth and every cost assumption are unchanged from
+  `alpha_reliability.CONTROL`, called directly rather than reimplemented.
+
 ## Lint gate invariants (v2.11)
 
 - The enabled rule set reports ZERO findings on `main`. A rule is turned on in the
