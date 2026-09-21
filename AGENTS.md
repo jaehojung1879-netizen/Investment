@@ -401,6 +401,60 @@
   `maxNamesPerSector`, breadth and every cost assumption are unchanged from
   `alpha_reliability.CONTROL`, called directly rather than reimplemented.
 
+## Entry-selection-separation invariants (v2.17)
+
+- ENTRY STATE DECIDES WHO TODAY, NOT HOW FAST. `score = decision / (risk *
+  100) * state` bakes the entry-state multiplier straight into the
+  SELECTION score, so a WATCH name's score is halved before it is ever
+  ranked against an ACCUMULATE name's. Nothing in `baseline_weights`
+  applies the multiplier again once a name is selected. Production
+  therefore does the opposite of the pre-registration's separation
+  ("alpha decides the held set, entry state decides how fast the target
+  weight is approached") on both ends.
+- THE AXIS IS THE CONTINUOUS THROTTLE ONLY. A multiplier of 0.0 (EVENT_RISK,
+  AVOID, a non-POSITIVE research view, insufficient data) stays a full
+  eligibility exclusion on BOTH rungs, for incumbents and new entries
+  alike. Whether an incumbent should be forced out on a blocking state at
+  all is a separate claim about EXITS the pre-registration explicitly
+  reserved for its own test.
+- A BUG THE DIAGNOSTIC CAUGHT IS RECORDED, NOT SILENTLY FIXED.
+  `select_portfolio_by_scores` builds and mutates its OWN internal row
+  copies, never the caller's `scored` list — so a `selected` flag read off
+  `scored`'s own rows is always stale or absent. The first sealed run of
+  `entry_state_incidence` read exactly that flag and reported `heldByState:
+  {}` and `namesTheDiscountLetIntoTheBook: 0` on every block, both
+  mechanically impossible. The fix reads the held set from `retained`/
+  `added` on the decision, the same fields every other diagnostic in this
+  line already uses.
+- THIS AXIS HAS BITE, MEASURED BEFORE THE LADDER. The discount changes
+  which names are held on 130 of 155 control rebalances (83.87%) — 258
+  names it kept out that alpha-only selection would hold, 258 it let in
+  that alpha-only would drop (necessarily equal: both rungs hold the same
+  COUNT per block under the same caps).
+- AVERAGE CASH NEARLY DOUBLED, AND THAT IS THE MECHANISM, NOT A SIDE
+  EFFECT. Moving the throttle to weight lifts average cash held from
+  30.417% to 56.002%: alpha-only selection holds far more of the WATCH/
+  WAIT_FOR_PULLBACK names the discount used to exclude, and 68.7% of held
+  name-dates on the new rung then carry a throttled weight, withholding a
+  mean of 66.7% of target when throttled. A materially smaller invested
+  fraction mechanically shrinks realised volatility and drawdown, and also
+  moves the region-weighted matched benchmark itself.
+- THE GROSS GAP IS NOT MERELY A VOLATILITY EFFECT. Arithmetic stock
+  selection rises 0.315pp -> 2.017pp while compounding is roughly flat
+  (0.405pp -> 0.289pp): on this sample the names the discount used to
+  exclude realised BETTER excess returns than the ones it favoured, not
+  merely lower volatility from holding more cash. That is a claim about
+  this historical sample's realised outcomes, not a mechanism this study
+  tested or a prediction about future samples.
+- THE PAIRED INTERVAL CONTAINS ZERO. Net excess moves from -0.684pp
+  (control) to +1.385pp (entry-at-weight), paired difference +2.069pp, 95%
+  CI [-1.881pp, +6.061pp] over 155 blocks. The point estimate is large and
+  favourable, but the interval does not clear zero, and no permutation
+  null was run — reported as CONTAINS ZERO, not as a result.
+- THIS WAS THE FOURTH AND LAST STUDY `alpha-reliability-v1` pre-registered.
+  `alpha_reliability.CONTROL` is called directly rather than reimplemented,
+  exactly as in every prior study in this line.
+
 ## Lint gate invariants (v2.11)
 
 - The enabled rule set reports ZERO findings on `main`. A rule is turned on in the

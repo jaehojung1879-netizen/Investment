@@ -1,0 +1,498 @@
+{
+  "entryStateIncidence": {
+    "eligibleByState": {
+      "ACCUMULATE_GRADUALLY": 845,
+      "WAIT_FOR_PULLBACK": 1518,
+      "WATCH": 665
+    },
+    "heldByState": {
+      "ACCUMULATE_GRADUALLY": 365,
+      "WAIT_FOR_PULLBACK": 197,
+      "WATCH": 160
+    },
+    "measuredRebalances": 155,
+    "namesTheDiscountKeptOutOfTheBook": 258,
+    "namesTheDiscountLetIntoTheBook": 258,
+    "rebalancesWhereSelectionWouldChange": 130,
+    "rebalancesWhereSelectionWouldChangePct": 83.87
+  },
+  "finding": {
+    "controlAverageCashPct": 30.41651741935484,
+    "controlNetExcessPp": -0.684262,
+    "entryAtWeightAverageCashPct": 56.00183474062091,
+    "entryAtWeightNetExcessPp": 1.385208,
+    "nextDirection": "This axis is the continuous throttle only; a state whose multiplier is 0 stays a full eligibility exclusion on both rungs, for incumbents and new entries alike. Whether an incumbent should be forced out on a blocking state at all is a separate claim about exits and was explicitly left for its own test by the pre-registration -- this was the fourth and last of the four studies alpha-reliability-v1 pre-registered.",
+    "promotionEligible": false,
+    "refuted": [],
+    "separated": false,
+    "separationDirection": null,
+    "summary": "The discount changed which names were held on 83.87% of control rebalances (130 of 155). On the new rung, 68.700% of held name-dates carried a throttled weight, and average cash held rose from 30.417% to 56.002% -- a much larger share of the book than the throttle's own direct effect, since alpha-only selection also holds many more of the WATCH/WAIT_FOR_PULLBACK names the discount used to keep out, and most of those are the ones then throttled. Net excess moves from -0.684pp (state discounts selection) to 1.385pp (state throttles weight only). Paired difference 2.069pp, 95% CI [-1.881pp, 6.061pp], which CONTAINS zero. The gross gap is overwhelmingly arithmetic stock selection (0.315pp -> 2.017pp), not compounding (0.405pp -> 0.289pp): on this sample the names the discount used to exclude realised BETTER excess returns than the ones it favoured, not merely lower volatility from holding more cash. That is a claim about THIS historical sample's realised outcomes, not a mechanism this study tested.",
+    "verdict": "BENCHMARK_BEATEN"
+  },
+  "freezeManifest": {
+    "axis": "WHETHER_ENTRY_STATE_DISCOUNTS_THE_SELECTION_SCORE_OR_ONLY_THROTTLES_THE_HELD_WEIGHT",
+    "controlSource": "alpha_reliability.run_rung(alpha_reliability.CONTROL, ...), unmodified",
+    "eligibilityUnchanged": "A state whose multiplier is 0 (EVENT_RISK, AVOID, dataInsufficient, valueTrap, non-POSITIVE research view) still excludes the name on BOTH rungs -- this axis is the CONTINUOUS throttle (0.25 WAIT_FOR_PULLBACK, 0.5 WATCH), never eligibility. Whether an incumbent should be forced out on a blocking state at all is the next study's claim about exits, per the pre-registration, and is untouched here.",
+    "heldFixedAcrossRungs": [
+      "fixed 21-session evaluation blocks and their cadence",
+      "PIT research candidate pool",
+      "0.30/0.25/0.25/0.20 momentum/value/quality/low-vol sleeve weights",
+      "expanding bucket calibration of percentile to expected excess",
+      "the entry-state multiplier's VALUES (0.25/0.5/1.0) -- only its ROLE moves",
+      "targetNames = 5, maxNamesPerSector = 2, maxNamesPerRegion = 3, maxPositionWeight, cash floor",
+      "inverse-downside-volatility conviction-tilted position sizing base",
+      "no backward-percentile smoothing, no confidence contraction, no signal hysteresis, no transaction-cost hurdle, no dynamic breadth, no region quota removal"
+    ],
+    "id": "entry-selection-separation-v1",
+    "ladder": [
+      "LATEST_ALPHA_NO_CONFIDENCE_NO_HYSTERESIS",
+      "ENTRY_STATE_THROTTLES_WEIGHT_NOT_SELECTION"
+    ],
+    "liveValidated": false,
+    "parametersIntroduced": [],
+    "permutationNullRun": false,
+    "productionChanged": false,
+    "promotionEligible": false,
+    "status": "CHALLENGER",
+    "targetNamesSectorRegionCapsCostAssumptionsUnchanged": true,
+    "weightRedistribution": "NONE -- throttled capital is left in cash, never reallocated"
+  },
+  "inputSnapshot": {
+    "sha256": "f0781292f508a123c234ded6d28aa8e84a0dc3cc29500e14989dc0b68f53b4d2",
+    "through": "2026-09-14"
+  },
+  "ladder": {
+    "ENTRY_STATE_THROTTLES_WEIGHT_NOT_SELECTION": {
+      "annualOneWayTurnoverX": 3.619978545839359,
+      "annualizedDownsideVolPct": 4.99952,
+      "annualizedExcessPct": 1.385208,
+      "annualizedRealizedVolPct": 7.446222,
+      "averageCashPct": 56.00183474062091,
+      "averageTurnoverPct": 34.4,
+      "benchmarkCagrPct": 6.670526,
+      "cagrPct": 8.055734,
+      "calendarYears": 13.684059,
+      "costDragCagrPp": 0.9205789236218447,
+      "cvar95Pct": -1.043622,
+      "edgeDecomposition": {
+        "arithmeticSelectionEdgePp": 2.0168,
+        "available": true,
+        "benchmarkBlockSdPct": 2.589,
+        "blockSdRatio": 0.7878,
+        "blocks": 155,
+        "bookBlockSdPct": 2.0397,
+        "compoundingEdgePp": 0.289,
+        "geometricGrossEdgePp": 2.3058,
+        "note": "GEOMETRIC = ARITHMETIC + COMPOUNDING. A book less volatile than its matched benchmark earns a positive compounding term without picking a single better name."
+      },
+      "grossBenchmarkGapPp": 2.3057869236218442,
+      "grossCagrPct": 8.976312923621844,
+      "hitRatePct": 49.68,
+      "informationRatio": 0.161419,
+      "mddPct": -11.465511,
+      "sharpe": 0.812612,
+      "sortino": 1.210481,
+      "trackingErrorPct": 7.929783,
+      "turnoverDecomposition": {
+        "available": true,
+        "averageNamesHeld": 4.66,
+        "averageOneWayTurnoverPct": 26.9056,
+        "fromNameReplacementPct": 19.0284,
+        "fromWeightRetargetPct": 7.8772,
+        "nameReplacementSharePct": 70.72,
+        "namesCarriedToNextBlockPct": 53.43,
+        "rebalances": 144
+      },
+      "turnoverRebalances": 144
+    },
+    "LATEST_ALPHA_NO_CONFIDENCE_NO_HYSTERESIS": {
+      "annualOneWayTurnoverX": 4.678611806628428,
+      "annualizedDownsideVolPct": 8.212611,
+      "annualizedExcessPct": -0.684262,
+      "annualizedRealizedVolPct": 11.985257,
+      "averageCashPct": 30.41651741935484,
+      "averageTurnoverPct": 44.46,
+      "benchmarkCagrPct": 12.844837,
+      "cagrPct": 12.160575,
+      "calendarYears": 13.684059,
+      "costDragCagrPp": 1.4036321599751513,
+      "cvar95Pct": -1.647671,
+      "edgeDecomposition": {
+        "arithmeticSelectionEdgePp": 0.3145,
+        "available": true,
+        "benchmarkBlockSdPct": 4.1402,
+        "blockSdRatio": 0.7839,
+        "blocks": 155,
+        "bookBlockSdPct": 3.2455,
+        "compoundingEdgePp": 0.4048,
+        "geometricGrossEdgePp": 0.7194,
+        "note": "GEOMETRIC = ARITHMETIC + COMPOUNDING. A book less volatile than its matched benchmark earns a positive compounding term without picking a single better name."
+      },
+      "grossBenchmarkGapPp": 0.719370159975151,
+      "grossCagrPct": 13.564207159975151,
+      "hitRatePct": 47.74,
+      "informationRatio": -0.053538,
+      "mddPct": -25.158189,
+      "sharpe": 0.852951,
+      "sortino": 1.245037,
+      "trackingErrorPct": 11.981285,
+      "turnoverDecomposition": {
+        "available": true,
+        "averageNamesHeld": 4.66,
+        "averageOneWayTurnoverPct": 42.1699,
+        "fromNameReplacementPct": 39.4175,
+        "fromWeightRetargetPct": 2.7524,
+        "nameReplacementSharePct": 93.47,
+        "namesCarriedToNextBlockPct": 37.92,
+        "rebalances": 144
+      },
+      "turnoverRebalances": 144
+    }
+  },
+  "pairedBlocks": 155,
+  "pairedVsControl": {
+    "available": true,
+    "cashAndCostDeltas": {
+      "averageCashPct": 25.585317321266068,
+      "averageEquityPct": -25.58531732126606,
+      "averageTurnoverPct": -10.060000000000002,
+      "benchmarkCagrPct": -6.174311,
+      "costDragCagrPp": -0.48305323635330666,
+      "sumTransactionCostPct": -5.403267117271428
+    },
+    "delta": {
+      "annualizedExcessPct": 2.06947,
+      "cagrPct": -4.104841,
+      "calmar": 0.21924127166289564,
+      "cvar95Pct": 0.6040490000000001,
+      "mddPct": 13.692678,
+      "sharpe": -0.040339000000000014,
+      "sortino": -0.03455600000000003
+    },
+    "estimandNote": "Path deltas recompute nonlinear statistics on jointly resampled net daily blocks. Mean block-metric deltas are a separate estimand, not the full-path delta. Costs and allocations are fixed at their original chronological values. Blocks are treated as exchangeable; serial regime dependence is not removed.",
+    "mddDescription": "+13.693pp shallower drawdown",
+    "meanPairedBlockMetricDifferenceCI": {
+      "annualizedExcessPct": {
+        "bootstrapMean": 9.636980788437537,
+        "ci95": [
+          0.13432072903961625,
+          22.610513485209907
+        ],
+        "evidence": "historical interval excludes zero; prospective evidence still required",
+        "pairedBlocks": 155,
+        "pointEstimate": 9.470664935019034,
+        "reason": null,
+        "samples": 2000,
+        "seed": 11,
+        "validSamples": 2000
+      },
+      "cagrPct": {
+        "bootstrapMean": -8.852289323648755,
+        "ci95": [
+          -13.71799095440896,
+          -4.39046398896773
+        ],
+        "evidence": "historical interval excludes zero; prospective evidence still required",
+        "pairedBlocks": 155,
+        "pointEstimate": -8.854037636793318,
+        "reason": null,
+        "samples": 2000,
+        "seed": 11,
+        "validSamples": 2000
+      },
+      "calmar": {
+        "bootstrapMean": null,
+        "ci95": [
+          null,
+          null
+        ],
+        "evidence": "historical evidence is inconclusive",
+        "pairedBlocks": 155,
+        "pointEstimate": null,
+        "reason": "INSUFFICIENT_PAIRS_OR_UNDEFINED_METRIC_IN_RESAMPLES",
+        "samples": 2000,
+        "seed": 11,
+        "validSamples": 0
+      },
+      "cvar95Pct": {
+        "bootstrapMean": 0.38941461286278833,
+        "ci95": [
+          0.3025186895640698,
+          0.4935785681166044
+        ],
+        "evidence": "historical interval excludes zero; prospective evidence still required",
+        "pairedBlocks": 155,
+        "pointEstimate": 0.38970192256255426,
+        "reason": null,
+        "samples": 2000,
+        "seed": 11,
+        "validSamples": 2000
+      },
+      "mddPct": {
+        "bootstrapMean": 0.9791253420274779,
+        "ci95": [
+          0.7490408977553698,
+          1.2591791230577631
+        ],
+        "evidence": "historical interval excludes zero; prospective evidence still required",
+        "pairedBlocks": 155,
+        "pointEstimate": 0.9789042115132666,
+        "reason": null,
+        "samples": 2000,
+        "seed": 11,
+        "validSamples": 2000
+      },
+      "sharpe": {
+        "bootstrapMean": null,
+        "ci95": [
+          null,
+          null
+        ],
+        "evidence": "historical evidence is inconclusive",
+        "pairedBlocks": 155,
+        "pointEstimate": null,
+        "reason": "INSUFFICIENT_PAIRS_OR_UNDEFINED_METRIC_IN_RESAMPLES",
+        "samples": 2000,
+        "seed": 11,
+        "validSamples": 0
+      },
+      "sortino": {
+        "bootstrapMean": null,
+        "ci95": [
+          null,
+          null
+        ],
+        "evidence": "historical evidence is inconclusive",
+        "pairedBlocks": 155,
+        "pointEstimate": null,
+        "reason": "INSUFFICIENT_PAIRS_OR_UNDEFINED_METRIC_IN_RESAMPLES",
+        "samples": 2000,
+        "seed": 11,
+        "validSamples": 0
+      }
+    },
+    "method": "PAIRED_WHOLE_EVALUATION_BLOCK_PERCENTILE_BOOTSTRAP",
+    "pathDifferenceCI": {
+      "annualizedExcessPct": {
+        "bootstrapMean": 2.098382332023245,
+        "ci95": [
+          -1.8810316093934552,
+          6.060568083586662
+        ],
+        "evidence": "historical evidence is inconclusive",
+        "pairedBlocks": 155,
+        "pointEstimate": 2.06947,
+        "reason": null,
+        "samples": 2000,
+        "seed": 11,
+        "validSamples": 2000
+      },
+      "cagrPct": {
+        "bootstrapMean": -4.112792128155521,
+        "ci95": [
+          -8.182164674982277,
+          -0.22391821998367048
+        ],
+        "evidence": "historical interval excludes zero; prospective evidence still required",
+        "pairedBlocks": 155,
+        "pointEstimate": -4.104841,
+        "reason": null,
+        "samples": 2000,
+        "seed": 11,
+        "validSamples": 2000
+      },
+      "calmar": {
+        "bootstrapMean": 0.08604299226034352,
+        "ci95": [
+          -0.47036760852329573,
+          0.5415096985384489
+        ],
+        "evidence": "historical evidence is inconclusive",
+        "pairedBlocks": 155,
+        "pointEstimate": 0.21924127166289564,
+        "reason": null,
+        "samples": 2000,
+        "seed": 11,
+        "validSamples": 2000
+      },
+      "cvar95Pct": {
+        "bootstrapMean": 0.6017542828725404,
+        "ci95": [
+          0.40519883426831277,
+          0.853964512550581
+        ],
+        "evidence": "historical interval excludes zero; prospective evidence still required",
+        "pairedBlocks": 155,
+        "pointEstimate": 0.6040490000000001,
+        "reason": null,
+        "samples": 2000,
+        "seed": 11,
+        "validSamples": 2000
+      },
+      "mddPct": {
+        "bootstrapMean": 9.381699879834818,
+        "ci95": [
+          0.33588973525223786,
+          19.37021812297524
+        ],
+        "evidence": "historical interval excludes zero; prospective evidence still required",
+        "pairedBlocks": 155,
+        "pointEstimate": 13.692678,
+        "reason": null,
+        "samples": 2000,
+        "seed": 11,
+        "validSamples": 2000
+      },
+      "sharpe": {
+        "bootstrapMean": -0.0447527687994223,
+        "ci95": [
+          -0.34164904821311365,
+          0.2562559432714879
+        ],
+        "evidence": "historical evidence is inconclusive",
+        "pairedBlocks": 155,
+        "pointEstimate": -0.040339000000000014,
+        "reason": null,
+        "samples": 2000,
+        "seed": 11,
+        "validSamples": 2000
+      },
+      "sortino": {
+        "bootstrapMean": -0.04378012395793857,
+        "ci95": [
+          -0.5323005750314153,
+          0.44568950460002343
+        ],
+        "evidence": "historical evidence is inconclusive",
+        "pairedBlocks": 155,
+        "pointEstimate": -0.03455600000000003,
+        "reason": null,
+        "samples": 2000,
+        "seed": 11,
+        "validSamples": 2000
+      }
+    }
+  },
+  "productionChanged": false,
+  "regionalAttribution": {
+    "ENTRY_STATE_THROTTLES_WEIGHT_NOT_SELECTION": {
+      "available": true,
+      "byRegion": {
+        "KR": {
+          "averageWeightPct": 32.423,
+          "blocks": 155,
+          "blocksHeld": 144,
+          "contributionCi95Pp": [
+            -3.4094,
+            5.1651
+          ],
+          "contributionPpPerYear": 1.0717,
+          "sleeveExcessCi95Pp": [
+            -10.8073,
+            12.8909
+          ],
+          "sleeveExcessPpPerYear": 0.8836,
+          "sleeveWinRatePct": 56.25
+        },
+        "US": {
+          "averageWeightPct": 11.575,
+          "blocks": 155,
+          "blocksHeld": 145,
+          "contributionCi95Pp": [
+            -0.1133,
+            2.0728
+          ],
+          "contributionPpPerYear": 0.9451,
+          "sleeveExcessCi95Pp": [
+            -0.498,
+            27.0311
+          ],
+          "sleeveExcessPpPerYear": 12.6446,
+          "sleeveWinRatePct": 57.24
+        }
+      },
+      "note": "`excessByRegion` sums to `grossExcessReturn`, so the contributions reconstruct the headline. Sleeve figures are weight-normalised and their intervals are wide; they locate the question, not the answer."
+    },
+    "LATEST_ALPHA_NO_CONFIDENCE_NO_HYSTERESIS": {
+      "available": true,
+      "byRegion": {
+        "KR": {
+          "averageWeightPct": 49.79,
+          "blocks": 155,
+          "blocksHeld": 144,
+          "contributionCi95Pp": [
+            -7.272,
+            5.7428
+          ],
+          "contributionPpPerYear": -0.4667,
+          "sleeveExcessCi95Pp": [
+            -9.2183,
+            12.933
+          ],
+          "sleeveExcessPpPerYear": 1.9349,
+          "sleeveWinRatePct": 57.64
+        },
+        "US": {
+          "averageWeightPct": 19.793,
+          "blocks": 155,
+          "blocksHeld": 145,
+          "contributionCi95Pp": [
+            -1.178,
+            2.9224
+          ],
+          "contributionPpPerYear": 0.7812,
+          "sleeveExcessCi95Pp": [
+            -4.7577,
+            22.4959
+          ],
+          "sleeveExcessPpPerYear": 8.3636,
+          "sleeveWinRatePct": 46.9
+        }
+      },
+      "note": "`excessByRegion` sums to `grossExcessReturn`, so the contributions reconstruct the headline. Sleeve figures are weight-normalised and their intervals are wide; they locate the question, not the answer."
+    }
+  },
+  "sealedInvariant": {
+    "after": "365dddb1387f1644693c8d458dd824ed8c039d850a4227de5756570664b9a7cc",
+    "before": "365dddb1387f1644693c8d458dd824ed8c039d850a4227de5756570664b9a7cc",
+    "unchanged": true
+  },
+  "selectionBehaviour": {
+    "ENTRY_STATE_THROTTLES_WEIGHT_NOT_SELECTION": {
+      "averageAdded": 2.181,
+      "averageNamesHeld": 4.658,
+      "averageReplaced": 2.148,
+      "averageRetained": 2.477,
+      "incumbentReplacementRatePct": 46.44,
+      "incumbentRetentionRatePct": 53.56,
+      "rebalances": 155,
+      "rebalancesWithIncumbents": 144
+    },
+    "LATEST_ALPHA_NO_CONFIDENCE_NO_HYSTERESIS": {
+      "averageAdded": 2.897,
+      "averageNamesHeld": 4.658,
+      "averageReplaced": 2.865,
+      "averageRetained": 1.761,
+      "incumbentReplacementRatePct": 61.92,
+      "incumbentRetentionRatePct": 38.08,
+      "rebalances": 155,
+      "rebalancesWithIncumbents": 144
+    }
+  },
+  "separation": null,
+  "status": "CHALLENGER",
+  "version": "entry-selection-separation-v1",
+  "weightThrottle": {
+    "heldNameDates": 722,
+    "throttledNameDates": 496,
+    "throttledNameDatesPct": 68.7,
+    "unapproachedWeightPctWhenThrottled": {
+      "available": true,
+      "mean": 66.7339,
+      "median": 75.0,
+      "observations": 496,
+      "p10": 50.0,
+      "p90": 75.0
+    }
+  }
+}
