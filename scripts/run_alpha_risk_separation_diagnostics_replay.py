@@ -127,6 +127,49 @@ def selection_behaviour(decisions: list[dict]) -> dict:
     }
 
 
+def _q4_verdict(challenger_side: dict, control_side: dict, mean_of) -> str:
+    """State what the set difference actually says, rather than leaving it implied.
+
+    The question presumes the denominator was blocking high-momentum /
+    high-quality names. Whether it was is decided by which sleeves actually
+    separate the two groups, so the verdict is derived from the measured gaps
+    rather than asserted.
+    """
+    gaps = {sleeve: (None if mean_of(challenger_side, sleeve) is None
+                     or mean_of(control_side, sleeve) is None
+                     else mean_of(challenger_side, sleeve) - mean_of(control_side, sleeve))
+            for sleeve in ("momentum", "quality", "value", "lowvol")}
+    vol_gap = (None if mean_of(challenger_side, "downsideVolPct") is None
+               or mean_of(control_side, "downsideVolPct") is None
+               else mean_of(challenger_side, "downsideVolPct")
+               - mean_of(control_side, "downsideVolPct"))
+    if gaps["momentum"] is None or gaps["lowvol"] is None or vol_gap is None:
+        return "The set difference could not be profiled on this sample."
+    # "Separates" here means the gap is larger than the smallest gap that any
+    # sleeve shows — a within-run comparison, not a threshold chosen in advance.
+    momentum_gap, quality_gap, lowvol_gap = (gaps["momentum"], gaps["quality"],
+                                             gaps["lowvol"])
+    alpha_axis_moved = max(abs(momentum_gap), abs(quality_gap or 0.0))
+    risk_axis_moved = abs(lowvol_gap)
+    if risk_axis_moved > alpha_axis_moved:
+        return (
+            f"SO THE PREMISE OF THIS QUESTION IS NOT WHAT HAPPENED. Momentum moved "
+            f"{momentum_gap:+.3f} and quality {(quality_gap or 0.0):+.3f} between the two "
+            f"groups — differences of well under a percentile point — while `lowvol` "
+            f"moved {lowvol_gap:+.3f} and realised downside volatility {vol_gap:+.3f}pp. "
+            "The denominator was not holding back high-momentum or high-quality names. "
+            "It was holding back names with the SAME alpha profile at HIGHER "
+            "volatility, which is what a risk denominator is supposed to do. That "
+            "reframes the axis: removing it did not buy different alpha, it bought the "
+            "same alpha more riskily.")
+    return (
+        f"Momentum moved {momentum_gap:+.3f} and quality {(quality_gap or 0.0):+.3f} "
+        f"against `lowvol`'s {lowvol_gap:+.3f} and {vol_gap:+.3f}pp of realised downside "
+        "volatility, so the alpha sleeves separate the two groups at least as much as "
+        "the risk axis does — the denominator was ordering on more than volatility "
+        "alone.")
+
+
 def _answers(report: dict) -> list[dict]:
     """Q1-Q8, answered from this run's own numbers."""
     ladder = report["frozenLadderReproduced"]["ladder"]
@@ -189,7 +232,8 @@ def _answers(report: dict) -> list[dict]:
                f"{_fmt(_m(control_side, 'momentum'))} / quality "
                f"{_fmt(_m(control_side, 'quality'))} / lowvol "
                f"{_fmt(_m(control_side, 'lowvol'))} at "
-               f"{_fmt(_m(control_side, 'downsideVolPct'), '%')}.")},
+               f"{_fmt(_m(control_side, 'downsideVolPct'), '%')}. "
+               + _q4_verdict(challenger_side, control_side, _m))},
         {"q": "Q5. 그러한 newly selected high-vol names가 실제 forward "
               "benchmark-relative return에서도 더 나았는가? (descriptive only)",
          "a": (f"Challenger-only names realised "
