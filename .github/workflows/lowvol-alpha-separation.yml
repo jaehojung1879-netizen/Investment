@@ -1,0 +1,115 @@
+name: Lowvol alpha separation
+
+# Read-only research CHALLENGER. Consumes the same pinned replay-v16 ledger
+# the other research analyses do, and writes only job artifacts in the code
+# checkout — never inside the sealed ledger.
+#
+# One axis: whether the `lowvol` sleeve sits inside the four-factor alpha.
+# The selection score's downside-volatility denominator, inverse-volatility
+# sizing, the entry multiplier, the research pool, every cap and
+# `evidenceCoverage` itself are held fixed and identical across both rungs.
+on:
+  workflow_dispatch:
+  push:
+    branches: [research/lowvol-alpha-separation-v1]
+    paths:
+      - 'pipeline/lowvol_alpha_separation.py'
+      - 'pipeline/alpha_risk_separation_diagnostics.py'
+      - 'pipeline/alpha_reliability.py'
+      - 'pipeline/entry_selection_separation.py'
+      - 'pipeline/signal_persistence.py'
+      - 'pipeline/longterm.py'
+      - 'pipeline/kelly_portfolio.py'
+      - 'pipeline/benchmark_alpha.py'
+      - 'pipeline/portfolio_validation.py'
+      - 'pipeline/selection_value.py'
+      - 'scripts/run_lowvol_alpha_separation_replay.py'
+      - 'tests/test_lowvol_alpha_separation.py'
+      - '.github/workflows/lowvol-alpha-separation.yml'
+      - 'docs/results/lowvol-alpha-separation-*'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: lowvol-alpha-separation-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lowvol-alpha-separation:
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
+    steps:
+      - name: Checkout research code
+        uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Test the derived weights and the coverage-penalty trap
+        run: >-
+          python -m pytest -q
+          tests/test_lowvol_alpha_separation.py
+          tests/test_alpha_risk_separation_diagnostics.py
+          tests/test_alpha_risk_separation.py
+          tests/test_entry_selection_separation.py
+          tests/test_alpha_reliability.py
+          tests/test_signal_persistence.py
+          tests/test_alpha_variants.py
+          tests/test_kelly_portfolio.py
+          tests/test_portfolio_validation.py
+
+      - name: Check out pinned sealed inputs (read-only)
+        uses: actions/checkout@v5
+        with:
+          ref: b71d8cb5ce21815980d28b606852f9294d43cc53
+          path: replay-work
+          persist-credentials: false
+
+      - name: Run the lowvol-alpha-separation ladder
+        run: |
+          set -o pipefail
+          python -u scripts/run_lowvol_alpha_separation_replay.py replay-work/ledger \
+            --output lowvol-alpha-separation-report.json \
+            --markdown lowvol-alpha-separation-report.md \
+            | tee lowvol-alpha-separation.log
+
+      - name: Verify sealed checkout unchanged
+        run: test -z "$(git -C replay-work status --porcelain)"
+
+      - name: Verify checked-in deterministic result when present
+        run: |
+          if test -f docs/results/lowvol-alpha-separation-report.json; then
+            cmp lowvol-alpha-separation-report.json \
+                docs/results/lowvol-alpha-separation-report.json
+            cmp lowvol-alpha-separation-report.md \
+                docs/results/lowvol-alpha-separation-report.md
+          fi
+
+      - name: Upload analysis
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lowvol-alpha-separation-v1
+          path: |
+            lowvol-alpha-separation-report.json
+            lowvol-alpha-separation-report.md
+            lowvol-alpha-separation.log
+          if-no-files-found: warn
+
+      - name: Summary
+        if: always()
+        run: |
+          if test -f lowvol-alpha-separation-report.md; then
+            cat lowvol-alpha-separation-report.md >> "$GITHUB_STEP_SUMMARY"
+          else
+            tail -n 100 lowvol-alpha-separation.log >> "$GITHUB_STEP_SUMMARY"
+          fi
