@@ -1,0 +1,108 @@
+name: Four-factor signal attribution audit
+
+# Read-only research AUDIT. Consumes the same pinned replay-v16 ledger the
+# other research analyses do, and writes only job artifacts in the code
+# checkout — never inside the sealed ledger.
+#
+# NOT a portfolio replay: no selection, no valuation, no calendar of
+# rebalance blocks. Computes cross-sectional Rank IC between each production
+# alpha sleeve (and, where the sealed ledger stores it, a raw subfactor
+# input) and matured benchmark-relative forward returns. No factor weight is
+# changed and no portfolio is selected or valued anywhere in this workflow.
+on:
+  workflow_dispatch:
+  push:
+    branches: [research/four-factor-signal-attribution-audit-v1]
+    paths:
+      - 'pipeline/four_factor_signal_attribution_audit.py'
+      - 'pipeline/historical_outcomes.py'
+      - 'pipeline/portfolio_validation.py'
+      - 'pipeline/longterm.py'
+      - 'pipeline/kelly_portfolio.py'
+      - 'pipeline/historical_store.py'
+      - 'pipeline/replay_inputs.py'
+      - 'scripts/run_four_factor_signal_attribution_audit.py'
+      - 'tests/test_four_factor_signal_attribution_audit.py'
+      - '.github/workflows/four-factor-signal-attribution-audit.yml'
+      - 'docs/results/four-factor-signal-attribution-audit-*'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: four-factor-signal-attribution-audit-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  four-factor-signal-attribution-audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
+    steps:
+      - name: Checkout research code
+        uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Test the attribution statistics and their dependencies
+        run: >-
+          python -m pytest -q
+          tests/test_four_factor_signal_attribution_audit.py
+          tests/test_portfolio_validation.py
+          tests/test_kelly_portfolio.py
+          tests/test_historical_store.py
+
+      - name: Check out pinned sealed inputs (read-only)
+        uses: actions/checkout@v5
+        with:
+          ref: b71d8cb5ce21815980d28b606852f9294d43cc53
+          path: replay-work
+          persist-credentials: false
+
+      - name: Run the four-factor signal attribution audit
+        run: |
+          set -o pipefail
+          python -u scripts/run_four_factor_signal_attribution_audit.py replay-work/ledger \
+            --output four-factor-signal-attribution-audit-report.json \
+            --markdown four-factor-signal-attribution-audit-report.md \
+            | tee four-factor-signal-attribution-audit.log
+
+      - name: Verify sealed checkout unchanged
+        run: test -z "$(git -C replay-work status --porcelain)"
+
+      - name: Verify checked-in deterministic result when present
+        run: |
+          if test -f docs/results/four-factor-signal-attribution-audit-report.json; then
+            cmp four-factor-signal-attribution-audit-report.json \
+                docs/results/four-factor-signal-attribution-audit-report.json
+            cmp four-factor-signal-attribution-audit-report.md \
+                docs/results/four-factor-signal-attribution-audit-report.md
+          fi
+
+      - name: Upload analysis
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: four-factor-signal-attribution-audit-v1
+          path: |
+            four-factor-signal-attribution-audit-report.json
+            four-factor-signal-attribution-audit-report.md
+            four-factor-signal-attribution-audit.log
+          if-no-files-found: warn
+
+      - name: Summary
+        if: always()
+        run: |
+          if test -f four-factor-signal-attribution-audit-report.md; then
+            cat four-factor-signal-attribution-audit-report.md >> "$GITHUB_STEP_SUMMARY"
+          else
+            tail -n 100 four-factor-signal-attribution-audit.log >> "$GITHUB_STEP_SUMMARY"
+          fi
