@@ -1,0 +1,114 @@
+name: Fundamental acceleration discovery
+
+# Read-only research DISCOVERY study. Consumes the same pinned replay-v16
+# ledger the other research analyses do, and writes only job artifacts in
+# the code checkout — never inside the sealed ledger.
+#
+# NOT a portfolio replay: no selection, no valuation, no calendar of
+# rebalance blocks. Computes a filing-over-filing fundamental-acceleration
+# composite from FundamentalStore's existing per-filing history, then
+# cross-sectional Rank IC / orthogonality / stability diagnostics against
+# matured benchmark-relative forward returns. No factor weight is changed
+# and no portfolio is selected or valued anywhere in this workflow.
+on:
+  workflow_dispatch:
+  push:
+    branches: [research/fundamental-acceleration-discovery-v1]
+    paths:
+      - 'pipeline/fundamental_acceleration.py'
+      - 'pipeline/fundamental_acceleration_discovery.py'
+      - 'pipeline/four_factor_signal_attribution_audit.py'
+      - 'pipeline/historical_outcomes.py'
+      - 'pipeline/portfolio_validation.py'
+      - 'pipeline/longterm.py'
+      - 'pipeline/pit_data.py'
+      - 'pipeline/kelly_portfolio.py'
+      - 'pipeline/historical_store.py'
+      - 'pipeline/replay_inputs.py'
+      - 'scripts/run_fundamental_acceleration_discovery.py'
+      - 'tests/test_fundamental_acceleration.py'
+      - 'tests/test_fundamental_acceleration_discovery.py'
+      - '.github/workflows/fundamental-acceleration-discovery.yml'
+      - 'docs/results/fundamental-acceleration-discovery-*'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: fundamental-acceleration-discovery-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  fundamental-acceleration-discovery:
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
+    steps:
+      - name: Checkout research code
+        uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Test the acceleration statistics and their dependencies
+        run: >-
+          python -m pytest -q
+          tests/test_fundamental_acceleration.py
+          tests/test_fundamental_acceleration_discovery.py
+          tests/test_four_factor_signal_attribution_audit.py
+          tests/test_portfolio_validation.py
+          tests/test_historical_store.py
+
+      - name: Check out pinned sealed inputs (read-only)
+        uses: actions/checkout@v5
+        with:
+          ref: b71d8cb5ce21815980d28b606852f9294d43cc53
+          path: replay-work
+          persist-credentials: false
+
+      - name: Run the fundamental acceleration discovery study
+        run: |
+          set -o pipefail
+          python -u scripts/run_fundamental_acceleration_discovery.py replay-work/ledger \
+            --output fundamental-acceleration-discovery-report.json \
+            --markdown fundamental-acceleration-discovery-report.md \
+            | tee fundamental-acceleration-discovery.log
+
+      - name: Verify sealed checkout unchanged
+        run: test -z "$(git -C replay-work status --porcelain)"
+
+      - name: Verify checked-in deterministic result when present
+        run: |
+          if test -f docs/results/fundamental-acceleration-discovery-report.json; then
+            cmp fundamental-acceleration-discovery-report.json \
+                docs/results/fundamental-acceleration-discovery-report.json
+            cmp fundamental-acceleration-discovery-report.md \
+                docs/results/fundamental-acceleration-discovery-report.md
+          fi
+
+      - name: Upload analysis
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fundamental-acceleration-discovery-v1
+          path: |
+            fundamental-acceleration-discovery-report.json
+            fundamental-acceleration-discovery-report.md
+            fundamental-acceleration-discovery.log
+          if-no-files-found: warn
+
+      - name: Summary
+        if: always()
+        run: |
+          if test -f fundamental-acceleration-discovery-report.md; then
+            cat fundamental-acceleration-discovery-report.md >> "$GITHUB_STEP_SUMMARY"
+          else
+            tail -n 100 fundamental-acceleration-discovery.log >> "$GITHUB_STEP_SUMMARY"
+          fi

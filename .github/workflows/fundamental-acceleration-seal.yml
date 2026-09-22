@@ -1,0 +1,147 @@
+name: Seal fundamental acceleration signal
+
+# Prospective sealing, NOT part of the daily production build and changes no
+# production output (`data/site-data.json` is built here only to read its
+# own live candidate universe, never republished or deployed).
+#
+# This is the primary validation split
+# `docs/challenger-2-fundamental-acceleration-v1-design.md` pre-registered:
+# today's acceleration reading, sealed immutably BEFORE its 126-trading-day
+# horizon can possibly be known, so a genuinely prospective (non-replay
+# -contaminated) study becomes possible once enough sealed records mature.
+# `fundamental-acceleration-discovery-v1` on replay-v16 is the bridge while
+# this window accumulates, never the confirmatory evidence.
+#
+# `workflow_dispatch` only for now, deliberately not on a schedule yet: the
+# candidate-list wiring (data/site-data.json -> researchTable ->
+# extract_acceleration_candidates.py) and the live PIT fundamentals fetch
+# below are new in this PR and have not been exercised against real secrets
+# in production. A human triggers the first run after reviewing this
+# workflow; converting it to `schedule:` (matching `fundamentals.yml`'s
+# cadence) is a follow-up, not decided here.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: signal-history-fundamental-acceleration-seal
+  cancel-in-progress: false
+
+jobs:
+  seal:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - name: Checkout code (main)
+        uses: actions/checkout@v5
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Test the sealing module and its dependencies
+        run: >-
+          python -m pytest -q
+          tests/test_fundamental_acceleration.py
+          tests/test_fundamental_acceleration_seal.py
+          tests/test_extract_acceleration_candidates.py
+
+      # `fundamentals.yml` collects RAW filings, sharded by fiscal year, onto
+      # signal-history under ledger/fundamentals/{kr,us}/ -- directories, not
+      # single files, so they are pulled with `git archive` exactly as
+      # `pages.yml` pulls ledger/historical. `build_pit_fundamentals.py` is
+      # the same derivation step `replay.yml` uses to turn those raw shards
+      # into the PIT_FUNDAMENTALS_V1 file `FundamentalStore` reads -- reused,
+      # not reimplemented, so live and replay never derive PIT fundamentals
+      # two different ways.
+      - name: Fetch and derive live PIT fundamentals from signal-history
+        run: |
+          mkdir -p .fundamentals/kr .fundamentals/us
+          if git fetch origin signal-history && \
+             git archive origin/signal-history ledger/fundamentals | tar -x -C .fundamentals; then
+            echo "raw shards fetched"
+          else
+            echo "no signal-history fundamentals yet; deriving from an empty store"
+          fi
+          python scripts/build_pit_fundamentals.py .fundamentals/ledger/fundamentals/kr \
+            --region kr --output .fundamentals/pit-kr.jsonl
+          python scripts/build_pit_fundamentals.py .fundamentals/ledger/fundamentals/us \
+            --region us --output .fundamentals/pit-us.jsonl
+
+      - name: Build today's site data (read-only source of the candidate universe)
+        env:
+          FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
+          ECOS_API_KEY: ${{ secrets.ECOS_API_KEY }}
+        run: python -m pipeline.build
+
+      - name: Extract today's acceleration candidates
+        run: |
+          python scripts/extract_acceleration_candidates.py data/site-data.json \
+            --output .fundamentals/candidates.jsonl
+
+      - name: Check out signal-history branch (orphan-safe)
+        run: |
+          git config user.name "fundamental-acceleration-seal-bot"
+          git config user.email "actions@github.com"
+          mkdir -p seal-work
+          if git ls-remote --exit-code --heads origin signal-history; then
+            git fetch origin signal-history
+            git worktree add seal-work origin/signal-history
+            git -C seal-work checkout -B signal-history
+          else
+            git worktree add --detach seal-work
+            git -C seal-work checkout --orphan signal-history
+            git -C seal-work rm -rf . || true
+          fi
+          mkdir -p seal-work/ledger/fundamental-acceleration-seal
+
+      - name: Seal today's reading
+        run: |
+          set -o pipefail
+          python scripts/seal_fundamental_acceleration_signal.py .fundamentals/candidates.jsonl \
+            --pit-fundamentals .fundamentals/pit-kr.jsonl .fundamentals/pit-us.jsonl \
+            --as-of "$(date -u +%Y-%m-%d)" \
+            --seal-store seal-work/ledger/fundamental-acceleration-seal/seal.jsonl \
+            | tee seal.log
+
+      - name: Commit & push to signal-history
+        run: |
+          cd seal-work
+          git add ledger/fundamental-acceleration-seal
+          if git diff --cached --quiet; then
+            echo "already sealed for today"
+            exit 0
+          fi
+          git commit -m "fundamental-acceleration-seal: reading for $(date -u +%Y-%m-%d)"
+          for attempt in 1 2 3 4 5; do
+            if git push origin signal-history; then
+              exit 0
+            fi
+            echo "push rejected (attempt $attempt); rebasing onto the remote"
+            git fetch origin signal-history
+            if ! git rebase origin/signal-history; then
+              git rebase --abort || true
+              echo "could not rebase onto signal-history"
+              exit 1
+            fi
+          done
+          echo "push failed after 5 attempts"
+          exit 1
+
+      - name: Summary
+        if: always()
+        run: |
+          {
+            echo '## Fundamental acceleration seal'
+            echo
+            echo '```'
+            tail -n 30 seal.log 2>/dev/null || echo 'no sealing output'
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"

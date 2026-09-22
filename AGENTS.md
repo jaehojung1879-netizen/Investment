@@ -743,6 +743,106 @@
   is new information sources evaluated as a separate CHALLENGER, not a
   same-sample reweighting of these four sleeves.
 
+## Fundamental-acceleration-discovery invariants (v2.22)
+
+- A DISCOVERY STUDY MEASURES COMPUTABILITY AND DISTINCTNESS BEFORE IT ASKS
+  ABOUT RETURN, AND CASE D IS A REAL, PUBLISHABLE ANSWER. Fundamental
+  acceleration (`accel_f = f(current filing) - f(previous filing)` for
+  roe/operatingMargin/profitMargin/earningsGrowth, sector-neutral z,
+  minimum 3 of 4 present) cleared both gates a same-sample re-tune would
+  have been tempted to fail on purpose: overall coverage 64.95% (>= the
+  pre-registered 0.60 floor) and |Spearman(accelerationPercentile,
+  qualityPercentile)| = 0.118 (well under the 0.70 redundancy ceiling — this
+  is genuinely distinct information from the existing Quality level
+  factor, not a relabelling of it). The standalone and incremental pooled
+  126D Rank IC point estimates are near zero regardless (-0.0026, -0.0009,
+  both 95% CI containing zero, both Holm p = 1.0 of a 2-hypothesis family)
+  and the sign disagrees KR-vs-US and first-half-vs-second-half. `CASE D —
+  NO_DISCOVERY_EVIDENCE`, per the pre-registered routing that a negative
+  point estimate is never stretched into "directionally promising" (Case
+  E) regardless of how the coverage/orthogonality gates read.
+- THE CURRENT FILING IS THE LATEST REPORT PERIOD VISIBLE, NEVER THE LATEST
+  AVAILABILITY DATE. `resolve_filing_pair` filters to
+  `availableFrom <= asOf` and THEN orders by fiscal period, because a
+  severely delayed filing can in principle arrive out of period order; both
+  legs' PIT visibility is asserted explicitly in code, exactly as
+  `contraction_holds` is asserted for the confidence weight in
+  `alpha_reliability.py`. Consecutiveness is a strict one-step adjacency in
+  each region's own fixed report-code cadence (US Q1→Q2→Q3→FY; KR DART's
+  11013→11012→11014→11011); a skipped period is `NOT_CONSECUTIVE` and
+  contributes no reading — deliberately conservative, never adaptive
+  per-company cadence detection, and any resulting coverage cost is
+  measured rather than engineered around (9,725 of 399,547 name-dates).
+- AMENDMENT RESOLUTION IS A DEFENSIVE-CORRECTNESS REQUIREMENT THAT CHANGES
+  NO REAL NUMBER ON THIS LEDGER, AND BOTH FACTS ARE PUBLISHED TOGETHER.
+  `resolve_filing_pair` groups visible filings by report period and keeps
+  the max-`availableFrom` record per group before chronological ordering.
+  Measured directly against the real sealed ledger: zero duplicate
+  `(ticker, reportPeriod)` filings exist in either region (0 of 4,302 KR
+  keys, 0 of 33,832 US keys), so this logic is exercised only by synthetic
+  fixtures in the test suite — a correctness guarantee for filings this
+  ledger does not currently contain, not a tuning knob.
+- OVERALL COVERAGE PASSING HIDES A REGIONAL SPLIT WIDE ENOUGH TO BE ITS OWN
+  FINDING, AND IT IS REPORTED RATHER THAN AVERAGED AWAY. KR data-sufficient
+  ratio is 13.76% against US's 81.79% — a sixth as complete — because KR is
+  24.7% of the sample by row count, so the US-dominated pooled ratio (64.95%)
+  clears the 0.60 floor while the region that needed the floor most does
+  not. Consistent with the PIT-fundamentals invariants' own finding that
+  DART serves from 2015 while the replay starts 2013: by time half,
+  coverage rises from 58.13% (first half) to 70.65% (second half) as more
+  consecutive Korean filing pairs accumulate.
+- THE SAME CONSTRUCTION SERVES BOTH VALIDATION LEGS, NEVER TWO
+  IMPLEMENTATIONS OF "ACCELERATION". `pipeline/fundamental_acceleration.py`
+  is the single shared PIT filing-pair resolver; the historical discovery
+  study (`fundamental_acceleration_discovery.py`, scored against
+  `replay-v16`) and prospective sealing
+  (`fundamental_acceleration_seal.py`, appended immutably before an
+  outcome can be known) both call it directly rather than each
+  re-deriving "current" and "previous" filing on their own.
+- A SEALED RECORD IS KEYED BY `(sealVersion, ticker, asOfDate)` AND A
+  COLLIDING KEY REFUSES THE WHOLE BATCH RATHER THAN MERGING OR OVERWRITING
+  IT. `fundamental_acceleration_seal.append_seal` raises rather than
+  silently reseals a key that already exists, and every sealed row carries
+  its own SHA-256 digest over its canonical content so a downstream reader
+  can verify a row was not altered after sealing without trusting file
+  mtime or git history alone. This mirrors the ledger's own append-only
+  signal discipline (date x region x ticker x model version) one level
+  down, at the record-digest level.
+- THE PROSPECTIVE SEALING WORKFLOW SHIPS `workflow_dispatch`-ONLY,
+  DELIBERATELY, BECAUSE ITS WIRING HAS NOT BEEN EXERCISED AGAINST REAL
+  SECRETS. `Seal fundamental acceleration signal` builds `data/site-data
+  .json` fresh, extracts the live candidate universe from its own
+  `longTerm.regions.*.researchTable`
+  (`scripts/extract_acceleration_candidates.py`), derives live PIT
+  fundamentals from the raw collected shards via the SAME
+  `scripts/build_pit_fundamentals.py` the sealed replay uses (never a
+  second derivation path), and seals. `PROSPECTIVE_START_DATE` is fixed by
+  whichever run a human first triggers after this PR merges; converting the
+  workflow to a schedule is a follow-up decision, not made here.
+- A DIAGNOSTIC THAT IS NEVER SCORED STILL RESPECTS THE SAME SECTOR
+  EXEMPTION THE SCORED FACTOR DOES. `debt_acceleration_diagnostic` masks
+  Financials/Utilities/Real Estate/Holding names' `debtToEquity`
+  acceleration to unmeasured, exactly as production's own leverage penalty
+  masks them (`lev.where(~lev_exempt)` in `longterm.score_cross_section`),
+  never includes them at a neutral zero. 297,790 non-exempt observations
+  measured, 17,617 exempt-sector observations masked; `debtToEquity`
+  acceleration is never in the composite regardless.
+- THE HISTORICAL DISCOVERY RUN IS DETERMINISTIC AND THE SEALED LEDGER IS
+  UNCHANGED, BOTH VERIFIED MECHANICALLY, NOT ASSERTED. Two full runs
+  against the real sealed `replay-v16` ledger (399,547 signals, 396,358
+  outcomes, 38,134 PIT filings across 904 tickers) produced byte-identical
+  JSON and Markdown reports, and the runner itself raises
+  `SEALED_LEDGER_CHANGED` if the ledger's own content digest differs
+  before and after — it did not, on either run.
+- NO PORTFOLIO WAS SELECTED OR VALUED, NO WEIGHT WAS TUNED IN RESPONSE TO
+  THIS RESULT, AND THE NEXT STEP NAMED IS A NEW SOURCE, NOT A RE-TUNE.
+  `kelly_portfolio.select_portfolio_by_scores` and `replay_valuation` are
+  never called anywhere in this study. Per the design's own case routing,
+  Case D points at evaluating a new information source as a separate
+  CHALLENGER rather than re-tuning this composite's fields, weights, or
+  windows — and the KR/US and first-half/second-half sign instability is
+  named as its own finding rather than folded into a bare "no effect".
+
 ## Lint gate invariants (v2.11)
 
 - The enabled rule set reports ZERO findings on `main`. A rule is turned on in the
