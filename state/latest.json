@@ -1,8 +1,8 @@
 {
   "schemaVersion": "2.7.0",
   "modelVersion": "longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
-  "buildCommitSha": "8e892e67f0e9",
-  "generatedAt": "2026-09-22T21:32:41.104805+00:00",
+  "buildCommitSha": "44d8605b09ef",
+  "generatedAt": "2026-09-22T23:01:25.250588+00:00",
   "marketAsOf": "2026-09-22",
   "macroRegime": "Transition/Low confidence",
   "holdingsByRegion": {
@@ -57,7 +57,7 @@
     "KO": "ACCUMULATE_GRADUALLY",
     "SNDK": "WAIT_FOR_PULLBACK",
     "ALL": "WATCH",
-    "VTRS": "WAIT_FOR_PULLBACK",
+    "TGT": "WAIT_FOR_PULLBACK",
     "078930.KS": "WAIT_FOR_PULLBACK",
     "402340.KS": "WAIT_FOR_PULLBACK",
     "034730.KS": "WAIT_FOR_PULLBACK",
@@ -115,7 +115,7 @@
   "stale": false,
   "productionValidation": {
     "passed": true,
-    "validatedAt": "2026-09-22T21:32:41.104805+00:00",
+    "validatedAt": "2026-09-22T23:01:25.250588+00:00",
     "errors": []
   }
 }
