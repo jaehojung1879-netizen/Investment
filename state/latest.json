@@ -2,7 +2,7 @@
   "schemaVersion": "2.7.0",
   "modelVersion": "longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
   "buildCommitSha": "e48cec540fcc",
-  "generatedAt": "2026-09-22T09:26:52.635457+00:00",
+  "generatedAt": "2026-09-22T13:49:03.069080+00:00",
   "marketAsOf": "2026-09-22",
   "macroRegime": "Transition/Low confidence",
   "holdingsByRegion": {
@@ -11,12 +11,12 @@
       "MU",
       "NUE",
       "SPG",
+      "MO",
+      "ALL",
       "GOOGL",
       "GOOG",
-      "MO",
       "TGT",
       "HST",
-      "ALL",
       "KO",
       "MPC"
     ],
@@ -47,17 +47,17 @@
     "MU": "WAIT_FOR_PULLBACK",
     "NUE": "WATCH",
     "SPG": "WATCH",
+    "MO": "ACCUMULATE_GRADUALLY",
+    "ALL": "WATCH",
     "GOOGL": "ACCUMULATE_GRADUALLY",
     "GOOG": "ACCUMULATE_GRADUALLY",
-    "MO": "ACCUMULATE_GRADUALLY",
     "TGT": "WAIT_FOR_PULLBACK",
     "HST": "WATCH",
-    "ALL": "WATCH",
     "KO": "ACCUMULATE_GRADUALLY",
     "MPC": "WAIT_FOR_PULLBACK",
     "TRV": "WAIT_FOR_PULLBACK",
-    "SWK": "WATCH",
     "VTRS": "WAIT_FOR_PULLBACK",
+    "GM": "WATCH",
     "078930.KS": "WAIT_FOR_PULLBACK",
     "402340.KS": "WAIT_FOR_PULLBACK",
     "034730.KS": "WAIT_FOR_PULLBACK",
@@ -115,7 +115,7 @@
   "stale": false,
   "productionValidation": {
     "passed": true,
-    "validatedAt": "2026-09-22T09:26:52.635457+00:00",
+    "validatedAt": "2026-09-22T13:49:03.069080+00:00",
     "errors": []
   }
 }
