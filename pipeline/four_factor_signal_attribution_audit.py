@@ -261,6 +261,22 @@ def _p_value(mean, se) -> float | None:
     return float(2.0 * sps.norm.sf(z))
 
 
+def _with_se_and_p(summary: dict) -> dict:
+    """`portfolio_validation._nw_summary` reports the 95% CI but not `se`
+    directly. Every HAC summary this module pools through
+    `pool_region_summaries` needs `se` recovered from the CI half-width
+    first -- centralized here so every caller (`sleeve_ic_table`,
+    `incremental_ic_table`, `quartile_spread_table`) attaches it the same
+    way, rather than each reimplementing it and risking one silently
+    omitting it (which `pool_region_summaries` would then read as
+    'this region has no usable estimate' and drop).
+    """
+    ci = summary.get("ci95")
+    summary["se"] = round((ci[1] - ci[0]) / (2 * 1.96), 8) if ci else None
+    summary["rawPValue"] = _p_value(summary.get("mean"), summary.get("se"))
+    return summary
+
+
 def pool_region_summaries(region_summaries: dict[str, dict]) -> dict:
     """Fixed-effect inverse-variance combination of independently-HAC-estimated
     regional means -- reused off-the-shelf statistics, not a method invented
@@ -319,13 +335,7 @@ def sleeve_ic_table(frame: pd.DataFrame, horizon: int, *, column_map=None) -> di
         by_region: dict[str, dict] = {}
         for region in regions:
             series = standalone_ic_series(frame, region, column)
-            summary = PV._nw_summary(series, horizon)
-            # `_nw_summary` reports the CI but not `se` directly; recover it
-            # from the CI half-width for the p-value and the pooling step.
-            ci = summary.get("ci95")
-            summary["se"] = round((ci[1] - ci[0]) / (2 * 1.96), 8) if ci else None
-            summary["rawPValue"] = _p_value(summary.get("mean"), summary.get("se"))
-            by_region[region] = summary
+            by_region[region] = _with_se_and_p(PV._nw_summary(series, horizon))
         pooled = pool_region_summaries(by_region)
         out[sleeve] = {"byRegion": by_region, "pooled": pooled}
     return out
@@ -437,7 +447,7 @@ def incremental_ic_table(incremental_rows: dict[str, list[tuple]], horizon: int)
     out = {}
     for sleeve, rows in incremental_rows.items():
         series = pd.Series(dict(rows), dtype=float).sort_index() if rows else pd.Series(dtype=float)
-        out[sleeve] = PV._nw_summary(series, horizon)
+        out[sleeve] = _with_se_and_p(PV._nw_summary(series, horizon))
     return out
 
 
@@ -445,7 +455,7 @@ def quartile_spread_table(quartile_rows: dict[str, list[tuple]], horizon: int) -
     out = {}
     for sleeve, rows in quartile_rows.items():
         series = pd.Series(dict(rows), dtype=float).sort_index() if rows else pd.Series(dtype=float)
-        summary = PV._nw_summary(series, horizon)
+        summary = _with_se_and_p(PV._nw_summary(series, horizon))
         summary["hitRatePct"] = (round(float((series > 0).mean() * 100), 2)
                                  if len(series) else None)
         out[sleeve] = summary

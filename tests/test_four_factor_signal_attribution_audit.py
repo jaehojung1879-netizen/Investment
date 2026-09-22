@@ -244,6 +244,33 @@ def test_redundancy_matrix_on_no_frames_reports_unavailable():
     assert C.redundancy_matrix([]) == {"available": False}
 
 
+def test_incremental_ic_table_attaches_se_so_pooling_does_not_silently_drop_it():
+    # Regression: `_nw_summary` never returns `se` directly, and
+    # `pool_region_summaries` reads a missing `se` as "no usable estimate".
+    # incremental_ic_table (and quartile_spread_table) must attach `se`
+    # themselves or a real, non-degenerate incremental IC vanishes from
+    # every pooled reading with no error raised anywhere.
+    frame = _redundant_frame(n_dates=6, n_per_date=20)
+    artifacts = C.cross_section_pass(frame, "US")
+    table = C.incremental_ic_table(artifacts["incrementalRows"], 126)
+    # `quality` is independent noise in `_redundant_frame`, so its residual
+    # against the other three sleeves is never degenerate.
+    assert table["quality"]["se"] is not None
+    pooled = C.pool_region_summaries({"US": table["quality"]})
+    assert pooled["mean"] is not None
+
+
+def test_quartile_spread_table_attaches_se_so_pooling_does_not_silently_drop_it():
+    frame = _monotonic_frame(n_per_date=16, noise=0.1)
+    artifacts = C.cross_section_pass(frame.assign(value=frame["momentum"],
+                                                   quality=frame["momentum"],
+                                                   lowvol=frame["momentum"]), "US")
+    table = C.quartile_spread_table(artifacts["quartileRows"], 126)
+    assert table["momentum"]["se"] is not None
+    pooled = C.pool_region_summaries({"US": table["momentum"]})
+    assert pooled["mean"] is not None
+
+
 def test_incremental_ic_collapses_for_a_sleeve_fully_explained_by_others():
     frame = _redundant_frame()
     artifacts = C.cross_section_pass(frame, "US")
