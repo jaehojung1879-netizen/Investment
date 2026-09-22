@@ -1,0 +1,576 @@
+{
+  "answers": [
+    {
+      "a": "Data-sufficient coverage ratio 0.6495 over 399547 signal name-dates (MEETS the pre-registered 0.6 minimum). Status breakdown: {'OK': 336309, 'NO_FILING_VISIBLE': 51893, 'NOT_CONSECUTIVE': 9725, 'NO_PREVIOUS_FILING': 1620}.",
+      "q": "Q1. Is the two-consecutive-filing PIT construction computable on real data, and at what overall coverage?"
+    },
+    {
+      "a": "By region: KR: 0.1376; US: 0.8179. By half: first 0.5813, second 0.7065.",
+      "q": "Q2. How does coverage split by region and by chronological half?"
+    },
+    {
+      "a": "debtToEquity: 93.6140%; earningsGrowth: 74.9910%; operatingMargin: 75.9640%; profitMargin: 79.1180%; roe: 79.4620%",
+      "q": "Q3. Which of the four primary fields (roe, operatingMargin, profitMargin, earningsGrowth) most limits coverage among OK consecutive-filing pairs?"
+    },
+    {
+      "a": "Pooled Spearman(accelerationPercentile, qualityPercentile) = 0.1180 (PASSES the pre-registered |rho| < 0.7 redundancy threshold).",
+      "q": "Q4. Is the acceleration composite genuinely distinct information from the existing Quality LEVEL factor, or a relabelling of it?"
+    },
+    {
+      "a": "lowvol: -0.0124; momentum: 0.1772; value: -0.0235",
+      "q": "Q5. How does the acceleration composite correlate with the other three existing sleeves (momentum, value, lowvol), descriptively?"
+    },
+    {
+      "a": "mean -0.0026, CI [-0.0257, 0.0204], raw p 0.8233, Holm p 1.0000.",
+      "q": "Q6. What is the standalone pooled-within-region Rank IC at the primary 126D horizon, with its 95% CI and Holm-adjusted p-value?"
+    },
+    {
+      "a": "mean -0.0009, CI [-0.0205, 0.0187], raw p 0.9248, Holm p 1.0000.",
+      "q": "Q7. What is the incremental Rank IC once Quality's own level is residualized out (single-predictor regression, Quality alone), with its 95% CI and Holm-adjusted p-value?"
+    },
+    {
+      "a": "{'KR': 'POSITIVE', 'US': 'NEGATIVE'} -- REGION_SIGN_UNSTABLE.",
+      "q": "Q8. Do KR and US agree in direction on the standalone Rank IC?"
+    },
+    {
+      "a": "first half mean -0.0222, second half mean 0.0157 -- HALF_SIGN_UNSTABLE.",
+      "q": "Q9. Does the direction persist across a fixed chronological half-split of the sample?"
+    },
+    {
+      "a": "quintile means [0.002275, -0.010594, -0.016543, -0.013075, 0.00677], monotonicity 0.5000, Q5-Q1 0.0045.",
+      "q": "Q10. Is the primary-horizon relationship monotone across acceleration quintiles?"
+    },
+    {
+      "a": "qualityQ1: high-low=0.0051 (n=1348); qualityQ2: high-low=0.0025 (n=1348); qualityQ3: high-low=-0.0042 (n=1348); qualityQ4: high-low=0.0044 (n=1348); qualityQ5: high-low=0.0135 (n=1348)",
+      "q": "Q11. Within a fixed Quality-percentile quintile, does a median-split on acceleration separate forward excess return (descriptive only, no score, ranking or rule)?"
+    },
+    {
+      "a": "D_NO_DISCOVERY_EVIDENCE -- Standalone and/or incremental pooled Rank IC point estimates are not both positive, or the evidence is otherwise mixed. No discovery evidence of a forward-return relationship beyond the existing Quality level factor on this sample. Per design, a favourable reading here is discovery-stage evidence only; confirmatory validation is reserved for the prospective sealed window, never for a same-sample re-tune of this composite.",
+      "q": "Q12. What is the overall outcome classification, and what does this study recommend next?"
+    }
+  ],
+  "classification": {
+    "case": "D_NO_DISCOVERY_EVIDENCE",
+    "rationale": "Standalone and/or incremental pooled Rank IC point estimates are not both positive, or the evidence is otherwise mixed. No discovery evidence of a forward-return relationship beyond the existing Quality level factor on this sample."
+  },
+  "composite": {
+    "diagnosticFields": [
+      "debtToEquity"
+    ],
+    "minPrimaryFields": 3,
+    "normalization": "longterm.sector_neutral_z, per (date, region)",
+    "primaryFields": [
+      "roe",
+      "operatingMargin",
+      "profitMargin",
+      "earningsGrowth"
+    ],
+    "winsor": 2.5
+  },
+  "confirmatoryFamily": {
+    "correction": "HOLM_BONFERRONI",
+    "hypotheses": [
+      "standalone",
+      "incremental"
+    ],
+    "primaryHorizon": 126,
+    "statistic": "POOLED_WITHIN_REGION_126D_RANK_IC"
+  },
+  "coverage": {
+    "byField": {
+      "debtToEquity": {
+        "presentAmongOkFilingPairs": 314831,
+        "presentPct": 93.614
+      },
+      "earningsGrowth": {
+        "presentAmongOkFilingPairs": 252201,
+        "presentPct": 74.991
+      },
+      "operatingMargin": {
+        "presentAmongOkFilingPairs": 255474,
+        "presentPct": 75.964
+      },
+      "profitMargin": {
+        "presentAmongOkFilingPairs": 266082,
+        "presentPct": 79.118
+      },
+      "roe": {
+        "presentAmongOkFilingPairs": 267237,
+        "presentPct": 79.462
+      }
+    },
+    "byRegion": {
+      "KR": {
+        "byStatus": {
+          "NOT_CONSECUTIVE": 1745,
+          "NO_FILING_VISIBLE": 50575,
+          "NO_PREVIOUS_FILING": 993,
+          "OK": 45588
+        },
+        "dataSufficient": 13611,
+        "dataSufficientRatio": 0.1376,
+        "total": 98901
+      },
+      "US": {
+        "byStatus": {
+          "NOT_CONSECUTIVE": 7980,
+          "NO_FILING_VISIBLE": 1318,
+          "NO_PREVIOUS_FILING": 627,
+          "OK": 290721
+        },
+        "dataSufficient": 245894,
+        "dataSufficientRatio": 0.8179,
+        "total": 300646
+      }
+    },
+    "byTimeHalf": {
+      "firstHalf": {
+        "byStatus": {
+          "NOT_CONSECUTIVE": 3267,
+          "NO_FILING_VISIBLE": 36181,
+          "NO_PREVIOUS_FILING": 844,
+          "OK": 141602
+        },
+        "dataSufficient": 105730,
+        "dataSufficientRatio": 0.5813,
+        "total": 181894
+      },
+      "secondHalf": {
+        "byStatus": {
+          "NOT_CONSECUTIVE": 6458,
+          "NO_FILING_VISIBLE": 15712,
+          "NO_PREVIOUS_FILING": 776,
+          "OK": 194707
+        },
+        "dataSufficient": 153775,
+        "dataSufficientRatio": 0.7065,
+        "total": 217653
+      }
+    },
+    "meetsMinCoverageRatio": true,
+    "minCoverageRatio": 0.6,
+    "overall": {
+      "byStatus": {
+        "NOT_CONSECUTIVE": 9725,
+        "NO_FILING_VISIBLE": 51893,
+        "NO_PREVIOUS_FILING": 1620,
+        "OK": 336309
+      },
+      "dataSufficient": 259505,
+      "dataSufficientRatio": 0.6495,
+      "total": 399547
+    }
+  },
+  "debtAccelerationDiagnostic": {
+    "exemptObservationsMasked": 17617,
+    "exemptSectors": [
+      "Financials",
+      "Holding",
+      "Real Estate",
+      "Utilities"
+    ],
+    "meanDeltaDebtToEquityNonExempt": 0.02836,
+    "nonExemptObservations": 297790,
+    "note": "Diagnostic only -- never included in the acceleration composite. Exempt-sector names are masked out exactly as production's own leverage penalty masks them, never included at a zero/neutral value."
+  },
+  "fundamentalsStoreDiagnostics": {
+    "availabilityRule": "availableFrom <= replayDate",
+    "contract": "PIT_FUNDAMENTALS_V1",
+    "currentSnapshotBackfillAllowed": false,
+    "errors": [],
+    "overlappingTickers": [],
+    "perSource": {
+      "pit-kr": {
+        "errors": [],
+        "rowsAccepted": 4302,
+        "rowsRead": 4302,
+        "rowsRejected": 0,
+        "tickers": 125
+      },
+      "pit-us": {
+        "errors": [],
+        "rowsAccepted": 33832,
+        "rowsRead": 33832,
+        "rowsRejected": 0,
+        "tickers": 779
+      }
+    },
+    "rowsAccepted": 38134,
+    "rowsRead": 38134,
+    "rowsRejected": 0
+  },
+  "halfStability": {
+    "agree": false,
+    "firstHalf": {
+      "ci95": [
+        -0.047315,
+        0.002967
+      ],
+      "mean": -0.022174,
+      "method": "INVERSE_VARIANCE_FIXED_EFFECT",
+      "rawPValue": 0.08387,
+      "regionsUsed": 2,
+      "se": 0.012827
+    },
+    "label": "HALF_SIGN_UNSTABLE",
+    "secondHalf": {
+      "ci95": [
+        -0.019231,
+        0.050658
+      ],
+      "mean": 0.015714,
+      "method": "INVERSE_VARIANCE_FIXED_EFFECT",
+      "rawPValue": 0.378118,
+      "regionsUsed": 2,
+      "se": 0.017829
+    }
+  },
+  "holm": {
+    "incremental": 1.0,
+    "standalone": 1.0
+  },
+  "incremental": {
+    "byRegion": {
+      "KR": {
+        "ci95": [
+          -0.047174,
+          0.121159
+        ],
+        "effectiveIndependentDates": 18,
+        "hacLag": 25,
+        "ir": 0.1513,
+        "mean": 0.036992,
+        "median": 0.056435,
+        "positiveRate": 0.5826,
+        "rawPValue": 0.38899618956378845,
+        "se": 0.04294209,
+        "std": 0.244423,
+        "uniqueDates": 460
+      },
+      "US": {
+        "ci95": [
+          -0.02328,
+          0.017039
+        ],
+        "effectiveIndependentDates": 27,
+        "hacLag": 25,
+        "ir": -0.043,
+        "mean": -0.00312,
+        "median": 0.000919,
+        "positiveRate": 0.5132,
+        "rawPValue": 0.7616301312629695,
+        "se": 0.01028546,
+        "std": 0.072575,
+        "uniqueDates": 680
+      }
+    },
+    "pooled": {
+      "ci95": [
+        -0.020549,
+        0.018661
+      ],
+      "mean": -0.000944,
+      "method": "INVERSE_VARIANCE_FIXED_EFFECT",
+      "rawPValue": 0.924838,
+      "regionsUsed": 2,
+      "se": 0.010003
+    }
+  },
+  "inputSnapshot": {
+    "sha256": "f0781292f508a123c234ded6d28aa8e84a0dc3cc29500e14989dc0b68f53b4d2",
+    "through": "2026-09-14"
+  },
+  "orthogonality": {
+    "byFactor": {
+      "lowvol": {
+        "meanSpearman": -0.0124,
+        "medianSpearman": 0.0091,
+        "observations": 1193
+      },
+      "momentum": {
+        "meanSpearman": 0.1772,
+        "medianSpearman": 0.1604,
+        "observations": 1193
+      },
+      "quality": {
+        "meanSpearman": 0.118,
+        "medianSpearman": 0.1482,
+        "observations": 1193
+      },
+      "value": {
+        "meanSpearman": -0.0235,
+        "medianSpearman": -0.0185,
+        "observations": 1193
+      }
+    },
+    "failsRedundancy": false,
+    "maxOrthogonalityAbsRho": 0.7,
+    "note": "Descriptive momentum/value/lowvol correlations are reported beside the primary Quality reading; only Quality's |rho| enters the FAIL_REDUNDANCY criterion, per this study's own pre-registered design.",
+    "qualityAbsRho": 0.118
+  },
+  "primaryHorizon": 126,
+  "productionChanged": false,
+  "promotionEligible": false,
+  "qualityConditional": {
+    "qualityQ1": {
+      "difference": 0.005072,
+      "highAccelerationMeanExcess": 0.014381,
+      "lowAccelerationMeanExcess": 0.009309,
+      "observations": 1348
+    },
+    "qualityQ2": {
+      "difference": 0.002454,
+      "highAccelerationMeanExcess": -0.007592,
+      "lowAccelerationMeanExcess": -0.010046,
+      "observations": 1348
+    },
+    "qualityQ3": {
+      "difference": -0.004193,
+      "highAccelerationMeanExcess": -0.021879,
+      "lowAccelerationMeanExcess": -0.017686,
+      "observations": 1348
+    },
+    "qualityQ4": {
+      "difference": 0.004375,
+      "highAccelerationMeanExcess": -0.011667,
+      "lowAccelerationMeanExcess": -0.016042,
+      "observations": 1348
+    },
+    "qualityQ5": {
+      "difference": 0.013524,
+      "highAccelerationMeanExcess": 0.005836,
+      "lowAccelerationMeanExcess": -0.007688,
+      "observations": 1348
+    }
+  },
+  "quintile": {
+    "monotonicityScore": 0.5,
+    "observationsPerQuintile": [
+      674,
+      674,
+      674,
+      674,
+      674
+    ],
+    "q5MinusQ1": 0.004495,
+    "quintileMeans": [
+      0.002275,
+      -0.010594,
+      -0.016543,
+      -0.013075,
+      0.00677
+    ]
+  },
+  "regionStability": {
+    "agree": false,
+    "label": "REGION_SIGN_UNSTABLE",
+    "signsByRegion": {
+      "KR": "POSITIVE",
+      "US": "NEGATIVE"
+    }
+  },
+  "researchHistoryContamination": "replay-v16 has been used by eleven prior CHALLENGER studies on this ledger. This result is DISCOVERY / DIAGNOSTIC EVIDENCE, not FINAL OUT-OF-SAMPLE VALIDATION, and is not used as production promotion evidence regardless of how favourable any single reading looks. Confirmatory validation is reserved for the prospective sealed signal window.",
+  "sealedInvariant": {
+    "after": "365dddb1387f1644693c8d458dd824ed8c039d850a4227de5756570664b9a7cc",
+    "before": "365dddb1387f1644693c8d458dd824ed8c039d850a4227de5756570664b9a7cc",
+    "unchanged": true
+  },
+  "secondaryHorizonTables": {
+    "21": {
+      "byRegion": {
+        "KR": {
+          "ci95": [
+            -0.018142,
+            0.050864
+          ],
+          "effectiveIndependentDates": 97,
+          "hacLag": 4,
+          "ir": 0.0727,
+          "mean": 0.016361,
+          "median": -0.00613,
+          "positiveRate": 0.4876,
+          "rawPValue": 0.3526747048839808,
+          "se": 0.01760357,
+          "std": 0.225008,
+          "uniqueDates": 482
+        },
+        "US": {
+          "ci95": [
+            -0.004897,
+            0.01318
+          ],
+          "effectiveIndependentDates": 141,
+          "hacLag": 4,
+          "ir": 0.0545,
+          "mean": 0.004142,
+          "median": 0.004112,
+          "positiveRate": 0.5221,
+          "rawPValue": 0.3690825554803876,
+          "se": 0.00461148,
+          "std": 0.076006,
+          "uniqueDates": 701
+        }
+      },
+      "pooled": {
+        "ci95": [
+          -0.003817,
+          0.01367
+        ],
+        "mean": 0.004927,
+        "method": "INVERSE_VARIANCE_FIXED_EFFECT",
+        "rawPValue": 0.26942,
+        "regionsUsed": 2,
+        "se": 0.004461
+      }
+    },
+    "252": {
+      "byRegion": {
+        "KR": {
+          "ci95": [
+            -0.061129,
+            0.10153
+          ],
+          "effectiveIndependentDates": 9,
+          "hacLag": 50,
+          "ir": 0.0913,
+          "mean": 0.020201,
+          "median": 0.028743,
+          "positiveRate": 0.5843,
+          "rawPValue": 0.6263760004923431,
+          "se": 0.04149464,
+          "std": 0.221159,
+          "uniqueDates": 433
+        },
+        "US": {
+          "ci95": [
+            -0.040971,
+            0.015646
+          ],
+          "effectiveIndependentDates": 13,
+          "hacLag": 50,
+          "ir": -0.1636,
+          "mean": -0.012662,
+          "median": -0.00934,
+          "positiveRate": 0.4349,
+          "rawPValue": 0.38065993400362796,
+          "se": 0.01444311,
+          "std": 0.077409,
+          "uniqueDates": 653
+        }
+      },
+      "pooled": {
+        "ci95": [
+          -0.035846,
+          0.017624
+        ],
+        "mean": -0.009111,
+        "method": "INVERSE_VARIANCE_FIXED_EFFECT",
+        "rawPValue": 0.504182,
+        "regionsUsed": 2,
+        "se": 0.01364
+      }
+    },
+    "63": {
+      "byRegion": {
+        "KR": {
+          "ci95": [
+            -0.044474,
+            0.068555
+          ],
+          "effectiveIndependentDates": 37,
+          "hacLag": 12,
+          "ir": 0.0513,
+          "mean": 0.012041,
+          "median": -0.005727,
+          "positiveRate": 0.4852,
+          "rawPValue": 0.6762408437357842,
+          "se": 0.02883393,
+          "std": 0.234729,
+          "uniqueDates": 474
+        },
+        "US": {
+          "ci95": [
+            -0.017225,
+            0.013987
+          ],
+          "effectiveIndependentDates": 54,
+          "hacLag": 12,
+          "ir": -0.0213,
+          "mean": -0.001619,
+          "median": 0.003826,
+          "positiveRate": 0.5195,
+          "rawPValue": 0.8388734040719361,
+          "se": 0.00796224,
+          "std": 0.075846,
+          "uniqueDates": 693
+        }
+      },
+      "pooled": {
+        "ci95": [
+          -0.015694,
+          0.014392
+        ],
+        "mean": -0.000651,
+        "method": "INVERSE_VARIANCE_FIXED_EFFECT",
+        "rawPValue": 0.932386,
+        "regionsUsed": 2,
+        "se": 0.007675
+      }
+    }
+  },
+  "secondaryHorizons": [
+    21,
+    63,
+    252
+  ],
+  "standalone": {
+    "byRegion": {
+      "KR": {
+        "ci95": [
+          -0.050173,
+          0.122401
+        ],
+        "effectiveIndependentDates": 18,
+        "hacLag": 25,
+        "ir": 0.1462,
+        "mean": 0.036114,
+        "median": 0.05116,
+        "positiveRate": 0.5739,
+        "rawPValue": 0.4120304878966152,
+        "se": 0.04402398,
+        "std": 0.246938,
+        "uniqueDates": 460
+      },
+      "US": {
+        "ci95": [
+          -0.029504,
+          0.018308
+        ],
+        "effectiveIndependentDates": 27,
+        "hacLag": 25,
+        "ir": -0.0675,
+        "mean": -0.005598,
+        "median": 0.003523,
+        "positiveRate": 0.5176,
+        "rawPValue": 0.6462574494656392,
+        "se": 0.01219694,
+        "std": 0.082898,
+        "uniqueDates": 680
+      }
+    },
+    "pooled": {
+      "ci95": [
+        -0.025663,
+        0.020414
+      ],
+      "mean": -0.002625,
+      "method": "INVERSE_VARIANCE_FIXED_EFFECT",
+      "rawPValue": 0.823315,
+      "regionsUsed": 2,
+      "se": 0.011754
+    }
+  },
+  "status": "DISCOVERY",
+  "totalReadings": 399547,
+  "version": "fundamental-acceleration-discovery-v1"
+}
