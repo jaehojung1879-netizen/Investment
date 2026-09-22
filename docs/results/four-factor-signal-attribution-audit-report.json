@@ -1,0 +1,2868 @@
+{
+  "answers": [
+    {
+      "a": "momentum: pooled 126D IC -0.0015 [-0.0297, 0.0267]; value: pooled 126D IC -0.0056 [-0.0381, 0.0269]; quality: pooled 126D IC -0.0223 [-0.0473, 0.0027]; lowvol: pooled 126D IC 0.0286 [-0.0100, 0.0673]",
+      "q": "Q1. Which sleeves show a standalone relationship with forward benchmark excess?"
+    },
+    {
+      "a": "momentum: raw p=0.9155, Holm-adjusted p=1.0000; value: raw p=0.7373, Holm-adjusted p=1.0000; quality: raw p=0.0805, Holm-adjusted p=0.3220; lowvol: raw p=0.1464, Holm-adjusted p=0.4392. Correction applied over exactly these 4 pooled-126D p-values.",
+      "q": "Q2. What survives Holm multiple-testing correction across the primary four-sleeve family?"
+    },
+    {
+      "a": "Redundancy matrix (pooled, mean pairwise Spearman): momentum-value -0.1706, momentum-quality 0.0461, momentum-lowvol 0.0028, value-quality -0.1182, value-lowvol 0.0859, quality-lowvol 0.0909",
+      "q": "Q3. Which sleeves are redundant with each other?"
+    },
+    {
+      "a": "momentum: standalone -0.0015 vs incremental 0.0212; value: standalone -0.0056 vs incremental -0.0079; quality: standalone -0.0223 vs incremental -0.0177; lowvol: standalone 0.0286 vs incremental 0.0172",
+      "q": "Q4. Does any sleeve carry positive incremental information once the other three are controlled for?"
+    },
+    {
+      "a": "momentum: {'KR': 'NEGATIVE', 'US': 'POSITIVE'}; value: {'KR': 'POSITIVE', 'US': 'NEGATIVE'}; quality: {'KR': 'NEGATIVE', 'US': 'NEGATIVE'}; lowvol: {'KR': 'POSITIVE', 'US': 'NEGATIVE'}",
+      "q": "Q5. Do KR and US agree in direction?"
+    },
+    {
+      "a": "momentum: first-half {'KR': 'NEGATIVE', 'US': 'POSITIVE'}, second-half {'KR': 'POSITIVE', 'US': 'POSITIVE'}; value: first-half {'KR': 'POSITIVE', 'US': 'NEGATIVE'}, second-half {'KR': 'POSITIVE', 'US': 'POSITIVE'}; quality: first-half {'KR': 'POSITIVE', 'US': 'NEGATIVE'}, second-half {'KR': 'NEGATIVE', 'US': 'NEGATIVE'}; lowvol: first-half {'KR': 'POSITIVE', 'US': 'POSITIVE'}, second-half {'KR': 'POSITIVE', 'US': 'NEGATIVE'}",
+      "q": "Q6. Does the direction persist across the first/second half of the sample?"
+    },
+    {
+      "a": "PIT_NOT_AVAILABLE -- the sealed ledger never stored the raw 12-1M/6M momentum inputs, only the blended momentum sleeve percentile. Not substituted with mom20Pct/mom60Pct, which are a different feature.",
+      "q": "Q7. Do the two momentum inputs (12-1M, 6M) carry different information?"
+    },
+    {
+      "a": "PIT_NOT_AVAILABLE -- no raw value input is stored on the sealed signal record.",
+      "q": "Q8. How redundant are the value inputs (trailing/forward earnings yield, book yield, FCF yield)?"
+    },
+    {
+      "a": "PIT_NOT_AVAILABLE -- no raw quality input is stored on the sealed signal record.",
+      "q": "Q9. Does Quality mix offsetting profitability/growth/balance-sheet signals?"
+    },
+    {
+      "a": "Classification per sleeve: momentum=D_UNSTABLE_REGIME_DEPENDENT; value=D_UNSTABLE_REGIME_DEPENDENT; quality=D_UNSTABLE_REGIME_DEPENDENT; lowvol=D_UNSTABLE_REGIME_DEPENDENT. Redundancy: momentum-value mean pairwise Spearman -0.1706, momentum-lowvol 0.0028. Subfactor-level attribution (which would separate 'sleeve is weak' from 'sleeve mixes a good and a bad input') is PIT_NOT_AVAILABLE for three of the four sleeves.",
+      "q": "Q10. Is the composite's weak discrimination best explained by uniformly weak sleeves, a mix of good and bad sleeves, excessive redundancy, or PIT coverage limits?"
+    }
+  ],
+  "classification": {
+    "lowvol": {
+      "case": "D_UNSTABLE_REGIME_DEPENDENT",
+      "halfSignsAgree": false,
+      "incrementalSign": "POSITIVE",
+      "rationale": "Sign disagrees across KR/US and/or first/second half; recorded as possibly conditional, not classified as independent or redundant.",
+      "regionSignsAgree": false,
+      "standaloneSign": "POSITIVE"
+    },
+    "momentum": {
+      "case": "D_UNSTABLE_REGIME_DEPENDENT",
+      "halfSignsAgree": false,
+      "incrementalSign": "POSITIVE",
+      "rationale": "Sign disagrees across KR/US and/or first/second half; recorded as possibly conditional, not classified as independent or redundant.",
+      "regionSignsAgree": false,
+      "standaloneSign": "NEGATIVE"
+    },
+    "quality": {
+      "case": "D_UNSTABLE_REGIME_DEPENDENT",
+      "halfSignsAgree": false,
+      "incrementalSign": "NEGATIVE",
+      "rationale": "Sign disagrees across KR/US and/or first/second half; recorded as possibly conditional, not classified as independent or redundant.",
+      "regionSignsAgree": true,
+      "standaloneSign": "NEGATIVE"
+    },
+    "value": {
+      "case": "D_UNSTABLE_REGIME_DEPENDENT",
+      "halfSignsAgree": false,
+      "incrementalSign": "NEGATIVE",
+      "rationale": "Sign disagrees across KR/US and/or first/second half; recorded as possibly conditional, not classified as independent or redundant.",
+      "regionSignsAgree": false,
+      "standaloneSign": "NEGATIVE"
+    }
+  },
+  "confirmatoryFamily": {
+    "correction": "HOLM_BONFERRONI",
+    "hypotheses": [
+      "momentum",
+      "value",
+      "quality",
+      "lowvol"
+    ],
+    "primaryHorizon": 126,
+    "statistic": "POOLED_WITHIN_REGION_126D_RANK_IC"
+  },
+  "coverage": {
+    "KR": {
+      "lowvol": {
+        "missingRatePct": 0.0,
+        "totalObservations": 95084,
+        "usableObservations": 95084
+      },
+      "momentum": {
+        "missingRatePct": 0.0,
+        "totalObservations": 95084,
+        "usableObservations": 95084
+      },
+      "quality": {
+        "missingRatePct": 53.986,
+        "totalObservations": 95084,
+        "usableObservations": 43752
+      },
+      "value": {
+        "missingRatePct": 55.447,
+        "totalObservations": 95084,
+        "usableObservations": 42363
+      }
+    },
+    "US": {
+      "lowvol": {
+        "missingRatePct": 0.0,
+        "totalObservations": 287716,
+        "usableObservations": 287716
+      },
+      "momentum": {
+        "missingRatePct": 0.0,
+        "totalObservations": 287716,
+        "usableObservations": 287716
+      },
+      "quality": {
+        "missingRatePct": 0.962,
+        "totalObservations": 287716,
+        "usableObservations": 284948
+      },
+      "value": {
+        "missingRatePct": 20.109,
+        "totalObservations": 287716,
+        "usableObservations": 229859
+      }
+    }
+  },
+  "evidenceCoverageAudit": {
+    "byEvidenceCoverageQuartile": {
+      "q1": {
+        "excessReturnMean": -0.018831,
+        "excessReturnSd": 0.222716,
+        "meanEvidenceCoverage": 0.575,
+        "observations": 112768
+      },
+      "q2": {
+        "excessReturnMean": -0.011674,
+        "excessReturnSd": 0.289471,
+        "meanEvidenceCoverage": 0.8404,
+        "observations": 132479
+      },
+      "q3": {
+        "excessReturnMean": -0.009836,
+        "excessReturnSd": 0.202531,
+        "meanEvidenceCoverage": 0.927,
+        "observations": 137553
+      }
+    },
+    "evidenceCoverageDistribution": {
+      "mean": 0.7933,
+      "median": 0.893,
+      "p10": 0.45,
+      "p90": 0.927,
+      "sd": 0.1637
+    },
+    "note": "Descriptive only, NOT part of the primary confirmatory family. evidenceCoverage weighting is never changed or removed by this study.",
+    "rawAlphaVsAlphaRankSpearman": {
+      "mean": 0.9932,
+      "observations": 1377
+    }
+  },
+  "holm": {
+    "lowvol": 0.439188,
+    "momentum": 1.0,
+    "quality": 0.321964,
+    "value": 1.0
+  },
+  "inputSnapshot": {
+    "sha256": "f0781292f508a123c234ded6d28aa8e84a0dc3cc29500e14989dc0b68f53b4d2",
+    "through": "2026-09-14"
+  },
+  "nextResearchProposals": [
+    "1. Case A (independent sleeve found): design an independent-sample validation of that sleeve's information, never a same-sample reweighting.",
+    "2. Case B (standalone but redundant): investigate an orthogonal information source rather than reweighting the existing four sleeves.",
+    "3. Case C (weak across the board): evaluate new information sources (earnings revisions, estimate dispersion, relative-strength breadth, valuation change) as a separate CHALLENGER -- proposed, not implemented here.",
+    "4. Case D (insufficient data): extend PIT instrumentation to store the raw subfactor inputs (mom121, mom6, and the value/quality raw ratios) on future signal records so a subfactor audit becomes possible -- proposed, not executed."
+  ],
+  "primaryHorizon": 126,
+  "primaryTable": {
+    "lowvol": {
+      "byRegion": {
+        "KR": {
+          "ci95": [
+            0.00473,
+            0.097447
+          ],
+          "effectiveIndependentDates": 27,
+          "hacLag": 25,
+          "ir": 0.344,
+          "mean": 0.051089,
+          "median": 0.04386,
+          "positiveRate": 0.6105,
+          "rawPValue": 0.03077256483236329,
+          "se": 0.0236523,
+          "std": 0.148498,
+          "uniqueDates": 688
+        },
+        "US": {
+          "ci95": [
+            -0.092544,
+            0.047459
+          ],
+          "effectiveIndependentDates": 27,
+          "hacLag": 25,
+          "ir": -0.1007,
+          "mean": -0.022543,
+          "median": -0.020489,
+          "positiveRate": 0.4586,
+          "rawPValue": 0.5279159777066258,
+          "se": 0.03571505,
+          "std": 0.223761,
+          "uniqueDates": 689
+        }
+      },
+      "pooled": {
+        "ci95": [
+          -0.01001,
+          0.067292
+        ],
+        "mean": 0.028641,
+        "method": "INVERSE_VARIANCE_FIXED_EFFECT",
+        "rawPValue": 0.146396,
+        "regionsUsed": 2,
+        "se": 0.01972
+      }
+    },
+    "momentum": {
+      "byRegion": {
+        "KR": {
+          "ci95": [
+            -0.047869,
+            0.023809
+          ],
+          "effectiveIndependentDates": 27,
+          "hacLag": 25,
+          "ir": -0.0873,
+          "mean": -0.01203,
+          "median": -0.004159,
+          "positiveRate": 0.4971,
+          "rawPValue": 0.5105965244352051,
+          "se": 0.0182852,
+          "std": 0.13782,
+          "uniqueDates": 688
+        },
+        "US": {
+          "ci95": [
+            -0.030142,
+            0.061217
+          ],
+          "effectiveIndependentDates": 27,
+          "hacLag": 25,
+          "ir": 0.0967,
+          "mean": 0.015537,
+          "median": 0.026641,
+          "positiveRate": 0.5675,
+          "rawPValue": 0.5049918371201241,
+          "se": 0.02330587,
+          "std": 0.160665,
+          "uniqueDates": 689
+        }
+      },
+      "pooled": {
+        "ci95": [
+          -0.029723,
+          0.02667
+        ],
+        "mean": -0.001526,
+        "method": "INVERSE_VARIANCE_FIXED_EFFECT",
+        "rawPValue": 0.915497,
+        "regionsUsed": 2,
+        "se": 0.014386
+      }
+    },
+    "quality": {
+      "byRegion": {
+        "KR": {
+          "ci95": [
+            -0.068364,
+            0.008422
+          ],
+          "effectiveIndependentDates": 20,
+          "hacLag": 25,
+          "ir": -0.2636,
+          "mean": -0.029971,
+          "median": -0.019849,
+          "positiveRate": 0.4297,
+          "rawPValue": 0.1260047639456781,
+          "se": 0.01958827,
+          "std": 0.11371,
+          "uniqueDates": 519
+        },
+        "US": {
+          "ci95": [
+            -0.049589,
+            0.016301
+          ],
+          "effectiveIndependentDates": 27,
+          "hacLag": 25,
+          "ir": -0.1475,
+          "mean": -0.016644,
+          "median": -0.007689,
+          "positiveRate": 0.4659,
+          "rawPValue": 0.322074774517384,
+          "se": 0.01680867,
+          "std": 0.112874,
+          "uniqueDates": 689
+        }
+      },
+      "pooled": {
+        "ci95": [
+          -0.047298,
+          0.002706
+        ],
+        "mean": -0.022296,
+        "method": "INVERSE_VARIANCE_FIXED_EFFECT",
+        "rawPValue": 0.080491,
+        "regionsUsed": 2,
+        "se": 0.012756
+      }
+    },
+    "value": {
+      "byRegion": {
+        "KR": {
+          "ci95": [
+            -0.034042,
+            0.085361
+          ],
+          "effectiveIndependentDates": 20,
+          "hacLag": 25,
+          "ir": 0.1549,
+          "mean": 0.025659,
+          "median": 0.015171,
+          "positiveRate": 0.5414,
+          "rawPValue": 0.39957257792701983,
+          "se": 0.03045995,
+          "std": 0.16562,
+          "uniqueDates": 519
+        },
+        "US": {
+          "ci95": [
+            -0.057473,
+            0.020035
+          ],
+          "effectiveIndependentDates": 27,
+          "hacLag": 25,
+          "ir": -0.1473,
+          "mean": -0.018719,
+          "median": -0.021084,
+          "positiveRate": 0.434,
+          "rawPValue": 0.3437808025941209,
+          "se": 0.01977245,
+          "std": 0.12706,
+          "uniqueDates": 689
+        }
+      },
+      "pooled": {
+        "ci95": [
+          -0.038069,
+          0.026943
+        ],
+        "mean": -0.005563,
+        "method": "INVERSE_VARIANCE_FIXED_EFFECT",
+        "rawPValue": 0.7373,
+        "regionsUsed": 2,
+        "se": 0.016585
+      }
+    }
+  },
+  "productionChanged": false,
+  "promotionEligible": false,
+  "provenance": {
+    "note": "AVAILABLE/UNAVAILABLE is measured by scanning every signal row for the exact key path production's own raw_inputs()/historical_replay.py would have written it to, not assumed from reading the code. `mom20Pct`/`mom60Pct`/`relMomentum` exist on the record but are a DIFFERENT short-horizon feature (entry/overheat layer), never production's momentum sleeve inputs (mom121, mom6), and are never substituted for them in this audit.",
+    "sleeveLevel": {
+      "lowvol": {
+        "presentCount": 399547,
+        "presentPct": 100.0
+      },
+      "momentum": {
+        "presentCount": 399547,
+        "presentPct": 100.0
+      },
+      "quality": {
+        "presentCount": 344551,
+        "presentPct": 86.2354
+      },
+      "value": {
+        "presentCount": 286225,
+        "presentPct": 71.6374
+      }
+    },
+    "subfactorLevel": {
+      "lowvol": {
+        "vol252": {
+          "presentCount": 399547,
+          "presentPct": 100.0,
+          "status": "AVAILABLE"
+        }
+      },
+      "momentum": {
+        "mom121": {
+          "presentCount": 0,
+          "presentPct": 0.0,
+          "status": "UNAVAILABLE_PIT_INPUT_NOT_STORED"
+        },
+        "mom6": {
+          "presentCount": 0,
+          "presentPct": 0.0,
+          "status": "UNAVAILABLE_PIT_INPUT_NOT_STORED"
+        }
+      },
+      "quality": {
+        "debtToEquity": {
+          "presentCount": 0,
+          "presentPct": 0.0,
+          "status": "UNAVAILABLE_PIT_INPUT_NOT_STORED"
+        },
+        "earningsGrowth": {
+          "presentCount": 0,
+          "presentPct": 0.0,
+          "status": "UNAVAILABLE_PIT_INPUT_NOT_STORED"
+        },
+        "opMargin": {
+          "presentCount": 0,
+          "presentPct": 0.0,
+          "status": "UNAVAILABLE_PIT_INPUT_NOT_STORED"
+        },
+        "profitMargin": {
+          "presentCount": 0,
+          "presentPct": 0.0,
+          "status": "UNAVAILABLE_PIT_INPUT_NOT_STORED"
+        },
+        "roe": {
+          "presentCount": 0,
+          "presentPct": 0.0,
+          "status": "UNAVAILABLE_PIT_INPUT_NOT_STORED"
+        }
+      },
+      "value": {
+        "bookYield": {
+          "presentCount": 0,
+          "presentPct": 0.0,
+          "status": "UNAVAILABLE_PIT_INPUT_NOT_STORED"
+        },
+        "earningsYield": {
+          "presentCount": 0,
+          "presentPct": 0.0,
+          "status": "UNAVAILABLE_PIT_INPUT_NOT_STORED"
+        },
+        "fcfYield": {
+          "presentCount": 0,
+          "presentPct": 0.0,
+          "status": "UNAVAILABLE_PIT_INPUT_NOT_STORED"
+        },
+        "fwdEarningsYield": {
+          "presentCount": 0,
+          "presentPct": 0.0,
+          "status": "UNAVAILABLE_PIT_INPUT_NOT_STORED"
+        }
+      }
+    },
+    "topLevel": {
+      "alpha": {
+        "presentCount": 399547,
+        "presentPct": 100.0
+      },
+      "alphaPercentile": {
+        "presentCount": 399547,
+        "presentPct": 100.0
+      },
+      "evidenceCoverage": {
+        "presentCount": 399547,
+        "presentPct": 100.0
+      },
+      "rawAlpha": {
+        "presentCount": 399547,
+        "presentPct": 100.0
+      }
+    },
+    "totalSignals": 399547
+  },
+  "researchHistoryContamination": "replay-v16 has been used by ten prior CHALLENGER studies on this ledger. This result is DISCOVERY / DIAGNOSTIC EVIDENCE, not FINAL OUT-OF-SAMPLE VALIDATION, and is not used as production promotion evidence regardless of how favourable any single reading looks.",
+  "sealedInvariant": {
+    "after": "365dddb1387f1644693c8d458dd824ed8c039d850a4227de5756570664b9a7cc",
+    "before": "365dddb1387f1644693c8d458dd824ed8c039d850a4227de5756570664b9a7cc",
+    "unchanged": true
+  },
+  "secondary": {
+    "incrementalIC": {
+      "lowvol": {
+        "byRegion": {
+          "KR": {
+            "ci95": [
+              -0.015515,
+              0.081174
+            ],
+            "effectiveIndependentDates": 20,
+            "hacLag": 25,
+            "ir": 0.2277,
+            "mean": 0.03283,
+            "median": 0.019034,
+            "positiveRate": 0.5665,
+            "rawPValue": 0.18318714812507464,
+            "se": 0.02466556,
+            "std": 0.144148,
+            "uniqueDates": 519
+          },
+          "US": {
+            "ci95": [
+              -0.070924,
+              0.053644
+            ],
+            "effectiveIndependentDates": 27,
+            "hacLag": 25,
+            "ir": -0.0435,
+            "mean": -0.00864,
+            "median": -0.014899,
+            "positiveRate": 0.463,
+            "rawPValue": 0.7857065538279577,
+            "se": 0.03177755,
+            "std": 0.198824,
+            "uniqueDates": 689
+          }
+        },
+        "pooled": {
+          "ci95": [
+            -0.020951,
+            0.055429
+          ],
+          "mean": 0.017239,
+          "method": "INVERSE_VARIANCE_FIXED_EFFECT",
+          "rawPValue": 0.376304,
+          "regionsUsed": 2,
+          "se": 0.019485
+        }
+      },
+      "momentum": {
+        "byRegion": {
+          "KR": {
+            "ci95": [
+              -0.020753,
+              0.063335
+            ],
+            "effectiveIndependentDates": 20,
+            "hacLag": 25,
+            "ir": 0.15,
+            "mean": 0.021291,
+            "median": 0.033344,
+            "positiveRate": 0.605,
+            "rawPValue": 0.32093407224498804,
+            "se": 0.02145102,
+            "std": 0.141961,
+            "uniqueDates": 519
+          },
+          "US": {
+            "ci95": [
+              -0.010782,
+              0.052972
+            ],
+            "effectiveIndependentDates": 27,
+            "hacLag": 25,
+            "ir": 0.1781,
+            "mean": 0.021095,
+            "median": 0.023465,
+            "positiveRate": 0.5849,
+            "rawPValue": 0.19461262652932654,
+            "se": 0.01626378,
+            "std": 0.118417,
+            "uniqueDates": 689
+          }
+        },
+        "pooled": {
+          "ci95": [
+            -0.004235,
+            0.046568
+          ],
+          "mean": 0.021167,
+          "method": "INVERSE_VARIANCE_FIXED_EFFECT",
+          "rawPValue": 0.102421,
+          "regionsUsed": 2,
+          "se": 0.01296
+        }
+      },
+      "quality": {
+        "byRegion": {
+          "KR": {
+            "ci95": [
+              -0.070153,
+              -0.007315
+            ],
+            "effectiveIndependentDates": 20,
+            "hacLag": 25,
+            "ir": -0.388,
+            "mean": -0.038734,
+            "median": -0.036807,
+            "positiveRate": 0.3391,
+            "rawPValue": 0.015677876234668566,
+            "se": 0.0160301,
+            "std": 0.099836,
+            "uniqueDates": 519
+          },
+          "US": {
+            "ci95": [
+              -0.029462,
+              0.014975
+            ],
+            "effectiveIndependentDates": 27,
+            "hacLag": 25,
+            "ir": -0.0897,
+            "mean": -0.007244,
+            "median": -0.007521,
+            "positiveRate": 0.4572,
+            "rawPValue": 0.5228048453032604,
+            "se": 0.01133597,
+            "std": 0.080768,
+            "uniqueDates": 689
+          }
+        },
+        "pooled": {
+          "ci95": [
+            -0.035883,
+            0.000399
+          ],
+          "mean": -0.017742,
+          "method": "INVERSE_VARIANCE_FIXED_EFFECT",
+          "rawPValue": 0.055251,
+          "regionsUsed": 2,
+          "se": 0.009256
+        }
+      },
+      "value": {
+        "byRegion": {
+          "KR": {
+            "ci95": [
+              -0.034769,
+              0.073557
+            ],
+            "effectiveIndependentDates": 20,
+            "hacLag": 25,
+            "ir": 0.1283,
+            "mean": 0.019394,
+            "median": 0.016661,
+            "positiveRate": 0.5453,
+            "rawPValue": 0.4827963946305235,
+            "se": 0.02763418,
+            "std": 0.151129,
+            "uniqueDates": 519
+          },
+          "US": {
+            "ci95": [
+              -0.055608,
+              0.016028
+            ],
+            "effectiveIndependentDates": 27,
+            "hacLag": 25,
+            "ir": -0.1688,
+            "mean": -0.01979,
+            "median": -0.01751,
+            "positiveRate": 0.4107,
+            "rawPValue": 0.2788393357712714,
+            "se": 0.01827449,
+            "std": 0.117228,
+            "uniqueDates": 689
+          }
+        },
+        "pooled": {
+          "ci95": [
+            -0.037744,
+            0.022008
+          ],
+          "mean": -0.007868,
+          "method": "INVERSE_VARIANCE_FIXED_EFFECT",
+          "rawPValue": 0.605739,
+          "regionsUsed": 2,
+          "se": 0.015243
+        }
+      }
+    },
+    "quartileSpread": {
+      "lowvol": {
+        "byRegion": {
+          "KR": {
+            "ci95": [
+              -0.044894,
+              0.020047
+            ],
+            "effectiveIndependentDates": 27,
+            "hacLag": 25,
+            "hitRatePct": 48.69,
+            "ir": -0.1137,
+            "mean": -0.012424,
+            "median": -0.002139,
+            "positiveRate": 0.4869,
+            "rawPValue": 0.45328869722027776,
+            "se": 0.01656658,
+            "std": 0.109295,
+            "uniqueDates": 688
+          },
+          "US": {
+            "ci95": [
+              -0.071953,
+              0.004522
+            ],
+            "effectiveIndependentDates": 27,
+            "hacLag": 25,
+            "hitRatePct": 39.62,
+            "ir": -0.2764,
+            "mean": -0.033715,
+            "median": -0.021867,
+            "positiveRate": 0.3962,
+            "rawPValue": 0.08395543135421826,
+            "se": 0.01950893,
+            "std": 0.121965,
+            "uniqueDates": 689
+          }
+        },
+        "pooled": {
+          "ci95": [
+            -0.046095,
+            0.003406
+          ],
+          "mean": -0.021344,
+          "method": "INVERSE_VARIANCE_FIXED_EFFECT",
+          "rawPValue": 0.090976,
+          "regionsUsed": 2,
+          "se": 0.012628
+        }
+      },
+      "momentum": {
+        "byRegion": {
+          "KR": {
+            "ci95": [
+              -0.012397,
+              0.041454
+            ],
+            "effectiveIndependentDates": 27,
+            "hacLag": 25,
+            "hitRatePct": 53.92,
+            "ir": 0.1408,
+            "mean": 0.014528,
+            "median": 0.009249,
+            "positiveRate": 0.5392,
+            "rawPValue": 0.29026373997748467,
+            "se": 0.0137375,
+            "std": 0.103177,
+            "uniqueDates": 688
+          },
+          "US": {
+            "ci95": [
+              -0.019198,
+              0.032326
+            ],
+            "effectiveIndependentDates": 27,
+            "hacLag": 25,
+            "hitRatePct": 56.6,
+            "ir": 0.0738,
+            "mean": 0.006564,
+            "median": 0.012408,
+            "positiveRate": 0.566,
+            "rawPValue": 0.6175004953240882,
+            "se": 0.01314388,
+            "std": 0.088953,
+            "uniqueDates": 689
+          }
+        },
+        "pooled": {
+          "ci95": [
+            -0.008244,
+            0.028984
+          ],
+          "mean": 0.01037,
+          "method": "INVERSE_VARIANCE_FIXED_EFFECT",
+          "rawPValue": 0.274859,
+          "regionsUsed": 2,
+          "se": 0.009497
+        }
+      },
+      "quality": {
+        "byRegion": {
+          "KR": {
+            "ci95": [
+              -0.065201,
+              0.004991
+            ],
+            "effectiveIndependentDates": 20,
+            "hacLag": 25,
+            "hitRatePct": 39.88,
+            "ir": -0.2855,
+            "mean": -0.030105,
+            "median": -0.014531,
+            "positiveRate": 0.3988,
+            "rawPValue": 0.09271072482156731,
+            "se": 0.01790612,
+            "std": 0.105438,
+            "uniqueDates": 519
+          },
+          "US": {
+            "ci95": [
+              -0.032708,
+              0.005205
+            ],
+            "effectiveIndependentDates": 27,
+            "hacLag": 25,
+            "hitRatePct": 46.15,
+            "ir": -0.2145,
+            "mean": -0.013751,
+            "median": -0.002629,
+            "positiveRate": 0.4615,
+            "rawPValue": 0.1550901631253538,
+            "se": 0.00967168,
+            "std": 0.064116,
+            "uniqueDates": 689
+          }
+        },
+        "pooled": {
+          "ci95": [
+            -0.034124,
+            -0.000766
+          ],
+          "mean": -0.017445,
+          "method": "INVERSE_VARIANCE_FIXED_EFFECT",
+          "rawPValue": 0.040368,
+          "regionsUsed": 2,
+          "se": 0.00851
+        }
+      },
+      "value": {
+        "byRegion": {
+          "KR": {
+            "ci95": [
+              -0.045454,
+              0.049582
+            ],
+            "effectiveIndependentDates": 20,
+            "hacLag": 25,
+            "hitRatePct": 47.98,
+            "ir": 0.0152,
+            "mean": 0.002064,
+            "median": -0.006262,
+            "positiveRate": 0.4798,
+            "rawPValue": 0.9321541546455262,
+            "se": 0.02424388,
+            "std": 0.135429,
+            "uniqueDates": 519
+          },
+          "US": {
+            "ci95": [
+              -0.028412,
+              0.01201
+            ],
+            "effectiveIndependentDates": 27,
+            "hacLag": 25,
+            "hitRatePct": 39.33,
+            "ir": -0.1211,
+            "mean": -0.008201,
+            "median": -0.017648,
+            "positiveRate": 0.3933,
+            "rawPValue": 0.4264344379618652,
+            "se": 0.01031173,
+            "std": 0.067696,
+            "uniqueDates": 689
+          }
+        },
+        "pooled": {
+          "ci95": [
+            -0.025227,
+            0.01197
+          ],
+          "mean": -0.006628,
+          "method": "INVERSE_VARIANCE_FIXED_EFFECT",
+          "rawPValue": 0.484842,
+          "regionsUsed": 2,
+          "se": 0.009489
+        }
+      }
+    },
+    "quintileMonotonicity": {
+      "KR": {
+        "lowvol": {
+          "monotonicityScore": 0.5,
+          "observationsPerQuintile": [
+            688,
+            688,
+            688,
+            688,
+            688
+          ],
+          "q5MinusQ1": -0.012397,
+          "quintileMeans": [
+            -0.01451,
+            -0.029318,
+            -0.037796,
+            -0.031601,
+            -0.026907
+          ]
+        },
+        "momentum": {
+          "monotonicityScore": 0.5,
+          "observationsPerQuintile": [
+            688,
+            688,
+            688,
+            688,
+            688
+          ],
+          "q5MinusQ1": 0.021103,
+          "quintileMeans": [
+            -0.03181,
+            -0.033974,
+            -0.029606,
+            -0.033442,
+            -0.010707
+          ]
+        },
+        "quality": {
+          "monotonicityScore": 0.25,
+          "observationsPerQuintile": [
+            519,
+            519,
+            519,
+            519,
+            519
+          ],
+          "q5MinusQ1": -0.024299,
+          "quintileMeans": [
+            -0.014433,
+            -0.005214,
+            -0.030065,
+            -0.030737,
+            -0.038732
+          ]
+        },
+        "value": {
+          "monotonicityScore": 0.75,
+          "observationsPerQuintile": [
+            519,
+            519,
+            519,
+            519,
+            519
+          ],
+          "q5MinusQ1": -0.003646,
+          "quintileMeans": [
+            -0.037123,
+            -0.033753,
+            -0.0102,
+            -0.002848,
+            -0.040769
+          ]
+        }
+      },
+      "US": {
+        "lowvol": {
+          "monotonicityScore": 0.0,
+          "observationsPerQuintile": [
+            689,
+            689,
+            689,
+            689,
+            689
+          ],
+          "q5MinusQ1": -0.037347,
+          "quintileMeans": [
+            0.015698,
+            -0.004669,
+            -0.009509,
+            -0.016521,
+            -0.021649
+          ]
+        },
+        "momentum": {
+          "monotonicityScore": 0.75,
+          "observationsPerQuintile": [
+            689,
+            689,
+            689,
+            689,
+            689
+          ],
+          "q5MinusQ1": 0.009403,
+          "quintileMeans": [
+            -0.008301,
+            -0.00784,
+            -0.011544,
+            -0.009158,
+            0.001102
+          ]
+        },
+        "quality": {
+          "monotonicityScore": 0.5,
+          "observationsPerQuintile": [
+            689,
+            689,
+            689,
+            689,
+            689
+          ],
+          "q5MinusQ1": -0.012762,
+          "quintileMeans": [
+            0.010682,
+            -0.00847,
+            -0.020986,
+            -0.01546,
+            -0.00208
+          ]
+        },
+        "value": {
+          "monotonicityScore": 0.5,
+          "observationsPerQuintile": [
+            689,
+            689,
+            689,
+            689,
+            689
+          ],
+          "q5MinusQ1": -0.011186,
+          "quintileMeans": [
+            0.017909,
+            -0.016992,
+            -0.018977,
+            -0.016923,
+            0.006723
+          ]
+        }
+      },
+      "pooled": {
+        "lowvol": {
+          "monotonicityScore": 0.0,
+          "observationsPerQuintile": [
+            1377,
+            1377,
+            1377,
+            1377,
+            1377
+          ],
+          "q5MinusQ1": -0.024881,
+          "quintileMeans": [
+            0.000605,
+            -0.016985,
+            -0.023642,
+            -0.024055,
+            -0.024276
+          ]
+        },
+        "momentum": {
+          "monotonicityScore": 0.5,
+          "observationsPerQuintile": [
+            1377,
+            1377,
+            1377,
+            1377,
+            1377
+          ],
+          "q5MinusQ1": 0.015249,
+          "quintileMeans": [
+            -0.020047,
+            -0.020897,
+            -0.020569,
+            -0.021291,
+            -0.004798
+          ]
+        },
+        "quality": {
+          "monotonicityScore": 0.5,
+          "observationsPerQuintile": [
+            1208,
+            1208,
+            1208,
+            1208,
+            1208
+          ],
+          "q5MinusQ1": -0.017719,
+          "quintileMeans": [
+            -0.000108,
+            -0.007071,
+            -0.024887,
+            -0.022023,
+            -0.017827
+          ]
+        },
+        "value": {
+          "monotonicityScore": 0.5,
+          "observationsPerQuintile": [
+            1208,
+            1208,
+            1208,
+            1208,
+            1208
+          ],
+          "q5MinusQ1": -0.007947,
+          "quintileMeans": [
+            -0.005735,
+            -0.024193,
+            -0.015206,
+            -0.010876,
+            -0.013682
+          ]
+        }
+      }
+    },
+    "redundancy": {
+      "KR": {
+        "available": true,
+        "matrix": {
+          "lowvol": {
+            "lowvol": {
+              "mean": 1.0,
+              "median": 1.0,
+              "observations": 519,
+              "p10": 1.0,
+              "p90": 1.0
+            },
+            "momentum": {
+              "mean": -0.0935,
+              "median": -0.1,
+              "observations": 519,
+              "p10": -0.4536,
+              "p90": 0.2273
+            },
+            "quality": {
+              "mean": 0.022,
+              "median": 0.0061,
+              "observations": 519,
+              "p10": -0.1732,
+              "p90": 0.2358
+            },
+            "value": {
+              "mean": 0.1999,
+              "median": 0.2005,
+              "observations": 519,
+              "p10": 0.0101,
+              "p90": 0.3642
+            }
+          },
+          "momentum": {
+            "lowvol": {
+              "mean": -0.0935,
+              "median": -0.1,
+              "observations": 519,
+              "p10": -0.4536,
+              "p90": 0.2273
+            },
+            "momentum": {
+              "mean": 1.0,
+              "median": 1.0,
+              "observations": 519,
+              "p10": 1.0,
+              "p90": 1.0
+            },
+            "quality": {
+              "mean": 0.0291,
+              "median": 0.0406,
+              "observations": 519,
+              "p10": -0.1709,
+              "p90": 0.215
+            },
+            "value": {
+              "mean": -0.1785,
+              "median": -0.1858,
+              "observations": 519,
+              "p10": -0.3562,
+              "p90": 0.0355
+            }
+          },
+          "quality": {
+            "lowvol": {
+              "mean": 0.022,
+              "median": 0.0061,
+              "observations": 519,
+              "p10": -0.1732,
+              "p90": 0.2358
+            },
+            "momentum": {
+              "mean": 0.0291,
+              "median": 0.0406,
+              "observations": 519,
+              "p10": -0.1709,
+              "p90": 0.215
+            },
+            "quality": {
+              "mean": 1.0,
+              "median": 1.0,
+              "observations": 519,
+              "p10": 1.0,
+              "p90": 1.0
+            },
+            "value": {
+              "mean": -0.1907,
+              "median": -0.1967,
+              "observations": 519,
+              "p10": -0.3289,
+              "p90": -0.0246
+            }
+          },
+          "value": {
+            "lowvol": {
+              "mean": 0.1999,
+              "median": 0.2005,
+              "observations": 519,
+              "p10": 0.0101,
+              "p90": 0.3642
+            },
+            "momentum": {
+              "mean": -0.1785,
+              "median": -0.1858,
+              "observations": 519,
+              "p10": -0.3562,
+              "p90": 0.0355
+            },
+            "quality": {
+              "mean": -0.1907,
+              "median": -0.1967,
+              "observations": 519,
+              "p10": -0.3289,
+              "p90": -0.0246
+            },
+            "value": {
+              "mean": 1.0,
+              "median": 1.0,
+              "observations": 519,
+              "p10": 1.0,
+              "p90": 1.0
+            }
+          }
+        }
+      },
+      "US": {
+        "available": true,
+        "matrix": {
+          "lowvol": {
+            "lowvol": {
+              "mean": 1.0,
+              "median": 1.0,
+              "observations": 689,
+              "p10": 1.0,
+              "p90": 1.0
+            },
+            "momentum": {
+              "mean": 0.0752,
+              "median": 0.0672,
+              "observations": 689,
+              "p10": -0.2439,
+              "p90": 0.427
+            },
+            "quality": {
+              "mean": 0.1427,
+              "median": 0.132,
+              "observations": 689,
+              "p10": 0.0212,
+              "p90": 0.2952
+            },
+            "value": {
+              "mean": 0.0001,
+              "median": -0.0155,
+              "observations": 689,
+              "p10": -0.1122,
+              "p90": 0.1296
+            }
+          },
+          "momentum": {
+            "lowvol": {
+              "mean": 0.0752,
+              "median": 0.0672,
+              "observations": 689,
+              "p10": -0.2439,
+              "p90": 0.427
+            },
+            "momentum": {
+              "mean": 1.0,
+              "median": 1.0,
+              "observations": 689,
+              "p10": 1.0,
+              "p90": 1.0
+            },
+            "quality": {
+              "mean": 0.0589,
+              "median": 0.0793,
+              "observations": 689,
+              "p10": -0.1258,
+              "p90": 0.1773
+            },
+            "value": {
+              "mean": -0.1647,
+              "median": -0.1822,
+              "observations": 689,
+              "p10": -0.3045,
+              "p90": -0.0117
+            }
+          },
+          "quality": {
+            "lowvol": {
+              "mean": 0.1427,
+              "median": 0.132,
+              "observations": 689,
+              "p10": 0.0212,
+              "p90": 0.2952
+            },
+            "momentum": {
+              "mean": 0.0589,
+              "median": 0.0793,
+              "observations": 689,
+              "p10": -0.1258,
+              "p90": 0.1773
+            },
+            "quality": {
+              "mean": 1.0,
+              "median": 1.0,
+              "observations": 689,
+              "p10": 1.0,
+              "p90": 1.0
+            },
+            "value": {
+              "mean": -0.0636,
+              "median": -0.0732,
+              "observations": 689,
+              "p10": -0.1578,
+              "p90": 0.056
+            }
+          },
+          "value": {
+            "lowvol": {
+              "mean": 0.0001,
+              "median": -0.0155,
+              "observations": 689,
+              "p10": -0.1122,
+              "p90": 0.1296
+            },
+            "momentum": {
+              "mean": -0.1647,
+              "median": -0.1822,
+              "observations": 689,
+              "p10": -0.3045,
+              "p90": -0.0117
+            },
+            "quality": {
+              "mean": -0.0636,
+              "median": -0.0732,
+              "observations": 689,
+              "p10": -0.1578,
+              "p90": 0.056
+            },
+            "value": {
+              "mean": 1.0,
+              "median": 1.0,
+              "observations": 689,
+              "p10": 1.0,
+              "p90": 1.0
+            }
+          }
+        }
+      },
+      "pooled": {
+        "available": true,
+        "matrix": {
+          "lowvol": {
+            "lowvol": {
+              "mean": 1.0,
+              "median": 1.0,
+              "observations": 1208,
+              "p10": 1.0,
+              "p90": 1.0
+            },
+            "momentum": {
+              "mean": 0.0028,
+              "median": 0.0058,
+              "observations": 1208,
+              "p10": -0.3395,
+              "p90": 0.368
+            },
+            "quality": {
+              "mean": 0.0909,
+              "median": 0.1014,
+              "observations": 1208,
+              "p10": -0.1004,
+              "p90": 0.2855
+            },
+            "value": {
+              "mean": 0.0859,
+              "median": 0.069,
+              "observations": 1208,
+              "p10": -0.1003,
+              "p90": 0.3253
+            }
+          },
+          "momentum": {
+            "lowvol": {
+              "mean": 0.0028,
+              "median": 0.0058,
+              "observations": 1208,
+              "p10": -0.3395,
+              "p90": 0.368
+            },
+            "momentum": {
+              "mean": 1.0,
+              "median": 1.0,
+              "observations": 1208,
+              "p10": 1.0,
+              "p90": 1.0
+            },
+            "quality": {
+              "mean": 0.0461,
+              "median": 0.0656,
+              "observations": 1208,
+              "p10": -0.1465,
+              "p90": 0.1944
+            },
+            "value": {
+              "mean": -0.1706,
+              "median": -0.1844,
+              "observations": 1208,
+              "p10": -0.3294,
+              "p90": 0.0004
+            }
+          },
+          "quality": {
+            "lowvol": {
+              "mean": 0.0909,
+              "median": 0.1014,
+              "observations": 1208,
+              "p10": -0.1004,
+              "p90": 0.2855
+            },
+            "momentum": {
+              "mean": 0.0461,
+              "median": 0.0656,
+              "observations": 1208,
+              "p10": -0.1465,
+              "p90": 0.1944
+            },
+            "quality": {
+              "mean": 1.0,
+              "median": 1.0,
+              "observations": 1208,
+              "p10": 1.0,
+              "p90": 1.0
+            },
+            "value": {
+              "mean": -0.1182,
+              "median": -0.1049,
+              "observations": 1208,
+              "p10": -0.287,
+              "p90": 0.0239
+            }
+          },
+          "value": {
+            "lowvol": {
+              "mean": 0.0859,
+              "median": 0.069,
+              "observations": 1208,
+              "p10": -0.1003,
+              "p90": 0.3253
+            },
+            "momentum": {
+              "mean": -0.1706,
+              "median": -0.1844,
+              "observations": 1208,
+              "p10": -0.3294,
+              "p90": 0.0004
+            },
+            "quality": {
+              "mean": -0.1182,
+              "median": -0.1049,
+              "observations": 1208,
+              "p10": -0.287,
+              "p90": 0.0239
+            },
+            "value": {
+              "mean": 1.0,
+              "median": 1.0,
+              "observations": 1208,
+              "p10": 1.0,
+              "p90": 1.0
+            }
+          }
+        }
+      }
+    }
+  },
+  "secondaryHorizonTables": {
+    "21": {
+      "lowvol": {
+        "byRegion": {
+          "KR": {
+            "ci95": [
+              0.001941,
+              0.047056
+            ],
+            "effectiveIndependentDates": 143,
+            "hacLag": 4,
+            "ir": 0.1419,
+            "mean": 0.024498,
+            "median": 0.010682,
+            "positiveRate": 0.5324,
+            "rawPValue": 0.03328670945862159,
+            "se": 0.01150893,
+            "std": 0.172661,
+            "uniqueDates": 710
+          },
+          "US": {
+            "ci95": [
+              -0.045627,
+              0.015728
+            ],
+            "effectiveIndependentDates": 143,
+            "hacLag": 4,
+            "ir": -0.063,
+            "mean": -0.01495,
+            "median": -0.008957,
+            "positiveRate": 0.4887,
+            "rawPValue": 0.3394956190256744,
+            "se": 0.01565179,
+            "std": 0.237393,
+            "uniqueDates": 710
+          }
+        },
+        "pooled": {
+          "ci95": [
+            -0.007519,
+            0.028828
+          ],
+          "mean": 0.010654,
+          "method": "INVERSE_VARIANCE_FIXED_EFFECT",
+          "rawPValue": 0.25053,
+          "regionsUsed": 2,
+          "se": 0.009272
+        }
+      },
+      "momentum": {
+        "byRegion": {
+          "KR": {
+            "ci95": [
+              -0.037877,
+              0.009331
+            ],
+            "effectiveIndependentDates": 143,
+            "hacLag": 4,
+            "ir": -0.0782,
+            "mean": -0.014273,
+            "median": -0.007824,
+            "positiveRate": 0.4803,
+            "rawPValue": 0.23594486828903893,
+            "se": 0.01204286,
+            "std": 0.18244,
+            "uniqueDates": 710
+          },
+          "US": {
+            "ci95": [
+              -0.024128,
+              0.023752
+            ],
+            "effectiveIndependentDates": 143,
+            "hacLag": 4,
+            "ir": -0.0009,
+            "mean": -0.000188,
+            "median": 0.024926,
+            "positiveRate": 0.5451,
+            "rawPValue": 0.987719599349838,
+            "se": 0.01221429,
+            "std": 0.199805,
+            "uniqueDates": 710
+          }
+        },
+        "pooled": {
+          "ci95": [
+            -0.024138,
+            0.009478
+          ],
+          "mean": -0.00733,
+          "method": "INVERSE_VARIANCE_FIXED_EFFECT",
+          "rawPValue": 0.392684,
+          "regionsUsed": 2,
+          "se": 0.008576
+        }
+      },
+      "quality": {
+        "byRegion": {
+          "KR": {
+            "ci95": [
+              -0.023905,
+              0.012421
+            ],
+            "effectiveIndependentDates": 109,
+            "hacLag": 4,
+            "ir": -0.0461,
+            "mean": -0.005742,
+            "median": -0.005886,
+            "positiveRate": 0.4843,
+            "rawPValue": 0.5355022686661848,
+            "se": 0.00926684,
+            "std": 0.124537,
+            "uniqueDates": 541
+          },
+          "US": {
+            "ci95": [
+              -0.023952,
+              0.005096
+            ],
+            "effectiveIndependentDates": 143,
+            "hacLag": 4,
+            "ir": -0.0851,
+            "mean": -0.009428,
+            "median": -0.008462,
+            "positiveRate": 0.4592,
+            "rawPValue": 0.20326642686037233,
+            "se": 0.0074102,
+            "std": 0.110811,
+            "uniqueDates": 710
+          }
+        },
+        "pooled": {
+          "ci95": [
+            -0.019334,
+            0.003353
+          ],
+          "mean": -0.00799,
+          "method": "INVERSE_VARIANCE_FIXED_EFFECT",
+          "rawPValue": 0.167388,
+          "regionsUsed": 2,
+          "se": 0.005787
+        }
+      },
+      "value": {
+        "byRegion": {
+          "KR": {
+            "ci95": [
+              -0.013632,
+              0.033677
+            ],
+            "effectiveIndependentDates": 109,
+            "hacLag": 4,
+            "ir": 0.0641,
+            "mean": 0.010023,
+            "median": 0.008112,
+            "positiveRate": 0.5231,
+            "rawPValue": 0.40625562850996155,
+            "se": 0.01206862,
+            "std": 0.156454,
+            "uniqueDates": 541
+          },
+          "US": {
+            "ci95": [
+              -0.022626,
+              0.008635
+            ],
+            "effectiveIndependentDates": 143,
+            "hacLag": 4,
+            "ir": -0.0574,
+            "mean": -0.006995,
+            "median": -0.014464,
+            "positiveRate": 0.4535,
+            "rawPValue": 0.3804081111479536,
+            "se": 0.00797474,
+            "std": 0.121959,
+            "uniqueDates": 710
+          }
+        },
+        "pooled": {
+          "ci95": [
+            -0.014863,
+            0.011218
+          ],
+          "mean": -0.001823,
+          "method": "INVERSE_VARIANCE_FIXED_EFFECT",
+          "rawPValue": 0.784118,
+          "regionsUsed": 2,
+          "se": 0.006653
+        }
+      }
+    },
+    "63": {
+      "lowvol": {
+        "byRegion": {
+          "KR": {
+            "ci95": [
+              0.007355,
+              0.074624
+            ],
+            "effectiveIndependentDates": 54,
+            "hacLag": 12,
+            "ir": 0.2619,
+            "mean": 0.040989,
+            "median": 0.028396,
+            "positiveRate": 0.5826,
+            "rawPValue": 0.016913978385637126,
+            "se": 0.01716046,
+            "std": 0.156498,
+            "uniqueDates": 702
+          },
+          "US": {
+            "ci95": [
+              -0.067865,
+              0.029549
+            ],
+            "effectiveIndependentDates": 54,
+            "hacLag": 12,
+            "ir": -0.0838,
+            "mean": -0.019158,
+            "median": -0.012134,
+            "positiveRate": 0.4772,
+            "rawPValue": 0.4407485116413312,
+            "se": 0.02485051,
+            "std": 0.228637,
+            "uniqueDates": 702
+          }
+        },
+        "pooled": {
+          "ci95": [
+            -0.006108,
+            0.049245
+          ],
+          "mean": 0.021568,
+          "method": "INVERSE_VARIANCE_FIXED_EFFECT",
+          "rawPValue": 0.126657,
+          "regionsUsed": 2,
+          "se": 0.014121
+        }
+      },
+      "momentum": {
+        "byRegion": {
+          "KR": {
+            "ci95": [
+              -0.049002,
+              0.014611
+            ],
+            "effectiveIndependentDates": 54,
+            "hacLag": 12,
+            "ir": -0.1056,
+            "mean": -0.017196,
+            "median": -0.007776,
+            "positiveRate": 0.4815,
+            "rawPValue": 0.2892982168668219,
+            "se": 0.01622781,
+            "std": 0.162874,
+            "uniqueDates": 702
+          },
+          "US": {
+            "ci95": [
+              -0.029009,
+              0.036194
+            ],
+            "effectiveIndependentDates": 54,
+            "hacLag": 12,
+            "ir": 0.0211,
+            "mean": 0.003592,
+            "median": 0.018069,
+            "positiveRate": 0.5427,
+            "rawPValue": 0.8290261151967329,
+            "se": 0.01663342,
+            "std": 0.170555,
+            "uniqueDates": 702
+          }
+        },
+        "pooled": {
+          "ci95": [
+            -0.029825,
+            0.015708
+          ],
+          "mean": -0.007059,
+          "method": "INVERSE_VARIANCE_FIXED_EFFECT",
+          "rawPValue": 0.543399,
+          "regionsUsed": 2,
+          "se": 0.011616
+        }
+      },
+      "quality": {
+        "byRegion": {
+          "KR": {
+            "ci95": [
+              -0.046892,
+              0.007549
+            ],
+            "effectiveIndependentDates": 41,
+            "hacLag": 12,
+            "ir": -0.1641,
+            "mean": -0.019671,
+            "median": -0.018879,
+            "positiveRate": 0.4409,
+            "rawPValue": 0.156657946996453,
+            "se": 0.01388801,
+            "std": 0.119862,
+            "uniqueDates": 533
+          },
+          "US": {
+            "ci95": [
+              -0.040275,
+              0.010314
+            ],
+            "effectiveIndependentDates": 54,
+            "hacLag": 12,
+            "ir": -0.13,
+            "mean": -0.014981,
+            "median": -0.004491,
+            "positiveRate": 0.49,
+            "rawPValue": 0.24570880403239126,
+            "se": 0.01290536,
+            "std": 0.115226,
+            "uniqueDates": 702
+          }
+        },
+        "pooled": {
+          "ci95": [
+            -0.035684,
+            0.001375
+          ],
+          "mean": -0.017154,
+          "method": "INVERSE_VARIANCE_FIXED_EFFECT",
+          "rawPValue": 0.069596,
+          "regionsUsed": 2,
+          "se": 0.009454
+        }
+      },
+      "value": {
+        "byRegion": {
+          "KR": {
+            "ci95": [
+              -0.023666,
+              0.052322
+            ],
+            "effectiveIndependentDates": 41,
+            "hacLag": 12,
+            "ir": 0.0942,
+            "mean": 0.014328,
+            "median": 0.016221,
+            "positiveRate": 0.546,
+            "rawPValue": 0.4598219826041622,
+            "se": 0.01938469,
+            "std": 0.152093,
+            "uniqueDates": 533
+          },
+          "US": {
+            "ci95": [
+              -0.041361,
+              0.012275
+            ],
+            "effectiveIndependentDates": 54,
+            "hacLag": 12,
+            "ir": -0.1183,
+            "mean": -0.014543,
+            "median": -0.023323,
+            "positiveRate": 0.4302,
+            "rawPValue": 0.28783687222499654,
+            "se": 0.01368265,
+            "std": 0.122966,
+            "uniqueDates": 702
+          }
+        },
+        "pooled": {
+          "ci95": [
+            -0.026852,
+            0.016968
+          ],
+          "mean": -0.004942,
+          "method": "INVERSE_VARIANCE_FIXED_EFFECT",
+          "rawPValue": 0.658405,
+          "regionsUsed": 2,
+          "se": 0.011178
+        }
+      }
+    },
+    "252": {
+      "lowvol": {
+        "byRegion": {
+          "KR": {
+            "ci95": [
+              0.005592,
+              0.140976
+            ],
+            "effectiveIndependentDates": 13,
+            "hacLag": 50,
+            "ir": 0.4739,
+            "mean": 0.073284,
+            "median": 0.089266,
+            "positiveRate": 0.6657,
+            "rawPValue": 0.03384488980657781,
+            "se": 0.03453673,
+            "std": 0.15463,
+            "uniqueDates": 661
+          },
+          "US": {
+            "ci95": [
+              -0.10936,
+              0.077024
+            ],
+            "effectiveIndependentDates": 13,
+            "hacLag": 50,
+            "ir": -0.0718,
+            "mean": -0.016168,
+            "median": -0.041297,
+            "positiveRate": 0.4411,
+            "rawPValue": 0.7338242111975746,
+            "se": 0.04754694,
+            "std": 0.225108,
+            "uniqueDates": 662
+          }
+        },
+        "pooled": {
+          "ci95": [
+            -0.01238,
+            0.097157
+          ],
+          "mean": 0.042389,
+          "method": "INVERSE_VARIANCE_FIXED_EFFECT",
+          "rawPValue": 0.129276,
+          "regionsUsed": 2,
+          "se": 0.027943
+        }
+      },
+      "momentum": {
+        "byRegion": {
+          "KR": {
+            "ci95": [
+              -0.083505,
+              0.017523
+            ],
+            "effectiveIndependentDates": 13,
+            "hacLag": 50,
+            "ir": -0.2562,
+            "mean": -0.032991,
+            "median": -0.030072,
+            "positiveRate": 0.407,
+            "rawPValue": 0.20051424274973273,
+            "se": 0.02577245,
+            "std": 0.128782,
+            "uniqueDates": 661
+          },
+          "US": {
+            "ci95": [
+              -0.060496,
+              0.053311
+            ],
+            "effectiveIndependentDates": 13,
+            "hacLag": 50,
+            "ir": -0.0214,
+            "mean": -0.003593,
+            "median": -0.002247,
+            "positiveRate": 0.494,
+            "rawPValue": 0.901506662480403,
+            "se": 0.0290324,
+            "std": 0.167922,
+            "uniqueDates": 662
+          }
+        },
+        "pooled": {
+          "ci95": [
+            -0.057811,
+            0.017742
+          ],
+          "mean": -0.020035,
+          "method": "INVERSE_VARIANCE_FIXED_EFFECT",
+          "rawPValue": 0.298587,
+          "regionsUsed": 2,
+          "se": 0.019274
+        }
+      },
+      "quality": {
+        "byRegion": {
+          "KR": {
+            "ci95": [
+              -0.102139,
+              0.028668
+            ],
+            "effectiveIndependentDates": 10,
+            "hacLag": 50,
+            "ir": -0.265,
+            "mean": -0.036735,
+            "median": -0.021592,
+            "positiveRate": 0.4085,
+            "rawPValue": 0.27095420764551215,
+            "se": 0.03336913,
+            "std": 0.138643,
+            "uniqueDates": 492
+          },
+          "US": {
+            "ci95": [
+              -0.051352,
+              0.020121
+            ],
+            "effectiveIndependentDates": 13,
+            "hacLag": 50,
+            "ir": -0.1602,
+            "mean": -0.015615,
+            "median": -0.003357,
+            "positiveRate": 0.4789,
+            "rawPValue": 0.3917663787931316,
+            "se": 0.01823291,
+            "std": 0.097449,
+            "uniqueDates": 662
+          }
+        },
+        "pooled": {
+          "ci95": [
+            -0.051831,
+            0.01089
+          ],
+          "mean": -0.020471,
+          "method": "INVERSE_VARIANCE_FIXED_EFFECT",
+          "rawPValue": 0.200755,
+          "regionsUsed": 2,
+          "se": 0.016
+        }
+      },
+      "value": {
+        "byRegion": {
+          "KR": {
+            "ci95": [
+              -0.0651,
+              0.08271
+            ],
+            "effectiveIndependentDates": 10,
+            "hacLag": 50,
+            "ir": 0.0531,
+            "mean": 0.008805,
+            "median": -0.016837,
+            "positiveRate": 0.4715,
+            "rawPValue": 0.8153628349178563,
+            "se": 0.03770663,
+            "std": 0.165838,
+            "uniqueDates": 492
+          },
+          "US": {
+            "ci95": [
+              -0.082659,
+              0.02427
+            ],
+            "effectiveIndependentDates": 13,
+            "hacLag": 50,
+            "ir": -0.2252,
+            "mean": -0.029194,
+            "median": -0.041445,
+            "positiveRate": 0.4018,
+            "rawPValue": 0.2845080500774546,
+            "se": 0.02727781,
+            "std": 0.129654,
+            "uniqueDates": 662
+          }
+        },
+        "pooled": {
+          "ci95": [
+            -0.059457,
+            0.027178
+          ],
+          "mean": -0.01614,
+          "method": "INVERSE_VARIANCE_FIXED_EFFECT",
+          "rawPValue": 0.465229,
+          "regionsUsed": 2,
+          "se": 0.022101
+        }
+      }
+    }
+  },
+  "secondaryHorizons": [
+    21,
+    63,
+    252
+  ],
+  "status": "AUDIT",
+  "timeStability": {
+    "bySleeveRegion": {
+      "lowvol": {
+        "KR": {
+          "incrementalFirstHalf": {
+            "ci95": [
+              0.018187,
+              0.089935
+            ],
+            "effectiveIndependentDates": 7,
+            "hacLag": 25,
+            "ir": 0.5589,
+            "mean": 0.054061,
+            "median": 0.03719,
+            "positiveRate": 0.6686,
+            "rawPValue": 0.0031403067444071143,
+            "se": 0.01830306,
+            "std": 0.096723,
+            "uniqueDates": 175
+          },
+          "incrementalSecondHalf": {
+            "ci95": [
+              -0.048003,
+              0.09206
+            ],
+            "effectiveIndependentDates": 14,
+            "hacLag": 25,
+            "ir": 0.1359,
+            "mean": 0.022029,
+            "median": 0.003001,
+            "positiveRate": 0.5145,
+            "rawPValue": 0.5375418025634704,
+            "se": 0.03573036,
+            "std": 0.162133,
+            "uniqueDates": 344
+          },
+          "quartileSpreadFirstHalf": {
+            "ci95": [
+              -0.024262,
+              0.036807
+            ],
+            "effectiveIndependentDates": 14,
+            "hacLag": 25,
+            "hitRatePct": 52.91,
+            "ir": 0.0895,
+            "mean": 0.006273,
+            "median": 0.004122,
+            "positiveRate": 0.5291,
+            "rawPValue": 0.6871970267413963,
+            "se": 0.01557883,
+            "std": 0.070103,
+            "uniqueDates": 344
+          },
+          "quartileSpreadSecondHalf": {
+            "ci95": [
+              -0.086468,
+              0.024228
+            ],
+            "effectiveIndependentDates": 14,
+            "hacLag": 25,
+            "hitRatePct": 44.48,
+            "ir": -0.23,
+            "mean": -0.03112,
+            "median": -0.019887,
+            "positiveRate": 0.4448,
+            "rawPValue": 0.27044836347710255,
+            "se": 0.02823878,
+            "std": 0.135315,
+            "uniqueDates": 344
+          },
+          "standaloneFirstHalf": {
+            "ci95": [
+              -0.008041,
+              0.107416
+            ],
+            "effectiveIndependentDates": 14,
+            "hacLag": 25,
+            "ir": 0.3772,
+            "mean": 0.049687,
+            "median": 0.046399,
+            "positiveRate": 0.6599,
+            "std": 0.131728,
+            "uniqueDates": 344
+          },
+          "standaloneSecondHalf": {
+            "ci95": [
+              -0.019406,
+              0.124387
+            ],
+            "effectiveIndependentDates": 14,
+            "hacLag": 25,
+            "ir": 0.3206,
+            "mean": 0.05249,
+            "median": 0.033081,
+            "positiveRate": 0.561,
+            "std": 0.163742,
+            "uniqueDates": 344
+          },
+          "standaloneSignFirst": "POSITIVE",
+          "standaloneSignSecond": "POSITIVE"
+        },
+        "US": {
+          "incrementalFirstHalf": {
+            "ci95": [
+              -0.059306,
+              0.122622
+            ],
+            "effectiveIndependentDates": 14,
+            "hacLag": 25,
+            "ir": 0.1576,
+            "mean": 0.031658,
+            "median": 0.006573,
+            "positiveRate": 0.5116,
+            "rawPValue": 0.4951538877288776,
+            "se": 0.0464102,
+            "std": 0.200835,
+            "uniqueDates": 344
+          },
+          "incrementalSecondHalf": {
+            "ci95": [
+              -0.128214,
+              0.030571
+            ],
+            "effectiveIndependentDates": 14,
+            "hacLag": 25,
+            "ir": -0.2587,
+            "mean": -0.048821,
+            "median": -0.037469,
+            "positiveRate": 0.4145,
+            "rawPValue": 0.22810027428917912,
+            "se": 0.04050638,
+            "std": 0.188684,
+            "uniqueDates": 345
+          },
+          "quartileSpreadFirstHalf": {
+            "ci95": [
+              -0.043483,
+              0.043884
+            ],
+            "effectiveIndependentDates": 14,
+            "hacLag": 25,
+            "hitRatePct": 44.77,
+            "ir": 0.0021,
+            "mean": 0.0002,
+            "median": -0.010502,
+            "positiveRate": 0.4477,
+            "rawPValue": 0.9928401673359946,
+            "se": 0.0222875,
+            "std": 0.097128,
+            "uniqueDates": 344
+          },
+          "quartileSpreadSecondHalf": {
+            "ci95": [
+              -0.124782,
+              -0.010283
+            ],
+            "effectiveIndependentDates": 14,
+            "hacLag": 25,
+            "hitRatePct": 34.49,
+            "ir": -0.5027,
+            "mean": -0.067533,
+            "median": -0.039764,
+            "positiveRate": 0.3449,
+            "rawPValue": 0.020773997331822672,
+            "se": 0.02920893,
+            "std": 0.134341,
+            "uniqueDates": 345
+          },
+          "standaloneFirstHalf": {
+            "ci95": [
+              -0.074314,
+              0.120468
+            ],
+            "effectiveIndependentDates": 14,
+            "hacLag": 25,
+            "ir": 0.1066,
+            "mean": 0.023077,
+            "median": -0.0017,
+            "positiveRate": 0.4971,
+            "std": 0.216461,
+            "uniqueDates": 344
+          },
+          "standaloneSecondHalf": {
+            "ci95": [
+              -0.16241,
+              0.026348
+            ],
+            "effectiveIndependentDates": 14,
+            "hacLag": 25,
+            "ir": -0.3065,
+            "mean": -0.068031,
+            "median": -0.042717,
+            "positiveRate": 0.4203,
+            "std": 0.221952,
+            "uniqueDates": 345
+          },
+          "standaloneSignFirst": "POSITIVE",
+          "standaloneSignSecond": "NEGATIVE"
+        }
+      },
+      "momentum": {
+        "KR": {
+          "incrementalFirstHalf": {
+            "ci95": [
+              -0.074068,
+              0.054926
+            ],
+            "effectiveIndependentDates": 7,
+            "hacLag": 25,
+            "ir": -0.0642,
+            "mean": -0.009571,
+            "median": 0.014726,
+            "positiveRate": 0.5543,
+            "rawPValue": 0.7711635638759112,
+            "se": 0.03290663,
+            "std": 0.149054,
+            "uniqueDates": 175
+          },
+          "incrementalSecondHalf": {
+            "ci95": [
+              -0.015312,
+              0.089294
+            ],
+            "effectiveIndependentDates": 14,
+            "hacLag": 25,
+            "ir": 0.2725,
+            "mean": 0.036991,
+            "median": 0.048192,
+            "positiveRate": 0.6308,
+            "rawPValue": 0.16568611880599804,
+            "se": 0.0266852,
+            "std": 0.135762,
+            "uniqueDates": 344
+          },
+          "quartileSpreadFirstHalf": {
+            "ci95": [
+              -0.032959,
+              0.023617
+            ],
+            "effectiveIndependentDates": 14,
+            "hacLag": 25,
+            "hitRatePct": 47.09,
+            "ir": -0.0557,
+            "mean": -0.004671,
+            "median": -0.005336,
+            "positiveRate": 0.4709,
+            "rawPValue": 0.7462097008857989,
+            "se": 0.01443265,
+            "std": 0.083841,
+            "uniqueDates": 344
+          },
+          "quartileSpreadSecondHalf": {
+            "ci95": [
+              -0.00954,
+              0.076996
+            ],
+            "effectiveIndependentDates": 14,
+            "hacLag": 25,
+            "hitRatePct": 60.76,
+            "ir": 0.2897,
+            "mean": 0.033728,
+            "median": 0.024057,
+            "positiveRate": 0.6076,
+            "rawPValue": 0.12655054922674958,
+            "se": 0.02207551,
+            "std": 0.116418,
+            "uniqueDates": 344
+          },
+          "standaloneFirstHalf": {
+            "ci95": [
+              -0.066547,
+              0.015647
+            ],
+            "effectiveIndependentDates": 14,
+            "hacLag": 25,
+            "ir": -0.2004,
+            "mean": -0.02545,
+            "median": -0.017462,
+            "positiveRate": 0.4593,
+            "std": 0.126995,
+            "uniqueDates": 344
+          },
+          "standaloneSecondHalf": {
+            "ci95": [
+              -0.056345,
+              0.059126
+            ],
+            "effectiveIndependentDates": 14,
+            "hacLag": 25,
+            "ir": 0.0095,
+            "mean": 0.00139,
+            "median": 0.014934,
+            "positiveRate": 0.5349,
+            "std": 0.146817,
+            "uniqueDates": 344
+          },
+          "standaloneSignFirst": "NEGATIVE",
+          "standaloneSignSecond": "POSITIVE"
+        },
+        "US": {
+          "incrementalFirstHalf": {
+            "ci95": [
+              -0.052579,
+              0.040662
+            ],
+            "effectiveIndependentDates": 14,
+            "hacLag": 25,
+            "ir": -0.0486,
+            "mean": -0.005959,
+            "median": -0.004162,
+            "positiveRate": 0.4797,
+            "rawPValue": 0.8021807279768415,
+            "se": 0.02378597,
+            "std": 0.122609,
+            "uniqueDates": 344
+          },
+          "incrementalSecondHalf": {
+            "ci95": [
+              0.009275,
+              0.086866
+            ],
+            "effectiveIndependentDates": 14,
+            "hacLag": 25,
+            "ir": 0.4464,
+            "mean": 0.048071,
+            "median": 0.06048,
+            "positiveRate": 0.6899,
+            "rawPValue": 0.015156791613882468,
+            "se": 0.01979362,
+            "std": 0.107676,
+            "uniqueDates": 345
+          },
+          "quartileSpreadFirstHalf": {
+            "ci95": [
+              -0.023722,
+              0.033275
+            ],
+            "effectiveIndependentDates": 14,
+            "hacLag": 25,
+            "hitRatePct": 50.58,
+            "ir": 0.0675,
+            "mean": 0.004777,
+            "median": 0.001323,
+            "positiveRate": 0.5058,
+            "rawPValue": 0.7425027830015412,
+            "se": 0.01454005,
+            "std": 0.070788,
+            "uniqueDates": 344
+          },
+          "quartileSpreadSecondHalf": {
+            "ci95": [
+              -0.034533,
+              0.051225
+            ],
+            "effectiveIndependentDates": 14,
+            "hacLag": 25,
+            "hitRatePct": 62.61,
+            "ir": 0.0802,
+            "mean": 0.008346,
+            "median": 0.026444,
+            "positiveRate": 0.6261,
+            "rawPValue": 0.702835349020274,
+            "se": 0.02187704,
+            "std": 0.104032,
+            "uniqueDates": 345
+          },
+          "standaloneFirstHalf": {
+            "ci95": [
+              -0.050997,
+              0.07556
+            ],
+            "effectiveIndependentDates": 14,
+            "hacLag": 25,
+            "ir": 0.0787,
+            "mean": 0.012281,
+            "median": 0.007226,
+            "positiveRate": 0.5233,
+            "std": 0.156078,
+            "uniqueDates": 344
+          },
+          "standaloneSecondHalf": {
+            "ci95": [
+              -0.047284,
+              0.084851
+            ],
+            "effectiveIndependentDates": 14,
+            "hacLag": 25,
+            "ir": 0.1137,
+            "mean": 0.018783,
+            "median": 0.04865,
+            "positiveRate": 0.6116,
+            "std": 0.165273,
+            "uniqueDates": 345
+          },
+          "standaloneSignFirst": "POSITIVE",
+          "standaloneSignSecond": "POSITIVE"
+        }
+      },
+      "quality": {
+        "KR": {
+          "incrementalFirstHalf": {
+            "ci95": [
+              -0.046311,
+              0.029055
+            ],
+            "effectiveIndependentDates": 7,
+            "hacLag": 25,
+            "ir": -0.1062,
+            "mean": -0.008628,
+            "median": -0.011034,
+            "positiveRate": 0.4343,
+            "rawPValue": 0.653599871015557,
+            "se": 0.01922602,
+            "std": 0.081256,
+            "uniqueDates": 175
+          },
+          "incrementalSecondHalf": {
+            "ci95": [
+              -0.093908,
+              -0.014192
+            ],
+            "effectiveIndependentDates": 14,
+            "hacLag": 25,
+            "ir": -0.5152,
+            "mean": -0.05405,
+            "median": -0.052157,
+            "positiveRate": 0.2907,
+            "rawPValue": 0.007863247388438436,
+            "se": 0.02033571,
+            "std": 0.104907,
+            "uniqueDates": 344
+          },
+          "quartileSpreadFirstHalf": {
+            "ci95": [
+              -0.028251,
+              0.019966
+            ],
+            "effectiveIndependentDates": 7,
+            "hacLag": 25,
+            "hitRatePct": 42.29,
+            "ir": -0.075,
+            "mean": -0.004142,
+            "median": -0.00957,
+            "positiveRate": 0.4229,
+            "rawPValue": 0.7363122665947017,
+            "se": 0.01230026,
+            "std": 0.05526,
+            "uniqueDates": 175
+          },
+          "quartileSpreadSecondHalf": {
+            "ci95": [
+              -0.092918,
+              0.006292
+            ],
+            "effectiveIndependentDates": 14,
+            "hacLag": 25,
+            "hitRatePct": 38.66,
+            "ir": -0.357,
+            "mean": -0.043313,
+            "median": -0.023713,
+            "positiveRate": 0.3866,
+            "rawPValue": 0.08700917660587505,
+            "se": 0.02530867,
+            "std": 0.121332,
+            "uniqueDates": 344
+          },
+          "standaloneFirstHalf": {
+            "ci95": [
+              -0.046575,
+              0.048691
+            ],
+            "effectiveIndependentDates": 7,
+            "hacLag": 25,
+            "ir": 0.0106,
+            "mean": 0.001058,
+            "median": 0.005349,
+            "positiveRate": 0.5314,
+            "std": 0.099832,
+            "uniqueDates": 175
+          },
+          "standaloneSecondHalf": {
+            "ci95": [
+              -0.094837,
+              0.003326
+            ],
+            "effectiveIndependentDates": 14,
+            "hacLag": 25,
+            "ir": -0.3905,
+            "mean": -0.045755,
+            "median": -0.042665,
+            "positiveRate": 0.3779,
+            "std": 0.117175,
+            "uniqueDates": 344
+          },
+          "standaloneSignFirst": "POSITIVE",
+          "standaloneSignSecond": "NEGATIVE"
+        },
+        "US": {
+          "incrementalFirstHalf": {
+            "ci95": [
+              -0.03327,
+              0.019413
+            ],
+            "effectiveIndependentDates": 14,
+            "hacLag": 25,
+            "ir": -0.0975,
+            "mean": -0.006929,
+            "median": 0.000608,
+            "positiveRate": 0.5087,
+            "rawPValue": 0.6061559964111947,
+            "se": 0.01343954,
+            "std": 0.071083,
+            "uniqueDates": 344
+          },
+          "incrementalSecondHalf": {
+            "ci95": [
+              -0.042525,
+              0.027409
+            ],
+            "effectiveIndependentDates": 14,
+            "hacLag": 25,
+            "ir": -0.0845,
+            "mean": -0.007558,
+            "median": -0.020497,
+            "positiveRate": 0.4058,
+            "rawPValue": 0.671823020015595,
+            "se": 0.01784031,
+            "std": 0.089491,
+            "uniqueDates": 345
+          },
+          "quartileSpreadFirstHalf": {
+            "ci95": [
+              -0.03025,
+              0.010406
+            ],
+            "effectiveIndependentDates": 14,
+            "hacLag": 25,
+            "hitRatePct": 52.33,
+            "ir": -0.2058,
+            "mean": -0.009922,
+            "median": 0.002591,
+            "positiveRate": 0.5233,
+            "rawPValue": 0.33873559436357814,
+            "se": 0.01037143,
+            "std": 0.048215,
+            "uniqueDates": 344
+          },
+          "quartileSpreadSecondHalf": {
+            "ci95": [
+              -0.048907,
+              0.013768
+            ],
+            "effectiveIndependentDates": 14,
+            "hacLag": 25,
+            "hitRatePct": 40.0,
+            "ir": -0.2292,
+            "mean": -0.01757,
+            "median": -0.007851,
+            "positiveRate": 0.4,
+            "rawPValue": 0.2718058104863684,
+            "se": 0.01598852,
+            "std": 0.076645,
+            "uniqueDates": 345
+          },
+          "standaloneFirstHalf": {
+            "ci95": [
+              -0.044876,
+              0.033594
+            ],
+            "effectiveIndependentDates": 14,
+            "hacLag": 25,
+            "ir": -0.0588,
+            "mean": -0.005641,
+            "median": 0.009326,
+            "positiveRate": 0.5378,
+            "std": 0.095859,
+            "uniqueDates": 344
+          },
+          "standaloneSecondHalf": {
+            "ci95": [
+              -0.078909,
+              0.02368
+            ],
+            "effectiveIndependentDates": 14,
+            "hacLag": 25,
+            "ir": -0.2178,
+            "mean": -0.027615,
+            "median": -0.020874,
+            "positiveRate": 0.3942,
+            "std": 0.126796,
+            "uniqueDates": 345
+          },
+          "standaloneSignFirst": "NEGATIVE",
+          "standaloneSignSecond": "NEGATIVE"
+        }
+      },
+      "value": {
+        "KR": {
+          "incrementalFirstHalf": {
+            "ci95": [
+              -0.101752,
+              0.149631
+            ],
+            "effectiveIndependentDates": 7,
+            "hacLag": 25,
+            "ir": 0.1189,
+            "mean": 0.02394,
+            "median": -0.020557,
+            "positiveRate": 0.4571,
+            "rawPValue": 0.7089147538751657,
+            "se": 0.06412832,
+            "std": 0.201281,
+            "uniqueDates": 175
+          },
+          "incrementalSecondHalf": {
+            "ci95": [
+              -0.032265,
+              0.066428
+            ],
+            "effectiveIndependentDates": 14,
+            "hacLag": 25,
+            "ir": 0.1448,
+            "mean": 0.017082,
+            "median": 0.027087,
+            "positiveRate": 0.5901,
+            "rawPValue": 0.49746610347306897,
+            "se": 0.02517679,
+            "std": 0.118003,
+            "uniqueDates": 344
+          },
+          "quartileSpreadFirstHalf": {
+            "ci95": [
+              -0.038171,
+              0.098032
+            ],
+            "effectiveIndependentDates": 7,
+            "hacLag": 25,
+            "hitRatePct": 61.14,
+            "ir": 0.269,
+            "mean": 0.02993,
+            "median": 0.015981,
+            "positiveRate": 0.6114,
+            "rawPValue": 0.38901637408800616,
+            "se": 0.03474566,
+            "std": 0.111284,
+            "uniqueDates": 175
+          },
+          "quartileSpreadSecondHalf": {
+            "ci95": [
+              -0.072915,
+              0.04869
+            ],
+            "effectiveIndependentDates": 14,
+            "hacLag": 25,
+            "hitRatePct": 41.28,
+            "ir": -0.0839,
+            "mean": -0.012112,
+            "median": -0.029749,
+            "positiveRate": 0.4128,
+            "rawPValue": 0.6962137107037423,
+            "se": 0.03102168,
+            "std": 0.144287,
+            "uniqueDates": 344
+          },
+          "standaloneFirstHalf": {
+            "ci95": [
+              -0.081711,
+              0.17365
+            ],
+            "effectiveIndependentDates": 7,
+            "hacLag": 25,
+            "ir": 0.2205,
+            "mean": 0.04597,
+            "median": -0.004896,
+            "positiveRate": 0.4914,
+            "std": 0.208485,
+            "uniqueDates": 175
+          },
+          "standaloneSecondHalf": {
+            "ci95": [
+              -0.044236,
+              0.07489
+            ],
+            "effectiveIndependentDates": 14,
+            "hacLag": 25,
+            "ir": 0.111,
+            "mean": 0.015327,
+            "median": 0.018953,
+            "positiveRate": 0.5669,
+            "std": 0.138049,
+            "uniqueDates": 344
+          },
+          "standaloneSignFirst": "POSITIVE",
+          "standaloneSignSecond": "POSITIVE"
+        },
+        "US": {
+          "incrementalFirstHalf": {
+            "ci95": [
+              -0.088377,
+              -0.006966
+            ],
+            "effectiveIndependentDates": 14,
+            "hacLag": 25,
+            "ir": -0.5182,
+            "mean": -0.047671,
+            "median": -0.034853,
+            "positiveRate": 0.2994,
+            "rawPValue": 0.021710541348428727,
+            "se": 0.02076811,
+            "std": 0.09199,
+            "uniqueDates": 344
+          },
+          "incrementalSecondHalf": {
+            "ci95": [
+              -0.046411,
+              0.062433
+            ],
+            "effectiveIndependentDates": 14,
+            "hacLag": 25,
+            "ir": 0.0606,
+            "mean": 0.008011,
+            "median": 0.006874,
+            "positiveRate": 0.5217,
+            "rawPValue": 0.7729526245405277,
+            "se": 0.02776633,
+            "std": 0.132268,
+            "uniqueDates": 345
+          },
+          "quartileSpreadFirstHalf": {
+            "ci95": [
+              -0.041596,
+              -0.004528
+            ],
+            "effectiveIndependentDates": 14,
+            "hacLag": 25,
+            "hitRatePct": 34.88,
+            "ir": -0.5345,
+            "mean": -0.023062,
+            "median": -0.023832,
+            "positiveRate": 0.3488,
+            "rawPValue": 0.014734333981373571,
+            "se": 0.00945612,
+            "std": 0.043144,
+            "uniqueDates": 344
+          },
+          "quartileSpreadSecondHalf": {
+            "ci95": [
+              -0.027208,
+              0.040442
+            ],
+            "effectiveIndependentDates": 14,
+            "hacLag": 25,
+            "hitRatePct": 43.77,
+            "ir": 0.0798,
+            "mean": 0.006617,
+            "median": -0.010836,
+            "positiveRate": 0.4377,
+            "rawPValue": 0.7014052905791179,
+            "se": 0.01725765,
+            "std": 0.082877,
+            "uniqueDates": 345
+          },
+          "standaloneFirstHalf": {
+            "ci95": [
+              -0.09108,
+              -0.002308
+            ],
+            "effectiveIndependentDates": 14,
+            "hacLag": 25,
+            "ir": -0.4675,
+            "mean": -0.046694,
+            "median": -0.046389,
+            "positiveRate": 0.3692,
+            "std": 0.099876,
+            "uniqueDates": 344
+          },
+          "standaloneSecondHalf": {
+            "ci95": [
+              -0.050166,
+              0.068515
+            ],
+            "effectiveIndependentDates": 14,
+            "hacLag": 25,
+            "ir": 0.0636,
+            "mean": 0.009174,
+            "median": -0.000264,
+            "positiveRate": 0.4986,
+            "std": 0.144151,
+            "uniqueDates": 345
+          },
+          "standaloneSignFirst": "NEGATIVE",
+          "standaloneSignSecond": "POSITIVE"
+        }
+      }
+    },
+    "firstHalfDates": [
+      "2013-01-04 00:00:00",
+      "2019-08-02 00:00:00"
+    ],
+    "secondHalfDates": [
+      "2019-08-09 00:00:00",
+      "2026-03-13 00:00:00"
+    ]
+  },
+  "version": "four-factor-signal-attribution-audit-v1"
+}

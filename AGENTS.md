@@ -652,6 +652,97 @@
   random, and this remains one historical sample after ten studies on this
   ledger, with no multiplicity correction.
 
+## Four-factor-signal-attribution-audit invariants (v2.21)
+
+- AN ATTRIBUTION AUDIT IS NOT A SELECTOR STUDY, AND NOTHING IN IT VALUES A
+  PORTFOLIO. `kelly_portfolio.select_portfolio_by_scores` and
+  `replay_valuation` are never called by
+  `four_factor_signal_attribution_audit.py`; it reads `factorPercentiles`,
+  `alphaPercentile`, `rawAlpha`, `alpha` and matured `excessReturn` directly
+  from the sealed signals/outcomes and computes cross-sectional Spearman
+  correlations, reusing `historical_outcomes.horizon_frame` and
+  `portfolio_validation._nw_summary` exactly as production's own
+  `alpha_diagnostics` already uses them.
+- SUBFACTOR PROVENANCE IS MEASURED BY SCANNING THE SEALED LEDGER, NOT
+  ASSUMED FROM THE PRODUCTION CODE THAT WROTE IT — the same discipline
+  `lowvol-alpha-separation-v1` established one level up. Every raw
+  subfactor input for momentum, value and quality is absent from the
+  sealed signal record (`mom121`, `mom6`, `earningsYield`,
+  `fwdEarningsYield`, `bookYield`, `fcfYield`, `roe`, `opMargin`,
+  `profitMargin`, `earningsGrowth`, `debtToEquity`) — only each sleeve's
+  already-blended percentile survives. Lowvol's one raw input (`vol252`)
+  is the sole exception, via `risk.vol252Pct`. `mom20Pct`/`mom60Pct`/
+  `relMomentum` exist on the record but are a DIFFERENT short-horizon
+  feature (the entry/overheat layer) and are never substituted for
+  production's actual momentum sleeve inputs.
+- REGION POOLING COMBINES TWO ALREADY-COMPUTED SUMMARIES, NEVER TWO
+  CROSS-SECTIONS. A naive concatenation of KR's and US's date-indexed IC
+  series into one `kelly_portfolio._newey_west_stats` call was considered
+  and rejected: `_sampling_step_days` filters non-positive gaps when
+  estimating the HAC lag, so a same-calendar-date cross-region pair would
+  be silently dropped from the LAG estimate while both rows still count in
+  the VARIANCE term. `pool_region_summaries` instead applies fixed-effect
+  inverse-variance weighting to the two regions' own independently-HAC-
+  estimated mean/SE pairs — a standard, off-the-shelf combination method,
+  not one invented for this study — and a region whose IC series has ZERO
+  sampling variance is treated as infinitely informative, not as
+  unusable: an early implementation read a falsy `se == 0.0` as "no
+  usable estimate" and a regression test now pins the fix.
+- A SILENT MISSING FIELD DROPPED EVERY POOLED SECONDARY READING TO
+  `n/a`, WITH NO ERROR RAISED. `portfolio_validation._nw_summary` reports
+  a 95% CI but never an `se` key; `sleeve_ic_table` recovered `se` from
+  the CI half-width inline, but `incremental_ic_table` and
+  `quartile_spread_table` returned `_nw_summary`'s dict as-is. The first
+  full sealed run published real by-region incremental IC and quartile
+  spread numbers next to a pooled column that was `None` for all four
+  sleeves, because `pool_region_summaries` reads a missing `se` as "this
+  region has no usable estimate." Centralized into `_with_se_and_p`,
+  applied identically everywhere a HAC summary is pooled, with a
+  regression test that pools a single region's own summary and checks
+  the pooled mean reproduces it.
+- NONE OF THE FOUR PRIMARY HYPOTHESES CLEARS RAW SIGNIFICANCE, LET ALONE
+  HOLM CORRECTION. Pooled-within-region 126D Rank IC: momentum -0.0015
+  (raw p=0.9155), value -0.0056 (p=0.7373), quality -0.0223 (p=0.0805),
+  lowvol +0.0286 (p=0.1464); every 95% CI contains zero and every
+  Holm-adjusted p exceeds 0.32. Measured on 399,547 sealed signals /
+  396,358 matured outcomes.
+- KR-ONLY LOWVOL IS THE ONE REGIONAL READING THAT CLEARS ZERO ON ITS OWN
+  (+0.0511, 95% CI [+0.0047, +0.0974], raw p=0.031) — AND IT IS STILL NOT
+  THE PRIMARY CLAIM. Section 8 forbids substituting a regional reading
+  for the pooled one; pooled against US's -0.0225 it does not survive,
+  and it is published as a secondary, descriptive number, not a finding.
+- REDUNDANCY IS LOW ACROSS ALL SIX SLEEVE PAIRS (|ρ| <= 0.17 POOLED), SO
+  THE COMPOSITE'S WEAKNESS IS NOT A DUPLICATION STORY. The four sleeves
+  select largely different names; they are just not, individually or
+  jointly, selecting names whose forward benchmark-relative return the
+  percentile orders. No sleeve's own quintile bucket is monotone
+  (best score 0.50 of 1.0; lowvol scores 0.00, the wrong direction).
+- EVERY SLEEVE CLASSIFIES AS REGION-SIGN-UNSTABLE, A MORE SPECIFIC
+  FINDING THAN "WEAK." `classify_sleeve` checks KR/US and first/second-half
+  sign agreement before magnitude, and all four sleeves disagree in sign
+  between KR and US at the primary horizon — not merely a small pooled
+  point estimate, but a sign that does not generalize across the two
+  regions the composite is applied to identically.
+- KOREAN VALUE/QUALITY COVERAGE IS A REAL GAP THIS AUDIT CANNOT SEPARATE
+  FROM A TRUE WEAK SIGNAL, AND IS PUBLISHED BESIDE THE IC RATHER THAN
+  AVERAGED AWAY. Missing rate: KR value 55.45%, KR quality 53.99%, against
+  US value 20.11%, US quality 0.96% — consistent with this repository's
+  own PIT-fundamentals invariants (DART serves from 2015; Korean
+  value/quality dark for the replay's first two years). A weak Korean
+  value/quality IC is `NO EVIDENCE DUE TO COVERAGE`-adjacent, never
+  reported as `EVIDENCE OF NO EFFECT`.
+- CLASSIFICATION IS DESCRIPTIVE AND NEVER RECOMMENDS DELETING A SLEEVE ON
+  ITS OWN. The four pre-specified cases (independent / redundant /
+  potentially harmful / unstable) describe the measured evidence; removing
+  a sleeve needs an independent sample, which this ledger — used by ten
+  prior studies — is not.
+- NO FACTOR WEIGHT WAS CHANGED, NO COMBINATION WAS SEARCHED, AND NO NEW
+  ALPHA FORMULA WAS BUILT FROM THIS SAMPLE. This result reads closest to
+  Case C (weak across the board) with a Case D (region-sign instability
+  plus a genuine Korean coverage gap) overlay, and the proposed next step
+  is new information sources evaluated as a separate CHALLENGER, not a
+  same-sample reweighting of these four sleeves.
+
 ## Lint gate invariants (v2.11)
 
 - The enabled rule set reports ZERO findings on `main`. A rule is turned on in the
