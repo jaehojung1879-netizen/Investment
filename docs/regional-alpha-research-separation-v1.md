@@ -520,3 +520,15 @@ instruction), not because any module changed.
 
 New branch from latest `main`; Draft PR only; no auto-merge. See the PR
 description for the exact required workflow statement.
+
+
+## Pre-result supersession: regional-alpha-model-v1
+
+The architecture decision in [regional-alpha-model-v1](regional-alpha-model-v1.md)
+supersedes the standalone US breadth / KR FX-beta historical discovery plans.
+Those candidates enter the regional model lineage gate as features; neither
+standalone winner-search runs first. The model study consumes the one remaining
+historical discovery budget in each region. After that run,
+`HISTORICAL_ALPHA_DISCOVERY_PHASE=CLOSED`, irrespective of results.
+All historical evidence is `DISCOVERY_ONLY`; `promotionEligible=false`.
+This is a pre-result research decision and changes no production setting.
