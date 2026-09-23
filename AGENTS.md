@@ -843,6 +843,140 @@
   windows — and the KR/US and first-half/second-half sign instability is
   named as its own finding rather than folded into a bare "no effect".
 
+## Alpha-information-inventory invariants (v2.23)
+
+- A DATA INVENTORY IS NOT A STUDY AND DOES NOT SCORE A LADDER.
+  `alpha-information-inventory-v1` measures no relationship to future
+  returns, computes no IC, runs no backtest, and touches no `FACTOR_WEIGHTS`,
+  CHAMPION, selector, Kelly parameter, entry rule, region cap, or macro
+  multiplier. Its only output is a map of what information exists, what is
+  used, what is collected but unused, and what is acquirable — graded on
+  economic rationale, PIT correctness, coverage, and cost, never on a
+  measured return.
+- "THE 31 FEATURES" IS `regional_alpha_features.feature_manifest()`'S
+  ELIGIBLE ROW COUNT, A RESEARCH-ONLY, NEVER-EXECUTED CHALLENGER MATRIX —
+  NOT PRODUCTION AND NOT THE OPPORTUNITY RADAR. No literal "31" constant
+  exists anywhere in the codebase; it is reproducible by counting
+  (21 price + 5 fundamental level + 4 fundamental-acceleration delta + 1
+  region-specific: US leadership breadth, KR market cap), identically in
+  both regions. Production's `FACTOR_WEIGHTS` has 13 raw sub-inputs across
+  4 sleeves; the Opportunity radar has 28 (`FEATURE_COLUMNS`). Three
+  different constructs; conflating any two of them mis-describes what has
+  actually been tried.
+- "USED IN ALPHA SCORING" HAS TWO DIFFERENT ANSWERS DEPENDING ON WHICH BUILD
+  IS ASKED ABOUT, AND BOTH MUST BE STATED. The live daily site build's
+  value/quality/growth sleeve reads `fundamentals.py` (Yahoo current-snapshot,
+  explicitly no PIT history, per `longterm.py:35-39`'s own design note).
+  The PIT-safe DART/Finnhub pipelines feed the identical
+  `score_cross_section` function, but only inside `historical_replay.py`'s
+  backtest/validation path. A study that reads "the model uses PIT
+  fundamentals" from the replay code and assumes the live build does the
+  same would be wrong about what ships today.
+- THE OPPORTUNITY MODEL ALREADY BLENDED VOLUME SHOCK, MOMENTUM
+  ACCELERATION, AND FUNDAMENTAL PERCENTILE VIA ML, AND IT WAS REJECTED
+  TWICE. Trained on `replay-v14` across 7 model families including a real
+  executed LightGBM run (not merely wired up), the winning rung's own
+  pooled test-period decile table is **negatively monotonic**
+  (`[+2.83,+0.88,-1.31,-6.35,-1.75,+6.79,+2.31,+2.81,-2.36,-0.87]` —
+  decile 10 underperforms decile 1) and failed to beat a plain logistic
+  baseline. Both the opportunity and warning radars are `accepted: false`.
+  A next study proposing this same information combination needs a stated,
+  concrete construction difference (e.g. magnitude-preserving volume shock
+  instead of percentile-only, or a hand-specified interaction instead of an
+  ML blend) to not be a relabelled redo.
+- A REJECTED MODEL CAN ALSO BE STRANDED, AND THE TWO FACTS ARE INDEPENDENT.
+  The committed Opportunity model spec is trained on `replayVersion:
+  replay-v14`; production has since moved to `replay-v16`, and
+  `build.py`'s generation-match check silently discards the stale spec
+  regardless of its own acceptance verdict. Fixing the generation mismatch
+  alone would not resurrect a model that already failed acceptance; both
+  causes of today's rule-based fallback are recorded separately, not
+  merged into one explanation.
+- `regional-alpha-model-v1` IS FULLY CODED, PRE-REGISTERED, AND HAS NEVER
+  BEEN RUN. It needs no new data collection — the 31-feature matrix is
+  already built and PIT-safe. Finishing it is unfinished prior work, not a
+  new hypothesis, and per this repository's own discipline takes priority
+  over starting anything new that would need a data build.
+- THE ECOS FETCH LAYER IS CONFIRMED 100% DEAD CODE, AND ONE OF ITS NINE
+  CONFIGURED SERIES IS A REAL, UNFIXED BUG. Grep across every `pipeline/*.py`
+  file for "ecos" finds only a boolean diagnostic flag; no HTTP call to
+  `ecos.bok.or.kr` exists anywhere. `config.json`'s `ecos.KR` block also
+  points `KTB_3Y` and `CorpBond_3Y` at the identical series ID `817Y002`,
+  which multiple independent secondary sources describe as a single broad
+  table distinguished only by an `item_code` this config schema has no
+  field for — even a working fetch function built against today's config
+  could not currently tell these two series apart. Flagged, not fixed, per
+  this inventory's own no-repair-work-here scope.
+- KOREAN INVESTOR-BEHAVIOR DATA (FLOW, SHORT-SELLING, LARGE-HOLDINGS
+  DISCLOSURE) IS REAL AND OFFICIAL, AND THE BLOCKER IS ACCESS, NOT
+  EXISTENCE. Per-stock investor-type net trading and short-sale statistics
+  are published free on KRX's own public data portal but sit behind a
+  different endpoint than this repo's currently-subscribed Open API key
+  reaches, and that portal was already found unreachable from this
+  project's sandbox by `scripts/probe_krx_index_membership.py`. Large-
+  holdings (5%-rule) disclosure is the one exception: it is served by
+  DART, the same vendor, same key, and same receipt-date PIT mechanism
+  `dart_fundamentals.py` already implements — the lowest-effort new data
+  build identified anywhere in this inventory.
+- KOREAN SHORT-SELLING SPANS AT LEAST THREE REGULATORY REGIMES WITHIN THE
+  REPLAY WINDOW, AND A FACTOR BUILT ON IT MUST CARRY THAT FORWARD RATHER
+  THAN AVERAGE IT AWAY. Full-market bans ran approximately 2020-03 to
+  2021-05 and 2023-11-05 to 2025-03-31 (the second paired with a structural
+  reporting overhaul), during which the variable is either illegal-to-
+  observe or measured under a materially different microstructure.
+- `fxBeta26w`/`absFxBeta26w`'S EXCLUSION IS RECONFIRMED OPEN, AND GOT MORE
+  CERTAIN, NOT LESS, SINCE THE EARLIER DESIGN DOC. The pre-registration
+  (`kr-alpha-research-design-v1.md`) had said FX-beta's PIT semantics
+  "pass, cleanly," before the feature matrix was actually built; the built
+  matrix (`regional_alpha_features.py:88`) excludes it as
+  `FX_PUBLICATION_TIME_UNRESOLVED`. FRED's `DEXKOUS` (already fetched,
+  display-only) is a noon-New-York rate, confirmed mismatched to a same-day
+  KRX-close regression; ECOS `731Y001` is a better-timed candidate,
+  contingent on the same unbuilt fetch layer above and an unverified live
+  timing check against the KRX close.
+- THE SEC DOMAIN-WIDE BLOCK ALREADY ESTABLISHED IN THE VENDOR REFUSAL
+  INVARIANTS ALSO BLOCKS FORM 4 AND 8-K ACCESS, AND NO FREE ALTERNATE
+  VENDOR RE-SERVES EITHER THE WAY FINNHUB RE-SERVES 10-Q/10-K FUNDAMENTALS.
+  Both are free, official, sufficiently historical (Form 4 structured
+  extraction from 2006; 8-K since 2001/2004) — the blocker is this
+  project's current CI egress, not the data's existence, exactly the
+  pattern already measured for SEC's other bulk products.
+- ANALYST ESTIMATE REVISIONS ARE NOT FREELY BUILDABLE IN EITHER REGION, AND
+  THIS CORROBORATES RATHER THAN OVERTURNS A PRIOR SUSPICION. Finnhub's free
+  tier reads as a current-snapshot or shallow-rolling-window product (two
+  independently surfaced sources disagree on retention depth, neither
+  describing a stable 2013-2026 panel), and Finnhub sells a *separate*
+  paid tier specifically for historical estimates. Korea's FnGuide/FnSpace
+  equivalent was already found ToS-blocked in `challenger-2-signal-source
+  -feasibility-v1.md`, not re-tested here.
+- A US DIVIDEND-CHANGE SIGNAL COULD BE BUILT TODAY WITH ZERO NEW
+  COLLECTION. `finnhub_fundamentals.py`'s `UNIT_ANCHORS[PER_SHARE]` already
+  includes `CommonStockDividendsPerShareDeclared`, sealed into the US PIT
+  store since replay-v15 — the raw field for a corporate-payout-policy
+  signal is already inside the canonical store; only a derived
+  period-over-period field is missing, the same shape of gap as the raw
+  debt/asset/equity levels already collected but not exposed standalone.
+- `sentiment.py` IS PRICE/BREADTH-DERIVED, NOT NEWS OR SEARCH SENTIMENT,
+  AND ITS MEASUREMENT-ABSENCE DEFECT (v2.11) IS CONFIRMED FIXED. No news
+  article, headline, or search-trend data is read anywhere in the module;
+  it blends 200D/50D breadth, %-Bull share, and median momentum with
+  region-specific market gauges. The denominator is now restricted to
+  measurable names, absence returns `(None, 0)` not `(0.0, 0)`, and the
+  measured-name counts are published alongside the share.
+- A REGIME×BUCKET PORTFOLIO-OUTCOME INTERACTION DIAGNOSTIC EXISTS AND IS
+  NEVER CONSUMED; A STOCK-LEVEL FEATURE×REGIME INTERACTION HAS NEVER BEEN
+  CODED ANYWHERE. `historical_calibration.regime_interaction()`'s
+  `activate` flag is read by nothing downstream (confirmed by grep across
+  `kelly_portfolio.py`, `validate.py`, `build.py`). Momentum acceleration ×
+  financial conditions and volume shock × quality × liquidity regime are
+  both confirmed genuinely absent, not merely untested by omission.
+- THE DECISION GATE IS CASE B — DATA BUILD REQUIRED — AND THE CHEAPEST NEXT
+  ACTION NEEDS NO DATA BUILD AT ALL. Real, `HIGHLY_DISTINCT` candidate axes
+  exist (KR investor flow, KR macro, KR large-holdings, accounting-quality
+  ratios, US dividend-change), but none is Grade A end-to-end. Running and
+  publishing `regional-alpha-model-v1` — already coded, already PIT-safe —
+  is unfinished prior work and outranks starting any new data build.
+
 ## Lint gate invariants (v2.11)
 
 - The enabled rule set reports ZERO findings on `main`. A rule is turned on in the

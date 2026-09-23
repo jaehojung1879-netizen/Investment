@@ -1,0 +1,129 @@
+{
+  "study": "alpha-information-inventory-v1",
+  "type": "DATA_INFORMATION_INVENTORY",
+  "notes": "Read-only inventory. No future-return relationship, IC, Rank IC, Top-N return, quintile spread, or backtest was computed anywhere in this artifact. No production config (FACTOR_WEIGHTS, CHAMPION, selector, Kelly, entry, region cap, macro multiplier) was changed. Grades reflect economic rationale, independence, PIT correctness, historical reproducibility, coverage, acquirability, cost/license, and redundancy only.",
+  "decisionGate": "CASE_B_DATA_BUILD_REQUIRED",
+  "decisionGateNotes": "Genuinely new, economically distinct information axes exist (KR investor flow, KR macro/regime, KR large-holdings disclosure, accounting-quality ratios, US dividend-change) but none is Grade A with zero build work required. Highest-priority action needs zero new data: run and publish the already-coded, never-executed regional-alpha-model-v1.",
+  "thirtyOneFeatures": {
+    "found": true,
+    "location": "pipeline/regional_alpha_features.py:60-83 (feature_manifest), research-only module, zero production imports",
+    "literalConstant": false,
+    "us": {"count": 31, "groups": {"PRICE": 21, "FUNDAMENTAL": 5, "DELTAS": 4, "US_ONLY": {"relativeStrengthBreadth52w": 1}}},
+    "kr": {"count": 31, "groups": {"PRICE": 21, "FUNDAMENTAL": 5, "DELTAS": 4, "KR_ONLY": {"marketCap": 1}}},
+    "distinctFrom": ["longterm.FACTOR_WEIGHTS (4 sleeves, 13 raw inputs)", "opportunity.FEATURE_COLUMNS (28: 19 level + 9 change)"]
+  },
+  "productionAlpha": {
+    "factorWeights": {"momentum": 0.30, "value": 0.25, "quality": 0.25, "lowvol": 0.20},
+    "rawInputs": {
+      "momentum": ["mom121", "mom6"],
+      "value": ["earningsYield", "fwdEarningsYield", "bookYield", "fcfYield"],
+      "quality": ["roe", "opMargin", "profitMargin", "earningsGrowth", "debtToEquity_negated_sector_exempt"],
+      "lowvol": ["vol252_negated"]
+    },
+    "criticalFinding": "Live daily build's value/quality/growth sleeve is fed from fundamentals.py (Yahoo current-snapshot, no PIT history). The PIT-safe DART/Finnhub pipelines feed the identical score_cross_section function but only inside historical_replay.py's backtest/validation path, never the live site build.",
+    "onlySleeveInputPersistedOnLedger": "vol252 (via risk.vol252Pct) — every other raw sub-input is computed internally and never persisted on the sealed signal record"
+  },
+  "dataSources": [
+    {"id": "price_trend", "group": "Price/trend/leadership", "grade": "A", "usRegion": true, "krRegion": true, "usedInProduction": "partial (12-1 and 6M momentum only)", "independence": "MOSTLY_REDUNDANT_INTERNALLY", "horizonBucket": "VERY_SHORT_TO_MEDIUM"},
+    {"id": "volume_liquidity_percentile", "group": "Volume/liquidity (percentile only)", "grade": "A", "usRegion": true, "krRegion": true, "usedInProduction": "opportunity radar only, one ratio (5D/60D)", "independence": "HIGHLY_DISTINCT_FROM_FACTOR_WEIGHTS", "horizonBucket": "VERY_SHORT_TO_SHORT_MED"},
+    {"id": "volume_liquidity_magnitude", "group": "Volume/liquidity (raw/log magnitude, dollar volume, shocks)", "grade": "C", "usRegion": true, "krRegion": true, "usedInProduction": false, "independence": "HIGHLY_DISTINCT", "horizonBucket": "VERY_SHORT_TO_SHORT_MED", "note": "Computable from data already in the canonical store; not coded anywhere"},
+    {"id": "microstructure_true", "group": "True bid/ask, order flow, tick data", "grade": "E", "usRegion": false, "krRegion": false, "usedInProduction": false, "independence": "N/A", "horizonBucket": "VERY_SHORT", "note": "No such data source exists anywhere in this repo"},
+    {"id": "microstructure_proxy", "group": "OHLCV-derived microstructure proxies (Amihud, range, VWAP proxy)", "grade": "C", "usRegion": true, "krRegion": true, "usedInProduction": false, "independence": "PARTIALLY_DISTINCT", "horizonBucket": "VERY_SHORT"},
+    {"id": "fundamental_level_live", "group": "Fundamental level (live build)", "grade": "B", "usRegion": true, "krRegion": true, "usedInProduction": true, "independence": "N/A_this_is_production", "horizonBucket": "MED_LONG", "note": "Live build uses Yahoo current-snapshot, not PIT"},
+    {"id": "fundamental_level_pit", "group": "Fundamental level (PIT, replay-only)", "grade": "A", "usRegion": true, "krRegion": true, "usedInProduction": "replay/validation only, not live", "independence": "N/A_this_is_production", "horizonBucket": "MED_LONG"},
+    {"id": "fundamental_acceleration", "group": "Fundamental acceleration (filing-over-filing)", "grade": "A", "usRegion": true, "krRegion": true, "usedInProduction": false, "independence": "PARTIALLY_DISTINCT", "horizonBucket": "MEDIUM", "note": "ALREADY_TESTED, CASE D no discovery evidence"},
+    {"id": "accounting_quality", "group": "Accounting quality (accruals, cash conversion, asset/debt growth)", "grade": "B", "usRegion": true, "krRegion": true, "usedInProduction": false, "independence": "HIGHLY_DISTINCT", "horizonBucket": "MED_LONG", "note": "Raw fields mostly already collected; derived fields missing. Receivables/inventory/working-capital genuinely not collected either region."},
+    {"id": "valuation_live", "group": "Valuation (live)", "grade": "A", "usRegion": true, "krRegion": true, "usedInProduction": true, "independence": "N/A_this_is_production", "horizonBucket": "MED_LONG"},
+    {"id": "valuation_pit_per_share", "group": "Valuation (PIT per-share yields)", "grade": "B", "usRegion": true, "krRegion": true, "usedInProduction": false, "independence": "N/A_this_is_production", "horizonBucket": "MED_LONG", "note": "PER_SHARE_NUMERATOR_PRICE_BASIS_UNRESOLVED still open"},
+    {"id": "analyst_estimates_us", "group": "Analyst estimates/revisions (US)", "grade": "D", "usRegion": true, "krRegion": false, "usedInProduction": false, "independence": "HIGHLY_DISTINCT", "horizonBucket": "SHORT_MED_TO_MEDIUM", "note": "Finnhub free tier is current-snapshot/shallow-window, not a stable 2013-2026 PIT panel"},
+    {"id": "analyst_estimates_kr", "group": "Analyst estimates/revisions (KR)", "grade": "E", "usRegion": false, "krRegion": true, "usedInProduction": false, "independence": "HIGHLY_DISTINCT", "horizonBucket": "SHORT_MED_TO_MEDIUM", "note": "FnGuide/FnSpace ToS-blocked, prior finding not re-tested"},
+    {"id": "corporate_events_dividend_us", "group": "Dividend-change signal (US)", "grade": "B", "usRegion": true, "krRegion": false, "usedInProduction": false, "independence": "PARTIALLY_DISTINCT", "horizonBucket": "MEDIUM_TO_MED_LONG", "note": "Raw field already collected in Finnhub PIT store"},
+    {"id": "corporate_events_other", "group": "Corporate events (8-K: M&A, guidance, buybacks)", "grade": "C", "usRegion": true, "krRegion": false, "usedInProduction": false, "independence": "PARTIALLY_DISTINCT", "horizonBucket": "SHORT_MED"},
+    {"id": "corporate_events_credit_rating", "group": "Credit rating changes", "grade": "E", "usRegion": true, "krRegion": true, "usedInProduction": false, "independence": "HIGHLY_DISTINCT", "horizonBucket": "MEDIUM"},
+    {"id": "options_data", "group": "Options data (per-equity, historical)", "grade": "E", "usRegion": true, "krRegion": false, "usedInProduction": false, "independence": "HIGHLY_DISTINCT", "horizonBucket": "VERY_SHORT"},
+    {"id": "form4_insider_us", "group": "SEC Form 4 insider transactions", "grade": "C", "usRegion": true, "krRegion": false, "usedInProduction": false, "independence": "HIGHLY_DISTINCT", "horizonBucket": "SHORT_MED", "note": "Blocked by SEC domain-wide 403 from this environment; free official source (2006+) exists"},
+    {"id": "short_interest_us", "group": "Short interest (FINRA/Nasdaq)", "grade": "C", "usRegion": true, "krRegion": false, "usedInProduction": false, "independence": "HIGHLY_DISTINCT", "horizonBucket": "SHORT_MED_TO_MEDIUM", "note": "Needs a PIT publication-lag correction; one unresolved cross-source ambiguity on OTC-only-before-2021 vs exchange-listed-since-2007"},
+    {"id": "institutional_13f_us", "group": "13F institutional holdings", "grade": "A", "usRegion": true, "krRegion": false, "usedInProduction": false, "independence": "PARTIALLY_DISTINCT", "horizonBucket": "MEDIUM", "note": "Already collected, confirmed zero code path into any alpha-scoring module. Coverage too sparse (small manager watchlist) to matter even if wired in."},
+    {"id": "investor_flow_kr", "group": "Per-stock investor-type net trading (KR)", "grade": "B", "usRegion": false, "krRegion": true, "usedInProduction": false, "independence": "HIGHLY_DISTINCT", "horizonBucket": "VERY_SHORT_TO_MEDIUM", "note": "Real official free source; not behind current subscribed KRX Open API key; portal unreachable from current sandbox"},
+    {"id": "short_selling_kr", "group": "Short-selling volume/balance (KR)", "grade": "B", "usRegion": false, "krRegion": true, "usedInProduction": false, "independence": "HIGHLY_DISTINCT", "horizonBucket": "SHORT_MED", "note": "Same access blocker as investor flow, PLUS at least three regulatory regimes (two multi-year bans: ~2020-03 to 2021, 2023-11-05 to 2025-03-31)"},
+    {"id": "large_holdings_kr", "group": "Large-holdings disclosure (5%-rule, DART)", "grade": "B", "usRegion": false, "krRegion": true, "usedInProduction": false, "independence": "HIGHLY_DISTINCT", "horizonBucket": "SHORT_MED_TO_MEDIUM", "note": "Lowest-effort build in this inventory; reuses dart_fundamentals.py's proven receipt-date PIT pattern"},
+    {"id": "foreign_ownership_limit_kr", "group": "Foreign-ownership-limit history (KR)", "grade": "E", "usRegion": false, "krRegion": true, "usedInProduction": false, "independence": "N/A", "horizonBucket": "N/A"},
+    {"id": "macro_us", "group": "Macro/regime, 6-axis (US/global)", "grade": "A", "usRegion": true, "krRegion": false, "usedInProduction": true, "independence": "N/A_this_is_production", "horizonBucket": "MEDIUM", "note": "ALFRED vintaging permanently unreachable for 10/28 panel columns per AGENTS.md v2.9, already closed, not re-tested"},
+    {"id": "macro_kr_ecos", "group": "Macro (BOK ECOS)", "grade": "C", "usRegion": false, "krRegion": true, "usedInProduction": false, "independence": "HIGHLY_DISTINCT", "horizonBucket": "MEDIUM", "note": "Fetch layer confirmed 100% dead code. KTB_3Y and CorpBond_3Y share the identical series ID 817Y002, a confirmed real ambiguity, not fixed here."},
+    {"id": "macro_kr_kosis", "group": "Macro (KOSIS)", "grade": "C", "usRegion": false, "krRegion": true, "usedInProduction": false, "independence": "HIGHLY_DISTINCT", "horizonBucket": "MEDIUM"},
+    {"id": "fx_kr", "group": "USD/KRW FX, stock-level fxBeta", "grade": "C", "usRegion": false, "krRegion": true, "usedInProduction": false, "independence": "HIGHLY_DISTINCT", "horizonBucket": "SHORT_MED", "note": "FX_PUBLICATION_TIME_UNRESOLVED reconfirmed still open; FRED DEXKOUS timing confirmed mismatched to KRX close; ECOS 731Y001 a candidate, blocked by dead fetch layer"},
+    {"id": "sector_context_static", "group": "Sector map (current, static)", "grade": "A", "usRegion": true, "krRegion": true, "usedInProduction": true, "independence": "N/A_this_is_production", "horizonBucket": "N/A"},
+    {"id": "sector_context_historical", "group": "Historical point-in-time sector classification", "grade": "E", "usRegion": true, "krRegion": true, "usedInProduction": false, "independence": "N/A", "horizonBucket": "N/A", "note": "No backfillable source found"},
+    {"id": "breadth_dispersion", "group": "Market breadth/dispersion (beyond existing MA breadth)", "grade": "C", "usRegion": true, "krRegion": true, "usedInProduction": "partial (200D/50D MA breadth only, inside sentiment.py)", "independence": "PARTIALLY_DISTINCT", "horizonBucket": "SHORT_MED"},
+    {"id": "sentiment_news_attention", "group": "News/search attention sentiment (Google Trends, Naver DataLab, etc.)", "grade": "C_documentation_only", "usRegion": true, "krRegion": true, "usedInProduction": false, "independence": "HIGHLY_DISTINCT", "horizonBucket": "VERY_SHORT", "note": "Not independently probed live in this inventory; existing sentiment.py is price/breadth-derived, not news/search"},
+    {"id": "expert_consensus", "group": "Expert/house-view consensus", "grade": "E_for_alpha_use", "usRegion": true, "krRegion": true, "usedInProduction": false, "independence": "N/A", "horizonBucket": "N/A", "note": "Theme-level, no ticker field, no historical time series retained"},
+    {"id": "national_pension", "group": "National Pension asset allocation", "grade": "E_for_stock_level_use", "usRegion": false, "krRegion": true, "usedInProduction": false, "independence": "N/A", "horizonBucket": "N/A", "note": "Aggregate fund-wide allocation only, no ticker field"},
+    {"id": "macro_vintage_fred", "group": "FRED/ALFRED vintage depth beyond AGENTS.md v2.9", "grade": "E", "usRegion": true, "krRegion": false, "usedInProduction": "N/A", "independence": "N/A", "horizonBucket": "N/A", "note": "Not re-tested; AGENTS.md v2.9 already closed this gate permanently for the columns that matter"}
+  ],
+  "collectedButUnused": [
+    {"field": "revenueGrowth", "module": "fundamentals.py:30", "reason": "not stated in code; simply never read by longterm.raw_inputs"},
+    {"field": "dividendYield", "module": "fundamentals.py:34", "reason": "same"},
+    {"field": "MACD, Bollinger, RSI-28, most VIX/macro-stress features", "module": "features.py", "reason": "different model's (short-term ML) feature set by construction"},
+    {"field": "Full DART/Finnhub PIT fundamentals sleeve", "module": "dart_derive.py, finnhub_derive.py", "reason": "live build uses Yahoo current-snapshot instead; replay-only in current wiring"},
+    {"field": "Raw debt/asset/equity levels", "module": "dart_derive.py, finnhub_derive.py", "reason": "computed as intermediate values, never exposed in output fields dict, only the ratio survives"},
+    {"field": "SEC 13F stock-level holdings", "module": "institutional_13f.py", "reason": "module's own docstring: a disclosure reader, not an investment signal"},
+    {"field": "National Pension asset-allocation weights", "module": "national_pension.py", "reason": "aggregate-only, no ticker field"},
+    {"field": "Expert/house-view consensus", "module": "expert_consensus.py", "reason": "theme-level, no ticker mapping exists"},
+    {"field": "KRX dated universe/market-cap snapshots", "module": "krx_universe.py", "reason": "live build resolves universe dynamically from today's listing; snapshots used only inside historical replay"}
+  ],
+  "researchHistory": {
+    "pendingExecution": [
+      {"study": "regional-alpha-model-v1", "modules": ["regional_alpha_features.py", "regional_alpha_model.py"], "status": "designed and coded, never run, no published result", "needsNewData": false}
+    ],
+    "concluded": [
+      {"study": "four-factor-signal-attribution-audit-v1", "verdict": "none significant, all region-sign-unstable", "needsReResearch": "NEW_HYPOTHESIS_ONLY"},
+      {"study": "fundamental-acceleration-discovery-v1", "verdict": "CASE_D_NO_DISCOVERY_EVIDENCE", "needsReResearch": "NEW_HYPOTHESIS_ONLY"},
+      {"study": "alpha-reliability-v1", "verdict": "confidence rung separated in the wrong direction; persistence rung contains zero", "needsReResearch": "NO_on_confidence / ONLY_IF_NEW_DATA_on_persistence"},
+      {"study": "signal-persistence-v1", "verdict": "contains zero on every rung", "needsReResearch": "ONLY_IF_NEW_DATA"},
+      {"study": "lowvol-alpha-separation-v1", "verdict": "CASE_D_KEEP_THE_SLEEVE", "needsReResearch": "NO"},
+      {"study": "alpha-risk-separation-v1", "verdict": "contains zero, benchmark not beaten", "needsReResearch": "ONLY_IF_NEW_DATA"},
+      {"study": "alpha-calibration-resolution-v1", "verdict": "CASE_B_does_not_help", "needsReResearch": "NO"},
+      {"study": "dynamic-breadth-v1", "verdict": "contains zero", "needsReResearch": "ONLY_IF_NEW_DATA"},
+      {"study": "switch-hurdle-v1", "verdict": "thin positive separation, not a promotion, stays a challenger", "needsReResearch": "ONLY_IF_NEW_DATA"},
+      {"study": "region-quota-removal-v1", "verdict": "point estimate worse, contains zero", "needsReResearch": "NO_on_this_axis_alone"},
+      {"study": "entry-selection-separation-v1", "verdict": "large favourable point estimate, contains zero", "needsReResearch": "ONLY_IF_NEW_DATA"},
+      {"study": "selection-value-decomposition-v1", "verdict": "own hypothesis refuted by its own pre-specified test", "needsReResearch": "NO"},
+      {"study": "benchmark-relative-alpha-v1", "verdict": "BENCHMARK_NOT_BEATEN, 3-axis confound, superseded", "needsReResearch": "NO_superseded"},
+      {"study": "opportunity-model", "verdict": "both opportunity and warning radars rejected (accepted:false), decile monotonicity negative on the winner", "needsReResearch": "N/A_rejected_and_stranded_on_stale_generation"}
+    ],
+    "challengerRegistry": {
+      "champion": "ALPHA_RANK_PER_DOWNSIDE_RISK (paperTrading, liveValidated:false)",
+      "challenger1": "CALIBRATED_EXPECTED_RETURN_PER_DOWNSIDE_RISK (indistinguishable from random, best p=0.065, not promoted)",
+      "challenger2": "TBD, not started"
+    }
+  },
+  "gaps": [
+    {"gap": "KR investor-type flow (per-stock)", "severity": "STRUCTURAL_GAP", "grade": "B"},
+    {"gap": "KR macro/regime (ECOS layer)", "severity": "STRUCTURAL_GAP", "grade": "C"},
+    {"gap": "Analyst estimate revisions (both regions)", "severity": "STRUCTURAL_GAP_but_likely_not_free", "grade": "D_US_E_KR"},
+    {"gap": "Historical point-in-time sector classification", "severity": "NICE_TO_HAVE", "grade": "E"},
+    {"gap": "Market microstructure (true tick/bid-ask)", "severity": "NON_BLOCKING", "grade": "E"},
+    {"gap": "KR/US short selling", "severity": "NICE_TO_HAVE", "grade": "C"},
+    {"gap": "Accounting quality ratios (accruals, cash conversion, growth)", "severity": "STRUCTURAL_GAP", "grade": "B"}
+  ],
+  "nextHypotheses": [
+    {"id": "H1", "name": "Regime-conditional leadership", "regions": ["US"], "krBlocked": true, "newDataNeeded": false, "overlapWithPriorResearch": "none found (confirmed absent)", "horizonBucket": "MEDIUM", "decision": "READY_TO_PREREGISTER_US_DATA_BUILD_FIRST_KR"},
+    {"id": "H2", "name": "Volume/liquidity magnitude x fundamental health", "regions": ["US", "KR"], "newDataNeeded": false, "overlapWithPriorResearch": "substantial overlap with rejected Opportunity model - see explicit caveat", "horizonBucket": "VERY_SHORT_TO_SHORT_MED", "decision": "DATA_BUILD_FIRST_overlap_flagged"},
+    {"id": "H3", "name": "KR investor-flow x price leadership", "regions": ["KR"], "newDataNeeded": true, "overlapWithPriorResearch": "none found (confirmed absent)", "horizonBucket": "SHORT_MED_TO_MEDIUM", "decision": "DATA_BUILD_FIRST"},
+    {"id": "H4", "name": "KR large-holdings (5%-rule) ownership change", "regions": ["KR"], "newDataNeeded": true, "overlapWithPriorResearch": "none found (confirmed absent)", "horizonBucket": "SHORT_MED_TO_MEDIUM", "decision": "DATA_BUILD_FIRST_lowest_effort"},
+    {"id": "H5", "name": "US dividend-change signal", "regions": ["US"], "newDataNeeded": false, "overlapWithPriorResearch": "partial, adjacent to quality sleeve", "horizonBucket": "MEDIUM_TO_MED_LONG", "decision": "READY_TO_PREREGISTER"}
+  ],
+  "productionSafety": {
+    "filesModifiedUnderPipeline": 0,
+    "configJsonModified": false,
+    "factorWeightsChanged": false,
+    "championChanged": false,
+    "kellyChanged": false,
+    "historicalArtifactsModified": false,
+    "outcomeledgerModified": false,
+    "signalHistoryModified": false,
+    "bulkExternalDownloadsPerformed": false,
+    "correlationsWithFutureReturnsComputed": false
+  },
+  "actionsRequiredInGithubActions": "none"
+}
