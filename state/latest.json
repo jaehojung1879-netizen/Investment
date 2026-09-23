@@ -1,8 +1,8 @@
 {
   "schemaVersion": "2.7.0",
   "modelVersion": "longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
-  "buildCommitSha": "6fc26a9be616",
-  "generatedAt": "2026-09-23T14:03:01.421525+00:00",
+  "buildCommitSha": "0fb201dd63de",
+  "generatedAt": "2026-09-23T21:46:52.386899+00:00",
   "marketAsOf": "2026-09-23",
   "macroRegime": "Transition/Low confidence",
   "holdingsByRegion": {
@@ -12,13 +12,13 @@
       "SPG",
       "NUE",
       "GOOGL",
+      "HST",
       "GOOG",
       "MO",
-      "HST",
-      "MPC",
+      "SNDK",
       "TRV",
-      "KO",
-      "ALL"
+      "MPC",
+      "SWK"
     ],
     "KR": [
       "078930.KS",
@@ -36,28 +36,28 @@
     ]
   },
   "modelPortfolioWeights": {
-    "KO": 0.3,
-    "GOOGL": 0.155768,
-    "SPG": 0.19002,
-    "002380.KS": 0.039624,
-    "021240.KS": 0.042149
+    "SPG": 0.280947,
+    "TRV": 0.225405,
+    "HST": 0.143648,
+    "002380.KS": 0.040093,
+    "021240.KS": 0.042648
   },
   "entryStatesByTicker": {
     "MU": "WAIT_FOR_PULLBACK",
     "STT": "WATCH",
     "SPG": "WATCH",
     "NUE": "WATCH",
-    "GOOGL": "ACCUMULATE_GRADUALLY",
-    "GOOG": "WATCH",
-    "MO": "WATCH",
+    "GOOGL": "WATCH",
     "HST": "WATCH",
-    "MPC": "WAIT_FOR_PULLBACK",
-    "TRV": "WATCH",
-    "KO": "ACCUMULATE_GRADUALLY",
-    "ALL": "WATCH",
-    "SWK": "WATCH",
-    "TGT": "WAIT_FOR_PULLBACK",
+    "GOOG": "AVOID",
+    "MO": "WATCH",
     "SNDK": "WAIT_FOR_PULLBACK",
+    "TRV": "WATCH",
+    "MPC": "WAIT_FOR_PULLBACK",
+    "SWK": "WATCH",
+    "KO": "ACCUMULATE_GRADUALLY",
+    "MAR": "WATCH",
+    "ALL": "WATCH",
     "078930.KS": "WAIT_FOR_PULLBACK",
     "402340.KS": "WAIT_FOR_PULLBACK",
     "034730.KS": "WAIT_FOR_PULLBACK",
@@ -83,14 +83,14 @@
     "009150.KS": "EMERGING_OPPORTUNITY",
     "402340.KS": "WATCH",
     "175330.KS": "EMERGING_OPPORTUNITY",
+    "ROK": "EMERGING_OPPORTUNITY",
     "MPWR": "EMERGING_OPPORTUNITY",
-    "CRWD": "EMERGING_OPPORTUNITY",
-    "INTC": "EMERGING_OPPORTUNITY",
     "FFIV": "EMERGING_OPPORTUNITY",
-    "BE": "EMERGING_OPPORTUNITY",
-    "DDOG": "EMERGING_OPPORTUNITY",
-    "STX": "EMERGING_OPPORTUNITY",
-    "AKAM": "EMERGING_OPPORTUNITY"
+    "CRWD": "EMERGING_OPPORTUNITY",
+    "WDC": "EMERGING_OPPORTUNITY",
+    "INTC": "EMERGING_OPPORTUNITY",
+    "AKAM": "EMERGING_OPPORTUNITY",
+    "DDOG": "EMERGING_OPPORTUNITY"
   },
   "warningTiersByTicker": {
     "005490.KS": "CRITICAL_WARNING",
@@ -101,21 +101,21 @@
     "009540.KS": "ELEVATED_WARNING",
     "002380.KS": "ELEVATED_WARNING",
     "000660.KS": "ELEVATED_WARNING",
-    "ALL": "CRITICAL_WARNING",
-    "GOOG": "ELEVATED_WARNING",
-    "STT": "ELEVATED_WARNING",
+    "GOOG": "CRITICAL_WARNING",
+    "GOOGL": "CRITICAL_WARNING",
+    "STT": "CRITICAL_WARNING",
     "MPC": "ELEVATED_WARNING",
-    "GOOGL": "ELEVATED_WARNING",
-    "KO": "ELEVATED_WARNING",
+    "SWK": "WATCH",
+    "MO": "ELEVATED_WARNING",
     "NUE": "WATCH",
-    "MO": "ELEVATED_WARNING"
+    "SPG": "WATCH"
   },
   "dataMode": "live",
   "seed": false,
   "stale": false,
   "productionValidation": {
     "passed": true,
-    "validatedAt": "2026-09-23T14:03:01.421525+00:00",
+    "validatedAt": "2026-09-23T21:46:52.386899+00:00",
     "errors": []
   }
 }
