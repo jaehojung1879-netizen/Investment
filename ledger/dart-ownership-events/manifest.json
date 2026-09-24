@@ -1,12 +1,12 @@
 {
   "apiErrors": 0,
   "apiRefusals": 0,
-  "companiesQueried": 200,
-  "companiesRemaining": 54,
+  "companiesQueried": 254,
+  "companiesRemaining": 0,
   "contract": "DART_OWNERSHIP_EVENTS_RAW_V2",
   "currentUniverseIssuerCount": 116,
   "currentUniverseSecurityCount": 119,
-  "dartUnavailableOrNoRecords": 24,
+  "dartUnavailableOrNoRecords": 26,
   "earliestObservedEventDate": "2024-09-24",
   "endpointSemantics": {
     "endpoint": "majorstock.json",
@@ -15,7 +15,7 @@
     "pitAvailabilityRule": "DART_RECEIPT_DATE_NOT_TRANSACTION_OR_REFERENCE_DATE",
     "requestDateBoundsSupported": false
   },
-  "eventCount": 2233,
+  "eventCount": 2496,
   "historicalOnlyIssuerCount": 138,
   "historicalOnlySecurityCount": 141,
   "historicalUniverseIssuerCount": 254,
@@ -28,16 +28,16 @@
     "2026"
   ],
   "successfullyMappedDartCorpCodes": 254,
-  "successfullyQueriedCompanies": 200,
+  "successfullyQueriedCompanies": 254,
   "thisRun": {
     "apiErrors": 0,
     "apiRefusals": 0,
-    "calls": 200,
-    "eventsObserved": 1932,
+    "calls": 54,
+    "eventsObserved": 563,
     "refused": 0,
     "shardsChanged": 3,
-    "stopReason": "CALL_BUDGET_SPENT"
+    "stopReason": "WORK_LIST_EXHAUSTED"
   },
   "unresolvedIdentityCount": 6,
-  "updatedAt": "2026-09-24T09:10:57Z"
+  "updatedAt": "2026-09-24T10:42:33Z"
 }
