@@ -202,15 +202,19 @@ resolved access status.
 Reuses `dart_fundamentals.receipt_date` directly for PIT visibility — the
 same vendor, same key, same receipt-date mechanism `dart_fundamentals.py`
 already implements for financial statements, just a different endpoint
-(`majorstock.json`, API group DS004). Field set corroborated from two
-independent third-party libraries wrapping the same documented endpoint
-(OpenDART's own guide was itself unreachable from this sandbox): `rcept_no`,
-`rcept_dt`, `corp_code`, `corp_name`, `report_tp` (신규/변동), `repror`,
-`stkqy`, `stkqy_irds`, `stkrt`, `stkrt_irds`. `report_tp`'s two corroborated
-values map to `NEW_5PCT_HOLDER`/`OWNERSHIP_CHANGE`; anything else passes
-through unchanged as `reportTypeRaw` rather than being forced into an
-invented category. INCREASE/DECREASE/EXIT_BELOW_THRESHOLD are derived from
-the SIGN of `stkrt_irds`, never assumed from an unconfirmed "before" field.
+(`majorstock.json`, API group DS004). A live probe (Actions run 35964461327)
+confirmed the source schema and corrected the earlier `report_tp` guess: real
+sample values were `일반`/`약식`, retained only as `reportTypeRaw`. The raw-v2
+contract also preserves `ctr_stkqy`, `ctr_stkrt`, and `report_resn` verbatim.
+INCREASE/DECREASE/EXIT_BELOW_THRESHOLD remain explicitly derived from
+`stkrt_irds`; no category is derived from the reason field.
+
+Collection is now issuer-grained over the PIT KR membership union rather than
+the current ticker list. Exact stock-code or unique exact-name mapping is
+recorded; ambiguous identities remain unresolved. The present dataset is
+`BLOCKED_HISTORICAL_DEPTH`: `majorstock.json` has no date-bound parameters and
+the observed response covers only a rolling-looking two-year interval. See
+`docs/dart-ownership-history-replay-integrity-v1.md`.
 
 **Grade: B — REPAIRABLE, lowest-effort build in this whole line** —
 unchanged assessment from the prior inventory, now backed by a concrete,

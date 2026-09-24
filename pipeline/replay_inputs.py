@@ -20,6 +20,10 @@ from . import pit_data
 from . import price_adjustment as PA
 
 SCHEMA = "REPLAY_INPUTS_V1"
+REPLAY_CONFIG_CONTRACT = "REPLAY_SEMANTIC_CONFIG_V1"
+CONFIG_POLICY_KEYS = {"configSha256", "replayConfigSha256", "replayConfigContract",
+                      "replaySemanticConfig"}
+REPLAY_POLICY_BASELINES = Path(__file__).resolve().parent.parent / "data" / "replay-policies"
 # Dated price panels are keyed "price/<YYYY-MM>" and "benchmark/<YYYY-MM>", but
 # one "benchmark/..." component is not a panel at all: this is the generation's
 # static vendor lineage, and its rows carry neither a date nor a Close. Every
@@ -40,7 +44,9 @@ def is_price_panel(name: str) -> bool:
 
 
 class InputVersionConflict(RuntimeError):
-    pass
+    def __init__(self, message: str, *, details: dict | None = None):
+        super().__init__(message)
+        self.details = details or {}
 
 
 def canonical(value) -> bytes:
@@ -50,6 +56,93 @@ def canonical(value) -> bytes:
 
 def digest(value) -> str:
     return hashlib.sha256(canonical(value)).hexdigest()
+
+
+def replay_semantic_config(cfg) -> dict:
+    """Normalized configuration consumed by replay/audit, excluding secrets.
+
+    ``Config`` is already the repository's canonical representation: defaulted,
+    deduplicated, and normalized. ECOS is deliberately excluded because the
+    replay acquisition and generation graph only calls the FRED macro path;
+    neither ``run_replay.py`` nor ``audit_portfolio.py`` imports the ECOS
+    fetcher. Everything else remains conservatively sealed.
+    """
+    normalized = asdict(cfg)
+    consumed = (
+        "core", "universe", "universe_size", "benchmarks", "benchmark_sources",
+        "fred_regions", "longterm", "kelly_portfolio", "historical_replay",
+    )
+    return {key: normalized[key] for key in consumed}
+
+
+def replay_config_policy(cfg) -> dict:
+    semantic = replay_semantic_config(cfg)
+    return {"replayConfigContract": REPLAY_CONFIG_CONTRACT,
+            "replayConfigSha256": digest(semantic),
+            "replaySemanticConfig": semantic}
+
+
+def _diff(left, right, path="") -> list[dict]:
+    if isinstance(left, dict) and isinstance(right, dict):
+        out = []
+        for key in sorted(set(left) | set(right)):
+            child = f"{path}.{key}" if path else str(key)
+            if key not in left:
+                out.append({"path": child, "sealed": None, "current": right[key]})
+            elif key not in right:
+                out.append({"path": child, "sealed": left[key], "current": None})
+            else:
+                out.extend(_diff(left[key], right[key], child))
+        return out
+    return [] if left == right else [{"path": path, "sealed": left, "current": right}]
+
+
+def policies_compatible(prior: dict, current: dict, *, replay_version: str,
+                        baseline_root: str | Path) -> tuple[bool, dict]:
+    """Compare policy semantics, including a fully inspectable legacy bridge."""
+    if prior == current:
+        return True, {"classification": "IDENTICAL"}
+    prior_other = {key: value for key, value in prior.items() if key not in CONFIG_POLICY_KEYS}
+    current_other = {key: value for key, value in current.items() if key not in CONFIG_POLICY_KEYS}
+    policy_diff = _diff(prior_other, current_other)
+    if policy_diff:
+        return False, {"classification": "REPLAY_SEMANTIC_CHANGE",
+                       "policyDifferences": policy_diff}
+    if prior.get("replayConfigContract") == REPLAY_CONFIG_CONTRACT:
+        same = prior.get("replayConfigSha256") == current.get("replayConfigSha256")
+        return same, {"classification": ("EQUIVALENT" if same else "REPLAY_SEMANTIC_CHANGE"),
+                      "sealedReplayConfigSha256": prior.get("replayConfigSha256"),
+                      "currentReplayConfigSha256": current.get("replayConfigSha256"),
+                      "semanticDifferences": _diff(
+                          prior.get("replaySemanticConfig"),
+                          current.get("replaySemanticConfig"))}
+
+    baseline_path = Path(baseline_root) / f"{replay_version}.json"
+    if not baseline_path.exists():
+        return False, {"classification": "UNKNOWN", "missingBaseline": str(baseline_path)}
+    baseline = json.loads(baseline_path.read_text(encoding="utf-8"))
+    semantic = baseline.get("semanticConfig")
+    checks = {
+        "baselineReplayVersionMatches": baseline.get("replayVersion") == replay_version,
+        "sealedLegacyHashMatchesBaseline": (
+            prior.get("configSha256") == baseline.get("legacyRawConfigSha256")),
+        "currentSemanticHashMatchesBaseline": (
+            current.get("replayConfigSha256") == digest(semantic)),
+        "currentSemanticConfigMatchesBaseline": (
+            current.get("replaySemanticConfig") == semantic),
+        "currentContractMatches": current.get("replayConfigContract") == REPLAY_CONFIG_CONTRACT,
+    }
+    compatible = all(checks.values())
+    trusted_bridge = (checks["baselineReplayVersionMatches"]
+                      and checks["sealedLegacyHashMatchesBaseline"]
+                      and checks["currentContractMatches"])
+    return compatible, {
+        "classification": ("REPRESENTATION_ONLY_CHANGE" if compatible else
+                           "REPLAY_SEMANTIC_CHANGE" if trusted_bridge else "UNKNOWN"),
+        "checks": checks,
+        "diagnosedRawDifferences": baseline.get("diagnosedRawDifferences", []),
+        "semanticDifferences": _diff(semantic, current.get("replaySemanticConfig")),
+    }
 
 
 def frame_rows(frame, through: str) -> list[dict]:
@@ -285,8 +378,16 @@ class InputStore:
             if through < prior["through"]:
                 raise InputVersionConflict("input cutoff cannot move backwards")
             old = self.load(prior)
-            if policy != prior["policy"]:
-                raise InputVersionConflict("replay policy changed; new DATA_VERSION/REPLAY_VERSION required")
+            compatible, details = policies_compatible(
+                prior["policy"], policy, replay_version=self.replay_version,
+                baseline_root=REPLAY_POLICY_BASELINES)
+            if not compatible:
+                raise InputVersionConflict(
+                    "replay policy changed; new DATA_VERSION/REPLAY_VERSION required",
+                    details=details)
+            # Representation compatibility does not authorize rewriting the
+            # sealed policy. Preserve its exact legacy bytes in every extension.
+            policy = prior["policy"]
             # The generation's universe, pinned at its first acquisition. A name
             # outside it cannot write rows into an already-published month.
             sealed_tickers = {row["ticker"] for name, rows in old.items()

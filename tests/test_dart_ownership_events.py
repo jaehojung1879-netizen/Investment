@@ -17,7 +17,9 @@ def _row(**overrides):
             "corp_code": "00126380", "corp_name": "삼성전자",
             "report_tp": "일반", "repror": "국민연금공단",
             "stkqy": "1,000,000", "stkqy_irds": "-50,000",
-            "stkrt": "4.80", "stkrt_irds": "-0.24"}
+            "stkrt": "4.80", "stkrt_irds": "-0.24",
+            "ctr_stkqy": "25,000", "ctr_stkrt": "0.12",
+            "report_resn": "단순투자목적"}
     base.update(overrides)
     return base
 
@@ -41,6 +43,11 @@ def test_a_normal_row_becomes_a_record_keyed_by_receipt_no():
     assert event["holdingPctAfter"] == 4.80
     assert event["holdingPctChange"] == -0.24
     assert event["holdingPctBefore"] is None, "never invented from stkrt - stkrt_irds"
+    assert event["majorTransactionSharesRaw"] == "25,000"
+    assert event["majorTransactionOwnershipPctRaw"] == "0.12"
+    assert event["reportReasonRaw"] == "단순투자목적"
+    assert event["eventDate"] is None
+    assert event["availableFrom"] == "2023-05-15", "PIT uses public receipt date only"
 
 
 def test_report_tp_ilban_is_preserved_raw_and_not_translated():
@@ -144,7 +151,7 @@ def test_direction_of_change_reads_the_sign_and_the_threshold_crossing():
 
 
 # --------------------------------------------------------------------------- #
-# amendment_flags
+# prior_filing_flags (this is not an amendment assertion)
 # --------------------------------------------------------------------------- #
 def test_the_first_event_for_a_filer_pair_is_unmarked_and_later_ones_are():
     events = [
@@ -153,10 +160,11 @@ def test_the_first_event_for_a_filer_pair_is_unmarked_and_later_ones_are():
         DOE.build_event(_row(rcept_no="20210101000002", stkrt="9.0"),
                         ticker="005930.KS", collected_at="x")[0],
     ]
-    flagged = DOE.amendment_flags(events)
+    flagged = DOE.prior_filing_flags(events)
     by_receipt = {e["receiptNo"]: e for e in flagged}
-    assert by_receipt["20200101000001"]["amendmentFlag"] is False
-    assert by_receipt["20210101000002"]["amendmentFlag"] is True
+    assert by_receipt["20200101000001"]["priorFilingExists"] is False
+    assert by_receipt["20210101000002"]["priorFilingExists"] is True
+    assert "amendmentFlag" not in by_receipt["20210101000002"]
 
 
 def test_duplicate_receipt_number_is_not_deduplicated_by_amendment_flags():
@@ -168,9 +176,9 @@ def test_duplicate_receipt_number_is_not_deduplicated_by_amendment_flags():
         DOE.build_event(_row(rcept_no="20200101000001", stkrt="10.0"),
                         ticker="005930.KS", collected_at="x")[0],
     ]
-    flagged = DOE.amendment_flags(events)
+    flagged = DOE.prior_filing_flags(events)
     assert len(flagged) == 2
-    assert sum(1 for e in flagged if e["amendmentFlag"]) == 1, (
+    assert sum(1 for e in flagged if e["priorFilingExists"]) == 1, (
         "the second identical receipt is still treated as 'an earlier one exists'")
 
 
@@ -181,10 +189,10 @@ def test_amendment_flags_orders_by_availablefrom_not_input_order():
                             ticker="005930.KS", collected_at="x")[0]
     earlier = DOE.build_event(_row(rcept_no="20200101000001", stkrt="10.0"),
                               ticker="005930.KS", collected_at="x")[0]
-    flagged = DOE.amendment_flags([later, earlier])
+    flagged = DOE.prior_filing_flags([later, earlier])
     by_receipt = {e["receiptNo"]: e for e in flagged}
-    assert by_receipt["20200101000001"]["amendmentFlag"] is False
-    assert by_receipt["20220101000002"]["amendmentFlag"] is True
+    assert by_receipt["20200101000001"]["priorFilingExists"] is False
+    assert by_receipt["20220101000002"]["priorFilingExists"] is True
 
 
 def test_two_different_filers_on_the_same_ticker_are_independent():
@@ -194,8 +202,27 @@ def test_two_different_filers_on_the_same_ticker_are_independent():
         DOE.build_event(_row(rcept_no="20200101000002", repror="B"),
                         ticker="005930.KS", collected_at="x")[0],
     ]
-    flagged = DOE.amendment_flags(events)
-    assert all(e["amendmentFlag"] is False for e in flagged)
+    flagged = DOE.prior_filing_flags(events)
+    assert all(e["priorFilingExists"] is False for e in flagged)
+
+
+def test_old_shard_rows_are_read_without_synthesizing_new_source_values():
+    old = {"id": "dart-ownership:1", "corpCode": "001", "amendmentFlag": True}
+    event = DOE.read_compatible_event(old)
+    assert event["schemaVersion"] == 1
+    assert event["priorFilingExists"] is True
+    assert event["reportReasonRaw"] is None
+    assert event["majorTransactionSharesRaw"] is None
+
+
+def test_repeat_collection_deduplicates_and_only_enriches_missing_raw_fields():
+    old, _ = DOE.build_event(_row(), ticker="005930.KS", collected_at="first")
+    old.pop("reportReasonRaw")
+    fresh, _ = DOE.build_event(_row(), ticker="005930.KS", collected_at="second")
+    merged = DOE.merge_events([old], [fresh])
+    assert len(merged) == 1
+    assert merged[0]["reportReasonRaw"] == "단순투자목적"
+    assert merged[0]["collectedAt"] == "first"
 
 
 # --------------------------------------------------------------------------- #

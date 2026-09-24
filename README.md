@@ -16,6 +16,8 @@ Replay v7의 고정 평가 달력과 성과 정의는 [v7 평가 문서](docs/re
 현재 세대는 **`replay-v16`**입니다. v7~v15 설명과 과거 수치는 아래에 변경 이력으로
 남아 있으며 현재 결과가 아닙니다. 정기 replay는 frozen input을 재현하고, 평가 anchor는
 고정된 KRX/NYSE 공통 세션 달력에서 정합니다. 가격 가용성이나 실제 endDate로 이동하지 않습니다.
+PR #151 이후 발생한 frozen-config 충돌의 비의미적 원인과 DART ownership 역사 수집 계약은
+[DART ownership/replay integrity 진단](docs/dart-ownership-history-replay-integrity-v1.md)에 정리했습니다.
 
 **Regional Rotation은 CHALLENGER**입니다. `regional-rotation-v1`은 기존 실제 기본값인
 **252 달력일** lookback / temperature **0.05** / 지역 floor **0.15**를 고정합니다.

@@ -1,82 +1,16 @@
-"""Korean 5%-rule ownership events (지분공시 종합정보, 대량보유상황보고), stored raw.
+"""Raw DART large-shareholding disclosures with receipt-date PIT semantics.
 
-WHAT THIS IS FOR. `alpha-information-inventory-v1` named DART's large-holdings
-disclosure (API group `DS004`) as the lowest-effort new Korean data source in
-its entire inventory, precisely because it is the SAME vendor, the SAME key
-and the SAME receipt-date PIT mechanism `dart_fundamentals.py` already
-implements — there is no second authentication path or second point-in-time
-question to answer, only a second endpoint.
+The v2 contract preserves every economically relevant ``majorstock.json``
+field confirmed by the live probe, including ``ctr_stkqy``, ``ctr_stkrt`` and
+``report_resn``.  Raw labels remain raw; this module does not infer an alpha
+classification.  Public availability is always the DART receipt date.  An
+event/reference or transaction date is stored separately only when DART
+actually supplies one and is never used to backdate availability.
 
-THE ENDPOINT, AS RESEARCHED (WebFetch of OpenDART's own developer guide was
-blocked by this sandbox's egress; researched instead via WebFetch/WebSearch of
-third-party libraries that wrap the same documented endpoint — `dart-fss`'s
-own source and `FinanceData/OpenDartReader`'s README, both citing the field
-set consistently, 2026-09-24). The endpoint is `majorstock.json`, under API
-group DS004 (지분공시 종합정보), taking `corp_code` (the same DART corp code
-`dart_fundamentals.corp_code_map` already resolves) and returning one row per
-report per filer per holding. Response fields corroborated across both
-sources: `rcept_no` (접수번호), `rcept_dt` (접수일자), `corp_code`, `corp_name`,
-`report_tp` (보고구분: observed values include "신규" and "변동"), `repror`
-(대표보고자 — the filer/holder name), `stkqy` (보유주식등의수), `stkqy_irds`
-(변동수량), `stkrt` (보유비율), `stkrt_irds` (변동비율). NOT independently
-confirmed and therefore NOT read by this module: whether the endpoint states a
-"before" holding percentage as its own field or only the post-report ratio
-plus the delta (`stkrt` and `stkrt_irds` together would let a caller
-reconstruct "before" as `stkrt - stkrt_irds`, but this module does not do that
-arithmetic itself — a subtraction performed on an unconfirmed field pair is a
-number invented rather than a number read).
-
-`dart_fundamentals.receipt_date` IS REUSED, NOT REIMPLEMENTED. The receipt
-number's first eight digits are the visibility date on every DART endpoint,
-by construction of the number itself — that is a fact about DART's numbering,
-not about the statement endpoint specifically, so importing the existing
-function is correct rather than convenient. `PIT fundamentals invariants
-(v2.9)`'s rule applies exactly as written: a row whose receipt date cannot be
-read is refused, never stored with a substitute.
-
-REPORT TYPE — CORRECTED BY A LIVE PROBE, AND NOT TRANSLATED EVEN NOW. The
-paragraph this replaces guessed `report_tp` would carry "신규" (new 5%+
-holder) / "변동" (a change). A live probe run against the real endpoint
-(GitHub Actions run 35964461327, job `probe`, 2026-09-24) measured the
-ACTUAL values across 55 rows on 3 tickers — 005930: 41/41 "일반"; 000660:
-9 "약식" + 1 "일반"; 035420: 4/4 "약식" — and "신규"/"변동" appeared ZERO
-times. The guess was simply wrong, not a value DART has since stopped
-using, and the constants encoding it are removed rather than kept as an
-unused, disproven guess.
-
-"일반"/"약식" are NOT translated into a normalized `reportType` either, on
-purpose. In general Korean securities-disclosure terminology (자본시장법
-제147조's 일반보고/약식보고 distinction) these read as the report's FORM —
-a full report versus an abbreviated one available to certain qualifying
-investors — but that reading has not been confirmed against OpenDART's own
-field-level documentation, which is blocked from this sandbox's egress
-exactly like the rest of this module's sourcing. Encoding that plausible
-but unconfirmed reading into `reportType` would repeat the exact defect
-this correction exists to fix: asserting a specific meaning for a raw
-label without having read it from an authoritative source. `reportTypeRaw`
-carries DART's exact string; `reportType` stays `None` for every value in
-`KNOWN_REPORT_TYPE_RAW_VALUES` until a verified source says what to call
-it. The finer distinctions the task asked for (INCREASE / DECREASE /
-EXIT_BELOW_THRESHOLD) are DERIVED from the sign of `stkrt_irds` and from
-whether `stkrt` crossed below 5% — a different field pair, read directly,
-never inferred from `report_tp`.
-
-NOT CONFIRMED PRESENT OR ABSENT: a report reason / holding-purpose field.
-The live probe only checked for the 10 fields this module already reads
-(see `scripts/probe_dart_ownership_events.py`'s `EXPECTED_FIELDS`); it
-captured a full raw sample row in its own JSON artifact but that artifact's
-contents were not inspected in the session that ran this probe. A future
-probe that logs the full set of raw field names on a sample row (not just
-the ones already expected) would answer whether such a field exists at
-all — this module reads none today because none has been confirmed.
-
-APPEND-ONLY, KEYED BY RECEIPT NUMBER. A restatement or a correction to an
-already-filed report arrives at DART as its own filing with its own
-`rcept_no` and its own receipt date — never as an edit to the row already on
-file. `amendmentFlag` records whether a given (filer, holder) pair had an
-earlier receipt number for what looks like the same underlying holding change,
-so a reader can see the amendment history without this module ever
-overwriting what was visible before it.
+Existing v1 shards remain readable.  Missing v2 fields stay ``None``: they are
+not reconstructed, backfilled, or synthesized.  Receipt numbers are immutable
+event identities.  A repeated receipt may enrich only fields newly observed
+from the source; conflicting non-null source values are rejected.
 """
 from __future__ import annotations
 
@@ -106,6 +40,8 @@ _REPORT_TYPE_MAP: dict[str, str] = {}
 # below this on a CHANGE report is read as an exit signal — DERIVED, because
 # no source consulted confirmed DART states "exited" as its own value.
 DISCLOSURE_THRESHOLD_PCT = 5.0
+RAW_CONTRACT = "DART_OWNERSHIP_EVENTS_RAW_V2"
+SCHEMA_VERSION = 2
 
 
 def parse_percent(text) -> float | None:
@@ -136,7 +72,13 @@ def direction_of_change(stkrt_irds: float | None, stkrt: float | None) -> str | 
     return None
 
 
-def build_event(row: dict, *, ticker: str, collected_at: str) -> tuple[dict | None, str]:
+def _raw_text(row: dict, key: str) -> str | None:
+    value = str(row.get(key) or "").strip()
+    return value or None
+
+
+def build_event(row: dict, *, ticker: str | None, collected_at: str,
+                issuer_id: str | None = None) -> tuple[dict | None, str]:
     """One stored ownership-event row from one `majorstock.json` response row.
 
     Refused, never stored with a substitute, when the receipt date cannot be
@@ -161,6 +103,8 @@ def build_event(row: dict, *, ticker: str, collected_at: str) -> tuple[dict | No
 
     return {
         "id": f"dart-ownership:{rcept_no}",
+        "schemaVersion": SCHEMA_VERSION,
+        "issuerId": issuer_id or (f"DART:{row.get('corp_code')}" if row.get("corp_code") else None),
         "ticker": ticker,
         "corpCode": row.get("corp_code"),
         "corpName": row.get("corp_name"),
@@ -176,34 +120,80 @@ def build_event(row: dict, *, ticker: str, collected_at: str) -> tuple[dict | No
         "holdingPctBefore": None,
         "shareCountAfter": stkqy,
         "shareCountChange": stkqy_irds,
+        "majorTransactionSharesRaw": _raw_text(row, "ctr_stkqy"),
+        "majorTransactionOwnershipPctRaw": _raw_text(row, "ctr_stkrt"),
+        "reportReasonRaw": _raw_text(row, "report_resn"),
+        "eventDate": None,
         "reportDate": row.get("rcept_dt"),
         "availableFrom": available_from,
         "receiptNo": rcept_no,
         "currency": "KRW",
         "source": "DART:majorstock",
+        "sourceEndpoint": "majorstock.json",
+        "sourceFields": {
+            "majorTransactionSharesRaw": "ctr_stkqy",
+            "majorTransactionOwnershipPctRaw": "ctr_stkrt",
+            "reportReasonRaw": "report_resn",
+        },
         "collectedAt": collected_at,
     }, ""
 
 
-def amendment_flags(events: list[dict]) -> list[dict]:
-    """Mark every event after the first one for the same (ticker, filer) pair.
-
-    Not a claim that a later filing corrects the number an earlier one
-    stated — DART issues a fresh receipt number for a genuinely new change in
-    holdings just as readily as for a correction. This flag says only "this
-    (ticker, filer) pair has an earlier receipt on file", so a reader can
-    look at the sequence rather than assume any one row is definitive.
-    """
+def prior_filing_flags(events: list[dict]) -> list[dict]:
+    """Mark only whether this issuer/reporter pair had an earlier filing."""
     seen: set[tuple[str, str]] = set()
     out: list[dict] = []
     for event in sorted(events, key=lambda e: (e.get("ticker"), e.get("filerName"),
                                                str(e.get("availableFrom")), e.get("receiptNo"))):
-        key = (event.get("ticker"), event.get("filerName"))
+        key = (event.get("issuerId") or event.get("corpCode") or event.get("ticker"),
+               event.get("filerName"))
         marked = dict(event)
-        marked["amendmentFlag"] = key in seen
+        marked.pop("amendmentFlag", None)
+        marked["priorFilingExists"] = key in seen
         seen.add(key)
         out.append(marked)
     return out
+
+
+def read_compatible_event(event: dict) -> dict:
+    """Read a v1/v2 event without inventing fields absent from the source."""
+    out = dict(event)
+    out.setdefault("schemaVersion", 1)
+    out.setdefault("issuerId", f"DART:{out['corpCode']}" if out.get("corpCode") else None)
+    out.setdefault("majorTransactionSharesRaw", None)
+    out.setdefault("majorTransactionOwnershipPctRaw", None)
+    out.setdefault("reportReasonRaw", None)
+    out.setdefault("eventDate", None)
+    if "amendmentFlag" in out and "priorFilingExists" not in out:
+        out["priorFilingExists"] = bool(out["amendmentFlag"])
+    return out
+
+
+def merge_events(existing: list[dict], fresh: list[dict]) -> list[dict]:
+    """Deterministically deduplicate receipts and refuse source conflicts."""
+    merged: dict[str, dict] = {}
+    for raw in [*existing, *fresh]:
+        event = dict(raw)
+        key = str(event.get("id") or "")
+        if not key:
+            raise ValueError("ownership event has no immutable id")
+        if key not in merged:
+            merged[key] = event
+            continue
+        prior = merged[key]
+        for field, value in event.items():
+            old = prior.get(field)
+            if value is None or value == "" or field == "collectedAt":
+                continue
+            if old in (None, ""):
+                prior[field] = value
+            elif old != value:
+                raise ValueError(f"conflicting ownership event {key} field {field}")
+    return sorted(merged.values(), key=lambda row: (str(row.get("availableFrom")), row["id"]))
+
+
+# Kept as a source-compatible alias for callers; output uses the truthful name.
+amendment_flags = prior_filing_flags
 
 
 def shard_path(root, year: int):

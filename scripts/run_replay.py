@@ -160,11 +160,13 @@ def _run(argv=None) -> int:
     if current_ids and not prior_inputs:
         raise RI.InputVersionConflict("existing signals have no input snapshot; new DATA_VERSION/REPLAY_VERSION required")
     through = args.end or (pd.Timestamp.now(tz="UTC").normalize() - pd.Timedelta(days=1)).strftime("%Y-%m-%d")
-    policy = {"start":start, "frequency":frequency, "calendarVersion":RC.CALENDAR_VERSION,
-              "modelVersion":prov_mod.MODEL_VERSION, "featureVersion":prov_mod.FEATURE_VERSION,
-              "configSha256":RI.digest(json.loads((ROOT / "config.json").read_text())),
-              "recoveryVersion":RR.RECOVERY_VERSION,
-              "corporateActionsSha256":RI.digest(corporate_actions)}
+    policy = {"start": start, "frequency": frequency,
+              "calendarVersion": RC.CALENDAR_VERSION,
+              "modelVersion": prov_mod.MODEL_VERSION,
+              "featureVersion": prov_mod.FEATURE_VERSION,
+              **RI.replay_config_policy(cfg),
+              "recoveryVersion": RR.RECOVERY_VERSION,
+              "corporateActionsSha256": RI.digest(corporate_actions)}
     if args.frozen_inputs:
         if not prior_inputs:
             # The first thing anyone hits after a REPLAY_VERSION bump, and the
@@ -180,8 +182,12 @@ def _run(argv=None) -> int:
                 "always frozen and will keep failing until that has happened.")
         if args.end and args.end != prior_inputs["through"]:
             raise RI.InputVersionConflict("--frozen-inputs must use its recorded cutoff")
-        if policy != prior_inputs["policy"]:
-            raise RI.InputVersionConflict("frozen replay policy/config differs from snapshot")
+        compatible, details = RI.policies_compatible(
+            prior_inputs["policy"], policy, replay_version=prov_mod.REPLAY_VERSION,
+            baseline_root=RI.REPLAY_POLICY_BASELINES)
+        if not compatible:
+            raise RI.InputVersionConflict(
+                "frozen replay policy/config differs from snapshot", details=details)
         through = prior_inputs["through"]
         manifest = prior_inputs
         frozen = RI.unpack(store.load(manifest))
@@ -698,6 +704,8 @@ def main(argv=None) -> int:
                       "dataVersion":prov_mod.DATA_VERSION, "reason":str(exc),
                       "requiresNewExperiment":conflict,
                       "retrySameGeneration":not conflict}
+            if getattr(exc, "details", None):
+                record["details"] = exc.details
             folder = ledger / "replay-input-conflicts"
             folder.mkdir(parents=True, exist_ok=True)
             (folder / (RI.digest(record) + ".json")).write_text(json.dumps(record, indent=2) + "\n")

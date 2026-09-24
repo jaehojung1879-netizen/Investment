@@ -138,19 +138,16 @@ jobs:
           mkdir -p ownership-work/ledger/dart-ownership-events
 
       - name: Collect a slice
-        # Resumable via `fetched.json`, keyed by ticker: a ticker already
-        # fetched (this run or a past one) is never re-requested, and a
-        # ticker whose call fails outright is removed from that set again
-        # before the run ends — so a re-run neither skips a company that
-        # never actually succeeded nor re-fetches (and duplicates) one that
-        # did. `majorstock.json` answers a company's entire disclosed
-        # history in one call, so there is no partial per-company state to
-        # resume within.
+        # Resumable via fetch-state.json, keyed by DART issuer identity and
+        # raw contract. Failed calls stay pending; completed issuers are not
+        # requested again unless the raw contract explicitly changes.
         env:
           DART_API_KEY: ${{ secrets.DART }}
         run: |
           python scripts/collect_dart_ownership_events.py \
             ownership-work/ledger/dart-ownership-events \
+            --membership-history ownership-work/ledger/universe-history.json \
+            --krx-universe-dir ownership-work/ledger/universe/kr \
             --max-calls "${{ inputs.max_calls || '200' }}" \
             --max-minutes "${{ inputs.max_minutes || '60' }}" \
             | tee collect.log
