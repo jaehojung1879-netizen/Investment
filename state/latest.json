@@ -1,8 +1,8 @@
 {
   "schemaVersion": "2.7.0",
   "modelVersion": "longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
-  "buildCommitSha": "cadca9848dce",
-  "generatedAt": "2026-09-24T07:49:34.690352+00:00",
+  "buildCommitSha": "9f5fbd38d974",
+  "generatedAt": "2026-09-24T09:12:05.818669+00:00",
   "marketAsOf": "2026-09-23",
   "macroRegime": "Transition/Low confidence",
   "holdingsByRegion": {
@@ -13,8 +13,8 @@
       "NUE",
       "HST",
       "GOOGL",
-      "GOOG",
       "MO",
+      "GOOG",
       "SNDK",
       "MPC",
       "KO",
@@ -49,8 +49,8 @@
     "NUE": "WATCH",
     "HST": "WATCH",
     "GOOGL": "WATCH",
-    "GOOG": "AVOID",
     "MO": "WATCH",
+    "GOOG": "AVOID",
     "SNDK": "WAIT_FOR_PULLBACK",
     "MPC": "WAIT_FOR_PULLBACK",
     "KO": "ACCUMULATE_GRADUALLY",
@@ -115,7 +115,7 @@
   "stale": false,
   "productionValidation": {
     "passed": true,
-    "validatedAt": "2026-09-24T07:49:34.690352+00:00",
+    "validatedAt": "2026-09-24T09:12:05.818669+00:00",
     "errors": []
   }
 }
