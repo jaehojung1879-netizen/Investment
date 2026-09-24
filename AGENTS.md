@@ -1053,6 +1053,61 @@
   `dart_fundamentals.WANTED_ACCOUNTS` or `finnhub_derive`'s account chains,
   confirmed by reading them, not assumed.
 
+## Workflow hygiene invariants (v2.25)
+
+- A CLOSED STUDY'S WORKFLOW IS REMOVABLE FROM THE ACTIONS MENU; ITS CODE,
+  RESULTS AND HISTORY ARE NOT. A study is closed when it has a published
+  verdict in `docs/results/` and no rung promotes production — removing its
+  `.github/workflows/*.yml` entry (`git rm`, never `rm`) only removes the
+  "Run workflow" button; the workflow file, the module it ran, and the
+  results it produced all remain reachable through git history and through
+  `docs/workflow-inventory.md`'s own RETIRED table. This is not a reason to
+  defer cleanup: 16 closed studies (`regional-alpha-model-v1` through
+  `signal-persistence-v1`) were retired from Active Actions in one pass
+  (`workflow-hygiene-live-data-fixes-v1`) because every one of them already
+  had a published, unambiguous verdict — 25 workflow files down to 9.
+- A SOURCE FAMILY THAT IS BLOCKED TODAY IS NOT RE-ATTEMPTED AS A DEDICATED
+  COLLECTOR WORKFLOW; IT BECOMES ONE `Probes` DROPDOWN OPTION. `kr-investor
+  -flow.yml`'s own two axes both measured `BLOCKED_SOURCE` on a real Actions
+  run (KRX's portal answering `HTTP 400: LOGOUT`/`400` on every candidate),
+  and `guru-13f-backfill.yml` measured `BLOCKED`/route `NONE` against SEC —
+  both dedicated workflows were removed rather than kept as buttons that do
+  nothing, and `scripts/probe_kr_investor_flow.py`, `probe_kr_short_selling
+  .py` and `probe_guru_13f_access.py` became options in
+  `.github/workflows/probes.yml`'s existing dropdown instead of new files.
+  The collector/backfill scripts themselves are untouched and still work
+  the moment a probe reports `SERVED`.
+- `success` ON A COLLECTOR JOB MUST NEVER HIDE A SOURCE REFUSAL. Measured
+  directly, 2026-09-24: the KR investor-flow collector logged
+  `호출 0 · 수집 0건 · 샤드 0개 변경 · 종료 사유 REFUSED: HTTP 400: b'LOGOUT'`
+  and the GitHub Actions job still reported green. `pipeline.
+  collector_outcomes.run_outcome` now classifies every collector run into
+  `SERVED` / `EMPTY_BUT_VALID` / `BLOCKED_SOURCE` / `AUTH_REQUIRED` /
+  `SCHEMA_CHANGED` / `NETWORK_ERROR`, and a refusal that produced zero rows
+  THIS run exits non-zero — which stops the workflow's own commit-and-push
+  step from running, so a refused run's empty manifest is never committed
+  to `signal-history` as if it were a completed collection. A refusal that
+  happened only after real rows were already written keeps exit code 0:
+  those rows are real and are kept, and failing that job would only hide
+  what it actually collected. Existing failed-attempt manifests already on
+  `signal-history` from before this fix are left alone, not rewritten —
+  the fact that they were `0 rows / REFUSED` is recorded here and in
+  `docs/workflow-inventory.md` instead.
+- A RAW ENUM FIELD'S VALUE IS NEVER TRANSLATED ON A GUESS, EVEN A PLAUSIBLE
+  ONE, AND A LIVE PROBE DISPROVING AN EARLIER GUESS IS PUBLISHED, NOT
+  QUIETLY FIXED. `dart_ownership_events.py` originally mapped DART's
+  `report_tp` field to `NEW_5PCT_HOLDER`/`CHANGE`, guessed from third-party
+  library research and never confirmed against a live response. A real
+  probe run (Actions run 35964461327, 2026-09-24) measured the actual
+  values across 55 rows on 3 tickers as "일반"/"약식" — "신규"/"변동" never
+  appeared once. The disproven constants were removed rather than kept
+  unused, and the real values are NOT translated into a normalized
+  `reportType` either: `KNOWN_REPORT_TYPE_RAW_VALUES` records what a live
+  probe has actually seen, `reportTypeRaw` always carries DART's exact
+  string, and `reportType` stays `None` until an authoritative source (not
+  general regulatory knowledge, however plausible) confirms what to call a
+  value. Guessing a second time would repeat the exact defect this fixes.
+
 ## Lint gate invariants (v2.11)
 
 - The enabled rule set reports ZERO findings on `main`. A rule is turned on in the

@@ -138,26 +138,42 @@ gzip, deterministic — never a raw SEC ZIP committed to git).
 `guru_13f_store` nor `security_identity` — a guardrail, not a promise in a
 docstring.
 
-## Workflow (`​.github/workflows/guru-13f-backfill.yml`)
+## Workflow
 
-`workflow_dispatch`-only, deliberately, matching
-`fundamental-acceleration-seal.yml`'s own reasoning: this wiring has never
-been exercised against real GitHub Actions network access. The `probe` job
-runs first and the `backfill` job only starts if the probe reports
-`SERVED`. **The workflow does not commit to git** — the backfill's output is
-uploaded as a build artifact only; committing a first real run's output is a
-follow-up decision after a human has reviewed it, not a step in this
-workflow.
+**As of `workflow-hygiene-live-data-fixes-v1` (2026-09-24), there is no
+dedicated backfill workflow in Active Actions.** A real probe run (Actions
+run 35964478931) measured `verdict: BLOCKED, route: NONE` — the SEC bulk
+13F dataset and both per-manager-submissions routes are refused from this
+repository's GitHub Actions runners, the same domain-wide block already
+measured for Form 4, 8-K and the bulk financial-statement dataset. Running
+the same probe again from the same network answers the same way, so the
+dedicated `guru-13f-backfill.yml` workflow (still in git history) was
+retired from the Actions menu; re-running it would just spend CI minutes
+confirming a fact already measured.
+
+`scripts/probe_guru_13f_access.py` — the exact script that workflow ran —
+is now one option in `.github/workflows/probes.yml`'s dropdown
+(`guru-13f-access`), so access can be re-checked with the same one click
+any other source probe uses, without a bespoke workflow file. If a future
+probe run reports `SERVED`, a backfill workflow can be restored from git
+history (or rebuilt against `scripts/backfill_guru_13f.py`, which is
+unchanged and still committing nothing automatically — its output is a
+report artifact, not a git commit, exactly as designed here) — see
+`docs/workflow-inventory.md` for the current Actions inventory.
 
 ## Grade
 
 **Guru 13F historical backfill, automated, from this repository's current
-CI: Grade C — ACQUIRABLE, likely blocked today.** The code is complete,
+CI: Grade C — ACQUIRABLE, confirmed blocked today.** The code is complete,
 tested against synthetic fixtures for both the bulk-dataset and
 per-manager-fallback routes, point-in-time-correct by design, and would need
 zero redesign if SEC ever un-blocks the Actions IP range or if run from a
-different network — but the same domain-wide SEC block this repository
-already proved for Form 4, 8-K, and the bulk financial-statement dataset
-almost certainly also covers both 13F routes today. That specific claim has
-not been directly re-measured; `scripts/probe_guru_13f_access.py` via
-`workflow_dispatch` is what would settle it.
+different network. The domain-wide SEC block this repository already proved
+for Form 4, 8-K, and the bulk financial-statement dataset has now been
+directly re-measured for the 13F routes specifically too, rather than
+inferred by adjacency: `scripts/probe_guru_13f_access.py` (Actions run
+35964478931, 2026-09-24) measured `403 Request Rate Threshold Exceeded` on
+the bulk dataset and `403 Undeclared Automated Tool` on the per-manager
+submissions API, verdict `BLOCKED`, route `NONE`. Re-checking this later
+is one click — `guru-13f-access` in `.github/workflows/probes.yml`'s
+dropdown — not a workflow to rebuild.

@@ -42,6 +42,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 
+from pipeline import collector_outcomes as OUT  # noqa: E402
 from pipeline import historical_store as HS  # noqa: E402
 from pipeline import kr_investor_flow as KIF  # noqa: E402
 from pipeline import universe as universe_mod  # noqa: E402
@@ -248,20 +249,27 @@ def main(argv=None) -> int:
         written += len(rows)
     save_done(store, done)
 
+    outcome = OUT.run_outcome(stop_reason=stop_reason, calls=calls, written=written)
     manifest = {
         "contract": "KR_INVESTOR_FLOW_RAW_V1",
         "updatedAt": collected_at,
         "universeSize": len(tickers),
         "dateRange": [args.start, end],
         "thisRun": {"calls": calls, "recordsWritten": written, "shardsChanged": changed,
-                    "stopReason": stop_reason, "emptyResponses": refused_count},
+                    "stopReason": stop_reason, "emptyResponses": refused_count,
+                    "outcome": outcome},
         "remainingPairs": len(pending) - len(fresh),
     }
     (store / "manifest.json").write_text(
         json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
     print(f"\n=== 이번 실행 ===\n  호출 {calls} · 수집 {written}건 · 샤드 {changed}개 변경 · "
-          f"종료 사유 {stop_reason}")
+          f"종료 사유 {stop_reason} · outcome {outcome}")
+
+    if OUT.is_reportable_failure(outcome, written=written):
+        print(f"거부: 소스가 이번 실행에서 아무 진행도 허용하지 않았습니다 (outcome={outcome}). "
+              "success로 보고하지 않습니다.")
+        return 1
     return 0
 
 

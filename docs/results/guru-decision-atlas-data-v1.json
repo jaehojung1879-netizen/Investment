@@ -8,7 +8,9 @@
     "identity": "pipeline/security_identity.py",
     "backfiller": "scripts/backfill_guru_13f.py",
     "probe": "scripts/probe_guru_13f_access.py",
-    "workflow": ".github/workflows/guru-13f-backfill.yml"
+    "probeWorkflow": ".github/workflows/probes.yml (probe: guru-13f-access)",
+    "dedicatedBackfillWorkflow": null,
+    "dedicatedBackfillWorkflowNote": "retired by workflow-hygiene-live-data-fixes-v1 (2026-09-24) after probe run 35964478931 measured verdict BLOCKED/route NONE; script and history preserved, no Active Actions entry"
   },
   "schema": {
     "grain": "one row per manager x accession x CUSIP/class/putCall",
@@ -26,13 +28,14 @@
   },
   "accessStatus": {
     "grade": "C",
-    "verdict": "ACQUIRABLE_LIKELY_BLOCKED_TODAY",
+    "verdict": "ACQUIRABLE_CONFIRMED_BLOCKED_TODAY",
     "evidence": [
       "AGENTS.md Vendor refusal invariants (v2.9): SEC refuses www.sec.gov/data.sec.gov/efts.sec.gov site-wide from GitHub Actions IP pool",
       "pipeline/institutional_13f.py has a live CACHED_SEC fallback path in its own code, with data/institutional_13f_cache.json recording sourceMode LIVE_SEC fetchedAt 2026-08-15",
-      "scripts/probe_sec_bulk_datasets.py already measured www.sec.gov's bulk financial-statement ZIP refused 2026-09-04, same host family as the 13F bulk dataset"
+      "scripts/probe_sec_bulk_datasets.py already measured www.sec.gov's bulk financial-statement ZIP refused 2026-09-04, same host family as the 13F bulk dataset",
+      "scripts/probe_guru_13f_access.py run directly (Actions run 35964478931, 2026-09-24): bulk dataset 403 'Request Rate Threshold Exceeded' (1,925B), per-manager submissions 403 'Undeclared Automated Tool' (4,818B), verdict BLOCKED, route NONE"
     ],
-    "notDirectlyMeasured": "The 13F-specific bulk dataset and per-manager submissions API were not re-probed in this session (sandbox network blocked); scripts/probe_guru_13f_access.py via workflow_dispatch is the actual test"
+    "reprobeVia": ".github/workflows/probes.yml, probe: guru-13f-access"
   },
   "sources": {
     "bulkDataset": "sec.gov/data-research/sec-markets-data/form-13f-data-sets (rolling 3-month window ZIPs of SUBMISSION/COVERPAGE/OTHERMANAGER/SIGNATURE/SUMMARYPAGE/INFOTABLE TSVs, XML data from ~2013Q2)",
