@@ -1,7 +1,7 @@
 {
   "contract": "DART_RAW_FILINGS_V1",
-  "updatedAt": "2026-09-22T08:55:15Z",
-  "universeSize": 119,
+  "updatedAt": "2026-09-24T08:51:50Z",
+  "universeSize": 68,
   "years": [
     2015,
     2026
@@ -10,9 +10,9 @@
   "progress": {
     "collected": 4373,
     "absent": 1468,
-    "pending": 377,
-    "total": 6218,
-    "completePct": 93.94
+    "pending": 182,
+    "total": 6023,
+    "completePct": 96.98
   },
   "absences": {
     "recorded": 1723,
@@ -20,20 +20,18 @@
     "awaitingDeadline": 255
   },
   "thisRun": {
-    "calls": 233,
+    "calls": 134,
     "recordsWritten": 0,
     "shardsChanged": 0,
     "stopReason": "WORK_LIST_EXHAUSTED",
     "statuses": {
-      "013": 233
+      "013": 134
     },
     "refused": {
-      "NO_CORP_CODE": 144,
-      "EMPTY_RESPONSE": 233
+      "NO_CORP_CODE": 48,
+      "EMPTY_RESPONSE": 134
     },
     "noCorpCodeTickers": [
-      "005385.KS",
-      "005387.KS",
       "005935.KS"
     ],
     "fsDiv": {},
