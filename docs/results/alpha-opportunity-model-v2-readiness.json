@@ -1,0 +1,20 @@
+{
+  "studyId": "alpha-opportunity-model-v2",
+  "immutableVersion": "2.0.0",
+  "specSha256": "97c3727b37eeab71e31ffee17a2f81cac29f0333552ff04a5374ef48484b0e19",
+  "phase": "PREREGISTRATION_ONLY",
+  "preregistrationStatus": "READY_FOR_HISTORICAL_EXECUTION",
+  "blockers": [],
+  "runtimePreLabelGates": [
+    "SEALED_INPUT_IDENTITY",
+    "REGION_YEAR_SURVIVORSHIP_ELIGIBILITY",
+    "FEATURE_COVERAGE",
+    "CALENDAR_SAMPLE_DEPTH"
+  ],
+  "supersedes": "alpha-opportunity-model-v1",
+  "v1SpecSha256": "e3c699b197fd558506d7157fa6dd8cdb91156faccd0e6e9547d21d5baa23dd6e",
+  "historicalOutcomesComputed": false,
+  "historicalModelsTrained": false,
+  "promotionEligible": false,
+  "productionChanged": false
+}
