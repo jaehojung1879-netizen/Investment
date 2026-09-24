@@ -1,0 +1,90 @@
+{
+  "study": "alpha-research-foundation-v2",
+  "type": "DATA_FOUNDATION",
+  "notes": "No Alpha model trained, no forward-return relationship computed, no historical discovery performed. Nothing here is imported by pipeline/longterm.py, pipeline/opportunity.py, pipeline/kelly_portfolio.py, or pipeline/build.py.",
+  "correction": {
+    "target": "regional-alpha-model-v1",
+    "priorClaim": "PENDING_EXECUTION / never run",
+    "correctedStatus": "EXECUTED",
+    "verdict": {"US": "NO_MODEL_EVIDENCE", "KR": "NO_MODEL_EVIDENCE"},
+    "closedScope": "HISTORICAL_DISCOVERY_CLOSED_ON_EXISTING_FEATURE_SET",
+    "evidenceSource": "GitHub Actions run 35826122755, job discovery, 2026-09-23",
+    "frozenManifestRows": 381899,
+    "frozenManifestHash": "6261031bf59e725ca58342e4f320a8ed62e5d4e797dc6f580c2d372a830543b7",
+    "errataDoc": "docs/alpha-research-foundation-v2-errata.md"
+  },
+  "workstreams": [
+    {
+      "id": "A", "name": "Accounting quality", "module": "pipeline/accounting_quality.py",
+      "regions": ["US", "KR"], "newCollectionNeeded": false, "status": "BUILT_AND_MEASURED",
+      "fields": ["ocfToNetIncomePct", "fcfToNetIncomePct", "assetGrowthPct", "debtGrowthPct", "capexIntensityPct", "shareCountChangePct"],
+      "measuredCoverage": {
+        "KR": {"tickers": 126, "rows": 3965, "period": "2015-2026", "ocfToNetIncomePct": 52.36, "fcfToNetIncomePct": 4.31, "assetGrowthPct": 97.07, "debtGrowthPct": 97.00, "capexIntensityPct": 7.74, "shareCountChangePct": 96.57},
+        "US": {"tickers": 779, "rows": 30999, "period": "2011-2026", "ocfToNetIncomePct": 97.39, "fcfToNetIncomePct": 87.00, "assetGrowthPct": 96.39, "debtGrowthPct": 96.08, "capexIntensityPct": 83.03, "shareCountChangePct": 78.70}
+      },
+      "notFeasible": ["receivablesGrowth", "inventoryGrowth", "workingCapitalMetrics"],
+      "testFile": "tests/test_accounting_quality.py", "testCount": 12
+    },
+    {
+      "id": "B", "name": "Liquidity/attention (magnitude-preserving)", "module": "pipeline/liquidity_attention.py",
+      "regions": ["US", "KR"], "newCollectionNeeded": false, "status": "BUILT_AND_TESTED",
+      "fields": ["volumeRatio1_20", "volumeRatio1_60", "volumeRatio5_20", "volumeRatio5_60", "logVolumeShock60", "volumeZScore60", "dollarVolume", "turnoverPct", "dollarVolumeShock60", "shockPersistence5d", "volumePriceAlignment", "volumePriceDivergence20", "closeLocationValue", "abnormalRange20", "gapPct", "gapTimesVolume", "rangeTimesVolume", "closeNearHighAfterShock", "closeNearLowAfterShock", "amihudIlliquidity20"],
+      "testFile": "tests/test_liquidity_attention.py", "testCount": 14
+    },
+    {
+      "id": "C", "name": "KR investor-type flow", "module": "pipeline/kr_investor_flow.py",
+      "regions": ["KR"], "newCollectionNeeded": true, "status": "BUILT_ACCESS_UNPROVEN",
+      "grade": "B", "probeScript": "scripts/probe_kr_investor_flow.py",
+      "workflow": ".github/workflows/kr-investor-flow.yml", "testFile": "tests/test_kr_investor_flow.py"
+    },
+    {
+      "id": "D", "name": "KR ownership events (5% rule)", "module": "pipeline/dart_ownership_events.py",
+      "regions": ["KR"], "newCollectionNeeded": true, "status": "BUILT_ACCESS_UNPROVEN",
+      "grade": "B", "note": "Lowest-effort build in the whole line, per alpha-information-inventory-v1",
+      "probeScript": "scripts/probe_dart_ownership_events.py",
+      "workflow": ".github/workflows/dart-ownership-events.yml", "testFile": "tests/test_dart_ownership_events.py"
+    },
+    {
+      "id": "E", "name": "KR short-selling", "module": "pipeline/kr_short_selling.py",
+      "regions": ["KR"], "newCollectionNeeded": true, "status": "BUILT_ACCESS_UNPROVEN",
+      "grade": "B", "regimeLabels": ["NORMAL", "BANNED_COVID", "BANNED_STRUCTURAL"],
+      "probeScript": "scripts/probe_kr_short_selling.py", "testFile": "tests/test_kr_short_selling.py"
+    },
+    {
+      "id": "F", "name": "Macro context (level/change/acceleration)", "module": "pipeline/macro_context.py",
+      "regions": ["US"], "newCollectionNeeded": false, "status": "BUILT_AND_TESTED",
+      "axes": ["growth", "inflation", "liquidity", "financialConditions", "riskAppetite", "earningsCredit"],
+      "krFetchLayer": "pipeline/ecos_macro.py", "krStatus": "BUILT_ACCESS_UNPROVEN_NO_API_KEY",
+      "configSchemaFix": "config.json ecos.KR.KTB_3Y/CorpBond_3Y now {seriesId, itemCode:null} instead of a bare shared string",
+      "testFile": "tests/test_macro_context.py", "testCount": 7
+    },
+    {
+      "id": "G", "name": "US dividend-change events", "module": "pipeline/dividend_events.py",
+      "regions": ["US"], "newCollectionNeeded": false, "status": "BUILT_AND_MEASURED",
+      "events": ["DIVIDEND_INITIATED", "DIVIDEND_INCREASED", "DIVIDEND_UNCHANGED", "DIVIDEND_DECREASED", "DIVIDEND_SUSPENDED", "NO_DIVIDEND"],
+      "measuredCoverage": {"tickersWithEvents": 220, "totalTickers": 779, "totalRows": 3806, "eventCounts": {"DIVIDEND_INCREASED": 962, "DIVIDEND_UNCHANGED": 965, "DIVIDEND_DECREASED": 460, "DIVIDEND_SUSPENDED": 313, "DIVIDEND_INITIATED": 239, "NO_DIVIDEND": 867}},
+      "dataQualityCaveat": "Raw CommonStockDividendsPerShareDeclared values observed as bare integers only in the real store; sub-dollar precision appears lost upstream",
+      "testFile": "tests/test_dividend_events.py", "testCount": 11
+    }
+  ],
+  "sectorContext": {
+    "status": "HISTORICAL_SECTOR_CONTEXT_UNRESOLVED",
+    "us": "Grade D - GICS point-in-time history exists only as a paid S&P Global Market Intelligence product",
+    "kr": "Grade E for retroactive history - KRX announced a full classification replacement (KRICS) on 2026-09-22, retiring the KSIC-based mapping; too new to grade for a forward-looking history",
+    "doc": "docs/alpha-data-foundation-v2-sector-context.md"
+  },
+  "guruTrack": {
+    "doc": "docs/guru-decision-atlas-data-v1.md",
+    "resultsFile": "docs/results/guru-decision-atlas-data-v1.json"
+  },
+  "philosophyDoc": "docs/alpha-research-philosophy-v2.md",
+  "productionSafety": {
+    "factorWeightsChanged": false, "championChanged": false, "kellyChanged": false,
+    "selectorChanged": false, "regionalAllocationChanged": false,
+    "historicalOutcomeLedgerModified": false, "newModelTrained": false,
+    "forwardReturnComputedAnywhere": false, "guruDataImportedByMainAlpha": false,
+    "fullTestSuitePassing": true, "fullTestSuiteCount": 1874,
+    "ruffFindings": 0
+  },
+  "decision": "MORE_DATA_FOUNDATION_REQUIRED"
+}

@@ -1,0 +1,302 @@
+name: KR investor flow & short selling (foundation, unproven)
+
+# `workflow_dispatch` ONLY, deliberately, matching `fundamental-acceleration
+# -seal.yml`'s own reasoning for a brand-new wire: the KRX public statistics
+# portal route both collectors in this workflow use has never been exercised
+# from Actions. `scripts/probe_krx_index_membership.py` tried a bare POST to
+# the same `getJsonData.cmd` endpoint once and every date came back
+# `HTTP 400 LOGOUT`; researching `pykrx`'s own source afterwards showed the
+# portal expects a session (a cookie plus Referer/X-Requested-With headers)
+# that bare attempt never sent. `probe_kr_investor_flow.py` and
+# `probe_kr_short_selling.py` isolate exactly that variable, each for its own
+# screen. A human runs a `probe-*` mode first and reads its verdict before
+# ever running a `collect-*` mode — this is not a schedule until that verdict
+# is SERVED.
+#
+# SHORT SELLING IS FOLDED IN HERE RATHER THAN GIVEN ITS OWN WORKFLOW, on
+# purpose: both axes are read from the SAME `data.krx.co.kr` portal, need the
+# SAME session/cookie/Referer treatment researched for investor flow, and
+# neither needs a subscribed key (unlike the KRX Open API's `sto/`
+# endpoints). Splitting them into two workflow files would duplicate that
+# session-establishment reasoning for no operational benefit — they still run
+# as fully independent jobs below, so one's failure never blocks the other.
+#
+# No secret is required for either axis: the statistics portal is
+# unauthenticated. What gates this route is session handling, not a
+# credential.
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "무엇을 할지 — probe(확인만) 또는 collect(수집)"
+        type: choice
+        options:
+          - "probe-investor-flow"
+          - "collect-investor-flow"
+          - "probe-short-selling"
+          - "collect-short-selling"
+        default: "probe-investor-flow"
+      ticker:
+        description: "probe 전용 — 확인할 6자리 코드"
+        type: string
+        default: "005930"
+      universe_tickers:
+        description: "collect 전용 — 콤마로 구분한 티커, 비우면 config.json의 KR 유니버스"
+        type: string
+        default: ""
+      start:
+        description: "collect 전용 — 시작일"
+        type: string
+        default: "2013-01-01"
+      max_calls:
+        description: "collect 전용 — 최대 호출 수"
+        type: string
+        default: "2000"
+      max_minutes:
+        description: "collect 전용 — 최대 분"
+        type: string
+        default: "240"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: signal-history-kr-investor-flow-short-selling
+  cancel-in-progress: false
+
+jobs:
+  probe-investor-flow:
+    if: inputs.mode == 'probe-investor-flow'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+
+      - name: Probe the portal
+        run: |
+          python scripts/probe_kr_investor_flow.py \
+            --output kr-investor-flow-probe.json --ticker "${{ inputs.ticker }}" \
+            | tee probe.log
+
+      - name: Upload the probe
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: kr-investor-flow-probe
+          path: |
+            kr-investor-flow-probe.json
+            probe.log
+          if-no-files-found: warn
+
+      - name: Summary
+        if: always()
+        run: |
+          {
+            echo '## KR investor flow probe'
+            echo
+            echo '```'
+            tail -n 120 probe.log 2>/dev/null || echo 'no probe output'
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  collect-investor-flow:
+    if: inputs.mode == 'collect-investor-flow'
+    runs-on: ubuntu-latest
+    timeout-minutes: 330
+    steps:
+      - name: Checkout code (main)
+        uses: actions/checkout@v5
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Check out signal-history branch (orphan-safe)
+        run: |
+          git config user.name "kr-investor-flow-bot"
+          git config user.email "actions@github.com"
+          mkdir -p flow-work
+          if git ls-remote --exit-code --heads origin signal-history; then
+            git fetch origin signal-history
+            git worktree add flow-work origin/signal-history
+            git -C flow-work checkout -B signal-history
+          else
+            git worktree add --detach flow-work
+            git -C flow-work checkout --orphan signal-history
+            git -C flow-work rm -rf . || true
+          fi
+          mkdir -p flow-work/ledger/kr-investor-flow
+
+      - name: Collect a slice
+        run: |
+          python scripts/collect_kr_investor_flow.py \
+            flow-work/ledger/kr-investor-flow \
+            --universe-tickers "${{ inputs.universe_tickers }}" \
+            --start "${{ inputs.start || '2013-01-01' }}" \
+            --max-calls "${{ inputs.max_calls || '2000' }}" \
+            --max-minutes "${{ inputs.max_minutes || '240' }}" \
+            | tee collect.log
+
+      - name: Commit & push to signal-history
+        run: |
+          cd flow-work
+          git add ledger/kr-investor-flow
+          if git diff --cached --quiet; then
+            echo "no new rows"
+            exit 0
+          fi
+          git commit -m "kr-investor-flow: slice for $(date -u +%Y-%m-%d)"
+          for attempt in 1 2 3 4 5; do
+            if git push origin signal-history; then
+              exit 0
+            fi
+            echo "push rejected (attempt $attempt); rebasing onto the remote"
+            git fetch origin signal-history
+            if ! git rebase origin/signal-history; then
+              git rebase --abort || true
+              echo "could not rebase onto signal-history"
+              exit 1
+            fi
+          done
+          echo "push failed after 5 attempts"
+          exit 1
+
+      - name: Summary
+        if: always()
+        run: |
+          {
+            echo '## KR investor flow collection'
+            echo
+            echo '```'
+            tail -n 40 collect.log 2>/dev/null || echo 'no collection output'
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  probe-short-selling:
+    if: inputs.mode == 'probe-short-selling'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+
+      - name: Probe the short-selling screens
+        run: |
+          python scripts/probe_kr_short_selling.py \
+            --output kr-short-selling-probe.json --ticker "${{ inputs.ticker }}" \
+            | tee probe.log
+
+      - name: Upload the probe
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: kr-short-selling-probe
+          path: |
+            kr-short-selling-probe.json
+            probe.log
+          if-no-files-found: warn
+
+      - name: Summary
+        if: always()
+        run: |
+          {
+            echo '## KR short selling probe'
+            echo
+            echo '```'
+            tail -n 120 probe.log 2>/dev/null || echo 'no probe output'
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  collect-short-selling:
+    if: inputs.mode == 'collect-short-selling'
+    runs-on: ubuntu-latest
+    timeout-minutes: 330
+    steps:
+      - name: Checkout code (main)
+        uses: actions/checkout@v5
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Check out signal-history branch (orphan-safe)
+        run: |
+          git config user.name "kr-short-selling-bot"
+          git config user.email "actions@github.com"
+          mkdir -p short-work
+          if git ls-remote --exit-code --heads origin signal-history; then
+            git fetch origin signal-history
+            git worktree add short-work origin/signal-history
+            git -C short-work checkout -B signal-history
+          else
+            git worktree add --detach short-work
+            git -C short-work checkout --orphan signal-history
+            git -C short-work rm -rf . || true
+          fi
+          mkdir -p short-work/ledger/kr-short-selling
+
+      - name: Collect a slice
+        run: |
+          python scripts/collect_kr_short_selling.py \
+            short-work/ledger/kr-short-selling \
+            --universe-tickers "${{ inputs.universe_tickers }}" \
+            --start "${{ inputs.start || '2013-01-01' }}" \
+            --max-calls "${{ inputs.max_calls || '2000' }}" \
+            --max-minutes "${{ inputs.max_minutes || '240' }}" \
+            | tee collect.log
+
+      - name: Commit & push to signal-history
+        run: |
+          cd short-work
+          git add ledger/kr-short-selling
+          if git diff --cached --quiet; then
+            echo "no new rows"
+            exit 0
+          fi
+          git commit -m "kr-short-selling: slice for $(date -u +%Y-%m-%d)"
+          for attempt in 1 2 3 4 5; do
+            if git push origin signal-history; then
+              exit 0
+            fi
+            echo "push rejected (attempt $attempt); rebasing onto the remote"
+            git fetch origin signal-history
+            if ! git rebase origin/signal-history; then
+              git rebase --abort || true
+              echo "could not rebase onto signal-history"
+              exit 1
+            fi
+          done
+          echo "push failed after 5 attempts"
+          exit 1
+
+      - name: Summary
+        if: always()
+        run: |
+          {
+            echo '## KR short selling collection'
+            echo
+            echo '```'
+            tail -n 40 collect.log 2>/dev/null || echo 'no collection output'
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"

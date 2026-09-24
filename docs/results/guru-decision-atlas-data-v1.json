@@ -1,0 +1,47 @@
+{
+  "study": "guru-decision-atlas-data-v1",
+  "type": "DATA_FOUNDATION",
+  "notes": "No manager performance ranking, no forward-return computation, no comparison against Main Alpha. Entirely separate research line; mechanically enforced separation via tests/test_guru_alpha_separation.py.",
+  "watchlist": ["National Pension Service", "Berkshire Hathaway", "Duquesne Family Office", "Bridgewater Associates", "Tiger Global Management", "Appaloosa", "Scion Asset Management"],
+  "modules": {
+    "store": "pipeline/guru_13f_store.py",
+    "identity": "pipeline/security_identity.py",
+    "backfiller": "scripts/backfill_guru_13f.py",
+    "probe": "scripts/probe_guru_13f_access.py",
+    "workflow": ".github/workflows/guru-13f-backfill.yml"
+  },
+  "schema": {
+    "grain": "one row per manager x accession x CUSIP/class/putCall",
+    "fields": ["managerId", "managerName", "managerCIK", "reportDate", "filingDate", "accessionNumber", "filingForm", "amendmentFlag", "originalOrAmended", "issuer", "titleClass", "CUSIP", "putCall", "shares", "reportedValue", "portfolioWeight", "previousShares", "changeShares", "changePct", "action", "acquisitionWindowStart", "acquisitionWindowEnd", "id"],
+    "actionValues": ["NEW", "ADD", "HOLD", "REDUCE", "EXIT"],
+    "actionThreshold": "HOLD unless relative change >= 0.5% (matches institutional_13f._changes) AND absolute change >= 100 shares",
+    "noFakeTradeDate": true,
+    "amendmentsPreserved": true,
+    "storageReuses": "pipeline/historical_store.py deterministic-gzip quarter-sharded pattern"
+  },
+  "identityResolution": {
+    "tiers": ["EXACT_CUSIP_MATCH", "NAME_FUZZY_MATCH", "UNRESOLVED"],
+    "cusipTickerFreeCrosswalk": false,
+    "expectedUnresolvedRate": "not measured (no real data fetched); expected non-trivial for older/renamed/delisted issuers"
+  },
+  "accessStatus": {
+    "grade": "C",
+    "verdict": "ACQUIRABLE_LIKELY_BLOCKED_TODAY",
+    "evidence": [
+      "AGENTS.md Vendor refusal invariants (v2.9): SEC refuses www.sec.gov/data.sec.gov/efts.sec.gov site-wide from GitHub Actions IP pool",
+      "pipeline/institutional_13f.py has a live CACHED_SEC fallback path in its own code, with data/institutional_13f_cache.json recording sourceMode LIVE_SEC fetchedAt 2026-08-15",
+      "scripts/probe_sec_bulk_datasets.py already measured www.sec.gov's bulk financial-statement ZIP refused 2026-09-04, same host family as the 13F bulk dataset"
+    ],
+    "notDirectlyMeasured": "The 13F-specific bulk dataset and per-manager submissions API were not re-probed in this session (sandbox network blocked); scripts/probe_guru_13f_access.py via workflow_dispatch is the actual test"
+  },
+  "sources": {
+    "bulkDataset": "sec.gov/data-research/sec-markets-data/form-13f-data-sets (rolling 3-month window ZIPs of SUBMISSION/COVERPAGE/OTHERMANAGER/SIGNATURE/SUMMARYPAGE/INFOTABLE TSVs, XML data from ~2013Q2)",
+    "perManagerFallback": "data.sec.gov/submissions/CIK{10-digit}.json with shard pagination for full history",
+    "cusipMapping": "No free bulk CUSIP-ticker crosswalk exists from SEC; company_tickers.json is CIK-ticker only"
+  },
+  "tests": {
+    "files": ["tests/test_guru_13f_store.py", "tests/test_security_identity.py", "tests/test_guru_alpha_separation.py", "tests/test_backfill_guru_13f.py", "tests/test_probe_guru_13f_access.py"],
+    "count": 41,
+    "allSynthetic": true
+  }
+}

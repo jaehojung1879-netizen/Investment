@@ -9,6 +9,29 @@
 > nothing here is a promotable candidate — there is no scored ladder in this
 > document at all.**
 
+> **CORRECTION (`alpha-research-foundation-v2`, filed after this document was
+> written).** Every claim below that `regional-alpha-model-v1` was
+> `PENDING_EXECUTION` / "never been run" was WRONG. It was run twice for
+> determinism on 2026-09-23 (workflow run
+> [35826122755](https://github.com/jaehojung1879-netizen/Investment/actions/runs/35826122755),
+> job log verified directly, not re-derived): a frozen 381,899-row feature
+> manifest (hash `6261031bf59e725ca58342e4f320a8ed62e5d4e797dc6f580c2d372a830543b7`)
+> was built without forward labels, labels were then constructed, and
+> independent annual US/KR models were fit (US training rows grew
+> 44,456→267,171 from 2016→2026; KR 15,294→75,743). Both runs produced the
+> byte-identical classification `{"US": "NO_MODEL_EVIDENCE", "KR":
+> "NO_MODEL_EVIDENCE"}`. The report artifact itself
+> (`regional-alpha-model-v1-discovery-only`, 179MB) was never committed to
+> `docs/results/` — that is why this document read it as unexecuted; it was
+> executed and its result was simply never published. The correct status is
+> `EXECUTED` / `NO_MODEL_EVIDENCE` (both regions) /
+> `HISTORICAL_DISCOVERY_CLOSED_ON_EXISTING_FEATURE_SET` — closed for the
+> 31-feature price/trend/risk + fundamental-level + fundamental-change matrix
+> specifically, not a claim that no public information anywhere carries
+> Alpha. See `docs/alpha-research-foundation-v2-errata.md` for the full
+> correction and every passage below it touches; do not re-run this study —
+> its one-shot historical-discovery budget for both regions is spent.
+
 Companion documents (read these for full detail; this report summarizes and
 cross-references them):
 
@@ -116,20 +139,25 @@ cross-references them):
 
 ### 다음 모델링 전에 반드시 해결할 데이터 공백
 
-1. `regional-alpha-model-v1`을 실행하는 데는 **공백이 없다** — 이미
-   설계·코드 완성, 신규 데이터 불필요. 안 돌린 것만 남았다.
-2. 한국 투자자 수급 접근 경로(KRX Open API 구독 범위 또는 네트워크
-   경로).
-3. ECOS fetch 레이어 구축 + `KTB_3Y`/`CorpBond_3Y` 중복 ID 수정.
-4. DART 대량보유(5%룰) 신규 모듈.
+**정정 (v2):** `regional-alpha-model-v1`은 이미 2026-09-23에 실행되어
+US/KR 모두 `NO_MODEL_EVIDENCE`로 종결됐다. 즉 "실행"은 남은 공백이
+아니다 — 기존 31-feature 매트릭스(price/trend/risk + fundamental
+level + fundamental change)에 대한 historical discovery는 두 지역
+모두 닫혔다. 남은 진짜 공백은:
+
+1. 한국 투자자 수급 접근 경로(KRX Open API 구독 범위 또는 네트워크
+   경로) — `NO_MODEL_EVIDENCE`가 나온 매트릭스에는 이 정보군이 전혀
+   없었다.
+2. ECOS fetch 레이어 구축 + `KTB_3Y`/`CorpBond_3Y` 중복 ID 수정.
+3. DART 대량보유(5%룰) 신규 모듈.
 
 ### 다음 단계 추천
 
-**CASE B — DATA_BUILD_REQUIRED**, 단 그 전에 **신규 데이터가 필요 없는
-작업이 하나 있다**: 이미 완성된 `regional-alpha-model-v1`을 실행하고
-결과를 게시하는 것. 이는 새로운 가설이 아니라 이미 존재하는 미완료
-작업이며, 이 인벤토리에서 발견한 가장 값싼 다음 행동이다. 그 다음
-순서는 아래 §5의 Decision Gate와 next-hypotheses 문서를 참조.
+**CASE B — DATA_BUILD_REQUIRED.** (정정: 이전 버전은 `regional-alpha-
+model-v1` 실행 자체를 "신규 데이터 불필요한 다음 행동"으로 추천했으나,
+그 연구는 이미 실행·종결되었으므로 더 이상 할 일이 아니다.) 다음
+우선순위는 §5 Decision Gate와 next-hypotheses 문서, 그리고
+`docs/alpha-research-foundation-v2-errata.md`를 참조.
 
 ---
 
@@ -372,23 +400,25 @@ need no new collection, neither is, by itself, the kind of broad new
 information axis "Conditional Alpha v2" implies; they are narrow additions
 (a regime interaction over existing series; one corporate-action field).
 
-**The one action this inventory recommends taking before any data build:**
-`regional-alpha-model-v1` needs zero new data, is fully coded and
-pre-registered, and has simply never been run. Running it and publishing
-its result is not a data-build task and not one of the five hypotheses in
-the companion document — it is unfinished prior work, and per this
-repository's own discipline, finishing it takes priority over starting
-anything new.
+**CORRECTED (v2):** the paragraph below, as originally written, recommended
+running `regional-alpha-model-v1` as the zero-new-data first action. That
+recommendation was based on a factual error: the study had already been run
+on 2026-09-23 (see the correction note at the top of this document) and
+closed both regions at `NO_MODEL_EVIDENCE`. It must not be run again — its
+one-shot historical-discovery budget is spent for both regions. The
+corrected recommended order follows.
 
 **Recommended order, none of it decided by this document (that decision
 belongs to whoever pre-registers the next study), only sequenced by
 data-readiness:**
-1. Run and publish `regional-alpha-model-v1` (no new data needed).
-2. Pre-register and test H1 (US arm) and/or H5 — both need no new data
-   collection.
-3. Build the DART large-holdings module (H4) — the cheapest genuine data
+1. Pre-register and test H1 (US arm) and/or H5 — both need no new data
+   collection, and neither re-uses `regional-alpha-model-v1`'s spent
+   discovery budget since both are different constructions (a regime
+   interaction, a dividend-change derivation), not a re-run of the same
+   31-feature matrix.
+2. Build the DART large-holdings module (H4) — the cheapest genuine data
    build identified.
-4. Build KR investor-flow access (H3) and the KR ECOS layer (blocking H1's
+3. Build KR investor-flow access (H3) and the KR ECOS layer (blocking H1's
    KR arm) — the two structural gaps that take the longest to close.
 
 ---

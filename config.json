@@ -228,7 +228,9 @@
   },
   "ecos": {
     "KR": {
-      "BaseRate": "722Y001", "KTB_3Y": "817Y002", "CorpBond_3Y": "817Y002",
+      "BaseRate": "722Y001",
+      "KTB_3Y": { "seriesId": "817Y002", "itemCode": null },
+      "CorpBond_3Y": { "seriesId": "817Y002", "itemCode": null },
       "CPI": "901Y009", "CoreCPI": "901Y010", "IndustrialProduction": "901Y033",
       "LeadingIndex": "901Y067", "Exports": "901Y011", "M2": "101Y004"
     }
