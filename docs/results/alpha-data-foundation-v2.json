@@ -33,22 +33,27 @@
     },
     {
       "id": "C", "name": "KR investor-type flow", "module": "pipeline/kr_investor_flow.py",
-      "regions": ["KR"], "newCollectionNeeded": true, "status": "BUILT_ACCESS_UNPROVEN",
+      "regions": ["KR"], "newCollectionNeeded": true, "status": "BUILT_ACCESS_CONFIRMED_BLOCKED",
       "grade": "B", "probeScript": "scripts/probe_kr_investor_flow.py",
-      "workflow": ".github/workflows/kr-investor-flow.yml", "testFile": "tests/test_kr_investor_flow.py"
+      "probeWorkflow": ".github/workflows/probes.yml (probe: kr-investor-flow)",
+      "dedicatedWorkflowNote": "retired by workflow-hygiene-live-data-fixes-v1 (2026-09-24); real Actions run measured HTTP 400 'LOGOUT' on the first call, 0 calls/0 records/0 shards, outcome BLOCKED_SOURCE",
+      "testFile": "tests/test_kr_investor_flow.py"
     },
     {
       "id": "D", "name": "KR ownership events (5% rule)", "module": "pipeline/dart_ownership_events.py",
-      "regions": ["KR"], "newCollectionNeeded": true, "status": "BUILT_ACCESS_UNPROVEN",
-      "grade": "B", "note": "Lowest-effort build in the whole line, per alpha-information-inventory-v1",
+      "regions": ["KR"], "newCollectionNeeded": true, "status": "BUILT_AND_MEASURED_SERVED",
+      "grade": "A", "note": "Lowest-effort build in the whole line, per alpha-information-inventory-v1. Corrected by workflow-hygiene-live-data-fixes-v1 (2026-09-24): a real probe run (Actions run 35964461327) confirmed all 10 expected fields served with status 000, and measured report_tp's real values (일반/약식, never the originally-guessed 신규/변동)",
       "probeScript": "scripts/probe_dart_ownership_events.py",
-      "workflow": ".github/workflows/dart-ownership-events.yml", "testFile": "tests/test_dart_ownership_events.py"
+      "workflow": ".github/workflows/dart-ownership-events.yml (mode: auto)", "testFile": "tests/test_dart_ownership_events.py"
     },
     {
       "id": "E", "name": "KR short-selling", "module": "pipeline/kr_short_selling.py",
-      "regions": ["KR"], "newCollectionNeeded": true, "status": "BUILT_ACCESS_UNPROVEN",
+      "regions": ["KR"], "newCollectionNeeded": true, "status": "BUILT_ACCESS_CONFIRMED_BLOCKED",
       "grade": "B", "regimeLabels": ["NORMAL", "BANNED_COVID", "BANNED_STRUCTURAL"],
-      "probeScript": "scripts/probe_kr_short_selling.py", "testFile": "tests/test_kr_short_selling.py"
+      "probeScript": "scripts/probe_kr_short_selling.py",
+      "probeWorkflow": ".github/workflows/probes.yml (probe: kr-short-selling)",
+      "dedicatedWorkflowNote": "retired by workflow-hygiene-live-data-fixes-v1 (2026-09-24); real Actions run measured HTTP 400 on every MDCSTAT301/305 bld candidate tried",
+      "testFile": "tests/test_kr_short_selling.py"
     },
     {
       "id": "F", "name": "Macro context (level/change/acceleration)", "module": "pipeline/macro_context.py",

@@ -1,12 +1,23 @@
-name: DART ownership events (foundation, unproven)
+name: Collect DART ownership events
 
-# `workflow_dispatch` ONLY. `dart_ownership_events.py`'s field set was
-# corroborated from third-party libraries wrapping DART's own DS004
-# (majorstock.json) endpoint, never confirmed against a live response —
-# OpenDART's own developer guide is blocked from this sandbox's egress.
-# `probe_dart_ownership_events.py` is the confirming step, matching
-# `probes.yml`'s own dispatch-only pattern for a source that has not been
-# exercised in CI yet. A human runs `mode: probe` first.
+# `auto` (the default) is the one button an operator needs: a small schema
+# probe runs first, and collection proceeds automatically only if that probe
+# reports `SERVED` — every expected field present on a real response. If the
+# source or key is refused, or an expected field goes missing (schema
+# drift), the run stops there and is never reported as a successful
+# collection. `probe`/`collect` stay available as explicit manual overrides
+# (e.g. re-running a probe alone to check status, or forcing a collection
+# after independently confirming things are fine) — see
+# `docs/workflow-inventory.md` for why the two steps are not fused into one
+# unconditional job: a probe call and a bulk collection call cost DART's
+# daily quota very differently, and forcing collection to always re-probe
+# first would spend part of that quota on every single collection run.
+#
+# `dart_ownership_events.py`'s field set was corroborated from third-party
+# libraries wrapping DART's own DS004 (majorstock.json) endpoint; a live
+# probe (Actions run 35964461327, 2026-09-24) has since confirmed all 10
+# expected fields are served and measured `report_tp`'s real values
+# ("일반"/"약식") — see that module's docstring for the correction.
 #
 # This is the SAME vendor and SAME key `fundamentals.yml` already uses for
 # DART's statement endpoint (DS002); a key subscribed to DS002 is not
@@ -16,12 +27,12 @@ on:
   workflow_dispatch:
     inputs:
       mode:
-        description: "probe=필드 확인만 (아무것도 기록하지 않음) / collect=수집"
+        description: "auto=스키마 확인 후 자동 수집 / probe=확인만 / collect=확인 없이 강제 수집"
         type: choice
-        options: ["probe", "collect"]
-        default: "probe"
+        options: ["auto", "probe", "collect"]
+        default: "auto"
       samples:
-        description: "probe 전용 — 확인할 종목코드 목록"
+        description: "probe(및 auto의 게이트) 전용 — 확인할 종목코드 목록"
         type: string
         default: "005930,000660,035420"
       max_calls:
@@ -42,9 +53,11 @@ concurrency:
 
 jobs:
   probe:
-    if: inputs.mode == 'probe'
+    if: inputs.mode == 'probe' || inputs.mode == 'auto'
     runs-on: ubuntu-latest
     timeout-minutes: 20
+    outputs:
+      verdict: ${{ steps.run.outputs.verdict }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v5
@@ -55,6 +68,7 @@ jobs:
           python-version: "3.11"
 
       - name: Probe majorstock.json
+        id: run
         env:
           DART_API_KEY: ${{ secrets.DART }}
         run: |
@@ -84,7 +98,14 @@ jobs:
           } >> "$GITHUB_STEP_SUMMARY"
 
   collect:
-    if: inputs.mode == 'collect'
+    needs: [probe]
+    # `always()` so `collect` mode's forced run is not skipped just because
+    # its own `probe` job (which never ran for it) reports nothing; `mode ==
+    # collect` bypasses the gate entirely, and `auto` requires SERVED.
+    if: |
+      always() &&
+      (inputs.mode == 'collect' ||
+       (inputs.mode == 'auto' && needs.probe.outputs.verdict == 'SERVED'))
     runs-on: ubuntu-latest
     timeout-minutes: 90
     steps:
@@ -117,6 +138,14 @@ jobs:
           mkdir -p ownership-work/ledger/dart-ownership-events
 
       - name: Collect a slice
+        # Resumable via `fetched.json`, keyed by ticker: a ticker already
+        # fetched (this run or a past one) is never re-requested, and a
+        # ticker whose call fails outright is removed from that set again
+        # before the run ends — so a re-run neither skips a company that
+        # never actually succeeded nor re-fetches (and duplicates) one that
+        # did. `majorstock.json` answers a company's entire disclosed
+        # history in one call, so there is no partial per-company state to
+        # resume within.
         env:
           DART_API_KEY: ${{ secrets.DART }}
         run: |
@@ -160,3 +189,23 @@ jobs:
             tail -n 40 collect.log 2>/dev/null || echo 'no collection output'
             echo '```'
           } >> "$GITHUB_STEP_SUMMARY"
+
+  gate-stopped:
+    needs: [probe]
+    if: inputs.mode == 'auto' && needs.probe.outputs.verdict != 'SERVED'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Explain why collection did not run
+        run: |
+          {
+            echo '## DART ownership events — collection skipped'
+            echo
+            echo "probe verdict: \`${{ needs.probe.outputs.verdict }}\` (not \`SERVED\`)"
+            echo
+            echo 'Collection only runs automatically after a `SERVED` probe.'
+            echo 'Check the probe job'"'"'s summary above for what refused it —'
+            echo 'a repeat run will not help without a change on the source or key side.'
+          } >> "$GITHUB_STEP_SUMMARY"
+          echo "probe verdict was ${{ needs.probe.outputs.verdict }}, not SERVED — collection skipped" >&2
+          exit 1

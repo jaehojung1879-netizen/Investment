@@ -34,15 +34,41 @@ function is correct rather than convenient. `PIT fundamentals invariants
 (v2.9)`'s rule applies exactly as written: a row whose receipt date cannot be
 read is refused, never stored with a substitute.
 
-REPORT TYPE, TRANSLATED WITHOUT INVENTING VALUES NOT YET OBSERVED. DART's
-`report_tp` is a free Korean label whose only two values corroborated above
-are "신규" (new 5%+ holder) and "변동" (a change in an existing holding). This
-module maps exactly those two and passes anything else through UNCHANGED
-under `reportTypeRaw` — the finer distinctions the task asked for
-(INCREASE / DECREASE / EXIT_BELOW_THRESHOLD) are DERIVED from the sign of
-`stkrt_irds` and from whether `stkrt` crossed below 5%, never read as if DART
-stated them directly, because that mapping was not independently verified
-against a live response.
+REPORT TYPE — CORRECTED BY A LIVE PROBE, AND NOT TRANSLATED EVEN NOW. The
+paragraph this replaces guessed `report_tp` would carry "신규" (new 5%+
+holder) / "변동" (a change). A live probe run against the real endpoint
+(GitHub Actions run 35964461327, job `probe`, 2026-09-24) measured the
+ACTUAL values across 55 rows on 3 tickers — 005930: 41/41 "일반"; 000660:
+9 "약식" + 1 "일반"; 035420: 4/4 "약식" — and "신규"/"변동" appeared ZERO
+times. The guess was simply wrong, not a value DART has since stopped
+using, and the constants encoding it are removed rather than kept as an
+unused, disproven guess.
+
+"일반"/"약식" are NOT translated into a normalized `reportType` either, on
+purpose. In general Korean securities-disclosure terminology (자본시장법
+제147조's 일반보고/약식보고 distinction) these read as the report's FORM —
+a full report versus an abbreviated one available to certain qualifying
+investors — but that reading has not been confirmed against OpenDART's own
+field-level documentation, which is blocked from this sandbox's egress
+exactly like the rest of this module's sourcing. Encoding that plausible
+but unconfirmed reading into `reportType` would repeat the exact defect
+this correction exists to fix: asserting a specific meaning for a raw
+label without having read it from an authoritative source. `reportTypeRaw`
+carries DART's exact string; `reportType` stays `None` for every value in
+`KNOWN_REPORT_TYPE_RAW_VALUES` until a verified source says what to call
+it. The finer distinctions the task asked for (INCREASE / DECREASE /
+EXIT_BELOW_THRESHOLD) are DERIVED from the sign of `stkrt_irds` and from
+whether `stkrt` crossed below 5% — a different field pair, read directly,
+never inferred from `report_tp`.
+
+NOT CONFIRMED PRESENT OR ABSENT: a report reason / holding-purpose field.
+The live probe only checked for the 10 fields this module already reads
+(see `scripts/probe_dart_ownership_events.py`'s `EXPECTED_FIELDS`); it
+captured a full raw sample row in its own JSON artifact but that artifact's
+contents were not inspected in the session that ran this probe. A future
+probe that logs the full set of raw field names on a sample row (not just
+the ones already expected) would answer whether such a field exists at
+all — this module reads none today because none has been confirmed.
 
 APPEND-ONLY, KEYED BY RECEIPT NUMBER. A restatement or a correction to an
 already-filed report arrives at DART as its own filing with its own
@@ -62,13 +88,19 @@ from . import dart_fundamentals as DF
 # that is called is safer than a control that is reproduced.
 receipt_date = DF.receipt_date
 
-# The two `report_tp` values corroborated across independent sources
-# researching this endpoint (see module docstring). Anything else DART
-# returns is passed through under `reportTypeRaw` rather than forced into one
-# of these two.
-REPORT_TYPE_NEW = "NEW_5PCT_HOLDER"
-REPORT_TYPE_CHANGE = "CHANGE"
-_REPORT_TYPE_MAP = {"신규": REPORT_TYPE_NEW, "변동": REPORT_TYPE_CHANGE}
+# The two `report_tp` values a live probe run has actually observed (see
+# module docstring for the run and counts). Listed so a probe or test can
+# tell "a known raw value we chose not to translate" apart from "a value
+# nobody has ever seen" — a materially different fact about the source.
+KNOWN_REPORT_TYPE_RAW_VALUES = frozenset({"일반", "약식"})
+
+# Deliberately empty. No raw value is mapped to a normalized `reportType`
+# yet — see module docstring for why guessing one here would repeat the
+# defect this correction fixes. Extending this dict is only correct once an
+# authoritative source (OpenDART's own field guide, or DART support)
+# confirms what a raw value means, at which point BOTH this map and
+# `KNOWN_REPORT_TYPE_RAW_VALUES` should gain the new entry together.
+_REPORT_TYPE_MAP: dict[str, str] = {}
 
 # The 5% line the report family is named for. A holding percentage crossing
 # below this on a CHANGE report is read as an exit signal — DERIVED, because

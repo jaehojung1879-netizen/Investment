@@ -25,11 +25,13 @@ own structure:
      one.
   2. THE FIELD SET. Every field `build_event` reads is checked for presence
      on a real row, for at least one company with disclosed 5%+ holders.
-  3. `report_tp`'S ACTUAL VALUES. Only "신규" and "변동" were corroborated by
-     research; this reports every distinct value a live sample actually
-     returns, so `dart_ownership_events._REPORT_TYPE_MAP` can be extended
-     from measurement rather than left silently mapping an unseen third value
-     to `None`.
+  3. `report_tp`'S ACTUAL VALUES. This reports every distinct value a live
+     sample actually returns, checked against
+     `dart_ownership_events.KNOWN_REPORT_TYPE_RAW_VALUES` — a genuinely new
+     value nobody has seen before is a different, more urgent fact than one
+     already known and deliberately left untranslated (see that module's
+     docstring for why `report_tp` is not translated into a normalized
+     `reportType` even for known values).
   4. HOW FAR BACK. DART's statement coverage starts 2015
      (`dart_fundamentals.FIRST_SERVED_YEAR`); ownership disclosures are a
      different report family and may reach further back or not as far — this
@@ -145,6 +147,38 @@ def probe_one(key: str, stock: str, corp: str) -> dict:
     return entry
 
 
+def classify_verdict(report: dict) -> str:
+    """One of SERVED / AUTH_REQUIRED / NETWORK_ERROR / BLOCKED_SOURCE /
+    SCHEMA_CHANGED / INCONCLUSIVE_NO_ROWS — the same exit-semantics vocabulary
+    `pipeline/collector_outcomes.py` uses for the KRX collectors, so an
+    operator (or an `auto` workflow gate) reads one consistent set of words
+    across every source in this repository rather than a bespoke string per
+    source.
+
+    A genuinely new `report_tp` value never downgrades this verdict: raw
+    passthrough handles any string, known or not, so a new categorical value
+    is noted (`reportTypesNeverSeenBefore`) but is not a reason to block
+    collection. Only a MISSING expected field — data this module actually
+    reads — does that.
+    """
+    samples = report["samples"]
+    served = [e for e in samples.values() if e.get("rows")]
+    if served:
+        all_fields_present = all(
+            all(pct > 0 for pct in (e.get("fieldsPresentPct") or {}).values())
+            for e in served)
+        return "SERVED" if all_fields_present else "SCHEMA_CHANGED"
+    statuses = [str(e.get("status", "")) for e in samples.values() if e.get("status")]
+    if any(any(code in status for code in DF.FATAL_STATUSES) for status in statuses):
+        return "AUTH_REQUIRED"
+    errors = [str(e["error"]) for e in samples.values() if e.get("error")]
+    if any("HTTP" not in err for err in errors):
+        return "NETWORK_ERROR"
+    if errors:
+        return "BLOCKED_SOURCE"
+    return "INCONCLUSIVE_NO_ROWS"
+
+
 def main(argv=None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", default="dart-ownership-probe.json")
@@ -187,8 +221,11 @@ def main(argv=None) -> int:
         time.sleep(0.3)
 
     report["allReportTypesSeen"] = dict(all_report_types)
-    unmapped = sorted(set(all_report_types) - set(DOE._REPORT_TYPE_MAP) - {"None"})
-    report["reportTypesNotYetMapped"] = unmapped
+    unseen = sorted(set(all_report_types) - DOE.KNOWN_REPORT_TYPE_RAW_VALUES - {"None"})
+    report["reportTypesNeverSeenBefore"] = unseen
+
+    verdict = classify_verdict(report)
+    report["verdict"] = verdict
 
     Path(args.output).write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n",
                                  encoding="utf-8")
@@ -200,11 +237,20 @@ def main(argv=None) -> int:
     print("\n=== 판정 ===")
     print(f"  응답 샘플 {len(served)}/{len(samples)}")
     print(f"  모든 기대 필드 존재: {'예' if served and all_fields_present else '아니오'}")
-    if unmapped:
-        print(f"  아직 매핑되지 않은 report_tp 값: {unmapped} — "
-              f"dart_ownership_events._REPORT_TYPE_MAP을 확장해야 합니다")
+    if unseen:
+        print(f"  처음 보는 report_tp 값: {unseen} — "
+              f"dart_ownership_events.KNOWN_REPORT_TYPE_RAW_VALUES에 없습니다. "
+              f"reportTypeRaw로는 그대로 보존되지만, 확인 전에는 reportType으로 "
+              f"번역하지 마세요")
+    print(f"  verdict: {verdict}")
+
+    github_output = os.environ.get("GITHUB_OUTPUT")
+    if github_output:
+        with open(github_output, "a", encoding="utf-8") as fh:
+            fh.write(f"verdict={verdict}\n")
+
     print(f"\nwrote {args.output}")
-    return 0
+    return 0 if verdict == "SERVED" else 1
 
 
 if __name__ == "__main__":

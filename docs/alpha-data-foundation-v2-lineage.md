@@ -50,7 +50,7 @@ percentile into a per-ticker field.
 | Field | Source | `availableFrom` | Coverage/status |
 |---|---|---|---|
 | `rcept_no`, `rcept_dt`, `corp_code`, `corp_name`, `report_tp`, `repror`, `stkqy`, `stkqy_irds`, `stkrt`, `stkrt_irds` | DART `majorstock.json` (API group DS004) | `dart_fundamentals.receipt_date(rcept_no)` — same mechanism as financial statements | **UNPROVEN** — field set corroborated from third-party libraries, not a live response; probe not yet run |
-| `reportType` (`NEW_5PCT_HOLDER`/`OWNERSHIP_CHANGE`/`reportTypeRaw` passthrough) | Derived from `report_tp` | Same | Only two DART label values are mapped; anything else passes through unchanged |
+| `reportType` (always `None` today; `reportTypeRaw` passthrough) | Derived from `report_tp` | Same | **Corrected 2026-09-24 by workflow-hygiene-live-data-fixes-v1**: a live probe (Actions run 35964461327) measured the real values as "일반"/"약식", never the "신규"/"변동" this row originally guessed. Neither is translated into `reportType` — see `pipeline/dart_ownership_events.py`'s module docstring for why an unconfirmed translation is not encoded; `reportTypeRaw` always carries DART's exact string |
 | Derived INCREASE/DECREASE/EXIT_BELOW_THRESHOLD | Derived from the sign of `stkrt_irds` and whether `stkrt` crosses below 5% | Same | Never reads an unconfirmed "before" field; no subtraction performed on unverified fields |
 
 ## Workstream E — `pipeline/kr_short_selling.py`

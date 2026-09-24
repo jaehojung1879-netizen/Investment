@@ -39,6 +39,9 @@ on:
           - us-delisted-prices
           - alfred-macro-vintages
           - kr-delisting-coverage
+          - kr-investor-flow
+          - kr-short-selling
+          - guru-13f-access
       args:
         description: "스크립트에 그대로 넘길 인자 (비우면 스크립트 기본값)"
         type: string
@@ -85,6 +88,9 @@ jobs:
             us-delisted-prices)    script=probe_us_delisted_prices.py;     deps=no  ;;
             alfred-macro-vintages) script=probe_alfred_macro_vintages.py;  deps=yes ;;
             kr-delisting-coverage) script=measure_kr_delisting_coverage.py; deps=yes ;;
+            kr-investor-flow)      script=probe_kr_investor_flow.py;       deps=no  ;;
+            kr-short-selling)      script=probe_kr_short_selling.py;       deps=no  ;;
+            guru-13f-access)       script=probe_guru_13f_access.py;        deps=no  ;;
             *) echo "unknown probe: ${{ inputs.probe }}" >&2; exit 2 ;;
           esac
           echo "script=$script" >> "$GITHUB_OUTPUT"

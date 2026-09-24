@@ -42,6 +42,13 @@ def test_lookback_days_rejects_something_that_is_not_a_number_at_all():
         parser.parse_args(["some/ledger", "--lookback-days", "not-a-number"])
 
 
+@pytest.mark.skipif(
+    not (ROOT / ".github/workflows/regional-rotation.yml").exists(),
+    reason="regional-rotation.yml was retired from Active Actions by "
+           "workflow-hygiene-live-data-fixes-v1 (the study it ran, "
+           "regional-rotation-v1, is closed and published — see "
+           "docs/workflow-inventory.md); the file and this regression are "
+           "still in git history if the workflow is ever restored.")
 def test_the_workflow_sets_pipefail_before_piping_into_tee():
     """Without it, bash -e only sees tee's own exit code, so a script that
     fails before printing anything still reports the step (and the whole
