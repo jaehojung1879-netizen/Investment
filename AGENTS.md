@@ -1108,6 +1108,56 @@
   general regulatory knowledge, however plausible) confirms what to call a
   value. Guessing a second time would repeat the exact defect this fixes.
 
+## Alpha-opportunity-model-v2 invariants (v2.26)
+
+- THE BENCHMARK IS A COMPETITOR FOR THE CAPITAL, NOT A SCALE FOR A RANKING.
+  `alpha-opportunity-model-v2` puts each stock's own regional benchmark in the
+  choice set with expected net alpha exactly 0. A name is
+  `ACTIVE_OPPORTUNITY` only if BOTH heads favour it over that outside option
+  at their point estimates AND at v1's sealed 5th-percentile bootstrap bounds
+  (`expectedNetAlpha > 0`, `P(net alpha > 0) > 0.5`). 0 and 0.5 are the
+  outside option's own values, not hurdles. A universe always has a best stock
+  and often has no active opportunity; zero active names is a valid state and
+  the count is endogenous. No Top-N, percentile cut, +X% edge, US/KR slot or
+  invested fraction exists, and `alpha_opportunity_v2_spec.load_sealed`
+  refuses a spec that reintroduces one with a value.
+- ACCOUNT SIZE IS NOT AN ALPHA QUESTION. v1's minimum edge, concentration
+  multiple, order notional, cash-ADV floor/fraction and slippage budget were
+  removed or moved to a separate, undefined portfolio layer under
+  `SMALL_CAPITAL_ASSUMPTION`. What stays: dated realistic costs inside net
+  alpha (the benchmark is charged nothing, which errs toward it), and a PIT
+  traded-at-all guard: 20 consecutive regional sessions of positive sealed
+  close AND positive share volume. Share volume is evidence of trading, never
+  cash value. That a personal order is small relative to traded value is an
+  assumption, published as one, not a measurement.
+- A GATE THAT A CALIBRATED MODEL CANNOT PASS IS NOT A CALIBRATION GATE. v1
+  averaged a per-date ECE and required <= 0.05. A perfectly calibrated
+  synthetic predictor reads 0.0693 at 120 names (KR) and 0.0342 at 500 (US),
+  so the KR gate was a certain rejection. v2 gates pooled date-balanced ECE
+  over the same bins and bound (null 0.0010 / 0.0018). The null is recorded in
+  the spec and reproduced by a test, and was measured with no market data.
+- A RULE THAT VOIDS A DATE ON ANY MISSING MEMBER CAN BE UNSATISFIABLE BY
+  CONSTRUCTION, AND THAT IS MEASURABLE FROM IDENTITIES ALONE. 703 of 715 US
+  weekly dates hold a pinned S&P 500 member the replay-v16 panel never priced
+  (194 names, 27.10% of 2013 member-dates falling to 0.65% in 2026), so v1's
+  US leg could only return `DATA_INSUFFICIENT`. v2 inherits the repository's
+  own answers instead of inventing one. Region-years whose unvouched share
+  exceeds `HISTORICAL_UNIVERSE_GAP_TOLERANCE_PCT` are excluded from training
+  AND evaluation (US 2013-2016 on the lower bound). Every gate must hold with
+  unresolved endpoints dropped AND assigned the date's worst plausible
+  outcome. The active level is additionally stressed at the full date gap.
+- A NEW VERSION RE-VERIFIES THE OLD SEAL; IT NEVER EDITS OR FALLS BACK TO IT.
+  v2 pins the v1 spec and sidecar by hash and raises `V1_SEAL_CHANGED` if
+  either moves. The v2 runner refuses any spec whose `studyId` is not v2. v2
+  hashes only its import closure plus its inputs, so unrelated production
+  edits do not strand it.
+- READY IS A STATEMENT ABOUT THE DESIGN, NOT ABOUT THE SOFTWARE. v2 is
+  `READY_FOR_HISTORICAL_EXECUTION` because no design blocker remains. Its
+  fail-closed pre-label gates (input identity, region-year eligibility,
+  coverage, calendar depth) can still stop the first real run, before any
+  label exists, and the runner has only been exercised on synthetic
+  fixtures. DART ownership is prospective-only; Guru/13F is never a feature.
+
 ## Lint gate invariants (v2.11)
 
 - The enabled rule set reports ZERO findings on `main`. A rule is turned on in the

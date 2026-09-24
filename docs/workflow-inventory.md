@@ -8,7 +8,7 @@ section's links for the numbers.
 Before this pass (`workflow-hygiene-live-data-fixes-v1`, 2026-09-24): 25
 workflow files, most of them one-shot research studies already closed and
 published. After that cleanup: **9**. The preregistration-only opportunity study
-adds one guarded manual entry point, bringing the current count to **10**. Nothing was deleted from the repository — every
+adds one guarded manual entry point per sealed version (v1, v2), bringing the current count to **11**. Nothing was deleted from the repository — every
 retired workflow's code, its `docs/results/*` artifact, and the workflow
 file itself all still exist in git history; only the Actions "Run workflow"
 entry point was removed.
@@ -29,6 +29,7 @@ collection — the ones an operator actually depends on.
 | `Collect DART ownership events` (`dart-ownership-events.yml`) | none — `workflow_dispatch` only | **Yes, `mode: auto`** (see below) | KR 5%-rule ownership disclosure collection (DS004) |
 | `Seal fundamental acceleration signal` (`fundamental-acceleration-seal.yml`) | none yet — `workflow_dispatch` only, deliberately (see its own header comment) | Yes, periodically, until converted to a schedule | Appends today's fundamental-acceleration reading immutably, before its 126-day horizon can be known, building the prospective sample `fundamental-acceleration-discovery-v1` is a bridge for |
 | `Alpha opportunity model v1` (`alpha-opportunity-model-v1.yml`) | none — `workflow_dispatch` only | **Do not run yet** | Sealed research harness; main/review/hash/data guards; currently `BLOCKED_PREREGISTRATION`. Merge and review first, resolve non-outcome blockers in a new version. |
+| `Alpha opportunity model v2` (`alpha-opportunity-model-v2.yml`) | none — `workflow_dispatch` only | **Only after the v2 preregistration PR is reviewed and merged** | Sealed v2 contract (benchmark as outside option); `READY_FOR_HISTORICAL_EXECUTION`. Inputs: the reviewed `research_specs/alpha-opportunity-model-v2.sha256` and the review acknowledgement. main-only; verifies v1 is untouched; fails closed at pre-label gates; uploads `alpha-opportunity-model-v2-results`; writes nothing. |
 | `Probes` (`probes.yml`) | none — `workflow_dispatch` only | On demand | One dropdown covering every external-source availability check (see below) |
 
 **`Collect DART ownership events`, `mode: auto` (the default) is the one

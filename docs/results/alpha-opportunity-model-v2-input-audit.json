@@ -1,0 +1,190 @@
+{
+  "allNoPanelNamesHaveDelistedDate": true,
+  "dartOwnership": {
+    "events": 2496,
+    "issuersQueried": 254,
+    "observedReceiptWindow": [
+      "2024-09-24",
+      "2026-09-23"
+    ],
+    "reading": "the bounded majorstock.json window is about two years and cannot be extended backward by more collection; history can only grow prospectively",
+    "requestDateBoundsSupported": false,
+    "source": "docs/results/alpha-opportunity-model-v1-input-audit.json dartOwnershipManifest (updatedAt 2026-09-24T10:42:33Z)",
+    "v1CalendarUpperBound": {
+      "evaluationDates": 46,
+      "weeklyDates": 98
+    }
+  },
+  "finding": {
+    "lowerBoundOnly": "counts only names with NO panel; partial panels and missing signal-date sessions are measured at runtime before labels and can only raise the unvouched share",
+    "v1StrictRule": "v1 marks a scheduled date INCOMPLETE if any PIT member lacks a matured endpoint, and its verdict requires EVERY evaluation date MEASURED; 703 of 715 US weekly dates carry at least one member with no price panel at all (including every date of every year before 2026), so a single such date already forces DATA_INSUFFICIENT and the v1 US leg could only ever return it. Established from identities alone, before any label.",
+    "v2Treatment": "region-year eligibility at the repository tolerance for BOTH training and evaluation; names without a signal-date price are not tradable in-data and are counted, never imputed; active-set level additionally stressed at the full date gap with the date worst plausible outcome."
+  },
+  "historicalModelsTrained": false,
+  "historicalOutcomesComputed": false,
+  "inputs": {
+    "usMembership": {
+      "path": "research_specs/alpha-opportunity-model-v1-us-membership.json.gz",
+      "sha256": "397b27270255d7a14a36d075a3e2889129d9351d817420614c8ccd289d74c30f"
+    },
+    "usUnpricedMembers": {
+      "measuredFrom": {
+        "inputSnapshotThrough": "2026-09-14",
+        "method": "every US ticker in the sealed universe memberships, checked against the tickers the sealed price panel actually carries",
+        "replayVersion": "replay-v16"
+      },
+      "path": "data/us-unpriced-members.json",
+      "sha256": "5206b031771ffc6766e2cfdfa53aee808c66e8dcf3feb40163e250cba94c1edc"
+    }
+  },
+  "krNote": "KR no-panel identities are not published in the repository; the runner measures KR unvouched share per region-year from the sealed panels before labels. replay-v16 reported KR affected observations 2.29% overall.",
+  "krUnvouchedMeasuredHere": false,
+  "method": "pinned v1 US membership (strictly earlier snapshot per weekly regional signal date) intersected with data/us-unpriced-members.json (tickers the sealed replay-v16 price panel carries no series for). Reads ticker identities only.",
+  "phase": "INPUT_ONLY",
+  "priceValuesRead": false,
+  "repositoryToleranceConstant": "pipeline.pit_data.HISTORICAL_UNIVERSE_GAP_TOLERANCE_PCT",
+  "repositoryTolerancePct": 20.0,
+  "returnsComputed": false,
+  "studyId": "alpha-opportunity-model-v2",
+  "usByYear": [
+    {
+      "exceedsRepositoryTolerance": true,
+      "memberDates": 26000,
+      "noPanelMemberDates": 7046,
+      "noPanelPct": 27.1,
+      "weeklyDates": 52,
+      "year": "2013"
+    },
+    {
+      "exceedsRepositoryTolerance": true,
+      "memberDates": 26007,
+      "noPanelMemberDates": 6631,
+      "noPanelPct": 25.5,
+      "weeklyDates": 52,
+      "year": "2014"
+    },
+    {
+      "exceedsRepositoryTolerance": true,
+      "memberDates": 26258,
+      "noPanelMemberDates": 6384,
+      "noPanelPct": 24.31,
+      "weeklyDates": 53,
+      "year": "2015"
+    },
+    {
+      "exceedsRepositoryTolerance": true,
+      "memberDates": 26138,
+      "noPanelMemberDates": 5506,
+      "noPanelPct": 21.07,
+      "weeklyDates": 52,
+      "year": "2016"
+    },
+    {
+      "exceedsRepositoryTolerance": false,
+      "memberDates": 26251,
+      "noPanelMemberDates": 5132,
+      "noPanelPct": 19.55,
+      "weeklyDates": 52,
+      "year": "2017"
+    },
+    {
+      "exceedsRepositoryTolerance": false,
+      "memberDates": 26260,
+      "noPanelMemberDates": 4550,
+      "noPanelPct": 17.33,
+      "weeklyDates": 52,
+      "year": "2018"
+    },
+    {
+      "exceedsRepositoryTolerance": false,
+      "memberDates": 26260,
+      "noPanelMemberDates": 4368,
+      "noPanelPct": 16.63,
+      "weeklyDates": 52,
+      "year": "2019"
+    },
+    {
+      "exceedsRepositoryTolerance": false,
+      "memberDates": 26765,
+      "noPanelMemberDates": 3488,
+      "noPanelPct": 13.03,
+      "weeklyDates": 53,
+      "year": "2020"
+    },
+    {
+      "exceedsRepositoryTolerance": false,
+      "memberDates": 26260,
+      "noPanelMemberDates": 2499,
+      "noPanelPct": 9.52,
+      "weeklyDates": 52,
+      "year": "2021"
+    },
+    {
+      "exceedsRepositoryTolerance": false,
+      "memberDates": 26258,
+      "noPanelMemberDates": 2373,
+      "noPanelPct": 9.04,
+      "weeklyDates": 52,
+      "year": "2022"
+    },
+    {
+      "exceedsRepositoryTolerance": false,
+      "memberDates": 26151,
+      "noPanelMemberDates": 1245,
+      "noPanelPct": 4.76,
+      "weeklyDates": 52,
+      "year": "2023"
+    },
+    {
+      "exceedsRepositoryTolerance": false,
+      "memberDates": 26154,
+      "noPanelMemberDates": 864,
+      "noPanelPct": 3.3,
+      "weeklyDates": 52,
+      "year": "2024"
+    },
+    {
+      "exceedsRepositoryTolerance": false,
+      "memberDates": 26155,
+      "noPanelMemberDates": 573,
+      "noPanelPct": 2.19,
+      "weeklyDates": 52,
+      "year": "2025"
+    },
+    {
+      "exceedsRepositoryTolerance": false,
+      "memberDates": 18609,
+      "noPanelMemberDates": 121,
+      "noPanelPct": 0.65,
+      "weeklyDates": 37,
+      "year": "2026"
+    }
+  ],
+  "usMaximumWeeklyNoPanelPct": 28.2,
+  "usMembershipUnion": 829,
+  "usMinimumNoPanelMembersOnAnyDate": 0,
+  "usNoPanelNames": 194,
+  "usNoPanelNamesOutsideMembership": 0,
+  "usWeeklyDates": 715,
+  "usWeeklyDatesWithAtLeastOneNoPanelMember": 703,
+  "usWeeklyDatesWithoutNoPanelMember": [
+    "2026-06-26",
+    "2026-07-02",
+    "2026-07-10",
+    "2026-07-17",
+    "2026-07-24",
+    "2026-07-31",
+    "2026-08-07",
+    "2026-08-14",
+    "2026-08-21",
+    "2026-08-28",
+    "2026-09-04",
+    "2026-09-11"
+  ],
+  "usYearsExcludedByLowerBound": [
+    "2013",
+    "2014",
+    "2015",
+    "2016"
+  ]
+}
