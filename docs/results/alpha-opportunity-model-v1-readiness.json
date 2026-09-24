@@ -1,0 +1,22 @@
+{
+  "studyId": "alpha-opportunity-model-v1",
+  "immutableVersion": "1.0.0",
+  "specSha256": "e3c699b197fd558506d7157fa6dd8cdb91156faccd0e6e9547d21d5baa23dd6e",
+  "phase": "PREREGISTRATION_ONLY",
+  "verdict": "BLOCKED_PREREGISTRATION",
+  "blockers": [
+    "ECONOMIC_EDGE_AND_CONCENTRATION_BUDGET_UNSPECIFIED",
+    "POSITION_NOTIONAL_LIQUIDITY_CAPACITY_AND_SLIPPAGE_UNSPECIFIED",
+    "AS_TRADED_ADV_SOURCE_CONTRACT_UNSEALED",
+    "FULL_PIT_UNIVERSE_FEATURE_COVERAGE_UNVERIFIED"
+  ],
+  "historicalOutcomesComputed": false,
+  "historicalModelsTrained": false,
+  "promotionEligible": false,
+  "excludedNonblockingFamilies": {
+    "US_MACRO": "BLOCKED_MACRO_PIT: unverified per-series release/vintage availability in replay-v16; not a primary blocker after exclusion",
+    "KR_MACRO": "BLOCKED_MACRO_PIT and incomplete collection",
+    "US_DIVIDENDS": "raw per-share amount precision unresolved, categorical transitions not proven robust",
+    "KR_OWNERSHIP_CORE": "short-history overlay only"
+  }
+}
