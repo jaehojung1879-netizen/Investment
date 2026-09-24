@@ -1,0 +1,403 @@
+{
+  "contract": "REPLAY_POLICY_LEGACY_BASELINE_V1",
+  "diagnosedCurrentRawConfigSha256": "cddf9de1ac3c47b6d45201a933f910c9eeee799d8b511f939b75502c9ca1f1b5",
+  "diagnosedRawDifferences": [
+    {
+      "classification": "REPRESENTATION_ONLY_CHANGE",
+      "current": {
+        "itemCode": null,
+        "seriesId": "817Y002"
+      },
+      "path": "ecos.KR.KTB_3Y",
+      "sealed": "817Y002"
+    },
+    {
+      "classification": "REPRESENTATION_ONLY_CHANGE",
+      "current": {
+        "itemCode": null,
+        "seriesId": "817Y002"
+      },
+      "path": "ecos.KR.CorpBond_3Y",
+      "sealed": "817Y002"
+    }
+  ],
+  "excludedFromReplayFingerprint": {
+    "ecos_regions": "UNUSED_FOR_REPLAY: run_replay and audit_portfolio use the FRED macro path and never import ecos_macro",
+    "otherConfigFields": "UNUSED_FOR_REPLAY: omitted by the explicit consumed-key projection in replay_semantic_config"
+  },
+  "legacyRawConfigSha256": "3f4663c1434bea4fa2a747c0c5629dbe9baac991e72fecd4ef28d20432649e95",
+  "replayVersion": "replay-v16",
+  "semanticConfig": {
+    "benchmark_sources": {
+      "069500.KS": [
+        {
+          "kind": "krx-total-return",
+          "symbol": "069500.KS"
+        },
+        {
+          "kind": "yahoo",
+          "symbol": "069500.KS"
+        }
+      ],
+      "SPY": [
+        {
+          "kind": "yahoo",
+          "symbol": "SPY"
+        }
+      ]
+    },
+    "benchmarks": {
+      "KR": "069500.KS",
+      "US": "SPY"
+    },
+    "core": [
+      "005930.KS",
+      "000660.KS",
+      "000810.KS",
+      "010120.KS",
+      "035420.KS",
+      "034020.KS",
+      "047040.KS",
+      "PFE",
+      "QQQ",
+      "NVDA",
+      "GOOGL"
+    ],
+    "fred_regions": {
+      "KR": {
+        "Korea_10Y": "IRLTLT01KRM156N",
+        "Korea_3M": "IR3TIB01KRM156N",
+        "USD_KRW": "DEXKOUS"
+      },
+      "US": {
+        "ANFCI": "ANFCI",
+        "Breakeven_10Y": "T10YIE",
+        "Broad_Dollar": "DTWEXBGS",
+        "CFNAI": "CFNAI",
+        "Core_CPI": "CPILFESL",
+        "Core_PCE": "PCEPILFE",
+        "Core_PPI": "WPSFD49116",
+        "FedFunds": "DFF",
+        "Fed_Assets": "WALCL",
+        "HY_Spread": "BAMLH0A0HYM2",
+        "Headline_CPI": "CPIAUCSL",
+        "Headline_PPI": "PPIFIS",
+        "IG_Spread": "BAMLC0A0CM",
+        "Initial_Claims": "ICSA",
+        "M2": "M2SL",
+        "NFCI": "NFCI",
+        "Payrolls": "PAYEMS",
+        "RRP": "RRPONTSYD",
+        "Real_10Y": "DFII10",
+        "TGA": "WTREGEN",
+        "Treasury_10Y": "DGS10",
+        "Treasury_2Y": "DGS2",
+        "Unemployment": "UNRATE",
+        "WTI": "DCOILWTICO"
+      }
+    },
+    "historical_replay": {
+      "_krxNotes": "KRX Open API stores collected by the `Collect universe history` workflow onto signal-history. krxPricesPath is the daily bars korea_prices falls back to for names FinanceDataReader serves nothing for. The monthly membership cross-sections have no key here because nothing reads them from config: replay.yml hands them to build_universe_history --krx-snapshots, which turns them into universe-history.json before the replay starts. Null here and set by replay.yml from the restored ledger, because a path that resolves on a developer's machine and not in CI is worse than one that resolves nowhere. Null means the Korean half behaves exactly as it did through v15: membership undescribed, prices from FDR alone.",
+      "_macroVintageNotes": "Names from macro.fredSeries whose ALFRED release history the replay should fetch, so the regime is conditioned on the number printed at the time rather than the number as revised since. Opt-in because the full release history is far heavier than the revised series. A series left off this list stays REVISED_HISTORY, and the vintageMacro integrity gate wants PIT_EXACT — which means every column in the macro panel, not just the revision-prone ones.",
+      "_notes": "frequency W = weekly rebalance-grid replay. D gives ~5x the signals at ~5x the cost and mostly adds overlapping observations; the HAC effective sample barely moves because neighbouring days share the same 126-day window. M is cheapest but thins the cross-section count below what bucket calibration needs. W is the chosen trade-off and is recorded in every replay diagnostic.",
+      "_orderingNotes": "minOrderingTStat / minOrderingEffectiveDates gate the bucket ladder on evidence that alpha RANK ordered returns (HAC t on top-minus-bottom, or on the per-date rank IC). 1.96 is calibrated by simulating this exact gate under the null, where it realises a 3.6-5.0% rejection rate; it is not a textbook critical value. Below the gate no ladder is published and no historical prior reaches Kelly, because a bucket's excess over the benchmark is mostly universe carry rather than selection skill.",
+      "_pitFundamentalsNotes": "PIT_FUNDAMENTALS_V1 JSONL, one filing per line. Required per line: ticker, fiscalPeriod, reportDate, publicationDate, availableFrom, currency, source, sourceAsOf, revisionStatus — availableFrom is the day WE could read it and is the only date that licenses use. Supply per-share numerators (epsTtm, bookValuePerShare, fcfPerShare) rather than yields: a yield needs a price, and the replay divides by the close of the date it is standing on. Ratios that need no price (roe, operatingMargin, profitMargin, debtToEquity, earningsGrowth) are stated directly. Filing dates come from SEC XBRL companyfacts (the per-fact `filed` field) for US and DART 접수일자 for KR; neither is bundled here, and while this stays null the value/quality sleeves are WITHHELD from the replay and the pointInTimeFundamentals integrity gate cannot pass.",
+      "alphaPercentileBuckets": [
+        0,
+        60,
+        80,
+        90,
+        95,
+        100
+      ],
+      "costAdjusted": true,
+      "enabled": true,
+      "frequency": "W",
+      "horizonDays": 126,
+      "krxPricesPath": null,
+      "macroVintageSeries": [],
+      "minBenchmarkCoveragePct": 95.0,
+      "minEffectiveDates": 30,
+      "minOrderingEffectiveDates": 12,
+      "minOrderingTStat": 1.96,
+      "pitFundamentalsPath": null,
+      "requirePitQuality": true,
+      "shrinkagePriorStrength": 30,
+      "start": "2013-01-01",
+      "universeHistoryPath": "data/universe-history.json"
+    },
+    "kelly_portfolio": {
+      "_selectionNullNotes": "The concentrated book is tested against the distribution the SAME construction produces when the conviction ranking is replaced by noise: same dates, same research pool, same name/sector/region caps, same entry multipliers, same cash floor, same turnover costs. Only the ordering varies, so the gap is what choosing was worth. It does NOT test the research screen, because the pool is already filtered by the alpha score. minPortfolioCompletenessPct refuses to publish a path built from the subset of portfolios that happened to be measurable - a dropped name is disproportionately a halted or delisted one, so the survivors are a different strategy.",
+      "activation": {
+        "minMaturedSignals": 100,
+        "minPaperDays": 252,
+        "requireNoMddDeterioration": true,
+        "requirePositiveCostAdjustedExcess": true,
+        "requirePositiveRankIC": true
+      },
+      "alphaPercentileBuckets": [
+        0,
+        60,
+        80,
+        90,
+        95,
+        100
+      ],
+      "blendWeight": 0.25,
+      "covarianceLookbackDays": 504,
+      "covarianceMinDays": 252,
+      "currency": {
+        "baseCurrency": "KRW",
+        "fxHedged": false,
+        "fxReturnsIncluded": false
+      },
+      "enabled": true,
+      "horizonDays": 126,
+      "kellyFraction": 0.25,
+      "maxNames": 5,
+      "maxPositionWeight": 0.3,
+      "maxSectorWeight": 0.45,
+      "maxThemeWeight": 0.45,
+      "maxTurnoverPct": 25,
+      "minCashPct": 15,
+      "minEffectiveDates": 30,
+      "minNames": 3,
+      "minNamesPerRegion": 1,
+      "minPortfolioCompletenessPct": 90,
+      "minUniqueDates": 63,
+      "mode": "shadow",
+      "probabilityCalibration": {
+        "integrity": {
+          "minPitCoverage": 0.6,
+          "requireHistoricalUniverse": true,
+          "requirePointInTimeFundamentals": true,
+          "requireVintageMacroForConditionalProbability": true
+        },
+        "maxBrier": 0.255,
+        "maxEce": 0.1,
+        "maxLogLoss": 0.72,
+        "minAuditDates": 63,
+        "minBrierSkill": 0.0,
+        "minConditionBrierImprovement": 0.0025,
+        "minConditionDates": 20,
+        "minIndependentAuditDates": 8,
+        "minTrainingDates": 30,
+        "payoffPriorStrength": 20,
+        "priorStrength": 20,
+        "requiredForKelly": true,
+        "selectionFraction": 0.65
+      },
+      "regimeMultipliers": {
+        "Deflation/Slowdown": {
+          "kellyMultiplier": 0.4,
+          "minCashPct": 25
+        },
+        "Goldilocks": {
+          "kellyMultiplier": 1.0,
+          "minCashPct": 10
+        },
+        "Reflation": {
+          "kellyMultiplier": 0.8,
+          "minCashPct": 15
+        },
+        "Stagflation": {
+          "kellyMultiplier": 0.3,
+          "minCashPct": 30
+        },
+        "Transition/Low confidence": {
+          "kellyMultiplier": 0.5,
+          "minCashPct": 20
+        }
+      },
+      "regionCaps": {
+        "KR": 0.65,
+        "US": 0.65
+      },
+      "riskAversion": 1.0,
+      "selection": {
+        "convictionTiltRange": 1.0,
+        "maxNamesPerRegion": 3,
+        "maxNamesPerSector": 2,
+        "minAlphaPercentile": 66,
+        "minNames": 3,
+        "targetNames": 5
+      },
+      "selectionNullDraws": 200,
+      "shrinkagePriorStrength": 30,
+      "timeDecayHalfLifeDays": 504,
+      "transactionCosts": {
+        "KR": {
+          "assumedTurnoverPct": 25,
+          "commissionBps": 5,
+          "expectedTradeNotionalKrw": 10000000,
+          "rebalanceDays": 63,
+          "sellTaxBps": 20,
+          "spreadBps": 12
+        },
+        "US": {
+          "assumedTurnoverPct": 25,
+          "commissionBps": 5,
+          "expectedTradeNotionalKrw": 10000000,
+          "rebalanceDays": 63,
+          "sellTaxBps": 3,
+          "spreadBps": 10
+        }
+      },
+      "turnoverPenalty": 0.002,
+      "useLedoitWolf": true,
+      "waitForPullbackWeightMultiplier": 0.25,
+      "watchWeightMultiplier": 0.5
+    },
+    "longterm": {
+      "excludeFromRanking": [
+        "QQQ",
+        "SPY",
+        "DIA",
+        "IWM",
+        "EFA",
+        "EEM",
+        "AGG",
+        "GLD",
+        "BIL",
+        "MTUM",
+        "VLUE",
+        "QUAL",
+        "USMV",
+        "VOO",
+        "IVV"
+      ],
+      "maxNameWeight": 0.15,
+      "maxNames": 12,
+      "maxSectorWeight": 0.3,
+      "minCashPct": 5,
+      "minFactorSleeves": 3,
+      "minFinancialCoverage": 0.4,
+      "minNames": 8,
+      "rankBuffer": {
+        "enterPct": 12,
+        "exitPct": 28
+      }
+    },
+    "universe": {
+      "KR": [
+        "005930.KS",
+        "000660.KS",
+        "373220.KS",
+        "207940.KS",
+        "005380.KS",
+        "000270.KS",
+        "068270.KS",
+        "105560.KS",
+        "035420.KS",
+        "012330.KS",
+        "028260.KS",
+        "055550.KS",
+        "035720.KS",
+        "051910.KS",
+        "006400.KS",
+        "000810.KS",
+        "015760.KS",
+        "032830.KS",
+        "003670.KS",
+        "086790.KS",
+        "138040.KS",
+        "010130.KS",
+        "009150.KS",
+        "011200.KS",
+        "034020.KS",
+        "033780.KS",
+        "066570.KS",
+        "316140.KS",
+        "024110.KS",
+        "010120.KS",
+        "047040.KS",
+        "018260.KS",
+        "030200.KS",
+        "009540.KS",
+        "051900.KS",
+        "097950.KS",
+        "271560.KS",
+        "004020.KS",
+        "267260.KS",
+        "042660.KS",
+        "010140.KS",
+        "329180.KS",
+        "012450.KS",
+        "064350.KS"
+      ],
+      "US": [
+        "QQQ",
+        "SPY",
+        "AAPL",
+        "MSFT",
+        "NVDA",
+        "GOOGL",
+        "GOOG",
+        "AMZN",
+        "META",
+        "AVGO",
+        "TSLA",
+        "BRK-B",
+        "LLY",
+        "JPM",
+        "V",
+        "WMT",
+        "UNH",
+        "XOM",
+        "MA",
+        "JNJ",
+        "PG",
+        "HD",
+        "COST",
+        "ORCL",
+        "ABBV",
+        "BAC",
+        "KO",
+        "MRK",
+        "CVX",
+        "ADBE",
+        "PEP",
+        "CRM",
+        "AMD",
+        "NFLX",
+        "TMO",
+        "ACN",
+        "LIN",
+        "MCD",
+        "ABT",
+        "CSCO",
+        "WFC",
+        "DHR",
+        "TXN",
+        "QCOM",
+        "PM",
+        "VZ",
+        "INTU",
+        "IBM",
+        "CAT",
+        "GE",
+        "NOW",
+        "ISRG",
+        "AMGN",
+        "PFE",
+        "UNP",
+        "SPGI",
+        "GS",
+        "HON",
+        "BKNG",
+        "AXP",
+        "LOW",
+        "BLK",
+        "SYK",
+        "ELV",
+        "PLD",
+        "TJX",
+        "VRTX",
+        "C",
+        "DE",
+        "GILD"
+      ]
+    },
+    "universe_size": 120
+  }
+}

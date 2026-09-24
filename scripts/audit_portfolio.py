@@ -79,9 +79,14 @@ def main(argv=None) -> int:
     store = RI.InputStore(ledger, replay_version, provenance.DATA_VERSION)
     manifest = store.manifest()
     if manifest:
-        config_hash = RI.digest(json.loads((ROOT / "config.json").read_text()))
-        if manifest["policy"].get("configSha256") != config_hash:
-            raise RI.InputVersionConflict("audit config differs from frozen replay config")
+        current_policy = {**manifest["policy"], **RI.replay_config_policy(cfg)}
+        current_policy.pop("configSha256", None)
+        compatible, details = RI.policies_compatible(
+            manifest["policy"], current_policy, replay_version=replay_version,
+            baseline_root=RI.REPLAY_POLICY_BASELINES)
+        if not compatible:
+            raise RI.InputVersionConflict(
+                "audit config differs from frozen replay config", details=details)
         frozen = RI.unpack(store.load(manifest, valuation_only=True))
         if (diagnostics.get("inputSnapshot") or {}).get("sha256") != manifest["sha256"]:
             raise RI.InputVersionConflict("diagnostics and input manifest disagree")

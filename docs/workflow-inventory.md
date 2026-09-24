@@ -34,8 +34,12 @@ button this whole PR was written to make sufficient**: it runs a small
 schema probe first, and only proceeds to collect if that probe reports
 `SERVED`. If the source or key is refused, or an expected field goes
 missing, the run stops and is reported as a failed job — never a quiet
-success with nothing collected. `probe`/`collect` remain as explicit manual
-overrides.
+success with nothing collected. Collection resolves the PIT historical KR
+membership union to DART issuer identities, then resumes by issuer and raw
+contract. `probe` also checks the official filing index for disclosures older
+than the bounded `majorstock.json` response; that depth check may report
+`BLOCKED_HISTORICAL_DEPTH` without changing the endpoint schema verdict.
+`probe`/`collect` remain as explicit manual overrides.
 
 ## ON-DEMAND PROBES
 

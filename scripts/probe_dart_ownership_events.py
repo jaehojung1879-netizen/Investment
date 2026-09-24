@@ -60,10 +60,12 @@ sys.path.insert(0, str(ROOT))
 
 from pipeline import dart_fundamentals as DF  # noqa: E402
 from pipeline import dart_ownership_events as DOE  # noqa: E402
+from pipeline import dart_ownership_universe as DOU  # noqa: E402
 
 BASE = "https://opendart.fss.or.kr/api"
 EXPECTED_FIELDS = ("rcept_no", "rcept_dt", "corp_code", "corp_name",
-                   "report_tp", "repror", "stkqy", "stkqy_irds", "stkrt", "stkrt_irds")
+                   "report_tp", "repror", "stkqy", "stkqy_irds", "stkrt", "stkrt_irds",
+                   "ctr_stkqy", "ctr_stkrt", "report_resn")
 
 
 def call(path: str, params: dict, timeout: int = 30) -> tuple[dict | None, str]:
@@ -83,7 +85,6 @@ def call(path: str, params: dict, timeout: int = 30) -> tuple[dict | None, str]:
 
 
 def corp_code_map(key: str) -> dict[str, str]:
-    """Same mapping `collect_dart_fundamentals.py` builds — reused, not redone."""
     try:
         with urllib.request.urlopen(f"{BASE}/corpCode.xml?crtfc_key={key}",
                                     timeout=120) as response:
@@ -91,21 +92,30 @@ def corp_code_map(key: str) -> dict[str, str]:
     except Exception as exc:  # pragma: no cover - network dependent
         print(f"ERROR: corp_code 목록을 받지 못했습니다 — {exc}")
         return {}
-    if blob[:2] != b"PK":
-        print("ERROR: corp_code 응답이 ZIP이 아닙니다")
-        return {}
-    import io
-    import xml.etree.ElementTree as ET
-    import zipfile
-    with zipfile.ZipFile(io.BytesIO(blob)) as archive:
-        xml = archive.read(archive.namelist()[0])
-    out: dict[str, str] = {}
-    for item in ET.fromstring(xml).iter("list"):
-        stock = (item.findtext("stock_code") or "").strip()
-        corp = (item.findtext("corp_code") or "").strip()
-        if stock and corp:
-            out[stock] = corp
-    return out
+    return {row["stockCode"]: row["corpCode"]
+            for row in DOU.parse_corp_code_zip(blob) if row["stockCode"]}
+
+
+def official_filing_depth(key: str, corp: str) -> dict:
+    """Check the official filing index without pretending it is event data."""
+    payload, error = call("list.json", {
+        "crtfc_key": key, "corp_code": corp, "bgn_de": "20130101",
+        "end_de": time.strftime("%Y%m%d", time.gmtime()), "pblntf_ty": "D",
+        "page_count": "100", "sort": "date", "sort_mth": "asc",
+    })
+    if payload is None:
+        return {"error": error}
+    rows = payload.get("list") or []
+    ownership = [row for row in rows if "대량보유" in str(row.get("report_nm") or "")]
+    return {
+        "status": DF.describe_status(str(payload.get("status"))),
+        "rowsReturned": len(rows),
+        "matchingLargeHoldingFilings": len(ownership),
+        "earliestMatchingReceiptDate": min(
+            (DF.receipt_date(row.get("rcept_no")) for row in ownership
+             if DF.receipt_date(row.get("rcept_no"))), default=None),
+        "note": "INDEX_ONLY_REQUIRES_DOCUMENT_PARSER_BEFORE_EVENT_BACKFILL",
+    }
 
 
 def probe_one(key: str, stock: str, corp: str) -> dict:
@@ -121,9 +131,12 @@ def probe_one(key: str, stock: str, corp: str) -> dict:
     if status != "000" or not rows:
         return entry
 
-    fields_present = {field: sum(1 for r in rows if r.get(field) not in (None, ""))
+    fields_present = {field: sum(1 for r in rows if field in r)
                       for field in EXPECTED_FIELDS}
+    fields_non_empty = {field: sum(1 for r in rows if r.get(field) not in (None, ""))
+                        for field in EXPECTED_FIELDS}
     entry["fieldsPresent"] = fields_present
+    entry["fieldsNonEmpty"] = fields_non_empty
     entry["fieldsPresentPct"] = {k: round(100.0 * v / len(rows), 1)
                                  for k, v in fields_present.items()}
     entry["reportTypesSeen"] = dict(Counter(str(r.get("report_tp")) for r in rows))
@@ -143,7 +156,14 @@ def probe_one(key: str, stock: str, corp: str) -> dict:
     entry["sampleReceiptDates"] = sorted({DF.receipt_date(r.get("rcept_no")) for r in rows[:20]})
     entry["earliestReceiptDate"] = min(
         (DF.receipt_date(r.get("rcept_no")) for r in rows
-         if DF.receipt_date(r.get("rcept_no"))), default=None)
+        if DF.receipt_date(r.get("rcept_no"))), default=None)
+    entry["officialFilingSearch"] = official_filing_depth(key, corp)
+    if (entry["officialFilingSearch"].get("earliestMatchingReceiptDate")
+            and entry["officialFilingSearch"]["earliestMatchingReceiptDate"]
+            < entry["earliestReceiptDate"]):
+        entry["historicalDepthStatus"] = "BLOCKED_HISTORICAL_DEPTH"
+    else:
+        entry["historicalDepthStatus"] = "INCONCLUSIVE_HISTORICAL_DEPTH"
     return entry
 
 
@@ -223,6 +243,12 @@ def main(argv=None) -> int:
     report["allReportTypesSeen"] = dict(all_report_types)
     unseen = sorted(set(all_report_types) - DOE.KNOWN_REPORT_TYPE_RAW_VALUES - {"None"})
     report["reportTypesNeverSeenBefore"] = unseen
+    depth_statuses = [entry.get("historicalDepthStatus")
+                      for entry in report["samples"].values()]
+    report["historicalDepthStatus"] = (
+        "BLOCKED_HISTORICAL_DEPTH"
+        if "BLOCKED_HISTORICAL_DEPTH" in depth_statuses
+        else "INCONCLUSIVE_HISTORICAL_DEPTH")
 
     verdict = classify_verdict(report)
     report["verdict"] = verdict
@@ -243,6 +269,7 @@ def main(argv=None) -> int:
               f"reportTypeRaw로는 그대로 보존되지만, 확인 전에는 reportType으로 "
               f"번역하지 마세요")
     print(f"  verdict: {verdict}")
+    print(f"  historical depth: {report['historicalDepthStatus']}")
 
     github_output = os.environ.get("GITHUB_OUTPUT")
     if github_output:
