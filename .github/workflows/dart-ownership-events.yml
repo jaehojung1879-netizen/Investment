@@ -1,0 +1,162 @@
+name: DART ownership events (foundation, unproven)
+
+# `workflow_dispatch` ONLY. `dart_ownership_events.py`'s field set was
+# corroborated from third-party libraries wrapping DART's own DS004
+# (majorstock.json) endpoint, never confirmed against a live response —
+# OpenDART's own developer guide is blocked from this sandbox's egress.
+# `probe_dart_ownership_events.py` is the confirming step, matching
+# `probes.yml`'s own dispatch-only pattern for a source that has not been
+# exercised in CI yet. A human runs `mode: probe` first.
+#
+# This is the SAME vendor and SAME key `fundamentals.yml` already uses for
+# DART's statement endpoint (DS002); a key subscribed to DS002 is not
+# guaranteed subscribed to DS004, which is exactly the first thing the probe
+# checks.
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "probe=필드 확인만 (아무것도 기록하지 않음) / collect=수집"
+        type: choice
+        options: ["probe", "collect"]
+        default: "probe"
+      samples:
+        description: "probe 전용 — 확인할 종목코드 목록"
+        type: string
+        default: "005930,000660,035420"
+      max_calls:
+        description: "collect 전용 — 최대 호출 수 (회사 수와 같음)"
+        type: string
+        default: "200"
+      max_minutes:
+        description: "collect 전용 — 최대 분"
+        type: string
+        default: "60"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: signal-history-dart-ownership-events
+  cancel-in-progress: false
+
+jobs:
+  probe:
+    if: inputs.mode == 'probe'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+
+      - name: Probe majorstock.json
+        env:
+          DART_API_KEY: ${{ secrets.DART }}
+        run: |
+          python scripts/probe_dart_ownership_events.py \
+            --output dart-ownership-probe.json --samples "${{ inputs.samples }}" \
+            | tee probe.log
+
+      - name: Upload the probe
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: dart-ownership-probe
+          path: |
+            dart-ownership-probe.json
+            probe.log
+          if-no-files-found: warn
+
+      - name: Summary
+        if: always()
+        run: |
+          {
+            echo '## DART ownership events probe'
+            echo
+            echo '```'
+            tail -n 120 probe.log 2>/dev/null || echo 'no probe output'
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  collect:
+    if: inputs.mode == 'collect'
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - name: Checkout code (main)
+        uses: actions/checkout@v5
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Check out signal-history branch (orphan-safe)
+        run: |
+          git config user.name "dart-ownership-events-bot"
+          git config user.email "actions@github.com"
+          mkdir -p ownership-work
+          if git ls-remote --exit-code --heads origin signal-history; then
+            git fetch origin signal-history
+            git worktree add ownership-work origin/signal-history
+            git -C ownership-work checkout -B signal-history
+          else
+            git worktree add --detach ownership-work
+            git -C ownership-work checkout --orphan signal-history
+            git -C ownership-work rm -rf . || true
+          fi
+          mkdir -p ownership-work/ledger/dart-ownership-events
+
+      - name: Collect a slice
+        env:
+          DART_API_KEY: ${{ secrets.DART }}
+        run: |
+          python scripts/collect_dart_ownership_events.py \
+            ownership-work/ledger/dart-ownership-events \
+            --max-calls "${{ inputs.max_calls || '200' }}" \
+            --max-minutes "${{ inputs.max_minutes || '60' }}" \
+            | tee collect.log
+
+      - name: Commit & push to signal-history
+        run: |
+          cd ownership-work
+          git add ledger/dart-ownership-events
+          if git diff --cached --quiet; then
+            echo "no new events"
+            exit 0
+          fi
+          git commit -m "dart-ownership-events: slice for $(date -u +%Y-%m-%d)"
+          for attempt in 1 2 3 4 5; do
+            if git push origin signal-history; then
+              exit 0
+            fi
+            echo "push rejected (attempt $attempt); rebasing onto the remote"
+            git fetch origin signal-history
+            if ! git rebase origin/signal-history; then
+              git rebase --abort || true
+              echo "could not rebase onto signal-history"
+              exit 1
+            fi
+          done
+          echo "push failed after 5 attempts"
+          exit 1
+
+      - name: Summary
+        if: always()
+        run: |
+          {
+            echo '## DART ownership events collection'
+            echo
+            echo '```'
+            tail -n 40 collect.log 2>/dev/null || echo 'no collection output'
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"

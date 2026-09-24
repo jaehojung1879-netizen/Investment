@@ -3,7 +3,7 @@
   "type": "DATA_INFORMATION_INVENTORY",
   "notes": "Read-only inventory. No future-return relationship, IC, Rank IC, Top-N return, quintile spread, or backtest was computed anywhere in this artifact. No production config (FACTOR_WEIGHTS, CHAMPION, selector, Kelly, entry, region cap, macro multiplier) was changed. Grades reflect economic rationale, independence, PIT correctness, historical reproducibility, coverage, acquirability, cost/license, and redundancy only.",
   "decisionGate": "CASE_B_DATA_BUILD_REQUIRED",
-  "decisionGateNotes": "Genuinely new, economically distinct information axes exist (KR investor flow, KR macro/regime, KR large-holdings disclosure, accounting-quality ratios, US dividend-change) but none is Grade A with zero build work required. Highest-priority action needs zero new data: run and publish the already-coded, never-executed regional-alpha-model-v1.",
+  "decisionGateNotes": "Genuinely new, economically distinct information axes exist (KR investor flow, KR macro/regime, KR large-holdings disclosure, accounting-quality ratios, US dividend-change) but none is Grade A with zero build work required. CORRECTED in alpha-research-foundation-v2 (see docs/alpha-research-foundation-v2-errata.md): regional-alpha-model-v1 was already executed 2026-09-23 and closed both regions at NO_MODEL_EVIDENCE; it is not a queued zero-new-data action and must not be re-run.",
   "thirtyOneFeatures": {
     "found": true,
     "location": "pipeline/regional_alpha_features.py:60-83 (feature_manifest), research-only module, zero production imports",
@@ -72,10 +72,9 @@
     {"field": "KRX dated universe/market-cap snapshots", "module": "krx_universe.py", "reason": "live build resolves universe dynamically from today's listing; snapshots used only inside historical replay"}
   ],
   "researchHistory": {
-    "pendingExecution": [
-      {"study": "regional-alpha-model-v1", "modules": ["regional_alpha_features.py", "regional_alpha_model.py"], "status": "designed and coded, never run, no published result", "needsNewData": false}
-    ],
+    "pendingExecution": [],
     "concluded": [
+      {"study": "regional-alpha-model-v1", "modules": ["regional_alpha_features.py", "regional_alpha_model.py"], "verdict": "EXECUTED 2026-09-23 (run 35826122755): classification {US: NO_MODEL_EVIDENCE, KR: NO_MODEL_EVIDENCE}; frozen manifest 381899 rows hash 6261031bf59e725ca58342e4f320a8ed62e5d4e797dc6f580c2d372a830543b7; report artifact uploaded to CI but never committed to docs/results/ (that omission, not non-execution, caused the original PENDING_EXECUTION mislabel)", "needsReResearch": "HISTORICAL_DISCOVERY_CLOSED_ON_EXISTING_FEATURE_SET", "correctedBy": "alpha-research-foundation-v2"},
       {"study": "four-factor-signal-attribution-audit-v1", "verdict": "none significant, all region-sign-unstable", "needsReResearch": "NEW_HYPOTHESIS_ONLY"},
       {"study": "fundamental-acceleration-discovery-v1", "verdict": "CASE_D_NO_DISCOVERY_EVIDENCE", "needsReResearch": "NEW_HYPOTHESIS_ONLY"},
       {"study": "alpha-reliability-v1", "verdict": "confidence rung separated in the wrong direction; persistence rung contains zero", "needsReResearch": "NO_on_confidence / ONLY_IF_NEW_DATA_on_persistence"},

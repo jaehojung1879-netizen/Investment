@@ -892,11 +892,13 @@
   alone would not resurrect a model that already failed acceptance; both
   causes of today's rule-based fallback are recorded separately, not
   merged into one explanation.
-- `regional-alpha-model-v1` IS FULLY CODED, PRE-REGISTERED, AND HAS NEVER
-  BEEN RUN. It needs no new data collection — the 31-feature matrix is
-  already built and PIT-safe. Finishing it is unfinished prior work, not a
-  new hypothesis, and per this repository's own discipline takes priority
-  over starting anything new that would need a data build.
+- `regional-alpha-model-v1` WAS ALREADY EXECUTED WHEN THIS BULLET WAS FIRST
+  WRITTEN, AND THE ORIGINAL CLAIM HERE THAT IT "HAS NEVER BEEN RUN" WAS
+  WRONG — corrected in `alpha-research-foundation-v2` (v2.24 below carries
+  the full correction and its evidence). It ran twice for determinism on
+  2026-09-23, closed `{"US": "NO_MODEL_EVIDENCE", "KR": "NO_MODEL_EVIDENCE"}`
+  on the frozen 31-feature matrix, and must not be run again — its one-shot
+  historical-discovery budget for both regions is spent.
 - THE ECOS FETCH LAYER IS CONFIRMED 100% DEAD CODE, AND ONE OF ITS NINE
   CONFIGURED SERIES IS A REAL, UNFIXED BUG. Grep across every `pipeline/*.py`
   file for "ecos" finds only a boolean diagnostic flag; no HTTP call to
@@ -970,12 +972,86 @@
   `kelly_portfolio.py`, `validate.py`, `build.py`). Momentum acceleration ×
   financial conditions and volume shock × quality × liquidity regime are
   both confirmed genuinely absent, not merely untested by omission.
-- THE DECISION GATE IS CASE B — DATA BUILD REQUIRED — AND THE CHEAPEST NEXT
-  ACTION NEEDS NO DATA BUILD AT ALL. Real, `HIGHLY_DISTINCT` candidate axes
-  exist (KR investor flow, KR macro, KR large-holdings, accounting-quality
-  ratios, US dividend-change), but none is Grade A end-to-end. Running and
-  publishing `regional-alpha-model-v1` — already coded, already PIT-safe —
-  is unfinished prior work and outranks starting any new data build.
+- THE DECISION GATE IS CASE B — DATA BUILD REQUIRED. Real, `HIGHLY_DISTINCT`
+  candidate axes exist (KR investor flow, KR macro, KR large-holdings,
+  accounting-quality ratios, US dividend-change), but none is Grade A
+  end-to-end. (Corrected in `alpha-research-foundation-v2`, v2.24 below: the
+  original bullet here named running `regional-alpha-model-v1` as the
+  zero-data-build first action — it had already been run and closed at
+  `NO_MODEL_EVIDENCE` when this was written, so that recommendation was
+  never actionable and must not be acted on.)
+
+## Alpha-research-foundation-v2 invariants (v2.24)
+
+- A RESEARCH LEDGER ERROR IS CORRECTED WITH ITS OWN EVIDENCE, NOT SILENTLY
+  REWRITTEN. Two bullets in the "Alpha-information-inventory invariants
+  (v2.23)" section above stated `regional-alpha-model-v1` had "never been
+  run." That was wrong, and the correction is published here rather than
+  edited into v2.23 without a trace: the study's own GitHub Actions job log
+  (run `35826122755`, job `discovery`, 2026-09-23) was read directly —
+  primary source, not the task instructions that first flagged the error —
+  and shows the frozen study executed TWICE for determinism, building a
+  381,899-row feature manifest (hash
+  `6261031bf59e725ca58342e4f320a8ed62e5d4e797dc6f580c2d372a830543b7`)
+  WITHOUT forward labels, then constructing labels and fitting independent
+  annual US/KR models (US training rows 44,456→267,171 across 2016→2026; KR
+  15,294→75,743), landing on the byte-identical classification `{"US":
+  "NO_MODEL_EVIDENCE", "KR": "NO_MODEL_EVIDENCE"}` on both runs. The 179MB
+  report artifact (`regional-alpha-model-v1-discovery-only`) was uploaded to
+  CI but never committed to `docs/results/` — that omission, not
+  non-execution, is what made the ledger read as unexecuted.
+- THE CORRECT STATUS DESCRIBES WHAT CLOSED, NOT A BLANKET CLAIM ABOUT PUBLIC
+  INFORMATION. `regional-alpha-model-v1` is `EXECUTED` /
+  `NO_MODEL_EVIDENCE` (both regions) /
+  `HISTORICAL_DISCOVERY_CLOSED_ON_EXISTING_FEATURE_SET` — closed for the
+  31-feature price/trend/risk + fundamental-level + fundamental-change
+  matrix specifically. "31 independent pieces of public information were
+  given to an ML model and it found no Alpha" overstates the result: most of
+  those 31 features are different representations of the same three
+  information families (price/trend, fundamental level, fundamental
+  change), and the study never had access to investor flow, ownership
+  behavior, accounting-quality ratios beyond profitability levels, event
+  information, or any macro interaction. The discovery phase is closed on
+  what was actually in the matrix, not on those absent axes.
+- A SPENT ONE-SHOT DISCOVERY BUDGET IS NEVER REFILLED BY RE-RUNNING THE SAME
+  MATRIX. Both regions' historical-discovery budget against this feature set
+  is spent; a future study over the SAME 31 features would be re-tuning a
+  closed result, the exact failure this repository's discipline exists to
+  prevent. A genuinely new axis (KR investor flow, KR ownership events,
+  accounting quality, a macro×feature interaction) is a different study, not
+  a retry.
+- SMALL-CAPITAL EDGE MEANS INSTITUTIONAL SCALABILITY IS NOT A REQUIREMENT,
+  AND THIS IS A DESIGN PRINCIPLE, NOT A PERFORMANCE CLAIM. `docs/alpha-
+  research-philosophy-v2.md` fixes the project's objective as finding
+  individual opportunities with a sufficiently large expected advantage
+  over their own passive benchmark to be worth the concentration risk — not
+  filling a fixed name count or a fixed regional quota. Holding fewer names,
+  holding cash when nothing clears the bar, and concentrating capital when
+  conviction is unusually high are treated as available degrees of freedom
+  precisely because this capital does not need to scale to institutional
+  size — not as a license to hold illiquid names without realistic
+  transaction-cost, slippage, capacity and liquidity-floor discipline, all
+  of which stay in force.
+- A DATA-FOUNDATION PR ADDS DERIVED FIELDS WITHOUT TOUCHING WHAT PRODUCTION
+  ALREADY EXPOSES. `pipeline/accounting_quality.py` is additive and
+  read-only with respect to `dart_derive.py`/`finnhub_derive.py`: it reuses
+  their `trailing_twelve_months`/`level_amount`/`amount`/`carried_shares`
+  primitives rather than re-deriving TTM or column semantics a second time,
+  and produces a SEPARATE `ACCOUNTING_QUALITY_V1` field set
+  (`ocfToNetIncomePct`, `fcfToNetIncomePct`, `assetGrowthPct`,
+  `debtGrowthPct`, `capexIntensityPct`, `shareCountChangePct`) that no
+  production path reads. Measured against the real sealed store (126 KR
+  tickers / 3,965 rows 2015-2026; 779 US tickers / 30,999 rows 2011-2026,
+  pulled from the `signal-history` branch): KR `assetGrowthPct`/
+  `debtGrowthPct`/`shareCountChangePct` coverage is 96-97%, but KR
+  `capexIntensityPct` is only 7.74% and `fcfToNetIncomePct` only 4.31% —
+  Korean filers omit `유형자산의취득` (capex) far more often than US filers
+  omit their capex chain (US: 83.03% and 87.00% respectively) — while KR
+  `ocfToNetIncomePct` (52.36%) trails US (97.39%) by a wide margin.
+  Receivables growth, inventory growth, and any working-capital metric stay
+  `NOT_FEASIBLE_DATA_MISSING`: no such line item exists in
+  `dart_fundamentals.WANTED_ACCOUNTS` or `finnhub_derive`'s account chains,
+  confirmed by reading them, not assumed.
 
 ## Lint gate invariants (v2.11)
 

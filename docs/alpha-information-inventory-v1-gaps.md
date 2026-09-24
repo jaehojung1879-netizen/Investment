@@ -197,8 +197,11 @@ lift than the derivation-only items.
 | Historical sector classification | NICE_TO_HAVE | No dated source found | E | Not currently closable |
 | Market microstructure (true tick/bid-ask) | NON_BLOCKING | No source exists; not needed for any current candidate | E | Not applicable to the current research horizon |
 
-None of the STRUCTURAL gaps above require new collection code before a
-non-data-dependent action: **the highest-priority item in this whole
-inventory needs no new data at all** — `regional-alpha-model-v1`'s 31-feature
-research matrix is fully built, PIT-safe, and has never been run. See the
-executive report's recommendation ordering.
+**CORRECTED (v2):** `regional-alpha-model-v1` was already executed on
+2026-09-23 and closed both regions at `NO_MODEL_EVIDENCE` — it is not, and
+was never, a gap-free "run this first" action; that claim in the original
+version of this document was a factual error (see
+`docs/alpha-research-foundation-v2-errata.md`). The STRUCTURAL gaps in the
+table above are the real remaining blockers; none of them is closed by
+re-running the existing 31-feature matrix, whose one-shot discovery budget
+for both regions is spent.

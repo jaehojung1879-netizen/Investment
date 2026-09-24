@@ -8,12 +8,14 @@
 > `READY_TO_PREREGISTER`, `DATA_BUILD_FIRST`, `NOT_FEASIBLE`,
 > `ALREADY_TESTED`, `NEEDS_PAID_DATA`.
 
-Before any of these: the research map's §1 names one item that requires
-**zero new data and zero new judgment calls about candidates** —
-`regional-alpha-model-v1` is fully designed and coded against the 31-feature
-PIT-safe research matrix, and has simply never been run. Finishing it is not
-one of the five hypotheses below because it is not a new hypothesis; it is
-existing, unexecuted work. See the executive report's recommendation.
+**CORRECTED (v2):** the paragraph below, as originally written, named
+`regional-alpha-model-v1` as unexecuted, zero-new-data first work. That was
+a factual error — it was executed on 2026-09-23 and closed both regions at
+`NO_MODEL_EVIDENCE` (see `docs/alpha-research-foundation-v2-errata.md`). It
+is a concluded, closed study, not a queued action, and none of the five
+hypotheses below re-uses its spent historical-discovery budget: each is
+either a different construction over existing data (H1, H2, H5) or a
+genuinely new information axis this matrix never had (H3, H4).
 
 ---
 
