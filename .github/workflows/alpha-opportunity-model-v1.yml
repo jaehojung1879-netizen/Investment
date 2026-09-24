@@ -1,0 +1,81 @@
+name: Alpha opportunity model v1
+
+on:
+  workflow_dispatch:
+    inputs:
+      sealed_sha256:
+        description: Reviewed canonical spec SHA-256 (must match the merged seal)
+        required: true
+        type: string
+      preregistration_reviewed:
+        description: Merged preregistration reviewed; all non-outcome blockers resolved in a new version
+        required: true
+        default: false
+        type: boolean
+
+permissions:
+  contents: read
+
+concurrency:
+  group: alpha-opportunity-model-v1
+  cancel-in-progress: false
+
+jobs:
+  research:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    env:
+      REVIEWED_SEAL: ${{ inputs.sealed_sha256 }}
+      REVIEW_ACK: ${{ inputs.preregistration_reviewed }}
+      OMP_NUM_THREADS: '1'
+      OPENBLAS_NUM_THREADS: '1'
+      MKL_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+          cache: pip
+      # Standard-library-only guard before dependencies or historical data.
+      - name: Validate reviewed seal and fail closed on unresolved design
+        run: |
+          python - <<'PY'
+          import os
+          from pipeline.alpha_opportunity_spec import load_sealed, require_execution
+          spec, _ = load_sealed(expected_hash=os.environ['REVIEWED_SEAL'])
+          require_execution(spec, reviewed=os.environ['REVIEW_ACK'] == 'true',
+                            branch=os.environ['GITHUB_REF'], prerequisites={'sealed': True})
+          PY
+      - name: Install pinned research dependencies
+        run: pip install -r requirements.txt -r requirements-dev.txt
+      - name: Synthetic tests and contract checks
+        run: |
+          ruff check .
+          python -m compileall -q pipeline scripts
+          python -m pytest -q tests/test_alpha_opportunity.py
+      - uses: actions/checkout@v5
+        with:
+          ref: 4ea107ed0cde289f0a049a65ff13d2441a786710
+          path: research-inputs
+          sparse-checkout: |
+            ledger/replay-inputs
+            ledger/historical/replay-v16/inputs.json
+            ledger/fundamentals
+            ledger/universe/kr
+            ledger/dart-ownership-events
+          sparse-checkout-cone-mode: false
+      - name: Execute only the sealed contract
+        run: |
+          python scripts/run_alpha_opportunity_model.py \
+            --sealed-sha256 "$REVIEWED_SEAL" --execute --reviewed \
+            --input-root research-inputs \
+            --us-membership research_specs/alpha-opportunity-model-v1-us-membership.json.gz \
+            --output "$RUNNER_TEMP/alpha-opportunity-model-v1-results"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: alpha-opportunity-model-v1-results
+          path: ${{ runner.temp }}/alpha-opportunity-model-v1-results
+          if-no-files-found: error

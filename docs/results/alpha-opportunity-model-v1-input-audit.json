@@ -1,0 +1,122 @@
+{
+  "studyId": "alpha-opportunity-model-v1",
+  "phase": "INPUT_ONLY",
+  "historicalOutcomesComputed": false,
+  "historicalModelsTrained": false,
+  "mainCommit": "9f5fbd38d9744df7cf09e77cb6ca2410766ad11d",
+  "signalHistoryCommit": "4ea107ed0cde289f0a049a65ff13d2441a786710",
+  "regionalAlpha": {
+    "status": "EXECUTED_AND_CLOSED_EXISTING_31_FEATURE_SCOPE",
+    "verifiedRun": 35826122755,
+    "verifiedJob": 107068116226,
+    "manifestSha256": "6261031bf59e725ca58342e4f320a8ed62e5d4e797dc6f580c2d372a830543b7"
+  },
+  "replay": {
+    "version": "replay-v16",
+    "verifiedRun": 35980991319,
+    "verifiedJob": 107572568277,
+    "mode": "FROZEN_INCREMENTAL",
+    "scheduleDeterminism": "SCHEDULE_STABLE",
+    "crossSectionDeterminism": "SCHEDULE_STABLE",
+    "freshFullDoubleReplayExecuted": false,
+    "limitation": "actual latest Actions verifies frozen prefix reproduction; no additional replay run in this PR",
+    "cutoff": "2026-09-14"
+  },
+  "dartOwnershipManifest": {
+    "apiErrors": 0,
+    "apiRefusals": 0,
+    "companiesQueried": 254,
+    "companiesRemaining": 0,
+    "contract": "DART_OWNERSHIP_EVENTS_RAW_V2",
+    "currentUniverseIssuerCount": 116,
+    "currentUniverseSecurityCount": 119,
+    "dartUnavailableOrNoRecords": 26,
+    "earliestObservedEventDate": "2024-09-24",
+    "endpointSemantics": {
+      "endpoint": "majorstock.json",
+      "noRowsMeaning": "NO_ROWS_RETURNED_BY_BOUNDED_ENDPOINT_NOT_PROOF_OF_NO_HISTORICAL_FILINGS",
+      "pitAvailabilityField": "availableFrom",
+      "pitAvailabilityRule": "DART_RECEIPT_DATE_NOT_TRANSACTION_OR_REFERENCE_DATE",
+      "requestDateBoundsSupported": false
+    },
+    "eventCount": 2496,
+    "historicalOnlyIssuerCount": 138,
+    "historicalOnlySecurityCount": 141,
+    "historicalUniverseIssuerCount": 254,
+    "historicalUniverseSecurityCount": 260,
+    "latestObservedEventDate": "2026-09-23",
+    "schemaVersion": 2,
+    "shardCoverage": [
+      "2024",
+      "2025",
+      "2026"
+    ],
+    "successfullyMappedDartCorpCodes": 254,
+    "successfullyQueriedCompanies": 254,
+    "thisRun": {
+      "apiErrors": 0,
+      "apiRefusals": 0,
+      "calls": 54,
+      "eventsObserved": 563,
+      "refused": 0,
+      "shardsChanged": 3,
+      "stopReason": "WORK_LIST_EXHAUSTED"
+    },
+    "unresolvedIdentityCount": 6,
+    "updatedAt": "2026-09-24T10:42:33Z"
+  },
+  "strictKrAccountingAudit": {
+    "denominator": "raw filing observations <= 2026-09-14; latest visible report, strict raw receipt filter; NOT PIT universe name-dates",
+    "rows": 4373,
+    "fieldCounts": {
+      "ocfToNetIncomePct": 1873,
+      "fcfToNetIncomePct": 167,
+      "assetGrowthPct": 3853,
+      "debtGrowthPct": 3850,
+      "capexIntensityPct": 305,
+      "shareCountChangePct": 0
+    },
+    "shareRows": 3721,
+    "shareRowsWithAvailability": 0
+  },
+  "inheritedAccountingCoverage": {
+    "data": {
+      "KR": {
+        "tickers": 126,
+        "rows": 3965,
+        "period": "2015-2026",
+        "ocfToNetIncomePct": 52.36,
+        "fcfToNetIncomePct": 4.31,
+        "assetGrowthPct": 97.07,
+        "debtGrowthPct": 97.0,
+        "capexIntensityPct": 7.74,
+        "shareCountChangePct": 96.57
+      },
+      "US": {
+        "tickers": 779,
+        "rows": 30999,
+        "period": "2011-2026",
+        "ocfToNetIncomePct": 97.39,
+        "fcfToNetIncomePct": 87.0,
+        "assetGrowthPct": 96.39,
+        "debtGrowthPct": 96.08,
+        "capexIntensityPct": 83.03,
+        "shareCountChangePct": 78.7
+      }
+    },
+    "denominator": "derived filing rows, NOT all PIT universe name-dates",
+    "authority": "docs/results/alpha-data-foundation-v2.json",
+    "notRecomputedUS": true
+  },
+  "fullPitUniverseAnnualCoverage": {
+    "status": "UNVERIFIED",
+    "blocksOutcomeExecution": true
+  },
+  "exclusions": {
+    "krShares": "all3721 raw records lack availableFrom; cannot inherit unrelated receipt dates",
+    "macro": "BLOCKED_MACRO_PIT",
+    "dividends": "precision unresolved even for event categories",
+    "cashTurnover": "total-return Close cannot prove traded cash value"
+  },
+  "closedStudyReruns": []
+}

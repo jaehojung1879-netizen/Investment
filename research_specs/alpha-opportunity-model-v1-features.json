@@ -1,0 +1,704 @@
+{
+  "schemaVersion": 1,
+  "studyId": "alpha-opportunity-model-v1",
+  "features": [
+    {
+      "name": "relative126",
+      "region": "US",
+      "family": "PRICE_LEADERSHIP",
+      "status": "PRIMARY",
+      "horizons": [
+        21,
+        126
+      ],
+      "rawFields": [
+        "replay price/* Close",
+        "replay price/* regional benchmark Close"
+      ],
+      "definition": "Close[t]/Close[t-126] - benchmarkClose[t]/benchmarkClose[t-126]",
+      "transformation": "train date-weighted median/IQR; already-log shock not logged again",
+      "pitAvailability": "regional sessions <= signal date; known after close; missing sessions reindexed without filling",
+      "coverage": {
+        "source": "replay-v16",
+        "period": "2013-01-01..2026-09-14",
+        "universeDateCoverage": null
+      },
+      "missingRule": "train weighted median plus binary missing indicator; nonfinite -> missing; entirely missing training feature omitted and logged for this fold only",
+      "allowedModels": [
+        "LINEAR",
+        "SHALLOW_CHALLENGER"
+      ],
+      "provenance": "sealed source blob identities plus per-row informationTimestamp, membershipDate and accountingProvenance"
+    },
+    {
+      "name": "acceleration21",
+      "region": "US",
+      "family": "PRICE_LEADERSHIP",
+      "status": "PRIMARY",
+      "horizons": [
+        21,
+        126
+      ],
+      "rawFields": [
+        "replay price/* Close"
+      ],
+      "definition": "Close[t]/Close[t-21] - Close[t-21]/Close[t-42]",
+      "transformation": "train date-weighted median/IQR; already-log shock not logged again",
+      "pitAvailability": "regional sessions <= signal date; known after close; missing sessions reindexed without filling",
+      "coverage": {
+        "source": "replay-v16",
+        "period": "2013-01-01..2026-09-14",
+        "universeDateCoverage": null
+      },
+      "missingRule": "train weighted median plus binary missing indicator; nonfinite -> missing; entirely missing training feature omitted and logged for this fold only",
+      "allowedModels": [
+        "LINEAR",
+        "SHALLOW_CHALLENGER"
+      ],
+      "provenance": "sealed source blob identities plus per-row informationTimestamp, membershipDate and accountingProvenance"
+    },
+    {
+      "name": "vol63",
+      "region": "US",
+      "family": "PRICE_LEADERSHIP",
+      "status": "PRIMARY",
+      "horizons": [
+        21,
+        126
+      ],
+      "rawFields": [
+        "replay price/* Close"
+      ],
+      "definition": "sample_std(last 63 one-session Close returns, ddof=1)*sqrt(252)",
+      "transformation": "train date-weighted median/IQR; already-log shock not logged again",
+      "pitAvailability": "regional sessions <= signal date; known after close; missing sessions reindexed without filling",
+      "coverage": {
+        "source": "replay-v16",
+        "period": "2013-01-01..2026-09-14",
+        "universeDateCoverage": null
+      },
+      "missingRule": "train weighted median plus binary missing indicator; nonfinite -> missing; entirely missing training feature omitted and logged for this fold only",
+      "allowedModels": [
+        "LINEAR",
+        "SHALLOW_CHALLENGER"
+      ],
+      "provenance": "sealed source blob identities plus per-row informationTimestamp, membershipDate and accountingProvenance"
+    },
+    {
+      "name": "logVolumeShock60",
+      "region": "US",
+      "family": "LIQUIDITY_ATTENTION",
+      "status": "PRIMARY",
+      "horizons": [
+        21,
+        126
+      ],
+      "rawFields": [
+        "replay price/* Volume"
+      ],
+      "definition": "log(Volume[t]/mean(Volume[t-59:t])); all 60 sessions required",
+      "transformation": "train date-weighted median/IQR; already-log shock not logged again",
+      "pitAvailability": "regional sessions <= signal date; known after close; missing sessions reindexed without filling",
+      "coverage": {
+        "source": "replay-v16",
+        "period": "2013-01-01..2026-09-14",
+        "universeDateCoverage": null
+      },
+      "missingRule": "train weighted median plus binary missing indicator; nonfinite -> missing; entirely missing training feature omitted and logged for this fold only",
+      "allowedModels": [
+        "LINEAR",
+        "SHALLOW_CHALLENGER"
+      ],
+      "provenance": "sealed source blob identities plus per-row informationTimestamp, membershipDate and accountingProvenance"
+    },
+    {
+      "name": "shockPersistence5d",
+      "region": "US",
+      "family": "LIQUIDITY_ATTENTION",
+      "status": "PRIMARY",
+      "horizons": [
+        21,
+        126
+      ],
+      "rawFields": [
+        "replay price/* Volume"
+      ],
+      "definition": "count(last 5 logVolumeShock60 > 1.0); all 5 required",
+      "transformation": "train date-weighted median/IQR; already-log shock not logged again",
+      "pitAvailability": "regional sessions <= signal date; known after close; missing sessions reindexed without filling",
+      "coverage": {
+        "source": "replay-v16",
+        "period": "2013-01-01..2026-09-14",
+        "universeDateCoverage": null
+      },
+      "missingRule": "train weighted median plus binary missing indicator; nonfinite -> missing; entirely missing training feature omitted and logged for this fold only",
+      "allowedModels": [
+        "LINEAR",
+        "SHALLOW_CHALLENGER"
+      ],
+      "provenance": "sealed source blob identities plus per-row informationTimestamp, membershipDate and accountingProvenance"
+    },
+    {
+      "name": "volumePriceAlignment",
+      "region": "US",
+      "family": "LIQUIDITY_ATTENTION",
+      "status": "PRIMARY",
+      "horizons": [
+        21,
+        126
+      ],
+      "rawFields": [
+        "replay price/* Volume",
+        "replay price/* Close"
+      ],
+      "definition": "logVolumeShock60[t]*sign(Close[t]-Close[t-1])",
+      "transformation": "train date-weighted median/IQR; already-log shock not logged again",
+      "pitAvailability": "regional sessions <= signal date; known after close; missing sessions reindexed without filling",
+      "coverage": {
+        "source": "replay-v16",
+        "period": "2013-01-01..2026-09-14",
+        "universeDateCoverage": null
+      },
+      "missingRule": "train weighted median plus binary missing indicator; nonfinite -> missing; entirely missing training feature omitted and logged for this fold only",
+      "allowedModels": [
+        "LINEAR",
+        "SHALLOW_CHALLENGER"
+      ],
+      "provenance": "sealed source blob identities plus per-row informationTimestamp, membershipDate and accountingProvenance"
+    },
+    {
+      "name": "ocfToNetIncomePct",
+      "region": "US",
+      "family": "ACCOUNTING_QUALITY",
+      "status": "PRIMARY",
+      "horizons": [
+        126
+      ],
+      "rawFields": [
+        "finnhub report.cf operatingCashFlow / DART 영업활동현금흐름",
+        "finnhub report.ic netIncome / DART 당기순이익"
+      ],
+      "definition": "100*TTM operating cash flow/TTM net income; nonzero denominator",
+      "transformation": "signed_log1p then train date-weighted median/IQR",
+      "pitAvailability": "public date strictly before signal date; filter raw before any TTM/index derivation; KR consistent receipt dates required",
+      "coverage": {
+        "source": "docs/results/alpha-data-foundation-v2.json",
+        "denominator": "derived filing rows, NOT PIT universe name-dates",
+        "period": "2011-2026",
+        "reportedPct": 97.39
+      },
+      "missingRule": "train weighted median plus binary missing indicator; nonfinite -> missing; entirely missing training feature omitted and logged for this fold only",
+      "allowedModels": [
+        "LINEAR",
+        "SHALLOW_CHALLENGER"
+      ],
+      "provenance": "sealed source blob identities plus per-row informationTimestamp, membershipDate and accountingProvenance"
+    },
+    {
+      "name": "assetGrowthPct",
+      "region": "US",
+      "family": "ACCOUNTING_QUALITY",
+      "status": "PRIMARY",
+      "horizons": [
+        126
+      ],
+      "rawFields": [
+        "finnhub report.bs ASSETS / DART 자산총계"
+      ],
+      "definition": "100*(total assets/prior same-stage total assets - 1); positive prior",
+      "transformation": "signed_log1p then train date-weighted median/IQR",
+      "pitAvailability": "public date strictly before signal date; filter raw before any TTM/index derivation; KR consistent receipt dates required",
+      "coverage": {
+        "source": "docs/results/alpha-data-foundation-v2.json",
+        "denominator": "derived filing rows, NOT PIT universe name-dates",
+        "period": "2011-2026",
+        "reportedPct": 96.39
+      },
+      "missingRule": "train weighted median plus binary missing indicator; nonfinite -> missing; entirely missing training feature omitted and logged for this fold only",
+      "allowedModels": [
+        "LINEAR",
+        "SHALLOW_CHALLENGER"
+      ],
+      "provenance": "sealed source blob identities plus per-row informationTimestamp, membershipDate and accountingProvenance"
+    },
+    {
+      "name": "debtGrowthPct",
+      "region": "US",
+      "family": "ACCOUNTING_QUALITY",
+      "status": "PRIMARY",
+      "horizons": [
+        126
+      ],
+      "rawFields": [
+        "finnhub report.bs total_liabilities / DART 부채총계"
+      ],
+      "definition": "100*(total liabilities/prior same-stage total liabilities - 1); positive prior; NOT interest-bearing debt alone",
+      "transformation": "signed_log1p then train date-weighted median/IQR",
+      "pitAvailability": "public date strictly before signal date; filter raw before any TTM/index derivation; KR consistent receipt dates required",
+      "coverage": {
+        "source": "docs/results/alpha-data-foundation-v2.json",
+        "denominator": "derived filing rows, NOT PIT universe name-dates",
+        "period": "2011-2026",
+        "reportedPct": 96.08
+      },
+      "missingRule": "train weighted median plus binary missing indicator; nonfinite -> missing; entirely missing training feature omitted and logged for this fold only",
+      "allowedModels": [
+        "LINEAR",
+        "SHALLOW_CHALLENGER"
+      ],
+      "provenance": "sealed source blob identities plus per-row informationTimestamp, membershipDate and accountingProvenance"
+    },
+    {
+      "name": "capexIntensityPct",
+      "region": "US",
+      "family": "ACCOUNTING_QUALITY",
+      "status": "PRIMARY",
+      "horizons": [
+        126
+      ],
+      "rawFields": [
+        "finnhub report.cf capex",
+        "finnhub report.ic revenue"
+      ],
+      "definition": "100*TTM capex/TTM revenue; retain upstream sign; nonzero denominator",
+      "transformation": "signed_log1p then train date-weighted median/IQR",
+      "pitAvailability": "public date strictly before signal date; filter raw before any TTM/index derivation; KR consistent receipt dates required",
+      "coverage": {
+        "source": "docs/results/alpha-data-foundation-v2.json",
+        "denominator": "derived filing rows, NOT PIT universe name-dates",
+        "period": "2011-2026",
+        "reportedPct": 83.03
+      },
+      "missingRule": "train weighted median plus binary missing indicator; nonfinite -> missing; entirely missing training feature omitted and logged for this fold only",
+      "allowedModels": [
+        "LINEAR",
+        "SHALLOW_CHALLENGER"
+      ],
+      "provenance": "sealed source blob identities plus per-row informationTimestamp, membershipDate and accountingProvenance"
+    },
+    {
+      "name": "shareCountChangePct",
+      "region": "US",
+      "family": "ACCOUNTING_QUALITY",
+      "status": "PRIMARY",
+      "horizons": [
+        126
+      ],
+      "rawFields": [
+        "finnhub report.bs/cf shares via finnhub_derive.share_count"
+      ],
+      "definition": "100*(reported shares/prior same-stage reported shares - 1); positive prior",
+      "transformation": "signed_log1p then train date-weighted median/IQR",
+      "pitAvailability": "public date strictly before signal date; filter raw before any TTM/index derivation; KR consistent receipt dates required",
+      "coverage": {
+        "source": "docs/results/alpha-data-foundation-v2.json",
+        "denominator": "derived filing rows, NOT PIT universe name-dates",
+        "period": "2011-2026",
+        "reportedPct": 78.7
+      },
+      "missingRule": "train weighted median plus binary missing indicator; nonfinite -> missing; entirely missing training feature omitted and logged for this fold only",
+      "allowedModels": [
+        "LINEAR",
+        "SHALLOW_CHALLENGER"
+      ],
+      "provenance": "sealed source blob identities plus per-row informationTimestamp, membershipDate and accountingProvenance"
+    },
+    {
+      "name": "relative126",
+      "region": "KR",
+      "family": "PRICE_LEADERSHIP",
+      "status": "PRIMARY",
+      "horizons": [
+        21,
+        126
+      ],
+      "rawFields": [
+        "replay price/* Close",
+        "replay price/* regional benchmark Close"
+      ],
+      "definition": "Close[t]/Close[t-126] - benchmarkClose[t]/benchmarkClose[t-126]",
+      "transformation": "train date-weighted median/IQR; already-log shock not logged again",
+      "pitAvailability": "regional sessions <= signal date; known after close; missing sessions reindexed without filling",
+      "coverage": {
+        "source": "replay-v16",
+        "period": "2013-01-01..2026-09-14",
+        "universeDateCoverage": null
+      },
+      "missingRule": "train weighted median plus binary missing indicator; nonfinite -> missing; entirely missing training feature omitted and logged for this fold only",
+      "allowedModels": [
+        "LINEAR",
+        "SHALLOW_CHALLENGER"
+      ],
+      "provenance": "sealed source blob identities plus per-row informationTimestamp, membershipDate and accountingProvenance"
+    },
+    {
+      "name": "acceleration21",
+      "region": "KR",
+      "family": "PRICE_LEADERSHIP",
+      "status": "PRIMARY",
+      "horizons": [
+        21,
+        126
+      ],
+      "rawFields": [
+        "replay price/* Close"
+      ],
+      "definition": "Close[t]/Close[t-21] - Close[t-21]/Close[t-42]",
+      "transformation": "train date-weighted median/IQR; already-log shock not logged again",
+      "pitAvailability": "regional sessions <= signal date; known after close; missing sessions reindexed without filling",
+      "coverage": {
+        "source": "replay-v16",
+        "period": "2013-01-01..2026-09-14",
+        "universeDateCoverage": null
+      },
+      "missingRule": "train weighted median plus binary missing indicator; nonfinite -> missing; entirely missing training feature omitted and logged for this fold only",
+      "allowedModels": [
+        "LINEAR",
+        "SHALLOW_CHALLENGER"
+      ],
+      "provenance": "sealed source blob identities plus per-row informationTimestamp, membershipDate and accountingProvenance"
+    },
+    {
+      "name": "vol63",
+      "region": "KR",
+      "family": "PRICE_LEADERSHIP",
+      "status": "PRIMARY",
+      "horizons": [
+        21,
+        126
+      ],
+      "rawFields": [
+        "replay price/* Close"
+      ],
+      "definition": "sample_std(last 63 one-session Close returns, ddof=1)*sqrt(252)",
+      "transformation": "train date-weighted median/IQR; already-log shock not logged again",
+      "pitAvailability": "regional sessions <= signal date; known after close; missing sessions reindexed without filling",
+      "coverage": {
+        "source": "replay-v16",
+        "period": "2013-01-01..2026-09-14",
+        "universeDateCoverage": null
+      },
+      "missingRule": "train weighted median plus binary missing indicator; nonfinite -> missing; entirely missing training feature omitted and logged for this fold only",
+      "allowedModels": [
+        "LINEAR",
+        "SHALLOW_CHALLENGER"
+      ],
+      "provenance": "sealed source blob identities plus per-row informationTimestamp, membershipDate and accountingProvenance"
+    },
+    {
+      "name": "logVolumeShock60",
+      "region": "KR",
+      "family": "LIQUIDITY_ATTENTION",
+      "status": "PRIMARY",
+      "horizons": [
+        21,
+        126
+      ],
+      "rawFields": [
+        "replay price/* Volume"
+      ],
+      "definition": "log(Volume[t]/mean(Volume[t-59:t])); all 60 sessions required",
+      "transformation": "train date-weighted median/IQR; already-log shock not logged again",
+      "pitAvailability": "regional sessions <= signal date; known after close; missing sessions reindexed without filling",
+      "coverage": {
+        "source": "replay-v16",
+        "period": "2013-01-01..2026-09-14",
+        "universeDateCoverage": null
+      },
+      "missingRule": "train weighted median plus binary missing indicator; nonfinite -> missing; entirely missing training feature omitted and logged for this fold only",
+      "allowedModels": [
+        "LINEAR",
+        "SHALLOW_CHALLENGER"
+      ],
+      "provenance": "sealed source blob identities plus per-row informationTimestamp, membershipDate and accountingProvenance"
+    },
+    {
+      "name": "shockPersistence5d",
+      "region": "KR",
+      "family": "LIQUIDITY_ATTENTION",
+      "status": "PRIMARY",
+      "horizons": [
+        21,
+        126
+      ],
+      "rawFields": [
+        "replay price/* Volume"
+      ],
+      "definition": "count(last 5 logVolumeShock60 > 1.0); all 5 required",
+      "transformation": "train date-weighted median/IQR; already-log shock not logged again",
+      "pitAvailability": "regional sessions <= signal date; known after close; missing sessions reindexed without filling",
+      "coverage": {
+        "source": "replay-v16",
+        "period": "2013-01-01..2026-09-14",
+        "universeDateCoverage": null
+      },
+      "missingRule": "train weighted median plus binary missing indicator; nonfinite -> missing; entirely missing training feature omitted and logged for this fold only",
+      "allowedModels": [
+        "LINEAR",
+        "SHALLOW_CHALLENGER"
+      ],
+      "provenance": "sealed source blob identities plus per-row informationTimestamp, membershipDate and accountingProvenance"
+    },
+    {
+      "name": "volumePriceAlignment",
+      "region": "KR",
+      "family": "LIQUIDITY_ATTENTION",
+      "status": "PRIMARY",
+      "horizons": [
+        21,
+        126
+      ],
+      "rawFields": [
+        "replay price/* Volume",
+        "replay price/* Close"
+      ],
+      "definition": "logVolumeShock60[t]*sign(Close[t]-Close[t-1])",
+      "transformation": "train date-weighted median/IQR; already-log shock not logged again",
+      "pitAvailability": "regional sessions <= signal date; known after close; missing sessions reindexed without filling",
+      "coverage": {
+        "source": "replay-v16",
+        "period": "2013-01-01..2026-09-14",
+        "universeDateCoverage": null
+      },
+      "missingRule": "train weighted median plus binary missing indicator; nonfinite -> missing; entirely missing training feature omitted and logged for this fold only",
+      "allowedModels": [
+        "LINEAR",
+        "SHALLOW_CHALLENGER"
+      ],
+      "provenance": "sealed source blob identities plus per-row informationTimestamp, membershipDate and accountingProvenance"
+    },
+    {
+      "name": "ocfToNetIncomePct",
+      "region": "KR",
+      "family": "ACCOUNTING_QUALITY",
+      "status": "PRIMARY",
+      "horizons": [
+        126
+      ],
+      "rawFields": [
+        "finnhub report.cf operatingCashFlow / DART 영업활동현금흐름",
+        "finnhub report.ic netIncome / DART 당기순이익"
+      ],
+      "definition": "100*TTM operating cash flow/TTM net income; nonzero denominator",
+      "transformation": "signed_log1p then train date-weighted median/IQR",
+      "pitAvailability": "public date strictly before signal date; filter raw before any TTM/index derivation; KR consistent receipt dates required",
+      "coverage": {
+        "source": "docs/results/alpha-data-foundation-v2.json",
+        "denominator": "derived filing rows, NOT PIT universe name-dates",
+        "period": "2015-2026",
+        "reportedPct": 52.36,
+        "strictRawAudit": {
+          "observed": 1873,
+          "rows": 4373,
+          "denominator": "raw filing observations <= 2026-09-14; latest visible report, strict raw receipt filter; NOT PIT universe name-dates"
+        }
+      },
+      "missingRule": "train weighted median plus binary missing indicator; nonfinite -> missing; entirely missing training feature omitted and logged for this fold only",
+      "allowedModels": [
+        "LINEAR",
+        "SHALLOW_CHALLENGER"
+      ],
+      "provenance": "sealed source blob identities plus per-row informationTimestamp, membershipDate and accountingProvenance"
+    },
+    {
+      "name": "assetGrowthPct",
+      "region": "KR",
+      "family": "ACCOUNTING_QUALITY",
+      "status": "PRIMARY",
+      "horizons": [
+        126
+      ],
+      "rawFields": [
+        "finnhub report.bs ASSETS / DART 자산총계"
+      ],
+      "definition": "100*(total assets/prior same-stage total assets - 1); positive prior",
+      "transformation": "signed_log1p then train date-weighted median/IQR",
+      "pitAvailability": "public date strictly before signal date; filter raw before any TTM/index derivation; KR consistent receipt dates required",
+      "coverage": {
+        "source": "docs/results/alpha-data-foundation-v2.json",
+        "denominator": "derived filing rows, NOT PIT universe name-dates",
+        "period": "2015-2026",
+        "reportedPct": 97.07,
+        "strictRawAudit": {
+          "observed": 3853,
+          "rows": 4373,
+          "denominator": "raw filing observations <= 2026-09-14; latest visible report, strict raw receipt filter; NOT PIT universe name-dates"
+        }
+      },
+      "missingRule": "train weighted median plus binary missing indicator; nonfinite -> missing; entirely missing training feature omitted and logged for this fold only",
+      "allowedModels": [
+        "LINEAR",
+        "SHALLOW_CHALLENGER"
+      ],
+      "provenance": "sealed source blob identities plus per-row informationTimestamp, membershipDate and accountingProvenance"
+    },
+    {
+      "name": "debtGrowthPct",
+      "region": "KR",
+      "family": "ACCOUNTING_QUALITY",
+      "status": "PRIMARY",
+      "horizons": [
+        126
+      ],
+      "rawFields": [
+        "finnhub report.bs total_liabilities / DART 부채총계"
+      ],
+      "definition": "100*(total liabilities/prior same-stage total liabilities - 1); positive prior; NOT interest-bearing debt alone",
+      "transformation": "signed_log1p then train date-weighted median/IQR",
+      "pitAvailability": "public date strictly before signal date; filter raw before any TTM/index derivation; KR consistent receipt dates required",
+      "coverage": {
+        "source": "docs/results/alpha-data-foundation-v2.json",
+        "denominator": "derived filing rows, NOT PIT universe name-dates",
+        "period": "2015-2026",
+        "reportedPct": 97.0,
+        "strictRawAudit": {
+          "observed": 3850,
+          "rows": 4373,
+          "denominator": "raw filing observations <= 2026-09-14; latest visible report, strict raw receipt filter; NOT PIT universe name-dates"
+        }
+      },
+      "missingRule": "train weighted median plus binary missing indicator; nonfinite -> missing; entirely missing training feature omitted and logged for this fold only",
+      "allowedModels": [
+        "LINEAR",
+        "SHALLOW_CHALLENGER"
+      ],
+      "provenance": "sealed source blob identities plus per-row informationTimestamp, membershipDate and accountingProvenance"
+    }
+  ],
+  "excluded": [
+    {
+      "region": "US",
+      "name": "fcfToNetIncomePct",
+      "reason": "REDUNDANT_OCF_CAPEX"
+    },
+    {
+      "region": "US",
+      "name": "receivablesGrowth",
+      "reason": "RAW_FIELDS_ABSENT"
+    },
+    {
+      "region": "US",
+      "name": "inventoryGrowth",
+      "reason": "RAW_FIELDS_ABSENT"
+    },
+    {
+      "region": "US",
+      "name": "workingCapital",
+      "reason": "RAW_FIELDS_ABSENT"
+    },
+    {
+      "region": "US",
+      "name": "dollarVolume",
+      "reason": "TOTAL_RETURN_CLOSE_NOT_TRADED_CASH_PRICE"
+    },
+    {
+      "region": "US",
+      "name": "amihudIlliquidity20",
+      "reason": "TOTAL_RETURN_CLOSE_NOT_TRADED_CASH_PRICE"
+    },
+    {
+      "region": "US",
+      "name": "macro",
+      "reason": "BLOCKED_MACRO_PIT"
+    },
+    {
+      "region": "US",
+      "name": "dividendMagnitude",
+      "reason": "UPSTREAM_PRECISION_UNPROVEN"
+    },
+    {
+      "region": "US",
+      "name": "sector",
+      "reason": "HISTORICAL_SECTOR_UNRESOLVED"
+    },
+    {
+      "region": "KR",
+      "name": "fcfToNetIncomePct",
+      "reason": "EXTREMELY_SPARSE"
+    },
+    {
+      "region": "KR",
+      "name": "receivablesGrowth",
+      "reason": "RAW_FIELDS_ABSENT"
+    },
+    {
+      "region": "KR",
+      "name": "inventoryGrowth",
+      "reason": "RAW_FIELDS_ABSENT"
+    },
+    {
+      "region": "KR",
+      "name": "workingCapital",
+      "reason": "RAW_FIELDS_ABSENT"
+    },
+    {
+      "region": "KR",
+      "name": "dollarVolume",
+      "reason": "TOTAL_RETURN_CLOSE_NOT_TRADED_CASH_PRICE"
+    },
+    {
+      "region": "KR",
+      "name": "amihudIlliquidity20",
+      "reason": "TOTAL_RETURN_CLOSE_NOT_TRADED_CASH_PRICE"
+    },
+    {
+      "region": "KR",
+      "name": "macro",
+      "reason": "BLOCKED_MACRO_PIT"
+    },
+    {
+      "region": "KR",
+      "name": "dividendMagnitude",
+      "reason": "UPSTREAM_PRECISION_UNPROVEN"
+    },
+    {
+      "region": "KR",
+      "name": "sector",
+      "reason": "HISTORICAL_SECTOR_UNRESOLVED"
+    },
+    {
+      "region": "KR",
+      "name": "capexIntensityPct",
+      "reason": "EXTREMELY_SPARSE"
+    },
+    {
+      "region": "KR",
+      "name": "shareCountChangePct",
+      "reason": "RAW_SHARE_RECORDS_HAVE_NO_PUBLIC_AVAILABILITY_DATE"
+    },
+    {
+      "region": "US",
+      "name": "dividendCategory",
+      "reason": "EVEN_CATEGORY_MAY_CHANGE_WITH_ROUNDING; NO_PRECISION_REPAIR_PROVEN"
+    }
+  ],
+  "coveragePolicy": {
+    "broad": 0.8,
+    "moderate": 0.2,
+    "belowModerate": "exclude before outcome execution; changes require new version",
+    "primaryPricePerRegionYearMinimum": 0.8,
+    "primaryAccountingPerRegionYearMinimum": 0.2,
+    "allUniverseNameDateAudit": "NOT_YET_MEASURED; blocks execution; no automatic dropping of failing fields",
+    "evaluationYearsOnly": true
+  },
+  "ownershipOverlayFeatures": [
+    {
+      "name": "ownershipCount21",
+      "rawFields": [
+        "issuerId",
+        "receiptNo",
+        "availableFrom"
+      ],
+      "definition": "distinct receipt count in preceding 21 KR sessions; full endpoint coverage required"
+    },
+    {
+      "name": "ownershipNetDirection21",
+      "rawFields": [
+        "holdingPctChange",
+        "receiptNo",
+        "availableFrom"
+      ],
+      "definition": "sum(sign(holdingPctChange)) for same receipt window; any absent change => missing"
+    }
+  ]
+}
