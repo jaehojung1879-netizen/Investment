@@ -1,0 +1,694 @@
+{
+  "contract": "KR_TERMINAL_ACTION_DOCUMENT_FETCH_STATE_V1",
+  "rawContract": "KR_TERMINAL_ACTION_DOCUMENT_TEXT_V1",
+  "receipts": {
+    "20130128800003": {
+      "checkedAt": "2026-09-25T13:15:43Z",
+      "status": "SUCCESS",
+      "ticker": "004940.KS"
+    },
+    "20130702800320": {
+      "checkedAt": "2026-09-25T13:16:32Z",
+      "status": "SUCCESS",
+      "ticker": "067250.KS"
+    },
+    "20130923000004": {
+      "checkedAt": "2026-09-25T13:15:04Z",
+      "status": "SUCCESS",
+      "ticker": "001300.KS"
+    },
+    "20130923000009": {
+      "checkedAt": "2026-09-25T13:15:05Z",
+      "status": "SUCCESS",
+      "ticker": "001300.KS"
+    },
+    "20130923800016": {
+      "checkedAt": "2026-09-25T13:15:06Z",
+      "status": "SUCCESS",
+      "ticker": "001300.KS"
+    },
+    "20131202000453": {
+      "checkedAt": "2026-09-25T13:15:07Z",
+      "status": "SUCCESS",
+      "ticker": "001300.KS"
+    },
+    "20131206800432": {
+      "checkedAt": "2026-09-25T13:16:16Z",
+      "status": "SUCCESS",
+      "ticker": "053000.KS"
+    },
+    "20140106000443": {
+      "checkedAt": "2026-09-25T13:15:08Z",
+      "status": "SUCCESS",
+      "ticker": "001300.KS"
+    },
+    "20140106800520": {
+      "checkedAt": "2026-09-25T13:15:09Z",
+      "status": "SUCCESS",
+      "ticker": "001300.KS"
+    },
+    "20140107800002": {
+      "checkedAt": "2026-09-25T13:16:17Z",
+      "status": "SUCCESS",
+      "ticker": "053000.KS"
+    },
+    "20140226800336": {
+      "checkedAt": "2026-09-25T13:16:18Z",
+      "status": "SUCCESS",
+      "ticker": "053000.KS"
+    },
+    "20140331001355": {
+      "checkedAt": "2026-09-25T13:15:10Z",
+      "status": "SUCCESS",
+      "ticker": "001300.KS"
+    },
+    "20140331800032": {
+      "checkedAt": "2026-09-25T13:15:11Z",
+      "status": "SUCCESS",
+      "ticker": "001300.KS"
+    },
+    "20140331800112": {
+      "checkedAt": "2026-09-25T13:15:12Z",
+      "status": "SUCCESS",
+      "ticker": "001300.KS"
+    },
+    "20140728000280": {
+      "checkedAt": "2026-09-25T13:16:19Z",
+      "status": "SUCCESS",
+      "ticker": "053000.KS"
+    },
+    "20140728800260": {
+      "checkedAt": "2026-09-25T13:16:20Z",
+      "status": "SUCCESS",
+      "ticker": "053000.KS"
+    },
+    "20140728800281": {
+      "checkedAt": "2026-09-25T13:16:21Z",
+      "status": "SUCCESS",
+      "ticker": "053000.KS"
+    },
+    "20140814001580": {
+      "checkedAt": "2026-09-25T13:16:22Z",
+      "status": "SUCCESS",
+      "ticker": "053000.KS"
+    },
+    "20140814801243": {
+      "checkedAt": "2026-09-25T13:16:23Z",
+      "status": "SUCCESS",
+      "ticker": "053000.KS"
+    },
+    "20140814801247": {
+      "checkedAt": "2026-09-25T13:16:24Z",
+      "status": "SUCCESS",
+      "ticker": "053000.KS"
+    },
+    "20140828000548": {
+      "checkedAt": "2026-09-25T13:16:26Z",
+      "status": "SUCCESS",
+      "ticker": "053000.KS"
+    },
+    "20140911000016": {
+      "checkedAt": "2026-09-25T13:16:27Z",
+      "status": "SUCCESS",
+      "ticker": "053000.KS"
+    },
+    "20150320802190": {
+      "checkedAt": "2026-09-25T13:15:31Z",
+      "status": "SUCCESS",
+      "ticker": "003600.KS"
+    },
+    "20150320802407": {
+      "checkedAt": "2026-09-25T13:15:32Z",
+      "status": "SUCCESS",
+      "ticker": "003600.KS"
+    },
+    "20150408000796": {
+      "checkedAt": "2026-09-25T13:15:47Z",
+      "status": "SUCCESS",
+      "ticker": "010520.KS"
+    },
+    "20150408800141": {
+      "checkedAt": "2026-09-25T13:15:47Z",
+      "status": "SUCCESS",
+      "ticker": "010520.KS"
+    },
+    "20150417000066": {
+      "checkedAt": "2026-09-25T13:15:48Z",
+      "error": "document.xml did not return a ZIP (147 bytes)",
+      "status": "FETCH_FAILED",
+      "ticker": "010520.KS"
+    },
+    "20150417800108": {
+      "checkedAt": "2026-09-25T13:15:49Z",
+      "error": "document.xml did not return a ZIP (147 bytes)",
+      "status": "FETCH_FAILED",
+      "ticker": "010520.KS"
+    },
+    "20150420000235": {
+      "checkedAt": "2026-09-25T13:15:33Z",
+      "status": "SUCCESS",
+      "ticker": "003600.KS"
+    },
+    "20150420800024": {
+      "checkedAt": "2026-09-25T13:15:34Z",
+      "status": "SUCCESS",
+      "ticker": "003600.KS"
+    },
+    "20150429000977": {
+      "checkedAt": "2026-09-25T13:15:49Z",
+      "error": "document.xml did not return a ZIP (147 bytes)",
+      "status": "FETCH_FAILED",
+      "ticker": "010520.KS"
+    },
+    "20150430001586": {
+      "checkedAt": "2026-09-25T13:15:35Z",
+      "error": "document.xml did not return a ZIP (147 bytes)",
+      "status": "FETCH_FAILED",
+      "ticker": "003600.KS"
+    },
+    "20150513003281": {
+      "checkedAt": "2026-09-25T13:15:36Z",
+      "error": "document.xml did not return a ZIP (147 bytes)",
+      "status": "FETCH_FAILED",
+      "ticker": "003600.KS"
+    },
+    "20150521000438": {
+      "checkedAt": "2026-09-25T13:15:36Z",
+      "error": "document.xml did not return a ZIP (147 bytes)",
+      "status": "FETCH_FAILED",
+      "ticker": "003600.KS"
+    },
+    "20150526000622": {
+      "checkedAt": "2026-09-25T13:14:58Z",
+      "status": "SUCCESS",
+      "ticker": "000830.KS"
+    },
+    "20150526800025": {
+      "checkedAt": "2026-09-25T13:14:59Z",
+      "status": "SUCCESS",
+      "ticker": "000830.KS"
+    },
+    "20150528000580": {
+      "checkedAt": "2026-09-25T13:15:37Z",
+      "error": "document.xml did not return a ZIP (147 bytes)",
+      "status": "FETCH_FAILED",
+      "ticker": "003600.KS"
+    },
+    "20150528000709": {
+      "checkedAt": "2026-09-25T13:15:37Z",
+      "error": "document.xml did not return a ZIP (147 bytes)",
+      "status": "FETCH_FAILED",
+      "ticker": "003600.KS"
+    },
+    "20150601800621": {
+      "checkedAt": "2026-09-25T13:15:38Z",
+      "status": "SUCCESS",
+      "ticker": "003600.KS"
+    },
+    "20150608000391": {
+      "checkedAt": "2026-09-25T13:15:00Z",
+      "error": "document.xml did not return a ZIP (147 bytes)",
+      "status": "FETCH_FAILED",
+      "ticker": "000830.KS"
+    },
+    "20150612000428": {
+      "checkedAt": "2026-09-25T13:15:01Z",
+      "error": "document.xml did not return a ZIP (147 bytes)",
+      "status": "FETCH_FAILED",
+      "ticker": "000830.KS"
+    },
+    "20150619000462": {
+      "checkedAt": "2026-09-25T13:15:01Z",
+      "error": "document.xml did not return a ZIP (147 bytes)",
+      "status": "FETCH_FAILED",
+      "ticker": "000830.KS"
+    },
+    "20150630800739": {
+      "checkedAt": "2026-09-25T13:15:39Z",
+      "status": "SUCCESS",
+      "ticker": "003600.KS"
+    },
+    "20150720000426": {
+      "checkedAt": "2026-09-25T13:15:02Z",
+      "status": "SUCCESS",
+      "ticker": "000830.KS"
+    },
+    "20150721800301": {
+      "checkedAt": "2026-09-25T13:15:40Z",
+      "error": "document.xml did not return a ZIP (147 bytes)",
+      "status": "FETCH_FAILED",
+      "ticker": "003600.KS"
+    },
+    "20150721800305": {
+      "checkedAt": "2026-09-25T13:15:40Z",
+      "status": "SUCCESS",
+      "ticker": "003600.KS"
+    },
+    "20150730800418": {
+      "checkedAt": "2026-09-25T13:15:41Z",
+      "status": "SUCCESS",
+      "ticker": "003600.KS"
+    },
+    "20150730800431": {
+      "checkedAt": "2026-09-25T13:15:42Z",
+      "status": "SUCCESS",
+      "ticker": "003600.KS"
+    },
+    "20150805800334": {
+      "checkedAt": "2026-09-25T13:15:43Z",
+      "error": "document.xml did not return a ZIP (147 bytes)",
+      "status": "FETCH_FAILED",
+      "ticker": "003600.KS"
+    },
+    "20150824000341": {
+      "checkedAt": "2026-09-25T13:15:03Z",
+      "status": "SUCCESS",
+      "ticker": "000830.KS"
+    },
+    "20160513004518": {
+      "checkedAt": "2026-09-25T13:16:12Z",
+      "status": "SUCCESS",
+      "ticker": "037620.KS"
+    },
+    "20160624000974": {
+      "checkedAt": "2026-09-25T13:16:43Z",
+      "status": "SUCCESS",
+      "ticker": "117930.KS"
+    },
+    "20160802000289": {
+      "checkedAt": "2026-09-25T13:15:28Z",
+      "status": "SUCCESS",
+      "ticker": "003450.KS"
+    },
+    "20160901000273": {
+      "checkedAt": "2026-09-25T13:15:29Z",
+      "error": "document.xml did not return a ZIP (147 bytes)",
+      "status": "FETCH_FAILED",
+      "ticker": "003450.KS"
+    },
+    "20160902000474": {
+      "checkedAt": "2026-09-25T13:15:29Z",
+      "error": "document.xml did not return a ZIP (147 bytes)",
+      "status": "FETCH_FAILED",
+      "ticker": "003450.KS"
+    },
+    "20160919000325": {
+      "checkedAt": "2026-09-25T13:16:13Z",
+      "error": "document.xml did not return a ZIP (147 bytes)",
+      "status": "FETCH_FAILED",
+      "ticker": "037620.KS"
+    },
+    "20161014000405": {
+      "checkedAt": "2026-09-25T13:16:14Z",
+      "error": "document.xml did not return a ZIP (147 bytes)",
+      "status": "FETCH_FAILED",
+      "ticker": "037620.KS"
+    },
+    "20161017000354": {
+      "checkedAt": "2026-09-25T13:16:44Z",
+      "error": "document.xml did not return a ZIP (147 bytes)",
+      "status": "FETCH_FAILED",
+      "ticker": "117930.KS"
+    },
+    "20161101000429": {
+      "checkedAt": "2026-09-25T13:15:30Z",
+      "status": "SUCCESS",
+      "ticker": "003450.KS"
+    },
+    "20161103000360": {
+      "checkedAt": "2026-09-25T13:15:31Z",
+      "error": "document.xml did not return a ZIP (147 bytes)",
+      "status": "FETCH_FAILED",
+      "ticker": "003450.KS"
+    },
+    "20161122000002": {
+      "checkedAt": "2026-09-25T13:16:45Z",
+      "status": "SUCCESS",
+      "ticker": "117930.KS"
+    },
+    "20170102000404": {
+      "checkedAt": "2026-09-25T13:16:46Z",
+      "error": "document.xml did not return a ZIP (147 bytes)",
+      "status": "FETCH_FAILED",
+      "ticker": "117930.KS"
+    },
+    "20170103000011": {
+      "checkedAt": "2026-09-25T13:16:46Z",
+      "error": "document.xml did not return a ZIP (147 bytes)",
+      "status": "FETCH_FAILED",
+      "ticker": "117930.KS"
+    },
+    "20170106000714": {
+      "checkedAt": "2026-09-25T13:16:47Z",
+      "error": "document.xml did not return a ZIP (147 bytes)",
+      "status": "FETCH_FAILED",
+      "ticker": "117930.KS"
+    },
+    "20170414002322": {
+      "checkedAt": "2026-09-25T13:15:13Z",
+      "status": "SUCCESS",
+      "ticker": "002550.KS"
+    },
+    "20170417000001": {
+      "checkedAt": "2026-09-25T13:15:14Z",
+      "status": "SUCCESS",
+      "ticker": "002550.KS"
+    },
+    "20170417000002": {
+      "checkedAt": "2026-09-25T13:15:16Z",
+      "status": "SUCCESS",
+      "ticker": "002550.KS"
+    },
+    "20170420000107": {
+      "checkedAt": "2026-09-25T13:15:17Z",
+      "status": "SUCCESS",
+      "ticker": "002550.KS"
+    },
+    "20170516000224": {
+      "checkedAt": "2026-09-25T13:15:17Z",
+      "error": "document.xml did not return a ZIP (147 bytes)",
+      "status": "FETCH_FAILED",
+      "ticker": "002550.KS"
+    },
+    "20170519000102": {
+      "checkedAt": "2026-09-25T13:15:18Z",
+      "status": "SUCCESS",
+      "ticker": "002550.KS"
+    },
+    "20170525000022": {
+      "checkedAt": "2026-09-25T13:15:19Z",
+      "error": "document.xml did not return a ZIP (147 bytes)",
+      "status": "FETCH_FAILED",
+      "ticker": "002550.KS"
+    },
+    "20170530000327": {
+      "checkedAt": "2026-09-25T13:15:20Z",
+      "error": "document.xml did not return a ZIP (147 bytes)",
+      "status": "FETCH_FAILED",
+      "ticker": "002550.KS"
+    },
+    "20180619000302": {
+      "checkedAt": "2026-09-25T13:14:50Z",
+      "status": "SUCCESS",
+      "ticker": "000030.KS"
+    },
+    "20180619000369": {
+      "checkedAt": "2026-09-25T13:14:51Z",
+      "error": "document.xml did not return a ZIP (147 bytes)",
+      "status": "FETCH_FAILED",
+      "ticker": "000030.KS"
+    },
+    "20180920000544": {
+      "checkedAt": "2026-09-25T13:14:52Z",
+      "error": "document.xml did not return a ZIP (147 bytes)",
+      "status": "FETCH_FAILED",
+      "ticker": "000030.KS"
+    },
+    "20181108000137": {
+      "checkedAt": "2026-09-25T13:14:53Z",
+      "error": "document.xml did not return a ZIP (147 bytes)",
+      "status": "FETCH_FAILED",
+      "ticker": "000030.KS"
+    },
+    "20181121000025": {
+      "checkedAt": "2026-09-25T13:14:53Z",
+      "error": "document.xml did not return a ZIP (147 bytes)",
+      "status": "FETCH_FAILED",
+      "ticker": "000030.KS"
+    },
+    "20181126000101": {
+      "checkedAt": "2026-09-25T13:14:54Z",
+      "error": "document.xml did not return a ZIP (147 bytes)",
+      "status": "FETCH_FAILED",
+      "ticker": "000030.KS"
+    },
+    "20190111000457": {
+      "checkedAt": "2026-09-25T13:14:55Z",
+      "status": "SUCCESS",
+      "ticker": "000030.KS"
+    },
+    "20191114002655": {
+      "checkedAt": "2026-09-25T13:16:33Z",
+      "status": "SUCCESS",
+      "ticker": "079440.KS"
+    },
+    "20191119000180": {
+      "checkedAt": "2026-09-25T13:16:34Z",
+      "error": "document.xml did not return a ZIP (147 bytes)",
+      "status": "FETCH_FAILED",
+      "ticker": "079440.KS"
+    },
+    "20191204000479": {
+      "checkedAt": "2026-09-25T13:16:34Z",
+      "error": "document.xml did not return a ZIP (147 bytes)",
+      "status": "FETCH_FAILED",
+      "ticker": "079440.KS"
+    },
+    "20191212000291": {
+      "checkedAt": "2026-09-25T13:15:51Z",
+      "status": "SUCCESS",
+      "ticker": "011160.KS"
+    },
+    "20191213000001": {
+      "checkedAt": "2026-09-25T13:15:53Z",
+      "status": "SUCCESS",
+      "ticker": "011160.KS"
+    },
+    "20191213000002": {
+      "checkedAt": "2026-09-25T13:15:54Z",
+      "status": "SUCCESS",
+      "ticker": "011160.KS"
+    },
+    "20191216000287": {
+      "checkedAt": "2026-09-25T13:15:55Z",
+      "error": "document.xml did not return a ZIP (147 bytes)",
+      "status": "FETCH_FAILED",
+      "ticker": "011160.KS"
+    },
+    "20191224000172": {
+      "checkedAt": "2026-09-25T13:15:55Z",
+      "error": "document.xml did not return a ZIP (147 bytes)",
+      "status": "FETCH_FAILED",
+      "ticker": "011160.KS"
+    },
+    "20200106000315": {
+      "checkedAt": "2026-09-25T13:15:56Z",
+      "status": "SUCCESS",
+      "ticker": "011160.KS"
+    },
+    "20200121800573": {
+      "checkedAt": "2026-09-25T13:15:57Z",
+      "status": "SUCCESS",
+      "ticker": "011160.KS"
+    },
+    "20200204000309": {
+      "checkedAt": "2026-09-25T13:15:58Z",
+      "error": "document.xml did not return a ZIP (147 bytes)",
+      "status": "FETCH_FAILED",
+      "ticker": "011160.KS"
+    },
+    "20200615000290": {
+      "checkedAt": "2026-09-25T13:15:58Z",
+      "status": "SUCCESS",
+      "ticker": "011160.KS"
+    },
+    "20200615000291": {
+      "checkedAt": "2026-09-25T13:15:59Z",
+      "status": "SUCCESS",
+      "ticker": "011160.KS"
+    },
+    "20221121000152": {
+      "checkedAt": "2026-09-25T13:14:56Z",
+      "status": "SUCCESS",
+      "ticker": "000060.KS"
+    },
+    "20221121000158": {
+      "checkedAt": "2026-09-25T13:15:44Z",
+      "status": "SUCCESS",
+      "ticker": "008560.KS"
+    },
+    "20221205000271": {
+      "checkedAt": "2026-09-25T13:14:57Z",
+      "status": "SUCCESS",
+      "ticker": "000060.KS"
+    },
+    "20221205000275": {
+      "checkedAt": "2026-09-25T13:15:45Z",
+      "status": "SUCCESS",
+      "ticker": "008560.KS"
+    },
+    "20240205000007": {
+      "checkedAt": "2026-09-25T13:15:20Z",
+      "status": "SUCCESS",
+      "ticker": "003410.KS"
+    },
+    "20240205000008": {
+      "checkedAt": "2026-09-25T13:15:22Z",
+      "status": "SUCCESS",
+      "ticker": "003410.KS"
+    },
+    "20240219001823": {
+      "checkedAt": "2026-09-25T13:15:23Z",
+      "status": "SUCCESS",
+      "ticker": "003410.KS"
+    },
+    "20240219001836": {
+      "checkedAt": "2026-09-25T13:15:24Z",
+      "status": "SUCCESS",
+      "ticker": "003410.KS"
+    },
+    "20240308000152": {
+      "checkedAt": "2026-09-25T13:15:25Z",
+      "status": "SUCCESS",
+      "ticker": "003410.KS"
+    },
+    "20240418000003": {
+      "checkedAt": "2026-09-25T13:16:35Z",
+      "status": "SUCCESS",
+      "ticker": "115390.KS"
+    },
+    "20240418000004": {
+      "checkedAt": "2026-09-25T13:16:36Z",
+      "status": "SUCCESS",
+      "ticker": "115390.KS"
+    },
+    "20240423000168": {
+      "checkedAt": "2026-09-25T13:15:26Z",
+      "status": "SUCCESS",
+      "ticker": "003410.KS"
+    },
+    "20240425000313": {
+      "checkedAt": "2026-09-25T13:15:27Z",
+      "error": "document.xml did not return a ZIP (147 bytes)",
+      "status": "FETCH_FAILED",
+      "ticker": "003410.KS"
+    },
+    "20240516000002": {
+      "checkedAt": "2026-09-25T13:16:38Z",
+      "status": "SUCCESS",
+      "ticker": "115390.KS"
+    },
+    "20240516000004": {
+      "checkedAt": "2026-09-25T13:16:39Z",
+      "status": "SUCCESS",
+      "ticker": "115390.KS"
+    },
+    "20240517000420": {
+      "checkedAt": "2026-09-25T13:16:40Z",
+      "status": "SUCCESS",
+      "ticker": "115390.KS"
+    },
+    "20240610000291": {
+      "checkedAt": "2026-09-25T13:16:41Z",
+      "status": "SUCCESS",
+      "ticker": "115390.KS"
+    },
+    "20240830002126": {
+      "checkedAt": "2026-09-25T13:16:42Z",
+      "status": "SUCCESS",
+      "ticker": "115390.KS"
+    },
+    "20241224000570": {
+      "checkedAt": "2026-09-25T13:16:43Z",
+      "status": "SUCCESS",
+      "ticker": "115390.KS"
+    },
+    "20250701000231": {
+      "checkedAt": "2026-09-25T13:16:14Z",
+      "status": "SUCCESS",
+      "ticker": "042670.KS"
+    },
+    "20250711000213": {
+      "checkedAt": "2026-09-25T13:16:15Z",
+      "status": "SUCCESS",
+      "ticker": "042670.KS"
+    },
+    "20250827000428": {
+      "checkedAt": "2026-09-25T13:15:50Z",
+      "status": "SUCCESS",
+      "ticker": "010620.KS"
+    },
+    "20260211000381": {
+      "checkedAt": "2026-09-25T13:16:28Z",
+      "status": "SUCCESS",
+      "ticker": "057050.KS"
+    },
+    "20260223000008": {
+      "checkedAt": "2026-09-25T13:16:00Z",
+      "status": "SUCCESS",
+      "ticker": "012510.KS"
+    },
+    "20260223000011": {
+      "checkedAt": "2026-09-25T13:16:02Z",
+      "status": "SUCCESS",
+      "ticker": "012510.KS"
+    },
+    "20260326001203": {
+      "checkedAt": "2026-09-25T13:16:02Z",
+      "status": "SUCCESS",
+      "ticker": "012510.KS"
+    },
+    "20260327000008": {
+      "checkedAt": "2026-09-25T13:16:04Z",
+      "status": "SUCCESS",
+      "ticker": "012510.KS"
+    },
+    "20260327000009": {
+      "checkedAt": "2026-09-25T13:16:05Z",
+      "status": "SUCCESS",
+      "ticker": "012510.KS"
+    },
+    "20260415000010": {
+      "checkedAt": "2026-09-25T13:16:06Z",
+      "status": "SUCCESS",
+      "ticker": "012510.KS"
+    },
+    "20260424000738": {
+      "checkedAt": "2026-09-25T13:16:06Z",
+      "status": "SUCCESS",
+      "ticker": "012510.KS"
+    },
+    "20260427000630": {
+      "checkedAt": "2026-09-25T13:16:07Z",
+      "status": "SUCCESS",
+      "ticker": "012510.KS"
+    },
+    "20260429000294": {
+      "checkedAt": "2026-09-25T13:16:08Z",
+      "error": "document.xml did not return a ZIP (147 bytes)",
+      "status": "FETCH_FAILED",
+      "ticker": "012510.KS"
+    },
+    "20260511000724": {
+      "checkedAt": "2026-09-25T13:16:09Z",
+      "status": "SUCCESS",
+      "ticker": "012510.KS"
+    },
+    "20260515100001": {
+      "checkedAt": "2026-09-25T13:16:10Z",
+      "error": "document.xml did not return a ZIP (147 bytes)",
+      "status": "FETCH_FAILED",
+      "ticker": "012510.KS"
+    },
+    "20260519000237": {
+      "checkedAt": "2026-09-25T13:16:11Z",
+      "status": "SUCCESS",
+      "ticker": "012510.KS"
+    },
+    "20260522000254": {
+      "checkedAt": "2026-09-25T13:16:29Z",
+      "status": "SUCCESS",
+      "ticker": "057050.KS"
+    },
+    "20260805000212": {
+      "checkedAt": "2026-09-25T13:16:30Z",
+      "status": "SUCCESS",
+      "ticker": "057050.KS"
+    },
+    "20260805000215": {
+      "checkedAt": "2026-09-25T13:16:31Z",
+      "status": "SUCCESS",
+      "ticker": "057050.KS"
+    }
+  }
+}
