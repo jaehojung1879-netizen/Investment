@@ -73,37 +73,53 @@ def completeness_row(*, identity: dict | None, action: dict | None,
     and never flipped to `READY` by a hardcoded rule.
     """
     action_type = (action or {}).get("actionType") or TCA.TERMINATION_TYPE_UNRESOLVED
+    action = action or {}
+    type_resolved = action_type in TCA.ACTION_TYPES - {TCA.TERMINATION_TYPE_UNRESOLVED}
     requires_successor = action_type in TCA.REQUIRES_SUCCESSOR_TERM
+    # Only an explicitly cash-only type proves that shares are irrelevant.
+    cash_only = action_type in {TCA.MERGER_CASH, TCA.TENDER_CASH_OUT}
+    cited = bool(action.get("sourceReceiptNumber") and action.get("sourceReceiptDate"))
+    unresolved = set(action.get("unresolvedFields") or [])
+    cash_resolved = cited and action.get("cashPerOldShare") is not None
+    successor_resolved = (cited and bool(action.get("successorSecurity"))
+                          and "successorSecurity" not in unresolved)
+    ratio_resolved = (cited and action.get("successorSharesPerOldShare") is not None
+                      and "successorSharesPerOldShare" not in unresolved)
+    # A receipt/sealed status alone states no economic terms. Require every
+    # leg owed by the resolved type; generic delisting types stay blocked.
+    consideration_resolved = (
+        type_resolved
+        and action_type in TCA.REQUIRES_CASH_TERM | TCA.REQUIRES_SUCCESSOR_TERM
+        and (action_type not in TCA.REQUIRES_CASH_TERM or cash_resolved)
+        and (not requires_successor or (successor_resolved and ratio_resolved))
+        and not unresolved.intersection({"terminalConsideration", "cashPerOldShare",
+                                         "considerationComponents"}))
     has_raw_evidence = bool((action or {}).get("sourceReceiptNumber")
                             or (action or {}).get("sources")
                             or (action or {}).get("sourceReceiptNumbers"))
     return {
-        "terminationTypeResolved": _status(action_type != TCA.TERMINATION_TYPE_UNRESOLVED),
+        "terminationTypeResolved": _status(type_resolved),
         "dartIssuerResolved": _status(bool((identity or {}).get("corpCode"))),
         "dividendLineageResolved": _status(
             bool(dividends and dividends.get("status") == DIVIDEND_RESOLVED)),
         "exDateSemanticsResolved": _status(
             bool(dividends and dividends.get("exDateSource") == "DIRECT")),
         "terminalConsiderationResolved": _status(
-            bool((action or {}).get("evidenceStatus") == TCA.EVIDENCE_SEALED),
-            applicable=action_type != TCA.TERMINATION_TYPE_UNRESOLVED),
+            consideration_resolved),
         "successorResolvedWhereRequired": _status(
-            bool((action or {}).get("successorSecurity")), applicable=requires_successor),
+            successor_resolved, applicable=not cash_only),
         "effectiveDateResolved": _status(bool((action or {}).get("effectiveDate"))),
         "lastTradingDateResolved": _status(bool(last_trading_date)),
         "rawEvidenceRetained": _status(has_raw_evidence),
         "sourceProvenanceRetained": _status(bool((action or {}).get("sources"))),
-        # TERMINAL_ACTION_CHAIN: whether this security's amendment/filing
-        # lineage has been CAPTURED (even an empty amendmentHistory is a
-        # valid "checked, no amendment found" answer -- `None` means it was
-        # never looked at) AND at least one receipt backs it.
+        # Capturing a disclosure/amendment list does not resolve its terms.
+        # A chain needs a dated, resolved action with complete economics and
+        # a final-terms citation; explicit outstanding fields keep it blocked.
         "terminalActionChainResolved": _status(
-            bool(action) and action.get("amendmentHistory") is not None and has_raw_evidence),
-        # EXCHANGE_RATIO: applicable only when the resolved type requires a
-        # successor share count at all.
-        "exchangeRatioResolved": _status(
-            bool((action or {}).get("successorSharesPerOldShare") is not None),
-            applicable=requires_successor),
+            consideration_resolved and bool(action.get("effectiveDate"))
+            and action.get("amendmentHistory") is not None
+            and bool(action.get("finalTermsReceiptNumber")) and not unresolved),
+        "exchangeRatioResolved": _status(ratio_resolved, applicable=not cash_only),
     }
 
 

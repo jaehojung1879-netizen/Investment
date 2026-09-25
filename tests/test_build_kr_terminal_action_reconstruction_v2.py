@@ -137,3 +137,15 @@ def test_no_dividend_section_rows_are_claimed_before_the_operator_has_collected_
     if inventory["inputs"]["totalDividendSectionRowsOnShard"] == 0:
         assert all(row["dividendLineageStatus"] == "NOT_COLLECTED"
                   for row in inventory["securities"])
+
+
+def test_disclosure_list_and_amendments_do_not_resolve_terminal_economics():
+    disclosures = [_disclosure("A.KS", "20200101000001", "2020-01-01"),
+                   _disclosure("A.KS", "20200201000001", "2020-02-01", "[정정]합병결정")]
+    action = BUILD.build_terminal_actions(disclosures, {}, {"actions": []})["A.KS"]
+    row = BUILD.INV.completeness_row(identity=None, action=action, dividends=None,
+                                     last_trading_date=None)
+    assert row["rawEvidenceRetained"] == BUILD.INV.READY
+    for field in ("terminalConsiderationResolved", "successorResolvedWhereRequired",
+                  "exchangeRatioResolved", "terminalActionChainResolved"):
+        assert row[field] == BUILD.INV.BLOCKED

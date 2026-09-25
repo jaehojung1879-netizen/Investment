@@ -215,27 +215,35 @@ byte-identical across two runs):
 | LAST_TRADING_DATE | 22 |
 | RAW_EVIDENCE | 22 |
 | (amendment/provenance retained) | 22 |
-| TERMINAL_ACTION_CHAIN | 22 |
+| TERMINAL_ACTION_CHAIN | 0 (BLOCKED) |
 | TERMINATION_TYPE | 0 |
-| TERMINAL_CONSIDERATION | 0 (NOT_APPLICABLE while type is unresolved) |
-| SUCCESSOR_IDENTITY | 0 (NOT_APPLICABLE while type is unresolved) |
-| EXCHANGE_RATIO | 0 (NOT_APPLICABLE while type is unresolved) |
+| TERMINAL_CONSIDERATION | 0 (BLOCKED while type is unresolved) |
+| SUCCESSOR_IDENTITY | 0 (BLOCKED while type is unresolved) |
+| EXCHANGE_RATIO | 0 (BLOCKED while type is unresolved) |
 | EFFECTIVE_DATE | 0 |
-| DIVIDEND_AMOUNT_LINEAGE | 0 (NOT_COLLECTED — see above) |
+| DIVIDEND_AMOUNT_LINEAGE | 15 (existing decoded amount evidence) |
 | DIVIDEND_EVENT_DATE_LINEAGE | 0 (BLOCKED — no sealed ex-date rule) |
 
-**Foundation status: `PARTIALLY_REPAIRED`.** Not `READY_FOR_V4_
-PREREGISTRATION` (obviously — 8 of 12 fields are still blocked for every
-security). Not `BLOCKED_BY_SOURCE_ACCESS` either: unlike v1, DART identity
-IS resolved for all 22, and real disclosure evidence IS retained for all 22
-— the remaining blockers are specific (no confirmed structured endpoint for
-economic terms; dividend `se` semantics undecoded pending a collection run),
-not "the source could not be reached at all." Per Section 21's materiality
-rule, `terminalConsiderationResolved`/`successorResolvedWhereRequired`/
-`exchangeRatioResolved` correctly read `NOT_APPLICABLE` rather than
-`BLOCKED` while `terminationType` itself is unresolved (a type-dependent
-field has nothing to be blocked ABOUT yet) — this is the existing v1 rule,
-unchanged, applied to the two new fields too.
+**Foundation status: `PARTIALLY_REPAIRED`.** Unknown termination types keep
+terminal consideration, successor identity, exchange ratio and terminal action
+chain `BLOCKED` for all 22 securities. `NOT_APPLICABLE` requires a resolved
+action type proving irrelevance (for example, successor shares in a cash-only
+merger). Independently cited successor and ratio fields can be `READY` even
+before type resolution. A raw receipt or `SEALED_FROM_DART_RECEIPT` status alone
+does not establish economics; consideration needs the required cited terms,
+and a chain also needs its effective date, final-terms citation, captured
+amendment history and no explicitly unresolved fields.
+
+Correctness-only rebuild: both runs used the same 17 input files, verified
+against current `signal-history` commit
+`8e0a0228bdd7229b032f2e5bd04e10a711373f32`. Both JSON outputs were byte-identical:
+SHA-256 `fcae3b7a5277e600d53ef270510412bc0418c81f98a4dcdd0c6eb2d7a1361fef`.
+Raw disclosure/provenance coverage stays 22/22; action-chain READY coverage
+falls from the erroneous 22/22 to 0/22. No original documents were parsed in
+this repair. The later parsing pass must review the collected documents for
+action types, economic terms and final amendment/successor lineage, then
+rebuild completeness from reviewed evidence. Collection itself is not proof
+that those terms are resolved.
 
 ## Exact next step (operator action required)
 
