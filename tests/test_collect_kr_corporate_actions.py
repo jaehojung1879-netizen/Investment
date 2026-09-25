@@ -275,6 +275,177 @@ def test_an_ambiguous_name_match_stays_unresolved_never_guessed(tmp_path):
 
 
 # --------------------------------------------------------------------------- #
+# Call budget: a HARD ceiling, checked before every page, never per ticker
+# --------------------------------------------------------------------------- #
+def _two_ticker_directory():
+    return _directory() + [{"corpCode": "00124", "corpName": "메리츠화재",
+                            "stockCode": "000060", "modifyDate": None}]
+
+
+def test_no_call_ever_occurs_beyond_max_calls(tmp_path):
+    """However many tickers or pages are available, the collector never
+    makes more than `max_calls` `list.json` requests."""
+    inventory = _inventory(tmp_path, ["000030.KS", "000060.KS"])
+    store = tmp_path / "store"
+    calls = {"n": 0}
+
+    def call_fn(path, params):
+        calls["n"] += 1
+        # An effectively unbounded multi-page result for every ticker, so
+        # the run would keep calling forever if the budget did not bind.
+        page_no = int(params["page_no"])
+        return _list_payload([_row(f"2013010{min(page_no, 9)}000{page_no:03d}")],
+                             page_no=page_no, total_count=1000, total_page=1000)
+
+    report = COLLECT.run(store, key="fakekey", inventory_path=inventory,
+                         max_calls=5, max_minutes=10,
+                         call_fn=call_fn, directory_fn=lambda key: _two_ticker_directory())
+    assert calls["n"] == 5
+    assert report["calls"] == 5
+    assert report["stopReason"] == "CALL_BUDGET_SPENT"
+
+
+def test_call_budget_exhausted_between_issuers_leaves_the_second_unresolved(tmp_path):
+    """The first ticker completes in one call; the budget (1) is then
+    already spent before the second ticker's first page, so the second
+    ticker is never attempted -- it is neither SUCCESS nor any other
+    terminal state, just remaining."""
+    inventory = _inventory(tmp_path, ["000030.KS", "000060.KS"])
+    store = tmp_path / "store"
+
+    def call_fn(path, params):
+        corp = params["corp_code"]
+        return _list_payload([_row("20190201000123", corp_code=corp)])
+
+    report = COLLECT.run(store, key="fakekey", inventory_path=inventory,
+                         max_calls=1, max_minutes=10,
+                         call_fn=call_fn, directory_fn=lambda key: _two_ticker_directory())
+    assert report["calls"] == 1
+    assert report["tickersSucceeded"] == 1
+    assert report["tickersRemaining"] == 1
+    assert report["stopReason"] == "CALL_BUDGET_SPENT"
+    assert report["datasetComplete"] is False
+
+
+def test_call_budget_exhausted_mid_issuer_leaves_that_issuer_unresolved(tmp_path):
+    """A single ticker's OWN pagination spans the budget: page 1 succeeds,
+    page 2 is refused by the budget before it is ever requested. That
+    ticker must not read SUCCESS, and the whole run stops -- the budget is
+    spent for every other ticker too."""
+    inventory = _inventory(tmp_path, ["000030.KS", "000060.KS"])
+    store = tmp_path / "store"
+
+    def call_fn(path, params):
+        page_no = int(params["page_no"])
+        if page_no == 1:
+            return _list_payload([_row("20190201000123")], page_no=1,
+                                 total_count=150, total_page=2)
+        raise AssertionError("page 2 must never be called: the budget ran out after page 1")
+
+    report = COLLECT.run(store, key="fakekey", inventory_path=inventory,
+                         max_calls=1, max_minutes=10,
+                         call_fn=call_fn, directory_fn=lambda key: _two_ticker_directory())
+    assert report["calls"] == 1
+    assert report["tickersSucceeded"] == 0
+    assert report["tickersWithPaginationFailure"] == 0, \
+        "budget exhaustion is not a pagination-metadata failure"
+    assert report["tickersRemaining"] == 2
+    assert report["stopReason"] == "CALL_BUDGET_SPENT"
+    assert report["datasetComplete"] is False
+
+
+def test_the_budget_exhausted_issuer_is_retried_from_page_one_next_run(tmp_path):
+    """A ticker interrupted mid-pagination by the budget must restart from
+    page 1 on the next run -- it never resumes from a partial page count,
+    because no partial result was ever kept."""
+    inventory = _inventory(tmp_path, ["000030.KS"])
+    store = tmp_path / "store"
+
+    def call_fn_budget_hit(path, params):
+        assert int(params["page_no"]) == 1, "must never reach page 2 this run"
+        return _list_payload([_row("20190201000123")], page_no=1, total_count=150, total_page=2)
+
+    first = COLLECT.run(store, key="fakekey", inventory_path=inventory,
+                        max_calls=1, max_minutes=10,
+                        call_fn=call_fn_budget_hit, directory_fn=lambda key: _directory())
+    assert first["tickersSucceeded"] == 0
+    assert first["tickersRemaining"] == 1
+
+    seen_pages = []
+
+    def call_fn_full(path, params):
+        page_no = int(params["page_no"])
+        seen_pages.append(page_no)
+        if page_no == 1:
+            return _list_payload([_row("20190201000123")], page_no=1,
+                                 total_count=150, total_page=2)
+        return _list_payload([_row("20190301000999", report_nm="공개매수신고서")],
+                             page_no=2, total_count=150, total_page=2)
+
+    second = COLLECT.run(store, key="fakekey", inventory_path=inventory,
+                         max_calls=10, max_minutes=10,
+                         call_fn=call_fn_full, directory_fn=lambda key: _directory())
+    assert seen_pages == [1, 2], "retried from page 1, not resumed mid-way"
+    assert second["tickersSucceeded"] == 1
+    assert second["tickersRemaining"] == 0
+    assert second["datasetComplete"] is True
+
+
+def test_a_sufficiently_large_budget_reaches_work_list_exhausted(tmp_path):
+    inventory = _inventory(tmp_path, ["000030.KS", "000060.KS"])
+    store = tmp_path / "store"
+
+    def call_fn(path, params):
+        return _list_payload([_row("20190201000123", corp_code=params["corp_code"])])
+
+    report = COLLECT.run(store, key="fakekey", inventory_path=inventory,
+                         max_calls=1000, max_minutes=30,
+                         call_fn=call_fn, directory_fn=lambda key: _two_ticker_directory())
+    assert report["stopReason"] == "WORK_LIST_EXHAUSTED"
+    assert report["fullWorkListExhausted"] is True
+    assert report["tickersRemaining"] == 0
+    assert report["tickersSucceeded"] == 2
+    assert report["datasetComplete"] is True
+    assert "INCOMPLETE" not in report["operatorMessage"]
+
+
+def test_incomplete_run_never_claims_completion_in_its_operator_message(tmp_path):
+    inventory = _inventory(tmp_path, ["000030.KS", "000060.KS"])
+    store = tmp_path / "store"
+
+    def call_fn(path, params):
+        return _list_payload([_row("20190201000123", corp_code=params["corp_code"])])
+
+    report = COLLECT.run(store, key="fakekey", inventory_path=inventory,
+                         max_calls=1, max_minutes=10,
+                         call_fn=call_fn, directory_fn=lambda key: _two_ticker_directory())
+    assert report["datasetComplete"] is False
+    assert "INCOMPLETE" in report["operatorMessage"]
+    assert "re-run" in report["operatorMessage"].lower()
+
+
+def test_previously_completed_issuers_are_preserved_when_the_budget_stops_a_later_one(tmp_path):
+    inventory = _inventory(tmp_path, ["000030.KS", "000060.KS"])
+    store = tmp_path / "store"
+    store.mkdir(parents=True)
+    COLLECT.save_state(store, {
+        "contract": COLLECT.STATE_CONTRACT, "rawContract": COLLECT.RAW_CONTRACT,
+        "tickers": {"000030.KS": {"status": "SUCCESS", "corpCode": "00123"}}})
+
+    def call_fn(path, params):
+        assert params["corp_code"] == "00124", "the already-SUCCESS ticker must not be re-called"
+        page_no = int(params["page_no"])
+        return _list_payload([_row(f"2019020{page_no}000123")], page_no=page_no,
+                             total_count=150, total_page=2)
+
+    report = COLLECT.run(store, key="fakekey", inventory_path=inventory,
+                         max_calls=1, max_minutes=10,
+                         call_fn=call_fn, directory_fn=lambda key: _two_ticker_directory())
+    assert report["tickersSucceeded"] == 1, "the pre-existing SUCCESS is preserved"
+    assert report["tickersRemaining"] == 1
+
+
+# --------------------------------------------------------------------------- #
 # Resumability: a ticker already SUCCESS is never re-queried
 # --------------------------------------------------------------------------- #
 def test_a_previously_succeeded_ticker_is_not_re_queried(tmp_path):

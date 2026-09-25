@@ -11,7 +11,7 @@ run, because this development environment has no `DART_API_KEY`.
 
 ## Correction (execution-critical)
 
-Two fixes to the design as first drafted, before any live run:
+Three fixes to the design as first drafted, before any live run:
 
 1. **Pagination.** The first draft's `list.json` calls carried no `page_no`
    and read only whatever a single `page_count=100` call returned — not
@@ -30,10 +30,26 @@ Two fixes to the design as first drafted, before any live run:
    exact stock code, then a unique exact normalized historical company
    name, then unresolved — never fuzzy, never a name/ticker similarity
    guess, and the SAME resolver for both the probe and the collector.
+3. **Call-budget semantics.** Adding full pagination made the first draft's
+   `--max-calls 30` default, described as "enough for all 22 securities",
+   false the moment any issuer needed more than one page — and the budget
+   was only checked once per ticker, so a single high-volume issuer could
+   in principle spend far more than the requested ceiling before the next
+   check ever ran. `checked_call` now checks the budget before **every**
+   `list.json` call, page or ticker, and raises `CallBudgetExhausted`
+   before the call that would cross it, so `calls` can never exceed
+   `max_calls`. A ticker interrupted mid-pagination this way is left in
+   whatever state it already had — never `SUCCESS` — so the next run
+   retries it from page 1. The default is now `250` (a conservative,
+   explicitly-not-guaranteed estimate: 22 tickers × up to ~10 pages, a
+   round number this sandbox has no measured basis for, since it has never
+   run against the live API), and every run reports `tickersRemaining`,
+   `fullWorkListExhausted` and `datasetComplete` so an operator can never
+   mistake a budget-truncated run for a finished one.
 
-Neither correction changes the foundation status: it stays
+None of the three corrections changes the foundation status: it stays
 `BLOCKED_BY_SOURCE_ACCESS`, because this sandbox still has no
-`DART_API_KEY` and neither fix could be exercised against the live API.
+`DART_API_KEY` and none of them could be exercised against the live API.
 
 ## Why this build exists
 
@@ -260,7 +276,11 @@ an honest, input-only snapshot, not a partial result dressed up as more.
    with the real `DART` secret. It probes `list.json`/`alotMatter.json`
    first (`scripts/probe_kr_corporate_actions.py`) and only collects if that
    probe reports `SERVED`; a refusal fails the job closed, per
-   `pipeline/collector_outcomes.py`.
+   `pipeline/collector_outcomes.py`. `max_calls` is an **API-call budget**,
+   not a ticker count — check the run's own `tickersRemaining`/
+   `datasetComplete`/`operatorMessage` fields; if `datasetComplete` is
+   `false`, re-run the same workflow with the same inputs to continue from
+   wherever it stopped, rather than treating one run as finished.
 2. A human reviews the collected disclosure-index rows
    (`ledger/kr-corporate-actions/` on `signal-history`) and, only from their
    actual content, adds entries to `data/kr-terminal-corporate-actions.json`

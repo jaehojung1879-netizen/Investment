@@ -13,6 +13,14 @@ name: Collect KR terminated-security corporate actions
 # `docs/kr-terminated-security-total-return-foundation-v1.md`. It is a
 # reading list for a human reviewer, never a resolved terminal-action book:
 # nothing this workflow writes assigns a termination type to any security.
+#
+# `max_calls` IS AN API-CALL BUDGET, NOT A TICKER COUNT. A single issuer's
+# `list.json` history can span more than one page, so "22 tickers" and "22
+# calls" are different quantities once pagination is in play. The default
+# is a conservative estimate, not a promise that every run finishes every
+# ticker — `collect_kr_corporate_actions.py`'s own printed summary states
+# whether the run completed the full work list, and re-running the same
+# inputs resumes from wherever it stopped.
 on:
   workflow_dispatch:
     inputs:
@@ -22,9 +30,9 @@ on:
         options: ["auto", "probe", "collect"]
         default: "auto"
       max_calls:
-        description: "collect 전용 — 최대 호출 수 (기본: 22개 종목 전체)"
+        description: "collect 전용 — list.json 호출 상한 (종목 수가 아님: 발행사 1곳이 여러 페이지를 쓸 수 있음). 기본값은 22개 종목을 대개 끝낼 수 있도록 보수적으로 잡은 값이며, 완료를 보장하지 않음 — 실행 결과의 tickersRemaining/datasetComplete를 확인할 것. 종목이 남으면 같은 입력으로 재실행하면 이어서 진행됨."
         type: string
-        default: "30"
+        default: "250"
       max_minutes:
         description: "collect 전용 — 최대 분"
         type: string
@@ -126,7 +134,7 @@ jobs:
           python scripts/collect_kr_corporate_actions.py \
             kr-actions-work/ledger/kr-corporate-actions \
             --inventory docs/results/kr-termination-inventory.json \
-            --max-calls "${{ inputs.max_calls || '30' }}" \
+            --max-calls "${{ inputs.max_calls || '250' }}" \
             --max-minutes "${{ inputs.max_minutes || '30' }}" \
             | tee collect.log
 

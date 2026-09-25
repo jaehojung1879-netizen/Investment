@@ -46,6 +46,18 @@ run; a refusal that produced zero rows exits non-zero, so a source refusal
 can never look like a completed collection — the exact defect the
 workflow-hygiene invariants (v2.25) record and fix for the KR investor-flow
 and short-selling collectors.
+
+`--max-calls` IS A HARD CEILING ON `list.json` CALLS, CHECKED BEFORE EVERY
+PAGE. Once pagination could span more than one call per issuer, "N calls"
+stopped meaning "N issuers" — a single high-volume issuer can consume many
+pages on its own. `checked_call` raises `CallBudgetExhausted` before the
+call that would exceed the budget, whether that call is a ticker's first
+page or its fifth; a ticker whose pagination is interrupted this way is
+left in whatever per-ticker state it already had (never `SUCCESS`), so the
+next run retries it rather than treating it as done. The summary this
+script prints always states whether the full work list was exhausted or
+whether tickers remain, and never reports the dataset complete when work
+remains.
 """
 from __future__ import annotations
 
@@ -71,9 +83,25 @@ PACE_SECONDS = 0.3
 STATE_CONTRACT = "KR_CORPORATE_ACTION_DISCLOSURE_FETCH_STATE_V1"
 RAW_CONTRACT = "KR_CORPORATE_ACTION_DISCLOSURE_INDEX_V1"
 
+# A conservative, not a guaranteed, budget: 22 tickers x up to ~10
+# `list.json` pages each (a round number picked because this sandbox has
+# never run against the live API and so has no measured page count for any
+# of the 22 issuers), rounded up. Whether it is enough for any GIVEN run
+# depends on how many disclosures DART actually holds for these issuers --
+# the run's own `tickersRemaining`/`datasetComplete` fields say so, never
+# this constant alone.
+DEFAULT_MAX_CALLS = 250
+DEFAULT_MAX_MINUTES = 30
+
 
 class Refused(RuntimeError):
     pass
+
+
+class CallBudgetExhausted(RuntimeError):
+    """The requested `--max-calls` budget would be exceeded by the next
+    `list.json` call. Raised BEFORE the call is made, never after, so the
+    budget is a hard ceiling this run cannot cross."""
 
 
 def call(path: str, params: dict, timeout: int = 30) -> dict:
@@ -151,11 +179,19 @@ def run(store: Path, *, key: str, inventory_path: Path, max_calls: int,
     written = 0
     stop_reason = "WORK_LIST_EXHAUSTED"
     new_rows: list[dict] = []
+
+    def checked_call(path: str, params: dict) -> dict:
+        # The budget is checked BEFORE the call that would spend it, every
+        # time this is invoked — once per `list.json` page, never once per
+        # ticker. `call_counter["n"]` can therefore never exceed `max_calls`.
+        if call_counter["n"] >= max_calls:
+            raise CallBudgetExhausted(
+                f"{max_calls} call(s) already made; the next call was refused before it ran")
+        call_counter["n"] += 1
+        return call_fn(path, params)
+
     try:
         for ticker, krx_name in securities:
-            if call_counter["n"] >= max_calls:
-                stop_reason = "CALL_BUDGET_SPENT"
-                break
             if time.monotonic() >= deadline:
                 stop_reason = "TIME_BUDGET_SPENT"
                 break
@@ -168,7 +204,8 @@ def run(store: Path, *, key: str, inventory_path: Path, max_calls: int,
             # -> unresolved) rather than a second, weaker "current stock
             # code only" path — see `resolve_historical_dart_identity`'s
             # docstring for why the exact-code-only path is too weak for a
-            # delisted security.
+            # delisted security. Identity resolution reads the already-
+            # fetched directory and spends no call budget.
             identity = KCA.resolve_historical_dart_identity(code, krx_name, directory)
             if identity["status"] != KCA.RESOLVED:
                 ticker_states[ticker] = {"status": "NO_DART_IDENTITY",
@@ -179,8 +216,7 @@ def run(store: Path, *, key: str, inventory_path: Path, max_calls: int,
             corp_code = identity["corpCode"]
 
             def fetch_page(page_no: int, corp_code=corp_code) -> dict:
-                call_counter["n"] += 1
-                return call_fn("list.json", {
+                return checked_call("list.json", {
                     "crtfc_key": key, "corp_code": corp_code, "bgn_de": "20130101",
                     "end_de": time.strftime("%Y%m%d", time.gmtime()),
                     "page_count": "100", "page_no": str(page_no),
@@ -188,6 +224,16 @@ def run(store: Path, *, key: str, inventory_path: Path, max_calls: int,
 
             try:
                 rows, meta = KCA.fetch_all_pages(fetch_page)
+            except CallBudgetExhausted:
+                # The budget ran out partway through this issuer's own
+                # pages (or before its first). Its ticker state is left
+                # exactly as it was on entry — never SUCCESS, never even
+                # PAGINATION_FAILED, which is reserved for a genuine data
+                # inconsistency — so the next run retries it from page 1.
+                # The whole run stops here: the budget is spent for every
+                # remaining ticker too, not just this one.
+                stop_reason = "CALL_BUDGET_SPENT"
+                break
             except KCA.PaginationError as exc:
                 # A partial-page failure must never mark this issuer
                 # complete — its state stays anything but SUCCESS, so the
@@ -215,17 +261,39 @@ def run(store: Path, *, key: str, inventory_path: Path, max_calls: int,
                              list(merged.values()))
     save_state(store, state)
 
+    tickers_requested = len(securities)
+    tickers_succeeded = sum(row.get("status") == "SUCCESS" for row in ticker_states.values())
+    tickers_no_identity = sum(
+        row.get("status") == "NO_DART_IDENTITY" for row in ticker_states.values())
+    tickers_pagination_failed = sum(
+        row.get("status") == "PAGINATION_FAILED" for row in ticker_states.values())
+    # Requested minus every ticker this run (or an earlier one) actually
+    # reached a terminal state for: never attempted because the call or
+    # time budget ran out before this run got to it.
+    tickers_remaining = (tickers_requested - tickers_succeeded
+                        - tickers_no_identity - tickers_pagination_failed)
+    full_work_list_exhausted = stop_reason == "WORK_LIST_EXHAUSTED"
+    dataset_complete = full_work_list_exhausted and tickers_remaining == 0
+
     outcome = CO.run_outcome(stop_reason=stop_reason, calls=calls, written=written)
     return {
         "contract": RAW_CONTRACT, "stopReason": stop_reason, "outcome": outcome,
-        "calls": calls, "written": written, "shardChanged": changed,
+        "calls": calls, "callBudget": max_calls, "written": written, "shardChanged": changed,
         "totalDisclosures": len(merged),
-        "tickersRequested": len(securities),
-        "tickersSucceeded": sum(row.get("status") == "SUCCESS" for row in ticker_states.values()),
-        "tickersWithNoDartIdentity": sum(
-            row.get("status") == "NO_DART_IDENTITY" for row in ticker_states.values()),
-        "tickersWithPaginationFailure": sum(
-            row.get("status") == "PAGINATION_FAILED" for row in ticker_states.values()),
+        "tickersRequested": tickers_requested,
+        "tickersSucceeded": tickers_succeeded,
+        "tickersWithNoDartIdentity": tickers_no_identity,
+        "tickersWithPaginationFailure": tickers_pagination_failed,
+        "tickersRemaining": tickers_remaining,
+        "fullWorkListExhausted": full_work_list_exhausted,
+        "datasetComplete": dataset_complete,
+        "operatorMessage": (
+            "All requested tickers reached a terminal state (collected, "
+            "identity-unresolved, or pagination-failed)." if dataset_complete else
+            f"INCOMPLETE: {tickers_remaining} of {tickers_requested} ticker(s) were never "
+            f"attempted this run (stopped: {stop_reason}). This is resumable partial "
+            "progress, not a finished collection — re-run this workflow with the same "
+            "--inventory to continue from where it stopped."),
     }
 
 
@@ -235,8 +303,17 @@ def main(argv=None) -> int:
     parser.add_argument(
         "--inventory", type=Path,
         default=ROOT / "docs/results/kr-termination-inventory.json")
-    parser.add_argument("--max-calls", type=int, default=30)
-    parser.add_argument("--max-minutes", type=int, default=30)
+    parser.add_argument(
+        "--max-calls", type=int, default=DEFAULT_MAX_CALLS,
+        help="Hard ceiling on list.json API calls THIS RUN may make, checked before "
+            "every page request (not once per ticker) -- a single issuer's disclosure "
+            "history can span many pages, so this is a call budget, not a ticker count "
+            "and not a promise that every requested ticker will finish. If the run "
+            "stops with tickers remaining, it is resumable: re-run with the same "
+            "--inventory and already-completed tickers are skipped.")
+    parser.add_argument(
+        "--max-minutes", type=int, default=DEFAULT_MAX_MINUTES,
+        help="Wall-clock safety limit, independent of --max-calls.")
     args = parser.parse_args(argv)
 
     key = os.environ.get("DART_API_KEY", "").strip()
@@ -249,9 +326,13 @@ def main(argv=None) -> int:
                     max_calls=args.max_calls, max_minutes=args.max_minutes)
     except Refused as exc:
         print(f"REFUSED before any progress: {exc}")
-        report = {"outcome": CO.classify_refusal(str(exc)), "calls": 0, "written": 0}
+        report = {"outcome": CO.classify_refusal(str(exc)), "calls": 0, "written": 0,
+                  "datasetComplete": False,
+                  "operatorMessage": "No progress was made this run; re-run once the "
+                                     "refusal's cause is resolved."}
 
     print(json.dumps(report, indent=2, sort_keys=True, ensure_ascii=False))
+    print(f"\n{report.get('operatorMessage', '')}")
     if CO.is_reportable_failure(report["outcome"], written=report["written"]):
         print(f"\nFAIL: {report['outcome']} with zero rows written this run.")
         return 1

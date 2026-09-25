@@ -1319,6 +1319,26 @@
   dependency closure, and even an additive edit to it raises
   `SEALED_DEPENDENCY_CHANGED` on v1's next load — reuse without ever
   touching a sealed file's bytes.
+- A CALL BUDGET CHECKED ONCE PER TICKER IS NOT A CALL BUDGET ONCE
+  PAGINATION EXISTS. `--max-calls 30`, described as "enough for all 22
+  securities", stopped being true the moment a ticker could span more than
+  one `list.json` page — the budget was checked before each TICKER, not
+  each PAGE, so a single high-volume issuer could spend past the requested
+  ceiling before the next check ever ran. `checked_call` in
+  `collect_kr_corporate_actions.py` now checks the budget before every
+  call, ticker-first-page or later page alike, and raises
+  `CallBudgetExhausted` before the call that would cross it — `calls` can
+  therefore never exceed `max_calls`. A ticker interrupted mid-pagination
+  this way is left exactly as it was on entry, never `SUCCESS`, so it
+  restarts from page 1 next run rather than resuming a partial page count;
+  a ticker completed by an EARLIER run is preserved and never re-queried.
+  The default rose from 30 to 250 — a conservative, explicitly
+  NOT-guaranteed estimate (22 tickers × up to ~10 pages, a round number
+  with no measured basis, since this sandbox has never run against the
+  live API) — and every run reports `tickersRemaining`,
+  `fullWorkListExhausted` and `datasetComplete` so a budget-truncated run
+  can never be read as a finished one; `operatorMessage` says so in prose
+  and tells the operator to re-run the same workflow.
 - MEMBERSHIP IN THE TOP-120 RESEARCH UNIVERSE AND A SECURITY'S OWN TRADING
   LIFE ARE DIFFERENT FACTS, MEASURED SEPARATELY. Several of the 22
   securities' last top-120 KRX snapshot date falls years before their last
