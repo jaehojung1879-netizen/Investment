@@ -1164,29 +1164,45 @@
   THE FIRST DEFINES ALPHA. v3's alpha layer classifies a name
   `POSITIVE_EXPECTED_ALPHA` iff `expectedNetAlpha > 0` against the benchmark's
   0, nothing else. v2 also required `P(net alpha > 0) > 0.5` and bootstrap
-  lower bounds above the outside option. Those are a payoff-SHAPE reading (P >
-  0.5 iff the predicted median is positive) and an ESTIMATION-confidence
-  reading, and made hurdles they hide a risk preference inside the alpha
-  definition: 40% x +30% / 60% x -8% has positive expectation and a negative
-  median. Both readings are published beside the class and can never change
-  it. The loader refuses any probability/lower-bound hurdle, Top-N, quota,
+  lower bounds above the outside option. Those are an OUTPERFORMANCE-
+  PROBABILITY reading and an ESTIMATION-confidence reading, and made hurdles
+  they hide a risk preference inside the alpha definition: 40% x +30% / 60% x
+  -8% has positive expectation and a probability of beating the benchmark
+  below one half. Both readings are published beside the class and can never
+  change it.
+- A PROBABILITY FROM ONE MODEL IS NOT A QUANTILE OF ANOTHER. The probability
+  head is a separately fitted Logistic model and the expected-return head is
+  Ridge; they are not one coherent predictive distribution, so
+  `probabilityNetOutperform > 0.5` is never described as a positive median.
+  The descriptive states are named for exactly what is known
+  (`EXPECTATION_{POSITIVE|NOT_POSITIVE}_OUTPERFORM_PROBABILITY_{ABOVE|NOT_ABOVE}_HALF`). The loader refuses any probability/lower-bound hurdle, Top-N, quota,
   invested fraction or sizing parameter with a value.
 - A FITTED-VALUE INTERVAL IS NOT A RETURN INTERVAL. `prediction_uncertainty`
   quantiles REFITTED predictions (sampling uncertainty of the conditional
   mean); `matured_residual_scale` is realised-minus-predicted RMS over past
   matured OOF predictions (predictive dispersion). They are labelled as such on
   every record and neither is a veto.
+- IDENTITY IS RESOLVED BEFORE SURVIVORSHIP IS MEASURED, AND ONLY ON EVIDENCE.
+  The pinned US membership carries two upstream data errors in the Symbol
+  column (`American Airlines Group`, commit 9217bee; `RVTY (Previously PKI)`,
+  commit a9ae84a); they explain every count difference between v2 (829/194)
+  and v3's first seal (828/195), and resolve to AAL/RVTY only by a
+  bracketing-snapshot rule. Symbols are joined only on SAME_CIK (never
+  co-listed), an explicit "(Previously X)" annotation, or an identical name at
+  the exact switch — 14 verified renames; an acquirer, a reused ticker's later
+  issuer or an unverifiable pre-2023 rename (the upstream file has CIK only from
+  2023-04-13) is never joined. The corrected count is stricter: 195 - 1 - 11 +
+  29 reused-symbol panels = 212 departed identities without usable history.
 - MISSINGNESS THAT FALLS ONLY ON DEPARTED NAMES IS NOT A SHARE TO TOLERATE.
-  Measured from sealed identities (no return read): all 195 US no-panel names
-  are departed and 0 of 503 current members are; 0 of 633 priced US panels ever
-  stops trading, so the US sample contains no failed or acquired company at
-  all; 30 priced symbols are not the member's own history (reuse: FB, LB, STI,
-  APC, NFX, ...). The departed-only share declines smoothly (27.1% in 2013 to
-  0.65% in 2026) and is never zero, so no cutoff is structural — any would be a
-  tolerance. v2's reuse of the 20% `HISTORICAL_UNIVERSE_GAP_TOLERANCE_PCT`,
+  Measured from sealed identities (no return read): 212 of 324 departed US
+  identities and 0 of 503 current ones lack usable history; 0 priced US panels
+  ever stop trading, so the US sample contains no failed or acquired company
+  at all; 181 departed exits cannot be established from sealed evidence. The
+  departed-only share declines smoothly (30.32% in 2013 to 0.54% in 2026) and
+  is never zero, so no cutoff is structural — any would be a tolerance. v2's reuse of the 20% `HISTORICAL_UNIVERSE_GAP_TOLERANCE_PCT`,
   built for a different gate, is withdrawn.
 - ENDPOINT STRESS IS NOT TRAINING-SURVIVORSHIP REPAIR, AND HERE IT WAS VACUOUS.
-  US tradable member-dates have 0 missing forward endpoints (296,768 / 285,810
+  US tradable member-dates have 0 missing forward endpoints (301,714 / 290,710
   at 21/126 sessions): the absent companies never entered the sample, so a
   bound on sampled names' endpoints had nothing to act on. Sample survivorship
   and endpoint survivorship are audited separately, in both regions.
@@ -1196,13 +1212,21 @@
   against 215 of 238 continuing names: Yahoo distributions do not serve
   delisted KR tickers, so exactly the names that later leave are on a
   price-return basis against a total-return benchmark (3.74% of tradable
-  member-dates). Repairable by a sealed DART dividend build; not repaired here.
+  member-dates). Dividends alone do not repair it: all 22 terminations are
+  `TERMINATION_TYPE_UNRESOLVED` and their terminal consideration (merger,
+  share exchange, tender, delisting) is unsealed. Both are data-foundation
+  builds in `docs/alpha-opportunity-v3-data-repair-plan.md`, not repaired here.
+- A BLOCKED VERSION IS NEVER UNBLOCKED IN PLACE. v3 stays
+  `BLOCKED_BY_DATA_INTEGRITY` whatever repair lands later; repaired inputs
+  are sealed by separate data-foundation work and only a new v4
+  preregistration, re-audited with v3's rules before any outcome, may be
+  `READY_FOR_HISTORICAL_EXECUTION`.
 - A SEAL PINS THE COMPUTED CLOSURE, NOT A HAND LIST. v2 sealed 51 files
   including `kelly_portfolio`, `longterm`, `replay_valuation`, `selection_null`
   through one lazy `portfolio_validation` import (for a 15-line cost lookup)
   and `regional_alpha_features -> historical_replay`. v3 recomputes the
   top-level-and-lazy import closure of its entry points on every load and
-  requires the sealed set to equal it plus declared data inputs (21 files): a
+  requires the sealed set to equal it plus declared data inputs (25 files): a
   new import raises `DEPENDENCY_CLOSURE_CHANGED`, an edited sealed file raises
   `SEALED_DEPENDENCY_CHANGED`, and unrelated production edits change nothing.
 - A BLOCKED STUDY HAS NO EXECUTION BUTTON. v3 is `BLOCKED_BY_DATA_INTEGRITY`,

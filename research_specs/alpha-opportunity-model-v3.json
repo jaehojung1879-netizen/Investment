@@ -7,7 +7,9 @@
   "lineage": {
     "alpha-opportunity-model-v1": "first opportunity preregistration; BLOCKED_PREREGISTRATION; never executed",
     "alpha-opportunity-model-v2": "benchmark-as-outside-option redesign; sealed READY; never historically executed; superseded before any outcome by the three defects v3 records",
-    "alpha-opportunity-model-v3": "separates expected value from probability and confidence; audits survivorship in both regions; seals only the computed execution closure"
+    "alpha-opportunity-model-v3": "separates expected value from probability and confidence; audits identity and survivorship in both regions; seals only the computed execution closure; BLOCKED_BY_DATA_INTEGRITY",
+    "data-foundation repair": "separate work: docs/alpha-opportunity-v3-data-repair-plan.md",
+    "alpha-opportunity-model-v4": "the only version that may become READY_FOR_HISTORICAL_EXECUTION, as a new preregistration over repaired, sealed inputs re-audited with v3's rules; no outcome is read before it is sealed"
   },
   "priorVersions": [
     {
@@ -22,7 +24,7 @@
     }
   ],
   "whyV3": {
-    "A_hiddenHurdles": "v2 required P(net alpha > 0) > 0.5 and bootstrap lower bounds above the outside option for ACTIVE_OPPORTUNITY; expected value can be positive with a negative median and with an estimation interval spanning zero, so those were hurdles on existence, not the outside-option comparison",
+    "A_hiddenHurdles": "v2 required P(net alpha > 0) > 0.5 and bootstrap lower bounds above the outside option for ACTIVE_OPPORTUNITY; expected value can be positive while the probability of beating the benchmark is below one half, and while the fitted-value interval spans zero, so those were hurdles on existence, not the outside-option comparison",
     "B_survivorship": "v2 treated the US gap as a missingness share under a 20% tolerance and bounded forward endpoints; the input-only audit shows the US sample contains no security that ever terminated and every missing member is a departed one, so no tolerance or endpoint bound addresses it",
     "C_closure": "v2's dependencyHashes pinned 51 files incl. kelly_portfolio, longterm, replay_valuation, selection_null via lazy imports of portfolio_validation and via regional_alpha_features -> historical_replay; unrelated production edits would strand v2"
   },
@@ -59,13 +61,14 @@
     ],
     "probability": {
       "field": "probabilityNetOutperform",
-      "meaning": "P(R_i - R_b - cost > 0); > 0.5 iff the predicted median net alpha is positive",
+      "meaning": "P(R_i - R_b - cost > 0) from the separately fitted Logistic head",
+      "notA": "median or any quantile of the Ridge head's prediction: the two heads are separate models, not one coherent predictive distribution",
       "role": "DESCRIPTIVE_ONLY_NEVER_A_VETO",
       "states": [
-        "EXPECTATION_POSITIVE_MEDIAN_POSITIVE",
-        "EXPECTATION_POSITIVE_MEDIAN_NOT_POSITIVE",
-        "EXPECTATION_NOT_POSITIVE_MEDIAN_POSITIVE",
-        "EXPECTATION_NOT_POSITIVE_MEDIAN_NOT_POSITIVE",
+        "EXPECTATION_POSITIVE_OUTPERFORM_PROBABILITY_ABOVE_HALF",
+        "EXPECTATION_POSITIVE_OUTPERFORM_PROBABILITY_NOT_ABOVE_HALF",
+        "EXPECTATION_NOT_POSITIVE_OUTPERFORM_PROBABILITY_ABOVE_HALF",
+        "EXPECTATION_NOT_POSITIVE_OUTPERFORM_PROBABILITY_NOT_ABOVE_HALF",
         "PROBABILITY_UNAVAILABLE"
       ]
     },
@@ -305,7 +308,7 @@
     "B_ordering": "equal-date rank IC lower > 0; within-date slope lower > 0",
     "C_probability": "Brier and log-loss improvement over training prevalence (net label) lower > 0; pooled date-balanced ECE upper <= 0.05 (v2 simulated null recorded in v2 spec)",
     "D_positiveExpectedAlphaRegion": "on dates with >= 1 POSITIVE_EXPECTED_ALPHA name: date-mean realised net relative return of those names lower > 0 (the outside-option test) AND same-date spread over non-positive names lower > 0 (lesser of level and spread); plus, disclosed not gated, realised-on-predicted slope inside the positive region and realised means by within-date terciles of predicted expectedNetAlpha among positive names (terciles fixed from predictions alone); no predicted-alpha threshold other than 0 is ever evaluated",
-    "D_disclosedBesideNotGating": "D recomputed separately for EXPECTATION_POSITIVE_MEDIAN_NOT_POSITIVE and FITTED_INTERVAL_SPANS_OUTSIDE_OPTION subsets, descriptive only",
+    "D_disclosedBesideNotGating": "D recomputed separately for EXPECTATION_POSITIVE_OUTPERFORM_PROBABILITY_NOT_ABOVE_HALF and FITTED_INTERVAL_SPANS_OUTSIDE_OPTION subsets, descriptive only",
     "E_stability": "annual folds >= 70% jointly positive (rank IC, Brier, MSE); D point estimate positive in each chronological half; regions separate, never pooled; no other subgroup",
     "dependence": "moving blocks of 26 whole weekly dates, 2000 draws, seed 42, 98.75% intervals over four region x horizon claims",
     "verdicts": [
@@ -321,6 +324,9 @@
   "survivorship": {
     "audit": "docs/results/alpha-opportunity-model-v3-survivorship-audit.json",
     "auditInputs": {
+      "corporateActions": [
+        "ESRX"
+      ],
       "krUniverseShardBlobSha1": {
         "ledger/universe/kr/krx-universe-2013.jsonl.gz": "e711a6c5e07c89e9b0cf12a94078120ceeb3b9a4",
         "ledger/universe/kr/krx-universe-2014.jsonl.gz": "395477e6dd72c117615919f850173d2830b2cc1f",
@@ -355,6 +361,14 @@
       "replayVersion": "replay-v16",
       "signalHistoryCommit": "4ea107ed0cde289f0a049a65ff13d2441a786710",
       "through": "2026-09-14",
+      "usIdentityEvidence": {
+        "firstSnapshotWithCik": "2023-04-13",
+        "path": "research_specs/alpha-opportunity-model-v3-us-identity-evidence.json.gz",
+        "ref": "3b2bb60e6269439cd75541eded6281c48e7681d1",
+        "reproducesPinnedMembers": true,
+        "sha256": "b10f9ca163ce2b20fb408be7d70dfb107875c7fcccccec49eb17fd96f2ebf220",
+        "upstream": "https://github.com/datasets/s-and-p-500-companies"
+      },
       "usMembership": {
         "path": "research_specs/alpha-opportunity-model-v1-us-membership.json.gz",
         "sha256": "397b27270255d7a14a36d075a3e2889129d9351d817420614c8ccd289d74c30f"
@@ -365,7 +379,353 @@
       "a sample that never observes a security terminating contains no failed or acquired company",
       "terminated names must carry the same total-return basis as survivors",
       "a restricted window is admissible only if it is clean on the same rules in every year it covers; a smoothly declining share offers a tolerance, not a cutoff",
-      "endpoint stress acts on names in the sample and never repairs training survivorship"
+      "endpoint stress acts on names in the sample and never repairs training survivorship",
+      "a departed symbol with no usable panel whose exit is not established by sealed evidence is an unresolved identity"
+    ],
+    "identity": {
+      "module": "pipeline/alpha_opportunity_v3_identity.py",
+      "evidence": "research_specs/alpha-opportunity-model-v3-us-identity-evidence.json.gz (Symbol/name/CIK at every pinned upstream commit; reproduces the pinned member lists exactly)",
+      "joinBases": [
+        "SAME_CIK (never co-listed; successor present at the exit snapshot)",
+        "PREVIOUSLY_ANNOTATION",
+        "IDENTICAL_NAME (at the exact exit snapshot, never co-listed)"
+      ],
+      "malformedRule": "resolved to T only if T is absent where the key sits, present in both neighbouring snapshots, and named by the key; otherwise IDENTITY_UNRESOLVED",
+      "never": [
+        "an acquired or delisted company priced from its acquirer",
+        "a reused ticker's later panel priced as the old member",
+        "a join without one of the three bases"
+      ],
+      "usCategoryCounts": {
+        "ACQUIRED_OR_MERGED_TERMINATED": 1,
+        "CURRENT_MEMBER_OWN_PANEL": 496,
+        "CURRENT_MEMBER_PANEL_LATE_START": 7,
+        "DEPARTED_NO_PANEL_REASON_UNRESOLVED": 181,
+        "PANEL_PARTIAL_OWN_HISTORY": 2,
+        "REMOVED_FROM_INDEX_STILL_TRADING": 97,
+        "SAME_SECURITY_RENAME": 14,
+        "TICKER_REUSE_DIFFERENT_ISSUER": 29
+      },
+      "usMalformedKeys": {
+        "American Airlines Group": {
+          "category": "IDENTIFIER_MALFORMED_RESOLVED",
+          "reachableFromGrid": true,
+          "resolvedTo": "AAL",
+          "snapshots": [
+            "2021-03-11"
+          ]
+        },
+        "RVTY (Previously PKI)": {
+          "category": "IDENTIFIER_MALFORMED_RESOLVED",
+          "reachableFromGrid": false,
+          "resolvedTo": "RVTY",
+          "snapshots": [
+            "2023-12-31"
+          ]
+        }
+      },
+      "usRenames": {
+        "BK": {
+          "basis": "SAME_CIK",
+          "pricedBy": "BNY",
+          "successor": "BNY"
+        },
+        "CBG": {
+          "basis": "IDENTICAL_NAME",
+          "pricedBy": "CBRE",
+          "successor": "CBRE"
+        },
+        "CDAY": {
+          "basis": "SAME_CIK",
+          "pricedBy": null,
+          "successor": "DAY"
+        },
+        "EQR": {
+          "basis": "SAME_CIK",
+          "pricedBy": "VMRK",
+          "successor": "VMRK"
+        },
+        "FI": {
+          "basis": "SAME_CIK",
+          "pricedBy": "FISV",
+          "successor": "FISV"
+        },
+        "HCN": {
+          "basis": "IDENTICAL_NAME",
+          "pricedBy": "WELL",
+          "successor": "WELL"
+        },
+        "JEC": {
+          "basis": "IDENTICAL_NAME",
+          "pricedBy": "J",
+          "successor": "J"
+        },
+        "LB": {
+          "basis": "IDENTICAL_NAME",
+          "pricedBy": "BBWI",
+          "successor": "BBWI"
+        },
+        "MMC": {
+          "basis": "SAME_CIK",
+          "pricedBy": "MRSH",
+          "successor": "MRSH"
+        },
+        "PEAK": {
+          "basis": "SAME_CIK",
+          "pricedBy": "DOC",
+          "successor": "DOC"
+        },
+        "PKI": {
+          "basis": "SAME_CIK",
+          "pricedBy": "RVTY",
+          "successor": "RVTY"
+        },
+        "RE": {
+          "basis": "SAME_CIK",
+          "pricedBy": "EG",
+          "successor": "EG"
+        },
+        "SATS": {
+          "basis": "SAME_CIK",
+          "pricedBy": "ECHO",
+          "successor": "ECHO"
+        },
+        "WLTW": {
+          "basis": "IDENTICAL_NAME",
+          "pricedBy": "WTW",
+          "successor": "WTW"
+        }
+      },
+      "usCountReconciliation": {
+        "auditNoPanel": 212,
+        "equals": 212,
+        "firstSealNoPanel": 195,
+        "minusRenamesPricedThroughSuccessor": [
+          "BK",
+          "CBG",
+          "FI",
+          "HCN",
+          "JEC",
+          "MMC",
+          "PEAK",
+          "PKI",
+          "RE",
+          "SATS",
+          "WLTW"
+        ],
+        "minusResolvedMalformedKeys": [
+          "American Airlines Group"
+        ],
+        "plusSymbolsWhosePanelBelongsToALaterSecurity": [
+          "ACT",
+          "ADT",
+          "APC",
+          "BBBY",
+          "BEAM",
+          "BTU",
+          "CAM",
+          "CSRA",
+          "DV",
+          "EA",
+          "EMC",
+          "FB",
+          "INFO",
+          "LEG",
+          "LIFE",
+          "NE",
+          "NFX",
+          "NU",
+          "PCL",
+          "PCLN",
+          "PCS",
+          "POM",
+          "S",
+          "SBNY",
+          "SE",
+          "SHLD",
+          "SPLS",
+          "STI",
+          "TE"
+        ]
+      }
+    },
+    "krTerminations": [
+      {
+        "code": "000030.KS",
+        "dividendEvents": 0,
+        "krxName": "우리은행",
+        "lastSession": "2019-02-12",
+        "resolveWith": "DART 주요사항보고서 (합병/주식교환·이전/분할합병/영업양수도 결정), 공개매수 신고, 상장폐지 관련 공시, and 현금·현물배당결정 for distributions",
+        "terminationType": "TERMINATION_TYPE_UNRESOLVED"
+      },
+      {
+        "code": "000060.KS",
+        "dividendEvents": 0,
+        "krxName": "메리츠화재",
+        "lastSession": "2023-02-20",
+        "resolveWith": "DART 주요사항보고서 (합병/주식교환·이전/분할합병/영업양수도 결정), 공개매수 신고, 상장폐지 관련 공시, and 현금·현물배당결정 for distributions",
+        "terminationType": "TERMINATION_TYPE_UNRESOLVED"
+      },
+      {
+        "code": "000830.KS",
+        "dividendEvents": 0,
+        "krxName": "삼성물산",
+        "lastSession": "2015-09-14",
+        "resolveWith": "DART 주요사항보고서 (합병/주식교환·이전/분할합병/영업양수도 결정), 공개매수 신고, 상장폐지 관련 공시, and 현금·현물배당결정 for distributions",
+        "terminationType": "TERMINATION_TYPE_UNRESOLVED"
+      },
+      {
+        "code": "001300.KS",
+        "dividendEvents": 0,
+        "krxName": "제일모직",
+        "lastSession": "2014-07-14",
+        "resolveWith": "DART 주요사항보고서 (합병/주식교환·이전/분할합병/영업양수도 결정), 공개매수 신고, 상장폐지 관련 공시, and 현금·현물배당결정 for distributions",
+        "terminationType": "TERMINATION_TYPE_UNRESOLVED"
+      },
+      {
+        "code": "002550.KS",
+        "dividendEvents": 0,
+        "krxName": "KB손해보험",
+        "lastSession": "2017-07-20",
+        "resolveWith": "DART 주요사항보고서 (합병/주식교환·이전/분할합병/영업양수도 결정), 공개매수 신고, 상장폐지 관련 공시, and 현금·현물배당결정 for distributions",
+        "terminationType": "TERMINATION_TYPE_UNRESOLVED"
+      },
+      {
+        "code": "003410.KS",
+        "dividendEvents": 0,
+        "krxName": "쌍용C&E",
+        "lastSession": "2024-07-08",
+        "resolveWith": "DART 주요사항보고서 (합병/주식교환·이전/분할합병/영업양수도 결정), 공개매수 신고, 상장폐지 관련 공시, and 현금·현물배당결정 for distributions",
+        "terminationType": "TERMINATION_TYPE_UNRESOLVED"
+      },
+      {
+        "code": "003450.KS",
+        "dividendEvents": 0,
+        "krxName": "현대증권",
+        "lastSession": "2016-10-31",
+        "resolveWith": "DART 주요사항보고서 (합병/주식교환·이전/분할합병/영업양수도 결정), 공개매수 신고, 상장폐지 관련 공시, and 현금·현물배당결정 for distributions",
+        "terminationType": "TERMINATION_TYPE_UNRESOLVED"
+      },
+      {
+        "code": "003600.KS",
+        "dividendEvents": 0,
+        "krxName": "SK",
+        "lastSession": "2015-08-13",
+        "resolveWith": "DART 주요사항보고서 (합병/주식교환·이전/분할합병/영업양수도 결정), 공개매수 신고, 상장폐지 관련 공시, and 현금·현물배당결정 for distributions",
+        "terminationType": "TERMINATION_TYPE_UNRESOLVED"
+      },
+      {
+        "code": "004940.KS",
+        "dividendEvents": 0,
+        "krxName": "외환은행",
+        "lastSession": "2013-04-25",
+        "resolveWith": "DART 주요사항보고서 (합병/주식교환·이전/분할합병/영업양수도 결정), 공개매수 신고, 상장폐지 관련 공시, and 현금·현물배당결정 for distributions",
+        "terminationType": "TERMINATION_TYPE_UNRESOLVED"
+      },
+      {
+        "code": "008560.KS",
+        "dividendEvents": 0,
+        "krxName": "메리츠증권",
+        "lastSession": "2023-04-24",
+        "resolveWith": "DART 주요사항보고서 (합병/주식교환·이전/분할합병/영업양수도 결정), 공개매수 신고, 상장폐지 관련 공시, and 현금·현물배당결정 for distributions",
+        "terminationType": "TERMINATION_TYPE_UNRESOLVED"
+      },
+      {
+        "code": "010520.KS",
+        "dividendEvents": 0,
+        "krxName": "현대하이스코",
+        "lastSession": "2015-07-14",
+        "resolveWith": "DART 주요사항보고서 (합병/주식교환·이전/분할합병/영업양수도 결정), 공개매수 신고, 상장폐지 관련 공시, and 현금·현물배당결정 for distributions",
+        "terminationType": "TERMINATION_TYPE_UNRESOLVED"
+      },
+      {
+        "code": "010620.KS",
+        "dividendEvents": 0,
+        "krxName": "HD현대미포",
+        "lastSession": "2025-12-12",
+        "resolveWith": "DART 주요사항보고서 (합병/주식교환·이전/분할합병/영업양수도 결정), 공개매수 신고, 상장폐지 관련 공시, and 현금·현물배당결정 for distributions",
+        "terminationType": "TERMINATION_TYPE_UNRESOLVED"
+      },
+      {
+        "code": "011160.KS",
+        "dividendEvents": 0,
+        "krxName": "두산건설",
+        "lastSession": "2020-03-23",
+        "resolveWith": "DART 주요사항보고서 (합병/주식교환·이전/분할합병/영업양수도 결정), 공개매수 신고, 상장폐지 관련 공시, and 현금·현물배당결정 for distributions",
+        "terminationType": "TERMINATION_TYPE_UNRESOLVED"
+      },
+      {
+        "code": "012510.KS",
+        "dividendEvents": 0,
+        "krxName": "더존비즈온",
+        "lastSession": "2026-07-14",
+        "resolveWith": "DART 주요사항보고서 (합병/주식교환·이전/분할합병/영업양수도 결정), 공개매수 신고, 상장폐지 관련 공시, and 현금·현물배당결정 for distributions",
+        "terminationType": "TERMINATION_TYPE_UNRESOLVED"
+      },
+      {
+        "code": "037620.KS",
+        "dividendEvents": 0,
+        "krxName": "미래에셋증권",
+        "lastSession": "2017-01-19",
+        "resolveWith": "DART 주요사항보고서 (합병/주식교환·이전/분할합병/영업양수도 결정), 공개매수 신고, 상장폐지 관련 공시, and 현금·현물배당결정 for distributions",
+        "terminationType": "TERMINATION_TYPE_UNRESOLVED"
+      },
+      {
+        "code": "042670.KS",
+        "dividendEvents": 0,
+        "krxName": "HD현대인프라코어",
+        "lastSession": "2026-01-23",
+        "resolveWith": "DART 주요사항보고서 (합병/주식교환·이전/분할합병/영업양수도 결정), 공개매수 신고, 상장폐지 관련 공시, and 현금·현물배당결정 for distributions",
+        "terminationType": "TERMINATION_TYPE_UNRESOLVED"
+      },
+      {
+        "code": "053000.KS",
+        "dividendEvents": 0,
+        "krxName": "우리금융",
+        "lastSession": "2014-11-18",
+        "resolveWith": "DART 주요사항보고서 (합병/주식교환·이전/분할합병/영업양수도 결정), 공개매수 신고, 상장폐지 관련 공시, and 현금·현물배당결정 for distributions",
+        "terminationType": "TERMINATION_TYPE_UNRESOLVED"
+      },
+      {
+        "code": "057050.KS",
+        "dividendEvents": 0,
+        "krxName": "현대홈쇼핑",
+        "lastSession": "2026-07-16",
+        "resolveWith": "DART 주요사항보고서 (합병/주식교환·이전/분할합병/영업양수도 결정), 공개매수 신고, 상장폐지 관련 공시, and 현금·현물배당결정 for distributions",
+        "terminationType": "TERMINATION_TYPE_UNRESOLVED"
+      },
+      {
+        "code": "067250.KS",
+        "dividendEvents": 0,
+        "krxName": "STX조선해양",
+        "lastSession": "2014-04-14",
+        "resolveWith": "DART 주요사항보고서 (합병/주식교환·이전/분할합병/영업양수도 결정), 공개매수 신고, 상장폐지 관련 공시, and 현금·현물배당결정 for distributions",
+        "terminationType": "TERMINATION_TYPE_UNRESOLVED"
+      },
+      {
+        "code": "079440.KS",
+        "dividendEvents": 0,
+        "krxName": "오렌지라이프",
+        "lastSession": "2020-02-13",
+        "resolveWith": "DART 주요사항보고서 (합병/주식교환·이전/분할합병/영업양수도 결정), 공개매수 신고, 상장폐지 관련 공시, and 현금·현물배당결정 for distributions",
+        "terminationType": "TERMINATION_TYPE_UNRESOLVED"
+      },
+      {
+        "code": "115390.KS",
+        "dividendEvents": 0,
+        "krxName": "락앤락",
+        "lastSession": "2024-12-06",
+        "resolveWith": "DART 주요사항보고서 (합병/주식교환·이전/분할합병/영업양수도 결정), 공개매수 신고, 상장폐지 관련 공시, and 현금·현물배당결정 for distributions",
+        "terminationType": "TERMINATION_TYPE_UNRESOLVED"
+      },
+      {
+        "code": "117930.KS",
+        "dividendEvents": 0,
+        "krxName": "한진해운",
+        "lastSession": "2017-03-06",
+        "resolveWith": "DART 주요사항보고서 (합병/주식교환·이전/분할합병/영업양수도 결정), 공개매수 신고, 상장폐지 관련 공시, and 현금·현물배당결정 for distributions",
+        "terminationType": "TERMINATION_TYPE_UNRESOLVED"
+      }
     ],
     "regions": {
       "US": {
@@ -373,16 +733,21 @@
         "defects": [
           "MISSINGNESS_CONCENTRATED_IN_DEPARTED_MEMBERS",
           "PANEL_SYMBOL_NOT_MEMBER_HISTORY",
+          "EXIT_IDENTITY_UNRESOLVED",
           "NO_TERMINATED_SECURITY_IN_SAMPLE"
         ],
         "facts": {
-          "membershipUnion": 828,
-          "departed": 325,
-          "noPanelNames": 195,
-          "noPanelDeparted": 195,
-          "noPanelCurrent": 0,
-          "panelNotOwnHistoryNames": 30,
-          "departedWithOwnHistory": 100,
+          "membershipUnion": 827,
+          "departed": 324,
+          "rawAllSnapshotUnion": 829,
+          "rawGridReachableUnion": 828,
+          "noUsablePanelNames": 212,
+          "noUsablePanelDeparted": 212,
+          "noUsablePanelCurrent": 0,
+          "panelPostdatesMembershipNames": 30,
+          "departedPricedByOwnHistory": 99,
+          "departedPricedViaVerifiedRename": 13,
+          "departedExitIdentityUnresolved": 181,
           "terminatedSecuritiesInPanel": 0,
           "missingForwardEndpoints": {
             "126": 0,
@@ -419,7 +784,7 @@
           },
           "membershipSnapshotMaxGapDays": 61
         },
-        "repair": "REPAIRABLE_BY_A_DATA_FOUNDATION_BUILD: dividends for the 22 terminated issuers from DART (same vendor, key and receipt-date PIT mechanism already used for fundamentals), sealed before any outcome; terminal consideration for share swaps also unmodelled",
+        "repair": "REPAIRABLE_BY_A_DATA_FOUNDATION_BUILD (docs/alpha-opportunity-v3-data-repair-plan.md): dividends with ex-dates for the 22 terminated issuers from DART, validated first on continuing names Yahoo serves; AND each termination classified from DART (merger, share exchange/transfer, tender/cash-out, delisting) with its terminal consideration sealed; all 22 are TERMINATION_TYPE_UNRESOLVED today",
         "restrictedWindow": {
           "cleanYears": [
             "2013",
@@ -459,6 +824,13 @@
     },
     "endpointStressIsNotTrainingRepair": true
   },
+  "blockerReassessment": {
+    "US_DELISTED_MEMBER_HISTORY_ABSENT": "STILL_APPLIES after identity cleanup: 0 terminated securities in the panel; 212 departed identities without usable history (181 exit unresolved, 29 reused symbols, ESRX acquired, CDAY->DAY without panel); 0 current",
+    "US_PANEL_SYMBOL_IDENTITY_UNVERIFIED": "STILL_APPLIES, narrowed: 2 malformed keys resolved, 14 renames verified and priced through successors, 29 reused symbols detected and never used; but panels are keyed by bare ticker, the upstream file carries CIK only from 2023-04-13, and 7 current symbols' panels start after their membership began",
+    "US_NO_STRUCTURAL_RESTRICTED_WINDOW": "STILL_APPLIES: departed-only no-usable-panel share 30.32% (2013) to 0.54% (2026), nonzero every year",
+    "US_EXIT_IDENTITY_UNRESOLVED": "NEW: 181 departed symbols whose exit (rename, merger, acquisition, delisting) cannot be established from sealed evidence",
+    "earlierMeasurementArtifacts": "v3's first seal counted the malformed key 'American Airlines Group' as a departed security and counted reused-symbol panels as priced; the corrected counts are stricter, not looser, and the conclusion is unchanged"
+  },
   "scope": "a conservative baseline opportunity model; not a test of fundamental state x change x liquidity shock x price leadership x investor flow x event context interactions; its failure or blockage says nothing about those hypotheses",
   "designBlockers": [
     {
@@ -474,7 +846,15 @@
       "category": "BLOCKED_BY_DATA_INTEGRITY"
     },
     {
+      "id": "US_EXIT_IDENTITY_UNRESOLVED",
+      "category": "BLOCKED_BY_DATA_INTEGRITY"
+    },
+    {
       "id": "KR_TERMINATED_NAME_DIVIDEND_LINEAGE_ABSENT",
+      "category": "BLOCKED_BY_DATA_INTEGRITY"
+    },
+    {
+      "id": "KR_TERMINAL_CONSIDERATION_UNRESOLVED",
       "category": "BLOCKED_BY_DATA_INTEGRITY"
     }
   ],
@@ -554,6 +934,7 @@
     "entryPoints": [
       "scripts/run_alpha_opportunity_model_v3.py",
       "scripts/audit_alpha_opportunity_v3_survivorship.py",
+      "scripts/build_alpha_opportunity_v3_us_identity_evidence.py",
       "pipeline/alpha_opportunity_v3_decision.py"
     ],
     "method": "static closure over pipeline imports, top-level and function-level, recomputed on every load; sealed set must equal closure + sealedDataInputs"
@@ -566,15 +947,19 @@
     "research_specs/alpha-opportunity-model-v2.sha256",
     "research_specs/alpha-opportunity-model-v1-features.json",
     "research_specs/alpha-opportunity-model-v1-us-membership.json.gz",
+    "research_specs/alpha-opportunity-model-v3-us-identity-evidence.json.gz",
+    "docs/results/alpha-opportunity-model-v2-input-audit.json",
     "requirements.txt"
   ],
   "dependencyHashes": {
-    "docs/results/alpha-opportunity-model-v3-survivorship-audit.json": "adf8f84451288b3e82ebc558b9754d3bcf92a42c37715e0256ed1541ab7f67cd",
+    "docs/results/alpha-opportunity-model-v2-input-audit.json": "ec1bc239484b786cae53703852f0416b2b5bce5570562d379c3d7a7978d67cd6",
+    "docs/results/alpha-opportunity-model-v3-survivorship-audit.json": "f0d9ed09880ffb75c6cc698dbb001e6f6879dee1991ede6ff6d365cc50f22902",
     "pipeline/__init__.py": "187da1ad9a148da44035f9cf25f7cb094c45afe53d3f445ba62392797972dede",
     "pipeline/alpha_opportunity_spec.py": "3d7150c2f62dbd8184ed2f3885828e93c1ba64d8ffe3695b0b5716641734c58e",
-    "pipeline/alpha_opportunity_v3_decision.py": "8390276d3ab50d1997fffbfb1a01b12dc70135ea4a5c114f2f9a6489162ece63",
+    "pipeline/alpha_opportunity_v3_decision.py": "ce6ee0ddd022e8ae6f182b227d8fd94f5f357194d91d0d364b42ccc7e079a641",
+    "pipeline/alpha_opportunity_v3_identity.py": "b04f3f4bace0b7a2f637372929cfb6d350e893130bb456e6d02fc577db944291",
     "pipeline/alpha_opportunity_v3_spec.py": "1c11c306f9f27a8e69b985d02bfb3bffaf691001c27ac49e6b21266dd315c162",
-    "pipeline/alpha_opportunity_v3_survivorship.py": "4c05d8988151108d6751f3003753932ec5cfbce935c0e8fc115e42c02fc050e4",
+    "pipeline/alpha_opportunity_v3_survivorship.py": "60b8364ac28f636c18d4f39c0ae366fb55c15e937495d04b5a31d28021b22952",
     "pipeline/historical_store.py": "2751be8b5b79260f2038c9fb975cae58d49cb7868751c6658e363b48712016c0",
     "pipeline/market_dates.py": "0182986bf731fd762a8004d5cf838ddfaaee656a2b19b8cfd6b47248c6281e4b",
     "pipeline/pit_data.py": "64da89c602ac4b6c67411d0b5defa2909b65c1a7aad0958b32cb7f7dcd567dbf",
@@ -588,7 +973,9 @@
     "research_specs/alpha-opportunity-model-v1.sha256": "8ae32e45708bbf5c01b999641f3f3d0dc4cba8b33a2d3c598dcbbcc77b60f010",
     "research_specs/alpha-opportunity-model-v2.json": "f9514c0f5e7ef5522d50f57aa579b7a08b5b62ee6026a8fd4941cb44f5a8bf7a",
     "research_specs/alpha-opportunity-model-v2.sha256": "2b400b8adf6edd4a97ed206abc089eba70fd5cfc9a5bf9094cedbe88058a79e4",
-    "scripts/audit_alpha_opportunity_v3_survivorship.py": "9b8852ee44663821a4a7ea84c319d56a812e77873afb4a4e3a445437a545390c",
+    "research_specs/alpha-opportunity-model-v3-us-identity-evidence.json.gz": "b10f9ca163ce2b20fb408be7d70dfb107875c7fcccccec49eb17fd96f2ebf220",
+    "scripts/audit_alpha_opportunity_v3_survivorship.py": "56676f18e59308cc6b7d3f886b42900f224aa3da4fdbc9926f12511ca7b3588c",
+    "scripts/build_alpha_opportunity_v3_us_identity_evidence.py": "47409b4e94ca22f5e8f6a0d29cccc985954fe7b27db07131ba8ed0638c3dc510",
     "scripts/run_alpha_opportunity_model_v3.py": "5343d2df129f733d9af6932a09a5424e4878e2bb6a5818f8838ad66d2a121e4f"
   }
 }

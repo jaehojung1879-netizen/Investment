@@ -10,8 +10,12 @@ BENCHMARK_EXPECTED_VALUE_PREFERRED. v2 additionally required
 P(net alpha > 0) > 0.5 and bootstrap lower bounds above their outside-option
 values; that turned a payoff-shape question and an estimation-confidence
 question into hidden hurdles on the existence of expected value. A payoff of
-40% x +30% and 60% x -8% has positive expectation and a median below zero.
-v3 keeps both readings and publishes them BESIDE the expected-value class,
+40% x +30% and 60% x -8% has positive expectation and a probability of
+beating the benchmark below one half, so the two can legitimately disagree.
+They are also produced by DIFFERENT fitted models (a Ridge expected-return
+head and a separate Logistic probability head), so neither is a statistic of
+the other's distribution. v3 keeps both and publishes them BESIDE the
+expected-value class,
 never as a veto on it. Risk preference, sizing and confidence weighting belong
 to a later portfolio layer that this module does not define.
 """
@@ -27,12 +31,17 @@ NOT_TRADABLE = "NOT_TRADABLE"
 UNMEASURED = "UNMEASURED"
 EXPECTED_VALUE_CLASSES = (POSITIVE, BENCHMARK, NOT_TRADABLE, UNMEASURED)
 
-# Descriptive only. P(net alpha > 0) > 0.5 is the statement that the MEDIAN of
-# the predicted net relative return is positive; it describes payoff shape.
-MEDIAN_AND_MEAN_POSITIVE = "EXPECTATION_POSITIVE_MEDIAN_POSITIVE"
-MEAN_POSITIVE_MEDIAN_NOT = "EXPECTATION_POSITIVE_MEDIAN_NOT_POSITIVE"
-MEAN_NOT_MEDIAN_POSITIVE = "EXPECTATION_NOT_POSITIVE_MEDIAN_POSITIVE"
-NEITHER_POSITIVE = "EXPECTATION_NOT_POSITIVE_MEDIAN_NOT_POSITIVE"
+# Descriptive only. Each state reports two facts side by side and nothing
+# more: the sign of expectedNetAlpha (Ridge head, net of cost) and whether the
+# separately fitted Logistic head's probabilityNetOutperform exceeds one half.
+# The two heads are not one coherent predictive distribution, so no state says
+# anything about a median or any other quantile of the return.
+EV_POSITIVE_PROB_ABOVE_HALF = "EXPECTATION_POSITIVE_OUTPERFORM_PROBABILITY_ABOVE_HALF"
+EV_POSITIVE_PROB_NOT_ABOVE_HALF = "EXPECTATION_POSITIVE_OUTPERFORM_PROBABILITY_NOT_ABOVE_HALF"
+EV_NOT_POSITIVE_PROB_ABOVE_HALF = "EXPECTATION_NOT_POSITIVE_OUTPERFORM_PROBABILITY_ABOVE_HALF"
+EV_NOT_POSITIVE_PROB_NOT_ABOVE_HALF = "EXPECTATION_NOT_POSITIVE_OUTPERFORM_PROBABILITY_NOT_ABOVE_HALF"
+DISTRIBUTION_STATES = (EV_POSITIVE_PROB_ABOVE_HALF, EV_POSITIVE_PROB_NOT_ABOVE_HALF,
+                       EV_NOT_POSITIVE_PROB_ABOVE_HALF, EV_NOT_POSITIVE_PROB_NOT_ABOVE_HALF)
 PROBABILITY_UNAVAILABLE = "PROBABILITY_UNAVAILABLE"
 
 # Descriptive only. Fitted-value SAMPLING uncertainty of the conditional mean
@@ -105,10 +114,11 @@ def expected_value_class(*, tradable, pit_valid, expected_net_alpha):
 def distribution_state(expected_net_alpha, probability):
     if not finite(expected_net_alpha) or not finite(probability):
         return PROBABILITY_UNAVAILABLE
-    mean_pos = expected_net_alpha > OUTSIDE_OPTION_NET_ALPHA
-    median_pos = probability > 0.5
-    return {(True, True): MEDIAN_AND_MEAN_POSITIVE, (True, False): MEAN_POSITIVE_MEDIAN_NOT,
-            (False, True): MEAN_NOT_MEDIAN_POSITIVE, (False, False): NEITHER_POSITIVE}[(mean_pos, median_pos)]
+    ev_positive = expected_net_alpha > OUTSIDE_OPTION_NET_ALPHA
+    prob_above_half = probability > 0.5
+    return {(True, True): EV_POSITIVE_PROB_ABOVE_HALF, (True, False): EV_POSITIVE_PROB_NOT_ABOVE_HALF,
+            (False, True): EV_NOT_POSITIVE_PROB_ABOVE_HALF,
+            (False, False): EV_NOT_POSITIVE_PROB_NOT_ABOVE_HALF}[(ev_positive, prob_above_half)]
 
 
 def fitted_uncertainty_state(lower, upper):

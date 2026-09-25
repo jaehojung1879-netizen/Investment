@@ -4,36 +4,38 @@
 `research_specs/alpha-opportunity-model-v3.json`, seal in the adjacent
 `.sha256`. No historical label, return, IC, calibration table, model fit or
 portfolio path was computed for this study. There is deliberately **no v3
-workflow**. `scripts/run_alpha_opportunity_model_v3.py --execute` refuses on
-the sealed status before it reads any input.
+workflow**: `scripts/run_alpha_opportunity_model_v3.py --execute` refuses on
+the sealed status before any input is read. The repair route is
+`docs/alpha-opportunity-v3-data-repair-plan.md`.
 
 ## Lineage
 
 | Version | What it is | Status |
 |---|---|---|
 | `alpha-opportunity-model-v1` (`e3c699b1…6dd6e`) | first opportunity preregistration | `BLOCKED_PREREGISTRATION`, never executed |
-| `alpha-opportunity-model-v2` (`97c3727b…0e19`) | benchmark-as-outside-option redesign | sealed `READY`, **never historically executed** |
-| `alpha-opportunity-model-v3` | separates expected value from confidence; audits survivorship in both regions; seals only the computed execution closure | `BLOCKED_BY_DATA_INTEGRITY` |
+| `alpha-opportunity-model-v2` (`97c3727b…0e19`) | benchmark-as-outside-option redesign | sealed `READY`, never historically executed |
+| `alpha-opportunity-model-v3` | separates expected value from probability and confidence; audits identity and survivorship in both regions; seals only the computed execution closure | `BLOCKED_BY_DATA_INTEGRITY` |
+| data-foundation repair | separate work (repair plan) | — |
+| `alpha-opportunity-model-v4` | new immutable preregistration over repaired, sealed, re-audited inputs | the **only** version that may become `READY_FOR_HISTORICAL_EXECUTION` |
 
-v1 and v2 are unchanged. v3 verifies both by their own spec digests and
-sidecars on every load. It does not verify them through their dependency lists,
-so v3 does not inherit v2's oversized seal. v3 exists only to fix three defects
-found before any outcome; everything else is carried from v2 unchanged.
+v1 and v2 are unchanged. v3 checks both by their own spec digests and sidecars
+on every load, never through their dependency lists. v3 is never unblocked in
+place, and no alpha outcome is read before v4 is sealed.
 
-## 1. Expected value is the alpha question; probability and confidence are not
+## 1. Expected value is the alpha question
 
-v2 labelled a name `ACTIVE_OPPORTUNITY` only if four conditions all held:
-expected net alpha > 0, P(net alpha > 0) > 0.5, and both bootstrap lower bounds
-above those values. The last three are not the outside-option comparison. They
-are hidden hurdles on the existence of expected value.
+v2 counted a name as `ACTIVE_OPPORTUNITY` only if four conditions held together:
 
-A payoff with a 40% chance of +30% and a 60% chance of −8% has positive
-expectation and a negative median. A positive fitted mean can have an
-estimation interval that spans zero. Neither fact changes the sign of expected
-value.
+- expected net alpha > 0
+- P(net alpha > 0) > 0.5
+- the lower bound of each head's bootstrap interval above that same outside-option value
 
-v3's alpha layer (`pipeline/alpha_opportunity_v3_decision.py`) has one
-existence rule:
+The last three are not the outside-option comparison. They are hidden hurdles on
+whether expected value exists at all. A payoff of 40% × +30% and 60% × −8% has
+positive expectation and a probability of beating the benchmark below one half,
+and a positive fitted mean can have an estimation interval that spans zero.
+
+v3's alpha layer (`pipeline/alpha_opportunity_v3_decision.py`) has one rule:
 
 ```
 expectedNetAlpha = E[R_i − R_benchmark(i)] − roundTripCost_i      (benchmark: 0, cost 0)
@@ -42,209 +44,202 @@ expectedNetAlpha ≤ 0   → BENCHMARK_EXPECTED_VALUE_PREFERRED
 (+ NOT_TRADABLE / UNMEASURED for the PIT tradability guard and invalid predictions)
 ```
 
-Two separate descriptive readings are published beside the class. Neither can
-change it:
+Two readings are published beside that class. Neither can change it.
 
-- **Distribution state**, from `probabilityNetOutperform`. Note that P > 0.5
-  if and only if the predicted **median** net alpha is positive. The four
-  states are:
-  - `EXPECTATION_POSITIVE_MEDIAN_POSITIVE`
-  - `EXPECTATION_POSITIVE_MEDIAN_NOT_POSITIVE`
-  - `EXPECTATION_NOT_POSITIVE_MEDIAN_POSITIVE`
-  - `EXPECTATION_NOT_POSITIVE_MEDIAN_NOT_POSITIVE`
-- **Uncertainty**, which is two different objects, checked in code:
+- **Outperformance probability.** `probabilityNetOutperform` = P(R_i − R_b −
+  cost > 0) comes from the Logistic head, which is fitted **separately** from
+  the Ridge expected-return head. The two are not one coherent predictive
+  distribution, so the probability is **not** a median or any other quantile
+  of the Ridge prediction. The four states say only what is known:
+  - `EXPECTATION_POSITIVE_OUTPERFORM_PROBABILITY_ABOVE_HALF`
+  - `EXPECTATION_POSITIVE_OUTPERFORM_PROBABILITY_NOT_ABOVE_HALF`
+  - `EXPECTATION_NOT_POSITIVE_OUTPERFORM_PROBABILITY_ABOVE_HALF`
+  - `EXPECTATION_NOT_POSITIVE_OUTPERFORM_PROBABILITY_NOT_ABOVE_HALF`
+- **Uncertainty.** These are two different objects, checked in code:
   - `expectedNetAlphaLower/Upper` and `probabilityLower/Upper` come from
-    `alpha_opportunity_model.prediction_uncertainty`: 200 training-only
-    moving-block refits, 5th/95th percentiles of the *refitted prediction*.
-    That is **fitted-value sampling uncertainty**, not an interval for the
-    stock's own return. It is reported as `fittedUncertaintyState`.
-  - `predictiveResidualRms` comes from `matured_residual_scale`: the RMS of
-    realised minus predicted over past matured out-of-fold predictions. That
-    is **predictive outcome dispersion**.
+    `prediction_uncertainty`: 5th/95th percentiles over 200 training-only
+    moving-block refits. That is **fitted-value sampling uncertainty**, not a
+    return interval.
+  - `predictiveResidualRms` comes from `matured_residual_scale`: realised minus
+    predicted RMS over past matured out-of-fold predictions. That is
+    **predictive outcome dispersion**.
 
 The opportunity surface is every `POSITIVE_EXPECTED_ALPHA` name, ordered by
-`expectedNetAlpha` for downstream analysis only. There is no Top-N, no US/KR
-quota, no invested fraction, no +X% hurdle, no probability hurdle and no
-lower-bound hurdle. The loader refuses a spec that gives any of these a value.
-An empty surface is `NO_POSITIVE_EXPECTED_ALPHA`. Risk preference, sizing,
-confidence weighting, Kelly, volatility targeting and dependence all belong to
-a later portfolio layer, which v3 does not define.
+`expectedNetAlpha` for analysis only. An empty surface is
+`NO_POSITIVE_EXPECTED_ALPHA`.
 
-**Carried unchanged from v2:**
-- model family: Ridge expected-return head, Logistic net-event probability
-  head, fixed shallow HGB used as a complement only; no search
-- feature registry
-- horizons: 21 and 126 sessions
-- transforms, dated costs and the PIT tradability guard
-- inference scheme
+None of the following exists, and the loader refuses a spec that gives any of
+them a value:
+- a Top-N or US/KR quota
+- an invested fraction
+- a +X% hurdle, a probability hurdle or a lower-bound hurdle
+- any sizing field
 
-No feature was found PIT-unsafe. No DART ownership, Guru/13F or macro input is
-used.
+Risk preference, confidence weighting, Kelly, volatility targeting and dependence
+belong to a later portfolio layer.
 
-**Pre-registered evaluation, for a future version with repaired inputs:**
+**Carried unchanged from v2:** the model family (Ridge and Logistic heads, plus
+a fixed shallow HGB complement), features, 21- and 126-session horizons,
+transforms, dated costs, the tradability guard and the inference scheme. No
+feature was found PIT-unsafe.
+
+**Pre-registered evaluation, for v4:**
 
 | | What it tests | Requirement |
 |---|---|---|
-| **A** | Absolute calibration: `realised = a + b·predicted`, date-balanced, pooled, not demeaned within date | b lower bound > 0; MSE improvement over the training mean |
+| **A** | Absolute calibration: `realised = a + b·predicted`, date-balanced, pooled | b lower bound > 0; MSE improvement |
 | **B** | Ordering | rank IC and within-date slope |
 | **C** | Probability head | Brier, log-loss and pooled ECE |
-| **D** | The direct test of the outside option, on names predicted positive | realised net alpha lower bound > 0, AND its spread over non-positive names on the same date > 0 |
+| **D** | The outside-option test, on names with predicted `expectedNetAlpha > 0` | realised net alpha lower bound > 0, and its same-date spread over non-positive names > 0 |
 | **E** | Stability | as in v2 |
 
-For D, the slope inside the positive region and within-date terciles of the
-prediction are also disclosed, without gating. The median-negative and
-interval-spanning-zero subsets are disclosed separately. No threshold other
-than 0 is ever evaluated.
+For D, the positive-region slope and prediction terciles are disclosed, and the
+`…OUTPERFORM_PROBABILITY_NOT_ABOVE_HALF` and interval-spanning-zero subsets are
+disclosed separately, none of them gated. No threshold other than 0 is
+evaluated.
 
-## 2. Survivorship: both regions audited from sealed identities alone
+## 2. Identity comes first
 
-`docs/results/alpha-opportunity-model-v3-survivorship-audit.json` is produced by
-`scripts/audit_alpha_opportunity_v3_survivorship.py` from signal-history commit
-`4ea107e` (replay-v16 manifest `f0781292…`, through 2026-09-14). Two runs gave
-byte-identical output. It reads only three things:
+`pipeline/alpha_opportunity_v3_identity.py` classifies every membership symbol
+before any survivorship statistic is computed. Its evidence is
+`research_specs/alpha-opportunity-model-v3-us-identity-evidence.json.gz`:
+Symbol, name and CIK read from **exactly** the upstream
+`datasets/s-and-p-500-companies` commits the pinned membership cites. Their
+Symbol columns reproduce every pinned member list, and the build is
+byte-identical when re-run. The upstream file carries CIK only from 2023-04-13.
 
-- whether a positive close or volume exists on a date
-- membership snapshots
-- whether any corporate event is recorded for a name
+Symbols are joined only with explicit evidence, and each join records which of
+three bases it used:
 
-It computes no returns.
+- **`SAME_CIK`:** same CIK, the two symbols are never co-listed (share classes
+  such as GOOG/GOOGL are), and the successor is present at the exit snapshot.
+- **`PREVIOUSLY_ANNOTATION`:** the successor's own upstream row says
+  "(Previously X)".
+- **`IDENTICAL_NAME`:** the same security name at the exact exit snapshot, never
+  co-listed.
 
-### US: blocked, with no defensible repair and no structural cutoff
+An acquired or delisted company is never priced from its acquirer. A panel that
+starts after a member left is never read as that member's history. Anything
+else stays unresolved.
 
-| Fact (pinned S&P 500 membership, weekly, strictly-earlier snapshot) | Value |
+**The two malformed identifiers** are upstream data errors in the Symbol
+column, traced to their source rows:
+
+- **`American Airlines Group`:** commit `9217bee` (2021-03-11), CSV row
+  `American Airlines Group,reports,Airlines`. AAL is missing only from that
+  snapshot.
+- **`RVTY (Previously PKI)`:** commit `a9ae84a` (2023-12-31). RVTY is missing
+  only from that snapshot.
+
+Both resolve by rule: the real symbol is absent where the key sits, present in
+both neighbouring snapshots, and named by the key. No other malformed identifier
+exists in either region.
+
+**US identity classes** (827 identities after resolution):
+
+| Class | Count |
 |---|---|
-| names ever members / currently members / departed | 828 / 503 / 325 |
-| names with no sealed price panel | **195 — all departed; 0 current** (P = 60% for departed, 0% for current) |
-| priced symbols whose panel is not the member's own history (first close after last membership date: symbol reuse, e.g. FB, LB, STI, APC, NFX) | 30 |
-| departed members with their own history | 100 of 325 |
-| **securities in the panel that ever stop trading** | **0 of 633** |
-| missing forward endpoints among tradable member-dates | **0** of 296,768 (21-day) / 285,810 (126-day) |
-| longest gap between membership observations | 769 days (2018-04 → 2020-05) |
+| current member, own panel | 496 |
+| current member, panel starts after membership began (earlier issuer or later listing, e.g. FOXA) | 7 |
+| departed, removed from index but still trading (own history) | 97 |
+| departed, panel partial own history | 2 |
+| verified rename (13 priced through successor; CDAY→DAY successor has no panel) | 14 |
+| departed, symbol's only panel belongs to a **later security** (reuse: FB, LB, STI, APC, NFX, …) | 29 |
+| acquired (sealed corporate-action book: ESRX) | 1 |
+| **departed, no usable panel, exit not established by sealed evidence** | **181** |
 
-| Year | 2013 | 2015 | 2017 | 2019 | 2021 | 2023 | 2025 | 2026 |
-|---|---|---|---|---|---|---|---|---|
-| member-dates with no panel | 27.1% | 24.3% | 19.5% | 16.6% | 9.5% | 4.8% | 2.2% | 0.65% |
-| + panel without a signal-date close | 5.8% | 5.3% | 3.3% | 2.3% | 1.3% | 0.7% | 0.6% | 0.5% |
+Pre-2023 renames that also changed the company name (for example FB→META,
+ANTM→ELV, PCLN→BKNG) carry no CIK in the evidence, so they stay among the 181.
+They are not guessed.
 
-**The US panel contains no failed or acquired company at all.** A departed name
-is present only if its symbol still trades today. The missingness is therefore
-not random: it is conditioned on the future, because the name delisted and the
-vendor dropped it.
+**Reconciliation, computed by the audit rather than narrated:**
+- **829 vs 828:** v2 took the union over *all* snapshots. v3 uses only snapshots
+  that some weekly date actually reaches, and `RVTY (Previously PKI)` sits only
+  in a snapshot no date reaches.
+- **194 vs 195:** v2's list set the malformed keys aside. v3's first seal
+  counted `American Airlines Group` as a departed security with no panel.
+- **Corrected no-usable-panel count:** 195 − 1 (malformed key resolved) − 11
+  (renames priced through successor: BK, CBG, FI, HCN, JEC, MMC, PEAK, PKI, RE,
+  SATS, WLTW) + 29 (reused-symbol panels, which the first seal counted as
+  priced) = **212**.
 
-**The endpoint stress was never a repair.** v2's worst-plausible endpoint stress
-had nothing to act on here (0 missing endpoints). The missing companies never
-contributed features, training rows or evaluation rows, and an endpoint bound
-acts only on names that are in the sample.
+The correction is stricter, not looser.
 
-**No source can restore them.** The sealed panels are Yahoo unadjusted plus
-actions. `docs/us-delisted-prices-source.md` measured the alternatives:
-polygon and FMP are paid-plan only, stooq is bot-blocked and finnhub is
-unusable. Buying a vendor is a human budget decision.
+## 3. Survivorship after identity
 
-**No window can be restricted to.** The departed-only missingness declines
-smoothly and is nonzero in every year, including 2026, and no year is clean.
-A cutoff would be a tolerance choice, not a structural break. v2's reuse of
-the repository's 20% tolerance, which was built for a different gate, is
-withdrawn.
+`docs/results/alpha-opportunity-model-v3-survivorship-audit.json` is input-only
+and byte-identical on repeated runs. Its sources are the signal-history commit
+`4ea107e`, replay-v16 manifest `f0781292…` (through 2026-09-14), the pinned
+membership and the identity evidence.
 
-### KR: coverage is complete; one lineage defect remains
+### US: still blocked
 
-| Fact (KRX KOSPI top-120, monthly, strictly-earlier snapshot) | Value |
+| | Value |
 |---|---|
-| names ever members / current / departed | 260 / 120 / 140 |
-| names with no panel | **0** (all 140 departed members priced) |
-| securities that stop trading inside the sample (delistings observed to the last session) | 22 |
-| **terminated names with any dividend event** | **0 of 22** vs 215 of 238 continuing names |
-| tradable member-dates on terminated names without dividend lineage | 3.74% (7.93% in 2013 → 0.76% in 2025) |
+| identities / current / departed | 827 / 503 / 324 |
+| no usable history: departed / current | **212 (65.4%) / 0 (0%)** |
+| departed priced by own history / via verified rename | 99 / 13 |
+| **securities in the panel that ever stop trading** | **0** |
+| missing forward endpoints among tradable member-dates | **0** of 301,714 (21-day) / 290,710 (126-day) |
+| departed-only no-usable-panel share of member-dates | 30.32% (2013), 22.48% (2016), 17.03% (2019), 9.12% (2021), 4.13% (2023), 1.79% (2025), 0.54% (2026) |
+
+After identity cleanup, the earlier US blockers are reassessed as follows:
+
+- **`US_DELISTED_MEMBER_HISTORY_ABSENT`:** still applies. The panel holds no
+  terminated company.
+- **`US_PANEL_SYMBOL_IDENTITY_UNVERIFIED`:** still applies, narrowed. Malformed
+  keys are resolved, renames verified and reuse detected, but the panels are
+  keyed by bare ticker and pre-2023 upstream rows have no CIK.
+- **`US_NO_STRUCTURAL_RESTRICTED_WINDOW`:** still applies. The departed-only share
+  is nonzero in every year, so any cutoff would be a tolerance.
+- **`US_EXIT_IDENTITY_UNRESOLVED`:** new, covering the 181 unresolved exits.
+
+Endpoint stress cannot help. The US has zero missing endpoints, because the
+absent companies never entered the sample.
+
+### KR: coverage complete, lineage and terminal values missing
+
+| | Value |
+|---|---|
+| members / current / departed | 260 / 120 / 140, all priced by their own KRX codes; no malformed codes, no renames or reuse needed |
+| terminated securities observed to their last session | 22 |
+| terminated names with any dividend event | **0 of 22** (vs 215 of 238 continuing) |
+| affected tradable member-dates | 3.74% (7.93% in 2013 → 0.76% in 2025) |
 | missing forward endpoints (all on terminated names) | 22 (21-day) / 300 (126-day) |
-| tradable member-dates | 98.3–99.8% per year |
-| membership | one missing month (2017-10), longest gap 61 days |
+| termination type | `TERMINATION_TYPE_UNRESOLVED` for all 22 (the `krTerminations` audit table lists KRX names and last sessions) |
 
-KR membership comes from KRX's own daily trade records, which include
-later-delisted names. The prices come from the same source. So KR has none of
-the US defects.
+**KR blockers:**
+- `KR_TERMINATED_NAME_DIVIDEND_LINEAGE_ABSENT`: Yahoo distributions do not
+  serve delisted KR tickers.
+- `KR_TERMINAL_CONSIDERATION_UNRESOLVED`: dividends alone do not value a
+  merger, share exchange, tender or delisting.
 
-It does have one. KR distributions come from Yahoo actions, and Yahoo does not
-carry delisted KR tickers. The 22 terminated names are therefore on a
-price-return basis, while survivors and the 069500.KS benchmark are on a
-total-return basis. Those 22 include regular dividend payers such as 000030
-우리은행 and 000060 메리츠화재. The effect is that labels on exactly the names
-that later leave are understated by their dividend yield. Terminal
-consideration in share swaps is also not modelled.
+## 4. Dependency closure
 
-This is repairable by a data-foundation build, not in a preregistration: DART
-dividend disclosures for the 22 issuers, from the same vendor, key and
-receipt-date PIT mechanism already used, sealed before any outcome.
+The sealed set is recomputed on every load. It is the top-level and lazy import
+closure of four entry points, plus declared data inputs:
 
-### What remains defensible
+- **Entry points:** the runner, the audit script, the identity-evidence builder,
+  and the decision module.
+- **Data inputs:** the audit, the identity evidence, the v1 and v2 specs with
+  their sidecars, the v1 registry and US membership, the v2 input audit, and
+  `requirements.txt`.
 
-**Nothing, for the registered claim.** US cannot be repaired from any allowed
-source, and has no structural sub-period. KR is one named data build away.
+Behaviour is enforced by tests:
+- a new unsealed import raises `DEPENDENCY_CLOSURE_CHANGED`
+- an edited sealed file raises `SEALED_DEPENDENCY_CHANGED`
+- `kelly_portfolio`, `longterm`, `replay_valuation`, `selection_null` and
+  `portfolio_validation` are **not** in the closure, and editing them changes
+  nothing
 
-A KR-only study would be a change of scope. It needs its own reviewed version
-after that build, and is not decided here.
+The DART ownership shards, `pit-*.jsonl` and collector bookkeeping are
+documented adjacent datasets, not inputs.
 
-## 3. The dependency closure is computed, minimal and enforced
+## 5. Scope
 
-v2 sealed 51 files. Among them were `kelly_portfolio`, `longterm`,
-`replay_valuation`, `selection_null` and `portfolio_validation`, which arrived
-through two paths:
-- a lazy import of `portfolio_validation`, used only for the 15-line
-  `_dated_cost_policy`
-- `alpha_opportunity_features → regional_alpha_features → historical_replay → longterm`
+v3 is a conservative baseline model. It does not test fundamental state ×
+change × liquidity shock × price leadership × investor flow × event context,
+and its blockage says nothing about those hypotheses.
 
-None of their functions is called on the research path. A production
-portfolio edit would still have stranded v2.
-
-v3 (`pipeline/alpha_opportunity_v3_spec.py`) recomputes the closure on every
-load. It walks the pipeline imports, both top-level and inside functions,
-starting from three entry points:
-- `scripts/run_alpha_opportunity_model_v3.py`
-- `scripts/audit_alpha_opportunity_v3_survivorship.py`
-- `pipeline/alpha_opportunity_v3_decision.py`
-
-The sealed file set must equal that closure plus the declared data inputs.
-Currently that is 21 files:
-
-- **13 code files:** `pipeline/__init__.py`, `alpha_opportunity_spec`,
-  `alpha_opportunity_v3_decision`, `alpha_opportunity_v3_spec`,
-  `alpha_opportunity_v3_survivorship`, `historical_store`, `market_dates`,
-  `pit_data`, `price_adjustment`, `replay_calendar`, `replay_inputs`, and the
-  two scripts.
-- **8 data files:** the audit, the v1 and v2 specs with their sidecars, the v1
-  feature registry, the pinned US membership, and `requirements.txt`.
-
-The effects:
-- A new import added without resealing raises `DEPENDENCY_CLOSURE_CHANGED`.
-- Editing a sealed file raises `SEALED_DEPENDENCY_CHANGED`.
-- Editing `kelly_portfolio`, `longterm`, `replay_valuation`, `selection_null`
-  or `portfolio_validation` changes nothing.
-
-The dated cost lookup is restated in the decision module, and a test proves it
-identical to `portfolio_validation._dated_cost_policy`.
-
-Future historical inputs drop the DART ownership shards (a prospective overlay),
-`pit-*.jsonl`, collector bookkeeping and `data/us-unpriced-members.json`. The
-feature path does not read them. They are recorded as documented adjacent
-datasets, not execution dependencies.
-
-## 4. Scope
-
-v3 is a conservative baseline opportunity model. It does not test interactions
-of fundamental state, fundamental change, liquidity shock, price leadership,
-investor flow and event context. The shallow challenger gives limited
-interaction diagnostics only. Neither this blockage nor any future failure of
-this model says anything about those hypotheses.
-
-## 5. What would unblock a successor version
-
-**US:** a delisted-inclusive, identity-keyed price source for the 195 no-panel
-names and the 30 symbol-reused ones. Because the defect is that a whole class
-of company is absent, not that a small share of name-dates is missing, partial
-recovery is not enough.
-
-**KR:** a sealed DART dividend lineage for the 22 terminated issuers.
-
-In either case the operator should also refrain from running
-`Alpha opportunity model v2`. Its US leg would train and evaluate on this
-survivor-only sample.
+`Alpha opportunity model v2` must not be run: its US leg would train and
+evaluate on the survivor-only sample measured here.

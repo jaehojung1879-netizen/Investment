@@ -96,7 +96,7 @@ def test_benchmark_outside_option_is_zero(spec):
 def test_positive_ev_with_probability_below_half_is_still_positive():
     rec = D.describe(row(probabilityNetOutperform=.40, probabilityLower=.35), cost=.002)
     assert rec["expectedValueClass"] == D.POSITIVE and rec["positiveExpectedAlpha"]
-    assert rec["distributionState"] == D.MEAN_POSITIVE_MEDIAN_NOT
+    assert rec["distributionState"] == D.EV_POSITIVE_PROB_NOT_ABOVE_HALF
     assert rec["probabilityNetOutperform"] == .40
 
 
@@ -112,7 +112,7 @@ def test_non_positive_ev_prefers_benchmark_whatever_probability_says():
         rec = D.describe(row(grossExpectedAlpha=gross, probabilityNetOutperform=.9, probabilityLower=.8), cost=.002)
         assert rec["expectedValueClass"] == D.BENCHMARK
     assert D.describe(row(grossExpectedAlpha=-.01, probabilityNetOutperform=.7), cost=0.)[
-        "distributionState"] == D.MEAN_NOT_MEDIAN_POSITIVE
+        "distributionState"] == D.EV_NOT_POSITIVE_PROB_ABOVE_HALF
 
 
 def test_zero_positive_names_is_valid():
@@ -283,7 +283,8 @@ def test_both_regions_receive_the_same_checks(spec):
     assert audit["historicalOutcomesComputed"] is False and audit["returnsComputed"] is False
     assert audit["labelsConstructed"] is False and audit["modelsTrained"] is False
     us, kr = audit["regions"]["US"], audit["regions"]["KR"]
-    assert us["sampleSurvivorship"]["noPanelDeparted"] == 195 and us["sampleSurvivorship"]["noPanelCurrent"] == 0
+    assert us["sampleSurvivorship"]["noPanelDeparted"] == 212 and us["sampleSurvivorship"]["noPanelCurrent"] == 0
+    assert us["universe"]["union"] == 827 and us["sampleSurvivorship"]["departedExitIdentityUnresolved"] == 181
     assert us["terminations"]["terminatedInPanel"] == 0
     assert kr["sampleSurvivorship"]["noPanelNames"] == 0 and kr["terminations"]["terminatedInPanel"] == 22
     assert kr["totalReturnLineage"]["terminatedWithDividendEvents"] == 0
@@ -338,7 +339,8 @@ def test_unrelated_module_change_does_not_break_seal(tmp_path, spec):
 
 @pytest.mark.parametrize("rel", ["pipeline/alpha_opportunity_v3_decision.py", "pipeline/replay_calendar.py",
                                  "pipeline/replay_inputs.py", "scripts/run_alpha_opportunity_model_v3.py",
-                                 "docs/results/alpha-opportunity-model-v3-survivorship-audit.json"])
+                                 "docs/results/alpha-opportunity-model-v3-survivorship-audit.json",
+                                 "pipeline/alpha_opportunity_v3_identity.py"])
 def test_real_dependency_change_breaks_seal(tmp_path, spec, rel):
     path = sealed_copy(tmp_path, spec)
     (tmp_path / rel).write_text((tmp_path / rel).read_text() + "\n# edit\n")
@@ -397,3 +399,146 @@ def test_survivorship_audit_reads_no_returns():
     src += (ROOT / "scripts/audit_alpha_opportunity_v3_survivorship.py").read_text()
     for forbidden in ("pct_change", "target_at", "forwardRelativeReturn", "excessReturn", "/ a - 1"):
         assert forbidden not in src
+
+
+# --------------------------------------------------------------------------- #
+# Terminology: probability is not a median
+# --------------------------------------------------------------------------- #
+def test_probability_terminology_never_claims_a_median(spec):
+    for state in D.DISTRIBUTION_STATES:
+        assert "MEDIAN" not in state and "OUTPERFORM_PROBABILITY" in state
+    prob = spec["decisionContract"]["probability"]
+    assert not any("MEDIAN" in st for st in prob["states"])
+    assert "median" not in prob["meaning"].lower() and "median" in prob["notA"].lower()
+    import re
+    for rel in ("docs/alpha-opportunity-model-v3-preregistration.md", "docs/alpha-opportunity-v3-data-repair-plan.md",
+                "pipeline/alpha_opportunity_v3_decision.py"):
+        text = re.sub(r"[*_`]", "", (ROOT / rel).read_text().lower())
+        for claim in ("predicted median", "positive median", "negative median", "median net alpha",
+                      "median of the predicted", "median is positive", "median below"):
+            assert claim not in text, (rel, claim)
+    rec = D.describe(row(probabilityNetOutperform=.3), cost=.002)
+    assert rec["expectedValueClass"] == D.POSITIVE
+    assert rec["distributionState"] == D.EV_POSITIVE_PROB_NOT_ABOVE_HALF
+
+
+# --------------------------------------------------------------------------- #
+# Identity
+# --------------------------------------------------------------------------- #
+from pipeline import alpha_opportunity_v3_identity as ID  # noqa: E402
+
+
+def _snaps(*members):
+    return [{"date": f"2020-0{i + 1}-01", "members": list(m)} for i, m in enumerate(members)]
+
+
+def _index(snaps, table):
+    return [{t: table.get((i, t), (t, t + " Inc", None)) for t in s["members"]} for i, s in enumerate(snaps)]
+
+
+FULL = {"2019-12-02": (True, True), "2020-01-02": (True, True), "2020-06-01": (True, True)}
+
+
+def test_malformed_identifier_never_silently_becomes_a_ticker():
+    snaps = _snaps({"AAL", "X"}, {"American Airlines Group", "X"}, {"AAL", "X"})
+    idx = _index(snaps, {(0, "AAL"): ("AAL", "American Airlines Group", None),
+                         (2, "AAL"): ("AAL", "American Airlines Group", None)})
+    recs, mapping = ID.classify(snaps, {"AAL": FULL, "X": FULL}, index=idx, through="2020-06-30")
+    assert recs["American Airlines Group"]["category"] == ID.IDENTIFIER_MALFORMED_RESOLVED
+    assert mapping == {"American Airlines Group": "AAL"}
+    # Not bracketed on both sides: stays unresolved, never guessed.
+    snaps2 = _snaps({"X"}, {"American Airlines Group", "X"}, {"AAL", "X"})
+    recs2, mapping2 = ID.classify(snaps2, {"AAL": FULL, "X": FULL}, index=_index(snaps2, {}), through="2020-06-30")
+    assert recs2["American Airlines Group"]["category"] == ID.IDENTIFIER_MALFORMED_UNRESOLVED and mapping2 == {}
+    assert ID.pricing_symbol("American Airlines Group", recs2) is None
+
+
+def test_reused_ticker_never_inherits_a_later_issuers_panel():
+    snaps = _snaps({"OLD", "X"}, {"X"}, {"X"})
+    later_issuer = {"2020-05-01": (True, True)}           # starts after OLD left
+    recs, _ = ID.classify(snaps, {"OLD": later_issuer, "X": FULL}, index=_index(snaps, {}), through="2020-06-30")
+    assert recs["OLD"]["category"] == ID.TICKER_REUSE_DIFFERENT_ISSUER
+    assert "PANEL_POSTDATES_MEMBERSHIP" in recs["OLD"]["flags"]
+    assert ID.pricing_symbol("OLD", recs) is None
+
+
+def test_same_security_rename_is_distinct_from_reuse_and_priced_by_successor():
+    snaps = _snaps({"FI", "X"}, {"FISV", "X"}, {"FISV", "X"})
+    idx = _index(snaps, {(0, "FI"): ("FI", "Fiserv", "798354"), (1, "FISV"): ("FISV", "Fiserv", "798354"),
+                         (2, "FISV"): ("FISV", "Fiserv", "798354")})
+    recs, _ = ID.classify(snaps, {"FISV": FULL, "X": FULL}, index=idx, through="2020-06-30")
+    assert recs["FI"]["category"] == ID.SAME_SECURITY_RENAME and recs["FI"]["basis"] == "SAME_CIK"
+    assert ID.pricing_symbol("FI", recs) == "FISV"
+
+
+def test_acquired_company_is_never_replaced_by_its_acquirer():
+    snaps = _snaps({"TGT", "ACQ0"}, {"ACQ"}, {"ACQ"})
+    idx = _index(snaps, {(0, "TGT"): ("TGT", "Target Co", "111"), (1, "ACQ"): ("ACQ", "Acquirer Co", "222")})
+    recs, _ = ID.classify(snaps, {"ACQ": FULL}, index=idx, through="2020-06-30")
+    assert recs["TGT"]["category"] == ID.DEPARTED_NO_PANEL_REASON_UNRESOLVED
+    assert ID.pricing_symbol("TGT", recs) is None
+    recs2, _ = ID.classify(snaps, {"ACQ": FULL}, index=idx, through="2020-06-30",
+                           corporate_actions=[{"ticker": "TGT", "type": "CASH_AND_STOCK_MERGER", "successorTicker": "ACQ"}])
+    assert recs2["TGT"]["category"] == ID.ACQUIRED_OR_MERGED_TERMINATED and ID.pricing_symbol("TGT", recs2) is None
+
+
+def test_share_classes_with_one_cik_are_never_joined():
+    snaps = _snaps({"GOOG", "GOOGL"}, {"GOOGL"}, {"GOOGL"})
+    idx = _index(snaps, {(0, "GOOG"): ("GOOG", "Alphabet C", "1652044"), (0, "GOOGL"): ("GOOGL", "Alphabet A", "1652044"),
+                         (1, "GOOGL"): ("GOOGL", "Alphabet A", "1652044"), (2, "GOOGL"): ("GOOGL", "Alphabet A", "1652044")})
+    recs, _ = ID.classify(snaps, {"GOOGL": FULL}, index=idx, through="2020-06-30")
+    assert recs["GOOG"]["category"] != ID.SAME_SECURITY_RENAME and ID.pricing_symbol("GOOG", recs) is None
+
+
+def test_ambiguous_successors_stay_unresolved():
+    snaps = _snaps({"OLD"}, {"NEW1", "NEW2"}, {"NEW1", "NEW2"})
+    idx = _index(snaps, {(0, "OLD"): ("OLD", "Same Name", None), (1, "NEW1"): ("NEW1", "Same Name", None),
+                         (1, "NEW2"): ("NEW2", "Same Name", None)})
+    recs, _ = ID.classify(snaps, {"NEW1": FULL, "NEW2": FULL}, index=idx, through="2020-06-30")
+    assert recs["OLD"]["category"] == ID.DEPARTED_NO_PANEL_REASON_UNRESOLVED
+    assert "RENAME_AMBIGUOUS" in recs["OLD"]["flags"] and ID.pricing_symbol("OLD", recs) is None
+
+
+def test_identity_evidence_reproduces_pinned_membership():
+    import gzip
+    ev = json.loads(gzip.decompress((ROOT / "research_specs/alpha-opportunity-model-v3-us-identity-evidence.json.gz").read_bytes()))
+    pinned = json.loads(gzip.decompress((ROOT / "research_specs/alpha-opportunity-model-v1-us-membership.json.gz").read_bytes()))
+    assert ev["pinnedMembershipSha256"] == V1S.file_hash(ROOT / "research_specs/alpha-opportunity-model-v1-us-membership.json.gz")
+    assert [s["sourceCommit"] for s in ev["snapshots"]] == [s["sourceCommit"] for s in pinned["snapshots"]]
+    for e, p in zip(ev["snapshots"], pinned["snapshots"]):
+        assert sorted({ev["rows"][i][0].replace(".", "-") for i in e["rows"]}) == p["members"]
+    raw = [ev["rows"][i] for e in ev["snapshots"] for i in e["rows"]]
+    assert ["American Airlines Group", "reports", None] in raw
+    assert any(r[0] == "RVTY (Previously PKI)" for r in raw)
+
+
+def test_us_counts_reconcile_v2_and_first_v3_seal_deterministically():
+    import gzip
+    audit = json.loads(AUDIT.read_text())
+    rec = audit["usCountReconciliation"]
+    assert rec["v2InputAudit"] == {**rec["v2InputAudit"], "membershipUnion": 829, "noPanelNames": 194}
+    assert rec["v3FirstSeal"]["union"] == 828 and rec["v3FirstSeal"]["noPanelNames"] == 195
+    st = rec["steps"]
+    assert st["minusResolvedMalformedKeys"] == ["American Airlines Group"]
+    assert st["firstSealNoPanel"] - len(st["minusResolvedMalformedKeys"]) - len(
+        st["minusRenamesPricedThroughSuccessor"]) + len(st["plusSymbolsWhosePanelBelongsToALaterSecurity"]) \
+        == st["equals"] == st["auditNoPanel"] == 212
+    malformed = rec["malformedKeys"]
+    assert malformed["American Airlines Group"]["resolvedTo"] == "AAL" and malformed["American Airlines Group"]["reachableFromGrid"]
+    assert malformed["RVTY (Previously PKI)"]["resolvedTo"] == "RVTY" and not malformed["RVTY (Previously PKI)"]["reachableFromGrid"]
+    # The raw unions are recomputable from the pinned file alone.
+    pinned = json.loads(gzip.decompress((ROOT / "research_specs/alpha-opportunity-model-v1-us-membership.json.gz").read_bytes()))["snapshots"]
+    assert len(set().union(*[set(s["members"]) for s in pinned])) == 829
+    grid = A.weekly_grid([d for d in RC.sessions("2012-01-01", "2027-12-31", "US") if str(d.date()) >= "2013-01-01"], "2026-09-14")
+    assert len(set().union(*[set(A.snapshot_on(pinned, g)["members"]) for g in grid])) == 828
+
+
+def test_kr_terminations_listed_and_untyped(spec):
+    audit = json.loads(AUDIT.read_text())
+    rows = audit["krTerminations"]
+    assert len(rows) == 22 and {r["terminationType"] for r in rows} == {"TERMINATION_TYPE_UNRESOLVED"}
+    assert all(r["dividendEvents"] == 0 and r["krxName"] for r in rows)
+    ids = {b["id"] for b in spec["designBlockers"]}
+    assert {"KR_TERMINATED_NAME_DIVIDEND_LINEAGE_ABSENT", "KR_TERMINAL_CONSIDERATION_UNRESOLVED",
+            "US_EXIT_IDENTITY_UNRESOLVED", "US_DELISTED_MEMBER_HISTORY_ABSENT"} <= ids
+    assert (ROOT / "docs/alpha-opportunity-v3-data-repair-plan.md").exists()
