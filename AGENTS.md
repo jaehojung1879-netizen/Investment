@@ -1360,6 +1360,88 @@
   operator action that can change this status; it has not been run with a
   real key in this environment.
 
+## KR terminal-action reconstruction invariants (v2.29)
+
+- A STALE "NEVER RUN" CLAIM IS CORRECTED WITH ITS OWN EVIDENCE, THE SAME
+  DISCIPLINE `alpha-research-foundation-v2` (v2.24) ALREADY ESTABLISHED ONE
+  LEVEL UP. v2.28's closing bullet said `kr-corporate-action-collection.yml`
+  "has not been run with a real key in this environment" — true when
+  written, false since: two real runs (`36091590740`, `36094672107`,
+  2026-09-25, `head_sha dd7ccb4`) both closed `conclusion: success`. Read
+  directly from `signal-history` rather than trusted from any prompt's
+  claim: `ledger/kr-corporate-actions/fetch-state.json` shows 22/22
+  `status: SUCCESS`; `kr-corporate-actions-disclosures.jsonl.gz` holds 451
+  rows, 145 of them amendments (32.2%). `foundationStatus` moved from
+  `BLOCKED_BY_SOURCE_ACCESS` to `PARTIALLY_REPAIRED` — DART identity and raw
+  evidence are now resolved for all 22, not zero.
+- A SANDBOX THAT CANNOT REACH ONE HOST STILL VERIFIES AGAINST A DIFFERENT
+  ONE, RATHER THAN TRUSTING THE UNREACHABLE ONE'S CLAIM SECOND-HAND. This
+  environment's egress cannot reach `*.blob.core.windows.net` (GitHub
+  Actions' own artifact storage; `connect_rejected`, gateway 403 on
+  CONNECT), so the probe's uploaded JSON artifact could not be downloaded —
+  but the same run's job LOGS (reachable via the GitHub API) already
+  printed everything needed to confirm `verdict: SERVED` and real
+  `alotMatter.json` rows. `probe_kr_corporate_actions.py` now also prints
+  its field-presence percentages and one raw sample row directly to stdout,
+  so a future run's schema is readable from the log alone, without the
+  artifact.
+- A GITHUB APP TOKEN'S OWN SCOPE IS A REAL BLOCKER, DISTINCT FROM A DART
+  REFUSAL, AND IS REPORTED AS ITSELF. This session's token answered
+  `workflow_dispatch` with `403 Resource not accessible by integration` —
+  not a DART-side refusal, not a schema problem, a permission this
+  environment's own credentials do not carry. It is recorded as exactly
+  that in `docs/kr-terminal-action-reconstruction-v2.md`'s "exact next
+  step", never conflated with a source-access blocker the way `AUTH_
+  REQUIRED`/`BLOCKED_SOURCE` already keep apart for a collector's own HTTP
+  calls (workflow-hygiene invariants, v2.25).
+- DISCLOSURE METADATA STAYS METADATA EVEN WHEN THE ENDPOINT IS FULLY
+  CONFIRMED AND THE FAMILY MATCH IS UNAMBIGUOUS. `list.json`'s 451 real
+  rows (117 MERGER, 160 DIVIDEND_DECISION, 56 BUSINESS_TRANSFER, 50
+  SPINOFF_OR_SPLIT_MERGER, 39 SHARE_EXCHANGE_OR_TRANSFER, 28 TENDER_OFFER,
+  13 DELISTING) never become a `terminationType`: `build_terminal_actions`
+  has no path from `disclosureFamilies` to `actionType`, tested directly
+  (`test_no_termination_type_is_ever_guessed_from_a_report_name`) against
+  an unambiguous single-family match, not just an ambiguous one. All 22
+  securities stay `TERMINATION_TYPE_UNRESOLVED` in this PR, by construction
+  rather than by incomplete effort.
+- A SCHEMA MAY GENERALIZE BEFORE A REAL RECORD NEEDS IT, PROVEN AGAINST
+  SYNTHETIC FIXTURES ONLY, AND SAID SO. `considerationComponents` (multi-leg
+  cash-and-stock, multi-successor split-mergers), `amendmentHistory` and
+  `chain_all_successors`' cycle-safe multi-successor reachability were built
+  and tested before any real DART filing content was reachable to populate
+  them — zero of the 22 securities uses any of these fields yet. A schema
+  extension is not evidence of what it was built to eventually hold.
+- A CONTINUING-NAME CROSS-VALIDATION SAMPLE IS DRAWN FROM THE REPOSITORY'S
+  OWN DATA, NEVER HAND-PICKED A SECOND TIME. `kr_continuing_dividend_
+  sample.select_continuing_sample` ranks every code ever seen inside the
+  top 120 by market cap, by how many snapshot dates it held that rank,
+  reading the real `ledger/universe/kr` shards this repository already
+  collects for other purposes — the same "days in top-N" measure `kr_
+  termination_inventory`'s own membership windows already use, reused as a
+  ranking key rather than invented again. Preferred shares are excluded by
+  a published, reviewable name-pattern heuristic (a KR preferred ticker's
+  name ends "우"/"N우X"), not a confirmed structured field — no field in
+  the snapshot rows states common/preferred directly.
+- RAW EVIDENCE RETAINED AND A RESOLVED TERM ARE DIFFERENT FACTS, AND
+  CONFLATING THEM WOULD HAVE READ 22 SECURITIES AS LESS DOCUMENTED THAN THEY
+  ARE. `rawEvidenceRetained` originally read only a record's SINGULAR
+  `sourceReceiptNumber` — populated only once a consideration TERM is
+  resolved and cited. All 22 securities have real disclosure receipts
+  retained (`sources`/`amendmentHistory`) with zero terms resolved yet, so
+  the original check would have reported `rawEvidenceRetained: BLOCKED`
+  for all 22 despite 451 real receipts on file. Fixed to recognize evidence
+  retained via `sources`/`sourceReceiptNumbers` independent of whether any
+  term built from it has been resolved.
+- A DEDICATED PROBE TIER EXISTS FOR "IS RAW CONTENT REACHABLE AT ALL",
+  SEPARATE FROM "IS A STRUCTURED FIELD MAP CONFIRMED". `document.xml`
+  (DART's original-filing-document download, a ZIP of raw XML/HTML) is
+  corroborated with HIGHER confidence than any disclosure-type-specific
+  structured endpoint precisely because it takes no type-specific path to
+  guess — probed for real receipt numbers this same run already found via
+  the confirmed `list.json` endpoint, never a fabricated one, and reported
+  as raw-evidence reachability only: zip/non-zip, byte count, content type —
+  never a structured field, because it is not a structured endpoint.
+
 ## Lint gate invariants (v2.11)
 
 - The enabled rule set reports ZERO findings on `main`. A rule is turned on in the
