@@ -1235,6 +1235,131 @@
   it must not be run, because its US leg would train and evaluate on the
   survivor-only sample v3 measured.
 
+## KR terminated-security total-return foundation invariants (v2.28)
+
+- A DATA-FOUNDATION BUILD IS NOT A STUDY AND COMPUTES NO OUTCOME.
+  `kr-terminated-security-total-return-foundation-v1` reconstructs what a
+  shareholder actually received when one of the 22 KR securities v3's own
+  sealed audit found without dividend or terminal-value lineage paid a
+  distribution or stopped trading. It calls no Alpha, IC, calibration,
+  return, CAGR, Sharpe or Sortino function anywhere, runs no portfolio
+  backtest, and touches none of `alpha-opportunity-model-v1/v2/v3`, whose
+  seals reload unchanged by their own digest.
+- A DISCLOSURE-NAME MATCH IS A READING LIST, NEVER A VERDICT.
+  `kr_corporate_action_events.classify_disclosure_family` matches DART's
+  `list.json` `report_nm` text against known corporate-action keywords —
+  the exact confirmed endpoint `probe_dart_ownership_events
+  .official_filing_depth` already reads live in this repository — and
+  assigns no `terminationType`. `TERMINATION_TYPE_UNRESOLVED` stays a
+  security's state until a human reads the matched disclosure's actual
+  content and a record citing its DART receipt is added to
+  `data/kr-terminal-corporate-actions.json`; guessing a type from a report
+  name, a company-name stem, or a ticker is exactly the failure this
+  repository's vendor-refusal and identity-resolution invariants already
+  forbid one level up, and this module never does it.
+- A CONSIDERATION TERM WITH NO RECEIPT CANNOT BE CONSTRUCTED, NOT MERELY
+  VALIDATED AFTER THE FACT. `kr_terminal_corporate_actions.build_record`
+  raises rather than returning a record if any of `cashPerOldShare`,
+  `successorSecurity` or `successorSharesPerOldShare` is set without a
+  citing `sourceReceiptNumber`/`sourceReceiptDate` — the same check
+  `replay_recovery.load_corporate_actions` already applies to the US book,
+  moved to construction time so an unvouched record can never exist to
+  begin with. `validate_book` re-applies the same check to a book read back
+  from disk, so a hand-edited file cannot smuggle one past the loader.
+- AN EX-DATE IS NEVER DERIVED FROM A RECORD DATE BY ASSUMPTION, AND NONE OF
+  THIS REPOSITORY'S SOURCES CURRENTLY LET ONE BE. No sealed, dated Korean
+  settlement-cycle rule exists anywhere in this codebase, and this
+  environment could not reach an authoritative source to establish one —
+  `opendart.fss.or.kr` is blocked from this sandbox's egress, the same
+  block `dart_ownership_events.py`'s docstring already records for the same
+  host. `exDateSemanticsResolved` reads `READY` only when a security's
+  dividend evidence states `exDateSource: "DIRECT"` — an ex-date DART's own
+  disclosure stated outright — never from a computed rule.
+  `DIVIDEND_EX_DATE_LINEAGE_BLOCKED` stays the status otherwise, and no
+  future change may flip it without first sealing that dated rule and
+  citing its source.
+- TWO CONFIDENCE TIERS FOR A DART ENDPOINT ARE NEVER BLURRED INTO ONE.
+  `list.json` (DS001) is CONFIRMED — already used live in this repository —
+  and its fields are read directly. `alotMatter.json`'s field names are
+  corroborated only from third-party OpenDART client documentation, exactly
+  the standard `dart_ownership_events.py` used for `majorstock.json` before
+  its own live probe (`probe_dart_ownership_events.py`) confirmed it; every
+  row `kr_corporate_action_events.build_dividend_section_row` produces
+  carries `endpointConfidence: CANDIDATE_UNCONFIRMED` until
+  `scripts/probe_kr_corporate_actions.py` runs against the real API. No
+  endpoint or field map for the merger/share-exchange/tender/delisting
+  structured disclosures is guessed anywhere in this codebase; discovery
+  for them stops at the `list.json` report-name level until one can be
+  corroborated or confirmed.
+- A SINGLE `page_count=100` CALL IS NOT A FILING-HISTORY RECONSTRUCTION.
+  `fetch_all_pages` walks a `list.json` result set to its own served
+  `total_page`, deduplicating by receipt number, and fails closed
+  (`PaginationError`) — never returns a partial result silently — on a
+  missing or non-numeric pagination field, a row-parse failure on any page,
+  or the underlying result set changing mid-walk (a later page's
+  `totalCount`/`totalPage` disagreeing with the first page's). A collector
+  ticker's state is marked `SUCCESS` only once every page has completed;
+  a mid-walk pagination failure leaves that ticker's state as anything but
+  `SUCCESS`, so the next run retries it rather than treating it as done.
+- AN EXACT-CURRENT-STOCK-CODE-ONLY RESOLVER IS TOO WEAK FOR A DELISTED
+  SECURITY, AND THIS REPOSITORY ALREADY HAS THE STRONGER ONE.
+  `kr_corporate_action_events.resolve_historical_dart_identity` calls
+  `dart_ownership_universe`'s EXISTING `_resolve_security`/`_unique_index`
+  directly rather than a second, weaker path: DART blanks a corp's current
+  `corpCode.xml` `stock_code` field once it delists, so an exact-code-only
+  match fails for exactly the securities this study needs — exact stock
+  code, then a UNIQUE exact normalized historical company name, then
+  unresolved; never fuzzy, never a ticker/name similarity guess, and an
+  ambiguous name match stays unresolved rather than picking either
+  candidate. Both `scripts/probe_kr_corporate_actions.py` and
+  `scripts/collect_kr_corporate_actions.py` call this one function.
+  `dart_ownership_universe.py`'s functions are called by their existing
+  PRIVATE names rather than given a new public alias:
+  `alpha-opportunity-model-v1` seals that file's exact bytes in its
+  dependency closure, and even an additive edit to it raises
+  `SEALED_DEPENDENCY_CHANGED` on v1's next load — reuse without ever
+  touching a sealed file's bytes.
+- A CALL BUDGET CHECKED ONCE PER TICKER IS NOT A CALL BUDGET ONCE
+  PAGINATION EXISTS. `--max-calls 30`, described as "enough for all 22
+  securities", stopped being true the moment a ticker could span more than
+  one `list.json` page — the budget was checked before each TICKER, not
+  each PAGE, so a single high-volume issuer could spend past the requested
+  ceiling before the next check ever ran. `checked_call` in
+  `collect_kr_corporate_actions.py` now checks the budget before every
+  call, ticker-first-page or later page alike, and raises
+  `CallBudgetExhausted` before the call that would cross it — `calls` can
+  therefore never exceed `max_calls`. A ticker interrupted mid-pagination
+  this way is left exactly as it was on entry, never `SUCCESS`, so it
+  restarts from page 1 next run rather than resuming a partial page count;
+  a ticker completed by an EARLIER run is preserved and never re-queried.
+  The default rose from 30 to 250 — a conservative, explicitly
+  NOT-guaranteed estimate (22 tickers × up to ~10 pages, a round number
+  with no measured basis, since this sandbox has never run against the
+  live API) — and every run reports `tickersRemaining`,
+  `fullWorkListExhausted` and `datasetComplete` so a budget-truncated run
+  can never be read as a finished one; `operatorMessage` says so in prose
+  and tells the operator to re-run the same workflow.
+- MEMBERSHIP IN THE TOP-120 RESEARCH UNIVERSE AND A SECURITY'S OWN TRADING
+  LIFE ARE DIFFERENT FACTS, MEASURED SEPARATELY. Several of the 22
+  securities' last top-120 KRX snapshot date falls years before their last
+  priced session (두산건설: last in the top-120 2013-07, last traded
+  2020-03-23; 락앤락: one snapshot in 2013-03, last traded 2024-12-06) —
+  consistent with a name remaining listed for years after falling out of
+  this study's research universe, reported as a measured date gap and
+  never as an inferred cause.
+- THIS BUILD IS BLOCKED BY SOURCE ACCESS, NOT BY DESIGN, AND THAT DIFFERENCE
+  IS PUBLISHED. `DART_API_KEY` is absent from this development environment,
+  so `corpCode.xml`, `list.json` and `alotMatter.json` were never called
+  live; `docs/results/kr-termination-inventory.json` reads
+  `dartIdentityStatus: DART_DIRECTORY_NOT_AVAILABLE` and
+  `terminationType: TERMINATION_TYPE_UNRESOLVED` for all 22 securities, and
+  `foundationStatus: BLOCKED_BY_SOURCE_ACCESS` follows from the completeness
+  matrix alone, never forced. `.github/workflows/kr-corporate-action-
+  collection.yml` (`mode: auto`, probe-then-collect, fails closed on a
+  zero-progress refusal via `pipeline.collector_outcomes`) is the exact
+  operator action that can change this status; it has not been run with a
+  real key in this environment.
+
 ## Lint gate invariants (v2.11)
 
 - The enabled rule set reports ZERO findings on `main`. A rule is turned on in the
