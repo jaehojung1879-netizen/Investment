@@ -18,16 +18,27 @@ WHAT DECIDES THE ANSWER, IN ORDER, mirroring `probe_dart_ownership_events
 
   1. DOES THE KEY REACH `corpCode.xml` AND `list.json` AT ALL.
   2. FOR EACH OF THE 22 TERMINATED TICKERS: can its DART issuer identity be
-     resolved (exact stock-code match in `corpCode.xml`, the same rule
-     `dart_ownership_universe._resolve_security` already applies), and does
-     `list.json` return any disclosure matching a known family keyword
-     (`kr_corporate_action_events.classify_disclosure_family`)?
+     resolved by the repository's EXISTING historical hierarchy —
+     `dart_ownership_universe._resolve_security`, reused via
+     `kr_corporate_action_events.resolve_historical_dart_identity` rather
+     than a second, weaker "current stock code only" path (DART blanks a
+     corp's `stock_code` once it delists, which is exactly why an exact-
+     current-code-only resolver is too weak for this sample) — and does
+     `list.json`, walked to EVERY page, return any disclosure matching a
+     known family keyword (`kr_corporate_action_events
+     .classify_disclosure_family`)?
   3. THE `alotMatter.json` FIELD SET, checked on a sample of continuing
      dividend-paying names (needed for the repair plan's cross-validation
      step) and on any of the 22 whose identity resolved.
   4. HOW FAR BACK `list.json` reaches for a terminated name relative to its
      own last trading date — the 22 include a 2013 exit, so historical depth
      is asked for directly rather than assumed.
+
+A single `page_count=100` call is not sufficient for a 2013-2026 filing
+history: `kr_corporate_action_events.fetch_all_pages` walks every page the
+served `total_page` names, using the SAME resolver and paginator
+`scripts/collect_kr_corporate_actions.py` uses, and this probe reports pages
+fetched and total rows for every ticker.
 
 Nothing is written to the ledger and no artifact changes. This reports.
 
@@ -76,34 +87,45 @@ def call(path: str, params: dict, timeout: int = 30) -> tuple[dict | None, str]:
         return None, f"non-JSON response ({len(raw)} bytes)"
 
 
-def corp_code_map(key: str) -> dict[str, str]:
+def corp_code_directory(key: str) -> list[dict]:
+    """The FULL `corpCode.xml` directory, including rows with a blank
+    `stock_code` (delisted issuers) — the input
+    `kr_corporate_action_events.resolve_historical_dart_identity` needs.
+    Never pre-filtered to a `{stockCode: corpCode}` map, which is exactly
+    the weaker path this probe no longer takes.
+    """
     try:
         with urllib.request.urlopen(f"{BASE}/corpCode.xml?crtfc_key={key}",
                                     timeout=120) as response:
             blob = response.read()
     except Exception as exc:  # pragma: no cover - network dependent
         print(f"ERROR: corp_code 목록을 받지 못했습니다 — {exc}")
-        return {}
-    return {row["stockCode"]: row["corpCode"]
-            for row in DOU.parse_corp_code_zip(blob) if row["stockCode"]}
+        return []
+    return DOU.parse_corp_code_zip(blob)
 
 
 def probe_disclosure_index(key: str, stock: str, corp: str) -> dict:
-    """`list.json` over the full replay window, classified by family."""
-    payload, error = call("list.json", {
-        "crtfc_key": key, "corp_code": corp, "bgn_de": "20130101",
-        "end_de": time.strftime("%Y%m%d", time.gmtime()),
-        "page_count": "100", "sort": "date", "sort_mth": "asc",
-    })
+    """`list.json`, walked to every page, classified by family."""
+    def fetch_page(page_no: int) -> dict:
+        payload, error = call("list.json", {
+            "crtfc_key": key, "corp_code": corp, "bgn_de": "20130101",
+            "end_de": time.strftime("%Y%m%d", time.gmtime()),
+            "page_count": "100", "page_no": str(page_no),
+            "sort": "date", "sort_mth": "asc",
+        })
+        if payload is None:
+            raise KCA.PaginationError(error)
+        return payload
+
     entry: dict = {"stockCode": stock, "corpCode": corp}
-    if payload is None:
-        entry["error"] = error
+    try:
+        rows, meta = KCA.fetch_all_pages(fetch_page)
+    except KCA.PaginationError as exc:
+        entry["error"] = str(exc)
         return entry
-    entry["status"] = DF.describe_status(str(payload.get("status")))
-    rows, parse_error = KCA.filing_index_rows(payload)
-    if parse_error:
-        entry["parseError"] = parse_error
-        return entry
+    entry["status"] = DF.describe_status(meta["status"])
+    entry["pagesFetched"] = meta["pagesFetched"]
+    entry["totalCount"] = meta["totalCount"]
     entry["rowsReturned"] = len(rows)
     candidates = KCA.candidate_disclosures(rows, ticker=f"{stock}.KS")
     entry["matchedDisclosures"] = len(candidates)
@@ -181,35 +203,51 @@ def main(argv=None) -> int:
 
     inventory = json.loads(args.terminated_input.read_text(encoding="utf-8"))
     terminated_codes = [row["code"].removesuffix(".KS") for row in inventory["securities"]]
+    krx_names = {row["code"].removesuffix(".KS"): row.get("krxName")
+                for row in inventory["securities"]}
 
     report: dict = {"probedAt": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
                     "endpoints": ["list.json", "alotMatter.json"],
                     "terminatedCodes": terminated_codes,
                     "continuingSample": list(CONTINUING_SAMPLE)}
 
-    codes = corp_code_map(key)
-    if not codes:
+    directory = corp_code_directory(key)
+    if not directory:
         return 1
-    print(f"corp_code 매핑 {len(codes):,}개\n")
+    print(f"corp_code 디렉터리 {len(directory):,}개\n")
 
+    report["identity"] = {}
     report["disclosureIndex"] = {}
     for stock in terminated_codes:
-        corp = codes.get(stock)
-        if not corp:
-            report["disclosureIndex"][stock] = {"error": "corp_code 매핑 없음"}
-            print(f"{stock}  corp_code 없음 — 종목 코드가 상장폐지 후 DART 목록에서 사라졌을 수 있음")
+        identity = KCA.resolve_historical_dart_identity(stock, krx_names.get(stock), directory)
+        report["identity"][stock] = identity
+        if identity["status"] != KCA.RESOLVED:
+            report["disclosureIndex"][stock] = {"error": "DART identity unresolved",
+                                               "identity": identity}
+            print(f"{stock}  identity UNRESOLVED ({identity['provenance']}) — "
+                  f"{krx_names.get(stock)!r} 이름 매칭 실패")
             continue
+        corp = identity["corpCode"]
         entry = probe_disclosure_index(key, stock, corp)
+        entry["identityBasis"] = identity["basis"]
         report["disclosureIndex"][stock] = entry
-        print(f"{stock}  status={entry.get('status')} matches={entry.get('matchedDisclosures')} "
+        print(f"{stock}  identity={identity['basis']} status={entry.get('status')} "
+              f"pages={entry.get('pagesFetched')} matches={entry.get('matchedDisclosures')} "
               f"families={entry.get('familiesSeen')}")
         time.sleep(0.3)
 
+    # `_unique_index` is called directly (module-private in
+    # `dart_ownership_universe.py`) rather than adding a public alias to a
+    # file `alpha-opportunity-model-v1` seals by hash — see
+    # `kr_corporate_action_events.resolve_historical_dart_identity`'s
+    # docstring for why.
+    continuing_directory_index = DOU._unique_index(directory, "stockCode")
     report["dividendSection"] = {}
     for stock in CONTINUING_SAMPLE:
-        corp = codes.get(stock)
-        if not corp:
+        candidates = continuing_directory_index.get(stock) or []
+        if len(candidates) != 1:
             continue
+        corp = candidates[0]["corpCode"]
         entry = probe_dividend_section(key, stock, corp)
         report["dividendSection"][stock] = entry
         print(f"{stock} (continuing)  alotMatter status={entry.get('status')} "
@@ -218,9 +256,14 @@ def main(argv=None) -> int:
 
     verdict = classify_verdict(report)
     report["verdict"] = verdict
-    resolved_identity = sum(1 for stock in terminated_codes if codes.get(stock))
+    resolved_identity = sum(1 for row in report["identity"].values()
+                            if row["status"] == KCA.RESOLVED)
     report["identityResolvedCount"] = resolved_identity
     report["identityResolvedOf"] = len(terminated_codes)
+    report["identityResolvedByBasis"] = {
+        basis: sum(1 for row in report["identity"].values() if row.get("basis") == basis)
+        for basis in KCA.IDENTITY_BASES
+    }
 
     Path(args.output).write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n",
                                  encoding="utf-8")

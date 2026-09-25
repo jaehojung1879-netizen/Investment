@@ -67,10 +67,18 @@ cited in a future change.
 from __future__ import annotations
 
 from . import dart_fundamentals as DF
+from . import dart_ownership_universe as DOU
 
 # Reused directly, exactly as `dart_ownership_events.receipt_date` reuses it —
 # a control that is called is safer than one reproduced.
 receipt_date = DF.receipt_date
+
+# DART's own "no data found" status (`dart_fundamentals.STATUS_MEANING`:
+# "조회된 데이터 없음") — the answer `list.json` gives a ticker with zero
+# matching disclosures. Reused, not reinvented: this is the exact code
+# `dart_fundamentals.build_record`'s docstring already documents for the
+# statement endpoint, and `list.json` shares DART's one status-code table.
+NO_DATA_STATUS = "013"
 
 DATE_ROLES = (
     "receiptDate", "decisionDate", "recordDate", "exDate",
@@ -131,15 +139,198 @@ def filing_index_rows(payload: dict) -> tuple[list[dict], str]:
     Mirrors `probe_dart_ownership_events.official_filing_depth`'s own read of
     this endpoint: `rows key must be exactly "list"` is what DART actually
     serves, confirmed live in this repository already.
+
+    Status `013` ("no data found") is DART's own answer for a ticker with
+    zero matching disclosures — a valid, common outcome (most tickers have
+    no merger/tender/delisting filing) — and returns `([], "")`, never an
+    error. A response that is neither `013` nor carrying a `list` key is a
+    different fact (a schema DART did not document) and IS an error.
     """
     if not isinstance(payload, dict):
         return [], f"payload was {type(payload).__name__}, not an object"
+    if str(payload.get("status") or "") == NO_DATA_STATUS:
+        return [], ""
     rows = payload.get("list")
     if rows is None:
         return [], "no 'list' key in payload"
     if not isinstance(rows, list):
         return [], f"'list' was {type(rows).__name__}, not a list"
     return rows, ""
+
+
+class PaginationError(RuntimeError):
+    """The result set could not be walked deterministically to completion."""
+
+
+# Corroborated (not confirmed) field names for `list.json` (DS001)'s own
+# pagination — direct access to `opendart.fss.or.kr` is blocked from this
+# sandbox's egress, so these are read from independent third-party OpenDART
+# client documentation (three separate WebSearch-surfaced sources agree:
+# a Postman collection, the `dart-fss` client docs, and general usage
+# writeups), the same evidentiary standard `ALOTMATTER_CANDIDATE_FIELDS`
+# above and `dart_ownership_events.py`'s original `majorstock.json` fields
+# used before their own live probes ran. `scripts/probe_kr_corporate_actions
+# .py` is what promotes this from corroborated to confirmed.
+PAGINATION_FIELDS = ("page_no", "page_count", "total_count", "total_page")
+
+
+def parse_pagination_metadata(payload: dict) -> tuple[dict | None, str]:
+    """(meta, error) from a `list.json` response's own pagination fields.
+
+    Every field is required and must parse as a non-negative integer; a
+    missing or non-numeric field is a hard error rather than an assumed
+    value — "we don't know how many pages there are" must never be silently
+    read as "there is exactly one". `totalCount`/`totalPage` are
+    cross-checked for internal consistency (zero results imply zero or one
+    page; a nonzero count implies at least one page).
+    """
+    if not isinstance(payload, dict):
+        return None, f"payload was {type(payload).__name__}, not an object"
+    missing = [field for field in PAGINATION_FIELDS if field not in payload]
+    if missing:
+        return None, f"missing pagination field(s): {missing}"
+    parsed: dict[str, int] = {}
+    for field in PAGINATION_FIELDS:
+        value = payload[field]
+        try:
+            parsed[field] = int(value)
+        except (TypeError, ValueError):
+            return None, f"pagination field {field!r} is not an integer: {value!r}"
+        if parsed[field] < 0:
+            return None, f"pagination field {field!r} is negative: {value!r}"
+    meta = {"pageNo": parsed["page_no"], "pageCount": parsed["page_count"],
+            "totalCount": parsed["total_count"], "totalPage": parsed["total_page"]}
+    if meta["totalCount"] == 0:
+        if meta["totalPage"] not in (0, 1):
+            return None, f"totalCount is 0 but totalPage is {meta['totalPage']}"
+    elif meta["totalPage"] < 1:
+        return None, f"totalCount is {meta['totalCount']} but totalPage is {meta['totalPage']}"
+    return meta, ""
+
+
+def pagination_consistent(first_meta: dict, later_meta: dict) -> bool:
+    """Whether a later page's totalCount/totalPage still match the first
+    page's. If not, the underlying result set changed mid-walk — most likely
+    a new filing landed between calls — and the whole fetch must be refused
+    rather than silently mixing rows from two different result sets.
+    """
+    return (first_meta["totalCount"] == later_meta["totalCount"]
+            and first_meta["totalPage"] == later_meta["totalPage"])
+
+
+def merge_paginated_rows(pages: list[list[dict]]) -> list[dict]:
+    """Flatten every page's raw rows, deduplicated by `rcept_no`.
+
+    Keeps each row's first occurrence, in page order (`list.json` is
+    requested `sort=date&sort_mth=asc`, so within a page rows are already
+    chronological; `candidate_disclosures` resorts the merged result
+    explicitly rather than trusting page order alone).
+    """
+    seen: set = set()
+    merged: list[dict] = []
+    for page in pages:
+        for row in page:
+            rcept_no = row.get("rcept_no")
+            if rcept_no in seen:
+                continue
+            seen.add(rcept_no)
+            merged.append(row)
+    return merged
+
+
+def fetch_all_pages(fetch_page) -> tuple[list[dict], dict]:
+    """Walk every page of a `list.json` result set to completion.
+
+    `fetch_page(page_no)` must return one raw JSON payload for that page —
+    network-free here, exactly the fetch/parse split this module keeps
+    everywhere else; the caller (a probe or collector script) supplies the
+    real HTTP call. Raises `PaginationError` — never returns a partial
+    result silently — on a missing/inconsistent pagination field, a
+    row-parse failure on any page, or the result set changing mid-walk.
+    """
+    first_payload = fetch_page(1)
+    rows, error = filing_index_rows(first_payload)
+    if error:
+        raise PaginationError(f"page 1: {error}")
+    status = str(first_payload.get("status") or "")
+    if status == NO_DATA_STATUS:
+        return [], {"status": status, "pageNo": 1, "pageCount": 0, "totalCount": 0,
+                    "totalPage": 0, "pagesFetched": 0, "rowsFetched": 0}
+    meta, meta_error = parse_pagination_metadata(first_payload)
+    if meta_error:
+        raise PaginationError(f"page 1: {meta_error}")
+    pages = [rows]
+    total_page = meta["totalPage"]
+    for page_no in range(2, total_page + 1):
+        payload = fetch_page(page_no)
+        page_rows, page_error = filing_index_rows(payload)
+        if page_error:
+            raise PaginationError(f"page {page_no}: {page_error}")
+        page_meta, page_meta_error = parse_pagination_metadata(payload)
+        if page_meta_error:
+            raise PaginationError(f"page {page_no}: {page_meta_error}")
+        if not pagination_consistent(meta, page_meta):
+            raise PaginationError(
+                f"page {page_no}: pagination metadata changed mid-walk "
+                f"(totalCount {meta['totalCount']}->{page_meta['totalCount']}, "
+                f"totalPage {meta['totalPage']}->{page_meta['totalPage']})")
+        pages.append(page_rows)
+    merged = merge_paginated_rows(pages)
+    return merged, {**meta, "status": status, "pagesFetched": total_page,
+                    "rowsFetched": len(merged)}
+
+
+# --------------------------------------------------------------------------- #
+# Historical DART issuer identity — reused, never reimplemented
+# --------------------------------------------------------------------------- #
+EXACT_STOCK_CODE = "EXACT_STOCK_CODE"
+UNIQUE_NORMALIZED_NAME = "UNIQUE_NORMALIZED_NAME"
+UNRESOLVED = "UNRESOLVED"
+RESOLVED = "RESOLVED"
+IDENTITY_BASES = (EXACT_STOCK_CODE, UNIQUE_NORMALIZED_NAME, UNRESOLVED)
+
+
+def resolve_historical_dart_identity(stock_code: str, krx_name: str | None,
+                                     dart_directory: list[dict]) -> dict:
+    """One security's DART issuer identity, by the repository's EXISTING
+    historical-identity hierarchy — `dart_ownership_universe._resolve_security`
+    /`_unique_index`, called directly (not reimplemented) rather than a
+    second, weaker path. Resolving a terminated/delisted KR security only by
+    its CURRENT `corpCode.xml` stock code is too weak, because DART blanks a
+    corp's `stock_code` field once it delists — this hierarchy is exactly
+    why `dart_ownership_universe.py` was built for the whole KR ownership
+    collector, and it is reused here rather than rebuilt:
+
+        1. exact stock code (Korean 6-digit codes are stable identifiers
+           that do not change or get reused the way US tickers do)
+        2. a UNIQUE exact normalized historical company name — never fuzzy,
+           and an ambiguous match (more than one candidate) stays unresolved
+        3. otherwise unresolved
+
+    `stock_code` is the bare 6-digit code (no `.KS` suffix). `krx_name` is
+    the ticker's own KRX name as already carried on the termination
+    inventory (`krxName`) — never a guessed or stemmed variant.
+
+    Calls `dart_ownership_universe`'s module-private `_resolve_security`/
+    `_unique_index` directly rather than adding a public alias to that
+    module: `alpha-opportunity-model-v1`'s sealed dependency closure pins
+    `dart_ownership_universe.py`'s own file hash, and even an additive,
+    behaviour-preserving edit to that file would raise
+    `SEALED_DEPENDENCY_CHANGED` on load — calling its private functions by
+    name changes nothing on disk there while still reusing its exact logic,
+    never a second implementation of it.
+    """
+    security = {"stockCode": stock_code, "names": [krx_name] if krx_name else []}
+    by_stock = DOU._unique_index(dart_directory, "stockCode")
+    by_name = DOU._unique_index(dart_directory, "corpName")
+    row, provenance = DOU._resolve_security(security, by_stock, by_name)
+    if row is None:
+        return {"status": UNRESOLVED, "corpCode": None, "corpName": None,
+               "basis": UNRESOLVED, "provenance": provenance}
+    basis = (EXACT_STOCK_CODE if provenance.get("method") == "DART_STOCK_CODE_EXACT"
+             else UNIQUE_NORMALIZED_NAME)
+    return {"status": RESOLVED, "corpCode": row["corpCode"],
+           "corpName": row.get("corpName"), "basis": basis, "provenance": provenance}
 
 
 def candidate_disclosures(rows: list[dict], *, ticker: str | None = None) -> list[dict]:

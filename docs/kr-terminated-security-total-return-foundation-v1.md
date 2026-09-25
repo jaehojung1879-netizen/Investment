@@ -9,6 +9,32 @@ Validation below). This PR builds pipeline modules, an input-only inventory,
 a probe, a collector, and one on-demand workflow — collection itself has not
 run, because this development environment has no `DART_API_KEY`.
 
+## Correction (execution-critical)
+
+Two fixes to the design as first drafted, before any live run:
+
+1. **Pagination.** The first draft's `list.json` calls carried no `page_no`
+   and read only whatever a single `page_count=100` call returned — not
+   sufficient for a 2013-2026 filing-history reconstruction, where a
+   long-lived issuer can carry well over 100 disclosures of every kind, not
+   only the ones this module matches. `fetch_all_pages` now walks every
+   page the response's own `total_page` names, fails closed on inconsistent
+   pagination metadata, and a ticker's collector state is marked `SUCCESS`
+   only once every page has completed.
+2. **Historical DART issuer identity.** The first draft resolved
+   `stockCode -> corpCode` only by an EXACT CURRENT `corpCode.xml` stock
+   code — too weak for a delisted security, since DART blanks a corp's
+   `stock_code` field once it delists. `resolve_historical_dart_identity`
+   now calls the repository's EXISTING historical resolver
+   (`dart_ownership_universe._resolve_security`/`_unique_index`) directly:
+   exact stock code, then a unique exact normalized historical company
+   name, then unresolved — never fuzzy, never a name/ticker similarity
+   guess, and the SAME resolver for both the probe and the collector.
+
+Neither correction changes the foundation status: it stays
+`BLOCKED_BY_SOURCE_ACCESS`, because this sandbox still has no
+`DART_API_KEY` and neither fix could be exercised against the live API.
+
 ## Why this build exists
 
 `alpha-opportunity-model-v3`'s sealed survivorship audit
@@ -74,6 +100,7 @@ reported as a date-arithmetic fact, nothing more.
 |---|---|---|
 | `opendart.fss.or.kr` (direct) | WebFetch of the developer guide | **Blocked by this sandbox's egress proxy** — the exact block `pipeline/dart_ownership_events.py`'s docstring already records for the same host |
 | `list.json` (DS001, disclosure index) | Already used live in this repository (`probe_dart_ownership_events.official_filing_depth`) | **CONFIRMED** — `rcept_no`, `rcept_dt`, `report_nm`, `corp_code`, `corp_name`, `flr_nm` are real, working fields |
+| `list.json` pagination fields | Field names (`page_no`, `page_count`, `total_count`, `total_page`) corroborated across independent third-party OpenDART client documentation (WebSearch); direct access to `opendart.fss.or.kr` blocked | **CORROBORATED, PENDING A LIVE PROBE** — `fetch_all_pages` fails closed if a live response does not carry them |
 | `alotMatter.json` (dividend section) | Field names corroborated across independent third-party OpenDART client documentation (WebSearch) | **CANDIDATE, UNCONFIRMED** — `rcept_no`, `corp_code`, `corp_name`, `se`, `thstrm`, `frmtrm`, `lwfr`, `stock_knd`; promoted to confirmed only when `scripts/probe_kr_corporate_actions.py` runs against the real API |
 | Merger / share-exchange / tender / delisting structured endpoints | Searched; no endpoint path or field map could be corroborated with confidence from this sandbox | **Not attempted.** No endpoint name is invented — see `pipeline/kr_corporate_action_events.py`'s module docstring. Discovery for these stays at the `list.json` report-name level only |
 | `corpCode.xml` (DART issuer directory) | Same mechanism `dart_ownership_universe.py` already uses live | Requires `DART_API_KEY`, absent in this sandbox — **not resolved here** |
@@ -97,6 +124,25 @@ for all 22 securities.
   `amendment_chain` preserves every filing in a same-family, same-issuer
   chain, marking which are themselves amendments, without ever collapsing to
   "latest wins".
+  - **Pagination.** `fetch_all_pages` walks a `list.json` result set to its
+    own served `total_page`, deduplicating by receipt number and failing
+    closed (`PaginationError`) on a missing or inconsistent pagination
+    field, or the underlying result set changing mid-walk. Field names
+    (`page_no`, `page_count`, `total_count`, `total_page`) are corroborated
+    from independent third-party OpenDART client documentation — direct
+    access to `opendart.fss.or.kr` is blocked from this sandbox's egress —
+    at the same standard `ALOTMATTER_CANDIDATE_FIELDS` already uses; a live
+    probe run is what confirms it.
+  - **Historical DART issuer identity.** `resolve_historical_dart_identity`
+    calls `dart_ownership_universe`'s existing `_resolve_security`/
+    `_unique_index` directly (never a second, weaker resolver): exact stock
+    code, then a UNIQUE exact normalized historical company name, then
+    unresolved — never fuzzy, never a ticker/name similarity guess. Reusing
+    the module-PRIVATE functions by name, rather than adding a public alias
+    to `dart_ownership_universe.py`, is deliberate:
+    `alpha-opportunity-model-v1` seals that file's exact bytes in its
+    dependency closure, and even an additive edit to it would raise
+    `SEALED_DEPENDENCY_CHANGED` on v1's next load.
 - **`pipeline/kr_terminal_corporate_actions.py`** — the normalized terminal-
   consideration record, generalized from `data/replay-corporate-actions.json`
   's existing `REPLAY_CORPORATE_ACTIONS_V1` ESRX record. Ten action types:

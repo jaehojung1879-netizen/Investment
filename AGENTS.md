@@ -1291,6 +1291,34 @@
   structured disclosures is guessed anywhere in this codebase; discovery
   for them stops at the `list.json` report-name level until one can be
   corroborated or confirmed.
+- A SINGLE `page_count=100` CALL IS NOT A FILING-HISTORY RECONSTRUCTION.
+  `fetch_all_pages` walks a `list.json` result set to its own served
+  `total_page`, deduplicating by receipt number, and fails closed
+  (`PaginationError`) — never returns a partial result silently — on a
+  missing or non-numeric pagination field, a row-parse failure on any page,
+  or the underlying result set changing mid-walk (a later page's
+  `totalCount`/`totalPage` disagreeing with the first page's). A collector
+  ticker's state is marked `SUCCESS` only once every page has completed;
+  a mid-walk pagination failure leaves that ticker's state as anything but
+  `SUCCESS`, so the next run retries it rather than treating it as done.
+- AN EXACT-CURRENT-STOCK-CODE-ONLY RESOLVER IS TOO WEAK FOR A DELISTED
+  SECURITY, AND THIS REPOSITORY ALREADY HAS THE STRONGER ONE.
+  `kr_corporate_action_events.resolve_historical_dart_identity` calls
+  `dart_ownership_universe`'s EXISTING `_resolve_security`/`_unique_index`
+  directly rather than a second, weaker path: DART blanks a corp's current
+  `corpCode.xml` `stock_code` field once it delists, so an exact-code-only
+  match fails for exactly the securities this study needs — exact stock
+  code, then a UNIQUE exact normalized historical company name, then
+  unresolved; never fuzzy, never a ticker/name similarity guess, and an
+  ambiguous name match stays unresolved rather than picking either
+  candidate. Both `scripts/probe_kr_corporate_actions.py` and
+  `scripts/collect_kr_corporate_actions.py` call this one function.
+  `dart_ownership_universe.py`'s functions are called by their existing
+  PRIVATE names rather than given a new public alias:
+  `alpha-opportunity-model-v1` seals that file's exact bytes in its
+  dependency closure, and even an additive edit to it raises
+  `SEALED_DEPENDENCY_CHANGED` on v1's next load — reuse without ever
+  touching a sealed file's bytes.
 - MEMBERSHIP IN THE TOP-120 RESEARCH UNIVERSE AND A SECURITY'S OWN TRADING
   LIFE ARE DIFFERENT FACTS, MEASURED SEPARATELY. Several of the 22
   securities' last top-120 KRX snapshot date falls years before their last

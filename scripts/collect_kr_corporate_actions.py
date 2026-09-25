@@ -13,6 +13,23 @@ and, only from their actual content, produces entries for
 `data/kr-terminal-corporate-actions.json` (see `pipeline
 .kr_terminal_corporate_actions.py`).
 
+`list.json` IS WALKED TO EVERY PAGE. `kr_corporate_action_events
+.fetch_all_pages` follows the response's own `total_page`, deduplicates by
+receipt number, and fails closed (`PaginationError`) on a missing or
+inconsistent pagination field rather than silently returning only page 1 —
+a 2013-2026 filing-history reconstruction cannot rely on a single
+`page_count=100` call.
+
+ISSUER IDENTITY REUSES THE REPOSITORY'S EXISTING HISTORICAL RESOLVER.
+`kr_corporate_action_events.resolve_historical_dart_identity` calls
+`dart_ownership_universe._resolve_security` directly — the exact hierarchy
+(exact stock code, then a unique exact normalized historical company name,
+then unresolved) `collect_dart_ownership_events.py` already uses for the
+whole KR ownership collector — rather than a second, weaker "current
+`corpCode.xml` stock code only" path, which fails for a delisted issuer
+whose stock code DART has since blanked. This script and
+`scripts/probe_kr_corporate_actions.py` call the SAME resolver function.
+
 WHY NOT `alotMatter.json` TOO. It is still CANDIDATE, PENDING A LIVE PROBE
 (`scripts/probe_kr_corporate_actions.py`) — see that module's docstring.
 Collecting from an unconfirmed endpoint into the permanent ledger is exactly
@@ -102,21 +119,25 @@ def save_state(store: Path, state: dict) -> None:
         json.dumps(state, indent=2, sort_keys=True, ensure_ascii=False) + "\n", encoding="utf-8")
 
 
-def load_terminated_codes(inventory_path: Path) -> list[str]:
+def load_terminated_securities(inventory_path: Path) -> list[tuple[str, str | None]]:
+    """(ticker, krxName) pairs, read from the inventory — never hardcoded.
+
+    `krxName` is what `kr_corporate_action_events.resolve_historical_dart_
+    identity` tries as a UNIQUE exact normalized name when a security's
+    current DART row carries no stock code (a delisted issuer).
+    """
     inventory = json.loads(inventory_path.read_text(encoding="utf-8"))
-    return sorted({row["code"] for row in inventory["securities"]})
+    by_code = {row["code"]: row.get("krxName") for row in inventory["securities"]}
+    return sorted(by_code.items())
 
 
 def run(store: Path, *, key: str, inventory_path: Path, max_calls: int,
        max_minutes: int, call_fn=call, directory_fn=corp_code_directory) -> dict:
     store.mkdir(parents=True, exist_ok=True)
-    tickers = load_terminated_codes(inventory_path)
+    securities = load_terminated_securities(inventory_path)
     directory = directory_fn(key)
     if not directory:
         raise Refused("corp_code directory was empty")
-    by_stock: dict[str, str] = {}
-    for row in directory:
-        by_stock.setdefault(row["stockCode"], row["corpCode"])
 
     state = load_state(store)
     ticker_states = state["tickers"]
@@ -126,44 +147,69 @@ def run(store: Path, *, key: str, inventory_path: Path, max_calls: int,
     existing = shard.get("all", [])
 
     deadline = time.monotonic() + max_minutes * 60
-    calls = 0
+    call_counter = {"n": 0}
     written = 0
     stop_reason = "WORK_LIST_EXHAUSTED"
     new_rows: list[dict] = []
     try:
-        for ticker in tickers:
-            if calls >= max_calls:
+        for ticker, krx_name in securities:
+            if call_counter["n"] >= max_calls:
                 stop_reason = "CALL_BUDGET_SPENT"
                 break
             if time.monotonic() >= deadline:
                 stop_reason = "TIME_BUDGET_SPENT"
                 break
-            code = ticker.removesuffix(".KS")
             if ticker_states.get(ticker, {}).get("status") == "SUCCESS":
                 continue
-            corp_code = by_stock.get(code)
-            if not corp_code:
+            code = ticker.removesuffix(".KS")
+
+            # Reuses the repository's EXISTING historical DART identity
+            # hierarchy (exact stock code -> unique exact normalized name
+            # -> unresolved) rather than a second, weaker "current stock
+            # code only" path — see `resolve_historical_dart_identity`'s
+            # docstring for why the exact-code-only path is too weak for a
+            # delisted security.
+            identity = KCA.resolve_historical_dart_identity(code, krx_name, directory)
+            if identity["status"] != KCA.RESOLVED:
                 ticker_states[ticker] = {"status": "NO_DART_IDENTITY",
+                                         "basis": identity["basis"],
+                                         "provenance": identity["provenance"],
                                          "checkedAt": time.strftime("%Y-%m-%dT%H:%M:%SZ")}
                 continue
-            payload = call_fn("list.json", {
-                "crtfc_key": key, "corp_code": corp_code, "bgn_de": "20130101",
-                "end_de": time.strftime("%Y%m%d", time.gmtime()),
-                "page_count": "100", "sort": "date", "sort_mth": "asc"})
-            calls += 1
-            rows, error = KCA.filing_index_rows(payload)
-            if error:
-                raise Refused(error)
+            corp_code = identity["corpCode"]
+
+            def fetch_page(page_no: int, corp_code=corp_code) -> dict:
+                call_counter["n"] += 1
+                return call_fn("list.json", {
+                    "crtfc_key": key, "corp_code": corp_code, "bgn_de": "20130101",
+                    "end_de": time.strftime("%Y%m%d", time.gmtime()),
+                    "page_count": "100", "page_no": str(page_no),
+                    "sort": "date", "sort_mth": "asc"})
+
+            try:
+                rows, meta = KCA.fetch_all_pages(fetch_page)
+            except KCA.PaginationError as exc:
+                # A partial-page failure must never mark this issuer
+                # complete — its state stays anything but SUCCESS, so the
+                # next run retries it rather than treating it as done.
+                ticker_states[ticker] = {"status": "PAGINATION_FAILED", "corpCode": corp_code,
+                                         "error": str(exc),
+                                         "checkedAt": time.strftime("%Y-%m-%dT%H:%M:%SZ")}
+                continue
+
             candidates = KCA.candidate_disclosures(rows, ticker=ticker)
             new_rows.extend(candidates)
             written += len(candidates)
             ticker_states[ticker] = {"status": "SUCCESS", "corpCode": corp_code,
+                                     "identityBasis": identity["basis"],
+                                     "pagesFetched": meta["pagesFetched"],
                                      "matchedDisclosures": len(candidates),
                                      "queriedAt": time.strftime("%Y-%m-%dT%H:%M:%SZ")}
             time.sleep(PACE_SECONDS)
     except Refused as exc:
         stop_reason = f"REFUSED: {exc}"
 
+    calls = call_counter["n"]
     merged = {row["receiptNo"]: row for row in [*existing, *new_rows]}
     changed = HS.write_shard(store / "kr-corporate-actions-disclosures.jsonl.gz",
                              list(merged.values()))
@@ -174,10 +220,12 @@ def run(store: Path, *, key: str, inventory_path: Path, max_calls: int,
         "contract": RAW_CONTRACT, "stopReason": stop_reason, "outcome": outcome,
         "calls": calls, "written": written, "shardChanged": changed,
         "totalDisclosures": len(merged),
-        "tickersRequested": len(tickers),
+        "tickersRequested": len(securities),
         "tickersSucceeded": sum(row.get("status") == "SUCCESS" for row in ticker_states.values()),
         "tickersWithNoDartIdentity": sum(
             row.get("status") == "NO_DART_IDENTITY" for row in ticker_states.values()),
+        "tickersWithPaginationFailure": sum(
+            row.get("status") == "PAGINATION_FAILED" for row in ticker_states.values()),
     }
 
 
