@@ -16,7 +16,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 
 NEW_MODULES = ("kr_corporate_action_events", "kr_terminal_corporate_actions",
-              "kr_dividend_reconciliation", "kr_termination_inventory")
+              "kr_dividend_reconciliation", "kr_termination_inventory",
+              "kr_continuing_dividend_sample")
 
 FORBIDDEN_TOKENS = ("select_portfolio_by_scores", "replay_valuation",
                     "kelly_portfolio", "alpha_opportunity_v3_decision",
@@ -37,7 +38,9 @@ def test_no_new_pipeline_module_imports_a_portfolio_or_alpha_function():
 
 def test_the_new_collector_and_builder_scripts_never_touch_alpha():
     for script in ("build_kr_termination_inventory.py",
+                   "build_kr_terminal_action_reconstruction_v2.py",
                    "collect_kr_corporate_actions.py",
+                   "collect_kr_dividend_sections.py",
                    "probe_kr_corporate_actions.py"):
         source = (ROOT / "scripts" / script).read_text(encoding="utf-8").lower()
         for token in FORBIDDEN_TOKENS:

@@ -29,6 +29,10 @@ MATRIX_FIELDS = (
     "exDateSemanticsResolved", "terminalConsiderationResolved",
     "successorResolvedWhereRequired", "effectiveDateResolved",
     "lastTradingDateResolved", "rawEvidenceRetained", "sourceProvenanceRetained",
+    # Added for `kr-terminal-action-reconstruction-v2`'s 12-field matrix
+    # (TERMINAL_ACTION_CHAIN, EXCHANGE_RATIO) -- additive, every field above
+    # keeps its original meaning and every v1 fixture still passes.
+    "terminalActionChainResolved", "exchangeRatioResolved",
 )
 
 DART_DIRECTORY_NOT_AVAILABLE = "DART_DIRECTORY_NOT_AVAILABLE"
@@ -70,6 +74,9 @@ def completeness_row(*, identity: dict | None, action: dict | None,
     """
     action_type = (action or {}).get("actionType") or TCA.TERMINATION_TYPE_UNRESOLVED
     requires_successor = action_type in TCA.REQUIRES_SUCCESSOR_TERM
+    has_raw_evidence = bool((action or {}).get("sourceReceiptNumber")
+                            or (action or {}).get("sources")
+                            or (action or {}).get("sourceReceiptNumbers"))
     return {
         "terminationTypeResolved": _status(action_type != TCA.TERMINATION_TYPE_UNRESOLVED),
         "dartIssuerResolved": _status(bool((identity or {}).get("corpCode"))),
@@ -84,8 +91,19 @@ def completeness_row(*, identity: dict | None, action: dict | None,
             bool((action or {}).get("successorSecurity")), applicable=requires_successor),
         "effectiveDateResolved": _status(bool((action or {}).get("effectiveDate"))),
         "lastTradingDateResolved": _status(bool(last_trading_date)),
-        "rawEvidenceRetained": _status(bool((action or {}).get("sourceReceiptNumber"))),
+        "rawEvidenceRetained": _status(has_raw_evidence),
         "sourceProvenanceRetained": _status(bool((action or {}).get("sources"))),
+        # TERMINAL_ACTION_CHAIN: whether this security's amendment/filing
+        # lineage has been CAPTURED (even an empty amendmentHistory is a
+        # valid "checked, no amendment found" answer -- `None` means it was
+        # never looked at) AND at least one receipt backs it.
+        "terminalActionChainResolved": _status(
+            bool(action) and action.get("amendmentHistory") is not None and has_raw_evidence),
+        # EXCHANGE_RATIO: applicable only when the resolved type requires a
+        # successor share count at all.
+        "exchangeRatioResolved": _status(
+            bool((action or {}).get("successorSharesPerOldShare") is not None),
+            applicable=requires_successor),
     }
 
 
@@ -123,7 +141,8 @@ def build_inventory(*, kr_terminations: list[dict],
             "dartIdentityStatus": (identity or {}).get("status") or DART_DIRECTORY_NOT_AVAILABLE,
             "terminationType": (action or {}).get("actionType") or TCA.TERMINATION_TYPE_UNRESOLVED,
             "evidenceSources": list((action or {}).get("sources") or []),
-            "evidenceReceiptNumbers": [r for r in [(action or {}).get("sourceReceiptNumber")] if r],
+            "evidenceReceiptNumbers": sorted((action or {}).get("sourceReceiptNumbers") or
+                                             [r for r in [(action or {}).get("sourceReceiptNumber")] if r]),
             "evidenceReceiptDates": [r for r in [(action or {}).get("sourceReceiptDate")] if r],
             "dividendEventsKnownFromYahoo": term.get("dividendEvents", 0),
             "dividendLineageStatus": (dividends or {}).get("status") or DIVIDEND_NOT_COLLECTED,
@@ -167,7 +186,8 @@ def foundation_status(rows: list[dict]) -> str:
     if blocked_fields <= {"dividendLineageResolved", "exDateSemanticsResolved"}:
         return BLOCKED_BY_DIVIDEND_LINEAGE
     if blocked_fields <= {"terminalConsiderationResolved", "successorResolvedWhereRequired",
-                          "terminationTypeResolved"}:
+                          "terminationTypeResolved", "terminalActionChainResolved",
+                          "exchangeRatioResolved"}:
         return BLOCKED_BY_TERMINAL_CONSIDERATION
     return PARTIALLY_REPAIRED
 

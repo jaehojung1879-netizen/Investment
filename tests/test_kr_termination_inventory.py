@@ -141,3 +141,59 @@ def test_partial_identity_resolution_with_no_field_ready_is_still_blocked_by_sou
         kr_terminations=[_termination(code="A.KS"), _termination(code="B.KS")],
         dart_identity={"A.KS": {"status": "NOT_FOUND"}})  # no corpCode -> no field turns READY
     assert INV.foundation_status(rows) == INV.BLOCKED_BY_SOURCE_ACCESS
+
+
+# --------------------------------------------------------------------------- #
+# v2 extension: TERMINAL_ACTION_CHAIN / EXCHANGE_RATIO (Section 19's 12th
+# and 8th fields, additive to the v1 completeness matrix)
+# --------------------------------------------------------------------------- #
+def test_terminal_action_chain_needs_a_captured_amendment_history_and_evidence():
+    unresolved = INV.completeness_row(identity=None, action=None, dividends=None,
+                                      last_trading_date="2013-04-25")
+    assert unresolved["terminalActionChainResolved"] == INV.BLOCKED
+
+    action = TCA.build_record(old_security="004940.KS", action_type=TCA.MERGER_CASH,
+                              cash_per_old_share=1000.0, effective_date="2013-04-25",
+                              source_receipt_number="r1", source_receipt_date="2013-03-01",
+                              sources=("DART:r1",))
+    ready = INV.completeness_row(identity={"corpCode": "00123"}, action=action,
+                                 dividends=None, last_trading_date="2013-04-25")
+    assert ready["terminalActionChainResolved"] == INV.READY
+
+
+def test_exchange_ratio_not_applicable_for_a_pure_cash_merger():
+    action = TCA.build_record(old_security="004940.KS", action_type=TCA.MERGER_CASH,
+                              cash_per_old_share=1000.0, effective_date="2013-04-25",
+                              source_receipt_number="r1", source_receipt_date="2013-03-01")
+    row = INV.completeness_row(identity=None, action=action, dividends=None,
+                               last_trading_date="2013-04-25")
+    assert row["exchangeRatioResolved"] == INV.NOT_APPLICABLE
+
+
+def test_exchange_ratio_blocked_until_shares_per_old_share_is_known():
+    action = TCA.build_record(old_security="000830.KS", action_type=TCA.MERGER_STOCK,
+                              successor_security="028260.KS", successor_shares_per_old_share=None,
+                              source_receipt_number="r1", source_receipt_date="2015-08-01")
+    row = INV.completeness_row(identity=None, action=action, dividends=None,
+                               last_trading_date="2015-09-14")
+    assert row["exchangeRatioResolved"] == INV.BLOCKED
+    ratio_known = TCA.build_record(
+        old_security="000830.KS", action_type=TCA.MERGER_STOCK,
+        successor_security="028260.KS", successor_shares_per_old_share=0.42,
+        source_receipt_number="r1", source_receipt_date="2015-08-01")
+    row2 = INV.completeness_row(identity=None, action=ratio_known, dividends=None,
+                                last_trading_date="2015-09-14")
+    assert row2["exchangeRatioResolved"] == INV.READY
+
+
+def test_raw_evidence_retained_counts_disclosure_sources_even_without_a_resolved_term():
+    # A security with retained disclosure receipts but no resolved
+    # termination type -- exactly this repository's real state for all 22
+    # -- still has RAW_EVIDENCE, distinct from having resolved anything.
+    action = TCA.build_record(old_security="004940.KS",
+                              action_type=TCA.TERMINATION_TYPE_UNRESOLVED,
+                              sources=("DART:20130301000111", "DART:20130814001621"))
+    row = INV.completeness_row(identity=None, action=action, dividends=None,
+                               last_trading_date="2013-04-25")
+    assert row["rawEvidenceRetained"] == INV.READY
+    assert row["terminationTypeResolved"] == INV.BLOCKED
