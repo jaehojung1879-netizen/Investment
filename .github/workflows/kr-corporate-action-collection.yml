@@ -1,0 +1,185 @@
+name: Collect KR terminated-security corporate actions
+
+# `auto` (the default) mirrors `dart-ownership-events.yml`'s own gate: a
+# schema/access probe runs first, and collection proceeds automatically only
+# if that probe reports `SERVED`. If DART refuses the key on `list.json`, or
+# an expected field goes missing, the run stops there and is never reported
+# as a successful collection.
+#
+# This collects only `list.json`'s CONFIRMED disclosure-index rows for the
+# 22 KR terminated securities `alpha-opportunity-model-v3`'s survivorship
+# audit found without dividend or terminal-value lineage — see
+# `pipeline/kr_corporate_action_events.py` and
+# `docs/kr-terminated-security-total-return-foundation-v1.md`. It is a
+# reading list for a human reviewer, never a resolved terminal-action book:
+# nothing this workflow writes assigns a termination type to any security.
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "auto=확인 후 자동 수집 / probe=확인만 / collect=확인 없이 강제 수집"
+        type: choice
+        options: ["auto", "probe", "collect"]
+        default: "auto"
+      max_calls:
+        description: "collect 전용 — 최대 호출 수 (기본: 22개 종목 전체)"
+        type: string
+        default: "30"
+      max_minutes:
+        description: "collect 전용 — 최대 분"
+        type: string
+        default: "30"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: signal-history-kr-corporate-actions
+  cancel-in-progress: false
+
+jobs:
+  probe:
+    if: inputs.mode == 'probe' || inputs.mode == 'auto'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    outputs:
+      verdict: ${{ steps.run.outputs.verdict }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+
+      - name: Probe list.json and alotMatter.json
+        id: run
+        env:
+          DART_API_KEY: ${{ secrets.DART }}
+        run: |
+          python scripts/probe_kr_corporate_actions.py \
+            --output kr-corporate-actions-probe.json | tee probe.log
+
+      - name: Upload the probe
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: kr-corporate-actions-probe
+          path: |
+            kr-corporate-actions-probe.json
+            probe.log
+          if-no-files-found: warn
+
+      - name: Summary
+        if: always()
+        run: |
+          {
+            echo '## KR corporate-action disclosure probe'
+            echo
+            echo '```'
+            tail -n 120 probe.log 2>/dev/null || echo 'no probe output'
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  collect:
+    needs: [probe]
+    if: |
+      always() &&
+      (inputs.mode == 'collect' ||
+       (inputs.mode == 'auto' && needs.probe.outputs.verdict == 'SERVED'))
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - name: Checkout code (main)
+        uses: actions/checkout@v5
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Check out signal-history branch (orphan-safe)
+        run: |
+          git config user.name "kr-corporate-actions-bot"
+          git config user.email "actions@github.com"
+          mkdir -p kr-actions-work
+          if git ls-remote --exit-code --heads origin signal-history; then
+            git fetch origin signal-history
+            git worktree add kr-actions-work origin/signal-history
+            git -C kr-actions-work checkout -B signal-history
+          else
+            git worktree add --detach kr-actions-work
+            git -C kr-actions-work checkout --orphan signal-history
+            git -C kr-actions-work rm -rf . || true
+          fi
+          mkdir -p kr-actions-work/ledger/kr-corporate-actions
+
+      - name: Collect the disclosure index
+        env:
+          DART_API_KEY: ${{ secrets.DART }}
+        run: |
+          python scripts/collect_kr_corporate_actions.py \
+            kr-actions-work/ledger/kr-corporate-actions \
+            --inventory docs/results/kr-termination-inventory.json \
+            --max-calls "${{ inputs.max_calls || '30' }}" \
+            --max-minutes "${{ inputs.max_minutes || '30' }}" \
+            | tee collect.log
+
+      - name: Commit & push to signal-history
+        run: |
+          cd kr-actions-work
+          git add ledger/kr-corporate-actions
+          if git diff --cached --quiet; then
+            echo "no new disclosures"
+            exit 0
+          fi
+          git commit -m "kr-corporate-actions: disclosure-index slice for $(date -u +%Y-%m-%d)"
+          for attempt in 1 2 3 4 5; do
+            if git push origin signal-history; then
+              exit 0
+            fi
+            echo "push rejected (attempt $attempt); rebasing onto the remote"
+            git fetch origin signal-history
+            if ! git rebase origin/signal-history; then
+              git rebase --abort || true
+              echo "could not rebase onto signal-history"
+              exit 1
+            fi
+          done
+          echo "push failed after 5 attempts"
+          exit 1
+
+      - name: Summary
+        if: always()
+        run: |
+          {
+            echo '## KR corporate-action disclosure collection'
+            echo
+            echo '```'
+            tail -n 60 collect.log 2>/dev/null || echo 'no collection output'
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  gate-stopped:
+    needs: [probe]
+    if: inputs.mode == 'auto' && needs.probe.outputs.verdict != 'SERVED'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Explain why collection did not run
+        run: |
+          {
+            echo '## KR corporate actions — collection skipped'
+            echo
+            echo "probe verdict: \`${{ needs.probe.outputs.verdict }}\` (not \`SERVED\`)"
+            echo
+            echo 'Collection only runs automatically after a `SERVED` probe.'
+            echo 'Check the probe job'"'"'s summary above for what refused it.'
+          } >> "$GITHUB_STEP_SUMMARY"
+          echo "probe verdict was ${{ needs.probe.outputs.verdict }}, not SERVED — collection skipped" >&2
+          exit 1
