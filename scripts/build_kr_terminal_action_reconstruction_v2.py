@@ -23,11 +23,19 @@ this PR, see the doc for why: no confirmed structured DART endpoint or raw-
 document extraction pipeline exists yet to responsibly assign a termination
 type from content rather than a report NAME).
 
+DIVIDEND AMOUNT LINEAGE IS NOW REAL, DECODED FROM LIVE-OBSERVED VALUES ONLY
+(`kr_dividend_amount_lineage.py`, commit
+`dfeb098e26ff71d3b8149199677417a78eda42d6`: 47/47 tickers, 6,150 rows).
+Dividend EVENT-DATE lineage stays BLOCKED regardless -- this endpoint has
+never stated an ex-date/record date in any row collected, so
+`exDateSemanticsResolved` cannot become `READY` from anything this script
+reads.
+
 WHAT THIS NEVER DOES. Assigns no `terminationType` from a report name (that
 stays a human's job reading real filing content, per `kr_corporate_action_
-events`'s own module docstring); decodes no `se` category without a
-`KNOWN_SE_RAW_VALUES` entry confirmed from an actually-observed value
-(none exist yet -- see the doc); computes no return, IC, or Alpha result.
+events`'s own module docstring, or a future validated pass of
+`kr_terminal_action_document_parser.py` -- unvalidated and unwired as
+shipped); computes no return, IC, or Alpha result.
 """
 from __future__ import annotations
 
@@ -42,6 +50,7 @@ sys.path.insert(0, str(ROOT))
 
 from pipeline import historical_store as HS  # noqa: E402
 from pipeline import kr_corporate_action_events as KCA  # noqa: E402
+from pipeline import kr_dividend_amount_lineage as DAL  # noqa: E402
 from pipeline import kr_terminal_corporate_actions as TCA  # noqa: E402
 from pipeline import kr_termination_inventory as INV  # noqa: E402
 
@@ -155,31 +164,60 @@ def run(*, signal_history_root: Path, signal_history_commit: str | None,
     reviewed_book = TCA.load_book(reviewed_book_path)
     terminal_actions = build_terminal_actions(disclosures, dart_identity, reviewed_book)
 
-    # Dividend lineage: still NOT_COLLECTED until `collect_kr_dividend_
-    # sections.py` has run AND its `se` categories have been decoded from a
-    # live-observed catalog (see module docstring) -- this script never
-    # guesses that mapping, so `dividend_lineage` stays empty even when raw
-    # rows exist on the shard, and the raw row COUNT is still published for
-    # visibility.
+    # Dividend AMOUNT lineage: real, decoded from live-observed `se`/
+    # `stock_knd` values only (`kr_dividend_amount_lineage.KNOWN_SE_RAW_
+    # VALUES`/`KNOWN_STOCK_KIND_RAW_VALUES`, both built from the real
+    # `collect_kr_dividend_sections.py` run, commit
+    # `dfeb098e26ff71d3b8149199677417a78eda42d6`). A ticker is
+    # `DIVIDEND_RESOLVED` once it has at least one real CASH_DPS/STOCK_DPS
+    # entry -- never from raw row presence alone (many raw rows are net
+    # income, payout ratio or EPS figures, not a per-share amount).
+    # `exDateSource` is never set here: this endpoint states no ex-date/
+    # record date in any collected row, so dividend EVENT-DATE lineage
+    # stays BLOCKED regardless (`kr_termination_inventory.completeness_
+    # row`'s own unchanged rule).
     dividend_rows_by_ticker: dict[str, list[dict]] = {}
     for row in dividend_rows:
         dividend_rows_by_ticker.setdefault(row["ticker"], []).append(row)
 
+    dividend_lineage: dict[str, dict] = {}
+    dividend_lineage_detail: dict[str, dict] = {}
+    for code in codes:
+        ticker = f"{code}.KS"
+        lineage = DAL.dividend_amount_lineage_for_ticker(
+            dividend_rows_by_ticker.get(code, []))
+        dividend_lineage_detail[ticker] = lineage
+        if lineage["entries"]:
+            dividend_lineage[ticker] = {"status": INV.DIVIDEND_RESOLVED}
+
     inventory = INV.build_inventory(
         kr_terminations=kr_terminations, kr_membership_windows=windows,
         dart_identity=dart_identity, terminal_actions=terminal_actions,
-        dividend_lineage={})
+        dividend_lineage=dividend_lineage)
 
     disclosures_by_ticker = {}
     for row in disclosures:
         disclosures_by_ticker.setdefault(row["ticker"], 0)
         disclosures_by_ticker[row["ticker"]] += 1
 
+    disclosures_by_full_ticker: dict[str, list[dict]] = {}
+    for row in disclosures:
+        disclosures_by_full_ticker.setdefault(row["ticker"], []).append(row)
+
     for security_row in inventory:
         ticker = security_row["code"]
+        bare_code = ticker.removesuffix(".KS")
         security_row["rawDisclosureRowsCollected"] = disclosures_by_ticker.get(ticker, 0)
         security_row["rawDividendSectionRowsCollected"] = len(
-            dividend_rows_by_ticker.get(ticker, []))
+            dividend_rows_by_ticker.get(bare_code, []))
+        lineage = dividend_lineage_detail.get(ticker, {"entries": [], "selfConsistencyDisagreements": 0})
+        security_row["dividendAmountLineageEntries"] = lineage["entries"]
+        security_row["dividendAmountLineageSelfConsistencyDisagreements"] = (
+            lineage["selfConsistencyDisagreements"])
+        narrowed = KCA.plausibly_responsible_disclosures(
+            disclosures_by_full_ticker.get(ticker, []),
+            last_trading_date=security_row["lastTradingDate"])
+        security_row["plausiblyResponsibleReceipts"] = [r["receiptNo"] for r in narrowed]
 
     return {
         "studyId": "kr-terminal-action-reconstruction-v2",

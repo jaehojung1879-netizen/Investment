@@ -41,6 +41,14 @@ on:
         description: "collect-dividends 전용 — alotMatter.json 호출 상한 (1호출=1종목x1년). 22개 종목 + 연속상장 대조표본까지 포함한 보수적 기본값이며, 완료를 보장하지 않음 — datasetComplete를 확인할 것."
         type: string
         default: "700"
+      max_calls_documents:
+        description: "collect-documents 전용 — document.xml 호출 상한 (narrowed 영수증 1건당 1호출). 2026-09-25 기준 실측 130건 위 여유값이며, 완료를 보장하지 않음."
+        type: string
+        default: "200"
+      max_minutes_documents:
+        description: "collect-documents 전용 — 최대 분"
+        type: string
+        default: "30"
       max_minutes_dividends:
         description: "collect-dividends 전용 — 최대 분"
         type: string
@@ -270,6 +278,98 @@ jobs:
             echo
             echo '```'
             tail -n 60 collect-dividends.log 2>/dev/null || echo 'no collection output'
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  collect-documents:
+    needs: [probe, collect]
+    if: |
+      always() &&
+      (inputs.mode == 'collect' ||
+       (inputs.mode == 'auto' && needs.probe.outputs.verdict == 'SERVED'))
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - name: Checkout code (main)
+        uses: actions/checkout@v5
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      # Runs after `collect` (via `needs`), which is what commits the real
+      # disclosure index this job's own narrowing step reads. Re-fetches
+      # signal-history fresh (a separate job/runner from `collect`).
+      - name: Check out signal-history branch (orphan-safe)
+        run: |
+          git config user.name "kr-corporate-actions-bot"
+          git config user.email "actions@github.com"
+          mkdir -p kr-actions-work
+          if git ls-remote --exit-code --heads origin signal-history; then
+            git fetch origin signal-history
+            git worktree add kr-actions-work origin/signal-history
+            git -C kr-actions-work checkout -B signal-history
+          else
+            git worktree add --detach kr-actions-work
+            git -C kr-actions-work checkout --orphan signal-history
+            git -C kr-actions-work rm -rf . || true
+          fi
+          mkdir -p kr-actions-work/ledger/kr-corporate-actions
+
+      # `document.xml` -- raw filing TEXT for the receipts `kr_corporate_
+      # action_events.plausibly_responsible_disclosures` narrows the real
+      # 451-row disclosure index down to (this job builds that narrowed
+      # list itself; no receipt list is accepted from elsewhere). Nothing
+      # this job writes assigns a termination type, consideration amount,
+      # ratio or successor -- that stays a later, separate parsing pass.
+      - name: Collect terminal-action filing documents
+        env:
+          DART_API_KEY: ${{ secrets.DART }}
+        run: |
+          python scripts/collect_kr_terminal_action_documents.py \
+            kr-actions-work/ledger/kr-corporate-actions \
+            --inventory docs/results/kr-termination-inventory.json \
+            --max-calls "${{ inputs.max_calls_documents || '200' }}" \
+            --max-minutes "${{ inputs.max_minutes_documents || '30' }}" \
+            | tee collect-documents.log
+
+      - name: Commit & push to signal-history
+        run: |
+          cd kr-actions-work
+          git add ledger/kr-corporate-actions
+          if git diff --cached --quiet; then
+            echo "no new documents"
+            exit 0
+          fi
+          git commit -m "kr-corporate-actions: terminal-action document slice for $(date -u +%Y-%m-%d)"
+          for attempt in 1 2 3 4 5; do
+            if git push origin signal-history; then
+              exit 0
+            fi
+            echo "push rejected (attempt $attempt); rebasing onto the remote"
+            git fetch origin signal-history
+            if ! git rebase origin/signal-history; then
+              git rebase --abort || true
+              echo "could not rebase onto signal-history"
+              exit 1
+            fi
+          done
+          echo "push failed after 5 attempts"
+          exit 1
+
+      - name: Summary
+        if: always()
+        run: |
+          {
+            echo '## KR terminal-action filing document collection'
+            echo
+            echo '```'
+            tail -n 60 collect-documents.log 2>/dev/null || echo 'no collection output'
             echo '```'
           } >> "$GITHUB_STEP_SUMMARY"
 

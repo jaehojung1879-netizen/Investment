@@ -19,18 +19,23 @@ TWO CONFIDENCE TIERS, NEVER BLURRED.
    amount, a ratio, a record date) from `list.json` — it carries only a
    report's name and its receipt.
 
-2. **CANDIDATE, PENDING A LIVE PROBE.** `alotMatter.json` (배당에 관한 사항,
+2. **CONFIRMED LIVE (2026-09-25).** `alotMatter.json` (배당에 관한 사항,
    dividend information) is DART's own documented dividend-section endpoint.
    WebFetch of `opendart.fss.or.kr` itself is blocked from this sandbox's
    egress — the exact block `dart_ownership_events.py`'s docstring already
    records for the same host — so its field names here
-   (`ALOTMATTER_CANDIDATE_FIELDS`) are corroborated from independent
-   third-party OpenDART client documentation, the same standard
-   `dart_ownership_events.py` used for `majorstock.json` before
-   `scripts/probe_dart_ownership_events.py` confirmed it live. They are
-   marked `endpointConfidence: CANDIDATE_UNCONFIRMED` on every row this
-   module builds, and stay that way until `scripts/probe_kr_corporate_actions
-   .py` runs against the real API with a real key.
+   (`ALOTMATTER_CANDIDATE_FIELDS`) were originally corroborated from
+   independent third-party OpenDART client documentation only, the same
+   standard `dart_ownership_events.py` used for `majorstock.json` before
+   `scripts/probe_dart_ownership_events.py` confirmed it live. A real
+   collection run (`collect_kr_dividend_sections.py`, signal-history commit
+   `dfeb098e26ff71d3b8149199677417a78eda42d6`) has since confirmed the
+   endpoint and all eight fields live: 47/47 tickers, 6,150 real rows. Every
+   row this module builds now carries `endpointConfidence: CONFIRMED_LIVE`.
+   This confirms the ENDPOINT and its FIELD NAMES only — what a given `se`/
+   `stock_knd` VALUE means is a separate question, decoded from
+   live-observed values alone in `kr_dividend_amount_lineage.py`, never
+   guessed here.
 
 WHAT IS DELIBERATELY NOT HERE. Structured endpoints for merger, share
 exchange/transfer, tender offer and delisting decisions are a further DART
@@ -363,6 +368,63 @@ def candidate_disclosures(rows: list[dict], *, ticker: str | None = None) -> lis
     return sorted(out, key=lambda r: (str(r["receiptDate"]), str(r["receiptNo"])))
 
 
+TERMINATION_RELEVANT_FAMILIES = frozenset({
+    MERGER, SHARE_EXCHANGE_OR_TRANSFER, SPINOFF_OR_SPLIT_MERGER,
+    BUSINESS_TRANSFER, TENDER_OFFER, DELISTING,
+})
+
+# A termination-defining disclosure (합병결정, 상장폐지, 공개매수 등) is
+# typically made well before the security's actual last trading date, and a
+# completion/종료 report can follow shortly after delisting -- both windows
+# are a HEURISTIC for narrowing a reading list, never a proof of relevance,
+# which is why this function's own name says "plausibly responsible" and
+# every row it returns still requires a human (or, later, a document-
+# content parse) to confirm.
+DEFAULT_BEFORE_DAYS = 365
+DEFAULT_AFTER_DAYS = 90
+
+
+def plausibly_responsible_disclosures(disclosures: list[dict], *, last_trading_date: str | None,
+                                      before_days: int = DEFAULT_BEFORE_DAYS,
+                                      after_days: int = DEFAULT_AFTER_DAYS) -> list[dict]:
+    """Narrow a security's full disclosure list to the ones PLAUSIBLY
+    responsible for its termination: a `TERMINATION_RELEVANT_FAMILIES`
+    match, receipted within `[last_trading_date - before_days,
+    last_trading_date + after_days]`.
+
+    Never a verdict -- this only shrinks a reading list from "every
+    disclosure this ticker ever filed" to "the ones worth a human (or a
+    future document-content parse) actually looking at", and a security
+    with `last_trading_date` unknown gets an empty result rather than an
+    unbounded one, so a missing date can never silently widen the window
+    to "everything".
+    """
+    if not last_trading_date:
+        return []
+    import datetime as _dt
+    try:
+        last = _dt.date.fromisoformat(str(last_trading_date)[:10])
+    except ValueError:
+        return []
+    window_start = last - _dt.timedelta(days=before_days)
+    window_end = last + _dt.timedelta(days=after_days)
+    out = []
+    for row in disclosures:
+        families = set(row.get("disclosureFamilies") or ())
+        if not families & TERMINATION_RELEVANT_FAMILIES:
+            continue
+        receipt = row.get("receiptDate")
+        if not receipt:
+            continue
+        try:
+            receipt_date_value = _dt.date.fromisoformat(str(receipt)[:10])
+        except ValueError:
+            continue
+        if window_start <= receipt_date_value <= window_end:
+            out.append(row)
+    return sorted(out, key=lambda r: (str(r["receiptDate"]), str(r["receiptNo"])))
+
+
 def amendment_chain(disclosures: list[dict]) -> list[dict]:
     """Group same-family disclosures for one issuer by receipt order.
 
@@ -386,11 +448,21 @@ def amendment_chain(disclosures: list[dict]) -> list[dict]:
 
 
 # --------------------------------------------------------------------------- #
-# alotMatter.json (배당에 관한 사항) -- CANDIDATE, PENDING A LIVE PROBE
+# alotMatter.json (배당에 관한 사항) -- CONFIRMED LIVE 2026-09-25
 # --------------------------------------------------------------------------- #
+# Promoted from CANDIDATE_UNCONFIRMED to CONFIRMED_LIVE by a real collection
+# run (`collect_kr_dividend_sections.py`, signal-history commit
+# `dfeb098e26ff71d3b8149199677417a78eda42d6`): 47/47 tickers SUCCESS, 6,150
+# real rows, all eight fields present on every row. The endpoint's own
+# reachability is now a measured fact, not a corroborated guess -- see
+# `kr_dividend_amount_lineage.py` for the separate, later step of deciding
+# what each row's `se`/`stock_knd` VALUE means, which stays gated on
+# live-observed values only, the same two-step promotion `report_tp` went
+# through (workflow-hygiene invariants, v2.25).
 ALOTMATTER_CANDIDATE_FIELDS = ("rcept_no", "corp_code", "corp_name", "se",
                                "thstrm", "frmtrm", "lwfr", "stock_knd")
 CANDIDATE_UNCONFIRMED = "CANDIDATE_UNCONFIRMED"
+CONFIRMED_LIVE = "CONFIRMED_LIVE_2026_09_25"
 
 
 def build_dividend_section_row(row: dict, *, ticker: str | None,
@@ -428,7 +500,7 @@ def build_dividend_section_row(row: dict, *, ticker: str | None,
         "priorPriorPeriodRaw": row.get("lwfr"),
         "decisionDate": None, "recordDate": None, "exDate": None,
         "effectiveDate": None, "lastTradingDate": None, "paymentDate": None,
-        "endpointConfidence": CANDIDATE_UNCONFIRMED,
+        "endpointConfidence": CONFIRMED_LIVE,
         "source": "DART:alotMatter",
         "collectedAt": collected_at,
     }, ""

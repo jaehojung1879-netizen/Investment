@@ -4,11 +4,11 @@
   "inputs": {
     "fetchStatePresent": true,
     "krTerminationsCount": 22,
-    "signalHistoryCommit": "dfe78604db50a8010090824f2ead652ee74ba1af",
+    "signalHistoryCommit": "dfeb098e26ff71d3b8149199677417a78eda42d6",
     "survivorshipAuditPath": "/home/user/Investment/docs/results/alpha-opportunity-model-v3-survivorship-audit.json",
     "survivorshipAuditSha256": "f0d9ed09880ffb75c6cc698dbb001e6f6879dee1991ede6ff6d365cc50f22902",
     "totalDisclosureRowsOnShard": 451,
-    "totalDividendSectionRowsOnShard": 0
+    "totalDividendSectionRowsOnShard": 6150
   },
   "labelsConstructed": false,
   "modelsTrained": false,
@@ -19,7 +19,7 @@
       "code": "000030.KS",
       "completeness": {
         "dartIssuerResolved": "READY",
-        "dividendLineageResolved": "BLOCKED",
+        "dividendLineageResolved": "READY",
         "effectiveDateResolved": "BLOCKED",
         "exDateSemanticsResolved": "BLOCKED",
         "exchangeRatioResolved": "NOT_APPLICABLE",
@@ -33,8 +33,99 @@
       },
       "dartCorpCode": "00254045",
       "dartIdentityStatus": "RESOLVED",
+      "dividendAmountLineageEntries": [
+        {
+          "fiscalYear": 2015,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2016-03-30",
+          "sourceReceiptNumber": "20160330004090",
+          "value": 500.0
+        },
+        {
+          "fiscalYear": 2016,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2017-03-31",
+          "sourceReceiptNumber": "20170331004833",
+          "value": 400.0
+        },
+        {
+          "fiscalYear": 2017,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2018-11-14",
+          "sourceReceiptNumber": "20181114001021",
+          "value": 600.0
+        },
+        {
+          "fiscalYear": 2018,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2019-04-01",
+          "sourceReceiptNumber": "20190401003520",
+          "value": 650.0
+        },
+        {
+          "fiscalYear": 2019,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2020-03-30",
+          "sourceReceiptNumber": "20200330003781",
+          "value": 2000.0
+        },
+        {
+          "fiscalYear": 2020,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2021-07-30",
+          "sourceReceiptNumber": "20210730000506",
+          "value": 950.0
+        },
+        {
+          "fiscalYear": 2021,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2022-03-17",
+          "sourceReceiptNumber": "20220317000674",
+          "value": 1642.0
+        },
+        {
+          "fiscalYear": 2022,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2023-03-16",
+          "sourceReceiptNumber": "20230316001052",
+          "value": 1917.0
+        },
+        {
+          "fiscalYear": 2023,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2024-03-26",
+          "sourceReceiptNumber": "20240326000240",
+          "value": 1581.0
+        },
+        {
+          "fiscalYear": 2024,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2025-03-18",
+          "sourceReceiptNumber": "20250318001159",
+          "value": 1889.0
+        },
+        {
+          "fiscalYear": 2025,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2026-03-13",
+          "sourceReceiptNumber": "20260313000815",
+          "value": 1627.0
+        }
+      ],
+      "dividendAmountLineageSelfConsistencyDisagreements": 0,
       "dividendEventsKnownFromYahoo": 0,
-      "dividendLineageStatus": "NOT_COLLECTED",
+      "dividendLineageStatus": "RESOLVED",
       "evidenceReceiptDates": [],
       "evidenceReceiptNumbers": [
         "20140728000271",
@@ -82,15 +173,24 @@
       "krxName": "우리은행",
       "lastMembershipDate": "2019-02-01",
       "lastTradingDate": "2019-02-12",
+      "plausiblyResponsibleReceipts": [
+        "20180619000302",
+        "20180619000369",
+        "20180920000544",
+        "20181108000137",
+        "20181121000025",
+        "20181126000101",
+        "20190111000457"
+      ],
       "rawDisclosureRowsCollected": 19,
-      "rawDividendSectionRowsCollected": 0,
+      "rawDividendSectionRowsCollected": 164,
       "terminationType": "TERMINATION_TYPE_UNRESOLVED"
     },
     {
       "code": "000060.KS",
       "completeness": {
         "dartIssuerResolved": "READY",
-        "dividendLineageResolved": "BLOCKED",
+        "dividendLineageResolved": "READY",
         "effectiveDateResolved": "BLOCKED",
         "exDateSemanticsResolved": "BLOCKED",
         "exchangeRatioResolved": "NOT_APPLICABLE",
@@ -104,8 +204,83 @@
       },
       "dartCorpCode": "00117744",
       "dartIdentityStatus": "RESOLVED",
+      "dividendAmountLineageEntries": [
+        {
+          "fiscalYear": 2015,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2016-03-30",
+          "sourceReceiptNumber": "20160330002889",
+          "value": 570.0
+        },
+        {
+          "fiscalYear": 2016,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2017-03-31",
+          "sourceReceiptNumber": "20170331003752",
+          "value": 830.0
+        },
+        {
+          "fiscalYear": 2017,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2018-04-02",
+          "sourceReceiptNumber": "20180402004802",
+          "value": 1140.0
+        },
+        {
+          "fiscalYear": 2018,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2019-04-01",
+          "sourceReceiptNumber": "20190401003290",
+          "value": 820.0
+        },
+        {
+          "fiscalYear": 2019,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2021-01-15",
+          "sourceReceiptNumber": "20210115000064",
+          "value": 850.0
+        },
+        {
+          "fiscalYear": 2021,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2022-11-30",
+          "sourceReceiptNumber": "20221130001307",
+          "value": 620.0
+        },
+        {
+          "fiscalYear": 2023,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2024-04-30",
+          "sourceReceiptNumber": "20240430000865",
+          "value": 6071.0
+        },
+        {
+          "fiscalYear": 2024,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2025-03-31",
+          "sourceReceiptNumber": "20250331003145",
+          "value": 6333.0
+        },
+        {
+          "fiscalYear": 2025,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2026-03-31",
+          "sourceReceiptNumber": "20260331003916",
+          "value": 7959.0
+        }
+      ],
+      "dividendAmountLineageSelfConsistencyDisagreements": 0,
       "dividendEventsKnownFromYahoo": 0,
-      "dividendLineageStatus": "NOT_COLLECTED",
+      "dividendLineageStatus": "RESOLVED",
       "evidenceReceiptDates": [],
       "evidenceReceiptNumbers": [
         "20130424800282",
@@ -139,8 +314,12 @@
       "krxName": "메리츠화재",
       "lastMembershipDate": "2023-02-01",
       "lastTradingDate": "2023-02-20",
+      "plausiblyResponsibleReceipts": [
+        "20221121000152",
+        "20221205000271"
+      ],
       "rawDisclosureRowsCollected": 12,
-      "rawDividendSectionRowsCollected": 0,
+      "rawDividendSectionRowsCollected": 158,
       "terminationType": "TERMINATION_TYPE_UNRESOLVED"
     },
     {
@@ -161,6 +340,8 @@
       },
       "dartCorpCode": "00126229",
       "dartIdentityStatus": "RESOLVED",
+      "dividendAmountLineageEntries": [],
+      "dividendAmountLineageSelfConsistencyDisagreements": 0,
       "dividendEventsKnownFromYahoo": 0,
       "dividendLineageStatus": "NOT_COLLECTED",
       "evidenceReceiptDates": [],
@@ -192,6 +373,15 @@
       "krxName": "삼성물산",
       "lastMembershipDate": "2015-09-01",
       "lastTradingDate": "2015-09-14",
+      "plausiblyResponsibleReceipts": [
+        "20150526000622",
+        "20150526800025",
+        "20150608000391",
+        "20150612000428",
+        "20150619000462",
+        "20150720000426",
+        "20150824000341"
+      ],
       "rawDisclosureRowsCollected": 10,
       "rawDividendSectionRowsCollected": 0,
       "terminationType": "TERMINATION_TYPE_UNRESOLVED"
@@ -214,6 +404,8 @@
       },
       "dartCorpCode": "00148328",
       "dartIdentityStatus": "RESOLVED",
+      "dividendAmountLineageEntries": [],
+      "dividendAmountLineageSelfConsistencyDisagreements": 0,
       "dividendEventsKnownFromYahoo": 0,
       "dividendLineageStatus": "NOT_COLLECTED",
       "evidenceReceiptDates": [],
@@ -251,6 +443,17 @@
       "krxName": "제일모직",
       "lastMembershipDate": "2014-07-01",
       "lastTradingDate": "2014-07-14",
+      "plausiblyResponsibleReceipts": [
+        "20130923000004",
+        "20130923000009",
+        "20130923800016",
+        "20131202000453",
+        "20140106000443",
+        "20140106800520",
+        "20140331001355",
+        "20140331800032",
+        "20140331800112"
+      ],
       "rawDisclosureRowsCollected": 13,
       "rawDividendSectionRowsCollected": 0,
       "terminationType": "TERMINATION_TYPE_UNRESOLVED"
@@ -259,7 +462,7 @@
       "code": "002550.KS",
       "completeness": {
         "dartIssuerResolved": "READY",
-        "dividendLineageResolved": "BLOCKED",
+        "dividendLineageResolved": "READY",
         "effectiveDateResolved": "BLOCKED",
         "exDateSemanticsResolved": "BLOCKED",
         "exchangeRatioResolved": "NOT_APPLICABLE",
@@ -273,8 +476,83 @@
       },
       "dartCorpCode": "00120216",
       "dartIdentityStatus": "RESOLVED",
+      "dividendAmountLineageEntries": [
+        {
+          "fiscalYear": 2015,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2016-03-30",
+          "sourceReceiptNumber": "20160330004139",
+          "value": 400.0
+        },
+        {
+          "fiscalYear": 2015,
+          "metric": "STOCK_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2016-03-30",
+          "sourceReceiptNumber": "20160330004139",
+          "value": 0.0
+        },
+        {
+          "fiscalYear": 2015,
+          "metric": "CASH_DPS",
+          "shareClass": "PREFERRED",
+          "sourceReceiptDate": "2016-03-30",
+          "sourceReceiptNumber": "20160330004139",
+          "value": 0.0
+        },
+        {
+          "fiscalYear": 2015,
+          "metric": "STOCK_DPS",
+          "shareClass": "PREFERRED",
+          "sourceReceiptDate": "2016-03-30",
+          "sourceReceiptNumber": "20160330004139",
+          "value": 0.0
+        },
+        {
+          "fiscalYear": 2016,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2017-03-31",
+          "sourceReceiptNumber": "20170331005157",
+          "value": 600.0
+        },
+        {
+          "fiscalYear": 2016,
+          "metric": "STOCK_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2017-03-31",
+          "sourceReceiptNumber": "20170331005157",
+          "value": 0.0
+        },
+        {
+          "fiscalYear": 2016,
+          "metric": "CASH_DPS",
+          "shareClass": "PREFERRED",
+          "sourceReceiptDate": "2017-03-31",
+          "sourceReceiptNumber": "20170331005157",
+          "value": 0.0
+        },
+        {
+          "fiscalYear": 2016,
+          "metric": "STOCK_DPS",
+          "shareClass": "PREFERRED",
+          "sourceReceiptDate": "2017-03-31",
+          "sourceReceiptNumber": "20170331005157",
+          "value": 0.0
+        },
+        {
+          "fiscalYear": 2017,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2018-03-29",
+          "sourceReceiptNumber": "20180329001258",
+          "value": 750.0
+        }
+      ],
+      "dividendAmountLineageSelfConsistencyDisagreements": 0,
       "dividendEventsKnownFromYahoo": 0,
-      "dividendLineageStatus": "NOT_COLLECTED",
+      "dividendLineageStatus": "RESOLVED",
       "evidenceReceiptDates": [],
       "evidenceReceiptNumbers": [
         "20130424800332",
@@ -310,15 +588,25 @@
       "krxName": "KB손해보험",
       "lastMembershipDate": "2017-07-03",
       "lastTradingDate": "2017-07-20",
+      "plausiblyResponsibleReceipts": [
+        "20170414002322",
+        "20170417000001",
+        "20170417000002",
+        "20170420000107",
+        "20170516000224",
+        "20170519000102",
+        "20170525000022",
+        "20170530000327"
+      ],
       "rawDisclosureRowsCollected": 13,
-      "rawDividendSectionRowsCollected": 0,
+      "rawDividendSectionRowsCollected": 99,
       "terminationType": "TERMINATION_TYPE_UNRESOLVED"
     },
     {
       "code": "003410.KS",
       "completeness": {
         "dartIssuerResolved": "READY",
-        "dividendLineageResolved": "BLOCKED",
+        "dividendLineageResolved": "READY",
         "effectiveDateResolved": "BLOCKED",
         "exDateSemanticsResolved": "BLOCKED",
         "exchangeRatioResolved": "NOT_APPLICABLE",
@@ -332,8 +620,107 @@
       },
       "dartCorpCode": "00138224",
       "dartIdentityStatus": "RESOLVED",
+      "dividendAmountLineageEntries": [
+        {
+          "fiscalYear": 2017,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2018-04-02",
+          "sourceReceiptNumber": "20180402003717",
+          "value": 1070.0
+        },
+        {
+          "fiscalYear": 2017,
+          "metric": "CASH_DPS",
+          "shareClass": "PREFERRED",
+          "sourceReceiptDate": "2018-04-02",
+          "sourceReceiptNumber": "20180402003717",
+          "value": 1120.0
+        },
+        {
+          "fiscalYear": 2018,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2019-04-01",
+          "sourceReceiptNumber": "20190401004206",
+          "value": 370.0
+        },
+        {
+          "fiscalYear": 2018,
+          "metric": "CASH_DPS",
+          "shareClass": "PREFERRED",
+          "sourceReceiptDate": "2019-04-01",
+          "sourceReceiptNumber": "20190401004206",
+          "value": 380.0
+        },
+        {
+          "fiscalYear": 2019,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2020-03-30",
+          "sourceReceiptNumber": "20200330004513",
+          "value": 420.0
+        },
+        {
+          "fiscalYear": 2019,
+          "metric": "CASH_DPS",
+          "shareClass": "PREFERRED",
+          "sourceReceiptDate": "2020-03-30",
+          "sourceReceiptNumber": "20200330004513",
+          "value": 430.0
+        },
+        {
+          "fiscalYear": 2020,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2021-03-17",
+          "sourceReceiptNumber": "20210317001029",
+          "value": 440.0
+        },
+        {
+          "fiscalYear": 2021,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2022-08-16",
+          "sourceReceiptNumber": "20220816001988",
+          "value": 440.0
+        },
+        {
+          "fiscalYear": 2022,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2023-03-21",
+          "sourceReceiptNumber": "20230321001494",
+          "value": 440.0
+        },
+        {
+          "fiscalYear": 2023,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2024-03-27",
+          "sourceReceiptNumber": "20240327001183",
+          "value": 280.0
+        },
+        {
+          "fiscalYear": 2024,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2025-03-28",
+          "sourceReceiptNumber": "20250328001785",
+          "value": 500.0
+        },
+        {
+          "fiscalYear": 2025,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2026-03-31",
+          "sourceReceiptNumber": "20260331004655",
+          "value": 180.0
+        }
+      ],
+      "dividendAmountLineageSelfConsistencyDisagreements": 0,
       "dividendEventsKnownFromYahoo": 0,
-      "dividendLineageStatus": "NOT_COLLECTED",
+      "dividendLineageStatus": "RESOLVED",
       "evidenceReceiptDates": [],
       "evidenceReceiptNumbers": [
         "20130905000163",
@@ -443,15 +830,24 @@
       "krxName": "쌍용C&E",
       "lastMembershipDate": "2024-07-01",
       "lastTradingDate": "2024-07-08",
+      "plausiblyResponsibleReceipts": [
+        "20240205000007",
+        "20240205000008",
+        "20240219001823",
+        "20240219001836",
+        "20240308000152",
+        "20240423000168",
+        "20240425000313"
+      ],
       "rawDisclosureRowsCollected": 50,
-      "rawDividendSectionRowsCollected": 0,
+      "rawDividendSectionRowsCollected": 156,
       "terminationType": "TERMINATION_TYPE_UNRESOLVED"
     },
     {
       "code": "003450.KS",
       "completeness": {
         "dartIssuerResolved": "READY",
-        "dividendLineageResolved": "BLOCKED",
+        "dividendLineageResolved": "READY",
         "effectiveDateResolved": "BLOCKED",
         "exDateSemanticsResolved": "BLOCKED",
         "exchangeRatioResolved": "NOT_APPLICABLE",
@@ -465,8 +861,91 @@
       },
       "dartCorpCode": "00164876",
       "dartIdentityStatus": "RESOLVED",
+      "dividendAmountLineageEntries": [
+        {
+          "fiscalYear": 2015,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2016-03-30",
+          "sourceReceiptNumber": "20160330003737",
+          "value": 500.0
+        },
+        {
+          "fiscalYear": 2017,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2018-04-05",
+          "sourceReceiptNumber": "20180405002096",
+          "value": 466.0
+        },
+        {
+          "fiscalYear": 2018,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2019-06-18",
+          "sourceReceiptNumber": "20190618000212",
+          "value": 167.0
+        },
+        {
+          "fiscalYear": 2019,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2020-03-27",
+          "sourceReceiptNumber": "20200327001153",
+          "value": 267.0
+        },
+        {
+          "fiscalYear": 2020,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2021-03-24",
+          "sourceReceiptNumber": "20210324000522",
+          "value": 435.0
+        },
+        {
+          "fiscalYear": 2021,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2022-03-24",
+          "sourceReceiptNumber": "20220324000538",
+          "value": 904.0
+        },
+        {
+          "fiscalYear": 2022,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2023-03-23",
+          "sourceReceiptNumber": "20230323000628",
+          "value": 1004.0
+        },
+        {
+          "fiscalYear": 2023,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2024-03-21",
+          "sourceReceiptNumber": "20240321001123",
+          "value": 502.0
+        },
+        {
+          "fiscalYear": 2024,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2025-03-21",
+          "sourceReceiptNumber": "20250321001148",
+          "value": 937.0
+        },
+        {
+          "fiscalYear": 2025,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2026-03-24",
+          "sourceReceiptNumber": "20260324000784",
+          "value": 1004.0
+        }
+      ],
+      "dividendAmountLineageSelfConsistencyDisagreements": 0,
       "dividendEventsKnownFromYahoo": 0,
-      "dividendLineageStatus": "NOT_COLLECTED",
+      "dividendLineageStatus": "RESOLVED",
       "evidenceReceiptDates": [],
       "evidenceReceiptNumbers": [
         "20130523800272",
@@ -496,8 +975,15 @@
       "krxName": "현대증권",
       "lastMembershipDate": "2016-10-04",
       "lastTradingDate": "2016-10-31",
+      "plausiblyResponsibleReceipts": [
+        "20160802000289",
+        "20160901000273",
+        "20160902000474",
+        "20161101000429",
+        "20161103000360"
+      ],
       "rawDisclosureRowsCollected": 10,
-      "rawDividendSectionRowsCollected": 0,
+      "rawDividendSectionRowsCollected": 164,
       "terminationType": "TERMINATION_TYPE_UNRESOLVED"
     },
     {
@@ -518,6 +1004,8 @@
       },
       "dartCorpCode": "00144155",
       "dartIdentityStatus": "RESOLVED",
+      "dividendAmountLineageEntries": [],
+      "dividendAmountLineageSelfConsistencyDisagreements": 0,
       "dividendEventsKnownFromYahoo": 0,
       "dividendLineageStatus": "NOT_COLLECTED",
       "evidenceReceiptDates": [],
@@ -591,6 +1079,24 @@
       "krxName": "SK",
       "lastMembershipDate": "2015-08-03",
       "lastTradingDate": "2015-08-13",
+      "plausiblyResponsibleReceipts": [
+        "20150320802190",
+        "20150320802407",
+        "20150420000235",
+        "20150420800024",
+        "20150430001586",
+        "20150513003281",
+        "20150521000438",
+        "20150528000580",
+        "20150528000709",
+        "20150601800621",
+        "20150630800739",
+        "20150721800301",
+        "20150721800305",
+        "20150730800418",
+        "20150730800431",
+        "20150805800334"
+      ],
       "rawDisclosureRowsCollected": 31,
       "rawDividendSectionRowsCollected": 0,
       "terminationType": "TERMINATION_TYPE_UNRESOLVED"
@@ -599,7 +1105,7 @@
       "code": "004940.KS",
       "completeness": {
         "dartIssuerResolved": "READY",
-        "dividendLineageResolved": "BLOCKED",
+        "dividendLineageResolved": "READY",
         "effectiveDateResolved": "BLOCKED",
         "exDateSemanticsResolved": "BLOCKED",
         "exchangeRatioResolved": "NOT_APPLICABLE",
@@ -613,8 +1119,75 @@
       },
       "dartCorpCode": "00158909",
       "dartIdentityStatus": "RESOLVED",
+      "dividendAmountLineageEntries": [
+        {
+          "fiscalYear": 2015,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2017-08-14",
+          "sourceReceiptNumber": "20170814001999",
+          "value": 392.0
+        },
+        {
+          "fiscalYear": 2016,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2017-03-30",
+          "sourceReceiptNumber": "20170330001518",
+          "value": 560.0
+        },
+        {
+          "fiscalYear": 2017,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2021-03-18",
+          "sourceReceiptNumber": "20210318000488",
+          "value": 907.0
+        },
+        {
+          "fiscalYear": 2018,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2019-04-05",
+          "sourceReceiptNumber": "20190405002654",
+          "value": 827.0
+        },
+        {
+          "fiscalYear": 2019,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2020-03-30",
+          "sourceReceiptNumber": "20200330004094",
+          "value": 897.0
+        },
+        {
+          "fiscalYear": 2020,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2021-03-18",
+          "sourceReceiptNumber": "20210318000528",
+          "value": 667.0
+        },
+        {
+          "fiscalYear": 2021,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2022-03-17",
+          "sourceReceiptNumber": "20220317001071",
+          "value": 989.0
+        },
+        {
+          "fiscalYear": 2022,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2023-03-16",
+          "sourceReceiptNumber": "20230316001278",
+          "value": 1353.0
+        }
+      ],
+      "dividendAmountLineageSelfConsistencyDisagreements": 0,
       "dividendEventsKnownFromYahoo": 0,
-      "dividendLineageStatus": "NOT_COLLECTED",
+      "dividendLineageStatus": "RESOLVED",
       "evidenceReceiptDates": [],
       "evidenceReceiptNumbers": [
         "20130128800003",
@@ -672,15 +1245,18 @@
       "krxName": "외환은행",
       "lastMembershipDate": "2013-04-01",
       "lastTradingDate": "2013-04-25",
+      "plausiblyResponsibleReceipts": [
+        "20130128800003"
+      ],
       "rawDisclosureRowsCollected": 24,
-      "rawDividendSectionRowsCollected": 0,
+      "rawDividendSectionRowsCollected": 128,
       "terminationType": "TERMINATION_TYPE_UNRESOLVED"
     },
     {
       "code": "008560.KS",
       "completeness": {
         "dartIssuerResolved": "READY",
-        "dividendLineageResolved": "BLOCKED",
+        "dividendLineageResolved": "READY",
         "effectiveDateResolved": "BLOCKED",
         "exDateSemanticsResolved": "BLOCKED",
         "exchangeRatioResolved": "NOT_APPLICABLE",
@@ -694,8 +1270,123 @@
       },
       "dartCorpCode": "00163682",
       "dartIdentityStatus": "RESOLVED",
+      "dividendAmountLineageEntries": [
+        {
+          "fiscalYear": 2015,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2016-03-30",
+          "sourceReceiptNumber": "20160330002214",
+          "value": 230.0
+        },
+        {
+          "fiscalYear": 2018,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2019-04-01",
+          "sourceReceiptNumber": "20190401003822",
+          "value": 200.0
+        },
+        {
+          "fiscalYear": 2018,
+          "metric": "CASH_DPS",
+          "shareClass": "PREFERRED",
+          "sourceReceiptDate": "2019-04-01",
+          "sourceReceiptNumber": "20190401003822",
+          "value": 224.0
+        },
+        {
+          "fiscalYear": 2019,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2020-03-30",
+          "sourceReceiptNumber": "20200330003697",
+          "value": 200.0
+        },
+        {
+          "fiscalYear": 2019,
+          "metric": "CASH_DPS",
+          "shareClass": "PREFERRED",
+          "sourceReceiptDate": "2020-03-30",
+          "sourceReceiptNumber": "20200330003697",
+          "value": 179.0
+        },
+        {
+          "fiscalYear": 2020,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2021-03-10",
+          "sourceReceiptNumber": "20210310000677",
+          "value": 320.0
+        },
+        {
+          "fiscalYear": 2020,
+          "metric": "CASH_DPS",
+          "shareClass": "PREFERRED",
+          "sourceReceiptDate": "2021-03-10",
+          "sourceReceiptNumber": "20210310000677",
+          "value": 179.0
+        },
+        {
+          "fiscalYear": 2021,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2022-03-08",
+          "sourceReceiptNumber": "20220308000675",
+          "value": 100.0
+        },
+        {
+          "fiscalYear": 2021,
+          "metric": "CASH_DPS",
+          "shareClass": "PREFERRED",
+          "sourceReceiptDate": "2022-03-08",
+          "sourceReceiptNumber": "20220308000675",
+          "value": 283.0
+        },
+        {
+          "fiscalYear": 2022,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2023-03-09",
+          "sourceReceiptNumber": "20230309000552",
+          "value": 135.0
+        },
+        {
+          "fiscalYear": 2023,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2024-04-01",
+          "sourceReceiptNumber": "20240401003586",
+          "value": 969.0
+        },
+        {
+          "fiscalYear": 2024,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2025-03-31",
+          "sourceReceiptNumber": "20250331003245",
+          "value": 704.0
+        },
+        {
+          "fiscalYear": 2025,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2026-04-01",
+          "sourceReceiptNumber": "20260401004248",
+          "value": 770.0
+        },
+        {
+          "fiscalYear": 2025,
+          "metric": "CASH_DPS",
+          "shareClass": "PREFERRED",
+          "sourceReceiptDate": "2026-04-01",
+          "sourceReceiptNumber": "20260401004248",
+          "value": 671.0
+        }
+      ],
+      "dividendAmountLineageSelfConsistencyDisagreements": 0,
       "dividendEventsKnownFromYahoo": 0,
-      "dividendLineageStatus": "NOT_COLLECTED",
+      "dividendLineageStatus": "RESOLVED",
       "evidenceReceiptDates": [],
       "evidenceReceiptNumbers": [
         "20130521800361",
@@ -753,8 +1444,12 @@
       "krxName": "메리츠증권",
       "lastMembershipDate": "2023-04-03",
       "lastTradingDate": "2023-04-24",
+      "plausiblyResponsibleReceipts": [
+        "20221121000158",
+        "20221205000275"
+      ],
       "rawDisclosureRowsCollected": 24,
-      "rawDividendSectionRowsCollected": 0,
+      "rawDividendSectionRowsCollected": 152,
       "terminationType": "TERMINATION_TYPE_UNRESOLVED"
     },
     {
@@ -775,6 +1470,8 @@
       },
       "dartCorpCode": "00164469",
       "dartIdentityStatus": "RESOLVED",
+      "dividendAmountLineageEntries": [],
+      "dividendAmountLineageSelfConsistencyDisagreements": 0,
       "dividendEventsKnownFromYahoo": 0,
       "dividendLineageStatus": "NOT_COLLECTED",
       "evidenceReceiptDates": [],
@@ -806,6 +1503,13 @@
       "krxName": "현대하이스코",
       "lastMembershipDate": "2015-02-02",
       "lastTradingDate": "2015-07-14",
+      "plausiblyResponsibleReceipts": [
+        "20150408000796",
+        "20150408800141",
+        "20150417000066",
+        "20150417800108",
+        "20150429000977"
+      ],
       "rawDisclosureRowsCollected": 10,
       "rawDividendSectionRowsCollected": 0,
       "terminationType": "TERMINATION_TYPE_UNRESOLVED"
@@ -814,7 +1518,7 @@
       "code": "010620.KS",
       "completeness": {
         "dartIssuerResolved": "READY",
-        "dividendLineageResolved": "BLOCKED",
+        "dividendLineageResolved": "READY",
         "effectiveDateResolved": "BLOCKED",
         "exDateSemanticsResolved": "BLOCKED",
         "exchangeRatioResolved": "NOT_APPLICABLE",
@@ -828,8 +1532,35 @@
       },
       "dartCorpCode": "00164609",
       "dartIdentityStatus": "RESOLVED",
+      "dividendAmountLineageEntries": [
+        {
+          "fiscalYear": 2018,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2019-04-01",
+          "sourceReceiptNumber": "20190401005226",
+          "value": 700.0
+        },
+        {
+          "fiscalYear": 2019,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2020-03-30",
+          "sourceReceiptNumber": "20200330002364",
+          "value": 350.0
+        },
+        {
+          "fiscalYear": 2024,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2025-07-11",
+          "sourceReceiptNumber": "20250711000373",
+          "value": 710.0
+        }
+      ],
+      "dividendAmountLineageSelfConsistencyDisagreements": 0,
       "dividendEventsKnownFromYahoo": 0,
-      "dividendLineageStatus": "NOT_COLLECTED",
+      "dividendLineageStatus": "RESOLVED",
       "evidenceReceiptDates": [],
       "evidenceReceiptNumbers": [
         "20130208800247",
@@ -855,15 +1586,18 @@
       "krxName": "HD현대미포",
       "lastMembershipDate": "2025-12-01",
       "lastTradingDate": "2025-12-12",
+      "plausiblyResponsibleReceipts": [
+        "20250827000428"
+      ],
       "rawDisclosureRowsCollected": 8,
-      "rawDividendSectionRowsCollected": 0,
+      "rawDividendSectionRowsCollected": 175,
       "terminationType": "TERMINATION_TYPE_UNRESOLVED"
     },
     {
       "code": "011160.KS",
       "completeness": {
         "dartIssuerResolved": "READY",
-        "dividendLineageResolved": "BLOCKED",
+        "dividendLineageResolved": "READY",
         "effectiveDateResolved": "BLOCKED",
         "exDateSemanticsResolved": "BLOCKED",
         "exchangeRatioResolved": "NOT_APPLICABLE",
@@ -877,8 +1611,19 @@
       },
       "dartCorpCode": "00102760",
       "dartIdentityStatus": "RESOLVED",
+      "dividendAmountLineageEntries": [
+        {
+          "fiscalYear": 2015,
+          "metric": "CASH_DPS",
+          "shareClass": "OTHER_CLASS_SHARE",
+          "sourceReceiptDate": "2016-05-16",
+          "sourceReceiptNumber": "20160516003173",
+          "value": 1144.0
+        }
+      ],
+      "dividendAmountLineageSelfConsistencyDisagreements": 0,
       "dividendEventsKnownFromYahoo": 0,
-      "dividendLineageStatus": "NOT_COLLECTED",
+      "dividendLineageStatus": "RESOLVED",
       "evidenceReceiptDates": [],
       "evidenceReceiptNumbers": [
         "20130204000135",
@@ -974,15 +1719,27 @@
       "krxName": "두산건설",
       "lastMembershipDate": "2013-07-01",
       "lastTradingDate": "2020-03-23",
+      "plausiblyResponsibleReceipts": [
+        "20191212000291",
+        "20191213000001",
+        "20191213000002",
+        "20191216000287",
+        "20191224000172",
+        "20200106000315",
+        "20200121800573",
+        "20200204000309",
+        "20200615000290",
+        "20200615000291"
+      ],
       "rawDisclosureRowsCollected": 43,
-      "rawDividendSectionRowsCollected": 0,
+      "rawDividendSectionRowsCollected": 137,
       "terminationType": "TERMINATION_TYPE_UNRESOLVED"
     },
     {
       "code": "012510.KS",
       "completeness": {
         "dartIssuerResolved": "READY",
-        "dividendLineageResolved": "BLOCKED",
+        "dividendLineageResolved": "READY",
         "effectiveDateResolved": "BLOCKED",
         "exDateSemanticsResolved": "BLOCKED",
         "exchangeRatioResolved": "NOT_APPLICABLE",
@@ -996,8 +1753,147 @@
       },
       "dartCorpCode": "00172291",
       "dartIdentityStatus": "RESOLVED",
+      "dividendAmountLineageEntries": [
+        {
+          "fiscalYear": 2015,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2016-05-16",
+          "sourceReceiptNumber": "20160516001451",
+          "value": 220.0
+        },
+        {
+          "fiscalYear": 2016,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2017-03-30",
+          "sourceReceiptNumber": "20170330000584",
+          "value": 290.0
+        },
+        {
+          "fiscalYear": 2018,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2019-04-01",
+          "sourceReceiptNumber": "20190401001908",
+          "value": 450.0
+        },
+        {
+          "fiscalYear": 2019,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2020-03-30",
+          "sourceReceiptNumber": "20200330003794",
+          "value": 470.0
+        },
+        {
+          "fiscalYear": 2019,
+          "metric": "CASH_DPS",
+          "shareClass": "PREFERRED",
+          "sourceReceiptDate": "2020-03-30",
+          "sourceReceiptNumber": "20200330003794",
+          "value": 939.0
+        },
+        {
+          "fiscalYear": 2020,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2021-07-06",
+          "sourceReceiptNumber": "20210706000401",
+          "value": 450.0
+        },
+        {
+          "fiscalYear": 2020,
+          "metric": "CASH_DPS",
+          "shareClass": "PREFERRED",
+          "sourceReceiptDate": "2021-07-06",
+          "sourceReceiptNumber": "20210706000401",
+          "value": 2576.0
+        },
+        {
+          "fiscalYear": 2021,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2022-03-30",
+          "sourceReceiptNumber": "20220330001628",
+          "value": 450.0
+        },
+        {
+          "fiscalYear": 2021,
+          "metric": "CASH_DPS",
+          "shareClass": "PREFERRED",
+          "sourceReceiptDate": "2022-03-30",
+          "sourceReceiptNumber": "20220330001628",
+          "value": 2576.0
+        },
+        {
+          "fiscalYear": 2022,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2023-03-15",
+          "sourceReceiptNumber": "20230315001173",
+          "value": 123.0
+        },
+        {
+          "fiscalYear": 2022,
+          "metric": "CASH_DPS",
+          "shareClass": "PREFERRED",
+          "sourceReceiptDate": "2023-03-15",
+          "sourceReceiptNumber": "20230315001173",
+          "value": 3408.0
+        },
+        {
+          "fiscalYear": 2023,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2024-03-13",
+          "sourceReceiptNumber": "20240313001285",
+          "value": 217.0
+        },
+        {
+          "fiscalYear": 2023,
+          "metric": "CASH_DPS",
+          "shareClass": "PREFERRED",
+          "sourceReceiptDate": "2024-03-13",
+          "sourceReceiptNumber": "20240313001285",
+          "value": 4861.0
+        },
+        {
+          "fiscalYear": 2024,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2025-03-17",
+          "sourceReceiptNumber": "20250317001028",
+          "value": 477.0
+        },
+        {
+          "fiscalYear": 2024,
+          "metric": "CASH_DPS",
+          "shareClass": "PREFERRED",
+          "sourceReceiptDate": "2025-03-17",
+          "sourceReceiptNumber": "20250317001028",
+          "value": 4861.0
+        },
+        {
+          "fiscalYear": 2025,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2026-03-18",
+          "sourceReceiptNumber": "20260318001198",
+          "value": 640.0
+        },
+        {
+          "fiscalYear": 2025,
+          "metric": "CASH_DPS",
+          "shareClass": "PREFERRED",
+          "sourceReceiptDate": "2026-03-18",
+          "sourceReceiptNumber": "20260318001198",
+          "value": 4861.0
+        }
+      ],
+      "dividendAmountLineageSelfConsistencyDisagreements": 0,
       "dividendEventsKnownFromYahoo": 0,
-      "dividendLineageStatus": "NOT_COLLECTED",
+      "dividendLineageStatus": "RESOLVED",
       "evidenceReceiptDates": [],
       "evidenceReceiptNumbers": [
         "20130212800032",
@@ -1073,15 +1969,29 @@
       "krxName": "더존비즈온",
       "lastMembershipDate": "2021-10-01",
       "lastTradingDate": "2026-07-14",
+      "plausiblyResponsibleReceipts": [
+        "20260223000008",
+        "20260223000011",
+        "20260326001203",
+        "20260327000008",
+        "20260327000009",
+        "20260415000010",
+        "20260424000738",
+        "20260427000630",
+        "20260429000294",
+        "20260511000724",
+        "20260515100001",
+        "20260519000237"
+      ],
       "rawDisclosureRowsCollected": 33,
-      "rawDividendSectionRowsCollected": 0,
+      "rawDividendSectionRowsCollected": 164,
       "terminationType": "TERMINATION_TYPE_UNRESOLVED"
     },
     {
       "code": "037620.KS",
       "completeness": {
         "dartIssuerResolved": "READY",
-        "dividendLineageResolved": "BLOCKED",
+        "dividendLineageResolved": "READY",
         "effectiveDateResolved": "BLOCKED",
         "exDateSemanticsResolved": "BLOCKED",
         "exchangeRatioResolved": "NOT_APPLICABLE",
@@ -1095,8 +2005,19 @@
       },
       "dartCorpCode": "00311030",
       "dartIdentityStatus": "RESOLVED",
+      "dividendAmountLineageEntries": [
+        {
+          "fiscalYear": 2015,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2016-03-30",
+          "sourceReceiptNumber": "20160330003404",
+          "value": 350.0
+        }
+      ],
+      "dividendAmountLineageSelfConsistencyDisagreements": 0,
       "dividendEventsKnownFromYahoo": 0,
-      "dividendLineageStatus": "NOT_COLLECTED",
+      "dividendLineageStatus": "RESOLVED",
       "evidenceReceiptDates": [],
       "evidenceReceiptNumbers": [
         "20130522800161",
@@ -1120,15 +2041,20 @@
       "krxName": "미래에셋증권",
       "lastMembershipDate": "2017-01-02",
       "lastTradingDate": "2017-01-19",
+      "plausiblyResponsibleReceipts": [
+        "20160513004518",
+        "20160919000325",
+        "20161014000405"
+      ],
       "rawDisclosureRowsCollected": 7,
-      "rawDividendSectionRowsCollected": 0,
+      "rawDividendSectionRowsCollected": 14,
       "terminationType": "TERMINATION_TYPE_UNRESOLVED"
     },
     {
       "code": "042670.KS",
       "completeness": {
         "dartIssuerResolved": "READY",
-        "dividendLineageResolved": "BLOCKED",
+        "dividendLineageResolved": "READY",
         "effectiveDateResolved": "BLOCKED",
         "exDateSemanticsResolved": "BLOCKED",
         "exchangeRatioResolved": "NOT_APPLICABLE",
@@ -1142,8 +2068,35 @@
       },
       "dartCorpCode": "00344287",
       "dartIdentityStatus": "RESOLVED",
+      "dividendAmountLineageEntries": [
+        {
+          "fiscalYear": 2022,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2023-03-17",
+          "sourceReceiptNumber": "20230317000838",
+          "value": 240.0
+        },
+        {
+          "fiscalYear": 2023,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2024-03-28",
+          "sourceReceiptNumber": "20240328001028",
+          "value": 110.0
+        },
+        {
+          "fiscalYear": 2024,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2025-04-18",
+          "sourceReceiptNumber": "20250418000372",
+          "value": 70.0
+        }
+      ],
+      "dividendAmountLineageSelfConsistencyDisagreements": 0,
       "dividendEventsKnownFromYahoo": 0,
-      "dividendLineageStatus": "NOT_COLLECTED",
+      "dividendLineageStatus": "RESOLVED",
       "evidenceReceiptDates": [],
       "evidenceReceiptNumbers": [
         "20140228800151",
@@ -1213,8 +2166,12 @@
       "krxName": "HD현대인프라코어",
       "lastMembershipDate": "2023-08-01",
       "lastTradingDate": "2026-01-23",
+      "plausiblyResponsibleReceipts": [
+        "20250701000231",
+        "20250711000213"
+      ],
       "rawDisclosureRowsCollected": 30,
-      "rawDividendSectionRowsCollected": 0,
+      "rawDividendSectionRowsCollected": 123,
       "terminationType": "TERMINATION_TYPE_UNRESOLVED"
     },
     {
@@ -1235,6 +2192,8 @@
       },
       "dartCorpCode": "00375302",
       "dartIdentityStatus": "RESOLVED",
+      "dividendAmountLineageEntries": [],
+      "dividendAmountLineageSelfConsistencyDisagreements": 0,
       "dividendEventsKnownFromYahoo": 0,
       "dividendLineageStatus": "NOT_COLLECTED",
       "evidenceReceiptDates": [],
@@ -1284,6 +2243,19 @@
       "krxName": "우리금융",
       "lastMembershipDate": "2014-11-03",
       "lastTradingDate": "2014-11-18",
+      "plausiblyResponsibleReceipts": [
+        "20131206800432",
+        "20140107800002",
+        "20140226800336",
+        "20140728000280",
+        "20140728800260",
+        "20140728800281",
+        "20140814001580",
+        "20140814801243",
+        "20140814801247",
+        "20140828000548",
+        "20140911000016"
+      ],
       "rawDisclosureRowsCollected": 19,
       "rawDividendSectionRowsCollected": 0,
       "terminationType": "TERMINATION_TYPE_UNRESOLVED"
@@ -1292,7 +2264,7 @@
       "code": "057050.KS",
       "completeness": {
         "dartIssuerResolved": "READY",
-        "dividendLineageResolved": "BLOCKED",
+        "dividendLineageResolved": "READY",
         "effectiveDateResolved": "BLOCKED",
         "exDateSemanticsResolved": "BLOCKED",
         "exchangeRatioResolved": "NOT_APPLICABLE",
@@ -1306,8 +2278,83 @@
       },
       "dartCorpCode": "00412597",
       "dartIdentityStatus": "RESOLVED",
+      "dividendAmountLineageEntries": [
+        {
+          "fiscalYear": 2015,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2016-03-30",
+          "sourceReceiptNumber": "20160330002544",
+          "value": 1500.0
+        },
+        {
+          "fiscalYear": 2016,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2017-03-31",
+          "sourceReceiptNumber": "20170331003433",
+          "value": 1500.0
+        },
+        {
+          "fiscalYear": 2018,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2019-04-01",
+          "sourceReceiptNumber": "20190401003020",
+          "value": 1900.0
+        },
+        {
+          "fiscalYear": 2020,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2021-08-18",
+          "sourceReceiptNumber": "20210818000207",
+          "value": 2200.0
+        },
+        {
+          "fiscalYear": 2021,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2022-03-24",
+          "sourceReceiptNumber": "20220324000867",
+          "value": 2400.0
+        },
+        {
+          "fiscalYear": 2022,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2023-03-15",
+          "sourceReceiptNumber": "20230315001376",
+          "value": 2600.0
+        },
+        {
+          "fiscalYear": 2023,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2024-03-15",
+          "sourceReceiptNumber": "20240315000790",
+          "value": 2800.0
+        },
+        {
+          "fiscalYear": 2024,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2025-08-29",
+          "sourceReceiptNumber": "20250829001728",
+          "value": 2800.0
+        },
+        {
+          "fiscalYear": 2025,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2026-03-16",
+          "sourceReceiptNumber": "20260316000819",
+          "value": 2800.0
+        }
+      ],
+      "dividendAmountLineageSelfConsistencyDisagreements": 0,
       "dividendEventsKnownFromYahoo": 0,
-      "dividendLineageStatus": "NOT_COLLECTED",
+      "dividendLineageStatus": "RESOLVED",
       "evidenceReceiptDates": [],
       "evidenceReceiptNumbers": [
         "20130228800538",
@@ -1381,8 +2428,14 @@
       "krxName": "현대홈쇼핑",
       "lastMembershipDate": "2015-01-02",
       "lastTradingDate": "2026-07-16",
+      "plausiblyResponsibleReceipts": [
+        "20260211000381",
+        "20260522000254",
+        "20260805000212",
+        "20260805000215"
+      ],
       "rawDisclosureRowsCollected": 32,
-      "rawDividendSectionRowsCollected": 0,
+      "rawDividendSectionRowsCollected": 156,
       "terminationType": "TERMINATION_TYPE_UNRESOLVED"
     },
     {
@@ -1403,6 +2456,8 @@
       },
       "dartCorpCode": "00109453",
       "dartIdentityStatus": "RESOLVED",
+      "dividendAmountLineageEntries": [],
+      "dividendAmountLineageSelfConsistencyDisagreements": 0,
       "dividendEventsKnownFromYahoo": 0,
       "dividendLineageStatus": "NOT_COLLECTED",
       "evidenceReceiptDates": [],
@@ -1416,15 +2471,18 @@
       "krxName": "STX조선해양",
       "lastMembershipDate": "2014-04-01",
       "lastTradingDate": "2014-04-14",
+      "plausiblyResponsibleReceipts": [
+        "20130702800320"
+      ],
       "rawDisclosureRowsCollected": 1,
-      "rawDividendSectionRowsCollected": 0,
+      "rawDividendSectionRowsCollected": 120,
       "terminationType": "TERMINATION_TYPE_UNRESOLVED"
     },
     {
       "code": "079440.KS",
       "completeness": {
         "dartIssuerResolved": "READY",
-        "dividendLineageResolved": "BLOCKED",
+        "dividendLineageResolved": "READY",
         "effectiveDateResolved": "BLOCKED",
         "exDateSemanticsResolved": "BLOCKED",
         "exchangeRatioResolved": "NOT_APPLICABLE",
@@ -1438,8 +2496,43 @@
       },
       "dartCorpCode": "00176792",
       "dartIdentityStatus": "RESOLVED",
+      "dividendAmountLineageEntries": [
+        {
+          "fiscalYear": 2017,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2018-03-30",
+          "sourceReceiptNumber": "20180330001804",
+          "value": 2400.0
+        },
+        {
+          "fiscalYear": 2018,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2019-03-28",
+          "sourceReceiptNumber": "20190328001973",
+          "value": 2600.0
+        },
+        {
+          "fiscalYear": 2019,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2020-03-30",
+          "sourceReceiptNumber": "20200330003387",
+          "value": 2100.0
+        },
+        {
+          "fiscalYear": 2020,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2021-03-30",
+          "sourceReceiptNumber": "20210330001517",
+          "value": 1360.0
+        }
+      ],
+      "dividendAmountLineageSelfConsistencyDisagreements": 0,
       "dividendEventsKnownFromYahoo": 0,
-      "dividendLineageStatus": "NOT_COLLECTED",
+      "dividendLineageStatus": "RESOLVED",
       "evidenceReceiptDates": [],
       "evidenceReceiptNumbers": [
         "20170818800233",
@@ -1469,15 +2562,20 @@
       "krxName": "오렌지라이프",
       "lastMembershipDate": "2020-02-03",
       "lastTradingDate": "2020-02-13",
+      "plausiblyResponsibleReceipts": [
+        "20191114002655",
+        "20191119000180",
+        "20191204000479"
+      ],
       "rawDisclosureRowsCollected": 10,
-      "rawDividendSectionRowsCollected": 0,
+      "rawDividendSectionRowsCollected": 60,
       "terminationType": "TERMINATION_TYPE_UNRESOLVED"
     },
     {
       "code": "115390.KS",
       "completeness": {
         "dartIssuerResolved": "READY",
-        "dividendLineageResolved": "BLOCKED",
+        "dividendLineageResolved": "READY",
         "effectiveDateResolved": "BLOCKED",
         "exDateSemanticsResolved": "BLOCKED",
         "exchangeRatioResolved": "NOT_APPLICABLE",
@@ -1491,8 +2589,51 @@
       },
       "dartCorpCode": "00561866",
       "dartIdentityStatus": "RESOLVED",
+      "dividendAmountLineageEntries": [
+        {
+          "fiscalYear": 2015,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2016-03-30",
+          "sourceReceiptNumber": "20160330003024",
+          "value": 200.0
+        },
+        {
+          "fiscalYear": 2016,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2017-03-31",
+          "sourceReceiptNumber": "20170331003202",
+          "value": 500.0
+        },
+        {
+          "fiscalYear": 2017,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2018-03-30",
+          "sourceReceiptNumber": "20180330001837",
+          "value": 130.0
+        },
+        {
+          "fiscalYear": 2018,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2019-04-01",
+          "sourceReceiptNumber": "20190401004445",
+          "value": 80.0
+        },
+        {
+          "fiscalYear": 2022,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2023-03-23",
+          "sourceReceiptNumber": "20230323001503",
+          "value": 1953.0
+        }
+      ],
+      "dividendAmountLineageSelfConsistencyDisagreements": 0,
       "dividendEventsKnownFromYahoo": 0,
-      "dividendLineageStatus": "NOT_COLLECTED",
+      "dividendLineageStatus": "RESOLVED",
       "evidenceReceiptDates": [],
       "evidenceReceiptNumbers": [
         "20130207800646",
@@ -1542,8 +2683,18 @@
       "krxName": "락앤락",
       "lastMembershipDate": "2013-03-04",
       "lastTradingDate": "2024-12-06",
+      "plausiblyResponsibleReceipts": [
+        "20240418000003",
+        "20240418000004",
+        "20240516000002",
+        "20240516000004",
+        "20240517000420",
+        "20240610000291",
+        "20240830002126",
+        "20241224000570"
+      ],
       "rawDisclosureRowsCollected": 20,
-      "rawDividendSectionRowsCollected": 0,
+      "rawDividendSectionRowsCollected": 135,
       "terminationType": "TERMINATION_TYPE_UNRESOLVED"
     },
     {
@@ -1564,6 +2715,8 @@
       },
       "dartCorpCode": "00790501",
       "dartIdentityStatus": "RESOLVED",
+      "dividendAmountLineageEntries": [],
+      "dividendAmountLineageSelfConsistencyDisagreements": 0,
       "dividendEventsKnownFromYahoo": 0,
       "dividendLineageStatus": "NOT_COLLECTED",
       "evidenceReceiptDates": [],
@@ -1639,8 +2792,16 @@
       "krxName": "한진해운",
       "lastMembershipDate": "2015-03-02",
       "lastTradingDate": "2017-03-06",
+      "plausiblyResponsibleReceipts": [
+        "20160624000974",
+        "20161017000354",
+        "20161122000002",
+        "20170102000404",
+        "20170103000011",
+        "20170106000714"
+      ],
       "rawDisclosureRowsCollected": 32,
-      "rawDividendSectionRowsCollected": 0,
+      "rawDividendSectionRowsCollected": 14,
       "terminationType": "TERMINATION_TYPE_UNRESOLVED"
     }
   ],
@@ -1648,7 +2809,7 @@
   "summary": {
     "byField": {
       "dartIssuerResolved": 22,
-      "dividendLineageResolved": 0,
+      "dividendLineageResolved": 15,
       "effectiveDateResolved": 0,
       "exDateSemanticsResolved": 0,
       "exchangeRatioResolved": 0,
