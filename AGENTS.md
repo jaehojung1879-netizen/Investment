@@ -1158,6 +1158,59 @@
   label exists, and the runner has only been exercised on synthetic
   fixtures. DART ownership is prospective-only; Guru/13F is never a feature.
 
+## Alpha-opportunity-model-v3 invariants (v2.27)
+
+- EXPECTED VALUE, PROBABILITY AND CONFIDENCE ARE DIFFERENT QUESTIONS, AND ONLY
+  THE FIRST DEFINES ALPHA. v3's alpha layer classifies a name
+  `POSITIVE_EXPECTED_ALPHA` iff `expectedNetAlpha > 0` against the benchmark's
+  0, nothing else. v2 also required `P(net alpha > 0) > 0.5` and bootstrap
+  lower bounds above the outside option. Those are a payoff-SHAPE reading (P >
+  0.5 iff the predicted median is positive) and an ESTIMATION-confidence
+  reading, and made hurdles they hide a risk preference inside the alpha
+  definition: 40% x +30% / 60% x -8% has positive expectation and a negative
+  median. Both readings are published beside the class and can never change
+  it. The loader refuses any probability/lower-bound hurdle, Top-N, quota,
+  invested fraction or sizing parameter with a value.
+- A FITTED-VALUE INTERVAL IS NOT A RETURN INTERVAL. `prediction_uncertainty`
+  quantiles REFITTED predictions (sampling uncertainty of the conditional
+  mean); `matured_residual_scale` is realised-minus-predicted RMS over past
+  matured OOF predictions (predictive dispersion). They are labelled as such on
+  every record and neither is a veto.
+- MISSINGNESS THAT FALLS ONLY ON DEPARTED NAMES IS NOT A SHARE TO TOLERATE.
+  Measured from sealed identities (no return read): all 195 US no-panel names
+  are departed and 0 of 503 current members are; 0 of 633 priced US panels ever
+  stops trading, so the US sample contains no failed or acquired company at
+  all; 30 priced symbols are not the member's own history (reuse: FB, LB, STI,
+  APC, NFX, ...). The departed-only share declines smoothly (27.1% in 2013 to
+  0.65% in 2026) and is never zero, so no cutoff is structural — any would be a
+  tolerance. v2's reuse of the 20% `HISTORICAL_UNIVERSE_GAP_TOLERANCE_PCT`,
+  built for a different gate, is withdrawn.
+- ENDPOINT STRESS IS NOT TRAINING-SURVIVORSHIP REPAIR, AND HERE IT WAS VACUOUS.
+  US tradable member-dates have 0 missing forward endpoints (296,768 / 285,810
+  at 21/126 sessions): the absent companies never entered the sample, so a
+  bound on sampled names' endpoints had nothing to act on. Sample survivorship
+  and endpoint survivorship are audited separately, in both regions.
+- A REGION CAN HAVE COMPLETE COVERAGE AND STILL A SURVIVORSHIP-CORRELATED BASIS
+  GAP. KR is priced for all 260 members (140 departed) with 22 delistings
+  observed to their last session, but 0 of those 22 carry any dividend event
+  against 215 of 238 continuing names: Yahoo distributions do not serve
+  delisted KR tickers, so exactly the names that later leave are on a
+  price-return basis against a total-return benchmark (3.74% of tradable
+  member-dates). Repairable by a sealed DART dividend build; not repaired here.
+- A SEAL PINS THE COMPUTED CLOSURE, NOT A HAND LIST. v2 sealed 51 files
+  including `kelly_portfolio`, `longterm`, `replay_valuation`, `selection_null`
+  through one lazy `portfolio_validation` import (for a 15-line cost lookup)
+  and `regional_alpha_features -> historical_replay`. v3 recomputes the
+  top-level-and-lazy import closure of its entry points on every load and
+  requires the sealed set to equal it plus declared data inputs (21 files): a
+  new import raises `DEPENDENCY_CLOSURE_CHANGED`, an edited sealed file raises
+  `SEALED_DEPENDENCY_CHANGED`, and unrelated production edits change nothing.
+- A BLOCKED STUDY HAS NO EXECUTION BUTTON. v3 is `BLOCKED_BY_DATA_INTEGRITY`,
+  ships no workflow, and its CLI refuses `--execute` on the sealed status
+  before any input is read. v2's workflow still exists and still validates;
+  it must not be run, because its US leg would train and evaluate on the
+  survivor-only sample v3 measured.
+
 ## Lint gate invariants (v2.11)
 
 - The enabled rule set reports ZERO findings on `main`. A rule is turned on in the

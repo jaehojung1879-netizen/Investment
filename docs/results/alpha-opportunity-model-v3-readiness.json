@@ -1,0 +1,26 @@
+{
+  "blockers": [
+    "US_DELISTED_MEMBER_HISTORY_ABSENT",
+    "US_PANEL_SYMBOL_IDENTITY_UNVERIFIED",
+    "US_NO_STRUCTURAL_RESTRICTED_WINDOW",
+    "KR_TERMINATED_NAME_DIVIDEND_LINEAGE_ABSENT"
+  ],
+  "executionWorkflow": null,
+  "historicalModelsTrained": false,
+  "historicalOutcomesComputed": false,
+  "immutableVersion": "3.0.0",
+  "phase": "PREREGISTRATION_ONLY",
+  "preregistrationStatus": "BLOCKED_BY_DATA_INTEGRITY",
+  "priorVersions": {
+    "alpha-opportunity-model-v1": "e3c699b197fd558506d7157fa6dd8cdb91156faccd0e6e9547d21d5baa23dd6e",
+    "alpha-opportunity-model-v2": "97c3727b37eeab71e31ffee17a2f81cac29f0333552ff04a5374ef48484b0e19"
+  },
+  "productionChanged": false,
+  "promotionEligible": false,
+  "regionVerdicts": {
+    "KR": "BLOCKED_BY_DATA_INTEGRITY",
+    "US": "BLOCKED_BY_DATA_INTEGRITY"
+  },
+  "specSha256": "3ebe642fe7947ffb3ce6301a7b415894092c3405f797b94f6037a9e2c8efb583",
+  "studyId": "alpha-opportunity-model-v3"
+}
