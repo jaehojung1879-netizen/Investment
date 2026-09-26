@@ -1442,6 +1442,84 @@
   as raw-evidence reachability only: zip/non-zip, byte count, content type —
   never a structured field, because it is not a structured endpoint.
 
+## Alpha-opportunity-model-v4 invariants (v2.30)
+
+- SOURCE FOUNDATION, STUDY DESIGN AND EXECUTION ARE THREE DIFFERENT FACTS,
+  AND A DOCUMENT THAT CONFLATES THEM READS "PARTIALLY_REPAIRED" AS A
+  BLOCKER FOREVER. `kr-terminal-action-reconstruction-v2.json`'s
+  `foundationStatus` stays `PARTIALLY_REPAIRED` — unedited, unloosened,
+  exactly PR #158's own value — while `alpha-opportunity-model-v4.json`'s
+  `preregistrationStatus` reads `READY_FOR_HISTORICAL_EXECUTION`, because
+  "ready" here means every known gap has a predeclared, machine-checked
+  treatment, not that the gap is gone. `pipeline.alpha_opportunity_v4_spec
+  .verify_source_foundation` re-checks both the cited artifact's hash and
+  its quoted status on every load, so a foundation that improves OR
+  regresses after this seal both raise rather than silently going stale.
+- A RETRY CONFIRMED EXHAUSTED IS VERIFIED FROM THE JOB LOG, NOT ASSUMED FROM
+  A PRIOR PR'S CLAIM, THE SAME DISCIPLINE `kr-terminal-action-
+  reconstruction-v2` (v2.29) ALREADY ESTABLISHED. GitHub Actions run
+  `36264244053` (2026-09-26, `mode: collect`, on `main` at PR #158's merge
+  commit) was read directly: disclosure index and dividend collection both
+  logged "no new" rows (already complete, 22/22 and 47/47), and the
+  document collector retried exactly the 38 previously-failed receipts —
+  `receiptsFailed: 38`, `written: 0`, `outcome: EMPTY_BUT_VALID`,
+  `datasetComplete: true` — all 38 failing again with the identical
+  retained error. Signal-history commit
+  `2132d8d83589ddc8ee6c0e640016211c8ebc65f0` (38 insertions, 38 deletions)
+  refreshes retry bookkeeping only; it is never read as 38 recovered
+  documents.
+- A PRIOR DOCUMENT'S OWN GATE IS A REAL CONSTRAINT, NOT SOMETHING A LATER
+  TASK SILENTLY OVERRIDES. Both `kr-terminated-security-total-return-
+  foundation-v1.md` and `kr-terminal-action-reconstruction-v2.md` state a
+  v4 preregistration should wait for every completeness-matrix field to
+  read READY. `alpha-opportunity-model-v4-preregistration.md` §2 states
+  this conflict explicitly, states why it is resolved differently now (the
+  one remaining operator action they named has since been run and
+  confirmed exhausted), and resolves it by adding a study-design layer
+  those documents did not contemplate — never by editing the source
+  foundation to force a READY reading of its own matrix.
+- A LABEL-ELIGIBILITY GATE ON A TERMINATED SECURITY IS A SECURITY-LEVEL
+  GATE, NOT ONLY A WINDOW-CROSSES-TERMINATION GATE, BECAUSE THE MISSING
+  BASIS APPLIES TO THE SECURITY'S ENTIRE TRADING LIFE.
+  `pipeline.alpha_opportunity_v4_eligibility.label_eligibility` requires
+  `exDateSemanticsResolved: READY` before ANY observation on one of the 22
+  KR terminated securities is eligible, pre- or post-termination — measured
+  BLOCKED for all 22 of 22 today, since Yahoo serves no distribution at all
+  for a delisted KR ticker, so the security's whole price-return history
+  (not merely its terminal window) sits on a different basis than the
+  total-return benchmark. `terminalActionChainResolved` (also BLOCKED for
+  all 22) gates a window that crosses termination on top of that. Every
+  reason code is frozen in `REASON_CODES` before any label is built, and
+  the function is a pure computation over the sealed completeness matrix —
+  re-running it against a repaired foundation would change the result
+  without changing the policy code.
+- EXCLUDING ALL 22 IS NOT THE SAME DEFECT AS THE US LEG'S
+  `NO_TERMINATED_SECURITY_IN_SAMPLE`, AND THE DIFFERENCE IS MEASURED. The US
+  panel never priced 212 of 324 departed identities at all (0% observed,
+  structurally invisible). All 22 KR terminated securities ARE priced to
+  their last session, ARE PIT-universe members on their live dates, and DO
+  enter feature computation and cross-sectional context — only their own
+  forward-return LABEL is withheld, for a disclosed, bounded, declining
+  share (`alpha-opportunity-model-v3`'s own sealed audit: 3.7366% of
+  tradable KR member-dates, 7.93% in 2013 to 0.76% in 2025, never zero).
+  This is still a real survivorship-conditioning limitation on v4's labeled
+  sample, published as such rather than left implicit, and the future
+  execution's required `exclusionsClusterAroundTerminalEventsCheck`
+  diagnostic exists precisely so no headline result can be read as an
+  unconditional statement about KR delisting risk.
+- ZERO NEW FEATURES, INTERACTIONS, HYPERPARAMETERS OR HORIZONS WERE ADDED.
+  v4 carries v3's KR model family, feature set, transforms, transaction
+  costs, tradability guard and uncertainty machinery forward byte-for-byte
+  (`carriedFromV3` in the spec). The one new axis is the eligibility
+  policy; everything else is a narrowing (KR-only) of an already-vetted
+  design, never a re-tune.
+- A STUDY THAT IS "READY" AT THE DESIGN LEVEL STILL SHIPS NO EXECUTION
+  BUTTON. `scripts/run_alpha_opportunity_model_v4.py --execute` raises
+  `NO_V4_EXECUTION_HARNESS_IN_THIS_PR` unconditionally, regardless of
+  `preregistrationStatus` — this PR builds no label engine, training loop
+  or evaluation code, exactly `alpha-opportunity-model-v3`'s own script's
+  discipline one level up.
+
 ## Lint gate invariants (v2.11)
 
 - The enabled rule set reports ZERO findings on `main`. A rule is turned on in the

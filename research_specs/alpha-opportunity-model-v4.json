@@ -1,0 +1,459 @@
+{
+  "benchmarks": {
+    "KR": "069500.KS"
+  },
+  "carriedFromV3": {
+    "allowedFeatures": {
+      "KR": {
+        "126": [
+          "relative126",
+          "acceleration21",
+          "vol63",
+          "logVolumeShock60",
+          "shockPersistence5d",
+          "volumePriceAlignment",
+          "ocfToNetIncomePct",
+          "assetGrowthPct",
+          "debtGrowthPct"
+        ],
+        "21": [
+          "relative126",
+          "acceleration21",
+          "vol63",
+          "logVolumeShock60",
+          "shockPersistence5d",
+          "volumePriceAlignment"
+        ]
+      }
+    },
+    "featureRegistry": "research_specs/alpha-opportunity-model-v1-features.json",
+    "inference": {
+      "blockDates": 26,
+      "minimumEvaluationBlocks": 6,
+      "multiplicity": "97.5% two-sided intervals Bonferroni across the two horizon (21D, 126D) primary claims; within claim all gates conjunctive",
+      "replicates": 2000,
+      "resampling": "noncircular moving blocks of complete chronological weekly date summaries; never iid names",
+      "seed": 42,
+      "twoSidedTail": 0.0125
+    },
+    "models": {
+      "baseline": "training date-weighted prevalence / training date-weighted mean relative return",
+      "histGradientBoosting": {
+        "early_stopping": false,
+        "l2_regularization": 10.0,
+        "learning_rate": 0.05,
+        "max_depth": null,
+        "max_iter": 100,
+        "max_leaf_nodes": 7,
+        "min_samples_leaf": 50,
+        "random_state": 42
+      },
+      "interpretation": "LINEAR primary and the only family that produces decisions; SHALLOW_CHALLENGER complementary interaction evidence only, never a decision, never a rescue, never a winner",
+      "logistic": {
+        "C": 1.0,
+        "max_iter": 2000,
+        "penalty": "l2",
+        "random_state": 42,
+        "solver": "lbfgs",
+        "tol": 0.0001
+      },
+      "ridge": {
+        "alpha": 10.0,
+        "solver": "lsqr",
+        "tol": 1e-06
+      },
+      "search": false,
+      "threads": 1
+    },
+    "note": "no model, hyperparameter, feature or horizon change from v3's KR leg; no feature was found PIT-unsafe on re-read; no DART ownership, Guru/13F or macro feature",
+    "targets": {
+      "beatBenchmarkNet_H": "1 iff forwardRelativeReturn_H > roundTripCost(region, signal date) else 0",
+      "entry": "next regional exchange session CLOSE after information date",
+      "exit": "H additional regional exchange sessions after entry",
+      "forwardRelativeReturn_H": "(stock Close[exit]/Close[entry]-1) - (regional benchmark Close[exit]/Close[entry]-1)",
+      "holidays": "replay_calendar pinned exchange-calendars+KR patches",
+      "implementation": "alpha_opportunity_v2_evaluation.target_from_sessions (v1 target_at semantics, precomputed calendar; test-proven equal)",
+      "informationTimestamp": "end of signal calendar day in regional timezone; date-only filings strictly earlier",
+      "missingOrDelisted": "exact endpoints only; unresolved endpoint => MISSING_FORWARD_PRICE_OR_DELISTING, never zero, forward fill, nearest date or last price. Separately and BEFORE this check, every KR security in the sealed 22-name terminated-security list is additionally gated by pipeline.alpha_opportunity_v4_eligibility: INELIGIBLE reads DATA_UNAVAILABLE_UNDER_PREDECLARED_POLICY, a different reason code from MISSING_FORWARD_PRICE_OR_DELISTING, because the failure mode is a total-return basis gap (unresolved dividend ex-date lineage), not a missing price row",
+      "totalReturn": "replay-v16 forward accumulated distributions/splits, same endpoint basis for stock and benchmark"
+    },
+    "tradabilityGuard": {
+      "advRequiredForAlphaResearch": false,
+      "advRequiredForExecutionRealism": "only for a future portfolio layer sizing beyond the small-capital assumption",
+      "notAlphaInput": "tradability is a filter, never a feature or a score; liquidity as predictive information would be a separate registered feature and is not one here",
+      "rule": "PIT universe member on the signal date AND a positive finite sealed close AND positive finite sealed share volume on every one of the 20 regional exchange sessions ending on the signal date (calendar reindex, no fills)",
+      "universeFloor": "KR strictly-earlier KRX top-120 by market cap",
+      "volumeUse": "share volume as traded/not-traded evidence only; never multiplied by the forward total-return Close into a fictitious cash ADV",
+      "windowProvenance": "v1's sealed 20-session ADV window, with the unsealed cash-value requirement replaced by traded-at-all evidence",
+      "windowSessions": 20
+    },
+    "transactionCostRule": "repository benchmark_alpha.REALISTIC_COSTS via portfolio_validation._dated_cost_policy; roundtrip=(2*commissionBps+spreadBps+sellTaxBps)/10000 at signal date, public schedule known then; same ex-ante estimate charged in candidate diagnostics, not a realized portfolio cost simulation",
+    "transactionCosts": {
+      "KR": {
+        "commissionBps": 1.5,
+        "sellTaxBps": 20.0,
+        "sellTaxSchedule": [
+          {
+            "effectiveDate": "1900-01-01",
+            "sellTaxBps": 30.0
+          },
+          {
+            "effectiveDate": "2019-06-03",
+            "sellTaxBps": 25.0
+          },
+          {
+            "effectiveDate": "2021-01-01",
+            "sellTaxBps": 23.0
+          },
+          {
+            "effectiveDate": "2023-01-01",
+            "sellTaxBps": 20.0
+          },
+          {
+            "effectiveDate": "2024-01-01",
+            "sellTaxBps": 18.0
+          },
+          {
+            "effectiveDate": "2025-01-01",
+            "sellTaxBps": 15.0
+          },
+          {
+            "effectiveDate": "2026-01-01",
+            "sellTaxBps": 20.0
+          }
+        ],
+        "spreadBps": 8.0
+      }
+    },
+    "transforms": {
+      "crossSectionalRank": false,
+      "imputation": "training median plus indicators for every active field; allmissing fields omitted per fold and logged",
+      "nonfinite": "missing",
+      "scaler": "date-weighted training median and IQR; zero IQR -> 1",
+      "signedLog1p": [
+        "assetGrowthPct",
+        "capexIntensityPct",
+        "debtGrowthPct",
+        "ocfToNetIncomePct",
+        "shareCountChangePct"
+      ],
+      "winsorization": false
+    },
+    "uncertainty": {
+      "blockDates": 26,
+      "confidenceContraction": false,
+      "implementation": "alpha_opportunity_v2_model.prediction_uncertainty: identical statistic to v1 (same seed, blocks, cluster weights, quantiles) from precomputed date indices; probability head refit on the NET label",
+      "lowerQuantile": 0.05,
+      "meaning": "90% sampling interval for fitted mean/probability; NOT individual return prediction interval",
+      "method": "training moving-block bootstrap refits of both linear heads, complete date clusters; transformer refit each replicate",
+      "minimumTrainingBlocks": 4,
+      "replicates": 200,
+      "residual": "past matured out-of-fold RMS of LINEAR relative-return residuals per fold; DISCLOSED as predictive dispersion for a future portfolio layer; never part of the opportunity decision",
+      "seed": 42
+    },
+    "walkForward": {
+      "coverageGate": "KR accounting-fundamental features (ocfToNetIncomePct, assetGrowthPct, debtGrowthPct) are dark 2013-2014 (DART serves from 2015; PIT fundamentals invariants); evaluation gate applies to years 2016 onward, training warmup coverage disclosed, no pre-source imputation claim",
+      "embargo": "exact endpoint maturity purge; no extra arbitrary embargo; training uses past only",
+      "evaluationStart": "first READY annual fold of each horizon cell; every later scheduled fold must be READY or the cell is DATA_INSUFFICIENT",
+      "featureStart": "2013-01-01",
+      "maturity": "outcomeEndDate strictly less than fold cutoff; no label merely started before cutoff",
+      "minimumHistoryMonths": 36,
+      "minimumMaturedDates": 104,
+      "minimumNamesPerDate": 10,
+      "missingTrainingLabels": "unresolved endpoints (MISSING_FORWARD_PRICE_OR_DELISTING, or INELIGIBLE under the v4 eligibility policy) are excluded from TRAINING with counts by reason code",
+      "pendingEvaluation": "exclude dates whose scheduled exit exceeds data cutoff; purely calendar-based, never label-quality based",
+      "prediction": "last KR regional session each calendar week",
+      "refit": "first KR weekly signal date each calendar year; expanding history",
+      "survivorshipEligibility": "an observation on a KR security enters training or evaluation only if pipeline.alpha_opportunity_v4_eligibility.label_eligibility reports ELIGIBLE for that (security, signal date, horizon); this replaces the v3-inherited 20% gap-tolerance reuse, which was already withdrawn by v3 for a different gate"
+    }
+  },
+  "citations": {
+    "krTerminalActionCollectionFinalRetryRun": "GitHub Actions run 36264244053 (workflow 'Collect KR terminated-security corporate actions', 2026-09-26T18:55Z, mode=collect, triggered on main after PR #158's merge commit 68c950d9f2fbd05fcb76b36bd714b236e2b33850): the 'collect' job (disclosure index) and 'collect-dividends' job both logged 'no new disclosures'/'no new dividend rows' (already complete: 22/22 disclosures, 451 rows; 47/47 dividend tickers, 6,150 rows); the 'collect-documents' job retried exactly the 38 previously-failed receipts (receiptsRequested=130, receiptsSucceeded=92, receiptsFailed=38, receiptsRemaining=0, written=0, outcome=EMPTY_BUT_VALID, datasetComplete=true, fullWorkListExhausted=true, stopReason=WORK_LIST_EXHAUSTED) -- all 38 failed again with the same retained error ('document.xml did not return a ZIP (147 bytes)'). Verified directly from the run's job logs in this PR, not carried over from a prior claim. This closes the repeated-DART-retry loop: signal-history commit 2132d8d83589ddc8ee6c0e640016211c8ebc65f0 (1 file changed, 38 insertions, 38 deletions) refreshes retry/failure bookkeeping only, not new evidence -- consistent with, and this PR's own independent confirmation of, the 'ledger/kr-corporate-actions/fetch-state.json' retry-state fields."
+  },
+  "createdAt": "2026-09-26T00:00:00Z",
+  "dataCutoff": "2026-09-14",
+  "decisionContract": {
+    "alphaExistenceRule": "expectedNetAlpha > 0",
+    "expectedValueClasses": [
+      "POSITIVE_EXPECTED_ALPHA",
+      "BENCHMARK_EXPECTED_VALUE_PREFERRED",
+      "NOT_TRADABLE",
+      "UNMEASURED"
+    ],
+    "fixedTopN": null,
+    "investedFraction": null,
+    "lowerBoundHurdle": null,
+    "minimumAlphaHurdle": null,
+    "onlyConditions": [
+      "PIT-valid inputs",
+      "a finite prediction",
+      "the PIT tradability guard carried from v2"
+    ],
+    "opportunitySurface": "every POSITIVE_EXPECTED_ALPHA name, ordered by expectedNetAlpha for downstream analysis only; zero names is NO_POSITIVE_EXPECTED_ALPHA",
+    "orderNotional": null,
+    "outsideOption": {
+      "costCharged": 0.0,
+      "expectedNetAlpha": 0.0,
+      "instrument": "own regional benchmark (KR 069500.KS, KODEX 200, as-traded forward total-return close via pipeline.korea_prices)"
+    },
+    "portfolioLayer": "SEPARATE_AND_UNDEFINED_HERE: risk preference, whether a positive-EV low-win-rate name is taken, confidence weighting, Kelly, inverse volatility, target volatility, dependence and concentration are never part of alpha existence",
+    "portfolioValue": null,
+    "probability": {
+      "field": "probabilityNetOutperform",
+      "meaning": "P(R_i - R_b - cost > 0) from the separately fitted Logistic head",
+      "notA": "median or any quantile of the Ridge head's prediction: the two heads are separate models, not one coherent predictive distribution",
+      "role": "DESCRIPTIVE_ONLY_NEVER_A_VETO",
+      "states": [
+        "EXPECTATION_POSITIVE_OUTPERFORM_PROBABILITY_ABOVE_HALF",
+        "EXPECTATION_POSITIVE_OUTPERFORM_PROBABILITY_NOT_ABOVE_HALF",
+        "EXPECTATION_NOT_POSITIVE_OUTPERFORM_PROBABILITY_ABOVE_HALF",
+        "EXPECTATION_NOT_POSITIVE_OUTPERFORM_PROBABILITY_NOT_ABOVE_HALF",
+        "PROBABILITY_UNAVAILABLE"
+      ]
+    },
+    "probabilityHurdle": null,
+    "question": "Is E[R_i - R_benchmark(i)] - roundTripCost_i > 0 ?",
+    "regionQuota": null,
+    "uncertainty": {
+      "fittedValue": {
+        "fields": [
+          "expectedNetAlphaLower",
+          "expectedNetAlphaUpper",
+          "probabilityLower",
+          "probabilityUpper"
+        ],
+        "kind": "FITTED_VALUE_SAMPLING",
+        "notA": "individual-return prediction interval",
+        "role": "DESCRIPTIVE_ONLY_NEVER_A_VETO",
+        "source": "alpha_opportunity_model.prediction_uncertainty: 200 training-only moving-block refits, 5th/95th percentiles of the refitted prediction",
+        "states": [
+          "FITTED_INTERVAL_ENTIRELY_ABOVE_OUTSIDE_OPTION",
+          "FITTED_INTERVAL_SPANS_OUTSIDE_OPTION",
+          "FITTED_INTERVAL_ENTIRELY_AT_OR_BELOW_OUTSIDE_OPTION",
+          "FITTED_INTERVAL_UNAVAILABLE"
+        ]
+      },
+      "predictive": {
+        "field": "predictiveResidualRms",
+        "kind": "PREDICTIVE_OUTCOME_DISPERSION",
+        "role": "DESCRIPTIVE_ONLY_NEVER_A_VETO",
+        "source": "alpha_opportunity_model.matured_residual_scale: equal-date RMS of realised minus predicted over past matured out-of-fold predictions"
+      }
+    }
+  },
+  "dependencyClosure": {
+    "entryPoints": [
+      "scripts/run_alpha_opportunity_model_v4.py",
+      "scripts/audit_alpha_opportunity_v4_kr_eligibility.py",
+      "pipeline/alpha_opportunity_v4_eligibility.py"
+    ],
+    "method": "static closure over pipeline imports, top-level and function-level, recomputed on every load; sealed set must equal closure + sealedDataInputs"
+  },
+  "dependencyHashes": {
+    "data/kr-terminal-corporate-actions.json": "4e67620afddfb4cd5849e857da78a91f643f00c0b24466e3e1517a108d156077",
+    "docs/results/alpha-opportunity-model-v3-survivorship-audit.json": "f0d9ed09880ffb75c6cc698dbb001e6f6879dee1991ede6ff6d365cc50f22902",
+    "docs/results/alpha-opportunity-model-v4-eligibility-policy.json": "c51ebf3cb1bdf4e6f3b018617437e55e27b8548ad36500e1ea64ca537bb43b0a",
+    "docs/results/kr-terminal-action-reconstruction-v2.json": "b1d2dcb0a8064139e601c4efab51a44e1323f93910ae70228054338a90629017",
+    "docs/results/kr-termination-inventory.json": "b58ecb2c4500302c40784613318c8451beee663ece5ee76ada26873a4292f93f",
+    "pipeline/__init__.py": "187da1ad9a148da44035f9cf25f7cb094c45afe53d3f445ba62392797972dede",
+    "pipeline/alpha_opportunity_spec.py": "3d7150c2f62dbd8184ed2f3885828e93c1ba64d8ffe3695b0b5716641734c58e",
+    "pipeline/alpha_opportunity_v3_spec.py": "1c11c306f9f27a8e69b985d02bfb3bffaf691001c27ac49e6b21266dd315c162",
+    "pipeline/alpha_opportunity_v4_eligibility.py": "c1fc4acbb1dda1b7c363ed821d2a9f817b80f1689d931d3ac0fa80925acc06fe",
+    "pipeline/alpha_opportunity_v4_spec.py": "b1bd3a9a7c68834490de90a65e8aa108bd371218ffc22e20118a0063dda57b32",
+    "requirements.txt": "b874e2c2c8bd5f4b0bc01b99f988d37d13c9d5018e7fb09992a6cdde6e94edb8",
+    "research_specs/alpha-opportunity-model-v1-features.json": "72f52c9c95d4045ba48c33980ad43f0e4df8bc072cbcc2b099a1c6f503323895",
+    "research_specs/alpha-opportunity-model-v1.json": "4c185128f3fc78ee17fcd4afe875ce3a1ed471ab5dec8dfdfadefda33c469cc4",
+    "research_specs/alpha-opportunity-model-v1.sha256": "8ae32e45708bbf5c01b999641f3f3d0dc4cba8b33a2d3c598dcbbcc77b60f010",
+    "research_specs/alpha-opportunity-model-v2.json": "f9514c0f5e7ef5522d50f57aa579b7a08b5b62ee6026a8fd4941cb44f5a8bf7a",
+    "research_specs/alpha-opportunity-model-v2.sha256": "2b400b8adf6edd4a97ed206abc089eba70fd5cfc9a5bf9094cedbe88058a79e4",
+    "research_specs/alpha-opportunity-model-v3.json": "319b450e97878bc0095301775a30f0d92d789680c78fd608e9c68bca4fb19f9b",
+    "research_specs/alpha-opportunity-model-v3.sha256": "9e23f25454a731a6cd53909a463f8d1ee5be557606c13c33a66a55b43ad81591",
+    "scripts/audit_alpha_opportunity_v4_kr_eligibility.py": "5ca0451ac32a3f8e48e93b96a9e2c57daf9a401a77e07e2a26c7eadaea094857",
+    "scripts/run_alpha_opportunity_model_v4.py": "8071ee8006813ce3f5a8db8276082db74463bd0688b9302653ddf6bfcdb5476a"
+  },
+  "designBlockers": [],
+  "eligibilityPolicy": {
+    "appliesTo": "the 22 KR securities named in alphaOpportunityV3SurvivorshipAudit's krTerminations list -- never a hardcoded code list in v4 code",
+    "computedResultAsOfThisSeal": {
+      "artifactPath": "docs/results/alpha-opportunity-model-v4-eligibility-policy.json",
+      "artifactSha256": "c51ebf3cb1bdf4e6f3b018617437e55e27b8548ad36500e1ea64ca537bb43b0a",
+      "dominantReasonCode": "KR_TERMINATED_SECURITY_DIVIDEND_EXDATE_LINEAGE_UNRESOLVED",
+      "eligibleSecurities": 0,
+      "ineligibleSecurities": 22,
+      "note": "Computed by scripts/audit_alpha_opportunity_v4_kr_eligibility.py against the real sealed evidence -- not asserted. Re-running it against a repaired foundation would change this result without any change to the policy code or this spec."
+    },
+    "contract": "ALPHA_OPPORTUNITY_V4_KR_LABEL_ELIGIBILITY_V1",
+    "knownConsequence": "v4's labeled sample excludes all 22 known-terminated KR securities' observations entirely, at every signal date, under current evidence. This is NOT the same defect alpha-opportunity-model-v3 found in the US leg (NO_TERMINATED_SECURITY_IN_SAMPLE, where the panel never priced a departed name at all, so termination was structurally invisible): here the 22 names ARE priced, ARE members of the PIT KR universe on their live dates, and DO still enter feature computation and cross-sectional context -- only their own forward-return LABEL is withheld, for a disclosed, quantified, bounded and shrinking fraction of member-dates (alphaOpportunityV3SurvivorshipAudit: 3.7366% of tradable KR member-dates, 7.93% in 2013 declining to 0.76% in 2025). It is still a real, disclosed survivorship-conditioning limitation: v4's labeled sample never observes the realised forward outcome of a name that is about to be delisted or merged out, which understates tail risk relative to the true investable universe. `requiredDiagnostics.exclusionsClusterAroundTerminalEventsCheck` in evaluationPreregistration requires the future execution to publish this quantitatively rather than let it pass unremarked, and evaluationPreregistration's own verdict vocabulary must be read alongside this caveat, never as an unconditional statement about KR delisting risk.",
+    "module": "pipeline/alpha_opportunity_v4_eligibility.py",
+    "neverAllowed": [
+      "treating an unresolved exchange ratio or successor as final",
+      "carrying the last traded price forward through a termination",
+      "inventing an ex-date from a record date or any other computed rule",
+      "assuming zero recovery for an unresolved termination",
+      "excluding or including an observation based on its realised return magnitude",
+      "using today's KR universe membership as a historical one",
+      "a new exclusion rule invented after an outcome is seen"
+    ],
+    "reasonCodes": [
+      "KR_SUCCESSOR_HAS_NO_PRICE_PANEL",
+      "KR_SUCCESSOR_IDENTITY_UNRESOLVED",
+      "KR_TERMINAL_ACTION_CHAIN_UNRESOLVED",
+      "KR_TERMINAL_CONSIDERATION_UNRESOLVED",
+      "KR_TERMINATED_SECURITY_DIVIDEND_EXDATE_LINEAGE_UNRESOLVED",
+      "KR_TERMINATED_SECURITY_NO_COMPLETENESS_EVIDENCE",
+      "KR_TERMINATED_SECURITY_TOTAL_RETURN_SERIES_NOT_YET_BUILT",
+      "KR_TERMINATION_TYPE_UNRESOLVED",
+      "NOT_A_KNOWN_TERMINATED_SECURITY",
+      "PRE_TERMINATION_WINDOW_TOTAL_RETURN_BASIS_RESOLVED",
+      "TERMINATION_WINDOW_FULLY_RESOLVED"
+    ],
+    "rule": "A security not in the 22 is unaffected: ordinary production/replay mechanics (MISSING_FORWARD_PRICE_OR_DELISTING) apply unchanged. For one of the 22: `exDateSemanticsResolved` must read READY in the sealed completeness matrix before ANY observation on that security -- pre- or post-termination -- is eligible, because the security's entire trading life is on a price-return basis (Yahoo serves no distributions for a delisted KR ticker) while the matched benchmark and every continuing name are total-return; this is not only a terminal-window problem. A window whose exit session is after the security's last traded session additionally requires `terminationTypeResolved`, `terminalConsiderationResolved`, `successorResolvedWhereRequired` (where applicable) and `terminalActionChainResolved` all READY, and -- where a successor is required -- that successor's own price panel."
+  },
+  "evaluationPreregistration": {
+    "A_absoluteCalibration": "date-balanced pooled realised = a + b * predicted net relative return (not within-date demeaned); b lower > 0; a and b intervals published; MSE improvement over training mean lower > 0",
+    "B_ordering": "equal-date rank IC lower > 0; within-date slope lower > 0",
+    "C_probability": "Brier and log-loss improvement over training prevalence (net label) lower > 0; pooled date-balanced ECE upper <= 0.05 (v2 simulated null recorded in v2 spec)",
+    "D_disclosedBesideNotGating": "D recomputed separately for EXPECTATION_POSITIVE_OUTPERFORM_PROBABILITY_NOT_ABOVE_HALF and FITTED_INTERVAL_SPANS_OUTSIDE_OPTION subsets, descriptive only",
+    "D_positiveExpectedAlphaRegion": "on dates with >= 1 POSITIVE_EXPECTED_ALPHA name: date-mean realised net relative return of those names lower > 0 (the outside-option test) AND same-date spread over non-positive names lower > 0 (lesser of level and spread); plus, disclosed not gated, realised-on-predicted slope inside the positive region and realised means by within-date terciles of predicted expectedNetAlpha among positive names (terciles fixed from predictions alone); no predicted-alpha threshold other than 0 is ever evaluated",
+    "E_stability": "annual folds >= 70% jointly positive (rank IC, Brier, MSE); D point estimate positive in each chronological half; no subgroup beyond the two horizons",
+    "F_missingnessIntegrity": "before ANY gate in A-E may be interpreted, the execution report MUST publish every field in `requiredDiagnostics` below; a report missing one is not a partial result, it is DATA_INSUFFICIENT for every claim",
+    "dependence": "moving blocks of 26 whole weekly dates, 2000 draws, seed 42, Bonferroni across the two horizon claims (21D, 126D): twoSidedTail=0.0125, 97.5% two-sided intervals",
+    "promotionEligible": false,
+    "requiredDiagnostics": [
+      "pitUniverseObservationsByYear",
+      "eligibleLabelsByYearAndHorizon",
+      "unavailableLabelsByReasonCode",
+      "terminatedVsContinuingLabelAvailability",
+      "memberDatesRemovedPctByReasonAndYear",
+      "temporalConcentrationOfMissingness",
+      "securityConcentrationOfMissingness",
+      "exclusionsClusterAroundTerminalEventsCheck",
+      "benchmarkCoveragePct",
+      "totalReturnComparabilityCoveragePct"
+    ],
+    "status": "PREREGISTERED_BEFORE_ANY_OUTCOME; not executable in this PR",
+    "verdicts": [
+      "PIT_INVALID",
+      "MODEL_UNSTABLE",
+      "DATA_INSUFFICIENT",
+      "POSITIVE_EXPECTED_ALPHA_EVIDENCE",
+      "PREDICTIVE_EVIDENCE_BENCHMARK_PREFERRED",
+      "NO_MODEL_EVIDENCE"
+    ]
+  },
+  "excludedFamilies": {
+    "ANALYST_ESTIMATE_REVISIONS": "no stable 2013-2026 PIT panel established for either region (alpha-information-inventory-v1); excluded",
+    "GURU_13F": "separate Guru Decision Atlas track; never an alpha feature; access status does not gate this study",
+    "KR_ACCOUNTING_QUALITY_LOW_COVERAGE_FIELDS": "capexIntensityPct (7.74% KR coverage) and fcfToNetIncomePct (4.31%) are confirmed built (alpha-data-foundation-v2 workstream A) but not promoted to the feature set, per this study's own philosophy that very-low-coverage variables are not promoted merely because they exist; ocfToNetIncomePct/assetGrowthPct/debtGrowthPct (52-97% KR coverage) are carried forward from v3 unchanged",
+    "KR_INVESTOR_FLOW": "pipeline/kr_investor_flow.py exists (alpha-data-foundation-v2 workstream C); live access unproven from this sandbox (Grade B REPAIRABLE, probe not yet run against a real network); excluded from v4's feature set until a probe reports SERVED",
+    "KR_MACRO_CONTEXT": "no KR axis exists in regime.py (every INDICATORS entry is FRED/CBOE-sourced); pipeline/ecos_macro.py is an unwired fetch layer only, vintage status REVISED_HISTORY not PIT_EXACT even if wired; excluded",
+    "KR_OWNERSHIP_EVENTS": "pipeline/dart_ownership_events.py exists; BLOCKED_HISTORICAL_DEPTH (majorstock.json has no date-bound parameters and serves only a rolling ~2-year window); excluded from a 2013-2026 historical study",
+    "KR_SHORT_SELLING": "pipeline/kr_short_selling.py exists (workstream E); same access-unproven status; excluded"
+  },
+  "executionWorkflow": null,
+  "formerV3BlockersResolvedByPolicy": [
+    {
+      "id": "KR_TERMINATED_NAME_DIVIDEND_LINEAGE_ABSENT",
+      "resolution": "v3 treated this as a design blocker because it had no predeclared treatment. v4 predeclares one: the eligibility policy above excludes every affected observation by a computed, machine-checked rule. The underlying dividend/ex-date data itself is unchanged and unrepaired."
+    },
+    {
+      "id": "KR_TERMINAL_CONSIDERATION_UNRESOLVED",
+      "resolution": "Same mechanism: a window crossing termination is INELIGIBLE under the policy above unless the full terminal-action chain is READY, which is true for 0 of 22 today. No unresolved consideration is ever used."
+    }
+  ],
+  "governingDocumentConflict": {
+    "conflictFound": true,
+    "documents": [
+      "docs/kr-terminated-security-total-return-foundation-v1.md",
+      "docs/kr-terminal-action-reconstruction-v2.md (PR #158)"
+    ],
+    "whatTheyStated": "Both documents' own 'exact next step' / final determination sections state a v4 preregistration should be drafted only once every applicable completeness-matrix field reads READY ('never before, and never by loosening this matrix's own rules'), and that the operator action remaining was a workflow retry, not a v4 draft.",
+    "whyV4IsCreatedAnyway": "The retry named as the remaining operator action has now been run (GitHub Actions run 36264244053, 2026-09-26) and confirmed exhausted: all 38 previously-failed DART receipts failed again with the same retained error, and every other evidence-recovery route (direct HTTPS, WebFetch, workflow_dispatch with a real token) was already confirmed exhausted by PR #158 itself. There is no further repair action available in this environment. This PR's own governing task explicitly requires a v4 preregistration now, built on a NEW study-level eligibility-policy concept that predeclares treatment of the remaining gap rather than waiting on a repair this environment cannot perform -- see docs/alpha-opportunity-model-v4-preregistration.md's own framing. This is a real conflict between the prior documents' stated gate and this PR's instructions, resolved here by: (a) never editing `docs/results/kr-terminal-action-reconstruction-v2.json`'s `foundationStatus` away from PARTIALLY_REPAIRED, (b) introducing the SOURCE FOUNDATION / STUDY DESIGN / EXECUTION three-layer distinction the prior documents did not contemplate, and (c) an eligibility policy that excludes rather than repairs the affected observations, so no completeness-matrix field is loosened and no value is invented to force a READY reading of the matrix itself."
+  },
+  "horizons": [
+    21,
+    126
+  ],
+  "immutableVersion": "4.0.0",
+  "lineage": {
+    "alpha-opportunity-model-v1": "first opportunity preregistration; BLOCKED_PREREGISTRATION; never executed",
+    "alpha-opportunity-model-v2": "benchmark-as-outside-option redesign; sealed READY; never historically executed; superseded before any outcome by the three defects v3 records",
+    "alpha-opportunity-model-v3": "separates expected value from probability and confidence; audits identity and survivorship in both regions; BLOCKED_BY_DATA_INTEGRITY in both regions; never executed",
+    "alpha-opportunity-model-v4": "THIS preregistration: KR-only, carries v3's economic contract, model family, features, costs and evaluation forward unchanged, and adds a predeclared, machine-checked eligibility policy that separates source-foundation completeness from study-design readiness. Never executed by this PR.",
+    "kr-terminal-action-reconstruction-v2 (PR #158, merged)": "real DART evidence collected and reconstructed; foundationStatus PARTIALLY_REPAIRED; every evidence-recovery route in this environment confirmed exhausted",
+    "kr-terminated-security-total-return-foundation-v1": "data-foundation build; BLOCKED_BY_SOURCE_ACCESS (no DART_API_KEY in that environment)"
+  },
+  "newInteractions": {
+    "count": 0,
+    "rationale": "Section 11 of this study's own governing task requires any interaction to be selected on economic mechanism, PIT availability, adequate historical coverage and manageable multiplicity -- never on outcome data. Every candidate hypothesis that needs investor flow (candidate 5, flow confirmation x price/attention) is excluded above as access-unproven. The remaining candidates (fundamental state/change x liquidity shock; price leadership x liquidity persistence; weak fundamentals x liquidity shock; attention x price-leadership divergence) all involve the same small, already-carried-forward KR feature set (relative126, acceleration21, vol63, logVolumeShock60, shockPersistence5d, volumePriceAlignment, and three DART accounting fields dark before 2015) that v1-v3 never found PIT-unsafe but also never tested in combination. Rather than add an untested interaction term to a preregistration whose purpose is closing a DATA-INTEGRITY gap, v4 carries v3's linear/shallow-HGB-complement model family unchanged, which already lets the shallow HGB complement (never a decision, per carriedFromV3.models.interpretation) surface any such interaction as complementary evidence without this spec committing to one by name. A dedicated interaction study, if warranted, is a separate preregistration."
+  },
+  "phase": "PREREGISTRATION_ONLY",
+  "preregistrationStatus": "READY_FOR_HISTORICAL_EXECUTION",
+  "priorVersions": [
+    {
+      "executed": false,
+      "specSha256": "e3c699b197fd558506d7157fa6dd8cdb91156faccd0e6e9547d21d5baa23dd6e",
+      "studyId": "alpha-opportunity-model-v1"
+    },
+    {
+      "executed": false,
+      "specSha256": "97c3727b37eeab71e31ffee17a2f81cac29f0333552ff04a5374ef48484b0e19",
+      "studyId": "alpha-opportunity-model-v2"
+    },
+    {
+      "executed": false,
+      "specSha256": "f6e11fafc2d46137d3f8385858c58d9991cb3809a2f811c368a81baf149fc3fe",
+      "studyId": "alpha-opportunity-model-v3"
+    }
+  ],
+  "regions": [
+    "KR"
+  ],
+  "scope": {
+    "conservativeBaseline": "a conservative baseline model over v3's already-vetted KR feature set and model family; not a test of any new interaction (see newInteractions) and not a re-tune of alpha-reliability-v1's closed calibration or alpha-risk-separation-v1's closed sleeve questions; its failure or blockage says nothing about those",
+    "regions": "KR-only. US carries a separate, structurally different survivorship defect (NO_TERMINATED_SECURITY_IN_SAMPLE: the panel never priced 212 of 324 departed S&P 500 identities at all, so termination is invisible, not merely basis-inconsistent) that this PR does not touch, repair, or wait for. Region symmetry is not a reason to hold KR back: alpha-research-philosophy-v2 section 1 already states 'treating US and KR as one model, or as two models forever' is not required, and regional-alpha-research-separation-v1 already separated the two before this PR existed."
+  },
+  "sealedDataInputs": [
+    "research_specs/alpha-opportunity-model-v1.json",
+    "research_specs/alpha-opportunity-model-v1.sha256",
+    "research_specs/alpha-opportunity-model-v2.json",
+    "research_specs/alpha-opportunity-model-v2.sha256",
+    "research_specs/alpha-opportunity-model-v3.json",
+    "research_specs/alpha-opportunity-model-v3.sha256",
+    "research_specs/alpha-opportunity-model-v1-features.json",
+    "docs/results/alpha-opportunity-model-v3-survivorship-audit.json",
+    "docs/results/kr-terminal-action-reconstruction-v2.json",
+    "docs/results/kr-termination-inventory.json",
+    "docs/results/alpha-opportunity-model-v4-eligibility-policy.json",
+    "data/kr-terminal-corporate-actions.json",
+    "requirements.txt"
+  ],
+  "sourceFoundation": {
+    "alphaOpportunityV3SurvivorshipAudit": {
+      "note": "source of the sealed krTerminations 22-name list; never hardcoded in v4 code",
+      "path": "docs/results/alpha-opportunity-model-v3-survivorship-audit.json",
+      "sha256": "f0d9ed09880ffb75c6cc698dbb001e6f6879dee1991ede6ff6d365cc50f22902"
+    },
+    "krTerminalActionReconstructionV2": {
+      "foundationStatus": "PARTIALLY_REPAIRED",
+      "note": "Read verbatim, never edited. `terminalActionChainResolved` 0/22, `exDateSemanticsResolved` 0/22 -- see docs/kr-terminal-action-reconstruction-v2.md.",
+      "path": "docs/results/kr-terminal-action-reconstruction-v2.json",
+      "sha256": "b1d2dcb0a8064139e601c4efab51a44e1323f93910ae70228054338a90629017",
+      "signalHistoryCommit": "4c6813c4cc8e84a9e429b37435e78baba7f1ee78"
+    },
+    "krTerminalCorporateActionsBook": {
+      "path": "data/kr-terminal-corporate-actions.json",
+      "sha256": "4e67620afddfb4cd5849e857da78a91f643f00c0b24466e3e1517a108d156077"
+    },
+    "krTerminationInventory": {
+      "path": "docs/results/kr-termination-inventory.json",
+      "sha256": "b58ecb2c4500302c40784613318c8451beee663ece5ee76ada26873a4292f93f"
+    }
+  },
+  "studyId": "alpha-opportunity-model-v4",
+  "whyV4": {
+    "A_scopeChange": "KR-only, per `scope` below -- the US survivorship defect is structurally different (no terminated security in the panel at all) and is not addressed here",
+    "B_eligibilityPolicy": "v3 recorded KR_TERMINATED_NAME_DIVIDEND_LINEAGE_ABSENT and KR_TERMINAL_CONSIDERATION_UNRESOLVED as unconditional design blockers because it had no predeclared treatment for them; v4 resolves both BY POLICY (see eligibilityPolicy), not by data repair -- the underlying data is exactly as incomplete as it was under v3",
+    "C_governingDocumentConflict": "see governingDocumentConflict below -- prior documents said wait for full repair; this PR's own task instructs otherwise, and the conflict is resolved without loosening or editing the source foundation's own completeness matrix"
+  }
+}
