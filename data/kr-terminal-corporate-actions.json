@@ -18,13 +18,34 @@
       ],
       "blockingReasons": [
         "FINAL_ECONOMIC_TERMS_AND_EFFECTIVE_DATE: later body corrections unavailable (20180920000544,20181108000137,20181121000025)",
-        "SUCCESSOR_SECURITY_IDENTITY: AMBIGUOUS_EXACT_IDENTITY",
         "AMENDMENT_ATTACHMENT_FINALITY: unavailable potentially material attachment",
-        "EXECUTION_CONFIRMATION: collected decisions state conditional/planned terms; no matching completion evidence establishes actual occurrence and final payment"
+        "EXECUTION_CONFIRMATION: RESOLVED by independent completion evidence (20190111000457); final economic terms may still be blocked separately, see other blockers."
       ],
       "cashInLieuRule": null,
       "cashPerOldShare": null,
-      "considerationComponents": [],
+      "completionEvidence": [
+        {
+          "documentSha256": "a40c0ba2eaa714999480238555da001ee25e37c4bc9258f52515e05a4c3affc3",
+          "field": "executionConfirmation",
+          "note": "Independent later filing (NYSE ADR delisting notice, receipt 2019-01-11, filed AFTER the three unavailable 2018 body corrections 20180920000544/20181108000137/20181121000025) states in the past tense that 우리금융지주 WAS established, and restates the trading-termination date (2019-01-11) already filed in the primary decision -- corroboration from a source independent of the missing corrections. This establishes the share transfer actually occurred and corroborates the effective date; it does NOT independently restate the primary bank's own common-share consideration/ratio (the 1:1 figure quoted here is the ADR program's own conversion ratio, not re-cited as successorSharesPerOldShare), so final economic terms stay blocked by the unavailable corrections.",
+          "quote": "(주)우리금융지주가 설립됨에 따라 뉴욕증권거래소(NYSE) 에 상장되었던 우리은행 ADR이 상장 폐지되고, (주)우리금융지주의 ADR이 기존 우리은행 ADR과 1:1 의 교환비율로 2019년 1월 11일 NYSE에상장등록될 예정이며, 원주기준의 ADR 실제교환은 (주)우리금융지주 주식의 국내 상장 예정일인 2019년 2월 13일에 이루어질 예정입니다.",
+          "receiptDate": "2019-01-11",
+          "receiptNo": "20190111000457",
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20190111000457",
+          "zipSha256": "e5c588db4747732cfe02c6a200a71df7520470f637305fe58b4709cf93e2a274"
+        }
+      ],
+      "considerationComponents": [
+        {
+          "cashAmount": null,
+          "sharesPerOldShare": null,
+          "sourceReceiptDate": "2018-06-19",
+          "sourceReceiptNumber": "20180619000302",
+          "successorIssuerCorpCode": "01350869",
+          "successorSecurity": "316140.KS",
+          "type": "SUCCESSOR_SHARES"
+        }
+      ],
       "decisionDate": null,
       "documentedTerms": {
         "cashPerOldShare": null,
@@ -37,7 +58,7 @@
       },
       "effectiveDate": null,
       "evidenceStatus": "SEALED_FROM_DART_RECEIPT",
-      "executionStatus": "UNCONFIRMED_BY_COLLECTED_COMPLETION_DOCUMENTS",
+      "executionStatus": "CONFIRMED_BY_INDEPENDENT_COMPLETION_EVIDENCE",
       "failedReceipts": [
         {
           "alternativeEvidence": "All 92 retained documents examined; no later authoritative final terms substitute found.",
@@ -99,6 +120,15 @@
           "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20180619000302",
           "zipSha256": "cccd3720d577980de5b88d30611c240fa4733f815618faa4c9334f19f7c50ba2"
         },
+        "successorSecurity": {
+          "documentSha256": "f10bc9926373d2892760f06f625ac6442e574aba7a3d47ae4fc87ad8ce384980",
+          "field": "successorSecurity",
+          "quote": "우리금융지주",
+          "receiptDate": "2018-06-19",
+          "receiptNo": "20180619000302",
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20180619000302",
+          "zipSha256": "cccd3720d577980de5b88d30611c240fa4733f815618faa4c9334f19f7c50ba2"
+        },
         "successorSharesPerOldShare": {
           "documentSha256": "f10bc9926373d2892760f06f625ac6442e574aba7a3d47ae4fc87ad8ce384980",
           "field": "successorSharesPerOldShare",
@@ -121,11 +151,12 @@
       "finalTermsReceiptNumber": null,
       "fractionalShareTreatment": null,
       "identityBridge": {
+        "disambiguationBasis": "Excluded 053000.KS/00375302 (delisted 2014-12-01) as already delisted before this document's own receipt date 2018-06-19.",
         "identitySourcePath": "ledger/dart-ownership-events/collection-universe.json",
         "identitySourceSha256": "7dddc6f75ea14adc8f97f3558409a68b2f71ab356b270e7d25d1ecb08875e4fc",
-        "method": "UNIQUE_EXACT_LEGAL_OR_HISTORICAL_NAME",
+        "method": "UNIQUE_EXACT_LEGAL_OR_HISTORICAL_NAME_TEMPORALLY_DISAMBIGUATED",
         "nameFromDocument": "우리금융지주",
-        "reason": "AMBIGUOUS_EXACT_IDENTITY"
+        "reason": null
       },
       "lastTradingDate": null,
       "latestReviewedTermsReceiptNumber": "20180619000302",
@@ -146,11 +177,10 @@
         "DART:20180619000302",
         "DART:20190111000457"
       ],
-      "successorIssuerCorpCode": null,
-      "successorSecurity": null,
+      "successorIssuerCorpCode": "01350869",
+      "successorSecurity": "316140.KS",
       "successorSharesPerOldShare": null,
       "unresolvedFields": [
-        "executionConfirmation",
         "finalEconomicTerms"
       ]
     },
@@ -236,6 +266,7 @@
       ],
       "cashInLieuRule": null,
       "cashPerOldShare": null,
+      "completionEvidence": [],
       "considerationComponents": [
         {
           "cashAmount": null,
@@ -311,6 +342,7 @@
       "finalTermsReceiptNumber": null,
       "fractionalShareTreatment": null,
       "identityBridge": {
+        "disambiguationBasis": null,
         "identitySourcePath": "ledger/dart-ownership-events/collection-universe.json",
         "identitySourceSha256": "7dddc6f75ea14adc8f97f3558409a68b2f71ab356b270e7d25d1ecb08875e4fc",
         "method": "UNIQUE_EXACT_LEGAL_OR_HISTORICAL_NAME",
@@ -361,12 +393,22 @@
       ],
       "blockingReasons": [
         "FINAL_ECONOMIC_TERMS_AND_EFFECTIVE_DATE: later body corrections unavailable (20150608000391,20150612000428,20150619000462)",
-        "SUCCESSOR_SECURITY_IDENTITY: AMBIGUOUS_EXACT_IDENTITY",
         "EXECUTION_CONFIRMATION: collected decisions state conditional/planned terms; no matching completion evidence establishes actual occurrence and final payment"
       ],
       "cashInLieuRule": "주식에 대하여 배정 또는 배당을 받을 권리를 가짐. 라. 신주 배정 시 발생하는 단주 처리방법 합병회사인 제일모직주식회사는 합병신주의 배정으로 1주 미만의 단주가 발생하는 경우에는 단주가 귀속될 주주에게 합병신주의 주권상장일에 한국거래소에서 거래되는 종가를 기준으로 계산된 금액을 주권상장일로부터 1개월 이내에 현금으로 지급합니다. 2. 산출근거 가. 보통주 합병비율 산출근거 본 합병의 경우 합병의 양 상대방이 유가증권시장 주권상장법인으로서, 자본시장과 금융투자업에 관한 법률 시행령 제176조의5 제1항 제1호에 따라 합병가액을 다음과 같이 산정한 후, 이를 기초로 합병비율을 산출하였습니다. (1) 제일모직주식회사 보통주식의 합병가액 유가증권시장 ",
       "cashPerOldShare": null,
-      "considerationComponents": [],
+      "completionEvidence": [],
+      "considerationComponents": [
+        {
+          "cashAmount": null,
+          "sharesPerOldShare": null,
+          "sourceReceiptDate": "2015-05-26",
+          "sourceReceiptNumber": "20150526800025",
+          "successorIssuerCorpCode": "00149655",
+          "successorSecurity": "028260.KS",
+          "type": "SUCCESSOR_SHARES"
+        }
+      ],
       "decisionDate": null,
       "documentedTerms": {
         "cashPerOldShare": null,
@@ -434,6 +476,15 @@
           "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20150526000622",
           "zipSha256": "dba6851d8944a3dfe53d37b8bf9a66d25007777f8d4cccad6898654750239ea5"
         },
+        "successorSecurity": {
+          "documentSha256": "4d3cf9b6d2e77ca8fd0a5db17143b8c8ad6a35b26de682262b772aae3baf2609",
+          "field": "successorSecurity",
+          "quote": "제일모직",
+          "receiptDate": "2015-05-26",
+          "receiptNo": "20150526800025",
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20150526800025",
+          "zipSha256": "9b4bbc5e45a4983a2a094c8fc0388805d3b1daa82d9da809cdfe5545937d09cd"
+        },
         "successorSharesPerOldShare": {
           "documentSha256": "4d3cf9b6d2e77ca8fd0a5db17143b8c8ad6a35b26de682262b772aae3baf2609",
           "field": "successorSharesPerOldShare",
@@ -456,11 +507,12 @@
       "finalTermsReceiptNumber": null,
       "fractionalShareTreatment": "주식에 대하여 배정 또는 배당을 받을 권리를 가짐. 라. 신주 배정 시 발생하는 단주 처리방법 합병회사인 제일모직주식회사는 합병신주의 배정으로 1주 미만의 단주가 발생하는 경우에는 단주가 귀속될 주주에게 합병신주의 주권상장일에 한국거래소에서 거래되는 종가를 기준으로 계산된 금액을 주권상장일로부터 1개월 이내에 현금으로 지급합니다. 2. 산출근거 가. 보통주 합병비율 산출근거 본 합병의 경우 합병의 양 상대방이 유가증권시장 주권상장법인으로서, 자본시장과 금융투자업에 관한 법률 시행령 제176조의5 제1항 제1호에 따라 합병가액을 다음과 같이 산정한 후, 이를 기초로 합병비율을 산출하였습니다. (1) 제일모직주식회사 보통주식의 합병가액 유가증권시장 ",
       "identityBridge": {
+        "disambiguationBasis": "Excluded 001300.KS/00148328 (delisted 2014-08-01) as already delisted before this document's own receipt date 2015-05-26.",
         "identitySourcePath": "ledger/dart-ownership-events/collection-universe.json",
         "identitySourceSha256": "7dddc6f75ea14adc8f97f3558409a68b2f71ab356b270e7d25d1ecb08875e4fc",
-        "method": "UNIQUE_EXACT_LEGAL_OR_HISTORICAL_NAME",
+        "method": "UNIQUE_EXACT_LEGAL_OR_HISTORICAL_NAME_TEMPORALLY_DISAMBIGUATED",
         "nameFromDocument": "제일모직",
-        "reason": "AMBIGUOUS_EXACT_IDENTITY"
+        "reason": null
       },
       "lastTradingDate": null,
       "latestReviewedTermsReceiptNumber": "20150526800025",
@@ -487,8 +539,8 @@
         "DART:20150720000426",
         "DART:20150824000341"
       ],
-      "successorIssuerCorpCode": null,
-      "successorSecurity": null,
+      "successorIssuerCorpCode": "00149655",
+      "successorSecurity": "028260.KS",
       "successorSharesPerOldShare": null,
       "unresolvedFields": [
         "executionConfirmation",
@@ -578,6 +630,7 @@
       ],
       "cashInLieuRule": null,
       "cashPerOldShare": null,
+      "completionEvidence": [],
       "considerationComponents": [
         {
           "cashAmount": null,
@@ -653,6 +706,7 @@
       "finalTermsReceiptNumber": null,
       "fractionalShareTreatment": null,
       "identityBridge": {
+        "disambiguationBasis": null,
         "identitySourcePath": "ledger/dart-ownership-events/collection-universe.json",
         "identitySourceSha256": "7dddc6f75ea14adc8f97f3558409a68b2f71ab356b270e7d25d1ecb08875e4fc",
         "method": "UNIQUE_EXACT_LEGAL_OR_HISTORICAL_NAME",
@@ -731,6 +785,7 @@
       ],
       "cashInLieuRule": null,
       "cashPerOldShare": null,
+      "completionEvidence": [],
       "considerationComponents": [],
       "decisionDate": null,
       "documentedTerms": {
@@ -812,6 +867,7 @@
       "finalTermsReceiptNumber": null,
       "fractionalShareTreatment": null,
       "identityBridge": {
+        "disambiguationBasis": null,
         "identitySourcePath": "ledger/dart-ownership-events/collection-universe.json",
         "identitySourceSha256": "7dddc6f75ea14adc8f97f3558409a68b2f71ab356b270e7d25d1ecb08875e4fc",
         "method": "UNIQUE_EXACT_LEGAL_OR_HISTORICAL_NAME",
@@ -876,6 +932,7 @@
       ],
       "cashInLieuRule": null,
       "cashPerOldShare": 7000.0,
+      "completionEvidence": [],
       "considerationComponents": [
         {
           "cashAmount": 7000.0,
@@ -942,6 +999,7 @@
       "finalTermsReceiptNumber": null,
       "fractionalShareTreatment": null,
       "identityBridge": {
+        "disambiguationBasis": null,
         "identitySourcePath": "ledger/dart-ownership-events/collection-universe.json",
         "identitySourceSha256": "7dddc6f75ea14adc8f97f3558409a68b2f71ab356b270e7d25d1ecb08875e4fc",
         "method": "UNIQUE_EXACT_LEGAL_OR_HISTORICAL_NAME",
@@ -1011,6 +1069,7 @@
       ],
       "cashInLieuRule": null,
       "cashPerOldShare": null,
+      "completionEvidence": [],
       "considerationComponents": [],
       "decisionDate": null,
       "documentedTerms": {
@@ -1092,6 +1151,7 @@
       "finalTermsReceiptNumber": null,
       "fractionalShareTreatment": null,
       "identityBridge": {
+        "disambiguationBasis": null,
         "identitySourcePath": "ledger/dart-ownership-events/collection-universe.json",
         "identitySourceSha256": "7dddc6f75ea14adc8f97f3558409a68b2f71ab356b270e7d25d1ecb08875e4fc",
         "method": "UNIQUE_EXACT_LEGAL_OR_HISTORICAL_NAME",
@@ -1147,6 +1207,7 @@
       ],
       "cashInLieuRule": "드밴드(주) 주주에게 교부할 에스케이텔레콤(주)의 자기주식에 관하여 1주 미만의 단주가 발생하는 경우, 단주가 귀속될 에스케이브로드밴드(주) 주주에게 주식교환일의 에스케이텔레콤(주) 보통주식의 종가(한국거래소에서 거래되는 종가를 의미한다)를 기준으로 계산된 금액을 현금으로 지급할 예정입니다. 3. 에스케이텔레콤㈜ 또는 에스케이브로드밴드㈜의 이사회 또는 주주총회에서 주식의 포괄적 교환계약의 승인 안건이 부결된 경우 주식의 포괄적 교환계약은 당사자들의 별도의 조치 없이도 당연히 소급하여 효력을 상실하며, 그에 따라 주식의 포괄적 교환은 무산됩니다. 4. 주식의 포괄적 교환 계약상 다음과 같은 사유가 발생하는 경우 주식의 포괄적 교환계약이 변경되거나 ",
       "cashPerOldShare": null,
+      "completionEvidence": [],
       "considerationComponents": [
         {
           "cashAmount": null,
@@ -1288,6 +1349,7 @@
       "finalTermsReceiptNumber": null,
       "fractionalShareTreatment": "드밴드(주) 주주에게 교부할 에스케이텔레콤(주)의 자기주식에 관하여 1주 미만의 단주가 발생하는 경우, 단주가 귀속될 에스케이브로드밴드(주) 주주에게 주식교환일의 에스케이텔레콤(주) 보통주식의 종가(한국거래소에서 거래되는 종가를 의미한다)를 기준으로 계산된 금액을 현금으로 지급할 예정입니다. 3. 에스케이텔레콤㈜ 또는 에스케이브로드밴드㈜의 이사회 또는 주주총회에서 주식의 포괄적 교환계약의 승인 안건이 부결된 경우 주식의 포괄적 교환계약은 당사자들의 별도의 조치 없이도 당연히 소급하여 효력을 상실하며, 그에 따라 주식의 포괄적 교환은 무산됩니다. 4. 주식의 포괄적 교환 계약상 다음과 같은 사유가 발생하는 경우 주식의 포괄적 교환계약이 변경되거나 ",
       "identityBridge": {
+        "disambiguationBasis": null,
         "documentEvidence": {
           "documentSha256": "bcd15f4ea56935e031d8e771ea8f896b3344d851d22c3b9aad3e80f5da9fb282",
           "field": "successorSecurity",
@@ -1372,6 +1434,7 @@
       ],
       "cashInLieuRule": "명식 보통주식 46,844,299주입니다. - 주식 배정시 발생하는 1주 미만의 단주에 대하여 ㈜하나금융지주 교환신주의 상장초일의 종가를 기준으로 계산된 금액을 그 비율에 따라 현금으로 주식교환 대상주주에게 지급합니다. 3. 다음 중 어느 하나에 해당하는 사유가 발생한 경우 주식의 포괄적 교환 계약은 당사자들의 별도의 조치 없이도 당연히 소급하여 효력을 상실하며, 그에 따라 주식의 포괄적 교환은 무산됩니다. (1) ㈜하나금융지주 또는 ㈜한국외환은행의 주주총회에서 주식의 포괄적 교환 계약 승인 안건이 부결된 경우 (2) ㈜하나금융지주 주주들의 주식매수청구권 행사 주식수 합계에 그 주식매수 예정가격을 곱한 금액이 금 1조원을 초과하는 경우 (3) ㈜",
       "cashPerOldShare": null,
+      "completionEvidence": [],
       "considerationComponents": [
         {
           "cashAmount": null,
@@ -1456,6 +1519,7 @@
       "finalTermsReceiptNumber": null,
       "fractionalShareTreatment": "명식 보통주식 46,844,299주입니다. - 주식 배정시 발생하는 1주 미만의 단주에 대하여 ㈜하나금융지주 교환신주의 상장초일의 종가를 기준으로 계산된 금액을 그 비율에 따라 현금으로 주식교환 대상주주에게 지급합니다. 3. 다음 중 어느 하나에 해당하는 사유가 발생한 경우 주식의 포괄적 교환 계약은 당사자들의 별도의 조치 없이도 당연히 소급하여 효력을 상실하며, 그에 따라 주식의 포괄적 교환은 무산됩니다. (1) ㈜하나금융지주 또는 ㈜한국외환은행의 주주총회에서 주식의 포괄적 교환 계약 승인 안건이 부결된 경우 (2) ㈜하나금융지주 주주들의 주식매수청구권 행사 주식수 합계에 그 주식매수 예정가격을 곱한 금액이 금 1조원을 초과하는 경우 (3) ㈜",
       "identityBridge": {
+        "disambiguationBasis": null,
         "identitySourcePath": "ledger/dart-ownership-events/collection-universe.json",
         "identitySourceSha256": "7dddc6f75ea14adc8f97f3558409a68b2f71ab356b270e7d25d1ecb08875e4fc",
         "method": "UNIQUE_EXACT_LEGAL_OR_HISTORICAL_NAME",
@@ -1539,6 +1603,7 @@
       ],
       "cashInLieuRule": null,
       "cashPerOldShare": null,
+      "completionEvidence": [],
       "considerationComponents": [
         {
           "cashAmount": null,
@@ -1614,6 +1679,7 @@
       "finalTermsReceiptNumber": null,
       "fractionalShareTreatment": null,
       "identityBridge": {
+        "disambiguationBasis": null,
         "identitySourcePath": "ledger/dart-ownership-events/collection-universe.json",
         "identitySourceSha256": "7dddc6f75ea14adc8f97f3558409a68b2f71ab356b270e7d25d1ecb08875e4fc",
         "method": "UNIQUE_EXACT_LEGAL_OR_HISTORICAL_NAME",
@@ -1669,6 +1735,7 @@
       ],
       "cashInLieuRule": null,
       "cashPerOldShare": null,
+      "completionEvidence": [],
       "considerationComponents": [
         {
           "cashAmount": null,
@@ -1769,6 +1836,7 @@
       "finalTermsReceiptNumber": null,
       "fractionalShareTreatment": null,
       "identityBridge": {
+        "disambiguationBasis": null,
         "identitySourcePath": "ledger/dart-ownership-events/collection-universe.json",
         "identitySourceSha256": "7dddc6f75ea14adc8f97f3558409a68b2f71ab356b270e7d25d1ecb08875e4fc",
         "method": "UNIQUE_EXACT_LEGAL_OR_HISTORICAL_NAME",
@@ -1824,6 +1892,7 @@
       ],
       "cashInLieuRule": null,
       "cashPerOldShare": null,
+      "completionEvidence": [],
       "considerationComponents": [
         {
           "cashAmount": null,
@@ -1899,6 +1968,7 @@
       "finalTermsReceiptNumber": null,
       "fractionalShareTreatment": null,
       "identityBridge": {
+        "disambiguationBasis": null,
         "identitySourcePath": "ledger/dart-ownership-events/collection-universe.json",
         "identitySourceSha256": "7dddc6f75ea14adc8f97f3558409a68b2f71ab356b270e7d25d1ecb08875e4fc",
         "method": "UNIQUE_EXACT_LEGAL_OR_HISTORICAL_NAME",
@@ -1952,6 +2022,7 @@
       ],
       "cashInLieuRule": null,
       "cashPerOldShare": null,
+      "completionEvidence": [],
       "considerationComponents": [
         {
           "cashAmount": null,
@@ -2052,6 +2123,7 @@
       "finalTermsReceiptNumber": null,
       "fractionalShareTreatment": null,
       "identityBridge": {
+        "disambiguationBasis": null,
         "identitySourcePath": "ledger/dart-ownership-events/collection-universe.json",
         "identitySourceSha256": "7dddc6f75ea14adc8f97f3558409a68b2f71ab356b270e7d25d1ecb08875e4fc",
         "method": "UNIQUE_EXACT_LEGAL_OR_HISTORICAL_NAME",
@@ -2232,6 +2304,7 @@
       ],
       "cashInLieuRule": null,
       "cashPerOldShare": 120000.0,
+      "completionEvidence": [],
       "considerationComponents": [
         {
           "cashAmount": 120000.0,
@@ -2306,6 +2379,7 @@
       "finalTermsReceiptNumber": null,
       "fractionalShareTreatment": null,
       "identityBridge": {
+        "disambiguationBasis": null,
         "identitySourcePath": "ledger/dart-ownership-events/collection-universe.json",
         "identitySourceSha256": "7dddc6f75ea14adc8f97f3558409a68b2f71ab356b270e7d25d1ecb08875e4fc",
         "method": "UNIQUE_EXACT_LEGAL_OR_HISTORICAL_NAME",
@@ -2385,6 +2459,7 @@
       ],
       "cashInLieuRule": "차와 관련하여 사정상 변경될 수 있습니다. 사. 신주배정시 발생하는 1주 미만의 단주에 대해서는 합병으로 인하여 발행ㆍ교부되는 미래에셋대우 주식회사의 합병신주가 한국거래소에 상장되어 거래되는 초일의 종가를 기준으로 계산된 금액을 단주가 귀속될 주주에게 현금으로 지급할 예정입니다. 아. 합병회사 미래에셋대우 주식회사는 피합병회사 미래에셋증권 주식회사를 흡수합병함에 있어 합병회사 미래에셋대우 주식회사가 피합병회사 미래에셋증권 주식회사의 주주에게 합병비율에 따른 합병신주를 교부하며 단주 지급금 외 별도의 합병 교부금을 지급하지 않습니다. 자. 본 주요사항보고서 제출일 현재 미래에셋증권 주식회사가 소유한 자기주식과 본 주요사항보고서 제출일 현재 미래에셋",
       "cashPerOldShare": null,
+      "completionEvidence": [],
       "considerationComponents": [
         {
           "cashAmount": null,
@@ -2486,6 +2561,7 @@
       "finalTermsReceiptNumber": null,
       "fractionalShareTreatment": "차와 관련하여 사정상 변경될 수 있습니다. 사. 신주배정시 발생하는 1주 미만의 단주에 대해서는 합병으로 인하여 발행ㆍ교부되는 미래에셋대우 주식회사의 합병신주가 한국거래소에 상장되어 거래되는 초일의 종가를 기준으로 계산된 금액을 단주가 귀속될 주주에게 현금으로 지급할 예정입니다. 아. 합병회사 미래에셋대우 주식회사는 피합병회사 미래에셋증권 주식회사를 흡수합병함에 있어 합병회사 미래에셋대우 주식회사가 피합병회사 미래에셋증권 주식회사의 주주에게 합병비율에 따른 합병신주를 교부하며 단주 지급금 외 별도의 합병 교부금을 지급하지 않습니다. 자. 본 주요사항보고서 제출일 현재 미래에셋증권 주식회사가 소유한 자기주식과 본 주요사항보고서 제출일 현재 미래에셋",
       "identityBridge": {
+        "disambiguationBasis": null,
         "identitySourcePath": "ledger/dart-ownership-events/collection-universe.json",
         "identitySourceSha256": "7dddc6f75ea14adc8f97f3558409a68b2f71ab356b270e7d25d1ecb08875e4fc",
         "method": "UNIQUE_EXACT_LEGAL_OR_HISTORICAL_NAME",
@@ -2576,6 +2652,7 @@
       ],
       "cashInLieuRule": null,
       "cashPerOldShare": null,
+      "completionEvidence": [],
       "considerationComponents": [
         {
           "cashAmount": null,
@@ -2642,6 +2719,7 @@
       "finalTermsReceiptNumber": null,
       "fractionalShareTreatment": null,
       "identityBridge": {
+        "disambiguationBasis": null,
         "identitySourcePath": "ledger/dart-ownership-events/collection-universe.json",
         "identitySourceSha256": "7dddc6f75ea14adc8f97f3558409a68b2f71ab356b270e7d25d1ecb08875e4fc",
         "method": "UNIQUE_EXACT_LEGAL_OR_HISTORICAL_NAME",
@@ -3058,6 +3136,7 @@
       ],
       "cashInLieuRule": null,
       "cashPerOldShare": null,
+      "completionEvidence": [],
       "considerationComponents": [
         {
           "cashAmount": null,
@@ -3133,6 +3212,7 @@
       "finalTermsReceiptNumber": null,
       "fractionalShareTreatment": null,
       "identityBridge": {
+        "disambiguationBasis": null,
         "identitySourcePath": "ledger/dart-ownership-events/collection-universe.json",
         "identitySourceSha256": "7dddc6f75ea14adc8f97f3558409a68b2f71ab356b270e7d25d1ecb08875e4fc",
         "method": "UNIQUE_EXACT_LEGAL_OR_HISTORICAL_NAME",
@@ -3257,6 +3337,7 @@
       ],
       "cashInLieuRule": " 주식교환 대상주주에게 (주)현대지에프홀딩스의 주식을 배정함에 있어 1주 미만의 단주가 발생하는 경우, 단주가 귀속될 주식교환 대상주주에게 주권상장일 종가를 기준으로 계산된 금액을 주식교환일로부터 1개월 이내에 현금으로 지급할 예정입니다. 5. 외부평가에 관한 사항 외부평가 여부 미해당 - 근거 및 사유 본건 주식교환은 주권상장법인 간의 주식교환으로 자본시장과 금융투자업에 관한 법률 제165조의4, 동법 시행령 제176조의5 및 제176조의6에 따라 교환가액을 산정한 후, 이를 기준으로 교환비율을 산출하였으므로, 동법 시행령 제176조의6 제4항에 의하여 교환가액의 적정성에 대한 외부평가기관의 평가가 요구되지 않습니다. 외부평가기관의 명칭 - 외",
       "cashPerOldShare": null,
+      "completionEvidence": [],
       "considerationComponents": [
         {
           "cashAmount": null,
@@ -3341,6 +3422,7 @@
       "finalTermsReceiptNumber": null,
       "fractionalShareTreatment": " 주식교환 대상주주에게 (주)현대지에프홀딩스의 주식을 배정함에 있어 1주 미만의 단주가 발생하는 경우, 단주가 귀속될 주식교환 대상주주에게 주권상장일 종가를 기준으로 계산된 금액을 주식교환일로부터 1개월 이내에 현금으로 지급할 예정입니다. 5. 외부평가에 관한 사항 외부평가 여부 미해당 - 근거 및 사유 본건 주식교환은 주권상장법인 간의 주식교환으로 자본시장과 금융투자업에 관한 법률 제165조의4, 동법 시행령 제176조의5 및 제176조의6에 따라 교환가액을 산정한 후, 이를 기준으로 교환비율을 산출하였으므로, 동법 시행령 제176조의6 제4항에 의하여 교환가액의 적정성에 대한 외부평가기관의 평가가 요구되지 않습니다. 외부평가기관의 명칭 - 외",
       "identityBridge": {
+        "disambiguationBasis": null,
         "identitySourcePath": "ledger/dart-ownership-events/collection-universe.json",
         "identitySourceSha256": "7dddc6f75ea14adc8f97f3558409a68b2f71ab356b270e7d25d1ecb08875e4fc",
         "method": "UNIQUE_EXACT_LEGAL_OR_HISTORICAL_NAME",
@@ -3443,6 +3525,7 @@
       ],
       "cashInLieuRule": null,
       "cashPerOldShare": null,
+      "completionEvidence": [],
       "considerationComponents": [],
       "decisionDate": null,
       "documentedTerms": {
@@ -3516,6 +3599,7 @@
       "finalTermsReceiptNumber": null,
       "fractionalShareTreatment": null,
       "identityBridge": {
+        "disambiguationBasis": null,
         "identitySourcePath": "ledger/dart-ownership-events/collection-universe.json",
         "identitySourceSha256": "7dddc6f75ea14adc8f97f3558409a68b2f71ab356b270e7d25d1ecb08875e4fc",
         "method": "UNIQUE_EXACT_LEGAL_OR_HISTORICAL_NAME",
@@ -3567,6 +3651,7 @@
       ],
       "cashInLieuRule": null,
       "cashPerOldShare": 8750.0,
+      "completionEvidence": [],
       "considerationComponents": [
         {
           "cashAmount": 8750.0,
@@ -3624,6 +3709,7 @@
       "finalTermsReceiptNumber": null,
       "fractionalShareTreatment": null,
       "identityBridge": {
+        "disambiguationBasis": null,
         "identitySourcePath": "ledger/dart-ownership-events/collection-universe.json",
         "identitySourceSha256": "7dddc6f75ea14adc8f97f3558409a68b2f71ab356b270e7d25d1ecb08875e4fc",
         "method": "UNIQUE_EXACT_LEGAL_OR_HISTORICAL_NAME",
@@ -3756,7 +3842,7 @@
     "dividendEvidenceCommit": "dfeb098e26ff71d3b8149199677417a78eda42d6",
     "documentEvidenceCommit": "71c5128a01a7528536a8ff24c4e82d896363fec0",
     "identityUniverseSha256": "7dddc6f75ea14adc8f97f3558409a68b2f71ab356b270e7d25d1ecb08875e4fc",
-    "reviewSha256": "3d5e8cf555d97ae52b96309cac1f59c2cdb5d78e528c63386930371e47f111b0",
+    "reviewSha256": "5b06c1802f2aac50b4f111184e219f323e5461dc0cbbacaec67f47cd9c563c89",
     "sourceHashes": {
       "dividend-fetch-state.json": "8d58f1fef9971ad86ec458581d8e48ab97208be4aa8f52d77a068afd66879e82",
       "document-fetch-state.json": "1f0509b19aa061cb7a1580e38cc662e49602230c2bb8d6222122b56fb6fc1fcf",
@@ -3771,7 +3857,9 @@
   "successorChains": {
     "000030.KS": {
       "cyclesDetected": [],
-      "reachableSuccessors": []
+      "reachableSuccessors": [
+        "316140.KS"
+      ]
     },
     "000060.KS": {
       "cyclesDetected": [],
@@ -3781,7 +3869,9 @@
     },
     "000830.KS": {
       "cyclesDetected": [],
-      "reachableSuccessors": []
+      "reachableSuccessors": [
+        "028260.KS"
+      ]
     },
     "001300.KS": {
       "cyclesDetected": [],
@@ -3854,7 +3944,8 @@
     "053000.KS": {
       "cyclesDetected": [],
       "reachableSuccessors": [
-        "000030.KS"
+        "000030.KS",
+        "316140.KS"
       ]
     },
     "057050.KS": {

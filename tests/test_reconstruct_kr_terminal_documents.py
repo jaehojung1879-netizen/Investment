@@ -100,6 +100,90 @@ def test_missing_or_ambiguous_identity_never_uses_similar_name():
     assert BUILD.resolve_successor('KB금융', universe)[2] == 'AMBIGUOUS_EXACT_IDENTITY'
 
 
+def _reused_name_universe():
+    # Two issuers share an exact legal name at different times -- the real
+    # shape observed live for 우리금융지주 (corpCode 00375302, delisted into
+    # 우리은행 2014-12-01, vs corpCode 01350869, first listed 2019-03-04) and
+    # 제일모직 (corpCode 00148328, delisted 2014-08-01, vs the entity now
+    # named 삼성물산 carrying 제일모직 as a historical alias).
+    return {'issuers': [
+        {'corpName': '재사용이름', 'corpCode': 'OLD',
+         'securities': [{'ticker': 'OLD.KS', 'names': [], 'delisted': '2014-08-01'}]},
+        {'corpName': '재사용이름', 'corpCode': 'NEW',
+         'securities': [{'ticker': 'NEW.KS', 'names': [], 'delisted': None}]},
+    ]}
+
+
+def test_a_candidate_already_delisted_before_the_document_is_excluded():
+    universe = _reused_name_universe()
+    ticker, corp, reason, note = BUILD.resolve_successor(
+        '재사용이름', universe, as_of_date='2015-05-26')
+    assert (ticker, corp, reason) == ('NEW.KS', 'NEW', None)
+    assert 'OLD.KS/OLD' in note and 'delisted 2014-08-01' in note
+
+
+def test_temporal_exclusion_never_narrows_when_both_candidates_are_still_live():
+    # Neither candidate is delisted before the document -- stays ambiguous.
+    universe = _reused_name_universe()
+    universe['issuers'][0]['securities'][0]['delisted'] = '2020-01-01'
+    ticker, corp, reason, note = BUILD.resolve_successor(
+        '재사용이름', universe, as_of_date='2015-05-26')
+    assert ticker is None and reason == 'AMBIGUOUS_EXACT_IDENTITY' and note is None
+
+
+def test_temporal_exclusion_requires_as_of_date_and_never_applies_to_explicit_code():
+    universe = _reused_name_universe()
+    # No as_of_date supplied: falls back to the old, unresolved behaviour.
+    assert BUILD.resolve_successor('재사용이름', universe)[2] == 'AMBIGUOUS_EXACT_IDENTITY'
+    # An explicit document-stated KRX code always wins outright and never
+    # goes through the temporal exclusion path.
+    ticker, corp, reason, note = BUILD.resolve_successor(
+        '재사용이름', universe, explicit='OLD.KS', as_of_date='2015-05-26')
+    assert (ticker, corp, reason, note) == ('OLD.KS', 'OLD', None, None)
+
+
+def test_real_book_resolves_both_reused_name_successors_by_temporal_exclusion():
+    # 000030.KS's document names "우리금융지주" and 000830.KS's names
+    # "제일모직" -- both exact names that also belong to an OLDER, already-
+    # terminated issuer in this repository's own 22-security book (053000.KS
+    # and 001300.KS respectively). Both must resolve to the entity that was
+    # still capable of being formed/receiving shares on the citing date.
+    by = {r['oldSecurity']: r for r in book()['actions']}
+    assert by['000030.KS']['successorSecurity'] == '316140.KS'
+    assert by['000030.KS']['identityBridge']['method'] == \
+        'UNIQUE_EXACT_LEGAL_OR_HISTORICAL_NAME_TEMPORALLY_DISAMBIGUATED'
+    assert by['000830.KS']['successorSecurity'] == '028260.KS'
+    assert by['000830.KS']['identityBridge']['method'] == \
+        'UNIQUE_EXACT_LEGAL_OR_HISTORICAL_NAME_TEMPORALLY_DISAMBIGUATED'
+
+
+def test_independent_completion_evidence_resolves_execution_never_final_terms():
+    row = next(r for r in book()['actions'] if r['oldSecurity'] == '000030.KS')
+    assert row['executionStatus'] == 'CONFIRMED_BY_INDEPENDENT_COMPLETION_EVIDENCE'
+    assert row['completionEvidence'] and row['completionEvidence'][0]['receiptNo'] == '20190111000457'
+    assert 'executionConfirmation' not in row['unresolvedFields']
+    # The independent evidence never substitutes for the still-missing body
+    # corrections: final consideration/ratio/date stay blocked.
+    assert row['effectiveDate'] is None
+    assert row['successorSharesPerOldShare'] is None
+    assert row['finalTermsReceiptNumber'] is None
+    matrix = INV.completeness_row(identity=None, action=row, dividends=None, last_trading_date=None)
+    assert matrix['terminalConsiderationResolved'] == INV.BLOCKED
+    assert matrix['terminalActionChainResolved'] == INV.BLOCKED
+
+
+def test_completion_evidence_review_schema_requires_receipt_and_quote():
+    # The reconstruction script never guards this with a schema validator of
+    # its own (every review field is checked by USE, the same discipline the
+    # rest of this reviewed file already follows) -- but every entry actually
+    # in the committed review file must carry both keys, so a hand-edit
+    # cannot add a dangling citation with no receipt or no quote to check.
+    reviews = json.loads((ROOT/'data/kr-terminal-document-review.json').read_text())['reviews']
+    for review in reviews:
+        for item in review.get('completionEvidence') or ():
+            assert item.get('receiptNo') and item.get('quote') and item.get('note')
+
+
 def edge(old, successors):
     components = tuple(TCA.build_consideration_component(
         component_type=TCA.COMPONENT_SUCCESSOR_SHARES, successor_security=successor,

@@ -2,6 +2,21 @@
 
 This is a data-foundation repair on Draft PR #158, not an Alpha study. No returns, labels, fitted models or backtests are computed; sealed Alpha v1/v2/v3 and production Alpha are unchanged. Do not merge or create v4.
 
+## Targeted repair pass (this update)
+
+**No new DART evidence could be fetched in this pass.** `opendart.fss.or.kr` and `dart.fss.or.kr` are both blocked at the network-policy layer in this environment (`CONNECT` refused with `403`, an organization egress denial, not a vendor-side refusal) — confirmed directly before any other work started, consistent with this repository's own already-recorded finding for the same host (KR terminated-security total-return foundation invariants, v2.28). None of the 38 failed receipts were retried and no new document was retrieved; sections 4/5/8 of the repair brief that call for new fetches were therefore not actionable this pass.
+
+What this pass DID do, entirely from the already-collected 92 documents, the 451-row disclosure index and the DART identity universe already on `signal-history` at the unchanged snapshot `4c6813c4cc8e84a9e429b37435e78baba7f1ee78` (re-fetched and re-hashed here; every source hash below is unchanged from the prior pass):
+
+1. **Re-verified, receipt by receipt, that all 21 materially-blocking and 12 potentially-material failures are genuinely unrecoverable from the 92 already-retrieved documents** — not merely re-asserted from the prior pass's own summary. Every ticker's full disclosure index and every already-retrieved document not currently cited were read again.
+2. **Fixed a real successor-identity defect**: `resolve_successor` treated two DART issuers that legitimately share an exact legal name at different points in time (e.g. 우리금융지주 corpCode `00375302`, delisted 2014-12-01 into 우리은행, versus corpCode `01350869`, first listed 2019-03-04 — the actual 2019 successor) as unresolvably ambiguous. A candidate the identity source itself already records as `delisted` strictly before the citing document's own receipt date is now excluded — an authoritative date fact already in the identity source, never a name-similarity guess — narrowing the match only when it leaves exactly one candidate. This resolved **000030.KS** (→ 316140.KS) and **000830.KS** (→ 028260.KS), raising SUCCESSOR_IDENTITY from 11/22 to 13/22. `KB금융지주`/`KB금융`, `신한금융지주회사`/`신한지주` and `에이치디현대건설기계`/`HD현대건설기계` remain `NO_EXACT_IDENTITY_BRIDGE`: these are DART-registered-name-vs-disclosure-prose-name mismatches, not temporal ambiguity, and no explicit KRX code or corp code appears in any retained document to bridge them — resolving them would require an alias inference this repository's identity-bridge discipline explicitly forbids.
+3. **Found and cited genuine independent completion evidence for 000030.KS**: an already-retrieved, already-successful filing (receipt `20190111000457`, a NYSE ADR delisting notice filed 2019-01-11, AFTER all three unavailable body corrections) states in the past tense that 우리금융지주 *was* established and restates the same 2019-01-11 date already on file. `executionStatus` for this one record now reads `CONFIRMED_BY_INDEPENDENT_COMPLETION_EVIDENCE` instead of `UNCONFIRMED_BY_COLLECTED_COMPLETION_DOCUMENTS`. This resolves EXECUTION only — the underlying consideration/ratio/effective-date fields stay BLOCKED, because the three missing body corrections could still have changed a term this delisting notice never restates (e.g. a subsidiary conversion ratio in the same original filing). No other ticker had a document this unambiguous; several `공개매수신고서`/`공개매수설명서` prospectuses were checked and found to carry only generic future-conditional delisting-risk boilerplate, not confirmed completion.
+4. **Repaired a structural defect named in this brief's own section 13**: every reconstructed record previously carried `'executionConfirmation'` in `unresolvedFields` unconditionally, which meant `terminalActionChainResolved` could never be `READY` for ANY security regardless of evidence — the 0/22 count was partly a code artifact, not purely an evidence gap. `unresolvedFields` now only carries `'executionConfirmation'` when execution is genuinely unconfirmed. `TERMINAL_ACTION_CHAIN` is still 0/22 on this sample (every record either has a materially missing correction blocking `finalTermsReceiptNumber`, or has no independent completion evidence at all) — but the count is now a live evidence read, not a structural ceiling.
+5. **Re-verified STX조선해양 (067250.KS) and 한진해운 (117930.KS)** directly from `fetch-state.json`/the disclosure index rather than trusting the prior summary: 067250's DART corp code (`00109453`) was resolved by exact stock code, and its entire `list.json` disclosure history (all pages fetched) contains exactly one filing — the retained STX France subsidiary merger — confirming the collection is exhaustive for this identity, not truncated. 117930's 32 disclosure rows were re-read in full; none states a per-share liquidation distribution. Both stay `TERMINATION_TYPE_UNRESOLVED`; no recovery is inferred from insolvency/delisting alone.
+6. **Fractional-share treatment** (section 9) was already correctly separated from the primary entitlement before this pass: `terminalConsiderationResolved` does not require `fractionalShareTreatment`, so a name like 000060.KS/001300.KS already reads TERMINAL_CONSIDERATION `READY` with only `terminalActionChainResolved`/execution blocked by the missing fractional rule. No schema change was needed here; this was verified, not assumed.
+
+Everything else — the 92-document corpus, the parser, the 15/22 dividend amount lineage, the 0/22 dividend event-date lineage, the cash-share-exchange handling, the successor-cycle guards — is unchanged from the prior pass and was re-verified rather than redone.
+
 ## Verified evidence
 
 - Current input snapshot: `signal-history` commit `4c6813c4cc8e84a9e429b37435e78baba7f1ee78`.
@@ -18,7 +33,7 @@ Every resolved economic field cites a retained filing, receipt date, original me
 
 **The retained documents establish disclosed contractual terms, not completed payment for every exit.** Fields that are READY below are supported by the selected filed decision. A scheduled effective date is kept distinct from publication date and from execution confirmation. Where a later body correction is missing, its predecessor’s cash/ratio/date remains only in `documentedTerms`; those canonical final fields stay empty and BLOCKED. `finalTermsReceiptNumber` remains empty for all 22; `latestReviewedTermsReceiptNumber` is not relabeled as final. Every action chain remains BLOCKED pending execution/finality evidence. Full reconstruction is therefore 0/22, not 20/22.
 
-Additional known limits: the identity bridge uses exact legal/historical names (legal suffix/spacing normalization only) or an explicit KRX code in a document; ambiguous old/new issuer names and unverified abbreviations stay BLOCKED. It does not fuzzy-match a successor. The identity snapshot is retrospective evidence of identity, not a claim that that mapping was available at the historical event date.
+Additional known limits: the identity bridge uses exact legal/historical names (legal suffix/spacing normalization only), an explicit KRX code in a document, or — as of this pass — exclusion of a candidate the identity source itself already records as delisted before the citing document's own receipt date. Ambiguous old/new issuer names with no such temporal separation, and unverified name-vs-registered-name variants (`KB금융지주`/`KB금융`, `신한금융지주회사`/`신한지주`, `에이치디현대건설기계`/`HD현대건설기계`), stay BLOCKED. It does not fuzzy-match a successor. The identity snapshot is retrospective evidence of identity, not a claim that that mapping was available at the historical event date.
 
 ## Counts
 
@@ -26,7 +41,7 @@ Additional known limits: the identity bridge uses exact legal/historical names (
 |---|---|
 | TERMINATION_TYPE | 20 |
 | TERMINAL_CONSIDERATION (documented base entitlement) | 10 |
-| SUCCESSOR_IDENTITY | 11 |
+| SUCCESSOR_IDENTITY | 13 |
 | EXCHANGE_RATIO | 8 |
 | EFFECTIVE_DATE (disclosed schedule) | 11 |
 | TERMINAL_ACTION_CHAIN | 0 |
@@ -35,7 +50,7 @@ Additional known limits: the identity bridge uses exact legal/historical names (
 | DIVIDEND_EVENT_DATE_LINEAGE | 0 |
 | RAW_EVIDENCE | 22 |
 
-Partial records: 20; unresolved parent actions: 2; fully reconstructed: 0. Material failed body corrections block 9 securities. Foundation status: **PARTIALLY_REPAIRED**.
+Partial records: 20; unresolved parent actions: 2; fully reconstructed: 0. Material failed body corrections still block 9 securities' final economic terms (successor identity for two of them — 000030.KS, 000830.KS — is now separately resolved by temporal disambiguation, but their consideration/ratio/date stay BLOCKED pending the missing corrections). Foundation status: **PARTIALLY_REPAIRED**.
 
 ## Per-security documented terms and exact blockers
 
@@ -43,9 +58,9 @@ The entitlement column reports what the cited decision says, including candidate
 
 | Security | Latest reviewed receipt | Documented entitlement per old common share | Disclosed date | Remaining blockers |
 |---|---|---|---|---|
-| 000030.KS 우리은행 | 20180619000302 | 1.0000000 shares of 우리금융지주 | 2019-01-11 | FINAL_ECONOMIC_TERMS_AND_EFFECTIVE_DATE: later body corrections unavailable (20180920000544,20181108000137,20181121000025); SUCCESSOR_SECURITY_IDENTITY: AMBIGUOUS_EXACT_IDENTITY; AMENDMENT_ATTACHMENT_FINALITY: unavailable potentially material attachment; EXECUTION_CONFIRMATION: collected decisions state conditional/planned terms; no matching completion evidence establishes actual occurrence and final payment |
+| 000030.KS 우리은행 | 20180619000302 | 1.0000000 shares of 우리금융지주 (316140.KS, identity resolved by temporal disambiguation) | 2019-01-11 | FINAL_ECONOMIC_TERMS_AND_EFFECTIVE_DATE: later body corrections unavailable (20180920000544,20181108000137,20181121000025); AMENDMENT_ATTACHMENT_FINALITY: unavailable potentially material attachment; EXECUTION_CONFIRMATION: RESOLVED by independent completion evidence (20190111000457) — final economic terms still blocked separately |
 | 000060.KS 메리츠화재 | 20221205000271 | 1.2657378 shares of 메리츠금융지주 | 2023-02-01 | FRACTIONAL_SHARE_CASH_IN_LIEU_RULE: not found in retained applicable decision; EXECUTION_CONFIRMATION: collected decisions state conditional/planned terms; no matching completion evidence establishes actual occurrence and final payment |
-| 000830.KS 삼성물산 | 20150526800025 | 0.3500885 shares of 제일모직 | 2015-09-01 | FINAL_ECONOMIC_TERMS_AND_EFFECTIVE_DATE: later body corrections unavailable (20150608000391,20150612000428,20150619000462); SUCCESSOR_SECURITY_IDENTITY: AMBIGUOUS_EXACT_IDENTITY; EXECUTION_CONFIRMATION: collected decisions state conditional/planned terms; no matching completion evidence establishes actual occurrence and final payment |
+| 000830.KS 삼성물산 | 20150526800025 | 0.3500885 shares of 제일모직 (028260.KS, identity resolved by temporal disambiguation) | 2015-09-01 | FINAL_ECONOMIC_TERMS_AND_EFFECTIVE_DATE: later body corrections unavailable (20150608000391,20150612000428,20150619000462); EXECUTION_CONFIRMATION: collected decisions state conditional/planned terms; no matching completion evidence establishes actual occurrence and final payment |
 | 001300.KS 제일모직 | 20140331800112 | 0.4425482 shares of 삼성SDI | 2014-07-01 | FRACTIONAL_SHARE_CASH_IN_LIEU_RULE: not found in retained applicable decision; EXECUTION_CONFIRMATION: collected decisions state conditional/planned terms; no matching completion evidence establishes actual occurrence and final payment |
 | 002550.KS KB손해보험 | 20170414002322 | 0.5728700 shares of KB금융지주 | 2017-07-03 | FINAL_ECONOMIC_TERMS_AND_EFFECTIVE_DATE: later body corrections unavailable (20170516000224,20170530000327); SUCCESSOR_SECURITY_IDENTITY: NO_EXACT_IDENTITY_BRIDGE; FRACTIONAL_SHARE_CASH_IN_LIEU_RULE: not found in retained applicable decision; AMENDMENT_ATTACHMENT_FINALITY: unavailable potentially material attachment; EXECUTION_CONFIRMATION: collected decisions state conditional/planned terms; no matching completion evidence establishes actual occurrence and final payment |
 | 003410.KS 쌍용C&E | 20240423000168 | KRW 7,000 cash | 2024-06-25 | AMENDMENT_ATTACHMENT_FINALITY: unavailable potentially material attachment; EXECUTION_CONFIRMATION: collected decisions state conditional/planned terms; no matching completion evidence establishes actual occurrence and final payment |
@@ -85,7 +100,7 @@ All 38 retained failures say the response was not a ZIP (147 bytes). The origina
 
 The review file names the selected same-event publication sequence. Each amendment retains its own receipt date, stated original submission date when present, correction-table previews and hashes, and the preceding reviewed version. Later amendments are never backdated to the original filing. Missing attachments/body corrections keep sequence finality BLOCKED. All other raw document receipts remain linked but are not silently inserted into that terminal sequence.
 
-The successor graph uses the existing multi-component contract. True cycles are rejected on book load; a converging diamond is not a cycle. The actual 053000 → 000030 linkage is retained and cannot become a completed chain while the descendant’s final terms remain unresolved.
+The successor graph uses the existing multi-component contract. True cycles are rejected on book load; a converging diamond is not a cycle. The actual 053000 → 000030 → 316140.KS linkage is now fully identity-resolved end to end (the second link was AMBIGUOUS_EXACT_IDENTITY before this pass's temporal disambiguation) but cannot become a completed chain while 000030.KS's own final terms remain unresolved.
 
 ## Reproduce without a new GitHub Action
 
@@ -104,9 +119,9 @@ The ledger, parsing report and completeness artifact were each rebuilt twice fro
 
 | Artifact | SHA-256 |
 |---|---|
-| `data/kr-terminal-corporate-actions.json` | `0ceabddd616859b838537cda8a308efdf013e5a1c8022deb92b6e85413708581` |
-| `docs/results/kr-terminal-document-parsing.json` | `df41ffa10d2e8eb49f37c89b0f3b8fe460040b1479cbcdd8e2237f7815a833c8` |
-| `docs/results/kr-terminal-action-reconstruction-v2.json` | `a0caf4a9a29a86b50f91d369bfe7a4958e337e45216289feba736e4c0b19d998` |
+| `data/kr-terminal-corporate-actions.json` | `3318fc4e44aa7ae83a4085055c10b48186fb51f4abc843028fe54d2dd4228ad8` |
+| `docs/results/kr-terminal-document-parsing.json` | `df41ffa10d2e8eb49f37c89b0f3b8fe460040b1479cbcdd8e2237f7815a833c8` (unchanged — document parsing itself was not touched) |
+| `docs/results/kr-terminal-action-reconstruction-v2.json` | `86a29529f6fbea964dc28df50b4afaa1677f0a2ee92be47902e38859d04c4bb2` |
 
 Source SHA-256 values:
 
@@ -119,7 +134,8 @@ Source SHA-256 values:
 
 ## Validation
 
-- Focused parser, ledger, completeness, dividend and sealed-foundation guardrail tests: 120 passed.
-- Full `pytest -q`: 2,313 passed, 1 skipped, 40 existing SciPy deprecation warnings (75.17 seconds).
-- `ruff check .`, `python -m compileall pipeline scripts`, `git diff --check` and `assert_pushable`: passed.
+- Focused parser, ledger, completeness, dividend and sealed-foundation guardrail tests: 129 passed (123 before this pass's test additions + 6 new: temporal-disambiguation identity resolution [3], the real-book resolution check for both reused-name successors, independent completion evidence, and the review-schema check for `completionEvidence` entries).
+- Full `pytest -q`: 2,319 passed, 1 skipped, 40 existing SciPy deprecation warnings (~77 seconds).
+- `ruff check .` and `python -m compileall pipeline scripts`: passed.
 - No Codex review/auto-review was invoked; PR stays draft and unmerged.
+- No network access to DART was attempted or available in this pass (`opendart.fss.or.kr`/`dart.fss.or.kr` both refused at the proxy/policy layer with `403` before any other work began); everything above was produced by re-reading already-collected, already-hashed evidence and by code/schema changes only.

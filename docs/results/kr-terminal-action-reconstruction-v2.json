@@ -6,7 +6,7 @@
     "documentEvidenceCommit": "71c5128a01a7528536a8ff24c4e82d896363fec0",
     "fetchStatePresent": true,
     "krTerminationsCount": 22,
-    "reviewedBookSha256": "0ceabddd616859b838537cda8a308efdf013e5a1c8022deb92b6e85413708581",
+    "reviewedBookSha256": "3318fc4e44aa7ae83a4085055c10b48186fb51f4abc843028fe54d2dd4228ad8",
     "signalHistoryCommit": "4c6813c4cc8e84a9e429b37435e78baba7f1ee78",
     "sourceHashes": {
       "dividend-fetch-state.json": "8d58f1fef9971ad86ec458581d8e48ab97208be4aa8f52d77a068afd66879e82",
@@ -16,7 +16,7 @@
       "kr-dividend-sections.jsonl.gz": "9e0f7680b74812f855a3a12e5c2b547cc7e1911e5d9078afe987c64265ed3199",
       "kr-terminal-action-documents.jsonl.gz": "98c1475f888cb07b5c8865b8902516e463bd934281d1f4744a7aba4b4d687071"
     },
-    "survivorshipAuditPath": "docs/results/alpha-opportunity-model-v3-survivorship-audit.json",
+    "survivorshipAuditPath": "/home/user/Investment/docs/results/alpha-opportunity-model-v3-survivorship-audit.json",
     "survivorshipAuditSha256": "f0d9ed09880ffb75c6cc698dbb001e6f6879dee1991ede6ff6d365cc50f22902",
     "totalDisclosureRowsOnShard": 451,
     "totalDividendSectionRowsOnShard": 6150
@@ -29,7 +29,7 @@
     "fullyReconstructed": 0,
     "partiallyReconstructed": 20,
     "securitiesBlockedByMaterialFailedReceipts": 9,
-    "successorIdentityResolved": 11,
+    "successorIdentityResolved": 13,
     "terminalConsiderationResolved": 10,
     "terminationTypesResolved": 20,
     "unresolved": 2
@@ -39,9 +39,8 @@
     {
       "blockingReasons": [
         "FINAL_ECONOMIC_TERMS_AND_EFFECTIVE_DATE: later body corrections unavailable (20180920000544,20181108000137,20181121000025)",
-        "SUCCESSOR_SECURITY_IDENTITY: AMBIGUOUS_EXACT_IDENTITY",
         "AMENDMENT_ATTACHMENT_FINALITY: unavailable potentially material attachment",
-        "EXECUTION_CONFIRMATION: collected decisions state conditional/planned terms; no matching completion evidence establishes actual occurrence and final payment"
+        "EXECUTION_CONFIRMATION: RESOLVED by independent completion evidence (20190111000457); final economic terms may still be blocked separately, see other blockers."
       ],
       "code": "000030.KS",
       "completeness": {
@@ -54,7 +53,7 @@
         "lastTradingDateResolved": "READY",
         "rawEvidenceRetained": "READY",
         "sourceProvenanceRetained": "READY",
-        "successorResolvedWhereRequired": "BLOCKED",
+        "successorResolvedWhereRequired": "READY",
         "terminalActionChainResolved": "BLOCKED",
         "terminalConsiderationResolved": "BLOCKED",
         "terminationTypeResolved": "READY"
@@ -175,7 +174,7 @@
         "DART:20180619000302",
         "DART:20190111000457"
       ],
-      "executionStatus": "UNCONFIRMED_BY_COLLECTED_COMPLETION_DOCUMENTS",
+      "executionStatus": "CONFIRMED_BY_INDEPENDENT_COMPLETION_EVIDENCE",
       "failedReceipts": [
         {
           "alternativeEvidence": "All 92 retained documents examined; no later authoritative final terms substitute found.",
@@ -237,6 +236,15 @@
           "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20180619000302",
           "zipSha256": "cccd3720d577980de5b88d30611c240fa4733f815618faa4c9334f19f7c50ba2"
         },
+        "successorSecurity": {
+          "documentSha256": "f10bc9926373d2892760f06f625ac6442e574aba7a3d47ae4fc87ad8ce384980",
+          "field": "successorSecurity",
+          "quote": "우리금융지주",
+          "receiptDate": "2018-06-19",
+          "receiptNo": "20180619000302",
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20180619000302",
+          "zipSha256": "cccd3720d577980de5b88d30611c240fa4733f815618faa4c9334f19f7c50ba2"
+        },
         "successorSharesPerOldShare": {
           "documentSha256": "f10bc9926373d2892760f06f625ac6442e574aba7a3d47ae4fc87ad8ce384980",
           "field": "successorSharesPerOldShare",
@@ -259,11 +267,12 @@
       "finalTermsReceiptNumber": null,
       "firstMembershipDate": "2014-12-01",
       "identityBridge": {
+        "disambiguationBasis": "Excluded 053000.KS/00375302 (delisted 2014-12-01) as already delisted before this document's own receipt date 2018-06-19.",
         "identitySourcePath": "ledger/dart-ownership-events/collection-universe.json",
         "identitySourceSha256": "7dddc6f75ea14adc8f97f3558409a68b2f71ab356b270e7d25d1ecb08875e4fc",
-        "method": "UNIQUE_EXACT_LEGAL_OR_HISTORICAL_NAME",
+        "method": "UNIQUE_EXACT_LEGAL_OR_HISTORICAL_NAME_TEMPORALLY_DISAMBIGUATED",
         "nameFromDocument": "우리금융지주",
-        "reason": "AMBIGUOUS_EXACT_IDENTITY"
+        "reason": null
       },
       "krxName": "우리은행",
       "lastMembershipDate": "2019-02-01",
@@ -283,7 +292,9 @@
       "reconstructionStatus": "PARTIALLY_RECONSTRUCTED",
       "successorChain": {
         "cyclesDetected": [],
-        "reachableSuccessors": []
+        "reachableSuccessors": [
+          "316140.KS"
+        ]
       },
       "terminationType": "SHARE_TRANSFER"
     },
@@ -460,6 +471,7 @@
       "finalTermsReceiptNumber": null,
       "firstMembershipDate": "2013-12-02",
       "identityBridge": {
+        "disambiguationBasis": null,
         "identitySourcePath": "ledger/dart-ownership-events/collection-universe.json",
         "identitySourceSha256": "7dddc6f75ea14adc8f97f3558409a68b2f71ab356b270e7d25d1ecb08875e4fc",
         "method": "UNIQUE_EXACT_LEGAL_OR_HISTORICAL_NAME",
@@ -488,7 +500,6 @@
     {
       "blockingReasons": [
         "FINAL_ECONOMIC_TERMS_AND_EFFECTIVE_DATE: later body corrections unavailable (20150608000391,20150612000428,20150619000462)",
-        "SUCCESSOR_SECURITY_IDENTITY: AMBIGUOUS_EXACT_IDENTITY",
         "EXECUTION_CONFIRMATION: collected decisions state conditional/planned terms; no matching completion evidence establishes actual occurrence and final payment"
       ],
       "code": "000830.KS",
@@ -502,7 +513,7 @@
         "lastTradingDateResolved": "READY",
         "rawEvidenceRetained": "READY",
         "sourceProvenanceRetained": "READY",
-        "successorResolvedWhereRequired": "BLOCKED",
+        "successorResolvedWhereRequired": "READY",
         "terminalActionChainResolved": "BLOCKED",
         "terminalConsiderationResolved": "BLOCKED",
         "terminationTypeResolved": "READY"
@@ -593,6 +604,15 @@
           "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20150526000622",
           "zipSha256": "dba6851d8944a3dfe53d37b8bf9a66d25007777f8d4cccad6898654750239ea5"
         },
+        "successorSecurity": {
+          "documentSha256": "4d3cf9b6d2e77ca8fd0a5db17143b8c8ad6a35b26de682262b772aae3baf2609",
+          "field": "successorSecurity",
+          "quote": "제일모직",
+          "receiptDate": "2015-05-26",
+          "receiptNo": "20150526800025",
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20150526800025",
+          "zipSha256": "9b4bbc5e45a4983a2a094c8fc0388805d3b1daa82d9da809cdfe5545937d09cd"
+        },
         "successorSharesPerOldShare": {
           "documentSha256": "4d3cf9b6d2e77ca8fd0a5db17143b8c8ad6a35b26de682262b772aae3baf2609",
           "field": "successorSharesPerOldShare",
@@ -615,11 +635,12 @@
       "finalTermsReceiptNumber": null,
       "firstMembershipDate": "2013-01-02",
       "identityBridge": {
+        "disambiguationBasis": "Excluded 001300.KS/00148328 (delisted 2014-08-01) as already delisted before this document's own receipt date 2015-05-26.",
         "identitySourcePath": "ledger/dart-ownership-events/collection-universe.json",
         "identitySourceSha256": "7dddc6f75ea14adc8f97f3558409a68b2f71ab356b270e7d25d1ecb08875e4fc",
-        "method": "UNIQUE_EXACT_LEGAL_OR_HISTORICAL_NAME",
+        "method": "UNIQUE_EXACT_LEGAL_OR_HISTORICAL_NAME_TEMPORALLY_DISAMBIGUATED",
         "nameFromDocument": "제일모직",
-        "reason": "AMBIGUOUS_EXACT_IDENTITY"
+        "reason": null
       },
       "krxName": "삼성물산",
       "lastMembershipDate": "2015-09-01",
@@ -639,7 +660,9 @@
       "reconstructionStatus": "PARTIALLY_RECONSTRUCTED",
       "successorChain": {
         "cyclesDetected": [],
-        "reachableSuccessors": []
+        "reachableSuccessors": [
+          "028260.KS"
+        ]
       },
       "terminationType": "MERGER_STOCK"
     },
@@ -757,6 +780,7 @@
       "finalTermsReceiptNumber": null,
       "firstMembershipDate": "2013-01-02",
       "identityBridge": {
+        "disambiguationBasis": null,
         "identitySourcePath": "ledger/dart-ownership-events/collection-universe.json",
         "identitySourceSha256": "7dddc6f75ea14adc8f97f3558409a68b2f71ab356b270e7d25d1ecb08875e4fc",
         "method": "UNIQUE_EXACT_LEGAL_OR_HISTORICAL_NAME",
@@ -987,6 +1011,7 @@
       "finalTermsReceiptNumber": null,
       "firstMembershipDate": "2013-08-01",
       "identityBridge": {
+        "disambiguationBasis": null,
         "identitySourcePath": "ledger/dart-ownership-events/collection-universe.json",
         "identitySourceSha256": "7dddc6f75ea14adc8f97f3558409a68b2f71ab356b270e7d25d1ecb08875e4fc",
         "method": "UNIQUE_EXACT_LEGAL_OR_HISTORICAL_NAME",
@@ -1212,6 +1237,7 @@
       "finalTermsReceiptNumber": null,
       "firstMembershipDate": "2017-12-01",
       "identityBridge": {
+        "disambiguationBasis": null,
         "identitySourcePath": "ledger/dart-ownership-events/collection-universe.json",
         "identitySourceSha256": "7dddc6f75ea14adc8f97f3558409a68b2f71ab356b270e7d25d1ecb08875e4fc",
         "method": "UNIQUE_EXACT_LEGAL_OR_HISTORICAL_NAME",
@@ -1440,6 +1466,7 @@
       "finalTermsReceiptNumber": null,
       "firstMembershipDate": "2013-01-02",
       "identityBridge": {
+        "disambiguationBasis": null,
         "identitySourcePath": "ledger/dart-ownership-events/collection-universe.json",
         "identitySourceSha256": "7dddc6f75ea14adc8f97f3558409a68b2f71ab356b270e7d25d1ecb08875e4fc",
         "method": "UNIQUE_EXACT_LEGAL_OR_HISTORICAL_NAME",
@@ -1646,6 +1673,7 @@
       "finalTermsReceiptNumber": null,
       "firstMembershipDate": "2013-01-02",
       "identityBridge": {
+        "disambiguationBasis": null,
         "documentEvidence": {
           "documentSha256": "bcd15f4ea56935e031d8e771ea8f896b3344d851d22c3b9aad3e80f5da9fb282",
           "field": "successorSecurity",
@@ -1865,6 +1893,7 @@
       "finalTermsReceiptNumber": null,
       "firstMembershipDate": "2013-01-02",
       "identityBridge": {
+        "disambiguationBasis": null,
         "identitySourcePath": "ledger/dart-ownership-events/collection-universe.json",
         "identitySourceSha256": "7dddc6f75ea14adc8f97f3558409a68b2f71ab356b270e7d25d1ecb08875e4fc",
         "method": "UNIQUE_EXACT_LEGAL_OR_HISTORICAL_NAME",
@@ -2102,6 +2131,7 @@
       "finalTermsReceiptNumber": null,
       "firstMembershipDate": "2015-05-04",
       "identityBridge": {
+        "disambiguationBasis": null,
         "identitySourcePath": "ledger/dart-ownership-events/collection-universe.json",
         "identitySourceSha256": "7dddc6f75ea14adc8f97f3558409a68b2f71ab356b270e7d25d1ecb08875e4fc",
         "method": "UNIQUE_EXACT_LEGAL_OR_HISTORICAL_NAME",
@@ -2253,6 +2283,7 @@
       "finalTermsReceiptNumber": null,
       "firstMembershipDate": "2013-01-02",
       "identityBridge": {
+        "disambiguationBasis": null,
         "identitySourcePath": "ledger/dart-ownership-events/collection-universe.json",
         "identitySourceSha256": "7dddc6f75ea14adc8f97f3558409a68b2f71ab356b270e7d25d1ecb08875e4fc",
         "method": "UNIQUE_EXACT_LEGAL_OR_HISTORICAL_NAME",
@@ -2404,6 +2435,7 @@
       "finalTermsReceiptNumber": null,
       "firstMembershipDate": "2013-01-02",
       "identityBridge": {
+        "disambiguationBasis": null,
         "identitySourcePath": "ledger/dart-ownership-events/collection-universe.json",
         "identitySourceSha256": "7dddc6f75ea14adc8f97f3558409a68b2f71ab356b270e7d25d1ecb08875e4fc",
         "method": "UNIQUE_EXACT_LEGAL_OR_HISTORICAL_NAME",
@@ -2574,6 +2606,7 @@
       "finalTermsReceiptNumber": null,
       "firstMembershipDate": "2013-06-03",
       "identityBridge": {
+        "disambiguationBasis": null,
         "identitySourcePath": "ledger/dart-ownership-events/collection-universe.json",
         "identitySourceSha256": "7dddc6f75ea14adc8f97f3558409a68b2f71ab356b270e7d25d1ecb08875e4fc",
         "method": "UNIQUE_EXACT_LEGAL_OR_HISTORICAL_NAME",
@@ -2858,6 +2891,7 @@
       "finalTermsReceiptNumber": null,
       "firstMembershipDate": "2018-07-02",
       "identityBridge": {
+        "disambiguationBasis": null,
         "identitySourcePath": "ledger/dart-ownership-events/collection-universe.json",
         "identitySourceSha256": "7dddc6f75ea14adc8f97f3558409a68b2f71ab356b270e7d25d1ecb08875e4fc",
         "method": "UNIQUE_EXACT_LEGAL_OR_HISTORICAL_NAME",
@@ -3025,6 +3059,7 @@
       "finalTermsReceiptNumber": null,
       "firstMembershipDate": "2013-02-01",
       "identityBridge": {
+        "disambiguationBasis": null,
         "identitySourcePath": "ledger/dart-ownership-events/collection-universe.json",
         "identitySourceSha256": "7dddc6f75ea14adc8f97f3558409a68b2f71ab356b270e7d25d1ecb08875e4fc",
         "method": "UNIQUE_EXACT_LEGAL_OR_HISTORICAL_NAME",
@@ -3168,6 +3203,7 @@
       "finalTermsReceiptNumber": null,
       "firstMembershipDate": "2013-01-02",
       "identityBridge": {
+        "disambiguationBasis": null,
         "identitySourcePath": "ledger/dart-ownership-events/collection-universe.json",
         "identitySourceSha256": "7dddc6f75ea14adc8f97f3558409a68b2f71ab356b270e7d25d1ecb08875e4fc",
         "method": "UNIQUE_EXACT_LEGAL_OR_HISTORICAL_NAME",
@@ -3308,6 +3344,7 @@
       "finalTermsReceiptNumber": null,
       "firstMembershipDate": "2013-01-02",
       "identityBridge": {
+        "disambiguationBasis": null,
         "identitySourcePath": "ledger/dart-ownership-events/collection-universe.json",
         "identitySourceSha256": "7dddc6f75ea14adc8f97f3558409a68b2f71ab356b270e7d25d1ecb08875e4fc",
         "method": "UNIQUE_EXACT_LEGAL_OR_HISTORICAL_NAME",
@@ -3337,7 +3374,8 @@
       "successorChain": {
         "cyclesDetected": [],
         "reachableSuccessors": [
-          "000030.KS"
+          "000030.KS",
+          "316140.KS"
         ]
       },
       "terminationType": "MERGER_STOCK"
@@ -3527,6 +3565,7 @@
       "finalTermsReceiptNumber": null,
       "firstMembershipDate": "2013-02-01",
       "identityBridge": {
+        "disambiguationBasis": null,
         "identitySourcePath": "ledger/dart-ownership-events/collection-universe.json",
         "identitySourceSha256": "7dddc6f75ea14adc8f97f3558409a68b2f71ab356b270e7d25d1ecb08875e4fc",
         "method": "UNIQUE_EXACT_LEGAL_OR_HISTORICAL_NAME",
@@ -3752,6 +3791,7 @@
       "finalTermsReceiptNumber": null,
       "firstMembershipDate": "2017-06-01",
       "identityBridge": {
+        "disambiguationBasis": null,
         "identitySourcePath": "ledger/dart-ownership-events/collection-universe.json",
         "identitySourceSha256": "7dddc6f75ea14adc8f97f3558409a68b2f71ab356b270e7d25d1ecb08875e4fc",
         "method": "UNIQUE_EXACT_LEGAL_OR_HISTORICAL_NAME",
@@ -3910,6 +3950,7 @@
       "finalTermsReceiptNumber": null,
       "firstMembershipDate": "2013-03-04",
       "identityBridge": {
+        "disambiguationBasis": null,
         "identitySourcePath": "ledger/dart-ownership-events/collection-universe.json",
         "identitySourceSha256": "7dddc6f75ea14adc8f97f3558409a68b2f71ab356b270e7d25d1ecb08875e4fc",
         "method": "UNIQUE_EXACT_LEGAL_OR_HISTORICAL_NAME",
@@ -4049,7 +4090,7 @@
       "lastTradingDateResolved": 22,
       "rawEvidenceRetained": 22,
       "sourceProvenanceRetained": 22,
-      "successorResolvedWhereRequired": 11,
+      "successorResolvedWhereRequired": 13,
       "terminalActionChainResolved": 0,
       "terminalConsiderationResolved": 10,
       "terminationTypeResolved": 20

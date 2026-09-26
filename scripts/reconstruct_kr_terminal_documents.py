@@ -30,18 +30,46 @@ def normalize_legal_name(value):
     return re.sub(r'\s+|주식회사|\(주\)|㈜', '', value)
 
 
-def resolve_successor(name, universe, explicit=None):
+def resolve_successor(name, universe, explicit=None, as_of_date=None):
+    """(ticker, corpCode, reason, disambiguationNote).
+
+    TEMPORAL EXCLUSION IS AN IDENTITY FACT, NOT A NAME GUESS. Korean issuer
+    names are reused: an old company can delist and years later an unrelated
+    or successor entity can be incorporated under the exact same legal name
+    (observed live in this corpus -- 우리금융지주 corpCode 00375302, delisted
+    2014-12-01 into 우리은행, versus corpCode 01350869, first listed
+    2019-03-04; 제일모직 corpCode 00148328, delisted 2014-08-01, versus the
+    entity now named 삼성물산, corpCode 00149655, whose `names` list carries
+    the historical alias 제일모직). When an exact-name match is otherwise
+    ambiguous, a candidate the identity source itself already records as
+    `delisted` strictly BEFORE this document's own receipt date is
+    categorically impossible as the entity this document names -- a security
+    that had already stopped trading could not be the counterparty a filing
+    was announcing. This is an authoritative, already-recorded date fact
+    about the identity source, never a similarity or plausibility judgment
+    about the name itself, so it narrows ambiguity only when it leaves
+    EXACTLY one candidate; anything else stays `AMBIGUOUS_EXACT_IDENTITY`.
+    """
     matches = []
     for issuer in universe['issuers']:
         for security in issuer['securities']:
             names = [issuer['corpName'], *security.get('names', [])]
             exact = any(normalize_legal_name(n) == normalize_legal_name(name) for n in names)
             if (explicit and security['ticker'] == explicit) or (not explicit and exact):
-                matches.append((security['ticker'], issuer['corpCode']))
+                matches.append((security['ticker'], issuer['corpCode'], security.get('delisted')))
     matches = sorted(set(matches))
+    note = None
+    if len(matches) > 1 and as_of_date and not explicit:
+        excluded = [m for m in matches if m[2] and m[2] < as_of_date]
+        viable = [m for m in matches if m not in excluded]
+        if len(viable) == 1:
+            note = ('Excluded ' + ', '.join(f'{t}/{c} (delisted {d})' for t, c, d in excluded)
+                    + f' as already delisted before this document\'s own receipt date {as_of_date}.')
+            matches = viable
+    matches = [(t, c) for t, c, _ in matches]
     if len(matches) != 1:
-        return None, None, 'AMBIGUOUS_EXACT_IDENTITY' if matches else 'NO_EXACT_IDENTITY_BRIDGE'
-    return *matches[0], None
+        return None, None, 'AMBIGUOUS_EXACT_IDENTITY' if matches else 'NO_EXACT_IDENTITY_BRIDGE', None
+    return *matches[0], None, note
 
 
 def term_row(structure, label, quote):
@@ -182,11 +210,19 @@ def reconstruct(*, evidence_root, identity_path, review_path):
             explicit = review.get('explicitSuccessorCode')
             if explicit and explicit['quote'] not in parsed[explicit['receiptNo']]['text']:
                 raise ValueError('explicit KRX code not in document')
-            successor, successor_corp, identity_reason = resolve_successor(
-                review['successorName'], identities, explicit['ticker'] if explicit else None)
-            bridge = {'method': 'DOCUMENT_EXPLICIT_KRX_CODE' if explicit else 'UNIQUE_EXACT_LEGAL_OR_HISTORICAL_NAME',
+            successor, successor_corp, identity_reason, disambiguation_note = resolve_successor(
+                review['successorName'], identities, explicit['ticker'] if explicit else None,
+                as_of_date=index[receipt]['receiptDate'])
+            if explicit:
+                method = 'DOCUMENT_EXPLICIT_KRX_CODE'
+            elif disambiguation_note:
+                method = 'UNIQUE_EXACT_LEGAL_OR_HISTORICAL_NAME_TEMPORALLY_DISAMBIGUATED'
+            else:
+                method = 'UNIQUE_EXACT_LEGAL_OR_HISTORICAL_NAME'
+            bridge = {'method': method,
                       'nameFromDocument': review['successorName'], 'identitySourcePath': 'ledger/dart-ownership-events/collection-universe.json',
-                      'identitySourceSha256': digest(identity_path), 'reason': identity_reason}
+                      'identitySourceSha256': digest(identity_path), 'reason': identity_reason,
+                      'disambiguationBasis': disambiguation_note}
             if explicit:
                 bridge['documentEvidence'] = cite(explicit['receiptNo'], explicit['quote'], 'successorSecurity')
             if successor and not cash_only:
@@ -211,6 +247,26 @@ def reconstruct(*, evidence_root, identity_path, review_path):
                 fraction, fraction_evidence = None, None
             if fraction_evidence:
                 evidence['fractionalShareTreatment'] = fraction_evidence
+            # Independent completion evidence: a SEPARATE later filing (never
+            # the decision itself, never a missing correction) that states,
+            # in terms this repository can check against the retained
+            # document text, that the transaction actually occurred -- e.g.
+            # a foreign-exchange delisting notice filed AFTER the decision
+            # that says the successor "was established" in the past tense.
+            # Reviewed and cited per entry; a quote absent from its own
+            # cited document raises, the same discipline every other
+            # citation in this reconstruction already applies. This can only
+            # ever resolve EXECUTION -- it never substitutes for a missing
+            # correction's final consideration/ratio/date, which stays
+            # blocked by `materials` regardless.
+            completion_evidence = []
+            for item in review.get('completionEvidence') or ():
+                doc_text = ' '.join(parsed[item['receiptNo']]['text'].split())
+                if item['quote'] not in doc_text:
+                    raise ValueError(f"completion evidence quote missing: {ticker} {item['receiptNo']}")
+                completion_evidence.append({**cite(item['receiptNo'], item['quote'], 'executionConfirmation'),
+                                            'note': item['note']})
+            execution_confirmed = bool(completion_evidence)
             # Original terms survive as candidates even when later amendments block them.
             documented = {'cashPerOldShare': cash, 'successorSharesPerOldShare': ratio,
                           'successorName': review['successorName'], 'effectiveDate': effective,
@@ -224,7 +280,12 @@ def reconstruct(*, evidence_root, identity_path, review_path):
                 blockers.append('FRACTIONAL_SHARE_CASH_IN_LIEU_RULE: not found in retained applicable decision')
             if any(f['category'] == 'POTENTIALLY_MATERIAL' for f in own_failures):
                 blockers.append('AMENDMENT_ATTACHMENT_FINALITY: unavailable potentially material attachment')
-            blockers.append('EXECUTION_CONFIRMATION: collected decisions state conditional/planned terms; no matching completion evidence establishes actual occurrence and final payment')
+            if execution_confirmed:
+                blockers.append('EXECUTION_CONFIRMATION: RESOLVED by independent completion evidence ('
+                                + ','.join(e['receiptNo'] for e in completion_evidence)
+                                + '); final economic terms may still be blocked separately, see other blockers.')
+            else:
+                blockers.append('EXECUTION_CONFIRMATION: collected decisions state conditional/planned terms; no matching completion evidence establishes actual occurrence and final payment')
             action = TCA.build_record(
                 old_security=ticker, action_type=review['actionType'],
                 old_issuer_corp_code=fetch[ticker]['corpCode'],
@@ -237,13 +298,17 @@ def reconstruct(*, evidence_root, identity_path, review_path):
                 cash_in_lieu_rule=fraction,
                 source_receipt_number=receipt, source_receipt_date=index[receipt]['receiptDate'],
                 sources=(f'DART:{receipt}',),
-                unresolved_fields=('executionConfirmation',) + (('finalEconomicTerms',) if materials else ()))
+                unresolved_fields=(() if execution_confirmed else ('executionConfirmation',))
+                                  + (('finalEconomicTerms',) if materials else ()))
             # build_record defaults final receipt to primary; overwrite explicitly
             # when later unavailable material prevents a claim of finality.
             action['finalTermsReceiptNumber'] = None
             action['latestReviewedTermsReceiptNumber'] = receipt
+            execution_status = ('CONFIRMED_BY_INDEPENDENT_COMPLETION_EVIDENCE' if execution_confirmed
+                                else review['executionStatus'])
             action.update({'fieldEvidence': evidence, 'documentedTerms': documented,
-                           'identityBridge': bridge, 'executionStatus': review['executionStatus']})
+                           'identityBridge': bridge, 'executionStatus': execution_status,
+                           'completionEvidence': completion_evidence})
             # Use the normalized existing multi-component contract, not a new book.
             components = []
             if action['cashPerOldShare'] is not None:
