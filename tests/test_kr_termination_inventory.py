@@ -4,6 +4,8 @@ fixtures -- the real, sealed inventory is exercised in
 """
 from __future__ import annotations
 
+import pytest
+
 from pipeline import kr_terminal_corporate_actions as TCA
 from pipeline import kr_termination_inventory as INV
 
@@ -27,9 +29,8 @@ def test_fully_unresolved_security_is_blocked_on_every_applicable_field():
     assert row["dividendLineageResolved"] == INV.BLOCKED
     assert row["exDateSemanticsResolved"] == INV.BLOCKED
     assert row["lastTradingDateResolved"] == INV.READY
-    # An unresolved type owes no consideration or successor term yet.
-    assert row["terminalConsiderationResolved"] == INV.NOT_APPLICABLE
-    assert row["successorResolvedWhereRequired"] == INV.NOT_APPLICABLE
+    for field in ECONOMIC_FIELDS:
+        assert row[field] == INV.BLOCKED
 
 
 def test_ex_date_semantics_stays_blocked_without_a_directly_sourced_ex_date():
@@ -141,3 +142,129 @@ def test_partial_identity_resolution_with_no_field_ready_is_still_blocked_by_sou
         kr_terminations=[_termination(code="A.KS"), _termination(code="B.KS")],
         dart_identity={"A.KS": {"status": "NOT_FOUND"}})  # no corpCode -> no field turns READY
     assert INV.foundation_status(rows) == INV.BLOCKED_BY_SOURCE_ACCESS
+
+
+# --------------------------------------------------------------------------- #
+# v2 extension: TERMINAL_ACTION_CHAIN / EXCHANGE_RATIO (Section 19's 12th
+# and 8th fields, additive to the v1 completeness matrix)
+# --------------------------------------------------------------------------- #
+def test_terminal_action_chain_needs_a_captured_amendment_history_and_evidence():
+    unresolved = INV.completeness_row(identity=None, action=None, dividends=None,
+                                      last_trading_date="2013-04-25")
+    assert unresolved["terminalActionChainResolved"] == INV.BLOCKED
+
+    action = TCA.build_record(old_security="004940.KS", action_type=TCA.MERGER_CASH,
+                              cash_per_old_share=1000.0, effective_date="2013-04-25",
+                              source_receipt_number="r1", source_receipt_date="2013-03-01",
+                              sources=("DART:r1",))
+    ready = INV.completeness_row(identity={"corpCode": "00123"}, action=action,
+                                 dividends=None, last_trading_date="2013-04-25")
+    assert ready["terminalActionChainResolved"] == INV.READY
+
+
+def test_exchange_ratio_not_applicable_for_a_pure_cash_merger():
+    action = TCA.build_record(old_security="004940.KS", action_type=TCA.MERGER_CASH,
+                              cash_per_old_share=1000.0, effective_date="2013-04-25",
+                              source_receipt_number="r1", source_receipt_date="2013-03-01")
+    row = INV.completeness_row(identity=None, action=action, dividends=None,
+                               last_trading_date="2013-04-25")
+    assert row["exchangeRatioResolved"] == INV.NOT_APPLICABLE
+
+
+def test_exchange_ratio_blocked_until_shares_per_old_share_is_known():
+    action = TCA.build_record(old_security="000830.KS", action_type=TCA.MERGER_STOCK,
+                              successor_security="028260.KS", successor_shares_per_old_share=None,
+                              source_receipt_number="r1", source_receipt_date="2015-08-01")
+    row = INV.completeness_row(identity=None, action=action, dividends=None,
+                               last_trading_date="2015-09-14")
+    assert row["exchangeRatioResolved"] == INV.BLOCKED
+    ratio_known = TCA.build_record(
+        old_security="000830.KS", action_type=TCA.MERGER_STOCK,
+        successor_security="028260.KS", successor_shares_per_old_share=0.42,
+        source_receipt_number="r1", source_receipt_date="2015-08-01")
+    row2 = INV.completeness_row(identity=None, action=ratio_known, dividends=None,
+                                last_trading_date="2015-09-14")
+    assert row2["exchangeRatioResolved"] == INV.READY
+
+
+def test_raw_evidence_retained_counts_disclosure_sources_even_without_a_resolved_term():
+    # A security with retained disclosure receipts but no resolved
+    # termination type -- exactly this repository's real state for all 22
+    # -- still has RAW_EVIDENCE, distinct from having resolved anything.
+    action = TCA.build_record(old_security="004940.KS",
+                              action_type=TCA.TERMINATION_TYPE_UNRESOLVED,
+                              sources=("DART:20130301000111", "DART:20130814001621"))
+    row = INV.completeness_row(identity=None, action=action, dividends=None,
+                               last_trading_date="2013-04-25")
+    assert row["rawEvidenceRetained"] == INV.READY
+    assert row["terminationTypeResolved"] == INV.BLOCKED
+
+
+ECONOMIC_FIELDS = (
+    "terminalConsiderationResolved", "successorResolvedWhereRequired",
+    "exchangeRatioResolved", "terminalActionChainResolved",
+)
+
+
+@pytest.mark.parametrize("action_type", [TCA.TERMINATION_TYPE_UNRESOLVED, TCA.MERGER_STOCK])
+@pytest.mark.parametrize("receipt", [None, "r1"])
+def test_raw_receipt_or_sealed_status_without_terms_never_resolves_economics(action_type, receipt):
+    action = TCA.build_record(
+        old_security="A.KS", action_type=action_type,
+        source_receipt_number=receipt, source_receipt_date="2020-01-01",
+        sources=("DART:r1",), effective_date="2020-02-01",
+        amendment_history=(TCA.build_amendment_entry(
+            receipt_number="r1", receipt_date="2020-01-01"),))
+    row = INV.completeness_row(identity=None, action=action, dividends=None,
+                               last_trading_date=None)
+    assert row["rawEvidenceRetained"] == INV.READY
+    for field in ECONOMIC_FIELDS:
+        assert row[field] == INV.BLOCKED
+
+
+@pytest.mark.parametrize("action_type", [TCA.INSOLVENCY_DELISTING,
+                                         TCA.VOLUNTARY_DELISTING, TCA.OTHER_TERMINATION])
+def test_generic_resolved_type_does_not_prove_share_terms_irrelevant(action_type):
+    action = TCA.build_record(old_security="A.KS", action_type=action_type)
+    row = INV.completeness_row(identity=None, action=action, dividends=None,
+                               last_trading_date=None)
+    for field in ECONOMIC_FIELDS:
+        assert row[field] == INV.BLOCKED
+
+
+def test_unknown_type_can_have_independently_cited_successor_and_ratio():
+    action = TCA.build_record(
+        old_security="A.KS", action_type=TCA.TERMINATION_TYPE_UNRESOLVED,
+        successor_security="B.KS", successor_shares_per_old_share=0.42,
+        source_receipt_number="r1", source_receipt_date="2020-01-01")
+    row = INV.completeness_row(identity=None, action=action, dividends=None,
+                               last_trading_date=None)
+    assert row["successorResolvedWhereRequired"] == INV.READY
+    assert row["exchangeRatioResolved"] == INV.READY
+    assert row["terminalConsiderationResolved"] == INV.BLOCKED
+    assert row["terminalActionChainResolved"] == INV.BLOCKED
+
+
+@pytest.mark.parametrize("missing", ["successorSecurity", "successorSharesPerOldShare"])
+def test_partial_stock_economics_cannot_resolve_consideration_or_chain(missing):
+    action = TCA.build_record(
+        old_security="A.KS", action_type=TCA.MERGER_STOCK,
+        successor_security="B.KS", successor_shares_per_old_share=0.42,
+        effective_date="2020-02-01", source_receipt_number="r1",
+        source_receipt_date="2020-01-01")
+    action[missing] = None
+    row = INV.completeness_row(identity=None, action=action, dividends=None,
+                               last_trading_date=None)
+    assert row["terminalConsiderationResolved"] == INV.BLOCKED
+    assert row["terminalActionChainResolved"] == INV.BLOCKED
+
+
+def test_explicitly_unresolved_chain_cannot_be_ready_from_cited_terms():
+    action = TCA.build_record(
+        old_security="A.KS", action_type=TCA.MERGER_CASH, cash_per_old_share=0,
+        effective_date="2020-02-01", source_receipt_number="r1",
+        source_receipt_date="2020-01-01", unresolved_fields=("terminalActionChain",))
+    row = INV.completeness_row(identity=None, action=action, dividends=None,
+                               last_trading_date=None)
+    assert row["terminalConsiderationResolved"] == INV.READY
+    assert row["terminalActionChainResolved"] == INV.BLOCKED

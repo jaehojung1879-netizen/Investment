@@ -1,56 +1,158 @@
 {
-  "actions": [
+  "foundationStatus": "PARTIALLY_REPAIRED",
+  "historicalOutcomesComputed": false,
+  "inputs": {
+    "dividendEvidenceCommit": "dfeb098e26ff71d3b8149199677417a78eda42d6",
+    "documentEvidenceCommit": "71c5128a01a7528536a8ff24c4e82d896363fec0",
+    "fetchStatePresent": true,
+    "krTerminationsCount": 22,
+    "reviewedBookSha256": "4e67620afddfb4cd5849e857da78a91f643f00c0b24466e3e1517a108d156077",
+    "signalHistoryCommit": "4c6813c4cc8e84a9e429b37435e78baba7f1ee78",
+    "sourceHashes": {
+      "dividend-fetch-state.json": "8d58f1fef9971ad86ec458581d8e48ab97208be4aa8f52d77a068afd66879e82",
+      "document-fetch-state.json": "1f0509b19aa061cb7a1580e38cc662e49602230c2bb8d6222122b56fb6fc1fcf",
+      "fetch-state.json": "73ba4187a80f92a5641ea6e738a919f2dfe365648da97c87a6890d209a55abde",
+      "kr-corporate-actions-disclosures.jsonl.gz": "67436598c0eea5cc209d6b5a93fc64cb472b682aa66e6a143ffc5ff853fab9db",
+      "kr-dividend-sections.jsonl.gz": "9e0f7680b74812f855a3a12e5c2b547cc7e1911e5d9078afe987c64265ed3199",
+      "kr-terminal-action-documents.jsonl.gz": "98c1475f888cb07b5c8865b8902516e463bd934281d1f4744a7aba4b4d687071"
+    },
+    "survivorshipAuditPath": "/home/user/Investment/docs/results/alpha-opportunity-model-v3-survivorship-audit.json",
+    "survivorshipAuditSha256": "f0d9ed09880ffb75c6cc698dbb001e6f6879dee1991ede6ff6d365cc50f22902",
+    "totalDisclosureRowsOnShard": 451,
+    "totalDividendSectionRowsOnShard": 6150
+  },
+  "labelsConstructed": false,
+  "modelsTrained": false,
+  "phase": "REAL_DOCUMENT_TERMS_RECONSTRUCTED_WITH_EXPLICIT_BLOCKERS",
+  "reconstructionCounts": {
+    "effectiveDateResolved": 12,
+    "fullyReconstructed": 0,
+    "partiallyReconstructed": 20,
+    "securitiesBlockedByMaterialFailedReceipts": 9,
+    "successorIdentityResolved": 13,
+    "terminalConsiderationResolved": 10,
+    "terminationTypesResolved": 20,
+    "unresolved": 2
+  },
+  "returnsComputed": false,
+  "securities": [
     {
-      "actionType": "SHARE_TRANSFER",
-      "amendmentChainStatus": "BLOCKED",
-      "amendmentHistory": [
-        {
-          "correctionRows": [],
-          "documentSha256": "f10bc9926373d2892760f06f625ac6442e574aba7a3d47ae4fc87ad8ce384980",
-          "fieldsChanged": [],
-          "originalSubmissionDateEvidence": [],
-          "receiptDate": "2018-06-19",
-          "receiptNumber": "20180619000302",
-          "reportName": "주요사항보고서(주식교환ㆍ이전결정)",
-          "scope": "REVIEWED_SAME_TERMINAL_EVENT_PUBLICATION_SEQUENCE",
-          "supersedesReceiptNumber": null
-        }
-      ],
       "blockingReasons": [
         "FINAL_ECONOMIC_CONSIDERATION: later body corrections unavailable (20180920000544,20181108000137,20181121000025); effective date separately resolved by independent completion evidence, see below.",
         "AMENDMENT_ATTACHMENT_FINALITY: unavailable potentially material attachment",
         "EXECUTION_CONFIRMATION: RESOLVED by independent completion evidence (20190111000457); final economic terms may still be blocked separately, see other blockers."
       ],
-      "cashInLieuRule": null,
-      "cashPerOldShare": null,
-      "completionEvidence": [
+      "code": "000030.KS",
+      "completeness": {
+        "amendmentChainResolved": "BLOCKED",
+        "dartIssuerResolved": "READY",
+        "dividendLineageResolved": "READY",
+        "effectiveDateResolved": "READY",
+        "exDateSemanticsResolved": "BLOCKED",
+        "exchangeRatioResolved": "BLOCKED",
+        "lastTradingDateResolved": "READY",
+        "rawEvidenceRetained": "READY",
+        "sourceProvenanceRetained": "READY",
+        "successorResolvedWhereRequired": "READY",
+        "terminalActionChainResolved": "BLOCKED",
+        "terminalConsiderationResolved": "BLOCKED",
+        "terminationTypeResolved": "READY"
+      },
+      "dartCorpCode": "00254045",
+      "dartIdentityStatus": "RESOLVED",
+      "dividendAmountLineageEntries": [
         {
-          "documentSha256": "a40c0ba2eaa714999480238555da001ee25e37c4bc9258f52515e05a4c3affc3",
-          "field": "executionConfirmation",
-          "note": "Independent later filing (NYSE ADR delisting notice, receipt 2019-01-11, filed AFTER the three unavailable 2018 body corrections 20180920000544/20181108000137/20181121000025) states in the past tense that 우리금융지주 WAS established, and restates the SAME trading-termination date (2019-01-11) already filed in the primary decision under the field name '3. 매매거래종료일' -- corroboration from a source independent of the missing corrections, filed after all three. This establishes the share transfer actually occurred and independently corroborates the effective date, so effectiveDate resolves via ALTERNATIVE_PRIMARY_EVIDENCE despite the missing corrections. It does NOT independently restate the primary bank's own common-share consideration/ratio (the 1:1 figure quoted here is the ADR program's own conversion ratio, never re-cited as successorSharesPerOldShare), so terminal consideration stays blocked by the unavailable corrections.",
-          "quote": "(주)우리금융지주가 설립됨에 따라 뉴욕증권거래소(NYSE) 에 상장되었던 우리은행 ADR이 상장 폐지되고, (주)우리금융지주의 ADR이 기존 우리은행 ADR과 1:1 의 교환비율로 2019년 1월 11일 NYSE에상장등록될 예정이며, 원주기준의 ADR 실제교환은 (주)우리금융지주 주식의 국내 상장 예정일인 2019년 2월 13일에 이루어질 예정입니다.",
-          "receiptDate": "2019-01-11",
-          "receiptNo": "20190111000457",
-          "resolvesFields": [
-            "executionConfirmation",
-            "effectiveDate"
-          ],
-          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20190111000457",
-          "zipSha256": "e5c588db4747732cfe02c6a200a71df7520470f637305fe58b4709cf93e2a274"
+          "fiscalYear": 2015,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2016-03-30",
+          "sourceReceiptNumber": "20160330004090",
+          "value": 500.0
+        },
+        {
+          "fiscalYear": 2016,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2017-03-31",
+          "sourceReceiptNumber": "20170331004833",
+          "value": 400.0
+        },
+        {
+          "fiscalYear": 2017,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2018-11-14",
+          "sourceReceiptNumber": "20181114001021",
+          "value": 600.0
+        },
+        {
+          "fiscalYear": 2018,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2019-04-01",
+          "sourceReceiptNumber": "20190401003520",
+          "value": 650.0
+        },
+        {
+          "fiscalYear": 2019,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2020-03-30",
+          "sourceReceiptNumber": "20200330003781",
+          "value": 2000.0
+        },
+        {
+          "fiscalYear": 2020,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2021-07-30",
+          "sourceReceiptNumber": "20210730000506",
+          "value": 950.0
+        },
+        {
+          "fiscalYear": 2021,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2022-03-17",
+          "sourceReceiptNumber": "20220317000674",
+          "value": 1642.0
+        },
+        {
+          "fiscalYear": 2022,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2023-03-16",
+          "sourceReceiptNumber": "20230316001052",
+          "value": 1917.0
+        },
+        {
+          "fiscalYear": 2023,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2024-03-26",
+          "sourceReceiptNumber": "20240326000240",
+          "value": 1581.0
+        },
+        {
+          "fiscalYear": 2024,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2025-03-18",
+          "sourceReceiptNumber": "20250318001159",
+          "value": 1889.0
+        },
+        {
+          "fiscalYear": 2025,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2026-03-13",
+          "sourceReceiptNumber": "20260313000815",
+          "value": 1627.0
         }
       ],
-      "considerationComponents": [
-        {
-          "cashAmount": null,
-          "sharesPerOldShare": null,
-          "sourceReceiptDate": "2018-06-19",
-          "sourceReceiptNumber": "20180619000302",
-          "successorIssuerCorpCode": "01350869",
-          "successorSecurity": "316140.KS",
-          "type": "SUCCESSOR_SHARES"
-        }
-      ],
-      "decisionDate": null,
+      "dividendAmountLineageSelfConsistencyDisagreements": 0,
+      "dividendEventsKnownFromYahoo": 0,
+      "dividendLineageStatus": "RESOLVED",
       "documentedTerms": {
         "cashPerOldShare": null,
         "effectiveDate": "2019-01-11",
@@ -60,8 +162,18 @@
         "successorName": "우리금융지주",
         "successorSharesPerOldShare": 1.0
       },
-      "effectiveDate": "2019-01-11",
-      "evidenceStatus": "SEALED_FROM_DART_RECEIPT",
+      "economicEvidenceScope": "FILED_CONTRACTUAL_TERMS_NOT_EXECUTION_CONFIRMATION",
+      "evidenceReceiptDates": [
+        "2018-06-19"
+      ],
+      "evidenceReceiptNumbers": [
+        "20180619000302",
+        "20190111000457"
+      ],
+      "evidenceSources": [
+        "DART:20180619000302",
+        "DART:20190111000457"
+      ],
       "executionStatus": "CONFIRMED_BY_INDEPENDENT_COMPLETION_EVIDENCE",
       "failedReceipts": [
         {
@@ -153,7 +265,7 @@
         }
       },
       "finalTermsReceiptNumber": null,
-      "fractionalShareTreatment": null,
+      "firstMembershipDate": "2014-12-01",
       "identityBridge": {
         "disambiguationBasis": "Excluded 053000.KS/00375302 (delisted 2014-12-01) as already delisted before this document's own receipt date 2018-06-19.",
         "identitySourcePath": "ledger/dart-ownership-events/collection-universe.json",
@@ -162,127 +274,130 @@
         "nameFromDocument": "우리금융지주",
         "reason": null
       },
-      "lastTradingDate": null,
+      "krxName": "우리은행",
+      "lastMembershipDate": "2019-02-01",
+      "lastTradingDate": "2019-02-12",
       "latestReviewedTermsReceiptNumber": "20180619000302",
-      "oldIssuerCorpCode": "00254045",
-      "oldSecurity": "000030.KS",
-      "rawDocumentReceipts": [
+      "plausiblyResponsibleReceipts": [
         "20180619000302",
+        "20180619000369",
+        "20180920000544",
+        "20181108000137",
+        "20181121000025",
+        "20181126000101",
         "20190111000457"
       ],
+      "rawDisclosureRowsCollected": 19,
+      "rawDividendSectionRowsCollected": 164,
       "reconstructionStatus": "PARTIALLY_RECONSTRUCTED",
-      "sourceReceiptDate": "2018-06-19",
-      "sourceReceiptNumber": "20180619000302",
-      "sourceReceiptNumbers": [
-        "20180619000302",
-        "20190111000457"
-      ],
-      "sources": [
-        "DART:20180619000302",
-        "DART:20190111000457"
-      ],
-      "successorIssuerCorpCode": "01350869",
-      "successorSecurity": "316140.KS",
-      "successorSharesPerOldShare": null,
-      "unresolvedFields": [
-        "finalEconomicTerms"
-      ]
+      "successorChain": {
+        "cyclesDetected": [],
+        "reachableSuccessors": [
+          "316140.KS"
+        ]
+      },
+      "terminationType": "SHARE_TRANSFER"
     },
     {
-      "actionType": "SHARE_EXCHANGE",
-      "amendmentChainStatus": "READY",
-      "amendmentHistory": [
-        {
-          "correctionRows": [],
-          "documentSha256": "c48f57a8db6cad9594ac921115451e3e5a3d97e204f5809a58792fee8e1576e6",
-          "fieldsChanged": [],
-          "originalSubmissionDateEvidence": [],
-          "receiptDate": "2022-11-21",
-          "receiptNumber": "20221121000152",
-          "reportName": "주요사항보고서(주식교환ㆍ이전결정)",
-          "scope": "REVIEWED_SAME_TERMINAL_EVENT_PUBLICATION_SEQUENCE",
-          "supersedesReceiptNumber": null
-        },
-        {
-          "correctionRows": [
-            {
-              "cellsPreview": [
-                "항 목",
-                "정정사유",
-                "정 정 전",
-                "정 정 후"
-              ],
-              "fullCellsSha256": "f6f6eac50a068e39af8ce30b828dd4cbd7e7177fe5f082770126f79761fe7214"
-            },
-            {
-              "cellsPreview": [
-                "16. 향후 회사구조개편에 관한 계획",
-                "자진기재 정정",
-                "본 증권신고서 제출일 현재 메리츠금융지주가 보유하고 있는 메리츠화재해상보험(주) 및 메리츠증권(주)의 지분은 59.5% 및 53.4% 입니다.",
-                "본 주요사항보고서 제출일 현재 (주)메리츠금융지주가 보유하고 있는 메리츠화재해상보험(주) 및 메리츠증권(주)의 지분은 60.9% 및 53.4% 입니다. 본 주요사항보고서 제출일 기준 메리츠화재해상보험(주) 및 메리츠증권(주)가 보유하고 있는 자기주식은 각각 전량 주식교환일 전 소각 또는 처분될 예정임에 따라, (주)메리츠금융지주가 보유하고 있는 메리츠화재해상보험(주) 및 메리츠증권(주)의 지분은 일부 변동 가능합니다."
-              ],
-              "fullCellsSha256": "2e46767d3c8c823d41d92e1275e33434da7e724a459f848f710cf076586ce925"
-            },
-            {
-              "cellsPreview": [
-                "17. 기타 투자판단과 관련한 중요사항",
-                "자진기재 정정",
-                "17. 기타 투자판단과 관련한 중요사항 (1) 주식교환일 현재 (주)메리츠금융지주가 보유중인 메리츠화재해상보험(주) 주식에 대해서는 (주)메리츠금융지주의 신주를 배정하지 않을 예정입니다. 또한 메리츠화재해상보험(주) 기 보유 자기주식(9,247,888주)에 대해서는 향후 이사회 결의를 통해 이익 소각 절차를 진행할 예정입니다. (후략)",
-                "17. 기타 투자판단과 관련한 중요사항 (1) 주식교환일 현재 (주)메리츠금융지주가 보유중인 메리츠화재해상보험(주) 주식에 대해서는 (주)메리츠금융지주의 신주를 배정하지 않을 예정입니다. 또한 메리츠화재해상보험(주) 기 보유 자기주식( 6,568,958주)에 대해서는 향후 이사회 결의를 통해 이익 소각 절차를 진행할 예정입니다. (후략)"
-              ],
-              "fullCellsSha256": "7acb2e5f72506c2a79bb15c3661a98cd34f8464cedd8898277a86cf86e08159e"
-            },
-            {
-              "cellsPreview": [
-                "자진기재 정정",
-                "(7) (중략) 자세한 사항은 2022년 11월 21일 공시한 (주)메리츠금융지주의 주요사항보고서 및 메리츠증권(주)의 주요사항보고서를 참고하시길 바랍니다.",
-                "(7) (중략) 자세한 사항은 2022년 11월 21일 (최초 제출일 기준) 공시한 (주)메리츠금융지주의 주요사항보고서 및 메리츠증권(주)의 주요사항보고서를 참고하시길 바랍니다."
-              ],
-              "fullCellsSha256": "efe0ef25a74af8b016f41c787d57f04e370f937224204689fb951237b7a74d50"
-            },
-            {
-              "cellsPreview": [
-                "자진기재 정정",
-                "※ 보다 자세한 사항은 2022년 11월 21일 공시할 (주)메리츠금융지주의 증권신고서를 참조 하시기 바랍니다.",
-                "※ 보다 자세한 사항은 2022년 11월 21일 (최초 제출일 기준) 공시 한 (주)메리츠금융지주의 증권신고서를 참조 하시기 바랍니다."
-              ],
-              "fullCellsSha256": "201b2fa972b24ab379857910757c77b7e547167b9a86575165061a27c24577d4"
-            }
-          ],
-          "documentSha256": "d0c56437c8ef37887a88f43092d41c14059f93566ed4d855d191222ab80f6f48",
-          "fieldsChanged": [
-            "16. 향후 회사구조개편에 관한 계획",
-            "17. 기타 투자판단과 관련한 중요사항",
-            "자진기재 정정",
-            "자진기재 정정"
-          ],
-          "originalSubmissionDateEvidence": [],
-          "receiptDate": "2022-12-05",
-          "receiptNumber": "20221205000271",
-          "reportName": "[기재정정]주요사항보고서(주식교환ㆍ이전결정)",
-          "scope": "REVIEWED_SAME_TERMINAL_EVENT_PUBLICATION_SEQUENCE",
-          "supersedesReceiptNumber": "20221121000152"
-        }
-      ],
       "blockingReasons": [
         "FRACTIONAL_SHARE_CASH_IN_LIEU_RULE: not found in retained applicable decision",
         "EXECUTION_CONFIRMATION: collected decisions state conditional/planned terms; no matching completion evidence establishes actual occurrence and final payment"
       ],
-      "cashInLieuRule": null,
-      "cashPerOldShare": null,
-      "completionEvidence": [],
-      "considerationComponents": [
+      "code": "000060.KS",
+      "completeness": {
+        "amendmentChainResolved": "READY",
+        "dartIssuerResolved": "READY",
+        "dividendLineageResolved": "READY",
+        "effectiveDateResolved": "READY",
+        "exDateSemanticsResolved": "BLOCKED",
+        "exchangeRatioResolved": "READY",
+        "lastTradingDateResolved": "READY",
+        "rawEvidenceRetained": "READY",
+        "sourceProvenanceRetained": "READY",
+        "successorResolvedWhereRequired": "READY",
+        "terminalActionChainResolved": "BLOCKED",
+        "terminalConsiderationResolved": "READY",
+        "terminationTypeResolved": "READY"
+      },
+      "dartCorpCode": "00117744",
+      "dartIdentityStatus": "RESOLVED",
+      "dividendAmountLineageEntries": [
         {
-          "cashAmount": null,
-          "sharesPerOldShare": 1.2657378,
-          "sourceReceiptDate": "2022-12-05",
-          "sourceReceiptNumber": "20221205000271",
-          "successorIssuerCorpCode": "00860332",
-          "successorSecurity": "138040.KS",
-          "type": "SUCCESSOR_SHARES"
+          "fiscalYear": 2015,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2016-03-30",
+          "sourceReceiptNumber": "20160330002889",
+          "value": 570.0
+        },
+        {
+          "fiscalYear": 2016,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2017-03-31",
+          "sourceReceiptNumber": "20170331003752",
+          "value": 830.0
+        },
+        {
+          "fiscalYear": 2017,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2018-04-02",
+          "sourceReceiptNumber": "20180402004802",
+          "value": 1140.0
+        },
+        {
+          "fiscalYear": 2018,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2019-04-01",
+          "sourceReceiptNumber": "20190401003290",
+          "value": 820.0
+        },
+        {
+          "fiscalYear": 2019,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2021-01-15",
+          "sourceReceiptNumber": "20210115000064",
+          "value": 850.0
+        },
+        {
+          "fiscalYear": 2021,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2022-11-30",
+          "sourceReceiptNumber": "20221130001307",
+          "value": 620.0
+        },
+        {
+          "fiscalYear": 2023,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2024-04-30",
+          "sourceReceiptNumber": "20240430000865",
+          "value": 6071.0
+        },
+        {
+          "fiscalYear": 2024,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2025-03-31",
+          "sourceReceiptNumber": "20250331003145",
+          "value": 6333.0
+        },
+        {
+          "fiscalYear": 2025,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2026-03-31",
+          "sourceReceiptNumber": "20260331003916",
+          "value": 7959.0
         }
       ],
-      "decisionDate": null,
+      "dividendAmountLineageSelfConsistencyDisagreements": 0,
+      "dividendEventsKnownFromYahoo": 0,
+      "dividendLineageStatus": "RESOLVED",
       "documentedTerms": {
         "cashPerOldShare": null,
         "effectiveDate": "2023-02-01",
@@ -292,8 +407,18 @@
         "successorName": "메리츠금융지주",
         "successorSharesPerOldShare": 1.2657378
       },
-      "effectiveDate": "2023-02-01",
-      "evidenceStatus": "SEALED_FROM_DART_RECEIPT",
+      "economicEvidenceScope": "FILED_CONTRACTUAL_TERMS_NOT_EXECUTION_CONFIRMATION",
+      "evidenceReceiptDates": [
+        "2022-12-05"
+      ],
+      "evidenceReceiptNumbers": [
+        "20221121000152",
+        "20221205000271"
+      ],
+      "evidenceSources": [
+        "DART:20221121000152",
+        "DART:20221205000271"
+      ],
       "executionStatus": "UNCONFIRMED_BY_COLLECTED_COMPLETION_DOCUMENTS",
       "failedReceipts": [],
       "fieldEvidence": {
@@ -344,7 +469,7 @@
         }
       },
       "finalTermsReceiptNumber": null,
-      "fractionalShareTreatment": null,
+      "firstMembershipDate": "2013-12-02",
       "identityBridge": {
         "disambiguationBasis": null,
         "identitySourcePath": "ledger/dart-ownership-events/collection-universe.json",
@@ -353,67 +478,52 @@
         "nameFromDocument": "메리츠금융지주",
         "reason": null
       },
-      "lastTradingDate": null,
+      "krxName": "메리츠화재",
+      "lastMembershipDate": "2023-02-01",
+      "lastTradingDate": "2023-02-20",
       "latestReviewedTermsReceiptNumber": "20221205000271",
-      "oldIssuerCorpCode": "00117744",
-      "oldSecurity": "000060.KS",
-      "rawDocumentReceipts": [
+      "plausiblyResponsibleReceipts": [
         "20221121000152",
         "20221205000271"
       ],
+      "rawDisclosureRowsCollected": 12,
+      "rawDividendSectionRowsCollected": 158,
       "reconstructionStatus": "PARTIALLY_RECONSTRUCTED",
-      "sourceReceiptDate": "2022-12-05",
-      "sourceReceiptNumber": "20221205000271",
-      "sourceReceiptNumbers": [
-        "20221121000152",
-        "20221205000271"
-      ],
-      "sources": [
-        "DART:20221121000152",
-        "DART:20221205000271"
-      ],
-      "successorIssuerCorpCode": "00860332",
-      "successorSecurity": "138040.KS",
-      "successorSharesPerOldShare": 1.2657378,
-      "unresolvedFields": [
-        "executionConfirmation"
-      ]
+      "successorChain": {
+        "cyclesDetected": [],
+        "reachableSuccessors": [
+          "138040.KS"
+        ]
+      },
+      "terminationType": "SHARE_EXCHANGE"
     },
     {
-      "actionType": "MERGER_STOCK",
-      "amendmentChainStatus": "BLOCKED",
-      "amendmentHistory": [
-        {
-          "correctionRows": [],
-          "documentSha256": "4d3cf9b6d2e77ca8fd0a5db17143b8c8ad6a35b26de682262b772aae3baf2609",
-          "fieldsChanged": [],
-          "originalSubmissionDateEvidence": [],
-          "receiptDate": "2015-05-26",
-          "receiptNumber": "20150526800025",
-          "reportName": "회사합병결정",
-          "scope": "REVIEWED_SAME_TERMINAL_EVENT_PUBLICATION_SEQUENCE",
-          "supersedesReceiptNumber": null
-        }
-      ],
       "blockingReasons": [
         "FINAL_ECONOMIC_TERMS_AND_EFFECTIVE_DATE: later body corrections unavailable (20150608000391,20150612000428,20150619000462)",
         "EXECUTION_CONFIRMATION: collected decisions state conditional/planned terms; no matching completion evidence establishes actual occurrence and final payment"
       ],
-      "cashInLieuRule": "주식에 대하여 배정 또는 배당을 받을 권리를 가짐. 라. 신주 배정 시 발생하는 단주 처리방법 합병회사인 제일모직주식회사는 합병신주의 배정으로 1주 미만의 단주가 발생하는 경우에는 단주가 귀속될 주주에게 합병신주의 주권상장일에 한국거래소에서 거래되는 종가를 기준으로 계산된 금액을 주권상장일로부터 1개월 이내에 현금으로 지급합니다. 2. 산출근거 가. 보통주 합병비율 산출근거 본 합병의 경우 합병의 양 상대방이 유가증권시장 주권상장법인으로서, 자본시장과 금융투자업에 관한 법률 시행령 제176조의5 제1항 제1호에 따라 합병가액을 다음과 같이 산정한 후, 이를 기초로 합병비율을 산출하였습니다. (1) 제일모직주식회사 보통주식의 합병가액 유가증권시장 ",
-      "cashPerOldShare": null,
-      "completionEvidence": [],
-      "considerationComponents": [
-        {
-          "cashAmount": null,
-          "sharesPerOldShare": null,
-          "sourceReceiptDate": "2015-05-26",
-          "sourceReceiptNumber": "20150526800025",
-          "successorIssuerCorpCode": "00149655",
-          "successorSecurity": "028260.KS",
-          "type": "SUCCESSOR_SHARES"
-        }
-      ],
-      "decisionDate": null,
+      "code": "000830.KS",
+      "completeness": {
+        "amendmentChainResolved": "BLOCKED",
+        "dartIssuerResolved": "READY",
+        "dividendLineageResolved": "BLOCKED",
+        "effectiveDateResolved": "BLOCKED",
+        "exDateSemanticsResolved": "BLOCKED",
+        "exchangeRatioResolved": "BLOCKED",
+        "lastTradingDateResolved": "READY",
+        "rawEvidenceRetained": "READY",
+        "sourceProvenanceRetained": "READY",
+        "successorResolvedWhereRequired": "READY",
+        "terminalActionChainResolved": "BLOCKED",
+        "terminalConsiderationResolved": "BLOCKED",
+        "terminationTypeResolved": "READY"
+      },
+      "dartCorpCode": "00126229",
+      "dartIdentityStatus": "RESOLVED",
+      "dividendAmountLineageEntries": [],
+      "dividendAmountLineageSelfConsistencyDisagreements": 0,
+      "dividendEventsKnownFromYahoo": 0,
+      "dividendLineageStatus": "NOT_COLLECTED",
       "documentedTerms": {
         "cashPerOldShare": null,
         "effectiveDate": "2015-09-01",
@@ -423,8 +533,22 @@
         "successorName": "제일모직",
         "successorSharesPerOldShare": 0.3500885
       },
-      "effectiveDate": null,
-      "evidenceStatus": "SEALED_FROM_DART_RECEIPT",
+      "economicEvidenceScope": "FILED_CONTRACTUAL_TERMS_NOT_EXECUTION_CONFIRMATION",
+      "evidenceReceiptDates": [
+        "2015-05-26"
+      ],
+      "evidenceReceiptNumbers": [
+        "20150526000622",
+        "20150526800025",
+        "20150720000426",
+        "20150824000341"
+      ],
+      "evidenceSources": [
+        "DART:20150526000622",
+        "DART:20150526800025",
+        "DART:20150720000426",
+        "DART:20150824000341"
+      ],
       "executionStatus": "UNCONFIRMED_BY_COLLECTED_COMPLETION_DOCUMENTS",
       "failedReceipts": [
         {
@@ -509,7 +633,7 @@
         }
       },
       "finalTermsReceiptNumber": null,
-      "fractionalShareTreatment": "주식에 대하여 배정 또는 배당을 받을 권리를 가짐. 라. 신주 배정 시 발생하는 단주 처리방법 합병회사인 제일모직주식회사는 합병신주의 배정으로 1주 미만의 단주가 발생하는 경우에는 단주가 귀속될 주주에게 합병신주의 주권상장일에 한국거래소에서 거래되는 종가를 기준으로 계산된 금액을 주권상장일로부터 1개월 이내에 현금으로 지급합니다. 2. 산출근거 가. 보통주 합병비율 산출근거 본 합병의 경우 합병의 양 상대방이 유가증권시장 주권상장법인으로서, 자본시장과 금융투자업에 관한 법률 시행령 제176조의5 제1항 제1호에 따라 합병가액을 다음과 같이 산정한 후, 이를 기초로 합병비율을 산출하였습니다. (1) 제일모직주식회사 보통주식의 합병가액 유가증권시장 ",
+      "firstMembershipDate": "2013-01-02",
       "identityBridge": {
         "disambiguationBasis": "Excluded 001300.KS/00148328 (delisted 2014-08-01) as already delisted before this document's own receipt date 2015-05-26.",
         "identitySourcePath": "ledger/dart-ownership-events/collection-universe.json",
@@ -518,135 +642,57 @@
         "nameFromDocument": "제일모직",
         "reason": null
       },
-      "lastTradingDate": null,
+      "krxName": "삼성물산",
+      "lastMembershipDate": "2015-09-01",
+      "lastTradingDate": "2015-09-14",
       "latestReviewedTermsReceiptNumber": "20150526800025",
-      "oldIssuerCorpCode": "00126229",
-      "oldSecurity": "000830.KS",
-      "rawDocumentReceipts": [
+      "plausiblyResponsibleReceipts": [
         "20150526000622",
         "20150526800025",
+        "20150608000391",
+        "20150612000428",
+        "20150619000462",
         "20150720000426",
         "20150824000341"
       ],
+      "rawDisclosureRowsCollected": 10,
+      "rawDividendSectionRowsCollected": 0,
       "reconstructionStatus": "PARTIALLY_RECONSTRUCTED",
-      "sourceReceiptDate": "2015-05-26",
-      "sourceReceiptNumber": "20150526800025",
-      "sourceReceiptNumbers": [
-        "20150526000622",
-        "20150526800025",
-        "20150720000426",
-        "20150824000341"
-      ],
-      "sources": [
-        "DART:20150526000622",
-        "DART:20150526800025",
-        "DART:20150720000426",
-        "DART:20150824000341"
-      ],
-      "successorIssuerCorpCode": "00149655",
-      "successorSecurity": "028260.KS",
-      "successorSharesPerOldShare": null,
-      "unresolvedFields": [
-        "executionConfirmation",
-        "finalEconomicTerms"
-      ]
+      "successorChain": {
+        "cyclesDetected": [],
+        "reachableSuccessors": [
+          "028260.KS"
+        ]
+      },
+      "terminationType": "MERGER_STOCK"
     },
     {
-      "actionType": "MERGER_STOCK",
-      "amendmentChainStatus": "READY",
-      "amendmentHistory": [
-        {
-          "correctionRows": [],
-          "documentSha256": "6a6ae85533a31bee9dba13ec5e7fd2d0434745535cd7940b69c829e4ea13d3db",
-          "fieldsChanged": [],
-          "originalSubmissionDateEvidence": [],
-          "receiptDate": "2014-03-31",
-          "receiptNumber": "20140331800032",
-          "reportName": "회사합병결정",
-          "scope": "REVIEWED_SAME_TERMINAL_EVENT_PUBLICATION_SEQUENCE",
-          "supersedesReceiptNumber": null
-        },
-        {
-          "correctionRows": [
-            {
-              "cellsPreview": [
-                "1. 정정관련 공시서류",
-                "회사합병 결정"
-              ],
-              "fullCellsSha256": "c8ad9c58f6a62c224e745783fa13d235e1b35fb16bba7bb0c9a974ca43948e67"
-            },
-            {
-              "cellsPreview": [
-                "2. 정정관련 공시서류제출일",
-                "2014-03-31"
-              ],
-              "fullCellsSha256": "7bab017460d1b1bd13e6aaa56b98263a984cb752df6739b14e21cda36fbcb085"
-            },
-            {
-              "cellsPreview": [
-                "3. 정정사유",
-                "기재 정정"
-              ],
-              "fullCellsSha256": "ac7ae22208a4e79a49ddee8a32694fb6221007e68cd88a748660bb4b82d412aa"
-            },
-            {
-              "cellsPreview": [
-                "4. 정정사항"
-              ],
-              "fullCellsSha256": "a989ae4a1050890016babd29d4872cbbbc4482072d938af75dfd4494a09e51c6"
-            },
-            {
-              "cellsPreview": [
-                "정정항목",
-                "정정전",
-                "정정후"
-              ],
-              "fullCellsSha256": "2c30e033db3c16a18039c31f90d2b0c1e8f51bc06fae58a1c16b4db199b0b1ad"
-            },
-            {
-              "cellsPreview": [
-                "11. 주식매수청구권 사항 마. 접수 장소",
-                "- 제일모직(주) :경기도 의왕시 고산로 56 R&D센터 경영지원팀 재무그룹",
-                "- 제일모직(주) :경기도 의왕시 고산로 56 R&D센터 인사지원팀 총무그룹"
-              ],
-              "fullCellsSha256": "62ec3c895dc7c07fddf2cd819f9112a9c8edfc28f2f9e91f13a0524cbf9221b2"
-            }
-          ],
-          "documentSha256": "d08437ed4c9699731d612f3136e88723012629f623422f8f0a3630f55f872b2d",
-          "fieldsChanged": [
-            "1. 정정관련 공시서류",
-            "2. 정정관련 공시서류제출일",
-            "3. 정정사유",
-            "4. 정정사항",
-            "11. 주식매수청구권 사항 마. 접수 장소"
-          ],
-          "originalSubmissionDateEvidence": [],
-          "receiptDate": "2014-03-31",
-          "receiptNumber": "20140331800112",
-          "reportName": "[기재정정]회사합병결정",
-          "scope": "REVIEWED_SAME_TERMINAL_EVENT_PUBLICATION_SEQUENCE",
-          "supersedesReceiptNumber": "20140331800032"
-        }
-      ],
       "blockingReasons": [
         "FRACTIONAL_SHARE_CASH_IN_LIEU_RULE: not found in retained applicable decision",
         "EXECUTION_CONFIRMATION: collected decisions state conditional/planned terms; no matching completion evidence establishes actual occurrence and final payment"
       ],
-      "cashInLieuRule": null,
-      "cashPerOldShare": null,
-      "completionEvidence": [],
-      "considerationComponents": [
-        {
-          "cashAmount": null,
-          "sharesPerOldShare": 0.4425482,
-          "sourceReceiptDate": "2014-03-31",
-          "sourceReceiptNumber": "20140331800112",
-          "successorIssuerCorpCode": "00126362",
-          "successorSecurity": "006400.KS",
-          "type": "SUCCESSOR_SHARES"
-        }
-      ],
-      "decisionDate": null,
+      "code": "001300.KS",
+      "completeness": {
+        "amendmentChainResolved": "READY",
+        "dartIssuerResolved": "READY",
+        "dividendLineageResolved": "BLOCKED",
+        "effectiveDateResolved": "READY",
+        "exDateSemanticsResolved": "BLOCKED",
+        "exchangeRatioResolved": "READY",
+        "lastTradingDateResolved": "READY",
+        "rawEvidenceRetained": "READY",
+        "sourceProvenanceRetained": "READY",
+        "successorResolvedWhereRequired": "READY",
+        "terminalActionChainResolved": "BLOCKED",
+        "terminalConsiderationResolved": "READY",
+        "terminationTypeResolved": "READY"
+      },
+      "dartCorpCode": "00148328",
+      "dartIdentityStatus": "RESOLVED",
+      "dividendAmountLineageEntries": [],
+      "dividendAmountLineageSelfConsistencyDisagreements": 0,
+      "dividendEventsKnownFromYahoo": 0,
+      "dividendLineageStatus": "NOT_COLLECTED",
       "documentedTerms": {
         "cashPerOldShare": null,
         "effectiveDate": "2014-07-01",
@@ -656,8 +702,32 @@
         "successorName": "삼성SDI",
         "successorSharesPerOldShare": 0.4425482
       },
-      "effectiveDate": "2014-07-01",
-      "evidenceStatus": "SEALED_FROM_DART_RECEIPT",
+      "economicEvidenceScope": "FILED_CONTRACTUAL_TERMS_NOT_EXECUTION_CONFIRMATION",
+      "evidenceReceiptDates": [
+        "2014-03-31"
+      ],
+      "evidenceReceiptNumbers": [
+        "20130923000004",
+        "20130923000009",
+        "20130923800016",
+        "20131202000453",
+        "20140106000443",
+        "20140106800520",
+        "20140331001355",
+        "20140331800032",
+        "20140331800112"
+      ],
+      "evidenceSources": [
+        "DART:20130923000004",
+        "DART:20130923000009",
+        "DART:20130923800016",
+        "DART:20131202000453",
+        "DART:20140106000443",
+        "DART:20140106800520",
+        "DART:20140331001355",
+        "DART:20140331800032",
+        "DART:20140331800112"
+      ],
       "executionStatus": "UNCONFIRMED_BY_COLLECTED_COMPLETION_DOCUMENTS",
       "failedReceipts": [],
       "fieldEvidence": {
@@ -708,7 +778,7 @@
         }
       },
       "finalTermsReceiptNumber": null,
-      "fractionalShareTreatment": null,
+      "firstMembershipDate": "2013-01-02",
       "identityBridge": {
         "disambiguationBasis": null,
         "identitySourcePath": "ledger/dart-ownership-events/collection-universe.json",
@@ -717,11 +787,11 @@
         "nameFromDocument": "삼성SDI",
         "reason": null
       },
-      "lastTradingDate": null,
+      "krxName": "제일모직",
+      "lastMembershipDate": "2014-07-01",
+      "lastTradingDate": "2014-07-14",
       "latestReviewedTermsReceiptNumber": "20140331800112",
-      "oldIssuerCorpCode": "00148328",
-      "oldSecurity": "001300.KS",
-      "rawDocumentReceipts": [
+      "plausiblyResponsibleReceipts": [
         "20130923000004",
         "20130923000009",
         "20130923800016",
@@ -732,54 +802,18 @@
         "20140331800032",
         "20140331800112"
       ],
+      "rawDisclosureRowsCollected": 13,
+      "rawDividendSectionRowsCollected": 0,
       "reconstructionStatus": "PARTIALLY_RECONSTRUCTED",
-      "sourceReceiptDate": "2014-03-31",
-      "sourceReceiptNumber": "20140331800112",
-      "sourceReceiptNumbers": [
-        "20130923000004",
-        "20130923000009",
-        "20130923800016",
-        "20131202000453",
-        "20140106000443",
-        "20140106800520",
-        "20140331001355",
-        "20140331800032",
-        "20140331800112"
-      ],
-      "sources": [
-        "DART:20130923000004",
-        "DART:20130923000009",
-        "DART:20130923800016",
-        "DART:20131202000453",
-        "DART:20140106000443",
-        "DART:20140106800520",
-        "DART:20140331001355",
-        "DART:20140331800032",
-        "DART:20140331800112"
-      ],
-      "successorIssuerCorpCode": "00126362",
-      "successorSecurity": "006400.KS",
-      "successorSharesPerOldShare": 0.4425482,
-      "unresolvedFields": [
-        "executionConfirmation"
-      ]
+      "successorChain": {
+        "cyclesDetected": [],
+        "reachableSuccessors": [
+          "006400.KS"
+        ]
+      },
+      "terminationType": "MERGER_STOCK"
     },
     {
-      "actionType": "SHARE_EXCHANGE",
-      "amendmentChainStatus": "BLOCKED",
-      "amendmentHistory": [
-        {
-          "correctionRows": [],
-          "documentSha256": "672b5c52c3b874da8944127b39c765231e6ceaec487d26443358a5b67807d146",
-          "fieldsChanged": [],
-          "originalSubmissionDateEvidence": [],
-          "receiptDate": "2017-04-14",
-          "receiptNumber": "20170414002322",
-          "reportName": "주요사항보고서(주식교환ㆍ이전결정)",
-          "scope": "REVIEWED_SAME_TERMINAL_EVENT_PUBLICATION_SEQUENCE",
-          "supersedesReceiptNumber": null
-        }
-      ],
       "blockingReasons": [
         "FINAL_ECONOMIC_TERMS_AND_EFFECTIVE_DATE: later body corrections unavailable (20170516000224,20170530000327)",
         "SUCCESSOR_SECURITY_IDENTITY: NO_EXACT_IDENTITY_BRIDGE",
@@ -787,11 +821,101 @@
         "AMENDMENT_ATTACHMENT_FINALITY: unavailable potentially material attachment",
         "EXECUTION_CONFIRMATION: collected decisions state conditional/planned terms; no matching completion evidence establishes actual occurrence and final payment"
       ],
-      "cashInLieuRule": null,
-      "cashPerOldShare": null,
-      "completionEvidence": [],
-      "considerationComponents": [],
-      "decisionDate": null,
+      "code": "002550.KS",
+      "completeness": {
+        "amendmentChainResolved": "BLOCKED",
+        "dartIssuerResolved": "READY",
+        "dividendLineageResolved": "READY",
+        "effectiveDateResolved": "BLOCKED",
+        "exDateSemanticsResolved": "BLOCKED",
+        "exchangeRatioResolved": "BLOCKED",
+        "lastTradingDateResolved": "READY",
+        "rawEvidenceRetained": "READY",
+        "sourceProvenanceRetained": "READY",
+        "successorResolvedWhereRequired": "BLOCKED",
+        "terminalActionChainResolved": "BLOCKED",
+        "terminalConsiderationResolved": "BLOCKED",
+        "terminationTypeResolved": "READY"
+      },
+      "dartCorpCode": "00120216",
+      "dartIdentityStatus": "RESOLVED",
+      "dividendAmountLineageEntries": [
+        {
+          "fiscalYear": 2015,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2016-03-30",
+          "sourceReceiptNumber": "20160330004139",
+          "value": 400.0
+        },
+        {
+          "fiscalYear": 2015,
+          "metric": "STOCK_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2016-03-30",
+          "sourceReceiptNumber": "20160330004139",
+          "value": 0.0
+        },
+        {
+          "fiscalYear": 2015,
+          "metric": "CASH_DPS",
+          "shareClass": "PREFERRED",
+          "sourceReceiptDate": "2016-03-30",
+          "sourceReceiptNumber": "20160330004139",
+          "value": 0.0
+        },
+        {
+          "fiscalYear": 2015,
+          "metric": "STOCK_DPS",
+          "shareClass": "PREFERRED",
+          "sourceReceiptDate": "2016-03-30",
+          "sourceReceiptNumber": "20160330004139",
+          "value": 0.0
+        },
+        {
+          "fiscalYear": 2016,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2017-03-31",
+          "sourceReceiptNumber": "20170331005157",
+          "value": 600.0
+        },
+        {
+          "fiscalYear": 2016,
+          "metric": "STOCK_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2017-03-31",
+          "sourceReceiptNumber": "20170331005157",
+          "value": 0.0
+        },
+        {
+          "fiscalYear": 2016,
+          "metric": "CASH_DPS",
+          "shareClass": "PREFERRED",
+          "sourceReceiptDate": "2017-03-31",
+          "sourceReceiptNumber": "20170331005157",
+          "value": 0.0
+        },
+        {
+          "fiscalYear": 2016,
+          "metric": "STOCK_DPS",
+          "shareClass": "PREFERRED",
+          "sourceReceiptDate": "2017-03-31",
+          "sourceReceiptNumber": "20170331005157",
+          "value": 0.0
+        },
+        {
+          "fiscalYear": 2017,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2018-03-29",
+          "sourceReceiptNumber": "20180329001258",
+          "value": 750.0
+        }
+      ],
+      "dividendAmountLineageSelfConsistencyDisagreements": 0,
+      "dividendEventsKnownFromYahoo": 0,
+      "dividendLineageStatus": "RESOLVED",
       "documentedTerms": {
         "cashPerOldShare": null,
         "effectiveDate": "2017-07-03",
@@ -801,8 +925,24 @@
         "successorName": "KB금융지주",
         "successorSharesPerOldShare": 0.57287
       },
-      "effectiveDate": null,
-      "evidenceStatus": "SEALED_FROM_DART_RECEIPT",
+      "economicEvidenceScope": "FILED_CONTRACTUAL_TERMS_NOT_EXECUTION_CONFIRMATION",
+      "evidenceReceiptDates": [
+        "2017-04-14"
+      ],
+      "evidenceReceiptNumbers": [
+        "20170414002322",
+        "20170417000001",
+        "20170417000002",
+        "20170420000107",
+        "20170519000102"
+      ],
+      "evidenceSources": [
+        "DART:20170414002322",
+        "DART:20170417000001",
+        "DART:20170417000002",
+        "DART:20170420000107",
+        "DART:20170519000102"
+      ],
       "executionStatus": "UNCONFIRMED_BY_COLLECTED_COMPLETION_DOCUMENTS",
       "failedReceipts": [
         {
@@ -869,7 +1009,7 @@
         }
       },
       "finalTermsReceiptNumber": null,
-      "fractionalShareTreatment": null,
+      "firstMembershipDate": "2013-08-01",
       "identityBridge": {
         "disambiguationBasis": null,
         "identitySourcePath": "ledger/dart-ownership-events/collection-universe.json",
@@ -878,77 +1018,153 @@
         "nameFromDocument": "KB금융지주",
         "reason": "NO_EXACT_IDENTITY_BRIDGE"
       },
-      "lastTradingDate": null,
+      "krxName": "KB손해보험",
+      "lastMembershipDate": "2017-07-03",
+      "lastTradingDate": "2017-07-20",
       "latestReviewedTermsReceiptNumber": "20170414002322",
-      "oldIssuerCorpCode": "00120216",
-      "oldSecurity": "002550.KS",
-      "rawDocumentReceipts": [
+      "plausiblyResponsibleReceipts": [
         "20170414002322",
         "20170417000001",
         "20170417000002",
         "20170420000107",
-        "20170519000102"
+        "20170516000224",
+        "20170519000102",
+        "20170525000022",
+        "20170530000327"
       ],
+      "rawDisclosureRowsCollected": 13,
+      "rawDividendSectionRowsCollected": 99,
       "reconstructionStatus": "PARTIALLY_RECONSTRUCTED",
-      "sourceReceiptDate": "2017-04-14",
-      "sourceReceiptNumber": "20170414002322",
-      "sourceReceiptNumbers": [
-        "20170414002322",
-        "20170417000001",
-        "20170417000002",
-        "20170420000107",
-        "20170519000102"
-      ],
-      "sources": [
-        "DART:20170414002322",
-        "DART:20170417000001",
-        "DART:20170417000002",
-        "DART:20170420000107",
-        "DART:20170519000102"
-      ],
-      "successorIssuerCorpCode": null,
-      "successorSecurity": null,
-      "successorSharesPerOldShare": null,
-      "unresolvedFields": [
-        "executionConfirmation",
-        "finalEconomicTerms"
-      ]
+      "successorChain": {
+        "cyclesDetected": [],
+        "reachableSuccessors": []
+      },
+      "terminationType": "SHARE_EXCHANGE"
     },
     {
-      "actionType": "CASH_SHARE_EXCHANGE",
-      "amendmentChainStatus": "BLOCKED",
-      "amendmentHistory": [
-        {
-          "correctionRows": [],
-          "documentSha256": "66093425803caa2531d515a09f257cdb8b240b6a0a1374ca6ccc960b6a7069b7",
-          "fieldsChanged": [],
-          "originalSubmissionDateEvidence": [],
-          "receiptDate": "2024-04-23",
-          "receiptNumber": "20240423000168",
-          "reportName": "주요사항보고서(주식교환ㆍ이전결정)",
-          "scope": "REVIEWED_SAME_TERMINAL_EVENT_PUBLICATION_SEQUENCE",
-          "supersedesReceiptNumber": null
-        }
-      ],
       "blockingReasons": [
         "AMENDMENT_ATTACHMENT_FINALITY: unavailable potentially material attachment",
         "EXECUTION_CONFIRMATION: collected decisions state conditional/planned terms; no matching completion evidence establishes actual occurrence and final payment"
       ],
-      "cashInLieuRule": null,
-      "cashPerOldShare": 7000.0,
-      "completionEvidence": [],
-      "considerationComponents": [
+      "code": "003410.KS",
+      "completeness": {
+        "amendmentChainResolved": "BLOCKED",
+        "dartIssuerResolved": "READY",
+        "dividendLineageResolved": "READY",
+        "effectiveDateResolved": "READY",
+        "exDateSemanticsResolved": "BLOCKED",
+        "exchangeRatioResolved": "NOT_APPLICABLE",
+        "lastTradingDateResolved": "READY",
+        "rawEvidenceRetained": "READY",
+        "sourceProvenanceRetained": "READY",
+        "successorResolvedWhereRequired": "NOT_APPLICABLE",
+        "terminalActionChainResolved": "BLOCKED",
+        "terminalConsiderationResolved": "READY",
+        "terminationTypeResolved": "READY"
+      },
+      "dartCorpCode": "00138224",
+      "dartIdentityStatus": "RESOLVED",
+      "dividendAmountLineageEntries": [
         {
-          "cashAmount": 7000.0,
-          "sharesPerOldShare": null,
-          "sourceReceiptDate": "2024-04-23",
-          "sourceReceiptNumber": "20240423000168",
-          "successorIssuerCorpCode": null,
-          "successorSecurity": null,
-          "type": "CASH"
+          "fiscalYear": 2017,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2018-04-02",
+          "sourceReceiptNumber": "20180402003717",
+          "value": 1070.0
+        },
+        {
+          "fiscalYear": 2017,
+          "metric": "CASH_DPS",
+          "shareClass": "PREFERRED",
+          "sourceReceiptDate": "2018-04-02",
+          "sourceReceiptNumber": "20180402003717",
+          "value": 1120.0
+        },
+        {
+          "fiscalYear": 2018,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2019-04-01",
+          "sourceReceiptNumber": "20190401004206",
+          "value": 370.0
+        },
+        {
+          "fiscalYear": 2018,
+          "metric": "CASH_DPS",
+          "shareClass": "PREFERRED",
+          "sourceReceiptDate": "2019-04-01",
+          "sourceReceiptNumber": "20190401004206",
+          "value": 380.0
+        },
+        {
+          "fiscalYear": 2019,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2020-03-30",
+          "sourceReceiptNumber": "20200330004513",
+          "value": 420.0
+        },
+        {
+          "fiscalYear": 2019,
+          "metric": "CASH_DPS",
+          "shareClass": "PREFERRED",
+          "sourceReceiptDate": "2020-03-30",
+          "sourceReceiptNumber": "20200330004513",
+          "value": 430.0
+        },
+        {
+          "fiscalYear": 2020,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2021-03-17",
+          "sourceReceiptNumber": "20210317001029",
+          "value": 440.0
+        },
+        {
+          "fiscalYear": 2021,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2022-08-16",
+          "sourceReceiptNumber": "20220816001988",
+          "value": 440.0
+        },
+        {
+          "fiscalYear": 2022,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2023-03-21",
+          "sourceReceiptNumber": "20230321001494",
+          "value": 440.0
+        },
+        {
+          "fiscalYear": 2023,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2024-03-27",
+          "sourceReceiptNumber": "20240327001183",
+          "value": 280.0
+        },
+        {
+          "fiscalYear": 2024,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2025-03-28",
+          "sourceReceiptNumber": "20250328001785",
+          "value": 500.0
+        },
+        {
+          "fiscalYear": 2025,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2026-03-31",
+          "sourceReceiptNumber": "20260331004655",
+          "value": 180.0
         }
       ],
-      "decisionDate": null,
+      "dividendAmountLineageSelfConsistencyDisagreements": 0,
+      "dividendEventsKnownFromYahoo": 0,
+      "dividendLineageStatus": "RESOLVED",
       "documentedTerms": {
         "cashPerOldShare": 7000.0,
         "effectiveDate": "2024-06-25",
@@ -958,8 +1174,26 @@
         "successorName": "한앤코시멘트홀딩스",
         "successorSharesPerOldShare": null
       },
-      "effectiveDate": "2024-06-25",
-      "evidenceStatus": "SEALED_FROM_DART_RECEIPT",
+      "economicEvidenceScope": "FILED_CONTRACTUAL_TERMS_NOT_EXECUTION_CONFIRMATION",
+      "evidenceReceiptDates": [
+        "2024-04-23"
+      ],
+      "evidenceReceiptNumbers": [
+        "20240205000007",
+        "20240205000008",
+        "20240219001823",
+        "20240219001836",
+        "20240308000152",
+        "20240423000168"
+      ],
+      "evidenceSources": [
+        "DART:20240205000007",
+        "DART:20240205000008",
+        "DART:20240219001823",
+        "DART:20240219001836",
+        "DART:20240308000152",
+        "DART:20240423000168"
+      ],
       "executionStatus": "UNCONFIRMED_BY_COLLECTED_COMPLETION_DOCUMENTS",
       "failedReceipts": [
         {
@@ -1001,7 +1235,7 @@
         }
       },
       "finalTermsReceiptNumber": null,
-      "fractionalShareTreatment": null,
+      "firstMembershipDate": "2017-12-01",
       "identityBridge": {
         "disambiguationBasis": null,
         "identitySourcePath": "ledger/dart-ownership-events/collection-universe.json",
@@ -1010,60 +1244,29 @@
         "nameFromDocument": "한앤코시멘트홀딩스",
         "reason": "NO_EXACT_IDENTITY_BRIDGE"
       },
-      "lastTradingDate": null,
+      "krxName": "쌍용C&E",
+      "lastMembershipDate": "2024-07-01",
+      "lastTradingDate": "2024-07-08",
       "latestReviewedTermsReceiptNumber": "20240423000168",
-      "oldIssuerCorpCode": "00138224",
-      "oldSecurity": "003410.KS",
-      "rawDocumentReceipts": [
+      "plausiblyResponsibleReceipts": [
         "20240205000007",
         "20240205000008",
         "20240219001823",
         "20240219001836",
         "20240308000152",
-        "20240423000168"
+        "20240423000168",
+        "20240425000313"
       ],
+      "rawDisclosureRowsCollected": 50,
+      "rawDividendSectionRowsCollected": 156,
       "reconstructionStatus": "PARTIALLY_RECONSTRUCTED",
-      "sourceReceiptDate": "2024-04-23",
-      "sourceReceiptNumber": "20240423000168",
-      "sourceReceiptNumbers": [
-        "20240205000007",
-        "20240205000008",
-        "20240219001823",
-        "20240219001836",
-        "20240308000152",
-        "20240423000168"
-      ],
-      "sources": [
-        "DART:20240205000007",
-        "DART:20240205000008",
-        "DART:20240219001823",
-        "DART:20240219001836",
-        "DART:20240308000152",
-        "DART:20240423000168"
-      ],
-      "successorIssuerCorpCode": null,
-      "successorSecurity": null,
-      "successorSharesPerOldShare": null,
-      "unresolvedFields": [
-        "executionConfirmation"
-      ]
+      "successorChain": {
+        "cyclesDetected": [],
+        "reachableSuccessors": []
+      },
+      "terminationType": "CASH_SHARE_EXCHANGE"
     },
     {
-      "actionType": "SHARE_EXCHANGE",
-      "amendmentChainStatus": "BLOCKED",
-      "amendmentHistory": [
-        {
-          "correctionRows": [],
-          "documentSha256": "f607abf1220de1f53a16eabd2b950892c43a9af8aaa55a1aa675997429d39928",
-          "fieldsChanged": [],
-          "originalSubmissionDateEvidence": [],
-          "receiptDate": "2016-08-02",
-          "receiptNumber": "20160802000289",
-          "reportName": "주요사항보고서(주식교환ㆍ이전결정)",
-          "scope": "REVIEWED_SAME_TERMINAL_EVENT_PUBLICATION_SEQUENCE",
-          "supersedesReceiptNumber": null
-        }
-      ],
       "blockingReasons": [
         "FINAL_ECONOMIC_TERMS_AND_EFFECTIVE_DATE: later body corrections unavailable (20160901000273)",
         "SUCCESSOR_SECURITY_IDENTITY: NO_EXACT_IDENTITY_BRIDGE",
@@ -1071,11 +1274,109 @@
         "AMENDMENT_ATTACHMENT_FINALITY: unavailable potentially material attachment",
         "EXECUTION_CONFIRMATION: collected decisions state conditional/planned terms; no matching completion evidence establishes actual occurrence and final payment"
       ],
-      "cashInLieuRule": null,
-      "cashPerOldShare": null,
-      "completionEvidence": [],
-      "considerationComponents": [],
-      "decisionDate": null,
+      "code": "003450.KS",
+      "completeness": {
+        "amendmentChainResolved": "BLOCKED",
+        "dartIssuerResolved": "READY",
+        "dividendLineageResolved": "READY",
+        "effectiveDateResolved": "BLOCKED",
+        "exDateSemanticsResolved": "BLOCKED",
+        "exchangeRatioResolved": "BLOCKED",
+        "lastTradingDateResolved": "READY",
+        "rawEvidenceRetained": "READY",
+        "sourceProvenanceRetained": "READY",
+        "successorResolvedWhereRequired": "BLOCKED",
+        "terminalActionChainResolved": "BLOCKED",
+        "terminalConsiderationResolved": "BLOCKED",
+        "terminationTypeResolved": "READY"
+      },
+      "dartCorpCode": "00164876",
+      "dartIdentityStatus": "RESOLVED",
+      "dividendAmountLineageEntries": [
+        {
+          "fiscalYear": 2015,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2016-03-30",
+          "sourceReceiptNumber": "20160330003737",
+          "value": 500.0
+        },
+        {
+          "fiscalYear": 2017,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2018-04-05",
+          "sourceReceiptNumber": "20180405002096",
+          "value": 466.0
+        },
+        {
+          "fiscalYear": 2018,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2019-06-18",
+          "sourceReceiptNumber": "20190618000212",
+          "value": 167.0
+        },
+        {
+          "fiscalYear": 2019,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2020-03-27",
+          "sourceReceiptNumber": "20200327001153",
+          "value": 267.0
+        },
+        {
+          "fiscalYear": 2020,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2021-03-24",
+          "sourceReceiptNumber": "20210324000522",
+          "value": 435.0
+        },
+        {
+          "fiscalYear": 2021,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2022-03-24",
+          "sourceReceiptNumber": "20220324000538",
+          "value": 904.0
+        },
+        {
+          "fiscalYear": 2022,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2023-03-23",
+          "sourceReceiptNumber": "20230323000628",
+          "value": 1004.0
+        },
+        {
+          "fiscalYear": 2023,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2024-03-21",
+          "sourceReceiptNumber": "20240321001123",
+          "value": 502.0
+        },
+        {
+          "fiscalYear": 2024,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2025-03-21",
+          "sourceReceiptNumber": "20250321001148",
+          "value": 937.0
+        },
+        {
+          "fiscalYear": 2025,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2026-03-24",
+          "sourceReceiptNumber": "20260324000784",
+          "value": 1004.0
+        }
+      ],
+      "dividendAmountLineageSelfConsistencyDisagreements": 0,
+      "dividendEventsKnownFromYahoo": 0,
+      "dividendLineageStatus": "RESOLVED",
       "documentedTerms": {
         "cashPerOldShare": null,
         "effectiveDate": "2016-11-09",
@@ -1085,8 +1386,18 @@
         "successorName": "KB금융지주",
         "successorSharesPerOldShare": 0.1907312
       },
-      "effectiveDate": null,
-      "evidenceStatus": "SEALED_FROM_DART_RECEIPT",
+      "economicEvidenceScope": "FILED_CONTRACTUAL_TERMS_NOT_EXECUTION_CONFIRMATION",
+      "evidenceReceiptDates": [
+        "2016-08-02"
+      ],
+      "evidenceReceiptNumbers": [
+        "20160802000289",
+        "20161101000429"
+      ],
+      "evidenceSources": [
+        "DART:20160802000289",
+        "DART:20161101000429"
+      ],
       "executionStatus": "UNCONFIRMED_BY_COLLECTED_COMPLETION_DOCUMENTS",
       "failedReceipts": [
         {
@@ -1153,7 +1464,7 @@
         }
       },
       "finalTermsReceiptNumber": null,
-      "fractionalShareTreatment": null,
+      "firstMembershipDate": "2013-01-02",
       "identityBridge": {
         "disambiguationBasis": null,
         "identitySourcePath": "ledger/dart-ownership-events/collection-universe.json",
@@ -1162,68 +1473,53 @@
         "nameFromDocument": "KB금융지주",
         "reason": "NO_EXACT_IDENTITY_BRIDGE"
       },
-      "lastTradingDate": null,
+      "krxName": "현대증권",
+      "lastMembershipDate": "2016-10-04",
+      "lastTradingDate": "2016-10-31",
       "latestReviewedTermsReceiptNumber": "20160802000289",
-      "oldIssuerCorpCode": "00164876",
-      "oldSecurity": "003450.KS",
-      "rawDocumentReceipts": [
+      "plausiblyResponsibleReceipts": [
         "20160802000289",
-        "20161101000429"
+        "20160901000273",
+        "20160902000474",
+        "20161101000429",
+        "20161103000360"
       ],
+      "rawDisclosureRowsCollected": 10,
+      "rawDividendSectionRowsCollected": 164,
       "reconstructionStatus": "PARTIALLY_RECONSTRUCTED",
-      "sourceReceiptDate": "2016-08-02",
-      "sourceReceiptNumber": "20160802000289",
-      "sourceReceiptNumbers": [
-        "20160802000289",
-        "20161101000429"
-      ],
-      "sources": [
-        "DART:20160802000289",
-        "DART:20161101000429"
-      ],
-      "successorIssuerCorpCode": null,
-      "successorSecurity": null,
-      "successorSharesPerOldShare": null,
-      "unresolvedFields": [
-        "executionConfirmation",
-        "finalEconomicTerms"
-      ]
+      "successorChain": {
+        "cyclesDetected": [],
+        "reachableSuccessors": []
+      },
+      "terminationType": "SHARE_EXCHANGE"
     },
     {
-      "actionType": "MERGER_STOCK",
-      "amendmentChainStatus": "BLOCKED",
-      "amendmentHistory": [
-        {
-          "correctionRows": [],
-          "documentSha256": "26ea9362252e8cb9c1d05da33957da0ca09c1b05ad6b10493c406e8ab9d9831b",
-          "fieldsChanged": [],
-          "originalSubmissionDateEvidence": [],
-          "receiptDate": "2015-04-20",
-          "receiptNumber": "20150420800024",
-          "reportName": "회사합병결정",
-          "scope": "REVIEWED_SAME_TERMINAL_EVENT_PUBLICATION_SEQUENCE",
-          "supersedesReceiptNumber": null
-        }
-      ],
       "blockingReasons": [
         "FINAL_ECONOMIC_TERMS_AND_EFFECTIVE_DATE: later body corrections unavailable (20150430001586,20150513003281,20150521000438,20150528000580,20150528000709)",
         "EXECUTION_CONFIRMATION: collected decisions state conditional/planned terms; no matching completion evidence establishes actual occurrence and final payment"
       ],
-      "cashInLieuRule": "드밴드(주) 주주에게 교부할 에스케이텔레콤(주)의 자기주식에 관하여 1주 미만의 단주가 발생하는 경우, 단주가 귀속될 에스케이브로드밴드(주) 주주에게 주식교환일의 에스케이텔레콤(주) 보통주식의 종가(한국거래소에서 거래되는 종가를 의미한다)를 기준으로 계산된 금액을 현금으로 지급할 예정입니다. 3. 에스케이텔레콤㈜ 또는 에스케이브로드밴드㈜의 이사회 또는 주주총회에서 주식의 포괄적 교환계약의 승인 안건이 부결된 경우 주식의 포괄적 교환계약은 당사자들의 별도의 조치 없이도 당연히 소급하여 효력을 상실하며, 그에 따라 주식의 포괄적 교환은 무산됩니다. 4. 주식의 포괄적 교환 계약상 다음과 같은 사유가 발생하는 경우 주식의 포괄적 교환계약이 변경되거나 ",
-      "cashPerOldShare": null,
-      "completionEvidence": [],
-      "considerationComponents": [
-        {
-          "cashAmount": null,
-          "sharesPerOldShare": null,
-          "sourceReceiptDate": "2015-04-20",
-          "sourceReceiptNumber": "20150420800024",
-          "successorIssuerCorpCode": "00181712",
-          "successorSecurity": "034730.KS",
-          "type": "SUCCESSOR_SHARES"
-        }
-      ],
-      "decisionDate": null,
+      "code": "003600.KS",
+      "completeness": {
+        "amendmentChainResolved": "BLOCKED",
+        "dartIssuerResolved": "READY",
+        "dividendLineageResolved": "BLOCKED",
+        "effectiveDateResolved": "BLOCKED",
+        "exDateSemanticsResolved": "BLOCKED",
+        "exchangeRatioResolved": "BLOCKED",
+        "lastTradingDateResolved": "READY",
+        "rawEvidenceRetained": "READY",
+        "sourceProvenanceRetained": "READY",
+        "successorResolvedWhereRequired": "READY",
+        "terminalActionChainResolved": "BLOCKED",
+        "terminalConsiderationResolved": "BLOCKED",
+        "terminationTypeResolved": "READY"
+      },
+      "dartCorpCode": "00144155",
+      "dartIdentityStatus": "RESOLVED",
+      "dividendAmountLineageEntries": [],
+      "dividendAmountLineageSelfConsistencyDisagreements": 0,
+      "dividendEventsKnownFromYahoo": 0,
+      "dividendLineageStatus": "NOT_COLLECTED",
       "documentedTerms": {
         "cashPerOldShare": null,
         "effectiveDate": "2015-08-01",
@@ -1233,8 +1529,32 @@
         "successorName": "에스케이씨앤씨",
         "successorSharesPerOldShare": 0.7367839
       },
-      "effectiveDate": null,
-      "evidenceStatus": "SEALED_FROM_DART_RECEIPT",
+      "economicEvidenceScope": "FILED_CONTRACTUAL_TERMS_NOT_EXECUTION_CONFIRMATION",
+      "evidenceReceiptDates": [
+        "2015-04-20"
+      ],
+      "evidenceReceiptNumbers": [
+        "20150320802190",
+        "20150320802407",
+        "20150420000235",
+        "20150420800024",
+        "20150601800621",
+        "20150630800739",
+        "20150721800305",
+        "20150730800418",
+        "20150730800431"
+      ],
+      "evidenceSources": [
+        "DART:20150320802190",
+        "DART:20150320802407",
+        "DART:20150420000235",
+        "DART:20150420800024",
+        "DART:20150601800621",
+        "DART:20150630800739",
+        "DART:20150721800305",
+        "DART:20150730800418",
+        "DART:20150730800431"
+      ],
       "executionStatus": "UNCONFIRMED_BY_COLLECTED_COMPLETION_DOCUMENTS",
       "failedReceipts": [
         {
@@ -1351,7 +1671,7 @@
         }
       },
       "finalTermsReceiptNumber": null,
-      "fractionalShareTreatment": "드밴드(주) 주주에게 교부할 에스케이텔레콤(주)의 자기주식에 관하여 1주 미만의 단주가 발생하는 경우, 단주가 귀속될 에스케이브로드밴드(주) 주주에게 주식교환일의 에스케이텔레콤(주) 보통주식의 종가(한국거래소에서 거래되는 종가를 의미한다)를 기준으로 계산된 금액을 현금으로 지급할 예정입니다. 3. 에스케이텔레콤㈜ 또는 에스케이브로드밴드㈜의 이사회 또는 주주총회에서 주식의 포괄적 교환계약의 승인 안건이 부결된 경우 주식의 포괄적 교환계약은 당사자들의 별도의 조치 없이도 당연히 소급하여 효력을 상실하며, 그에 따라 주식의 포괄적 교환은 무산됩니다. 4. 주식의 포괄적 교환 계약상 다음과 같은 사유가 발생하는 경우 주식의 포괄적 교환계약이 변경되거나 ",
+      "firstMembershipDate": "2013-01-02",
       "identityBridge": {
         "disambiguationBasis": null,
         "documentEvidence": {
@@ -1369,88 +1689,130 @@
         "nameFromDocument": "에스케이씨앤씨",
         "reason": null
       },
-      "lastTradingDate": null,
+      "krxName": "SK",
+      "lastMembershipDate": "2015-08-03",
+      "lastTradingDate": "2015-08-13",
       "latestReviewedTermsReceiptNumber": "20150420800024",
-      "oldIssuerCorpCode": "00144155",
-      "oldSecurity": "003600.KS",
-      "rawDocumentReceipts": [
+      "plausiblyResponsibleReceipts": [
         "20150320802190",
         "20150320802407",
         "20150420000235",
         "20150420800024",
+        "20150430001586",
+        "20150513003281",
+        "20150521000438",
+        "20150528000580",
+        "20150528000709",
         "20150601800621",
         "20150630800739",
+        "20150721800301",
         "20150721800305",
         "20150730800418",
-        "20150730800431"
+        "20150730800431",
+        "20150805800334"
       ],
+      "rawDisclosureRowsCollected": 31,
+      "rawDividendSectionRowsCollected": 0,
       "reconstructionStatus": "PARTIALLY_RECONSTRUCTED",
-      "sourceReceiptDate": "2015-04-20",
-      "sourceReceiptNumber": "20150420800024",
-      "sourceReceiptNumbers": [
-        "20150320802190",
-        "20150320802407",
-        "20150420000235",
-        "20150420800024",
-        "20150601800621",
-        "20150630800739",
-        "20150721800305",
-        "20150730800418",
-        "20150730800431"
-      ],
-      "sources": [
-        "DART:20150320802190",
-        "DART:20150320802407",
-        "DART:20150420000235",
-        "DART:20150420800024",
-        "DART:20150601800621",
-        "DART:20150630800739",
-        "DART:20150721800305",
-        "DART:20150730800418",
-        "DART:20150730800431"
-      ],
-      "successorIssuerCorpCode": "00181712",
-      "successorSecurity": "034730.KS",
-      "successorSharesPerOldShare": null,
-      "unresolvedFields": [
-        "executionConfirmation",
-        "finalEconomicTerms"
-      ]
+      "successorChain": {
+        "cyclesDetected": [],
+        "reachableSuccessors": [
+          "034730.KS"
+        ]
+      },
+      "terminationType": "MERGER_STOCK"
     },
     {
-      "actionType": "SHARE_EXCHANGE",
-      "amendmentChainStatus": "READY",
-      "amendmentHistory": [
-        {
-          "correctionRows": [],
-          "documentSha256": "3b66e5e90cdb9db3d3f533e2680586df4edaa848f5120778ca6b2b20caf2c95b",
-          "fieldsChanged": [],
-          "originalSubmissionDateEvidence": [],
-          "receiptDate": "2013-01-28",
-          "receiptNumber": "20130128800003",
-          "reportName": "주식교환ㆍ이전결정",
-          "scope": "REVIEWED_SAME_TERMINAL_EVENT_PUBLICATION_SEQUENCE",
-          "supersedesReceiptNumber": null
-        }
-      ],
       "blockingReasons": [
         "EXECUTION_CONFIRMATION: collected decisions state conditional/planned terms; no matching completion evidence establishes actual occurrence and final payment"
       ],
-      "cashInLieuRule": "명식 보통주식 46,844,299주입니다. - 주식 배정시 발생하는 1주 미만의 단주에 대하여 ㈜하나금융지주 교환신주의 상장초일의 종가를 기준으로 계산된 금액을 그 비율에 따라 현금으로 주식교환 대상주주에게 지급합니다. 3. 다음 중 어느 하나에 해당하는 사유가 발생한 경우 주식의 포괄적 교환 계약은 당사자들의 별도의 조치 없이도 당연히 소급하여 효력을 상실하며, 그에 따라 주식의 포괄적 교환은 무산됩니다. (1) ㈜하나금융지주 또는 ㈜한국외환은행의 주주총회에서 주식의 포괄적 교환 계약 승인 안건이 부결된 경우 (2) ㈜하나금융지주 주주들의 주식매수청구권 행사 주식수 합계에 그 주식매수 예정가격을 곱한 금액이 금 1조원을 초과하는 경우 (3) ㈜",
-      "cashPerOldShare": null,
-      "completionEvidence": [],
-      "considerationComponents": [
+      "code": "004940.KS",
+      "completeness": {
+        "amendmentChainResolved": "READY",
+        "dartIssuerResolved": "READY",
+        "dividendLineageResolved": "READY",
+        "effectiveDateResolved": "READY",
+        "exDateSemanticsResolved": "BLOCKED",
+        "exchangeRatioResolved": "READY",
+        "lastTradingDateResolved": "READY",
+        "rawEvidenceRetained": "READY",
+        "sourceProvenanceRetained": "READY",
+        "successorResolvedWhereRequired": "READY",
+        "terminalActionChainResolved": "BLOCKED",
+        "terminalConsiderationResolved": "READY",
+        "terminationTypeResolved": "READY"
+      },
+      "dartCorpCode": "00158909",
+      "dartIdentityStatus": "RESOLVED",
+      "dividendAmountLineageEntries": [
         {
-          "cashAmount": null,
-          "sharesPerOldShare": 0.1894302,
-          "sourceReceiptDate": "2013-01-28",
-          "sourceReceiptNumber": "20130128800003",
-          "successorIssuerCorpCode": "00547583",
-          "successorSecurity": "086790.KS",
-          "type": "SUCCESSOR_SHARES"
+          "fiscalYear": 2015,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2017-08-14",
+          "sourceReceiptNumber": "20170814001999",
+          "value": 392.0
+        },
+        {
+          "fiscalYear": 2016,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2017-03-30",
+          "sourceReceiptNumber": "20170330001518",
+          "value": 560.0
+        },
+        {
+          "fiscalYear": 2017,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2021-03-18",
+          "sourceReceiptNumber": "20210318000488",
+          "value": 907.0
+        },
+        {
+          "fiscalYear": 2018,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2019-04-05",
+          "sourceReceiptNumber": "20190405002654",
+          "value": 827.0
+        },
+        {
+          "fiscalYear": 2019,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2020-03-30",
+          "sourceReceiptNumber": "20200330004094",
+          "value": 897.0
+        },
+        {
+          "fiscalYear": 2020,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2021-03-18",
+          "sourceReceiptNumber": "20210318000528",
+          "value": 667.0
+        },
+        {
+          "fiscalYear": 2021,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2022-03-17",
+          "sourceReceiptNumber": "20220317001071",
+          "value": 989.0
+        },
+        {
+          "fiscalYear": 2022,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2023-03-16",
+          "sourceReceiptNumber": "20230316001278",
+          "value": 1353.0
         }
       ],
-      "decisionDate": null,
+      "dividendAmountLineageSelfConsistencyDisagreements": 0,
+      "dividendEventsKnownFromYahoo": 0,
+      "dividendLineageStatus": "RESOLVED",
       "documentedTerms": {
         "cashPerOldShare": null,
         "effectiveDate": "2013-04-05",
@@ -1460,8 +1822,16 @@
         "successorName": "하나금융지주",
         "successorSharesPerOldShare": 0.1894302
       },
-      "effectiveDate": "2013-04-05",
-      "evidenceStatus": "SEALED_FROM_DART_RECEIPT",
+      "economicEvidenceScope": "FILED_CONTRACTUAL_TERMS_NOT_EXECUTION_CONFIRMATION",
+      "evidenceReceiptDates": [
+        "2013-01-28"
+      ],
+      "evidenceReceiptNumbers": [
+        "20130128800003"
+      ],
+      "evidenceSources": [
+        "DART:20130128800003"
+      ],
       "executionStatus": "UNCONFIRMED_BY_COLLECTED_COMPLETION_DOCUMENTS",
       "failedReceipts": [],
       "fieldEvidence": {
@@ -1521,7 +1891,7 @@
         }
       },
       "finalTermsReceiptNumber": null,
-      "fractionalShareTreatment": "명식 보통주식 46,844,299주입니다. - 주식 배정시 발생하는 1주 미만의 단주에 대하여 ㈜하나금융지주 교환신주의 상장초일의 종가를 기준으로 계산된 금액을 그 비율에 따라 현금으로 주식교환 대상주주에게 지급합니다. 3. 다음 중 어느 하나에 해당하는 사유가 발생한 경우 주식의 포괄적 교환 계약은 당사자들의 별도의 조치 없이도 당연히 소급하여 효력을 상실하며, 그에 따라 주식의 포괄적 교환은 무산됩니다. (1) ㈜하나금융지주 또는 ㈜한국외환은행의 주주총회에서 주식의 포괄적 교환 계약 승인 안건이 부결된 경우 (2) ㈜하나금융지주 주주들의 주식매수청구권 행사 주식수 합계에 그 주식매수 예정가격을 곱한 금액이 금 1조원을 초과하는 경우 (3) ㈜",
+      "firstMembershipDate": "2013-01-02",
       "identityBridge": {
         "disambiguationBasis": null,
         "identitySourcePath": "ledger/dart-ownership-events/collection-universe.json",
@@ -1530,96 +1900,164 @@
         "nameFromDocument": "하나금융지주",
         "reason": null
       },
-      "lastTradingDate": null,
+      "krxName": "외환은행",
+      "lastMembershipDate": "2013-04-01",
+      "lastTradingDate": "2013-04-25",
       "latestReviewedTermsReceiptNumber": "20130128800003",
-      "oldIssuerCorpCode": "00158909",
-      "oldSecurity": "004940.KS",
-      "rawDocumentReceipts": [
+      "plausiblyResponsibleReceipts": [
         "20130128800003"
       ],
+      "rawDisclosureRowsCollected": 24,
+      "rawDividendSectionRowsCollected": 128,
       "reconstructionStatus": "PARTIALLY_RECONSTRUCTED",
-      "sourceReceiptDate": "2013-01-28",
-      "sourceReceiptNumber": "20130128800003",
-      "sourceReceiptNumbers": [
-        "20130128800003"
-      ],
-      "sources": [
-        "DART:20130128800003"
-      ],
-      "successorIssuerCorpCode": "00547583",
-      "successorSecurity": "086790.KS",
-      "successorSharesPerOldShare": 0.1894302,
-      "unresolvedFields": [
-        "executionConfirmation"
-      ]
+      "successorChain": {
+        "cyclesDetected": [],
+        "reachableSuccessors": [
+          "086790.KS"
+        ]
+      },
+      "terminationType": "SHARE_EXCHANGE"
     },
     {
-      "actionType": "SHARE_EXCHANGE",
-      "amendmentChainStatus": "READY",
-      "amendmentHistory": [
-        {
-          "correctionRows": [],
-          "documentSha256": "4afe513f507bb9c1e24b8e23dcdf8f2926bad10cec18396725857ee0b6ac29eb",
-          "fieldsChanged": [],
-          "originalSubmissionDateEvidence": [],
-          "receiptDate": "2022-11-21",
-          "receiptNumber": "20221121000158",
-          "reportName": "주요사항보고서(주식교환ㆍ이전결정)",
-          "scope": "REVIEWED_SAME_TERMINAL_EVENT_PUBLICATION_SEQUENCE",
-          "supersedesReceiptNumber": null
-        },
-        {
-          "correctionRows": [
-            {
-              "cellsPreview": [
-                "항 목",
-                "정정사유",
-                "정 정 전",
-                "정 정 후"
-              ],
-              "fullCellsSha256": "f6f6eac50a068e39af8ce30b828dd4cbd7e7177fe5f082770126f79761fe7214"
-            },
-            {
-              "cellsPreview": [
-                "16. 향후 회사구조개편에 관한 계획",
-                "자진기재 정정",
-                "본 증권신고서 제출일 현재 메리츠금융지주가 보유하고 있는 메리츠화재해상보험(주) 및 메리츠증권(주)의 지분은 59.5% 및 53.4% 입니다.",
-                "본 주요사항보고서 제출일 현재 (주)메리츠금융지주가 보유하고 있는 메리츠화재해상보험(주) 및 메리츠증권(주)의 지분은 60.9% 및 53.4% 입니다. 본 주요사항보고서 제출일 기준 메리츠화재해상보험(주) 및 메리츠증권(주)가 보유하고 있는 자기주식은 각각 전량 주식교환일 전 소각 또는 처분될 예정임에 따라, (주)메리츠금융지주가 보유하고 있는 메리츠화재해상보험(주) 및 메리츠증권(주)의 지분은 일부 변동 가능합니다."
-              ],
-              "fullCellsSha256": "2e46767d3c8c823d41d92e1275e33434da7e724a459f848f710cf076586ce925"
-            }
-          ],
-          "documentSha256": "1af338a854c054a903bc484762d0cca0acf6b06a6f3bfc8b13927bd5f94e4e3d",
-          "fieldsChanged": [
-            "16. 향후 회사구조개편에 관한 계획"
-          ],
-          "originalSubmissionDateEvidence": [],
-          "receiptDate": "2022-12-05",
-          "receiptNumber": "20221205000275",
-          "reportName": "[기재정정]주요사항보고서(주식교환ㆍ이전결정)",
-          "scope": "REVIEWED_SAME_TERMINAL_EVENT_PUBLICATION_SEQUENCE",
-          "supersedesReceiptNumber": "20221121000158"
-        }
-      ],
       "blockingReasons": [
         "FRACTIONAL_SHARE_CASH_IN_LIEU_RULE: not found in retained applicable decision",
         "EXECUTION_CONFIRMATION: collected decisions state conditional/planned terms; no matching completion evidence establishes actual occurrence and final payment"
       ],
-      "cashInLieuRule": null,
-      "cashPerOldShare": null,
-      "completionEvidence": [],
-      "considerationComponents": [
+      "code": "008560.KS",
+      "completeness": {
+        "amendmentChainResolved": "READY",
+        "dartIssuerResolved": "READY",
+        "dividendLineageResolved": "READY",
+        "effectiveDateResolved": "READY",
+        "exDateSemanticsResolved": "BLOCKED",
+        "exchangeRatioResolved": "READY",
+        "lastTradingDateResolved": "READY",
+        "rawEvidenceRetained": "READY",
+        "sourceProvenanceRetained": "READY",
+        "successorResolvedWhereRequired": "READY",
+        "terminalActionChainResolved": "BLOCKED",
+        "terminalConsiderationResolved": "READY",
+        "terminationTypeResolved": "READY"
+      },
+      "dartCorpCode": "00163682",
+      "dartIdentityStatus": "RESOLVED",
+      "dividendAmountLineageEntries": [
         {
-          "cashAmount": null,
-          "sharesPerOldShare": 0.1607327,
-          "sourceReceiptDate": "2022-12-05",
-          "sourceReceiptNumber": "20221205000275",
-          "successorIssuerCorpCode": "00860332",
-          "successorSecurity": "138040.KS",
-          "type": "SUCCESSOR_SHARES"
+          "fiscalYear": 2015,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2016-03-30",
+          "sourceReceiptNumber": "20160330002214",
+          "value": 230.0
+        },
+        {
+          "fiscalYear": 2018,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2019-04-01",
+          "sourceReceiptNumber": "20190401003822",
+          "value": 200.0
+        },
+        {
+          "fiscalYear": 2018,
+          "metric": "CASH_DPS",
+          "shareClass": "PREFERRED",
+          "sourceReceiptDate": "2019-04-01",
+          "sourceReceiptNumber": "20190401003822",
+          "value": 224.0
+        },
+        {
+          "fiscalYear": 2019,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2020-03-30",
+          "sourceReceiptNumber": "20200330003697",
+          "value": 200.0
+        },
+        {
+          "fiscalYear": 2019,
+          "metric": "CASH_DPS",
+          "shareClass": "PREFERRED",
+          "sourceReceiptDate": "2020-03-30",
+          "sourceReceiptNumber": "20200330003697",
+          "value": 179.0
+        },
+        {
+          "fiscalYear": 2020,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2021-03-10",
+          "sourceReceiptNumber": "20210310000677",
+          "value": 320.0
+        },
+        {
+          "fiscalYear": 2020,
+          "metric": "CASH_DPS",
+          "shareClass": "PREFERRED",
+          "sourceReceiptDate": "2021-03-10",
+          "sourceReceiptNumber": "20210310000677",
+          "value": 179.0
+        },
+        {
+          "fiscalYear": 2021,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2022-03-08",
+          "sourceReceiptNumber": "20220308000675",
+          "value": 100.0
+        },
+        {
+          "fiscalYear": 2021,
+          "metric": "CASH_DPS",
+          "shareClass": "PREFERRED",
+          "sourceReceiptDate": "2022-03-08",
+          "sourceReceiptNumber": "20220308000675",
+          "value": 283.0
+        },
+        {
+          "fiscalYear": 2022,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2023-03-09",
+          "sourceReceiptNumber": "20230309000552",
+          "value": 135.0
+        },
+        {
+          "fiscalYear": 2023,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2024-04-01",
+          "sourceReceiptNumber": "20240401003586",
+          "value": 969.0
+        },
+        {
+          "fiscalYear": 2024,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2025-03-31",
+          "sourceReceiptNumber": "20250331003245",
+          "value": 704.0
+        },
+        {
+          "fiscalYear": 2025,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2026-04-01",
+          "sourceReceiptNumber": "20260401004248",
+          "value": 770.0
+        },
+        {
+          "fiscalYear": 2025,
+          "metric": "CASH_DPS",
+          "shareClass": "PREFERRED",
+          "sourceReceiptDate": "2026-04-01",
+          "sourceReceiptNumber": "20260401004248",
+          "value": 671.0
         }
       ],
-      "decisionDate": null,
+      "dividendAmountLineageSelfConsistencyDisagreements": 0,
+      "dividendEventsKnownFromYahoo": 0,
+      "dividendLineageStatus": "RESOLVED",
       "documentedTerms": {
         "cashPerOldShare": null,
         "effectiveDate": "2023-04-05",
@@ -1629,8 +2067,18 @@
         "successorName": "메리츠금융지주",
         "successorSharesPerOldShare": 0.1607327
       },
-      "effectiveDate": "2023-04-05",
-      "evidenceStatus": "SEALED_FROM_DART_RECEIPT",
+      "economicEvidenceScope": "FILED_CONTRACTUAL_TERMS_NOT_EXECUTION_CONFIRMATION",
+      "evidenceReceiptDates": [
+        "2022-12-05"
+      ],
+      "evidenceReceiptNumbers": [
+        "20221121000158",
+        "20221205000275"
+      ],
+      "evidenceSources": [
+        "DART:20221121000158",
+        "DART:20221205000275"
+      ],
       "executionStatus": "UNCONFIRMED_BY_COLLECTED_COMPLETION_DOCUMENTS",
       "failedReceipts": [],
       "fieldEvidence": {
@@ -1681,7 +2129,7 @@
         }
       },
       "finalTermsReceiptNumber": null,
-      "fractionalShareTreatment": null,
+      "firstMembershipDate": "2015-05-04",
       "identityBridge": {
         "disambiguationBasis": null,
         "identitySourcePath": "ledger/dart-ownership-events/collection-universe.json",
@@ -1690,68 +2138,53 @@
         "nameFromDocument": "메리츠금융지주",
         "reason": null
       },
-      "lastTradingDate": null,
+      "krxName": "메리츠증권",
+      "lastMembershipDate": "2023-04-03",
+      "lastTradingDate": "2023-04-24",
       "latestReviewedTermsReceiptNumber": "20221205000275",
-      "oldIssuerCorpCode": "00163682",
-      "oldSecurity": "008560.KS",
-      "rawDocumentReceipts": [
+      "plausiblyResponsibleReceipts": [
         "20221121000158",
         "20221205000275"
       ],
+      "rawDisclosureRowsCollected": 24,
+      "rawDividendSectionRowsCollected": 152,
       "reconstructionStatus": "PARTIALLY_RECONSTRUCTED",
-      "sourceReceiptDate": "2022-12-05",
-      "sourceReceiptNumber": "20221205000275",
-      "sourceReceiptNumbers": [
-        "20221121000158",
-        "20221205000275"
-      ],
-      "sources": [
-        "DART:20221121000158",
-        "DART:20221205000275"
-      ],
-      "successorIssuerCorpCode": "00860332",
-      "successorSecurity": "138040.KS",
-      "successorSharesPerOldShare": 0.1607327,
-      "unresolvedFields": [
-        "executionConfirmation"
-      ]
+      "successorChain": {
+        "cyclesDetected": [],
+        "reachableSuccessors": [
+          "138040.KS"
+        ]
+      },
+      "terminationType": "SHARE_EXCHANGE"
     },
     {
-      "actionType": "MERGER_STOCK",
-      "amendmentChainStatus": "BLOCKED",
-      "amendmentHistory": [
-        {
-          "correctionRows": [],
-          "documentSha256": "7511cfd53c08fff793a521f44993b766daf020aa5aeb4e23404c980b9b1d685e",
-          "fieldsChanged": [],
-          "originalSubmissionDateEvidence": [],
-          "receiptDate": "2015-04-08",
-          "receiptNumber": "20150408800141",
-          "reportName": "회사합병결정",
-          "scope": "REVIEWED_SAME_TERMINAL_EVENT_PUBLICATION_SEQUENCE",
-          "supersedesReceiptNumber": null
-        }
-      ],
       "blockingReasons": [
         "FINAL_ECONOMIC_TERMS_AND_EFFECTIVE_DATE: later body corrections unavailable (20150417000066,20150417800108,20150429000977)",
         "FRACTIONAL_SHARE_CASH_IN_LIEU_RULE: not found in retained applicable decision",
         "EXECUTION_CONFIRMATION: collected decisions state conditional/planned terms; no matching completion evidence establishes actual occurrence and final payment"
       ],
-      "cashInLieuRule": null,
-      "cashPerOldShare": null,
-      "completionEvidence": [],
-      "considerationComponents": [
-        {
-          "cashAmount": null,
-          "sharesPerOldShare": null,
-          "sourceReceiptDate": "2015-04-08",
-          "sourceReceiptNumber": "20150408800141",
-          "successorIssuerCorpCode": "00145880",
-          "successorSecurity": "004020.KS",
-          "type": "SUCCESSOR_SHARES"
-        }
-      ],
-      "decisionDate": null,
+      "code": "010520.KS",
+      "completeness": {
+        "amendmentChainResolved": "BLOCKED",
+        "dartIssuerResolved": "READY",
+        "dividendLineageResolved": "BLOCKED",
+        "effectiveDateResolved": "BLOCKED",
+        "exDateSemanticsResolved": "BLOCKED",
+        "exchangeRatioResolved": "BLOCKED",
+        "lastTradingDateResolved": "READY",
+        "rawEvidenceRetained": "READY",
+        "sourceProvenanceRetained": "READY",
+        "successorResolvedWhereRequired": "READY",
+        "terminalActionChainResolved": "BLOCKED",
+        "terminalConsiderationResolved": "BLOCKED",
+        "terminationTypeResolved": "READY"
+      },
+      "dartCorpCode": "00164469",
+      "dartIdentityStatus": "RESOLVED",
+      "dividendAmountLineageEntries": [],
+      "dividendAmountLineageSelfConsistencyDisagreements": 0,
+      "dividendEventsKnownFromYahoo": 0,
+      "dividendLineageStatus": "NOT_COLLECTED",
       "documentedTerms": {
         "cashPerOldShare": null,
         "effectiveDate": "2015-07-01",
@@ -1761,8 +2194,18 @@
         "successorName": "현대제철",
         "successorSharesPerOldShare": 0.8577607
       },
-      "effectiveDate": null,
-      "evidenceStatus": "SEALED_FROM_DART_RECEIPT",
+      "economicEvidenceScope": "FILED_CONTRACTUAL_TERMS_NOT_EXECUTION_CONFIRMATION",
+      "evidenceReceiptDates": [
+        "2015-04-08"
+      ],
+      "evidenceReceiptNumbers": [
+        "20150408000796",
+        "20150408800141"
+      ],
+      "evidenceSources": [
+        "DART:20150408000796",
+        "DART:20150408800141"
+      ],
       "executionStatus": "UNCONFIRMED_BY_COLLECTED_COMPLETION_DOCUMENTS",
       "failedReceipts": [
         {
@@ -1838,7 +2281,7 @@
         }
       },
       "finalTermsReceiptNumber": null,
-      "fractionalShareTreatment": null,
+      "firstMembershipDate": "2013-01-02",
       "identityBridge": {
         "disambiguationBasis": null,
         "identitySourcePath": "ledger/dart-ownership-events/collection-universe.json",
@@ -1847,68 +2290,80 @@
         "nameFromDocument": "현대제철",
         "reason": null
       },
-      "lastTradingDate": null,
+      "krxName": "현대하이스코",
+      "lastMembershipDate": "2015-02-02",
+      "lastTradingDate": "2015-07-14",
       "latestReviewedTermsReceiptNumber": "20150408800141",
-      "oldIssuerCorpCode": "00164469",
-      "oldSecurity": "010520.KS",
-      "rawDocumentReceipts": [
+      "plausiblyResponsibleReceipts": [
         "20150408000796",
-        "20150408800141"
+        "20150408800141",
+        "20150417000066",
+        "20150417800108",
+        "20150429000977"
       ],
+      "rawDisclosureRowsCollected": 10,
+      "rawDividendSectionRowsCollected": 0,
       "reconstructionStatus": "PARTIALLY_RECONSTRUCTED",
-      "sourceReceiptDate": "2015-04-08",
-      "sourceReceiptNumber": "20150408800141",
-      "sourceReceiptNumbers": [
-        "20150408000796",
-        "20150408800141"
-      ],
-      "sources": [
-        "DART:20150408000796",
-        "DART:20150408800141"
-      ],
-      "successorIssuerCorpCode": "00145880",
-      "successorSecurity": "004020.KS",
-      "successorSharesPerOldShare": null,
-      "unresolvedFields": [
-        "executionConfirmation",
-        "finalEconomicTerms"
-      ]
+      "successorChain": {
+        "cyclesDetected": [],
+        "reachableSuccessors": [
+          "004020.KS"
+        ]
+      },
+      "terminationType": "MERGER_STOCK"
     },
     {
-      "actionType": "MERGER_STOCK",
-      "amendmentChainStatus": "READY",
-      "amendmentHistory": [
-        {
-          "correctionRows": [],
-          "documentSha256": "864dbb4b2672bdd9b31c416b6bab7218aec814eee90be43b078f697ec224be2d",
-          "fieldsChanged": [],
-          "originalSubmissionDateEvidence": [],
-          "receiptDate": "2025-08-27",
-          "receiptNumber": "20250827000428",
-          "reportName": "주요사항보고서(회사합병결정)",
-          "scope": "REVIEWED_SAME_TERMINAL_EVENT_PUBLICATION_SEQUENCE",
-          "supersedesReceiptNumber": null
-        }
-      ],
       "blockingReasons": [
         "FRACTIONAL_SHARE_CASH_IN_LIEU_RULE: not found in retained applicable decision",
         "EXECUTION_CONFIRMATION: collected decisions state conditional/planned terms; no matching completion evidence establishes actual occurrence and final payment"
       ],
-      "cashInLieuRule": null,
-      "cashPerOldShare": null,
-      "completionEvidence": [],
-      "considerationComponents": [
+      "code": "010620.KS",
+      "completeness": {
+        "amendmentChainResolved": "READY",
+        "dartIssuerResolved": "READY",
+        "dividendLineageResolved": "READY",
+        "effectiveDateResolved": "READY",
+        "exDateSemanticsResolved": "BLOCKED",
+        "exchangeRatioResolved": "READY",
+        "lastTradingDateResolved": "READY",
+        "rawEvidenceRetained": "READY",
+        "sourceProvenanceRetained": "READY",
+        "successorResolvedWhereRequired": "READY",
+        "terminalActionChainResolved": "BLOCKED",
+        "terminalConsiderationResolved": "READY",
+        "terminationTypeResolved": "READY"
+      },
+      "dartCorpCode": "00164609",
+      "dartIdentityStatus": "RESOLVED",
+      "dividendAmountLineageEntries": [
         {
-          "cashAmount": null,
-          "sharesPerOldShare": 0.4059146,
-          "sourceReceiptDate": "2025-08-27",
-          "sourceReceiptNumber": "20250827000428",
-          "successorIssuerCorpCode": "01390344",
-          "successorSecurity": "329180.KS",
-          "type": "SUCCESSOR_SHARES"
+          "fiscalYear": 2018,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2019-04-01",
+          "sourceReceiptNumber": "20190401005226",
+          "value": 700.0
+        },
+        {
+          "fiscalYear": 2019,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2020-03-30",
+          "sourceReceiptNumber": "20200330002364",
+          "value": 350.0
+        },
+        {
+          "fiscalYear": 2024,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2025-07-11",
+          "sourceReceiptNumber": "20250711000373",
+          "value": 710.0
         }
       ],
-      "decisionDate": null,
+      "dividendAmountLineageSelfConsistencyDisagreements": 0,
+      "dividendEventsKnownFromYahoo": 0,
+      "dividendLineageStatus": "RESOLVED",
       "documentedTerms": {
         "cashPerOldShare": null,
         "effectiveDate": "2025-12-01",
@@ -1918,8 +2373,16 @@
         "successorName": "HD현대중공업",
         "successorSharesPerOldShare": 0.4059146
       },
-      "effectiveDate": "2025-12-01",
-      "evidenceStatus": "SEALED_FROM_DART_RECEIPT",
+      "economicEvidenceScope": "FILED_CONTRACTUAL_TERMS_NOT_EXECUTION_CONFIRMATION",
+      "evidenceReceiptDates": [
+        "2025-08-27"
+      ],
+      "evidenceReceiptNumbers": [
+        "20250827000428"
+      ],
+      "evidenceSources": [
+        "DART:20250827000428"
+      ],
       "executionStatus": "UNCONFIRMED_BY_COLLECTED_COMPLETION_DOCUMENTS",
       "failedReceipts": [],
       "fieldEvidence": {
@@ -1970,7 +2433,7 @@
         }
       },
       "finalTermsReceiptNumber": null,
-      "fractionalShareTreatment": null,
+      "firstMembershipDate": "2013-01-02",
       "identityBridge": {
         "disambiguationBasis": null,
         "identitySourcePath": "ledger/dart-ownership-events/collection-universe.json",
@@ -1979,66 +2442,62 @@
         "nameFromDocument": "HD현대중공업",
         "reason": null
       },
-      "lastTradingDate": null,
+      "krxName": "HD현대미포",
+      "lastMembershipDate": "2025-12-01",
+      "lastTradingDate": "2025-12-12",
       "latestReviewedTermsReceiptNumber": "20250827000428",
-      "oldIssuerCorpCode": "00164609",
-      "oldSecurity": "010620.KS",
-      "rawDocumentReceipts": [
+      "plausiblyResponsibleReceipts": [
         "20250827000428"
       ],
+      "rawDisclosureRowsCollected": 8,
+      "rawDividendSectionRowsCollected": 175,
       "reconstructionStatus": "PARTIALLY_RECONSTRUCTED",
-      "sourceReceiptDate": "2025-08-27",
-      "sourceReceiptNumber": "20250827000428",
-      "sourceReceiptNumbers": [
-        "20250827000428"
-      ],
-      "sources": [
-        "DART:20250827000428"
-      ],
-      "successorIssuerCorpCode": "01390344",
-      "successorSecurity": "329180.KS",
-      "successorSharesPerOldShare": 0.4059146,
-      "unresolvedFields": [
-        "executionConfirmation"
-      ]
+      "successorChain": {
+        "cyclesDetected": [],
+        "reachableSuccessors": [
+          "329180.KS"
+        ]
+      },
+      "terminationType": "MERGER_STOCK"
     },
     {
-      "actionType": "SHARE_EXCHANGE",
-      "amendmentChainStatus": "BLOCKED",
-      "amendmentHistory": [
-        {
-          "correctionRows": [],
-          "documentSha256": "4615ff17954cae174f7769f72f1867be06cabdb221d57b288b6b4c34a068ebc3",
-          "fieldsChanged": [],
-          "originalSubmissionDateEvidence": [],
-          "receiptDate": "2019-12-12",
-          "receiptNumber": "20191212000291",
-          "reportName": "주요사항보고서(주식교환ㆍ이전결정)",
-          "scope": "REVIEWED_SAME_TERMINAL_EVENT_PUBLICATION_SEQUENCE",
-          "supersedesReceiptNumber": null
-        }
-      ],
       "blockingReasons": [
         "FINAL_ECONOMIC_TERMS_AND_EFFECTIVE_DATE: later body corrections unavailable (20191224000172)",
         "FRACTIONAL_SHARE_CASH_IN_LIEU_RULE: not found in retained applicable decision",
         "AMENDMENT_ATTACHMENT_FINALITY: unavailable potentially material attachment",
         "EXECUTION_CONFIRMATION: collected decisions state conditional/planned terms; no matching completion evidence establishes actual occurrence and final payment"
       ],
-      "cashInLieuRule": null,
-      "cashPerOldShare": null,
-      "completionEvidence": [],
-      "considerationComponents": [
+      "code": "011160.KS",
+      "completeness": {
+        "amendmentChainResolved": "BLOCKED",
+        "dartIssuerResolved": "READY",
+        "dividendLineageResolved": "READY",
+        "effectiveDateResolved": "BLOCKED",
+        "exDateSemanticsResolved": "BLOCKED",
+        "exchangeRatioResolved": "BLOCKED",
+        "lastTradingDateResolved": "READY",
+        "rawEvidenceRetained": "READY",
+        "sourceProvenanceRetained": "READY",
+        "successorResolvedWhereRequired": "READY",
+        "terminalActionChainResolved": "BLOCKED",
+        "terminalConsiderationResolved": "BLOCKED",
+        "terminationTypeResolved": "READY"
+      },
+      "dartCorpCode": "00102760",
+      "dartIdentityStatus": "RESOLVED",
+      "dividendAmountLineageEntries": [
         {
-          "cashAmount": null,
-          "sharesPerOldShare": null,
-          "sourceReceiptDate": "2019-12-12",
-          "sourceReceiptNumber": "20191212000291",
-          "successorIssuerCorpCode": "00159616",
-          "successorSecurity": "034020.KS",
-          "type": "SUCCESSOR_SHARES"
+          "fiscalYear": 2015,
+          "metric": "CASH_DPS",
+          "shareClass": "OTHER_CLASS_SHARE",
+          "sourceReceiptDate": "2016-05-16",
+          "sourceReceiptNumber": "20160516003173",
+          "value": 1144.0
         }
       ],
-      "decisionDate": null,
+      "dividendAmountLineageSelfConsistencyDisagreements": 0,
+      "dividendEventsKnownFromYahoo": 0,
+      "dividendLineageStatus": "RESOLVED",
       "documentedTerms": {
         "cashPerOldShare": null,
         "effectiveDate": "2020-03-10",
@@ -2048,8 +2507,28 @@
         "successorName": "두산중공업",
         "successorSharesPerOldShare": 0.2480895
       },
-      "effectiveDate": null,
-      "evidenceStatus": "SEALED_FROM_DART_RECEIPT",
+      "economicEvidenceScope": "FILED_CONTRACTUAL_TERMS_NOT_EXECUTION_CONFIRMATION",
+      "evidenceReceiptDates": [
+        "2019-12-12"
+      ],
+      "evidenceReceiptNumbers": [
+        "20191212000291",
+        "20191213000001",
+        "20191213000002",
+        "20200106000315",
+        "20200121800573",
+        "20200615000290",
+        "20200615000291"
+      ],
+      "evidenceSources": [
+        "DART:20191212000291",
+        "DART:20191213000001",
+        "DART:20191213000002",
+        "DART:20200106000315",
+        "DART:20200121800573",
+        "DART:20200615000290",
+        "DART:20200615000291"
+      ],
       "executionStatus": "UNCONFIRMED_BY_COLLECTED_COMPLETION_DOCUMENTS",
       "failedReceipts": [
         {
@@ -2125,7 +2604,7 @@
         }
       },
       "finalTermsReceiptNumber": null,
-      "fractionalShareTreatment": null,
+      "firstMembershipDate": "2013-06-03",
       "identityBridge": {
         "disambiguationBasis": null,
         "identitySourcePath": "ledger/dart-ownership-events/collection-universe.json",
@@ -2134,193 +2613,196 @@
         "nameFromDocument": "두산중공업",
         "reason": null
       },
-      "lastTradingDate": null,
+      "krxName": "두산건설",
+      "lastMembershipDate": "2013-07-01",
+      "lastTradingDate": "2020-03-23",
       "latestReviewedTermsReceiptNumber": "20191212000291",
-      "oldIssuerCorpCode": "00102760",
-      "oldSecurity": "011160.KS",
-      "rawDocumentReceipts": [
+      "plausiblyResponsibleReceipts": [
         "20191212000291",
         "20191213000001",
         "20191213000002",
+        "20191216000287",
+        "20191224000172",
         "20200106000315",
         "20200121800573",
+        "20200204000309",
         "20200615000290",
         "20200615000291"
       ],
+      "rawDisclosureRowsCollected": 43,
+      "rawDividendSectionRowsCollected": 137,
       "reconstructionStatus": "PARTIALLY_RECONSTRUCTED",
-      "sourceReceiptDate": "2019-12-12",
-      "sourceReceiptNumber": "20191212000291",
-      "sourceReceiptNumbers": [
-        "20191212000291",
-        "20191213000001",
-        "20191213000002",
-        "20200106000315",
-        "20200121800573",
-        "20200615000290",
-        "20200615000291"
-      ],
-      "sources": [
-        "DART:20191212000291",
-        "DART:20191213000001",
-        "DART:20191213000002",
-        "DART:20200106000315",
-        "DART:20200121800573",
-        "DART:20200615000290",
-        "DART:20200615000291"
-      ],
-      "successorIssuerCorpCode": "00159616",
-      "successorSecurity": "034020.KS",
-      "successorSharesPerOldShare": null,
-      "unresolvedFields": [
-        "executionConfirmation",
-        "finalEconomicTerms"
-      ]
+      "successorChain": {
+        "cyclesDetected": [],
+        "reachableSuccessors": [
+          "034020.KS"
+        ]
+      },
+      "terminationType": "SHARE_EXCHANGE"
     },
     {
-      "actionType": "CASH_SHARE_EXCHANGE",
-      "amendmentChainStatus": "READY",
-      "amendmentHistory": [
-        {
-          "correctionRows": [],
-          "documentSha256": "d93d6f72ea5df6c3f8f44a634a1dad56ddd4ba0d48e9e58227b73df908759837",
-          "fieldsChanged": [],
-          "originalSubmissionDateEvidence": [],
-          "receiptDate": "2026-04-27",
-          "receiptNumber": "20260427000630",
-          "reportName": "주요사항보고서(주식교환ㆍ이전결정)",
-          "scope": "REVIEWED_SAME_TERMINAL_EVENT_PUBLICATION_SEQUENCE",
-          "supersedesReceiptNumber": null
-        },
-        {
-          "correctionRows": [
-            {
-              "cellsPreview": [
-                "항 목",
-                "정정사유",
-                "정 정 전",
-                "정 정 후"
-              ],
-              "fullCellsSha256": "f6f6eac50a068e39af8ce30b828dd4cbd7e7177fe5f082770126f79761fe7214"
-            },
-            {
-              "cellsPreview": [
-                "10. 주식매수청구권에 관한 사항- 행사절차, 방법, 기간, 장소",
-                "오기 정정",
-                "(1) 주식매수청구권의 행사절차: 반대의사 통지상법 제360조의5 및 자본시장과 금융투자업에 관한 법률 제165조의5에 의거, 주주확정 기준일(2026년 5월 12일) 현재 회사의 주주명부에 등재된 주주 중 주식교환에 관한 이사회 결의에 반대하는 주주는 주식교환을 한다는 뜻을 공고하거나 주주에게 통지한 날부터 2주 이내(2026년 5월 27일까지)에 회사에 대하여 서면으로 주식교환에 관한 이사회 결의에 반대하는 의사를 통지하여야 합니다.단, 주권을 증권회사에 위탁하고 있는 일반주주(기존 \"실질주주\")의 경우에는 당해 증권회사에 통지하여야 합니다. 이때, 반대의사 표시는 반대의사통지 종료일의 3영업일 이전 (2026년 5월 22일) 까지 하여야 합니다. 증권회사에서는 실질주주의 반대의사 표시를 취합하여 반대의",
-                "(1) 주식매수청구권의 행사절차: 반대의사 통지상법 제360조의5 및 자본시장과 금융투자업에 관한 법률 제165조의5에 의거, 주주확정 기준일(2026년 5월 12일) 현재 회사의 주주명부에 등재된 주주 중 주식교환에 관한 이사회 결의에 반대하는 주주는 주식교환을 한다는 뜻을 공고하거나 주주에게 통지한 날부터 2주 이내(2026년 5월 27일까지)에 회사에 대하여 서면으로 주식교환에 관한 이사회 결의에 반대하는 의사를 통지하여야 합니다.단, 주권을 증권회사에 위탁하고 있는 일반주주(기존 \"실질주주\")의 경우에는 당해 증권회사에 통지하여야 합니다. 이때, 반대의사 표시는 반대의사통지 종료일의 3영업일 이전 (2026년 5월 21일) 까지 하여야 합니다. 증권회사에서는 실질주주의 반대의사 표시를 취합하여 반대의"
-              ],
-              "fullCellsSha256": "22f2e138654b45c58cf997f395d26e126988b70540574c71f0e08b8a391f8cf0"
-            }
-          ],
-          "documentSha256": "be00ff3729b1f8a1b362954050cdb303ad7cc87c7c9b2a150f9182b5b3de6910",
-          "fieldsChanged": [
-            "10. 주식매수청구권에 관한 사항- 행사절차, 방법, 기간, 장소"
-          ],
-          "originalSubmissionDateEvidence": [
-            [
-              "2. 정정대상 공시서류의 최초제출일 :",
-              "2026년 04월 27일"
-            ]
-          ],
-          "receiptDate": "2026-05-11",
-          "receiptNumber": "20260511000724",
-          "reportName": "[정정명령부과][기재정정]주요사항보고서(주식교환ㆍ이전결정)",
-          "scope": "REVIEWED_SAME_TERMINAL_EVENT_PUBLICATION_SEQUENCE",
-          "supersedesReceiptNumber": "20260427000630"
-        },
-        {
-          "correctionRows": [
-            {
-              "cellsPreview": [
-                "항 목",
-                "정정사유",
-                "정 정 전",
-                "정 정 후"
-              ],
-              "fullCellsSha256": "f6f6eac50a068e39af8ce30b828dd4cbd7e7177fe5f082770126f79761fe7214"
-            },
-            {
-              "cellsPreview": [
-                "18. 이사의 충실의무 이행에 관련된 사항다. 주식교환의 가격, 주주 직접 손해 가능성 및 잠재적 이해상충",
-                "이사의 충실의무 이행과 관련된 사항에 대한 내용 보완 기재",
-                "(주1) 정정전",
-                "(주2) 정정후"
-              ],
-              "fullCellsSha256": "5df62f64a7ddb86e11e6d8008bf84928a08f16d70902750a7b9bb6bba4909821"
-            },
-            {
-              "cellsPreview": [
-                "18. 이사의 충실의무 이행에 관련된 사항라. 본건 주식교환 시 회사가 진행한 공정성 강화 조치",
-                "이사의 충실의무 이행과 관련된 사항에 대한 내용 보완 기재",
-                "(주3) 정정전",
-                "(주4) 정정후"
-              ],
-              "fullCellsSha256": "04c7fcc196a45180e42bf9e0e1a81fb4e41b7e75996b8301d7f525d240cc52bc"
-            },
-            {
-              "cellsPreview": [
-                "18. 이사의 충실의무 이행에 관련된 사항라. 본건 주식교환 시 회사가 진행한 공정성 강화 조치특별위원회의 구체적인 검토 내용은 다음과 같습니다. (2) 거래 조건의 공정성",
-                "이사의 충실의무 이행과 관련된 사항에 대한 내용 보완 기재",
-                "(주5) 정정전",
-                "(주6) 정정후"
-              ],
-              "fullCellsSha256": "9549d246bd78747c1da50551dab696c9244d036e39bee630d2c4932305283d62"
-            },
-            {
-              "cellsPreview": [
-                "18. 이사의 충실의무 이행에 관련된 사항라. 본건 주식교환 시 회사가 진행한 공정성 강화 조치특별위원회의 구체적인 검토 내용은 다음과 같습니다. (3) 거래 절차의 적정성",
-                "이사의 충실의무 이행과 관련된 사항에 대한 내용 보완 기재",
-                "(주7) 정정전",
-                "(주8) 정정후"
-              ],
-              "fullCellsSha256": "03d336ed469a0b89d0bc4246d8c4d17c6197b5a9dd32ae59bf7a85a5ec0caac0"
-            },
-            {
-              "cellsPreview": [
-                "18. 이사의 충실의무 이행에 관련된 사항마. 독립적 외부전문가의 검토",
-                "이사의 충실의무 이행과 관련된 사항에 대한 내용 보완 기재",
-                "(주9) 정정전",
-                "(주10) 정정후"
-              ],
-              "fullCellsSha256": "608660de032ebe49430d84d4710c82f3c682fb5053f00cbcce7fabe6b550024f"
-            }
-          ],
-          "documentSha256": "83d74831925749ba95a2ace61eb5b16f48c1f4bd2a889aee3f496a2575bf75ab",
-          "fieldsChanged": [
-            "18. 이사의 충실의무 이행에 관련된 사항라. 본건 주식교환 시 회사가 진행한 공정성 강화 조치특별위원회의 구체적인 검토 내용은 다음과 같습니다. (2) 거래 조건의 공정성",
-            "18. 이사의 충실의무 이행에 관련된 사항라. 본건 주식교환 시 회사가 진행한 공정성 강화 조치특별위원회의 구체적인 검토 내용은 다음과 같습니다. (3) 거래 절차의 적정성"
-          ],
-          "originalSubmissionDateEvidence": [
-            [
-              "2. 정정대상 공시서류의 최초제출일 :",
-              "2026년 04월 27일"
-            ]
-          ],
-          "receiptDate": "2026-05-19",
-          "receiptNumber": "20260519000237",
-          "reportName": "[기재정정]주요사항보고서(주식교환ㆍ이전결정)",
-          "scope": "REVIEWED_SAME_TERMINAL_EVENT_PUBLICATION_SEQUENCE",
-          "supersedesReceiptNumber": "20260511000724"
-        }
-      ],
       "blockingReasons": [
         "EXECUTION_CONFIRMATION: collected decisions state conditional/planned terms; no matching completion evidence establishes actual occurrence and final payment"
       ],
-      "cashInLieuRule": null,
-      "cashPerOldShare": 120000.0,
-      "completionEvidence": [],
-      "considerationComponents": [
+      "code": "012510.KS",
+      "completeness": {
+        "amendmentChainResolved": "READY",
+        "dartIssuerResolved": "READY",
+        "dividendLineageResolved": "READY",
+        "effectiveDateResolved": "READY",
+        "exDateSemanticsResolved": "BLOCKED",
+        "exchangeRatioResolved": "NOT_APPLICABLE",
+        "lastTradingDateResolved": "READY",
+        "rawEvidenceRetained": "READY",
+        "sourceProvenanceRetained": "READY",
+        "successorResolvedWhereRequired": "NOT_APPLICABLE",
+        "terminalActionChainResolved": "BLOCKED",
+        "terminalConsiderationResolved": "READY",
+        "terminationTypeResolved": "READY"
+      },
+      "dartCorpCode": "00172291",
+      "dartIdentityStatus": "RESOLVED",
+      "dividendAmountLineageEntries": [
         {
-          "cashAmount": 120000.0,
-          "sharesPerOldShare": null,
-          "sourceReceiptDate": "2026-05-19",
-          "sourceReceiptNumber": "20260519000237",
-          "successorIssuerCorpCode": null,
-          "successorSecurity": null,
-          "type": "CASH"
+          "fiscalYear": 2015,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2016-05-16",
+          "sourceReceiptNumber": "20160516001451",
+          "value": 220.0
+        },
+        {
+          "fiscalYear": 2016,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2017-03-30",
+          "sourceReceiptNumber": "20170330000584",
+          "value": 290.0
+        },
+        {
+          "fiscalYear": 2018,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2019-04-01",
+          "sourceReceiptNumber": "20190401001908",
+          "value": 450.0
+        },
+        {
+          "fiscalYear": 2019,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2020-03-30",
+          "sourceReceiptNumber": "20200330003794",
+          "value": 470.0
+        },
+        {
+          "fiscalYear": 2019,
+          "metric": "CASH_DPS",
+          "shareClass": "PREFERRED",
+          "sourceReceiptDate": "2020-03-30",
+          "sourceReceiptNumber": "20200330003794",
+          "value": 939.0
+        },
+        {
+          "fiscalYear": 2020,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2021-07-06",
+          "sourceReceiptNumber": "20210706000401",
+          "value": 450.0
+        },
+        {
+          "fiscalYear": 2020,
+          "metric": "CASH_DPS",
+          "shareClass": "PREFERRED",
+          "sourceReceiptDate": "2021-07-06",
+          "sourceReceiptNumber": "20210706000401",
+          "value": 2576.0
+        },
+        {
+          "fiscalYear": 2021,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2022-03-30",
+          "sourceReceiptNumber": "20220330001628",
+          "value": 450.0
+        },
+        {
+          "fiscalYear": 2021,
+          "metric": "CASH_DPS",
+          "shareClass": "PREFERRED",
+          "sourceReceiptDate": "2022-03-30",
+          "sourceReceiptNumber": "20220330001628",
+          "value": 2576.0
+        },
+        {
+          "fiscalYear": 2022,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2023-03-15",
+          "sourceReceiptNumber": "20230315001173",
+          "value": 123.0
+        },
+        {
+          "fiscalYear": 2022,
+          "metric": "CASH_DPS",
+          "shareClass": "PREFERRED",
+          "sourceReceiptDate": "2023-03-15",
+          "sourceReceiptNumber": "20230315001173",
+          "value": 3408.0
+        },
+        {
+          "fiscalYear": 2023,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2024-03-13",
+          "sourceReceiptNumber": "20240313001285",
+          "value": 217.0
+        },
+        {
+          "fiscalYear": 2023,
+          "metric": "CASH_DPS",
+          "shareClass": "PREFERRED",
+          "sourceReceiptDate": "2024-03-13",
+          "sourceReceiptNumber": "20240313001285",
+          "value": 4861.0
+        },
+        {
+          "fiscalYear": 2024,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2025-03-17",
+          "sourceReceiptNumber": "20250317001028",
+          "value": 477.0
+        },
+        {
+          "fiscalYear": 2024,
+          "metric": "CASH_DPS",
+          "shareClass": "PREFERRED",
+          "sourceReceiptDate": "2025-03-17",
+          "sourceReceiptNumber": "20250317001028",
+          "value": 4861.0
+        },
+        {
+          "fiscalYear": 2025,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2026-03-18",
+          "sourceReceiptNumber": "20260318001198",
+          "value": 640.0
+        },
+        {
+          "fiscalYear": 2025,
+          "metric": "CASH_DPS",
+          "shareClass": "PREFERRED",
+          "sourceReceiptDate": "2026-03-18",
+          "sourceReceiptNumber": "20260318001198",
+          "value": 4861.0
         }
       ],
-      "decisionDate": null,
+      "dividendAmountLineageSelfConsistencyDisagreements": 0,
+      "dividendEventsKnownFromYahoo": 0,
+      "dividendLineageStatus": "RESOLVED",
       "documentedTerms": {
         "cashPerOldShare": 120000.0,
         "effectiveDate": "2026-06-30",
@@ -2330,8 +2812,34 @@
         "successorName": "도로니쿰",
         "successorSharesPerOldShare": null
       },
-      "effectiveDate": "2026-06-30",
-      "evidenceStatus": "SEALED_FROM_DART_RECEIPT",
+      "economicEvidenceScope": "FILED_CONTRACTUAL_TERMS_NOT_EXECUTION_CONFIRMATION",
+      "evidenceReceiptDates": [
+        "2026-05-19"
+      ],
+      "evidenceReceiptNumbers": [
+        "20260223000008",
+        "20260223000011",
+        "20260326001203",
+        "20260327000008",
+        "20260327000009",
+        "20260415000010",
+        "20260424000738",
+        "20260427000630",
+        "20260511000724",
+        "20260519000237"
+      ],
+      "evidenceSources": [
+        "DART:20260223000008",
+        "DART:20260223000011",
+        "DART:20260326001203",
+        "DART:20260327000008",
+        "DART:20260327000009",
+        "DART:20260415000010",
+        "DART:20260424000738",
+        "DART:20260427000630",
+        "DART:20260511000724",
+        "DART:20260519000237"
+      ],
       "executionStatus": "UNCONFIRMED_BY_COLLECTED_COMPLETION_DOCUMENTS",
       "failedReceipts": [
         {
@@ -2381,7 +2889,7 @@
         }
       },
       "finalTermsReceiptNumber": null,
-      "fractionalShareTreatment": null,
+      "firstMembershipDate": "2018-07-02",
       "identityBridge": {
         "disambiguationBasis": null,
         "identitySourcePath": "ledger/dart-ownership-events/collection-universe.json",
@@ -2390,11 +2898,11 @@
         "nameFromDocument": "도로니쿰",
         "reason": "NO_EXACT_IDENTITY_BRIDGE"
       },
-      "lastTradingDate": null,
+      "krxName": "더존비즈온",
+      "lastMembershipDate": "2021-10-01",
+      "lastTradingDate": "2026-07-14",
       "latestReviewedTermsReceiptNumber": "20260519000237",
-      "oldIssuerCorpCode": "00172291",
-      "oldSecurity": "012510.KS",
-      "rawDocumentReceipts": [
+      "plausiblyResponsibleReceipts": [
         "20260223000008",
         "20260223000011",
         "20260326001203",
@@ -2403,79 +2911,57 @@
         "20260415000010",
         "20260424000738",
         "20260427000630",
+        "20260429000294",
         "20260511000724",
+        "20260515100001",
         "20260519000237"
       ],
+      "rawDisclosureRowsCollected": 33,
+      "rawDividendSectionRowsCollected": 164,
       "reconstructionStatus": "PARTIALLY_RECONSTRUCTED",
-      "sourceReceiptDate": "2026-05-19",
-      "sourceReceiptNumber": "20260519000237",
-      "sourceReceiptNumbers": [
-        "20260223000008",
-        "20260223000011",
-        "20260326001203",
-        "20260327000008",
-        "20260327000009",
-        "20260415000010",
-        "20260424000738",
-        "20260427000630",
-        "20260511000724",
-        "20260519000237"
-      ],
-      "sources": [
-        "DART:20260223000008",
-        "DART:20260223000011",
-        "DART:20260326001203",
-        "DART:20260327000008",
-        "DART:20260327000009",
-        "DART:20260415000010",
-        "DART:20260424000738",
-        "DART:20260427000630",
-        "DART:20260511000724",
-        "DART:20260519000237"
-      ],
-      "successorIssuerCorpCode": null,
-      "successorSecurity": null,
-      "successorSharesPerOldShare": null,
-      "unresolvedFields": [
-        "executionConfirmation"
-      ]
+      "successorChain": {
+        "cyclesDetected": [],
+        "reachableSuccessors": []
+      },
+      "terminationType": "CASH_SHARE_EXCHANGE"
     },
     {
-      "actionType": "MERGER_STOCK",
-      "amendmentChainStatus": "BLOCKED",
-      "amendmentHistory": [
-        {
-          "correctionRows": [],
-          "documentSha256": "e4e91c5daad8cc8b58ed4a7318cb575bb58b6058f72b6f14030e7e36f683d8c4",
-          "fieldsChanged": [],
-          "originalSubmissionDateEvidence": [],
-          "receiptDate": "2016-05-13",
-          "receiptNumber": "20160513004518",
-          "reportName": "주요사항보고서(회사합병결정)",
-          "scope": "REVIEWED_SAME_TERMINAL_EVENT_PUBLICATION_SEQUENCE",
-          "supersedesReceiptNumber": null
-        }
-      ],
       "blockingReasons": [
         "FINAL_ECONOMIC_TERMS_AND_EFFECTIVE_DATE: later body corrections unavailable (20160919000325)",
         "AMENDMENT_ATTACHMENT_FINALITY: unavailable potentially material attachment",
         "EXECUTION_CONFIRMATION: collected decisions state conditional/planned terms; no matching completion evidence establishes actual occurrence and final payment"
       ],
-      "cashInLieuRule": "차와 관련하여 사정상 변경될 수 있습니다. 사. 신주배정시 발생하는 1주 미만의 단주에 대해서는 합병으로 인하여 발행ㆍ교부되는 미래에셋대우 주식회사의 합병신주가 한국거래소에 상장되어 거래되는 초일의 종가를 기준으로 계산된 금액을 단주가 귀속될 주주에게 현금으로 지급할 예정입니다. 아. 합병회사 미래에셋대우 주식회사는 피합병회사 미래에셋증권 주식회사를 흡수합병함에 있어 합병회사 미래에셋대우 주식회사가 피합병회사 미래에셋증권 주식회사의 주주에게 합병비율에 따른 합병신주를 교부하며 단주 지급금 외 별도의 합병 교부금을 지급하지 않습니다. 자. 본 주요사항보고서 제출일 현재 미래에셋증권 주식회사가 소유한 자기주식과 본 주요사항보고서 제출일 현재 미래에셋",
-      "cashPerOldShare": null,
-      "completionEvidence": [],
-      "considerationComponents": [
+      "code": "037620.KS",
+      "completeness": {
+        "amendmentChainResolved": "BLOCKED",
+        "dartIssuerResolved": "READY",
+        "dividendLineageResolved": "READY",
+        "effectiveDateResolved": "BLOCKED",
+        "exDateSemanticsResolved": "BLOCKED",
+        "exchangeRatioResolved": "BLOCKED",
+        "lastTradingDateResolved": "READY",
+        "rawEvidenceRetained": "READY",
+        "sourceProvenanceRetained": "READY",
+        "successorResolvedWhereRequired": "READY",
+        "terminalActionChainResolved": "BLOCKED",
+        "terminalConsiderationResolved": "BLOCKED",
+        "terminationTypeResolved": "READY"
+      },
+      "dartCorpCode": "00311030",
+      "dartIdentityStatus": "RESOLVED",
+      "dividendAmountLineageEntries": [
         {
-          "cashAmount": null,
-          "sharesPerOldShare": null,
-          "sourceReceiptDate": "2016-05-13",
-          "sourceReceiptNumber": "20160513004518",
-          "successorIssuerCorpCode": "00111722",
-          "successorSecurity": "006800.KS",
-          "type": "SUCCESSOR_SHARES"
+          "fiscalYear": 2015,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2016-03-30",
+          "sourceReceiptNumber": "20160330003404",
+          "value": 350.0
         }
       ],
-      "decisionDate": null,
+      "dividendAmountLineageSelfConsistencyDisagreements": 0,
+      "dividendEventsKnownFromYahoo": 0,
+      "dividendLineageStatus": "RESOLVED",
       "documentedTerms": {
         "cashPerOldShare": null,
         "effectiveDate": "2016-11-01",
@@ -2485,8 +2971,16 @@
         "successorName": "미래에셋대우",
         "successorSharesPerOldShare": 2.9716317
       },
-      "effectiveDate": null,
-      "evidenceStatus": "SEALED_FROM_DART_RECEIPT",
+      "economicEvidenceScope": "FILED_CONTRACTUAL_TERMS_NOT_EXECUTION_CONFIRMATION",
+      "evidenceReceiptDates": [
+        "2016-05-13"
+      ],
+      "evidenceReceiptNumbers": [
+        "20160513004518"
+      ],
+      "evidenceSources": [
+        "DART:20160513004518"
+      ],
       "executionStatus": "UNCONFIRMED_BY_COLLECTED_COMPLETION_DOCUMENTS",
       "failedReceipts": [
         {
@@ -2563,7 +3057,7 @@
         }
       },
       "finalTermsReceiptNumber": null,
-      "fractionalShareTreatment": "차와 관련하여 사정상 변경될 수 있습니다. 사. 신주배정시 발생하는 1주 미만의 단주에 대해서는 합병으로 인하여 발행ㆍ교부되는 미래에셋대우 주식회사의 합병신주가 한국거래소에 상장되어 거래되는 초일의 종가를 기준으로 계산된 금액을 단주가 귀속될 주주에게 현금으로 지급할 예정입니다. 아. 합병회사 미래에셋대우 주식회사는 피합병회사 미래에셋증권 주식회사를 흡수합병함에 있어 합병회사 미래에셋대우 주식회사가 피합병회사 미래에셋증권 주식회사의 주주에게 합병비율에 따른 합병신주를 교부하며 단주 지급금 외 별도의 합병 교부금을 지급하지 않습니다. 자. 본 주요사항보고서 제출일 현재 미래에셋증권 주식회사가 소유한 자기주식과 본 주요사항보고서 제출일 현재 미래에셋",
+      "firstMembershipDate": "2013-02-01",
       "identityBridge": {
         "disambiguationBasis": null,
         "identitySourcePath": "ledger/dart-ownership-events/collection-universe.json",
@@ -2572,103 +3066,79 @@
         "nameFromDocument": "미래에셋대우",
         "reason": null
       },
-      "lastTradingDate": null,
+      "krxName": "미래에셋증권",
+      "lastMembershipDate": "2017-01-02",
+      "lastTradingDate": "2017-01-19",
       "latestReviewedTermsReceiptNumber": "20160513004518",
-      "oldIssuerCorpCode": "00311030",
-      "oldSecurity": "037620.KS",
-      "rawDocumentReceipts": [
-        "20160513004518"
+      "plausiblyResponsibleReceipts": [
+        "20160513004518",
+        "20160919000325",
+        "20161014000405"
       ],
+      "rawDisclosureRowsCollected": 7,
+      "rawDividendSectionRowsCollected": 14,
       "reconstructionStatus": "PARTIALLY_RECONSTRUCTED",
-      "sourceReceiptDate": "2016-05-13",
-      "sourceReceiptNumber": "20160513004518",
-      "sourceReceiptNumbers": [
-        "20160513004518"
-      ],
-      "sources": [
-        "DART:20160513004518"
-      ],
-      "successorIssuerCorpCode": "00111722",
-      "successorSecurity": "006800.KS",
-      "successorSharesPerOldShare": null,
-      "unresolvedFields": [
-        "executionConfirmation",
-        "finalEconomicTerms"
-      ]
+      "successorChain": {
+        "cyclesDetected": [],
+        "reachableSuccessors": [
+          "006800.KS"
+        ]
+      },
+      "terminationType": "MERGER_STOCK"
     },
     {
-      "actionType": "MERGER_STOCK",
-      "amendmentChainStatus": "READY",
-      "amendmentHistory": [
-        {
-          "correctionRows": [],
-          "documentSha256": "1a9c455da1857b14e6bdbe7e96b30ffdc24ba35569ffeb1f34ae2cfa955ef85d",
-          "fieldsChanged": [],
-          "originalSubmissionDateEvidence": [],
-          "receiptDate": "2025-07-01",
-          "receiptNumber": "20250701000231",
-          "reportName": "주요사항보고서(회사합병결정)",
-          "scope": "REVIEWED_SAME_TERMINAL_EVENT_PUBLICATION_SEQUENCE",
-          "supersedesReceiptNumber": null
-        },
-        {
-          "correctionRows": [
-            {
-              "cellsPreview": [
-                "항 목",
-                "정정사유",
-                "정 정 전",
-                "정 정 후"
-              ],
-              "fullCellsSha256": "f6f6eac50a068e39af8ce30b828dd4cbd7e7177fe5f082770126f79761fe7214"
-            },
-            {
-              "cellsPreview": [
-                "10. 합병일정 매매거래 정지 예정기간",
-                "유관기관과의 일정 조율에 따른 기재 정정",
-                "시작일: 2025년 12월 30일종료일: 2026년 01월 25일",
-                "시작일: 2025년 12월 29 일종료일: 2026년 01월 25일"
-              ],
-              "fullCellsSha256": "5ecf144e0313626fab6370c3fd405ba7ff2193a549c4837689c62d523696a8f3"
-            }
-          ],
-          "documentSha256": "d56ad446b9fb19881d24f0bf52d7955bf326f105677b189a9ce48972713d53ba",
-          "fieldsChanged": [
-            "10. 합병일정 매매거래 정지 예정기간"
-          ],
-          "originalSubmissionDateEvidence": [
-            [
-              "2. 정정대상 공시서류의 최초제출일 :",
-              "2025년 07월 01일"
-            ]
-          ],
-          "receiptDate": "2025-07-11",
-          "receiptNumber": "20250711000213",
-          "reportName": "[기재정정]주요사항보고서(회사합병결정)",
-          "scope": "REVIEWED_SAME_TERMINAL_EVENT_PUBLICATION_SEQUENCE",
-          "supersedesReceiptNumber": "20250701000231"
-        }
-      ],
       "blockingReasons": [
         "SUCCESSOR_SECURITY_IDENTITY: NO_EXACT_IDENTITY_BRIDGE",
         "FRACTIONAL_SHARE_CASH_IN_LIEU_RULE: not found in retained applicable decision",
         "EXECUTION_CONFIRMATION: collected decisions state conditional/planned terms; no matching completion evidence establishes actual occurrence and final payment"
       ],
-      "cashInLieuRule": null,
-      "cashPerOldShare": null,
-      "completionEvidence": [],
-      "considerationComponents": [
+      "code": "042670.KS",
+      "completeness": {
+        "amendmentChainResolved": "READY",
+        "dartIssuerResolved": "READY",
+        "dividendLineageResolved": "READY",
+        "effectiveDateResolved": "READY",
+        "exDateSemanticsResolved": "BLOCKED",
+        "exchangeRatioResolved": "READY",
+        "lastTradingDateResolved": "READY",
+        "rawEvidenceRetained": "READY",
+        "sourceProvenanceRetained": "READY",
+        "successorResolvedWhereRequired": "BLOCKED",
+        "terminalActionChainResolved": "BLOCKED",
+        "terminalConsiderationResolved": "BLOCKED",
+        "terminationTypeResolved": "READY"
+      },
+      "dartCorpCode": "00344287",
+      "dartIdentityStatus": "RESOLVED",
+      "dividendAmountLineageEntries": [
         {
-          "cashAmount": null,
-          "sharesPerOldShare": 0.1621707,
-          "sourceReceiptDate": "2025-07-11",
-          "sourceReceiptNumber": "20250711000213",
-          "successorIssuerCorpCode": null,
-          "successorSecurity": null,
-          "type": "SUCCESSOR_SHARES"
+          "fiscalYear": 2022,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2023-03-17",
+          "sourceReceiptNumber": "20230317000838",
+          "value": 240.0
+        },
+        {
+          "fiscalYear": 2023,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2024-03-28",
+          "sourceReceiptNumber": "20240328001028",
+          "value": 110.0
+        },
+        {
+          "fiscalYear": 2024,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2025-04-18",
+          "sourceReceiptNumber": "20250418000372",
+          "value": 70.0
         }
       ],
-      "decisionDate": null,
+      "dividendAmountLineageSelfConsistencyDisagreements": 0,
+      "dividendEventsKnownFromYahoo": 0,
+      "dividendLineageStatus": "RESOLVED",
       "documentedTerms": {
         "cashPerOldShare": null,
         "effectiveDate": "2026-01-01",
@@ -2678,8 +3148,18 @@
         "successorName": "에이치디현대건설기계",
         "successorSharesPerOldShare": 0.1621707
       },
-      "effectiveDate": "2026-01-01",
-      "evidenceStatus": "SEALED_FROM_DART_RECEIPT",
+      "economicEvidenceScope": "FILED_CONTRACTUAL_TERMS_NOT_EXECUTION_CONFIRMATION",
+      "evidenceReceiptDates": [
+        "2025-07-11"
+      ],
+      "evidenceReceiptNumbers": [
+        "20250701000231",
+        "20250711000213"
+      ],
+      "evidenceSources": [
+        "DART:20250701000231",
+        "DART:20250711000213"
+      ],
       "executionStatus": "UNCONFIRMED_BY_COLLECTED_COMPLETION_DOCUMENTS",
       "failedReceipts": [],
       "fieldEvidence": {
@@ -2721,7 +3201,7 @@
         }
       },
       "finalTermsReceiptNumber": null,
-      "fractionalShareTreatment": null,
+      "firstMembershipDate": "2013-01-02",
       "identityBridge": {
         "disambiguationBasis": null,
         "identitySourcePath": "ledger/dart-ownership-events/collection-universe.json",
@@ -2730,429 +3210,49 @@
         "nameFromDocument": "에이치디현대건설기계",
         "reason": "NO_EXACT_IDENTITY_BRIDGE"
       },
-      "lastTradingDate": null,
+      "krxName": "HD현대인프라코어",
+      "lastMembershipDate": "2023-08-01",
+      "lastTradingDate": "2026-01-23",
       "latestReviewedTermsReceiptNumber": "20250711000213",
-      "oldIssuerCorpCode": "00344287",
-      "oldSecurity": "042670.KS",
-      "rawDocumentReceipts": [
+      "plausiblyResponsibleReceipts": [
         "20250701000231",
         "20250711000213"
       ],
+      "rawDisclosureRowsCollected": 30,
+      "rawDividendSectionRowsCollected": 123,
       "reconstructionStatus": "PARTIALLY_RECONSTRUCTED",
-      "sourceReceiptDate": "2025-07-11",
-      "sourceReceiptNumber": "20250711000213",
-      "sourceReceiptNumbers": [
-        "20250701000231",
-        "20250711000213"
-      ],
-      "sources": [
-        "DART:20250701000231",
-        "DART:20250711000213"
-      ],
-      "successorIssuerCorpCode": null,
-      "successorSecurity": null,
-      "successorSharesPerOldShare": 0.1621707,
-      "unresolvedFields": [
-        "executionConfirmation"
-      ]
+      "successorChain": {
+        "cyclesDetected": [],
+        "reachableSuccessors": []
+      },
+      "terminationType": "MERGER_STOCK"
     },
     {
-      "actionType": "MERGER_STOCK",
-      "amendmentChainStatus": "READY",
-      "amendmentHistory": [
-        {
-          "correctionRows": [],
-          "documentSha256": "02097811ebcef006d7c3996b18bde49336570fa3b41f986716326706350aa557",
-          "fieldsChanged": [],
-          "originalSubmissionDateEvidence": [],
-          "receiptDate": "2014-07-28",
-          "receiptNumber": "20140728000280",
-          "reportName": "주요사항보고서(합병결정)",
-          "scope": "REVIEWED_SAME_TERMINAL_EVENT_PUBLICATION_SEQUENCE",
-          "supersedesReceiptNumber": null
-        },
-        {
-          "correctionRows": [
-            {
-              "cellsPreview": [
-                "항 목",
-                "정정사유",
-                "정 정 전",
-                "정 정 후"
-              ],
-              "fullCellsSha256": "f6f6eac50a068e39af8ce30b828dd4cbd7e7177fe5f082770126f79761fe7214"
-            },
-            {
-              "cellsPreview": [
-                "II. 보고 내용"
-              ],
-              "fullCellsSha256": "4706f058119fe4d8198585373481a2445b7a16760450e4cb8c8218e7d0aa7dd2"
-            },
-            {
-              "cellsPreview": [
-                "제1절. 합병에 관한 기본사항"
-              ],
-              "fullCellsSha256": "4ab93318707c41f60b83eb01172168af775415a00083ac70255777ff9df8b6a3"
-            },
-            {
-              "cellsPreview": [
-                "3. 합병의 요령 마. 자기주식 소유현황 및 처리방침",
-                "기재 추가",
-                "- 피합병회사인 우리금융지주(주)는 주요사항보고서 제출일 현재 보통주식 29,157 주의 자기주식을 소유하고 있는데, 합병기일 현재 우리금융지주(주)가 보유하는 자기주식(우리금융지주(주)가 본건 합병에 반대하는 우리금융지주(주)의 주주들의 주식매수청구권 행사에 응하여 합병기일 이전에 취득하는 자기주식 포함)에 대하여 본건 합병의 합병비율에 따라 합병신주를 배정, 교부할 예정입니다.",
-                "(정정후 주1)"
-              ],
-              "fullCellsSha256": "ff622ec368dceffb1dd217fa53780336c8a6d1825f1ef45a1c5893978b8c645f"
-            },
-            {
-              "cellsPreview": [
-                "4. 진행경과 및 일정 나. 주요일정",
-                "기재 추가",
-                "주1) 상기 합병일정은 본 주요사항보고서 제출일 현재 예상일정으로, 관계 기관과의 협의 및승인 과정 등에 의해 변경될 수 있습니다. 주2) 상법 제526조의 합병종료보고 주주총회와 그에 대한 합병에 관한 사항 보고는 이사회의 개최와 인터넷 홈페이지 공고 로 대체합니다.",
-                "(정정후 주2)"
-              ],
-              "fullCellsSha256": "4d53add999faf8cef5655e09f4cea840b80c8f6a19bfe336fc2ffe58fc9d34d0"
-            },
-            {
-              "cellsPreview": [
-                "제2절. 합병상대방회사의 개요"
-              ],
-              "fullCellsSha256": "ef3e5178ceeadc176f00f40753a7f0e63eab12a2ec0767e42593df6f26cf84a3"
-            },
-            {
-              "cellsPreview": [
-                "1. 회사의 개황 마. 임직원 현황",
-                "기재 정정",
-                "(정정전 주3)",
-                "(정정후 주3)"
-              ],
-              "fullCellsSha256": "5e8621bd7910ce01b0520edbc3b1d0c60398284944744b765647555959ee9b11"
-            },
-            {
-              "cellsPreview": [
-                "2. 최근 3년간 요약재무정보 및 외부감사 여부"
-              ],
-              "fullCellsSha256": "89f5df6c2f1083918908f03e68fafecc060805730e7d39adefd10580c4cb99a3"
-            },
-            {
-              "cellsPreview": [
-                "가. 최근 3년간 요약재무정보",
-                "기재 정정",
-                "(정정전 주4)",
-                "(정정후 주4)"
-              ],
-              "fullCellsSha256": "399d63cb522bd7ff07fe9283f32400389410504e56c5884a4701522e29cbc4b3"
-            },
-            {
-              "cellsPreview": [
-                "제4절. 합병 가액 및 산출근거"
-              ],
-              "fullCellsSha256": "4e90fc062aca43d25be9e228cd9f92064a4a6323f76fd51de85793a7fabc0a06"
-            },
-            {
-              "cellsPreview": [
-                "2. 합병당사회사의 합병가액 산정"
-              ],
-              "fullCellsSha256": "193077afcdaf2cce7cd2a12dca0f123d97b4bc784a5365625f9217a20c8f8ddb"
-            },
-            {
-              "cellsPreview": [
-                "가. 합병법인의 합병가액 산정",
-                "기재 정정",
-                "(정정전 주5)",
-                "(정정후 주5)"
-              ],
-              "fullCellsSha256": "7c9d4ceb7a3e21ec756e5c42cf399495a3be6685a46fb9de3c20378380999ad7"
-            },
-            {
-              "cellsPreview": [
-                "나. 피합병법인의 합병가액 산정",
-                "기재 정정",
-                "(정정전 주6)",
-                "(정정후 주6)"
-              ],
-              "fullCellsSha256": "aeb570b50130cbee4d5f016ff79b4edcffbce37b5bfc7d4cd17d7c27bf611e2c"
-            },
-            {
-              "cellsPreview": [
-                "3. 평가방법 라. 상대가치 분석방법",
-                "기재 정정",
-                "외부평가법인은 수익가치 산정을 위한 상기의 평가방법 중 이익할인법으로 수익가치를 산정하였습니다. 합병법인이 향후 민영화 이슈 등을 가지고 있으며 , 합병법인이 속한 사업의 장기적 미래예측이 쉽지 않은 점을 감안하면 장기간의 미래 수익창출능력에 대한 예측이 중요시되는 평가방법(현금흐름할인모형, 배당할인모형)보다는 미래 예측기간이 짧아 객관성과 예측가능성이 확보되는 이익할인법이 합병법인의 수익가치를 평가하는데 더 적합하다고 판단되어 본 평가 시에 합병법인의 수익가치 산정방법으로 채택하였습니다",
-                "외부평가법인은 수익가치 산정을 위한 상기의 평가방법 중 이익할인법으로 수익가치를 산정하였습니다. 합병법인이 향후 민영화 이슈 등을 가지고 있 어 , 장기간의 미래 수익창출능력에 대한 예측이 중요시되는 평가방법(현금흐름할인모형, 배당할인모형)보다는 미래 예측기간이 짧아 객관성과 예측가능성이 확보되는 이익할인법이 합병법인의 수익가치를 평가하는데 더 적합하다고 판단되어 본 평가 시에 합병법인의 수익가치 산정방법으로 채택하였습니다"
-              ],
-              "fullCellsSha256": "ee27bfc0a21747219efabf6fa5f832e2e9a6a3123f70656e15eeddc3455396ee"
-            },
-            {
-              "cellsPreview": [
-                "제7절. 기타 투자자보호에 필요한 사항"
-              ],
-              "fullCellsSha256": "49beab758c585feb8eb548e1ef12fffa81d3c7db5213dcf78e0a22eaeca30bc0"
-            },
-            {
-              "cellsPreview": [
-                "1. 합병의 성사를 어렵게 하는 위험요소 및 대책 나. 합병계약서 상의 해제조건",
-                "기재 추가",
-                "-",
-                "주1) 참고로 위 합병계약서 상의 해제조건 중 \"합병인가를 신청하였음에도 합병기일 이전에 합병인가를 취득하지 못한 경우 등 본 계약체결일로부터 6개월이 경과하기까지 합병인가를 취득하지 못할 것이 명백한 경우\"와 관련하여, 동 해제조건에서의 '합병인가'라 함은 '금융산업의구조개선에관한법률' 제4조 제1항에 따른 금융기관의 합병에 대한 금융위원회의 인가를 의미합니다."
-              ],
-              "fullCellsSha256": "a29cda8b9b35fb21e0b0885cd460a810b2a853edac2b1721d72cf098b86de6af"
-            },
-            {
-              "cellsPreview": [
-                "제8절. 그 밖에 투자의사결정에 필요한 사항 3. 합병 이후 재무상태표",
-                "기재 정정",
-                "(정정전 주 7 )",
-                "(정정후 주 7 )"
-              ],
-              "fullCellsSha256": "afbb1078bda24af20ef2656841b847fcd3f6592c8f34677f135ea765fdc49296"
-            },
-            {
-              "cellsPreview": [
-                "[전문가의 확인] 1. 전문가의 확인 p2.",
-                "기재 정정",
-                "합병법인이 피합병법인을 합병함에 있어서 합병비율의 기준이 되는 합병 양 당사회사(이하 \"당사회사\")의 주당평가액은 합병법인과 피합병법인이 각각 17,070원(액면가액 5,000원)과 17,070원(액면가액 5,000원)으로 추정되었으며, 당사회사가 합의한 합병비율 1:1.0000000은 적정한 것으로 판단됩니다.",
-                "합병법인이 피합병법인을 합병함에 있어서 합병비율의 기준이 되는 합병 양 당사회사(이하 \"당사회사\")의 주당평가액은 합병법인과 피합병법인이 각각 17,076원(액면가액 5,000원)과 17,076원(액면가액 5,000원)으로 추정되었으며, 당사회사가 합의한 합병비율 1:1.0000000은 적정한 것으로 판단됩니다."
-              ],
-              "fullCellsSha256": "ed63f1ed4b156ecfb1800f10f51e71223869abd641c653bba74acb75b3f47b90"
-            },
-            {
-              "cellsPreview": [
-                "",
-                "(정정전 주4)",
-                "(정정후 주4)"
-              ],
-              "fullCellsSha256": "a1350baaf5c47231f30c2128dd32c6f65e3966c9e65ccabba1ae2066c4d53d50"
-            },
-            {
-              "cellsPreview": [
-                "(단위 : 백만원)"
-              ],
-              "fullCellsSha256": "8a8aeb24a4f7a9eb45c4a5cee2603ce3eae48dce654489e70dd949df56569ad2"
-            },
-            {
-              "cellsPreview": [
-                "",
-                "(정정전 주4)",
-                "(정정후 주4)"
-              ],
-              "fullCellsSha256": "a1350baaf5c47231f30c2128dd32c6f65e3966c9e65ccabba1ae2066c4d53d50"
-            },
-            {
-              "cellsPreview": [
-                "(단위 : 백만원)"
-              ],
-              "fullCellsSha256": "8a8aeb24a4f7a9eb45c4a5cee2603ce3eae48dce654489e70dd949df56569ad2"
-            },
-            {
-              "cellsPreview": [
-                "",
-                "(정정전 주4)",
-                "(정정후 주4)"
-              ],
-              "fullCellsSha256": "a1350baaf5c47231f30c2128dd32c6f65e3966c9e65ccabba1ae2066c4d53d50"
-            },
-            {
-              "cellsPreview": [
-                "(단위 : 백만원)"
-              ],
-              "fullCellsSha256": "8a8aeb24a4f7a9eb45c4a5cee2603ce3eae48dce654489e70dd949df56569ad2"
-            },
-            {
-              "cellsPreview": [
-                "",
-                "(정정전 주4)",
-                "(정정후 주4)"
-              ],
-              "fullCellsSha256": "a1350baaf5c47231f30c2128dd32c6f65e3966c9e65ccabba1ae2066c4d53d50"
-            },
-            {
-              "cellsPreview": [
-                "(단위 : 백만원)"
-              ],
-              "fullCellsSha256": "8a8aeb24a4f7a9eb45c4a5cee2603ce3eae48dce654489e70dd949df56569ad2"
-            }
-          ],
-          "documentSha256": "007b5de98edba5e0041786508ba8db7bae8f2ca54ce5f2b472049274dea7ab01",
-          "fieldsChanged": [
-            "II. 보고 내용",
-            "제1절. 합병에 관한 기본사항",
-            "3. 합병의 요령 마. 자기주식 소유현황 및 처리방침",
-            "4. 진행경과 및 일정 나. 주요일정",
-            "제2절. 합병상대방회사의 개요",
-            "2. 최근 3년간 요약재무정보 및 외부감사 여부",
-            "제4절. 합병 가액 및 산출근거",
-            "2. 합병당사회사의 합병가액 산정",
-            "3. 평가방법 라. 상대가치 분석방법",
-            "제7절. 기타 투자자보호에 필요한 사항",
-            "1. 합병의 성사를 어렵게 하는 위험요소 및 대책 나. 합병계약서 상의 해제조건",
-            "[전문가의 확인] 1. 전문가의 확인 p2.",
-            "(단위 : 백만원)",
-            "(단위 : 백만원)",
-            "(단위 : 백만원)",
-            "(단위 : 백만원)"
-          ],
-          "originalSubmissionDateEvidence": [],
-          "receiptDate": "2014-08-14",
-          "receiptNumber": "20140814001580",
-          "reportName": "[기재정정]주요사항보고서(합병결정)",
-          "scope": "REVIEWED_SAME_TERMINAL_EVENT_PUBLICATION_SEQUENCE",
-          "supersedesReceiptNumber": "20140728000280"
-        },
-        {
-          "correctionRows": [
-            {
-              "cellsPreview": [
-                "항 목",
-                "정정사유",
-                "정 정 전",
-                "정 정 후"
-              ],
-              "fullCellsSha256": "f6f6eac50a068e39af8ce30b828dd4cbd7e7177fe5f082770126f79761fe7214"
-            },
-            {
-              "cellsPreview": [
-                "제4절. 합병 가액 및 산출근거"
-              ],
-              "fullCellsSha256": "4e90fc062aca43d25be9e228cd9f92064a4a6323f76fd51de85793a7fabc0a06"
-            },
-            {
-              "cellsPreview": [
-                "2. 합병당사회사의 합병가액 산정"
-              ],
-              "fullCellsSha256": "193077afcdaf2cce7cd2a12dca0f123d97b4bc784a5365625f9217a20c8f8ddb"
-            },
-            {
-              "cellsPreview": [
-                "가. 합병법인의 합병가액 산정 (1) 합병법인의 본질가치의 산정 ① 합병법인의 자산가치 산정",
-                "기재 정정",
-                "(정정전 주1)",
-                "(정정후 주1)"
-              ],
-              "fullCellsSha256": "da89b15931df4c297a9e208e2c4d156d98778807c872bb208e1866cbda4fcbe5"
-            },
-            {
-              "cellsPreview": [
-                "② 합병법인의 수익가치의 산정",
-                "기재 정정",
-                "(정정전 주2)",
-                "(정정후 주2)"
-              ],
-              "fullCellsSha256": "c61a217e7cc3e33a9652179dfe1251aad58a0cb3e2f0ef515c8a8eb73f75c60a"
-            },
-            {
-              "cellsPreview": [
-                "나. 피합병법인의 합병가액 산정 (2) 피합병법인의 자산가치 산정",
-                "기재 추가",
-                "(*3) 피합병법인의 종속기업투자주식 중 상장법인에 대한 투자주식은 \"취득원가로 평가하는 시장성 없는 주식\"이 아니라고 판단하여 평가대상에서 제외하였습니다.",
-                "(*3) 피합병법인의 종속기업투자주식 중 상장법인에 대한 투자주식은 \"취득원가로 평가하는 시장성 없는 주식\"이 아니라고 판단하여 평가대상에서 제외하였습니다. 상장법인의 투자주식과 관련하여 2014년에 인식한 손상차손은 (주4)에서 일괄로 반영하였습니다."
-              ],
-              "fullCellsSha256": "1a2efca22d1a0de5b517d4b24234295e29b2c227aad80945ff6954161e125882"
-            },
-            {
-              "cellsPreview": [
-                "3. 평가방법"
-              ],
-              "fullCellsSha256": "d5f23137711e058bb60182918179a54f8910da899bde336de4407371ffe7fc6d"
-            },
-            {
-              "cellsPreview": [
-                "다. 본질가치 분석방법 (2) 수익가치 분석방법 ③ 이익할인법",
-                "기재 정정",
-                "(생 략 ) 합병법인이 향후 민영화 이슈 등을 가지고 있 어 , 장기간의 미래 수익창출능력에 대한 예측이 중요시되는 평가방법(현금흐름할인모형, 배당할인모형)보다는 미래 예측기간이 짧아 객관성과 예측가능성이 확보되는 이익할인법이 합병법인의 수익가치를 평가하는데 더 적합하다고 판단되어 본 평가 시에 합병법인의 수익가치 산정방법으로 채택하였습니다 .",
-                "(생략) 합병법인이 향후 민영화 이슈 등 으로 인하여 , 장기간의 미래 수익창출능력에 대한 예측이 중요시되는 평가방법(현금흐름할인법, 배당할인법)보다는 미래 예측기간이 짧아객관성과 예측가능성이 확보되는 이익할인법이 합병법인의 수익가치를 평가하는데 더 적합하다고 판단되어 본 평가시에 합병법인의 수익가치 산정방법으로 채택하였습니다."
-              ],
-              "fullCellsSha256": "b2a135e116bfe9c361955e4865e24ce4d84baca47b65ee15f3c141c4042fbae3"
-            }
-          ],
-          "documentSha256": "0b2ce5ac3e8ecb178a1c273365a6adf5803d755a1fc16b80e68c83414f7822e1",
-          "fieldsChanged": [
-            "제4절. 합병 가액 및 산출근거",
-            "2. 합병당사회사의 합병가액 산정",
-            "나. 피합병법인의 합병가액 산정 (2) 피합병법인의 자산가치 산정",
-            "3. 평가방법",
-            "다. 본질가치 분석방법 (2) 수익가치 분석방법 ③ 이익할인법"
-          ],
-          "originalSubmissionDateEvidence": [],
-          "receiptDate": "2014-08-28",
-          "receiptNumber": "20140828000548",
-          "reportName": "[기재정정]주요사항보고서(합병결정)",
-          "scope": "REVIEWED_SAME_TERMINAL_EVENT_PUBLICATION_SEQUENCE",
-          "supersedesReceiptNumber": "20140814001580"
-        },
-        {
-          "correctionRows": [
-            {
-              "cellsPreview": [
-                "항 목",
-                "정정사유",
-                "정 정 전",
-                "정 정 후"
-              ],
-              "fullCellsSha256": "f6f6eac50a068e39af8ce30b828dd4cbd7e7177fe5f082770126f79761fe7214"
-            },
-            {
-              "cellsPreview": [
-                "제4절. 합병 가액 및 산출근거 2. 합병당사회사의 합병가액 산정"
-              ],
-              "fullCellsSha256": "a7835e03bf3041808783b80fde7a575cc039e76784a4bb93fd5bf458ec9fdc66"
-            },
-            {
-              "cellsPreview": [
-                "가. 합병법인의 합병가액 산정 (1) 합병법인의 본질가치의 산정 ② 합병법인의 수익가치의 산정",
-                "기재 정정",
-                "(정정전 주1)",
-                "(정정후 주1)"
-              ],
-              "fullCellsSha256": "4bc29241fa9ba371ed513cea4ae87679b1ec03ca2e99f074c34413b518baa4d8"
-            },
-            {
-              "cellsPreview": [
-                "나. 피합병법인의 합병가액 산정 (2) 피합병법인의 자산가치 산정",
-                "기재 정정",
-                "(정정전 주2)",
-                "(정정후 주2)"
-              ],
-              "fullCellsSha256": "df0a5f01bc3e2bcc1a2015c81e871df1b26e83b063b453d3e1036b9499b32561"
-            },
-            {
-              "cellsPreview": [
-                "제8절. 그 밖에 투자의사결정에 필요한 사항 3. 합병 이후 재무상태표",
-                "기재 정정",
-                "(정정전 주3)",
-                "(정정후 주3)"
-              ],
-              "fullCellsSha256": "bede9c0609f0881a034591665498249a68c36a0b7f69a9a7041ff3b7b0b1bde5"
-            }
-          ],
-          "documentSha256": "48bb9faaf8b57cb89d963422f8eb9997ffbffb2da3d79e8e56d41016f1ce793d",
-          "fieldsChanged": [
-            "제4절. 합병 가액 및 산출근거 2. 합병당사회사의 합병가액 산정"
-          ],
-          "originalSubmissionDateEvidence": [],
-          "receiptDate": "2014-09-11",
-          "receiptNumber": "20140911000016",
-          "reportName": "[기재정정]주요사항보고서(합병결정)",
-          "scope": "REVIEWED_SAME_TERMINAL_EVENT_PUBLICATION_SEQUENCE",
-          "supersedesReceiptNumber": "20140828000548"
-        }
-      ],
       "blockingReasons": [
         "EXECUTION_CONFIRMATION: collected decisions state conditional/planned terms; no matching completion evidence establishes actual occurrence and final payment"
       ],
-      "cashInLieuRule": null,
-      "cashPerOldShare": null,
-      "completionEvidence": [],
-      "considerationComponents": [
-        {
-          "cashAmount": null,
-          "sharesPerOldShare": 1.0,
-          "sourceReceiptDate": "2014-09-11",
-          "sourceReceiptNumber": "20140911000016",
-          "successorIssuerCorpCode": "00254045",
-          "successorSecurity": "000030.KS",
-          "type": "SUCCESSOR_SHARES"
-        }
-      ],
-      "decisionDate": null,
+      "code": "053000.KS",
+      "completeness": {
+        "amendmentChainResolved": "READY",
+        "dartIssuerResolved": "READY",
+        "dividendLineageResolved": "BLOCKED",
+        "effectiveDateResolved": "READY",
+        "exDateSemanticsResolved": "BLOCKED",
+        "exchangeRatioResolved": "READY",
+        "lastTradingDateResolved": "READY",
+        "rawEvidenceRetained": "READY",
+        "sourceProvenanceRetained": "READY",
+        "successorResolvedWhereRequired": "READY",
+        "terminalActionChainResolved": "BLOCKED",
+        "terminalConsiderationResolved": "READY",
+        "terminationTypeResolved": "READY"
+      },
+      "dartCorpCode": "00375302",
+      "dartIdentityStatus": "RESOLVED",
+      "dividendAmountLineageEntries": [],
+      "dividendAmountLineageSelfConsistencyDisagreements": 0,
+      "dividendEventsKnownFromYahoo": 0,
+      "dividendLineageStatus": "NOT_COLLECTED",
       "documentedTerms": {
         "cashPerOldShare": null,
         "effectiveDate": "2014-11-01",
@@ -3162,8 +3262,36 @@
         "successorName": "우리은행",
         "successorSharesPerOldShare": 1.0
       },
-      "effectiveDate": "2014-11-01",
-      "evidenceStatus": "SEALED_FROM_DART_RECEIPT",
+      "economicEvidenceScope": "FILED_CONTRACTUAL_TERMS_NOT_EXECUTION_CONFIRMATION",
+      "evidenceReceiptDates": [
+        "2014-09-11"
+      ],
+      "evidenceReceiptNumbers": [
+        "20131206800432",
+        "20140107800002",
+        "20140226800336",
+        "20140728000280",
+        "20140728800260",
+        "20140728800281",
+        "20140814001580",
+        "20140814801243",
+        "20140814801247",
+        "20140828000548",
+        "20140911000016"
+      ],
+      "evidenceSources": [
+        "DART:20131206800432",
+        "DART:20140107800002",
+        "DART:20140226800336",
+        "DART:20140728000280",
+        "DART:20140728800260",
+        "DART:20140728800281",
+        "DART:20140814001580",
+        "DART:20140814801243",
+        "DART:20140814801247",
+        "DART:20140828000548",
+        "DART:20140911000016"
+      ],
       "executionStatus": "UNCONFIRMED_BY_COLLECTED_COMPLETION_DOCUMENTS",
       "failedReceipts": [],
       "fieldEvidence": {
@@ -3214,7 +3342,7 @@
         }
       },
       "finalTermsReceiptNumber": null,
-      "fractionalShareTreatment": null,
+      "firstMembershipDate": "2013-01-02",
       "identityBridge": {
         "disambiguationBasis": null,
         "identitySourcePath": "ledger/dart-ownership-events/collection-universe.json",
@@ -3223,11 +3351,11 @@
         "nameFromDocument": "우리은행",
         "reason": null
       },
-      "lastTradingDate": null,
+      "krxName": "우리금융",
+      "lastMembershipDate": "2014-11-03",
+      "lastTradingDate": "2014-11-18",
       "latestReviewedTermsReceiptNumber": "20140911000016",
-      "oldIssuerCorpCode": "00375302",
-      "oldSecurity": "053000.KS",
-      "rawDocumentReceipts": [
+      "plausiblyResponsibleReceipts": [
         "20131206800432",
         "20140107800002",
         "20140226800336",
@@ -3240,120 +3368,117 @@
         "20140828000548",
         "20140911000016"
       ],
+      "rawDisclosureRowsCollected": 19,
+      "rawDividendSectionRowsCollected": 0,
       "reconstructionStatus": "PARTIALLY_RECONSTRUCTED",
-      "sourceReceiptDate": "2014-09-11",
-      "sourceReceiptNumber": "20140911000016",
-      "sourceReceiptNumbers": [
-        "20131206800432",
-        "20140107800002",
-        "20140226800336",
-        "20140728000280",
-        "20140728800260",
-        "20140728800281",
-        "20140814001580",
-        "20140814801243",
-        "20140814801247",
-        "20140828000548",
-        "20140911000016"
-      ],
-      "sources": [
-        "DART:20131206800432",
-        "DART:20140107800002",
-        "DART:20140226800336",
-        "DART:20140728000280",
-        "DART:20140728800260",
-        "DART:20140728800281",
-        "DART:20140814001580",
-        "DART:20140814801243",
-        "DART:20140814801247",
-        "DART:20140828000548",
-        "DART:20140911000016"
-      ],
-      "successorIssuerCorpCode": "00254045",
-      "successorSecurity": "000030.KS",
-      "successorSharesPerOldShare": 1.0,
-      "unresolvedFields": [
-        "executionConfirmation"
-      ]
+      "successorChain": {
+        "cyclesDetected": [],
+        "reachableSuccessors": [
+          "000030.KS",
+          "316140.KS"
+        ]
+      },
+      "terminationType": "MERGER_STOCK"
     },
     {
-      "actionType": "SHARE_EXCHANGE",
-      "amendmentChainStatus": "READY",
-      "amendmentHistory": [
-        {
-          "correctionRows": [],
-          "documentSha256": "423adbd49ea768bb26bb71bacc0ac606715bb2fd0a59e69dfcff4d4f325b398e",
-          "fieldsChanged": [],
-          "originalSubmissionDateEvidence": [],
-          "receiptDate": "2026-02-11",
-          "receiptNumber": "20260211000381",
-          "reportName": "주요사항보고서(주식교환ㆍ이전결정)",
-          "scope": "REVIEWED_SAME_TERMINAL_EVENT_PUBLICATION_SEQUENCE",
-          "supersedesReceiptNumber": null
-        },
-        {
-          "correctionRows": [
-            {
-              "cellsPreview": [
-                "항 목",
-                "정정사유",
-                "정 정 전",
-                "정 정 후"
-              ],
-              "fullCellsSha256": "f6f6eac50a068e39af8ce30b828dd4cbd7e7177fe5f082770126f79761fe7214"
-            },
-            {
-              "cellsPreview": [
-                "16. 향후 회사구조개편에 관한 계획",
-                "회사구조개편 계획 구체화에 따른 기재 정정",
-                "(주1) 정정 전",
-                "(주1) 정정 후"
-              ],
-              "fullCellsSha256": "f5b7b6bf739d5cd290ebcb0826dbcad887b42cbbbd5b7d18b40caae096e70e26"
-            },
-            {
-              "cellsPreview": [
-                "17. 기타 투자판단과 관련한 중요사항",
-                "주식매수청구권 행사 주식수 확정에 따른 기재 정정",
-                "(주2) 정정 전",
-                "(주2) 정정 후"
-              ],
-              "fullCellsSha256": "67983d21ded3e29bcd56828f05780e6b26242ef6aa57582b75158b80570beac6"
-            }
-          ],
-          "documentSha256": "ec112f39dcb7441c5b7bb8ad124161544ddb849264f9a607472966de4835fbe2",
-          "fieldsChanged": [],
-          "originalSubmissionDateEvidence": [
-            [
-              "2. 정정대상 공시서류의 최초제출일 :",
-              "2026년 02월 11일"
-            ]
-          ],
-          "receiptDate": "2026-05-22",
-          "receiptNumber": "20260522000254",
-          "reportName": "[기재정정]주요사항보고서(주식교환ㆍ이전결정)",
-          "scope": "REVIEWED_SAME_TERMINAL_EVENT_PUBLICATION_SEQUENCE",
-          "supersedesReceiptNumber": "20260211000381"
-        }
-      ],
       "blockingReasons": [
         "EXECUTION_CONFIRMATION: collected decisions state conditional/planned terms; no matching completion evidence establishes actual occurrence and final payment"
       ],
-      "cashInLieuRule": " 주식교환 대상주주에게 (주)현대지에프홀딩스의 주식을 배정함에 있어 1주 미만의 단주가 발생하는 경우, 단주가 귀속될 주식교환 대상주주에게 주권상장일 종가를 기준으로 계산된 금액을 주식교환일로부터 1개월 이내에 현금으로 지급할 예정입니다. 5. 외부평가에 관한 사항 외부평가 여부 미해당 - 근거 및 사유 본건 주식교환은 주권상장법인 간의 주식교환으로 자본시장과 금융투자업에 관한 법률 제165조의4, 동법 시행령 제176조의5 및 제176조의6에 따라 교환가액을 산정한 후, 이를 기준으로 교환비율을 산출하였으므로, 동법 시행령 제176조의6 제4항에 의하여 교환가액의 적정성에 대한 외부평가기관의 평가가 요구되지 않습니다. 외부평가기관의 명칭 - 외",
-      "cashPerOldShare": null,
-      "completionEvidence": [],
-      "considerationComponents": [
+      "code": "057050.KS",
+      "completeness": {
+        "amendmentChainResolved": "READY",
+        "dartIssuerResolved": "READY",
+        "dividendLineageResolved": "READY",
+        "effectiveDateResolved": "READY",
+        "exDateSemanticsResolved": "BLOCKED",
+        "exchangeRatioResolved": "READY",
+        "lastTradingDateResolved": "READY",
+        "rawEvidenceRetained": "READY",
+        "sourceProvenanceRetained": "READY",
+        "successorResolvedWhereRequired": "READY",
+        "terminalActionChainResolved": "BLOCKED",
+        "terminalConsiderationResolved": "READY",
+        "terminationTypeResolved": "READY"
+      },
+      "dartCorpCode": "00412597",
+      "dartIdentityStatus": "RESOLVED",
+      "dividendAmountLineageEntries": [
         {
-          "cashAmount": null,
-          "sharesPerOldShare": 6.357104,
-          "sourceReceiptDate": "2026-05-22",
-          "sourceReceiptNumber": "20260522000254",
-          "successorIssuerCorpCode": "00105280",
-          "successorSecurity": "005440.KS",
-          "type": "SUCCESSOR_SHARES"
+          "fiscalYear": 2015,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2016-03-30",
+          "sourceReceiptNumber": "20160330002544",
+          "value": 1500.0
+        },
+        {
+          "fiscalYear": 2016,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2017-03-31",
+          "sourceReceiptNumber": "20170331003433",
+          "value": 1500.0
+        },
+        {
+          "fiscalYear": 2018,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2019-04-01",
+          "sourceReceiptNumber": "20190401003020",
+          "value": 1900.0
+        },
+        {
+          "fiscalYear": 2020,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2021-08-18",
+          "sourceReceiptNumber": "20210818000207",
+          "value": 2200.0
+        },
+        {
+          "fiscalYear": 2021,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2022-03-24",
+          "sourceReceiptNumber": "20220324000867",
+          "value": 2400.0
+        },
+        {
+          "fiscalYear": 2022,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2023-03-15",
+          "sourceReceiptNumber": "20230315001376",
+          "value": 2600.0
+        },
+        {
+          "fiscalYear": 2023,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2024-03-15",
+          "sourceReceiptNumber": "20240315000790",
+          "value": 2800.0
+        },
+        {
+          "fiscalYear": 2024,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2025-08-29",
+          "sourceReceiptNumber": "20250829001728",
+          "value": 2800.0
+        },
+        {
+          "fiscalYear": 2025,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2026-03-16",
+          "sourceReceiptNumber": "20260316000819",
+          "value": 2800.0
         }
       ],
-      "decisionDate": null,
+      "dividendAmountLineageSelfConsistencyDisagreements": 0,
+      "dividendEventsKnownFromYahoo": 0,
+      "dividendLineageStatus": "RESOLVED",
       "documentedTerms": {
         "cashPerOldShare": null,
         "effectiveDate": "2026-06-30",
@@ -3363,8 +3488,22 @@
         "successorName": "현대지에프홀딩스",
         "successorSharesPerOldShare": 6.357104
       },
-      "effectiveDate": "2026-06-30",
-      "evidenceStatus": "SEALED_FROM_DART_RECEIPT",
+      "economicEvidenceScope": "FILED_CONTRACTUAL_TERMS_NOT_EXECUTION_CONFIRMATION",
+      "evidenceReceiptDates": [
+        "2026-05-22"
+      ],
+      "evidenceReceiptNumbers": [
+        "20260211000381",
+        "20260522000254",
+        "20260805000212",
+        "20260805000215"
+      ],
+      "evidenceSources": [
+        "DART:20260211000381",
+        "DART:20260522000254",
+        "DART:20260805000212",
+        "DART:20260805000215"
+      ],
       "executionStatus": "UNCONFIRMED_BY_COLLECTED_COMPLETION_DOCUMENTS",
       "failedReceipts": [],
       "fieldEvidence": {
@@ -3424,7 +3563,7 @@
         }
       },
       "finalTermsReceiptNumber": null,
-      "fractionalShareTreatment": " 주식교환 대상주주에게 (주)현대지에프홀딩스의 주식을 배정함에 있어 1주 미만의 단주가 발생하는 경우, 단주가 귀속될 주식교환 대상주주에게 주권상장일 종가를 기준으로 계산된 금액을 주식교환일로부터 1개월 이내에 현금으로 지급할 예정입니다. 5. 외부평가에 관한 사항 외부평가 여부 미해당 - 근거 및 사유 본건 주식교환은 주권상장법인 간의 주식교환으로 자본시장과 금융투자업에 관한 법률 제165조의4, 동법 시행령 제176조의5 및 제176조의6에 따라 교환가액을 산정한 후, 이를 기준으로 교환비율을 산출하였으므로, 동법 시행령 제176조의6 제4항에 의하여 교환가액의 적정성에 대한 외부평가기관의 평가가 요구되지 않습니다. 외부평가기관의 명칭 - 외",
+      "firstMembershipDate": "2013-02-01",
       "identityBridge": {
         "disambiguationBasis": null,
         "identitySourcePath": "ledger/dart-ownership-events/collection-universe.json",
@@ -3433,105 +3572,146 @@
         "nameFromDocument": "현대지에프홀딩스",
         "reason": null
       },
-      "lastTradingDate": null,
+      "krxName": "현대홈쇼핑",
+      "lastMembershipDate": "2015-01-02",
+      "lastTradingDate": "2026-07-16",
       "latestReviewedTermsReceiptNumber": "20260522000254",
-      "oldIssuerCorpCode": "00412597",
-      "oldSecurity": "057050.KS",
-      "rawDocumentReceipts": [
+      "plausiblyResponsibleReceipts": [
         "20260211000381",
         "20260522000254",
         "20260805000212",
         "20260805000215"
       ],
+      "rawDisclosureRowsCollected": 32,
+      "rawDividendSectionRowsCollected": 156,
       "reconstructionStatus": "PARTIALLY_RECONSTRUCTED",
-      "sourceReceiptDate": "2026-05-22",
-      "sourceReceiptNumber": "20260522000254",
-      "sourceReceiptNumbers": [
-        "20260211000381",
-        "20260522000254",
-        "20260805000212",
-        "20260805000215"
-      ],
-      "sources": [
-        "DART:20260211000381",
-        "DART:20260522000254",
-        "DART:20260805000212",
-        "DART:20260805000215"
-      ],
-      "successorIssuerCorpCode": "00105280",
-      "successorSecurity": "005440.KS",
-      "successorSharesPerOldShare": 6.357104,
-      "unresolvedFields": [
-        "executionConfirmation"
-      ]
+      "successorChain": {
+        "cyclesDetected": [],
+        "reachableSuccessors": [
+          "005440.KS"
+        ]
+      },
+      "terminationType": "SHARE_EXCHANGE"
     },
     {
-      "actionType": "TERMINATION_TYPE_UNRESOLVED",
-      "amendmentChainStatus": "BLOCKED",
-      "amendmentHistory": [],
       "blockingReasons": [
         "Only a subsidiary STX France SA / STX France Cabins SAS merger was retrieved; no parent-share terminal terms."
       ],
-      "cashInLieuRule": null,
-      "cashPerOldShare": null,
-      "considerationComponents": [],
-      "decisionDate": null,
+      "code": "067250.KS",
+      "completeness": {
+        "amendmentChainResolved": "BLOCKED",
+        "dartIssuerResolved": "READY",
+        "dividendLineageResolved": "BLOCKED",
+        "effectiveDateResolved": "BLOCKED",
+        "exDateSemanticsResolved": "BLOCKED",
+        "exchangeRatioResolved": "BLOCKED",
+        "lastTradingDateResolved": "READY",
+        "rawEvidenceRetained": "READY",
+        "sourceProvenanceRetained": "READY",
+        "successorResolvedWhereRequired": "BLOCKED",
+        "terminalActionChainResolved": "BLOCKED",
+        "terminalConsiderationResolved": "BLOCKED",
+        "terminationTypeResolved": "BLOCKED"
+      },
+      "dartCorpCode": "00109453",
+      "dartIdentityStatus": "RESOLVED",
+      "dividendAmountLineageEntries": [],
+      "dividendAmountLineageSelfConsistencyDisagreements": 0,
+      "dividendEventsKnownFromYahoo": 0,
+      "dividendLineageStatus": "NOT_COLLECTED",
       "documentedTerms": null,
-      "effectiveDate": null,
-      "evidenceStatus": "UNRESOLVED",
+      "economicEvidenceScope": "FILED_CONTRACTUAL_TERMS_NOT_EXECUTION_CONFIRMATION",
+      "evidenceReceiptDates": [],
+      "evidenceReceiptNumbers": [
+        "20130702800320"
+      ],
+      "evidenceSources": [
+        "DART:20130702800320"
+      ],
       "executionStatus": "UNRESOLVED",
       "failedReceipts": [],
       "fieldEvidence": {},
       "finalTermsReceiptNumber": null,
-      "fractionalShareTreatment": null,
+      "firstMembershipDate": "2014-04-01",
       "identityBridge": null,
-      "lastTradingDate": null,
-      "oldIssuerCorpCode": "00109453",
-      "oldSecurity": "067250.KS",
-      "rawDocumentReceipts": [
+      "krxName": "STX조선해양",
+      "lastMembershipDate": "2014-04-01",
+      "lastTradingDate": "2014-04-14",
+      "latestReviewedTermsReceiptNumber": null,
+      "plausiblyResponsibleReceipts": [
         "20130702800320"
       ],
+      "rawDisclosureRowsCollected": 1,
+      "rawDividendSectionRowsCollected": 120,
       "reconstructionStatus": "BLOCKED",
-      "sourceReceiptDate": null,
-      "sourceReceiptNumber": null,
-      "sourceReceiptNumbers": [
-        "20130702800320"
-      ],
-      "sources": [
-        "DART:20130702800320"
-      ],
-      "successorIssuerCorpCode": null,
-      "successorSecurity": null,
-      "successorSharesPerOldShare": null,
-      "unresolvedFields": []
+      "successorChain": {
+        "cyclesDetected": [],
+        "reachableSuccessors": []
+      },
+      "terminationType": "TERMINATION_TYPE_UNRESOLVED"
     },
     {
-      "actionType": "SHARE_EXCHANGE",
-      "amendmentChainStatus": "BLOCKED",
-      "amendmentHistory": [
-        {
-          "correctionRows": [],
-          "documentSha256": "4d549e93dffe76d2c84aea5cec23fd11c0be23c5531701eed483051a3f4da193",
-          "fieldsChanged": [],
-          "originalSubmissionDateEvidence": [],
-          "receiptDate": "2019-11-14",
-          "receiptNumber": "20191114002655",
-          "reportName": "[첨부추가]주요사항보고서(주식교환ㆍ이전결정)",
-          "scope": "REVIEWED_SAME_TERMINAL_EVENT_PUBLICATION_SEQUENCE",
-          "supersedesReceiptNumber": null
-        }
-      ],
       "blockingReasons": [
         "FINAL_ECONOMIC_TERMS_AND_EFFECTIVE_DATE: later body corrections unavailable (20191119000180,20191204000479)",
         "SUCCESSOR_SECURITY_IDENTITY: NO_EXACT_IDENTITY_BRIDGE",
         "FRACTIONAL_SHARE_CASH_IN_LIEU_RULE: not found in retained applicable decision",
         "EXECUTION_CONFIRMATION: collected decisions state conditional/planned terms; no matching completion evidence establishes actual occurrence and final payment"
       ],
-      "cashInLieuRule": null,
-      "cashPerOldShare": null,
-      "completionEvidence": [],
-      "considerationComponents": [],
-      "decisionDate": null,
+      "code": "079440.KS",
+      "completeness": {
+        "amendmentChainResolved": "BLOCKED",
+        "dartIssuerResolved": "READY",
+        "dividendLineageResolved": "READY",
+        "effectiveDateResolved": "BLOCKED",
+        "exDateSemanticsResolved": "BLOCKED",
+        "exchangeRatioResolved": "BLOCKED",
+        "lastTradingDateResolved": "READY",
+        "rawEvidenceRetained": "READY",
+        "sourceProvenanceRetained": "READY",
+        "successorResolvedWhereRequired": "BLOCKED",
+        "terminalActionChainResolved": "BLOCKED",
+        "terminalConsiderationResolved": "BLOCKED",
+        "terminationTypeResolved": "READY"
+      },
+      "dartCorpCode": "00176792",
+      "dartIdentityStatus": "RESOLVED",
+      "dividendAmountLineageEntries": [
+        {
+          "fiscalYear": 2017,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2018-03-30",
+          "sourceReceiptNumber": "20180330001804",
+          "value": 2400.0
+        },
+        {
+          "fiscalYear": 2018,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2019-03-28",
+          "sourceReceiptNumber": "20190328001973",
+          "value": 2600.0
+        },
+        {
+          "fiscalYear": 2019,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2020-03-30",
+          "sourceReceiptNumber": "20200330003387",
+          "value": 2100.0
+        },
+        {
+          "fiscalYear": 2020,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2021-03-30",
+          "sourceReceiptNumber": "20210330001517",
+          "value": 1360.0
+        }
+      ],
+      "dividendAmountLineageSelfConsistencyDisagreements": 0,
+      "dividendEventsKnownFromYahoo": 0,
+      "dividendLineageStatus": "RESOLVED",
       "documentedTerms": {
         "cashPerOldShare": null,
         "effectiveDate": "2020-01-28",
@@ -3541,8 +3721,16 @@
         "successorName": "신한금융지주회사",
         "successorSharesPerOldShare": 0.6601483
       },
-      "effectiveDate": null,
-      "evidenceStatus": "SEALED_FROM_DART_RECEIPT",
+      "economicEvidenceScope": "FILED_CONTRACTUAL_TERMS_NOT_EXECUTION_CONFIRMATION",
+      "evidenceReceiptDates": [
+        "2019-11-14"
+      ],
+      "evidenceReceiptNumbers": [
+        "20191114002655"
+      ],
+      "evidenceSources": [
+        "DART:20191114002655"
+      ],
       "executionStatus": "UNCONFIRMED_BY_COLLECTED_COMPLETION_DOCUMENTS",
       "failedReceipts": [
         {
@@ -3601,7 +3789,7 @@
         }
       },
       "finalTermsReceiptNumber": null,
-      "fractionalShareTreatment": null,
+      "firstMembershipDate": "2017-06-01",
       "identityBridge": {
         "disambiguationBasis": null,
         "identitySourcePath": "ledger/dart-ownership-events/collection-universe.json",
@@ -3610,64 +3798,91 @@
         "nameFromDocument": "신한금융지주회사",
         "reason": "NO_EXACT_IDENTITY_BRIDGE"
       },
-      "lastTradingDate": null,
+      "krxName": "오렌지라이프",
+      "lastMembershipDate": "2020-02-03",
+      "lastTradingDate": "2020-02-13",
       "latestReviewedTermsReceiptNumber": "20191114002655",
-      "oldIssuerCorpCode": "00176792",
-      "oldSecurity": "079440.KS",
-      "rawDocumentReceipts": [
-        "20191114002655"
+      "plausiblyResponsibleReceipts": [
+        "20191114002655",
+        "20191119000180",
+        "20191204000479"
       ],
+      "rawDisclosureRowsCollected": 10,
+      "rawDividendSectionRowsCollected": 60,
       "reconstructionStatus": "PARTIALLY_RECONSTRUCTED",
-      "sourceReceiptDate": "2019-11-14",
-      "sourceReceiptNumber": "20191114002655",
-      "sourceReceiptNumbers": [
-        "20191114002655"
-      ],
-      "sources": [
-        "DART:20191114002655"
-      ],
-      "successorIssuerCorpCode": null,
-      "successorSecurity": null,
-      "successorSharesPerOldShare": null,
-      "unresolvedFields": [
-        "executionConfirmation",
-        "finalEconomicTerms"
-      ]
+      "successorChain": {
+        "cyclesDetected": [],
+        "reachableSuccessors": []
+      },
+      "terminationType": "SHARE_EXCHANGE"
     },
     {
-      "actionType": "CASH_SHARE_EXCHANGE",
-      "amendmentChainStatus": "READY",
-      "amendmentHistory": [
-        {
-          "correctionRows": [],
-          "documentSha256": "fd522fc3899dce5530604adbfa680dff876d102b04b9dc49552a5238e1ce2146",
-          "fieldsChanged": [],
-          "originalSubmissionDateEvidence": [],
-          "receiptDate": "2024-08-30",
-          "receiptNumber": "20240830002126",
-          "reportName": "주요사항보고서(주식교환ㆍ이전결정)",
-          "scope": "REVIEWED_SAME_TERMINAL_EVENT_PUBLICATION_SEQUENCE",
-          "supersedesReceiptNumber": null
-        }
-      ],
       "blockingReasons": [
         "EXECUTION_CONFIRMATION: collected decisions state conditional/planned terms; no matching completion evidence establishes actual occurrence and final payment"
       ],
-      "cashInLieuRule": null,
-      "cashPerOldShare": 8750.0,
-      "completionEvidence": [],
-      "considerationComponents": [
+      "code": "115390.KS",
+      "completeness": {
+        "amendmentChainResolved": "READY",
+        "dartIssuerResolved": "READY",
+        "dividendLineageResolved": "READY",
+        "effectiveDateResolved": "READY",
+        "exDateSemanticsResolved": "BLOCKED",
+        "exchangeRatioResolved": "NOT_APPLICABLE",
+        "lastTradingDateResolved": "READY",
+        "rawEvidenceRetained": "READY",
+        "sourceProvenanceRetained": "READY",
+        "successorResolvedWhereRequired": "NOT_APPLICABLE",
+        "terminalActionChainResolved": "BLOCKED",
+        "terminalConsiderationResolved": "READY",
+        "terminationTypeResolved": "READY"
+      },
+      "dartCorpCode": "00561866",
+      "dartIdentityStatus": "RESOLVED",
+      "dividendAmountLineageEntries": [
         {
-          "cashAmount": 8750.0,
-          "sharesPerOldShare": null,
-          "sourceReceiptDate": "2024-08-30",
-          "sourceReceiptNumber": "20240830002126",
-          "successorIssuerCorpCode": null,
-          "successorSecurity": null,
-          "type": "CASH"
+          "fiscalYear": 2015,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2016-03-30",
+          "sourceReceiptNumber": "20160330003024",
+          "value": 200.0
+        },
+        {
+          "fiscalYear": 2016,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2017-03-31",
+          "sourceReceiptNumber": "20170331003202",
+          "value": 500.0
+        },
+        {
+          "fiscalYear": 2017,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2018-03-30",
+          "sourceReceiptNumber": "20180330001837",
+          "value": 130.0
+        },
+        {
+          "fiscalYear": 2018,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2019-04-01",
+          "sourceReceiptNumber": "20190401004445",
+          "value": 80.0
+        },
+        {
+          "fiscalYear": 2022,
+          "metric": "CASH_DPS",
+          "shareClass": "COMMON",
+          "sourceReceiptDate": "2023-03-23",
+          "sourceReceiptNumber": "20230323001503",
+          "value": 1953.0
         }
       ],
-      "decisionDate": null,
+      "dividendAmountLineageSelfConsistencyDisagreements": 0,
+      "dividendEventsKnownFromYahoo": 0,
+      "dividendLineageStatus": "RESOLVED",
       "documentedTerms": {
         "cashPerOldShare": 8750.0,
         "effectiveDate": "2024-11-22",
@@ -3677,8 +3892,30 @@
         "successorName": "컨슈머피닉스",
         "successorSharesPerOldShare": null
       },
-      "effectiveDate": "2024-11-22",
-      "evidenceStatus": "SEALED_FROM_DART_RECEIPT",
+      "economicEvidenceScope": "FILED_CONTRACTUAL_TERMS_NOT_EXECUTION_CONFIRMATION",
+      "evidenceReceiptDates": [
+        "2024-08-30"
+      ],
+      "evidenceReceiptNumbers": [
+        "20240418000003",
+        "20240418000004",
+        "20240516000002",
+        "20240516000004",
+        "20240517000420",
+        "20240610000291",
+        "20240830002126",
+        "20241224000570"
+      ],
+      "evidenceSources": [
+        "DART:20240418000003",
+        "DART:20240418000004",
+        "DART:20240516000002",
+        "DART:20240516000004",
+        "DART:20240517000420",
+        "DART:20240610000291",
+        "DART:20240830002126",
+        "DART:20241224000570"
+      ],
       "executionStatus": "UNCONFIRMED_BY_COLLECTED_COMPLETION_DOCUMENTS",
       "failedReceipts": [],
       "fieldEvidence": {
@@ -3711,7 +3948,7 @@
         }
       },
       "finalTermsReceiptNumber": null,
-      "fractionalShareTreatment": null,
+      "firstMembershipDate": "2013-03-04",
       "identityBridge": {
         "disambiguationBasis": null,
         "identitySourcePath": "ledger/dart-ownership-events/collection-universe.json",
@@ -3720,11 +3957,11 @@
         "nameFromDocument": "컨슈머피닉스",
         "reason": "NO_EXACT_IDENTITY_BRIDGE"
       },
-      "lastTradingDate": null,
+      "krxName": "락앤락",
+      "lastMembershipDate": "2013-03-04",
+      "lastTradingDate": "2024-12-06",
       "latestReviewedTermsReceiptNumber": "20240830002126",
-      "oldIssuerCorpCode": "00561866",
-      "oldSecurity": "115390.KS",
-      "rawDocumentReceipts": [
+      "plausiblyResponsibleReceipts": [
         "20240418000003",
         "20240418000004",
         "20240516000002",
@@ -3734,50 +3971,52 @@
         "20240830002126",
         "20241224000570"
       ],
+      "rawDisclosureRowsCollected": 20,
+      "rawDividendSectionRowsCollected": 135,
       "reconstructionStatus": "PARTIALLY_RECONSTRUCTED",
-      "sourceReceiptDate": "2024-08-30",
-      "sourceReceiptNumber": "20240830002126",
-      "sourceReceiptNumbers": [
-        "20240418000003",
-        "20240418000004",
-        "20240516000002",
-        "20240516000004",
-        "20240517000420",
-        "20240610000291",
-        "20240830002126",
-        "20241224000570"
-      ],
-      "sources": [
-        "DART:20240418000003",
-        "DART:20240418000004",
-        "DART:20240516000002",
-        "DART:20240516000004",
-        "DART:20240517000420",
-        "DART:20240610000291",
-        "DART:20240830002126",
-        "DART:20241224000570"
-      ],
-      "successorIssuerCorpCode": null,
-      "successorSecurity": null,
-      "successorSharesPerOldShare": null,
-      "unresolvedFields": [
-        "executionConfirmation"
-      ]
+      "successorChain": {
+        "cyclesDetected": [],
+        "reachableSuccessors": []
+      },
+      "terminationType": "CASH_SHARE_EXCHANGE"
     },
     {
-      "actionType": "TERMINATION_TYPE_UNRESOLVED",
-      "amendmentChainStatus": "BLOCKED",
-      "amendmentHistory": [],
       "blockingReasons": [
         "Retrieved filings transfer businesses/assets. Corporate sale proceeds do not establish a per-share liquidation distribution; no terminal shareholder payout is evidenced."
       ],
-      "cashInLieuRule": null,
-      "cashPerOldShare": null,
-      "considerationComponents": [],
-      "decisionDate": null,
+      "code": "117930.KS",
+      "completeness": {
+        "amendmentChainResolved": "BLOCKED",
+        "dartIssuerResolved": "READY",
+        "dividendLineageResolved": "BLOCKED",
+        "effectiveDateResolved": "BLOCKED",
+        "exDateSemanticsResolved": "BLOCKED",
+        "exchangeRatioResolved": "BLOCKED",
+        "lastTradingDateResolved": "READY",
+        "rawEvidenceRetained": "READY",
+        "sourceProvenanceRetained": "READY",
+        "successorResolvedWhereRequired": "BLOCKED",
+        "terminalActionChainResolved": "BLOCKED",
+        "terminalConsiderationResolved": "BLOCKED",
+        "terminationTypeResolved": "BLOCKED"
+      },
+      "dartCorpCode": "00790501",
+      "dartIdentityStatus": "RESOLVED",
+      "dividendAmountLineageEntries": [],
+      "dividendAmountLineageSelfConsistencyDisagreements": 0,
+      "dividendEventsKnownFromYahoo": 0,
+      "dividendLineageStatus": "NOT_COLLECTED",
       "documentedTerms": null,
-      "effectiveDate": null,
-      "evidenceStatus": "UNRESOLVED",
+      "economicEvidenceScope": "FILED_CONTRACTUAL_TERMS_NOT_EXECUTION_CONFIRMATION",
+      "evidenceReceiptDates": [],
+      "evidenceReceiptNumbers": [
+        "20160624000974",
+        "20161122000002"
+      ],
+      "evidenceSources": [
+        "DART:20160624000974",
+        "DART:20161122000002"
+      ],
       "executionStatus": "UNRESOLVED",
       "failedReceipts": [
         {
@@ -3815,165 +4054,54 @@
       ],
       "fieldEvidence": {},
       "finalTermsReceiptNumber": null,
-      "fractionalShareTreatment": null,
+      "firstMembershipDate": "2015-03-02",
       "identityBridge": null,
-      "lastTradingDate": null,
-      "oldIssuerCorpCode": "00790501",
-      "oldSecurity": "117930.KS",
-      "rawDocumentReceipts": [
+      "krxName": "한진해운",
+      "lastMembershipDate": "2015-03-02",
+      "lastTradingDate": "2017-03-06",
+      "latestReviewedTermsReceiptNumber": null,
+      "plausiblyResponsibleReceipts": [
         "20160624000974",
-        "20161122000002"
+        "20161017000354",
+        "20161122000002",
+        "20170102000404",
+        "20170103000011",
+        "20170106000714"
       ],
+      "rawDisclosureRowsCollected": 32,
+      "rawDividendSectionRowsCollected": 14,
       "reconstructionStatus": "BLOCKED",
-      "sourceReceiptDate": null,
-      "sourceReceiptNumber": null,
-      "sourceReceiptNumbers": [
-        "20160624000974",
-        "20161122000002"
-      ],
-      "sources": [
-        "DART:20160624000974",
-        "DART:20161122000002"
-      ],
-      "successorIssuerCorpCode": null,
-      "successorSecurity": null,
-      "successorSharesPerOldShare": null,
-      "unresolvedFields": []
+      "successorChain": {
+        "cyclesDetected": [],
+        "reachableSuccessors": []
+      },
+      "terminationType": "TERMINATION_TYPE_UNRESOLVED"
     }
   ],
-  "historicalOutcomesComputed": false,
-  "inputs": {
-    "dividendEvidenceCommit": "dfeb098e26ff71d3b8149199677417a78eda42d6",
-    "documentEvidenceCommit": "71c5128a01a7528536a8ff24c4e82d896363fec0",
-    "identityUniverseSha256": "7dddc6f75ea14adc8f97f3558409a68b2f71ab356b270e7d25d1ecb08875e4fc",
-    "reviewSha256": "2b39782f679a150285f3edd404d05f094ca74928388676398cfd694dc3782835",
-    "sourceHashes": {
-      "dividend-fetch-state.json": "8d58f1fef9971ad86ec458581d8e48ab97208be4aa8f52d77a068afd66879e82",
-      "document-fetch-state.json": "1f0509b19aa061cb7a1580e38cc662e49602230c2bb8d6222122b56fb6fc1fcf",
-      "fetch-state.json": "73ba4187a80f92a5641ea6e738a919f2dfe365648da97c87a6890d209a55abde",
-      "kr-corporate-actions-disclosures.jsonl.gz": "67436598c0eea5cc209d6b5a93fc64cb472b682aa66e6a143ffc5ff853fab9db",
-      "kr-dividend-sections.jsonl.gz": "9e0f7680b74812f855a3a12e5c2b547cc7e1911e5d9078afe987c64265ed3199",
-      "kr-terminal-action-documents.jsonl.gz": "98c1475f888cb07b5c8865b8902516e463bd934281d1f4744a7aba4b4d687071"
+  "studyId": "kr-terminal-action-reconstruction-v2",
+  "summary": {
+    "byField": {
+      "amendmentChainResolved": 10,
+      "dartIssuerResolved": 22,
+      "dividendLineageResolved": 15,
+      "effectiveDateResolved": 12,
+      "exDateSemanticsResolved": 0,
+      "exchangeRatioResolved": 8,
+      "lastTradingDateResolved": 22,
+      "rawEvidenceRetained": 22,
+      "sourceProvenanceRetained": 22,
+      "successorResolvedWhereRequired": 13,
+      "terminalActionChainResolved": 0,
+      "terminalConsiderationResolved": 10,
+      "terminationTypeResolved": 20
+    },
+    "securities": 22,
+    "terminationTypeBreakdown": {
+      "CASH_SHARE_EXCHANGE": 3,
+      "MERGER_STOCK": 8,
+      "SHARE_EXCHANGE": 8,
+      "SHARE_TRANSFER": 1,
+      "TERMINATION_TYPE_UNRESOLVED": 2
     }
-  },
-  "schema": "KR_TERMINAL_CORPORATE_ACTIONS_V1",
-  "scope": "DOCUMENTED_TERMS_WITH_EXPLICIT_FINALITY_AND_EXECUTION_BLOCKERS",
-  "successorChains": {
-    "000030.KS": {
-      "cyclesDetected": [],
-      "reachableSuccessors": [
-        "316140.KS"
-      ]
-    },
-    "000060.KS": {
-      "cyclesDetected": [],
-      "reachableSuccessors": [
-        "138040.KS"
-      ]
-    },
-    "000830.KS": {
-      "cyclesDetected": [],
-      "reachableSuccessors": [
-        "028260.KS"
-      ]
-    },
-    "001300.KS": {
-      "cyclesDetected": [],
-      "reachableSuccessors": [
-        "006400.KS"
-      ]
-    },
-    "002550.KS": {
-      "cyclesDetected": [],
-      "reachableSuccessors": []
-    },
-    "003410.KS": {
-      "cyclesDetected": [],
-      "reachableSuccessors": []
-    },
-    "003450.KS": {
-      "cyclesDetected": [],
-      "reachableSuccessors": []
-    },
-    "003600.KS": {
-      "cyclesDetected": [],
-      "reachableSuccessors": [
-        "034730.KS"
-      ]
-    },
-    "004940.KS": {
-      "cyclesDetected": [],
-      "reachableSuccessors": [
-        "086790.KS"
-      ]
-    },
-    "008560.KS": {
-      "cyclesDetected": [],
-      "reachableSuccessors": [
-        "138040.KS"
-      ]
-    },
-    "010520.KS": {
-      "cyclesDetected": [],
-      "reachableSuccessors": [
-        "004020.KS"
-      ]
-    },
-    "010620.KS": {
-      "cyclesDetected": [],
-      "reachableSuccessors": [
-        "329180.KS"
-      ]
-    },
-    "011160.KS": {
-      "cyclesDetected": [],
-      "reachableSuccessors": [
-        "034020.KS"
-      ]
-    },
-    "012510.KS": {
-      "cyclesDetected": [],
-      "reachableSuccessors": []
-    },
-    "037620.KS": {
-      "cyclesDetected": [],
-      "reachableSuccessors": [
-        "006800.KS"
-      ]
-    },
-    "042670.KS": {
-      "cyclesDetected": [],
-      "reachableSuccessors": []
-    },
-    "053000.KS": {
-      "cyclesDetected": [],
-      "reachableSuccessors": [
-        "000030.KS",
-        "316140.KS"
-      ]
-    },
-    "057050.KS": {
-      "cyclesDetected": [],
-      "reachableSuccessors": [
-        "005440.KS"
-      ]
-    },
-    "067250.KS": {
-      "cyclesDetected": [],
-      "reachableSuccessors": []
-    },
-    "079440.KS": {
-      "cyclesDetected": [],
-      "reachableSuccessors": []
-    },
-    "115390.KS": {
-      "cyclesDetected": [],
-      "reachableSuccessors": []
-    },
-    "117930.KS": {
-      "cyclesDetected": [],
-      "reachableSuccessors": []
-    }
-  },
-  "version": "kr-terminal-corporate-actions-v1"
+  }
 }

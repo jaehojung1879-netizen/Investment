@@ -168,6 +168,49 @@ def probe_dividend_section(key: str, stock: str, corp: str) -> dict:
     return entry
 
 
+def probe_document_retrieval(key: str, receipt_no: str, timeout: int = 30) -> dict:
+    """`document.xml` -- DART's original-filing-document download endpoint.
+
+    This is a DIFFERENT confidence tier from `alotMatter.json`: it is not a
+    structured JSON endpoint at all (DART serves a ZIP of the filing's raw
+    XML/HTML), so a successful probe here establishes RAW-EVIDENCE
+    reachability only -- never a structured field, never a termination type,
+    never a consideration amount. See `docs/kr-terminal-action-reconstruction
+    -v2.md` for why structured merger/tender/share-exchange endpoints are not
+    probed here: no third-party documentation this sandbox could reach
+    corroborated a specific endpoint path or field map for them, and guessing
+    one is exactly what the vendor-refusal invariants forbid. `document.xml`
+    is reported separately because it is corroborated with higher confidence
+    (a generic, commonly-referenced OpenDART base endpoint, not one specific
+    to a disclosure type) and does not require guessing a type-specific path.
+    """
+    url = f"{BASE}/document.xml?crtfc_key={key}&rcept_no={receipt_no}"
+    try:
+        with urllib.request.urlopen(url, timeout=timeout) as response:
+            raw = response.read()
+            content_type = response.headers.get("Content-Type", "")
+    except urllib.error.HTTPError as exc:
+        return {"receiptNo": receipt_no, "reachable": False, "error": f"HTTP {exc.code}"}
+    except Exception as exc:  # pragma: no cover - network dependent
+        return {"receiptNo": receipt_no, "reachable": False,
+               "error": f"{type(exc).__name__}: {exc}"}
+    is_zip = raw[:2] == b"PK"
+    is_json_refusal = False
+    refusal_status = None
+    if not is_zip:
+        try:
+            payload = json.loads(raw.decode("utf-8"))
+            is_json_refusal = True
+            refusal_status = DF.describe_status(str(payload.get("status")))
+        except (ValueError, UnicodeDecodeError):
+            pass
+    return {
+        "receiptNo": receipt_no, "reachable": True, "contentType": content_type,
+        "bytes": len(raw), "isZip": is_zip, "isJsonRefusal": is_json_refusal,
+        "refusalStatus": refusal_status,
+    }
+
+
 def classify_verdict(report: dict) -> str:
     """SERVED / AUTH_REQUIRED / NETWORK_ERROR / BLOCKED_SOURCE /
     SCHEMA_CHANGED / INCONCLUSIVE_NO_ROWS, mirroring
@@ -252,7 +295,29 @@ def main(argv=None) -> int:
         report["dividendSection"][stock] = entry
         print(f"{stock} (continuing)  alotMatter status={entry.get('status')} "
               f"rows={entry.get('rows')}")
+        if entry.get("fieldsPresentPct"):
+            print(f"    fieldsPresentPct={json.dumps(entry['fieldsPresentPct'], ensure_ascii=False)}")
+            print(f"    sampleRow={json.dumps(entry['sampleRow'], ensure_ascii=False)}")
         time.sleep(0.3)
+
+    # RAW-EVIDENCE reachability -- one real MERGER-family receipt number per
+    # security that has one, drawn from the disclosure index this run just
+    # fetched (never a guessed receipt number). See `probe_document_retrieval`
+    # docstring for why this is a separate, lower-detail confidence tier from
+    # `alotMatter.json`.
+    report["documentRetrieval"] = {}
+    for stock, entry in report["disclosureIndex"].items():
+        merger_match = next((m for m in entry.get("sampleMatches") or []
+                             if KCA.MERGER in m.get("disclosureFamilies", ())), None)
+        if merger_match is None:
+            continue
+        doc_entry = probe_document_retrieval(key, merger_match["receiptNo"])
+        report["documentRetrieval"][stock] = doc_entry
+        print(f"{stock}  document.xml receipt={merger_match['receiptNo']} -> "
+              f"{json.dumps(doc_entry, ensure_ascii=False)}")
+        time.sleep(0.3)
+        if len(report["documentRetrieval"]) >= 3:
+            break
 
     verdict = classify_verdict(report)
     report["verdict"] = verdict

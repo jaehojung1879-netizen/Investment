@@ -29,6 +29,10 @@ MATRIX_FIELDS = (
     "exDateSemanticsResolved", "terminalConsiderationResolved",
     "successorResolvedWhereRequired", "effectiveDateResolved",
     "lastTradingDateResolved", "rawEvidenceRetained", "sourceProvenanceRetained",
+    # Added for `kr-terminal-action-reconstruction-v2`'s 12-field matrix
+    # (TERMINAL_ACTION_CHAIN, EXCHANGE_RATIO) -- additive, every field above
+    # keeps its original meaning and every v1 fixture still passes.
+    "terminalActionChainResolved", "exchangeRatioResolved",
 )
 
 DART_DIRECTORY_NOT_AVAILABLE = "DART_DIRECTORY_NOT_AVAILABLE"
@@ -69,23 +73,53 @@ def completeness_row(*, identity: dict | None, action: dict | None,
     and never flipped to `READY` by a hardcoded rule.
     """
     action_type = (action or {}).get("actionType") or TCA.TERMINATION_TYPE_UNRESOLVED
+    action = action or {}
+    type_resolved = action_type in TCA.ACTION_TYPES - {TCA.TERMINATION_TYPE_UNRESOLVED}
     requires_successor = action_type in TCA.REQUIRES_SUCCESSOR_TERM
+    # Only an explicitly cash-only type proves that shares are irrelevant.
+    cash_only = action_type in {TCA.MERGER_CASH, TCA.TENDER_CASH_OUT, TCA.CASH_SHARE_EXCHANGE}
+    cited = bool(action.get("sourceReceiptNumber") and action.get("sourceReceiptDate"))
+    unresolved = set(action.get("unresolvedFields") or [])
+    cash_resolved = cited and action.get("cashPerOldShare") is not None
+    successor_resolved = (cited and bool(action.get("successorSecurity"))
+                          and "successorSecurity" not in unresolved)
+    ratio_resolved = (cited and action.get("successorSharesPerOldShare") is not None
+                      and "successorSharesPerOldShare" not in unresolved)
+    # A receipt/sealed status alone states no economic terms. Require every
+    # leg owed by the resolved type; generic delisting types stay blocked.
+    consideration_resolved = (
+        type_resolved
+        and action_type in TCA.REQUIRES_CASH_TERM | TCA.REQUIRES_SUCCESSOR_TERM
+        and (action_type not in TCA.REQUIRES_CASH_TERM or cash_resolved)
+        and (not requires_successor or (successor_resolved and ratio_resolved))
+        and not unresolved.intersection({"terminalConsideration", "cashPerOldShare",
+                                         "considerationComponents"}))
+    has_raw_evidence = bool((action or {}).get("sourceReceiptNumber")
+                            or (action or {}).get("sources")
+                            or (action or {}).get("sourceReceiptNumbers"))
     return {
-        "terminationTypeResolved": _status(action_type != TCA.TERMINATION_TYPE_UNRESOLVED),
+        "terminationTypeResolved": _status(type_resolved),
         "dartIssuerResolved": _status(bool((identity or {}).get("corpCode"))),
         "dividendLineageResolved": _status(
             bool(dividends and dividends.get("status") == DIVIDEND_RESOLVED)),
         "exDateSemanticsResolved": _status(
             bool(dividends and dividends.get("exDateSource") == "DIRECT")),
         "terminalConsiderationResolved": _status(
-            bool((action or {}).get("evidenceStatus") == TCA.EVIDENCE_SEALED),
-            applicable=action_type != TCA.TERMINATION_TYPE_UNRESOLVED),
+            consideration_resolved),
         "successorResolvedWhereRequired": _status(
-            bool((action or {}).get("successorSecurity")), applicable=requires_successor),
+            successor_resolved, applicable=not cash_only),
         "effectiveDateResolved": _status(bool((action or {}).get("effectiveDate"))),
         "lastTradingDateResolved": _status(bool(last_trading_date)),
-        "rawEvidenceRetained": _status(bool((action or {}).get("sourceReceiptNumber"))),
+        "rawEvidenceRetained": _status(has_raw_evidence),
         "sourceProvenanceRetained": _status(bool((action or {}).get("sources"))),
+        # Capturing a disclosure/amendment list does not resolve its terms.
+        # A chain needs a dated, resolved action with complete economics and
+        # a final-terms citation; explicit outstanding fields keep it blocked.
+        "terminalActionChainResolved": _status(
+            consideration_resolved and bool(action.get("effectiveDate"))
+            and action.get("amendmentHistory") is not None
+            and bool(action.get("finalTermsReceiptNumber")) and not unresolved),
+        "exchangeRatioResolved": _status(ratio_resolved, applicable=not cash_only),
     }
 
 
@@ -123,7 +157,8 @@ def build_inventory(*, kr_terminations: list[dict],
             "dartIdentityStatus": (identity or {}).get("status") or DART_DIRECTORY_NOT_AVAILABLE,
             "terminationType": (action or {}).get("actionType") or TCA.TERMINATION_TYPE_UNRESOLVED,
             "evidenceSources": list((action or {}).get("sources") or []),
-            "evidenceReceiptNumbers": [r for r in [(action or {}).get("sourceReceiptNumber")] if r],
+            "evidenceReceiptNumbers": sorted((action or {}).get("sourceReceiptNumbers") or
+                                             [r for r in [(action or {}).get("sourceReceiptNumber")] if r]),
             "evidenceReceiptDates": [r for r in [(action or {}).get("sourceReceiptDate")] if r],
             "dividendEventsKnownFromYahoo": term.get("dividendEvents", 0),
             "dividendLineageStatus": (dividends or {}).get("status") or DIVIDEND_NOT_COLLECTED,
@@ -167,7 +202,8 @@ def foundation_status(rows: list[dict]) -> str:
     if blocked_fields <= {"dividendLineageResolved", "exDateSemanticsResolved"}:
         return BLOCKED_BY_DIVIDEND_LINEAGE
     if blocked_fields <= {"terminalConsiderationResolved", "successorResolvedWhereRequired",
-                          "terminationTypeResolved"}:
+                          "terminationTypeResolved", "terminalActionChainResolved",
+                          "exchangeRatioResolved"}:
         return BLOCKED_BY_TERMINAL_CONSIDERATION
     return PARTIALLY_REPAIRED
 

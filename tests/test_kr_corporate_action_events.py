@@ -156,7 +156,7 @@ def test_dividend_section_row_is_marked_unconfirmed():
     record, reason = KCA.build_dividend_section_row(
         row, ticker="005930.KS", collected_at="2026-09-25T00:00:00Z")
     assert reason == ""
-    assert record["endpointConfidence"] == KCA.CANDIDATE_UNCONFIRMED
+    assert record["endpointConfidence"] == KCA.CONFIRMED_LIVE
     assert record["categoryRaw"] == "주당 현금배당금(원)", "se kept raw, never interpreted"
     assert record["receiptDate"] == "2023-03-12"
 
@@ -400,3 +400,53 @@ def test_a_near_miss_name_is_not_treated_as_a_match():
                  "modifyDate": None}]
     identity = KCA.resolve_historical_dart_identity("999999", "우리은행A", directory)
     assert identity["status"] == KCA.UNRESOLVED
+
+
+# --------------------------------------------------------------------------- #
+# plausibly_responsible_disclosures -- narrows a reading list, never a verdict
+# --------------------------------------------------------------------------- #
+def test_a_merger_filing_inside_the_window_is_kept():
+    disclosures = KCA.candidate_disclosures(
+        [_list_row(rcept_no="20190101000001", report_nm="합병결정")], ticker="000030.KS")
+    narrowed = KCA.plausibly_responsible_disclosures(
+        disclosures, last_trading_date="2019-02-12")
+    assert len(narrowed) == 1
+
+
+def test_a_filing_far_outside_the_window_is_dropped():
+    disclosures = KCA.candidate_disclosures(
+        [_list_row(rcept_no="20100101000001", report_nm="합병결정")], ticker="000030.KS")
+    narrowed = KCA.plausibly_responsible_disclosures(
+        disclosures, last_trading_date="2019-02-12")
+    assert narrowed == []
+
+
+def test_a_dividend_decision_is_never_termination_relevant():
+    disclosures = KCA.candidate_disclosures(
+        [_list_row(rcept_no="20190101000001", report_nm="현금배당결정")], ticker="000030.KS")
+    narrowed = KCA.plausibly_responsible_disclosures(
+        disclosures, last_trading_date="2019-02-12")
+    assert narrowed == []
+
+
+def test_no_last_trading_date_returns_empty_never_unbounded():
+    disclosures = KCA.candidate_disclosures(
+        [_list_row(rcept_no="20190101000001", report_nm="합병결정")], ticker="000030.KS")
+    narrowed = KCA.plausibly_responsible_disclosures(disclosures, last_trading_date=None)
+    assert narrowed == []
+
+
+def test_a_completion_report_shortly_after_last_trading_date_is_kept():
+    disclosures = KCA.candidate_disclosures(
+        [_list_row(rcept_no="20190301000001", report_nm="합병 등 종료보고서")], ticker="000030.KS")
+    narrowed = KCA.plausibly_responsible_disclosures(
+        disclosures, last_trading_date="2019-02-12")
+    assert len(narrowed) == 1
+
+
+def test_a_filing_well_after_the_after_days_grace_window_is_dropped():
+    disclosures = KCA.candidate_disclosures(
+        [_list_row(rcept_no="20200101000001", report_nm="합병 등 종료보고서")], ticker="000030.KS")
+    narrowed = KCA.plausibly_responsible_disclosures(
+        disclosures, last_trading_date="2019-02-12")
+    assert narrowed == []
