@@ -11,8 +11,8 @@ DART served it), never a structured field: no `terminationType`, no
 `cashPerOldShare`, no `successorSecurity` is assigned here. A later,
 separate parsing pass reads what THIS script retrieves and decides what, if
 anything, can be responsibly extracted -- see `kr_terminal_action_document
-_parser.py`, which this collector never imports and which has not been run
-on any real document yet.
+_parser.py`. The separate reconstruction pass now validates real table
+patterns against all 92 successfully retrieved documents.
 
 WHAT IS STORED, AND WHY NOT THE RAW ZIP BYTES. Committing 130+ ZIP archives
 verbatim risks exactly the "huge redundant filing body" this repair line's

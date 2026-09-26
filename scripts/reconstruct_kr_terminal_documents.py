@@ -270,7 +270,9 @@ def reconstruct(*, evidence_root, identity_path, review_path):
                             and '최초제출일' in row['cells'][0].replace(' ', '')]
             history.append({**TCA.build_amendment_entry(
                 receipt_number=r, receipt_date=index[r]['receiptDate'],
-                report_name=index[r]['reportName'], supersedes_receipt_number=previous),
+                report_name=index[r]['reportName'], supersedes_receipt_number=previous,
+                fields_changed=tuple(row['cells'][0][:120] for row in correction_rows
+                                     if row['cells'] and '정정전' not in ''.join(row['cells']).replace(' ', '')[:80])),
                 'originalSubmissionDateEvidence': [row['cells'] for row in initial_rows],
                 'correctionRows': [
                     {'cellsPreview': [cell[:400] for cell in row['cells']],

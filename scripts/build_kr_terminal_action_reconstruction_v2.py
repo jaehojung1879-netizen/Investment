@@ -16,12 +16,11 @@ WHAT THIS DOES. Reads (from a checkout of `signal-history`):
     present) -- real `alotMatter.json` rows, once `collect_kr_dividend_
     sections.py` has been run.
 
-And the always-available inputs: the sealed v3 survivorship audit (the 22
-securities' own identity, never hardcoded) and `data/kr-terminal-corporate-
-actions.json` (the human-reviewed terminal-action book -- still empty in
-this PR, see the doc for why: no confirmed structured DART endpoint or raw-
-document extraction pipeline exists yet to responsibly assign a termination
-type from content rather than a report NAME).
+The sealed survivorship audit supplies the 22 security identities. The
+normalized book is now populated by `reconstruct_kr_terminal_documents.py`
+from all 92 retained original filings plus explicit review selections.
+Document access is live and verified; remaining blockers concern evidence
+of final terms, exact successor identity, fractional treatment and execution.
 
 DIVIDEND AMOUNT LINEAGE IS NOW REAL, DECODED FROM LIVE-OBSERVED VALUES ONLY
 (`kr_dividend_amount_lineage.py`, commit
@@ -33,9 +32,8 @@ reads.
 
 WHAT THIS NEVER DOES. Assigns no `terminationType` from a report name (that
 stays a human's job reading real filing content, per `kr_corporate_action_
-events`'s own module docstring, or a future validated pass of
-`kr_terminal_action_document_parser.py` -- unvalidated and unwired as
-shipped); computes no return, IC, or Alpha result.
+events`'s own module docstring, or the reviewed real-document reconstruction in
+`kr_terminal_action_document_parser.py`); computes no return, IC, or Alpha result.
 """
 from __future__ import annotations
 
@@ -219,13 +217,48 @@ def run(*, signal_history_root: Path, signal_history_commit: str | None,
             last_trading_date=security_row["lastTradingDate"])
         security_row["plausiblyResponsibleReceipts"] = [r["receiptNo"] for r in narrowed]
 
+    actions_by_security = {row["oldSecurity"]: row for row in reviewed_book.get("actions", [])}
+    for row in inventory:
+        action = actions_by_security.get(row['code'], {})
+        row['completeness']['amendmentChainResolved'] = (
+            INV.READY if action.get('amendmentChainStatus') == 'READY' else INV.BLOCKED)
+        row['economicEvidenceScope'] = 'FILED_CONTRACTUAL_TERMS_NOT_EXECUTION_CONFIRMATION'
+        row['documentedTerms'] = action.get('documentedTerms')
+        row['fieldEvidence'] = action.get('fieldEvidence', {})
+        row['identityBridge'] = action.get('identityBridge')
+        row['latestReviewedTermsReceiptNumber'] = action.get('latestReviewedTermsReceiptNumber')
+        row['finalTermsReceiptNumber'] = action.get('finalTermsReceiptNumber')
+        row['executionStatus'] = action.get('executionStatus', 'UNRESOLVED')
+        row['reconstructionStatus'] = action.get('reconstructionStatus', 'BLOCKED')
+        row['blockingReasons'] = action.get('blockingReasons', [])
+        row['failedReceipts'] = action.get('failedReceipts', [])
+        row['successorChain'] = reviewed_book.get('successorChains', {}).get(row['code'])
+    summary = INV.summary(inventory)
+    summary['byField']['amendmentChainResolved'] = sum(
+        row['completeness']['amendmentChainResolved'] == INV.READY for row in inventory)
+    counts = {
+        'terminationTypesResolved': summary['byField']['terminationTypeResolved'],
+        'terminalConsiderationResolved': summary['byField']['terminalConsiderationResolved'],
+        'successorIdentityResolved': summary['byField']['successorResolvedWhereRequired'],
+        'effectiveDateResolved': summary['byField']['effectiveDateResolved'],
+        'fullyReconstructed': sum(r['reconstructionStatus'] == 'FULLY_RECONSTRUCTED' for r in inventory),
+        'partiallyReconstructed': sum(r['reconstructionStatus'] == 'PARTIALLY_RECONSTRUCTED' for r in inventory),
+        'unresolved': sum(r['reconstructionStatus'] == 'BLOCKED' for r in inventory),
+        'securitiesBlockedByMaterialFailedReceipts': sum(any(
+            f['category'] == 'MATERIALLY_BLOCKING' for f in r['failedReceipts']) for r in inventory),
+    }
+
     return {
         "studyId": "kr-terminal-action-reconstruction-v2",
-        "phase": "REAL_DISCLOSURE_EVIDENCE_ASSEMBLED",
+        "phase": "REAL_DOCUMENT_TERMS_RECONSTRUCTED_WITH_EXPLICIT_BLOCKERS",
         "historicalOutcomesComputed": False, "returnsComputed": False,
         "labelsConstructed": False, "modelsTrained": False,
         "inputs": {
             "signalHistoryCommit": signal_history_commit,
+            "documentEvidenceCommit": reviewed_book.get('inputs', {}).get('documentEvidenceCommit'),
+            "dividendEvidenceCommit": reviewed_book.get('inputs', {}).get('dividendEvidenceCommit'),
+            "reviewedBookSha256": sha256_of(reviewed_book_path),
+            "sourceHashes": reviewed_book.get('inputs', {}).get('sourceHashes', {}),
             "survivorshipAuditPath": str(survivorship_audit),
             "survivorshipAuditSha256": sha256_of(survivorship_audit),
             "krTerminationsCount": len(kr_terminations),
@@ -234,7 +267,8 @@ def run(*, signal_history_root: Path, signal_history_commit: str | None,
             "fetchStatePresent": bool(fetch_state),
         },
         "securities": inventory,
-        "summary": INV.summary(inventory),
+        "summary": summary,
+        "reconstructionCounts": counts,
         "foundationStatus": INV.foundation_status(inventory),
     }
 

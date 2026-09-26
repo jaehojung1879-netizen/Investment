@@ -2,7 +2,7 @@
 
 Validated on the 92 retrieved documents at signal-history commit
 71c5128a01a7528536a8ff24c4e82d896363fec0. Table rows retain cell boundaries,
-source offsets and correction-table status. DART's TE/TU cells, &cr; entities,
+row indices and correction-table status. DART's TE/TU cells, &cr; entities,
 HTML BRs, Korean dates, common/preferred ratios and cash-instead-of-stock
 wording are observed in that corpus. Extraction produces candidates, never
 an automatic declaration of finality, subject identity or action completion.
@@ -19,9 +19,8 @@ PARSER_VALIDATION_STATUS = "REAL_DART_TABLE_PATTERNS_VALIDATED"
 AMBIGUOUS_ZERO_MATCHES = "ZERO_MATCHES"
 AMBIGUOUS_MULTIPLE_MATCHES = "MULTIPLE_CANDIDATE_MATCHES"
 
-# Standard 주요사항보고서(합병결정) template field labels -- see module
-# docstring for why these are public, checkable form vocabulary rather than
-# a guessed enum.
+# Legacy text-only labels. Real XML/HTML extraction uses table boundaries
+# below; neither path alone asserts subject identity or economic finality.
 FIELD_LABELS: dict[str, tuple[str, ...]] = {
     "mergerRatio": ("합병비율",),
     "mergerConsiderationValue": ("합병가액",),
@@ -77,11 +76,8 @@ def parse_filing_document(text: str, *, receipt_no: str) -> dict:
 
     Returns a dict with one entry per field: `{"value": ..., "reason":
     ...}` -- `value` is `None` whenever extraction was not unambiguous, and
-    `reason` says why. `parserValidationStatus` is always
-    `NEVER_VALIDATED_AGAINST_REAL_DART_CONTENT` on the current shipped
-    version of this module; a future change that validates this against
-    real retrieved documents is what may ever change that value, and only
-    after doing so.
+    `reason` says why. The validation flag covers observed real table
+    patterns only; it does not establish final economics or execution.
     """
     structure = document_structure(text)
     fields = {}

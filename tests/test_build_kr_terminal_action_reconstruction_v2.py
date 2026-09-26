@@ -114,11 +114,12 @@ def test_committed_v2_inventory_reflects_the_real_collection_not_a_guess():
     assert inventory["inputs"]["totalDisclosureRowsOnShard"] == 451
     assert all(row["dartIdentityStatus"] == "RESOLVED" for row in inventory["securities"])
     assert all(row["dartCorpCode"] for row in inventory["securities"])
-    # No content-level extraction pipeline exists yet, so termination type
-    # stays unresolved for every security -- never guessed from a report
-    # name (Section 3's rule).
-    assert all(row["terminationType"] == "TERMINATION_TYPE_UNRESOLVED"
-              for row in inventory["securities"])
+    # Types come from the cited filing body; two non-terminal document sets
+    # still cannot establish the parent's action.
+    assert sum(row["terminationType"] != "TERMINATION_TYPE_UNRESOLVED"
+               for row in inventory["securities"]) == 20
+    assert all(row['fieldEvidence'].get('actionType') for row in inventory['securities']
+               if row['terminationType'] != 'TERMINATION_TYPE_UNRESOLVED')
     assert inventory["foundationStatus"] != "READY_FOR_V4_PREREGISTRATION"
 
 
@@ -149,3 +150,14 @@ def test_disclosure_list_and_amendments_do_not_resolve_terminal_economics():
     for field in ("terminalConsiderationResolved", "successorResolvedWhereRequired",
                   "exchangeRatioResolved", "terminalActionChainResolved"):
         assert row[field] == BUILD.INV.BLOCKED
+
+
+
+def test_real_dividend_amounts_preserved_separately_from_event_dates():
+    inventory = json.loads(V2_INVENTORY_PATH.read_text())
+    assert inventory['inputs']['totalDividendSectionRowsOnShard'] == 6150
+    assert inventory['summary']['byField']['dividendLineageResolved'] == 15
+    assert inventory['summary']['byField']['exDateSemanticsResolved'] == 0
+    assert inventory['reconstructionCounts']['fullyReconstructed'] == 0
+    for row in inventory['securities']:
+        assert row['completeness']['terminalActionChainResolved'] == 'BLOCKED'
