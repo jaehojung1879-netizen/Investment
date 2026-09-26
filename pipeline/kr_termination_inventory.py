@@ -77,7 +77,7 @@ def completeness_row(*, identity: dict | None, action: dict | None,
     type_resolved = action_type in TCA.ACTION_TYPES - {TCA.TERMINATION_TYPE_UNRESOLVED}
     requires_successor = action_type in TCA.REQUIRES_SUCCESSOR_TERM
     # Only an explicitly cash-only type proves that shares are irrelevant.
-    cash_only = action_type in {TCA.MERGER_CASH, TCA.TENDER_CASH_OUT}
+    cash_only = action_type in {TCA.MERGER_CASH, TCA.TENDER_CASH_OUT, TCA.CASH_SHARE_EXCHANGE}
     cited = bool(action.get("sourceReceiptNumber") and action.get("sourceReceiptDate"))
     unresolved = set(action.get("unresolvedFields") or [])
     cash_resolved = cited and action.get("cashPerOldShare") is not None

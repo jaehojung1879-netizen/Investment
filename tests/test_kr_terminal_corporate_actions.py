@@ -85,10 +85,11 @@ def test_validate_book_rejects_an_unknown_action_type():
         TCA.validate_book([{"oldSecurity": "x", "actionType": "MADE_UP"}])
 
 
-def test_load_book_reads_the_reviewed_empty_book():
+def test_load_book_reads_the_reviewed_real_document_book():
     book = TCA.load_book(ROOT / "data/kr-terminal-corporate-actions.json")
     assert book["schema"] == TCA.CONTRACT
-    assert book["actions"] == [], "no security has actually been resolved in this PR"
+    assert len(book["actions"]) == 22
+    assert all(row.get("blockingReasons") for row in book["actions"])
 
 
 # --------------------------------------------------------------------------- #

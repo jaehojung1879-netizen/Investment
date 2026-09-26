@@ -61,6 +61,7 @@ from __future__ import annotations
 
 CONTRACT = "KR_TERMINAL_CORPORATE_ACTIONS_V1"
 
+CASH_SHARE_EXCHANGE = "CASH_SHARE_EXCHANGE"
 MERGER_CASH = "MERGER_CASH"
 MERGER_STOCK = "MERGER_STOCK"
 MERGER_CASH_AND_STOCK = "MERGER_CASH_AND_STOCK"
@@ -74,7 +75,7 @@ OTHER_TERMINATION = "OTHER_TERMINATION"
 TERMINATION_TYPE_UNRESOLVED = "TERMINATION_TYPE_UNRESOLVED"
 
 ACTION_TYPES = frozenset({
-    MERGER_CASH, MERGER_STOCK, MERGER_CASH_AND_STOCK, SHARE_EXCHANGE,
+    CASH_SHARE_EXCHANGE, MERGER_CASH, MERGER_STOCK, MERGER_CASH_AND_STOCK, SHARE_EXCHANGE,
     SHARE_TRANSFER, TENDER_CASH_OUT, HOLDING_COMPANY_REORGANIZATION,
     INSOLVENCY_DELISTING, VOLUNTARY_DELISTING, OTHER_TERMINATION,
     TERMINATION_TYPE_UNRESOLVED,
@@ -82,7 +83,7 @@ ACTION_TYPES = frozenset({
 
 # Used only by the completeness matrix (`kr_termination_inventory.py`) to ask
 # "does this resolved type still owe a term" — never to fabricate one.
-REQUIRES_CASH_TERM = frozenset({MERGER_CASH, MERGER_CASH_AND_STOCK, TENDER_CASH_OUT})
+REQUIRES_CASH_TERM = frozenset({CASH_SHARE_EXCHANGE, MERGER_CASH, MERGER_CASH_AND_STOCK, TENDER_CASH_OUT})
 REQUIRES_SUCCESSOR_TERM = frozenset({MERGER_STOCK, MERGER_CASH_AND_STOCK,
                                      SHARE_EXCHANGE, SHARE_TRANSFER,
                                      HOLDING_COMPANY_REORGANIZATION})
@@ -263,6 +264,9 @@ def validate_book(actions: list[dict]) -> None:
             if not amendment.get("receiptNumber") or not amendment.get("receiptDate"):
                 raise ValueError(f"amendment entry missing receipt number/date: {key}")
 
+    if any(chain['cyclesDetected'] for chain in chain_all_successors(actions).values()):
+        raise ValueError("cycle in terminal successor actions")
+
 
 def load_book(path) -> dict:
     import json
@@ -330,18 +334,18 @@ def chain_all_successors(actions: list[dict]) -> dict[str, dict]:
     for start in by_old:
         reachable: list[str] = []
         cycles: list[str] = []
-        stack = [start]
-        visited = {start}
-        while stack:
-            current = stack.pop()
+        # A diamond is not a cycle: only an ancestor on this path is cyclic.
+        def visit(current, ancestors):
             for successor in by_old.get(current, []):
-                if successor in visited:
+                if successor in ancestors:
                     if successor not in cycles:
                         cycles.append(successor)
                     continue
-                visited.add(successor)
-                reachable.append(successor)
-                stack.append(successor)
+                if successor not in reachable:
+                    reachable.append(successor)
+                visit(successor, ancestors | {successor})
+
+        visit(start, {start})
         out[start] = {"reachableSuccessors": sorted(reachable), "cyclesDetected": sorted(cycles)}
     return out
 
