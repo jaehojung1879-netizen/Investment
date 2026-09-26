@@ -42,11 +42,17 @@ def test_all_twenty_reviewed_real_term_patterns_reextract_exactly():
 
 
 def test_missing_later_body_corrections_preserve_candidates_but_block_final_terms():
+    # A record with independent alternative-primary-evidence for its OWN
+    # effectiveDate (currently only 000030.KS) is the one field-specific
+    # exception; every other field on every materially-blocked record, and
+    # every field on every OTHER materially-blocked record, stays blocked.
+    fields_alt_resolved = {'000030.KS': {'effectiveDate'}}
     for action in book()['actions']:
         material = any(f['category'] == 'MATERIALLY_BLOCKING' for f in action['failedReceipts'])
         if material:
+            resolved = fields_alt_resolved.get(action['oldSecurity'], set())
             assert action['documentedTerms'] is not None
-            assert action['effectiveDate'] is None
+            assert (action['effectiveDate'] is None) != ('effectiveDate' in resolved)
             assert action['cashPerOldShare'] is None
             assert action['successorSharesPerOldShare'] is None
             assert action['finalTermsReceiptNumber'] is None
@@ -160,16 +166,36 @@ def test_real_book_resolves_both_reused_name_successors_by_temporal_exclusion():
 def test_independent_completion_evidence_resolves_execution_never_final_terms():
     row = next(r for r in book()['actions'] if r['oldSecurity'] == '000030.KS')
     assert row['executionStatus'] == 'CONFIRMED_BY_INDEPENDENT_COMPLETION_EVIDENCE'
-    assert row['completionEvidence'] and row['completionEvidence'][0]['receiptNo'] == '20190111000457'
+    evidence = row['completionEvidence']
+    assert evidence and evidence[0]['receiptNo'] == '20190111000457'
+    assert set(evidence[0]['resolvesFields']) == {'executionConfirmation', 'effectiveDate'}
     assert 'executionConfirmation' not in row['unresolvedFields']
-    # The independent evidence never substitutes for the still-missing body
-    # corrections: final consideration/ratio/date stay blocked.
-    assert row['effectiveDate'] is None
+    # Naming 'effectiveDate' in resolvesFields is exactly what lets THIS field
+    # through despite the missing corrections -- finality stays field-specific:
+    assert row['effectiveDate'] == '2019-01-11'
+    # ...but the independent evidence never substitutes for a field it does not
+    # name: consideration/ratio/finality stay blocked by the missing corrections.
     assert row['successorSharesPerOldShare'] is None
+    assert row['cashPerOldShare'] is None
     assert row['finalTermsReceiptNumber'] is None
     matrix = INV.completeness_row(identity=None, action=row, dividends=None, last_trading_date=None)
+    assert matrix['effectiveDateResolved'] == INV.READY
     assert matrix['terminalConsiderationResolved'] == INV.BLOCKED
+    assert matrix['exchangeRatioResolved'] == INV.BLOCKED
     assert matrix['terminalActionChainResolved'] == INV.BLOCKED
+
+
+def test_completion_evidence_resolves_fields_defaults_to_execution_only():
+    # An entry with no `resolvesFields` key (the shape every entry had before
+    # this pass) must keep resolving execution alone, never effectiveDate by
+    # default -- the exact fallback `reconstruct()` applies via
+    # `item.get('resolvesFields') or ('executionConfirmation',)`.
+    assert tuple({}.get('resolvesFields') or ('executionConfirmation',)) == ('executionConfirmation',)
+    # The one real entry in the committed review file is explicit, not relying
+    # on that default, and names exactly the two fields this pass established:
+    reviews = json.loads((ROOT/'data/kr-terminal-document-review.json').read_text())['reviews']
+    only_entry = next(r for r in reviews if r['oldSecurity'] == '000030.KS')['completionEvidence'][0]
+    assert only_entry['resolvesFields'] == ['executionConfirmation', 'effectiveDate']
 
 
 def test_completion_evidence_review_schema_requires_receipt_and_quote():

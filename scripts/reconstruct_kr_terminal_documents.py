@@ -255,24 +255,40 @@ def reconstruct(*, evidence_root, identity_path, review_path):
             # that says the successor "was established" in the past tense.
             # Reviewed and cited per entry; a quote absent from its own
             # cited document raises, the same discipline every other
-            # citation in this reconstruction already applies. This can only
-            # ever resolve EXECUTION -- it never substitutes for a missing
-            # correction's final consideration/ratio/date, which stays
-            # blocked by `materials` regardless.
+            # citation in this reconstruction already applies.
+            #
+            # FINALITY IS FIELD-SPECIFIC. A missing correction blocks only
+            # the fields it could have changed, never every field a record
+            # has. `resolvesFields` names exactly which of this record's own
+            # fields this piece of evidence independently corroborates --
+            # defaulting to execution alone when omitted, since that is the
+            # only claim every prior completion-evidence entry made. Naming
+            # 'effectiveDate' here means a LATER, independent filing restates
+            # the SAME date already on file despite the missing correction --
+            # it never lets a missing correction's consideration/ratio field
+            # through, because nothing has independently restated those.
             completion_evidence = []
+            resolved_fields: set[str] = set()
             for item in review.get('completionEvidence') or ():
                 doc_text = ' '.join(parsed[item['receiptNo']]['text'].split())
                 if item['quote'] not in doc_text:
                     raise ValueError(f"completion evidence quote missing: {ticker} {item['receiptNo']}")
+                fields = tuple(item.get('resolvesFields') or ('executionConfirmation',))
                 completion_evidence.append({**cite(item['receiptNo'], item['quote'], 'executionConfirmation'),
-                                            'note': item['note']})
-            execution_confirmed = bool(completion_evidence)
+                                            'note': item['note'], 'resolvesFields': fields})
+                resolved_fields.update(fields)
+            execution_confirmed = 'executionConfirmation' in resolved_fields
+            effective_date_alt_resolved = 'effectiveDate' in resolved_fields
             # Original terms survive as candidates even when later amendments block them.
             documented = {'cashPerOldShare': cash, 'successorSharesPerOldShare': ratio,
                           'successorName': review['successorName'], 'effectiveDate': effective,
                           'receiptNo': receipt, 'receiptDate': index[receipt]['receiptDate'],
                           'scope': 'FILED_CONTRACTUAL_TERMS_NOT_PROOF_OF_EXECUTION'}
-            if materials:
+            if materials and effective_date_alt_resolved:
+                blockers.append('FINAL_ECONOMIC_CONSIDERATION: later body corrections unavailable ('
+                                + ','.join(f['receiptNo'] for f in materials)
+                                + '); effective date separately resolved by independent completion evidence, see below.')
+            elif materials:
                 blockers.append('FINAL_ECONOMIC_TERMS_AND_EFFECTIVE_DATE: later body corrections unavailable (' + ','.join(f['receiptNo'] for f in materials) + ')')
             if not cash_only and not successor:
                 blockers.append('SUCCESSOR_SECURITY_IDENTITY: ' + str(identity_reason))
@@ -289,7 +305,7 @@ def reconstruct(*, evidence_root, identity_path, review_path):
             action = TCA.build_record(
                 old_security=ticker, action_type=review['actionType'],
                 old_issuer_corp_code=fetch[ticker]['corpCode'],
-                effective_date=None if materials else effective,
+                effective_date=effective if (not materials or effective_date_alt_resolved) else None,
                 cash_per_old_share=None if materials else cash,
                 successor_security=None if cash_only else successor,
                 successor_issuer_corp_code=None if cash_only else successor_corp,

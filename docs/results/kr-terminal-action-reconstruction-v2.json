@@ -6,7 +6,7 @@
     "documentEvidenceCommit": "71c5128a01a7528536a8ff24c4e82d896363fec0",
     "fetchStatePresent": true,
     "krTerminationsCount": 22,
-    "reviewedBookSha256": "3318fc4e44aa7ae83a4085055c10b48186fb51f4abc843028fe54d2dd4228ad8",
+    "reviewedBookSha256": "4e67620afddfb4cd5849e857da78a91f643f00c0b24466e3e1517a108d156077",
     "signalHistoryCommit": "4c6813c4cc8e84a9e429b37435e78baba7f1ee78",
     "sourceHashes": {
       "dividend-fetch-state.json": "8d58f1fef9971ad86ec458581d8e48ab97208be4aa8f52d77a068afd66879e82",
@@ -25,7 +25,7 @@
   "modelsTrained": false,
   "phase": "REAL_DOCUMENT_TERMS_RECONSTRUCTED_WITH_EXPLICIT_BLOCKERS",
   "reconstructionCounts": {
-    "effectiveDateResolved": 11,
+    "effectiveDateResolved": 12,
     "fullyReconstructed": 0,
     "partiallyReconstructed": 20,
     "securitiesBlockedByMaterialFailedReceipts": 9,
@@ -38,7 +38,7 @@
   "securities": [
     {
       "blockingReasons": [
-        "FINAL_ECONOMIC_TERMS_AND_EFFECTIVE_DATE: later body corrections unavailable (20180920000544,20181108000137,20181121000025)",
+        "FINAL_ECONOMIC_CONSIDERATION: later body corrections unavailable (20180920000544,20181108000137,20181121000025); effective date separately resolved by independent completion evidence, see below.",
         "AMENDMENT_ATTACHMENT_FINALITY: unavailable potentially material attachment",
         "EXECUTION_CONFIRMATION: RESOLVED by independent completion evidence (20190111000457); final economic terms may still be blocked separately, see other blockers."
       ],
@@ -47,7 +47,7 @@
         "amendmentChainResolved": "BLOCKED",
         "dartIssuerResolved": "READY",
         "dividendLineageResolved": "READY",
-        "effectiveDateResolved": "BLOCKED",
+        "effectiveDateResolved": "READY",
         "exDateSemanticsResolved": "BLOCKED",
         "exchangeRatioResolved": "BLOCKED",
         "lastTradingDateResolved": "READY",
@@ -4084,7 +4084,7 @@
       "amendmentChainResolved": 10,
       "dartIssuerResolved": 22,
       "dividendLineageResolved": 15,
-      "effectiveDateResolved": 11,
+      "effectiveDateResolved": 12,
       "exDateSemanticsResolved": 0,
       "exchangeRatioResolved": 8,
       "lastTradingDateResolved": 22,
