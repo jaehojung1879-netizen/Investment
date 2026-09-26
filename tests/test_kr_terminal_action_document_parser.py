@@ -1,10 +1,4 @@
-"""`kr_terminal_action_document_parser.py`, exercised ONLY against synthetic
-fixtures this repository constructed from the PUBLIC description of DART's
-standard 주요사항보고서(합병결정) template structure -- never a real
-scraped filing. This module has never been run against real DART content;
-see its own module docstring and `docs/kr-terminal-action-reconstruction-
-v2.md` for why, and for what would need to happen before it could be.
-"""
+"""Conservative text extraction and observed real DART table patterns."""
 from __future__ import annotations
 
 from pipeline import kr_terminal_action_document_parser as PARSER
@@ -69,9 +63,9 @@ def test_every_field_in_field_labels_gets_a_result_entry():
     assert all(f["value"] is None for f in result["fields"].values())
 
 
-def test_the_validation_status_is_always_never_validated_as_shipped():
+def test_validation_status_describes_observed_patterns_not_economic_readiness():
     result = PARSER.parse_filing_document("(빈 문서)", receipt_no="20200101000001")
-    assert result["parserValidationStatus"] == "NEVER_VALIDATED_AGAINST_REAL_DART_CONTENT"
+    assert result["parserValidationStatus"] == "REAL_DART_TABLE_PATTERNS_VALIDATED"
 
 
 def test_a_synthetic_standard_form_document_extracts_its_unambiguous_fields():
@@ -103,3 +97,37 @@ def test_no_field_is_ever_read_from_a_report_name():
     assert set(signature.parameters) == {"text", "receipt_no"}
     signature = inspect.signature(PARSER.extract_labeled_value)
     assert set(signature.parameters) == {"text", "labels"}
+
+
+
+def test_real_dart_table_patterns_and_cash_valuation_ratio_separation():
+    import json
+    from pathlib import Path
+    fixtures = json.loads((Path(__file__).parent / "fixtures" /
+                           "kr-terminal-real-table-patterns.json").read_text())
+    for fixture in fixtures:
+        structure = PARSER.document_structure(fixture["xml"])
+        rows = PARSER.labeled_rows(structure, fixture["label"])
+        assert rows, fixture["receiptNo"]
+        value = rows[-1]["cells"][-1]
+        if isinstance(fixture["expected"], int):
+            assert PARSER.cash_instead_of_stock(value) == fixture["expected"]
+        elif fixture["expected"]:
+            assert PARSER.korean_date(value) == fixture["expected"]
+        else:
+            assert "0.7367839" in value and "1.1102438" in value
+            assert PARSER.cash_instead_of_stock(value) is None
+
+
+def test_before_after_table_is_not_a_current_terms_table():
+    text = ("<TABLE><TR><TH>정정항목</TH><TH>정정전</TH><TH>정정후</TH></TR>"
+            "<TR><TD>합병기일</TD><TD>2016년 11월 01일</TD><TD>2016년 12월 29일</TD></TR>"
+            "</TABLE><TABLE><TR><TD>합병기일</TD><TE>2016년 12월 29일</TE></TR></TABLE>")
+    rows = PARSER.labeled_rows(PARSER.document_structure(text), "합병기일")
+    assert len(rows) == 1
+    assert PARSER.korean_date(rows[0]["cells"][-1]) == "2016-12-29"
+
+
+def test_tender_price_or_appraisal_value_is_not_cash_exchange_consideration():
+    assert PARSER.cash_instead_of_stock("공개매수가격 주당 현금 8,750원") is None
+    assert PARSER.cash_instead_of_stock("매수예정가격 7,383원") is None

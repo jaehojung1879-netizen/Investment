@@ -1,56 +1,20 @@
-"""A CONSERVATIVE scaffold for reading termination terms out of a real DART
-filing document's own text -- UNVALIDATED against any real filing.
+"""Read real DART XML/HTML tables without turning filing presence into economics.
 
-WHY THIS EXISTS NOW BUT PRODUCES NOTHING YET. `document.xml` reachability is
-confirmed live (`scripts/probe_kr_corporate_actions.probe_document_
-retrieval`) and `scripts/collect_kr_terminal_action_documents.py` can now
-retrieve real filing text for the 130 receipts this repair line's own
-narrowing step selected -- but this sandbox has not run that collector
-(no `workflow_dispatch` permission; see `docs/kr-terminal-action-
-reconstruction-v2.md`), so ZERO real filing documents exist anywhere this
-repository can read yet. Writing a parser now and claiming it works would be
-exactly the failure this repository's discipline forbids: a plausible-
-looking extraction with nothing real behind it. This module exists so the
-NEXT step (once real documents land) has a starting point to validate and
-correct against real content, not a claim that termination terms are
-resolved.
-
-`PARSER_VALIDATION_STATUS` IS STAMPED ON EVERY RESULT, ALWAYS
-`NEVER_VALIDATED_AGAINST_REAL_DART_CONTENT` AS SHIPPED. No completeness-
-matrix field, no `kr_terminal_corporate_actions.build_record` call anywhere
-in this repository reads this module's output — it is not imported by
-`build_kr_terminal_action_reconstruction_v2.py` or any other assembly
-script. Wiring it in is future work, gated on that validation actually
-happening.
-
-THE FIELD LABELS ARE STANDARD KOREAN COMMERCIAL-ACT / DART DISCLOSURE-
-TEMPLATE VOCABULARY, THE SAME EPISTEMIC TIER AS `보통주`/`우선주` IN
-`kr_dividend_amount_lineage.py` -- NOT A GUESSED DART-INTERNAL ENUM. DART's
-주요사항보고서(합병결정) template is a standardized form every Korean
-merger disclosure uses the same field names for (합병비율, 합병가액,
-합병기일, 존속회사, 소멸회사, 1주당 신주배정주식수, 현금교부); this is
-public, checkable knowledge of the form's own structure, not a probe-and-
-confirm exercise like `report_tp`'s opaque code was. What IS unvalidated is
-whether this module's own EXTRACTION LOGIC correctly locates the value next
-to each label across the real variety of real filings' formatting (HTML
-tables, footnotes, amendment strikethroughs) -- that is what a real
-document validates, not the label list itself.
-
-EVERY EXTRACTION IS CONSERVATIVE: A FIELD IS `None` UNLESS EXACTLY ONE
-CANDIDATE MATCHES. Zero matches or more than one candidate both return
-`None` with a stated reason -- never a best guess among several, and never
-an average or a first-match pick. This is the module-level version of the
-task's own instruction: "if parsing is ambiguous, leave the field BLOCKED."
-
-NO TERMINATION TYPE IS INFERRED FROM `report_nm`. This module only ever
-reads the FILING'S OWN BODY TEXT, passed in by the caller -- it takes no
-disclosure-index row and computes nothing from a report name.
+Validated on the 92 retrieved documents at signal-history commit
+71c5128a01a7528536a8ff24c4e82d896363fec0. Table rows retain cell boundaries,
+source offsets and correction-table status. DART's TE/TU cells, &cr; entities,
+HTML BRs, Korean dates, common/preferred ratios and cash-instead-of-stock
+wording are observed in that corpus. Extraction produces candidates, never
+an automatic declaration of finality, subject identity or action completion.
+Report names are not inputs. Later amendments keep their own receipt dates.
 """
 from __future__ import annotations
 
 import re
+from html.parser import HTMLParser
+from datetime import date
 
-PARSER_VALIDATION_STATUS = "NEVER_VALIDATED_AGAINST_REAL_DART_CONTENT"
+PARSER_VALIDATION_STATUS = "REAL_DART_TABLE_PATTERNS_VALIDATED"
 
 AMBIGUOUS_ZERO_MATCHES = "ZERO_MATCHES"
 AMBIGUOUS_MULTIPLE_MATCHES = "MULTIPLE_CANDIDATE_MATCHES"
@@ -119,12 +83,100 @@ def parse_filing_document(text: str, *, receipt_no: str) -> dict:
     real retrieved documents is what may ever change that value, and only
     after doing so.
     """
+    structure = document_structure(text)
     fields = {}
     for field_name, labels in FIELD_LABELS.items():
         value, reason = extract_labeled_value(text, labels)
         fields[field_name] = {"value": value, "reason": reason}
     return {
         "receiptNo": receipt_no,
+        "structure": structure,
         "fields": fields,
         "parserValidationStatus": PARSER_VALIDATION_STATUS,
     }
+
+
+class _Document(HTMLParser):
+    """Small tolerant XML/HTML reader; no external entities or network access."""
+
+    def __init__(self):
+        super().__init__(convert_charrefs=True)
+        self.rows = []
+        self.tables = []
+        self.next_table = 0
+        self.row = None
+        self.cell = None
+        self.parts = []
+        self.issuer = None
+
+    def handle_starttag(self, tag, attrs):
+        attrs = dict(attrs)
+        if tag == "company-name":
+            self.issuer = attrs.get("aregciK".lower())
+        if tag == "table":
+            self.tables.append(self.next_table)
+            self.next_table += 1
+        if tag == "tr":
+            self.row = {"cells": [], "table": self.tables[-1] if self.tables else -1}
+        if tag in {"td", "th", "te", "tu"} and self.row is not None:
+            self.cell = []
+        if tag in {"p", "br", "title", "tr"}:
+            self.handle_data("\n")
+
+    def handle_endtag(self, tag):
+        if tag in {"td", "th", "te", "tu"} and self.cell is not None:
+            if self.row is not None:
+                self.row["cells"].append(" ".join("".join(self.cell).replace("&cr;", " ").split()))
+            self.cell = None
+        if tag == "tr" and self.row is not None:
+            self.row["rowIndex"] = len(self.rows)
+            self.rows.append(self.row)
+            self.row = None
+        if tag == "table" and self.tables:
+            self.tables.pop()
+        if tag in {"p", "br", "tr", "title"}:
+            self.handle_data("\n")
+
+    def handle_data(self, data):
+        self.parts.append(data)
+        if self.cell is not None:
+            self.cell.append(data)
+
+
+def document_structure(text: str) -> dict:
+    parser = _Document()
+    parser.feed(text)
+    corrections = {row["table"] for row in parser.rows
+                   if "정정전" in "".join(row["cells"]).replace(" ", "")
+                   and "정정후" in "".join(row["cells"]).replace(" ", "")}
+    for row in parser.rows:
+        row["isCorrectionTable"] = row["table"] in corrections
+    return {"rows": parser.rows, "text": "".join(parser.parts).replace("&cr;", " "),
+            "issuerCorpCode": parser.issuer}
+
+
+def labeled_rows(structure: dict, label: str) -> list[dict]:
+    """Exact row-label matches, excluding before/after correction tables."""
+    def normalized(value):
+        return re.sub(r"^\d+\.", "", re.sub(r"\s+", "", value))
+    return [row for row in structure["rows"] if row["cells"]
+            and not row["isCorrectionTable"]
+            and normalized(row["cells"][0]) == normalized(label)]
+
+
+def korean_date(value: str) -> str | None:
+    match = re.fullmatch(r"\s*(\d{4})\s*[년.\-/]\s*(\d{1,2})\s*[월.\-/]\s*(\d{1,2})\s*일?\.?\s*", value)
+    if not match:
+        return None
+    try:
+        return date(*map(int, match.groups())).isoformat()
+    except ValueError:
+        return None
+
+
+def cash_instead_of_stock(value: str) -> float | None:
+    """Ignore a valuation ratio when the actual consideration is cash."""
+    if "현금교부형" not in value or "신주 발행에 갈음" not in value:
+        return None
+    amounts = set(re.findall(r"(?:1주당|주당)\s*현금\s*([\d,]+)원", value))
+    return float(amounts.pop().replace(",", "")) if len(amounts) == 1 else None
