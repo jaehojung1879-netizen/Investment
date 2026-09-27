@@ -342,9 +342,12 @@ def test_the_schedule_collects_both_regions_without_being_asked():
     """A cron passes no inputs at all, so a region gate that only reads
     `inputs.region` would silently collect nothing on the nightly run."""
     workflow = _fundamentals_workflow()
+    # The schedule branch stays unconditional; the parenthesised half only
+    # keeps a hand-started `raw-*` target (the separate kr-raw job) from also
+    # starting the daily collectors.
     for region in ("kr", "us"):
-        assert (f"github.event_name == 'schedule' || inputs.region == 'both' "
-                f"|| inputs.region == '{region}'") in workflow
+        assert (f"github.event_name == 'schedule' || ((inputs.region == 'both' "
+                f"|| inputs.region == '{region}') && !startsWith(inputs.target, 'raw-'))") in workflow
 
 
 def test_each_region_writes_its_own_path_under_the_shared_branch():

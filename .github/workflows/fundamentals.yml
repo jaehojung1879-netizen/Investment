@@ -51,11 +51,18 @@ on:
         description: "최대 분 (비우면 지역별 기본 상한)"
         type: string
         default: ""
+      # `raw-statements` / `raw-probe-2015` run the SEPARATE `kr-raw` job below
+      # (kr-accounting-coverage-repair-v1) and skip both daily collectors. The
+      # schedule never sends a target, so the daily run can never take them.
       target:
-        description: "KR 전용 — auto=재무제표 후 주식수까지 / statements / shares"
+        description: "KR 전용 — auto=재무제표 후 주식수까지 / statements / shares / raw-statements=PIT 유니버스 원본행 재수집 / raw-probe-2015=2015 분기 가용성 탐침"
         type: choice
-        options: ["auto", "statements", "shares"]
+        options: ["auto", "statements", "shares", "raw-statements", "raw-probe-2015"]
         default: "auto"
+      raw_years:
+        description: "raw-statements 전용 — 수집 연도 우선순위 (비우면 2015,2016,2024,2025,2023,2017..2022,2026)"
+        type: string
+        default: ""
       region:
         description: "어느 쪽을 수집할지 (예약 실행은 항상 둘 다)"
         type: choice
@@ -74,7 +81,7 @@ concurrency:
 
 jobs:
   kr:
-    if: github.event_name == 'schedule' || inputs.region == 'both' || inputs.region == 'kr'
+    if: github.event_name == 'schedule' || ((inputs.region == 'both' || inputs.region == 'kr') && !startsWith(inputs.target, 'raw-'))
     runs-on: ubuntu-latest
     timeout-minutes: 330
     steps:
@@ -153,7 +160,7 @@ jobs:
           } >> "$GITHUB_STEP_SUMMARY"
 
   us:
-    if: github.event_name == 'schedule' || inputs.region == 'both' || inputs.region == 'us'
+    if: github.event_name == 'schedule' || ((inputs.region == 'both' || inputs.region == 'us') && !startsWith(inputs.target, 'raw-'))
     runs-on: ubuntu-latest
     timeout-minutes: 330
     steps:
@@ -269,5 +276,122 @@ jobs:
             echo
             echo '```'
             cat us-semantics.log 2>/dev/null || echo '측정 출력 없음'
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  # kr-accounting-coverage-repair-v1. Re-collects DART statement responses WHOLE
+  # (every row, every attempt's real status) for every ticker ever in a KR
+  # top-120 snapshot, into `ledger/fundamentals/kr-raw` -- never into
+  # `ledger/fundamentals/kr`, whose 28 blobs are the sealed v4 execution input.
+  # Then rebuilds `kr-canonical-v2` from it and audits that CANDIDATE store's
+  # feature coverage against the sealed snapshot's own membership, prices
+  # (backward tradability only) and denominator. Outcome-free throughout.
+  kr-raw:
+    if: github.event_name == 'workflow_dispatch' && startsWith(inputs.target, 'raw-')
+    runs-on: ubuntu-latest
+    timeout-minutes: 345
+    env:
+      SEALED_SIGNAL_HISTORY_COMMIT: 4ea107ed0cde289f0a049a65ff13d2441a786710
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Check out signal-history (writable head + sealed commit, read-only)
+        run: |
+          git config user.name "dart-raw-statements-bot"
+          git config user.email "actions@github.com"
+          git fetch origin signal-history
+          git worktree add raw-work origin/signal-history
+          git -C raw-work checkout -B signal-history
+          git worktree add --detach sealed-work "$SEALED_SIGNAL_HISTORY_COMMIT"
+          test "$(git -C sealed-work rev-parse HEAD)" = "$SEALED_SIGNAL_HISTORY_COMMIT"
+          mkdir -p raw-work/ledger/fundamentals/kr-raw
+
+      - name: Probe fiscal-2015 quarterly availability (writes nothing to the store)
+        if: inputs.target == 'raw-probe-2015'
+        env:
+          DART_API_KEY: ${{ secrets.DART }}
+        run: |
+          set -o pipefail
+          python scripts/collect_dart_raw_statements.py raw-work/ledger/fundamentals/kr-raw \
+            --universe-dir sealed-work/ledger/universe/kr --mode probe-2015 \
+            --probe-tickers 8 --max-calls 200 --probe-output probe-2015.json | tee raw.log
+
+      - name: Collect a slice of raw statement rows
+        if: inputs.target == 'raw-statements'
+        env:
+          DART_API_KEY: ${{ secrets.DART }}
+        run: |
+          set -o pipefail
+          python scripts/collect_dart_raw_statements.py raw-work/ledger/fundamentals/kr-raw \
+            --universe-dir sealed-work/ledger/universe/kr --mode collect \
+            --years "${{ inputs.raw_years || '2015,2016,2024,2025,2023,2017,2018,2019,2020,2021,2022,2026' }}" \
+            --max-calls "${{ inputs.max_calls || '1800' }}" \
+            --max-minutes "${{ inputs.max_minutes || '290' }}" | tee raw.log
+
+      - name: Rebuild canonical filings and audit the candidate's coverage
+        if: inputs.target == 'raw-statements'
+        run: |
+          set -o pipefail
+          python scripts/build_kr_canonical_filings.py raw-work/ledger/fundamentals/kr-raw \
+            raw-work/ledger/fundamentals/kr-canonical-v2 \
+            --legacy-dir sealed-work/ledger/fundamentals/kr | tee canonical.log
+          python scripts/audit_kr_accounting_coverage.py --input-root sealed-work \
+            --kr-fundamentals-dir raw-work/ledger/fundamentals/kr-canonical-v2 \
+            --absent-json raw-work/ledger/fundamentals/kr-raw/absent.json \
+            --output-dir raw-work/ledger/fundamentals/kr-canonical-v2/coverage-audit | tee audit.log
+
+      - name: Commit & push to signal-history
+        if: inputs.target == 'raw-statements'
+        run: |
+          cd raw-work
+          git add ledger/fundamentals/kr-raw ledger/fundamentals/kr-canonical-v2
+          if git diff --cached --quiet; then
+            echo "no new raw filings"
+            exit 0
+          fi
+          git commit -m "fundamentals: DART raw statement rows (PIT KR universe) $(date -u +%Y-%m-%d)"
+          for attempt in 1 2 3 4 5; do
+            if git push origin signal-history; then
+              exit 0
+            fi
+            echo "push rejected (attempt $attempt); rebasing onto the remote"
+            git fetch origin signal-history
+            if ! git rebase origin/signal-history; then
+              git rebase --abort || true
+              echo "could not rebase onto signal-history"
+              exit 1
+            fi
+          done
+          echo "push failed after 5 attempts"
+          exit 1
+
+      - name: Summary
+        if: always()
+        run: |
+          {
+            echo '## DART 원본 행 재수집 / 2015 분기 탐침'
+            echo
+            echo '```'
+            tail -n 80 raw.log 2>/dev/null || echo '수집 출력 없음'
+            echo '```'
+            echo
+            echo '### 계정 매핑 증거 (IFRS 요소로만 허용된 행)'
+            echo '```'
+            cat canonical.log 2>/dev/null || echo '재구성 없음'
+            echo '```'
+            echo
+            echo '### 후보 스냅샷 커버리지 게이트 (outcome-free)'
+            echo '```'
+            cat audit.log 2>/dev/null || echo '감사 없음'
             echo '```'
           } >> "$GITHUB_STEP_SUMMARY"
