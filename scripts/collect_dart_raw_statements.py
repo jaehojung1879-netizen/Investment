@@ -339,6 +339,14 @@ def probe_original_stage(key: str, corp: str, periodic: list[dict], stage: str,
             _, how = XS.resolve_account(entries, account, fiscal_year_start=fiscal_year_start,
                                         period_end=period_end)
             accounts[account] = how
+            # Structured, not a raw-text guess: every window-matched
+            # candidate's own contextRef/dimensional qualifier/value, for a
+            # human to see EXACTLY why an account resolved, stayed
+            # AMBIGUOUS, or was AXIS_EXCLUDED_ONLY -- cheap even when
+            # `dump_entries` is off, unlike the raw-byte snippet below.
+            if how["status"] in (XS.AMBIGUOUS, XS.AXIS_EXCLUDED_ONLY, XS.RESOLVED):
+                accounts[account]["candidateDetail"] = XS.describe_candidates(
+                    entries, account, fiscal_year_start=fiscal_year_start, period_end=period_end)
         xbrl["candidateAccounts"] = accounts
         if dump_entries:
             xbrl["entryTextSnippets"] = {

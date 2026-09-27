@@ -577,6 +577,8 @@ def _instance_zip(facts_and_contexts: str) -> bytes:
     xml = ('<?xml version="1.0" encoding="UTF-8"?>'
            '<xbrl xmlns:ifrs-full="http://xbrl.ifrs.org/taxonomy/2015-03-11/ifrs-full" '
            'xmlns:ifrs="http://xbrl.ifrs.org/taxonomy/2015-03-11/ifrs" '
+           'xmlns:xbrldi="http://xbrl.org/2006/xbrldi" '
+           'xmlns:dart-gcd="http://dart.fss.or.kr/taxonomy/2013-03-31/ifrs/dart-gcd" '
            'xmlns:xbrli="http://www.xbrl.org/2003/instance">' + facts_and_contexts + '</xbrl>')
     buf = io.BytesIO()
     with zipfile.ZipFile(buf, "w") as z:
@@ -666,6 +668,166 @@ def test_unparseable_zip_entry_leaves_every_account_unavailable():
 def test_a_bad_zip_is_reported_not_silently_empty():
     entries, error = XS.unzip_entries(b"not a zip")
     assert entries == [] and error
+
+
+# --------------------------------------------------------------------------- #
+# Dimensional-qualifier exclusion, pinned to REAL context definitions served
+# by GitHub Actions run 36304452901 (`raw-probe-2015`, `--dump-entries`),
+# copied byte-for-byte from that run's own `entryTextSnippets`. The 15 of 18
+# served fiscal-2015 filings that read AMBIGUOUS under the first cut of this
+# module all shared this shape: multiple contexts carrying the exact same
+# literal dates, distinguished only by a `<scenario>` dimensional qualifier
+# the context-window filter alone could not see. The FACT elements below are
+# synthetic (the real snippet truncated before reaching any fact) -- added
+# only to exercise `resolve_account` end to end against the real context
+# shapes; the CONTEXT XML itself is exactly what DART served.
+# --------------------------------------------------------------------------- #
+REAL_000080_PERIODAXIS_CONTEXTS = (
+    '<xbrli:context id="CFY2015dFQA_dart-gcd_PeriodAxis_dart-gcd_PeriodCoveredbyTheYearBeforeLastFiscalYearMember">'
+    '<xbrli:entity><xbrli:identifier scheme="http://dart.fss.or.kr/ifrs/CIK">00150244</xbrli:identifier></xbrli:entity>'
+    '<xbrli:period><xbrli:startDate>2015-01-01</xbrli:startDate><xbrli:endDate>2015-03-31</xbrli:endDate></xbrli:period>'
+    '<xbrli:scenario><xbrldi:explicitMember dimension="dart-gcd:PeriodAxis">'
+    'dart-gcd:PeriodCoveredbyTheYearBeforeLastFiscalYearMember</xbrldi:explicitMember></xbrli:scenario>'
+    '</xbrli:context>'
+    '<xbrli:context id="CFY2015dFQA_dart-gcd_PeriodAxis_dart-gcd_PeriodCoveredbyLastFiscalYearMember">'
+    '<xbrli:entity><xbrli:identifier scheme="http://dart.fss.or.kr/ifrs/CIK">00150244</xbrli:identifier></xbrli:entity>'
+    '<xbrli:period><xbrli:startDate>2015-01-01</xbrli:startDate><xbrli:endDate>2015-03-31</xbrli:endDate></xbrli:period>'
+    '<xbrli:scenario><xbrldi:explicitMember dimension="dart-gcd:PeriodAxis">'
+    'dart-gcd:PeriodCoveredbyLastFiscalYearMember</xbrldi:explicitMember></xbrli:scenario>'
+    '</xbrli:context>'
+)
+# Real, from 000240.KS / 000100.KS: `ConsolidatedAndSeparateFinancialStatementsAxis`
+# alone is the ONE qualifier this module admits.
+REAL_SEPARATE_ONLY_CONTEXT = (
+    '<xbrli:context id="PFY2014dFQ_ifrs_ConsolidatedAndSeparateFinancialStatementsAxis_ifrs_SeparateMember">'
+    '<xbrli:entity><xbrli:identifier scheme="http://dart.fss.or.kr/ifrs/CIK">00160047</xbrli:identifier></xbrli:entity>'
+    '<xbrli:period><xbrli:startDate>2015-01-01</xbrli:startDate><xbrli:endDate>2015-03-31</xbrli:endDate></xbrli:period>'
+    '<xbrli:scenario><xbrldi:explicitMember dimension="ifrs:ConsolidatedAndSeparateFinancialStatementsAxis">'
+    'ifrs:SeparateMember</xbrldi:explicitMember></xbrli:scenario>'
+    '</xbrli:context>'
+)
+# Real, from 000100.KS: TWO axes on the SAME context at once (Consolidated +
+# an SCE component) -- confirms exclusion must check the axis SET, not just
+# whether ComponentsOfEquityAxis is present alone.
+REAL_CONSOLIDATED_PLUS_SCE_COMPONENT_CONTEXT = (
+    '<xbrli:context id="CFY2015eFQA_ifrs_ConsolidatedAndSeparateFinancialStatementsAxis_ifrs_ConsolidatedMember_'
+    'ifrs_ComponentsOfEquityAxis_ifrs_EquityAttributableToOwnersOfParentMember">'
+    '<xbrli:entity><xbrli:identifier scheme="http://dart.fss.or.kr/ifrs/CIK">00145109</xbrli:identifier></xbrli:entity>'
+    '<xbrli:period><xbrli:startDate>2015-01-01</xbrli:startDate><xbrli:endDate>2015-03-31</xbrli:endDate></xbrli:period>'
+    '<xbrli:scenario>'
+    '<xbrldi:explicitMember dimension="ifrs:ConsolidatedAndSeparateFinancialStatementsAxis">'
+    'ifrs:ConsolidatedMember</xbrldi:explicitMember>'
+    '<xbrldi:explicitMember dimension="ifrs:ComponentsOfEquityAxis">'
+    'ifrs:EquityAttributableToOwnersOfParentMember</xbrldi:explicitMember>'
+    '</xbrli:scenario>'
+    '</xbrli:context>'
+)
+
+
+def test_real_periodaxis_contexts_are_excluded_and_never_cause_ambiguity():
+    """The exact 000080.KS shape: two PeriodAxis-tagged comparative contexts
+    plus one unqualified current context, all sharing the window. Before this
+    fix all three were candidates and disagreement made 당기순이익 AMBIGUOUS;
+    now the two PeriodAxis ones are excluded and the unqualified one wins."""
+    zip_bytes = _instance_zip(
+        REAL_000080_PERIODAXIS_CONTEXTS +
+        '<xbrli:context id="CurrentUnqualified"><xbrli:period><xbrli:startDate>2015-01-01</xbrli:startDate>'
+        '<xbrli:endDate>2015-03-31</xbrli:endDate></xbrli:period></xbrli:context>'
+        '<ifrs:ProfitLoss contextRef="CFY2015dFQA_dart-gcd_PeriodAxis_dart-gcd_PeriodCoveredbyTheYearBeforeLastFiscalYearMember" '
+        'unitRef="KRW">11111</ifrs:ProfitLoss>'
+        '<ifrs:ProfitLoss contextRef="CFY2015dFQA_dart-gcd_PeriodAxis_dart-gcd_PeriodCoveredbyLastFiscalYearMember" '
+        'unitRef="KRW">22222</ifrs:ProfitLoss>'
+        '<ifrs:ProfitLoss contextRef="CurrentUnqualified" unitRef="KRW">99999</ifrs:ProfitLoss>')
+    entries, _ = XS.unzip_entries(zip_bytes)
+    value, how = XS.resolve_account(entries, "당기순이익", fiscal_year_start="2015-01-01",
+                                    period_end="2015-03-31")
+    assert value == "99999" and how["status"] == XS.RESOLVED
+    assert how["candidates"] == 3 and how["eligibleCandidates"] == 1
+    assert how["statementBasis"] is None
+
+
+def test_periodaxis_only_candidates_are_axis_excluded_not_not_found():
+    """No unqualified context at all -- only the two real PeriodAxis
+    comparative contexts. This must read AXIS_EXCLUDED_ONLY, a different fact
+    from NOT_FOUND (the element was never stated at all)."""
+    zip_bytes = _instance_zip(
+        REAL_000080_PERIODAXIS_CONTEXTS +
+        '<ifrs:ProfitLoss contextRef="CFY2015dFQA_dart-gcd_PeriodAxis_dart-gcd_PeriodCoveredbyTheYearBeforeLastFiscalYearMember" '
+        'unitRef="KRW">11111</ifrs:ProfitLoss>'
+        '<ifrs:ProfitLoss contextRef="CFY2015dFQA_dart-gcd_PeriodAxis_dart-gcd_PeriodCoveredbyLastFiscalYearMember" '
+        'unitRef="KRW">22222</ifrs:ProfitLoss>')
+    entries, _ = XS.unzip_entries(zip_bytes)
+    value, how = XS.resolve_account(entries, "당기순이익", fiscal_year_start="2015-01-01",
+                                    period_end="2015-03-31")
+    assert value is None and how["status"] == XS.AXIS_EXCLUDED_ONLY
+    assert how["candidates"] == 2 and how["eligibleCandidates"] == 0
+
+
+def test_real_separate_only_context_is_eligible_and_recorded():
+    """The exact 000240.KS/000100.KS shape: SeparateMember alone, no other
+    axis, no unqualified rival -- this repository's own already-established
+    Consolidated-preferred rule applies and the basis is recorded."""
+    zip_bytes = _instance_zip(
+        REAL_SEPARATE_ONLY_CONTEXT +
+        '<ifrs:ProfitLoss contextRef="PFY2014dFQ_ifrs_ConsolidatedAndSeparateFinancialStatementsAxis_ifrs_SeparateMember" '
+        'unitRef="KRW">55555</ifrs:ProfitLoss>')
+    entries, _ = XS.unzip_entries(zip_bytes)
+    value, how = XS.resolve_account(entries, "당기순이익", fiscal_year_start="2015-01-01",
+                                    period_end="2015-03-31")
+    assert value == "55555" and how["status"] == XS.RESOLVED
+    assert how["statementBasis"] == DF.FS_SEPARATE
+
+
+def test_consolidated_preferred_over_separate_when_both_present_and_no_unqualified():
+    zip_bytes = _instance_zip(
+        REAL_SEPARATE_ONLY_CONTEXT +
+        '<xbrli:context id="ConsolidatedOnly">'
+        '<xbrli:period><xbrli:startDate>2015-01-01</xbrli:startDate><xbrli:endDate>2015-03-31</xbrli:endDate></xbrli:period>'
+        '<xbrli:scenario><xbrldi:explicitMember dimension="ifrs:ConsolidatedAndSeparateFinancialStatementsAxis">'
+        'ifrs:ConsolidatedMember</xbrldi:explicitMember></xbrli:scenario></xbrli:context>'
+        '<ifrs:ProfitLoss contextRef="PFY2014dFQ_ifrs_ConsolidatedAndSeparateFinancialStatementsAxis_ifrs_SeparateMember" '
+        'unitRef="KRW">55555</ifrs:ProfitLoss>'
+        '<ifrs:ProfitLoss contextRef="ConsolidatedOnly" unitRef="KRW">77777</ifrs:ProfitLoss>')
+    entries, _ = XS.unzip_entries(zip_bytes)
+    value, how = XS.resolve_account(entries, "당기순이익", fiscal_year_start="2015-01-01",
+                                    period_end="2015-03-31")
+    assert value == "77777" and how["status"] == XS.RESOLVED
+    assert how["statementBasis"] == DF.FS_CONSOLIDATED
+
+
+def test_real_consolidated_plus_sce_component_context_is_excluded():
+    """The exact 000100.KS shape: a context tagged with BOTH the admitted
+    Consolidated axis AND an SCE component axis at once -- confirms exclusion
+    checks the axis SET, and reuses this repository's existing SCE-component
+    refusal (dart_canonical_accounts) rather than deciding it a second way."""
+    zip_bytes = _instance_zip(
+        REAL_CONSOLIDATED_PLUS_SCE_COMPONENT_CONTEXT +
+        '<ifrs:ProfitLoss contextRef="CFY2015eFQA_ifrs_ConsolidatedAndSeparateFinancialStatementsAxis_ifrs_ConsolidatedMember_'
+        'ifrs_ComponentsOfEquityAxis_ifrs_EquityAttributableToOwnersOfParentMember" unitRef="KRW">33333'
+        '</ifrs:ProfitLoss>')
+    entries, _ = XS.unzip_entries(zip_bytes)
+    value, how = XS.resolve_account(entries, "당기순이익", fiscal_year_start="2015-01-01",
+                                    period_end="2015-03-31")
+    assert value is None and how["status"] == XS.AXIS_EXCLUDED_ONLY
+
+
+def test_describe_candidates_reports_eligibility_per_candidate():
+    zip_bytes = _instance_zip(
+        REAL_000080_PERIODAXIS_CONTEXTS +
+        '<xbrli:context id="CurrentUnqualified"><xbrli:period><xbrli:startDate>2015-01-01</xbrli:startDate>'
+        '<xbrli:endDate>2015-03-31</xbrli:endDate></xbrli:period></xbrli:context>'
+        '<ifrs:ProfitLoss contextRef="CFY2015dFQA_dart-gcd_PeriodAxis_dart-gcd_PeriodCoveredbyTheYearBeforeLastFiscalYearMember" '
+        'unitRef="KRW">11111</ifrs:ProfitLoss>'
+        '<ifrs:ProfitLoss contextRef="CurrentUnqualified" unitRef="KRW">99999</ifrs:ProfitLoss>')
+    entries, _ = XS.unzip_entries(zip_bytes)
+    detail = XS.describe_candidates(entries, "당기순이익", fiscal_year_start="2015-01-01",
+                                    period_end="2015-03-31")
+    by_context = {d["contextRef"]: d for d in detail}
+    assert by_context["CurrentUnqualified"]["eligibleAxisShape"] is True
+    assert by_context["CurrentUnqualified"]["dims"] == []
+    excluded_id = "CFY2015dFQA_dart-gcd_PeriodAxis_dart-gcd_PeriodCoveredbyTheYearBeforeLastFiscalYearMember"
+    assert by_context[excluded_id]["eligibleAxisShape"] is False
+    assert by_context[excluded_id]["dims"] == [("PeriodAxis", "PeriodCoveredbyTheYearBeforeLastFiscalYearMember")]
 
 
 FULL_XBRL_ZIP = _instance_zip(
