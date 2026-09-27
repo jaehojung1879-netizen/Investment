@@ -1,5 +1,19 @@
 # Alpha opportunity model v4: sealed preregistration (KR-only)
 
+> **Correction notice (contract V2, same PR, before merge).** An independent
+> review of the first sealed version found two real defects, both fixed here
+> and both described in full in §5 and §11: (1) the eligibility policy
+> conditioned a PRE-termination observation's eligibility on whether its
+> security was on a "known terminated" list — a future-survival-conditioned
+> selection rule, even though the numeric result for today's 22 securities is
+> unchanged; and (2) the spec hash-pinned the KR terminal-action evidentiary
+> artifacts as immutable while simultaneously claiming a future repair to
+> those same artifacts would not require a new preregistration, which was a
+> direct contradiction (the old loader would have refused to load at all once
+> those bytes changed). Nothing about the economic contract, feature set,
+> model family, horizons, costs, or scope changed; see `correctionHistory` in
+> the sealed spec for the exact, machine-readable diff.
+
 **Status: `READY_FOR_HISTORICAL_EXECUTION` at the study-DESIGN level.** Spec
 `research_specs/alpha-opportunity-model-v4.json`, seal in the adjacent
 `.sha256`. **The KR terminal-action source foundation this study depends on
@@ -69,8 +83,11 @@ contemplate. The conflict is resolved, not silently overridden, by:
 
 1. **Never editing** `kr-terminal-action-reconstruction-v2.json`'s
    `foundationStatus` — it stays `PARTIALLY_REPAIRED`, exactly as PR #158
-   left it, and v4's own loader (`verify_source_foundation`) raises if that
-   file's hash or its quoted status ever disagrees with what v4 cites.
+   left it. v4's own loader records what this file looked like at seal time
+   in `sourceFoundationCitation` (informational, never re-verified against
+   disk — see §11's correction note); a future execution instead proves the
+   file only ever improved, never regressed, via `assert_foundation_not_
+   regressed`.
 2. Introducing the three-layer distinction in §1, which the prior documents'
    binary "wait for READY" framing did not have room for.
 3. An eligibility policy that **excludes** affected observations by a
@@ -155,78 +172,123 @@ membership backfilled onto the past.
 
 ## 5. The eligibility policy (the core of this preregistration)
 
-`pipeline/alpha_opportunity_v4_eligibility.py`. Reads no price, return or
+`pipeline/alpha_opportunity_v4_eligibility.py`, contract
+`ALPHA_OPPORTUNITY_V4_KR_LABEL_ELIGIBILITY_V2`. Reads no price, return or
 label — only the already-sealed completeness metadata in `docs/results/kr-
 terminal-action-reconstruction-v2.json`.
 
-### Why a security-level gate, not only a terminal-window gate
+### Corrected in this revision: eligibility must never read a security's own eventual termination status
 
-Production's KR price panel (`pipeline/korea_prices.py`) takes
-distributions from Yahoo "if Yahoo happens to carry the name" — and Yahoo
-serves **zero** of the 22 terminated securities' distributions (`alpha-
-opportunity-model-v3`'s sealed survivorship audit: 0 of 22 terminated names
-have any dividend event, against 215 of 238 continuing names). That is not
-only a problem for the forward window that crosses termination: it means
-**every session** of these 22 securities' trading life — not only the
-final one — is on a price-return basis, while the matched benchmark and
-every continuing name are total-return. A window entirely before
-termination is not automatically clean.
+The first sealed version's `label_eligibility` took a `code` and a
+`known_terminated_codes` set and branched on membership: "not one of the 22
+known-to-terminate ⇒ ELIGIBLE, otherwise evaluate completeness." That
+function COULD express, and did compute, an answer that depended on whether
+a security is known (in 2026, with the benefit of hindsight) to terminate at
+all — a future-survival-conditioned selection rule, even for an observation
+whose own target window never touches the termination event. Two securities
+with identical dividend/terminal-action evidence through a target's own exit
+date must be treated identically whether or not one of them happens to
+terminate years later, and the first version did not guarantee that: it
+never even evaluated completeness for a security outside the audited list,
+and it collapsed "no evidence has been collected for you" and "evidence has
+been collected and shows a gap" into the same unconditional exclusion, keyed
+on list membership rather than on the observation's own data requirement.
 
-The predeclared rule therefore gates the whole security first:
+**The fix removes the security's identity and its termination-list
+membership from the function's inputs entirely.** `label_eligibility` now
+takes exactly two things:
 
-1. **`exDateSemanticsResolved` must read `READY`** in the sealed
-   completeness matrix before *any* observation on that security is
-   eligible — pre- or post-termination. Measured directly: this field is
-   `BLOCKED` for **all 22 of 22** securities today (verified by re-reading
-   `docs/results/kr-terminal-action-reconstruction-v2.json` in this PR).
-   `exDateSemanticsResolved` reads `READY` only when a security's dividend
-   evidence states `exDateSource: "DIRECT"` — an ex-date DART's own
-   disclosure stated outright. No sealed, dated Korean settlement-cycle
-   rule exists anywhere in this repository to derive one from a record
-   date, and none is invented here.
-2. Even if resolved, an actual total-return series must have been
-   **reconstructed and spliced** into the price panel used to build labels
-   — a separate, not-yet-built engineering step this preregistration does
-   not perform (`TOTAL_RETURN_SERIES_NOT_YET_BUILT`).
-3. **Only if both hold**, a window entirely before the security's last
-   traded session is eligible.
-4. A window whose exit session is **after** the last traded session
-   additionally requires `terminationTypeResolved`,
-   `terminalConsiderationResolved`, `successorResolvedWhereRequired`
-   (where the resolved type requires a successor) and
-   `terminalActionChainResolved` all `READY`, and — where a successor is
-   required — that successor's own price panel. Measured: `terminal
-   ActionChainResolved` is also `BLOCKED` for all 22 today, so this
-   condition is never reached in practice; it exists so a future partial
-   repair (e.g. one security's ex-date lineage resolved without its
-   terminal consideration also being finalised) is still handled correctly
-   without a new preregistration.
+- `completeness` — the sealed completeness row for this security, or `None`
+  if this repository has never audited its dividend/terminal-action
+  evidence. Audit coverage today is the 22 names in the sealed
+  `alpha-opportunity-model-v3` survivorship audit's `krTerminations` list —
+  a fact about which securities this repository happened to build evidence
+  for (that project was commissioned specifically to investigate these 22),
+  never a fact the function branches on. A currently-surviving security
+  audited for any other reason would be evaluated by the identical rule.
+- `window_crosses_termination` — whether THIS window's own scheduled exit
+  session falls after the security's last traded session. This is
+  legitimate, not a look-ahead: a forward-return target is, by
+  construction, a claim about a bounded FUTURE interval relative to its own
+  signal date, and asking whether that interval's own endpoint crosses an
+  event that occurred inside it is asking about the target's own
+  definition — exactly what the pre-existing
+  `MISSING_FORWARD_PRICE_OR_DELISTING` check already does. It is never used
+  to ask anything about a window that does not itself span the event.
+
+The rule itself is unchanged in substance, only in what triggers it:
+
+1. **Non-crossing window.** `ELIGIBLE` via
+   `KR_DIVIDEND_BASIS_AUDIT_NOT_PERFORMED_DEFERS_TO_PRODUCTION` if
+   `completeness` is `None` (production's existing, unaudited total-return
+   construction applies, exactly as it silently does for the other 238 KR
+   names today — this is not a new gap v4 introduces). If audited,
+   `exDateSemanticsResolved` must read `READY` (else
+   `KR_DIVIDEND_EXDATE_LINEAGE_UNRESOLVED`) AND an actual total-return
+   series must have been reconstructed and spliced into the price panel
+   used for labels — a separate, not-yet-built engineering step this
+   preregistration does not perform (`KR_TOTAL_RETURN_SERIES_NOT_YET_
+   BUILT`). Only then is the window `ELIGIBLE`
+   (`PRE_TERMINATION_WINDOW_TOTAL_RETURN_BASIS_RESOLVED`).
+2. **Crossing window** (exit session after the last traded session):
+   requires `terminationTypeResolved`, `terminalConsiderationResolved`,
+   `successorResolvedWhereRequired` (where the resolved type requires a
+   successor) and `terminalActionChainResolved` all `READY`, and — where a
+   successor is required — that successor's own price panel.
+
+### Why the 22 stay excluded today without this being outcome-conditioned
+
+Production's real basis for *every* KR security (continuing or departed)
+already trusts whatever Yahoo's own dividend-row date says, with zero
+independent verification anywhere in this codebase
+(`pipeline/price_adjustment.to_total_return` applies the vendor row's own
+index date directly — confirmed by reading the module, not assumed). Holding
+the 22 audited names to a *stricter*, DART-confirmed standard while every
+other name defers to unverified Yahoo rows would itself be the asymmetric,
+outcome-correlated scrutiny this correction removes. The reason the 22
+still fail today is not that stricter standard — it is a *prior, already-
+measured* fact this repository established for them specifically:
+`alpha-opportunity-model-v3`'s sealed audit found **zero** Yahoo dividend
+rows across their *entire* observed lives (not merely after delisting),
+against 215-of-238 dividend-event coverage on continuing names over the
+same window. "Trust whatever Yahoo says" has nothing to trust for these 22;
+`completeness is None` (unaudited) defers to production exactly as every
+other KR security already does, and `completeness` present with
+`exDateSemanticsResolved` still `BLOCKED` means this repository has already
+looked and confirmed there is nothing to defer to. Neither branch reads
+termination status — proved by `tests/test_alpha_opportunity_v4.py`'s
+future-termination-invariance and future-metadata-mutation-invariance
+tests, which vary a synthetic "terminates later" label while holding
+completeness fixed and show the eligibility call never moves.
 
 ### This is computed, not hardcoded
 
-Every function takes the completeness row as an argument. Running
-`scripts/audit_alpha_opportunity_v4_kr_eligibility.py` against the real,
-already-sealed evidence (input-only: two JSON reads, one JSON write, no
-price, no return) produces `docs/results/alpha-opportunity-model-v4-
-eligibility-policy.json`, committed alongside this spec:
+Running `scripts/audit_alpha_opportunity_v4_kr_eligibility.py` against the
+real, already-sealed evidence (input-only: two JSON reads, one JSON write,
+no price, no return) produces `docs/results/alpha-opportunity-model-v4-
+eligibility-policy.json`, committed alongside this spec, now split by
+window scope:
 
 ```json
-{"securitiesEvaluated": 22, "eligibleTodaySecurityLevel": 0,
- "ineligibleTodaySecurityLevel": 22,
- "reasonCounts": {"KR_TERMINATED_SECURITY_DIVIDEND_EXDATE_LINEAGE_UNRESOLVED": 22}}
+{"preTerminationWindows": {"eligible": 0, "ineligible": 22},
+ "terminationCrossingWindows": {"eligible": 0, "ineligible": 22}}
 ```
 
-All 22 known-terminated securities are excluded from v4's labeled sample
-today, for exactly one reason, computed rather than asserted. If a future,
-separate data-foundation PR resolves a specific security's ex-date lineage
-(never inferred, never derived from a record date) and splices a real
-total-return series for it, the **same function, unmodified**, would admit
-that security's pre-termination observations without a new preregistration
-— the policy is reusable across the repair, not a one-time filter tuned to
-today's gap.
+The **numeric** result is unchanged from contract V1 — all 22 still
+excluded on both window scopes — because the underlying per-security
+dividend/terminal-action evidence is exactly as incomplete as it was; what
+changed is that the *mechanism* computing this result no longer reads
+termination-list membership at all. If a future, separate data-foundation
+PR resolves a specific security's ex-date lineage (never inferred, never
+derived from a record date) and splices a real total-return series for it,
+the **same function, unmodified**, would admit that security's
+pre-termination observations without a new preregistration.
 
 ### What this policy never does
 
+- Uses a security's own eventual termination status, or list membership
+  derived from it, as an input to any eligibility decision about a window
+  that does not itself cross the termination event.
 - Treats an unresolved exchange ratio or successor as final.
 - Carries the last traded price forward through a termination.
 - Invents an ex-date from a record date or any other computed rule.
@@ -240,15 +302,17 @@ today's gap.
 
 ### A known, disclosed, bounded consequence — not the same defect as US
 
-Excluding all 22 securities' labels entirely raises a fair question: does
-this recreate the same "the sample never observes termination" defect v3
-found unrepairable in the US leg? **No, and the difference is measured, not
-asserted.** In the US case, the panel never priced 212 of 324 departed
-identities *at all* — termination was structurally invisible, 0% observed.
-In KR, all 22 securities *are* priced right up to their last session, *are*
-members of the PIT universe on their live dates, and *do* still enter
-feature computation and cross-sectional ranking context — only their own
-forward-return **label** is withheld. The affected share is disclosed and
+Excluding all 22 securities' pre-termination windows raises a fair
+question: does this recreate the same "the sample never observes
+termination" defect v3 found unrepairable in the US leg? **No, and the
+difference is measured, not asserted.** In the US case, the panel never
+priced 212 of 324 departed identities *at all* — termination was
+structurally invisible, 0% observed. In KR, all 22 securities *are* priced
+right up to their last session, *are* members of the PIT universe on their
+live dates, and *do* still enter feature computation and cross-sectional
+ranking context — only their own forward-return **label** is withheld, for
+a reason (a proven, per-security, zero-Yahoo-dividend-evidence data gap)
+that does not read termination status. The affected share is disclosed and
 bounded: `alpha-opportunity-model-v3`'s sealed audit measured 3.7366% of
 tradable KR member-dates, front-loaded at 7.93% in 2013 and declining to
 0.76% by 2025 (never zero, so no cutoff here would be structural — this is
@@ -256,11 +320,12 @@ exactly why it is handled by an eligibility rule rather than a coverage
 tolerance).
 
 This is still a real, disclosed limitation: v4's labeled sample never
-observes the realised forward outcome of a name that is about to be
-delisted or merged out, which understates tail risk relative to the true
-investable universe. The future execution's evaluation report **must**
-publish `exclusionsClusterAroundTerminalEventsCheck` (§7) quantitatively,
-and any headline result must be read alongside this caveat, never as an
+observes the realised forward outcome of a name whose own dividend
+evidence this repository has already found incomplete, which happens (for
+research-coverage reasons, not by rule) to be exactly the names that also
+terminate. The future execution's evaluation report **must** publish
+`exclusionsClusterAroundTerminalEventsCheck` (§7) quantitatively, and any
+headline result must be read alongside this caveat, never as an
 unconditional statement about KR delisting risk.
 
 ## 6. Economic contract — carried forward from v3, KR-only
@@ -407,11 +472,26 @@ action reconstruction and inventory artifacts, the terminal-actions book,
 `selection_null` and `portfolio_validation` are not in the closure —
 editing them changes nothing here, exactly v3's own discipline.
 
-`verify_source_foundation` additionally checks that every cited
-source-foundation artifact's hash AND its quoted status still match the
-file on disk — a source foundation that improves *or* regresses after this
-seal both raise, because either would mean this spec's own quoted fact is
-stale.
+**Corrected in this revision.** The first version additionally hash-pinned
+the three KR terminal-action artifacts into `dependencyHashes`/
+`sealedDataInputs` and re-verified their quoted status against disk on
+every load — directly contradicting §5's own claim that a future repair
+could be consumed without a new preregistration, since the old loader would
+refuse to load at all once those bytes changed (`SEALED_DEPENDENCY_
+CHANGED`). Those three artifacts (`kr-terminal-action-reconstruction-v2
+.json`, `kr-termination-inventory.json`, `data/kr-terminal-corporate-
+actions.json`) are now `sourceFoundationCitation` entries only — a
+historical record of what they looked like when this spec was sealed,
+never re-verified against disk by `load_sealed`. A future execution instead
+calls `pipeline.alpha_opportunity_v4_eligibility.assert_foundation_not_
+regressed(cited_snapshot=..., current_snapshot=...)` against whatever
+current snapshot it reads, which raises `FOUNDATION_REGRESSED` if any
+completeness field that was `READY` at seal time is no longer `READY` —
+prefix stability, never immutability, exactly `Historical replay
+invariants` (v2.6)'s own rule for a growing ledger. The
+`alpha-opportunity-model-v3-survivorship-audit.json` input is different in
+kind — a declared-frozen, input-only snapshot never legitimately updated in
+place — and stays fully hash-pinned in `sealedDataInputs`, unchanged.
 
 ## 12. Self-audit (see also the PR description)
 
@@ -425,7 +505,8 @@ stale.
   (`test_v1_v2_v3_seals_unchanged`).
 - `kr-terminal-action-reconstruction-v2.json`'s `foundationStatus` was read,
   never edited, and stays `PARTIALLY_REPAIRED`
-  (`test_source_foundation_is_pinned_and_still_partially_repaired`).
+  (`test_source_foundation_citation_is_informational_and_still_partially_
+  repaired`).
 - The 38 failed DART receipts were not silently treated as successful —
   `written: 0`, `receiptsFailed: 38`, quoted verbatim in `citations`.
 - No zero terminal recovery was inferred; no ex-date was invented; no
@@ -433,10 +514,21 @@ stale.
   consequence" section states precisely why this differs from the US
   defect); no outcome-dependent threshold was introduced anywhere in this
   design.
+- **Eligibility no longer reads a security's own eventual termination
+  status** for any window that does not itself cross the termination event
+  — mechanically proven by `test_function_signature_takes_no_security_
+  identity_or_termination_list` (the function has no such parameter) and by
+  six future-termination/future-metadata-mutation/return-basis-symmetry/
+  no-manufactured-outcome/no-outcome-access tests in
+  `tests/test_alpha_opportunity_v4.py`.
+- **A future data-foundation repair no longer breaks the seal** —
+  mechanically proven by `test_foundation_artifact_changing_on_disk_no_
+  longer_breaks_the_seal`, and a genuine regression is caught by a
+  dedicated `assert_foundation_not_regressed` function/test instead of by
+  refusing to load the spec at all.
 - `ruff check .`, `python -m compileall pipeline scripts`, full `pytest -q`
-  (2,365 passed, 1 skipped — 45 more than PR #158's 2,320, all new v4
-  tests), `python scripts/make_seed.py` +
-  `python -m pipeline.validate data/site-data.json --allow-seed` all pass.
+  (2,374 passed, 1 skipped — zero regressions), `python scripts/make_seed.py`
+  + `python -m pipeline.validate data/site-data.json --allow-seed` all pass.
 
 ## 13. What the next execution PR is allowed to do
 
@@ -453,4 +545,8 @@ missing-at-random; edit `kr-terminal-action-reconstruction-v2.json` or its
 `scripts/audit_alpha_opportunity_v4_kr_eligibility.py` against a *later*
 source-foundation snapshot and get a *different* (more permissive) result
 without a new preregistration — that is the one designed degree of freedom
-this document grants in advance.
+this document grants in advance — but it must first call
+`pipeline.alpha_opportunity_v4_eligibility.assert_foundation_not_regressed`
+against the snapshot cited in `sourceFoundationCitation` (retrievable from
+this commit's own git history) to prove the later snapshot only ever adds
+evidence, never regresses a field this seal already relied on.

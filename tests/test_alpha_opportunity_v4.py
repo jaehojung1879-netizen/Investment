@@ -114,14 +114,22 @@ def test_spec_reintroducing_a_hurdle_or_sizing_parameter_is_refused(tmp_path, sp
 
 
 # --------------------------------------------------------------------------- #
-# Source foundation vs study design vs execution: the three layers stay apart
+# Source foundation vs study design vs execution: the three layers stay apart,
+# and (CORRECTED) a future foundation repair no longer breaks the seal.
 # --------------------------------------------------------------------------- #
-def test_source_foundation_is_pinned_and_still_partially_repaired(spec):
-    entry = spec["sourceFoundation"]["krTerminalActionReconstructionV2"]
-    assert entry["foundationStatus"] == "PARTIALLY_REPAIRED"
+def test_source_foundation_citation_is_informational_and_still_partially_repaired(spec):
+    entry = spec["sourceFoundationCitation"]["krTerminalActionReconstructionV2"]
+    assert entry["foundationStatusAsOfThisSeal"] == "PARTIALLY_REPAIRED"
     real = S.read_json(ROOT / entry["path"])
     assert real["foundationStatus"] == "PARTIALLY_REPAIRED"
-    assert S.file_hash(ROOT / entry["path"]) == entry["sha256"]
+    assert S.file_hash(ROOT / entry["path"]) == entry["shaAsOfThisSeal"]
+    # The three KR terminal-action artifacts are citations, not sealed inputs.
+    for name in ("krTerminalActionReconstructionV2", "krTerminationInventory",
+                 "krTerminalCorporateActionsBook"):
+        assert spec["sourceFoundationCitation"][name]["path"] not in spec["dependencyHashes"]
+    # The v3 survivorship audit remains a genuinely sealed, hash-verified input.
+    assert ("docs/results/alpha-opportunity-model-v3-survivorship-audit.json"
+           in spec["dependencyHashes"])
 
 
 def test_design_status_is_ready_despite_partially_repaired_source(spec):
@@ -131,17 +139,42 @@ def test_design_status_is_ready_despite_partially_repaired_source(spec):
     assert ids == {"KR_TERMINATED_NAME_DIVIDEND_LINEAGE_ABSENT", "KR_TERMINAL_CONSIDERATION_UNRESOLVED"}
 
 
-def test_source_foundation_status_changing_underneath_the_seal_is_caught(tmp_path, spec):
+def test_foundation_artifact_changing_on_disk_no_longer_breaks_the_seal(tmp_path, spec):
+    """CORRECTION: v1 of this spec hash-pinned the KR terminal-action artifact
+    into dependencyHashes AND re-verified its quoted status on every load --
+    directly contradicting the spec's own claim that a future data-foundation
+    repair could be consumed by the same eligibility policy without a new
+    preregistration, since that repair changes the artifact's bytes. A repair
+    (or, symmetrically, a regression) must not make the SEALED SPEC itself
+    unloadable; only `assert_foundation_not_regressed` (tested below) should
+    ever object to a regression, and only when an execution explicitly calls it.
+    """
     path = sealed_copy(tmp_path, spec)
     recon_path = tmp_path / "docs/results/kr-terminal-action-reconstruction-v2.json"
-    recon = json.loads(recon_path.read_text())
-    recon["foundationStatus"] = "READY_FOR_V4_PREREGISTRATION"
-    recon_path.write_text(json.dumps(recon))
-    # The reconstruction artifact is also a sealed data input, so the plain
-    # dependency-hash check catches this mutation before verify_source_
-    # foundation ever runs -- an even earlier, stricter refusal.
-    with pytest.raises(ValueError, match="SEALED_DEPENDENCY_CHANGED|SOURCE_FOUNDATION_ARTIFACT_CHANGED|SOURCE_FOUNDATION_STATUS_STALE"):
-        S.load_sealed(path, expected_hash=seal(), root=tmp_path)
+    recon_path.parent.mkdir(parents=True, exist_ok=True)
+    real_recon = json.loads((ROOT / "docs/results/kr-terminal-action-reconstruction-v2.json").read_text())
+    real_recon["foundationStatus"] = "READY_FOR_V4_PREREGISTRATION"
+    real_recon["securities"][0]["completeness"]["exDateSemanticsResolved"] = "READY"
+    recon_path.write_text(json.dumps(real_recon))
+    loaded = S.load_sealed(path, expected_hash=seal(), root=tmp_path)
+    assert loaded["preregistrationStatus"] == "READY_FOR_HISTORICAL_EXECUTION"
+
+
+def test_assert_foundation_not_regressed_accepts_improvement_and_rejects_regression():
+    cited = {"securities": [{"code": "000030.KS", "completeness": {"exDateSemanticsResolved": "BLOCKED",
+                                                                   "terminationTypeResolved": "READY"}}]}
+    improved = {"securities": [{"code": "000030.KS", "completeness": {"exDateSemanticsResolved": "READY",
+                                                                      "terminationTypeResolved": "READY"}}]}
+    assert ELIG.assert_foundation_not_regressed(cited_snapshot=cited, current_snapshot=improved)
+
+    regressed = {"securities": [{"code": "000030.KS", "completeness": {"exDateSemanticsResolved": "BLOCKED",
+                                                                       "terminationTypeResolved": "BLOCKED"}}]}
+    with pytest.raises(ValueError, match="FOUNDATION_REGRESSED"):
+        ELIG.assert_foundation_not_regressed(cited_snapshot=cited, current_snapshot=regressed)
+
+    dropped = {"securities": []}
+    with pytest.raises(ValueError, match="FOUNDATION_REGRESSED"):
+        ELIG.assert_foundation_not_regressed(cited_snapshot=cited, current_snapshot=dropped)
 
 
 def test_readiness_never_claims_an_outcome(spec):
@@ -152,6 +185,7 @@ def test_readiness_never_claims_an_outcome(spec):
     assert ready["promotionEligible"] is False
     assert ready["productionChanged"] is False
     assert ready["executionWorkflow"] is None
+    assert ready["executionMustReverifyFoundationAgainstLiveData"] is True
 
 
 def test_require_execution_still_needs_review_and_main(spec):
@@ -180,43 +214,36 @@ def test_cli_readiness_print_matches_module(spec):
 
 
 # --------------------------------------------------------------------------- #
-# Eligibility policy: pure function, deterministic, computed not hardcoded
+# Eligibility policy: pure function of (completeness, window_crosses_termination)
+# only -- CORRECTED to take no security code and no termination-list membership.
 # --------------------------------------------------------------------------- #
-KNOWN = frozenset({"000030.KS"})
+def test_unaudited_security_defers_to_production_on_a_non_crossing_window():
+    rec = ELIG.label_eligibility(completeness=None, window_crosses_termination=False)
+    assert rec == {"status": ELIG.ELIGIBLE, "reasonCode": ELIG.DIVIDEND_BASIS_AUDIT_NOT_PERFORMED}
 
 
-def test_a_name_outside_the_known_terminated_list_is_unaffected():
-    rec = ELIG.label_eligibility(code="005930.KS", known_terminated_codes=KNOWN,
-                                 completeness=None, window_crosses_termination=False)
-    assert rec == {"status": ELIG.ELIGIBLE, "reasonCode": ELIG.NOT_A_KNOWN_TERMINATED_SECURITY}
-
-
-def test_missing_completeness_evidence_is_ineligible():
-    rec = ELIG.label_eligibility(code="000030.KS", known_terminated_codes=KNOWN,
-                                 completeness=None, window_crosses_termination=False)
+def test_unaudited_security_crossing_termination_has_no_evidence_to_construct_from():
+    rec = ELIG.label_eligibility(completeness=None, window_crosses_termination=True)
     assert rec == {"status": ELIG.INELIGIBLE, "reasonCode": ELIG.NO_COMPLETENESS_EVIDENCE}
 
 
-def test_exdate_unresolved_blocks_even_a_pre_termination_window():
-    rec = ELIG.label_eligibility(
-        code="000030.KS", known_terminated_codes=KNOWN,
-        completeness={"exDateSemanticsResolved": "BLOCKED"}, window_crosses_termination=False)
+def test_exdate_unresolved_blocks_a_pre_termination_window():
+    rec = ELIG.label_eligibility(completeness={"exDateSemanticsResolved": "BLOCKED"},
+                                 window_crosses_termination=False)
     assert rec == {"status": ELIG.INELIGIBLE, "reasonCode": ELIG.EXDATE_LINEAGE_UNRESOLVED}
 
 
 def test_exdate_resolved_but_no_spliced_series_still_blocks():
-    rec = ELIG.label_eligibility(
-        code="000030.KS", known_terminated_codes=KNOWN,
-        completeness={"exDateSemanticsResolved": "READY"}, window_crosses_termination=False,
-        total_return_series_built=frozenset())
+    rec = ELIG.label_eligibility(completeness={"exDateSemanticsResolved": "READY"},
+                                 window_crosses_termination=False,
+                                 total_return_series_available=False)
     assert rec == {"status": ELIG.INELIGIBLE, "reasonCode": ELIG.TOTAL_RETURN_SERIES_NOT_BUILT}
 
 
 def test_fully_resolved_pre_termination_window_is_eligible():
-    rec = ELIG.label_eligibility(
-        code="000030.KS", known_terminated_codes=KNOWN,
-        completeness={"exDateSemanticsResolved": "READY"}, window_crosses_termination=False,
-        total_return_series_built=frozenset({"000030.KS"}))
+    rec = ELIG.label_eligibility(completeness={"exDateSemanticsResolved": "READY"},
+                                 window_crosses_termination=False,
+                                 total_return_series_available=True)
     assert rec == {"status": ELIG.ELIGIBLE, "reasonCode": ELIG.PRE_TERMINATION_WINDOW_BASIS_RESOLVED}
 
 
@@ -230,9 +257,7 @@ def test_crossing_termination_requires_every_chain_field(missing_field, expected
                "terminalConsiderationResolved": "READY", "successorResolvedWhereRequired": "NOT_APPLICABLE",
                "terminalActionChainResolved": "READY"}
     complete[missing_field] = "BLOCKED"
-    rec = ELIG.label_eligibility(
-        code="000030.KS", known_terminated_codes=KNOWN, completeness=complete,
-        window_crosses_termination=True, total_return_series_built=frozenset({"000030.KS"}))
+    rec = ELIG.label_eligibility(completeness=complete, window_crosses_termination=True)
     assert rec["status"] == ELIG.INELIGIBLE and rec["reasonCode"] == expected_reason
 
 
@@ -240,9 +265,7 @@ def test_crossing_termination_needs_successor_identity_when_applicable():
     complete = {"exDateSemanticsResolved": "READY", "terminationTypeResolved": "READY",
                "terminalConsiderationResolved": "READY", "successorResolvedWhereRequired": "BLOCKED",
                "terminalActionChainResolved": "READY"}
-    rec = ELIG.label_eligibility(
-        code="000030.KS", known_terminated_codes=KNOWN, completeness=complete,
-        window_crosses_termination=True, total_return_series_built=frozenset({"000030.KS"}))
+    rec = ELIG.label_eligibility(completeness=complete, window_crosses_termination=True)
     assert rec == {"status": ELIG.INELIGIBLE, "reasonCode": ELIG.SUCCESSOR_IDENTITY_UNRESOLVED}
 
 
@@ -250,10 +273,8 @@ def test_crossing_termination_needs_the_successors_own_price_panel():
     complete = {"exDateSemanticsResolved": "READY", "terminationTypeResolved": "READY",
                "terminalConsiderationResolved": "READY", "successorResolvedWhereRequired": "READY",
                "terminalActionChainResolved": "READY"}
-    rec = ELIG.label_eligibility(
-        code="000030.KS", known_terminated_codes=KNOWN, completeness=complete,
-        window_crosses_termination=True, successor_codes=("316140.KS",),
-        priced_securities=frozenset(), total_return_series_built=frozenset({"000030.KS"}))
+    rec = ELIG.label_eligibility(completeness=complete, window_crosses_termination=True,
+                                 successor_codes=("316140.KS",), priced_securities=frozenset())
     assert rec["status"] == ELIG.INELIGIBLE and rec["reasonCode"] == ELIG.SUCCESSOR_HAS_NO_PRICE_PANEL
     assert rec["unpricedSuccessors"] == ["316140.KS"]
 
@@ -262,10 +283,8 @@ def test_fully_resolved_termination_window_is_eligible():
     complete = {"exDateSemanticsResolved": "READY", "terminationTypeResolved": "READY",
                "terminalConsiderationResolved": "READY", "successorResolvedWhereRequired": "READY",
                "terminalActionChainResolved": "READY"}
-    rec = ELIG.label_eligibility(
-        code="000030.KS", known_terminated_codes=KNOWN, completeness=complete,
-        window_crosses_termination=True, successor_codes=("316140.KS",),
-        priced_securities=frozenset({"316140.KS"}), total_return_series_built=frozenset({"000030.KS"}))
+    rec = ELIG.label_eligibility(completeness=complete, window_crosses_termination=True,
+                                 successor_codes=("316140.KS",), priced_securities=frozenset({"316140.KS"}))
     assert rec == {"status": ELIG.ELIGIBLE, "reasonCode": ELIG.TERMINATION_WINDOW_FULLY_RESOLVED}
 
 
@@ -276,24 +295,158 @@ def test_no_reason_code_is_ever_invented_outside_the_frozen_set():
                        "terminalConsiderationResolved": "READY",
                        "successorResolvedWhereRequired": "NOT_APPLICABLE",
                        "terminalActionChainResolved": "READY"}
-            rec = ELIG.label_eligibility(code="000030.KS", known_terminated_codes=KNOWN,
-                                         completeness=complete, window_crosses_termination=crosses,
-                                         total_return_series_built=frozenset({"000030.KS"}))
+            rec = ELIG.label_eligibility(completeness=complete, window_crosses_termination=crosses,
+                                         total_return_series_available=True)
             assert rec["reasonCode"] in ELIG.REASON_CODES
 
 
+def test_function_signature_takes_no_security_identity_or_termination_list():
+    """CORRECTED: the defect this test guards against is `label_eligibility`
+    branching on a security's own code or list membership. Asserting the
+    signature has no such parameter is a direct, mechanical proof (not just a
+    behavioural inference) that the function CANNOT read a security's
+    identity or its termination-list membership."""
+    import inspect
+    params = set(inspect.signature(ELIG.label_eligibility).parameters)
+    assert "code" not in params
+    assert "known_terminated_codes" not in params
+
+
 # --------------------------------------------------------------------------- #
-# The policy applied to the REAL sealed evidence: today, all 22 are blocked
+# Anti-look-ahead tests (required): the future-termination invariant
 # --------------------------------------------------------------------------- #
-def test_bulk_verdict_against_the_real_sealed_evidence_blocks_all_22():
+def test_future_termination_invariance_pre_termination_window():
+    """TEST 1. Two synthetic securities with identical completeness evidence
+    through a target's own exit date -- one 'continues forever', one
+    'terminates years later' -- must get an IDENTICAL eligibility call for an
+    observation whose own window never crosses either security's event. The
+    function takes no parameter that could even express 'terminates later',
+    so this is checked by holding the only two real inputs (completeness,
+    window_crosses_termination) identical and confirming identical output --
+    the only way the two syntheic securities COULD differ is a channel this
+    function does not have.
+    """
+    shared_completeness = {"exDateSemanticsResolved": "READY"}
+    continues_forever = ELIG.label_eligibility(
+        completeness=shared_completeness, window_crosses_termination=False,
+        total_return_series_available=True)
+    terminates_years_later = ELIG.label_eligibility(
+        completeness=shared_completeness, window_crosses_termination=False,
+        total_return_series_available=True)
+    assert continues_forever == terminates_years_later == {
+        "status": ELIG.ELIGIBLE, "reasonCode": ELIG.PRE_TERMINATION_WINDOW_BASIS_RESOLVED}
+
+
+def test_future_termination_invariance_with_an_unresolved_dividend_basis():
+    """Same invariant, but with an evidenced data gap: both the eventually-
+    terminating and the eventually-surviving security get the SAME (blocked)
+    answer when they carry the SAME unresolved dividend evidence -- proving
+    the block is about the evidence, never about which one terminates."""
+    shared_completeness = {"exDateSemanticsResolved": "BLOCKED"}
+    for _ in range(2):  # "terminates later" vs "continues forever": same call either way
+        rec = ELIG.label_eligibility(completeness=shared_completeness,
+                                     window_crosses_termination=False)
+        assert rec == {"status": ELIG.INELIGIBLE, "reasonCode": ELIG.EXDATE_LINEAGE_UNRESOLVED}
+
+
+def test_future_metadata_mutation_invariance():
+    """TEST 2. An observation whose target ends before termination must not
+    change eligibility when ONLY metadata describing a LATER termination is
+    edited. The pre-termination branch must never even READ the termination-
+    event fields (asserted both behaviourally and, via
+    TERMINATION_EVENT_FIELDS, by construction)."""
+    base = {"exDateSemanticsResolved": "READY", "terminationTypeResolved": "BLOCKED",
+           "terminalConsiderationResolved": "BLOCKED", "successorResolvedWhereRequired": "BLOCKED",
+           "terminalActionChainResolved": "BLOCKED"}
+    before = ELIG.label_eligibility(completeness=base, window_crosses_termination=False,
+                                    total_return_series_available=True)
+    mutated = dict(base)
+    for field in ELIG.TERMINATION_EVENT_FIELDS:
+        mutated[field] = "READY"  # later termination now fully resolved
+    after = ELIG.label_eligibility(completeness=mutated, window_crosses_termination=False,
+                                   total_return_series_available=True)
+    assert before == after == {"status": ELIG.ELIGIBLE,
+                               "reasonCode": ELIG.PRE_TERMINATION_WINDOW_BASIS_RESOLVED}
+
+
+def test_termination_window_sensitivity():
+    """TEST 3. For a window that DOES cross termination, unresolved required
+    terminal economics make the label unavailable, and resolving exactly the
+    required evidence makes it eligible -- the opposite of TEST 2, on purpose:
+    this axis SHOULD move the answer, only for a crossing window."""
+    unresolved = {"exDateSemanticsResolved": "READY", "terminationTypeResolved": "BLOCKED",
+                 "terminalConsiderationResolved": "BLOCKED",
+                 "successorResolvedWhereRequired": "NOT_APPLICABLE",
+                 "terminalActionChainResolved": "BLOCKED"}
+    assert ELIG.label_eligibility(completeness=unresolved, window_crosses_termination=True
+                                  )["status"] == ELIG.INELIGIBLE
+    resolved = {**unresolved, "terminationTypeResolved": "READY",
+               "terminalConsiderationResolved": "READY", "terminalActionChainResolved": "READY"}
+    assert ELIG.label_eligibility(completeness=resolved, window_crosses_termination=True
+                                  ) == {"status": ELIG.ELIGIBLE,
+                                       "reasonCode": ELIG.TERMINATION_WINDOW_FULLY_RESOLVED}
+
+
+def test_return_basis_symmetry_survivor_and_future_terminated_security():
+    """TEST 4. A survivor and a future-terminated security must use the SAME
+    economic-basis rule for the same kind of (non-crossing) target -- proven
+    by construction: the function has no channel to distinguish them other
+    than the completeness evidence itself, so feeding it the SAME evidence
+    for 'the survivor' and 'the eventually-terminated one' cannot produce
+    different answers."""
+    same_evidence = {"exDateSemanticsResolved": "READY"}
+    survivor_call = ELIG.label_eligibility(completeness=same_evidence,
+                                           window_crosses_termination=False,
+                                           total_return_series_available=True)
+    eventually_terminated_call = ELIG.label_eligibility(completeness=same_evidence,
+                                                        window_crosses_termination=False,
+                                                        total_return_series_available=True)
+    assert survivor_call == eventually_terminated_call
+
+
+def test_no_manufactured_outcome_ever_returned():
+    """TEST 5. An INELIGIBLE decision never carries a zero, a benchmark
+    return, a last price, a nearest price, or an assumed-no-dividend value --
+    the return shape is always exactly {status, reasonCode[, unpricedSuccessors]}."""
+    scenarios = [
+        ELIG.label_eligibility(completeness=None, window_crosses_termination=True),
+        ELIG.label_eligibility(completeness={"exDateSemanticsResolved": "BLOCKED"},
+                               window_crosses_termination=False),
+        ELIG.label_eligibility(completeness={"exDateSemanticsResolved": "READY",
+                                             "terminationTypeResolved": "BLOCKED"},
+                               window_crosses_termination=True),
+    ]
+    forbidden_keys = {"return", "value", "price", "assumedReturn", "zero", "benchmarkReturn"}
+    for rec in scenarios:
+        assert rec["status"] == ELIG.INELIGIBLE
+        assert not forbidden_keys & rec.keys()
+        assert set(rec.keys()) <= {"status", "reasonCode", "unpricedSuccessors"}
+
+
+def test_no_outcome_access_in_eligibility_or_spec_modules():
+    """TEST 6. The eligibility module and the spec loader construct zero
+    labels and read zero future-return/model-performance artifacts."""
+    import inspect
+    for module in (ELIG, S):
+        source = inspect.getsource(module).lower()
+        for token in ("forwardreturn", "excessreturn", "sharpe", "sortino", "cagr", "rank ic",
+                     "kelly_portfolio", "select_portfolio_by_scores", "replay_valuation"):
+            assert token not in source, f"{module.__name__} references {token}"
+
+
+# --------------------------------------------------------------------------- #
+# The policy applied to the REAL sealed evidence, window-scoped
+# --------------------------------------------------------------------------- #
+def test_bulk_verdict_against_the_real_sealed_evidence():
     reconstruction = S.read_json(ROOT / "docs/results/kr-terminal-action-reconstruction-v2.json")
     audit = S.read_json(ROOT / "docs/results/alpha-opportunity-model-v3-survivorship-audit.json")
     completeness_by_code = {row["code"]: row["completeness"] for row in reconstruction["securities"]}
     verdicts = ELIG.bulk_security_verdicts(kr_terminations=audit["krTerminations"],
                                            completeness_by_code=completeness_by_code)
     assert len(verdicts) == 22
-    assert all(v["status"] == ELIG.INELIGIBLE for v in verdicts)
-    assert all(v["reasonCode"] == ELIG.EXDATE_LINEAGE_UNRESOLVED for v in verdicts)
+    assert all(v["preTerminationWindows"]["status"] == ELIG.INELIGIBLE for v in verdicts)
+    assert all(v["preTerminationWindows"]["reasonCode"] == ELIG.EXDATE_LINEAGE_UNRESOLVED for v in verdicts)
+    assert all(v["terminationCrossingWindows"]["status"] == ELIG.INELIGIBLE for v in verdicts)
 
 
 def test_committed_eligibility_artifact_matches_a_fresh_recompute(tmp_path):
@@ -308,7 +461,8 @@ def test_committed_eligibility_artifact_matches_a_fresh_recompute(tmp_path):
     assert out.read_bytes() == committed
     entry = S.read_json(S.DEFAULT_SPEC)["eligibilityPolicy"]["computedResultAsOfThisSeal"]
     assert S.file_hash(out) == entry["artifactSha256"]
-    assert entry["eligibleSecurities"] == 0 and entry["ineligibleSecurities"] == 22
+    assert entry["preTerminationWindows"]["ineligible"] == 22
+    assert entry["terminationCrossingWindows"]["ineligible"] == 22
 
 
 def test_audit_script_computes_no_return_or_outcome():

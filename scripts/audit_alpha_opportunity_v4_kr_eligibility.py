@@ -45,12 +45,19 @@ def main(argv=None) -> int:
     completeness_by_code = {row["code"]: row["completeness"] for row in reconstruction["securities"]}
     verdicts = ELIG.bulk_security_verdicts(kr_terminations=kr_terminations,
                                            completeness_by_code=completeness_by_code)
-    by_reason: dict[str, int] = {}
-    for v in verdicts:
-        by_reason[v["reasonCode"] or v["status"]] = by_reason.get(v["reasonCode"] or v["status"], 0) + 1
+
+    def _reason_counts(key: str) -> dict[str, int]:
+        counts: dict[str, int] = {}
+        for v in verdicts:
+            reason = v[key]["reasonCode"]
+            counts[reason] = counts.get(reason, 0) + 1
+        return counts
+
+    pre_termination_reasons = _reason_counts("preTerminationWindows")
+    termination_crossing_reasons = _reason_counts("terminationCrossingWindows")
 
     report = {
-        "contract": "ALPHA_OPPORTUNITY_V4_KR_ELIGIBILITY_POLICY_RESULT_V1",
+        "contract": "ALPHA_OPPORTUNITY_V4_KR_ELIGIBILITY_POLICY_RESULT_V2",
         "policyModule": "pipeline/alpha_opportunity_v4_eligibility.py",
         "policyContract": ELIG.CONTRACT,
         "inputs": {
@@ -59,17 +66,24 @@ def main(argv=None) -> int:
             "survivorshipAuditPath": _relative(args.survivorship_audit),
         },
         "securitiesEvaluated": len(verdicts),
-        "eligibleTodaySecurityLevel": sum(1 for v in verdicts if v["status"] == ELIG.ELIGIBLE),
-        "ineligibleTodaySecurityLevel": sum(1 for v in verdicts if v["status"] == ELIG.INELIGIBLE),
-        "conditionallyEligiblePendingTotalReturnSeriesBuild": sum(
-            1 for v in verdicts
-            if v["status"] == "CONDITIONALLY_ELIGIBLE_PENDING_TOTAL_RETURN_SERIES_BUILD"),
-        "reasonCounts": by_reason,
+        "preTerminationWindows": {
+            "eligible": sum(1 for v in verdicts if v["preTerminationWindows"]["status"] == ELIG.ELIGIBLE),
+            "ineligible": sum(1 for v in verdicts if v["preTerminationWindows"]["status"] == ELIG.INELIGIBLE),
+            "reasonCounts": pre_termination_reasons,
+        },
+        "terminationCrossingWindows": {
+            "eligible": sum(1 for v in verdicts if v["terminationCrossingWindows"]["status"] == ELIG.ELIGIBLE),
+            "ineligible": sum(1 for v in verdicts if v["terminationCrossingWindows"]["status"] == ELIG.INELIGIBLE),
+            "reasonCounts": termination_crossing_reasons,
+        },
         "verdicts": verdicts,
-        "note": ("A security read here as INELIGIBLE or CONDITIONALLY_ELIGIBLE has no forward "
-                 "return, IC, label or model computed anywhere by this script. This is a "
-                 "metadata-only application of a predeclared policy to already-sealed "
-                 "completeness evidence."),
+        "note": ("Neither window scope reads a security's eventual termination status: "
+                 "preTerminationWindows is decided from the security's OWN dividend-evidence "
+                 "completeness alone (never from list membership), and terminationCrossingWindows "
+                 "applies only to a window whose own scheduled exit is after the security's last "
+                 "traded session. A security read here as INELIGIBLE has no forward return, IC, "
+                 "label or model computed anywhere by this script -- this is a metadata-only "
+                 "application of a predeclared policy to already-sealed completeness evidence."),
         "historicalOutcomesComputed": False,
         "labelsConstructed": False,
         "modelsTrained": False,
@@ -78,7 +92,9 @@ def main(argv=None) -> int:
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_bytes(canonical(report) + b"\n")
     print(json.dumps({"written": str(args.output), "securitiesEvaluated": len(verdicts),
-                      "reasonCounts": by_reason}, indent=2))
+                      "preTerminationWindowReasonCounts": pre_termination_reasons,
+                      "terminationCrossingWindowReasonCounts": termination_crossing_reasons},
+                     indent=2))
     return 0
 
 

@@ -4,8 +4,8 @@ fits a model, or reads a price.
 
 v4 differs from v3 in exactly one structural way: it is KR-only (see the
 spec's own `scope` block for why), and it separates SOURCE-FOUNDATION
-completeness (`sourceFoundation`, read from the already-sealed
-`kr-terminal-action-reconstruction-v2` artifact, which stays
+completeness (`sourceFoundationCitation`, a snapshot of the already-sealed
+`kr-terminal-action-reconstruction-v2` artifact AS OF THIS SEAL, which stays
 `PARTIALLY_REPAIRED`) from STUDY-DESIGN readiness (`preregistrationStatus`).
 The former is not, and cannot be, changed by this module. The latter can be
 `READY_FOR_HISTORICAL_EXECUTION` even while the former is `PARTIALLY_
@@ -14,17 +14,44 @@ REPAIRED`, because the two v3 KR design blockers this spec inherited
 `KR_TERMINAL_CONSIDERATION_UNRESOLVED`) are resolved here by a predeclared,
 machine-checked ELIGIBILITY POLICY (`pipeline/alpha_opportunity_v4_
 eligibility.py`) that excludes affected observations, not by the underlying
-data becoming complete. `docs/alpha-opportunity-model-v4-preregistration.md`
-states this distinction in full; this module enforces it by never reading
-or writing `sourceFoundation.krTerminalActionReconstructionV2.
-foundationStatus` as anything other than a cited, hash-pinned fact.
+data becoming complete.
+
+CORRECTION (this revision): the first version of this module hash-pinned
+`kr-terminal-action-reconstruction-v2.json` (and two sibling artifacts) into
+`dependencyHashes`/`sealedDataInputs` and additionally re-verified the
+artifact's own quoted `foundationStatus` against disk on every load. That
+directly contradicted this same module's own documented claim (and
+`docs/alpha-opportunity-model-v4-preregistration.md`'s own claim) that "a
+future data-foundation PR that resolves a security's ex-date lineage would
+let the SAME eligibility function admit it without a new preregistration" --
+a future repair changes that artifact's bytes, which the OLD `load_sealed`
+would refuse to load at all (`SEALED_DEPENDENCY_CHANGED`). Sealing a POLICY
+and pinning its evidentiary INPUT's exact bytes are two different
+promises, and this module now keeps only the first: `sourceFoundationCitation`
+is a historical record of what the artifact looked like when this spec was
+sealed (informational, never re-verified at load time), never an input this
+loader's hash check depends on. The three KR terminal-action artifacts
+(`kr-terminal-action-reconstruction-v2.json`, `kr-termination-inventory
+.json`, `data/kr-terminal-corporate-actions.json`) are accordingly NOT in
+`sealedDataInputs` -- they are expected to IMPROVE over time exactly as any
+other growing ledger in this repository does (`Historical replay invariants`
+(v2.6): "The invariant is PREFIX STABILITY, never immutability"), and a
+future execution reads whatever current snapshot exists, calling
+`alpha_opportunity_v4_eligibility.assert_foundation_not_regressed` first to
+prove the new snapshot only ever adds evidence, never removes it, against
+the cited snapshot recorded here (retrievable from this exact commit via
+`git show`, named in `sourceFoundationCitation`).
 
 v1, v2 AND v3 are verified byte-for-byte by their own spec digests and
 sidecars -- v4 never re-derives their content, only pins and checks it,
 following the discipline v3 already established for v1/v2 (v3's own
 docstring: "v3 must not inherit v2's oversized [dependency list]"; the same
 reasoning is why v4 does not re-import v3's own (empty, US-blocked)
-dependency closure).
+dependency closure). This IS still the right discipline for v1/v2/v3, and
+for the `alpha-opportunity-model-v3-survivorship-audit.json` this spec DOES
+still hash-pin (unlike the KR terminal-action artifacts): both are
+DECLARED-FROZEN, input-only snapshots that are never legitimately updated in
+place, never a growing ledger.
 """
 from __future__ import annotations
 
@@ -67,21 +94,17 @@ def verify_prior_versions(spec, root=ROOT):
     return True
 
 
-def verify_source_foundation(spec, root=ROOT):
-    """The cited source-foundation artifacts are unchanged AND their status
-    is quoted verbatim -- this function never computes or infers a status,
-    only checks that the one the spec quotes still matches the artifact on
-    disk. A foundation improving OR regressing after this seal both raise
-    here, because either would mean the spec's own quoted fact is stale.
+def verify_source_foundation_citation(spec):
+    """`sourceFoundationCitation` is a well-formed historical record -- this
+    checks the SPEC's own internal shape only (every entry names a path and
+    a sha256 it claims held AT SEAL TIME), never the artifact on disk today.
+    Deliberately NOT called against the live filesystem: see module
+    docstring for why re-verifying a growing ledger's current bytes against
+    a sealed spec is exactly the contradiction this revision removes.
     """
-    for entry in spec["sourceFoundation"].values():
-        path = Path(root) / entry["path"]
-        if file_hash(path) != entry["sha256"]:
-            raise ValueError("SOURCE_FOUNDATION_ARTIFACT_CHANGED: " + entry["path"])
-        if "foundationStatus" in entry:
-            actual = read_json(path).get("foundationStatus")
-            if actual != entry["foundationStatus"]:
-                raise ValueError("SOURCE_FOUNDATION_STATUS_STALE: " + entry["path"])
+    for name, entry in spec["sourceFoundationCitation"].items():
+        if not entry.get("path") or not entry.get("shaAsOfThisSeal"):
+            raise ValueError("MALFORMED_SOURCE_FOUNDATION_CITATION: " + name)
     return True
 
 
@@ -108,7 +131,7 @@ def load_sealed(path=DEFAULT_SPEC, *, expected_hash, root=ROOT):
         if not p.is_relative_to(root.resolve()) or not p.is_file() or file_hash(p) != sha:
             raise ValueError("SEALED_DEPENDENCY_CHANGED: " + rel)
     verify_prior_versions(spec, root)
-    verify_source_foundation(spec, root)
+    verify_source_foundation_citation(spec)
     return spec
 
 
@@ -127,9 +150,11 @@ def readiness(spec, spec_hash):
     return {
         "studyId": STUDY, "immutableVersion": spec["immutableVersion"], "specSha256": spec_hash,
         "phase": "PREREGISTRATION_ONLY", "preregistrationStatus": preregistration_status(spec),
-        "sourceFoundationStatus": {
-            name: entry["foundationStatus"] for name, entry in spec["sourceFoundation"].items()
-            if "foundationStatus" in entry},
+        "sourceFoundationStatusAsOfThisSeal": {
+            name: entry["foundationStatusAsOfThisSeal"]
+            for name, entry in spec["sourceFoundationCitation"].items()
+            if "foundationStatusAsOfThisSeal" in entry},
+        "executionMustReverifyFoundationAgainstLiveData": True,
         "blockers": [b["id"] for b in spec.get("designBlockers") or []],
         "formerBlockersResolvedByPolicyNotByData": [
             b["id"] for b in spec.get("formerV3BlockersResolvedByPolicy") or []],

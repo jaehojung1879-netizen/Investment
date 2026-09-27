@@ -1520,6 +1520,71 @@
   or evaluation code, exactly `alpha-opportunity-model-v3`'s own script's
   discipline one level up.
 
+## Alpha-opportunity-model-v4 correction invariants (v2.31)
+
+- A LABEL-ELIGIBILITY GATE MUST NEVER TAKE A SECURITY'S IDENTITY OR ITS
+  TERMINATION-LIST MEMBERSHIP AS AN INPUT, AND THIS IS NOW PROVEN
+  MECHANICALLY RATHER THAN ARGUED. v2.30's own first bullet already named the
+  right PRINCIPLE (a security-level gate is legitimate ONLY because the
+  underlying basis gap applies to a security's whole trading life); what it
+  shipped did not fully live up to it: `label_eligibility` took `code` and
+  `known_terminated_codes` and branched on set membership BEFORE ever
+  reading completeness evidence, so a security's own eventual termination
+  status — knowable only in hindsight — decided whether extra scrutiny
+  applied to a PRE-termination observation whose own target window never
+  touches the event. Contract V2 removes both parameters entirely:
+  `label_eligibility(completeness, window_crosses_termination, ...)` cannot
+  read a security's code or its list membership because neither is a
+  parameter, and `test_function_signature_takes_no_security_identity_or_
+  termination_list` checks the signature itself, not just behaviour on
+  today's data. Two securities with identical completeness evidence and the
+  same window-crossing fact now receive IDENTICAL treatment by construction
+  — six anti-look-ahead tests (future-termination invariance, future-
+  metadata-mutation invariance, termination-window sensitivity, return-
+  basis symmetry, no-manufactured-outcome, no-outcome-access) prove this
+  from both directions rather than asserting it in prose.
+- THE NUMERIC RESULT DID NOT CHANGE; THE MECHANISM DID. All 22 audited KR
+  securities remain INELIGIBLE on both the pre-termination and termination-
+  crossing window scopes after this fix, because their own dividend
+  evidence (measured, not assumed: ZERO Yahoo dividend rows across each
+  security's entire observed life, against 215/238 dividend events on
+  continuing names — `alpha-opportunity-model-v3`'s sealed survivorship
+  audit) is exactly as incomplete as it was under the defective version.
+  Deferring to unaudited production behaviour for every OTHER KR security
+  (`completeness is None` ⇒ `KR_DIVIDEND_BASIS_AUDIT_NOT_PERFORMED_DEFERS_
+  TO_PRODUCTION`) is not a double standard: it is the same trust-Yahoo's-
+  own-row-dates basis `pipeline.price_adjustment.to_total_return` already
+  applies to every KR security with zero independent verification anywhere
+  in this codebase, confirmed by reading that module directly rather than
+  assumed from its docstring.
+- SEALING A POLICY AND HASH-PINNING ITS EVIDENTIARY INPUT'S EXACT BYTES ARE
+  TWO DIFFERENT PROMISES, AND CONFLATING THEM MADE V2.30'S OWN CLAIM FALSE
+  ON ITS FACE. The first sealed spec hash-pinned `kr-terminal-action-
+  reconstruction-v2.json` (and two sibling artifacts) into `dependencyHashes`
+  /`sealedDataInputs` while claiming a future repair to those same artifacts
+  would let the same eligibility function admit new evidence WITHOUT a new
+  preregistration — but the old `load_sealed` would raise `SEALED_
+  DEPENDENCY_CHANGED` the moment those bytes changed, refusing to load the
+  spec at all. The three KR terminal-action artifacts are now
+  `sourceFoundationCitation` entries (a historical record of what they
+  looked like at seal time, never re-verified against disk by
+  `load_sealed`), and `pipeline.alpha_opportunity_v4_eligibility.assert_
+  foundation_not_regressed` gives a future execution a PREFIX-STABILITY
+  check (may only improve, never regress a field already relied on) in
+  place of a byte-identity requirement — the same discipline `Historical
+  replay invariants` (v2.6) already established for a growing ledger, one
+  level up. `alpha-opportunity-model-v3-survivorship-audit.json` is
+  different in kind (a declared-frozen, input-only snapshot, never
+  legitimately updated in place) and stays fully hash-pinned, unchanged.
+- BOTH DEFECTS WERE FOUND BY INDEPENDENT REVIEW BEFORE MERGE, NOT BY THIS
+  PROJECT'S OWN AUTHOR, AND THE CORRECTION IS PUBLISHED WITH ITS OWN
+  EVIDENCE RATHER THAN SILENTLY EDITED IN — the same discipline `alpha-
+  research-foundation-v2` (v2.24) and `kr-terminal-action-reconstruction-v2`
+  (v2.29) already established for a stale or wrong claim one level up.
+  `research_specs/alpha-opportunity-model-v4.json`'s own `correctionHistory`
+  field records the issue and the fix in the sealed artifact itself, not
+  only in prose.
+
 ## Lint gate invariants (v2.11)
 
 - The enabled rule set reports ZERO findings on `main`. A rule is turned on in the

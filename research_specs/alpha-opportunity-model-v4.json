@@ -74,7 +74,7 @@
       "holidays": "replay_calendar pinned exchange-calendars+KR patches",
       "implementation": "alpha_opportunity_v2_evaluation.target_from_sessions (v1 target_at semantics, precomputed calendar; test-proven equal)",
       "informationTimestamp": "end of signal calendar day in regional timezone; date-only filings strictly earlier",
-      "missingOrDelisted": "exact endpoints only; unresolved endpoint => MISSING_FORWARD_PRICE_OR_DELISTING, never zero, forward fill, nearest date or last price. Separately and BEFORE this check, every KR security in the sealed 22-name terminated-security list is additionally gated by pipeline.alpha_opportunity_v4_eligibility: INELIGIBLE reads DATA_UNAVAILABLE_UNDER_PREDECLARED_POLICY, a different reason code from MISSING_FORWARD_PRICE_OR_DELISTING, because the failure mode is a total-return basis gap (unresolved dividend ex-date lineage), not a missing price row",
+      "missingOrDelisted": "exact endpoints only; unresolved endpoint => MISSING_FORWARD_PRICE_OR_DELISTING, never zero, forward fill, nearest date or last price. Separately, pipeline.alpha_opportunity_v4_eligibility.label_eligibility additionally gates every KR observation (not only the 22 audited terminated securities -- see eligibilityPolicy): a non-crossing window is INELIGIBLE with reason KR_DIVIDEND_EXDATE_LINEAGE_UNRESOLVED or KR_TOTAL_RETURN_SERIES_NOT_YET_BUILT only when this security's OWN audited dividend evidence is incomplete, never because the security is known to terminate; a crossing window is additionally gated on the full terminal-action chain. These are different reason codes from MISSING_FORWARD_PRICE_OR_DELISTING because the failure mode is a total-return basis gap or an unresolved corporate action, not a missing price row.",
       "totalReturn": "replay-v16 forward accumulated distributions/splits, same endpoint basis for stock and benchmark"
     },
     "tradabilityGuard": {
@@ -164,12 +164,24 @@
       "pendingEvaluation": "exclude dates whose scheduled exit exceeds data cutoff; purely calendar-based, never label-quality based",
       "prediction": "last KR regional session each calendar week",
       "refit": "first KR weekly signal date each calendar year; expanding history",
-      "survivorshipEligibility": "an observation on a KR security enters training or evaluation only if pipeline.alpha_opportunity_v4_eligibility.label_eligibility reports ELIGIBLE for that (security, signal date, horizon); this replaces the v3-inherited 20% gap-tolerance reuse, which was already withdrawn by v3 for a different gate"
+      "survivorshipEligibility": "an observation on a KR security enters training or evaluation only if pipeline.alpha_opportunity_v4_eligibility.label_eligibility(completeness=..., window_crosses_termination=...) reports ELIGIBLE for that (security, signal date, horizon). `completeness` is the sealed completeness row for the security if this repository has audited its dividend/terminal-action evidence, else None -- audit coverage today is the 22 names in the sealed v3 survivorship audit's krTerminations list, a fact about research coverage, never an input the function reads. `window_crosses_termination` is a pure calendar fact (does this window's own exit session fall after the security's last traded session), computed the same way alpha_opportunity_v2_evaluation.target_from_sessions already decides MISSING_FORWARD_PRICE_OR_DELISTING. Neither a security's own eventual termination nor any other future fact is read by this function for a window that does not itself cross the termination event -- see pipeline/alpha_opportunity_v4_eligibility.py's own docstring and tests/test_alpha_opportunity_v4.py's future-termination-invariance tests. This replaces the v3-inherited 20% gap-tolerance reuse, which was already withdrawn by v3 for a different gate."
     }
   },
   "citations": {
     "krTerminalActionCollectionFinalRetryRun": "GitHub Actions run 36264244053 (workflow 'Collect KR terminated-security corporate actions', 2026-09-26T18:55Z, mode=collect, triggered on main after PR #158's merge commit 68c950d9f2fbd05fcb76b36bd714b236e2b33850): the 'collect' job (disclosure index) and 'collect-dividends' job both logged 'no new disclosures'/'no new dividend rows' (already complete: 22/22 disclosures, 451 rows; 47/47 dividend tickers, 6,150 rows); the 'collect-documents' job retried exactly the 38 previously-failed receipts (receiptsRequested=130, receiptsSucceeded=92, receiptsFailed=38, receiptsRemaining=0, written=0, outcome=EMPTY_BUT_VALID, datasetComplete=true, fullWorkListExhausted=true, stopReason=WORK_LIST_EXHAUSTED) -- all 38 failed again with the same retained error ('document.xml did not return a ZIP (147 bytes)'). Verified directly from the run's job logs in this PR, not carried over from a prior claim. This closes the repeated-DART-retry loop: signal-history commit 2132d8d83589ddc8ee6c0e640016211c8ebc65f0 (1 file changed, 38 insertions, 38 deletions) refreshes retry/failure bookkeeping only, not new evidence -- consistent with, and this PR's own independent confirmation of, the 'ledger/kr-corporate-actions/fetch-state.json' retry-state fields."
   },
+  "correctionHistory": [
+    {
+      "issue": "None -- first sealed version.",
+      "revision": "V1 (initial preregistration)"
+    },
+    {
+      "fix": "(1) pipeline/alpha_opportunity_v4_eligibility.py's label_eligibility no longer takes a security code or termination-list membership; it takes only completeness evidence and a window-crossing calendar fact, and the pre-termination branch never reads any termination-event field. New tests prove future-termination and future-metadata-mutation invariance. (2) The three KR terminal-action artifacts moved out of sealedDataInputs/dependencyHashes into sourceFoundationCitation (informational, never re-verified at load time); a new pipeline.alpha_opportunity_v4_eligibility.assert_foundation_not_regressed function gives a future execution a prefix-stability check (may only improve, never regress) against the cited snapshot, in place of a byte-identity requirement.",
+      "issue": "Independent review found two defects: (1) the eligibility policy conditioned pre-termination-window eligibility on security-level termination-list membership rather than on the observation's own data requirements (a future-survival-conditioning / look-ahead defect); (2) the spec hash-pinned the KR terminal-action evidentiary artifacts as immutable sealed inputs while simultaneously claiming a future repair to those same artifacts would not require a new preregistration -- a direct contradiction, since the old loader would refuse to load at all once those bytes changed.",
+      "numericChange": "None: the 22 audited securities remain fully excluded from both window scopes under current evidence, computed for a corrected reason.",
+      "revision": "V2 (this correction, same PR, before merge)"
+    }
+  ],
   "createdAt": "2026-09-26T00:00:00Z",
   "dataCutoff": "2026-09-14",
   "decisionContract": {
@@ -250,16 +262,13 @@
     "method": "static closure over pipeline imports, top-level and function-level, recomputed on every load; sealed set must equal closure + sealedDataInputs"
   },
   "dependencyHashes": {
-    "data/kr-terminal-corporate-actions.json": "4e67620afddfb4cd5849e857da78a91f643f00c0b24466e3e1517a108d156077",
     "docs/results/alpha-opportunity-model-v3-survivorship-audit.json": "f0d9ed09880ffb75c6cc698dbb001e6f6879dee1991ede6ff6d365cc50f22902",
-    "docs/results/alpha-opportunity-model-v4-eligibility-policy.json": "c51ebf3cb1bdf4e6f3b018617437e55e27b8548ad36500e1ea64ca537bb43b0a",
-    "docs/results/kr-terminal-action-reconstruction-v2.json": "b1d2dcb0a8064139e601c4efab51a44e1323f93910ae70228054338a90629017",
-    "docs/results/kr-termination-inventory.json": "b58ecb2c4500302c40784613318c8451beee663ece5ee76ada26873a4292f93f",
+    "docs/results/alpha-opportunity-model-v4-eligibility-policy.json": "f5fdc9c47a2873e454796c0bc50b82c43fa89455984201c4ae5eaed8189f6efd",
     "pipeline/__init__.py": "187da1ad9a148da44035f9cf25f7cb094c45afe53d3f445ba62392797972dede",
     "pipeline/alpha_opportunity_spec.py": "3d7150c2f62dbd8184ed2f3885828e93c1ba64d8ffe3695b0b5716641734c58e",
     "pipeline/alpha_opportunity_v3_spec.py": "1c11c306f9f27a8e69b985d02bfb3bffaf691001c27ac49e6b21266dd315c162",
-    "pipeline/alpha_opportunity_v4_eligibility.py": "c1fc4acbb1dda1b7c363ed821d2a9f817b80f1689d931d3ac0fa80925acc06fe",
-    "pipeline/alpha_opportunity_v4_spec.py": "b1bd3a9a7c68834490de90a65e8aa108bd371218ffc22e20118a0063dda57b32",
+    "pipeline/alpha_opportunity_v4_eligibility.py": "985c608372ac975cf9b0a76ef0e4206fac70ddbf38922a1281e369271b2fba4e",
+    "pipeline/alpha_opportunity_v4_spec.py": "9802a558dd237b016ecfac8f35e66c3351b637f660b6d58a989fc2f837b62395",
     "requirements.txt": "b874e2c2c8bd5f4b0bc01b99f988d37d13c9d5018e7fb09992a6cdde6e94edb8",
     "research_specs/alpha-opportunity-model-v1-features.json": "72f52c9c95d4045ba48c33980ad43f0e4df8bc072cbcc2b099a1c6f503323895",
     "research_specs/alpha-opportunity-model-v1.json": "4c185128f3fc78ee17fcd4afe875ce3a1ed471ab5dec8dfdfadefda33c469cc4",
@@ -268,24 +277,37 @@
     "research_specs/alpha-opportunity-model-v2.sha256": "2b400b8adf6edd4a97ed206abc089eba70fd5cfc9a5bf9094cedbe88058a79e4",
     "research_specs/alpha-opportunity-model-v3.json": "319b450e97878bc0095301775a30f0d92d789680c78fd608e9c68bca4fb19f9b",
     "research_specs/alpha-opportunity-model-v3.sha256": "9e23f25454a731a6cd53909a463f8d1ee5be557606c13c33a66a55b43ad81591",
-    "scripts/audit_alpha_opportunity_v4_kr_eligibility.py": "5ca0451ac32a3f8e48e93b96a9e2c57daf9a401a77e07e2a26c7eadaea094857",
+    "scripts/audit_alpha_opportunity_v4_kr_eligibility.py": "739849a7e308a133a41ec663f8d275fe5884d6697efea6db2c4fc8b68f6f48c0",
     "scripts/run_alpha_opportunity_model_v4.py": "8071ee8006813ce3f5a8db8276082db74463bd0688b9302653ddf6bfcdb5476a"
   },
   "designBlockers": [],
   "eligibilityPolicy": {
-    "appliesTo": "the 22 KR securities named in alphaOpportunityV3SurvivorshipAudit's krTerminations list -- never a hardcoded code list in v4 code",
+    "appliesTo": "label_eligibility is defined for ANY KR security; the SEALED completeness evidence it reads today only exists for the 22 KR securities named in alphaOpportunityV3SurvivorshipAudit's krTerminations list (a fact about which securities this repository has audited, not a fact the function branches on) -- for any other KR security `completeness=None` and a non-crossing window is ELIGIBLE, deferring to whatever total-return construction pipeline.korea_prices already applies to every KR security, exactly as v1-v3 already assumed for the whole KR universe. This is not a double standard: the 22 are excluded from PRODUCTION's implicit ELIGIBLE-by-default only because this repository has POSITIVELY MEASURED a gap for them (ZERO Yahoo dividend rows across their entire observed lives, against 215/238 dividend events on continuing names -- alphaOpportunityV3SurvivorshipAudit), not because they are the ones that terminate.",
     "computedResultAsOfThisSeal": {
       "artifactPath": "docs/results/alpha-opportunity-model-v4-eligibility-policy.json",
-      "artifactSha256": "c51ebf3cb1bdf4e6f3b018617437e55e27b8548ad36500e1ea64ca537bb43b0a",
-      "dominantReasonCode": "KR_TERMINATED_SECURITY_DIVIDEND_EXDATE_LINEAGE_UNRESOLVED",
-      "eligibleSecurities": 0,
-      "ineligibleSecurities": 22,
-      "note": "Computed by scripts/audit_alpha_opportunity_v4_kr_eligibility.py against the real sealed evidence -- not asserted. Re-running it against a repaired foundation would change this result without any change to the policy code or this spec."
+      "artifactSha256": "f5fdc9c47a2873e454796c0bc50b82c43fa89455984201c4ae5eaed8189f6efd",
+      "note": "Computed by scripts/audit_alpha_opportunity_v4_kr_eligibility.py against the real sealed evidence -- not asserted. The NUMERIC result is unchanged from contract V1 (all 22 still excluded on both window scopes today) because the underlying per-security dividend/terminal-action evidence is exactly as incomplete as it was; what changed is that the MECHANISM computing this result no longer reads termination-list membership at all. Re-running this script against a repaired foundation would change this result without any change to the policy code or this spec.",
+      "preTerminationWindows": {
+        "dominantReasonCode": "KR_DIVIDEND_EXDATE_LINEAGE_UNRESOLVED",
+        "eligible": 0,
+        "ineligible": 22
+      },
+      "terminationCrossingWindows": {
+        "eligible": 0,
+        "ineligible": 22,
+        "reasonCounts": {
+          "KR_TERMINAL_ACTION_CHAIN_UNRESOLVED": 10,
+          "KR_TERMINAL_CONSIDERATION_UNRESOLVED": 10,
+          "KR_TERMINATION_TYPE_UNRESOLVED": 2
+        }
+      }
     },
-    "contract": "ALPHA_OPPORTUNITY_V4_KR_LABEL_ELIGIBILITY_V1",
-    "knownConsequence": "v4's labeled sample excludes all 22 known-terminated KR securities' observations entirely, at every signal date, under current evidence. This is NOT the same defect alpha-opportunity-model-v3 found in the US leg (NO_TERMINATED_SECURITY_IN_SAMPLE, where the panel never priced a departed name at all, so termination was structurally invisible): here the 22 names ARE priced, ARE members of the PIT KR universe on their live dates, and DO still enter feature computation and cross-sectional context -- only their own forward-return LABEL is withheld, for a disclosed, quantified, bounded and shrinking fraction of member-dates (alphaOpportunityV3SurvivorshipAudit: 3.7366% of tradable KR member-dates, 7.93% in 2013 declining to 0.76% in 2025). It is still a real, disclosed survivorship-conditioning limitation: v4's labeled sample never observes the realised forward outcome of a name that is about to be delisted or merged out, which understates tail risk relative to the true investable universe. `requiredDiagnostics.exclusionsClusterAroundTerminalEventsCheck` in evaluationPreregistration requires the future execution to publish this quantitatively rather than let it pass unremarked, and evaluationPreregistration's own verdict vocabulary must be read alongside this caveat, never as an unconditional statement about KR delisting risk.",
+    "contract": "ALPHA_OPPORTUNITY_V4_KR_LABEL_ELIGIBILITY_V2",
+    "correctionAppliedInThisRevision": "The FIRST version of this policy (contract V1) branched on whether a security's code was in a `known_terminated_codes` set and, if so, excluded EVERY observation on it (pre- and post-termination) once its exDateSemanticsResolved read BLOCKED. That used the security's eventual termination status -- an outcome only knowable in hindsight -- as the gate deciding whether extra scrutiny applied to an observation whose own target window never touches the termination event, which is a future-survival-conditioned selection rule (a bounded, disclosed, but real instance of the same KIND of defect the US leg's NO_TERMINATED_SECURITY_IN_SAMPLE already named, even though the US case is structurally worse -- 0% coverage vs. a proven per-security data gap here). CONTRACT V2 removes `known_terminated_codes` and the security's own code from the eligibility FUNCTION entirely: `label_eligibility` takes only `completeness` (the sealed evidence row, or None if never audited) and `window_crosses_termination` (a pure calendar fact about the OBSERVATION's own target window, legitimate because a forward-return target is a claim about a bounded future interval by construction, exactly like the pre-existing MISSING_FORWARD_PRICE_OR_DELISTING check). Two securities with identical completeness evidence and the same window-crossing fact now receive IDENTICAL treatment regardless of whether one of them is known to terminate -- proved by tests/test_alpha_opportunity_v4.py's future-termination-invariance and future-metadata-mutation-invariance tests, which vary a synthetic terminates-later label while holding completeness fixed and assert the eligibility call does not move.",
+    "knownConsequence": "v4's labeled sample excludes all 22 audited KR securities' observations entirely, at every signal date, under current evidence -- for a reason (a proven, per-security, zero-Yahoo-dividend-evidence data gap) that does not read termination status. This is NOT the same defect alpha-opportunity-model-v3 found in the US leg (NO_TERMINATED_SECURITY_IN_SAMPLE, where the panel never priced a departed name at all -- 0% coverage, structurally invisible): here the 22 names ARE priced, ARE members of the PIT KR universe on their live dates, and DO still enter feature computation and cross-sectional context -- only their own forward-return LABEL is withheld, for a disclosed, quantified, bounded and shrinking fraction of member-dates (alphaOpportunityV3SurvivorshipAudit: 3.7366% of tradable KR member-dates, 7.93% in 2013 declining to 0.76% in 2025). It is still a real, disclosed survivorship-adjacent limitation: v4's labeled sample never observes the realised forward outcome of a name whose OWN dividend evidence this repository has already found incomplete, which happens (for research-coverage reasons, not by rule) to be exactly the names that also terminate. `requiredDiagnostics.exclusionsClusterAroundTerminalEventsCheck` in evaluationPreregistration requires the future execution to publish this quantitatively rather than let it pass unremarked, and evaluationPreregistration's own verdict vocabulary must be read alongside this caveat, never as an unconditional statement about KR delisting risk.",
     "module": "pipeline/alpha_opportunity_v4_eligibility.py",
     "neverAllowed": [
+      "using a security's own eventual termination status, or list membership derived from it, as an input to any eligibility decision about a window that does not itself cross the termination event",
       "treating an unresolved exchange ratio or successor as final",
       "carrying the last traded price forward through a termination",
       "inventing an ex-date from a record date or any other computed rule",
@@ -295,19 +317,19 @@
       "a new exclusion rule invented after an outcome is seen"
     ],
     "reasonCodes": [
+      "KR_DIVIDEND_BASIS_AUDIT_NOT_PERFORMED_DEFERS_TO_PRODUCTION",
+      "KR_DIVIDEND_EXDATE_LINEAGE_UNRESOLVED",
       "KR_SUCCESSOR_HAS_NO_PRICE_PANEL",
       "KR_SUCCESSOR_IDENTITY_UNRESOLVED",
       "KR_TERMINAL_ACTION_CHAIN_UNRESOLVED",
       "KR_TERMINAL_CONSIDERATION_UNRESOLVED",
-      "KR_TERMINATED_SECURITY_DIVIDEND_EXDATE_LINEAGE_UNRESOLVED",
-      "KR_TERMINATED_SECURITY_NO_COMPLETENESS_EVIDENCE",
-      "KR_TERMINATED_SECURITY_TOTAL_RETURN_SERIES_NOT_YET_BUILT",
+      "KR_TERMINATION_CROSSING_WINDOW_NO_COMPLETENESS_EVIDENCE",
       "KR_TERMINATION_TYPE_UNRESOLVED",
-      "NOT_A_KNOWN_TERMINATED_SECURITY",
+      "KR_TOTAL_RETURN_SERIES_NOT_YET_BUILT",
       "PRE_TERMINATION_WINDOW_TOTAL_RETURN_BASIS_RESOLVED",
       "TERMINATION_WINDOW_FULLY_RESOLVED"
     ],
-    "rule": "A security not in the 22 is unaffected: ordinary production/replay mechanics (MISSING_FORWARD_PRICE_OR_DELISTING) apply unchanged. For one of the 22: `exDateSemanticsResolved` must read READY in the sealed completeness matrix before ANY observation on that security -- pre- or post-termination -- is eligible, because the security's entire trading life is on a price-return basis (Yahoo serves no distributions for a delisted KR ticker) while the matched benchmark and every continuing name are total-return; this is not only a terminal-window problem. A window whose exit session is after the security's last traded session additionally requires `terminationTypeResolved`, `terminalConsiderationResolved`, `successorResolvedWhereRequired` (where applicable) and `terminalActionChainResolved` all READY, and -- where a successor is required -- that successor's own price panel."
+    "rule": "Non-crossing window (the target's own exit session is at or before the security's last traded session, or the security never terminates): ELIGIBLE if never audited (defers to production); if audited, ELIGIBLE only when exDateSemanticsResolved reads READY AND a total-return series has actually been spliced into the price panel used for labels (an engineering step this PR does not perform, so this is INELIGIBLE for every audited security today) -- never because the security is known to terminate. Crossing window (the target's own exit session is after the security's last traded session): requires terminationTypeResolved, terminalConsiderationResolved, successorResolvedWhereRequired (where the resolved type requires a successor) and terminalActionChainResolved all READY, and -- where a successor is required -- that successor's own price panel. This branch legitimately depends on the termination event because that event is INSIDE the target window being constructed."
   },
   "evaluationPreregistration": {
     "A_absoluteCalibration": "date-balanced pooled realised = a + b * predicted net relative return (not within-date demeaned); b lower > 0; a and b intervals published; MSE improvement over training mean lower > 0",
@@ -354,7 +376,7 @@
   "formerV3BlockersResolvedByPolicy": [
     {
       "id": "KR_TERMINATED_NAME_DIVIDEND_LINEAGE_ABSENT",
-      "resolution": "v3 treated this as a design blocker because it had no predeclared treatment. v4 predeclares one: the eligibility policy above excludes every affected observation by a computed, machine-checked rule. The underlying dividend/ex-date data itself is unchanged and unrepaired."
+      "resolution": "v3 treated this as a design blocker because it had no predeclared treatment. v4 predeclares one: label_eligibility excludes every observation for which this repository has audited and found an unresolved dividend-basis gap, by a computed, machine-checked rule that reads only the security's own evidence -- never its termination status. The underlying dividend/ex-date data itself is unchanged and unrepaired."
     },
     {
       "id": "KR_TERMINAL_CONSIDERATION_UNRESOLVED",
@@ -422,32 +444,31 @@
     "research_specs/alpha-opportunity-model-v3.sha256",
     "research_specs/alpha-opportunity-model-v1-features.json",
     "docs/results/alpha-opportunity-model-v3-survivorship-audit.json",
-    "docs/results/kr-terminal-action-reconstruction-v2.json",
-    "docs/results/kr-termination-inventory.json",
     "docs/results/alpha-opportunity-model-v4-eligibility-policy.json",
-    "data/kr-terminal-corporate-actions.json",
     "requirements.txt"
   ],
-  "sourceFoundation": {
+  "sourceFoundationCitation": {
     "alphaOpportunityV3SurvivorshipAudit": {
-      "note": "source of the sealed krTerminations 22-name list; never hardcoded in v4 code",
+      "note": "UNLIKE the three artifacts above, this one IS in sealedDataInputs and IS hash-verified by load_sealed on every load: it is a declared-frozen, input-only snapshot (its own docstring: 'byte-identical on repeated runs', tied to a fixed signal-history commit and replay manifest), never a growing ledger. Source of the sealed krTerminations 22-name list; never hardcoded in v4 code.",
       "path": "docs/results/alpha-opportunity-model-v3-survivorship-audit.json",
-      "sha256": "f0d9ed09880ffb75c6cc698dbb001e6f6879dee1991ede6ff6d365cc50f22902"
+      "shaAsOfThisSeal": "f0d9ed09880ffb75c6cc698dbb001e6f6879dee1991ede6ff6d365cc50f22902"
     },
     "krTerminalActionReconstructionV2": {
-      "foundationStatus": "PARTIALLY_REPAIRED",
-      "note": "Read verbatim, never edited. `terminalActionChainResolved` 0/22, `exDateSemanticsResolved` 0/22 -- see docs/kr-terminal-action-reconstruction-v2.md.",
+      "foundationStatusAsOfThisSeal": "PARTIALLY_REPAIRED",
+      "note": "A CITATION, never a sealed input: this file is NOT in sealedDataInputs and its bytes are NOT re-verified by load_sealed. It is expected to improve over time (prefix-stability, never immutability -- Historical replay invariants v2.6). Read verbatim, never edited by this spec or any code it seals. `terminalActionChainResolved` 0/22, `exDateSemanticsResolved` 0/22 as of this seal -- see docs/kr-terminal-action-reconstruction-v2.md. A future execution reads whatever current snapshot exists on disk and calls pipeline.alpha_opportunity_v4_eligibility.assert_foundation_not_regressed against the version of this file committed alongside this spec (retrievable via git history) before using it.",
       "path": "docs/results/kr-terminal-action-reconstruction-v2.json",
-      "sha256": "b1d2dcb0a8064139e601c4efab51a44e1323f93910ae70228054338a90629017",
-      "signalHistoryCommit": "4c6813c4cc8e84a9e429b37435e78baba7f1ee78"
+      "shaAsOfThisSeal": "b1d2dcb0a8064139e601c4efab51a44e1323f93910ae70228054338a90629017",
+      "signalHistoryCommitAsOfThisSeal": "4c6813c4cc8e84a9e429b37435e78baba7f1ee78"
     },
     "krTerminalCorporateActionsBook": {
+      "note": "A citation, never a sealed input -- same reasoning as krTerminalActionReconstructionV2.",
       "path": "data/kr-terminal-corporate-actions.json",
-      "sha256": "4e67620afddfb4cd5849e857da78a91f643f00c0b24466e3e1517a108d156077"
+      "shaAsOfThisSeal": "4e67620afddfb4cd5849e857da78a91f643f00c0b24466e3e1517a108d156077"
     },
     "krTerminationInventory": {
+      "note": "A citation, never a sealed input -- same reasoning as krTerminalActionReconstructionV2.",
       "path": "docs/results/kr-termination-inventory.json",
-      "sha256": "b58ecb2c4500302c40784613318c8451beee663ece5ee76ada26873a4292f93f"
+      "shaAsOfThisSeal": "b58ecb2c4500302c40784613318c8451beee663ece5ee76ada26873a4292f93f"
     }
   },
   "studyId": "alpha-opportunity-model-v4",
