@@ -12,15 +12,26 @@ whether a name happens to be one of the 22 audited terminated securities.
 """
 from __future__ import annotations
 
+import gzip
+import json
 from pathlib import Path
+import subprocess
 
 import numpy as np
 import pandas as pd
 import pytest
+import yaml
 
+from pipeline import alpha_opportunity_spec as S1
+from pipeline import alpha_opportunity_v2_evaluation as E
+from pipeline import alpha_opportunity_v2_model as M
 from pipeline import alpha_opportunity_v4_eligibility as ELIG
 from pipeline import alpha_opportunity_v4_execution as X
 from pipeline import alpha_opportunity_v4_spec as S4
+from pipeline import regional_alpha_features as SOURCES
+from pipeline import replay_calendar as RC
+from scripts import execute_alpha_opportunity_model_v4 as CLI
+from scripts import run_alpha_opportunity_model_v2 as V2CLI
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -282,3 +293,287 @@ def test_execution_harness_module_is_not_in_the_sealed_dependency_closure():
     spec = S4.read_json(S4.DEFAULT_SPEC)
     assert "pipeline/alpha_opportunity_v4_execution.py" not in spec["dependencyHashes"]
     assert "scripts/execute_alpha_opportunity_model_v4.py" not in spec["dependencyHashes"]
+
+
+# =========================================================================== #
+# Regression tests for the V1 harness's sequencing defect. The V1 harness
+# built forward labels (`target_from_sessions`) and called `label_eligibility`
+# for every horizon BEFORE the coverage gate; every test below would have
+# failed against it.
+# =========================================================================== #
+PRICE_FEATURES = ["relative126", "acceleration21", "vol63", "logVolumeShock60",
+                  "shockPersistence5d", "volumePriceAlignment"]
+ACCOUNTING_FEATURES = ["ocfToNetIncomePct", "assetGrowthPct", "debtGrowthPct"]
+TICKERS = [f"T{i:02d}.KS" for i in range(12)]
+
+
+class OutcomeTouched(AssertionError):
+    pass
+
+
+def _runtime():
+    v4 = S4.read_json(S4.DEFAULT_SPEC)
+    v2 = S1.read_json(ROOT / "research_specs/alpha-opportunity-model-v2.json")
+    return X.build_runtime_spec(v4, v2)
+
+
+def _registry():
+    return S1.read_json(ROOT / "research_specs/alpha-opportunity-model-v1-features.json")
+
+
+def _synthetic(start, end, *, accounting=lambda year: True, unpriced_year=None):
+    """A PIT feature frame plus sealed-shaped price panels. Every name trades
+    every KR session (so it is tradable), except that in `unpriced_year` ten of
+    the twelve names have no close at all -- which makes that region-year
+    unvouched above v2's 20% tolerance."""
+    sessions = RC.sessions("2014-06-01", end, "KR")
+    prices = {}
+    for i, ticker in enumerate(TICKERS + [X.KR_BENCHMARK]):
+        frame = pd.DataFrame({"Close": 100.0, "Volume": 1000.0}, index=sessions)
+        if unpriced_year and i < 10:
+            frame = frame.loc[frame.index.year != int(unpriced_year)]
+        prices[ticker] = frame
+    rows = []
+    for date in SOURCES.weekly_grid(start, end, "KR"):
+        has_accounting = accounting(date[:4])
+        for ticker in TICKERS:
+            rows.append({"date": date, "region": "KR", "ticker": ticker,
+                         **{f: 1.0 for f in PRICE_FEATURES},
+                         **{f: (1.0 if has_accounting else np.nan) for f in ACCOUNTING_FEATURES}})
+    return pd.DataFrame(rows), prices
+
+
+def _forbid_outcomes(monkeypatch):
+    """Every function that reads a forward price, builds or consumes a label,
+    or calls the v4 observation-eligibility policy raises on touch."""
+    def boom(name):
+        def _raise(*a, **k):
+            raise OutcomeTouched(name)
+        return _raise
+    for module, name in ((E, "target_from_sessions"), (E, "attach_labels"), (E, "net_label"),
+                         (E, "evaluate_cell"), (M, "predict_cell"), (M, "fit_heads"),
+                         (ELIG, "label_eligibility"), (X, "attach_eligibility"),
+                         (X, "last_priced_session"), (X, "window_crosses_termination"),
+                         (X, "missingness_integrity_report")):
+        monkeypatch.setattr(module, name, boom(f"{module.__name__}.{name}"))
+
+
+def _run(frame, prices, **kw):
+    return CLI.run_from_features(frame, prices, runtime_spec=_runtime(), registry=_registry(),
+                                 completeness_map={}, terminated_codes=[], spec_hash="0" * 64, **kw)
+
+
+def test_A_B_C_coverage_failure_touches_no_outcome_and_no_eligibility(monkeypatch):
+    frame, prices = _synthetic("2016-01-01", "2016-12-31", accounting=lambda year: False)
+    _forbid_outcomes(monkeypatch)
+    result = _run(frame, prices, stop_before_labels=False)
+    assert result["status"] == "BLOCKED_BY_DATA_INTEGRITY"
+    assert result["stoppedBeforeLabels"] is True
+    assert {c["feature"] for c in result["detail"]["coverageFailures"]} == set(ACCOUNTING_FEATURES)
+    assert result["counts"] == {"targetFromSessionsCalls": 0, "labelEligibilityCalls": 0,
+                                "predictCellCalls": 0, "evaluateCellCalls": 0}
+
+
+def test_coverage_failure_blocks_even_without_the_stop_flag_and_before_the_identity_recheck(monkeypatch):
+    frame, prices = _synthetic("2016-01-01", "2016-12-31", accounting=lambda year: False)
+    _forbid_outcomes(monkeypatch)
+    hook_calls = []
+    result = _run(frame, prices, stop_before_labels=False, before_labels=lambda: hook_calls.append(1))
+    assert result["stoppedBeforeLabels"] is True and hook_calls == []
+
+
+def test_D_region_year_eligibility_runs_before_coverage_and_restricts_its_denominator(monkeypatch):
+    frame, prices = _synthetic("2016-01-01", "2021-12-31", unpriced_year="2019",
+                               accounting=lambda year: year != "2019")
+    order = []
+    real_eligibility, real_gates = V2CLI.eligibility, V2CLI.pre_label_gates
+
+    def eligibility(frame, spec):
+        order.append("eligibility")
+        return real_eligibility(frame, spec)
+
+    def gates(frame, registry, spec):
+        order.append("gates")
+        assert "eligibleRegionYear" in frame
+        return real_gates(frame, registry, spec)
+    monkeypatch.setattr(V2CLI, "eligibility", eligibility)
+    monkeypatch.setattr(V2CLI, "pre_label_gates", gates)
+    _forbid_outcomes(monkeypatch)
+    result = _run(frame, prices, stop_before_labels=True)
+    assert order == ["eligibility", "gates"]
+    by_year = {r["year"]: r for r in result["regionYearEligibility"]}
+    assert by_year["2019"]["eligible"] is False and by_year["2019"]["unvouchedPct"] > 20.0
+    assert all(by_year[y]["eligible"] for y in ("2016", "2017", "2018", "2020", "2021"))
+    # 2019's accounting is entirely missing, so the gate passes ONLY because
+    # 2019 is outside the eligible denominator, exactly as v2 specifies.
+    assert result["status"] == CLI.STOPPED_FOR_REVIEW
+    assert not any(c["year"] == "2019" for c in result["coverage"])
+
+
+def test_D_counterfactual_without_region_year_eligibility_the_same_frame_fails_coverage():
+    frame, prices = _synthetic("2016-01-01", "2021-12-31", unpriced_year="2019",
+                               accounting=lambda year: year != "2019")
+    guard = V2CLI.tradability_frame(prices, frame, "KR", 20)
+    merged = frame.merge(guard, on=["date", "region", "ticker"])
+    merged["eligibleRegionYear"] = True
+    with pytest.raises(V2CLI.PreLabelStop) as stop:
+        V2CLI.pre_label_gates(merged, _registry(), _runtime())
+    assert {c["year"] for c in stop.value.detail["coverageFailures"]} == {"2019"}
+
+
+def test_gates_passing_with_stop_before_labels_constructs_no_label(monkeypatch):
+    frame, prices = _synthetic("2016-01-01", "2021-12-31")
+    _forbid_outcomes(monkeypatch)
+    result = _run(frame, prices, stop_before_labels=True)
+    assert result["status"] == CLI.STOPPED_FOR_REVIEW and result["stoppedBeforeLabels"] is True
+    assert result["counts"]["targetFromSessionsCalls"] == 0
+
+
+def test_labels_come_strictly_after_gates_and_after_the_identity_recheck(monkeypatch):
+    frame, prices = _synthetic("2016-01-01", "2021-12-31")
+    order = []
+    monkeypatch.setattr(V2CLI, "pre_label_gates",
+                        lambda *a, _g=V2CLI.pre_label_gates: (order.append("gates"), _g(*a))[1])
+
+    def target(*a, **k):
+        order.append("target")
+        raise OutcomeTouched("target_from_sessions")
+    monkeypatch.setattr(E, "target_from_sessions", target)
+    with pytest.raises(OutcomeTouched):
+        _run(frame, prices, stop_before_labels=False, before_labels=lambda: order.append("recheck"))
+    assert order == ["gates", "recheck", "target"]
+
+
+def test_F_a_failing_identity_recheck_blocks_every_label(monkeypatch):
+    frame, prices = _synthetic("2016-01-01", "2021-12-31")
+    _forbid_outcomes(monkeypatch)
+
+    def changed():
+        raise ValueError("INPUT_IDENTITY_CHANGED_MID_RUN")
+    with pytest.raises(ValueError, match="INPUT_IDENTITY_CHANGED_MID_RUN"):
+        _run(frame, prices, stop_before_labels=False, before_labels=changed)
+
+
+# --------------------------------------------------------------------------- #
+# Input identity (F) and the moving-branch guard (E)
+# --------------------------------------------------------------------------- #
+def _fixture_inputs(root: Path):
+    files = {"ledger/fundamentals/kr/dart-2015.jsonl.gz": gzip.compress(b'{"a":1}\n', mtime=0),
+             "ledger/fundamentals/kr/shares.jsonl.gz": gzip.compress(b'{"s":1}\n', mtime=0),
+             "ledger/universe/kr/krx-universe-2013.jsonl.gz": gzip.compress(b'{"u":1}\n', mtime=0)}
+    for rel, data in files.items():
+        (root / rel).parent.mkdir(parents=True, exist_ok=True)
+        (root / rel).write_bytes(data)
+    body = {"replayVersion": "replay-v16", "components": {}}
+    manifest = {**body, "sha256": S1.digest(body)}
+    (root / X.REPLAY_MANIFEST).parent.mkdir(parents=True, exist_ok=True)
+    (root / X.REPLAY_MANIFEST).write_text(json.dumps(manifest))
+    rels = list(files) + [X.REPLAY_MANIFEST]
+    return {"signalHistoryCommit": "sealed", "replayManifestSha256": manifest["sha256"],
+            "gitBlobSha1": {rel: X.git_blob_sha1(root / rel) for rel in rels}}
+
+
+def test_F_unchanged_inputs_verify_and_bookkeeping_is_outside_the_identity(tmp_path):
+    sealed = _fixture_inputs(tmp_path)
+    (tmp_path / "ledger/fundamentals/kr/manifest.json").write_text("{}")
+    (tmp_path / "ledger/fundamentals/kr/absent.json").write_text("{}")
+    identity = X.verify_input_identity(sealed, tmp_path)
+    assert identity["gitBlobSha1"] == sealed["gitBlobSha1"]
+    assert identity["signalHistoryCommit"] is None
+
+
+@pytest.mark.parametrize("mutate,code", [
+    (lambda r: (r / "ledger/fundamentals/kr/dart-2015.jsonl.gz").write_bytes(b"x"), "INPUT_SNAPSHOT_CHANGED"),
+    (lambda r: (r / "ledger/fundamentals/kr/shares.jsonl.gz").unlink(), "INPUT_SNAPSHOT_CHANGED"),
+    (lambda r: (r / "ledger/universe/kr/krx-universe-2013.jsonl.gz").write_bytes(b"x"), "INPUT_SNAPSHOT_CHANGED"),
+    (lambda r: (r / "ledger/fundamentals/kr/dart-2099.jsonl.gz").write_bytes(b"x"), "UNSEALED_RAW_SHARD"),
+    (lambda r: (r / "ledger/universe/kr/krx-universe-2099.jsonl.gz").write_bytes(b"x"), "UNSEALED_RAW_SHARD"),
+    (lambda r: (r / X.REPLAY_MANIFEST).write_text("{}"), "INPUT_SNAPSHOT_CHANGED"),
+])
+def test_F_any_input_mutation_is_rejected(tmp_path, mutate, code):
+    sealed = _fixture_inputs(tmp_path)
+    mutate(tmp_path)
+    with pytest.raises(ValueError, match=code):
+        X.verify_input_identity(sealed, tmp_path)
+
+
+def test_F_manifest_digest_is_checked_against_the_sealed_value(tmp_path):
+    sealed = _fixture_inputs(tmp_path)
+    sealed = {**sealed, "replayManifestSha256": "0" * 64}
+    with pytest.raises(ValueError, match="REPLAY_MANIFEST_CHANGED"):
+        X.verify_input_identity(sealed, tmp_path)
+
+
+def test_F_identity_is_checked_before_any_row_is_read(tmp_path, monkeypatch):
+    def boom(*a, **k):
+        raise OutcomeTouched("data read before identity")
+    monkeypatch.setattr(SOURCES, "load_inputs", boom)
+    monkeypatch.setattr(X, "load_kr_raw", boom)
+    monkeypatch.setattr(X, "load_kr_memberships", boom)
+    v4 = S4.read_json(S4.DEFAULT_SPEC)
+    with pytest.raises(ValueError, match="INPUT_SNAPSHOT_CHANGED|REPLAY_MANIFEST"):
+        CLI.execute(v4, {}, S1.read_json(CLI.V3_SPEC), input_root=tmp_path,
+                    output=tmp_path / "out", stop_before_labels=True)
+
+
+def _git_repo(root: Path):
+    subprocess.run(["git", "init", "-q", str(root)], check=True)
+    for key, value in (("user.email", "t@t"), ("user.name", "t")):
+        subprocess.run(["git", "-C", str(root), "config", key, value], check=True)
+    subprocess.run(["git", "-C", str(root), "add", "-A"], check=True)
+    subprocess.run(["git", "-C", str(root), "commit", "-q", "-m", "x"], check=True)
+    return subprocess.check_output(["git", "-C", str(root), "rev-parse", "HEAD"], text=True).strip()
+
+
+def test_E_a_moved_checkout_cannot_pass_as_the_frozen_commit(tmp_path):
+    sealed = _fixture_inputs(tmp_path)
+    frozen = _git_repo(tmp_path)
+    assert X.verify_input_identity(sealed, tmp_path, expected_signal_history_sha=frozen)["signalHistoryCommit"] == frozen
+    (tmp_path / "ledger/fundamentals/kr/manifest.json").write_text("{}")  # bookkeeping only
+    subprocess.run(["git", "-C", str(tmp_path), "add", "-A"], check=True)
+    subprocess.run(["git", "-C", str(tmp_path), "commit", "-q", "-m", "branch moved"], check=True)
+    with pytest.raises(ValueError, match="SIGNAL_HISTORY_COMMIT_MISMATCH"):
+        X.verify_input_identity(sealed, tmp_path, expected_signal_history_sha=frozen)
+
+
+def test_E_workflow_never_checks_out_signal_history_by_branch_name():
+    workflow = yaml.safe_load((ROOT / ".github/workflows/alpha-opportunity-model-v4-execution.yml").read_text())
+    refs = {job: [s["with"]["ref"] for s in body["steps"]
+                  if s.get("uses", "").startswith("actions/checkout") and "ref" in s.get("with", {})]
+            for job, body in workflow["jobs"].items()}
+    assert refs["freeze"] == ["${{ env.SEALED_SIGNAL_HISTORY_COMMIT }}"]
+    assert refs["execute"] == ["${{ needs.freeze.outputs.signal_history_sha }}"]
+    assert workflow["env"]["SEALED_SIGNAL_HISTORY_COMMIT"] == \
+        S1.read_json(CLI.V3_SPEC)["futureExecutionInputs"]["signalHistoryCommit"]
+    run = next(s["run"] for s in workflow["jobs"]["execute"]["steps"] if "execute_alpha" in s.get("run", ""))
+    assert "--expected-signal-history-sha" in run and "--expected-input-identity-sha256" in run
+    assert "signal-history" not in json.dumps(refs)
+
+
+def test_sealed_input_identity_names_every_raw_file_the_harness_reads():
+    sealed = X.sealed_input_identity(S1.read_json(CLI.V3_SPEC))
+    blobs = sealed["gitBlobSha1"]
+    assert sealed["signalHistoryCommit"] == "4ea107ed0cde289f0a049a65ff13d2441a786710"
+    assert sealed["replayManifestSha256"] == "f0781292f508a123c234ded6d28aa8e84a0dc3cc29500e14989dc0b68f53b4d2"
+    assert {f"ledger/fundamentals/kr/dart-{y}.jsonl.gz" for y in range(2015, 2027)} <= set(blobs)
+    assert {f"ledger/universe/kr/krx-universe-{y}.jsonl.gz" for y in range(2013, 2027)} <= set(blobs)
+    assert "ledger/fundamentals/kr/shares.jsonl.gz" in blobs and X.REPLAY_MANIFEST in blobs
+    assert not any("/us/" in r or r.endswith("manifest.json") for r in blobs)
+    assert len(blobs) == 28
+
+
+# --------------------------------------------------------------------------- #
+# G -- every sealed spec and sidecar is byte-identical
+# --------------------------------------------------------------------------- #
+def test_G_sealed_specs_and_sidecars_are_unchanged():
+    expected = {"alpha-opportunity-model-v1": "e3c699b197fd558506d7157fa6dd8cdb91156faccd0e6e9547d21d5baa23dd6e",
+                "alpha-opportunity-model-v2": "97c3727b37eeab71e31ffee17a2f81cac29f0333552ff04a5374ef48484b0e19",
+                "alpha-opportunity-model-v3": "f6e11fafc2d46137d3f8385858c58d9991cb3809a2f811c368a81baf149fc3fe",
+                "alpha-opportunity-model-v4": "4db0a96267a8b0de41c445ac600a8064a760191abdd29d97600153a78cbab8e6"}
+    for study, sha in expected.items():
+        path = ROOT / "research_specs" / f"{study}.json"
+        assert S1.digest(S1.read_json(path)) == sha
+        assert path.with_suffix(".sha256").read_text().strip() == sha
+    S4.load_sealed(expected_hash=expected["alpha-opportunity-model-v4"])
+    CLI.S2.load_sealed(ROOT / "research_specs/alpha-opportunity-model-v2.json",
+                       expected_hash=expected["alpha-opportunity-model-v2"])

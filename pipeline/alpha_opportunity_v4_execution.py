@@ -39,18 +39,25 @@ invention of a new number.
 """
 from __future__ import annotations
 
+import fnmatch
+import hashlib
+import json
 from pathlib import Path
+import subprocess
 
 import numpy as np
 import pandas as pd
 
 from . import alpha_opportunity_v4_eligibility as ELIG
 from . import historical_store as HS
-from . import replay_calendar as RC
 from .alpha_opportunity_features import accounting_at, price_attention_at
+from .alpha_opportunity_spec import digest
 from .regional_alpha_features import BENCHMARKS, MembershipSnapshots, weekly_grid
 
-CONTRACT = "ALPHA_OPPORTUNITY_V4_KR_EXECUTION_HARNESS_V1"
+# V2: pre-label gates now run before any label exists (the V1 harness built
+# labels and called label_eligibility first -- see the execution report's
+# correction section); raw inputs are verified against the sealed identity.
+CONTRACT = "ALPHA_OPPORTUNITY_V4_KR_EXECUTION_HARNESS_V2"
 KR_BENCHMARK = BENCHMARKS["KR"]
 
 
@@ -118,32 +125,90 @@ def build_kr_matrix(prices, kr_memberships, raw, shares, *, start, through):
     return frame.sort_values(["date", "ticker"]).reset_index(drop=True)
 
 
-def tradability_frame_kr(prices, frame, window):
-    """PIT tradability + vouched flags per (date, ticker), KR only. Never
-    reads past a date. Mirrors `scripts/run_alpha_opportunity_model_v2.py`'s
-    own `tradability_frame`, restricted to one region."""
-    days = RC.sessions("2012-01-01", str(pd.to_datetime(frame.date).max().date()), "KR")
-    out = []
-    for ticker, group in frame.groupby("ticker"):
-        f = prices.get(ticker)
-        dates = pd.to_datetime(group.date)
-        if f is None or "Close" not in f or "Volume" not in f:
-            out.append(pd.DataFrame({"date": group.date, "ticker": ticker, "vouched": False,
-                                     "tradable": False, "tradabilityReason": "NO_SEALED_PRICE_PANEL"}))
-            continue
-        panel = f.reindex(days)
-        close = pd.to_numeric(panel.Close, errors="coerce")
-        volume = pd.to_numeric(panel.Volume, errors="coerce")
-        good_close = (close > 0) & np.isfinite(close)
-        good = good_close & (volume > 0) & np.isfinite(volume)
-        full = good.astype(int).rolling(window, min_periods=window).sum().eq(window)
-        vouched = good_close.reindex(dates, fill_value=False).to_numpy(bool)
-        tradable = full.reindex(dates, fill_value=False).to_numpy(bool)
-        reason = np.where(tradable, "TRADABLE",
-                          np.where(vouched, "NOT_CONTINUOUSLY_TRADED_IN_WINDOW", "NO_SIGNAL_DATE_PRICE"))
-        out.append(pd.DataFrame({"date": group.date.to_numpy(), "ticker": ticker,
-                                 "vouched": vouched, "tradable": tradable, "tradabilityReason": reason}))
-    return pd.concat(out, ignore_index=True).assign(region="KR")
+# --------------------------------------------------------------------------- #
+# Raw input identity. The replay-v16 manifest content-addresses the price,
+# benchmark and corporate-event objects (`InputStore._read` re-hashes every
+# object against its manifest ref), but it does NOT cover the raw
+# `ledger/fundamentals/kr` and `ledger/universe/kr` shards this harness reads
+# directly -- those live beside the replay store, not inside it. Their sealed
+# identity is the git-blob list `alpha-opportunity-model-v3`'s own
+# `futureExecutionInputs` recorded at signal-history commit 4ea107ed (the same
+# list, file for file, as v2's sealed `inputFiles`); v3's JSON is one of v4's
+# own hash-pinned `sealedDataInputs`, so reading it here invents nothing.
+# Collector bookkeeping v3 names as unread (`fundamentals/kr/manifest.json`,
+# `absent.json`, `krx-universe-done.json`) is outside the read patterns and so
+# outside the identity, exactly as v3's `excludedAdjacent` states.
+# --------------------------------------------------------------------------- #
+REPLAY_MANIFEST = "ledger/historical/replay-v16/inputs.json"
+KR_READ_PATTERNS = (("ledger/fundamentals/kr", "dart-*.jsonl.gz"),
+                    ("ledger/fundamentals/kr", "shares.jsonl.gz"),
+                    ("ledger/universe/kr", "krx-universe-*.jsonl.gz"))
+
+
+def _read_by_harness(rel: str) -> bool:
+    return rel == REPLAY_MANIFEST or any(
+        fnmatch.fnmatchcase(rel, f"{folder}/{pattern}") for folder, pattern in KR_READ_PATTERNS)
+
+
+def sealed_input_identity(v3_spec: dict) -> dict:
+    """The sealed identity of every raw file this harness reads."""
+    future = v3_spec["futureExecutionInputs"]
+    blobs = {rel: sha for rel, sha in future["gitBlobSha1"].items() if _read_by_harness(rel)}
+    if REPLAY_MANIFEST not in blobs or not any("fundamentals/kr/dart-" in r for r in blobs):
+        raise ValueError("SEALED_INPUT_IDENTITY_INCOMPLETE")
+    return {"signalHistoryCommit": future["signalHistoryCommit"],
+            "replayManifestSha256": future["replayManifestSha256"], "gitBlobSha1": blobs}
+
+
+def git_blob_sha1(path) -> str:
+    data = Path(path).read_bytes()
+    return hashlib.sha1(b"blob " + str(len(data)).encode() + b"\0" + data).hexdigest()
+
+
+def signal_history_commit(input_root) -> str | None:
+    """The commit the input checkout is actually at, or None if it is not a
+    git checkout (a synthetic fixture). Recorded, never trusted alone: the
+    blob identity below is what proves the bytes."""
+    try:
+        out = subprocess.run(["git", "-C", str(input_root), "rev-parse", "HEAD"],
+                             capture_output=True, text=True, check=True)
+    except (OSError, subprocess.CalledProcessError):
+        return None
+    return out.stdout.strip() or None
+
+
+def verify_input_identity(sealed: dict, input_root, *, expected_signal_history_sha=None) -> dict:
+    """Byte-level proof the checkout is the sealed snapshot. Reads no row.
+
+    Raises `INPUT_SNAPSHOT_CHANGED` on any sealed file missing or differing,
+    `UNSEALED_RAW_SHARD` on any file the harness WOULD read that the sealed
+    list does not name, `REPLAY_MANIFEST_CHANGED` on a manifest digest
+    mismatch, and `SIGNAL_HISTORY_COMMIT_MISMATCH` when an expected commit
+    (the freeze job's) is given and the checkout is elsewhere.
+    """
+    root = Path(input_root)
+    commit = signal_history_commit(root)
+    if expected_signal_history_sha is not None and commit != expected_signal_history_sha:
+        raise ValueError(f"SIGNAL_HISTORY_COMMIT_MISMATCH: expected {expected_signal_history_sha}, got {commit}")
+    for rel, sha in sorted(sealed["gitBlobSha1"].items()):
+        path = root / rel
+        if not path.is_file() or git_blob_sha1(path) != sha:
+            raise ValueError("INPUT_SNAPSHOT_CHANGED: " + rel)
+    for folder, pattern in KR_READ_PATTERNS:
+        for path in sorted((root / folder).glob(pattern)):
+            rel = str(path.relative_to(root))
+            if rel not in sealed["gitBlobSha1"]:
+                raise ValueError("UNSEALED_RAW_SHARD: " + rel)
+    manifest = json.loads((root / REPLAY_MANIFEST).read_text())
+    got = digest({k: v for k, v in manifest.items() if k != "sha256"})
+    if not got == manifest.get("sha256") == sealed["replayManifestSha256"]:
+        raise ValueError("REPLAY_MANIFEST_CHANGED: " + got)
+    identity = {"sealedSignalHistoryCommit": sealed["signalHistoryCommit"],
+                "signalHistoryCommit": commit, "replayManifestSha256": got,
+                "gitBlobSha1": dict(sorted(sealed["gitBlobSha1"].items()))}
+    identity["inputIdentitySha256"] = digest(identity["gitBlobSha1"] | {
+        "__replayManifestSha256__": got})
+    return identity
 
 
 # --------------------------------------------------------------------------- #
