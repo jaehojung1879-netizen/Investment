@@ -1828,6 +1828,76 @@
   design, new KR fundamentals input and canonicalization contract). v5 is
   not built here.
 
+## KR original-fiscal-2015-XBRL invariants (v2.34)
+
+- A "NOT ANSWERABLE FROM THIS ENVIRONMENT" CLAIM IS CORRECTED WITH A REAL
+  RUN, THE SAME DISCIPLINE `alpha-research-foundation-v2` (v2.24) AND
+  `kr-terminal-action-reconstruction-v2` (v2.29) ALREADY ESTABLISHED. v2.33's
+  own text said whether original 2015 filings exist was "not answered from
+  this environment." GitHub Actions run
+  `36300578100` (2026-09-27, `data/kr-accounting-coverage-repair-v1` at
+  `4965599c`, `target: raw-probe-2015`, a real `DART_API_KEY`) answered it:
+  artifact `dart-fiscal-2015-probe`, sha256
+  `af7e3b58086b1004af59bdbf978d4e19e9a150fd212d51a639f3512a9a885c2e`, 64
+  calls, 8 tickers. `fnlttSinglAcntAll` answered 013/013 on 24 of 24 real
+  attempts (reconfirming, not merely re-asserting, v2.33's mechanism).
+  `list.json` listed the original fiscal-2015 Q1/H1/Q3 filings with real
+  receipt numbers for all 8, including a genuine original-vs-amendment pair
+  (`000030.KS` Q1: original receipt `20150515002248`, amendment
+  `[기재정정]`, receipt `20150529001078`). `fnlttXbrl.xml` served a real ZIP
+  (`PK` signature, 85-170 KB) for 6 of 8 sampled 2015 Q3 packages and DART's
+  own `<result><status>014</status><message>파일이 존재하지 않습니다.
+  </message></result>` (147 bytes) for the other 2. The workflow's own step
+  list confirms `Collect a slice`/`Rebuild canonical`/`Commit & push` all
+  ran `conclusion: skipped` -- nothing was written to `signal-history`.
+- TWO ENDPOINTS, TWO DEPTHS, NEVER ONE VERDICT ABOUT "DART". Fiscal-2015
+  quarterlies are `PRIMARY_SOURCE_DOES_NOT_SUPPLY_REQUIRED_HISTORY` for
+  `fnlttSinglAcntAll` specifically, confirmed live rather than inferred from
+  the sealed store's own recorded (and, per v2.33's own finding, partly
+  invented) statuses. The original filing archive
+  (`list.json` + `fnlttXbrl.xml`) is a DIFFERENT route with different
+  depth, and it recovers most, not all, of the sample.
+- AN ENVELOPE CONFIRMED LIVE IS NOT THE SAME PROMISE AS CONTENT CONFIRMED
+  LIVE, AND THE TWO ARE NEVER BLURRED. The probe recorded only a served
+  package's first two bytes and total size, never its contents --
+  `DART_API_KEY` is absent from this development environment and
+  `opendart.fss.or.kr` stays blocked from this sandbox's egress (unchanged
+  from v2.28). `pipeline/dart_xbrl_statements.py`'s account-extraction logic
+  has NEVER run against a real served ZIP in this session. It carries
+  `endpointConfidence: CANDIDATE_UNCONFIRMED` on every record it builds --
+  the same tier `alotMatter.json` carried before ITS OWN live probe
+  (workflow-hygiene invariants, v2.25) -- built from general XBRL/K-IFRS
+  convention plus element identifiers this repository has ALREADY confirmed
+  live via the JSON statement endpoint's own `account_id` field, tested
+  only against synthetic fixtures, never claimed as verified.
+- AN ORIGINAL FILING IS SELECTED BY WHAT `list.json` ITSELF SAYS, NEVER BY
+  PICKING THE LATEST RECEIPT. `dart_xbrl_originals.select_original_filing`
+  matches a stage's own stated report label and period, then keeps only the
+  row WITHOUT the `[기재정정]` amendment marker; more than one such row is
+  `AMBIGUOUS_REPORT_MATCH`, refused rather than resolved by any tiebreak. A
+  stage whose only listed filing is an amendment is
+  `ORIGINAL_NOT_LISTED_ONLY_AMENDMENT`, never silently upgraded to "original
+  available."
+- THE CONTEXT WINDOW DECIDES THE COLUMN, THE SAME RULE `dart_derive.
+  cumulative_amount` ALREADY USES, NEVER A SECOND ONE INVENTED FOR XBRL. A
+  flow account is read only from a DURATION context running from the fiscal
+  year's own start to the filing's period end -- the cumulative reading --
+  stored under exactly the amount field name `dart_derive` already reads
+  for that statement (`thstrm_add_amount` for net income's CIS branch,
+  `thstrm_amount` for cash flow's single-column branch). A same-named
+  concept's standalone-quarter duration context is never even considered a
+  candidate, so it cannot silently win a tiebreak; two facts surviving the
+  cumulative-window filter with disagreeing values is `AMBIGUOUS`,
+  proved end to end by a test that reconstructs a 2016 Q3 TTM roll-forward
+  through the unmodified sealed `dart_derive.trailing_twelve_months` using
+  an XBRL-derived 2015 record as its missing same-stage prior.
+- NEITHER THE 20% GATE NOR ANY COVERAGE NUMBER HAS MOVED YET. Only
+  `raw-probe-2015` has run against the live API; `raw-xbrl-2015` (the real
+  collector) and `raw-statements` (whose fiscal-2015 work list is now
+  annual-report-only, since quarterlies there are confirmed wasteful) have
+  not. Every 2016/2025 coverage figure in this document is still the
+  pre-repair measurement or an upper bound, never an "after" result.
+
 ## Lint gate invariants (v2.11)
 
 - The enabled rule set reports ZERO findings on `main`. A rule is turned on in the

@@ -490,9 +490,425 @@ def test_raw_collection_job_is_dispatch_only_and_never_writes_the_sealed_store()
     assert "SEALED_SIGNAL_HISTORY_COMMIT: 4ea107ed0cde289f0a049a65ff13d2441a786710" in job
     assert "--universe-dir sealed-work/ledger/universe/kr" in job
     assert "git add ledger/fundamentals/kr-raw ledger/fundamentals/kr-canonical-v2" in job
+    assert "ledger/fundamentals/kr-xbrl-original ledger/fundamentals/kr-candidate-merged" in job
     assert "git add ledger/fundamentals\n" not in job and "git add ledger/fundamentals/kr\n" not in job
     assert "name: dart-fiscal-2015-probe" in job and "probe-2015.json" in job
+    assert "raw-xbrl-2015" in job
+    assert "collect_dart_xbrl_originals.py" in job and "merge_kr_candidate_snapshot.py" in job
     # Every step that tees a collector or audit keeps its exit status.
     for step in job.split("      - name: ")[1:]:
         if "| tee" in step:
             assert "set -o pipefail" in step, step.splitlines()[0]
+
+
+# --------------------------------------------------------------------------- #
+# Original-XBRL discovery/classification, pinned to the LIVE probe evidence
+# (GitHub Actions run 36300578100, 2026-09-27, artifact dart-fiscal-2015-probe,
+# sha256 af7e3b58086b1004af59bdbf978d4e19e9a150fd212d51a639f3512a9a885c2e).
+# --------------------------------------------------------------------------- #
+from pipeline import dart_xbrl_originals as XO
+from pipeline import dart_xbrl_statements as XS
+from scripts import collect_dart_xbrl_originals as XCOLLECT
+from scripts import merge_kr_candidate_snapshot as MERGE
+
+REAL_014_BODY = ('<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'
+                 '<result><status>014</status><message>파일이 존재하지 않습니다.</message></result>'
+                 ).encode("utf-8")
+# 000030.KS's real periodicReports, exactly as the live probe recorded them.
+REAL_PERIODIC_000030 = [
+    {"rceptNo": "20160516002505", "rceptDt": "20160516", "reportNm": "분기보고서 (2016.03)"},
+    {"rceptNo": "20160330004090", "rceptDt": "20160330", "reportNm": "사업보고서 (2015.12)"},
+    {"rceptNo": "20151116001418", "rceptDt": "20151116", "reportNm": "분기보고서 (2015.09)"},
+    {"rceptNo": "20150817001343", "rceptDt": "20150817", "reportNm": "반기보고서 (2015.06)"},
+    {"rceptNo": "20150529001078", "rceptDt": "20150529", "reportNm": "[기재정정]분기보고서 (2015.03)"},
+    {"rceptNo": "20150529001060", "rceptDt": "20150529", "reportNm": "[기재정정]사업보고서 (2014.12)"},
+    {"rceptNo": "20150515002248", "rceptDt": "20150515", "reportNm": "분기보고서 (2015.03)"},
+    {"rceptNo": "20150331004293", "rceptDt": "20150331", "reportNm": "사업보고서 (2014.12)"},
+]
+
+
+def test_real_014_error_envelope_is_parsed_and_classified():
+    assert XO.parse_error_envelope(REAL_014_BODY) == {
+        "status": "014", "message": "파일이 존재하지 않습니다."}
+    classification, envelope = XO.classify_xbrl_response(REAL_014_BODY)
+    assert classification == XO.FILE_NOT_AVAILABLE_014 and envelope["status"] == "014"
+
+
+def test_real_zip_signature_is_classified_served():
+    classification, envelope = XO.classify_xbrl_response(b"PK\x03\x04rest-of-a-real-zip")
+    assert classification == XO.XBRL_ZIP_SERVED and envelope is None
+
+
+def test_select_original_filing_reproduces_the_real_000030_case():
+    row, selection = XO.select_original_filing(REAL_PERIODIC_000030, "11014")
+    assert selection == XO.ORIGINAL_LISTED and row["rceptNo"] == "20151116001418"
+    row, selection = XO.select_original_filing(REAL_PERIODIC_000030, "11012")
+    assert selection == XO.ORIGINAL_LISTED and row["rceptNo"] == "20150817001343"
+    # Q1 has BOTH an original and its amendment listed; the amendment is
+    # never picked, even though it is the later, "more current" receipt.
+    row, selection = XO.select_original_filing(REAL_PERIODIC_000030, "11013")
+    assert selection == XO.ORIGINAL_LISTED and row["rceptNo"] == "20150515002248"
+
+
+def test_a_stage_with_only_an_amended_filing_is_its_own_state():
+    only_amended = [{"rceptNo": "1", "rceptDt": "20150529", "reportNm": "[기재정정]분기보고서 (2015.03)"}]
+    row, selection = XO.select_original_filing(only_amended, "11013")
+    assert row is None and selection == XO.ORIGINAL_NOT_LISTED_ONLY_AMENDMENT
+
+
+def test_no_matching_stage_is_no_original_filing_index():
+    row, selection = XO.select_original_filing([], "11013")
+    assert row is None and selection == XO.NO_ORIGINAL_FILING_INDEX
+
+
+def test_two_disagreeing_originals_for_one_stage_are_ambiguous():
+    dup = [{"rceptNo": "1", "rceptDt": "20150515", "reportNm": "분기보고서 (2015.03)"},
+           {"rceptNo": "2", "rceptDt": "20150516", "reportNm": "분기보고서 (2015.03)"}]
+    row, selection = XO.select_original_filing(dup, "11013")
+    assert row is None and selection == XO.AMBIGUOUS_REPORT_MATCH
+
+
+# --------------------------------------------------------------------------- #
+# XBRL parsing: exact local name, cumulative-window-only, never synthesised
+# --------------------------------------------------------------------------- #
+def _instance_zip(facts_and_contexts: str) -> bytes:
+    import io
+    import zipfile
+    xml = ('<?xml version="1.0" encoding="UTF-8"?>'
+           '<xbrl xmlns:ifrs-full="http://xbrl.ifrs.org/taxonomy/2015-03-11/ifrs-full" '
+           'xmlns:ifrs="http://xbrl.ifrs.org/taxonomy/2015-03-11/ifrs" '
+           'xmlns:xbrli="http://www.xbrl.org/2003/instance">' + facts_and_contexts + '</xbrl>')
+    buf = io.BytesIO()
+    with zipfile.ZipFile(buf, "w") as z:
+        z.writestr("instance.xbrl", xml)
+    return buf.getvalue()
+
+
+STANDARD_CONTEXTS = (
+    '<xbrli:context id="I"><xbrli:period><xbrli:instant>2015-09-30</xbrli:instant></xbrli:period></xbrli:context>'
+    '<xbrli:context id="YTD"><xbrli:period><xbrli:startDate>2015-01-01</xbrli:startDate>'
+    '<xbrli:endDate>2015-09-30</xbrli:endDate></xbrli:period></xbrli:context>'
+    '<xbrli:context id="Qonly"><xbrli:period><xbrli:startDate>2015-07-01</xbrli:startDate>'
+    '<xbrli:endDate>2015-09-30</xbrli:endDate></xbrli:period></xbrli:context>'
+)
+
+
+def test_target_local_names_derived_from_the_shared_element_rules():
+    assert XS.TARGET_LOCAL_NAMES["당기순이익"] == frozenset({"ProfitLoss"})
+    assert XS.TARGET_LOCAL_NAMES["영업활동현금흐름"] == frozenset(
+        {"CashFlowsFromUsedInOperatingActivities"})
+    assert "ProfitLossAttributableToOwnersOfParent" not in XS.ALL_TARGET_LOCAL_NAMES
+
+
+def test_resolve_account_prefers_the_cumulative_window_over_a_standalone_quarter():
+    zip_bytes = _instance_zip(
+        STANDARD_CONTEXTS +
+        '<ifrs-full:ProfitLoss contextRef="YTD" unitRef="KRW">50000</ifrs-full:ProfitLoss>'
+        '<ifrs-full:ProfitLoss contextRef="Qonly" unitRef="KRW">15000</ifrs-full:ProfitLoss>')
+    entries, _ = XS.unzip_entries(zip_bytes)
+    value, how = XS.resolve_account(entries, "당기순이익", fiscal_year_start="2015-01-01",
+                                    period_end="2015-09-30")
+    assert value == "50000" and how["status"] == XS.RESOLVED
+
+
+def test_resolve_account_is_ambiguous_when_two_cumulative_facts_disagree():
+    zip_bytes = _instance_zip(
+        STANDARD_CONTEXTS +
+        '<ifrs-full:ProfitLoss contextRef="YTD" unitRef="KRW">50000</ifrs-full:ProfitLoss>'
+        '<ifrs:ProfitLoss contextRef="YTD" unitRef="KRW">51000</ifrs:ProfitLoss>')
+    entries, _ = XS.unzip_entries(zip_bytes)
+    value, how = XS.resolve_account(entries, "당기순이익", fiscal_year_start="2015-01-01",
+                                    period_end="2015-09-30")
+    assert value is None and how["status"] == XS.AMBIGUOUS
+
+
+def test_resolve_account_not_found_when_no_context_matches():
+    zip_bytes = _instance_zip(STANDARD_CONTEXTS)
+    entries, _ = XS.unzip_entries(zip_bytes)
+    value, how = XS.resolve_account(entries, "자산총계", fiscal_year_start="2015-01-01",
+                                    period_end="2015-09-30")
+    assert value is None and how["status"] == XS.NOT_FOUND
+
+
+def test_attributable_to_parent_profit_is_never_matched_to_net_income():
+    zip_bytes = _instance_zip(
+        STANDARD_CONTEXTS +
+        '<ifrs-full:ProfitLossAttributableToOwnersOfParent contextRef="YTD" unitRef="KRW">'
+        '99999</ifrs-full:ProfitLossAttributableToOwnersOfParent>')
+    entries, _ = XS.unzip_entries(zip_bytes)
+    value, how = XS.resolve_account(entries, "당기순이익", fiscal_year_start="2015-01-01",
+                                    period_end="2015-09-30")
+    assert value is None and how["status"] == XS.NOT_FOUND
+
+
+def test_current_assets_is_never_matched_to_total_assets():
+    zip_bytes = _instance_zip(
+        STANDARD_CONTEXTS +
+        '<ifrs-full:CurrentAssets contextRef="I" unitRef="KRW">1</ifrs-full:CurrentAssets>')
+    entries, _ = XS.unzip_entries(zip_bytes)
+    value, how = XS.resolve_account(entries, "자산총계", fiscal_year_start="2015-01-01",
+                                    period_end="2015-09-30")
+    assert value is None and how["status"] == XS.NOT_FOUND
+
+
+def test_unparseable_zip_entry_leaves_every_account_unavailable():
+    import io
+    import zipfile
+    buf = io.BytesIO()
+    with zipfile.ZipFile(buf, "w") as z:
+        z.writestr("instance.xbrl", b"not xml at all {{{")
+    entries, _ = XS.unzip_entries(buf.getvalue())
+    value, how = XS.resolve_account(entries, "자산총계", fiscal_year_start="2015-01-01",
+                                    period_end="2015-09-30")
+    assert value is None and how["status"] == XS.NO_PARSEABLE_XML_ENTRY
+
+
+def test_a_bad_zip_is_reported_not_silently_empty():
+    entries, error = XS.unzip_entries(b"not a zip")
+    assert entries == [] and error
+
+
+FULL_XBRL_ZIP = _instance_zip(
+    STANDARD_CONTEXTS +
+    '<ifrs-full:Assets contextRef="I" unitRef="KRW">1000000</ifrs-full:Assets>'
+    '<ifrs-full:Liabilities contextRef="I" unitRef="KRW">400000</ifrs-full:Liabilities>'
+    '<ifrs-full:ProfitLoss contextRef="YTD" unitRef="KRW">50000</ifrs-full:ProfitLoss>'
+    '<ifrs-full:CashFlowsFromUsedInOperatingActivities contextRef="YTD" unitRef="KRW">'
+    '70000</ifrs-full:CashFlowsFromUsedInOperatingActivities>')
+
+
+def test_canonical_record_from_xbrl_carries_candidate_unconfirmed_and_original_receipt():
+    entries, _ = XS.unzip_entries(FULL_XBRL_ZIP)
+    record, provenance = XS.canonical_record_from_xbrl(
+        ticker="000080.KS", stock_code="000080", corp_code="00126380", fiscal_year=2015,
+        report_code="11014", entries=entries, original_receipt_no="20151113000033",
+        original_receipt_date="2015-11-13", zip_sha256="deadbeef", collected_at="x")
+    assert record["id"] == "000080.KS:2015:11014"
+    assert record["availableFrom"] == "2015-11-13" and record["receiptNos"] == ["20151113000033"]
+    assert record["canonicalization"]["endpointConfidence"] == "CANDIDATE_UNCONFIRMED"
+    assert all(v["status"] == XS.RESOLVED for v in provenance.values())
+
+
+def test_xbrl_record_actually_serves_as_the_missing_prior_same_filing_for_2016_ttm():
+    """The whole point: a 2016 Q3 net-income/OCF roll-forward needs a fiscal-2015
+    Q3 prior filing on the SAME report code. Prove the XBRL-derived record
+    supplies it, read by the unmodified sealed `dart_derive`."""
+    entries, _ = XS.unzip_entries(FULL_XBRL_ZIP)
+    record_2015, _ = XS.canonical_record_from_xbrl(
+        ticker="000080.KS", stock_code="000080", corp_code="00126380", fiscal_year=2015,
+        report_code="11014", entries=entries, original_receipt_no="20151113000033",
+        original_receipt_date="2015-11-13", zip_sha256="x", collected_at="x")
+    # trailing_twelve_months(2016, Q3) needs (2015, ANNUAL) and (2015, Q3) --
+    # the latter is exactly the filing `record_2015` (from XBRL) supplies.
+    prior_annual_2015 = _legacy("000080.KS", 2015, "11011", {"당기순이익": ("CIS", 100000, None),
+                                                             "영업활동현금흐름": ("CF", 150000, None)},
+                                "2016-03-20")
+    current = _legacy("000080.KS", 2016, "11014", {"당기순이익": ("CIS", 20000, 60000),
+                                                    "영업활동현금흐름": ("CF", 90000, None)},
+                      "2016-11-13")
+    by_key = DD.index_filings([prior_annual_2015, record_2015, current])
+    ni, ni_basis = DD.trailing_twelve_months(by_key, 2016, "11014", "당기순이익")
+    ocf, ocf_basis = DD.trailing_twelve_months(by_key, 2016, "11014", "영업활동현금흐름")
+    # TTM = FY2015(100000) - cum2015Q3(50000, from record_2015) + cum2016Q3(60000)
+    assert ni == pytest.approx(100000 - 50000 + 60000) and ni_basis == DD.BASIS_ROLLFORWARD
+    # TTM = FY2015(150000) - cum2015Q3(70000, from record_2015) + cum2016Q3(90000)
+    assert ocf == pytest.approx(150000 - 70000 + 90000) and ocf_basis == DD.BASIS_ROLLFORWARD
+
+
+# --------------------------------------------------------------------------- #
+# The real collector: append-only, budget-checked, every classification kept
+# --------------------------------------------------------------------------- #
+def _scripted_list_and_xbrl(monkeypatch, list_answer, xbrl_answer):
+    calls = {"list": 0, "xbrl": 0}
+
+    def fake_call_json(path, params):
+        if path == "list.json":
+            calls["list"] += 1
+            return list_answer(params)
+        raise AssertionError(path)
+    def fake_http(path, params, timeout=40):
+        if path == "fnlttXbrl.xml":
+            calls["xbrl"] += 1
+            return xbrl_answer(params)
+        raise AssertionError(path)
+    monkeypatch.setattr(COLLECT, "call_json", fake_call_json)
+    monkeypatch.setattr(COLLECT, "http", fake_http)
+    monkeypatch.setattr(COLLECT, "PACE_SECONDS", 0)
+    return calls
+
+
+ONE_TICKER_UNIVERSE_DIRECTORY = [{"corpCode": "00126380", "corpName": "회사", "stockCode": "000080"}]
+
+
+def _one_ticker_universe(tmp_path):
+    udir = tmp_path / "u"
+    HS.write_shard(udir / "krx-universe-2025.jsonl.gz", [
+        {"id": "u1", "date": "2025-01-02", "ticker": "000080.KS", "name": "회사", "rank": 1}])
+    return COLLECT.pit_universe(udir)
+
+
+def test_xbrl_collector_stores_served_zips_and_every_other_classification(tmp_path, monkeypatch):
+    def list_answer(p):
+        return {"status": "000", "list": [
+            {"rcept_no": "Q3ORIG", "rcept_dt": "20151113", "report_nm": "분기보고서 (2015.09)"},
+            {"rcept_no": "H1ORIG", "rcept_dt": "20150817", "report_nm": "반기보고서 (2015.06)"},
+            {"rcept_no": "Q1AMEND", "rcept_dt": "20150515", "report_nm": "[기재정정]분기보고서 (2015.03)"}],
+                "page_no": 1, "page_count": 100, "total_count": 3, "total_page": 1}
+    def xbrl_answer(p):
+        if p["reprt_code"] == "11014":
+            return FULL_XBRL_ZIP
+        return REAL_014_BODY
+    calls = _scripted_list_and_xbrl(monkeypatch, list_answer, xbrl_answer)
+    manifest = XCOLLECT.collect(tmp_path / "store", "k", _one_ticker_universe(tmp_path),
+                               COLLECT.Budget(1000, 10), directory_fn=lambda _: ONE_TICKER_UNIVERSE_DIRECTORY)
+    assert manifest["classifications"] == {
+        XO.XBRL_ZIP_SERVED: 1, XO.FILE_NOT_AVAILABLE_014: 1,
+        XO.ORIGINAL_NOT_LISTED_ONLY_AMENDMENT: 1}
+    assert manifest["recordsStored"] == 1 and manifest["datasetComplete"]
+    stored = HS.read_jsonl(tmp_path / "store/dart-xbrl-2015.jsonl.gz")
+    assert len(stored) == 1 and stored[0]["id"] == "000080.KS:2015:11014"
+    assert stored[0]["canonicalization"]["endpointConfidence"] == "CANDIDATE_UNCONFIRMED"
+    # Second run: every stage already checked, nothing re-fetched.
+    calls["list"] = calls["xbrl"] = 0
+    XCOLLECT.collect(tmp_path / "store", "k", _one_ticker_universe(tmp_path), COLLECT.Budget(1000, 10),
+                     directory_fn=lambda _: ONE_TICKER_UNIVERSE_DIRECTORY)
+    assert calls == {"list": 0, "xbrl": 0}
+
+
+def test_xbrl_collector_never_selects_an_amendment_as_original(tmp_path, monkeypatch):
+    def list_answer(p):
+        return {"status": "000", "list": [
+            {"rcept_no": "ORIGINAL", "rcept_dt": "20150515", "report_nm": "분기보고서 (2015.03)"},
+            {"rcept_no": "AMENDMENT", "rcept_dt": "20150529", "report_nm": "[기재정정]분기보고서 (2015.03)"}],
+                "page_no": 1, "page_count": 100, "total_count": 2, "total_page": 1}
+    seen_receipts = []
+    def xbrl_answer(p):
+        seen_receipts.append(p["rcept_no"])
+        return REAL_014_BODY
+    _scripted_list_and_xbrl(monkeypatch, list_answer, xbrl_answer)
+    XCOLLECT.collect(tmp_path / "store", "k", _one_ticker_universe(tmp_path), COLLECT.Budget(1000, 10),
+                     directory_fn=lambda _: ONE_TICKER_UNIVERSE_DIRECTORY)
+    # Only Q1 has any filing on record (H1/Q3 have none) -- one fetch, the
+    # ORIGINAL receipt, never the amendment.
+    assert seen_receipts == ["ORIGINAL"]
+
+
+def test_xbrl_collector_call_budget_leaves_a_stage_unresolved_not_settled(tmp_path, monkeypatch):
+    def list_answer(p):
+        return {"status": "000", "list": [], "page_no": 1, "page_count": 100,
+                "total_count": 0, "total_page": 0}
+    _scripted_list_and_xbrl(monkeypatch, list_answer, lambda p: REAL_014_BODY)
+    manifest = XCOLLECT.collect(tmp_path / "store", "k", _one_ticker_universe(tmp_path),
+                               COLLECT.Budget(1, 10), directory_fn=lambda _: ONE_TICKER_UNIVERSE_DIRECTORY)
+    assert manifest["thisRun"]["stopReason"] == "CALL_BUDGET_SPENT"
+    assert not manifest["datasetComplete"] and manifest["checked"] < 3
+
+
+def test_xbrl_collector_dump_dir_writes_the_raw_zip_and_never_commits_it(tmp_path, monkeypatch):
+    def list_answer(p):
+        return {"status": "000", "list": [
+            {"rcept_no": "R", "rcept_dt": "20151113", "report_nm": "분기보고서 (2015.09)"}],
+                "page_no": 1, "page_count": 100, "total_count": 1, "total_page": 1}
+    _scripted_list_and_xbrl(monkeypatch, list_answer, lambda p: FULL_XBRL_ZIP)
+    dump = tmp_path / "dump"
+    XCOLLECT.collect(tmp_path / "store", "k", _one_ticker_universe(tmp_path), COLLECT.Budget(1000, 10),
+                     directory_fn=lambda _: ONE_TICKER_UNIVERSE_DIRECTORY, dump_dir=dump)
+    written = list(dump.glob("*.zip"))
+    assert len(written) == 1 and written[0].read_bytes() == FULL_XBRL_ZIP
+
+
+# --------------------------------------------------------------------------- #
+# Expanded (all-stage) probe -- read-only, two endpoints, uses the real evidence
+# --------------------------------------------------------------------------- #
+def test_expanded_probe_reports_all_three_stages_for_both_endpoints(monkeypatch):
+    def answers(p):
+        return {"status": "013", "message": "조회된 데이타가 없습니다."}
+    _scripted(monkeypatch, answers)
+    def fake_list_json(key, corp, budget):
+        return REAL_PERIODIC_000030, ""
+    monkeypatch.setattr(COLLECT, "periodic_reports_via_list_json", fake_list_json)
+    def fake_fetch_xbrl(key, rcept_no, stage, budget):
+        budget.spend()
+        return (FULL_XBRL_ZIP if rcept_no == "20151116001418" else REAL_014_BODY), ""
+    monkeypatch.setattr(COLLECT, "fetch_original_xbrl", fake_fetch_xbrl)
+    result = COLLECT.probe_2015("k", {"000030.KS": "살아있는회사"}, COLLECT.Budget(1000, 10), 1,
+                          directory_fn=lambda _: [{"corpCode": "00254045",
+                                                    "corpName": "살아있는회사",
+                                                    "stockCode": "000030"}])
+    row = result["sample"][0]
+    assert [(f["stage"], f["selection"]) for f in row["originalFilings"]] == [
+        ("11013", XO.ORIGINAL_LISTED), ("11012", XO.ORIGINAL_LISTED), ("11014", XO.ORIGINAL_LISTED)]
+    q3 = next(f for f in row["originalFilings"] if f["stage"] == "11014")
+    assert q3["xbrl"]["classification"] == XO.XBRL_ZIP_SERVED
+    assert q3["xbrl"]["candidateAccounts"]["자산총계"]["status"] == XS.RESOLVED
+    q1 = next(f for f in row["originalFilings"] if f["stage"] == "11013")
+    assert q1["xbrl"]["classification"] == XO.FILE_NOT_AVAILABLE_014
+
+
+# --------------------------------------------------------------------------- #
+# Bulk collection no longer wastes calls on a proven-013 endpoint for 2015
+# --------------------------------------------------------------------------- #
+def test_year_codes_limits_fiscal_2015_to_the_annual_report_only():
+    assert COLLECT.year_codes(2015) == COLLECT.ANNUAL_ONLY
+    assert COLLECT.year_codes(2016) == COLLECT.CODES
+
+
+def test_bulk_collector_pending_list_never_asks_fnlttSinglAcntAll_for_2015_quarterlies(tmp_path, monkeypatch):
+    _scripted(monkeypatch, lambda p: {"status": "013"})
+    manifest = COLLECT.collect(tmp_path / "store", "k", _universe(tmp_path), [2015, 2025],
+                        COLLECT.Budget(1000, 60), directory_fn=lambda _: DIRECTORY)
+    absent = json.loads((tmp_path / "store/absent.json").read_text())
+    codes_asked_for_2015 = {k.split(":")[2] for k in absent if k.split(":")[1] == "2015"}
+    unresolved = json.loads((tmp_path / "store/unresolved.json").read_text())
+    codes_asked_for_2015 |= {k.split(":")[2] for k in unresolved if k.split(":")[1] == "2015"}
+    assert codes_asked_for_2015 <= {"11011"}
+    assert manifest["thisRun"]["calls"] > 0
+
+
+# --------------------------------------------------------------------------- #
+# Merge: candidate snapshot combines both sources, collision refused
+# --------------------------------------------------------------------------- #
+def test_merge_combines_both_sources_by_year(tmp_path):
+    canon = tmp_path / "canonical-v2"
+    HS.write_shard(DF.shard_path(canon, 2025), [
+        {"id": "A.KS:2025:11011", "fiscalYear": 2025, "ticker": "A.KS", "reportCode": "11011"}])
+    xbrl = tmp_path / "xbrl-original"
+    HS.write_shard(xbrl / "dart-xbrl-2015.jsonl.gz", [
+        {"id": "A.KS:2015:11014", "fiscalYear": 2015, "ticker": "A.KS", "reportCode": "11014"}])
+    out = tmp_path / "merged"
+    report = MERGE.merge(out, canon, xbrl)
+    assert report["records"] == 2 and report["bySource"] == {"canonical-v2": 1, "xbrl-original": 1}
+    assert HS.read_jsonl(DF.shard_path(out, 2025))[0]["id"] == "A.KS:2025:11011"
+    assert HS.read_jsonl(DF.shard_path(out, 2015))[0]["id"] == "A.KS:2015:11014"
+
+
+def test_merge_refuses_to_pick_a_side_on_collision(tmp_path):
+    canon = tmp_path / "canonical-v2"
+    HS.write_shard(DF.shard_path(canon, 2015), [
+        {"id": "A.KS:2015:11014", "fiscalYear": 2015, "ticker": "A.KS", "reportCode": "11014",
+         "source": "legacy"}])
+    xbrl = tmp_path / "xbrl-original"
+    HS.write_shard(xbrl / "dart-xbrl-2015.jsonl.gz", [
+        {"id": "A.KS:2015:11014", "fiscalYear": 2015, "ticker": "A.KS", "reportCode": "11014",
+         "source": "xbrl"}])
+    with pytest.raises(ValueError, match="CANDIDATE_SOURCE_COLLISION"):
+        MERGE.merge(tmp_path / "merged", canon, xbrl)
+
+
+def test_merge_works_with_no_xbrl_dir_at_all(tmp_path):
+    canon = tmp_path / "canonical-v2"
+    HS.write_shard(DF.shard_path(canon, 2025), [
+        {"id": "A.KS:2025:11011", "fiscalYear": 2025, "ticker": "A.KS", "reportCode": "11011"}])
+    report = MERGE.merge(tmp_path / "merged", canon, None)
+    assert report["records"] == 1 and report["bySource"] == {"canonical-v2": 1}
+
+
+# --------------------------------------------------------------------------- #
+# New modules obey the same outcome-free / sealed-file boundaries
+# --------------------------------------------------------------------------- #
+@pytest.mark.parametrize("path", [
+    "pipeline/dart_xbrl_originals.py", "pipeline/dart_xbrl_statements.py",
+    "scripts/collect_dart_xbrl_originals.py", "scripts/merge_kr_candidate_snapshot.py"])
+def test_xbrl_repair_code_never_names_an_outcome_function(path):
+    text = (ROOT / path).read_text(encoding="utf-8")
+    assert not [name for name in OUTCOME_NAMES if name in text]

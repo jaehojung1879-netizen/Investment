@@ -38,6 +38,7 @@ Usage:
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import os
 import sys
@@ -54,6 +55,8 @@ from pipeline import collector_outcomes as CO  # noqa: E402
 from pipeline import dart_fundamentals as DF  # noqa: E402
 from pipeline import dart_ownership_universe as DOU  # noqa: E402
 from pipeline import dart_raw_statements as RS  # noqa: E402
+from pipeline import dart_xbrl_originals as XO  # noqa: E402
+from pipeline import dart_xbrl_statements as XS  # noqa: E402
 from pipeline import historical_store as HS  # noqa: E402
 from pipeline import kr_corporate_action_events as KCA  # noqa: E402
 
@@ -62,6 +65,20 @@ PACE_SECONDS = 0.2
 # Gate years first (2016 and 2025) with the priors they need, then the rest.
 DEFAULT_YEARS = (2015, 2016, 2024, 2025, 2023, 2017, 2018, 2019, 2020, 2021, 2022, 2026)
 CODES = ("11013", "11012", "11014", "11011")
+ANNUAL_ONLY = ("11011",)
+# Fiscal-2015 Q1/H1/Q3 measured 013/013 on 24 of 24 real attempts (the live
+# `raw-probe-2015` probe, GitHub Actions run 36300578100) -- a genuine source
+# absence for THIS endpoint, not a coverage gap this collector can close.
+# Spending calls asking `fnlttSinglAcntAll` for them again would only repeat
+# a proven-wasteful request; the annual report (81 of the sealed store's
+# 2015 filings) IS served here and stays on this path. The original-filing
+# archive (`fnlttXbrl.xml`, via `scripts/collect_dart_xbrl_originals.py`) owns
+# recovering the quarterlies, a different endpoint with different depth.
+YEARS_LIMITED_TO_ANNUAL = frozenset({2015})
+
+
+def year_codes(year: int) -> tuple[str, ...]:
+    return ANNUAL_ONLY if year in YEARS_LIMITED_TO_ANNUAL else CODES
 
 
 class Refused(RuntimeError):
@@ -169,7 +186,9 @@ def collect(store: Path, key: str, universe: dict, years, budget: Budget,
                   if unresolved_path.exists() else {})
     today = time.strftime("%Y-%m-%d", time.gmtime())
     resolved = {t: i for t, i in identities.items() if i["status"] == KCA.RESOLVED}
-    pending = RS.work_list(resolved, years, CODES, done, RS.settled(absent, today))
+    pending = []
+    for year in years:
+        pending += RS.work_list(resolved, [year], year_codes(year), done, RS.settled(absent, today))
 
     collected_at = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
     fresh: dict[int, list[dict]] = {}
@@ -231,8 +250,10 @@ def collect(store: Path, key: str, universe: dict, years, budget: Budget,
     unresolved_path.write_text(json.dumps(unresolved, ensure_ascii=False, indent=1, sort_keys=True) + "\n",
                                encoding="utf-8")
     all_records = [r for rows in shards.values() for r in rows] + [r for rows in fresh.values() for r in rows]
-    remaining = RS.work_list(resolved, years, CODES, {r["id"] for r in all_records},
-                             RS.settled(absent, today))
+    remaining = []
+    for year in years:
+        remaining += RS.work_list(resolved, [year], year_codes(year),
+                                  {r["id"] for r in all_records}, RS.settled(absent, today))
     outcome = CO.run_outcome(stop_reason=stop_reason, calls=budget.calls, written=written)
     manifest = {
         "contract": RS.CONTRACT, "updatedAt": collected_at,
@@ -253,43 +274,102 @@ def collect(store: Path, key: str, universe: dict, years, budget: Budget,
     return manifest
 
 
-def probe_2015(key: str, universe: dict, budget: Budget, sample: int, directory_fn=corp_directory) -> dict:
-    """Fiscal-2015 quarterly availability on a small sample, three independent ways."""
+# --------------------------------------------------------------------------- #
+# list.json discovery + fnlttXbrl.xml fetch, shared by the probe (read-only)
+# and the real original-XBRL collector (`collect_dart_xbrl_originals.py`).
+# --------------------------------------------------------------------------- #
+def periodic_reports_via_list_json(key: str, corp: str, budget: "Budget") -> tuple[list[dict], str]:
+    """Every 사업/분기/반기보고서 `list.json` shows for one issuer, fully paginated.
+
+    Never a single-page read: `KCA.fetch_all_pages` walks to the response's
+    own `total_page`, exactly the discipline this repository already applies
+    to `list.json` for corporate-action discovery.
+    """
+    def fetch_page(page_no):
+        budget.spend()
+        return call_json("list.json", {
+            "crtfc_key": key, "corp_code": corp, "bgn_de": "20150101", "end_de": "20160630",
+            "pblntf_ty": "A", "page_count": "100", "page_no": str(page_no),
+            "sort": "date", "sort_mth": "asc"})
+    try:
+        rows, _ = KCA.fetch_all_pages(fetch_page)
+    except KCA.PaginationError as exc:
+        return [], f"PAGINATION_ERROR: {exc}"
+    periodic = [{"rceptNo": r.get("rcept_no"), "rceptDt": r.get("rcept_dt"), "reportNm": r.get("report_nm")}
+                for r in rows if any(k in str(r.get("report_nm")) for k in ("분기보고서", "반기보고서", "사업보고서"))]
+    return periodic, ""
+
+
+def fetch_original_xbrl(key: str, rcept_no: str, report_code: str, budget: "Budget") -> tuple[bytes | None, str]:
+    budget.spend()
+    try:
+        return http("fnlttXbrl.xml", {"crtfc_key": key, "rcept_no": rcept_no, "reprt_code": report_code}), ""
+    except Refused as exc:
+        return None, str(exc)
+
+
+def probe_original_stage(key: str, corp: str, periodic: list[dict], stage: str,
+                         budget: "Budget", *, dump_entries: bool = False) -> dict:
+    """One (issuer, fiscal-2015 stage)'s full original-XBRL evidence: which
+    filing is the original, whether its XBRL package is served, and (only
+    when served) a CANDIDATE_UNCONFIRMED best-effort read of the four gate
+    accounts -- never a claim that the read is correct, only that it ran.
+    """
+    row, selection = XO.select_original_filing(periodic, stage)
+    entry = {"stage": stage, "selection": selection,
+            "originalReceiptNo": (row or {}).get("rceptNo"),
+            "originalReceiptDate": (row or {}).get("rceptDt"), "xbrl": None}
+    if row is None:
+        return entry
+    body, error = fetch_original_xbrl(key, row["rceptNo"], stage, budget)
+    if body is None:
+        entry["xbrl"] = {"classification": XO.REQUEST_ERROR, "error": error}
+        return entry
+    classification, envelope = XO.classify_xbrl_response(body)
+    xbrl = {"classification": classification, "bytes": len(body), "errorEnvelope": envelope}
+    if classification == XO.XBRL_ZIP_SERVED:
+        entries, unzip_error = XS.unzip_entries(body)
+        xbrl["zipSha256"] = hashlib.sha256(body).hexdigest()
+        xbrl["entryNames"] = [name for name, _ in entries]
+        xbrl["unzipError"] = unzip_error
+        fiscal_year_start = "2015-01-01"
+        period_end = DF.period_end(2015, stage)
+        accounts = {}
+        for account in XS.TARGET_LOCAL_NAMES:
+            _, how = XS.resolve_account(entries, account, fiscal_year_start=fiscal_year_start,
+                                        period_end=period_end)
+            accounts[account] = how
+        xbrl["candidateAccounts"] = accounts
+        if dump_entries:
+            xbrl["entryTextSnippets"] = {
+                name: data.decode("utf-8", "replace")[:2000] for name, data in entries}
+    entry["xbrl"] = xbrl
+    return entry
+
+
+def probe_2015(key: str, universe: dict, budget: Budget, sample: int, directory_fn=corp_directory,
+               *, dump_entries: bool = False) -> dict:
+    """Fiscal-2015 Q1/H1/Q3 availability on a small sample, all three stages,
+    two independent endpoints: `fnlttSinglAcntAll` (the ordinary statement
+    endpoint) and, via `list.json` discovery, the original-filing archive's
+    own `fnlttXbrl.xml`. Writes nothing to the store."""
     identities = resolve_all(universe, directory_fn(key))
     tickers = [t for t, i in identities.items() if i["status"] == KCA.RESOLVED][:sample]
     out = []
     for ticker in tickers:
         corp = identities[ticker]["corpCode"]
-        entry = {"ticker": ticker, "corpCode": corp, "statementEndpoint": {}, "filingIndex": None,
-                 "originalXbrl": []}
+        entry = {"ticker": ticker, "corpCode": corp, "statementEndpoint": {}, "originalFilings": []}
         for code in ("11013", "11012", "11014"):
             _, _, attempts, _ = fetch_statement(key, corp, 2015, code, budget)
             entry["statementEndpoint"][code] = attempts
-        budget.spend()
-        listing = call_json("list.json", {
-            "crtfc_key": key, "corp_code": corp, "bgn_de": "20150101", "end_de": "20160630",
-            "pblntf_ty": "A", "page_count": "100", "page_no": "1"})
-        periodic = [{"rceptNo": r.get("rcept_no"), "rceptDt": r.get("rcept_dt"), "reportNm": r.get("report_nm")}
-                    for r in listing.get("list") or []
-                    if any(k in str(r.get("report_nm")) for k in ("분기보고서", "반기보고서", "사업보고서"))]
-        entry["filingIndex"] = {"status": listing.get("status"), "message": listing.get("message"),
-                                "totalCount": listing.get("total_count"), "periodicReports": periodic}
-        for report in [p for p in periodic if "(2015." in str(p["reportNm"])
-                       and ("분기" in str(p["reportNm"]) or "반기" in str(p["reportNm"]))][:1]:
-            name = str(report["reportNm"])
-            code = "11012" if "반기" in name else ("11013" if "(2015.03)" in name else "11014")
-            budget.spend()
-            try:
-                blob = http("fnlttXbrl.xml", {"crtfc_key": key, "rcept_no": report["rceptNo"],
-                                               "reprt_code": code})
-                entry["originalXbrl"].append({"rceptNo": report["rceptNo"], "reportCode": code,
-                                              "bytes": len(blob), "zip": blob[:2] == b"PK",
-                                              "head": blob[:160].decode("utf-8", "replace") if blob[:2] != b"PK" else None})
-            except Refused as exc:
-                entry["originalXbrl"].append({"rceptNo": report["rceptNo"], "error": str(exc)})
+        periodic, list_error = periodic_reports_via_list_json(key, corp, budget)
+        entry["listJsonError"] = list_error or None
+        for stage in ("11013", "11012", "11014"):
+            entry["originalFilings"].append(
+                probe_original_stage(key, corp, periodic, stage, budget, dump_entries=dump_entries))
         out.append(entry)
         time.sleep(PACE_SECONDS)
-    return {"contract": "DART_FISCAL_2015_QUARTERLY_PROBE_V1", "calls": budget.calls, "sample": out}
+    return {"contract": "DART_FISCAL_2015_QUARTERLY_PROBE_V2", "calls": budget.calls, "sample": out}
 
 
 def main(argv=None) -> int:
@@ -302,6 +382,9 @@ def main(argv=None) -> int:
     parser.add_argument("--max-minutes", type=int, default=300)
     parser.add_argument("--probe-tickers", type=int, default=8)
     parser.add_argument("--probe-output", type=Path)
+    parser.add_argument("--dump-entries", action="store_true",
+                        help="probe-2015 only: embed a bounded text snippet of each served "
+                             "ZIP entry in the output, for a human to review real XBRL structure")
     args = parser.parse_args(argv)
     key = os.environ.get("DART_API_KEY", "").strip()
     if not key:
@@ -318,7 +401,8 @@ def main(argv=None) -> int:
         print(f"ERROR: corpCode.xml not served -- {exc}")
         return 2
     if args.mode == "probe-2015":
-        result = probe_2015(key, universe, budget, args.probe_tickers, directory_fn=lambda _: directory)
+        result = probe_2015(key, universe, budget, args.probe_tickers, directory_fn=lambda _: directory,
+                            dump_entries=args.dump_entries)
         text = json.dumps(result, ensure_ascii=False, indent=1)
         print(text)
         if args.probe_output:

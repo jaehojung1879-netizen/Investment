@@ -55,9 +55,9 @@ on:
       # (kr-accounting-coverage-repair-v1) and skip both daily collectors. The
       # schedule never sends a target, so the daily run can never take them.
       target:
-        description: "KR 전용 — auto=재무제표 후 주식수까지 / statements / shares / raw-statements=PIT 유니버스 원본행 재수집 / raw-probe-2015=2015 분기 가용성 탐침"
+        description: "KR 전용 — auto=재무제표 후 주식수까지 / statements / shares / raw-statements=PIT 유니버스 원본행 재수집 / raw-probe-2015=2015 분기 가용성 탐침(전 분기, 원본 XBRL 포함) / raw-xbrl-2015=2015 분기 원본 XBRL 수집(CANDIDATE_UNCONFIRMED)"
         type: choice
-        options: ["auto", "statements", "shares", "raw-statements", "raw-probe-2015"]
+        options: ["auto", "statements", "shares", "raw-statements", "raw-probe-2015", "raw-xbrl-2015"]
         default: "auto"
       raw_years:
         description: "raw-statements 전용 — 수집 연도 우선순위 (비우면 2015,2016,2024,2025,2023,2017..2022,2026)"
@@ -323,8 +323,31 @@ jobs:
         run: |
           set -o pipefail
           python scripts/collect_dart_raw_statements.py raw-work/ledger/fundamentals/kr-raw \
-            --universe-dir sealed-work/ledger/universe/kr --mode probe-2015 \
+            --universe-dir sealed-work/ledger/universe/kr --mode probe-2015 --dump-entries \
             --probe-tickers 8 --max-calls 200 --probe-output probe-2015.json | tee raw.log
+
+      - name: Collect original fiscal-2015 XBRL filings (CANDIDATE_UNCONFIRMED accounts)
+        if: inputs.target == 'raw-xbrl-2015'
+        env:
+          DART_API_KEY: ${{ secrets.DART }}
+        run: |
+          set -o pipefail
+          python scripts/collect_dart_xbrl_originals.py raw-work/ledger/fundamentals/kr-xbrl-original \
+            --universe-dir sealed-work/ledger/universe/kr \
+            --max-calls "${{ inputs.max_calls || '1800' }}" \
+            --max-minutes "${{ inputs.max_minutes || '290' }}" | tee raw.log
+
+      - name: Merge with any existing canonical-v2 store and audit the candidate's coverage
+        if: inputs.target == 'raw-xbrl-2015'
+        run: |
+          set -o pipefail
+          python scripts/merge_kr_candidate_snapshot.py raw-work/ledger/fundamentals/kr-candidate-merged \
+            --canonical-dir raw-work/ledger/fundamentals/kr-canonical-v2 \
+            --xbrl-dir raw-work/ledger/fundamentals/kr-xbrl-original | tee canonical.log
+          python scripts/audit_kr_accounting_coverage.py --input-root sealed-work \
+            --kr-fundamentals-dir raw-work/ledger/fundamentals/kr-candidate-merged \
+            --absent-json raw-work/ledger/fundamentals/kr-raw/absent.json \
+            --output-dir raw-work/ledger/fundamentals/kr-candidate-merged/coverage-audit | tee audit.log
 
       # The probe's exact answers (every status and message, the filing index,
       # the XBRL package sizes) kept as a reviewable file, not only a log tail.
@@ -357,16 +380,25 @@ jobs:
           python scripts/build_kr_canonical_filings.py raw-work/ledger/fundamentals/kr-raw \
             raw-work/ledger/fundamentals/kr-canonical-v2 \
             --legacy-dir sealed-work/ledger/fundamentals/kr | tee canonical.log
+          if [ -d raw-work/ledger/fundamentals/kr-xbrl-original ]; then
+            python scripts/merge_kr_candidate_snapshot.py raw-work/ledger/fundamentals/kr-candidate-merged \
+              --canonical-dir raw-work/ledger/fundamentals/kr-canonical-v2 \
+              --xbrl-dir raw-work/ledger/fundamentals/kr-xbrl-original | tee -a canonical.log
+            AUDIT_DIR=raw-work/ledger/fundamentals/kr-candidate-merged
+          else
+            AUDIT_DIR=raw-work/ledger/fundamentals/kr-canonical-v2
+          fi
           python scripts/audit_kr_accounting_coverage.py --input-root sealed-work \
-            --kr-fundamentals-dir raw-work/ledger/fundamentals/kr-canonical-v2 \
+            --kr-fundamentals-dir "$AUDIT_DIR" \
             --absent-json raw-work/ledger/fundamentals/kr-raw/absent.json \
-            --output-dir raw-work/ledger/fundamentals/kr-canonical-v2/coverage-audit | tee audit.log
+            --output-dir "$AUDIT_DIR/coverage-audit" | tee audit.log
 
       - name: Commit & push to signal-history
-        if: inputs.target == 'raw-statements'
+        if: inputs.target == 'raw-statements' || inputs.target == 'raw-xbrl-2015'
         run: |
           cd raw-work
-          git add ledger/fundamentals/kr-raw ledger/fundamentals/kr-canonical-v2
+          git add ledger/fundamentals/kr-raw ledger/fundamentals/kr-canonical-v2 \
+                  ledger/fundamentals/kr-xbrl-original ledger/fundamentals/kr-candidate-merged
           if git diff --cached --quiet; then
             echo "no new raw filings"
             exit 0

@@ -121,28 +121,57 @@ scheduling, resume or year-boundary cause applies.
   discarded: an empty response never reaches the parser.
 
 **D. Do the original 2015 quarterly filings exist, with their receipt
-numbers?** Not answered from this environment. `DART_API_KEY` is absent and
-`opendart.fss.or.kr` is blocked from this sandbox, as `AGENTS.md` v2.28
-already records. The `raw-probe-2015` mode (§7) answers it three independent
-ways on 8 tickers:
-- the real status and message from the statement endpoint for each 2015
-  quarterly, under both CFS and OFS;
-- whether `list.json` lists the original 2015 quarterly and half-year
-  reports with their receipt numbers;
-- whether `fnlttXbrl.xml` serves the original XBRL package for such a
-  receipt. Only the size and ZIP signature are recorded; nothing is parsed.
-  This endpoint is corroborated from documentation, not yet confirmed live.
+numbers? Confirmed live.** GitHub Actions run
+[36300578100](https://github.com/jaehojung1879-netizen/Investment/actions/runs/36300578100)
+(2026-09-27, `data/kr-accounting-coverage-repair-v1` at `4965599c`, job
+`kr-raw`, `target: raw-probe-2015`) ran the `raw-probe-2015` mode with a real
+`DART_API_KEY` against the live API and pushed nothing to `signal-history`
+(the `Collect a slice`/`Rebuild canonical`/`Commit & push` steps all show
+`conclusion: skipped`, confirmed from the job's own step list). Artifact
+`dart-fiscal-2015-probe`, sha256 `af7e3b58086b1004af59bdbf978d4e19e9a150fd212d51a639f3512a9a885c2e`,
+64 calls, 8 tickers (`000030.KS`, `000060.KS`, `000080.KS`, `000100.KS`,
+`000120.KS`, `000150.KS`, `000210.KS`, `000240.KS`). Measured, not assumed:
 
-**Recoverable 2015 filings today: 0 confirmed.**
-- If the XBRL package is served, a separate parser build could recover them
-  with their original receipt dates.
+| | Result |
+|---|---|
+| `fnlttSinglAcntAll`, fiscal-2015 Q1/H1/Q3, both CFS and OFS | 013 on 24 of 24 real attempts (8 tickers × 3 stages), reconfirming §3C's mechanism with a live call rather than only the sealed store's history |
+| `list.json`, same tickers/period | listed the original Q1/H1/Q3 filings with real receipt numbers for every one of the 8, e.g. `000030.KS`'s `분기보고서 (2015.09)`, receipt `20151116001418`; `000030.KS`'s Q1 also shows a real amendment, `[기재정정]분기보고서 (2015.03)`, receipt `20150529001078`, alongside its original, receipt `20150515002248` — confirming an original and its amendment are genuinely two different receipts on record |
+| `fnlttXbrl.xml`, one 2015 Q3 package per ticker | **6 of 8 served a real ZIP** (153–170 KB: `000080`, `000100`, `000120`, `000150`, `000210`, `000240`; one at 85 KB: `000240`). **2 of 8 returned DART's own error envelope**, `<result><status>014</status><message>파일이 존재하지 않습니다.</message></result>` (147 bytes, confirmed non-ZIP): `000030.KS`, `000060.KS` |
+
+**The consequence, stated precisely.** `fnlttSinglAcntAll` and the original
+filing archive (`list.json` + `fnlttXbrl.xml`) are different endpoints with
+different historical depth. Fiscal-2015 quarterlies are
+`PRIMARY_SOURCE_DOES_NOT_SUPPLY_REQUIRED_HISTORY` for the STATEMENT endpoint
+specifically — never a blanket claim about DART. The original archive
+serves most, not all, of the sample.
+
+**What is still unconfirmed, stated just as precisely.** This session has
+**not** read the contents of any served ZIP — `DART_API_KEY` is absent from
+this development environment and `opendart.fss.or.kr` is blocked from this
+sandbox's egress (unchanged from `AGENTS.md` v2.28). The live probe recorded
+only the outer envelope (first two bytes `PK`, total size). Whether the four
+gate accounts can actually be extracted from a served ZIP's real internal
+XBRL structure is answered by `pipeline/dart_xbrl_statements.py`, built from
+general XBRL/K-IFRS conventions and this repository's own already-confirmed
+element identifiers — carrying `endpointConfidence: CANDIDATE_UNCONFIRMED`
+throughout, the same tier `alotMatter.json` carried before its own live
+probe. §7 names the exact next run that would promote it.
+
+**Recoverable 2015 filings today: 0 confirmed, 6 of 8 sampled candidates.**
 - A 2015 quarterly is never synthesised from a later report's comparative
   column. `frmtrm_*` is a restated comparative, and on a quarterly balance
   sheet it is the prior year-end, not the same quarter.
+- An original filing is never read from its later amendment. §7's original-
+  XBRL collector selects the earliest non-`[기재정정]` receipt matching a
+  stage's own stated report name and period; a stage listed only as an
+  amendment is its own recorded state
+  (`ORIGINAL_NOT_LISTED_ONLY_AMENDMENT`), never silently upgraded.
 
 With 2015 quarterlies, the 2016 upper bound rises to **55.1% for growth and
 60.87% for `ocfToNetIncomePct`**. Jan–Mar 2016 and the pre-2015 priors stay
-dark whatever is collected.
+dark whatever is collected. That bound assumes every account is recoverable
+from a served package; the CANDIDATE_UNCONFIRMED tier means the real number
+could be lower.
 
 ## 4. Collection-universe gap
 
@@ -242,17 +271,70 @@ path reads unchanged.
   combination the element rule admitted, and compares the result with the
   legacy store.
 
+**`pipeline/dart_xbrl_originals.py`** — discovery and classification, network-free.
+- `select_original_filing` picks the earliest non-`[기재정정]` `list.json` row
+  matching a stage's own stated report name and period; a stage listed only
+  as an amendment, only ambiguously, or not at all is its own recorded state
+  (`ORIGINAL_NOT_LISTED_ONLY_AMENDMENT` / `AMBIGUOUS_REPORT_MATCH` /
+  `NO_ORIGINAL_FILING_INDEX`) — never a guess.
+- `classify_xbrl_response` reads only the served bytes' own shape: a ZIP
+  signature, or DART's own `<result><status>014</status>…</result>` error
+  envelope (pinned to the exact 147-byte body the live probe captured).
+
+**`pipeline/dart_xbrl_statements.py`** — parsing, `CANDIDATE_UNCONFIRMED`.
+- Matches XBRL facts by exact QName local name, namespace-agnostic, derived
+  from the same `ELEMENT_RULES` the canonical rebuild already uses — never a
+  fuzzy label, never `ProfitLossAttributableToOwnersOfParent` for net income
+  or `CurrentAssets` for total assets.
+- A flow account (net income, operating cash flow) is read only from a
+  DURATION context running from the fiscal year's own start to the filing's
+  period end — the cumulative reading, stored under exactly the amount field
+  `dart_derive.cumulative_amount` already reads for that statement — never a
+  same-named concept's standalone-quarter context.
+- Two same-named facts surviving that window with disagreeing values is
+  `AMBIGUOUS`; no parseable XML entry is `NO_PARSEABLE_XML_ENTRY`. Neither is
+  ever resolved by picking one.
+- Every record carries `endpointConfidence: CANDIDATE_UNCONFIRMED`, because
+  this session has never read a real served ZIP's contents (§3D). A unit
+  test proves the resulting record actually supplies `dart_derive`'s missing
+  2015-same-stage prior for a 2016 TTM roll-forward, end to end, unmodified.
+
+**`scripts/collect_dart_xbrl_originals.py`** — the real collector, not yet run.
+- For every stage of every resolved PIT ticker: `list.json` discovery (fully
+  paginated), original-filing selection, `fnlttXbrl.xml` fetch, classify,
+  extract. Append-only, keyed ticker × stage, budget-checked before every
+  call (list.json pages and the XBRL fetch alike).
+- Stores the four candidate accounts plus the served ZIP's SHA-256 and every
+  entry's name — never the raw ZIP bytes themselves in git. `--dump-dir`
+  writes the raw ZIPs locally for direct human inspection (never committed).
+- Every classification is kept in `fetch-state.json`, including the ones
+  that store nothing (`ORIGINAL_NOT_LISTED_ONLY_AMENDMENT`, `FILE_NOT_
+  AVAILABLE_014`, …), so a re-run never silently re-asks a settled case and
+  a reviewer can see exactly why any given stage has no record.
+
+**`scripts/merge_kr_candidate_snapshot.py`** — combines `kr-canonical-v2`
+(other years) with `kr-xbrl-original` (fiscal-2015 quarterlies) into one
+candidate directory the sealed feature path reads unchanged; raises rather
+than silently picking a side if the two sources ever describe the same
+filing (they should never overlap by construction).
+
 **`fundamentals.yml` job `kr-raw`**
 - Manual dispatch only; the schedule can never take it.
-- Reads the sealed commit. Writes only `ledger/fundamentals/kr-raw` and
-  `kr-canonical-v2`, never `ledger/fundamentals/kr`.
-- After collecting, it audits the candidate store with the same feature
-  path, membership, backward tradability and denominator, and publishes
-  "after" coverage per gate year.
+- Reads the sealed commit. Writes only `ledger/fundamentals/kr-raw`,
+  `kr-canonical-v2`, `kr-xbrl-original` and `kr-candidate-merged`, never
+  `ledger/fundamentals/kr`.
+- `target: raw-probe-2015` now tests all three stages against BOTH
+  endpoints (not one Q3 sample) and, for a served ZIP, best-effort reports
+  which of the four accounts the `CANDIDATE_UNCONFIRMED` parser recovers —
+  still writes nothing to the store.
+- `target: raw-xbrl-2015` runs the real collector, merges with any existing
+  `kr-canonical-v2`, and audits the merged candidate.
+- `target: raw-statements` now also merges in `kr-xbrl-original` before
+  auditing, if that store exists.
 
-**Coverage after repair: not yet measured.** Collection needs the
-repository's DART secret, so it runs in Actions. Before and after, by gate
-year:
+**Coverage after repair: not yet measured.** Neither `raw-statements` nor
+`raw-xbrl-2015` has been run — only `raw-probe-2015` has (§3D), and it
+writes nothing. Before and upper bounds, by gate year:
 
 | Year | Feature | Before (measured) | Upper bound, collection | Upper bound, collection + 2015 quarterlies | After |
 |---|---|---|---|---|---|
@@ -265,7 +347,9 @@ year:
 - **2025:** likely, if the dropped rows are net income. This is decided by
   the "after" audit, not by this table.
 - **2016:** **cannot pass by collection alone**, since growth's bound is 0%.
-  It can pass only if DART supplies 2015 quarterlies (§3).
+  Passing needs both `raw-xbrl-2015` to recover 2015 quarterlies AND their
+  extracted accounts to leave `CANDIDATE_UNCONFIRMED` and clear the 20%
+  floor — neither is measured yet.
 
 ## 8. Decision classification
 
@@ -274,17 +358,20 @@ year:
 | Ticker never collected (common shares) | `DATA_COLLECTION_GAP_REPAIRABLE` |
 | Net income / operating cash flow dropped at collection (label outside the alias list) | `PARSER_OR_DERIVATION_DEFECT_REPAIRABLE` (pending raw-row evidence) |
 | Net income taken from SCE component rows | `PARSER_OR_DERIVATION_DEFECT_REPAIRABLE` (fixed in the canonical rule) |
-| Fiscal-2015 quarterlies from the statement endpoint | `PRIMARY_SOURCE_DOES_NOT_SUPPLY_REQUIRED_HISTORY` for that endpoint; `UNRESOLVED` until the probe checks `list.json` and the original XBRL |
+| Fiscal-2015 quarterlies from the statement endpoint | `PRIMARY_SOURCE_DOES_NOT_SUPPLY_REQUIRED_HISTORY` for `fnlttSinglAcntAll` specifically — confirmed live (§3D) |
+| Fiscal-2015 quarterlies from the original filing archive | `DATA_COLLECTION_GAP_REPAIRABLE` for 6 of 8 sampled (`fnlttXbrl.xml` serves a ZIP); `PRIMARY_SOURCE_DOES_NOT_SUPPLY_REQUIRED_HISTORY` for 2 of 8 (014); whether the four accounts actually extract from a served ZIP is `UNRESOLVED` (`CANDIDATE_UNCONFIRMED`, §7) |
 | Pre-2015 priors (Jan–Mar and Apr–May 2016) | `PRIMARY_SOURCE_DOES_NOT_SUPPLY_REQUIRED_HISTORY` |
-| Amendments served in place of originals | `PRIMARY_SOURCE_DOES_NOT_SUPPLY_REQUIRED_HISTORY` via the statement endpoint; `UNRESOLVED` for an original-XBRL build |
+| Amendments served in place of originals | `PRIMARY_SOURCE_DOES_NOT_SUPPLY_REQUIRED_HISTORY` via the statement endpoint; `DATA_COLLECTION_GAP_REPAIRABLE` via the original-XBRL path where a served ZIP exists |
 | Preferred shares without an issuer mapping | `UNRESOLVED` (needs a preregistered identity rule) |
 | DART "013" on a due filing (3 name-dates in 2025) | `PRIMARY_SOURCE_DOES_NOT_SUPPLY_REQUIRED_HISTORY` |
 
 **Overall:**
-- **2016:** `PRIMARY_SOURCE_DOES_NOT_SUPPLY_REQUIRED_HISTORY` unless the
-  2015 probe finds originals.
+- **2016:** `UNRESOLVED`, pending `raw-xbrl-2015`'s real recovery rate and
+  whether the recovered accounts clear the 20% floor. Not
+  `PRIMARY_SOURCE_DOES_NOT_SUPPLY_REQUIRED_HISTORY` outright any more: the
+  live probe found a genuine second route for most of the sample.
 - **2025:** `PARSER_OR_DERIVATION_DEFECT_REPAIRABLE` plus
-  `DATA_COLLECTION_GAP_REPAIRABLE`, subject to the collection run.
+  `DATA_COLLECTION_GAP_REPAIRABLE`, subject to the `raw-statements` run.
 
 ## 9. Versioning consequence
 
@@ -311,21 +398,35 @@ year:
 The job is in `fundamentals.yml` on this branch. It can be dispatched from
 the branch before merge.
 
-1. **Actions → "Collect fundamentals" → Use workflow from
-   `data/kr-accounting-coverage-repair-v1`**, with:
-   - `target: raw-probe-2015`
-   - leave the other inputs empty
+1. ~~`target: raw-probe-2015`~~ **Done.** Run
+   [36300578100](https://github.com/jaehojung1879-netizen/Investment/actions/runs/36300578100),
+   64 calls, wrote nothing, artifact `dart-fiscal-2015-probe` uploaded.
+   Evidence is in §3D. The probe now also tests all three stages (not one
+   Q3 sample) and, for a served ZIP, best-effort reports which of the four
+   accounts the `CANDIDATE_UNCONFIRMED` parser recovers — re-running it is
+   optional, useful only for a wider sample than 8 tickers or to review
+   more real ZIP structure via `--dump-entries`.
+2. **`target: raw-xbrl-2015`**, other inputs empty (`max_calls` 1,800,
+   `max_minutes` 290). Not yet run. This is the collector that would
+   actually recover fiscal-2015 quarterlies where `fnlttXbrl.xml` serves
+   them. Its job summary publishes real classification counts (how many
+   stages got `XBRL_ZIP_SERVED` vs `FILE_NOT_AVAILABLE_014` vs the
+   selection-side codes) and the merged candidate's real "after" coverage
+   for 2016 — the first real measurement of whether original-XBRL recovery
+   actually clears the 20% floor, since every number before this is an
+   upper bound.
+3. **`target: raw-statements`**, `raw_years`/`max_calls`/`max_minutes`
+   empty. Re-run until the log reports `"datasetComplete": true` (2015 now
+   asks only for the annual report there, so this is fewer calls than
+   before — about 12,140 filings over 7–9 runs). If step 2 already ran,
+   this step's audit reads the merged candidate (canonical-v2 + xbrl-
+   original) automatically; if not, it audits canonical-v2 alone, exactly
+   as before.
 
-   About 65 calls. It writes nothing to the store. Its JSON and log are
-   uploaded as the `dart-fiscal-2015-probe` workflow artifact. Its log answers §3 C and
-   D.
-2. **Same workflow**, with:
-   - `target: raw-statements`
-   - `raw_years:` empty (default order 2015, 2016, 2024, 2025, 2023,
-     2017–2022, 2026)
-   - `max_calls:` empty (1,800)
-   - `max_minutes:` empty (290)
-
-   Re-run it until the log reports `"datasetComplete": true`. That is about
-   12,500 filings (260 tickers × 12 years × 4 reports) over 7–10 runs. Every run publishes the rebuilt store's
-   admitted-label evidence and its "after" gate coverage in the job summary.
+Review before running step 2: `pipeline/dart_xbrl_statements.py`'s account
+extraction has never been exercised against a real served ZIP in this
+session (§3D, §7). Its logic is built from confirmed element identifiers and
+general XBRL convention, marked `CANDIDATE_UNCONFIRMED`, and tested only
+against synthetic fixtures. Running step 2 with `--dump-dir` locally, or
+reading `--dump-entries`'s output from an expanded probe run, is how to
+inspect real structure before trusting its output.
