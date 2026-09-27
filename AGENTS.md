@@ -1626,6 +1626,90 @@
   SNAPSHOT frozen once outcome computation begins, three different
   promises that must never be collapsed into one byte-pin again.
 
+## Alpha-opportunity-model-v4 execution invariants (v2.32)
+
+- EXECUTION CODE IS NOT THE SEALED PREREGISTRATION, AND LIVES OUTSIDE ITS
+  DEPENDENCY CLOSURE BY CONSTRUCTION. `pipeline/alpha_opportunity_v4_
+  execution.py` and `scripts/execute_alpha_opportunity_model_v4.py` build the
+  KR-only label engine the preregistration explicitly deferred, but neither
+  file is in `research_specs/alpha-opportunity-model-v4.json`'s own
+  `dependencyHashes` — editing the PREREGISTRATION's own entry point
+  (`scripts/run_alpha_opportunity_model_v4.py`) to add real execution code
+  would have raised `SEALED_DEPENDENCY_CHANGED` and retroactively rewritten
+  what PR #159 merged. The execution script instead calls `pipeline.
+  alpha_opportunity_v4_spec.load_sealed()` as a read-only proof the
+  preregistration is still exactly what was reviewed, then imports (never
+  edits) `pipeline.alpha_opportunity_v4_eligibility`'s sealed functions.
+- A RUNTIME SPEC IS ASSEMBLED FROM TWO ALREADY-SEALED DOCUMENTS, NEVER
+  INVENTED. v4's own JSON never redeclares `evidenceGates`, `costStress`,
+  the `WORST_PLAUSIBLE` survivorship-stress thresholds, or `coverageGate` --
+  they do not change when a study narrows from four region x horizon claims
+  to two, so `build_runtime_spec` reads them from `research_specs/alpha-
+  opportunity-model-v2.json` (already one of v4's own `sealedDataInputs`)
+  and overlays v4's own explicit `carriedFromV3` values on top, which always
+  win where both specify one.
+- THE FIRST REAL EXECUTION STOPPED AT THE PRE-LABEL COVERAGE GATE, BEFORE
+  THE ELIGIBILITY POLICY -- V4'S OWN DESIGN CONTRIBUTION -- WAS EVER
+  EXERCISED. Run against the real, hash-verified sealed `replay-v16` KR
+  ledger (replay manifest SHA-256 `f0781292f508a123c234ded6d28aa8e84a0dc3cc
+  29500e14989dc0b68f53b4d2`, matching the sealed survivorship audit's own
+  citation exactly): `BLOCKED_BY_DATA_INTEGRITY`, `stoppedBeforeLabels:
+  true`, zero labels constructed, zero models fit. The gate itself is
+  inherited unmodified from `alpha-opportunity-model-v2`'s own
+  `coverageGate` (`firstEvaluationYear=2016`, accounting floor `0.2`) --
+  not new to this execution, and its firing says nothing about whether
+  `label_eligibility` behaves correctly on real labelled data, only that no
+  observation ever reached it. `docs/alpha-opportunity-model-v4-execution-
+  report.md` and `docs/results/alpha-opportunity-model-v4-execution-report
+  .json` are the full, byte-identical record.
+- A COVERAGE-GATE FAILURE IS INVESTIGATED TO A MECHANISM BEFORE IT IS
+  ACCEPTED AS A RESULT, THE SAME DISCIPLINE THIS FILE'S OWN "GENUINE BUG"
+  RULE REQUIRES ONE LEVEL UP. Two of the four coverage failures read exactly
+  `0.0` (`assetGrowthPct`/`debtGrowthPct`, KR, 2016) -- re-verified directly
+  against the real fetched ledger rather than assumed to be a harness
+  defect: the raw DART collection's earliest fiscal year (2015) carries
+  ONLY the annual report code (`11011`, 81 tickers, zero quarterly rows),
+  so any signal date inside calendar year 2016 -- which can only ever pick
+  a fiscal-year-2016 filing as "current" (the FY2016 annual is not filed
+  until ~March 2017) -- structurally lacks the same-report-code
+  fiscal-2015 prior filing `_growth_pct` requires. This sharpens this
+  file's own PIT-fundamentals invariant ("dark for the first two years")
+  to a measured third dark year for these two specific growth features. The
+  fourth failure (`ocfToNetIncomePct`, KR, 2025, 17.42%) is NOT explained by
+  the same mechanism (2024/2025 both carry full four-report-code coverage
+  across all 126 DART-tracked tickers) -- traced instead to genuine
+  per-filing DART account-completeness variance (measured directly:
+  `000080.KS`'s `(2024, '11014')` filing carries `매출액`/`영업이익`/
+  `영업활동현금흐름`/`유형자산의취득`/`자본총계`/`자산총계` but not
+  `당기순이익`/`부채총계`, even though its neighbouring quarters and
+  annuals do), compounding across the three filings a TTM rollforward
+  needs. Neither mechanism is a code defect; neither was "fixed" by
+  loosening the inherited `0.2` floor, adding an imputation, or excluding a
+  year -- the gate is reported exactly as it fired.
+- ONLY 126 OF THE 260 KR SECURITIES THIS STUDY'S OWN TOP-120 UNIVERSE EVER
+  HELD HAVE ANY DART FUNDAMENTALS COLLECTED AT ALL (48.5%), MEASURED
+  DIRECTLY FROM THE SAME LEDGER THIS EXECUTION READ -- matching `alpha-
+  research-foundation-v2`'s own 126-ticker citation exactly, and confirming
+  this run's own fetched ledger snapshot is complete against that
+  independently-documented count rather than an artifact of a partial
+  checkout. This lowers every KR accounting feature's coverage ceiling in
+  every year and is a real, standing limitation the 2016/2025 findings
+  above sit on top of, not a substitute explanation for either.
+- A SECOND EXECUTION WAS RUN, DELIBERATELY, PURELY TO RE-STAMP CORRECT
+  PROVENANCE, NEVER TO CHANGE A RESULT. The first run executed before its
+  own harness code was committed (`executionCodeCommitSha` would have named
+  the merge commit, not the commit that actually produced the report); a
+  second run against the IDENTICAL frozen execution snapshot, after
+  committing, reproduced the byte-identical `BLOCKED_BY_DATA_INTEGRITY`
+  result with only the commit-sha field changed -- itself a small,
+  deliberate determinism check in the same spirit as this file's own
+  replay-determinism invariants, not a rerun in response to an unwanted
+  number.
+- NO PROMOTION, NO PRODUCTION CHANGE, REGARDLESS OF THIS RESULT.
+  `promotionEligible: false` is asserted in the execution report's own
+  schema; nothing about the KR terminal-action foundation, the eligibility
+  policy, or any v1-v4 spec was edited by this execution.
+
 ## Lint gate invariants (v2.11)
 
 - The enabled rule set reports ZERO findings on `main`. A rule is turned on in the
