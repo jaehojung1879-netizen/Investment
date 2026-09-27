@@ -381,43 +381,53 @@ def test_coverage_failure_blocks_even_without_the_stop_flag_and_before_the_ident
     assert result["stoppedBeforeLabels"] is True and hook_calls == []
 
 
-def test_D_region_year_eligibility_runs_before_coverage_and_restricts_its_denominator(monkeypatch):
-    frame, prices = _synthetic("2016-01-01", "2021-12-31", unpriced_year="2019",
-                               accounting=lambda year: year != "2019")
-    order = []
-    real_eligibility, real_gates = V2CLI.eligibility, V2CLI.pre_label_gates
+def _forbid_replaced_region_year_rule(monkeypatch):
+    """v2's 20% region-year tolerance is replaced by v4's per-observation
+    label_eligibility (sealed v4 `survivorshipEligibility`); neither v2's
+    rule nor v2's gate that consumes it may run on the v4 path."""
+    def replaced(*a, **k):
+        raise OutcomeTouched("replaced v2 region-year rule called")
+    monkeypatch.setattr(V2CLI, "eligibility", replaced)
+    monkeypatch.setattr(V2CLI, "pre_label_gates", replaced)
 
-    def eligibility(frame, spec):
-        order.append("eligibility")
-        return real_eligibility(frame, spec)
 
-    def gates(frame, registry, spec):
-        order.append("gates")
-        assert "eligibleRegionYear" in frame
-        return real_gates(frame, registry, spec)
-    monkeypatch.setattr(V2CLI, "eligibility", eligibility)
-    monkeypatch.setattr(V2CLI, "pre_label_gates", gates)
+def test_D_v2_region_year_eligibility_is_never_called(monkeypatch):
+    frame, prices = _synthetic("2016-01-01", "2021-12-31")
     _forbid_outcomes(monkeypatch)
+    _forbid_replaced_region_year_rule(monkeypatch)
     result = _run(frame, prices, stop_before_labels=True)
-    assert order == ["eligibility", "gates"]
-    by_year = {r["year"]: r for r in result["regionYearEligibility"]}
-    assert by_year["2019"]["eligible"] is False and by_year["2019"]["unvouchedPct"] > 20.0
-    assert all(by_year[y]["eligible"] for y in ("2016", "2017", "2018", "2020", "2021"))
-    # 2019's accounting is entirely missing, so the gate passes ONLY because
-    # 2019 is outside the eligible denominator, exactly as v2 specifies.
     assert result["status"] == CLI.STOPPED_FOR_REVIEW
-    assert not any(c["year"] == "2019" for c in result["coverage"])
+    assert "regionYearEligibility" not in result
+    assert "tradableInEligibleRegionYears" not in result["preLabelFrame"]
 
 
-def test_D_counterfactual_without_region_year_eligibility_the_same_frame_fails_coverage():
+def test_D_a_year_the_replaced_20pct_rule_would_drop_stays_in_the_coverage_denominator(monkeypatch):
+    frame, prices = _synthetic("2016-01-01", "2021-12-31", unpriced_year="2019")
+    # Counterfactual, measured with v2's own rule: 2019 is >20% unvouched.
+    guard = V2CLI.tradability_frame(prices, frame, "KR", 20)
+    old = {r["year"]: r for r in V2CLI.eligibility(frame.merge(guard, on=["date", "region", "ticker"]),
+                                                   _runtime())}
+    assert old["2019"]["eligible"] is False and old["2019"]["unvouchedPct"] > 20.0
+    _forbid_outcomes(monkeypatch)
+    _forbid_replaced_region_year_rule(monkeypatch)
+    result = _run(frame, prices, stop_before_labels=True)
+    rows_2019 = {c["universeRows"] for c in result["coverage"] if c["year"] == "2019"}
+    weeks_2019 = len([d for d in SOURCES.weekly_grid("2019-01-01", "2019-12-31", "KR")])
+    # The two names still tradable in 2019 are counted; the year is not dropped.
+    assert rows_2019 == {2 * weeks_2019}
+
+
+def test_D_the_replaced_rule_can_no_longer_hide_a_year_from_the_coverage_gate(monkeypatch):
+    """Under v2's rule 2019 left the denominator and its missing accounting
+    was never checked; under v4 its tradable names are checked and fail."""
     frame, prices = _synthetic("2016-01-01", "2021-12-31", unpriced_year="2019",
                                accounting=lambda year: year != "2019")
-    guard = V2CLI.tradability_frame(prices, frame, "KR", 20)
-    merged = frame.merge(guard, on=["date", "region", "ticker"])
-    merged["eligibleRegionYear"] = True
-    with pytest.raises(V2CLI.PreLabelStop) as stop:
-        V2CLI.pre_label_gates(merged, _registry(), _runtime())
-    assert {c["year"] for c in stop.value.detail["coverageFailures"]} == {"2019"}
+    _forbid_outcomes(monkeypatch)
+    _forbid_replaced_region_year_rule(monkeypatch)
+    result = _run(frame, prices, stop_before_labels=False)
+    assert result["status"] == "BLOCKED_BY_DATA_INTEGRITY"
+    assert {c["year"] for c in result["detail"]["coverageFailures"]} == {"2019"}
+    assert result["counts"]["targetFromSessionsCalls"] == 0
 
 
 def test_gates_passing_with_stop_before_labels_constructs_no_label(monkeypatch):
@@ -431,8 +441,8 @@ def test_gates_passing_with_stop_before_labels_constructs_no_label(monkeypatch):
 def test_labels_come_strictly_after_gates_and_after_the_identity_recheck(monkeypatch):
     frame, prices = _synthetic("2016-01-01", "2021-12-31")
     order = []
-    monkeypatch.setattr(V2CLI, "pre_label_gates",
-                        lambda *a, _g=V2CLI.pre_label_gates: (order.append("gates"), _g(*a))[1])
+    monkeypatch.setattr(X, "pre_label_gates",
+                        lambda *a, _g=X.pre_label_gates: (order.append("gates"), _g(*a))[1])
 
     def target(*a, **k):
         order.append("target")

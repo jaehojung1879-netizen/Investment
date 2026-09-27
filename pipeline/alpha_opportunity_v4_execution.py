@@ -48,16 +48,18 @@ import subprocess
 import numpy as np
 import pandas as pd
 
+from . import alpha_opportunity_features as F
 from . import alpha_opportunity_v4_eligibility as ELIG
 from . import historical_store as HS
 from .alpha_opportunity_features import accounting_at, price_attention_at
+from .alpha_opportunity_v2_evaluation import calendar_depth
 from .alpha_opportunity_spec import digest
 from .regional_alpha_features import BENCHMARKS, MembershipSnapshots, weekly_grid
 
-# V2: pre-label gates now run before any label exists (the V1 harness built
-# labels and called label_eligibility first -- see the execution report's
-# correction section); raw inputs are verified against the sealed identity.
-CONTRACT = "ALPHA_OPPORTUNITY_V4_KR_EXECUTION_HARNESS_V2"
+# V3. V1 built labels and called label_eligibility before the coverage gate;
+# V2 fixed the order and froze raw input identity but still applied v2's
+# region-year tolerance, which the sealed v4 spec replaces; V3 removes it.
+CONTRACT = "ALPHA_OPPORTUNITY_V4_KR_EXECUTION_HARNESS_V3"
 KR_BENCHMARK = BENCHMARKS["KR"]
 
 
@@ -123,6 +125,49 @@ def build_kr_matrix(prices, kr_memberships, raw, shares, *, start, through):
     if frame.duplicated(["date", "region", "ticker"]).any():
         raise ValueError("DUPLICATE_NAME_DATE")
     return frame.sort_values(["date", "ticker"]).reset_index(drop=True)
+
+
+# --------------------------------------------------------------------------- #
+# Pre-label gates. v2's `pre_label_gates` restricted its denominator to
+# `eligibleRegionYear & tradable`, where `eligibleRegionYear` is v2's 20%
+# region-year unvouched tolerance. v4's sealed
+# `carriedFromV3.walkForward.survivorshipEligibility` states that its own
+# per-observation `label_eligibility` REPLACES that tolerance, so v4 has no
+# region-year gate at all: the pre-label denominator is every tradable KR
+# name-date. (`label_eligibility` itself cannot run here -- its crossing
+# fact needs the window's exit session measured against a name's last
+# priced session, which is a post-signal fact; it runs after the gates.)
+# Everything else is v2's, unchanged: the same `F.coverage` over the same
+# registry, the same `coverageGate` thresholds, the same `calendar_depth`.
+# --------------------------------------------------------------------------- #
+class PreLabelStop(Exception):
+    """A registered pre-label gate failed; no label has been constructed."""
+
+    def __init__(self, status, detail):
+        super().__init__(status)
+        self.status, self.detail = status, detail
+
+
+def pre_label_gates(frame, registry, spec):
+    """FEATURE_COVERAGE then CALENDAR_SAMPLE_DEPTH on tradable KR name-dates.
+
+    Reads PIT features and the tradability flag only. Raises `PreLabelStop`
+    (`BLOCKED_BY_DATA_INTEGRITY` / `BLOCKED_BY_SAMPLE_DEPTH`) exactly where
+    v2's own gate would, minus the replaced region-year restriction.
+    """
+    cov_cfg = spec["coverageGate"]
+    observed = frame.loc[frame.region.eq("KR") & frame.tradable]
+    coverage = F.coverage(observed, registry)
+    failures = [c for c in coverage if int(c["year"]) >= cov_cfg["firstEvaluationYear"]
+                and c["coverage"] < (cov_cfg["price"] if c["feature"] in F.PRICE + F.ATTENTION
+                                     else cov_cfg["accounting"])]
+    if failures:
+        raise PreLabelStop("BLOCKED_BY_DATA_INTEGRITY", {"coverageFailures": failures})
+    dates = observed.drop_duplicates("date")
+    depth = {"KR": calendar_depth(dates.date.str[:4].value_counts().to_dict(), spec)}
+    if depth["KR"]["status"] != "SUFFICIENT_UPPER_BOUND":
+        raise PreLabelStop("BLOCKED_BY_SAMPLE_DEPTH", {"calendarDepth": depth})
+    return coverage, depth
 
 
 # --------------------------------------------------------------------------- #

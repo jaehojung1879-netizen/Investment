@@ -8,8 +8,8 @@ THIS SCRIPT IS NOT THE PREREGISTRATION'S OWN SEALED ENTRY POINT.
 `pipeline.alpha_opportunity_v4_spec.load_sealed()` as a read-only proof the
 preregistration is still exactly what was merged.
 
-ORDER, ENFORCED BY CONTROL FLOW. This is `scripts/run_alpha_opportunity_model_
-v2.py`'s own sealed order (its `runtimePreLabelGates`), narrowed to KR:
+ORDER, ENFORCED BY CONTROL FLOW. v2's sealed `runtimePreLabelGates` order,
+narrowed to KR, with the one step the sealed v4 spec replaces removed:
 
   1. sealed spec identities (v4, and v2/v3 whose sealed JSON supplies runtime
      constants and the raw-input identity)
@@ -17,23 +17,29 @@ v2.py`'s own sealed order (its `runtimePreLabelGates`), narrowed to KR:
      of every raw file read, replay manifest digest; KR terminal-action
      foundation checked for regression and frozen
   3. PIT features (`build_kr_matrix`)
-  4. tradability (v2's own `tradability_frame`, called)
-  5. REGION_YEAR_SURVIVORSHIP_ELIGIBILITY (v2's own `eligibility`, called)
-  6. FEATURE_COVERAGE and CALENDAR_SAMPLE_DEPTH on tradable, eligible
-     region-years (v2's own `pre_label_gates`, called)
-  7. only now: identity re-verified, then forward labels, v4 observation
-     eligibility, walk-forward fits and evaluation.
+  4. tradability guard (v2's own `tradability_frame`, called)
+  5. FEATURE_COVERAGE and CALENDAR_SAMPLE_DEPTH on every tradable KR
+     name-date (`alpha_opportunity_v4_execution.pre_label_gates`: v2's
+     thresholds and `calendar_depth`, v4's denominator)
+  6. only now: identity re-verified, then forward labels, v4 per-observation
+     `label_eligibility`, walk-forward fits and evaluation.
 
-Nothing before step 7 calls `target_from_sessions`, reads a price after a
+There is NO region-year survivorship step. v2's
+`REGION_YEAR_SURVIVORSHIP_ELIGIBILITY` (20% unvouched tolerance) is replaced
+by v4's per-observation `label_eligibility`, per the sealed v4 spec's
+`carriedFromV3.walkForward.survivorshipEligibility`.
+
+Nothing before step 6 calls `target_from_sessions`, reads a price after a
 signal date, builds `forwardRelativeReturn`/`beatBenchmarkNet`, or calls
-`label_eligibility`. `--stop-before-labels` ends a run after step 6 whatever
+`label_eligibility`. `--stop-before-labels` ends a run after step 5 whatever
 the gates say.
 
-The first execution recorded in this PR (harness contract V1) did NOT follow
-this order: it built forward labels and called `label_eligibility` for every
-horizon BEFORE the coverage gate. See the execution report's correction
-section; its raw report is kept as `docs/results/alpha-opportunity-model-v4-
-execution-run1-defective.json`.
+Two earlier harness revisions in this PR broke the contract. Contract V1 built
+forward labels and called `label_eligibility` BEFORE the coverage gate (raw
+report kept as `docs/results/alpha-opportunity-model-v4-execution-run1-
+defective.json`). Contract V2 fixed that but still applied v2's replaced
+region-year tolerance (it excluded nothing: every KR year was under 0.13%
+unvouched). This is contract V3.
 """
 from __future__ import annotations
 
@@ -150,17 +156,12 @@ def run_from_features(frame, prices, *, runtime_spec, registry, completeness_map
         raise ValueError("TRADABILITY_UNRESOLVED")
     frame["tradable"] = frame.tradable.astype(bool)
     frame["vouched"] = frame.vouched.astype(bool)
-    region_years = V2.eligibility(frame, runtime_spec)
-    ok = {(e["region"], e["year"]) for e in region_years if e["eligible"]}
-    frame["eligibleRegionYear"] = [(r, d[:4]) in ok for r, d in zip(frame.region, frame.date)]
-    base["regionYearEligibility"] = region_years
     # Counts only; no price after a signal date enters any of them.
     base["preLabelFrame"] = {"memberDates": int(len(frame)), "tradable": int(frame.tradable.sum()),
-                             "tradableInEligibleRegionYears": int((frame.tradable & frame.eligibleRegionYear).sum()),
                              "horizons": list(runtime_spec["horizons"])}
     try:
-        coverage, depth = V2.pre_label_gates(frame, registry, runtime_spec)
-    except V2.PreLabelStop as stop:
+        coverage, depth = X.pre_label_gates(frame, registry, runtime_spec)
+    except X.PreLabelStop as stop:
         return {**base, "status": stop.status, "stoppedBeforeLabels": True, "detail": stop.detail}
     base.update(coverage=coverage, calendarDepth=depth)
     if stop_before_labels:
@@ -168,8 +169,9 @@ def run_from_features(frame, prices, *, runtime_spec, registry, completeness_map
 
     # ---- Step 7. Labels exist only past this line. ----------------------
     before_labels()
+    # A per-DATE share for evaluate_cell's own endpoint stress, not a gate.
     unvouched_by_date = (1 - frame.groupby(["region", "date"]).vouched.mean()).to_dict()
-    regional = frame.loc[frame.eligibleRegionYear & frame.tradable].copy()
+    regional = frame.loc[frame.tradable].copy()
     regional["roundTripCost"] = [D.dated_round_trip_cost("KR", d, runtime_spec) for d in regional.date]
     schedule = sorted(regional.date.unique())
     sessions = RC.sessions("2012-01-01", "2027-12-31", "KR")
