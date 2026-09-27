@@ -1,188 +1,190 @@
 # alpha-opportunity-model-v4 — KR historical execution report
 
-> **CORRECTION IN PROGRESS — the claims below about the FIRST execution are
-> wrong.** That run's harness (contract V1) called `target_from_sessions`,
-> `attach_labels` and `label_eligibility` for every horizon BEFORE the
-> coverage gate, so forward labels WERE constructed in memory and the v4
-> eligibility policy WAS invoked, even though its report says
-> `stoppedBeforeLabels: true`. No model was fit, no fold evaluated, and no
-> Alpha/IC/calibration/portfolio result was produced or persisted. The raw
-> report is preserved unchanged as
-> `docs/results/alpha-opportunity-model-v4-execution-run1-defective.json`.
-> The repaired harness (commit `073169e3`) restores v2's sealed pre-label
-> order; a corrected, gate-only run is in progress and this document will be
-> rewritten with its result.
+Execution of the merged, sealed `alpha-opportunity-model-v4` preregistration
+(PR #159; `research_specs/alpha-opportunity-model-v4.json`, SHA-256
+`4db0a96267a8b0de41c445ac600a8064a760191abdd29d97600153a78cbab8e6`,
+unchanged). **No production behaviour changed, nothing is promoted, and no
+Alpha, IC, calibration or portfolio result exists from either run below.**
 
-This is the HISTORICAL EXECUTION of the already-merged, sealed
-`alpha-opportunity-model-v4` preregistration (PR #159,
-`research_specs/alpha-opportunity-model-v4.json`, SHA-256
-`4db0a96267a8b0de41c445ac600a8064a760191abdd29d97600153a78cbab8e6`). It
-was run exactly once, from a frozen execution snapshot, against the real,
-hash-verified sealed `replay-v16` KR ledger. **No production behaviour
-changed and nothing here is a promotion.**
+This PR ran the study twice with two different harnesses. They must not be
+read as one result.
 
-## 1. Implementation facts
+| | Run 1 (harness contract V1) — **DEFECTIVE** | Run 2 (harness contract V2) — **corrected** |
+|---|---|---|
+| Harness commit | `1ffb8a72` (plus an identical provenance re-run) | `073169e3` |
+| Report | `docs/results/alpha-opportunity-model-v4-execution-run1-defective.json` (bytes unchanged) | `docs/results/alpha-opportunity-model-v4-execution-report.json` |
+| Order | features → tradability → **forward labels → `label_eligibility`** → coverage gate | identity → features → tradability → region-year eligibility → coverage + depth gates → (stop) |
+| Forward labels built | **Yes, in memory** (see §1) | **0** (`targetFromSessionsCalls: 0`) |
+| v4 `label_eligibility` called | **Yes** | **0** (`labelEligibilityCalls: 0`) |
+| Models fit / folds evaluated | 0 / 0 | 0 / 0 (`predictCellCalls: 0`, `evaluateCellCalls: 0`) |
+| Raw input identity enforced | No | Yes, 28 sealed git blobs at `signal-history` `4ea107ed` |
+| Result | `BLOCKED_BY_DATA_INTEGRITY` | `BLOCKED_BY_DATA_INTEGRITY` |
 
-- New, non-sealed code: `pipeline/alpha_opportunity_v4_execution.py` (KR-only
-  label engine, eligibility wiring, ten `F_missingnessIntegrity`
-  diagnostics) and `scripts/execute_alpha_opportunity_model_v4.py` (the real
-  execution entry point). Neither is part of the preregistration's own
-  sealed dependency closure — `research_specs/alpha-opportunity-model-v4
-  .json`/`.sha256`, `pipeline/alpha_opportunity_v4_eligibility.py`,
-  `pipeline/alpha_opportunity_v4_spec.py` and `scripts/run_alpha_opportunity_
-  model_v4.py` are byte-identical to what PR #159 merged (verified by
-  `S4.load_sealed()` at the start of every run — a read-only check, not an
-  edit).
-- Every feature, cost, transform, walk-forward rule, model family,
-  hyperparameter, alpha decision rule and evaluation gate is read from the
-  already-sealed `research_specs/alpha-opportunity-model-v2.json` (v4's own
-  `sealedDataInputs`) and `research_specs/alpha-opportunity-model-v4.json`'s
-  own `carriedFromV3` block, assembled by `build_runtime_spec` — v4's own
-  value always wins where both specify one. No number was invented; none was
-  changed in response to this run's result.
-- `pipeline.alpha_opportunity_v2_evaluation`, `alpha_opportunity_v2_model`,
-  `alpha_opportunity_v2_decision`, `alpha_opportunity_v3_decision` and
-  `alpha_opportunity_features`'s per-name feature functions
-  (`price_attention_at`, `accounting_at`) are called completely unmodified.
-  Only the KR-only orchestration loop (membership/raw-fundamentals loading,
-  matrix assembly, tradability) is new, and it mirrors the region-scoped
-  slice of the already-sealed v1–v3 orchestration exactly.
-- 21 new unit tests (`tests/test_alpha_opportunity_v4_execution.py`), all
-  against synthetic fixtures, written and passing BEFORE this execution ran.
-  Full suite: 2,404 passed / 1 skipped before this PR's own additions; no
-  regression after them.
+## 1. Correction: the first run's sequencing defect
 
-## 2. Frozen execution provenance
+The V1 harness (`scripts/execute_alpha_opportunity_model_v4.py` at
+`1ffb8a72`/`8695e00f`) called `alpha_opportunity_v2_evaluation.
+target_from_sessions`, `attach_labels` and `alpha_opportunity_v4_eligibility.
+label_eligibility` for every horizon **before** its coverage gate. It then
+wrote `stoppedBeforeLabels: true`. That field, and this document's earlier
+statements that "zero forward-return labels were ever constructed" and that
+"the eligibility policy was never reached", were **false** for run 1.
 
-Recorded once, before any label was constructed, and verified unchanged at
-the end of the run (`assert_snapshot_matches_frozen_hash`):
+What run 1 actually did before the gate stopped it:
+
+- `target_from_sessions` read the entry and exit closes for every tradable KR
+  name-date and computed `forwardRelativeReturn`; `attach_labels` computed
+  `beatBenchmarkNet`. Run 1 had no call counters, so the count is derived
+  rather than logged: the corrected run's own pre-label frame has 85,132
+  tradable name-dates, and run 1's tradability function was a line-for-line
+  copy of v2's, so run 1 made 85,132 x 2 horizons = **170,264** label
+  constructions and the same number of `label_eligibility` calls. The
+  mechanism was also reproduced directly on the unrepaired code with a
+  synthetic frame: 1,248 label and 1,248 eligibility calls before a coverage
+  stop that reported none.
+- The labels lived only in process memory. The coverage gate raised before
+  any walk-forward fold, model fit, prediction, evaluation or diagnostic, and
+  the report it wrote contains no label, no return and no outcome-derived
+  field. Nothing outcome-derived was persisted, printed or inspected.
+- No parameter, threshold, feature, eligibility rule or gate was changed in
+  response to any Alpha outcome — none was computed. The run-1 coverage
+  numbers are identical to run 2's (§4), which could not have happened if the
+  premature labels had fed the gate: the gate reads PIT features only.
+
+Run 1 also did not apply v2's region-year survivorship step and did not
+verify the raw KR fundamentals/universe files, which the replay manifest does
+not cover. Both are fixed in V2 (§2). Those files were in fact byte-identical
+to the sealed identity for run 1 as well: every one of the 28 files matched at
+the `signal-history` head used then (`2132d8d8`), and only unread collector
+bookkeeping differed.
+
+## 2. Implementation facts (harness contract V2)
+
+- New code outside the preregistration's sealed closure:
+  `pipeline/alpha_opportunity_v4_execution.py` and
+  `scripts/execute_alpha_opportunity_model_v4.py`. The preregistration's own
+  files (`research_specs/alpha-opportunity-model-v4.json`/`.sha256`,
+  `pipeline/alpha_opportunity_v4_eligibility.py`,
+  `pipeline/alpha_opportunity_v4_spec.py`,
+  `scripts/run_alpha_opportunity_model_v4.py`) are byte-identical to PR #159.
+  `load_sealed()` checks them at every start.
+- **Order, enforced by control flow.** This is `scripts/run_alpha_opportunity_
+  model_v2.py`'s sealed `runtimePreLabelGates` order, narrowed to KR. v2's own
+  `tradability_frame`, `eligibility` and `pre_label_gates` are called, not
+  re-implemented.
+  1. sealed spec identities (v4; v2 and v3, whose sealed JSON supplies runtime
+     constants and the raw-input identity)
+  2. `SEALED_INPUT_IDENTITY`: signal-history commit, git blob of every raw
+     file read, replay-manifest digest; KR terminal-action foundation checked
+     for regression and frozen
+  3. PIT features
+  4. tradability
+  5. `REGION_YEAR_SURVIVORSHIP_ELIGIBILITY` (20% unvouched tolerance)
+  6. `FEATURE_COVERAGE` and `CALENDAR_SAMPLE_DEPTH` on tradable names in
+     eligible region-years
+  7. only after every gate passes: input identity and frozen foundation
+     re-verified, then labels, v4 observation eligibility, fits, evaluation.
+  `--stop-before-labels` ends a run after step 6 whatever the gates say.
+- 20 new regression tests. Every function that reads a forward price, builds
+  or consumes a label, or calls the eligibility policy is replaced by a spy
+  that raises on touch. The tests prove a coverage failure touches none of
+  them and that labels come strictly after the gates and the identity
+  recheck. They also cover the region-year denominator, input mutation, the
+  moving-branch guard and seal immutability. Each would have failed on V1.
+- Every feature, cost, transform, model, hyperparameter, threshold, gate and
+  decision rule is read from the sealed v2/v4 JSON. No number was changed.
+
+## 3. Frozen execution provenance (run 2)
 
 | Field | Value |
 |---|---|
-| Sealed v4 spec SHA-256 | `4db0a96267a8b0de41c445ac600a8064a760191abdd29d97600153a78cbab8e6` |
-| Preregistration `immutableVersion` | `4.0.0` |
-| Execution code commit | `1ffb8a7272603f053fa48d577ff08344f5e8ecd7` (checkout clean) |
-| Execution checkout dirty | `false` |
-| Replay ledger version | `replay-v16` |
-| Replay manifest SHA-256 | `f0781292f508a123c234ded6d28aa8e84a0dc3cc29500e14989dc0b68f53b4d2` (matches the sealed audit's own citation exactly) |
-| Data cutoff | `2026-09-14` |
-| KR terminal-action foundation snapshot | `docs/results/kr-terminal-action-reconstruction-v2.json`, unchanged since the v4 seal (current file hash == cited seal-time hash: `b1d2dcb0a8064139e601c4efab51a44e1323f93910ae70228054338a90629017`) — `assert_foundation_not_regressed` trivially holds |
-| Frozen execution-snapshot hash | `a844d39e159130ac04eddd895d8dd2b3f14b0bfc3ef3c30050afbc6b7c181b66` |
-| Deterministic seeds | `inference.seed=42`, `uncertainty.seed=42` (both carried unchanged from v3) |
-| KR ledger inputs read | `ledger/replay-inputs` (price/benchmark panels), `ledger/historical/replay-v16/inputs.json`, `ledger/fundamentals/kr` (126 tickers, DART raw shards), `ledger/universe/kr` (weekly top-120 snapshots, 2013–2026) |
+| v4 spec SHA-256 | `4db0a96267a8b0de41c445ac600a8064a760191abdd29d97600153a78cbab8e6` |
+| Harness contract / commit | `ALPHA_OPPORTUNITY_V4_KR_EXECUTION_HARNESS_V2` / `073169e34290e5084c34a59e9d2e07b689a6f458` (clean) |
+| `signal-history` commit (checked out and verified) | `4ea107ed0cde289f0a049a65ff13d2441a786710`, the commit v3's sealed `futureExecutionInputs` and v2's sealed `snapshots` both name |
+| Replay manifest SHA-256 | `f0781292f508a123c234ded6d28aa8e84a0dc3cc29500e14989dc0b68f53b4d2` |
+| Raw input identity | 28 git blobs: `ledger/fundamentals/kr/dart-2015…2026.jsonl.gz`, `shares.jsonl.gz`, `ledger/universe/kr/krx-universe-2013…2026.jsonl.gz`, `ledger/historical/replay-v16/inputs.json` — exactly v3's sealed list, listed in the JSON report |
+| Input identity SHA-256 | `674a8b976707012438d2613fc54f238ffefe1179e5959461ce5a6d380f0a8f26` |
+| KR terminal-action foundation | unchanged since seal; frozen snapshot hash `a844d39e159130ac04eddd895d8dd2b3f14b0bfc3ef3c30050afbc6b7c181b66` |
+| Data cutoff / seeds | `2026-09-14` / inference 42, uncertainty 42 |
 
-The run was executed twice against this identical frozen snapshot — once
-before, once after the harness code itself was committed — to both correctly
-stamp `executionCodeCommitSha` and verify determinism. The two runs are
-byte-identical in every field except that one commit-SHA string.
+**Why this identity contract, and not the current branch head.** The replay
+manifest content-addresses price, benchmark and corporate-event objects, but
+not the raw `ledger/fundamentals/kr` and `ledger/universe/kr` shards the
+feature path reads. The only sealed statement of those shards' identity in
+this lineage is v3's `futureExecutionInputs.gitBlobSha1`, the same files and
+hashes as v2's sealed `inputFiles`. v3's JSON is one of v4's own hash-pinned
+`sealedDataInputs`. v4's own spec pins no raw-shard identity and names no
+newer one. So the sealed identity governs, rather than whichever
+`signal-history` head a run happens to check out. Collector bookkeeping that
+v3 names as unread (`fundamentals/kr/manifest.json`, `absent.json`,
+`krx-universe-done.json`) is outside the identity, as v3's `excludedAdjacent`
+states.
 
-## 3. OOS results
+## 4. Preregistered gate decisions (run 2)
 
-**None were computed.** The run stopped at the pre-label coverage gate
-(`pre_label_gates`, inherited unmodified from `alpha-opportunity-model-v2`'s
-own `coverageGate`: `firstEvaluationYear=2016`, `accounting` floor `0.2`) —
-**zero forward-return labels were ever constructed**, zero models were
-fitted, zero folds were evaluated. `results: []`, `folds: []`,
-`numericalFailures: []`.
+**`BLOCKED_BY_DATA_INTEGRITY`, `stoppedBeforeLabels: true`.** All four call
+counters are zero.
 
-## 4. Preregistered gate decisions
+Region-year survivorship eligibility (v2 rule, 20% unvouched tolerance):
+**all 14 KR years eligible**. The unvouched share runs from 0.000% to 0.128%
+(2014), so 85,132 of 85,680 member-dates are tradable and all 85,132 lie in
+eligible years. The step excluded nothing.
 
-**Status: `BLOCKED_BY_DATA_INTEGRITY`** (one of the four statuses
-`alpha_opportunity_v4_spec.STATUSES` names; `stoppedBeforeLabels: true`).
+Coverage failures (tradable, eligible region-years, `firstEvaluationYear =
+2016`, accounting floor `0.2`, inherited from v2 unmodified):
 
-Coverage failures (KR accounting features, tradable name-dates in the built
-feature matrix, `firstEvaluationYear=2016` onward):
-
-| Year | Feature | Coverage | Observed / Universe rows |
+| Year | Feature | Coverage | Observed / rows |
 |---|---|---|---|
 | 2016 | `ocfToNetIncomePct` | 3.99% | 248 / 6,212 |
-| 2016 | `assetGrowthPct` | **0.00%** | 0 / 6,212 |
-| 2016 | `debtGrowthPct` | **0.00%** | 0 / 6,212 |
+| 2016 | `assetGrowthPct` | 0.00% | 0 / 6,212 |
+| 2016 | `debtGrowthPct` | 0.00% | 0 / 6,212 |
 | 2025 | `ocfToNetIncomePct` | 17.42% | 1,083 / 6,218 |
 
-All against the inherited (v2/v3, unmodified) `0.2` accounting-coverage
-floor. Every other year (2017–2024, 2026) and every price/attention feature
-clears the gate.
+Every price and attention feature, and every other year, clears the gate.
+The calendar-depth gate was not reached because coverage stops first.
 
-This gate is exactly the one `alpha-opportunity-model-v2`'s own script
-already enforced, carried forward unmodified — it is not new to this
-execution, and passing or failing it says nothing about the eligibility
-policy that is v4's own design change (see §6): **the eligibility policy was
-never reached in this run.**
+## 5. Descriptive diagnostics — why the gate fires (input data, not outcomes)
 
-## 5. Descriptive diagnostics — WHY the gate fired, investigated (not tuned around)
+These findings come from run 1's investigation and are unaffected by its
+defect. They read only filing metadata and account presence, never a return.
+Run 2 reproduces the same four failures exactly.
 
-Two independent, root-caused, disclosable data facts, verified directly
-against the real fetched KR ledger before this report was written — neither
-is a bug in this harness or in the sealed preregistration:
+- **2016, exact zeros.** The raw DART collection's earliest fiscal year, 2015,
+  has only the annual report (`11011`: 81 tickers, 0 quarterly rows).
+  `assetGrowthPct` and `debtGrowthPct` need a same-report-code prior-year
+  filing. During calendar 2016 the current filing is always a fiscal-2016
+  quarterly, because the FY2016 annual is not filed until about March 2017.
+  None of those quarterlies has a fiscal-2015 counterpart, so both features
+  are structurally zero for every 2016 signal date. That extends this
+  repository's "dark for the first two years" PIT-fundamentals finding to a
+  third year for these two features.
+- **2025, 17.42%.** Fiscal 2024 and 2025 have all four report codes for all
+  126 DART tickers, so the 2016 mechanism does not apply. The cause is
+  account completeness per filing. For example, `000080.KS`'s
+  `(2024, '11014')` filing lacks `당기순이익` and `부채총계` although its
+  neighbouring filings carry them. A TTM rollforward needs three filings, so
+  these gaps compound.
+- Only 126 of the 260 KR securities ever in the top-120 universe have any DART
+  fundamentals (48.5%). This lowers every accounting feature's ceiling in
+  every year.
 
-**(a) 2016 growth features (0% both).** The raw DART collection's earliest
-fiscal year is 2015, and for 2015 **only the annual report (code `11011`) was
-collected — no quarterly filings exist for fiscal year 2015 at all**
-(measured: 81 tickers each carry exactly one `(2015, '11011')` filing, zero
-`(2015, '11012'/'11013'/'11014')` rows). `assetGrowthPct`/`debtGrowthPct`
-require a same-report-code prior-year filing
-(`accounting_quality.derive_kr_fields` → `_growth_pct(current, prior)`). During
-calendar year 2016 itself, the filing `alpha_opportunity_features.accounting_at`
-picks as "current" is always one of fiscal-year-2016's own report codes
-(11011/12/13/14, whichever has most recently become PIT-visible) — the
-fiscal-year-2016 ANNUAL report is not filed until ~March 2017, so it can
-never be "current" during 2016. Every fiscal-year-2016 QUARTERLY filing that
-IS current during 2016 needs a fiscal-year-2015 SAME-quarter filing that this
-collection never has. The result is a **structural, deterministic** zero for
-every signal date in calendar year 2016 — a sharper, newly-measured version
-of this repository's own PIT-fundamentals invariant ("DART serves from 2015
-... Korean value and quality are dark for the first two years"): the
-`ocfToNetIncomePct`/`assetGrowthPct`/`debtGrowthPct` darkness measured here
-extends into a **third** year (2016) for the two growth-rate features
-specifically, because 2015's own collection is annual-only.
-
-**(b) 2025 `ocfToNetIncomePct` (17.4%).** Not explained by (a): fiscal years
-2024 and 2025 both have full four-report-code coverage across all 126
-DART-tracked tickers. Root cause instead: `dart_derive.trailing_twelve_months`'s
-rollforward needs `당기순이익` (net income) present in BOTH the current AND the
-prior-year same-quarter filing's own `accounts` dict, and DART's own reported
-account set varies filing-by-filing — measured directly on one real example
-(`000080.KS`, `(2024, '11014')`): that filing's `accounts` carry `매출액`,
-`영업이익`, `영업활동현금흐름`, `유형자산의취득`, `자본총계`, `자산총계` but
-**not** `당기순이익` or `부채총계`, even though the SAME ticker's other
-quarters and its annual filings do carry it. This is a per-filing DART
-reporting-completeness gap this repository's own PIT-fundamentals invariants
-already anticipate ("a blank line item is `None`, never `0.0`") — never
-fabricated here, and compounding across the three filings a TTM rollforward
-needs is what drags aggregate coverage down for this specific flow account
-in this specific year. 126 of 260 ever-top-120 KR tickers (48.5%) have DART
-fundamentals collected at all (matching `alpha-research-foundation-v2`'s own
-126-ticker citation exactly), which lowers every accounting feature's ceiling
-further but does not by itself explain a 17% (rather than ~50%) reading —
-the per-filing account-completeness gap above is the dominant mechanism.
-
-Neither fact was known to require this specific gate to fire before this
-run; both were investigated with real, re-executable evidence after the run
-stopped, exactly as the two-phase discipline requires (`STOP and document
-it`, never `silently repair and rerun`). No threshold, feature, or gate was
-changed in response.
+None of this was addressed by loosening the floor, imputing, or excluding
+2016 or 2025.
 
 ## 6. Limitations
 
-- **The eligibility policy — v4's entire design contribution — was never
-  exercised.** No observation ever reached `label_eligibility`; the 22
-  audited KR terminated securities' known-blocked completeness evidence
-  never entered a single label decision in this run. This report cannot say
-  anything about whether that policy behaves as intended on real labelled
-  data; it can only report (§1–2) that it is wired correctly against
-  synthetic fixtures.
-- **The `0.2` accounting coverage floor is inherited from v2, unmodified.**
-  It was designed for a joint US+KR study; whether it is the right bar for a
-  KR-only study is a legitimate question this report does not answer — and
-  is explicitly NOT one this run may answer by loosening it.
-- **This is one execution, from one frozen ledger snapshot** (`replay-v16`
-  through `2026-09-14`). A later KR fundamentals collection run that adds
-  quarterly 2015 filings, or improves per-filing DART account completeness,
-  could change this specific gate's outcome without any code or policy
-  change — exactly what `assert_foundation_not_regressed`/`freeze_execution_
-  snapshot` exist to make auditable rather than silent.
-- **No promotion, no production change, regardless of this result.**
-  `promotionEligible: false` is asserted in the report schema itself.
-- The full, byte-identical result is committed at
-  `docs/results/alpha-opportunity-model-v4-execution-report.json`.
+- **The v4 eligibility policy has produced no evidence on real data.** Run 2
+  never calls it. Run 1 called it, but on labels the harness should not yet
+  have built, and nothing downstream used the result. Whether the policy
+  behaves as intended on labelled data is untested.
+- **Conflict flagged for review:** v4's sealed
+  `walkForward.survivorshipEligibility` text says the label-eligibility policy
+  "replaces" v2's 20% region-year tolerance. Run 2 applies v2's step because
+  the pre-label order is v2's sealed `runtimePreLabelGates`. On this KR sample
+  the step excludes nothing (max unvouched 0.128%), so the conflict does not
+  change the result. It would matter if a future KR year exceeded 20%.
+- The `0.2` accounting floor comes from a joint US+KR design and is inherited
+  unmodified; this report does not judge whether it suits KR-only.
+- One sealed snapshot. A foundation or DART collection change could change the
+  gate outcome without any code or policy change.
+- No promotion (`promotionEligible: false`) and no production change.

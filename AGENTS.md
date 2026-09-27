@@ -1648,20 +1648,47 @@
   opportunity-model-v2.json` (already one of v4's own `sealedDataInputs`)
   and overlays v4's own explicit `carriedFromV3` values on top, which always
   win where both specify one.
-- THE FIRST REAL EXECUTION STOPPED AT THE PRE-LABEL COVERAGE GATE, BEFORE
-  THE ELIGIBILITY POLICY -- V4'S OWN DESIGN CONTRIBUTION -- WAS EVER
-  EXERCISED. Run against the real, hash-verified sealed `replay-v16` KR
-  ledger (replay manifest SHA-256 `f0781292f508a123c234ded6d28aa8e84a0dc3cc
-  29500e14989dc0b68f53b4d2`, matching the sealed survivorship audit's own
-  citation exactly): `BLOCKED_BY_DATA_INTEGRITY`, `stoppedBeforeLabels:
-  true`, zero labels constructed, zero models fit. The gate itself is
-  inherited unmodified from `alpha-opportunity-model-v2`'s own
-  `coverageGate` (`firstEvaluationYear=2016`, accounting floor `0.2`) --
-  not new to this execution, and its firing says nothing about whether
-  `label_eligibility` behaves correctly on real labelled data, only that no
-  observation ever reached it. `docs/alpha-opportunity-model-v4-execution-
-  report.md` and `docs/results/alpha-opportunity-model-v4-execution-report
-  .json` are the full, byte-identical record.
+- A "PRE-LABEL" GATE IS PRE-LABEL ONLY IF NOTHING BEFORE IT CAN BUILD A
+  LABEL, AND THE FIRST EXECUTION'S WAS NOT. Harness contract V1 called
+  `target_from_sessions`, `attach_labels` and `label_eligibility` for every
+  horizon BEFORE its coverage gate, then wrote `stoppedBeforeLabels: true`.
+  The claims first published here, that zero labels were constructed and
+  that the eligibility policy was never exercised, were false. Derived from
+  the corrected run's 85,132 tradable name-dates x 2 horizons, run 1 built
+  about 170,264 forward labels in memory and made as many eligibility calls
+  (reproduced directly on the unrepaired code: 1,248 of each before a stop
+  that reported none). Nothing downstream consumed them: no fold, fit,
+  prediction, evaluation or persisted field. The raw report is kept
+  byte-identical as `docs/results/alpha-opportunity-model-v4-execution-
+  run1-defective.json` rather than deleted. Contract V2 restores
+  `scripts/run_alpha_opportunity_model_v2.py`'s sealed `runtimePreLabelGates`
+  order by CALLING v2's own `tradability_frame`, `eligibility` and
+  `pre_label_gates`. Call counters incremented at the call sites put
+  `targetFromSessionsCalls`/`labelEligibilityCalls` in every report, and
+  regression tests replace every outcome-reading function with a spy that
+  raises on touch. A flag that says what happened is not evidence that it
+  did; the counter and the spy are.
+- THE CORRECTED EXECUTION STOPPED AT THE SAME GATE WITH ZERO LABELS.
+  Contract V2 at `073169e3`, run with `--stop-before-labels`, on the sealed
+  `signal-history` commit `4ea107ed`: `BLOCKED_BY_DATA_INTEGRITY`, all four
+  call counters zero, coverage failures identical to run 1's (the gate reads
+  PIT features only, so run 1's premature labels could not have moved it).
+  v2's region-year survivorship step excludes nothing for KR: the maximum
+  unvouched share is 0.128% (2014) against a 20% tolerance. The sealed v4
+  spec's `walkForward.survivorshipEligibility` says the label-eligibility
+  policy "replaces" that tolerance. The conflict is flagged in the execution
+  report and does not bind on this sample.
+- THE REPLAY MANIFEST DOES NOT COVER THE RAW SHARDS THE FEATURE PATH READS,
+  SO THEIR IDENTITY IS VERIFIED SEPARATELY. `ledger/fundamentals/kr` and
+  `ledger/universe/kr` live beside the replay store, not inside it. V2
+  verifies all 28 files by git blob against `alpha-opportunity-model-v3`'s
+  sealed `futureExecutionInputs` (identical to v2's sealed `inputFiles`),
+  refuses any unsealed shard the harness would read, and re-verifies after
+  the gates, before any label. The workflow never checks out `signal-history`
+  by branch name. The freeze job pins the sealed commit and publishes the
+  commit and identity hash, and the execute job checks out that exact
+  commit and refuses a mismatch. A moving branch cannot put the two jobs on
+  different snapshots.
 - A COVERAGE-GATE FAILURE IS INVESTIGATED TO A MECHANISM BEFORE IT IS
   ACCEPTED AS A RESULT, THE SAME DISCIPLINE THIS FILE'S OWN "GENUINE BUG"
   RULE REQUIRES ONE LEVEL UP. Two of the four coverage failures read exactly
@@ -1695,16 +1722,10 @@
   checkout. This lowers every KR accounting feature's coverage ceiling in
   every year and is a real, standing limitation the 2016/2025 findings
   above sit on top of, not a substitute explanation for either.
-- A SECOND EXECUTION WAS RUN, DELIBERATELY, PURELY TO RE-STAMP CORRECT
-  PROVENANCE, NEVER TO CHANGE A RESULT. The first run executed before its
-  own harness code was committed (`executionCodeCommitSha` would have named
-  the merge commit, not the commit that actually produced the report); a
-  second run against the IDENTICAL frozen execution snapshot, after
-  committing, reproduced the byte-identical `BLOCKED_BY_DATA_INTEGRITY`
-  result with only the commit-sha field changed -- itself a small,
-  deliberate determinism check in the same spirit as this file's own
-  replay-determinism invariants, not a rerun in response to an unwanted
-  number.
+- RUN 1 WAS EXECUTED TWICE, AND BOTH EXECUTIONS CARRY THE SAME DEFECT. The
+  second execution re-stamped `executionCodeCommitSha` after the V1 code was
+  committed and reproduced a byte-identical report. That is a determinism
+  check of the V1 harness, not a correction of its ordering.
 - NO PROMOTION, NO PRODUCTION CHANGE, REGARDLESS OF THIS RESULT.
   `promotionEligible: false` is asserted in the execution report's own
   schema; nothing about the KR terminal-action foundation, the eligibility
