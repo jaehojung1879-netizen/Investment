@@ -219,14 +219,52 @@ under its own status, `AXIS_EXCLUDED_ONLY`, kept apart from `NOT_FOUND`
 "never stated at all"). This can only ever REMOVE a candidate from
 ambiguity, never invent one.
 
-**This fix has not yet been re-validated against live DART content.**
-Re-running `raw-probe-2015` against the live API on the repaired parser —
-the obvious next step — needs a `workflow_dispatch` call this session's
-GitHub token cannot make: a direct attempt returned `403 Resource not
-accessible by integration`, the same class of blocker `AGENTS.md` v2.29
-already recorded for a different workflow. This is a genuine, confirmed
-permission blocker, not a DART-side refusal and not a code defect — the
-exact next operator action is in §10.
+**This fix has not yet been re-validated against live DART content from
+this session** — a direct `workflow_dispatch` attempt returned `403
+Resource not accessible by integration`, the same class of blocker
+`AGENTS.md` v2.29 already recorded for a different workflow. But the
+operator validated it directly: see §3F.
+
+**F. The real collector ran, and validated the fix — then a real workflow
+bug discarded the result.** GitHub Actions run
+[36313209561](https://github.com/jaehojung1879-netizen/Investment/actions/runs/36313209561)
+(2026-09-27, `target: raw-xbrl-2015`, this branch at `fee7cba1`, real
+`DART_API_KEY`) ran the actual collector, not the probe, across the full
+254-issuer PIT universe: 762 (ticker, stage) combinations checked, 1,369
+calls, `datasetComplete: true`. Measured:
+
+| Classification | Count |
+|---|---|
+| `XBRL_ZIP_SERVED` | 526 |
+| `NO_ORIGINAL_FILING_INDEX` | 154 |
+| `FILE_NOT_AVAILABLE_014` | 81 |
+| `AMBIGUOUS_REPORT_MATCH` | 1 |
+
+**525 of 526 served ZIPs (99.8%) produced a record with at least one
+resolved account** — against 3 of 18 (16.7%) on the small pre-fix sample.
+This is the strongest evidence yet that the dimensional-qualifier allowlist
+(§3E) generalises across the real population, not just the 8-ticker sample
+it was built from.
+
+The run then failed at the commit-and-push step: `fatal: pathspec
+'ledger/fundamentals/kr-canonical-v2' did not match any files` — a real
+workflow defect, not a DART or parser problem. `raw-xbrl-2015` alone never
+creates `kr-canonical-v2` (that is `raw-statements`' own rebuild step, never
+run in this branch's history), and a bare `git add` on a path that does not
+exist at all is a hard git error, not a no-op. **All 525 real, live-
+collected records were discarded before reaching `signal-history`** — the
+commit step aborted before the `git commit`/`git push` lines ever ran.
+Fixed on this branch (commit `4c43ce36`): the step now adds only the
+candidate paths that actually exist that run, proven by a regression test
+that extracts the real shell loop from the workflow file and runs it
+against a repo missing `kr-canonical-v2`. The coverage audit this same run
+printed is consequently **not a real "after" reading**: with `kr-canonical-
+v2` absent, the merged candidate store held only the 525 fiscal-2015 XBRL
+records and nothing from any other year, so every 2016–2026 gate cell read
+`0.0` by construction — there was no fiscal-2016+ filing in the store to
+compute a TTM from, independent of whether the fiscal-2015 prior was
+correct. §10 names re-running `raw-xbrl-2015` (now that the commit bug is
+fixed) as the immediate next step.
 
 ## 4. Collection-universe gap
 
@@ -465,62 +503,53 @@ writes nothing. Before and upper bounds, by gate year:
 The job is in `fundamentals.yml` on this branch. It can be dispatched from
 the branch before merge.
 
-**Blocked: this session cannot dispatch it.** A direct `workflow_dispatch`
-call against `fundamentals.yml` from this session returned `403 Resource
-not accessible by integration` — a GitHub App token permission this
-environment's credentials do not carry, not a DART-side refusal and not a
-code defect (the same class of blocker `AGENTS.md` v2.29 already recorded
-for `kr-corporate-action-collection.yml`). Every step below needs a human
-operator to dispatch it from the GitHub Actions UI (or a token with
-`workflow_dispatch` scope); this session can only build, validate and
-report.
+**This session cannot dispatch the workflow itself.** A direct
+`workflow_dispatch` call against `fundamentals.yml`, and a `rerun_workflow_
+run` on an existing run, both returned `403 Resource not accessible by
+integration` — a GitHub App token permission this environment's credentials
+do not carry, not a DART-side refusal and not a code defect (the same class
+of blocker `AGENTS.md` v2.29 already recorded for `kr-corporate-action-
+collection.yml`). The operator has been dispatching runs directly, and §3F
+already gives strong evidence the parser fix works on the real population
+(525 of 526 served ZIPs resolved) — a separate confirming `raw-probe-2015`
+run is no longer the blocking step; the commit-step bug §3F found is.
 
-1. ~~`target: raw-probe-2015`~~ **Done twice.** Run
+1. ~~`target: raw-probe-2015`~~ **Done twice**, both wrote nothing to
+   `signal-history`: run
    [36300578100](https://github.com/jaehojung1879-netizen/Investment/actions/runs/36300578100)
    (single-stage sample, §3D) and run
    [36304452901](https://github.com/jaehojung1879-netizen/Investment/actions/runs/36304452901)
-   (expanded all-stage probe with `--dump-entries`, §3E) — both wrote
-   nothing to `signal-history`. The second run's real evidence found and
-   fixed a genuine parser defect (§3E); the fix has not yet been
-   re-validated against live content.
-2. **`target: raw-probe-2015` again, on the current head (`3a3e2ad7`),
-   with `--dump-entries`.** The single remaining step before trusting the
-   parser on real data: confirm the repaired
-   `pipeline/dart_xbrl_statements.py` now resolves most of the 15
-   previously-`AMBIGUOUS` filings for the evidence-based reason §3E
-   describes (an eligible, unqualified or Consolidated-preferred fact
-   survives), that the 3 already-`RESOLVED` filings stay resolved and
-   unchanged, and that no `RESOLVED` case silently became `NOT_FOUND` or a
-   different value (which would mean the exclusion rule was wrong, not
-   merely incomplete). `scripts/collect_dart_raw_statements.py`'s
-   `candidateAccounts[account].candidateDetail` now reports every
-   candidate's `contextRef`/`dims`/`eligibleAxisShape` for exactly this
-   review, without needing `--dump-entries` at all (that flag is only for
-   the raw byte snippet, still useful for anything this allowlist has not
-   yet seen).
-3. **`target: raw-xbrl-2015`**, other inputs empty (`max_calls` 1,800,
-   `max_minutes` 290). Not yet run. This is the collector that would
-   actually recover fiscal-2015 quarterlies where `fnlttXbrl.xml` serves
-   them. Its job summary publishes real classification counts (how many
-   stages got `XBRL_ZIP_SERVED` vs `FILE_NOT_AVAILABLE_014` vs the
-   selection-side codes) and the merged candidate's real "after" coverage
-   for 2016 — the first real measurement of whether original-XBRL recovery
-   actually clears the 20% floor, since every number before this is an
-   upper bound. Run only after step 2 confirms the parser behaves as
-   evidence-explained, not merely that it changed the resolved count.
+   (expanded all-stage probe with `--dump-entries`, §3E) — the second run's
+   real evidence found and fixed the dimensional-qualifier parser defect.
+2. ~~`target: raw-xbrl-2015`~~ **Run once, real collection succeeded,
+   commit failed.** Run
+   [36313209561](https://github.com/jaehojung1879-netizen/Investment/actions/runs/36313209561)
+   (§3F) collected 525 real records (525 of 526 served ZIPs resolved) but
+   then crashed at the commit step on a nonexistent `kr-canonical-v2` path,
+   discarding all of it. Fixed on this branch (`4c43ce36`).
+3. **`target: raw-xbrl-2015` again, on the current head (`4c43ce36`).**
+   The immediate next step: re-run the exact same collection (it is
+   idempotent — `fetch-state.json` already marks all 762 (ticker, stage)
+   pairs checked, so this run should be fast and should reproduce the same
+   525-record result) and confirm the commit step now succeeds and pushes
+   to `signal-history`. This is the run that actually lands real data.
 4. **`target: raw-statements`**, `raw_years`/`max_calls`/`max_minutes`
-   empty. Re-run until the log reports `"datasetComplete": true` (2015 now
-   asks only for the annual report there, so this is fewer calls than
-   before — about 12,140 filings over 7–9 runs). If step 3 already ran,
-   this step's audit reads the merged candidate (canonical-v2 + xbrl-
-   original) automatically; if not, it audits canonical-v2 alone, exactly
-   as before.
+   empty. Not yet run at all. Re-run until the log reports
+   `"datasetComplete": true` (2015 now asks only for the annual report
+   there, so this is fewer calls than before — about 12,140 filings over
+   7–9 runs). Once step 3 has actually landed the xbrl-original store on
+   `signal-history`, this step's audit reads the merged candidate
+   (canonical-v2 + xbrl-original) automatically — this is the run that
+   produces the first REAL "after" coverage number for 2016, since §3F's
+   own audit read every 2016+ cell as 0.0 only because no other year's
+   filing existed in the store yet, not because the fiscal-2015 recovery
+   failed.
 
-Review before running step 3: `pipeline/dart_xbrl_statements.py`'s account
-extraction has never been exercised against a real served ZIP's CONTENTS in
-this session beyond the envelope-level checks step 2 exists to run (§3E,
-§7). Its logic is built from confirmed element identifiers, general XBRL
-convention, and now three axis families measured directly from real served
-content — still marked `CANDIDATE_UNCONFIRMED` until step 2's own review
-confirms the resolved values themselves (not just the resolved COUNT) look
-right.
+`pipeline/dart_xbrl_statements.py`'s account extraction still carries
+`CANDIDATE_UNCONFIRMED`: 525 of 526 served ZIPs producing at least one
+resolved account is strong evidence the mechanism generalises, but nobody
+has read a served ZIP's raw content by eye end to end in this session to
+confirm the resolved VALUES themselves are correct, only that the
+allowlist logic runs and produces a value most of the time. `--dump-dir`
+on a real `raw-xbrl-2015` run remains the way to promote this to
+`CONFIRMED_LIVE`.

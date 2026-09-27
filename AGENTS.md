@@ -1946,6 +1946,58 @@
   `signal-history` and no "after" coverage figure exists anywhere in this
   repository yet.
 
+## KR original-fiscal-2015-XBRL live-collection invariants (v2.36)
+
+- THE REAL COLLECTOR VALIDATED THE PARSER FIX FAR MORE STRONGLY THAN THE
+  SAMPLE PROBE COULD, AND THEN A DIFFERENT REAL DEFECT DISCARDED THE RESULT.
+  GitHub Actions run `36313209561` (operator-dispatched, `target: raw-xbrl-
+  2015`, this branch at `fee7cba1`, real `DART_API_KEY`) ran the actual
+  collector across the full 254-issuer PIT universe: 762 (ticker, stage)
+  pairs, 1,369 calls, `datasetComplete: true`. 526 packages served a real
+  ZIP; **525 of those 526 (99.8%) produced a record with at least one
+  resolved account** -- against 3 of 18 (16.7%) on the small pre-fix
+  sample that found the defect in the first place. This is measured on the
+  full population the fix was never tuned against, not the 8-ticker sample
+  it was built from.
+- A COLLECTOR SUCCEEDING IS NOT THE SAME FACT AS ITS DATA REACHING
+  `signal-history`, AND THIS RUN PROVED WHY THE DISTINCTION MATTERS. The
+  same run's commit-and-push step failed: `fatal: pathspec 'ledger/
+  fundamentals/kr-canonical-v2' did not match any files`. `raw-xbrl-2015`
+  alone never creates `kr-canonical-v2` (that is `raw-statements`' own
+  rebuild step, never run on this branch), and a bare `git add` on a path
+  that does not exist at all is a hard git error, not a no-op -- unlike a
+  glob that matches zero files. All 525 real, live-collected records were
+  discarded before ever reaching `signal-history`, and the workflow's own
+  green/red status on the earlier steps gave no indication of this until
+  the final step's own failure.
+- A WORKFLOW FIX GETS THE SAME EVIDENTIARY STANDARD AS A CODE FIX: A
+  REGRESSION TEST EXTRACTED FROM THE REAL FAILING SCRIPT, NOT A REWRITE
+  ASSERTED CORRECT BY INSPECTION. `fundamentals.yml`'s commit step now adds
+  only the candidate paths that exist that run (`for path in ...; do [ -e
+  "$path" ] && git add "$path"; done`), and `test_commit_step_never_
+  crashes_when_one_candidate_path_is_missing` extracts that exact shell
+  loop from the workflow file's own text and runs it for real, in a temp
+  git repo missing `kr-canonical-v2` -- reproducing the real run's own
+  state rather than a hypothetical one.
+- THE SAME RUN'S OWN COVERAGE AUDIT READ EVERY 2016-2026 GATE CELL AS
+  EXACTLY 0.0, AND THAT IS NOT A PARSER FAILURE. With `kr-canonical-v2`
+  never built (no `raw-statements` run has ever landed on this branch), the
+  merged candidate store this run audited held ONLY the 525 fiscal-2015
+  XBRL records and no filing from any other year at all -- so a 2016 TTM
+  computation had no fiscal-2016 "current" filing to roll forward from,
+  independent of whether the fiscal-2015 PRIOR the XBRL path supplied was
+  correct. Reading this 0.0 as "the fix did not help" would have been
+  exactly the genuine-bug-vs-harness-defect confusion this file's own KR
+  accounting coverage repair invariants (v2.33) already warn against one
+  level up. The real "after" reading needs `raw-statements` to actually run
+  and land `kr-canonical-v2` first.
+- STILL NEITHER THE 20% GATE NOR A REAL "AFTER" COVERAGE NUMBER HAS MOVED.
+  The 525 records collected by run `36313209561` never reached `signal-
+  history` (the commit failed), so the sealed store, `kr-canonical-v2`, and
+  every published coverage figure are unchanged. The next real measurement
+  needs `raw-xbrl-2015` re-run on the fixed commit step, then `raw-
+  statements` run to `datasetComplete: true`.
+
 ## Lint gate invariants (v2.11)
 
 - The enabled rule set reports ZERO findings on `main`. A rule is turned on in the
