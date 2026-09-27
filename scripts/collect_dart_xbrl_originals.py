@@ -56,9 +56,30 @@ from scripts import collect_dart_raw_statements as C  # noqa: E402
 STAGES = ("11013", "11012", "11014")
 CONTRACT = "DART_XBRL_ORIGINAL_STORE_V1"
 
+# `LIST_JSON_ERROR` is this collector's own request-layer classification (a
+# `list.json` call that raised or returned no rows for a reason other than a
+# genuine empty index); it is not one of `dart_xbrl_originals.CLASSIFICATIONS`
+# because that module never makes the `list.json` call itself.
+LIST_JSON_ERROR = "LIST_JSON_ERROR"
+
+# A request/network failure is never evidence the filing doesn't exist -- the
+# same rule `dart_raw_statements.SOURCE_ABSENCE_STATUSES` already enforces one
+# level down. Only `XO.REQUEST_ERROR` (an unparseable, non-ZIP `fnlttXbrl.xml`
+# response) and `LIST_JSON_ERROR` are transient in this sense: every other
+# classification is either a served ZIP or a fact `list.json` itself stated
+# (no matching filing, only an amendment, an ambiguous match, or DART's own
+# confirmed 014 "file does not exist" envelope for the exact original receipt).
+RETRYABLE_CLASSIFICATIONS = frozenset({LIST_JSON_ERROR, XO.REQUEST_ERROR})
+
 
 def record_id(ticker: str, stage: str) -> str:
     return f"xbrl2015:{ticker}:{stage}"
+
+
+def _needs_fetch(rid: str, state: dict) -> bool:
+    """True if `rid` has never been checked, or was last checked with a retryable outcome."""
+    row = state.get(rid)
+    return row is None or row["classification"] in RETRYABLE_CLASSIFICATIONS
 
 
 def load_state(store: Path) -> dict:
@@ -86,7 +107,7 @@ def collect(store: Path, key: str, universe: dict, budget: "C.Budget", *,
     by_id = {r["id"]: r for r in records}
 
     pending = [(ticker, stage) for ticker in sorted(resolved) for stage in STAGES
-              if record_id(ticker, stage) not in state]
+              if _needs_fetch(record_id(ticker, stage), state)]
     collected_at = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
     stop_reason, written = "WORK_LIST_EXHAUSTED", 0
 
@@ -102,7 +123,7 @@ def collect(store: Path, key: str, universe: dict, budget: "C.Budget", *,
             stop_reason = "TIME_BUDGET_SPENT"
             break
         if list_error:
-            state[rid] = {"ticker": ticker, "stage": stage, "classification": "LIST_JSON_ERROR",
+            state[rid] = {"ticker": ticker, "stage": stage, "classification": LIST_JSON_ERROR,
                          "detail": list_error, "checkedAt": collected_at}
             continue
         row, selection = XO.select_original_filing(periodic, stage)
@@ -153,7 +174,7 @@ def collect(store: Path, key: str, universe: dict, budget: "C.Budget", *,
         HS.write_shard(store / path_name, rows)
     save_state(store, state)
 
-    remaining = [(t, s) for t in sorted(resolved) for s in STAGES if record_id(t, s) not in state]
+    remaining = [(t, s) for t in sorted(resolved) for s in STAGES if _needs_fetch(record_id(t, s), state)]
     classifications = {}
     for row in state.values():
         classifications[row["classification"]] = classifications.get(row["classification"], 0) + 1

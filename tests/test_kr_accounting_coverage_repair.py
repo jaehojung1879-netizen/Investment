@@ -818,6 +818,96 @@ def test_xbrl_collector_dump_dir_writes_the_raw_zip_and_never_commits_it(tmp_pat
 
 
 # --------------------------------------------------------------------------- #
+# Retryable vs. terminal fetch-state classifications. A request/network
+# failure (LIST_JSON_ERROR, XO.REQUEST_ERROR) is never evidence the filing
+# doesn't exist, so it must never settle a (ticker, stage) the way a genuine
+# `list.json`/`fnlttXbrl.xml` answer does.
+# --------------------------------------------------------------------------- #
+def test_needs_fetch_treats_only_request_layer_errors_as_retryable():
+    assert XCOLLECT._needs_fetch("r", {}) is True
+    for terminal in (XO.XBRL_ZIP_SERVED, XO.FILE_NOT_AVAILABLE_014, XO.NO_ORIGINAL_FILING_INDEX,
+                    XO.ORIGINAL_NOT_LISTED_ONLY_AMENDMENT, XO.AMBIGUOUS_REPORT_MATCH):
+        assert XCOLLECT._needs_fetch("r", {"r": {"classification": terminal}}) is False
+    for retryable in (XCOLLECT.LIST_JSON_ERROR, XO.REQUEST_ERROR):
+        assert XCOLLECT._needs_fetch("r", {"r": {"classification": retryable}}) is True
+
+
+def test_xbrl_collector_request_error_retries_next_run_and_is_not_settled(tmp_path, monkeypatch):
+    def list_answer(p):
+        return {"status": "000", "list": [
+            {"rcept_no": "R", "rcept_dt": "20151113", "report_nm": "분기보고서 (2015.09)"}],
+                "page_no": 1, "page_count": 100, "total_count": 1, "total_page": 1}
+    attempts = {"n": 0}
+    def xbrl_answer(p):
+        attempts["n"] += 1
+        # Neither a ZIP nor DART's confirmed 014 envelope -- an unclassifiable
+        # response, exactly what a transient request-layer fault looks like.
+        return b"<html>upstream error</html>" if attempts["n"] == 1 else FULL_XBRL_ZIP
+    calls = _scripted_list_and_xbrl(monkeypatch, list_answer, xbrl_answer)
+    store, universe = tmp_path / "store", _one_ticker_universe(tmp_path)
+    manifest = XCOLLECT.collect(store, "k", universe, COLLECT.Budget(1000, 10),
+                               directory_fn=lambda _: ONE_TICKER_UNIVERSE_DIRECTORY)
+    # The other two stages (no matching filing at all) settle immediately;
+    # only the one with a real filing hits the request-layer fault.
+    assert manifest["classifications"] == {XO.REQUEST_ERROR: 1, XO.NO_ORIGINAL_FILING_INDEX: 2}
+    assert not manifest["datasetComplete"]
+    assert calls["xbrl"] == 1
+    # Second run: the REQUEST_ERROR stage is retried, never read as settled.
+    manifest2 = XCOLLECT.collect(store, "k", universe, COLLECT.Budget(1000, 10),
+                                directory_fn=lambda _: ONE_TICKER_UNIVERSE_DIRECTORY)
+    assert calls["xbrl"] == 2
+    assert manifest2["classifications"] == {XO.XBRL_ZIP_SERVED: 1, XO.NO_ORIGINAL_FILING_INDEX: 2}
+    assert manifest2["recordsStored"] == 1 and manifest2["datasetComplete"]
+
+
+def test_xbrl_collector_list_json_error_retries_next_run_and_is_not_settled(tmp_path, monkeypatch):
+    attempts = {"n": 0}
+    def list_answer(p):
+        attempts["n"] += 1
+        if attempts["n"] <= 3:
+            # Internally inconsistent pagination metadata (totalCount>0 but
+            # totalPage 0) makes `KCA.fetch_all_pages` raise `PaginationError`
+            # -- a request-layer fault, not DART stating "no filings".
+            return {"status": "000", "list": [], "page_no": 1, "page_count": 100,
+                    "total_count": 5, "total_page": 0}
+        return {"status": "013"}
+    calls = _scripted_list_and_xbrl(monkeypatch, list_answer, lambda p: REAL_014_BODY)
+    store, universe = tmp_path / "store", _one_ticker_universe(tmp_path)
+    manifest = XCOLLECT.collect(store, "k", universe, COLLECT.Budget(1000, 10),
+                               directory_fn=lambda _: ONE_TICKER_UNIVERSE_DIRECTORY)
+    assert manifest["classifications"] == {XCOLLECT.LIST_JSON_ERROR: 3}
+    assert not manifest["datasetComplete"]
+    assert calls["xbrl"] == 0  # never reached fnlttXbrl.xml on a list.json fault
+    # Second run: every stage retries list.json rather than being treated as
+    # already checked -- this time DART genuinely states no filings exist.
+    manifest2 = XCOLLECT.collect(store, "k", universe, COLLECT.Budget(1000, 10),
+                                directory_fn=lambda _: ONE_TICKER_UNIVERSE_DIRECTORY)
+    assert attempts["n"] == 6
+    assert manifest2["classifications"] == {XO.NO_ORIGINAL_FILING_INDEX: 3}
+    assert manifest2["datasetComplete"]
+
+
+def test_file_not_available_014_stays_terminal_and_is_never_refetched(tmp_path, monkeypatch):
+    def list_answer(p):
+        return {"status": "000", "list": [
+            {"rcept_no": "R", "rcept_dt": "20151113", "report_nm": "분기보고서 (2015.09)"}],
+                "page_no": 1, "page_count": 100, "total_count": 1, "total_page": 1}
+    calls = _scripted_list_and_xbrl(monkeypatch, list_answer, lambda p: REAL_014_BODY)
+    store, universe = tmp_path / "store", _one_ticker_universe(tmp_path)
+    manifest = XCOLLECT.collect(store, "k", universe, COLLECT.Budget(1000, 10),
+                               directory_fn=lambda _: ONE_TICKER_UNIVERSE_DIRECTORY)
+    assert manifest["classifications"] == {XO.FILE_NOT_AVAILABLE_014: 1, XO.NO_ORIGINAL_FILING_INDEX: 2}
+    # 014 is DART's own confirmed "file does not exist" answer for the exact
+    # original receipt -- terminal, unlike a bare request error. A second run
+    # never re-asks it.
+    calls["list"] = calls["xbrl"] = 0
+    manifest2 = XCOLLECT.collect(store, "k", universe, COLLECT.Budget(1000, 10),
+                                directory_fn=lambda _: ONE_TICKER_UNIVERSE_DIRECTORY)
+    assert calls == {"list": 0, "xbrl": 0}
+    assert manifest2["datasetComplete"]
+
+
+# --------------------------------------------------------------------------- #
 # Expanded (all-stage) probe -- read-only, two endpoints, uses the real evidence
 # --------------------------------------------------------------------------- #
 def test_expanded_probe_reports_all_three_stages_for_both_endpoints(monkeypatch):
