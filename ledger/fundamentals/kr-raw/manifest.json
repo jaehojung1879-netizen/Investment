@@ -1,0 +1,215 @@
+{
+  "contract": "DART_RAW_STATEMENT_ROWS_V1",
+  "updatedAt": "2026-09-27T15:35:14Z",
+  "pitUniverseTickers": 260,
+  "resolvedIssuers": 254,
+  "unresolvedIssuers": [
+    "005385.KS",
+    "005387.KS",
+    "005935.KS",
+    "051905.KS",
+    "051915.KS",
+    "090435.KS"
+  ],
+  "identityBasis": {
+    "EXACT_STOCK_CODE": 254,
+    "UNRESOLVED": 6
+  },
+  "years": [
+    2015,
+    2016,
+    2024,
+    2025,
+    2023,
+    2017,
+    2018,
+    2019,
+    2020,
+    2021,
+    2022,
+    2026
+  ],
+  "storedFilings": 949,
+  "recordedAbsences": 403,
+  "unresolvedFilings": 0,
+  "sourceAbsenceStatuses": [
+    "013"
+  ],
+  "remaining": 10078,
+  "datasetComplete": false,
+  "statusTable": [
+    {
+      "fiscalYear": 2015,
+      "reportCode": "11011",
+      "result": "ABSENT",
+      "detail": "CFS=013/OFS=013",
+      "filings": 79
+    },
+    {
+      "fiscalYear": 2015,
+      "reportCode": "11011",
+      "result": "SERVED",
+      "detail": "CFS",
+      "filings": 166
+    },
+    {
+      "fiscalYear": 2015,
+      "reportCode": "11011",
+      "result": "SERVED",
+      "detail": "OFS",
+      "filings": 9
+    },
+    {
+      "fiscalYear": 2016,
+      "reportCode": "11011",
+      "result": "ABSENT",
+      "detail": "CFS=013/OFS=013",
+      "filings": 79
+    },
+    {
+      "fiscalYear": 2016,
+      "reportCode": "11011",
+      "result": "SERVED",
+      "detail": "CFS",
+      "filings": 166
+    },
+    {
+      "fiscalYear": 2016,
+      "reportCode": "11011",
+      "result": "SERVED",
+      "detail": "OFS",
+      "filings": 9
+    },
+    {
+      "fiscalYear": 2016,
+      "reportCode": "11012",
+      "result": "ABSENT",
+      "detail": "CFS=013/OFS=013",
+      "filings": 79
+    },
+    {
+      "fiscalYear": 2016,
+      "reportCode": "11012",
+      "result": "SERVED",
+      "detail": "CFS",
+      "filings": 166
+    },
+    {
+      "fiscalYear": 2016,
+      "reportCode": "11012",
+      "result": "SERVED",
+      "detail": "OFS",
+      "filings": 9
+    },
+    {
+      "fiscalYear": 2016,
+      "reportCode": "11013",
+      "result": "ABSENT",
+      "detail": "CFS=013/OFS=013",
+      "filings": 79
+    },
+    {
+      "fiscalYear": 2016,
+      "reportCode": "11013",
+      "result": "SERVED",
+      "detail": "CFS",
+      "filings": 166
+    },
+    {
+      "fiscalYear": 2016,
+      "reportCode": "11013",
+      "result": "SERVED",
+      "detail": "OFS",
+      "filings": 9
+    },
+    {
+      "fiscalYear": 2016,
+      "reportCode": "11014",
+      "result": "ABSENT",
+      "detail": "CFS=013/OFS=013",
+      "filings": 79
+    },
+    {
+      "fiscalYear": 2016,
+      "reportCode": "11014",
+      "result": "SERVED",
+      "detail": "CFS",
+      "filings": 166
+    },
+    {
+      "fiscalYear": 2016,
+      "reportCode": "11014",
+      "result": "SERVED",
+      "detail": "OFS",
+      "filings": 9
+    },
+    {
+      "fiscalYear": 2024,
+      "reportCode": "11011",
+      "result": "ABSENT",
+      "detail": "CFS=013/OFS=013",
+      "filings": 2
+    },
+    {
+      "fiscalYear": 2024,
+      "reportCode": "11011",
+      "result": "SERVED",
+      "detail": "CFS",
+      "filings": 18
+    },
+    {
+      "fiscalYear": 2024,
+      "reportCode": "11012",
+      "result": "ABSENT",
+      "detail": "CFS=013/OFS=013",
+      "filings": 2
+    },
+    {
+      "fiscalYear": 2024,
+      "reportCode": "11012",
+      "result": "SERVED",
+      "detail": "CFS",
+      "filings": 19
+    },
+    {
+      "fiscalYear": 2024,
+      "reportCode": "11013",
+      "result": "ABSENT",
+      "detail": "CFS=013/OFS=013",
+      "filings": 2
+    },
+    {
+      "fiscalYear": 2024,
+      "reportCode": "11013",
+      "result": "SERVED",
+      "detail": "CFS",
+      "filings": 19
+    },
+    {
+      "fiscalYear": 2024,
+      "reportCode": "11014",
+      "result": "ABSENT",
+      "detail": "CFS=013/OFS=013",
+      "filings": 2
+    },
+    {
+      "fiscalYear": 2024,
+      "reportCode": "11014",
+      "result": "SERVED",
+      "detail": "CFS",
+      "filings": 18
+    }
+  ],
+  "thisRun": {
+    "calls": 1800,
+    "written": 949,
+    "stopReason": "CALL_BUDGET_SPENT",
+    "outcome": "SERVED",
+    "attemptStatuses": {
+      "CFS=013": 448,
+      "OFS=013": 403,
+      "CFS=000": 904,
+      "OFS=000": 45
+    }
+  }
+}
