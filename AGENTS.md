@@ -1747,6 +1747,75 @@
   schema; nothing about the KR terminal-action foundation, the eligibility
   policy, or any v1-v4 spec was edited by this execution.
 
+## KR accounting coverage repair invariants (v2.33)
+
+- A COVERAGE AUDIT CALLS THE FEATURE PATH IT AUDITS AND REFUSES TO PUBLISH A
+  SECOND DENOMINATOR. `alpha_opportunity_kr_accounting_coverage_audit`
+  decides availability with the sealed `alpha_opportunity_features.
+  accounting_at` and only EXPLAINS absences; it raises
+  `AUDIT_DISAGREES_WITH_FEATURE_PATH` if its chain walk ever contradicts that
+  function, and `scripts/audit_kr_accounting_coverage.py` refuses to publish
+  unless it reproduces #160's 85,680 / 85,132 frame and all four failing
+  cells exactly (248/6,212, 0/6,212, 0/6,212, 1,083/6,218). It reads no
+  label, forward price, model or return.
+- THE COLLECTOR'S UNIVERSE WAS TODAY'S, NOT THE ONE V4 READS. `collect_dart_
+  fundamentals.py` builds its work list from `universe.resolve(cfg)`, so only
+  126 of the 260 tickers ever in a KR top-120 snapshot have any DART filing
+  -- 2,223 tradable 2016 name-dates and 751 in 2025 (156 of them preferred
+  shares, whose accounts sit under the common issuer and which no
+  `corpCode.xml` row names; mapping them is an identity rule that needs its
+  own preregistered decision, not a collector default).
+- A RAW STORE THAT KEEPS ONLY MATCHED ROWS CANNOT SAY WHAT IT DROPPED.
+  `dart_fundamentals.build_record` stores only exact-label rows. Net income
+  is absent from 1,586 of 3,260 stored quarterly filings (87 of 1,113 annual),
+  rising from 5% in 2016 to 72% in 2024-2025, while 259 of the 274 2025
+  quarterlies without it still carry revenue or operating income from the
+  same income statement. That is 3,706 of 2025's 5,135 missing
+  `ocfToNetIncomePct` name-dates, and it cannot be proven from the sealed
+  store which label was dropped. `pipeline/dart_raw_statements.py` keeps
+  every row and every attempt's real status instead.
+- A COLLECTOR MUST NOT WRITE A STATUS THE SOURCE DID NOT SEND. `fetch_one`
+  returns the literal "013" whenever CFS and OFS both fail, so all 1,723
+  sealed absences -- including 381 of 381 fiscal-2015 quarterlies -- read
+  013 by construction. The uniform 127-ticker pattern points at the endpoint
+  not serving 2015 quarterlies, but whether original 2015 filings exist is
+  answered only by `raw-probe-2015` (statement endpoint's real status,
+  `list.json`, original XBRL), never inferred.
+- AN ACCOUNT IS ADMITTED BY WHAT THE FILER SAYS IT IS, IN THE STATEMENT IT
+  BELONGS TO, AND NOWHERE ELSE. `dart_canonical_accounts` adds exactly one
+  rule for the four gate accounts: the IFRS element id those accounts carry
+  under an exact label match in the sealed store (`ProfitLoss` in IS/CIS,
+  `CashFlowsFromUsedInOperatingActivities` in CF, `Assets`/`Liabilities` in
+  BS). Attributable-to-parent profit, cash generated from operations,
+  current subtotals, SCE rows and component rows are never mapped, and
+  disagreeing candidates are left out as AMBIGUOUS. The rebuild publishes
+  every label the element rule admitted for review before any snapshot is
+  frozen. It also refuses the 56 legacy filings whose net income came from
+  an SCE component row -- a correctness repair that LOWERS 2016
+  `ocfToNetIncomePct` 3.99% -> 3.88% on the legacy rows, reported rather
+  than hidden.
+- AN AMENDMENT SERVED IN PLACE OF AN ORIGINAL IS PIT-HONEST AND COSTS
+  COVERAGE, AND THE SAME ENDPOINT CANNOT GIVE IT BACK. 1,208 of 4,373 stored
+  filings (27.6%) are dated after their statutory deadline because
+  `fnlttSinglAcntAll` serves the latest amendment's receipt and the record id
+  has no receipt in it -- 010130.KS's fourteen FY2022-2025Q3 filings are all
+  dated 2026-08-13. 239 collected 2025 name-dates run on a current filing
+  held back this way. "Restatements arrive as their own filing" is false for
+  that implementation and is recorded, not edited into a sealed module.
+- AN UPPER BOUND IS PUBLISHED AS ONE. With every collection reason resolved,
+  2016 growth is still bounded at 0% and 2016 `ocfToNetIncomePct` at 9.43%:
+  the 2016 gate cannot pass by collection alone, only if DART supplies
+  fiscal-2015 quarterlies (bound 55.10% / 60.87%). 2025
+  `ocfToNetIncomePct` is bounded at 95.75%. None of these is a projection;
+  the `kr-raw` job measures the real after-coverage with the same audit.
+- REPAIRED DATA IS A NEW INPUT SNAPSHOT AND NEVER RUNS UNDER V4. The repair
+  writes only `ledger/fundamentals/kr-raw` and `kr-canonical-v2`; the 28
+  blobs v4 sealed are untouched and its identity still verifies. Executing
+  against the repaired store needs a frozen snapshot and a new
+  preregistration (`alpha-opportunity-model-v5`, same economic and model
+  design, new KR fundamentals input and canonicalization contract). v5 is
+  not built here.
+
 ## Lint gate invariants (v2.11)
 
 - The enabled rule set reports ZERO findings on `main`. A rule is turned on in the
