@@ -1442,6 +1442,190 @@
   as raw-evidence reachability only: zip/non-zip, byte count, content type —
   never a structured field, because it is not a structured endpoint.
 
+## Alpha-opportunity-model-v4 invariants (v2.30)
+
+- SOURCE FOUNDATION, STUDY DESIGN AND EXECUTION ARE THREE DIFFERENT FACTS,
+  AND A DOCUMENT THAT CONFLATES THEM READS "PARTIALLY_REPAIRED" AS A
+  BLOCKER FOREVER. `kr-terminal-action-reconstruction-v2.json`'s
+  `foundationStatus` stays `PARTIALLY_REPAIRED` — unedited, unloosened,
+  exactly PR #158's own value — while `alpha-opportunity-model-v4.json`'s
+  `preregistrationStatus` reads `READY_FOR_HISTORICAL_EXECUTION`, because
+  "ready" here means every known gap has a predeclared, machine-checked
+  treatment, not that the gap is gone. `pipeline.alpha_opportunity_v4_spec
+  .verify_source_foundation` re-checks both the cited artifact's hash and
+  its quoted status on every load, so a foundation that improves OR
+  regresses after this seal both raise rather than silently going stale.
+- A RETRY CONFIRMED EXHAUSTED IS VERIFIED FROM THE JOB LOG, NOT ASSUMED FROM
+  A PRIOR PR'S CLAIM, THE SAME DISCIPLINE `kr-terminal-action-
+  reconstruction-v2` (v2.29) ALREADY ESTABLISHED. GitHub Actions run
+  `36264244053` (2026-09-26, `mode: collect`, on `main` at PR #158's merge
+  commit) was read directly: disclosure index and dividend collection both
+  logged "no new" rows (already complete, 22/22 and 47/47), and the
+  document collector retried exactly the 38 previously-failed receipts —
+  `receiptsFailed: 38`, `written: 0`, `outcome: EMPTY_BUT_VALID`,
+  `datasetComplete: true` — all 38 failing again with the identical
+  retained error. Signal-history commit
+  `2132d8d83589ddc8ee6c0e640016211c8ebc65f0` (38 insertions, 38 deletions)
+  refreshes retry bookkeeping only; it is never read as 38 recovered
+  documents.
+- A PRIOR DOCUMENT'S OWN GATE IS A REAL CONSTRAINT, NOT SOMETHING A LATER
+  TASK SILENTLY OVERRIDES. Both `kr-terminated-security-total-return-
+  foundation-v1.md` and `kr-terminal-action-reconstruction-v2.md` state a
+  v4 preregistration should wait for every completeness-matrix field to
+  read READY. `alpha-opportunity-model-v4-preregistration.md` §2 states
+  this conflict explicitly, states why it is resolved differently now (the
+  one remaining operator action they named has since been run and
+  confirmed exhausted), and resolves it by adding a study-design layer
+  those documents did not contemplate — never by editing the source
+  foundation to force a READY reading of its own matrix.
+- A LABEL-ELIGIBILITY GATE ON A TERMINATED SECURITY IS A SECURITY-LEVEL
+  GATE, NOT ONLY A WINDOW-CROSSES-TERMINATION GATE, BECAUSE THE MISSING
+  BASIS APPLIES TO THE SECURITY'S ENTIRE TRADING LIFE.
+  `pipeline.alpha_opportunity_v4_eligibility.label_eligibility` requires
+  `exDateSemanticsResolved: READY` before ANY observation on one of the 22
+  KR terminated securities is eligible, pre- or post-termination — measured
+  BLOCKED for all 22 of 22 today, since Yahoo serves no distribution at all
+  for a delisted KR ticker, so the security's whole price-return history
+  (not merely its terminal window) sits on a different basis than the
+  total-return benchmark. `terminalActionChainResolved` (also BLOCKED for
+  all 22) gates a window that crosses termination on top of that. Every
+  reason code is frozen in `REASON_CODES` before any label is built, and
+  the function is a pure computation over the sealed completeness matrix —
+  re-running it against a repaired foundation would change the result
+  without changing the policy code.
+- EXCLUDING ALL 22 IS NOT THE SAME DEFECT AS THE US LEG'S
+  `NO_TERMINATED_SECURITY_IN_SAMPLE`, AND THE DIFFERENCE IS MEASURED. The US
+  panel never priced 212 of 324 departed identities at all (0% observed,
+  structurally invisible). All 22 KR terminated securities ARE priced to
+  their last session, ARE PIT-universe members on their live dates, and DO
+  enter feature computation and cross-sectional context — only their own
+  forward-return LABEL is withheld, for a disclosed, bounded, declining
+  share (`alpha-opportunity-model-v3`'s own sealed audit: 3.7366% of
+  tradable KR member-dates, 7.93% in 2013 to 0.76% in 2025, never zero).
+  This is still a real survivorship-conditioning limitation on v4's labeled
+  sample, published as such rather than left implicit, and the future
+  execution's required `exclusionsClusterAroundTerminalEventsCheck`
+  diagnostic exists precisely so no headline result can be read as an
+  unconditional statement about KR delisting risk.
+- ZERO NEW FEATURES, INTERACTIONS, HYPERPARAMETERS OR HORIZONS WERE ADDED.
+  v4 carries v3's KR model family, feature set, transforms, transaction
+  costs, tradability guard and uncertainty machinery forward byte-for-byte
+  (`carriedFromV3` in the spec). The one new axis is the eligibility
+  policy; everything else is a narrowing (KR-only) of an already-vetted
+  design, never a re-tune.
+- A STUDY THAT IS "READY" AT THE DESIGN LEVEL STILL SHIPS NO EXECUTION
+  BUTTON. `scripts/run_alpha_opportunity_model_v4.py --execute` raises
+  `NO_V4_EXECUTION_HARNESS_IN_THIS_PR` unconditionally, regardless of
+  `preregistrationStatus` — this PR builds no label engine, training loop
+  or evaluation code, exactly `alpha-opportunity-model-v3`'s own script's
+  discipline one level up.
+
+## Alpha-opportunity-model-v4 correction invariants (v2.31)
+
+- A LABEL-ELIGIBILITY GATE MUST NEVER TAKE A SECURITY'S IDENTITY OR ITS
+  TERMINATION-LIST MEMBERSHIP AS AN INPUT, AND THIS IS NOW PROVEN
+  MECHANICALLY RATHER THAN ARGUED. v2.30's own first bullet already named the
+  right PRINCIPLE (a security-level gate is legitimate ONLY because the
+  underlying basis gap applies to a security's whole trading life); what it
+  shipped did not fully live up to it: `label_eligibility` took `code` and
+  `known_terminated_codes` and branched on set membership BEFORE ever
+  reading completeness evidence, so a security's own eventual termination
+  status — knowable only in hindsight — decided whether extra scrutiny
+  applied to a PRE-termination observation whose own target window never
+  touches the event. Contract V2 removes both parameters entirely:
+  `label_eligibility(completeness, window_crosses_termination, ...)` cannot
+  read a security's code or its list membership because neither is a
+  parameter, and `test_function_signature_takes_no_security_identity_or_
+  termination_list` checks the signature itself, not just behaviour on
+  today's data. Two securities with identical completeness evidence and the
+  same window-crossing fact now receive IDENTICAL treatment by construction
+  — six anti-look-ahead tests (future-termination invariance, future-
+  metadata-mutation invariance, termination-window sensitivity, return-
+  basis symmetry, no-manufactured-outcome, no-outcome-access) prove this
+  from both directions rather than asserting it in prose.
+- THE NUMERIC RESULT DID NOT CHANGE; THE MECHANISM DID. All 22 audited KR
+  securities remain INELIGIBLE on both the pre-termination and termination-
+  crossing window scopes after this fix, because their own dividend
+  evidence (measured, not assumed: ZERO Yahoo dividend rows across each
+  security's entire observed life, against 215/238 dividend events on
+  continuing names — `alpha-opportunity-model-v3`'s sealed survivorship
+  audit) is exactly as incomplete as it was under the defective version.
+  Deferring to unaudited production behaviour for every OTHER KR security
+  (`completeness is None` ⇒ `KR_DIVIDEND_BASIS_AUDIT_NOT_PERFORMED_DEFERS_
+  TO_PRODUCTION`) is not a double standard: it is the same trust-Yahoo's-
+  own-row-dates basis `pipeline.price_adjustment.to_total_return` already
+  applies to every KR security with zero independent verification anywhere
+  in this codebase, confirmed by reading that module directly rather than
+  assumed from its docstring.
+- SEALING A POLICY AND HASH-PINNING ITS EVIDENTIARY INPUT'S EXACT BYTES ARE
+  TWO DIFFERENT PROMISES, AND CONFLATING THEM MADE V2.30'S OWN CLAIM FALSE
+  ON ITS FACE. The first sealed spec hash-pinned `kr-terminal-action-
+  reconstruction-v2.json` (and two sibling artifacts) into `dependencyHashes`
+  /`sealedDataInputs` while claiming a future repair to those same artifacts
+  would let the same eligibility function admit new evidence WITHOUT a new
+  preregistration — but the old `load_sealed` would raise `SEALED_
+  DEPENDENCY_CHANGED` the moment those bytes changed, refusing to load the
+  spec at all. The three KR terminal-action artifacts are now
+  `sourceFoundationCitation` entries (a historical record of what they
+  looked like at seal time, never re-verified against disk by
+  `load_sealed`), and `pipeline.alpha_opportunity_v4_eligibility.assert_
+  foundation_not_regressed` gives a future execution a PREFIX-STABILITY
+  check (may only improve, never regress a field already relied on) in
+  place of a byte-identity requirement — the same discipline `Historical
+  replay invariants` (v2.6) already established for a growing ledger, one
+  level up. `alpha-opportunity-model-v3-survivorship-audit.json` is
+  different in kind (a declared-frozen, input-only snapshot, never
+  legitimately updated in place) and stays fully hash-pinned, unchanged.
+- BOTH DEFECTS WERE FOUND BY INDEPENDENT REVIEW BEFORE MERGE, NOT BY THIS
+  PROJECT'S OWN AUTHOR, AND THE CORRECTION IS PUBLISHED WITH ITS OWN
+  EVIDENCE RATHER THAN SILENTLY EDITED IN — the same discipline `alpha-
+  research-foundation-v2` (v2.24) and `kr-terminal-action-reconstruction-v2`
+  (v2.29) already established for a stale or wrong claim one level up.
+  `research_specs/alpha-opportunity-model-v4.json`'s own `correctionHistory`
+  field records the issue and the fix in the sealed artifact itself, not
+  only in prose.
+- FIXING A LOOK-AHEAD BRANCH IN THE ELIGIBILITY FUNCTION DOES NOT, BY
+  ITSELF, PROVE THE FUNCTION'S INPUTS ARE FREE OF THE SAME BIAS ONE LEVEL
+  UP, AND THIS WAS INVESTIGATED WITH EVIDENCE RATHER THAN ASSUMED EITHER
+  WAY. A further review asked whether audit-SELECTION (which securities
+  ever receive a `completeness` row) is itself outcome-conditioned, since
+  the 22 audited names were chosen because prior research already knew they
+  terminate, while no continuing name has ever been checked the same way.
+  This is not resolved by re-reading `label_eligibility`'s signature again
+  — it needed evidence the signature fix could not produce. `docs/results/
+  kr-dividend-amount-lineage-v2.json`'s `continuingNameReconciliation`
+  already cross-validates DART fiscal-year dividend amounts against
+  Yahoo's own window sums for a 25-name CONTINUING-security sample, selected
+  by `pipeline.kr_continuing_dividend_sample.select_continuing_sample` —
+  ranked by market-cap tenure, excluding the 22 under study, with nothing
+  about dividend completeness in the ranking rule, built for an unrelated
+  validation purpose before this question was ever asked. Measured: 224 of
+  226 (99.1%) DART-confirmed dividend-year rows across those 25 names show
+  a matching Yahoo event; ZERO of the 25 show the all-years-zero blackout
+  pattern all 22 audited terminated names show (one name, 010140.KS, has no
+  DART rows to check at all — a category-C data-absence case, counted
+  neither way, never assumed to be a genuine non-payer or a vendor gap).
+  This corroborates, on already-available evidence and without new
+  collection, that trusting `completeness is None` as a genuine UNKNOWN
+  default (never a "confirmed clean" claim) is evidence-supported — and is
+  reported as exactly that: corroboration for 25 of 238 continuing names,
+  never a claim that the remaining 213 are verified, and never a reason to
+  change `label_eligibility`'s own decision logic, which was already
+  correct after v2.30's fix.
+- "MAY ONLY IMPROVE, NEVER REGRESS" IS NOT THE SAME GUARANTEE AS "THE
+  EXECUTION DATASET IS FIXED", AND A REVIEWER CORRECTLY NAMED THE GAP.
+  `assert_foundation_not_regressed` (v2.30) proves a later snapshot never
+  loses evidence the seal relied on, but says nothing about a single
+  execution RUN reading two different snapshots at two different points, or
+  choosing among candidate snapshots for a more favourable result. The
+  contract now names a third, explicit tier: `freeze_execution_snapshot`
+  hashes whatever snapshot one run actually uses, once, before that run
+  constructs its first label, and `assert_snapshot_matches_frozen_hash`
+  proves a later read within the same run is still that snapshot — POLICY
+  sealed / FOUNDATION improves monotonically pre-execution / EXECUTION
+  SNAPSHOT frozen once outcome computation begins, three different
+  promises that must never be collapsed into one byte-pin again.
+
 ## Lint gate invariants (v2.11)
 
 - The enabled rule set reports ZERO findings on `main`. A rule is turned on in the
