@@ -1584,6 +1584,47 @@
   `research_specs/alpha-opportunity-model-v4.json`'s own `correctionHistory`
   field records the issue and the fix in the sealed artifact itself, not
   only in prose.
+- FIXING A LOOK-AHEAD BRANCH IN THE ELIGIBILITY FUNCTION DOES NOT, BY
+  ITSELF, PROVE THE FUNCTION'S INPUTS ARE FREE OF THE SAME BIAS ONE LEVEL
+  UP, AND THIS WAS INVESTIGATED WITH EVIDENCE RATHER THAN ASSUMED EITHER
+  WAY. A further review asked whether audit-SELECTION (which securities
+  ever receive a `completeness` row) is itself outcome-conditioned, since
+  the 22 audited names were chosen because prior research already knew they
+  terminate, while no continuing name has ever been checked the same way.
+  This is not resolved by re-reading `label_eligibility`'s signature again
+  — it needed evidence the signature fix could not produce. `docs/results/
+  kr-dividend-amount-lineage-v2.json`'s `continuingNameReconciliation`
+  already cross-validates DART fiscal-year dividend amounts against
+  Yahoo's own window sums for a 25-name CONTINUING-security sample, selected
+  by `pipeline.kr_continuing_dividend_sample.select_continuing_sample` —
+  ranked by market-cap tenure, excluding the 22 under study, with nothing
+  about dividend completeness in the ranking rule, built for an unrelated
+  validation purpose before this question was ever asked. Measured: 224 of
+  226 (99.1%) DART-confirmed dividend-year rows across those 25 names show
+  a matching Yahoo event; ZERO of the 25 show the all-years-zero blackout
+  pattern all 22 audited terminated names show (one name, 010140.KS, has no
+  DART rows to check at all — a category-C data-absence case, counted
+  neither way, never assumed to be a genuine non-payer or a vendor gap).
+  This corroborates, on already-available evidence and without new
+  collection, that trusting `completeness is None` as a genuine UNKNOWN
+  default (never a "confirmed clean" claim) is evidence-supported — and is
+  reported as exactly that: corroboration for 25 of 238 continuing names,
+  never a claim that the remaining 213 are verified, and never a reason to
+  change `label_eligibility`'s own decision logic, which was already
+  correct after v2.30's fix.
+- "MAY ONLY IMPROVE, NEVER REGRESS" IS NOT THE SAME GUARANTEE AS "THE
+  EXECUTION DATASET IS FIXED", AND A REVIEWER CORRECTLY NAMED THE GAP.
+  `assert_foundation_not_regressed` (v2.30) proves a later snapshot never
+  loses evidence the seal relied on, but says nothing about a single
+  execution RUN reading two different snapshots at two different points, or
+  choosing among candidate snapshots for a more favourable result. The
+  contract now names a third, explicit tier: `freeze_execution_snapshot`
+  hashes whatever snapshot one run actually uses, once, before that run
+  constructs its first label, and `assert_snapshot_matches_frozen_hash`
+  proves a later read within the same run is still that snapshot — POLICY
+  sealed / FOUNDATION improves monotonically pre-execution / EXECUTION
+  SNAPSHOT frozen once outcome computation begins, three different
+  promises that must never be collapsed into one byte-pin again.
 
 ## Lint gate invariants (v2.11)
 

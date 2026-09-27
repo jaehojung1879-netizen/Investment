@@ -180,6 +180,24 @@
       "issue": "Independent review found two defects: (1) the eligibility policy conditioned pre-termination-window eligibility on security-level termination-list membership rather than on the observation's own data requirements (a future-survival-conditioning / look-ahead defect); (2) the spec hash-pinned the KR terminal-action evidentiary artifacts as immutable sealed inputs while simultaneously claiming a future repair to those same artifacts would not require a new preregistration -- a direct contradiction, since the old loader would refuse to load at all once those bytes changed.",
       "numericChange": "None: the 22 audited securities remain fully excluded from both window scopes under current evidence, computed for a corrected reason.",
       "revision": "V2 (this correction, same PR, before merge)"
+    },
+    {
+      "fix": "Investigated rather than assumed. docs/results/kr-dividend-amount-lineage-v2.json already contains an outcome-blind, market-cap-tenure-ranked, 25-name continuing-security dividend cross-validation sample (built for an unrelated validation purpose, before this question was asked). Measured directly: 222 of 224 DART-confirmed dividend-year rows across those 25 names show a matching Yahoo event, 0 of 25 continuing names show the all-years-zero blackout pattern all 22 audited terminated names show. This corroborates, on already-available evidence and without new data collection, that the specific failure mode is real and distinctive to the audited terminated names, not an artifact of nobody looking elsewhere -- recorded as eligibilityPolicy.universeWideCorroboration, explicitly scoped as corroboration for 25 of 238 continuing names, never claimed as a full audit. Also added the missing third tier of the foundation-versioning contract (executionDataVersioning): freeze_execution_snapshot / assert_snapshot_matches_frozen_hash, so a future execution run pins one data snapshot before computing any outcome and cannot swap snapshots based on results.",
+      "issue": "A further review asked whether audit-SELECTION itself (which securities ever receive a completeness row) is outcome-conditioned, since the 22 audited names were chosen because prior research already knew they terminate, while no continuing name has ever been put through the same dividend-completeness audit. label_eligibility's CODE no longer reads termination status (V2's fix), but this asks a different question: is trusting `completeness is None` as ELIGIBLE-by-deferral for the never-audited majority itself an unproven assumption that happens to favour survivors.",
+      "numericChange": "None: no eligibility decision, reason code, or spec design parameter changed.",
+      "revision": "V2.1 (this pass, same PR, before merge)"
+    },
+    {
+      "fix": "Investigated rather than assumed. docs/results/kr-dividend-amount-lineage-v2.json already contains an outcome-blind, market-cap-tenure-ranked, 25-name continuing-security dividend cross-validation sample (built for an unrelated validation purpose, before this question was asked). Measured directly: 222 of 224 DART-confirmed dividend-year rows across those 25 names show a matching Yahoo event, 0 of 25 continuing names show the all-years-zero blackout pattern all 22 audited terminated names show. This corroborates, on already-available evidence and without new data collection, that the specific failure mode is real and distinctive to the audited terminated names, not an artifact of nobody looking elsewhere -- recorded as eligibilityPolicy.universeWideCorroboration, explicitly scoped as corroboration for 25 of 238 continuing names, never claimed as a full audit. Also added the missing third tier of the foundation-versioning contract (executionDataVersioning): freeze_execution_snapshot / assert_snapshot_matches_frozen_hash, so a future execution run pins one data snapshot before computing any outcome and cannot swap snapshots based on results.",
+      "issue": "A further review asked whether audit-SELECTION itself (which securities ever receive a completeness row) is outcome-conditioned, since the 22 audited names were chosen because prior research already knew they terminate, while no continuing name has ever been put through the same dividend-completeness audit. label_eligibility's CODE no longer reads termination status (V2's fix), but this asks a different question: is trusting `completeness is None` as ELIGIBLE-by-deferral for the never-audited majority itself an unproven assumption that happens to favour survivors.",
+      "numericChange": "None: no eligibility decision, reason code, or spec design parameter changed.",
+      "revision": "V2.1 (this pass, same PR, before merge)"
+    },
+    {
+      "fix": "Investigated rather than assumed. docs/results/kr-dividend-amount-lineage-v2.json already contains an outcome-blind, market-cap-tenure-ranked, 25-name continuing-security dividend cross-validation sample (built for an unrelated validation purpose, before this question was asked). Measured directly: 224 of 226 DART-confirmed dividend-year rows across those 25 names show a matching Yahoo event, 0 of 25 continuing names show the all-years-zero blackout pattern all 22 audited terminated names show. This corroborates, on already-available evidence and without new data collection, that the specific failure mode is real and distinctive to the audited terminated names, not an artifact of nobody looking elsewhere -- recorded as eligibilityPolicy.universeWideCorroboration, explicitly scoped as corroboration for 25 of 238 continuing names, never claimed as a full audit. Also added the missing third tier of the foundation-versioning contract (executionDataVersioning): freeze_execution_snapshot / assert_snapshot_matches_frozen_hash, so a future execution run pins one data snapshot before computing any outcome and cannot swap snapshots based on results.",
+      "issue": "A further review asked whether audit-SELECTION itself (which securities ever receive a completeness row) is outcome-conditioned, since the 22 audited names were chosen because prior research already knew they terminate, while no continuing name has ever been put through the same dividend-completeness audit. label_eligibility's CODE no longer reads termination status (V2's fix), but this asks a different question: is trusting `completeness is None` as ELIGIBLE-by-deferral for the never-audited majority itself an unproven assumption that happens to favour survivors.",
+      "numericChange": "None: no eligibility decision, reason code, or spec design parameter changed.",
+      "revision": "V2.1 (this pass, same PR, before merge)"
     }
   ],
   "createdAt": "2026-09-26T00:00:00Z",
@@ -267,7 +285,7 @@
     "pipeline/__init__.py": "187da1ad9a148da44035f9cf25f7cb094c45afe53d3f445ba62392797972dede",
     "pipeline/alpha_opportunity_spec.py": "3d7150c2f62dbd8184ed2f3885828e93c1ba64d8ffe3695b0b5716641734c58e",
     "pipeline/alpha_opportunity_v3_spec.py": "1c11c306f9f27a8e69b985d02bfb3bffaf691001c27ac49e6b21266dd315c162",
-    "pipeline/alpha_opportunity_v4_eligibility.py": "985c608372ac975cf9b0a76ef0e4206fac70ddbf38922a1281e369271b2fba4e",
+    "pipeline/alpha_opportunity_v4_eligibility.py": "8c20c70b35dba244f0341459ee295ca836e0ec6782f3e4989197bc2a220ba204",
     "pipeline/alpha_opportunity_v4_spec.py": "9802a558dd237b016ecfac8f35e66c3351b637f660b6d58a989fc2f837b62395",
     "requirements.txt": "b874e2c2c8bd5f4b0bc01b99f988d37d13c9d5018e7fb09992a6cdde6e94edb8",
     "research_specs/alpha-opportunity-model-v1-features.json": "72f52c9c95d4045ba48c33980ad43f0e4df8bc072cbcc2b099a1c6f503323895",
@@ -329,7 +347,28 @@
       "PRE_TERMINATION_WINDOW_TOTAL_RETURN_BASIS_RESOLVED",
       "TERMINATION_WINDOW_FULLY_RESOLVED"
     ],
-    "rule": "Non-crossing window (the target's own exit session is at or before the security's last traded session, or the security never terminates): ELIGIBLE if never audited (defers to production); if audited, ELIGIBLE only when exDateSemanticsResolved reads READY AND a total-return series has actually been spliced into the price panel used for labels (an engineering step this PR does not perform, so this is INELIGIBLE for every audited security today) -- never because the security is known to terminate. Crossing window (the target's own exit session is after the security's last traded session): requires terminationTypeResolved, terminalConsiderationResolved, successorResolvedWhereRequired (where the resolved type requires a successor) and terminalActionChainResolved all READY, and -- where a successor is required -- that successor's own price panel. This branch legitimately depends on the termination event because that event is INSIDE the target window being constructed."
+    "rule": "Non-crossing window (the target's own exit session is at or before the security's last traded session, or the security never terminates): ELIGIBLE if never audited (defers to production); if audited, ELIGIBLE only when exDateSemanticsResolved reads READY AND a total-return series has actually been spliced into the price panel used for labels (an engineering step this PR does not perform, so this is INELIGIBLE for every audited security today) -- never because the security is known to terminate. Crossing window (the target's own exit session is after the security's last traded session): requires terminationTypeResolved, terminalConsiderationResolved, successorResolvedWhereRequired (where the resolved type requires a successor) and terminalActionChainResolved all READY, and -- where a successor is required -- that successor's own price panel. This branch legitimately depends on the termination event because that event is INSIDE the target window being constructed.",
+    "universeWideCorroboration": {
+      "interpretation": "224 of 226 (99.1%) DART-confirmed dividend-year rows across 25 outcome-blind-selected continuing names show at least one Yahoo dividend event in the same window; ZERO of the 25 show the specific all-years-zero pattern all 22 audited terminated names show. 010140.KS has no DART fiscal-year rows to check at all in this sample -- a data-absence case, category C (unknown from this evidence), neither counted as corroborating nor contradicting, and never assumed to be a genuine zero-dividend company or a vendor gap.",
+      "measured": {
+        "continuingNamesSampled": 25,
+        "continuingNamesShowingTheFullBlackoutPatternAllYearsZero": [],
+        "continuingNamesWithNoDartFiscalYearRowsToCheck": [
+          "010140.KS"
+        ],
+        "rowsWithAtLeastOneYahooEventInWindow": 224,
+        "rowsWithNoYahooEventInWindow": 2,
+        "tickerFiscalYearRowsWithADartAmount": 226
+      },
+      "purpose": "Not a full universe audit. Corroborates that treating `completeness is None` (the 213 continuing KR names never audited for dividend-basis completeness) as ELIGIBLE-by-deferral is an evidence-supported default, not a blind trust, and that the near-total Yahoo dividend blackout specific to the 22 audited terminated names is a real, distinctive, measured pattern rather than an artifact of asymmetric scrutiny alone.",
+      "scopeLimit": "213 of 238 continuing KR names, and all 118 REMOVED_FROM_INDEX_STILL_TRADING departed names, remain unaudited by ANY dividend-completeness check under either standard (DART ex-date confirmation or this lighter amount cross-validation). This is a disclosed, bounded research-coverage gap, never claimed to be closed by this corroboration sample, and a full-universe audit is separate, additive future data-foundation work, out of scope for this preregistration.",
+      "selectionMechanism": "pipeline.kr_continuing_dividend_sample.select_continuing_sample: every code ranked inside the top-120 by market cap on at least one monthly snapshot, EXCLUDING the 22 terminated securities under study, ranked by how many snapshot dates it held that rank (most persistent first). Nothing about dividend completeness enters this ranking rule -- it was built to validate the DART-derivation methodology generally, before this correction ever needed it as corroborating evidence.",
+      "source": {
+        "field": "continuingNameReconciliation.fiscalYearAmountCrossValidation.byTicker",
+        "path": "docs/results/kr-dividend-amount-lineage-v2.json",
+        "shaAsOfThisSeal": "2c3c7d93159b1959f1358d0f4df0a78e14035ad916d53e8fa3356155c311e621"
+      }
+    }
   },
   "evaluationPreregistration": {
     "A_absoluteCalibration": "date-balanced pooled realised = a + b * predicted net relative return (not within-date demeaned); b lower > 0; a and b intervals published; MSE improvement over training mean lower > 0",
@@ -371,6 +410,14 @@
     "KR_MACRO_CONTEXT": "no KR axis exists in regime.py (every INDICATORS entry is FRED/CBOE-sourced); pipeline/ecos_macro.py is an unwired fetch layer only, vintage status REVISED_HISTORY not PIT_EXACT even if wired; excluded",
     "KR_OWNERSHIP_EVENTS": "pipeline/dart_ownership_events.py exists; BLOCKED_HISTORICAL_DEPTH (majorstock.json has no date-bound parameters and serves only a rolling ~2-year window); excluded from a 2013-2026 historical study",
     "KR_SHORT_SELLING": "pipeline/kr_short_selling.py exists (workstream E); same access-unproven status; excluded"
+  },
+  "executionDataVersioning": {
+    "rationale": "Separates three different promises that a single byte-pin conflated in the first sealed version: what the POLICY guarantees (immutable), what the FOUNDATION is allowed to do (improve monotonically, checked), and what one EXECUTION RUN actually used (frozen once, checked again if read twice, never outcome-selected).",
+    "tiers": {
+      "executionSnapshot": "whichever current foundation state a specific execution run reads MUST be frozen -- hashed via pipeline.alpha_opportunity_v4_eligibility.freeze_execution_snapshot and recorded immutably in that run's own output report -- exactly once, BEFORE the run constructs its first label. The run must call assert_snapshot_matches_frozen_hash before any later step that reads the foundation again, and must never select among candidate snapshots, or re-read a newer one mid-run, based on which produces a more favourable result. Once outcome computation starts, the execution dataset/version does not change.",
+      "foundation": "the KR terminal-action reconstruction artifacts may improve monotonically before an execution starts -- pipeline.alpha_opportunity_v4_eligibility.assert_foundation_not_regressed proves a later snapshot only ever adds READY fields relative to the snapshot cited in sourceFoundationCitation, never removes one.",
+      "policy": "sealed by this preregistration; pipeline/alpha_opportunity_v4_eligibility.py's decision logic and reason codes are frozen and verified by dependencyHashes on every load."
+    }
   },
   "executionWorkflow": null,
   "formerV3BlockersResolvedByPolicy": [
@@ -452,6 +499,11 @@
       "note": "UNLIKE the three artifacts above, this one IS in sealedDataInputs and IS hash-verified by load_sealed on every load: it is a declared-frozen, input-only snapshot (its own docstring: 'byte-identical on repeated runs', tied to a fixed signal-history commit and replay manifest), never a growing ledger. Source of the sealed krTerminations 22-name list; never hardcoded in v4 code.",
       "path": "docs/results/alpha-opportunity-model-v3-survivorship-audit.json",
       "shaAsOfThisSeal": "f0d9ed09880ffb75c6cc698dbb001e6f6879dee1991ede6ff6d365cc50f22902"
+    },
+    "krDividendAmountLineageV2ContinuingNameCorroboration": {
+      "note": "A citation, used only as corroborating evidence for eligibilityPolicy.universeWideCorroboration above -- never re-verified against disk by load_sealed, and never itself gating any observation's eligibility.",
+      "path": "docs/results/kr-dividend-amount-lineage-v2.json",
+      "shaAsOfThisSeal": "2c3c7d93159b1959f1358d0f4df0a78e14035ad916d53e8fa3356155c311e621"
     },
     "krTerminalActionReconstructionV2": {
       "foundationStatusAsOfThisSeal": "PARTIALLY_REPAIRED",

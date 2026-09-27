@@ -86,6 +86,40 @@ flag -- proved by `tests/test_alpha_opportunity_v4.py`'s future-termination-
 invariance tests, which vary only a synthetic "terminates later" label while
 holding completeness fixed and show the eligibility call is identical.
 
+A SECOND-ORDER CONCERN, INVESTIGATED AND CORROBORATED (this revision): even
+with the code fix above, a fair question remains -- WHO gets a `completeness`
+row at all is itself decided by a research project commissioned specifically
+to investigate the 22 known-terminated names, so does trusting
+`completeness is None` as "defer to production" quietly re-import the same
+bias through the back door (nobody ever looks for the same failure mode in a
+name that happens to survive)? This is not answered by code alone; it needed
+evidence. `docs/results/kr-dividend-amount-lineage-v2.json`'s
+`continuingNameReconciliation` already cross-validates DART fiscal-year
+dividend amounts against Yahoo's own window sums for a 25-name CONTINUING-name
+sample selected by `pipeline.kr_continuing_dividend_sample.select_continuing_
+sample` -- ranked purely by how many monthly snapshots a code held a top-120
+market-cap rank, EXCLUDING the 22 under study, with NOTHING about dividend
+completeness in the ranking rule. Measured directly: of 226 ticker-fiscal-year
+rows across those 25 names where DART states a real dividend amount, 224
+(99.1%) show at least one matching-or-mismatched Yahoo event in the same
+window, and ZERO of the 25 continuing names show the specific failure pattern
+all 22 terminated names show (DART confirms dividends existed; Yahoo shows
+NONE across the whole observed life). One name (010140.KS) has no DART
+fiscal-year rows to check at all -- a data-absence case (`this security may
+never have paid a dividend in the window`, category C: unknown from this
+evidence, never assumed to be A or B) that neither corroborates nor
+contradicts the pattern, and is not counted either way.
+
+This is corroboration, not a full audit, and is reported as exactly that: it
+supports treating `completeness is None` as a genuine "unknown" (never a
+"confirmed clean") default for the 213 continuing names this sample does not
+cover, because the SPECIFIC failure mode this study cares about was measured,
+on an outcome-blind sample, to be rare among continuing names (0 of 25) and
+universal among the audited terminated ones (22 of 22) -- not merely assumed
+absent because nobody checked. A full audit of all 260 KR securities remains
+future, separate, additive work (`docs/alpha-opportunity-model-v4-
+preregistration.md`'s own scope section), never claimed to be done here.
+
 WHAT THIS MODULE NEVER DOES. It never treats an unresolved exchange ratio or
 successor as final. It never invents an ex-date from a record date (no
 sealed, dated Korean settlement-cycle rule exists anywhere in this
@@ -255,4 +289,36 @@ def assert_foundation_not_regressed(*, cited_snapshot: dict, current_snapshot: d
             if cited_value == READY and current_completeness.get(field) != READY:
                 raise ValueError(f"FOUNDATION_REGRESSED: {code}.{field} was READY, now "
                                  f"{current_completeness.get(field)!r}")
+    return True
+
+
+def freeze_execution_snapshot(reconstruction_snapshot: dict) -> str:
+    """The THIRD tier of the versioning contract, alongside `assert_
+    foundation_not_regressed`'s prefix-stability check: POLICY is sealed by
+    this spec; FOUNDATION may improve monotonically before an execution
+    starts (checked by that function); the EXECUTION SNAPSHOT is whichever
+    current foundation state a specific execution run reads, and it must be
+    frozen -- hashed and recorded immutably -- exactly once, BEFORE that run
+    constructs its first label. A run may never re-read a newer snapshot
+    partway through and may never choose among candidate snapshots based on
+    which one produces a more favourable result: `canonical` and `digest`
+    (`pipeline.alpha_opportunity_spec`) make the hash a pure, deterministic
+    function of content, so the SAME snapshot always freezes to the SAME
+    hash regardless of when or how many times it is computed. This function
+    performs no I/O and reads no return or label; it only fixes what
+    "the data used" means for a run that has not started yet.
+    """
+    from .alpha_opportunity_spec import digest
+    return digest(reconstruction_snapshot)
+
+
+def assert_snapshot_matches_frozen_hash(*, reconstruction_snapshot: dict, frozen_hash: str) -> bool:
+    """A later step of the SAME execution run proves it is still reading the
+    snapshot it froze at the start, guarding against a mid-run swap (e.g. a
+    concurrent data-foundation PR landing between two steps of one run).
+    Raises `EXECUTION_SNAPSHOT_CHANGED_MID_RUN` on any mismatch.
+    """
+    actual = freeze_execution_snapshot(reconstruction_snapshot)
+    if actual != frozen_hash:
+        raise ValueError(f"EXECUTION_SNAPSHOT_CHANGED_MID_RUN: expected {frozen_hash}, got {actual}")
     return True

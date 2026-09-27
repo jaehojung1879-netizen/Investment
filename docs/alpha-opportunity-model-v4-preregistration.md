@@ -13,6 +13,23 @@
 > those bytes changed). Nothing about the economic contract, feature set,
 > model family, horizons, costs, or scope changed; see `correctionHistory` in
 > the sealed spec for the exact, machine-readable diff.
+>
+> **Second-order review (contract V2, revision "V2.1", same PR, before
+> merge).** A further review asked whether audit-*selection* itself (which
+> securities ever receive a `completeness` row at all) is outcome-
+> conditioned, since the 22 audited names were chosen because prior research
+> already knew they terminate, while no continuing name has ever been put
+> through the same check. §5a investigates this with real evidence rather
+> than by further code changes: an already-sealed, outcome-blind, 25-name
+> continuing-security corroboration sample shows the specific failure mode
+> (a total Yahoo dividend blackout despite real DART-confirmed dividends) is
+> real and distinctive to the audited names (22 of 22), not merely
+> undetected elsewhere (0 of 25 continuing names show it). This is
+> corroboration, explicitly not a full audit — 213 of 238 continuing names
+> remain unaudited, disclosed as a bounded scope limit, never as a closed
+> question. §11 also adds the missing third tier of the foundation-
+> versioning contract (an execution-time snapshot freeze), which the
+> reviewer separately flagged as underspecified.
 
 **Status: `READY_FOR_HISTORICAL_EXECUTION` at the study-DESIGN level.** Spec
 `research_specs/alpha-opportunity-model-v4.json`, seal in the adjacent
@@ -328,6 +345,75 @@ terminate. The future execution's evaluation report **must** publish
 headline result must be read alongside this caveat, never as an
 unconditional statement about KR delisting risk.
 
+## 5a. Is trusting the unaudited majority itself outcome-conditioned? Investigated, not assumed
+
+§5's fix removed the code-level look-ahead: `label_eligibility` cannot read
+a security's identity or termination-list membership. A further, fair
+question remains: which securities ever get a `completeness` row in the
+first place is decided by the `kr-terminal-action-reconstruction-v2`
+project, which was commissioned specifically to investigate the 22 names
+already known (in 2026) to terminate. If nobody has ever looked for the
+same failure mode in a security that happens to survive, does trusting
+`completeness is None` as "defer to production" quietly re-import the same
+bias — just one level up, in *who gets checked* rather than in the
+eligibility function's own logic?
+
+This cannot be answered by re-reading the code again; it needs evidence,
+and this repository already has some. `docs/results/kr-dividend-amount-
+lineage-v2.json`'s `continuingNameReconciliation` cross-validates DART
+fiscal-year dividend amounts against Yahoo's own window sums for a 25-name
+**continuing**-security sample, selected by `pipeline.kr_continuing_
+dividend_sample.select_continuing_sample` — ranked purely by how many
+monthly snapshots a code held a top-120 market-cap rank, **excluding** the
+22 under study, with nothing about dividend completeness anywhere in the
+ranking rule (verified by reading the module, not assumed from its
+docstring — `test_corroboration_selection_mechanism_is_outcome_blind`).
+This sample was built for an unrelated validation purpose, before this
+question was ever asked, which is exactly what makes it usable as
+corroboration rather than a fix designed to produce a convenient answer.
+
+**Measured directly** (`eligibilityPolicy.universeWideCorroboration` in the
+spec, regression-pinned against a fresh read of the artifact by
+`test_universe_wide_corroboration_matches_a_fresh_read_of_the_real_
+artifact`):
+
+| | Value |
+|---|---|
+| Continuing names sampled | 25 |
+| Ticker-fiscal-year rows where DART states a real dividend amount | 226 |
+| Rows with at least one matching-or-mismatched Yahoo event in the window | 224 (99.1%) |
+| Rows with `NO_YAHOO_EVENT_IN_WINDOW` | 2 |
+| Continuing names showing the SAME all-years-zero blackout pattern as the 22 | **0 of 25** |
+| Continuing names with no DART fiscal-year rows to check at all | 1 (`010140.KS`) |
+
+**Reading this correctly, per the reviewer's own A/B/C distinction (never
+collapse "confirmed no dividend" with "source lost the history" with
+"unknown"):** `010140.KS` having zero DART rows to check is a **category C**
+data-absence case — it neither corroborates nor contradicts anything, and
+is not read as "this company never paid a dividend" (that would be
+inventing a fact not in evidence) nor as "the source failed" (equally
+unevidenced). It is excluded from both the numerator and denominator of the
+corroboration claim.
+
+**What this does and does not establish.** It corroborates that treating
+"never audited" as a genuine **unknown** default (never a "confirmed
+clean" claim) is evidence-supported: on an outcome-blind sample, the
+specific failure this study cares about — real DART-confirmed dividends
+with a complete Yahoo blackout — was measured at 0/25 among continuing
+names and 22/22 among the audited terminated ones. That is a real,
+distinctive difference between the two groups, not an artifact of only
+ever looking at one of them. It does **not** establish that all 238
+continuing names are clean: 213 of them remain unaudited by any dividend-
+completeness check under either standard (DART ex-date confirmation, or
+this lighter amount cross-validation), and this is stated as a bounded,
+disclosed research-coverage gap — a natural, separate, additive future
+data-foundation task, never claimed to be closed here. `label_eligibility`
+itself does not change: `completeness is None` still defers to production
+via `KR_DIVIDEND_BASIS_AUDIT_NOT_PERFORMED_DEFERS_TO_PRODUCTION`, a reason
+code kept semantically and mechanically distinct from an audited-and-clean
+result (`test_A_unaudited_is_not_the_same_reason_code_as_audited_and_
+clean`).
+
 ## 6. Economic contract — carried forward from v3, KR-only
 
 Nothing below is a new design decision; each item is v3's own KR leg,
@@ -493,6 +579,28 @@ invariants` (v2.6)'s own rule for a growing ledger. The
 kind — a declared-frozen, input-only snapshot never legitimately updated in
 place — and stays fully hash-pinned in `sealedDataInputs`, unchanged.
 
+**Strengthened in this pass: the execution-data snapshot must be frozen,
+not merely non-regressing.** A reviewer correctly noted that "may only
+improve" alone leaves a gap: an execution run could, in principle, read a
+newer foundation snapshot partway through, or pick among several candidate
+snapshots for a more favourable result. `executionDataVersioning` in the
+spec now names three tiers explicitly:
+
+1. **Policy** — sealed by this preregistration (unchanged: the eligibility
+   decision logic and reason codes, verified by `dependencyHashes`).
+2. **Foundation** — may improve monotonically before an execution starts,
+   checked by `assert_foundation_not_regressed`.
+3. **Execution snapshot** — whichever current foundation state one specific
+   execution run actually reads MUST be frozen — hashed via the new
+   `pipeline.alpha_opportunity_v4_eligibility.freeze_execution_snapshot` and
+   recorded immutably in that run's own output report — **exactly once,
+   before the run constructs its first label**. If the run reads the
+   foundation again later, it must call the new `assert_snapshot_matches_
+   frozen_hash` to prove it is still the same snapshot. A run may never
+   select among candidate snapshots, or re-read a newer one mid-run, based
+   on which produces a more favourable result — once outcome computation
+   starts, the dataset used does not change.
+
 ## 12. Self-audit (see also the PR description)
 
 - No future return, label, IC, quintile spread, CAGR, Sharpe, Sortino or
@@ -526,8 +634,24 @@ place — and stays fully hash-pinned in `sealedDataInputs`, unchanged.
   longer_breaks_the_seal`, and a genuine regression is caught by a
   dedicated `assert_foundation_not_regressed` function/test instead of by
   refusing to load the spec at all.
+- **Audit-selection (who gets a `completeness` row) was investigated for
+  the same defect, not assumed clean** — §5a's corroboration evidence
+  (measured, regression-pinned) plus tests A-E specifically named by the
+  reviewing task: unaudited-is-not-audited-and-clean (A), audit-selection
+  invariance (B), the audit rule is PIT-derived not termination-list-
+  derived (C), future termination outside the window never invalidates it
+  (D), and an event inside the window with unresolved economics stays
+  unavailable (E).
+- **Execution-data snapshot freezing was strengthened from "may only
+  improve" to "must be frozen before any outcome computation"** — tier 3 of
+  `executionDataVersioning`, mechanically proven by tests F
+  (`freeze_execution_snapshot` determinism, `assert_snapshot_matches_
+  frozen_hash` catching a mid-run swap).
+- Test G (no outcome access) extends to the two new functions:
+  `test_G_freeze_and_corroboration_functions_construct_no_labels_or_
+  outcomes`.
 - `ruff check .`, `python -m compileall pipeline scripts`, full `pytest -q`
-  (2,374 passed, 1 skipped — zero regressions), `python scripts/make_seed.py`
+  (2,385 passed, 1 skipped — zero regressions), `python scripts/make_seed.py`
   + `python -m pipeline.validate data/site-data.json --allow-seed` all pass.
 
 ## 13. What the next execution PR is allowed to do
@@ -550,3 +674,16 @@ this document grants in advance — but it must first call
 against the snapshot cited in `sourceFoundationCitation` (retrievable from
 this commit's own git history) to prove the later snapshot only ever adds
 evidence, never regresses a field this seal already relied on.
+
+It must then call `freeze_execution_snapshot` on whatever current
+foundation snapshot it actually uses, exactly once, **before** constructing
+its first label, and record the returned hash immutably in its own output
+report; if it reads the foundation again later in the same run, it must
+call `assert_snapshot_matches_frozen_hash` to prove the snapshot has not
+changed underneath it. It must never read multiple candidate snapshots and
+pick the one that produces a more favourable result. It may extend
+`eligibilityPolicy.universeWideCorroboration`'s scope to more continuing
+names using already-available data (a further, symmetric, outcome-blind
+audit) without a new preregistration, but may not silently treat the
+current 213-name gap as closed, and may not use realised outcomes to decide
+which additional names to audit.
