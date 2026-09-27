@@ -1898,6 +1898,54 @@
   not. Every 2016/2025 coverage figure in this document is still the
   pre-repair measurement or an upper bound, never an "after" result.
 
+## KR original-fiscal-2015-XBRL parser-repair invariants (v2.35)
+
+- AN EXPANDED LIVE PROBE FOUND A REAL PARSER DEFECT, AND IT WAS FIXED FROM
+  THE SERVED CONTENT ITSELF, NOT FROM ASSUMED SEMANTICS. GitHub Actions run
+  `36304452901` (`raw-probe-2015`, `--dump-entries`, real `DART_API_KEY`, a
+  re-run after a first attempt timed out on `corpCode.xml`) served 18 of 24
+  sampled fiscal-2015 Q1/H1/Q3 packages as real ZIPs; the parser resolved
+  only 3 and read 15 `AMBIGUOUS`, all-or-nothing per issuer (never per-stage
+  or per-account). `pipeline/dart_xbrl_statements.py`'s context-window match
+  never inspected a context's own `<scenario>`/`<segment>` dimensional
+  qualifier, and real served content showed multiple contexts sharing the
+  exact same literal dates, distinguished only by such a qualifier.
+- DIMENSIONAL QUALIFIERS ARE AN ALLOWLIST, NEVER A BLOCKLIST, BECAUSE A
+  BLOCKLIST ASSUMES EVERY FUTURE AXIS HAS ALREADY BEEN SEEN. A context is
+  eligible only if its dimensional content is empty, or is exactly one
+  `ConsolidatedAndSeparateFinancialStatementsAxis` member — the same
+  Consolidated-vs-Separate distinction this repository's PIT-fundamentals
+  invariants already resolve for the JSON endpoint (prefer Consolidated),
+  reused rather than re-decided. Two OTHER axis families were measured live
+  and are excluded by the same allowlist, not named individually as special
+  cases: `dart-gcd:PeriodAxis` (every member observed names a PRIOR period;
+  DART's general-corp comparative template reuses one boilerplate date
+  range across a table, so the member's own name is the only real signal)
+  and `ifrs:ComponentsOfEquityAxis` (an SCE component row — one real context
+  carried this axis together WITH the admitted Consolidated one at once,
+  confirming exclusion must check the axis SET rather than a single flag).
+  Exclusion gets its own status, `AXIS_EXCLUDED_ONLY`, kept apart from
+  `NOT_FOUND` — "stated only under a qualifier not admitted" and "never
+  stated at all" are different facts. This can only ever REMOVE a candidate
+  from ambiguity, never invent one: a residual disagreement inside the
+  preferred pool still reports `AMBIGUOUS`, exactly as before this evidence
+  was read. Six regression tests are pinned byte-for-byte to the real
+  context XML this run served, not to a hand-written approximation of it.
+- THE FIX HAS NOT YET BEEN RE-VALIDATED AGAINST LIVE CONTENT, AND THE REASON
+  IS A CONFIRMED PERMISSION BLOCKER, NOT A DESIGN GAP. A direct
+  `workflow_dispatch` call against `fundamentals.yml` from this session
+  returned `403 Resource not accessible by integration` — the same class of
+  blocker already recorded one level up for `kr-corporate-action-
+  collection.yml`. Re-running `raw-probe-2015` on the repaired parser, then
+  reading `candidateAccounts[account].candidateDetail`'s per-candidate
+  `contextRef`/`dims`/`eligibleAxisShape` (now attached even without
+  `--dump-entries`), is the confirming step a human operator must dispatch
+  before `raw-xbrl-2015` or `raw-statements` is run against it.
+- NEITHER THE 20% GATE NOR ANY COVERAGE NUMBER HAS MOVED. This PR still
+  changes only parsing and diagnostic code; no collector has written to
+  `signal-history` and no "after" coverage figure exists anywhere in this
+  repository yet.
+
 ## Lint gate invariants (v2.11)
 
 - The enabled rule set reports ZERO findings on `main`. A rule is turned on in the

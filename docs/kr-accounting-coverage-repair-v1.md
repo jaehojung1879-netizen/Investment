@@ -173,6 +173,61 @@ dark whatever is collected. That bound assumes every account is recoverable
 from a served package; the CANDIDATE_UNCONFIRMED tier means the real number
 could be lower.
 
+**E. Was the CANDIDATE_UNCONFIRMED parser actually correct on served
+content? Measured, and a real defect found and repaired.** GitHub Actions
+run [36304452901](https://github.com/jaehojung1879-netizen/Investment/actions/runs/36304452901)
+(2026-09-27, this branch at `b3e02b8f`, `--dump-entries`, a real re-run
+after a first attempt timed out on `corpCode.xml`) ran the expanded
+all-stage probe against the live API and printed its own structured JSON to
+the job log (artifact upload could not be downloaded from this sandbox —
+blob storage stays blocked, per `AGENTS.md` v2.29 — so the job log was read
+directly and parsed). Measured, not assumed: **18 of 24 sampled 2015 Q1/H1/Q3
+packages served a real ZIP** (6 of 24 returned DART's confirmed 014
+envelope), and of those 18, the first cut of the parser resolved only **3**
+and read **15** as `AMBIGUOUS` — an all-or-nothing pattern per issuer (every
+stage of a given ticker either all resolved or all ambiguous), pointing at a
+filer-level XBRL-authoring style rather than a per-account or per-quarter
+cause.
+
+The mechanism, read from the real served content: the parser's context
+window match (`instant`/`startDate`/`endDate` only) never inspected a
+context's own `<scenario>`/`<segment>` dimensional qualifier, and DART's
+general-corp filers from this era tag multiple contexts with the exact same
+literal dates, distinguished only by such a qualifier. Three axis families
+were actually observed (byte-exact XML quoted in
+`tests/test_kr_accounting_coverage_repair.py`):
+- `ifrs:ConsolidatedAndSeparateFinancialStatementsAxis`
+  (`ConsolidatedMember`/`SeparateMember`) — the same Consolidated-vs-Separate
+  distinction this repository's PIT-fundamentals invariants already resolve
+  for the JSON endpoint (prefer Consolidated), reused rather than re-decided.
+- `dart-gcd:PeriodAxis` (`PeriodCoveredbyLastFiscalYearMember` /
+  `PeriodCoveredbyTheYearBeforeLastFiscalYearMember`) — every member actually
+  observed names a PRIOR period; the axis reuses one literal boilerplate
+  date range across a comparative table, so the member's own name is the
+  only real signal.
+- `ifrs:ComponentsOfEquityAxis` — an SCE component row (one real context
+  carried BOTH this axis and the Consolidated one at once), exactly the
+  shape `dart_canonical_accounts` already refuses for the JSON-row path.
+
+`pipeline/dart_xbrl_statements.py` now admits a context as an eligible
+candidate only if its dimensional content is empty, or is exactly one
+Consolidated/Separate member — an allowlist of the two shapes this evidence
+and this repository's own prior rules can account for, never a blocklist
+that assumes every future axis has been seen. Anything else is excluded
+under its own status, `AXIS_EXCLUDED_ONLY`, kept apart from `NOT_FOUND`
+("stated only under a qualifier we do not admit" is a different fact from
+"never stated at all"). This can only ever REMOVE a candidate from
+ambiguity, never invent one.
+
+**This fix has not yet been re-validated against live DART content.**
+Re-running `raw-probe-2015` against the live API on the repaired parser —
+the obvious next step — needs a `workflow_dispatch` call this session's
+GitHub token cannot make: a direct attempt returned `403 Resource not
+accessible by integration`, the same class of blocker `AGENTS.md` v2.29
+already recorded for a different workflow. This is a genuine, confirmed
+permission blocker, not a DART-side refusal and not a code defect — the
+exact next operator action is in §10.
+
 ## 4. Collection-universe gap
 
 - `collect_dart_fundamentals.py` builds its work list from
@@ -294,8 +349,20 @@ path reads unchanged.
 - Two same-named facts surviving that window with disagreeing values is
   `AMBIGUOUS`; no parseable XML entry is `NO_PARSEABLE_XML_ENTRY`. Neither is
   ever resolved by picking one.
+- **A context's own `<scenario>`/`<segment>` dimensional qualifier is an
+  allowlist, measured from real served content (§3E).** Eligible: empty, or
+  exactly one `ConsolidatedAndSeparateFinancialStatementsAxis` member
+  (Consolidated preferred over Separate, per this repository's own existing
+  rule, basis recorded per account). Excluded under its own status
+  (`AXIS_EXCLUDED_ONLY`, never folded into `NOT_FOUND`): everything else,
+  including the two axis families real evidence showed being misread as
+  candidates before this fix (`dart-gcd:PeriodAxis`'s comparative-period
+  tags, `ifrs:ComponentsOfEquityAxis`'s SCE component rows). `describe_
+  candidates` reports every window-matched candidate's contextRef/dims/
+  eligibility for review, without deciding a value itself.
 - Every record carries `endpointConfidence: CANDIDATE_UNCONFIRMED`, because
-  this session has never read a real served ZIP's contents (§3D). A unit
+  this session has never read a real served ZIP's contents beyond what §3E's
+  live probe already measured (§10 names the confirming re-run). A unit
   test proves the resulting record actually supplies `dart_derive`'s missing
   2015-same-stage prior for a 2016 TTM roll-forward, end to end, unmodified.
 
@@ -398,15 +465,40 @@ writes nothing. Before and upper bounds, by gate year:
 The job is in `fundamentals.yml` on this branch. It can be dispatched from
 the branch before merge.
 
-1. ~~`target: raw-probe-2015`~~ **Done.** Run
-   [36300578100](https://github.com/jaehojung1879-netizen/Investment/actions/runs/36300578100),
-   64 calls, wrote nothing, artifact `dart-fiscal-2015-probe` uploaded.
-   Evidence is in §3D. The probe now also tests all three stages (not one
-   Q3 sample) and, for a served ZIP, best-effort reports which of the four
-   accounts the `CANDIDATE_UNCONFIRMED` parser recovers — re-running it is
-   optional, useful only for a wider sample than 8 tickers or to review
-   more real ZIP structure via `--dump-entries`.
-2. **`target: raw-xbrl-2015`**, other inputs empty (`max_calls` 1,800,
+**Blocked: this session cannot dispatch it.** A direct `workflow_dispatch`
+call against `fundamentals.yml` from this session returned `403 Resource
+not accessible by integration` — a GitHub App token permission this
+environment's credentials do not carry, not a DART-side refusal and not a
+code defect (the same class of blocker `AGENTS.md` v2.29 already recorded
+for `kr-corporate-action-collection.yml`). Every step below needs a human
+operator to dispatch it from the GitHub Actions UI (or a token with
+`workflow_dispatch` scope); this session can only build, validate and
+report.
+
+1. ~~`target: raw-probe-2015`~~ **Done twice.** Run
+   [36300578100](https://github.com/jaehojung1879-netizen/Investment/actions/runs/36300578100)
+   (single-stage sample, §3D) and run
+   [36304452901](https://github.com/jaehojung1879-netizen/Investment/actions/runs/36304452901)
+   (expanded all-stage probe with `--dump-entries`, §3E) — both wrote
+   nothing to `signal-history`. The second run's real evidence found and
+   fixed a genuine parser defect (§3E); the fix has not yet been
+   re-validated against live content.
+2. **`target: raw-probe-2015` again, on the current head (`3a3e2ad7`),
+   with `--dump-entries`.** The single remaining step before trusting the
+   parser on real data: confirm the repaired
+   `pipeline/dart_xbrl_statements.py` now resolves most of the 15
+   previously-`AMBIGUOUS` filings for the evidence-based reason §3E
+   describes (an eligible, unqualified or Consolidated-preferred fact
+   survives), that the 3 already-`RESOLVED` filings stay resolved and
+   unchanged, and that no `RESOLVED` case silently became `NOT_FOUND` or a
+   different value (which would mean the exclusion rule was wrong, not
+   merely incomplete). `scripts/collect_dart_raw_statements.py`'s
+   `candidateAccounts[account].candidateDetail` now reports every
+   candidate's `contextRef`/`dims`/`eligibleAxisShape` for exactly this
+   review, without needing `--dump-entries` at all (that flag is only for
+   the raw byte snippet, still useful for anything this allowlist has not
+   yet seen).
+3. **`target: raw-xbrl-2015`**, other inputs empty (`max_calls` 1,800,
    `max_minutes` 290). Not yet run. This is the collector that would
    actually recover fiscal-2015 quarterlies where `fnlttXbrl.xml` serves
    them. Its job summary publishes real classification counts (how many
@@ -414,19 +506,21 @@ the branch before merge.
    selection-side codes) and the merged candidate's real "after" coverage
    for 2016 — the first real measurement of whether original-XBRL recovery
    actually clears the 20% floor, since every number before this is an
-   upper bound.
-3. **`target: raw-statements`**, `raw_years`/`max_calls`/`max_minutes`
+   upper bound. Run only after step 2 confirms the parser behaves as
+   evidence-explained, not merely that it changed the resolved count.
+4. **`target: raw-statements`**, `raw_years`/`max_calls`/`max_minutes`
    empty. Re-run until the log reports `"datasetComplete": true` (2015 now
    asks only for the annual report there, so this is fewer calls than
-   before — about 12,140 filings over 7–9 runs). If step 2 already ran,
+   before — about 12,140 filings over 7–9 runs). If step 3 already ran,
    this step's audit reads the merged candidate (canonical-v2 + xbrl-
    original) automatically; if not, it audits canonical-v2 alone, exactly
    as before.
 
-Review before running step 2: `pipeline/dart_xbrl_statements.py`'s account
-extraction has never been exercised against a real served ZIP in this
-session (§3D, §7). Its logic is built from confirmed element identifiers and
-general XBRL convention, marked `CANDIDATE_UNCONFIRMED`, and tested only
-against synthetic fixtures. Running step 2 with `--dump-dir` locally, or
-reading `--dump-entries`'s output from an expanded probe run, is how to
-inspect real structure before trusting its output.
+Review before running step 3: `pipeline/dart_xbrl_statements.py`'s account
+extraction has never been exercised against a real served ZIP's CONTENTS in
+this session beyond the envelope-level checks step 2 exists to run (§3E,
+§7). Its logic is built from confirmed element identifiers, general XBRL
+convention, and now three axis families measured directly from real served
+content — still marked `CANDIDATE_UNCONFIRMED` until step 2's own review
+confirms the resolved values themselves (not just the resolved COUNT) look
+right.
