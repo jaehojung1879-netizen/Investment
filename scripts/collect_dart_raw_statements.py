@@ -141,6 +141,8 @@ def fetch_statement(key, corp, year, code, budget) -> tuple[list[dict], str | No
             return [], None, attempts, f"REFUSED:DART {DF.describe_status(status)}"
         if status == DF.QUOTA_STATUS:
             return [], None, attempts, "DAILY_QUOTA"
+        if status in RS.RUN_STOPPING_STATUSES:
+            return [], None, attempts, f"REFUSED:DART {DF.describe_status(status)}"
         rows = payload.get("list") or []
         if status == "000" and rows:
             return rows, fs_div, attempts, None
@@ -162,6 +164,9 @@ def collect(store: Path, key: str, universe: dict, years, budget: Budget,
     done = {r["id"] for rows in shards.values() for r in rows}
     absent_path = store / "absent.json"
     absent = json.loads(absent_path.read_text(encoding="utf-8")) if absent_path.exists() else {}
+    unresolved_path = store / "unresolved.json"
+    unresolved = (json.loads(unresolved_path.read_text(encoding="utf-8"))
+                  if unresolved_path.exists() else {})
     today = time.strftime("%Y-%m-%d", time.gmtime())
     resolved = {t: i for t, i in identities.items() if i["status"] == KCA.RESOLVED}
     pending = RS.work_list(resolved, years, CODES, done, RS.settled(absent, today))
@@ -185,7 +190,12 @@ def collect(store: Path, key: str, universe: dict, years, budget: Budget,
             break
         for a in attempts:
             statuses[f"{a['fsDiv']}={a['status']}"] += 1
+        rid = RS.record_id(ticker, year, code)
         if stop:
+            # The filing's answers are kept as UNRESOLVED so the log and the
+            # store show exactly what DART said; nothing about it is settled.
+            unresolved[rid] = RS.unresolved_record(ticker=ticker, fiscal_year=year, report_code=code,
+                                                   attempts=attempts, checked_at=collected_at)
             stop_reason = stop if stop.startswith("REFUSED:") else "CALL_BUDGET_SPENT"
             break
         record, reason = RS.build_raw_record(
@@ -193,10 +203,20 @@ def collect(store: Path, key: str, universe: dict, years, budget: Budget,
             fiscal_year=year, report_code=code, fs_div=fs_div or RS.FS_ORDER[-1], rows=rows,
             attempts=attempts, collected_at=collected_at, identity_basis=identity["basis"])
         if record is None:
-            absent[RS.record_id(ticker, year, code)] = RS.absence_record(
-                ticker=ticker, fiscal_year=year, report_code=code, attempts=attempts,
-                checked_at=collected_at)
+            # Only DART's own "no data" on every statement division is evidence
+            # that the filing does not exist. Anything else -- 100, 800, 900,
+            # 021, 014, a 000 with no rows, an unknown code -- is kept with its
+            # statuses and retried, never settled.
+            if RS.absence_evidence(attempts) == RS.SOURCE_ABSENCE:
+                absent[rid] = RS.absence_record(ticker=ticker, fiscal_year=year, report_code=code,
+                                                attempts=attempts, checked_at=collected_at)
+                unresolved.pop(rid, None)
+            else:
+                unresolved[rid] = RS.unresolved_record(ticker=ticker, fiscal_year=year,
+                                                       report_code=code, attempts=attempts,
+                                                       checked_at=collected_at)
             continue
+        unresolved.pop(rid, None)
         fresh.setdefault(year, []).append(record)
         written += 1
         time.sleep(PACE_SECONDS)
@@ -208,6 +228,8 @@ def collect(store: Path, key: str, universe: dict, years, budget: Budget,
             raise RuntimeError(f"{path} exceeds {RS.MAX_SHARD_BYTES} bytes; shard finer")
     absent_path.write_text(json.dumps(absent, ensure_ascii=False, indent=1, sort_keys=True) + "\n",
                            encoding="utf-8")
+    unresolved_path.write_text(json.dumps(unresolved, ensure_ascii=False, indent=1, sort_keys=True) + "\n",
+                               encoding="utf-8")
     all_records = [r for rows in shards.values() for r in rows] + [r for rows in fresh.values() for r in rows]
     remaining = RS.work_list(resolved, years, CODES, {r["id"] for r in all_records},
                              RS.settled(absent, today))
@@ -219,8 +241,10 @@ def collect(store: Path, key: str, universe: dict, years, budget: Budget,
         "identityBasis": dict(Counter(i["basis"] for i in identities.values())),
         "years": list(years),
         "storedFilings": len(all_records), "recordedAbsences": len(absent),
+        "unresolvedFilings": len(unresolved),
+        "sourceAbsenceStatuses": sorted(RS.SOURCE_ABSENCE_STATUSES),
         "remaining": len(remaining), "datasetComplete": not remaining,
-        "statusTable": RS.status_table(all_records, absent),
+        "statusTable": RS.status_table(all_records, absent, unresolved),
         "thisRun": {"calls": budget.calls, "written": written, "stopReason": stop_reason,
                     "outcome": outcome, "attemptStatuses": dict(statuses)},
     }
@@ -303,7 +327,8 @@ def main(argv=None) -> int:
     years = [int(y) for y in args.years.split(",") if y.strip()]
     manifest = collect(args.store_dir, key, universe, years, budget, directory_fn=lambda _: directory)
     print(json.dumps({k: manifest[k] for k in ("pitUniverseTickers", "resolvedIssuers", "storedFilings",
-                                               "recordedAbsences", "remaining", "datasetComplete",
+                                               "recordedAbsences", "unresolvedFilings", "remaining",
+                                               "datasetComplete",
                                                "thisRun")}, ensure_ascii=False, indent=1))
     for row in manifest["statusTable"]:
         print(f"  {row['fiscalYear']} {row['reportCode']} {row['result']:6} {row['detail']:28} {row['filings']}")

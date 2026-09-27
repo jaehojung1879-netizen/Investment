@@ -1781,6 +1781,18 @@
   not serving 2015 quarterlies, but whether original 2015 filings exist is
   answered only by `raw-probe-2015` (statement endpoint's real status,
   `list.json`, original XBRL), never inferred.
+- A REQUEST, CONFIGURATION OR SYSTEM FAILURE IS NEVER EVIDENCE THAT A
+  HISTORICAL FILING DID NOT EXIST. The new raw collector's first draft
+  stopped only on key and quota statuses, let 100 (invalid field), 800
+  (maintenance), 900 (undefined error) and 021 (company-count limit) fall
+  through to an absence, and settled that absence on the calendar alone --
+  and a test asserted it. Fixed before any collection ran:
+  `dart_raw_statements.absence_evidence` is SOURCE_ABSENCE only when every
+  statement division answered a status in `SOURCE_ABSENCE_STATUSES` (013
+  alone -- 014 has no repository evidence for this endpoint and fails
+  closed), `settled` re-derives that from the stored attempts, and every
+  other answer is kept in `unresolved.json` with DART's own status and
+  message and retried. 800 and 021 stop the run as a refusal.
 - AN ACCOUNT IS ADMITTED BY WHAT THE FILER SAYS IT IS, IN THE STATEMENT IT
   BELONGS TO, AND NOWHERE ELSE. `dart_canonical_accounts` adds exactly one
   rule for the four gate accounts: the IFRS element id those accounts carry

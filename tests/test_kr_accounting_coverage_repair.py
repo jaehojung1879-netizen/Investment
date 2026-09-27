@@ -174,7 +174,9 @@ def test_mixed_receipts_are_flagged_and_dated_by_the_earliest():
 
 def test_work_list_follows_the_given_year_priority_and_skips_done_and_settled():
     done = {RS.record_id("A.KS", 2016, "11013")}
-    absent = {RS.record_id("A.KS", 2016, "11012"): {"fiscalYear": 2016, "reportCode": "11012"}}
+    absent = {RS.record_id("A.KS", 2016, "11012"): {
+        "fiscalYear": 2016, "reportCode": "11012",
+        "attempts": [{"fsDiv": "CFS", "status": "013"}, {"fsDiv": "OFS", "status": "013"}]}}
     pending = RS.work_list(["A.KS"], [2016, 2014, 2015], ["11013", "11012"], done,
                            RS.settled(absent, "2026-09-27"))
     assert pending == [("A.KS", 2015, "11013"), ("A.KS", 2015, "11012")]
@@ -223,15 +225,104 @@ def test_collector_records_real_statuses_resolves_delisted_issuers_and_keeps_row
     assert len(delisted) == 4 and all(r["fsDiv"] == "OFS" for r in delisted)
     assert [a["status"] for a in delisted[0]["attempts"]] == ["013", "000"]
     assert delisted[0]["rows"] == QUARTER_ROWS
+    # DART said 100 (invalid field), not 013: that is a request failure, not
+    # evidence the filing does not exist. Kept with its statuses, never absent.
     absent = json.loads((tmp_path / "store/absent.json").read_text())
-    q1 = absent[RS.record_id("000001.KS", 2025, "11013")]
-    # DART said 100, not 013 -- and that is what is kept.
-    assert [a["status"] for a in q1["attempts"]] == ["100", "100"]
-    # Second run: nothing stored or settled is fetched again.
+    unresolved = json.loads((tmp_path / "store/unresolved.json").read_text())
+    q1 = RS.record_id("000001.KS", 2025, "11013")
+    assert q1 not in absent and absent == {}
+    assert [a["status"] for a in unresolved[q1]["attempts"]] == ["100", "100"]
+    assert unresolved[q1]["evidence"] == RS.NOT_ESTABLISHED
+    assert manifest["unresolvedFilings"] == 3 and not manifest["datasetComplete"]
+    # Second run: stored filings are not fetched again; the 100s are retried.
     calls.clear()
     COLLECT.collect(tmp_path / "store", "k", _universe(tmp_path), [2025],
                     COLLECT.Budget(1000, 10), directory_fn=lambda _: DIRECTORY)
+    assert sorted({(c[0], c[2]) for c in calls}) == [
+        ("00000001", "11012"), ("00000001", "11013"), ("00000001", "11014")]
+
+
+def _two_filers(tmp_path, monkeypatch, status, message="m"):
+    """Every call answers `status`; returns (manifest, calls, store)."""
+    calls = _scripted(monkeypatch, lambda p: {"status": status, "message": message})
+    store = tmp_path / "store"
+    manifest = COLLECT.collect(store, "k", _universe(tmp_path), [2025],
+                               COLLECT.Budget(1000, 10), directory_fn=lambda _: DIRECTORY)
+    return manifest, calls, store
+
+
+def test_013_on_every_division_is_recorded_as_a_source_absence_and_settles(tmp_path, monkeypatch):
+    manifest, calls, store = _two_filers(tmp_path, monkeypatch, "013", "조회된 데이타가 없습니다.")
+    absent = json.loads((store / "absent.json").read_text())
+    assert len(absent) == 8 and manifest["unresolvedFilings"] == 0
+    row = absent[RS.record_id("000001.KS", 2025, "11013")]
+    assert row["evidence"] == RS.SOURCE_ABSENCE
+    assert [(a["fsDiv"], a["status"], a["message"]) for a in row["attempts"]] == [
+        ("CFS", "013", "조회된 데이타가 없습니다."), ("OFS", "013", "조회된 데이타가 없습니다.")]
+    # 2025 filings are past deadline + grace by 2026-09-27; a 2026 Q3 one is not.
+    assert RS.settled(absent, "2026-09-27") == set(absent)
+    assert RS.settled(absent, "2025-06-01") == set()
+    calls.clear()
+    COLLECT.collect(store, "k", _universe(tmp_path), [2025], COLLECT.Budget(1000, 10),
+                    directory_fn=lambda _: DIRECTORY)
     assert calls == []
+
+
+@pytest.mark.parametrize("status", ["100", "900", "014", "999", "None"])
+def test_non_absence_statuses_are_never_settled_and_are_retried(tmp_path, monkeypatch, status):
+    manifest, calls, store = _two_filers(tmp_path, monkeypatch, status)
+    assert json.loads((store / "absent.json").read_text()) == {}
+    unresolved = json.loads((store / "unresolved.json").read_text())
+    assert len(unresolved) == 8 and manifest["unresolvedFilings"] == 8
+    assert all([a["status"] for a in r["attempts"]] == [status, status] for r in unresolved.values())
+    assert not manifest["datasetComplete"]
+    calls.clear()
+    COLLECT.collect(store, "k", _universe(tmp_path), [2025], COLLECT.Budget(1000, 10),
+                    directory_fn=lambda _: DIRECTORY)
+    assert len(calls) == 16  # every unresolved filing asked again, both divisions
+
+
+@pytest.mark.parametrize("status", ["800", "021"])
+def test_maintenance_and_company_limit_stop_the_run_without_settling(tmp_path, monkeypatch, status):
+    manifest, calls, store = _two_filers(tmp_path, monkeypatch, status)
+    assert len(calls) == 1 and manifest["thisRun"]["stopReason"].startswith("REFUSED:DART " + status)
+    assert manifest["thisRun"]["outcome"] != "SERVED"
+    assert json.loads((store / "absent.json").read_text()) == {}
+    unresolved = json.loads((store / "unresolved.json").read_text())
+    assert [a["status"] for r in unresolved.values() for a in r["attempts"]] == [status]
+
+
+def test_mixed_013_and_a_request_error_is_not_absence():
+    attempts = [{"fsDiv": "CFS", "status": "013"}, {"fsDiv": "OFS", "status": "100"}]
+    assert RS.absence_evidence(attempts) == RS.NOT_ESTABLISHED
+    assert RS.absence_evidence([{"fsDiv": "CFS", "status": "013"}]) == RS.NOT_ESTABLISHED
+    assert RS.absence_evidence([{"fsDiv": "CFS", "status": "000"},
+                                {"fsDiv": "OFS", "status": "000"}]) == RS.NOT_ESTABLISHED
+    with pytest.raises(ValueError, match="ABSENCE_NOT_ESTABLISHED"):
+        RS.absence_record(ticker="A.KS", fiscal_year=2016, report_code="11013",
+                          attempts=attempts, checked_at="x")
+
+
+def test_settled_rederives_evidence_and_ignores_a_stored_label():
+    # A hand-edited or older row claiming absence with non-013 attempts never settles.
+    forged = {"x": {"fiscalYear": 2016, "reportCode": "11013", "evidence": RS.SOURCE_ABSENCE,
+                    "attempts": [{"fsDiv": "CFS", "status": "100"}, {"fsDiv": "OFS", "status": "100"}]},
+              "legacy": {"fiscalYear": 2016, "reportCode": "11013", "status": "013"}}
+    assert RS.settled(forged, "2026-09-27") == set()
+
+
+def test_served_000_rows_are_stored_unchanged(tmp_path, monkeypatch):
+    manifest, _, store = _two_filers(tmp_path, monkeypatch, "000")
+    # 000 with no rows is not a filing and not an absence.
+    assert json.loads((store / "absent.json").read_text()) == {}
+    assert manifest["unresolvedFilings"] == 8
+    calls = _scripted(monkeypatch, lambda p: {"status": "000", "list": QUARTER_ROWS})
+    COLLECT.collect(store, "k", _universe(tmp_path), [2025], COLLECT.Budget(1000, 10),
+                    directory_fn=lambda _: DIRECTORY)
+    stored = HS.read_jsonl(store / "raw-2025.jsonl.gz")
+    assert len(stored) == 8 and all(r["rows"] == QUARTER_ROWS and r["fsDiv"] == "CFS" for r in stored)
+    assert json.loads((store / "unresolved.json").read_text()) == {}
+    assert len(calls) == 8
 
 
 def test_budget_is_checked_before_every_call_and_never_leaves_a_partial_filing(tmp_path, monkeypatch):
@@ -400,6 +491,7 @@ def test_raw_collection_job_is_dispatch_only_and_never_writes_the_sealed_store()
     assert "--universe-dir sealed-work/ledger/universe/kr" in job
     assert "git add ledger/fundamentals/kr-raw ledger/fundamentals/kr-canonical-v2" in job
     assert "git add ledger/fundamentals\n" not in job and "git add ledger/fundamentals/kr\n" not in job
+    assert "name: dart-fiscal-2015-probe" in job and "probe-2015.json" in job
     # Every step that tees a collector or audit keeps its exit status.
     for step in job.split("      - name: ")[1:]:
         if "| tee" in step:

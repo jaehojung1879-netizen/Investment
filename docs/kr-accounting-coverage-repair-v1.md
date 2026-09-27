@@ -204,6 +204,22 @@ No derivation was changed: all four modules are sealed.
 - `availableFrom` comes only from the served `rcept_no`. The run is
   append-only, budget-checked before every call, and fails closed on a
   refusal.
+- **Only DART's own "no data" counts as absence.** A filing is recorded in
+  `absent.json` only when both CFS and OFS answered 013. It is skipped
+  permanently only once, in addition, its deadline plus grace has passed;
+  `settled()` re-derives both conditions from the stored attempts.
+  - 013 is the only status this repository has evidence means "no such data"
+    for statement requests.
+  - 014 appears only as a label in the status table, with no evidence of what
+    it means for `fnlttSinglAcntAll`, so it is not treated as absence.
+  - 100, 900, 014, a 000 with no rows, a transport failure and any unknown
+    code go to `unresolved.json` with every status and message, and are
+    retried next run.
+  - 800 (maintenance) and 021 (company-count limit) stop the run as a
+    refusal. Nothing is settled either way.
+  - A first draft of this collector let 100/800/900/021 fall through to a
+    settled absence, and one test asserted it. That was corrected before any
+    collection ran.
 
 **`pipeline/dart_canonical_accounts.py` and
 `scripts/build_kr_canonical_filings.py`** rebuild records the sealed feature
@@ -300,7 +316,8 @@ the branch before merge.
    - `target: raw-probe-2015`
    - leave the other inputs empty
 
-   About 65 calls. It writes nothing to the store. Its log answers §3 C and
+   About 65 calls. It writes nothing to the store. Its JSON and log are
+   uploaded as the `dart-fiscal-2015-probe` workflow artifact. Its log answers §3 C and
    D.
 2. **Same workflow**, with:
    - `target: raw-statements`

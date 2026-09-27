@@ -326,6 +326,18 @@ jobs:
             --universe-dir sealed-work/ledger/universe/kr --mode probe-2015 \
             --probe-tickers 8 --max-calls 200 --probe-output probe-2015.json | tee raw.log
 
+      # The probe's exact answers (every status and message, the filing index,
+      # the XBRL package sizes) kept as a reviewable file, not only a log tail.
+      - name: Upload fiscal-2015 probe evidence
+        if: always() && inputs.target == 'raw-probe-2015'
+        uses: actions/upload-artifact@v4
+        with:
+          name: dart-fiscal-2015-probe
+          path: |
+            probe-2015.json
+            raw.log
+          if-no-files-found: warn
+
       - name: Collect a slice of raw statement rows
         if: inputs.target == 'raw-statements'
         env:

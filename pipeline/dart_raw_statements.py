@@ -23,6 +23,21 @@ returns the literal "013" once both CFS and OFS fail, whatever DART actually
 answered, so every one of the 1,723 absences in the sealed `absent.json` reads
 013 by construction. Here each attempt keeps its own status and message.
 
+AN ABSENCE IS EVIDENCE ONLY WHEN DART SAID "NO DATA". A filing is recorded
+as absent -- and may later settle into the permanently-skipped set -- only
+when EVERY statement division was asked and every answer was a status in
+`SOURCE_ABSENCE_STATUSES`. Today that is 013 alone: the one status this
+repository has evidence means "no such data" for statement requests (the
+PIT-fundamentals invariants). 014 ("file does not exist") appears here only
+as a label in `dart_fundamentals.STATUS_MEANING`; nothing in the repository
+shows `fnlttSinglAcntAll` returning it or what it would mean there, so it is
+NOT treated as absence. 100 (invalid field), 800 (maintenance), 900
+(undefined error), 021 (company-count limit), a 000 with no rows, a
+transport failure and any unknown status are request, configuration or
+source failures: they say nothing about whether a historical filing existed,
+so they are kept as UNRESOLVED -- every status and message preserved -- and
+retried on the next run, never settled.
+
 POINT IN TIME IS STILL THE RECEIPT NUMBER. `availableFrom` comes from the
 served `rcept_no` and from nothing else, exactly as `dart_fundamentals.
 receipt_date` defines it; a response mixing receipt numbers is kept but
@@ -43,6 +58,25 @@ FS_ORDER = (DF.FS_CONSOLIDATED, DF.FS_SEPARATE)
 # 90 MB, under GitHub's 100 MB blob limit, the same margin the historical
 # ledger keeps. A shard that outgrows it is split finer, never raised.
 MAX_SHARD_BYTES = 90 * 1024 * 1024
+
+
+# Statuses that establish "DART holds no such data" for this endpoint.
+SOURCE_ABSENCE_STATUSES = frozenset({"013"})
+# Retryable statuses that will answer the same way for every remaining call in
+# this run: maintenance and the company-count limit. The run stops rather than
+# spending its budget on them; nothing is settled either way.
+RUN_STOPPING_STATUSES = frozenset({"800", "021"})
+SOURCE_ABSENCE = "SOURCE_ABSENCE"
+NOT_ESTABLISHED = "ABSENCE_NOT_ESTABLISHED"
+
+
+def absence_evidence(attempts: list[dict]) -> str:
+    """SOURCE_ABSENCE iff every statement division was asked and each said "no data"."""
+    divisions = {a.get("fsDiv") for a in attempts or []}
+    if (divisions == set(FS_ORDER) and len(attempts) == len(FS_ORDER)
+            and all(str(a.get("status")) in SOURCE_ABSENCE_STATUSES for a in attempts)):
+        return SOURCE_ABSENCE
+    return NOT_ESTABLISHED
 
 
 def record_id(ticker: str, fiscal_year: int, report_code: str) -> str:
@@ -96,10 +130,24 @@ def build_raw_record(*, ticker: str, stock_code: str, corp_code: str, fiscal_yea
 
 def absence_record(*, ticker: str, fiscal_year: int, report_code: str, attempts: list[dict],
                    checked_at: str) -> dict:
-    """DART served no rows for this filing under any statement division."""
+    """DART served no rows for this filing; `evidence` says whether that means absent.
+
+    Raises if called with attempts that do not establish absence -- a caller
+    that wants to keep an unresolved answer uses `unresolved_record`.
+    """
+    evidence = absence_evidence(attempts)
+    if evidence != SOURCE_ABSENCE:
+        raise ValueError("ABSENCE_NOT_ESTABLISHED_BY_SOURCE_STATUS")
     return {"ticker": ticker, "fiscalYear": int(fiscal_year), "reportCode": report_code,
-            "attempts": attempts, "checkedAt": checked_at,
+            "evidence": evidence, "attempts": attempts, "checkedAt": checked_at,
             "dueBy": DF.filing_deadline(fiscal_year, report_code)}
+
+
+def unresolved_record(*, ticker: str, fiscal_year: int, report_code: str, attempts: list[dict],
+                      checked_at: str) -> dict:
+    """No rows and no evidence of absence: kept with every status, retried next run."""
+    return {"ticker": ticker, "fiscalYear": int(fiscal_year), "reportCode": report_code,
+            "evidence": NOT_ESTABLISHED, "attempts": attempts, "checkedAt": checked_at}
 
 
 def work_list(tickers, years, codes, done_ids: set[str], settled_absent: set[str]):
@@ -121,13 +169,19 @@ def work_list(tickers, years, codes, done_ids: set[str], settled_absent: set[str
 
 
 def settled(absent: dict, today: str) -> set[str]:
-    """Absence ids whose filing deadline plus grace has passed (see `DF.absence_is_settled`)."""
+    """Absence ids that may be skipped for good.
+
+    Both conditions, re-derived from the stored attempts rather than trusted
+    from a field: DART said "no data" on every statement division, AND the
+    filing's deadline plus grace has passed (`DF.absence_is_settled`).
+    """
     return {key for key, row in (absent or {}).items()
-            if DF.absence_is_settled(int(row["fiscalYear"]), str(row["reportCode"]), today)}
+            if absence_evidence(row.get("attempts") or []) == SOURCE_ABSENCE
+            and DF.absence_is_settled(int(row["fiscalYear"]), str(row["reportCode"]), today)}
 
 
-def status_table(records: list[dict], absent: dict) -> list[dict]:
-    """Served / absent counts by fiscal year, report code and each attempt's real status."""
+def status_table(records: list[dict], absent: dict, unresolved: dict | None = None) -> list[dict]:
+    """Served / absent / unresolved counts by fiscal year, report code and each attempt's real status."""
     tally: dict[tuple, int] = {}
     for row in records:
         key = (row["fiscalYear"], row["reportCode"], "SERVED", row["fsDiv"])
@@ -135,6 +189,10 @@ def status_table(records: list[dict], absent: dict) -> list[dict]:
     for row in (absent or {}).values():
         statuses = "/".join(f"{a['fsDiv']}={a['status']}" for a in row.get("attempts") or [])
         key = (row["fiscalYear"], row["reportCode"], "ABSENT", statuses)
+        tally[key] = tally.get(key, 0) + 1
+    for row in (unresolved or {}).values():
+        statuses = "/".join(f"{a['fsDiv']}={a['status']}" for a in row.get("attempts") or [])
+        key = (row["fiscalYear"], row["reportCode"], "UNRESOLVED", statuses)
         tally[key] = tally.get(key, 0) + 1
     return [{"fiscalYear": y, "reportCode": c, "result": r, "detail": d, "filings": n}
             for (y, c, r, d), n in sorted(tally.items(), key=str)]
