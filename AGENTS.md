@@ -1626,6 +1626,127 @@
   SNAPSHOT frozen once outcome computation begins, three different
   promises that must never be collapsed into one byte-pin again.
 
+## Alpha-opportunity-model-v4 execution invariants (v2.32)
+
+- EXECUTION CODE IS NOT THE SEALED PREREGISTRATION, AND LIVES OUTSIDE ITS
+  DEPENDENCY CLOSURE BY CONSTRUCTION. `pipeline/alpha_opportunity_v4_
+  execution.py` and `scripts/execute_alpha_opportunity_model_v4.py` build the
+  KR-only label engine the preregistration explicitly deferred, but neither
+  file is in `research_specs/alpha-opportunity-model-v4.json`'s own
+  `dependencyHashes` — editing the PREREGISTRATION's own entry point
+  (`scripts/run_alpha_opportunity_model_v4.py`) to add real execution code
+  would have raised `SEALED_DEPENDENCY_CHANGED` and retroactively rewritten
+  what PR #159 merged. The execution script instead calls `pipeline.
+  alpha_opportunity_v4_spec.load_sealed()` as a read-only proof the
+  preregistration is still exactly what was reviewed, then imports (never
+  edits) `pipeline.alpha_opportunity_v4_eligibility`'s sealed functions.
+- A RUNTIME SPEC IS ASSEMBLED FROM TWO ALREADY-SEALED DOCUMENTS, NEVER
+  INVENTED. v4's own JSON never redeclares `evidenceGates`, `costStress`,
+  the `WORST_PLAUSIBLE` survivorship-stress thresholds, or `coverageGate` --
+  they do not change when a study narrows from four region x horizon claims
+  to two, so `build_runtime_spec` reads them from `research_specs/alpha-
+  opportunity-model-v2.json` (already one of v4's own `sealedDataInputs`)
+  and overlays v4's own explicit `carriedFromV3` values on top, which always
+  win where both specify one.
+- A "PRE-LABEL" GATE IS PRE-LABEL ONLY IF NOTHING BEFORE IT CAN BUILD A
+  LABEL, AND THE FIRST EXECUTION'S WAS NOT. Harness contract V1 called
+  `target_from_sessions`, `attach_labels` and `label_eligibility` for every
+  horizon BEFORE its coverage gate, then wrote `stoppedBeforeLabels: true`.
+  The claims first published here, that zero labels were constructed and
+  that the eligibility policy was never exercised, were false. Derived from
+  the corrected run's 85,132 tradable name-dates x 2 horizons, run 1 built
+  about 170,264 forward labels in memory and made as many eligibility calls
+  (reproduced directly on the unrepaired code: 1,248 of each before a stop
+  that reported none). Nothing downstream consumed them: no fold, fit,
+  prediction, evaluation or persisted field. The raw report is kept
+  byte-identical as `docs/results/alpha-opportunity-model-v4-execution-
+  run1-defective.json` rather than deleted. Contract V2 moved the gates
+  ahead of every label by calling v2's own `tradability_frame`,
+  `eligibility` and `pre_label_gates` (see the next bullets for what that
+  got wrong). Call counters incremented at the call sites put
+  `targetFromSessionsCalls`/`labelEligibilityCalls` in every report, and
+  regression tests replace every outcome-reading function with a spy that
+  raises on touch. A flag that says what happened is not evidence that it
+  did; the counter and the spy are.
+- A SEALED CONTRACT SAYS WHICH INHERITED RULE IT REPLACES, AND CALLING THE
+  OLDER STUDY'S PIPELINE WHOLESALE RE-IMPORTS THE REPLACED ONE. v4's
+  `carriedFromV3.walkForward.survivorshipEligibility` states that the
+  per-observation `label_eligibility` policy REPLACES the inherited 20%
+  region-year gap tolerance. Contract V2, in restoring v2's pre-label
+  order, also called v2's `eligibility` and `pre_label_gates`, so it
+  dropped whole region-years above 20% unvouched from both the coverage
+  denominator and the labelled sample, and its report published a
+  `regionYearEligibility` table as if the rule governed v4. That is a
+  second implementation mismatch, found by review before merge. It had no
+  numerical effect on the V2 run: the maximum KR unvouched share is 0.128%
+  (2014), so every year stayed in and the denominator was the same 85,132
+  tradable name-dates. Contract V3 removes the rule rather than setting
+  every year eligible: `alpha_opportunity_v4_execution.pre_label_gates`
+  runs v2's sealed coverage thresholds and calendar-depth check on every
+  tradable KR name-date, v2's `eligibility` and `pre_label_gates` are never
+  called (a spy test raises if they are), and a synthetic year the old rule
+  would have dropped stays in the denominator and can fail the coverage
+  gate. The V2 report is kept byte-identical as `docs/results/alpha-
+  opportunity-model-v4-execution-run2-region-year-mismatch.json`.
+- THE CONTRACT-CORRECT EXECUTION STOPPED AT THE SAME GATE WITH ZERO LABELS.
+  Contract V3 at `b8a5dd29`, run with `--stop-before-labels`, on the sealed
+  `signal-history` commit `4ea107ed` (input identity `674a8b97…`):
+  `BLOCKED_BY_DATA_INTEGRITY`, all four call counters zero, and the same
+  four coverage failures as runs 1 and 2 (the gate reads PIT features only,
+  and no year was ever excluded, so neither earlier defect could move it).
+- THE REPLAY MANIFEST DOES NOT COVER THE RAW SHARDS THE FEATURE PATH READS,
+  SO THEIR IDENTITY IS VERIFIED SEPARATELY. `ledger/fundamentals/kr` and
+  `ledger/universe/kr` live beside the replay store, not inside it. V2 and
+  V3 verify all 28 files by git blob against `alpha-opportunity-model-v3`'s
+  sealed `futureExecutionInputs` (identical to v2's sealed `inputFiles`),
+  refuses any unsealed shard the harness would read, and re-verifies after
+  the gates, before any label. The workflow never checks out `signal-history`
+  by branch name. The freeze job pins the sealed commit and publishes the
+  commit and identity hash, and the execute job checks out that exact
+  commit and refuses a mismatch. A moving branch cannot put the two jobs on
+  different snapshots.
+- A COVERAGE-GATE FAILURE IS INVESTIGATED TO A MECHANISM BEFORE IT IS
+  ACCEPTED AS A RESULT, THE SAME DISCIPLINE THIS FILE'S OWN "GENUINE BUG"
+  RULE REQUIRES ONE LEVEL UP. Two of the four coverage failures read exactly
+  `0.0` (`assetGrowthPct`/`debtGrowthPct`, KR, 2016) -- re-verified directly
+  against the real fetched ledger rather than assumed to be a harness
+  defect: the raw DART collection's earliest fiscal year (2015) carries
+  ONLY the annual report code (`11011`, 81 tickers, zero quarterly rows),
+  so any signal date inside calendar year 2016 -- which can only ever pick
+  a fiscal-year-2016 filing as "current" (the FY2016 annual is not filed
+  until ~March 2017) -- structurally lacks the same-report-code
+  fiscal-2015 prior filing `_growth_pct` requires. This sharpens this
+  file's own PIT-fundamentals invariant ("dark for the first two years")
+  to a measured third dark year for these two specific growth features. The
+  fourth failure (`ocfToNetIncomePct`, KR, 2025, 17.42%) is NOT explained by
+  the same mechanism (2024/2025 both carry full four-report-code coverage
+  across all 126 DART-tracked tickers) -- traced instead to genuine
+  per-filing DART account-completeness variance (measured directly:
+  `000080.KS`'s `(2024, '11014')` filing carries `매출액`/`영업이익`/
+  `영업활동현금흐름`/`유형자산의취득`/`자본총계`/`자산총계` but not
+  `당기순이익`/`부채총계`, even though its neighbouring quarters and
+  annuals do), compounding across the three filings a TTM rollforward
+  needs. Neither mechanism is a code defect; neither was "fixed" by
+  loosening the inherited `0.2` floor, adding an imputation, or excluding a
+  year -- the gate is reported exactly as it fired.
+- ONLY 126 OF THE 260 KR SECURITIES THIS STUDY'S OWN TOP-120 UNIVERSE EVER
+  HELD HAVE ANY DART FUNDAMENTALS COLLECTED AT ALL (48.5%), MEASURED
+  DIRECTLY FROM THE SAME LEDGER THIS EXECUTION READ -- matching `alpha-
+  research-foundation-v2`'s own 126-ticker citation exactly, and confirming
+  this run's own fetched ledger snapshot is complete against that
+  independently-documented count rather than an artifact of a partial
+  checkout. This lowers every KR accounting feature's coverage ceiling in
+  every year and is a real, standing limitation the 2016/2025 findings
+  above sit on top of, not a substitute explanation for either.
+- RUN 1 WAS EXECUTED TWICE, AND BOTH EXECUTIONS CARRY THE SAME DEFECT. The
+  second execution re-stamped `executionCodeCommitSha` after the V1 code was
+  committed and reproduced a byte-identical report. That is a determinism
+  check of the V1 harness, not a correction of its ordering.
+- NO PROMOTION, NO PRODUCTION CHANGE, REGARDLESS OF THIS RESULT.
+  `promotionEligible: false` is asserted in the execution report's own
+  schema; nothing about the KR terminal-action foundation, the eligibility
+  policy, or any v1-v4 spec was edited by this execution.
+
 ## Lint gate invariants (v2.11)
 
 - The enabled rule set reports ZERO findings on `main`. A rule is turned on in the
