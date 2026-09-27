@@ -1,5 +1,18 @@
 # alpha-opportunity-model-v4 — KR historical execution report
 
+> **CORRECTION IN PROGRESS — the claims below about the FIRST execution are
+> wrong.** That run's harness (contract V1) called `target_from_sessions`,
+> `attach_labels` and `label_eligibility` for every horizon BEFORE the
+> coverage gate, so forward labels WERE constructed in memory and the v4
+> eligibility policy WAS invoked, even though its report says
+> `stoppedBeforeLabels: true`. No model was fit, no fold evaluated, and no
+> Alpha/IC/calibration/portfolio result was produced or persisted. The raw
+> report is preserved unchanged as
+> `docs/results/alpha-opportunity-model-v4-execution-run1-defective.json`.
+> The repaired harness (commit `073169e3`) restores v2's sealed pre-label
+> order; a corrected, gate-only run is in progress and this document will be
+> rewritten with its result.
+
 This is the HISTORICAL EXECUTION of the already-merged, sealed
 `alpha-opportunity-model-v4` preregistration (PR #159,
 `research_specs/alpha-opportunity-model-v4.json`, SHA-256
