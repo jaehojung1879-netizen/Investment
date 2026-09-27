@@ -20,7 +20,6 @@ import subprocess
 import numpy as np
 import pandas as pd
 import pytest
-import yaml
 
 from pipeline import alpha_opportunity_spec as S1
 from pipeline import alpha_opportunity_v2_evaluation as E
@@ -536,18 +535,29 @@ def test_E_a_moved_checkout_cannot_pass_as_the_frozen_commit(tmp_path):
         X.verify_input_identity(sealed, tmp_path, expected_signal_history_sha=frozen)
 
 
+def _workflow_jobs(text):
+    """{job: its YAML text}. Plain-text split on the two top-level job keys
+    this workflow has; the repository carries no YAML parser dependency."""
+    body = text[text.index("\njobs:\n"):]
+    execute_at = body.index("\n  execute:\n")
+    return {"freeze": body[:execute_at], "execute": body[execute_at:]}
+
+
+def _checkout_refs(job_text):
+    return [line.split("ref:", 1)[1].strip() for line in job_text.splitlines()
+            if line.strip().startswith("ref:")]
+
+
 def test_E_workflow_never_checks_out_signal_history_by_branch_name():
-    workflow = yaml.safe_load((ROOT / ".github/workflows/alpha-opportunity-model-v4-execution.yml").read_text())
-    refs = {job: [s["with"]["ref"] for s in body["steps"]
-                  if s.get("uses", "").startswith("actions/checkout") and "ref" in s.get("with", {})]
-            for job, body in workflow["jobs"].items()}
-    assert refs["freeze"] == ["${{ env.SEALED_SIGNAL_HISTORY_COMMIT }}"]
-    assert refs["execute"] == ["${{ needs.freeze.outputs.signal_history_sha }}"]
-    assert workflow["env"]["SEALED_SIGNAL_HISTORY_COMMIT"] == \
-        S1.read_json(CLI.V3_SPEC)["futureExecutionInputs"]["signalHistoryCommit"]
-    run = next(s["run"] for s in workflow["jobs"]["execute"]["steps"] if "execute_alpha" in s.get("run", ""))
-    assert "--expected-signal-history-sha" in run and "--expected-input-identity-sha256" in run
-    assert "signal-history" not in json.dumps(refs)
+    text = (ROOT / ".github/workflows/alpha-opportunity-model-v4-execution.yml").read_text()
+    jobs = _workflow_jobs(text)
+    assert _checkout_refs(jobs["freeze"]) == ["${{ env.SEALED_SIGNAL_HISTORY_COMMIT }}"]
+    assert _checkout_refs(jobs["execute"]) == ["${{ needs.freeze.outputs.signal_history_sha }}"]
+    sealed = S1.read_json(CLI.V3_SPEC)["futureExecutionInputs"]["signalHistoryCommit"]
+    assert f"SEALED_SIGNAL_HISTORY_COMMIT: {sealed}" in text
+    assert "--expected-signal-history-sha" in jobs["execute"]
+    assert "--expected-input-identity-sha256" in jobs["execute"]
+    assert not any("signal-history" in ref for ref in _checkout_refs(text))
 
 
 def test_sealed_input_identity_names_every_raw_file_the_harness_reads():
