@@ -48,7 +48,7 @@ the end of the run (`assert_snapshot_matches_frozen_hash`):
 |---|---|
 | Sealed v4 spec SHA-256 | `4db0a96267a8b0de41c445ac600a8064a760191abdd29d97600153a78cbab8e6` |
 | Preregistration `immutableVersion` | `4.0.0` |
-| Execution code commit | `<see docs/results/alpha-opportunity-model-v4-execution-report.json>` |
+| Execution code commit | `1ffb8a7272603f053fa48d577ff08344f5e8ecd7` (checkout clean) |
 | Execution checkout dirty | `false` |
 | Replay ledger version | `replay-v16` |
 | Replay manifest SHA-256 | `f0781292f508a123c234ded6d28aa8e84a0dc3cc29500e14989dc0b68f53b4d2` (matches the sealed audit's own citation exactly) |
@@ -57,6 +57,11 @@ the end of the run (`assert_snapshot_matches_frozen_hash`):
 | Frozen execution-snapshot hash | `a844d39e159130ac04eddd895d8dd2b3f14b0bfc3ef3c30050afbc6b7c181b66` |
 | Deterministic seeds | `inference.seed=42`, `uncertainty.seed=42` (both carried unchanged from v3) |
 | KR ledger inputs read | `ledger/replay-inputs` (price/benchmark panels), `ledger/historical/replay-v16/inputs.json`, `ledger/fundamentals/kr` (126 tickers, DART raw shards), `ledger/universe/kr` (weekly top-120 snapshots, 2013–2026) |
+
+The run was executed twice against this identical frozen snapshot — once
+before, once after the harness code itself was committed — to both correctly
+stamp `executionCodeCommitSha` and verify determinism. The two runs are
+byte-identical in every field except that one commit-SHA string.
 
 ## 3. OOS results
 
