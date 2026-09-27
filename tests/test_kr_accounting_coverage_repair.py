@@ -489,8 +489,9 @@ def test_raw_collection_job_is_dispatch_only_and_never_writes_the_sealed_store()
     assert "if: github.event_name == 'workflow_dispatch' && startsWith(inputs.target, 'raw-')" in job
     assert "SEALED_SIGNAL_HISTORY_COMMIT: 4ea107ed0cde289f0a049a65ff13d2441a786710" in job
     assert "--universe-dir sealed-work/ledger/universe/kr" in job
-    assert "git add ledger/fundamentals/kr-raw ledger/fundamentals/kr-canonical-v2" in job
+    assert "for path in ledger/fundamentals/kr-raw ledger/fundamentals/kr-canonical-v2" in job
     assert "ledger/fundamentals/kr-xbrl-original ledger/fundamentals/kr-candidate-merged" in job
+    assert 'if [ -e "$path" ]; then' in job and 'git add "$path"' in job
     assert "git add ledger/fundamentals\n" not in job and "git add ledger/fundamentals/kr\n" not in job
     assert "name: dart-fiscal-2015-probe" in job and "probe-2015.json" in job
     assert "raw-xbrl-2015" in job
@@ -499,6 +500,39 @@ def test_raw_collection_job_is_dispatch_only_and_never_writes_the_sealed_store()
     for step in job.split("      - name: ")[1:]:
         if "| tee" in step:
             assert "set -o pipefail" in step, step.splitlines()[0]
+
+
+def test_commit_step_never_crashes_when_one_candidate_path_is_missing(tmp_path):
+    """Real defect, found by a real run (GitHub Actions 36313209561,
+    `raw-xbrl-2015` alone, 2026-09-27): `raw-xbrl-2015` never creates
+    kr-canonical-v2 (that is raw-statements' own rebuild step), and a bare
+    `git add` on a path that does not exist at all is a hard git error, not a
+    no-op -- it aborted the commit AFTER a real 525-record collection had
+    already succeeded, discarding it. This test extracts the actual `git add`
+    loop from the workflow file and runs it for real in a repo missing one of
+    the four candidate paths, proving it no longer raises."""
+    workflow = (ROOT / ".github/workflows/fundamentals.yml").read_text(encoding="utf-8")
+    job = workflow.split("\n  kr-raw:\n", 1)[1]
+    step = job.split("- name: Commit & push to signal-history\n", 1)[1].split("\n      - name:", 1)[0]
+    loop = step.split("run: |\n", 1)[1]
+    repo = tmp_path / "raw-work"
+    repo.mkdir()
+    subprocess.run(["git", "init", "-q"], cwd=repo, check=True)
+    subprocess.run(["git", "config", "user.email", "t@example.com"], cwd=repo, check=True)
+    subprocess.run(["git", "config", "user.name", "t"], cwd=repo, check=True)
+    (repo / "ledger/fundamentals/kr-raw").mkdir(parents=True)
+    (repo / "ledger/fundamentals/kr-raw/absent.json").write_text("{}")
+    (repo / "ledger/fundamentals/kr-xbrl-original").mkdir(parents=True)
+    (repo / "ledger/fundamentals/kr-xbrl-original/x.jsonl").write_text("{}")
+    # kr-canonical-v2 and kr-candidate-merged deliberately absent, exactly the
+    # real run's state after `raw-xbrl-2015` alone.
+    add_only = loop.split('if git diff --cached --quiet', 1)[0]
+    add_script = "\n".join(line[10:] if line.startswith(" " * 10) else line for line in add_only.splitlines())
+    result = subprocess.run(["bash", "-c", add_script], cwd=repo, capture_output=True, text=True)
+    assert result.returncode == 0, result.stderr
+    staged = subprocess.run(["git", "diff", "--cached", "--name-only"], cwd=repo,
+                            capture_output=True, text=True, check=True).stdout
+    assert "kr-raw/absent.json" in staged and "kr-xbrl-original/x.jsonl" in staged
 
 
 # --------------------------------------------------------------------------- #

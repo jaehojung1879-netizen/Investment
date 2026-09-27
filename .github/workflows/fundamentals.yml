@@ -397,8 +397,18 @@ jobs:
         if: inputs.target == 'raw-statements' || inputs.target == 'raw-xbrl-2015'
         run: |
           cd raw-work
-          git add ledger/fundamentals/kr-raw ledger/fundamentals/kr-canonical-v2 \
-                  ledger/fundamentals/kr-xbrl-original ledger/fundamentals/kr-candidate-merged
+          # `raw-xbrl-2015` alone never creates kr-canonical-v2 (that is
+          # raw-statements' own rebuild step) -- a bare `git add` on a path
+          # that does not exist at all is a hard git error ("did not match
+          # any files"), not a no-op, and would abort the commit before
+          # anything real gets pushed. Add only the paths this run actually
+          # produced.
+          for path in ledger/fundamentals/kr-raw ledger/fundamentals/kr-canonical-v2 \
+                      ledger/fundamentals/kr-xbrl-original ledger/fundamentals/kr-candidate-merged; do
+            if [ -e "$path" ]; then
+              git add "$path"
+            fi
+          done
           if git diff --cached --quiet; then
             echo "no new raw filings"
             exit 0
