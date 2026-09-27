@@ -1,0 +1,243 @@
+{
+  "artifactType": "METHODOLOGICAL_DESIGN_REVIEW",
+  "reviewId": "alpha-research-design-review-v1",
+  "executable": false,
+  "createsPreregistration": false,
+  "baseMainCommit": "2c5b684949af82746dd2ba2ed810c255f4b84c2e",
+  "reviewDate": "2026-09-28",
+  "scope": {
+    "productionChanged": false,
+    "sealedArtifactsChanged": false,
+    "signalHistoryChanged": false,
+    "pr161Changed": false,
+    "alphaWorkflowExecuted": false,
+    "historicalModelsFit": false,
+    "historicalReturnsComputed": false
+  },
+  "exposure": {
+    "completeOutcomeBlindnessCertified": false,
+    "priorHistoricalOutcomeExposure": true,
+    "description": "Embedded outcomes encountered in required AGENTS and mixed legacy documentation; preliminary keyword filters were incomplete. Exposure disclosed; no outcomes used as recommendation evidence. No execution reports or signal-history ledger intentionally opened.",
+    "preV5ExecutionReview": true
+  },
+  "decisions": [
+    {
+      "id": "R01",
+      "decision": "KEEP",
+      "topic": "target",
+      "problemAndEvidence": "Rank-only success cannot establish advantage over the passive option (§2; L1,L3).",
+      "proposedChangeAndBenefit": "Gross total-return difference primary economic quantity; dated costs explicit. Preserves investor meaning.",
+      "newRisk": "Benchmark/style carry can look like skill.",
+      "beforeV5Outcomes": "Yes: exact endpoint and benchmark contract."
+    },
+    {
+      "id": "R02",
+      "decision": "MODIFY",
+      "topic": "claims",
+      "problemAndEvidence": "v4 joins mean, rank and classification gates although v3 calls probability descriptive.",
+      "proposedChangeAndBenefit": "Separate expected-return, incremental-prediction, probability and deployability conclusions. Avoid irrelevant vetoes.",
+      "newRisk": "Easier cherry-picking unless all statuses reported.",
+      "beforeV5Outcomes": "Yes, complete conjunctions and multiplicity."
+    },
+    {
+      "id": "R03",
+      "decision": "MODIFY",
+      "topic": "baselines",
+      "problemAndEvidence": "Training mean alone cannot isolate information beyond momentum (L9,L10).",
+      "proposedChangeAndBenefit": "Freeze matched ladder in §13. Identifies incremental information.",
+      "newRisk": "Extra comparisons can become a tournament.",
+      "beforeV5Outcomes": "Yes; one primary model, no replacement."
+    },
+    {
+      "id": "R04",
+      "decision": "MODIFY",
+      "topic": "survivorship",
+      "problemAndEvidence": "Code invariance to a termination flag does not remove outcome-correlated audit selection.",
+      "proposedChangeAndBenefit": "Symmetric auditing and unconditional denominator; narrow claims if unresolved (§9).",
+      "newRisk": "Strict repair can reduce feasible scope.",
+      "beforeV5Outcomes": "Yes, before broad-universe claims."
+    },
+    {
+      "id": "R05",
+      "decision": "MODIFY",
+      "topic": "accounting semantics",
+      "problemAndEvidence": "Total liabilities ≠ interest-bearing debt; OCF/NI changes interpretation around losses. Actual code (§8).",
+      "proposedChangeAndBenefit": "Rename in future registry; predefine denominator policy and sector comparability.",
+      "newRisk": "New definitions break historical comparability.",
+      "beforeV5Outcomes": "Yes; preserve old seals."
+    },
+    {
+      "id": "R06",
+      "decision": "KEEP",
+      "topic": "small models",
+      "problemAndEvidence": "Current feature count and date depth do not justify an architecture tournament (L9).",
+      "proposedChangeAndBenefit": "Retain exact Logistic/Ridge/HGB defaults; no third class.",
+      "newRisk": "True signal may fall outside these forms.",
+      "beforeV5Outcomes": "Yes; conclusions restricted to tested forms."
+    },
+    {
+      "id": "R07",
+      "decision": "MODIFY",
+      "topic": "overlap inference",
+      "problemAndEvidence": "A 26-week block is close to 126-session overlap; dependence may extend beyond it.",
+      "proposedChangeAndBenefit": "Horizon-aware 10/52-week primary blocks and 5/26/104-week fixed sensitivities (§11).",
+      "newRisk": "Fewer effective blocks; unstable long-block inference.",
+      "beforeV5Outcomes": "Yes; synthetic calibration and depth gate."
+    },
+    {
+      "id": "R08",
+      "decision": "KEEP",
+      "topic": "chronological PIT",
+      "problemAndEvidence": "Current raw-before-derive, endpoint maturity and train-only transforms address concrete leakage routes.",
+      "proposedChangeAndBenefit": "Retain and test prefix invariance.",
+      "newRisk": "Expanding windows adapt slowly to breaks.",
+      "beforeV5Outcomes": "Yes; no rolling-window rescue."
+    },
+    {
+      "id": "R09",
+      "decision": "MODIFY",
+      "topic": "regularization contract",
+      "problemAndEvidence": "Date weights sum to number of dates; fixed penalty has changing strength as history grows.",
+      "proposedChangeAndBenefit": "Document sum-loss objective explicitly; retain current scaling instead of silently renormalizing.",
+      "newRisk": "Shrinkage weakens with growing sample.",
+      "beforeV5Outcomes": "Yes; synthetic mechanics check only."
+    },
+    {
+      "id": "R10",
+      "decision": "MODIFY",
+      "topic": "uncertainty labels",
+      "problemAndEvidence": "Bootstrap fitted values do not include all model/source risk or individual payoff dispersion.",
+      "proposedChangeAndBenefit": "Report conditional uncertainty, residual dispersion, numerical failures separately.",
+      "newRisk": "Users may still over-read intervals.",
+      "beforeV5Outcomes": "Yes."
+    },
+    {
+      "id": "R11",
+      "decision": "MODIFY",
+      "topic": "stability",
+      "problemAndEvidence": "Joint annual positivity and classification gates mix questions and can waste power.",
+      "proposedChangeAndBenefit": "Fixed return-relevant stability disclosure/restriction (§11); classification standalone.",
+      "newRisk": "Less stringent than inherited omnibus gate.",
+      "beforeV5Outcomes": "Yes; explicitly a methodological change, no retrospective upgrade."
+    },
+    {
+      "id": "R12",
+      "decision": "BLOCKED",
+      "topic": "costs/capacity",
+      "problemAndEvidence": "Positive volume is not a cash participation estimate (L11).",
+      "proposedChangeAndBenefit": "Input-only notional/ADV/slippage contract (§12); separate conditional signal evidence.",
+      "newRisk": "Assumed costs can still understate stress fills.",
+      "beforeV5Outcomes": "Yes for investability, not gross predictive evidence."
+    },
+    {
+      "id": "R13",
+      "decision": "MODIFY",
+      "topic": "secondary factor diagnostic",
+      "problemAndEvidence": "Benchmark outperformance may be factor exposure (L1,L2,L10).",
+      "proposedChangeAndBenefit": "Freeze local factor set, historical-beta residual diagnostic (§14).",
+      "newRisk": "Factor misspecification and source revisions.",
+      "beforeV5Outcomes": "Protocol yes; unavailable regional factors BLOCKED."
+    },
+    {
+      "id": "R14",
+      "decision": "EXCLUDE",
+      "topic": "expansion/search",
+      "problemAndEvidence": "Microcap evidence and ML papers do not justify universe/model shopping.",
+      "proposedChangeAndBenefit": "Keep universe; new study only with independent feasibility rationale.",
+      "newRisk": "Some real opportunities excluded.",
+      "beforeV5Outcomes": "Yes."
+    },
+    {
+      "id": "R15",
+      "decision": "MODIFY",
+      "topic": "stopping",
+      "problemAndEvidence": "New version names can conceal repeated use of exposed history (L4,L5).",
+      "proposedChangeAndBenefit": "Full attempt ledger; one v5 run; prospective confirmation (§15).",
+      "newRisk": "Slower learning after genuine failures.",
+      "beforeV5Outcomes": "Yes."
+    },
+    {
+      "id": "R16",
+      "decision": "BLOCKED",
+      "topic": "source families",
+      "problemAndEvidence": "Value, capex, shares, macro/flows have specific price, availability or coverage gaps.",
+      "proposedChangeAndBenefit": "KEEP exclusions where unproven; ADD_LATER only after independent source audit.",
+      "newRisk": "Omitted-variable risk.",
+      "beforeV5Outcomes": "Yes; freeze exact registry."
+    },
+    {
+      "id": "R17",
+      "decision": "KEEP",
+      "topic": "layer separation",
+      "problemAndEvidence": "Candidate-date evidence is not a funded, overlapping-position strategy.",
+      "proposedChangeAndBenefit": "No portfolio/production conclusions; future construction study separately sealed.",
+      "newRisk": "Deployability remains unanswered.",
+      "beforeV5Outcomes": "Yes."
+    },
+    {
+      "id": "R18",
+      "decision": "MODIFY",
+      "topic": "dates/snapshot",
+      "problemAndEvidence": "KR accounting source starts later than generic 2013 warmup; mutable repair cannot define a run midstream.",
+      "proposedChangeAndBenefit": "Input-only coverage selects start under a frozen rule; hash exact repaired snapshot before labels.",
+      "newRisk": "Shorter sample may lack power.",
+      "beforeV5Outcomes": "Yes; no automatic v5 now."
+    }
+  ],
+  "featureFamilyPolicy": {
+    "KEEP": [
+      "relative_momentum",
+      "acceleration_context",
+      "realized_volatility_context",
+      "volume_shock",
+      "shock_persistence",
+      "price_volume_alignment",
+      "cash_conversion_with_redefined_denominator",
+      "asset_growth",
+      "total_liabilities_growth"
+    ],
+    "ADD_LATER": [
+      "conventional_value",
+      "conventional_profitability"
+    ],
+    "EXCLUDE": [
+      "redundant_fcf_over_net_income",
+      "legacy_model_score_as_new_information",
+      "new_handcrafted_interaction_zoo"
+    ],
+    "BLOCKED_BY_DATA": [
+      "KR_capex",
+      "KR_share_change",
+      "actual_cash_liquidity",
+      "unverified_macro_flow_shorting_ownership_history",
+      "value_price_basis"
+    ]
+  },
+  "baselineOrder": [
+    "B0_training_intercept",
+    "B1_zero_gross_relative_return",
+    "B2_momentum_ridge",
+    "B3_compact_economic_ridge",
+    "B4_full_ridge_primary",
+    "B5_shallow_HGB_descriptive"
+  ],
+  "blockedQuantities": [
+    "unresolved_terminal_and_dividend_economics",
+    "symmetric_full_universe_audit",
+    "US_departed_identity_price_coverage",
+    "sealed_daily_cash_ADV",
+    "notional_and_participation_mandate",
+    "independent_slippage_evidence",
+    "minimum_meaningful_edge",
+    "concentration_risk_mandate",
+    "KR_local_factor_source"
+  ],
+  "nextSteps": [
+    "review_and_accept_methodological_decisions",
+    "finalize_KR_data_foundation_independently",
+    "identify_and_hash_repaired_input_snapshot",
+    "freeze_input_only_coverage_semantic_and_inference_decisions",
+    "create_v5_only_in_separate_authorized_task"
+  ],
+  "document": "docs/alpha-research-design-review-v1.md"
+}
