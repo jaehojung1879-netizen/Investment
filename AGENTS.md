@@ -1660,28 +1660,44 @@
   that reported none). Nothing downstream consumed them: no fold, fit,
   prediction, evaluation or persisted field. The raw report is kept
   byte-identical as `docs/results/alpha-opportunity-model-v4-execution-
-  run1-defective.json` rather than deleted. Contract V2 restores
-  `scripts/run_alpha_opportunity_model_v2.py`'s sealed `runtimePreLabelGates`
-  order by CALLING v2's own `tradability_frame`, `eligibility` and
-  `pre_label_gates`. Call counters incremented at the call sites put
+  run1-defective.json` rather than deleted. Contract V2 moved the gates
+  ahead of every label by calling v2's own `tradability_frame`,
+  `eligibility` and `pre_label_gates` (see the next bullets for what that
+  got wrong). Call counters incremented at the call sites put
   `targetFromSessionsCalls`/`labelEligibilityCalls` in every report, and
   regression tests replace every outcome-reading function with a spy that
   raises on touch. A flag that says what happened is not evidence that it
   did; the counter and the spy are.
-- THE CORRECTED EXECUTION STOPPED AT THE SAME GATE WITH ZERO LABELS.
-  Contract V2 at `073169e3`, run with `--stop-before-labels`, on the sealed
-  `signal-history` commit `4ea107ed`: `BLOCKED_BY_DATA_INTEGRITY`, all four
-  call counters zero, coverage failures identical to run 1's (the gate reads
-  PIT features only, so run 1's premature labels could not have moved it).
-  v2's region-year survivorship step excludes nothing for KR: the maximum
-  unvouched share is 0.128% (2014) against a 20% tolerance. The sealed v4
-  spec's `walkForward.survivorshipEligibility` says the label-eligibility
-  policy "replaces" that tolerance. The conflict is flagged in the execution
-  report and does not bind on this sample.
+- A SEALED CONTRACT SAYS WHICH INHERITED RULE IT REPLACES, AND CALLING THE
+  OLDER STUDY'S PIPELINE WHOLESALE RE-IMPORTS THE REPLACED ONE. v4's
+  `carriedFromV3.walkForward.survivorshipEligibility` states that the
+  per-observation `label_eligibility` policy REPLACES the inherited 20%
+  region-year gap tolerance. Contract V2, in restoring v2's pre-label
+  order, also called v2's `eligibility` and `pre_label_gates`, so it
+  dropped whole region-years above 20% unvouched from both the coverage
+  denominator and the labelled sample, and its report published a
+  `regionYearEligibility` table as if the rule governed v4. That is a
+  second implementation mismatch, found by review before merge. It had no
+  numerical effect on the V2 run: the maximum KR unvouched share is 0.128%
+  (2014), so every year stayed in and the denominator was the same 85,132
+  tradable name-dates. Contract V3 removes the rule rather than setting
+  every year eligible: `alpha_opportunity_v4_execution.pre_label_gates`
+  runs v2's sealed coverage thresholds and calendar-depth check on every
+  tradable KR name-date, v2's `eligibility` and `pre_label_gates` are never
+  called (a spy test raises if they are), and a synthetic year the old rule
+  would have dropped stays in the denominator and can fail the coverage
+  gate. The V2 report is kept byte-identical as `docs/results/alpha-
+  opportunity-model-v4-execution-run2-region-year-mismatch.json`.
+- THE CONTRACT-CORRECT EXECUTION STOPPED AT THE SAME GATE WITH ZERO LABELS.
+  Contract V3 at `b8a5dd29`, run with `--stop-before-labels`, on the sealed
+  `signal-history` commit `4ea107ed` (input identity `674a8b97…`):
+  `BLOCKED_BY_DATA_INTEGRITY`, all four call counters zero, and the same
+  four coverage failures as runs 1 and 2 (the gate reads PIT features only,
+  and no year was ever excluded, so neither earlier defect could move it).
 - THE REPLAY MANIFEST DOES NOT COVER THE RAW SHARDS THE FEATURE PATH READS,
   SO THEIR IDENTITY IS VERIFIED SEPARATELY. `ledger/fundamentals/kr` and
-  `ledger/universe/kr` live beside the replay store, not inside it. V2
-  verifies all 28 files by git blob against `alpha-opportunity-model-v3`'s
+  `ledger/universe/kr` live beside the replay store, not inside it. V2 and
+  V3 verify all 28 files by git blob against `alpha-opportunity-model-v3`'s
   sealed `futureExecutionInputs` (identical to v2's sealed `inputFiles`),
   refuses any unsealed shard the harness would read, and re-verifies after
   the gates, before any label. The workflow never checks out `signal-history`
