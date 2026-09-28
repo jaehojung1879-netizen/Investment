@@ -29,9 +29,15 @@ def test_v3_preserves_v2_synthetic_null_contract_except_interval_and_seed():
         "statistics",
         "selectionFraction",
         "syntheticForecastScale",
-        "acceptance",
     ):
         assert v3[key] == v2[key]
+    for key in (
+        "materialCoverageFloor",
+        "directionalFalsePositiveCeiling",
+        "undefinedFrequencyCeiling",
+        "maximumMonteCarlo95HalfWidth",
+    ):
+        assert v3["acceptance"][key] == v2["acceptance"][key]
     for horizon in ("21", "126"):
         assert v3["horizons"][horizon]["forwardSessions"] == v2["horizons"][horizon]["forwardSessions"]
         assert v3["horizons"][horizon]["calendarWeeks"] == v2["horizons"][horizon]["calendarWeeks"]
