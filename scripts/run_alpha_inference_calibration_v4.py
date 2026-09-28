@@ -2,7 +2,7 @@
 """Run the frozen synthetic Alpha inference calibration v4 protocol.
 
 Exit codes: 0 for any complete methodological verdict (PASS, FAIL,
-DATA_INSUFFICIENT) -- the verdict lives in the artifact and in the printed
+INCONCLUSIVE, DATA_INSUFFICIENT) -- the verdict lives in the artifact and in the printed
 summary, never in the process status -- and 1 for INFRASTRUCTURE_ERROR, which
 still writes an artifact saying so.  ``--development-smoke`` runs a reduced
 budget on a different seed, labels the artifact DEVELOPMENT_ONLY and carries no
@@ -85,6 +85,7 @@ def main(argv: list[str] | None = None) -> int:
                 f"  {cell['dgp']} H{cell['horizonSessions']} {cell['calendarWeeks']}w: {cell['status']}",
                 flush=True,
             ),
+            formal=(run_class == "FORMAL"),
         )
     except Exception as exc:  # noqa: BLE001 - every failure must still leave an artifact
         _write(output, {

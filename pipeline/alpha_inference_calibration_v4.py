@@ -23,15 +23,17 @@ and generates invented data from seeded RNG streams.
 """
 from __future__ import annotations
 
+import hashlib
+import json
 import math
 from typing import Any
 
 import numpy as np
 from scipy.signal import lfilter
 
+from pipeline import alpha_inference_mc_decision as mc
 from pipeline.alpha_inference_calibration_v1 import (
     _aggregate,
-    _passes_metric,
     _row_rank_correlation,
 )
 from pipeline.alpha_inference_calibration_v3 import _self_normalized_interval
@@ -47,14 +49,56 @@ CONFIRMATORY = (
 )
 DESCRIPTIVE = ("rankIC",)
 BURN_IN = 512
-STATUSES = ("PASS", "FAIL", "DATA_INSUFFICIENT")
+STATUSES = mc.STATES
+METRICS_PER_STATISTIC = 3  # coverage floor, positive false-positive ceiling, undefined-frequency ceiling
+
+# Values a FORMAL run must carry.  A development smoke may change only the seed and the
+# replicate count; every scientific choice below is refused in both modes except where noted.
+FORMAL_PINS: dict[str, Any] = {
+    "seed": 20261001,
+    "simulationReplicates": 2000,
+    "acceptance": {
+        "materialCoverageFloor": 0.95,
+        "directionalFalsePositiveCeiling": 0.05,
+        "undefinedFrequencyCeiling": 0.05,
+        "maximumMonteCarlo95HalfWidth": 0.04,
+    },
+    "monteCarloDecision": {
+        "intervalMethod": "CLOPPER_PEARSON_EXACT_ONE_SIDED",
+        "passSideOneSidedAlpha": 0.025,
+        "failSideFamilywiseAlpha": 0.05,
+        "failSideAdjustment": "BONFERRONI_OVER_ALL_REGISTERED_DECISIONS",
+        "failSideDecisionCount": 360,
+    },
+    "criticalValue": 66.57,
+    "dgpsSha256": "6049f2ad36c6e9f30a1960d75138c8d1da485cd8ee8cb62e73994aee0299a912",
+    "horizonsSha256": "c1d52d26cf86d6a84926ee12bf451f474be12e71e2d2f80babbf14c0a251508c",
+}
+
+
+def _canonical_sha(obj: Any) -> str:
+    return hashlib.sha256(json.dumps(obj, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
+
+
+def decision_count(spec: dict[str, Any]) -> int:
+    """Registered (cell x confirmatory statistic x metric) decisions the FAIL budget is split over."""
+    cells = len(spec["dgps"]) * sum(len(h["calendarWeeks"]) for h in spec["horizons"].values())
+    return cells * len(CONFIRMATORY) * METRICS_PER_STATISTIC
+
 
 
 # --------------------------------------------------------------------------
 # protocol
 # --------------------------------------------------------------------------
-def validate_spec(spec: dict[str, Any]) -> None:
-    """Refuse any protocol that is not the v4 contract as frozen."""
+def validate_spec(spec: dict[str, Any], *, formal: bool = True) -> None:
+    """Refuse any protocol that is not the v4 contract as frozen.
+
+    Structural and decision-rule checks always apply.  With ``formal=True`` the
+    seed, replicate count, DGPs and horizons are also pinned to the frozen values;
+    a DEVELOPMENT_ONLY smoke (``formal=False``) may move only the seed, the
+    replicate count and the DGP/horizon lists it needs, never the interval method,
+    critical value, statistic partition, thresholds or Monte Carlo decision rule.
+    """
     def fail(reason: str) -> None:
         raise ValueError(f"INVALID_V4_PROTOCOL: {reason}")
 
@@ -65,11 +109,19 @@ def validate_spec(spec: dict[str, Any]) -> None:
         fail("interval method")
     if cfg.get("blockLength") != "NONE" or int(cfg.get("bootstrapDraws", -1)) != 0:
         fail("v4 has no block length and no bootstrap")
-    if float(cfg.get("U1CriticalValue", 0.0)) != 66.57:
+    if float(cfg.get("U1CriticalValue", 0.0)) != FORMAL_PINS["criticalValue"]:
         fail("U1 critical value")
     stats = spec.get("statistics", {})
     if tuple(stats.get("confirmatory", ())) != CONFIRMATORY or tuple(stats.get("descriptive", ())) != DESCRIPTIVE:
         fail("statistic partition")
+    acceptance = spec.get("acceptance", {})
+    for key, value in FORMAL_PINS["acceptance"].items():
+        if acceptance.get(key) != value:
+            fail(f"acceptance.{key}")
+    mc_cfg = spec.get("monteCarloDecision", {})
+    for key, value in FORMAL_PINS["monteCarloDecision"].items():
+        if mc_cfg.get(key) != value:
+            fail(f"monteCarloDecision.{key}")
     for key, horizon_cfg in spec.get("horizons", {}).items():
         depth = spec.get("minimumConfirmatoryDepth", {}).get(key)
         if depth is None:
@@ -85,6 +137,17 @@ def validate_spec(spec: dict[str, Any]) -> None:
             fail("phiPredictor")
     if int(spec.get("simulationReplicates", 0)) < 1:
         fail("simulationReplicates")
+    if formal:
+        if spec.get("seed") != FORMAL_PINS["seed"]:
+            fail("seed")
+        if spec.get("simulationReplicates") != FORMAL_PINS["simulationReplicates"]:
+            fail("simulationReplicates")
+        if _canonical_sha(spec.get("dgps")) != FORMAL_PINS["dgpsSha256"]:
+            fail("dgps")
+        if _canonical_sha(spec.get("horizons")) != FORMAL_PINS["horizonsSha256"]:
+            fail("horizons")
+        if decision_count(spec) != FORMAL_PINS["monteCarloDecision"]["failSideDecisionCount"]:
+            fail("failSideDecisionCount does not match the registered decisions")
 
 
 def confirmatory_depth_status(spec: dict[str, Any], horizon_sessions: int, evaluation_weeks: int) -> str:
@@ -333,13 +396,63 @@ def replicate_intervals(
     return out
 
 
-def run_calibration(spec: dict[str, Any], *, progress: Any = None) -> dict[str, Any]:
-    """Execute the frozen v4 synthetic protocol.  No repository data are accepted."""
-    validate_spec(spec)
-    sims = int(spec["simulationReplicates"])
+def decide_statistic(
+    intervals: list[dict[str, float] | None],
+    replicates: int,
+    spec: dict[str, Any],
+) -> dict[str, Any]:
+    """Three-state decisions for one confirmatory statistic in one cell.
+
+    Coverage and the positive false-positive rate are counted over replicates that
+    produced a defined interval; the undefined frequency is counted over all
+    replicates.  Every count is an integer, so the Clopper-Pearson bounds are exact.
+    """
     acceptance = spec["acceptance"]
+    mc_cfg = spec["monteCarloDecision"]
+    pass_alpha = float(mc_cfg["passSideOneSidedAlpha"])
+    fail_alpha = mc.fail_side_alpha(float(mc_cfg["failSideFamilywiseAlpha"]), int(mc_cfg["failSideDecisionCount"]))
+    max_half_width = float(acceptance["maximumMonteCarlo95HalfWidth"])
+
+    measured = [r for r in intervals if r is not None]
+    n_measured = len(measured)
+    covered = sum(1 for r in measured if r["lower"] <= 0.0 <= r["upper"])
+    positive = sum(1 for r in measured if r["lower"] > 0.0)
+    undefined = replicates - n_measured
+
+    common = {"pass_alpha": pass_alpha, "fail_alpha": fail_alpha}
+    coverage = mc.classify_metric(
+        covered, n_measured, kind=mc.FLOOR, threshold=float(acceptance["materialCoverageFloor"]),
+        max_half_width=max_half_width, **common,
+    )
+    false_positive = mc.classify_metric(
+        positive, n_measured, kind=mc.CEILING, threshold=float(acceptance["directionalFalsePositiveCeiling"]),
+        max_half_width=max_half_width, **common,
+    )
+    undefined_frequency = mc.classify_metric(
+        undefined, replicates, kind=mc.CEILING, threshold=float(acceptance["undefinedFrequencyCeiling"]),
+        **common,
+    )
+    reasons = {"coverage": "MATERIAL_UNDERCOVERAGE", "positiveFalsePositive": "DIRECTIONAL_FALSE_POSITIVE_EXCESS",
+               "undefinedFrequency": "UNDEFINED_FREQUENCY_EXCESS"}
+    metrics = {"coverage": coverage, "positiveFalsePositive": false_positive, "undefinedFrequency": undefined_frequency}
+    return {
+        "state": mc.combine_states([m["state"] for m in metrics.values()]),
+        "metrics": metrics,
+        "failureCodes": [reasons[k] for k, m in metrics.items() if m["state"] == mc.FAIL],
+        "inconclusiveCodes": [f"{reasons[k]}:{m['reason']}" for k, m in metrics.items() if m["state"] == mc.INCONCLUSIVE],
+        "medianWidth": float(np.median([r["width"] for r in measured])) if measured else None,
+    }
+
+
+def run_calibration(
+    spec: dict[str, Any], *, progress: Any = None, formal: bool = True
+) -> dict[str, Any]:
+    """Execute the frozen v4 synthetic protocol.  No repository data are accepted."""
+    validate_spec(spec, formal=formal)
+    sims = int(spec["simulationReplicates"])
     cells: list[dict[str, Any]] = []
-    failures: list[dict[str, Any]] = []
+    failed: list[dict[str, Any]] = []
+    inconclusive: list[dict[str, Any]] = []
     insufficient: list[dict[str, Any]] = []
 
     for dgp_index, dgp in enumerate(spec["dgps"]):
@@ -355,7 +468,7 @@ def run_calibration(spec: dict[str, Any], *, progress: Any = None) -> dict[str, 
                     "nonOverlappingWindows": round(weeks * int(spec["signalStepSessions"]) / horizon, 3),
                 }
                 if cell["depthStatus"] != "ELIGIBLE":
-                    cell.update({"status": "DATA_INSUFFICIENT", "metrics": None, "failures": {}})
+                    cell.update({"status": mc.DATA_INSUFFICIENT, "statistics": None, "failures": {}, "inconclusive": {}})
                     cells.append(cell)
                     insufficient.append(cell)
                     continue
@@ -364,44 +477,48 @@ def run_calibration(spec: dict[str, Any], *, progress: Any = None) -> dict[str, 
                     replicate_intervals(spec, dgp, horizon=horizon, weeks=weeks, replicate=r, dgp_index=dgp_index)
                     for r in range(sims)
                 ]
-                metrics: dict[str, Any] = {}
-                comparator: dict[str, Any] = {}
-                cell_failures: dict[str, list[str]] = {}
-                for statistic in CONFIRMATORY:
-                    aggregate = _aggregate([rec[statistic]["primary"] for rec in records], sims)
-                    ok, why = _passes_metric(aggregate, acceptance)
-                    metrics[statistic] = aggregate
-                    if not ok:
-                        cell_failures[statistic] = why
-                for statistic in CONFIRMATORY + DESCRIPTIVE:
-                    comparator[statistic] = _aggregate([rec[statistic]["comparator"] for rec in records], sims)
+                decisions = {
+                    statistic: decide_statistic([rec[statistic]["primary"] for rec in records], sims, spec)
+                    for statistic in CONFIRMATORY
+                }
+                comparator = {
+                    statistic: _aggregate([rec[statistic]["comparator"] for rec in records], sims)
+                    for statistic in CONFIRMATORY + DESCRIPTIVE
+                }
                 cell.update({
-                    "status": "PASS" if not cell_failures else "FAIL",
-                    "metrics": metrics,
-                    "failures": cell_failures,
+                    "status": mc.combine_states([d["state"] for d in decisions.values()]),
+                    "statistics": decisions,
+                    "failures": {k: d["failureCodes"] for k, d in decisions.items() if d["failureCodes"]},
+                    "inconclusive": {k: d["inconclusiveCodes"] for k, d in decisions.items() if d["inconclusiveCodes"]},
                     "descriptive": {"rankIC": comparator["rankIC"]},
                     "nonGatingV3SignalDateComparator": comparator,
                 })
                 cells.append(cell)
-                if cell_failures:
-                    failures.append({k: cell[k] for k in ("dgp", "horizonSessions", "calendarWeeks", "failures")})
+                summary = {k: cell[k] for k in ("dgp", "horizonSessions", "calendarWeeks")}
+                if cell["failures"]:
+                    failed.append({**summary, "failures": cell["failures"]})
+                if cell["inconclusive"]:
+                    inconclusive.append({**summary, "inconclusive": cell["inconclusive"]})
                 if progress is not None:
                     progress(cell)
 
-    if failures:
-        status = "FAIL"
-    elif insufficient:
-        status = "DATA_INSUFFICIENT"
-    else:
-        status = "PASS"
+    status = mc.top_level_status(
+        cell_states=[c["status"] for c in cells if c["status"] != mc.DATA_INSUFFICIENT],
+        insufficient_depth_cells=len(insufficient),
+    )
     return {
         "contract": spec["contract"],
         "outcomeFree": True,
         "intervalConstruction": spec["intervalConstruction"],
+        "monteCarloDecision": spec["monteCarloDecision"],
+        "acceptance": {k: spec["acceptance"][k] for k in FORMAL_PINS["acceptance"]},
         "simulationReplicates": sims,
         "statistics": spec["statistics"],
         "cells": cells,
         "primaryStatus": status,
-        "primaryFailures": failures,
-        "interpretation": acceptance["interpretationRule"],
+        "statusCounts": {state: sum(1 for c in cells if c["status"] == state)
+                         for state in (mc.PASS, mc.FAIL, mc.INCONCLUSIVE, mc.DATA_INSUFFICIENT)},
+        "primaryFailures": failed,
+        "inconclusiveCells": inconclusive,
+        "interpretation": spec["acceptance"]["interpretationRule"],
     }
