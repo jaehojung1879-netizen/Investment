@@ -1,0 +1,115 @@
+{
+  "contract": "ALPHA_INFERENCE_CALIBRATION_V2",
+  "outcomeFree": true,
+  "purpose": "Outcome-free validation of a circular moving-block basic interval after the frozen v1 non-circular percentile interval materially under-covered under synthetic nulls.",
+  "sourceReview": "docs/alpha-research-design-review-v1.md",
+  "supersedesCalibrationProtocol": "ALPHA_INFERENCE_CALIBRATION_V1",
+  "v1FailureReference": {
+    "workflowRunId": 36472769120,
+    "v1SpecSha256": "195a365c5224e10671e91fb601353a29fe39e6efa633d6e053fc67360461b433",
+    "artifactZipSha256": "ba41dce994639ce0155168d749557ff0c55d1f6b91bd6b554729898b833a8ffd",
+    "primaryStatus": "FAIL",
+    "primaryCellsFailed": 16,
+    "diagnosisBoundary": "The v1 result establishes that its registered interval mechanics under-cover. V1 sensitivity performance is not used to change the candidate block grid or primary block choices in v2."
+  },
+  "seed": 20260929,
+  "simulationReplicates": 300,
+  "bootstrapDraws": 10000,
+  "namesPerDate": 60,
+  "signalStepSessions": 5,
+  "minimumEffectiveBlocks": 6,
+  "confidence": {
+    "familywiseAlpha": 0.05,
+    "primaryExpectedReturnClaims": 2,
+    "cellTwoSidedAlpha": 0.025,
+    "tailQuantile": 0.0125,
+    "nominalCoverage": 0.975
+  },
+  "intervalConstruction": {
+    "resampler": "CIRCULAR_MOVING_BLOCK_BOOTSTRAP",
+    "blockStarts": "Each block start is uniform over all n weekly dates; blocks wrap modulo n, removing non-circular endpoint inclusion asymmetry.",
+    "sampleLength": "ceil(n / block) blocks are concatenated and the final block is truncated so every bootstrap draw contains exactly n dates.",
+    "interval": "BASIC_CENTERED_ERROR",
+    "formula": "Let theta_hat be the observed date-series mean and theta_star the circular-block bootstrap mean. With e_star=theta_star-theta_hat, CI=[theta_hat-q_(1-tail)(e_star), theta_hat-q_tail(e_star)].",
+    "rationale": "This changes only the finite-sample resampling and centering mechanics implicated by v1. It does not alter the block grid, primary block rule, DGPs, acceptance tolerances, statistics, horizons or historical research design."
+  },
+  "horizons": {
+    "21": {
+      "forwardSessions": 21,
+      "calendarWeeks": [78, 156],
+      "candidateBlocks": [5, 10],
+      "primaryBlock": 10
+    },
+    "126": {
+      "forwardSessions": 126,
+      "calendarWeeks": [312, 624],
+      "candidateBlocks": [26, 52, 104],
+      "primaryBlock": 52
+    }
+  },
+  "dgps": [
+    {
+      "name": "IID_SHARED",
+      "phiShared": 0.0,
+      "phiIdiosyncratic": 0.0,
+      "sigmaShared": 0.5,
+      "sigmaIdiosyncratic": 1.0
+    },
+    {
+      "name": "WEAK_SERIAL",
+      "phiShared": 0.25,
+      "phiIdiosyncratic": 0.1,
+      "sigmaShared": 0.5,
+      "sigmaIdiosyncratic": 1.0
+    },
+    {
+      "name": "PERSISTENT_SERIAL",
+      "phiShared": 0.8,
+      "phiIdiosyncratic": 0.35,
+      "sigmaShared": 0.5,
+      "sigmaIdiosyncratic": 1.0
+    },
+    {
+      "name": "PERSISTENT_SHARED_HEAVY",
+      "phiShared": 0.9,
+      "phiIdiosyncratic": 0.25,
+      "sigmaShared": 1.0,
+      "sigmaIdiosyncratic": 0.5
+    }
+  ],
+  "nullConstruction": {
+    "outcome": "Forward sums of synthetic daily shared plus idiosyncratic shocks over exactly H sessions, sampled every five sessions.",
+    "predictors": "Generated from a separately spawned RNG stream and independent of every target innovation.",
+    "pairedForecastContrast": "Two exchangeable independent synthetic forecast streams with the same scale; expected paired MSE difference is exactly zero by symmetry.",
+    "selection": "Top 20 percent of names by an independent synthetic selection score; expected selected mean and selected-minus-universe mean are zero.",
+    "rankStatistic": "Within-date rank correlation between an independent synthetic score and target; population value is zero.",
+    "realDataReads": "FORBIDDEN"
+  },
+  "statistics": [
+    "dateMean",
+    "pairedMseImprovement",
+    "rankIC",
+    "selectedMean",
+    "selectedMinusUniverse"
+  ],
+  "selectionFraction": 0.2,
+  "syntheticForecastScale": 0.25,
+  "acceptance": {
+    "primaryCandidateOnlyDeterminesPass": true,
+    "materialCoverageFloor": 0.95,
+    "directionalFalsePositiveCeiling": 0.05,
+    "undefinedFrequencyCeiling": 0.05,
+    "maximumMonteCarlo95HalfWidth": 0.04,
+    "depthRule": "A candidate is evaluable only when floor(calendarWeeks / blockWeeks) >= minimumEffectiveBlocks. A depth-ineligible sensitivity is reported DATA_INSUFFICIENT and is not a failure.",
+    "failureRule": "If a primary block violates any frozen tolerance in any evaluable DGP/depth cell, calibration is FAIL. Do not promote a sensitivity because it looks better; revise the method in a new documented protocol before historical outcomes.",
+    "sensitivityRule": "All registered sensitivity blocks are reported. They never replace a failed primary inside this protocol."
+  },
+  "prohibitions": [
+    "No historical return, label, score, prediction, result report, signal-history outcome artifact, or Alpha experiment may be read.",
+    "No simulation parameter may be estimated from real returns.",
+    "V1 sensitivity results may not select or alter the v2 primary block lengths, candidate grid, acceptance tolerances or DGPs.",
+    "No seed, DGP, block grid, tolerance, calendar depth, statistic, interval construction or replication budget may be changed after viewing v2 calibration results under this contract.",
+    "No historical outcome may select a block length.",
+    "No v5 preregistration or seal is created by this calibration protocol."
+  ]
+}
