@@ -1,6 +1,6 @@
 {
   "contract": "DART_RAW_STATEMENT_ROWS_V1",
-  "updatedAt": "2026-09-28T09:06:54Z",
+  "updatedAt": "2026-09-28T10:23:14Z",
   "pitUniverseTickers": 260,
   "resolvedIssuers": 254,
   "unresolvedIssuers": [
@@ -29,13 +29,13 @@
     2022,
     2026
   ],
-  "storedFilings": 8402,
-  "recordedAbsences": 2140,
+  "storedFilings": 8826,
+  "recordedAbsences": 2604,
   "unresolvedFilings": 0,
   "sourceAbsenceStatuses": [
     "013"
   ],
-  "remaining": 955,
+  "remaining": 521,
   "datasetComplete": false,
   "statusTable": [
     {
@@ -904,54 +904,68 @@
       "reportCode": "11011",
       "result": "ABSENT",
       "detail": "CFS=013/OFS=013",
-      "filings": 32
+      "filings": 254
     },
     {
       "fiscalYear": 2026,
       "reportCode": "11012",
       "result": "ABSENT",
       "detail": "CFS=013/OFS=013",
-      "filings": 3
+      "filings": 13
     },
     {
       "fiscalYear": 2026,
       "reportCode": "11012",
       "result": "SERVED",
       "detail": "CFS",
-      "filings": 29
+      "filings": 235
+    },
+    {
+      "fiscalYear": 2026,
+      "reportCode": "11012",
+      "result": "SERVED",
+      "detail": "OFS",
+      "filings": 6
     },
     {
       "fiscalYear": 2026,
       "reportCode": "11013",
       "result": "ABSENT",
       "detail": "CFS=013/OFS=013",
-      "filings": 2
+      "filings": 12
     },
     {
       "fiscalYear": 2026,
       "reportCode": "11013",
       "result": "SERVED",
       "detail": "CFS",
-      "filings": 30
+      "filings": 236
+    },
+    {
+      "fiscalYear": 2026,
+      "reportCode": "11013",
+      "result": "SERVED",
+      "detail": "OFS",
+      "filings": 6
     },
     {
       "fiscalYear": 2026,
       "reportCode": "11014",
       "result": "ABSENT",
       "detail": "CFS=013/OFS=013",
-      "filings": 32
+      "filings": 254
     }
   ],
   "thisRun": {
-    "calls": 3000,
-    "written": 1825,
-    "stopReason": "CALL_BUDGET_SPENT",
+    "calls": 1498,
+    "written": 424,
+    "stopReason": "WORK_LIST_EXHAUSTED",
     "outcome": "SERVED",
     "attemptStatuses": {
-      "CFS=013": 617,
-      "OFS=013": 558,
-      "CFS=000": 1766,
-      "OFS=000": 59
+      "CFS=013": 543,
+      "OFS=013": 531,
+      "CFS=000": 412,
+      "OFS=000": 12
     }
   }
 }
