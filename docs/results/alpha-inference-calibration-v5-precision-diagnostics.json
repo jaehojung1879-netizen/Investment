@@ -1,0 +1,364 @@
+{
+  "decisionLevels": {
+    "coverageFloor": 0.95,
+    "directionalFalsePositiveCeiling": 0.05,
+    "failSideOneSidedAlpha": 0.0001388889,
+    "passSideOneSidedAlpha": 0.025
+  },
+  "halfWidthByBudget": {
+    "10000": {
+      "exactClopperPearsonTwoSided95": 0.0043222924,
+      "meetsTargetExact": true,
+      "meetsTargetNormal": true,
+      "normalApproximation": 0.004271721
+    },
+    "2000": {
+      "exactClopperPearsonTwoSided95": 0.0098087272,
+      "meetsTargetExact": false,
+      "meetsTargetNormal": false,
+      "normalApproximation": 0.0095518585
+    },
+    "7299": {
+      "exactClopperPearsonTwoSided95": 0.0050697866,
+      "meetsTargetExact": false,
+      "meetsTargetNormal": false,
+      "normalApproximation": 0.0050000137
+    },
+    "7500": {
+      "exactClopperPearsonTwoSided95": 0.0050001315,
+      "meetsTargetExact": false,
+      "meetsTargetNormal": true,
+      "normalApproximation": 0.0049325585
+    },
+    "7501": {
+      "exactClopperPearsonTwoSided95": 0.0049994823,
+      "meetsTargetExact": true,
+      "meetsTargetNormal": true,
+      "normalApproximation": 0.0049322297
+    },
+    "8000": {
+      "exactClopperPearsonTwoSided95": 0.0048392472,
+      "meetsTargetExact": true,
+      "meetsTargetNormal": true,
+      "normalApproximation": 0.0047759292
+    }
+  },
+  "label": "DEVELOPMENT_ONLY",
+  "operatingCharacteristicByBudget": {
+    "2000": {
+      "ceilingBoundaries": {
+        "maxEventsForPass": 80,
+        "minEventsForFail": 138
+      },
+      "coverageByTrueValue": {
+        "0.920": {
+          "FAIL": 0.9702777312,
+          "INCONCLUSIVE": 0.0297222688,
+          "PASS": 0.0
+        },
+        "0.930": {
+          "FAIL": 0.5820288787,
+          "INCONCLUSIVE": 0.417971112,
+          "PASS": 9.3e-09
+        },
+        "0.940": {
+          "FAIL": 0.051992268,
+          "INCONCLUSIVE": 0.9479649349,
+          "PASS": 4.27971e-05
+        },
+        "0.945": {
+          "FAIL": 0.0044587126,
+          "INCONCLUSIVE": 0.9942611206,
+          "PASS": 0.0012801668
+        },
+        "0.950": {
+          "FAIL": 0.0001241017,
+          "INCONCLUSIVE": 0.9797879134,
+          "PASS": 0.0200879849
+        },
+        "0.955": {
+          "FAIL": 8.604e-07,
+          "INCONCLUSIVE": 0.847549205,
+          "PASS": 0.1524499346
+        },
+        "0.960": {
+          "FAIL": 1.1e-09,
+          "INCONCLUSIVE": 0.47030585,
+          "PASS": 0.529694149
+        },
+        "0.965": {
+          "FAIL": 0.0,
+          "INCONCLUSIVE": 0.1025832433,
+          "PASS": 0.8974167567
+        },
+        "0.970": {
+          "FAIL": 0.0,
+          "INCONCLUSIVE": 0.004993304,
+          "PASS": 0.995006696
+        },
+        "0.975": {
+          "FAIL": 0.0,
+          "INCONCLUSIVE": 2.67403e-05,
+          "PASS": 0.9999732597
+        }
+      },
+      "coverageFloorBoundaries": {
+        "maxSuccessesForFail": 1862,
+        "minSuccessesForPass": 1920
+      },
+      "falsePositiveCeilingByTrueRate": {
+        "0.010": {
+          "FAIL": 0.0,
+          "INCONCLUSIVE": 0.0,
+          "PASS": 1.0
+        },
+        "0.020": {
+          "FAIL": 0.0,
+          "INCONCLUSIVE": 5.4e-09,
+          "PASS": 0.9999999946
+        },
+        "0.030": {
+          "FAIL": 0.0,
+          "INCONCLUSIVE": 0.004993304,
+          "PASS": 0.995006696
+        },
+        "0.040": {
+          "FAIL": 1.1e-09,
+          "INCONCLUSIVE": 0.47030585,
+          "PASS": 0.529694149
+        },
+        "0.050": {
+          "FAIL": 0.0001241017,
+          "INCONCLUSIVE": 0.9797879134,
+          "PASS": 0.0200879849
+        },
+        "0.060": {
+          "FAIL": 0.051992268,
+          "INCONCLUSIVE": 0.9479649349,
+          "PASS": 4.27971e-05
+        },
+        "0.070": {
+          "FAIL": 0.5820288787,
+          "INCONCLUSIVE": 0.417971112,
+          "PASS": 9.3e-09
+        }
+      }
+    },
+    "7500": {
+      "ceilingBoundaries": {
+        "maxEventsForPass": 337,
+        "minEventsForFail": 446
+      },
+      "coverageByTrueValue": {
+        "0.920": {
+          "FAIL": 1.0,
+          "INCONCLUSIVE": 0.0,
+          "PASS": 0.0
+        },
+        "0.930": {
+          "FAIL": 0.9998838715,
+          "INCONCLUSIVE": 0.0001161285,
+          "PASS": 0.0
+        },
+        "0.940": {
+          "FAIL": 0.5839439613,
+          "INCONCLUSIVE": 0.4160560327,
+          "PASS": 5.9e-09
+        },
+        "0.945": {
+          "FAIL": 0.0486062979,
+          "INCONCLUSIVE": 0.9513472858,
+          "PASS": 4.64163e-05
+        },
+        "0.950": {
+          "FAIL": 0.0001363272,
+          "INCONCLUSIVE": 0.9777256759,
+          "PASS": 0.022137997
+        },
+        "0.955": {
+          "FAIL": 4.4e-09,
+          "INCONCLUSIVE": 0.4966285616,
+          "PASS": 0.503371434
+        },
+        "0.960": {
+          "FAIL": 0.0,
+          "INCONCLUSIVE": 0.0147549149,
+          "PASS": 0.9852450851
+        },
+        "0.965": {
+          "FAIL": 0.0,
+          "INCONCLUSIVE": 2.9796e-06,
+          "PASS": 0.9999970204
+        },
+        "0.970": {
+          "FAIL": 0.0,
+          "INCONCLUSIVE": 0.0,
+          "PASS": 1.0
+        },
+        "0.975": {
+          "FAIL": 0.0,
+          "INCONCLUSIVE": 0.0,
+          "PASS": 1.0
+        }
+      },
+      "coverageFloorBoundaries": {
+        "maxSuccessesForFail": 7054,
+        "minSuccessesForPass": 7163
+      },
+      "falsePositiveCeilingByTrueRate": {
+        "0.010": {
+          "FAIL": 0.0,
+          "INCONCLUSIVE": 0.0,
+          "PASS": 1.0
+        },
+        "0.020": {
+          "FAIL": 0.0,
+          "INCONCLUSIVE": 0.0,
+          "PASS": 1.0
+        },
+        "0.030": {
+          "FAIL": 0.0,
+          "INCONCLUSIVE": 0.0,
+          "PASS": 1.0
+        },
+        "0.040": {
+          "FAIL": 0.0,
+          "INCONCLUSIVE": 0.0147549149,
+          "PASS": 0.9852450851
+        },
+        "0.050": {
+          "FAIL": 0.0001363272,
+          "INCONCLUSIVE": 0.9777256759,
+          "PASS": 0.022137997
+        },
+        "0.060": {
+          "FAIL": 0.5839439613,
+          "INCONCLUSIVE": 0.4160560327,
+          "PASS": 5.9e-09
+        },
+        "0.070": {
+          "FAIL": 0.9998838715,
+          "INCONCLUSIVE": 0.0001161285,
+          "PASS": 0.0
+        }
+      }
+    },
+    "8000": {
+      "ceilingBoundaries": {
+        "maxEventsForPass": 361,
+        "minEventsForFail": 474
+      },
+      "coverageByTrueValue": {
+        "0.920": {
+          "FAIL": 1.0,
+          "INCONCLUSIVE": 0.0,
+          "PASS": 0.0
+        },
+        "0.930": {
+          "FAIL": 0.9999479032,
+          "INCONCLUSIVE": 5.20968e-05,
+          "PASS": 0.0
+        },
+        "0.940": {
+          "FAIL": 0.6178088482,
+          "INCONCLUSIVE": 0.3821911487,
+          "PASS": 3.1e-09
+        },
+        "0.945": {
+          "FAIL": 0.051443398,
+          "INCONCLUSIVE": 0.9485189735,
+          "PASS": 3.76285e-05
+        },
+        "0.950": {
+          "FAIL": 0.0001183445,
+          "INCONCLUSIVE": 0.9770489094,
+          "PASS": 0.022832746
+        },
+        "0.955": {
+          "FAIL": 2.4e-09,
+          "INCONCLUSIVE": 0.4645326503,
+          "PASS": 0.5354673474
+        },
+        "0.960": {
+          "FAIL": 0.0,
+          "INCONCLUSIVE": 0.0099091652,
+          "PASS": 0.9900908348
+        },
+        "0.965": {
+          "FAIL": 0.0,
+          "INCONCLUSIVE": 9.69e-07,
+          "PASS": 0.999999031
+        },
+        "0.970": {
+          "FAIL": 0.0,
+          "INCONCLUSIVE": 0.0,
+          "PASS": 1.0
+        },
+        "0.975": {
+          "FAIL": 0.0,
+          "INCONCLUSIVE": 0.0,
+          "PASS": 1.0
+        }
+      },
+      "coverageFloorBoundaries": {
+        "maxSuccessesForFail": 7526,
+        "minSuccessesForPass": 7639
+      },
+      "falsePositiveCeilingByTrueRate": {
+        "0.010": {
+          "FAIL": 0.0,
+          "INCONCLUSIVE": 0.0,
+          "PASS": 1.0
+        },
+        "0.020": {
+          "FAIL": 0.0,
+          "INCONCLUSIVE": 0.0,
+          "PASS": 1.0
+        },
+        "0.030": {
+          "FAIL": 0.0,
+          "INCONCLUSIVE": 0.0,
+          "PASS": 1.0
+        },
+        "0.040": {
+          "FAIL": 0.0,
+          "INCONCLUSIVE": 0.0099091652,
+          "PASS": 0.9900908348
+        },
+        "0.050": {
+          "FAIL": 0.0001183445,
+          "INCONCLUSIVE": 0.9770489094,
+          "PASS": 0.022832746
+        },
+        "0.060": {
+          "FAIL": 0.6178088482,
+          "INCONCLUSIVE": 0.3821911487,
+          "PASS": 3.1e-09
+        },
+        "0.070": {
+          "FAIL": 0.9999479032,
+          "INCONCLUSIVE": 5.20968e-05,
+          "PASS": 0.0
+        }
+      }
+    }
+  },
+  "outcomeFree": true,
+  "precisionRule": {
+    "atProbability": 0.95,
+    "chosenReplicates": 8000,
+    "confidenceLevel": 0.95,
+    "exactClopperPearsonMinimumR": 7501,
+    "exactRule": "k = round(0.95 R) successes; half-width of the exact two-sided 95% interval",
+    "normalApproximationFormula": "z * sqrt(p (1 - p) / R) <= targetHalfWidth",
+    "normalApproximationMinimumR": 7299,
+    "normalApproximationRealMinimum": 7298.7717593188,
+    "note": "7,500 satisfies the normal approximation but misses the exact half-width by 1.3e-7 (exact minimum 7,501), so the rounded budget is 8,000. The choice follows from the rule and was not made by asking what would classify any cell.",
+    "roundingUnit": 500,
+    "statement": "The 95% Monte Carlo half-width of a probability estimate at p = 0.95 must be at most 0.5 percentage points, by BOTH the normal approximation and the exact two-sided Clopper-Pearson interval; the budget is the smallest multiple of 500 satisfying both.",
+    "targetHalfWidth": 0.005,
+    "zValue": 1.9599639845
+  },
+  "purpose": "Derive the v5 replicate count from a general Monte Carlo precision rule and disclose the exact operating characteristic of the frozen v4 decision rule at generic true-probability values. Computed before the v5 protocol was frozen. Uses no simulation, no registered-cell coverage and no market or Alpha data; the grid is generic and was not tuned to any v4 cell.",
+  "sourceProtocol": "research_specs/alpha-inference-calibration-v4.json"
+}
