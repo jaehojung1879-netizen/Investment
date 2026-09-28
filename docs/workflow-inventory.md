@@ -6,11 +6,12 @@ one-shot research workflows may remain on disk only when the table explicitly
 says not to run them. Historical one-shot workflows removed from the Actions
 surface remain documented under RETIRED RESEARCH.
 
-There are **17 workflow files** on the current branch, including the four
+There are **18 workflow files** on the current branch, including the five
 synthetic inference calibration versions. Calibration v1, v2 and v3 are closed
-substantive failures retained only for reproducibility. Calibration v4 is the
-only pending inference-calibration action, and only after its protocol PR is
-merged.
+substantive failures and v4 is a closed INCONCLUSIVE result; all four are
+retained only for reproducibility. Calibration v5 (a precision-only replication
+of v4) is the only pending inference-calibration action, and only after its
+protocol PR is merged.
 
 ## ACTIVE
 
@@ -31,7 +32,8 @@ merged.
 | `Synthetic alpha inference calibration v1` (`alpha-inference-calibration-v1.yml`) | none — `workflow_dispatch` only | **Do not run — closed substantive FAIL** | Run `36472769120` completed the registered synthetic contract and failed coverage. Preserved only for reproducibility; see `docs/results/alpha-inference-calibration-v1-report.md`. |
 | `Synthetic alpha inference calibration v2` (`alpha-inference-calibration-v2.yml`) | none — `workflow_dispatch` only | **Do not run — closed substantive FAIL** | Run `36476033206` completed all 40 registered synthetic cells and failed the frozen coverage contract even after circular moving blocks + basic intervals. Preserved only for reproducibility; see `docs/results/alpha-inference-calibration-v2-report.md`. |
 | `Synthetic alpha inference calibration v3` (`alpha-inference-calibration-v3.yml`) | none — `workflow_dispatch` only | **Do not run — closed substantive FAIL** | Run `36483954346` (main `faff543`) completed all 16 cells and failed the frozen coverage floor in 3 H126/312-week cells (`dateMean`/`selectedMean`). Preserved only for reproducibility; diagnosis in `docs/alpha-inference-calibration-v4-methodology.md`. |
-| `Synthetic alpha inference calibration v4` (`alpha-inference-calibration-v4.yml`) | none — `workflow_dispatch` only, refuses any ref but `main` | **Run exactly once only after the v4 protocol PR is merged** | Synthetic-only calendar-time attribution + unchanged v3 self-normalized pivot; Spearman rank IC descriptive only. No secrets, market data or `signal-history`. The job stays green on a methodological FAIL/INCONCLUSIVE/DATA_INSUFFICIENT (verdict in the artifact and step summary); only INFRASTRUCTURE_ERROR fails it. Monte Carlo verdicts use exact binomial bounds, so INCONCLUSIVE is a valid result. Any complete result closes v4 — no reseed, no v4.1. |
+| `Synthetic alpha inference calibration v4` (`alpha-inference-calibration-v4.yml`) | none — `workflow_dispatch` only, refuses any ref but `main` | **Do not run — closed INCONCLUSIVE result** | Run `36493207997` (main `4b5cd78`) completed all 24 cells: 22 PASS, 2 INCONCLUSIVE (PERSISTENT_SHARED_HEAVY and its heavy-tailed twin, both H21 / 78 weeks), 0 FAIL; every H126 cell passed. Not a FAIL and not a PASS. Preserved only for reproducibility; see `docs/results/alpha-inference-calibration-v4-report.md`. |
+| `Synthetic alpha inference calibration v5` (`alpha-inference-calibration-v5.yml`) | none — `workflow_dispatch` only, refuses any ref but `main` | **Run exactly once only after the v5 protocol PR is merged** | Precision-only replication of the closed v4 calibration: identical method, DGPs, statistics, thresholds and Monte Carlo decision rule (proved by test and by pinned engine hashes), new seed `20261002`, 8,000 replicates chosen by a general half-width rule. No secrets, market data or `signal-history`. The job stays green on PASS/FAIL/INCONCLUSIVE/DATA_INSUFFICIENT (verdict in the artifact and step summary); only INFRASTRUCTURE_ERROR fails it. Any complete result closes v5 — no reseed, no rerun with more replicates. |
 | `Probes` (`probes.yml`) | none — `workflow_dispatch` only | On demand | Dispatcher for external-source availability/schema probes. |
 
 ### Operator notes
