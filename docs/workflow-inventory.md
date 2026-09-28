@@ -1,137 +1,90 @@
 # Workflow inventory
 
-What is actually in `.github/workflows/` today, why, and where a closed
-study's results still live. Written for an operator who wants to know what
-to click, not what was tried — see `docs/results/` and this file's RETIRED
-section's links for the numbers.
+This document is the operator-facing inventory for `.github/workflows/`.
+Every workflow file currently on disk must appear in the ACTIVE table; closed
+one-shot research workflows may remain on disk only when the table explicitly
+says not to run them. Historical one-shot workflows removed from the Actions
+surface remain documented under RETIRED RESEARCH.
 
-Before this pass (`workflow-hygiene-live-data-fixes-v1`, 2026-09-24): 25
-workflow files, most of them one-shot research studies already closed and
-published. After that cleanup: **9**. The preregistration-only opportunity study
-adds one guarded manual entry point per sealed version (v1, v2), and the
-synthetic inference calibration methods retain v1's closed-failure entry point
-for reproducibility plus v2's new guarded entry point, bringing the current
-count to **13**. Nothing was deleted from the repository — every retired
-workflow's code, its `docs/results/*` artifact, and the workflow file itself all
-still exist in git history; only selected Actions "Run workflow" entry points
-have been removed.
+There are **16 workflow files** on the current branch, including the three
+synthetic inference calibration versions. Calibration v1 and v2 are closed
+substantive failures retained only for reproducibility. Calibration v3 is the
+only pending inference-calibration action.
 
 ## ACTIVE
 
-Workflows that run production infrastructure or standing evidence
-collection — the ones an operator actually depends on. One-shot guarded
-research workflows that remain on disk are also listed here so the inventory
-matches the Actions surface exactly; their Manual run column is authoritative.
-
 | Workflow | Schedule | Manual run needed? | What it does |
 |---|---|---|---|
-| `Tests` (`tests.yml`) | on every PR / push to `main` | No — runs automatically | Full test suite + lint gate before merge |
-| `Build insight data and deploy Pages` (`pages.yml`) | daily 08:20 KST + on push to `main` | No | Builds `data/site-data.json` and deploys the public dashboard |
-| `Append paper-signal ledger` (`ledger.yml`) | daily 00:10 UTC | No | Appends the day's cross-section to the immutable signal ledger (`signal-history` branch) |
-| `Collect fundamentals` (`fundamentals.yml`) | daily 03:40 UTC | No (`auto` mode picks statements-then-shares itself) | DART (KR) + Finnhub (US) point-in-time fundamentals collection. Manual-only `target: raw-statements` / `raw-probe-2015` / `raw-xbrl-2015` run the separate `kr-raw` job instead (kr-accounting-coverage-repair-v1): whole DART statement responses for every ticker ever in a KR top-120 snapshot into `ledger/fundamentals/kr-raw` (fiscal-2015 there now asks only for the annual report, confirmed wasteful for quarterlies by a live probe, run `36300578100`), the element-id canonical rebuild into `kr-canonical-v2`, original fiscal-2015 quarterly filings via `list.json` + `fnlttXbrl.xml` (`CANDIDATE_UNCONFIRMED` account extraction) into `kr-xbrl-original`, a merge of both into `kr-candidate-merged`, and an outcome-free coverage audit of the candidate against the sealed v4 snapshot (`4ea107ed`). Never writes `ledger/fundamentals/kr`; the schedule never takes it. |
-| `Collect universe history` (`universe.yml`) | monthly, 1st, 04:20 UTC | No | Monthly index-membership snapshots |
-| `Historical point-in-time replay` (`replay.yml`) | daily 02:40 UTC | No (incremental) | Extends the sealed `replay-v16` historical ledger and weekly ML retrain |
-| `Collect DART ownership events` (`dart-ownership-events.yml`) | none — `workflow_dispatch` only | **Yes, `mode: auto`** (see below) | KR 5%-rule ownership disclosure collection (DS004) |
-| `Collect KR terminated-security corporate actions` (`kr-corporate-action-collection.yml`) | none — `workflow_dispatch` only | **Yes, `mode: auto`** (probe first, exactly as the DART ownership workflow above) | Three jobs: `probe` (schema/access gate), `collect` (DART `list.json` disclosure-index — merger/share-exchange/tender/delisting/dividend-decision report names — for the 22 KR terminated securities named in `docs/results/kr-termination-inventory.json`; a reading list for a human reviewer, never a resolved termination type), and `collect-dividends` (DART `alotMatter.json` dividend-section rows for the same 22 plus a real, deterministically-selected continuing-name cross-validation sample — see `pipeline/kr_continuing_dividend_sample.py`). Confirmed run with a real key 2026-09-25 (runs `36091590740`/`36094672107`): 22/22 identity-resolved, 451 matched disclosures. See `docs/kr-terminal-action-reconstruction-v2.md`. |
-| `Seal fundamental acceleration signal` (`fundamental-acceleration-seal.yml`) | none yet — `workflow_dispatch` only, deliberately (see its own header comment) | Yes, periodically, until converted to a schedule | Appends today's fundamental-acceleration reading immutably, before its 126-day horizon can be known, building the prospective sample `fundamental-acceleration-discovery-v1` is a bridge for |
-| `Alpha opportunity model v1` (`alpha-opportunity-model-v1.yml`) | none — `workflow_dispatch` only | **Do not run yet** | Sealed research harness; main/review/hash/data guards; currently `BLOCKED_PREREGISTRATION`. Merge and review first, resolve non-outcome blockers in a new version. |
-| `Alpha opportunity model v2` (`alpha-opportunity-model-v2.yml`) | none — `workflow_dispatch` only | **Do not run** — superseded before any outcome by `alpha-opportunity-model-v3`, whose input-only audit found the US sample survivor-only (no terminated security; 212 departed identities without usable history, 0 current, after resolving malformed keys, renames and reused tickers) and KR delisted names without dividend lineage or terminal values. Repair route: `docs/alpha-opportunity-v3-data-repair-plan.md`. v3 is `BLOCKED_BY_DATA_INTEGRITY` (both regions) and deliberately has no workflow. | Sealed v2 contract (benchmark as outside option); `READY_FOR_HISTORICAL_EXECUTION`. Inputs: the reviewed `research_specs/alpha-opportunity-model-v2.sha256` and the review acknowledgement. main-only; verifies v1 is untouched; fails closed at pre-label gates; uploads `alpha-opportunity-model-v2-results`; writes nothing. |
-| `Alpha opportunity model v4 execution (KR)` (`alpha-opportunity-model-v4-execution.yml`) | none — `workflow_dispatch` only | Only after review of `docs/alpha-opportunity-model-v4-execution-report.md`. The contract-correct (V3) gate-only run stopped at `BLOCKED_BY_DATA_INTEGRITY` with zero labels built. Keep `stop_before_labels: true` (the default) unless a reviewer has accepted a passing gate result. | Inputs: `sealed_sha256` (must equal `research_specs/alpha-opportunity-model-v4.sha256`) and `stop_before_labels`. Job `freeze` verifies the merged v4 seal, checks out `signal-history` at the SEALED commit `4ea107ed…` (never by branch name), verifies all 28 raw input files by git blob and freezes the KR terminal-action foundation, then publishes the commit and the input-identity hash. Job `execute` checks out exactly that commit, refuses any mismatch, and runs `scripts/execute_alpha_opportunity_model_v4.py` (harness contract V3): tradability, then v2's sealed coverage and calendar-depth thresholds on every tradable KR name-date. v2's 20% region-year tolerance is not applied, because v4's sealed `survivorshipEligibility` replaces it with per-observation `label_eligibility`. No label exists before every gate passes. Writes nothing to production; no promotion. |
-| `Synthetic alpha inference calibration v1` (`alpha-inference-calibration-v1.yml`) | none — `workflow_dispatch` only | **Do not run — closed substantive FAIL** | Frozen v1 non-circular percentile calibration. Run `36472769120` completed all synthetic cells and failed the registered coverage contract. Preserve for reproducibility only; see `docs/results/alpha-inference-calibration-v1-report.md`. |
-| `Synthetic alpha inference calibration v2` (`alpha-inference-calibration-v2.yml`) | none — `workflow_dispatch` only | **Run once only after v2 protocol PR is merged** | Outcome-free successor to v1. Keeps the same horizons, DGPs, block grid, primary blocks and tolerances; changes only to circular moving-block resampling plus a centered/basic interval. A complete substantive FAIL closes v2; no seed/block rerun. |
-| `Probes` (`probes.yml`) | none — `workflow_dispatch` only | On demand | One dropdown covering every external-source availability check (see below) |
+| `Tests` (`tests.yml`) | on every PR / push to `main` | No — runs automatically | Full test suite + lint/import gate before merge. |
+| `Build insight data and deploy Pages` (`pages.yml`) | daily 08:20 KST + on push to `main` | No | Builds site data and deploys Pages. |
+| `Append paper-signal ledger` (`ledger.yml`) | daily 00:10 UTC | No | Appends the daily cross-section to the immutable signal ledger. |
+| `Collect fundamentals` (`fundamentals.yml`) | daily 03:40 UTC | No for scheduled collection | DART/Finnhub PIT fundamentals plus the guarded KR raw-statement repair routes. The repaired KR accounting foundation is complete for the historical scope; do not repeatedly dispatch `raw-statements` merely to revisit not-yet-mature 2026 filings. |
+| `Collect universe history` (`universe.yml`) | monthly, 1st, 04:20 UTC | No | Monthly point-in-time membership snapshots. |
+| `Historical point-in-time replay` (`replay.yml`) | daily 02:40 UTC | No | Extends replay-v16 using frozen PIT inputs and weekly ML retraining. |
+| `Collect DART ownership events` (`dart-ownership-events.yml`) | none — `workflow_dispatch` only | **Yes, `mode: auto`** | KR 5%-rule ownership disclosure collection with probe-first fail-closed behavior. |
+| `Collect KR terminated-security corporate actions` (`kr-corporate-action-collection.yml`) | none — `workflow_dispatch` only | **Yes, `mode: auto`** when additional source collection is actually required | DART disclosure-index, dividend-section, and terminal-action evidence collection for the terminated-security foundation. |
+| `Seal fundamental acceleration signal` (`fundamental-acceleration-seal.yml`) | none yet | Yes, periodically | Appends genuinely prospective acceleration observations before their 126-session horizon can be known. |
+| `Alpha opportunity model v1` (`alpha-opportunity-model-v1.yml`) | none — `workflow_dispatch` only | **Do not run** | Legacy sealed preregistration harness; superseded by later design/data-integrity work. |
+| `Alpha opportunity model v2` (`alpha-opportunity-model-v2.yml`) | none — `workflow_dispatch` only | **Do not run** | Superseded before execution by later data-integrity work. Do not revive it as a historical outcome search. |
+| `Alpha opportunity model v4 execution (KR)` (`alpha-opportunity-model-v4-execution.yml`) | none — `workflow_dispatch` only | **Do not run for Alpha outcomes while v5 preparation is in progress** | Existing guarded KR v4 harness retained for reproducibility. Its prior gate-only execution stopped before labels because the then-sealed data foundation failed integrity requirements. |
+| `Synthetic alpha inference calibration v1` (`alpha-inference-calibration-v1.yml`) | none — `workflow_dispatch` only | **Do not run — closed substantive FAIL** | Run `36472769120` completed the registered synthetic contract and failed coverage. Preserved only for reproducibility; see `docs/results/alpha-inference-calibration-v1-report.md`. |
+| `Synthetic alpha inference calibration v2` (`alpha-inference-calibration-v2.yml`) | none — `workflow_dispatch` only | **Do not run — closed substantive FAIL** | Run `36476033206` completed all 40 registered synthetic cells and failed the frozen coverage contract even after circular moving blocks + basic intervals. Preserved only for reproducibility; see `docs/results/alpha-inference-calibration-v2-report.md`. |
+| `Synthetic alpha inference calibration v3` (`alpha-inference-calibration-v3.yml`) | none — `workflow_dispatch` only | **Run exactly once only after the v3 protocol PR is merged** | Synthetic-only self-normalized fixed-b (`b=1`) interval calibration. No block-length choice or bootstrap evaluation draws; no historical Alpha outcomes or `signal-history` outcome artifacts are read. A complete substantive FAIL closes v3. |
+| `Probes` (`probes.yml`) | none — `workflow_dispatch` only | On demand | Dispatcher for external-source availability/schema probes. |
 
-**`Collect DART ownership events`, `mode: auto` (the default) is the one
-button this whole PR was written to make sufficient**: it runs a small
-schema probe first, and only proceeds to collect if that probe reports
-`SERVED`. If the source or key is refused, or an expected field goes
-missing, the run stops and is reported as a failed job — never a quiet
-success with nothing collected. Collection resolves the PIT historical KR
-membership union to DART issuer identities, then resumes by issuer and raw
-contract. `probe` also checks the official filing index for disclosures older
-than the bounded `majorstock.json` response; that depth check may report
-`BLOCKED_HISTORICAL_DEPTH` without changing the endpoint schema verdict.
-`probe`/`collect` remain as explicit manual overrides.
+### Operator notes
+
+- `Collect DART ownership events`, `mode: auto`, probes first and proceeds only
+  when the source contract is served. Vendor refusal is a failed/blocked
+  measurement, never permission to scrape around the source.
+- The Alpha opportunity v1/v2/v4 workflow files remain visible because the
+  repository preserves sealed historical research machinery. Their presence is
+  not permission to spend another historical-outcome attempt.
+- For inference calibration, the authoritative progression is now
+  **v1 FAIL -> v2 FAIL -> v3 pending**. Never rerun v1/v2 with another seed,
+  threshold, or favorable sensitivity.
 
 ## ON-DEMAND PROBES
 
-Not part of daily operation — these measure whether an external source is
-currently reachable, so "is it still blocked?" is always a single dropdown
-selection and a click away, never a bespoke workflow to write. All routed
-through `.github/workflows/probes.yml`'s `probe` input.
+All are routed through `probes.yml` unless a dedicated collector above is the
+operator entry point.
 
-| Probe | Source | Last confirmed status (2026-09-24) |
+| Probe | Source / purpose | Current interpretation |
 |---|---|---|
-| `sec-egress` / `sec-headers` / `sec-fundamentals` / `sec-bulk-datasets` | SEC (Form 4, 8-K, bulk financial statements) | `BLOCKED` — site-wide from this repo's Actions IP pool |
-| `guru-13f-access` | SEC 13F bulk dataset + per-manager submissions | `BLOCKED`, route `NONE` (run 35964478931) — see `docs/guru-decision-atlas-data-v1.md` |
-| `fmp-fundamentals` | Financial Modeling Prep | see `docs/results/` for the most recent cap measurement |
-| `dart-fundamentals` | DART DS002 (statements) | `SERVED` — production already depends on this |
-| `krx-index-membership` | KRX Open API | mixed — per-endpoint, see `AGENTS.md`'s vendor-refusal invariants |
-| `kr-investor-flow` | KRX public statistics portal (investor-type net trading) | `BLOCKED_SOURCE` — HTTP 400 `LOGOUT` on the first call (run 35963936572) |
-| `kr-short-selling` | KRX public statistics portal (short-sale screens) | `BLOCKED_SOURCE` — HTTP 400 on every `MDCSTAT301`/`MDCSTAT305` candidate tried (run 35964424923) |
-| `us-pit-fundamentals` / `us-delisted-prices` | Multi-vendor PIT fundamentals / delisted-price fallback chain | see `docs/results/` |
-| `alfred-macro-vintages` | ALFRED (FRED vintages) | permanently closed for 10 of 28 panel columns — see `AGENTS.md`'s macro-vintage invariants |
-| `kr-delisting-coverage` | Korean delisted-name price coverage | see `docs/results/` |
-
-A `BLOCKED` verdict here is never retried automatically and never silently
-worked around (no scraping, no proxy rotation, no CAPTCHA bypass) — see
-`AGENTS.md`. Re-running the same probe after a vendor changes something is
-the entire point of keeping it on this list.
+| `sec-egress` / `sec-headers` / `sec-fundamentals` / `sec-bulk-datasets` | SEC access | Prior Actions measurements were blocked; re-probe only to measure a changed source condition. |
+| `guru-13f-access` | SEC 13F availability | Prior route blocked; no proxy/scraping workaround. |
+| `fmp-fundamentals` | FMP fundamental source | See the latest source-capability result under `docs/results/`. |
+| `dart-fundamentals` | DART DS002 | Served; production collection already depends on it. |
+| `krx-index-membership` | KRX membership source | Endpoint-specific status; follow repository vendor-refusal invariants. |
+| `kr-investor-flow` | KRX investor-flow source | Previously blocked source. |
+| `kr-short-selling` | KRX short-sale source | Previously blocked source. |
+| `us-pit-fundamentals` / `us-delisted-prices` | US historical data routes | See the latest source-capability reports. |
+| `alfred-macro-vintages` | ALFRED vintage coverage | Known historical-vintage gaps remain documented. |
+| `kr-delisting-coverage` | KR delisted-name coverage | See the latest data-foundation report. |
 
 ## RETIRED RESEARCH
 
-Removed from the Actions menu because the study is closed: a verdict was
-reached, published to `docs/results/`, and no rung promotes production. The
-workflow file, its code, and its results all remain in git history and can
-be restored (`git log --diff-filter=D -- .github/workflows/<name>.yml`) if
-a study needs to be re-run under a materially new condition — never as a
-same-sample re-tune (see `AGENTS.md`'s selection-value invariants on why
-that specific failure mode is disallowed here).
+These workflow files are intentionally absent from `.github/workflows/`.
+Their code/results remain in git history or `docs/results/`; restoring one is a
+new research action and must not be used as a same-sample rescue.
 
-| Retired workflow | Study | Verdict | Results |
-|---|---|---|---|
-| `regional-alpha-model.yml` | `regional-alpha-model-v1` | `EXECUTED` / `NO_MODEL_EVIDENCE` (US & KR) / historical discovery closed on the existing 31-feature matrix | `docs/alpha-research-foundation-v2-errata.md` |
-| `benchmark-alpha.yml` | `benchmark-relative-alpha-v1` | `BENCHMARK_NOT_BEATEN` | `docs/results/benchmark-alpha-report.md` |
-| `selection-value.yml` | `selection-value-decomposition-v1` | read-only diagnostic, no promotion | `docs/results/selection-value-report.md` |
-| `switch-hurdle.yml` | `regional-switch-hurdle-v1` | first paired interval to clear zero (+2.757pp), still not promoted (`promotionEligible: false`) | `docs/results/switch-hurdle-report.md` |
-| `signal-persistence.yml` | `signal-persistence-v1` | all point estimates same direction, no rung separates | `docs/results/signal-persistence-report.md` |
-| `alpha-reliability.yml` | `alpha-reliability-v1` | confidence-shrinkage rung refuted by its own pre-test | `docs/results/alpha-reliability-report.md` |
-| `alpha-risk-separation.yml` | `alpha-risk-separation-v1` | paired interval contains zero | `docs/results/alpha-risk-separation-report.md` |
-| `alpha-risk-separation-diagnostics.yml` | diagnostic extension of the above | read-only, no score/rule changed | `docs/results/` (same study) |
-| `dynamic-breadth.yml` | `dynamic-breadth-v1` | paired interval contains zero | `docs/results/` |
-| `region-quota-removal.yml` | `region-quota-removal-v1` | point estimate worse, interval contains zero | `docs/results/` |
-| `entry-selection-separation.yml` | `entry-selection-separation-v1` | paired interval contains zero (4th and last study `alpha-reliability-v1` pre-registered) | `docs/results/` |
-| `lowvol-alpha-separation.yml` | `lowvol-alpha-separation-v1` | Case B — sleeve removal does not help | `docs/results/` |
-| `alpha-calibration-resolution.yml` | `alpha-calibration-resolution-v1` | Case B — ordinal rescue does not help | `docs/results/` |
-| `four-factor-signal-attribution-audit.yml` | `four-factor-signal-attribution-audit-v1` | no sleeve clears significance; region-sign-unstable | `docs/results/` |
-| `fundamental-acceleration-discovery.yml` | `fundamental-acceleration-discovery-v1` | Case D — no discovery evidence | `docs/results/` |
-| `regional-rotation.yml` | `regional-rotation-v1` | validated CHALLENGER, all timing-metric CIs contain zero | `docs/results/regional-rotation-report.md` |
+| Retired workflow | Study | Closed status / result location |
+|---|---|---|
+| `regional-alpha-model.yml` | `regional-alpha-model-v1` | Historical discovery closed; see `docs/alpha-research-foundation-v2-errata.md`. |
+| `benchmark-alpha.yml` | `benchmark-relative-alpha-v1` | Closed; see `docs/results/benchmark-alpha-report.md`. |
+| `selection-value.yml` | `selection-value-decomposition-v1` | Closed diagnostic; see `docs/results/`. |
+| `switch-hurdle.yml` | `regional-switch-hurdle-v1` | Closed; see `docs/results/switch-hurdle-report.md`. |
+| `signal-persistence.yml` | `signal-persistence-v1` | Closed; see `docs/results/`. |
+| `alpha-reliability.yml` | `alpha-reliability-v1` | Closed; see `docs/results/alpha-reliability-report.md`. |
+| `alpha-risk-separation.yml` | `alpha-risk-separation-v1` | Closed; see `docs/results/alpha-risk-separation-report.md`. |
+| `alpha-risk-separation-diagnostics.yml` | diagnostic extension | Closed; see `docs/results/`. |
+| `dynamic-breadth.yml` | `dynamic-breadth-v1` | Closed; see `docs/results/`. |
+| `region-quota-removal.yml` | `region-quota-removal-v1` | Closed; see `docs/results/`. |
+| `entry-selection-separation.yml` | `entry-selection-separation-v1` | Closed; see `docs/results/`. |
+| `lowvol-alpha-separation.yml` | `lowvol-alpha-separation-v1` | Closed; see `docs/results/`. |
+| `alpha-calibration-resolution.yml` | `alpha-calibration-resolution-v1` | Closed; see `docs/results/`. |
+| `four-factor-signal-attribution-audit.yml` | `four-factor-signal-attribution-audit-v1` | Closed; see `docs/results/`. |
+| `fundamental-acceleration-discovery.yml` | `fundamental-acceleration-discovery-v1` | Closed historical discovery; prospective sealing remains separate. |
+| `regional-rotation.yml` | `regional-rotation-v1` | Closed; see `docs/results/regional-rotation-report.md`. |
 
-See `AGENTS.md` for the full, dated invariant write-up behind every row
-above — this table exists to say where to click, not to re-argue any of
-them.
-
-## Judgment calls made, and why
-
-- **`fundamental-acceleration-seal.yml` stayed ACTIVE, not RETIRED.**
-  Unlike every workflow in the RETIRED table, it is not a closed backward
-  -looking study — it is the mechanism accumulating the genuinely
-  prospective sample `fundamental-acceleration-discovery-v1`'s own design
-  doc named as the confirmatory evidence a same-sample replay can never be.
-  Its own header comment says converting it to a schedule is "a follow-up,
-  not decided here" — this PR does not decide that either; it stays a
-  manual, periodic trigger.
-- **`dart-ownership-events.yml` stayed ACTIVE and was simplified, not
-  retired** — its probe is `SERVED` (measured 2026-09-24), unlike the two
-  KRX-portal sources folded into `Probes`.
-- **`kr-investor-flow.yml` was removed entirely (not merely trimmed)**
-  rather than kept as a collect-only workflow with its probe jobs moved
-  out. Both of its axes (investor flow, short-selling) measured
-  `BLOCKED_SOURCE`; a collect workflow with nothing to collect is exactly
-  the clutter this pass exists to remove. `scripts/collect_kr_investor_flow.py`
-  and `scripts/collect_kr_short_selling.py` are unchanged and still callable
-  manually (`gh workflow run` against a restored workflow file, or a new
-  one) once a probe reports `SERVED`.
-- **`guru-13f-backfill.yml` was removed for the same reason**, after its
-  own probe run measured `BLOCKED`/`NONE` directly rather than by inference
-  from an adjacent SEC measurement.
+The retirement table is an audit trail, not a list of workflows to restore.

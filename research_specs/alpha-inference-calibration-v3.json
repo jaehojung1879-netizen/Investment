@@ -1,0 +1,114 @@
+{
+  "contract": "ALPHA_INFERENCE_CALIBRATION_V3",
+  "outcomeFree": true,
+  "purpose": "Synthetic-only validation of a tuning-parameter-free self-normalized interval for the future Alpha v5 date-level mean statistics after v1 and v2 block-bootstrap intervals substantively failed their frozen null-coverage contracts.",
+  "sourceReview": "docs/alpha-research-design-review-v1.md",
+  "seed": 20260930,
+  "simulationReplicates": 300,
+  "namesPerDate": 60,
+  "signalStepSessions": 5,
+  "confidence": {
+    "familywiseAlpha": 0.05,
+    "primaryExpectedReturnClaims": 2,
+    "cellTwoSidedAlpha": 0.025,
+    "nominalCoverage": 0.975
+  },
+  "horizons": {
+    "21": {
+      "forwardSessions": 21,
+      "calendarWeeks": [78, 156]
+    },
+    "126": {
+      "forwardSessions": 126,
+      "calendarWeeks": [312, 624]
+    }
+  },
+  "dgps": [
+    {
+      "name": "IID_SHARED",
+      "phiShared": 0.0,
+      "phiIdiosyncratic": 0.0,
+      "sigmaShared": 0.5,
+      "sigmaIdiosyncratic": 1.0
+    },
+    {
+      "name": "WEAK_SERIAL",
+      "phiShared": 0.25,
+      "phiIdiosyncratic": 0.1,
+      "sigmaShared": 0.5,
+      "sigmaIdiosyncratic": 1.0
+    },
+    {
+      "name": "PERSISTENT_SERIAL",
+      "phiShared": 0.8,
+      "phiIdiosyncratic": 0.35,
+      "sigmaShared": 0.5,
+      "sigmaIdiosyncratic": 1.0
+    },
+    {
+      "name": "PERSISTENT_SHARED_HEAVY",
+      "phiShared": 0.9,
+      "phiIdiosyncratic": 0.25,
+      "sigmaShared": 1.0,
+      "sigmaIdiosyncratic": 0.5
+    }
+  ],
+  "nullConstruction": {
+    "outcome": "Forward sums of synthetic daily shared plus idiosyncratic shocks over exactly H sessions, sampled every five sessions.",
+    "predictors": "Generated from a separately spawned RNG stream and independent of every target innovation.",
+    "pairedForecastContrast": "Two exchangeable independent synthetic forecast streams with the same scale; expected paired MSE difference is exactly zero by symmetry.",
+    "selection": "Top 20 percent of names by an independent synthetic selection score; expected selected mean and selected-minus-universe mean are zero.",
+    "rankStatistic": "Within-date rank correlation between an independent synthetic score and target; population value is zero.",
+    "realDataReads": "FORBIDDEN"
+  },
+  "statistics": [
+    "dateMean",
+    "pairedMseImprovement",
+    "rankIC",
+    "selectedMean",
+    "selectedMinusUniverse"
+  ],
+  "selectionFraction": 0.2,
+  "syntheticForecastScale": 0.25,
+  "intervalConstruction": {
+    "method": "SELF_NORMALIZED_FIXED_B_BARTLETT_B1",
+    "scalarTarget": "date-level arithmetic mean",
+    "normalizer": "W_n = n^-2 * sum_{t=1}^n (S_t - (t/n) S_n)^2, where S_t is the prefix sum of the date-level statistic",
+    "confidenceInterval": "theta_hat +/- sqrt(U1CriticalValue * W_n / n)",
+    "criticalDistribution": "U1 = B(1)^2 / integral_0^1 (B(r)-rB(1))^2 dr",
+    "criticalPercentile": 0.975,
+    "U1CriticalValue": 66.57,
+    "criticalValueSource": "Lobato (2001) U1 pivotal distribution; independently reproduced table reports q=1 upper critical value 66.57 at 97.5%. Shao (2010) gives the recursive-estimate self-normalized confidence-region construction and identifies it as Bartlett fixed-b with b=1.",
+    "blockLength": "NONE",
+    "bootstrapDraws": 0
+  },
+  "acceptance": {
+    "materialCoverageFloor": 0.95,
+    "directionalFalsePositiveCeiling": 0.05,
+    "undefinedFrequencyCeiling": 0.05,
+    "maximumMonteCarlo95HalfWidth": 0.04,
+    "failureRule": "If any registered statistic violates any frozen tolerance in any DGP/depth/horizon cell, calibration is FAIL. Do not alter the pivotal critical value, calendar depth, DGP, statistic, seed, or tolerance after viewing results under this contract.",
+    "interpretationRule": "PASS validates only synthetic null size/coverage behavior for this self-normalized interval. It does not establish historical Alpha, profitability, deployability, stationarity of real returns, or power against economically relevant alternatives."
+  },
+  "v1FailureReference": {
+    "workflowRun": 36472769120,
+    "primaryStatus": "FAIL",
+    "reason": "Non-circular moving-block percentile/basic mechanics materially undercover under the registered nulls."
+  },
+  "v2FailureReference": {
+    "workflowRun": 36476033206,
+    "primaryStatus": "FAIL",
+    "specSha256": "df82d685d62b0c55a789e79076d97a99b1fd37c344f8615b7312d280302e3973",
+    "artifactZipSha256": "e63f2cde44d5debd0766ae2453f8de1a994dfa1b221b41a2cc634d3c9c996d02",
+    "reason": "Circular moving-block basic intervals still materially undercover in every primary cell; all registered sensitivity block lengths also had zero fully passing cells."
+  },
+  "prohibitions": [
+    "No historical return, label, score, prediction, result report, signal-history outcome artifact, or Alpha experiment may be read.",
+    "No simulation parameter may be estimated from real returns.",
+    "No v1 or v2 sensitivity block performance may select or tune v3 because v3 has no block-length parameter.",
+    "The U1 critical value is fixed from the published pivotal distribution and may not be inflated or reduced after viewing v3 calibration results.",
+    "No seed, DGP, tolerance, calendar depth, statistic, or replication budget may be changed after viewing v3 calibration results under this contract.",
+    "No historical outcome may be accessed before v3 is closed and the later v5 preregistration is separately frozen.",
+    "No v5 preregistration or seal is created by this calibration protocol."
+  ]
+}

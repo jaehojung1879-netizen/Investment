@@ -1,0 +1,46 @@
+name: Synthetic alpha inference calibration v3
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: alpha-inference-calibration-v3
+  cancel-in-progress: false
+
+jobs:
+  calibrate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Verify frozen protocol is tracked
+        run: |
+          git diff --exit-code -- research_specs/alpha-inference-calibration-v3.json
+          python -m json.tool research_specs/alpha-inference-calibration-v3.json >/dev/null
+
+      - name: Run synthetic-only calibration v3
+        run: |
+          python scripts/run_alpha_inference_calibration_v3.py \
+            --spec research_specs/alpha-inference-calibration-v3.json \
+            --output artifacts/alpha-inference-calibration-v3.json
+
+      - name: Upload complete calibration result
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: alpha-inference-calibration-v3
+          path: artifacts/alpha-inference-calibration-v3.json
+          if-no-files-found: error
+          retention-days: 90
