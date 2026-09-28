@@ -1,0 +1,223 @@
+{
+  "contract": "ALPHA_INFERENCE_CALIBRATION_V4",
+  "outcomeFree": true,
+  "protocolStatus": "FROZEN_BEFORE_FORMAL_RUN",
+  "purpose": "Synthetic-only validation of a realization-time (calendar-time) attribution of linear forward-return statistics followed by the unchanged v3 self-normalized pivot, after v1, v2 and v3 substantively failed their frozen null-coverage contracts. Not an Alpha experiment and not a v5 preregistration.",
+  "methodologyRecord": "docs/alpha-inference-calibration-v4-methodology.md",
+  "sourceReview": "docs/alpha-research-design-review-v1.md",
+  "seed": 20261001,
+  "simulationReplicates": 2000,
+  "simulationReplicatesRationale": "Retained from revision 1 under the three-state rule. Precision criterion: the 95% Monte Carlo half-width of a coverage estimate at the 0.95 floor must be at most 1 percentage point (1.96*sqrt(0.95*0.05/R) <= 0.01 requires R >= 1825; rounded up to 2000). R is NOT raised to force a classification. A method whose true coverage sits within about one Monte Carlo half-width of a threshold is expected to return INCONCLUSIVE at this R, and that is an honest statement of what 2,000 replicates can resolve; the development operating characteristic in docs/results/alpha-inference-calibration-v4-development-diagnostics.json lists the state probabilities. At 300 replicates a cell whose true coverage is 0.958 read below the floor with probability 0.198, so the v1-v3 rule could not separate a method's distortion from Monte Carlo noise.",
+  "namesPerDate": 60,
+  "signalStepSessions": 5,
+  "confidence": {
+    "familywiseAlpha": 0.05,
+    "primaryExpectedReturnClaims": 2,
+    "cellTwoSidedAlpha": 0.025,
+    "nominalCoverage": 0.975,
+    "multiplicity": "Bonferroni over the two KR horizon primary expected-return claims, unchanged from v1-v3. Every confirmatory statistic in every cell is evaluated at the claim-level 97.5% interval; the calibration verdict is a conjunction over all of them, so no statistic or cell is an independent opportunity to pass."
+  },
+  "horizons": {
+    "21": {
+      "forwardSessions": 21,
+      "calendarWeeks": [
+        78,
+        156
+      ]
+    },
+    "126": {
+      "forwardSessions": 126,
+      "calendarWeeks": [
+        312,
+        624
+      ]
+    }
+  },
+  "minimumConfirmatoryDepth": {
+    "rule": "Confirmatory inference at a horizon is licensed only at evaluation calendars at least as deep as the shallowest depth this frozen calibration evaluated for that horizon. Shallower calendars were never calibrated and are DATA_INSUFFICIENT_FOR_CONFIRMATORY_H{horizon}_INFERENCE; they are never unlocked by a different interval.",
+    "21": {
+      "calendarWeeks": 78
+    },
+    "126": {
+      "calendarWeeks": 312
+    }
+  },
+  "dgps": [
+    {
+      "name": "IID_SHARED",
+      "phiShared": 0.0,
+      "phiIdiosyncratic": 0.0,
+      "sigmaShared": 0.5,
+      "sigmaIdiosyncratic": 1.0,
+      "phiPredictor": 0.0,
+      "innovation": "GAUSSIAN"
+    },
+    {
+      "name": "WEAK_SERIAL",
+      "phiShared": 0.25,
+      "phiIdiosyncratic": 0.1,
+      "sigmaShared": 0.5,
+      "sigmaIdiosyncratic": 1.0,
+      "phiPredictor": 0.0,
+      "innovation": "GAUSSIAN"
+    },
+    {
+      "name": "PERSISTENT_SERIAL",
+      "phiShared": 0.8,
+      "phiIdiosyncratic": 0.35,
+      "sigmaShared": 0.5,
+      "sigmaIdiosyncratic": 1.0,
+      "phiPredictor": 0.0,
+      "innovation": "GAUSSIAN"
+    },
+    {
+      "name": "PERSISTENT_SHARED_HEAVY",
+      "phiShared": 0.9,
+      "phiIdiosyncratic": 0.25,
+      "sigmaShared": 1.0,
+      "sigmaIdiosyncratic": 0.5,
+      "phiPredictor": 0.0,
+      "innovation": "GAUSSIAN"
+    },
+    {
+      "name": "PERSISTENT_SERIAL_PERSISTENT_PREDICTORS",
+      "phiShared": 0.8,
+      "phiIdiosyncratic": 0.35,
+      "sigmaShared": 0.5,
+      "sigmaIdiosyncratic": 1.0,
+      "phiPredictor": 0.95,
+      "innovation": "GAUSSIAN"
+    },
+    {
+      "name": "PERSISTENT_SHARED_HEAVY_TAILED_PERSISTENT_PREDICTORS",
+      "phiShared": 0.9,
+      "phiIdiosyncratic": 0.25,
+      "sigmaShared": 1.0,
+      "sigmaIdiosyncratic": 0.5,
+      "phiPredictor": 0.95,
+      "innovation": "STUDENT_T",
+      "studentTDegreesOfFreedom": 4
+    }
+  ],
+  "dgpRationale": {
+    "inherited": "The four v1-v3 DGPs are kept byte-for-byte in their outcome parameters; none is removed.",
+    "persistentPredictors": "Under the v1-v3 null every predictor and selection score was redrawn independently each week, which makes rankIC, pairedMseImprovement and selectedMinusUniverse exact martingale-difference sequences whatever the overlap: they could not fail for the reason dateMean did. Real v5 scores persist week to week. phiPredictor 0.95 is a weekly AR(1) on each synthetic name's scores (a half-life of about 13.5 weeks), fixed a priori as a slow-moving-score stress, never estimated from data. Predictors remain independent of every return innovation, so the null is still exact.",
+    "heavyTails": "Student-t innovations with 4 degrees of freedom, rescaled to unit variance, applied to shared and idiosyncratic daily innovations: the heaviest integer tail with a finite variance and finite 2+delta moments, which the functional central limit theorem behind the self-normalized pivot requires."
+  },
+  "nullConstruction": {
+    "outcome": "Forward sums of synthetic daily shared plus idiosyncratic shocks over exactly H sessions, sampled every five sessions.",
+    "predictors": "Generated from a separately spawned RNG stream and independent of every return innovation; weekly AR(1) with coefficient phiPredictor and unit stationary variance.",
+    "pairedForecastContrast": "Two exchangeable independent synthetic forecast streams with the same scale; expected paired MSE difference is exactly zero by symmetry.",
+    "selection": "Top 20 percent of names by an independent synthetic selection score, frozen at the signal date for the whole holding window.",
+    "rankStatistic": "Within-date Spearman correlation between an independent synthetic score and the forward target; population value is zero.",
+    "rankWeightedSpread": "Within-date return of a dollar-neutral portfolio weighted by centred ranks of the same independent score (long leg sums to one); population value is zero.",
+    "realDataReads": "FORBIDDEN"
+  },
+  "selectionFraction": 0.2,
+  "syntheticForecastScale": 0.25,
+  "statistics": {
+    "confirmatory": [
+      "dateMean",
+      "selectedMean",
+      "selectedMinusUniverse",
+      "pairedMseImprovement",
+      "rankWeightedSpread"
+    ],
+    "descriptive": [
+      "rankIC"
+    ],
+    "rationale": "A statistic is confirmatory only if it is LINEAR in forward returns with weights fixed at the signal date (plus, for the MSE contrast, a forecast-only term known at the signal date), because only then can each realized return be attributed to the one calendar week in which it occurs. Spearman rankIC ranks the forward target, is not decomposable, and under persistent predictors inherits the full overlap dependence that v3's failure diagnosis identifies; it is reported with the v3 interval as a descriptive diagnostic and can neither pass nor fail the protocol. rankWeightedSpread is the decomposable, return-unit counterpart of a within-date ordering claim; whether v5 adopts it in place of Spearman rankIC is a v5 design decision this protocol does not make."
+  },
+  "intervalConstruction": {
+    "method": "CALENDAR_TIME_ATTRIBUTION_SELF_NORMALIZED",
+    "attribution": "For each statistic, each signal-date cohort's value is written as sum_i w(t,i) Y(t,i) + f(t), with w fixed at the signal date and f a forecast-only term. Y(t,i) is the sum of daily returns over the cohort's H sessions. The contribution of session s is sum over cohorts active at s of sum_i w(t,i) r(s,i) and is attributed to the calendar week containing s; f(t) is attributed to the signal week t. D(w) is the sum of contributions attributed to calendar week w. Summing D over all calendar weeks reproduces the sum of the signal-date statistic exactly, so the estimator and estimand are unchanged.",
+    "exposureProfile": "x(w) = (number of (defined cohort, session) pairs in calendar week w) / H; sum_w x(w) equals the number of defined signal dates.",
+    "estimate": "theta_hat = sum_w D(w) / sum_w x(w), identical to the arithmetic mean of the signal-date statistic over defined dates.",
+    "normalizer": "Residuals e(w) = D(w) - theta_hat x(w); partial sums R(t) = sum_{w<=t} e(w); V = sum_t R(t)^2 over the N calendar weeks.",
+    "confidenceInterval": "theta_hat +/- sqrt(U1CriticalValue * V / N) / sum_w x(w). With x identically one this is exactly v3's interval, which a unit test proves.",
+    "criticalDistribution": "U1 = B(1)^2 / integral_0^1 (B(r)-rB(1))^2 dr",
+    "criticalPercentile": 0.975,
+    "U1CriticalValue": 66.57,
+    "criticalValueSource": "Unchanged from v3: Lobato (2001) U1 pivotal distribution, 97.5% upper critical value 66.57; Shao (2010) recursive-estimate self-normalization, equivalent to Bartlett fixed-b at b=1.",
+    "blockLength": "NONE",
+    "bootstrapDraws": 0,
+    "tuningParameters": "NONE",
+    "nearZeroNormalizerRelativeTolerance": 1e-12,
+    "undefinedRule": "The interval is undefined (never a degenerate zero-width interval) when fewer than two calendar weeks exist, any D or x is non-finite, no signal date is defined, or V <= nearZeroNormalizerRelativeTolerance * N^2 * mean(D^2). Undefined intervals count toward undefinedFrequency."
+  },
+  "descriptiveIntervalConstruction": {
+    "method": "V3_SELF_NORMALIZED_SIGNAL_DATE",
+    "appliesTo": "rankIC, and a non-gating disclosure comparator for every confirmatory statistic",
+    "gating": false
+  },
+  "undefinedStatistics": "A signal date whose statistic is undefined (for example an empty selected set) contributes no cohort weight, no forecast term and no exposure; the date-balanced mean runs over defined dates only. The frozen synthetic designs cannot produce an undefined date; the rule is exercised by unit tests.",
+  "acceptance": {
+    "materialCoverageFloor": 0.95,
+    "directionalFalsePositiveCeiling": 0.05,
+    "undefinedFrequencyCeiling": 0.05,
+    "maximumMonteCarlo95HalfWidth": 0.04,
+    "gatingStatistics": "confirmatory only",
+    "failureRule": "Each metric of each confirmatory statistic in each DGP/depth/horizon cell is classified PASS, FAIL or INCONCLUSIVE by monteCarloDecision. A cell takes the worst of its statistics' states (FAIL, then INCONCLUSIVE, then PASS). Do not alter the pivotal critical value, attribution rule, calendar depth, DGP, statistic partition, seed, replicate count, threshold or Monte Carlo decision levels after viewing results under this contract.",
+    "statusRule": "Precedence: (1) INFRASTRUCTURE_ERROR if no complete result exists; (2) FAIL if any evaluated confirmatory cell is FAIL; (3) INCONCLUSIVE if any evaluated cell is INCONCLUSIVE; (4) DATA_INSUFFICIENT if any registered cell is below its horizon's minimum confirmatory depth; (5) PASS otherwise. A definite refutation outranks everything; an evaluated cell the simulation cannot resolve outranks an unevaluated one because it is information about the method, whereas a depth shortfall is information about the calendar. Only PASS licenses confirmatory inference; INCONCLUSIVE and DATA_INSUFFICIENT are complete, legitimate results that license nothing.",
+    "interpretationRule": "PASS validates only synthetic null size/coverage behavior of this interval for the confirmatory statistics under these DGPs and depths. It does not establish historical Alpha, profitability, deployability, stationarity or short memory of real returns, or power against economically relevant alternatives."
+  },
+  "stoppingRule": "After merge, run 'Synthetic alpha inference calibration v4' exactly once on main. A complete PASS, FAIL, INCONCLUSIVE or DATA_INSUFFICIENT artifact closes this protocol's run budget. INCONCLUSIVE is not resolved by rerunning with more replicates or another seed (that is optional stopping): a more precise study is a separately justified v5 calibration-method study. A rerun is permitted only when the run produced no complete artifact or reported INFRASTRUCTURE_ERROR, after an infrastructure-only repair documented in the result record. A FAIL is never followed by a v4.1.",
+  "developmentDiagnostics": {
+    "file": "docs/results/alpha-inference-calibration-v4-development-diagnostics.json",
+    "label": "DEVELOPMENT_ONLY",
+    "use": "Analytic exact-Gaussian reconstruction of the v1-v3 failures, and the exact Gaussian coverage of the v4 calendar-time interval, computed BEFORE the revision-1 freeze commit and fully disclosed. The attribution method was derived from the structural decomposition of overlapping returns; the v4 exact-coverage figures were seen before the protocol was frozen. No free parameter, threshold, DGP, depth, statistic partition, critical value or tuning parameter was selected by optimizing them: the only choice they could have informed is the replicate count (through the Monte Carlo operating characteristic, which does not depend on any method's coverage). Revision 2 adds the three-state operating characteristic of the Monte Carlo decision rule to the same file."
+  },
+  "v1FailureReference": {
+    "workflowRun": 36472769120,
+    "primaryStatus": "FAIL"
+  },
+  "v2FailureReference": {
+    "workflowRun": 36476033206,
+    "primaryStatus": "FAIL",
+    "specSha256": "df82d685d62b0c55a789e79076d97a99b1fd37c344f8615b7312d280302e3973"
+  },
+  "v3FailureReference": {
+    "workflowRun": 36483954346,
+    "primaryStatus": "FAIL",
+    "mainCommit": "faff543fd0516e734d14d680cecf0f12b8850fd6",
+    "specSha256": "e8340ac3541e8981983996b8a66b54030757c2cd0419aab2140f8e3fe41d1d59",
+    "artifactId": 10998470853,
+    "artifactZipSha256": "c9ee787aaa34d0102e0cef13505195b1b40d19b5bbfb74f1998e27c6fb2abe14",
+    "failedCells": [
+      "IID_SHARED/H126/312: selectedMean 0.9467",
+      "WEAK_SERIAL/H126/312: dateMean 0.9367, selectedMean 0.9400",
+      "PERSISTENT_SHARED_HEAVY/H126/312: dateMean 0.9433, selectedMean 0.9433"
+    ],
+    "reason": "Signal-date self-normalization of an overlapping series whose mechanical dependence spans 26 of 312 dates: exact Gaussian dateMean coverage 0.957-0.958 against nominal 0.975, read through 300-replicate Monte Carlo noise against a 0.95 floor."
+  },
+  "prohibitions": [
+    "No historical return, label, score, prediction, Alpha result report, signal-history outcome artifact, or Alpha experiment may be read.",
+    "No simulation parameter may be estimated from real returns.",
+    "No v1, v2 or v3 result may tune a v4 parameter; v4 has no block length or bandwidth.",
+    "The U1 critical value is fixed from the published pivotal distribution and may not be changed after viewing v4 results.",
+    "No seed, DGP, tolerance, calendar depth, statistic partition, attribution rule or replicate count may be changed after viewing v4 results under this contract.",
+    "The workflow may not be dispatched from a non-main ref for the formal run, and development smoke runs carry runClass DEVELOPMENT_ONLY and no verdict authority.",
+    "No v5 preregistration or seal is created by this calibration protocol."
+  ],
+  "preMergeRevision": {
+    "revision": 2,
+    "reason": "Review of the first draft found that PASS/FAIL was decided from a Monte Carlo point estimate (observed coverage >= 0.95) although the simulation is itself stochastic, and that the draft's chronology statement was too strong. Revision 2 adds the Monte Carlo decision rule below and corrects the chronology. No DGP, depth, seed, statistic partition, critical value, threshold, attribution rule or replicate count changed. Revision 1 is commit 0300bf2.",
+    "formalRunExecutedBeforeRevision": false
+  },
+  "monteCarloDecision": {
+    "purpose": "Separate three facts that a point-estimate comparison conflates: the truth is on the safe side of a threshold, the truth is on the unsafe side, or the simulation cannot tell. These levels govern ONLY Monte Carlo classification error and are unrelated to the 97.5% level of the statistical interval whose coverage is being measured.",
+    "intervalMethod": "CLOPPER_PEARSON_EXACT_ONE_SIDED",
+    "passSideOneSidedAlpha": 0.025,
+    "failSideFamilywiseAlpha": 0.05,
+    "failSideAdjustment": "BONFERRONI_OVER_ALL_REGISTERED_DECISIONS",
+    "failSideDecisionCount": 360,
+    "failSideDecisionCountDefinition": "registered cells (6 DGPs x 4 horizon/depth pairs = 24) x confirmatory statistics (5) x metrics (coverage, positive false positive, undefined frequency = 3). Each FAIL-side decision therefore uses one-sided alpha 0.05/360.",
+    "multiplicityRationale": "PASS is an intersection of per-metric claims: a method with even one metric truly on the unsafe side reaches PASS only if that metric's own safe-side bound clears its threshold, which has probability at most the per-metric level, so no adjustment is needed and 0.025 is used per metric. FAIL is a union of per-metric claims, so its familywise false-FAIL probability grows with the number of decisions and is budgeted at 0.05 by Bonferroni. The price is that FAIL is reserved for clear refutation and a moderately deficient method will usually be INCONCLUSIVE, never PASS.",
+    "floorMetric": "coverage; PASS if lower(passSideAlpha) >= materialCoverageFloor, FAIL if upper(failSideAlpha) < materialCoverageFloor, else INCONCLUSIVE.",
+    "ceilingMetrics": "positive false-positive rate and undefined frequency; PASS if upper(passSideAlpha) <= ceiling, FAIL if lower(failSideAlpha) > ceiling, else INCONCLUSIVE.",
+    "denominators": "Coverage and positive false-positive rate are counted over replicates with a defined interval; undefined frequency over all replicates. All counts are integers.",
+    "precisionGuard": "acceptance.maximumMonteCarlo95HalfWidth is kept as a usability check: an estimate whose 95% half-width exceeds it can never be PASS (it is INCONCLUSIVE with reason MONTE_CARLO_PRECISION_INSUFFICIENT) but can still be FAIL.",
+    "noMeasurableReplicates": "n = 0 measured replicates is INCONCLUSIVE for coverage and false-positive rate; the undefined-frequency metric of the same statistic is then a FAIL.",
+    "levelsFrozenBeforeFormalRun": true
+  }
+}
