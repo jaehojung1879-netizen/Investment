@@ -7,7 +7,7 @@
   "sourceReview": "docs/alpha-research-design-review-v1.md",
   "seed": 20261001,
   "simulationReplicates": 2000,
-  "simulationReplicatesRationale": "Chosen by a precision criterion fixed before any v4 simulation: the 95% Monte Carlo half-width of a coverage estimate at the 0.95 floor must be at most 1 percentage point (1.96*sqrt(0.95*0.05/R) <= 0.01 requires R >= 1825; rounded up to 2000). At 300 replicates a cell whose true coverage is 0.958 reads below the floor with probability 0.198, so the v1-v3 rule could not separate a method's distortion from Monte Carlo noise. A larger R makes a method whose true coverage is below 0.95 fail MORE reliably; it cannot rescue one.",
+  "simulationReplicatesRationale": "Retained from revision 1 under the three-state rule. Precision criterion: the 95% Monte Carlo half-width of a coverage estimate at the 0.95 floor must be at most 1 percentage point (1.96*sqrt(0.95*0.05/R) <= 0.01 requires R >= 1825; rounded up to 2000). R is NOT raised to force a classification. A method whose true coverage sits within about one Monte Carlo half-width of a threshold is expected to return INCONCLUSIVE at this R, and that is an honest statement of what 2,000 replicates can resolve; the development operating characteristic in docs/results/alpha-inference-calibration-v4-development-diagnostics.json lists the state probabilities. At 300 replicates a cell whose true coverage is 0.958 read below the floor with probability 0.198, so the v1-v3 rule could not separate a method's distortion from Monte Carlo noise.",
   "namesPerDate": 60,
   "signalStepSessions": 5,
   "confidence": {
@@ -20,17 +20,27 @@
   "horizons": {
     "21": {
       "forwardSessions": 21,
-      "calendarWeeks": [78, 156]
+      "calendarWeeks": [
+        78,
+        156
+      ]
     },
     "126": {
       "forwardSessions": 126,
-      "calendarWeeks": [312, 624]
+      "calendarWeeks": [
+        312,
+        624
+      ]
     }
   },
   "minimumConfirmatoryDepth": {
     "rule": "Confirmatory inference at a horizon is licensed only at evaluation calendars at least as deep as the shallowest depth this frozen calibration evaluated for that horizon. Shallower calendars were never calibrated and are DATA_INSUFFICIENT_FOR_CONFIRMATORY_H{horizon}_INFERENCE; they are never unlocked by a different interval.",
-    "21": {"calendarWeeks": 78},
-    "126": {"calendarWeeks": 312}
+    "21": {
+      "calendarWeeks": 78
+    },
+    "126": {
+      "calendarWeeks": 312
+    }
   },
   "dgps": [
     {
@@ -147,15 +157,15 @@
     "undefinedFrequencyCeiling": 0.05,
     "maximumMonteCarlo95HalfWidth": 0.04,
     "gatingStatistics": "confirmatory only",
-    "failureRule": "If any confirmatory statistic violates any frozen tolerance in any DGP/depth/horizon cell, calibration is FAIL. Do not alter the pivotal critical value, attribution rule, calendar depth, DGP, statistic partition, seed, replicate count or tolerance after viewing results under this contract.",
-    "statusRule": "FAIL if any evaluated confirmatory cell fails; otherwise DATA_INSUFFICIENT if any registered cell is below its horizon's minimum confirmatory depth; otherwise PASS. INFRASTRUCTURE_ERROR is reserved for a run that did not produce a complete result.",
+    "failureRule": "Each metric of each confirmatory statistic in each DGP/depth/horizon cell is classified PASS, FAIL or INCONCLUSIVE by monteCarloDecision. A cell takes the worst of its statistics' states (FAIL, then INCONCLUSIVE, then PASS). Do not alter the pivotal critical value, attribution rule, calendar depth, DGP, statistic partition, seed, replicate count, threshold or Monte Carlo decision levels after viewing results under this contract.",
+    "statusRule": "Precedence: (1) INFRASTRUCTURE_ERROR if no complete result exists; (2) FAIL if any evaluated confirmatory cell is FAIL; (3) INCONCLUSIVE if any evaluated cell is INCONCLUSIVE; (4) DATA_INSUFFICIENT if any registered cell is below its horizon's minimum confirmatory depth; (5) PASS otherwise. A definite refutation outranks everything; an evaluated cell the simulation cannot resolve outranks an unevaluated one because it is information about the method, whereas a depth shortfall is information about the calendar. Only PASS licenses confirmatory inference; INCONCLUSIVE and DATA_INSUFFICIENT are complete, legitimate results that license nothing.",
     "interpretationRule": "PASS validates only synthetic null size/coverage behavior of this interval for the confirmatory statistics under these DGPs and depths. It does not establish historical Alpha, profitability, deployability, stationarity or short memory of real returns, or power against economically relevant alternatives."
   },
-  "stoppingRule": "After merge, run 'Synthetic alpha inference calibration v4' exactly once on main. A complete PASS, FAIL or DATA_INSUFFICIENT artifact closes this protocol's run budget. A rerun is permitted only when the run produced no complete artifact or reported INFRASTRUCTURE_ERROR, after an infrastructure-only repair documented in the result record. A FAIL is never followed by a v4.1: any further method is a separately justified v5 calibration-method study.",
+  "stoppingRule": "After merge, run 'Synthetic alpha inference calibration v4' exactly once on main. A complete PASS, FAIL, INCONCLUSIVE or DATA_INSUFFICIENT artifact closes this protocol's run budget. INCONCLUSIVE is not resolved by rerunning with more replicates or another seed (that is optional stopping): a more precise study is a separately justified v5 calibration-method study. A rerun is permitted only when the run produced no complete artifact or reported INFRASTRUCTURE_ERROR, after an infrastructure-only repair documented in the result record. A FAIL is never followed by a v4.1.",
   "developmentDiagnostics": {
     "file": "docs/results/alpha-inference-calibration-v4-development-diagnostics.json",
     "label": "DEVELOPMENT_ONLY",
-    "use": "Analytic exact-Gaussian reconstruction of the v1-v3 failures. The attribution method was fixed from structure before these numbers were computed; the only v4 quantity the diagnostics informed is the replicate count, through the acceptance rule's Monte Carlo operating characteristic, which does not depend on any method's coverage."
+    "use": "Analytic exact-Gaussian reconstruction of the v1-v3 failures, and the exact Gaussian coverage of the v4 calendar-time interval, computed BEFORE the revision-1 freeze commit and fully disclosed. The attribution method was derived from the structural decomposition of overlapping returns; the v4 exact-coverage figures were seen before the protocol was frozen. No free parameter, threshold, DGP, depth, statistic partition, critical value or tuning parameter was selected by optimizing them: the only choice they could have informed is the replicate count (through the Monte Carlo operating characteristic, which does not depend on any method's coverage). Revision 2 adds the three-state operating characteristic of the Monte Carlo decision rule to the same file."
   },
   "v1FailureReference": {
     "workflowRun": 36472769120,
@@ -188,5 +198,26 @@
     "No seed, DGP, tolerance, calendar depth, statistic partition, attribution rule or replicate count may be changed after viewing v4 results under this contract.",
     "The workflow may not be dispatched from a non-main ref for the formal run, and development smoke runs carry runClass DEVELOPMENT_ONLY and no verdict authority.",
     "No v5 preregistration or seal is created by this calibration protocol."
-  ]
+  ],
+  "preMergeRevision": {
+    "revision": 2,
+    "reason": "Review of the first draft found that PASS/FAIL was decided from a Monte Carlo point estimate (observed coverage >= 0.95) although the simulation is itself stochastic, and that the draft's chronology statement was too strong. Revision 2 adds the Monte Carlo decision rule below and corrects the chronology. No DGP, depth, seed, statistic partition, critical value, threshold, attribution rule or replicate count changed. Revision 1 is commit 0300bf2.",
+    "formalRunExecutedBeforeRevision": false
+  },
+  "monteCarloDecision": {
+    "purpose": "Separate three facts that a point-estimate comparison conflates: the truth is on the safe side of a threshold, the truth is on the unsafe side, or the simulation cannot tell. These levels govern ONLY Monte Carlo classification error and are unrelated to the 97.5% level of the statistical interval whose coverage is being measured.",
+    "intervalMethod": "CLOPPER_PEARSON_EXACT_ONE_SIDED",
+    "passSideOneSidedAlpha": 0.025,
+    "failSideFamilywiseAlpha": 0.05,
+    "failSideAdjustment": "BONFERRONI_OVER_ALL_REGISTERED_DECISIONS",
+    "failSideDecisionCount": 360,
+    "failSideDecisionCountDefinition": "registered cells (6 DGPs x 4 horizon/depth pairs = 24) x confirmatory statistics (5) x metrics (coverage, positive false positive, undefined frequency = 3). Each FAIL-side decision therefore uses one-sided alpha 0.05/360.",
+    "multiplicityRationale": "PASS is an intersection of per-metric claims: a method with even one metric truly on the unsafe side reaches PASS only if that metric's own safe-side bound clears its threshold, which has probability at most the per-metric level, so no adjustment is needed and 0.025 is used per metric. FAIL is a union of per-metric claims, so its familywise false-FAIL probability grows with the number of decisions and is budgeted at 0.05 by Bonferroni. The price is that FAIL is reserved for clear refutation and a moderately deficient method will usually be INCONCLUSIVE, never PASS.",
+    "floorMetric": "coverage; PASS if lower(passSideAlpha) >= materialCoverageFloor, FAIL if upper(failSideAlpha) < materialCoverageFloor, else INCONCLUSIVE.",
+    "ceilingMetrics": "positive false-positive rate and undefined frequency; PASS if upper(passSideAlpha) <= ceiling, FAIL if lower(failSideAlpha) > ceiling, else INCONCLUSIVE.",
+    "denominators": "Coverage and positive false-positive rate are counted over replicates with a defined interval; undefined frequency over all replicates. All counts are integers.",
+    "precisionGuard": "acceptance.maximumMonteCarlo95HalfWidth is kept as a usability check: an estimate whose 95% half-width exceeds it can never be PASS (it is INCONCLUSIVE with reason MONTE_CARLO_PRECISION_INSUFFICIENT) but can still be FAIL.",
+    "noMeasurableReplicates": "n = 0 measured replicates is INCONCLUSIVE for coverage and false-positive rate; the undefined-frequency metric of the same statistic is then a FAIL.",
+    "levelsFrozenBeforeFormalRun": true
+  }
 }
