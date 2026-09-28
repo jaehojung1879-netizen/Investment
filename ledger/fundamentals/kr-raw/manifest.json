@@ -1,6 +1,6 @@
 {
   "contract": "DART_RAW_STATEMENT_ROWS_V1",
-  "updatedAt": "2026-09-27T21:09:39Z",
+  "updatedAt": "2026-09-28T02:55:24Z",
   "pitUniverseTickers": 260,
   "resolvedIssuers": 254,
   "unresolvedIssuers": [
@@ -29,13 +29,13 @@
     2022,
     2026
   ],
-  "storedFilings": 3453,
-  "recordedAbsences": 576,
+  "storedFilings": 4828,
+  "recordedAbsences": 989,
   "unresolvedFilings": 0,
   "sourceAbsenceStatuses": [
     "013"
   ],
-  "remaining": 7401,
+  "remaining": 5613,
   "datasetComplete": false,
   "statusTable": [
     {
@@ -144,88 +144,256 @@
       "filings": 9
     },
     {
-      "fiscalYear": 2023,
+      "fiscalYear": 2017,
       "reportCode": "11011",
       "result": "ABSENT",
       "detail": "CFS=013/OFS=013",
+      "filings": 71
+    },
+    {
+      "fiscalYear": 2017,
+      "reportCode": "11011",
+      "result": "SERVED",
+      "detail": "CFS",
+      "filings": 174
+    },
+    {
+      "fiscalYear": 2017,
+      "reportCode": "11011",
+      "result": "SERVED",
+      "detail": "OFS",
+      "filings": 9
+    },
+    {
+      "fiscalYear": 2017,
+      "reportCode": "11012",
+      "result": "ABSENT",
+      "detail": "CFS=013/OFS=013",
+      "filings": 73
+    },
+    {
+      "fiscalYear": 2017,
+      "reportCode": "11012",
+      "result": "SERVED",
+      "detail": "CFS",
+      "filings": 171
+    },
+    {
+      "fiscalYear": 2017,
+      "reportCode": "11012",
+      "result": "SERVED",
+      "detail": "OFS",
       "filings": 10
     },
     {
-      "fiscalYear": 2023,
-      "reportCode": "11011",
+      "fiscalYear": 2017,
+      "reportCode": "11013",
+      "result": "ABSENT",
+      "detail": "CFS=013/OFS=013",
+      "filings": 78
+    },
+    {
+      "fiscalYear": 2017,
+      "reportCode": "11013",
       "result": "SERVED",
       "detail": "CFS",
       "filings": 166
     },
     {
-      "fiscalYear": 2023,
+      "fiscalYear": 2017,
+      "reportCode": "11013",
+      "result": "SERVED",
+      "detail": "OFS",
+      "filings": 10
+    },
+    {
+      "fiscalYear": 2017,
+      "reportCode": "11014",
+      "result": "ABSENT",
+      "detail": "CFS=013/OFS=013",
+      "filings": 73
+    },
+    {
+      "fiscalYear": 2017,
+      "reportCode": "11014",
+      "result": "SERVED",
+      "detail": "CFS",
+      "filings": 171
+    },
+    {
+      "fiscalYear": 2017,
+      "reportCode": "11014",
+      "result": "SERVED",
+      "detail": "OFS",
+      "filings": 10
+    },
+    {
+      "fiscalYear": 2018,
+      "reportCode": "11011",
+      "result": "ABSENT",
+      "detail": "CFS=013/OFS=013",
+      "filings": 18
+    },
+    {
+      "fiscalYear": 2018,
+      "reportCode": "11011",
+      "result": "SERVED",
+      "detail": "CFS",
+      "filings": 98
+    },
+    {
+      "fiscalYear": 2018,
       "reportCode": "11011",
       "result": "SERVED",
       "detail": "OFS",
-      "filings": 5
+      "filings": 4
     },
     {
-      "fiscalYear": 2023,
+      "fiscalYear": 2018,
       "reportCode": "11012",
       "result": "ABSENT",
       "detail": "CFS=013/OFS=013",
-      "filings": 30
+      "filings": 18
     },
     {
-      "fiscalYear": 2023,
+      "fiscalYear": 2018,
       "reportCode": "11012",
       "result": "SERVED",
       "detail": "CFS",
-      "filings": 148
+      "filings": 99
     },
     {
-      "fiscalYear": 2023,
+      "fiscalYear": 2018,
       "reportCode": "11012",
       "result": "SERVED",
       "detail": "OFS",
       "filings": 4
     },
     {
-      "fiscalYear": 2023,
+      "fiscalYear": 2018,
       "reportCode": "11013",
       "result": "ABSENT",
       "detail": "CFS=013/OFS=013",
-      "filings": 30
+      "filings": 18
     },
     {
-      "fiscalYear": 2023,
+      "fiscalYear": 2018,
       "reportCode": "11013",
       "result": "SERVED",
       "detail": "CFS",
-      "filings": 148
+      "filings": 99
     },
     {
-      "fiscalYear": 2023,
+      "fiscalYear": 2018,
       "reportCode": "11013",
       "result": "SERVED",
       "detail": "OFS",
       "filings": 4
     },
     {
+      "fiscalYear": 2018,
+      "reportCode": "11014",
+      "result": "ABSENT",
+      "detail": "CFS=013/OFS=013",
+      "filings": 18
+    },
+    {
+      "fiscalYear": 2018,
+      "reportCode": "11014",
+      "result": "SERVED",
+      "detail": "CFS",
+      "filings": 99
+    },
+    {
+      "fiscalYear": 2018,
+      "reportCode": "11014",
+      "result": "SERVED",
+      "detail": "OFS",
+      "filings": 4
+    },
+    {
+      "fiscalYear": 2023,
+      "reportCode": "11011",
+      "result": "ABSENT",
+      "detail": "CFS=013/OFS=013",
+      "filings": 16
+    },
+    {
+      "fiscalYear": 2023,
+      "reportCode": "11011",
+      "result": "SERVED",
+      "detail": "CFS",
+      "filings": 228
+    },
+    {
+      "fiscalYear": 2023,
+      "reportCode": "11011",
+      "result": "SERVED",
+      "detail": "OFS",
+      "filings": 10
+    },
+    {
+      "fiscalYear": 2023,
+      "reportCode": "11012",
+      "result": "ABSENT",
+      "detail": "CFS=013/OFS=013",
+      "filings": 47
+    },
+    {
+      "fiscalYear": 2023,
+      "reportCode": "11012",
+      "result": "SERVED",
+      "detail": "CFS",
+      "filings": 200
+    },
+    {
+      "fiscalYear": 2023,
+      "reportCode": "11012",
+      "result": "SERVED",
+      "detail": "OFS",
+      "filings": 7
+    },
+    {
+      "fiscalYear": 2023,
+      "reportCode": "11013",
+      "result": "ABSENT",
+      "detail": "CFS=013/OFS=013",
+      "filings": 47
+    },
+    {
+      "fiscalYear": 2023,
+      "reportCode": "11013",
+      "result": "SERVED",
+      "detail": "CFS",
+      "filings": 200
+    },
+    {
+      "fiscalYear": 2023,
+      "reportCode": "11013",
+      "result": "SERVED",
+      "detail": "OFS",
+      "filings": 7
+    },
+    {
       "fiscalYear": 2023,
       "reportCode": "11014",
       "result": "ABSENT",
       "detail": "CFS=013/OFS=013",
-      "filings": 10
+      "filings": 16
     },
     {
       "fiscalYear": 2023,
       "reportCode": "11014",
       "result": "SERVED",
       "detail": "CFS",
-      "filings": 166
+      "filings": 228
     },
     {
       "fiscalYear": 2023,
       "reportCode": "11014",
       "result": "SERVED",
       "detail": "OFS",
-      "filings": 6
+      "filings": 10
     },
     {
       "fiscalYear": 2024,
@@ -397,15 +565,15 @@
     }
   ],
   "thisRun": {
-    "calls": 2947,
-    "written": 2504,
-    "stopReason": "TIME_BUDGET_SPENT",
-    "outcome": "SERVED",
+    "calls": 2272,
+    "written": 1375,
+    "stopReason": "REFUSED:RemoteDisconnected: Remote end closed connection without response",
+    "outcome": "NETWORK_ERROR",
     "attemptStatuses": {
-      "CFS=000": 2408,
-      "CFS=013": 269,
-      "OFS=000": 96,
-      "OFS=013": 173
+      "CFS=013": 483,
+      "OFS=000": 70,
+      "CFS=000": 1305,
+      "OFS=013": 413
     }
   }
 }
