@@ -35,7 +35,7 @@ R is fixed by a rule about a probability estimate at the coverage floor. It is *
 
 **Rule.** The 95% Monte Carlo half-width of a probability estimate at p = 0.95 must be at most **0.5 percentage points**, by both the normal approximation and the exact two-sided Clopper–Pearson interval. The budget is the smallest multiple of 500 satisfying both.
 
-- **Normal approximation:** 1.96·√(0.95·0.05/R) ≤ 0.005 ⇒ R ≥ (1.96/0.005)²·0.0475 = 7,299.04, so **R ≥ 7,299**.
+- **Normal approximation:** z₀.₉₇₅·√(0.95·0.05/R) ≤ 0.005, with z₀.₉₇₅ = 1.959963984… (the exact 97.5th normal percentile, not the rounded 1.96) ⇒ R ≥ (z₀.₉₇₅/0.005)²·0.0475 = 7,298.77, so **R ≥ 7,299**. (The rounded literal 1.96 would give 7,299.04 and hence 7,300; the code uses the exact percentile, so 7,299 is what is stated, and the difference is immaterial because the exact Clopper–Pearson criterion below dominates and the budget is 8,000 either way.)
 - **Exact Clopper–Pearson** (k = round(0.95 R), two-sided 95%): the half-width at R = 7,500 is 0.0050001, over target by 1.3×10⁻⁷, and it first meets the target at **R = 7,501** (and stays under it for every larger R checked).
 - **Rounding up to a multiple of 500:** 7,500 satisfies the normal criterion but not the exact one, so the budget is **R = 8,000** (exact half-width 0.00484). The exact rule is the one that matters because it is the interval family the decision rule itself uses.
 - Runtime scales from v4's 488.5 s at R = 2,000 to roughly 33 minutes; the workflow timeout is 180 minutes.

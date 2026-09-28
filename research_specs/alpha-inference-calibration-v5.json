@@ -12,7 +12,7 @@
     "targetHalfWidth": 0.005,
     "atProbability": 0.95,
     "confidenceLevel": 0.95,
-    "normalApproximationFormula": "1.96 * sqrt(p (1 - p) / R) <= targetHalfWidth",
+    "normalApproximationFormula": "z_0.975 * sqrt(p (1 - p) / R) <= targetHalfWidth, with z_0.975 = 1.959963984... (the exact 97.5th normal percentile, scipy norm.ppf(0.975), not the rounded 1.96)",
     "normalApproximationMinimumR": 7299,
     "exactClopperPearsonMinimumR": 7501,
     "exactRule": "k = round(0.95 R) successes; half-width of the exact two-sided 95% interval; criterion holds for every larger R checked",

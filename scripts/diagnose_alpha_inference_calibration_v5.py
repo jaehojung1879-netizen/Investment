@@ -62,9 +62,9 @@ def main() -> None:
 
     half_widths = {
         str(r): {
-            "normalApproximation": 1.96 * math.sqrt(0.95 * 0.05 / r),
+            "normalApproximation": z * math.sqrt(0.95 * 0.05 / r),
             "exactClopperPearsonTwoSided95": v5.exact_cp_half_width(r),
-            "meetsTargetNormal": 1.96 * math.sqrt(0.95 * 0.05 / r) <= v5.PRECISION_TARGET_HALF_WIDTH,
+            "meetsTargetNormal": z * math.sqrt(0.95 * 0.05 / r) <= v5.PRECISION_TARGET_HALF_WIDTH,
             "meetsTargetExact": v5.exact_cp_half_width(r) <= v5.PRECISION_TARGET_HALF_WIDTH,
         }
         for r in sorted({2000, normal_min, 7500, exact_min, chosen, 10000})

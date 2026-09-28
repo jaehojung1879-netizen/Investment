@@ -11,6 +11,7 @@ from contextlib import redirect_stdout
 from pathlib import Path
 
 import pytest
+from scipy.stats import norm
 
 from pipeline import alpha_inference_calibration_v4 as v4
 from pipeline import alpha_inference_calibration_v5 as v5
@@ -174,13 +175,34 @@ def test_replicate_count_is_exactly_frozen_and_follows_the_precision_rule():
 
 def test_precision_criterion_is_satisfied_by_both_the_normal_and_the_exact_interval():
     r = _v5()["simulationReplicates"]
-    assert 1.96 * math.sqrt(0.95 * 0.05 / r) <= 0.005
+    z = float(norm.ppf(0.975))  # 1.959963984..., not the rounded 1.96
+    assert 1.96 < z + 1e-4 and z < 1.96  # the exact percentile is a hair below the rounded value
+    assert z * math.sqrt(0.95 * 0.05 / r) <= 0.005
     assert v5.exact_cp_half_width(r) <= 0.005
     # 7,500 is the instructive near miss: fine by the normal formula, a hair over exactly
-    assert 1.96 * math.sqrt(0.95 * 0.05 / 7500) <= 0.005 < v5.exact_cp_half_width(7500)
+    assert z * math.sqrt(0.95 * 0.05 / 7500) <= 0.005 < v5.exact_cp_half_width(7500)
     assert v5.exact_cp_half_width(7501) <= 0.005
     assert v5.exact_cp_half_width(2000) > 0.009  # v4's budget was about twice as wide
     assert all(v5.exact_cp_half_width(x) <= 0.005 for x in range(r, r + 200, 7))
+
+
+def test_normal_approximation_uses_the_exact_percentile_and_is_documented_that_way():
+    z = float(norm.ppf(0.975))
+    exact_real_minimum = (z / 0.005) ** 2 * 0.95 * 0.05
+    rounded_real_minimum = (1.96 / 0.005) ** 2 * 0.95 * 0.05
+    assert math.ceil(exact_real_minimum) == 7299 == v5.required_replicates_normal()
+    assert math.ceil(rounded_real_minimum) == 7300  # the rounded literal would have said 7,300
+    assert v5.chosen_replicates() == 8000  # immaterial to the budget: the exact criterion dominates
+    formula = _v5()["precisionCriterion"]["normalApproximationFormula"]
+    assert formula.startswith("z_0.975 * sqrt(") and "1.959963984" in formula
+    doc = Path("docs/alpha-inference-calibration-v5-precision.md").read_text()
+    assert "1.959963984" in doc and "7,298.77" in doc and "7,299.04" in doc  # 7,299.04 only as the literal-1.96 remark
+    assert "1.96·√" not in doc  # the rounded literal is no longer the stated formula
+    diag = json.loads(DIAGNOSTICS.read_text())
+    assert math.isclose(diag["precisionRule"]["zValue"], z, abs_tol=1e-9)
+    assert math.isclose(diag["precisionRule"]["normalApproximationRealMinimum"], exact_real_minimum, abs_tol=1e-6)
+    half = diag["halfWidthByBudget"]["8000"]["normalApproximation"]
+    assert math.isclose(half, z * math.sqrt(0.95 * 0.05 / 8000), abs_tol=1e-9)
 
 
 def test_precision_helpers_reject_invalid_inputs():
