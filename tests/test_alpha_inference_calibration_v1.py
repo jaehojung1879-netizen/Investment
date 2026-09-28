@@ -1,5 +1,7 @@
 import json
 from pathlib import Path
+import subprocess
+import sys
 
 import numpy as np
 
@@ -65,3 +67,14 @@ def test_depth_contract_marks_104_week_sensitivity_unusable_on_312_weeks():
     assert 312 // 52 >= minimum
     assert 312 // 104 < minimum
     assert 624 // 104 >= minimum
+
+
+def test_runner_can_be_invoked_directly_from_repo_root():
+    completed = subprocess.run(
+        [sys.executable, "scripts/run_alpha_inference_calibration_v1.py", "--help"],
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    assert completed.returncode == 0, completed.stderr
+    assert "Frozen synthetic-only calibration protocol" in completed.stdout
