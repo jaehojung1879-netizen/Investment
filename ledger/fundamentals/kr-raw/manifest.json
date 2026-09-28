@@ -1,6 +1,6 @@
 {
   "contract": "DART_RAW_STATEMENT_ROWS_V1",
-  "updatedAt": "2026-09-28T10:23:14Z",
+  "updatedAt": "2026-09-28T12:25:09Z",
   "pitUniverseTickers": 260,
   "resolvedIssuers": 254,
   "unresolvedIssuers": [
@@ -957,15 +957,13 @@
     }
   ],
   "thisRun": {
-    "calls": 1498,
-    "written": 424,
+    "calls": 1042,
+    "written": 0,
     "stopReason": "WORK_LIST_EXHAUSTED",
-    "outcome": "SERVED",
+    "outcome": "EMPTY_BUT_VALID",
     "attemptStatuses": {
-      "CFS=013": 543,
-      "OFS=013": 531,
-      "CFS=000": 412,
-      "OFS=000": 12
+      "CFS=013": 521,
+      "OFS=013": 521
     }
   }
 }
