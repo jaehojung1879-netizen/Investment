@@ -1747,6 +1747,257 @@
   schema; nothing about the KR terminal-action foundation, the eligibility
   policy, or any v1-v4 spec was edited by this execution.
 
+## KR accounting coverage repair invariants (v2.33)
+
+- A COVERAGE AUDIT CALLS THE FEATURE PATH IT AUDITS AND REFUSES TO PUBLISH A
+  SECOND DENOMINATOR. `alpha_opportunity_kr_accounting_coverage_audit`
+  decides availability with the sealed `alpha_opportunity_features.
+  accounting_at` and only EXPLAINS absences; it raises
+  `AUDIT_DISAGREES_WITH_FEATURE_PATH` if its chain walk ever contradicts that
+  function, and `scripts/audit_kr_accounting_coverage.py` refuses to publish
+  unless it reproduces #160's 85,680 / 85,132 frame and all four failing
+  cells exactly (248/6,212, 0/6,212, 0/6,212, 1,083/6,218). It reads no
+  label, forward price, model or return.
+- THE COLLECTOR'S UNIVERSE WAS TODAY'S, NOT THE ONE V4 READS. `collect_dart_
+  fundamentals.py` builds its work list from `universe.resolve(cfg)`, so only
+  126 of the 260 tickers ever in a KR top-120 snapshot have any DART filing
+  -- 2,223 tradable 2016 name-dates and 751 in 2025 (156 of them preferred
+  shares, whose accounts sit under the common issuer and which no
+  `corpCode.xml` row names; mapping them is an identity rule that needs its
+  own preregistered decision, not a collector default).
+- A RAW STORE THAT KEEPS ONLY MATCHED ROWS CANNOT SAY WHAT IT DROPPED.
+  `dart_fundamentals.build_record` stores only exact-label rows. Net income
+  is absent from 1,586 of 3,260 stored quarterly filings (87 of 1,113 annual),
+  rising from 5% in 2016 to 72% in 2024-2025, while 259 of the 274 2025
+  quarterlies without it still carry revenue or operating income from the
+  same income statement. That is 3,706 of 2025's 5,135 missing
+  `ocfToNetIncomePct` name-dates, and it cannot be proven from the sealed
+  store which label was dropped. `pipeline/dart_raw_statements.py` keeps
+  every row and every attempt's real status instead.
+- A COLLECTOR MUST NOT WRITE A STATUS THE SOURCE DID NOT SEND. `fetch_one`
+  returns the literal "013" whenever CFS and OFS both fail, so all 1,723
+  sealed absences -- including 381 of 381 fiscal-2015 quarterlies -- read
+  013 by construction. The uniform 127-ticker pattern points at the endpoint
+  not serving 2015 quarterlies, but whether original 2015 filings exist is
+  answered only by `raw-probe-2015` (statement endpoint's real status,
+  `list.json`, original XBRL), never inferred.
+- A REQUEST, CONFIGURATION OR SYSTEM FAILURE IS NEVER EVIDENCE THAT A
+  HISTORICAL FILING DID NOT EXIST. The new raw collector's first draft
+  stopped only on key and quota statuses, let 100 (invalid field), 800
+  (maintenance), 900 (undefined error) and 021 (company-count limit) fall
+  through to an absence, and settled that absence on the calendar alone --
+  and a test asserted it. Fixed before any collection ran:
+  `dart_raw_statements.absence_evidence` is SOURCE_ABSENCE only when every
+  statement division answered a status in `SOURCE_ABSENCE_STATUSES` (013
+  alone -- 014 has no repository evidence for this endpoint and fails
+  closed), `settled` re-derives that from the stored attempts, and every
+  other answer is kept in `unresolved.json` with DART's own status and
+  message and retried. 800 and 021 stop the run as a refusal.
+- AN ACCOUNT IS ADMITTED BY WHAT THE FILER SAYS IT IS, IN THE STATEMENT IT
+  BELONGS TO, AND NOWHERE ELSE. `dart_canonical_accounts` adds exactly one
+  rule for the four gate accounts: the IFRS element id those accounts carry
+  under an exact label match in the sealed store (`ProfitLoss` in IS/CIS,
+  `CashFlowsFromUsedInOperatingActivities` in CF, `Assets`/`Liabilities` in
+  BS). Attributable-to-parent profit, cash generated from operations,
+  current subtotals, SCE rows and component rows are never mapped, and
+  disagreeing candidates are left out as AMBIGUOUS. The rebuild publishes
+  every label the element rule admitted for review before any snapshot is
+  frozen. It also refuses the 56 legacy filings whose net income came from
+  an SCE component row -- a correctness repair that LOWERS 2016
+  `ocfToNetIncomePct` 3.99% -> 3.88% on the legacy rows, reported rather
+  than hidden.
+- AN AMENDMENT SERVED IN PLACE OF AN ORIGINAL IS PIT-HONEST AND COSTS
+  COVERAGE, AND THE SAME ENDPOINT CANNOT GIVE IT BACK. 1,208 of 4,373 stored
+  filings (27.6%) are dated after their statutory deadline because
+  `fnlttSinglAcntAll` serves the latest amendment's receipt and the record id
+  has no receipt in it -- 010130.KS's fourteen FY2022-2025Q3 filings are all
+  dated 2026-08-13. 239 collected 2025 name-dates run on a current filing
+  held back this way. "Restatements arrive as their own filing" is false for
+  that implementation and is recorded, not edited into a sealed module.
+- AN UPPER BOUND IS PUBLISHED AS ONE. With every collection reason resolved,
+  2016 growth is still bounded at 0% and 2016 `ocfToNetIncomePct` at 9.43%:
+  the 2016 gate cannot pass by collection alone, only if DART supplies
+  fiscal-2015 quarterlies (bound 55.10% / 60.87%). 2025
+  `ocfToNetIncomePct` is bounded at 95.75%. None of these is a projection;
+  the `kr-raw` job measures the real after-coverage with the same audit.
+- REPAIRED DATA IS A NEW INPUT SNAPSHOT AND NEVER RUNS UNDER V4. The repair
+  writes only `ledger/fundamentals/kr-raw` and `kr-canonical-v2`; the 28
+  blobs v4 sealed are untouched and its identity still verifies. Executing
+  against the repaired store needs a frozen snapshot and a new
+  preregistration (`alpha-opportunity-model-v5`, same economic and model
+  design, new KR fundamentals input and canonicalization contract). v5 is
+  not built here.
+
+## KR original-fiscal-2015-XBRL invariants (v2.34)
+
+- A "NOT ANSWERABLE FROM THIS ENVIRONMENT" CLAIM IS CORRECTED WITH A REAL
+  RUN, THE SAME DISCIPLINE `alpha-research-foundation-v2` (v2.24) AND
+  `kr-terminal-action-reconstruction-v2` (v2.29) ALREADY ESTABLISHED. v2.33's
+  own text said whether original 2015 filings exist was "not answered from
+  this environment." GitHub Actions run
+  `36300578100` (2026-09-27, `data/kr-accounting-coverage-repair-v1` at
+  `4965599c`, `target: raw-probe-2015`, a real `DART_API_KEY`) answered it:
+  artifact `dart-fiscal-2015-probe`, sha256
+  `af7e3b58086b1004af59bdbf978d4e19e9a150fd212d51a639f3512a9a885c2e`, 64
+  calls, 8 tickers. `fnlttSinglAcntAll` answered 013/013 on 24 of 24 real
+  attempts (reconfirming, not merely re-asserting, v2.33's mechanism).
+  `list.json` listed the original fiscal-2015 Q1/H1/Q3 filings with real
+  receipt numbers for all 8, including a genuine original-vs-amendment pair
+  (`000030.KS` Q1: original receipt `20150515002248`, amendment
+  `[기재정정]`, receipt `20150529001078`). `fnlttXbrl.xml` served a real ZIP
+  (`PK` signature, 85-170 KB) for 6 of 8 sampled 2015 Q3 packages and DART's
+  own `<result><status>014</status><message>파일이 존재하지 않습니다.
+  </message></result>` (147 bytes) for the other 2. The workflow's own step
+  list confirms `Collect a slice`/`Rebuild canonical`/`Commit & push` all
+  ran `conclusion: skipped` -- nothing was written to `signal-history`.
+- TWO ENDPOINTS, TWO DEPTHS, NEVER ONE VERDICT ABOUT "DART". Fiscal-2015
+  quarterlies are `PRIMARY_SOURCE_DOES_NOT_SUPPLY_REQUIRED_HISTORY` for
+  `fnlttSinglAcntAll` specifically, confirmed live rather than inferred from
+  the sealed store's own recorded (and, per v2.33's own finding, partly
+  invented) statuses. The original filing archive
+  (`list.json` + `fnlttXbrl.xml`) is a DIFFERENT route with different
+  depth, and it recovers most, not all, of the sample.
+- AN ENVELOPE CONFIRMED LIVE IS NOT THE SAME PROMISE AS CONTENT CONFIRMED
+  LIVE, AND THE TWO ARE NEVER BLURRED. The probe recorded only a served
+  package's first two bytes and total size, never its contents --
+  `DART_API_KEY` is absent from this development environment and
+  `opendart.fss.or.kr` stays blocked from this sandbox's egress (unchanged
+  from v2.28). `pipeline/dart_xbrl_statements.py`'s account-extraction logic
+  has NEVER run against a real served ZIP in this session. It carries
+  `endpointConfidence: CANDIDATE_UNCONFIRMED` on every record it builds --
+  the same tier `alotMatter.json` carried before ITS OWN live probe
+  (workflow-hygiene invariants, v2.25) -- built from general XBRL/K-IFRS
+  convention plus element identifiers this repository has ALREADY confirmed
+  live via the JSON statement endpoint's own `account_id` field, tested
+  only against synthetic fixtures, never claimed as verified.
+- AN ORIGINAL FILING IS SELECTED BY WHAT `list.json` ITSELF SAYS, NEVER BY
+  PICKING THE LATEST RECEIPT. `dart_xbrl_originals.select_original_filing`
+  matches a stage's own stated report label and period, then keeps only the
+  row WITHOUT the `[기재정정]` amendment marker; more than one such row is
+  `AMBIGUOUS_REPORT_MATCH`, refused rather than resolved by any tiebreak. A
+  stage whose only listed filing is an amendment is
+  `ORIGINAL_NOT_LISTED_ONLY_AMENDMENT`, never silently upgraded to "original
+  available."
+- THE CONTEXT WINDOW DECIDES THE COLUMN, THE SAME RULE `dart_derive.
+  cumulative_amount` ALREADY USES, NEVER A SECOND ONE INVENTED FOR XBRL. A
+  flow account is read only from a DURATION context running from the fiscal
+  year's own start to the filing's period end -- the cumulative reading --
+  stored under exactly the amount field name `dart_derive` already reads
+  for that statement (`thstrm_add_amount` for net income's CIS branch,
+  `thstrm_amount` for cash flow's single-column branch). A same-named
+  concept's standalone-quarter duration context is never even considered a
+  candidate, so it cannot silently win a tiebreak; two facts surviving the
+  cumulative-window filter with disagreeing values is `AMBIGUOUS`,
+  proved end to end by a test that reconstructs a 2016 Q3 TTM roll-forward
+  through the unmodified sealed `dart_derive.trailing_twelve_months` using
+  an XBRL-derived 2015 record as its missing same-stage prior.
+- NEITHER THE 20% GATE NOR ANY COVERAGE NUMBER HAS MOVED YET. Only
+  `raw-probe-2015` has run against the live API; `raw-xbrl-2015` (the real
+  collector) and `raw-statements` (whose fiscal-2015 work list is now
+  annual-report-only, since quarterlies there are confirmed wasteful) have
+  not. Every 2016/2025 coverage figure in this document is still the
+  pre-repair measurement or an upper bound, never an "after" result.
+
+## KR original-fiscal-2015-XBRL parser-repair invariants (v2.35)
+
+- AN EXPANDED LIVE PROBE FOUND A REAL PARSER DEFECT, AND IT WAS FIXED FROM
+  THE SERVED CONTENT ITSELF, NOT FROM ASSUMED SEMANTICS. GitHub Actions run
+  `36304452901` (`raw-probe-2015`, `--dump-entries`, real `DART_API_KEY`, a
+  re-run after a first attempt timed out on `corpCode.xml`) served 18 of 24
+  sampled fiscal-2015 Q1/H1/Q3 packages as real ZIPs; the parser resolved
+  only 3 and read 15 `AMBIGUOUS`, all-or-nothing per issuer (never per-stage
+  or per-account). `pipeline/dart_xbrl_statements.py`'s context-window match
+  never inspected a context's own `<scenario>`/`<segment>` dimensional
+  qualifier, and real served content showed multiple contexts sharing the
+  exact same literal dates, distinguished only by such a qualifier.
+- DIMENSIONAL QUALIFIERS ARE AN ALLOWLIST, NEVER A BLOCKLIST, BECAUSE A
+  BLOCKLIST ASSUMES EVERY FUTURE AXIS HAS ALREADY BEEN SEEN. A context is
+  eligible only if its dimensional content is empty, or is exactly one
+  `ConsolidatedAndSeparateFinancialStatementsAxis` member — the same
+  Consolidated-vs-Separate distinction this repository's PIT-fundamentals
+  invariants already resolve for the JSON endpoint (prefer Consolidated),
+  reused rather than re-decided. Two OTHER axis families were measured live
+  and are excluded by the same allowlist, not named individually as special
+  cases: `dart-gcd:PeriodAxis` (every member observed names a PRIOR period;
+  DART's general-corp comparative template reuses one boilerplate date
+  range across a table, so the member's own name is the only real signal)
+  and `ifrs:ComponentsOfEquityAxis` (an SCE component row — one real context
+  carried this axis together WITH the admitted Consolidated one at once,
+  confirming exclusion must check the axis SET rather than a single flag).
+  Exclusion gets its own status, `AXIS_EXCLUDED_ONLY`, kept apart from
+  `NOT_FOUND` — "stated only under a qualifier not admitted" and "never
+  stated at all" are different facts. This can only ever REMOVE a candidate
+  from ambiguity, never invent one: a residual disagreement inside the
+  preferred pool still reports `AMBIGUOUS`, exactly as before this evidence
+  was read. Six regression tests are pinned byte-for-byte to the real
+  context XML this run served, not to a hand-written approximation of it.
+- THE FIX HAS NOT YET BEEN RE-VALIDATED AGAINST LIVE CONTENT, AND THE REASON
+  IS A CONFIRMED PERMISSION BLOCKER, NOT A DESIGN GAP. A direct
+  `workflow_dispatch` call against `fundamentals.yml` from this session
+  returned `403 Resource not accessible by integration` — the same class of
+  blocker already recorded one level up for `kr-corporate-action-
+  collection.yml`. Re-running `raw-probe-2015` on the repaired parser, then
+  reading `candidateAccounts[account].candidateDetail`'s per-candidate
+  `contextRef`/`dims`/`eligibleAxisShape` (now attached even without
+  `--dump-entries`), is the confirming step a human operator must dispatch
+  before `raw-xbrl-2015` or `raw-statements` is run against it.
+- NEITHER THE 20% GATE NOR ANY COVERAGE NUMBER HAS MOVED. This PR still
+  changes only parsing and diagnostic code; no collector has written to
+  `signal-history` and no "after" coverage figure exists anywhere in this
+  repository yet.
+
+## KR original-fiscal-2015-XBRL live-collection invariants (v2.36)
+
+- THE REAL COLLECTOR VALIDATED THE PARSER FIX FAR MORE STRONGLY THAN THE
+  SAMPLE PROBE COULD, AND THEN A DIFFERENT REAL DEFECT DISCARDED THE RESULT.
+  GitHub Actions run `36313209561` (operator-dispatched, `target: raw-xbrl-
+  2015`, this branch at `fee7cba1`, real `DART_API_KEY`) ran the actual
+  collector across the full 254-issuer PIT universe: 762 (ticker, stage)
+  pairs, 1,369 calls, `datasetComplete: true`. 526 packages served a real
+  ZIP; **525 of those 526 (99.8%) produced a record with at least one
+  resolved account** -- against 3 of 18 (16.7%) on the small pre-fix
+  sample that found the defect in the first place. This is measured on the
+  full population the fix was never tuned against, not the 8-ticker sample
+  it was built from.
+- A COLLECTOR SUCCEEDING IS NOT THE SAME FACT AS ITS DATA REACHING
+  `signal-history`, AND THIS RUN PROVED WHY THE DISTINCTION MATTERS. The
+  same run's commit-and-push step failed: `fatal: pathspec 'ledger/
+  fundamentals/kr-canonical-v2' did not match any files`. `raw-xbrl-2015`
+  alone never creates `kr-canonical-v2` (that is `raw-statements`' own
+  rebuild step, never run on this branch), and a bare `git add` on a path
+  that does not exist at all is a hard git error, not a no-op -- unlike a
+  glob that matches zero files. All 525 real, live-collected records were
+  discarded before ever reaching `signal-history`, and the workflow's own
+  green/red status on the earlier steps gave no indication of this until
+  the final step's own failure.
+- A WORKFLOW FIX GETS THE SAME EVIDENTIARY STANDARD AS A CODE FIX: A
+  REGRESSION TEST EXTRACTED FROM THE REAL FAILING SCRIPT, NOT A REWRITE
+  ASSERTED CORRECT BY INSPECTION. `fundamentals.yml`'s commit step now adds
+  only the candidate paths that exist that run (`for path in ...; do [ -e
+  "$path" ] && git add "$path"; done`), and `test_commit_step_never_
+  crashes_when_one_candidate_path_is_missing` extracts that exact shell
+  loop from the workflow file's own text and runs it for real, in a temp
+  git repo missing `kr-canonical-v2` -- reproducing the real run's own
+  state rather than a hypothetical one.
+- THE SAME RUN'S OWN COVERAGE AUDIT READ EVERY 2016-2026 GATE CELL AS
+  EXACTLY 0.0, AND THAT IS NOT A PARSER FAILURE. With `kr-canonical-v2`
+  never built (no `raw-statements` run has ever landed on this branch), the
+  merged candidate store this run audited held ONLY the 525 fiscal-2015
+  XBRL records and no filing from any other year at all -- so a 2016 TTM
+  computation had no fiscal-2016 "current" filing to roll forward from,
+  independent of whether the fiscal-2015 PRIOR the XBRL path supplied was
+  correct. Reading this 0.0 as "the fix did not help" would have been
+  exactly the genuine-bug-vs-harness-defect confusion this file's own KR
+  accounting coverage repair invariants (v2.33) already warn against one
+  level up. The real "after" reading needs `raw-statements` to actually run
+  and land `kr-canonical-v2` first.
+- STILL NEITHER THE 20% GATE NOR A REAL "AFTER" COVERAGE NUMBER HAS MOVED.
+  The 525 records collected by run `36313209561` never reached `signal-
+  history` (the commit failed), so the sealed store, `kr-canonical-v2`, and
+  every published coverage figure are unchanged. The next real measurement
+  needs `raw-xbrl-2015` re-run on the fixed commit step, then `raw-
+  statements` run to `datasetComplete: true`.
+
 ## Lint gate invariants (v2.11)
 
 - The enabled rule set reports ZERO findings on `main`. A rule is turned on in the
