@@ -22,6 +22,7 @@ ROOT = Path(__file__).resolve().parent.parent
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
+from pipeline import alpha_inference_mc_decision as mc  # noqa: E402
 from pipeline.alpha_inference_exact_coverage import (  # noqa: E402
     calendar_map,
     circular_block_normal_form,
@@ -32,6 +33,7 @@ from pipeline.alpha_inference_exact_coverage import (  # noqa: E402
 )
 
 V3_SPEC = ROOT / "research_specs/alpha-inference-calibration-v3.json"
+V4_SPEC = ROOT / "research_specs/alpha-inference-calibration-v4.json"
 DEFAULT_OUTPUT = ROOT / "docs/results/alpha-inference-calibration-v4-development-diagnostics.json"
 U1_975 = 66.57
 
@@ -68,6 +70,81 @@ def _acceptance_operating_characteristic() -> dict[str, dict[str, float]]:
             for p in (0.940, 0.945, 0.950, 0.955, 0.958, 0.960, 0.965, 0.970, 0.975)
         }
     return table
+
+
+def _state_thresholds(replicates: int, kind: str, threshold: float, pass_alpha: float, fail_alpha: float) -> list[str]:
+    """State for every possible success count, from the production classifier itself."""
+    return [
+        mc.classify_metric(k, replicates, kind=kind, threshold=threshold,
+                           pass_alpha=pass_alpha, fail_alpha=fail_alpha)["state"]
+        for k in range(replicates + 1)
+    ]
+
+
+def _state_probabilities(states: list[str], replicates: int, p: float) -> dict[str, float]:
+    pmf = binom.pmf(np.arange(replicates + 1), replicates, p)
+    return {state: float(sum(pmf[i] for i, st in enumerate(states) if st == state))
+            for state in (mc.PASS, mc.INCONCLUSIVE, mc.FAIL)}
+
+
+def _three_state_operating_characteristic(cells: list[dict]) -> dict:
+    """State probabilities of the revision-2 Monte Carlo decision rule (DEVELOPMENT_ONLY).
+
+    Depends only on the frozen levels, the replicate count and the thresholds; the
+    per-cell rows additionally use the exact Gaussian dateMean coverage of the v4
+    interval, which is disclosed, not tuned against.
+    """
+    spec = json.loads(V4_SPEC.read_text())
+    cfg = spec["monteCarloDecision"]
+    replicates = int(spec["simulationReplicates"])
+    pass_alpha = float(cfg["passSideOneSidedAlpha"])
+    fail_alpha = mc.fail_side_alpha(float(cfg["failSideFamilywiseAlpha"]), int(cfg["failSideDecisionCount"]))
+    floor = float(spec["acceptance"]["materialCoverageFloor"])
+    ceiling = float(spec["acceptance"]["directionalFalsePositiveCeiling"])
+
+    floor_states = _state_thresholds(replicates, mc.FLOOR, floor, pass_alpha, fail_alpha)
+    ceiling_states = _state_thresholds(replicates, mc.CEILING, ceiling, pass_alpha, fail_alpha)
+    min_pass = next(k for k, st in enumerate(floor_states) if st == mc.PASS)
+    max_fail = max(k for k, st in enumerate(floor_states) if st == mc.FAIL)
+
+    rows = []
+    product = 1.0
+    for cell in cells:
+        if cell["dgp"] not in {d["name"] for d in json.loads(V3_SPEC.read_text())["dgps"]}:
+            continue
+        probs = _state_probabilities(floor_states, replicates, cell["exactCoverageV4CalendarTimeSN"])
+        product *= probs[mc.PASS]
+        rows.append({
+            "dgp": cell["dgp"], "horizonSessions": cell["horizonSessions"], "calendarWeeks": cell["calendarWeeks"],
+            "exactGaussianCoverageV4": cell["exactCoverageV4CalendarTimeSN"], **probs,
+        })
+    return {
+        "label": "DEVELOPMENT_ONLY",
+        "replicates": replicates,
+        "passSideOneSidedAlpha": pass_alpha,
+        "failSideOneSidedAlpha": fail_alpha,
+        "coverageFloor": floor,
+        "coverageMinCoveredForPass": min_pass,
+        "coverageMinObservedForPass": min_pass / replicates,
+        "coverageMaxCoveredForFail": max_fail,
+        "coverageMaxObservedForFail": max_fail / replicates,
+        "coverageByTrueValue": {
+            f"{p:.3f}": _state_probabilities(floor_states, replicates, p)
+            for p in (0.90, 0.92, 0.93, 0.94, 0.945, 0.95, 0.955, 0.957, 0.96, 0.965, 0.97, 0.975)
+        },
+        "falsePositiveCeilingByTrueRate": {
+            f"{p:.3f}": _state_probabilities(ceiling_states, replicates, p)
+            for p in (0.01, 0.0125, 0.02, 0.03, 0.04, 0.05, 0.06, 0.07)
+        },
+        "dateMeanCoverageAtExactV4GaussianValue": rows,
+        "illustrativeProbabilityAllInheritedDateMeanCoverageCellsPass": product,
+        "illustrativeCaveat": (
+            "dateMean coverage only, the 16 inherited-DGP cells with exact Gaussian values, treated as independent "
+            "(distinct seeds). The other four confirmatory statistics, the two added DGPs and the false-positive and "
+            "undefined-frequency metrics are not analysed here. Read it as: cells whose true coverage lies within about "
+            "one Monte Carlo half-width of the 0.95 floor are expected to be INCONCLUSIVE, by design."
+        ),
+    }
 
 
 def main() -> None:
@@ -140,6 +217,12 @@ def main() -> None:
             "definition": "P(observed Monte Carlo coverage < 0.95 floor | true coverage p) per statistic cell",
             "byReplicates": _acceptance_operating_characteristic(),
         },
+        "threeStateRuleOperatingCharacteristic": _three_state_operating_characteristic(cells),
+        "chronologyNote": (
+            "These diagnostics, including the exact Gaussian coverage of the v4 calendar-time interval, were computed "
+            "before the revision-1 protocol freeze commit and are disclosed in full. Nothing in them selected a "
+            "parameter, threshold, DGP, depth, statistic partition, critical value or tuning parameter."
+        ),
         "outcomeFree": True,
     }
     output = Path(args.output)

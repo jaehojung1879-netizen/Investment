@@ -284,11 +284,275 @@
       "v2PrimaryBlocks": 12
     }
   ],
+  "chronologyNote": "These diagnostics, including the exact Gaussian coverage of the v4 calendar-time interval, were computed before the revision-1 protocol freeze commit and are disclosed in full. Nothing in them selected a parameter, threshold, DGP, depth, statistic partition, critical value or tuning parameter.",
   "label": "DEVELOPMENT_ONLY",
   "nominalCoverage": 0.975,
   "outcomeFree": true,
   "purpose": "Analytic reconstruction of why the closed v1/v2/v3 synthetic calibrations failed. Exact Gaussian coverage of dateMean intervals under the frozen v3 DGPs; not a calibration verdict and not used to choose any v4 parameter.",
   "sourceSpec": "research_specs/alpha-inference-calibration-v3.json",
   "sourceSpecSha256": "e8340ac3541e8981983996b8a66b54030757c2cd0419aab2140f8e3fe41d1d59",
+  "threeStateRuleOperatingCharacteristic": {
+    "coverageByTrueValue": {
+      "0.900": {
+        "FAIL": 0.9999995182538931,
+        "INCONCLUSIVE": 4.81746106190515e-07,
+        "PASS": 7.582892400348686e-24
+      },
+      "0.920": {
+        "FAIL": 0.9702777312251428,
+        "INCONCLUSIVE": 0.029722268774518088,
+        "PASS": 3.3930115656957746e-13
+      },
+      "0.930": {
+        "FAIL": 0.5820288786901354,
+        "INCONCLUSIVE": 0.4179711119935529,
+        "PASS": 9.316310852103662e-09
+      },
+      "0.940": {
+        "FAIL": 0.051992268009348995,
+        "INCONCLUSIVE": 0.9479649348547241,
+        "PASS": 4.279713592741263e-05
+      },
+      "0.945": {
+        "FAIL": 0.004458712624874284,
+        "INCONCLUSIVE": 0.9942611205810656,
+        "PASS": 0.0012801667940602673
+      },
+      "0.950": {
+        "FAIL": 0.0001241016700821637,
+        "INCONCLUSIVE": 0.9797879134209774,
+        "PASS": 0.020087984908939937
+      },
+      "0.955": {
+        "FAIL": 8.603787002967087e-07,
+        "INCONCLUSIVE": 0.8475492049972211,
+        "PASS": 0.15244993462407888
+      },
+      "0.957": {
+        "FAIL": 7.41980764401739e-08,
+        "INCONCLUSIVE": 0.7242729591878642,
+        "PASS": 0.2757269666140596
+      },
+      "0.960": {
+        "FAIL": 1.056324070756908e-09,
+        "INCONCLUSIVE": 0.4703058499746339,
+        "PASS": 0.5296941489690422
+      },
+      "0.965": {
+        "FAIL": 1.4389956088844433e-13,
+        "INCONCLUSIVE": 0.10258324330052568,
+        "PASS": 0.8974167566993306
+      },
+      "0.970": {
+        "FAIL": 1.1044813985085463e-18,
+        "INCONCLUSIVE": 0.0049933039976191055,
+        "PASS": 0.9950066960023812
+      },
+      "0.975": {
+        "FAIL": 1.6785114054986175e-25,
+        "INCONCLUSIVE": 2.674034864821647e-05,
+        "PASS": 0.9999732596513509
+      }
+    },
+    "coverageFloor": 0.95,
+    "coverageMaxCoveredForFail": 1862,
+    "coverageMaxObservedForFail": 0.931,
+    "coverageMinCoveredForPass": 1920,
+    "coverageMinObservedForPass": 0.96,
+    "dateMeanCoverageAtExactV4GaussianValue": [
+      {
+        "FAIL": 1.2704808708391028e-20,
+        "INCONCLUSIVE": 0.0012676339945542027,
+        "PASS": 0.9987323660054456,
+        "calendarWeeks": 78,
+        "dgp": "IID_SHARED",
+        "exactGaussianCoverageV4": 0.9715773808688686,
+        "horizonSessions": 21
+      },
+      {
+        "FAIL": 6.455293854884758e-23,
+        "INCONCLUSIVE": 0.0002206913698709791,
+        "PASS": 0.999779308630129,
+        "calendarWeeks": 156,
+        "dgp": "IID_SHARED",
+        "exactGaussianCoverageV4": 0.9732737128968446,
+        "horizonSessions": 21
+      },
+      {
+        "FAIL": 1.6112756670057025e-18,
+        "INCONCLUSIVE": 0.0055793591863062255,
+        "PASS": 0.9944206408136936,
+        "calendarWeeks": 312,
+        "dgp": "IID_SHARED",
+        "exactGaussianCoverageV4": 0.9698597908188261,
+        "horizonSessions": 126
+      },
+      {
+        "FAIL": 1.1921948377708691e-21,
+        "INCONCLUSIVE": 0.0005885187925476498,
+        "PASS": 0.9994114812074523,
+        "calendarWeeks": 624,
+        "dgp": "IID_SHARED",
+        "exactGaussianCoverageV4": 0.972358226292737,
+        "horizonSessions": 126
+      },
+      {
+        "FAIL": 1.2184898792127284e-19,
+        "INCONCLUSIVE": 0.002571475548161784,
+        "PASS": 0.9974285244518387,
+        "calendarWeeks": 78,
+        "dgp": "WEAK_SERIAL",
+        "exactGaussianCoverageV4": 0.970796649710534,
+        "horizonSessions": 21
+      },
+      {
+        "FAIL": 2.228992446799512e-22,
+        "INCONCLUSIVE": 0.00033635229321038603,
+        "PASS": 0.9996636477067894,
+        "calendarWeeks": 156,
+        "dgp": "WEAK_SERIAL",
+        "exactGaussianCoverageV4": 0.9728906969813989,
+        "horizonSessions": 21
+      },
+      {
+        "FAIL": 2.714916979728923e-18,
+        "INCONCLUSIVE": 0.0064950473461306,
+        "PASS": 0.9935049526538694,
+        "calendarWeeks": 312,
+        "dgp": "WEAK_SERIAL",
+        "exactGaussianCoverageV4": 0.9696642212522127,
+        "horizonSessions": 126
+      },
+      {
+        "FAIL": 1.589760364588311e-21,
+        "INCONCLUSIVE": 0.0006469978659855092,
+        "PASS": 0.9993530021340147,
+        "calendarWeeks": 624,
+        "dgp": "WEAK_SERIAL",
+        "exactGaussianCoverageV4": 0.9722651395640691,
+        "horizonSessions": 126
+      },
+      {
+        "FAIL": 1.5172380383762764e-13,
+        "INCONCLUSIVE": 0.10374453312811859,
+        "PASS": 0.89625546687173,
+        "calendarWeeks": 78,
+        "dgp": "PERSISTENT_SERIAL",
+        "exactGaussianCoverageV4": 0.9649740343649367,
+        "horizonSessions": 21
+      },
+      {
+        "FAIL": 8.49714409171657e-19,
+        "INCONCLUSIVE": 0.004620771988616404,
+        "PASS": 0.9953792280113842,
+        "calendarWeeks": 156,
+        "dgp": "PERSISTENT_SERIAL",
+        "exactGaussianCoverageV4": 0.970096700389609,
+        "horizonSessions": 21
+      },
+      {
+        "FAIL": 1.1351769384017263e-16,
+        "INCONCLUSIVE": 0.018361861061279794,
+        "PASS": 0.981638138938721,
+        "calendarWeeks": 312,
+        "dgp": "PERSISTENT_SERIAL",
+        "exactGaussianCoverageV4": 0.9681975554579012,
+        "horizonSessions": 126
+      },
+      {
+        "FAIL": 1.294021991562677e-20,
+        "INCONCLUSIVE": 0.001275068999547836,
+        "PASS": 0.9987249310004531,
+        "calendarWeeks": 624,
+        "dgp": "PERSISTENT_SERIAL",
+        "exactGaussianCoverageV4": 0.971571180887663,
+        "horizonSessions": 126
+      },
+      {
+        "FAIL": 8.983239047269672e-08,
+        "INCONCLUSIVE": 0.734944075960049,
+        "PASS": 0.2650558342075602,
+        "calendarWeeks": 78,
+        "dgp": "PERSISTENT_SHARED_HEAVY",
+        "exactGaussianCoverageV4": 0.9568521142462851,
+        "horizonSessions": 21
+      },
+      {
+        "FAIL": 1.0611324819132256e-14,
+        "INCONCLUSIVE": 0.057270259685952646,
+        "PASS": 0.9427297403140361,
+        "calendarWeeks": 156,
+        "dgp": "PERSISTENT_SHARED_HEAVY",
+        "exactGaussianCoverageV4": 0.966234154553631,
+        "horizonSessions": 21
+      },
+      {
+        "FAIL": 1.0641511339983316e-14,
+        "INCONCLUSIVE": 0.05730833743216271,
+        "PASS": 0.9426916625678263,
+        "calendarWeeks": 312,
+        "dgp": "PERSISTENT_SHARED_HEAVY",
+        "exactGaussianCoverageV4": 0.9662328551460198,
+        "horizonSessions": 126
+      },
+      {
+        "FAIL": 1.868912005834851e-19,
+        "INCONCLUSIVE": 0.0029309307079938077,
+        "PASS": 0.9970690692920047,
+        "calendarWeeks": 624,
+        "dgp": "PERSISTENT_SHARED_HEAVY",
+        "exactGaussianCoverageV4": 0.9706448889652539,
+        "horizonSessions": 126
+      }
+    ],
+    "failSideOneSidedAlpha": 0.0001388888888888889,
+    "falsePositiveCeilingByTrueRate": {
+      "0.010": {
+        "FAIL": 3.4398715559136455e-68,
+        "INCONCLUSIVE": 4.441993422767145e-25,
+        "PASS": 0.9999999999999996
+      },
+      "0.013": {
+        "FAIL": 7.637974341953112e-57,
+        "INCONCLUSIVE": 2.6611458694629307e-19,
+        "PASS": 1.0000000000000002
+      },
+      "0.020": {
+        "FAIL": 8.791678408391024e-35,
+        "INCONCLUSIVE": 5.38292837006201e-09,
+        "PASS": 0.9999999946170721
+      },
+      "0.030": {
+        "FAIL": 1.1044813985084296e-18,
+        "INCONCLUSIVE": 0.004993303997619008,
+        "PASS": 0.9950066960023813
+      },
+      "0.040": {
+        "FAIL": 1.0563240707568532e-09,
+        "INCONCLUSIVE": 0.4703058499746313,
+        "PASS": 0.5296941489690457
+      },
+      "0.050": {
+        "FAIL": 0.0001241016700821603,
+        "INCONCLUSIVE": 0.9797879134209776,
+        "PASS": 0.020087984908940336
+      },
+      "0.060": {
+        "FAIL": 0.05199226800934815,
+        "INCONCLUSIVE": 0.9479649348547252,
+        "PASS": 4.279713592741424e-05
+      },
+      "0.070": {
+        "FAIL": 0.5820288786901394,
+        "INCONCLUSIVE": 0.41797111199354986,
+        "PASS": 9.316310852103166e-09
+      }
+    },
+    "illustrativeCaveat": "dateMean coverage only, the 16 inherited-DGP cells with exact Gaussian values, treated as independent (distinct seeds). The other four confirmatory statistics, the two added DGPs and the false-positive and undefined-frequency metrics are not analysed here. Read it as: cells whose true coverage lies within about one Monte Carlo half-width of the 0.95 floor are expected to be INCONCLUSIVE, by design.",
+    "illustrativeProbabilityAllInheritedDateMeanCoverageCellsPass": 0.20180390531643544,
+    "label": "DEVELOPMENT_ONLY",
+    "passSideOneSidedAlpha": 0.025,
+    "replicates": 2000
+  },
   "u1CriticalValue": 66.57
 }
