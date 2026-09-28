@@ -6,10 +6,11 @@ one-shot research workflows may remain on disk only when the table explicitly
 says not to run them. Historical one-shot workflows removed from the Actions
 surface remain documented under RETIRED RESEARCH.
 
-There are **16 workflow files** on the current branch, including the three
-synthetic inference calibration versions. Calibration v1 and v2 are closed
-substantive failures retained only for reproducibility. Calibration v3 is the
-only pending inference-calibration action.
+There are **17 workflow files** on the current branch, including the four
+synthetic inference calibration versions. Calibration v1, v2 and v3 are closed
+substantive failures retained only for reproducibility. Calibration v4 is the
+only pending inference-calibration action, and only after its protocol PR is
+merged.
 
 ## ACTIVE
 
@@ -29,7 +30,8 @@ only pending inference-calibration action.
 | `Alpha opportunity model v4 execution (KR)` (`alpha-opportunity-model-v4-execution.yml`) | none — `workflow_dispatch` only | **Do not run for Alpha outcomes while v5 preparation is in progress** | Existing guarded KR v4 harness retained for reproducibility. Its prior gate-only execution stopped before labels because the then-sealed data foundation failed integrity requirements. |
 | `Synthetic alpha inference calibration v1` (`alpha-inference-calibration-v1.yml`) | none — `workflow_dispatch` only | **Do not run — closed substantive FAIL** | Run `36472769120` completed the registered synthetic contract and failed coverage. Preserved only for reproducibility; see `docs/results/alpha-inference-calibration-v1-report.md`. |
 | `Synthetic alpha inference calibration v2` (`alpha-inference-calibration-v2.yml`) | none — `workflow_dispatch` only | **Do not run — closed substantive FAIL** | Run `36476033206` completed all 40 registered synthetic cells and failed the frozen coverage contract even after circular moving blocks + basic intervals. Preserved only for reproducibility; see `docs/results/alpha-inference-calibration-v2-report.md`. |
-| `Synthetic alpha inference calibration v3` (`alpha-inference-calibration-v3.yml`) | none — `workflow_dispatch` only | **Run exactly once only after the v3 protocol PR is merged** | Synthetic-only self-normalized fixed-b (`b=1`) interval calibration. No block-length choice or bootstrap evaluation draws; no historical Alpha outcomes or `signal-history` outcome artifacts are read. A complete substantive FAIL closes v3. |
+| `Synthetic alpha inference calibration v3` (`alpha-inference-calibration-v3.yml`) | none — `workflow_dispatch` only | **Do not run — closed substantive FAIL** | Run `36483954346` (main `faff543`) completed all 16 cells and failed the frozen coverage floor in 3 H126/312-week cells (`dateMean`/`selectedMean`). Preserved only for reproducibility; diagnosis in `docs/alpha-inference-calibration-v4-methodology.md`. |
+| `Synthetic alpha inference calibration v4` (`alpha-inference-calibration-v4.yml`) | none — `workflow_dispatch` only, refuses any ref but `main` | **Run exactly once only after the v4 protocol PR is merged** | Synthetic-only calendar-time attribution + unchanged v3 self-normalized pivot; Spearman rank IC descriptive only. No secrets, market data or `signal-history`. The job stays green on a methodological FAIL/DATA_INSUFFICIENT (verdict in the artifact and step summary); only INFRASTRUCTURE_ERROR fails it. A complete FAIL closes v4 — no v4.1. |
 | `Probes` (`probes.yml`) | none — `workflow_dispatch` only | On demand | Dispatcher for external-source availability/schema probes. |
 
 ### Operator notes

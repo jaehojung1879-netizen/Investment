@@ -1,0 +1,76 @@
+name: Synthetic alpha inference calibration v4
+
+# One-shot formal run of the frozen synthetic-only v4 protocol after it is
+# merged.  No secrets, no market data, no signal-history.  A methodological
+# FAIL or DATA_INSUFFICIENT is a complete result: the job stays green and the
+# verdict is in the artifact and the step summary.  Only INFRASTRUCTURE_ERROR
+# (no complete result) fails the job.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: alpha-inference-calibration-v4
+  cancel-in-progress: false
+
+jobs:
+  calibrate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - name: Refuse any ref other than main
+        if: github.ref != 'refs/heads/main'
+        run: |
+          echo "::error::The formal v4 calibration runs only from refs/heads/main (got ${{ github.ref }})."
+          exit 1
+
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Verify frozen protocol is tracked and unchanged
+        run: |
+          git diff --exit-code -- research_specs/alpha-inference-calibration-v4.json
+          python -m json.tool research_specs/alpha-inference-calibration-v4.json >/dev/null
+          sha256sum research_specs/alpha-inference-calibration-v4.json
+
+      - name: Run synthetic-only calibration v4
+        run: |
+          python scripts/run_alpha_inference_calibration_v4.py \
+            --spec research_specs/alpha-inference-calibration-v4.json \
+            --output artifacts/alpha-inference-calibration-v4.json
+
+      - name: Record methodological verdict
+        if: always()
+        run: |
+          python - <<'EOF' >> "$GITHUB_STEP_SUMMARY"
+          import json, pathlib
+          path = pathlib.Path("artifacts/alpha-inference-calibration-v4.json")
+          if not path.exists():
+              print("## v4 calibration: NO ARTIFACT (infrastructure failure)")
+              raise SystemExit(0)
+          r = json.loads(path.read_text())
+          print(f"## v4 calibration: `{r['primaryStatus']}` ({r.get('runClass')})")
+          print(f"spec sha256 `{r.get('specSha256')}`")
+          for f in r.get("primaryFailures", []):
+              print(f"- {f['dgp']} H{f['horizonSessions']} {f['calendarWeeks']}w: {f['failures']}")
+          EOF
+          status=$(python -c "import json;print(json.load(open('artifacts/alpha-inference-calibration-v4.json'))['primaryStatus'])" 2>/dev/null || echo MISSING)
+          if [ "$status" != "PASS" ]; then echo "::warning::v4 methodological status: $status"; fi
+
+      - name: Upload complete calibration result
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: alpha-inference-calibration-v4
+          path: artifacts/alpha-inference-calibration-v4.json
+          if-no-files-found: error
+          retention-days: 90

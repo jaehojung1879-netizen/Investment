@@ -1998,6 +1998,40 @@
   needs `raw-xbrl-2015` re-run on the fixed commit step, then `raw-
   statements` run to `datasetComplete: true`.
 
+## Alpha-inference-calibration-v4 invariants (v2.37)
+
+- A CALIBRATION FAILURE IS DIAGNOSED BEFORE IT IS REPLACED, AND THE DIAGNOSIS
+  MAY NOT REOPEN IT. v3 (run `36483954346`) failed 3 of 16 cells, all
+  H126/312 weeks, all `dateMean`/`selectedMean`. Its exact Gaussian coverage
+  there (Imhof) is 0.957-0.958 against nominal 0.975 -- a real distortion,
+  yet ABOVE the 0.95 floor; the observed 0.937-0.950 are that distortion read
+  through 300-replicate noise (a true-0.958 cell reads below the floor with
+  probability 0.198). Both facts are published; v3 stays FAIL and immutable.
+- AN "IID" DGP IS NOT AN IID SERIES. `IID_SHARED` has iid DAILY shocks, but its
+  weekly H126 forward sums overlap 26 dates (lag-1 autocorrelation 0.960). The
+  v1/v2 reading that failure "under IID" excluded a dependence cause was wrong.
+- A STATISTIC THAT PASSES UNDER A NULL THAT MAKES IT WHITE HAS NOT BEEN TESTED.
+  With predictors redrawn independently every week, `rankIC`,
+  `pairedMseImprovement` and `selectedMinusUniverse` are martingale
+  differences whatever the overlap; they could not fail for the reason the
+  mean statistics did. v4 adds persistent-predictor DGPs, never removes one.
+- KNOWN DEPENDENCE IS REMOVED, NOT RE-ESTIMATED. Every confirmatory v4
+  statistic is linear in forward returns with signal-date weights, so each
+  realized return is attributed to the one calendar week it occurs in; the
+  sum is an exact identity (same estimator, same estimand) and the unchanged
+  v3 SN pivot is applied to that series. Spearman rank IC is not linear in
+  returns and is DESCRIPTIVE only. The method has no tuning parameter and was
+  fixed before any v4 coverage was computed.
+- MONTE CARLO BUDGET IS SET BY A PRECISION CRITERION, NOT BY A HOPED-FOR
+  VERDICT. R = 2,000 because the 95% half-width at the 0.95 floor must be at
+  most 1pp; a larger R can only make a method below the floor fail more
+  reliably. Tolerances, depths and U1 = 66.57 are unchanged from v3.
+- A METHODOLOGICAL VERDICT IS NOT A PROCESS FAILURE. The v4 runner exits 0
+  on PASS/FAIL/DATA_INSUFFICIENT and 1 only on INFRASTRUCTURE_ERROR, and
+  always writes the artifact; the workflow runs only from `main`. A complete
+  v4 FAIL is final: no reseed, no v4.1 -- a further method is a new,
+  separately justified v5 calibration study.
+
 ## Lint gate invariants (v2.11)
 
 - The enabled rule set reports ZERO findings on `main`. A rule is turned on in the
