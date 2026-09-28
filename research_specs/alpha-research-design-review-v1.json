@@ -17,7 +17,7 @@
   "exposure": {
     "completeOutcomeBlindnessCertified": false,
     "priorHistoricalOutcomeExposure": true,
-    "description": "Embedded outcomes encountered in required AGENTS and mixed legacy documentation; preliminary keyword filters were incomplete. Exposure disclosed; no outcomes used as recommendation evidence. No execution reports or signal-history ledger intentionally opened.",
+    "description": "Embedded outcomes encountered in required AGENTS and mixed legacy documentation; preliminary keyword filters were incomplete. Exposure disclosed; no outcomes used as recommendation evidence. No execution reports or signal-history ledger intentionally opened. Minor revision re-encountered embedded AGENTS commentary; none selected or justified these revisions.",
     "preV5ExecutionReview": true
   },
   "decisions": [
@@ -43,8 +43,8 @@
       "id": "R03",
       "decision": "MODIFY",
       "topic": "baselines",
-      "problemAndEvidence": "Training mean alone cannot isolate information beyond momentum (L9,L10).",
-      "proposedChangeAndBenefit": "Freeze matched ladder in §13. Identifies incremental information.",
+      "problemAndEvidence": "An isolated asset-growth rung obscures attribution and invites feature selection (L9,L10; §13).",
+      "proposedChangeAndBenefit": "Freeze complete non-accounting B3 and full accounting-inclusive B4; deduplicate identical rungs. Identifies information by family.",
       "newRisk": "Extra comparisons can become a tournament.",
       "beforeV5Outcomes": "Yes; one primary model, no replacement."
     },
@@ -61,10 +61,10 @@
       "id": "R05",
       "decision": "MODIFY",
       "topic": "accounting semantics",
-      "problemAndEvidence": "Total liabilities ≠ interest-bearing debt; OCF/NI changes interpretation around losses. Actual code (§8).",
-      "proposedChangeAndBenefit": "Rename in future registry; predefine denominator policy and sector comparability.",
-      "newRisk": "New definitions break historical comparability.",
-      "beforeV5Outcomes": "Yes; preserve old seals."
+      "problemAndEvidence": "Total liabilities ≠ interest-bearing debt; observed NI <= 0 is not source absence (§8).",
+      "proposedChangeAndBenefit": "Separate source status, denominator state and valid ratio; require a named cash-conversion contract before activation.",
+      "newRisk": "A loss indicator adds a predictor; definitions break comparability.",
+      "beforeV5Outcomes": "Yes; formulation BLOCKED until v5 contract approval; preserve old seals."
     },
     {
       "id": "R06",
@@ -79,10 +79,10 @@
       "id": "R07",
       "decision": "MODIFY",
       "topic": "overlap inference",
-      "problemAndEvidence": "A 26-week block is close to 126-session overlap; dependence may extend beyond it.",
-      "proposedChangeAndBenefit": "Horizon-aware 10/52-week primary blocks and 5/26/104-week fixed sensitivities (§11).",
-      "newRisk": "Fewer effective blocks; unstable long-block inference.",
-      "beforeV5Outcomes": "Yes; synthetic calibration and depth gate."
+      "problemAndEvidence": "Overlap does not determine an optimal block length; dependence and inferential purpose matter (L14,L15).",
+      "proposedChangeAndBenefit": "Treat 10/52 weeks as candidate primary rules pending synthetic null calibration; fixed small candidate sets (§11).",
+      "newRisk": "Long blocks reduce effective blocks and power; short blocks can under-cover.",
+      "beforeV5Outcomes": "Yes; calibration and usability review before seal and historical outcomes."
     },
     {
       "id": "R08",
@@ -192,7 +192,7 @@
       "volume_shock",
       "shock_persistence",
       "price_volume_alignment",
-      "cash_conversion_with_redefined_denominator",
+      "cash_conversion_family_pending_named_contract",
       "asset_growth",
       "total_liabilities_growth"
     ],
@@ -217,7 +217,7 @@
     "B0_training_intercept",
     "B1_zero_gross_relative_return",
     "B2_momentum_ridge",
-    "B3_compact_economic_ridge",
+    "B3_non_accounting_core_ridge",
     "B4_full_ridge_primary",
     "B5_shallow_HGB_descriptive"
   ],
@@ -239,5 +239,96 @@
     "freeze_input_only_coverage_semantic_and_inference_decisions",
     "create_v5_only_in_separate_authorized_task"
   ],
-  "document": "docs/alpha-research-design-review-v1.md"
+  "document": "docs/alpha-research-design-review-v1.md",
+  "cashConversionReview": {
+    "status": "BLOCKED_PENDING_V5_NAMED_CONTRACT",
+    "recommendedContractName": "cash_conversion_state_v1",
+    "recommendation": "Positive-NI ratio plus explicitly registered NI-state encoding; no predictor activated here.",
+    "sourceStates": [
+      "AVAILABLE",
+      "SOURCE_MISSING",
+      "SOURCE_OR_IDENTITY_FAILURE"
+    ],
+    "netIncomeStates": [
+      "POSITIVE",
+      "ZERO",
+      "NEGATIVE",
+      "UNKNOWN"
+    ],
+    "ratioCondition": "PIT-valid OCF and NI, NI > 0",
+    "nonpositiveNIIsSourceMissing": false,
+    "lossIndicatorIsMateriallyNewPredictor": true,
+    "sourceFailureReasons": "Audit metadata; not automatically separate predictors. Preserve NI state when trustworthy even if OCF is absent.",
+    "requiredBeforeActivation": [
+      "approve_named_contract_in_v5",
+      "freeze_encoding_imputation_scaling_and_inactive_columns",
+      "freeze_source_failure_handling"
+    ],
+    "alternative": "OCF/positive assets changes meaning to cash profitability; separate contract, no silent substitution or additional family.",
+    "unresolvedFallback": "Explicit pre-outcome exclusion of cash-conversion field if no approved contract; no post-result fallback."
+  },
+  "baselineAttribution": {
+    "B0": "Training-date-balanced unconditional mean",
+    "B1": "Zero gross benchmark-relative return",
+    "B2": "Momentum-only Ridge",
+    "B3": [
+      "relative126",
+      "acceleration21",
+      "vol63",
+      "logVolumeShock60",
+      "shockPersistence5d",
+      "volumePriceAlignment"
+    ],
+    "B3Scope": "Complete predeclared non-accounting core allowed for region/horizon",
+    "B4": "B3 plus all frozen approved regional/horizon accounting fields; sole primary Ridge",
+    "B5": "Same full inputs, existing shallow HGB; descriptive only",
+    "B2_to_B3": "Incremental non-accounting price/attention context",
+    "B3_to_B4": "Incremental accounting information; NOT_APPLICABLE if no accounting registered",
+    "identicalRegistryRule": "One fit; B4 primary-role alias of B3; no duplicate baseline or test",
+    "individualFeatureAblationShopping": false
+  },
+  "bootstrapReview": {
+    "status": "CANDIDATE_PENDING_SYNTHETIC_NULL_CALIBRATION",
+    "candidatePrimaryWeeks": {
+      "21": 10,
+      "126": 52
+    },
+    "predeclaredCandidateSetsWeeks": {
+      "21": [
+        5,
+        10
+      ],
+      "126": [
+        26,
+        52,
+        104
+      ]
+    },
+    "optimalityClaim": false,
+    "calibrationCompleted": false,
+    "references": [
+      "L14",
+      "L15"
+    ],
+    "syntheticRequirements": [
+      "cross_sectional_common_and_idiosyncratic_shocks",
+      "serial_weekly_dependence",
+      "exact_21_and_126_session_overlapping_targets_sampled_weekly",
+      "predictors_independent_of_all_target_innovations_no_true_signal",
+      "short_and_long_calendars",
+      "whole_date_paired_resampling",
+      "known_null_means_and_paired_forecast_contrasts",
+      "actual_interval_and_multiplicity_mechanics",
+      "false_positive_rates_coverage_and_Monte_Carlo_uncertainty",
+      "widths_effective_blocks_and_undefined_depth_failure_rates"
+    ],
+    "unresolvedBeforeCalibration": [
+      "freeze_DGP_grid_seed_replication_budget",
+      "freeze_statistics_interval_construction",
+      "freeze_material_undercoverage_and_unusability_tolerances"
+    ],
+    "operationalFloorStatus": "Six primary blocks and five annual folds are candidates, not validity theorems; assess usability before freeze.",
+    "revisionRule": "Document invalidity/unusability before v5 seal and historical outcome access; no optimization or expanded grid; new method needs separate frozen validation rationale.",
+    "postSealRule": "Never choose length from historical results; report insufficient depth and feasible sensitivity reversals."
+  }
 }

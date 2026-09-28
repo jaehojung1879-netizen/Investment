@@ -155,5 +155,30 @@
     "ledger"
   ],
   "finalReadUtility": "scripts/review_design_view.py",
-  "warning": "This receipt does not retroactively certify blindness or imply that every source was read in full."
+  "warning": "This receipt does not retroactively certify blindness or imply that every source was read in full.",
+  "methodologicalReferences": [
+    {
+      "id": "L14",
+      "citation": "Künsch, Hans R. (1989). The Jackknife and the Bootstrap for General Stationary Observations. Annals of Statistics 17(3), 1217–1241.",
+      "doi": "10.1214/aos/1176347265",
+      "reviewedUrls": [
+        "https://people.math.ethz.ch/~kuensch/papers/",
+        "https://www.researchgate.net/publication/2355926_The_Jackknife_and_the_Bootstrap_for_General_Stationary_Observations"
+      ],
+      "inspection": "Author publication record and abstract on author-uploaded paper page; publisher full text blocked. No full-text-read claim.",
+      "designUse": "Consecutive-block resampling for stationary dependence; no universal finite block guarantee.",
+      "reviewDate": "2026-09-28"
+    },
+    {
+      "id": "L15",
+      "citation": "Hall, Peter, Joel L. Horowitz, and Bing-Yi Jing (1995). On blocking rules for the bootstrap with dependent data. Biometrika 82(3), 561–574.",
+      "doi": "10.1093/biomet/82.3.561",
+      "reviewedUrls": [
+        "https://academic.oup.com/biomet/article-abstract/82/3/561/260651"
+      ],
+      "inspection": "Publisher citation and abstract; no full-text-read claim.",
+      "designUse": "Block choice depends on inferential task; calibrate candidates without claiming 52 weeks optimal.",
+      "reviewDate": "2026-09-28"
+    }
+  ]
 }
