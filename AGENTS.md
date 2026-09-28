@@ -2020,17 +2020,47 @@
   realized return is attributed to the one calendar week it occurs in; the
   sum is an exact identity (same estimator, same estimand) and the unchanged
   v3 SN pivot is applied to that series. Spearman rank IC is not linear in
-  returns and is DESCRIPTIVE only. The method has no tuning parameter and was
-  fixed before any v4 coverage was computed.
+  returns and is DESCRIPTIVE only. The method has no tuning parameter. It was
+  derived from the overlap structure, but development-only exact-Gaussian
+  coverage of the v4 interval was computed and seen BEFORE the protocol freeze
+  commit (disclosed in the development diagnostics); nothing was selected by
+  optimizing it. "Fixed before any v4 coverage was computed" would be false.
 - MONTE CARLO BUDGET IS SET BY A PRECISION CRITERION, NOT BY A HOPED-FOR
   VERDICT. R = 2,000 because the 95% half-width at the 0.95 floor must be at
   most 1pp; a larger R can only make a method below the floor fail more
   reliably. Tolerances, depths and U1 = 66.57 are unchanged from v3.
 - A METHODOLOGICAL VERDICT IS NOT A PROCESS FAILURE. The v4 runner exits 0
-  on PASS/FAIL/DATA_INSUFFICIENT and 1 only on INFRASTRUCTURE_ERROR, and
-  always writes the artifact; the workflow runs only from `main`. A complete
-  v4 FAIL is final: no reseed, no v4.1 -- a further method is a new,
-  separately justified v5 calibration study.
+  on PASS/FAIL/INCONCLUSIVE/DATA_INSUFFICIENT and 1 only on
+  INFRASTRUCTURE_ERROR, and always writes the artifact; the workflow runs only
+  from `main`. A complete v4 FAIL is final: no reseed, no v4.1 -- a further
+  method is a new, separately justified v5 calibration study.
+- A SIMULATED PROBABILITY IS COMPARED TO A THRESHOLD THROUGH ITS OWN
+  UNCERTAINTY, NOT AS IF IT WERE EXACT. Revision 2 classifies every
+  Monte Carlo-estimated metric (coverage floor, false-positive and
+  undefined-frequency ceilings) PASS / FAIL / INCONCLUSIVE from exact
+  one-sided Clopper-Pearson bounds (`pipeline/alpha_inference_mc_decision`).
+  The old point-estimate rule read a true-0.950 method as FAIL with
+  probability 0.473 and a true-0.945 method as PASS with probability 0.176
+  at 2,000 replicates; both operating characteristics are published.
+- MONTE CARLO CONFIDENCE AND STATISTICAL CONFIDENCE ARE DIFFERENT LEVELS.
+  The 97.5% interval (Bonferroni over two KR horizon claims) is the claim
+  being calibrated; the Monte Carlo levels (PASS side 0.025 per metric, FAIL
+  side 0.05 Bonferroni over 360 registered decisions) only govern
+  classification error of the simulation. PASS is an intersection so it needs
+  no adjustment; FAIL is a union so it does. The price is that FAIL is
+  reserved for clear refutation.
+- INCONCLUSIVE IS AN ANSWER AND IS NOT FIXED BY MORE REPLICATES. At 2,000
+  replicates PASS needs observed coverage >= 0.960 and FAIL <= 0.931; a
+  true-0.957 cell (the exact Gaussian value for PERSISTENT_SHARED_HEAVY at
+  H21/78) is INCONCLUSIVE with probability about 0.735, and the chance that
+  all 16 inherited-DGP `dateMean` coverage cells PASS is about 0.20. That was
+  published before the run and R was not raised to avoid it; a more precise
+  study is a new v5 calibration-method study, never a rerun of v4.
+- A FUTURE ORDERING CLAIM IS NOT DECIDED BY A CALIBRATION STATISTIC.
+  `rankWeightedSpread` is confirmatory in the v4 calibration because it is
+  decomposable; it is NOT silently substituted for Spearman rank IC in Alpha
+  v5, whose design review still expects a positive rank-IC lower bound. That
+  choice is a separate pre-v5 design decision.
 
 ## Lint gate invariants (v2.11)
 

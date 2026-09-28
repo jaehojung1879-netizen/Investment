@@ -1,12 +1,34 @@
 # Alpha inference calibration v4 — methodology diagnosis and frozen protocol
 
-Status: **PROTOCOL FROZEN, NOT EXECUTED.** Synthetic/statistical methodology only.
+Status: **PROTOCOL FROZEN (pre-merge revision 2), NOT EXECUTED.** Synthetic/statistical methodology only.
 No historical Alpha outcome, label, return, score, prediction, Alpha result
 report or `signal-history` artifact was read to produce anything here. v1, v2
 and v3 remain closed substantive FAILs and are not modified. This is step 1 of
 the sequence (inference methodology → original-XBRL value validation → repaired
 KR snapshot freeze → accounting semantic contract → v5 preregistration → one
 authorized historical execution). It authorizes no v5 execution.
+
+## Revision history and chronology (read this first)
+
+- **Revision 1** (commits `60fc002`, `0300bf2`, `39e0a9c`, `5caa0d9`): diagnosis,
+  calendar-time attribution method, protocol, implementation, workflow.
+- **Revision 2** (this update, before merge; no formal run exists): adds an explicit
+  Monte Carlo decision rule (§6b) and corrects the chronology below. It changes no
+  DGP, depth, seed, statistic partition, critical value, threshold, attribution rule
+  or replicate count; a semantic diff of the spec against revision 1 confirms this.
+- **Accurate chronology.** The calendar-time attribution method was derived from the
+  structural decomposition of overlapping returns. Development-only exact-Gaussian
+  coverage diagnostics, *including the exact coverage of the v4 calendar-time
+  interval*, were then computed **before the revision-1 protocol freeze commit** and
+  are fully disclosed in `docs/results/alpha-inference-calibration-v4-development-diagnostics.json`.
+  The v4 exact-coverage numbers were therefore seen before freeze. No free parameter,
+  threshold, DGP, depth, statistic partition, critical value or tuning parameter was
+  selected by optimizing those development coverage results; the method has none,
+  and the only choice they could have informed is the replicate count, through the
+  Monte Carlo operating characteristic, which does not depend on any method's
+  coverage. An earlier draft of this document, the PR body and `AGENTS.md` said the
+  method was "fixed before any v4 coverage was computed"; that was too strong and is
+  corrected here.
 
 Machine-readable protocol: `research_specs/alpha-inference-calibration-v4.json`.
 Analytic diagnostics (DEVELOPMENT_ONLY):
@@ -203,19 +225,20 @@ of estimating it, and leaves only the return process's own persistence to the
 pivot: weekly lag-1 autocorrelation of the interior calendar series is 0.00 /
 0.06 / 0.49 / 0.71 for the four inherited DGPs, against 0.96–0.99 for the
 signal-date series at H126. It has no tuning parameter, so there is nothing to
-select from v1–v3 sensitivities. It was fixed **before** any v4 number was
-computed (recorded in this session before the diagnostics in §3 were run for the
-new method).
+select from v1–v3 sensitivities. It was derived from the overlap structure before
+the v4 coverage diagnostics were run, but those diagnostics were computed before
+the protocol was frozen (see the chronology at the top), so "fixed before any v4
+coverage was seen" would be wrong.
 
-**Honest analytic preview (DEVELOPMENT_ONLY, computed after the method was
-fixed).** Exact Gaussian `dateMean` coverage of the v4 interval under the four
+**Honest analytic preview (DEVELOPMENT_ONLY, computed before freeze and disclosed).** Exact Gaussian `dateMean` coverage of the v4 interval under the four
 inherited DGPs: H126/312 0.966–0.970 (v3: 0.957–0.958); H126/624 0.971–0.972;
 H21/156 0.966–0.973; H21/78 0.957–0.972 — the lowest is PERSISTENT_SHARED_HEAVY
 at H21/78 (0.9569, v3 0.9557), where the residual distortion is ordinary
-short-sample SN distortion from genuine weekly persistence, not overlap. At 2,000
-replicates a statistic with true coverage 0.957 reads below the floor with
-probability ≈7%. **v4 can FAIL.** Nothing was changed in response; the new DGPs
-(§6) have not been analysed and may be harder.
+short-sample SN distortion from genuine weekly persistence, not overlap. Under the
+three-state rule of §6b that one cell has probability 0.265 of PASS, 0.735 of
+INCONCLUSIVE and about 0 of FAIL at 2,000 replicates. **v4 can FAIL or be
+INCONCLUSIVE.** Nothing was changed in response; the new DGPs (§6) have not been
+analysed and may be harder.
 
 ### Statistic partition
 
@@ -248,12 +271,12 @@ Changed from v3, each for a stated reason:
    `PERSISTENT_SHARED_HEAVY_TAILED_PERSISTENT_PREDICTORS` (Student-t, 4 df,
    unit variance, plus persistent scores) — the heaviest integer tail with the
    finite 2+δ moments the pivot's FCLT needs. Both make the test harder;
-4. **replicates 300 → 2,000**, by a precision criterion fixed before any v4 run:
-   Monte Carlo 95% half-width at the 0.95 floor ≤ 1pp requires R ≥ 1,825. At 300 a
-   true-0.975 method fails a cell with probability 0.004 and a true-0.958 method
-   with 0.198; at 2,000 these are 1e−10 and 0.036, and a true-0.945 method fails
-   with 0.82. More replicates make a method below the floor fail more reliably;
-   they cannot rescue one;
+4. **replicates 300 → 2,000**, by a precision criterion: Monte Carlo 95% half-width
+   at the 0.95 floor ≤ 1pp requires R ≥ 1,825. Under the v1–v3 point-estimate rule at
+   300 a true-0.958 method failed a cell with probability 0.198. Revision 2 **retains**
+   2,000 and does not raise it to force a classification: cells whose true coverage is
+   within about one Monte Carlo half-width of a threshold are expected to return
+   INCONCLUSIVE, and that is what 2,000 replicates can honestly resolve (§6b);
 5. new seed `20261001`;
 6. near-zero-normalizer tolerance (relative `1e−12`) so a vanishing but positive
    normalizer is undefined rather than falsely certain;
@@ -269,11 +292,89 @@ floor, 5% directional-FP ceiling, 5% undefined ceiling, 4pp Monte Carlo
 half-width ceiling, `U1 = 66.57`, and the conjunctive rule: any confirmatory
 statistic failing any tolerance in any cell is FAIL.
 
-Statuses: `FAIL` if any evaluated confirmatory cell fails; else
-`DATA_INSUFFICIENT` if any registered cell is below its minimum depth (none is,
-by construction); else `PASS`. `INFRASTRUCTURE_ERROR` means no complete result and
-is written to the artifact. The job exits 0 on every methodological verdict and 1
-only on `INFRASTRUCTURE_ERROR`.
+Statuses and their precedence are in §6b. The job exits 0 on every methodological
+verdict (PASS, FAIL, INCONCLUSIVE, DATA_INSUFFICIENT) and 1 only on
+`INFRASTRUCTURE_ERROR`, which is still written to the artifact.
+
+## 6b. Monte Carlo decision rule (revision 2)
+
+**Problem.** v1–v3 and revision 1 classified a cell from the simulated point
+estimate (`coverage >= 0.95`). The simulation is stochastic, so that verdict hides
+its own noise. Under that old rule at 2,000 replicates a method whose true coverage
+is 0.945 reads PASS with probability 0.176, one at exactly 0.950 reads FAIL with
+probability 0.473, and one at 0.958 still reads FAIL with probability 0.036 (0.198
+at 300 replicates). The development operating characteristic
+(`threeStateRuleOperatingCharacteristic`, and the retained
+`acceptanceRuleOperatingCharacteristic` for the old rule) lists the numbers.
+
+**Rule.** Every Monte Carlo-estimated probability gets exact one-sided
+Clopper–Pearson bounds on its true value (scipy `beta.ppf`; integer counts; no
+asymptotics) and is classified:
+
+| metric | PASS | FAIL | else |
+|---|---|---|---|
+| coverage (floor 0.95) | lower bound (α=0.025) ≥ 0.95 | upper bound (α=0.05/360) < 0.95 | INCONCLUSIVE |
+| positive false-positive rate (ceiling 0.05) | upper bound (α=0.025) ≤ 0.05 | lower bound (α=0.05/360) > 0.05 | INCONCLUSIVE |
+| undefined frequency (ceiling 0.05) | upper bound (α=0.025) ≤ 0.05 | lower bound (α=0.05/360) > 0.05 | INCONCLUSIVE |
+
+Coverage and false-positive rate are counted over replicates with a defined
+interval, undefined frequency over all replicates. The 4pp half-width diagnostic is
+kept as a usability guard: a metric too imprecise to be a calibration reading can
+never PASS (INCONCLUSIVE, `MONTE_CARLO_PRECISION_INSUFFICIENT`) but can still FAIL.
+Zero measured replicates is INCONCLUSIVE for coverage and false-positive rate and a
+FAIL for the undefined-frequency metric of the same statistic.
+
+**Two confidence concepts, kept apart.** The 97.5% level (Bonferroni over the two
+KR horizon claims) is the *statistical interval* whose coverage is being measured.
+The levels above govern only *Monte Carlo classification error*. They are unrelated
+and neither is derived from the other.
+
+**Multiplicity of the Monte Carlo decision.** PASS is an intersection of per-metric
+claims: a method with even one metric truly unsafe reaches PASS only if that
+metric's own safe-side bound clears its threshold, which has probability at most
+the per-metric level (0.025), so PASS needs no adjustment. FAIL is a union of
+per-metric claims, so its familywise false-FAIL probability grows with the number of
+decisions and is budgeted at 0.05 by Bonferroni over all registered decisions:
+24 cells × 5 confirmatory statistics × 3 metrics = **360** (α = 0.05/360 =
+1.39×10⁻⁴). The cost is stated plainly: FAIL is reserved for clear refutation, and a
+moderately deficient method will usually be INCONCLUSIVE, never PASS. rankIC is
+descriptive and enters no decision.
+
+**Cell, statistic and protocol states.** A statistic takes the worst of its three
+metric states, a cell the worst of its statistics (FAIL, then INCONCLUSIVE, then
+PASS). Top-level precedence: (1) `INFRASTRUCTURE_ERROR` if no complete result exists;
+(2) `FAIL` if any evaluated confirmatory cell is FAIL; (3) `INCONCLUSIVE` if any
+evaluated cell is INCONCLUSIVE; (4) `DATA_INSUFFICIENT` if any registered cell is
+below its minimum confirmatory depth (none is, by construction); (5) `PASS`. A
+definite refutation outranks everything; an evaluated cell the simulation cannot
+resolve outranks an unevaluated one because it is information about the method,
+whereas a depth shortfall is information about the calendar. Only PASS licenses
+confirmatory inference.
+
+**What 2,000 replicates can and cannot resolve** (development operating
+characteristic, coverage metric): PASS needs an observed coverage of at least
+0.960 (1,920/2,000); FAIL needs at most 0.931 (1,862/2,000). A true coverage of
+0.975 PASSes with probability 1.000, 0.970 with 0.995, 0.965 with 0.897, 0.960 with
+0.530, 0.957 with 0.276, 0.950 with 0.020; true 0.940 is FAIL with probability
+0.052 and INCONCLUSIVE 0.948, true 0.920 is FAIL with 0.970, true 0.900 FAIL with
+1.000. **Consequence for this protocol, stated before the run:** the
+PERSISTENT_SHARED_HEAVY / H21 / 78-week cell has exact Gaussian `dateMean` coverage
+0.9569, so it is INCONCLUSIVE with probability about 0.735 even if the method is
+exactly as analysed; treating the 16 inherited-DGP `dateMean` coverage cells as
+independent, the probability that all of them PASS is about 0.20. The formal
+verdict is therefore **more likely INCONCLUSIVE than PASS**, and an INCONCLUSIVE
+result is a complete, legitimate outcome: it says a 0.957 method cannot be
+certified against a 0.95 floor with 2,000 replicates. R was not raised to avoid it.
+Resolving it would need a larger R (a separately justified v5 calibration-method
+study), not a rerun of this protocol.
+
+**Rank IC.** Nothing here decides the future ordering claim. The accepted Alpha
+design review expects a positive rank-IC lower bound in the v5 evidence contract.
+`rankWeightedSpread` is **not** silently substituted for it. Before v5
+preregistration a separate design decision must choose among: keeping rank IC
+confirmatory with another valid inference treatment; adopting `rankWeightedSpread` as
+the ordering criterion; or making rank IC descriptive and formally revising the
+composite primary claim.
 
 ## 7. Feasibility of each horizon
 
@@ -310,14 +411,15 @@ only on `INFRASTRUCTURE_ERROR`.
 
 This PR contains **no** formal v4 result. Only DEVELOPMENT_ONLY checks were run:
 unit tests, 40-replicate smoke runs on non-formal seeds (every smoke cell is
-flagged by the Monte Carlo precision rule, as it must be at that budget), an
+INCONCLUSIVE, as it must be at that budget), an
 implementation-vs-analytic check on replicate indices ≥ 10⁶, and the exact
 Gaussian analysis. None selected a parameter.
 
 After review and merge, the operator runs **once**, from `main`:
 Actions → **Synthetic alpha inference calibration v4** → Run workflow (branch
 `main`). The workflow refuses any other ref, has no inputs and no secrets. A
-complete PASS, FAIL or DATA_INSUFFICIENT artifact closes v4. A FAIL is preserved,
+complete PASS, FAIL, INCONCLUSIVE or DATA_INSUFFICIENT artifact closes v4;
+INCONCLUSIVE is not resolved by rerunning with more replicates or another seed. A FAIL is preserved,
 never followed by a reseeded rerun, altered threshold, sensitivity swap or v4.1;
 any further method is a separately justified v5 calibration-method study. Only a
 run that produced no complete artifact (or `INFRASTRUCTURE_ERROR`) may be rerun,

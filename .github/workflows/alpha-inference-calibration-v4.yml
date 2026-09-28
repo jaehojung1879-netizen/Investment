@@ -2,9 +2,9 @@ name: Synthetic alpha inference calibration v4
 
 # One-shot formal run of the frozen synthetic-only v4 protocol after it is
 # merged.  No secrets, no market data, no signal-history.  A methodological
-# FAIL or DATA_INSUFFICIENT is a complete result: the job stays green and the
-# verdict is in the artifact and the step summary.  Only INFRASTRUCTURE_ERROR
-# (no complete result) fails the job.
+# FAIL, INCONCLUSIVE or DATA_INSUFFICIENT is a complete result: the job stays
+# green and the verdict is in the artifact and the step summary.  Only
+# INFRASTRUCTURE_ERROR (no complete result) fails the job.
 on:
   workflow_dispatch:
 
@@ -60,8 +60,12 @@ jobs:
           r = json.loads(path.read_text())
           print(f"## v4 calibration: `{r['primaryStatus']}` ({r.get('runClass')})")
           print(f"spec sha256 `{r.get('specSha256')}`")
+          print(f"cell states: `{r.get('statusCounts')}`")
+          print("A complete PASS/FAIL/INCONCLUSIVE/DATA_INSUFFICIENT result is a valid research outcome and closes this protocol's run budget.")
           for f in r.get("primaryFailures", []):
-              print(f"- {f['dgp']} H{f['horizonSessions']} {f['calendarWeeks']}w: {f['failures']}")
+              print(f"- FAIL {f['dgp']} H{f['horizonSessions']} {f['calendarWeeks']}w: {f['failures']}")
+          for f in r.get("inconclusiveCells", []):
+              print(f"- INCONCLUSIVE {f['dgp']} H{f['horizonSessions']} {f['calendarWeeks']}w: {f['inconclusive']}")
           EOF
           status=$(python -c "import json;print(json.load(open('artifacts/alpha-inference-calibration-v4.json'))['primaryStatus'])" 2>/dev/null || echo MISSING)
           if [ "$status" != "PASS" ]; then echo "::warning::v4 methodological status: $status"; fi
