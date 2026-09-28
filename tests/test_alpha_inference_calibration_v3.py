@@ -23,7 +23,6 @@ def test_v3_preserves_v2_synthetic_null_contract_except_interval_and_seed():
         "simulationReplicates",
         "namesPerDate",
         "signalStepSessions",
-        "confidence",
         "dgps",
         "nullConstruction",
         "statistics",
@@ -31,6 +30,14 @@ def test_v3_preserves_v2_synthetic_null_contract_except_interval_and_seed():
         "syntheticForecastScale",
     ):
         assert v3[key] == v2[key]
+    for key in (
+        "familywiseAlpha",
+        "primaryExpectedReturnClaims",
+        "cellTwoSidedAlpha",
+        "nominalCoverage",
+    ):
+        assert v3["confidence"][key] == v2["confidence"][key]
+    assert "tailQuantile" not in v3["confidence"]
     for key in (
         "materialCoverageFloor",
         "directionalFalsePositiveCeiling",
