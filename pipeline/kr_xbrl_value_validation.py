@@ -38,6 +38,12 @@ CLASSIFICATIONS = ("MATCH", "VALUE_MISMATCH", "SEMANTIC_MISMATCH", "METADATA_MIS
                    "AMBIGUOUS_SOURCE_FACT", "SOURCE_UNAVAILABLE", "INFRASTRUCTURE_ERROR")
 
 
+# Entity identification schemes admitted as a DART corporation-code scheme in
+# addition to the v1 host rule. v1 admits none; v2 (see
+# kr_xbrl_value_validation_v2) passes exactly one, by exact string equality.
+V1_CORP_CODE_SCHEMES = frozenset()
+
+
 class Ambiguous(ValueError):
     pass
 
@@ -264,7 +270,8 @@ def outcome(item, candidate_value, status, reason, **evidence):
             "classification": status, "reason": reason, **evidence}
 
 
-def validate_item(item, candidate_value, raw=None, filing_rows=None):
+def validate_item(item, candidate_value, raw=None, filing_rows=None,
+                  corp_code_schemes=V1_CORP_CODE_SCHEMES):
     """Read source fact by recorded pointer, independently validate its semantics."""
     def result(status, reason, **evidence):
         return outcome(item, candidate_value, status, reason, **evidence)
@@ -338,11 +345,19 @@ def validate_item(item, candidate_value, raw=None, filing_rows=None):
                                {"startDate": str(item["fiscalYear"]) + "-01-01", "endDate": end})
             if context["period"] != expected_period:
                 return result("SEMANTIC_MISMATCH", "prior/current/instant/duration period substitution", source=ev)
-            if context["entity"] not in (item["corpCode"], item["stockCode"]):
-                raise Ambiguous("context entity uses an identifier not independently mapped to issuer")
             scheme = context.get("entityScheme") or ""
-            if not re.fullmatch(r"https?://(?:dart|opendart)\.fss\.or\.kr/?", scheme):
-                raise Ambiguous("context entity scheme not independently established as DART identity")
+            if scheme in corp_code_schemes:
+                # Exact-string scheme independently established as a DART
+                # corporation-code scheme: the identifier must be the corpCode.
+                # No stockCode substitution is allowed under it.
+                if context["entity"] != item["corpCode"]:
+                    return result("METADATA_MISMATCH",
+                                  "context entity identifier differs from the frozen corpCode", source=ev)
+            else:
+                if context["entity"] not in (item["corpCode"], item["stockCode"]):
+                    raise Ambiguous("context entity uses an identifier not independently mapped to issuer")
+                if not re.fullmatch(r"https?://(?:dart|opendart)\.fss\.or\.kr/?", scheme):
+                    raise Ambiguous("context entity scheme not independently established as DART identity")
             dims = context["dimensions"]
             basis = None
             if len(dims) == 1:
