@@ -1,0 +1,92 @@
+name: KR original XBRL value validation
+
+# One-shot, read-only source audit of the frozen 60-fact sample. Ordinary
+# `pull_request` (never `pull_request_target`), same-repository branch only.
+# Uses the existing DART secret solely as DART_API_KEY for the frozen receipts.
+# Pushes nothing, dispatches nothing, runs no Alpha model. The methodological
+# verdict (PASS/FAIL/BLOCKED) is data in the artifact, not a job failure; only
+# INFRASTRUCTURE_ERROR fails the job.
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/kr-original-xbrl-value-validation.yml"
+      - "pipeline/kr_xbrl_value_validation.py"
+      - "pipeline/kr_xbrl_validation_sample.py"
+      - "scripts/validate_kr_original_xbrl_values.py"
+      - "research_specs/kr-original-xbrl-value-validation-v1*.json"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: kr-xbrl-validation-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    if: >-
+      github.event.pull_request.head.repo.full_name == github.repository &&
+      github.event.pull_request.head.ref == 'data/kr-original-xbrl-value-validation-v1'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Fetch pinned accounting source commit
+        run: git fetch --no-tags --depth=1 origin fb6e83743fd8cdba647d1522a4645b662a9d5647
+
+      - name: Run the frozen validation
+        env:
+          DART_API_KEY: ${{ secrets.DART }}
+        run: |
+          mkdir -p out
+          set +e
+          python scripts/validate_kr_original_xbrl_values.py \
+            --input-root "$RUNNER_TEMP/input" \
+            --source-dir "$RUNNER_TEMP/sources" \
+            --materialize-from-git --download \
+            --output out/kr-original-xbrl-value-validation-v1-live.json \
+            2>&1 | tee out/run.log
+          code=${PIPESTATUS[0]}
+          echo "exit code $code" | tee -a out/run.log
+          echo "code=$code" >> "$GITHUB_OUTPUT"
+        id: run
+
+      # The artifact host is not reachable from every reviewer environment, so
+      # the per-item evidence is also echoed to the job log (no secrets or URLs
+      # are ever in the report; sampleItem is dropped as it is in the frozen file).
+      - name: Print per-item evidence
+        run: |
+          python - <<'PY'
+          import collections, json
+          r = json.load(open("out/kr-original-xbrl-value-validation-v1-live.json"))
+          print("verdict", r.get("verdict"), r.get("counts"))
+          print(collections.Counter((x["classification"], x["reason"]) for x in r.get("results", [])).most_common())
+          for x in r.get("results", []):
+              print(json.dumps({k: v for k, v in x.items() if k != "sampleItem"}, sort_keys=True, ensure_ascii=False))
+          PY
+
+      - name: Sample and report hashes
+        run: sha256sum research_specs/kr-original-xbrl-value-validation-v1*.json out/*.json | tee out/hashes.txt
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: kr-original-xbrl-value-validation-v1-live
+          path: out/
+          if-no-files-found: error
+
+      - name: Fail only on infrastructure error
+        if: steps.run.outputs.code == '4' || steps.run.outputs.code == ''
+        run: exit 1
