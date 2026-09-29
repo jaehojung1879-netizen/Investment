@@ -1,0 +1,111 @@
+name: KR original XBRL presentation evidence diagnostic
+
+# Outcome-free, read-only structural diagnostic of 12 frozen facts' original DART
+# ZIPs. Not a validation run: it changes no validation contract, repairs nothing,
+# pushes nothing and runs no Alpha model. Uses the existing secrets.DART as
+# DART_API_KEY only. Never pull_request_target.
+#
+# Triggers: manual `workflow_dispatch` (usable once the workflow exists on the
+# default branch) and, for the authoring PR only, a gated `pull_request` run that
+# needs the authorization file and stops if a result artifact already exists, so
+# it cannot repeat. A rerun is only for genuine infrastructure/transport failure.
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - ".github/workflows/kr-original-xbrl-presentation-evidence-diagnostic.yml"
+      - "pipeline/kr_xbrl_presentation_diagnostic.py"
+      - "scripts/diagnose_kr_xbrl_presentation_evidence.py"
+      - "research_specs/kr-original-xbrl-presentation-evidence-diagnostic-v1*.json"
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: kr-xbrl-presentation-diagnostic-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  diagnose:
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      (github.event.pull_request.head.repo.full_name == github.repository &&
+       github.event.pull_request.head.ref == 'data/kr-original-xbrl-presentation-evidence-diagnostic-v1')
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Gate
+        id: gate
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          EVENT: ${{ github.event_name }}
+        run: |
+          if [ "$EVENT" = "pull_request" ]; then
+            if [ ! -f research_specs/kr-original-xbrl-presentation-evidence-diagnostic-v1-live-authorization.json ]; then
+              echo "No authorization file; skipping."; echo "go=false" >> "$GITHUB_OUTPUT"; exit 0
+            fi
+            n=$(gh api "repos/$REPO/actions/artifacts?name=kr-original-xbrl-presentation-evidence-diagnostic-v1" --jq '[.artifacts[] | select(.expired==false)] | length')
+            if [ "$n" != "0" ]; then
+              echo "A diagnostic artifact already exists; skipping."; echo "go=false" >> "$GITHUB_OUTPUT"; exit 0
+            fi
+          fi
+          echo "go=true" >> "$GITHUB_OUTPUT"
+
+      - uses: actions/setup-python@v6
+        if: steps.gate.outputs.go == 'true'
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install dependencies
+        if: steps.gate.outputs.go == 'true'
+        run: pip install -r requirements.txt
+
+      - name: Fetch pinned accounting source commit
+        if: steps.gate.outputs.go == 'true'
+        run: git fetch --no-tags --depth=1 origin fb6e83743fd8cdba647d1522a4645b662a9d5647
+
+      - name: Run the diagnostic
+        if: steps.gate.outputs.go == 'true'
+        id: run
+        env:
+          DART_API_KEY: ${{ secrets.DART }}
+        run: |
+          mkdir -p out
+          set +e
+          python scripts/diagnose_kr_xbrl_presentation_evidence.py \
+            --input-root "$RUNNER_TEMP/input" \
+            --source-dir "$RUNNER_TEMP/sources" \
+            --raw-dir out/raw \
+            --materialize-from-git --download \
+            --output out/kr-original-xbrl-presentation-evidence-diagnostic-v1-live.json \
+            2>&1 | tee out/run.log
+          code=${PIPESTATUS[0]}
+          echo "exit code $code" | tee -a out/run.log
+          echo "code=$code" >> "$GITHUB_OUTPUT"
+
+      - name: Hashes
+        if: steps.gate.outputs.go == 'true'
+        run: |
+          cd out
+          find . -type f ! -name hashes.txt -print0 | sort -z | xargs -0 sha256sum | tee hashes.txt
+
+      - uses: actions/upload-artifact@v4
+        if: steps.gate.outputs.go == 'true'
+        with:
+          name: kr-original-xbrl-presentation-evidence-diagnostic-v1
+          path: out/
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Fail only on infrastructure error
+        if: steps.gate.outputs.go == 'true' && steps.run.outputs.code != '0'
+        run: exit 1
