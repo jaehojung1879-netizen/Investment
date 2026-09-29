@@ -1,0 +1,88 @@
+{
+  "candidate": {
+    "counts": {
+      "kr-candidate-merged": 9351,
+      "kr-canonical-v2": 8826,
+      "kr-xbrl-original": 525
+    },
+    "gitBlobSha1": {
+      "dart-2015.jsonl.gz": "ee23f00aea08bc28548872a8d8153f1afbb53500",
+      "dart-2016.jsonl.gz": "65be7342d1d47bcbcda84db99f218312d2adb03d",
+      "dart-2017.jsonl.gz": "2b0146e9c1b8363fecdc1c3b1af0b21b68c8e237",
+      "dart-2018.jsonl.gz": "2316d0b0125fb207f9c721323c368120ff10428e",
+      "dart-2019.jsonl.gz": "4a41f94a2748256efae16c50b04f30e2d7578b56",
+      "dart-2020.jsonl.gz": "932292695b4906b9b179f5cef506299a43c96c1a",
+      "dart-2021.jsonl.gz": "46ccf6e760fd2d5037ab67fca0ab2a6ebd1f25dc",
+      "dart-2022.jsonl.gz": "056694d86b9cefbd6b62eb44c91a610d6b5a08b0",
+      "dart-2023.jsonl.gz": "8a0dd4f040d37ffb43d6078721d2f9a763e9539d",
+      "dart-2024.jsonl.gz": "78619db28718f2b49f69893057a10ef459e53c12",
+      "dart-2025.jsonl.gz": "b60daa3620adba7374155837cdbdc96def57dd7a",
+      "dart-2026.jsonl.gz": "5caf06224466fcf30cf0d8e412fb50e24f8b94c6"
+    },
+    "sha256": "af642e7e79e9ba59ac6ee14faf033f4d63887188bab6506845c082e21dc3d1cc",
+    "sourceCommit": "fb6e83743fd8cdba647d1522a4645b662a9d5647",
+    "universeCount": 260
+  },
+  "classifications": [
+    "MATCH",
+    "VALUE_MISMATCH",
+    "SEMANTIC_MISMATCH",
+    "METADATA_MISMATCH",
+    "AMBIGUOUS_SOURCE_FACT",
+    "SOURCE_UNAVAILABLE",
+    "INFRASTRUCTURE_ERROR"
+  ],
+  "comparison": {
+    "accountSemantics": {
+      "assets": "IFRS Assets, BS, period-end instant",
+      "liabilities": "IFRS Liabilities, BS, period-end instant",
+      "net_income": "IFRS ProfitLoss, IS/CIS, cumulative duration",
+      "operating_cash_flow": "IFRS CashFlowsFromUsedInOperatingActivities, CF, cumulative duration"
+    },
+    "context": "Instant equals fiscal period end; durations start fiscal-year start and end report period. Validate context entity against independently authenticated issuer identity; unsupported identifier mapping is ambiguous. Only empty dimensions or exactly consolidated/separate axis shape; recorded CFS/OFS must match, and unknown basis must be independently established or remain ambiguous. No prior-period substitution.",
+    "factLocator": "Locate exact recorded contextRef and element in every original XML instance. Resolve expanded namespace QName, context entity, periods, dimensions and expanded unit measure. Compare every duplicate; unresolved disagreement is ambiguous. A local-name-only nonstandard taxonomy is not sufficient proof.",
+    "independence": "Use stdlib XML reader directly; no import/call/copy of dart_xbrl_statements fact parser. Only authenticated download plumbing may be reused.",
+    "number": "Decimal only; compare signs and exact amounts, or equality after decimal quantization at declared decimals/precision using ROUND_HALF_EVEN. INF is exact. Positive significant precision derives decimal places from source exponent; invalid/conflicting declarations are ambiguous. Do not assume decimals is scale. Standard XBRL monetary fact scale/sign attributes are unsupported (ambiguous); inline XBRL requires a separate explicit implementation and is never silently interpreted. No float tolerance. Missing/nil/nonfinite/malformed values are ambiguous.",
+    "priority": "Confirmed identity metadata mismatch; confirmed accounting/unit/context semantic mismatch; confirmed numeric mismatch; unresolved evidence. Source-unavailable is classified before parsing. A source-read exception in the validator is INFRASTRUCTURE_ERROR, never an economic mismatch.",
+    "sourceIdentity": "Require original filing list evidence matching ticker/stockCode, corpCode, receipt, stage and fiscal period. Compare archive and XML entry hashes. Different archive packaging alone is ambiguous unless original entry bytes are verifiably identical. No later amendment substituted.",
+    "statementEvidence": "Use original package presentation linkbase roles/role definitions and concept locators. Net-income IS and CIS are semantically equivalent for the same ProfitLoss fact; record actual roles. SCE component evidence is not net-income evidence. Missing or inconclusive statement evidence is AMBIGUOUS_SOURCE_FACT, never inferred from concept name.",
+    "unit": "Require source unit to expand to ISO4217:KRW and candidate currency KRW. Preserve unitRef. Divide units/unsupported currencies are semantic mismatches when source proof is conclusive."
+  },
+  "confidence": "No production enum edits. Recommend stronger fixed-sample confidence only on strict PASS; all other outcomes retain CANDIDATE_UNCONFIRMED.",
+  "descriptiveBound": "Only on PASS: two-sided 95% exact Clopper-Pearson upper bound 1-(0.025)^(1/60); optionally label one-sided 95% bound 1-(0.05)^(1/60) separately. Descriptive, not a design-based population guarantee under balanced nonrandom deterministic sampling.",
+  "frame": {
+    "byFamily": {
+      "assets": 517,
+      "liabilities": 516,
+      "net_income": 515,
+      "operating_cash_flow": 489
+    },
+    "originalShardSha256": "889e4d42d2cf62d13477a8c67fddfd5d13e2dfd30ba1f8e4adf7733aab0bd195",
+    "sha256": "d35a97b42ea5dc740e49beece3e0e6194d1eaea5eba3630779ed14e90a1b370f",
+    "size": 2037,
+    "unit": "one stored original-XBRL record/account fact; no numeric eligibility filter"
+  },
+  "immutability": "Commit protocol, sample, selector before opening source values. Later validator pins both file hashes and freeze commit; verify git ancestry and exact frozen bytes. No amendment after source inspection; no substitution or repair.",
+  "nextAfterPass": "KR repaired-input snapshot freeze + accounting semantic contract; no v5 execution or final input seal in this PR.",
+  "sample": {
+    "adaptation": "Amounts omitted from manifest intentionally. Immutable original shard and merged shard identities bind stored amounts; candidate amounts are joined only after freeze. Statement is the candidate claimed statement, not a verified source fact. Null basis/context is retained, not excluded.",
+    "algorithm": "15 rounds in net_income,operating_cash_flow,assets,liabilities order. Nonempty cells=(family,reportCode,basis,statement), smallest prior selections first, ties SHA256(canonical([seed,cell])). Within cell minimize prior global corpCode count, ties SHA256(canonical([seed,recordId+\":\"+family])). canonical=sorted-key compact UTF-8 JSON, ensure_ascii=false. Never search seeds; never replace an item.",
+    "manifestSha256": "590513ede1c8bd06d701f22f4b1aa01bcf8b004aa30b9410540865696e863e70",
+    "perFamily": 15,
+    "seed": "KR_ORIGINAL_XBRL_VALUE_VALIDATION_V1",
+    "size": 60,
+    "uniqueIssuers": 50
+  },
+  "sourceAccess": "Persisted raw bytes preferred. Otherwise existing DART_API_KEY environment and collect_dart_raw_statements authenticated HTTP plumbing only. Never store/print key or request URL containing key. Missing key/raw bytes -> BLOCKED_ON_SOURCE_ACCESS.",
+  "sourceCommit": "fb6e83743fd8cdba647d1522a4645b662a9d5647",
+  "startingMain": "d8e3caddb8a007cfd9842eedd5e751e054d267e4",
+  "startupDeviation": "Initial keyword paragraph sanitizer leaked one unrelated historical performance narrative. No result artifact or investment outcome workflow was opened/executed. No leaked information enters frame, algorithm, thresholds, comparisons or verdict. Replaced with fail-closed known-command extraction. Do not claim zero outcome exposure.",
+  "study": "kr-original-xbrl-value-validation-v1",
+  "verdict": {
+    "BLOCKED": "no confirmed mismatch; at least one SOURCE_UNAVAILABLE or AMBIGUOUS_SOURCE_FACT",
+    "FAIL": "at least one confirmed VALUE_MISMATCH, SEMANTIC_MISMATCH or METADATA_MISMATCH, irrespective of other unresolved items",
+    "INFRASTRUCTURE_ERROR": "process cannot produce a complete conclusive audit because of process errors; report any per-item errors explicitly. FAIL takes priority over process errors.",
+    "PASS": "all 60 MATCH"
+  },
+  "version": 1
+}
