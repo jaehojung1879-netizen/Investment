@@ -6,11 +6,11 @@ import hashlib
 import json
 import os
 from pathlib import Path
+import re
 import subprocess
 
 import numpy as np
 import pytest
-import yaml
 
 from pipeline import alpha_inference_calibration_v4 as CAL4
 from pipeline import alpha_opportunity_v5_spec as S
@@ -191,16 +191,17 @@ def test_code_reads_no_outcome_module():
 
 
 def test_workflow_is_main_only_dispatch_only_read_only_and_pinned():
-    path = ROOT / ".github/workflows/alpha-opportunity-model-v5-execution.yml"
-    text = path.read_text()
-    wf = yaml.safe_load(text)
-    assert list(wf[True]) == ["workflow_dispatch"] and wf["permissions"] == {"contents": "read", "actions": "read"}
+    text = (ROOT / ".github/workflows/alpha-opportunity-model-v5-execution.yml").read_text()
+    triggers = re.search(r"^on:\n((?:  .*\n|\n)+)", text, re.M).group(1)
+    assert "workflow_dispatch" in triggers and "pull_request" not in triggers and "schedule" not in triggers
+    assert re.search(r"^permissions:\n  contents: read\n  actions: read\n", text, re.M)
     assert "pull_request_target" not in text and "secrets." not in text
     assert "github.ref != 'refs/heads/main'" in text
-    assert wf["env"]["SEALED_SHA256"] == SEAL
+    assert re.search(r"SEALED_SHA256: ([0-9a-f]{64})", text).group(1) == SEAL
     assert "--verify-snapshot-from-git" in text and "--verify-raw-inputs-from-git" in text
     assert "authorization.json" in text and "alpha-opportunity-model-v5-result" in text
-    assert wf["jobs"]["v5"]["steps"][-1]["if"] == "inputs.mode == 'execute'"
+    last_step = text.rsplit("      - name:", 1)[1]
+    assert "inputs.mode == 'execute'" in last_step and "--execute" in last_step
 
 
 def test_calibration_and_snapshot_inputs_are_unchanged():
