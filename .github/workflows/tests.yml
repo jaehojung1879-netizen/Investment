@@ -41,6 +41,11 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt -r requirements-dev.txt
 
+      # The frozen KR accounting snapshot is verified against its pinned source
+      # commit (accounting shards only, never a checkout of that branch).
+      - name: Fetch the pinned KR accounting source commit
+        run: git fetch --no-tags --depth=1 origin fb6e83743fd8cdba647d1522a4645b662a9d5647
+
       # Cheapest first, and it catches a class the suite structurally cannot:
       # a name the tests never reach, an import two modules disagree about, a
       # value computed and then dropped. `ruff.toml` argues the rule set; it is

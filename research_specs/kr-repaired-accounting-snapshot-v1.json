@@ -1,0 +1,772 @@
+{
+  "candidateIdentitySha256": "af642e7e79e9ba59ac6ee14faf033f4d63887188bab6506845c082e21dc3d1cc",
+  "code": {
+    "pipeline/accounting_quality.py": "48a6a0a65c7e35acfcf91830b1fc2cff4bbab2f9",
+    "pipeline/alpha_opportunity_features.py": "69c82037185cd6e34e66621bebaf979e92216d01",
+    "pipeline/dart_canonical_accounts.py": "526d699a72b13c3a712f4ee1b043e8decd840e20",
+    "pipeline/dart_derive.py": "c86121c14edab57c81bd1e3638ac2dc488139fcf",
+    "pipeline/dart_fundamentals.py": "8c4ff5c0ad88115826f67375aef1a3e1937616f6",
+    "pipeline/dart_xbrl_statements.py": "7aa93a94457d77a02b6d4e4b2542d186eb90bf8d",
+    "pipeline/historical_store.py": "c3fc27434cf347d1464b2465b1cca505aeb763d7",
+    "scripts/build_kr_canonical_filings.py": "9ef1877f82a70f080b5cb9fe1c492882dc879a87",
+    "scripts/merge_kr_candidate_snapshot.py": "d3524733f9452d9655e89d21ad4d69db8d3bf937"
+  },
+  "coverage": {
+    "availableFromRange": [
+      "2015-04-29",
+      "2026-09-16"
+    ],
+    "byFiscalYear": {
+      "2015": 700,
+      "2016": 700,
+      "2017": 721,
+      "2018": 745,
+      "2019": 759,
+      "2020": 782,
+      "2021": 815,
+      "2022": 825,
+      "2023": 890,
+      "2024": 961,
+      "2025": 970,
+      "2026": 483
+    },
+    "byReportCode": {
+      "11011": 2248,
+      "11012": 2442,
+      "11013": 2425,
+      "11014": 2236
+    },
+    "bySourceAndFsDiv": {
+      "DART:CFS": 8479,
+      "DART:OFS": 347,
+      "DART:fnlttXbrl.xml:ORIGINAL": 525
+    },
+    "distinctIds": 9351,
+    "distinctTickers": 250,
+    "fiscalYearRange": [
+      2015,
+      2026
+    ],
+    "perAccountStatementBasisFromXbrl": {
+      "CFS": 1883,
+      "OFS": 154
+    },
+    "records": 9351,
+    "recordsAvailableAfterStatutoryDeadline": 2639,
+    "recordsMissingAnyFamily": 400,
+    "recordsWithAccount": {
+      "assets": 9339,
+      "liabilities": 9340,
+      "net_income": 9203,
+      "operating_cash_flow": 9096
+    },
+    "recordsWithAllFourFamilies": 8951,
+    "recordsWithMultipleReceipts": 0,
+    "recordsWithReceiptDateNotEqualToAvailableFrom": 2
+  },
+  "coverageByShard": {
+    "dart-2015.jsonl.gz": {
+      "availableFromRange": [
+        "2015-04-29",
+        "2023-05-02"
+      ],
+      "byFiscalYear": {
+        "2015": 700
+      },
+      "byReportCode": {
+        "11011": 175,
+        "11012": 175,
+        "11013": 175,
+        "11014": 175
+      },
+      "bySourceAndFsDiv": {
+        "DART:CFS": 166,
+        "DART:OFS": 9,
+        "DART:fnlttXbrl.xml:ORIGINAL": 525
+      },
+      "distinctIds": 700,
+      "distinctTickers": 179,
+      "fiscalYearRange": [
+        2015,
+        2015
+      ],
+      "perAccountStatementBasisFromXbrl": {
+        "CFS": 1883,
+        "OFS": 154
+      },
+      "records": 700,
+      "recordsAvailableAfterStatutoryDeadline": 309,
+      "recordsMissingAnyFamily": 57,
+      "recordsWithAccount": {
+        "assets": 692,
+        "liabilities": 691,
+        "net_income": 688,
+        "operating_cash_flow": 655
+      },
+      "recordsWithAllFourFamilies": 643,
+      "recordsWithMultipleReceipts": 0,
+      "recordsWithReceiptDateNotEqualToAvailableFrom": 2
+    },
+    "dart-2016.jsonl.gz": {
+      "availableFromRange": [
+        "2016-04-28",
+        "2023-05-02"
+      ],
+      "byFiscalYear": {
+        "2016": 700
+      },
+      "byReportCode": {
+        "11011": 175,
+        "11012": 175,
+        "11013": 175,
+        "11014": 175
+      },
+      "bySourceAndFsDiv": {
+        "DART:CFS": 664,
+        "DART:OFS": 36
+      },
+      "distinctIds": 700,
+      "distinctTickers": 176,
+      "fiscalYearRange": [
+        2016,
+        2016
+      ],
+      "perAccountStatementBasisFromXbrl": {},
+      "records": 700,
+      "recordsAvailableAfterStatutoryDeadline": 335,
+      "recordsMissingAnyFamily": 51,
+      "recordsWithAccount": {
+        "assets": 700,
+        "liabilities": 700,
+        "net_income": 684,
+        "operating_cash_flow": 661
+      },
+      "recordsWithAllFourFamilies": 649,
+      "recordsWithMultipleReceipts": 0,
+      "recordsWithReceiptDateNotEqualToAvailableFrom": 0
+    },
+    "dart-2017.jsonl.gz": {
+      "availableFromRange": [
+        "2017-05-04",
+        "2024-10-02"
+      ],
+      "byFiscalYear": {
+        "2017": 721
+      },
+      "byReportCode": {
+        "11011": 183,
+        "11012": 181,
+        "11013": 176,
+        "11014": 181
+      },
+      "bySourceAndFsDiv": {
+        "DART:CFS": 682,
+        "DART:OFS": 39
+      },
+      "distinctIds": 721,
+      "distinctTickers": 184,
+      "fiscalYearRange": [
+        2017,
+        2017
+      ],
+      "perAccountStatementBasisFromXbrl": {},
+      "records": 721,
+      "recordsAvailableAfterStatutoryDeadline": 165,
+      "recordsMissingAnyFamily": 43,
+      "recordsWithAccount": {
+        "assets": 721,
+        "liabilities": 721,
+        "net_income": 706,
+        "operating_cash_flow": 690
+      },
+      "recordsWithAllFourFamilies": 678,
+      "recordsWithMultipleReceipts": 0,
+      "recordsWithReceiptDateNotEqualToAvailableFrom": 0
+    },
+    "dart-2018.jsonl.gz": {
+      "availableFromRange": [
+        "2018-04-30",
+        "2024-10-02"
+      ],
+      "byFiscalYear": {
+        "2018": 745
+      },
+      "byReportCode": {
+        "11011": 188,
+        "11012": 187,
+        "11013": 183,
+        "11014": 187
+      },
+      "bySourceAndFsDiv": {
+        "DART:CFS": 711,
+        "DART:OFS": 34
+      },
+      "distinctIds": 745,
+      "distinctTickers": 188,
+      "fiscalYearRange": [
+        2018,
+        2018
+      ],
+      "perAccountStatementBasisFromXbrl": {},
+      "records": 745,
+      "recordsAvailableAfterStatutoryDeadline": 206,
+      "recordsMissingAnyFamily": 37,
+      "recordsWithAccount": {
+        "assets": 744,
+        "liabilities": 745,
+        "net_income": 736,
+        "operating_cash_flow": 718
+      },
+      "recordsWithAllFourFamilies": 708,
+      "recordsWithMultipleReceipts": 0,
+      "recordsWithReceiptDateNotEqualToAvailableFrom": 0
+    },
+    "dart-2019.jsonl.gz": {
+      "availableFromRange": [
+        "2019-05-09",
+        "2024-10-02"
+      ],
+      "byFiscalYear": {
+        "2019": 759
+      },
+      "byReportCode": {
+        "11011": 193,
+        "11012": 189,
+        "11013": 188,
+        "11014": 189
+      },
+      "bySourceAndFsDiv": {
+        "DART:CFS": 730,
+        "DART:OFS": 29
+      },
+      "distinctIds": 759,
+      "distinctTickers": 193,
+      "fiscalYearRange": [
+        2019,
+        2019
+      ],
+      "perAccountStatementBasisFromXbrl": {},
+      "records": 759,
+      "recordsAvailableAfterStatutoryDeadline": 57,
+      "recordsMissingAnyFamily": 39,
+      "recordsWithAccount": {
+        "assets": 759,
+        "liabilities": 759,
+        "net_income": 744,
+        "operating_cash_flow": 735
+      },
+      "recordsWithAllFourFamilies": 720,
+      "recordsWithMultipleReceipts": 0,
+      "recordsWithReceiptDateNotEqualToAvailableFrom": 0
+    },
+    "dart-2020.jsonl.gz": {
+      "availableFromRange": [
+        "2020-05-11",
+        "2025-06-05"
+      ],
+      "byFiscalYear": {
+        "2020": 782
+      },
+      "byReportCode": {
+        "11011": 199,
+        "11012": 195,
+        "11013": 193,
+        "11014": 195
+      },
+      "bySourceAndFsDiv": {
+        "DART:CFS": 759,
+        "DART:OFS": 23
+      },
+      "distinctIds": 782,
+      "distinctTickers": 199,
+      "fiscalYearRange": [
+        2020,
+        2020
+      ],
+      "perAccountStatementBasisFromXbrl": {},
+      "records": 782,
+      "recordsAvailableAfterStatutoryDeadline": 221,
+      "recordsMissingAnyFamily": 40,
+      "recordsWithAccount": {
+        "assets": 781,
+        "liabilities": 782,
+        "net_income": 767,
+        "operating_cash_flow": 758
+      },
+      "recordsWithAllFourFamilies": 742,
+      "recordsWithMultipleReceipts": 0,
+      "recordsWithReceiptDateNotEqualToAvailableFrom": 0
+    },
+    "dart-2021.jsonl.gz": {
+      "availableFromRange": [
+        "2021-05-11",
+        "2025-08-22"
+      ],
+      "byFiscalYear": {
+        "2021": 815
+      },
+      "byReportCode": {
+        "11011": 206,
+        "11012": 204,
+        "11013": 200,
+        "11014": 205
+      },
+      "bySourceAndFsDiv": {
+        "DART:CFS": 789,
+        "DART:OFS": 26
+      },
+      "distinctIds": 815,
+      "distinctTickers": 206,
+      "fiscalYearRange": [
+        2021,
+        2021
+      ],
+      "perAccountStatementBasisFromXbrl": {},
+      "records": 815,
+      "recordsAvailableAfterStatutoryDeadline": 504,
+      "recordsMissingAnyFamily": 50,
+      "recordsWithAccount": {
+        "assets": 815,
+        "liabilities": 815,
+        "net_income": 790,
+        "operating_cash_flow": 790
+      },
+      "recordsWithAllFourFamilies": 765,
+      "recordsWithMultipleReceipts": 0,
+      "recordsWithReceiptDateNotEqualToAvailableFrom": 0
+    },
+    "dart-2022.jsonl.gz": {
+      "availableFromRange": [
+        "2022-05-09",
+        "2026-08-13"
+      ],
+      "byFiscalYear": {
+        "2022": 825
+      },
+      "byReportCode": {
+        "11011": 207,
+        "11012": 206,
+        "11013": 206,
+        "11014": 206
+      },
+      "bySourceAndFsDiv": {
+        "DART:CFS": 797,
+        "DART:OFS": 28
+      },
+      "distinctIds": 825,
+      "distinctTickers": 207,
+      "fiscalYearRange": [
+        2022,
+        2022
+      ],
+      "perAccountStatementBasisFromXbrl": {},
+      "records": 825,
+      "recordsAvailableAfterStatutoryDeadline": 371,
+      "recordsMissingAnyFamily": 38,
+      "recordsWithAccount": {
+        "assets": 825,
+        "liabilities": 825,
+        "net_income": 810,
+        "operating_cash_flow": 802
+      },
+      "recordsWithAllFourFamilies": 787,
+      "recordsWithMultipleReceipts": 0,
+      "recordsWithReceiptDateNotEqualToAvailableFrom": 0
+    },
+    "dart-2023.jsonl.gz": {
+      "availableFromRange": [
+        "2023-05-09",
+        "2026-08-13"
+      ],
+      "byFiscalYear": {
+        "2023": 890
+      },
+      "byReportCode": {
+        "11011": 238,
+        "11012": 207,
+        "11013": 207,
+        "11014": 238
+      },
+      "bySourceAndFsDiv": {
+        "DART:CFS": 856,
+        "DART:OFS": 34
+      },
+      "distinctIds": 890,
+      "distinctTickers": 238,
+      "fiscalYearRange": [
+        2023,
+        2023
+      ],
+      "perAccountStatementBasisFromXbrl": {},
+      "records": 890,
+      "recordsAvailableAfterStatutoryDeadline": 100,
+      "recordsMissingAnyFamily": 29,
+      "recordsWithAccount": {
+        "assets": 890,
+        "liabilities": 890,
+        "net_income": 874,
+        "operating_cash_flow": 877
+      },
+      "recordsWithAllFourFamilies": 861,
+      "recordsWithMultipleReceipts": 0,
+      "recordsWithReceiptDateNotEqualToAvailableFrom": 0
+    },
+    "dart-2024.jsonl.gz": {
+      "availableFromRange": [
+        "2024-05-08",
+        "2026-08-13"
+      ],
+      "byFiscalYear": {
+        "2024": 961
+      },
+      "byReportCode": {
+        "11011": 242,
+        "11012": 239,
+        "11013": 238,
+        "11014": 242
+      },
+      "bySourceAndFsDiv": {
+        "DART:CFS": 921,
+        "DART:OFS": 40
+      },
+      "distinctIds": 961,
+      "distinctTickers": 242,
+      "fiscalYearRange": [
+        2024,
+        2024
+      ],
+      "perAccountStatementBasisFromXbrl": {},
+      "records": 961,
+      "recordsAvailableAfterStatutoryDeadline": 269,
+      "recordsMissingAnyFamily": 15,
+      "recordsWithAccount": {
+        "assets": 959,
+        "liabilities": 959,
+        "net_income": 952,
+        "operating_cash_flow": 957
+      },
+      "recordsWithAllFourFamilies": 946,
+      "recordsWithMultipleReceipts": 0,
+      "recordsWithReceiptDateNotEqualToAvailableFrom": 0
+    },
+    "dart-2025.jsonl.gz": {
+      "availableFromRange": [
+        "2025-04-30",
+        "2026-08-14"
+      ],
+      "byFiscalYear": {
+        "2025": 970
+      },
+      "byReportCode": {
+        "11011": 242,
+        "11012": 243,
+        "11013": 242,
+        "11014": 243
+      },
+      "bySourceAndFsDiv": {
+        "DART:CFS": 933,
+        "DART:OFS": 37
+      },
+      "distinctIds": 970,
+      "distinctTickers": 244,
+      "fiscalYearRange": [
+        2025,
+        2025
+      ],
+      "perAccountStatementBasisFromXbrl": {},
+      "records": 970,
+      "recordsAvailableAfterStatutoryDeadline": 74,
+      "recordsMissingAnyFamily": 0,
+      "recordsWithAccount": {
+        "assets": 970,
+        "liabilities": 970,
+        "net_income": 970,
+        "operating_cash_flow": 970
+      },
+      "recordsWithAllFourFamilies": 970,
+      "recordsWithMultipleReceipts": 0,
+      "recordsWithReceiptDateNotEqualToAvailableFrom": 0
+    },
+    "dart-2026.jsonl.gz": {
+      "availableFromRange": [
+        "2026-05-12",
+        "2026-09-16"
+      ],
+      "byFiscalYear": {
+        "2026": 483
+      },
+      "byReportCode": {
+        "11012": 241,
+        "11013": 242
+      },
+      "bySourceAndFsDiv": {
+        "DART:CFS": 471,
+        "DART:OFS": 12
+      },
+      "distinctIds": 483,
+      "distinctTickers": 242,
+      "fiscalYearRange": [
+        2026,
+        2026
+      ],
+      "perAccountStatementBasisFromXbrl": {},
+      "records": 483,
+      "recordsAvailableAfterStatutoryDeadline": 28,
+      "recordsMissingAnyFamily": 1,
+      "recordsWithAccount": {
+        "assets": 483,
+        "liabilities": 483,
+        "net_income": 482,
+        "operating_cash_flow": 483
+      },
+      "recordsWithAllFourFamilies": 482,
+      "recordsWithMultipleReceipts": 0,
+      "recordsWithReceiptDateNotEqualToAvailableFrom": 0
+    }
+  },
+  "freeze": {
+    "frozenSnapshotSha256": "e0199d98679357f405de9a95a4091045db814d65af61e2c698af1a70d54fda58",
+    "statement": "After this commit the snapshot identity is fixed. Any change to the shards, the merger/canonicalisation code listed under `code`, or the source commit requires a new snapshot version, never an edit."
+  },
+  "frozenSnapshotSha256": "e0199d98679357f405de9a95a4091045db814d65af61e2c698af1a70d54fda58",
+  "inputs": {
+    "kr-canonical-v2": {
+      "dart-2015.jsonl.gz": "e2b9b9ec679ebe8f30ce90eb2da5149dff740ddc",
+      "dart-2016.jsonl.gz": "65be7342d1d47bcbcda84db99f218312d2adb03d",
+      "dart-2017.jsonl.gz": "2b0146e9c1b8363fecdc1c3b1af0b21b68c8e237",
+      "dart-2018.jsonl.gz": "2316d0b0125fb207f9c721323c368120ff10428e",
+      "dart-2019.jsonl.gz": "4a41f94a2748256efae16c50b04f30e2d7578b56",
+      "dart-2020.jsonl.gz": "932292695b4906b9b179f5cef506299a43c96c1a",
+      "dart-2021.jsonl.gz": "46ccf6e760fd2d5037ab67fca0ab2a6ebd1f25dc",
+      "dart-2022.jsonl.gz": "056694d86b9cefbd6b62eb44c91a610d6b5a08b0",
+      "dart-2023.jsonl.gz": "8a0dd4f040d37ffb43d6078721d2f9a763e9539d",
+      "dart-2024.jsonl.gz": "78619db28718f2b49f69893057a10ef459e53c12",
+      "dart-2025.jsonl.gz": "b60daa3620adba7374155837cdbdc96def57dd7a",
+      "dart-2026.jsonl.gz": "5caf06224466fcf30cf0d8e412fb50e24f8b94c6"
+    },
+    "kr-xbrl-original": {
+      "dart-xbrl-2015.jsonl.gz": "bb9300676cffd3503c9fe0e1da8b9157b57a8c3f"
+    },
+    "mergeReport": {
+      "bySource": {
+        "canonical-v2": 8826,
+        "xbrl-original": 525
+      },
+      "records": 9351
+    }
+  },
+  "kind": "DATA_FOUNDATION_SNAPSHOT_FREEZE",
+  "knownLimitations": [
+    "Validation covers only the fixed 60-fact fiscal-2015 original-XBRL sample (v3 PASS, concept identity, not statement-membership proof). The 8,826 canonical-v2 records rest on the element/label rules and were not source-validated by that audit.",
+    "250 of 260 PIT-universe tickers have at least one record; 6 preferred-share tickers are unresolved identities (no corpCode) and 4 further resolved issuers have no record.",
+    "The raw-statement collection reported datasetComplete=false with 521 unsettled items and 2,604 recorded source absences (013) at the source commit.",
+    "DART serves statements from 2015; fiscal-2015 quarterlies exist only through original XBRL, so 2016 growth features stay structurally unavailable (audited in kr-accounting-coverage-repair-v1).",
+    "2,639 records carry an amendment's later availableFrom; earlier original values are not in the snapshot and restatement history is not modelled.",
+    "400 records lack at least one of the four families; 2 records fail the receipt-date test and are never visible.",
+    "fiscalYear 2026 is partial (availableFrom up to 2026-09-16).",
+    "Consolidated and separate bases are recorded, not harmonised.",
+    "This freezes an input, not a study: no Alpha, outcome or label was read, and no Alpha-v5 design is implied."
+  ],
+  "notThis": [
+    "Alpha research or an Alpha-v5 preregistration",
+    "an accounting repair, refetch, reselection or tuning",
+    "a rerun of any validation"
+  ],
+  "provenance": {
+    "description": "kr-candidate-merged at the pinned signal-history commit = kr-canonical-v2 (raw DART statement rows, canonicalised by dart_canonical_accounts) united with kr-xbrl-original (fiscal-2015 Q1/H1/Q3 original XBRL via dart_xbrl_statements), merged by scripts/merge_kr_candidate_snapshot.py. Source records are never edited.",
+    "pathsAtSourceCommit": [
+      "ledger/fundamentals/kr-candidate-merged",
+      "ledger/fundamentals/kr-canonical-v2",
+      "ledger/fundamentals/kr-xbrl-original"
+    ],
+    "recreate": "git fetch --no-tags --depth=1 origin <sourceCommit>; python scripts/build_kr_repaired_accounting_snapshot_manifest.py --from-git --verify",
+    "sourceCommit": "fb6e83743fd8cdba647d1522a4645b662a9d5647",
+    "sourceComposition": {
+      "kr-canonical-v2": 8826,
+      "kr-xbrl-original": 525
+    },
+    "universe": {
+      "citedFrom": "ledger/fundamentals/kr-raw/manifest.json blob 82811e7cca1dc71a162be88908ed8dde9e601f88 at the source commit",
+      "identityBasis": "EXACT_STOCK_CODE for the 254; the 6 unresolved are preferred-share tickers with no corpCode row (not mapped; that would need its own preregistered identity rule)",
+      "pitUniverseTickers": 260,
+      "resolvedIssuers": 254,
+      "tickersWithAtLeastOneSnapshotRecord": 250,
+      "unresolvedIssuers": [
+        "005385.KS",
+        "005387.KS",
+        "005935.KS",
+        "051905.KS",
+        "051915.KS",
+        "090435.KS"
+      ]
+    },
+    "validatedCandidate": "candidateIdentitySha256 equals the candidate SHA-256 validated by kr-original-xbrl-value-validation v1-v3"
+  },
+  "recordCount": 9351,
+  "regeneration": {
+    "byteIdentical": true,
+    "contentSha256": "e0199d98679357f405de9a95a4091045db814d65af61e2c698af1a70d54fda58",
+    "mergeReportEqual": true,
+    "method": "scripts/merge_kr_candidate_snapshot.py from kr-canonical-v2 + kr-xbrl-original",
+    "shardSetEqual": true
+  },
+  "semanticContract": {
+    "amountUnits": "Full KRW as stated by the filer (decimals recorded for original-XBRL records); no scaling.",
+    "basisCfsVsOfs": {
+      "jsonEndpointRecords": "Consolidated (CFS) is requested first and Separate (OFS) only if CFS served nothing; the answering basis is recorded per record in fsDiv (CFS 8,479; OFS 347).",
+      "note": "Downstream feature code does not condition on basis. A company reporting only OFS is compared on that basis, recorded but not adjusted.",
+      "originalXbrlRecords": "Per account: an unqualified fact first, otherwise Consolidated over Separate; the winning basis is recorded per account in canonicalization.accounts[*].statementBasis (CFS 1,883; OFS 154 account readings). Different accounts of one filing may resolve under different bases."
+    },
+    "contract": "KR_ACCOUNTING_SEMANTIC_CONTRACT_V1",
+    "duplicatesAndMultipleReceipts": {
+      "candidateRows": "Inside the first statement that has candidates for an account, candidates that disagree on amounts make the account AMBIGUOUS and it is omitted; a component row (account_detail other than '-') is never a total.",
+      "multipleReceipts": "0 records carry more than one receipt number. Several would take the earliest as availableFrom, and visible_filings would refuse a record whose receipt dates differ.",
+      "recordIds": "Unique in the snapshot (9,351 ids, 9,351 records). historical_store.write_shard keeps the first write of an id.",
+      "sourceCollision": "If an id existed in both kr-canonical-v2 and kr-xbrl-original the merger raises CANDIDATE_SOURCE_COLLISION rather than choose."
+    },
+    "families": {
+      "assets": {
+        "account": "자산총계",
+        "ifrsElement": "Assets",
+        "meaning": "Total assets at the period end, level, KRW.",
+        "statement": "BS"
+      },
+      "liabilities": {
+        "account": "부채총계",
+        "ifrsElement": "Liabilities",
+        "meaning": "Total liabilities at the period end, level, KRW.",
+        "statement": "BS"
+      },
+      "net_income": {
+        "account": "당기순이익",
+        "ifrsElement": "ProfitLoss",
+        "meaning": "Profit or loss for the period including non-controlling interests, cumulative year-to-date; never ProfitLossAttributableToOwnersOfParent.",
+        "statement": "IS or CIS (CF label fallback only via exact label)"
+      },
+      "operating_cash_flow": {
+        "account": "영업활동현금흐름",
+        "ifrsElement": "CashFlowsFromUsedInOperatingActivities",
+        "meaning": "Net cash flows from operating activities, cumulative year-to-date; never the 'cash generated from operations' subtotal.",
+        "statement": "CF"
+      }
+    },
+    "filingAndAmendmentTreatment": {
+      "identity": "One record per ticker x fiscalYear x reportCode (id ticker:fiscalYear:reportCode). The snapshot holds exactly one value per filing.",
+      "jsonEndpointRecords": "fnlttSinglAcntAll serves the LATEST amendment's receipt for a filing, so its availableFrom is that later date. 2,639 records are dated after their statutory deadline. This is point-in-time honest (the later date) but the earlier original values are not recoverable from this snapshot.",
+      "originalXbrlRecords": "The 525 fiscal-2015 Q1/H1/Q3 records come from the ORIGINAL filing selected from DART list.json by its own report label with the amendment marker excluded; an amendment is never substituted.",
+      "restatements": "Not modelled. A later restatement is not a new record in this snapshot; where the endpoint served an amendment it replaced the original in place at collection time."
+    },
+    "missingValues": {
+      "measured": "400 of 9,351 records lack at least one of the four families.",
+      "rule": "An account absent from a filing is absent from record.accounts and reads as None. Never 0.0, never imputed. Absence lowers coverage; it is not a value."
+    },
+    "noFutureFillNoLookAhead": {
+      "rules": [
+        "only filings with availableFrom < as-of date are visible",
+        "the current filing is the latest visible by (fiscalYear, stage order Q1<H1<Q3<annual), and priors come only from the same visible set",
+        "share counts may be carried forward from an earlier visible filing, never from a later one",
+        "no forward fill of a missing account from any other period",
+        "whole-history derivation followed by filtering is forbidden"
+      ]
+    },
+    "periodSemantics": {
+      "flows": "Flow accounts are cumulative from fiscal-year start to the period end. Annual: thstrm_amount. Quarterly IS/CIS: thstrm_add_amount (year-to-date; thstrm_amount is the quarter alone). Cash flow: the single reported column is already year-to-date.",
+      "levels": "Balance-sheet accounts are levels at the period end (thstrm_amount); never rolled forward or averaged.",
+      "reportCodes": {
+        "11011": "annual, 12 months to 12-31",
+        "11012": "half-year, 6 months to 06-30",
+        "11013": "Q1, 3 months to 03-31",
+        "11014": "Q3, 9 months to 09-30"
+      },
+      "trailingTwelveMonths": "Annual figure as filed; otherwise TTM = FY(Y-1) - cumulative(Y-1, same stage) + cumulative(Y, stage), requiring both prior filings to be visible; anything missing gives None. Never annualised."
+    },
+    "pointInTimeAvailability": {
+      "availableFrom": "The date in the head of the DART receipt number (dart_fundamentals.receipt_date); the minimum over a filing's receipts. A filing with no receipt date is refused at collection.",
+      "measured": "2 of 9,351 records fail the receipt-equals-availableFrom test (005300.KS:2015:11013, 019170.KS:2015:11012) and are never visible.",
+      "visibleTo": "A filing is usable for an as-of date D only if availableFrom < D (strictly earlier; intraday release time is unknown) AND every receipt number's date prefix equals availableFrom (alpha_opportunity_features.visible_filings). Nothing derived from a filing that is not yet visible may be used, including as a prior in a rollforward."
+    },
+    "sourcePrecedence": {
+      "rule": "The two sources are disjoint by construction, so no precedence is needed and none is applied: kr-xbrl-original covers only fiscal-2015 Q1/H1/Q3 (525 records); kr-canonical-v2 covers every other filing including the FY2015 annual (175). A collision is an error.",
+      "validation": "kr-original-xbrl-value-validation-v3 confirmed 60 of 60 fixed-sample original-XBRL records against source; canonical-v2 records were not validated against original packages by that audit."
+    }
+  },
+  "shards": {
+    "dart-2015.jsonl.gz": {
+      "contentSha256": "6058f1288b32e625a4e3c05f8ab2d8cd0f85a54a8a66dce88ce0f272ed2c853a",
+      "fileSha256": "a7eeaf2d25dde7e7574f6991f4075962cc3fbeaaeec09fa0b86f7399571f6168",
+      "gitBlobSha1": "ee23f00aea08bc28548872a8d8153f1afbb53500",
+      "records": 700
+    },
+    "dart-2016.jsonl.gz": {
+      "contentSha256": "1ba09152ea0bc7b53cfecb2279c14d7645721f4f663f90b37ca33507e3addb34",
+      "fileSha256": "a1032ae814df1a0fb10f7edc92881e2c2b44d3064e089d0210cfdbdf1ee3d0c6",
+      "gitBlobSha1": "65be7342d1d47bcbcda84db99f218312d2adb03d",
+      "records": 700
+    },
+    "dart-2017.jsonl.gz": {
+      "contentSha256": "4ba645564aae38ee36ac65b03ca1831b32cbcdce50e6758e16c6f97a947b8a17",
+      "fileSha256": "06a9acd533536e3aeddbbf31c9429c5aaf22db2e52d9eb515aa7fab3a1a3749a",
+      "gitBlobSha1": "2b0146e9c1b8363fecdc1c3b1af0b21b68c8e237",
+      "records": 721
+    },
+    "dart-2018.jsonl.gz": {
+      "contentSha256": "8635532619b44ed78c3c249dd93877970ecf90e114c6c1d2e9261fbbc0b23afa",
+      "fileSha256": "98278a45385b4b895055f3f5b35fa6c87d4f64ed8da97f69e1822f908ada89d3",
+      "gitBlobSha1": "2316d0b0125fb207f9c721323c368120ff10428e",
+      "records": 745
+    },
+    "dart-2019.jsonl.gz": {
+      "contentSha256": "9e9694ccbccc79f2907e3b52b7607bafd792c5ad712a969a45f62f4efe1eec4b",
+      "fileSha256": "7d1f9decc7d8d683cde70db6a01578ae1bc68532a42535657e6575a2eb05e206",
+      "gitBlobSha1": "4a41f94a2748256efae16c50b04f30e2d7578b56",
+      "records": 759
+    },
+    "dart-2020.jsonl.gz": {
+      "contentSha256": "ae687ee75917092248958b4c04201af1e76f8ac35b8df09c333607f3e75405c5",
+      "fileSha256": "073c38aae8c455c40b74cf962d89dac5dea5ae49131d1ccdac37f2fefe5527fe",
+      "gitBlobSha1": "932292695b4906b9b179f5cef506299a43c96c1a",
+      "records": 782
+    },
+    "dart-2021.jsonl.gz": {
+      "contentSha256": "add87e64bc18d83248bd2024ffb042bfa661665c2918f34d0e73aa49be5635b1",
+      "fileSha256": "aca2af6575e8fa2a0f04c2213856e3746f999334ad50b6c480dece23dbaf81cb",
+      "gitBlobSha1": "46ccf6e760fd2d5037ab67fca0ab2a6ebd1f25dc",
+      "records": 815
+    },
+    "dart-2022.jsonl.gz": {
+      "contentSha256": "0f219de09ac1de8a12f02b30ecb2604385da6d2a5c603707cd40f1456e72386c",
+      "fileSha256": "05d8e984985a5b2d2ad6a55782885f73aebef953e4d49f70a3ceef9c525c1080",
+      "gitBlobSha1": "056694d86b9cefbd6b62eb44c91a610d6b5a08b0",
+      "records": 825
+    },
+    "dart-2023.jsonl.gz": {
+      "contentSha256": "b51d7641aa6b03274c336c4939fd6a1668cc02d9c575d0410368157ca8d9c21d",
+      "fileSha256": "8c4752b966d7dd5ae6d4b594236bb924068c13446c85069c170eb159b23dcd78",
+      "gitBlobSha1": "8a0dd4f040d37ffb43d6078721d2f9a763e9539d",
+      "records": 890
+    },
+    "dart-2024.jsonl.gz": {
+      "contentSha256": "43ae887b62f69201b29e956929675451cab71e8dd36e12ac57e7fdeb9786230d",
+      "fileSha256": "0e3f4ea1ad049861e98fcbf5d95e28eb91388b7b2205992dd6a03748ebd540c4",
+      "gitBlobSha1": "78619db28718f2b49f69893057a10ef459e53c12",
+      "records": 961
+    },
+    "dart-2025.jsonl.gz": {
+      "contentSha256": "5f36f6c49f880ef07ff8aae639b48cb2ec9e73c44c8f4d2873da56fa5973e447",
+      "fileSha256": "312b0a559e60c554fe9a823207d8c1e986b7cccd8675e0ce11aff0c85483f215",
+      "gitBlobSha1": "b60daa3620adba7374155837cdbdc96def57dd7a",
+      "records": 970
+    },
+    "dart-2026.jsonl.gz": {
+      "contentSha256": "c1e33adb7938eaa50f49f4b28a35ea22a3db7b26b454ed88cfcc7138c9eebef5",
+      "fileSha256": "713ec8bc535bec018748e098f7a1b5737450d5e4c56ed2a0899510b7b3588c1c",
+      "gitBlobSha1": "5caf06224466fcf30cf0d8e412fb50e24f8b94c6",
+      "records": 483
+    }
+  },
+  "snapshotContentSha256": "e0199d98679357f405de9a95a4091045db814d65af61e2c698af1a70d54fda58",
+  "sourceCommit": "fb6e83743fd8cdba647d1522a4645b662a9d5647",
+  "startingMain": "ca859e894f2505b1caae01e23e2fe785160dbceb",
+  "study": "kr-repaired-accounting-snapshot-v1",
+  "version": 1
+}
