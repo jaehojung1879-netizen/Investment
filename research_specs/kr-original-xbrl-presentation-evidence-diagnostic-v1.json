@@ -1,0 +1,100 @@
+{
+  "currentReaderHypotheses": [
+    "role definition in a different document",
+    "definition wording not handled by statement_kind",
+    "relative company-taxonomy href",
+    "fragment differs from ifrs_<element>/ifrs-full_<element>",
+    "concept only in external taxonomy",
+    "XSD concept id differs from element QName",
+    "extension element substitutes for a standard element",
+    "arc connectivity filter excludes labels",
+    "linkbase referenced but not embedded",
+    "no relevant presentation network"
+  ],
+  "externalTaxonomy": "External resources are documented (href, inside-ZIP or external, whether membership is provable without them) and never fetched or treated as equivalent to source-contained evidence.",
+  "forbidden": [
+    "editing v1/v2 protocol, sample, reports or reader semantics",
+    "repairing candidate data",
+    "pull_request_target",
+    "committing raw ZIPs",
+    "signal-history writes",
+    "any Alpha/outcome artifact or workflow"
+  ],
+  "frozen": {
+    "candidateSha256": "af642e7e79e9ba59ac6ee14faf033f4d63887188bab6506845c082e21dc3d1cc",
+    "sampleSha256": "590513ede1c8bd06d701f22f4b1aa01bcf8b004aa30b9410540865696e863e70",
+    "v2ProtocolSha256": "a0251b2459de1ed820c7306c822e29429d92b18b72e2063d044e34ba8db3871d"
+  },
+  "identityVsCorroboration": "The report separates whether the frozen fact is uniquely identified by filing, issuer, element QName, period, dimensions, basis, unit, precision and amount from whether presentation adds independent statement-membership proof. It changes no validation contract.",
+  "inventory": [
+    "archive (receipt, ticker, corpCode, zip sha256, file count)",
+    "every XML-like entry (name, type, sha256, root tag, targetNamespace)",
+    "schemaRef/linkbaseRef/roleRef/arcroleRef raw hrefs",
+    "roleType (roleURI, definition, usedOn)",
+    "presentationLink (role, definition, inferred kind, loc/arc counts, hrefs, concept fragments)"
+  ],
+  "kind": "OUTCOME_FREE_SOURCE_STRUCTURE_DIAGNOSTIC",
+  "notThis": [
+    "Alpha research",
+    "a validation version",
+    "an accounting repair",
+    "a rerun of v1 or v2",
+    "a candidate change",
+    "a v5 input seal"
+  ],
+  "outcomeBlindness": "Only accounting/XBRL structure is read. The earlier accidental exposure to one historical performance narrative remains disclosed; zero exposure is not claimed.",
+  "predecessors": {
+    "v1": {
+      "blocker": "context entity scheme not independently established as DART identity",
+      "closed": true,
+      "verdict": "BLOCKED"
+    },
+    "v2": {
+      "artifact": 11029185628,
+      "blocker": "source presentation does not prove required financial statement",
+      "closed": true,
+      "liveRun": 36557135754,
+      "presentationEvidence": "[] for 60/60",
+      "verdict": "BLOCKED"
+    }
+  },
+  "question": "Why is presentation evidence empty for all 60 v2 facts: reader bug, source structure limitation, external taxonomy dependency, or mixed structure?",
+  "retained": "Raw ZIPs are kept only as a temporary Actions artifact, never committed to git.",
+  "startingMain": "b1cb804ebc9e4acbbebd0573f7204ed621a7be69",
+  "study": "kr-original-xbrl-presentation-evidence-diagnostic-v1",
+  "subset": {
+    "identities": [
+      "108670.KS:2015:11013:net_income",
+      "008770.KS:2015:11012:net_income",
+      "068270.KS:2015:11014:net_income",
+      "006740.KS:2015:11013:operating_cash_flow",
+      "115390.KS:2015:11012:operating_cash_flow",
+      "042700.KS:2015:11014:operating_cash_flow",
+      "047810.KS:2015:11013:assets",
+      "052690.KS:2015:11012:assets",
+      "003230.KS:2015:11014:assets",
+      "057050.KS:2015:11013:liabilities",
+      "012750.KS:2015:11012:liabilities",
+      "003520.KS:2015:11014:liabilities"
+    ],
+    "purpose": "structural diagnosis only; does NOT replace the fixed 60-fact sample",
+    "rule": "For each of 4 families x 3 stages (11013,11012,11014) take the cell of frozen items; prefer basis CFS if (familyIndex+stageIndex) is even else OFS (familyOrder net_income,operating_cash_flow,assets,liabilities; stageOrder 11013,11012,11014), falling back to the whole cell if none; pick the minimum SHA-256 of 'KR_ORIGINAL_XBRL_PRESENTATION_DIAGNOSTIC_V1|'+identity. Uses identity/provenance metadata only, never whether presentation works.",
+    "size": 12,
+    "source": "the already frozen v1 60 items; no new sample"
+  },
+  "trace": "For each diagnostic fact: element QName -> context -> statement/basis expectation -> presentation network, recording where the current reader's chain first breaks.",
+  "verdictNote": "Not a PASS/FAIL judgment on accounting values.",
+  "verdicts": [
+    "READER_BUG_CONFIRMED",
+    "SOURCE_PRESENTATION_INSUFFICIENT",
+    "EXTERNAL_TAXONOMY_DEPENDENCY",
+    "MIXED_SOURCE_STRUCTURE",
+    "INCONCLUSIVE"
+  ],
+  "version": 1,
+  "workflow": {
+    "permissions": "contents: read (actions: read only for the one-shot artifact gate)",
+    "reruns": "only for genuine infrastructure/transport failure",
+    "secret": "existing secrets.DART as DART_API_KEY"
+  }
+}
