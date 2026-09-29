@@ -1,0 +1,85 @@
+name: Alpha opportunity model v5 execution
+
+# The one authorized historical execution of the frozen alpha-opportunity-model-v5
+# preregistration, plus an outcome-free verification mode. workflow_dispatch only,
+# refuses any ref but main.
+#
+#   mode: verify   -> checks every frozen identity; reads no label, price return,
+#                     score or outcome. Safe to run any time after merge.
+#   mode: execute  -> requires the operator's authorization file
+#                     (research_specs/alpha-opportunity-model-v5-execution-authorization.json),
+#                     refuses when a result artifact already exists (one-shot),
+#                     verifies first, then calls the runner's --execute.
+#
+# In the preregistration change the runner's --execute REFUSES with
+# NO_V5_EXECUTION_HARNESS_IN_THIS_PR: the reviewed execution harness is a separate
+# later change. Do not run mode: execute before that harness has merged.
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "verify (outcome-free) or execute (the single authorized run)"
+        type: choice
+        options: [verify, execute]
+        default: verify
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: alpha-opportunity-model-v5
+  cancel-in-progress: false
+
+env:
+  SEALED_SHA256: d0f1aaf50d9629ba2f8a0a9802cd4ebd653018028ee97b2746f9e50703741e75
+
+jobs:
+  v5:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    steps:
+      - name: Refuse any ref other than main
+        if: github.ref != 'refs/heads/main'
+        run: |
+          echo "::error::alpha-opportunity-model-v5 runs only from refs/heads/main (got ${{ github.ref }})."
+          exit 1
+
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Fetch pinned KR accounting source commit and sealed raw-input commit
+        run: |
+          git fetch --no-tags --depth=1 origin fb6e83743fd8cdba647d1522a4645b662a9d5647
+          git fetch --no-tags --depth=1 --filter=blob:none origin 4ea107ed0cde289f0a049a65ff13d2441a786710
+
+      - name: Sidecar equals the pinned digest
+        run: test "$(cat research_specs/alpha-opportunity-model-v5.sha256)" = "$SEALED_SHA256"
+
+      - name: Verify every frozen identity (outcome-free)
+        run: |
+          python scripts/run_alpha_opportunity_model_v5.py --sealed-sha256 "$SEALED_SHA256" --verify-only \
+            --verify-snapshot-from-git --verify-raw-inputs-from-git | tee verify.json
+
+      - name: Execution gate (authorization present, no earlier result artifact)
+        if: inputs.mode == 'execute'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+        run: |
+          test -f research_specs/alpha-opportunity-model-v5-execution-authorization.json
+          n=$(gh api "repos/$REPO/actions/artifacts?name=alpha-opportunity-model-v5-result" --jq '[.artifacts[] | select(.expired==false)] | length')
+          if [ "$n" != "0" ]; then echo "::error::a v5 result artifact already exists; the run is one-shot."; exit 1; fi
+
+      - name: Execute (fails closed until the reviewed harness has merged)
+        if: inputs.mode == 'execute'
+        run: python scripts/run_alpha_opportunity_model_v5.py --sealed-sha256 "$SEALED_SHA256" --execute

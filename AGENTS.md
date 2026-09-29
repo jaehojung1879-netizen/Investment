@@ -2106,6 +2106,39 @@
   the open rank-IC versus `rankWeightedSpread` decision (v2.37) remains a
   separate pre-Alpha-v5 design choice.
 
+## Alpha-opportunity-model-v5 preregistration invariants (v2.39)
+
+- A PREREGISTRATION IS NOT AN EXECUTION, AND NEITHER IS ITS VERIFIER. `alpha-
+  opportunity-model-v5` freezes one KR historical execution. Its runner verifies
+  identities (`--verify-only`) and its `--execute` refuses with
+  `NO_V5_EXECUTION_HARNESS_IN_THIS_PR`; the reviewed harness is a later change kept
+  outside the sealed dependency closure, as v4's was, so adding it cannot rewrite the
+  frozen protocol. No label, score or outcome was read to write the protocol.
+- A REGION WITH NO REPAIRED INPUT IS BLOCKED, NOT SUBSTITUTED. The US survivorship
+  defect has no sealed repair on `main`, so the single execution is KR-only with two
+  primary claims (which is also what the inference calibration's Bonferroni design
+  assumed). The US model stays separate, never pooled and with no region feature; it can
+  join only through a new version over a separately hashed US snapshot.
+- A DESIGN QUESTION THE CALIBRATION LEFT OPEN IS DECIDED IN THE FROZEN FILE, BEFORE
+  OUTCOMES. `rankWeightedSpread` is the confirmatory ordering statistic because it is
+  linear in returns with signal-date weights and was calibrated; Spearman `rankIC` is
+  descriptive only. The change from the earlier rank-IC expectation is recorded as an
+  explicit pre-outcome revision with its reason, not adopted after a result.
+- SUBTRACTING A FIELD IS NOT MINING A FEATURE, AND IT IS STILL RECORDED. `ocfTo
+  NetIncomePct` is removed from KR H126 (the design review required its state contract
+  to be approved or the field excluded); nothing is added. The decision is in the
+  spec's decisions ledger with its reason.
+- INHERITED MEANS VERIFIED, NOT RESTATED. Every value carried from the sealed v4 is
+  copied with a digest and compared to its source on each load
+  (`INHERITED_VALUE_CHANGED`), the KR accounting snapshot is pinned by content hash,
+  candidate identity and per-shard blob, and the calibrated inference spec and engine
+  files are pinned by hash. A merged result the repository does not carry (the v5
+  calibration run) is cited from Actions with its provenance, never invented.
+- A SUBSTANTIVE RESULT CLOSES THE STUDY. One authorized execution from merged `main`;
+  a retry only for a run with no complete artifact; no reseeding, threshold, feature,
+  model, horizon, benchmark or universe change afterwards. The sample is exposed
+  history: PASS is replication-type evidence needing prospective confirmation.
+
 ## Lint gate invariants (v2.11)
 
 - The enabled rule set reports ZERO findings on `main`. A rule is turned on in the
