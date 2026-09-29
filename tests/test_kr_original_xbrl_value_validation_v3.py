@@ -136,3 +136,13 @@ def test_no_production_parser_or_outcome_access():
             assert forbidden not in code
     with pytest.raises(ValueError, match="OUTCOME_OR_UNAPPROVED_PATH_REFUSED"):
         S.permitted_path(ROOT, "ledger/historical/replay-v16/x.jsonl.gz")
+
+
+def test_saved_v3_report_preserves_the_exact_v1_items():
+    _, _, sample = V3.load_frozen(ROOT)
+    report = json.loads((ROOT / "docs/results/kr-original-xbrl-value-validation-v3-report.json").read_text())
+    assert [r["sampleItem"] for r in report["results"]] == sample["items"]
+    assert report["sampleSha256"] == V.SAMPLE_SHA256 and sum(report["counts"].values()) == 60
+    assert report["verdict"] == "PASS" and report["counts"]["MATCH"] == 60
+    assert all(r["classification"] == "MATCH" for r in report["results"])
+    assert report["candidateRepaired"] is False and report["alphaOutcomesUsed"] is False
