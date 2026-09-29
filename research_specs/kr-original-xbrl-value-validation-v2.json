@@ -1,0 +1,132 @@
+{
+  "candidate": {
+    "changes": "NONE",
+    "sha256": "af642e7e79e9ba59ac6ee14faf033f4d63887188bab6506845c082e21dc3d1cc",
+    "sourceCommit": "fb6e83743fd8cdba647d1522a4645b662a9d5647"
+  },
+  "classifications": [
+    "MATCH",
+    "VALUE_MISMATCH",
+    "SEMANTIC_MISMATCH",
+    "METADATA_MISMATCH",
+    "AMBIGUOUS_SOURCE_FACT",
+    "SOURCE_UNAVAILABLE",
+    "INFRASTRUCTURE_ERROR"
+  ],
+  "confidence": "CANDIDATE_UNCONFIRMED remains unless 60/60 MATCH. No production enum is invented and no v5 input is sealed.",
+  "independentEvidence": {
+    "conclusion": "The URI is an entity identification scheme namespace (not required to be web-resolvable) used by DART contexts for the 8-digit DART corporation code.",
+    "notSufficientAlone": "That all 60 v1 files contained the URI motivated the follow-up but is not treated as evidence.",
+    "provenance": "Supplied by the requester in the task instructions before this freeze. The authoring environment's egress proxy blocks these hosts, so the sources were not re-fetched here; their content is recorded as cited, not independently re-verified by the author.",
+    "sources": [
+      {
+        "establishes": "The entity identifier element's required scheme attribute holds the namespace URI of the identification scheme; XBRL assumes no application can resolve the identifier or scheme URI.",
+        "id": "XBRL-2.1",
+        "section": "4.7.3.1",
+        "title": "XBRL 2.1 Specification, XBRL International",
+        "url": "https://www.xbrl.org/Specification/xbrl-recommendation-2003-12-31.pdf"
+      },
+      {
+        "establishes": "corp_code is the disclosing company's 8-digit corporation code (example 00126380).",
+        "id": "OPENDART",
+        "title": "OpenDART developer guide (FSS)",
+        "url": "https://engopendart.fss.or.kr/guide/detail.do?apiGrpCd=DE002&apiId=AE00029"
+      },
+      {
+        "establishes": "An XBRL context example shows <identifier scheme=\"http://dart.fss.or.kr/ifrs/CIK\">00126380</identifier>, the same 8-digit value OpenDART gives as a corporation code.",
+        "id": "KPMG-KR-XBRL-2023",
+        "title": "KPMG Korea XBRL seminar material, 2023-04-28",
+        "url": "https://assets.kpmg.com/content/dam/kpmg/kr/pdf/2023/kr-kpmg-xbrl-seminar-20230428.pdf"
+      }
+    ],
+    "whyNotBroader": "The evidence names one URI. It says nothing about other paths, hosts, schemes or identifier types, and a scheme URI is an opaque namespace name, so prefix or wildcard matching would admit identifiers no evidence covers."
+  },
+  "newBlockerPolicy": "If another systematic blocker appears, v2 stays BLOCKED. No further rule is widened inside v2; any further change needs a new separately justified version.",
+  "nextAfterPass": "KR repaired-input snapshot freeze + accounting semantic contract",
+  "noShortCircuit": "After the entity check every remaining check runs: period, basis, unit, decimals/precision, presentation, nil/transform attributes, duplicate-fact consistency, exact Decimal amount. A raw text equal to the candidate is not a MATCH without them.",
+  "predecessor": {
+    "blockingReason": "context entity scheme not independently established as DART identity",
+    "counts": {
+      "AMBIGUOUS_SOURCE_FACT": 60,
+      "INFRASTRUCTURE_ERROR": 0,
+      "MATCH": 0,
+      "METADATA_MISMATCH": 0,
+      "SEMANTIC_MISMATCH": 0,
+      "SOURCE_UNAVAILABLE": 0,
+      "VALUE_MISMATCH": 0
+    },
+    "liveArtifact": 11012284532,
+    "liveRun": 36519798469,
+    "mergeCommit": "568b9b5b16a2841b20fdf5993b3ad87275bd0088",
+    "preSourceFreezeCommit": "e756f0aa4457aaa4840ea359df7eb9276ce77731",
+    "protocolSha256": "0aec37a4daed0d0765a25846cbdcbc410d70098fbed9340926a5376dd791cb0a",
+    "reportJsonSha256": "6341d0aae30c014c8f15b2cae7261609742b52dae7f698d2bc33fe0b5a74380b",
+    "reproducibility": "A v1 rerun must still reject the CIK scheme and reproduce BLOCKED. v1 files are never edited.",
+    "sampleSha256": "590513ede1c8bd06d701f22f4b1aa01bcf8b004aa30b9410540865696e863e70",
+    "status": "CLOSED_IMMUTABLE",
+    "study": "kr-original-xbrl-value-validation-v1",
+    "verdict": "BLOCKED"
+  },
+  "purpose": "Single-rule capability follow-up to the closed v1: decide whether the exact entity identification scheme http://dart.fss.or.kr/ifrs/CIK is admitted as a DART corporation-code scheme, then run every remaining frozen check on the same 60 facts. Not an Alpha experiment, not an accounting repair, not the Alpha-v5 input seal.",
+  "runPolicy": {
+    "forbidden": [
+      "pull_request_target",
+      "signal-history writes",
+      "candidate repair",
+      "Alpha execution",
+      "raw ZIP commits"
+    ],
+    "formalLiveRuns": 1,
+    "permissions": "contents: read, actions: read",
+    "secret": "existing secrets.DART as DART_API_KEY only",
+    "trigger": "Only after this protocol is frozen and normal CI is green. Not repeated because a verdict is undesirable. A run that ends INFRASTRUCTURE_ERROR before producing any valid classification may be retried, and any retry is documented in the report."
+  },
+  "sample": {
+    "newSampling": "FORBIDDEN",
+    "newSeed": "NONE",
+    "note": "The v1 sample file and its deterministic reselection from the frozen frame are verified unchanged before any source comparison.",
+    "requiredSha256": "590513ede1c8bd06d701f22f4b1aa01bcf8b004aa30b9410540865696e863e70",
+    "reuse": "EXACT_V1_SAMPLE",
+    "size": 60,
+    "substitution": "FORBIDDEN"
+  },
+  "singleSemanticChange": {
+    "implementation": "Versioned option on the shared reader defaulting to the v1 rule, enabled only by the v2 module/script under this protocol.",
+    "notAllowed": [
+      "wildcard or prefix matching of dart.fss.or.kr/*",
+      "trailing-slash, case, scheme (https) or whitespace variants",
+      "arbitrary CIK-like schemes",
+      "stockCode substitution under this scheme",
+      "any weakening of the entity comparison",
+      "any other ambiguity rule change"
+    ],
+    "otherSchemes": "Behave exactly as in v1 (bare dart/opendart host scheme only; otherwise AMBIGUOUS_SOURCE_FACT).",
+    "rule": "An xbrli:identifier whose scheme attribute equals exactly the string http://dart.fss.or.kr/ifrs/CIK is admitted as a DART corporation-code identification scheme. Its identifier text must equal the item's frozen corpCode exactly. A different text is METADATA_MISMATCH."
+  },
+  "startupDeviation": "Carried from v1: one unrelated historical performance narrative was accidentally seen during an earlier startup sanitization. Zero historical-outcome exposure is not claimed. It influenced nothing here and no historical Alpha artifact is opened.",
+  "study": "kr-original-xbrl-value-validation-v2",
+  "unchangedFromV1": [
+    "candidate dataset and SHA",
+    "the same 60 fixed facts and sample SHA",
+    "4 account families and 15-per-family quotas",
+    "stored candidate values",
+    "receipt numbers",
+    "filing-index identity rules",
+    "context/date rules",
+    "statement rules",
+    "CFS/OFS basis rules",
+    "unit/currency rules",
+    "Decimal comparison",
+    "classification set",
+    "PASS/FAIL/BLOCKED/INFRASTRUCTURE_ERROR semantics",
+    "independent-reader philosophy (no production fact parser)",
+    "outcome-blindness constraints"
+  ],
+  "verdict": {
+    "BLOCKED": "No confirmed mismatch, but at least one AMBIGUOUS_SOURCE_FACT or SOURCE_UNAVAILABLE.",
+    "FAIL": "At least one confirmed VALUE_MISMATCH, SEMANTIC_MISMATCH or METADATA_MISMATCH.",
+    "INFRASTRUCTURE_ERROR": "The validation process itself cannot complete.",
+    "PASS": "All 60 frozen facts are independently MATCH."
+  },
+  "version": 2
+}

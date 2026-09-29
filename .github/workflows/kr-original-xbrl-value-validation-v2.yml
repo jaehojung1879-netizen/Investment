@@ -1,0 +1,117 @@
+name: KR original XBRL value validation v2
+
+# One-shot, read-only replication of the frozen v1 sample under the single v2
+# entity-scheme rule. Ordinary `pull_request` (never `pull_request_target`),
+# same-repository branch only. Uses the existing DART secret solely as
+# DART_API_KEY for the 57 frozen receipts. Pushes nothing, dispatches nothing,
+# repairs nothing, runs no Alpha model.
+#
+# "Exactly once": the job does nothing unless the live-authorization file exists
+# in the checkout, and does nothing if this study's result artifact already
+# exists in the repository. The methodological verdict (PASS/FAIL/BLOCKED) is
+# data in the artifact, not a job failure; only INFRASTRUCTURE_ERROR fails the job.
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/kr-original-xbrl-value-validation-v2.yml"
+      - "pipeline/kr_xbrl_value_validation*.py"
+      - "scripts/validate_kr_original_xbrl_values_v2.py"
+      - "research_specs/kr-original-xbrl-value-validation-v2*.json"
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: kr-xbrl-validation-v2-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    if: >-
+      github.event.pull_request.head.repo.full_name == github.repository &&
+      github.event.pull_request.head.ref == 'data/kr-original-xbrl-value-validation-v2'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Gate (authorization present, no earlier result artifact)
+        id: gate
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+        run: |
+          if [ ! -f research_specs/kr-original-xbrl-value-validation-v2-live-authorization.json ]; then
+            echo "No live authorization file; skipping."; echo "go=false" >> "$GITHUB_OUTPUT"; exit 0
+          fi
+          n=$(gh api "repos/$REPO/actions/artifacts?name=kr-original-xbrl-value-validation-v2-live" --jq '[.artifacts[] | select(.expired==false)] | length')
+          if [ "$n" != "0" ]; then
+            echo "A v2 result artifact already exists ($n); the formal run is one-shot. Skipping."; echo "go=false" >> "$GITHUB_OUTPUT"; exit 0
+          fi
+          echo "go=true" >> "$GITHUB_OUTPUT"
+
+      - uses: actions/setup-python@v6
+        if: steps.gate.outputs.go == 'true'
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install dependencies
+        if: steps.gate.outputs.go == 'true'
+        run: pip install -r requirements.txt
+
+      - name: Fetch pinned accounting source commit
+        if: steps.gate.outputs.go == 'true'
+        run: git fetch --no-tags --depth=1 origin fb6e83743fd8cdba647d1522a4645b662a9d5647
+
+      - name: Run the frozen v2 validation
+        if: steps.gate.outputs.go == 'true'
+        id: run
+        env:
+          DART_API_KEY: ${{ secrets.DART }}
+        run: |
+          mkdir -p out
+          set +e
+          python scripts/validate_kr_original_xbrl_values_v2.py \
+            --input-root "$RUNNER_TEMP/input" \
+            --source-dir "$RUNNER_TEMP/sources" \
+            --materialize-from-git --download \
+            --output out/kr-original-xbrl-value-validation-v2-live.json \
+            2>&1 | tee out/run.log
+          code=${PIPESTATUS[0]}
+          echo "exit code $code" | tee -a out/run.log
+          echo "code=$code" >> "$GITHUB_OUTPUT"
+
+      # Per-item evidence is echoed to the log as well, because the artifact host
+      # is not reachable from every reviewer environment. Reports hold no secrets.
+      - name: Print per-item evidence
+        if: steps.gate.outputs.go == 'true'
+        run: |
+          python - <<'PY'
+          import collections, json
+          r = json.load(open("out/kr-original-xbrl-value-validation-v2-live.json"))
+          print("verdict", r.get("verdict"), r.get("counts"))
+          print(collections.Counter((x["classification"], x["reason"]) for x in r.get("results", [])).most_common())
+          for x in r.get("results", []):
+              print(json.dumps({k: v for k, v in x.items() if k != "sampleItem"}, sort_keys=True, ensure_ascii=False))
+          PY
+
+      - name: Hashes
+        if: steps.gate.outputs.go == 'true'
+        run: sha256sum research_specs/kr-original-xbrl-value-validation-v*.json out/*.json | tee out/hashes.txt
+
+      - uses: actions/upload-artifact@v4
+        if: steps.gate.outputs.go == 'true'
+        with:
+          name: kr-original-xbrl-value-validation-v2-live
+          path: out/
+          if-no-files-found: error
+
+      - name: Fail only on infrastructure error
+        if: steps.gate.outputs.go == 'true' && (steps.run.outputs.code == '4' || steps.run.outputs.code == '')
+        run: exit 1
