@@ -321,7 +321,9 @@ def test_saved_report_is_complete_and_preserves_fixed_items():
     assert [r["sampleItem"] for r in report["results"]] == sample["items"]
     assert all(r["candidateValue"] is not None for r in report["results"])
     assert report["verdict"] == "BLOCKED"
-    assert report["counts"]["SOURCE_UNAVAILABLE"] == 60
+    assert report["counts"]["AMBIGUOUS_SOURCE_FACT"] == 60
+    assert sum(report["counts"].values()) == 60
+    assert report["sourceAccess"]["status"] == "COMPLETED"
 
 
 def test_changed_frame_metadata_changes_selection_identity():

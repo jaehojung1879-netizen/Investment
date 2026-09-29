@@ -1,7 +1,7 @@
 # Original DART XBRL fixed-sample source-value validation
 
 This is an accounting audit, not a repair or an investment study. The current
-result is **BLOCKED_ON_SOURCE_ACCESS**. No confidence promotion is justified.
+result is **BLOCKED** (live run completed: 60 AMBIGUOUS_SOURCE_FACT on the reader's DART entity-scheme rule; see the report). No confidence promotion is justified.
 
 ## Frozen design and chronology
 

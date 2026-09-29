@@ -2,9 +2,9 @@
 
 ## Result
 
-**Overall verdict: BLOCKED. Operational blocker: BLOCKED_ON_SOURCE_ACCESS.**
-The fixed sample and independent reader are complete; original source validation
-has not been demonstrated. No candidate data or production confidence label changed.
+**Overall verdict: BLOCKED (live execution completed).** The frozen 60-item
+audit ran against real DART originals. All 57 receipts downloaded
+(`sourceAccess: COMPLETED`, zero failures) and no candidate data changed.
 
 | Classification | Count |
 |---|---:|
@@ -12,13 +12,34 @@ has not been demonstrated. No candidate data or production confidence label chan
 | VALUE_MISMATCH | 0 |
 | SEMANTIC_MISMATCH | 0 |
 | METADATA_MISMATCH | 0 |
-| AMBIGUOUS_SOURCE_FACT | 0 |
-| SOURCE_UNAVAILABLE | 60 |
+| AMBIGUOUS_SOURCE_FACT | 60 |
+| SOURCE_UNAVAILABLE | 0 |
 | INFRASTRUCTURE_ERROR | 0 |
 
-Zero confirmed mismatches with no source-resolved facts is not a successful
-validation. No error-rate confidence bound is reported. There are no confirmed
-mismatch examples to diagnose and no repair is proposed.
+Live evidence: Actions run `36519798469` (head `02124c9c`), artifact
+`11012284532` (zip SHA-256 `3b3de806d6d0539aa0d314aa599d6193c0ce2b502ba3b2881322550f246be240`),
+report SHA-256 `a04725f6e7df4aa57ef0b27d6ec0c708f80848f269b33adb4cd69826e0f8660a`.
+An earlier run on head `eb5a3190` (`36518798900`, artifact `11012490293`) produced
+a byte-identical report hash. The per-item fields in the JSON are reproduced
+from the job log; the artifact zip could not be downloaded from the authoring
+environment.
+
+**Why every item is ambiguous.** All 60 stop at the reader's frozen identity
+rule with the same reason: `context entity scheme not independently
+established as DART identity`. The served contexts use entity scheme
+`http://dart.fss.or.kr/ifrs/CIK`; the frozen rule admits only a bare
+`dart|opendart.fss.or.kr` scheme. This is a conservative reader-capability
+limit, not evidence that any candidate value is wrong.
+
+**Descriptive only, not a classification.** In all 60 items the context entity
+equals the sample's `corpCode` and the source raw text equals the stored
+candidate amount. These observations were made after the run, changed no
+rule, and do not produce a MATCH: under the frozen semantics the identity
+scheme is unproven, so PASS is not established. Relaxing the rule after seeing
+this would be the loosening the protocol forbids; any such amendment needs its
+own pre-registered follow-up, and this sample must stay fixed.
+
+No confirmed mismatch exists, so nothing is diagnosed or repaired here.
 
 ## Verified identity and sample
 
@@ -55,22 +76,13 @@ completion. No broader collection-completion claim is made here.
 
 ## Evidence and limitations
 
-The adjacent JSON report records every frozen fact, its stored normalized value,
-issuer/receipt/period, claimed statement and element, recorded context/unit/
-precision, original ZIP hash and exact reason it could not be compared.
-No original source amount was fabricated or inferred from the production value.
-
-Raw source bytes are not persisted in the pinned repository store; its collector
-explicitly stores hashes and extracted values only. DART's host responded, but
-the authorized `DART_API_KEY` environment variable was absent. No authenticated
-source request was made. Source absence here means unavailable to this audit,
-not proof that DART lacks the filing.
-
-The independent implementation reads the original XML/context/unit/presentation
-directly and uses Decimal. Synthetic tests exercise matching, incorrect signs,
-wrong values, wrong periods/bases/currencies, metadata mismatches, duplicate
-ambiguity, unavailable sources and process verdict priority. Those tests are
-implementation checks, not substitutes for live source evidence.
+The adjacent JSON report records every frozen fact with its stored value,
+recorded context/unit/decimals/raw text, entry and ZIP hashes, filing-index
+hash and the exact reason it stayed ambiguous. No source amount was inferred
+from the production value. The independent reader (not the production
+extractor) produced these results; the synthetic tests remain implementation
+checks and the live run shows real 2015 packages resolve to a concrete fact
+but not past the identity-scheme rule.
 
 ## Verification
 
@@ -95,14 +107,17 @@ The startup sanitizer did leak one unrelated performance narrative. The incident
 and subsequent fail-closed replacement are disclosed in the protocol/runbook.
 Do not describe this session as having had zero historical-outcome exposure.
 
+## CI
+
+`tests.yml` now checks out full history (`fetch-depth: 0`); the two failures
+were the shallow checkout lacking freeze commit `e756f0aa`, and are fixed
+without skipping or weakening the ancestry check. Tests run `36519798466` on
+head `02124c9c`: success.
+
 ## Confidence and next action
 
-`CANDIDATE_UNCONFIRMED` **cannot be promoted** on this evidence. Execute the
-exact operator command in `docs/kr-original-xbrl-value-validation-v1.md` in the
-existing authorized DART environment, keep the sample unchanged, and publish
-the completed evidence. A confirmed mismatch must remain FAIL and any actual
-repair belongs in a separately authorized task/PR.
-
-Only after strict PASS is the next task **KR repaired-input snapshot freeze +
-accounting semantic contract**. No final v5 seal or historical Alpha execution
-is part of this PR.
+`CANDIDATE_UNCONFIRMED` **cannot be promoted**: no item is MATCH. The sample
+stays fixed. The blocker is the reader's entity-scheme rule, which needs a
+separately pre-registered, human-approved amendment (and a new result file)
+before any PASS is possible. Nothing else — no repair, v5 seal or Alpha
+execution — is part of this PR.

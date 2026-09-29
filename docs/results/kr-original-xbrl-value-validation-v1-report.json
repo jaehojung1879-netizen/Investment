@@ -3,25 +3,68 @@
   "audited": 60,
   "candidateSha256": "af642e7e79e9ba59ac6ee14faf033f4d63887188bab6506845c082e21dc3d1cc",
   "counts": {
-    "AMBIGUOUS_SOURCE_FACT": 0,
+    "AMBIGUOUS_SOURCE_FACT": 60,
     "INFRASTRUCTURE_ERROR": 0,
     "MATCH": 0,
     "METADATA_MISMATCH": 0,
     "SEMANTIC_MISMATCH": 0,
-    "SOURCE_UNAVAILABLE": 60,
+    "SOURCE_UNAVAILABLE": 0,
     "VALUE_MISMATCH": 0
   },
   "expected": 60,
   "frameSize": 2037,
   "freezeCommit": "e756f0aa4457aaa4840ea359df7eb9276ce77731",
   "historicalAlphaExecuted": false,
+  "liveExecution": {
+    "artifactId": 11012284532,
+    "artifactZipSha256": "3b3de806d6d0539aa0d314aa599d6193c0ce2b502ba3b2881322550f246be240",
+    "earlierIdenticalRun": {
+      "artifactId": 11012490293,
+      "artifactZipSha256": "2c0997dc870aa02a4da06949a9bc436a1804c3e3243a7efde98ed2c6522f37a1",
+      "headSha": "eb5a3190a7e98621592c06970286d015e34d67bd",
+      "liveReportSha256": "a04725f6e7df4aa57ef0b27d6ec0c708f80848f269b33adb4cd69826e0f8660a",
+      "runId": 36518798900
+    },
+    "exitCode": 3,
+    "headSha": "02124c9cbc1e97b5a3fcfab2b85eaad14c53b587",
+    "liveReportSha256": "a04725f6e7df4aa57ef0b27d6ec0c708f80848f269b33adb4cd69826e0f8660a",
+    "provenance": "per-item fields below are reproduced from the run's job log (sampleItem re-attached from the frozen sample); the artifact zip itself was not downloadable from the authoring environment",
+    "runId": 36519798469,
+    "workflow": "KR original XBRL value validation"
+  },
   "promotionRecommended": false,
   "results": [
     {
       "candidateValue": "73277712096.0",
-      "classification": "SOURCE_UNAVAILABLE",
+      "classification": "AMBIGUOUS_SOURCE_FACT",
+      "filingIndexSha256": "0fe5baafc0cb34fa0ffb5fe757ff60f7e393cb9e4ead6c5039db18ecb20a79c0",
       "identity": "114090.KS:2015:11014:net_income",
-      "reason": "BLOCKED_ON_SOURCE_ACCESS: original ZIP bytes unavailable",
+      "lastSourceFact": {
+        "context": {
+          "dimensions": [
+            [
+              "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}ConsolidatedAndSeparateFinancialStatementsAxis",
+              "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}SeparateMember"
+            ]
+          ],
+          "entity": "00557508",
+          "entityScheme": "http://dart.fss.or.kr/ifrs/CIK",
+          "period": {
+            "endDate": "2015-09-30",
+            "startDate": "2015-01-01"
+          }
+        },
+        "contextRef": "CFY2015dTQA_ifrs_ConsolidatedAndSeparateFinancialStatementsAxis_ifrs_SeparateMember",
+        "decimals": "0",
+        "elementQName": "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}ProfitLoss",
+        "entry": "00557508_2014-04-23.xbrl",
+        "entrySha256": "302b835cd14b65be3086f86ba0821dd80f1d9f5b5004dfdfcf2ca7f61b9faee4",
+        "precision": null,
+        "rawText": "73277712096",
+        "unit": "{http://www.xbrl.org/2003/iso4217}KRW",
+        "unitRef": "KRW"
+      },
+      "reason": "context entity scheme not independently established as DART identity",
       "sampleItem": {
         "account": "당기순이익",
         "availableFrom": "2015-11-16",
@@ -45,13 +88,41 @@
         "ticker": "114090.KS",
         "unitRef": "KRW",
         "zipSha256": "ca4d8c61f31a0f5964a26a808adda37c331834b50e3a8777d861d03ba4d2406a"
-      }
+      },
+      "sourceFacts": [],
+      "sourceZipSha256": "ca4d8c61f31a0f5964a26a808adda37c331834b50e3a8777d861d03ba4d2406a"
     },
     {
       "candidateValue": "10961217829.0",
-      "classification": "SOURCE_UNAVAILABLE",
+      "classification": "AMBIGUOUS_SOURCE_FACT",
+      "filingIndexSha256": "29dd729dcd1d424214bc9ebcd0788c12a78e7aef6b91a9f7db68aefe97e85d6a",
       "identity": "185750.KS:2015:11012:operating_cash_flow",
-      "reason": "BLOCKED_ON_SOURCE_ACCESS: original ZIP bytes unavailable",
+      "lastSourceFact": {
+        "context": {
+          "dimensions": [
+            [
+              "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}ConsolidatedAndSeparateFinancialStatementsAxis",
+              "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}SeparateMember"
+            ]
+          ],
+          "entity": "00992871",
+          "entityScheme": "http://dart.fss.or.kr/ifrs/CIK",
+          "period": {
+            "endDate": "2015-06-30",
+            "startDate": "2015-01-01"
+          }
+        },
+        "contextRef": "CFY2015dHYA_ifrs_ConsolidatedAndSeparateFinancialStatementsAxis_ifrs_SeparateMember",
+        "decimals": "0",
+        "elementQName": "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}CashFlowsFromUsedInOperatingActivities",
+        "entry": "00992871_2014-03-28.xbrl",
+        "entrySha256": "b7dc5c34277e9e47afde1ad52568a7481632d718b4f9fb78dd6c54d325cad6aa",
+        "precision": null,
+        "rawText": "10961217829",
+        "unit": "{http://www.xbrl.org/2003/iso4217}KRW",
+        "unitRef": "KRW"
+      },
+      "reason": "context entity scheme not independently established as DART identity",
       "sampleItem": {
         "account": "영업활동현금흐름",
         "availableFrom": "2015-08-13",
@@ -75,13 +146,40 @@
         "ticker": "185750.KS",
         "unitRef": "KRW",
         "zipSha256": "81990f28c903e2985f08310c34ca22c217382b8bb520481dbc1d6ed49f24972d"
-      }
+      },
+      "sourceFacts": [],
+      "sourceZipSha256": "81990f28c903e2985f08310c34ca22c217382b8bb520481dbc1d6ed49f24972d"
     },
     {
       "candidateValue": "101462079576.0",
-      "classification": "SOURCE_UNAVAILABLE",
+      "classification": "AMBIGUOUS_SOURCE_FACT",
+      "filingIndexSha256": "d100be8dfd38e674073fbbf8c63bb9ad26cfff3fcfb3544c93bfba11d83a0ced",
       "identity": "005690.KS:2015:11013:assets",
-      "reason": "BLOCKED_ON_SOURCE_ACCESS: original ZIP bytes unavailable",
+      "lastSourceFact": {
+        "context": {
+          "dimensions": [
+            [
+              "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}ConsolidatedAndSeparateFinancialStatementsAxis",
+              "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}SeparateMember"
+            ]
+          ],
+          "entity": "00145163",
+          "entityScheme": "http://dart.fss.or.kr/ifrs/CIK",
+          "period": {
+            "instant": "2015-03-31"
+          }
+        },
+        "contextRef": "CFY2015eFQA_ifrs_ConsolidatedAndSeparateFinancialStatementsAxis_ifrs_SeparateMember",
+        "decimals": "0",
+        "elementQName": "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}Assets",
+        "entry": "00145163_2011-05-11.xbrl",
+        "entrySha256": "1ba989125857ee694dd525747606ae67ba2b35502444ff94cd3be97a15009d2c",
+        "precision": null,
+        "rawText": "101462079576",
+        "unit": "{http://www.xbrl.org/2003/iso4217}KRW",
+        "unitRef": "KRW"
+      },
+      "reason": "context entity scheme not independently established as DART identity",
       "sampleItem": {
         "account": "자산총계",
         "availableFrom": "2015-05-15",
@@ -105,13 +203,40 @@
         "ticker": "005690.KS",
         "unitRef": "KRW",
         "zipSha256": "55c29b55dd84043edee2b033c772b4e6ca481690342cd570484b20907cf97402"
-      }
+      },
+      "sourceFacts": [],
+      "sourceZipSha256": "55c29b55dd84043edee2b033c772b4e6ca481690342cd570484b20907cf97402"
     },
     {
       "candidateValue": "179758197283.0",
-      "classification": "SOURCE_UNAVAILABLE",
+      "classification": "AMBIGUOUS_SOURCE_FACT",
+      "filingIndexSha256": "e7a372d01584a87399c54731771486ddc1c856f60f87a183daa05b4ffae18f65",
       "identity": "005070.KS:2015:11012:liabilities",
-      "reason": "BLOCKED_ON_SOURCE_ACCESS: original ZIP bytes unavailable",
+      "lastSourceFact": {
+        "context": {
+          "dimensions": [
+            [
+              "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}ConsolidatedAndSeparateFinancialStatementsAxis",
+              "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}SeparateMember"
+            ]
+          ],
+          "entity": "00129989",
+          "entityScheme": "http://dart.fss.or.kr/ifrs/CIK",
+          "period": {
+            "instant": "2015-06-30"
+          }
+        },
+        "contextRef": "CFY2015eHYA_ifrs_ConsolidatedAndSeparateFinancialStatementsAxis_ifrs_SeparateMember",
+        "decimals": "0",
+        "elementQName": "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}Liabilities",
+        "entry": "00129989_2011-05-04.xbrl",
+        "entrySha256": "1e370ffbd7ae342899a48d00aee817716a9feca2d113c4015604b209c63794c0",
+        "precision": null,
+        "rawText": "179758197283",
+        "unit": "{http://www.xbrl.org/2003/iso4217}KRW",
+        "unitRef": "KRW"
+      },
+      "reason": "context entity scheme not independently established as DART identity",
       "sampleItem": {
         "account": "부채총계",
         "availableFrom": "2015-08-13",
@@ -135,13 +260,41 @@
         "ticker": "005070.KS",
         "unitRef": "KRW",
         "zipSha256": "f021b1b26a4fd8d9c0b2976b1723a48da3613080b25c5724e681429111b35106"
-      }
+      },
+      "sourceFacts": [],
+      "sourceZipSha256": "f021b1b26a4fd8d9c0b2976b1723a48da3613080b25c5724e681429111b35106"
     },
     {
       "candidateValue": "18242888710.0",
-      "classification": "SOURCE_UNAVAILABLE",
+      "classification": "AMBIGUOUS_SOURCE_FACT",
+      "filingIndexSha256": "8accf95a73872ded52215acea9fc196c124fc0abc531793e07bcf927e975b71a",
       "identity": "012450.KS:2015:11013:net_income",
-      "reason": "BLOCKED_ON_SOURCE_ACCESS: original ZIP bytes unavailable",
+      "lastSourceFact": {
+        "context": {
+          "dimensions": [
+            [
+              "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}ConsolidatedAndSeparateFinancialStatementsAxis",
+              "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}ConsolidatedMember"
+            ]
+          ],
+          "entity": "00126566",
+          "entityScheme": "http://dart.fss.or.kr/ifrs/CIK",
+          "period": {
+            "endDate": "2015-03-31",
+            "startDate": "2015-01-01"
+          }
+        },
+        "contextRef": "CFY2015dFQA_ifrs_ConsolidatedAndSeparateFinancialStatementsAxis_ifrs_ConsolidatedMember",
+        "decimals": "0",
+        "elementQName": "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}ProfitLoss",
+        "entry": "00126566_2011-08-18.xbrl",
+        "entrySha256": "e83387e122f2c6456e9915f353de96d33ee2a971da0db09193b5ef0d124f2774",
+        "precision": null,
+        "rawText": "18242888710",
+        "unit": "{http://www.xbrl.org/2003/iso4217}KRW",
+        "unitRef": "KRW"
+      },
+      "reason": "context entity scheme not independently established as DART identity",
       "sampleItem": {
         "account": "당기순이익",
         "availableFrom": "2015-05-15",
@@ -165,13 +318,41 @@
         "ticker": "012450.KS",
         "unitRef": "KRW",
         "zipSha256": "1d90faeba59b4b4f0b7efb515483d9da14c861b5b7bf00f9f204d689bf1c843d"
-      }
+      },
+      "sourceFacts": [],
+      "sourceZipSha256": "1d90faeba59b4b4f0b7efb515483d9da14c861b5b7bf00f9f204d689bf1c843d"
     },
     {
       "candidateValue": "170398933989.0",
-      "classification": "SOURCE_UNAVAILABLE",
+      "classification": "AMBIGUOUS_SOURCE_FACT",
+      "filingIndexSha256": "911431d3ac6f0ec9324511ff5e7860d4b3576fafb9698b1f4726ef9c6805208d",
       "identity": "003410.KS:2015:11014:operating_cash_flow",
-      "reason": "BLOCKED_ON_SOURCE_ACCESS: original ZIP bytes unavailable",
+      "lastSourceFact": {
+        "context": {
+          "dimensions": [
+            [
+              "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}ConsolidatedAndSeparateFinancialStatementsAxis",
+              "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}ConsolidatedMember"
+            ]
+          ],
+          "entity": "00138224",
+          "entityScheme": "http://dart.fss.or.kr/ifrs/CIK",
+          "period": {
+            "endDate": "2015-09-30",
+            "startDate": "2015-01-01"
+          }
+        },
+        "contextRef": "CFY2015dTQA_ifrs_ConsolidatedAndSeparateFinancialStatementsAxis_ifrs_ConsolidatedMember",
+        "decimals": "0",
+        "elementQName": "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}CashFlowsFromUsedInOperatingActivities",
+        "entry": "00138224_2011-08-19.xbrl",
+        "entrySha256": "c1831997aed4c3b476ae50795319f4838f44b4dbbed10b6ea84f43b909d25976",
+        "precision": null,
+        "rawText": "170398933989",
+        "unit": "{http://www.xbrl.org/2003/iso4217}KRW",
+        "unitRef": "KRW"
+      },
+      "reason": "context entity scheme not independently established as DART identity",
       "sampleItem": {
         "account": "영업활동현금흐름",
         "availableFrom": "2015-11-13",
@@ -195,13 +376,40 @@
         "ticker": "003410.KS",
         "unitRef": "KRW",
         "zipSha256": "2df4c717d63676cd3067a6c67f0146a9f32ba4e732436e3dd2a226e88d7ed7fc"
-      }
+      },
+      "sourceFacts": [],
+      "sourceZipSha256": "2df4c717d63676cd3067a6c67f0146a9f32ba4e732436e3dd2a226e88d7ed7fc"
     },
     {
       "candidateValue": "45962882522.0",
-      "classification": "SOURCE_UNAVAILABLE",
+      "classification": "AMBIGUOUS_SOURCE_FACT",
+      "filingIndexSha256": "3cef124e194e9ed5db3af6ff25bb3b94bc3a76e7157e3844deff26e1248282f4",
       "identity": "002410.KS:2015:11014:assets",
-      "reason": "BLOCKED_ON_SOURCE_ACCESS: original ZIP bytes unavailable",
+      "lastSourceFact": {
+        "context": {
+          "dimensions": [
+            [
+              "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}ConsolidatedAndSeparateFinancialStatementsAxis",
+              "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}SeparateMember"
+            ]
+          ],
+          "entity": "00122694",
+          "entityScheme": "http://dart.fss.or.kr/ifrs/CIK",
+          "period": {
+            "instant": "2015-09-30"
+          }
+        },
+        "contextRef": "CFY2015eTQA_ifrs_ConsolidatedAndSeparateFinancialStatementsAxis_ifrs_SeparateMember",
+        "decimals": "0",
+        "elementQName": "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}Assets",
+        "entry": "00122694_2014-01-01.xbrl",
+        "entrySha256": "e4d8abe1af38027497d048470ba78e366f9b36b87b5627cc58a95eff539699be",
+        "precision": null,
+        "rawText": "45962882522",
+        "unit": "{http://www.xbrl.org/2003/iso4217}KRW",
+        "unitRef": "KRW"
+      },
+      "reason": "context entity scheme not independently established as DART identity",
       "sampleItem": {
         "account": "자산총계",
         "availableFrom": "2015-11-13",
@@ -225,13 +433,40 @@
         "ticker": "002410.KS",
         "unitRef": "KRW",
         "zipSha256": "3e0876adbfd0da94594c15647eebb9209b00f4457c1736f6a903e523c46c599d"
-      }
+      },
+      "sourceFacts": [],
+      "sourceZipSha256": "3e0876adbfd0da94594c15647eebb9209b00f4457c1736f6a903e523c46c599d"
     },
     {
       "candidateValue": "4055760829014.0",
-      "classification": "SOURCE_UNAVAILABLE",
+      "classification": "AMBIGUOUS_SOURCE_FACT",
+      "filingIndexSha256": "727636a14c76bc2c52f83c1b0adb62123f17f3abd4842942dbc2b12f385ac8a3",
       "identity": "028050.KS:2015:11013:liabilities",
-      "reason": "BLOCKED_ON_SOURCE_ACCESS: original ZIP bytes unavailable",
+      "lastSourceFact": {
+        "context": {
+          "dimensions": [
+            [
+              "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}ConsolidatedAndSeparateFinancialStatementsAxis",
+              "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}SeparateMember"
+            ]
+          ],
+          "entity": "00126308",
+          "entityScheme": "http://dart.fss.or.kr/ifrs/CIK",
+          "period": {
+            "instant": "2015-03-31"
+          }
+        },
+        "contextRef": "CFY2015eFQA_ifrs_ConsolidatedAndSeparateFinancialStatementsAxis_ifrs_SeparateMember",
+        "decimals": "0",
+        "elementQName": "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}Liabilities",
+        "entry": "00126308_2011-05-25.xbrl",
+        "entrySha256": "edc21e9e9769d1abcdaa7086ff2400dc12bd1e2e9aafd068eb5325033311a2f7",
+        "precision": null,
+        "rawText": "4055760829014",
+        "unit": "{http://www.xbrl.org/2003/iso4217}KRW",
+        "unitRef": "KRW"
+      },
+      "reason": "context entity scheme not independently established as DART identity",
       "sampleItem": {
         "account": "부채총계",
         "availableFrom": "2015-05-15",
@@ -255,13 +490,41 @@
         "ticker": "028050.KS",
         "unitRef": "KRW",
         "zipSha256": "dd3c042ebee0b463d521e6eed3525a48a6bfc412c90124c19154ff1ec83f1dc0"
-      }
+      },
+      "sourceFacts": [],
+      "sourceZipSha256": "dd3c042ebee0b463d521e6eed3525a48a6bfc412c90124c19154ff1ec83f1dc0"
     },
     {
       "candidateValue": "156359595000.0",
-      "classification": "SOURCE_UNAVAILABLE",
+      "classification": "AMBIGUOUS_SOURCE_FACT",
+      "filingIndexSha256": "7f4c50d759f479c0178102131d99d2c5f4d7e9ac5152985f23dcb8bf611109da",
       "identity": "035420.KS:2015:11013:net_income",
-      "reason": "BLOCKED_ON_SOURCE_ACCESS: original ZIP bytes unavailable",
+      "lastSourceFact": {
+        "context": {
+          "dimensions": [
+            [
+              "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}ConsolidatedAndSeparateFinancialStatementsAxis",
+              "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}SeparateMember"
+            ]
+          ],
+          "entity": "00266961",
+          "entityScheme": "http://dart.fss.or.kr/ifrs/CIK",
+          "period": {
+            "endDate": "2015-03-31",
+            "startDate": "2015-01-01"
+          }
+        },
+        "contextRef": "CFY2015dFQQ_ifrs_ConsolidatedAndSeparateFinancialStatementsAxis_ifrs_SeparateMember",
+        "decimals": "-3",
+        "elementQName": "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}ProfitLoss",
+        "entry": "00266961_2011-05-23.xbrl",
+        "entrySha256": "e26881a19b7c22d0e09fcbaafb1a3a577836b54c551785421e2005ef533a1324",
+        "precision": null,
+        "rawText": "156359595000",
+        "unit": "{http://www.xbrl.org/2003/iso4217}KRW",
+        "unitRef": "KRW"
+      },
+      "reason": "context entity scheme not independently established as DART identity",
       "sampleItem": {
         "account": "당기순이익",
         "availableFrom": "2015-05-15",
@@ -285,13 +548,41 @@
         "ticker": "035420.KS",
         "unitRef": "KRW",
         "zipSha256": "07d4aaf617e2fa39f98b6570e9c0967465f089f78859a7badcc3a499c35c2725"
-      }
+      },
+      "sourceFacts": [],
+      "sourceZipSha256": "07d4aaf617e2fa39f98b6570e9c0967465f089f78859a7badcc3a499c35c2725"
     },
     {
       "candidateValue": "214668676793.0",
-      "classification": "SOURCE_UNAVAILABLE",
+      "classification": "AMBIGUOUS_SOURCE_FACT",
+      "filingIndexSha256": "63530c14eed738fa2d3103218d01735ebff0f0afe6a8acc1ee1349b5b84614eb",
       "identity": "047040.KS:2015:11012:operating_cash_flow",
-      "reason": "BLOCKED_ON_SOURCE_ACCESS: original ZIP bytes unavailable",
+      "lastSourceFact": {
+        "context": {
+          "dimensions": [
+            [
+              "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}ConsolidatedAndSeparateFinancialStatementsAxis",
+              "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}ConsolidatedMember"
+            ]
+          ],
+          "entity": "00124540",
+          "entityScheme": "http://dart.fss.or.kr/ifrs/CIK",
+          "period": {
+            "endDate": "2015-06-30",
+            "startDate": "2015-01-01"
+          }
+        },
+        "contextRef": "CFY2015dHYA_ifrs_ConsolidatedAndSeparateFinancialStatementsAxis_ifrs_ConsolidatedMember",
+        "decimals": "0",
+        "elementQName": "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}CashFlowsFromUsedInOperatingActivities",
+        "entry": "00124540_2015-08-03.xbrl",
+        "entrySha256": "f262b1e7bb7176bd6a3e4355e84a627ac805270ff8714dff0cf77fbc56c6ff59",
+        "precision": null,
+        "rawText": "214668676793",
+        "unit": "{http://www.xbrl.org/2003/iso4217}KRW",
+        "unitRef": "KRW"
+      },
+      "reason": "context entity scheme not independently established as DART identity",
       "sampleItem": {
         "account": "영업활동현금흐름",
         "availableFrom": "2015-08-17",
@@ -315,13 +606,40 @@
         "ticker": "047040.KS",
         "unitRef": "KRW",
         "zipSha256": "2c4526ef1790b5b512c82dbfbe24d6cdeb5a125b7ea1b08cc1e698b7fea88ea6"
-      }
+      },
+      "sourceFacts": [],
+      "sourceZipSha256": "2c4526ef1790b5b512c82dbfbe24d6cdeb5a125b7ea1b08cc1e698b7fea88ea6"
     },
     {
       "candidateValue": "3814844216526.0",
-      "classification": "SOURCE_UNAVAILABLE",
+      "classification": "AMBIGUOUS_SOURCE_FACT",
+      "filingIndexSha256": "6a5fc48d6438584fa936ed41c80d1af934a4512c84a63bea1fb634ddb681a8d7",
       "identity": "011790.KS:2015:11014:assets",
-      "reason": "BLOCKED_ON_SOURCE_ACCESS: original ZIP bytes unavailable",
+      "lastSourceFact": {
+        "context": {
+          "dimensions": [
+            [
+              "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}ConsolidatedAndSeparateFinancialStatementsAxis",
+              "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}ConsolidatedMember"
+            ]
+          ],
+          "entity": "00139889",
+          "entityScheme": "http://dart.fss.or.kr/ifrs/CIK",
+          "period": {
+            "instant": "2015-09-30"
+          }
+        },
+        "contextRef": "CFY2015eTQA_ifrs_ConsolidatedAndSeparateFinancialStatementsAxis_ifrs_ConsolidatedMember",
+        "decimals": "0",
+        "elementQName": "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}Assets",
+        "entry": "00139889_2011-05-03.xbrl",
+        "entrySha256": "7620db6cf65cb568cac82068c90ca8f127b6ce9947b7afde8b8cd004e04c28e6",
+        "precision": null,
+        "rawText": "3814844216526",
+        "unit": "{http://www.xbrl.org/2003/iso4217}KRW",
+        "unitRef": "KRW"
+      },
+      "reason": "context entity scheme not independently established as DART identity",
       "sampleItem": {
         "account": "자산총계",
         "availableFrom": "2015-11-16",
@@ -345,13 +663,40 @@
         "ticker": "011790.KS",
         "unitRef": "KRW",
         "zipSha256": "76eadc7b8c31f4b212d5de5cb5cf6638a2468e1fb54c478cb01396c6f2a92164"
-      }
+      },
+      "sourceFacts": [],
+      "sourceZipSha256": "76eadc7b8c31f4b212d5de5cb5cf6638a2468e1fb54c478cb01396c6f2a92164"
     },
     {
       "candidateValue": "109241623358.0",
-      "classification": "SOURCE_UNAVAILABLE",
+      "classification": "AMBIGUOUS_SOURCE_FACT",
+      "filingIndexSha256": "c2a3dcc6bbaa737764f9be5c6f2d6e68ac72b0b5881be80770a1bff6d63a3a56",
       "identity": "001570.KS:2015:11014:liabilities",
-      "reason": "BLOCKED_ON_SOURCE_ACCESS: original ZIP bytes unavailable",
+      "lastSourceFact": {
+        "context": {
+          "dimensions": [
+            [
+              "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}ConsolidatedAndSeparateFinancialStatementsAxis",
+              "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}ConsolidatedMember"
+            ]
+          ],
+          "entity": "00106119",
+          "entityScheme": "http://dart.fss.or.kr/ifrs/CIK",
+          "period": {
+            "instant": "2015-09-30"
+          }
+        },
+        "contextRef": "CFY2015eTQA_ifrs_ConsolidatedAndSeparateFinancialStatementsAxis_ifrs_ConsolidatedMember",
+        "decimals": "0",
+        "elementQName": "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}Liabilities",
+        "entry": "00106119_2015-10-13.xbrl",
+        "entrySha256": "1d2dddac0cf4c885b78e48ba2a63a2bdf636ee1d3ad293a661e1b0d6224caac2",
+        "precision": null,
+        "rawText": "109241623358",
+        "unit": "{http://www.xbrl.org/2003/iso4217}KRW",
+        "unitRef": "KRW"
+      },
+      "reason": "context entity scheme not independently established as DART identity",
       "sampleItem": {
         "account": "부채총계",
         "availableFrom": "2015-11-16",
@@ -375,13 +720,41 @@
         "ticker": "001570.KS",
         "unitRef": "KRW",
         "zipSha256": "dddca43830354c00efa150c65d33fd9c85b3319cbbe35d49cb75b25a2e625eae"
-      }
+      },
+      "sourceFacts": [],
+      "sourceZipSha256": "dddca43830354c00efa150c65d33fd9c85b3319cbbe35d49cb75b25a2e625eae"
     },
     {
       "candidateValue": "2403866000000.0",
-      "classification": "SOURCE_UNAVAILABLE",
+      "classification": "AMBIGUOUS_SOURCE_FACT",
+      "filingIndexSha256": "81a517a81ff5c2539296a544ca4d7ecbe5917a79d2b155c9a81da8d29fb9555f",
       "identity": "000660.KS:2015:11012:net_income",
-      "reason": "BLOCKED_ON_SOURCE_ACCESS: original ZIP bytes unavailable",
+      "lastSourceFact": {
+        "context": {
+          "dimensions": [
+            [
+              "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}ConsolidatedAndSeparateFinancialStatementsAxis",
+              "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}ConsolidatedMember"
+            ]
+          ],
+          "entity": "00164779",
+          "entityScheme": "http://dart.fss.or.kr/ifrs/CIK",
+          "period": {
+            "endDate": "2015-06-30",
+            "startDate": "2015-01-01"
+          }
+        },
+        "contextRef": "CFY2015dHYA_ifrs_ConsolidatedAndSeparateFinancialStatementsAxis_ifrs_ConsolidatedMember",
+        "decimals": "-6",
+        "elementQName": "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}ProfitLoss",
+        "entry": "00164779_2011-05-24.xbrl",
+        "entrySha256": "30f6cd7ea613b133f6b15802a5c574afeea9d18088e9eb91859d34d47621c849",
+        "precision": null,
+        "rawText": "2403866000000",
+        "unit": "{http://www.xbrl.org/2003/iso4217}KRW",
+        "unitRef": "KRW"
+      },
+      "reason": "context entity scheme not independently established as DART identity",
       "sampleItem": {
         "account": "당기순이익",
         "availableFrom": "2015-08-12",
@@ -405,13 +778,41 @@
         "ticker": "000660.KS",
         "unitRef": "KRW",
         "zipSha256": "94617ba2a56a459207ddcacaac4277a83a9ea442a9c477cee832db33dbfe751e"
-      }
+      },
+      "sourceFacts": [],
+      "sourceZipSha256": "94617ba2a56a459207ddcacaac4277a83a9ea442a9c477cee832db33dbfe751e"
     },
     {
       "candidateValue": "11924719146.0",
-      "classification": "SOURCE_UNAVAILABLE",
+      "classification": "AMBIGUOUS_SOURCE_FACT",
+      "filingIndexSha256": "ce49afdffb4fc8abdb8da440b8033f30c23a567eb270cf914a3cebf7d77ba521",
       "identity": "052690.KS:2015:11014:operating_cash_flow",
-      "reason": "BLOCKED_ON_SOURCE_ACCESS: original ZIP bytes unavailable",
+      "lastSourceFact": {
+        "context": {
+          "dimensions": [
+            [
+              "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}ConsolidatedAndSeparateFinancialStatementsAxis",
+              "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}SeparateMember"
+            ]
+          ],
+          "entity": "00159209",
+          "entityScheme": "http://dart.fss.or.kr/ifrs/CIK",
+          "period": {
+            "endDate": "2015-09-30",
+            "startDate": "2015-01-01"
+          }
+        },
+        "contextRef": "CFY2015dTQA_ifrs_ConsolidatedAndSeparateFinancialStatementsAxis_ifrs_SeparateMember",
+        "decimals": "0",
+        "elementQName": "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}CashFlowsFromUsedInOperatingActivities",
+        "entry": "00159209_2014-08-04.xbrl",
+        "entrySha256": "7433ffc84a92c85e5a0d531e50c64061838ff72736c7304c52532d9e40fb665d",
+        "precision": null,
+        "rawText": "11924719146",
+        "unit": "{http://www.xbrl.org/2003/iso4217}KRW",
+        "unitRef": "KRW"
+      },
+      "reason": "context entity scheme not independently established as DART identity",
       "sampleItem": {
         "account": "영업활동현금흐름",
         "availableFrom": "2015-11-13",
@@ -435,13 +836,40 @@
         "ticker": "052690.KS",
         "unitRef": "KRW",
         "zipSha256": "d636a4b78c366cd127ed6a7db1fc1fc3efd6b10bb2723a98cd131158d4ebb562"
-      }
+      },
+      "sourceFacts": [],
+      "sourceZipSha256": "d636a4b78c366cd127ed6a7db1fc1fc3efd6b10bb2723a98cd131158d4ebb562"
     },
     {
       "candidateValue": "7605787050000.0",
-      "classification": "SOURCE_UNAVAILABLE",
+      "classification": "AMBIGUOUS_SOURCE_FACT",
+      "filingIndexSha256": "13897e9ca0508e10828ba6450a5a26d99236123204b2cf4b24ceb00f4facf5b2",
       "identity": "010060.KS:2015:11012:assets",
-      "reason": "BLOCKED_ON_SOURCE_ACCESS: original ZIP bytes unavailable",
+      "lastSourceFact": {
+        "context": {
+          "dimensions": [
+            [
+              "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}ConsolidatedAndSeparateFinancialStatementsAxis",
+              "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}ConsolidatedMember"
+            ]
+          ],
+          "entity": "00148896",
+          "entityScheme": "http://dart.fss.or.kr/ifrs/CIK",
+          "period": {
+            "instant": "2015-06-30"
+          }
+        },
+        "contextRef": "CFY2015eHYA_ifrs_ConsolidatedAndSeparateFinancialStatementsAxis_ifrs_ConsolidatedMember",
+        "decimals": "-3",
+        "elementQName": "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}Assets",
+        "entry": "00148896_2011-04-29.xbrl",
+        "entrySha256": "89a1886a3864b35b807d548acbc0a23c68b89d960ff600eacc8cf98e7bccfa9b",
+        "precision": null,
+        "rawText": "7605787050000",
+        "unit": "{http://www.xbrl.org/2003/iso4217}KRW",
+        "unitRef": "KRW"
+      },
+      "reason": "context entity scheme not independently established as DART identity",
       "sampleItem": {
         "account": "자산총계",
         "availableFrom": "2015-08-13",
@@ -465,13 +893,40 @@
         "ticker": "010060.KS",
         "unitRef": "KRW",
         "zipSha256": "9eb2ec21929f553ae5f88fcf77b44a06fbccc54f4d47ee98c349423005ac94e0"
-      }
+      },
+      "sourceFacts": [],
+      "sourceZipSha256": "9eb2ec21929f553ae5f88fcf77b44a06fbccc54f4d47ee98c349423005ac94e0"
     },
     {
       "candidateValue": "5428433000000.0",
-      "classification": "SOURCE_UNAVAILABLE",
+      "classification": "AMBIGUOUS_SOURCE_FACT",
+      "filingIndexSha256": "d30b1eeb09076f2640d2c8dd956356890b976ad084230d54e1ca5affa008febb",
       "identity": "010950.KS:2015:11012:liabilities",
-      "reason": "BLOCKED_ON_SOURCE_ACCESS: original ZIP bytes unavailable",
+      "lastSourceFact": {
+        "context": {
+          "dimensions": [
+            [
+              "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}ConsolidatedAndSeparateFinancialStatementsAxis",
+              "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}ConsolidatedMember"
+            ]
+          ],
+          "entity": "00138279",
+          "entityScheme": "http://dart.fss.or.kr/ifrs/CIK",
+          "period": {
+            "instant": "2015-06-30"
+          }
+        },
+        "contextRef": "CFY2015eHYA_ifrs_ConsolidatedAndSeparateFinancialStatementsAxis_ifrs_ConsolidatedMember",
+        "decimals": "-6",
+        "elementQName": "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}Liabilities",
+        "entry": "00138279_2014-03-14.xbrl",
+        "entrySha256": "1f398d4bf686a918e9bb2a79804f8ef4ac54f020db5e398daaf0aeca5935d6ce",
+        "precision": null,
+        "rawText": "5428433000000",
+        "unit": "{http://www.xbrl.org/2003/iso4217}KRW",
+        "unitRef": "KRW"
+      },
+      "reason": "context entity scheme not independently established as DART identity",
       "sampleItem": {
         "account": "부채총계",
         "availableFrom": "2015-08-17",
@@ -495,13 +950,41 @@
         "ticker": "010950.KS",
         "unitRef": "KRW",
         "zipSha256": "131eccddc0ca0f3c83e3a082eabf627b867a919dea89018244aa8d717483c208"
-      }
+      },
+      "sourceFacts": [],
+      "sourceZipSha256": "131eccddc0ca0f3c83e3a082eabf627b867a919dea89018244aa8d717483c208"
     },
     {
       "candidateValue": "107188117070.0",
-      "classification": "SOURCE_UNAVAILABLE",
+      "classification": "AMBIGUOUS_SOURCE_FACT",
+      "filingIndexSha256": "9e983071e447e99c2edb773db61687e54a0a651141bed34bd0d1e7016b8375aa",
       "identity": "068270.KS:2015:11014:net_income",
-      "reason": "BLOCKED_ON_SOURCE_ACCESS: original ZIP bytes unavailable",
+      "lastSourceFact": {
+        "context": {
+          "dimensions": [
+            [
+              "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}ConsolidatedAndSeparateFinancialStatementsAxis",
+              "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}ConsolidatedMember"
+            ]
+          ],
+          "entity": "00413046",
+          "entityScheme": "http://dart.fss.or.kr/ifrs/CIK",
+          "period": {
+            "endDate": "2015-09-30",
+            "startDate": "2015-01-01"
+          }
+        },
+        "contextRef": "CFY2015dTQA_ifrs_ConsolidatedAndSeparateFinancialStatementsAxis_ifrs_ConsolidatedMember",
+        "decimals": "0",
+        "elementQName": "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}ProfitLoss",
+        "entry": "00413046_2012-07-26.xbrl",
+        "entrySha256": "f4119d3a9bc3715ca782bc8c71d2ff5de13ed0a663282b21ea8f01a410dcbd41",
+        "precision": null,
+        "rawText": "107188117070",
+        "unit": "{http://www.xbrl.org/2003/iso4217}KRW",
+        "unitRef": "KRW"
+      },
+      "reason": "context entity scheme not independently established as DART identity",
       "sampleItem": {
         "account": "당기순이익",
         "availableFrom": "2015-11-16",
@@ -525,13 +1008,41 @@
         "ticker": "068270.KS",
         "unitRef": "KRW",
         "zipSha256": "cb72f7ec3483ccc7f86210f1d917b0e2d555b24a0f050c76c80aa01800169f42"
-      }
+      },
+      "sourceFacts": [],
+      "sourceZipSha256": "cb72f7ec3483ccc7f86210f1d917b0e2d555b24a0f050c76c80aa01800169f42"
     },
     {
       "candidateValue": "130839961.0",
-      "classification": "SOURCE_UNAVAILABLE",
+      "classification": "AMBIGUOUS_SOURCE_FACT",
+      "filingIndexSha256": "ebd5aefa1d172c9fbc058439721c0496035acfb3cad649359549e61071cfc0d1",
       "identity": "006740.KS:2015:11013:operating_cash_flow",
-      "reason": "BLOCKED_ON_SOURCE_ACCESS: original ZIP bytes unavailable",
+      "lastSourceFact": {
+        "context": {
+          "dimensions": [
+            [
+              "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}ConsolidatedAndSeparateFinancialStatementsAxis",
+              "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}SeparateMember"
+            ]
+          ],
+          "entity": "00141404",
+          "entityScheme": "http://dart.fss.or.kr/ifrs/CIK",
+          "period": {
+            "endDate": "2015-03-31",
+            "startDate": "2015-01-01"
+          }
+        },
+        "contextRef": "CFY2015dFQA_ifrs_ConsolidatedAndSeparateFinancialStatementsAxis_ifrs_SeparateMember",
+        "decimals": "0",
+        "elementQName": "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}CashFlowsFromUsedInOperatingActivities",
+        "entry": "00141404_2013-05-06.xbrl",
+        "entrySha256": "9835f49398c99db1cc1a2f83fc2cdafd2793c284bc1469c5efe81ae133b6d52c",
+        "precision": null,
+        "rawText": "130839961",
+        "unit": "{http://www.xbrl.org/2003/iso4217}KRW",
+        "unitRef": "KRW"
+      },
+      "reason": "context entity scheme not independently established as DART identity",
       "sampleItem": {
         "account": "영업활동현금흐름",
         "availableFrom": "2015-05-15",
@@ -555,13 +1066,40 @@
         "ticker": "006740.KS",
         "unitRef": "KRW",
         "zipSha256": "e6c31334bcd993136405c1786c49a567e0c4de0535ac97604989eaf0ffcbafed"
-      }
+      },
+      "sourceFacts": [],
+      "sourceZipSha256": "e6c31334bcd993136405c1786c49a567e0c4de0535ac97604989eaf0ffcbafed"
     },
     {
       "candidateValue": "640048584431.0",
-      "classification": "SOURCE_UNAVAILABLE",
+      "classification": "AMBIGUOUS_SOURCE_FACT",
+      "filingIndexSha256": "cbc36645b029eedcc3a079a56a370244f8afca9dd054a889d585efba0355dab7",
       "identity": "009240.KS:2015:11012:assets",
-      "reason": "BLOCKED_ON_SOURCE_ACCESS: original ZIP bytes unavailable",
+      "lastSourceFact": {
+        "context": {
+          "dimensions": [
+            [
+              "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}ConsolidatedAndSeparateFinancialStatementsAxis",
+              "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}SeparateMember"
+            ]
+          ],
+          "entity": "00161693",
+          "entityScheme": "http://dart.fss.or.kr/ifrs/CIK",
+          "period": {
+            "instant": "2015-06-30"
+          }
+        },
+        "contextRef": "CFY2015eHYA_ifrs_ConsolidatedAndSeparateFinancialStatementsAxis_ifrs_SeparateMember",
+        "decimals": "0",
+        "elementQName": "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}Assets",
+        "entry": "00161693_2015-03-17.xbrl",
+        "entrySha256": "1b70cdd45b3fee7f75b773fdbe9e7a8ca08f0d3a27181621eb4c2f8a8d7cfb78",
+        "precision": null,
+        "rawText": "640048584431",
+        "unit": "{http://www.xbrl.org/2003/iso4217}KRW",
+        "unitRef": "KRW"
+      },
+      "reason": "context entity scheme not independently established as DART identity",
       "sampleItem": {
         "account": "자산총계",
         "availableFrom": "2015-08-17",
@@ -585,13 +1123,40 @@
         "ticker": "009240.KS",
         "unitRef": "KRW",
         "zipSha256": "bb79919d69d5a77fdac7222fa6b1f5deb77b7409f7fd1484e782088cb6a59691"
-      }
+      },
+      "sourceFacts": [],
+      "sourceZipSha256": "bb79919d69d5a77fdac7222fa6b1f5deb77b7409f7fd1484e782088cb6a59691"
     },
     {
       "candidateValue": "88236120211.0",
-      "classification": "SOURCE_UNAVAILABLE",
+      "classification": "AMBIGUOUS_SOURCE_FACT",
+      "filingIndexSha256": "2c2ee631aa314fb2bf36f3814249659757a38706b3ccab1690c25ae8f147f2e0",
       "identity": "003520.KS:2015:11014:liabilities",
-      "reason": "BLOCKED_ON_SOURCE_ACCESS: original ZIP bytes unavailable",
+      "lastSourceFact": {
+        "context": {
+          "dimensions": [
+            [
+              "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}ConsolidatedAndSeparateFinancialStatementsAxis",
+              "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}SeparateMember"
+            ]
+          ],
+          "entity": "00141149",
+          "entityScheme": "http://dart.fss.or.kr/ifrs/CIK",
+          "period": {
+            "instant": "2015-09-30"
+          }
+        },
+        "contextRef": "CFY2015eTQA_ifrs_ConsolidatedAndSeparateFinancialStatementsAxis_ifrs_SeparateMember",
+        "decimals": "0",
+        "elementQName": "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}Liabilities",
+        "entry": "00141149_2013-05-15.xbrl",
+        "entrySha256": "abf94dc58a1b7b6600f5bd5dcee52cef66cf904781e0714dac4507a78bb58f3a",
+        "precision": null,
+        "rawText": "88236120211",
+        "unit": "{http://www.xbrl.org/2003/iso4217}KRW",
+        "unitRef": "KRW"
+      },
+      "reason": "context entity scheme not independently established as DART identity",
       "sampleItem": {
         "account": "부채총계",
         "availableFrom": "2015-11-16",
@@ -615,13 +1180,41 @@
         "ticker": "003520.KS",
         "unitRef": "KRW",
         "zipSha256": "66575463bb598367161f5a16e905bb48741d5a17d850a0e0a1b10858764e61aa"
-      }
+      },
+      "sourceFacts": [],
+      "sourceZipSha256": "66575463bb598367161f5a16e905bb48741d5a17d850a0e0a1b10858764e61aa"
     },
     {
       "candidateValue": "62241176910.0",
-      "classification": "SOURCE_UNAVAILABLE",
+      "classification": "AMBIGUOUS_SOURCE_FACT",
+      "filingIndexSha256": "22a8b235e13e9fef8757bd4f8e0865192c23f53878cf671fabbc91fae00d4bc0",
       "identity": "008770.KS:2015:11012:net_income",
-      "reason": "BLOCKED_ON_SOURCE_ACCESS: original ZIP bytes unavailable",
+      "lastSourceFact": {
+        "context": {
+          "dimensions": [
+            [
+              "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}ConsolidatedAndSeparateFinancialStatementsAxis",
+              "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}SeparateMember"
+            ]
+          ],
+          "entity": "00165680",
+          "entityScheme": "http://dart.fss.or.kr/ifrs/CIK",
+          "period": {
+            "endDate": "2015-06-30",
+            "startDate": "2015-01-01"
+          }
+        },
+        "contextRef": "CFY2015dHYA_ifrs_ConsolidatedAndSeparateFinancialStatementsAxis_ifrs_SeparateMember",
+        "decimals": "0",
+        "elementQName": "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}ProfitLoss",
+        "entry": "00165680_2015-03-31.xbrl",
+        "entrySha256": "5faa1d91370a31ab841a0bb86cc602fc38140acc30c380bb9d9d1331470b37d0",
+        "precision": null,
+        "rawText": "62241176910",
+        "unit": "{http://www.xbrl.org/2003/iso4217}KRW",
+        "unitRef": "KRW"
+      },
+      "reason": "context entity scheme not independently established as DART identity",
       "sampleItem": {
         "account": "당기순이익",
         "availableFrom": "2015-08-17",
@@ -645,13 +1238,41 @@
         "ticker": "008770.KS",
         "unitRef": "KRW",
         "zipSha256": "8d62286928c754a8ef7fc9827f45ff1cdb367aea495756f5a1b4e249192a32f1"
-      }
+      },
+      "sourceFacts": [],
+      "sourceZipSha256": "8d62286928c754a8ef7fc9827f45ff1cdb367aea495756f5a1b4e249192a32f1"
     },
     {
       "candidateValue": "58693432259.0",
-      "classification": "SOURCE_UNAVAILABLE",
+      "classification": "AMBIGUOUS_SOURCE_FACT",
+      "filingIndexSha256": "8b41938d12aebdae04aa2eae07dbb828688ea7cb7c974b35ac3fa3f2857bfd0d",
       "identity": "003620.KS:2015:11013:operating_cash_flow",
-      "reason": "BLOCKED_ON_SOURCE_ACCESS: original ZIP bytes unavailable",
+      "lastSourceFact": {
+        "context": {
+          "dimensions": [
+            [
+              "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}ConsolidatedAndSeparateFinancialStatementsAxis",
+              "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}ConsolidatedMember"
+            ]
+          ],
+          "entity": "00138242",
+          "entityScheme": "http://dart.fss.or.kr/ifrs/CIK",
+          "period": {
+            "endDate": "2015-03-31",
+            "startDate": "2015-01-01"
+          }
+        },
+        "contextRef": "CFY2015dFQA_ifrs_ConsolidatedAndSeparateFinancialStatementsAxis_ifrs_ConsolidatedMember",
+        "decimals": "0",
+        "elementQName": "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}CashFlowsFromUsedInOperatingActivities",
+        "entry": "00138242_2011-05-13.xbrl",
+        "entrySha256": "884097d4bbc97aeab8f8901c1f49e26c54a63fa99361e8e18b242df5fd70e751",
+        "precision": null,
+        "rawText": "58693432259",
+        "unit": "{http://www.xbrl.org/2003/iso4217}KRW",
+        "unitRef": "KRW"
+      },
+      "reason": "context entity scheme not independently established as DART identity",
       "sampleItem": {
         "account": "영업활동현금흐름",
         "availableFrom": "2015-05-15",
@@ -675,13 +1296,40 @@
         "ticker": "003620.KS",
         "unitRef": "KRW",
         "zipSha256": "d75c75469ac0eaa87bc5d45651b9b8ffd3a7c34f69781281bd563c14d73a176e"
-      }
+      },
+      "sourceFacts": [],
+      "sourceZipSha256": "d75c75469ac0eaa87bc5d45651b9b8ffd3a7c34f69781281bd563c14d73a176e"
     },
     {
       "candidateValue": "53742047997000.0",
-      "classification": "SOURCE_UNAVAILABLE",
+      "classification": "AMBIGUOUS_SOURCE_FACT",
+      "filingIndexSha256": "6dd4a26cd5b6270317ee01db3266e3733a2632c49cc27bcf6a955a6260a5c702",
       "identity": "009540.KS:2015:11013:assets",
-      "reason": "BLOCKED_ON_SOURCE_ACCESS: original ZIP bytes unavailable",
+      "lastSourceFact": {
+        "context": {
+          "dimensions": [
+            [
+              "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}ConsolidatedAndSeparateFinancialStatementsAxis",
+              "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}ConsolidatedMember"
+            ]
+          ],
+          "entity": "00164830",
+          "entityScheme": "http://dart.fss.or.kr/ifrs/CIK",
+          "period": {
+            "instant": "2015-03-31"
+          }
+        },
+        "contextRef": "CFY2015eFQA_ifrs_ConsolidatedAndSeparateFinancialStatementsAxis_ifrs_ConsolidatedMember",
+        "decimals": "-3",
+        "elementQName": "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}Assets",
+        "entry": "00164830_2011-05-06.xbrl",
+        "entrySha256": "ac56b500d2f45337e9e149afdb54f96cae59135f01ca594e520550faae8b8ba4",
+        "precision": null,
+        "rawText": "53742047997000",
+        "unit": "{http://www.xbrl.org/2003/iso4217}KRW",
+        "unitRef": "KRW"
+      },
+      "reason": "context entity scheme not independently established as DART identity",
       "sampleItem": {
         "account": "자산총계",
         "availableFrom": "2015-05-15",
@@ -705,13 +1353,40 @@
         "ticker": "009540.KS",
         "unitRef": "KRW",
         "zipSha256": "9858697f6a8145a7e99f4c9c06b98248e38d5d20f21191c1af7ce0fa3b7c5468"
-      }
+      },
+      "sourceFacts": [],
+      "sourceZipSha256": "9858697f6a8145a7e99f4c9c06b98248e38d5d20f21191c1af7ce0fa3b7c5468"
     },
     {
       "candidateValue": "59631070000000.0",
-      "classification": "SOURCE_UNAVAILABLE",
+      "classification": "AMBIGUOUS_SOURCE_FACT",
+      "filingIndexSha256": "8c4e2351f1d832cbcac6ddefe8b3f667bd32d15f7f32f3bb1bd8021a8183e095",
       "identity": "005930.KS:2015:11013:liabilities",
-      "reason": "BLOCKED_ON_SOURCE_ACCESS: original ZIP bytes unavailable",
+      "lastSourceFact": {
+        "context": {
+          "dimensions": [
+            [
+              "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}ConsolidatedAndSeparateFinancialStatementsAxis",
+              "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}ConsolidatedMember"
+            ]
+          ],
+          "entity": "00126380",
+          "entityScheme": "http://dart.fss.or.kr/ifrs/CIK",
+          "period": {
+            "instant": "2015-03-31"
+          }
+        },
+        "contextRef": "CFY2015eFQA_ifrs_ConsolidatedAndSeparateFinancialStatementsAxis_ifrs_ConsolidatedMember",
+        "decimals": "-6",
+        "elementQName": "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}Liabilities",
+        "entry": "00126380_2011-04-30.xbrl",
+        "entrySha256": "ce316a1953a6b73584162ed2a7c3825fd1d9e240416875bf7e5943bba515d7d2",
+        "precision": null,
+        "rawText": "59631070000000",
+        "unit": "{http://www.xbrl.org/2003/iso4217}KRW",
+        "unitRef": "KRW"
+      },
+      "reason": "context entity scheme not independently established as DART identity",
       "sampleItem": {
         "account": "부채총계",
         "availableFrom": "2015-05-15",
@@ -735,13 +1410,41 @@
         "ticker": "005930.KS",
         "unitRef": "KRW",
         "zipSha256": "466beb4ea37d2551ca72d4bd1cc95082463f88c9225d2cfc2dd5f25b89755368"
-      }
+      },
+      "sourceFacts": [],
+      "sourceZipSha256": "466beb4ea37d2551ca72d4bd1cc95082463f88c9225d2cfc2dd5f25b89755368"
     },
     {
       "candidateValue": "64965474651.0",
-      "classification": "SOURCE_UNAVAILABLE",
+      "classification": "AMBIGUOUS_SOURCE_FACT",
+      "filingIndexSha256": "e5549ed19be97ebba38528fe6014ba8fc1dd75430d01ec20c38136bda789350e",
       "identity": "181710.KS:2015:11014:net_income",
-      "reason": "BLOCKED_ON_SOURCE_ACCESS: original ZIP bytes unavailable",
+      "lastSourceFact": {
+        "context": {
+          "dimensions": [
+            [
+              "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}ConsolidatedAndSeparateFinancialStatementsAxis",
+              "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}SeparateMember"
+            ]
+          ],
+          "entity": "00983271",
+          "entityScheme": "http://dart.fss.or.kr/ifrs/CIK",
+          "period": {
+            "endDate": "2015-09-30",
+            "startDate": "2015-01-01"
+          }
+        },
+        "contextRef": "CFY2015dTQA_ifrs_ConsolidatedAndSeparateFinancialStatementsAxis_ifrs_SeparateMember",
+        "decimals": "0",
+        "elementQName": "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}ProfitLoss",
+        "entry": "00983271_2013-11-18.xbrl",
+        "entrySha256": "d5f14680e8b2f43741f6ef6a0d815c8461d8b2f284b7c8ab2d845ec4bb1fa8ec",
+        "precision": null,
+        "rawText": "64965474651",
+        "unit": "{http://www.xbrl.org/2003/iso4217}KRW",
+        "unitRef": "KRW"
+      },
+      "reason": "context entity scheme not independently established as DART identity",
       "sampleItem": {
         "account": "당기순이익",
         "availableFrom": "2015-11-16",
@@ -765,13 +1468,41 @@
         "ticker": "181710.KS",
         "unitRef": "KRW",
         "zipSha256": "9a141dedb8ca83ff47d275eea53c8515698c436458493159fc0e06ccc2a682ce"
-      }
+      },
+      "sourceFacts": [],
+      "sourceZipSha256": "9a141dedb8ca83ff47d275eea53c8515698c436458493159fc0e06ccc2a682ce"
     },
     {
       "candidateValue": "27774880762.0",
-      "classification": "SOURCE_UNAVAILABLE",
+      "classification": "AMBIGUOUS_SOURCE_FACT",
+      "filingIndexSha256": "4106850f2f630b327d659fdac443d7420de89f7544a9fb3486fc88a33b0803b7",
       "identity": "002380.KS:2015:11012:operating_cash_flow",
-      "reason": "BLOCKED_ON_SOURCE_ACCESS: original ZIP bytes unavailable",
+      "lastSourceFact": {
+        "context": {
+          "dimensions": [
+            [
+              "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}ConsolidatedAndSeparateFinancialStatementsAxis",
+              "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}SeparateMember"
+            ]
+          ],
+          "entity": "00105271",
+          "entityScheme": "http://dart.fss.or.kr/ifrs/CIK",
+          "period": {
+            "endDate": "2015-06-30",
+            "startDate": "2015-01-01"
+          }
+        },
+        "contextRef": "CFY2015dHYA_ifrs_ConsolidatedAndSeparateFinancialStatementsAxis_ifrs_SeparateMember",
+        "decimals": "0",
+        "elementQName": "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}CashFlowsFromUsedInOperatingActivities",
+        "entry": "00105271_2011-05-25.xbrl",
+        "entrySha256": "9a3d5c8954a4d59ab821baca0c597b331850f19986206846f9378ed7b5a664df",
+        "precision": null,
+        "rawText": "27774880762",
+        "unit": "{http://www.xbrl.org/2003/iso4217}KRW",
+        "unitRef": "KRW"
+      },
+      "reason": "context entity scheme not independently established as DART identity",
       "sampleItem": {
         "account": "영업활동현금흐름",
         "availableFrom": "2015-08-13",
@@ -795,13 +1526,40 @@
         "ticker": "002380.KS",
         "unitRef": "KRW",
         "zipSha256": "8ffb91dbdf5cf930e7c9b30ff2ff36d72c6ed655e542b670052324791a1b99f3"
-      }
+      },
+      "sourceFacts": [],
+      "sourceZipSha256": "8ffb91dbdf5cf930e7c9b30ff2ff36d72c6ed655e542b670052324791a1b99f3"
     },
     {
       "candidateValue": "1800235041517.0",
-      "classification": "SOURCE_UNAVAILABLE",
+      "classification": "AMBIGUOUS_SOURCE_FACT",
+      "filingIndexSha256": "b86bf96c9bb19a0de5a90a489f3a2ab723983358aceafa5b96905e937a9bbe8b",
       "identity": "057050.KS:2015:11013:assets",
-      "reason": "BLOCKED_ON_SOURCE_ACCESS: original ZIP bytes unavailable",
+      "lastSourceFact": {
+        "context": {
+          "dimensions": [
+            [
+              "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}ConsolidatedAndSeparateFinancialStatementsAxis",
+              "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}SeparateMember"
+            ]
+          ],
+          "entity": "00412597",
+          "entityScheme": "http://dart.fss.or.kr/ifrs/CIK",
+          "period": {
+            "instant": "2015-03-31"
+          }
+        },
+        "contextRef": "CFY2015eFQA_ifrs_ConsolidatedAndSeparateFinancialStatementsAxis_ifrs_SeparateMember",
+        "decimals": "0",
+        "elementQName": "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}Assets",
+        "entry": "00412597_2012-03-30.xbrl",
+        "entrySha256": "9773a6e1056f7c62267c6a9e1e27c7eef62867f39b86a947121db833f03866cb",
+        "precision": null,
+        "rawText": "1800235041517",
+        "unit": "{http://www.xbrl.org/2003/iso4217}KRW",
+        "unitRef": "KRW"
+      },
+      "reason": "context entity scheme not independently established as DART identity",
       "sampleItem": {
         "account": "자산총계",
         "availableFrom": "2015-05-15",
@@ -825,13 +1583,40 @@
         "ticker": "057050.KS",
         "unitRef": "KRW",
         "zipSha256": "fef00b4e0d4af933f83df33bfaea0ac36a568523135fafe36c12ee2b54d4b71d"
-      }
+      },
+      "sourceFacts": [],
+      "sourceZipSha256": "fef00b4e0d4af933f83df33bfaea0ac36a568523135fafe36c12ee2b54d4b71d"
     },
     {
       "candidateValue": "93923549378.0",
-      "classification": "SOURCE_UNAVAILABLE",
+      "classification": "AMBIGUOUS_SOURCE_FACT",
+      "filingIndexSha256": "8098c8b776b50148a18f53cdfc303395619c2ff1d0ef47bce62f9934e77c30c3",
       "identity": "000240.KS:2015:11012:liabilities",
-      "reason": "BLOCKED_ON_SOURCE_ACCESS: original ZIP bytes unavailable",
+      "lastSourceFact": {
+        "context": {
+          "dimensions": [
+            [
+              "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}ConsolidatedAndSeparateFinancialStatementsAxis",
+              "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}SeparateMember"
+            ]
+          ],
+          "entity": "00160047",
+          "entityScheme": "http://dart.fss.or.kr/ifrs/CIK",
+          "period": {
+            "instant": "2015-06-30"
+          }
+        },
+        "contextRef": "CFY2015eHYA_ifrs_ConsolidatedAndSeparateFinancialStatementsAxis_ifrs_SeparateMember",
+        "decimals": "0",
+        "elementQName": "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}Liabilities",
+        "entry": "00160047_2011-05-30.xbrl",
+        "entrySha256": "78b18e17fcbda6a21568bdbfe32664bf2f333d81668ce1b8e8257bafdccf10fb",
+        "precision": null,
+        "rawText": "93923549378",
+        "unit": "{http://www.xbrl.org/2003/iso4217}KRW",
+        "unitRef": "KRW"
+      },
+      "reason": "context entity scheme not independently established as DART identity",
       "sampleItem": {
         "account": "부채총계",
         "availableFrom": "2015-08-17",
@@ -855,13 +1640,41 @@
         "ticker": "000240.KS",
         "unitRef": "KRW",
         "zipSha256": "a2ea64e834e4408d0c3c4e5ebe26980a6f57c4b6d41ada4d559138f47161c92e"
-      }
+      },
+      "sourceFacts": [],
+      "sourceZipSha256": "a2ea64e834e4408d0c3c4e5ebe26980a6f57c4b6d41ada4d559138f47161c92e"
     },
     {
       "candidateValue": "8125000000.0",
-      "classification": "SOURCE_UNAVAILABLE",
+      "classification": "AMBIGUOUS_SOURCE_FACT",
+      "filingIndexSha256": "44819c7301cb9b6e1d3d4c6aaed68bd8bf0b5823888fd72eff36b689564c16c8",
       "identity": "108670.KS:2015:11013:net_income",
-      "reason": "BLOCKED_ON_SOURCE_ACCESS: original ZIP bytes unavailable",
+      "lastSourceFact": {
+        "context": {
+          "dimensions": [
+            [
+              "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}ConsolidatedAndSeparateFinancialStatementsAxis",
+              "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}ConsolidatedMember"
+            ]
+          ],
+          "entity": "00759513",
+          "entityScheme": "http://dart.fss.or.kr/ifrs/CIK",
+          "period": {
+            "endDate": "2015-03-31",
+            "startDate": "2015-01-01"
+          }
+        },
+        "contextRef": "CFY2015dFQA_ifrs_ConsolidatedAndSeparateFinancialStatementsAxis_ifrs_ConsolidatedMember",
+        "decimals": "-6",
+        "elementQName": "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}ProfitLoss",
+        "entry": "00759513_2011-05-20.xbrl",
+        "entrySha256": "bef8eb46b7eada28299cce6902f2e4f88fc23d5ca18dea8b1600489794ada322",
+        "precision": null,
+        "rawText": "8125000000",
+        "unit": "{http://www.xbrl.org/2003/iso4217}KRW",
+        "unitRef": "KRW"
+      },
+      "reason": "context entity scheme not independently established as DART identity",
       "sampleItem": {
         "account": "당기순이익",
         "availableFrom": "2015-05-15",
@@ -885,13 +1698,41 @@
         "ticker": "108670.KS",
         "unitRef": "KRW",
         "zipSha256": "5f22c5e530c0212c69171bad0af93cfe72adc679bf4c32986af8a5a589f1a9aa"
-      }
+      },
+      "sourceFacts": [],
+      "sourceZipSha256": "5f22c5e530c0212c69171bad0af93cfe72adc679bf4c32986af8a5a589f1a9aa"
     },
     {
       "candidateValue": "841495700000.0",
-      "classification": "SOURCE_UNAVAILABLE",
+      "classification": "AMBIGUOUS_SOURCE_FACT",
+      "filingIndexSha256": "3a258a4fac5796a81ee1c547a05223eca312174fc14548ac3b18c3a2eb73afee",
       "identity": "047050.KS:2015:11014:operating_cash_flow",
-      "reason": "BLOCKED_ON_SOURCE_ACCESS: original ZIP bytes unavailable",
+      "lastSourceFact": {
+        "context": {
+          "dimensions": [
+            [
+              "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}ConsolidatedAndSeparateFinancialStatementsAxis",
+              "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}ConsolidatedMember"
+            ]
+          ],
+          "entity": "00124504",
+          "entityScheme": "http://dart.fss.or.kr/ifrs/CIK",
+          "period": {
+            "endDate": "2015-09-30",
+            "startDate": "2015-01-01"
+          }
+        },
+        "contextRef": "CFY2015dTQA_ifrs_ConsolidatedAndSeparateFinancialStatementsAxis_ifrs_ConsolidatedMember",
+        "decimals": "-3",
+        "elementQName": "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}CashFlowsFromUsedInOperatingActivities",
+        "entry": "00124504_2014-02-13.xbrl",
+        "entrySha256": "c5845e3b7d7dadbcab465dbc206d2d56ace3ffea60f708215ca2d09ce3956e5e",
+        "precision": null,
+        "rawText": "841495700000",
+        "unit": "{http://www.xbrl.org/2003/iso4217}KRW",
+        "unitRef": "KRW"
+      },
+      "reason": "context entity scheme not independently established as DART identity",
       "sampleItem": {
         "account": "영업활동현금흐름",
         "availableFrom": "2015-11-16",
@@ -915,13 +1756,40 @@
         "ticker": "047050.KS",
         "unitRef": "KRW",
         "zipSha256": "a72e5ab3186d7308a8abbbba7524551a7bc4384743769c6fd109f6dff262c3ec"
-      }
+      },
+      "sourceFacts": [],
+      "sourceZipSha256": "a72e5ab3186d7308a8abbbba7524551a7bc4384743769c6fd109f6dff262c3ec"
     },
     {
       "candidateValue": "230033081002.0",
-      "classification": "SOURCE_UNAVAILABLE",
+      "classification": "AMBIGUOUS_SOURCE_FACT",
+      "filingIndexSha256": "571bf8801baab25d74f75bfc2fde01715d2c4fe19e033225148751fe165c04e2",
       "identity": "042700.KS:2015:11014:assets",
-      "reason": "BLOCKED_ON_SOURCE_ACCESS: original ZIP bytes unavailable",
+      "lastSourceFact": {
+        "context": {
+          "dimensions": [
+            [
+              "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}ConsolidatedAndSeparateFinancialStatementsAxis",
+              "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}SeparateMember"
+            ]
+          ],
+          "entity": "00161383",
+          "entityScheme": "http://dart.fss.or.kr/ifrs/CIK",
+          "period": {
+            "instant": "2015-09-30"
+          }
+        },
+        "contextRef": "CFY2015eTQA_ifrs_ConsolidatedAndSeparateFinancialStatementsAxis_ifrs_SeparateMember",
+        "decimals": "0",
+        "elementQName": "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}Assets",
+        "entry": "00161383_2011-05-04.xbrl",
+        "entrySha256": "1ad1422b8a29600b3f4b4e5ac77f6e0f29734eb0f5b11add233758c3de3fabc7",
+        "precision": null,
+        "rawText": "230033081002",
+        "unit": "{http://www.xbrl.org/2003/iso4217}KRW",
+        "unitRef": "KRW"
+      },
+      "reason": "context entity scheme not independently established as DART identity",
       "sampleItem": {
         "account": "자산총계",
         "availableFrom": "2015-11-13",
@@ -945,13 +1813,40 @@
         "ticker": "042700.KS",
         "unitRef": "KRW",
         "zipSha256": "67e6239783f52a6e1f262d162d67b15937980037dc5ef1ecc7eae3b95b09fcc4"
-      }
+      },
+      "sourceFacts": [],
+      "sourceZipSha256": "67e6239783f52a6e1f262d162d67b15937980037dc5ef1ecc7eae3b95b09fcc4"
     },
     {
       "candidateValue": "16462362258.0",
-      "classification": "SOURCE_UNAVAILABLE",
+      "classification": "AMBIGUOUS_SOURCE_FACT",
+      "filingIndexSha256": "4cfabb59d5a9a4086c5f973648fec3aaf990dd83b755788354b2663023a7aa6b",
       "identity": "002410.KS:2015:11013:liabilities",
-      "reason": "BLOCKED_ON_SOURCE_ACCESS: original ZIP bytes unavailable",
+      "lastSourceFact": {
+        "context": {
+          "dimensions": [
+            [
+              "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}ConsolidatedAndSeparateFinancialStatementsAxis",
+              "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}SeparateMember"
+            ]
+          ],
+          "entity": "00122694",
+          "entityScheme": "http://dart.fss.or.kr/ifrs/CIK",
+          "period": {
+            "instant": "2015-03-31"
+          }
+        },
+        "contextRef": "CFY2015eFQA_ifrs_ConsolidatedAndSeparateFinancialStatementsAxis_ifrs_SeparateMember",
+        "decimals": "0",
+        "elementQName": "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}Liabilities",
+        "entry": "00122694_2014-01-01.xbrl",
+        "entrySha256": "f6891fe233542726ab2d095f59aa2fc3f6299fb7571d1fcce4cf775884a721ab",
+        "precision": null,
+        "rawText": "16462362258",
+        "unit": "{http://www.xbrl.org/2003/iso4217}KRW",
+        "unitRef": "KRW"
+      },
+      "reason": "context entity scheme not independently established as DART identity",
       "sampleItem": {
         "account": "부채총계",
         "availableFrom": "2015-05-08",
@@ -975,13 +1870,41 @@
         "ticker": "002410.KS",
         "unitRef": "KRW",
         "zipSha256": "1ab75c982a0ca83f1dd721f4496ba389cbd15d94c3dd9a51c44cb46885e777ea"
-      }
+      },
+      "sourceFacts": [],
+      "sourceZipSha256": "1ab75c982a0ca83f1dd721f4496ba389cbd15d94c3dd9a51c44cb46885e777ea"
     },
     {
       "candidateValue": "56399300778.0",
-      "classification": "SOURCE_UNAVAILABLE",
+      "classification": "AMBIGUOUS_SOURCE_FACT",
+      "filingIndexSha256": "93aadddeaadbba3507123c1fb731178cc916885050e067c6fcb01c52301d72e5",
       "identity": "037620.KS:2015:11013:net_income",
-      "reason": "BLOCKED_ON_SOURCE_ACCESS: original ZIP bytes unavailable",
+      "lastSourceFact": {
+        "context": {
+          "dimensions": [
+            [
+              "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}ConsolidatedAndSeparateFinancialStatementsAxis",
+              "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}SeparateMember"
+            ]
+          ],
+          "entity": "00311030",
+          "entityScheme": "http://dart.fss.or.kr/ifrs/CIK",
+          "period": {
+            "endDate": "2015-03-31",
+            "startDate": "2015-01-01"
+          }
+        },
+        "contextRef": "CFY2015dFQA_ifrs_ConsolidatedAndSeparateFinancialStatementsAxis_ifrs_SeparateMember",
+        "decimals": "0",
+        "elementQName": "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}ProfitLoss",
+        "entry": "00311030_2011-08-16.xbrl",
+        "entrySha256": "4867866401996fb4262de5adbeb21c051a37167b8caa89857f10b760291a0ba7",
+        "precision": null,
+        "rawText": "56399300778",
+        "unit": "{http://www.xbrl.org/2003/iso4217}KRW",
+        "unitRef": "KRW"
+      },
+      "reason": "context entity scheme not independently established as DART identity",
       "sampleItem": {
         "account": "당기순이익",
         "availableFrom": "2015-05-15",
@@ -1005,13 +1928,41 @@
         "ticker": "037620.KS",
         "unitRef": "KRW",
         "zipSha256": "fdf0e300427d1772b9bdfaf54e660e21d4c3ca0879d45c9272a668d02ede40fb"
-      }
+      },
+      "sourceFacts": [],
+      "sourceZipSha256": "fdf0e300427d1772b9bdfaf54e660e21d4c3ca0879d45c9272a668d02ede40fb"
     },
     {
       "candidateValue": "197453521746.0",
-      "classification": "SOURCE_UNAVAILABLE",
+      "classification": "AMBIGUOUS_SOURCE_FACT",
+      "filingIndexSha256": "c463c60e133952f6b1a59c92360d7c46f317ce42150fcee2c7ba30c8c36a8f5a",
       "identity": "027410.KS:2015:11012:operating_cash_flow",
-      "reason": "BLOCKED_ON_SOURCE_ACCESS: original ZIP bytes unavailable",
+      "lastSourceFact": {
+        "context": {
+          "dimensions": [
+            [
+              "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}ConsolidatedAndSeparateFinancialStatementsAxis",
+              "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}ConsolidatedMember"
+            ]
+          ],
+          "entity": "00219097",
+          "entityScheme": "http://dart.fss.or.kr/ifrs/CIK",
+          "period": {
+            "endDate": "2015-06-30",
+            "startDate": "2015-01-01"
+          }
+        },
+        "contextRef": "CFY2015dHYA_ifrs_ConsolidatedAndSeparateFinancialStatementsAxis_ifrs_ConsolidatedMember",
+        "decimals": "0",
+        "elementQName": "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}CashFlowsFromUsedInOperatingActivities",
+        "entry": "00219097_2014-08-12.xbrl",
+        "entrySha256": "5643e6549cdca41ded1afcb05f5c594ed0ee6ab442c8f7ffa64842f7e8a90298",
+        "precision": null,
+        "rawText": "197453521746",
+        "unit": "{http://www.xbrl.org/2003/iso4217}KRW",
+        "unitRef": "KRW"
+      },
+      "reason": "context entity scheme not independently established as DART identity",
       "sampleItem": {
         "account": "영업활동현금흐름",
         "availableFrom": "2015-08-28",
@@ -1035,13 +1986,40 @@
         "ticker": "027410.KS",
         "unitRef": "KRW",
         "zipSha256": "3fe02d1fb87f6ce6b1a5bf80b1c4a1c65532bf153be125b7c2ce8983b9f73792"
-      }
+      },
+      "sourceFacts": [],
+      "sourceZipSha256": "3fe02d1fb87f6ce6b1a5bf80b1c4a1c65532bf153be125b7c2ce8983b9f73792"
     },
     {
       "candidateValue": "299805130641.0",
-      "classification": "SOURCE_UNAVAILABLE",
+      "classification": "AMBIGUOUS_SOURCE_FACT",
+      "filingIndexSha256": "faaa5cbb7c4bb4f7ee27b3163b8c4477032fae7d851ece03bebdd2850fcdc498",
       "identity": "003230.KS:2015:11014:assets",
-      "reason": "BLOCKED_ON_SOURCE_ACCESS: original ZIP bytes unavailable",
+      "lastSourceFact": {
+        "context": {
+          "dimensions": [
+            [
+              "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}ConsolidatedAndSeparateFinancialStatementsAxis",
+              "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}ConsolidatedMember"
+            ]
+          ],
+          "entity": "00126955",
+          "entityScheme": "http://dart.fss.or.kr/ifrs/CIK",
+          "period": {
+            "instant": "2015-09-30"
+          }
+        },
+        "contextRef": "CFY2015eTQA_ifrs_ConsolidatedAndSeparateFinancialStatementsAxis_ifrs_ConsolidatedMember",
+        "decimals": "0",
+        "elementQName": "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}Assets",
+        "entry": "00126955_2015-04-22.xbrl",
+        "entrySha256": "c21ff1e521755aac53c7346190d4064a142bf68291f3f1974b5d1f35bf1b219a",
+        "precision": null,
+        "rawText": "299805130641",
+        "unit": "{http://www.xbrl.org/2003/iso4217}KRW",
+        "unitRef": "KRW"
+      },
+      "reason": "context entity scheme not independently established as DART identity",
       "sampleItem": {
         "account": "자산총계",
         "availableFrom": "2015-11-16",
@@ -1065,13 +2043,40 @@
         "ticker": "003230.KS",
         "unitRef": "KRW",
         "zipSha256": "45dbfb59cd66c3d29cf68d8b8d70e8a08e3d856d871e895bf4f1205e81a30953"
-      }
+      },
+      "sourceFacts": [],
+      "sourceZipSha256": "45dbfb59cd66c3d29cf68d8b8d70e8a08e3d856d871e895bf4f1205e81a30953"
     },
     {
       "candidateValue": "93410286000000.0",
-      "classification": "SOURCE_UNAVAILABLE",
+      "classification": "AMBIGUOUS_SOURCE_FACT",
+      "filingIndexSha256": "6faa47b2529a444326a925ad9b60db980649515f15819d55b3b7258355256356",
       "identity": "005380.KS:2015:11014:liabilities",
-      "reason": "BLOCKED_ON_SOURCE_ACCESS: original ZIP bytes unavailable",
+      "lastSourceFact": {
+        "context": {
+          "dimensions": [
+            [
+              "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}ConsolidatedAndSeparateFinancialStatementsAxis",
+              "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}ConsolidatedMember"
+            ]
+          ],
+          "entity": "00164742",
+          "entityScheme": "http://dart.fss.or.kr/ifrs/CIK",
+          "period": {
+            "instant": "2015-09-30"
+          }
+        },
+        "contextRef": "CFY2015eTQA_ifrs_ConsolidatedAndSeparateFinancialStatementsAxis_ifrs_ConsolidatedMember",
+        "decimals": "-6",
+        "elementQName": "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}Liabilities",
+        "entry": "00164742_2011-05-17.xbrl",
+        "entrySha256": "b31b2da2b1719e7ff17f071ddecccb4b17ca54e7c070eaeec4e403b7ddf3e8c1",
+        "precision": null,
+        "rawText": "93410286000000",
+        "unit": "{http://www.xbrl.org/2003/iso4217}KRW",
+        "unitRef": "KRW"
+      },
+      "reason": "context entity scheme not independently established as DART identity",
       "sampleItem": {
         "account": "부채총계",
         "availableFrom": "2015-11-16",
@@ -1095,13 +2100,41 @@
         "ticker": "005380.KS",
         "unitRef": "KRW",
         "zipSha256": "044812401140d62a7def0e8e99319d6ae25ca3d547fc2cf70cfb05ae1feccae2"
-      }
+      },
+      "sourceFacts": [],
+      "sourceZipSha256": "044812401140d62a7def0e8e99319d6ae25ca3d547fc2cf70cfb05ae1feccae2"
     },
     {
       "candidateValue": "444434213406.0",
-      "classification": "SOURCE_UNAVAILABLE",
+      "classification": "AMBIGUOUS_SOURCE_FACT",
+      "filingIndexSha256": "a5439ecb4f17aa71672e609839b2c4beb10a9c08c80dd127ba41528ccd4d2c88",
       "identity": "004020.KS:2015:11012:net_income",
-      "reason": "BLOCKED_ON_SOURCE_ACCESS: original ZIP bytes unavailable",
+      "lastSourceFact": {
+        "context": {
+          "dimensions": [
+            [
+              "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}ConsolidatedAndSeparateFinancialStatementsAxis",
+              "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}ConsolidatedMember"
+            ]
+          ],
+          "entity": "00145880",
+          "entityScheme": "http://dart.fss.or.kr/ifrs/CIK",
+          "period": {
+            "endDate": "2015-06-30",
+            "startDate": "2015-01-01"
+          }
+        },
+        "contextRef": "CFY2015dHYA_ifrs_ConsolidatedAndSeparateFinancialStatementsAxis_ifrs_ConsolidatedMember",
+        "decimals": "0",
+        "elementQName": "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}ProfitLoss",
+        "entry": "00145880_2011-05-20.xbrl",
+        "entrySha256": "9a354601d588f55741fccddcfb7f155d30dd39d3105b93e1777a028bde1b5ec1",
+        "precision": null,
+        "rawText": "444434213406",
+        "unit": "{http://www.xbrl.org/2003/iso4217}KRW",
+        "unitRef": "KRW"
+      },
+      "reason": "context entity scheme not independently established as DART identity",
       "sampleItem": {
         "account": "당기순이익",
         "availableFrom": "2015-08-17",
@@ -1125,13 +2158,41 @@
         "ticker": "004020.KS",
         "unitRef": "KRW",
         "zipSha256": "cdc46f5a8250971039f9ff0636b335f2600e3d113eb2271d40ae38f16d5a1916"
-      }
+      },
+      "sourceFacts": [],
+      "sourceZipSha256": "cdc46f5a8250971039f9ff0636b335f2600e3d113eb2271d40ae38f16d5a1916"
     },
     {
       "candidateValue": "28275668516.0",
-      "classification": "SOURCE_UNAVAILABLE",
+      "classification": "AMBIGUOUS_SOURCE_FACT",
+      "filingIndexSha256": "571bf8801baab25d74f75bfc2fde01715d2c4fe19e033225148751fe165c04e2",
       "identity": "042700.KS:2015:11014:operating_cash_flow",
-      "reason": "BLOCKED_ON_SOURCE_ACCESS: original ZIP bytes unavailable",
+      "lastSourceFact": {
+        "context": {
+          "dimensions": [
+            [
+              "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}ConsolidatedAndSeparateFinancialStatementsAxis",
+              "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}SeparateMember"
+            ]
+          ],
+          "entity": "00161383",
+          "entityScheme": "http://dart.fss.or.kr/ifrs/CIK",
+          "period": {
+            "endDate": "2015-09-30",
+            "startDate": "2015-01-01"
+          }
+        },
+        "contextRef": "CFY2015dTQA_ifrs_ConsolidatedAndSeparateFinancialStatementsAxis_ifrs_SeparateMember",
+        "decimals": "0",
+        "elementQName": "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}CashFlowsFromUsedInOperatingActivities",
+        "entry": "00161383_2011-05-04.xbrl",
+        "entrySha256": "1ad1422b8a29600b3f4b4e5ac77f6e0f29734eb0f5b11add233758c3de3fabc7",
+        "precision": null,
+        "rawText": "28275668516",
+        "unit": "{http://www.xbrl.org/2003/iso4217}KRW",
+        "unitRef": "KRW"
+      },
+      "reason": "context entity scheme not independently established as DART identity",
       "sampleItem": {
         "account": "영업활동현금흐름",
         "availableFrom": "2015-11-13",
@@ -1155,13 +2216,40 @@
         "ticker": "042700.KS",
         "unitRef": "KRW",
         "zipSha256": "67e6239783f52a6e1f262d162d67b15937980037dc5ef1ecc7eae3b95b09fcc4"
-      }
+      },
+      "sourceFacts": [],
+      "sourceZipSha256": "67e6239783f52a6e1f262d162d67b15937980037dc5ef1ecc7eae3b95b09fcc4"
     },
     {
       "candidateValue": "10953878517686.0",
-      "classification": "SOURCE_UNAVAILABLE",
+      "classification": "AMBIGUOUS_SOURCE_FACT",
+      "filingIndexSha256": "83ab7a9f4532e99c172cdda362fa2cfd0b6107b86fbc2c5beac4b68d98c0511e",
       "identity": "000210.KS:2015:11012:assets",
-      "reason": "BLOCKED_ON_SOURCE_ACCESS: original ZIP bytes unavailable",
+      "lastSourceFact": {
+        "context": {
+          "dimensions": [
+            [
+              "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}ConsolidatedAndSeparateFinancialStatementsAxis",
+              "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}ConsolidatedMember"
+            ]
+          ],
+          "entity": "00109693",
+          "entityScheme": "http://dart.fss.or.kr/ifrs/CIK",
+          "period": {
+            "instant": "2015-06-30"
+          }
+        },
+        "contextRef": "CFY2015eHYA_ifrs_ConsolidatedAndSeparateFinancialStatementsAxis_ifrs_ConsolidatedMember",
+        "decimals": "0",
+        "elementQName": "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}Assets",
+        "entry": "00109693_2011-05-30.xbrl",
+        "entrySha256": "359bd733950e8e772d624c3b7131ced5ef74794ea4804df99b1af052fee10ad8",
+        "precision": null,
+        "rawText": "10953878517686",
+        "unit": "{http://www.xbrl.org/2003/iso4217}KRW",
+        "unitRef": "KRW"
+      },
+      "reason": "context entity scheme not independently established as DART identity",
       "sampleItem": {
         "account": "자산총계",
         "availableFrom": "2015-08-17",
@@ -1185,13 +2273,40 @@
         "ticker": "000210.KS",
         "unitRef": "KRW",
         "zipSha256": "57648c3b3297dc053ab3252bc25e22768b9fd21b91ea91950b9a142b5b977211"
-      }
+      },
+      "sourceFacts": [],
+      "sourceZipSha256": "57648c3b3297dc053ab3252bc25e22768b9fd21b91ea91950b9a142b5b977211"
     },
     {
       "candidateValue": "423169416385.0",
-      "classification": "SOURCE_UNAVAILABLE",
+      "classification": "AMBIGUOUS_SOURCE_FACT",
+      "filingIndexSha256": "c553abf64e739087192f13b2f3570713292a2090a67fa7e35c9bda45f3a91df2",
       "identity": "012750.KS:2015:11012:liabilities",
-      "reason": "BLOCKED_ON_SOURCE_ACCESS: original ZIP bytes unavailable",
+      "lastSourceFact": {
+        "context": {
+          "dimensions": [
+            [
+              "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}ConsolidatedAndSeparateFinancialStatementsAxis",
+              "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}ConsolidatedMember"
+            ]
+          ],
+          "entity": "00158501",
+          "entityScheme": "http://dart.fss.or.kr/ifrs/CIK",
+          "period": {
+            "instant": "2015-06-30"
+          }
+        },
+        "contextRef": "CFY2015eHYA_ifrs_ConsolidatedAndSeparateFinancialStatementsAxis_ifrs_ConsolidatedMember",
+        "decimals": "0",
+        "elementQName": "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}Liabilities",
+        "entry": "00158501_2011-05-30.xbrl",
+        "entrySha256": "5a02db1dd2b4ee1385284a4b75f94e646399390a22500f52b65ffea6833cf1ed",
+        "precision": null,
+        "rawText": "423169416385",
+        "unit": "{http://www.xbrl.org/2003/iso4217}KRW",
+        "unitRef": "KRW"
+      },
+      "reason": "context entity scheme not independently established as DART identity",
       "sampleItem": {
         "account": "부채총계",
         "availableFrom": "2015-08-17",
@@ -1215,13 +2330,41 @@
         "ticker": "012750.KS",
         "unitRef": "KRW",
         "zipSha256": "595fe0850b090412cbfcc57fd59188c2d40b000a49b0c4926a87d36f65576609"
-      }
+      },
+      "sourceFacts": [],
+      "sourceZipSha256": "595fe0850b090412cbfcc57fd59188c2d40b000a49b0c4926a87d36f65576609"
     },
     {
       "candidateValue": "-228031809090.0",
-      "classification": "SOURCE_UNAVAILABLE",
+      "classification": "AMBIGUOUS_SOURCE_FACT",
+      "filingIndexSha256": "9744eaf6dbaa17e68e2abeac10a04d8d70bf78934a5175155c99639728d3d8e0",
       "identity": "180640.KS:2015:11014:net_income",
-      "reason": "BLOCKED_ON_SOURCE_ACCESS: original ZIP bytes unavailable",
+      "lastSourceFact": {
+        "context": {
+          "dimensions": [
+            [
+              "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}ConsolidatedAndSeparateFinancialStatementsAxis",
+              "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}ConsolidatedMember"
+            ]
+          ],
+          "entity": "00983040",
+          "entityScheme": "http://dart.fss.or.kr/ifrs/CIK",
+          "period": {
+            "endDate": "2015-09-30",
+            "startDate": "2015-01-01"
+          }
+        },
+        "contextRef": "CFY2015dTQA_ifrs_ConsolidatedAndSeparateFinancialStatementsAxis_ifrs_ConsolidatedMember",
+        "decimals": "0",
+        "elementQName": "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}ProfitLoss",
+        "entry": "00983040_2015-03-31.xbrl",
+        "entrySha256": "359278c20beaadbe59d9fe94f82552e6127207e4bed649bb5c5aa0721aedbab5",
+        "precision": null,
+        "rawText": "-228031809090",
+        "unit": "{http://www.xbrl.org/2003/iso4217}KRW",
+        "unitRef": "KRW"
+      },
+      "reason": "context entity scheme not independently established as DART identity",
       "sampleItem": {
         "account": "당기순이익",
         "availableFrom": "2015-11-16",
@@ -1245,13 +2388,41 @@
         "ticker": "180640.KS",
         "unitRef": "KRW",
         "zipSha256": "10eab125e4a993ee68242d7ffb42c2363c5544b3972a157312d9b6f634c7e848"
-      }
+      },
+      "sourceFacts": [],
+      "sourceZipSha256": "10eab125e4a993ee68242d7ffb42c2363c5544b3972a157312d9b6f634c7e848"
     },
     {
       "candidateValue": "16370321166.0",
-      "classification": "SOURCE_UNAVAILABLE",
+      "classification": "AMBIGUOUS_SOURCE_FACT",
+      "filingIndexSha256": "a1c029481bcf947c6201377976cf86cbdb1a63a3b4fb7e029ed5f1081585427b",
       "identity": "185750.KS:2015:11013:operating_cash_flow",
-      "reason": "BLOCKED_ON_SOURCE_ACCESS: original ZIP bytes unavailable",
+      "lastSourceFact": {
+        "context": {
+          "dimensions": [
+            [
+              "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}ConsolidatedAndSeparateFinancialStatementsAxis",
+              "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}SeparateMember"
+            ]
+          ],
+          "entity": "00992871",
+          "entityScheme": "http://dart.fss.or.kr/ifrs/CIK",
+          "period": {
+            "endDate": "2015-03-31",
+            "startDate": "2015-01-01"
+          }
+        },
+        "contextRef": "CFY2015dFQA_ifrs_ConsolidatedAndSeparateFinancialStatementsAxis_ifrs_SeparateMember",
+        "decimals": "0",
+        "elementQName": "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}CashFlowsFromUsedInOperatingActivities",
+        "entry": "00992871_2014-03-28.xbrl",
+        "entrySha256": "bebd30d3430bf2e364792b382e0772c4d68c14b79f1773dc839c884d983f8d84",
+        "precision": null,
+        "rawText": "16370321166",
+        "unit": "{http://www.xbrl.org/2003/iso4217}KRW",
+        "unitRef": "KRW"
+      },
+      "reason": "context entity scheme not independently established as DART identity",
       "sampleItem": {
         "account": "영업활동현금흐름",
         "availableFrom": "2015-05-15",
@@ -1275,13 +2446,40 @@
         "ticker": "185750.KS",
         "unitRef": "KRW",
         "zipSha256": "d7707fd3b449d1a2e80ca487e7c720bd1ac85cb6a6e88617a73bc7a5af989364"
-      }
+      },
+      "sourceFacts": [],
+      "sourceZipSha256": "d7707fd3b449d1a2e80ca487e7c720bd1ac85cb6a6e88617a73bc7a5af989364"
     },
     {
       "candidateValue": "790759345974.0",
-      "classification": "SOURCE_UNAVAILABLE",
+      "classification": "AMBIGUOUS_SOURCE_FACT",
+      "filingIndexSha256": "74f5489ebce44c5436b47f7082e80fb4de81e87a07e8c120cd35828fb57963be",
       "identity": "052690.KS:2015:11012:assets",
-      "reason": "BLOCKED_ON_SOURCE_ACCESS: original ZIP bytes unavailable",
+      "lastSourceFact": {
+        "context": {
+          "dimensions": [
+            [
+              "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}ConsolidatedAndSeparateFinancialStatementsAxis",
+              "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}SeparateMember"
+            ]
+          ],
+          "entity": "00159209",
+          "entityScheme": "http://dart.fss.or.kr/ifrs/CIK",
+          "period": {
+            "instant": "2015-06-30"
+          }
+        },
+        "contextRef": "CFY2015eHYA_ifrs_ConsolidatedAndSeparateFinancialStatementsAxis_ifrs_SeparateMember",
+        "decimals": "0",
+        "elementQName": "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}Assets",
+        "entry": "00159209_2014-08-04.xbrl",
+        "entrySha256": "33bc4155d215f5ce8f5dec83431c67fc6a3872288a516cef2a15d599ac356e85",
+        "precision": null,
+        "rawText": "790759345974",
+        "unit": "{http://www.xbrl.org/2003/iso4217}KRW",
+        "unitRef": "KRW"
+      },
+      "reason": "context entity scheme not independently established as DART identity",
       "sampleItem": {
         "account": "자산총계",
         "availableFrom": "2015-08-13",
@@ -1305,13 +2503,40 @@
         "ticker": "052690.KS",
         "unitRef": "KRW",
         "zipSha256": "6b76e763e16575aee6bd4e0d213f2cedcfca124973cf386c8f072af4f4491353"
-      }
+      },
+      "sourceFacts": [],
+      "sourceZipSha256": "6b76e763e16575aee6bd4e0d213f2cedcfca124973cf386c8f072af4f4491353"
     },
     {
       "candidateValue": "5417516683271.0",
-      "classification": "SOURCE_UNAVAILABLE",
+      "classification": "AMBIGUOUS_SOURCE_FACT",
+      "filingIndexSha256": "ec2414e9ea893dd486cf80b14d7ebca32051f0b1391c75edc74c3f3432e20fd4",
       "identity": "028050.KS:2015:11014:liabilities",
-      "reason": "BLOCKED_ON_SOURCE_ACCESS: original ZIP bytes unavailable",
+      "lastSourceFact": {
+        "context": {
+          "dimensions": [
+            [
+              "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}ConsolidatedAndSeparateFinancialStatementsAxis",
+              "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}SeparateMember"
+            ]
+          ],
+          "entity": "00126308",
+          "entityScheme": "http://dart.fss.or.kr/ifrs/CIK",
+          "period": {
+            "instant": "2015-09-30"
+          }
+        },
+        "contextRef": "CFY2015eTQA_ifrs_ConsolidatedAndSeparateFinancialStatementsAxis_ifrs_SeparateMember",
+        "decimals": "0",
+        "elementQName": "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}Liabilities",
+        "entry": "00126308_2011-05-25.xbrl",
+        "entrySha256": "e775081d0c8a1e2f8fd23de38b1b5225a59ef39636d80cb497647c51d6686827",
+        "precision": null,
+        "rawText": "5417516683271",
+        "unit": "{http://www.xbrl.org/2003/iso4217}KRW",
+        "unitRef": "KRW"
+      },
+      "reason": "context entity scheme not independently established as DART identity",
       "sampleItem": {
         "account": "부채총계",
         "availableFrom": "2015-11-16",
@@ -1335,13 +2560,41 @@
         "ticker": "028050.KS",
         "unitRef": "KRW",
         "zipSha256": "57d6083dca12db8d55ed976418de54c9661bde406b175477045fd929fd91af24"
-      }
+      },
+      "sourceFacts": [],
+      "sourceZipSha256": "57d6083dca12db8d55ed976418de54c9661bde406b175477045fd929fd91af24"
     },
     {
       "candidateValue": "32572882196.0",
-      "classification": "SOURCE_UNAVAILABLE",
+      "classification": "AMBIGUOUS_SOURCE_FACT",
+      "filingIndexSha256": "2b9b35bdc98466208210b48d199e69f1fb57d9c084ebed51aad5e85f53c46453",
       "identity": "103140.KS:2015:11012:net_income",
-      "reason": "BLOCKED_ON_SOURCE_ACCESS: original ZIP bytes unavailable",
+      "lastSourceFact": {
+        "context": {
+          "dimensions": [
+            [
+              "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}ConsolidatedAndSeparateFinancialStatementsAxis",
+              "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}SeparateMember"
+            ]
+          ],
+          "entity": "00684714",
+          "entityScheme": "http://dart.fss.or.kr/ifrs/CIK",
+          "period": {
+            "endDate": "2015-06-30",
+            "startDate": "2015-01-01"
+          }
+        },
+        "contextRef": "CFY2015dHYA_ifrs_ConsolidatedAndSeparateFinancialStatementsAxis_ifrs_SeparateMember",
+        "decimals": "0",
+        "elementQName": "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}ProfitLoss",
+        "entry": "00684714_2014-03-11.xbrl",
+        "entrySha256": "f6245f343bcbaec0855e67046d310e19ae99ec41278dde066153383d4d1c58c4",
+        "precision": null,
+        "rawText": "32572882196",
+        "unit": "{http://www.xbrl.org/2003/iso4217}KRW",
+        "unitRef": "KRW"
+      },
+      "reason": "context entity scheme not independently established as DART identity",
       "sampleItem": {
         "account": "당기순이익",
         "availableFrom": "2015-08-13",
@@ -1365,13 +2618,41 @@
         "ticker": "103140.KS",
         "unitRef": "KRW",
         "zipSha256": "9190bdb8c139c45f44cb6d0a33724a07c78e0a1cb81a1da04edf69ba6c2253f9"
-      }
+      },
+      "sourceFacts": [],
+      "sourceZipSha256": "9190bdb8c139c45f44cb6d0a33724a07c78e0a1cb81a1da04edf69ba6c2253f9"
     },
     {
       "candidateValue": "413918576490.0",
-      "classification": "SOURCE_UNAVAILABLE",
+      "classification": "AMBIGUOUS_SOURCE_FACT",
+      "filingIndexSha256": "da3dc6b350bc43e996775cd283c1801be859426ac2d0a6bb64d3f82915c8435a",
       "identity": "012630.KS:2015:11013:operating_cash_flow",
-      "reason": "BLOCKED_ON_SOURCE_ACCESS: original ZIP bytes unavailable",
+      "lastSourceFact": {
+        "context": {
+          "dimensions": [
+            [
+              "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}ConsolidatedAndSeparateFinancialStatementsAxis",
+              "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}ConsolidatedMember"
+            ]
+          ],
+          "entity": "00164636",
+          "entityScheme": "http://dart.fss.or.kr/ifrs/CIK",
+          "period": {
+            "endDate": "2015-03-31",
+            "startDate": "2015-01-01"
+          }
+        },
+        "contextRef": "CFY2015dFQA_ifrs_ConsolidatedAndSeparateFinancialStatementsAxis_ifrs_ConsolidatedMember",
+        "decimals": "0",
+        "elementQName": "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}CashFlowsFromUsedInOperatingActivities",
+        "entry": "00164636_2011-05-24.xbrl",
+        "entrySha256": "44373b217488cb037a75d7e3b45cb0c39f18715cb9e08ddcc12c8eabd647ae64",
+        "precision": null,
+        "rawText": "413918576490",
+        "unit": "{http://www.xbrl.org/2003/iso4217}KRW",
+        "unitRef": "KRW"
+      },
+      "reason": "context entity scheme not independently established as DART identity",
       "sampleItem": {
         "account": "영업활동현금흐름",
         "availableFrom": "2015-05-15",
@@ -1395,13 +2676,40 @@
         "ticker": "012630.KS",
         "unitRef": "KRW",
         "zipSha256": "b6883feb4eb552d689ef10cfb761488ba157657d4b89a913ddd7f9fe6359a412"
-      }
+      },
+      "sourceFacts": [],
+      "sourceZipSha256": "b6883feb4eb552d689ef10cfb761488ba157657d4b89a913ddd7f9fe6359a412"
     },
     {
       "candidateValue": "2260088000000.0",
-      "classification": "SOURCE_UNAVAILABLE",
+      "classification": "AMBIGUOUS_SOURCE_FACT",
+      "filingIndexSha256": "f1e932df7b06185051d1e9b703a37830afafbeef3c65ef4635471dd4f5a66b2c",
       "identity": "047810.KS:2015:11013:assets",
-      "reason": "BLOCKED_ON_SOURCE_ACCESS: original ZIP bytes unavailable",
+      "lastSourceFact": {
+        "context": {
+          "dimensions": [
+            [
+              "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}ConsolidatedAndSeparateFinancialStatementsAxis",
+              "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}ConsolidatedMember"
+            ]
+          ],
+          "entity": "00309503",
+          "entityScheme": "http://dart.fss.or.kr/ifrs/CIK",
+          "period": {
+            "instant": "2015-03-31"
+          }
+        },
+        "contextRef": "CFY2015eFQA_ifrs_ConsolidatedAndSeparateFinancialStatementsAxis_ifrs_ConsolidatedMember",
+        "decimals": "-6",
+        "elementQName": "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}Assets",
+        "entry": "00309503_2014-03-31.xbrl",
+        "entrySha256": "e3a0488bbda9e1c776db317d497675047ba3ebf5efe82a598a8809ac3861eacc",
+        "precision": null,
+        "rawText": "2260088000000",
+        "unit": "{http://www.xbrl.org/2003/iso4217}KRW",
+        "unitRef": "KRW"
+      },
+      "reason": "context entity scheme not independently established as DART identity",
       "sampleItem": {
         "account": "자산총계",
         "availableFrom": "2015-05-15",
@@ -1425,13 +2733,40 @@
         "ticker": "047810.KS",
         "unitRef": "KRW",
         "zipSha256": "10e8109216ee5801057ddd9d72f0f12576d90e5ba28470a92add108a52bd9672"
-      }
+      },
+      "sourceFacts": [],
+      "sourceZipSha256": "10e8109216ee5801057ddd9d72f0f12576d90e5ba28470a92add108a52bd9672"
     },
     {
       "candidateValue": "2758780032813.0",
-      "classification": "SOURCE_UNAVAILABLE",
+      "classification": "AMBIGUOUS_SOURCE_FACT",
+      "filingIndexSha256": "dd5eca2a3cac4604ed08cacb0605501aebfe94e8e7806ad8d90ea630c2df2f48",
       "identity": "034730.KS:2015:11013:liabilities",
-      "reason": "BLOCKED_ON_SOURCE_ACCESS: original ZIP bytes unavailable",
+      "lastSourceFact": {
+        "context": {
+          "dimensions": [
+            [
+              "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}ConsolidatedAndSeparateFinancialStatementsAxis",
+              "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}ConsolidatedMember"
+            ]
+          ],
+          "entity": "00181712",
+          "entityScheme": "http://dart.fss.or.kr/ifrs/CIK",
+          "period": {
+            "instant": "2015-03-31"
+          }
+        },
+        "contextRef": "CFY2015eFQA_ifrs_ConsolidatedAndSeparateFinancialStatementsAxis_ifrs_ConsolidatedMember",
+        "decimals": "0",
+        "elementQName": "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}Liabilities",
+        "entry": "00181712_2011-05-16.xbrl",
+        "entrySha256": "848694db53c90385ea9e2d8c1db6b8d1eda658a4f7c7390aab3241c78603c7b8",
+        "precision": null,
+        "rawText": "2758780032813",
+        "unit": "{http://www.xbrl.org/2003/iso4217}KRW",
+        "unitRef": "KRW"
+      },
+      "reason": "context entity scheme not independently established as DART identity",
       "sampleItem": {
         "account": "부채총계",
         "availableFrom": "2015-05-15",
@@ -1455,13 +2790,41 @@
         "ticker": "034730.KS",
         "unitRef": "KRW",
         "zipSha256": "4ecc4ae9b89afa4b29ad8a33c75761277e923b3a4b382bdb564740cb5a05e09a"
-      }
+      },
+      "sourceFacts": [],
+      "sourceZipSha256": "4ecc4ae9b89afa4b29ad8a33c75761277e923b3a4b382bdb564740cb5a05e09a"
     },
     {
       "candidateValue": "81280798400.0",
-      "classification": "SOURCE_UNAVAILABLE",
+      "classification": "AMBIGUOUS_SOURCE_FACT",
+      "filingIndexSha256": "22b47d712439c4cddc0052790866e9db0e828f0a9df0b0ef4f1877bc2294347d",
       "identity": "004990.KS:2015:11014:net_income",
-      "reason": "BLOCKED_ON_SOURCE_ACCESS: original ZIP bytes unavailable",
+      "lastSourceFact": {
+        "context": {
+          "dimensions": [
+            [
+              "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}ConsolidatedAndSeparateFinancialStatementsAxis",
+              "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}SeparateMember"
+            ]
+          ],
+          "entity": "00120562",
+          "entityScheme": "http://dart.fss.or.kr/ifrs/CIK",
+          "period": {
+            "endDate": "2015-09-30",
+            "startDate": "2015-01-01"
+          }
+        },
+        "contextRef": "CFY2015dTQA_ifrs_ConsolidatedAndSeparateFinancialStatementsAxis_ifrs_SeparateMember",
+        "decimals": "0",
+        "elementQName": "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}ProfitLoss",
+        "entry": "00120562_2013-08-14.xbrl",
+        "entrySha256": "72c672d95f724c7b2d5c1b5f269556938ec37a9b5fb1c039bad3fdfc94d1860f",
+        "precision": null,
+        "rawText": "81280798400",
+        "unit": "{http://www.xbrl.org/2003/iso4217}KRW",
+        "unitRef": "KRW"
+      },
+      "reason": "context entity scheme not independently established as DART identity",
       "sampleItem": {
         "account": "당기순이익",
         "availableFrom": "2015-11-16",
@@ -1485,13 +2848,41 @@
         "ticker": "004990.KS",
         "unitRef": "KRW",
         "zipSha256": "6fe30c517f4a15d38a43405212e9d8436ba8f7699820fa50a5dd00087c0d3b19"
-      }
+      },
+      "sourceFacts": [],
+      "sourceZipSha256": "6fe30c517f4a15d38a43405212e9d8436ba8f7699820fa50a5dd00087c0d3b19"
     },
     {
       "candidateValue": "-3171732681.0",
-      "classification": "SOURCE_UNAVAILABLE",
+      "classification": "AMBIGUOUS_SOURCE_FACT",
+      "filingIndexSha256": "e7a372d01584a87399c54731771486ddc1c856f60f87a183daa05b4ffae18f65",
       "identity": "005070.KS:2015:11012:operating_cash_flow",
-      "reason": "BLOCKED_ON_SOURCE_ACCESS: original ZIP bytes unavailable",
+      "lastSourceFact": {
+        "context": {
+          "dimensions": [
+            [
+              "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}ConsolidatedAndSeparateFinancialStatementsAxis",
+              "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}SeparateMember"
+            ]
+          ],
+          "entity": "00129989",
+          "entityScheme": "http://dart.fss.or.kr/ifrs/CIK",
+          "period": {
+            "endDate": "2015-06-30",
+            "startDate": "2015-01-01"
+          }
+        },
+        "contextRef": "CFY2015dHYA_ifrs_ConsolidatedAndSeparateFinancialStatementsAxis_ifrs_SeparateMember",
+        "decimals": "0",
+        "elementQName": "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}CashFlowsFromUsedInOperatingActivities",
+        "entry": "00129989_2011-05-04.xbrl",
+        "entrySha256": "1e370ffbd7ae342899a48d00aee817716a9feca2d113c4015604b209c63794c0",
+        "precision": null,
+        "rawText": "-3171732681",
+        "unit": "{http://www.xbrl.org/2003/iso4217}KRW",
+        "unitRef": "KRW"
+      },
+      "reason": "context entity scheme not independently established as DART identity",
       "sampleItem": {
         "account": "영업활동현금흐름",
         "availableFrom": "2015-08-13",
@@ -1515,13 +2906,40 @@
         "ticker": "005070.KS",
         "unitRef": "KRW",
         "zipSha256": "f021b1b26a4fd8d9c0b2976b1723a48da3613080b25c5724e681429111b35106"
-      }
+      },
+      "sourceFacts": [],
+      "sourceZipSha256": "f021b1b26a4fd8d9c0b2976b1723a48da3613080b25c5724e681429111b35106"
     },
     {
       "candidateValue": "182796279076.0",
-      "classification": "SOURCE_UNAVAILABLE",
+      "classification": "AMBIGUOUS_SOURCE_FACT",
+      "filingIndexSha256": "d09bfa750336b5125b34e2dfdbde600b9c9ed7d69b62f22ecec45927d6f957ac",
       "identity": "003520.KS:2015:11013:assets",
-      "reason": "BLOCKED_ON_SOURCE_ACCESS: original ZIP bytes unavailable",
+      "lastSourceFact": {
+        "context": {
+          "dimensions": [
+            [
+              "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}ConsolidatedAndSeparateFinancialStatementsAxis",
+              "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}SeparateMember"
+            ]
+          ],
+          "entity": "00141149",
+          "entityScheme": "http://dart.fss.or.kr/ifrs/CIK",
+          "period": {
+            "instant": "2015-03-31"
+          }
+        },
+        "contextRef": "CFY2015eFQA_ifrs_ConsolidatedAndSeparateFinancialStatementsAxis_ifrs_SeparateMember",
+        "decimals": "0",
+        "elementQName": "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}Assets",
+        "entry": "00141149_2013-05-15.xbrl",
+        "entrySha256": "0ac9cdb2d40711fadec061f8e63688342c8a268fa452a53f73bf44e9aa3ad693",
+        "precision": null,
+        "rawText": "182796279076",
+        "unit": "{http://www.xbrl.org/2003/iso4217}KRW",
+        "unitRef": "KRW"
+      },
+      "reason": "context entity scheme not independently established as DART identity",
       "sampleItem": {
         "account": "자산총계",
         "availableFrom": "2015-05-15",
@@ -1545,13 +2963,40 @@
         "ticker": "003520.KS",
         "unitRef": "KRW",
         "zipSha256": "b04d74258005c119bbb1ebd66e80644541e6793580619fe293c5faf28131fd62"
-      }
+      },
+      "sourceFacts": [],
+      "sourceZipSha256": "b04d74258005c119bbb1ebd66e80644541e6793580619fe293c5faf28131fd62"
     },
     {
       "candidateValue": "10037702836.0",
-      "classification": "SOURCE_UNAVAILABLE",
+      "classification": "AMBIGUOUS_SOURCE_FACT",
+      "filingIndexSha256": "90d21af66aad1ac533b376ec909979bea27f1702c656cbf3d9525e9369f5571f",
       "identity": "005690.KS:2015:11012:liabilities",
-      "reason": "BLOCKED_ON_SOURCE_ACCESS: original ZIP bytes unavailable",
+      "lastSourceFact": {
+        "context": {
+          "dimensions": [
+            [
+              "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}ConsolidatedAndSeparateFinancialStatementsAxis",
+              "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}SeparateMember"
+            ]
+          ],
+          "entity": "00145163",
+          "entityScheme": "http://dart.fss.or.kr/ifrs/CIK",
+          "period": {
+            "instant": "2015-06-30"
+          }
+        },
+        "contextRef": "CFY2015eHYA_ifrs_ConsolidatedAndSeparateFinancialStatementsAxis_ifrs_SeparateMember",
+        "decimals": "0",
+        "elementQName": "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}Liabilities",
+        "entry": "00145163_2011-05-11.xbrl",
+        "entrySha256": "23de28523463fca6aea4c983b638dd7ea5f0822bd033a9796235693863b7a7f9",
+        "precision": null,
+        "rawText": "10037702836",
+        "unit": "{http://www.xbrl.org/2003/iso4217}KRW",
+        "unitRef": "KRW"
+      },
+      "reason": "context entity scheme not independently established as DART identity",
       "sampleItem": {
         "account": "부채총계",
         "availableFrom": "2015-08-13",
@@ -1575,13 +3020,41 @@
         "ticker": "005690.KS",
         "unitRef": "KRW",
         "zipSha256": "bdf04074a667a6bde880c894028797cbed5bb3a5385f095ca2c9e2ad529d3c0d"
-      }
+      },
+      "sourceFacts": [],
+      "sourceZipSha256": "bdf04074a667a6bde880c894028797cbed5bb3a5385f095ca2c9e2ad529d3c0d"
     },
     {
       "candidateValue": "27433566565.0",
-      "classification": "SOURCE_UNAVAILABLE",
+      "classification": "AMBIGUOUS_SOURCE_FACT",
+      "filingIndexSha256": "0d56a52b0edd3abb31f181fe784a939fea446f7dcd280a5681936c8088fdaf05",
       "identity": "204320.KS:2015:11013:net_income",
-      "reason": "BLOCKED_ON_SOURCE_ACCESS: original ZIP bytes unavailable",
+      "lastSourceFact": {
+        "context": {
+          "dimensions": [
+            [
+              "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}ConsolidatedAndSeparateFinancialStatementsAxis",
+              "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}ConsolidatedMember"
+            ]
+          ],
+          "entity": "01042775",
+          "entityScheme": "http://dart.fss.or.kr/ifrs/CIK",
+          "period": {
+            "endDate": "2015-03-31",
+            "startDate": "2015-01-01"
+          }
+        },
+        "contextRef": "CFY2015dFQA_ifrs_ConsolidatedAndSeparateFinancialStatementsAxis_ifrs_ConsolidatedMember",
+        "decimals": "0",
+        "elementQName": "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}ProfitLoss",
+        "entry": "01042775_2015-03-25.xbrl",
+        "entrySha256": "b4847e590f3ee68a7c40ea4151c81a7858af3bb2c5c37888543f771a90cb5a72",
+        "precision": null,
+        "rawText": "27433566565",
+        "unit": "{http://www.xbrl.org/2003/iso4217}KRW",
+        "unitRef": "KRW"
+      },
+      "reason": "context entity scheme not independently established as DART identity",
       "sampleItem": {
         "account": "당기순이익",
         "availableFrom": "2015-05-15",
@@ -1605,13 +3078,41 @@
         "ticker": "204320.KS",
         "unitRef": "KRW",
         "zipSha256": "79432dd88a63a2dcb2f7f6260e684020abb73f69d9b10429fc4d19c353c56917"
-      }
+      },
+      "sourceFacts": [],
+      "sourceZipSha256": "79432dd88a63a2dcb2f7f6260e684020abb73f69d9b10429fc4d19c353c56917"
     },
     {
       "candidateValue": "-147843000000.0",
-      "classification": "SOURCE_UNAVAILABLE",
+      "classification": "AMBIGUOUS_SOURCE_FACT",
+      "filingIndexSha256": "90600e214033f87aeadff01275a5838d2e02a2a322f76d85d68a5a951bf51ff0",
       "identity": "011200.KS:2015:11014:operating_cash_flow",
-      "reason": "BLOCKED_ON_SOURCE_ACCESS: original ZIP bytes unavailable",
+      "lastSourceFact": {
+        "context": {
+          "dimensions": [
+            [
+              "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}ConsolidatedAndSeparateFinancialStatementsAxis",
+              "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}ConsolidatedMember"
+            ]
+          ],
+          "entity": "00164645",
+          "entityScheme": "http://dart.fss.or.kr/ifrs/CIK",
+          "period": {
+            "endDate": "2015-09-30",
+            "startDate": "2015-01-01"
+          }
+        },
+        "contextRef": "CFY2015dTQA_ifrs_ConsolidatedAndSeparateFinancialStatementsAxis_ifrs_ConsolidatedMember",
+        "decimals": "-6",
+        "elementQName": "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}CashFlowsFromUsedInOperatingActivities",
+        "entry": "00164645_2011-05-30.xbrl",
+        "entrySha256": "fa00492c8a314217d864a104b2b437987d2f4744392ff11657f78dcac0884f4c",
+        "precision": null,
+        "rawText": "-147843000000",
+        "unit": "{http://www.xbrl.org/2003/iso4217}KRW",
+        "unitRef": "KRW"
+      },
+      "reason": "context entity scheme not independently established as DART identity",
       "sampleItem": {
         "account": "영업활동현금흐름",
         "availableFrom": "2015-11-16",
@@ -1635,13 +3136,40 @@
         "ticker": "011200.KS",
         "unitRef": "KRW",
         "zipSha256": "1d55e89960263619639d1501f658b9ea6afb12229ddaa2ee138a1610647b125c"
-      }
+      },
+      "sourceFacts": [],
+      "sourceZipSha256": "1d55e89960263619639d1501f658b9ea6afb12229ddaa2ee138a1610647b125c"
     },
     {
       "candidateValue": "2646620218128.0",
-      "classification": "SOURCE_UNAVAILABLE",
+      "classification": "AMBIGUOUS_SOURCE_FACT",
+      "filingIndexSha256": "6b758f3ac77662054b1522ed1bdb5a18ee527bbc3687a964590a902da0d22cf2",
       "identity": "000240.KS:2015:11014:assets",
-      "reason": "BLOCKED_ON_SOURCE_ACCESS: original ZIP bytes unavailable",
+      "lastSourceFact": {
+        "context": {
+          "dimensions": [
+            [
+              "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}ConsolidatedAndSeparateFinancialStatementsAxis",
+              "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}SeparateMember"
+            ]
+          ],
+          "entity": "00160047",
+          "entityScheme": "http://dart.fss.or.kr/ifrs/CIK",
+          "period": {
+            "instant": "2015-09-30"
+          }
+        },
+        "contextRef": "CFY2015eTQA_ifrs_ConsolidatedAndSeparateFinancialStatementsAxis_ifrs_SeparateMember",
+        "decimals": "0",
+        "elementQName": "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}Assets",
+        "entry": "00160047_2011-05-30.xbrl",
+        "entrySha256": "2b07363150a527f988b33702ed212827cd543ae06c56eaa2265a31ff4a6b2050",
+        "precision": null,
+        "rawText": "2646620218128",
+        "unit": "{http://www.xbrl.org/2003/iso4217}KRW",
+        "unitRef": "KRW"
+      },
+      "reason": "context entity scheme not independently established as DART identity",
       "sampleItem": {
         "account": "자산총계",
         "availableFrom": "2015-11-16",
@@ -1665,13 +3193,40 @@
         "ticker": "000240.KS",
         "unitRef": "KRW",
         "zipSha256": "1f5f02a68ba57a77d4586468278991e637f588d7a63e4d7995c1c3eb291edcf7"
-      }
+      },
+      "sourceFacts": [],
+      "sourceZipSha256": "1f5f02a68ba57a77d4586468278991e637f588d7a63e4d7995c1c3eb291edcf7"
     },
     {
       "candidateValue": "516611300153.0",
-      "classification": "SOURCE_UNAVAILABLE",
+      "classification": "AMBIGUOUS_SOURCE_FACT",
+      "filingIndexSha256": "b86bf96c9bb19a0de5a90a489f3a2ab723983358aceafa5b96905e937a9bbe8b",
       "identity": "057050.KS:2015:11013:liabilities",
-      "reason": "BLOCKED_ON_SOURCE_ACCESS: original ZIP bytes unavailable",
+      "lastSourceFact": {
+        "context": {
+          "dimensions": [
+            [
+              "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}ConsolidatedAndSeparateFinancialStatementsAxis",
+              "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}SeparateMember"
+            ]
+          ],
+          "entity": "00412597",
+          "entityScheme": "http://dart.fss.or.kr/ifrs/CIK",
+          "period": {
+            "instant": "2015-03-31"
+          }
+        },
+        "contextRef": "CFY2015eFQA_ifrs_ConsolidatedAndSeparateFinancialStatementsAxis_ifrs_SeparateMember",
+        "decimals": "0",
+        "elementQName": "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}Liabilities",
+        "entry": "00412597_2012-03-30.xbrl",
+        "entrySha256": "9773a6e1056f7c62267c6a9e1e27c7eef62867f39b86a947121db833f03866cb",
+        "precision": null,
+        "rawText": "516611300153",
+        "unit": "{http://www.xbrl.org/2003/iso4217}KRW",
+        "unitRef": "KRW"
+      },
+      "reason": "context entity scheme not independently established as DART identity",
       "sampleItem": {
         "account": "부채총계",
         "availableFrom": "2015-05-15",
@@ -1695,13 +3250,41 @@
         "ticker": "057050.KS",
         "unitRef": "KRW",
         "zipSha256": "fef00b4e0d4af933f83df33bfaea0ac36a568523135fafe36c12ee2b54d4b71d"
-      }
+      },
+      "sourceFacts": [],
+      "sourceZipSha256": "fef00b4e0d4af933f83df33bfaea0ac36a568523135fafe36c12ee2b54d4b71d"
     },
     {
       "candidateValue": "13898875607.0",
-      "classification": "SOURCE_UNAVAILABLE",
+      "classification": "AMBIGUOUS_SOURCE_FACT",
+      "filingIndexSha256": "5cd77bb4a45ee23f9146ce4adcf115d76d660c1ae8a307f1dec7840e1e4538e8",
       "identity": "001740.KS:2015:11013:net_income",
-      "reason": "BLOCKED_ON_SOURCE_ACCESS: original ZIP bytes unavailable",
+      "lastSourceFact": {
+        "context": {
+          "dimensions": [
+            [
+              "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}ConsolidatedAndSeparateFinancialStatementsAxis",
+              "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}SeparateMember"
+            ]
+          ],
+          "entity": "00131780",
+          "entityScheme": "http://dart.fss.or.kr/ifrs/CIK",
+          "period": {
+            "endDate": "2015-03-31",
+            "startDate": "2015-01-01"
+          }
+        },
+        "contextRef": "CFY2015dFQA_ifrs_ConsolidatedAndSeparateFinancialStatementsAxis_ifrs_SeparateMember",
+        "decimals": "0",
+        "elementQName": "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}ProfitLoss",
+        "entry": "00131780_2011-05-12.xbrl",
+        "entrySha256": "6aa880b507c67fb785a25ffe8d8f4304df0fb3cf0ffc2b062970ea217a7e713c",
+        "precision": null,
+        "rawText": "13898875607",
+        "unit": "{http://www.xbrl.org/2003/iso4217}KRW",
+        "unitRef": "KRW"
+      },
+      "reason": "context entity scheme not independently established as DART identity",
       "sampleItem": {
         "account": "당기순이익",
         "availableFrom": "2015-05-15",
@@ -1725,13 +3308,41 @@
         "ticker": "001740.KS",
         "unitRef": "KRW",
         "zipSha256": "c8dd65d0cdec4dc10e18828e2594fb26a28e80e0a25d6a2cef2e6a3f2e756178"
-      }
+      },
+      "sourceFacts": [],
+      "sourceZipSha256": "c8dd65d0cdec4dc10e18828e2594fb26a28e80e0a25d6a2cef2e6a3f2e756178"
     },
     {
       "candidateValue": "10696678159.0",
-      "classification": "SOURCE_UNAVAILABLE",
+      "classification": "AMBIGUOUS_SOURCE_FACT",
+      "filingIndexSha256": "1f2f36d213fd2236ad24bd38aa6a9bd85995f7872e202f80470382902312bfc4",
       "identity": "115390.KS:2015:11012:operating_cash_flow",
-      "reason": "BLOCKED_ON_SOURCE_ACCESS: original ZIP bytes unavailable",
+      "lastSourceFact": {
+        "context": {
+          "dimensions": [
+            [
+              "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}ConsolidatedAndSeparateFinancialStatementsAxis",
+              "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}ConsolidatedMember"
+            ]
+          ],
+          "entity": "00561866",
+          "entityScheme": "http://dart.fss.or.kr/ifrs/CIK",
+          "period": {
+            "endDate": "2015-06-30",
+            "startDate": "2015-01-01"
+          }
+        },
+        "contextRef": "CFY2015dHYA_ifrs_ConsolidatedAndSeparateFinancialStatementsAxis_ifrs_ConsolidatedMember",
+        "decimals": "0",
+        "elementQName": "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}CashFlowsFromUsedInOperatingActivities",
+        "entry": "00561866_2015-08-04.xbrl",
+        "entrySha256": "2d684d4350e3731e96c71d659f8840c8c56bc042c7ff551ede96adb3e928df9a",
+        "precision": null,
+        "rawText": "10696678159",
+        "unit": "{http://www.xbrl.org/2003/iso4217}KRW",
+        "unitRef": "KRW"
+      },
+      "reason": "context entity scheme not independently established as DART identity",
       "sampleItem": {
         "account": "영업활동현금흐름",
         "availableFrom": "2015-08-13",
@@ -1755,13 +3366,40 @@
         "ticker": "115390.KS",
         "unitRef": "KRW",
         "zipSha256": "febe68e485f36b12f53cbec66353c16e2cf3f352291e23cc5e4d1413131f8d5d"
-      }
+      },
+      "sourceFacts": [],
+      "sourceZipSha256": "febe68e485f36b12f53cbec66353c16e2cf3f352291e23cc5e4d1413131f8d5d"
     },
     {
       "candidateValue": "28558720000000.0",
-      "classification": "SOURCE_UNAVAILABLE",
+      "classification": "AMBIGUOUS_SOURCE_FACT",
+      "filingIndexSha256": "102a399b4d92e1c012bcf787546b8dfcc49839a5b51b7d2e64079f4ea750c431",
       "identity": "017670.KS:2015:11014:assets",
-      "reason": "BLOCKED_ON_SOURCE_ACCESS: original ZIP bytes unavailable",
+      "lastSourceFact": {
+        "context": {
+          "dimensions": [
+            [
+              "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}ConsolidatedAndSeparateFinancialStatementsAxis",
+              "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}ConsolidatedMember"
+            ]
+          ],
+          "entity": "00159023",
+          "entityScheme": "http://dart.fss.or.kr/ifrs/CIK",
+          "period": {
+            "instant": "2015-09-30"
+          }
+        },
+        "contextRef": "CFY2015eTQA_ifrs_ConsolidatedAndSeparateFinancialStatementsAxis_ifrs_ConsolidatedMember",
+        "decimals": "-6",
+        "elementQName": "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}Assets",
+        "entry": "00159023_2011-05-03.xbrl",
+        "entrySha256": "c20ee35eeaa051621664f1e2d8eb2e356b61807252fa016b654e6ede0a355802",
+        "precision": null,
+        "rawText": "28558720000000",
+        "unit": "{http://www.xbrl.org/2003/iso4217}KRW",
+        "unitRef": "KRW"
+      },
+      "reason": "context entity scheme not independently established as DART identity",
       "sampleItem": {
         "account": "자산총계",
         "availableFrom": "2015-11-16",
@@ -1785,13 +3423,40 @@
         "ticker": "017670.KS",
         "unitRef": "KRW",
         "zipSha256": "a366170be59c34b04c01b372d0719467c7cfad27feeebd6c827b750b28188170"
-      }
+      },
+      "sourceFacts": [],
+      "sourceZipSha256": "a366170be59c34b04c01b372d0719467c7cfad27feeebd6c827b750b28188170"
     },
     {
       "candidateValue": "2220721190007.0",
-      "classification": "SOURCE_UNAVAILABLE",
+      "classification": "AMBIGUOUS_SOURCE_FACT",
+      "filingIndexSha256": "edd465304422bfceab97bf0509f811d7242e3a469677f95cd943c9798bce6e50",
       "identity": "033780.KS:2015:11014:liabilities",
-      "reason": "BLOCKED_ON_SOURCE_ACCESS: original ZIP bytes unavailable",
+      "lastSourceFact": {
+        "context": {
+          "dimensions": [
+            [
+              "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}ConsolidatedAndSeparateFinancialStatementsAxis",
+              "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}ConsolidatedMember"
+            ]
+          ],
+          "entity": "00244455",
+          "entityScheme": "http://dart.fss.or.kr/ifrs/CIK",
+          "period": {
+            "instant": "2015-09-30"
+          }
+        },
+        "contextRef": "CFY2015eTQA_ifrs_ConsolidatedAndSeparateFinancialStatementsAxis_ifrs_ConsolidatedMember",
+        "decimals": "0",
+        "elementQName": "{http://xbrl.iasb.org/taxonomy/2010-04-30/ifrs}Liabilities",
+        "entry": "00244455_2011-04-28.xbrl",
+        "entrySha256": "3fb3a2efefdcac9ee40d499235faffeaf3122f3916abdb5d58603d18dc6a7cdc",
+        "precision": null,
+        "rawText": "2220721190007",
+        "unit": "{http://www.xbrl.org/2003/iso4217}KRW",
+        "unitRef": "KRW"
+      },
+      "reason": "context entity scheme not independently established as DART identity",
       "sampleItem": {
         "account": "부채총계",
         "availableFrom": "2015-11-16",
@@ -1815,14 +3480,17 @@
         "ticker": "033780.KS",
         "unitRef": "KRW",
         "zipSha256": "e8b8ecf245f4c8f734ec2c3e9c0cc002ec0225b77854b2fac145eb57e5236be1"
-      }
+      },
+      "sourceFacts": [],
+      "sourceZipSha256": "e8b8ecf245f4c8f734ec2c3e9c0cc002ec0225b77854b2fac145eb57e5236be1"
     }
   ],
   "sampleSha256": "590513ede1c8bd06d701f22f4b1aa01bcf8b004aa30b9410540865696e863e70",
   "sampleSize": 60,
   "sourceAccess": {
-    "reason": "DART_API_KEY absent",
-    "status": "BLOCKED_ON_SOURCE_ACCESS"
+    "failures": [],
+    "note": "all 57 frozen receipts (60 items) downloaded from DART with the existing DART secret",
+    "status": "COMPLETED"
   },
   "sourceCommit": "fb6e83743fd8cdba647d1522a4645b662a9d5647",
   "sourceConfidence": "CANDIDATE_UNCONFIRMED",
