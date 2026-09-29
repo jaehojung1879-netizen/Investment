@@ -1,0 +1,118 @@
+{
+  "candidate": {
+    "changes": "NONE",
+    "sha256": "af642e7e79e9ba59ac6ee14faf033f4d63887188bab6506845c082e21dc3d1cc",
+    "sourceCommit": "fb6e83743fd8cdba647d1522a4645b662a9d5647"
+  },
+  "classifications": [
+    "MATCH",
+    "VALUE_MISMATCH",
+    "SEMANTIC_MISMATCH",
+    "METADATA_MISMATCH",
+    "AMBIGUOUS_SOURCE_FACT",
+    "SOURCE_UNAVAILABLE",
+    "INFRASTRUCTURE_ERROR"
+  ],
+  "confidence": "CANDIDATE_UNCONFIRMED is promoted only on 60/60 MATCH, and then only as fixed-sample evidence with the residual limit above. No production enum is invented and no v5 input is sealed.",
+  "disclosures": [
+    "The v3 rules were designed after v1/v2 logs and the PR #171 structural diagnostic had exposed structure and, descriptively, that source raw text equalled the candidate amount for the 60 items. The rules were chosen from source structure and are not conditioned on any per-item value, and no item is replaced, but this design is not blind to that descriptive observation.",
+    "Carried from v1: one unrelated historical performance narrative was accidentally seen during an earlier startup sanitization; zero historical-outcome exposure is not claimed and no Alpha artifact is opened."
+  ],
+  "forbiddenChanges": [
+    "any other ambiguity rule",
+    "stockCode substitution",
+    "wildcard scheme or concept matching",
+    "tolerance changes",
+    "new sample",
+    "candidate repair"
+  ],
+  "nextAfterPass": "KR repaired-input snapshot freeze + accounting semantic contract",
+  "noSilentRepair": "A mismatch found by the formal run is reported with its evidence and never repaired, loosened or reclassified in this PR. A new systematic blocker leaves v3 BLOCKED; any further change needs a new separately justified version.",
+  "predecessors": {
+    "diagnosticPR171": {
+      "artifact": 11030592265,
+      "mergeCommit": "2e9e2baf",
+      "reportJsonSha256": "0457b0a072b47134cc0f13130611aafcaf3f7c1011713d2a5f694ef5bb88fcb1",
+      "run": 36562070867,
+      "specSha256": "fe3a17e5dce5ad78e16936d6907fb85f57fdc74eb35f3b396e1c1fdf6e9b593e",
+      "study": "kr-original-xbrl-presentation-evidence-diagnostic-v1",
+      "verdict": "MIXED_SOURCE_STRUCTURE"
+    },
+    "v1": {
+      "blocker": "entity scheme not established",
+      "closed": true,
+      "protocolSha256": "0aec37a4daed0d0765a25846cbdcbc410d70098fbed9340926a5376dd791cb0a",
+      "verdict": "BLOCKED"
+    },
+    "v2": {
+      "artifact": 11029185628,
+      "blocker": "source presentation does not prove required financial statement (60/60)",
+      "closed": true,
+      "liveRun": 36557135754,
+      "protocolSha256": "a0251b2459de1ed820c7306c822e29429d92b18b72e2063d044e34ba8db3871d",
+      "reportJsonSha256": "19ac9a3d5a8a1448b7e0be1f142c089eb895399c83fc10d56e6b0e1de3cebf96",
+      "verdict": "BLOCKED"
+    }
+  },
+  "purpose": "Complete the original-XBRL source-value validation of the existing frozen 60 facts by replacing the presentation-membership mandatory gate, which PR #171 showed the DART source package cannot satisfy, with explicit concept-identity evidence. Not an Alpha experiment, not an accounting repair, not the Alpha-v5 input seal.",
+  "ruleChanges": {
+    "R1_presentationNotAMandatoryGate": {
+      "change": "Presentation-linkbase membership is no longer required for MATCH. It is still computed and recorded on every item as descriptive corroboration and never changes a classification.",
+      "notAClaim": "This does not claim presentation is unimportant in general, only that this source cannot provide it; membership corroboration stays unproven and is disclosed as such.",
+      "why": "PR #171 (12 of the frozen 60, structure only): 12/12 ZIPs carry zero roleType definitions and point role definitions to an external DART taxonomy; standard-concept locs are external DART-hosted hrefs; Assets/Liabilities have no presentation loc in any ZIP network (6/6). A gate the package cannot satisfy proves nothing about a value, so it would only make every item AMBIGUOUS regardless of correctness."
+    },
+    "R2_explicitConceptIdentity": {
+      "extensionConcepts": "A fact whose concept is in any other namespace (an extension/company concept) is never assumed equivalent to a standard concept. No lineage evidence is admitted in v3, so it is AMBIGUOUS_SOURCE_FACT. A local-name match without the IFRS namespace is likewise AMBIGUOUS.",
+      "namespaceEvidence": "The namespace URI is read from the instance's own in-scope declaration for the fact's prefix. The IFRS taxonomy files themselves are not fetched and are not treated as verified.",
+      "residualLimit": "Concept identity plus context, basis, period, unit, decimals and amount identify the fact; they do not independently prove the filing displays it in the named statement. That is stated in the report.",
+      "rule": "The source fact's concept must be identified by expanded QName: namespace URI matching the IFRS taxonomy authority pattern already used by the reader (xbrl.ifrs.org or xbrl.iasb.org taxonomy namespace) AND local name equal to the frozen element AND that local name being the family's frozen IFRS concept (ProfitLoss, CashFlowsFromUsedInOperatingActivities, Assets, Liabilities). The concept's meaning is defined by that IFRS taxonomy identity; the frozen candidate statement code must be consistent with the family (BS for Assets/Liabilities, IS/CIS for ProfitLoss, CF for operating cash flow)."
+    }
+  },
+  "runPolicy": {
+    "forbidden": [
+      "pull_request_target",
+      "signal-history writes",
+      "candidate repair",
+      "Alpha execution",
+      "raw ZIP commits"
+    ],
+    "formalLiveRuns": 1,
+    "permissions": "contents: read, actions: read",
+    "secret": "existing secrets.DART as DART_API_KEY only",
+    "trigger": "after this protocol is frozen and normal CI is green; not repeated because a verdict is undesirable; a run ending INFRASTRUCTURE_ERROR before any valid classification may be retried and any retry is documented"
+  },
+  "sample": {
+    "newSampling": "FORBIDDEN",
+    "requiredSha256": "590513ede1c8bd06d701f22f4b1aa01bcf8b004aa30b9410540865696e863e70",
+    "reuse": "EXACT_V1_SAMPLE",
+    "size": 60,
+    "substitution": "FORBIDDEN"
+  },
+  "startingMain": "2e9e2baf7db245cc3ed30da33d7db6ba64452584",
+  "study": "kr-original-xbrl-value-validation-v3",
+  "unchangedFromV1AndV2": [
+    "candidate dataset and SHA",
+    "the same 60 facts, sample SHA and 15-per-family quotas",
+    "stored candidate values",
+    "receipt numbers and filing-index identity checks",
+    "exact instance pointer (recorded contextRef + element) in every original XML instance, duplicates compared",
+    "period rules (instant at period end; duration from fiscal-year start)",
+    "CFS/OFS basis rules and dimension allowlist",
+    "KRW unit / currency rules",
+    "unitRef and decimals provenance checks",
+    "nil / scale / sign / format transformation refusal",
+    "Decimal comparison at declared decimals/precision",
+    "v2 rule: identifier scheme exactly http://dart.fss.or.kr/ifrs/CIK with identifier text == frozen corpCode; no stockCode fallback there",
+    "classification set",
+    "PASS/FAIL/BLOCKED/INFRASTRUCTURE_ERROR semantics",
+    "independent-reader philosophy (no production fact parser)",
+    "outcome blindness"
+  ],
+  "verdict": {
+    "BLOCKED": "No confirmed mismatch, but at least one AMBIGUOUS_SOURCE_FACT or SOURCE_UNAVAILABLE.",
+    "FAIL": "At least one confirmed VALUE_MISMATCH, SEMANTIC_MISMATCH or METADATA_MISMATCH.",
+    "INFRASTRUCTURE_ERROR": "The validation process itself cannot complete.",
+    "PASS": "All 60 frozen facts independently MATCH."
+  },
+  "version": 3
+}

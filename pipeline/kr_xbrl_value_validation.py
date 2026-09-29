@@ -271,7 +271,7 @@ def outcome(item, candidate_value, status, reason, **evidence):
 
 
 def validate_item(item, candidate_value, raw=None, filing_rows=None,
-                  corp_code_schemes=V1_CORP_CODE_SCHEMES):
+                  corp_code_schemes=V1_CORP_CODE_SCHEMES, presentation_gate=True):
     """Read source fact by recorded pointer, independently validate its semantics."""
     def result(status, reason, **evidence):
         return outcome(item, candidate_value, status, reason, **evidence)
@@ -377,8 +377,16 @@ def validate_item(item, candidate_value, raw=None, filing_rows=None,
                 return result("METADATA_MISMATCH", "unitRef/decimals provenance differs", source=ev)
             roles = presentation_evidence(documents, fact.tag)
             ev["presentation"] = roles
-            if not any(r["statement"] in statements for r in roles):
-                raise Ambiguous("source presentation does not prove required financial statement")
+            if presentation_gate:
+                if not any(r["statement"] in statements for r in roles):
+                    raise Ambiguous("source presentation does not prove required financial statement")
+            else:
+                # v3: membership is descriptive corroboration only. The concept is
+                # identified by IFRS-namespace expanded QName (checked above through
+                # is_ifrs and the frozen local name); nothing is assumed for others.
+                ev["conceptIdentity"] = {"namespace": fact.tag.partition("}")[0].lstrip("{"),
+                                         "localName": fact.tag.rsplit("}", 1)[-1], "ifrsNamespace": True}
+                ev["presentationCorroboratesStatement"] = any(r["statement"] in statements for r in roles)
             if fact.get(NIL) in ("true", "1"):
                 raise Ambiguous("source fact is nil")
             if any(fact.get(a) is not None for a in ("scale", "sign", "format")):
