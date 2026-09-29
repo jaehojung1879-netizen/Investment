@@ -129,3 +129,12 @@ def test_summary_counts():
     ds = [D.diagnose_item(item(), build(with_link=False)), D.diagnose_item(item(), build(with_link=False))]
     s = D.summarize(ds)
     assert s["firstBreakCounts"] == {"NO_PRESENTATION_LINKBASE_IN_ZIP": 2} and s["itemsWithAnyPresentationNetwork"] == 0
+
+
+def test_saved_diagnostic_report_is_consistent_and_closed_results_untouched():
+    report = json.loads((ROOT / "docs/results/kr-original-xbrl-presentation-evidence-diagnostic-v1-report.json").read_text())
+    spec = json.loads((ROOT / "research_specs/kr-original-xbrl-presentation-evidence-diagnostic-v1.json").read_text())
+    assert report["subset"] == spec["subset"]["identities"] and len(report["items"]) == 12
+    assert report["diagnosticVerdict"] in spec["verdicts"] and report["readerBugConfirmed"] is False
+    assert report["liveExecution"]["zipsRetrieved"] == 12 and len(report["liveExecution"]["rawZipSha256"]) == 12
+    assert report["alphaOutcomesUsed"] is False and report["candidateRepaired"] is False

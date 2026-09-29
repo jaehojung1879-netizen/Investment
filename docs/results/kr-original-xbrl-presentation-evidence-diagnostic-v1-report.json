@@ -1,0 +1,2855 @@
+{
+  "alphaOutcomesUsed": false,
+  "candidateRepaired": false,
+  "diagnosticVerdict": "MIXED_SOURCE_STRUCTURE",
+  "findings": {
+    "F1_roleDefinitionsAbsent": "12/12 ZIPs contain zero link:roleType elements. Presentation roles are http://dart.fss.or.kr/role/ifrs/dart_2013-03-31_role-D<code> and the instance's roleRefs point to external DART taxonomy files (rol_dart_2013-03-31.xsd). No role definition text is in any ZIP, so statement_kind() never receives a definition. Role-to-statement mapping needs an external resource.",
+    "F2_conceptHrefsExternal": "Standard IFRS concept locs use absolute URLs on http://dart.fss.or.kr/Resource/Taxonomy/ifrs/2013-03-31/ifrs-cor_2010-04-30.xsd#ifrs_<Element>. Those resources are not in the ZIP, and the reader admits only xbrl.ifrs.org / xbrl.iasb.org hosts. Fragments do equal ifrs_<Element>.",
+    "F3_balanceSheetConceptsAbsent": "For all 6 Assets/Liabilities facts, the element has no loc in any presentation network in the ZIP (the only presentation linkbase is the dimensions one). Presentation cannot prove balance-sheet membership from the ZIP even with a perfect reader.",
+    "F4_partialForOthers": "Operating cash flow: locs found in role D520005 (and D520000 when present), connected by live arcs, for 3/3 (the role's meaning is itself not defined in the ZIP). ProfitLoss: 0 locs in 1/3; in the other 2 the locs sit in roles whose statement cannot be established from the ZIP and most are not connected by live arcs.",
+    "F5_identityEvidence": "12/12: unique instance pointer, entity == frozen corpCode, unitRef and decimals as frozen, raw text equals the candidate amount (descriptive), ZIP SHA equals the frozen v1 zipSha256."
+  },
+  "hypotheses": {
+    "1": {
+      "evidence": "no roleType in any file of 12/12 ZIPs",
+      "result": "REJECTED",
+      "text": "role definition in a different document"
+    },
+    "10": {
+      "evidence": "6/6 Assets/Liabilities and 1/3 ProfitLoss have no loc in any network",
+      "result": "CONFIRMED_FOR_BALANCE_SHEET",
+      "text": "no relevant presentation network"
+    },
+    "2": {
+      "evidence": "no definition text exists in the ZIPs",
+      "result": "NOT_TESTABLE",
+      "text": "definition wording not handled by statement_kind"
+    },
+    "3": {
+      "evidence": "extension-concept locs point to in-ZIP XSDs (basename match); standard-concept locs are absolute external URLs",
+      "result": "PARTLY_OBSERVED",
+      "text": "relative company-taxonomy href"
+    },
+    "4": {
+      "evidence": "external locs use ifrs_<Element> fragments",
+      "result": "REJECTED",
+      "text": "fragment differs from ifrs_<element>"
+    },
+    "5": {
+      "evidence": "ifrs-cor_2010-04-30.xsd is DART-hosted and not in the ZIP",
+      "result": "CONFIRMED",
+      "text": "concept only in an external taxonomy"
+    },
+    "6": {
+      "evidence": "entity..._udf_CF_..._<Element> ids",
+      "result": "OBSERVED_FOR_EXTENSIONS",
+      "text": "XSD concept id differs from element QName"
+    },
+    "7": {
+      "evidence": "same-named udf CF concepts observed; substitution semantics not examined",
+      "result": "NOT_ESTABLISHED",
+      "text": "extension element substitutes for a standard element"
+    },
+    "8": {
+      "evidence": "some ProfitLoss locs are not connected by live arcs; CF locs are connected",
+      "result": "PARTLY_OBSERVED",
+      "text": "arc connectivity excludes labels"
+    },
+    "9": {
+      "evidence": "referenced pre/dim/cal/lab files are in the ZIPs (path-separator artifact in the tool's own scope flag)",
+      "result": "REJECTED",
+      "text": "linkbases referenced but not embedded"
+    }
+  },
+  "items": [
+    {
+      "basis": "CFS",
+      "concepts": 30,
+      "files": [
+        [
+          "00759513_2011-05-20.xbrl",
+          "XBRL_INSTANCE",
+          449351
+        ],
+        [
+          "00759513_entry_point_2011-05-20.xsd",
+          "XSD",
+          16822
+        ],
+        [
+          "ifrs_for_00759513\\dimensions_ifrs_for_00759513\\dim_ifrs_for_00759513_2011-05-20.xml",
+          "LINKBASE:definition",
+          746760
+        ],
+        [
+          "ifrs_for_00759513\\dimensions_ifrs_for_00759513\\cal_ifrs_for_00759513_2011-05-20.xml",
+          "LINKBASE:calculation",
+          663496
+        ],
+        [
+          "ifrs_for_00759513\\dimensions_ifrs_for_00759513\\pre_ifrs_for_00759513_2011-05-20.xml",
+          "LINKBASE:presentation",
+          765590
+        ],
+        [
+          "ifrs_for_00759513\\dimensions_ifrs_for_00759513\\role_ifrs_for_00759513-dim_2011-05-20.xsd",
+          "XSD",
+          649
+        ],
+        [
+          "labels\\lab_00759513-ko_2011-05-20.xml",
+          "LINKBASE:label",
+          99180
+        ],
+        [
+          "labels\\lab_00759513-en_2011-05-20.xml",
+          "LINKBASE:label",
+          84760
+        ]
+      ],
+      "firstBreak": "ROLE_DEFINITION_MISSING",
+      "identity": "108670.KS:2015:11013:net_income",
+      "identity_evidence": {
+        "decimalsMatch": true,
+        "entityIsFrozenCorpCode": true,
+        "rawTextEqualsCandidateDescriptive": true,
+        "uniqueFactPointer": true,
+        "unitRefMatches": true
+      },
+      "matchedLocs": [],
+      "networks": [
+        {
+          "arcCount": 20,
+          "definitionFound": false,
+          "hrefScopes": {
+            "EXTERNAL_URL": 23
+          },
+          "kind": null,
+          "liveArcCount": 3,
+          "locCount": 23,
+          "role": "http://dart.fss.or.kr/role/ifrs/dart_2013-03-31_role-D610005"
+        },
+        {
+          "arcCount": 19,
+          "definitionFound": false,
+          "hrefScopes": {
+            "EXTERNAL_URL": 22
+          },
+          "kind": null,
+          "liveArcCount": 4,
+          "locCount": 22,
+          "role": "http://dart.fss.or.kr/role/ifrs/dart_2013-03-31_role-D610000"
+        },
+        {
+          "arcCount": 323,
+          "definitionFound": false,
+          "hrefScopes": {
+            "EXTERNAL_URL": 323,
+            "INSIDE_ZIP_BY_BASENAME_ONLY": 4
+          },
+          "kind": null,
+          "liveArcCount": 22,
+          "locCount": 327,
+          "role": "http://dart.fss.or.kr/role/ifrs/dart_2013-03-31_role-D520005"
+        },
+        {
+          "arcCount": 324,
+          "definitionFound": false,
+          "hrefScopes": {
+            "EXTERNAL_URL": 324,
+            "INSIDE_ZIP_BY_BASENAME_ONLY": 4
+          },
+          "kind": null,
+          "liveArcCount": 22,
+          "locCount": 328,
+          "role": "http://dart.fss.or.kr/role/ifrs/dart_2013-03-31_role-D520000"
+        },
+        {
+          "arcCount": 25,
+          "definitionFound": false,
+          "hrefScopes": {
+            "EXTERNAL_URL": 24,
+            "INSIDE_ZIP_BY_BASENAME_ONLY": 2
+          },
+          "kind": null,
+          "liveArcCount": 2,
+          "locCount": 26,
+          "role": "http://dart.fss.or.kr/role/ifrs/dart_2013-03-31_role-D410005"
+        },
+        {
+          "arcCount": 30,
+          "definitionFound": false,
+          "hrefScopes": {
+            "EXTERNAL_URL": 29,
+            "INSIDE_ZIP_BY_BASENAME_ONLY": 3
+          },
+          "kind": null,
+          "liveArcCount": 5,
+          "locCount": 32,
+          "role": "http://dart.fss.or.kr/role/ifrs/dart_2013-03-31_role-D410000"
+        },
+        {
+          "arcCount": 84,
+          "definitionFound": false,
+          "hrefScopes": {
+            "EXTERNAL_URL": 83,
+            "INSIDE_ZIP_BY_BASENAME_ONLY": 5
+          },
+          "kind": null,
+          "liveArcCount": 5,
+          "locCount": 88,
+          "role": "http://dart.fss.or.kr/role/ifrs/dart_2013-03-31_role-D310005"
+        },
+        {
+          "arcCount": 90,
+          "definitionFound": false,
+          "hrefScopes": {
+            "EXTERNAL_URL": 85,
+            "INSIDE_ZIP_BY_BASENAME_ONLY": 10
+          },
+          "kind": null,
+          "liveArcCount": 11,
+          "locCount": 95,
+          "role": "http://dart.fss.or.kr/role/ifrs/dart_2013-03-31_role-D310000"
+        },
+        {
+          "arcCount": 224,
+          "definitionFound": false,
+          "hrefScopes": {
+            "EXTERNAL_URL": 236,
+            "INSIDE_ZIP_BY_BASENAME_ONLY": 1
+          },
+          "kind": null,
+          "liveArcCount": 20,
+          "locCount": 237,
+          "role": "http://dart.fss.or.kr/role/ifrs/dart_2013-03-31_role-D210005"
+        },
+        {
+          "arcCount": 235,
+          "definitionFound": false,
+          "hrefScopes": {
+            "EXTERNAL_URL": 244,
+            "INSIDE_ZIP_BY_BASENAME_ONLY": 1
+          },
+          "kind": null,
+          "liveArcCount": 26,
+          "locCount": 245,
+          "role": "http://dart.fss.or.kr/role/ifrs/dart_2013-03-31_role-D210000"
+        }
+      ],
+      "readerEvidence": 0,
+      "references": [
+        [
+          "schemaRef",
+          "00759513_entry_point_2011-05-20.xsd",
+          "INSIDE_ZIP"
+        ],
+        [
+          "linkbaseRef",
+          "ifrs_for_00759513/dimensions_ifrs_for_00759513/pre_ifrs_for_00759513_2011-05-20.xml",
+          "RELATIVE_NOT_IN_ZIP"
+        ],
+        [
+          "linkbaseRef",
+          "ifrs_for_00759513/dimensions_ifrs_for_00759513/dim_ifrs_for_00759513_2011-05-20.xml",
+          "RELATIVE_NOT_IN_ZIP"
+        ],
+        [
+          "linkbaseRef",
+          "ifrs_for_00759513/dimensions_ifrs_for_00759513/cal_ifrs_for_00759513_2011-05-20.xml",
+          "RELATIVE_NOT_IN_ZIP"
+        ],
+        [
+          "linkbaseRef",
+          "labels/lab_00759513-ko_2011-05-20.xml",
+          "RELATIVE_NOT_IN_ZIP"
+        ],
+        [
+          "linkbaseRef",
+          "labels/lab_00759513-en_2011-05-20.xml",
+          "RELATIVE_NOT_IN_ZIP"
+        ],
+        [
+          "arcroleRef",
+          "http://www.xbrl.org/2005/xbrldt-2005.xsd#domain-member",
+          "EXTERNAL_URL"
+        ],
+        [
+          "arcroleRef",
+          "http://www.xbrl.org/2005/xbrldt-2005.xsd#all",
+          "EXTERNAL_URL"
+        ],
+        [
+          "arcroleRef",
+          "http://www.xbrl.org/2005/xbrldt-2005.xsd#dimension-default",
+          "EXTERNAL_URL"
+        ],
+        [
+          "arcroleRef",
+          "http://www.xbrl.org/2005/xbrldt-2005.xsd#dimension-domain",
+          "EXTERNAL_URL"
+        ],
+        [
+          "arcroleRef",
+          "http://www.xbrl.org/2005/xbrldt-2005.xsd#hypercube-dimension",
+          "EXTERNAL_URL"
+        ]
+      ],
+      "roleTypes": [],
+      "v2": {
+        "classification": "AMBIGUOUS_SOURCE_FACT",
+        "reason": "source presentation does not prove required financial statement"
+      },
+      "zipShaMatchesFrozen": true
+    },
+    {
+      "basis": "OFS",
+      "concepts": 168,
+      "files": [
+        [
+          "00165680_2015-03-31.xbrl",
+          "XBRL_INSTANCE",
+          469666
+        ],
+        [
+          "00165680_entry_point_2015-03-31.xsd",
+          "XSD",
+          57475
+        ],
+        [
+          "ifrs_for_00165680\\dimensions_ifrs_for_00165680\\dim_ifrs_for_00165680_2015-03-31.xml",
+          "LINKBASE:definition",
+          821690
+        ],
+        [
+          "ifrs_for_00165680\\dimensions_ifrs_for_00165680\\cal_ifrs_for_00165680_2015-03-31.xml",
+          "LINKBASE:calculation",
+          335749
+        ],
+        [
+          "ifrs_for_00165680\\dimensions_ifrs_for_00165680\\pre_ifrs_for_00165680_2015-03-31.xml",
+          "LINKBASE:presentation",
+          837777
+        ],
+        [
+          "ifrs_for_00165680\\dimensions_ifrs_for_00165680\\role_ifrs_for_00165680-dim_2015-03-31.xsd",
+          "XSD",
+          649
+        ],
+        [
+          "labels\\lab_00165680-ko_2015-03-31.xml",
+          "LINKBASE:label",
+          297534
+        ],
+        [
+          "labels\\lab_00165680-en_2015-03-31.xml",
+          "LINKBASE:label",
+          268728
+        ]
+      ],
+      "firstBreak": "ROLE_DEFINITION_MISSING",
+      "identity": "008770.KS:2015:11012:net_income",
+      "identity_evidence": {
+        "decimalsMatch": true,
+        "entityIsFrozenCorpCode": true,
+        "rawTextEqualsCandidateDescriptive": true,
+        "uniqueFactPointer": true,
+        "unitRefMatches": true
+      },
+      "matchedLocs": [
+        {
+          "connected": false,
+          "definitionFound": false,
+          "doc": "ifrs_for_00165680\\dimensions_ifrs_for_00165680\\pre_ifrs_for_00165680_2015-03-31.xml",
+          "fragment": "ifrs_ProfitLoss",
+          "href": "http://dart.fss.or.kr/Resource/Taxonomy/ifrs/2013-03-31/ifrs-cor_2010-04-30.xsd#ifrs_ProfitLoss",
+          "kind": null,
+          "readerWouldAccept": false,
+          "resolvedQName": null,
+          "resolvesInLocalXsd": false,
+          "role": "http://dart.fss.or.kr/role/ifrs/dart_2013-03-31_role-D610005",
+          "roleDefinition": "",
+          "scope": "EXTERNAL_URL"
+        },
+        {
+          "connected": false,
+          "definitionFound": false,
+          "doc": "ifrs_for_00165680\\dimensions_ifrs_for_00165680\\pre_ifrs_for_00165680_2015-03-31.xml",
+          "fragment": "ifrs_ProfitLoss",
+          "href": "http://dart.fss.or.kr/Resource/Taxonomy/ifrs/2013-03-31/ifrs-cor_2010-04-30.xsd#ifrs_ProfitLoss",
+          "kind": null,
+          "readerWouldAccept": false,
+          "resolvedQName": null,
+          "resolvesInLocalXsd": false,
+          "role": "http://dart.fss.or.kr/role/ifrs/dart_2013-03-31_role-D610000",
+          "roleDefinition": "",
+          "scope": "EXTERNAL_URL"
+        },
+        {
+          "connected": false,
+          "definitionFound": false,
+          "doc": "ifrs_for_00165680\\dimensions_ifrs_for_00165680\\pre_ifrs_for_00165680_2015-03-31.xml",
+          "fragment": "ifrs_ProfitLoss",
+          "href": "http://dart.fss.or.kr/Resource/Taxonomy/ifrs/2013-03-31/ifrs-cor_2010-04-30.xsd#ifrs_ProfitLoss",
+          "kind": null,
+          "readerWouldAccept": false,
+          "resolvedQName": null,
+          "resolvesInLocalXsd": false,
+          "role": "http://dart.fss.or.kr/role/ifrs/dart_2013-03-31_role-D410005",
+          "roleDefinition": "",
+          "scope": "EXTERNAL_URL"
+        },
+        {
+          "connected": false,
+          "definitionFound": false,
+          "doc": "ifrs_for_00165680\\dimensions_ifrs_for_00165680\\pre_ifrs_for_00165680_2015-03-31.xml",
+          "fragment": "ifrs_ProfitLoss",
+          "href": "http://dart.fss.or.kr/Resource/Taxonomy/ifrs/2013-03-31/ifrs-cor_2010-04-30.xsd#ifrs_ProfitLoss",
+          "kind": null,
+          "readerWouldAccept": false,
+          "resolvedQName": null,
+          "resolvesInLocalXsd": false,
+          "role": "http://dart.fss.or.kr/role/ifrs/dart_2013-03-31_role-D410000",
+          "roleDefinition": "",
+          "scope": "EXTERNAL_URL"
+        },
+        {
+          "connected": false,
+          "definitionFound": false,
+          "doc": "ifrs_for_00165680\\dimensions_ifrs_for_00165680\\pre_ifrs_for_00165680_2015-03-31.xml",
+          "fragment": "ifrs_ProfitLoss",
+          "href": "http://dart.fss.or.kr/Resource/Taxonomy/ifrs/2013-03-31/ifrs-cor_2010-04-30.xsd#ifrs_ProfitLoss",
+          "kind": null,
+          "readerWouldAccept": false,
+          "resolvedQName": null,
+          "resolvesInLocalXsd": false,
+          "role": "http://dart.fss.or.kr/role/ifrs/dart_2013-03-31_role-D320000",
+          "roleDefinition": "",
+          "scope": "EXTERNAL_URL"
+        }
+      ],
+      "networks": [
+        {
+          "arcCount": 36,
+          "definitionFound": false,
+          "hrefScopes": {
+            "EXTERNAL_URL": 29,
+            "INSIDE_ZIP_BY_BASENAME_ONLY": 10
+          },
+          "kind": null,
+          "liveArcCount": 13,
+          "locCount": 39,
+          "role": "http://dart.fss.or.kr/role/ifrs/dart_2013-03-31_role-D610005"
+        },
+        {
+          "arcCount": 47,
+          "definitionFound": false,
+          "hrefScopes": {
+            "EXTERNAL_URL": 31,
+            "INSIDE_ZIP_BY_BASENAME_ONLY": 19
+          },
+          "kind": null,
+          "liveArcCount": 20,
+          "locCount": 50,
+          "role": "http://dart.fss.or.kr/role/ifrs/dart_2013-03-31_role-D610000"
+        },
+        {
+          "arcCount": 357,
+          "definitionFound": false,
+          "hrefScopes": {
+            "EXTERNAL_URL": 327,
+            "INSIDE_ZIP_BY_BASENAME_ONLY": 35
+          },
+          "kind": null,
+          "liveArcCount": 58,
+          "locCount": 362,
+          "role": "http://dart.fss.or.kr/role/ifrs/dart_2013-03-31_role-D520005"
+        },
+        {
+          "arcCount": 353,
+          "definitionFound": false,
+          "hrefScopes": {
+            "EXTERNAL_URL": 322,
+            "INSIDE_ZIP_BY_BASENAME_ONLY": 35
+          },
+          "kind": null,
+          "liveArcCount": 57,
+          "locCount": 357,
+          "role": "http://dart.fss.or.kr/role/ifrs/dart_2013-03-31_role-D520000"
+        },
+        {
+          "arcCount": 25,
+          "definitionFound": false,
+          "hrefScopes": {
+            "EXTERNAL_URL": 25,
+            "INSIDE_ZIP_BY_BASENAME_ONLY": 4
+          },
+          "kind": null,
+          "liveArcCount": 4,
+          "locCount": 29,
+          "role": "http://dart.fss.or.kr/role/ifrs/dart_2013-03-31_role-D410005"
+        },
+        {
+          "arcCount": 31,
+          "definitionFound": false,
+          "hrefScopes": {
+            "EXTERNAL_URL": 27,
+            "INSIDE_ZIP_BY_BASENAME_ONLY": 7
+          },
+          "kind": null,
+          "liveArcCount": 9,
+          "locCount": 34,
+          "role": "http://dart.fss.or.kr/role/ifrs/dart_2013-03-31_role-D410000"
+        },
+        {
+          "arcCount": 70,
+          "definitionFound": false,
+          "hrefScopes": {
+            "EXTERNAL_URL": 66,
+            "INSIDE_ZIP_BY_BASENAME_ONLY": 8
+          },
+          "kind": null,
+          "liveArcCount": 9,
+          "locCount": 74,
+          "role": "http://dart.fss.or.kr/role/ifrs/dart_2013-03-31_role-D320005"
+        },
+        {
+          "arcCount": 73,
+          "definitionFound": false,
+          "hrefScopes": {
+            "EXTERNAL_URL": 67,
+            "INSIDE_ZIP_BY_BASENAME_ONLY": 9
+          },
+          "kind": null,
+          "liveArcCount": 11,
+          "locCount": 76,
+          "role": "http://dart.fss.or.kr/role/ifrs/dart_2013-03-31_role-D320000"
+        },
+        {
+          "arcCount": 260,
+          "definitionFound": false,
+          "hrefScopes": {
+            "EXTERNAL_URL": 248,
+            "INSIDE_ZIP_BY_BASENAME_ONLY": 21
+          },
+          "kind": null,
+          "liveArcCount": 38,
+          "locCount": 269,
+          "role": "http://dart.fss.or.kr/role/ifrs/dart_2013-03-31_role-D210005"
+        },
+        {
+          "arcCount": 248,
+          "definitionFound": false,
+          "hrefScopes": {
+            "EXTERNAL_URL": 238,
+            "INSIDE_ZIP_BY_BASENAME_ONLY": 20
+          },
+          "kind": null,
+          "liveArcCount": 34,
+          "locCount": 258,
+          "role": "http://dart.fss.or.kr/role/ifrs/dart_2013-03-31_role-D210000"
+        }
+      ],
+      "readerEvidence": 0,
+      "references": [
+        [
+          "schemaRef",
+          "00165680_entry_point_2015-03-31.xsd",
+          "INSIDE_ZIP"
+        ],
+        [
+          "linkbaseRef",
+          "ifrs_for_00165680/dimensions_ifrs_for_00165680/pre_ifrs_for_00165680_2015-03-31.xml",
+          "RELATIVE_NOT_IN_ZIP"
+        ],
+        [
+          "linkbaseRef",
+          "ifrs_for_00165680/dimensions_ifrs_for_00165680/dim_ifrs_for_00165680_2015-03-31.xml",
+          "RELATIVE_NOT_IN_ZIP"
+        ],
+        [
+          "linkbaseRef",
+          "ifrs_for_00165680/dimensions_ifrs_for_00165680/cal_ifrs_for_00165680_2015-03-31.xml",
+          "RELATIVE_NOT_IN_ZIP"
+        ],
+        [
+          "linkbaseRef",
+          "labels/lab_00165680-ko_2015-03-31.xml",
+          "RELATIVE_NOT_IN_ZIP"
+        ],
+        [
+          "linkbaseRef",
+          "labels/lab_00165680-en_2015-03-31.xml",
+          "RELATIVE_NOT_IN_ZIP"
+        ],
+        [
+          "arcroleRef",
+          "http://www.xbrl.org/2005/xbrldt-2005.xsd#domain-member",
+          "EXTERNAL_URL"
+        ],
+        [
+          "arcroleRef",
+          "http://www.xbrl.org/2005/xbrldt-2005.xsd#all",
+          "EXTERNAL_URL"
+        ],
+        [
+          "arcroleRef",
+          "http://www.xbrl.org/2005/xbrldt-2005.xsd#dimension-default",
+          "EXTERNAL_URL"
+        ],
+        [
+          "arcroleRef",
+          "http://www.xbrl.org/2005/xbrldt-2005.xsd#dimension-domain",
+          "EXTERNAL_URL"
+        ],
+        [
+          "arcroleRef",
+          "http://www.xbrl.org/2005/xbrldt-2005.xsd#hypercube-dimension",
+          "EXTERNAL_URL"
+        ]
+      ],
+      "roleTypes": [],
+      "v2": {
+        "classification": "AMBIGUOUS_SOURCE_FACT",
+        "reason": "source presentation does not prove required financial statement"
+      },
+      "zipShaMatchesFrozen": true
+    },
+    {
+      "basis": "CFS",
+      "concepts": 125,
+      "files": [
+        [
+          "00413046_2012-07-26.xbrl",
+          "XBRL_INSTANCE",
+          416498
+        ],
+        [
+          "00413046_entry_point_2012-07-26.xsd",
+          "XSD",
+          48130
+        ],
+        [
+          "ifrs_for_00413046\\dimensions_ifrs_for_00413046\\dim_ifrs_for_00413046_2012-07-26.xml",
+          "LINKBASE:definition",
+          656374
+        ],
+        [
+          "ifrs_for_00413046\\dimensions_ifrs_for_00413046\\cal_ifrs_for_00413046_2012-07-26.xml",
+          "LINKBASE:calculation",
+          598357
+        ],
+        [
+          "ifrs_for_00413046\\dimensions_ifrs_for_00413046\\pre_ifrs_for_00413046_2012-07-26.xml",
+          "LINKBASE:presentation",
+          673711
+        ],
+        [
+          "ifrs_for_00413046\\dimensions_ifrs_for_00413046\\role_ifrs_for_00413046-dim_2012-07-26.xsd",
+          "XSD",
+          649
+        ],
+        [
+          "labels\\lab_00413046-ko_2012-07-26.xml",
+          "LINKBASE:label",
+          206573
+        ],
+        [
+          "labels\\lab_00413046-en_2012-07-26.xml",
+          "LINKBASE:label",
+          197050
+        ]
+      ],
+      "firstBreak": "ROLE_DEFINITION_MISSING",
+      "identity": "068270.KS:2015:11014:net_income",
+      "identity_evidence": {
+        "decimalsMatch": true,
+        "entityIsFrozenCorpCode": true,
+        "rawTextEqualsCandidateDescriptive": true,
+        "uniqueFactPointer": true,
+        "unitRefMatches": true
+      },
+      "matchedLocs": [
+        {
+          "connected": false,
+          "definitionFound": false,
+          "doc": "ifrs_for_00413046\\dimensions_ifrs_for_00413046\\pre_ifrs_for_00413046_2012-07-26.xml",
+          "fragment": "ifrs_ProfitLoss",
+          "href": "http://dart.fss.or.kr/Resource/Taxonomy/ifrs/2013-03-31/ifrs-cor_2010-04-30.xsd#ifrs_ProfitLoss",
+          "kind": null,
+          "readerWouldAccept": false,
+          "resolvedQName": null,
+          "resolvesInLocalXsd": false,
+          "role": "http://dart.fss.or.kr/role/ifrs/dart_2013-03-31_role-D310005",
+          "roleDefinition": "",
+          "scope": "EXTERNAL_URL"
+        },
+        {
+          "connected": true,
+          "definitionFound": false,
+          "doc": "ifrs_for_00413046\\dimensions_ifrs_for_00413046\\pre_ifrs_for_00413046_2012-07-26.xml",
+          "fragment": "ifrs_ProfitLoss",
+          "href": "http://dart.fss.or.kr/Resource/Taxonomy/ifrs/2013-03-31/ifrs-cor_2010-04-30.xsd#ifrs_ProfitLoss",
+          "kind": null,
+          "readerWouldAccept": false,
+          "resolvedQName": null,
+          "resolvesInLocalXsd": false,
+          "role": "http://dart.fss.or.kr/role/ifrs/dart_2013-03-31_role-D310005",
+          "roleDefinition": "",
+          "scope": "EXTERNAL_URL"
+        },
+        {
+          "connected": false,
+          "definitionFound": false,
+          "doc": "ifrs_for_00413046\\dimensions_ifrs_for_00413046\\pre_ifrs_for_00413046_2012-07-26.xml",
+          "fragment": "ifrs_ProfitLoss",
+          "href": "http://dart.fss.or.kr/Resource/Taxonomy/ifrs/2013-03-31/ifrs-cor_2010-04-30.xsd#ifrs_ProfitLoss",
+          "kind": null,
+          "readerWouldAccept": false,
+          "resolvedQName": null,
+          "resolvesInLocalXsd": false,
+          "role": "http://dart.fss.or.kr/role/ifrs/dart_2013-03-31_role-D310000",
+          "roleDefinition": "",
+          "scope": "EXTERNAL_URL"
+        }
+      ],
+      "networks": [
+        {
+          "arcCount": 30,
+          "definitionFound": false,
+          "hrefScopes": {
+            "EXTERNAL_URL": 22,
+            "INSIDE_ZIP_BY_BASENAME_ONLY": 12
+          },
+          "kind": null,
+          "liveArcCount": 12,
+          "locCount": 34,
+          "role": "http://dart.fss.or.kr/role/ifrs/dart_2013-03-31_role-D610005"
+        },
+        {
+          "arcCount": 35,
+          "definitionFound": false,
+          "hrefScopes": {
+            "EXTERNAL_URL": 22,
+            "INSIDE_ZIP_BY_BASENAME_ONLY": 17
+          },
+          "kind": null,
+          "liveArcCount": 17,
+          "locCount": 39,
+          "role": "http://dart.fss.or.kr/role/ifrs/dart_2013-03-31_role-D610000"
+        },
+        {
+          "arcCount": 217,
+          "definitionFound": false,
+          "hrefScopes": {
+            "EXTERNAL_URL": 186,
+            "INSIDE_ZIP_BY_BASENAME_ONLY": 35
+          },
+          "kind": null,
+          "liveArcCount": 38,
+          "locCount": 221,
+          "role": "http://dart.fss.or.kr/role/ifrs/dart_2013-03-31_role-D510005"
+        },
+        {
+          "arcCount": 212,
+          "definitionFound": false,
+          "hrefScopes": {
+            "EXTERNAL_URL": 180,
+            "INSIDE_ZIP_BY_BASENAME_ONLY": 36
+          },
+          "kind": null,
+          "liveArcCount": 36,
+          "locCount": 216,
+          "role": "http://dart.fss.or.kr/role/ifrs/dart_2013-03-31_role-D510000"
+        },
+        {
+          "arcCount": 25,
+          "definitionFound": false,
+          "hrefScopes": {
+            "EXTERNAL_URL": 24,
+            "INSIDE_ZIP_BY_BASENAME_ONLY": 2
+          },
+          "kind": null,
+          "liveArcCount": 2,
+          "locCount": 26,
+          "role": "http://dart.fss.or.kr/role/ifrs/dart_2013-03-31_role-D410005"
+        },
+        {
+          "arcCount": 29,
+          "definitionFound": false,
+          "hrefScopes": {
+            "EXTERNAL_URL": 26,
+            "INSIDE_ZIP_BY_BASENAME_ONLY": 5
+          },
+          "kind": null,
+          "liveArcCount": 5,
+          "locCount": 31,
+          "role": "http://dart.fss.or.kr/role/ifrs/dart_2013-03-31_role-D410000"
+        },
+        {
+          "arcCount": 101,
+          "definitionFound": false,
+          "hrefScopes": {
+            "EXTERNAL_URL": 106
+          },
+          "kind": null,
+          "liveArcCount": 10,
+          "locCount": 106,
+          "role": "http://dart.fss.or.kr/role/ifrs/dart_2013-03-31_role-D310005"
+        },
+        {
+          "arcCount": 80,
+          "definitionFound": false,
+          "hrefScopes": {
+            "EXTERNAL_URL": 90
+          },
+          "kind": null,
+          "liveArcCount": 0,
+          "locCount": 90,
+          "role": "http://dart.fss.or.kr/role/ifrs/dart_2013-03-31_role-D310000"
+        },
+        {
+          "arcCount": 242,
+          "definitionFound": false,
+          "hrefScopes": {
+            "EXTERNAL_URL": 242,
+            "INSIDE_ZIP_BY_BASENAME_ONLY": 7
+          },
+          "kind": null,
+          "liveArcCount": 24,
+          "locCount": 249,
+          "role": "http://dart.fss.or.kr/role/ifrs/dart_2013-03-31_role-D210005"
+        },
+        {
+          "arcCount": 237,
+          "definitionFound": false,
+          "hrefScopes": {
+            "EXTERNAL_URL": 236,
+            "INSIDE_ZIP_BY_BASENAME_ONLY": 11
+          },
+          "kind": null,
+          "liveArcCount": 24,
+          "locCount": 247,
+          "role": "http://dart.fss.or.kr/role/ifrs/dart_2013-03-31_role-D210000"
+        }
+      ],
+      "readerEvidence": 0,
+      "references": [
+        [
+          "schemaRef",
+          "00413046_entry_point_2012-07-26.xsd",
+          "INSIDE_ZIP"
+        ],
+        [
+          "linkbaseRef",
+          "ifrs_for_00413046/dimensions_ifrs_for_00413046/pre_ifrs_for_00413046_2012-07-26.xml",
+          "RELATIVE_NOT_IN_ZIP"
+        ],
+        [
+          "linkbaseRef",
+          "ifrs_for_00413046/dimensions_ifrs_for_00413046/dim_ifrs_for_00413046_2012-07-26.xml",
+          "RELATIVE_NOT_IN_ZIP"
+        ],
+        [
+          "linkbaseRef",
+          "ifrs_for_00413046/dimensions_ifrs_for_00413046/cal_ifrs_for_00413046_2012-07-26.xml",
+          "RELATIVE_NOT_IN_ZIP"
+        ],
+        [
+          "linkbaseRef",
+          "labels/lab_00413046-ko_2012-07-26.xml",
+          "RELATIVE_NOT_IN_ZIP"
+        ],
+        [
+          "linkbaseRef",
+          "labels/lab_00413046-en_2012-07-26.xml",
+          "RELATIVE_NOT_IN_ZIP"
+        ],
+        [
+          "arcroleRef",
+          "http://www.xbrl.org/2005/xbrldt-2005.xsd#domain-member",
+          "EXTERNAL_URL"
+        ],
+        [
+          "arcroleRef",
+          "http://www.xbrl.org/2005/xbrldt-2005.xsd#all",
+          "EXTERNAL_URL"
+        ],
+        [
+          "arcroleRef",
+          "http://www.xbrl.org/2005/xbrldt-2005.xsd#dimension-default",
+          "EXTERNAL_URL"
+        ],
+        [
+          "arcroleRef",
+          "http://www.xbrl.org/2005/xbrldt-2005.xsd#dimension-domain",
+          "EXTERNAL_URL"
+        ],
+        [
+          "arcroleRef",
+          "http://www.xbrl.org/2005/xbrldt-2005.xsd#hypercube-dimension",
+          "EXTERNAL_URL"
+        ]
+      ],
+      "roleTypes": [],
+      "v2": {
+        "classification": "AMBIGUOUS_SOURCE_FACT",
+        "reason": "source presentation does not prove required financial statement"
+      },
+      "zipShaMatchesFrozen": true
+    },
+    {
+      "basis": "OFS",
+      "concepts": 46,
+      "files": [
+        [
+          "00141404_2013-05-06.xbrl",
+          "XBRL_INSTANCE",
+          193010
+        ],
+        [
+          "00141404_entry_point_2013-05-06.xsd",
+          "XSD",
+          20306
+        ],
+        [
+          "ifrs_for_00141404\\dimensions_ifrs_for_00141404\\dim_ifrs_for_00141404_2013-05-06.xml",
+          "LINKBASE:definition",
+          383279
+        ],
+        [
+          "ifrs_for_00141404\\dimensions_ifrs_for_00141404\\cal_ifrs_for_00141404_2013-05-06.xml",
+          "LINKBASE:calculation",
+          366602
+        ],
+        [
+          "ifrs_for_00141404\\dimensions_ifrs_for_00141404\\pre_ifrs_for_00141404_2013-05-06.xml",
+          "LINKBASE:presentation",
+          392039
+        ],
+        [
+          "ifrs_for_00141404\\dimensions_ifrs_for_00141404\\role_ifrs_for_00141404-dim_2013-05-06.xsd",
+          "XSD",
+          649
+        ],
+        [
+          "labels\\lab_00141404-ko_2013-05-06.xml",
+          "LINKBASE:label",
+          73979
+        ],
+        [
+          "labels\\lab_00141404-en_2013-05-06.xml",
+          "LINKBASE:label",
+          63163
+        ]
+      ],
+      "firstBreak": "ROLE_DEFINITION_MISSING",
+      "identity": "006740.KS:2015:11013:operating_cash_flow",
+      "identity_evidence": {
+        "decimalsMatch": true,
+        "entityIsFrozenCorpCode": true,
+        "rawTextEqualsCandidateDescriptive": true,
+        "uniqueFactPointer": true,
+        "unitRefMatches": true
+      },
+      "matchedLocs": [
+        {
+          "connected": true,
+          "definitionFound": false,
+          "doc": "ifrs_for_00141404\\dimensions_ifrs_for_00141404\\pre_ifrs_for_00141404_2013-05-06.xml",
+          "fragment": "ifrs_CashFlowsFromUsedInOperatingActivities",
+          "href": "http://dart.fss.or.kr/Resource/Taxonomy/ifrs/2013-03-31/ifrs-cor_2010-04-30.xsd#ifrs_CashFlowsFromUsedInOperatingActivities",
+          "kind": null,
+          "readerWouldAccept": false,
+          "resolvedQName": null,
+          "resolvesInLocalXsd": false,
+          "role": "http://dart.fss.or.kr/role/ifrs/dart_2013-03-31_role-D520005",
+          "roleDefinition": "",
+          "scope": "EXTERNAL_URL"
+        },
+        {
+          "connected": true,
+          "definitionFound": false,
+          "doc": "ifrs_for_00141404\\dimensions_ifrs_for_00141404\\pre_ifrs_for_00141404_2013-05-06.xml",
+          "fragment": "entity00141404_udf_CF_20135617126918_CashFlowsFromUsedInOperatingActivities",
+          "href": "../../00141404_entry_point_2013-05-06.xsd#entity00141404_udf_CF_20135617126918_CashFlowsFromUsedInOperatingActivities",
+          "kind": null,
+          "readerWouldAccept": false,
+          "resolvedQName": "{http://dart.fss.or.kr/taxonomy/2013-05-06/entity00141404}udf_CF_20135617126918_CashFlowsFromUsedInOperatingActivities",
+          "resolvesInLocalXsd": true,
+          "role": "http://dart.fss.or.kr/role/ifrs/dart_2013-03-31_role-D520005",
+          "roleDefinition": "",
+          "scope": "INSIDE_ZIP_BY_BASENAME_ONLY"
+        }
+      ],
+      "networks": [
+        {
+          "arcCount": 103,
+          "definitionFound": false,
+          "hrefScopes": {
+            "EXTERNAL_URL": 112,
+            "INSIDE_ZIP_BY_BASENAME_ONLY": 2
+          },
+          "kind": null,
+          "liveArcCount": 2,
+          "locCount": 114,
+          "role": "http://dart.fss.or.kr/role/ifrs/dart_2013-03-31_role-D431415"
+        },
+        {
+          "arcCount": 28,
+          "definitionFound": false,
+          "hrefScopes": {
+            "EXTERNAL_URL": 25,
+            "INSIDE_ZIP_BY_BASENAME_ONLY": 7
+          },
+          "kind": null,
+          "liveArcCount": 8,
+          "locCount": 32,
+          "role": "http://dart.fss.or.kr/role/ifrs/dart_2013-03-31_role-D610005"
+        },
+        {
+          "arcCount": 322,
+          "definitionFound": false,
+          "hrefScopes": {
+            "EXTERNAL_URL": 316,
+            "INSIDE_ZIP_BY_BASENAME_ONLY": 10
+          },
+          "kind": null,
+          "liveArcCount": 22,
+          "locCount": 326,
+          "role": "http://dart.fss.or.kr/role/ifrs/dart_2013-03-31_role-D520005"
+        },
+        {
+          "arcCount": 255,
+          "definitionFound": false,
+          "hrefScopes": {
+            "EXTERNAL_URL": 236,
+            "INSIDE_ZIP_BY_BASENAME_ONLY": 27
+          },
+          "kind": null,
+          "liveArcCount": 34,
+          "locCount": 263,
+          "role": "http://dart.fss.or.kr/role/ifrs/dart_2013-03-31_role-D210005"
+        }
+      ],
+      "readerEvidence": 0,
+      "references": [
+        [
+          "schemaRef",
+          "00141404_entry_point_2013-05-06.xsd",
+          "INSIDE_ZIP"
+        ],
+        [
+          "linkbaseRef",
+          "ifrs_for_00141404/dimensions_ifrs_for_00141404/pre_ifrs_for_00141404_2013-05-06.xml",
+          "RELATIVE_NOT_IN_ZIP"
+        ],
+        [
+          "linkbaseRef",
+          "ifrs_for_00141404/dimensions_ifrs_for_00141404/dim_ifrs_for_00141404_2013-05-06.xml",
+          "RELATIVE_NOT_IN_ZIP"
+        ],
+        [
+          "linkbaseRef",
+          "ifrs_for_00141404/dimensions_ifrs_for_00141404/cal_ifrs_for_00141404_2013-05-06.xml",
+          "RELATIVE_NOT_IN_ZIP"
+        ],
+        [
+          "linkbaseRef",
+          "labels/lab_00141404-ko_2013-05-06.xml",
+          "RELATIVE_NOT_IN_ZIP"
+        ],
+        [
+          "linkbaseRef",
+          "labels/lab_00141404-en_2013-05-06.xml",
+          "RELATIVE_NOT_IN_ZIP"
+        ],
+        [
+          "arcroleRef",
+          "http://www.xbrl.org/2005/xbrldt-2005.xsd#domain-member",
+          "EXTERNAL_URL"
+        ],
+        [
+          "arcroleRef",
+          "http://www.xbrl.org/2005/xbrldt-2005.xsd#all",
+          "EXTERNAL_URL"
+        ],
+        [
+          "arcroleRef",
+          "http://www.xbrl.org/2005/xbrldt-2005.xsd#dimension-default",
+          "EXTERNAL_URL"
+        ],
+        [
+          "arcroleRef",
+          "http://www.xbrl.org/2005/xbrldt-2005.xsd#dimension-domain",
+          "EXTERNAL_URL"
+        ],
+        [
+          "arcroleRef",
+          "http://www.xbrl.org/2005/xbrldt-2005.xsd#hypercube-dimension",
+          "EXTERNAL_URL"
+        ]
+      ],
+      "roleTypes": [],
+      "v2": {
+        "classification": "AMBIGUOUS_SOURCE_FACT",
+        "reason": "source presentation does not prove required financial statement"
+      },
+      "zipShaMatchesFrozen": true
+    },
+    {
+      "basis": "CFS",
+      "concepts": 48,
+      "files": [
+        [
+          "00561866_2015-08-04.xbrl",
+          "XBRL_INSTANCE",
+          389190
+        ],
+        [
+          "00561866_entry_point_2015-08-04.xsd",
+          "XSD",
+          22170
+        ],
+        [
+          "ifrs_for_00561866\\dimensions_ifrs_for_00561866\\dim_ifrs_for_00561866_2015-08-04.xml",
+          "LINKBASE:definition",
+          784003
+        ],
+        [
+          "ifrs_for_00561866\\dimensions_ifrs_for_00561866\\cal_ifrs_for_00561866_2015-08-04.xml",
+          "LINKBASE:calculation",
+          627309
+        ],
+        [
+          "ifrs_for_00561866\\dimensions_ifrs_for_00561866\\pre_ifrs_for_00561866_2015-08-04.xml",
+          "LINKBASE:presentation",
+          803104
+        ],
+        [
+          "ifrs_for_00561866\\dimensions_ifrs_for_00561866\\role_ifrs_for_00561866-dim_2015-08-04.xsd",
+          "XSD",
+          649
+        ],
+        [
+          "labels\\lab_00561866-ko_2015-08-04.xml",
+          "LINKBASE:label",
+          101407
+        ],
+        [
+          "labels\\lab_00561866-en_2015-08-04.xml",
+          "LINKBASE:label",
+          75882
+        ]
+      ],
+      "firstBreak": "ROLE_DEFINITION_MISSING",
+      "identity": "115390.KS:2015:11012:operating_cash_flow",
+      "identity_evidence": {
+        "decimalsMatch": true,
+        "entityIsFrozenCorpCode": true,
+        "rawTextEqualsCandidateDescriptive": true,
+        "uniqueFactPointer": true,
+        "unitRefMatches": true
+      },
+      "matchedLocs": [
+        {
+          "connected": true,
+          "definitionFound": false,
+          "doc": "ifrs_for_00561866\\dimensions_ifrs_for_00561866\\pre_ifrs_for_00561866_2015-08-04.xml",
+          "fragment": "ifrs_CashFlowsFromUsedInOperatingActivities",
+          "href": "http://dart.fss.or.kr/Resource/Taxonomy/ifrs/2013-03-31/ifrs-cor_2010-04-30.xsd#ifrs_CashFlowsFromUsedInOperatingActivities",
+          "kind": null,
+          "readerWouldAccept": false,
+          "resolvedQName": null,
+          "resolvesInLocalXsd": false,
+          "role": "http://dart.fss.or.kr/role/ifrs/dart_2013-03-31_role-D520005",
+          "roleDefinition": "",
+          "scope": "EXTERNAL_URL"
+        },
+        {
+          "connected": true,
+          "definitionFound": false,
+          "doc": "ifrs_for_00561866\\dimensions_ifrs_for_00561866\\pre_ifrs_for_00561866_2015-08-04.xml",
+          "fragment": "ifrs_CashFlowsFromUsedInOperatingActivities",
+          "href": "http://dart.fss.or.kr/Resource/Taxonomy/ifrs/2013-03-31/ifrs-cor_2010-04-30.xsd#ifrs_CashFlowsFromUsedInOperatingActivities",
+          "kind": null,
+          "readerWouldAccept": false,
+          "resolvedQName": null,
+          "resolvesInLocalXsd": false,
+          "role": "http://dart.fss.or.kr/role/ifrs/dart_2013-03-31_role-D520000",
+          "roleDefinition": "",
+          "scope": "EXTERNAL_URL"
+        }
+      ],
+      "networks": [
+        {
+          "arcCount": 108,
+          "definitionFound": false,
+          "hrefScopes": {
+            "EXTERNAL_URL": 117,
+            "INSIDE_ZIP_BY_BASENAME_ONLY": 1
+          },
+          "kind": null,
+          "liveArcCount": 4,
+          "locCount": 118,
+          "role": "http://dart.fss.or.kr/role/ifrs/dart_2013-03-31_role-D431415"
+        },
+        {
+          "arcCount": 110,
+          "definitionFound": false,
+          "hrefScopes": {
+            "EXTERNAL_URL": 116,
+            "INSIDE_ZIP_BY_BASENAME_ONLY": 4
+          },
+          "kind": null,
+          "liveArcCount": 7,
+          "locCount": 120,
+          "role": "http://dart.fss.or.kr/role/ifrs/dart_2013-03-31_role-D431410"
+        },
+        {
+          "arcCount": 22,
+          "definitionFound": false,
+          "hrefScopes": {
+            "EXTERNAL_URL": 25
+          },
+          "kind": null,
+          "liveArcCount": 4,
+          "locCount": 25,
+          "role": "http://dart.fss.or.kr/role/ifrs/dart_2013-03-31_role-D610005"
+        },
+        {
+          "arcCount": 25,
+          "definitionFound": false,
+          "hrefScopes": {
+            "EXTERNAL_URL": 25,
+            "INSIDE_ZIP_BY_BASENAME_ONLY": 3
+          },
+          "kind": null,
+          "liveArcCount": 7,
+          "locCount": 28,
+          "role": "http://dart.fss.or.kr/role/ifrs/dart_2013-03-31_role-D610000"
+        },
+        {
+          "arcCount": 354,
+          "definitionFound": false,
+          "hrefScopes": {
+            "EXTERNAL_URL": 343,
+            "INSIDE_ZIP_BY_BASENAME_ONLY": 15
+          },
+          "kind": null,
+          "liveArcCount": 57,
+          "locCount": 358,
+          "role": "http://dart.fss.or.kr/role/ifrs/dart_2013-03-31_role-D520005"
+        },
+        {
+          "arcCount": 355,
+          "definitionFound": false,
+          "hrefScopes": {
+            "EXTERNAL_URL": 341,
+            "INSIDE_ZIP_BY_BASENAME_ONLY": 19
+          },
+          "kind": null,
+          "liveArcCount": 58,
+          "locCount": 360,
+          "role": "http://dart.fss.or.kr/role/ifrs/dart_2013-03-31_role-D520000"
+        },
+        {
+          "arcCount": 235,
+          "definitionFound": false,
+          "hrefScopes": {
+            "EXTERNAL_URL": 245,
+            "INSIDE_ZIP_BY_BASENAME_ONLY": 3
+          },
+          "kind": null,
+          "liveArcCount": 22,
+          "locCount": 248,
+          "role": "http://dart.fss.or.kr/role/ifrs/dart_2013-03-31_role-D210005"
+        },
+        {
+          "arcCount": 226,
+          "definitionFound": false,
+          "hrefScopes": {
+            "EXTERNAL_URL": 235,
+            "INSIDE_ZIP_BY_BASENAME_ONLY": 3
+          },
+          "kind": null,
+          "liveArcCount": 20,
+          "locCount": 238,
+          "role": "http://dart.fss.or.kr/role/ifrs/dart_2013-03-31_role-D210000"
+        }
+      ],
+      "readerEvidence": 0,
+      "references": [
+        [
+          "schemaRef",
+          "00561866_entry_point_2015-08-04.xsd",
+          "INSIDE_ZIP"
+        ],
+        [
+          "linkbaseRef",
+          "ifrs_for_00561866/dimensions_ifrs_for_00561866/pre_ifrs_for_00561866_2015-08-04.xml",
+          "RELATIVE_NOT_IN_ZIP"
+        ],
+        [
+          "linkbaseRef",
+          "ifrs_for_00561866/dimensions_ifrs_for_00561866/dim_ifrs_for_00561866_2015-08-04.xml",
+          "RELATIVE_NOT_IN_ZIP"
+        ],
+        [
+          "linkbaseRef",
+          "ifrs_for_00561866/dimensions_ifrs_for_00561866/cal_ifrs_for_00561866_2015-08-04.xml",
+          "RELATIVE_NOT_IN_ZIP"
+        ],
+        [
+          "linkbaseRef",
+          "labels/lab_00561866-ko_2015-08-04.xml",
+          "RELATIVE_NOT_IN_ZIP"
+        ],
+        [
+          "linkbaseRef",
+          "labels/lab_00561866-en_2015-08-04.xml",
+          "RELATIVE_NOT_IN_ZIP"
+        ],
+        [
+          "arcroleRef",
+          "http://www.xbrl.org/2005/xbrldt-2005.xsd#domain-member",
+          "EXTERNAL_URL"
+        ],
+        [
+          "arcroleRef",
+          "http://www.xbrl.org/2005/xbrldt-2005.xsd#all",
+          "EXTERNAL_URL"
+        ],
+        [
+          "arcroleRef",
+          "http://www.xbrl.org/2005/xbrldt-2005.xsd#dimension-default",
+          "EXTERNAL_URL"
+        ],
+        [
+          "arcroleRef",
+          "http://www.xbrl.org/2005/xbrldt-2005.xsd#dimension-domain",
+          "EXTERNAL_URL"
+        ],
+        [
+          "arcroleRef",
+          "http://www.xbrl.org/2005/xbrldt-2005.xsd#hypercube-dimension",
+          "EXTERNAL_URL"
+        ]
+      ],
+      "roleTypes": [],
+      "v2": {
+        "classification": "AMBIGUOUS_SOURCE_FACT",
+        "reason": "source presentation does not prove required financial statement"
+      },
+      "zipShaMatchesFrozen": true
+    },
+    {
+      "basis": "OFS",
+      "concepts": 104,
+      "files": [
+        [
+          "00161383_2011-05-04.xbrl",
+          "XBRL_INSTANCE",
+          340258
+        ],
+        [
+          "00161383_entry_point_2011-05-04.xsd",
+          "XSD",
+          43280
+        ],
+        [
+          "ifrs_for_00161383\\dimensions_ifrs_for_00161383\\dim_ifrs_for_00161383_2011-05-04.xml",
+          "LINKBASE:definition",
+          461680
+        ],
+        [
+          "ifrs_for_00161383\\dimensions_ifrs_for_00161383\\cal_ifrs_for_00161383_2011-05-04.xml",
+          "LINKBASE:calculation",
+          392472
+        ],
+        [
+          "ifrs_for_00161383\\dimensions_ifrs_for_00161383\\pre_ifrs_for_00161383_2011-05-04.xml",
+          "LINKBASE:presentation",
+          471269
+        ],
+        [
+          "ifrs_for_00161383\\dimensions_ifrs_for_00161383\\role_ifrs_for_00161383-dim_2011-05-04.xsd",
+          "XSD",
+          649
+        ],
+        [
+          "labels\\lab_00161383-ko_2011-05-04.xml",
+          "LINKBASE:label",
+          207733
+        ],
+        [
+          "labels\\lab_00161383-en_2011-05-04.xml",
+          "LINKBASE:label",
+          200008
+        ]
+      ],
+      "firstBreak": "ROLE_DEFINITION_MISSING",
+      "identity": "042700.KS:2015:11014:operating_cash_flow",
+      "identity_evidence": {
+        "decimalsMatch": true,
+        "entityIsFrozenCorpCode": true,
+        "rawTextEqualsCandidateDescriptive": true,
+        "uniqueFactPointer": true,
+        "unitRefMatches": true
+      },
+      "matchedLocs": [
+        {
+          "connected": true,
+          "definitionFound": false,
+          "doc": "ifrs_for_00161383\\dimensions_ifrs_for_00161383\\pre_ifrs_for_00161383_2011-05-04.xml",
+          "fragment": "ifrs_CashFlowsFromUsedInOperatingActivities",
+          "href": "http://dart.fss.or.kr/Resource/Taxonomy/ifrs/2013-03-31/ifrs-cor_2010-04-30.xsd#ifrs_CashFlowsFromUsedInOperatingActivities",
+          "kind": null,
+          "readerWouldAccept": false,
+          "resolvedQName": null,
+          "resolvesInLocalXsd": false,
+          "role": "http://dart.fss.or.kr/role/ifrs/dart_2013-03-31_role-D520005",
+          "roleDefinition": "",
+          "scope": "EXTERNAL_URL"
+        },
+        {
+          "connected": true,
+          "definitionFound": false,
+          "doc": "ifrs_for_00161383\\dimensions_ifrs_for_00161383\\pre_ifrs_for_00161383_2011-05-04.xml",
+          "fragment": "entity00161383_udf_CF_2011511164238135_CashFlowsFromUsedInOperatingActivities",
+          "href": "../../00161383_entry_point_2011-05-04.xsd#entity00161383_udf_CF_2011511164238135_CashFlowsFromUsedInOperatingActivities",
+          "kind": null,
+          "readerWouldAccept": false,
+          "resolvedQName": "{http://dart.fss.or.kr/taxonomy/2011-05-04/entity00161383}udf_CF_2011511164238135_CashFlowsFromUsedInOperatingActivities",
+          "resolvesInLocalXsd": true,
+          "role": "http://dart.fss.or.kr/role/ifrs/dart_2013-03-31_role-D520005",
+          "roleDefinition": "",
+          "scope": "INSIDE_ZIP_BY_BASENAME_ONLY"
+        },
+        {
+          "connected": true,
+          "definitionFound": false,
+          "doc": "ifrs_for_00161383\\dimensions_ifrs_for_00161383\\pre_ifrs_for_00161383_2011-05-04.xml",
+          "fragment": "entity00161383_udf_CF_201231185612136_udf_CF_2011511164238135_CashFlowsFromUsedInOperatingActivities",
+          "href": "../../00161383_entry_point_2011-05-04.xsd#entity00161383_udf_CF_201231185612136_udf_CF_2011511164238135_CashFlowsFromUsedInOperatingActivities",
+          "kind": null,
+          "readerWouldAccept": false,
+          "resolvedQName": "{http://dart.fss.or.kr/taxonomy/2011-05-04/entity00161383}udf_CF_201231185612136_udf_CF_2011511164238135_CashFlowsFromUsedInOperatingActivities",
+          "resolvesInLocalXsd": true,
+          "role": "http://dart.fss.or.kr/role/ifrs/dart_2013-03-31_role-D520005",
+          "roleDefinition": "",
+          "scope": "INSIDE_ZIP_BY_BASENAME_ONLY"
+        },
+        {
+          "connected": true,
+          "definitionFound": false,
+          "doc": "ifrs_for_00161383\\dimensions_ifrs_for_00161383\\pre_ifrs_for_00161383_2011-05-04.xml",
+          "fragment": "entity00161383_udf_CF_2011511164535204_udf_CF_2011511164238135_CashFlowsFromUsedInOperatingActivities",
+          "href": "../../00161383_entry_point_2011-05-04.xsd#entity00161383_udf_CF_2011511164535204_udf_CF_2011511164238135_CashFlowsFromUsedInOperatingActivities",
+          "kind": null,
+          "readerWouldAccept": false,
+          "resolvedQName": "{http://dart.fss.or.kr/taxonomy/2011-05-04/entity00161383}udf_CF_2011511164535204_udf_CF_2011511164238135_CashFlowsFromUsedInOperatingActivities",
+          "resolvesInLocalXsd": true,
+          "role": "http://dart.fss.or.kr/role/ifrs/dart_2013-03-31_role-D520005",
+          "roleDefinition": "",
+          "scope": "INSIDE_ZIP_BY_BASENAME_ONLY"
+        },
+        {
+          "connected": true,
+          "definitionFound": false,
+          "doc": "ifrs_for_00161383\\dimensions_ifrs_for_00161383\\pre_ifrs_for_00161383_2011-05-04.xml",
+          "fragment": "entity00161383_udf_CF_20118109292481_udf_CF_2011511164535204_udf_CF_2011511164238135_CashFlowsFromUsedInOperatingActivities",
+          "href": "../../00161383_entry_point_2011-05-04.xsd#entity00161383_udf_CF_20118109292481_udf_CF_2011511164535204_udf_CF_2011511164238135_CashFlowsFromUsedInOperatingActivities",
+          "kind": null,
+          "readerWouldAccept": false,
+          "resolvedQName": "{http://dart.fss.or.kr/taxonomy/2011-05-04/entity00161383}udf_CF_20118109292481_udf_CF_2011511164535204_udf_CF_2011511164238135_CashFlowsFromUsedInOperatingActivities",
+          "resolvesInLocalXsd": true,
+          "role": "http://dart.fss.or.kr/role/ifrs/dart_2013-03-31_role-D520005",
+          "roleDefinition": "",
+          "scope": "INSIDE_ZIP_BY_BASENAME_ONLY"
+        },
+        {
+          "connected": true,
+          "definitionFound": false,
+          "doc": "ifrs_for_00161383\\dimensions_ifrs_for_00161383\\pre_ifrs_for_00161383_2011-05-04.xml",
+          "fragment": "entity00161383_udf_CF_201181093450386_udf_CF_2011511164535204_udf_CF_2011511164238135_CashFlowsFromUsedInOperatingActivities",
+          "href": "../../00161383_entry_point_2011-05-04.xsd#entity00161383_udf_CF_201181093450386_udf_CF_2011511164535204_udf_CF_2011511164238135_CashFlowsFromUsedInOperatingActivities",
+          "kind": null,
+          "readerWouldAccept": false,
+          "resolvedQName": "{http://dart.fss.or.kr/taxonomy/2011-05-04/entity00161383}udf_CF_201181093450386_udf_CF_2011511164535204_udf_CF_2011511164238135_CashFlowsFromUsedInOperatingActivities",
+          "resolvesInLocalXsd": true,
+          "role": "http://dart.fss.or.kr/role/ifrs/dart_2013-03-31_role-D520005",
+          "roleDefinition": "",
+          "scope": "INSIDE_ZIP_BY_BASENAME_ONLY"
+        }
+      ],
+      "networks": [
+        {
+          "arcCount": 156,
+          "definitionFound": false,
+          "hrefScopes": {
+            "EXTERNAL_URL": 148,
+            "INSIDE_ZIP_BY_BASENAME_ONLY": 15
+          },
+          "kind": null,
+          "liveArcCount": 29,
+          "locCount": 163,
+          "role": "http://dart.fss.or.kr/role/ifrs/dart_2013-03-31_role-D431425"
+        },
+        {
+          "arcCount": 38,
+          "definitionFound": false,
+          "hrefScopes": {
+            "EXTERNAL_URL": 31,
+            "INSIDE_ZIP_BY_BASENAME_ONLY": 9
+          },
+          "kind": null,
+          "liveArcCount": 13,
+          "locCount": 40,
+          "role": "http://dart.fss.or.kr/role/ifrs/dart_2013-03-31_role-D610005"
+        },
+        {
+          "arcCount": 385,
+          "definitionFound": false,
+          "hrefScopes": {
+            "EXTERNAL_URL": 318,
+            "INSIDE_ZIP_BY_BASENAME_ONLY": 71
+          },
+          "kind": null,
+          "liveArcCount": 76,
+          "locCount": 389,
+          "role": "http://dart.fss.or.kr/role/ifrs/dart_2013-03-31_role-D520005"
+        },
+        {
+          "arcCount": 249,
+          "definitionFound": false,
+          "hrefScopes": {
+            "EXTERNAL_URL": 245,
+            "INSIDE_ZIP_BY_BASENAME_ONLY": 9
+          },
+          "kind": null,
+          "liveArcCount": 28,
+          "locCount": 254,
+          "role": "http://dart.fss.or.kr/role/ifrs/dart_2013-03-31_role-D210005"
+        }
+      ],
+      "readerEvidence": 0,
+      "references": [
+        [
+          "schemaRef",
+          "00161383_entry_point_2011-05-04.xsd",
+          "INSIDE_ZIP"
+        ],
+        [
+          "linkbaseRef",
+          "ifrs_for_00161383/dimensions_ifrs_for_00161383/pre_ifrs_for_00161383_2011-05-04.xml",
+          "RELATIVE_NOT_IN_ZIP"
+        ],
+        [
+          "linkbaseRef",
+          "ifrs_for_00161383/dimensions_ifrs_for_00161383/dim_ifrs_for_00161383_2011-05-04.xml",
+          "RELATIVE_NOT_IN_ZIP"
+        ],
+        [
+          "linkbaseRef",
+          "ifrs_for_00161383/dimensions_ifrs_for_00161383/cal_ifrs_for_00161383_2011-05-04.xml",
+          "RELATIVE_NOT_IN_ZIP"
+        ],
+        [
+          "linkbaseRef",
+          "labels/lab_00161383-ko_2011-05-04.xml",
+          "RELATIVE_NOT_IN_ZIP"
+        ],
+        [
+          "linkbaseRef",
+          "labels/lab_00161383-en_2011-05-04.xml",
+          "RELATIVE_NOT_IN_ZIP"
+        ],
+        [
+          "arcroleRef",
+          "http://www.xbrl.org/2005/xbrldt-2005.xsd#domain-member",
+          "EXTERNAL_URL"
+        ],
+        [
+          "arcroleRef",
+          "http://www.xbrl.org/2005/xbrldt-2005.xsd#all",
+          "EXTERNAL_URL"
+        ],
+        [
+          "arcroleRef",
+          "http://www.xbrl.org/2005/xbrldt-2005.xsd#dimension-default",
+          "EXTERNAL_URL"
+        ],
+        [
+          "arcroleRef",
+          "http://www.xbrl.org/2005/xbrldt-2005.xsd#dimension-domain",
+          "EXTERNAL_URL"
+        ],
+        [
+          "arcroleRef",
+          "http://www.xbrl.org/2005/xbrldt-2005.xsd#hypercube-dimension",
+          "EXTERNAL_URL"
+        ]
+      ],
+      "roleTypes": [],
+      "v2": {
+        "classification": "AMBIGUOUS_SOURCE_FACT",
+        "reason": "source presentation does not prove required financial statement"
+      },
+      "zipShaMatchesFrozen": true
+    },
+    {
+      "basis": "CFS",
+      "concepts": 25,
+      "files": [
+        [
+          "00309503_2014-03-31.xbrl",
+          "XBRL_INSTANCE",
+          292254
+        ],
+        [
+          "00309503_entry_point_2014-03-31.xsd",
+          "XSD",
+          14951
+        ],
+        [
+          "ifrs_for_00309503\\dimensions_ifrs_for_00309503\\dim_ifrs_for_00309503_2014-03-31.xml",
+          "LINKBASE:definition",
+          726702
+        ],
+        [
+          "ifrs_for_00309503\\dimensions_ifrs_for_00309503\\cal_ifrs_for_00309503_2014-03-31.xml",
+          "LINKBASE:calculation",
+          647800
+        ],
+        [
+          "ifrs_for_00309503\\dimensions_ifrs_for_00309503\\pre_ifrs_for_00309503_2014-03-31.xml",
+          "LINKBASE:presentation",
+          745297
+        ],
+        [
+          "ifrs_for_00309503\\dimensions_ifrs_for_00309503\\role_ifrs_for_00309503-dim_2014-03-31.xsd",
+          "XSD",
+          649
+        ],
+        [
+          "labels\\lab_00309503-ko_2014-03-31.xml",
+          "LINKBASE:label",
+          62443
+        ],
+        [
+          "labels\\lab_00309503-en_2014-03-31.xml",
+          "LINKBASE:label",
+          37468
+        ]
+      ],
+      "firstBreak": "ROLE_DEFINITION_MISSING",
+      "identity": "047810.KS:2015:11013:assets",
+      "identity_evidence": {
+        "decimalsMatch": true,
+        "entityIsFrozenCorpCode": true,
+        "rawTextEqualsCandidateDescriptive": true,
+        "uniqueFactPointer": true,
+        "unitRefMatches": true
+      },
+      "matchedLocs": [],
+      "networks": [
+        {
+          "arcCount": 102,
+          "definitionFound": false,
+          "hrefScopes": {
+            "EXTERNAL_URL": 115
+          },
+          "kind": null,
+          "liveArcCount": 2,
+          "locCount": 115,
+          "role": "http://dart.fss.or.kr/role/ifrs/dart_2013-03-31_role-D431415"
+        },
+        {
+          "arcCount": 102,
+          "definitionFound": false,
+          "hrefScopes": {
+            "EXTERNAL_URL": 114,
+            "INSIDE_ZIP_BY_BASENAME_ONLY": 2
+          },
+          "kind": null,
+          "liveArcCount": 4,
+          "locCount": 116,
+          "role": "http://dart.fss.or.kr/role/ifrs/dart_2013-03-31_role-D431410"
+        },
+        {
+          "arcCount": 21,
+          "definitionFound": false,
+          "hrefScopes": {
+            "EXTERNAL_URL": 23,
+            "INSIDE_ZIP_BY_BASENAME_ONLY": 4
+          },
+          "kind": null,
+          "liveArcCount": 4,
+          "locCount": 27,
+          "role": "http://dart.fss.or.kr/role/ifrs/dart_2013-03-31_role-D610005"
+        },
+        {
+          "arcCount": 25,
+          "definitionFound": false,
+          "hrefScopes": {
+            "EXTERNAL_URL": 23,
+            "INSIDE_ZIP_BY_BASENAME_ONLY": 7
+          },
+          "kind": null,
+          "liveArcCount": 7,
+          "locCount": 30,
+          "role": "http://dart.fss.or.kr/role/ifrs/dart_2013-03-31_role-D610000"
+        },
+        {
+          "arcCount": 310,
+          "definitionFound": false,
+          "hrefScopes": {
+            "EXTERNAL_URL": 314,
+            "INSIDE_ZIP_BY_BASENAME_ONLY": 1
+          },
+          "kind": null,
+          "liveArcCount": 13,
+          "locCount": 315,
+          "role": "http://dart.fss.or.kr/role/ifrs/dart_2013-03-31_role-D520005"
+        },
+        {
+          "arcCount": 318,
+          "definitionFound": false,
+          "hrefScopes": {
+            "EXTERNAL_URL": 320,
+            "INSIDE_ZIP_BY_BASENAME_ONLY": 3
+          },
+          "kind": null,
+          "liveArcCount": 17,
+          "locCount": 323,
+          "role": "http://dart.fss.or.kr/role/ifrs/dart_2013-03-31_role-D520000"
+        },
+        {
+          "arcCount": 223,
+          "definitionFound": false,
+          "hrefScopes": {
+            "EXTERNAL_URL": 235,
+            "INSIDE_ZIP_BY_BASENAME_ONLY": 3
+          },
+          "kind": null,
+          "liveArcCount": 16,
+          "locCount": 238,
+          "role": "http://dart.fss.or.kr/role/ifrs/dart_2013-03-31_role-D210005"
+        },
+        {
+          "arcCount": 225,
+          "definitionFound": false,
+          "hrefScopes": {
+            "EXTERNAL_URL": 232,
+            "INSIDE_ZIP_BY_BASENAME_ONLY": 5
+          },
+          "kind": null,
+          "liveArcCount": 19,
+          "locCount": 237,
+          "role": "http://dart.fss.or.kr/role/ifrs/dart_2013-03-31_role-D210000"
+        }
+      ],
+      "readerEvidence": 0,
+      "references": [
+        [
+          "schemaRef",
+          "00309503_entry_point_2014-03-31.xsd",
+          "INSIDE_ZIP"
+        ],
+        [
+          "linkbaseRef",
+          "ifrs_for_00309503/dimensions_ifrs_for_00309503/pre_ifrs_for_00309503_2014-03-31.xml",
+          "RELATIVE_NOT_IN_ZIP"
+        ],
+        [
+          "linkbaseRef",
+          "ifrs_for_00309503/dimensions_ifrs_for_00309503/dim_ifrs_for_00309503_2014-03-31.xml",
+          "RELATIVE_NOT_IN_ZIP"
+        ],
+        [
+          "linkbaseRef",
+          "ifrs_for_00309503/dimensions_ifrs_for_00309503/cal_ifrs_for_00309503_2014-03-31.xml",
+          "RELATIVE_NOT_IN_ZIP"
+        ],
+        [
+          "linkbaseRef",
+          "labels/lab_00309503-ko_2014-03-31.xml",
+          "RELATIVE_NOT_IN_ZIP"
+        ],
+        [
+          "linkbaseRef",
+          "labels/lab_00309503-en_2014-03-31.xml",
+          "RELATIVE_NOT_IN_ZIP"
+        ],
+        [
+          "arcroleRef",
+          "http://www.xbrl.org/2005/xbrldt-2005.xsd#domain-member",
+          "EXTERNAL_URL"
+        ],
+        [
+          "arcroleRef",
+          "http://www.xbrl.org/2005/xbrldt-2005.xsd#all",
+          "EXTERNAL_URL"
+        ],
+        [
+          "arcroleRef",
+          "http://www.xbrl.org/2005/xbrldt-2005.xsd#dimension-default",
+          "EXTERNAL_URL"
+        ],
+        [
+          "arcroleRef",
+          "http://www.xbrl.org/2005/xbrldt-2005.xsd#dimension-domain",
+          "EXTERNAL_URL"
+        ],
+        [
+          "arcroleRef",
+          "http://www.xbrl.org/2005/xbrldt-2005.xsd#hypercube-dimension",
+          "EXTERNAL_URL"
+        ]
+      ],
+      "roleTypes": [],
+      "v2": {
+        "classification": "AMBIGUOUS_SOURCE_FACT",
+        "reason": "source presentation does not prove required financial statement"
+      },
+      "zipShaMatchesFrozen": true
+    },
+    {
+      "basis": "OFS",
+      "concepts": 108,
+      "files": [
+        [
+          "00159209_2014-08-04.xbrl",
+          "XBRL_INSTANCE",
+          427098
+        ],
+        [
+          "00159209_entry_point_2014-08-04.xsd",
+          "XSD",
+          40228
+        ],
+        [
+          "ifrs_for_00159209\\dimensions_ifrs_for_00159209\\dim_ifrs_for_00159209_2014-08-04.xml",
+          "LINKBASE:definition",
+          422310
+        ],
+        [
+          "ifrs_for_00159209\\dimensions_ifrs_for_00159209\\cal_ifrs_for_00159209_2014-08-04.xml",
+          "LINKBASE:calculation",
+          332771
+        ],
+        [
+          "ifrs_for_00159209\\dimensions_ifrs_for_00159209\\pre_ifrs_for_00159209_2014-08-04.xml",
+          "LINKBASE:presentation",
+          430784
+        ],
+        [
+          "ifrs_for_00159209\\dimensions_ifrs_for_00159209\\role_ifrs_for_00159209-dim_2014-08-04.xsd",
+          "XSD",
+          649
+        ],
+        [
+          "labels\\lab_00159209-ko_2014-08-04.xml",
+          "LINKBASE:label",
+          170891
+        ],
+        [
+          "labels\\lab_00159209-en_2014-08-04.xml",
+          "LINKBASE:label",
+          160465
+        ]
+      ],
+      "firstBreak": "ROLE_DEFINITION_MISSING",
+      "identity": "052690.KS:2015:11012:assets",
+      "identity_evidence": {
+        "decimalsMatch": true,
+        "entityIsFrozenCorpCode": true,
+        "rawTextEqualsCandidateDescriptive": true,
+        "uniqueFactPointer": true,
+        "unitRefMatches": true
+      },
+      "matchedLocs": [],
+      "networks": [
+        {
+          "arcCount": 148,
+          "definitionFound": false,
+          "hrefScopes": {
+            "EXTERNAL_URL": 119,
+            "INSIDE_ZIP_BY_BASENAME_ONLY": 39
+          },
+          "kind": null,
+          "liveArcCount": 60,
+          "locCount": 158,
+          "role": "http://dart.fss.or.kr/role/ifrs/dart_2013-03-31_role-D431415"
+        },
+        {
+          "arcCount": 27,
+          "definitionFound": false,
+          "hrefScopes": {
+            "EXTERNAL_URL": 26,
+            "INSIDE_ZIP_BY_BASENAME_ONLY": 5
+          },
+          "kind": null,
+          "liveArcCount": 9,
+          "locCount": 31,
+          "role": "http://dart.fss.or.kr/role/ifrs/dart_2013-03-31_role-D610005"
+        },
+        {
+          "arcCount": 343,
+          "definitionFound": false,
+          "hrefScopes": {
+            "EXTERNAL_URL": 326,
+            "INSIDE_ZIP_BY_BASENAME_ONLY": 22
+          },
+          "kind": null,
+          "liveArcCount": 47,
+          "locCount": 348,
+          "role": "http://dart.fss.or.kr/role/ifrs/dart_2013-03-31_role-D520005"
+        },
+        {
+          "arcCount": 243,
+          "definitionFound": false,
+          "hrefScopes": {
+            "EXTERNAL_URL": 217,
+            "INSIDE_ZIP_BY_BASENAME_ONLY": 42
+          },
+          "kind": null,
+          "liveArcCount": 65,
+          "locCount": 259,
+          "role": "http://dart.fss.or.kr/role/ifrs/dart_2013-03-31_role-D210005"
+        }
+      ],
+      "readerEvidence": 0,
+      "references": [
+        [
+          "schemaRef",
+          "00159209_entry_point_2014-08-04.xsd",
+          "INSIDE_ZIP"
+        ],
+        [
+          "linkbaseRef",
+          "ifrs_for_00159209/dimensions_ifrs_for_00159209/pre_ifrs_for_00159209_2014-08-04.xml",
+          "RELATIVE_NOT_IN_ZIP"
+        ],
+        [
+          "linkbaseRef",
+          "ifrs_for_00159209/dimensions_ifrs_for_00159209/dim_ifrs_for_00159209_2014-08-04.xml",
+          "RELATIVE_NOT_IN_ZIP"
+        ],
+        [
+          "linkbaseRef",
+          "ifrs_for_00159209/dimensions_ifrs_for_00159209/cal_ifrs_for_00159209_2014-08-04.xml",
+          "RELATIVE_NOT_IN_ZIP"
+        ],
+        [
+          "linkbaseRef",
+          "labels/lab_00159209-ko_2014-08-04.xml",
+          "RELATIVE_NOT_IN_ZIP"
+        ],
+        [
+          "linkbaseRef",
+          "labels/lab_00159209-en_2014-08-04.xml",
+          "RELATIVE_NOT_IN_ZIP"
+        ],
+        [
+          "arcroleRef",
+          "http://www.xbrl.org/2005/xbrldt-2005.xsd#domain-member",
+          "EXTERNAL_URL"
+        ],
+        [
+          "arcroleRef",
+          "http://www.xbrl.org/2005/xbrldt-2005.xsd#all",
+          "EXTERNAL_URL"
+        ],
+        [
+          "arcroleRef",
+          "http://www.xbrl.org/2005/xbrldt-2005.xsd#dimension-default",
+          "EXTERNAL_URL"
+        ],
+        [
+          "arcroleRef",
+          "http://www.xbrl.org/2005/xbrldt-2005.xsd#dimension-domain",
+          "EXTERNAL_URL"
+        ],
+        [
+          "arcroleRef",
+          "http://www.xbrl.org/2005/xbrldt-2005.xsd#hypercube-dimension",
+          "EXTERNAL_URL"
+        ]
+      ],
+      "roleTypes": [],
+      "v2": {
+        "classification": "AMBIGUOUS_SOURCE_FACT",
+        "reason": "source presentation does not prove required financial statement"
+      },
+      "zipShaMatchesFrozen": true
+    },
+    {
+      "basis": "CFS",
+      "concepts": 32,
+      "files": [
+        [
+          "00126955_2015-04-22.xbrl",
+          "XBRL_INSTANCE",
+          286108
+        ],
+        [
+          "00126955_entry_point_2015-04-22.xsd",
+          "XSD",
+          16834
+        ],
+        [
+          "ifrs_for_00126955\\dimensions_ifrs_for_00126955\\dim_ifrs_for_00126955_2015-04-22.xml",
+          "LINKBASE:definition",
+          769282
+        ],
+        [
+          "ifrs_for_00126955\\dimensions_ifrs_for_00126955\\cal_ifrs_for_00126955_2015-04-22.xml",
+          "LINKBASE:calculation",
+          674242
+        ],
+        [
+          "ifrs_for_00126955\\dimensions_ifrs_for_00126955\\pre_ifrs_for_00126955_2015-04-22.xml",
+          "LINKBASE:presentation",
+          788570
+        ],
+        [
+          "ifrs_for_00126955\\dimensions_ifrs_for_00126955\\role_ifrs_for_00126955-dim_2015-04-22.xsd",
+          "XSD",
+          649
+        ],
+        [
+          "labels\\lab_00126955-ko_2015-04-22.xml",
+          "LINKBASE:label",
+          84437
+        ],
+        [
+          "labels\\lab_00126955-en_2015-04-22.xml",
+          "LINKBASE:label",
+          53678
+        ]
+      ],
+      "firstBreak": "ROLE_DEFINITION_MISSING",
+      "identity": "003230.KS:2015:11014:assets",
+      "identity_evidence": {
+        "decimalsMatch": true,
+        "entityIsFrozenCorpCode": true,
+        "rawTextEqualsCandidateDescriptive": true,
+        "uniqueFactPointer": true,
+        "unitRefMatches": true
+      },
+      "matchedLocs": [],
+      "networks": [
+        {
+          "arcCount": 104,
+          "definitionFound": false,
+          "hrefScopes": {
+            "EXTERNAL_URL": 115,
+            "INSIDE_ZIP_BY_BASENAME_ONLY": 2
+          },
+          "kind": null,
+          "liveArcCount": 2,
+          "locCount": 117,
+          "role": "http://dart.fss.or.kr/role/ifrs/dart_2013-03-31_role-D431415"
+        },
+        {
+          "arcCount": 103,
+          "definitionFound": false,
+          "hrefScopes": {
+            "EXTERNAL_URL": 113,
+            "INSIDE_ZIP_BY_BASENAME_ONLY": 3
+          },
+          "kind": null,
+          "liveArcCount": 3,
+          "locCount": 116,
+          "role": "http://dart.fss.or.kr/role/ifrs/dart_2013-03-31_role-D431410"
+        },
+        {
+          "arcCount": 29,
+          "definitionFound": false,
+          "hrefScopes": {
+            "EXTERNAL_URL": 29,
+            "INSIDE_ZIP_BY_BASENAME_ONLY": 4
+          },
+          "kind": null,
+          "liveArcCount": 7,
+          "locCount": 33,
+          "role": "http://dart.fss.or.kr/role/ifrs/dart_2013-03-31_role-D610005"
+        },
+        {
+          "arcCount": 33,
+          "definitionFound": false,
+          "hrefScopes": {
+            "EXTERNAL_URL": 28,
+            "INSIDE_ZIP_BY_BASENAME_ONLY": 9
+          },
+          "kind": null,
+          "liveArcCount": 9,
+          "locCount": 37,
+          "role": "http://dart.fss.or.kr/role/ifrs/dart_2013-03-31_role-D610000"
+        },
+        {
+          "arcCount": 331,
+          "definitionFound": false,
+          "hrefScopes": {
+            "EXTERNAL_URL": 332,
+            "INSIDE_ZIP_BY_BASENAME_ONLY": 3
+          },
+          "kind": null,
+          "liveArcCount": 25,
+          "locCount": 335,
+          "role": "http://dart.fss.or.kr/role/ifrs/dart_2013-03-31_role-D520005"
+        },
+        {
+          "arcCount": 331,
+          "definitionFound": false,
+          "hrefScopes": {
+            "EXTERNAL_URL": 329,
+            "INSIDE_ZIP_BY_BASENAME_ONLY": 4
+          },
+          "kind": null,
+          "liveArcCount": 26,
+          "locCount": 333,
+          "role": "http://dart.fss.or.kr/role/ifrs/dart_2013-03-31_role-D520000"
+        },
+        {
+          "arcCount": 244,
+          "definitionFound": false,
+          "hrefScopes": {
+            "EXTERNAL_URL": 252,
+            "INSIDE_ZIP_BY_BASENAME_ONLY": 3
+          },
+          "kind": null,
+          "liveArcCount": 25,
+          "locCount": 255,
+          "role": "http://dart.fss.or.kr/role/ifrs/dart_2013-03-31_role-D210005"
+        },
+        {
+          "arcCount": 238,
+          "definitionFound": false,
+          "hrefScopes": {
+            "EXTERNAL_URL": 246,
+            "INSIDE_ZIP_BY_BASENAME_ONLY": 4
+          },
+          "kind": null,
+          "liveArcCount": 25,
+          "locCount": 250,
+          "role": "http://dart.fss.or.kr/role/ifrs/dart_2013-03-31_role-D210000"
+        }
+      ],
+      "readerEvidence": 0,
+      "references": [
+        [
+          "schemaRef",
+          "00126955_entry_point_2015-04-22.xsd",
+          "INSIDE_ZIP"
+        ],
+        [
+          "linkbaseRef",
+          "ifrs_for_00126955/dimensions_ifrs_for_00126955/pre_ifrs_for_00126955_2015-04-22.xml",
+          "RELATIVE_NOT_IN_ZIP"
+        ],
+        [
+          "linkbaseRef",
+          "ifrs_for_00126955/dimensions_ifrs_for_00126955/dim_ifrs_for_00126955_2015-04-22.xml",
+          "RELATIVE_NOT_IN_ZIP"
+        ],
+        [
+          "linkbaseRef",
+          "ifrs_for_00126955/dimensions_ifrs_for_00126955/cal_ifrs_for_00126955_2015-04-22.xml",
+          "RELATIVE_NOT_IN_ZIP"
+        ],
+        [
+          "linkbaseRef",
+          "labels/lab_00126955-ko_2015-04-22.xml",
+          "RELATIVE_NOT_IN_ZIP"
+        ],
+        [
+          "linkbaseRef",
+          "labels/lab_00126955-en_2015-04-22.xml",
+          "RELATIVE_NOT_IN_ZIP"
+        ],
+        [
+          "arcroleRef",
+          "http://www.xbrl.org/2005/xbrldt-2005.xsd#domain-member",
+          "EXTERNAL_URL"
+        ],
+        [
+          "arcroleRef",
+          "http://www.xbrl.org/2005/xbrldt-2005.xsd#all",
+          "EXTERNAL_URL"
+        ],
+        [
+          "arcroleRef",
+          "http://www.xbrl.org/2005/xbrldt-2005.xsd#dimension-default",
+          "EXTERNAL_URL"
+        ],
+        [
+          "arcroleRef",
+          "http://www.xbrl.org/2005/xbrldt-2005.xsd#dimension-domain",
+          "EXTERNAL_URL"
+        ],
+        [
+          "arcroleRef",
+          "http://www.xbrl.org/2005/xbrldt-2005.xsd#hypercube-dimension",
+          "EXTERNAL_URL"
+        ]
+      ],
+      "roleTypes": [],
+      "v2": {
+        "classification": "AMBIGUOUS_SOURCE_FACT",
+        "reason": "source presentation does not prove required financial statement"
+      },
+      "zipShaMatchesFrozen": true
+    },
+    {
+      "basis": "OFS",
+      "concepts": 28,
+      "files": [
+        [
+          "00412597_2012-03-30.xbrl",
+          "XBRL_INSTANCE",
+          158501
+        ],
+        [
+          "00412597_entry_point_2012-03-30.xsd",
+          "XSD",
+          15856
+        ],
+        [
+          "ifrs_for_00412597\\dimensions_ifrs_for_00412597\\dim_ifrs_for_00412597_2012-03-30.xml",
+          "LINKBASE:definition",
+          399984
+        ],
+        [
+          "ifrs_for_00412597\\dimensions_ifrs_for_00412597\\cal_ifrs_for_00412597_2012-03-30.xml",
+          "LINKBASE:calculation",
+          348417
+        ],
+        [
+          "ifrs_for_00412597\\dimensions_ifrs_for_00412597\\pre_ifrs_for_00412597_2012-03-30.xml",
+          "LINKBASE:presentation",
+          409387
+        ],
+        [
+          "ifrs_for_00412597\\dimensions_ifrs_for_00412597\\role_ifrs_for_00412597-dim_2012-03-30.xsd",
+          "XSD",
+          649
+        ],
+        [
+          "labels\\lab_00412597-ko_2012-03-30.xml",
+          "LINKBASE:label",
+          83018
+        ],
+        [
+          "labels\\lab_00412597-en_2012-03-30.xml",
+          "LINKBASE:label",
+          42028
+        ]
+      ],
+      "firstBreak": "ROLE_DEFINITION_MISSING",
+      "identity": "057050.KS:2015:11013:liabilities",
+      "identity_evidence": {
+        "decimalsMatch": true,
+        "entityIsFrozenCorpCode": true,
+        "rawTextEqualsCandidateDescriptive": true,
+        "uniqueFactPointer": true,
+        "unitRefMatches": true
+      },
+      "matchedLocs": [],
+      "networks": [
+        {
+          "arcCount": 120,
+          "definitionFound": false,
+          "hrefScopes": {
+            "EXTERNAL_URL": 122,
+            "INSIDE_ZIP_BY_BASENAME_ONLY": 6
+          },
+          "kind": null,
+          "liveArcCount": 11,
+          "locCount": 128,
+          "role": "http://dart.fss.or.kr/role/ifrs/dart_2013-03-31_role-D431415"
+        },
+        {
+          "arcCount": 32,
+          "definitionFound": false,
+          "hrefScopes": {
+            "EXTERNAL_URL": 32,
+            "INSIDE_ZIP_BY_BASENAME_ONLY": 3
+          },
+          "kind": null,
+          "liveArcCount": 9,
+          "locCount": 35,
+          "role": "http://dart.fss.or.kr/role/ifrs/dart_2013-03-31_role-D610005"
+        },
+        {
+          "arcCount": 348,
+          "definitionFound": false,
+          "hrefScopes": {
+            "EXTERNAL_URL": 341,
+            "INSIDE_ZIP_BY_BASENAME_ONLY": 12
+          },
+          "kind": null,
+          "liveArcCount": 46,
+          "locCount": 353,
+          "role": "http://dart.fss.or.kr/role/ifrs/dart_2013-03-31_role-D520005"
+        },
+        {
+          "arcCount": 233,
+          "definitionFound": false,
+          "hrefScopes": {
+            "EXTERNAL_URL": 238,
+            "INSIDE_ZIP_BY_BASENAME_ONLY": 7
+          },
+          "kind": null,
+          "liveArcCount": 18,
+          "locCount": 245,
+          "role": "http://dart.fss.or.kr/role/ifrs/dart_2013-03-31_role-D210005"
+        }
+      ],
+      "readerEvidence": 0,
+      "references": [
+        [
+          "schemaRef",
+          "00412597_entry_point_2012-03-30.xsd",
+          "INSIDE_ZIP"
+        ],
+        [
+          "linkbaseRef",
+          "ifrs_for_00412597/dimensions_ifrs_for_00412597/pre_ifrs_for_00412597_2012-03-30.xml",
+          "RELATIVE_NOT_IN_ZIP"
+        ],
+        [
+          "linkbaseRef",
+          "ifrs_for_00412597/dimensions_ifrs_for_00412597/dim_ifrs_for_00412597_2012-03-30.xml",
+          "RELATIVE_NOT_IN_ZIP"
+        ],
+        [
+          "linkbaseRef",
+          "ifrs_for_00412597/dimensions_ifrs_for_00412597/cal_ifrs_for_00412597_2012-03-30.xml",
+          "RELATIVE_NOT_IN_ZIP"
+        ],
+        [
+          "linkbaseRef",
+          "labels/lab_00412597-ko_2012-03-30.xml",
+          "RELATIVE_NOT_IN_ZIP"
+        ],
+        [
+          "linkbaseRef",
+          "labels/lab_00412597-en_2012-03-30.xml",
+          "RELATIVE_NOT_IN_ZIP"
+        ],
+        [
+          "arcroleRef",
+          "http://www.xbrl.org/2005/xbrldt-2005.xsd#domain-member",
+          "EXTERNAL_URL"
+        ],
+        [
+          "arcroleRef",
+          "http://www.xbrl.org/2005/xbrldt-2005.xsd#all",
+          "EXTERNAL_URL"
+        ],
+        [
+          "arcroleRef",
+          "http://www.xbrl.org/2005/xbrldt-2005.xsd#dimension-default",
+          "EXTERNAL_URL"
+        ],
+        [
+          "arcroleRef",
+          "http://www.xbrl.org/2005/xbrldt-2005.xsd#dimension-domain",
+          "EXTERNAL_URL"
+        ],
+        [
+          "arcroleRef",
+          "http://www.xbrl.org/2005/xbrldt-2005.xsd#hypercube-dimension",
+          "EXTERNAL_URL"
+        ]
+      ],
+      "roleTypes": [],
+      "v2": {
+        "classification": "AMBIGUOUS_SOURCE_FACT",
+        "reason": "source presentation does not prove required financial statement"
+      },
+      "zipShaMatchesFrozen": true
+    },
+    {
+      "basis": "CFS",
+      "concepts": 67,
+      "files": [
+        [
+          "00158501_2011-05-30.xbrl",
+          "XBRL_INSTANCE",
+          302111
+        ],
+        [
+          "00158501_entry_point_2011-05-30.xsd",
+          "XSD",
+          26717
+        ],
+        [
+          "ifrs_for_00158501\\dimensions_ifrs_for_00158501\\dim_ifrs_for_00158501_2011-05-30.xml",
+          "LINKBASE:definition",
+          765086
+        ],
+        [
+          "ifrs_for_00158501\\dimensions_ifrs_for_00158501\\cal_ifrs_for_00158501_2011-05-30.xml",
+          "LINKBASE:calculation",
+          675627
+        ],
+        [
+          "ifrs_for_00158501\\dimensions_ifrs_for_00158501\\pre_ifrs_for_00158501_2011-05-30.xml",
+          "LINKBASE:presentation",
+          783206
+        ],
+        [
+          "ifrs_for_00158501\\dimensions_ifrs_for_00158501\\role_ifrs_for_00158501-dim_2011-05-30.xsd",
+          "XSD",
+          649
+        ],
+        [
+          "labels\\lab_00158501-ko_2011-05-30.xml",
+          "LINKBASE:label",
+          134311
+        ],
+        [
+          "labels\\lab_00158501-en_2011-05-30.xml",
+          "LINKBASE:label",
+          113639
+        ]
+      ],
+      "firstBreak": "ROLE_DEFINITION_MISSING",
+      "identity": "012750.KS:2015:11012:liabilities",
+      "identity_evidence": {
+        "decimalsMatch": true,
+        "entityIsFrozenCorpCode": true,
+        "rawTextEqualsCandidateDescriptive": true,
+        "uniqueFactPointer": true,
+        "unitRefMatches": true
+      },
+      "matchedLocs": [],
+      "networks": [
+        {
+          "arcCount": 30,
+          "definitionFound": false,
+          "hrefScopes": {
+            "EXTERNAL_URL": 26,
+            "INSIDE_ZIP_BY_BASENAME_ONLY": 8
+          },
+          "kind": null,
+          "liveArcCount": 9,
+          "locCount": 34,
+          "role": "http://dart.fss.or.kr/role/ifrs/dart_2013-03-31_role-D610005"
+        },
+        {
+          "arcCount": 32,
+          "definitionFound": false,
+          "hrefScopes": {
+            "EXTERNAL_URL": 26,
+            "INSIDE_ZIP_BY_BASENAME_ONLY": 10
+          },
+          "kind": null,
+          "liveArcCount": 11,
+          "locCount": 36,
+          "role": "http://dart.fss.or.kr/role/ifrs/dart_2013-03-31_role-D610000"
+        },
+        {
+          "arcCount": 317,
+          "definitionFound": false,
+          "hrefScopes": {
+            "EXTERNAL_URL": 315,
+            "INSIDE_ZIP_BY_BASENAME_ONLY": 6
+          },
+          "kind": null,
+          "liveArcCount": 15,
+          "locCount": 321,
+          "role": "http://dart.fss.or.kr/role/ifrs/dart_2013-03-31_role-D520005"
+        },
+        {
+          "arcCount": 317,
+          "definitionFound": false,
+          "hrefScopes": {
+            "EXTERNAL_URL": 315,
+            "INSIDE_ZIP_BY_BASENAME_ONLY": 6
+          },
+          "kind": null,
+          "liveArcCount": 15,
+          "locCount": 321,
+          "role": "http://dart.fss.or.kr/role/ifrs/dart_2013-03-31_role-D520000"
+        },
+        {
+          "arcCount": 23,
+          "definitionFound": false,
+          "hrefScopes": {
+            "EXTERNAL_URL": 25
+          },
+          "kind": null,
+          "liveArcCount": 2,
+          "locCount": 25,
+          "role": "http://dart.fss.or.kr/role/ifrs/dart_2013-03-31_role-D410005"
+        },
+        {
+          "arcCount": 24,
+          "definitionFound": false,
+          "hrefScopes": {
+            "EXTERNAL_URL": 26
+          },
+          "kind": null,
+          "liveArcCount": 3,
+          "locCount": 26,
+          "role": "http://dart.fss.or.kr/role/ifrs/dart_2013-03-31_role-D410000"
+        },
+        {
+          "arcCount": 87,
+          "definitionFound": false,
+          "hrefScopes": {
+            "EXTERNAL_URL": 95
+          },
+          "kind": null,
+          "liveArcCount": 3,
+          "locCount": 95,
+          "role": "http://dart.fss.or.kr/role/ifrs/dart_2013-03-31_role-D310005"
+        },
+        {
+          "arcCount": 84,
+          "definitionFound": false,
+          "hrefScopes": {
+            "EXTERNAL_URL": 92
+          },
+          "kind": null,
+          "liveArcCount": 2,
+          "locCount": 92,
+          "role": "http://dart.fss.or.kr/role/ifrs/dart_2013-03-31_role-D310000"
+        },
+        {
+          "arcCount": 244,
+          "definitionFound": false,
+          "hrefScopes": {
+            "EXTERNAL_URL": 239,
+            "INSIDE_ZIP_BY_BASENAME_ONLY": 16
+          },
+          "kind": null,
+          "liveArcCount": 25,
+          "locCount": 255,
+          "role": "http://dart.fss.or.kr/role/ifrs/dart_2013-03-31_role-D210005"
+        },
+        {
+          "arcCount": 252,
+          "definitionFound": false,
+          "hrefScopes": {
+            "EXTERNAL_URL": 238,
+            "INSIDE_ZIP_BY_BASENAME_ONLY": 21
+          },
+          "kind": null,
+          "liveArcCount": 32,
+          "locCount": 259,
+          "role": "http://dart.fss.or.kr/role/ifrs/dart_2013-03-31_role-D210000"
+        }
+      ],
+      "readerEvidence": 0,
+      "references": [
+        [
+          "schemaRef",
+          "00158501_entry_point_2011-05-30.xsd",
+          "INSIDE_ZIP"
+        ],
+        [
+          "linkbaseRef",
+          "ifrs_for_00158501/dimensions_ifrs_for_00158501/pre_ifrs_for_00158501_2011-05-30.xml",
+          "RELATIVE_NOT_IN_ZIP"
+        ],
+        [
+          "linkbaseRef",
+          "ifrs_for_00158501/dimensions_ifrs_for_00158501/dim_ifrs_for_00158501_2011-05-30.xml",
+          "RELATIVE_NOT_IN_ZIP"
+        ],
+        [
+          "linkbaseRef",
+          "ifrs_for_00158501/dimensions_ifrs_for_00158501/cal_ifrs_for_00158501_2011-05-30.xml",
+          "RELATIVE_NOT_IN_ZIP"
+        ],
+        [
+          "linkbaseRef",
+          "labels/lab_00158501-ko_2011-05-30.xml",
+          "RELATIVE_NOT_IN_ZIP"
+        ],
+        [
+          "linkbaseRef",
+          "labels/lab_00158501-en_2011-05-30.xml",
+          "RELATIVE_NOT_IN_ZIP"
+        ],
+        [
+          "arcroleRef",
+          "http://www.xbrl.org/2005/xbrldt-2005.xsd#domain-member",
+          "EXTERNAL_URL"
+        ],
+        [
+          "arcroleRef",
+          "http://www.xbrl.org/2005/xbrldt-2005.xsd#all",
+          "EXTERNAL_URL"
+        ],
+        [
+          "arcroleRef",
+          "http://www.xbrl.org/2005/xbrldt-2005.xsd#dimension-default",
+          "EXTERNAL_URL"
+        ],
+        [
+          "arcroleRef",
+          "http://www.xbrl.org/2005/xbrldt-2005.xsd#dimension-domain",
+          "EXTERNAL_URL"
+        ],
+        [
+          "arcroleRef",
+          "http://www.xbrl.org/2005/xbrldt-2005.xsd#hypercube-dimension",
+          "EXTERNAL_URL"
+        ]
+      ],
+      "roleTypes": [],
+      "v2": {
+        "classification": "AMBIGUOUS_SOURCE_FACT",
+        "reason": "source presentation does not prove required financial statement"
+      },
+      "zipShaMatchesFrozen": true
+    },
+    {
+      "basis": "OFS",
+      "concepts": 15,
+      "files": [
+        [
+          "00141149_2013-05-15.xbrl",
+          "XBRL_INSTANCE",
+          117849
+        ],
+        [
+          "00141149_entry_point_2013-05-15.xsd",
+          "XSD",
+          11770
+        ],
+        [
+          "ifrs_for_00141149\\dimensions_ifrs_for_00141149\\dim_ifrs_for_00141149_2013-05-15.xml",
+          "LINKBASE:definition",
+          373641
+        ],
+        [
+          "ifrs_for_00141149\\dimensions_ifrs_for_00141149\\cal_ifrs_for_00141149_2013-05-15.xml",
+          "LINKBASE:calculation",
+          349054
+        ],
+        [
+          "ifrs_for_00141149\\dimensions_ifrs_for_00141149\\pre_ifrs_for_00141149_2013-05-15.xml",
+          "LINKBASE:presentation",
+          383299
+        ],
+        [
+          "ifrs_for_00141149\\dimensions_ifrs_for_00141149\\role_ifrs_for_00141149-dim_2013-05-15.xsd",
+          "XSD",
+          649
+        ],
+        [
+          "labels\\lab_00141149-ko_2013-05-15.xml",
+          "LINKBASE:label",
+          26584
+        ],
+        [
+          "labels\\lab_00141149-en_2013-05-15.xml",
+          "LINKBASE:label",
+          21848
+        ]
+      ],
+      "firstBreak": "ROLE_DEFINITION_MISSING",
+      "identity": "003520.KS:2015:11014:liabilities",
+      "identity_evidence": {
+        "decimalsMatch": true,
+        "entityIsFrozenCorpCode": true,
+        "rawTextEqualsCandidateDescriptive": true,
+        "uniqueFactPointer": true,
+        "unitRefMatches": true
+      },
+      "matchedLocs": [],
+      "networks": [
+        {
+          "arcCount": 103,
+          "definitionFound": false,
+          "hrefScopes": {
+            "EXTERNAL_URL": 115
+          },
+          "kind": null,
+          "liveArcCount": 0,
+          "locCount": 115,
+          "role": "http://dart.fss.or.kr/role/ifrs/dart_2013-03-31_role-D431415"
+        },
+        {
+          "arcCount": 21,
+          "definitionFound": false,
+          "hrefScopes": {
+            "EXTERNAL_URL": 25
+          },
+          "kind": null,
+          "liveArcCount": 1,
+          "locCount": 25,
+          "role": "http://dart.fss.or.kr/role/ifrs/dart_2013-03-31_role-D610005"
+        },
+        {
+          "arcCount": 327,
+          "definitionFound": false,
+          "hrefScopes": {
+            "EXTERNAL_URL": 325,
+            "INSIDE_ZIP_BY_BASENAME_ONLY": 6
+          },
+          "kind": null,
+          "liveArcCount": 23,
+          "locCount": 331,
+          "role": "http://dart.fss.or.kr/role/ifrs/dart_2013-03-31_role-D520005"
+        },
+        {
+          "arcCount": 235,
+          "definitionFound": false,
+          "hrefScopes": {
+            "EXTERNAL_URL": 236,
+            "INSIDE_ZIP_BY_BASENAME_ONLY": 9
+          },
+          "kind": null,
+          "liveArcCount": 20,
+          "locCount": 245,
+          "role": "http://dart.fss.or.kr/role/ifrs/dart_2013-03-31_role-D210005"
+        }
+      ],
+      "readerEvidence": 0,
+      "references": [
+        [
+          "schemaRef",
+          "00141149_entry_point_2013-05-15.xsd",
+          "INSIDE_ZIP"
+        ],
+        [
+          "linkbaseRef",
+          "ifrs_for_00141149/dimensions_ifrs_for_00141149/pre_ifrs_for_00141149_2013-05-15.xml",
+          "RELATIVE_NOT_IN_ZIP"
+        ],
+        [
+          "linkbaseRef",
+          "ifrs_for_00141149/dimensions_ifrs_for_00141149/dim_ifrs_for_00141149_2013-05-15.xml",
+          "RELATIVE_NOT_IN_ZIP"
+        ],
+        [
+          "linkbaseRef",
+          "ifrs_for_00141149/dimensions_ifrs_for_00141149/cal_ifrs_for_00141149_2013-05-15.xml",
+          "RELATIVE_NOT_IN_ZIP"
+        ],
+        [
+          "linkbaseRef",
+          "labels/lab_00141149-ko_2013-05-15.xml",
+          "RELATIVE_NOT_IN_ZIP"
+        ],
+        [
+          "linkbaseRef",
+          "labels/lab_00141149-en_2013-05-15.xml",
+          "RELATIVE_NOT_IN_ZIP"
+        ],
+        [
+          "arcroleRef",
+          "http://www.xbrl.org/2005/xbrldt-2005.xsd#domain-member",
+          "EXTERNAL_URL"
+        ],
+        [
+          "arcroleRef",
+          "http://www.xbrl.org/2005/xbrldt-2005.xsd#all",
+          "EXTERNAL_URL"
+        ],
+        [
+          "arcroleRef",
+          "http://www.xbrl.org/2005/xbrldt-2005.xsd#dimension-default",
+          "EXTERNAL_URL"
+        ],
+        [
+          "arcroleRef",
+          "http://www.xbrl.org/2005/xbrldt-2005.xsd#dimension-domain",
+          "EXTERNAL_URL"
+        ],
+        [
+          "arcroleRef",
+          "http://www.xbrl.org/2005/xbrldt-2005.xsd#hypercube-dimension",
+          "EXTERNAL_URL"
+        ]
+      ],
+      "roleTypes": [],
+      "v2": {
+        "classification": "AMBIGUOUS_SOURCE_FACT",
+        "reason": "source presentation does not prove required financial statement"
+      },
+      "zipShaMatchesFrozen": true
+    }
+  ],
+  "liveExecution": {
+    "artifactId": 11030592265,
+    "artifactZipSha256": "af880c7e9ec1cb43c10cc1eb0dabed4ad863cb65a0a7c625e53ad77919597883",
+    "event": "pull_request (gated one-shot)",
+    "formalReruns": 0,
+    "headSha": "d153d9a94b59bb2c8dff3ff58aa73c665aab53a3",
+    "liveReportSha256": "5394f1aced08a56beef0206bc2923ce5e8295ca75fb43693536745d6594b7c88",
+    "provenance": "per-item fields below are reproduced from the run's job log (trimmed); the artifact zip, which holds the raw ZIPs and full inventory, could not be downloaded from the authoring environment",
+    "rawZipSha256": {
+      "20150515001350-11013": "10e8109216ee5801057ddd9d72f0f12576d90e5ba28470a92add108a52bd9672",
+      "20150515001709-11013": "e6c31334bcd993136405c1786c49a567e0c4de0535ac97604989eaf0ffcbafed",
+      "20150515002284-11013": "5f22c5e530c0212c69171bad0af93cfe72adc679bf4c32986af8a5a589f1a9aa",
+      "20150515002367-11013": "fef00b4e0d4af933f83df33bfaea0ac36a568523135fafe36c12ee2b54d4b71d",
+      "20150813000436-11012": "febe68e485f36b12f53cbec66353c16e2cf3f352291e23cc5e4d1413131f8d5d",
+      "20150813000580-11012": "6b76e763e16575aee6bd4e0d213f2cedcfca124973cf386c8f072af4f4491353",
+      "20150817001399-11012": "8d62286928c754a8ef7fc9827f45ff1cdb367aea495756f5a1b4e249192a32f1",
+      "20150817001636-11012": "595fe0850b090412cbfcc57fd59188c2d40b000a49b0c4926a87d36f65576609",
+      "20151113001001-11014": "67e6239783f52a6e1f262d162d67b15937980037dc5ef1ecc7eae3b95b09fcc4",
+      "20151116000048-11014": "66575463bb598367161f5a16e905bb48741d5a17d850a0e0a1b10858764e61aa",
+      "20151116001144-11014": "cb72f7ec3483ccc7f86210f1d917b0e2d555b24a0f050c76c80aa01800169f42",
+      "20151116001749-11014": "45dbfb59cd66c3d29cf68d8b8d70e8a08e3d856d871e895bf4f1205e81a30953"
+    },
+    "runId": 36562070867,
+    "runLogSha256": "1cfab26211962a884e991bc79f7ea65368aad0e389454fda321a6beed4b2e72a",
+    "workflow": "KR original XBRL presentation evidence diagnostic",
+    "zipsRetrieved": 12
+  },
+  "notMeasured": [
+    "calculation and definition linkbase membership of the target elements (both are in every ZIP)",
+    "external DART taxonomy contents (never fetched)",
+    "the artifact's raw files (not downloadable here)"
+  ],
+  "readerBugConfirmed": false,
+  "startingMain": "b1cb804ebc9e4acbbebd0573f7204ed621a7be69",
+  "study": "kr-original-xbrl-presentation-evidence-diagnostic-v1",
+  "subset": [
+    "108670.KS:2015:11013:net_income",
+    "008770.KS:2015:11012:net_income",
+    "068270.KS:2015:11014:net_income",
+    "006740.KS:2015:11013:operating_cash_flow",
+    "115390.KS:2015:11012:operating_cash_flow",
+    "042700.KS:2015:11014:operating_cash_flow",
+    "047810.KS:2015:11013:assets",
+    "052690.KS:2015:11012:assets",
+    "003230.KS:2015:11014:assets",
+    "057050.KS:2015:11013:liabilities",
+    "012750.KS:2015:11012:liabilities",
+    "003520.KS:2015:11014:liabilities"
+  ],
+  "summary": {
+    "firstBreakCounts": {
+      "ROLE_DEFINITION_MISSING": 12
+    },
+    "items": 12,
+    "itemsWithAnyPresentationNetwork": 12,
+    "itemsWithMatchedLoc": 5,
+    "itemsWithStatementKindNetwork": 0,
+    "linkbaseRefsNotEmbedded": 60,
+    "matchedLocScopes": {
+      "EXTERNAL_URL": 12,
+      "INSIDE_ZIP_BY_BASENAME_ONLY": 12
+    },
+    "networkKindsSeen": {
+      "UNMAPPED": 84
+    },
+    "readerEmptyCount": 12
+  },
+  "summaryCaveats": {
+    "linkbaseRefsNotEmbedded": "60 is an instrument artifact: ZIP entry names use backslash separators while linkbaseRef hrefs use forward slashes, so the diagnostic's path test failed. The file listings show every referenced pre/dim/cal/lab linkbase is present in the ZIP.",
+    "matchedLocScopes": "counts cover locs recorded per item, not every loc"
+  },
+  "v1v2Modified": false
+}
