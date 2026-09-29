@@ -25,7 +25,13 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
+      # Full history: `pipeline.kr_xbrl_value_validation` proves by
+      # `git merge-base --is-ancestor` that the pre-source freeze commit is in
+      # this checkout's history. A shallow clone cannot contain it, which failed
+      # two tests for an infrastructure reason, not a scientific one.
       - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
 
       - uses: actions/setup-python@v6
         with:
