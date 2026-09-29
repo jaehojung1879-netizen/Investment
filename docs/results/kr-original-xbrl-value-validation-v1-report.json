@@ -1,0 +1,1833 @@
+{
+  "alphaOutcomesUsed": false,
+  "audited": 60,
+  "candidateSha256": "af642e7e79e9ba59ac6ee14faf033f4d63887188bab6506845c082e21dc3d1cc",
+  "counts": {
+    "AMBIGUOUS_SOURCE_FACT": 0,
+    "INFRASTRUCTURE_ERROR": 0,
+    "MATCH": 0,
+    "METADATA_MISMATCH": 0,
+    "SEMANTIC_MISMATCH": 0,
+    "SOURCE_UNAVAILABLE": 60,
+    "VALUE_MISMATCH": 0
+  },
+  "expected": 60,
+  "frameSize": 2037,
+  "freezeCommit": "e756f0aa4457aaa4840ea359df7eb9276ce77731",
+  "historicalAlphaExecuted": false,
+  "promotionRecommended": false,
+  "results": [
+    {
+      "candidateValue": "73277712096.0",
+      "classification": "SOURCE_UNAVAILABLE",
+      "identity": "114090.KS:2015:11014:net_income",
+      "reason": "BLOCKED_ON_SOURCE_ACCESS: original ZIP bytes unavailable",
+      "sampleItem": {
+        "account": "당기순이익",
+        "availableFrom": "2015-11-16",
+        "basis": "OFS",
+        "contextRef": "CFY2015dTQA_ifrs_ConsolidatedAndSeparateFinancialStatementsAxis_ifrs_SeparateMember",
+        "corpCode": "00557508",
+        "currency": "KRW",
+        "decimals": "0",
+        "element": "ProfitLoss",
+        "family": "net_income",
+        "fiscalYear": 2015,
+        "identity": "114090.KS:2015:11014:net_income",
+        "receiptNos": [
+          "20151116000127"
+        ],
+        "recordId": "114090.KS:2015:11014",
+        "reportCode": "11014",
+        "reportName": "3분기",
+        "statement": "CIS",
+        "stockCode": "114090",
+        "ticker": "114090.KS",
+        "unitRef": "KRW",
+        "zipSha256": "ca4d8c61f31a0f5964a26a808adda37c331834b50e3a8777d861d03ba4d2406a"
+      }
+    },
+    {
+      "candidateValue": "10961217829.0",
+      "classification": "SOURCE_UNAVAILABLE",
+      "identity": "185750.KS:2015:11012:operating_cash_flow",
+      "reason": "BLOCKED_ON_SOURCE_ACCESS: original ZIP bytes unavailable",
+      "sampleItem": {
+        "account": "영업활동현금흐름",
+        "availableFrom": "2015-08-13",
+        "basis": "OFS",
+        "contextRef": "CFY2015dHYA_ifrs_ConsolidatedAndSeparateFinancialStatementsAxis_ifrs_SeparateMember",
+        "corpCode": "00992871",
+        "currency": "KRW",
+        "decimals": "0",
+        "element": "CashFlowsFromUsedInOperatingActivities",
+        "family": "operating_cash_flow",
+        "fiscalYear": 2015,
+        "identity": "185750.KS:2015:11012:operating_cash_flow",
+        "receiptNos": [
+          "20150813000573"
+        ],
+        "recordId": "185750.KS:2015:11012",
+        "reportCode": "11012",
+        "reportName": "반기",
+        "statement": "CF",
+        "stockCode": "185750",
+        "ticker": "185750.KS",
+        "unitRef": "KRW",
+        "zipSha256": "81990f28c903e2985f08310c34ca22c217382b8bb520481dbc1d6ed49f24972d"
+      }
+    },
+    {
+      "candidateValue": "101462079576.0",
+      "classification": "SOURCE_UNAVAILABLE",
+      "identity": "005690.KS:2015:11013:assets",
+      "reason": "BLOCKED_ON_SOURCE_ACCESS: original ZIP bytes unavailable",
+      "sampleItem": {
+        "account": "자산총계",
+        "availableFrom": "2015-05-15",
+        "basis": "OFS",
+        "contextRef": "CFY2015eFQA_ifrs_ConsolidatedAndSeparateFinancialStatementsAxis_ifrs_SeparateMember",
+        "corpCode": "00145163",
+        "currency": "KRW",
+        "decimals": "0",
+        "element": "Assets",
+        "family": "assets",
+        "fiscalYear": 2015,
+        "identity": "005690.KS:2015:11013:assets",
+        "receiptNos": [
+          "20150515001617"
+        ],
+        "recordId": "005690.KS:2015:11013",
+        "reportCode": "11013",
+        "reportName": "1분기",
+        "statement": "BS",
+        "stockCode": "005690",
+        "ticker": "005690.KS",
+        "unitRef": "KRW",
+        "zipSha256": "55c29b55dd84043edee2b033c772b4e6ca481690342cd570484b20907cf97402"
+      }
+    },
+    {
+      "candidateValue": "179758197283.0",
+      "classification": "SOURCE_UNAVAILABLE",
+      "identity": "005070.KS:2015:11012:liabilities",
+      "reason": "BLOCKED_ON_SOURCE_ACCESS: original ZIP bytes unavailable",
+      "sampleItem": {
+        "account": "부채총계",
+        "availableFrom": "2015-08-13",
+        "basis": "OFS",
+        "contextRef": "CFY2015eHYA_ifrs_ConsolidatedAndSeparateFinancialStatementsAxis_ifrs_SeparateMember",
+        "corpCode": "00129989",
+        "currency": "KRW",
+        "decimals": "0",
+        "element": "Liabilities",
+        "family": "liabilities",
+        "fiscalYear": 2015,
+        "identity": "005070.KS:2015:11012:liabilities",
+        "receiptNos": [
+          "20150813000899"
+        ],
+        "recordId": "005070.KS:2015:11012",
+        "reportCode": "11012",
+        "reportName": "반기",
+        "statement": "BS",
+        "stockCode": "005070",
+        "ticker": "005070.KS",
+        "unitRef": "KRW",
+        "zipSha256": "f021b1b26a4fd8d9c0b2976b1723a48da3613080b25c5724e681429111b35106"
+      }
+    },
+    {
+      "candidateValue": "18242888710.0",
+      "classification": "SOURCE_UNAVAILABLE",
+      "identity": "012450.KS:2015:11013:net_income",
+      "reason": "BLOCKED_ON_SOURCE_ACCESS: original ZIP bytes unavailable",
+      "sampleItem": {
+        "account": "당기순이익",
+        "availableFrom": "2015-05-15",
+        "basis": "CFS",
+        "contextRef": "CFY2015dFQA_ifrs_ConsolidatedAndSeparateFinancialStatementsAxis_ifrs_ConsolidatedMember",
+        "corpCode": "00126566",
+        "currency": "KRW",
+        "decimals": "0",
+        "element": "ProfitLoss",
+        "family": "net_income",
+        "fiscalYear": 2015,
+        "identity": "012450.KS:2015:11013:net_income",
+        "receiptNos": [
+          "20150515001451"
+        ],
+        "recordId": "012450.KS:2015:11013",
+        "reportCode": "11013",
+        "reportName": "1분기",
+        "statement": "CIS",
+        "stockCode": "012450",
+        "ticker": "012450.KS",
+        "unitRef": "KRW",
+        "zipSha256": "1d90faeba59b4b4f0b7efb515483d9da14c861b5b7bf00f9f204d689bf1c843d"
+      }
+    },
+    {
+      "candidateValue": "170398933989.0",
+      "classification": "SOURCE_UNAVAILABLE",
+      "identity": "003410.KS:2015:11014:operating_cash_flow",
+      "reason": "BLOCKED_ON_SOURCE_ACCESS: original ZIP bytes unavailable",
+      "sampleItem": {
+        "account": "영업활동현금흐름",
+        "availableFrom": "2015-11-13",
+        "basis": "CFS",
+        "contextRef": "CFY2015dTQA_ifrs_ConsolidatedAndSeparateFinancialStatementsAxis_ifrs_ConsolidatedMember",
+        "corpCode": "00138224",
+        "currency": "KRW",
+        "decimals": "0",
+        "element": "CashFlowsFromUsedInOperatingActivities",
+        "family": "operating_cash_flow",
+        "fiscalYear": 2015,
+        "identity": "003410.KS:2015:11014:operating_cash_flow",
+        "receiptNos": [
+          "20151113000935"
+        ],
+        "recordId": "003410.KS:2015:11014",
+        "reportCode": "11014",
+        "reportName": "3분기",
+        "statement": "CF",
+        "stockCode": "003410",
+        "ticker": "003410.KS",
+        "unitRef": "KRW",
+        "zipSha256": "2df4c717d63676cd3067a6c67f0146a9f32ba4e732436e3dd2a226e88d7ed7fc"
+      }
+    },
+    {
+      "candidateValue": "45962882522.0",
+      "classification": "SOURCE_UNAVAILABLE",
+      "identity": "002410.KS:2015:11014:assets",
+      "reason": "BLOCKED_ON_SOURCE_ACCESS: original ZIP bytes unavailable",
+      "sampleItem": {
+        "account": "자산총계",
+        "availableFrom": "2015-11-13",
+        "basis": "OFS",
+        "contextRef": "CFY2015eTQA_ifrs_ConsolidatedAndSeparateFinancialStatementsAxis_ifrs_SeparateMember",
+        "corpCode": "00122694",
+        "currency": "KRW",
+        "decimals": "0",
+        "element": "Assets",
+        "family": "assets",
+        "fiscalYear": 2015,
+        "identity": "002410.KS:2015:11014:assets",
+        "receiptNos": [
+          "20151113000875"
+        ],
+        "recordId": "002410.KS:2015:11014",
+        "reportCode": "11014",
+        "reportName": "3분기",
+        "statement": "BS",
+        "stockCode": "002410",
+        "ticker": "002410.KS",
+        "unitRef": "KRW",
+        "zipSha256": "3e0876adbfd0da94594c15647eebb9209b00f4457c1736f6a903e523c46c599d"
+      }
+    },
+    {
+      "candidateValue": "4055760829014.0",
+      "classification": "SOURCE_UNAVAILABLE",
+      "identity": "028050.KS:2015:11013:liabilities",
+      "reason": "BLOCKED_ON_SOURCE_ACCESS: original ZIP bytes unavailable",
+      "sampleItem": {
+        "account": "부채총계",
+        "availableFrom": "2015-05-15",
+        "basis": "OFS",
+        "contextRef": "CFY2015eFQA_ifrs_ConsolidatedAndSeparateFinancialStatementsAxis_ifrs_SeparateMember",
+        "corpCode": "00126308",
+        "currency": "KRW",
+        "decimals": "0",
+        "element": "Liabilities",
+        "family": "liabilities",
+        "fiscalYear": 2015,
+        "identity": "028050.KS:2015:11013:liabilities",
+        "receiptNos": [
+          "20150515001438"
+        ],
+        "recordId": "028050.KS:2015:11013",
+        "reportCode": "11013",
+        "reportName": "1분기",
+        "statement": "BS",
+        "stockCode": "028050",
+        "ticker": "028050.KS",
+        "unitRef": "KRW",
+        "zipSha256": "dd3c042ebee0b463d521e6eed3525a48a6bfc412c90124c19154ff1ec83f1dc0"
+      }
+    },
+    {
+      "candidateValue": "156359595000.0",
+      "classification": "SOURCE_UNAVAILABLE",
+      "identity": "035420.KS:2015:11013:net_income",
+      "reason": "BLOCKED_ON_SOURCE_ACCESS: original ZIP bytes unavailable",
+      "sampleItem": {
+        "account": "당기순이익",
+        "availableFrom": "2015-05-15",
+        "basis": "OFS",
+        "contextRef": "CFY2015dFQQ_ifrs_ConsolidatedAndSeparateFinancialStatementsAxis_ifrs_SeparateMember",
+        "corpCode": "00266961",
+        "currency": "KRW",
+        "decimals": "-3",
+        "element": "ProfitLoss",
+        "family": "net_income",
+        "fiscalYear": 2015,
+        "identity": "035420.KS:2015:11013:net_income",
+        "receiptNos": [
+          "20150515001873"
+        ],
+        "recordId": "035420.KS:2015:11013",
+        "reportCode": "11013",
+        "reportName": "1분기",
+        "statement": "CIS",
+        "stockCode": "035420",
+        "ticker": "035420.KS",
+        "unitRef": "KRW",
+        "zipSha256": "07d4aaf617e2fa39f98b6570e9c0967465f089f78859a7badcc3a499c35c2725"
+      }
+    },
+    {
+      "candidateValue": "214668676793.0",
+      "classification": "SOURCE_UNAVAILABLE",
+      "identity": "047040.KS:2015:11012:operating_cash_flow",
+      "reason": "BLOCKED_ON_SOURCE_ACCESS: original ZIP bytes unavailable",
+      "sampleItem": {
+        "account": "영업활동현금흐름",
+        "availableFrom": "2015-08-17",
+        "basis": "CFS",
+        "contextRef": "CFY2015dHYA_ifrs_ConsolidatedAndSeparateFinancialStatementsAxis_ifrs_ConsolidatedMember",
+        "corpCode": "00124540",
+        "currency": "KRW",
+        "decimals": "0",
+        "element": "CashFlowsFromUsedInOperatingActivities",
+        "family": "operating_cash_flow",
+        "fiscalYear": 2015,
+        "identity": "047040.KS:2015:11012:operating_cash_flow",
+        "receiptNos": [
+          "20150817001458"
+        ],
+        "recordId": "047040.KS:2015:11012",
+        "reportCode": "11012",
+        "reportName": "반기",
+        "statement": "CF",
+        "stockCode": "047040",
+        "ticker": "047040.KS",
+        "unitRef": "KRW",
+        "zipSha256": "2c4526ef1790b5b512c82dbfbe24d6cdeb5a125b7ea1b08cc1e698b7fea88ea6"
+      }
+    },
+    {
+      "candidateValue": "3814844216526.0",
+      "classification": "SOURCE_UNAVAILABLE",
+      "identity": "011790.KS:2015:11014:assets",
+      "reason": "BLOCKED_ON_SOURCE_ACCESS: original ZIP bytes unavailable",
+      "sampleItem": {
+        "account": "자산총계",
+        "availableFrom": "2015-11-16",
+        "basis": "CFS",
+        "contextRef": "CFY2015eTQA_ifrs_ConsolidatedAndSeparateFinancialStatementsAxis_ifrs_ConsolidatedMember",
+        "corpCode": "00139889",
+        "currency": "KRW",
+        "decimals": "0",
+        "element": "Assets",
+        "family": "assets",
+        "fiscalYear": 2015,
+        "identity": "011790.KS:2015:11014:assets",
+        "receiptNos": [
+          "20151116001206"
+        ],
+        "recordId": "011790.KS:2015:11014",
+        "reportCode": "11014",
+        "reportName": "3분기",
+        "statement": "BS",
+        "stockCode": "011790",
+        "ticker": "011790.KS",
+        "unitRef": "KRW",
+        "zipSha256": "76eadc7b8c31f4b212d5de5cb5cf6638a2468e1fb54c478cb01396c6f2a92164"
+      }
+    },
+    {
+      "candidateValue": "109241623358.0",
+      "classification": "SOURCE_UNAVAILABLE",
+      "identity": "001570.KS:2015:11014:liabilities",
+      "reason": "BLOCKED_ON_SOURCE_ACCESS: original ZIP bytes unavailable",
+      "sampleItem": {
+        "account": "부채총계",
+        "availableFrom": "2015-11-16",
+        "basis": "CFS",
+        "contextRef": "CFY2015eTQA_ifrs_ConsolidatedAndSeparateFinancialStatementsAxis_ifrs_ConsolidatedMember",
+        "corpCode": "00106119",
+        "currency": "KRW",
+        "decimals": "0",
+        "element": "Liabilities",
+        "family": "liabilities",
+        "fiscalYear": 2015,
+        "identity": "001570.KS:2015:11014:liabilities",
+        "receiptNos": [
+          "20151116000546"
+        ],
+        "recordId": "001570.KS:2015:11014",
+        "reportCode": "11014",
+        "reportName": "3분기",
+        "statement": "BS",
+        "stockCode": "001570",
+        "ticker": "001570.KS",
+        "unitRef": "KRW",
+        "zipSha256": "dddca43830354c00efa150c65d33fd9c85b3319cbbe35d49cb75b25a2e625eae"
+      }
+    },
+    {
+      "candidateValue": "2403866000000.0",
+      "classification": "SOURCE_UNAVAILABLE",
+      "identity": "000660.KS:2015:11012:net_income",
+      "reason": "BLOCKED_ON_SOURCE_ACCESS: original ZIP bytes unavailable",
+      "sampleItem": {
+        "account": "당기순이익",
+        "availableFrom": "2015-08-12",
+        "basis": "CFS",
+        "contextRef": "CFY2015dHYA_ifrs_ConsolidatedAndSeparateFinancialStatementsAxis_ifrs_ConsolidatedMember",
+        "corpCode": "00164779",
+        "currency": "KRW",
+        "decimals": "-6",
+        "element": "ProfitLoss",
+        "family": "net_income",
+        "fiscalYear": 2015,
+        "identity": "000660.KS:2015:11012:net_income",
+        "receiptNos": [
+          "20150812000408"
+        ],
+        "recordId": "000660.KS:2015:11012",
+        "reportCode": "11012",
+        "reportName": "반기",
+        "statement": "CIS",
+        "stockCode": "000660",
+        "ticker": "000660.KS",
+        "unitRef": "KRW",
+        "zipSha256": "94617ba2a56a459207ddcacaac4277a83a9ea442a9c477cee832db33dbfe751e"
+      }
+    },
+    {
+      "candidateValue": "11924719146.0",
+      "classification": "SOURCE_UNAVAILABLE",
+      "identity": "052690.KS:2015:11014:operating_cash_flow",
+      "reason": "BLOCKED_ON_SOURCE_ACCESS: original ZIP bytes unavailable",
+      "sampleItem": {
+        "account": "영업활동현금흐름",
+        "availableFrom": "2015-11-13",
+        "basis": "OFS",
+        "contextRef": "CFY2015dTQA_ifrs_ConsolidatedAndSeparateFinancialStatementsAxis_ifrs_SeparateMember",
+        "corpCode": "00159209",
+        "currency": "KRW",
+        "decimals": "0",
+        "element": "CashFlowsFromUsedInOperatingActivities",
+        "family": "operating_cash_flow",
+        "fiscalYear": 2015,
+        "identity": "052690.KS:2015:11014:operating_cash_flow",
+        "receiptNos": [
+          "20151113000799"
+        ],
+        "recordId": "052690.KS:2015:11014",
+        "reportCode": "11014",
+        "reportName": "3분기",
+        "statement": "CF",
+        "stockCode": "052690",
+        "ticker": "052690.KS",
+        "unitRef": "KRW",
+        "zipSha256": "d636a4b78c366cd127ed6a7db1fc1fc3efd6b10bb2723a98cd131158d4ebb562"
+      }
+    },
+    {
+      "candidateValue": "7605787050000.0",
+      "classification": "SOURCE_UNAVAILABLE",
+      "identity": "010060.KS:2015:11012:assets",
+      "reason": "BLOCKED_ON_SOURCE_ACCESS: original ZIP bytes unavailable",
+      "sampleItem": {
+        "account": "자산총계",
+        "availableFrom": "2015-08-13",
+        "basis": "CFS",
+        "contextRef": "CFY2015eHYA_ifrs_ConsolidatedAndSeparateFinancialStatementsAxis_ifrs_ConsolidatedMember",
+        "corpCode": "00148896",
+        "currency": "KRW",
+        "decimals": "-3",
+        "element": "Assets",
+        "family": "assets",
+        "fiscalYear": 2015,
+        "identity": "010060.KS:2015:11012:assets",
+        "receiptNos": [
+          "20150813000744"
+        ],
+        "recordId": "010060.KS:2015:11012",
+        "reportCode": "11012",
+        "reportName": "반기",
+        "statement": "BS",
+        "stockCode": "010060",
+        "ticker": "010060.KS",
+        "unitRef": "KRW",
+        "zipSha256": "9eb2ec21929f553ae5f88fcf77b44a06fbccc54f4d47ee98c349423005ac94e0"
+      }
+    },
+    {
+      "candidateValue": "5428433000000.0",
+      "classification": "SOURCE_UNAVAILABLE",
+      "identity": "010950.KS:2015:11012:liabilities",
+      "reason": "BLOCKED_ON_SOURCE_ACCESS: original ZIP bytes unavailable",
+      "sampleItem": {
+        "account": "부채총계",
+        "availableFrom": "2015-08-17",
+        "basis": "CFS",
+        "contextRef": "CFY2015eHYA_ifrs_ConsolidatedAndSeparateFinancialStatementsAxis_ifrs_ConsolidatedMember",
+        "corpCode": "00138279",
+        "currency": "KRW",
+        "decimals": "-6",
+        "element": "Liabilities",
+        "family": "liabilities",
+        "fiscalYear": 2015,
+        "identity": "010950.KS:2015:11012:liabilities",
+        "receiptNos": [
+          "20150817000694"
+        ],
+        "recordId": "010950.KS:2015:11012",
+        "reportCode": "11012",
+        "reportName": "반기",
+        "statement": "BS",
+        "stockCode": "010950",
+        "ticker": "010950.KS",
+        "unitRef": "KRW",
+        "zipSha256": "131eccddc0ca0f3c83e3a082eabf627b867a919dea89018244aa8d717483c208"
+      }
+    },
+    {
+      "candidateValue": "107188117070.0",
+      "classification": "SOURCE_UNAVAILABLE",
+      "identity": "068270.KS:2015:11014:net_income",
+      "reason": "BLOCKED_ON_SOURCE_ACCESS: original ZIP bytes unavailable",
+      "sampleItem": {
+        "account": "당기순이익",
+        "availableFrom": "2015-11-16",
+        "basis": "CFS",
+        "contextRef": "CFY2015dTQA_ifrs_ConsolidatedAndSeparateFinancialStatementsAxis_ifrs_ConsolidatedMember",
+        "corpCode": "00413046",
+        "currency": "KRW",
+        "decimals": "0",
+        "element": "ProfitLoss",
+        "family": "net_income",
+        "fiscalYear": 2015,
+        "identity": "068270.KS:2015:11014:net_income",
+        "receiptNos": [
+          "20151116001144"
+        ],
+        "recordId": "068270.KS:2015:11014",
+        "reportCode": "11014",
+        "reportName": "3분기",
+        "statement": "CIS",
+        "stockCode": "068270",
+        "ticker": "068270.KS",
+        "unitRef": "KRW",
+        "zipSha256": "cb72f7ec3483ccc7f86210f1d917b0e2d555b24a0f050c76c80aa01800169f42"
+      }
+    },
+    {
+      "candidateValue": "130839961.0",
+      "classification": "SOURCE_UNAVAILABLE",
+      "identity": "006740.KS:2015:11013:operating_cash_flow",
+      "reason": "BLOCKED_ON_SOURCE_ACCESS: original ZIP bytes unavailable",
+      "sampleItem": {
+        "account": "영업활동현금흐름",
+        "availableFrom": "2015-05-15",
+        "basis": "OFS",
+        "contextRef": "CFY2015dFQA_ifrs_ConsolidatedAndSeparateFinancialStatementsAxis_ifrs_SeparateMember",
+        "corpCode": "00141404",
+        "currency": "KRW",
+        "decimals": "0",
+        "element": "CashFlowsFromUsedInOperatingActivities",
+        "family": "operating_cash_flow",
+        "fiscalYear": 2015,
+        "identity": "006740.KS:2015:11013:operating_cash_flow",
+        "receiptNos": [
+          "20150515001709"
+        ],
+        "recordId": "006740.KS:2015:11013",
+        "reportCode": "11013",
+        "reportName": "1분기",
+        "statement": "CF",
+        "stockCode": "006740",
+        "ticker": "006740.KS",
+        "unitRef": "KRW",
+        "zipSha256": "e6c31334bcd993136405c1786c49a567e0c4de0535ac97604989eaf0ffcbafed"
+      }
+    },
+    {
+      "candidateValue": "640048584431.0",
+      "classification": "SOURCE_UNAVAILABLE",
+      "identity": "009240.KS:2015:11012:assets",
+      "reason": "BLOCKED_ON_SOURCE_ACCESS: original ZIP bytes unavailable",
+      "sampleItem": {
+        "account": "자산총계",
+        "availableFrom": "2015-08-17",
+        "basis": "OFS",
+        "contextRef": "CFY2015eHYA_ifrs_ConsolidatedAndSeparateFinancialStatementsAxis_ifrs_SeparateMember",
+        "corpCode": "00161693",
+        "currency": "KRW",
+        "decimals": "0",
+        "element": "Assets",
+        "family": "assets",
+        "fiscalYear": 2015,
+        "identity": "009240.KS:2015:11012:assets",
+        "receiptNos": [
+          "20150817000931"
+        ],
+        "recordId": "009240.KS:2015:11012",
+        "reportCode": "11012",
+        "reportName": "반기",
+        "statement": "BS",
+        "stockCode": "009240",
+        "ticker": "009240.KS",
+        "unitRef": "KRW",
+        "zipSha256": "bb79919d69d5a77fdac7222fa6b1f5deb77b7409f7fd1484e782088cb6a59691"
+      }
+    },
+    {
+      "candidateValue": "88236120211.0",
+      "classification": "SOURCE_UNAVAILABLE",
+      "identity": "003520.KS:2015:11014:liabilities",
+      "reason": "BLOCKED_ON_SOURCE_ACCESS: original ZIP bytes unavailable",
+      "sampleItem": {
+        "account": "부채총계",
+        "availableFrom": "2015-11-16",
+        "basis": "OFS",
+        "contextRef": "CFY2015eTQA_ifrs_ConsolidatedAndSeparateFinancialStatementsAxis_ifrs_SeparateMember",
+        "corpCode": "00141149",
+        "currency": "KRW",
+        "decimals": "0",
+        "element": "Liabilities",
+        "family": "liabilities",
+        "fiscalYear": 2015,
+        "identity": "003520.KS:2015:11014:liabilities",
+        "receiptNos": [
+          "20151116000048"
+        ],
+        "recordId": "003520.KS:2015:11014",
+        "reportCode": "11014",
+        "reportName": "3분기",
+        "statement": "BS",
+        "stockCode": "003520",
+        "ticker": "003520.KS",
+        "unitRef": "KRW",
+        "zipSha256": "66575463bb598367161f5a16e905bb48741d5a17d850a0e0a1b10858764e61aa"
+      }
+    },
+    {
+      "candidateValue": "62241176910.0",
+      "classification": "SOURCE_UNAVAILABLE",
+      "identity": "008770.KS:2015:11012:net_income",
+      "reason": "BLOCKED_ON_SOURCE_ACCESS: original ZIP bytes unavailable",
+      "sampleItem": {
+        "account": "당기순이익",
+        "availableFrom": "2015-08-17",
+        "basis": "OFS",
+        "contextRef": "CFY2015dHYA_ifrs_ConsolidatedAndSeparateFinancialStatementsAxis_ifrs_SeparateMember",
+        "corpCode": "00165680",
+        "currency": "KRW",
+        "decimals": "0",
+        "element": "ProfitLoss",
+        "family": "net_income",
+        "fiscalYear": 2015,
+        "identity": "008770.KS:2015:11012:net_income",
+        "receiptNos": [
+          "20150817001399"
+        ],
+        "recordId": "008770.KS:2015:11012",
+        "reportCode": "11012",
+        "reportName": "반기",
+        "statement": "CIS",
+        "stockCode": "008770",
+        "ticker": "008770.KS",
+        "unitRef": "KRW",
+        "zipSha256": "8d62286928c754a8ef7fc9827f45ff1cdb367aea495756f5a1b4e249192a32f1"
+      }
+    },
+    {
+      "candidateValue": "58693432259.0",
+      "classification": "SOURCE_UNAVAILABLE",
+      "identity": "003620.KS:2015:11013:operating_cash_flow",
+      "reason": "BLOCKED_ON_SOURCE_ACCESS: original ZIP bytes unavailable",
+      "sampleItem": {
+        "account": "영업활동현금흐름",
+        "availableFrom": "2015-05-15",
+        "basis": "CFS",
+        "contextRef": "CFY2015dFQA_ifrs_ConsolidatedAndSeparateFinancialStatementsAxis_ifrs_ConsolidatedMember",
+        "corpCode": "00138242",
+        "currency": "KRW",
+        "decimals": "0",
+        "element": "CashFlowsFromUsedInOperatingActivities",
+        "family": "operating_cash_flow",
+        "fiscalYear": 2015,
+        "identity": "003620.KS:2015:11013:operating_cash_flow",
+        "receiptNos": [
+          "20150515001082"
+        ],
+        "recordId": "003620.KS:2015:11013",
+        "reportCode": "11013",
+        "reportName": "1분기",
+        "statement": "CF",
+        "stockCode": "003620",
+        "ticker": "003620.KS",
+        "unitRef": "KRW",
+        "zipSha256": "d75c75469ac0eaa87bc5d45651b9b8ffd3a7c34f69781281bd563c14d73a176e"
+      }
+    },
+    {
+      "candidateValue": "53742047997000.0",
+      "classification": "SOURCE_UNAVAILABLE",
+      "identity": "009540.KS:2015:11013:assets",
+      "reason": "BLOCKED_ON_SOURCE_ACCESS: original ZIP bytes unavailable",
+      "sampleItem": {
+        "account": "자산총계",
+        "availableFrom": "2015-05-15",
+        "basis": "CFS",
+        "contextRef": "CFY2015eFQA_ifrs_ConsolidatedAndSeparateFinancialStatementsAxis_ifrs_ConsolidatedMember",
+        "corpCode": "00164830",
+        "currency": "KRW",
+        "decimals": "-3",
+        "element": "Assets",
+        "family": "assets",
+        "fiscalYear": 2015,
+        "identity": "009540.KS:2015:11013:assets",
+        "receiptNos": [
+          "20150515002370"
+        ],
+        "recordId": "009540.KS:2015:11013",
+        "reportCode": "11013",
+        "reportName": "1분기",
+        "statement": "BS",
+        "stockCode": "009540",
+        "ticker": "009540.KS",
+        "unitRef": "KRW",
+        "zipSha256": "9858697f6a8145a7e99f4c9c06b98248e38d5d20f21191c1af7ce0fa3b7c5468"
+      }
+    },
+    {
+      "candidateValue": "59631070000000.0",
+      "classification": "SOURCE_UNAVAILABLE",
+      "identity": "005930.KS:2015:11013:liabilities",
+      "reason": "BLOCKED_ON_SOURCE_ACCESS: original ZIP bytes unavailable",
+      "sampleItem": {
+        "account": "부채총계",
+        "availableFrom": "2015-05-15",
+        "basis": "CFS",
+        "contextRef": "CFY2015eFQA_ifrs_ConsolidatedAndSeparateFinancialStatementsAxis_ifrs_ConsolidatedMember",
+        "corpCode": "00126380",
+        "currency": "KRW",
+        "decimals": "-6",
+        "element": "Liabilities",
+        "family": "liabilities",
+        "fiscalYear": 2015,
+        "identity": "005930.KS:2015:11013:liabilities",
+        "receiptNos": [
+          "20150515001379"
+        ],
+        "recordId": "005930.KS:2015:11013",
+        "reportCode": "11013",
+        "reportName": "1분기",
+        "statement": "BS",
+        "stockCode": "005930",
+        "ticker": "005930.KS",
+        "unitRef": "KRW",
+        "zipSha256": "466beb4ea37d2551ca72d4bd1cc95082463f88c9225d2cfc2dd5f25b89755368"
+      }
+    },
+    {
+      "candidateValue": "64965474651.0",
+      "classification": "SOURCE_UNAVAILABLE",
+      "identity": "181710.KS:2015:11014:net_income",
+      "reason": "BLOCKED_ON_SOURCE_ACCESS: original ZIP bytes unavailable",
+      "sampleItem": {
+        "account": "당기순이익",
+        "availableFrom": "2015-11-16",
+        "basis": "OFS",
+        "contextRef": "CFY2015dTQA_ifrs_ConsolidatedAndSeparateFinancialStatementsAxis_ifrs_SeparateMember",
+        "corpCode": "00983271",
+        "currency": "KRW",
+        "decimals": "0",
+        "element": "ProfitLoss",
+        "family": "net_income",
+        "fiscalYear": 2015,
+        "identity": "181710.KS:2015:11014:net_income",
+        "receiptNos": [
+          "20151116000264"
+        ],
+        "recordId": "181710.KS:2015:11014",
+        "reportCode": "11014",
+        "reportName": "3분기",
+        "statement": "CIS",
+        "stockCode": "181710",
+        "ticker": "181710.KS",
+        "unitRef": "KRW",
+        "zipSha256": "9a141dedb8ca83ff47d275eea53c8515698c436458493159fc0e06ccc2a682ce"
+      }
+    },
+    {
+      "candidateValue": "27774880762.0",
+      "classification": "SOURCE_UNAVAILABLE",
+      "identity": "002380.KS:2015:11012:operating_cash_flow",
+      "reason": "BLOCKED_ON_SOURCE_ACCESS: original ZIP bytes unavailable",
+      "sampleItem": {
+        "account": "영업활동현금흐름",
+        "availableFrom": "2015-08-13",
+        "basis": "OFS",
+        "contextRef": "CFY2015dHYA_ifrs_ConsolidatedAndSeparateFinancialStatementsAxis_ifrs_SeparateMember",
+        "corpCode": "00105271",
+        "currency": "KRW",
+        "decimals": "0",
+        "element": "CashFlowsFromUsedInOperatingActivities",
+        "family": "operating_cash_flow",
+        "fiscalYear": 2015,
+        "identity": "002380.KS:2015:11012:operating_cash_flow",
+        "receiptNos": [
+          "20150813001363"
+        ],
+        "recordId": "002380.KS:2015:11012",
+        "reportCode": "11012",
+        "reportName": "반기",
+        "statement": "CF",
+        "stockCode": "002380",
+        "ticker": "002380.KS",
+        "unitRef": "KRW",
+        "zipSha256": "8ffb91dbdf5cf930e7c9b30ff2ff36d72c6ed655e542b670052324791a1b99f3"
+      }
+    },
+    {
+      "candidateValue": "1800235041517.0",
+      "classification": "SOURCE_UNAVAILABLE",
+      "identity": "057050.KS:2015:11013:assets",
+      "reason": "BLOCKED_ON_SOURCE_ACCESS: original ZIP bytes unavailable",
+      "sampleItem": {
+        "account": "자산총계",
+        "availableFrom": "2015-05-15",
+        "basis": "OFS",
+        "contextRef": "CFY2015eFQA_ifrs_ConsolidatedAndSeparateFinancialStatementsAxis_ifrs_SeparateMember",
+        "corpCode": "00412597",
+        "currency": "KRW",
+        "decimals": "0",
+        "element": "Assets",
+        "family": "assets",
+        "fiscalYear": 2015,
+        "identity": "057050.KS:2015:11013:assets",
+        "receiptNos": [
+          "20150515002367"
+        ],
+        "recordId": "057050.KS:2015:11013",
+        "reportCode": "11013",
+        "reportName": "1분기",
+        "statement": "BS",
+        "stockCode": "057050",
+        "ticker": "057050.KS",
+        "unitRef": "KRW",
+        "zipSha256": "fef00b4e0d4af933f83df33bfaea0ac36a568523135fafe36c12ee2b54d4b71d"
+      }
+    },
+    {
+      "candidateValue": "93923549378.0",
+      "classification": "SOURCE_UNAVAILABLE",
+      "identity": "000240.KS:2015:11012:liabilities",
+      "reason": "BLOCKED_ON_SOURCE_ACCESS: original ZIP bytes unavailable",
+      "sampleItem": {
+        "account": "부채총계",
+        "availableFrom": "2015-08-17",
+        "basis": "OFS",
+        "contextRef": "CFY2015eHYA_ifrs_ConsolidatedAndSeparateFinancialStatementsAxis_ifrs_SeparateMember",
+        "corpCode": "00160047",
+        "currency": "KRW",
+        "decimals": "0",
+        "element": "Liabilities",
+        "family": "liabilities",
+        "fiscalYear": 2015,
+        "identity": "000240.KS:2015:11012:liabilities",
+        "receiptNos": [
+          "20150817001544"
+        ],
+        "recordId": "000240.KS:2015:11012",
+        "reportCode": "11012",
+        "reportName": "반기",
+        "statement": "BS",
+        "stockCode": "000240",
+        "ticker": "000240.KS",
+        "unitRef": "KRW",
+        "zipSha256": "a2ea64e834e4408d0c3c4e5ebe26980a6f57c4b6d41ada4d559138f47161c92e"
+      }
+    },
+    {
+      "candidateValue": "8125000000.0",
+      "classification": "SOURCE_UNAVAILABLE",
+      "identity": "108670.KS:2015:11013:net_income",
+      "reason": "BLOCKED_ON_SOURCE_ACCESS: original ZIP bytes unavailable",
+      "sampleItem": {
+        "account": "당기순이익",
+        "availableFrom": "2015-05-15",
+        "basis": "CFS",
+        "contextRef": "CFY2015dFQA_ifrs_ConsolidatedAndSeparateFinancialStatementsAxis_ifrs_ConsolidatedMember",
+        "corpCode": "00759513",
+        "currency": "KRW",
+        "decimals": "-6",
+        "element": "ProfitLoss",
+        "family": "net_income",
+        "fiscalYear": 2015,
+        "identity": "108670.KS:2015:11013:net_income",
+        "receiptNos": [
+          "20150515002284"
+        ],
+        "recordId": "108670.KS:2015:11013",
+        "reportCode": "11013",
+        "reportName": "1분기",
+        "statement": "CIS",
+        "stockCode": "108670",
+        "ticker": "108670.KS",
+        "unitRef": "KRW",
+        "zipSha256": "5f22c5e530c0212c69171bad0af93cfe72adc679bf4c32986af8a5a589f1a9aa"
+      }
+    },
+    {
+      "candidateValue": "841495700000.0",
+      "classification": "SOURCE_UNAVAILABLE",
+      "identity": "047050.KS:2015:11014:operating_cash_flow",
+      "reason": "BLOCKED_ON_SOURCE_ACCESS: original ZIP bytes unavailable",
+      "sampleItem": {
+        "account": "영업활동현금흐름",
+        "availableFrom": "2015-11-16",
+        "basis": "CFS",
+        "contextRef": "CFY2015dTQA_ifrs_ConsolidatedAndSeparateFinancialStatementsAxis_ifrs_ConsolidatedMember",
+        "corpCode": "00124504",
+        "currency": "KRW",
+        "decimals": "-3",
+        "element": "CashFlowsFromUsedInOperatingActivities",
+        "family": "operating_cash_flow",
+        "fiscalYear": 2015,
+        "identity": "047050.KS:2015:11014:operating_cash_flow",
+        "receiptNos": [
+          "20151116000843"
+        ],
+        "recordId": "047050.KS:2015:11014",
+        "reportCode": "11014",
+        "reportName": "3분기",
+        "statement": "CF",
+        "stockCode": "047050",
+        "ticker": "047050.KS",
+        "unitRef": "KRW",
+        "zipSha256": "a72e5ab3186d7308a8abbbba7524551a7bc4384743769c6fd109f6dff262c3ec"
+      }
+    },
+    {
+      "candidateValue": "230033081002.0",
+      "classification": "SOURCE_UNAVAILABLE",
+      "identity": "042700.KS:2015:11014:assets",
+      "reason": "BLOCKED_ON_SOURCE_ACCESS: original ZIP bytes unavailable",
+      "sampleItem": {
+        "account": "자산총계",
+        "availableFrom": "2015-11-13",
+        "basis": "OFS",
+        "contextRef": "CFY2015eTQA_ifrs_ConsolidatedAndSeparateFinancialStatementsAxis_ifrs_SeparateMember",
+        "corpCode": "00161383",
+        "currency": "KRW",
+        "decimals": "0",
+        "element": "Assets",
+        "family": "assets",
+        "fiscalYear": 2015,
+        "identity": "042700.KS:2015:11014:assets",
+        "receiptNos": [
+          "20151113001001"
+        ],
+        "recordId": "042700.KS:2015:11014",
+        "reportCode": "11014",
+        "reportName": "3분기",
+        "statement": "BS",
+        "stockCode": "042700",
+        "ticker": "042700.KS",
+        "unitRef": "KRW",
+        "zipSha256": "67e6239783f52a6e1f262d162d67b15937980037dc5ef1ecc7eae3b95b09fcc4"
+      }
+    },
+    {
+      "candidateValue": "16462362258.0",
+      "classification": "SOURCE_UNAVAILABLE",
+      "identity": "002410.KS:2015:11013:liabilities",
+      "reason": "BLOCKED_ON_SOURCE_ACCESS: original ZIP bytes unavailable",
+      "sampleItem": {
+        "account": "부채총계",
+        "availableFrom": "2015-05-08",
+        "basis": "OFS",
+        "contextRef": "CFY2015eFQA_ifrs_ConsolidatedAndSeparateFinancialStatementsAxis_ifrs_SeparateMember",
+        "corpCode": "00122694",
+        "currency": "KRW",
+        "decimals": "0",
+        "element": "Liabilities",
+        "family": "liabilities",
+        "fiscalYear": 2015,
+        "identity": "002410.KS:2015:11013:liabilities",
+        "receiptNos": [
+          "20150508000400"
+        ],
+        "recordId": "002410.KS:2015:11013",
+        "reportCode": "11013",
+        "reportName": "1분기",
+        "statement": "BS",
+        "stockCode": "002410",
+        "ticker": "002410.KS",
+        "unitRef": "KRW",
+        "zipSha256": "1ab75c982a0ca83f1dd721f4496ba389cbd15d94c3dd9a51c44cb46885e777ea"
+      }
+    },
+    {
+      "candidateValue": "56399300778.0",
+      "classification": "SOURCE_UNAVAILABLE",
+      "identity": "037620.KS:2015:11013:net_income",
+      "reason": "BLOCKED_ON_SOURCE_ACCESS: original ZIP bytes unavailable",
+      "sampleItem": {
+        "account": "당기순이익",
+        "availableFrom": "2015-05-15",
+        "basis": "OFS",
+        "contextRef": "CFY2015dFQA_ifrs_ConsolidatedAndSeparateFinancialStatementsAxis_ifrs_SeparateMember",
+        "corpCode": "00311030",
+        "currency": "KRW",
+        "decimals": "0",
+        "element": "ProfitLoss",
+        "family": "net_income",
+        "fiscalYear": 2015,
+        "identity": "037620.KS:2015:11013:net_income",
+        "receiptNos": [
+          "20150515002043"
+        ],
+        "recordId": "037620.KS:2015:11013",
+        "reportCode": "11013",
+        "reportName": "1분기",
+        "statement": "CIS",
+        "stockCode": "037620",
+        "ticker": "037620.KS",
+        "unitRef": "KRW",
+        "zipSha256": "fdf0e300427d1772b9bdfaf54e660e21d4c3ca0879d45c9272a668d02ede40fb"
+      }
+    },
+    {
+      "candidateValue": "197453521746.0",
+      "classification": "SOURCE_UNAVAILABLE",
+      "identity": "027410.KS:2015:11012:operating_cash_flow",
+      "reason": "BLOCKED_ON_SOURCE_ACCESS: original ZIP bytes unavailable",
+      "sampleItem": {
+        "account": "영업활동현금흐름",
+        "availableFrom": "2015-08-28",
+        "basis": "CFS",
+        "contextRef": "CFY2015dHYA_ifrs_ConsolidatedAndSeparateFinancialStatementsAxis_ifrs_ConsolidatedMember",
+        "corpCode": "00219097",
+        "currency": "KRW",
+        "decimals": "0",
+        "element": "CashFlowsFromUsedInOperatingActivities",
+        "family": "operating_cash_flow",
+        "fiscalYear": 2015,
+        "identity": "027410.KS:2015:11012:operating_cash_flow",
+        "receiptNos": [
+          "20150828000450"
+        ],
+        "recordId": "027410.KS:2015:11012",
+        "reportCode": "11012",
+        "reportName": "반기",
+        "statement": "CF",
+        "stockCode": "027410",
+        "ticker": "027410.KS",
+        "unitRef": "KRW",
+        "zipSha256": "3fe02d1fb87f6ce6b1a5bf80b1c4a1c65532bf153be125b7c2ce8983b9f73792"
+      }
+    },
+    {
+      "candidateValue": "299805130641.0",
+      "classification": "SOURCE_UNAVAILABLE",
+      "identity": "003230.KS:2015:11014:assets",
+      "reason": "BLOCKED_ON_SOURCE_ACCESS: original ZIP bytes unavailable",
+      "sampleItem": {
+        "account": "자산총계",
+        "availableFrom": "2015-11-16",
+        "basis": "CFS",
+        "contextRef": "CFY2015eTQA_ifrs_ConsolidatedAndSeparateFinancialStatementsAxis_ifrs_ConsolidatedMember",
+        "corpCode": "00126955",
+        "currency": "KRW",
+        "decimals": "0",
+        "element": "Assets",
+        "family": "assets",
+        "fiscalYear": 2015,
+        "identity": "003230.KS:2015:11014:assets",
+        "receiptNos": [
+          "20151116001749"
+        ],
+        "recordId": "003230.KS:2015:11014",
+        "reportCode": "11014",
+        "reportName": "3분기",
+        "statement": "BS",
+        "stockCode": "003230",
+        "ticker": "003230.KS",
+        "unitRef": "KRW",
+        "zipSha256": "45dbfb59cd66c3d29cf68d8b8d70e8a08e3d856d871e895bf4f1205e81a30953"
+      }
+    },
+    {
+      "candidateValue": "93410286000000.0",
+      "classification": "SOURCE_UNAVAILABLE",
+      "identity": "005380.KS:2015:11014:liabilities",
+      "reason": "BLOCKED_ON_SOURCE_ACCESS: original ZIP bytes unavailable",
+      "sampleItem": {
+        "account": "부채총계",
+        "availableFrom": "2015-11-16",
+        "basis": "CFS",
+        "contextRef": "CFY2015eTQA_ifrs_ConsolidatedAndSeparateFinancialStatementsAxis_ifrs_ConsolidatedMember",
+        "corpCode": "00164742",
+        "currency": "KRW",
+        "decimals": "-6",
+        "element": "Liabilities",
+        "family": "liabilities",
+        "fiscalYear": 2015,
+        "identity": "005380.KS:2015:11014:liabilities",
+        "receiptNos": [
+          "20151116001441"
+        ],
+        "recordId": "005380.KS:2015:11014",
+        "reportCode": "11014",
+        "reportName": "3분기",
+        "statement": "BS",
+        "stockCode": "005380",
+        "ticker": "005380.KS",
+        "unitRef": "KRW",
+        "zipSha256": "044812401140d62a7def0e8e99319d6ae25ca3d547fc2cf70cfb05ae1feccae2"
+      }
+    },
+    {
+      "candidateValue": "444434213406.0",
+      "classification": "SOURCE_UNAVAILABLE",
+      "identity": "004020.KS:2015:11012:net_income",
+      "reason": "BLOCKED_ON_SOURCE_ACCESS: original ZIP bytes unavailable",
+      "sampleItem": {
+        "account": "당기순이익",
+        "availableFrom": "2015-08-17",
+        "basis": "CFS",
+        "contextRef": "CFY2015dHYA_ifrs_ConsolidatedAndSeparateFinancialStatementsAxis_ifrs_ConsolidatedMember",
+        "corpCode": "00145880",
+        "currency": "KRW",
+        "decimals": "0",
+        "element": "ProfitLoss",
+        "family": "net_income",
+        "fiscalYear": 2015,
+        "identity": "004020.KS:2015:11012:net_income",
+        "receiptNos": [
+          "20150817001388"
+        ],
+        "recordId": "004020.KS:2015:11012",
+        "reportCode": "11012",
+        "reportName": "반기",
+        "statement": "CIS",
+        "stockCode": "004020",
+        "ticker": "004020.KS",
+        "unitRef": "KRW",
+        "zipSha256": "cdc46f5a8250971039f9ff0636b335f2600e3d113eb2271d40ae38f16d5a1916"
+      }
+    },
+    {
+      "candidateValue": "28275668516.0",
+      "classification": "SOURCE_UNAVAILABLE",
+      "identity": "042700.KS:2015:11014:operating_cash_flow",
+      "reason": "BLOCKED_ON_SOURCE_ACCESS: original ZIP bytes unavailable",
+      "sampleItem": {
+        "account": "영업활동현금흐름",
+        "availableFrom": "2015-11-13",
+        "basis": "OFS",
+        "contextRef": "CFY2015dTQA_ifrs_ConsolidatedAndSeparateFinancialStatementsAxis_ifrs_SeparateMember",
+        "corpCode": "00161383",
+        "currency": "KRW",
+        "decimals": "0",
+        "element": "CashFlowsFromUsedInOperatingActivities",
+        "family": "operating_cash_flow",
+        "fiscalYear": 2015,
+        "identity": "042700.KS:2015:11014:operating_cash_flow",
+        "receiptNos": [
+          "20151113001001"
+        ],
+        "recordId": "042700.KS:2015:11014",
+        "reportCode": "11014",
+        "reportName": "3분기",
+        "statement": "CF",
+        "stockCode": "042700",
+        "ticker": "042700.KS",
+        "unitRef": "KRW",
+        "zipSha256": "67e6239783f52a6e1f262d162d67b15937980037dc5ef1ecc7eae3b95b09fcc4"
+      }
+    },
+    {
+      "candidateValue": "10953878517686.0",
+      "classification": "SOURCE_UNAVAILABLE",
+      "identity": "000210.KS:2015:11012:assets",
+      "reason": "BLOCKED_ON_SOURCE_ACCESS: original ZIP bytes unavailable",
+      "sampleItem": {
+        "account": "자산총계",
+        "availableFrom": "2015-08-17",
+        "basis": "CFS",
+        "contextRef": "CFY2015eHYA_ifrs_ConsolidatedAndSeparateFinancialStatementsAxis_ifrs_ConsolidatedMember",
+        "corpCode": "00109693",
+        "currency": "KRW",
+        "decimals": "0",
+        "element": "Assets",
+        "family": "assets",
+        "fiscalYear": 2015,
+        "identity": "000210.KS:2015:11012:assets",
+        "receiptNos": [
+          "20150817001411"
+        ],
+        "recordId": "000210.KS:2015:11012",
+        "reportCode": "11012",
+        "reportName": "반기",
+        "statement": "BS",
+        "stockCode": "000210",
+        "ticker": "000210.KS",
+        "unitRef": "KRW",
+        "zipSha256": "57648c3b3297dc053ab3252bc25e22768b9fd21b91ea91950b9a142b5b977211"
+      }
+    },
+    {
+      "candidateValue": "423169416385.0",
+      "classification": "SOURCE_UNAVAILABLE",
+      "identity": "012750.KS:2015:11012:liabilities",
+      "reason": "BLOCKED_ON_SOURCE_ACCESS: original ZIP bytes unavailable",
+      "sampleItem": {
+        "account": "부채총계",
+        "availableFrom": "2015-08-17",
+        "basis": "CFS",
+        "contextRef": "CFY2015eHYA_ifrs_ConsolidatedAndSeparateFinancialStatementsAxis_ifrs_ConsolidatedMember",
+        "corpCode": "00158501",
+        "currency": "KRW",
+        "decimals": "0",
+        "element": "Liabilities",
+        "family": "liabilities",
+        "fiscalYear": 2015,
+        "identity": "012750.KS:2015:11012:liabilities",
+        "receiptNos": [
+          "20150817001636"
+        ],
+        "recordId": "012750.KS:2015:11012",
+        "reportCode": "11012",
+        "reportName": "반기",
+        "statement": "BS",
+        "stockCode": "012750",
+        "ticker": "012750.KS",
+        "unitRef": "KRW",
+        "zipSha256": "595fe0850b090412cbfcc57fd59188c2d40b000a49b0c4926a87d36f65576609"
+      }
+    },
+    {
+      "candidateValue": "-228031809090.0",
+      "classification": "SOURCE_UNAVAILABLE",
+      "identity": "180640.KS:2015:11014:net_income",
+      "reason": "BLOCKED_ON_SOURCE_ACCESS: original ZIP bytes unavailable",
+      "sampleItem": {
+        "account": "당기순이익",
+        "availableFrom": "2015-11-16",
+        "basis": "CFS",
+        "contextRef": "CFY2015dTQA_ifrs_ConsolidatedAndSeparateFinancialStatementsAxis_ifrs_ConsolidatedMember",
+        "corpCode": "00983040",
+        "currency": "KRW",
+        "decimals": "0",
+        "element": "ProfitLoss",
+        "family": "net_income",
+        "fiscalYear": 2015,
+        "identity": "180640.KS:2015:11014:net_income",
+        "receiptNos": [
+          "20151116001832"
+        ],
+        "recordId": "180640.KS:2015:11014",
+        "reportCode": "11014",
+        "reportName": "3분기",
+        "statement": "CIS",
+        "stockCode": "180640",
+        "ticker": "180640.KS",
+        "unitRef": "KRW",
+        "zipSha256": "10eab125e4a993ee68242d7ffb42c2363c5544b3972a157312d9b6f634c7e848"
+      }
+    },
+    {
+      "candidateValue": "16370321166.0",
+      "classification": "SOURCE_UNAVAILABLE",
+      "identity": "185750.KS:2015:11013:operating_cash_flow",
+      "reason": "BLOCKED_ON_SOURCE_ACCESS: original ZIP bytes unavailable",
+      "sampleItem": {
+        "account": "영업활동현금흐름",
+        "availableFrom": "2015-05-15",
+        "basis": "OFS",
+        "contextRef": "CFY2015dFQA_ifrs_ConsolidatedAndSeparateFinancialStatementsAxis_ifrs_SeparateMember",
+        "corpCode": "00992871",
+        "currency": "KRW",
+        "decimals": "0",
+        "element": "CashFlowsFromUsedInOperatingActivities",
+        "family": "operating_cash_flow",
+        "fiscalYear": 2015,
+        "identity": "185750.KS:2015:11013:operating_cash_flow",
+        "receiptNos": [
+          "20150515000921"
+        ],
+        "recordId": "185750.KS:2015:11013",
+        "reportCode": "11013",
+        "reportName": "1분기",
+        "statement": "CF",
+        "stockCode": "185750",
+        "ticker": "185750.KS",
+        "unitRef": "KRW",
+        "zipSha256": "d7707fd3b449d1a2e80ca487e7c720bd1ac85cb6a6e88617a73bc7a5af989364"
+      }
+    },
+    {
+      "candidateValue": "790759345974.0",
+      "classification": "SOURCE_UNAVAILABLE",
+      "identity": "052690.KS:2015:11012:assets",
+      "reason": "BLOCKED_ON_SOURCE_ACCESS: original ZIP bytes unavailable",
+      "sampleItem": {
+        "account": "자산총계",
+        "availableFrom": "2015-08-13",
+        "basis": "OFS",
+        "contextRef": "CFY2015eHYA_ifrs_ConsolidatedAndSeparateFinancialStatementsAxis_ifrs_SeparateMember",
+        "corpCode": "00159209",
+        "currency": "KRW",
+        "decimals": "0",
+        "element": "Assets",
+        "family": "assets",
+        "fiscalYear": 2015,
+        "identity": "052690.KS:2015:11012:assets",
+        "receiptNos": [
+          "20150813000580"
+        ],
+        "recordId": "052690.KS:2015:11012",
+        "reportCode": "11012",
+        "reportName": "반기",
+        "statement": "BS",
+        "stockCode": "052690",
+        "ticker": "052690.KS",
+        "unitRef": "KRW",
+        "zipSha256": "6b76e763e16575aee6bd4e0d213f2cedcfca124973cf386c8f072af4f4491353"
+      }
+    },
+    {
+      "candidateValue": "5417516683271.0",
+      "classification": "SOURCE_UNAVAILABLE",
+      "identity": "028050.KS:2015:11014:liabilities",
+      "reason": "BLOCKED_ON_SOURCE_ACCESS: original ZIP bytes unavailable",
+      "sampleItem": {
+        "account": "부채총계",
+        "availableFrom": "2015-11-16",
+        "basis": "OFS",
+        "contextRef": "CFY2015eTQA_ifrs_ConsolidatedAndSeparateFinancialStatementsAxis_ifrs_SeparateMember",
+        "corpCode": "00126308",
+        "currency": "KRW",
+        "decimals": "0",
+        "element": "Liabilities",
+        "family": "liabilities",
+        "fiscalYear": 2015,
+        "identity": "028050.KS:2015:11014:liabilities",
+        "receiptNos": [
+          "20151116001819"
+        ],
+        "recordId": "028050.KS:2015:11014",
+        "reportCode": "11014",
+        "reportName": "3분기",
+        "statement": "BS",
+        "stockCode": "028050",
+        "ticker": "028050.KS",
+        "unitRef": "KRW",
+        "zipSha256": "57d6083dca12db8d55ed976418de54c9661bde406b175477045fd929fd91af24"
+      }
+    },
+    {
+      "candidateValue": "32572882196.0",
+      "classification": "SOURCE_UNAVAILABLE",
+      "identity": "103140.KS:2015:11012:net_income",
+      "reason": "BLOCKED_ON_SOURCE_ACCESS: original ZIP bytes unavailable",
+      "sampleItem": {
+        "account": "당기순이익",
+        "availableFrom": "2015-08-13",
+        "basis": "OFS",
+        "contextRef": "CFY2015dHYA_ifrs_ConsolidatedAndSeparateFinancialStatementsAxis_ifrs_SeparateMember",
+        "corpCode": "00684714",
+        "currency": "KRW",
+        "decimals": "0",
+        "element": "ProfitLoss",
+        "family": "net_income",
+        "fiscalYear": 2015,
+        "identity": "103140.KS:2015:11012:net_income",
+        "receiptNos": [
+          "20150813000740"
+        ],
+        "recordId": "103140.KS:2015:11012",
+        "reportCode": "11012",
+        "reportName": "반기",
+        "statement": "CIS",
+        "stockCode": "103140",
+        "ticker": "103140.KS",
+        "unitRef": "KRW",
+        "zipSha256": "9190bdb8c139c45f44cb6d0a33724a07c78e0a1cb81a1da04edf69ba6c2253f9"
+      }
+    },
+    {
+      "candidateValue": "413918576490.0",
+      "classification": "SOURCE_UNAVAILABLE",
+      "identity": "012630.KS:2015:11013:operating_cash_flow",
+      "reason": "BLOCKED_ON_SOURCE_ACCESS: original ZIP bytes unavailable",
+      "sampleItem": {
+        "account": "영업활동현금흐름",
+        "availableFrom": "2015-05-15",
+        "basis": "CFS",
+        "contextRef": "CFY2015dFQA_ifrs_ConsolidatedAndSeparateFinancialStatementsAxis_ifrs_ConsolidatedMember",
+        "corpCode": "00164636",
+        "currency": "KRW",
+        "decimals": "0",
+        "element": "CashFlowsFromUsedInOperatingActivities",
+        "family": "operating_cash_flow",
+        "fiscalYear": 2015,
+        "identity": "012630.KS:2015:11013:operating_cash_flow",
+        "receiptNos": [
+          "20150515001905"
+        ],
+        "recordId": "012630.KS:2015:11013",
+        "reportCode": "11013",
+        "reportName": "1분기",
+        "statement": "CF",
+        "stockCode": "012630",
+        "ticker": "012630.KS",
+        "unitRef": "KRW",
+        "zipSha256": "b6883feb4eb552d689ef10cfb761488ba157657d4b89a913ddd7f9fe6359a412"
+      }
+    },
+    {
+      "candidateValue": "2260088000000.0",
+      "classification": "SOURCE_UNAVAILABLE",
+      "identity": "047810.KS:2015:11013:assets",
+      "reason": "BLOCKED_ON_SOURCE_ACCESS: original ZIP bytes unavailable",
+      "sampleItem": {
+        "account": "자산총계",
+        "availableFrom": "2015-05-15",
+        "basis": "CFS",
+        "contextRef": "CFY2015eFQA_ifrs_ConsolidatedAndSeparateFinancialStatementsAxis_ifrs_ConsolidatedMember",
+        "corpCode": "00309503",
+        "currency": "KRW",
+        "decimals": "-6",
+        "element": "Assets",
+        "family": "assets",
+        "fiscalYear": 2015,
+        "identity": "047810.KS:2015:11013:assets",
+        "receiptNos": [
+          "20150515001350"
+        ],
+        "recordId": "047810.KS:2015:11013",
+        "reportCode": "11013",
+        "reportName": "1분기",
+        "statement": "BS",
+        "stockCode": "047810",
+        "ticker": "047810.KS",
+        "unitRef": "KRW",
+        "zipSha256": "10e8109216ee5801057ddd9d72f0f12576d90e5ba28470a92add108a52bd9672"
+      }
+    },
+    {
+      "candidateValue": "2758780032813.0",
+      "classification": "SOURCE_UNAVAILABLE",
+      "identity": "034730.KS:2015:11013:liabilities",
+      "reason": "BLOCKED_ON_SOURCE_ACCESS: original ZIP bytes unavailable",
+      "sampleItem": {
+        "account": "부채총계",
+        "availableFrom": "2015-05-15",
+        "basis": "CFS",
+        "contextRef": "CFY2015eFQA_ifrs_ConsolidatedAndSeparateFinancialStatementsAxis_ifrs_ConsolidatedMember",
+        "corpCode": "00181712",
+        "currency": "KRW",
+        "decimals": "0",
+        "element": "Liabilities",
+        "family": "liabilities",
+        "fiscalYear": 2015,
+        "identity": "034730.KS:2015:11013:liabilities",
+        "receiptNos": [
+          "20150515002514"
+        ],
+        "recordId": "034730.KS:2015:11013",
+        "reportCode": "11013",
+        "reportName": "1분기",
+        "statement": "BS",
+        "stockCode": "034730",
+        "ticker": "034730.KS",
+        "unitRef": "KRW",
+        "zipSha256": "4ecc4ae9b89afa4b29ad8a33c75761277e923b3a4b382bdb564740cb5a05e09a"
+      }
+    },
+    {
+      "candidateValue": "81280798400.0",
+      "classification": "SOURCE_UNAVAILABLE",
+      "identity": "004990.KS:2015:11014:net_income",
+      "reason": "BLOCKED_ON_SOURCE_ACCESS: original ZIP bytes unavailable",
+      "sampleItem": {
+        "account": "당기순이익",
+        "availableFrom": "2015-11-16",
+        "basis": "OFS",
+        "contextRef": "CFY2015dTQA_ifrs_ConsolidatedAndSeparateFinancialStatementsAxis_ifrs_SeparateMember",
+        "corpCode": "00120562",
+        "currency": "KRW",
+        "decimals": "0",
+        "element": "ProfitLoss",
+        "family": "net_income",
+        "fiscalYear": 2015,
+        "identity": "004990.KS:2015:11014:net_income",
+        "receiptNos": [
+          "20151116001718"
+        ],
+        "recordId": "004990.KS:2015:11014",
+        "reportCode": "11014",
+        "reportName": "3분기",
+        "statement": "CIS",
+        "stockCode": "004990",
+        "ticker": "004990.KS",
+        "unitRef": "KRW",
+        "zipSha256": "6fe30c517f4a15d38a43405212e9d8436ba8f7699820fa50a5dd00087c0d3b19"
+      }
+    },
+    {
+      "candidateValue": "-3171732681.0",
+      "classification": "SOURCE_UNAVAILABLE",
+      "identity": "005070.KS:2015:11012:operating_cash_flow",
+      "reason": "BLOCKED_ON_SOURCE_ACCESS: original ZIP bytes unavailable",
+      "sampleItem": {
+        "account": "영업활동현금흐름",
+        "availableFrom": "2015-08-13",
+        "basis": "OFS",
+        "contextRef": "CFY2015dHYA_ifrs_ConsolidatedAndSeparateFinancialStatementsAxis_ifrs_SeparateMember",
+        "corpCode": "00129989",
+        "currency": "KRW",
+        "decimals": "0",
+        "element": "CashFlowsFromUsedInOperatingActivities",
+        "family": "operating_cash_flow",
+        "fiscalYear": 2015,
+        "identity": "005070.KS:2015:11012:operating_cash_flow",
+        "receiptNos": [
+          "20150813000899"
+        ],
+        "recordId": "005070.KS:2015:11012",
+        "reportCode": "11012",
+        "reportName": "반기",
+        "statement": "CF",
+        "stockCode": "005070",
+        "ticker": "005070.KS",
+        "unitRef": "KRW",
+        "zipSha256": "f021b1b26a4fd8d9c0b2976b1723a48da3613080b25c5724e681429111b35106"
+      }
+    },
+    {
+      "candidateValue": "182796279076.0",
+      "classification": "SOURCE_UNAVAILABLE",
+      "identity": "003520.KS:2015:11013:assets",
+      "reason": "BLOCKED_ON_SOURCE_ACCESS: original ZIP bytes unavailable",
+      "sampleItem": {
+        "account": "자산총계",
+        "availableFrom": "2015-05-15",
+        "basis": "OFS",
+        "contextRef": "CFY2015eFQA_ifrs_ConsolidatedAndSeparateFinancialStatementsAxis_ifrs_SeparateMember",
+        "corpCode": "00141149",
+        "currency": "KRW",
+        "decimals": "0",
+        "element": "Assets",
+        "family": "assets",
+        "fiscalYear": 2015,
+        "identity": "003520.KS:2015:11013:assets",
+        "receiptNos": [
+          "20150515000261"
+        ],
+        "recordId": "003520.KS:2015:11013",
+        "reportCode": "11013",
+        "reportName": "1분기",
+        "statement": "BS",
+        "stockCode": "003520",
+        "ticker": "003520.KS",
+        "unitRef": "KRW",
+        "zipSha256": "b04d74258005c119bbb1ebd66e80644541e6793580619fe293c5faf28131fd62"
+      }
+    },
+    {
+      "candidateValue": "10037702836.0",
+      "classification": "SOURCE_UNAVAILABLE",
+      "identity": "005690.KS:2015:11012:liabilities",
+      "reason": "BLOCKED_ON_SOURCE_ACCESS: original ZIP bytes unavailable",
+      "sampleItem": {
+        "account": "부채총계",
+        "availableFrom": "2015-08-13",
+        "basis": "OFS",
+        "contextRef": "CFY2015eHYA_ifrs_ConsolidatedAndSeparateFinancialStatementsAxis_ifrs_SeparateMember",
+        "corpCode": "00145163",
+        "currency": "KRW",
+        "decimals": "0",
+        "element": "Liabilities",
+        "family": "liabilities",
+        "fiscalYear": 2015,
+        "identity": "005690.KS:2015:11012:liabilities",
+        "receiptNos": [
+          "20150813000430"
+        ],
+        "recordId": "005690.KS:2015:11012",
+        "reportCode": "11012",
+        "reportName": "반기",
+        "statement": "BS",
+        "stockCode": "005690",
+        "ticker": "005690.KS",
+        "unitRef": "KRW",
+        "zipSha256": "bdf04074a667a6bde880c894028797cbed5bb3a5385f095ca2c9e2ad529d3c0d"
+      }
+    },
+    {
+      "candidateValue": "27433566565.0",
+      "classification": "SOURCE_UNAVAILABLE",
+      "identity": "204320.KS:2015:11013:net_income",
+      "reason": "BLOCKED_ON_SOURCE_ACCESS: original ZIP bytes unavailable",
+      "sampleItem": {
+        "account": "당기순이익",
+        "availableFrom": "2015-05-15",
+        "basis": "CFS",
+        "contextRef": "CFY2015dFQA_ifrs_ConsolidatedAndSeparateFinancialStatementsAxis_ifrs_ConsolidatedMember",
+        "corpCode": "01042775",
+        "currency": "KRW",
+        "decimals": "0",
+        "element": "ProfitLoss",
+        "family": "net_income",
+        "fiscalYear": 2015,
+        "identity": "204320.KS:2015:11013:net_income",
+        "receiptNos": [
+          "20150515002224"
+        ],
+        "recordId": "204320.KS:2015:11013",
+        "reportCode": "11013",
+        "reportName": "1분기",
+        "statement": "CIS",
+        "stockCode": "204320",
+        "ticker": "204320.KS",
+        "unitRef": "KRW",
+        "zipSha256": "79432dd88a63a2dcb2f7f6260e684020abb73f69d9b10429fc4d19c353c56917"
+      }
+    },
+    {
+      "candidateValue": "-147843000000.0",
+      "classification": "SOURCE_UNAVAILABLE",
+      "identity": "011200.KS:2015:11014:operating_cash_flow",
+      "reason": "BLOCKED_ON_SOURCE_ACCESS: original ZIP bytes unavailable",
+      "sampleItem": {
+        "account": "영업활동현금흐름",
+        "availableFrom": "2015-11-16",
+        "basis": "CFS",
+        "contextRef": "CFY2015dTQA_ifrs_ConsolidatedAndSeparateFinancialStatementsAxis_ifrs_ConsolidatedMember",
+        "corpCode": "00164645",
+        "currency": "KRW",
+        "decimals": "-6",
+        "element": "CashFlowsFromUsedInOperatingActivities",
+        "family": "operating_cash_flow",
+        "fiscalYear": 2015,
+        "identity": "011200.KS:2015:11014:operating_cash_flow",
+        "receiptNos": [
+          "20151116001822"
+        ],
+        "recordId": "011200.KS:2015:11014",
+        "reportCode": "11014",
+        "reportName": "3분기",
+        "statement": "CF",
+        "stockCode": "011200",
+        "ticker": "011200.KS",
+        "unitRef": "KRW",
+        "zipSha256": "1d55e89960263619639d1501f658b9ea6afb12229ddaa2ee138a1610647b125c"
+      }
+    },
+    {
+      "candidateValue": "2646620218128.0",
+      "classification": "SOURCE_UNAVAILABLE",
+      "identity": "000240.KS:2015:11014:assets",
+      "reason": "BLOCKED_ON_SOURCE_ACCESS: original ZIP bytes unavailable",
+      "sampleItem": {
+        "account": "자산총계",
+        "availableFrom": "2015-11-16",
+        "basis": "OFS",
+        "contextRef": "CFY2015eTQA_ifrs_ConsolidatedAndSeparateFinancialStatementsAxis_ifrs_SeparateMember",
+        "corpCode": "00160047",
+        "currency": "KRW",
+        "decimals": "0",
+        "element": "Assets",
+        "family": "assets",
+        "fiscalYear": 2015,
+        "identity": "000240.KS:2015:11014:assets",
+        "receiptNos": [
+          "20151116001696"
+        ],
+        "recordId": "000240.KS:2015:11014",
+        "reportCode": "11014",
+        "reportName": "3분기",
+        "statement": "BS",
+        "stockCode": "000240",
+        "ticker": "000240.KS",
+        "unitRef": "KRW",
+        "zipSha256": "1f5f02a68ba57a77d4586468278991e637f588d7a63e4d7995c1c3eb291edcf7"
+      }
+    },
+    {
+      "candidateValue": "516611300153.0",
+      "classification": "SOURCE_UNAVAILABLE",
+      "identity": "057050.KS:2015:11013:liabilities",
+      "reason": "BLOCKED_ON_SOURCE_ACCESS: original ZIP bytes unavailable",
+      "sampleItem": {
+        "account": "부채총계",
+        "availableFrom": "2015-05-15",
+        "basis": "OFS",
+        "contextRef": "CFY2015eFQA_ifrs_ConsolidatedAndSeparateFinancialStatementsAxis_ifrs_SeparateMember",
+        "corpCode": "00412597",
+        "currency": "KRW",
+        "decimals": "0",
+        "element": "Liabilities",
+        "family": "liabilities",
+        "fiscalYear": 2015,
+        "identity": "057050.KS:2015:11013:liabilities",
+        "receiptNos": [
+          "20150515002367"
+        ],
+        "recordId": "057050.KS:2015:11013",
+        "reportCode": "11013",
+        "reportName": "1분기",
+        "statement": "BS",
+        "stockCode": "057050",
+        "ticker": "057050.KS",
+        "unitRef": "KRW",
+        "zipSha256": "fef00b4e0d4af933f83df33bfaea0ac36a568523135fafe36c12ee2b54d4b71d"
+      }
+    },
+    {
+      "candidateValue": "13898875607.0",
+      "classification": "SOURCE_UNAVAILABLE",
+      "identity": "001740.KS:2015:11013:net_income",
+      "reason": "BLOCKED_ON_SOURCE_ACCESS: original ZIP bytes unavailable",
+      "sampleItem": {
+        "account": "당기순이익",
+        "availableFrom": "2015-05-15",
+        "basis": "OFS",
+        "contextRef": "CFY2015dFQA_ifrs_ConsolidatedAndSeparateFinancialStatementsAxis_ifrs_SeparateMember",
+        "corpCode": "00131780",
+        "currency": "KRW",
+        "decimals": "0",
+        "element": "ProfitLoss",
+        "family": "net_income",
+        "fiscalYear": 2015,
+        "identity": "001740.KS:2015:11013:net_income",
+        "receiptNos": [
+          "20150515002732"
+        ],
+        "recordId": "001740.KS:2015:11013",
+        "reportCode": "11013",
+        "reportName": "1분기",
+        "statement": "CIS",
+        "stockCode": "001740",
+        "ticker": "001740.KS",
+        "unitRef": "KRW",
+        "zipSha256": "c8dd65d0cdec4dc10e18828e2594fb26a28e80e0a25d6a2cef2e6a3f2e756178"
+      }
+    },
+    {
+      "candidateValue": "10696678159.0",
+      "classification": "SOURCE_UNAVAILABLE",
+      "identity": "115390.KS:2015:11012:operating_cash_flow",
+      "reason": "BLOCKED_ON_SOURCE_ACCESS: original ZIP bytes unavailable",
+      "sampleItem": {
+        "account": "영업활동현금흐름",
+        "availableFrom": "2015-08-13",
+        "basis": "CFS",
+        "contextRef": "CFY2015dHYA_ifrs_ConsolidatedAndSeparateFinancialStatementsAxis_ifrs_ConsolidatedMember",
+        "corpCode": "00561866",
+        "currency": "KRW",
+        "decimals": "0",
+        "element": "CashFlowsFromUsedInOperatingActivities",
+        "family": "operating_cash_flow",
+        "fiscalYear": 2015,
+        "identity": "115390.KS:2015:11012:operating_cash_flow",
+        "receiptNos": [
+          "20150813000436"
+        ],
+        "recordId": "115390.KS:2015:11012",
+        "reportCode": "11012",
+        "reportName": "반기",
+        "statement": "CF",
+        "stockCode": "115390",
+        "ticker": "115390.KS",
+        "unitRef": "KRW",
+        "zipSha256": "febe68e485f36b12f53cbec66353c16e2cf3f352291e23cc5e4d1413131f8d5d"
+      }
+    },
+    {
+      "candidateValue": "28558720000000.0",
+      "classification": "SOURCE_UNAVAILABLE",
+      "identity": "017670.KS:2015:11014:assets",
+      "reason": "BLOCKED_ON_SOURCE_ACCESS: original ZIP bytes unavailable",
+      "sampleItem": {
+        "account": "자산총계",
+        "availableFrom": "2015-11-16",
+        "basis": "CFS",
+        "contextRef": "CFY2015eTQA_ifrs_ConsolidatedAndSeparateFinancialStatementsAxis_ifrs_ConsolidatedMember",
+        "corpCode": "00159023",
+        "currency": "KRW",
+        "decimals": "-6",
+        "element": "Assets",
+        "family": "assets",
+        "fiscalYear": 2015,
+        "identity": "017670.KS:2015:11014:assets",
+        "receiptNos": [
+          "20151116000427"
+        ],
+        "recordId": "017670.KS:2015:11014",
+        "reportCode": "11014",
+        "reportName": "3분기",
+        "statement": "BS",
+        "stockCode": "017670",
+        "ticker": "017670.KS",
+        "unitRef": "KRW",
+        "zipSha256": "a366170be59c34b04c01b372d0719467c7cfad27feeebd6c827b750b28188170"
+      }
+    },
+    {
+      "candidateValue": "2220721190007.0",
+      "classification": "SOURCE_UNAVAILABLE",
+      "identity": "033780.KS:2015:11014:liabilities",
+      "reason": "BLOCKED_ON_SOURCE_ACCESS: original ZIP bytes unavailable",
+      "sampleItem": {
+        "account": "부채총계",
+        "availableFrom": "2015-11-16",
+        "basis": "CFS",
+        "contextRef": "CFY2015eTQA_ifrs_ConsolidatedAndSeparateFinancialStatementsAxis_ifrs_ConsolidatedMember",
+        "corpCode": "00244455",
+        "currency": "KRW",
+        "decimals": "0",
+        "element": "Liabilities",
+        "family": "liabilities",
+        "fiscalYear": 2015,
+        "identity": "033780.KS:2015:11014:liabilities",
+        "receiptNos": [
+          "20151116001372"
+        ],
+        "recordId": "033780.KS:2015:11014",
+        "reportCode": "11014",
+        "reportName": "3분기",
+        "statement": "BS",
+        "stockCode": "033780",
+        "ticker": "033780.KS",
+        "unitRef": "KRW",
+        "zipSha256": "e8b8ecf245f4c8f734ec2c3e9c0cc002ec0225b77854b2fac145eb57e5236be1"
+      }
+    }
+  ],
+  "sampleSha256": "590513ede1c8bd06d701f22f4b1aa01bcf8b004aa30b9410540865696e863e70",
+  "sampleSize": 60,
+  "sourceAccess": {
+    "reason": "DART_API_KEY absent",
+    "status": "BLOCKED_ON_SOURCE_ACCESS"
+  },
+  "sourceCommit": "fb6e83743fd8cdba647d1522a4645b662a9d5647",
+  "sourceConfidence": "CANDIDATE_UNCONFIRMED",
+  "startingMain": "d8e3caddb8a007cfd9842eedd5e751e054d267e4",
+  "startupDeviation": "Initial keyword paragraph sanitizer leaked one unrelated historical performance narrative. No result artifact or investment outcome workflow was opened/executed. No leaked information enters frame, algorithm, thresholds, comparisons or verdict. Replaced with fail-closed known-command extraction. Do not claim zero outcome exposure.",
+  "study": "kr-original-xbrl-value-validation-v1",
+  "verdict": "BLOCKED"
+}
