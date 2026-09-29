@@ -1,0 +1,895 @@
+{
+  "baseMainCommit": "6ed82022c5ea11fe07a1cd7169cc9d01145ef005",
+  "baselineLadder": {
+    "B0": "training date-weighted mean gross relative return (net-event prevalence separately)",
+    "B1": "predicted gross relative return identically zero; descriptive",
+    "B2": "Ridge alpha 10 on relative126 only, same transform and weight convention",
+    "B3": "Ridge alpha 10 on the six non-accounting features; descriptive attribution",
+    "B4": "Ridge alpha 10 on the full frozen registry for the cell; the SOLE primary expected-return model",
+    "B5": "the frozen shallow HGB on exactly B4's inputs; complementary, cannot rescue a failed claim",
+    "H21": "no accounting field is registered, so B3 and B4 are one fitted predictor; the accounting comparison is NOT_APPLICABLE; no duplicate fit",
+    "rule": "all rungs on the same dates, universe, maturity rule and snapshot; an attribution ladder, never a competition"
+  },
+  "benchmarks": {
+    "KR": "069500.KS"
+  },
+  "blockedRegions": {
+    "US": {
+      "designBlockerIdsFromV3": [
+        "US_DELISTED_MEMBER_HISTORY_ABSENT",
+        "US_PANEL_SYMBOL_IDENTITY_UNVERIFIED",
+        "US_NO_STRUCTURAL_RESTRICTED_WINDOW",
+        "US_EXIT_IDENTITY_UNRESOLVED",
+        "KR_TERMINATED_NAME_DIVIDEND_LINEAGE_ABSENT",
+        "KR_TERMINAL_CONSIDERATION_UNRESOLVED"
+      ],
+      "notSubstituted": "No other US dataset was substituted.",
+      "rule": "The US model is separate from the KR model and is never pooled with it or given a region feature. It is not fitted, scored or reported by this execution. It can be added only by a new preregistered version over a separately repaired and hashed US snapshot; the region count of this study cannot change after results.",
+      "status": "BLOCKED_BY_DATA_INTEGRITY",
+      "why": "No repaired, sealed US survivorship input exists on main. alpha-opportunity-model-v3 identified US_DELISTED_MEMBER_HISTORY_ABSENT (212 of 324 departed identities with no usable history; no priced US panel ever stops trading) and v4 went KR-only for that reason; alpha-opportunity-v3-data-repair-plan lists the repair as unbuilt."
+    }
+  },
+  "claims": {
+    "cells": [
+      {
+        "horizon": 21,
+        "region": "KR"
+      },
+      {
+        "horizon": 126,
+        "region": "KR"
+      }
+    ],
+    "economicCandidate": {
+      "evaluatedOnlyIf": "the primary claim is PASS",
+      "limits": "Conditional candidate-date opportunity, not a financed portfolio. The meaningful-edge margin, order notional, cash ADV and slippage are BLOCKED (design review section 12), so 'net above zero at the assumed friction' is NOT an economically meaningful or investable finding.",
+      "name": "ECONOMIC_CANDIDATE_FINDING",
+      "requires": [
+        "selectedMinusUniverse lower bound > 0",
+        "selectedMean (net) lower bound > 0",
+        "at least 52 defined selected weekly dates",
+        "the point estimate of selectedMean positive in BOTH chronological halves (split at the midpoint of the scheduled evaluation-date list)"
+      ],
+      "statuses": [
+        "ECONOMIC_CANDIDATE_SUPPORTED",
+        "NOT_SUPPORTED",
+        "PERIOD_CONCENTRATED",
+        "DATA_INSUFFICIENT_SELECTED_DATES",
+        "NOT_EVALUATED"
+      ]
+    },
+    "hgb": "descriptive; never substitutes for B4",
+    "overall": {
+      "FAIL_means": "a registered claim is refuted in direction; it closes the registered hypothesis and does not show no signal exists",
+      "PASS_means": "credible incremental model-implied expected return over the tested baselines in this historical, already-exposed sample. It is not production readiness, deployability, proof of alpha, or evidence outside the tested forms.",
+      "rule": "Claim results are authoritative. The overall label uses the calibrated precedence: INFRASTRUCTURE_ERROR, then FAIL, then INCONCLUSIVE, then DATA_INSUFFICIENT, then PASS; PASS requires both claims PASS."
+    },
+    "primary": {
+      "conjuncts": [
+        "pairedMseImprovement(B4 vs B0) lower bound > 0",
+        "pairedMseImprovement(B4 vs B2) lower bound > 0",
+        "rankWeightedSpread(B4) lower bound > 0"
+      ],
+      "intervals": "97.5% two-sided calendar-time self-normalised",
+      "name": "CREDIBLE_INCREMENTAL_EXPECTED_RETURN",
+      "precedenceWithinClaim": [
+        "INFRASTRUCTURE_ERROR",
+        "DATA_INSUFFICIENT",
+        "FAIL",
+        "INCONCLUSIVE",
+        "PASS"
+      ],
+      "status": {
+        "DATA_INSUFFICIENT": "the pre-label gates, the confirmatory depth, the label eligibility counts or any conjunct's interval fail; never remedied by shortening or re-specifying",
+        "FAIL": "at least one conjunct has its UPPER bound strictly below zero (an interval that excludes zero in the wrong direction)",
+        "INCONCLUSIVE": "all conjuncts defined, none refuted, at least one interval contains zero: not established, not refuted",
+        "INFRASTRUCTURE_ERROR": "no complete result exists",
+        "PASS": "all three conjuncts defined and their lower bounds strictly above zero"
+      }
+    },
+    "probability": "Logistic quality is a separate descriptive conclusion; a probability result never gates or rescues a return claim"
+  },
+  "createdAt": "2026-09-29T00:00:00Z",
+  "dataCutoff": "2026-09-14",
+  "decisionsLedger": [
+    {
+      "id": "D1",
+      "kind": "INHERITED",
+      "source": "v4 carriedFromV3",
+      "what": "models, targets, horizons, benchmarks, entry convention, weights, transforms, purge, eligibility, tradability, costs, cutoff"
+    },
+    {
+      "id": "D2",
+      "kind": "PRE_OUTCOME_REVISION",
+      "what": "rankWeightedSpread confirmatory; rankIC descriptive",
+      "why": "calibrated statistic; see orderingStatistic"
+    },
+    {
+      "id": "D3",
+      "kind": "PRE_OUTCOME_REVISION",
+      "what": "calendar-time self-normalised inference replaces the moving-block bootstrap",
+      "why": "ALPHA_INFERENCE_CALIBRATION_V5 PASS; design review R07"
+    },
+    {
+      "id": "D4",
+      "kind": "PRE_OUTCOME_REVISION",
+      "what": "claim structure: predictive conjunction against B0 and B2, then a conditional economic tier; v4's omnibus A/B/C/D/E gates are not carried",
+      "why": "design review R02, R03, R11"
+    },
+    {
+      "id": "D5",
+      "kind": "PRE_OUTCOME_REVISION",
+      "what": "KR accounting input is the frozen snapshot e0199d98...",
+      "why": "the repaired, validated candidate"
+    },
+    {
+      "id": "D6",
+      "kind": "PRE_OUTCOME_REVISION",
+      "what": "ocfToNetIncomePct removed from KR 126; nothing added",
+      "why": "design review section 17 either/or; no new feature construction"
+    },
+    {
+      "id": "D7",
+      "kind": "BLOCKER",
+      "what": "US region excluded from this execution",
+      "why": "no repaired sealed US survivorship input"
+    },
+    {
+      "id": "D8",
+      "kind": "INHERITED",
+      "what": "coverage gate and READY-fold start rule",
+      "why": "v4 walkForward; the H126 start year is a pre-label input fact"
+    }
+  ],
+  "dependencyClosure": {
+    "entryPoints": [
+      "scripts/run_alpha_opportunity_model_v5.py"
+    ],
+    "method": "static closure over pipeline imports, top-level and function-level, recomputed on every load; sealed set must equal closure + sealedDataInputs"
+  },
+  "dependencyHashes": {
+    "docs/results/alpha-opportunity-model-v3-survivorship-audit.json": "f0d9ed09880ffb75c6cc698dbb001e6f6879dee1991ede6ff6d365cc50f22902",
+    "docs/results/alpha-opportunity-model-v4-eligibility-policy.json": "f5fdc9c47a2873e454796c0bc50b82c43fa89455984201c4ae5eaed8189f6efd",
+    "pipeline/__init__.py": "187da1ad9a148da44035f9cf25f7cb094c45afe53d3f445ba62392797972dede",
+    "pipeline/alpha_inference_calibration_v1.py": "87a6990fd6fc5217824ee00205ee247abe88006a2445d41b5a6086709f551186",
+    "pipeline/alpha_inference_calibration_v3.py": "5afa9a03dbfb5343be522d282a1b2050cbbd01722dc7b8eae1e6e06b55c2bf13",
+    "pipeline/alpha_inference_calibration_v4.py": "024231e1adeeb4d29ea047d187eb7eb5478fd21c442991bd1c8963d6a38cd601",
+    "pipeline/alpha_inference_mc_decision.py": "6d131e20e2bcc212247a95fce2c5f733faa7f1624991b364d9fea96b4962f61e",
+    "pipeline/alpha_opportunity_spec.py": "3d7150c2f62dbd8184ed2f3885828e93c1ba64d8ffe3695b0b5716641734c58e",
+    "pipeline/alpha_opportunity_v3_spec.py": "1c11c306f9f27a8e69b985d02bfb3bffaf691001c27ac49e6b21266dd315c162",
+    "pipeline/alpha_opportunity_v5_spec.py": "970dab4293b4664940aece7c76498b6436862dcec7e9726a7b26168ca565de81",
+    "pipeline/dart_fundamentals.py": "5faad514e864d199a1eb9db41fbb182ab9b4a73a0e7179e7f56ac99b387e579b",
+    "pipeline/kr_repaired_accounting_snapshot.py": "b5b225e8a1d21b1516801c0ced1ef2164189867a457df1e0a51cd8ec95dd63ea",
+    "research_specs/alpha-inference-calibration-v4.json": "012e43177b8e8ec7143eff30d7280c4cf8015b32b464bcddd87c09f75c984a5d",
+    "research_specs/alpha-inference-calibration-v5.json": "b32e1fad5f06ad61e11fb80801b8ba833f1b26d1a3a95233e48395d50a6bf5cc",
+    "research_specs/alpha-opportunity-model-v1-features.json": "72f52c9c95d4045ba48c33980ad43f0e4df8bc072cbcc2b099a1c6f503323895",
+    "research_specs/alpha-opportunity-model-v1.json": "4c185128f3fc78ee17fcd4afe875ce3a1ed471ab5dec8dfdfadefda33c469cc4",
+    "research_specs/alpha-opportunity-model-v1.sha256": "8ae32e45708bbf5c01b999641f3f3d0dc4cba8b33a2d3c598dcbbcc77b60f010",
+    "research_specs/alpha-opportunity-model-v2.json": "f9514c0f5e7ef5522d50f57aa579b7a08b5b62ee6026a8fd4941cb44f5a8bf7a",
+    "research_specs/alpha-opportunity-model-v2.sha256": "2b400b8adf6edd4a97ed206abc089eba70fd5cfc9a5bf9094cedbe88058a79e4",
+    "research_specs/alpha-opportunity-model-v3.json": "319b450e97878bc0095301775a30f0d92d789680c78fd608e9c68bca4fb19f9b",
+    "research_specs/alpha-opportunity-model-v3.sha256": "9e23f25454a731a6cd53909a463f8d1ee5be557606c13c33a66a55b43ad81591",
+    "research_specs/alpha-opportunity-model-v4.json": "49296a9221993066e54632ef5effbcd07823467a49991176ee4e20e97981373e",
+    "research_specs/alpha-opportunity-model-v4.sha256": "4edae95da91360189b7005626b1aeb8f377fc8905f72910d0dd109fe07462122",
+    "research_specs/kr-repaired-accounting-snapshot-v1.json": "8dbae2203e1b809060100845f4571016e71fbc78cc09c1b52d9edeb46d38f331",
+    "scripts/run_alpha_opportunity_model_v5.py": "4448314f4cec7997882ad391ba6022118e4c37b3d419f5a18cbf9a4b6e5bcd2a"
+  },
+  "designBlockers": [],
+  "executionHarness": {
+    "expectedFiles": [
+      "pipeline/alpha_opportunity_v5_execution.py",
+      "scripts/execute_alpha_opportunity_model_v5.py"
+    ],
+    "status": "NOT_BUILT_IN_THIS_PR",
+    "why": "Execution code is kept outside the sealed closure, as v4's was, so adding a reviewed harness does not rewrite this preregistration. It must build labels, folds, the B0-B5 fits, the statistics above and the calibrated interval by calling the frozen calibration engine, and must ship its own synthetic tests before the one authorized run."
+  },
+  "executionRule": {
+    "afterASubstantiveResult": "A complete PASS, FAIL, INCONCLUSIVE or DATA_INSUFFICIENT artifact closes this preregistration. No reseeding, threshold change, feature change, model change, horizon change, benchmark change, universe change or rerun after seeing it. A defect found afterwards is a disclosed amended exploratory analysis; the defective run is preserved.",
+    "attemptLedger": "every attempt and artifact is kept",
+    "authorizedExecutions": 1,
+    "onFail": "the registered hypothesis is closed; no switch to HGB, no new horizon, no lowered criteria",
+    "onPass": "freeze the candidate mapping for prospective observation with a data-sufficiency and error-spending rule set before collection; no automatic production or deployment",
+    "retry": "only when the run produced no complete artifact or reported INFRASTRUCTURE_ERROR, after an outcome-independent repair documented in the result record",
+    "verifyBeforeOutcomes": [
+      "the ref is main and the protocol digest equals the sealed digest",
+      "the dependency closure equals the sealed set and every sealed file hash matches",
+      "v1-v4 seals unchanged; inherited values unchanged",
+      "the KR accounting snapshot content hash, candidate identity and per-shard blob identity match, and regeneration is byte-identical",
+      "the sealed raw input blobs at the pinned signal-history commit match",
+      "the calibrated inference spec and engine file hashes match",
+      "the execution snapshot of the KR terminal-action foundation is frozen and only ever improves (v4 executionDataVersioning)",
+      "pre-label gates run BEFORE any label is built, with call counters at zero and spies proving no outcome-reading function ran (the lesson of the v4 executions)"
+    ],
+    "when": "only from merged main, only after the separately reviewed execution harness has merged, with the operator's explicit authorization",
+    "where": "GitHub Actions workflow 'Alpha opportunity model v5 execution' (alpha-opportunity-model-v5-execution.yml), workflow_dispatch, refuses any ref but main"
+  },
+  "horizons": [
+    21,
+    126
+  ],
+  "immutableVersion": "5.0.0",
+  "inference": {
+    "calibration": {
+      "U1CriticalValue": 66.57,
+      "confirmatoryStatistics": [
+        "dateMean",
+        "selectedMean",
+        "selectedMinusUniverse",
+        "pairedMseImprovement",
+        "rankWeightedSpread"
+      ],
+      "contract": "ALPHA_INFERENCE_CALIBRATION_V5",
+      "descriptiveStatistics": [
+        "rankIC"
+      ],
+      "engineFiles": {
+        "pipeline/alpha_inference_calibration_v1.py": "87a6990fd6fc5217824ee00205ee247abe88006a2445d41b5a6086709f551186",
+        "pipeline/alpha_inference_calibration_v3.py": "5afa9a03dbfb5343be522d282a1b2050cbbd01722dc7b8eae1e6e06b55c2bf13",
+        "pipeline/alpha_inference_calibration_v4.py": "024231e1adeeb4d29ea047d187eb7eb5478fd21c442991bd1c8963d6a38cd601",
+        "pipeline/alpha_inference_mc_decision.py": "6d131e20e2bcc212247a95fce2c5f733faa7f1624991b364d9fea96b4962f61e"
+      },
+      "formalResult": {
+        "artifactId": 11006375565,
+        "artifactZipSha256": "4cbc04a2ebb343fd323d2fa8eae7ed8e1b7ce3b424c331764693f15c3fb802f2",
+        "cells": 24,
+        "failedCells": 0,
+        "mainCommit": "d8e3caddb8a007cfd9842eedd5e751e054d267e4",
+        "primaryStatus": "PASS",
+        "provenance": "read from the GitHub Actions run and job log; the artifact zip was not downloaded and the repository carries no committed v5 calibration report. Closed: not rerun.",
+        "scope": "synthetic null size and coverage of the interval only; it does not establish Alpha, stationarity of real returns, or power",
+        "specSha256": "b32e1fad5f06ad61e11fb80801b8ba833f1b26d1a3a95233e48395d50a6bf5cc",
+        "workflowRun": 36499870415
+      },
+      "nominalCoverage": 0.975,
+      "predecessor": {
+        "contract": "ALPHA_INFERENCE_CALIBRATION_V4",
+        "result": "INCONCLUSIVE (22 PASS, 2 INCONCLUSIVE, 0 FAIL), closed"
+      },
+      "specFileSha256": "b32e1fad5f06ad61e11fb80801b8ba833f1b26d1a3a95233e48395d50a6bf5cc",
+      "specPath": "research_specs/alpha-inference-calibration-v5.json"
+    },
+    "confidence": {
+      "claimTwoSidedAlpha": 0.025,
+      "familywiseAlpha": 0.05,
+      "multiplicity": "Bonferroni over the two KR horizon primary claims. Every confirmatory statistic in a claim is read at its 97.5% interval and a claim is a conjunction, so no statistic is a separate opportunity to succeed.",
+      "nominalCoverage": 0.975,
+      "primaryClaims": 2
+    },
+    "method": "CALENDAR_TIME_ATTRIBUTION_SELF_NORMALIZED",
+    "minimumConfirmatoryDepth": {
+      "126": {
+        "signalWeeks": 312
+      },
+      "21": {
+        "signalWeeks": 78
+      },
+      "meaning": "the number of scheduled weekly signal dates in the evaluation calendar; fewer is DATA_INSUFFICIENT and is never unlocked by a different interval"
+    },
+    "notInherited": "the v4 moving-block bootstrap (26-week blocks, 2,000 draws, seed 42, 98.75%) is replaced by the calibrated calendar-time self-normalised interval; there is no bootstrap seed, block length or draw count in this study"
+  },
+  "inherited": {
+    "benchmarks": {
+      "note": "KR 069500.KS",
+      "sourcePointer": "benchmarks",
+      "sourceSpec": "research_specs/alpha-opportunity-model-v4.json",
+      "value": {
+        "KR": "069500.KS"
+      },
+      "valueSha256": "7c9e052ded3fcfda26af0ae0d393003d91144738ed61d22cb59633851d0cc82a"
+    },
+    "dataCutoff": {
+      "note": "no data after this date",
+      "sourcePointer": "dataCutoff",
+      "sourceSpec": "research_specs/alpha-opportunity-model-v4.json",
+      "value": "2026-09-14",
+      "valueSha256": "f5b6fdf5f4ebf78aa4b62760754b27a137561c56ac2127d020d580b5d9491fa8"
+    },
+    "decisionContract": {
+      "note": "descriptive expected-value classes; no hurdles, no portfolio layer",
+      "sourcePointer": "decisionContract",
+      "sourceSpec": "research_specs/alpha-opportunity-model-v4.json",
+      "value": {
+        "alphaExistenceRule": "expectedNetAlpha > 0",
+        "expectedValueClasses": [
+          "POSITIVE_EXPECTED_ALPHA",
+          "BENCHMARK_EXPECTED_VALUE_PREFERRED",
+          "NOT_TRADABLE",
+          "UNMEASURED"
+        ],
+        "fixedTopN": null,
+        "investedFraction": null,
+        "lowerBoundHurdle": null,
+        "minimumAlphaHurdle": null,
+        "onlyConditions": [
+          "PIT-valid inputs",
+          "a finite prediction",
+          "the PIT tradability guard carried from v2"
+        ],
+        "opportunitySurface": "every POSITIVE_EXPECTED_ALPHA name, ordered by expectedNetAlpha for downstream analysis only; zero names is NO_POSITIVE_EXPECTED_ALPHA",
+        "orderNotional": null,
+        "outsideOption": {
+          "costCharged": 0.0,
+          "expectedNetAlpha": 0.0,
+          "instrument": "own regional benchmark (KR 069500.KS, KODEX 200, as-traded forward total-return close via pipeline.korea_prices)"
+        },
+        "portfolioLayer": "SEPARATE_AND_UNDEFINED_HERE: risk preference, whether a positive-EV low-win-rate name is taken, confidence weighting, Kelly, inverse volatility, target volatility, dependence and concentration are never part of alpha existence",
+        "portfolioValue": null,
+        "probability": {
+          "field": "probabilityNetOutperform",
+          "meaning": "P(R_i - R_b - cost > 0) from the separately fitted Logistic head",
+          "notA": "median or any quantile of the Ridge head's prediction: the two heads are separate models, not one coherent predictive distribution",
+          "role": "DESCRIPTIVE_ONLY_NEVER_A_VETO",
+          "states": [
+            "EXPECTATION_POSITIVE_OUTPERFORM_PROBABILITY_ABOVE_HALF",
+            "EXPECTATION_POSITIVE_OUTPERFORM_PROBABILITY_NOT_ABOVE_HALF",
+            "EXPECTATION_NOT_POSITIVE_OUTPERFORM_PROBABILITY_ABOVE_HALF",
+            "EXPECTATION_NOT_POSITIVE_OUTPERFORM_PROBABILITY_NOT_ABOVE_HALF",
+            "PROBABILITY_UNAVAILABLE"
+          ]
+        },
+        "probabilityHurdle": null,
+        "question": "Is E[R_i - R_benchmark(i)] - roundTripCost_i > 0 ?",
+        "regionQuota": null,
+        "uncertainty": {
+          "fittedValue": {
+            "fields": [
+              "expectedNetAlphaLower",
+              "expectedNetAlphaUpper",
+              "probabilityLower",
+              "probabilityUpper"
+            ],
+            "kind": "FITTED_VALUE_SAMPLING",
+            "notA": "individual-return prediction interval",
+            "role": "DESCRIPTIVE_ONLY_NEVER_A_VETO",
+            "source": "alpha_opportunity_model.prediction_uncertainty: 200 training-only moving-block refits, 5th/95th percentiles of the refitted prediction",
+            "states": [
+              "FITTED_INTERVAL_ENTIRELY_ABOVE_OUTSIDE_OPTION",
+              "FITTED_INTERVAL_SPANS_OUTSIDE_OPTION",
+              "FITTED_INTERVAL_ENTIRELY_AT_OR_BELOW_OUTSIDE_OPTION",
+              "FITTED_INTERVAL_UNAVAILABLE"
+            ]
+          },
+          "predictive": {
+            "field": "predictiveResidualRms",
+            "kind": "PREDICTIVE_OUTCOME_DISPERSION",
+            "role": "DESCRIPTIVE_ONLY_NEVER_A_VETO",
+            "source": "alpha_opportunity_model.matured_residual_scale: equal-date RMS of realised minus predicted over past matured out-of-fold predictions"
+          }
+        }
+      },
+      "valueSha256": "bb2872f0e1c5453f92d6132a36a20a016f4db3b371427e87fac1c6645d4f2fce"
+    },
+    "eligibilityPolicy": {
+      "note": "label eligibility for terminated KR securities, identity-blind by signature",
+      "sourcePointer": "eligibilityPolicy",
+      "sourceSpec": "research_specs/alpha-opportunity-model-v4.json",
+      "value": {
+        "appliesTo": "label_eligibility is defined for ANY KR security; the SEALED completeness evidence it reads today only exists for the 22 KR securities named in alphaOpportunityV3SurvivorshipAudit's krTerminations list (a fact about which securities this repository has audited, not a fact the function branches on) -- for any other KR security `completeness=None` and a non-crossing window is ELIGIBLE, deferring to whatever total-return construction pipeline.korea_prices already applies to every KR security, exactly as v1-v3 already assumed for the whole KR universe. This is not a double standard: the 22 are excluded from PRODUCTION's implicit ELIGIBLE-by-default only because this repository has POSITIVELY MEASURED a gap for them (ZERO Yahoo dividend rows across their entire observed lives, against 215/238 dividend events on continuing names -- alphaOpportunityV3SurvivorshipAudit), not because they are the ones that terminate.",
+        "computedResultAsOfThisSeal": {
+          "artifactPath": "docs/results/alpha-opportunity-model-v4-eligibility-policy.json",
+          "artifactSha256": "f5fdc9c47a2873e454796c0bc50b82c43fa89455984201c4ae5eaed8189f6efd",
+          "note": "Computed by scripts/audit_alpha_opportunity_v4_kr_eligibility.py against the real sealed evidence -- not asserted. The NUMERIC result is unchanged from contract V1 (all 22 still excluded on both window scopes today) because the underlying per-security dividend/terminal-action evidence is exactly as incomplete as it was; what changed is that the MECHANISM computing this result no longer reads termination-list membership at all. Re-running this script against a repaired foundation would change this result without any change to the policy code or this spec.",
+          "preTerminationWindows": {
+            "dominantReasonCode": "KR_DIVIDEND_EXDATE_LINEAGE_UNRESOLVED",
+            "eligible": 0,
+            "ineligible": 22
+          },
+          "terminationCrossingWindows": {
+            "eligible": 0,
+            "ineligible": 22,
+            "reasonCounts": {
+              "KR_TERMINAL_ACTION_CHAIN_UNRESOLVED": 10,
+              "KR_TERMINAL_CONSIDERATION_UNRESOLVED": 10,
+              "KR_TERMINATION_TYPE_UNRESOLVED": 2
+            }
+          }
+        },
+        "contract": "ALPHA_OPPORTUNITY_V4_KR_LABEL_ELIGIBILITY_V2",
+        "correctionAppliedInThisRevision": "The FIRST version of this policy (contract V1) branched on whether a security's code was in a `known_terminated_codes` set and, if so, excluded EVERY observation on it (pre- and post-termination) once its exDateSemanticsResolved read BLOCKED. That used the security's eventual termination status -- an outcome only knowable in hindsight -- as the gate deciding whether extra scrutiny applied to an observation whose own target window never touches the termination event, which is a future-survival-conditioned selection rule (a bounded, disclosed, but real instance of the same KIND of defect the US leg's NO_TERMINATED_SECURITY_IN_SAMPLE already named, even though the US case is structurally worse -- 0% coverage vs. a proven per-security data gap here). CONTRACT V2 removes `known_terminated_codes` and the security's own code from the eligibility FUNCTION entirely: `label_eligibility` takes only `completeness` (the sealed evidence row, or None if never audited) and `window_crosses_termination` (a pure calendar fact about the OBSERVATION's own target window, legitimate because a forward-return target is a claim about a bounded future interval by construction, exactly like the pre-existing MISSING_FORWARD_PRICE_OR_DELISTING check). Two securities with identical completeness evidence and the same window-crossing fact now receive IDENTICAL treatment regardless of whether one of them is known to terminate -- proved by tests/test_alpha_opportunity_v4.py's future-termination-invariance and future-metadata-mutation-invariance tests, which vary a synthetic terminates-later label while holding completeness fixed and assert the eligibility call does not move.",
+        "knownConsequence": "v4's labeled sample excludes all 22 audited KR securities' observations entirely, at every signal date, under current evidence -- for a reason (a proven, per-security, zero-Yahoo-dividend-evidence data gap) that does not read termination status. This is NOT the same defect alpha-opportunity-model-v3 found in the US leg (NO_TERMINATED_SECURITY_IN_SAMPLE, where the panel never priced a departed name at all -- 0% coverage, structurally invisible): here the 22 names ARE priced, ARE members of the PIT KR universe on their live dates, and DO still enter feature computation and cross-sectional context -- only their own forward-return LABEL is withheld, for a disclosed, quantified, bounded and shrinking fraction of member-dates (alphaOpportunityV3SurvivorshipAudit: 3.7366% of tradable KR member-dates, 7.93% in 2013 declining to 0.76% in 2025). It is still a real, disclosed survivorship-adjacent limitation: v4's labeled sample never observes the realised forward outcome of a name whose OWN dividend evidence this repository has already found incomplete, which happens (for research-coverage reasons, not by rule) to be exactly the names that also terminate. `requiredDiagnostics.exclusionsClusterAroundTerminalEventsCheck` in evaluationPreregistration requires the future execution to publish this quantitatively rather than let it pass unremarked, and evaluationPreregistration's own verdict vocabulary must be read alongside this caveat, never as an unconditional statement about KR delisting risk.",
+        "module": "pipeline/alpha_opportunity_v4_eligibility.py",
+        "neverAllowed": [
+          "using a security's own eventual termination status, or list membership derived from it, as an input to any eligibility decision about a window that does not itself cross the termination event",
+          "treating an unresolved exchange ratio or successor as final",
+          "carrying the last traded price forward through a termination",
+          "inventing an ex-date from a record date or any other computed rule",
+          "assuming zero recovery for an unresolved termination",
+          "excluding or including an observation based on its realised return magnitude",
+          "using today's KR universe membership as a historical one",
+          "a new exclusion rule invented after an outcome is seen"
+        ],
+        "reasonCodes": [
+          "KR_DIVIDEND_BASIS_AUDIT_NOT_PERFORMED_DEFERS_TO_PRODUCTION",
+          "KR_DIVIDEND_EXDATE_LINEAGE_UNRESOLVED",
+          "KR_SUCCESSOR_HAS_NO_PRICE_PANEL",
+          "KR_SUCCESSOR_IDENTITY_UNRESOLVED",
+          "KR_TERMINAL_ACTION_CHAIN_UNRESOLVED",
+          "KR_TERMINAL_CONSIDERATION_UNRESOLVED",
+          "KR_TERMINATION_CROSSING_WINDOW_NO_COMPLETENESS_EVIDENCE",
+          "KR_TERMINATION_TYPE_UNRESOLVED",
+          "KR_TOTAL_RETURN_SERIES_NOT_YET_BUILT",
+          "PRE_TERMINATION_WINDOW_TOTAL_RETURN_BASIS_RESOLVED",
+          "TERMINATION_WINDOW_FULLY_RESOLVED"
+        ],
+        "rule": "Non-crossing window (the target's own exit session is at or before the security's last traded session, or the security never terminates): ELIGIBLE if never audited (defers to production); if audited, ELIGIBLE only when exDateSemanticsResolved reads READY AND a total-return series has actually been spliced into the price panel used for labels (an engineering step this PR does not perform, so this is INELIGIBLE for every audited security today) -- never because the security is known to terminate. Crossing window (the target's own exit session is after the security's last traded session): requires terminationTypeResolved, terminalConsiderationResolved, successorResolvedWhereRequired (where the resolved type requires a successor) and terminalActionChainResolved all READY, and -- where a successor is required -- that successor's own price panel. This branch legitimately depends on the termination event because that event is INSIDE the target window being constructed.",
+        "universeWideCorroboration": {
+          "interpretation": "224 of 226 (99.1%) DART-confirmed dividend-year rows across 25 outcome-blind-selected continuing names show at least one Yahoo dividend event in the same window; ZERO of the 25 show the specific all-years-zero pattern all 22 audited terminated names show. 010140.KS has no DART fiscal-year rows to check at all in this sample -- a data-absence case, category C (unknown from this evidence), neither counted as corroborating nor contradicting, and never assumed to be a genuine zero-dividend company or a vendor gap.",
+          "measured": {
+            "continuingNamesSampled": 25,
+            "continuingNamesShowingTheFullBlackoutPatternAllYearsZero": [],
+            "continuingNamesWithNoDartFiscalYearRowsToCheck": [
+              "010140.KS"
+            ],
+            "rowsWithAtLeastOneYahooEventInWindow": 224,
+            "rowsWithNoYahooEventInWindow": 2,
+            "tickerFiscalYearRowsWithADartAmount": 226
+          },
+          "purpose": "Not a full universe audit. Corroborates that treating `completeness is None` (the 213 continuing KR names never audited for dividend-basis completeness) as ELIGIBLE-by-deferral is an evidence-supported default, not a blind trust, and that the near-total Yahoo dividend blackout specific to the 22 audited terminated names is a real, distinctive, measured pattern rather than an artifact of asymmetric scrutiny alone.",
+          "scopeLimit": "213 of 238 continuing KR names, and all 118 REMOVED_FROM_INDEX_STILL_TRADING departed names, remain unaudited by ANY dividend-completeness check under either standard (DART ex-date confirmation or this lighter amount cross-validation). This is a disclosed, bounded research-coverage gap, never claimed to be closed by this corroboration sample, and a full-universe audit is separate, additive future data-foundation work, out of scope for this preregistration.",
+          "selectionMechanism": "pipeline.kr_continuing_dividend_sample.select_continuing_sample: every code ranked inside the top-120 by market cap on at least one monthly snapshot, EXCLUDING the 22 terminated securities under study, ranked by how many snapshot dates it held that rank (most persistent first). Nothing about dividend completeness enters this ranking rule -- it was built to validate the DART-derivation methodology generally, before this correction ever needed it as corroborating evidence.",
+          "source": {
+            "field": "continuingNameReconciliation.fiscalYearAmountCrossValidation.byTicker",
+            "path": "docs/results/kr-dividend-amount-lineage-v2.json",
+            "shaAsOfThisSeal": "2c3c7d93159b1959f1358d0f4df0a78e14035ad916d53e8fa3356155c311e621"
+          }
+        }
+      },
+      "valueSha256": "7827dc2720caf34b66b0af9a8924a915a30dfa413eae1c9dbae0b854657abeaa"
+    },
+    "executionDataVersioning": {
+      "note": "policy sealed / foundation improves monotonically / execution snapshot frozen once outcome computation begins",
+      "sourcePointer": "executionDataVersioning",
+      "sourceSpec": "research_specs/alpha-opportunity-model-v4.json",
+      "value": {
+        "rationale": "Separates three different promises that a single byte-pin conflated in the first sealed version: what the POLICY guarantees (immutable), what the FOUNDATION is allowed to do (improve monotonically, checked), and what one EXECUTION RUN actually used (frozen once, checked again if read twice, never outcome-selected).",
+        "tiers": {
+          "executionSnapshot": "whichever current foundation state a specific execution run reads MUST be frozen -- hashed via pipeline.alpha_opportunity_v4_eligibility.freeze_execution_snapshot and recorded immutably in that run's own output report -- exactly once, BEFORE the run constructs its first label. The run must call assert_snapshot_matches_frozen_hash before any later step that reads the foundation again, and must never select among candidate snapshots, or re-read a newer one mid-run, based on which produces a more favourable result. Once outcome computation starts, the execution dataset/version does not change.",
+          "foundation": "the KR terminal-action reconstruction artifacts may improve monotonically before an execution starts -- pipeline.alpha_opportunity_v4_eligibility.assert_foundation_not_regressed proves a later snapshot only ever adds READY fields relative to the snapshot cited in sourceFoundationCitation, never removes one.",
+          "policy": "sealed by this preregistration; pipeline/alpha_opportunity_v4_eligibility.py's decision logic and reason codes are frozen and verified by dependencyHashes on every load."
+        }
+      },
+      "valueSha256": "bc74b84992ba0119237279391d53d4dd2c3bdfd4f1beb07a4a90049e1249ff45"
+    },
+    "featureRegistry": {
+      "note": "feature source registry path",
+      "sourcePointer": "carriedFromV3.featureRegistry",
+      "sourceSpec": "research_specs/alpha-opportunity-model-v4.json",
+      "value": "research_specs/alpha-opportunity-model-v1-features.json",
+      "valueSha256": "e719135a91431e42062ad4d62139e07e5885004f0461c7d53815d9d79445ea04"
+    },
+    "horizons": {
+      "note": "21 and 126 sessions",
+      "sourcePointer": "horizons",
+      "sourceSpec": "research_specs/alpha-opportunity-model-v4.json",
+      "value": [
+        21,
+        126
+      ],
+      "valueSha256": "728e76fbc6d6afa61cac0c02085054dac0764c16e61169f4159a286f3ff1eeb2"
+    },
+    "models": {
+      "note": "Ridge alpha 10 (lsqr) primary; Logistic C 1; shallow HGB; no search; threads 1",
+      "sourcePointer": "carriedFromV3.models",
+      "sourceSpec": "research_specs/alpha-opportunity-model-v4.json",
+      "value": {
+        "baseline": "training date-weighted prevalence / training date-weighted mean relative return",
+        "histGradientBoosting": {
+          "early_stopping": false,
+          "l2_regularization": 10.0,
+          "learning_rate": 0.05,
+          "max_depth": null,
+          "max_iter": 100,
+          "max_leaf_nodes": 7,
+          "min_samples_leaf": 50,
+          "random_state": 42
+        },
+        "interpretation": "LINEAR primary and the only family that produces decisions; SHALLOW_CHALLENGER complementary interaction evidence only, never a decision, never a rescue, never a winner",
+        "logistic": {
+          "C": 1.0,
+          "max_iter": 2000,
+          "penalty": "l2",
+          "random_state": 42,
+          "solver": "lbfgs",
+          "tol": 0.0001
+        },
+        "ridge": {
+          "alpha": 10.0,
+          "solver": "lsqr",
+          "tol": 1e-06
+        },
+        "search": false,
+        "threads": 1
+      },
+      "valueSha256": "24f24c6ba78d4bd61f6142d64412686a8330c9e9a3625bb8bbdcf41eef74afee"
+    },
+    "targets": {
+      "note": "gross benchmark-relative total return; next-session-close entry; H sessions",
+      "sourcePointer": "carriedFromV3.targets",
+      "sourceSpec": "research_specs/alpha-opportunity-model-v4.json",
+      "value": {
+        "beatBenchmarkNet_H": "1 iff forwardRelativeReturn_H > roundTripCost(region, signal date) else 0",
+        "entry": "next regional exchange session CLOSE after information date",
+        "exit": "H additional regional exchange sessions after entry",
+        "forwardRelativeReturn_H": "(stock Close[exit]/Close[entry]-1) - (regional benchmark Close[exit]/Close[entry]-1)",
+        "holidays": "replay_calendar pinned exchange-calendars+KR patches",
+        "implementation": "alpha_opportunity_v2_evaluation.target_from_sessions (v1 target_at semantics, precomputed calendar; test-proven equal)",
+        "informationTimestamp": "end of signal calendar day in regional timezone; date-only filings strictly earlier",
+        "missingOrDelisted": "exact endpoints only; unresolved endpoint => MISSING_FORWARD_PRICE_OR_DELISTING, never zero, forward fill, nearest date or last price. Separately, pipeline.alpha_opportunity_v4_eligibility.label_eligibility additionally gates every KR observation (not only the 22 audited terminated securities -- see eligibilityPolicy): a non-crossing window is INELIGIBLE with reason KR_DIVIDEND_EXDATE_LINEAGE_UNRESOLVED or KR_TOTAL_RETURN_SERIES_NOT_YET_BUILT only when this security's OWN audited dividend evidence is incomplete, never because the security is known to terminate; a crossing window is additionally gated on the full terminal-action chain. These are different reason codes from MISSING_FORWARD_PRICE_OR_DELISTING because the failure mode is a total-return basis gap or an unresolved corporate action, not a missing price row.",
+        "totalReturn": "replay-v16 forward accumulated distributions/splits, same endpoint basis for stock and benchmark"
+      },
+      "valueSha256": "5b0c10d0bc5311ea8669f040f3a97a94c2f2f6a49026f5cdbe636642de6e97cd"
+    },
+    "tradabilityGuard": {
+      "note": "existing investability rule only; a filter, never a feature",
+      "sourcePointer": "carriedFromV3.tradabilityGuard",
+      "sourceSpec": "research_specs/alpha-opportunity-model-v4.json",
+      "value": {
+        "advRequiredForAlphaResearch": false,
+        "advRequiredForExecutionRealism": "only for a future portfolio layer sizing beyond the small-capital assumption",
+        "notAlphaInput": "tradability is a filter, never a feature or a score; liquidity as predictive information would be a separate registered feature and is not one here",
+        "rule": "PIT universe member on the signal date AND a positive finite sealed close AND positive finite sealed share volume on every one of the 20 regional exchange sessions ending on the signal date (calendar reindex, no fills)",
+        "universeFloor": "KR strictly-earlier KRX top-120 by market cap",
+        "volumeUse": "share volume as traded/not-traded evidence only; never multiplied by the forward total-return Close into a fictitious cash ADV",
+        "windowProvenance": "v1's sealed 20-session ADV window, with the unsealed cash-value requirement replaced by traded-at-all evidence",
+        "windowSessions": 20
+      },
+      "valueSha256": "e5d183ecc267e5196210ca4f351f47ccbc8240fd1868eec08ae65ad6ce2774c7"
+    },
+    "transactionCostRule": {
+      "note": "ex-ante signal-date round trip",
+      "sourcePointer": "carriedFromV3.transactionCostRule",
+      "sourceSpec": "research_specs/alpha-opportunity-model-v4.json",
+      "value": "repository benchmark_alpha.REALISTIC_COSTS via portfolio_validation._dated_cost_policy; roundtrip=(2*commissionBps+spreadBps+sellTaxBps)/10000 at signal date, public schedule known then; same ex-ante estimate charged in candidate diagnostics, not a realized portfolio cost simulation",
+      "valueSha256": "4fcc82e069f0efe80012b1705d7bd3dabc7d140faf67186b159b37cb9f8a2ae5"
+    },
+    "transactionCosts": {
+      "note": "dated KR schedule",
+      "sourcePointer": "carriedFromV3.transactionCosts",
+      "sourceSpec": "research_specs/alpha-opportunity-model-v4.json",
+      "value": {
+        "KR": {
+          "commissionBps": 1.5,
+          "sellTaxBps": 20.0,
+          "sellTaxSchedule": [
+            {
+              "effectiveDate": "1900-01-01",
+              "sellTaxBps": 30.0
+            },
+            {
+              "effectiveDate": "2019-06-03",
+              "sellTaxBps": 25.0
+            },
+            {
+              "effectiveDate": "2021-01-01",
+              "sellTaxBps": 23.0
+            },
+            {
+              "effectiveDate": "2023-01-01",
+              "sellTaxBps": 20.0
+            },
+            {
+              "effectiveDate": "2024-01-01",
+              "sellTaxBps": 18.0
+            },
+            {
+              "effectiveDate": "2025-01-01",
+              "sellTaxBps": 15.0
+            },
+            {
+              "effectiveDate": "2026-01-01",
+              "sellTaxBps": 20.0
+            }
+          ],
+          "spreadBps": 8.0
+        }
+      },
+      "valueSha256": "15cdc1026f1201cbc06d126c4a672a361573d95f06b2f305bf733bb511787d26"
+    },
+    "transforms": {
+      "note": "training-only; signed log1p for the accounting growth fields; median/IQR; indicators",
+      "sourcePointer": "carriedFromV3.transforms",
+      "sourceSpec": "research_specs/alpha-opportunity-model-v4.json",
+      "value": {
+        "crossSectionalRank": false,
+        "imputation": "training median plus indicators for every active field; allmissing fields omitted per fold and logged",
+        "nonfinite": "missing",
+        "scaler": "date-weighted training median and IQR; zero IQR -> 1",
+        "signedLog1p": [
+          "assetGrowthPct",
+          "capexIntensityPct",
+          "debtGrowthPct",
+          "ocfToNetIncomePct",
+          "shareCountChangePct"
+        ],
+        "winsorization": false
+      },
+      "valueSha256": "18f4c75fcb6d8a24bf7a4aa686df76ca0e0a7a9f320b1f51517aab6a1e455791"
+    },
+    "uncertainty": {
+      "note": "fitted-value sampling uncertainty; descriptive only, never a veto",
+      "sourcePointer": "carriedFromV3.uncertainty",
+      "sourceSpec": "research_specs/alpha-opportunity-model-v4.json",
+      "value": {
+        "blockDates": 26,
+        "confidenceContraction": false,
+        "implementation": "alpha_opportunity_v2_model.prediction_uncertainty: identical statistic to v1 (same seed, blocks, cluster weights, quantiles) from precomputed date indices; probability head refit on the NET label",
+        "lowerQuantile": 0.05,
+        "meaning": "90% sampling interval for fitted mean/probability; NOT individual return prediction interval",
+        "method": "training moving-block bootstrap refits of both linear heads, complete date clusters; transformer refit each replicate",
+        "minimumTrainingBlocks": 4,
+        "replicates": 200,
+        "residual": "past matured out-of-fold RMS of LINEAR relative-return residuals per fold; DISCLOSED as predictive dispersion for a future portfolio layer; never part of the opportunity decision",
+        "seed": 42
+      },
+      "valueSha256": "597c189b7a01e8a8b9c0e7309b3119a5c4a67c61f03a66f2425641eb79af2039"
+    },
+    "walkForwardBase": {
+      "note": "expanding annual refit, weekly prediction, exact maturity purge, label eligibility; see modifiedFromV4.walkForward for the one change",
+      "sourcePointer": "carriedFromV3.walkForward",
+      "sourceSpec": "research_specs/alpha-opportunity-model-v4.json",
+      "value": {
+        "coverageGate": "KR accounting-fundamental features (ocfToNetIncomePct, assetGrowthPct, debtGrowthPct) are dark 2013-2014 (DART serves from 2015; PIT fundamentals invariants); evaluation gate applies to years 2016 onward, training warmup coverage disclosed, no pre-source imputation claim",
+        "embargo": "exact endpoint maturity purge; no extra arbitrary embargo; training uses past only",
+        "evaluationStart": "first READY annual fold of each horizon cell; every later scheduled fold must be READY or the cell is DATA_INSUFFICIENT",
+        "featureStart": "2013-01-01",
+        "maturity": "outcomeEndDate strictly less than fold cutoff; no label merely started before cutoff",
+        "minimumHistoryMonths": 36,
+        "minimumMaturedDates": 104,
+        "minimumNamesPerDate": 10,
+        "missingTrainingLabels": "unresolved endpoints (MISSING_FORWARD_PRICE_OR_DELISTING, or INELIGIBLE under the v4 eligibility policy) are excluded from TRAINING with counts by reason code",
+        "pendingEvaluation": "exclude dates whose scheduled exit exceeds data cutoff; purely calendar-based, never label-quality based",
+        "prediction": "last KR regional session each calendar week",
+        "refit": "first KR weekly signal date each calendar year; expanding history",
+        "survivorshipEligibility": "an observation on a KR security enters training or evaluation only if pipeline.alpha_opportunity_v4_eligibility.label_eligibility(completeness=..., window_crosses_termination=...) reports ELIGIBLE for that (security, signal date, horizon). `completeness` is the sealed completeness row for the security if this repository has audited its dividend/terminal-action evidence, else None -- audit coverage today is the 22 names in the sealed v3 survivorship audit's krTerminations list, a fact about research coverage, never an input the function reads. `window_crosses_termination` is a pure calendar fact (does this window's own exit session fall after the security's last traded session), computed the same way alpha_opportunity_v2_evaluation.target_from_sessions already decides MISSING_FORWARD_PRICE_OR_DELISTING. Neither a security's own eventual termination nor any other future fact is read by this function for a window that does not itself cross the termination event -- see pipeline/alpha_opportunity_v4_eligibility.py's own docstring and tests/test_alpha_opportunity_v4.py's future-termination-invariance tests. This replaces the v3-inherited 20% gap-tolerance reuse, which was already withdrawn by v3 for a different gate."
+      },
+      "valueSha256": "7a30dab4af63c47826c560b0678b7b3d29f0455361b1f1063d685722eb3d2626"
+    }
+  },
+  "inputs": {
+    "krAccounting": {
+      "candidateIdentitySha256": "af642e7e79e9ba59ac6ee14faf033f4d63887188bab6506845c082e21dc3d1cc",
+      "gitBlobSha1": {
+        "dart-2015.jsonl.gz": "ee23f00aea08bc28548872a8d8153f1afbb53500",
+        "dart-2016.jsonl.gz": "65be7342d1d47bcbcda84db99f218312d2adb03d",
+        "dart-2017.jsonl.gz": "2b0146e9c1b8363fecdc1c3b1af0b21b68c8e237",
+        "dart-2018.jsonl.gz": "2316d0b0125fb207f9c721323c368120ff10428e",
+        "dart-2019.jsonl.gz": "4a41f94a2748256efae16c50b04f30e2d7578b56",
+        "dart-2020.jsonl.gz": "932292695b4906b9b179f5cef506299a43c96c1a",
+        "dart-2021.jsonl.gz": "46ccf6e760fd2d5037ab67fca0ab2a6ebd1f25dc",
+        "dart-2022.jsonl.gz": "056694d86b9cefbd6b62eb44c91a610d6b5a08b0",
+        "dart-2023.jsonl.gz": "8a0dd4f040d37ffb43d6078721d2f9a763e9539d",
+        "dart-2024.jsonl.gz": "78619db28718f2b49f69893057a10ef459e53c12",
+        "dart-2025.jsonl.gz": "b60daa3620adba7374155837cdbdc96def57dd7a",
+        "dart-2026.jsonl.gz": "5caf06224466fcf30cf0d8e412fb50e24f8b94c6"
+      },
+      "manifest": "research_specs/kr-repaired-accounting-snapshot-v1.json",
+      "manifestFileSha256": "8dbae2203e1b809060100845f4571016e71fbc78cc09c1b52d9edeb46d38f331",
+      "rebuildOrAlter": "FORBIDDEN. Any change needs a new snapshot version and a new preregistration.",
+      "recordCount": 9351,
+      "replaces": "ledger/fundamentals/kr/dart-*.jsonl.gz, which v5 never reads",
+      "semanticContract": "docs/kr-repaired-accounting-snapshot-v1.md (KR_ACCOUNTING_SEMANTIC_CONTRACT_V1)",
+      "snapshot": "kr-repaired-accounting-snapshot-v1",
+      "snapshotContentSha256": "e0199d98679357f405de9a95a4091045db814d65af61e2c698af1a70d54fda58",
+      "sourceCommit": "fb6e83743fd8cdba647d1522a4645b662a9d5647"
+    },
+    "prices": "replay-v16 forward accumulated total-return Close panels named by the sealed replay manifest; no other price source",
+    "sealedRaw": {
+      "gitBlobSha1": {
+        "ledger/fundamentals/kr/shares.jsonl.gz": "a515ca2c4f237d688566b45b2f4cc5afd3d6f0fb",
+        "ledger/historical/replay-v16/inputs.json": "76556e948fd89786d846a6275a0bc55f4bb56658",
+        "ledger/universe/kr/krx-universe-2013.jsonl.gz": "e711a6c5e07c89e9b0cf12a94078120ceeb3b9a4",
+        "ledger/universe/kr/krx-universe-2014.jsonl.gz": "395477e6dd72c117615919f850173d2830b2cc1f",
+        "ledger/universe/kr/krx-universe-2015.jsonl.gz": "029bcef52056d4b172d78094779a5eff9c89ff89",
+        "ledger/universe/kr/krx-universe-2016.jsonl.gz": "402910f37a4f75887f8c8f7e501aec1afe90b14d",
+        "ledger/universe/kr/krx-universe-2017.jsonl.gz": "db9b0436c970eb1bf4f2456bab7060432558f6e6",
+        "ledger/universe/kr/krx-universe-2018.jsonl.gz": "9a08628f96aa3aeb5d47b11612d14ab551519abc",
+        "ledger/universe/kr/krx-universe-2019.jsonl.gz": "c1f7990b38b0e17b71c88327b5262c768dcfe16d",
+        "ledger/universe/kr/krx-universe-2020.jsonl.gz": "baf7d4e2609aaaa7091cab087cabdbc5a3c58619",
+        "ledger/universe/kr/krx-universe-2021.jsonl.gz": "c09f60669adf36d81def38dfed6cb0d4dd6c456d",
+        "ledger/universe/kr/krx-universe-2022.jsonl.gz": "a1b303c61dd1d114149c3da51763f1dccb711137",
+        "ledger/universe/kr/krx-universe-2023.jsonl.gz": "024abba6a91153259a8030f6e441497a28c723de",
+        "ledger/universe/kr/krx-universe-2024.jsonl.gz": "a4329587eccc43f015f97524f27a660a6448e263",
+        "ledger/universe/kr/krx-universe-2025.jsonl.gz": "070296ad800a3a57735bbcbaf24f5885d82162e8",
+        "ledger/universe/kr/krx-universe-2026.jsonl.gz": "ccc098c5ce029412a67bf8b85113e0b6a19891dc"
+      },
+      "replayManifestSha256": "f0781292f508a123c234ded6d28aa8e84a0dc3cc29500e14989dc0b68f53b4d2",
+      "scope": "KR dated universe shards, the KR share-count records, and the replay-v16 input manifest; identical blobs to the sealed v3/v4 identity",
+      "signalHistoryCommit": "4ea107ed0cde289f0a049a65ff13d2441a786710",
+      "verification": "blob identity at the pinned commit, before any label"
+    },
+    "universe": {
+      "KR": "strictly earlier KRX monthly ranked top120 snapshot; no current-member union"
+    }
+  },
+  "lineage": {
+    "alpha-opportunity-model-v1": "first opportunity preregistration; never executed",
+    "alpha-opportunity-model-v2": "benchmark-as-outside-option; never executed",
+    "alpha-opportunity-model-v3": "BLOCKED_BY_DATA_INTEGRITY",
+    "alpha-opportunity-model-v4": "KR-only; executed twice defectively then stopped at the pre-label accounting-coverage gate with zero labels (see docs/results); its rank-IC evidence gate and moving-block inference are replaced here, not edited",
+    "alpha-research-design-review-v1": "methodological review; its R02, R03, R07, R11 and R18 proposals are adopted below as explicit pre-outcome revisions",
+    "kr-repaired-accounting-snapshot-v1": "the frozen KR accounting input this study reads"
+  },
+  "modelIds": {
+    "KR": "KR_OPPORTUNITY_MODEL_V5"
+  },
+  "modifiedFromV4": {
+    "features": {
+      "KR": {
+        "126": [
+          "relative126",
+          "acceleration21",
+          "vol63",
+          "logVolumeShock60",
+          "shockPersistence5d",
+          "volumePriceAlignment",
+          "assetGrowthPct",
+          "debtGrowthPct"
+        ],
+        "21": [
+          "relative126",
+          "acceleration21",
+          "vol63",
+          "logVolumeShock60",
+          "shockPersistence5d",
+          "volumePriceAlignment"
+        ]
+      },
+      "change": "ocfToNetIncomePct is REMOVED from the KR 126 registry. Nothing is added.",
+      "renamedInReport": {
+        "debtGrowthPct": "totalLiabilitiesGrowthPct: the KR field reads 부채총계 (total liabilities), not interest-bearing debt; the sealed field name and values are unchanged"
+      },
+      "unchanged": "relative126, acceleration21, vol63, logVolumeShock60, shockPersistence5d, volumePriceAlignment, assetGrowthPct, debtGrowthPct exactly as sealed; no feature mining, no interaction, no factor added; no US-only field (capex, share count) applies",
+      "why": "alpha-research-design-review-v1 (section 8, R05, section 17) required the named cash-conversion state contract to be approved OR the field explicitly excluded before outcomes. Creating a new contract would be new feature construction, which this study forbids, and the sealed ratio is a percent of any nonzero net income (a loss flips its sign), so it conflates loss, absence and ratio. The choice is subtractive, made from definition and source coverage, not from any return."
+    },
+    "walkForward": {
+      "consequence": "H126 begins at the first calendar year, 2016 or later, whose accounting coverage passes the inherited 0.2 floor for both registered accounting fields, and stays gated thereafter. The snapshot's own audit shows fiscal-2016 growth structurally unavailable, so this is the inherited rule working, not a new one. The start year is a pre-label input fact and is never chosen by return.",
+      "coverageGate": {
+        "accounting": 0.2,
+        "applies": "H21 to the six price/attention features only; H126 additionally to assetGrowthPct and debtGrowthPct. Computed input-only from the frozen snapshot before any label.",
+        "denominator": "tradable KR name-dates",
+        "firstGateYear": 2016,
+        "price": 0.8
+      },
+      "inheritedRule": "evaluationStart is the first READY annual fold of each horizon cell; every later scheduled fold must be READY or the cell is DATA_INSUFFICIENT (v4 walkForward)",
+      "noPriceOnlyFallback": "A price-only H126 period is never substituted for a blocked accounting period."
+    }
+  },
+  "notThis": [
+    "the synthetic ALPHA_INFERENCE_CALIBRATION_V5",
+    "an execution",
+    "an accounting repair",
+    "a portfolio or deployment study"
+  ],
+  "operationalRisk": "The first real run may stop at a pre-label gate (no labels built) or find the H126 calendar shallower than 312 signal weeks; both are reported outcomes, not reasons to alter this protocol.",
+  "orderingStatistic": {
+    "chronology": "Made before any historical label, score or outcome was read for this study; it is recorded in this frozen file, not adopted after seeing a result.",
+    "decision": "rankWeightedSpread is the CONFIRMATORY ordering statistic. Spearman rankIC is DESCRIPTIVE ONLY and can neither pass nor fail a claim.",
+    "definition": "Per signal date, dollar-neutral weights w_i = centred within-date rank of the B4 predicted gross relative return divided by the sum of the positive centred ranks; rankWeightedSpread(t) = sum_i w_i * Y(t,i) with Y the gross forward relative return. Ties are broken by ticker ascending (stable order). Dates with fewer than minimumNamesPerDate names are excluded from the evaluation calendar, as inherited.",
+    "revisionOf": "The earlier design expectation (alpha-research-design-review-v1 section 11 and alpha-opportunity-model-v2/v4 evaluation gate B) required a positive lower bound for mean within-date rank correlation.",
+    "status": "EXPLICIT_PRE_OUTCOME_REVISION",
+    "why": "rankIC ranks the forward target, is not linear in returns and cannot be attributed to calendar weeks, so no completed calibration covers it. rankWeightedSpread is linear in forward returns with weights fixed at the signal date and was calibrated (ALPHA_INFERENCE_CALIBRATION_V5, 24 of 24 cells). ALPHA_INFERENCE_CALIBRATION_V5 states that adopting it 'is a v5 design decision this protocol does not make'; this preregistration makes it."
+  },
+  "outcomeExposure": {
+    "completeOutcomeBlindnessCertified": false,
+    "description": "The required AGENTS.md read and earlier project sessions exposed embedded historical research narratives. They cannot be undone. No historical label, score, model result or ledger outcome artifact was opened to write this protocol; every design element is inherited from sealed specifications or decided from definitions, source coverage and synthetic calibration, as recorded in decisionsLedger."
+  },
+  "outputSchema": {
+    "additions": [
+      "claims table with all conjunct intervals and statuses",
+      "baseline ladder contrasts",
+      "start year and coverage by feature and year",
+      "selection counts by date",
+      "attempt ledger"
+    ],
+    "blockedOutput": "readiness metadata and reasons only; no predictions",
+    "noPortfolioFields": [
+      "positions",
+      "weights",
+      "kellyFraction",
+      "NAV",
+      "CAGR",
+      "Sharpe",
+      "recommendations",
+      "allocation",
+      "orderNotional"
+    ],
+    "reference": "research_specs/alpha-opportunity-model-v2.json#expectedOutputSchema (schemaVersion 2)"
+  },
+  "phase": "PREREGISTRATION_ONLY",
+  "preregistrationStatus": "READY_FOR_HISTORICAL_EXECUTION",
+  "priorVersions": [
+    {
+      "specSha256": "e3c699b197fd558506d7157fa6dd8cdb91156faccd0e6e9547d21d5baa23dd6e",
+      "studyId": "alpha-opportunity-model-v1"
+    },
+    {
+      "specSha256": "97c3727b37eeab71e31ffee17a2f81cac29f0333552ff04a5374ef48484b0e19",
+      "studyId": "alpha-opportunity-model-v2"
+    },
+    {
+      "specSha256": "f6e11fafc2d46137d3f8385858c58d9991cb3809a2f811c368a81baf149fc3fe",
+      "studyId": "alpha-opportunity-model-v3"
+    },
+    {
+      "specSha256": "4db0a96267a8b0de41c445ac600a8064a760191abdd29d97600153a78cbab8e6",
+      "studyId": "alpha-opportunity-model-v4"
+    }
+  ],
+  "prohibitions": [
+    "no historical label, score, outcome or Alpha result is read to design or amend this protocol",
+    "no hyperparameter or feature search, no model tournament, no third model class",
+    "no threshold, depth, block, seed or interval change after any outcome",
+    "no pooling of regions and no region feature",
+    "no US substitution for a blocked input",
+    "no edit of the KR accounting snapshot or of any prior sealed version",
+    "no portfolio construction, sizing, Kelly or deployment claim"
+  ],
+  "regions": [
+    "KR"
+  ],
+  "sampleStatus": "HISTORICAL_DISCOVERY_ON_AN_EXPOSED_SAMPLE",
+  "sampleStatusNote": "Earlier studies used this history and outcomes were exposed. A new seal, a repaired snapshot or a new study id does not make it an untouched holdout. A PASS is replication-type evidence that must be followed by prospective confirmation; a negative result does not prove absence of predictability.",
+  "sealedDataInputs": [
+    "docs/results/alpha-opportunity-model-v3-survivorship-audit.json",
+    "docs/results/alpha-opportunity-model-v4-eligibility-policy.json",
+    "pipeline/alpha_inference_calibration_v1.py",
+    "pipeline/alpha_inference_calibration_v3.py",
+    "pipeline/alpha_inference_calibration_v4.py",
+    "pipeline/alpha_inference_mc_decision.py",
+    "research_specs/alpha-inference-calibration-v4.json",
+    "research_specs/alpha-inference-calibration-v5.json",
+    "research_specs/alpha-opportunity-model-v1-features.json",
+    "research_specs/alpha-opportunity-model-v1.json",
+    "research_specs/alpha-opportunity-model-v1.sha256",
+    "research_specs/alpha-opportunity-model-v2.json",
+    "research_specs/alpha-opportunity-model-v2.sha256",
+    "research_specs/alpha-opportunity-model-v3.json",
+    "research_specs/alpha-opportunity-model-v3.sha256",
+    "research_specs/alpha-opportunity-model-v4.json",
+    "research_specs/alpha-opportunity-model-v4.sha256",
+    "research_specs/kr-repaired-accounting-snapshot-v1.json"
+  ],
+  "statistics": {
+    "Y": "forwardRelativeReturn_H, gross: stock total-return over the H sessions minus the regional benchmark's, exact endpoints",
+    "dateMean": {
+      "role": "universe carry context; reported, never a conjunct",
+      "weights": "1/n_t"
+    },
+    "descriptive": [
+      "rankIC (equal-date Spearman with the signal-date self-normalised interval)",
+      "within-date slope",
+      "absolute calibration intercept and slope (not demeaned)",
+      "Brier, log loss and pooled date-balanced ECE for the Logistic head",
+      "B1, B3, B5 contrasts",
+      "annual estimates and the fraction positive",
+      "cost x2 stress",
+      "fitted-value uncertainty and predictive residual dispersion",
+      "selection counts and fraction of dates with S_t empty"
+    ],
+    "pairedMseImprovement": {
+      "baselines": [
+        "B0",
+        "B2"
+      ],
+      "f": "mean_i (p_baseline^2 - p_B4^2)",
+      "target": "gross Y; positive means B4 has the smaller squared error",
+      "weights": "-2 (p_baseline - p_B4) / n_t"
+    },
+    "rankWeightedSpread": "see orderingStatistic.definition",
+    "selectedMean": {
+      "S_t": "names with predicted gross relative return minus c(t,i) strictly above zero (the outside option's expected net alpha is exactly 0)",
+      "target": "net: Y minus the ex-ante round-trip cost c(t,i); the cost enters as the forecast-time term f(t) = -sum_i w c",
+      "undefined": "dates with S_t empty contribute nothing",
+      "weights": "1/|S_t| on S_t"
+    },
+    "selectedMinusUniverse": {
+      "target": "gross Y (pure same-date selection value; the benchmark and the unselected names are charged no cost)",
+      "undefined": "dates with S_t empty",
+      "weights": "1/|S_t| on S_t minus 1/n_t on the whole tradable universe"
+    },
+    "signalDateForm": "every confirmatory statistic is sum_i w(t,i) Y(t,i) + f(t) with w and f fixed at the signal date",
+    "undefinedRule": "a date whose statistic is undefined contributes no cohort weight, forecast term or exposure (calibrated rule); an undefined interval for any conjunct of a claim is DATA_INSUFFICIENT, never dropped"
+  },
+  "statusMeaning": "The KR design, inputs, statistics and rules are frozen. It is not a statement that the software is proven: the reviewed execution harness is NOT part of this change (executionHarness.status), its fail-closed pre-label gates can still stop the first run before any label exists, and the US region is blocked (blockedRegions).",
+  "studyId": "alpha-opportunity-model-v5"
+}
