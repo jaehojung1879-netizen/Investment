@@ -64,6 +64,20 @@ jobs:
           echo "code=$code" >> "$GITHUB_OUTPUT"
         id: run
 
+      # The artifact host is not reachable from every reviewer environment, so
+      # the per-item evidence is also echoed to the job log (no secrets or URLs
+      # are ever in the report; sampleItem is dropped as it is in the frozen file).
+      - name: Print per-item evidence
+        run: |
+          python - <<'PY'
+          import collections, json
+          r = json.load(open("out/kr-original-xbrl-value-validation-v1-live.json"))
+          print("verdict", r.get("verdict"), r.get("counts"))
+          print(collections.Counter((x["classification"], x["reason"]) for x in r.get("results", [])).most_common())
+          for x in r.get("results", []):
+              print(json.dumps({k: v for k, v in x.items() if k != "sampleItem"}, sort_keys=True, ensure_ascii=False))
+          PY
+
       - name: Sample and report hashes
         run: sha256sum research_specs/kr-original-xbrl-value-validation-v1*.json out/*.json | tee out/hashes.txt
 
