@@ -33,6 +33,7 @@ those counters and never asserted independently of them.
 """
 from __future__ import annotations
 
+import copy
 import hashlib
 import json
 import math
@@ -71,8 +72,8 @@ MATURED = E.MATURED
 UNRESOLVED = E.UNRESOLVED
 FORMAL = "FORMAL_EXECUTION"
 GATES_ONLY = "GATES_ONLY_NO_LABELS"
-HARNESS_FILES = ("pipeline/alpha_opportunity_v5_execution.py", "pipeline/alpha_opportunity_v5_evidence.py",
-                 "scripts/execute_alpha_opportunity_model_v5.py")
+HARNESS_FILES = ("pipeline/alpha_opportunity_v5_diagnostics.py", "pipeline/alpha_opportunity_v5_execution.py",
+                 "pipeline/alpha_opportunity_v5_evidence.py", "scripts/execute_alpha_opportunity_model_v5.py")
 # Registered non-success reasons. Each maps to a claim status; none is ever "fixed" by editing a threshold.
 GATE_INTEGRITY = "BLOCKED_BY_DATA_INTEGRITY"
 GATE_DEPTH = "BLOCKED_BY_SAMPLE_DEPTH"
@@ -448,7 +449,16 @@ def build_labels(permit, regional, prices, sessions, runtime_spec, completeness_
 # --------------------------------------------------------------------------- #
 # Fixed models. One code path per estimator; no search anywhere.
 # --------------------------------------------------------------------------- #
-def _fit_predict(kind, train, valid, names, spec):
+class FittedModel:
+    """One fitted registered estimator with everything a supplemental diagnostic needs to read (never to change)."""
+    __slots__ = ("kind", "prediction", "omitted", "transformer", "estimator", "names")
+
+    def __init__(self, kind, prediction, omitted, transformer, estimator, names):
+        self.kind, self.prediction, self.omitted = kind, prediction, omitted
+        self.transformer, self.estimator, self.names = transformer, estimator, list(names)
+
+
+def fit_model(kind, train, valid, names, spec) -> FittedModel:
     """Fit one registered estimator on the training frame; predict the validation frame.
 
     kind: 'ridge' (expected gross relative return), 'hgb' (the frozen shallow challenger, same target)
@@ -468,15 +478,22 @@ def _fit_predict(kind, train, valid, names, spec):
     with threadpool_limits(limits=1), warnings.catch_warnings():
         warnings.simplefilter("error", ConvergenceWarning)
         if kind == "logistic":
+            estimator = logistic
             logistic.fit(x, train.beatBenchmark.to_numpy(int), sample_weight=weights)
             out = logistic.predict_proba(v)[:, 1]
         else:
-            model = {"ridge": ridge, "hgb": hgb}[kind]
-            model.fit(x, train.forwardRelativeReturn.to_numpy(float), sample_weight=weights)
-            out = model.predict(v)
+            estimator = {"ridge": ridge, "hgb": hgb}[kind]
+            estimator.fit(x, train.forwardRelativeReturn.to_numpy(float), sample_weight=weights)
+            out = estimator.predict(v)
     if not np.isfinite(out).all():
         raise FloatingPointError("MODEL_UNSTABLE_NONFINITE")
-    return out, list(transformer.omitted)
+    return FittedModel(kind, out, list(transformer.omitted), transformer, estimator, names)
+
+
+def _fit_predict(kind, train, valid, names, spec):
+    """(prediction, omitted features) of `fit_model`: the primary path's only entry point to a fit."""
+    fitted = fit_model(kind, train, valid, names, spec)
+    return fitted.prediction, fitted.omitted
 
 
 def fitted_value_interval(train, valid, names, spec):
@@ -687,19 +704,43 @@ def jsonable(value):
 
 
 ATTEMPT_KEYS = ("attempt",)
+# Keys that are NOT part of the primary payload: the digests of it and the references to supplemental artifacts.
+NON_PRIMARY_KEYS = ("resultDigests", "diagnosticReferences")
 
 
 def substantive_digest(result: dict) -> str:
-    """Digest of everything except the attempt identity and the digest fields themselves."""
-    body = {k: v for k, v in result.items() if k not in ("resultDigests",)}
+    """Digest of the primary payload: everything except the attempt identity, the digests and the diagnostic references."""
+    body = {k: v for k, v in result.items() if k not in NON_PRIMARY_KEYS}
     body["provenance"] = {k: v for k, v in result["provenance"].items() if k not in ATTEMPT_KEYS}
     return digest(body)
 
 
-def finalize(result: dict) -> bytes:
-    result = jsonable(result)
-    result["resultDigests"] = {"substantiveResultSha256": substantive_digest(result)}
-    return canonical(result) + b"\n"
+def freeze_primary(result: dict) -> dict:
+    """Canonicalise the COMPLETE primary result and freeze its hash. The returned payload is an independent deep copy:
+    nothing that happens afterwards (a diagnostic, a mutation of `result`) can change it."""
+    payload = jsonable(copy.deepcopy(result))
+    return {"payload": payload, "sha256": substantive_digest(payload)}
+
+
+def finalize_primary(frozen: dict, references=None) -> bytes:
+    """The result file: the unchanged primary payload, its original hash, and (only if given) references to the
+    supplemental artifacts. With no references the bytes are exactly the primary result's."""
+    payload = copy.deepcopy(frozen["payload"])
+    if substantive_digest(payload) != frozen["sha256"]:
+        raise OrderingViolation("PRIMARY_RESULT_CHANGED_AFTER_FREEZE")
+    payload["resultDigests"] = {"substantiveResultSha256": frozen["sha256"]}
+    if references is not None:
+        payload["diagnosticReferences"] = jsonable(references)
+    return canonical(payload) + b"\n"
+
+
+def finalize(result: dict, references=None) -> bytes:
+    return finalize_primary(freeze_primary(result), references)
+
+
+def jsonable_bytes(document) -> bytes:
+    """Deterministic serialization of a supplemental artifact."""
+    return canonical(jsonable(document)) + b"\n"
 
 
 def code_identity(root, entry="scripts/execute_alpha_opportunity_model_v5.py") -> dict:
@@ -769,13 +810,16 @@ def build_result(*, spec, spec_sha, mode, runtime_spec, counters, guard, phase, 
 # Orchestration.
 # --------------------------------------------------------------------------- #
 def run_execution(*, spec, spec_sha, runtime_spec, prepare, guard, calibration, mode, provenance,
-                  foundation=None, counters=None, sessions=None):
+                  foundation=None, counters=None, sessions=None, capture=None):
     """Pre-label gates, permit, labels, ladder, evidence, claims. Returns the result dict; never raises on
     a registered stop, and reports any other failure as INFRASTRUCTURE_ERROR with the counters it observed.
 
     `prepare()` builds the PIT feature frame (tradability attached) and loads prices; it runs inside the
     guarded block so that a failure while reading inputs is an INFRASTRUCTURE_ERROR artifact, not a crash.
     It must read no forward price: `Counters` and the ordering tests are what prove it did not.
+
+    `capture`, when a dict, receives references to the in-memory intermediates a SUPPLEMENTAL diagnostic reads after the
+    primary result is frozen. Filling it changes nothing the primary path computes or reports.
     """
     counters = counters or Counters()
     phase = "IDENTITY_FROZEN"
@@ -815,8 +859,14 @@ def run_execution(*, spec, spec_sha, runtime_spec, prepare, guard, calibration, 
             table = evaluation_table(cell["predictions"], runtime_spec)
             cells[str(horizon)], evidence = evaluate_cell(table, cell, horizon, runtime_spec, prices, days,
                                                           calibration, counters)
+            if capture is not None:
+                capture.setdefault("horizons", {})[horizon] = {"table": table, "cell": cell, "modelling": modelling,
+                                                               "rungs": cell["rungs"]}
             evaluation[str(horizon)] = {"signalWeeks": cells[str(horizon)]["signalWeeks"],
                                         "evaluationRows": 0 if table is None else int(len(table))}
+        if capture is not None:
+            capture["schedule"], capture["days"] = schedule, days
+            capture["benchmarkClose"] = EV.aligned_close(prices[KR_BENCHMARK], days)
         phase = "DIAGNOSTICS"
         allrows = pd.concat(annotated_frames, ignore_index=True)
         diagnostics = X4.missingness_integrity_report(allrows, regional, prices, terminated_codes)

@@ -8,6 +8,7 @@ from __future__ import annotations
 import numpy as np
 import pandas as pd
 
+from pipeline import alpha_opportunity_v5_diagnostics as DIAG
 from pipeline import alpha_opportunity_v5_execution as X
 from pipeline import alpha_opportunity_v5_spec as S5
 from pipeline import regional_alpha_features as SOURCES
@@ -17,7 +18,17 @@ BENCH = "069500.KS"
 SPEC_SHA = "d0f1aaf50d9629ba2f8a0a9802cd4ebd653018028ee97b2746f9e50703741e75"
 DAYS = RC.sessions("2012-01-01", "2027-12-31", "KR")
 CALIBRATION = {"critical": 66.57, "tolerance": 1e-12}
+DIAG_SHA = "15a855faae2b7a1ae34aea703a8e0b996b363fd8359210bb43ab308945048f9a"
+HARNESS_HASHES = {"synthetic": "test"}
 _SPEC = None
+_DIAG = None
+
+
+def diagnostic_spec():
+    global _DIAG
+    if _DIAG is None:
+        _DIAG = DIAG.load_diagnostic_spec(expected_hash=DIAG_SHA)
+    return _DIAG
 
 
 def sealed_spec():
@@ -65,8 +76,8 @@ def make_world(seed=7, n=14, leak=True, cutoff="2022-12-30", sign=1.0):
     return {"frame": pd.DataFrame(rows), "prices": prices, "position": position, "cutoff": cutoff}
 
 
-def run_world(world, *, mode=X.FORMAL, spec=None, rt=None, guard=None, counters=None, shuffle=False,
-              attempt="test", frame_mutator=None):
+def run_kwargs(world, *, mode=X.FORMAL, spec=None, rt=None, guard=None, counters=None, shuffle=False,
+               attempt="test", frame_mutator=None):
     spec = spec or sealed_spec()
     rt = rt or runtime(world["cutoff"])
     if guard is None:
@@ -83,6 +94,10 @@ def run_world(world, *, mode=X.FORMAL, spec=None, rt=None, guard=None, counters=
             prices = {k: prices[k] for k in reversed(list(prices))}
         return X.attach_tradability(frame, prices, rt), prices, {}, []
 
-    return X.run_execution(spec=spec, spec_sha=SPEC_SHA, runtime_spec=rt, prepare=prepare, guard=guard,
-                           calibration=CALIBRATION, mode=mode, provenance={"attempt": {"attemptId": attempt}},
-                           counters=counters, sessions=DAYS)
+    return dict(spec=spec, spec_sha=SPEC_SHA, runtime_spec=rt, prepare=prepare, guard=guard,
+                calibration=CALIBRATION, mode=mode, provenance={"attempt": {"attemptId": attempt}},
+                counters=counters, sessions=DAYS)
+
+
+def run_world(world, **kwargs):
+    return X.run_execution(**run_kwargs(world, **kwargs))

@@ -2189,6 +2189,38 @@
   infrastructure-error steps after it, so that test now requires exactly one step passing `--execute`, gated on
   execute mode. No frozen-value assertion was loosened.
 
+## Alpha-opportunity-model-v5 supplemental-diagnostics invariants (v2.41)
+
+- A SUPPLEMENTAL DIAGNOSTIC PROTOCOL IS FROZEN BEFORE OUTCOMES AND IS NOT AN AMENDMENT. `alpha-opportunity-model-v5-
+  diagnostics-v1` (`research_specs/alpha-opportunity-model-v5-diagnostics-v1.json`, digest `15a855fa...`) adds
+  descriptive attribution to the ONE authorized v5 execution without changing a feature, horizon, target, model,
+  hyperparameter, interval, threshold, claim state, cost, universe or execution count. Its firewall flags
+  (`affectsPrimaryClaim`, `promotionEligible`, `modelSelectionAllowed`, `featureSelectionAllowed`,
+  `resultCanRescuePrimary`, `resultCanRefutePrimary`, `resultCanGatePrimary`, `resultCanTriggerRerun`) are all false
+  and re-checked on every load; the operator authorization pins its digest beside the harness file hashes. No
+  historical outcome was read to write or test it.
+- PRIMARY FIRST, DIAGNOSTICS AFTER, ON COPIES. The complete primary result is built, canonicalised and hashed before a
+  diagnostic runs; diagnostics get deep copies and their own counters; the result file is the unchanged primary payload
+  plus its original hash plus only REFERENCES to diagnostic artifacts, and those references are outside the primary
+  digest. The primary digest is identical with diagnostics on or off (tested on a real re-run), and a diagnostic that
+  raises, returns garbage or violates the firewall becomes a separate `DIAGNOSTIC_ERROR` that changes no status,
+  payload or hash, does not fail the job and authorises no retry.
+- EXACTNESS IS ASSERTED, NOT ASSUMED. The Ridge decomposition `intercept + sum(valueCoef*transformed +
+  missingCoef*indicator)` must equal the B4 prediction to 1e-9 on every evaluated row and each diagnostic refit must
+  reproduce the primary B4 and B5 predictions, or the diagnostic run is an error. The Logistic head is decomposed on
+  the log-odds scale only; probability-scale additivity is never claimed.
+- CORRELATED PREDICTORS CHANGE WHAT AN ABLATION MEANS. Individual leave-one-feature-out is unique information
+  conditional on the remaining substitutes, so a near-zero value is not evidence of no information; the frozen
+  families make group leave-one-family-out the headline reading and a training-only redundancy map is reported beside
+  both with no verdict label. ALE, not PDP, is the nonlinear display, with edges from the fold's TRAINING data only and
+  unsupported bins reported rather than bridged.
+- REGIME LABELS READ THE PAST ONLY. The volatility threshold is the median of the same statistic over the strictly
+  earlier signal dates (expanding, minimum 26), the trend label reads the trailing 126 sessions, no named event and no
+  full-sample constant is used, and a test shows a future shock cannot alter an earlier label.
+- THE MULTIPLE-TESTING FIREWALL IS CODE. Outputs are scanned for significance, p-value, winner, best-feature and
+  promoted-predictor keys; a hit makes the run a `DIAGNOSTIC_ERROR`. Diagnostics choose no best feature, group,
+  regime or interaction, and any hypothesis they suggest belongs to a NEW preregistration.
+
 ## Lint gate invariants (v2.11)
 
 - The enabled rule set reports ZERO findings on `main`. A rule is turned on in the

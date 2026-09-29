@@ -7,7 +7,8 @@ executes is exactly the one that was reviewed, then hands control to the reviewe
 `pipeline/alpha_opportunity_v5_execution.py`.
 
 MODES
-  --print-code-identity   the harness file hashes an operator authorization pins. Reads nothing else.
+  --print-code-identity   the harness file hashes and the diagnostic-spec digest an operator authorization pins.
+                          Reads nothing else.
   --freeze-only           every identity check; reads no price, label or outcome; prints the frozen identity.
   --stop-before-labels    the PRE-LABEL GATES on the real inputs, then stops. Builds no label, fits nothing.
                           Its artifact is never a substantive result and closes nothing. It exists so that
@@ -18,6 +19,11 @@ MODES
                           this spec digest, authorizes exactly one execution and pins these harness file
                           hashes; and no committed result exists. The authorization file is NOT part of the
                           change that introduced this script.
+
+The formal run is PRIMARY FIRST: the complete registered result is built, canonicalised and hashed before the
+supplemental descriptive diagnostics (`research_specs/alpha-opportunity-model-v5-diagnostics-v1.json`) run on copies.
+A diagnostic failure is reported as DIAGNOSTIC_ERROR beside the unchanged primary result and authorises no retry.
+Diagnostics cannot be skipped in a formal run and the authorization pins their spec digest.
 
 A scientific verdict (PASS / FAIL / INCONCLUSIVE / DATA_INSUFFICIENT) is a successful process (exit 0);
 only INFRASTRUCTURE_ERROR exits non-zero, and the artifact is written either way. A refusal before the
@@ -37,6 +43,7 @@ import tempfile
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
+from pipeline import alpha_opportunity_v5_diagnostics as DIAG  # noqa: E402
 from pipeline import alpha_opportunity_v5_evidence as EV  # noqa: E402
 from pipeline import alpha_opportunity_v5_execution as X  # noqa: E402
 from pipeline import alpha_opportunity_v5_spec as S5  # noqa: E402
@@ -57,8 +64,10 @@ class Refusal(RuntimeError):
     """The run may not start. Nothing has been read; nothing is written."""
 
 
-def verify_authorization(path, *, spec_sha256, harness_files, committed_result=COMMITTED_RESULT):
-    """The operator's explicit, single-use authorization, tied to the reviewed harness bytes."""
+def verify_authorization(path, *, spec_sha256, harness_files, diagnostic_spec_sha256,
+                         committed_result=COMMITTED_RESULT):
+    """The operator's explicit, single-use authorization, tied to the reviewed harness bytes and to the frozen
+    supplemental diagnostic spec."""
     path = Path(path)
     if Path(committed_result).exists():
         raise Refusal("A_COMMITTED_V5_RESULT_ALREADY_EXISTS: the run is one-shot")
@@ -67,7 +76,8 @@ def verify_authorization(path, *, spec_sha256, harness_files, committed_result=C
     record = json.loads(path.read_text())
     checks = (record.get("studyId") == S5.STUDY, record.get("specSha256") == spec_sha256,
               record.get("authorizedExecutions") == 1, bool(str(record.get("authorizedBy", "")).strip()),
-              record.get("harnessFiles") == harness_files)
+              record.get("harnessFiles") == harness_files,
+              record.get("diagnosticSpecSha256") == diagnostic_spec_sha256)
     if not all(checks):
         raise Refusal("AUTHORIZATION_DOES_NOT_MATCH_SPEC_OR_HARNESS")
     return record
@@ -89,7 +99,8 @@ def library_versions():
             "scipy": scipy.__version__, "scikit-learn": sklearn.__version__}
 
 
-def make_guard(*, spec, spec_path, sealed, input_root, merged_dir, v4_spec, frozen_hash, expected_signal_history_sha):
+def make_guard(*, spec, spec_path, sealed, input_root, merged_dir, v4_spec, frozen_hash, expected_signal_history_sha,
+               diagnostic_sha):
     pin = spec["inputs"]["krAccounting"]
     return X.IdentityGuard({
         "spec": lambda: X.spec_identity(spec_path, sealed),
@@ -100,6 +111,7 @@ def make_guard(*, spec, spec_path, sealed, input_root, merged_dir, v4_spec, froz
         "calibratedInference": lambda: X.calibration_identity(spec, ROOT),
         "terminalActionExecutionSnapshot": X.foundation_identity_fn(v4_spec, ROOT, frozen_hash),
         "harnessCode": lambda: X.harness_file_hashes(ROOT),
+        "diagnosticSpec": lambda: digest(DIAG.load_diagnostic_spec(expected_hash=diagnostic_sha)),
     })
 
 
@@ -126,11 +138,13 @@ def make_prepare(*, spec, runtime_spec, input_root, merged_dir, foundation_snaps
 def execute(args) -> dict:
     formal = args.execute
     spec = S5.load_sealed(args.spec, expected_hash=args.sealed_sha256)
+    diag = DIAG.load_diagnostic_spec(expected_hash=args.diagnostic_sha256)
     v4_spec = read_json(ROOT / S5.V4_SPEC)
     code = X.code_identity(ROOT)
     if formal:
         require_actions_main()
-        verify_authorization(args.authorization, spec_sha256=args.sealed_sha256, harness_files=code["harnessFiles"])
+        verify_authorization(args.authorization, spec_sha256=args.sealed_sha256, harness_files=code["harnessFiles"],
+                             diagnostic_spec_sha256=args.diagnostic_sha256)
     output = Path(args.output).resolve() if args.output else None
     if output is not None and (output.exists() or output.is_relative_to(ROOT)):
         raise Refusal("OUTPUT_MUST_BE_NEW_AND_OUTSIDE_THE_REPOSITORY")
@@ -141,7 +155,8 @@ def execute(args) -> dict:
         guard = make_guard(spec=spec, spec_path=args.spec, sealed=args.sealed_sha256, input_root=args.input_root,
                            merged_dir=dirs["merged"], v4_spec=v4_spec,
                            frozen_hash=foundation["frozenExecutionSnapshotHash"],
-                           expected_signal_history_sha=args.expected_signal_history_sha)
+                           expected_signal_history_sha=args.expected_signal_history_sha,
+                           diagnostic_sha=args.diagnostic_sha256)
         frozen = guard.freeze()
         if args.freeze_only:
             return {"frozenIdentity": frozen, "frozenSha256": guard.frozen_digest, "foundation": foundation,
@@ -153,29 +168,36 @@ def execute(args) -> dict:
                       "attempt": {"attemptId": args.attempt_id, "executionCodeCommitSha": git("rev-parse", "HEAD"),
                                   "executionCodeDirty": bool(git("status", "--porcelain", "--untracked-files=no"))},
                       "sealedSignalHistoryCommit": spec["inputs"]["sealedRaw"]["signalHistoryCommit"],
-                      "krAccountingSourceCommit": spec["inputs"]["krAccounting"]["sourceCommit"]}
-        mode = X.FORMAL if formal else X.GATES_ONLY
-        result = X.run_execution(
+                      "krAccountingSourceCommit": spec["inputs"]["krAccounting"]["sourceCommit"],
+                      "diagnosticSpecSha256": args.diagnostic_sha256}
+        run_kwargs = dict(
             spec=spec, spec_sha=args.sealed_sha256, runtime_spec=runtime_spec,
             prepare=make_prepare(spec=spec, runtime_spec=runtime_spec, input_root=args.input_root,
                                  merged_dir=dirs["merged"], foundation_snapshot=foundation_snapshot),
-            guard=guard, calibration=X.calibration_params(ROOT), mode=mode, provenance=provenance,
-            foundation=foundation)
-    return result
+            guard=guard, calibration=X.calibration_params(ROOT), mode=X.FORMAL if formal else X.GATES_ONLY,
+            provenance=provenance, foundation=foundation)
+        return DIAG.execute_with_diagnostics(run_kwargs=run_kwargs, diag=diag if formal else None,
+                                             diag_sha=args.diagnostic_sha256, harness_hashes=code["harnessFiles"])
 
 
-def write_result(result: dict, output: Path, *, formal: bool):
+def write_result(outcome: dict, output: Path, *, formal: bool):
+    """The primary file, then (only if any) the diagnostic artifacts in a separate subdirectory."""
     output.mkdir(parents=True)
-    data = X.finalize(result)
     name = X.RESULT_NAME if formal else GATES_ONLY_NAME
-    (output / name).write_bytes(data)
-    return json.loads(data)
+    (output / name).write_bytes(outcome["primaryBytes"])
+    if outcome["diagnosticArtifacts"]:
+        folder = output / "diagnostics"
+        folder.mkdir()
+        for artifact, data in outcome["diagnosticArtifacts"].items():
+            (folder / artifact).write_bytes(data)
+    return json.loads(outcome["primaryBytes"])
 
 
 def main(argv=None) -> int:
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     p.add_argument("--spec", type=Path, default=S5.DEFAULT_SPEC)
     p.add_argument("--sealed-sha256")
+    p.add_argument("--diagnostic-sha256", help="digest of research_specs/alpha-opportunity-model-v5-diagnostics-v1.json")
     p.add_argument("--input-root", type=Path)
     p.add_argument("--output", type=Path)
     p.add_argument("--authorization", type=Path, default=AUTHORIZATION)
@@ -188,18 +210,22 @@ def main(argv=None) -> int:
     mode.add_argument("--execute", action="store_true")
     args = p.parse_args(argv)
     if args.print_code_identity:
-        print(json.dumps(X.code_identity(ROOT)["harnessFiles"], sort_keys=True, indent=2))
+        diag_sidecar = DIAG.DEFAULT_SPEC.with_suffix(".sha256").read_text().strip()
+        print(json.dumps({"harnessFiles": X.code_identity(ROOT)["harnessFiles"], "diagnosticSpecSha256": diag_sidecar},
+                         sort_keys=True, indent=2))
         return 0
-    if not args.sealed_sha256 or args.input_root is None:
-        p.error("--sealed-sha256 and --input-root are required")
+    if not args.sealed_sha256 or not args.diagnostic_sha256 or args.input_root is None:
+        p.error("--sealed-sha256, --diagnostic-sha256 and --input-root are required")
     if not args.freeze_only and args.output is None:
         p.error("--output is required")
-    outcome = execute(args)
+    result = execute(args)
     if args.freeze_only:
-        print(json.dumps(outcome, sort_keys=True))
+        print(json.dumps(result, sort_keys=True))
         return 0
+    outcome = result
     written = write_result(outcome, Path(args.output).resolve(), formal=args.execute)
     print(json.dumps({"overallStatus": written["overallStatus"], "claims": written["claims"],
+                      "diagnosticStatus": outcome["diagnosticStatus"],
                       "counters": written["ordering"]["counters"], "executionMode": written["executionMode"],
                       "substantiveResult": written["substantiveResult"],
                       "substantiveResultSha256": written["resultDigests"]["substantiveResultSha256"]},

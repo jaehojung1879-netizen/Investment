@@ -121,13 +121,15 @@ trips the one-shot guard.
 ## Operator steps after review and merge (not performed here)
 
 1. Optionally dispatch `mode: gates-only` from merged `main` and read the gate result.
-2. Compute the harness hashes: `python scripts/execute_alpha_opportunity_model_v5.py --print-code-identity`.
+2. Compute the harness hashes and read the diagnostic-spec digest: `python scripts/execute_alpha_opportunity_model_v5.py --print-code-identity`. The supplemental diagnostics (`docs/alpha-opportunity-model-v5-diagnostics.md`) are part of the formal run and their spec digest is pinned by the authorization.
 3. Commit `research_specs/alpha-opportunity-model-v5-execution-authorization.json`:
 
    ```json
    {"studyId": "alpha-opportunity-model-v5", "specSha256": "<the sealed digest>",
     "authorizedExecutions": 1, "authorizedBy": "<operator>",
-    "harnessFiles": {"pipeline/alpha_opportunity_v5_evidence.py": "<sha256>",
+    "diagnosticSpecSha256": "15a855faae2b7a1ae34aea703a8e0b996b363fd8359210bb43ab308945048f9a",
+    "harnessFiles": {"pipeline/alpha_opportunity_v5_diagnostics.py": "<sha256>",
+                     "pipeline/alpha_opportunity_v5_evidence.py": "<sha256>",
                      "pipeline/alpha_opportunity_v5_execution.py": "<sha256>",
                      "scripts/execute_alpha_opportunity_model_v5.py": "<sha256>"}}
    ```

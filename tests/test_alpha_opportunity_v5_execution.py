@@ -978,7 +978,7 @@ def test_jsonable_removes_non_finite_and_numpy_types():
 def authorization(tmp_path, **override):
     identity = X.code_identity(ROOT)["harnessFiles"]
     record = {"studyId": "alpha-opportunity-model-v5", "specSha256": SEAL, "authorizedExecutions": 1,
-              "authorizedBy": "operator", "harnessFiles": identity, **override}
+              "authorizedBy": "operator", "harnessFiles": identity, "diagnosticSpecSha256": W.DIAG_SHA, **override}
     path = tmp_path / "authorization.json"
     path.write_text(json.dumps(record))
     return path, identity
@@ -988,17 +988,21 @@ def test_authorization_is_required_and_tied_to_spec_digest_and_harness_bytes(tmp
     missing = tmp_path / "absent.json"
     none_committed = tmp_path / "no-committed-result.json"
     with pytest.raises(CLI.Refusal, match="AUTHORIZATION_MISSING"):
-        CLI.verify_authorization(missing, spec_sha256=SEAL, harness_files={}, committed_result=none_committed)
+        CLI.verify_authorization(missing, spec_sha256=SEAL, harness_files={}, diagnostic_spec_sha256=W.DIAG_SHA,
+                                 committed_result=none_committed)
     path, identity = authorization(tmp_path)
-    assert CLI.verify_authorization(path, spec_sha256=SEAL, harness_files=identity,
+    assert CLI.verify_authorization(path, spec_sha256=SEAL, harness_files=identity, diagnostic_spec_sha256=W.DIAG_SHA,
                                     committed_result=none_committed)["authorizedExecutions"] == 1
     for override in ({"specSha256": "0" * 64}, {"authorizedExecutions": 2}, {"authorizedBy": " "},
-                     {"studyId": "alpha-opportunity-model-v4"}, {"harnessFiles": {"x": "y"}}):
+                     {"studyId": "alpha-opportunity-model-v4"}, {"harnessFiles": {"x": "y"}},
+                     {"diagnosticSpecSha256": "0" * 64}, {"diagnosticSpecSha256": None}):
         bad, _ = authorization(tmp_path, **override)
         with pytest.raises(CLI.Refusal, match="AUTHORIZATION_DOES_NOT_MATCH"):
-            CLI.verify_authorization(bad, spec_sha256=SEAL, harness_files=identity, committed_result=none_committed)
+            CLI.verify_authorization(bad, spec_sha256=SEAL, harness_files=identity, diagnostic_spec_sha256=W.DIAG_SHA,
+                                     committed_result=none_committed)
     with pytest.raises(CLI.Refusal, match="AUTHORIZATION_DOES_NOT_MATCH"):
-        CLI.verify_authorization(path, spec_sha256=SEAL, harness_files=dict(identity, extra="00"), committed_result=none_committed)
+        CLI.verify_authorization(path, spec_sha256=SEAL, harness_files=dict(identity, extra="00"),
+                                 diagnostic_spec_sha256=W.DIAG_SHA, committed_result=none_committed)
 
 
 def test_a_committed_result_makes_the_run_one_shot(tmp_path):
@@ -1006,7 +1010,8 @@ def test_a_committed_result_makes_the_run_one_shot(tmp_path):
     committed = tmp_path / "alpha-opportunity-model-v5-result.json"
     committed.write_text("{}")
     with pytest.raises(CLI.Refusal, match="A_COMMITTED_V5_RESULT_ALREADY_EXISTS"):
-        CLI.verify_authorization(path, spec_sha256=SEAL, harness_files=identity, committed_result=committed)
+        CLI.verify_authorization(path, spec_sha256=SEAL, harness_files=identity, diagnostic_spec_sha256=W.DIAG_SHA,
+                                 committed_result=committed)
 
 
 def test_formal_execution_is_refused_outside_actions_and_outside_main():
@@ -1024,7 +1029,7 @@ def test_execute_without_authorization_refuses_before_reading_any_input(tmp_path
     monkeypatch.setattr(X, "run_execution", spy.raising("run_execution"))
     monkeypatch.setattr(X, "freeze_foundation", spy.raising("freeze_foundation"))
     with pytest.raises(CLI.Refusal, match="AUTHORIZATION_MISSING"):
-        CLI.main(["--sealed-sha256", SEAL, "--input-root", str(tmp_path), "--output", str(tmp_path / "out"), "--execute"])
+        CLI.main(["--sealed-sha256", SEAL, "--diagnostic-sha256", W.DIAG_SHA, "--input-root", str(tmp_path), "--output", str(tmp_path / "out"), "--execute"])
     assert spy.calls == [] and not (tmp_path / "out").exists()
 
 
@@ -1032,18 +1037,19 @@ def test_execute_from_a_non_main_ref_is_refused_before_authorization_is_read(tmp
     monkeypatch.setenv("GITHUB_ACTIONS", "true")
     monkeypatch.setenv("GITHUB_REF", "refs/heads/some-branch")
     with pytest.raises(CLI.Refusal, match="ONLY_FROM_MAIN"):
-        CLI.main(["--sealed-sha256", SEAL, "--input-root", str(tmp_path), "--output", str(tmp_path / "out"), "--execute"])
+        CLI.main(["--sealed-sha256", SEAL, "--diagnostic-sha256", W.DIAG_SHA, "--input-root", str(tmp_path), "--output", str(tmp_path / "out"), "--execute"])
 
 
 def test_a_wrong_sealed_digest_is_refused_before_anything_else(tmp_path):
     with pytest.raises(ValueError, match="SEALED_SPEC_CHANGED"):
-        CLI.main(["--sealed-sha256", "0" * 64, "--input-root", str(tmp_path), "--output", str(tmp_path / "o"), "--stop-before-labels"])
+        CLI.main(["--sealed-sha256", "0" * 64, "--diagnostic-sha256", W.DIAG_SHA, "--input-root", str(tmp_path), "--output", str(tmp_path / "o"), "--stop-before-labels"])
 
 
 def test_print_code_identity_reads_nothing_but_the_harness_files(capsys):
     assert CLI.main(["--print-code-identity"]) == 0
     printed = json.loads(capsys.readouterr().out)
-    assert set(printed) == set(X.HARNESS_FILES) and all(len(v) == 64 for v in printed.values())
+    assert set(printed["harnessFiles"]) == set(X.HARNESS_FILES) and all(len(v) == 64 for v in printed["harnessFiles"].values())
+    assert printed["diagnosticSpecSha256"] == W.DIAG_SHA
 
 
 def test_code_identity_records_the_full_import_closure_for_audit():
@@ -1057,7 +1063,8 @@ def test_output_must_be_new_and_outside_the_repository(tmp_path):
     for target in (ROOT / "docs/results/x-out", tmp_path):
         with pytest.raises(CLI.Refusal, match="OUTPUT_MUST_BE_NEW_AND_OUTSIDE_THE_REPOSITORY"):
             CLI.execute(type("A", (), {"execute": False, "spec": S5.DEFAULT_SPEC, "sealed_sha256": SEAL,
-                                       "output": target, "authorization": None})())
+                                       "output": target, "authorization": None,
+                                       "diagnostic_sha256": W.DIAG_SHA})())
 
 
 def materialize_sealed_raw_inputs(target):
@@ -1079,11 +1086,11 @@ def materialize_sealed_raw_inputs(target):
 def test_freeze_only_on_the_real_sealed_identities_reads_no_outcome(tmp_path, capsys, monkeypatch):
     root = materialize_sealed_raw_inputs(tmp_path / "inputs")
     spy = install_spies(monkeypatch)
-    assert CLI.main(["--sealed-sha256", SEAL, "--input-root", str(root), "--freeze-only"]) == 0
+    assert CLI.main(["--sealed-sha256", SEAL, "--diagnostic-sha256", W.DIAG_SHA, "--input-root", str(root), "--freeze-only"]) == 0
     out = json.loads(capsys.readouterr().out.strip().splitlines()[-1])
     assert out["outcomeAccess"] == "NONE" and spy.calls == []
     assert set(out["frozenIdentity"]) == {"spec", "sealedClosureAndPriors", "krAccountingSnapshot", "sealedRawInputs",
-                                          "calibratedInference", "terminalActionExecutionSnapshot", "harnessCode"}
+                                          "calibratedInference", "terminalActionExecutionSnapshot", "harnessCode", "diagnosticSpec"}
     assert out["frozenIdentity"]["krAccountingSnapshot"]["snapshotContentSha256"] == K.FROZEN_CONTENT_SHA256
     assert out["frozenIdentity"]["sealedRawInputs"]["blobsVerified"] == 16
     assert out["foundation"]["foundationStatusAtExecution"] == "PARTIALLY_REPAIRED"
@@ -1093,7 +1100,7 @@ def test_freeze_only_refuses_a_swapped_real_raw_input(tmp_path):
     root = materialize_sealed_raw_inputs(tmp_path / "inputs")
     (root / "ledger/fundamentals/kr/shares.jsonl.gz").write_bytes(b"swapped")
     with pytest.raises(ValueError, match="INPUT_SNAPSHOT_CHANGED"):
-        CLI.main(["--sealed-sha256", SEAL, "--input-root", str(root), "--freeze-only"])
+        CLI.main(["--sealed-sha256", SEAL, "--diagnostic-sha256", W.DIAG_SHA, "--input-root", str(root), "--freeze-only"])
 
 
 # --------------------------------------------------------------------------- #
