@@ -145,3 +145,12 @@ def test_v2_does_not_use_production_parser_or_outcomes():
             assert forbidden not in code
     with pytest.raises(ValueError, match="OUTCOME_OR_UNAPPROVED_PATH_REFUSED"):
         S.permitted_path(ROOT, "ledger/historical/replay-v16/x.jsonl.gz")
+
+
+def test_saved_v2_report_preserves_the_exact_v1_items_and_v1_is_separate():
+    _, _, sample = V2.load_frozen(ROOT)
+    report = json.loads((ROOT / "docs/results/kr-original-xbrl-value-validation-v2-report.json").read_text())
+    assert [r["sampleItem"] for r in report["results"]] == sample["items"]
+    assert report["sampleSha256"] == V.SAMPLE_SHA256
+    assert sum(report["counts"].values()) == 60 and report["verdict"] == "BLOCKED"
+    assert report["counts"]["MATCH"] == 0 and report["promotionRecommended"] is False
