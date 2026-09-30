@@ -157,11 +157,6 @@ def test_a_changed_spec_file_is_refused_by_the_identity_component(tmp_path):
         X.spec_identity(copy, SEAL)
 
 
-def test_authorization_and_result_artifacts_do_not_exist_in_this_change():
-    assert not list((ROOT / "docs/results").glob("alpha-opportunity-model-v5*"))
-    assert not list(ROOT.glob("**/alpha-opportunity-model-v5-result*"))
-
-
 def test_frozen_scientific_contract_read_by_the_harness():
     rt = X.build_runtime_spec(spec)
     assert rt["regions"] == ["KR"] and rt["horizons"] == [21, 126] and rt["benchmarks"] == {"KR": "069500.KS"}
@@ -1021,13 +1016,13 @@ def test_formal_execution_is_refused_outside_actions_and_outside_main():
     CLI.require_actions_main({"GITHUB_ACTIONS": "true", "GITHUB_REF": "refs/heads/main"})
 
 
-def test_execute_without_authorization_refuses_before_reading_any_input(tmp_path, monkeypatch):
+def test_execute_is_refused_before_reading_any_input_once_the_result_is_committed(tmp_path, monkeypatch):
     monkeypatch.setenv("GITHUB_ACTIONS", "true")
     monkeypatch.setenv("GITHUB_REF", "refs/heads/main")
     spy = Spy()
     monkeypatch.setattr(X, "run_execution", spy.raising("run_execution"))
     monkeypatch.setattr(X, "freeze_foundation", spy.raising("freeze_foundation"))
-    with pytest.raises(CLI.Refusal, match="AUTHORIZATION_MISSING"):
+    with pytest.raises(CLI.Refusal, match="A_COMMITTED_V5_RESULT_ALREADY_EXISTS"):
         CLI.main(["--sealed-sha256", SEAL, "--diagnostic-sha256", W.DIAG_SHA, "--input-root", str(tmp_path), "--output", str(tmp_path / "out"), "--authorization", str(tmp_path / "absent-authorization.json"), "--execute"])
     assert spy.calls == [] and not (tmp_path / "out").exists()
 
