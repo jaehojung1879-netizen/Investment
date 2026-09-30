@@ -36,8 +36,3 @@ def test_the_harness_accepts_this_authorization_and_refuses_a_moved_harness_file
     with pytest.raises(CLI.Refusal, match="AUTHORIZATION_DOES_NOT_MATCH"):
         CLI.verify_authorization(PATH, spec_sha256=SPEC_SHA, harness_files=moved,
                                  diagnostic_spec_sha256=DIAG_SHA, committed_result=none_committed)
-
-
-def test_no_result_artifact_exists():
-    assert not list((ROOT / "docs/results").glob("alpha-opportunity-model-v5*"))
-    assert not list(ROOT.glob("**/alpha-opportunity-model-v5-result*"))

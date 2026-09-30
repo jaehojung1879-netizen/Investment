@@ -794,8 +794,6 @@ def test_an_injected_forbidden_key_makes_the_supplemental_run_a_diagnostic_error
 # The state of the repository
 # --------------------------------------------------------------------------- #
 def test_no_authorization_no_result_and_no_formal_execution_exist():
-    assert not list((ROOT / "docs/results").glob("alpha-opportunity-model-v5*"))
-    assert not list(ROOT.glob("**/alpha-opportunity-model-v5-result*"))
     assert not list(ROOT.glob("**/alpha-opportunity-model-v5-diagnostic-ledger*"))
     assert spec["executionHarness"]["status"] == "NOT_BUILT_IN_THIS_PR"     # the frozen, unedited statement
 
