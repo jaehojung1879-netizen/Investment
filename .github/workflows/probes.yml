@@ -21,6 +21,10 @@ name: Probes
 # jobs depend on is a probe that breaks them.
 
 on:
+  pull_request:
+    paths:
+      - 'pipeline/kr_model_raw_snapshot.py'
+      - 'scripts/prepare_kr_model_raw_snapshot.py'
   workflow_dispatch:
     inputs:
       probe:
@@ -59,7 +63,7 @@ jobs:
   # Every probe except the egress fan-out, which needs many runners and so
   # cannot share this shape.
   probe:
-    if: inputs.probe != 'sec-egress'
+    if: github.event_name == 'workflow_dispatch' && inputs.probe != 'sec-egress'
     runs-on: ubuntu-latest
     # The KR delisting measurement walks the whole Korean panel and is the
     # only one that needs hours; the rest finish in minutes.
@@ -245,3 +249,56 @@ jobs:
             tail -n 60 probe.log 2>/dev/null || echo '프로브 출력 없음'
             echo '```'
           } >> "$GITHUB_STEP_SUMMARY"
+
+  kr-model-raw-readiness:
+    # Explicitly requested collection for this one same-repository Draft PR.
+    # No new collector workflow/menu, no labels, no model and no contents writes.
+    if: >-
+      github.event_name == 'pull_request' &&
+      github.event.pull_request.head.repo.full_name == github.repository &&
+      github.head_ref == 'data/kr-model-overlay-raw-snapshot'
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    env:
+      OMP_NUM_THREADS: '1'
+      OPENBLAS_NUM_THREADS: '1'
+      MKL_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+          cache: pip
+      - run: pip install -r requirements.txt -r requirements-dev.txt
+      - name: Fetch exact pinned raw source commits only
+        run: |
+          git fetch --no-tags --depth=1 --filter=blob:none origin 4ea107ed0cde289f0a049a65ff13d2441a786710 fb6e83743fd8cdba647d1522a4645b662a9d5647
+      - name: Official KRX collection, immutable snapshot and frozen gates-only
+        env:
+          KRX_API_KEY: ${{ secrets.KRX_API_KEY }}
+        run: |
+          python scripts/prepare_kr_model_raw_snapshot.py --directory raw-inputs --output readiness.json
+      - name: Preserve acquisition/readiness audit even on source refusal
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: kr-model-raw-readiness-${{ github.run_id }}
+          path: |
+            readiness.json
+            readiness.json.sha256
+            raw-inputs/acquisition.json
+            raw-inputs/snapshot-manifest.json
+            raw-inputs/snapshot-manifest.sha256
+          if-no-files-found: warn
+          retention-days: 90
+      - name: Preserve immutable raw bytes or clearly partial acquisition evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: kr-model-raw-inputs-${{ github.run_id }}
+          path: raw-inputs
+          if-no-files-found: warn
+          retention-days: 90
