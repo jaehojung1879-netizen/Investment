@@ -17,10 +17,17 @@ need to rerun Alpha v5.
    `substantiveResultSha256` formula, unchanged) **before** any diagnostic runs.
 2. Diagnostics receive deep copies of the primary intermediates and use their own counters; the primary counters never
    see a diagnostic fit.
-3. The result file is the unchanged primary payload plus its original hash plus, only if diagnostics ran, a
-   `diagnosticReferences` block (status, spec digest, artifact SHA-256/bytes/schema/row count). That block is excluded
-   from the primary digest, so the primary digest is identical with diagnostics on or off (tested, including against a
-   re-run), and with diagnostics disabled the bytes are exactly the previous harness's.
+3. **The primary result file is written atomically (temp file, fsync, rename) BEFORE any diagnostic function is
+   invoked, and is never rewritten.** It is exactly the primary bytes, with or without diagnostics (byte-identical, tested
+   on a real re-run), and it carries no reference to the diagnostics. The references (`status`, diagnostic-spec digest,
+   `primaryResultSha256`, the primary file's own SHA-256, each artifact's SHA-256/bytes/schema/row count) live in a separate
+   `diagnostics/alpha-opportunity-model-v5-diagnostic-references.json`. Diagnostic artifacts are written only into
+   `diagnostics/` and the writer refuses any name that equals or escapes to a primary path.
+   Consequently a diagnostic failure of ANY kind, including a process-level one (OOM kill, timeout, crash, SIGKILL),
+   finds a complete, valid primary file already on disk (tested, including a real subprocess killed with SIGKILL right
+   after the write). The workflow steps after `Execute` run with `always()`, classify the primary file that exists, and
+   upload it under the one-shot name; a crashed diagnostic process never fails the job and never turns a completed
+   primary result into an attempt.
 4. Any diagnostic exception, malformed return or firewall violation becomes a separate `DIAGNOSTIC_ERROR` reference. It
    never changes a claim, an overall status, a payload or a hash, never fails the job and **never authorises a
    substantive retry**.

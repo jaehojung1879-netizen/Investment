@@ -162,12 +162,12 @@ def test_primary_result_is_identical_with_diagnostics_on_and_off(leaky):
     assert off["diagnosticStatus"] == "DISABLED" and on["diagnosticStatus"] == D.COMPLETE
     assert off["frozen"]["sha256"] == on["frozen"]["sha256"] == leaky["frozen"]["sha256"]
     assert off["frozen"]["payload"] == on["frozen"]["payload"]
-    on_doc, off_doc = json.loads(on["primaryBytes"]), json.loads(off["primaryBytes"])
-    references = on_doc.pop("diagnosticReferences")
-    assert on_doc == off_doc and "diagnosticReferences" not in off_doc
-    assert references["primaryResultSha256"] == on["frozen"]["sha256"] == on_doc["resultDigests"]["substantiveResultSha256"]
-    assert on_doc["overallStatus"] == off_doc["overallStatus"] and on_doc["claims"] == off_doc["claims"]
-    assert off["primaryBytes"] == X.finalize(leaky["result"])           # exactly the harness's own primary bytes
+    assert on["primaryBytes"] == off["primaryBytes"] == X.finalize(leaky["result"])     # byte-for-byte, references or not
+    doc = json.loads(on["primaryBytes"])
+    assert "diagnosticReferences" not in doc and doc["resultDigests"]["substantiveResultSha256"] == on["frozen"]["sha256"]
+    assert on["references"]["primaryResultSha256"] == on["frozen"]["sha256"]           # the references point AT the primary
+    assert on["references"]["primaryResultFileSha256"] == hashlib.sha256(on["primaryBytes"]).hexdigest()
+    assert doc["overallStatus"] == json.loads(off["primaryBytes"])["overallStatus"] and doc["claims"] == json.loads(off["primaryBytes"])["claims"]
 
 
 def test_primary_bytes_without_references_are_exactly_the_original_primary_serialization(leaky):
@@ -187,7 +187,8 @@ def test_a_raising_diagnostic_leaves_the_primary_status_payload_and_hash_unchang
                                         harness_hashes=HARNESS)
     doc = json.loads(failed["primaryBytes"])
     assert failed["diagnosticStatus"] == D.DIAGNOSTIC_ERROR and failed["diagnosticArtifacts"] == {}
-    assert doc["diagnosticReferences"]["status"] == D.DIAGNOSTIC_ERROR and doc["diagnosticReferences"]["error"]["code"] == "RuntimeError"
+    assert failed["references"]["status"] == D.DIAGNOSTIC_ERROR and failed["references"]["error"]["code"] == "RuntimeError"
+    assert "diagnosticReferences" not in doc and failed["primaryBytes"] == clean["primaryBytes"]
     assert failed["frozen"]["payload"] == clean["frozen"]["payload"] and failed["frozen"]["sha256"] == clean["frozen"]["sha256"]
     clean_doc = json.loads(clean["primaryBytes"])
     assert doc["overallStatus"] == clean_doc["overallStatus"] and doc["claims"] == clean_doc["claims"]
@@ -748,7 +749,8 @@ def test_every_artifact_carries_its_hashes_schema_and_row_count_and_the_primary_
     out = D.execute_with_diagnostics(run_kwargs={"runtime_spec": W.runtime()}, diag=diag, diag_sha=W.DIAG_SHA,
                                      harness_hashes=HARNESS)
     doc = json.loads(out["primaryBytes"])
-    refs = doc["diagnosticReferences"]
+    refs = out["references"]
+    assert json.loads(out["referencesBytes"]) == refs and "diagnosticReferences" not in doc
     assert refs["status"] == D.COMPLETE and refs["diagnosticSpecSha256"] == W.DIAG_SHA
     assert refs["primaryResultSha256"] == doc["resultDigests"]["substantiveResultSha256"]
     assert set(refs["artifacts"]) == set(D.ARTIFACTS.values())
@@ -762,7 +764,7 @@ def test_every_artifact_carries_its_hashes_schema_and_row_count_and_the_primary_
         assert header["schemaVersion"] == D.SCHEMA_VERSION and header["primaryResultSha256"] == refs["primaryResultSha256"]
         assert header["diagnosticSpecSha256"] == W.DIAG_SHA and header["harnessFileHashes"] == HARNESS
         assert header["affectsPrimaryClaim"] is False and header["promotionEligible"] is False and header["rowCount"] >= 1
-    assert out["primaryBytes"] == X.finalize_primary(out["frozen"], out["references"])
+    assert out["primaryBytes"] == X.finalize_primary(out["frozen"])            # the primary never embeds the references
 
 
 def test_the_multiple_testing_firewall_refuses_significance_winner_and_promotion_keys():
@@ -825,3 +827,199 @@ def test_workflow_pins_the_diagnostic_spec_and_uploads_diagnostics_separately_fr
     assert "name: alpha-opportunity-model-v5-diagnostics\n" in text and "name: alpha-opportunity-model-v5-result\n" in text
     assert "v5-result/alpha-opportunity-model-v5-result.json" in text     # the one-shot artifact holds ONLY the primary file
     assert "tests/test_alpha_opportunity_v5_diagnostics.py" in text
+
+
+# --------------------------------------------------------------------------- #
+# Durable primary isolation: the primary file exists BEFORE any diagnostic runs and is never touched again
+# --------------------------------------------------------------------------- #
+def cli():
+    from scripts import execute_alpha_opportunity_model_v5 as CLI
+    return CLI
+
+
+def persisting(tmp_path, seen=None):
+    """A `persist_primary` callback that writes through the CLI's own atomic writer, recording what it wrote."""
+    output = tmp_path / "out"
+
+    def persist(data):
+        cli().write_primary(output, X.RESULT_NAME, data)
+        if seen is not None:
+            seen.append(data)
+    return output, persist
+
+
+def test_the_primary_file_is_physically_written_before_any_diagnostic_is_invoked(leaky, monkeypatch, tmp_path):
+    replay_primary(leaky, monkeypatch)
+    output, persist = persisting(tmp_path)
+    at_diagnostic_time = {}
+
+    def diagnostic(*a, **k):
+        target = output / X.RESULT_NAME
+        at_diagnostic_time["exists"] = target.is_file()
+        at_diagnostic_time["bytes"] = target.read_bytes() if target.is_file() else None
+        raise RuntimeError("stop here: only the ordering is under test")
+
+    monkeypatch.setattr(D, "run_supplemental", diagnostic)
+    out = D.execute_with_diagnostics(run_kwargs={"runtime_spec": W.runtime()}, diag=diag, diag_sha=W.DIAG_SHA,
+                                     harness_hashes=HARNESS, persist_primary=persist)
+    assert at_diagnostic_time["exists"] is True
+    assert at_diagnostic_time["bytes"] == out["primaryBytes"] == (output / X.RESULT_NAME).read_bytes()
+    assert not list(output.glob("*.partial"))                                   # the atomic write left no temp file
+
+
+def test_a_normal_diagnostic_exception_leaves_the_persisted_primary_byte_identical(leaky, monkeypatch, tmp_path):
+    replay_primary(leaky, monkeypatch)
+    output, persist = persisting(tmp_path)
+    monkeypatch.setattr(D, "run_supplemental", lambda *a, **k: (_ for _ in ()).throw(MemoryError("diagnostic OOM")))
+    out = D.execute_with_diagnostics(run_kwargs={"runtime_spec": W.runtime()}, diag=diag, diag_sha=W.DIAG_SHA,
+                                     harness_hashes=HARNESS, persist_primary=persist)
+    persisted = (output / X.RESULT_NAME).read_bytes()
+    assert out["diagnosticStatus"] == D.DIAGNOSTIC_ERROR and out["references"]["error"]["code"] == "MemoryError"
+    assert persisted == out["primaryBytes"] == X.finalize(leaky["result"])
+    doc = json.loads(persisted)
+    assert doc["overallStatus"] in ("PASS", "FAIL", "INCONCLUSIVE", "DATA_INSUFFICIENT") and doc["substantiveResult"] is True
+
+
+@pytest.mark.parametrize("failure", [SystemExit(137), KeyboardInterrupt()])
+def test_a_process_level_diagnostic_failure_leaves_a_valid_primary_on_disk(leaky, monkeypatch, tmp_path, failure):
+    replay_primary(leaky, monkeypatch)
+    output, persist = persisting(tmp_path)
+
+    def killed(*a, **k):
+        raise failure
+
+    monkeypatch.setattr(D, "run_supplemental", killed)
+    with pytest.raises(type(failure)):                       # a process-level stop is NOT swallowed as a diagnostic error
+        D.execute_with_diagnostics(run_kwargs={"runtime_spec": W.runtime()}, diag=diag, diag_sha=W.DIAG_SHA,
+                                   harness_hashes=HARNESS, persist_primary=persist)
+    persisted = (output / X.RESULT_NAME).read_bytes()
+    doc = json.loads(persisted)
+    assert persisted == X.finalize(leaky["result"]) and doc["resultDigests"]["substantiveResultSha256"] == leaky["frozen"]["sha256"]
+    assert X.substantive_digest({k: v for k, v in doc.items() if k != "resultDigests"}) == leaky["frozen"]["sha256"]
+    assert doc["substantiveResult"] is True and not (output / "diagnostics").exists()
+
+
+def test_a_hard_kill_of_the_process_after_the_primary_write_leaves_the_primary_intact(tmp_path):
+    import os
+    import signal
+    import subprocess
+    output = tmp_path / "out"
+    payload = b'{"primary":"complete"}\n'
+    code = (
+        "import os, signal, sys\n"
+        f"sys.path.insert(0, {str(ROOT)!r})\n"
+        "from pathlib import Path\n"
+        "from scripts import execute_alpha_opportunity_model_v5 as CLI\n"
+        f"CLI.write_primary(Path({str(output)!r}), 'alpha-opportunity-model-v5-result.json', {payload!r})\n"
+        "os.kill(os.getpid(), signal.SIGKILL)        # the 'diagnostics' die abruptly, as an OOM kill would\n")
+    proc = subprocess.run([sys.executable, "-c", code], capture_output=True, cwd=ROOT)
+    assert proc.returncode == -signal.SIGKILL
+    assert (output / "alpha-opportunity-model-v5-result.json").read_bytes() == payload
+    assert not list(output.glob("*.partial")) and not (output / "diagnostics").exists()
+    assert os.path.isdir(output)
+
+
+def test_diagnostic_artifacts_cannot_overwrite_or_shadow_the_primary_path(tmp_path):
+    CLI = cli()
+    output = tmp_path / "out"
+    CLI.write_primary(output, X.RESULT_NAME, b"PRIMARY")
+    with pytest.raises(CLI.Refusal, match="PRIMARY_RESULT_ALREADY_EXISTS"):
+        CLI.write_primary(output, X.RESULT_NAME, b"SECOND WRITE")
+    assert (output / X.RESULT_NAME).read_bytes() == b"PRIMARY"
+    for name in (X.RESULT_NAME, CLI.GATES_ONLY_NAME, "../" + X.RESULT_NAME, "sub/../../x"):
+        with pytest.raises(CLI.Refusal, match="MAY_NOT_TOUCH_A_PRIMARY_PATH"):
+            CLI.write_diagnostics({"diagnosticArtifacts": {name: b"garbage"}, "referencesBytes": None}, output)
+    assert (output / X.RESULT_NAME).read_bytes() == b"PRIMARY"
+    CLI.write_diagnostics({"diagnosticArtifacts": {D.ARTIFACTS["models"]: b"{}"}, "referencesBytes": b"{}"}, output)
+    assert sorted(p.name for p in (output / "diagnostics").iterdir()) == sorted([D.ARTIFACTS["models"], D.REFERENCES_NAME])
+    assert (output / X.RESULT_NAME).read_bytes() == b"PRIMARY"
+
+
+def test_status_claims_digest_and_payload_are_unchanged_by_diagnostics_even_when_they_fail(leaky, monkeypatch, tmp_path):
+    replay_primary(leaky, monkeypatch)
+    written = {}
+    for label, behaviour in (("off", None), ("ok", "real"), ("error", "raise")):
+        output, persist = persisting(tmp_path / label)
+        if behaviour == "raise":
+            monkeypatch.setattr(D, "run_supplemental", lambda *a, **k: (_ for _ in ()).throw(RuntimeError("boom")))
+        elif behaviour == "real":
+            monkeypatch.setattr(D, "run_supplemental", supplemental_real)
+        out = D.execute_with_diagnostics(run_kwargs={"runtime_spec": W.runtime(CUTOFF)},
+                                         diag=None if behaviour is None else diag, diag_sha=W.DIAG_SHA,
+                                         harness_hashes=HARNESS, persist_primary=persist)
+        written[label] = ((output / X.RESULT_NAME).read_bytes(), out["frozen"]["sha256"])
+    assert written["off"] == written["ok"] == written["error"]
+    doc = json.loads(written["off"][0])
+    assert doc["resultDigests"]["substantiveResultSha256"] == written["off"][1] == leaky["frozen"]["sha256"]
+
+
+REAL_SUPPLEMENTAL = D.run_supplemental          # captured at import, before any test patches the module attribute
+
+
+def supplemental_real(ctx, **kwargs):
+    return REAL_SUPPLEMENTAL(ctx, **kwargs)
+
+
+def test_a_diagnostic_failure_creates_no_retry_authority(leaky, monkeypatch, tmp_path):
+    replay_primary(leaky, monkeypatch)
+    output, persist = persisting(tmp_path)
+    monkeypatch.setattr(D, "run_supplemental", lambda *a, **k: (_ for _ in ()).throw(RuntimeError("boom")))
+    out = D.execute_with_diagnostics(run_kwargs={"runtime_spec": W.runtime()}, diag=diag, diag_sha=W.DIAG_SHA,
+                                     harness_hashes=HARNESS, persist_primary=persist)
+    refs = out["references"]
+    assert refs["status"] == D.DIAGNOSTIC_ERROR and refs["authorizesRetry"] is False and refs["changesPrimary"] is False
+    doc = json.loads((output / X.RESULT_NAME).read_bytes())
+    assert doc["substantiveResult"] is True and doc["closesPreregistration"] is True and doc["overallStatus"] != "INFRASTRUCTURE_ERROR"
+    text = (output / X.RESULT_NAME).read_text()
+    assert "DIAGNOSTIC_ERROR" not in text and "retry" not in text.lower()
+
+
+def test_a_failure_during_primary_computation_still_yields_no_false_substantive_result(monkeypatch, tmp_path):
+    spy = []
+    monkeypatch.setattr(D, "run_supplemental", lambda *a, **k: spy.append(1))
+    world = W.make_world(seed=5, n=12)
+
+    def add_us(frame):
+        us = frame.iloc[:5].copy()
+        us["region"] = "US"
+        return pd.concat([frame, us], ignore_index=True)
+
+    output, persist = persisting(tmp_path)
+    out = D.execute_with_diagnostics(run_kwargs=W.run_kwargs(world, frame_mutator=add_us), diag=diag, diag_sha=W.DIAG_SHA,
+                                     harness_hashes=HARNESS, persist_primary=persist)
+    doc = json.loads((output / X.RESULT_NAME).read_bytes())
+    assert doc["overallStatus"] == "INFRASTRUCTURE_ERROR" and doc["substantiveResult"] is False
+    assert doc["closesPreregistration"] is False and all(c["status"] == "INFRASTRUCTURE_ERROR" for c in doc["claims"].values())
+    assert spy == [] and out["diagnosticStatus"] == D.NOT_RUN and out["diagnosticArtifacts"] == {}
+    assert out["references"]["authorizesRetry"] is False
+
+
+def test_the_one_shot_authorization_and_main_only_guards_are_unchanged(tmp_path):
+    CLI = cli()
+    none_committed = tmp_path / "none.json"
+    with pytest.raises(CLI.Refusal, match="AUTHORIZATION_MISSING"):
+        CLI.verify_authorization(tmp_path / "absent.json", spec_sha256=W.SPEC_SHA, harness_files={},
+                                 diagnostic_spec_sha256=W.DIAG_SHA, committed_result=none_committed)
+    committed = tmp_path / "alpha-opportunity-model-v5-result.json"
+    committed.write_text("{}")
+    with pytest.raises(CLI.Refusal, match="A_COMMITTED_V5_RESULT_ALREADY_EXISTS"):
+        CLI.verify_authorization(tmp_path / "absent.json", spec_sha256=W.SPEC_SHA, harness_files={},
+                                 diagnostic_spec_sha256=W.DIAG_SHA, committed_result=committed)
+    with pytest.raises(CLI.Refusal, match="ONLY_FROM_MAIN"):
+        CLI.require_actions_main({"GITHUB_ACTIONS": "true", "GITHUB_REF": "refs/heads/other"})
+    text = (ROOT / ".github/workflows/alpha-opportunity-model-v5-execution.yml").read_text()
+    assert "github.ref != 'refs/heads/main'" in text and "expired==false" in text and "one-shot" in text
+    assert "authorization.json" in text and not (ROOT / "research_specs/alpha-opportunity-model-v5-execution-authorization.json").exists()
+
+
+def test_workflow_classifies_and_uploads_the_primary_even_if_the_diagnostic_process_died():
+    import re
+    text = (ROOT / ".github/workflows/alpha-opportunity-model-v5-execution.yml").read_text()
+    for anchor in ("id: classify", "name: alpha-opportunity-model-v5-result", "name: alpha-opportunity-model-v5-diagnostics"):
+        block = text[text.index(anchor) - 200:text.index(anchor) + 200]
+        assert "always() && inputs.mode == 'execute'" in block, anchor
+    assert re.search(r"alpha-opportunity-model-v5-result\n\s+path: \$\{\{ runner\.temp \}\}/v5-result/alpha-opportunity-model-v5-result\.json", text)
+    assert "alpha-opportunity-model-v5-diagnostic-references.json" in text
+    execute = text[text.index("id: execute"):text.index("id: classify")]
+    assert "exit 0" in execute and "PIPESTATUS" in execute            # a dying diagnostic process cannot fail the step early
+    assert '"NO_ARTIFACT"' in text and "INFRASTRUCTURE_ERROR" in text  # a missing/invalid primary still fails the job

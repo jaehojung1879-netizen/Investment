@@ -22,8 +22,11 @@ name: Alpha opportunity model v5 execution
 #
 # The formal run is PRIMARY FIRST: the registered primary result is built, canonicalised and hashed before the
 # supplemental descriptive diagnostics (research_specs/alpha-opportunity-model-v5-diagnostics-v1.json) run on copies.
-# Diagnostics are uploaded as their own artifact, can never change the primary status, and a DIAGNOSTIC_ERROR
-# neither fails the job nor authorises a retry. The authorization pins the diagnostic-spec digest as well.
+# The PRIMARY result file is written atomically to disk BEFORE any diagnostic starts and is never rewritten, so even a
+# process-level diagnostic failure (OOM kill, timeout, crash) cannot destroy it: the steps after `Execute` run with
+# always() and classify/upload whatever primary file exists. Diagnostics are uploaded as their own artifact, can never
+# change the primary status, and a DIAGNOSTIC_ERROR or a crashed diagnostic process neither fails the job nor
+# authorises a retry. The authorization pins the diagnostic-spec digest as well.
 #
 # The authorization file is NOT part of the change that introduced this harness.
 #
@@ -154,13 +157,18 @@ jobs:
 
       - name: Classify the result (substantive results close the preregistration)
         id: classify
-        if: inputs.mode == 'execute'
+        if: always() && inputs.mode == 'execute'
         run: |
           f="$RUNNER_TEMP/v5-result/alpha-opportunity-model-v5-result.json"
           if [ -f "$f" ]; then
             substantive=$(python -c "import json,sys; print(str(json.load(open(sys.argv[1]))['substantiveResult']).lower())" "$f")
             status=$(python -c "import json,sys; print(json.load(open(sys.argv[1]))['overallStatus'])" "$f")
-            diagnostics=$(python -c "import json,sys; print((json.load(open(sys.argv[1])).get('diagnosticReferences') or {}).get('status','NONE'))" "$f")
+            refs="$RUNNER_TEMP/v5-result/diagnostics/alpha-opportunity-model-v5-diagnostic-references.json"
+            if [ -f "$refs" ]; then
+              diagnostics=$(python -c "import json,sys; print(json.load(open(sys.argv[1])).get('status','NONE'))" "$refs")
+            else
+              diagnostics=NO_REFERENCES_WRITTEN
+            fi
           else
             substantive=false
             status=NO_ARTIFACT
@@ -175,6 +183,8 @@ jobs:
             echo "only INFRASTRUCTURE_ERROR or a missing artifact fails it."
             echo ""
             echo "Supplemental diagnostics: **$diagnostics** (descriptive only; never changes the primary status)."
+            echo "Execute process exit code: ${{ steps.execute.outputs.exit_code }} (a non-zero code with a written primary result"
+            echo "means a diagnostic process failure AFTER the primary file was durable; the primary result stands)."
             echo ""
             echo '```json'
             cat execute-summary.json 2>/dev/null || true
@@ -182,7 +192,7 @@ jobs:
           } >> "$GITHUB_STEP_SUMMARY"
 
       - uses: actions/upload-artifact@v4
-        if: inputs.mode == 'execute' && steps.classify.outputs.substantive == 'true'
+        if: always() && inputs.mode == 'execute' && steps.classify.outputs.substantive == 'true'
         with:
           name: alpha-opportunity-model-v5-result
           path: ${{ runner.temp }}/v5-result/alpha-opportunity-model-v5-result.json
@@ -190,7 +200,7 @@ jobs:
           retention-days: 90
 
       - uses: actions/upload-artifact@v4
-        if: inputs.mode == 'execute' && steps.classify.outputs.substantive == 'true'
+        if: always() && inputs.mode == 'execute' && steps.classify.outputs.substantive == 'true'
         with:
           name: alpha-opportunity-model-v5-diagnostics
           path: ${{ runner.temp }}/v5-result/diagnostics
@@ -198,7 +208,7 @@ jobs:
           retention-days: 90
 
       - uses: actions/upload-artifact@v4
-        if: inputs.mode == 'execute' && steps.classify.outputs.substantive != 'true'
+        if: always() && inputs.mode == 'execute' && steps.classify.outputs.substantive != 'true'
         with:
           name: alpha-opportunity-model-v5-attempt-${{ github.run_id }}-${{ github.run_attempt }}
           path: ${{ runner.temp }}/v5-result
@@ -206,7 +216,7 @@ jobs:
           retention-days: 90
 
       - name: Fail the job only when the machinery failed
-        if: inputs.mode == 'execute'
+        if: always() && inputs.mode == 'execute'
         run: |
           if [ "${{ steps.classify.outputs.status }}" = "INFRASTRUCTURE_ERROR" ] || [ "${{ steps.classify.outputs.status }}" = "NO_ARTIFACT" ]; then
             echo "::error::v5 execution did not produce a complete valid result (${{ steps.classify.outputs.status }}); see the attempt artifact."

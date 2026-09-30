@@ -176,21 +176,54 @@ def execute(args) -> dict:
                                  merged_dir=dirs["merged"], foundation_snapshot=foundation_snapshot),
             guard=guard, calibration=X.calibration_params(ROOT), mode=X.FORMAL if formal else X.GATES_ONLY,
             provenance=provenance, foundation=foundation)
+        primary_name = X.RESULT_NAME if formal else GATES_ONLY_NAME
+
+        def persist_primary(data: bytes):
+            write_primary(Path(args.output).resolve(), primary_name, data)
+
         return DIAG.execute_with_diagnostics(run_kwargs=run_kwargs, diag=diag if formal else None,
-                                             diag_sha=args.diagnostic_sha256, harness_hashes=code["harnessFiles"])
+                                             diag_sha=args.diagnostic_sha256, harness_hashes=code["harnessFiles"],
+                                             persist_primary=persist_primary)
 
 
-def write_result(outcome: dict, output: Path, *, formal: bool):
-    """The primary file, then (only if any) the diagnostic artifacts in a separate subdirectory."""
-    output.mkdir(parents=True)
-    name = X.RESULT_NAME if formal else GATES_ONLY_NAME
-    (output / name).write_bytes(outcome["primaryBytes"])
-    if outcome["diagnosticArtifacts"]:
-        folder = output / "diagnostics"
-        folder.mkdir()
-        for artifact, data in outcome["diagnosticArtifacts"].items():
-            (folder / artifact).write_bytes(data)
-    return json.loads(outcome["primaryBytes"])
+def _atomic_write(path: Path, data: bytes):
+    """Write-then-rename in the same directory with fsync, so a reader (or a crash) sees either no file or the whole one."""
+    tmp = path.with_name(path.name + ".partial")
+    with open(tmp, "wb") as handle:
+        handle.write(data)
+        handle.flush()
+        os.fsync(handle.fileno())
+    os.replace(tmp, path)
+    fd = os.open(path.parent, os.O_RDONLY)
+    try:
+        os.fsync(fd)
+    finally:
+        os.close(fd)
+
+
+def write_primary(output: Path, name: str, data: bytes):
+    """Make the PRIMARY result durable. Called BEFORE any supplemental diagnostic runs; the file is never rewritten."""
+    output.mkdir(parents=True, exist_ok=True)
+    target = output / name
+    if target.exists():
+        raise Refusal("PRIMARY_RESULT_ALREADY_EXISTS: it is written once and never overwritten")
+    _atomic_write(target, data)
+
+
+def write_diagnostics(outcome: dict, output: Path):
+    """Diagnostic artifacts and their references, in a subdirectory, never at (or over) a primary path."""
+    artifacts = dict(outcome["diagnosticArtifacts"])
+    if outcome.get("referencesBytes") is not None:
+        artifacts[DIAG.REFERENCES_NAME] = outcome["referencesBytes"]
+    if not artifacts:
+        return
+    folder = (output / "diagnostics").resolve()
+    folder.mkdir(exist_ok=True)
+    for name, data in artifacts.items():
+        target = (folder / name).resolve()
+        if target.parent != folder or name in (X.RESULT_NAME, GATES_ONLY_NAME):
+            raise Refusal("DIAGNOSTIC_ARTIFACT_MAY_NOT_TOUCH_A_PRIMARY_PATH: " + name)
+        _atomic_write(target, data)
 
 
 def main(argv=None) -> int:
@@ -223,7 +256,9 @@ def main(argv=None) -> int:
         print(json.dumps(result, sort_keys=True))
         return 0
     outcome = result
-    written = write_result(outcome, Path(args.output).resolve(), formal=args.execute)
+    output = Path(args.output).resolve()
+    written = json.loads(outcome["primaryBytes"])          # already durable on disk (written before diagnostics ran)
+    write_diagnostics(outcome, output)
     print(json.dumps({"overallStatus": written["overallStatus"], "claims": written["claims"],
                       "diagnosticStatus": outcome["diagnosticStatus"],
                       "counters": written["ordering"]["counters"], "executionMode": written["executionMode"],

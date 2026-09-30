@@ -836,17 +836,27 @@ def run_diagnostics_safely(ctx, **kwargs) -> dict:
                 "authorizesRetry": False, "changesPrimary": False}
 
 
-def execute_with_diagnostics(*, run_kwargs, diag=None, diag_sha=None, harness_hashes=None) -> dict:
-    """PRIMARY FIRST. 1) the complete registered primary result is built; 2) canonicalised; 3) its hash frozen;
-    4) only then are the supplemental diagnostics run, on copies; 5) the unchanged primary payload and its original
-    hash are embedded and only REFERENCES to the diagnostic artifacts are added. `diag=None` disables the layer
-    entirely and yields exactly the primary result's bytes."""
+REFERENCES_NAME = "alpha-opportunity-model-v5-diagnostic-references.json"
+
+
+def execute_with_diagnostics(*, run_kwargs, diag=None, diag_sha=None, harness_hashes=None,
+                             persist_primary=None) -> dict:
+    """PRIMARY FIRST AND PRIMARY DURABLE. 1) the complete registered primary result is built; 2) canonicalised;
+    3) its hash frozen; 4) `persist_primary(bytes)` makes the primary result durable (the caller writes it atomically);
+    5) ONLY THEN are the supplemental diagnostics run, on copies. The primary bytes are final at step 4: they are never
+    rewritten, never gain a diagnostic reference and never depend on whether diagnostics finish, so a diagnostic failure
+    of ANY kind (an exception, an OOM kill, a timeout, a crash) cannot destroy, alter or invalidate a completed primary
+    result. The references to the diagnostic artifacts live in their own document (`references`), never in the primary
+    file. `diag=None` disables the layer and yields exactly the same primary bytes."""
     capture = {} if diag is not None else None
     result = X.run_execution(**run_kwargs, capture=capture)
     frozen = X.freeze_primary(result)
+    primary_bytes = X.finalize_primary(frozen)
+    if persist_primary is not None:
+        persist_primary(primary_bytes)               # durable BEFORE any diagnostic function is invoked
     if diag is None:
-        return {"frozen": frozen, "primaryBytes": X.finalize_primary(frozen), "diagnosticArtifacts": {},
-                "references": None, "diagnosticStatus": "DISABLED"}
+        return {"frozen": frozen, "primaryBytes": primary_bytes, "diagnosticArtifacts": {},
+                "references": None, "referencesBytes": None, "diagnosticStatus": "DISABLED"}
     reached = (result["phaseReached"] == "COMPLETE" and result["executionMode"] == X.FORMAL
                and any(h.get("table") is not None for h in (capture.get("horizons") or {}).values()))
     if not reached:
@@ -855,8 +865,16 @@ def execute_with_diagnostics(*, run_kwargs, diag=None, diag_sha=None, harness_ha
     else:
         out = run_diagnostics_safely(capture, runtime_spec=run_kwargs["runtime_spec"], diag=diag, diag_sha=diag_sha,
                                      primary_sha=frozen["sha256"], harness_hashes=harness_hashes)
-    references = {"status": out["status"], "diagnosticSpecSha256": diag_sha, "primaryResultSha256": frozen["sha256"],
+    references = {"schemaVersion": SCHEMA_VERSION, "status": out["status"], "diagnosticSpecSha256": diag_sha,
+                  "primaryResultSha256": frozen["sha256"], "primaryResultFileSha256": _sha256(primary_bytes),
                   "artifacts": out["references"], "error": out.get("error"), "reason": out.get("reason"),
+                  "authorizesRetry": False, "changesPrimary": False,
                   "firewall": "descriptive only; cannot gate, rescue, refute, select, tune or trigger a rerun"}
-    return {"frozen": frozen, "primaryBytes": X.finalize_primary(frozen, references),
-            "diagnosticArtifacts": out["artifacts"], "references": references, "diagnosticStatus": out["status"]}
+    return {"frozen": frozen, "primaryBytes": primary_bytes, "diagnosticArtifacts": out["artifacts"],
+            "references": references, "referencesBytes": X.jsonable_bytes(references),
+            "diagnosticStatus": out["status"]}
+
+
+def _sha256(data: bytes) -> str:
+    import hashlib
+    return hashlib.sha256(data).hexdigest()

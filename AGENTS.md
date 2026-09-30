@@ -2199,10 +2199,15 @@
   `resultCanRescuePrimary`, `resultCanRefutePrimary`, `resultCanGatePrimary`, `resultCanTriggerRerun`) are all false
   and re-checked on every load; the operator authorization pins its digest beside the harness file hashes. No
   historical outcome was read to write or test it.
+- THE PRIMARY RESULT IS DURABLE BEFORE ANY DIAGNOSTIC RUNS. Catching a diagnostic exception is not isolation from a
+  diagnostic that cannot be caught (OOM kill, timeout, crash). The primary file is therefore written atomically (temp file,
+  fsync, rename) before the first diagnostic function is invoked and is never rewritten; it carries no diagnostic
+  reference (those are in a separate `diagnostics/...-diagnostic-references.json`); diagnostic artifacts can only be
+  written under `diagnostics/`; and the workflow classifies and uploads whatever primary file exists with `always()`.
+  Tested with a normal exception, `SystemExit`/`KeyboardInterrupt` and a real SIGKILL right after the primary write.
 - PRIMARY FIRST, DIAGNOSTICS AFTER, ON COPIES. The complete primary result is built, canonicalised and hashed before a
   diagnostic runs; diagnostics get deep copies and their own counters; the result file is the unchanged primary payload
-  plus its original hash plus only REFERENCES to diagnostic artifacts, and those references are outside the primary
-  digest. The primary digest is identical with diagnostics on or off (tested on a real re-run), and a diagnostic that
+  and its original hash, and the REFERENCES to diagnostic artifacts are a separate file outside it. The primary digest is identical with diagnostics on or off (tested on a real re-run), and a diagnostic that
   raises, returns garbage or violates the firewall becomes a separate `DIAGNOSTIC_ERROR` that changes no status,
   payload or hash, does not fail the job and authorises no retry.
 - EXACTNESS IS ASSERTED, NOT ASSUMED. The Ridge decomposition `intercept + sum(valueCoef*transformed +
