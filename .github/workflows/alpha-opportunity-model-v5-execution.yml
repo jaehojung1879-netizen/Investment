@@ -1,26 +1,46 @@
 name: Alpha opportunity model v5 execution
 
-# The one authorized historical execution of the frozen alpha-opportunity-model-v5
-# preregistration, plus an outcome-free verification mode. workflow_dispatch only,
-# refuses any ref but main.
+# The frozen alpha-opportunity-model-v5 preregistration: an outcome-free verification mode, an
+# outcome-free pre-label gate dry run, and the ONE authorized historical execution.
+# workflow_dispatch only, refuses any ref but main.
 #
-#   mode: verify   -> checks every frozen identity; reads no label, price return,
-#                     score or outcome. Safe to run any time after merge.
-#   mode: execute  -> requires the operator's authorization file
-#                     (research_specs/alpha-opportunity-model-v5-execution-authorization.json),
-#                     refuses when a result artifact already exists (one-shot),
-#                     verifies first, then calls the runner's --execute.
+#   mode: verify      -> checks every frozen identity (spec digest, dependency closure, v1-v4 seals,
+#                        inherited values, KR accounting snapshot, sealed raw-input blobs, calibrated
+#                        inference pins). Reads no price, label, score or outcome.
+#   mode: gates-only  -> verify, then runs the PRE-LABEL GATES on the sealed inputs
+#                        (`execute_alpha_opportunity_model_v5.py --stop-before-labels`): PIT features,
+#                        tradability, feature coverage and calendar depth. Builds no label, fits no model,
+#                        reads no outcome (its call counters are in the artifact). Its artifact is never a
+#                        substantive result and closes nothing; it exists so the single authorized run is
+#                        not spent discovering an input fact. Needs no authorization.
+#   mode: execute     -> verify, then the single formal execution. Requires the operator's authorization
+#                        file (research_specs/alpha-opportunity-model-v5-execution-authorization.json,
+#                        which pins the spec digest and the reviewed harness file hashes) and refuses when
+#                        a result artifact already exists (one-shot). The harness refuses again on its own
+#                        if the authorization is missing or stale, if it is not running in Actions on main,
+#                        or if a committed result exists.
 #
-# In the preregistration change the runner's --execute REFUSES with
-# NO_V5_EXECUTION_HARNESS_IN_THIS_PR: the reviewed execution harness is a separate
-# later change. Do not run mode: execute before that harness has merged.
+# The formal run is PRIMARY FIRST: the registered primary result is built, canonicalised and hashed before the
+# supplemental descriptive diagnostics (research_specs/alpha-opportunity-model-v5-diagnostics-v1.json) run on copies.
+# The PRIMARY result file is written atomically to disk BEFORE any diagnostic starts and is never rewritten, so even a
+# process-level diagnostic failure (OOM kill, timeout, crash) cannot destroy it: the steps after `Execute` run with
+# always() and classify/upload whatever primary file exists. Diagnostics are uploaded as their own artifact, can never
+# change the primary status, and a DIAGNOSTIC_ERROR or a crashed diagnostic process neither fails the job nor
+# authorises a retry. The authorization pins the diagnostic-spec digest as well.
+#
+# The authorization file is NOT part of the change that introduced this harness.
+#
+# A scientific verdict (PASS / FAIL / INCONCLUSIVE / DATA_INSUFFICIENT) is a SUCCESSFUL job: the workflow
+# status reports whether the machinery worked, the job summary and artifact report what it found. Only
+# INFRASTRUCTURE_ERROR fails the job, and its artifact is kept under an attempt name so that it does not
+# close the one-shot guard.
 on:
   workflow_dispatch:
     inputs:
       mode:
-        description: "verify (outcome-free) or execute (the single authorized run)"
+        description: "verify (outcome-free), gates-only (outcome-free pre-label gates) or execute (the single authorized run)"
         type: choice
-        options: [verify, execute]
+        options: [verify, gates-only, execute]
         default: verify
 
 permissions:
@@ -33,6 +53,11 @@ concurrency:
 
 env:
   SEALED_SHA256: d0f1aaf50d9629ba2f8a0a9802cd4ebd653018028ee97b2746f9e50703741e75
+  DIAGNOSTICS_SHA256: 15a855faae2b7a1ae34aea703a8e0b996b363fd8359210bb43ab308945048f9a
+  SEALED_SIGNAL_HISTORY_COMMIT: 4ea107ed0cde289f0a049a65ff13d2441a786710
+  OMP_NUM_THREADS: "1"
+  OPENBLAS_NUM_THREADS: "1"
+  MKL_NUM_THREADS: "1"
 
 jobs:
   v5:
@@ -62,8 +87,10 @@ jobs:
           git fetch --no-tags --depth=1 origin fb6e83743fd8cdba647d1522a4645b662a9d5647
           git fetch --no-tags --depth=1 --filter=blob:none origin 4ea107ed0cde289f0a049a65ff13d2441a786710
 
-      - name: Sidecar equals the pinned digest
-        run: test "$(cat research_specs/alpha-opportunity-model-v5.sha256)" = "$SEALED_SHA256"
+      - name: Sidecars equal the pinned digests
+        run: |
+          test "$(cat research_specs/alpha-opportunity-model-v5.sha256)" = "$SEALED_SHA256"
+          test "$(cat research_specs/alpha-opportunity-model-v5-diagnostics-v1.sha256)" = "$DIAGNOSTICS_SHA256"
 
       - name: Verify every frozen identity (outcome-free)
         run: |
@@ -80,6 +107,118 @@ jobs:
           n=$(gh api "repos/$REPO/actions/artifacts?name=alpha-opportunity-model-v5-result" --jq '[.artifacts[] | select(.expired==false)] | length')
           if [ "$n" != "0" ]; then echo "::error::a v5 result artifact already exists; the run is one-shot."; exit 1; fi
 
-      - name: Execute (fails closed until the reviewed harness has merged)
+      - name: Synthetic contract tests of the reviewed harness
+        if: inputs.mode != 'verify'
+        run: |
+          pip install -r requirements-dev.txt
+          python -m pytest -q tests/test_alpha_opportunity_v5_execution.py tests/test_alpha_opportunity_v5_diagnostics.py \
+            tests/test_alpha_opportunity_v5_preregistration.py
+
+      - uses: actions/checkout@v5
+        if: inputs.mode != 'verify'
+        with:
+          ref: ${{ env.SEALED_SIGNAL_HISTORY_COMMIT }}
+          path: research-inputs
+          sparse-checkout: |
+            ledger/replay-inputs
+            ledger/historical/replay-v16/inputs.json
+            ledger/fundamentals/kr/shares.jsonl.gz
+            ledger/universe/kr
+          sparse-checkout-cone-mode: false
+
+      - name: Pre-label gates on the sealed inputs (outcome-free; builds no label)
+        if: inputs.mode == 'gates-only'
+        run: |
+          python scripts/execute_alpha_opportunity_model_v5.py --sealed-sha256 "$SEALED_SHA256" \
+            --diagnostic-sha256 "$DIAGNOSTICS_SHA256" \
+            --input-root research-inputs --expected-signal-history-sha "$SEALED_SIGNAL_HISTORY_COMMIT" \
+            --attempt-id "gates-only-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT" \
+            --output "$RUNNER_TEMP/v5-gates-only" --stop-before-labels | tee gates-only-summary.json
+
+      - uses: actions/upload-artifact@v4
+        if: inputs.mode == 'gates-only' && always()
+        with:
+          name: alpha-opportunity-model-v5-gates-only-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/v5-gates-only
+          if-no-files-found: ignore
+
+      - name: Execute the frozen v5 protocol (the single authorized run)
+        id: execute
         if: inputs.mode == 'execute'
-        run: python scripts/run_alpha_opportunity_model_v5.py --sealed-sha256 "$SEALED_SHA256" --execute
+        run: |
+          set +e
+          python scripts/execute_alpha_opportunity_model_v5.py --sealed-sha256 "$SEALED_SHA256" \
+            --diagnostic-sha256 "$DIAGNOSTICS_SHA256" \
+            --input-root research-inputs --expected-signal-history-sha "$SEALED_SIGNAL_HISTORY_COMMIT" \
+            --attempt-id "$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT" \
+            --output "$RUNNER_TEMP/v5-result" --execute | tee execute-summary.json
+          echo "exit_code=${PIPESTATUS[0]}" >> "$GITHUB_OUTPUT"
+          exit 0
+
+      - name: Classify the result (substantive results close the preregistration)
+        id: classify
+        if: always() && inputs.mode == 'execute'
+        run: |
+          f="$RUNNER_TEMP/v5-result/alpha-opportunity-model-v5-result.json"
+          if [ -f "$f" ]; then
+            substantive=$(python -c "import json,sys; print(str(json.load(open(sys.argv[1]))['substantiveResult']).lower())" "$f")
+            status=$(python -c "import json,sys; print(json.load(open(sys.argv[1]))['overallStatus'])" "$f")
+            refs="$RUNNER_TEMP/v5-result/diagnostics/alpha-opportunity-model-v5-diagnostic-references.json"
+            if [ -f "$refs" ]; then
+              diagnostics=$(python -c "import json,sys; print(json.load(open(sys.argv[1])).get('status','NONE'))" "$refs")
+            else
+              diagnostics=NO_REFERENCES_WRITTEN
+            fi
+          else
+            substantive=false
+            status=NO_ARTIFACT
+            diagnostics=NONE
+          fi
+          echo "substantive=$substantive" >> "$GITHUB_OUTPUT"
+          echo "status=$status" >> "$GITHUB_OUTPUT"
+          {
+            echo "### alpha-opportunity-model-v5 execution"
+            echo ""
+            echo "Overall status: **$status** (substantive: $substantive). A verdict is a successful job;"
+            echo "only INFRASTRUCTURE_ERROR or a missing artifact fails it."
+            echo ""
+            echo "Supplemental diagnostics: **$diagnostics** (descriptive only; never changes the primary status)."
+            echo "Execute process exit code: ${{ steps.execute.outputs.exit_code }} (a non-zero code with a written primary result"
+            echo "means a diagnostic process failure AFTER the primary file was durable; the primary result stands)."
+            echo ""
+            echo '```json'
+            cat execute-summary.json 2>/dev/null || true
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - uses: actions/upload-artifact@v4
+        if: always() && inputs.mode == 'execute' && steps.classify.outputs.substantive == 'true'
+        with:
+          name: alpha-opportunity-model-v5-result
+          path: ${{ runner.temp }}/v5-result/alpha-opportunity-model-v5-result.json
+          if-no-files-found: error
+          retention-days: 90
+
+      - uses: actions/upload-artifact@v4
+        if: always() && inputs.mode == 'execute' && steps.classify.outputs.substantive == 'true'
+        with:
+          name: alpha-opportunity-model-v5-diagnostics
+          path: ${{ runner.temp }}/v5-result/diagnostics
+          if-no-files-found: ignore
+          retention-days: 90
+
+      - uses: actions/upload-artifact@v4
+        if: always() && inputs.mode == 'execute' && steps.classify.outputs.substantive != 'true'
+        with:
+          name: alpha-opportunity-model-v5-attempt-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/v5-result
+          if-no-files-found: ignore
+          retention-days: 90
+
+      - name: Fail the job only when the machinery failed
+        if: always() && inputs.mode == 'execute'
+        run: |
+          if [ "${{ steps.classify.outputs.status }}" = "INFRASTRUCTURE_ERROR" ] || [ "${{ steps.classify.outputs.status }}" = "NO_ARTIFACT" ]; then
+            echo "::error::v5 execution did not produce a complete valid result (${{ steps.classify.outputs.status }}); see the attempt artifact."
+            exit 1
+          fi

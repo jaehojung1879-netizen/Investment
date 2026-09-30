@@ -2139,6 +2139,93 @@
   model, horizon, benchmark or universe change afterwards. The sample is exposed
   history: PASS is replication-type evidence needing prospective confirmation.
 
+## Alpha-opportunity-model-v5 execution-harness invariants (v2.40)
+
+- A HARNESS IS NOT AN AUTHORIZATION AND NEITHER IS AN EXECUTION. `alpha-opportunity-model-v5-
+  execution-harness-v1` implements the reviewed harness that PR #174 left outside the sealed
+  closure (`pipeline/alpha_opportunity_v5_execution.py`, `alpha_opportunity_v5_evidence.py`,
+  `scripts/execute_alpha_opportunity_model_v5.py`) and executes nothing. The sealed spec
+  (`d0f1aaf5...`), its sidecar, the preregistration document, `alpha_opportunity_v5_spec.py` and
+  `run_alpha_opportunity_model_v5.py` are byte-identical to the preregistration merge, the sealed runner's
+  `--execute` still refuses, and neither the operator authorization file nor any result artifact exists.
+  State: `HARNESS_READY_BUT_NOT_AUTHORIZED`. All tests use synthetic fixtures; the harness has never
+  run on real prices.
+- "STOPPED BEFORE LABELS" IS DERIVED FROM CALL COUNTERS, NEVER ASSERTED. v4's first harness built about
+  170k forward labels before its coverage gate and wrote `stoppedBeforeLabels: true`. In v5 the counters are
+  incremented at the call sites of `target_from_sessions`, `label_eligibility`, every fit, prediction and
+  evaluation; the flag is computed from them; `build_labels` raises without a `LabelPermit`; a permit exists
+  only for a `GatesPassed` object and only after every frozen identity was re-verified; and a test replaces
+  each outcome-reading function with a spy that raises and requires zero counters and zero spy hits after any
+  pre-label failure. A flag that says what happened is not evidence that it did; the counter and the spy are.
+- ONE FROZEN IDENTITY, MEASURED AT THREE POINTS. Spec, closure, priors, KR accounting snapshot, sealed raw
+  blobs and replay manifest, calibrated-inference pins, the terminal-action execution snapshot and the harness
+  code are frozen together, re-verified immediately before the first label, and verified once more at the end
+  of the run. A same-run input swap is an `INFRASTRUCTURE_ERROR` naming the component that moved, never a
+  verdict. Price objects are covered by the replay manifest and re-hashed by `InputStore` when read; that is a
+  disclosed limit, not a claim of a second hash.
+- A VERDICT IS A SUCCESSFUL PROCESS. PASS, FAIL, INCONCLUSIVE and DATA_INSUFFICIENT (including a registered
+  pre-label gate stop) exit 0 and, from the formal run, close the preregistration. Only INFRASTRUCTURE_ERROR
+  exits non-zero, and its artifact is uploaded under an attempt name so it cannot close the one-shot guard. The
+  workflow reports whether the machinery worked; the artifact and job summary report what it found.
+- THE CALIBRATED ENGINE IS CALLED, AND THE ONE NEW PIECE IS PROVED EQUAL TO IT. The interval is
+  `calendar_time_sn_interval` and the rank weights are the engine's `_centred_rank_weights`, both from the
+  engine files pinned by the sealed spec. The frozen label is a compounded ratio while the calibration
+  simulates additive shared returns, so real cohorts are attributed to calendar weeks through the exact
+  telescoping increment `(Close[s]-Close[s-1])/Close[entry]` minus the benchmark's. That generalisation equals
+  the engine's `calendar_time_series` on additive data (tested) and the sum of D over weeks must equal the sum
+  of the signal-date statistic on every series or the run raises. Estimator and estimand are unchanged.
+- THE ONE-SHOT HAS THREE INDEPENDENT LOCKS. The workflow refuses non-main and an existing unexpired result
+  artifact; the script refuses outside Actions on main, without an authorization file that pins the spec digest
+  and the reviewed harness file hashes (an authorization cannot be spent on code that was not reviewed), and when
+  `docs/results/alpha-opportunity-model-v5-result.json` is committed. A dry run of the pre-label gates
+  (`--stop-before-labels`, workflow `mode: gates-only`) is outcome-free, needs no authorization, is never a
+  substantive result and closes nothing: a formal run that stops at a gate is a closing result, and learning that
+  fact from an outcome-free run does not spend the budget.
+- DESCRIPTIVE HEADS CANNOT GATE. B1, B3, B5, the Logistic head, rankIC, calibration, fitted-value uncertainty
+  and cost stress are reported and read by nothing that decides a claim; a descriptive head failing is recorded
+  and moves nothing, while a PRIMARY Ridge (B0/B2/B3/B4) failing numerically is an execution failure.
+- A PRE-EXISTING TEST THAT ENCODED THE OLD STATE WAS UPDATED, AND SAYS SO. The PR #174 workflow test required the
+  execute step to be the workflow's LAST step; the harness adds classification, artifact and fail-on-
+  infrastructure-error steps after it, so that test now requires exactly one step passing `--execute`, gated on
+  execute mode. No frozen-value assertion was loosened.
+
+## Alpha-opportunity-model-v5 supplemental-diagnostics invariants (v2.41)
+
+- A SUPPLEMENTAL DIAGNOSTIC PROTOCOL IS FROZEN BEFORE OUTCOMES AND IS NOT AN AMENDMENT. `alpha-opportunity-model-v5-
+  diagnostics-v1` (`research_specs/alpha-opportunity-model-v5-diagnostics-v1.json`, digest `15a855fa...`) adds
+  descriptive attribution to the ONE authorized v5 execution without changing a feature, horizon, target, model,
+  hyperparameter, interval, threshold, claim state, cost, universe or execution count. Its firewall flags
+  (`affectsPrimaryClaim`, `promotionEligible`, `modelSelectionAllowed`, `featureSelectionAllowed`,
+  `resultCanRescuePrimary`, `resultCanRefutePrimary`, `resultCanGatePrimary`, `resultCanTriggerRerun`) are all false
+  and re-checked on every load; the operator authorization pins its digest beside the harness file hashes. No
+  historical outcome was read to write or test it.
+- THE PRIMARY RESULT IS DURABLE BEFORE ANY DIAGNOSTIC RUNS. Catching a diagnostic exception is not isolation from a
+  diagnostic that cannot be caught (OOM kill, timeout, crash). The primary file is therefore written atomically (temp file,
+  fsync, rename) before the first diagnostic function is invoked and is never rewritten; it carries no diagnostic
+  reference (those are in a separate `diagnostics/...-diagnostic-references.json`); diagnostic artifacts can only be
+  written under `diagnostics/`; and the workflow classifies and uploads whatever primary file exists with `always()`.
+  Tested with a normal exception, `SystemExit`/`KeyboardInterrupt` and a real SIGKILL right after the primary write.
+- PRIMARY FIRST, DIAGNOSTICS AFTER, ON COPIES. The complete primary result is built, canonicalised and hashed before a
+  diagnostic runs; diagnostics get deep copies and their own counters; the result file is the unchanged primary payload
+  and its original hash, and the REFERENCES to diagnostic artifacts are a separate file outside it. The primary digest is identical with diagnostics on or off (tested on a real re-run), and a diagnostic that
+  raises, returns garbage or violates the firewall becomes a separate `DIAGNOSTIC_ERROR` that changes no status,
+  payload or hash, does not fail the job and authorises no retry.
+- EXACTNESS IS ASSERTED, NOT ASSUMED. The Ridge decomposition `intercept + sum(valueCoef*transformed +
+  missingCoef*indicator)` must equal the B4 prediction to 1e-9 on every evaluated row and each diagnostic refit must
+  reproduce the primary B4 and B5 predictions, or the diagnostic run is an error. The Logistic head is decomposed on
+  the log-odds scale only; probability-scale additivity is never claimed.
+- CORRELATED PREDICTORS CHANGE WHAT AN ABLATION MEANS. Individual leave-one-feature-out is unique information
+  conditional on the remaining substitutes, so a near-zero value is not evidence of no information; the frozen
+  families make group leave-one-family-out the headline reading and a training-only redundancy map is reported beside
+  both with no verdict label. ALE, not PDP, is the nonlinear display, with edges from the fold's TRAINING data only and
+  unsupported bins reported rather than bridged.
+- REGIME LABELS READ THE PAST ONLY. The volatility threshold is the median of the same statistic over the strictly
+  earlier signal dates (expanding, minimum 26), the trend label reads the trailing 126 sessions, no named event and no
+  full-sample constant is used, and a test shows a future shock cannot alter an earlier label.
+- THE MULTIPLE-TESTING FIREWALL IS CODE. Outputs are scanned for significance, p-value, winner, best-feature and
+  promoted-predictor keys; a hit makes the run a `DIAGNOSTIC_ERROR`. Diagnostics choose no best feature, group,
+  regime or interaction, and any hypothesis they suggest belongs to a NEW preregistration.
+
 ## Lint gate invariants (v2.11)
 
 - The enabled rule set reports ZERO findings on `main`. A rule is turned on in the

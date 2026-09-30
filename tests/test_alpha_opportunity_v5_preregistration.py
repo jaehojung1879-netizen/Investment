@@ -200,8 +200,11 @@ def test_workflow_is_main_only_dispatch_only_read_only_and_pinned():
     assert re.search(r"SEALED_SHA256: ([0-9a-f]{64})", text).group(1) == SEAL
     assert "--verify-snapshot-from-git" in text and "--verify-raw-inputs-from-git" in text
     assert "authorization.json" in text and "alpha-opportunity-model-v5-result" in text
-    last_step = text.rsplit("      - name:", 1)[1]
-    assert "inputs.mode == 'execute'" in last_step and "--execute" in last_step
+    # The reviewed harness (a later change) adds steps after the execute step (classification, artifact upload,
+    # the fail-only-on-infrastructure-error step), so the execute step is no longer the LAST step; it must still
+    # exist, be gated on execute mode, and be the only step that passes --execute.
+    execute_steps = [step for step in text.split("      - name:")[1:] if "--execute" in step]
+    assert len(execute_steps) == 1 and "inputs.mode == 'execute'" in execute_steps[0]
 
 
 def test_calibration_and_snapshot_inputs_are_unchanged():

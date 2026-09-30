@@ -1,0 +1,316 @@
+{
+  "ablation": {
+    "convention": "delta = metric(ablation) - metric(B4) for every metric below",
+    "deltas": [
+      "pooledMse",
+      "equalDateMse",
+      "rankWeightedSpread",
+      "predictionCrossSectionalVariance"
+    ],
+    "identicalToB4": [
+      "walk-forward folds",
+      "maturity purge",
+      "training date weights",
+      "training-only transforms",
+      "missingness semantics",
+      "Ridge alpha=10",
+      "universe",
+      "evaluation dates"
+    ],
+    "interpretation": {
+      "group": "predictive reliance on the family as a whole; preferred for the headline diagnostic reading",
+      "individual": "UNIQUE information conditional on the remaining correlated features",
+      "nearZeroIndividual": "does NOT imply the feature carries no information when correlated substitutes exist"
+    },
+    "kinds": [
+      "B4_MINUS_FEATURE_j (every registry feature)",
+      "B4_MINUS_GROUP_G (every applicable frozen group)"
+    ],
+    "newProductionModel": false,
+    "perFold": true,
+    "prohibited": [
+      "PASS/FAIL",
+      "promoting a feature",
+      "dropping a feature from v5",
+      "significant-feature labels"
+    ],
+    "search": false,
+    "selection": false
+  },
+  "ale": {
+    "aggregation": "descriptive median across folds by decile index; no significance",
+    "binEdges": "equal-count quantiles of the fold's TRAINING values of the feature; duplicates collapse",
+    "bins": 10,
+    "centering": "count-weighted mean of the accumulated effect over the bins with a defined accumulated value",
+    "evaluatedOn": "out-of-fold validation rows of the fold, assigned to the training-derived bins; only rows with an observed value",
+    "evaluationDeterminesThresholds": false,
+    "method": "1-dimensional Accumulated Local Effects of B5 (not PDP, not SHAP)",
+    "minimumBinSupport": 50,
+    "scale": "B5 predicted expected relative return, centered",
+    "shap": "not a dependency and not the authoritative importance method",
+    "unsupportedBins": "reported UNSUPPORTED with a null effect; never extrapolated, interpolated or bridged"
+  },
+  "artifacts": {
+    "everyArtifactCarries": [
+      "schemaVersion",
+      "rowCount",
+      "primaryResultSha256",
+      "diagnosticSpecSha256",
+      "harnessFileHashes",
+      "sha256 (in the primary result's diagnosticReferences)"
+    ],
+    "ledger": "alpha-opportunity-model-v5-diagnostic-ledger.jsonl.gz",
+    "models": "alpha-opportunity-model-v5-diagnostic-models.json",
+    "schemaVersion": 1,
+    "summary": "alpha-opportunity-model-v5-diagnostic-summary.json"
+  },
+  "coefficientStability": {
+    "interpretation": "MODEL COEFFICIENTS under training-only robust scaling; never causal effects; no significance label",
+    "l2DriftRule": "Euclidean norm of the difference of consecutive coefficient vectors over every value and missing-indicator entry of the horizon's registry; an omitted feature contributes 0",
+    "model": "B4 Ridge, every annual expanding-window fit, per horizon and per active feature",
+    "recorded": [
+      "refitYear",
+      "trainingCutoff",
+      "standardizedValueCoefficient",
+      "missingIndicatorCoefficient",
+      "intercept",
+      "activeOrOmitted",
+      "sign"
+    ],
+    "signFlipRule": "count of sign changes between consecutive evaluation refits, exact zeros carrying the previous sign",
+    "summaries": [
+      "median",
+      "medianAbsolute",
+      "interquartileRange",
+      "fractionPositive",
+      "fractionNegative",
+      "signFlipCount",
+      "yearToYearDrift",
+      "l2CoefficientVectorDrift"
+    ]
+  },
+  "featureGroups": {
+    "ACCOUNTING": {
+      "at21": "NOT_APPLICABLE: no accounting field is registered at H21",
+      "features": [
+        "assetGrowthPct",
+        "debtGrowthPct"
+      ],
+      "horizons": [
+        "126"
+      ]
+    },
+    "ATTENTION_LIQUIDITY": [
+      "logVolumeShock60",
+      "shockPersistence5d",
+      "volumePriceAlignment"
+    ],
+    "RISK_VOLATILITY": [
+      "vol63"
+    ],
+    "TREND_MOMENTUM": [
+      "relative126",
+      "acceleration21"
+    ],
+    "note": "Semantic groups for ATTRIBUTION ONLY. They do not alter the frozen feature registry, B2, B3 or B4."
+  },
+  "firewall": {
+    "affectsPrimaryClaim": false,
+    "allDiagnosticsAreDescriptiveExploratory": true,
+    "diagnosticFailureRule": "reported separately as DIAGNOSTIC_ERROR; never changes a primary status or payload and never authorises a substantive retry",
+    "featureSelectionAllowed": false,
+    "forbiddenOutputKeySubstrings": [
+      "significan",
+      "pvalue",
+      "p_value",
+      "winner",
+      "bestfeature",
+      "bestmodel",
+      "bestregime",
+      "bestgroup",
+      "promotedpredictor",
+      "tstat",
+      "holm",
+      "bonferroni"
+    ],
+    "futurePromotionOfAnyFindingRequires": "a NEW preregistered study or version; nothing here is evidence for a claim",
+    "modelSelectionAllowed": false,
+    "noBestSubgroupFeatureModelOrRegimeSelectionAfterResults": true,
+    "noPValueOrSignificanceMining": true,
+    "primaryFirst": [
+      "construct the complete registered primary result",
+      "canonicalize it",
+      "freeze primaryResultSha256",
+      "only then run diagnostics on immutable copies",
+      "embed the unchanged primary payload and its original hash; add references only"
+    ],
+    "promotionEligible": false,
+    "resultCanChangeCandidateSelection": false,
+    "resultCanGatePrimary": false,
+    "resultCanRefutePrimary": false,
+    "resultCanRescuePrimary": false,
+    "resultCanTriggerRerun": false,
+    "resultCanTuneAnyParameter": false
+  },
+  "headConcordance": {
+    "calibrationBins": "10 equal-width probability bins",
+    "deciles": "within each signal date, ties broken by ticker ascending, pooled by decile index",
+    "disagreement": "expected relative return > 0 with probability < 0.5, and expected relative return <= 0 with probability >= 0.5",
+    "logisticNeverGatesOrRescues": true,
+    "reported": [
+      "equalDateCorrelationOfHeads",
+      "expectedReturnDecilesVsRealizedBeatRate",
+      "expectedReturnDecilesVsMeanRealizedRelativeReturn",
+      "probabilityDecilesVsRealizedBeatRate",
+      "probabilityCalibrationTable",
+      "disagreementCounts"
+    ]
+  },
+  "immutableVersion": "1.0.0",
+  "kind": "SUPPLEMENTAL_DESCRIPTIVE_DIAGNOSTIC_PROTOCOL",
+  "ledger": {
+    "artifact": "alpha-opportunity-model-v5-diagnostic-ledger.jsonl.gz",
+    "fields": [
+      "studyId",
+      "horizon",
+      "signalDate",
+      "ticker",
+      "foldId",
+      "trainingCutoff",
+      "featureValues",
+      "transformedFeatureValues",
+      "missingIndicators",
+      "predictions",
+      "logisticProbability",
+      "b4FeatureContributions",
+      "b4FamilyContributions",
+      "realizedRelativeReturn",
+      "beatBenchmarkNet",
+      "roundTripCost",
+      "selected",
+      "eligibilityStatus",
+      "regime"
+    ],
+    "noRawSourceDocuments": true,
+    "rows": "every out-of-fold evaluated name-date of the primary evaluation tables",
+    "serialization": "canonical JSON lines, sorted keys, gzip with mtime 0",
+    "sort": [
+      "horizon",
+      "signalDate",
+      "ticker"
+    ]
+  },
+  "linearVsNonlinear": {
+    "b5CannotRescueB4": true,
+    "comparison": "B4 Ridge (primary) against B5 HGB (descriptive), out-of-fold",
+    "quintileRule": "top and bottom ceil(n/5) names of each date by prediction, ties broken by ticker ascending",
+    "reported": [
+      "pooledMseDifference",
+      "pearsonPredictionCorrelation",
+      "equalDateSpearmanPredictionCorrelation",
+      "topQuintileOverlapByDate",
+      "bottomQuintileOverlapByDate",
+      "signDisagreementRate",
+      "dispersionOfB5MinusB4",
+      "byAnnualFold"
+    ]
+  },
+  "parent": {
+    "relationship": "SUPPLEMENT_NOT_AMENDMENT: this is not a v5.1 primary preregistration and changes nothing the parent froze",
+    "specSha256": "d0f1aaf50d9629ba2f8a0a9802cd4ebd653018028ee97b2746f9e50703741e75",
+    "studyId": "alpha-opportunity-model-v5"
+  },
+  "phase": "FROZEN_BEFORE_ANY_ALPHA_V5_OUTCOME",
+  "predictionDecomposition": {
+    "absoluteTolerance": 1e-09,
+    "byLevels": [
+      "horizon",
+      "date",
+      "fold"
+    ],
+    "identity": "intercept + sum_j (valueCoefficient_j * transformedFeature_j + missingIndicatorCoefficient_j * missingIndicator_j) == B4 prediction",
+    "interpretation": "model attribution; not true importance",
+    "logistic": "the same exact decomposition on the LOG-ODDS scale only; never probability-scale additivity",
+    "onFailure": "DIAGNOSTIC_ERROR (never a primary change)",
+    "reported": [
+      "signedContribution",
+      "absoluteContribution",
+      "meanSigned",
+      "meanAbsolute",
+      "crossSectionalDispersion",
+      "familyShareOfAbsoluteContribution"
+    ]
+  },
+  "prohibitions": [
+    "no diagnostic output may enter a primary status, interval, threshold, selection, model choice or retry decision",
+    "no significance label, p-value, promoted predictor or winner is produced",
+    "no outcome-optimized threshold, bin, group or regime",
+    "no new feature, interaction, model or hyperparameter"
+  ],
+  "redundancy": {
+    "aggregation": [
+      "median across folds",
+      "interquartile range across folds"
+    ],
+    "combinedWith": "individual and group ablation, reported side by side with no verdict label",
+    "data": "TRAINING rows only, per fold",
+    "features": "active features after the frozen signed-log transform, pairwise-complete, before imputation",
+    "statistics": [
+      "date-weighted Pearson",
+      "date-weighted Spearman"
+    ],
+    "weights": "each row weighted 1/(rows on its signal date); Spearman uses average ranks within the pairwise-complete set"
+  },
+  "references": {
+    "note": "Methodological motivation only. None of these validates any Alpha-v5 result.",
+    "works": [
+      "Gu, Kelly & Xiu (2020), Empirical Asset Pricing via Machine Learning, Review of Financial Studies",
+      "Harvey, Liu & Zhu (2016), ...and the Cross-Section of Expected Returns, Review of Financial Studies",
+      "Harvey, Sancetta & Zhao (2026), multiple testing and selection bias in the factor zoo",
+      "Fisher, Rudin & Dominici (2019), All Models are Wrong, but Many are Useful: model reliance, JMLR",
+      "Verdinelli & Wasserman (2024), Decorrelated Variable Importance, JMLR",
+      "Apley & Zhu (2020), Visualizing the effects of predictor variables in black box supervised learning models, JRSS-B"
+    ]
+  },
+  "regimes": {
+    "TREND": {
+      "NON_POSITIVE": "<= 0",
+      "POSITIVE": "> 0",
+      "variable": "KR benchmark 069500.KS trailing 126-session total return"
+    },
+    "VOLATILITY": {
+      "HIGH": "> threshold",
+      "LOW": "<= threshold",
+      "minimumPriorSignalDates": 26,
+      "threshold": "median of the same statistic over the STRICTLY EARLIER weekly signal dates, expanding",
+      "undetermined": "UNDETERMINED when fewer than the minimum prior dates exist; excluded, never filled",
+      "variable": "KR benchmark trailing 63-session realized volatility (sample std of 63 daily simple returns, annualised by sqrt(252))"
+    },
+    "alsoByCalendarEvaluationYear": true,
+    "belowMinimum": "DESCRIPTIVE_DATA_SPARSE: counts only, no estimate",
+    "informationRule": "only information known at the signal date; no named historical event; no full-sample threshold",
+    "minimumSignalWeeks": 26,
+    "noWinnerOrLoserLabel": true,
+    "notAClaim": true,
+    "regimes": [
+      "POSITIVE/LOW",
+      "POSITIVE/HIGH",
+      "NON_POSITIVE/LOW",
+      "NON_POSITIVE/HIGH"
+    ],
+    "reported": [
+      "signalWeeks",
+      "eligibleNames",
+      "b4Mse",
+      "b0Mse",
+      "b2Mse",
+      "b4VsB0MseImprovement",
+      "b4VsB2MseImprovement",
+      "rankWeightedSpread",
+      "b4B5Agreement",
+      "logisticBrier",
+      "logisticLogLoss"
+    ]
+  },
+  "studyId": "alpha-opportunity-model-v5-diagnostics-v1"
+}
