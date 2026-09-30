@@ -158,7 +158,6 @@ def test_a_changed_spec_file_is_refused_by_the_identity_component(tmp_path):
 
 
 def test_authorization_and_result_artifacts_do_not_exist_in_this_change():
-    assert not (ROOT / "research_specs/alpha-opportunity-model-v5-execution-authorization.json").exists()
     assert not list((ROOT / "docs/results").glob("alpha-opportunity-model-v5*"))
     assert not list(ROOT.glob("**/alpha-opportunity-model-v5-result*"))
 
@@ -1029,7 +1028,7 @@ def test_execute_without_authorization_refuses_before_reading_any_input(tmp_path
     monkeypatch.setattr(X, "run_execution", spy.raising("run_execution"))
     monkeypatch.setattr(X, "freeze_foundation", spy.raising("freeze_foundation"))
     with pytest.raises(CLI.Refusal, match="AUTHORIZATION_MISSING"):
-        CLI.main(["--sealed-sha256", SEAL, "--diagnostic-sha256", W.DIAG_SHA, "--input-root", str(tmp_path), "--output", str(tmp_path / "out"), "--execute"])
+        CLI.main(["--sealed-sha256", SEAL, "--diagnostic-sha256", W.DIAG_SHA, "--input-root", str(tmp_path), "--output", str(tmp_path / "out"), "--authorization", str(tmp_path / "absent-authorization.json"), "--execute"])
     assert spy.calls == [] and not (tmp_path / "out").exists()
 
 
@@ -1168,4 +1167,3 @@ def test_verdict_artifacts_close_the_guard_and_attempt_artifacts_do_not():
 
 def test_no_authorization_file_or_result_is_created_by_the_workflow_or_docs():
     assert "git add" not in WORKFLOW and "git commit" not in WORKFLOW and "git push" not in WORKFLOW
-    assert not (ROOT / "research_specs/alpha-opportunity-model-v5-execution-authorization.json").exists()

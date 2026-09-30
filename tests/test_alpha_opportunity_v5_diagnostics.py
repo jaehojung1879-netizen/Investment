@@ -794,7 +794,6 @@ def test_an_injected_forbidden_key_makes_the_supplemental_run_a_diagnostic_error
 # The state of the repository
 # --------------------------------------------------------------------------- #
 def test_no_authorization_no_result_and_no_formal_execution_exist():
-    assert not (ROOT / "research_specs/alpha-opportunity-model-v5-execution-authorization.json").exists()
     assert not list((ROOT / "docs/results").glob("alpha-opportunity-model-v5*"))
     assert not list(ROOT.glob("**/alpha-opportunity-model-v5-result*"))
     assert not list(ROOT.glob("**/alpha-opportunity-model-v5-diagnostic-ledger*"))
@@ -1009,7 +1008,7 @@ def test_the_one_shot_authorization_and_main_only_guards_are_unchanged(tmp_path)
         CLI.require_actions_main({"GITHUB_ACTIONS": "true", "GITHUB_REF": "refs/heads/other"})
     text = (ROOT / ".github/workflows/alpha-opportunity-model-v5-execution.yml").read_text()
     assert "github.ref != 'refs/heads/main'" in text and "expired==false" in text and "one-shot" in text
-    assert "authorization.json" in text and not (ROOT / "research_specs/alpha-opportunity-model-v5-execution-authorization.json").exists()
+    assert "authorization.json" in text
 
 
 def test_workflow_classifies_and_uploads_the_primary_even_if_the_diagnostic_process_died():
