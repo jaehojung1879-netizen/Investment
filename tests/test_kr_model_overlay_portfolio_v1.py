@@ -50,7 +50,7 @@ def price_frame(start="2013-01-01", end="2021-01-01", growth=.0001):
 
 
 def candidate(ticker="000001.KS", alpha=.02, dv=.2, adv=1e10, **changes):
-    return {"ticker": ticker, "predictionH126": alpha, "downsideVol126": dv, "adv60": adv, "tradable": True, **changes}
+    return {"ticker": ticker, "predictionH126": alpha, "downsideVol126": dv, "adv60": adv, "tradable": True, "coreFamilyObserved": True, **changes}
 
 
 @pytest.mark.parametrize("field,value", [("marketCap",0), ("listedShares",-1), ("close",np.nan),
@@ -400,7 +400,7 @@ def replay_fixture():
     features=[];predictions=[]
     for date in schedule:
         for t in tickers:
-            features.append({"date":date,"ticker":t,"region":"KR","adv60":1e10,"downsideVol126":.2,"tradable":True})
+            features.append({"date":date,"ticker":t,"region":"KR","adv60":1e10,"downsideVol126":.2,"tradable":True, "coreFamilyObserved":True, **dict.fromkeys(F.RAW_FEATURES,.1)})
             predictions.append({"date":date,"ticker":t,"region":"KR","prediction":.02,"momentumPrediction":.015})
     bundle={"features":pd.DataFrame(features),"market":market,"prices":prices,"schedule":schedule,
             "overlay":{d:{"status":"READY","riskMultiplier":.7} for d in schedule}}
@@ -456,9 +456,9 @@ def test_empty_predictions_withhold_portfolio_path():
 
 def test_permanent_formal_lock_survives_artifact_retention():
     workflow = (ROOT / ".github/workflows/kr-model-overlay-portfolio-v1.yml").read_text()
-    assert "git.createRef" in workflow and "PERMANENT_ONE_SHOT_LOCK_ALREADY_EXISTS" in workflow
+    assert "claim_execution_lock" in (ROOT / "scripts/run_kr_model_overlay_portfolio_v1.py").read_text() and "PERMANENT_ONE_SHOT_LOCK_ALREADY_EXISTS" in workflow
     assert "git.updateRef" not in workflow and "git.deleteRef" not in workflow
-    assert "KR_V1_EXECUTION_LOCK" in workflow
+    assert "github.rest.git.createRef" not in workflow
 
 
 def test_nonfinite_trailing_quotes_block_risk_inputs():
@@ -480,7 +480,7 @@ def test_authorization_pins_and_clean_gate_permit(tmp_path):
         X.require_authorization(frozen, "different-spec", identity, tmp_path)
     with pytest.raises(ValueError, match="CLEAN_PASSED_GATES"):
         X.issue_permit({"status": "READY", "counters": {"targetCalls": 1}}, frozen, "synthetic-spec", identity, tmp_path)
-    permit = X.issue_permit({"status": "READY", "counters": {"targetCalls": 0}}, frozen, "synthetic-spec", identity, tmp_path)
+    permit = X.issue_permit({"status": "READY", "counters": X.asdict(X.Counters())}, frozen, "synthetic-spec", identity, tmp_path, lock=X.ExecutionLock("synthetic-spec", X._LOCK_TOKEN))
     X.require_permit(permit)
 
 
@@ -495,11 +495,11 @@ def test_diagnostic_crash_cannot_rewrite_or_retry_primary(tmp_path, monkeypatch)
     monkeypatch.setattr(CLI.subprocess, "check_output", lambda *a, **k: auth)
     monkeypatch.setenv("GITHUB_ACTIONS", "true")
     monkeypatch.setenv("GITHUB_REF", "refs/heads/main")
-    monkeypatch.setenv("KR_V1_EXECUTION_LOCK", sha)
+    monkeypatch.setattr(X, "claim_execution_lock", lambda *a: X.ExecutionLock(sha, X._LOCK_TOKEN))
     monkeypatch.setattr(X, "input_identity", lambda *a: {"sha256": "synthetic-input"})
     monkeypatch.setattr(X, "require_authorization", lambda *a: {})
     monkeypatch.setattr(X, "prepare", lambda *a: {})
-    monkeypatch.setattr(X, "pre_label_gates", lambda *a: {"status": "READY", "counters": {}})
+    monkeypatch.setattr(X, "pre_label_gates", lambda *a: {"status": "READY", "counters": X.asdict(X.Counters())})
     monkeypatch.setattr(X, "run_historical", lambda *a: ({"state": "DATA_INSUFFICIENT", "synthetic": True}, {}))
     def crash(*args):
         raise RuntimeError("synthetic diagnostic failure")
@@ -521,3 +521,308 @@ def test_suspended_and_partial_exits_still_occupy_holding_slots():
     occupied["old0"] = 0.0
     allowed = P.limit_new_positions(occupied, buys, ["new2", "new1", "old1"])
     assert list(allowed) == ["old1", "new2"]
+
+
+def synthetic_execution(monkeypatch, tmp_path):
+    frozen, sha = spec(), "synthetic-spec"
+    auth = b'{"synthetic":true}'
+    path = tmp_path / X.AUTH_PATH
+    path.parent.mkdir(parents=True)
+    path.write_bytes(auth)
+    monkeypatch.setattr(X, "load_spec", lambda *a: (frozen, sha))
+    monkeypatch.setattr(CLI.subprocess, "check_output", lambda *a, **k: auth)
+    monkeypatch.setenv("GITHUB_ACTIONS", "true")
+    monkeypatch.setenv("GITHUB_REF", "refs/heads/main")
+    monkeypatch.setattr(X, "input_identity", lambda *a: {"sha256": "synthetic-input"})
+    monkeypatch.setattr(X, "require_authorization", lambda *a: {})
+    monkeypatch.setattr(X, "prepare", lambda *a: {})
+    monkeypatch.setattr(X, "pre_label_gates", lambda *a: {"status": "READY", "counters": X.asdict(X.Counters())})
+    return sha
+
+
+@pytest.mark.parametrize("failure", ["download", "identity", "prepare", "gate", "dirty", "missing-counter", "swap"])
+def test_pre_lock_failure_never_consumes_one_shot(monkeypatch, tmp_path, failure):
+    sha = synthetic_execution(monkeypatch, tmp_path)
+    claims, outcomes = [], []
+    monkeypatch.setattr(X, "claim_execution_lock", lambda *a: claims.append(sha))
+    monkeypatch.setattr(X, "run_historical", lambda *a: outcomes.append(1))
+    def fail(*a):
+        raise ValueError("SYNTHETIC_INPUT_FAILURE")
+    if failure == "identity":
+        monkeypatch.setattr(X, "require_authorization", fail)
+    elif failure == "prepare":
+        monkeypatch.setattr(X, "prepare", fail)
+    elif failure == "gate":
+        monkeypatch.setattr(X, "pre_label_gates", lambda *a: {"status": "DATA_INSUFFICIENT", "counters": X.asdict(X.Counters())})
+    elif failure in ("dirty", "missing-counter"):
+        counts = X.asdict(X.Counters())
+        if failure == "dirty":
+            counts["labelCalls"] = 1
+        else:
+            counts.pop("labelCalls")
+        monkeypatch.setattr(X, "pre_label_gates", lambda *a: {"status": "READY", "counters": counts})
+    elif failure == "swap":
+        identities = iter([{"sha256": "synthetic-input"}, {"sha256": "changed-input"}])
+        monkeypatch.setattr(X, "input_identity", lambda *a: next(identities))
+    output = tmp_path / "run"
+    if failure in ("prepare", "gate", "download"):
+        report = CLI.run("execute", input_root=None if failure == "download" else tmp_path, output=output, root=tmp_path)
+        assert report["status"] == "DATA_INSUFFICIENT"
+        assert report.get("executionAuthorizationConsumed", False) is False
+    else:
+        with pytest.raises(ValueError):
+            CLI.run("execute", input_root=tmp_path, output=output, root=tmp_path)
+    assert claims == outcomes == []
+    assert not (output / "execution.started.json").exists()
+    assert not (output / "primary.json").exists()
+
+
+def test_lock_permit_outcome_order_and_atomic_duplicate_refusal(monkeypatch, tmp_path):
+    sha = synthetic_execution(monkeypatch, tmp_path)
+    events = []
+    real_issue = X.issue_permit
+    def claim(value):
+        events.append("lock")
+        return X.ExecutionLock(value, X._LOCK_TOKEN)
+    def issue(*args, **kwargs):
+        events.append("permit")
+        return real_issue(*args, **kwargs)
+    def outcome(*args):
+        assert events == ["lock", "permit"]
+        events.append("outcome")
+        return {"state": "DATA_INSUFFICIENT", "synthetic": True}, None
+    monkeypatch.setattr(X, "claim_execution_lock", claim)
+    monkeypatch.setattr(X, "issue_permit", issue)
+    monkeypatch.setattr(X, "run_historical", outcome)
+    CLI.run("execute", input_root=tmp_path, output=tmp_path / "run", root=tmp_path)
+    assert events == ["lock", "permit", "outcome"]
+    def duplicate(value):
+        raise ValueError("PERMANENT_ONE_SHOT_LOCK_ALREADY_EXISTS")
+    monkeypatch.setattr(X, "claim_execution_lock", duplicate)
+    with pytest.raises(ValueError, match="ALREADY_EXISTS"):
+        CLI.run("execute", input_root=tmp_path, output=tmp_path / "other", root=tmp_path)
+    assert events == ["lock", "permit", "outcome"]
+    assert sha == "synthetic-spec"
+
+
+def test_permit_rejects_incomplete_counter_map_and_absent_lock(monkeypatch):
+    monkeypatch.setattr(X, "require_authorization", lambda *a: {})
+    with pytest.raises(ValueError, match="CLEAN_PASSED"):
+        X.issue_permit({"status": "READY", "counters": {}}, spec(), "s", {"sha256": "i"})
+    with pytest.raises(ValueError, match="LOCK_REQUIRED"):
+        X.issue_permit({"status": "READY", "counters": X.asdict(X.Counters())}, spec(), "s", {"sha256": "i"})
+
+
+def test_formal_download_failure_precedes_runner_and_lock():
+    workflow = (ROOT / ".github/workflows/kr-model-overlay-portfolio-v1.yml").read_text()
+    runner = (ROOT / "scripts/run_kr_model_overlay_portfolio_v1.py").read_text()
+    assert workflow.index("permanent one-shot refusal") < workflow.index("Download separately frozen raw snapshot") < workflow.index("Authorized single DEVELOPMENT execution")
+    assert "AUTHORIZED_ARTIFACT_IDENTITY_MISMATCH" in workflow
+    assert "MAIN_HEAD_CHANGED" in workflow and "AUTHORIZATION_NOT_COMMITTED_AT_HEAD" in workflow
+    assert "createRef" not in workflow
+    assert runner.index("gates = X.pre_label_gates") < runner.index("lock = X.claim_execution_lock") < runner.index("permit = X.issue_permit") < runner.index("X.run_historical")
+
+
+@pytest.mark.parametrize("family", ["VALUE", "QUALITY", "CATALYST"])
+def test_core_family_required_before_imputation(family):
+    train, valid = train_fixture()
+    valid.loc[:, list(F.FAMILIES[family])] = np.nan
+    assert not F.core_observability(valid).coreFamilyObserved.any()
+    with pytest.raises(ValueError, match="CORE_FAMILY_UNOBSERVED"):
+        M.fit_predict(train, valid, spec())
+    assert P.select([candidate(coreFamilyObserved=False)], spec()["portfolio"]) == []
+
+
+def test_one_observed_constituent_per_core_family_is_enough():
+    train, valid = train_fixture()
+    for names in (F.FAMILIES[f] for f in ("VALUE", "QUALITY", "CATALYST")):
+        valid.loc[:, list(names[1:])] = np.nan
+    assert F.core_observability(valid).coreFamilyObserved.all()
+    result = M.fit_predict(train, valid, spec())
+    assert len(result["predictions"]) == len(valid)
+    assert np.isfinite(result["predictions"].prediction).all()
+    assert any(name.endswith("_missing") for name in result["columns"])
+
+
+def test_joint_core_coverage_blocks_even_when_individual_floors_pass():
+    bundle = gate_bundle()
+    frame = bundle["features"]
+    # VALUE and QUALITY each observed on 50%, but never on the same stock.
+    for i, names in enumerate((F.FAMILIES["VALUE"], F.FAMILIES["QUALITY"])):
+        frame.loc[frame.index % 2 == i, list(names)] = np.nan
+    report = X.pre_label_gates(bundle, spec(), X.Counters())
+    assert report["status"] == "DATA_INSUFFICIENT"
+    assert any(reason.startswith("CORE_FAMILY_COVERAGE:") for reason in report["reasons"])
+    assert report["coverage"]["2020"]["rates"]["coreFamilyObserved"] == 0
+    assert report["coverage"]["2020"]["rates"]["valueObserved"] == .5
+
+
+def model_evaluation_fixture():
+    predictions, labels = [], []
+    for date in ("2020-01-03", "2020-01-10"):
+        for i in range(12):
+            predictions.append({"date": date, "ticker": str(i), "prediction": i / 100,
+                                "meanPrediction": 0., "momentumPrediction": .01})
+            labels.append({"date": date, "ticker": str(i), "forwardRelativeReturn": i / 100,
+                           "labelStatus": "MATURED", "eligibilityStatus": "ELIGIBLE"})
+    cfg = deepcopy(spec()); cfg["gates"]["minimumEvaluationDates"] = 2
+    permit = X.OutcomePermit("synthetic-spec", "synthetic-input", X._PERMIT_TOKEN)
+    return permit, pd.DataFrame(predictions), pd.DataFrame(labels), cfg
+
+
+def test_ineligible_terminal_rows_do_not_poison_model_metrics():
+    permit, predictions, labels, cfg = model_evaluation_fixture()
+    labels.loc[labels.ticker.eq("11"), ["labelStatus", "eligibilityStatus", "forwardRelativeReturn"]] = ["UNRESOLVED_TERMINAL_OR_DISTRIBUTION_EVIDENCE", "BLOCKED", np.nan]
+    result = X.evaluate_model(permit, predictions, labels, cfg, X.Counters())
+    assert result["complete"] and result["dates"] == 2
+    assert result["eligibilityDiagnostics"]["evaluatedRows"] == 22
+    labels.loc[labels.ticker.eq("11"), "forwardRelativeReturn"] = 1e99
+    assert result == X.evaluate_model(permit, predictions, labels, cfg, X.Counters())
+    labels.loc[labels.ticker.isin(["8", "9", "10"]), "eligibilityStatus"] = "BLOCKED"
+    assert not X.evaluate_model(permit, predictions, labels, cfg, X.Counters())["complete"]
+
+
+def test_model_training_excludes_ineligible_and_core_absent_rows():
+    train, valid = train_fixture()
+    data = pd.concat([train, valid], ignore_index=True)
+    data["eligibilityStatus"] = "ELIGIBLE"
+    data.loc[data.ticker.eq("000011.KS"), "eligibilityStatus"] = "BLOCKED"
+    data.loc[data.ticker.eq("000010.KS"), list(F.FAMILIES["VALUE"])] = np.nan
+    cfg = deepcopy(spec()); cfg["walkForward"]["minimumMaturedDates"] = 4
+    fold = list(M.folds(data, ["2019-01-04"], cfg))[0]
+    assert fold["status"] == "READY" and len(fold["train"]) == 40
+    assert set(fold["train"].ticker) == {f"{i:06d}.KS" for i in range(10)}
+    # Future terminal status does not remove an ex-ante core-observed prediction.
+    assert "000011.KS" in set(fold["valid"].ticker)
+    assert "000010.KS" not in set(fold["valid"].ticker)
+
+
+@pytest.mark.parametrize("mode", ["normal", "partial", "suspended", "already-above"])
+def test_overlay_gross_during_deferred_exits(mode):
+    cfg = spec()["portfolio"]
+    before = {"old": .7}
+    desired = {"old": .2, "new": .2}
+    adv = {"old": 1e10, "new": 1e10}
+    if mode == "partial":
+        adv["old"] = 1e9  # at most .1 pretrade NAV sold
+    elif mode in ("suspended", "already-above"):
+        adv.pop("old")
+    result = P.execute_rebalance(before, desired, adv, ["new", "old"], .4, cfg, nav_krw=1e8)
+    assert result["overlayTargetGross"] == .4
+    assert result["cashWeight"] >= 0
+    if mode == "normal":
+        assert result["realizedGross"] <= .4 + 1e-12
+        assert result["weights"]["new"] > 0
+        assert result["overlayExcessDueToDeferredExit"] == 0
+    else:
+        assert result["holdingAmounts"].get("new", 0) == 0
+        assert result["realizedGross"] > .4
+        assert result["overlayConstraintBinding"]
+        assert result["overlayExcessDueToDeferredExit"] == pytest.approx(result["realizedGross"] - .4)
+        assert result["availableNewBuyGross"] == 0
+        if mode in ("suspended", "already-above"):
+            assert result["holdingAmounts"]["old"] == .7
+
+
+def cost_cfg():
+    cfg = deepcopy(spec()["portfolio"])
+    cfg["impactAtOnePercent"] = 0  # isolate the registered fixed-rate arithmetic
+    return cfg
+
+
+def assert_ledger(result):
+    assert sum(result["holdingAmounts"].values()) + result["cashAmount"] == pytest.approx(result["postCostNavFactor"], abs=1e-14)
+    assert result["postCostNavFactor"] + result["costFraction"] == pytest.approx(1, abs=1e-14)
+    assert sum(result["weights"].values()) + result["cashWeight"] == pytest.approx(1)
+    assert result["cashAmount"] >= 0 and sum(result["weights"].values()) <= 1 + 1e-12
+
+
+def test_exact_initial_purchase_and_cost_funding():
+    cfg = cost_cfg()
+    result = P.execute_rebalance({}, {"a": .3}, {"a": 1e10}, ["a"], 1., cfg, nav_krw=1e8)
+    # q=.3*Npost and Npost=1-.0015*q.
+    expected = 1 / (1 + .3 * .0015)
+    assert result["postCostNavFactor"] == pytest.approx(expected)
+    assert result["holdingAmounts"]["a"] == pytest.approx(.3 * expected)
+    assert result["cashAmount"] == pytest.approx(.7 * expected)
+    assert_ledger(result)
+
+
+def test_exact_sale_and_ordinary_rebalance():
+    cfg = cost_cfg()
+    sale = P.execute_rebalance({"a": .3}, {}, {"a": 1e10}, [], 0., cfg, nav_krw=1e8)
+    assert sale["costFraction"] == pytest.approx(.3 * .0045)
+    assert sale["cashAmount"] == pytest.approx(1 - .3 * .0045)
+    assert_ledger(sale)
+    result = P.execute_rebalance({"a": .3}, {"b": .3}, {"a": 1e10, "b": 1e10}, ["b"], 1., cfg, nav_krw=1e8)
+    expected = (1 - .3 * .0045) / (1 + .3 * .0015)
+    assert result["postCostNavFactor"] == pytest.approx(expected)
+    assert result["holdingAmounts"]["b"] == pytest.approx(.3 * expected)
+    assert_ledger(result)
+
+
+@pytest.mark.parametrize("cash", [0., 1e-12, .001])
+def test_near_zero_cash_is_not_used_twice(cash):
+    cfg = cost_cfg()
+    before = {"a": 1 - cash}
+    # Suspended old position; new intended exposure cannot borrow to fund fees.
+    result = P.execute_rebalance(before, {"a": 1 - cash, "b": .1}, {"b": 1e10}, ["b", "a"], 1., cfg, nav_krw=1e8)
+    bought = result["holdingAmounts"].get("b", 0)
+    assert bought == pytest.approx(cash / (1 + .0015), abs=1e-14)
+    assert result["costFraction"] == pytest.approx(bought * .0015)
+    assert_ledger(result)
+
+
+def test_impact_and_participation_use_actual_funded_notional():
+    cfg = spec()["portfolio"]
+    result = P.execute_rebalance({}, {"a": .3}, {"a": 3e9}, ["a"], 1., cfg, nav_krw=2e8)
+    q = result["holdingAmounts"]["a"]
+    assert q * 2e8 <= .01 * 3e9
+    participation = q * 2e8 / 3e9
+    assert result["costFraction"] == pytest.approx(q * (.0015 + .0005 * np.sqrt(participation / .01)))
+    assert_ledger(result)
+
+
+def test_gross_and_net_have_same_stock_pnl_and_separate_fee_cash():
+    permit, predictions, bundle, cfg = replay_fixture()
+    result = X.replay_portfolio(permit, predictions, bundle, cfg, X.Counters())
+    path = result["path"]
+    previous_net = previous_gross = 1.
+    paid = 0.
+    for row in path:
+        assert sum(row["holdingsKrw"].values()) + row["cashKrw"] == pytest.approx(row["nav"] * 1e8)
+        # Currency gap is accumulated paid costs, retained in gross cash.
+        pretrade_net = previous_net + row["grossNav"] - previous_gross
+        paid += pretrade_net * row["cost"]
+        assert row["grossNav"] - row["nav"] == pytest.approx(paid, abs=1e-12)
+        assert row["realizedGross"] == pytest.approx(sum(row["weights"].values()))
+        previous_net, previous_gross = row["nav"], row["grossNav"]
+
+
+def test_atomic_repository_lock_request_and_network_failure(monkeypatch):
+    for name, value in {"GITHUB_ACTIONS": "true", "GITHUB_REF": "refs/heads/main", "GITHUB_SHA": "synthetic-head",
+                        "GITHUB_REPOSITORY": "synthetic/repo", "GH_TOKEN": "synthetic-token"}.items():
+        monkeypatch.setenv(name, value)
+    requests = []
+    class Response:
+        status = 201
+        def __enter__(self):
+            return self
+        def __exit__(self, *args):
+            return False
+    def create(request, timeout):
+        requests.append(json.loads(request.data))
+        assert timeout == 30 and request.method == "POST"
+        return Response()
+    monkeypatch.setattr(X, "urlopen", create)
+    lock = X.claim_execution_lock("synthetic-spec")
+    assert lock == X.ExecutionLock("synthetic-spec", X._LOCK_TOKEN)
+    assert requests == [{"ref": "refs/tags/kr-model-overlay-portfolio-v1-execution-lock-synthetic-spec", "sha": "synthetic-head"}]
+    def unavailable(*a, **k):
+        raise OSError("synthetic lost response")
+    monkeypatch.setattr(X, "urlopen", unavailable)
+    with pytest.raises(OSError):
+        X.claim_execution_lock("synthetic-spec")
+    monkeypatch.setenv("GITHUB_REF", "refs/heads/pr")
+    with pytest.raises(ValueError, match="ACTIONS_MAIN"):
+        X.claim_execution_lock("synthetic-spec")

@@ -30,8 +30,6 @@ def run(mode, *, input_root=None, output=None, root=ROOT):
             raise ValueError("EXECUTE_UNAUTHORIZED")
         if os.environ.get("GITHUB_ACTIONS") != "true" or os.environ.get("GITHUB_REF") != "refs/heads/main":
             raise ValueError("FORMAL_EXECUTION_REQUIRES_ACTIONS_MAIN")
-        if os.environ.get("KR_V1_EXECUTION_LOCK") != sha:
-            raise ValueError("PERMANENT_REPOSITORY_EXECUTION_LOCK_REQUIRED")
         committed = subprocess.check_output(["git", "show", "HEAD:" + X.AUTH_PATH], cwd=root)
         if committed != (Path(root) / X.AUTH_PATH).read_bytes():
             raise ValueError("AUTHORIZATION_NOT_COMMITTED_AT_HEAD")
@@ -59,18 +57,19 @@ def run(mode, *, input_root=None, output=None, root=ROOT):
     output.mkdir(parents=True, exist_ok=True)
     if (output / "primary.json").exists() or (output / "execution.started.json").exists():
         raise ValueError("ONE_SHOT_ALREADY_SPENT")
-    X.atomic_write(output / "execution.started.json", {"specSha256": sha, "inputSha256": identity["sha256"]}, immutable=True)
     if gates["status"] != "READY":
-        primary = {**report, "state": "DATA_INSUFFICIENT", "substantive": True,
-                   "executionAuthorizationConsumed": True, "prospectiveEvidence": False}
-        digest = X.atomic_write(output / "primary.json", primary, immutable=True)
-        X.atomic_write(output / "primary.sha256.json", {"fileSha256": digest}, immutable=True)
-        return primary
-    # Recheck all pins immediately before exchanging the gates for a permit.
+        return {**report, "executionAuthorizationConsumed": False, "substantive": False}
+    # All identity and clean-gate checks precede the permanent repository claim.
     X.load_spec(root)
     if X.input_identity(input_root) != identity:
         raise ValueError("SAME_RUN_INPUT_SWAP")
-    permit = X.issue_permit(gates, spec, sha, identity, root)
+    X.require_authorization(spec, sha, identity, root)
+    if not counters.zero() or gates.get("counters") != asdict(X.Counters()):
+        raise ValueError("OUTCOME_PERMIT_REQUIRES_CLEAN_PASSED_GATES")
+    lock = X.claim_execution_lock(sha)
+    # Nothing outcome-facing may intervene in this claim -> permit exchange.
+    permit = X.issue_permit(gates, spec, sha, identity, root, lock=lock)
+    X.atomic_write(output / "execution.started.json", {"specSha256": sha, "inputSha256": identity["sha256"]}, immutable=True)
     context = None
     try:
         primary, context = X.run_historical(permit, bundle, spec, counters)

@@ -16,11 +16,11 @@
     3.0
   ],
   "dependencyHashes": {
-    ".github/workflows/kr-model-overlay-portfolio-v1.yml": "3550f37d13363b2613fe37184456edf6b60489013ba2263ec11f49fe0569c6a8",
-    "docs/kr-model-overlay-portfolio-v1-data-audit.md": "f94ea75cace16e060d078025d99b98d7b4ccedc8c02b4694f51516cd711c9532",
-    "docs/kr-model-overlay-portfolio-v1-design.md": "b8118590632b3e6eb6543e1e91de4b8ae7f28f48c7339e3ff1ebaa14cd39bcb1",
-    "docs/kr-model-overlay-portfolio-v1-execution.md": "242c11c22e0ecfbe016f8df741daf47e2d79209918103e7eb2dde4b27887fce7",
-    "docs/kr-model-overlay-portfolio-v1-preregistration.md": "15f3251760ede7d39dfa6029ca033584f359a26d29b87e86b70e197d740d3ec9",
+    ".github/workflows/kr-model-overlay-portfolio-v1.yml": "3764b329e976c8e3b387e9b93d2127002d919f22a9586731439d6aa7c8758269",
+    "docs/kr-model-overlay-portfolio-v1-data-audit.md": "2e502a0ced4708054700d959f04e446b6b7fb9fc7ba9b6281d53c8447e1b55e4",
+    "docs/kr-model-overlay-portfolio-v1-design.md": "e048cacc9562a4d82aec0f68ffeb489e80d557970dd93299a16ed0f9a891de8b",
+    "docs/kr-model-overlay-portfolio-v1-execution.md": "faedb373e2e1630f00a0050ba48a87044148b2051ab596d40c3164024eb6e009",
+    "docs/kr-model-overlay-portfolio-v1-preregistration.md": "48f75b72807d679d878fb71ffbf6c2f8e7c64cc508632c8977c2b5dceb73edd1",
     "docs/kr-model-overlay-portfolio-v1-prospective.md": "4c52bf37a42a42dc906b4f5e8dc1eca5a00605fe5724d5606da427de79614b00",
     "docs/kr-model-overlay-portfolio-v1-research-foundation.md": "477a4b8a1627b9c3808a62b0d83422a69d415aa20b43128dd70a90c11f7b2672",
     "docs/results/kr-terminal-action-reconstruction-v2.json": "b1d2dcb0a8064139e601c4efab51a44e1323f93910ae70228054338a90629017",
@@ -57,14 +57,14 @@
     "pipeline/historical_replay.py": "80ace61f2df0d48ee98349bc998b77f58d8c62a4e8aa01da7b3cdacf158266e9",
     "pipeline/historical_store.py": "2751be8b5b79260f2038c9fb975cae58d49cb7868751c6658e363b48712016c0",
     "pipeline/kelly_portfolio.py": "6a4bd54be11e35e7348f64d0c99e7764635c4efcea62306da0b6ca81bfb3b06c",
-    "pipeline/kr_concentrated_portfolio.py": "245f00f321c890b2c70e2276b93313a6d1eb0e2185312aec38cefd9a1fb1687e",
+    "pipeline/kr_concentrated_portfolio.py": "5059260c02e55dfde5b38b644ef2a66d0ff793dd2fb2e17609331dbb08571b64",
     "pipeline/kr_market_risk_overlay.py": "983b3aab891a2af2f6d54b9b3d7ca29788651ba898b074da0506a40431ae4c07",
     "pipeline/kr_market_value.py": "49306b8d14c4e8d681ae5846802c2ae82fa5727bb7a8adf356fa313217103c5e",
-    "pipeline/kr_model_overlay_portfolio.py": "04b006de9228a7b424d2be886a5d095f0f8250d75855940cb1dcd6e1a159f3c8",
-    "pipeline/kr_model_portfolio_execution.py": "f9b613d979669b10ffffc6f7bc6c99cde99ab8c1504a25453e67fd9e78085af0",
+    "pipeline/kr_model_overlay_portfolio.py": "b67495886aa63e10315d96ce8b30a023ee75adac6f5fec5a4fab7593b4f70343",
+    "pipeline/kr_model_portfolio_execution.py": "c07dce188bc319ffe716f0a8558b7ffc3a64446d90c7fa7891f7d7e087e641f9",
     "pipeline/kr_portfolio_diagnostics.py": "9f28a5ddf49a58c95db36d3a573b19e56fe7c86f98ad2ed01d96e8c09e6b5c34",
     "pipeline/kr_repaired_accounting_snapshot.py": "b5b225e8a1d21b1516801c0ced1ef2164189867a457df1e0a51cd8ec95dd63ea",
-    "pipeline/kr_value_quality_catalyst.py": "ee5dcfabc8bf5bd4d269c95fdb42ad3968535fab6971e535c7175b15b00369a8",
+    "pipeline/kr_value_quality_catalyst.py": "1bfd62d1437dd9b574f1ab635836e7d7e69651dbbbaeedf29af84a90de17bb28",
     "pipeline/krx_universe.py": "77008b8c0dcb9cd44b0b1182df94d2f0af62edb6f03b6a41082c04679101d6b8",
     "pipeline/liquidity_attention.py": "208c989a70e2d276c040867496a127eda9ca82644012999a7253f7d47bb171a6",
     "pipeline/longterm.py": "75702c4862545e0ceadbfc5db2585b89ffeadad21f43206b597e2982d171c5f6",
@@ -88,16 +88,16 @@
     "research_specs/kr-model-overlay-portfolio-v1-diagnostics-v1.sha256": "5f59875c6fe1d08888bb3e5f16b59eb4327405345027e4d339c31341bcdc1e6b",
     "research_specs/kr-repaired-accounting-snapshot-v1.json": "8dbae2203e1b809060100845f4571016e71fbc78cc09c1b52d9edeb46d38f331",
     "scripts/collect_kr_model_market_values.py": "2546c9afb7ef231c1599d59af4731a49ac05d7af6540c47e02bcc78ddc5e83fc",
-    "scripts/run_kr_model_overlay_portfolio_v1.py": "3bf1e365dc9781a006067883bb3f33599f13b21b1e23fb3829496fc70e73b3dc",
+    "scripts/run_kr_model_overlay_portfolio_v1.py": "734e50e3c34f4b6bdcf50b27a2da5193a8e450e244ff61100014655bae282c8c",
     "tests/test_alpha_opportunity.py": "e268deece5b79257c188de954e3b417913b5653b03e0fbd8d324e2755e3449ec",
     "tests/test_alpha_opportunity_v2.py": "da59980766def19e1fee3d03ad0d470c6c9119e00e5597db4b085947095315fd",
     "tests/test_alpha_opportunity_v3.py": "e0820099439439aa86564bdfb14d6382fa651422eca9f509e1c1929f661abf91",
-    "tests/test_kr_model_overlay_portfolio_v1.py": "2ea5e2674462d0f331ebbfa4b43fa514667da7e433cba85f2cda512ef8029446"
+    "tests/test_kr_model_overlay_portfolio_v1.py": "6490d9077bc77dbf2a50375003630834c3da463d632fdd96d3e0029ac56e931f"
   },
   "developmentCutoff": "2026-09-14",
   "developmentState": {
     "candidate": "ALL primary H126 model MSE-vs-mean >0 AND MSE-vs-momentum >0 AND rankWeightedSpread >0; net portfolio full excess >0 AND both chronological halves >0",
-    "dataInsufficient": "source/depth/gate/undefined/incomplete model endpoints or continuous portfolio path",
+    "dataInsufficient": "source/core coverage/depth/gate/undefined model evidence or incomplete continuous portfolio path; isolated ineligible model rows excluded with diagnostics",
     "inconclusive": "complete mixed evidence",
     "inferenceStatus": "development point-estimate screens only, no independent confirmation/significance/PASS claim",
     "infrastructureError": "machinery/identity/numerical failure",
@@ -136,6 +136,7 @@
     ]
   },
   "gates": {
+    "coreFamilyFloor": 0.2,
     "denominator": "all PIT member name-dates by year; no missing member removal",
     "featureFloors": {
       "CATALYST": 0.8,
@@ -240,7 +241,7 @@
     "unknown held terminal economics block path",
     "partial distributions in inherited adjusted index",
     "zero cash yield",
-    "fixed reference capacity and weight-based cost approximation"
+    "KRW100m initial reference account; no sector cap; deferred exits can temporarily exceed overlay target"
   ],
   "model": {
     "challenger": {
@@ -268,7 +269,9 @@
     "authorizationPath": "research_specs/kr-model-overlay-portfolio-v1-execution-authorization.json",
     "authorizedExecutions": 1,
     "noPostOutcomeTuning": true,
-    "requires": "separately committed exact spec/input/full closure/diagnostic pins; Actions main; permanent atomic repository tag before sole attempt",
+    "postLockFailureMayConsume": true,
+    "preLockFailureConsumes": false,
+    "requires": "Actions latest main; committed full authorization with exact artifact/run/spec/input/closure/diagnostic pins; no result/lock; download/identity; READY + all six zero counters; atomic permanent repository lock; immediate clean-gate permit; only then outcomes",
     "substantiveResultCloses": true
   },
   "outcomeAccess": {
@@ -282,6 +285,7 @@
   },
   "overlay": {
     "canReorderStocks": false,
+    "executionConstraint": "targetGross=riskMultiplier; availableNewBuyGross=max(0,targetGross-actualPostSellGross); no new buys above target; excess only from executable partial/deferred exits; buys include cost funding",
     "inputs": [
       "benchmark close/SMA200",
       "annualized benchmark std63"
@@ -302,8 +306,9 @@
     "buyFixedCost": 0.0015,
     "capApplies": "target weights; intervening market drift disclosed",
     "cashRate": "ZERO_KRW_NOMINAL",
-    "costSemantics": "fixed conservative commission/slippage/levy buffer, NOT statutory history; sqrt participation impact; postcost investable NAV weight approximation",
+    "costSemantics": "buy15bp/sell45bp assumptions unchanged; sqrt impact on actual executed KRW notional; exact post-cost holdings/cash/NAV, deterministic cost-funded buys, zero cash yield",
     "downsideLookback": 126,
+    "grossPath": "same actual executed stock notionals as net; all saved transaction costs retained as zero-rate cash; identical currency stock P&L, not separately selected/rebalanced",
     "impactAtOnePercent": 0.0005,
     "kelly": "NOT_USED",
     "maximumAdvFraction": 0.01,
@@ -311,6 +316,7 @@
     "minimumAdvKrw": 3000000000.0,
     "minimumDownsideVol": 0.01,
     "minimumHoldings": 0,
+    "netPath": "initial KRW100m reference account; currency holdings plus cash less paid fees; no negative cash or leverage; actual trade notional = pretrade NAV * weight change",
     "referenceNavKrw": 100000000.0,
     "roundTripFixedCost": 0.006,
     "sectorCap": null,
@@ -372,6 +378,12 @@
   "secondaryCannotRescue": true,
   "sectorStatus": "DEFERRED_BY_PIT_SECTOR_HISTORY",
   "startingMain": "449508ad18ef6f4a7fce3678c0f593b3237dbab3",
+  "stockEligibility": {
+    "familyRule": "at least one finite raw feature per VALUE/QUALITY/CATALYST family; not every constituent",
+    "missingIndicators": "preserved within eligible rows",
+    "primary": "valueObserved && qualityObserved && catalystObserved before imputation",
+    "terminalEligibility": "evaluation/training only; never ex-ante stock filter"
+  },
   "studyId": "kr-model-overlay-portfolio-v1",
   "targetSemantics": {
     "distributionCoverage": "PARTIAL_OBSERVED_DISTRIBUTIONS_NOT_UNQUALIFIED_TOTAL_RETURN",
@@ -379,6 +391,7 @@
     "exit": "entry + H further KR sessions",
     "function": "pipeline.alpha_opportunity_v2_evaluation.target_from_sessions",
     "missing": "no nearest date/forward fill/zero; unresolved",
+    "modelEligibility": "MATURED + ELIGIBLE + finite return only, minimum10 names/date and104 evaluation dates; never zero/impute unresolved returns",
     "pending": "calendar-only",
     "terminalEligibility": "reuse v4 post-label, not selection",
     "value": "stock adjusted-index ratio minus benchmark same-endpoint ratio"

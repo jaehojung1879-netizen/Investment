@@ -20,6 +20,16 @@ RAW_FEATURES = tuple(name for family in FAMILIES.values() for name in family)
 STAGE = {"11013": 1, "11012": 2, "11014": 3, "11011": 4}
 
 
+def core_observability(frame):
+    """Raw, pre-imputation economic-family presence; no outcome information."""
+    flags = pd.DataFrame(index=frame.index)
+    for family in ("VALUE", "QUALITY", "CATALYST"):
+        raw = frame.reindex(columns=FAMILIES[family]).apply(pd.to_numeric, errors="coerce")
+        flags[family.lower() + "Observed"] = np.isfinite(raw).any(axis=1)
+    flags["coreFamilyObserved"] = flags.all(axis=1)
+    return flags
+
+
 def ratio(numerator, denominator):
     if numerator is None or denominator is None:
         return None
@@ -111,7 +121,8 @@ def feature_at(ticker, date, records, market, frame, benchmark):
     if len(trailing) == 60 and all(r is not None and r["volume"] > 0 for r in trailing):
         adv = float(np.mean([r["tradingValue"] for r in trailing]))
         out["logAdv60"] = math.log1p(adv)
-    return {"date": date, "ticker": ticker, "region": "KR", **out,
+    observed = core_observability(pd.DataFrame([out])).iloc[0].to_dict()
+    return {"date": date, "ticker": ticker, "region": "KR", **out, **observed,
             "adv60": adv, "downsideVol126": dv,
             "marketValuePresent": quote is not None,
             "tradable": quote is not None and quote["volume"] > 0 and quote["tradingValue"] > 0,

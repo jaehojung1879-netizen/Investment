@@ -43,3 +43,9 @@ Registry eligibility is structural, subject to the predeclared joined coverage g
 * Analyst revisions/consensus: no permitted PIT source. No fabricated estimates.
 
 No external economic-series histories were collected. The only added source infrastructure is the official KRX date-specific market-value cache. It is first-write immutable, complete-day identity checked, source hashes recorded, and invalid data refuse rather than masquerade as observed zeros.
+
+## Core family observability and model eligibility repair
+
+Before imputation, valueObserved, qualityObserved and catalystObserved each mean at least one finite raw constituent in that family. PRIMARY stock eligibility requires their conjunction, coreFamilyObserved; RISK/price variables cannot substitute for absent VALUE or QUALITY. Individual constituent missing indicators remain. Execution gates report all four presence rates by year over all PIT member name-dates, alongside existing per-feature coverage. Freeze coreFamilyObserved >=20%, using the existing accounting-family floor; a real failure yields DATA_INSUFFICIENT with no post-outcome relaxation. Joined coverage remains NOT_MEASURED.
+
+MODEL training/evaluation uses only MATURED + ELIGIBLE finite-return rows, with ten eligible names/date and registered depth rules. Ineligible/unresolved terminal rows are explicitly excluded, never return-imputed, and status/core-family/raw missingness diagnostics retain the full annual denominator. These exclusions do not invalidate sufficient remaining model evidence. They are not an ex-ante terminal selection filter. ACTUAL PORTFOLIO held unresolved terminal economics still block/withhold the continuous path.

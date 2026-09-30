@@ -8,7 +8,7 @@ from sklearn.linear_model import Ridge
 from threadpoolctl import threadpool_limits
 
 from .alpha_opportunity_model import TrainTransformer, date_weights, weighted_quantile
-from .kr_value_quality_catalyst import FAMILIES, RAW_FEATURES
+from .kr_value_quality_catalyst import FAMILIES, RAW_FEATURES, core_observability
 
 INTERACTIONS = ("VALUE_X_QUALITY", "VALUE_X_CATALYST", "QUALITY_X_CATALYST", "VALUE_X_QUALITY_X_CATALYST")
 
@@ -68,6 +68,10 @@ def fit_predict(train, valid, spec, *, challenger=False):
         raise ValueError("TRAINING_ENDPOINT_NOT_STRICTLY_MATURED")
     if set(train.labelStatus) != {"MATURED"}:
         raise ValueError("UNMATURED_TRAINING_LABEL")
+    if not core_observability(train).coreFamilyObserved.all() or not core_observability(valid).coreFamilyObserved.all():
+        raise ValueError("PRIMARY_CORE_FAMILY_UNOBSERVED")
+    if "eligibilityStatus" in train and not train.eligibilityStatus.eq("ELIGIBLE").all():
+        raise ValueError("INELIGIBLE_TRAINING_LABEL")
     train = train.sort_values(["date", "ticker"]).reset_index(drop=True)
     valid = valid.sort_values(["date", "ticker"]).reset_index(drop=True)
     w = date_weights(train.date)
@@ -106,6 +110,9 @@ def fit_predict(train, valid, spec, *, challenger=False):
 
 def folds(data, schedule, spec):
     cfg = spec["walkForward"]
+    # Terminal eligibility is evaluation-only. Predictions remain available for
+    # ex-ante core-observed names, including subsequently unresolved terminals.
+    data = data.loc[core_observability(data).coreFamilyObserved]
     dates = pd.to_datetime(data.date)
     ends = pd.to_datetime(data.outcomeEndDate)
     for year in sorted({pd.Timestamp(d).year for d in schedule}):
@@ -113,7 +120,8 @@ def folds(data, schedule, spec):
         cutoff = min(scheduled)
         if pd.Timestamp(cutoff) < pd.Timestamp(cfg["featureStart"]) + pd.DateOffset(months=cfg["minimumHistoryMonths"]):
             continue
-        train = data.loc[(dates < pd.Timestamp(cutoff)) & (ends < pd.Timestamp(cutoff)) & data.labelStatus.eq("MATURED")]
+        eligible = data.eligibilityStatus.eq("ELIGIBLE")
+        train = data.loc[(dates < pd.Timestamp(cutoff)) & (ends < pd.Timestamp(cutoff)) & data.labelStatus.eq("MATURED") & eligible]
         counts = train.groupby("date").size()
         train = train.loc[train.date.isin(counts[counts >= cfg["minimumNamesPerDate"]].index)]
         valid = data.loc[data.date.isin(scheduled)]

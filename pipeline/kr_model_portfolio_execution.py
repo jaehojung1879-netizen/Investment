@@ -11,6 +11,7 @@ import hashlib
 import json
 import os
 from pathlib import Path
+from urllib.request import Request, urlopen
 
 import numpy as np
 import pandas as pd
@@ -192,10 +193,12 @@ def prepare(input_root, spec):
 def pre_label_gates(bundle, spec, counters):
     if not counters.zero():
         raise ValueError("GATES_ENTERED_AFTER_OUTCOME_ACCESS")
-    frame = bundle["features"]
+    frame = bundle["features"].copy()
     reasons, coverage = [], {}
     if frame.empty:
         return {"status": "DATA_INSUFFICIENT", "reasons": ["NO_PIT_NAME_DATES"], "coverage": {}}
+    observed = F.core_observability(frame)
+    frame[observed.columns] = observed
     if frame.duplicated(["date", "ticker"]).any():
         raise ValueError("DUPLICATE_PIT_NAME_DATE")
     if any(prov.get("availableFrom", "") >= date for date, prov in zip(frame.date, frame.accountingProvenance)):
@@ -216,6 +219,10 @@ def pre_label_gates(bundle, spec, counters):
             measured[name] = float(group[name].mean())
             if measured[name] < spec["gates"]["marketFloor"]:
                 reasons.append("MARKET_OR_TRADABILITY_COVERAGE:" + year + ":" + name)
+        for name in observed.columns:
+            measured[name] = float(group[name].mean())
+        if measured["coreFamilyObserved"] < spec["gates"]["coreFamilyFloor"]:
+            reasons.append("CORE_FAMILY_COVERAGE:" + year)
         measured["portfolioLiquidity"] = float(group.apply(lambda r: P.eligible(r, spec["portfolio"]), axis=1).mean())
         if measured["portfolioLiquidity"] < spec["gates"]["liquidityFloor"]:
             reasons.append("LIQUIDITY_COVERAGE:" + year)
@@ -258,6 +265,13 @@ class OutcomePermit:
 
 
 _PERMIT_TOKEN = object()
+_LOCK_TOKEN = object()
+
+
+@dataclass(frozen=True)
+class ExecutionLock:
+    specSha256: str
+    token: object
 
 
 def require_authorization(spec, spec_sha, identity, root=ROOT):
@@ -275,11 +289,33 @@ def require_authorization(spec, spec_sha, identity, root=ROOT):
     return auth
 
 
-def issue_permit(gates, spec, sha, identity, root=ROOT):
-    if gates["status"] != "READY" or any(gates.get("counters", {}).values()):
+def issue_permit(gates, spec, sha, identity, root=ROOT, *, lock=None):
+    if gates["status"] != "READY" or gates.get("counters") != asdict(Counters()):
         raise ValueError("OUTCOME_PERMIT_REQUIRES_CLEAN_PASSED_GATES")
     require_authorization(spec, sha, identity, root)
+    if not isinstance(lock, ExecutionLock) or lock.specSha256 != sha or lock.token is not _LOCK_TOKEN:
+        raise ValueError("PERMANENT_REPOSITORY_EXECUTION_LOCK_REQUIRED")
     return OutcomePermit(sha, identity["sha256"], _PERMIT_TOKEN)
+
+
+def claim_execution_lock(sha):
+    """Atomic repository create; called only after same-process clean gates.
+
+    A duplicate or ambiguous network response refuses without outcome access.
+    Never update or delete the permanent tag, even after an execution failure.
+    """
+    if os.environ.get("GITHUB_ACTIONS") != "true" or os.environ.get("GITHUB_REF") != "refs/heads/main":
+        raise ValueError("FORMAL_EXECUTION_REQUIRES_ACTIONS_MAIN")
+    payload = json.dumps({"ref": "refs/tags/" + STUDY + "-execution-lock-" + sha,
+                          "sha": os.environ["GITHUB_SHA"]}).encode()
+    request = Request("https://api.github.com/repos/" + os.environ["GITHUB_REPOSITORY"] + "/git/refs",
+                      data=payload, method="POST",
+                      headers={"Authorization": "Bearer " + os.environ["GH_TOKEN"],
+                               "Content-Type": "application/json", "Accept": "application/vnd.github+json"})
+    with urlopen(request, timeout=30) as response:
+        if response.status != 201:
+            raise ValueError("ATOMIC_EXECUTION_LOCK_NOT_CREATED")
+    return ExecutionLock(sha, _LOCK_TOKEN)
 
 
 def require_permit(permit):
@@ -350,6 +386,9 @@ def model_predictions(permit, labelled, bundle, spec, horizon, counters):
         baselines.append(base)
         records.append({"horizon": horizon, "cutoff": fold["cutoff"], "trainingDates": train.date.nunique(),
                         "trainingRows": len(train), "omittedFeatures": fitted["omittedFeatures"],
+                        "trainingEligibilityStatus": "MATURED_AND_ELIGIBLE_AND_CORE_OBSERVED",
+                        "trainingMissingness": {n: int(pd.to_numeric(train[n], errors="coerce").replace([np.inf, -np.inf], np.nan).isna().sum())
+                                                for n in F.RAW_FEATURES},
                         "columns": fitted["columns"], "coefficients": fitted["estimator"].coef_.tolist(),
                         "intercept": float(fitted["estimator"].intercept_),
                         "challengerError": challenger_error,
@@ -362,6 +401,19 @@ def model_predictions(permit, labelled, bundle, spec, horizon, counters):
         raise ValueError("NO_READY_ANNUAL_FOLD")
     predictions = pd.concat(outputs).merge(pd.concat(baselines), on=["date", "ticker"], validate="one_to_one")
     return predictions, records
+
+
+def eligibility_diagnostics(labelled):
+    """Full scheduled denominator, including names absent from predictions."""
+    output = {}
+    observed = F.core_observability(labelled)
+    for year, group in labelled.groupby(labelled.date.str[:4]):
+        output[year] = {"rows": len(group), "labelStatus": group.labelStatus.value_counts().to_dict(),
+                        "eligibilityStatus": group.eligibilityStatus.value_counts().to_dict(),
+                        "coreFamilyObservedRows": int(observed.loc[group.index, "coreFamilyObserved"].sum()),
+                        "missingRawFeatures": {n: int(pd.to_numeric(group[n], errors="coerce").replace([np.inf, -np.inf], np.nan).isna().sum())
+                                               for n in F.RAW_FEATURES}}
+    return output
 
 
 def development_state(model_evidence, portfolio_evidence):
@@ -405,11 +457,20 @@ def prediction_receipt(path, *, signal_date, merge_date, spec_sha, input_sha, mo
 def evaluate_model(permit, predictions, labels, spec, counters):
     require_permit(permit)
     counters.modelOutcomeCalls += 1
-    joined = predictions.merge(labels[["date", "ticker", "forwardRelativeReturn", "labelStatus"]],
+    joined = predictions.merge(labels[["date", "ticker", "forwardRelativeReturn", "labelStatus", "eligibilityStatus"]],
                                on=["date", "ticker"], validate="one_to_one")
-    matured = joined.loc[joined.labelStatus.eq("MATURED")]
-    if len(matured) < len(joined.loc[~joined.labelStatus.eq("PENDING")]) or matured.date.nunique() < spec["gates"]["minimumEvaluationDates"]:
-        return {"complete": False, "reason": "UNRESOLVED_ENDPOINT_OR_EVALUATION_DEPTH"}
+    mask = joined.labelStatus.eq("MATURED") & joined.eligibilityStatus.eq("ELIGIBLE")
+    mask &= np.isfinite(pd.to_numeric(joined.forwardRelativeReturn, errors="coerce"))
+    matured = joined.loc[mask]
+    counts = matured.groupby("date").size()
+    matured = matured.loc[matured.date.isin(counts[counts >= spec["walkForward"]["minimumNamesPerDate"]].index)]
+    diagnostics = {"predictionRows": len(joined), "eligibleMaturedRows": int(mask.sum()),
+                   "evaluatedRows": len(matured), "datesBelowMinimumNames": int((counts < spec["walkForward"]["minimumNamesPerDate"]).sum()),
+                   "labelStatusCounts": joined.labelStatus.value_counts().to_dict(),
+                   "eligibilityStatusCounts": joined.eligibilityStatus.value_counts().to_dict(),
+                   "nonfiniteMaturedEligibleReturns": int((joined.labelStatus.eq("MATURED") & joined.eligibilityStatus.eq("ELIGIBLE") & ~mask).sum())}
+    if matured.date.nunique() < spec["gates"]["minimumEvaluationDates"]:
+        return {"complete": False, "reason": "ELIGIBLE_EVALUATION_DEPTH", "eligibilityDiagnostics": diagnostics}
     summaries = []
     from .alpha_opportunity_v5_evidence import rank_weighted_spread_design
     for _, group in matured.groupby("date", sort=True):
@@ -418,7 +479,7 @@ def evaluate_model(permit, predictions, labels, spec, counters):
             "mseImprovementVsMean": float(np.mean((group.meanPrediction.to_numpy() - y)**2 - (prediction - y)**2)),
             "mseImprovementVsMomentum": float(np.mean((group.momentumPrediction.to_numpy() - y)**2 - (prediction - y)**2)),
             "rankWeightedSpread": float(rank_weighted_spread_design(prediction, group.ticker).weights @ y)})
-    return {"complete": True, "dates": len(summaries),
+    return {"complete": True, "dates": len(summaries), "eligibilityDiagnostics": diagnostics,
             **{key: float(np.mean([r[key] for r in summaries])) for key in summaries[0]}}
 
 
@@ -471,12 +532,15 @@ unresolved held terminal economics block the complete path, never disappear.
                 previous_prices[ticker] = mark
             growth = 1 - sum(positions.values()) + sum(w * stock_growth[t] for t, w in positions.items())
             positions = {t: w * stock_growth[t] / growth for t, w in positions.items()}
+            # Gross holds identical executed stock notionals; saved fees stay
+            # in zero-rate cash. It receives the same currency stock P&L.
+            gross_nav += nav * (growth - 1)
             nav *= growth
-            gross_nav *= growth
             benchmark_price = _price(bundle["prices"], bundle["market"], spec["benchmark"], day)
             benchmark_nav *= benchmark_price / previous_benchmark
             previous_benchmark = benchmark_price
         cost, turnover, overlay, selected = 0.0, 0.0, None, []
+        execution = None
         if index % spec["rebalance"]["strideKrSessions"] == 0:
             prior_signals = [d for d in schedule if d < day]
             signal = prior_signals[-1] if prior_signals else None
@@ -500,35 +564,18 @@ unresolved held terminal economics block the complete path, never disappear.
                 names = P.select(rows, cfg)
                 equal_rows = [{**r, "downsideVol126": 1.0} for r in names]
                 desired = {t: w * overlay["riskMultiplier"] for t, w in P.size(equal_rows, cfg).items()}
-            after = dict(positions)
             adv = {}
-            desired_buys = {}
             for ticker in sorted(set(positions) | set(desired)):
                 quote = bundle["market"].at(ticker, day)
                 history = bundle["market"].trailing(ticker, signal, 60)
                 if not quote or quote["volume"] <= 0 or len(history) < 60 or any(r is None for r in history):
                     continue  # No fictitious suspension fill.
                 adv[ticker] = float(np.mean([r["tradingValue"] for r in history]))
-                limit = cfg["maximumAdvFraction"] * adv[ticker] / cfg["referenceNavKrw"]
-                change = np.clip(desired.get(ticker, 0) - positions.get(ticker, 0), -limit, limit)
-                if change <= 0:
-                    after[ticker] = max(0.0, positions.get(ticker, 0) + change)
-                else:
-                    desired_buys[ticker] = change
-            # Cash freed by executable sells only; deferred exits cannot finance buys.
-            desired_buys = P.limit_new_positions(after, desired_buys, selected, cfg["maximumHoldings"])
-            capacity = max(0.0, 1 - sum(after.values()))
-            demand = sum(desired_buys.values())
-            fraction = min(1.0, capacity / demand) if demand else 0.0
-            for ticker, change in desired_buys.items():
-                after[ticker] = after.get(ticker, 0) + fraction * change
-            after = {t: float(w) for t, w in sorted(after.items()) if w > 1e-12}
-            cost_info = P.trading_cost(positions, after, adv, cfg, stress=stress)
-            cost, turnover = cost_info["costFraction"], cost_info["oneWayTurnover"]
-            # Costs charged once at the close, the remaining NAV is the new
-            # investable base. Frozen weight-based implementation approximation.
-            nav *= 1 - cost
-            positions = after
+            execution = P.execute_rebalance(positions, desired, adv, selected, overlay["riskMultiplier"], cfg,
+                                            nav_krw=nav * cfg["referenceNavKrw"], stress=stress)
+            cost, turnover = execution["costFraction"], execution["oneWayTurnover"]
+            nav *= execution["postCostNavFactor"]
+            positions = execution["weights"]
             for ticker in positions:
                 previous_prices[ticker] = _price(bundle["prices"], bundle["market"], ticker, day, previous_prices.get(ticker))
             if not started:
@@ -542,7 +589,13 @@ unresolved held terminal economics block the complete path, never disappear.
             records.append({"date": day, "nav": nav, "grossNav": gross_nav, "benchmarkNav": benchmark_nav,
                             "cost": cost, "turnover": turnover, "holdings": len(positions),
                             "cashWeight": 1 - sum(positions.values()), "weights": dict(positions),
-                            "selected": selected, "overlay": overlay})
+                            "selected": selected, "overlay": overlay,
+                            **({key: execution[key] for key in ("overlayTargetGross", "realizedGross", "overlayConstraintBinding", "overlayExcessDueToDeferredExit")}
+                               if execution else {"overlayTargetGross": records[-1]["overlayTargetGross"],
+                                                  "realizedGross": sum(positions.values()), "overlayConstraintBinding": None,
+                                                  "overlayExcessDueToDeferredExit": None}),
+                            "cashKrw": nav * cfg["referenceNavKrw"] * (1 - sum(positions.values())),
+                            "holdingsKrw": {t: nav * cfg["referenceNavKrw"] * w for t, w in positions.items()}})
     if len(records) < spec["gates"]["minimumPortfolioSessions"]:
         return {"complete": False, "reason": "PORTFOLIO_DEPTH"}
     from .kr_portfolio_diagnostics import portfolio_metrics
@@ -554,15 +607,17 @@ def run_historical(permit, bundle, spec, counters):
     models, predictions, records = {}, {}, []
     for horizon in spec["horizons"]:
         labels = build_labels(permit, bundle, spec, horizon, counters)
+        diagnostics = eligibility_diagnostics(labels)
         try:
             scored, folds = model_predictions(permit, labels, bundle, spec, horizon, counters)
         except ValueError as exc:
             if str(exc) not in ("NO_READY_ANNUAL_FOLD", "MISSING_LATER_ANNUAL_FOLD", "MISSING_ENTIRE_TRAINING_FAMILY", "DATA_INSUFFICIENT_ALL_FEATURES_MISSING"):
                 raise
-            models[str(horizon)] = {"complete": False, "reason": str(exc)}
+            models[str(horizon)] = {"complete": False, "reason": str(exc), "fullEligibilityByYear": diagnostics}
             predictions[str(horizon)] = pd.DataFrame()
             continue
         models[str(horizon)] = evaluate_model(permit, scored, labels, spec, counters)
+        models[str(horizon)]["fullEligibilityByYear"] = diagnostics
         predictions[str(horizon)] = scored
         records.extend(folds)
     try:

@@ -56,12 +56,21 @@ jobs:
         with:
           script: |
             if (context.ref !== 'refs/heads/main') throw new Error('MAIN_ONLY');
+            const main = await github.rest.git.getRef({...context.repo, ref:'heads/main'});
+            if (main.data.object.sha !== context.sha) throw new Error('MAIN_HEAD_CHANGED');
             const fs = require('fs');
             if (!fs.existsSync('research_specs/kr-model-overlay-portfolio-v1-execution-authorization.json')) throw new Error('EXECUTE_UNAUTHORIZED');
+            const authPath = 'research_specs/kr-model-overlay-portfolio-v1-execution-authorization.json';
+            const committed = require('child_process').execFileSync('git', ['show', 'HEAD:' + authPath]);
+            if (!committed.equals(fs.readFileSync(authPath))) throw new Error('AUTHORIZATION_NOT_COMMITTED_AT_HEAD');
+            const auth = JSON.parse(committed);
+            if (!auth.inputArtifact || !auth.inputRunId || auth.inputArtifact !== ${{ toJSON(inputs.inputArtifact) }} || String(auth.inputRunId) !== ${{ toJSON(inputs.inputRunId) }}) throw new Error('AUTHORIZED_ARTIFACT_IDENTITY_MISMATCH');
             if (fs.existsSync('docs/results/kr-model-overlay-portfolio-v1-result.json')) throw new Error('V1_ALREADY_CLOSED');
             const artifacts = await github.paginate(github.rest.actions.listArtifactsForRepo, {...context.repo, per_page:100});
             if (artifacts.some(a => a.name.startsWith('kr-model-overlay-portfolio-v1-primary-'))) throw new Error('PRIMARY_ALREADY_EXISTS_DO_NOT_RERUN');
             const specSha = fs.readFileSync('research_specs/kr-model-overlay-portfolio-v1.sha256', 'utf8').trim();
+            const spec = JSON.parse(fs.readFileSync('research_specs/kr-model-overlay-portfolio-v1.json'));
+            if (auth.specSha256 !== specSha || auth.studyId !== spec.studyId || auth.authorizedExecutions !== 1 || !auth.authorizedBy || !auth.mergeCommit || !auth.inputSnapshotSha256 || !require('util').isDeepStrictEqual(auth.harnessHashes, spec.dependencyHashes) || auth.diagnosticSpecSha256 !== spec.diagnostics.sha256) throw new Error('AUTHORIZATION_IDENTITY_MISMATCH');
             const lockRef = 'tags/kr-model-overlay-portfolio-v1-execution-lock-' + specSha;
             try {
               await github.rest.git.getRef({...context.repo, ref:lockRef});
@@ -69,10 +78,8 @@ jobs:
             } catch (e) {
               if (e.status !== 404) throw e;
             }
-            // Atomic create (never update/delete): duplicate formal attempts refuse forever,
-            // independently of artifact retention or supplementary failures.
-            await github.rest.git.createRef({...context.repo, ref:'refs/' + lockRef, sha:context.sha});
-            core.exportVariable('KR_V1_EXECUTION_LOCK', specSha);
+            // Read-only refusal. Permanent create occurs in the Python runner,
+            // after exact snapshot verification and READY gates with six zeros.
       - name: Download separately frozen raw snapshot
         if: github.event_name == 'workflow_dispatch' && inputs.mode != 'verify'
         uses: actions/download-artifact@v5
@@ -86,6 +93,8 @@ jobs:
         run: python scripts/run_kr_model_overlay_portfolio_v1.py --mode gates-only --inputs inputs --output run
       - name: Authorized single DEVELOPMENT execution
         if: github.event_name == 'workflow_dispatch' && inputs.mode == 'execute'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: python scripts/run_kr_model_overlay_portfolio_v1.py --mode execute --inputs inputs --output run
       - name: Classify durable primary before supplementary upload
         if: always()
