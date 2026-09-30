@@ -1,0 +1,11 @@
+# Immutable v1 preregistration
+
+The authority is `research_specs/kr-model-overlay-portfolio-v1.json` and its SHA-256 sidecar, verified by `scripts/run_kr_model_overlay_portfolio_v1.py --mode verify`. The scientific design, fixed raw registry/interactions/transforms, H126/H252 target, benchmark/universe/cutoff, annual chronology, risk rule, concentrated allocation/costs, baselines, data gates, development-state rules, diagnostics, prospective boundary and no-rescue closure are specified in that JSON. Full code/import dependency hashes and the prior v5 artifact byte hashes are included. Do not confuse canonical JSON digest with pretty-printed file SHA.
+
+This freeze incorporates the explicitly authorized continuation: official daily KRX capitalization replaces unproven DART shares; historical sectors are optional and deferred; no sector-relative feature or cap. It does not rehabilitate the invalid share-count provenance or claim static sectors were historically correct. Final registry is small and based on concept/availability validity, never a historical feature tournament.
+
+Status: **MACHINE_FROZEN / RAW_DATA_READINESS_PENDING / EXECUTE_UNAUTHORIZED**. Raw source acquisition and measured joined coverage must precede a separate authorization. Their future input snapshot digest is intentionally not fabricated here; exact accounting, universe and inherited replay pins already exist and are fixed. Any added raw cache changes the authorization's input identity but must not change the frozen registry or thresholds. A failed registered gate stops; no feature is silently removed to pass it.
+
+The diagnostic spec `research_specs/kr-model-overlay-portfolio-v1-diagnostics-v1.json` is also sealed. It is descriptive/hypothesis-generating and cannot change the primary state, select a feature, tune a parameter, authorize rerun or rescue a negative/inconclusive result. The primary is durably written before diagnostics.
+
+No separately committed execution authorization exists. No historical DEVELOPMENT execution was performed. Synthetic labels/quotes in tests are not real historical evidence. Historical outcome-exposed research stays DEVELOPMENT forever; prospective evidence begins only after the actual final merge.
