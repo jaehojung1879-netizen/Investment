@@ -1,0 +1,429 @@
+{
+  "baselines": {
+    "model": [
+      "unconditional date-weighted training mean",
+      "Ridge10 relative126"
+    ],
+    "portfolio": [
+      "069500.KS full benchmark",
+      "equal weight same selected names descriptive",
+      "momentum baseline selected by same cost/risk rules descriptive"
+    ]
+  },
+  "benchmark": "069500.KS",
+  "costStress": [
+    2.0,
+    3.0
+  ],
+  "dependencyHashes": {
+    ".github/workflows/kr-model-overlay-portfolio-v1.yml": "3764b329e976c8e3b387e9b93d2127002d919f22a9586731439d6aa7c8758269",
+    "docs/kr-model-overlay-portfolio-v1-data-audit.md": "2e502a0ced4708054700d959f04e446b6b7fb9fc7ba9b6281d53c8447e1b55e4",
+    "docs/kr-model-overlay-portfolio-v1-design.md": "e048cacc9562a4d82aec0f68ffeb489e80d557970dd93299a16ed0f9a891de8b",
+    "docs/kr-model-overlay-portfolio-v1-execution.md": "faedb373e2e1630f00a0050ba48a87044148b2051ab596d40c3164024eb6e009",
+    "docs/kr-model-overlay-portfolio-v1-preregistration.md": "48f75b72807d679d878fb71ffbf6c2f8e7c64cc508632c8977c2b5dceb73edd1",
+    "docs/kr-model-overlay-portfolio-v1-prospective.md": "4c52bf37a42a42dc906b4f5e8dc1eca5a00605fe5724d5606da427de79614b00",
+    "docs/kr-model-overlay-portfolio-v1-research-foundation.md": "477a4b8a1627b9c3808a62b0d83422a69d415aa20b43128dd70a90c11f7b2672",
+    "docs/results/kr-terminal-action-reconstruction-v2.json": "b1d2dcb0a8064139e601c4efab51a44e1323f93910ae70228054338a90629017",
+    "docs/results/kr-terminal-action-reconstruction-v2.json.sha256": "102535d12a4f41402dfba582e24fdd1f4623c938e8946ba075e693f295b3e8c5",
+    "docs/workflow-inventory.md": "4556d9539757d9fa5ac7be5ba0028353e56d877674c1061c0dba4adf25c9919e",
+    "pipeline/__init__.py": "187da1ad9a148da44035f9cf25f7cb094c45afe53d3f445ba62392797972dede",
+    "pipeline/accounting_quality.py": "b65c54126ea45bc544d843d5f87b109e71ca7658a1d7a8f99cd435cdf9ea6ada",
+    "pipeline/alpha_inference_calibration_v1.py": "87a6990fd6fc5217824ee00205ee247abe88006a2445d41b5a6086709f551186",
+    "pipeline/alpha_inference_calibration_v3.py": "5afa9a03dbfb5343be522d282a1b2050cbbd01722dc7b8eae1e6e06b55c2bf13",
+    "pipeline/alpha_inference_calibration_v4.py": "024231e1adeeb4d29ea047d187eb7eb5478fd21c442991bd1c8963d6a38cd601",
+    "pipeline/alpha_inference_mc_decision.py": "6d131e20e2bcc212247a95fce2c5f733faa7f1624991b364d9fea96b4962f61e",
+    "pipeline/alpha_opportunity_features.py": "62bfd05894b0f448e2d588f9395fb616c9d114a74503c1f663e20a84dfe0976e",
+    "pipeline/alpha_opportunity_model.py": "998c0b50d713a5c89ce1850bbae1b112215507fe6a38d992d7f1de158476ce83",
+    "pipeline/alpha_opportunity_spec.py": "3d7150c2f62dbd8184ed2f3885828e93c1ba64d8ffe3695b0b5716641734c58e",
+    "pipeline/alpha_opportunity_v2_decision.py": "89c14660b05c96611ef80c3116191fb21dc82f9909b9bc8db2ff2ae3601546be",
+    "pipeline/alpha_opportunity_v2_evaluation.py": "e6f8a6f299945da36b39767a2dc7c7748a9bfee497e27a0d0ec05738bf235c62",
+    "pipeline/alpha_opportunity_v2_model.py": "7d190b933262bde1c38b00493ab83d0b24fa433cc29ad7bda9939caa86c95f0b",
+    "pipeline/alpha_opportunity_v3_spec.py": "1c11c306f9f27a8e69b985d02bfb3bffaf691001c27ac49e6b21266dd315c162",
+    "pipeline/alpha_opportunity_v4_eligibility.py": "8c20c70b35dba244f0341459ee295ca836e0ec6782f3e4989197bc2a220ba204",
+    "pipeline/alpha_opportunity_v4_execution.py": "f6d9dfd3be1558249bb69a29a903e791443d071793b2f591a2e900d492c954ba",
+    "pipeline/alpha_opportunity_v5_evidence.py": "305fc463129a50e6048152d99fec5f238bbd4f526818fc840b0c8e2af486425d",
+    "pipeline/alpha_opportunity_v5_execution.py": "55cf02999ee153e3d5be5036fb1905163b9bbcf991586aab22435ea92deccbc1",
+    "pipeline/alpha_opportunity_v5_spec.py": "970dab4293b4664940aece7c76498b6436862dcec7e9726a7b26168ca565de81",
+    "pipeline/dart_derive.py": "c18be6391fd8e04118a8e13cb62ace5a20e641f1d67e1c185652ed88572bd457",
+    "pipeline/dart_fundamentals.py": "5faad514e864d199a1eb9db41fbb182ab9b4a73a0e7179e7f56ac99b387e579b",
+    "pipeline/dart_ownership_events.py": "fdb4280a7bebdfb324f4ee87c9ad2ac22d640cc0dced10c7fc0f1bcd59c461d8",
+    "pipeline/entry.py": "d9c8e33686a55114bfabb6b11c634ff0198461859ecdaf10dffc7e3c49a191a2",
+    "pipeline/evidence.py": "31e8f67184073395d67f44a165d74f4ed368e468b790e695dbdcc698de7d9e88",
+    "pipeline/finnhub_derive.py": "2ceaf6a081a5fbbd893398a68e58006254da06492629d9e8824e0e835b848b56",
+    "pipeline/finnhub_fundamentals.py": "95b5090f1a306df5bc6231d952c42dfc85097a3a1f9f90a82bb4fa8af4f3a20d",
+    "pipeline/fundamental_acceleration.py": "4aeb649a2a046d9cf11432a7ac5a18a1b6ff993a48f2d7216e3280d446aa02cf",
+    "pipeline/historical_calibration.py": "2c825613bc1a543a225159e421aa15a176a222ce61cac12937de4e8c33db5e11",
+    "pipeline/historical_outcomes.py": "9db74870fe015f26ee5c4ac4709a420d33ef28e5feaab2c4caeedd7e85555569",
+    "pipeline/historical_replay.py": "80ace61f2df0d48ee98349bc998b77f58d8c62a4e8aa01da7b3cdacf158266e9",
+    "pipeline/historical_store.py": "2751be8b5b79260f2038c9fb975cae58d49cb7868751c6658e363b48712016c0",
+    "pipeline/kelly_portfolio.py": "6a4bd54be11e35e7348f64d0c99e7764635c4efcea62306da0b6ca81bfb3b06c",
+    "pipeline/kr_concentrated_portfolio.py": "5059260c02e55dfde5b38b644ef2a66d0ff793dd2fb2e17609331dbb08571b64",
+    "pipeline/kr_market_risk_overlay.py": "983b3aab891a2af2f6d54b9b3d7ca29788651ba898b074da0506a40431ae4c07",
+    "pipeline/kr_market_value.py": "49306b8d14c4e8d681ae5846802c2ae82fa5727bb7a8adf356fa313217103c5e",
+    "pipeline/kr_model_overlay_portfolio.py": "b67495886aa63e10315d96ce8b30a023ee75adac6f5fec5a4fab7593b4f70343",
+    "pipeline/kr_model_portfolio_execution.py": "c07dce188bc319ffe716f0a8558b7ffc3a64446d90c7fa7891f7d7e087e641f9",
+    "pipeline/kr_portfolio_diagnostics.py": "9f28a5ddf49a58c95db36d3a573b19e56fe7c86f98ad2ed01d96e8c09e6b5c34",
+    "pipeline/kr_repaired_accounting_snapshot.py": "b5b225e8a1d21b1516801c0ced1ef2164189867a457df1e0a51cd8ec95dd63ea",
+    "pipeline/kr_value_quality_catalyst.py": "1bfd62d1437dd9b574f1ab635836e7d7e69651dbbbaeedf29af84a90de17bb28",
+    "pipeline/krx_universe.py": "77008b8c0dcb9cd44b0b1182df94d2f0af62edb6f03b6a41082c04679101d6b8",
+    "pipeline/liquidity_attention.py": "208c989a70e2d276c040867496a127eda9ca82644012999a7253f7d47bb171a6",
+    "pipeline/longterm.py": "75702c4862545e0ceadbfc5db2585b89ffeadad21f43206b597e2982d171c5f6",
+    "pipeline/market_dates.py": "0182986bf731fd762a8004d5cf838ddfaaee656a2b19b8cfd6b47248c6281e4b",
+    "pipeline/pit_data.py": "64da89c602ac4b6c67411d0b5defa2909b65c1a7aad0958b32cb7f7dcd567dbf",
+    "pipeline/portfolio_validation.py": "a22c18fc31f47b1701ea4c426ff31dec48f3f367163bd1eb3e8cf75c1fadf2a5",
+    "pipeline/price_adjustment.py": "ebdde717be22277315186d5f302642cbc8a057fedee84192b7af14b15c405892",
+    "pipeline/probability_calibration.py": "7e06f855981c7c88dc8a595fd879d201892ca99bfbb4b1dcab1bebaf0e6f62f6",
+    "pipeline/provenance.py": "762a214d6d0a59cef35a1b4612b60e13e2f6197a0a289e97e2b1da1f496c8171",
+    "pipeline/regime.py": "b5634c109ac19ad6b0e13788f1ce9cde8f20f50019a82a8b4f65f9bc23200aca",
+    "pipeline/regional_alpha_features.py": "2fc5eb16d0438ca15763aeaf49e9226146a7ecf209680ae8f33fd42f57555132",
+    "pipeline/replay_calendar.py": "56116f837e8ae3b9ca43c27c87b3be8bcf608172a761879a6b1284a39c9a3ab2",
+    "pipeline/replay_determinism.py": "2233d8341d7be1b5123caecd3ebdb10aef67ecfac7b3c10c687795f66f397153",
+    "pipeline/replay_inputs.py": "dd77b249476b252ba585b1b836fd060a029b0c4d9c3b9a0847caf8be545a5a1d",
+    "pipeline/replay_valuation.py": "18e673a0721077af06b8ca9f774650c27fa58820a489b9ea639a9ccf02693bf3",
+    "pipeline/sectors.py": "1cb470d676eeb24d5fa4976bf8fc0f71f808957f132c908158acb6422fde60ba",
+    "pipeline/selection_null.py": "b00e7419a8a620e284f3b5a15aafa66e9a8f776b81da027a766a72b3eecf5e17",
+    "requirements-dev.txt": "a79bc887434c85f6748879e766d15a95d7c97ae0d8fa84eb0d29bc112a0a462d",
+    "requirements.txt": "b874e2c2c8bd5f4b0bc01b99f988d37d13c9d5018e7fb09992a6cdde6e94edb8",
+    "research_specs/kr-model-overlay-portfolio-v1-diagnostics-v1.json": "9777c9b1a37f14236b72b46c9f3be575755ede5d59c62231b1b13acb09da4ae4",
+    "research_specs/kr-model-overlay-portfolio-v1-diagnostics-v1.sha256": "5f59875c6fe1d08888bb3e5f16b59eb4327405345027e4d339c31341bcdc1e6b",
+    "research_specs/kr-repaired-accounting-snapshot-v1.json": "8dbae2203e1b809060100845f4571016e71fbc78cc09c1b52d9edeb46d38f331",
+    "scripts/collect_kr_model_market_values.py": "2546c9afb7ef231c1599d59af4731a49ac05d7af6540c47e02bcc78ddc5e83fc",
+    "scripts/run_kr_model_overlay_portfolio_v1.py": "734e50e3c34f4b6bdcf50b27a2da5193a8e450e244ff61100014655bae282c8c",
+    "tests/test_alpha_opportunity.py": "e268deece5b79257c188de954e3b417913b5653b03e0fbd8d324e2755e3449ec",
+    "tests/test_alpha_opportunity_v2.py": "da59980766def19e1fee3d03ad0d470c6c9119e00e5597db4b085947095315fd",
+    "tests/test_alpha_opportunity_v3.py": "e0820099439439aa86564bdfb14d6382fa651422eca9f509e1c1929f661abf91",
+    "tests/test_kr_model_overlay_portfolio_v1.py": "6490d9077bc77dbf2a50375003630834c3da463d632fdd96d3e0029ac56e931f"
+  },
+  "developmentCutoff": "2026-09-14",
+  "developmentState": {
+    "candidate": "ALL primary H126 model MSE-vs-mean >0 AND MSE-vs-momentum >0 AND rankWeightedSpread >0; net portfolio full excess >0 AND both chronological halves >0",
+    "dataInsufficient": "source/core coverage/depth/gate/undefined model evidence or incomplete continuous portfolio path; isolated ineligible model rows excluded with diagnostics",
+    "inconclusive": "complete mixed evidence",
+    "inferenceStatus": "development point-estimate screens only, no independent confirmation/significance/PASS claim",
+    "infrastructureError": "machinery/identity/numerical failure",
+    "reject": "all three model signs nonpositive OR full net portfolio excess nonpositive",
+    "secondaryCannotRescue": true
+  },
+  "diagnostics": {
+    "canRescue": false,
+    "path": "research_specs/kr-model-overlay-portfolio-v1-diagnostics-v1.json",
+    "primaryFirst": true,
+    "sha256": "0fd3baf70d0fbe24e17a9ab2244ea6c3a4d8ac50c0af634a196fe3c3cb885f03"
+  },
+  "entryPoints": [
+    "scripts/run_kr_model_overlay_portfolio_v1.py",
+    "scripts/collect_kr_model_market_values.py"
+  ],
+  "featureFamilies": {
+    "CATALYST": [
+      "relative126",
+      "momentum121",
+      "ocfImprovementToAssets"
+    ],
+    "QUALITY": [
+      "netIncomeToAssets",
+      "ocfToAssets",
+      "negativeAccrualsToAssets"
+    ],
+    "RISK": [
+      "negativeDownsideVol126",
+      "logAdv60"
+    ],
+    "VALUE": [
+      "bookToMarketProxy",
+      "earningsYieldProxy",
+      "ocfYieldProxy"
+    ]
+  },
+  "gates": {
+    "coreFamilyFloor": 0.2,
+    "denominator": "all PIT member name-dates by year; no missing member removal",
+    "featureFloors": {
+      "CATALYST": 0.8,
+      "QUALITY": 0.2,
+      "RISK": 0.8,
+      "VALUE": 0.2
+    },
+    "featureOverrides": {
+      "ocfImprovementToAssets": 0.2
+    },
+    "firstCoverageDate": "2017-01-01",
+    "liquidityFloor": 0.2,
+    "marketFloor": 0.8,
+    "minimumEvaluationDates": 104,
+    "minimumMaturedSignalDates": 156,
+    "minimumPortfolioSessions": 252,
+    "zeroCounters": [
+      "targetCalls",
+      "labelCalls",
+      "fitCalls",
+      "predictionCalls",
+      "modelOutcomeCalls",
+      "portfolioOutcomeCalls"
+    ]
+  },
+  "horizons": [
+    126,
+    252
+  ],
+  "immutableVersion": 1,
+  "inputs": {
+    "DartSharesStatus": "REJECTED_AS_PIT_VALUATION_SOURCE",
+    "accounting": {
+      "contentSha256": "e0199d98679357f405de9a95a4091045db814d65af61e2c698af1a70d54fda58",
+      "gitBlobSha1": {
+        "dart-2015.jsonl.gz": "ee23f00aea08bc28548872a8d8153f1afbb53500",
+        "dart-2016.jsonl.gz": "65be7342d1d47bcbcda84db99f218312d2adb03d",
+        "dart-2017.jsonl.gz": "2b0146e9c1b8363fecdc1c3b1af0b21b68c8e237",
+        "dart-2018.jsonl.gz": "2316d0b0125fb207f9c721323c368120ff10428e",
+        "dart-2019.jsonl.gz": "4a41f94a2748256efae16c50b04f30e2d7578b56",
+        "dart-2020.jsonl.gz": "932292695b4906b9b179f5cef506299a43c96c1a",
+        "dart-2021.jsonl.gz": "46ccf6e760fd2d5037ab67fca0ab2a6ebd1f25dc",
+        "dart-2022.jsonl.gz": "056694d86b9cefbd6b62eb44c91a610d6b5a08b0",
+        "dart-2023.jsonl.gz": "8a0dd4f040d37ffb43d6078721d2f9a763e9539d",
+        "dart-2024.jsonl.gz": "78619db28718f2b49f69893057a10ef459e53c12",
+        "dart-2025.jsonl.gz": "b60daa3620adba7374155837cdbdc96def57dd7a",
+        "dart-2026.jsonl.gz": "5caf06224466fcf30cf0d8e412fb50e24f8b94c6"
+      },
+      "manifest": "research_specs/kr-repaired-accounting-snapshot-v1.json",
+      "sourceCommit": "fb6e83743fd8cdba647d1522a4645b662a9d5647"
+    },
+    "marketValue": {
+      "capReconciliationTolerance": 0.01,
+      "currency": "KRW",
+      "fields": [
+        "date",
+        "securityId",
+        "close",
+        "marketCap",
+        "listedShares",
+        "volume",
+        "tradingValue"
+      ],
+      "grain": "security/date",
+      "immutableFirstWrite": true,
+      "noMonthlyCapFallback": true,
+      "signalTiming": "observed signal close, next-session or later execution",
+      "source": "KRX:sto/stk_bydd_trd",
+      "status": "PRIMARY_MARKET_VALUE_SOURCE_NEW_CACHE_PENDING"
+    },
+    "replayManifestSha256": "f0781292f508a123c234ded6d28aa8e84a0dc3cc29500e14989dc0b68f53b4d2",
+    "terminalFoundationPath": "docs/results/kr-terminal-action-reconstruction-v2.json",
+    "universeBlobs": {
+      "ledger/universe/kr/krx-universe-2013.jsonl.gz": "e711a6c5e07c89e9b0cf12a94078120ceeb3b9a4",
+      "ledger/universe/kr/krx-universe-2014.jsonl.gz": "395477e6dd72c117615919f850173d2830b2cc1f",
+      "ledger/universe/kr/krx-universe-2015.jsonl.gz": "029bcef52056d4b172d78094779a5eff9c89ff89",
+      "ledger/universe/kr/krx-universe-2016.jsonl.gz": "402910f37a4f75887f8c8f7e501aec1afe90b14d",
+      "ledger/universe/kr/krx-universe-2017.jsonl.gz": "db9b0436c970eb1bf4f2456bab7060432558f6e6",
+      "ledger/universe/kr/krx-universe-2018.jsonl.gz": "9a08628f96aa3aeb5d47b11612d14ab551519abc",
+      "ledger/universe/kr/krx-universe-2019.jsonl.gz": "c1f7990b38b0e17b71c88327b5262c768dcfe16d",
+      "ledger/universe/kr/krx-universe-2020.jsonl.gz": "baf7d4e2609aaaa7091cab087cabdbc5a3c58619",
+      "ledger/universe/kr/krx-universe-2021.jsonl.gz": "c09f60669adf36d81def38dfed6cb0d4dd6c456d",
+      "ledger/universe/kr/krx-universe-2022.jsonl.gz": "a1b303c61dd1d114149c3da51763f1dccb711137",
+      "ledger/universe/kr/krx-universe-2023.jsonl.gz": "024abba6a91153259a8030f6e441497a28c723de",
+      "ledger/universe/kr/krx-universe-2024.jsonl.gz": "a4329587eccc43f015f97524f27a660a6448e263",
+      "ledger/universe/kr/krx-universe-2025.jsonl.gz": "070296ad800a3a57735bbcbaf24f5885d82162e8",
+      "ledger/universe/kr/krx-universe-2026.jsonl.gz": "ccc098c5ce029412a67bf8b85113e0b6a19891dc"
+    },
+    "universeSourceCommit": "4ea107ed0cde289f0a049a65ff13d2441a786710"
+  },
+  "interactionRule": "products of positive parts of equal-active-constituent training robust-z family averages; separate training median/IQR for interactions",
+  "interactions": [
+    "VALUE_X_QUALITY",
+    "VALUE_X_CATALYST",
+    "QUALITY_X_CATALYST",
+    "VALUE_X_QUALITY_X_CATALYST"
+  ],
+  "limitations": [
+    "new KRX daily cache/joined coverage unmeasured",
+    "CFS total/NCI vs issue-cap proxies",
+    "no PIT sectors/sector cap",
+    "unknown held terminal economics block path",
+    "partial distributions in inherited adjusted index",
+    "zero cash yield",
+    "KRW100m initial reference account; no sector cap; deferred exits can temporarily exceed overlay target"
+  ],
+  "model": {
+    "challenger": {
+      "early_stopping": false,
+      "l2_regularization": 10.0,
+      "learning_rate": 0.05,
+      "max_depth": 2,
+      "max_iter": 100,
+      "max_leaf_nodes": 7,
+      "min_samples_leaf": 20,
+      "random_state": 42
+    },
+    "classification": "NOT_IMPLEMENTED",
+    "hyperparameterSearch": false,
+    "primary": "Ridge separate for H126/H252",
+    "ridge": {
+      "alpha": 10.0,
+      "fit_intercept": true,
+      "solver": "svd"
+    }
+  },
+  "modelId": "KR_MODEL_OVERLAY_PORTFOLIO_V1",
+  "oneShot": {
+    "authorizationExists": false,
+    "authorizationPath": "research_specs/kr-model-overlay-portfolio-v1-execution-authorization.json",
+    "authorizedExecutions": 1,
+    "noPostOutcomeTuning": true,
+    "postLockFailureMayConsume": true,
+    "preLockFailureConsumes": false,
+    "requires": "Actions latest main; committed full authorization with exact artifact/run/spec/input/closure/diagnostic pins; no result/lock; download/identity; READY + all six zero counters; atomic permanent repository lock; immediate clean-gate permit; only then outcomes",
+    "substantiveResultCloses": true
+  },
+  "outcomeAccess": {
+    "allowed": "source/coverage calculations and explicit synthetic unit fixtures",
+    "historicalStudyExecuted": false,
+    "newStudyModelsFitOnRealLabels": false,
+    "newStudyPortfolioOutcomesCalculated": false,
+    "newStudyTargetsRead": false,
+    "priorNarrativeExposure": "required AGENTS/README and prior sessions already exposed; v5 result artifact bytes only hashed during this task",
+    "zeroGateProof": "counters at call sites plus adversarial spies"
+  },
+  "overlay": {
+    "canReorderStocks": false,
+    "executionConstraint": "targetGross=riskMultiplier; availableNewBuyGross=max(0,targetGross-actualPostSellGross); no new buys above target; excess only from executable partial/deferred exits; buys include cost funding",
+    "inputs": [
+      "benchmark close/SMA200",
+      "annualized benchmark std63"
+    ],
+    "maximumGross": 1.0,
+    "missing": "block gate",
+    "multipliersByAdverseFlagCount": [
+      1.0,
+      0.7,
+      0.4
+    ],
+    "trendAdverse": "close < mean(last200closes)",
+    "volAdverse": "std63(ddof=1)*sqrt252 >0.25"
+  },
+  "phase": "MACHINE_FROZEN_NOT_EXECUTED",
+  "portfolio": {
+    "advLookback": 60,
+    "buyFixedCost": 0.0015,
+    "capApplies": "target weights; intervening market drift disclosed",
+    "cashRate": "ZERO_KRW_NOMINAL",
+    "costSemantics": "buy15bp/sell45bp assumptions unchanged; sqrt impact on actual executed KRW notional; exact post-cost holdings/cash/NAV, deterministic cost-funded buys, zero cash yield",
+    "downsideLookback": 126,
+    "grossPath": "same actual executed stock notionals as net; all saved transaction costs retained as zero-rate cash; identical currency stock P&L, not separately selected/rebalanced",
+    "impactAtOnePercent": 0.0005,
+    "kelly": "NOT_USED",
+    "maximumAdvFraction": 0.01,
+    "maximumHoldings": 5,
+    "minimumAdvKrw": 3000000000.0,
+    "minimumDownsideVol": 0.01,
+    "minimumHoldings": 0,
+    "netPath": "initial KRW100m reference account; currency holdings plus cash less paid fees; no negative cash or leverage; actual trade notional = pretrade NAV * weight change",
+    "referenceNavKrw": 100000000.0,
+    "roundTripFixedCost": 0.006,
+    "sectorCap": null,
+    "sectorConcentration": "ACKNOWLEDGED_UNCONTROLLED",
+    "selection": "top5 eligible primary H126 predictions strictly above fixed roundtrip cost; ties ticker ascending",
+    "sellFixedCost": 0.0045,
+    "singleNameCap": 0.3,
+    "sizing": "inverse downside126 annual semideviation; constrained water-fill before overlay; residual cash",
+    "tradeLimits": "signal and actual execution quote/volume; partial fills, suspended orders deferred and occupy holding slots; new names admitted by model rank into remaining slots; unknown terminal economics withhold path"
+  },
+  "primaryHorizon": 126,
+  "priorIdentity": {
+    "docs/results/alpha-opportunity-model-v5-diagnostic-models.json": "b43d7d42e95375619c0cd0c1fa2ee28e95273ad485a54fb9d46803ae3831db98",
+    "docs/results/alpha-opportunity-model-v5-diagnostic-references.json": "cf580b0c47b4023dfda707b4f9906796e8aabe88f4aa347b62ac8e23d3d67d2e",
+    "docs/results/alpha-opportunity-model-v5-diagnostic-summary.json": "37c6d8996f5a2696c7bd34863f96a9f74fc4a4a50bf694b5a772b1a4cafc304d",
+    "docs/results/alpha-opportunity-model-v5-result.json": "e06aa3fe17fb5986dd7e6a36272cc1bda59f78f97bfa4e6efaa68d1359d020d4",
+    "docs/results/alpha-opportunity-model-v5-result.sha256": "d34ac290a368747deb5d1c572510b46d5799ef4bc094b0e1b86adf7d76837550",
+    "research_specs/alpha-inference-calibration-v5.json": "b32e1fad5f06ad61e11fb80801b8ba833f1b26d1a3a95233e48395d50a6bf5cc",
+    "research_specs/alpha-opportunity-model-v5-diagnostics-v1.json": "25b8b092dadbafeb0b14fd934bdff7424e30694f703cac3fdbbc6663597184e8",
+    "research_specs/alpha-opportunity-model-v5-diagnostics-v1.sha256": "a99ae7114b9495ab03194168fb8112c0bd5d49c7aafadc59d0005fa64dec3e09",
+    "research_specs/alpha-opportunity-model-v5-execution-authorization.json": "1ac1e0b41e8b2b27efe635d68fb5be6f91c581a1dbec60dc6a83f7567e6cbe76",
+    "research_specs/alpha-opportunity-model-v5.json": "8a0a42a3f9414dbefa3ab8ec47f00ad71f8d7436febb125dff150f3c1e50d54c",
+    "research_specs/alpha-opportunity-model-v5.sha256": "0844b9c5eece485a527cc0212096cb3c18c56bdeae4aa16432e104d92a1b10cb"
+  },
+  "prospectiveStart": "first eligible KR session strictly after actual final specification merge DATE; no retroactive 2026-09-15 claim",
+  "rebalance": {
+    "anchorsIndependentOfEndDate": true,
+    "betweenAnchors": "drifted holdings, no daily retarget",
+    "execution": "anchor close strictly later than signal",
+    "origin": "2015-01-01",
+    "signal": "preceding completed weekly KR signal",
+    "strideKrSessions": 21
+  },
+  "regions": [
+    "KR"
+  ],
+  "scientificStatus": "DEVELOPMENT_ON_OUTCOME_EXPOSED_KR_HISTORY",
+  "sealedDataInputs": [
+    "docs/kr-model-overlay-portfolio-v1-research-foundation.md",
+    "docs/kr-model-overlay-portfolio-v1-data-audit.md",
+    "docs/kr-model-overlay-portfolio-v1-design.md",
+    "docs/kr-model-overlay-portfolio-v1-execution.md",
+    "docs/kr-model-overlay-portfolio-v1-prospective.md",
+    "docs/kr-model-overlay-portfolio-v1-preregistration.md",
+    "research_specs/kr-repaired-accounting-snapshot-v1.json",
+    "docs/results/kr-terminal-action-reconstruction-v2.json",
+    "docs/results/kr-terminal-action-reconstruction-v2.json.sha256",
+    "research_specs/kr-model-overlay-portfolio-v1-diagnostics-v1.json",
+    "research_specs/kr-model-overlay-portfolio-v1-diagnostics-v1.sha256",
+    ".github/workflows/kr-model-overlay-portfolio-v1.yml",
+    "tests/test_kr_model_overlay_portfolio_v1.py",
+    "tests/test_alpha_opportunity.py",
+    "tests/test_alpha_opportunity_v2.py",
+    "tests/test_alpha_opportunity_v3.py",
+    "docs/workflow-inventory.md",
+    "requirements.txt",
+    "requirements-dev.txt"
+  ],
+  "secondaryCannotRescue": true,
+  "sectorStatus": "DEFERRED_BY_PIT_SECTOR_HISTORY",
+  "startingMain": "449508ad18ef6f4a7fce3678c0f593b3237dbab3",
+  "stockEligibility": {
+    "familyRule": "at least one finite raw feature per VALUE/QUALITY/CATALYST family; not every constituent",
+    "missingIndicators": "preserved within eligible rows",
+    "primary": "valueObserved && qualityObserved && catalystObserved before imputation",
+    "terminalEligibility": "evaluation/training only; never ex-ante stock filter"
+  },
+  "studyId": "kr-model-overlay-portfolio-v1",
+  "targetSemantics": {
+    "distributionCoverage": "PARTIAL_OBSERVED_DISTRIBUTIONS_NOT_UNQUALIFIED_TOTAL_RETURN",
+    "entry": "strict next KR session close",
+    "exit": "entry + H further KR sessions",
+    "function": "pipeline.alpha_opportunity_v2_evaluation.target_from_sessions",
+    "missing": "no nearest date/forward fill/zero; unresolved",
+    "modelEligibility": "MATURED + ELIGIBLE + finite return only, minimum10 names/date and104 evaluation dates; never zero/impute unresolved returns",
+    "pending": "calendar-only",
+    "terminalEligibility": "reuse v4 post-label, not selection",
+    "value": "stock adjusted-index ratio minus benchmark same-endpoint ratio"
+  },
+  "transforms": {
+    "allMissing": "omit constituent with disclosure, require >=1 per family",
+    "missing": "nonfinite->missing->training median + indicator",
+    "scaling": "weighted median/IQR",
+    "signedLog1p": [
+      "bookToMarketProxy",
+      "earningsYieldProxy",
+      "ocfYieldProxy",
+      "netIncomeToAssets",
+      "ocfToAssets",
+      "negativeAccrualsToAssets",
+      "ocfImprovementToAssets",
+      "negativeDownsideVol126"
+    ],
+    "trainingOnly": true,
+    "weights": "equal total weight per training date",
+    "wholeSampleNormalization": false,
+    "winsorization": false
+  },
+  "universe": "strictly previous KRX monthly ranked top120; no current-member union",
+  "walkForward": {
+    "featureStart": "2015-01-01",
+    "firstReady": "calendar/depth/source rule only; every later fold ready or DATA_INSUFFICIENT",
+    "minimumHistoryMonths": 36,
+    "minimumMaturedDates": 104,
+    "minimumNamesPerDate": 10,
+    "prediction": "last KR session of completed calendar week",
+    "purge": "outcomeEndDate strictly less than annual cutoff",
+    "refit": "first fixed weekly KR signal each year; expanding training"
+  }
+}

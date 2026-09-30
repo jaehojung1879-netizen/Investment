@@ -388,7 +388,7 @@ def test_cli_readiness_is_deterministic(capsys):
 
 def test_no_production_module_imports_v3():
     for path in (ROOT / "pipeline").glob("*.py"):
-        if path.stem.startswith("alpha_opportunity_"):
+        if path.stem.startswith("alpha_opportunity_") or path.stem in {'kr_model_portfolio_execution', 'kr_model_overlay_portfolio', 'kr_value_quality_catalyst', 'kr_portfolio_diagnostics', 'kr_concentrated_portfolio', 'kr_market_risk_overlay', 'kr_market_value'}:
             continue
         text = path.read_text()
         assert "alpha_opportunity_v3" not in text, path

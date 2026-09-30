@@ -1,0 +1,121 @@
+name: KR model overlay portfolio v1
+on:
+  pull_request:
+    paths:
+      - 'pipeline/kr_model*'
+      - 'pipeline/kr_market*'
+      - 'pipeline/kr_value_quality*'
+      - 'pipeline/kr_concentrated*'
+      - 'pipeline/kr_portfolio_diagnostics.py'
+      - 'scripts/*kr_model*'
+      - 'research_specs/kr-model-overlay-portfolio-v1*'
+      - 'tests/test_kr_model_overlay_portfolio_v1.py'
+      - '.github/workflows/kr-model-overlay-portfolio-v1.yml'
+  workflow_dispatch:
+    inputs:
+      mode:
+        type: choice
+        options: [verify, gates-only, execute]
+        default: verify
+      inputArtifact:
+        description: Exact committed raw-input artifact name (required for gates/execute)
+        type: string
+        required: false
+      inputRunId:
+        description: Producing workflow run ID of the exact raw snapshot
+        type: string
+        required: false
+permissions:
+  contents: write
+  actions: read
+concurrency:
+  group: kr-model-overlay-portfolio-v1-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  frozen-machine:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+          cache: pip
+      - run: pip install -r requirements.txt -r requirements-dev.txt
+      - name: Synthetic tests, frozen identity and zero-access smoke
+        run: |
+          ruff check .
+          python -m pytest -q tests/test_kr_model_overlay_portfolio_v1.py
+          python scripts/run_kr_model_overlay_portfolio_v1.py --mode verify --output run
+          python scripts/run_kr_model_overlay_portfolio_v1.py --mode gates-only --output run
+      - name: Main-only authorization and permanent one-shot refusal
+        if: github.event_name == 'workflow_dispatch' && inputs.mode == 'execute'
+        uses: actions/github-script@v8
+        with:
+          script: |
+            if (context.ref !== 'refs/heads/main') throw new Error('MAIN_ONLY');
+            const main = await github.rest.git.getRef({...context.repo, ref:'heads/main'});
+            if (main.data.object.sha !== context.sha) throw new Error('MAIN_HEAD_CHANGED');
+            const fs = require('fs');
+            if (!fs.existsSync('research_specs/kr-model-overlay-portfolio-v1-execution-authorization.json')) throw new Error('EXECUTE_UNAUTHORIZED');
+            const authPath = 'research_specs/kr-model-overlay-portfolio-v1-execution-authorization.json';
+            const committed = require('child_process').execFileSync('git', ['show', 'HEAD:' + authPath]);
+            if (!committed.equals(fs.readFileSync(authPath))) throw new Error('AUTHORIZATION_NOT_COMMITTED_AT_HEAD');
+            const auth = JSON.parse(committed);
+            if (!auth.inputArtifact || !auth.inputRunId || auth.inputArtifact !== ${{ toJSON(inputs.inputArtifact) }} || String(auth.inputRunId) !== ${{ toJSON(inputs.inputRunId) }}) throw new Error('AUTHORIZED_ARTIFACT_IDENTITY_MISMATCH');
+            if (fs.existsSync('docs/results/kr-model-overlay-portfolio-v1-result.json')) throw new Error('V1_ALREADY_CLOSED');
+            const artifacts = await github.paginate(github.rest.actions.listArtifactsForRepo, {...context.repo, per_page:100});
+            if (artifacts.some(a => a.name.startsWith('kr-model-overlay-portfolio-v1-primary-'))) throw new Error('PRIMARY_ALREADY_EXISTS_DO_NOT_RERUN');
+            const specSha = fs.readFileSync('research_specs/kr-model-overlay-portfolio-v1.sha256', 'utf8').trim();
+            const spec = JSON.parse(fs.readFileSync('research_specs/kr-model-overlay-portfolio-v1.json'));
+            if (auth.specSha256 !== specSha || auth.studyId !== spec.studyId || auth.authorizedExecutions !== 1 || !auth.authorizedBy || !auth.mergeCommit || !auth.inputSnapshotSha256 || !require('util').isDeepStrictEqual(auth.harnessHashes, spec.dependencyHashes) || auth.diagnosticSpecSha256 !== spec.diagnostics.sha256) throw new Error('AUTHORIZATION_IDENTITY_MISMATCH');
+            const lockRef = 'tags/kr-model-overlay-portfolio-v1-execution-lock-' + specSha;
+            try {
+              await github.rest.git.getRef({...context.repo, ref:lockRef});
+              throw new Error('PERMANENT_ONE_SHOT_LOCK_ALREADY_EXISTS');
+            } catch (e) {
+              if (e.status !== 404) throw e;
+            }
+            // Read-only refusal. Permanent create occurs in the Python runner,
+            // after exact snapshot verification and READY gates with six zeros.
+      - name: Download separately frozen raw snapshot
+        if: github.event_name == 'workflow_dispatch' && inputs.mode != 'verify'
+        uses: actions/download-artifact@v5
+        with:
+          name: ${{ inputs.inputArtifact }}
+          path: inputs
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run-id: ${{ inputs.inputRunId }}
+      - name: Gates only, no permit
+        if: github.event_name == 'workflow_dispatch' && inputs.mode == 'gates-only'
+        run: python scripts/run_kr_model_overlay_portfolio_v1.py --mode gates-only --inputs inputs --output run
+      - name: Authorized single DEVELOPMENT execution
+        if: github.event_name == 'workflow_dispatch' && inputs.mode == 'execute'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python scripts/run_kr_model_overlay_portfolio_v1.py --mode execute --inputs inputs --output run
+      - name: Classify durable primary before supplementary upload
+        if: always()
+        id: primary
+        shell: bash
+        run: |
+          if test -f run/primary.json; then
+            echo 'exists=true' >> "$GITHUB_OUTPUT"
+          fi
+      - uses: actions/upload-artifact@v4
+        if: always() && steps.primary.outputs.exists == 'true'
+        with:
+          name: kr-model-overlay-portfolio-v1-primary-${{ github.run_id }}
+          path: |
+            run/primary.json
+            run/primary.sha256.json
+            run/execution.started.json
+          retention-days: 90
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: kr-model-overlay-portfolio-v1-audit-${{ github.run_id }}
+          path: run
+          retention-days: 90

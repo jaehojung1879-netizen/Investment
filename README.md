@@ -11,6 +11,12 @@ Replay v7의 고정 평가 달력과 성과 정의는 [v7 평가 문서](docs/re
 확인된 Actions 실패와 benchmark lineage/가격 기준 수정은
 [v10 Actions 복구 문서](docs/replay-v10-actions-repair.md)에 정리했습니다.
 
+## KR model-overlay-portfolio v1 — machine frozen, execution unauthorized
+
+`kr-model-overlay-portfolio-v1` separates H126/H252 Value–Quality–Catalyst stock forecasts, benchmark risk budgeting and a 0–5-stock concentrated portfolio. The KR history through 2026-09-14 is outcome-exposed development evidence; this PR computes no historical labels or strategy outcomes. Daily official KRX market-value cache and joined coverage remain pending. Historical sectors are deferred.
+
+See the [research foundation](docs/kr-model-overlay-portfolio-v1-research-foundation.md), [source audit](docs/kr-model-overlay-portfolio-v1-data-audit.md), [frozen design](docs/kr-model-overlay-portfolio-v1-design.md), [preregistration](docs/kr-model-overlay-portfolio-v1-preregistration.md), [execution firewall](docs/kr-model-overlay-portfolio-v1-execution.md) and [prospective receipts](docs/kr-model-overlay-portfolio-v1-prospective.md). No authorization or scheduled prediction automation is activated. Prospective eligibility begins strictly after the final specification's actual merge date.
+
 ## 현재 replay / Regional Rotation 검증
 
 현재 세대는 **`replay-v16`**입니다. v7~v15 설명과 과거 수치는 아래에 변경 이력으로

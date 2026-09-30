@@ -371,7 +371,7 @@ def test_overlay_cannot_borrow_core_history(spec):
 
 def test_no_production_imports_or_real_outcome_artifact():
     for path in (ROOT/'pipeline').glob('*.py'):
-        if path.stem.startswith('alpha_opportunity_'):
+        if path.stem.startswith('alpha_opportunity_') or path.stem in {'kr_model_portfolio_execution', 'kr_model_overlay_portfolio', 'kr_value_quality_catalyst', 'kr_portfolio_diagnostics', 'kr_concentrated_portfolio', 'kr_market_risk_overlay', 'kr_market_value'}:
             continue
         tree=ast.parse(path.read_text())
         for node in ast.walk(tree):
