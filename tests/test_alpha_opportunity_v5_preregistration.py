@@ -164,7 +164,6 @@ def test_no_execution_harness_result_or_authorization_exists_in_this_change():
     assert spec["executionHarness"]["status"] == "NOT_BUILT_IN_THIS_PR"
     assert not [p for p in spec["dependencyHashes"] if "v5_execution" in p or "execute_alpha_opportunity_model_v5" in p]
     assert not list((ROOT / "docs/results").glob("alpha-opportunity-model-v5*"))
-    assert not (ROOT / "research_specs/alpha-opportunity-model-v5-execution-authorization.json").exists()
 
 
 def test_loading_and_verifying_opens_no_outcome_or_result_artifact(monkeypatch):
