@@ -274,34 +274,82 @@ def run_loader(tmp_path, spec, objects):
         return X.load_sources(tmp_path, spec)
 
 
-def test_the_sealed_loader_reads_the_static_lineage_as_price_rows_and_dies_with_the_observed_keyerror(tmp_path):
+def test_the_corrected_sealed_loader_reads_only_dated_panels_and_survives_the_static_lineage(tmp_path):
     spec, objects = real_shaped_world(tmp_path)
-    # Not a hypothetical: this is the unchanged sealed loader on the manifest shape the real replay-v16 inputs have.
-    # The static component is a single row with `ticker` ending .KS and no `date`; the dedup loop indexes row["date"].
+    *_, prices = run_loader(tmp_path, spec, objects)      # the exact world that raised KeyError('date') in run 36844599518
+    assert sorted(prices) == ['000001.KS', '069500.KS']
+    assert len(prices['000001.KS']) == 1 and len(prices['069500.KS']) == 1
+    assert RI.is_price_panel('price/2020-01') and not RI.is_price_panel('price/source') and not RI.is_price_panel('benchmark/source')
+    assert 'price/source' in S.json.loads((tmp_path / 'ledger/historical/replay-v16/inputs.json').read_text())['components']
+
+
+def test_equivalence_proof_matches_the_sealed_loader_and_input_identity_still_includes_the_static_objects(tmp_path):
+    spec, objects = real_shaped_world(tmp_path)
+    with patch.object(RI.InputStore, '_read', lambda self, ref: objects[ref]), \
+         patch.object(X.MV.MarketValueStore, 'load', lambda path: object()), patch.object(X.K, 'shard_files', lambda path: []):
+        proof = S.loader_equivalence(tmp_path, spec)
+    assert proof['staticSourcesExcluded'] == ['benchmark/source', 'price/source'] and proof['datedPanels'] == 2
+    assert proof['tickers'] == 2 and proof['datedRows'] == 2
+    # source_files() (input identity) still selects every price/ and benchmark/ replay object, static lineage included.
+    import inspect
+    assert 'name.startswith(("price/", "benchmark/"))' in inspect.getsource(X.source_files)
+
+
+def test_the_correction_still_rejects_conflicts_and_malformed_dated_rows(tmp_path):
+    spec, objects = real_shaped_world(tmp_path)
+    objects['p1'].append({'ticker': '000001.KS', 'date': '2020-01-03', 'Close': 2., 'High': 1., 'Low': 1., 'Open': 1., 'Volume': 1})
+    with pytest.raises(ValueError, match='CONFLICTING_REPLAY_PRICE_RECORD'):
+        run_loader(tmp_path, spec, objects)
+    objects['p1'].pop()
+    del objects['p1'][0]['date']  # a DATED panel row without a date is still malformed evidence, never skipped
     with pytest.raises(KeyError, match='date'):
         run_loader(tmp_path, spec, objects)
 
 
-def test_dated_panels_only_applies_the_repository_predicate_and_loads_every_dated_panel(tmp_path):
-    spec, objects = real_shaped_world(tmp_path)
-    S.SKIPPED_STATIC_SOURCES.clear()
-    with S.dated_panels_only():
-        *_, prices = run_loader(tmp_path, spec, objects)
-    assert sorted(prices) == ['000001.KS', '069500.KS']
-    assert len(prices['000001.KS']) == 1 and len(prices['069500.KS']) == 1
-    assert sorted(S.SKIPPED_STATIC_SOURCES) == sorted(RI.STATIC_SOURCES)
-    assert RI.is_price_panel('price/2020-01') and not RI.is_price_panel('price/source') and not RI.is_price_panel('benchmark/source')
+def test_the_runtime_shim_is_gone():
+    assert not hasattr(S, 'dated_panels_only') and not hasattr(S, 'SKIPPED_STATIC_SOURCES')
 
 
-def test_the_adaptation_never_dates_defaults_or_drops_a_dated_row_and_still_rejects_conflicts(tmp_path):
-    spec, objects = real_shaped_world(tmp_path)
-    objects['p1'].append({'ticker': '000001.KS', 'date': '2020-01-03', 'Close': 2., 'High': 1., 'Low': 1., 'Open': 1., 'Volume': 1})
-    with S.dated_panels_only(), pytest.raises(ValueError, match='CONFLICTING_REPLAY_PRICE_RECORD'):
-        run_loader(tmp_path, spec, objects)
-    objects['p1'].pop()
-    del objects['p1'][0]['date']  # a DATED panel row without a date is still malformed evidence, not skipped
-    with S.dated_panels_only(), pytest.raises(KeyError, match='date'):
-        run_loader(tmp_path, spec, objects)
+def gate_frame(rows):
+    frame = pd.DataFrame(rows)
+    return frame
+
+
+def test_ocf_improvement_coverage_gate_starts_in_2018_and_nothing_else_moved():
+    spec = S.frozen_spec()
+    assert spec['gates']['featureCoverageStartYear'] == {'ocfImprovementToAssets': 2018}
+    assert spec['gates']['featureOverrides'] == {'ocfImprovementToAssets': .2} and spec['gates']['coreFamilyFloor'] == .2
+    assert spec['gates']['firstCoverageDate'] == '2017-01-01' and spec['gates']['featureFloors']['CATALYST'] == .8
+
+    def bundle(low_year, low_feature):
+        dates = {'2017': '2017-06-02', '2018': '2018-06-01'}
+        rows = []
+        for year, date in dates.items():
+            for i in range(10):
+                row = {n: 1. for n in S.F.RAW_FEATURES}
+                if year == low_year and i >= 1:
+                    row[low_feature] = np.nan          # 10% observed, below every floor
+                row.update(date=date, ticker=f'{i:06d}.KS', accountingProvenance={'availableFrom': '2016-01-01'},
+                           marketValuePresent=True, tradable=True)
+                rows.append(row)
+        return {'features': pd.DataFrame(rows), 'schedule': list(dates.values()), 'overlay': {d: {'status': 'READY'} for d in dates.values()}}
+    def reasons(low_year, feature):
+        with patch.object(X.P, 'eligible', return_value=True):
+            return set(X.pre_label_gates(bundle(low_year, feature), spec, X.Counters())['reasons'])
+    assert 'FEATURE_COVERAGE:2017:ocfImprovementToAssets' not in reasons('2017', 'ocfImprovementToAssets')   # warm-up year
+    assert 'FEATURE_COVERAGE:2018:ocfImprovementToAssets' in reasons('2018', 'ocfImprovementToAssets')       # 20% floor still enforced
+    assert 'FEATURE_COVERAGE:2017:relative126' in reasons('2017', 'relative126')                              # other gates unchanged
+    assert 'FEATURE_COVERAGE:2017:momentum121' in reasons('2017', 'momentum121')
+
+
+def test_the_resealed_spec_verifies_records_the_correction_and_changes_nothing_else():
+    spec, sha = X.load_spec()
+    assert sha == S.SPEC_SHA and S.DIAGNOSTIC_SHA == spec['diagnostics']['sha256']
+    history = spec['correctionHistory'][0]
+    assert history['kind'].startswith('PRE_OUTCOME_LINEAGE') and 'NOT_PERFORMANCE_TUNING' in history['kind']
+    assert [c['id'] for c in history['corrections']] == ['SEALED_LOADER_DATED_PANELS', 'OCF_IMPROVEMENT_STRUCTURAL_WARMUP']
+    assert history['previousSpecSha256'] == 'bda5ade60fab095d629dd542fac89c6fded3949c52b98e860e5f6ce677b1ad0c'
+    assert spec['oneShot']['authorizationExists'] is False
 
 
 def completed(root, cache='c' * 64):

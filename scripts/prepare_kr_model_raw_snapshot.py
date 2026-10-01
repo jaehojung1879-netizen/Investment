@@ -43,7 +43,8 @@ def no_network(*args, **kwargs):
     raise RuntimeError("NETWORK_ACQUISITION_FORBIDDEN_IN_REPLAY")
 
 
-def collect_and_gate(directory, *, root=ROOT, key=None, fetch=S.call, pace=.4, replay=False, expected_cache_sha256=None):
+def collect_and_gate(directory, *, root=ROOT, key=None, fetch=S.call, pace=.4, replay=False, expected_cache_sha256=None,
+                     expected_input_identity=None):
     spec = S.frozen_spec(root)
     states = boundary(root)
     base = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=root, text=True).strip()
@@ -64,6 +65,10 @@ def collect_and_gate(directory, *, root=ROOT, key=None, fetch=S.call, pace=.4, r
         if acquisition["complete"]:
             S.materialize_inherited(directory, spec, root)
             snapshot = S.freeze_snapshot(directory, spec)
+            if expected_input_identity and snapshot["inputIdentity"]["sha256"] != expected_input_identity:
+                raise ValueError("INPUT_IDENTITY_CHANGED_BY_CORRECTION")
+            if replay:
+                output["loaderEquivalence"] = S.loader_equivalence(directory, spec)
             output.update(componentHashStatus="IMMUTABLE_COMPLETE_RAW_SNAPSHOT", rawSnapshotSha256=snapshot["sha256"], inputIdentitySha256=snapshot["inputIdentity"]["sha256"],
                           componentHashes={p:m["sha256"] for p,m in snapshot["components"].items()})
             report = S.gates_only(directory, root=root)
@@ -94,10 +99,12 @@ def main():
     parser.add_argument("--output", type=Path, default=Path("readiness.json"))
     parser.add_argument("--mode", choices=("collect", "replay", "verify", "gates-only"), default="collect")
     parser.add_argument("--expected-cache-sha256", default=None)
+    parser.add_argument("--expected-input-identity", default=None)
     args = parser.parse_args()
     if args.mode == "replay":
         result = collect_and_gate(args.directory, key=None, fetch=no_network, replay=True,
-                                  expected_cache_sha256=args.expected_cache_sha256)
+                                  expected_cache_sha256=args.expected_cache_sha256,
+                                  expected_input_identity=args.expected_input_identity)
     elif args.mode == "collect":
         result = collect_and_gate(args.directory, key=os.environ.get("KRX_API_KEY"))
     else:
@@ -114,6 +121,7 @@ def main():
     if isinstance(result.get("annualCoreFamilyCoverage"), dict):
         for year, row in sorted(result["annualCoreFamilyCoverage"].items()):
             print("coverage", year, row["pitUniverseDenominator"], {n: round(v["share"], 4) for n, v in row["families"].items()})
+    print("loaderEquivalence", json.dumps(result.get("loaderEquivalence"), sort_keys=True))
     print("snapshot", result.get("rawSnapshotSha256"), "identity", result.get("inputIdentitySha256"),
           "components", len(result.get("componentHashes", {})))
     return 0 if result["status"] in ("READY", "VERIFIED") else 2

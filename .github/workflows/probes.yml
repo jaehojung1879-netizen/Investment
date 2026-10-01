@@ -291,7 +291,8 @@ jobs:
       - name: Immutable snapshot and frozen gates-only from the preserved acquisition
         run: |
           python scripts/prepare_kr_model_raw_snapshot.py --mode replay --directory raw-inputs --output readiness.json \
-            --expected-cache-sha256 3419d9d201f942b3c89be146b8f696679c8105a5f00d8adb0dd2c5a655a80037
+            --expected-cache-sha256 3419d9d201f942b3c89be146b8f696679c8105a5f00d8adb0dd2c5a655a80037 \
+            --expected-input-identity 233df37ed205cc6b48828121e711417ccf961301dc58aa252430b343db9666a7
       - name: Preserve readiness audit and snapshot manifest
         if: always()
         uses: actions/upload-artifact@v4

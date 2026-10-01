@@ -30,7 +30,7 @@ from scripts.collect_krx_universe_snapshots import call, DEFAULT_BASE, ENDPOINT,
 
 canonical, digest, file_hash = RI.canonical, X.digest, X.file_hash
 
-SPEC_SHA = "bda5ade60fab095d629dd542fac89c6fded3949c52b98e860e5f6ce677b1ad0c"
+SPEC_SHA = "057e4aed4cc2fb58a7771ac6f46d7c48a4e41638f446a4c2d1d1c4f36d1eac44"
 DIAGNOSTIC_SHA = "0fd3baf70d0fbe24e17a9ab2244ea6c3a4d8ac50c0af634a196fe3c3cb885f03"
 SCHEMA = "KR_MODEL_RAW_SNAPSHOT_V1"
 MANIFEST = "snapshot-manifest.json"
@@ -314,8 +314,7 @@ def freeze_snapshot(directory, spec):
     if acquisition["cache"] != summary:
         raise ValueError("KRX_ACQUISITION_CACHE_CHANGED")
     # Reuse exact frozen accounting/universe/replay source validators before seal.
-    with dated_panels_only():
-        X.load_sources(root, spec)
+    X.load_sources(root, spec)
     files = {str(p.relative_to(root)): _component(p, root) for p in _raw_files(root)}
     document = {"schema": SCHEMA, "studyId": X.STUDY, "specSha256": SPEC_SHA, "diagnosticSpecSha256": DIAGNOSTIC_SHA,
                 "sourceCommits": {"universeAndReplay": spec["inputs"]["universeSourceCommit"],
@@ -349,30 +348,6 @@ def verify_snapshot(directory):
     return document
 
 
-SKIPPED_STATIC_SOURCES = []
-
-
-@contextmanager
-def dated_panels_only():
-    """Make the sealed loader read only DATED price/benchmark panels.
-
-    The pinned replay manifest also lists `price/source` and `benchmark/source`: one-row lineage records with a
-    `ticker` and no `date`. The sealed `load_sources` selects components by prefix, so it reads them as price rows and
-    dies with KeyError('date') (first seen in run 36844599518). `replay_inputs.is_price_panel` is this repository's own
-    predicate for the distinction (it fixed the same defect for replay-v10). The sealed file cannot be edited without
-    breaking its closure hash, so the adaptation is applied at runtime and recorded; nothing is dated, defaulted or
-    dropped from a panel."""
-    original = RI.InputStore.load_component
-    def load_component(self, name, manifest=None):
-        if name.startswith(("price/", "benchmark/")) and not RI.is_price_panel(name):
-            if name not in SKIPPED_STATIC_SOURCES:
-                SKIPPED_STATIC_SOURCES.append(name)
-            return []
-        return original(self, name, manifest)
-    with patch.object(RI.InputStore, "load_component", load_component):
-        yield
-
-
 @contextmanager
 def outcome_firewall():
     """Runtime deny-list at all frozen outcome/authorization boundaries."""
@@ -387,6 +362,36 @@ def outcome_firewall():
         stack.enter_context(patch.object(X.M.HistGradientBoostingRegressor, "fit", forbidden))
         stack.enter_context(patch.object(X.M.FamilyTransformer, "fit", forbidden))
         yield
+
+
+def loader_equivalence(directory, spec):
+    """Prove outcome-blind that the corrected SEALED loader reads exactly the dated price/benchmark panels.
+
+    Independent reference: iterate the manifest's components, split them by whether every row carries a date, and compare
+    the sealed loader's per-ticker date sets and row counts. No return, label or model quantity is computed."""
+    root = Path(directory)
+    manifest = json.loads((root / "ledger/historical/replay-v16/inputs.json").read_text())
+    store = RI.InputStore(root / "ledger", "replay-v16", manifest["dataVersion"])
+    dated, static, expected = [], [], {}
+    for name in sorted(manifest["components"]):
+        if not name.startswith(("price/", "benchmark/")):
+            continue
+        rows = store.load_component(name, manifest)
+        if rows and all("date" in r for r in rows):
+            dated.append(name)
+            for r in rows:
+                if str(r.get("ticker", "")).endswith(".KS"):
+                    expected.setdefault(r["ticker"], set()).add(r["date"])
+        else:
+            static.append(name)
+    if sorted(static) != sorted(RI.STATIC_SOURCES) or any(not RI.is_price_panel(n) for n in dated) or any(RI.is_price_panel(n) for n in static):
+        raise ValueError("DATED_PANEL_PREDICATE_DISAGREES_WITH_MANIFEST_STRUCTURE")
+    *_, prices = X.load_sources(root, spec)
+    actual = {t: {str(d.date()) for d in frame.index} for t, frame in prices.items()}
+    if actual != expected:
+        raise ValueError("SEALED_LOADER_PANELS_DIFFER_FROM_DATED_COMPONENT_ROWS")
+    return {"datedPanels": len(dated), "staticSourcesExcluded": sorted(static), "tickers": len(actual),
+            "datedRows": sum(len(v) for v in actual.values()), "panelDigest": digest({t: sorted(v) for t, v in sorted(actual.items())})}
 
 
 def annual_coverage(bundle, spec):
@@ -421,15 +426,13 @@ def gates_only(directory, *, root=X.ROOT):
             bundle = original_prepare(*args)
             prepared.append(bundle)
             return bundle
-        with patch.object(X, "prepare", prepare), dated_panels_only():
+        with patch.object(X, "prepare", prepare):
             report = run("gates-only", input_root=directory, root=root)
         report["annualCoreFamilyCoverage"] = annual_coverage(prepared[0], frozen_spec(root)) if prepared else "NOT_MEASURED"
     if report["counters"] != asdict(X.Counters()):
         raise RuntimeError("NONZERO_OUTCOME_COUNTERS")
     if verify_snapshot(directory) != snapshot:
         raise ValueError("RAW_SNAPSHOT_CHANGED_DURING_GATES")
-    report["loaderAdaptation"] = {"name": "dated_panels_only", "skippedStaticSources": sorted(SKIPPED_STATIC_SOURCES),
-                                  "sealedLoaderBytesChanged": False, "scope": "READINESS_ONLY_NOT_THE_SEALED_EXECUTION_PATH"}
     report["rawSnapshotSha256"] = snapshot["sha256"]
     report["readiness"] = "READY_FOR_SEPARATE_EXECUTION_AUTHORIZATION" if report["status"] == "READY" else report["status"]
     report["executionAuthorizationCreated"] = False

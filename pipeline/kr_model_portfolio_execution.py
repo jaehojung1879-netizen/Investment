@@ -156,7 +156,9 @@ def load_sources(input_root, spec):
     store = RI.InputStore(root / "ledger", "replay-v16", manifest["dataVersion"])
     prices = {}
     for component in sorted(manifest["components"]):
-        if not component.startswith(("price/", "benchmark/")):
+        # Dated panels only. `price/source` and `benchmark/source` are one-row lineage records with no `date`
+        # (pre-execution correction 1; the identity logic in `source_files` is deliberately unchanged).
+        if not RI.is_price_panel(component):
             continue
         for row in store.load_component(component, manifest):
             ticker = row.get("ticker")
@@ -206,6 +208,7 @@ def pre_label_gates(bundle, spec, counters):
     if set(frame.date) != set(bundle["schedule"]):
         reasons.append("MISSING_SCHEDULED_SIGNAL_DATE")
     gate_rows = frame.loc[frame.date >= spec["gates"]["firstCoverageDate"]]
+    warmup = spec["gates"].get("featureCoverageStartYear", {})
     for year, group in gate_rows.groupby(gate_rows.date.str[:4]):
         measured = {}
         for family, names in F.FAMILIES.items():
@@ -213,7 +216,9 @@ def pre_label_gates(bundle, spec, counters):
                 rate = float(pd.to_numeric(group[name], errors="coerce").replace([np.inf, -np.inf], np.nan).notna().mean())
                 measured[name] = rate
                 floor = spec["gates"]["featureOverrides"].get(name, spec["gates"]["featureFloors"][family])
-                if rate < floor:
+                # Structural warm-up (pre-execution correction 2): the rate is still measured and reported, the floor is
+                # simply not enforced before this feature's own start year. The floor value itself never changes.
+                if rate < floor and int(year) >= warmup.get(name, 0):
                     reasons.append("FEATURE_COVERAGE:" + year + ":" + name)
         for name in ("marketValuePresent", "tradable"):
             measured[name] = float(group[name].mean())

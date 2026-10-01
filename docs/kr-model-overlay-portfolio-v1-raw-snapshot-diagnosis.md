@@ -1,4 +1,12 @@
-# kr-model-overlay-portfolio-v1 — raw snapshot gate diagnosis and sealed-machine correction plan
+# kr-model-overlay-portfolio-v1 — raw snapshot gate diagnosis and sealed-machine correction
+
+> **Update (pre-execution reseal, same PR).** The owner accepted this diagnosis and the two corrections below were made once, before any outcome:
+> (1) the sealed loader now selects dated panels with `replay_inputs.is_price_panel`; (2) the `ocfImprovementToAssets` coverage gate begins in calendar
+> year 2018 (`gates.featureCoverageStartYear`), floor unchanged at 0.20. This is a pre-outcome lineage correction, not performance-driven tuning: it was
+> derived from accounting chronology alone with all six outcome counters at 0, and 2017 observations stay available to the model under the existing
+> missing-value/missing-indicator semantics. The primary spec was resealed (previous `bda5ade6…ad0c`; new `057e4aed4cc2fb58a7771ac6f46d7c48a4e41638f446a4c2d1d1c4f36d1eac44`) with a `correctionHistory`
+> entry; the diagnostic spec, raw KRX cache, accounting shards, PIT universe, raw component hashes and input identity are unchanged. The text below is the original
+> diagnosis; "plan only" in section 6 is superseded by this update.
 
 Outcome-blind. No label, target, price, KRX value, return, model or portfolio quantity was read; no KRX collection was
 performed; no frozen file was changed. All six outcome counters stay 0; no authorization, lock or permit exists.
