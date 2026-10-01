@@ -49,7 +49,9 @@ def test_require_authorization_accepts_exact_record_and_refuses_any_moved_identi
 
 
 def test_authorization_creates_no_result_lock_or_permit():
-    assert not (ROOT / X.RESULT_PATH).exists()
+    # State transition: the formal result is now sealed at RESULT_PATH (it was absent before execution).
+    # Everything below, the permit requirement and zero counters, is unchanged.
+    assert (ROOT / X.RESULT_PATH).is_file()
     counters = X.Counters()
     assert counters.zero()
     with pytest.raises(ValueError, match="WITHOUT_PERMIT"):

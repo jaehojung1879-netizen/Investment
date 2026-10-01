@@ -1,0 +1,83 @@
+{
+  "artifacts": {
+    "audit": {
+      "archiveBytes": 9085156,
+      "archiveSha256": "03827ed6a554cb4a13c6abedeba5dad0d89be863b6de61e86883845053e98af2",
+      "artifactId": 11194283481,
+      "files": [
+        "primary.json",
+        "primary.sha256.json",
+        "execution.started.json",
+        "gates-only.json",
+        "verify.json",
+        "diagnostics/summary.json"
+      ],
+      "name": "kr-model-overlay-portfolio-v1-audit-36926769546"
+    },
+    "obtainedBy": "Operator-supplied ZIPs (sandbox could not reach the Actions artifact blob host); both archive digests were recomputed and matched GitHub's digests; the primary files in both archives are byte-identical.",
+    "primary": {
+      "archiveBytes": 10896,
+      "archiveSha256": "dcf27477fbf425023432f973c5607e41ca70a751ec99e33b89fa6c3878e21c48",
+      "artifactId": 11194647226,
+      "files": [
+        "primary.json",
+        "primary.sha256.json",
+        "execution.started.json"
+      ],
+      "name": "kr-model-overlay-portfolio-v1-primary-36926769546"
+    }
+  },
+  "canonicalState": "DEVELOPMENT_REJECT",
+  "closure": "The committed result at docs/results/kr-model-overlay-portfolio-v1-result.json is the repository's own one-shot guard (RESULT_PATH); the runner and workflow refuse any further execution while it exists.",
+  "committedFiles": {
+    "diagnosticSummaryGz": {
+      "note": "gzip (mtime 0) only to stay well under GitHub's file limit; the uncompressed bytes are exactly the artifact's",
+      "path": "docs/results/kr-model-overlay-portfolio-v1-diagnostic-summary.json.gz",
+      "sha256": "d00effa09a05418ba6f11debd95a64d8c1fcbdf90de46b6aa0c820f49b3171ad",
+      "source": "diagnostics/summary.json",
+      "uncompressedBytes": 58463505,
+      "uncompressedSha256": "db9f2b7a7ab0aa7fda0e997187bbb84fd49e19fcbe83ae5ede535e23b6970be4"
+    },
+    "executionStarted": {
+      "path": "docs/results/kr-model-overlay-portfolio-v1-execution-started.json",
+      "sha256": "ba0747b92d30409c5c310fd844413e9e1c95c3924517716ac358194943df83d4",
+      "source": "execution.started.json"
+    },
+    "result": {
+      "path": "docs/results/kr-model-overlay-portfolio-v1-result.json",
+      "sha256": "2c16e4e121abdd771c103eadce8707484b4092eb501188823aa1ac0726ec272a",
+      "source": "primary.json"
+    },
+    "resultSidecar": {
+      "path": "docs/results/kr-model-overlay-portfolio-v1-result.sha256.json",
+      "sha256": "c1311e67bd88fff24c2701ba5dc03daf329415ba4be60b3510ef66b1c162722a",
+      "source": "primary.sha256.json"
+    }
+  },
+  "formalRun": {
+    "completedAt": "2026-10-01T21:18:53Z",
+    "conclusion": "success",
+    "event": "workflow_dispatch",
+    "executionCommitSha": "89decab393a09381b11cbd16db99e73cc32b2a64",
+    "headBranch": "main",
+    "job": "frozen-machine",
+    "runId": 36926769546,
+    "startedAt": "2026-10-01T21:09:43Z",
+    "workflow": "KR model overlay portfolio v1"
+  },
+  "inputSnapshotSha256": "233df37ed205cc6b48828121e711417ccf961301dc58aa252430b343db9666a7",
+  "notCommittedButHashed": {
+    "gates-only.json": "36a766810d2172cde5f777de882fda4a80d82fc7a2613a29b35abc47e1d93c49",
+    "verify.json": "fe9fe6cec9b8eb4c5a9c8b7e0179f8db19373143c85cb95b34a0e52d2ccbb93e"
+  },
+  "permanentExecutionLock": {
+    "neverUpdatedOrDeleted": true,
+    "points_to": "89decab393a09381b11cbd16db99e73cc32b2a64",
+    "ref": "refs/tags/kr-model-overlay-portfolio-v1-execution-lock-563b64ee6f4709a263719669f795ad55e7828e340f082358af1599453253b6fd"
+  },
+  "primaryResultFileSha256": "2c16e4e121abdd771c103eadce8707484b4092eb501188823aa1ac0726ec272a",
+  "purpose": "Archival provenance for the single formal DEVELOPMENT execution. Authored for the seal; contains no recomputed statistic.",
+  "scientificStatus": "DEVELOPMENT_ON_OUTCOME_EXPOSED_HISTORY",
+  "specSha256": "563b64ee6f4709a263719669f795ad55e7828e340f082358af1599453253b6fd",
+  "studyId": "kr-model-overlay-portfolio-v1"
+}
