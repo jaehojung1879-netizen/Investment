@@ -244,3 +244,112 @@ def test_network_failure_run_touches_no_outcome_and_keeps_all_six_counters_zero(
     assert report['counters'] == asdict(X.Counters()) == {k: 0 for k in report['counters']}
     assert report['rawSnapshotSha256'] is None and not (tmp_path / S.MANIFEST).exists()
     assert not report.get('executionAuthorizationCreated') and not report.get('executionPermitIssued')
+
+
+# --- post-acquisition: KeyError('date') on the static lineage components (run 36844599518) ---------------------
+from pipeline import replay_inputs as RI  # noqa: E402
+
+
+def real_shaped_world(tmp_path):
+    """The shape the pinned replay-v16 manifest really has: dated panels PLUS one-row `price/source`/`benchmark/source`."""
+    objects = {'p1': [{'ticker': '000001.KS', 'date': '2020-01-03', 'Close': 1., 'High': 1., 'Low': 1., 'Open': 1., 'Volume': 1}],
+               'b1': [{'ticker': '069500.KS', 'date': '2020-01-03', 'Close': 1.}],
+               'ps': [{'coverageShortfall': {}, 'crossCheck': {}, 'distributions': {}, 'region': 'KR', 'routes': [], 'source': 'S',
+                       'vendor': 'V'}],
+               'bs': [{'policy': 'P', 'region': 'KR', 'source': 'S', 'symbol': '^KS200', 'ticker': '069500.KS'}]}
+    comps = {'price/2020-01': ['p1'], 'benchmark/2020-01': ['b1'], 'price/source': ['ps'], 'benchmark/source': ['bs']}
+    manifest = {'dataVersion': 'd', 'components': comps}
+    manifest['sha256'] = RI.digest({k: v for k, v in manifest.items() if k != 'sha256'})
+    path = tmp_path / 'ledger/historical/replay-v16/inputs.json'
+    path.parent.mkdir(parents=True); path.write_text(json.dumps(manifest))
+    spec = {'inputs': {'accounting': {'gitBlobSha1': {}, 'contentSha256': X.K.content_sha256({})}, 'universeBlobs': {},
+                       'replayManifestSha256': manifest['sha256']}}
+    (tmp_path / 'market').mkdir()
+    return spec, objects
+
+
+def run_loader(tmp_path, spec, objects):
+    with patch.object(RI.InputStore, '_read', lambda self, ref: objects[ref]), \
+         patch.object(X.MV.MarketValueStore, 'load', lambda path: object()), patch.object(X.K, 'shard_files', lambda path: []):
+        return X.load_sources(tmp_path, spec)
+
+
+def test_the_sealed_loader_reads_the_static_lineage_as_price_rows_and_dies_with_the_observed_keyerror(tmp_path):
+    spec, objects = real_shaped_world(tmp_path)
+    # Not a hypothetical: this is the unchanged sealed loader on the manifest shape the real replay-v16 inputs have.
+    # The static component is a single row with `ticker` ending .KS and no `date`; the dedup loop indexes row["date"].
+    with pytest.raises(KeyError, match='date'):
+        run_loader(tmp_path, spec, objects)
+
+
+def test_dated_panels_only_applies_the_repository_predicate_and_loads_every_dated_panel(tmp_path):
+    spec, objects = real_shaped_world(tmp_path)
+    S.SKIPPED_STATIC_SOURCES.clear()
+    with S.dated_panels_only():
+        *_, prices = run_loader(tmp_path, spec, objects)
+    assert sorted(prices) == ['000001.KS', '069500.KS']
+    assert len(prices['000001.KS']) == 1 and len(prices['069500.KS']) == 1
+    assert sorted(S.SKIPPED_STATIC_SOURCES) == sorted(RI.STATIC_SOURCES)
+    assert RI.is_price_panel('price/2020-01') and not RI.is_price_panel('price/source') and not RI.is_price_panel('benchmark/source')
+
+
+def test_the_adaptation_never_dates_defaults_or_drops_a_dated_row_and_still_rejects_conflicts(tmp_path):
+    spec, objects = real_shaped_world(tmp_path)
+    objects['p1'].append({'ticker': '000001.KS', 'date': '2020-01-03', 'Close': 2., 'High': 1., 'Low': 1., 'Open': 1., 'Volume': 1})
+    with S.dated_panels_only(), pytest.raises(ValueError, match='CONFLICTING_REPLAY_PRICE_RECORD'):
+        run_loader(tmp_path, spec, objects)
+    objects['p1'].pop()
+    del objects['p1'][0]['date']  # a DATED panel row without a date is still malformed evidence, not skipped
+    with S.dated_panels_only(), pytest.raises(KeyError, match='date'):
+        run_loader(tmp_path, spec, objects)
+
+
+def completed(root, cache='c' * 64):
+    X.atomic_write(root / 'acquisition.json', {'status': 'SERVED', 'complete': True, 'missingDates': [], 'requiredDates': 1,
+                                               'cache': {'sha256': cache}})
+
+
+def test_replay_never_contacts_the_source_and_only_accepts_the_completed_acquisition(tmp_path, monkeypatch):
+    monkeypatch.setattr(CLI, 'boundary', lambda root: {'permanentLockExists': False})
+    monkeypatch.setattr(S, 'materialize_universe', lambda *args: ['000001.KS'])
+    monkeypatch.setattr(S, 'materialize_inherited', lambda *args: None)
+    monkeypatch.setattr(S, 'required_dates', lambda spec: [DATE])
+    monkeypatch.setattr(S, 'collect_official', lambda *a, **k: (_ for _ in ()).throw(AssertionError('must not collect')))
+    monkeypatch.setattr('urllib.request.urlopen', lambda *a, **k: (_ for _ in ()).throw(AssertionError('network')))
+    completed(tmp_path)
+    frozen = {}
+    def freeze(directory, spec):
+        frozen['hit'] = True
+        return {'sha256': 'a' * 64, 'inputIdentity': {'sha256': 'b' * 64}, 'components': {}}
+    monkeypatch.setattr(S, 'freeze_snapshot', freeze)
+    monkeypatch.setattr(S, 'gates_only', lambda directory, root=None: {'status': 'DATA_INSUFFICIENT', 'counters': asdict(X.Counters()),
+                                                                       'gates': {'reasons': ['X']}})
+    with S.outcome_firewall():
+        report = CLI.collect_and_gate(tmp_path, key=None, fetch=CLI.no_network, replay=True, expected_cache_sha256='c' * 64)
+    assert frozen['hit'] and report['acquisitionSource'].startswith('REPLAY_OF_PRESERVED_ARTIFACT')
+    assert report['counters'] == asdict(X.Counters()) == {k: 0 for k in report['counters']}
+    assert not report.get('executionAuthorizationCreated') and not report.get('executionPermitIssued')
+    wrong = CLI.collect_and_gate(tmp_path, key=None, fetch=CLI.no_network, replay=True, expected_cache_sha256='d' * 64)
+    assert wrong['status'] == 'INFRASTRUCTURE_ERROR' and 'NOT_THE_COMPLETED_ACQUISITION' in wrong['error']
+    with pytest.raises(RuntimeError, match='FORBIDDEN_IN_REPLAY'):
+        CLI.no_network()
+
+
+def test_a_post_acquisition_crash_is_reported_as_infrastructure_error_not_an_uncaught_traceback(tmp_path, monkeypatch):
+    monkeypatch.setattr(CLI, 'boundary', lambda root: {'permanentLockExists': False})
+    monkeypatch.setattr(S, 'materialize_universe', lambda *args: ['000001.KS'])
+    monkeypatch.setattr(S, 'materialize_inherited', lambda *args: None)
+    monkeypatch.setattr(S, 'required_dates', lambda spec: [DATE])
+    completed(tmp_path)
+    monkeypatch.setattr(S, 'freeze_snapshot', lambda *a: {}['date'])
+    report = CLI.collect_and_gate(tmp_path, key=None, fetch=CLI.no_network, replay=True)
+    assert report['status'] == 'INFRASTRUCTURE_ERROR' and report['errorType'] == 'KeyError'
+    assert report['counters'] == asdict(X.Counters()) and report['rawSnapshotSha256'] is None
+
+
+def test_the_workflow_cannot_start_another_krx_acquisition():
+    text = (S.X.ROOT / '.github/workflows/probes.yml').read_text()
+    job = text[text.index('  kr-model-raw-replay:'):]
+    assert 'kr-model-raw-readiness' not in text and 'KRX_API_KEY' not in job and '--mode replay' in job
+    assert '--mode collect' not in text and 'run-id: 36844599518' in job and 'kr-model-raw-inputs-36844599518' in job
+    assert '3419d9d201f942b3c89be146b8f696679c8105a5f00d8adb0dd2c5a655a80037' in job

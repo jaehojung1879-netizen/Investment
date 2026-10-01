@@ -314,7 +314,8 @@ def freeze_snapshot(directory, spec):
     if acquisition["cache"] != summary:
         raise ValueError("KRX_ACQUISITION_CACHE_CHANGED")
     # Reuse exact frozen accounting/universe/replay source validators before seal.
-    X.load_sources(root, spec)
+    with dated_panels_only():
+        X.load_sources(root, spec)
     files = {str(p.relative_to(root)): _component(p, root) for p in _raw_files(root)}
     document = {"schema": SCHEMA, "studyId": X.STUDY, "specSha256": SPEC_SHA, "diagnosticSpecSha256": DIAGNOSTIC_SHA,
                 "sourceCommits": {"universeAndReplay": spec["inputs"]["universeSourceCommit"],
@@ -346,6 +347,30 @@ def verify_snapshot(directory):
     if X.input_identity(root) != document["inputIdentity"]:
         raise ValueError("RAW_SNAPSHOT_INPUT_IDENTITY_CHANGED")
     return document
+
+
+SKIPPED_STATIC_SOURCES = []
+
+
+@contextmanager
+def dated_panels_only():
+    """Make the sealed loader read only DATED price/benchmark panels.
+
+    The pinned replay manifest also lists `price/source` and `benchmark/source`: one-row lineage records with a
+    `ticker` and no `date`. The sealed `load_sources` selects components by prefix, so it reads them as price rows and
+    dies with KeyError('date') (first seen in run 36844599518). `replay_inputs.is_price_panel` is this repository's own
+    predicate for the distinction (it fixed the same defect for replay-v10). The sealed file cannot be edited without
+    breaking its closure hash, so the adaptation is applied at runtime and recorded; nothing is dated, defaulted or
+    dropped from a panel."""
+    original = RI.InputStore.load_component
+    def load_component(self, name, manifest=None):
+        if name.startswith(("price/", "benchmark/")) and not RI.is_price_panel(name):
+            if name not in SKIPPED_STATIC_SOURCES:
+                SKIPPED_STATIC_SOURCES.append(name)
+            return []
+        return original(self, name, manifest)
+    with patch.object(RI.InputStore, "load_component", load_component):
+        yield
 
 
 @contextmanager
@@ -396,13 +421,15 @@ def gates_only(directory, *, root=X.ROOT):
             bundle = original_prepare(*args)
             prepared.append(bundle)
             return bundle
-        with patch.object(X, "prepare", prepare):
+        with patch.object(X, "prepare", prepare), dated_panels_only():
             report = run("gates-only", input_root=directory, root=root)
         report["annualCoreFamilyCoverage"] = annual_coverage(prepared[0], frozen_spec(root)) if prepared else "NOT_MEASURED"
     if report["counters"] != asdict(X.Counters()):
         raise RuntimeError("NONZERO_OUTCOME_COUNTERS")
     if verify_snapshot(directory) != snapshot:
         raise ValueError("RAW_SNAPSHOT_CHANGED_DURING_GATES")
+    report["loaderAdaptation"] = {"name": "dated_panels_only", "skippedStaticSources": sorted(SKIPPED_STATIC_SOURCES),
+                                  "sealedLoaderBytesChanged": False, "scope": "READINESS_ONLY_NOT_THE_SEALED_EXECUTION_PATH"}
     report["rawSnapshotSha256"] = snapshot["sha256"]
     report["readiness"] = "READY_FOR_SEPARATE_EXECUTION_AUTHORIZATION" if report["status"] == "READY" else report["status"]
     report["executionAuthorizationCreated"] = False

@@ -250,15 +250,20 @@ jobs:
             echo '```'
           } >> "$GITHUB_STEP_SUMMARY"
 
-  kr-model-raw-readiness:
-    # Explicitly requested collection for this one same-repository Draft PR.
-    # No new collector workflow/menu, no labels, no model and no contents writes.
+  kr-model-raw-replay:
+    # Post-acquisition processing of the ONE completed official KRX acquisition (run 36844599518, artifact
+    # 11157875265). It never calls KRX: no KRX credential is exposed, the replay mode has no network path, and the
+    # collection job that this replaces is gone, so a push to this PR cannot start another acquisition.
+    # No labels, no model and no contents writes.
     if: >-
       github.event_name == 'pull_request' &&
       github.event.pull_request.head.repo.full_name == github.repository &&
       github.head_ref == 'data/kr-model-overlay-raw-snapshot'
     runs-on: ubuntu-latest
-    timeout-minutes: 120
+    timeout-minutes: 60
+    permissions:
+      contents: read
+      actions: read
     env:
       OMP_NUM_THREADS: '1'
       OPENBLAS_NUM_THREADS: '1'
@@ -276,29 +281,26 @@ jobs:
       - name: Fetch exact pinned raw source commits only
         run: |
           git fetch --no-tags --depth=1 --filter=blob:none origin 4ea107ed0cde289f0a049a65ff13d2441a786710 fb6e83743fd8cdba647d1522a4645b662a9d5647
-      - name: Official KRX collection, immutable snapshot and frozen gates-only
-        env:
-          KRX_API_KEY: ${{ secrets.KRX_API_KEY }}
+      - name: Download the preserved completed acquisition (no KRX contact)
+        uses: actions/download-artifact@v4
+        with:
+          name: kr-model-raw-inputs-36844599518
+          run-id: 36844599518
+          github-token: ${{ github.token }}
+          path: raw-inputs
+      - name: Immutable snapshot and frozen gates-only from the preserved acquisition
         run: |
-          python scripts/prepare_kr_model_raw_snapshot.py --directory raw-inputs --output readiness.json
-      - name: Preserve acquisition/readiness audit even on source refusal
+          python scripts/prepare_kr_model_raw_snapshot.py --mode replay --directory raw-inputs --output readiness.json \
+            --expected-cache-sha256 3419d9d201f942b3c89be146b8f696679c8105a5f00d8adb0dd2c5a655a80037
+      - name: Preserve readiness audit and snapshot manifest
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: kr-model-raw-readiness-${{ github.run_id }}
+          name: kr-model-raw-replay-${{ github.run_id }}
           path: |
             readiness.json
             readiness.json.sha256
-            raw-inputs/acquisition.json
             raw-inputs/snapshot-manifest.json
             raw-inputs/snapshot-manifest.sha256
-          if-no-files-found: warn
-          retention-days: 90
-      - name: Preserve immutable raw bytes or clearly partial acquisition evidence
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: kr-model-raw-inputs-${{ github.run_id }}
-          path: raw-inputs
           if-no-files-found: warn
           retention-days: 90
