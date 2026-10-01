@@ -4,7 +4,7 @@ Starting main `449508ad18ef6f4a7fce3678c0f593b3237dbab3`; branch `research/kr-mo
 
 ## Specification and hashes
 
-Canonical preregistration SHA-256: `057e4aed4cc2fb58a7771ac6f46d7c48a4e41638f446a4c2d1d1c4f36d1eac44` (resealed once, pre-execution, see `correctionHistory`; the first seal was `bda5ade60fab095d629dd542fac89c6fded3949c52b98e860e5f6ce677b1ad0c`).
+Canonical preregistration SHA-256: `563b64ee6f4709a263719669f795ad55e7828e340f082358af1599453253b6fd` (resealed twice, pre-execution, see `correctionHistory`; seals before it: `bda5ade60fab095d629dd542fac89c6fded3949c52b98e860e5f6ce677b1ad0c`, then `057e4aed4cc2fb58a7771ac6f46d7c48a4e41638f446a4c2d1d1c4f36d1eac44`; the second reseal is a test-only pre-authorization lifecycle correction).
 Diagnostic canonical SHA-256: `0fd3baf70d0fbe24e17a9ab2244ea6c3a4d8ac50c0af634a196fe3c3cb885f03`.
 
 Complete imported-code, workflow, dependency and frozen document hashes are in `research_specs/kr-model-overlay-portfolio-v1.json: dependencyHashes` (77 entries). Main new harness/module byte hashes:

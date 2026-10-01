@@ -30,7 +30,7 @@ from scripts.collect_krx_universe_snapshots import call, DEFAULT_BASE, ENDPOINT,
 
 canonical, digest, file_hash = RI.canonical, X.digest, X.file_hash
 
-SPEC_SHA = "057e4aed4cc2fb58a7771ac6f46d7c48a4e41638f446a4c2d1d1c4f36d1eac44"
+SPEC_SHA = "563b64ee6f4709a263719669f795ad55e7828e340f082358af1599453253b6fd"
 DIAGNOSTIC_SHA = "0fd3baf70d0fbe24e17a9ab2244ea6c3a4d8ac50c0af634a196fe3c3cb885f03"
 SCHEMA = "KR_MODEL_RAW_SNAPSHOT_V1"
 MANIFEST = "snapshot-manifest.json"

@@ -275,12 +275,17 @@ def test_gates_never_call_outcome_paths(monkeypatch):
     assert all(v==0 for v in report["counters"].values())
 
 
-def test_execute_refuses_before_prepare_or_label(monkeypatch):
+def test_execute_refuses_before_prepare_or_label(monkeypatch, tmp_path):
+    # Authorization-absent state is synthetic (empty temp root), never the real
+    # repository root: the real root legitimately gains the authorization file later.
+    frozen,sha=X.load_spec()
+    monkeypatch.setattr(X,"load_spec",lambda *a:(frozen,sha))
+    assert not (tmp_path/X.AUTH_PATH).exists()
     def bomb(*a,**k):
         raise AssertionError("source read before authorization")
     monkeypatch.setattr(X,"prepare",bomb)
     with pytest.raises(ValueError,match="EXECUTE_UNAUTHORIZED"):
-        CLI.run("execute")
+        CLI.run("execute",root=tmp_path)
     with pytest.raises(ValueError,match="WITHOUT_PERMIT"):
         X.build_labels(None,{},spec(),126,X.Counters())
     with pytest.raises(ValueError,match="WITHOUT_PERMIT"):
@@ -291,7 +296,6 @@ def test_frozen_closure_and_prior_identity():
     frozen,sha=X.load_spec()
     assert sha==(ROOT/X.SPEC_PATH).with_suffix(".sha256").read_text().strip()
     assert frozen["horizons"]==[126,252]
-    assert not (ROOT/X.AUTH_PATH).exists()
     assert not (ROOT/X.RESULT_PATH).exists()
     assert frozen["portfolio"]["singleNameCap"]==.3
     assert frozen["sectorStatus"]=="DEFERRED_BY_PIT_SECTOR_HISTORY"
