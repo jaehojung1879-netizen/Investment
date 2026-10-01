@@ -11,6 +11,46 @@
     ]
   },
   "benchmark": "069500.KS",
+  "correctionHistory": [
+    {
+      "corrections": [
+        {
+          "economicEffect": "none: the two static components never produced a priced row; no dated panel, row, value or date is added or removed",
+          "file": "pipeline/kr_model_portfolio_execution.py",
+          "fix": "panel selection uses replay_inputs.is_price_panel(component), the repository's canonical dated-panel predicate. source_files() (input identity) is unchanged, so the static lineage objects stay in the input identity.",
+          "id": "SEALED_LOADER_DATED_PANELS",
+          "issue": "load_sources selected replay components by prefix price/ or benchmark/, which also selects the dateless one-row lineage records price/source and benchmark/source and died with KeyError('date') on the first real replay-v16 snapshot."
+        },
+        {
+          "file": "pipeline/kr_model_portfolio_execution.py",
+          "fix": "the coverage gate for ocfImprovementToAssets begins in calendar year 2018. Its floor stays 0.20 and is unchanged from 2018 on; every other feature, family and market/liquidity gate keeps its existing start rule. 2017 coverage is still measured and reported.",
+          "gate": "gates.featureCoverageStartYear",
+          "id": "OCF_IMPROVEMENT_STRUCTURAL_WARMUP",
+          "issue": "ocfImprovementToAssets needs a same-stage prior-year TTM chain. Fiscal-2015 Q1/H1/Q3 original-XBRL records carry fsDiv=None and are withheld by the frozen basis rule, so quarter-stage observations cannot be generally available before 2018. 2017 reads 520/6120 = 8.50% (maximum the frozen rule can produce) against the 0.20 floor, knowable from accounting chronology alone.",
+          "unchanged": "0.20 floor, universe, feature definition, fsDiv basis rule, imputation and missing indicators, 2017 data remains available to training/model under existing missing-value semantics, study period, all outcome/model/portfolio rules"
+        }
+      ],
+      "evidence": {
+        "officialKrxAcquisition": "run 36844599518, SERVED, 3364/3364 dates, 733458 rows, 260 securities, cache sha256 3419d9d201f942b3c89be146b8f696679c8105a5f00d8adb0dd2c5a655a80037",
+        "outcomeAccess": "NONE: six outcome counters 0 throughout; no label, target, fit, prediction, model or portfolio quantity was read",
+        "replayAndDiagnosis": "docs/kr-model-overlay-portfolio-v1-raw-snapshot-diagnosis.md; scripts/diagnose_kr_ocf_improvement_lineage.py"
+      },
+      "kind": "PRE_OUTCOME_LINEAGE_AND_LOADER_CORRECTION_NOT_PERFORMANCE_TUNING",
+      "notAChange": [
+        "model features",
+        "hyperparameters",
+        "portfolio and overlay rules",
+        "thresholds other than the feature-specific start year",
+        "diagnostic spec",
+        "raw KRX cache",
+        "accounting shards",
+        "PIT universe",
+        "input identity"
+      ],
+      "previousSpecSha256": "bda5ade60fab095d629dd542fac89c6fded3949c52b98e860e5f6ce677b1ad0c",
+      "revision": "PRE_EXECUTION_CORRECTION_1"
+    }
+  ],
   "costStress": [
     2.0,
     3.0
@@ -61,7 +101,7 @@
     "pipeline/kr_market_risk_overlay.py": "983b3aab891a2af2f6d54b9b3d7ca29788651ba898b074da0506a40431ae4c07",
     "pipeline/kr_market_value.py": "49306b8d14c4e8d681ae5846802c2ae82fa5727bb7a8adf356fa313217103c5e",
     "pipeline/kr_model_overlay_portfolio.py": "b67495886aa63e10315d96ce8b30a023ee75adac6f5fec5a4fab7593b4f70343",
-    "pipeline/kr_model_portfolio_execution.py": "c07dce188bc319ffe716f0a8558b7ffc3a64446d90c7fa7891f7d7e087e641f9",
+    "pipeline/kr_model_portfolio_execution.py": "6128ba0af8bb517ac260a76a8b397e486a3225f206b706953dbf0390a5a7bb82",
     "pipeline/kr_portfolio_diagnostics.py": "9f28a5ddf49a58c95db36d3a573b19e56fe7c86f98ad2ed01d96e8c09e6b5c34",
     "pipeline/kr_repaired_accounting_snapshot.py": "b5b225e8a1d21b1516801c0ced1ef2164189867a457df1e0a51cd8ec95dd63ea",
     "pipeline/kr_value_quality_catalyst.py": "1bfd62d1437dd9b574f1ab635836e7d7e69651dbbbaeedf29af84a90de17bb28",
@@ -138,6 +178,9 @@
   "gates": {
     "coreFamilyFloor": 0.2,
     "denominator": "all PIT member name-dates by year; no missing member removal",
+    "featureCoverageStartYear": {
+      "ocfImprovementToAssets": 2018
+    },
     "featureFloors": {
       "CATALYST": 0.8,
       "QUALITY": 0.2,

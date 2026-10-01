@@ -21,6 +21,10 @@ name: Probes
 # jobs depend on is a probe that breaks them.
 
 on:
+  pull_request:
+    paths:
+      - 'pipeline/kr_model_raw_snapshot.py'
+      - 'scripts/prepare_kr_model_raw_snapshot.py'
   workflow_dispatch:
     inputs:
       probe:
@@ -59,7 +63,7 @@ jobs:
   # Every probe except the egress fan-out, which needs many runners and so
   # cannot share this shape.
   probe:
-    if: inputs.probe != 'sec-egress'
+    if: github.event_name == 'workflow_dispatch' && inputs.probe != 'sec-egress'
     runs-on: ubuntu-latest
     # The KR delisting measurement walks the whole Korean panel and is the
     # only one that needs hours; the rest finish in minutes.
@@ -245,3 +249,59 @@ jobs:
             tail -n 60 probe.log 2>/dev/null || echo '프로브 출력 없음'
             echo '```'
           } >> "$GITHUB_STEP_SUMMARY"
+
+  kr-model-raw-replay:
+    # Post-acquisition processing of the ONE completed official KRX acquisition (run 36844599518, artifact
+    # 11157875265). It never calls KRX: no KRX credential is exposed, the replay mode has no network path, and the
+    # collection job that this replaces is gone, so a push to this PR cannot start another acquisition.
+    # No labels, no model and no contents writes.
+    if: >-
+      github.event_name == 'pull_request' &&
+      github.event.pull_request.head.repo.full_name == github.repository &&
+      github.head_ref == 'data/kr-model-overlay-raw-snapshot'
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    permissions:
+      contents: read
+      actions: read
+    env:
+      OMP_NUM_THREADS: '1'
+      OPENBLAS_NUM_THREADS: '1'
+      MKL_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+          cache: pip
+      - run: pip install -r requirements.txt -r requirements-dev.txt
+      - name: Fetch exact pinned raw source commits only
+        run: |
+          git fetch --no-tags --depth=1 --filter=blob:none origin 4ea107ed0cde289f0a049a65ff13d2441a786710 fb6e83743fd8cdba647d1522a4645b662a9d5647
+      - name: Download the preserved completed acquisition (no KRX contact)
+        uses: actions/download-artifact@v4
+        with:
+          name: kr-model-raw-inputs-36844599518
+          run-id: 36844599518
+          github-token: ${{ github.token }}
+          path: raw-inputs
+      - name: Immutable snapshot and frozen gates-only from the preserved acquisition
+        run: |
+          python scripts/prepare_kr_model_raw_snapshot.py --mode replay --directory raw-inputs --output readiness.json \
+            --expected-cache-sha256 3419d9d201f942b3c89be146b8f696679c8105a5f00d8adb0dd2c5a655a80037 \
+            --expected-input-identity 233df37ed205cc6b48828121e711417ccf961301dc58aa252430b343db9666a7
+      - name: Preserve readiness audit and snapshot manifest
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: kr-model-raw-replay-${{ github.run_id }}
+          path: |
+            readiness.json
+            readiness.json.sha256
+            raw-inputs/snapshot-manifest.json
+            raw-inputs/snapshot-manifest.sha256
+          if-no-files-found: warn
+          retention-days: 90
