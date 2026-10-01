@@ -258,7 +258,7 @@ jobs:
     if: >-
       github.event_name == 'pull_request' &&
       github.event.pull_request.head.repo.full_name == github.repository &&
-      github.head_ref == 'data/kr-model-overlay-raw-snapshot'
+      github.head_ref == 'fix/kr-model-overlay-preauthorization-test-lifecycle'
     runs-on: ubuntu-latest
     timeout-minutes: 60
     permissions:

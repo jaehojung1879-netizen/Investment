@@ -49,6 +49,42 @@
       ],
       "previousSpecSha256": "bda5ade60fab095d629dd542fac89c6fded3949c52b98e860e5f6ce677b1ad0c",
       "revision": "PRE_EXECUTION_CORRECTION_1"
+    },
+    {
+      "corrections": [
+        {
+          "file": "tests/test_kr_model_overlay_portfolio_v1.py",
+          "fix": "test_execute_refuses_before_prepare_or_label proves EXECUTE_UNAUTHORIZED against an empty temp root; test_frozen_closure_and_prior_identity drops only the real-root authorization-absence assertion. Result/lock/permit/one-shot guards and WITHOUT_PERMIT refusals are unchanged.",
+          "id": "AUTH_ABSENCE_TESTED_ON_SYNTHETIC_ROOT"
+        }
+      ],
+      "evidence": {
+        "outcomeAccess": "NONE: test-only change; six outcome counters 0"
+      },
+      "issue": "Two pinned lifecycle tests asserted that the execution authorization file is permanently absent from the real repository root, so the one-shot authorization PR could never coexist with the sealed spec.",
+      "kind": "PRE_AUTHORIZATION_TEST_LIFECYCLE_CORRECTION",
+      "notAChange": [
+        "features",
+        "horizons",
+        "targets",
+        "benchmark",
+        "universe",
+        "accounting and market inputs",
+        "KRX bytes",
+        "coverage thresholds",
+        "2018 ocf warm-up",
+        "hyperparameters",
+        "portfolio rules",
+        "costs",
+        "liquidity",
+        "overlay",
+        "verdict semantics",
+        "diagnostic spec",
+        "one-shot ordering",
+        "input identity"
+      ],
+      "previousSpecSha256": "057e4aed4cc2fb58a7771ac6f46d7c48a4e41638f446a4c2d1d1c4f36d1eac44",
+      "revision": "PRE_EXECUTION_CORRECTION_2"
     }
   ],
   "costStress": [
@@ -132,7 +168,7 @@
     "tests/test_alpha_opportunity.py": "e268deece5b79257c188de954e3b417913b5653b03e0fbd8d324e2755e3449ec",
     "tests/test_alpha_opportunity_v2.py": "da59980766def19e1fee3d03ad0d470c6c9119e00e5597db4b085947095315fd",
     "tests/test_alpha_opportunity_v3.py": "e0820099439439aa86564bdfb14d6382fa651422eca9f509e1c1929f661abf91",
-    "tests/test_kr_model_overlay_portfolio_v1.py": "6490d9077bc77dbf2a50375003630834c3da463d632fdd96d3e0029ac56e931f"
+    "tests/test_kr_model_overlay_portfolio_v1.py": "77c11c361afec215be9619306dd82262829bc2e736f624e364c39e4f3151c3d3"
   },
   "developmentCutoff": "2026-09-14",
   "developmentState": {
