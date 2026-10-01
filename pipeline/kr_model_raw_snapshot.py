@@ -25,7 +25,7 @@ from . import kr_value_quality_catalyst as F
 from . import replay_calendar as RC
 from . import replay_inputs as RI
 from . import historical_store as HS
-from .collector_outcomes import classify_refusal
+from .collector_outcomes import NETWORK_ERROR, classify_refusal
 from scripts.collect_krx_universe_snapshots import call, DEFAULT_BASE, ENDPOINT, Refused
 
 canonical, digest, file_hash = RI.canonical, X.digest, X.file_hash
@@ -34,6 +34,10 @@ SPEC_SHA = "bda5ade60fab095d629dd542fac89c6fded3949c52b98e860e5f6ce677b1ad0c"
 DIAGNOSTIC_SHA = "0fd3baf70d0fbe24e17a9ab2244ea6c3a4d8ac50c0af634a196fe3c3cb885f03"
 SCHEMA = "KR_MODEL_RAW_SNAPSHOT_V1"
 MANIFEST = "snapshot-manifest.json"
+# Bounded, deterministic retry for TRANSIENT network failures only (an SSL handshake timeout ended the first
+# attempt at the 596th request). Same source, same request, same parse; 5 attempts, fixed waits, then fail closed.
+RETRY_ATTEMPTS = 5
+BACKOFF_SECONDS = (2, 5, 15, 45)
 
 
 def frozen_spec(root=X.ROOT):
@@ -192,7 +196,26 @@ def verify_cached_day(root, date, members):
         raise ValueError("KRX_NONDETERMINISTIC_SERIALIZATION")
 
 
-def collect_official(directory, dates, members, *, key, fetch=call, pace=.4, max_calls=None):
+def fetch_with_retry(fetch, params, key, *, report, retries=RETRY_ATTEMPTS, backoff=BACKOFF_SECONDS, sleep=time.sleep):
+    """Retry only failures `classify_refusal` calls NETWORK_ERROR; auth, schema and source refusals are never retried.
+
+    The identical request is repeated and its payload goes through the unchanged normalisation, so a recovered response
+    is as official as a first-attempt one. Exhaustion re-raises the last error, which stops the acquisition closed."""
+    for attempt in range(1, retries + 1):
+        report["requestAttempts"] += 1
+        try:
+            return fetch(DEFAULT_BASE, ENDPOINT, params, key)
+        except Refused as exc:
+            message = str(exc).replace(key, "[REDACTED]")
+            if classify_refusal(message) != NETWORK_ERROR or attempt == retries:
+                raise Refused(message + (" [attempts=%d]" % attempt if attempt > 1 else "")) from None
+            wait = backoff[min(attempt - 1, len(backoff) - 1)]
+            report["retryEvents"].append({"date": params["basDd"], "attempt": attempt, "waitSeconds": wait, "error": message})
+            sleep(wait)
+
+
+def collect_official(directory, dates, members, *, key, fetch=call, pace=.4, max_calls=None, retries=RETRY_ATTEMPTS,
+                     backoff=BACKOFF_SECONDS, sleep=time.sleep):
     """Preserve raw responses/provenance; resume only byte-verified first writes."""
     root = Path(directory)
     dates = sorted(set(dates))
@@ -201,7 +224,9 @@ def collect_official(directory, dates, members, *, key, fetch=call, pace=.4, max
               "method": "OFFICIAL_KRX_GET_AUTH_KEY", "requestedStart": min(dates) if dates else None,
               "requestedEnd": max(dates) if dates else None, "requiredDates": len(dates),
               "identifierSelection": "UNION_OF_PINNED_HISTORICAL_TOP120_MEMBERS_FOR_RAW_STORAGE_ONLY",
-              "requiredSecurityIds": sorted(members), "calls": 0, "status": "SERVED", "failure": None}
+              "requiredSecurityIds": sorted(members), "calls": 0, "requestAttempts": 0, "retryEvents": [],
+              "retryPolicy": {"attempts": retries, "backoffSeconds": list(backoff), "retried": "NETWORK_ERROR_ONLY"},
+              "status": "SERVED", "failure": None}
     if not key:
         report.update(status="AUTH_REQUIRED", failure="KRX_API_KEY_REQUIRED")
     else:
@@ -215,7 +240,8 @@ def collect_official(directory, dates, members, *, key, fetch=call, pace=.4, max
             acquired = datetime.now(timezone.utc).isoformat()
             try:
                 report["calls"] += 1
-                payload = fetch(DEFAULT_BASE, ENDPOINT, {"basDd": date.replace("-", "")}, key)
+                payload = fetch_with_retry(fetch, {"basDd": date.replace("-", "")}, key, report=report, retries=retries,
+                                         backoff=backoff, sleep=sleep)
                 raw = canonical(payload) + b"\n"
                 immutable_bytes(root / "sources/krx" / (date + ".json.gz"), gzip.compress(raw, mtime=0))
                 records, validation = normalize_official(payload, date)
