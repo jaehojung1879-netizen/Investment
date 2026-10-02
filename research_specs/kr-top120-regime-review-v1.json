@@ -1,0 +1,613 @@
+{
+  "benchmark": "069500.KS",
+  "benchmarks": {
+    "belowMinimum": "DATA_INSUFFICIENT: the observation has no leave-one-out value. A missing or unresolved peer is NEVER zero-filled.",
+    "leaveOneOutIsNewAndPostOutcomeExploratory": true,
+    "minimumPeers": 50,
+    "minimumPeersRationale": "Reuses the anatomy's existing decileMinimumNames = 50: outcome-independent and already frozen before any anatomy outcome.",
+    "peerUniverse": "the FULL PIT Top120 (never the reduced sensitivity universe)",
+    "subjectExcludedFromItsOwnBenchmark": true,
+    "variants": {
+      "ABSOLUTE_STOCK_RETURN": "stock adjusted-index return",
+      "KODEX200_RELATIVE_RETURN": "stock adjusted-index return minus 069500.KS adjusted-index return",
+      "TOP120_LEAVE_ONE_OUT_EQUAL_WEIGHT_RELATIVE_RETURN": "stock return of i minus the arithmetic mean return of all OTHER valid PIT Top120 securities for the same signal date / horizon / terminal treatment"
+    }
+  },
+  "boundary": {
+    "designedAfterOutcomes": true,
+    "knownPredecessorObservationsAreNotConfirmatory": [
+      "bookToMarketProxy H126 showed a positive historical association",
+      "relative126 showed a large positive D10-D1",
+      "logAdv60 looked positive overall but weak within market-cap strata",
+      "quality variables looked weak",
+      "extreme 2025-2026 winners exist",
+      "Samsung Electronics and SK Hynix are central market cases"
+    ],
+    "mayChooseABestFactor": false,
+    "mayClaimIndependentReplication": false,
+    "mayConfirmAFactor": false,
+    "mayProduceProductionWeights": false,
+    "mayRescueKrModelOverlayPortfolioV1": false,
+    "mayTuneThresholdsFromFavourableSlices": false,
+    "mayValidateAStrategy": false,
+    "passFailSemantics": "NONE",
+    "promotionSemantics": "NONE",
+    "purpose": "Decompose known observations by outcome-window period, signal-time market state and mega-cap membership. Nothing more."
+  },
+  "calendar": {
+    "featureStart": "2015-01-01",
+    "maturity": "Decided by the calendar alone before any price is read; an exit after the development cutoff is PENDING.",
+    "overlap": "Weekly signals overlap for H-1 sessions; the effective number of independent observations is about dates/(H/5).",
+    "signalDates": "pipeline.kr_model_overlay_portfolio.weekly_dates(featureStart, developmentCutoff): last KR session of each completed calendar week."
+  },
+  "dependencyHashes": {
+    ".github/workflows/kr-top120-regime-review-v1.yml": "2df9b21088bbc88f02cbf35ec5fb6cd1ef3b2d0de426a902ca5c5729aa89f5f7",
+    "docs/kr-top120-regime-review-v1-design.md": "991e4b567b5204fc78cd6cb425096976de0ae1a14d9b781f2f1a4c6578f516cf",
+    "docs/results/kr-factor-anatomy-v1-manifest.json": "3f8cdd9e5cf82b58f8526078c545b9ce8e116b3bf196e474e807a22a4cd59df9",
+    "docs/results/kr-factor-anatomy-v1-report.md": "2ffbb3458660c74fcbacd148cb2b8d7c7013ac7967978a6c8334b6af7b9f892e",
+    "docs/results/kr-factor-anatomy-v1-result.json": "8518ec8cae95d0a23e964aab147e20659f17437fcd6fec6cb7f64cfa2b98a9e7",
+    "docs/results/kr-factor-anatomy-v1-seal-provenance.json": "eeba9641810d60c539935d5542ca48c7ae6a48859d63be5292bbe5e88ce4c2fa",
+    "pipeline/__init__.py": "187da1ad9a148da44035f9cf25f7cb094c45afe53d3f445ba62392797972dede",
+    "pipeline/accounting_quality.py": "b65c54126ea45bc544d843d5f87b109e71ca7658a1d7a8f99cd435cdf9ea6ada",
+    "pipeline/alpha_inference_calibration_v1.py": "87a6990fd6fc5217824ee00205ee247abe88006a2445d41b5a6086709f551186",
+    "pipeline/alpha_inference_calibration_v3.py": "5afa9a03dbfb5343be522d282a1b2050cbbd01722dc7b8eae1e6e06b55c2bf13",
+    "pipeline/alpha_inference_calibration_v4.py": "024231e1adeeb4d29ea047d187eb7eb5478fd21c442991bd1c8963d6a38cd601",
+    "pipeline/alpha_inference_mc_decision.py": "6d131e20e2bcc212247a95fce2c5f733faa7f1624991b364d9fea96b4962f61e",
+    "pipeline/alpha_opportunity_features.py": "62bfd05894b0f448e2d588f9395fb616c9d114a74503c1f663e20a84dfe0976e",
+    "pipeline/alpha_opportunity_model.py": "998c0b50d713a5c89ce1850bbae1b112215507fe6a38d992d7f1de158476ce83",
+    "pipeline/alpha_opportunity_spec.py": "3d7150c2f62dbd8184ed2f3885828e93c1ba64d8ffe3695b0b5716641734c58e",
+    "pipeline/alpha_opportunity_v2_evaluation.py": "e6f8a6f299945da36b39767a2dc7c7748a9bfee497e27a0d0ec05738bf235c62",
+    "pipeline/alpha_opportunity_v3_spec.py": "1c11c306f9f27a8e69b985d02bfb3bffaf691001c27ac49e6b21266dd315c162",
+    "pipeline/alpha_opportunity_v4_eligibility.py": "8c20c70b35dba244f0341459ee295ca836e0ec6782f3e4989197bc2a220ba204",
+    "pipeline/alpha_opportunity_v4_execution.py": "f6d9dfd3be1558249bb69a29a903e791443d071793b2f591a2e900d492c954ba",
+    "pipeline/alpha_opportunity_v5_evidence.py": "305fc463129a50e6048152d99fec5f238bbd4f526818fc840b0c8e2af486425d",
+    "pipeline/dart_derive.py": "c18be6391fd8e04118a8e13cb62ace5a20e641f1d67e1c185652ed88572bd457",
+    "pipeline/dart_fundamentals.py": "5faad514e864d199a1eb9db41fbb182ab9b4a73a0e7179e7f56ac99b387e579b",
+    "pipeline/dart_ownership_events.py": "fdb4280a7bebdfb324f4ee87c9ad2ac22d640cc0dced10c7fc0f1bcd59c461d8",
+    "pipeline/entry.py": "d9c8e33686a55114bfabb6b11c634ff0198461859ecdaf10dffc7e3c49a191a2",
+    "pipeline/evidence.py": "31e8f67184073395d67f44a165d74f4ed368e468b790e695dbdcc698de7d9e88",
+    "pipeline/finnhub_derive.py": "2ceaf6a081a5fbbd893398a68e58006254da06492629d9e8824e0e835b848b56",
+    "pipeline/finnhub_fundamentals.py": "95b5090f1a306df5bc6231d952c42dfc85097a3a1f9f90a82bb4fa8af4f3a20d",
+    "pipeline/fundamental_acceleration.py": "4aeb649a2a046d9cf11432a7ac5a18a1b6ff993a48f2d7216e3280d446aa02cf",
+    "pipeline/historical_calibration.py": "2c825613bc1a543a225159e421aa15a176a222ce61cac12937de4e8c33db5e11",
+    "pipeline/historical_outcomes.py": "9db74870fe015f26ee5c4ac4709a420d33ef28e5feaab2c4caeedd7e85555569",
+    "pipeline/historical_replay.py": "80ace61f2df0d48ee98349bc998b77f58d8c62a4e8aa01da7b3cdacf158266e9",
+    "pipeline/historical_store.py": "2751be8b5b79260f2038c9fb975cae58d49cb7868751c6658e363b48712016c0",
+    "pipeline/kelly_portfolio.py": "6a4bd54be11e35e7348f64d0c99e7764635c4efcea62306da0b6ca81bfb3b06c",
+    "pipeline/kr_concentrated_portfolio.py": "5059260c02e55dfde5b38b644ef2a66d0ff793dd2fb2e17609331dbb08571b64",
+    "pipeline/kr_factor_anatomy.py": "56b2ad6660ae5b02fb9f646f78f4db1e7040caeb108fcf7f3b10e45354fe3a5a",
+    "pipeline/kr_factor_anatomy_execution.py": "f8aae109d75dca9521b356168f1a56712f092911f556495538c2e5ab6a7b95e8",
+    "pipeline/kr_factor_anatomy_report.py": "855124c2dedb71b4d813aa97acac3b1921c9d74f537bb2a515e0131146f8067d",
+    "pipeline/kr_market_risk_overlay.py": "983b3aab891a2af2f6d54b9b3d7ca29788651ba898b074da0506a40431ae4c07",
+    "pipeline/kr_market_value.py": "49306b8d14c4e8d681ae5846802c2ae82fa5727bb7a8adf356fa313217103c5e",
+    "pipeline/kr_model_overlay_portfolio.py": "b67495886aa63e10315d96ce8b30a023ee75adac6f5fec5a4fab7593b4f70343",
+    "pipeline/kr_model_portfolio_execution.py": "6128ba0af8bb517ac260a76a8b397e486a3225f206b706953dbf0390a5a7bb82",
+    "pipeline/kr_portfolio_diagnostics.py": "9f28a5ddf49a58c95db36d3a573b19e56fe7c86f98ad2ed01d96e8c09e6b5c34",
+    "pipeline/kr_repaired_accounting_snapshot.py": "b5b225e8a1d21b1516801c0ced1ef2164189867a457df1e0a51cd8ec95dd63ea",
+    "pipeline/kr_top120_regime_review.py": "43e4ab3438f1fb3765975866f1d948bbde4469dd59047d52049c9752d4f74a31",
+    "pipeline/kr_top120_regime_review_execution.py": "afb801535ba992e49757e9bb7822f8d377bbf41ca6d1e26ac40a6f397d4e6b22",
+    "pipeline/kr_value_quality_catalyst.py": "1bfd62d1437dd9b574f1ab635836e7d7e69651dbbbaeedf29af84a90de17bb28",
+    "pipeline/krx_universe.py": "77008b8c0dcb9cd44b0b1182df94d2f0af62edb6f03b6a41082c04679101d6b8",
+    "pipeline/liquidity_attention.py": "208c989a70e2d276c040867496a127eda9ca82644012999a7253f7d47bb171a6",
+    "pipeline/longterm.py": "75702c4862545e0ceadbfc5db2585b89ffeadad21f43206b597e2982d171c5f6",
+    "pipeline/market_dates.py": "0182986bf731fd762a8004d5cf838ddfaaee656a2b19b8cfd6b47248c6281e4b",
+    "pipeline/pit_data.py": "64da89c602ac4b6c67411d0b5defa2909b65c1a7aad0958b32cb7f7dcd567dbf",
+    "pipeline/portfolio_validation.py": "a22c18fc31f47b1701ea4c426ff31dec48f3f367163bd1eb3e8cf75c1fadf2a5",
+    "pipeline/price_adjustment.py": "ebdde717be22277315186d5f302642cbc8a057fedee84192b7af14b15c405892",
+    "pipeline/probability_calibration.py": "7e06f855981c7c88dc8a595fd879d201892ca99bfbb4b1dcab1bebaf0e6f62f6",
+    "pipeline/provenance.py": "762a214d6d0a59cef35a1b4612b60e13e2f6197a0a289e97e2b1da1f496c8171",
+    "pipeline/regime.py": "b5634c109ac19ad6b0e13788f1ce9cde8f20f50019a82a8b4f65f9bc23200aca",
+    "pipeline/regional_alpha_features.py": "2fc5eb16d0438ca15763aeaf49e9226146a7ecf209680ae8f33fd42f57555132",
+    "pipeline/replay_calendar.py": "56116f837e8ae3b9ca43c27c87b3be8bcf608172a761879a6b1284a39c9a3ab2",
+    "pipeline/replay_determinism.py": "2233d8341d7be1b5123caecd3ebdb10aef67ecfac7b3c10c687795f66f397153",
+    "pipeline/replay_inputs.py": "dd77b249476b252ba585b1b836fd060a029b0c4d9c3b9a0847caf8be545a5a1d",
+    "pipeline/replay_valuation.py": "18e673a0721077af06b8ca9f774650c27fa58820a489b9ea639a9ccf02693bf3",
+    "pipeline/sectors.py": "1cb470d676eeb24d5fa4976bf8fc0f71f808957f132c908158acb6422fde60ba",
+    "pipeline/selection_null.py": "b00e7419a8a620e284f3b5a15aafa66e9a8f776b81da027a766a72b3eecf5e17",
+    "research_specs/kr-factor-anatomy-v1.json": "1d8e526c05491898e00dacf18ad5b2cd458e04cfc843f4a35ff97bfd4272c393",
+    "research_specs/kr-factor-anatomy-v1.sha256": "a2c2b0cd706b1ad6efacb4105e06cade7df8c0912ced59a22191ad7489b23501",
+    "scripts/run_kr_top120_regime_review_v1.py": "9bb73b2a9aff1d0ad2e7b71cba5f7d696f4519be0f6a4a9c30bd7b6b91892633"
+  },
+  "developmentCutoff": "2026-09-14",
+  "entryPoints": [
+    "pipeline/kr_top120_regime_review_execution.py",
+    "pipeline/kr_top120_regime_review.py"
+  ],
+  "execution": {
+    "executeRequires": [
+      "GitHub Actions",
+      "workflow_dispatch",
+      "refs/heads/main",
+      "checkout equals the dispatched commit",
+      "this exact spec and sidecar committed at that commit",
+      "exact sealed predecessor result, report, manifest, provenance and archive identity",
+      "inputArtifact and inputRunId equal to input.artifactName / input.producingRunId",
+      "Actions API artifact id and archive digest equal to the pinned values",
+      "exact raw input identity",
+      "no committed result",
+      "no committed execution marker",
+      "no existing execution lock tag",
+      "no unexpired results artifact"
+    ],
+    "modes": [
+      "verify",
+      "execute"
+    ],
+    "neverInvokes": [
+      "kr-factor-anatomy-v1 execute",
+      "the sealed kr-model-overlay-portfolio-v1 execute workflow",
+      "KRX collection"
+    ],
+    "outcomeExecutionInThisChange": false,
+    "pullRequestMayRun": [
+      "verify"
+    ],
+    "workflow": ".github/workflows/kr-top120-regime-review-v1.yml"
+  },
+  "factors": [
+    {
+      "definitionSource": "kr-factor-anatomy-v1 spec factors[] (unchanged)",
+      "family": "VALUE",
+      "name": "bookToMarketProxy"
+    },
+    {
+      "definitionSource": "kr-factor-anatomy-v1 spec factors[] (unchanged)",
+      "family": "VALUE",
+      "name": "earningsYieldProxy"
+    },
+    {
+      "definitionSource": "kr-factor-anatomy-v1 spec factors[] (unchanged)",
+      "family": "VALUE",
+      "name": "ocfYieldProxy"
+    },
+    {
+      "definitionSource": "kr-factor-anatomy-v1 spec factors[] (unchanged)",
+      "family": "QUALITY",
+      "name": "netIncomeToAssets"
+    },
+    {
+      "definitionSource": "kr-factor-anatomy-v1 spec factors[] (unchanged)",
+      "family": "QUALITY",
+      "name": "ocfToAssets"
+    },
+    {
+      "definitionSource": "kr-factor-anatomy-v1 spec factors[] (unchanged)",
+      "family": "QUALITY",
+      "name": "negativeAccrualsToAssets"
+    },
+    {
+      "definitionSource": "kr-factor-anatomy-v1 spec factors[] (unchanged)",
+      "family": "CATALYST",
+      "name": "relative126"
+    },
+    {
+      "definitionSource": "kr-factor-anatomy-v1 spec factors[] (unchanged)",
+      "family": "CATALYST",
+      "name": "momentum121"
+    },
+    {
+      "definitionSource": "kr-factor-anatomy-v1 spec factors[] (unchanged)",
+      "family": "CATALYST",
+      "name": "ocfImprovementToAssets"
+    },
+    {
+      "definitionSource": "kr-factor-anatomy-v1 spec factors[] (unchanged)",
+      "family": "RISK_MARKET_STRUCTURE",
+      "name": "negativeDownsideVol126"
+    },
+    {
+      "definitionSource": "kr-factor-anatomy-v1 spec factors[] (unchanged)",
+      "family": "RISK_MARKET_STRUCTURE",
+      "name": "logAdv60"
+    }
+  ],
+  "factorsRule": "Exactly these 11 factors, in this order, in every output. No new factor. Never sorted by result.",
+  "fundamentalsImprovement": {
+    "flags": {
+      "netIncomeImprovementUp": "netIncomeImprovementToAssets > 0 (anatomy definition, same PIT lineage)",
+      "ocfImprovementUp": "ocfImprovementToAssets > 0"
+    },
+    "neverCollapsed": true,
+    "question": "Did improving companies actually fall, or did they merely fail to beat an unusually strong semiconductor-heavy benchmark?",
+    "slices": [
+      "FULL_SAMPLE",
+      "PRE_2025_COMPLETE_WINDOW",
+      "TOUCHES_2025_OR_LATER",
+      "EXCLUDE_WINDOWS_TOUCHING_2025_OR_2026"
+    ],
+    "successDefinitions": {
+      "ABSOLUTE_UP": "stockReturn > 0",
+      "BEATS_KODEX200": "KODEX200_RELATIVE_RETURN > 0",
+      "BEATS_TOP120_EQUAL_WEIGHT": "TOP120_LEAVE_ONE_OUT_EQUAL_WEIGHT_RELATIVE_RETURN > 0"
+    },
+    "weighting": "date-equal; dates with fewer than statistics.interactionCellMinimumNames flagged names are excluded from a rate; each definition keeps its OWN valid population"
+  },
+  "horizons": [
+    126,
+    252
+  ],
+  "immutableVersion": "kr-top120-regime-review-v1@1",
+  "input": {
+    "artifactArchiveSha256": "42eeb18b7a5c88816629036f472a93057b6a9be4768ad47292ba0d2750b4cce7",
+    "artifactId": 11157875265,
+    "artifactName": "kr-model-raw-inputs-36844599518",
+    "downloadRule": "The execution workflow downloads this exact artifact (name, run id, artifact id and archive digest checked through the Actions API before download) and verifies the input identity before any outcome is computed.",
+    "identityDefinition": "pipeline.kr_model_portfolio_execution.input_identity(root)['sha256'] \u2014 NOT the snapshot manifest hash",
+    "identitySha256": "233df37ed205cc6b48828121e711417ccf961301dc58aa252430b343db9666a7",
+    "krxCacheNote": "Pinned provenance. The daily KRX market-value files are covered byte-for-byte by the input identity.",
+    "krxCacheSha256": "3419d9d201f942b3c89be146b8f696679c8105a5f00d8adb0dd2c5a655a80037",
+    "producingRunId": 36844599518,
+    "recollectKrx": false,
+    "replaceSnapshotSilently": false
+  },
+  "inputNote": "The exact raw lineage the anatomy used (copied by value from its spec, compared by a test). No data recollection and no Top300 broadening.",
+  "labelRules": {
+    "descriptiveOnly": true,
+    "direction": "sign of the FULL_SAMPLE FULL_TOP120 equal-date mean D10-D1; zero or unmeasurable is NO_CLEAR_PATTERN",
+    "forbiddenLabels": [
+      "VALIDATED",
+      "PROVEN",
+      "PASS",
+      "FAIL",
+      "BEST_FACTOR",
+      "PRODUCTION_READY"
+    ],
+    "gatesNothing": true,
+    "labels": [
+      "PERSISTENT_ACROSS_PRE_RECENT_AND_RECENT",
+      "RECENT_REGIME_CONCENTRATED",
+      "PRE_RECENT_ONLY",
+      "OUTLIER_SENSITIVE",
+      "MEGA_CAP_SENSITIVE",
+      "REGIME_DEPENDENT",
+      "NO_CLEAR_PATTERN",
+      "DATA_INSUFFICIENT"
+    ],
+    "minimumDatesFull": 104,
+    "minimumDatesFullSource": "kr-factor-anatomy-v1 interpretation.minimumDatesForLabel (reused)",
+    "precedence": [
+      "DATA_INSUFFICIENT",
+      "NO_CLEAR_PATTERN (zero direction)",
+      "OUTLIER_SENSITIVE",
+      "MEGA_CAP_SENSITIVE",
+      "chronology: RECENT_REGIME_CONCENTRATED / PRE_RECENT_ONLY (DATA_INSUFFICIENT if chronology cannot be assessed)",
+      "REGIME_DEPENDENT",
+      "PERSISTENT_ACROSS_PRE_RECENT_AND_RECENT",
+      "NO_CLEAR_PATTERN"
+    ],
+    "rules": {
+      "DATA_INSUFFICIENT": "FULL_SAMPLE has fewer than minimumDatesFull dates with a decile spread, or a headline statistic is unmeasurable; also when no pre-recent view or no recent view is MEASURABLE (persistence cannot be assessed)",
+      "MEGA_CAP_SENSITIVE": "under EXCLUDE_BOTH or EXCLUDE_DYNAMIC_TOP2_MARKET_CAP (when MEASURABLE) the mean spread changes sign or falls below weakeningFraction of the full-universe magnitude",
+      "NO_CLEAR_PATTERN": "otherwise, when measurable",
+      "OUTLIER_SENSITIVE": "mean spread has a non-zero sign AND both the median spread and the mean Spearman do not carry that sign",
+      "PERSISTENT_ACROSS_PRE_RECENT_AND_RECENT": "full-sample mean, median and Spearman share the direction AND every MEASURABLE pre-recent view and the recent view show it",
+      "PRE_RECENT_ONLY": "every MEASURABLE pre-recent view shows the direction and TOUCHES_2025_OR_LATER does not",
+      "RECENT_REGIME_CONCENTRATED": "TOUCHES_2025_OR_LATER shows the direction while no MEASURABLE pre-recent view (PRE_2025_COMPLETE_WINDOW, EXCLUDE_WINDOWS_TOUCHING_2025_OR_2026) shows it",
+      "REGIME_DEPENDENT": "TREND_OK and TREND_BAD (or VOL_OK and VOL_HIGH) are both MEASURABLE and their mean spreads have opposite non-zero signs"
+    },
+    "showsDirection": "a slice 'shows' the direction when it is MEASURABLE and BOTH its mean D10-D1 and mean within-date Spearman carry that sign",
+    "sliceMinimumDates": 26,
+    "sliceMinimumDatesRationale": "Frozen now, not optimised: the anatomy's H126 block length (26 weekly dates), the smallest date count its own moving-block resampler accepts.",
+    "weakeningFraction": 0.5,
+    "weakeningFractionSource": "kr-factor-anatomy-v1 interpretation.monotonicityFloor 0.5, the repository's only existing proportion convention; not fitted"
+  },
+  "lifecycle": {
+    "authorizationTestsAreLifecycleIndependent": "every authorization and lock test builds its own synthetic repository and fake GitHub API",
+    "executionLock": {
+      "createdBefore": "any target, endpoint or return is read; attach_outcomes refuses without the lock object",
+      "createdOnlyAfter": "exact identities, predecessor verification, input identity and every readiness gate passed",
+      "existingRefRefuses": "HTTP 422 on create, and an unconditional workflow / authorization check, refuse execution",
+      "identity": [
+        "studyId",
+        "exact spec SHA256 (in the tag name)",
+        "dispatched main SHA (the commit the tag points at, verified after creation)"
+      ],
+      "mechanism": "fixed study-level git tag refs/tags/kr-top120-regime-review-v1-execution-lock (the exclusive atomic claim) plus identity tag refs/tags/kr-top120-regime-review-v1-execution-lock-<specSha256>, each created by an atomic POST /git/refs from Actions",
+      "neverUpdatedMovedOrDeleted": true,
+      "notEnforcement": [
+        "Actions artifacts or their retention",
+        "a local output file",
+        "a result file committed later",
+        "the committed execution-started.json (provenance only)"
+      ],
+      "onlyMethodsIssued": [
+        "POST",
+        "GET"
+      ],
+      "postLockFailure": "PERMANENTLY CONSUMES the ENTIRE kr-top120-regime-review-v1 study, not one spec SHA, regardless of artifacts, their retention, expiry or any later spec revision",
+      "preLockFailure": "spends nothing: gates-failed.json, no lock",
+      "studyLevel": "ANY ref under the ...-execution-lock prefix, for ANY spec SHA, refuses execution: a spec revision never reopens the study",
+      "unverifiableLockStateRefuses": true,
+      "workflowPermission": "contents: write on the execute job only, solely to create the lock ref"
+    },
+    "markerPath": "docs/results/kr-top120-regime-review-v1-execution-started.json",
+    "markerRole": "human-readable provenance written after the lock; its later commit is NOT the one-shot enforcement",
+    "resultPath": "docs/results/kr-top120-regime-review-v1-result.json",
+    "sequence": [
+      "protocol PR merges",
+      "human dispatches execute once",
+      "identities and readiness gates pass",
+      "durable exclusive one-shot lock created on GitHub (git tag) before the first outcome",
+      "result artifact emitted",
+      "result seal commits exact artifact bytes without rerunning",
+      "later execute attempts fail closed"
+    ],
+    "verdictIsASuccessfulProcess": true
+  },
+  "limitation": "EXPLORATORY_POST_OUTCOME_REGIME_DIAGNOSTIC: designed AFTER the kr-factor-anatomy-v1 outcomes were seen. It can only ask whether already-known relationships are concentrated in particular periods, market states or mega-cap names. It cannot confirm a factor, validate a strategy, rescue kr-model-overlay-portfolio-v1, produce production weights, choose a best factor, tune a threshold or claim independent replication.",
+  "limitations": [
+    "EXPLORATORY_POST_OUTCOME_REGIME_DIAGNOSTIC: designed AFTER the kr-factor-anatomy-v1 outcomes were seen. It can only ask whether already-known relationships are concentrated in particular periods, market states or mega-cap names. It cannot confirm a factor, validate a strategy, rescue kr-model-overlay-portfolio-v1, produce production weights, choose a best factor, tune a threshold or claim independent replication.",
+    "Outcome-exposed single historical sample; the new leave-one-out benchmark is post-outcome exploratory.",
+    "Top-120 PIT market-cap universe: all large caps; no small-cap statements.",
+    "Return basis is the adjusted index with partial observed distributions, not total shareholder return.",
+    "Weekly signals overlap; effective independent observations are far fewer than the date count; no intervals or p-values are produced.",
+    "Many descriptive views are produced with no multiplicity correction."
+  ],
+  "marketRegimes": {
+    "noBestRegime": true,
+    "noOutcomeDefinedRegime": true,
+    "riskMultiplier": [
+      1.0,
+      0.7,
+      0.4
+    ],
+    "rowsWithoutAState": "belong to no state (DATA_INSUFFICIENT benchmark history); counted in regimeStateCoverage",
+    "source": "pipeline.kr_market_risk_overlay.state_at() on the signal date (past-only benchmark information), recorded per row",
+    "states": [
+      "TREND_OK",
+      "TREND_BAD",
+      "VOL_OK",
+      "VOL_HIGH",
+      "TREND_OK_VOL_OK",
+      "TREND_BAD_VOL_OK",
+      "TREND_OK_VOL_HIGH",
+      "TREND_BAD_VOL_HIGH",
+      "RISK_MULTIPLIER_1.0",
+      "RISK_MULTIPLIER_0.7",
+      "RISK_MULTIPLIER_0.4"
+    ],
+    "trendAdverse": "benchmark close < SMA200",
+    "volAdverse": "annualised benchmark 63-session volatility > 25%"
+  },
+  "megaCapSensitivities": {
+    "concentrationContext": [
+      "Samsung Electronics marketCap share of PIT Top120",
+      "SK Hynix share",
+      "combined share",
+      "dynamic largest-name share",
+      "dynamic top-2 share"
+    ],
+    "contextOnly": true,
+    "dynamic": "At each signal date remove the two largest names by signal-date marketCap within the PIT Top120 (ties by ticker). Reads date, ticker and marketCap only.",
+    "fixedIdentities": {
+      "EXCLUDE_BOTH": [
+        "005930.KS",
+        "000660.KS"
+      ],
+      "EXCLUDE_SAMSUNG_ELECTRONICS": [
+        "005930.KS"
+      ],
+      "EXCLUDE_SK_HYNIX": [
+        "000660.KS"
+      ]
+    },
+    "forbidden": [
+      "Samsung Electro-Mechanics",
+      "KEPCO",
+      "any later-discovered winner",
+      "any manually chosen sector basket",
+      "any post-outcome company addition"
+    ],
+    "noTunedThreshold": true,
+    "ranksRecomputed": "After exclusion, same-date percentiles and deciles are recomputed inside the reduced cross-section; every other rule is preserved.",
+    "universes": [
+      "FULL_TOP120",
+      "EXCLUDE_SAMSUNG_ELECTRONICS",
+      "EXCLUDE_SK_HYNIX",
+      "EXCLUDE_BOTH",
+      "EXCLUDE_DYNAMIC_TOP2_MARKET_CAP"
+    ]
+  },
+  "outcomeAccess": {
+    "counters": [
+      "targetCalls",
+      "labelCalls",
+      "outcomeColumnCalls",
+      "analysisCalls",
+      "markerWrites"
+    ],
+    "inThisChange": "NONE",
+    "tests": "Synthetic data only.",
+    "verifyModeRequiresAllZero": true
+  },
+  "outputs": {
+    "artifact": {
+      "files": [
+        "regime-review.json",
+        "report.md",
+        "manifest.json",
+        "execution-started.json",
+        "tables/*.csv.gz"
+      ],
+      "name": "kr-top120-regime-review-v1-results-<run_id>"
+    },
+    "deterministic": "Sorted keys, canonical JSON, gzip mtime 0: two executions on the same inputs must be byte-identical.",
+    "forbiddenOutputs": [
+      "PASS",
+      "FAIL",
+      "validated",
+      "proven",
+      "promotion eligibility",
+      "production factor weights",
+      "best factor",
+      "recommended portfolio"
+    ],
+    "sections": [
+      "A. Regime executive map (11 factors x H126/H252 x six registered slices)",
+      "B. Mega-cap sensitivity (five universes)",
+      "C. Market-regime table (trend x volatility, riskMultiplier)",
+      "D. Fundamentals-improved table (three success definitions)",
+      "E. Concentration context chronology",
+      "F. JSON + CSV",
+      "G. Markdown report without promotional interpretation"
+    ]
+  },
+  "phase": "PROTOCOL_AND_HARNESS_ONLY_NO_OUTCOMES_COMPUTED",
+  "predecessor": {
+    "artifactArchiveSha256": "f8020bdac9878f523091881d129e3c414234012c17e1fd61e1e49b6d6538b80f",
+    "artifactId": 11207962601,
+    "executionRunId": 36960496371,
+    "executionSha": "cd82a5b7edb08f18ccdaa3f231415354aef9a41c",
+    "files": {
+      "manifest": "docs/results/kr-factor-anatomy-v1-manifest.json",
+      "provenance": "docs/results/kr-factor-anatomy-v1-seal-provenance.json",
+      "report": "docs/results/kr-factor-anatomy-v1-report.md",
+      "result": "docs/results/kr-factor-anatomy-v1-result.json"
+    },
+    "neverModified": true,
+    "neverRerun": true,
+    "rawInputIdentitySha256": "233df37ed205cc6b48828121e711417ccf961301dc58aa252430b343db9666a7",
+    "scientificStatus": "EXPLORATORY_DEVELOPMENT_ON_OUTCOME_EXPOSED_KR_HISTORY",
+    "sha256": {
+      "manifest": "3f8cdd9e5cf82b58f8526078c545b9ce8e116b3bf196e474e807a22a4cd59df9",
+      "provenance": "eeba9641810d60c539935d5542ca48c7ae6a48859d63be5292bbe5e88ce4c2fa",
+      "report": "2ffbb3458660c74fcbacd148cb2b8d7c7013ac7967978a6c8334b6af7b9f892e",
+      "result": "8518ec8cae95d0a23e964aab147e20659f17437fcd6fec6cb7f64cfa2b98a9e7"
+    },
+    "specSha256": "ceb97f481ae7261e89da4467fba03465f0c78cc3654cd799c26e5088ee3bc3d2",
+    "studyId": "kr-factor-anatomy-v1"
+  },
+  "prominentQuestionsFromAnatomy": [
+    "bookToMarketProxy",
+    "relative126",
+    "ocfImprovementToAssets",
+    "logAdv60"
+  ],
+  "questions": {
+    "Q1": "Do the known bookToMarketProxy and recent-price-strength relationships remain when outcome windows touching the unusual 2025-2026 market regime are removed?",
+    "Q2": "Are momentum / liquidity relationships materially dependent on Samsung Electronics, SK Hynix, or the two largest PIT market-cap names?",
+    "Q3": "Are mean factor spreads driven by a small number of extreme winners, while median spreads and within-date rank correlations are weak?",
+    "Q4": "When fundamentals improve, do companies actually have negative absolute returns, or do they merely underperform KODEX200?",
+    "Q5": "Do the known relationships differ across signal-time benchmark trend / volatility states?"
+  },
+  "readiness": {
+    "failedGateEffect": "writes gates-failed.json; no marker, no outcome read, no budget spent",
+    "gates": [
+      "label-free signal-time panel is non-empty",
+      "all 11 factor columns exist",
+      "every scheduled signal date is present",
+      "no duplicate (date, ticker)",
+      "PIT membership holds on every row",
+      "signal-date marketCap is available for the dynamic exclusion",
+      "a signal-time benchmark state exists"
+    ],
+    "minimumNamesWithMarketCapPerDate": 3
+  },
+  "region": "KR",
+  "returnBasis": {
+    "benchmarkDependent": [
+      "absolute relative-return levels",
+      "fraction beating the benchmark",
+      "KODEX200-relative fundamentals success"
+    ],
+    "caveat": "Distribution completeness is not fully audited; high-dividend names remain unreliable.",
+    "label": "BENCHMARK_RELATIVE_ADJUSTED_INDEX_RETURN_PARTIAL_DISTRIBUTIONS",
+    "notTotalShareholderReturn": true,
+    "sameDateSpreadNote": "For same-date D10-D1 the benchmark subtraction cancels algebraically, so the spread is a cross-sectional stock-return spread (and the within-date Spearman rank correlation is identical against stock return and KODEX-relative return)."
+  },
+  "robustness": {
+    "noIntervalsNoPValues": true,
+    "noTrimming": true,
+    "noWinsorisation": true,
+    "outputs": [
+      "equal-date mean D10-D1",
+      "D10 median stock return minus D1 median stock return (equal-date mean of per-date differences)",
+      "mean within-date Spearman rank correlation",
+      "year-by-year D10-D1",
+      "leave-best-year-out D10-D1"
+    ],
+    "separateOutputs": "The three headline views are computed independently and never substituted for one another."
+  },
+  "scientificStatus": "EXPLORATORY_POST_OUTCOME_REGIME_DIAGNOSTIC",
+  "sealedDataInputs": [
+    ".github/workflows/kr-top120-regime-review-v1.yml",
+    "docs/kr-top120-regime-review-v1-design.md",
+    "scripts/run_kr_top120_regime_review_v1.py",
+    "docs/results/kr-factor-anatomy-v1-result.json",
+    "docs/results/kr-factor-anatomy-v1-report.md",
+    "docs/results/kr-factor-anatomy-v1-manifest.json",
+    "docs/results/kr-factor-anatomy-v1-seal-provenance.json",
+    "research_specs/kr-factor-anatomy-v1.json",
+    "research_specs/kr-factor-anatomy-v1.sha256"
+  ],
+  "statistics": {
+    "belowThreshold": "Dates under decileMinimumNames contribute no decile table; dates under rankCorrelationMinimumNames contribute nothing. Both counts are reported.",
+    "decileMinimumNames": 50,
+    "decileMinimumRationale": "Fixed from design, before any outcome: 5 names per decile on average, the smallest count at which a decile median or beat-fraction is not decided by one or two stocks; v1's own minimumNamesPerDate (10) would give one name per decile. Input-coverage counts published in the v1 readiness record before any v1 outcome were consulted only to see which factors the threshold affects: ocfImprovementToAssets, the sparsest factor, is observed for about 8.5% of 2017, 43% of 2018 and 62-67% of 2019-2020 name-dates, so it forms deciles only from about 2018 and only barely then (about 51 of 120 names); no outcome was consulted.",
+    "decileOutputs": [
+      "observations",
+      "dates",
+      "mean relative return per decile",
+      "median relative return per decile",
+      "fraction beating the benchmark per decile",
+      "D10 minus D1",
+      "within-date rank correlation",
+      "annual table",
+      "positive-year fraction",
+      "decile monotonicity (rank correlation of decile index with decile mean)",
+      "leave-best-year-out",
+      "block-bootstrap interval",
+      "by benchmark state"
+    ],
+    "interactionCellMinimumNames": 3,
+    "minimumDatesPerYear": 13,
+    "minimumDatesPerYearRationale": "One calendar quarter of weekly signals; shorter years are tabulated but excluded from the positive-year fraction.",
+    "noFactorRanking": "All factors are displayed side by side in frozen spec order and never sorted by result.",
+    "noPValueFishing": true,
+    "noSignificanceThresholdForAnything": true,
+    "quintileMinimumNames": 50,
+    "rankCorrelationMinimumNames": 10,
+    "strataCellMinimumNames": 10,
+    "tercileMinimumNames": 30
+  },
+  "studyId": "kr-top120-regime-review-v1",
+  "universe": {
+    "membership": "The anatomy's strictly-previous KRX monthly top-120 PIT membership, unchanged. No Top300, no survivor substitution, no zero fill.",
+    "primary": "PIT_TOP120_LARGE_CAP_ANALYSIS_UNIVERSE",
+    "scopeStatement": "SCOPE: point-in-time TOP-120 KRX market-capitalisation LARGE CAPS only (260 securities ever held that rank, 2013-2026). Nothing here describes the whole Korean market, mid caps or small caps.",
+    "terminalDiscipline": "Primary V1_TERMINAL_DISCIPLINE only (an observation contributes only if MATURED and ELIGIBLE under the sealed v1 terminal rule). The anatomy's ALL_OBSERVED_ENDPOINTS sensitivity is not repeated."
+  },
+  "valueUpPolicyEra": {
+    "causalClaim": false,
+    "exclusionRegime": false,
+    "factor": false,
+    "note": "2024+ is treated only as calendar context already visible through chronology. The principal special-regime diagnostic is mega-cap / semiconductor concentration."
+  },
+  "windowSlices": {
+    "classification": "By each observation's own entryDate and exitDate, never by signal year alone. A slice removes OUTCOMES only; same-date ranks are unchanged.",
+    "insufficientRule": "A slice with fewer than labelRules.sliceMinimumDates dates with a decile spread is DATA_INSUFFICIENT; H252 has no valid TOUCHES_2026 data unless matured windows exist. No breakpoint is added after execution.",
+    "intersectsCalendarYear": "entryDate <= YYYY-12-31 AND exitDate >= YYYY-01-01 (closed interval, ISO date comparison)",
+    "noOtherBreakpoint": true,
+    "order": [
+      "FULL_SAMPLE",
+      "PRE_2025_COMPLETE_WINDOW",
+      "TOUCHES_2025_OR_LATER",
+      "PRE_2026_COMPLETE_WINDOW",
+      "TOUCHES_2026",
+      "EXCLUDE_WINDOWS_TOUCHING_2025",
+      "EXCLUDE_WINDOWS_TOUCHING_2026",
+      "EXCLUDE_WINDOWS_TOUCHING_2025_OR_2026"
+    ],
+    "signalYearChronology": "SIGNAL_YEAR tables (2015..2026) are context only and never define a slice.",
+    "slices": {
+      "EXCLUDE_WINDOWS_TOUCHING_2025": "NOT intersects calendar year 2025",
+      "EXCLUDE_WINDOWS_TOUCHING_2025_OR_2026": "NOT intersects 2025 AND NOT intersects 2026",
+      "EXCLUDE_WINDOWS_TOUCHING_2026": "NOT intersects calendar year 2026",
+      "FULL_SAMPLE": "every valid matured observation with a known entry and exit date",
+      "PRE_2025_COMPLETE_WINDOW": "exitDate < 2025-01-01",
+      "PRE_2026_COMPLETE_WINDOW": "exitDate < 2026-01-01",
+      "TOUCHES_2025_OR_LATER": "exitDate >= 2025-01-01",
+      "TOUCHES_2026": "entryDate <= 2026-09-14 AND exitDate >= 2026-01-01"
+    }
+  }
+}
