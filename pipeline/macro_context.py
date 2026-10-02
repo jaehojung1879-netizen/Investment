@@ -32,14 +32,10 @@ stock-level features to test an interaction — that join and that test are
 explicitly out of scope here, per this task's own "no interaction/outcome
 testing" instruction.
 
-KR STATUS. Every entry in `regime.INDICATORS` is FRED- or CBOE-sourced —
-there is no KR axis to restructure this way, confirmed by
-`alpha-information-inventory-v1`'s data map (§16-17): the ECOS fetch layer
-that would need to exist for one is still 100% unbuilt (see
-`pipeline/kr_investor_flow.py`'s sibling KR-macro workstream in this same
-PR for what would be needed before a KR axis history could exist at all).
-This module is US/global only, by construction of what `regime.py` itself
-can compute today.
+KR STATUS. This module remains US/global only, preserving existing US
+aggregation. The separate pipeline.kr_market_context foundation provides KR
+axes and explicit knowledge records; ECOS native identities still require
+manual metadata/smoke validation. No KR axis is added to regime.INDICATORS.
 """
 from __future__ import annotations
 

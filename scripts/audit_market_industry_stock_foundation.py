@@ -31,11 +31,11 @@ def audit(root=ROOT):
     if spec["studyId"] != VERSION or spec["execution"] != {
         "historicalReturnsAllowed": False, "modelsAllowed": False,
         "portfolioAllowed": False, "taxonomyOutcomeSelectionAllowed": False,
-        "returnPrimitiveScope": "SYNTHETIC_ONLY", "workflowMode": "METADATA_AUDIT_ONLY"
+        "returnPrimitiveScope": "SYNTHETIC_ONLY", "workflowMode": "METADATA_AUDIT_AND_MANUAL_SOURCE_SMOKE_ONLY"
     }:
         raise ValueError("FOUNDATION_EXECUTION_BOUNDARY_CHANGED")
     for rel, wanted in spec["dependencyHashes"].items():
-        if (not rel.startswith(ALLOWED_PREFIXES) or ".." in Path(rel).parts
+        if ((rel != "config.json" and not rel.startswith(ALLOWED_PREFIXES)) or ".." in Path(rel).parts
                 or rel.startswith("docs/results/") or "result" in Path(rel).name):
             raise ValueError("OUTCOME_PATH_NOT_ALLOWED_IN_AUDIT")
         if _hash(root / rel) != wanted:
@@ -46,6 +46,7 @@ def audit(root=ROOT):
             "historicalMembershipRowsVerified": 0, "historicalClassificationCoverageFraction": None,
             "historicalIndustryObservationCount": None,
             "sourceMatrix": spec["sourceMatrix"], "featureMatrix": spec["featureMatrix"],
+            "marketContextFoundation": spec["marketContextFoundation"],
             "verifiedDependencies": sorted(spec["dependencyHashes"]),
             "historicalOutcomeComputed": False, "modelFitPerformed": False,
             "taxonomyChosenUsingOutcomes": False, "priorStudyRerun": False}

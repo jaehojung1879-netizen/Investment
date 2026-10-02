@@ -23,3 +23,13 @@ Top120 regime-review dispatch 37018055459 completed and its durable lock exists 
 main 9504f970a2895781eedcc3a6a1c94126fd4682f8; result artifact 11232463461 exists
 (archive digest recorded in the new foundation design). Only provenance metadata was
 checked here, not result contents. Neither closed study can be rerun by this foundation.
+
+## ECOS manual source-validation extension (PR #188)
+
+`probes.yml` adds `ecos-market-context` to the existing manual dispatch menu.
+Its separate job requires workflow_dispatch and maps only the ECOS secret to
+ECOS_API_KEY. Other probe jobs exclude this option. PR jobs receive no ECOS
+credential. It reads BOK metadata and at most latest-period smoke observations,
+saves only sanitized source identities/coverage/status, and computes no Alpha
+outcomes. No schedule, production wiring or sealed study rerun is introduced.
+The foundation metadata workflow remains credential-free on PR events.

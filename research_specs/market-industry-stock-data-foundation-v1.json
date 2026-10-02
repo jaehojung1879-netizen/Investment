@@ -50,25 +50,41 @@
     "docs/challenger-2-signal-source-feasibility-v1.md (source inventory only)"
   ],
   "dependencyHashes": {
-    ".github/workflows/market-industry-stock-foundation-v1.yml": "453a6c096ac10c7d2ca0b175348adba4ab6e17b9bf36f6e827bfcf0bf54c3e5c",
-    "docs/market-industry-stock-data-foundation-v1.md": "731990adf434880f407d39b25a38da4ff8ef1ec97ef49b7f4fb664c633d358ea",
+    ".github/workflows/market-industry-stock-foundation-v1.yml": "7c5c4a56eece31be17f0fa92f9f14660ab2e8f2ea6ebc79cc8d220888f34b1e9",
+    ".github/workflows/probes.yml": "6e729b159304ad2005b0878c06bcb672f381acc6401e824cf782e5a8d54ccc34",
+    "config.json": "934769cbc8eb486c1536bc597fbf337f2f011ec18be751266db495efefc9f38c",
+    "docs/kr-macro-regime-design-v1.md": "46d9c0c3d154729f216e21776e5439640ad7ac49511f558d5032a12fc7b3d02c",
+    "docs/kr-market-context-foundation-v1.md": "f940123e7fac0345f6168a2bcbe1f6dc370aade767609e7f37f898345ccaf128",
+    "docs/market-industry-stock-data-foundation-v1.md": "de995c29e89672f54e01228beb9936f49b1d52f68e951d88684767aace4c9e33",
+    "pipeline/config.py": "217e66ea6b1035716f4a52688aee7b52ed9a68b383bcbcb4ec96851016e18ffa",
     "pipeline/dart_canonical_accounts.py": "d3ba397b84b51404939880a504809876cd01e896b164544142861ef7b615b0a9",
     "pipeline/dart_derive.py": "c18be6391fd8e04118a8e13cb62ace5a20e641f1d67e1c185652ed88572bd457",
     "pipeline/dart_xbrl_statements.py": "0b2e5209eff6c6dbcd9076747ae74e6512e8593e0b8ddaad90f8ff3aa59769a8",
+    "pipeline/datafeed.py": "c9320325332087c49e73b842ed80fde5a15c1f7f47361a12704a64c62b1deefd",
+    "pipeline/ecos_macro.py": "1fe17d6666b7cc6fe483d47928bbffd1b389f19743cd38c0e05b8a00a324c938",
     "pipeline/finnhub_derive.py": "2ceaf6a081a5fbbd893398a68e58006254da06492629d9e8824e0e835b848b56",
     "pipeline/industry_foundation.py": "795965170eef879e6e5dac6b7b5f7a32e7d898a2eb4e6eb30a1960e04d4af0d3",
+    "pipeline/kr_market_context.py": "61cd2a323bc42e78d8643ea44de4bd8d888d685cbd76003ff4a8234fbe37b11f",
     "pipeline/kr_market_risk_overlay.py": "983b3aab891a2af2f6d54b9b3d7ca29788651ba898b074da0506a40431ae4c07",
     "pipeline/kr_repaired_accounting_snapshot.py": "b5b225e8a1d21b1516801c0ced1ef2164189867a457df1e0a51cd8ec95dd63ea",
     "pipeline/kr_terminal_corporate_actions.py": "6d550fc0900629150d2159b73196dcd726acf66f9e9e9350e1cb7db927c388f3",
     "pipeline/krx_universe.py": "77008b8c0dcb9cd44b0b1182df94d2f0af62edb6f03b6a41082c04679101d6b8",
+    "pipeline/macro.py": "1f13b5726a9c301eb4c0c1d3a1ba298ca9abebe9f1c77ef8236e46dc853412d0",
+    "pipeline/macro_context.py": "ece4b613c559195337363f6a54e1886af369299f41760094c8d9d5dd033e2244",
     "pipeline/pit_data.py": "64da89c602ac4b6c67411d0b5defa2909b65c1a7aad0958b32cb7f7dcd567dbf",
     "pipeline/price_adjustment.py": "ebdde717be22277315186d5f302642cbc8a057fedee84192b7af14b15c405892",
+    "pipeline/regime.py": "b5634c109ac19ad6b0e13788f1ce9cde8f20f50019a82a8b4f65f9bc23200aca",
     "pipeline/sectors.py": "1cb470d676eeb24d5fa4976bf8fc0f71f808957f132c908158acb6422fde60ba",
+    "research_specs/kr-market-context-source-v1.schema.json": "b1dc4f00ce6445e237765cc97a40c7507ded16575d64b2ab4cb7ac317cd99900",
     "research_specs/kr-repaired-accounting-snapshot-v1.json": "8dbae2203e1b809060100845f4571016e71fbc78cc09c1b52d9edeb46d38f331",
     "research_specs/market-industry-stock-membership-v1.schema.json": "fa0c826bd6a2665df06da297cb8117738aa733b96255b9f689d7fdd58bd8a11d",
-    "scripts/audit_market_industry_stock_foundation.py": "f7210ee62439c342116b31c0b2f152198912cf097cec8d81def7660ae407398e",
+    "scripts/audit_market_industry_stock_foundation.py": "c1a2dd0ecdc894a2068d1724c10998a389ae8b76d12222964367cf6b9d744a26",
+    "scripts/probe_ecos_market_context.py": "c27ca7164f81e7d26b47d949590a1004c3a075433572682cf606398943d36ac5",
     "tests/fixtures/industry-foundation.synthetic.json": "474ec934b225ee64b534a3fd8342a7e9c39edd91ba270f2dabcdbf56dfeb7a49",
-    "tests/test_industry_foundation.py": "22137a02c4126609473c428a7b881a0f5bfea99de948aa55e5215fd0590214b9"
+    "tests/test_alpha_opportunity.py": "e408df12d072053932151a4367d24cb92292c2ea6fb26359c74c4f7d4352121a",
+    "tests/test_ecos_macro.py": "de931db0a3f41cb2e0557b71e97690c734d1871672a3aed472f9e9c9f6032028",
+    "tests/test_industry_foundation.py": "22137a02c4126609473c428a7b881a0f5bfea99de948aa55e5215fd0590214b9",
+    "tests/test_kr_market_context.py": "8edf20f4b09b75d7afb0203992977d168703761150415967b1ba2ee5a74c3e8b"
   },
   "economicObjective": "Future returns above each relevant market benchmark after realistic investability and costs.",
   "execution": {
@@ -77,7 +93,7 @@
     "portfolioAllowed": false,
     "returnPrimitiveScope": "SYNTHETIC_ONLY",
     "taxonomyOutcomeSelectionAllowed": false,
-    "workflowMode": "METADATA_AUDIT_ONLY"
+    "workflowMode": "METADATA_AUDIT_AND_MANUAL_SOURCE_SMOKE_ONLY"
   },
   "externalIndustryObservation": {
     "requiredFields": [
@@ -350,6 +366,24 @@
         "KR": "PARTIAL",
         "US": "PARTIAL"
       }
+    },
+    {
+      "blocker": "live ECOS source validation/release vintages pending",
+      "family": "krMarketContext",
+      "industryPanelStatus": "SEPARATE_STATE_OBJECT",
+      "regions": {
+        "KR": "READY_CONTEXT_PRIMITIVE",
+        "US": "EXISTING_DEFINITIONS_UNCHANGED"
+      }
+    },
+    {
+      "blocker": "dated full universe/membership/market cap and denominators",
+      "family": "krEquityBreadthConcentration",
+      "industryPanelStatus": "DATA_FOUNDATION_REQUIRED",
+      "regions": {
+        "KR": "DATA_FOUNDATION_REQUIRED",
+        "US": "EXISTING_ONLY"
+      }
     }
   ],
   "granularity": {
@@ -403,6 +437,408 @@
     }
   },
   "mainShaUsed": "9504f970a2895781eedcc3a6a1c94126fd4682f8",
+  "marketContextFoundation": {
+    "axes": {
+      "domesticGrowth": [
+        "IndustrialProduction",
+        "Exports",
+        "LeadingIndex"
+      ],
+      "domesticLiquidityCredit": [
+        "M2",
+        "KTB_3Y",
+        "CorpBond_3Y",
+        "KR_CreditSpread"
+      ],
+      "domesticRates": [
+        "BaseRate",
+        "Korea_3M",
+        "Korea_10Y",
+        "KR_TermSpread"
+      ],
+      "equityMarketState": [
+        "KODEX200_TrendAdverse",
+        "KODEX200_Vol63",
+        "Breadth",
+        "Concentration"
+      ],
+      "externalFinancialConditions": [
+        "USD_KRW",
+        "Broad_Dollar",
+        "Real_10Y",
+        "FedFunds",
+        "Treasury_2Y",
+        "Treasury_10Y",
+        "HY_Spread",
+        "VIX"
+      ],
+      "inflation": [
+        "CPI",
+        "CoreCPI"
+      ]
+    },
+    "compositeScore": false,
+    "contract": "KR_MARKET_CONTEXT_V1",
+    "ecosSeriesReadiness": [
+      {
+        "availableFrom": null,
+        "configuredCandidate": {
+          "cycle": null,
+          "itemCode": null,
+          "seriesId": "722Y001",
+          "sourceStatus": "DATA_LINEAGE_UNRESOLVED"
+        },
+        "earliestObservation": null,
+        "historicalConfirmatoryEligible": false,
+        "itemName": null,
+        "latestObservation": null,
+        "manualProbeExecuted": false,
+        "name": "BaseRate",
+        "nativeCycle": null,
+        "publishedAt": null,
+        "semanticMatchVerified": false,
+        "sourceStatus": "DATA_LINEAGE_UNRESOLVED",
+        "tableExists": null,
+        "unit": null,
+        "vintageStatus": "REVISED_HISTORY"
+      },
+      {
+        "availableFrom": null,
+        "configuredCandidate": {
+          "cycle": null,
+          "itemCode": null,
+          "seriesId": "817Y002",
+          "sourceStatus": "DATA_LINEAGE_UNRESOLVED"
+        },
+        "earliestObservation": null,
+        "historicalConfirmatoryEligible": false,
+        "itemName": null,
+        "latestObservation": null,
+        "manualProbeExecuted": false,
+        "name": "KTB_3Y",
+        "nativeCycle": null,
+        "publishedAt": null,
+        "semanticMatchVerified": false,
+        "sourceStatus": "DATA_LINEAGE_UNRESOLVED",
+        "tableExists": null,
+        "unit": null,
+        "vintageStatus": "REVISED_HISTORY"
+      },
+      {
+        "availableFrom": null,
+        "configuredCandidate": {
+          "cycle": null,
+          "itemCode": null,
+          "seriesId": "817Y002",
+          "sourceStatus": "DATA_LINEAGE_UNRESOLVED"
+        },
+        "earliestObservation": null,
+        "historicalConfirmatoryEligible": false,
+        "itemName": null,
+        "latestObservation": null,
+        "manualProbeExecuted": false,
+        "name": "CorpBond_3Y",
+        "nativeCycle": null,
+        "publishedAt": null,
+        "semanticMatchVerified": false,
+        "sourceStatus": "DATA_LINEAGE_UNRESOLVED",
+        "tableExists": null,
+        "unit": null,
+        "vintageStatus": "REVISED_HISTORY"
+      },
+      {
+        "availableFrom": null,
+        "configuredCandidate": {
+          "cycle": null,
+          "itemCode": null,
+          "seriesId": "901Y009",
+          "sourceStatus": "DATA_LINEAGE_UNRESOLVED"
+        },
+        "earliestObservation": null,
+        "historicalConfirmatoryEligible": false,
+        "itemName": null,
+        "latestObservation": null,
+        "manualProbeExecuted": false,
+        "name": "CPI",
+        "nativeCycle": null,
+        "publishedAt": null,
+        "semanticMatchVerified": false,
+        "sourceStatus": "DATA_LINEAGE_UNRESOLVED",
+        "tableExists": null,
+        "unit": null,
+        "vintageStatus": "REVISED_HISTORY"
+      },
+      {
+        "availableFrom": null,
+        "configuredCandidate": {
+          "cycle": null,
+          "itemCode": null,
+          "seriesId": "901Y010",
+          "sourceStatus": "DATA_LINEAGE_UNRESOLVED"
+        },
+        "earliestObservation": null,
+        "historicalConfirmatoryEligible": false,
+        "itemName": null,
+        "latestObservation": null,
+        "manualProbeExecuted": false,
+        "name": "CoreCPI",
+        "nativeCycle": null,
+        "publishedAt": null,
+        "semanticMatchVerified": false,
+        "sourceStatus": "DATA_LINEAGE_UNRESOLVED",
+        "tableExists": null,
+        "unit": null,
+        "vintageStatus": "REVISED_HISTORY"
+      },
+      {
+        "availableFrom": null,
+        "configuredCandidate": {
+          "cycle": null,
+          "itemCode": null,
+          "seriesId": "901Y033",
+          "sourceStatus": "DATA_LINEAGE_UNRESOLVED"
+        },
+        "earliestObservation": null,
+        "historicalConfirmatoryEligible": false,
+        "itemName": null,
+        "latestObservation": null,
+        "manualProbeExecuted": false,
+        "name": "IndustrialProduction",
+        "nativeCycle": null,
+        "publishedAt": null,
+        "semanticMatchVerified": false,
+        "sourceStatus": "DATA_LINEAGE_UNRESOLVED",
+        "tableExists": null,
+        "unit": null,
+        "vintageStatus": "REVISED_HISTORY"
+      },
+      {
+        "availableFrom": null,
+        "configuredCandidate": {
+          "cycle": null,
+          "itemCode": null,
+          "seriesId": "901Y067",
+          "sourceStatus": "DATA_LINEAGE_UNRESOLVED"
+        },
+        "earliestObservation": null,
+        "historicalConfirmatoryEligible": false,
+        "itemName": null,
+        "latestObservation": null,
+        "manualProbeExecuted": false,
+        "name": "LeadingIndex",
+        "nativeCycle": null,
+        "publishedAt": null,
+        "semanticMatchVerified": false,
+        "sourceStatus": "DATA_LINEAGE_UNRESOLVED",
+        "tableExists": null,
+        "unit": null,
+        "vintageStatus": "REVISED_HISTORY"
+      },
+      {
+        "availableFrom": null,
+        "configuredCandidate": {
+          "cycle": null,
+          "itemCode": null,
+          "seriesId": "901Y011",
+          "sourceStatus": "DATA_LINEAGE_UNRESOLVED"
+        },
+        "earliestObservation": null,
+        "historicalConfirmatoryEligible": false,
+        "itemName": null,
+        "latestObservation": null,
+        "manualProbeExecuted": false,
+        "name": "Exports",
+        "nativeCycle": null,
+        "publishedAt": null,
+        "semanticMatchVerified": false,
+        "sourceStatus": "DATA_LINEAGE_UNRESOLVED",
+        "tableExists": null,
+        "unit": null,
+        "vintageStatus": "REVISED_HISTORY"
+      },
+      {
+        "availableFrom": null,
+        "configuredCandidate": {
+          "cycle": null,
+          "itemCode": null,
+          "seriesId": "101Y004",
+          "sourceStatus": "DATA_LINEAGE_UNRESOLVED"
+        },
+        "earliestObservation": null,
+        "historicalConfirmatoryEligible": false,
+        "itemName": null,
+        "latestObservation": null,
+        "manualProbeExecuted": false,
+        "name": "M2",
+        "nativeCycle": null,
+        "publishedAt": null,
+        "semanticMatchVerified": false,
+        "sourceStatus": "DATA_LINEAGE_UNRESOLVED",
+        "tableExists": null,
+        "unit": null,
+        "vintageStatus": "REVISED_HISTORY"
+      }
+    ],
+    "fredGlobalInventory": [
+      {
+        "fetchImplementation": "pipeline.datafeed.fetch_macro",
+        "name": "Treasury_10Y",
+        "releaseEvidenceSuppliedInThisRevision": false,
+        "seriesId": "DGS10",
+        "upgradeRule": "Only actual nonempty release frames reconstructed through pit_data.vintage_column/MacroVintageView",
+        "vintageStatus": "REVISED_HISTORY"
+      },
+      {
+        "fetchImplementation": "pipeline.datafeed.fetch_macro",
+        "name": "Treasury_2Y",
+        "releaseEvidenceSuppliedInThisRevision": false,
+        "seriesId": "DGS2",
+        "upgradeRule": "Only actual nonempty release frames reconstructed through pit_data.vintage_column/MacroVintageView",
+        "vintageStatus": "REVISED_HISTORY"
+      },
+      {
+        "fetchImplementation": "pipeline.datafeed.fetch_macro",
+        "name": "FedFunds",
+        "releaseEvidenceSuppliedInThisRevision": false,
+        "seriesId": "DFF",
+        "upgradeRule": "Only actual nonempty release frames reconstructed through pit_data.vintage_column/MacroVintageView",
+        "vintageStatus": "REVISED_HISTORY"
+      },
+      {
+        "fetchImplementation": "pipeline.datafeed.fetch_macro",
+        "name": "HY_Spread",
+        "releaseEvidenceSuppliedInThisRevision": false,
+        "seriesId": "BAMLH0A0HYM2",
+        "upgradeRule": "Only actual nonempty release frames reconstructed through pit_data.vintage_column/MacroVintageView",
+        "vintageStatus": "REVISED_HISTORY"
+      },
+      {
+        "fetchImplementation": "pipeline.datafeed.fetch_macro",
+        "name": "IG_Spread",
+        "releaseEvidenceSuppliedInThisRevision": false,
+        "seriesId": "BAMLC0A0CM",
+        "upgradeRule": "Only actual nonempty release frames reconstructed through pit_data.vintage_column/MacroVintageView",
+        "vintageStatus": "REVISED_HISTORY"
+      },
+      {
+        "fetchImplementation": "pipeline.datafeed.fetch_macro",
+        "name": "Real_10Y",
+        "releaseEvidenceSuppliedInThisRevision": false,
+        "seriesId": "DFII10",
+        "upgradeRule": "Only actual nonempty release frames reconstructed through pit_data.vintage_column/MacroVintageView",
+        "vintageStatus": "REVISED_HISTORY"
+      },
+      {
+        "fetchImplementation": "pipeline.datafeed.fetch_macro",
+        "name": "NFCI",
+        "releaseEvidenceSuppliedInThisRevision": false,
+        "seriesId": "NFCI",
+        "upgradeRule": "Only actual nonempty release frames reconstructed through pit_data.vintage_column/MacroVintageView",
+        "vintageStatus": "REVISED_HISTORY"
+      },
+      {
+        "fetchImplementation": "pipeline.datafeed.fetch_macro",
+        "name": "ANFCI",
+        "releaseEvidenceSuppliedInThisRevision": false,
+        "seriesId": "ANFCI",
+        "upgradeRule": "Only actual nonempty release frames reconstructed through pit_data.vintage_column/MacroVintageView",
+        "vintageStatus": "REVISED_HISTORY"
+      },
+      {
+        "fetchImplementation": "pipeline.datafeed.fetch_macro",
+        "name": "Broad_Dollar",
+        "releaseEvidenceSuppliedInThisRevision": false,
+        "seriesId": "DTWEXBGS",
+        "upgradeRule": "Only actual nonempty release frames reconstructed through pit_data.vintage_column/MacroVintageView",
+        "vintageStatus": "REVISED_HISTORY"
+      },
+      {
+        "fetchImplementation": "pipeline.datafeed.fetch_macro",
+        "name": "USD_KRW",
+        "releaseEvidenceSuppliedInThisRevision": false,
+        "seriesId": "DEXKOUS",
+        "upgradeRule": "Only actual nonempty release frames reconstructed through pit_data.vintage_column/MacroVintageView",
+        "vintageStatus": "REVISED_HISTORY"
+      },
+      {
+        "fetchImplementation": "pipeline.datafeed.fetch_macro",
+        "name": "Korea_10Y",
+        "releaseEvidenceSuppliedInThisRevision": false,
+        "seriesId": "IRLTLT01KRM156N",
+        "upgradeRule": "Only actual nonempty release frames reconstructed through pit_data.vintage_column/MacroVintageView",
+        "vintageStatus": "REVISED_HISTORY"
+      },
+      {
+        "fetchImplementation": "pipeline.datafeed.fetch_macro",
+        "name": "Korea_3M",
+        "releaseEvidenceSuppliedInThisRevision": false,
+        "seriesId": "IR3TIB01KRM156N",
+        "upgradeRule": "Only actual nonempty release frames reconstructed through pit_data.vintage_column/MacroVintageView",
+        "vintageStatus": "REVISED_HISTORY"
+      },
+      {
+        "economicSource": "CBOE",
+        "fetchImplementation": "pipeline.datafeed.fetch_vix",
+        "name": "VIX",
+        "releaseEvidenceSuppliedInThisRevision": false,
+        "seriesId": "^VIX",
+        "vintageStatus": "REVISED_HISTORY"
+      }
+    ],
+    "futureLabelsInState": false,
+    "industryConnection": {
+      "commonCandidates": [
+        "trailing relative momentum",
+        "breadth",
+        "dispersion",
+        "dated earnings/accounting change",
+        "credit",
+        "liquidity"
+      ],
+      "futureLabel": "industry-market future simple cumulative return gap, only in a separate preregistered study",
+      "industrySpecificCandidates": [
+        "export mix",
+        "bank rates/curve",
+        "producer input costs",
+        "inventory/order cycle"
+      ],
+      "interactionsImplemented": false,
+      "stateObjects": [
+        "MarketContext_t",
+        "IndustryCycleState_s,t"
+      ]
+    },
+    "knowledgeRule": "observedThrough <= t AND availableFrom <= t; revised/current values also fetchedAt <= t",
+    "krRegimeLabels": false,
+    "manualLiveValidation": {
+      "branch": "research/market-industry-stock-data-foundation-v1",
+      "dispatchBlocker": "Connector has no dispatch operation; no local authenticated dispatch credential; browser fallback requires permission.",
+      "probe": "ecos-market-context",
+      "runtimeVariable": "ECOS_API_KEY",
+      "secretName": "ECOS",
+      "status": "NOT_DISPATCHED",
+      "workflow": "probes.yml"
+    },
+    "primitiveStatus": "READY_CONTEXT_PRIMITIVE",
+    "productionWired": false,
+    "publicationLagCreatesVintage": false,
+    "remainingGaps": [
+      "manual dispatch and exact semantic selections",
+      "historical release vintages",
+      "PIT breadth/concentration",
+      "historical taxonomy/membership",
+      "industry studies deliberately deferred"
+    ],
+    "reviewedParentHead": "b0ced85853046488817329220ca3688e7daf6965",
+    "sourceStatusVocabulary": [
+      "LIVE_VALIDATED_SOURCE",
+      "REVISED_HISTORY",
+      "DATA_LINEAGE_UNRESOLVED",
+      "NOT_AVAILABLE",
+      "AMBIGUOUS_SOURCE"
+    ],
+    "unitRule": "native units; changes in native-observation windows; no cross-axis average"
+  },
   "membership": {
     "ambiguousVisibleAssignments": "RAISE",
     "currentSnapshotAllowed": false,
@@ -527,6 +963,24 @@
       ],
       "sourceId": "ANALYST_ESTIMATE_VINTAGES",
       "status": "NOT_AVAILABLE"
+    },
+    {
+      "blocker": "Manual metadata/smoke dispatch pending; no item/cycle guessed; historical release vintages absent.",
+      "regions": [
+        "KR"
+      ],
+      "sourceId": "KR_ECOS_NATIVE_MACRO",
+      "status": "DATA_LINEAGE_UNRESOLVED",
+      "vintageStatus": "REVISED_HISTORY"
+    },
+    {
+      "blocker": "No actual release evidence supplied for an upgrade; aggregate macro-vintage gate remains closed.",
+      "regions": [
+        "KR"
+      ],
+      "sourceId": "KR_FRED_GLOBAL_CONTEXT",
+      "status": "EXISTING_FETCH_REUSABLE",
+      "vintageStatus": "REVISED_HISTORY"
     }
   ],
   "studyId": "market-industry-stock-data-foundation-v1"

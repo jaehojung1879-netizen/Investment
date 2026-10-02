@@ -3,7 +3,6 @@ from __future__ import annotations
 
 import ast
 from copy import deepcopy
-import json
 from pathlib import Path
 
 import numpy as np
@@ -70,8 +69,11 @@ def test_json_rejects_duplicates_and_nonfinite(tmp_path):
 
 def test_real_seal_and_readiness(spec):
     seal = S.DEFAULT_SPEC.with_suffix('.sha256').read_text().strip()
-    loaded, _ = S.load_sealed(expected_hash=seal)
-    assert loaded == spec and seal == S.digest(spec)
+    assert seal == S.digest(spec)
+    # The original v1 seal remains immutable. Shared ECOS/config repairs do
+    # not reseal it: its old execution closure correctly refuses this tree.
+    with pytest.raises(ValueError, match="SEALED_DEPENDENCY_CHANGED: pipeline/config.py"):
+        S.load_sealed(expected_hash=seal)
     report = S.readiness(spec, seal)
     assert report['verdict'] == 'BLOCKED_PREREGISTRATION'
     assert not report['historicalModelsTrained'] and not report['historicalOutcomesComputed']
@@ -104,7 +106,7 @@ def test_execution_blocked_before_inputs(monkeypatch, spec, tmp_path):
     monkeypatch.setenv('GITHUB_REF', 'refs/heads/main')
     monkeypatch.setattr(CLI, 'execute', lambda *a: pytest.fail('must not train'))
     monkeypatch.setattr(CLI, 'verify_inputs', lambda *a: pytest.fail('must not read inputs'))
-    with pytest.raises(ValueError, match='BLOCKED_PREREGISTRATION'):
+    with pytest.raises(ValueError, match='SEALED_DEPENDENCY_CHANGED'):
         CLI.main(['--sealed-sha256', S.digest(spec), '--execute', '--reviewed',
                   '--input-root', str(tmp_path), '--output', str(tmp_path/'out')])
     assert not (tmp_path/'out').exists()
@@ -123,12 +125,11 @@ def test_review_branch_and_prerequisites(spec):
         S.require_execution(clean, reviewed=True, branch='refs/heads/main', prerequisites={'ok':False})
 
 
-def test_cli_validation_only_deterministic(spec, capsys):
-    assert CLI.main(['--sealed-sha256', S.digest(spec)]) == 0
-    a = capsys.readouterr().out
-    CLI.main(['--sealed-sha256', S.digest(spec)])
-    assert capsys.readouterr().out == a
-    assert json.loads(a)['historicalModelsTrained'] is False
+def test_cli_old_seal_refuses_changed_shared_sources(capsys):
+    for _ in range(2):
+        with pytest.raises(ValueError, match='SEALED_DEPENDENCY_CHANGED'):
+            CLI.main(['--sealed-sha256', S.digest(S.read_json(S.DEFAULT_SPEC))])
+        assert capsys.readouterr().out == ''
 
 
 def test_chronological_expanding_maturity_no_overlap(spec):

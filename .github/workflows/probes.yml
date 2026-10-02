@@ -46,6 +46,7 @@ on:
           - kr-investor-flow
           - kr-short-selling
           - guru-13f-access
+          - ecos-market-context
       args:
         description: "스크립트에 그대로 넘길 인자 (비우면 스크립트 기본값)"
         type: string
@@ -63,7 +64,7 @@ jobs:
   # Every probe except the egress fan-out, which needs many runners and so
   # cannot share this shape.
   probe:
-    if: github.event_name == 'workflow_dispatch' && inputs.probe != 'sec-egress'
+    if: github.event_name == 'workflow_dispatch' && inputs.probe != 'sec-egress' && inputs.probe != 'ecos-market-context'
     runs-on: ubuntu-latest
     # The KR delisting measurement walks the whole Korean panel and is the
     # only one that needs hours; the rest finish in minutes.
@@ -305,3 +306,27 @@ jobs:
             raw-inputs/snapshot-manifest.sha256
           if-no-files-found: warn
           retention-days: 90
+
+  ecos-market-context:
+    if: github.event_name == 'workflow_dispatch' && inputs.probe == 'ecos-market-context'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+      - name: Read-only ECOS metadata and smoke
+        env:
+          ECOS_API_KEY: ${{ secrets.ECOS }}
+          ECOS_MANUAL_PROBE: '1'
+          # args is JSON data for exact reviewed metadata selectors, never shell.
+          ECOS_SELECTIONS: ${{ inputs.args || '{}' }}
+        run: python scripts/probe_ecos_market_context.py --output "$RUNNER_TEMP/ecos/source-readiness.json"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ecos-market-context-source-metadata-${{ github.run_id }}
+          path: ${{ runner.temp }}/ecos/source-readiness.json
+          if-no-files-found: error

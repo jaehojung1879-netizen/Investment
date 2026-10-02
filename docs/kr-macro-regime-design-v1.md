@@ -1,5 +1,13 @@
 # KR macro regime design — v1
 
+> Historical design snapshot. Current implementation/status: see
+> `docs/kr-market-context-foundation-v1.md` (PR #188). An ECOS fetcher now
+> exists; its per-series native identity is gated on manual validation.
+> The old duplicate-table objection below was an item-selection gap, not
+> proof that two yields cannot share a table. CorpBond_3Y is a yield; its
+> spread is derived separately. The current sixth axis is equityMarketState.
+> Original statements below describe the earlier inventory, not current readiness.
+
 > **Design only. No threshold or weight is fitted or optimized in this
 > document, and no production code changes.** This proposes the AXIS
 > structure a future KR-specific regime engine would use, built from an

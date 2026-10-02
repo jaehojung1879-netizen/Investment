@@ -304,3 +304,18 @@ NO PRIOR SEALED STUDY WAS RERUN
 
 THIS FOUNDATION SERVES THE BROADER OBJECTIVE OF FUTURE BENCHMARK-RELATIVE ALPHA,
 BUT DOES NOT CLAIM ALPHA ITSELF.
+
+## KR market-context implementation revision (PR #188)
+
+The reusable KR context and safe ECOS validation path are detailed in
+`docs/kr-market-context-foundation-v1.md`. They implement separate domestic
+growth, inflation, rates, liquidity/credit, external financial conditions
+and equity-market measurements. Revised ECOS history never becomes PIT_EXACT
+through a publication lag. The manual source validation is still awaiting an
+authorized dispatch path; the machine-readable matrix does not claim a live
+run. Source/feature readiness and identity pins now include this layer.
+
+The original alpha-opportunity-model-v1 seal pins shared config/ecos modules.
+Repairing those modules intentionally makes its old closure fail closed; its
+specification, hashes and runner are not resealed or changed. Regression tests
+verify this refusal before input loading or training. No study is reopened.
