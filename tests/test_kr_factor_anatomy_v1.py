@@ -717,10 +717,22 @@ def good_env(s):
             "ANATOMY_INPUT_RUN_ID": str(s["input"]["producingRunId"])}
 
 
+def unsealed_repo(tmp_path):
+    """A synthetic PRE-SEAL repository: exact copies of the frozen spec and sidecar, and NO committed result. The real
+    ROOT may or may not carry the sealed result, so lifecycle behaviour is never asserted against it."""
+    repo = tmp_path / "repo"
+    for rel in (E.SPEC_PATH, str(Path(E.SPEC_PATH).with_suffix(".sha256"))):
+        (repo / rel).parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy(ROOT / rel, repo / rel)
+    assert not (repo / E.RESULT_PATH).exists()
+    return repo
+
+
 def test_outcome_execution_refuses_before_merged_main_authorization_and_spec_seal(tmp_path):
     s, sha = E.load_spec()
     env = good_env(s)
-    permit = E.authorize_execution(s, sha, ROOT, env, fake_git())
+    repo = unsealed_repo(tmp_path)
+    permit = E.authorize_execution(s, sha, repo, env, fake_git())                      # pre-seal state: authorized
     assert isinstance(permit, E.ExecutionPermit) and permit.specSha256 == sha
     cases = [({"GITHUB_ACTIONS": "false"}, "REQUIRES_ACTIONS"), ({"GITHUB_REF": "refs/heads/feature"}, "REQUIRES_MAIN"),
              ({"GITHUB_REF": "refs/pull/1/merge"}, "REQUIRES_MAIN"),
@@ -731,18 +743,13 @@ def test_outcome_execution_refuses_before_merged_main_authorization_and_spec_sea
              ({"ANATOMY_INPUT_RUN_ID": ""}, "INPUT_ARTIFACT_IDENTITY_MISMATCH")]
     for change, message in cases:
         with pytest.raises(ValueError, match=message):
-            E.authorize_execution(s, sha, ROOT, {**env, **change}, fake_git())
+            E.authorize_execution(s, sha, repo, {**env, **change}, fake_git())
     with pytest.raises(ValueError, match="SPEC_NOT_COMMITTED_AT_HEAD"):                 # unmerged / edited spec
-        E.authorize_execution(s, sha, ROOT, env, fake_git(override=b"{}"))
-    sealed = tmp_path / "repo"
-    for rel in (E.SPEC_PATH, str(Path(E.SPEC_PATH).with_suffix(".sha256"))):
-        (sealed / rel).parent.mkdir(parents=True, exist_ok=True)
-        shutil.copy(ROOT / rel, sealed / rel)
-    assert E.authorize_execution(s, sha, sealed, env, fake_git())
-    (sealed / E.RESULT_PATH).parent.mkdir(parents=True, exist_ok=True)
-    (sealed / E.RESULT_PATH).write_text("{}")
+        E.authorize_execution(s, sha, repo, env, fake_git(override=b"{}"))
+    (repo / E.RESULT_PATH).parent.mkdir(parents=True, exist_ok=True)                    # the result is now committed
+    (repo / E.RESULT_PATH).write_text("{}")
     with pytest.raises(ValueError, match="ANATOMY_RESULT_ALREADY_COMMITTED"):
-        E.authorize_execution(s, sha, sealed, env, fake_git())
+        E.authorize_execution(s, sha, repo, env, fake_git())
 
 
 def test_every_outcome_path_refuses_without_a_permit_and_before_any_data_is_read(monkeypatch, tmp_path):
