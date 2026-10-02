@@ -2226,6 +2226,35 @@
   promoted-predictor keys; a hit makes the run a `DIAGNOSTIC_ERROR`. Diagnostics choose no best feature, group,
   regime or interaction, and any hypothesis they suggest belongs to a NEW preregistration.
 
+## KR factor anatomy protocol invariants (v2.42)
+
+- AN EXPLORATORY MAP ON OUTCOME-EXPOSED HISTORY GENERATES HYPOTHESES AND NOTHING ELSE. `kr-factor-anatomy-v1`
+  decomposes the eleven raw features of `kr-model-overlay-portfolio-v1` descriptively. Every KR date through
+  2026-09-14 is already outcome-exposed, so every result is permanently
+  `EXPLORATORY_DEVELOPMENT_ON_OUTCOME_EXPOSED_KR_HISTORY`: no PASS/FAIL, no promotion, no production weight, no
+  "best factor", no recommended portfolio, and it can never validate, rescue or alter v1's sealed
+  `DEVELOPMENT_REJECT`. The output schema is scanned for those semantics (`assert_no_forbidden_keys`).
+- A PREMISE ABOUT THE OUTCOME IS READ FROM THE CODE, NOT FROM THE BRIEF. The task brief expected a price-only
+  return. The replay `Close` is the as-traded close with a forward-accumulated dividend factor
+  (`price_adjustment.to_total_return`, `AS_TRADED_CLOSE_WITH_FORWARD_ACCUMULATED_TOTAL_RETURN`), joined to
+  Yahoo distributions only where the vendor served them (none for the 22 audited delisted names; per-name
+  completeness for continuing names unaudited). The outcome is therefore
+  `BENCHMARK_RELATIVE_ADJUSTED_INDEX_RETURN_PARTIAL_DISTRIBUTIONS` — neither a price return nor a total shareholder
+  return — and is never labelled either. High-dividend names (banks, financials) stay unreliable;
+  `TOTAL_RETURN_ANALYSIS` is DATA_FOUNDATION_REQUIRED and no dividend adjustment is improvised.
+- RANKS ARE FIXED BEFORE OUTCOMES. Percentiles and buckets come from the signal-date cross-section only, so a name
+  whose outcome is later withheld keeps its rank slot and no future information can move a rank. Every statistic is
+  per date first and date-equal-weighted after (`date_weights`), summed in an input-order-independent order.
+- A STRUCTURAL SUBGROUP NEEDS A DATED CLASSIFICATION OR IT IS NOT COMPUTED. No point-in-time sector or
+  regulated-enterprise/financial history exists, so `STRUCTURAL_CLASSIFICATION_STATUS` is DATA_FOUNDATION_REQUIRED.
+  A classification file the spec does not pin is refused (`UNPINNED_STRUCTURAL_CLASSIFICATION_PRESENT`); KEPCO stays
+  in every primary table, with a labelled single-ticker leave-out and a fixed case study.
+- OUTCOME EXECUTION IS A SEPARATE, GUARDED STEP. The protocol change computes no outcome. `execute` needs a
+  `workflow_dispatch` on merged `main`, this exact spec committed at that commit, the exact preserved artifact
+  (name, run, id and archive digest checked through the Actions API), the input identity, and no committed result;
+  pull-request CI runs `verify` only. A sealed study's pinned files (here `docs/workflow-inventory.md`) are never
+  edited: later workflows are documented in `docs/workflow-inventory-addendum.md`.
+
 ## Lint gate invariants (v2.11)
 
 - The enabled rule set reports ZERO findings on `main`. A rule is turned on in the

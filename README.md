@@ -17,6 +17,8 @@ Replay v7의 고정 평가 달력과 성과 정의는 [v7 평가 문서](docs/re
 
 See the [research foundation](docs/kr-model-overlay-portfolio-v1-research-foundation.md), [source audit](docs/kr-model-overlay-portfolio-v1-data-audit.md), [frozen design](docs/kr-model-overlay-portfolio-v1-design.md), [preregistration](docs/kr-model-overlay-portfolio-v1-preregistration.md), [execution firewall](docs/kr-model-overlay-portfolio-v1-execution.md) and [prospective receipts](docs/kr-model-overlay-portfolio-v1-prospective.md). No authorization or scheduled prediction automation is activated. Prospective eligibility begins strictly after the final specification's actual merge date.
 
+`kr-factor-anatomy-v1` is an **exploratory, hypothesis-generating** protocol and harness for a Korean market map: how each of the eleven v1 raw features, its family, size and liquidity strata, interactions and structural company types have historically been associated with benchmark-relative returns. It is outcome-exposed development history, can never validate, rescue or alter the sealed `DEVELOPMENT_REJECT` of v1, and has **no PASS/FAIL or promotion semantics**. The outcome is a benchmark-relative adjusted-index return with partial observed distributions (not total shareholder return). This change computes no factor outcome; execution is possible only from merged `main`. See the [design and protocol](docs/kr-factor-anatomy-v1-design.md).
+
 ## 현재 replay / Regional Rotation 검증
 
 현재 세대는 **`replay-v16`**입니다. v7~v15 설명과 과거 수치는 아래에 변경 이력으로

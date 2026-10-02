@@ -13,6 +13,9 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 WORKFLOWS_DIR = ROOT / ".github" / "workflows"
 DOC = ROOT / "docs" / "workflow-inventory.md"
+# The main inventory is byte-pinned by the sealed kr-model-overlay-portfolio-v1 spec, so workflows added after that
+# seal are documented in this addendum instead (same ACTIVE-table format). Both documents are read below.
+ADDENDUM = ROOT / "docs" / "workflow-inventory-addendum.md"
 
 _YML_NAME = re.compile(r"[A-Za-z0-9][\w.-]*\.yml")
 
@@ -33,8 +36,20 @@ def test_the_inventory_doc_exists():
     assert DOC.is_file(), "docs/workflow-inventory.md is required by workflow-hygiene-live-data-fixes-v1"
 
 
+def _all_docs() -> list[str]:
+    return [p.read_text(encoding="utf-8") for p in (DOC, ADDENDUM) if p.is_file()]
+
+
+def _active_named() -> set[str]:
+    named: set[str] = set()
+    for text in _all_docs():
+        if "## ACTIVE" in text:
+            named |= set(_YML_NAME.findall(_section(text, "ACTIVE")))
+    return named
+
+
 def test_every_workflow_file_on_disk_is_mentioned_somewhere_in_the_doc():
-    text = DOC.read_text(encoding="utf-8")
+    text = "\n".join(_all_docs())
     mentioned = set(_YML_NAME.findall(text))
     on_disk = _actual_workflow_files()
     missing = on_disk - mentioned
@@ -42,9 +57,7 @@ def test_every_workflow_file_on_disk_is_mentioned_somewhere_in_the_doc():
 
 
 def test_every_active_row_names_a_workflow_that_actually_exists():
-    text = DOC.read_text(encoding="utf-8")
-    active = _section(text, "ACTIVE")
-    named = set(_YML_NAME.findall(active))
+    named = _active_named()
     on_disk = _actual_workflow_files()
     missing = named - on_disk
     assert not missing, (
@@ -56,8 +69,7 @@ def test_no_active_workflow_file_is_missing_from_the_active_table():
     """The inverse direction: every file that actually runs unconditionally
     or on a schedule (not routed through Probes) should be listed as ACTIVE,
     not left implicit."""
-    text = DOC.read_text(encoding="utf-8")
-    active_named = set(_YML_NAME.findall(_section(text, "ACTIVE")))
+    active_named = _active_named()
     on_disk = _actual_workflow_files()
     # probes.yml is its own ACTIVE row (the dispatcher) even though the
     # sources it probes are documented in the ON-DEMAND PROBES table by
@@ -83,7 +95,7 @@ def test_retired_table_lists_no_currently_active_workflow():
     """Guards against a copy-paste naming an ACTIVE workflow in the RETIRED
     table by mistake."""
     text = DOC.read_text(encoding="utf-8")
-    active_names = set(_YML_NAME.findall(_section(text, "ACTIVE")))
+    active_names = _active_named()
     retired_names = set(_YML_NAME.findall(_section(text, "RETIRED RESEARCH")))
     overlap = active_names & retired_names
     assert not overlap, f"listed as both ACTIVE and RETIRED: {sorted(overlap)}"
