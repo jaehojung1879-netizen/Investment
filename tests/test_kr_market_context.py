@@ -161,3 +161,21 @@ def test_probe_reports_metadata_and_smoke_without_values(monkeypatch):
     assert not result['series'][0]['historicalConfirmatoryEligible']
     assert result['validatedConfig']['KTB_3Y']['cycle']=='D'
     assert result['validatedConfig']['KTB_3Y']['unit']=='연%'
+
+
+def test_old_v1_seal_stays_immutable_and_refuses_new_ecos_closure(monkeypatch,tmp_path,capsys):
+    from pipeline import alpha_opportunity_spec as S
+    from scripts import run_alpha_opportunity_model as CLI
+    spec=S.read_json(S.DEFAULT_SPEC)
+    seal=S.DEFAULT_SPEC.with_suffix('.sha256').read_text().strip()
+    assert seal==S.digest(spec)
+    assert S.readiness(spec,seal)['verdict']=='BLOCKED_PREREGISTRATION'
+    with pytest.raises(ValueError,match='SEALED_DEPENDENCY_CHANGED: pipeline/config.py'):
+        S.load_sealed(expected_hash=seal)
+    monkeypatch.setenv('GITHUB_REF','refs/heads/main')
+    monkeypatch.setattr(CLI,'execute',lambda *a:pytest.fail('must never train'))
+    monkeypatch.setattr(CLI,'verify_inputs',lambda *a:pytest.fail('must never load input'))
+    for args in ([],['--execute','--reviewed','--input-root',str(tmp_path),'--output',str(tmp_path/'blocked')]):
+        with pytest.raises(ValueError,match='SEALED_DEPENDENCY_CHANGED'):
+            CLI.main(['--sealed-sha256',seal,*args])
+    assert capsys.readouterr().out=='' and not (tmp_path/'blocked').exists()

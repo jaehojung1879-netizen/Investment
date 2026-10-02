@@ -782,7 +782,7 @@
       "vintageStatus": "REVISED_HISTORY"
     }
   ],
-  "specSha256": "4c3af1d667b9a0a7c7410a4425ed4fe3ecd0e07d6adb3c1f05be83f928e62286",
+  "specSha256": "df82bfd03a7366a1e3b9f5a7cc3780bbcd481b136a6e548aebc0480921de6f1d",
   "status": "DATA_FOUNDATION_REQUIRED",
   "studyId": "market-industry-stock-data-foundation-v1",
   "taxonomyChosenUsingOutcomes": false,
@@ -817,6 +817,7 @@
     "research_specs/market-industry-stock-membership-v1.schema.json",
     "scripts/audit_market_industry_stock_foundation.py",
     "scripts/probe_ecos_market_context.py",
+    "tests/conftest.py",
     "tests/fixtures/industry-foundation.synthetic.json",
     "tests/test_alpha_opportunity.py",
     "tests/test_ecos_macro.py",

@@ -317,5 +317,6 @@ run. Source/feature readiness and identity pins now include this layer.
 
 The original alpha-opportunity-model-v1 seal pins shared config/ecos modules.
 Repairing those modules intentionally makes its old closure fail closed; its
-specification, hashes and runner are not resealed or changed. Regression tests
-verify this refusal before input loading or training. No study is reopened.
+specification, hashes and runner are not resealed or changed. The hash-pinned legacy test file is byte-preserved. Three old open-closure
+assertions are strict-xfailed through the existing conftest supersession pattern;
+new context tests verify refusal before inputs or training. No study is reopened.
