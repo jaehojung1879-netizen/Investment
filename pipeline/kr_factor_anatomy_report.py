@@ -15,8 +15,8 @@ import pandas as pd
 from . import kr_factor_anatomy as A
 from . import kr_value_quality_catalyst as F
 
-PRIMARY_UNIVERSE = "BROAD_PIT_ANALYSIS_UNIVERSE"
-SECONDARY_UNIVERSE = "V1_INVESTABLE_ANALYSIS_UNIVERSE"
+PRIMARY_UNIVERSE = "PIT_TOP120_LARGE_CAP_ANALYSIS_UNIVERSE"
+SECONDARY_UNIVERSE = "PIT_TOP120_V1_INVESTABLE_ANALYSIS_UNIVERSE"
 V1_DISCIPLINE = "V1_TERMINAL_DISCIPLINE"
 ALL_OBSERVED = "ALL_OBSERVED_ENDPOINTS"
 
@@ -30,6 +30,7 @@ def header(spec):
             "returnBasis": A.RETURN_BASIS, "totalReturnAnalysis": "DATA_FOUNDATION_REQUIRED",
             "dividendAdjustment": "NONE_APPLIED", "structuralClassification": spec["structuralClassification"]["status"],
             "developmentCutoff": spec["developmentCutoff"], "benchmark": spec["benchmark"],
+            "universeScope": spec["universes"]["scopeStatement"],
             "interpretation": "HYPOTHESIS_GENERATING_ONLY; NO_PASS_FAIL; NO_PROMOTION; CANNOT_RESCUE_OR_ALTER_KR_V1"}
 
 
@@ -188,13 +189,14 @@ def labels_and_map(tables, strata_block, spec):
                  "caveat": factor["caveat"], "horizons": {}}
         for h in spec["horizons"]:
             anatomy = tables[name][str(h)]
-            sign = int(np.sign(anatomy["meanRankCorrelation"])) if np.isfinite(anatomy["meanRankCorrelation"]) else 0
+            sign = A.canonical_sign(anatomy)            # ONE canonical direction: sign of D10-D1
             cap = strata_block[str(h)]["marketCapStrata"][name]["table"]
             liq = strata_block[str(h)]["adv60Strata"][name]
             agreement = A.strata_agreement(cap, sign)
             liq_agreement = A.strata_agreement(liq["table"], sign) if "table" in liq else None
             entry["horizons"][str(h)] = {
                 "direction": {1: "POSITIVE", -1: "NEGATIVE", 0: "NONE"}[sign],
+                "directionMeasures": A.direction_measures(anatomy),
                 "d10MinusD1": anatomy["d10MinusD1"], "meanRankCorrelation": anatomy["meanRankCorrelation"],
                 "interval": anatomy["interval"], "positiveYearFraction": anatomy["spreadYearStability"]["positiveYearFraction"],
                 "marketCapStrataAgreement": agreement, "liquidityStrataAgreement": liq_agreement,
@@ -250,9 +252,9 @@ def winners_losers(events, v1_folds, horizon, spec):
     return {name: explain_events(frame, v1_folds, horizon, spec) for name, frame in tables.items()}
 
 
-def case_studies(events, v1_folds, spec):
+def case_studies(events, v1_folds, spec, tickers=None):
     out = {}
-    for ticker in spec["caseStudies"]["tickers"]:
+    for ticker in (tickers or spec["caseStudies"]["tickers"]):
         picked = A.case_selection(events, ticker)
         if picked["status"] != "SELECTED":
             out[ticker] = {"status": picked["status"]}
@@ -307,6 +309,13 @@ def analyze_all(panel, spec, v1=None, *, structural=None):
     result["winnersLosers"] = detail
     cs_h = spec["caseStudies"]["horizon"]
     result["caseStudies"] = case_studies(events[cs_h], v1["folds"], spec)
+    financial = spec["financialCaseStudies"]
+    result["financialCaseStudies"] = {
+        "status": "PREFROZEN_REPRESENTATIVE_FINANCIAL_CASES_NOT_A_CLASSIFICATION",
+        "structuralClassification": spec["structuralClassification"]["status"],
+        "distributionCaveats": financial["distributionCaveats"],
+        "inputCoverageAtFreeze": financial["inputCoverageAtFreeze"],
+        "cases": case_studies(events[cs_h], v1["folds"], spec, tickers=financial["tickers"])}
     A.assert_no_forbidden_keys(result)
     return result, rows
 
@@ -319,6 +328,7 @@ PLAIN_BANNER = ("EXPLORATORY / DEVELOPMENT / HYPOTHESIS-GENERATING. Korean histo
 def render_report(result, spec):
     """Human-readable Markdown. Rows keep the spec's factor order; they are never sorted by result."""
     lines = ["# KR factor anatomy v1 — market map", "", "**" + PLAIN_BANNER + "**", "",
+             "**Scope: " + spec["universes"]["scopeStatement"] + "**", "",
              "Return basis: `" + A.RETURN_BASIS + "` — the stock's and the KODEX 200 benchmark's adjusted-index return "
              "over the same sessions, dividend-reinvested ONLY where the vendor served distributions. It is neither a pure "
              "price return nor a complete total shareholder return; high-dividend stocks (banks, financials) are NOT "
@@ -326,7 +336,7 @@ def render_report(result, spec):
              "Structural/sector subgroup analysis: " + result["structuralClassification"]["status"] +
              " (no historical classification is back-applied from today).", ""]
     primary = result["universes"][PRIMARY_UNIVERSE]
-    lines += ["## A. Executive map (broad PIT universe, side by side, spec order)", "",
+    lines += ["## A. Executive map (PIT top-120 KOSPI large-cap universe, side by side, spec order)", "",
               "| factor | family | H126 D10−D1 | H126 yrs positive | H126 label | H252 D10−D1 | H252 yrs positive | H252 label |",
               "|---|---|---|---|---|---|---|---|"]
     def fmt(x, digits=4):
@@ -353,7 +363,9 @@ def render_report(result, spec):
               "- Financial-company sensitivity: DATA_FOUNDATION_REQUIRED (no dated authoritative list).",
               "- Price-return vs total-return: see header above; no dividend adjustment was fabricated.",
               "- KEPCO (015760.KS) stays in every primary table; the leave-KEPCO-out figures are a labelled single-ticker "
-              "sensitivity, not a classification claim.", "",
+              "sensitivity, not a classification claim.",
+              "- Pre-frozen representative financial cases (bank holdings and insurers) are extracted mechanically in "
+              "`financialCaseStudies` with their distribution-coverage caveats; they are not a financial-sector classification.", "",
               "## D. Winner / loser anatomy and E. Samsung / SK Hynix / KEPCO case studies", "",
               "Mechanical selections with exact v1 decompositions are in the machine-readable results "
               "(`winnersLosers`, `caseStudies`). No narrative is attached by the execution code.", ""]

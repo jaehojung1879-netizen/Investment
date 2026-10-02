@@ -74,7 +74,7 @@ Both start from the v1 point-in-time membership: the strictly previous monthly K
 (no current-member union, no survivorship backfill). Every member is a large cap, so this study says nothing about
 small caps.
 
-| | A. `BROAD_PIT_ANALYSIS_UNIVERSE` (primary) | B. `V1_INVESTABLE_ANALYSIS_UNIVERSE` |
+| | A. `PIT_TOP120_LARGE_CAP_ANALYSIS_UNIVERSE` (primary) | B. `PIT_TOP120_V1_INVESTABLE_ANALYSIS_UNIVERSE` |
 |---|---|---|
 | Membership | PIT top-120 | PIT top-120 |
 | Factor tested | its own value must be finite | its own value must be finite |
@@ -218,3 +218,26 @@ survivors are never substituted.
 Nothing in this study. A pattern that looks interesting becomes a hypothesis for a new preregistration, evaluated on
 prospective or otherwise independent data with the multiplicity of this many views counted. Until then every label,
 interval, spread and case study is a description of one outcome-exposed history.
+
+## 14. Pre-outcome corrections (revision 2)
+
+All four changes below were made before any anatomy outcome existed and the spec was resealed once for them.
+
+1. **Scope is large-cap, stated everywhere.** The primary universe is `PIT_TOP120_LARGE_CAP_ANALYSIS_UNIVERSE`
+   (the earlier name overstated it). It is the point-in-time top-120 KRX market-cap set (260 securities ever). It says
+   nothing about the whole Korean market, mid caps or small caps. The outcome-free audit
+   `docs/results/kr-factor-anatomy-v1-input-scope-audit.json` shows why it is not broadened: the PIT snapshots carry
+   ranks 1-300 (624 securities, 364 only ever at 121-300), but price panels, the KRX market cache and the accounting
+   snapshot exist only for the 260 ever-top-120 securities (accounting: 250 of them, 0 outside). Using ranks 121-300
+   would condition on having been top-120 at another time. Market-only factors: not broadenable. Accounting factors:
+   not broadenable. Raw KRX payloads are unpinned, unadjusted and unreadable here.
+2. **Structural classification** was attempted before outcomes and remains `DATA_FOUNDATION_REQUIRED`: no dated
+   authoritative source for historical financial or regulated/public-enterprise status is pinned or reachable, and
+   today's sector label is forbidden. Instead eight financial names are frozen as case studies (`financialCaseStudies`:
+   KB, Shinhan, Hana, Woori, IBK, Samsung Life, Samsung Fire, Korea Investment Holdings) with explicit distribution
+   and accounting-proxy caveats. KEPCO stays in every primary table.
+3. **Label direction consistency.** The canonical direction is the sign of the equal-date D10-D1 spread. A BROADLY_*
+   label additionally requires decile monotonicity and the mean within-date rank correlation to be non-zero and share
+   that sign; otherwise the label is `NO_CLEAR_MONOTONIC_PATTERN`. Adversarial synthetic tests cover each contradiction.
+4. **Winner/loser tables** now include `largestPositiveStockReturn` (rose most) and `largestNegativeStockReturn` (fell
+   most) beside the absolute, benchmark-relative and prediction-error tables; all are mechanical.

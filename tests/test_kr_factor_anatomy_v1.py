@@ -137,7 +137,7 @@ def test_spec_pins_exact_input_return_definition_and_boundaries():
 def test_eleven_v1_factors_two_universes_fixed_interactions_and_cases():
     s = spec()
     assert [f["name"] for f in s["factors"]] == list(F.RAW_FEATURES) and len(s["factors"]) == 11
-    assert s["universes"]["definitions"] == ["BROAD_PIT_ANALYSIS_UNIVERSE", "V1_INVESTABLE_ANALYSIS_UNIVERSE"]
+    assert s["universes"]["definitions"] == ["PIT_TOP120_LARGE_CAP_ANALYSIS_UNIVERSE", "PIT_TOP120_V1_INVESTABLE_ANALYSIS_UNIVERSE"]
     ids = [i["id"] for i in s["interactions"]]
     assert len(ids) == 11 and len(set(ids)) == 11
     for family in ("CHEAP_X_PROFITABILITY", "CHEAP_X_OCF_IMPROVEMENT", "CHEAP_X_PRIOR_MOMENTUM"):
@@ -253,11 +253,11 @@ def test_broad_and_v1_investable_universes_differ_only_by_the_documented_filters
                      "adv60": [np.nan, 1e9, 3e9, 5e9][int(rng.integers(0, 4))],
                      "downsideVol126": [np.nan, .005, .01, .3][int(rng.integers(0, 4))]})
     panel = pd.DataFrame(rows)
-    broad = A.universe_mask(panel, "BROAD_PIT_ANALYSIS_UNIVERSE", s)
-    investable = A.universe_mask(panel, "V1_INVESTABLE_ANALYSIS_UNIVERSE", s)
+    broad = A.universe_mask(panel, "PIT_TOP120_LARGE_CAP_ANALYSIS_UNIVERSE", s)
+    investable = A.universe_mask(panel, "PIT_TOP120_V1_INVESTABLE_ANALYSIS_UNIVERSE", s)
     assert broad.all() and (investable <= broad).all()
-    cfg = {"minimumAdvKrw": s["universes"]["V1_INVESTABLE_ANALYSIS_UNIVERSE"]["v1Constraints"]["minimumAdvKrw"],
-           "minimumDownsideVol": s["universes"]["V1_INVESTABLE_ANALYSIS_UNIVERSE"]["v1Constraints"]["minimumDownsideVol"]}
+    cfg = {"minimumAdvKrw": s["universes"]["PIT_TOP120_V1_INVESTABLE_ANALYSIS_UNIVERSE"]["v1Constraints"]["minimumAdvKrw"],
+           "minimumDownsideVol": s["universes"]["PIT_TOP120_V1_INVESTABLE_ANALYSIS_UNIVERSE"]["v1Constraints"]["minimumDownsideVol"]}
     for row, flag in zip(panel.to_dict("records"), investable):
         assert bool(P.eligible(row, cfg)) == bool(flag)                         # exactly the v1 stock-eligibility rule
         if not flag:
@@ -432,7 +432,7 @@ def test_net_income_improvement_reproduces_the_v1_ocf_chain_and_abstains_on_mixe
 # Descriptive labels, intervals, year views
 # --------------------------------------------------------------------------- #
 def anatomy(**over):
-    base = {"datesWithDeciles": 300, "decileMonotonicity": 0.9, "d10MinusD1": 0.02, "leaveBestYearOut": {"signRetained": True},
+    base = {"datesWithDeciles": 300, "decileMonotonicity": 0.9, "d10MinusD1": 0.02, "meanRankCorrelation": 0.05, "leaveBestYearOut": {"signRetained": True},
             "spreadYearStability": {"positiveYearFraction": 0.9}}
     base.update(over)
     return base
@@ -442,7 +442,8 @@ def test_descriptive_labels_are_rule_based_and_exhaustive():
     s = spec()
     agree = {"measured": 5, "agreeing": 5}
     assert A.descriptive_label(anatomy(), agree, s) == "BROADLY_POSITIVE_HISTORICAL_ASSOCIATION"
-    assert A.descriptive_label(anatomy(d10MinusD1=-.02, spreadYearStability={"positiveYearFraction": .1}), agree, s) == \
+    assert A.descriptive_label(anatomy(d10MinusD1=-.02, decileMonotonicity=-.9, meanRankCorrelation=-.05,
+                                       spreadYearStability={"positiveYearFraction": .1}), agree, s) == \
         "BROADLY_NEGATIVE_HISTORICAL_ASSOCIATION"
     assert A.descriptive_label(anatomy(decileMonotonicity=.2), agree, s) == "NO_CLEAR_MONOTONIC_PATTERN"
     assert A.descriptive_label(anatomy(spreadYearStability={"positiveYearFraction": .5}), agree, s) == "UNSTABLE_OR_REGIME_DEPENDENT"
@@ -451,6 +452,52 @@ def test_descriptive_labels_are_rule_based_and_exhaustive():
     assert A.descriptive_label(anatomy(datesWithDeciles=10), agree, s) == "DATA_INSUFFICIENT"
     assert A.descriptive_label(anatomy(), {"measured": 1, "agreeing": 1}, s) == "DATA_INSUFFICIENT"
     assert set(s["interpretation"]["labels"]) == set(A.DESCRIPTIVE_LABELS)
+
+
+@pytest.mark.parametrize("over", [
+    {"d10MinusD1": .02, "decileMonotonicity": .9, "meanRankCorrelation": -.05},     # rank correlation contradicts
+    {"d10MinusD1": .02, "decileMonotonicity": -.9, "meanRankCorrelation": .05},     # monotonicity contradicts
+    {"d10MinusD1": -.02, "decileMonotonicity": .9, "meanRankCorrelation": .05},     # spread contradicts
+    {"d10MinusD1": -.02, "decileMonotonicity": .9, "meanRankCorrelation": -.05,
+     "spreadYearStability": {"positiveYearFraction": .1}},
+    {"d10MinusD1": .02, "decileMonotonicity": .9, "meanRankCorrelation": 0.0},      # a measure with no direction
+    {"d10MinusD1": .02, "decileMonotonicity": .9, "meanRankCorrelation": None},
+])
+def test_contradictory_direction_measures_never_give_a_broad_label(over):
+    s = spec()
+    label = A.descriptive_label(anatomy(**over), {"measured": 5, "agreeing": 5}, s)
+    assert label == "NO_CLEAR_MONOTONIC_PATTERN"
+    assert label not in ("BROADLY_POSITIVE_HISTORICAL_ASSOCIATION", "BROADLY_NEGATIVE_HISTORICAL_ASSOCIATION")
+
+
+def test_canonical_direction_is_the_spread_sign_and_is_frozen():
+    s = spec()["interpretation"]
+    assert "D10-D1" in s["canonicalDirection"] and len(s["directionMeasures"]) == 3
+    assert A.canonical_sign(anatomy(d10MinusD1=-.01)) == -1 and A.canonical_sign(anatomy(d10MinusD1=0.0)) == 0
+    assert A.direction_measures(anatomy())["consistent"] is True
+    assert A.direction_measures(anatomy(meanRankCorrelation=-.1))["consistent"] is False
+
+
+def test_scope_is_large_cap_everywhere_and_investigation_is_frozen():
+    s = spec()
+    assert "TOP-120" in s["universes"]["scopeStatement"] and "LARGE CAP" in s["universes"]["scopeStatement"]
+    assert "BROAD_PIT_ANALYSIS_UNIVERSE" not in json.dumps(s)
+    inv = s["universes"]["scopeInvestigation"]
+    assert "NOT broadened" in inv["marketOnlyFactors"] and "NOT broadened" in inv["accountingFactors"]
+    audit = json.loads((ROOT / "docs/results/kr-factor-anatomy-v1-input-scope-audit.json").read_text())
+    assert audit["readsNoPriceLevelReturnLabelOrOutcome"] is True
+    assert audit["pricePanels"]["equalsSecuritiesEverInTop120"] is True and audit["accounting"]["outsideEverTop120"] == 0
+    assert audit["universe"]["distinctSecuritiesRank1To120"] == 260 and audit["universe"]["distinctSecuritiesRank1To300"] == 624
+
+
+def test_financial_case_studies_are_frozen_with_caveats_and_structure_stays_blocked():
+    s = spec()
+    fin = s["financialCaseStudies"]
+    assert len(fin["tickers"]) == 8 and "105560.KS" in fin["tickers"] and set(fin["names"]) == set(fin["tickers"])
+    assert fin["distributionCaveats"] and all(v["hasSealedPricePanel"] for v in fin["inputCoverageAtFreeze"].values())
+    assert s["structuralClassification"]["status"] == "DATA_FOUNDATION_REQUIRED"
+    assert s["structuralClassification"]["investigation"]["attemptedBeforeOutcomes"] is True
+    assert "015760.KS" not in fin["tickers"] and s["kepco"]["primaryUniverse"].startswith("KEPCO is NOT excluded")
 
 
 def test_block_interval_is_deterministic_descriptive_and_refuses_short_series():
@@ -495,7 +542,7 @@ def test_winner_loser_selection_is_mechanical_deterministic_and_non_overlapping(
     events = events_frame()
     first = A.mechanical_event_tables(events, s)
     second = A.mechanical_event_tables(events.sample(frac=1.0, random_state=3).reset_index(drop=True), s)
-    assert set(first) == {"largestAbsoluteStockReturn", "benchmarkRelativeWinners", "benchmarkRelativeLosers",
+    assert set(first) == {"largestPositiveStockReturn", "largestNegativeStockReturn", "largestAbsoluteStockReturn", "benchmarkRelativeWinners", "benchmarkRelativeLosers",
                           "largestPositivePredictionError", "largestNegativePredictionError"}
     for name, table in first.items():
         assert len(table) <= s["winnersLosers"]["count"]
@@ -508,6 +555,9 @@ def test_winner_loser_selection_is_mechanical_deterministic_and_non_overlapping(
     assert winners == sorted(winners, reverse=True)
     assert first["benchmarkRelativeLosers"].relativeReturn.tolist() == sorted(first["benchmarkRelativeLosers"].relativeReturn)
     assert first["largestAbsoluteStockReturn"].stockReturn.abs().is_monotonic_decreasing
+    assert first["largestPositiveStockReturn"].stockReturn.is_monotonic_decreasing
+    assert first["largestNegativeStockReturn"].stockReturn.is_monotonic_increasing
+    assert first["largestPositiveStockReturn"].stockReturn.iloc[0] >= first["largestNegativeStockReturn"].stockReturn.iloc[0]
 
 
 def test_top_five_frequency_and_fixed_case_selection():
@@ -574,7 +624,7 @@ def test_structural_classification_is_a_data_foundation_gate_and_cannot_appear_a
     assert A.structural_status(s, tmp_path)["status"] == "PASSED"
     result = analysis["result"]
     assert result["structuralClassification"]["subgroupTables"] == "DATA_FOUNDATION_REQUIRED"
-    assert not any("sector" in k.lower() or "financial" in k.lower() for k in result)
+    assert not any("sector" in k.lower() or ("financial" in k.lower() and k != "financialCaseStudies") for k in result)
 
 
 def test_every_frozen_table_is_produced_for_both_horizons_and_universes(analysis):

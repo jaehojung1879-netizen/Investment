@@ -1,0 +1,6038 @@
+{
+  "accounting": {
+    "everTop120WithoutRecord": 10,
+    "outsideEverTop120": 0,
+    "tickersWithAnyFrozenRecord": 250,
+    "withinEverTop120": 250
+  },
+  "dividendEvents": {
+    "note": "Counts of years in which the vendor served at least one distribution event. Not a completeness audit: absence does not prove a security paid nothing.",
+    "securitiesWithAnyServedEvent": 215
+  },
+  "kind": "OUTCOME_FREE_INPUT_SCOPE_AUDIT",
+  "pricePanels": {
+    "equalsSecuritiesEverInTop120": true,
+    "krTickers": 260,
+    "lineage": {
+      "distributions": "YAHOO_ACTIONS",
+      "routes": {
+        "naver-range": 260
+      },
+      "source": "krx-native-sessions-with-yahoo-distributions-and-open-api-fallback-v3",
+      "vendor": "FINANCE_DATA_READER"
+    }
+  },
+  "readsNoPriceLevelReturnLabelOrOutcome": true,
+  "securities": {
+    "000030.KS": {
+      "firstTop120": "2014-12-01",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2019-02-01",
+      "names": [
+        "우리은행"
+      ],
+      "servedDividendEventYearCount": 0,
+      "top120Snapshots": 50,
+      "yearsWithServedDividendEvent": []
+    },
+    "000060.KS": {
+      "firstTop120": "2013-12-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2023-02-01",
+      "names": [
+        "메리츠화재"
+      ],
+      "servedDividendEventYearCount": 0,
+      "top120Snapshots": 69,
+      "yearsWithServedDividendEvent": []
+    },
+    "000080.KS": {
+      "firstTop120": "2013-01-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2022-05-02",
+      "names": [
+        "하이트진로"
+      ],
+      "servedDividendEventYearCount": 14,
+      "top120Snapshots": 47,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2024"
+      ]
+    },
+    "000100.KS": {
+      "firstTop120": "2013-01-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-09-01",
+      "names": [
+        "유한양행"
+      ],
+      "servedDividendEventYearCount": 15,
+      "top120Snapshots": 164,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2026"
+      ]
+    },
+    "000120.KS": {
+      "firstTop120": "2013-01-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2024-05-02",
+      "names": [
+        "CJ대한통운"
+      ],
+      "servedDividendEventYearCount": 4,
+      "top120Snapshots": 123,
+      "yearsWithServedDividendEvent": [
+        "2022",
+        "2024",
+        "2025",
+        "2026"
+      ]
+    },
+    "000150.KS": {
+      "firstTop120": "2013-01-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-09-01",
+      "names": [
+        "두산"
+      ],
+      "servedDividendEventYearCount": 15,
+      "top120Snapshots": 105,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2024",
+        "2025",
+        "2026"
+      ]
+    },
+    "000210.KS": {
+      "firstTop120": "2013-01-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2021-01-04",
+      "names": [
+        "DL",
+        "대림산업"
+      ],
+      "servedDividendEventYearCount": 14,
+      "top120Snapshots": 96,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2024"
+      ]
+    },
+    "000240.KS": {
+      "firstTop120": "2013-08-01",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2018-11-01",
+      "names": [
+        "한국앤컴퍼니",
+        "한국타이어월드와이드",
+        "한국테크놀로지그룹"
+      ],
+      "servedDividendEventYearCount": 16,
+      "top120Snapshots": 45,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025",
+        "2026"
+      ]
+    },
+    "000270.KS": {
+      "firstTop120": "2013-01-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-09-01",
+      "names": [
+        "기아",
+        "기아차"
+      ],
+      "servedDividendEventYearCount": 15,
+      "top120Snapshots": 164,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2024",
+        "2025",
+        "2026"
+      ]
+    },
+    "000500.KS": {
+      "firstTop120": "2026-05-04",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-09-01",
+      "names": [
+        "가온전선"
+      ],
+      "servedDividendEventYearCount": 13,
+      "top120Snapshots": 5,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2026"
+      ]
+    },
+    "000660.KS": {
+      "firstTop120": "2013-01-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-09-01",
+      "names": [
+        "SK하이닉스"
+      ],
+      "servedDividendEventYearCount": 13,
+      "top120Snapshots": 164,
+      "yearsWithServedDividendEvent": [
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025",
+        "2026"
+      ]
+    },
+    "000670.KS": {
+      "firstTop120": "2013-01-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2018-01-02",
+      "names": [
+        "영풍"
+      ],
+      "servedDividendEventYearCount": 15,
+      "top120Snapshots": 57,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025"
+      ]
+    },
+    "000720.KS": {
+      "firstTop120": "2013-01-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-09-01",
+      "names": [
+        "현대건설"
+      ],
+      "servedDividendEventYearCount": 15,
+      "top120Snapshots": 164,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2024",
+        "2025",
+        "2026"
+      ]
+    },
+    "000810.KS": {
+      "firstTop120": "2013-01-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-09-01",
+      "names": [
+        "삼성화재"
+      ],
+      "servedDividendEventYearCount": 15,
+      "top120Snapshots": 164,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2024",
+        "2025",
+        "2026"
+      ]
+    },
+    "000830.KS": {
+      "firstTop120": "2013-01-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2015-09-01",
+      "names": [
+        "삼성물산"
+      ],
+      "servedDividendEventYearCount": 0,
+      "top120Snapshots": 33,
+      "yearsWithServedDividendEvent": []
+    },
+    "000880.KS": {
+      "firstTop120": "2013-01-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-09-01",
+      "names": [
+        "한화"
+      ],
+      "servedDividendEventYearCount": 15,
+      "top120Snapshots": 116,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2026"
+      ]
+    },
+    "000990.KS": {
+      "firstTop120": "2021-01-04",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-09-01",
+      "names": [
+        "DB하이텍",
+        "동부하이텍"
+      ],
+      "servedDividendEventYearCount": 9,
+      "top120Snapshots": 29,
+      "yearsWithServedDividendEvent": [
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2025",
+        "2026"
+      ]
+    },
+    "001040.KS": {
+      "firstTop120": "2013-01-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-09-01",
+      "names": [
+        "CJ"
+      ],
+      "servedDividendEventYearCount": 15,
+      "top120Snapshots": 150,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2024",
+        "2025",
+        "2026"
+      ]
+    },
+    "001120.KS": {
+      "firstTop120": "2013-01-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2013-04-01",
+      "names": [
+        "LG상사",
+        "LX인터내셔널"
+      ],
+      "servedDividendEventYearCount": 15,
+      "top120Snapshots": 4,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2025",
+        "2026"
+      ]
+    },
+    "001300.KS": {
+      "firstTop120": "2013-01-02",
+      "hasFrozenAccountingRecord": false,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2014-07-01",
+      "names": [
+        "제일모직"
+      ],
+      "servedDividendEventYearCount": 0,
+      "top120Snapshots": 19,
+      "yearsWithServedDividendEvent": []
+    },
+    "001440.KS": {
+      "firstTop120": "2015-11-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-09-01",
+      "names": [
+        "대한전선"
+      ],
+      "servedDividendEventYearCount": 0,
+      "top120Snapshots": 33,
+      "yearsWithServedDividendEvent": []
+    },
+    "001450.KS": {
+      "firstTop120": "2013-01-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-09-01",
+      "names": [
+        "현대해상"
+      ],
+      "servedDividendEventYearCount": 13,
+      "top120Snapshots": 131,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2024"
+      ]
+    },
+    "001570.KS": {
+      "firstTop120": "2023-03-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2024-11-01",
+      "names": [
+        "금양"
+      ],
+      "servedDividendEventYearCount": 7,
+      "top120Snapshots": 21,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2018"
+      ]
+    },
+    "001680.KS": {
+      "firstTop120": "2014-08-01",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2014-10-01",
+      "names": [
+        "대상"
+      ],
+      "servedDividendEventYearCount": 15,
+      "top120Snapshots": 2,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2025",
+        "2026"
+      ]
+    },
+    "001740.KS": {
+      "firstTop120": "2013-01-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2017-05-02",
+      "names": [
+        "SK네트웍스"
+      ],
+      "servedDividendEventYearCount": 14,
+      "top120Snapshots": 39,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2024",
+        "2025",
+        "2026"
+      ]
+    },
+    "001800.KS": {
+      "firstTop120": "2013-01-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2017-07-03",
+      "names": [
+        "오리온",
+        "오리온홀딩스"
+      ],
+      "servedDividendEventYearCount": 15,
+      "top120Snapshots": 55,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2025",
+        "2026"
+      ]
+    },
+    "002350.KS": {
+      "firstTop120": "2013-06-03",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2013-10-01",
+      "names": [
+        "넥센타이어"
+      ],
+      "servedDividendEventYearCount": 15,
+      "top120Snapshots": 5,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2025",
+        "2026"
+      ]
+    },
+    "002380.KS": {
+      "firstTop120": "2013-01-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-09-01",
+      "names": [
+        "KCC"
+      ],
+      "servedDividendEventYearCount": 16,
+      "top120Snapshots": 126,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025",
+        "2026"
+      ]
+    },
+    "002410.KS": {
+      "firstTop120": "2014-03-03",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2014-03-03",
+      "names": [
+        "범양건영"
+      ],
+      "servedDividendEventYearCount": 0,
+      "top120Snapshots": 1,
+      "yearsWithServedDividendEvent": []
+    },
+    "002550.KS": {
+      "firstTop120": "2013-08-01",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2017-07-03",
+      "names": [
+        "KB손해보험",
+        "LIG손해보험"
+      ],
+      "servedDividendEventYearCount": 0,
+      "top120Snapshots": 27,
+      "yearsWithServedDividendEvent": []
+    },
+    "002790.KS": {
+      "firstTop120": "2013-01-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2024-06-03",
+      "names": [
+        "아모레G",
+        "아모레퍼시픽홀딩스"
+      ],
+      "servedDividendEventYearCount": 15,
+      "top120Snapshots": 130,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2025",
+        "2026"
+      ]
+    },
+    "003000.KS": {
+      "firstTop120": "2020-04-01",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2020-10-05",
+      "names": [
+        "부광약품"
+      ],
+      "servedDividendEventYearCount": 12,
+      "top120Snapshots": 7,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2025"
+      ]
+    },
+    "003090.KS": {
+      "firstTop120": "2020-07-01",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2021-02-01",
+      "names": [
+        "대웅"
+      ],
+      "servedDividendEventYearCount": 14,
+      "top120Snapshots": 4,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2024",
+        "2025"
+      ]
+    },
+    "003230.KS": {
+      "firstTop120": "2024-06-03",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-09-01",
+      "names": [
+        "삼양식품"
+      ],
+      "servedDividendEventYearCount": 15,
+      "top120Snapshots": 28,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025",
+        "2026"
+      ]
+    },
+    "003240.KS": {
+      "firstTop120": "2014-02-03",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2019-04-01",
+      "names": [
+        "태광산업"
+      ],
+      "servedDividendEventYearCount": 15,
+      "top120Snapshots": 5,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2026"
+      ]
+    },
+    "003410.KS": {
+      "firstTop120": "2017-12-01",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2024-07-01",
+      "names": [
+        "쌍용C&E",
+        "쌍용양회"
+      ],
+      "servedDividendEventYearCount": 0,
+      "top120Snapshots": 80,
+      "yearsWithServedDividendEvent": []
+    },
+    "003450.KS": {
+      "firstTop120": "2013-01-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2016-10-04",
+      "names": [
+        "현대증권"
+      ],
+      "servedDividendEventYearCount": 0,
+      "top120Snapshots": 12,
+      "yearsWithServedDividendEvent": []
+    },
+    "003490.KS": {
+      "firstTop120": "2013-01-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-09-01",
+      "names": [
+        "대한항공"
+      ],
+      "servedDividendEventYearCount": 6,
+      "top120Snapshots": 164,
+      "yearsWithServedDividendEvent": [
+        "2017",
+        "2018",
+        "2022",
+        "2023",
+        "2024",
+        "2026"
+      ]
+    },
+    "003520.KS": {
+      "firstTop120": "2016-06-01",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2017-09-01",
+      "names": [
+        "영진약품"
+      ],
+      "servedDividendEventYearCount": 0,
+      "top120Snapshots": 9,
+      "yearsWithServedDividendEvent": []
+    },
+    "003550.KS": {
+      "firstTop120": "2013-01-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-09-01",
+      "names": [
+        "LG"
+      ],
+      "servedDividendEventYearCount": 15,
+      "top120Snapshots": 164,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2025",
+        "2026"
+      ]
+    },
+    "003600.KS": {
+      "firstTop120": "2013-01-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2015-08-03",
+      "names": [
+        "SK"
+      ],
+      "servedDividendEventYearCount": 0,
+      "top120Snapshots": 32,
+      "yearsWithServedDividendEvent": []
+    },
+    "003620.KS": {
+      "firstTop120": "2023-05-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2023-05-02",
+      "names": [
+        "KG모빌리티",
+        "쌍용차"
+      ],
+      "servedDividendEventYearCount": 0,
+      "top120Snapshots": 1,
+      "yearsWithServedDividendEvent": []
+    },
+    "003670.KS": {
+      "firstTop120": "2019-06-03",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-09-01",
+      "names": [
+        "포스코케미칼",
+        "포스코퓨처엠"
+      ],
+      "servedDividendEventYearCount": 14,
+      "top120Snapshots": 88,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2024",
+        "2026"
+      ]
+    },
+    "004000.KS": {
+      "firstTop120": "2013-01-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2013-01-02",
+      "names": [
+        "롯데정밀화학",
+        "삼성정밀화학"
+      ],
+      "servedDividendEventYearCount": 15,
+      "top120Snapshots": 1,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2025",
+        "2026"
+      ]
+    },
+    "004020.KS": {
+      "firstTop120": "2013-01-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-09-01",
+      "names": [
+        "현대제철"
+      ],
+      "servedDividendEventYearCount": 15,
+      "top120Snapshots": 163,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2024",
+        "2025",
+        "2026"
+      ]
+    },
+    "004170.KS": {
+      "firstTop120": "2013-01-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-09-01",
+      "names": [
+        "신세계"
+      ],
+      "servedDividendEventYearCount": 15,
+      "top120Snapshots": 106,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2025",
+        "2026"
+      ]
+    },
+    "004370.KS": {
+      "firstTop120": "2013-01-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2025-04-01",
+      "names": [
+        "농심"
+      ],
+      "servedDividendEventYearCount": 15,
+      "top120Snapshots": 79,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2026"
+      ]
+    },
+    "004800.KS": {
+      "firstTop120": "2013-01-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2020-06-01",
+      "names": [
+        "효성"
+      ],
+      "servedDividendEventYearCount": 15,
+      "top120Snapshots": 76,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025"
+      ]
+    },
+    "004940.KS": {
+      "firstTop120": "2013-01-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2013-04-01",
+      "names": [
+        "외환은행"
+      ],
+      "servedDividendEventYearCount": 0,
+      "top120Snapshots": 4,
+      "yearsWithServedDividendEvent": []
+    },
+    "004990.KS": {
+      "firstTop120": "2013-01-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2025-09-01",
+      "names": [
+        "롯데제과",
+        "롯데지주"
+      ],
+      "servedDividendEventYearCount": 14,
+      "top120Snapshots": 143,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2025",
+        "2026"
+      ]
+    },
+    "005070.KS": {
+      "firstTop120": "2023-03-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2024-11-01",
+      "names": [
+        "코스모신소재"
+      ],
+      "servedDividendEventYearCount": 0,
+      "top120Snapshots": 21,
+      "yearsWithServedDividendEvent": []
+    },
+    "005250.KS": {
+      "firstTop120": "2015-07-01",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2021-01-04",
+      "names": [
+        "녹십자홀딩스"
+      ],
+      "servedDividendEventYearCount": 15,
+      "top120Snapshots": 12,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2026"
+      ]
+    },
+    "005300.KS": {
+      "firstTop120": "2013-01-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2017-09-01",
+      "names": [
+        "롯데칠성"
+      ],
+      "servedDividendEventYearCount": 15,
+      "top120Snapshots": 56,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2025",
+        "2026"
+      ]
+    },
+    "005380.KS": {
+      "firstTop120": "2013-01-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-09-01",
+      "names": [
+        "현대차"
+      ],
+      "servedDividendEventYearCount": 16,
+      "top120Snapshots": 164,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025",
+        "2026"
+      ]
+    },
+    "005385.KS": {
+      "firstTop120": "2013-01-02",
+      "hasFrozenAccountingRecord": false,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-09-01",
+      "names": [
+        "현대차우"
+      ],
+      "servedDividendEventYearCount": 16,
+      "top120Snapshots": 136,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025",
+        "2026"
+      ]
+    },
+    "005387.KS": {
+      "firstTop120": "2013-01-02",
+      "hasFrozenAccountingRecord": false,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-09-01",
+      "names": [
+        "현대차2우B"
+      ],
+      "servedDividendEventYearCount": 16,
+      "top120Snapshots": 164,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025",
+        "2026"
+      ]
+    },
+    "005440.KS": {
+      "firstTop120": "2013-01-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2016-11-01",
+      "names": [
+        "현대그린푸드",
+        "현대지에프홀딩스"
+      ],
+      "servedDividendEventYearCount": 15,
+      "top120Snapshots": 44,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2025",
+        "2026"
+      ]
+    },
+    "005490.KS": {
+      "firstTop120": "2013-01-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-09-01",
+      "names": [
+        "POSCO",
+        "POSCO홀딩스"
+      ],
+      "servedDividendEventYearCount": 16,
+      "top120Snapshots": 164,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025",
+        "2026"
+      ]
+    },
+    "005610.KS": {
+      "firstTop120": "2015-02-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2017-05-02",
+      "names": [
+        "SPC삼립",
+        "삼립식품"
+      ],
+      "servedDividendEventYearCount": 15,
+      "top120Snapshots": 19,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2026"
+      ]
+    },
+    "005690.KS": {
+      "firstTop120": "2020-05-04",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2020-05-04",
+      "names": [
+        "파미셀"
+      ],
+      "servedDividendEventYearCount": 2,
+      "top120Snapshots": 1,
+      "yearsWithServedDividendEvent": [
+        "2024",
+        "2025"
+      ]
+    },
+    "005830.KS": {
+      "firstTop120": "2013-01-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-09-01",
+      "names": [
+        "DB손해보험",
+        "동부화재"
+      ],
+      "servedDividendEventYearCount": 15,
+      "top120Snapshots": 164,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2024",
+        "2025",
+        "2026"
+      ]
+    },
+    "005930.KS": {
+      "firstTop120": "2013-01-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-09-01",
+      "names": [
+        "삼성전자"
+      ],
+      "servedDividendEventYearCount": 16,
+      "top120Snapshots": 164,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025",
+        "2026"
+      ]
+    },
+    "005935.KS": {
+      "firstTop120": "2013-01-02",
+      "hasFrozenAccountingRecord": false,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-09-01",
+      "names": [
+        "삼성전자우"
+      ],
+      "servedDividendEventYearCount": 16,
+      "top120Snapshots": 164,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025",
+        "2026"
+      ]
+    },
+    "005940.KS": {
+      "firstTop120": "2013-01-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-09-01",
+      "names": [
+        "NH투자증권",
+        "우리투자증권"
+      ],
+      "servedDividendEventYearCount": 15,
+      "top120Snapshots": 164,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2024",
+        "2025",
+        "2026"
+      ]
+    },
+    "006040.KS": {
+      "firstTop120": "2022-12-01",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2023-04-03",
+      "names": [
+        "동원산업"
+      ],
+      "servedDividendEventYearCount": 15,
+      "top120Snapshots": 4,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2024",
+        "2025",
+        "2026"
+      ]
+    },
+    "006120.KS": {
+      "firstTop120": "2016-01-04",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2018-01-02",
+      "names": [
+        "SK디스커버리",
+        "SK케미칼"
+      ],
+      "servedDividendEventYearCount": 16,
+      "top120Snapshots": 9,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025",
+        "2026"
+      ]
+    },
+    "006260.KS": {
+      "firstTop120": "2013-01-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-09-01",
+      "names": [
+        "LS"
+      ],
+      "servedDividendEventYearCount": 15,
+      "top120Snapshots": 108,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2025",
+        "2026"
+      ]
+    },
+    "006280.KS": {
+      "firstTop120": "2013-03-04",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2022-01-03",
+      "names": [
+        "녹십자"
+      ],
+      "servedDividendEventYearCount": 15,
+      "top120Snapshots": 76,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2026"
+      ]
+    },
+    "006360.KS": {
+      "firstTop120": "2013-01-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2022-09-01",
+      "names": [
+        "GS건설"
+      ],
+      "servedDividendEventYearCount": 10,
+      "top120Snapshots": 110,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2025",
+        "2026"
+      ]
+    },
+    "006400.KS": {
+      "firstTop120": "2013-01-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-09-01",
+      "names": [
+        "삼성SDI"
+      ],
+      "servedDividendEventYearCount": 14,
+      "top120Snapshots": 164,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2024"
+      ]
+    },
+    "006650.KS": {
+      "firstTop120": "2017-01-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2021-03-02",
+      "names": [
+        "대한유화"
+      ],
+      "servedDividendEventYearCount": 14,
+      "top120Snapshots": 7,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025"
+      ]
+    },
+    "006740.KS": {
+      "firstTop120": "2023-09-01",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2023-09-01",
+      "names": [
+        "영풍제지"
+      ],
+      "servedDividendEventYearCount": 13,
+      "top120Snapshots": 1,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023"
+      ]
+    },
+    "006800.KS": {
+      "firstTop120": "2013-01-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-09-01",
+      "names": [
+        "대우증권",
+        "미래에셋대우",
+        "미래에셋증권"
+      ],
+      "servedDividendEventYearCount": 15,
+      "top120Snapshots": 164,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2024",
+        "2025",
+        "2026"
+      ]
+    },
+    "007070.KS": {
+      "firstTop120": "2013-01-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2024-12-02",
+      "names": [
+        "GS리테일"
+      ],
+      "servedDividendEventYearCount": 15,
+      "top120Snapshots": 133,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2025",
+        "2026"
+      ]
+    },
+    "007310.KS": {
+      "firstTop120": "2013-05-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2020-12-01",
+      "names": [
+        "오뚜기"
+      ],
+      "servedDividendEventYearCount": 15,
+      "top120Snapshots": 78,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2025",
+        "2026"
+      ]
+    },
+    "007570.KS": {
+      "firstTop120": "2020-08-03",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2020-09-01",
+      "names": [
+        "일양약품"
+      ],
+      "servedDividendEventYearCount": 11,
+      "top120Snapshots": 2,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2013",
+        "2014",
+        "2016",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025"
+      ]
+    },
+    "007660.KS": {
+      "firstTop120": "2023-08-01",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-09-01",
+      "names": [
+        "이수페타시스"
+      ],
+      "servedDividendEventYearCount": 13,
+      "top120Snapshots": 25,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2022",
+        "2023",
+        "2025",
+        "2026"
+      ]
+    },
+    "007700.KS": {
+      "firstTop120": "2019-11-01",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2021-05-03",
+      "names": [
+        "F&F",
+        "F&F홀딩스"
+      ],
+      "servedDividendEventYearCount": 15,
+      "top120Snapshots": 9,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025"
+      ]
+    },
+    "008560.KS": {
+      "firstTop120": "2015-05-04",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2023-04-03",
+      "names": [
+        "메리츠종금증권",
+        "메리츠증권"
+      ],
+      "servedDividendEventYearCount": 0,
+      "top120Snapshots": 89,
+      "yearsWithServedDividendEvent": []
+    },
+    "008770.KS": {
+      "firstTop120": "2013-01-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2024-04-01",
+      "names": [
+        "호텔신라"
+      ],
+      "servedDividendEventYearCount": 13,
+      "top120Snapshots": 133,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023"
+      ]
+    },
+    "008930.KS": {
+      "firstTop120": "2015-04-01",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2025-08-01",
+      "names": [
+        "한미사이언스"
+      ],
+      "servedDividendEventYearCount": 10,
+      "top120Snapshots": 108,
+      "yearsWithServedDividendEvent": [
+        "2015",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2026"
+      ]
+    },
+    "009150.KS": {
+      "firstTop120": "2013-01-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-09-01",
+      "names": [
+        "삼성전기"
+      ],
+      "servedDividendEventYearCount": 15,
+      "top120Snapshots": 164,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025"
+      ]
+    },
+    "009240.KS": {
+      "firstTop120": "2014-04-01",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2021-04-01",
+      "names": [
+        "한샘"
+      ],
+      "servedDividendEventYearCount": 15,
+      "top120Snapshots": 74,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2026"
+      ]
+    },
+    "009420.KS": {
+      "firstTop120": "2018-12-03",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2020-12-01",
+      "names": [
+        "한올바이오파마"
+      ],
+      "servedDividendEventYearCount": 0,
+      "top120Snapshots": 14,
+      "yearsWithServedDividendEvent": []
+    },
+    "009540.KS": {
+      "firstTop120": "2013-01-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-09-01",
+      "names": [
+        "HD한국조선해양",
+        "한국조선해양",
+        "현대중공업"
+      ],
+      "servedDividendEventYearCount": 5,
+      "top120Snapshots": 164,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2013",
+        "2025",
+        "2026"
+      ]
+    },
+    "009830.KS": {
+      "firstTop120": "2013-01-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-09-01",
+      "names": [
+        "한화솔루션",
+        "한화케미칼"
+      ],
+      "servedDividendEventYearCount": 11,
+      "top120Snapshots": 164,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2023",
+        "2024"
+      ]
+    },
+    "010060.KS": {
+      "firstTop120": "2013-01-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-09-01",
+      "names": [
+        "OCI",
+        "OCI홀딩스"
+      ],
+      "servedDividendEventYearCount": 11,
+      "top120Snapshots": 107,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2014",
+        "2016",
+        "2017",
+        "2018",
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025"
+      ]
+    },
+    "010120.KS": {
+      "firstTop120": "2013-01-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-09-01",
+      "names": [
+        "LS ELECTRIC",
+        "LS산전"
+      ],
+      "servedDividendEventYearCount": 15,
+      "top120Snapshots": 73,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2026"
+      ]
+    },
+    "010130.KS": {
+      "firstTop120": "2013-01-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-09-01",
+      "names": [
+        "고려아연"
+      ],
+      "servedDividendEventYearCount": 16,
+      "top120Snapshots": 164,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025",
+        "2026"
+      ]
+    },
+    "010140.KS": {
+      "firstTop120": "2013-01-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-09-01",
+      "names": [
+        "삼성중공업"
+      ],
+      "servedDividendEventYearCount": 4,
+      "top120Snapshots": 164,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2013",
+        "2014"
+      ]
+    },
+    "010520.KS": {
+      "firstTop120": "2013-01-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2015-02-02",
+      "names": [
+        "현대하이스코"
+      ],
+      "servedDividendEventYearCount": 0,
+      "top120Snapshots": 19,
+      "yearsWithServedDividendEvent": []
+    },
+    "010620.KS": {
+      "firstTop120": "2013-01-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2025-12-01",
+      "names": [
+        "HD현대미포",
+        "현대미포조선"
+      ],
+      "servedDividendEventYearCount": 0,
+      "top120Snapshots": 111,
+      "yearsWithServedDividendEvent": []
+    },
+    "010780.KS": {
+      "firstTop120": "2015-04-01",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2016-08-01",
+      "names": [
+        "아이에스동서"
+      ],
+      "servedDividendEventYearCount": 12,
+      "top120Snapshots": 6,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2023",
+        "2024",
+        "2025"
+      ]
+    },
+    "010950.KS": {
+      "firstTop120": "2013-01-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-09-01",
+      "names": [
+        "S-Oil"
+      ],
+      "servedDividendEventYearCount": 14,
+      "top120Snapshots": 164,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2026"
+      ]
+    },
+    "011070.KS": {
+      "firstTop120": "2013-01-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-09-01",
+      "names": [
+        "LG이노텍"
+      ],
+      "servedDividendEventYearCount": 12,
+      "top120Snapshots": 162,
+      "yearsWithServedDividendEvent": [
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2025",
+        "2026"
+      ]
+    },
+    "011160.KS": {
+      "firstTop120": "2013-06-03",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2013-07-01",
+      "names": [
+        "두산건설"
+      ],
+      "servedDividendEventYearCount": 0,
+      "top120Snapshots": 2,
+      "yearsWithServedDividendEvent": []
+    },
+    "011170.KS": {
+      "firstTop120": "2013-01-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-05-04",
+      "names": [
+        "롯데케미칼",
+        "호남석유"
+      ],
+      "servedDividendEventYearCount": 16,
+      "top120Snapshots": 150,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025",
+        "2026"
+      ]
+    },
+    "011200.KS": {
+      "firstTop120": "2013-01-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-09-01",
+      "names": [
+        "HMM",
+        "현대상선"
+      ],
+      "servedDividendEventYearCount": 5,
+      "top120Snapshots": 101,
+      "yearsWithServedDividendEvent": [
+        "2021",
+        "2022",
+        "2023",
+        "2025",
+        "2026"
+      ]
+    },
+    "011210.KS": {
+      "firstTop120": "2013-01-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2021-02-01",
+      "names": [
+        "현대위아"
+      ],
+      "servedDividendEventYearCount": 15,
+      "top120Snapshots": 55,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2024",
+        "2025",
+        "2026"
+      ]
+    },
+    "011780.KS": {
+      "firstTop120": "2013-01-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2025-08-01",
+      "names": [
+        "금호석유",
+        "금호석유화학"
+      ],
+      "servedDividendEventYearCount": 15,
+      "top120Snapshots": 148,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025"
+      ]
+    },
+    "011790.KS": {
+      "firstTop120": "2019-09-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-09-01",
+      "names": [
+        "SKC"
+      ],
+      "servedDividendEventYearCount": 12,
+      "top120Snapshots": 84,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022"
+      ]
+    },
+    "011810.KS": {
+      "firstTop120": "2014-04-01",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2014-06-02",
+      "names": [
+        "STX"
+      ],
+      "servedDividendEventYearCount": 2,
+      "top120Snapshots": 2,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012"
+      ]
+    },
+    "012330.KS": {
+      "firstTop120": "2013-01-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-09-01",
+      "names": [
+        "현대모비스"
+      ],
+      "servedDividendEventYearCount": 16,
+      "top120Snapshots": 164,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025",
+        "2026"
+      ]
+    },
+    "012450.KS": {
+      "firstTop120": "2013-01-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-09-01",
+      "names": [
+        "삼성테크윈",
+        "한화에어로스페이스",
+        "한화테크윈"
+      ],
+      "servedDividendEventYearCount": 10,
+      "top120Snapshots": 118,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2013",
+        "2015",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025"
+      ]
+    },
+    "012510.KS": {
+      "firstTop120": "2018-07-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2021-10-01",
+      "names": [
+        "더존비즈온"
+      ],
+      "servedDividendEventYearCount": 0,
+      "top120Snapshots": 28,
+      "yearsWithServedDividendEvent": []
+    },
+    "012630.KS": {
+      "firstTop120": "2013-01-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2018-06-01",
+      "names": [
+        "HDC",
+        "현대산업"
+      ],
+      "servedDividendEventYearCount": 15,
+      "top120Snapshots": 64,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2025",
+        "2026"
+      ]
+    },
+    "0126Z0.KS": {
+      "firstTop120": "2025-12-01",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-09-01",
+      "names": [
+        "삼성에피스홀딩스"
+      ],
+      "servedDividendEventYearCount": 0,
+      "top120Snapshots": 10,
+      "yearsWithServedDividendEvent": []
+    },
+    "012750.KS": {
+      "firstTop120": "2013-01-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2025-10-01",
+      "names": [
+        "에스원"
+      ],
+      "servedDividendEventYearCount": 15,
+      "top120Snapshots": 125,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025"
+      ]
+    },
+    "014680.KS": {
+      "firstTop120": "2020-07-01",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2024-01-02",
+      "names": [
+        "한솔케미칼"
+      ],
+      "servedDividendEventYearCount": 15,
+      "top120Snapshots": 27,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2024",
+        "2025",
+        "2026"
+      ]
+    },
+    "014820.KS": {
+      "firstTop120": "2015-06-01",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2016-05-02",
+      "names": [
+        "동원시스템즈"
+      ],
+      "servedDividendEventYearCount": 12,
+      "top120Snapshots": 11,
+      "yearsWithServedDividendEvent": [
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2024",
+        "2025",
+        "2026"
+      ]
+    },
+    "015760.KS": {
+      "firstTop120": "2013-01-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-09-01",
+      "names": [
+        "한국전력"
+      ],
+      "servedDividendEventYearCount": 8,
+      "top120Snapshots": 164,
+      "yearsWithServedDividendEvent": [
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2020",
+        "2024",
+        "2025"
+      ]
+    },
+    "016360.KS": {
+      "firstTop120": "2013-01-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-09-01",
+      "names": [
+        "삼성증권"
+      ],
+      "servedDividendEventYearCount": 15,
+      "top120Snapshots": 164,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025"
+      ]
+    },
+    "016380.KS": {
+      "firstTop120": "2020-06-01",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2020-06-01",
+      "names": [
+        "KG동부제철",
+        "KG스틸",
+        "동부제철"
+      ],
+      "servedDividendEventYearCount": 6,
+      "top120Snapshots": 1,
+      "yearsWithServedDividendEvent": [
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2025",
+        "2026"
+      ]
+    },
+    "017390.KS": {
+      "firstTop120": "2023-01-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2023-04-03",
+      "names": [
+        "서울가스"
+      ],
+      "servedDividendEventYearCount": 15,
+      "top120Snapshots": 4,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025"
+      ]
+    },
+    "017670.KS": {
+      "firstTop120": "2013-01-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-09-01",
+      "names": [
+        "SK텔레콤"
+      ],
+      "servedDividendEventYearCount": 16,
+      "top120Snapshots": 164,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025",
+        "2026"
+      ]
+    },
+    "017800.KS": {
+      "firstTop120": "2015-08-03",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-02-02",
+      "names": [
+        "현대엘리베이",
+        "현대엘리베이터"
+      ],
+      "servedDividendEventYearCount": 12,
+      "top120Snapshots": 38,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025",
+        "2026"
+      ]
+    },
+    "018250.KS": {
+      "firstTop120": "2018-07-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2018-09-03",
+      "names": [
+        "애경산업"
+      ],
+      "servedDividendEventYearCount": 8,
+      "top120Snapshots": 3,
+      "yearsWithServedDividendEvent": [
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2025",
+        "2026"
+      ]
+    },
+    "018260.KS": {
+      "firstTop120": "2014-12-01",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-09-01",
+      "names": [
+        "삼성에스디에스"
+      ],
+      "servedDividendEventYearCount": 12,
+      "top120Snapshots": 141,
+      "yearsWithServedDividendEvent": [
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025"
+      ]
+    },
+    "018880.KS": {
+      "firstTop120": "2013-01-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-08-03",
+      "names": [
+        "한라공조",
+        "한라비스테온공조",
+        "한온시스템"
+      ],
+      "servedDividendEventYearCount": 13,
+      "top120Snapshots": 146,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023"
+      ]
+    },
+    "019170.KS": {
+      "firstTop120": "2020-07-01",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2021-10-01",
+      "names": [
+        "신풍제약"
+      ],
+      "servedDividendEventYearCount": 5,
+      "top120Snapshots": 16,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2013",
+        "2014",
+        "2020"
+      ]
+    },
+    "020150.KS": {
+      "firstTop120": "2018-07-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2023-08-01",
+      "names": [
+        "롯데에너지머티리얼즈",
+        "일진머티리얼즈"
+      ],
+      "servedDividendEventYearCount": 8,
+      "top120Snapshots": 60,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2016",
+        "2017",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023"
+      ]
+    },
+    "020560.KS": {
+      "firstTop120": "2015-02-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2015-04-01",
+      "names": [
+        "아시아나항공"
+      ],
+      "servedDividendEventYearCount": 0,
+      "top120Snapshots": 3,
+      "yearsWithServedDividendEvent": []
+    },
+    "021240.KS": {
+      "firstTop120": "2013-01-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-09-01",
+      "names": [
+        "웅진코웨이",
+        "코웨이"
+      ],
+      "servedDividendEventYearCount": 14,
+      "top120Snapshots": 164,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2026"
+      ]
+    },
+    "022100.KS": {
+      "firstTop120": "2024-01-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-06-01",
+      "names": [
+        "포스코DX"
+      ],
+      "servedDividendEventYearCount": 14,
+      "top120Snapshots": 30,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2013",
+        "2014",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2024",
+        "2025",
+        "2026"
+      ]
+    },
+    "023530.KS": {
+      "firstTop120": "2013-01-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-08-03",
+      "names": [
+        "롯데쇼핑"
+      ],
+      "servedDividendEventYearCount": 15,
+      "top120Snapshots": 122,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2025",
+        "2026"
+      ]
+    },
+    "024110.KS": {
+      "firstTop120": "2013-01-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-09-01",
+      "names": [
+        "기업은행"
+      ],
+      "servedDividendEventYearCount": 15,
+      "top120Snapshots": 164,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2024",
+        "2025",
+        "2026"
+      ]
+    },
+    "026960.KS": {
+      "firstTop120": "2016-08-01",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2025-05-02",
+      "names": [
+        "동서"
+      ],
+      "servedDividendEventYearCount": 16,
+      "top120Snapshots": 80,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025",
+        "2026"
+      ]
+    },
+    "027410.KS": {
+      "firstTop120": "2014-11-03",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2017-12-01",
+      "names": [
+        "BGF",
+        "BGF리테일"
+      ],
+      "servedDividendEventYearCount": 12,
+      "top120Snapshots": 37,
+      "yearsWithServedDividendEvent": [
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2025",
+        "2026"
+      ]
+    },
+    "028050.KS": {
+      "firstTop120": "2013-01-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-09-01",
+      "names": [
+        "삼성E&A",
+        "삼성엔지니어링"
+      ],
+      "servedDividendEventYearCount": 4,
+      "top120Snapshots": 152,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2024",
+        "2025"
+      ]
+    },
+    "028260.KS": {
+      "firstTop120": "2015-01-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-09-01",
+      "names": [
+        "삼성물산",
+        "제일모직"
+      ],
+      "servedDividendEventYearCount": 11,
+      "top120Snapshots": 140,
+      "yearsWithServedDividendEvent": [
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025"
+      ]
+    },
+    "028670.KS": {
+      "firstTop120": "2015-08-03",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2024-03-04",
+      "names": [
+        "STX팬오션",
+        "팬오션"
+      ],
+      "servedDividendEventYearCount": 7,
+      "top120Snapshots": 100,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025"
+      ]
+    },
+    "029780.KS": {
+      "firstTop120": "2013-01-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-09-01",
+      "names": [
+        "삼성카드"
+      ],
+      "servedDividendEventYearCount": 15,
+      "top120Snapshots": 164,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2024",
+        "2025",
+        "2026"
+      ]
+    },
+    "030000.KS": {
+      "firstTop120": "2013-01-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2023-11-01",
+      "names": [
+        "제일기획"
+      ],
+      "servedDividendEventYearCount": 12,
+      "top120Snapshots": 118,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025"
+      ]
+    },
+    "030200.KS": {
+      "firstTop120": "2013-01-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-09-01",
+      "names": [
+        "KT"
+      ],
+      "servedDividendEventYearCount": 15,
+      "top120Snapshots": 164,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2013",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025",
+        "2026"
+      ]
+    },
+    "031210.KS": {
+      "firstTop120": "2025-04-01",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-03-03",
+      "names": [
+        "서울보증보험"
+      ],
+      "servedDividendEventYearCount": 2,
+      "top120Snapshots": 8,
+      "yearsWithServedDividendEvent": [
+        "2025",
+        "2026"
+      ]
+    },
+    "031430.KS": {
+      "firstTop120": "2019-04-01",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2020-05-04",
+      "names": [
+        "신세계인터내셔날"
+      ],
+      "servedDividendEventYearCount": 15,
+      "top120Snapshots": 5,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2025",
+        "2026"
+      ]
+    },
+    "032640.KS": {
+      "firstTop120": "2013-01-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-09-01",
+      "names": [
+        "LG유플러스"
+      ],
+      "servedDividendEventYearCount": 15,
+      "top120Snapshots": 164,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025",
+        "2026"
+      ]
+    },
+    "032830.KS": {
+      "firstTop120": "2013-01-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-09-01",
+      "names": [
+        "삼성생명"
+      ],
+      "servedDividendEventYearCount": 15,
+      "top120Snapshots": 164,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025"
+      ]
+    },
+    "033780.KS": {
+      "firstTop120": "2013-01-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-09-01",
+      "names": [
+        "KT&G"
+      ],
+      "servedDividendEventYearCount": 16,
+      "top120Snapshots": 164,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025",
+        "2026"
+      ]
+    },
+    "034020.KS": {
+      "firstTop120": "2013-01-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-09-01",
+      "names": [
+        "두산에너빌리티",
+        "두산중공업"
+      ],
+      "servedDividendEventYearCount": 6,
+      "top120Snapshots": 131,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2013",
+        "2014",
+        "2015",
+        "2016"
+      ]
+    },
+    "034220.KS": {
+      "firstTop120": "2013-01-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-09-01",
+      "names": [
+        "LG디스플레이"
+      ],
+      "servedDividendEventYearCount": 5,
+      "top120Snapshots": 164,
+      "yearsWithServedDividendEvent": [
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2021"
+      ]
+    },
+    "034730.KS": {
+      "firstTop120": "2013-01-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-09-01",
+      "names": [
+        "SK",
+        "SK C&C"
+      ],
+      "servedDividendEventYearCount": 16,
+      "top120Snapshots": 164,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025",
+        "2026"
+      ]
+    },
+    "035250.KS": {
+      "firstTop120": "2013-01-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-03-03",
+      "names": [
+        "강원랜드"
+      ],
+      "servedDividendEventYearCount": 13,
+      "top120Snapshots": 158,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2022",
+        "2023",
+        "2025",
+        "2026"
+      ]
+    },
+    "035420.KS": {
+      "firstTop120": "2013-01-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-09-01",
+      "names": [
+        "NAVER",
+        "NHN"
+      ],
+      "servedDividendEventYearCount": 15,
+      "top120Snapshots": 164,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2025",
+        "2026"
+      ]
+    },
+    "035720.KS": {
+      "firstTop120": "2017-08-01",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-09-01",
+      "names": [
+        "카카오"
+      ],
+      "servedDividendEventYearCount": 15,
+      "top120Snapshots": 109,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2024",
+        "2025",
+        "2026"
+      ]
+    },
+    "036460.KS": {
+      "firstTop120": "2013-01-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-02-02",
+      "names": [
+        "한국가스공사"
+      ],
+      "servedDividendEventYearCount": 9,
+      "top120Snapshots": 153,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2014",
+        "2015",
+        "2018",
+        "2019",
+        "2021",
+        "2024",
+        "2025"
+      ]
+    },
+    "036570.KS": {
+      "firstTop120": "2013-01-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-09-01",
+      "names": [
+        "NC",
+        "엔씨소프트"
+      ],
+      "servedDividendEventYearCount": 15,
+      "top120Snapshots": 164,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2025",
+        "2026"
+      ]
+    },
+    "037560.KS": {
+      "firstTop120": "2013-07-01",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2014-02-03",
+      "names": [
+        "CJ헬로",
+        "CJ헬로비전",
+        "LG헬로비전"
+      ],
+      "servedDividendEventYearCount": 11,
+      "top120Snapshots": 2,
+      "yearsWithServedDividendEvent": [
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023"
+      ]
+    },
+    "037620.KS": {
+      "firstTop120": "2013-02-01",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2017-01-02",
+      "names": [
+        "미래에셋증권"
+      ],
+      "servedDividendEventYearCount": 0,
+      "top120Snapshots": 39,
+      "yearsWithServedDividendEvent": []
+    },
+    "039130.KS": {
+      "firstTop120": "2015-08-03",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2015-09-01",
+      "names": [
+        "하나투어"
+      ],
+      "servedDividendEventYearCount": 12,
+      "top120Snapshots": 2,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2024",
+        "2025",
+        "2026"
+      ]
+    },
+    "039490.KS": {
+      "firstTop120": "2013-05-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-09-01",
+      "names": [
+        "키움증권"
+      ],
+      "servedDividendEventYearCount": 15,
+      "top120Snapshots": 96,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025"
+      ]
+    },
+    "042660.KS": {
+      "firstTop120": "2013-01-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-09-01",
+      "names": [
+        "대우조선해양",
+        "한화오션"
+      ],
+      "servedDividendEventYearCount": 4,
+      "top120Snapshots": 136,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2013",
+        "2014"
+      ]
+    },
+    "042670.KS": {
+      "firstTop120": "2013-01-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2023-08-01",
+      "names": [
+        "HD현대인프라코어",
+        "두산인프라코어",
+        "현대두산인프라코어"
+      ],
+      "servedDividendEventYearCount": 0,
+      "top120Snapshots": 58,
+      "yearsWithServedDividendEvent": []
+    },
+    "042700.KS": {
+      "firstTop120": "2023-06-01",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-09-01",
+      "names": [
+        "한미반도체"
+      ],
+      "servedDividendEventYearCount": 15,
+      "top120Snapshots": 40,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2024",
+        "2025",
+        "2026"
+      ]
+    },
+    "047040.KS": {
+      "firstTop120": "2013-01-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-09-01",
+      "names": [
+        "대우건설"
+      ],
+      "servedDividendEventYearCount": 0,
+      "top120Snapshots": 109,
+      "yearsWithServedDividendEvent": []
+    },
+    "047050.KS": {
+      "firstTop120": "2013-01-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-09-01",
+      "names": [
+        "대우인터내셔널",
+        "포스코대우",
+        "포스코인터내셔널"
+      ],
+      "servedDividendEventYearCount": 15,
+      "top120Snapshots": 153,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2024",
+        "2025",
+        "2026"
+      ]
+    },
+    "047810.KS": {
+      "firstTop120": "2013-01-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-09-01",
+      "names": [
+        "한국항공우주"
+      ],
+      "servedDividendEventYearCount": 14,
+      "top120Snapshots": 164,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2025",
+        "2026"
+      ]
+    },
+    "051600.KS": {
+      "firstTop120": "2013-01-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2020-04-01",
+      "names": [
+        "한전KPS"
+      ],
+      "servedDividendEventYearCount": 15,
+      "top120Snapshots": 65,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025"
+      ]
+    },
+    "051900.KS": {
+      "firstTop120": "2013-01-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-09-01",
+      "names": [
+        "LG생활건강"
+      ],
+      "servedDividendEventYearCount": 15,
+      "top120Snapshots": 160,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2025",
+        "2026"
+      ]
+    },
+    "051905.KS": {
+      "firstTop120": "2019-04-01",
+      "hasFrozenAccountingRecord": false,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2020-07-01",
+      "names": [
+        "LG생활건강우"
+      ],
+      "servedDividendEventYearCount": 15,
+      "top120Snapshots": 11,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2025",
+        "2026"
+      ]
+    },
+    "051910.KS": {
+      "firstTop120": "2013-01-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-09-01",
+      "names": [
+        "LG화학"
+      ],
+      "servedDividendEventYearCount": 15,
+      "top120Snapshots": 164,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2025",
+        "2026"
+      ]
+    },
+    "051915.KS": {
+      "firstTop120": "2015-12-01",
+      "hasFrozenAccountingRecord": false,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2023-12-01",
+      "names": [
+        "LG화학우"
+      ],
+      "servedDividendEventYearCount": 15,
+      "top120Snapshots": 38,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2025",
+        "2026"
+      ]
+    },
+    "052690.KS": {
+      "firstTop120": "2013-01-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-09-01",
+      "names": [
+        "한전기술"
+      ],
+      "servedDividendEventYearCount": 15,
+      "top120Snapshots": 78,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025"
+      ]
+    },
+    "053000.KS": {
+      "firstTop120": "2013-01-02",
+      "hasFrozenAccountingRecord": false,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2014-11-03",
+      "names": [
+        "우리금융"
+      ],
+      "servedDividendEventYearCount": 0,
+      "top120Snapshots": 23,
+      "yearsWithServedDividendEvent": []
+    },
+    "053210.KS": {
+      "firstTop120": "2013-01-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2013-09-02",
+      "names": [
+        "스카이라이프"
+      ],
+      "servedDividendEventYearCount": 14,
+      "top120Snapshots": 7,
+      "yearsWithServedDividendEvent": [
+        "2012",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2026"
+      ]
+    },
+    "055550.KS": {
+      "firstTop120": "2013-01-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-09-01",
+      "names": [
+        "신한지주"
+      ],
+      "servedDividendEventYearCount": 16,
+      "top120Snapshots": 164,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025",
+        "2026"
+      ]
+    },
+    "057050.KS": {
+      "firstTop120": "2013-02-01",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2015-01-02",
+      "names": [
+        "현대홈쇼핑"
+      ],
+      "servedDividendEventYearCount": 0,
+      "top120Snapshots": 23,
+      "yearsWithServedDividendEvent": []
+    },
+    "060980.KS": {
+      "firstTop120": "2013-01-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2014-10-01",
+      "names": [
+        "만도",
+        "한라홀딩스"
+      ],
+      "servedDividendEventYearCount": 15,
+      "top120Snapshots": 22,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2024",
+        "2025",
+        "2026"
+      ]
+    },
+    "062040.KS": {
+      "firstTop120": "2025-02-03",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-09-01",
+      "names": [
+        "산일전기"
+      ],
+      "servedDividendEventYearCount": 2,
+      "top120Snapshots": 15,
+      "yearsWithServedDividendEvent": [
+        "2024",
+        "2025"
+      ]
+    },
+    "064350.KS": {
+      "firstTop120": "2013-11-01",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-09-01",
+      "names": [
+        "현대로템"
+      ],
+      "servedDividendEventYearCount": 4,
+      "top120Snapshots": 88,
+      "yearsWithServedDividendEvent": [
+        "2013",
+        "2023",
+        "2025",
+        "2026"
+      ]
+    },
+    "064400.KS": {
+      "firstTop120": "2025-03-04",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-09-01",
+      "names": [
+        "LG씨엔에스"
+      ],
+      "servedDividendEventYearCount": 2,
+      "top120Snapshots": 19,
+      "yearsWithServedDividendEvent": [
+        "2025",
+        "2026"
+      ]
+    },
+    "066570.KS": {
+      "firstTop120": "2013-01-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-09-01",
+      "names": [
+        "LG전자"
+      ],
+      "servedDividendEventYearCount": 16,
+      "top120Snapshots": 164,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025",
+        "2026"
+      ]
+    },
+    "066970.KS": {
+      "firstTop120": "2024-02-01",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-09-01",
+      "names": [
+        "엘앤에프"
+      ],
+      "servedDividendEventYearCount": 11,
+      "top120Snapshots": 24,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2022"
+      ]
+    },
+    "067250.KS": {
+      "firstTop120": "2014-04-01",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2014-04-01",
+      "names": [
+        "STX조선해양"
+      ],
+      "servedDividendEventYearCount": 0,
+      "top120Snapshots": 1,
+      "yearsWithServedDividendEvent": []
+    },
+    "068270.KS": {
+      "firstTop120": "2018-03-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-09-01",
+      "names": [
+        "셀트리온"
+      ],
+      "servedDividendEventYearCount": 7,
+      "top120Snapshots": 103,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025"
+      ]
+    },
+    "069620.KS": {
+      "firstTop120": "2018-01-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2020-07-01",
+      "names": [
+        "대웅제약"
+      ],
+      "servedDividendEventYearCount": 14,
+      "top120Snapshots": 24,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2024",
+        "2025"
+      ]
+    },
+    "069960.KS": {
+      "firstTop120": "2013-01-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-07-01",
+      "names": [
+        "현대백화점"
+      ],
+      "servedDividendEventYearCount": 15,
+      "top120Snapshots": 90,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2025",
+        "2026"
+      ]
+    },
+    "071050.KS": {
+      "firstTop120": "2013-01-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-09-01",
+      "names": [
+        "한국금융지주"
+      ],
+      "servedDividendEventYearCount": 15,
+      "top120Snapshots": 164,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2025",
+        "2026"
+      ]
+    },
+    "071840.KS": {
+      "firstTop120": "2013-01-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2014-12-01",
+      "names": [
+        "롯데하이마트"
+      ],
+      "servedDividendEventYearCount": 15,
+      "top120Snapshots": 19,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2025",
+        "2026"
+      ]
+    },
+    "071970.KS": {
+      "firstTop120": "2025-09-01",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2025-11-03",
+      "names": [
+        "HD현대마린엔진",
+        "STX중공업"
+      ],
+      "servedDividendEventYearCount": 2,
+      "top120Snapshots": 2,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012"
+      ]
+    },
+    "073240.KS": {
+      "firstTop120": "2013-01-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2016-10-04",
+      "names": [
+        "금호타이어"
+      ],
+      "servedDividendEventYearCount": 0,
+      "top120Snapshots": 21,
+      "yearsWithServedDividendEvent": []
+    },
+    "078930.KS": {
+      "firstTop120": "2013-01-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-09-01",
+      "names": [
+        "GS"
+      ],
+      "servedDividendEventYearCount": 15,
+      "top120Snapshots": 164,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2025",
+        "2026"
+      ]
+    },
+    "079160.KS": {
+      "firstTop120": "2015-06-01",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2017-02-01",
+      "names": [
+        "CJ CGV"
+      ],
+      "servedDividendEventYearCount": 8,
+      "top120Snapshots": 18,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018"
+      ]
+    },
+    "079440.KS": {
+      "firstTop120": "2017-06-01",
+      "hasFrozenAccountingRecord": false,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2020-02-03",
+      "names": [
+        "아이엔지생명",
+        "오렌지라이프"
+      ],
+      "servedDividendEventYearCount": 0,
+      "top120Snapshots": 32,
+      "yearsWithServedDividendEvent": []
+    },
+    "079550.KS": {
+      "firstTop120": "2015-11-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-09-01",
+      "names": [
+        "LIG넥스원",
+        "LIG디펜스앤에어로스페이스"
+      ],
+      "servedDividendEventYearCount": 11,
+      "top120Snapshots": 48,
+      "yearsWithServedDividendEvent": [
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2026"
+      ]
+    },
+    "081660.KS": {
+      "firstTop120": "2018-07-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2025-02-03",
+      "names": [
+        "미스토홀딩스",
+        "휠라코리아",
+        "휠라홀딩스"
+      ],
+      "servedDividendEventYearCount": 16,
+      "top120Snapshots": 52,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025",
+        "2026"
+      ]
+    },
+    "082740.KS": {
+      "firstTop120": "2025-09-01",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-09-01",
+      "names": [
+        "HSD엔진",
+        "두산엔진",
+        "한화엔진"
+      ],
+      "servedDividendEventYearCount": 0,
+      "top120Snapshots": 12,
+      "yearsWithServedDividendEvent": []
+    },
+    "086280.KS": {
+      "firstTop120": "2013-01-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-09-01",
+      "names": [
+        "현대글로비스"
+      ],
+      "servedDividendEventYearCount": 15,
+      "top120Snapshots": 164,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2024",
+        "2025",
+        "2026"
+      ]
+    },
+    "086790.KS": {
+      "firstTop120": "2013-01-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-09-01",
+      "names": [
+        "하나금융지주"
+      ],
+      "servedDividendEventYearCount": 16,
+      "top120Snapshots": 164,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025",
+        "2026"
+      ]
+    },
+    "088350.KS": {
+      "firstTop120": "2013-01-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-09-01",
+      "names": [
+        "한화생명"
+      ],
+      "servedDividendEventYearCount": 11,
+      "top120Snapshots": 115,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2024"
+      ]
+    },
+    "088980.KS": {
+      "firstTop120": "2013-01-02",
+      "hasFrozenAccountingRecord": false,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-09-01",
+      "names": [
+        "맥쿼리인프라"
+      ],
+      "servedDividendEventYearCount": 16,
+      "top120Snapshots": 164,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025",
+        "2026"
+      ]
+    },
+    "090430.KS": {
+      "firstTop120": "2013-01-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-09-01",
+      "names": [
+        "아모레퍼시픽"
+      ],
+      "servedDividendEventYearCount": 15,
+      "top120Snapshots": 164,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2025",
+        "2026"
+      ]
+    },
+    "090435.KS": {
+      "firstTop120": "2015-04-01",
+      "hasFrozenAccountingRecord": false,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2017-11-01",
+      "names": [
+        "아모레퍼시픽우"
+      ],
+      "servedDividendEventYearCount": 15,
+      "top120Snapshots": 28,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2025",
+        "2026"
+      ]
+    },
+    "096770.KS": {
+      "firstTop120": "2013-01-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-09-01",
+      "names": [
+        "SK이노베이션"
+      ],
+      "servedDividendEventYearCount": 10,
+      "top120Snapshots": 164,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2013",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2021",
+        "2025"
+      ]
+    },
+    "097950.KS": {
+      "firstTop120": "2013-01-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2025-11-03",
+      "names": [
+        "CJ제일제당"
+      ],
+      "servedDividendEventYearCount": 16,
+      "top120Snapshots": 154,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025",
+        "2026"
+      ]
+    },
+    "103140.KS": {
+      "firstTop120": "2025-07-01",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2025-11-03",
+      "names": [
+        "풍산"
+      ],
+      "servedDividendEventYearCount": 15,
+      "top120Snapshots": 5,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2025",
+        "2026"
+      ]
+    },
+    "103590.KS": {
+      "firstTop120": "2026-03-03",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-07-01",
+      "names": [
+        "일진전기"
+      ],
+      "servedDividendEventYearCount": 13,
+      "top120Snapshots": 4,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025"
+      ]
+    },
+    "105560.KS": {
+      "firstTop120": "2013-01-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-09-01",
+      "names": [
+        "KB금융"
+      ],
+      "servedDividendEventYearCount": 16,
+      "top120Snapshots": 164,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025",
+        "2026"
+      ]
+    },
+    "105630.KS": {
+      "firstTop120": "2015-01-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2016-05-02",
+      "names": [
+        "한세실업"
+      ],
+      "servedDividendEventYearCount": 15,
+      "top120Snapshots": 11,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2025",
+        "2026"
+      ]
+    },
+    "108670.KS": {
+      "firstTop120": "2014-06-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2015-03-02",
+      "names": [
+        "LG하우시스",
+        "LX하우시스"
+      ],
+      "servedDividendEventYearCount": 14,
+      "top120Snapshots": 6,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2025"
+      ]
+    },
+    "111770.KS": {
+      "firstTop120": "2013-02-01",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-08-03",
+      "names": [
+        "영원무역"
+      ],
+      "servedDividendEventYearCount": 16,
+      "top120Snapshots": 58,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025",
+        "2026"
+      ]
+    },
+    "112610.KS": {
+      "firstTop120": "2020-10-05",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2024-11-01",
+      "names": [
+        "씨에스윈드"
+      ],
+      "servedDividendEventYearCount": 12,
+      "top120Snapshots": 34,
+      "yearsWithServedDividendEvent": [
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025"
+      ]
+    },
+    "114090.KS": {
+      "firstTop120": "2013-01-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2017-12-01",
+      "names": [
+        "GKL"
+      ],
+      "servedDividendEventYearCount": 13,
+      "top120Snapshots": 37,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2023",
+        "2024",
+        "2025",
+        "2026"
+      ]
+    },
+    "115390.KS": {
+      "firstTop120": "2013-03-04",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2013-03-04",
+      "names": [
+        "락앤락"
+      ],
+      "servedDividendEventYearCount": 0,
+      "top120Snapshots": 1,
+      "yearsWithServedDividendEvent": []
+    },
+    "117930.KS": {
+      "firstTop120": "2015-03-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2015-03-02",
+      "names": [
+        "한진해운"
+      ],
+      "servedDividendEventYearCount": 0,
+      "top120Snapshots": 1,
+      "yearsWithServedDividendEvent": []
+    },
+    "120110.KS": {
+      "firstTop120": "2013-01-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2018-02-01",
+      "names": [
+        "코오롱인더"
+      ],
+      "servedDividendEventYearCount": 16,
+      "top120Snapshots": 21,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025",
+        "2026"
+      ]
+    },
+    "128940.KS": {
+      "firstTop120": "2015-04-01",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-09-01",
+      "names": [
+        "한미약품"
+      ],
+      "servedDividendEventYearCount": 10,
+      "top120Snapshots": 137,
+      "yearsWithServedDividendEvent": [
+        "2015",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2026"
+      ]
+    },
+    "137310.KS": {
+      "firstTop120": "2021-08-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2023-03-02",
+      "names": [
+        "에스디바이오센서"
+      ],
+      "servedDividendEventYearCount": 4,
+      "top120Snapshots": 20,
+      "yearsWithServedDividendEvent": [
+        "2021",
+        "2022",
+        "2024",
+        "2026"
+      ]
+    },
+    "138040.KS": {
+      "firstTop120": "2015-03-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-09-01",
+      "names": [
+        "메리츠금융지주"
+      ],
+      "servedDividendEventYearCount": 12,
+      "top120Snapshots": 108,
+      "yearsWithServedDividendEvent": [
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2025"
+      ]
+    },
+    "138930.KS": {
+      "firstTop120": "2013-01-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-09-01",
+      "names": [
+        "BNK금융지주",
+        "BS금융지주"
+      ],
+      "servedDividendEventYearCount": 16,
+      "top120Snapshots": 135,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025",
+        "2026"
+      ]
+    },
+    "139130.KS": {
+      "firstTop120": "2013-01-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2018-11-01",
+      "names": [
+        "DGB금융지주",
+        "iM금융지주"
+      ],
+      "servedDividendEventYearCount": 15,
+      "top120Snapshots": 45,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2024",
+        "2025",
+        "2026"
+      ]
+    },
+    "139480.KS": {
+      "firstTop120": "2013-01-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2023-06-01",
+      "names": [
+        "이마트"
+      ],
+      "servedDividendEventYearCount": 15,
+      "top120Snapshots": 125,
+      "yearsWithServedDividendEvent": [
+        "2011",
+        "2012",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2024",
+        "2025",
+        "2026"
+      ]
+    },
+    "161390.KS": {
+      "firstTop120": "2013-01-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-09-01",
+      "names": [
+        "한국타이어",
+        "한국타이어앤테크놀로지"
+      ],
+      "servedDividendEventYearCount": 14,
+      "top120Snapshots": 164,
+      "yearsWithServedDividendEvent": [
+        "2012",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2025",
+        "2026"
+      ]
+    },
+    "161890.KS": {
+      "firstTop120": "2015-06-01",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-09-01",
+      "names": [
+        "한국콜마"
+      ],
+      "servedDividendEventYearCount": 13,
+      "top120Snapshots": 19,
+      "yearsWithServedDividendEvent": [
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2025",
+        "2026"
+      ]
+    },
+    "175330.KS": {
+      "firstTop120": "2024-02-01",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-09-01",
+      "names": [
+        "JB금융지주"
+      ],
+      "servedDividendEventYearCount": 14,
+      "top120Snapshots": 32,
+      "yearsWithServedDividendEvent": [
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025",
+        "2026"
+      ]
+    },
+    "180640.KS": {
+      "firstTop120": "2014-12-01",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-09-01",
+      "names": [
+        "한진칼"
+      ],
+      "servedDividendEventYearCount": 9,
+      "top120Snapshots": 96,
+      "yearsWithServedDividendEvent": [
+        "2014",
+        "2015",
+        "2017",
+        "2018",
+        "2019",
+        "2022",
+        "2023",
+        "2024",
+        "2026"
+      ]
+    },
+    "181710.KS": {
+      "firstTop120": "2013-09-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2020-08-03",
+      "names": [
+        "NHN",
+        "NHN엔터테인먼트"
+      ],
+      "servedDividendEventYearCount": 3,
+      "top120Snapshots": 9,
+      "yearsWithServedDividendEvent": [
+        "2023",
+        "2025",
+        "2026"
+      ]
+    },
+    "185750.KS": {
+      "firstTop120": "2020-09-01",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2021-01-04",
+      "names": [
+        "종근당"
+      ],
+      "servedDividendEventYearCount": 13,
+      "top120Snapshots": 4,
+      "yearsWithServedDividendEvent": [
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025"
+      ]
+    },
+    "192400.KS": {
+      "firstTop120": "2014-09-01",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2016-06-01",
+      "names": [
+        "쿠쿠전자",
+        "쿠쿠홀딩스"
+      ],
+      "servedDividendEventYearCount": 12,
+      "top120Snapshots": 22,
+      "yearsWithServedDividendEvent": [
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025"
+      ]
+    },
+    "192820.KS": {
+      "firstTop120": "2015-09-01",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2025-07-01",
+      "names": [
+        "코스맥스"
+      ],
+      "servedDividendEventYearCount": 10,
+      "top120Snapshots": 4,
+      "yearsWithServedDividendEvent": [
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2021",
+        "2023",
+        "2024",
+        "2026"
+      ]
+    },
+    "204320.KS": {
+      "firstTop120": "2014-11-03",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2023-07-03",
+      "names": [
+        "HL만도",
+        "만도"
+      ],
+      "servedDividendEventYearCount": 11,
+      "top120Snapshots": 55,
+      "yearsWithServedDividendEvent": [
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2021",
+        "2022",
+        "2023",
+        "2025",
+        "2026"
+      ]
+    },
+    "207940.KS": {
+      "firstTop120": "2016-12-01",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-09-01",
+      "names": [
+        "삼성바이오로직스"
+      ],
+      "servedDividendEventYearCount": 0,
+      "top120Snapshots": 117,
+      "yearsWithServedDividendEvent": []
+    },
+    "241560.KS": {
+      "firstTop120": "2016-12-01",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-09-01",
+      "names": [
+        "두산밥캣"
+      ],
+      "servedDividendEventYearCount": 10,
+      "top120Snapshots": 117,
+      "yearsWithServedDividendEvent": [
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025",
+        "2026"
+      ]
+    },
+    "251270.KS": {
+      "firstTop120": "2017-06-01",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-04-01",
+      "names": [
+        "넷마블",
+        "넷마블게임즈"
+      ],
+      "servedDividendEventYearCount": 5,
+      "top120Snapshots": 106,
+      "yearsWithServedDividendEvent": [
+        "2017",
+        "2020",
+        "2021",
+        "2024",
+        "2026"
+      ]
+    },
+    "259960.KS": {
+      "firstTop120": "2021-09-01",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-09-01",
+      "names": [
+        "크래프톤"
+      ],
+      "servedDividendEventYearCount": 1,
+      "top120Snapshots": 61,
+      "yearsWithServedDividendEvent": [
+        "2026"
+      ]
+    },
+    "267250.KS": {
+      "firstTop120": "2017-06-01",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-09-01",
+      "names": [
+        "HD현대",
+        "현대로보틱스",
+        "현대중공업지주"
+      ],
+      "servedDividendEventYearCount": 9,
+      "top120Snapshots": 111,
+      "yearsWithServedDividendEvent": [
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025",
+        "2026"
+      ]
+    },
+    "267260.KS": {
+      "firstTop120": "2023-07-03",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-09-01",
+      "names": [
+        "HD현대일렉트릭",
+        "현대일렉트릭"
+      ],
+      "servedDividendEventYearCount": 5,
+      "top120Snapshots": 39,
+      "yearsWithServedDividendEvent": [
+        "2022",
+        "2023",
+        "2024",
+        "2025",
+        "2026"
+      ]
+    },
+    "267270.KS": {
+      "firstTop120": "2018-02-01",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-09-01",
+      "names": [
+        "HD건설기계",
+        "HD현대건설기계",
+        "현대건설기계"
+      ],
+      "servedDividendEventYearCount": 6,
+      "top120Snapshots": 9,
+      "yearsWithServedDividendEvent": [
+        "2018",
+        "2021",
+        "2022",
+        "2023",
+        "2025",
+        "2026"
+      ]
+    },
+    "271560.KS": {
+      "firstTop120": "2017-08-01",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-09-01",
+      "names": [
+        "오리온"
+      ],
+      "servedDividendEventYearCount": 9,
+      "top120Snapshots": 109,
+      "yearsWithServedDividendEvent": [
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2025",
+        "2026"
+      ]
+    },
+    "271940.KS": {
+      "firstTop120": "2021-09-01",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2021-09-01",
+      "names": [
+        "일진하이솔루스"
+      ],
+      "servedDividendEventYearCount": 0,
+      "top120Snapshots": 1,
+      "yearsWithServedDividendEvent": []
+    },
+    "272210.KS": {
+      "firstTop120": "2021-03-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-09-01",
+      "names": [
+        "한화시스템"
+      ],
+      "servedDividendEventYearCount": 7,
+      "top120Snapshots": 63,
+      "yearsWithServedDividendEvent": [
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2026"
+      ]
+    },
+    "278470.KS": {
+      "firstTop120": "2024-06-03",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-09-01",
+      "names": [
+        "에이피알"
+      ],
+      "servedDividendEventYearCount": 2,
+      "top120Snapshots": 20,
+      "yearsWithServedDividendEvent": [
+        "2025",
+        "2026"
+      ]
+    },
+    "282330.KS": {
+      "firstTop120": "2018-01-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2024-02-01",
+      "names": [
+        "BGF리테일"
+      ],
+      "servedDividendEventYearCount": 9,
+      "top120Snapshots": 71,
+      "yearsWithServedDividendEvent": [
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2025",
+        "2026"
+      ]
+    },
+    "285130.KS": {
+      "firstTop120": "2020-07-01",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2022-01-03",
+      "names": [
+        "SK케미칼"
+      ],
+      "servedDividendEventYearCount": 9,
+      "top120Snapshots": 17,
+      "yearsWithServedDividendEvent": [
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025",
+        "2026"
+      ]
+    },
+    "294870.KS": {
+      "firstTop120": "2018-07-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2019-09-02",
+      "names": [
+        "HDC현대산업개발",
+        "IPARK현대산업개발"
+      ],
+      "servedDividendEventYearCount": 8,
+      "top120Snapshots": 15,
+      "yearsWithServedDividendEvent": [
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2025",
+        "2026"
+      ]
+    },
+    "298020.KS": {
+      "firstTop120": "2021-05-03",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2021-09-01",
+      "names": [
+        "효성티앤씨"
+      ],
+      "servedDividendEventYearCount": 8,
+      "top120Snapshots": 5,
+      "yearsWithServedDividendEvent": [
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025"
+      ]
+    },
+    "298040.KS": {
+      "firstTop120": "2024-04-01",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-09-01",
+      "names": [
+        "효성중공업"
+      ],
+      "servedDividendEventYearCount": 3,
+      "top120Snapshots": 30,
+      "yearsWithServedDividendEvent": [
+        "2023",
+        "2024",
+        "2025"
+      ]
+    },
+    "298050.KS": {
+      "firstTop120": "2021-10-01",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2021-12-01",
+      "names": [
+        "HS효성첨단소재",
+        "효성첨단소재"
+      ],
+      "servedDividendEventYearCount": 5,
+      "top120Snapshots": 3,
+      "yearsWithServedDividendEvent": [
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025"
+      ]
+    },
+    "302440.KS": {
+      "firstTop120": "2021-04-01",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-02-02",
+      "names": [
+        "SK바이오사이언스"
+      ],
+      "servedDividendEventYearCount": 0,
+      "top120Snapshots": 59,
+      "yearsWithServedDividendEvent": []
+    },
+    "307950.KS": {
+      "firstTop120": "2021-01-04",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-09-01",
+      "names": [
+        "현대오토에버"
+      ],
+      "servedDividendEventYearCount": 7,
+      "top120Snapshots": 68,
+      "yearsWithServedDividendEvent": [
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2024",
+        "2025",
+        "2026"
+      ]
+    },
+    "316140.KS": {
+      "firstTop120": "2019-03-04",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-09-01",
+      "names": [
+        "우리금융지주"
+      ],
+      "servedDividendEventYearCount": 8,
+      "top120Snapshots": 91,
+      "yearsWithServedDividendEvent": [
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025",
+        "2026"
+      ]
+    },
+    "323410.KS": {
+      "firstTop120": "2021-09-01",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-09-01",
+      "names": [
+        "카카오뱅크"
+      ],
+      "servedDividendEventYearCount": 4,
+      "top120Snapshots": 61,
+      "yearsWithServedDividendEvent": [
+        "2022",
+        "2023",
+        "2025",
+        "2026"
+      ]
+    },
+    "326030.KS": {
+      "firstTop120": "2020-08-03",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-09-01",
+      "names": [
+        "SK바이오팜"
+      ],
+      "servedDividendEventYearCount": 0,
+      "top120Snapshots": 74,
+      "yearsWithServedDividendEvent": []
+    },
+    "329180.KS": {
+      "firstTop120": "2021-10-01",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-09-01",
+      "names": [
+        "HD현대중공업",
+        "현대중공업"
+      ],
+      "servedDividendEventYearCount": 2,
+      "top120Snapshots": 60,
+      "yearsWithServedDividendEvent": [
+        "2025",
+        "2026"
+      ]
+    },
+    "336260.KS": {
+      "firstTop120": "2020-07-01",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-07-01",
+      "names": [
+        "두산퓨얼셀"
+      ],
+      "servedDividendEventYearCount": 0,
+      "top120Snapshots": 24,
+      "yearsWithServedDividendEvent": []
+    },
+    "336370.KS": {
+      "firstTop120": "2021-12-01",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2022-01-03",
+      "names": [
+        "두산솔루스",
+        "솔루스첨단소재"
+      ],
+      "servedDividendEventYearCount": 6,
+      "top120Snapshots": 2,
+      "yearsWithServedDividendEvent": [
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025"
+      ]
+    },
+    "352820.KS": {
+      "firstTop120": "2020-11-02",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-09-01",
+      "names": [
+        "빅히트",
+        "하이브"
+      ],
+      "servedDividendEventYearCount": 3,
+      "top120Snapshots": 71,
+      "yearsWithServedDividendEvent": [
+        "2023",
+        "2025",
+        "2026"
+      ]
+    },
+    "353200.KS": {
+      "firstTop120": "2026-04-01",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-09-01",
+      "names": [
+        "대덕전자"
+      ],
+      "servedDividendEventYearCount": 6,
+      "top120Snapshots": 6,
+      "yearsWithServedDividendEvent": [
+        "2020",
+        "2021",
+        "2022",
+        "2024",
+        "2025",
+        "2026"
+      ]
+    },
+    "361610.KS": {
+      "firstTop120": "2021-06-01",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2024-10-02",
+      "names": [
+        "SK아이이테크놀로지"
+      ],
+      "servedDividendEventYearCount": 0,
+      "top120Snapshots": 40,
+      "yearsWithServedDividendEvent": []
+    },
+    "373220.KS": {
+      "firstTop120": "2022-02-03",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-09-01",
+      "names": [
+        "LG에너지솔루션"
+      ],
+      "servedDividendEventYearCount": 0,
+      "top120Snapshots": 56,
+      "yearsWithServedDividendEvent": []
+    },
+    "375500.KS": {
+      "firstTop120": "2021-02-01",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2021-05-03",
+      "names": [
+        "DL이앤씨"
+      ],
+      "servedDividendEventYearCount": 5,
+      "top120Snapshots": 2,
+      "yearsWithServedDividendEvent": [
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2026"
+      ]
+    },
+    "377300.KS": {
+      "firstTop120": "2021-12-01",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-09-01",
+      "names": [
+        "카카오페이"
+      ],
+      "servedDividendEventYearCount": 0,
+      "top120Snapshots": 58,
+      "yearsWithServedDividendEvent": []
+    },
+    "383220.KS": {
+      "firstTop120": "2021-06-01",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2025-07-01",
+      "names": [
+        "F&F"
+      ],
+      "servedDividendEventYearCount": 5,
+      "top120Snapshots": 44,
+      "yearsWithServedDividendEvent": [
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025"
+      ]
+    },
+    "402340.KS": {
+      "firstTop120": "2021-12-01",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-09-01",
+      "names": [
+        "SK스퀘어"
+      ],
+      "servedDividendEventYearCount": 1,
+      "top120Snapshots": 58,
+      "yearsWithServedDividendEvent": [
+        "2026"
+      ]
+    },
+    "439260.KS": {
+      "firstTop120": "2025-08-01",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2025-10-01",
+      "names": [
+        "대한조선"
+      ],
+      "servedDividendEventYearCount": 1,
+      "top120Snapshots": 3,
+      "yearsWithServedDividendEvent": [
+        "2025"
+      ]
+    },
+    "443060.KS": {
+      "firstTop120": "2024-06-03",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-09-01",
+      "names": [
+        "HD현대마린솔루션"
+      ],
+      "servedDividendEventYearCount": 3,
+      "top120Snapshots": 28,
+      "yearsWithServedDividendEvent": [
+        "2024",
+        "2025",
+        "2026"
+      ]
+    },
+    "450080.KS": {
+      "firstTop120": "2023-12-01",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-05-04",
+      "names": [
+        "에코프로머티"
+      ],
+      "servedDividendEventYearCount": 0,
+      "top120Snapshots": 30,
+      "yearsWithServedDividendEvent": []
+    },
+    "454910.KS": {
+      "firstTop120": "2023-11-01",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-09-01",
+      "names": [
+        "두산로보틱스"
+      ],
+      "servedDividendEventYearCount": 0,
+      "top120Snapshots": 35,
+      "yearsWithServedDividendEvent": []
+    },
+    "462870.KS": {
+      "firstTop120": "2024-08-01",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2025-06-02",
+      "names": [
+        "시프트업"
+      ],
+      "servedDividendEventYearCount": 0,
+      "top120Snapshots": 11,
+      "yearsWithServedDividendEvent": []
+    },
+    "489790.KS": {
+      "firstTop120": "2025-03-04",
+      "hasFrozenAccountingRecord": true,
+      "hasSealedPricePanel": true,
+      "lastTop120": "2026-04-01",
+      "names": [
+        "한화비전",
+        "한화인더스트리얼솔루션즈"
+      ],
+      "servedDividendEventYearCount": 0,
+      "top120Snapshots": 6,
+      "yearsWithServedDividendEvent": []
+    }
+  },
+  "sources": {
+    "accountingCommit": "fb6e83743fd8cdba647d1522a4645b662a9d5647",
+    "replayManifestSha256": "f0781292f508a123c234ded6d28aa8e84a0dc3cc29500e14989dc0b68f53b4d2",
+    "universeCommit": "4ea107ed0cde289f0a049a65ff13d2441a786710"
+  },
+  "study": "kr-factor-anatomy-v1",
+  "universe": {
+    "distinctSecuritiesRank1To120": 260,
+    "distinctSecuritiesRank1To300": 624,
+    "fieldsPerRow": [
+      "code",
+      "date",
+      "id",
+      "listedShares",
+      "marketCap",
+      "name",
+      "rank",
+      "region",
+      "ticker"
+    ],
+    "firstSnapshot": "2013-01-02",
+    "lastSnapshot": "2026-09-01",
+    "maxRankPerSnapshot": {
+      "max": 300,
+      "min": 300
+    },
+    "rank121To300NameDates": 29520,
+    "rank121To300NameDatesOfSecuritiesEverInTop120": 13285,
+    "rank121To300NameDatesOfSecuritiesNeverInTop120": 16235,
+    "rowsPerSnapshot": {
+      "max": 300,
+      "min": 300
+    },
+    "securitiesOnlyEverRanked121To300": 364,
+    "snapshots": 164
+  }
+}

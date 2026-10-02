@@ -2255,6 +2255,12 @@
   pull-request CI runs `verify` only. A sealed study's pinned files (here `docs/workflow-inventory.md`) are never
   edited: later workflows are documented in `docs/workflow-inventory-addendum.md`.
 
+- PRE-OUTCOME REVISION 2: the primary universe is named for what it is, the PIT top-120 LARGE-CAP set (an outcome-free
+  audit shows price and accounting inputs exist only for the 260 ever-top-120 securities, so no broader denominator is
+  valid); structural classification was attempted and stays DATA_FOUNDATION_REQUIRED with eight frozen financial case
+  studies and distribution caveats; a BROADLY_* label needs D10-D1, decile monotonicity and mean rank correlation to
+  agree in sign; separate largest-rise and largest-fall tables exist. No outcome was computed.
+
 ## Lint gate invariants (v2.11)
 
 - The enabled rule set reports ZERO findings on `main`. A rule is turned on in the

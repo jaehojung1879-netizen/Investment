@@ -115,9 +115,9 @@ def _verify_v1_relationship(spec, root):
     same = {"horizons": (spec["horizons"], v1["horizons"]), "benchmark": (spec["benchmark"], v1["benchmark"]),
             "developmentCutoff": (spec["developmentCutoff"], v1["developmentCutoff"]),
             "featureStart": (spec["calendar"]["featureStart"], v1["walkForward"]["featureStart"]),
-            "minimumAdvKrw": (spec["universes"]["V1_INVESTABLE_ANALYSIS_UNIVERSE"]["v1Constraints"]["minimumAdvKrw"],
+            "minimumAdvKrw": (spec["universes"]["PIT_TOP120_V1_INVESTABLE_ANALYSIS_UNIVERSE"]["v1Constraints"]["minimumAdvKrw"],
                               v1["portfolio"]["minimumAdvKrw"]),
-            "minimumDownsideVol": (spec["universes"]["V1_INVESTABLE_ANALYSIS_UNIVERSE"]["v1Constraints"]["minimumDownsideVol"],
+            "minimumDownsideVol": (spec["universes"]["PIT_TOP120_V1_INVESTABLE_ANALYSIS_UNIVERSE"]["v1Constraints"]["minimumDownsideVol"],
                                    v1["portfolio"]["minimumDownsideVol"])}
     for name, (mine, theirs) in same.items():
         if mine != theirs:

@@ -421,16 +421,38 @@ def four_state_table(frame, up_flag, outcome, *, strata=None, spec=None, mean_co
 # --------------------------------------------------------------------------- #
 # Rule-based descriptive labels (never a gate, never a score)
 # --------------------------------------------------------------------------- #
+def canonical_sign(anatomy):
+    """THE frozen canonical direction of a factor: the sign of its equal-date D10-D1. Every strata-agreement check and
+    the executive map's `direction` use this one number, never a second sign."""
+    spread = anatomy["d10MinusD1"]
+    if spread is None or not np.isfinite(spread) or spread == 0:
+        return 0
+    return 1 if spread > 0 else -1
+
+
+def direction_measures(anatomy):
+    """The three major direction measures and whether they agree. Zero or missing counts as disagreement: a measure
+    with no direction cannot corroborate one."""
+    def sign(value):
+        return 0 if value is None or not np.isfinite(value) or value == 0 else (1 if value > 0 else -1)
+    signs = {"d10MinusD1": sign(anatomy["d10MinusD1"]), "decileMonotonicity": sign(anatomy["decileMonotonicity"]),
+             "meanRankCorrelation": sign(anatomy["meanRankCorrelation"])}
+    values = set(signs.values())
+    return {"signs": signs, "consistent": len(values) == 1 and 0 not in values}
+
+
 def descriptive_label(anatomy, agreement, spec):
+    """Rule-based, frozen. First match wins. BROADLY_POSITIVE / BROADLY_NEGATIVE are reachable only when D10-D1, decile
+    monotonicity and the mean within-date rank correlation all share one sign; any disagreement among them is
+    NO_CLEAR_MONOTONIC_PATTERN, never a direction."""
     cfg = spec["interpretation"]
     if (anatomy["datesWithDeciles"] < cfg["minimumDatesForLabel"] or anatomy["decileMonotonicity"] is None
             or anatomy["spreadYearStability"]["positiveYearFraction"] is None):
         return "DATA_INSUFFICIENT"
-    spread, mono = anatomy["d10MinusD1"], anatomy["decileMonotonicity"]
-    fraction = anatomy["spreadYearStability"]["positiveYearFraction"]
-    if abs(mono) < cfg["monotonicityFloor"] or not np.isfinite(spread) or spread == 0:
+    if not direction_measures(anatomy)["consistent"] or abs(anatomy["decileMonotonicity"]) < cfg["monotonicityFloor"]:
         return "NO_CLEAR_MONOTONIC_PATTERN"
-    sign = 1 if spread > 0 else -1
+    sign = canonical_sign(anatomy)
+    fraction = anatomy["spreadYearStability"]["positiveYearFraction"]
     leave = anatomy["leaveBestYearOut"]
     flips = leave is not None and not leave["signRetained"]
     consistent = fraction >= cfg["yearFractionBroad"] if sign > 0 else fraction <= 1 - cfg["yearFractionBroad"]
@@ -468,7 +490,9 @@ def mechanical_event_tables(events, spec):
     n = spec["winnersLosers"]["count"]
     events = events.copy()
     events["absStockReturn"] = events.stockReturn.abs()
-    tables = {"largestAbsoluteStockReturn": select_nonoverlapping(events, "absStockReturn", descending=True, count=n),
+    tables = {"largestPositiveStockReturn": select_nonoverlapping(events, "stockReturn", descending=True, count=n),
+              "largestNegativeStockReturn": select_nonoverlapping(events, "stockReturn", descending=False, count=n),
+              "largestAbsoluteStockReturn": select_nonoverlapping(events, "absStockReturn", descending=True, count=n),
               "benchmarkRelativeWinners": select_nonoverlapping(events, "relativeReturn", descending=True, count=n),
               "benchmarkRelativeLosers": select_nonoverlapping(events, "relativeReturn", descending=False, count=n)}
     if "predictionError" in events and events.predictionError.notna().any():
@@ -595,10 +619,10 @@ def assert_pit_membership(panel, memberships):
 def universe_mask(panel, name, spec):
     """A = the PIT membership rows themselves (no other signal-time filter). B = A plus exactly the v1 stock
     eligibility conditions of `kr_concentrated_portfolio.eligible`."""
-    if name == "BROAD_PIT_ANALYSIS_UNIVERSE":
+    if name == "PIT_TOP120_LARGE_CAP_ANALYSIS_UNIVERSE":
         return pd.Series(True, index=panel.index)
-    if name == "V1_INVESTABLE_ANALYSIS_UNIVERSE":
-        cfg = spec["universes"]["V1_INVESTABLE_ANALYSIS_UNIVERSE"]["v1Constraints"]
+    if name == "PIT_TOP120_V1_INVESTABLE_ANALYSIS_UNIVERSE":
+        cfg = spec["universes"]["PIT_TOP120_V1_INVESTABLE_ANALYSIS_UNIVERSE"]["v1Constraints"]
         adv, vol = clean_numeric(panel.adv60), clean_numeric(panel.downsideVol126)
         return (panel.coreFamilyObserved.fillna(False).astype(bool) & panel.tradable.fillna(False).astype(bool)
                 & np.isfinite(adv) & (adv >= cfg["minimumAdvKrw"])

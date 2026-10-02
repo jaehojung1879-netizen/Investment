@@ -45,8 +45,9 @@
   "deliverable": "A MARKET MAP, not an investment strategy.",
   "dependencyHashes": {
     ".github/workflows/kr-factor-anatomy-v1.yml": "d1908cec30ca7258e1bfefb87273065360953707da8970a3d30ecb6d722089d2",
-    "docs/kr-factor-anatomy-v1-design.md": "ae3f2fbf25dfed2e7e3750cf8bd1b28df304cd7db6cd395e37ae67331a1b262e",
+    "docs/kr-factor-anatomy-v1-design.md": "b2e6402d118b6fbcbba0f62497b1efd92d28ab513d1a64661c62b2454839694d",
     "docs/kr-model-overlay-portfolio-v1-final-postmortem.md": "20d79907b78dab5a1a1094794c66a318bb8cc4deb4bed7f6256d210d9009f41b",
+    "docs/results/kr-factor-anatomy-v1-input-scope-audit.json": "5f9d4f3e96540f1325ab5a4cd3034b61ed289551797e25beeb62a3d85c4dc9b9",
     "docs/results/kr-model-overlay-portfolio-v1-diagnostic-summary.json.gz": "d00effa09a05418ba6f11debd95a64d8c1fcbdf90de46b6aa0c820f49b3171ad",
     "docs/results/kr-model-overlay-portfolio-v1-result.json": "2c16e4e121abdd771c103eadce8707484b4092eb501188823aa1ac0726ec272a",
     "docs/results/kr-model-overlay-portfolio-v1-result.sha256.json": "c1311e67bd88fff24c2701ba5dc03daf329415ba4be60b3510ef66b1c162722a",
@@ -80,9 +81,9 @@
     "pipeline/historical_store.py": "2751be8b5b79260f2038c9fb975cae58d49cb7868751c6658e363b48712016c0",
     "pipeline/kelly_portfolio.py": "6a4bd54be11e35e7348f64d0c99e7764635c4efcea62306da0b6ca81bfb3b06c",
     "pipeline/kr_concentrated_portfolio.py": "5059260c02e55dfde5b38b644ef2a66d0ff793dd2fb2e17609331dbb08571b64",
-    "pipeline/kr_factor_anatomy.py": "a2922078eb755feb75760e265c090973c2fa8eacb4034604bd73da1e8fe1177c",
-    "pipeline/kr_factor_anatomy_execution.py": "6628e8761e61ba2f399a797bd9811e00de6ca9e30595e4e7afb3344b573afcf5",
-    "pipeline/kr_factor_anatomy_report.py": "fbbfc429561c30b732296e85b08d5b7675432d1e3b8961e60424d4f154abd72c",
+    "pipeline/kr_factor_anatomy.py": "56b2ad6660ae5b02fb9f646f78f4db1e7040caeb108fcf7f3b10e45354fe3a5a",
+    "pipeline/kr_factor_anatomy_execution.py": "f8aae109d75dca9521b356168f1a56712f092911f556495538c2e5ab6a7b95e8",
+    "pipeline/kr_factor_anatomy_report.py": "855124c2dedb71b4d813aa97acac3b1921c9d74f537bb2a515e0131146f8067d",
     "pipeline/kr_market_risk_overlay.py": "983b3aab891a2af2f6d54b9b3d7ca29788651ba898b074da0506a40431ae4c07",
     "pipeline/kr_market_value.py": "49306b8d14c4e8d681ae5846802c2ae82fa5727bb7a8adf356fa313217103c5e",
     "pipeline/kr_model_overlay_portfolio.py": "b67495886aa63e10315d96ce8b30a023ee75adac6f5fec5a4fab7593b4f70343",
@@ -109,6 +110,7 @@
     "pipeline/selection_null.py": "b00e7419a8a620e284f3b5a15aafa66e9a8f776b81da027a766a72b3eecf5e17",
     "research_specs/kr-model-overlay-portfolio-v1.json": "c1cbfd232fdcaa7fa584cd1762e9e28291b4382d37e6244f5ab1a18731fb2df2",
     "research_specs/kr-model-overlay-portfolio-v1.sha256": "31f5e13ac44f4591b820fffb03849c99653d076fe496c40e275d693723b18cb1",
+    "scripts/audit_kr_factor_anatomy_input_scope.py": "90409e89219043be56ccc9716ae6ee0b980ec4e885fc7243a054b40dea32aa5c",
     "scripts/run_kr_factor_anatomy_v1.py": "88b612988d8e3ae825da92a41e8d8ea95f1835b713332b9695b12ea1ba2e7c7a"
   },
   "developmentCutoff": "2026-09-14",
@@ -249,6 +251,108 @@
     "views": [
       "RANK_MEAN_FAMILY_SCORE (full history, outcome-independent): equal-weight mean of the within-date percentiles of the constituents a name HAS (the v1 'each available constituent contributes equally' rule).",
       "V1_ARCHIVED_FAMILY_SCORE (exact sealed v1 per-prediction VALUE/QUALITY/CATALYST/RISK scores): exists only for v1 prediction rows (core-observed names, evaluation dates from 2020), is fold-standardised and median-imputed, and is horizon-specific (v1 fits each horizon separately)."
+    ]
+  },
+  "financialCaseStudies": {
+    "distributionCaveats": [
+      "The return basis carries only distributions the vendor served (Yahoo actions); completeness is unaudited for continuing names. High-yield financials are where a missing distribution matters most, so their stock returns are likely understated relative to total shareholder return.",
+      "Whole-entity accounting numerators over one issue's market cap (ISSUE_CAP_ACCOUNTING_PROXY) distort book/earnings ratios of financial holding companies, and ocfYield/ocfToAssets/accruals are not comparable for banks and insurers.",
+      "Several members changed names or structure (e.g. Woori Financial Group relisted in 2019 under a new ticker; 053000.KS has no frozen accounting record); case studies cover each ticker's own history only.",
+      "No claim is made that these names are representative of financials or that financials differ from non-financials."
+    ],
+    "extractions": [
+      "highest sealed v1 H126 prediction",
+      "lowest sealed v1 H126 prediction",
+      "largest positive realised prediction error",
+      "largest negative realised prediction error"
+    ],
+    "horizon": 126,
+    "inputCoverageAtFreeze": {
+      "000810.KS": {
+        "firstTop120": "2013-01-02",
+        "hasFrozenAccountingRecord": true,
+        "hasSealedPricePanel": true,
+        "lastTop120": "2026-09-01",
+        "servedDividendEventYearCount": 15,
+        "top120Snapshots": 164
+      },
+      "024110.KS": {
+        "firstTop120": "2013-01-02",
+        "hasFrozenAccountingRecord": true,
+        "hasSealedPricePanel": true,
+        "lastTop120": "2026-09-01",
+        "servedDividendEventYearCount": 15,
+        "top120Snapshots": 164
+      },
+      "032830.KS": {
+        "firstTop120": "2013-01-02",
+        "hasFrozenAccountingRecord": true,
+        "hasSealedPricePanel": true,
+        "lastTop120": "2026-09-01",
+        "servedDividendEventYearCount": 15,
+        "top120Snapshots": 164
+      },
+      "055550.KS": {
+        "firstTop120": "2013-01-02",
+        "hasFrozenAccountingRecord": true,
+        "hasSealedPricePanel": true,
+        "lastTop120": "2026-09-01",
+        "servedDividendEventYearCount": 16,
+        "top120Snapshots": 164
+      },
+      "071050.KS": {
+        "firstTop120": "2013-01-02",
+        "hasFrozenAccountingRecord": true,
+        "hasSealedPricePanel": true,
+        "lastTop120": "2026-09-01",
+        "servedDividendEventYearCount": 15,
+        "top120Snapshots": 164
+      },
+      "086790.KS": {
+        "firstTop120": "2013-01-02",
+        "hasFrozenAccountingRecord": true,
+        "hasSealedPricePanel": true,
+        "lastTop120": "2026-09-01",
+        "servedDividendEventYearCount": 16,
+        "top120Snapshots": 164
+      },
+      "105560.KS": {
+        "firstTop120": "2013-01-02",
+        "hasFrozenAccountingRecord": true,
+        "hasSealedPricePanel": true,
+        "lastTop120": "2026-09-01",
+        "servedDividendEventYearCount": 16,
+        "top120Snapshots": 164
+      },
+      "316140.KS": {
+        "firstTop120": "2019-03-04",
+        "hasFrozenAccountingRecord": true,
+        "hasSealedPricePanel": true,
+        "lastTop120": "2026-09-01",
+        "servedDividendEventYearCount": 8,
+        "top120Snapshots": 91
+      }
+    },
+    "names": {
+      "000810.KS": "Samsung Fire & Marine Insurance",
+      "024110.KS": "Industrial Bank of Korea",
+      "032830.KS": "Samsung Life Insurance",
+      "055550.KS": "Shinhan Financial Group",
+      "071050.KS": "Korea Investment Holdings",
+      "086790.KS": "Hana Financial Group",
+      "105560.KS": "KB Financial Group",
+      "316140.KS": "Woori Financial Group"
+    },
+    "selection": "Fixed now from the audit's coverage rows: financial-company names with a sealed price panel and a frozen accounting record, ordered by presence in the top-120 snapshots; chosen before any outcome and never changed. A case-study list, NOT a financial-sector classification and not a subgroup table.",
+    "tickers": [
+      "105560.KS",
+      "055550.KS",
+      "086790.KS",
+      "316140.KS",
+      "024110.KS",
+      "032830.KS",
+      "000810.KS",
+      "071050.KS"
     ]
   },
   "fundamentalsVsPrice": {
@@ -490,6 +594,13 @@
     }
   ],
   "interpretation": {
+    "canonicalDirection": "ONE frozen direction for every directional check: the sign of the equal-date D10-D1 decile spread (high factor percentile minus low). Year stability, leave-best-year-out and strata agreement are all read against this sign.",
+    "directionConsistencyRule": "BROADLY_POSITIVE/NEGATIVE requires all three direction measures to be non-zero and share one sign. If any is zero/unmeasured or they disagree, the label is NO_CLEAR_MONOTONIC_PATTERN.",
+    "directionMeasures": [
+      "sign of D10-D1",
+      "sign of the decile monotonicity (Spearman of decile mean vs decile index)",
+      "sign of the mean within-date rank correlation"
+    ],
     "forbiddenOutputs": [
       "PASS",
       "FAIL",
@@ -509,11 +620,11 @@
     "minimumDatesForLabel": 104,
     "minimumMeasuredStrata": 3,
     "monotonicityFloor": 0.5,
-    "order": "First match wins: DATA_INSUFFICIENT, NO_CLEAR_MONOTONIC_PATTERN, UNSTABLE_OR_REGIME_DEPENDENT, CONCENTRATED_IN_SPECIFIC_STRATA, then BROADLY_POSITIVE / BROADLY_NEGATIVE by the sign of D10-D1.",
+    "order": "First match wins: DATA_INSUFFICIENT, NO_CLEAR_MONOTONIC_PATTERN (including direction disagreement), UNSTABLE_OR_REGIME_DEPENDENT, CONCENTRATED_IN_SPECIFIC_STRATA, then BROADLY_POSITIVE / BROADLY_NEGATIVE by the sign of D10-D1.",
     "rules": [
-      "NO_CLEAR_MONOTONIC_PATTERN if |decile monotonicity| < monotonicityFloor.",
+      "NO_CLEAR_MONOTONIC_PATTERN if the three direction measures do not share one non-zero sign, or |decile monotonicity| < monotonicityFloor.",
       "UNSTABLE_OR_REGIME_DEPENDENT if the sign does not survive leave-best-year-out, or the positive-year fraction is below yearFractionBroad for a positive spread (or above 1-yearFractionBroad for a negative one).",
-      "CONCENTRATED_IN_SPECIFIC_STRATA if fewer than strataAgreementFraction of the measured market-cap quintiles share the pooled sign of the rank correlation.",
+      "CONCENTRATED_IN_SPECIFIC_STRATA if fewer than strataAgreementFraction of the measured market-cap quintiles share the canonical direction (the sign of D10-D1).",
       "Otherwise BROADLY_POSITIVE or BROADLY_NEGATIVE by the sign of the equal-date D10-D1."
     ],
     "status": "Descriptive and rule-based. Constants are fixed here, are not optimisation targets, and gate nothing. The interval is shown beside the label and is not part of it.",
@@ -615,6 +726,8 @@
   },
   "scientificStatus": "EXPLORATORY_DEVELOPMENT_ON_OUTCOME_EXPOSED_KR_HISTORY",
   "sealedDataInputs": [
+    "docs/results/kr-factor-anatomy-v1-input-scope-audit.json",
+    "scripts/audit_kr_factor_anatomy_input_scope.py",
     ".github/workflows/kr-factor-anatomy-v1.yml",
     "docs/kr-factor-anatomy-v1-design.md",
     "scripts/run_kr_factor_anatomy_v1.py",
@@ -682,6 +795,12 @@
     ],
     "classificationPath": "research_specs/kr-factor-anatomy-v1-structural-classification.json",
     "consequence": "The primary factor anatomy proceeds. Every sector/structural subgroup table is marked DATA_FOUNDATION_REQUIRED and is not computed.",
+    "investigation": {
+      "attemptedBeforeOutcomes": true,
+      "blocker": "No dated, authoritative source for historical financial-company or regulated/public-enterprise status exists in the pinned inputs (snapshots carry code, name, market cap, shares only; the repository has no sector or ownership field), and the primary sources (KRX industry classification, DART/ALIO/government public-institution designations, FSC registers) are unreachable from this environment, which blocks verification of validity dates per member. Today's sector label is forbidden as PIT data and no backfill was made.",
+      "mitigation": "Pre-frozen financialCaseStudies (large bank-holding and financial examples with existing data) with explicit distribution-coverage caveats. KEPCO remains in every primary table.",
+      "result": "NOT BUILDABLE BEFORE OUTCOMES; stays DATA_FOUNDATION_REQUIRED."
+    },
     "methodology": {
       "FINANCIAL": "Banks, insurers, securities and holding-type financial firms whose balance-sheet economics differ from industrials. Needs a dated authoritative classification.",
       "ORDINARY_NON_FINANCIAL_PRIVATE": "Everything not in the two classes above, defined only as the complement of the two frozen lists.",
@@ -725,7 +844,7 @@
     "twoSidedTail": 0.025
   },
   "universes": {
-    "BROAD_PIT_ANALYSIS_UNIVERSE": {
+    "PIT_TOP120_LARGE_CAP_ANALYSIS_UNIVERSE": {
       "requires": [
         "PIT membership on the signal date",
         "finite value of the factor being tested",
@@ -734,7 +853,7 @@
       "rule": "The v1 point-in-time membership itself: strictly previous KRX monthly ranked top-120 by market capitalisation, with no current-member union and no survivorship backfill. A factor is tested on a name-date only when its OWN value is finite and a valid matured outcome exists; no unrelated factor family is required.",
       "scope": "A top-120 market-cap universe: every member is a large cap. Statements about small caps are impossible in this study."
     },
-    "V1_INVESTABLE_ANALYSIS_UNIVERSE": {
+    "PIT_TOP120_V1_INVESTABLE_ANALYSIS_UNIVERSE": {
       "rule": "The broad universe restricted to exactly the v1 stock-eligibility conditions of pipeline.kr_concentrated_portfolio.eligible.",
       "v1Constraints": {
         "minimumAdvKrw": 3000000000.0,
@@ -744,8 +863,8 @@
       }
     },
     "definitions": [
-      "BROAD_PIT_ANALYSIS_UNIVERSE",
-      "V1_INVESTABLE_ANALYSIS_UNIVERSE"
+      "PIT_TOP120_LARGE_CAP_ANALYSIS_UNIVERSE",
+      "PIT_TOP120_V1_INVESTABLE_ANALYSIS_UNIVERSE"
     ],
     "documentedDifferences": [
       "B additionally requires VALUE, QUALITY and CATALYST families each to have at least one finite raw feature (coreFamilyObserved) on the signal date.",
@@ -755,8 +874,18 @@
       "Neither universe requires a v1 prediction, a positive-prediction cut, a round-trip-cost hurdle, a holding cap, the benchmark overlay or any portfolio constraint."
     ],
     "neverSilentlySwitched": true,
-    "primary": "BROAD_PIT_ANALYSIS_UNIVERSE",
-    "ranksAreComputedWithin": "the universe being analysed, from signal-date information only"
+    "primary": "PIT_TOP120_LARGE_CAP_ANALYSIS_UNIVERSE",
+    "ranksAreComputedWithin": "the universe being analysed, from signal-date information only",
+    "scopeInvestigation": {
+      "accountingFactors": "NOT broadened. The frozen DART accounting snapshot covers 250 of the 260 ever-top-120 securities and 0 outside it.",
+      "audit": "docs/results/kr-factor-anatomy-v1-input-scope-audit.json (outcome-free, from the two pinned signal-history commits)",
+      "decision": "Denominator unchanged; scope is stated as large-cap everywhere.",
+      "marketOnlyFactors": "NOT broadened. Sealed replay price panels, the KRX market cache and every derived market feature exist ONLY for the 260 securities that were ever top-120 (price-panel ticker set equals that set exactly). Ranks 121-300 priced histories exist only for names that were top-120 at another time, so including them would condition on a later or earlier large-cap state. The 364 securities never top-120 have no price history in the pinned inputs.",
+      "pitUniverse": "KRX monthly snapshots carry rank 1-300 (KOSPI) with code, name, market cap and shares only; 624 distinct securities reached rank <= 300, 364 only ever at ranks 121-300.",
+      "rawKrxPayloads": "The preserved raw KRX payloads contain more securities than the normalised v1 market files, but they are outside the pinned input identity, are unadjusted closes with no dividend lineage, and are not readable from this environment; no broader denominator is built from them.",
+      "wouldBeRequired": "A new pinned, adjusted price panel and accounting collection for ranks 121-300 members (including departed names) under a new preregistration, before any outcome."
+    },
+    "scopeStatement": "SCOPE: point-in-time TOP-120 KRX market-capitalisation LARGE CAPS only (260 securities ever held that rank, 2013-2026). Nothing here describes the whole Korean market, mid caps or small caps."
   },
   "v1": {
     "diagnosticSummaryPath": "docs/results/kr-model-overlay-portfolio-v1-diagnostic-summary.json.gz",
@@ -797,10 +926,14 @@
       "benchmarkRelativeWinners": "descending by relative return",
       "largestAbsoluteStockReturn": "descending by |stock return of the window| (not benchmark-relative)",
       "largestNegativePredictionError": "ascending by the same error (most negative first)",
+      "largestNegativeStockReturn": "ascending by signed stock return of the window (what fell most; not benchmark-relative)",
       "largestPositivePredictionError": "descending by (realised relative return - sealed v1 prediction)",
+      "largestPositiveStockReturn": "descending by signed stock return of the window (what rose most; not benchmark-relative)",
       "mostFrequentV1TopFive": "tickers by number of signal dates with sealed v1 prediction rank <= 5"
     },
     "tables": [
+      "largestPositiveStockReturn",
+      "largestNegativeStockReturn",
       "largestAbsoluteStockReturn",
       "benchmarkRelativeWinners",
       "benchmarkRelativeLosers",
@@ -809,6 +942,6 @@
       "mostFrequentV1TopFive"
     ],
     "tieBreak": "(score, date ascending, ticker ascending)",
-    "universeAndTreatment": "BROAD_PIT_ANALYSIS_UNIVERSE under V1_TERMINAL_DISCIPLINE"
+    "universeAndTreatment": "PIT_TOP120_LARGE_CAP_ANALYSIS_UNIVERSE under V1_TERMINAL_DISCIPLINE"
   }
 }
