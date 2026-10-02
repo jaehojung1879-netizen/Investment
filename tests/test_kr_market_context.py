@@ -1,6 +1,7 @@
 from dataclasses import replace
 import json
 from pathlib import Path
+import re
 
 import pytest
 
@@ -82,19 +83,23 @@ def test_benchmark_reuses_existing_engine_and_requires_availability(monkeypatch)
 
 
 def test_workflow_secret_is_manual_job_only_and_no_raw_upload():
-    import yaml
-    workflow=yaml.safe_load(Path('.github/workflows/probes.yml').read_text())
-    jobs=workflow['jobs']
-    secret_jobs=[]
-    for name,job in jobs.items():
-        if 'secrets.ECOS' in json.dumps(job):
-            secret_jobs.append(name)
-            assert "github.event_name == 'workflow_dispatch'" in job['if']
-            env=job['steps'][2]['env']
-            assert env['ECOS_API_KEY']=='${{ secrets.ECOS }}'
-            assert 'tee' not in job['steps'][2]['run']
-            assert job['steps'][3]['with']['path']=='${{ runner.temp }}/ecos/source-readiness.json'
+    # Check this workflow's explicit text contract, as other workflow tests do;
+    # no YAML parser dependency is needed in the repository test environment.
+    workflow=Path('.github/workflows/probes.yml').read_text()
+    parts=re.split(r"(?m)^  ([\w-]+):\s*$",workflow.split('\njobs:\n',1)[1])
+    jobs=dict(zip(parts[1::2],parts[2::2]))
+    secret_jobs=[name for name,body in jobs.items() if 'secrets.ECOS' in body]
     assert secret_jobs==['ecos-market-context']
+    assert workflow.count('secrets.ECOS')==1
+    job=jobs['ecos-market-context']
+    assert "    if: github.event_name == 'workflow_dispatch' && inputs.probe == 'ecos-market-context'\n" in job
+    assert '          ECOS_API_KEY: ${{ secrets.ECOS }}\n' in job
+    runs=re.findall(r"(?m)^        run: (.*)$",job)
+    assert runs==['python scripts/probe_ecos_market_context.py --output "$RUNNER_TEMP/ecos/source-readiness.json"']
+    assert 'tee' not in runs[0]
+    assert job.count('      - uses: actions/upload-artifact@v4\n')==1
+    upload=job.split('      - uses: actions/upload-artifact@v4\n',1)[1]
+    assert re.findall(r"(?m)^          path: (.*)$",upload)==['${{ runner.temp }}/ecos/source-readiness.json']
 
 
 def test_secret_guard_blocks_server_echo():
