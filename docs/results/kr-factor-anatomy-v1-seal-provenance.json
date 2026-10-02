@@ -1,0 +1,38 @@
+{
+  "artifactArchiveSha256": "f8020bdac9878f523091881d129e3c414234012c17e1fd61e1e49b6d6538b80f",
+  "artifactId": 11207962601,
+  "artifactName": "kr-factor-anatomy-v1-results-36960496371",
+  "artifactTablesVerifiedNotCommitted": 98,
+  "committedFiles": {
+    "docs/results/kr-factor-anatomy-v1-manifest.json": {
+      "bytes": 16942,
+      "sha256": "3f8cdd9e5cf82b58f8526078c545b9ce8e116b3bf196e474e807a22a4cd59df9",
+      "sourceFile": "manifest.json"
+    },
+    "docs/results/kr-factor-anatomy-v1-report.md": {
+      "bytes": 22237,
+      "sha256": "2ffbb3458660c74fcbacd148cb2b8d7c7013ac7967978a6c8334b6af7b9f892e",
+      "sourceFile": "report.md"
+    },
+    "docs/results/kr-factor-anatomy-v1-result.json": {
+      "bytes": 2274784,
+      "sha256": "8518ec8cae95d0a23e964aab147e20659f17437fcd6fec6cb7f64cfa2b98a9e7",
+      "sourceFile": "anatomy.json"
+    }
+  },
+  "executionRunId": 36960496371,
+  "executionSha": "cd82a5b7edb08f18ccdaa3f231415354aef9a41c",
+  "inputIdentitySha256": "233df37ed205cc6b48828121e711417ccf961301dc58aa252430b343db9666a7",
+  "kind": "RESULT_SEAL_EXACT_ARTIFACT_BYTES",
+  "scientificStatus": "EXPLORATORY_DEVELOPMENT_ON_OUTCOME_EXPOSED_KR_HISTORY",
+  "sealedAtUtc": "2026-10-02T11:00:03Z",
+  "specSha256": "ceb97f481ae7261e89da4467fba03465f0c78cc3654cd799c26e5088ee3bc3d2",
+  "statements": [
+    "No scientific statistic was recomputed by this seal.",
+    "The committed result, report and manifest are the exact bytes of the artifact members anatomy.json, report.md and manifest.json (renamed only).",
+    "Committing the result path makes the anatomy workflow refuse any further execute (ANATOMY_RESULT_ALREADY_COMMITTED)."
+  ],
+  "statisticsRecomputed": false,
+  "studyId": "kr-factor-anatomy-v1",
+  "tablesNote": "tables/*.csv.gz remain only in the (expiring) Actions artifact; their hashes are recorded in the committed manifest."
+}
