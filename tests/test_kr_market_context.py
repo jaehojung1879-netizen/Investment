@@ -179,3 +179,11 @@ def test_old_v1_seal_stays_immutable_and_refuses_new_ecos_closure(monkeypatch,tm
         with pytest.raises(ValueError,match='SEALED_DEPENDENCY_CHANGED'):
             CLI.main(['--sealed-sha256',seal,*args])
     assert capsys.readouterr().out=='' and not (tmp_path/'blocked').exists()
+
+
+def test_every_measurement_even_missing_spread_carries_information_contract():
+    required={'value','change','acceleration','direction','source','observedThrough',
+              'publishedAt','availableFrom','vintageStatus','coverage','status'}
+    for axis in MC.state_at('2024-01-01')['axes'].values():
+        for row in axis['measurements'].values():
+            assert required <= row.keys()

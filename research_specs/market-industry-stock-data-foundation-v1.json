@@ -64,7 +64,7 @@
     "pipeline/ecos_macro.py": "1fe17d6666b7cc6fe483d47928bbffd1b389f19743cd38c0e05b8a00a324c938",
     "pipeline/finnhub_derive.py": "2ceaf6a081a5fbbd893398a68e58006254da06492629d9e8824e0e835b848b56",
     "pipeline/industry_foundation.py": "795965170eef879e6e5dac6b7b5f7a32e7d898a2eb4e6eb30a1960e04d4af0d3",
-    "pipeline/kr_market_context.py": "61cd2a323bc42e78d8643ea44de4bd8d888d685cbd76003ff4a8234fbe37b11f",
+    "pipeline/kr_market_context.py": "02993292c8f9fba3adf708744534d4e230f1e1ca9cbd7c6c24e72ff0baac018e",
     "pipeline/kr_market_risk_overlay.py": "983b3aab891a2af2f6d54b9b3d7ca29788651ba898b074da0506a40431ae4c07",
     "pipeline/kr_repaired_accounting_snapshot.py": "b5b225e8a1d21b1516801c0ced1ef2164189867a457df1e0a51cd8ec95dd63ea",
     "pipeline/kr_terminal_corporate_actions.py": "6d550fc0900629150d2159b73196dcd726acf66f9e9e9350e1cb7db927c388f3",
@@ -79,13 +79,13 @@
     "research_specs/kr-repaired-accounting-snapshot-v1.json": "8dbae2203e1b809060100845f4571016e71fbc78cc09c1b52d9edeb46d38f331",
     "research_specs/market-industry-stock-membership-v1.schema.json": "fa0c826bd6a2665df06da297cb8117738aa733b96255b9f689d7fdd58bd8a11d",
     "scripts/audit_market_industry_stock_foundation.py": "c1a2dd0ecdc894a2068d1724c10998a389ae8b76d12222964367cf6b9d744a26",
-    "scripts/probe_ecos_market_context.py": "c27ca7164f81e7d26b47d949590a1004c3a075433572682cf606398943d36ac5",
+    "scripts/probe_ecos_market_context.py": "6cdf013c9e98d1e7b409defdc2366880f1d3d79ae9fef04db985dfb25a942099",
     "tests/conftest.py": "404ba3c3fd95d7001d5ef75c6cc88c869dfb1174e89a4332586aad0e5528d6d1",
     "tests/fixtures/industry-foundation.synthetic.json": "474ec934b225ee64b534a3fd8342a7e9c39edd91ba270f2dabcdbf56dfeb7a49",
     "tests/test_alpha_opportunity.py": "e268deece5b79257c188de954e3b417913b5653b03e0fbd8d324e2755e3449ec",
     "tests/test_ecos_macro.py": "de931db0a3f41cb2e0557b71e97690c734d1871672a3aed472f9e9c9f6032028",
     "tests/test_industry_foundation.py": "22137a02c4126609473c428a7b881a0f5bfea99de948aa55e5215fd0590214b9",
-    "tests/test_kr_market_context.py": "0a4c92aa4dcd1e5d9fcbb6a7566235b23fadcdcac38cd49daea949715c813315"
+    "tests/test_kr_market_context.py": "77b6ed77ef406206082145bc932fa3bf6a52fc6d960be4bcf2e01dacef355f1a"
   },
   "economicObjective": "Future returns above each relevant market benchmark after realistic investability and costs.",
   "execution": {

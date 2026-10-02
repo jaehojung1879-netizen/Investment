@@ -138,12 +138,17 @@ def _spread(left, right):
     if (left["value"] is None or right["value"] is None
             or left["observedThrough"] != right["observedThrough"] or not left.get("unit")
             or left.get("unit") != right.get("unit")):
-        return {"value": None, "status": "DATA_INSUFFICIENT", "sourceStatus": "DATA_LINEAGE_UNRESOLVED"}
+        return {"value": None, "change": None, "acceleration": None, "direction": None,
+                "status": "DATA_INSUFFICIENT", "sourceStatus": "DATA_LINEAGE_UNRESOLVED",
+                "source": None, "observedThrough": None, "publishedAt": None,
+                "availableFrom": None, "knownFrom": None, "vintageStatus": None,
+                "coverage": {"inputs": 0, "requiredInputs": 2}, "confirmatoryHistoricalEligible": False}
     exact = all(r["vintageStatus"] == "PIT_EXACT" for r in (left, right))
     return {"value": left["value"] - right["value"], "change": None, "acceleration": None,
             "direction": None, "status": "DERIVED", "source": [left["source"], right["source"]],
             "sourceStatus": "DERIVED_FROM_VISIBLE_INPUTS", "observedThrough": left["observedThrough"],
             "publishedAt": None, "availableFrom": max(left["availableFrom"], right["availableFrom"], key=stamp),
+            "knownFrom": max(left["knownFrom"], right["knownFrom"], key=stamp),
             "vintageStatus": "PIT_EXACT" if exact else "REVISED_HISTORY",
             "confirmatoryHistoricalEligible": exact, "coverage": {"inputs": 2}}
 

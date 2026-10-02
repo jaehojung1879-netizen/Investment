@@ -30,6 +30,14 @@ SEMANTICS = {
     "LeadingIndex": ("선행지수", "선행지수 순환변동치"),
     "Exports": ("수출", "수출금액"), "M2": ("M2", "M2(광의통화)"),
 }
+# Broad catalog discovery terms expose alternatives to incorrect placeholders.
+# They NEVER select an item; automatic selection still requires exact semantics.
+TABLE_SEARCH = {
+    "BaseRate": ("기준금리",), "KTB_3Y": ("시장금리",), "CorpBond_3Y": ("시장금리",),
+    "CPI": ("소비자물가",), "CoreCPI": ("소비자물가", "근원"),
+    "IndustrialProduction": ("생산", "광공업"), "LeadingIndex": ("경기종합", "선행"),
+    "Exports": ("수출", "수출입", "무역", "국제수지"), "M2": ("M2", "광의통화"),
+}
 TABLE_FIELDS = ("STAT_CODE", "STAT_NAME", "CYCLE", "SRCH_YN", "ORG_NAME")
 ITEM_FIELDS = ("STAT_CODE", "STAT_NAME", "GRP_CODE", "GRP_NAME", "ITEM_CODE", "ITEM_NAME",
                "CYCLE", "START_TIME", "END_TIME", "DATA_CNT", "UNIT_NAME")
@@ -131,7 +139,7 @@ def probe(key, config, selections=None):
         # Relevant metadata includes alternatives to wrong placeholder tables;
         # it does not automatically redefine a series from fuzzy matches.
         candidates = [r for r in tables if r.get("STAT_CODE") == code or any(
-            token in str(r.get("STAT_NAME")) for token in SEMANTICS[name])]
+            token in str(r.get("STAT_NAME")) for token in TABLE_SEARCH[name])]
         item_candidates = []
         for candidate in candidates:
             stat = candidate["STAT_CODE"]
