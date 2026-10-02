@@ -2261,6 +2261,26 @@
   studies and distribution caveats; a BROADLY_* label needs D10-D1, decile monotonicity and mean rank correlation to
   agree in sign; separate largest-rise and largest-fall tables exist. No outcome was computed.
 
+## KR Top120 regime review protocol invariants (v2.43)
+
+- A POST-OUTCOME DIAGNOSTIC SAYS SO, AND CAN ONLY DECOMPOSE. `kr-top120-regime-review-v1` is
+  `EXPLORATORY_POST_OUTCOME_REGIME_DIAGNOSTIC`, designed after the sealed `kr-factor-anatomy-v1` outcomes were seen
+  (predecessor pinned by result / report / manifest / provenance / archive / spec / raw-input identity). It asks only whether
+  known relationships are concentrated in outcome periods, signal-time market states or mega-cap names; it cannot confirm a
+  factor, validate a strategy, rescue `kr-model-overlay-portfolio-v1`, produce weights, pick a best factor or tune a threshold.
+- CHRONOLOGY IS BY OUTCOME WINDOW, NOT SIGNAL YEAR. A late-2024 signal maturing in 2025 is a 2025 observation: slices are decided
+  by each observation's entry / exit date (closed-interval intersection with the calendar year). A slice removes outcomes only;
+  a mechanical sensitivity universe removes names BEFORE ranking and same-date ranks are recomputed. Only Samsung Electronics,
+  SK Hynix and the two largest signal-date market caps can be removed; no company is added after outcomes.
+- NO OUTLIER RULE IS CHOSEN FROM THE RESULT. No winsorisation or trimming exists; the median spread and mean within-date Spearman
+  are fixed robust views reported beside, never instead of, the ordinary mean. The leave-one-out Top120 benchmark excludes the
+  subject, needs at least 50 OTHER valid names (the anatomy's decile minimum) and never zero-fills a peer; absolute, KODEX200-relative
+  and leave-one-out returns, and the three fundamentals success definitions, are never collapsed.
+- THE LIFECYCLE IS DESIGNED BEFORE THE RUN. Identities and readiness gates pass before anything durable exists; the execution
+  marker is written atomically and exclusively before the first outcome; a failed gate spends nothing; a committed result or marker
+  makes `execute` refuse. Authorization tests build their own synthetic repositories so none depends on the real repository being
+  pre- or post-seal (the lesson of the anatomy authorization-test repair).
+
 ## Lint gate invariants (v2.11)
 
 - The enabled rule set reports ZERO findings on `main`. A rule is turned on in the

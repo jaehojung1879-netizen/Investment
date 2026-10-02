@@ -1,0 +1,127 @@
+name: KR Top120 regime review v1
+# EXPLORATORY_POST_OUTCOME_REGIME_DIAGNOSTIC. Pull requests run `verify` only (synthetic tests plus outcome-free identity).
+# `execute` exists only as a manual workflow_dispatch on merged main, after the guard below. It never reruns
+# kr-factor-anatomy-v1, never invokes any sealed execute workflow and never contacts KRX.
+on:
+  pull_request:
+    paths:
+      - 'pipeline/kr_top120_regime_review*'
+      - 'scripts/run_kr_top120_regime_review_v1.py'
+      - 'research_specs/kr-top120-regime-review-v1*'
+      - 'tests/test_kr_top120_regime_review_v1.py'
+      - 'docs/kr-top120-regime-review-v1-design.md'
+      - '.github/workflows/kr-top120-regime-review-v1.yml'
+  workflow_dispatch:
+    inputs:
+      mode:
+        type: choice
+        options: [verify, execute]
+        default: verify
+      inputArtifact:
+        description: Exact preserved raw-input artifact name (required for execute)
+        type: string
+        required: false
+      inputRunId:
+        description: Producing workflow run ID of the exact raw snapshot (required for execute)
+        type: string
+        required: false
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: kr-top120-regime-review-v1-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  frozen-machine:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+          cache: pip
+      - run: pip install -r requirements.txt -r requirements-dev.txt
+      - name: Synthetic tests and outcome-free identity verification
+        run: |
+          ruff check .
+          python -m pytest -q tests/test_kr_top120_regime_review_v1.py
+          python scripts/run_kr_top120_regime_review_v1.py --mode verify --output run
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: kr-top120-regime-review-v1-verify-${{ github.run_id }}
+          path: run
+          retention-days: 30
+  execute:
+    # Never on pull_request. Requires an explicit manual dispatch with mode=execute.
+    if: github.event_name == 'workflow_dispatch' && inputs.mode == 'execute'
+    needs: frozen-machine
+    runs-on: ubuntu-latest
+    timeout-minutes: 240
+    env:
+      REGIME_INPUT_ARTIFACT: ${{ inputs.inputArtifact }}
+      REGIME_INPUT_RUN_ID: ${{ inputs.inputRunId }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - name: Main-only guard, committed spec, sealed predecessor, exact preserved artifact, no earlier result
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const fs = require('fs');
+            const cp = require('child_process');
+            if (context.ref !== 'refs/heads/main') throw new Error('MAIN_ONLY');
+            const main = await github.rest.git.getRef({...context.repo, ref: 'heads/main'});
+            if (main.data.object.sha !== context.sha) throw new Error('MAIN_HEAD_CHANGED');
+            const specPath = 'research_specs/kr-top120-regime-review-v1.json';
+            for (const p of [specPath, 'research_specs/kr-top120-regime-review-v1.sha256']) {
+              const committed = cp.execFileSync('git', ['show', 'HEAD:' + p]);
+              if (!committed.equals(fs.readFileSync(p))) throw new Error('SPEC_NOT_COMMITTED_AT_HEAD');
+            }
+            const spec = JSON.parse(fs.readFileSync(specPath));
+            const crypto = require('crypto');
+            for (const [key, rel] of Object.entries(spec.predecessor.files)) {
+              const sha = crypto.createHash('sha256').update(fs.readFileSync(rel)).digest('hex');
+              if (sha !== spec.predecessor.sha256[key]) throw new Error('PREDECESSOR_IDENTITY_CHANGED_' + key);
+            }
+            const pin = spec.input;
+            if (process.env.REGIME_INPUT_ARTIFACT !== pin.artifactName || process.env.REGIME_INPUT_RUN_ID !== String(pin.producingRunId)) throw new Error('INPUT_ARTIFACT_IDENTITY_MISMATCH');
+            if (fs.existsSync(spec.lifecycle.resultPath)) throw new Error('REGIME_REVIEW_ALREADY_SEALED');
+            if (fs.existsSync(spec.lifecycle.markerPath)) throw new Error('REGIME_REVIEW_MARKER_ALREADY_COMMITTED');
+            const art = await github.rest.actions.getArtifact({...context.repo, artifact_id: pin.artifactId});
+            const a = art.data;
+            if (a.expired || a.name !== pin.artifactName || String(a.workflow_run.id) !== String(pin.producingRunId) || a.digest !== 'sha256:' + pin.artifactArchiveSha256) throw new Error('PRESERVED_ARTIFACT_IDENTITY_MISMATCH');
+            const earlier = await github.paginate(github.rest.actions.listArtifactsForRepo, {...context.repo, per_page: 100});
+            if (earlier.some(x => !x.expired && x.name.startsWith('kr-top120-regime-review-v1-results-'))) throw new Error('RESULTS_ARTIFACT_ALREADY_EXISTS');
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+          cache: pip
+      - run: pip install -r requirements.txt -r requirements-dev.txt
+      - name: Download the exact preserved raw snapshot
+        uses: actions/download-artifact@v5
+        with:
+          name: ${{ inputs.inputArtifact }}
+          path: inputs
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run-id: ${{ inputs.inputRunId }}
+      - name: Exploratory regime review execution (identities and gates before the marker, marker before any outcome)
+        id: execution
+        run: python scripts/run_kr_top120_regime_review_v1.py --mode execute --inputs inputs --output run
+      - uses: actions/upload-artifact@v4
+        if: always() && steps.execution.outcome == 'success'
+        with:
+          name: kr-top120-regime-review-v1-results-${{ github.run_id }}
+          path: run
+          retention-days: 90
+      - uses: actions/upload-artifact@v4
+        if: always() && steps.execution.outcome != 'success'
+        with:
+          name: kr-top120-regime-review-v1-attempt-${{ github.run_id }}
+          path: run
+          retention-days: 30
+          if-no-files-found: ignore
