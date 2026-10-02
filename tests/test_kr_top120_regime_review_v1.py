@@ -541,6 +541,9 @@ class FakeGitHub:
                 return 422, {}
             self.refs[payload["ref"]] = payload["sha"]
             return 201, {}
+        if method == "GET" and path.startswith("/git/matching-refs/"):
+            prefix = "refs/" + path[len("/git/matching-refs/"):]
+            return 200, [{"ref": r, "object": {"sha": v}} for r, v in sorted(self.refs.items()) if r.startswith(prefix)]
         if method == "GET":
             ref = "refs/" + path[len("/git/ref/"):]
             return (200, {"object": {"sha": self.refs[ref]}}) if ref in self.refs else (404, {})
@@ -706,7 +709,7 @@ def test_the_lock_is_created_after_the_gates_and_before_the_first_outcome(monkey
     with pytest.raises(RuntimeError, match="stop after the outcomes were attached"):
         run_execute(s, sha, tmp_path, api)
     assert log == ["gates", "attach_outcomes", "lock_present=True"]                  # gates, then lock, then outcomes
-    assert [c[0] for c in api.calls] == ["POST", "GET"] and api.refs == {E.lock_ref(sha): "abc123"}
+    assert api.refs == {E.STUDY_LOCK_REF: "abc123", E.lock_ref(sha): "abc123"} and [c[0] for c in api.calls].count("POST") == 2
     marker = json.loads((tmp_path / "out" / "execution-started.json").read_text())
     assert marker["outcomesReadBeforeThisMarker"] == 0 and marker["lockRef"] == E.lock_ref(sha) and marker["lockedMainSha"] == "abc123"
     with pytest.raises(FileExistsError):
@@ -728,7 +731,7 @@ def test_an_existing_lock_refuses_execution_before_any_outcome(monkeypatch, tmp_
     _, _, log = stub_pipeline(monkeypatch, tmp_path, make_panel(n_dates=3), api)
     with pytest.raises(ValueError, match="EXECUTION_LOCK_ALREADY_EXISTS"):
         run_execute(s, sha, tmp_path, api)
-    assert log == ["gates"] and api.refs == {E.lock_ref(sha): "0ld5ha"}              # untouched, never moved to the new commit
+    assert log == ["gates"] and api.refs == {E.lock_ref(sha): "0ld5ha"}              # untouched, never moved to the new commit, no second tag
     repo = unsealed_repo(tmp_path)
     with pytest.raises(ValueError, match="EXECUTION_LOCK_ALREADY_EXISTS"):
         E.authorize_execution(s, sha, repo, good_env(s), fake_git(), lambda: E.lock_exists(sha, action_env(), api))
@@ -740,7 +743,7 @@ def test_a_post_lock_failure_permanently_consumes_the_study(monkeypatch, tmp_pat
     monkeypatch.setattr(R, "add_outcomes", lambda p, n: (_ for _ in ()).throw(RuntimeError("infrastructure failure after the lock")))
     with pytest.raises(RuntimeError, match="infrastructure failure"):
         run_execute(s, sha, tmp_path, api)
-    assert E.lock_ref(sha) in api.refs                                               # the failure did not release anything
+    assert E.lock_ref(sha) in api.refs and E.STUDY_LOCK_REF in api.refs              # the failure did not release anything
     repo = unsealed_repo(tmp_path)
     probe = lambda: E.lock_exists(sha, action_env(), api)                            # noqa: E731
     with pytest.raises(ValueError, match="EXECUTION_LOCK_ALREADY_EXISTS"):
@@ -758,11 +761,59 @@ def test_artifacts_and_their_expiry_are_irrelevant_to_the_permanent_lock():
     s, sha = E.load_spec()
     held = FakeGitHub(existing=[E.lock_ref(sha)])
     assert E.lock_exists(sha, action_env(), held) is True                            # nothing else is asked: no artifact listing exists
-    assert all(path.startswith("/git/ref/tags/") for _, path in held.calls)
+    assert all(path.startswith("/git/matching-refs/tags/") for _, path in held.calls)
     text = (ROOT / ".github/workflows/kr-top120-regime-review-v1.yml").read_text()
     guard = text[text.index("Main-only guard"):text.index("      - uses: actions/setup-python@v6", text.index("Main-only guard"))]
     assert "EXECUTION_LOCK_ALREADY_EXISTS" in guard and "-attempt-" not in guard      # attempt artifacts neither block nor reopen
     assert guard.index("EXECUTION_LOCK_ALREADY_EXISTS") < guard.index("RESULTS_ARTIFACT_ALREADY_EXISTS")
+
+
+def test_a_lock_from_an_older_spec_sha_still_consumes_the_whole_study(monkeypatch, tmp_path):
+    s, sha = E.load_spec()
+    old_sha = "0ld5pec" + "0" * 57                                                  # a previous revision's spec SHA
+    assert old_sha != sha
+    api = FakeGitHub(existing=[E.lock_ref(old_sha)])                                 # old-spec lock exists, no result was sealed
+    repo = unsealed_repo(tmp_path)
+    assert not (repo / E.RESULT_PATH).exists() and not (repo / E.MARKER_PATH).exists()
+    probe = lambda: E.lock_exists(sha, action_env(), api)                            # noqa: E731
+    with pytest.raises(ValueError, match="EXECUTION_LOCK_ALREADY_EXISTS"):
+        E.authorize_execution(s, sha, repo, good_env(s), fake_git(), probe)          # the CURRENT spec has no lock of its own
+    assert E.lock_ref(sha) not in api.refs
+    with pytest.raises(ValueError, match="EXECUTION_LOCK_ALREADY_EXISTS"):
+        E.claim_execution_lock(sha, action_env(), api)                               # nor can the claim create one
+    assert api.refs == {E.lock_ref(old_sha): "0ld5ha"} and all(m == "GET" for m, _ in api.calls)
+    _, _, log = stub_pipeline(monkeypatch, tmp_path, make_panel(n_dates=3), api)
+    with pytest.raises(ValueError, match="EXECUTION_LOCK_ALREADY_EXISTS"):
+        run_execute(s, sha, tmp_path, api)
+    assert log == ["gates"]                                                          # refused before any outcome
+    only_study_level = FakeGitHub(existing=[E.STUDY_LOCK_REF])
+    assert E.lock_exists(sha, action_env(), only_study_level) is True
+
+
+def test_same_spec_duplicates_refuse_and_no_lock_leaves_authorization_possible(tmp_path):
+    s, sha = E.load_spec()
+    repo = unsealed_repo(tmp_path)
+    clean = FakeGitHub()
+    permit = E.authorize_execution(s, sha, repo, good_env(s), fake_git(), lambda: E.lock_exists(sha, action_env(), clean))
+    assert isinstance(permit, E.ExecutionPermit) and clean.refs == {}                # authorization alone creates nothing
+    other_prefix = FakeGitHub(existing=["refs/tags/some-other-study-execution-lock-" + sha, "refs/tags/kr-top120-regime-review-v1-x"])
+    assert E.lock_exists(sha, action_env(), other_prefix) is False                   # only THIS study's prefix counts
+    E.claim_execution_lock(sha, action_env(), clean)
+    held = FakeGitHub(existing=list(clean.refs))
+    with pytest.raises(ValueError, match="EXECUTION_LOCK_ALREADY_EXISTS"):
+        E.authorize_execution(s, sha, repo, good_env(s), fake_git(), lambda: E.lock_exists(sha, action_env(), held))
+    with pytest.raises(ValueError, match="EXECUTION_LOCK_ALREADY_EXISTS"):
+        E.claim_execution_lock(sha, action_env(), clean)
+
+
+def test_workflow_guard_refuses_any_lock_for_the_study_not_one_spec_sha():
+    text = (ROOT / ".github/workflows/kr-top120-regime-review-v1.yml").read_text()
+    guard = text[text.index("Main-only guard"):text.index("      - uses: actions/setup-python@v6", text.index("Main-only guard"))]
+    assert "listMatchingRefs" in guard and "'-execution-lock'" in guard and "matching.data.length > 0" in guard
+    assert "specSha" not in guard and "getRef({...context.repo, ref: 'tags/'" not in guard    # no exact-SHA lookup remains
+    s = spec()
+    assert "ANY ref under" in s["lifecycle"]["executionLock"]["studyLevel"]
+    assert "ENTIRE kr-top120-regime-review-v1 study" in s["lifecycle"]["executionLock"]["postLockFailure"]
 
 
 def test_the_lock_cannot_be_moved_overwritten_or_deleted():
@@ -770,7 +821,8 @@ def test_the_lock_cannot_be_moved_overwritten_or_deleted():
     api = FakeGitHub()
     lock = E.claim_execution_lock(sha, action_env(), api)
     assert lock.ref == E.lock_ref(sha) == "refs/tags/kr-top120-regime-review-v1-execution-lock-" + sha
-    assert (lock.specSha256, lock.mainSha) == (sha, "abc123") and api.refs[lock.ref] == "abc123"
+    assert E.STUDY_LOCK_REF == "refs/tags/kr-top120-regime-review-v1-execution-lock"
+    assert (lock.specSha256, lock.mainSha) == (sha, "abc123") and api.refs[lock.ref] == api.refs[E.STUDY_LOCK_REF] == "abc123"
     before = dict(api.refs)
     for sha_main in ("abc123", "def456"):
         with pytest.raises(ValueError, match="EXECUTION_LOCK_ALREADY_EXISTS"):
@@ -789,16 +841,18 @@ def test_the_lock_must_point_at_the_authorized_commit_and_be_created_only_on_mai
     class Redirecting(FakeGitHub):
         def __call__(self, method, path, payload=None):
             status, body = super().__call__(method, path, payload)
-            return (status, {"object": {"sha": "somewhere-else"}}) if method == "GET" and status == 200 else (status, body)
+            return (status, {"object": {"sha": "somewhere-else"}}) if method == "GET" and path.startswith("/git/ref/") and status == 200 else (status, body)
     with pytest.raises(ValueError, match="EXECUTION_LOCK_NOT_ON_THE_AUTHORIZED_COMMIT"):
         E.claim_execution_lock(sha, action_env(), Redirecting())
     for bad in (action_env(GITHUB_REF="refs/heads/research/kr-top120-regime-review-v1"), action_env(GITHUB_ACTIONS="false")):
         with pytest.raises(ValueError, match="FORMAL_EXECUTION_REQUIRES_ACTIONS_MAIN"):
             E.claim_execution_lock(sha, bad, FakeGitHub())
     with pytest.raises(ValueError, match="ATOMIC_EXECUTION_LOCK_NOT_CREATED"):
-        E.claim_execution_lock(sha, action_env(), lambda m, p, d=None: (500, {}))
-    for status, outcome in ((200, True), (404, False)):
-        assert E.lock_exists(sha, action_env(), lambda m, p, d=None, s_=status: (s_, {})) is outcome
+        E.claim_execution_lock(sha, action_env(), lambda m, p, d=None: (200, []) if m == "GET" else (500, {}))
+    for body, outcome in (([{"ref": "x"}], True), ([], False)):
+        assert E.lock_exists(sha, action_env(), lambda m, p, d=None, b=body: (200, b)) is outcome
+    with pytest.raises(ValueError, match="EXECUTION_LOCK_STATE_UNVERIFIABLE"):
+        E.lock_exists(sha, action_env(), lambda m, p, d=None: (404, {}))                 # not a listing: unverifiable, refuse
     for env in ({}, action_env(GH_TOKEN=""), action_env(GITHUB_REPOSITORY="")):
         with pytest.raises(ValueError, match="EXECUTION_LOCK_STATE_UNVERIFIABLE"):
             E.lock_exists(sha, env, FakeGitHub())

@@ -2277,9 +2277,10 @@
   subject, needs at least 50 OTHER valid names (the anatomy's decile minimum) and never zero-fills a peer; absolute, KODEX200-relative
   and leave-one-out returns, and the three fundamentals success definitions, are never collapsed.
 - THE ONE-SHOT IS A DURABLE GITHUB-SIDE LOCK, NOT AN ARTIFACT OR A LOCAL FILE. Identities and readiness gates pass first; only
-  then the git tag `refs/tags/kr-top120-regime-review-v1-execution-lock-<specSha256>` is created by an atomic `POST /git/refs`
-  at the dispatched main commit (existing ref: 422, refuse; only POST and GET are ever issued, so it is never moved or
-  deleted) and only after it exists can any outcome be read. A failure before the lock spends nothing; a failure after it
+  then the study-level git tag `refs/tags/kr-top120-regime-review-v1-execution-lock` and the identity tag `...-lock-<specSha256>`
+  are created by atomic `POST /git/refs` at the dispatched main commit (existing ref: 422, refuse; only POST and GET are ever
+  issued, so none is moved or deleted) and ANY ref under that prefix, for any spec SHA, refuses execution, so editing the spec
+  never reopens the study (a first repair keyed the check to the current spec SHA only, which a revised spec would have escaped) and only after it exists can any outcome be read. A failure before the lock spends nothing; a failure after it
   permanently consumes the study whatever artifacts exist or expire. The first draft of this protocol wrote its "marker" only
   into the run's output directory and let a later `execute` run again after a post-marker failure — found by review before
   merge and repaired. Authorization and lock tests build their own synthetic repository and fake GitHub API (the lesson of the

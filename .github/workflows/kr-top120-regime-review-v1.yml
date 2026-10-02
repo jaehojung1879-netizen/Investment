@@ -3,9 +3,10 @@ name: KR Top120 regime review v1
 # `execute` exists only as a manual workflow_dispatch on merged main, after the guard below. It never reruns
 # kr-factor-anatomy-v1, never invokes any sealed execute workflow and never contacts KRX.
 # ONE-SHOT: after identities and readiness gates pass (and before any outcome is read) the run creates the git tag
-# refs/tags/kr-top120-regime-review-v1-execution-lock-<specSha256> with an atomic POST /git/refs. The tag is never moved or
-# deleted: a failure after it permanently consumes the study, whatever artifacts exist, expire or are deleted. A failure before
-# it spends nothing. Artifacts are never the enforcement.
+# refs/tags/kr-top120-regime-review-v1-execution-lock (study level) and ...-execution-lock-<specSha256> with atomic
+# POST /git/refs. Tags are never moved or deleted; ANY ref under the ...-execution-lock prefix, for any spec SHA, refuses
+# execution. A failure after the lock permanently consumes the WHOLE study, whatever artifacts exist or expire and whatever
+# later spec revision is committed. A failure before it spends nothing. Artifacts are never the enforcement.
 on:
   pull_request:
     paths:
@@ -99,10 +100,9 @@ jobs:
             if (process.env.REGIME_INPUT_ARTIFACT !== pin.artifactName || process.env.REGIME_INPUT_RUN_ID !== String(pin.producingRunId)) throw new Error('INPUT_ARTIFACT_IDENTITY_MISMATCH');
             if (fs.existsSync(spec.lifecycle.resultPath)) throw new Error('REGIME_REVIEW_ALREADY_SEALED');
             if (fs.existsSync(spec.lifecycle.markerPath)) throw new Error('REGIME_REVIEW_MARKER_ALREADY_COMMITTED');
-            const specSha = fs.readFileSync('research_specs/kr-top120-regime-review-v1.sha256', 'utf8').trim();
-            let locked = true;
-            try { await github.rest.git.getRef({...context.repo, ref: 'tags/' + spec.studyId + '-execution-lock-' + specSha}); }
-            catch (error) { if (error.status === 404) locked = false; else throw error; }
+            const lockPrefix = 'tags/' + spec.studyId + '-execution-lock';
+            const matching = await github.rest.git.listMatchingRefs({...context.repo, ref: lockPrefix});
+            const locked = matching.data.length > 0;           // ANY lock for this study, whatever spec SHA it carries
             if (locked) throw new Error('EXECUTION_LOCK_ALREADY_EXISTS');
             const art = await github.rest.actions.getArtifact({...context.repo, artifact_id: pin.artifactId});
             const a = art.data;

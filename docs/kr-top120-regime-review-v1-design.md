@@ -84,15 +84,18 @@ Protocol PR merges → a human dispatches `execute` once → identities and read
 created on GitHub** → only then may any outcome be read → result artifact → seal commits the exact bytes without rerunning →
 later attempts fail closed.
 
-**The lock** is the git tag `refs/tags/kr-top120-regime-review-v1-execution-lock-<specSha256>`, created from Actions by an
-atomic `POST /git/refs` pointing at the dispatched main commit (verified by a `GET` afterwards). It is the repository's
-already-proven mechanism from `kr-model-overlay-portfolio-v1`. An existing ref answers 422 and execution refuses; only POST and
-GET are ever issued, so the tag is never updated, moved, deleted or recreated. `attach_outcomes` refuses without the lock
-object, so no outcome can be read before it exists. An unverifiable lock state (no token, any non-200/404 answer) refuses.
+**The lock** is two git tags created from Actions by atomic `POST /git/refs`, both at the dispatched main commit (verified by a
+`GET` afterwards): the fixed study-level tag `refs/tags/kr-top120-regime-review-v1-execution-lock` (the exclusive claim) and the
+identity tag `...-execution-lock-<specSha256>`. **Any ref under the `...-execution-lock` prefix, for any spec SHA, consumes the
+whole study**: a later spec revision has a different SHA but still sees the old lock (the workflow lists matching refs;
+authorization and the claim call `GET /git/matching-refs/...`), so editing the spec never reopens `kr-top120-regime-review-v1`.
+It is the repository's proven mechanism from `kr-model-overlay-portfolio-v1`. An existing ref answers 422 and execution refuses;
+only POST and GET are ever issued, so no tag is updated, moved, deleted or recreated. `attach_outcomes` refuses without the lock
+object, so no outcome can be read before it exists. An unverifiable lock state (no token, any non-200 answer) refuses.
 
 * A failure **before** the lock (identity, predecessor, input identity, any readiness gate) writes `gates-failed.json`, creates
   no lock and spends nothing.
-* A failure **after** the lock permanently consumes v1, whether or not any artifact was emitted, kept, expired or deleted. A
+* A failure **after** the lock permanently consumes the ENTIRE study (not one spec SHA), whether or not any artifact was emitted, kept, expired or deleted. A
   retry would be a new, separately preregistered version.
 * Actions artifacts and their retention, local files, a later-committed result and the committed `execution-started.json`
   are **not** the enforcement; the last is provenance only. The workflow's results-artifact check is an additional convenience.

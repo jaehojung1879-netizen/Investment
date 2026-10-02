@@ -41,8 +41,8 @@
     "signalDates": "pipeline.kr_model_overlay_portfolio.weekly_dates(featureStart, developmentCutoff): last KR session of each completed calendar week."
   },
   "dependencyHashes": {
-    ".github/workflows/kr-top120-regime-review-v1.yml": "1bd8cac0ddbd5b20dd7b922963fe1590fda3080a9c36c6616bc9d3c73047566d",
-    "docs/kr-top120-regime-review-v1-design.md": "19b110dfa36ae155ef513b6fadc26e71a5066d1a9d019c85686bc5ee1febbf80",
+    ".github/workflows/kr-top120-regime-review-v1.yml": "2df9b21088bbc88f02cbf35ec5fb6cd1ef3b2d0de426a902ca5c5729aa89f5f7",
+    "docs/kr-top120-regime-review-v1-design.md": "991e4b567b5204fc78cd6cb425096976de0ae1a14d9b781f2f1a4c6578f516cf",
     "docs/results/kr-factor-anatomy-v1-manifest.json": "3f8cdd9e5cf82b58f8526078c545b9ce8e116b3bf196e474e807a22a4cd59df9",
     "docs/results/kr-factor-anatomy-v1-report.md": "2ffbb3458660c74fcbacd148cb2b8d7c7013ac7967978a6c8334b6af7b9f892e",
     "docs/results/kr-factor-anatomy-v1-result.json": "8518ec8cae95d0a23e964aab147e20659f17437fcd6fec6cb7f64cfa2b98a9e7",
@@ -85,7 +85,7 @@
     "pipeline/kr_portfolio_diagnostics.py": "9f28a5ddf49a58c95db36d3a573b19e56fe7c86f98ad2ed01d96e8c09e6b5c34",
     "pipeline/kr_repaired_accounting_snapshot.py": "b5b225e8a1d21b1516801c0ced1ef2164189867a457df1e0a51cd8ec95dd63ea",
     "pipeline/kr_top120_regime_review.py": "43e4ab3438f1fb3765975866f1d948bbde4469dd59047d52049c9752d4f74a31",
-    "pipeline/kr_top120_regime_review_execution.py": "11bc5692a77ad8cc92d034895d076af6841143f2f9f25c6e0abc353245e1726d",
+    "pipeline/kr_top120_regime_review_execution.py": "afb801535ba992e49757e9bb7822f8d377bbf41ca6d1e26ac40a6f397d4e6b22",
     "pipeline/kr_value_quality_catalyst.py": "1bfd62d1437dd9b574f1ab635836e7d7e69651dbbbaeedf29af84a90de17bb28",
     "pipeline/krx_universe.py": "77008b8c0dcb9cd44b0b1182df94d2f0af62edb6f03b6a41082c04679101d6b8",
     "pipeline/liquidity_attention.py": "208c989a70e2d276c040867496a127eda9ca82644012999a7253f7d47bb171a6",
@@ -302,7 +302,7 @@
         "exact spec SHA256 (in the tag name)",
         "dispatched main SHA (the commit the tag points at, verified after creation)"
       ],
-      "mechanism": "git tag refs/tags/kr-top120-regime-review-v1-execution-lock-<specSha256> created by an atomic POST /git/refs from Actions",
+      "mechanism": "fixed study-level git tag refs/tags/kr-top120-regime-review-v1-execution-lock (the exclusive atomic claim) plus identity tag refs/tags/kr-top120-regime-review-v1-execution-lock-<specSha256>, each created by an atomic POST /git/refs from Actions",
       "neverUpdatedMovedOrDeleted": true,
       "notEnforcement": [
         "Actions artifacts or their retention",
@@ -314,8 +314,9 @@
         "POST",
         "GET"
       ],
-      "postLockFailure": "PERMANENTLY CONSUMES the one-shot execution regardless of artifacts, their retention or expiry",
+      "postLockFailure": "PERMANENTLY CONSUMES the ENTIRE kr-top120-regime-review-v1 study, not one spec SHA, regardless of artifacts, their retention, expiry or any later spec revision",
       "preLockFailure": "spends nothing: gates-failed.json, no lock",
+      "studyLevel": "ANY ref under the ...-execution-lock prefix, for ANY spec SHA, refuses execution: a spec revision never reopens the study",
       "unverifiableLockStateRefuses": true,
       "workflowPermission": "contents: write on the execute job only, solely to create the lock ref"
     },

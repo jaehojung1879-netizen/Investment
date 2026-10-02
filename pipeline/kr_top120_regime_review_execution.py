@@ -11,9 +11,11 @@ Lifecycle (decided now, so the study does not repeat the sealing complexity of i
 2. a human dispatches `execute` once;
 3. identities and readiness gates are proven BEFORE anything durable exists: a failed gate writes `gates-failed.json`,
    creates NO lock and spends nothing;
-4. only then a DURABLE, EXCLUSIVE one-shot lock is created on GitHub: the git tag
-   `refs/tags/kr-top120-regime-review-v1-execution-lock-<specSha256>` pointing at the dispatched main commit, created by an
-   atomic `POST /git/refs` (an existing ref answers 422 and execution refuses). The tag is never updated, moved or deleted;
+4. only then a DURABLE, EXCLUSIVE one-shot lock is created on GitHub: the fixed study-level git tag
+   `refs/tags/kr-top120-regime-review-v1-execution-lock` and the identity tag `...-execution-lock-<specSha256>`, both at the
+   dispatched main commit, created by atomic `POST /git/refs` (an existing ref answers 422 and execution refuses). ANY ref under
+   the `...-execution-lock` prefix, for ANY spec SHA, consumes the whole study: editing the spec never reopens it. Tags are
+   never updated, moved or deleted;
 5. only after the lock is established and verified may any outcome be read. ANY failure after the lock permanently
    consumes v1: a later `execute` refuses whether or not a result artifact was ever emitted, kept or expired;
 6. the result artifact is emitted (a verdict, including DATA_INSUFFICIENT, is a successful process);
@@ -155,9 +157,16 @@ class ExecutionLock:
     token: object
 
 
+LOCK_PREFIX = "refs/tags/" + STUDY + "-execution-lock"
+
+
 def lock_ref(spec_sha):
-    """Identity of the lock: study + exact spec SHA. One lock per frozen spec, whatever main commit later dispatches."""
-    return "refs/tags/" + STUDY + "-execution-lock-" + spec_sha
+    """Identity of this revision's lock: study + exact spec SHA. It is recorded for provenance; it is NOT what makes the study
+    one-shot. That is `STUDY_LOCK_REF` and the PREFIX check: any ref under LOCK_PREFIX, for any spec SHA, consumes the study."""
+    return LOCK_PREFIX + "-" + spec_sha
+
+
+STUDY_LOCK_REF = LOCK_PREFIX                       # one fixed, study-level ref: its atomic create is the exclusive claim
 
 
 def github_api(method, path, payload=None, env=None):
@@ -175,36 +184,44 @@ def github_api(method, path, payload=None, env=None):
         return error.code, {}
 
 
-def lock_exists(spec_sha, env=None, api=github_api):
-    """True / False from the API; anything else (including a missing token) is UNVERIFIABLE and refuses."""
+def lock_exists(spec_sha=None, env=None, api=github_api):
+    """True when ANY execution lock for this study exists, whatever spec SHA it carries; False when none does. Anything else
+    (including a missing token) is UNVERIFIABLE and refuses. `spec_sha` is accepted for call compatibility and deliberately
+    ignored: changing the spec never reopens the study."""
     env = os.environ if env is None else env
     if not env.get("GH_TOKEN") or not env.get("GITHUB_REPOSITORY"):
         raise ValueError("EXECUTION_LOCK_STATE_UNVERIFIABLE")
-    status, _ = api("GET", "/git/ref/" + lock_ref(spec_sha)[len("refs/"):], None)
-    if status == 200:
-        return True
-    if status == 404:
-        return False
+    status, body = api("GET", "/git/matching-refs/" + LOCK_PREFIX[len("refs/"):], None)
+    if status == 200 and isinstance(body, list):
+        return len(body) > 0
     raise ValueError("EXECUTION_LOCK_STATE_UNVERIFIABLE")
 
 
 def claim_execution_lock(spec_sha, env=None, api=github_api):
-    """Atomic exclusive create, called only after identities and readiness gates passed and before ANY outcome is read.
+    """Exclusive create, called only after identities and readiness gates passed and before ANY outcome is read.
 
-    Only POST (create) and GET (verify) are ever issued: the ref is never PATCHed, moved, deleted or recreated, so a failure
-    after this call cannot reopen the study. A duplicate (HTTP 422) or an ambiguous response refuses without outcome access."""
+    1. refuse if ANY lock for this study already exists (any spec SHA);
+    2. atomically create the fixed study-level ref (a duplicate answers 422: the exclusive claim for the whole study);
+    3. create this revision's spec-SHA ref (identity), then verify both point at the dispatched main commit.
+
+    Only POST (create) and GET (read) are ever issued: no ref is PATCHed, moved, deleted or recreated, so a failure after
+    this call cannot reopen the study. An ambiguous response refuses without outcome access."""
     env = os.environ if env is None else env
     if env.get("GITHUB_ACTIONS") != "true" or env.get("GITHUB_REF") != "refs/heads/main":
         raise ValueError("FORMAL_EXECUTION_REQUIRES_ACTIONS_MAIN")
-    main_sha, ref = env["GITHUB_SHA"], lock_ref(spec_sha)
-    status, _ = api("POST", "/git/refs", {"ref": ref, "sha": main_sha})
-    if status == 422:
+    if lock_exists(spec_sha, env, api):
         raise ValueError("EXECUTION_LOCK_ALREADY_EXISTS")
-    if status != 201:
-        raise ValueError("ATOMIC_EXECUTION_LOCK_NOT_CREATED")
-    status, body = api("GET", "/git/ref/" + ref[len("refs/"):], None)
-    if status != 200 or (body.get("object") or {}).get("sha") != main_sha:
-        raise ValueError("EXECUTION_LOCK_NOT_ON_THE_AUTHORIZED_COMMIT")
+    main_sha, ref = env["GITHUB_SHA"], lock_ref(spec_sha)
+    for target in (STUDY_LOCK_REF, ref):
+        status, _ = api("POST", "/git/refs", {"ref": target, "sha": main_sha})
+        if status == 422:
+            raise ValueError("EXECUTION_LOCK_ALREADY_EXISTS")
+        if status != 201:
+            raise ValueError("ATOMIC_EXECUTION_LOCK_NOT_CREATED")
+    for target in (STUDY_LOCK_REF, ref):
+        status, body = api("GET", "/git/ref/" + target[len("refs/"):], None)
+        if status != 200 or (body.get("object") or {}).get("sha") != main_sha:
+            raise ValueError("EXECUTION_LOCK_NOT_ON_THE_AUTHORIZED_COMMIT")
     return ExecutionLock(spec_sha, main_sha, ref, _LOCK_TOKEN)
 
 
