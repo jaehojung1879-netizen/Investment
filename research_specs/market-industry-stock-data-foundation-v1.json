@@ -1,0 +1,533 @@
+{
+  "confirmations": [
+    "NO HISTORICAL ALPHA OUTCOME WAS COMPUTED",
+    "NO INDUSTRY TAXONOMY WAS SELECTED USING FUTURE RETURNS",
+    "NO PRIOR SEALED STUDY WAS RERUN",
+    "THIS FOUNDATION SERVES THE BROADER OBJECTIVE OF FUTURE BENCHMARK-RELATIVE ALPHA, BUT DOES NOT CLAIM ALPHA ITSELF"
+  ],
+  "crossRegion": {
+    "benchmarkDefinition": "Future protocol pins regional benchmark identity, currency and return basis; no vendor/instrument substitution",
+    "identicalSourcesRequired": false,
+    "identicalTaxonomiesRequired": false,
+    "pooledTrainingAllowed": false,
+    "sharedAbstraction": [
+      "MARKET",
+      "INDUSTRY",
+      "STOCK"
+    ]
+  },
+  "decomposition": {
+    "compounding": "Do not compound gaps separately. Wealth relative composition has cross term. Log ratios add only for positive wealth.",
+    "definition": "simple cumulative same-interval return differences",
+    "identity": "(R_I-R_M)+(R_S-R_I)=R_S-R_M",
+    "selfInclusion": "full industry includes subject; descriptive benchmark gap, not independent causal residual",
+    "signalMembershipFrozen": true
+  },
+  "dependenciesReadForDesign": [
+    "AGENTS.md",
+    "README.md",
+    "docs/alpha-research-philosophy-v2.md",
+    "docs/alpha-data-foundation-v2.md",
+    "docs/alpha-data-foundation-v2-sector-context.md",
+    "docs/alpha-data-foundation-v2-lineage.md",
+    "docs/alpha-data-foundation-v2-gaps.md",
+    "docs/alpha-research-foundation-v2-errata.md",
+    "docs/kr-universe-history-source.md",
+    "docs/kr-accounting-coverage-repair-v1-final-audit.md",
+    "docs/kr-repaired-accounting-snapshot-v1.md",
+    "docs/kr-terminal-action-reconstruction-v2.md",
+    "docs/kr-terminated-security-total-return-foundation-v1.md",
+    "docs/kr-model-overlay-portfolio-v1-research-foundation.md",
+    "docs/kr-factor-anatomy-v1-design.md",
+    "docs/kr-top120-regime-review-v1-design.md",
+    "docs/regional-alpha-model-v1.md",
+    "docs/us-pit-fundamentals-source.md",
+    "docs/results/kr-factor-anatomy-v1-seal-provenance.json",
+    "docs/results/kr-model-overlay-portfolio-v1-seal-provenance.json",
+    "docs/us-alpha-research-design-v1.md (design and source sections only)",
+    "docs/kr-macro-regime-design-v1.md",
+    "docs/kr-model-overlay-portfolio-v1-preregistration.md",
+    "docs/challenger-2-signal-source-feasibility-v1.md (source inventory only)"
+  ],
+  "dependencyHashes": {
+    ".github/workflows/market-industry-stock-foundation-v1.yml": "453a6c096ac10c7d2ca0b175348adba4ab6e17b9bf36f6e827bfcf0bf54c3e5c",
+    "docs/market-industry-stock-data-foundation-v1.md": "731990adf434880f407d39b25a38da4ff8ef1ec97ef49b7f4fb664c633d358ea",
+    "pipeline/dart_canonical_accounts.py": "d3ba397b84b51404939880a504809876cd01e896b164544142861ef7b615b0a9",
+    "pipeline/dart_derive.py": "c18be6391fd8e04118a8e13cb62ace5a20e641f1d67e1c185652ed88572bd457",
+    "pipeline/dart_xbrl_statements.py": "0b2e5209eff6c6dbcd9076747ae74e6512e8593e0b8ddaad90f8ff3aa59769a8",
+    "pipeline/finnhub_derive.py": "2ceaf6a081a5fbbd893398a68e58006254da06492629d9e8824e0e835b848b56",
+    "pipeline/industry_foundation.py": "795965170eef879e6e5dac6b7b5f7a32e7d898a2eb4e6eb30a1960e04d4af0d3",
+    "pipeline/kr_market_risk_overlay.py": "983b3aab891a2af2f6d54b9b3d7ca29788651ba898b074da0506a40431ae4c07",
+    "pipeline/kr_repaired_accounting_snapshot.py": "b5b225e8a1d21b1516801c0ced1ef2164189867a457df1e0a51cd8ec95dd63ea",
+    "pipeline/kr_terminal_corporate_actions.py": "6d550fc0900629150d2159b73196dcd726acf66f9e9e9350e1cb7db927c388f3",
+    "pipeline/krx_universe.py": "77008b8c0dcb9cd44b0b1182df94d2f0af62edb6f03b6a41082c04679101d6b8",
+    "pipeline/pit_data.py": "64da89c602ac4b6c67411d0b5defa2909b65c1a7aad0958b32cb7f7dcd567dbf",
+    "pipeline/price_adjustment.py": "ebdde717be22277315186d5f302642cbc8a057fedee84192b7af14b15c405892",
+    "pipeline/sectors.py": "1cb470d676eeb24d5fa4976bf8fc0f71f808957f132c908158acb6422fde60ba",
+    "research_specs/kr-repaired-accounting-snapshot-v1.json": "8dbae2203e1b809060100845f4571016e71fbc78cc09c1b52d9edeb46d38f331",
+    "research_specs/market-industry-stock-membership-v1.schema.json": "fa0c826bd6a2665df06da297cb8117738aa733b96255b9f689d7fdd58bd8a11d",
+    "scripts/audit_market_industry_stock_foundation.py": "f7210ee62439c342116b31c0b2f152198912cf097cec8d81def7660ae407398e",
+    "tests/fixtures/industry-foundation.synthetic.json": "474ec934b225ee64b534a3fd8342a7e9c39edd91ba270f2dabcdbf56dfeb7a49",
+    "tests/test_industry_foundation.py": "22137a02c4126609473c428a7b881a0f5bfea99de948aa55e5215fd0590214b9"
+  },
+  "economicObjective": "Future returns above each relevant market benchmark after realistic investability and costs.",
+  "execution": {
+    "historicalReturnsAllowed": false,
+    "modelsAllowed": false,
+    "portfolioAllowed": false,
+    "returnPrimitiveScope": "SYNTHETIC_ONLY",
+    "taxonomyOutcomeSelectionAllowed": false,
+    "workflowMode": "METADATA_AUDIT_ONLY"
+  },
+  "externalIndustryObservation": {
+    "requiredFields": [
+      "region",
+      "taxonomyId",
+      "taxonomyVersion",
+      "industryId",
+      "metricId",
+      "unit",
+      "currency",
+      "observationPeriod",
+      "publishedAt",
+      "vintageId",
+      "source",
+      "sourceSha256",
+      "mappingValidity",
+      "mappingReleaseDate"
+    ],
+    "visibility": "publishedAt < signal; observation month alone is insufficient"
+  },
+  "featureMatrix": [
+    {
+      "blocker": "trailing matched-basis prices; dated industry membership; complete frozen cohort",
+      "family": "relativeMomentum",
+      "industryPanelStatus": "DATA_FOUNDATION_REQUIRED",
+      "regions": {
+        "KR": "PARTIAL",
+        "US": "PARTIAL"
+      }
+    },
+    {
+      "blocker": "past-only moving-average/rise measurement; measured and full denominator; membership",
+      "family": "breadth",
+      "industryPanelStatus": "DATA_FOUNDATION_REQUIRED",
+      "regions": {
+        "KR": "PARTIAL",
+        "US": "PARTIAL"
+      }
+    },
+    {
+      "blocker": "same-cohort trailing returns, missingness and distribution semantics",
+      "family": "dispersion",
+      "industryPanelStatus": "DATA_FOUNDATION_REQUIRED",
+      "regions": {
+        "KR": "PARTIAL",
+        "US": "PARTIAL"
+      }
+    },
+    {
+      "blocker": "complete trailing industry blocks; no missing-block bridging",
+      "family": "volatility",
+      "industryPanelStatus": "DATA_FOUNDATION_REQUIRED",
+      "regions": {
+        "KR": "PARTIAL",
+        "US": "PARTIAL"
+      }
+    },
+    {
+      "blocker": "as-traded monetary volume; do not multiply forward adjusted index by volume",
+      "family": "liquidity",
+      "industryPanelStatus": "DATA_FOUNDATION_REQUIRED",
+      "regions": {
+        "KR": "PARTIAL",
+        "US": "PARTIAL"
+      }
+    },
+    {
+      "blocker": "PIT market cap/full universe; historical US cap not universally verified",
+      "family": "concentration",
+      "industryPanelStatus": "DATA_FOUNDATION_REQUIRED",
+      "regions": {
+        "KR": "PARTIAL",
+        "US": "PARTIAL"
+      }
+    },
+    {
+      "blocker": "legacy DART/Finnhub concepts; not proven repaired-KR four-family coverage",
+      "family": "revenue",
+      "industryPanelStatus": "DATA_FOUNDATION_REQUIRED",
+      "regions": {
+        "KR": "PARTIAL",
+        "US": "PARTIAL"
+      }
+    },
+    {
+      "blocker": "legacy DART/Finnhub concepts; independently verify periods/units/basis",
+      "family": "operatingProfit",
+      "industryPanelStatus": "DATA_FOUNDATION_REQUIRED",
+      "regions": {
+        "KR": "PARTIAL",
+        "US": "PARTIAL"
+      }
+    },
+    {
+      "blocker": "repaired KR ProfitLoss includes noncontrolling interests; US account chain; release visibility",
+      "family": "netIncome",
+      "industryPanelStatus": "DATA_FOUNDATION_REQUIRED",
+      "regions": {
+        "KR": "PARTIAL",
+        "US": "PARTIAL"
+      }
+    },
+    {
+      "blocker": "repaired KR CF; same visible TTM chain; incomplete OCF is missing",
+      "family": "operatingCashFlow",
+      "industryPanelStatus": "DATA_FOUNDATION_REQUIRED",
+      "regions": {
+        "KR": "PARTIAL",
+        "US": "PARTIAL"
+      }
+    },
+    {
+      "blocker": "dated balance-sheet totals; sector comparability and statement basis",
+      "family": "assetsLeverage",
+      "industryPanelStatus": "DATA_FOUNDATION_REQUIRED",
+      "regions": {
+        "KR": "PARTIAL",
+        "US": "PARTIAL"
+      }
+    },
+    {
+      "blocker": "matched visible same-name same-stage cohorts; changing membership is not growth",
+      "family": "aggregateChanges",
+      "industryPanelStatus": "DATA_FOUNDATION_REQUIRED",
+      "regions": {
+        "KR": "PARTIAL",
+        "US": "PARTIAL"
+      }
+    },
+    {
+      "blocker": "matched same-stage pairs and measured/full denominators",
+      "family": "improvementBreadth",
+      "industryPanelStatus": "DATA_FOUNDATION_REQUIRED",
+      "regions": {
+        "KR": "PARTIAL",
+        "US": "PARTIAL"
+      }
+    },
+    {
+      "blocker": "sparse KR legacy line item outside repaired four-family guarantee; never missing=0",
+      "family": "capex",
+      "industryPanelStatus": "DATA_FOUNDATION_REQUIRED",
+      "regions": {
+        "KR": "PARTIAL",
+        "US": "PARTIAL"
+      }
+    },
+    {
+      "blocker": "both flows with consistent stage/TTM/unit/currency",
+      "family": "capexSales",
+      "industryPanelStatus": "DATA_FOUNDATION_REQUIRED",
+      "regions": {
+        "KR": "PARTIAL",
+        "US": "PARTIAL"
+      }
+    },
+    {
+      "blocker": "same-stage year-ago positive denominator; no future amended values",
+      "family": "assetGrowth",
+      "industryPanelStatus": "DATA_FOUNDATION_REQUIRED",
+      "regions": {
+        "KR": "PARTIAL",
+        "US": "PARTIAL"
+      }
+    },
+    {
+      "blocker": "No historical estimate store; realised accounting is not expectations.",
+      "family": "analystEpsRevisions",
+      "industryPanelStatus": "NOT_AVAILABLE",
+      "regions": {
+        "KR": "NOT_AVAILABLE",
+        "US": "NOT_AVAILABLE"
+      }
+    },
+    {
+      "blocker": "No historical estimate store; realised accounting is not expectations.",
+      "family": "estimateBreadth",
+      "industryPanelStatus": "NOT_AVAILABLE",
+      "regions": {
+        "KR": "NOT_AVAILABLE",
+        "US": "NOT_AVAILABLE"
+      }
+    },
+    {
+      "blocker": "No historical estimate store; realised accounting is not expectations.",
+      "family": "estimateDispersion",
+      "industryPanelStatus": "NOT_AVAILABLE",
+      "regions": {
+        "KR": "NOT_AVAILABLE",
+        "US": "NOT_AVAILABLE"
+      }
+    },
+    {
+      "blocker": "Official source leads only; taxonomy crosswalk, release/vintage, units and coverage unverified.",
+      "family": "exports",
+      "industryPanelStatus": "DATA_FOUNDATION_REQUIRED",
+      "regions": {
+        "KR": "DATA_FOUNDATION_REQUIRED",
+        "US": "DATA_FOUNDATION_REQUIRED"
+      }
+    },
+    {
+      "blocker": "Official source leads only; taxonomy crosswalk, release/vintage, units and coverage unverified.",
+      "family": "orders",
+      "industryPanelStatus": "DATA_FOUNDATION_REQUIRED",
+      "regions": {
+        "KR": "DATA_FOUNDATION_REQUIRED",
+        "US": "DATA_FOUNDATION_REQUIRED"
+      }
+    },
+    {
+      "blocker": "Official source leads only; taxonomy crosswalk, release/vintage, units and coverage unverified.",
+      "family": "shipments",
+      "industryPanelStatus": "DATA_FOUNDATION_REQUIRED",
+      "regions": {
+        "KR": "DATA_FOUNDATION_REQUIRED",
+        "US": "DATA_FOUNDATION_REQUIRED"
+      }
+    },
+    {
+      "blocker": "Official source leads only; taxonomy crosswalk, release/vintage, units and coverage unverified.",
+      "family": "commodityProductPrices",
+      "industryPanelStatus": "DATA_FOUNDATION_REQUIRED",
+      "regions": {
+        "KR": "DATA_FOUNDATION_REQUIRED",
+        "US": "DATA_FOUNDATION_REQUIRED"
+      }
+    },
+    {
+      "blocker": "Official source leads only; taxonomy crosswalk, release/vintage, units and coverage unverified.",
+      "family": "spreads",
+      "industryPanelStatus": "DATA_FOUNDATION_REQUIRED",
+      "regions": {
+        "KR": "DATA_FOUNDATION_REQUIRED",
+        "US": "DATA_FOUNDATION_REQUIRED"
+      }
+    },
+    {
+      "blocker": "same dated industry cohort, monetary price and compatible visible accounting; no adjusted-index price valuation; history uses only earlier observations",
+      "family": "ownHistoryAndMarketValuation",
+      "industryPanelStatus": "DATA_FOUNDATION_REQUIRED",
+      "regions": {
+        "KR": "PARTIAL",
+        "US": "PARTIAL"
+      }
+    },
+    {
+      "blocker": "matched cohort, visible accounting/statement basis and meaningful positive denominator; financial firms require compatible concepts",
+      "family": "profitabilityBalanceSheetChanges",
+      "industryPanelStatus": "DATA_FOUNDATION_REQUIRED",
+      "regions": {
+        "KR": "PARTIAL",
+        "US": "PARTIAL"
+      }
+    },
+    {
+      "blocker": "same-stage visible trailing financial chains; missing revenue/operating profit do not inherit repaired four-family readiness",
+      "family": "salesEarningsOcfAcceleration",
+      "industryPanelStatus": "DATA_FOUNDATION_REQUIRED",
+      "regions": {
+        "KR": "PARTIAL",
+        "US": "PARTIAL"
+      }
+    },
+    {
+      "blocker": "trailing industry series frozen by signal-known membership; no current-sector substitute",
+      "family": "stockMomentumRelativeToOwnIndustry",
+      "industryPanelStatus": "DATA_FOUNDATION_REQUIRED",
+      "regions": {
+        "KR": "PARTIAL",
+        "US": "PARTIAL"
+      }
+    }
+  ],
+  "granularity": {
+    "chosenIndustryCount": null,
+    "chosenTaxonomy": null,
+    "criteria": [
+      "historical group counts",
+      "full-universe coverage",
+      "membership continuity",
+      "economic interpretability",
+      "statistical group size",
+      "regional applicability"
+    ],
+    "futureReturnsAllowed": false,
+    "mechanicalMinimumConstituents": 2,
+    "statisticalMinimumConstituents": null
+  },
+  "industryConstruction": {
+    "capDefinition": "publicly available dated full capitalization; same currency; no interpolation",
+    "cashExit": "retain proven cash proceeds to common endpoint with zero yield",
+    "entry": "next regional session close",
+    "maximumCapAge": null,
+    "missingConstituent": "whole block DATA_INSUFFICIENT, return null, no reweight",
+    "productionWeightsAllowed": false,
+    "rebalance": "Future protocol must preregister regional calendar; no historical series constructed",
+    "returnBases": [
+      "PRICE_RETURN",
+      "ADJUSTED_INDEX_RETURN_PARTIAL_DISTRIBUTIONS",
+      "TOTAL_SHAREHOLDER_RETURN"
+    ],
+    "selection": "full PIT universe and signal-date membership; entrants next rebalance",
+    "terminated": "follow old holding entitlements under frozen industry; unresolved blocks",
+    "totalReturnRequires": "complete distributions and resolved entitlements for each constituent and compatible benchmark",
+    "unclassifiedUniverse": "block every industry observation until complete or separately preregistered restricted universe",
+    "weightDrift": "buy-and-hold within block",
+    "weightings": [
+      "EQUAL_WEIGHT",
+      "MARKET_CAP_WEIGHT"
+    ]
+  },
+  "layers": {
+    "INDUSTRY": {
+      "futureTarget": "industry simple cumulative return minus market simple cumulative return"
+    },
+    "MARKET": {
+      "purpose": "Market state and separate risk budget",
+      "stockSelectionAllowed": false
+    },
+    "STOCK_WITHIN_INDUSTRY": {
+      "futureTarget": "stock simple cumulative return minus signal-date industry simple cumulative return"
+    }
+  },
+  "mainShaUsed": "9504f970a2895781eedcc3a6a1c94126fd4682f8",
+  "membership": {
+    "ambiguousVisibleAssignments": "RAISE",
+    "currentSnapshotAllowed": false,
+    "historicalIdentityRequired": true,
+    "joinKey": "region/security_id/taxonomy_id/taxonomy_version",
+    "schema": "PIT_INDUSTRY_MEMBERSHIP_V1",
+    "schemaFile": "research_specs/market-industry-stock-membership-v1.schema.json",
+    "taxonomyRevisionPolicy": "Separate dated version; no current-codebook retroactive projection",
+    "validity": "valid_from <= signal_date < valid_to (null means open)",
+    "visibility": "release_date < signal_date <= known_to (null means open)"
+  },
+  "priorExecutionProvenance": {
+    "krFactorAnatomy": {
+      "outcomePayloadRead": false,
+      "sealRun": 36960496371
+    },
+    "krTop120RegimeReview": {
+      "committedResultPresentAtBase": false,
+      "conclusion": "success",
+      "dispatchRun": 37018055459,
+      "lockCommit": "9504f970a2895781eedcc3a6a1c94126fd4682f8",
+      "outcomePayloadRead": false,
+      "permanentStudyLockPresent": true,
+      "resultsArtifactArchiveSha256": "93c0127cebddc7247057fa2e49e97ef58a593f0a375710c585b5e8c12610dcb4",
+      "resultsArtifactId": 11232463461
+    }
+  },
+  "readiness": {
+    "classificationSourceAcquired": false,
+    "historicalGranularityMetrics": null,
+    "historicalIndustryPanel": "DATA_FOUNDATION_REQUIRED",
+    "historicalTaxonomyCoverageFraction": null,
+    "primitiveStatus": "READY_SYNTHETIC_ONLY",
+    "trueTotalShareholderReturn": "DATA_FOUNDATION_REQUIRED"
+  },
+  "roadmap": [
+    "market-industry-stock-data-foundation-v1",
+    "industry-opportunity-anatomy-v1",
+    "within-industry-stock-anatomy-v1",
+    "hierarchical-alpha-model-v1",
+    "separate portfolio/risk-budget preregistration"
+  ],
+  "schemaVersion": 1,
+  "scientificStatus": "DATA_FOUNDATION_AND_RESEARCH_ARCHITECTURE_ONLY",
+  "sourceMatrix": [
+    {
+      "accessibleHistoryVerified": false,
+      "blocker": "No retained historical assignment/codebook/release panel; trade snapshots do not supply industry.",
+      "coverageFraction": null,
+      "historicalMembershipRowsVerified": 0,
+      "regions": [
+        "KR"
+      ],
+      "sourceId": "KR_KRX_HISTORICAL_KSIC",
+      "status": "DATA_FOUNDATION_REQUIRED"
+    },
+    {
+      "accessibleHistoryVerified": false,
+      "blocker": "Official introduction listing verified; detailed release/launch structure not independently verified; no backward projection.",
+      "coverageFraction": null,
+      "historicalMembershipRowsVerified": 0,
+      "regions": [
+        "KR"
+      ],
+      "sourceId": "KRICS_PROSPECTIVE",
+      "status": "DATA_FOUNDATION_REQUIRED"
+    },
+    {
+      "accessibleHistoryVerified": false,
+      "blocker": "Current company API induty_code has no as-of request. Receipt-specific archival classification extraction unbuilt.",
+      "coverageFraction": null,
+      "historicalMembershipRowsVerified": 0,
+      "regions": [
+        "KR"
+      ],
+      "sourceId": "DART_COMPANY_INDUSTRY",
+      "status": "NOT_AVAILABLE"
+    },
+    {
+      "accessibleHistoryVerified": false,
+      "blocker": "Authoritative history exists; entitlement, historical release vintages and security mapping not verified.",
+      "coverageFraction": null,
+      "historicalMembershipRowsVerified": 0,
+      "regions": [
+        "KR",
+        "US"
+      ],
+      "sourceId": "GICS_HISTORY_LICENSED",
+      "status": "DATA_FOUNDATION_REQUIRED"
+    },
+    {
+      "accessibleHistoryVerified": false,
+      "blocker": "Official SUB/header dated SIC source exists; existing repository SEC access refusals, no dated CIK/security collector.",
+      "coverageFraction": null,
+      "historicalMembershipRowsVerified": 0,
+      "regions": [
+        "US"
+      ],
+      "sourceId": "SEC_FILING_SIC",
+      "status": "DATA_FOUNDATION_REQUIRED"
+    },
+    {
+      "accessibleHistoryVerified": false,
+      "blocker": "Current-only values cannot be historical evidence.",
+      "coverageFraction": null,
+      "historicalMembershipRowsVerified": 0,
+      "regions": [
+        "KR",
+        "US"
+      ],
+      "sourceId": "STATIC_YAHOO_CLASSIFICATION",
+      "status": "NOT_AVAILABLE"
+    },
+    {
+      "accessibleHistoryVerified": false,
+      "blocker": "No retained estimate-vintage panel/collector. Official Finnhub history exists but current account entitlement and revision vintages unverified; S&P PIT Estimates is an unacquired licensed lead.",
+      "coverageFraction": null,
+      "historicalMembershipRowsVerified": 0,
+      "regions": [
+        "KR",
+        "US"
+      ],
+      "sourceId": "ANALYST_ESTIMATE_VINTAGES",
+      "status": "NOT_AVAILABLE"
+    }
+  ],
+  "studyId": "market-industry-stock-data-foundation-v1"
+}

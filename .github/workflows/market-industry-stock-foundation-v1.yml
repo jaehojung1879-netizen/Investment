@@ -1,0 +1,28 @@
+name: Market industry stock foundation v1 metadata audit
+on:
+  pull_request:
+    paths:
+      - 'pipeline/industry_foundation.py'
+      - 'scripts/audit_market_industry_stock_foundation.py'
+      - 'research_specs/market-industry-stock*'
+      - 'docs/market-industry-stock*'
+      - 'tests/test_industry_foundation.py'
+      - '.github/workflows/market-industry-stock-foundation-v1.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  metadata-only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+      - name: Audit contracts and sources only
+        run: python scripts/audit_market_industry_stock_foundation.py --output "$RUNNER_TEMP/foundation/readiness.json"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: market-industry-stock-foundation-metadata-${{ github.run_id }}
+          path: ${{ runner.temp }}/foundation/readiness.json
