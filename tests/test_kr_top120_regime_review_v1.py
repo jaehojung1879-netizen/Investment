@@ -527,6 +527,35 @@ def test_analysis_and_outputs_are_deterministic(analysis, tmp_path):
 # --------------------------------------------------------------------------- #
 # Authorization and lifecycle — every test builds its own synthetic repository
 # --------------------------------------------------------------------------- #
+class FakeGitHub:
+    """A fake GitHub git-refs API. Only create (POST) and read (GET) exist; any other verb is a test failure."""
+    def __init__(self, existing=(), head="abc123"):
+        self.refs = {r: "0ld5ha" for r in existing}
+        self.calls = []
+        self.head = head
+
+    def __call__(self, method, path, payload=None):
+        self.calls.append((method, path))
+        if method == "POST":
+            if payload["ref"] in self.refs:
+                return 422, {}
+            self.refs[payload["ref"]] = payload["sha"]
+            return 201, {}
+        if method == "GET":
+            ref = "refs/" + path[len("/git/ref/"):]
+            return (200, {"object": {"sha": self.refs[ref]}}) if ref in self.refs else (404, {})
+        raise AssertionError("the lock may only be created and read, never " + method)
+
+
+def action_env(**over):
+    return {"GITHUB_ACTIONS": "true", "GITHUB_REF": "refs/heads/main", "GITHUB_SHA": "abc123", "GH_TOKEN": "t",
+            "GITHUB_REPOSITORY": "o/r", **over}
+
+
+def no_lock():
+    return False
+
+
 def fake_git(head="abc123", override=None):
     def git(args, cwd):
         if args == ["rev-parse", "HEAD"]:
@@ -559,7 +588,7 @@ def test_execution_refuses_before_merged_main_authorization(tmp_path):
     s, sha = E.load_spec()
     repo = unsealed_repo(tmp_path)
     env = good_env(s)
-    permit = E.authorize_execution(s, sha, repo, env, fake_git())
+    permit = E.authorize_execution(s, sha, repo, env, fake_git(), no_lock)
     assert isinstance(permit, E.ExecutionPermit) and permit.specSha256 == sha
     cases = [({"GITHUB_ACTIONS": "false"}, "REQUIRES_ACTIONS"), ({"GITHUB_REF": "refs/heads/research/kr-top120-regime-review-v1"}, "REQUIRES_MAIN"),
              ({"GITHUB_REF": "refs/pull/1/merge"}, "REQUIRES_MAIN"), ({"GITHUB_EVENT_NAME": "pull_request"}, "REQUIRES_WORKFLOW_DISPATCH"),
@@ -568,23 +597,23 @@ def test_execution_refuses_before_merged_main_authorization(tmp_path):
              ({"REGIME_INPUT_RUN_ID": "1"}, "INPUT_ARTIFACT_IDENTITY_MISMATCH"), ({"REGIME_INPUT_RUN_ID": ""}, "INPUT_ARTIFACT_IDENTITY_MISMATCH")]
     for change, message in cases:
         with pytest.raises(ValueError, match=message):
-            E.authorize_execution(s, sha, repo, {**env, **change}, fake_git())
+            E.authorize_execution(s, sha, repo, {**env, **change}, fake_git(), no_lock)
     with pytest.raises(ValueError, match="SPEC_NOT_COMMITTED_AT_HEAD"):
-        E.authorize_execution(s, sha, repo, env, fake_git(override=b"{}"))
+        E.authorize_execution(s, sha, repo, env, fake_git(override=b"{}"), no_lock)
 
 
 def test_execution_refuses_if_a_result_or_marker_already_exists(tmp_path):
     s, sha = E.load_spec()
     repo = unsealed_repo(tmp_path)
     env = good_env(s)
-    assert E.authorize_execution(s, sha, repo, env, fake_git())
+    assert E.authorize_execution(s, sha, repo, env, fake_git(), no_lock)
     (repo / E.MARKER_PATH).write_text("{}")
     with pytest.raises(ValueError, match="EXECUTION_MARKER_ALREADY_COMMITTED"):
-        E.authorize_execution(s, sha, repo, env, fake_git())
+        E.authorize_execution(s, sha, repo, env, fake_git(), no_lock)
     (repo / E.MARKER_PATH).unlink()
     (repo / E.RESULT_PATH).write_text("{}")
     with pytest.raises(ValueError, match="REGIME_REVIEW_RESULT_ALREADY_COMMITTED"):
-        E.authorize_execution(s, sha, repo, env, fake_git())
+        E.authorize_execution(s, sha, repo, env, fake_git(), no_lock)
 
 
 @pytest.mark.parametrize("key", ["result", "report", "manifest", "provenance"])
@@ -594,7 +623,7 @@ def test_execution_refuses_if_the_sealed_predecessor_changed(tmp_path, key):
     target = repo / s["predecessor"]["files"][key]
     target.write_bytes(target.read_bytes() + b" ")
     with pytest.raises(ValueError, match="PREDECESSOR_IDENTITY_CHANGED: " + key):
-        E.authorize_execution(s, sha, repo, good_env(s), fake_git())
+        E.authorize_execution(s, sha, repo, good_env(s), fake_git(), no_lock)
 
 
 def test_verify_mode_touches_no_outcome_and_the_runner_refuses_outside_actions(tmp_path):
@@ -625,9 +654,9 @@ def test_every_outcome_path_refuses_without_a_permit(monkeypatch, tmp_path):
 
 
 # --------------------------------------------------------------------------- #
-# Marker lifecycle: nothing durable before gates, marker before any outcome
+# The durable one-shot lock: nothing before the gates, before any outcome, never movable, never reopened
 # --------------------------------------------------------------------------- #
-def stub_pipeline(monkeypatch, tmp_path, panel, reasons=()):
+def stub_pipeline(monkeypatch, tmp_path, panel, api, reasons=(), attach=None):
     """Replace every data-reading step with a stub so the ORDER of operations can be observed on synthetic data."""
     s, sha = E.load_spec()
     log = []
@@ -637,40 +666,158 @@ def stub_pipeline(monkeypatch, tmp_path, panel, reasons=()):
     monkeypatch.setattr(AE, "load_memberships", lambda *a: None)
     monkeypatch.setattr(A, "assert_pit_membership", lambda *a: True)
     monkeypatch.setattr(E, "signal_time_panel", lambda bundle: bundle["features"])
-    monkeypatch.setattr(E, "readiness_gates", lambda *a: list(reasons))
 
-    def attach(panel, bundle, v1, spec_, permit, counters):
+    def gates(*a):
+        log.append("gates")
+        return list(reasons)
+    monkeypatch.setattr(E, "readiness_gates", gates)
+
+    def default_attach(panel_, bundle, v1, spec_, permit, counters, lock=None, sha_=None):
+        E.require_lock(lock, sha_)
         log.append("attach_outcomes")
-        log.append("marker_present=" + str((tmp_path / "out" / "execution-started.json").exists()))
+        log.append("lock_present=" + str(E.lock_ref(sha) in api.refs))
         counters.outcomeColumnCalls += 1
-        return panel
-    monkeypatch.setattr(E, "attach_outcomes", attach)
+        return panel_
+    monkeypatch.setattr(E, "attach_outcomes", attach or default_attach)
     return s, sha, log
 
 
-def test_a_failed_readiness_gate_writes_no_marker_and_reads_no_outcome(monkeypatch, tmp_path):
-    panel = make_panel(n_dates=3)
-    s, sha, log = stub_pipeline(monkeypatch, tmp_path, panel, reasons=["MARKET_CAP_UNAVAILABLE_FOR_DYNAMIC_EXCLUSION"])
+def run_execute(s, sha, tmp_path, api, env=None):
+    return E.execute(tmp_path / "in", tmp_path / "out", s, sha, E.ExecutionPermit(sha, E._PERMIT_TOKEN), ROOT,
+                     action_env() if env is None else env, api)
+
+
+def test_a_failed_readiness_gate_creates_no_durable_lock_and_reads_no_outcome(monkeypatch, tmp_path):
+    api = FakeGitHub()
+    s, sha, log = stub_pipeline(monkeypatch, tmp_path, make_panel(n_dates=3), api, reasons=["MARKET_CAP_UNAVAILABLE_FOR_DYNAMIC_EXCLUSION"])
     monkeypatch.setattr(A, "endpoint_returns", lambda *a, **k: (_ for _ in ()).throw(AssertionError("outcome read")))
     with pytest.raises(ValueError, match="READINESS_GATE_FAILED: MARKET_CAP_UNAVAILABLE"):
-        E.execute(tmp_path / "in", tmp_path / "out", s, sha, E.ExecutionPermit(sha, E._PERMIT_TOKEN), ROOT)
-    assert log == [] and not (tmp_path / "out" / "execution-started.json").exists()
+        run_execute(s, sha, tmp_path, api)
+    assert api.calls == [] and api.refs == {} and log == ["gates"]                  # no lock call of any kind
+    assert not (tmp_path / "out" / "execution-started.json").exists()
     failed = json.loads((tmp_path / "out" / "gates-failed.json").read_text())
     assert failed["counters"] == {"targetCalls": 0, "labelCalls": 0, "outcomeColumnCalls": 0, "analysisCalls": 0, "markerWrites": 0}
 
 
-def test_the_marker_is_written_after_the_gates_and_before_the_first_outcome(monkeypatch, tmp_path):
-    panel = make_panel(n_dates=3)
-    s, sha, log = stub_pipeline(monkeypatch, tmp_path, panel)
-    monkeypatch.setattr(R, "add_outcomes", lambda p, n: (_ for _ in ()).throw(RuntimeError("stop after the marker")))
-    with pytest.raises(RuntimeError, match="stop after the marker"):
-        E.execute(tmp_path / "in", tmp_path / "out", s, sha, E.ExecutionPermit(sha, E._PERMIT_TOKEN), ROOT)
-    assert log == ["attach_outcomes", "marker_present=True"]
+def test_the_lock_is_created_after_the_gates_and_before_the_first_outcome(monkeypatch, tmp_path):
+    api = FakeGitHub()
+    s, sha, log = stub_pipeline(monkeypatch, tmp_path, make_panel(n_dates=3), api)
+    monkeypatch.setattr(R, "add_outcomes", lambda p, n: (_ for _ in ()).throw(RuntimeError("stop after the outcomes were attached")))
+    with pytest.raises(RuntimeError, match="stop after the outcomes were attached"):
+        run_execute(s, sha, tmp_path, api)
+    assert log == ["gates", "attach_outcomes", "lock_present=True"]                  # gates, then lock, then outcomes
+    assert [c[0] for c in api.calls] == ["POST", "GET"] and api.refs == {E.lock_ref(sha): "abc123"}
     marker = json.loads((tmp_path / "out" / "execution-started.json").read_text())
-    assert marker["outcomesReadBeforeThisMarker"] == 0 and marker["specSha256"] == sha
-    assert marker["predecessorResultSha256"] == s["predecessor"]["sha256"]["result"]
+    assert marker["outcomesReadBeforeThisMarker"] == 0 and marker["lockRef"] == E.lock_ref(sha) and marker["lockedMainSha"] == "abc123"
     with pytest.raises(FileExistsError):
-        E.write_execution_marker(tmp_path / "out", s, sha, {"sha256": "x"}, E.Counters())              # never updated or replaced
+        E.write_execution_marker(tmp_path / "out", s, sha, {"sha256": "x"}, E.Counters())
+
+
+def test_no_outcome_function_runs_without_the_durable_lock(tmp_path):
+    s, sha = E.load_spec()
+    permit = E.ExecutionPermit(sha, E._PERMIT_TOKEN)
+    for lock in (None, object(), E.ExecutionLock(sha, "abc123", "r", object()), E.ExecutionLock("0" * 64, "abc123", "r", E._LOCK_TOKEN)):
+        with pytest.raises(ValueError, match="DURABLE_EXECUTION_LOCK_REQUIRED_BEFORE_ANY_OUTCOME"):
+            E.attach_outcomes(pd.DataFrame(), {}, {}, s, permit, E.Counters(), lock, sha)
+    assert E.claim_execution_lock(sha, action_env(), FakeGitHub()).specSha256 == sha
+
+
+def test_an_existing_lock_refuses_execution_before_any_outcome(monkeypatch, tmp_path):
+    s, sha = E.load_spec()
+    api = FakeGitHub(existing=[E.lock_ref(sha)])
+    _, _, log = stub_pipeline(monkeypatch, tmp_path, make_panel(n_dates=3), api)
+    with pytest.raises(ValueError, match="EXECUTION_LOCK_ALREADY_EXISTS"):
+        run_execute(s, sha, tmp_path, api)
+    assert log == ["gates"] and api.refs == {E.lock_ref(sha): "0ld5ha"}              # untouched, never moved to the new commit
+    repo = unsealed_repo(tmp_path)
+    with pytest.raises(ValueError, match="EXECUTION_LOCK_ALREADY_EXISTS"):
+        E.authorize_execution(s, sha, repo, good_env(s), fake_git(), lambda: E.lock_exists(sha, action_env(), api))
+
+
+def test_a_post_lock_failure_permanently_consumes_the_study(monkeypatch, tmp_path):
+    api = FakeGitHub()
+    s, sha, _ = stub_pipeline(monkeypatch, tmp_path, make_panel(n_dates=3), api)
+    monkeypatch.setattr(R, "add_outcomes", lambda p, n: (_ for _ in ()).throw(RuntimeError("infrastructure failure after the lock")))
+    with pytest.raises(RuntimeError, match="infrastructure failure"):
+        run_execute(s, sha, tmp_path, api)
+    assert E.lock_ref(sha) in api.refs                                               # the failure did not release anything
+    repo = unsealed_repo(tmp_path)
+    probe = lambda: E.lock_exists(sha, action_env(), api)                            # noqa: E731
+    with pytest.raises(ValueError, match="EXECUTION_LOCK_ALREADY_EXISTS"):
+        E.authorize_execution(s, sha, repo, good_env(s), fake_git(), probe)          # no result, no marker, no artifact: still refused
+    with pytest.raises(ValueError, match="EXECUTION_LOCK_ALREADY_EXISTS"):
+        E.claim_execution_lock(sha, action_env(GITHUB_SHA="another-main-sha"), api)
+    assert api.refs[E.lock_ref(sha)] == "abc123"
+
+
+def test_artifacts_and_their_expiry_are_irrelevant_to_the_permanent_lock():
+    import inspect
+    for fn in (E.lock_exists, E.claim_execution_lock, E.require_lock, E.lock_ref):                  # the lock never reads an artifact
+        text = inspect.getsource(fn).lower()
+        assert "artifact" not in text and "expir" not in text and "retention" not in text
+    s, sha = E.load_spec()
+    held = FakeGitHub(existing=[E.lock_ref(sha)])
+    assert E.lock_exists(sha, action_env(), held) is True                            # nothing else is asked: no artifact listing exists
+    assert all(path.startswith("/git/ref/tags/") for _, path in held.calls)
+    text = (ROOT / ".github/workflows/kr-top120-regime-review-v1.yml").read_text()
+    guard = text[text.index("Main-only guard"):text.index("      - uses: actions/setup-python@v6", text.index("Main-only guard"))]
+    assert "EXECUTION_LOCK_ALREADY_EXISTS" in guard and "-attempt-" not in guard      # attempt artifacts neither block nor reopen
+    assert guard.index("EXECUTION_LOCK_ALREADY_EXISTS") < guard.index("RESULTS_ARTIFACT_ALREADY_EXISTS")
+
+
+def test_the_lock_cannot_be_moved_overwritten_or_deleted():
+    s, sha = E.load_spec()
+    api = FakeGitHub()
+    lock = E.claim_execution_lock(sha, action_env(), api)
+    assert lock.ref == E.lock_ref(sha) == "refs/tags/kr-top120-regime-review-v1-execution-lock-" + sha
+    assert (lock.specSha256, lock.mainSha) == (sha, "abc123") and api.refs[lock.ref] == "abc123"
+    before = dict(api.refs)
+    for sha_main in ("abc123", "def456"):
+        with pytest.raises(ValueError, match="EXECUTION_LOCK_ALREADY_EXISTS"):
+            E.claim_execution_lock(sha, action_env(GITHUB_SHA=sha_main), api)
+    assert api.refs == before                                                          # same commit or another: not overwritten
+    assert {m for m, _ in api.calls} == {"POST", "GET"}                                # FakeGitHub raises on any other verb
+    import inspect
+    source = inspect.getsource(E.claim_execution_lock) + inspect.getsource(E.lock_exists)
+    for verb in ('"PATCH"', '"PUT"', '"DELETE"'):
+        assert verb not in source
+
+
+def test_the_lock_must_point_at_the_authorized_commit_and_be_created_only_on_main():
+    s, sha = E.load_spec()
+
+    class Redirecting(FakeGitHub):
+        def __call__(self, method, path, payload=None):
+            status, body = super().__call__(method, path, payload)
+            return (status, {"object": {"sha": "somewhere-else"}}) if method == "GET" and status == 200 else (status, body)
+    with pytest.raises(ValueError, match="EXECUTION_LOCK_NOT_ON_THE_AUTHORIZED_COMMIT"):
+        E.claim_execution_lock(sha, action_env(), Redirecting())
+    for bad in (action_env(GITHUB_REF="refs/heads/research/kr-top120-regime-review-v1"), action_env(GITHUB_ACTIONS="false")):
+        with pytest.raises(ValueError, match="FORMAL_EXECUTION_REQUIRES_ACTIONS_MAIN"):
+            E.claim_execution_lock(sha, bad, FakeGitHub())
+    with pytest.raises(ValueError, match="ATOMIC_EXECUTION_LOCK_NOT_CREATED"):
+        E.claim_execution_lock(sha, action_env(), lambda m, p, d=None: (500, {}))
+    for status, outcome in ((200, True), (404, False)):
+        assert E.lock_exists(sha, action_env(), lambda m, p, d=None, s_=status: (s_, {})) is outcome
+    for env in ({}, action_env(GH_TOKEN=""), action_env(GITHUB_REPOSITORY="")):
+        with pytest.raises(ValueError, match="EXECUTION_LOCK_STATE_UNVERIFIABLE"):
+            E.lock_exists(sha, env, FakeGitHub())
+    with pytest.raises(ValueError, match="EXECUTION_LOCK_STATE_UNVERIFIABLE"):
+        E.lock_exists(sha, action_env(), lambda m, p, d=None: (503, {}))                 # an ambiguous answer refuses
+
+
+def test_workflow_permission_for_the_lock_is_minimal_and_job_scoped():
+    text = (ROOT / ".github/workflows/kr-top120-regime-review-v1.yml").read_text()
+    assert text.index("permissions:\n  contents: read\n  actions: read") < text.index("  frozen-machine:")
+    execute = text[text.index("  execute:"):]
+    assert "    permissions:\n      contents: write" in execute and "      actions: read" in execute
+    assert "contents: write" not in text[:text.index("  execute:")]
+    assert "GH_TOKEN: ${{ github.token }}" in execute and "--mode execute" in execute
+    s = spec()
+    lock = s["lifecycle"]["executionLock"]
+    assert lock["neverUpdatedMovedOrDeleted"] is True and lock["onlyMethodsIssued"] == ["POST", "GET"]
+    assert "PERMANENTLY CONSUMES" in lock["postLockFailure"] and "no existing execution lock tag" in s["execution"]["executeRequires"]
+    assert not any("attempt" in str(v).lower() and "does not close" in str(v).lower() for v in s["lifecycle"].values())
 
 
 def test_gate_function_reports_every_registered_reason():
@@ -730,7 +877,8 @@ def test_outcome_assembly_equals_the_anatomy_assembly_on_a_synthetic_bundle():
     bundle = {"features": features, "prices": prices, "market": Market(), "accounting": {}, "schedule": sig,
               "overlay": {d: {"riskMultiplier": 1.0, "trendAdverse": False, "volAdverse": False} for d in sig}}
     permit = E.ExecutionPermit("x", E._PERMIT_TOKEN)
-    mine = E.attach_outcomes(E.signal_time_panel(bundle), bundle, v1_spec, s, permit, E.Counters())
+    lock = E.ExecutionLock("x", "abc123", "refs/tags/x", E._LOCK_TOKEN)
+    mine = E.attach_outcomes(E.signal_time_panel(bundle), bundle, v1_spec, s, permit, E.Counters(), lock, "x")
     theirs = AE.build_panel(bundle, v1_spec, json.loads((ROOT / AE.SPEC_PATH).read_text()), AE.ExecutionPermit("x", AE._PERMIT_TOKEN), AE.Counters())
     shared = [c for c in mine.columns if c in theirs.columns and c.endswith(("126", "252")) and not c.startswith(("rel", "fundamental"))]
     assert {"entry126", "exit126", "stock126", "bench126", "status126", "rawStatus252"} <= set(shared)

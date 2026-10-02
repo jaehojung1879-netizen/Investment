@@ -2,6 +2,10 @@ name: KR Top120 regime review v1
 # EXPLORATORY_POST_OUTCOME_REGIME_DIAGNOSTIC. Pull requests run `verify` only (synthetic tests plus outcome-free identity).
 # `execute` exists only as a manual workflow_dispatch on merged main, after the guard below. It never reruns
 # kr-factor-anatomy-v1, never invokes any sealed execute workflow and never contacts KRX.
+# ONE-SHOT: after identities and readiness gates pass (and before any outcome is read) the run creates the git tag
+# refs/tags/kr-top120-regime-review-v1-execution-lock-<specSha256> with an atomic POST /git/refs. The tag is never moved or
+# deleted: a failure after it permanently consumes the study, whatever artifacts exist, expire or are deleted. A failure before
+# it spends nothing. Artifacts are never the enforcement.
 on:
   pull_request:
     paths:
@@ -61,6 +65,9 @@ jobs:
     needs: frozen-machine
     runs-on: ubuntu-latest
     timeout-minutes: 240
+    permissions:
+      contents: write      # ONLY to create the one-shot lock tag (git ref); nothing else is pushed
+      actions: read
     env:
       REGIME_INPUT_ARTIFACT: ${{ inputs.inputArtifact }}
       REGIME_INPUT_RUN_ID: ${{ inputs.inputRunId }}
@@ -92,6 +99,11 @@ jobs:
             if (process.env.REGIME_INPUT_ARTIFACT !== pin.artifactName || process.env.REGIME_INPUT_RUN_ID !== String(pin.producingRunId)) throw new Error('INPUT_ARTIFACT_IDENTITY_MISMATCH');
             if (fs.existsSync(spec.lifecycle.resultPath)) throw new Error('REGIME_REVIEW_ALREADY_SEALED');
             if (fs.existsSync(spec.lifecycle.markerPath)) throw new Error('REGIME_REVIEW_MARKER_ALREADY_COMMITTED');
+            const specSha = fs.readFileSync('research_specs/kr-top120-regime-review-v1.sha256', 'utf8').trim();
+            let locked = true;
+            try { await github.rest.git.getRef({...context.repo, ref: 'tags/' + spec.studyId + '-execution-lock-' + specSha}); }
+            catch (error) { if (error.status === 404) locked = false; else throw error; }
+            if (locked) throw new Error('EXECUTION_LOCK_ALREADY_EXISTS');
             const art = await github.rest.actions.getArtifact({...context.repo, artifact_id: pin.artifactId});
             const a = art.data;
             if (a.expired || a.name !== pin.artifactName || String(a.workflow_run.id) !== String(pin.producingRunId) || a.digest !== 'sha256:' + pin.artifactArchiveSha256) throw new Error('PRESERVED_ARTIFACT_IDENTITY_MISMATCH');
@@ -111,6 +123,8 @@ jobs:
           run-id: ${{ inputs.inputRunId }}
       - name: Exploratory regime review execution (identities and gates before the marker, marker before any outcome)
         id: execution
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: python scripts/run_kr_top120_regime_review_v1.py --mode execute --inputs inputs --output run
       - uses: actions/upload-artifact@v4
         if: always() && steps.execution.outcome == 'success'

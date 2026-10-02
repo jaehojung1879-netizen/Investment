@@ -2276,10 +2276,14 @@
   are fixed robust views reported beside, never instead of, the ordinary mean. The leave-one-out Top120 benchmark excludes the
   subject, needs at least 50 OTHER valid names (the anatomy's decile minimum) and never zero-fills a peer; absolute, KODEX200-relative
   and leave-one-out returns, and the three fundamentals success definitions, are never collapsed.
-- THE LIFECYCLE IS DESIGNED BEFORE THE RUN. Identities and readiness gates pass before anything durable exists; the execution
-  marker is written atomically and exclusively before the first outcome; a failed gate spends nothing; a committed result or marker
-  makes `execute` refuse. Authorization tests build their own synthetic repositories so none depends on the real repository being
-  pre- or post-seal (the lesson of the anatomy authorization-test repair).
+- THE ONE-SHOT IS A DURABLE GITHUB-SIDE LOCK, NOT AN ARTIFACT OR A LOCAL FILE. Identities and readiness gates pass first; only
+  then the git tag `refs/tags/kr-top120-regime-review-v1-execution-lock-<specSha256>` is created by an atomic `POST /git/refs`
+  at the dispatched main commit (existing ref: 422, refuse; only POST and GET are ever issued, so it is never moved or
+  deleted) and only after it exists can any outcome be read. A failure before the lock spends nothing; a failure after it
+  permanently consumes the study whatever artifacts exist or expire. The first draft of this protocol wrote its "marker" only
+  into the run's output directory and let a later `execute` run again after a post-marker failure — found by review before
+  merge and repaired. Authorization and lock tests build their own synthetic repository and fake GitHub API (the lesson of the
+  anatomy authorization-test repair).
 
 ## Lint gate invariants (v2.11)
 

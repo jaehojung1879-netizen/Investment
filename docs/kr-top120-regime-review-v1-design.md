@@ -78,14 +78,28 @@ trend or volatility states) → `PERSISTENT_ACROSS_PRE_RECENT_AND_RECENT` → `N
 anatomy (104 dates, 0.5) or frozen simply now (26 dates per slice, the anatomy's H126 block length). No "validated",
 "proven", "pass", "fail", "best" or "production-ready" label exists.
 
-## 10. Lifecycle (decided now)
+## 10. Lifecycle (decided now) — a durable lock, not an artifact
 
-Protocol PR merges → a human dispatches `execute` once → identities and readiness gates pass → the execution marker is written
-atomically and exclusively **before** any outcome is read → result artifact → seal commits the exact bytes without rerunning →
-later attempts fail closed (`REGIME_REVIEW_RESULT_ALREADY_COMMITTED`, committed marker, or an unexpired results artifact). A
-failed gate writes `gates-failed.json` and spends nothing. A verdict, including `DATA_INSUFFICIENT`, is a successful process;
-only an infrastructure error exits non-zero and uploads under an `attempt` name. Authorization tests build their own synthetic
-repositories, so none depends on whether the real repository is pre- or post-seal.
+Protocol PR merges → a human dispatches `execute` once → identities and readiness gates pass → **a durable, exclusive lock is
+created on GitHub** → only then may any outcome be read → result artifact → seal commits the exact bytes without rerunning →
+later attempts fail closed.
+
+**The lock** is the git tag `refs/tags/kr-top120-regime-review-v1-execution-lock-<specSha256>`, created from Actions by an
+atomic `POST /git/refs` pointing at the dispatched main commit (verified by a `GET` afterwards). It is the repository's
+already-proven mechanism from `kr-model-overlay-portfolio-v1`. An existing ref answers 422 and execution refuses; only POST and
+GET are ever issued, so the tag is never updated, moved, deleted or recreated. `attach_outcomes` refuses without the lock
+object, so no outcome can be read before it exists. An unverifiable lock state (no token, any non-200/404 answer) refuses.
+
+* A failure **before** the lock (identity, predecessor, input identity, any readiness gate) writes `gates-failed.json`, creates
+  no lock and spends nothing.
+* A failure **after** the lock permanently consumes v1, whether or not any artifact was emitted, kept, expired or deleted. A
+  retry would be a new, separately preregistered version.
+* Actions artifacts and their retention, local files, a later-committed result and the committed `execution-started.json`
+  are **not** the enforcement; the last is provenance only. The workflow's results-artifact check is an additional convenience.
+
+Workflow permissions: `contents: write` on the `execute` job only, solely to create the lock ref; the verify job and PRs stay
+read-only. A verdict, including `DATA_INSUFFICIENT`, is a successful process. Authorization and lock tests build their own
+synthetic repositories and a fake GitHub API, so none depends on the real repository's state.
 
 ## 11. Outputs
 

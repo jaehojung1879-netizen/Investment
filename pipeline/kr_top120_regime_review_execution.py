@@ -9,16 +9,19 @@ Lifecycle (decided now, so the study does not repeat the sealing complexity of i
 
 1. protocol PR merges;
 2. a human dispatches `execute` once;
-3. identities and readiness gates are proven BEFORE anything durable exists — a failed gate writes `gates-failed.json`, claims
-   nothing and spends no budget;
-4. only then the execution marker `execution-started.json` is written atomically and exclusively, still before the first
-   outcome is read;
-5. the result artifact is emitted (a verdict, including DATA_INSUFFICIENT, is a successful process);
-6. a seal commits the artifact's exact bytes without rerunning anything; the committed result path makes `execute` refuse
-   (`REGIME_REVIEW_RESULT_ALREADY_COMMITTED`), as does a committed marker.
+3. identities and readiness gates are proven BEFORE anything durable exists: a failed gate writes `gates-failed.json`,
+   creates NO lock and spends nothing;
+4. only then a DURABLE, EXCLUSIVE one-shot lock is created on GitHub: the git tag
+   `refs/tags/kr-top120-regime-review-v1-execution-lock-<specSha256>` pointing at the dispatched main commit, created by an
+   atomic `POST /git/refs` (an existing ref answers 422 and execution refuses). The tag is never updated, moved or deleted;
+5. only after the lock is established and verified may any outcome be read. ANY failure after the lock permanently
+   consumes v1: a later `execute` refuses whether or not a result artifact was ever emitted, kept or expired;
+6. the result artifact is emitted (a verdict, including DATA_INSUFFICIENT, is a successful process);
+7. a seal commits the artifact's exact bytes (and the human-readable `execution-started.json`) without rerunning anything;
+   the committed result path or marker also makes `execute` refuse. Those files are provenance, NOT the enforcement.
 
-Every authorization test builds its own synthetic repository, so none of them depends on whether the real repository is
-pre- or post-seal.
+Actions artifacts and their retention are never consulted by the lock. Every authorization and lock test builds its own
+synthetic repository and fake GitHub API, so none depends on the real repository's lifecycle state.
 """
 from __future__ import annotations
 
@@ -28,6 +31,8 @@ import json
 import os
 from pathlib import Path
 import subprocess
+import urllib.error
+import urllib.request
 
 import numpy as np
 import pandas as pd
@@ -137,15 +142,89 @@ def verify(root=ROOT, env=None):
 
 
 # --------------------------------------------------------------------------- #
+# The durable one-shot lock (a GitHub git ref, never an artifact or a local file)
+# --------------------------------------------------------------------------- #
+_LOCK_TOKEN = object()
+
+
+@dataclass(frozen=True)
+class ExecutionLock:
+    specSha256: str
+    mainSha: str
+    ref: str
+    token: object
+
+
+def lock_ref(spec_sha):
+    """Identity of the lock: study + exact spec SHA. One lock per frozen spec, whatever main commit later dispatches."""
+    return "refs/tags/" + STUDY + "-execution-lock-" + spec_sha
+
+
+def github_api(method, path, payload=None, env=None):
+    """(status, body) from the GitHub REST API. A transport error is raised, never swallowed."""
+    env = os.environ if env is None else env
+    request = urllib.request.Request(
+        "https://api.github.com/repos/" + env["GITHUB_REPOSITORY"] + path,
+        data=None if payload is None else json.dumps(payload).encode(), method=method,
+        headers={"Authorization": "Bearer " + env["GH_TOKEN"], "Content-Type": "application/json",
+                 "Accept": "application/vnd.github+json"})
+    try:
+        with urllib.request.urlopen(request, timeout=30) as response:
+            return response.status, json.loads(response.read() or b"{}")
+    except urllib.error.HTTPError as error:
+        return error.code, {}
+
+
+def lock_exists(spec_sha, env=None, api=github_api):
+    """True / False from the API; anything else (including a missing token) is UNVERIFIABLE and refuses."""
+    env = os.environ if env is None else env
+    if not env.get("GH_TOKEN") or not env.get("GITHUB_REPOSITORY"):
+        raise ValueError("EXECUTION_LOCK_STATE_UNVERIFIABLE")
+    status, _ = api("GET", "/git/ref/" + lock_ref(spec_sha)[len("refs/"):], None)
+    if status == 200:
+        return True
+    if status == 404:
+        return False
+    raise ValueError("EXECUTION_LOCK_STATE_UNVERIFIABLE")
+
+
+def claim_execution_lock(spec_sha, env=None, api=github_api):
+    """Atomic exclusive create, called only after identities and readiness gates passed and before ANY outcome is read.
+
+    Only POST (create) and GET (verify) are ever issued: the ref is never PATCHed, moved, deleted or recreated, so a failure
+    after this call cannot reopen the study. A duplicate (HTTP 422) or an ambiguous response refuses without outcome access."""
+    env = os.environ if env is None else env
+    if env.get("GITHUB_ACTIONS") != "true" or env.get("GITHUB_REF") != "refs/heads/main":
+        raise ValueError("FORMAL_EXECUTION_REQUIRES_ACTIONS_MAIN")
+    main_sha, ref = env["GITHUB_SHA"], lock_ref(spec_sha)
+    status, _ = api("POST", "/git/refs", {"ref": ref, "sha": main_sha})
+    if status == 422:
+        raise ValueError("EXECUTION_LOCK_ALREADY_EXISTS")
+    if status != 201:
+        raise ValueError("ATOMIC_EXECUTION_LOCK_NOT_CREATED")
+    status, body = api("GET", "/git/ref/" + ref[len("refs/"):], None)
+    if status != 200 or (body.get("object") or {}).get("sha") != main_sha:
+        raise ValueError("EXECUTION_LOCK_NOT_ON_THE_AUTHORIZED_COMMIT")
+    return ExecutionLock(spec_sha, main_sha, ref, _LOCK_TOKEN)
+
+
+def require_lock(lock, sha):
+    if not isinstance(lock, ExecutionLock) or lock.token is not _LOCK_TOKEN or lock.specSha256 != sha:
+        raise ValueError("DURABLE_EXECUTION_LOCK_REQUIRED_BEFORE_ANY_OUTCOME")
+    return lock
+
+
+# --------------------------------------------------------------------------- #
 # Execution authorization (merged main only)
 # --------------------------------------------------------------------------- #
 def _git(args, root):
     return subprocess.check_output(["git", *args], cwd=str(root))
 
 
-def authorize_execution(spec, sha, root=ROOT, env=None, git=_git):
+def authorize_execution(spec, sha, root=ROOT, env=None, git=_git, lock_probe=None):
     """Raise unless this is a workflow_dispatch on main, at a commit that carries exactly this spec, over the exact sealed
-    predecessor, naming exactly the preserved raw artifact, with no committed result and no committed execution marker."""
+    predecessor, naming exactly the preserved raw artifact, with no committed result or marker and NO durable execution lock
+    (the lock is a GitHub tag; an unverifiable lock state refuses)."""
     env = os.environ if env is None else env
     root = Path(root)
     if env.get("GITHUB_ACTIONS") != "true":
@@ -168,6 +247,8 @@ def authorize_execution(spec, sha, root=ROOT, env=None, git=_git):
         raise ValueError("REGIME_REVIEW_RESULT_ALREADY_COMMITTED")
     if (root / MARKER_PATH).exists():
         raise ValueError("REGIME_REVIEW_EXECUTION_MARKER_ALREADY_COMMITTED")
+    if (lock_probe or (lambda: lock_exists(sha, env)))():
+        raise ValueError("EXECUTION_LOCK_ALREADY_EXISTS")
     return ExecutionPermit(sha, _PERMIT_TOKEN)
 
 
@@ -210,10 +291,11 @@ def readiness_gates(panel, bundle, spec):
     return reasons
 
 
-def attach_outcomes(panel, bundle, v1_spec, spec, permit, counters):
+def attach_outcomes(panel, bundle, v1_spec, spec, permit, counters, lock=None, sha=None):
     """Endpoint returns and the v1 terminal discipline, identical in rule to the anatomy's `build_panel` (and cross-checked
-    against the sealed v1 target on every row). Requires a permit; increments the outcome counters."""
+    against the sealed v1 target on every row). Requires a permit AND the durable lock; increments the outcome counters."""
     require_permit(permit)
+    require_lock(lock, permit.specSha256 if sha is None else sha)
     prices = bundle["prices"]
     days = RC.sessions("2013-01-01", "2028-12-31", "KR")
     out = panel.copy().reset_index(drop=True)
@@ -249,10 +331,11 @@ def attach_outcomes(panel, bundle, v1_spec, spec, permit, counters):
 # --------------------------------------------------------------------------- #
 # Marker (written only after identities and gates pass) and deterministic output
 # --------------------------------------------------------------------------- #
-def write_execution_marker(output, spec, sha, identity, counters):
-    """Atomic, exclusive publication. A second call in the same output directory fails; nothing is ever updated."""
+def write_execution_marker(output, spec, sha, identity, counters, lock=None):
+    """HUMAN-READABLE provenance of the lock, never the enforcement. Atomic and exclusive in the output directory."""
     counters.markerWrites += 1
     document = {"studyId": STUDY, "specSha256": sha, "inputIdentitySha256": identity["sha256"],
+                "lockRef": None if lock is None else lock.ref, "lockedMainSha": None if lock is None else lock.mainSha,
                 "predecessorResultSha256": spec["predecessor"]["sha256"]["result"], "outcomesReadBeforeThisMarker": 0}
     X.atomic_write(Path(output) / "execution-started.json", document, immutable=True)
     return document
@@ -278,8 +361,9 @@ def write_outputs(output, analysis, report, spec, sha, identity, counters):
     return manifest
 
 
-def execute(input_root, output, spec, sha, permit, root=ROOT):
-    """Order: permit -> exact input identity -> predecessor -> label-free panel -> readiness gates -> MARKER -> outcomes -> tables."""
+def execute(input_root, output, spec, sha, permit, root=ROOT, env=None, api=github_api):
+    """Order: permit -> exact input identity -> predecessor -> label-free panel -> readiness gates -> DURABLE LOCK ->
+    marker file -> outcomes -> tables. A failure before the lock spends nothing; a failure after it consumes the study."""
     require_permit(permit)
     if permit.specSha256 != sha:
         raise ValueError("PERMIT_FOR_A_DIFFERENT_SPEC")
@@ -297,8 +381,9 @@ def execute(input_root, output, spec, sha, permit, root=ROOT):
         Path(output).mkdir(parents=True, exist_ok=True)
         X.atomic_write(Path(output) / "gates-failed.json", {"studyId": STUDY, "reasons": reasons, "counters": asdict(counters)})
         raise ValueError("READINESS_GATE_FAILED: " + ";".join(reasons))
-    write_execution_marker(output, spec, sha, identity, counters)
-    panel = attach_outcomes(panel, bundle, v1_spec, spec, permit, counters)
+    lock = claim_execution_lock(sha, env, api)                   # durable + exclusive; nothing below runs without it
+    write_execution_marker(output, spec, sha, identity, counters, lock)
+    panel = attach_outcomes(panel, bundle, v1_spec, spec, permit, counters, lock, sha)
     panel = R.add_outcomes(panel, spec["benchmarks"]["minimumPeers"])
     counters.analysisCalls += 1
     analysis = R.analyze_all(panel, spec)

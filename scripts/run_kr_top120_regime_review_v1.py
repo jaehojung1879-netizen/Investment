@@ -5,7 +5,8 @@ workflow_dispatch on merged main that names the exact preserved raw artifact ove
 
 EXPLORATORY_POST_OUTCOME_REGIME_DIAGNOSTIC. This runner never reruns kr-factor-anatomy-v1, never invokes any sealed
 execute path and never contacts KRX. A verdict (including DATA_INSUFFICIENT) exits 0; only an infrastructure error exits
-non-zero, and it is written as an attempt record that does not close the study.
+non-zero. A failure BEFORE the durable execution lock (a git tag created only after identities and readiness gates pass)
+spends nothing; a failure AFTER it permanently consumes the one-shot execution.
 """
 from __future__ import annotations
 
@@ -34,7 +35,7 @@ def run(mode, *, input_root=None, output=None, root=ROOT, env=None):
     permit = E.authorize_execution(spec, sha, root, env)
     if not input_root or not output:
         raise ValueError("EXECUTE_REQUIRES_INPUTS_AND_OUTPUT")
-    return E.execute(input_root, output, spec, sha, permit, root)
+    return E.execute(input_root, output, spec, sha, permit, root, env)
 
 
 def main(argv=None):
