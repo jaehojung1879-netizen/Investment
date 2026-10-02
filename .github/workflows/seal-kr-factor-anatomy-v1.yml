@@ -1,0 +1,93 @@
+name: Seal KR factor anatomy v1 result
+# TEMPORARY. Manual dispatch from merged main only. Downloads the exact formal result artifact INSIDE Actions, verifies its
+# archive SHA-256 before anything is extracted, then commits the exact bytes to a dedicated branch and opens ONE Draft PR.
+# It recomputes no statistic, never merges, and is deleted on the result-seal branch so no reusable sealing path remains.
+on:
+  workflow_dispatch:
+permissions:
+  contents: write
+  pull-requests: write
+  actions: read
+concurrency:
+  group: seal-kr-factor-anatomy-v1
+  cancel-in-progress: false
+jobs:
+  seal:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      GH_TOKEN: ${{ github.token }}
+      ARTIFACT_ID: '11207962601'
+      ARCHIVE_SHA256: f8020bdac9878f523091881d129e3c414234012c17e1fd61e1e49b6d6538b80f
+      SEAL_BRANCH: research/kr-factor-anatomy-v1-result-seal
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+          cache: pip
+      - run: pip install -r requirements.txt -r requirements-dev.txt
+      - name: Guards (main only, frozen spec, nothing sealed yet, branch absent)
+        run: |
+          set -euo pipefail
+          [ "$GITHUB_REF" = "refs/heads/main" ] || { echo "MAIN_ONLY"; exit 1; }
+          git fetch origin main
+          [ "$(git rev-parse HEAD)" = "$GITHUB_SHA" ] && [ "$(git rev-parse origin/main)" = "$GITHUB_SHA" ] || { echo "HEAD_IS_NOT_CURRENT_MAIN"; exit 1; }
+          python .github/seal/seal_kr_factor_anatomy_v1.py check-main --root .
+          if git ls-remote --exit-code --heads origin "$SEAL_BRANCH" >/dev/null 2>&1; then echo "SEAL_BRANCH_EXISTS"; exit 1; fi
+      - name: Artifact metadata must match exactly
+        run: |
+          set -euo pipefail
+          curl -fsS -H "Authorization: Bearer $GH_TOKEN" -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/artifacts/${ARTIFACT_ID}" -o artifact-metadata.json
+          python .github/seal/seal_kr_factor_anatomy_v1.py check-metadata --metadata artifact-metadata.json
+      - name: Download the exact archive and verify its SHA-256 before extracting anything
+        run: |
+          set -euo pipefail
+          curl -fsSL -H "Authorization: Bearer $GH_TOKEN" -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/artifacts/${ARTIFACT_ID}/zip" -o artifact.zip
+          sha256sum artifact.zip
+          [ "$(sha256sum artifact.zip | awk '{print $1}')" = "$ARCHIVE_SHA256" ] || { echo "ARCHIVE_SHA256_MISMATCH"; exit 1; }
+      - name: Extract, verify manifest provenance, write exact bytes and provenance
+        run: |
+          set -euo pipefail
+          python .github/seal/seal_kr_factor_anatomy_v1.py seal --archive artifact.zip --workdir "$RUNNER_TEMP/extracted" \
+            --root . --sealed-at "$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+      - name: Install the seal tests, remove the temporary sealing helpers, validate
+        run: |
+          set -euo pipefail
+          cp .github/seal/test_kr_factor_anatomy_v1_result_seal.py.txt tests/test_kr_factor_anatomy_v1_result_seal.py
+          git rm -rq .github/seal tests/test_seal_kr_factor_anatomy_v1_script.py
+          rm -rf .github/seal
+          ruff check .
+          python -m pytest -q tests/test_kr_factor_anatomy_v1_result_seal.py tests/test_kr_factor_anatomy_v1.py tests/test_kr_model_overlay_portfolio_v1_sealed_result.py
+      - name: Commit to the seal branch and open ONE Draft PR
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -b "$SEAL_BRANCH"
+          git add docs/results/kr-factor-anatomy-v1-result.json docs/results/kr-factor-anatomy-v1-report.md \
+            docs/results/kr-factor-anatomy-v1-manifest.json docs/results/kr-factor-anatomy-v1-seal-provenance.json \
+            tests/test_kr_factor_anatomy_v1_result_seal.py
+          git commit -q -m "Research: seal KR factor anatomy v1 exploratory result (exact artifact bytes, no statistic recomputed)"
+          git push origin "$SEAL_BRANCH"
+          cat > pr-body.md <<'B'
+          **RESULT SEAL ONLY — NO HISTORICAL STATISTIC RECOMPUTED**
+
+          Exact bytes of the formal `kr-factor-anatomy-v1` result, committed by an Actions run that downloaded the artifact and verified its archive SHA-256 before extracting anything.
+
+          - execution run: 36960496371 · execution SHA: cd82a5b7edb08f18ccdaa3f231415354aef9a41c
+          - artifact: kr-factor-anatomy-v1-results-36960496371 (id 11207962601)
+          - archive SHA-256: f8020bdac9878f523091881d129e3c414234012c17e1fd61e1e49b6d6538b80f
+          - anatomy spec SHA: ceb97f481ae7261e89da4467fba03465f0c78cc3654cd799c26e5088ee3bc3d2
+          - raw input identity: 233df37ed205cc6b48828121e711417ccf961301dc58aa252430b343db9666a7
+          - scientific status: EXPLORATORY_DEVELOPMENT_ON_OUTCOME_EXPOSED_KR_HISTORY
+
+          Files are `anatomy.json` -> `kr-factor-anatomy-v1-result.json`, `report.md`, `manifest.json` (renamed only) plus a new provenance record with per-file SHA-256s. Committing the result path makes the anatomy workflow refuse any further execute. No PASS/FAIL or promotion semantics. Draft; do not merge automatically.
+          B
+          sed -i 's/^          //' pr-body.md
+          gh pr create --draft --base main --head "$SEAL_BRANCH" \
+            --title "Research: seal KR factor anatomy v1 exploratory result" --body-file pr-body.md
