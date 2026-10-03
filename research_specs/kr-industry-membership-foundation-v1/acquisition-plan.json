@@ -1,0 +1,4572 @@
+{
+  "contract": "KR_INDUSTRY_SOURCE_ACQUISITION_PLAN_V1",
+  "criteriaFreezeCommit": "54da1f87",
+  "criteriaSha256": "c7163a88dbc90aaebe575da41bda867508272abcf8da74ddf25304a5cf07bb28",
+  "historicalOutcomeComputed": false,
+  "maxBodyBytes": 4000000,
+  "maxCalls": 1239,
+  "maxWorkers": 4,
+  "receiptInventorySources": [
+    {
+      "commit": "167a416aab482b330c6822b02b6d5376be67fa4f",
+      "path": "ledger/fundamentals/kr-raw/raw-2015.jsonl.gz",
+      "sha256": "252784fb8b05b657ccb97e9d2c550051dd9e37389fd4c6595dcc91848801d2d0"
+    },
+    {
+      "commit": "167a416aab482b330c6822b02b6d5376be67fa4f",
+      "path": "ledger/fundamentals/kr-raw/raw-2023.jsonl.gz",
+      "sha256": "16e18691cfaaa6c82cc6a19bcc8cef49611b944e30a1b62f6977224dd7c47609"
+    }
+  ],
+  "selectedSections": [
+    "company overview",
+    "business overview"
+  ],
+  "targetRule": "All unmixed annual receipts in the earliest retained annual era (2015) and later complete era (2023); no filtering by industry, survival, performance or parsing success. Retained terminal filings are scanned separately.",
+  "targets": [
+    {
+      "availableFrom": "2016-03-30",
+      "corpCode": "00150244",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160330000717"
+      ],
+      "stockCode": "000080",
+      "ticker": "000080.KS"
+    },
+    {
+      "availableFrom": "2016-03-30",
+      "corpCode": "00145109",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160330001687"
+      ],
+      "stockCode": "000100",
+      "ticker": "000100.KS"
+    },
+    {
+      "availableFrom": "2016-03-30",
+      "corpCode": "00113410",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160330003057"
+      ],
+      "stockCode": "000120",
+      "ticker": "000120.KS"
+    },
+    {
+      "availableFrom": "2016-03-30",
+      "corpCode": "00117212",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160330004060"
+      ],
+      "stockCode": "000150",
+      "ticker": "000150.KS"
+    },
+    {
+      "availableFrom": "2016-03-30",
+      "corpCode": "00109693",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160330004025"
+      ],
+      "stockCode": "000210",
+      "ticker": "000210.KS"
+    },
+    {
+      "availableFrom": "2016-03-30",
+      "corpCode": "00160047",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160330003174"
+      ],
+      "stockCode": "000240",
+      "ticker": "000240.KS"
+    },
+    {
+      "availableFrom": "2021-12-10",
+      "corpCode": "00106641",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20211210000418"
+      ],
+      "stockCode": "000270",
+      "ticker": "000270.KS"
+    },
+    {
+      "availableFrom": "2016-03-30",
+      "corpCode": "00104768",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160330003930"
+      ],
+      "stockCode": "000500",
+      "ticker": "000500.KS"
+    },
+    {
+      "availableFrom": "2016-05-16",
+      "corpCode": "00164779",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160516001867"
+      ],
+      "stockCode": "000660",
+      "ticker": "000660.KS"
+    },
+    {
+      "availableFrom": "2016-05-16",
+      "corpCode": "00141307",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160516003193"
+      ],
+      "stockCode": "000670",
+      "ticker": "000670.KS"
+    },
+    {
+      "availableFrom": "2017-06-22",
+      "corpCode": "00164478",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20170622000235"
+      ],
+      "stockCode": "000720",
+      "ticker": "000720.KS"
+    },
+    {
+      "availableFrom": "2016-03-30",
+      "corpCode": "00160588",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160330004137"
+      ],
+      "stockCode": "000880",
+      "ticker": "000880.KS"
+    },
+    {
+      "availableFrom": "2016-03-29",
+      "corpCode": "00160843",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160329001125"
+      ],
+      "stockCode": "000990",
+      "ticker": "000990.KS"
+    },
+    {
+      "availableFrom": "2016-03-30",
+      "corpCode": "00148540",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160330003575"
+      ],
+      "stockCode": "001040",
+      "ticker": "001040.KS"
+    },
+    {
+      "availableFrom": "2016-03-30",
+      "corpCode": "00120076",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160330002390"
+      ],
+      "stockCode": "001120",
+      "ticker": "001120.KS"
+    },
+    {
+      "availableFrom": "2016-03-30",
+      "corpCode": "00113207",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160330003748"
+      ],
+      "stockCode": "001440",
+      "ticker": "001440.KS"
+    },
+    {
+      "availableFrom": "2016-03-30",
+      "corpCode": "00106119",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160330001666"
+      ],
+      "stockCode": "001570",
+      "ticker": "001570.KS"
+    },
+    {
+      "availableFrom": "2016-03-30",
+      "corpCode": "00121941",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160330002087"
+      ],
+      "stockCode": "001680",
+      "ticker": "001680.KS"
+    },
+    {
+      "availableFrom": "2016-05-16",
+      "corpCode": "00131780",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160516003090"
+      ],
+      "stockCode": "001740",
+      "ticker": "001740.KS"
+    },
+    {
+      "availableFrom": "2016-03-30",
+      "corpCode": "00117577",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160330003612"
+      ],
+      "stockCode": "001800",
+      "ticker": "001800.KS"
+    },
+    {
+      "availableFrom": "2016-05-16",
+      "corpCode": "00173874",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160516002078"
+      ],
+      "stockCode": "002350",
+      "ticker": "002350.KS"
+    },
+    {
+      "availableFrom": "2016-03-30",
+      "corpCode": "00105271",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160330003845"
+      ],
+      "stockCode": "002380",
+      "ticker": "002380.KS"
+    },
+    {
+      "availableFrom": "2016-11-16",
+      "corpCode": "00122694",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20161116000240"
+      ],
+      "stockCode": "002410",
+      "ticker": "002410.KS"
+    },
+    {
+      "availableFrom": "2016-05-16",
+      "corpCode": "00154462",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160516003110"
+      ],
+      "stockCode": "002790",
+      "ticker": "002790.KS"
+    },
+    {
+      "availableFrom": "2016-03-30",
+      "corpCode": "00123718",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160330002258"
+      ],
+      "stockCode": "003000",
+      "ticker": "003000.KS"
+    },
+    {
+      "availableFrom": "2016-03-30",
+      "corpCode": "00111810",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160330003165"
+      ],
+      "stockCode": "003090",
+      "ticker": "003090.KS"
+    },
+    {
+      "availableFrom": "2016-03-30",
+      "corpCode": "00126955",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160330004062"
+      ],
+      "stockCode": "003230",
+      "ticker": "003230.KS"
+    },
+    {
+      "availableFrom": "2019-04-17",
+      "corpCode": "00153393",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20190417000536"
+      ],
+      "stockCode": "003240",
+      "ticker": "003240.KS"
+    },
+    {
+      "availableFrom": "2016-03-31",
+      "corpCode": "00138224",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160331000294"
+      ],
+      "stockCode": "003410",
+      "ticker": "003410.KS"
+    },
+    {
+      "availableFrom": "2016-05-16",
+      "corpCode": "00113526",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160516003079"
+      ],
+      "stockCode": "003490",
+      "ticker": "003490.KS"
+    },
+    {
+      "availableFrom": "2016-03-30",
+      "corpCode": "00141149",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160330001300"
+      ],
+      "stockCode": "003520",
+      "ticker": "003520.KS"
+    },
+    {
+      "availableFrom": "2016-05-16",
+      "corpCode": "00120021",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160516003529"
+      ],
+      "stockCode": "003550",
+      "ticker": "003550.KS"
+    },
+    {
+      "availableFrom": "2016-05-13",
+      "corpCode": "00138242",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160513005066"
+      ],
+      "stockCode": "003620",
+      "ticker": "003620.KS"
+    },
+    {
+      "availableFrom": "2016-03-30",
+      "corpCode": "00155276",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160330004396"
+      ],
+      "stockCode": "003670",
+      "ticker": "003670.KS"
+    },
+    {
+      "availableFrom": "2016-03-30",
+      "corpCode": "00157681",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160330002581"
+      ],
+      "stockCode": "004000",
+      "ticker": "004000.KS"
+    },
+    {
+      "availableFrom": "2016-03-30",
+      "corpCode": "00145880",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160330003681"
+      ],
+      "stockCode": "004020",
+      "ticker": "004020.KS"
+    },
+    {
+      "availableFrom": "2016-03-30",
+      "corpCode": "00136378",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160330003999"
+      ],
+      "stockCode": "004170",
+      "ticker": "004170.KS"
+    },
+    {
+      "availableFrom": "2016-05-16",
+      "corpCode": "00108241",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160516002521"
+      ],
+      "stockCode": "004370",
+      "ticker": "004370.KS"
+    },
+    {
+      "availableFrom": "2016-03-30",
+      "corpCode": "00117188",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160330004322"
+      ],
+      "stockCode": "004800",
+      "ticker": "004800.KS"
+    },
+    {
+      "availableFrom": "2016-06-08",
+      "corpCode": "00120562",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160608000130"
+      ],
+      "stockCode": "004990",
+      "ticker": "004990.KS"
+    },
+    {
+      "availableFrom": "2018-08-17",
+      "corpCode": "00129989",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20180817000160"
+      ],
+      "stockCode": "005070",
+      "ticker": "005070.KS"
+    },
+    {
+      "availableFrom": "2016-03-30",
+      "corpCode": "00108135",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160330002566"
+      ],
+      "stockCode": "005250",
+      "ticker": "005250.KS"
+    },
+    {
+      "availableFrom": "2016-06-08",
+      "corpCode": "00120571",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160608000081"
+      ],
+      "stockCode": "005300",
+      "ticker": "005300.KS"
+    },
+    {
+      "availableFrom": "2022-02-17",
+      "corpCode": "00164742",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20220217000915"
+      ],
+      "stockCode": "005380",
+      "ticker": "005380.KS"
+    },
+    {
+      "availableFrom": "2016-03-30",
+      "corpCode": "00105280",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160330002592"
+      ],
+      "stockCode": "005440",
+      "ticker": "005440.KS"
+    },
+    {
+      "availableFrom": "2016-03-30",
+      "corpCode": "00155319",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160330002741"
+      ],
+      "stockCode": "005490",
+      "ticker": "005490.KS"
+    },
+    {
+      "availableFrom": "2016-03-30",
+      "corpCode": "00125530",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160330003318"
+      ],
+      "stockCode": "005610",
+      "ticker": "005610.KS"
+    },
+    {
+      "availableFrom": "2016-03-30",
+      "corpCode": "00145163",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160330002177"
+      ],
+      "stockCode": "005690",
+      "ticker": "005690.KS"
+    },
+    {
+      "availableFrom": "2016-03-30",
+      "corpCode": "00126380",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160330003536"
+      ],
+      "stockCode": "005930",
+      "ticker": "005930.KS"
+    },
+    {
+      "availableFrom": "2016-05-12",
+      "corpCode": "00118026",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160512002065"
+      ],
+      "stockCode": "006040",
+      "ticker": "006040.KS"
+    },
+    {
+      "availableFrom": "2016-05-16",
+      "corpCode": "00131832",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160516003598"
+      ],
+      "stockCode": "006120",
+      "ticker": "006120.KS"
+    },
+    {
+      "availableFrom": "2016-03-30",
+      "corpCode": "00105952",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160330002783"
+      ],
+      "stockCode": "006260",
+      "ticker": "006260.KS"
+    },
+    {
+      "availableFrom": "2016-03-30",
+      "corpCode": "00129679",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160330002633"
+      ],
+      "stockCode": "006280",
+      "ticker": "006280.KS"
+    },
+    {
+      "availableFrom": "2016-03-30",
+      "corpCode": "00120030",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160330004065"
+      ],
+      "stockCode": "006360",
+      "ticker": "006360.KS"
+    },
+    {
+      "availableFrom": "2016-06-30",
+      "corpCode": "00126362",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160630000416"
+      ],
+      "stockCode": "006400",
+      "ticker": "006400.KS"
+    },
+    {
+      "availableFrom": "2016-03-29",
+      "corpCode": "00260383",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160329000111"
+      ],
+      "stockCode": "006650",
+      "ticker": "006650.KS"
+    },
+    {
+      "availableFrom": "2016-03-30",
+      "corpCode": "00141404",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160330004182"
+      ],
+      "stockCode": "006740",
+      "ticker": "006740.KS"
+    },
+    {
+      "availableFrom": "2016-03-30",
+      "corpCode": "00140177",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160330000226"
+      ],
+      "stockCode": "007070",
+      "ticker": "007070.KS"
+    },
+    {
+      "availableFrom": "2016-03-30",
+      "corpCode": "00141529",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160330002935"
+      ],
+      "stockCode": "007310",
+      "ticker": "007310.KS"
+    },
+    {
+      "availableFrom": "2016-03-30",
+      "corpCode": "00146454",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160330002250"
+      ],
+      "stockCode": "007570",
+      "ticker": "007570.KS"
+    },
+    {
+      "availableFrom": "2016-03-30",
+      "corpCode": "00107613",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160330004101"
+      ],
+      "stockCode": "007660",
+      "ticker": "007660.KS"
+    },
+    {
+      "availableFrom": "2016-03-30",
+      "corpCode": "00126487",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160330001659"
+      ],
+      "stockCode": "007700",
+      "ticker": "007700.KS"
+    },
+    {
+      "availableFrom": "2016-05-16",
+      "corpCode": "00165680",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160516003735"
+      ],
+      "stockCode": "008770",
+      "ticker": "008770.KS"
+    },
+    {
+      "availableFrom": "2016-03-30",
+      "corpCode": "00161426",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160330003142"
+      ],
+      "stockCode": "008930",
+      "ticker": "008930.KS"
+    },
+    {
+      "availableFrom": "2016-03-30",
+      "corpCode": "00126371",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160330003977"
+      ],
+      "stockCode": "009150",
+      "ticker": "009150.KS"
+    },
+    {
+      "availableFrom": "2016-05-17",
+      "corpCode": "00161693",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160517000168"
+      ],
+      "stockCode": "009240",
+      "ticker": "009240.KS"
+    },
+    {
+      "availableFrom": "2016-03-30",
+      "corpCode": "00162586",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160330003099"
+      ],
+      "stockCode": "009420",
+      "ticker": "009420.KS"
+    },
+    {
+      "availableFrom": "2018-07-10",
+      "corpCode": "00164830",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20180710000623"
+      ],
+      "stockCode": "009540",
+      "ticker": "009540.KS"
+    },
+    {
+      "availableFrom": "2016-03-30",
+      "corpCode": "00162461",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160330004031"
+      ],
+      "stockCode": "009830",
+      "ticker": "009830.KS"
+    },
+    {
+      "availableFrom": "2016-05-11",
+      "corpCode": "00148896",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160511001331"
+      ],
+      "stockCode": "010060",
+      "ticker": "010060.KS"
+    },
+    {
+      "availableFrom": "2016-03-30",
+      "corpCode": "00105855",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160330004015"
+      ],
+      "stockCode": "010120",
+      "ticker": "010120.KS"
+    },
+    {
+      "availableFrom": "2016-03-30",
+      "corpCode": "00102858",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160330002726"
+      ],
+      "stockCode": "010130",
+      "ticker": "010130.KS"
+    },
+    {
+      "availableFrom": "2016-03-30",
+      "corpCode": "00126478",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160330003624"
+      ],
+      "stockCode": "010140",
+      "ticker": "010140.KS"
+    },
+    {
+      "availableFrom": "2016-03-30",
+      "corpCode": "00164609",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160330004326"
+      ],
+      "stockCode": "010620",
+      "ticker": "010620.KS"
+    },
+    {
+      "availableFrom": "2016-03-30",
+      "corpCode": "00115977",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160330003061"
+      ],
+      "stockCode": "010780",
+      "ticker": "010780.KS"
+    },
+    {
+      "availableFrom": "2016-03-30",
+      "corpCode": "00138279",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160330004075"
+      ],
+      "stockCode": "010950",
+      "ticker": "010950.KS"
+    },
+    {
+      "availableFrom": "2016-04-05",
+      "corpCode": "00105961",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160405002212"
+      ],
+      "stockCode": "011070",
+      "ticker": "011070.KS"
+    },
+    {
+      "availableFrom": "2016-05-16",
+      "corpCode": "00102760",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160516003173"
+      ],
+      "stockCode": "011160",
+      "ticker": "011160.KS"
+    },
+    {
+      "availableFrom": "2016-06-02",
+      "corpCode": "00165413",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160602000002"
+      ],
+      "stockCode": "011170",
+      "ticker": "011170.KS"
+    },
+    {
+      "availableFrom": "2018-09-07",
+      "corpCode": "00164645",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20180907000529"
+      ],
+      "stockCode": "011200",
+      "ticker": "011200.KS"
+    },
+    {
+      "availableFrom": "2016-03-30",
+      "corpCode": "00106623",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160330003830"
+      ],
+      "stockCode": "011210",
+      "ticker": "011210.KS"
+    },
+    {
+      "availableFrom": "2016-05-16",
+      "corpCode": "00106368",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160516003040"
+      ],
+      "stockCode": "011780",
+      "ticker": "011780.KS"
+    },
+    {
+      "availableFrom": "2016-05-16",
+      "corpCode": "00139889",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160516001145"
+      ],
+      "stockCode": "011790",
+      "ticker": "011790.KS"
+    },
+    {
+      "availableFrom": "2017-11-17",
+      "corpCode": "00138297",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20171117000438"
+      ],
+      "stockCode": "011810",
+      "ticker": "011810.KS"
+    },
+    {
+      "availableFrom": "2016-03-30",
+      "corpCode": "00164788",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160330003998"
+      ],
+      "stockCode": "012330",
+      "ticker": "012330.KS"
+    },
+    {
+      "availableFrom": "2016-05-16",
+      "corpCode": "00126566",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160516002683"
+      ],
+      "stockCode": "012450",
+      "ticker": "012450.KS"
+    },
+    {
+      "availableFrom": "2016-05-16",
+      "corpCode": "00172291",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160516001451"
+      ],
+      "stockCode": "012510",
+      "ticker": "012510.KS"
+    },
+    {
+      "availableFrom": "2016-03-30",
+      "corpCode": "00164636",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160330003375"
+      ],
+      "stockCode": "012630",
+      "ticker": "012630.KS"
+    },
+    {
+      "availableFrom": "2017-03-16",
+      "corpCode": "00158501",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20170316000712"
+      ],
+      "stockCode": "012750",
+      "ticker": "012750.KS"
+    },
+    {
+      "availableFrom": "2016-03-23",
+      "corpCode": "00140955",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160323000159"
+      ],
+      "stockCode": "014680",
+      "ticker": "014680.KS"
+    },
+    {
+      "availableFrom": "2016-03-29",
+      "corpCode": "00132637",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160329001264"
+      ],
+      "stockCode": "014820",
+      "ticker": "014820.KS"
+    },
+    {
+      "availableFrom": "2016-03-30",
+      "corpCode": "00159193",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160330002927"
+      ],
+      "stockCode": "015760",
+      "ticker": "015760.KS"
+    },
+    {
+      "availableFrom": "2016-03-30",
+      "corpCode": "00115676",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160330004452"
+      ],
+      "stockCode": "016380",
+      "ticker": "016380.KS"
+    },
+    {
+      "availableFrom": "2016-03-30",
+      "corpCode": "00130684",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160330004120"
+      ],
+      "stockCode": "017390",
+      "ticker": "017390.KS"
+    },
+    {
+      "availableFrom": "2016-05-16",
+      "corpCode": "00159023",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160516003078"
+      ],
+      "stockCode": "017670",
+      "ticker": "017670.KS"
+    },
+    {
+      "availableFrom": "2016-03-30",
+      "corpCode": "00164724",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160330003038"
+      ],
+      "stockCode": "017800",
+      "ticker": "017800.KS"
+    },
+    {
+      "availableFrom": "2016-03-30",
+      "corpCode": "00126186",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160330002354"
+      ],
+      "stockCode": "018260",
+      "ticker": "018260.KS"
+    },
+    {
+      "availableFrom": "2016-03-30",
+      "corpCode": "00161125",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160330002628"
+      ],
+      "stockCode": "018880",
+      "ticker": "018880.KS"
+    },
+    {
+      "availableFrom": "2023-05-02",
+      "corpCode": "00137359",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20230502000004"
+      ],
+      "stockCode": "019170",
+      "ticker": "019170.KS"
+    },
+    {
+      "availableFrom": "2016-03-30",
+      "corpCode": "00113997",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160330002583"
+      ],
+      "stockCode": "020150",
+      "ticker": "020150.KS"
+    },
+    {
+      "availableFrom": "2016-03-30",
+      "corpCode": "00138792",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160330004234"
+      ],
+      "stockCode": "020560",
+      "ticker": "020560.KS"
+    },
+    {
+      "availableFrom": "2016-03-30",
+      "corpCode": "00170558",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160330004478"
+      ],
+      "stockCode": "021240",
+      "ticker": "021240.KS"
+    },
+    {
+      "availableFrom": "2016-03-28",
+      "corpCode": "00155212",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160328000559"
+      ],
+      "stockCode": "022100",
+      "ticker": "022100.KS"
+    },
+    {
+      "availableFrom": "2016-06-09",
+      "corpCode": "00120526",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160609000026"
+      ],
+      "stockCode": "023530",
+      "ticker": "023530.KS"
+    },
+    {
+      "availableFrom": "2016-03-30",
+      "corpCode": "00144395",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160330001956"
+      ],
+      "stockCode": "026960",
+      "ticker": "026960.KS"
+    },
+    {
+      "availableFrom": "2016-03-30",
+      "corpCode": "00219097",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160330002688"
+      ],
+      "stockCode": "027410",
+      "ticker": "027410.KS"
+    },
+    {
+      "availableFrom": "2016-03-30",
+      "corpCode": "00126308",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160330003671"
+      ],
+      "stockCode": "028050",
+      "ticker": "028050.KS"
+    },
+    {
+      "availableFrom": "2016-03-30",
+      "corpCode": "00149655",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160330002954"
+      ],
+      "stockCode": "028260",
+      "ticker": "028260.KS"
+    },
+    {
+      "availableFrom": "2016-04-28",
+      "corpCode": "00122737",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160428000575"
+      ],
+      "stockCode": "028670",
+      "ticker": "028670.KS"
+    },
+    {
+      "availableFrom": "2016-05-16",
+      "corpCode": "00148276",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160516003763"
+      ],
+      "stockCode": "030000",
+      "ticker": "030000.KS"
+    },
+    {
+      "availableFrom": "2016-03-30",
+      "corpCode": "00190321",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160330002293"
+      ],
+      "stockCode": "030200",
+      "ticker": "030200.KS"
+    },
+    {
+      "availableFrom": "2016-03-30",
+      "corpCode": "00234412",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160330004295"
+      ],
+      "stockCode": "031430",
+      "ticker": "031430.KS"
+    },
+    {
+      "availableFrom": "2016-03-30",
+      "corpCode": "00231363",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160330003728"
+      ],
+      "stockCode": "032640",
+      "ticker": "032640.KS"
+    },
+    {
+      "availableFrom": "2020-11-16",
+      "corpCode": "00244455",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20201116001910"
+      ],
+      "stockCode": "033780",
+      "ticker": "033780.KS"
+    },
+    {
+      "availableFrom": "2016-10-28",
+      "corpCode": "00159616",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20161028000369"
+      ],
+      "stockCode": "034020",
+      "ticker": "034020.KS"
+    },
+    {
+      "availableFrom": "2016-05-16",
+      "corpCode": "00105873",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160516001596"
+      ],
+      "stockCode": "034220",
+      "ticker": "034220.KS"
+    },
+    {
+      "availableFrom": "2016-05-16",
+      "corpCode": "00181712",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160516003231"
+      ],
+      "stockCode": "034730",
+      "ticker": "034730.KS"
+    },
+    {
+      "availableFrom": "2016-03-29",
+      "corpCode": "00255619",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160329000932"
+      ],
+      "stockCode": "035250",
+      "ticker": "035250.KS"
+    },
+    {
+      "availableFrom": "2016-03-30",
+      "corpCode": "00266961",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160330003610"
+      ],
+      "stockCode": "035420",
+      "ticker": "035420.KS"
+    },
+    {
+      "availableFrom": "2016-03-30",
+      "corpCode": "00258801",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160330002170"
+      ],
+      "stockCode": "035720",
+      "ticker": "035720.KS"
+    },
+    {
+      "availableFrom": "2016-03-30",
+      "corpCode": "00261285",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160330003045"
+      ],
+      "stockCode": "036460",
+      "ticker": "036460.KS"
+    },
+    {
+      "availableFrom": "2016-03-30",
+      "corpCode": "00261443",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160330003091"
+      ],
+      "stockCode": "036570",
+      "ticker": "036570.KS"
+    },
+    {
+      "availableFrom": "2016-03-30",
+      "corpCode": "00222532",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160330003207"
+      ],
+      "stockCode": "037560",
+      "ticker": "037560.KS"
+    },
+    {
+      "availableFrom": "2016-03-30",
+      "corpCode": "00269940",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160330003820"
+      ],
+      "stockCode": "039130",
+      "ticker": "039130.KS"
+    },
+    {
+      "availableFrom": "2017-10-19",
+      "corpCode": "00111704",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20171019000325"
+      ],
+      "stockCode": "042660",
+      "ticker": "042660.KS"
+    },
+    {
+      "availableFrom": "2016-03-30",
+      "corpCode": "00344287",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160330003767"
+      ],
+      "stockCode": "042670",
+      "ticker": "042670.KS"
+    },
+    {
+      "availableFrom": "2016-03-30",
+      "corpCode": "00161383",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160330003554"
+      ],
+      "stockCode": "042700",
+      "ticker": "042700.KS"
+    },
+    {
+      "availableFrom": "2016-03-30",
+      "corpCode": "00124540",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160330004245"
+      ],
+      "stockCode": "047040",
+      "ticker": "047040.KS"
+    },
+    {
+      "availableFrom": "2016-03-30",
+      "corpCode": "00124504",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160330001086"
+      ],
+      "stockCode": "047050",
+      "ticker": "047050.KS"
+    },
+    {
+      "availableFrom": "2017-08-14",
+      "corpCode": "00309503",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20170814002469"
+      ],
+      "stockCode": "047810",
+      "ticker": "047810.KS"
+    },
+    {
+      "availableFrom": "2016-03-30",
+      "corpCode": "00159218",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160330004458"
+      ],
+      "stockCode": "051600",
+      "ticker": "051600.KS"
+    },
+    {
+      "availableFrom": "2016-05-17",
+      "corpCode": "00356370",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160517000164"
+      ],
+      "stockCode": "051900",
+      "ticker": "051900.KS"
+    },
+    {
+      "availableFrom": "2016-05-16",
+      "corpCode": "00356361",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160516001952"
+      ],
+      "stockCode": "051910",
+      "ticker": "051910.KS"
+    },
+    {
+      "availableFrom": "2020-03-30",
+      "corpCode": "00159209",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20200330003306"
+      ],
+      "stockCode": "052690",
+      "ticker": "052690.KS"
+    },
+    {
+      "availableFrom": "2016-03-30",
+      "corpCode": "00349097",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160330001417"
+      ],
+      "stockCode": "053210",
+      "ticker": "053210.KS"
+    },
+    {
+      "availableFrom": "2016-03-30",
+      "corpCode": "00412597",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160330002544"
+      ],
+      "stockCode": "057050",
+      "ticker": "057050.KS"
+    },
+    {
+      "availableFrom": "2016-03-30",
+      "corpCode": "00299002",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160330004312"
+      ],
+      "stockCode": "060980",
+      "ticker": "060980.KS"
+    },
+    {
+      "availableFrom": "2016-03-30",
+      "corpCode": "00302926",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160330003853"
+      ],
+      "stockCode": "064350",
+      "ticker": "064350.KS"
+    },
+    {
+      "availableFrom": "2016-03-30",
+      "corpCode": "00401731",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160330003806"
+      ],
+      "stockCode": "066570",
+      "ticker": "066570.KS"
+    },
+    {
+      "availableFrom": "2016-03-28",
+      "corpCode": "00398701",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160328000415"
+      ],
+      "stockCode": "066970",
+      "ticker": "066970.KS"
+    },
+    {
+      "availableFrom": "2016-05-13",
+      "corpCode": "00413046",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160513005242"
+      ],
+      "stockCode": "068270",
+      "ticker": "068270.KS"
+    },
+    {
+      "availableFrom": "2016-03-30",
+      "corpCode": "00427483",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160330003128"
+      ],
+      "stockCode": "069620",
+      "ticker": "069620.KS"
+    },
+    {
+      "availableFrom": "2016-03-30",
+      "corpCode": "00428251",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160330003411"
+      ],
+      "stockCode": "069960",
+      "ticker": "069960.KS"
+    },
+    {
+      "availableFrom": "2016-11-14",
+      "corpCode": "00158307",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20161114001402"
+      ],
+      "stockCode": "071840",
+      "ticker": "071840.KS"
+    },
+    {
+      "availableFrom": "2016-05-16",
+      "corpCode": "00406046",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160516003316"
+      ],
+      "stockCode": "071970",
+      "ticker": "071970.KS"
+    },
+    {
+      "availableFrom": "2017-04-04",
+      "corpCode": "00481454",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20170404001954"
+      ],
+      "stockCode": "073240",
+      "ticker": "073240.KS"
+    },
+    {
+      "availableFrom": "2016-03-30",
+      "corpCode": "00500254",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160330003413"
+      ],
+      "stockCode": "078930",
+      "ticker": "078930.KS"
+    },
+    {
+      "availableFrom": "2016-03-30",
+      "corpCode": "00303873",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160330004050"
+      ],
+      "stockCode": "079160",
+      "ticker": "079160.KS"
+    },
+    {
+      "availableFrom": "2016-03-29",
+      "corpCode": "00503668",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160329000865"
+      ],
+      "stockCode": "079550",
+      "ticker": "079550.KS"
+    },
+    {
+      "availableFrom": "2016-05-16",
+      "corpCode": "00195229",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160516002748"
+      ],
+      "stockCode": "081660",
+      "ticker": "081660.KS"
+    },
+    {
+      "availableFrom": "2016-03-30",
+      "corpCode": "00361008",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160330003667"
+      ],
+      "stockCode": "082740",
+      "ticker": "082740.KS"
+    },
+    {
+      "availableFrom": "2016-03-30",
+      "corpCode": "00360595",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160330001763"
+      ],
+      "stockCode": "086280",
+      "ticker": "086280.KS"
+    },
+    {
+      "availableFrom": "2016-03-30",
+      "corpCode": "00583424",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160330003329"
+      ],
+      "stockCode": "090430",
+      "ticker": "090430.KS"
+    },
+    {
+      "availableFrom": "2016-05-16",
+      "corpCode": "00631518",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160516002275"
+      ],
+      "stockCode": "096770",
+      "ticker": "096770.KS"
+    },
+    {
+      "availableFrom": "2016-03-30",
+      "corpCode": "00635134",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160330003590"
+      ],
+      "stockCode": "097950",
+      "ticker": "097950.KS"
+    },
+    {
+      "availableFrom": "2016-03-30",
+      "corpCode": "00684714",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160330002513"
+      ],
+      "stockCode": "103140",
+      "ticker": "103140.KS"
+    },
+    {
+      "availableFrom": "2016-03-30",
+      "corpCode": "00683469",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160330001757"
+      ],
+      "stockCode": "103590",
+      "ticker": "103590.KS"
+    },
+    {
+      "availableFrom": "2016-03-30",
+      "corpCode": "00728638",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160330001940"
+      ],
+      "stockCode": "105630",
+      "ticker": "105630.KS"
+    },
+    {
+      "availableFrom": "2016-05-16",
+      "corpCode": "00759513",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160516002061"
+      ],
+      "stockCode": "108670",
+      "ticker": "108670.KS"
+    },
+    {
+      "availableFrom": "2016-03-30",
+      "corpCode": "00776820",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160330002465"
+      ],
+      "stockCode": "111770",
+      "ticker": "111770.KS"
+    },
+    {
+      "availableFrom": "2016-05-25",
+      "corpCode": "00670340",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160525000400"
+      ],
+      "stockCode": "112610",
+      "ticker": "112610.KS"
+    },
+    {
+      "availableFrom": "2016-03-28",
+      "corpCode": "00557508",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160328000528"
+      ],
+      "stockCode": "114090",
+      "ticker": "114090.KS"
+    },
+    {
+      "availableFrom": "2016-03-30",
+      "corpCode": "00561866",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160330003024"
+      ],
+      "stockCode": "115390",
+      "ticker": "115390.KS"
+    },
+    {
+      "availableFrom": "2016-03-30",
+      "corpCode": "00790501",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160330002176"
+      ],
+      "stockCode": "117930",
+      "ticker": "117930.KS"
+    },
+    {
+      "availableFrom": "2016-03-30",
+      "corpCode": "00795135",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160330001903"
+      ],
+      "stockCode": "120110",
+      "ticker": "120110.KS"
+    },
+    {
+      "availableFrom": "2016-03-30",
+      "corpCode": "00828497",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160330003054"
+      ],
+      "stockCode": "128940",
+      "ticker": "128940.KS"
+    },
+    {
+      "availableFrom": "2016-03-30",
+      "corpCode": "00872984",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160330004084"
+      ],
+      "stockCode": "139480",
+      "ticker": "139480.KS"
+    },
+    {
+      "availableFrom": "2016-03-30",
+      "corpCode": "00937324",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160330003710"
+      ],
+      "stockCode": "161390",
+      "ticker": "161390.KS"
+    },
+    {
+      "availableFrom": "2016-03-29",
+      "corpCode": "00939331",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160329001045"
+      ],
+      "stockCode": "161890",
+      "ticker": "161890.KS"
+    },
+    {
+      "availableFrom": "2021-03-17",
+      "corpCode": "00983040",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20210317000885"
+      ],
+      "stockCode": "180640",
+      "ticker": "180640.KS"
+    },
+    {
+      "availableFrom": "2016-03-30",
+      "corpCode": "00983271",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160330002072"
+      ],
+      "stockCode": "181710",
+      "ticker": "181710.KS"
+    },
+    {
+      "availableFrom": "2016-03-30",
+      "corpCode": "00992871",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160330003114"
+      ],
+      "stockCode": "185750",
+      "ticker": "185750.KS"
+    },
+    {
+      "availableFrom": "2016-03-30",
+      "corpCode": "00132354",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160330001838"
+      ],
+      "stockCode": "192400",
+      "ticker": "192400.KS"
+    },
+    {
+      "availableFrom": "2016-03-30",
+      "corpCode": "01009789",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160330002819"
+      ],
+      "stockCode": "192820",
+      "ticker": "192820.KS"
+    },
+    {
+      "availableFrom": "2016-05-16",
+      "corpCode": "01042775",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20160516002185"
+      ],
+      "stockCode": "204320",
+      "ticker": "204320.KS"
+    },
+    {
+      "availableFrom": "2024-03-26",
+      "corpCode": "00254045",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240326000240"
+      ],
+      "stockCode": "000030",
+      "ticker": "000030.KS"
+    },
+    {
+      "availableFrom": "2024-04-30",
+      "corpCode": "00117744",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240430000865"
+      ],
+      "stockCode": "000060",
+      "ticker": "000060.KS"
+    },
+    {
+      "availableFrom": "2024-03-14",
+      "corpCode": "00150244",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240314000553"
+      ],
+      "stockCode": "000080",
+      "ticker": "000080.KS"
+    },
+    {
+      "availableFrom": "2024-03-07",
+      "corpCode": "00145109",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240307000960"
+      ],
+      "stockCode": "000100",
+      "ticker": "000100.KS"
+    },
+    {
+      "availableFrom": "2024-03-20",
+      "corpCode": "00113410",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240320001789"
+      ],
+      "stockCode": "000120",
+      "ticker": "000120.KS"
+    },
+    {
+      "availableFrom": "2024-03-20",
+      "corpCode": "00117212",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240320001953"
+      ],
+      "stockCode": "000150",
+      "ticker": "000150.KS"
+    },
+    {
+      "availableFrom": "2024-03-29",
+      "corpCode": "00109693",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240329002623"
+      ],
+      "stockCode": "000210",
+      "ticker": "000210.KS"
+    },
+    {
+      "availableFrom": "2024-03-20",
+      "corpCode": "00160047",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240320001601"
+      ],
+      "stockCode": "000240",
+      "ticker": "000240.KS"
+    },
+    {
+      "availableFrom": "2024-03-12",
+      "corpCode": "00106641",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240312000909"
+      ],
+      "stockCode": "000270",
+      "ticker": "000270.KS"
+    },
+    {
+      "availableFrom": "2024-03-18",
+      "corpCode": "00104768",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240318000764"
+      ],
+      "stockCode": "000500",
+      "ticker": "000500.KS"
+    },
+    {
+      "availableFrom": "2024-03-19",
+      "corpCode": "00164779",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240319000684"
+      ],
+      "stockCode": "000660",
+      "ticker": "000660.KS"
+    },
+    {
+      "availableFrom": "2024-08-14",
+      "corpCode": "00141307",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240814004220"
+      ],
+      "stockCode": "000670",
+      "ticker": "000670.KS"
+    },
+    {
+      "availableFrom": "2024-03-29",
+      "corpCode": "00164478",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240329003141"
+      ],
+      "stockCode": "000720",
+      "ticker": "000720.KS"
+    },
+    {
+      "availableFrom": "2024-04-29",
+      "corpCode": "00139214",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240429000782"
+      ],
+      "stockCode": "000810",
+      "ticker": "000810.KS"
+    },
+    {
+      "availableFrom": "2025-12-18",
+      "corpCode": "00160588",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20251218000264"
+      ],
+      "stockCode": "000880",
+      "ticker": "000880.KS"
+    },
+    {
+      "availableFrom": "2024-03-27",
+      "corpCode": "00160843",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240327001130"
+      ],
+      "stockCode": "000990",
+      "ticker": "000990.KS"
+    },
+    {
+      "availableFrom": "2024-03-20",
+      "corpCode": "00148540",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240320001996"
+      ],
+      "stockCode": "001040",
+      "ticker": "001040.KS"
+    },
+    {
+      "availableFrom": "2024-03-20",
+      "corpCode": "00120076",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240320000868"
+      ],
+      "stockCode": "001120",
+      "ticker": "001120.KS"
+    },
+    {
+      "availableFrom": "2024-03-21",
+      "corpCode": "00113207",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240321001692"
+      ],
+      "stockCode": "001440",
+      "ticker": "001440.KS"
+    },
+    {
+      "availableFrom": "2024-03-14",
+      "corpCode": "00164973",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240314001515"
+      ],
+      "stockCode": "001450",
+      "ticker": "001450.KS"
+    },
+    {
+      "availableFrom": "2024-04-17",
+      "corpCode": "00106119",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240417000287"
+      ],
+      "stockCode": "001570",
+      "ticker": "001570.KS"
+    },
+    {
+      "availableFrom": "2024-03-27",
+      "corpCode": "00121941",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240327000761"
+      ],
+      "stockCode": "001680",
+      "ticker": "001680.KS"
+    },
+    {
+      "availableFrom": "2024-03-19",
+      "corpCode": "00131780",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240319000871"
+      ],
+      "stockCode": "001740",
+      "ticker": "001740.KS"
+    },
+    {
+      "availableFrom": "2024-03-13",
+      "corpCode": "00117577",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240313000499"
+      ],
+      "stockCode": "001800",
+      "ticker": "001800.KS"
+    },
+    {
+      "availableFrom": "2024-03-18",
+      "corpCode": "00173874",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240318000903"
+      ],
+      "stockCode": "002350",
+      "ticker": "002350.KS"
+    },
+    {
+      "availableFrom": "2024-03-27",
+      "corpCode": "00105271",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240327001177"
+      ],
+      "stockCode": "002380",
+      "ticker": "002380.KS"
+    },
+    {
+      "availableFrom": "2025-06-05",
+      "corpCode": "00122694",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20250605000503"
+      ],
+      "stockCode": "002410",
+      "ticker": "002410.KS"
+    },
+    {
+      "availableFrom": "2024-04-30",
+      "corpCode": "00120216",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240430000217"
+      ],
+      "stockCode": "002550",
+      "ticker": "002550.KS"
+    },
+    {
+      "availableFrom": "2024-03-07",
+      "corpCode": "00154462",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240307000584"
+      ],
+      "stockCode": "002790",
+      "ticker": "002790.KS"
+    },
+    {
+      "availableFrom": "2024-03-22",
+      "corpCode": "00123718",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240322000905"
+      ],
+      "stockCode": "003000",
+      "ticker": "003000.KS"
+    },
+    {
+      "availableFrom": "2024-03-20",
+      "corpCode": "00111810",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240320001160"
+      ],
+      "stockCode": "003090",
+      "ticker": "003090.KS"
+    },
+    {
+      "availableFrom": "2024-03-20",
+      "corpCode": "00126955",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240320001358"
+      ],
+      "stockCode": "003230",
+      "ticker": "003230.KS"
+    },
+    {
+      "availableFrom": "2024-03-29",
+      "corpCode": "00153393",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240329003575"
+      ],
+      "stockCode": "003240",
+      "ticker": "003240.KS"
+    },
+    {
+      "availableFrom": "2024-03-27",
+      "corpCode": "00138224",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240327001183"
+      ],
+      "stockCode": "003410",
+      "ticker": "003410.KS"
+    },
+    {
+      "availableFrom": "2024-03-21",
+      "corpCode": "00164876",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240321001123"
+      ],
+      "stockCode": "003450",
+      "ticker": "003450.KS"
+    },
+    {
+      "availableFrom": "2024-03-13",
+      "corpCode": "00113526",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240313001650"
+      ],
+      "stockCode": "003490",
+      "ticker": "003490.KS"
+    },
+    {
+      "availableFrom": "2024-03-20",
+      "corpCode": "00141149",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240320001268"
+      ],
+      "stockCode": "003520",
+      "ticker": "003520.KS"
+    },
+    {
+      "availableFrom": "2024-03-19",
+      "corpCode": "00120021",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240319000703"
+      ],
+      "stockCode": "003550",
+      "ticker": "003550.KS"
+    },
+    {
+      "availableFrom": "2024-03-18",
+      "corpCode": "00138242",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240318000335"
+      ],
+      "stockCode": "003620",
+      "ticker": "003620.KS"
+    },
+    {
+      "availableFrom": "2024-03-26",
+      "corpCode": "00155276",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240326000383"
+      ],
+      "stockCode": "003670",
+      "ticker": "003670.KS"
+    },
+    {
+      "availableFrom": "2024-03-29",
+      "corpCode": "00157681",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240329003375"
+      ],
+      "stockCode": "004000",
+      "ticker": "004000.KS"
+    },
+    {
+      "availableFrom": "2024-03-18",
+      "corpCode": "00145880",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240318000916"
+      ],
+      "stockCode": "004020",
+      "ticker": "004020.KS"
+    },
+    {
+      "availableFrom": "2024-03-13",
+      "corpCode": "00136378",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240313001406"
+      ],
+      "stockCode": "004170",
+      "ticker": "004170.KS"
+    },
+    {
+      "availableFrom": "2024-03-14",
+      "corpCode": "00108241",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240314000698"
+      ],
+      "stockCode": "004370",
+      "ticker": "004370.KS"
+    },
+    {
+      "availableFrom": "2024-03-15",
+      "corpCode": "00117188",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240315000695"
+      ],
+      "stockCode": "004800",
+      "ticker": "004800.KS"
+    },
+    {
+      "availableFrom": "2024-03-14",
+      "corpCode": "00158909",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240314001547"
+      ],
+      "stockCode": "004940",
+      "ticker": "004940.KS"
+    },
+    {
+      "availableFrom": "2024-03-20",
+      "corpCode": "00120562",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240320001124"
+      ],
+      "stockCode": "004990",
+      "ticker": "004990.KS"
+    },
+    {
+      "availableFrom": "2024-03-15",
+      "corpCode": "00129989",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240315000492"
+      ],
+      "stockCode": "005070",
+      "ticker": "005070.KS"
+    },
+    {
+      "availableFrom": "2024-03-20",
+      "corpCode": "00108135",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240320001805"
+      ],
+      "stockCode": "005250",
+      "ticker": "005250.KS"
+    },
+    {
+      "availableFrom": "2024-03-26",
+      "corpCode": "00120571",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240326000264"
+      ],
+      "stockCode": "005300",
+      "ticker": "005300.KS"
+    },
+    {
+      "availableFrom": "2024-03-13",
+      "corpCode": "00164742",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240313001451"
+      ],
+      "stockCode": "005380",
+      "ticker": "005380.KS"
+    },
+    {
+      "availableFrom": "2024-03-20",
+      "corpCode": "00105280",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240320001537"
+      ],
+      "stockCode": "005440",
+      "ticker": "005440.KS"
+    },
+    {
+      "availableFrom": "2024-03-22",
+      "corpCode": "00155319",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240322000986"
+      ],
+      "stockCode": "005490",
+      "ticker": "005490.KS"
+    },
+    {
+      "availableFrom": "2024-03-21",
+      "corpCode": "00125530",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240321001513"
+      ],
+      "stockCode": "005610",
+      "ticker": "005610.KS"
+    },
+    {
+      "availableFrom": "2024-03-20",
+      "corpCode": "00145163",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240320001254"
+      ],
+      "stockCode": "005690",
+      "ticker": "005690.KS"
+    },
+    {
+      "availableFrom": "2024-04-30",
+      "corpCode": "00159102",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240430000990"
+      ],
+      "stockCode": "005830",
+      "ticker": "005830.KS"
+    },
+    {
+      "availableFrom": "2024-03-12",
+      "corpCode": "00126380",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240312000736"
+      ],
+      "stockCode": "005930",
+      "ticker": "005930.KS"
+    },
+    {
+      "availableFrom": "2024-05-14",
+      "corpCode": "00120182",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240514000627"
+      ],
+      "stockCode": "005940",
+      "ticker": "005940.KS"
+    },
+    {
+      "availableFrom": "2024-03-20",
+      "corpCode": "00118026",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240320001973"
+      ],
+      "stockCode": "006040",
+      "ticker": "006040.KS"
+    },
+    {
+      "availableFrom": "2024-03-20",
+      "corpCode": "00131832",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240320001824"
+      ],
+      "stockCode": "006120",
+      "ticker": "006120.KS"
+    },
+    {
+      "availableFrom": "2024-03-28",
+      "corpCode": "00105952",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240328001620"
+      ],
+      "stockCode": "006260",
+      "ticker": "006260.KS"
+    },
+    {
+      "availableFrom": "2024-03-20",
+      "corpCode": "00129679",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240320001551"
+      ],
+      "stockCode": "006280",
+      "ticker": "006280.KS"
+    },
+    {
+      "availableFrom": "2026-06-30",
+      "corpCode": "00120030",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20260630000500"
+      ],
+      "stockCode": "006360",
+      "ticker": "006360.KS"
+    },
+    {
+      "availableFrom": "2024-03-12",
+      "corpCode": "00126362",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240312000853"
+      ],
+      "stockCode": "006400",
+      "ticker": "006400.KS"
+    },
+    {
+      "availableFrom": "2024-03-07",
+      "corpCode": "00260383",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240307000479"
+      ],
+      "stockCode": "006650",
+      "ticker": "006650.KS"
+    },
+    {
+      "availableFrom": "2024-03-20",
+      "corpCode": "00141404",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240320001681"
+      ],
+      "stockCode": "006740",
+      "ticker": "006740.KS"
+    },
+    {
+      "availableFrom": "2024-03-18",
+      "corpCode": "00111722",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240318000604"
+      ],
+      "stockCode": "006800",
+      "ticker": "006800.KS"
+    },
+    {
+      "availableFrom": "2024-04-01",
+      "corpCode": "00140177",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240401004251"
+      ],
+      "stockCode": "007070",
+      "ticker": "007070.KS"
+    },
+    {
+      "availableFrom": "2024-03-18",
+      "corpCode": "00141529",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240318000813"
+      ],
+      "stockCode": "007310",
+      "ticker": "007310.KS"
+    },
+    {
+      "availableFrom": "2025-03-27",
+      "corpCode": "00146454",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20250327000993"
+      ],
+      "stockCode": "007570",
+      "ticker": "007570.KS"
+    },
+    {
+      "availableFrom": "2024-03-21",
+      "corpCode": "00107613",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240321001149"
+      ],
+      "stockCode": "007660",
+      "ticker": "007660.KS"
+    },
+    {
+      "availableFrom": "2024-03-20",
+      "corpCode": "00126487",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240320001670"
+      ],
+      "stockCode": "007700",
+      "ticker": "007700.KS"
+    },
+    {
+      "availableFrom": "2024-04-01",
+      "corpCode": "00163682",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240401003586"
+      ],
+      "stockCode": "008560",
+      "ticker": "008560.KS"
+    },
+    {
+      "availableFrom": "2024-03-13",
+      "corpCode": "00165680",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240313001634"
+      ],
+      "stockCode": "008770",
+      "ticker": "008770.KS"
+    },
+    {
+      "availableFrom": "2024-03-28",
+      "corpCode": "00161426",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240328001634"
+      ],
+      "stockCode": "008930",
+      "ticker": "008930.KS"
+    },
+    {
+      "availableFrom": "2024-03-29",
+      "corpCode": "00126371",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240329002895"
+      ],
+      "stockCode": "009150",
+      "ticker": "009150.KS"
+    },
+    {
+      "availableFrom": "2024-03-28",
+      "corpCode": "00161693",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240328001271"
+      ],
+      "stockCode": "009240",
+      "ticker": "009240.KS"
+    },
+    {
+      "availableFrom": "2024-03-20",
+      "corpCode": "00162586",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240320000734"
+      ],
+      "stockCode": "009420",
+      "ticker": "009420.KS"
+    },
+    {
+      "availableFrom": "2024-03-21",
+      "corpCode": "00164830",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240321000061"
+      ],
+      "stockCode": "009540",
+      "ticker": "009540.KS"
+    },
+    {
+      "availableFrom": "2024-03-28",
+      "corpCode": "00162461",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240328000654"
+      ],
+      "stockCode": "009830",
+      "ticker": "009830.KS"
+    },
+    {
+      "availableFrom": "2024-03-29",
+      "corpCode": "00148896",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240329003297"
+      ],
+      "stockCode": "010060",
+      "ticker": "010060.KS"
+    },
+    {
+      "availableFrom": "2024-03-26",
+      "corpCode": "00105855",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240326000494"
+      ],
+      "stockCode": "010120",
+      "ticker": "010120.KS"
+    },
+    {
+      "availableFrom": "2026-08-13",
+      "corpCode": "00102858",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20260813001690"
+      ],
+      "stockCode": "010130",
+      "ticker": "010130.KS"
+    },
+    {
+      "availableFrom": "2024-03-15",
+      "corpCode": "00126478",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240315000850"
+      ],
+      "stockCode": "010140",
+      "ticker": "010140.KS"
+    },
+    {
+      "availableFrom": "2024-03-15",
+      "corpCode": "00164609",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240315000753"
+      ],
+      "stockCode": "010620",
+      "ticker": "010620.KS"
+    },
+    {
+      "availableFrom": "2024-03-21",
+      "corpCode": "00115977",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240321001950"
+      ],
+      "stockCode": "010780",
+      "ticker": "010780.KS"
+    },
+    {
+      "availableFrom": "2024-03-20",
+      "corpCode": "00138279",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240320001242"
+      ],
+      "stockCode": "010950",
+      "ticker": "010950.KS"
+    },
+    {
+      "availableFrom": "2024-02-28",
+      "corpCode": "00105961",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240228008553"
+      ],
+      "stockCode": "011070",
+      "ticker": "011070.KS"
+    },
+    {
+      "availableFrom": "2024-03-29",
+      "corpCode": "00102760",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240329003168"
+      ],
+      "stockCode": "011160",
+      "ticker": "011160.KS"
+    },
+    {
+      "availableFrom": "2024-04-01",
+      "corpCode": "00165413",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240401004380"
+      ],
+      "stockCode": "011170",
+      "ticker": "011170.KS"
+    },
+    {
+      "availableFrom": "2024-03-28",
+      "corpCode": "00164645",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240328001188"
+      ],
+      "stockCode": "011200",
+      "ticker": "011200.KS"
+    },
+    {
+      "availableFrom": "2024-03-29",
+      "corpCode": "00106623",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240329002076"
+      ],
+      "stockCode": "011210",
+      "ticker": "011210.KS"
+    },
+    {
+      "availableFrom": "2024-03-28",
+      "corpCode": "00106368",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240328001337"
+      ],
+      "stockCode": "011780",
+      "ticker": "011780.KS"
+    },
+    {
+      "availableFrom": "2024-04-09",
+      "corpCode": "00139889",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240409003864"
+      ],
+      "stockCode": "011790",
+      "ticker": "011790.KS"
+    },
+    {
+      "availableFrom": "2024-03-21",
+      "corpCode": "00138297",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240321001859"
+      ],
+      "stockCode": "011810",
+      "ticker": "011810.KS"
+    },
+    {
+      "availableFrom": "2024-03-19",
+      "corpCode": "00164788",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240319000626"
+      ],
+      "stockCode": "012330",
+      "ticker": "012330.KS"
+    },
+    {
+      "availableFrom": "2024-03-29",
+      "corpCode": "00126566",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240329000902"
+      ],
+      "stockCode": "012450",
+      "ticker": "012450.KS"
+    },
+    {
+      "availableFrom": "2024-03-13",
+      "corpCode": "00172291",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240313001285"
+      ],
+      "stockCode": "012510",
+      "ticker": "012510.KS"
+    },
+    {
+      "availableFrom": "2024-03-21",
+      "corpCode": "00164636",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240321000304"
+      ],
+      "stockCode": "012630",
+      "ticker": "012630.KS"
+    },
+    {
+      "availableFrom": "2024-03-13",
+      "corpCode": "00158501",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240313001360"
+      ],
+      "stockCode": "012750",
+      "ticker": "012750.KS"
+    },
+    {
+      "availableFrom": "2024-03-12",
+      "corpCode": "00140955",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240312000921"
+      ],
+      "stockCode": "014680",
+      "ticker": "014680.KS"
+    },
+    {
+      "availableFrom": "2024-03-19",
+      "corpCode": "00132637",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240319000775"
+      ],
+      "stockCode": "014820",
+      "ticker": "014820.KS"
+    },
+    {
+      "availableFrom": "2024-03-29",
+      "corpCode": "00159193",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240329002856"
+      ],
+      "stockCode": "015760",
+      "ticker": "015760.KS"
+    },
+    {
+      "availableFrom": "2024-03-13",
+      "corpCode": "00104856",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240313001446"
+      ],
+      "stockCode": "016360",
+      "ticker": "016360.KS"
+    },
+    {
+      "availableFrom": "2024-03-18",
+      "corpCode": "00115676",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240318000890"
+      ],
+      "stockCode": "016380",
+      "ticker": "016380.KS"
+    },
+    {
+      "availableFrom": "2024-03-19",
+      "corpCode": "00130684",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240319000303"
+      ],
+      "stockCode": "017390",
+      "ticker": "017390.KS"
+    },
+    {
+      "availableFrom": "2024-03-18",
+      "corpCode": "00159023",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240318000570"
+      ],
+      "stockCode": "017670",
+      "ticker": "017670.KS"
+    },
+    {
+      "availableFrom": "2024-03-20",
+      "corpCode": "00164724",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240320001956"
+      ],
+      "stockCode": "017800",
+      "ticker": "017800.KS"
+    },
+    {
+      "availableFrom": "2024-03-13",
+      "corpCode": "00139454",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240313000766"
+      ],
+      "stockCode": "018250",
+      "ticker": "018250.KS"
+    },
+    {
+      "availableFrom": "2024-03-29",
+      "corpCode": "00126186",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240329003204"
+      ],
+      "stockCode": "018260",
+      "ticker": "018260.KS"
+    },
+    {
+      "availableFrom": "2024-03-20",
+      "corpCode": "00161125",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240320000500"
+      ],
+      "stockCode": "018880",
+      "ticker": "018880.KS"
+    },
+    {
+      "availableFrom": "2024-03-22",
+      "corpCode": "00137359",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240322000888"
+      ],
+      "stockCode": "019170",
+      "ticker": "019170.KS"
+    },
+    {
+      "availableFrom": "2024-03-15",
+      "corpCode": "00113997",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240315000794"
+      ],
+      "stockCode": "020150",
+      "ticker": "020150.KS"
+    },
+    {
+      "availableFrom": "2024-03-25",
+      "corpCode": "00138792",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240325000904"
+      ],
+      "stockCode": "020560",
+      "ticker": "020560.KS"
+    },
+    {
+      "availableFrom": "2024-03-29",
+      "corpCode": "00170558",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240329002735"
+      ],
+      "stockCode": "021240",
+      "ticker": "021240.KS"
+    },
+    {
+      "availableFrom": "2024-06-18",
+      "corpCode": "00155212",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240618000197"
+      ],
+      "stockCode": "022100",
+      "ticker": "022100.KS"
+    },
+    {
+      "availableFrom": "2024-03-15",
+      "corpCode": "00120526",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240315000948"
+      ],
+      "stockCode": "023530",
+      "ticker": "023530.KS"
+    },
+    {
+      "availableFrom": "2024-04-30",
+      "corpCode": "00149646",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240430000630"
+      ],
+      "stockCode": "024110",
+      "ticker": "024110.KS"
+    },
+    {
+      "availableFrom": "2024-03-14",
+      "corpCode": "00144395",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240314000472"
+      ],
+      "stockCode": "026960",
+      "ticker": "026960.KS"
+    },
+    {
+      "availableFrom": "2024-04-12",
+      "corpCode": "00219097",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240412003440"
+      ],
+      "stockCode": "027410",
+      "ticker": "027410.KS"
+    },
+    {
+      "availableFrom": "2024-03-29",
+      "corpCode": "00126308",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240329003421"
+      ],
+      "stockCode": "028050",
+      "ticker": "028050.KS"
+    },
+    {
+      "availableFrom": "2024-03-29",
+      "corpCode": "00149655",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240329002523"
+      ],
+      "stockCode": "028260",
+      "ticker": "028260.KS"
+    },
+    {
+      "availableFrom": "2024-03-19",
+      "corpCode": "00122737",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240319000829"
+      ],
+      "stockCode": "028670",
+      "ticker": "028670.KS"
+    },
+    {
+      "availableFrom": "2024-03-12",
+      "corpCode": "00126292",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240312000868"
+      ],
+      "stockCode": "029780",
+      "ticker": "029780.KS"
+    },
+    {
+      "availableFrom": "2024-03-13",
+      "corpCode": "00148276",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240313001356"
+      ],
+      "stockCode": "030000",
+      "ticker": "030000.KS"
+    },
+    {
+      "availableFrom": "2024-03-20",
+      "corpCode": "00190321",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240320002050"
+      ],
+      "stockCode": "030200",
+      "ticker": "030200.KS"
+    },
+    {
+      "availableFrom": "2024-03-12",
+      "corpCode": "00234412",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240312000886"
+      ],
+      "stockCode": "031430",
+      "ticker": "031430.KS"
+    },
+    {
+      "availableFrom": "2024-03-13",
+      "corpCode": "00231363",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240313001130"
+      ],
+      "stockCode": "032640",
+      "ticker": "032640.KS"
+    },
+    {
+      "availableFrom": "2024-06-12",
+      "corpCode": "00126256",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240612000329"
+      ],
+      "stockCode": "032830",
+      "ticker": "032830.KS"
+    },
+    {
+      "availableFrom": "2024-03-20",
+      "corpCode": "00244455",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240320001212"
+      ],
+      "stockCode": "033780",
+      "ticker": "033780.KS"
+    },
+    {
+      "availableFrom": "2024-03-27",
+      "corpCode": "00159616",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240327001226"
+      ],
+      "stockCode": "034020",
+      "ticker": "034020.KS"
+    },
+    {
+      "availableFrom": "2024-03-14",
+      "corpCode": "00105873",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240314000487"
+      ],
+      "stockCode": "034220",
+      "ticker": "034220.KS"
+    },
+    {
+      "availableFrom": "2024-03-19",
+      "corpCode": "00181712",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240319000757"
+      ],
+      "stockCode": "034730",
+      "ticker": "034730.KS"
+    },
+    {
+      "availableFrom": "2024-03-20",
+      "corpCode": "00255619",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240320001396"
+      ],
+      "stockCode": "035250",
+      "ticker": "035250.KS"
+    },
+    {
+      "availableFrom": "2024-03-18",
+      "corpCode": "00266961",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240318000844"
+      ],
+      "stockCode": "035420",
+      "ticker": "035420.KS"
+    },
+    {
+      "availableFrom": "2024-04-18",
+      "corpCode": "00258801",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240418000375"
+      ],
+      "stockCode": "035720",
+      "ticker": "035720.KS"
+    },
+    {
+      "availableFrom": "2024-03-25",
+      "corpCode": "00261285",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240325000966"
+      ],
+      "stockCode": "036460",
+      "ticker": "036460.KS"
+    },
+    {
+      "availableFrom": "2024-03-22",
+      "corpCode": "00261443",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240322000989"
+      ],
+      "stockCode": "036570",
+      "ticker": "036570.KS"
+    },
+    {
+      "availableFrom": "2024-03-06",
+      "corpCode": "00222532",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240306000614"
+      ],
+      "stockCode": "037560",
+      "ticker": "037560.KS"
+    },
+    {
+      "availableFrom": "2024-03-21",
+      "corpCode": "00269940",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240321001614"
+      ],
+      "stockCode": "039130",
+      "ticker": "039130.KS"
+    },
+    {
+      "availableFrom": "2024-03-20",
+      "corpCode": "00296290",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240320001275"
+      ],
+      "stockCode": "039490",
+      "ticker": "039490.KS"
+    },
+    {
+      "availableFrom": "2024-03-28",
+      "corpCode": "00111704",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240328000773"
+      ],
+      "stockCode": "042660",
+      "ticker": "042660.KS"
+    },
+    {
+      "availableFrom": "2024-03-28",
+      "corpCode": "00344287",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240328001028"
+      ],
+      "stockCode": "042670",
+      "ticker": "042670.KS"
+    },
+    {
+      "availableFrom": "2024-03-14",
+      "corpCode": "00161383",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240314001257"
+      ],
+      "stockCode": "042700",
+      "ticker": "042700.KS"
+    },
+    {
+      "availableFrom": "2024-03-20",
+      "corpCode": "00124540",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240320001313"
+      ],
+      "stockCode": "047040",
+      "ticker": "047040.KS"
+    },
+    {
+      "availableFrom": "2024-03-29",
+      "corpCode": "00124504",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240329001908"
+      ],
+      "stockCode": "047050",
+      "ticker": "047050.KS"
+    },
+    {
+      "availableFrom": "2024-03-26",
+      "corpCode": "00309503",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240326000812"
+      ],
+      "stockCode": "047810",
+      "ticker": "047810.KS"
+    },
+    {
+      "availableFrom": "2024-03-20",
+      "corpCode": "00159218",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240320000788"
+      ],
+      "stockCode": "051600",
+      "ticker": "051600.KS"
+    },
+    {
+      "availableFrom": "2024-03-18",
+      "corpCode": "00356370",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240318000511"
+      ],
+      "stockCode": "051900",
+      "ticker": "051900.KS"
+    },
+    {
+      "availableFrom": "2024-03-15",
+      "corpCode": "00356361",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240315000957"
+      ],
+      "stockCode": "051910",
+      "ticker": "051910.KS"
+    },
+    {
+      "availableFrom": "2024-03-20",
+      "corpCode": "00159209",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240320001238"
+      ],
+      "stockCode": "052690",
+      "ticker": "052690.KS"
+    },
+    {
+      "availableFrom": "2024-03-20",
+      "corpCode": "00349097",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240320001841"
+      ],
+      "stockCode": "053210",
+      "ticker": "053210.KS"
+    },
+    {
+      "availableFrom": "2024-05-02",
+      "corpCode": "00382199",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240502000081"
+      ],
+      "stockCode": "055550",
+      "ticker": "055550.KS"
+    },
+    {
+      "availableFrom": "2024-03-15",
+      "corpCode": "00412597",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240315000790"
+      ],
+      "stockCode": "057050",
+      "ticker": "057050.KS"
+    },
+    {
+      "availableFrom": "2025-09-16",
+      "corpCode": "00299002",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20250916000279"
+      ],
+      "stockCode": "060980",
+      "ticker": "060980.KS"
+    },
+    {
+      "availableFrom": "2024-03-20",
+      "corpCode": "00302926",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240320000873"
+      ],
+      "stockCode": "064350",
+      "ticker": "064350.KS"
+    },
+    {
+      "availableFrom": "2024-04-01",
+      "corpCode": "00139834",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240401003467"
+      ],
+      "stockCode": "064400",
+      "ticker": "064400.KS"
+    },
+    {
+      "availableFrom": "2024-03-18",
+      "corpCode": "00401731",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240318000755"
+      ],
+      "stockCode": "066570",
+      "ticker": "066570.KS"
+    },
+    {
+      "availableFrom": "2024-03-28",
+      "corpCode": "00398701",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240328001260"
+      ],
+      "stockCode": "066970",
+      "ticker": "066970.KS"
+    },
+    {
+      "availableFrom": "2024-03-28",
+      "corpCode": "00109453",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240328000369"
+      ],
+      "stockCode": "067250",
+      "ticker": "067250.KS"
+    },
+    {
+      "availableFrom": "2024-03-18",
+      "corpCode": "00413046",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240318000913"
+      ],
+      "stockCode": "068270",
+      "ticker": "068270.KS"
+    },
+    {
+      "availableFrom": "2024-03-20",
+      "corpCode": "00427483",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240320001120"
+      ],
+      "stockCode": "069620",
+      "ticker": "069620.KS"
+    },
+    {
+      "availableFrom": "2024-03-18",
+      "corpCode": "00428251",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240318000213"
+      ],
+      "stockCode": "069960",
+      "ticker": "069960.KS"
+    },
+    {
+      "availableFrom": "2025-03-20",
+      "corpCode": "00432102",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20250320000836"
+      ],
+      "stockCode": "071050",
+      "ticker": "071050.KS"
+    },
+    {
+      "availableFrom": "2024-03-15",
+      "corpCode": "00158307",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240315000917"
+      ],
+      "stockCode": "071840",
+      "ticker": "071840.KS"
+    },
+    {
+      "availableFrom": "2024-04-11",
+      "corpCode": "00406046",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240411003898"
+      ],
+      "stockCode": "071970",
+      "ticker": "071970.KS"
+    },
+    {
+      "availableFrom": "2024-03-26",
+      "corpCode": "00481454",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240326000919"
+      ],
+      "stockCode": "073240",
+      "ticker": "073240.KS"
+    },
+    {
+      "availableFrom": "2024-03-20",
+      "corpCode": "00500254",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240320001516"
+      ],
+      "stockCode": "078930",
+      "ticker": "078930.KS"
+    },
+    {
+      "availableFrom": "2024-03-18",
+      "corpCode": "00303873",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240318000720"
+      ],
+      "stockCode": "079160",
+      "ticker": "079160.KS"
+    },
+    {
+      "availableFrom": "2024-03-20",
+      "corpCode": "00503668",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240320001078"
+      ],
+      "stockCode": "079550",
+      "ticker": "079550.KS"
+    },
+    {
+      "availableFrom": "2024-03-20",
+      "corpCode": "00195229",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240320000962"
+      ],
+      "stockCode": "081660",
+      "ticker": "081660.KS"
+    },
+    {
+      "availableFrom": "2024-03-20",
+      "corpCode": "00361008",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240320000730"
+      ],
+      "stockCode": "082740",
+      "ticker": "082740.KS"
+    },
+    {
+      "availableFrom": "2024-03-19",
+      "corpCode": "00360595",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240319000815"
+      ],
+      "stockCode": "086280",
+      "ticker": "086280.KS"
+    },
+    {
+      "availableFrom": "2024-05-16",
+      "corpCode": "00547583",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240516001695"
+      ],
+      "stockCode": "086790",
+      "ticker": "086790.KS"
+    },
+    {
+      "availableFrom": "2024-04-30",
+      "corpCode": "00113058",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240430000873"
+      ],
+      "stockCode": "088350",
+      "ticker": "088350.KS"
+    },
+    {
+      "availableFrom": "2024-03-07",
+      "corpCode": "00583424",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240307000545"
+      ],
+      "stockCode": "090430",
+      "ticker": "090430.KS"
+    },
+    {
+      "availableFrom": "2024-03-20",
+      "corpCode": "00631518",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240320000950"
+      ],
+      "stockCode": "096770",
+      "ticker": "096770.KS"
+    },
+    {
+      "availableFrom": "2024-03-19",
+      "corpCode": "00635134",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240319000861"
+      ],
+      "stockCode": "097950",
+      "ticker": "097950.KS"
+    },
+    {
+      "availableFrom": "2024-03-14",
+      "corpCode": "00684714",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240314001650"
+      ],
+      "stockCode": "103140",
+      "ticker": "103140.KS"
+    },
+    {
+      "availableFrom": "2024-03-13",
+      "corpCode": "00683469",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240313001767"
+      ],
+      "stockCode": "103590",
+      "ticker": "103590.KS"
+    },
+    {
+      "availableFrom": "2024-03-26",
+      "corpCode": "00688996",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240326000894"
+      ],
+      "stockCode": "105560",
+      "ticker": "105560.KS"
+    },
+    {
+      "availableFrom": "2024-03-20",
+      "corpCode": "00728638",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240320000621"
+      ],
+      "stockCode": "105630",
+      "ticker": "105630.KS"
+    },
+    {
+      "availableFrom": "2024-03-14",
+      "corpCode": "00759513",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240314001786"
+      ],
+      "stockCode": "108670",
+      "ticker": "108670.KS"
+    },
+    {
+      "availableFrom": "2024-04-01",
+      "corpCode": "00776820",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240401004267"
+      ],
+      "stockCode": "111770",
+      "ticker": "111770.KS"
+    },
+    {
+      "availableFrom": "2024-03-18",
+      "corpCode": "00670340",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240318000727"
+      ],
+      "stockCode": "112610",
+      "ticker": "112610.KS"
+    },
+    {
+      "availableFrom": "2024-03-20",
+      "corpCode": "00557508",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240320000077"
+      ],
+      "stockCode": "114090",
+      "ticker": "114090.KS"
+    },
+    {
+      "availableFrom": "2024-03-21",
+      "corpCode": "00561866",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240321002017"
+      ],
+      "stockCode": "115390",
+      "ticker": "115390.KS"
+    },
+    {
+      "availableFrom": "2024-03-20",
+      "corpCode": "00795135",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240320001923"
+      ],
+      "stockCode": "120110",
+      "ticker": "120110.KS"
+    },
+    {
+      "availableFrom": "2024-03-19",
+      "corpCode": "00828497",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240319000649"
+      ],
+      "stockCode": "128940",
+      "ticker": "128940.KS"
+    },
+    {
+      "availableFrom": "2025-08-22",
+      "corpCode": "00854997",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20250822000247"
+      ],
+      "stockCode": "137310",
+      "ticker": "137310.KS"
+    },
+    {
+      "availableFrom": "2024-04-30",
+      "corpCode": "00860332",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240430000957"
+      ],
+      "stockCode": "138040",
+      "ticker": "138040.KS"
+    },
+    {
+      "availableFrom": "2024-03-14",
+      "corpCode": "00858364",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240314001564"
+      ],
+      "stockCode": "138930",
+      "ticker": "138930.KS"
+    },
+    {
+      "availableFrom": "2024-04-30",
+      "corpCode": "00878915",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240430000805"
+      ],
+      "stockCode": "139130",
+      "ticker": "139130.KS"
+    },
+    {
+      "availableFrom": "2024-03-20",
+      "corpCode": "00872984",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240320001504"
+      ],
+      "stockCode": "139480",
+      "ticker": "139480.KS"
+    },
+    {
+      "availableFrom": "2024-03-25",
+      "corpCode": "00937324",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240325000791"
+      ],
+      "stockCode": "161390",
+      "ticker": "161390.KS"
+    },
+    {
+      "availableFrom": "2024-03-21",
+      "corpCode": "00939331",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240321001772"
+      ],
+      "stockCode": "161890",
+      "ticker": "161890.KS"
+    },
+    {
+      "availableFrom": "2024-05-07",
+      "corpCode": "00980122",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240507000432"
+      ],
+      "stockCode": "175330",
+      "ticker": "175330.KS"
+    },
+    {
+      "availableFrom": "2024-03-20",
+      "corpCode": "00983040",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240320001651"
+      ],
+      "stockCode": "180640",
+      "ticker": "180640.KS"
+    },
+    {
+      "availableFrom": "2024-03-19",
+      "corpCode": "00983271",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240319000767"
+      ],
+      "stockCode": "181710",
+      "ticker": "181710.KS"
+    },
+    {
+      "availableFrom": "2024-03-20",
+      "corpCode": "00992871",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240320001136"
+      ],
+      "stockCode": "185750",
+      "ticker": "185750.KS"
+    },
+    {
+      "availableFrom": "2024-03-26",
+      "corpCode": "00132354",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240326000734"
+      ],
+      "stockCode": "192400",
+      "ticker": "192400.KS"
+    },
+    {
+      "availableFrom": "2024-03-20",
+      "corpCode": "01009789",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240320001628"
+      ],
+      "stockCode": "192820",
+      "ticker": "192820.KS"
+    },
+    {
+      "availableFrom": "2024-05-16",
+      "corpCode": "01042775",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240516001059"
+      ],
+      "stockCode": "204320",
+      "ticker": "204320.KS"
+    },
+    {
+      "availableFrom": "2024-03-07",
+      "corpCode": "00877059",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240307000835"
+      ],
+      "stockCode": "207940",
+      "ticker": "207940.KS"
+    },
+    {
+      "availableFrom": "2024-03-29",
+      "corpCode": "01032486",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240329003259"
+      ],
+      "stockCode": "241560",
+      "ticker": "241560.KS"
+    },
+    {
+      "availableFrom": "2024-03-20",
+      "corpCode": "00904672",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240320001885"
+      ],
+      "stockCode": "251270",
+      "ticker": "251270.KS"
+    },
+    {
+      "availableFrom": "2024-03-18",
+      "corpCode": "00760971",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240318000420"
+      ],
+      "stockCode": "259960",
+      "ticker": "259960.KS"
+    },
+    {
+      "availableFrom": "2024-03-21",
+      "corpCode": "01205709",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240321001432"
+      ],
+      "stockCode": "267250",
+      "ticker": "267250.KS"
+    },
+    {
+      "availableFrom": "2024-03-18",
+      "corpCode": "01205851",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240318000722"
+      ],
+      "stockCode": "267260",
+      "ticker": "267260.KS"
+    },
+    {
+      "availableFrom": "2024-03-20",
+      "corpCode": "01205842",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240320001838"
+      ],
+      "stockCode": "267270",
+      "ticker": "267270.KS"
+    },
+    {
+      "availableFrom": "2024-03-13",
+      "corpCode": "01238169",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240313000527"
+      ],
+      "stockCode": "271560",
+      "ticker": "271560.KS"
+    },
+    {
+      "availableFrom": "2024-03-13",
+      "corpCode": "00972503",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240313001276"
+      ],
+      "stockCode": "271940",
+      "ticker": "271940.KS"
+    },
+    {
+      "availableFrom": "2024-05-16",
+      "corpCode": "00339391",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240516000399"
+      ],
+      "stockCode": "272210",
+      "ticker": "272210.KS"
+    },
+    {
+      "availableFrom": "2024-03-21",
+      "corpCode": "01190568",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240321000964"
+      ],
+      "stockCode": "278470",
+      "ticker": "278470.KS"
+    },
+    {
+      "availableFrom": "2024-04-12",
+      "corpCode": "01263022",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240412003349"
+      ],
+      "stockCode": "282330",
+      "ticker": "282330.KS"
+    },
+    {
+      "availableFrom": "2024-03-18",
+      "corpCode": "01267170",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240318000792"
+      ],
+      "stockCode": "285130",
+      "ticker": "285130.KS"
+    },
+    {
+      "availableFrom": "2024-04-01",
+      "corpCode": "01310269",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240401002733"
+      ],
+      "stockCode": "294870",
+      "ticker": "294870.KS"
+    },
+    {
+      "availableFrom": "2024-03-06",
+      "corpCode": "01316227",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240306000715"
+      ],
+      "stockCode": "298020",
+      "ticker": "298020.KS"
+    },
+    {
+      "availableFrom": "2024-03-15",
+      "corpCode": "01316245",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240315000877"
+      ],
+      "stockCode": "298040",
+      "ticker": "298040.KS"
+    },
+    {
+      "availableFrom": "2024-03-06",
+      "corpCode": "01316254",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240306000635"
+      ],
+      "stockCode": "298050",
+      "ticker": "298050.KS"
+    },
+    {
+      "availableFrom": "2024-03-15",
+      "corpCode": "01319899",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240315000914"
+      ],
+      "stockCode": "302440",
+      "ticker": "302440.KS"
+    },
+    {
+      "availableFrom": "2024-03-29",
+      "corpCode": "00362441",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240329000426"
+      ],
+      "stockCode": "307950",
+      "ticker": "307950.KS"
+    },
+    {
+      "availableFrom": "2024-05-16",
+      "corpCode": "01350869",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240516001472"
+      ],
+      "stockCode": "316140",
+      "ticker": "316140.KS"
+    },
+    {
+      "availableFrom": "2024-03-20",
+      "corpCode": "01133217",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240320001487"
+      ],
+      "stockCode": "323410",
+      "ticker": "323410.KS"
+    },
+    {
+      "availableFrom": "2024-03-18",
+      "corpCode": "00878696",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240318000296"
+      ],
+      "stockCode": "326030",
+      "ticker": "326030.KS"
+    },
+    {
+      "availableFrom": "2024-03-18",
+      "corpCode": "01390344",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240318000459"
+      ],
+      "stockCode": "329180",
+      "ticker": "329180.KS"
+    },
+    {
+      "availableFrom": "2024-03-18",
+      "corpCode": "01412725",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240318000856"
+      ],
+      "stockCode": "336260",
+      "ticker": "336260.KS"
+    },
+    {
+      "availableFrom": "2024-03-20",
+      "corpCode": "01412822",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240320001614"
+      ],
+      "stockCode": "336370",
+      "ticker": "336370.KS"
+    },
+    {
+      "availableFrom": "2024-03-22",
+      "corpCode": "01204056",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240322001002"
+      ],
+      "stockCode": "352820",
+      "ticker": "352820.KS"
+    },
+    {
+      "availableFrom": "2024-03-20",
+      "corpCode": "01478712",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240320001649"
+      ],
+      "stockCode": "353200",
+      "ticker": "353200.KS"
+    },
+    {
+      "availableFrom": "2024-03-18",
+      "corpCode": "01386916",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240318000831"
+      ],
+      "stockCode": "361610",
+      "ticker": "361610.KS"
+    },
+    {
+      "availableFrom": "2024-03-14",
+      "corpCode": "01515323",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240314001110"
+      ],
+      "stockCode": "373220",
+      "ticker": "373220.KS"
+    },
+    {
+      "availableFrom": "2024-03-28",
+      "corpCode": "01524093",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240328001465"
+      ],
+      "stockCode": "375500",
+      "ticker": "375500.KS"
+    },
+    {
+      "availableFrom": "2024-04-18",
+      "corpCode": "01244601",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240418000360"
+      ],
+      "stockCode": "377300",
+      "ticker": "377300.KS"
+    },
+    {
+      "availableFrom": "2024-03-20",
+      "corpCode": "01568413",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240320001667"
+      ],
+      "stockCode": "383220",
+      "ticker": "383220.KS"
+    },
+    {
+      "availableFrom": "2024-04-19",
+      "corpCode": "01596425",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240419000675"
+      ],
+      "stockCode": "402340",
+      "ticker": "402340.KS"
+    },
+    {
+      "availableFrom": "2024-04-17",
+      "corpCode": "01311408",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240417000528"
+      ],
+      "stockCode": "450080",
+      "ticker": "450080.KS"
+    },
+    {
+      "availableFrom": "2024-03-20",
+      "corpCode": "01105153",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "receiptNos": [
+        "20240320001860"
+      ],
+      "stockCode": "454910",
+      "ticker": "454910.KS"
+    }
+  ],
+  "timeoutSeconds": 15
+}

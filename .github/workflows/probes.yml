@@ -47,6 +47,7 @@ on:
           - kr-short-selling
           - guru-13f-access
           - ecos-market-context
+          - krx-industry-openapi
       args:
         description: "스크립트에 그대로 넘길 인자 (비우면 스크립트 기본값)"
         type: string
@@ -64,7 +65,8 @@ jobs:
   # Every probe except the egress fan-out, which needs many runners and so
   # cannot share this shape.
   probe:
-    if: github.event_name == 'workflow_dispatch' && inputs.probe != 'sec-egress' && inputs.probe != 'ecos-market-context'
+    if: github.event_name == 'workflow_dispatch' && inputs.probe != 'sec-egress' && inputs.probe != 'ecos-market-context' &&
+      inputs.probe != 'krx-industry-openapi'
     runs-on: ubuntu-latest
     # The KR delisting measurement walks the whole Korean panel and is the
     # only one that needs hours; the rest finish in minutes.
@@ -250,6 +252,37 @@ jobs:
             tail -n 60 probe.log 2>/dev/null || echo '프로브 출력 없음'
             echo '```'
           } >> "$GITHUB_STEP_SUMMARY"
+
+  krx-industry-openapi:
+    if: github.event_name == 'workflow_dispatch' && inputs.probe == 'krx-industry-openapi'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+      - name: Verify frozen official source contract before authentication
+        run: python scripts/probe_krx_industry_openapi.py --verify-plan
+      - name: Read-only KRX header-auth reference metadata
+        env:
+          AUTH_KEY: ${{ secrets.KRX_API_KEY }}
+          KRX_INDUSTRY_MANUAL_PROBE: '1'
+        run: python scripts/probe_krx_industry_openapi.py
+      - name: Retain sanitized source evidence only
+        uses: actions/upload-artifact@v4
+        with:
+          name: krx-industry-openapi-source-metadata-${{ github.run_id }}
+          path: |
+            krx-openapi-source-metadata.json
+            krx-openapi-source-metadata.json.sha256
+          if-no-files-found: error
+          retention-days: 90
+
 
   kr-model-raw-replay:
     # Post-acquisition processing of the ONE completed official KRX acquisition (run 36844599518, artifact

@@ -1,0 +1,1419 @@
+{
+  "acquisitionPlanSha256": "a93786a015964a641c63a5a5da247980cf81ffa32d55ea07dbaa23f3c046b341",
+  "batches": [
+    {
+      "file": "batch-000.json.gz",
+      "rawObjectCount": 60,
+      "sha256": "a9f608dd4c6daf61603b590a87677f6a00fd9425b5509b83236d495a71e5a36e"
+    }
+  ],
+  "checkpointAt": "2026-10-03T03:29:10.235965+00:00",
+  "collectionStartedAt": "2026-10-03T03:24:39.292234+00:00",
+  "complete": false,
+  "contract": "KR_INDUSTRY_PUBLIC_DART_ACQUISITION_V1",
+  "historicalOutcomeComputed": false,
+  "records": [
+    {
+      "responses": [
+        {
+          "error": null,
+          "sha256": "7762c71c6b009ba992411a1af3eed4172b7340fe988dcef9e0a6453ff07e8b1e",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20160330000717"
+        },
+        {
+          "error": null,
+          "section": "company_overview",
+          "sha256": "cf66473e0bf7cfa8d5ca43d9fb6e3ccec15894b16c211f57be48096bb89d5274",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20160330000717&dcmNo=5012906&eleId=4&offset=14201&length=43646&dtd=dart3.xsd"
+        },
+        {
+          "error": null,
+          "section": "business_overview",
+          "sha256": "d9ac9ec6c48de65f83bedb47c4a7f880b2e191da352dd840350ab5a1bd22fcde",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20160330000717&dcmNo=5012906&eleId=10&offset=230509&length=390654&dtd=dart3.xsd"
+        }
+      ],
+      "sections": [
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [],
+          "node": {
+            "dcmNo": "5012906",
+            "dtd": "dart3.xsd",
+            "eleId": "4",
+            "length": "43646",
+            "offset": "14201",
+            "rcpNo": "20160330000717",
+            "text": "1. 회사의 개요"
+          },
+          "section": "company_overview",
+          "sha256": "cf66473e0bf7cfa8d5ca43d9fb6e3ccec15894b16c211f57be48096bb89d5274"
+        },
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [],
+          "node": {
+            "dcmNo": "5012906",
+            "dtd": "dart3.xsd",
+            "eleId": "10",
+            "length": "390654",
+            "offset": "230509",
+            "rcpNo": "20160330000717",
+            "text": "II. 사업의 내용"
+          },
+          "section": "business_overview",
+          "sha256": "d9ac9ec6c48de65f83bedb47c4a7f880b2e191da352dd840350ab5a1bd22fcde"
+        }
+      ],
+      "target": {
+        "availableFrom": "2016-03-30",
+        "corpCode": "00150244",
+        "fiscalYear": 2015,
+        "identityBasis": "EXACT_STOCK_CODE",
+        "receiptNos": [
+          "20160330000717"
+        ],
+        "stockCode": "000080",
+        "ticker": "000080.KS"
+      }
+    },
+    {
+      "responses": [
+        {
+          "error": null,
+          "sha256": "9a96afdd0bd4acd00fe38dfe1957663530d9caf5537e7dce83f0813ffbecc694",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20160330001687"
+        },
+        {
+          "error": null,
+          "section": "company_overview",
+          "sha256": "7bb67473491b2214888a10cc7cd546ea93595081c01196b020cf176803e5649b",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20160330001687&dcmNo=5016928&eleId=4&offset=22990&length=15877&dtd=dart3.xsd"
+        },
+        {
+          "error": null,
+          "section": "business_overview",
+          "sha256": "e428165ddd48438c2e206d6d0dbb58fcdbc153962b4cfa5934c5df571f5f4bb3",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20160330001687&dcmNo=5016928&eleId=10&offset=169460&length=199153&dtd=dart3.xsd"
+        }
+      ],
+      "sections": [
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [],
+          "node": {
+            "dcmNo": "5016928",
+            "dtd": "dart3.xsd",
+            "eleId": "4",
+            "length": "15877",
+            "offset": "22990",
+            "rcpNo": "20160330001687",
+            "text": "1. 회사의 개요"
+          },
+          "section": "company_overview",
+          "sha256": "7bb67473491b2214888a10cc7cd546ea93595081c01196b020cf176803e5649b"
+        },
+        {
+          "classificationMarkers": [
+            {
+              "offset": 2345,
+              "text": "동기대비 38.6% 증가함.   \r\n 나) 공시대상 사업부문의 구분 \r\n  (1) 당사의 공시대상 사업부문은 약품사업부문, 생활건강사업부문, 해외사업부문임.  &nbsp; (2) 한국표준산업분류표에 의한 구분 - 약품사업부문, 생활건강사업부문, 해외사업부문  &nbsp; (3) 연구개발부문 및 사업지원부문은 공시대상부문은 아니나, 투자자의 이해를 &nbsp;  &nbsp; 돕기위해 부문현황을 작성함.   \r\n (가) 약품사업부문 \r\n   \r\n 제93기 사업기에 약품사업부문은 공정거래 자율준수프로그램 강화 등 지속되는 제약산업 규제로 인해 어려운 환경하에서도, 목표 달성을 위한 강한 책임의식으로 실행중심의 소통마케팅활동을 전개하여 전년대비 9%의 성장을 실현하였습니다. \r\n   \r\n B형간염치료제 비리어드를 1,100억원대의 거대품목으로 성장시켰고, 그 외 트라젠타, 트윈스타, 아토르바, 메로펜 등 13개 주요품목이 100억원 이상의 주요품목으로 자리매김하여 안정적 성장의 견인차 역할을 하였습니다. 또한, 독감백신 플루아릭스테트라와 자체 개발한 개량신약 고혈압ㆍ고지혈증 복합제 듀오웰정을 성공적으로 시장에 안착시키켰습니다. \r\n 제94기에도 약품사업부문은 경쟁력 있는 신제품을 지속적으로 출품하고, 기존 품목을 육성하여 시장점유를 확대할 수 있도록 최선의 노력을 기울이도록 하겠습니다. \r\n  (나) 생활건강사업부문 \r\n   \r\n 생활건강사업부문은 고객의 니즈를 적극 수용한 차별화된 마케팅전략으로 주력 품목인 유한락스와 칫솔ㆍ치약 등 구강용품의 시장점유율을 지속적으로 확대시켜 어려운 유통시장에서 9%의 성장을 실현하"
+            }
+          ],
+          "explicitCodeCandidates": [],
+          "node": {
+            "dcmNo": "5016928",
+            "dtd": "dart3.xsd",
+            "eleId": "10",
+            "length": "199153",
+            "offset": "169460",
+            "rcpNo": "20160330001687",
+            "text": "II. 사업의 내용"
+          },
+          "section": "business_overview",
+          "sha256": "e428165ddd48438c2e206d6d0dbb58fcdbc153962b4cfa5934c5df571f5f4bb3"
+        }
+      ],
+      "target": {
+        "availableFrom": "2016-03-30",
+        "corpCode": "00145109",
+        "fiscalYear": 2015,
+        "identityBasis": "EXACT_STOCK_CODE",
+        "receiptNos": [
+          "20160330001687"
+        ],
+        "stockCode": "000100",
+        "ticker": "000100.KS"
+      }
+    },
+    {
+      "responses": [
+        {
+          "error": null,
+          "sha256": "60bbed5565c7bbc2a0f33d9d0c472fdd0530d0b3d7db63d99c3130f2d580d7aa",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20160330003057"
+        },
+        {
+          "error": null,
+          "section": "company_overview",
+          "sha256": "3a8f723b2b27ceb7ce5f647573173c32bc1449406f45a7f25d1a24659f790889",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20160330003057&dcmNo=5023683&eleId=4&offset=7773&length=78760&dtd=dart3.xsd"
+        },
+        {
+          "error": null,
+          "section": "business_overview",
+          "sha256": "368fbfa33e309f89ed52a4bc41d26947a9cb83c1990ffbe8a25a859a63df1ee3",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20160330003057&dcmNo=5023683&eleId=10&offset=174435&length=127933&dtd=dart3.xsd"
+        }
+      ],
+      "sections": [
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [
+            "B 15",
+            "C 24"
+          ],
+          "node": {
+            "dcmNo": "5023683",
+            "dtd": "dart3.xsd",
+            "eleId": "4",
+            "length": "78760",
+            "offset": "7773",
+            "rcpNo": "20160330003057",
+            "text": "1. 회사의 개요"
+          },
+          "section": "company_overview",
+          "sha256": "3a8f723b2b27ceb7ce5f647573173c32bc1449406f45a7f25d1a24659f790889"
+        },
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [],
+          "node": {
+            "dcmNo": "5023683",
+            "dtd": "dart3.xsd",
+            "eleId": "10",
+            "length": "127933",
+            "offset": "174435",
+            "rcpNo": "20160330003057",
+            "text": "II. 사업의 내용"
+          },
+          "section": "business_overview",
+          "sha256": "368fbfa33e309f89ed52a4bc41d26947a9cb83c1990ffbe8a25a859a63df1ee3"
+        }
+      ],
+      "target": {
+        "availableFrom": "2016-03-30",
+        "corpCode": "00113410",
+        "fiscalYear": 2015,
+        "identityBasis": "EXACT_STOCK_CODE",
+        "receiptNos": [
+          "20160330003057"
+        ],
+        "stockCode": "000120",
+        "ticker": "000120.KS"
+      }
+    },
+    {
+      "responses": [
+        {
+          "error": null,
+          "sha256": "f6b665a8221a85b11cfabf9e165f0f9cc56443c4131abd2d05810becb1252eff",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20160330004060"
+        },
+        {
+          "error": null,
+          "section": "company_overview",
+          "sha256": "e08e4034316ee2a8ef09c6719c14fd3bcfe759497331d0233190092d759c5bb8",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20160330004060&dcmNo=5028749&eleId=4&offset=13888&length=130488&dtd=dart3.xsd"
+        },
+        {
+          "error": null,
+          "section": "business_overview",
+          "sha256": "37a5f00a76cff899681cf17436ce2ffff398ff3a2287f5a302303be8ffccf945",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20160330004060&dcmNo=5028749&eleId=10&offset=222815&length=667452&dtd=dart3.xsd"
+        }
+      ],
+      "sections": [
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [
+            "B01",
+            "B20"
+          ],
+          "node": {
+            "dcmNo": "5028749",
+            "dtd": "dart3.xsd",
+            "eleId": "4",
+            "length": "130488",
+            "offset": "13888",
+            "rcpNo": "20160330004060",
+            "text": "1. 회사의 개요"
+          },
+          "section": "company_overview",
+          "sha256": "e08e4034316ee2a8ef09c6719c14fd3bcfe759497331d0233190092d759c5bb8"
+        },
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [
+            "K21",
+            "S 51",
+            "T 40",
+            "T12"
+          ],
+          "node": {
+            "dcmNo": "5028749",
+            "dtd": "dart3.xsd",
+            "eleId": "10",
+            "length": "667452",
+            "offset": "222815",
+            "rcpNo": "20160330004060",
+            "text": "II. 사업의 내용"
+          },
+          "section": "business_overview",
+          "sha256": "37a5f00a76cff899681cf17436ce2ffff398ff3a2287f5a302303be8ffccf945"
+        }
+      ],
+      "target": {
+        "availableFrom": "2016-03-30",
+        "corpCode": "00117212",
+        "fiscalYear": 2015,
+        "identityBasis": "EXACT_STOCK_CODE",
+        "receiptNos": [
+          "20160330004060"
+        ],
+        "stockCode": "000150",
+        "ticker": "000150.KS"
+      }
+    },
+    {
+      "responses": [
+        {
+          "error": null,
+          "sha256": "3cd99e8cbf66d62ac248bbe357f0506af9b663d39d0eb16933bf3903a58938d7",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20160330004025"
+        },
+        {
+          "error": null,
+          "section": "company_overview",
+          "sha256": "58257c6245f976e557f2a10782cb2024305a720a92e757a323d47611cd53a7ec",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20160330004025&dcmNo=5028596&eleId=4&offset=5312&length=41837&dtd=dart3.xsd"
+        },
+        {
+          "error": null,
+          "section": "business_overview",
+          "sha256": "68d5ad9e7f21de7647f3e1919aeea5f8bfbb9564bb60150dae64c2ceaee63544",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20160330004025&dcmNo=5028596&eleId=10&offset=90361&length=642991&dtd=dart3.xsd"
+        }
+      ],
+      "sections": [
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [],
+          "node": {
+            "dcmNo": "5028596",
+            "dtd": "dart3.xsd",
+            "eleId": "4",
+            "length": "41837",
+            "offset": "5312",
+            "rcpNo": "20160330004025",
+            "text": "1. 회사의 개요"
+          },
+          "section": "company_overview",
+          "sha256": "58257c6245f976e557f2a10782cb2024305a720a92e757a323d47611cd53a7ec"
+        },
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [],
+          "node": {
+            "dcmNo": "5028596",
+            "dtd": "dart3.xsd",
+            "eleId": "10",
+            "length": "642991",
+            "offset": "90361",
+            "rcpNo": "20160330004025",
+            "text": "II. 사업의 내용"
+          },
+          "section": "business_overview",
+          "sha256": "68d5ad9e7f21de7647f3e1919aeea5f8bfbb9564bb60150dae64c2ceaee63544"
+        }
+      ],
+      "target": {
+        "availableFrom": "2016-03-30",
+        "corpCode": "00109693",
+        "fiscalYear": 2015,
+        "identityBasis": "EXACT_STOCK_CODE",
+        "receiptNos": [
+          "20160330004025"
+        ],
+        "stockCode": "000210",
+        "ticker": "000210.KS"
+      }
+    },
+    {
+      "responses": [
+        {
+          "error": null,
+          "sha256": "acd9298bd0d3a6a8c2310d4506f0af28975aceae984aa019892c15977cf1f97c",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20160330003174"
+        },
+        {
+          "error": null,
+          "section": "company_overview",
+          "sha256": "bb529d17cb14bf00ea404b316051b20066e60d85c7b80404da3c1eb4cfd597d8",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20160330003174&dcmNo=5024259&eleId=4&offset=7395&length=57593&dtd=dart3.xsd"
+        },
+        {
+          "error": null,
+          "section": "business_overview",
+          "sha256": "0f43f11f298eba11762bc8f33a992c8fce7581c6302642c542362b2f064bd66b",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20160330003174&dcmNo=5024259&eleId=10&offset=118877&length=104285&dtd=dart3.xsd"
+        }
+      ],
+      "sections": [
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [],
+          "node": {
+            "dcmNo": "5024259",
+            "dtd": "dart3.xsd",
+            "eleId": "4",
+            "length": "57593",
+            "offset": "7395",
+            "rcpNo": "20160330003174",
+            "text": "1. 회사의 개요"
+          },
+          "section": "company_overview",
+          "sha256": "bb529d17cb14bf00ea404b316051b20066e60d85c7b80404da3c1eb4cfd597d8"
+        },
+        {
+          "classificationMarkers": [
+            {
+              "offset": 30954,
+              "text": "력을 좌우하는 국가 기간산업으로 우리나라 산업화 태동기 이후 비약적인 성장을 거듭한 결과, 현재 세계 유수의 기업과 어깨를 겨루며 우리나라 경제 성장의 모태역할을 하고 있습니다. 한국표준산업분류에 의거하면 일반적으로 기계 산업은 일반기계, 전기 기계, 정밀기계, 기계요소, 금속제품 등 5대 업종으로 구분되며, 적용범위나 전 산업의 영향력 측면에서 타 어떤 산업보다 광범위한 영역을 대상으로 우리나라 산업의 근간을 형성하고 있습니다.  상기의 기계산업 분류 중 일반기계 산업이 타 사업과 구별되는 특징을 보면,  첫째, 일반기계 산업은 제조업의 근간이 되는 시설 및 장비를 만드는 산업으로 제조업의 생산성과 정밀도를 결정하는 기반산업으로, 이는 일반기계 산업의 수준이 국가의 전체 산업수준을 가늠하는 척도가 되며, 생산되는 기계의 기술수준이 다른 산업에서 생산하는 제품의 수준을 결정할 정도로 국가산업의 근간이 되는 산업입니다.  둘째, 일반기계 산업은 단기간 내 제반 경쟁력 확보가 어려운 자본 및 기술 집약형 산업이며, 우수한 부품과 소재가 다양하게 소요되는 산업으로, 다수의 관련 부품산업과 동반성장은 물론 기술력 확보에 장시간의 시간이 소요되며, 대규모 시설투자가 이루어져야 함은 물론, 제품 개발 및 상품화에는 다양한 부품 및 소재 관련업체가 필요한 산업입니다.  셋째, 일반기계 산업은 수주중심 산업으로 산업경기의 선행지표로서, 국가정책적인 사업과도 밀접한 연계를 하고 있습니다.  (2) 산업의 성장성  일반기계 산업으로 분류되는 고무, 화학섬유 및 플라스틱 성형기 제조산업은 타이어제품 제조에 필수적인 산업이며, 타"
+            }
+          ],
+          "explicitCodeCandidates": [
+            "C29292",
+            "C29294"
+          ],
+          "node": {
+            "dcmNo": "5024259",
+            "dtd": "dart3.xsd",
+            "eleId": "10",
+            "length": "104285",
+            "offset": "118877",
+            "rcpNo": "20160330003174",
+            "text": "II. 사업의 내용"
+          },
+          "section": "business_overview",
+          "sha256": "0f43f11f298eba11762bc8f33a992c8fce7581c6302642c542362b2f064bd66b"
+        }
+      ],
+      "target": {
+        "availableFrom": "2016-03-30",
+        "corpCode": "00160047",
+        "fiscalYear": 2015,
+        "identityBasis": "EXACT_STOCK_CODE",
+        "receiptNos": [
+          "20160330003174"
+        ],
+        "stockCode": "000240",
+        "ticker": "000240.KS"
+      }
+    },
+    {
+      "responses": [
+        {
+          "error": null,
+          "sha256": "04ba5420e6d5b5782959540e33d143fccd3475bbc3addaa674b8c8135fd6bc63",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20211210000418"
+        },
+        {
+          "error": null,
+          "section": "company_overview",
+          "sha256": "9936d38de7d273129d34dae90b30faa88fba3670f53fc0ee9c13a465d13341a7",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20211210000418&dcmNo=8310148&eleId=6&offset=23975&length=50419&dtd=dart3.xsd"
+        },
+        {
+          "error": null,
+          "section": "business_overview",
+          "sha256": "189858444d4039b0bd311f39fed9fde2e9b45cd839780d63e2c72c0cdb4f3833",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20211210000418&dcmNo=8310148&eleId=12&offset=132706&length=142400&dtd=dart3.xsd"
+        }
+      ],
+      "sections": [
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [],
+          "node": {
+            "dcmNo": "8310148",
+            "dtd": "dart3.xsd",
+            "eleId": "6",
+            "length": "50419",
+            "offset": "23975",
+            "rcpNo": "20211210000418",
+            "text": "1. 회사의 개요"
+          },
+          "section": "company_overview",
+          "sha256": "9936d38de7d273129d34dae90b30faa88fba3670f53fc0ee9c13a465d13341a7"
+        },
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [],
+          "node": {
+            "dcmNo": "8310148",
+            "dtd": "dart3.xsd",
+            "eleId": "12",
+            "length": "142400",
+            "offset": "132706",
+            "rcpNo": "20211210000418",
+            "text": "II. 사업의 내용"
+          },
+          "section": "business_overview",
+          "sha256": "189858444d4039b0bd311f39fed9fde2e9b45cd839780d63e2c72c0cdb4f3833"
+        }
+      ],
+      "target": {
+        "availableFrom": "2021-12-10",
+        "corpCode": "00106641",
+        "fiscalYear": 2015,
+        "identityBasis": "EXACT_STOCK_CODE",
+        "receiptNos": [
+          "20211210000418"
+        ],
+        "stockCode": "000270",
+        "ticker": "000270.KS"
+      }
+    },
+    {
+      "responses": [
+        {
+          "error": null,
+          "sha256": "7d84eea8020e130a795b813e40dbf685a95e7fbdd859358953e7556954baa292",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20160330003930"
+        },
+        {
+          "error": null,
+          "section": "company_overview",
+          "sha256": "41e6861e8f0090db0ae739b32036a86e8b92ebde87942f59989b2ea0231d3238",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20160330003930&dcmNo=5028103&eleId=4&offset=13834&length=69351&dtd=dart3.xsd"
+        },
+        {
+          "error": null,
+          "section": "business_overview",
+          "sha256": "66e6f932bfd7d8a699b24284c007f05fce69197619b84862fbf18609d5d355bc",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20160330003930&dcmNo=5028103&eleId=10&offset=163620&length=164413&dtd=dart3.xsd"
+        }
+      ],
+      "sections": [
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [],
+          "node": {
+            "dcmNo": "5028103",
+            "dtd": "dart3.xsd",
+            "eleId": "4",
+            "length": "69351",
+            "offset": "13834",
+            "rcpNo": "20160330003930",
+            "text": "1. 회사의 개요"
+          },
+          "section": "company_overview",
+          "sha256": "41e6861e8f0090db0ae739b32036a86e8b92ebde87942f59989b2ea0231d3238"
+        },
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [],
+          "node": {
+            "dcmNo": "5028103",
+            "dtd": "dart3.xsd",
+            "eleId": "10",
+            "length": "164413",
+            "offset": "163620",
+            "rcpNo": "20160330003930",
+            "text": "II. 사업의 내용"
+          },
+          "section": "business_overview",
+          "sha256": "66e6f932bfd7d8a699b24284c007f05fce69197619b84862fbf18609d5d355bc"
+        }
+      ],
+      "target": {
+        "availableFrom": "2016-03-30",
+        "corpCode": "00104768",
+        "fiscalYear": 2015,
+        "identityBasis": "EXACT_STOCK_CODE",
+        "receiptNos": [
+          "20160330003930"
+        ],
+        "stockCode": "000500",
+        "ticker": "000500.KS"
+      }
+    },
+    {
+      "responses": [
+        {
+          "error": null,
+          "sha256": "6b6ffd66481fb5253ff42667c8abedb6f31189ed14097a92dd001d312a6f5072",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20160516001867"
+        },
+        {
+          "error": null,
+          "section": "company_overview",
+          "sha256": "5f57bf1149ea8300c4392608ec7f5db6e529ccafe8a719cf65af450df8ece599",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20160516001867&dcmNo=5143680&eleId=6&offset=149807&length=50946&dtd=dart3.xsd"
+        },
+        {
+          "error": null,
+          "section": "business_overview",
+          "sha256": "48acd48e0293794190b9c51505408dcb684877d72edb75f7d565c88dd5df93c1",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20160516001867&dcmNo=5143680&eleId=12&offset=287265&length=142350&dtd=dart3.xsd"
+        }
+      ],
+      "sections": [
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [],
+          "node": {
+            "dcmNo": "5143680",
+            "dtd": "dart3.xsd",
+            "eleId": "6",
+            "length": "50946",
+            "offset": "149807",
+            "rcpNo": "20160516001867",
+            "text": "1. 회사의 개요"
+          },
+          "section": "company_overview",
+          "sha256": "5f57bf1149ea8300c4392608ec7f5db6e529ccafe8a719cf65af450df8ece599"
+        },
+        {
+          "classificationMarkers": [
+            {
+              "offset": 8846,
+              "text": "lash, MCP 등 \r\n \r\n \r\n   합계 \r\n   18,797,998 \r\n   100.0% \r\n     \r\n \r\n \r\n \r\n \r\n \r\n  \r\n \r\n \r\n \r\n   ※ 당사는 한국표준산업분류표상의 소분류에 의한 '반도체 및 기타 전자부품 제조업(분류번호: 321)'에 해당하며, 반도체부문의 매출액이 총매출액의 90%를 초과하므로 반도체부문으로 기재함. \r\n \r\n \r\n \r\n    \r\n \r\n (2) 시장점유율 \r\n \r\n \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n \r\n \r\n \r\n   구 &nbsp; &nbsp;분 \r\n   '15년 \r\n   '14년 \r\n   '13년 \r\n   '12년 \r\n   '11년 \r\n   '10년 \r\n \r\n \r\n \r\n \r\n   DRAM \r\n   27.3% \r\n   27.1% \r\n   26.6% \r\n   24.7% \r\n   22.8% \r\n   21.8% \r\n \r\n \r\n   NAND Flash \r\n   12.6% \r\n   10.8% \r\n   10.7% \r\n   9.9% \r\n   11.7% \r\n   9.5% \r\n \r\n \r\n \r\n  출처: IDC 2016년 3월, 매출액 기준      (3) 시장 경쟁요소 및 회사의 경쟁력        (가) 메모리반도체 사업      [DRAM]   컴퓨팅 메모리(Computing Memory) 사업의 경우 가격이 높고 품질의 신뢰성이 바탕이 되어야 하는 고용량(High Density) 서버용 제품 비중과 이동성 확대에 따른 노트북(Notebook) 및 울트라북(Ultrabook) 제품의 비중이 확대되고 있습니다.   \r\n \r\n 2016년 PC 출하"
+            }
+          ],
+          "explicitCodeCandidates": [],
+          "node": {
+            "dcmNo": "5143680",
+            "dtd": "dart3.xsd",
+            "eleId": "12",
+            "length": "142350",
+            "offset": "287265",
+            "rcpNo": "20160516001867",
+            "text": "II. 사업의 내용"
+          },
+          "section": "business_overview",
+          "sha256": "48acd48e0293794190b9c51505408dcb684877d72edb75f7d565c88dd5df93c1"
+        }
+      ],
+      "target": {
+        "availableFrom": "2016-05-16",
+        "corpCode": "00164779",
+        "fiscalYear": 2015,
+        "identityBasis": "EXACT_STOCK_CODE",
+        "receiptNos": [
+          "20160516001867"
+        ],
+        "stockCode": "000660",
+        "ticker": "000660.KS"
+      }
+    },
+    {
+      "responses": [
+        {
+          "error": null,
+          "sha256": "868731721bb3c9f0afd52d339ec1357c6d7d3bae5226f4c6558bec30b3d05ab2",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20160516003193"
+        },
+        {
+          "error": null,
+          "section": "company_overview",
+          "sha256": "d706b80621ebfe50bdbfc5a3ae09668d5d21f8f9243b5db5204c2293de1e40f7",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20160516003193&dcmNo=5146409&eleId=6&offset=19588&length=26330&dtd=dart3.xsd"
+        },
+        {
+          "error": null,
+          "section": "business_overview",
+          "sha256": "6361a5c9926d0b75b00c329c3dc587cf29cbd79b73d8839e54d633e7475c8c32",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20160516003193&dcmNo=5146409&eleId=12&offset=77079&length=268048&dtd=dart3.xsd"
+        }
+      ],
+      "sections": [
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [],
+          "node": {
+            "dcmNo": "5146409",
+            "dtd": "dart3.xsd",
+            "eleId": "6",
+            "length": "26330",
+            "offset": "19588",
+            "rcpNo": "20160516003193",
+            "text": "1. 회사의 개요"
+          },
+          "section": "company_overview",
+          "sha256": "d706b80621ebfe50bdbfc5a3ae09668d5d21f8f9243b5db5204c2293de1e40f7"
+        },
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [],
+          "node": {
+            "dcmNo": "5146409",
+            "dtd": "dart3.xsd",
+            "eleId": "12",
+            "length": "268048",
+            "offset": "77079",
+            "rcpNo": "20160516003193",
+            "text": "II. 사업의 내용"
+          },
+          "section": "business_overview",
+          "sha256": "6361a5c9926d0b75b00c329c3dc587cf29cbd79b73d8839e54d633e7475c8c32"
+        }
+      ],
+      "target": {
+        "availableFrom": "2016-05-16",
+        "corpCode": "00141307",
+        "fiscalYear": 2015,
+        "identityBasis": "EXACT_STOCK_CODE",
+        "receiptNos": [
+          "20160516003193"
+        ],
+        "stockCode": "000670",
+        "ticker": "000670.KS"
+      }
+    },
+    {
+      "responses": [
+        {
+          "error": null,
+          "sha256": "106be708034062f2ee055195070a8daef8cbdcdcbfa6439805cefc30c265f3a1",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20170622000235"
+        },
+        {
+          "error": null,
+          "section": "company_overview",
+          "sha256": "75c1daee9b7b4f15db789a42d75f9f3a8eacf43c075be00e558e8dd5ca7441ef",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20170622000235&dcmNo=5693925&eleId=6&offset=221814&length=87582&dtd=dart3.xsd"
+        },
+        {
+          "error": null,
+          "section": "business_overview",
+          "sha256": "821d690e0f1290a9c663990ac4b07e365c36579b4583d32d4ebf4272e76b7d16",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20170622000235&dcmNo=5693925&eleId=12&offset=358085&length=382278&dtd=dart3.xsd"
+        }
+      ],
+      "sections": [
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [],
+          "node": {
+            "dcmNo": "5693925",
+            "dtd": "dart3.xsd",
+            "eleId": "6",
+            "length": "87582",
+            "offset": "221814",
+            "rcpNo": "20170622000235",
+            "text": "1. 회사의 개요"
+          },
+          "section": "company_overview",
+          "sha256": "75c1daee9b7b4f15db789a42d75f9f3a8eacf43c075be00e558e8dd5ca7441ef"
+        },
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [],
+          "node": {
+            "dcmNo": "5693925",
+            "dtd": "dart3.xsd",
+            "eleId": "12",
+            "length": "382278",
+            "offset": "358085",
+            "rcpNo": "20170622000235",
+            "text": "II. 사업의 내용"
+          },
+          "section": "business_overview",
+          "sha256": "821d690e0f1290a9c663990ac4b07e365c36579b4583d32d4ebf4272e76b7d16"
+        }
+      ],
+      "target": {
+        "availableFrom": "2017-06-22",
+        "corpCode": "00164478",
+        "fiscalYear": 2015,
+        "identityBasis": "EXACT_STOCK_CODE",
+        "receiptNos": [
+          "20170622000235"
+        ],
+        "stockCode": "000720",
+        "ticker": "000720.KS"
+      }
+    },
+    {
+      "responses": [
+        {
+          "error": null,
+          "sha256": "7a41d37a6feaf8e8c7096bee8c35b55f9b50d4eb61001e91ba7cf7323b2bf560",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20160330004137"
+        },
+        {
+          "error": null,
+          "section": "company_overview",
+          "sha256": "299da9b657ac75f4ab571b66d1665330270f97951fdb239068bcfafe9d52691f",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20160330004137&dcmNo=5029181&eleId=4&offset=13830&length=274716&dtd=dart3.xsd"
+        },
+        {
+          "error": null,
+          "section": "business_overview",
+          "sha256": "deec89c3f0554c8fe60c36fa4f6a9c8102d3288b43e50d3799a9c2a38cc7049f",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20160330004137&dcmNo=5029181&eleId=10&offset=366728&length=1995482&dtd=dart3.xsd"
+        }
+      ],
+      "sections": [
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [
+            "A 07660",
+            "E10",
+            "E14",
+            "E15"
+          ],
+          "node": {
+            "dcmNo": "5029181",
+            "dtd": "dart3.xsd",
+            "eleId": "4",
+            "length": "274716",
+            "offset": "13830",
+            "rcpNo": "20160330004137",
+            "text": "1. 회사의 개요"
+          },
+          "section": "company_overview",
+          "sha256": "299da9b657ac75f4ab571b66d1665330270f97951fdb239068bcfafe9d52691f"
+        },
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [
+            "B73020",
+            "B73040",
+            "C74040",
+            "C75080",
+            "F100",
+            "K10",
+            "L5013",
+            "L6083",
+            "P5080",
+            "T50"
+          ],
+          "node": {
+            "dcmNo": "5029181",
+            "dtd": "dart3.xsd",
+            "eleId": "10",
+            "length": "1995482",
+            "offset": "366728",
+            "rcpNo": "20160330004137",
+            "text": "II. 사업의 내용"
+          },
+          "section": "business_overview",
+          "sha256": "deec89c3f0554c8fe60c36fa4f6a9c8102d3288b43e50d3799a9c2a38cc7049f"
+        }
+      ],
+      "target": {
+        "availableFrom": "2016-03-30",
+        "corpCode": "00160588",
+        "fiscalYear": 2015,
+        "identityBasis": "EXACT_STOCK_CODE",
+        "receiptNos": [
+          "20160330004137"
+        ],
+        "stockCode": "000880",
+        "ticker": "000880.KS"
+      }
+    },
+    {
+      "responses": [
+        {
+          "error": null,
+          "sha256": "7ec2a477c8c2cb23687afa9f6bd416c173352557b7cbaf2aae26ae6e073640c3",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20160329001125"
+        },
+        {
+          "error": null,
+          "section": "company_overview",
+          "sha256": "052fd687a58401198e0ae5c2a25de980b04721baf85ceb1cbbdacb95b9d393d3",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20160329001125&dcmNo=5009492&eleId=4&offset=18556&length=23077&dtd=dart3.xsd"
+        },
+        {
+          "error": null,
+          "section": "business_overview",
+          "sha256": "2798190e65044991a08ab97450c7f2c15825daf40097cd49a0475dbed74eee12",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20160329001125&dcmNo=5009492&eleId=10&offset=114721&length=147287&dtd=dart3.xsd"
+        }
+      ],
+      "sections": [
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [],
+          "node": {
+            "dcmNo": "5009492",
+            "dtd": "dart3.xsd",
+            "eleId": "4",
+            "length": "23077",
+            "offset": "18556",
+            "rcpNo": "20160329001125",
+            "text": "1. 회사의 개요"
+          },
+          "section": "company_overview",
+          "sha256": "052fd687a58401198e0ae5c2a25de980b04721baf85ceb1cbbdacb95b9d393d3"
+        },
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [],
+          "node": {
+            "dcmNo": "5009492",
+            "dtd": "dart3.xsd",
+            "eleId": "10",
+            "length": "147287",
+            "offset": "114721",
+            "rcpNo": "20160329001125",
+            "text": "II. 사업의 내용"
+          },
+          "section": "business_overview",
+          "sha256": "2798190e65044991a08ab97450c7f2c15825daf40097cd49a0475dbed74eee12"
+        }
+      ],
+      "target": {
+        "availableFrom": "2016-03-29",
+        "corpCode": "00160843",
+        "fiscalYear": 2015,
+        "identityBasis": "EXACT_STOCK_CODE",
+        "receiptNos": [
+          "20160329001125"
+        ],
+        "stockCode": "000990",
+        "ticker": "000990.KS"
+      }
+    },
+    {
+      "responses": [
+        {
+          "error": null,
+          "sha256": "9815dbe0463b615f5ec6d03805eb6d72d6ac600f3a18a0f0dc8939a3641bb37e",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20160330003575"
+        },
+        {
+          "error": null,
+          "section": "company_overview",
+          "sha256": "933fdc8fc1b5f1ab19153064ee7b8db2e7243ec1306d5f1f582c5100dbb428fb",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20160330003575&dcmNo=5026295&eleId=4&offset=5402&length=229975&dtd=dart3.xsd"
+        },
+        {
+          "error": null,
+          "section": "business_overview",
+          "sha256": "d2d96db5e9f34012da1b63a0f9f3bf7c69b4ebba6d62dd8287f73dc10552addc",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20160330003575&dcmNo=5026295&eleId=10&offset=316160&length=794367&dtd=dart3.xsd"
+        }
+      ],
+      "sections": [
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [
+            "B 15",
+            "B1702",
+            "P06600"
+          ],
+          "node": {
+            "dcmNo": "5026295",
+            "dtd": "dart3.xsd",
+            "eleId": "4",
+            "length": "229975",
+            "offset": "5402",
+            "rcpNo": "20160330003575",
+            "text": "1. 회사의 개요"
+          },
+          "section": "company_overview",
+          "sha256": "933fdc8fc1b5f1ab19153064ee7b8db2e7243ec1306d5f1f582c5100dbb428fb"
+        },
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [],
+          "node": {
+            "dcmNo": "5026295",
+            "dtd": "dart3.xsd",
+            "eleId": "10",
+            "length": "794367",
+            "offset": "316160",
+            "rcpNo": "20160330003575",
+            "text": "II. 사업의 내용"
+          },
+          "section": "business_overview",
+          "sha256": "d2d96db5e9f34012da1b63a0f9f3bf7c69b4ebba6d62dd8287f73dc10552addc"
+        }
+      ],
+      "target": {
+        "availableFrom": "2016-03-30",
+        "corpCode": "00148540",
+        "fiscalYear": 2015,
+        "identityBasis": "EXACT_STOCK_CODE",
+        "receiptNos": [
+          "20160330003575"
+        ],
+        "stockCode": "001040",
+        "ticker": "001040.KS"
+      }
+    },
+    {
+      "responses": [
+        {
+          "error": null,
+          "sha256": "0351a7ad1bc628635449976b7fbf6b7f53667b350ce4350bba87218988de8db3",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20160330002390"
+        },
+        {
+          "error": null,
+          "section": "company_overview",
+          "sha256": "8a7306cba33ad0e4ed688bf84370c11a7de27169ae58149d738882c44fad0c38",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20160330002390&dcmNo=5020425&eleId=4&offset=11892&length=174663&dtd=dart3.xsd"
+        },
+        {
+          "error": null,
+          "section": "business_overview",
+          "sha256": "f300e51ea1ac13873ea3ecd27b57853c6511c4c1391de60e681195750be3cdb0",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20160330002390&dcmNo=5020425&eleId=10&offset=223159&length=277935&dtd=dart3.xsd"
+        }
+      ],
+      "sections": [
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [],
+          "node": {
+            "dcmNo": "5020425",
+            "dtd": "dart3.xsd",
+            "eleId": "4",
+            "length": "174663",
+            "offset": "11892",
+            "rcpNo": "20160330002390",
+            "text": "1. 회사의 개요"
+          },
+          "section": "company_overview",
+          "sha256": "8a7306cba33ad0e4ed688bf84370c11a7de27169ae58149d738882c44fad0c38"
+        },
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [],
+          "node": {
+            "dcmNo": "5020425",
+            "dtd": "dart3.xsd",
+            "eleId": "10",
+            "length": "277935",
+            "offset": "223159",
+            "rcpNo": "20160330002390",
+            "text": "II. 사업의 내용"
+          },
+          "section": "business_overview",
+          "sha256": "f300e51ea1ac13873ea3ecd27b57853c6511c4c1391de60e681195750be3cdb0"
+        }
+      ],
+      "target": {
+        "availableFrom": "2016-03-30",
+        "corpCode": "00120076",
+        "fiscalYear": 2015,
+        "identityBasis": "EXACT_STOCK_CODE",
+        "receiptNos": [
+          "20160330002390"
+        ],
+        "stockCode": "001120",
+        "ticker": "001120.KS"
+      }
+    },
+    {
+      "responses": [
+        {
+          "error": null,
+          "sha256": "cf735cd5da9fa6183d1cb44c2d9bbe8d188c38dfb69dff3a0fe2c843407da9df",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20160330003748"
+        },
+        {
+          "error": null,
+          "section": "company_overview",
+          "sha256": "21f52929b5dd4fed1720833955184ce0c6c68c6075b37fa734dd2156bc0cb1d5",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20160330003748&dcmNo=5027255&eleId=4&offset=5316&length=24821&dtd=dart3.xsd"
+        },
+        {
+          "error": null,
+          "section": "business_overview",
+          "sha256": "db2122a6b4f797f7037535b10abf8130a544da75b44b308faaa96e51e598e832",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20160330003748&dcmNo=5027255&eleId=10&offset=105090&length=103528&dtd=dart3.xsd"
+        }
+      ],
+      "sections": [
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [],
+          "node": {
+            "dcmNo": "5027255",
+            "dtd": "dart3.xsd",
+            "eleId": "4",
+            "length": "24821",
+            "offset": "5316",
+            "rcpNo": "20160330003748",
+            "text": "1. 회사의 개요"
+          },
+          "section": "company_overview",
+          "sha256": "21f52929b5dd4fed1720833955184ce0c6c68c6075b37fa734dd2156bc0cb1d5"
+        },
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [],
+          "node": {
+            "dcmNo": "5027255",
+            "dtd": "dart3.xsd",
+            "eleId": "10",
+            "length": "103528",
+            "offset": "105090",
+            "rcpNo": "20160330003748",
+            "text": "II. 사업의 내용"
+          },
+          "section": "business_overview",
+          "sha256": "db2122a6b4f797f7037535b10abf8130a544da75b44b308faaa96e51e598e832"
+        }
+      ],
+      "target": {
+        "availableFrom": "2016-03-30",
+        "corpCode": "00113207",
+        "fiscalYear": 2015,
+        "identityBasis": "EXACT_STOCK_CODE",
+        "receiptNos": [
+          "20160330003748"
+        ],
+        "stockCode": "001440",
+        "ticker": "001440.KS"
+      }
+    },
+    {
+      "responses": [
+        {
+          "error": null,
+          "sha256": "98389f8a48d560485188b64c8a56420f2826745e0094ac422ce57aeb92202a6d",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20160330001666"
+        },
+        {
+          "error": null,
+          "section": "company_overview",
+          "sha256": "64fe4d4e2c5c4956a116cc1a08febf4f6288f569d5cee87fbf7f19472cdfb273",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20160330001666&dcmNo=5016838&eleId=4&offset=50578&length=20456&dtd=dart3.xsd"
+        },
+        {
+          "error": null,
+          "section": "business_overview",
+          "sha256": "df56f228b1995310b6788c710b52418f32bbb42c5e2fbb6cbc8ade7e2739c315",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20160330001666&dcmNo=5016838&eleId=10&offset=115310&length=104135&dtd=dart3.xsd"
+        }
+      ],
+      "sections": [
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [],
+          "node": {
+            "dcmNo": "5016838",
+            "dtd": "dart3.xsd",
+            "eleId": "4",
+            "length": "20456",
+            "offset": "50578",
+            "rcpNo": "20160330001666",
+            "text": "1. 회사의 개요"
+          },
+          "section": "company_overview",
+          "sha256": "64fe4d4e2c5c4956a116cc1a08febf4f6288f569d5cee87fbf7f19472cdfb273"
+        },
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [],
+          "node": {
+            "dcmNo": "5016838",
+            "dtd": "dart3.xsd",
+            "eleId": "10",
+            "length": "104135",
+            "offset": "115310",
+            "rcpNo": "20160330001666",
+            "text": "II. 사업의 내용"
+          },
+          "section": "business_overview",
+          "sha256": "df56f228b1995310b6788c710b52418f32bbb42c5e2fbb6cbc8ade7e2739c315"
+        }
+      ],
+      "target": {
+        "availableFrom": "2016-03-30",
+        "corpCode": "00106119",
+        "fiscalYear": 2015,
+        "identityBasis": "EXACT_STOCK_CODE",
+        "receiptNos": [
+          "20160330001666"
+        ],
+        "stockCode": "001570",
+        "ticker": "001570.KS"
+      }
+    },
+    {
+      "responses": [
+        {
+          "error": null,
+          "sha256": "ec37094fcf2f353e436765438761912df01cb45c1a04db4b353e3fc2b6876afc",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20160330002087"
+        },
+        {
+          "error": null,
+          "section": "company_overview",
+          "sha256": "b28948d3f530dc510ca56a28299fc62124133020ee10350fbc78ae03a53a9840",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20160330002087&dcmNo=5018838&eleId=4&offset=13830&length=37904&dtd=dart3.xsd"
+        },
+        {
+          "error": null,
+          "section": "business_overview",
+          "sha256": "859a57bdb6ecc954c2b8d833093bd2ee52a6e19d034ae83772ac4946c6560939",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20160330002087&dcmNo=5018838&eleId=10&offset=102569&length=227597&dtd=dart3.xsd"
+        }
+      ],
+      "sections": [
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [
+            "B 301"
+          ],
+          "node": {
+            "dcmNo": "5018838",
+            "dtd": "dart3.xsd",
+            "eleId": "4",
+            "length": "37904",
+            "offset": "13830",
+            "rcpNo": "20160330002087",
+            "text": "1. 회사의 개요"
+          },
+          "section": "company_overview",
+          "sha256": "b28948d3f530dc510ca56a28299fc62124133020ee10350fbc78ae03a53a9840"
+        },
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [
+            "L25",
+            "P2301",
+            "P2302",
+            "R174"
+          ],
+          "node": {
+            "dcmNo": "5018838",
+            "dtd": "dart3.xsd",
+            "eleId": "10",
+            "length": "227597",
+            "offset": "102569",
+            "rcpNo": "20160330002087",
+            "text": "II. 사업의 내용"
+          },
+          "section": "business_overview",
+          "sha256": "859a57bdb6ecc954c2b8d833093bd2ee52a6e19d034ae83772ac4946c6560939"
+        }
+      ],
+      "target": {
+        "availableFrom": "2016-03-30",
+        "corpCode": "00121941",
+        "fiscalYear": 2015,
+        "identityBasis": "EXACT_STOCK_CODE",
+        "receiptNos": [
+          "20160330002087"
+        ],
+        "stockCode": "001680",
+        "ticker": "001680.KS"
+      }
+    },
+    {
+      "responses": [
+        {
+          "error": null,
+          "sha256": "b04ff97afd794442de7742e5281ba0c3304cd844c00edac22c85bb7878992490",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20160516003090"
+        },
+        {
+          "error": null,
+          "section": "company_overview",
+          "sha256": "179301694c09686938ebb71856ba4935bc158b9f7ed7f03e7f75d61535182f35",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20160516003090&dcmNo=5146161&eleId=6&offset=62225&length=73922&dtd=dart3.xsd"
+        },
+        {
+          "error": null,
+          "section": "business_overview",
+          "sha256": "7fe5ab1b67da8aa5add7d48166d8f916c547052df21691cf5b092c7efb83167a",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20160516003090&dcmNo=5146161&eleId=12&offset=195214&length=255718&dtd=dart3.xsd"
+        }
+      ],
+      "sections": [
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [],
+          "node": {
+            "dcmNo": "5146161",
+            "dtd": "dart3.xsd",
+            "eleId": "6",
+            "length": "73922",
+            "offset": "62225",
+            "rcpNo": "20160516003090",
+            "text": "1. 회사의 개요"
+          },
+          "section": "company_overview",
+          "sha256": "179301694c09686938ebb71856ba4935bc158b9f7ed7f03e7f75d61535182f35"
+        },
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [],
+          "node": {
+            "dcmNo": "5146161",
+            "dtd": "dart3.xsd",
+            "eleId": "12",
+            "length": "255718",
+            "offset": "195214",
+            "rcpNo": "20160516003090",
+            "text": "II. 사업의 내용"
+          },
+          "section": "business_overview",
+          "sha256": "7fe5ab1b67da8aa5add7d48166d8f916c547052df21691cf5b092c7efb83167a"
+        }
+      ],
+      "target": {
+        "availableFrom": "2016-05-16",
+        "corpCode": "00131780",
+        "fiscalYear": 2015,
+        "identityBasis": "EXACT_STOCK_CODE",
+        "receiptNos": [
+          "20160516003090"
+        ],
+        "stockCode": "001740",
+        "ticker": "001740.KS"
+      }
+    },
+    {
+      "responses": [
+        {
+          "error": null,
+          "sha256": "3e8ba262abcd2622f67c511d5f9917dba0111fbb1c1e9197986b6e8feb418064",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20160330003612"
+        },
+        {
+          "error": null,
+          "section": "company_overview",
+          "sha256": "ad14940201c6557bb950a161fae0c49ccf4cc040e62a61b01a6ae557518b1e80",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20160330003612&dcmNo=5026503&eleId=4&offset=5372&length=76441&dtd=dart3.xsd"
+        },
+        {
+          "error": null,
+          "section": "business_overview",
+          "sha256": "79912bb656252d969720263634715b6f381e016c074eda3bd6212a8cb288a9c1",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20160330003612&dcmNo=5026503&eleId=10&offset=173441&length=260385&dtd=dart3.xsd"
+        }
+      ],
+      "sections": [
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [
+            "B6038",
+            "B6042"
+          ],
+          "node": {
+            "dcmNo": "5026503",
+            "dtd": "dart3.xsd",
+            "eleId": "4",
+            "length": "76441",
+            "offset": "5372",
+            "rcpNo": "20160330003612",
+            "text": "1. 회사의 개요"
+          },
+          "section": "company_overview",
+          "sha256": "ad14940201c6557bb950a161fae0c49ccf4cc040e62a61b01a6ae557518b1e80"
+        },
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [],
+          "node": {
+            "dcmNo": "5026503",
+            "dtd": "dart3.xsd",
+            "eleId": "10",
+            "length": "260385",
+            "offset": "173441",
+            "rcpNo": "20160330003612",
+            "text": "II. 사업의 내용"
+          },
+          "section": "business_overview",
+          "sha256": "79912bb656252d969720263634715b6f381e016c074eda3bd6212a8cb288a9c1"
+        }
+      ],
+      "target": {
+        "availableFrom": "2016-03-30",
+        "corpCode": "00117577",
+        "fiscalYear": 2015,
+        "identityBasis": "EXACT_STOCK_CODE",
+        "receiptNos": [
+          "20160330003612"
+        ],
+        "stockCode": "001800",
+        "ticker": "001800.KS"
+      }
+    }
+  ],
+  "recoveryNote": "Only first 20 receipt records have complete retained bytes. Unretained checkpoint metadata is preserved separately, never counted as acquired evidence.",
+  "requests": 124,
+  "retainedResponseCount": 60
+}

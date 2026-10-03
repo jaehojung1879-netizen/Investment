@@ -1,0 +1,35 @@
+{
+  "acquisitionRule": "All issuer-years FY2013..2025, including pre-window seed; earliest original annual report per year; corrections not selected automatically; retained bytes subtracted by receipt",
+  "ambiguousMapping": "UNKNOWN",
+  "baselineHead": "7c76267b94c258ee9a3e05c2b6e292e376c63796",
+  "carry": "Strictly after release until superseded or identity termination; no backward fill",
+  "conflictRule": "Highest-tier newest release cohort; conflicting assignments at same release are UNKNOWN until next unambiguous cohort; later single assignment supersedes only after release",
+  "contract": "KR_INDUSTRY_MEMBERSHIP_CRITERIA_V2",
+  "identityInventorySha256": "7dddc6f75ea14adc8f97f3558409a68b2f71ab356b270e7d25d1ecb08875e4fc",
+  "identityRule": "Dated issuer evidence required: filing title issuer plus exact filing stock code or source issuer identifier, tied to retained directory; retrospective bridge alone insufficient",
+  "minimumAnnualCoverage": 0.9,
+  "minimumFractionInSufficientGroups": 0.9,
+  "minimumGroupSize": 5,
+  "minimumSignalCoverage": 0.9,
+  "minimumSufficientGroups": 3,
+  "minimumTerminalCoverage": 0.9,
+  "nativeKrxSeparate": true,
+  "object": "PIT_AVAILABLE_CLASSIFICATION_STATE",
+  "outcomesAllowed": false,
+  "sameDayReleaseUsable": false,
+  "sourceHierarchy": [
+    "KRX_DATED_NATIVE_CLASSIFICATION",
+    "DART_EXPLICIT_ISSUER_CLASSIFICATION",
+    "DART_EXPLICIT_ISSUER_LABEL",
+    "CURRENT_ONLY_CROSSCHECK",
+    "UNKNOWN"
+  ],
+  "taxonomyPriority": [
+    "KSIC_GROUP_3_DIGIT",
+    "KSIC_DIVISION_2_DIGIT",
+    "KSIC_SECTION"
+  ],
+  "unversionedExplicitLabels": "Admit literal issuer label state but never claim standardized codebook grouping",
+  "v1InputsSha256": "d7c464973ad029bf08886c4bdf2517d1b3ece04cce87bcc63706f1230ed53cd0",
+  "v1PreservedDecision": "DATA_FOUNDATION_INSUFFICIENT_UNDER_V1_STRICT_CONTRACT"
+}
