@@ -1,0 +1,43 @@
+name: KR industry membership source acquisition v1
+on:
+  pull_request:
+    types: [opened]
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  collect:
+    if: github.head_ref == 'data/kr-industry-membership-foundation-v1'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      max-parallel: 4
+      matrix:
+        batch: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify frozen criteria and receipt inventory
+        run: |
+          python - <<'PY'
+          import hashlib,pathlib
+          root=pathlib.Path('research_specs/kr-industry-membership-foundation-v1')
+          for name,wanted in [('criteria.json','c7163a88dbc90aaebe575da41bda867508272abcf8da74ddf25304a5cf07bb28'),('acquisition-plan.json','a93786a015964a641c63a5a5da247980cf81ffa32d55ea07dbaa23f3c046b341')]:
+              assert hashlib.sha256((root/name).read_bytes()).hexdigest()==wanted
+          PY
+      - name: Collect receipt-specific public classification sections only
+        env:
+          SOURCE_BATCH: ${{ matrix.batch }}
+        run: |
+          python -u scripts/collect_kr_industry_membership_sources.py \
+            --plan research_specs/kr-industry-membership-foundation-v1/acquisition-plan.json \
+            --batch "$SOURCE_BATCH" --output /tmp/industry-source-batch
+      - uses: actions/upload-artifact@v4
+        with:
+          name: kr-industry-source-batch-${{ matrix.batch }}-${{ github.run_id }}
+          path: /tmp/industry-source-batch/
+          if-no-files-found: error
+          retention-days: 90
