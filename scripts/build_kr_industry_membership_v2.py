@@ -24,22 +24,30 @@ def read(root,path):
     return json.loads((root/path).read_text())
 
 
+def manifests(root):
+    """(annual-style manifests, chapter manifests): retained evidence only, never a network read."""
+    annual=sorted((root/V1/'acquired-dart').glob('manifest-*.json'))+sorted((root/V2/'acquired-dart/annual').glob('batch-*/manifest-originals.json'))
+    chapters=sorted((root/V2/'acquired-dart/chapters').glob('manifest-chapters.json'))
+    return annual,chapters
+
+
 def retained(root):
-    objects,records=[],[]
+    objects,records,chapter_records=[],[],[]
     sources={}
-    for directory in (V1+'/acquired-dart',V2+'/acquired-dart'):
-        for p in sorted((root/directory).glob('manifest-*.json')):
-            m=json.loads(p.read_text()); raw=(p.parent/m['archive']).read_bytes()
-            if V.digest(raw)!=m['archiveSha256']:
-                raise ValueError('ACQUISITION_ARCHIVE_CHANGED')
-            bodies=json.loads(gzip.decompress(raw))
-            for sha,b64 in bodies.items():
-                body=base64.b64decode(b64)
-                if V.digest(body)!=sha:
-                    raise ValueError('SOURCE_SHA_CHANGED')
-                sources[sha]=body
-            records.extend(m['records']);objects.append({'path':str(p.relative_to(root)),'sha256':V.digest(p.read_bytes()),'archiveSha256':m['archiveSha256']})
-    return records,sources,objects
+    annual,chapters=manifests(root)
+    for p in annual+chapters:
+        m=json.loads(p.read_text()); raw=(p.parent/m['archive']).read_bytes()
+        if V.digest(raw)!=m['archiveSha256']:
+            raise ValueError('ACQUISITION_ARCHIVE_CHANGED')
+        bodies=json.loads(gzip.decompress(raw))
+        for sha,b64 in bodies.items():
+            body=base64.b64decode(b64)
+            if V.digest(body)!=sha:
+                raise ValueError('SOURCE_SHA_CHANGED')
+            sources[sha]=body
+        (chapter_records if p in chapters else records).extend(m['records'])
+        objects.append({'path':str(p.relative_to(root)),'sha256':V.digest(p.read_bytes()),'archiveSha256':m['archiveSha256']})
+    return records,chapter_records,sources,objects
 
 
 # High precision issuer-only templates. No company-name, subsidiary, product,
@@ -69,11 +77,11 @@ def explicit_labels(plain):
     return result
 
 
-def observations_from_record(record,sources):
-    target=record['target'];receipt=target['receiptNos'][0];corp=target['corpCode']; ticker=target['ticker']
-    main=record['responses'][0]
-    raw=sources.get(main.get('sha256'))
-    if main.get('status')!=200 or raw is None or target.get('identityBasis')!='EXACT_STOCK_CODE':
+def observe(target,main_sha,main_status,sections,sources):
+    """Shared by annual records and chapter supplements: identical admission, identical template."""
+    receipt=target['receiptNos'][0];corp=target['corpCode']; ticker=target['ticker']
+    raw=sources.get(main_sha)
+    if main_status!=200 or raw is None or target.get('identityBasis')!='EXACT_STOCK_CODE':
         return [],'SOURCE_OR_IDENTITY_UNPROVEN'
     text=raw.decode('utf-8',errors='strict')
     identity="openCorpInfoNew('"+corp+"',"
@@ -82,19 +90,17 @@ def observations_from_record(record,sources):
     if text.count(identity)!=1 or not title or '사업보고서' not in title[1] or release.replace('-','.') not in title[1]:
         return [],'DATED_ISSUER_RELEASE_UNPROVEN'
     output=[]
-    for section in record['sections']:
-        if section['node']['rcpNo']!=receipt:
-            raise ValueError('LATER_RECEIPT_NODE_REFUSED')
-        body=sources[section['sha256']];source=body.decode('utf-8',errors='strict')
+    for section_sha,section_url in sections:
+        body=sources[section_sha];source=body.decode('utf-8',errors='strict')
         plain=re.sub(r'\s+',' ',html.unescape(re.sub(r'<[^>]*>',' ',source)))
         for candidate in explicit_labels(plain):
             # Retain full exact section locator: unique even with repeated markers.
             row={'security_id':'KRX:'+ticker,'ticker':ticker,'corpCode':corp,'issuer_id':'DART:'+corp,
                  'reported_as_of':None,'fiscal_year_metadata':target['fiscalYear'],'report_period_status':'EXACT_REPORT_PERIOD_UNVERIFIED; NEVER_INFERRED_FROM_ENDPOINT_FISCAL_YEAR',
                  'receipt_no':receipt,'known_from':release,'release_timestamp_precision':'DAY; strictly subsequent signal only',
-                 'subject_scope':'ISSUER','identity_status':'DATED_ISSUER_SECURITY','identity_source_sha256':main['sha256'],
+                 'subject_scope':'ISSUER','identity_status':'DATED_ISSUER_SECURITY','identity_source_sha256':main_sha,
                  'identity_locator':identity,'identity_bridge_basis':target['identityBasis'],
-                 'source_sha256':section['sha256'],'source_locator':source,'source_url':next(r['url'] for r in record['responses'] if r.get('sha256')==section['sha256']),
+                 'source_sha256':section_sha,'source_locator':source,'source_url':section_url,
                  'taxonomy_name':'KSIC_AS_REPORTED','taxonomy_version':None,'taxonomy_version_status':'UNVERIFIED; never inferred from code prefix or filing year',
                  'evidence_tier':'DART_EXPLICIT_ISSUER_CLASSIFICATION' if candidate['reported_code'] else 'DART_EXPLICIT_ISSUER_LABEL','evidence_quality':'EXPLICIT_ISSUER_TEMPLATE_WITH_DATED_CORP_IDENTIFIER',
                  **candidate}
@@ -103,6 +109,52 @@ def observations_from_record(record,sources):
                 raise ValueError(reason)
             output.append(admitted)
     return output,None
+
+
+def observations_from_record(record,sources):
+    target=record['target'];receipt=target['receiptNos'][0]
+    main=record['responses'][0]
+    sections=[]
+    for section in record['sections']:
+        if section['node']['rcpNo']!=receipt:
+            raise ValueError('LATER_RECEIPT_NODE_REFUSED')
+        sections.append((section['sha256'],next(r['url'] for r in record['responses'] if r.get('sha256')==section['sha256'])))
+    return observe(target,main.get('sha256'),main.get('status'),sections,sources)
+
+
+def observations_from_chapter(record,sources):
+    """A frozen supplement: the parent business chapter of an already-retained original receipt."""
+    target,response=record['target'],record['response']
+    if record['node']['rcpNo']!=target['receiptNos'][0]:
+        raise ValueError('LATER_RECEIPT_NODE_REFUSED')
+    if response.get('status')!=200 or response.get('sha256') not in sources:
+        return [],'CHAPTER_SOURCE_UNAVAILABLE'
+    main=record['mainResponse']
+    return observe(target,main['sha256'],main['status'],[(response['sha256'],response['url'])],sources)
+
+
+def issuer_year_coverage(root,receipts_read):
+    """Metadata-only counts of what the frozen inventory planned and the listing answered."""
+    plan=read(root,SPEC+'/acquisition-plan.json');inventory=read(root,SPEC+'/issuer-year-inventory.json')
+    selected=missing=0;listing=Counter();annual_receipts=set()
+    for path in sorted((root/V2/'inventory').glob('batch-*/inventory.json')):
+        for entry in json.loads(path.read_text()):
+            listing[entry['listingStatus']]+=1
+            selected+=len(entry['selected']);missing+=len(entry['missingYears'])
+            annual_receipts.update(r['receiptNos'][0] for r in entry['selected'])
+    return {'plannedIssuerYears':inventory['issuerYears'],'issuers':len(inventory['issuers']),
+            'listedOriginalAnnualReceipts':len(annual_receipts),'listedSelectedIssuerYears':selected,
+            'issuerYearsWithNoListedOriginal':missing,'listingStatus':dict(listing),
+            'receiptsReadForClassification':len(receipts_read),
+            'retainedBeforeV2':len(plan['retainedReceipts'])}
+
+
+def taxonomy_evidence(root):
+    manifest=read(root,V2+'/taxonomy-sources/manifest.json')
+    source=root/manifest['derivedFrom']
+    if V.digest(source.read_bytes())!=manifest['derivedFromSha256']:
+        raise ValueError('TAXONOMY_EVIDENCE_NOT_DERIVED_FROM_RETAINED_SOURCES')
+    return manifest
 
 
 def build(root=ROOT):
@@ -114,7 +166,7 @@ def build(root=ROOT):
         raise ValueError('EXISTING_KRX_PIT_UNIVERSE_CHANGED')
     if V.digest((root/V1/'identity-inventory.json').read_bytes())!=criteria['identityInventorySha256']:
         raise ValueError('EXISTING_IDENTITY_CHANGED')
-    records,sources,manifest=retained(root);observations=[];reasons=Counter();receipts=set()
+    records,chapter_records,sources,manifest=retained(root);observations=[];reasons=Counter();receipts=set();chapter_reasons=Counter();chapter_observations=0
     for record in records:
         receipt=record['target']['receiptNos'][0]
         if receipt in receipts:
@@ -123,6 +175,10 @@ def build(root=ROOT):
         obs,reason=observations_from_record(record,sources)
         observations.extend(obs)
         reasons[reason or ('EXPLICIT_ISSUER_LABEL_FOUND' if obs else 'NO_SAFE_ISSUER_TEMPLATE')]+=1
+    for record in chapter_records:
+        obs,reason=observations_from_chapter(record,sources)
+        observations.extend(obs);chapter_observations+=len(obs)
+        chapter_reasons[reason or ('EXPLICIT_ISSUER_LABEL_FOUND' if obs else 'NO_SAFE_ISSUER_TEMPLATE')]+=1
     # Same issuer/security/release/label can appear in two source sections.
     unique={ (r['security_id'],r['known_from'],r['reported_label'],r['reported_code']):r for r in observations }
     observations=sorted(unique.values(),key=lambda r:(r['security_id'],r['known_from'],r['reported_label']))
@@ -134,9 +190,12 @@ def build(root=ROOT):
     audit=V.audit(observations,schedule,criteria,ends)
     audit.update(v1Decision=criteria['v1PreservedDecision'],criteriaSha256=V.digest(raw),universeSourceCommit=inputs['sourceCommit'],
                  everTop120Securities=len(inputs['securities']),sourceManifests=manifest,receiptReadingStatus=dict(reasons),
-                 acquiredV2Receipts=sum(len(json.loads(p.read_text())['records']) for p in (root/V2/'acquired-dart').glob('manifest-*.json')),
+                 acquiredV2Receipts=sum(len(json.loads(p.read_text())['records']) for p in (root/V2/'acquired-dart/annual').glob('batch-*/manifest-originals.json')),
+                 chapterSupplement={'frozenTargets':len(chapter_records),'readingStatus':dict(chapter_reasons),'observations':chapter_observations},
+                 issuerYearEvidence=issuer_year_coverage(root,receipts),
+                 conflictedNameDates=sum(len(d['conflictedSecurityIds']) for d in audit['dates']),
                  retainedV1ReceiptCount=413,terminalDocumentsRetained=92,sourceReceiptsRead=len(receipts),
-                 taxonomyChoice=None,globalTaxonomyEvidence=read(root,V2+'/taxonomy-sources/manifest.json'))
+                 taxonomyChoice=None,globalTaxonomyEvidence=taxonomy_evidence(root))
     if audit['signalDates']!=610 or audit['nameDates']!=73200:
         raise ValueError('FROZEN_RESEARCH_CALENDAR_CHANGED')
     return observations,audit

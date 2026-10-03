@@ -109,3 +109,47 @@ def test_v1_files_independently_preserved():
 def test_source_hash_changes_fail_closed():
     row,sources=fixture();sources=copy.deepcopy(sources);sources[row['source_sha256']]=b'changed'
     assert V.admit(row,sources,{})[0] is None
+
+
+def _chapter_fixture(chapter_text):
+    corp,receipt='00000001','20240319000001'
+    main=("<title>사업보고서 (2024.03.19)</title> openCorpInfoNew('"+corp+"',").encode()
+    chapter=chapter_text.encode()
+    sources={V.digest(main):main,V.digest(chapter):chapter}
+    record={'target':{'receiptNos':[receipt],'corpCode':corp,'ticker':'000001.KS','fiscalYear':2023,'identityBasis':'EXACT_STOCK_CODE'},
+            'node':{'rcpNo':receipt},'mainResponse':{'sha256':V.digest(main),'status':200},
+            'response':{'status':200,'sha256':V.digest(chapter),'url':'https://example.invalid/chapter'}}
+    return record,sources
+
+
+def test_chapter_supplement_uses_the_same_issuer_template_and_dated_identity():
+    from scripts.build_kr_industry_membership_v2 import observations_from_chapter
+    record,sources=_chapter_fixture('<p>당사는 한국표준산업분류상 전기통신업에 해당한다.</p>')
+    rows,reason=observations_from_chapter(record,sources)
+    assert reason is None and rows[0]['known_from']=='2024-03-19' and not rows[0]['standardized']
+    record,sources=_chapter_fixture('<p>종속회사는 한국표준산업분류상 금융업에 해당한다.</p>')
+    assert observations_from_chapter(record,sources)[0]==[]
+    record['node']['rcpNo']='20250101000001'
+    with pytest.raises(ValueError,match='LATER_RECEIPT'):
+        observations_from_chapter(record,sources)
+
+
+def test_assembler_refuses_a_batch_whose_bytes_do_not_match_the_frozen_plan(tmp_path):
+    import hashlib
+    from scripts import assemble_kr_industry_v2_sources as A
+    inv=tmp_path/'kr-industry-v2-original-inventory-0';src=tmp_path/'kr-industry-v2-original-sources-0'
+    inv.mkdir();src.mkdir()
+    (inv/'remaining.json').write_text(json.dumps({'batch':0}));(inv/'remaining.json.sha256').write_text('0'*64+'\n')
+    with pytest.raises(ValueError,match='FROZEN_BATCH_INVENTORY_MISMATCH'):
+        A.assemble(tmp_path,None)
+    raw=(inv/'remaining.json').read_bytes();(inv/'remaining.json.sha256').write_text(hashlib.sha256(raw).hexdigest()+'\n')
+    (src/'a.gz').write_bytes(b'x')
+    (src/'manifest-originals.json').write_text(json.dumps({'planSha256':hashlib.sha256(raw).hexdigest(),'archive':'a.gz','archiveSha256':'bad'}))
+    with pytest.raises(ValueError,match='ORIGINAL_SOURCE_ARCHIVE_MISMATCH'):
+        A.assemble(tmp_path,None)
+
+
+def test_taxonomy_evidence_is_derived_from_retained_sources_and_claims_no_version():
+    from scripts.build_kr_industry_membership_v2 import taxonomy_evidence
+    evidence=taxonomy_evidence(ROOT)
+    assert evidence['verifiedOfficialCodebooks']==[] and not evidence['taxonomyVersionEstablished']
