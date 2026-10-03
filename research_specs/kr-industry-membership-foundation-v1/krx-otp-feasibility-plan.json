@@ -1,0 +1,102 @@
+{
+  "baselineHead": "337192c2591e81944f3a4fb6dcedc2d9fa3930f5",
+  "calendarSourceSha256": "56116f837e8ae3b9ca43c27c87b3be8bcf608172a761879a6b1284a39c9a3ab2",
+  "calendarVersion": "xkrx-xnys-4.11.1-v2-kr-2026-closures",
+  "contract": "KRX_INDUSTRY_OTP_FEASIBILITY_PLAN_V1",
+  "csvEndpoint": "https://data.krx.co.kr/comm/fileDn/download_csv/download.cmd",
+  "csvParameters": "code=<exact valid OTP>; if no valid OTP, code=empty string is a declared download-endpoint negative control, never an OTP exchange",
+  "currentClassificationBackfillAllowed": false,
+  "dates": [
+    {
+      "effectiveDate": "2015-01-02",
+      "otpParameters": {
+        "csvxls_isNo": "false",
+        "locale": "ko_KR",
+        "mktId": "STK",
+        "money": "1",
+        "name": "fileDown",
+        "trdDd": "20150102",
+        "url": "dbms/MDC/STAT/standard/MDCSTAT03901"
+      },
+      "requestedDate": "2015-01-02",
+      "substituted": false,
+      "substitutionReason": null
+    },
+    {
+      "effectiveDate": "2020-01-02",
+      "otpParameters": {
+        "csvxls_isNo": "false",
+        "locale": "ko_KR",
+        "mktId": "STK",
+        "money": "1",
+        "name": "fileDown",
+        "trdDd": "20200102",
+        "url": "dbms/MDC/STAT/standard/MDCSTAT03901"
+      },
+      "requestedDate": "2020-01-02",
+      "substituted": false,
+      "substitutionReason": null
+    },
+    {
+      "effectiveDate": "2023-01-02",
+      "otpParameters": {
+        "csvxls_isNo": "false",
+        "locale": "ko_KR",
+        "mktId": "STK",
+        "money": "1",
+        "name": "fileDown",
+        "trdDd": "20230102",
+        "url": "dbms/MDC/STAT/standard/MDCSTAT03901"
+      },
+      "requestedDate": "2023-01-02",
+      "substituted": false,
+      "substitutionReason": null
+    },
+    {
+      "effectiveDate": "2026-09-01",
+      "otpParameters": {
+        "csvxls_isNo": "false",
+        "locale": "ko_KR",
+        "mktId": "STK",
+        "money": "1",
+        "name": "fileDown",
+        "trdDd": "20260901",
+        "url": "dbms/MDC/STAT/standard/MDCSTAT03901"
+      },
+      "requestedDate": "2026-09-01",
+      "substituted": false,
+      "substitutionReason": null
+    }
+  ],
+  "expansionRule": "No historical expansion unless a genuine classification CSV is obtained and a separate exact-date/budget plan is frozen first. Existing admission/version/release/validity gates and taxonomy order/thresholds stay unchanged.",
+  "frozenBeforeProbe": true,
+  "historicalOutcomeComputed": false,
+  "locale": "ko_KR",
+  "marketRationale": "All 260 pinned Top120 security tickers have KS suffix; STK is the official form KOSPI option. No KOSDAQ union.",
+  "maxBodyBytes": 2097152,
+  "maxConcurrency": 1,
+  "maxRequests": 18,
+  "negativeControlRule": "One empty-code CSV POST per failed OTP; label CONTROL_NO_VALID_OTP. Never forward an error body as an OTP.",
+  "officialFormSourceSha256": "b3f2c51c7149900ec251eacbb66e47080898611518394d916a8b90c923a6468f",
+  "otpEndpoint": "https://data.krx.co.kr/comm/fileDn/GenerateOTP/generate.cmd",
+  "outcomeFieldsInspected": false,
+  "priorStudyExecutionAllowed": false,
+  "profiles": [
+    {
+      "bootstrapUrl": "https://data.krx.co.kr/contents/MDC/STAT/standard/MDCSTAT039.jsp",
+      "id": "dataset-page",
+      "referer": "https://data.krx.co.kr/contents/MDC/STAT/standard/MDCSTAT039.jsp"
+    },
+    {
+      "bootstrapUrl": "https://data.krx.co.kr/contents/MDC/MDI/mdiLoader",
+      "id": "marketplace-loader",
+      "referer": "https://data.krx.co.kr/contents/MDC/MDI/mdiLoader"
+    }
+  ],
+  "rawArtifactLayout": "data/kr-industry-membership-foundation-v1/krx-otp-probe/raw/<sha256>.bin; manifest.json stores all exact requests/status/headers/timestamps/raw hashes and parser result; no overwrite",
+  "requestMethod": "GET bootstrap then form-urlencoded POST OTP and CSV, shared cookie jar within profile, no redirects/retries/authentication",
+  "responseParser": "Reject non-200, empty, HTML/XML/JSON/error/login bodies and malformed CSV. Decode UTF-8 BOM or CP949/EUC-KR explicitly. Extract only code/name/industry/market/date; do not expose price or performance values. Request date alone is not original release/validity proof.",
+  "sourceIdentity": "Official KRX Data Marketplace [12025] industry classification MDCSTAT03901",
+  "timeoutSeconds": 15,
+  "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36"
+}
