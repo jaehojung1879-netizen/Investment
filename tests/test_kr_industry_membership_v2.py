@@ -153,3 +153,18 @@ def test_taxonomy_evidence_is_derived_from_retained_sources_and_claims_no_versio
     from scripts.build_kr_industry_membership_v2 import taxonomy_evidence
     evidence=taxonomy_evidence(ROOT)
     assert evidence['verifiedOfficialCodebooks']==[] and not evidence['taxonomyVersionEstablished']
+
+
+def test_committed_v2_state_is_reproduced_from_retained_bytes_and_decision_is_structural():
+    import gzip
+    observations,audit=build()
+    state=ROOT/'data/kr-industry-membership-foundation-v2/state'
+    for name,value in (('observations.json.gz',observations),('audit.json.gz',audit)):
+        raw=gzip.compress((json.dumps(value,ensure_ascii=False,sort_keys=True,separators=(',',':'))+'\n').encode(),mtime=0)
+        assert (state/name).read_bytes()==raw
+    assert audit['decision']=='DATA_FOUNDATION_INSUFFICIENT_V2' and audit['acquiredV2Receipts']==2533
+    assert audit['chapterSupplement']['frozenTargets']==68 and audit['chapterSupplement']['observations']==29
+    assert audit['admittedObservations']==79 and audit['conflictedNameDates']==0
+    assert sum(d['classified'] for d in audit['dates'])==2876 and audit['nameDates']==73200
+    assert max(d['sufficientGroupCount'] for d in audit['dates'])==0 and not audit['standardizedTaxonomyReady']
+    assert audit['terminalNameDates']=={'classified':0,'denominator':2345} and not audit['historicalOutcomeComputed']
