@@ -1,0 +1,696 @@
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+ 
+ 
+<!DOCTYPE html>
+<html lang="ko"> 
+<head>
+	<title>국문 - KRX | Data Marketplace OPEN API</title>
+	<meta charset="utf-8">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+	<meta name="viewport" content="width=100">
+	<meta name="author" content="한국거래소" />
+	<meta name="robots" content="index, follow" />
+	<meta name="robots" content="noarchive" />
+	<script type="text/javascript">
+		var GLOBAL_VAR = {
+			CONTEXT_PATH: ''
+		}
+	</script>
+	<script type="text/javascript" src="/inc/lib/jquery/jquery-1.12.4.min.js"></script>
+<link rel="stylesheet" type="text/css" href="/inc/lib/jquery/jquery-ui-1.12.1.custom.min.css" />
+<script type="text/javascript" src="/inc/lib/jquery/jquery-ui-1.12.1.custom.min.js"></script>
+<script type="text/javascript" src="/inc/lib/lodash/lodash-3.10.1.min.js"></script>
+
+      <script type="text/javascript">
+      	if (!Object.assign) Object.assign = _.assign;
+      </script>
+      
+<script type="text/javascript" src="/WEB-APP/webponent/ci/agent.js"></script>
+<script type="text/javascript" src="/WEB-APP/webponent/ci/util.js"></script>
+<script type="text/javascript" src="/WEB-APP/webponent/ci/ui.js"></script>
+<!-- getDevice not defined --><script type="text/javascript" src="/inc/js/opp.js?v=20260323_1"></script>
+<script type="text/javascript" src="/inc/js/opp.lang.js?v=20260323_1"></script>
+<script type="text/javascript" src="/inc/js/opp.module.js?v=20260323_1"></script>
+<script type="text/javascript" src="/inc/js/opp.util.js?v=20260323_1"></script>
+<script type="text/javascript" src="/inc/js/opp.layer.js?v=20260323_1"></script>
+<script type="text/javascript" src="/inc/js/opp.validate.js?v=20260323_1"></script>
+
+      <script type="text/javascript">
+      	opp.lang.setLocale(document.querySelector('html').lang);
+				opp.lang.setResources();
+
+				if (!location.origin) {
+					location.origin = location.protocol + '//' + location.hostname;
+					if (location.port) location.origin += ':' + location.port;
+				}
+      </script>
+      
+<script type="text/javascript" src="/inc/js/opp.opp.js?v=20260323_1"></script>
+ 
+	<link rel="stylesheet" type="text/css" href="/WEB-APP/webponent/dialog/dialog.css" />
+<link rel="stylesheet" type="text/css" href="/WEB-APP/webponent/dialog/layerlink.css" />
+<link rel="stylesheet" type="text/css" href="/templets/opp/css/sub.css?v=20260323_1" />
+<link rel="stylesheet" type="text/css" href="/templets/opp/css/opp.css?v=20260323_1" />
+<link rel="stylesheet" type="text/css" href="/inc/lib/calendar/css/pc/calendar.css?v=20260323_1" />
+<link rel="stylesheet" type="text/css" href="/inc/lib/ci-grid/css/ci-grid.css?v=20260323_1" />
+<link rel="stylesheet" type="text/css" href="/inc/lib/highlight/style/androidstudio.min.css" />
+<script type="text/javascript" src="/WEB-APP/webponent/dialog/dialog.js"></script>
+<script type="text/javascript" src="/WEB-APP/webponent/dialog/layerlink.js"></script>
+<script type="text/javascript" src="/inc/lib/jquery/jquery.vticker.min.js"></script>
+<script type="text/javascript" src="/templets/opp/js/ui.js"></script>
+<script type="text/javascript" src="/inc/lib/calendar/calendar.js?v=20260323_1"></script>
+<script type="text/javascript" src="/inc/lib/ci-grid/js/ci-grid-1.00.0.js?v=20260323_1"></script>
+<script type="text/javascript" src="/WEB-APP/webponent/chart2.0/lib/comm/raphael.js"></script>
+<script type="text/javascript" src="/WEB-APP/webponent/chart2.0/lib/comm/webponent.comm.common.js"></script>
+<script type="text/javascript" src="/WEB-APP/webponent/chart2.0/lib/chart/webponent.chart.js"></script>
+<script type="text/javascript" src="/WEB-APP/webponent/chart2.0/lib/visual/webponent.visual.horizon.js"></script>
+<script type="text/javascript" src="/WEB-APP/webponent/chart2.0/lib/visual/webponent.visual.korea.js"></script>
+<script type="text/javascript" src="/WEB-APP/webponent/chart2.0/lib/visual/webponent.visual.pie.js"></script>
+<script type="text/javascript" src="/WEB-APP/webponent/chart2.0/lib/visual/webponent.visual.scatterplot.js"></script>
+<script type="text/javascript" src="/WEB-APP/webponent/chart2.0/lib/visual/webponent.visual.treemap.js"></script>
+<script type="text/javascript" src="/inc/lib/highlight/highlight.min.js"></script>
+<script type="text/javascript" src="/inc/lib/beautify/beautify.min.js"></script>
+<script type="text/javascript" src="/inc/lib/beautify/beautify-html.min.js"></script>
+<script type="text/javascript" src="/inc/lib/beautify/beautify-css.min.js"></script>
+
+	<!--h:s--><!--h:e-->
+</head>
+<body>
+	
+	
+	
+
+	
+	
+	<div id="wrap" class="intro">
+		<div class="skipToNavigation">
+			<a href="#gnb">메뉴 바로가기</a>
+			<a href="#content">본문 바로가기</a>
+		</div>
+
+		<!-- header -->
+		<div id="header" class="">
+			<div class="globalMenu">
+				<div class="inner">
+					<ul class="personal_menu">
+						
+						
+							
+							
+								<li><a href="/contents/OPP/COMS/client/OPPCOMS001.cmd">로그인</a></li>
+								<li><a href="/contents/OPP/COMS/client/OPPCOMS002_S0.cmd">회원가입</a></li>
+							
+						
+					</ul>
+					<a href="https://data.krx.co.kr/contents/MDC/MAIN/main/index.cmd" target="_blank" class="btnKrxCenter" title="KRX Data Marketplace 메인으로 이동">KRX Data Marketplace</a>
+				</div>
+			</div>
+
+			<div class="headerNav">
+				<div class="inner">
+					<h1><a href="/contents/OPP/MAIN/main/index.cmd" title="OPEN API"><img src="/templets/opp/img/common/img_logo.png" alt="KRX OPEN API">KRX OPEN API</a></h1>
+
+					<ul class="gnb">
+						
+							
+						
+							
+								<li><a href="javascript:gotoMenu('/contents/OPP/INFO/OPPINFO001.jsp','OPP01');" title="서비스 소개 이동">서비스 소개</a></li>
+							
+						
+							
+								<li><a href="javascript:gotoMenu('/contents/OPP/USES/service/OPPUSES001_S1.cmd','OPP02');" title="서비스 이용 이동">서비스 이용</a></li>
+							
+						
+							
+								<li><a href="javascript:gotoMenu('/contents/OPP/COMM/notice/OPPCOMM001_S1.cmd','OPP03');" title="소통의 창 이동">소통의 창</a></li>
+							
+						
+							
+								<li><a href="javascript:gotoMenu('/contents/OPP/DATA/OPPDATA001.jsp','OPP04');" title="데이터상품 이동">데이터상품</a></li>
+							
+						
+							
+								<li><a href="javascript:gotoMenu('/contents/OPP/MYPG/mypage/OPPMYPG001.cmd','OPP05');" title="마이페이지 이동">마이페이지</a></li>
+							
+						
+							
+						
+							
+						
+					</ul>
+				</div>
+			</div>
+
+			<div id="headerMenu" class="subMenu">
+				<div class="inner">
+					
+						
+					
+						
+						
+							<ul>
+								
+								
+									<li><a href="javascript:gotoMenu('/contents/OPP/INFO/OPPINFO001.jsp','OPP0101');" title="서비스 소개">서비스 소개</a></li>
+								
+								
+								
+									<li><a href="javascript:gotoMenu('/contents/OPP/INFO/OPPINFO002.jsp','OPP0102');" title="이용약관">이용약관</a></li>
+								
+								
+								
+									<li><a href="javascript:gotoMenu('/contents/OPP/INFO/OPPINFO003.jsp','OPP0103');" title="서비스 이용방법">서비스 이용방법</a></li>
+								
+								
+								
+									<li><a href="javascript:gotoMenu('/contents/OPP/INFO/service/OPPINFO004.cmd','OPP0104');" title="서비스 목록">서비스 목록</a></li>
+								
+								
+							</ul>
+						
+						
+					
+						
+						
+							<ul>
+								
+								
+									<li><a href="javascript:gotoMenu('/contents/OPP/USES/service/OPPUSES001_S1.cmd','OPP0201');" title="지수">지수</a></li>
+								
+								
+								
+									<li><a href="javascript:gotoMenu('/contents/OPP/USES/service/OPPUSES002_S1.cmd','OPP0202');" title="주식">주식</a></li>
+								
+								
+								
+									<li><a href="javascript:gotoMenu('/contents/OPP/USES/service/OPPUSES003_S1.cmd','OPP0203');" title="증권상품">증권상품</a></li>
+								
+								
+								
+									<li><a href="javascript:gotoMenu('/contents/OPP/USES/service/OPPUSES004_S1.cmd','OPP0204');" title="채권">채권</a></li>
+								
+								
+								
+									<li><a href="javascript:gotoMenu('/contents/OPP/USES/service/OPPUSES005_S1.cmd','OPP0205');" title="파생상품">파생상품</a></li>
+								
+								
+								
+									<li><a href="javascript:gotoMenu('/contents/OPP/USES/service/OPPUSES006_S1.cmd','OPP0206');" title="일반상품">일반상품</a></li>
+								
+								
+								
+									<li><a href="javascript:gotoMenu('/contents/OPP/USES/service/OPPUSES007_S1.cmd','OPP0207');" title="ESG">ESG</a></li>
+								
+								
+							</ul>
+						
+						
+					
+						
+						
+							<ul>
+								
+								
+									<li><a href="javascript:gotoMenu('/contents/OPP/COMM/notice/OPPCOMM001_S1.cmd','OPP0301');" title="공지사항">공지사항</a></li>
+								
+								
+								
+								
+								
+								
+								
+									<li><a href="javascript:gotoMenu('/contents/OPP/COMM/faq/OPPCOMM004.cmd','OPP0304');" title="FAQ">FAQ</a></li>
+								
+								
+							</ul>
+						
+						
+					
+						
+						
+							<ul>
+								
+								
+									<li><a href="javascript:gotoMenu('/contents/OPP/DATA/OPPDATA001.jsp','OPP0401');" title="데이터 구입">데이터 구입</a></li>
+								
+								
+								
+									<li><a href="javascript:gotoMenu('/contents/OPP/DATA/OPPDATA002.jsp','OPP0402');" title="데이터 분배">데이터 분배</a></li>
+								
+								
+								
+									<li><a href="javascript:gotoMenu('/contents/OPP/DATA/OPPDATA005.jsp','OPP0403');" title="지수 라이센스">지수 라이센스</a></li>
+								
+								
+							</ul>
+						
+						
+					
+						
+						
+							<ul>
+								
+								
+									<li><a href="javascript:gotoMenu('/contents/OPP/MYPG/mypage/OPPMYPG001.cmd','OPP0105');" title="API 인증키 신청">API 인증키 신청</a></li>
+								
+								
+								
+									<li><a href="javascript:gotoMenu('/contents/OPP/MYPG/mypage/OPPMYPG002.cmd','OPP0501');" title="API 인증키 발급내역">API 인증키 발급내역</a></li>
+								
+								
+								
+									<li><a href="javascript:gotoMenu('/contents/OPP/MYPG/mypage/OPPMYPG003_S1.cmd','OPP0502');" title="이용현황">이용현황</a></li>
+								
+								
+							</ul>
+						
+						
+					
+						
+					
+						
+					
+				</div>
+			</div>
+		</div>
+		<!--// header -->
+
+		<!-- container -->
+		<div id="container">
+			<div id="content">
+				
+				
+					<!-- 상단 타이틀 영역 -->
+					<div class="topArea">
+						<div class="inner">
+							<h2>서비스 소개</h2>
+
+							<ul class="location">
+								<li>HOME</li>
+								
+									
+								
+									
+										<li>서비스 소개</li>
+										
+											
+												
+											
+												
+													<li>이용약관</li>
+													
+														
+															
+																<li>국문</li>
+																
+															
+														
+															
+														
+													
+												
+											
+												
+											
+												
+											
+										
+									
+								
+									
+								
+									
+								
+									
+								
+									
+								
+									
+								
+									
+								
+							</ul>
+						</div>
+					</div>
+					<!--// 상단 타이틀 영역 -->
+
+					<div class="inner">
+
+						<!-- lnb -->
+						
+							<div id="lnb">
+								<ul>
+									
+										
+									
+										
+											
+												
+													
+														<li>
+															<a href="/contents/OPP/INFO/OPPINFO001.jsp" title="서비스 소개">서비스 소개</a>
+															
+														</li>
+													
+												
+													
+														<li class="on">
+															<a href="javascript:void(0);" title="이용약관">이용약관</a>
+															
+																<ul class="sub" style="display: block;">
+																	
+																		
+																			<li class="on">
+																				<a href="/contents/OPP/INFO/OPPINFO002.jsp" title="국문">국문</a>
+																			</li>
+																		
+																	
+																		
+																			<li>
+																				<a href="/contents/OPP/INFO/OPPINFO005.jsp" title="영문">영문</a>
+																			</li>
+																		
+																	
+																</ul>
+															
+														</li>
+													
+												
+													
+														<li>
+															<a href="/contents/OPP/INFO/OPPINFO003.jsp" title="서비스 이용방법">서비스 이용방법</a>
+															
+														</li>
+													
+												
+													
+														<li>
+															<a href="/contents/OPP/INFO/service/OPPINFO004.cmd" title="서비스 목록">서비스 목록</a>
+															
+														</li>
+													
+												
+											
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+								</ul>
+							</div>
+						
+						<!--// lnb -->
+
+						<!-- subContent -->
+						<div class="subContent">
+							
+								<div class="contentTit">
+									<h4>국문</h4>
+									
+									
+									
+								</div>
+							
+
+							<div class="content">
+								<!--b:s-->
+  <!-- 이용약관 -->
+  <div class="terms_area">
+
+    <h5 class="tit">제1장 총 칙</h5>
+
+    <strong class="subTit">제1조(목적)</strong>
+    <p>본 약관은 한국거래소가 제공하는 OPEN API 서비스를 이용함에 있어 이용에 관한 제반 사항과 기타 필요한 사항을 규정함을 목적으로 한다.</p>
+
+    <strong class="subTit">제2조(용어의 정의)</strong>
+    <p>본 약관에서 사용하는 주요 용어의 정의는 다음과 같다. 정의되지 않은 것은 관련 법령이나 기타 일반관례에 따른다.</p>
+    <ol>
+      <li>① "API"란 Application Programming Interface의 약자로, 정보 소유자가 정보 이용자에게 정보를 제공하기 위하여 정의한 규약을 말한다.</li>
+      <li>② "API 서비스"란 KRX Data Marketplace(한국거래소의 시장정보 포털을 말한다)상의 정보를 제공받은 이용자가 동 정보를 활용하여 직접 응용프로그램과 서비스를 개발할 수 있도록 한국거래소에서 제공하는 서비스를 말한다.</li>
+      <li>③ "인증키"란 API 이용자가 API 서비스 이용허가를 받은 개인 또는 법인임을 식별할 수 있도록 한국거래소가 API 이용자에게 개별적으로 부여하는 고유한 값을 말한다.</li>
+      <li>④ "API 이용자"란 한국거래소가 제공하는 OPEN API서비스를 이용하는 모든 개인 또는 법인으로서, 이 약관에 동의한 자를 말한다.</li>
+    </ol>
+
+    <strong class="subTit">제3조(약관의 효력발생 및 변경)</strong>
+    <ol>
+      <li>① 본 약관은 API 서비스의 이용을 위하여 본 약관에 동의를 함으로써 효력이 발생한다.</li>
+      <li>② API 서비스의 모든 서비스는 본 약관에 동의한 경우에 한하여 제공한다.</li>
+      <li>③ API 서비스를 이용하기 위해서는 본 약관에 동의한 후 인증키 발급을 신청하여야 한다.</li>
+      <li>④ 한국거래소는 필요한 경우 본 약관을 개정할 수 있으며, 개정시에는 그 개정의 주요내용 및 적용일자를 홈페이지에 게시한다. 다만, 약관의 개정에 따라 이용자의 이용 조건 등이 제한되는 경우에는 적용일자로부터 15일 전까지 공지하고 이용자에게 이메일 등의 수단으로 개별적으로 통지한다.</li>
+      <li>⑤ 약관의 변경 사실 및 내역을 확인하지 않아 발생한 모든 손해에 대한 책임은 API 이용자에게 귀속된다.</li>
+    </ol>
+
+    <strong class="subTit">제4조(약관에 명시되지 않은 사항)</strong>
+    <p>본 약관에 명시되지 않은 사항은 관계 법령과 한국거래소 업무규정 등에서 정하는 바에 따른다.</p>
+
+    <h5 class="tit">제2장 이용 방법, 조건 및 절차</h5>
+
+    <strong class="subTit">제5조(제공방법)</strong>
+    <ol>
+      <li>① API 서비스 이용을 희망하는 자는 한국거래소에 API 서비스 인증키를 신청하여야 한다.</li>
+      <li>② 한국거래소는 약관 동의 등 일정 요건을 갖춘 API 서비스 신청자에게 인증키를 부여하며, 이용자는 선량한 관리자의 주의의무를 다하여 인증키를 관리하여야 한다.</li>
+      <li>③ API 서비스의 이용기간은 제공기관이 인증키를 제공한 날부터 1년으로 하며, 이용기간 만료 전에 이용자의 연장요청이 있는 경우 1년 단위로 연장할 수 있다.</li>
+      <li>④ 한국거래소는 다음 각 호의 어느 하나에 해당하는 사유가 있는 경우 제1항 또는 제3항에 따른 인증키 신청 또는 연장요청을 거부할 수 있다. 이 경우 그 사유를 해당 이용자에게 통지하여야 한다.
+        <ol>
+          <li>1. 이 약관에서 정한 사항을 위반한 이용자의 신청인 경우</li>
+          <li>2. 그 밖에 한국거래소가 이용자의 신청이 부적절하다고 판단하는 경우</li>
+        </ol>
+      </li>
+      <li>⑤ API 서비스의 이용시간은 한국거래소의 업무상 또는 기술상 특별한 지장이 없는 한 연중무휴, 1일 24시간을 원칙으로 한다. 다만 다음 각 호의 경우는 예외로 하며, 사전에 홈페이지를 통하여 관련 내용을 공지한다.
+        <ol>
+          <li>1. 시스템 정기 점검 등을 위하여 한국거래소가 별도로 정한 시간 또는 기간이 있는 경우</li>
+          <li>2. 일부 서비스에 대하여 한국거래소가 별도로 정한 이용시간이 있는 경우</li>
+        </ol>
+      </li>
+    </ol>
+
+    <strong class="subTit">제6조(서비스 이용 시 주의사항)</strong>
+    <ol>
+      <li>① API 이용자는 API 서비스를 이용한 결과를 구성함에 있어 다음 각 호에 해당하는 내용과 결합하여 구성할 수 없다.
+        <ol>
+          <li>1. 공공질서 및 미풍양속에 반하는 경우</li>
+          <li>2. 범죄행위에 관련되는 경우</li>
+          <li>3. 국익 또는 사회적 공익을 저해하는 경우</li>
+          <li>4. 타인의 명예를 훼손하거나, 타인에게 불이익을 주는 경우</li>
+          <li>5. API 서비스를 손상시키는 등 서비스의 건전한 이용을 저해한 경우</li>
+        </ol>
+      </li>
+      <li>② API 이용자는 API 서비스를 비상업적인 목적으로만 이용할 수 있으며, API 서비스를 이용한 결과에 대한 대가를 제3자에게 청구해서는 아니된다.</li>
+      <li>③ API 이용자는 API 서비스를 이용한 결과의 앞, 뒤, 중간 등에 다른 내용을 삽입하거나 왜곡할 수 없고, 타인으로 하여금 결과의 내용 및 의도 등을 오인하게 해서는 아니된다. 또한 URL 등 API 서비스로 제공되는 모든 내용을 API이용자가 임의로 변조해서는 아니된다.</li>
+      <li>④ 한국거래소에서 제공하는 API 서비스의 결과를 API 이용자가 왜곡한 경우 한국거래소는 API 이용자에게 민사․형사적 필요한 조치를 취할 수 있다.</li>
+    </ol>
+
+    <strong class="subTit">제7조(금지사항)</strong>
+    <p>이용자는 다음 각 호의 행위를 하지 않아야 한다.</p>
+    <ol>
+      <li>① 속임에 의한 이용자 사칭</li>
+      <li>② 바이러스ㆍ웜 등 악성코드의 전파</li>
+      <li>③ 저작권 위반이나 『정보통신망 이용촉진 및 정보보호 등에 관한 법률』의 불법정보 등과 결합 또는 연계 이용</li>
+      <li>④ API 연결방식의 위ㆍ변조</li>
+      <li>⑤ API 인증키의 양도, 증여 및 담보 목적물 사용</li>
+      <li>⑥ 접근이 허용된 범위가 아님에도 권한 없이 접근을 시도하는 행위</li>
+    </ol>
+
+    <strong class="subTit">제8조(제공중단)</strong>
+    <ol>
+      <li>① 한국거래소는 API 서비스의 범위를 제한하거나 별도의 이용 가능 시간 또는 이용가능 횟수를 지정할 수 있다.</li>
+      <li>② 한국거래소는 다음 각 호의 어느 하나에 해당하는 경우 API 서비스 제공을 일시적으로 중단할 수 있다. 다만 부득이한 경우에는 예고 없이 서비스를 중단할 수 있다.
+        <ol>
+          <li>1. 관련 법률 개정으로 인해 API 서비스 제공 대상이 변경되어 더 이상 활용을 할 수 없을 경우</li>
+          <li>2. 시스템 정기점검, 증설 및 교체의 경우</li>
+          <li>3. API 서비스 제공에 있어서의 기술적 결함이 발견되는 경우</li>
+          <li>4. 신규 API 서비스를 추가하는 경우</li>
+        </ol>
+      </li>
+      <li>③ 제7조의 금지사항이 발생하거나 이용자가 본 약관의 내용을 위반하는 경우 한국거래소는 API 서비스 제공을 중단할 수 있으며, 법적 조치를 포함하여 필요한 조치를 취할 수 있다.</li>
+      <li>④ 하나의 키당 1일(매일 0시~24시) 10,000회 이하의 요청으로 제한하며, 이를 초과할 경우 서비스가 중지될 수 있다.</li>
+      <li>⑤ 한국거래소에서 발급된 인증키는 12개월간 미사용시 사전 공지 없이 삭제될 수 있다.</li>
+    </ol>
+
+    <strong class="subTit">제9조(API 이용자의 의무)</strong>
+    <ol>
+      <li>① API 이용자는 API서비스를 이용함에 있어서 본 약관에서 규정하는 사항과 기타 한국거래소가 정한 제반 규정, 공지사항 및 관계 법령을 준수하여야 한다.</li>
+      <li>② API 이용자는 한국거래소의 업무에 방해가 되는 행위 또는 한국거래소의 명예를 훼손하는 행위를 해서는 아니된다.</li>
+      <li>③ API 서비스를 이용함에 있어서 API 이용자의 행위에 대한 모든 책임은 당사자가 부담하고, API 이용자는 어떠한 경우에도 한국거래소를 대리하지 않으며, 한국거래소를 대리하는 것처럼 오인할 수 있는 행위를 해서는 아니된다.</li>
+      <li>④ API 이용자는 성명, 연락처(전자우편 주소 포함)가 변경된 경우에는 이를 한국거래소에 즉시 통보하여야 하며, 변경내용을 통보하지 않아 발생하는 손해에 대하여 한국거래소는 어떠한 책임도 부담하지 아니한다.</li>
+    </ol>
+
+    <strong class="subTit">제10조(API 서비스의 저작권)</strong>
+    <ol>
+      <li>① 한국거래소가 제공하는 API 서비스 및 관련 프로그램의 저작권은 한국거래소가 보유한다.</li>
+      <li>② API 이용자는 API 서비스 이용 시 한국거래소 및 제3자의 저작권을 침해해서는 아니된다.</li>
+      <li>③ API 이용자가 API 서비스를 이용한 결과를 사용하여 화면을 제작한 경우, 해당 화면에 “한국거래소 통계정보”를 사용한 결과임을 명시해야 한다. 다만, 한국거래소가 별도의 표시방식을 정한 경우에는 그에 따라야 한다.</li>
+    </ol>
+
+    <strong class="subTit">제11조(서비스 이용의 제한)</strong>
+    <ol>
+      <li>① 한국거래소는 API 이용자가 관련 법령 또는 본 약관을 준수하지 않는 경우 API 이용자의 사용을 중지할 수 있다.</li>
+      <li>② API 이용자는 한국거래소로부터 제공받은 정보를 제3자에게 제공할 수 없다.</li>
+      <li>③ API 이용자는 이용기간 만료, 해지 등의 사유로 이용계약이 종료된 이후에는 한국거래소로부터 제공받은 정보를 이용할 수 없다.</li>
+      <li>④ API 이용자가 제2항을 위반하였을 경우 한국거래소는 이용승인을 철회하고 API 서비스를 중단할 수 있다.</li>
+      <li>⑤ API 서비스 이용상 API 이용자의 귀책사유로 인하여 한국거래소에 손해가 발생한 경우 한국거래소는 본 약관에 따른 계약의 해지와는 별도로 손해배상을 청구할 수 있다.</li>
+    </ol>
+
+    <h5 class="tit">제3장 기타</h5>
+
+    <strong class="subTit">제12조(면책)</strong>
+    <ol>
+      <li>① 한국거래소는 API 이용자가 본 약관의 내용을 준수하지 않아 발생한 손해에 대하여 일체의 책임을 부담하지 아니한다.</li>
+      <li>② 한국거래소는 정보의 오류, 누락, API 서비스 장애 등과 관련하여 그 정확성과 완결성을 보장하지 아니한다.</li>
+      <li>③ API 이용자가 한국거래소 통계정보를 편집하여 새로운 부가정보를 생산한 경우 한국거래소는 해당 부가정보에 대한 책임을 부담하지 아니한다.</li>
+      <li>④ 한국거래소는 API 이용자와 제3자간에 API 서비스를 매개로 발생한 분쟁에 대해 개입할 의무가 없으며, 이로 인한 손해배상책임도 부담하지 아니한다.</li>
+      <li>⑤ 한국거래소는 통계정보의 계속적 제공 또는 추가되는 통계정보의 지속적 제공을 보장하지 아니한다.</li>
+    </ol>
+
+    <strong class="subTit">제13조(재판관할)</strong>
+    <p>본 약관에 관한 분쟁이 발생하는 경우 관련 소송의 1심 관할법원은 서울남부지방법원으로 한다.</p>
+
+    <p class="desc">이 약관은 2025년 12월 26일부터 시행한다.</p>
+  </div>
+  <!--// 이용약관 -->
+<!--b:e-->
+							</div>
+						</div>
+						<!--// subContent -->
+					</div>
+				
+			</div>
+		</div>
+		<!--// container -->
+
+		<!-- footer -->
+		<div id="footer">
+			<div class="inner">
+				<ul class="footerMenu">
+					<li><a href="http://info.krx.co.kr/contents/KRX/06/06070100/KRX06070100.jsp" target="_blank">개인정보처리방침</a></li>
+					<li><a href="http://info.krx.co.kr/contents/KRX/06/06070200/KRX06070200.jsp" target="_blank">법적고지</a></li>
+					
+				</ul>
+				<small>본사 : 48400 부산광역시 남구 문현금융로 40(문현동) TEL : 051-662-2000 사업자 등록번호 : 602-81-35420금융서비스업 대표자 : 정은보 <br />서울 : 07320 서울특별시 영등포구 여의나루로 76(여의도동) TEL : 1577-0088/ 02-3774-9000 통신판매신고 부산남구 : 0036호<br />Copyright  2020 KOREA Exchange all rights reserved. krxdata@krx.co.kr</small>
+
+				<a href="javascript:void(0);" class="btnFamilySite">Family Site</a>
+				<ul class="familyMenu">
+					<li><a href="http://krx.co.kr" target="_blank">KRX 한국거래소</a></li>
+					<li><a href="http://data.krx.co.kr" target="_blank">KRX Data Marketplace</a></li>
+				</ul>
+			</div>
+		</div>
+		<!--// footer -->
+	</div>
+	<div class="dim"></div>
+	<script type="text/javascript">
+
+		function gotoMenu(url, menu_id, popupYn, popupAttr) {
+			var isLogin = false;
+
+			if (!isLogin && (menu_id === 'OPP05' || menu_id === 'OPP0105' || menu_id === 'OPP0501' || menu_id === 'OPP0502')) {
+				alert('로그인 또는 회원가입이 필요합니다. ');
+			}
+
+			location.href = url;
+
+
+		}
+
+
+		opp.module.setModule({
+			name: 'TEMPLET_MODULE',
+			init: 'init',
+			function: function (self, api) {
+
+				var SESSION_TIMEOUT = 30;
+
+				self.init = function () {
+					if ($('#jsLogoutBtn').length > 0) {
+						timeoutForLogout();
+					}
+				};
+
+				var makeDigitNumber = function (number) {
+					var digitNumber = number + '';
+					if (number < 10) {
+						digitNumber = '0' + number;
+					}
+					return digitNumber;
+				};
+
+				var confirmForLogout = function () {
+					api.util.submitAjax({
+						url: '/contents/OPP/MAIN/main/removeSession.cmd',
+						success: function () {
+							api.layer.confirm('세션 만료로 자동 로그아웃 되었습니다.<br><strong>서비스 이용을 위해 재로그인 해주세요.</strong>', function () {
+								location.href = '/contents/OPP/COMS/client/OPPCOMS001.cmd';
+							}, function () {
+								location.href = '/contents/OPP/MAIN/main/index.cmd';
+							});
+						}
+					});
+				};
+
+				var timeoutForLogout = function () {
+					if (self.timeoutForLogout) {
+						clearInterval(self.timeoutForLogout);
+					}
+					var date = new Date();
+					date.setMinutes(date.getMinutes() + SESSION_TIMEOUT);
+					document.cookie = 'opp.client_session=' + encodeURIComponent('true') + '; path=/; secure; expires=' + date.toUTCString() + ';';
+					var minute = SESSION_TIMEOUT;
+					var second = 0;
+					self.timeoutForLogout = setInterval(function () {
+						second -= 1;
+						if (second < 0) {
+							minute -= 1;
+							second = 59;
+						}
+						if (minute < 0 || api.util.getCookie('opp.client_session') !== 'true') {
+							minute = 0;
+							second = 0;
+							confirmForLogout();
+							clearInterval(self.timeoutForLogout);
+						}
+						$('#jsLogoutTime').text(makeDigitNumber(minute) + '분 ' + makeDigitNumber(second) + '초');
+					}, 1000);
+				};
+
+				$('#jsExtendLoginBtn').on('click', function () {
+					api.util.submitAjax({
+						url: '/contents/OPP/MAIN/main/extendSession.cmd',
+						success: function (data) {
+							if (api.util.isErrorCode(data)) {
+								confirmForLogout();
+							} else {
+								$('#jsLogoutTime').text(SESSION_TIMEOUT + '분 00초');
+								timeoutForLogout();
+							}
+						}
+					});
+				});
+
+			}
+		});
+	</script>
+</body>
+</html>

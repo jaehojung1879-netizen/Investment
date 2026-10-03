@@ -35,3 +35,14 @@ credential. It reads BOK metadata and at most latest-period smoke observations,
 saves only sanitized source identities/coverage/status, and computes no Alpha
 outcomes. No schedule, production wiring or sealed study rerun is introduced.
 The foundation metadata workflow remains credential-free on PR events.
+
+## KRX authenticated reference-source extension (Draft PR #189)
+
+`probes.yml` adds `krx-industry-openapi` to the existing manual menu. Its isolated
+workflow_dispatch-only job receives KRX_API_KEY as AUTH_KEY only in the exact probe
+step, uses read-only contents and persist-credentials:false, and excludes generic
+probe jobs. Sixteen fixed requests at concurrency one inspect official reference
+schemas and date acceptance; no price/return values, raw authenticated responses,
+headers or logs are uploaded. No schedule, full-history acquisition, outcome execution
+or automatic membership promotion. Plan and public official documentation hashes
+are verified before authentication. Execution remains pending manual dispatch.

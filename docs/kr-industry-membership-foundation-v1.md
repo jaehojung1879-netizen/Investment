@@ -113,3 +113,11 @@ NO CURRENT INDUSTRY CLASSIFICATION WAS BACKFILLED INTO HISTORY
 NO TAXONOMY OR GRANULARITY WAS CHOSEN FROM FUTURE RETURNS
 
 NO SEALED PRIOR STUDY WAS RERUN
+# Authenticated official KRX reference-route extension
+
+The accepted anonymous OTP and DART evidence are unchanged. The new official
+Open API contract review, immutable public specifications and frozen 16-request
+header-only manual probe are documented in
+`docs/kr-industry-membership-foundation-v1-openapi.md`. Authenticated execution is
+pending, not a source-access failure. Coverage and all scientific gates remain
+unchanged; the accepted decision remains DATA_FOUNDATION_INSUFFICIENT.

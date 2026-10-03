@@ -15,6 +15,7 @@ sys.path.insert(0, str(ROOT))
 from pipeline import kr_industry_membership as K  # noqa: E402
 from scripts.collect_kr_industry_membership_sources import classification_markers  # noqa: E402
 from scripts.probe_krx_industry_otp import verify as verify_krx_probe  # noqa: E402
+from scripts.probe_krx_industry_openapi import verify_evidence as verify_openapi  # noqa: E402
 
 DATA = 'data/kr-industry-membership-foundation-v1'
 CRITERIA = 'research_specs/kr-industry-membership-foundation-v1/criteria.json'
@@ -142,6 +143,7 @@ def build(root=ROOT):
               'codeShapedCandidateSections': sum(bool(s['explicitCodeCandidates']) for r in records for s in r['sections']),
               'retainedTerminalCodeRelatedMentionSections': len(read(root, DATA + '/classification-observations.json')['terminalClassificationMentions']),
               'admittedAssignmentRows': len(rows), 'readingListIsNotMembership': True,
+              'krxOpenapiFeasibility': verify_openapi(root),
               'krxOtpFeasibility': {'requestCount': probe['requestCount'],
                   'manifestSha256': K.sha256((root / DATA / 'krx-otp-probe/manifest.json').read_bytes()),
                   'realClassificationCsvObtained': probe['realClassificationCsvObtained'],
@@ -173,7 +175,7 @@ def verify_closure(root=ROOT):
     if K.sha256(raw) != (root / SPEC).with_suffix('.sha256').read_text().strip():
         raise ValueError('INDUSTRY_SPEC_CHANGED')
     for path, wanted in json.loads(raw)['dependencyHashes'].items():
-        if '..' in Path(path).parts or not path.startswith(('pipeline/', 'scripts/', 'tests/', 'research_specs/', DATA + '/', 'docs/kr-industry-membership-foundation-v1')):
+        if '..' in Path(path).parts or not (path == '.github/workflows/probes.yml' or path.startswith(('pipeline/', 'scripts/', 'tests/', 'research_specs/', DATA + '/', 'docs/kr-industry-membership-foundation-v1'))):
             raise ValueError('UNSUPPORTED_AUDIT_INPUT')
         if K.sha256((root / path).read_bytes()) != wanted:
             raise ValueError('INDUSTRY_DEPENDENCY_CHANGED:' + path)
