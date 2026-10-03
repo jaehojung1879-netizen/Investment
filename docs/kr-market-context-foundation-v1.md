@@ -107,12 +107,50 @@ No ALFRED-equivalent endpoint or first-vintage history is invented. The fixed me
 services expose no retained revision matrix in the adapter contract; live output
 records the services actually inspected and absence of vintage evidence.
 
-**Actual manual Actions status: not dispatched in this revision session yet.**
-The GitHub connector exposes GET and Git-data writes but no workflow dispatch;
-no authenticated local dispatch credential is available. The repository secret
-itself is never read. The nine-series readiness matrix therefore remains honestly
-unvalidated until this manual job runs. A signed-in GitHub UI dispatch requires
-permission to use the browser fallback under this session's tool rules.
+**Actual manual Actions status: completed successfully.** Run
+[37080934658](https://github.com/jaehojung1879-netizen/Investment/actions/runs/37080934658)
+ran on head `6ebe13922e899b88e938f4f7aec7b8575ec47f34`. This revision downloaded
+only artifact `11258377162`, named
+`ecos-market-context-source-metadata-37080934658`, and applied its facts offline.
+No ECOS request or probe rerun was made to apply this evidence.
+
+Verified ZIP SHA-256:
+`6a0f59e13737b55102cfd3bbdf31f812c19ce71e104a0fde9727d86dcbffb1b3`.
+Verified sanitized JSON byte SHA-256:
+`8cfb15cdcbf88796831b2b2c7eb25d44ca411a8acf44a53512906dd7f32e6b07`.
+The metadata was checked at `2026-10-03T00:15:46.789703+00:00`.
+`research_specs/kr-market-context-ecos-evidence-37080934658.json` retains an
+explicitly scoped metadata extract, original selection hashes, unresolved
+semantic/group alternatives and exact artifact provenance. It is not a copy of
+the complete discovery catalog; the full source JSON is identified by the hash above.
+
+| Name | Configured table exists | Applied item / native cycle | Exact semantic name / unit | Observation coverage | Source status |
+|---|---|---|---|---|---|
+| BaseRate | 722Y001: yes | null / null | unresolved | null | AMBIGUOUS_SOURCE |
+| KTB_3Y | 817Y002: yes | 010200000 / D | 국고채(3년) / 연% | 19981113–20261002; 6,910 observations | LIVE_VALIDATED_SOURCE |
+| CorpBond_3Y | 817Y002: yes | null / null | rating unresolved | null | AMBIGUOUS_SOURCE |
+| CPI | 901Y009: yes | null / null | native cycle unresolved | null | AMBIGUOUS_SOURCE |
+| CoreCPI | 901Y010: yes | null / null | definition unresolved | null | DATA_LINEAGE_UNRESOLVED |
+| IndustrialProduction | 901Y033: yes | null / null | production/adjustment selectors unresolved | null | DATA_LINEAGE_UNRESOLVED |
+| LeadingIndex | 901Y067: yes | I16E / M | 선행지수순환변동치 / 2020=100 | 197001–202608; 680 observations | LIVE_VALIDATED_SOURCE |
+| Exports | 901Y011: no | null / null | table unresolved | null | NOT_AVAILABLE |
+| M2 | 101Y004: yes | null / null | monetary definition unresolved | null | DATA_LINEAGE_UNRESOLVED |
+
+Only the artifact's two `validatedConfig` entries are promoted. BaseRate's
+`0101000` occurs in A/D/M/Q and CPI's total index `0` in A/M/Q; no cycle is
+chosen from the table header alone. Corporate AA− and BBB− remain alternatives.
+Core CPI exposes both exclusion definitions; production exposes original and
+seasonally adjusted groups. M2's configured table advertises historical
+average-balance, original-series components, not a uniquely validated current M2
+definition. Export alternatives in the catalog do not resolve the absent
+configured table. None of these metadata candidates become executable selectors.
+
+LeadingIndex specifically means the cyclical component, not the leading index
+level. Its unit is retained exactly as ECOS advertised (`2020=100`); no economic
+reinterpretation or normalization is applied. Coverage is metadata observation
+coverage, not release/vintage coverage. Both latest-period smoke checks succeeded
+and retained no values. All nine entries remain `REVISED_HISTORY`, with
+`publishedAt`/`availableFrom` null and historical confirmatory eligibility false.
 
 ## Future industry connection and readiness
 
@@ -127,7 +165,7 @@ an implemented/selected feature set or fitted interaction.
 
 Ready: six-axis primitive, immutable visibility mechanics, per-series ECOS fetch,
 manual metadata/smoke runner, source schema/status matrix and synthetic verification.
-Still needed: actual manual dispatch and exact semantic selections, historical release
+Still needed: exact semantic/native-cycle selections for seven blocked series, historical release
 vintages where genuinely available, PIT breadth/concentration and historical industry
 taxonomy/membership. Industry outcomes/models remain deliberately outside this PR.
 

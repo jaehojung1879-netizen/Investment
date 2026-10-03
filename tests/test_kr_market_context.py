@@ -1,4 +1,5 @@
 from dataclasses import replace
+import hashlib
 import json
 from pathlib import Path
 import re
@@ -192,3 +193,66 @@ def test_every_measurement_even_missing_spread_carries_information_contract():
     for axis in MC.state_at('2024-01-01')['axes'].values():
         for row in axis['measurements'].values():
             assert required <= row.keys()
+
+
+def test_applied_ecos_artifact_matches_config_and_readiness_without_network(monkeypatch):
+    from pipeline.config import load_config
+    from scripts.audit_market_industry_stock_foundation import audit
+
+    monkeypatch.setattr(P.EM, 'request', lambda *a, **k: pytest.fail('artifact application must be offline'))
+    root = Path(__file__).resolve().parents[1]
+    evidence = json.loads((root / 'research_specs/kr-market-context-ecos-evidence-37080934658.json').read_text())
+    provenance = evidence['artifactProvenance']
+    assert (provenance['runId'], provenance['artifactId']) == (37080934658, 11258377162)
+    assert provenance['sourceHead'] == '6ebe13922e899b88e938f4f7aec7b8575ec47f34'
+    assert provenance['artifactDigest'] == 'sha256:6a0f59e13737b55102cfd3bbdf31f812c19ce71e104a0fde9727d86dcbffb1b3'
+    assert provenance['sourceReadinessJsonSha256'] == '8cfb15cdcbf88796831b2b2c7eb25d44ca411a8acf44a53512906dd7f32e6b07'
+    cfg, _ = load_config(root / 'config.json')
+    context = audit(root)['marketContextFoundation']
+    readiness = {r['name']: r for r in context['ecosSeriesReadiness']}
+    assert context['manualLiveValidation']['status'] == 'COMPLETED_SUCCESS'
+    assert set(evidence['validatedConfig']) == {'KTB_3Y', 'LeadingIndex'}
+    expected = {
+        'KTB_3Y': ('817Y002', '010200000', 'D', '국고채(3년)', '연%', '19981113', '20261002', 6910),
+        'LeadingIndex': ('901Y067', 'I16E', 'M', '선행지수순환변동치', '2020=100', '197001', '202608', 680),
+    }
+    assert len(evidence['series']) == len(readiness) == len(cfg.ecos_series) == 9
+    for row in evidence['series']:
+        name = row['name']
+        matrix = readiness[name]
+        applied = cfg.ecos_series[name]
+        assert matrix['appliedConfig'] == applied
+        assert applied['sourceStatus'] == matrix['sourceStatus'] == row['sourceStatus']
+        assert applied['vintageStatus'] == matrix['vintageStatus'] == row['vintageStatus'] == 'REVISED_HISTORY'
+        assert matrix['publishedAt'] is None and matrix['availableFrom'] is None
+        assert not matrix['historicalConfirmatoryEligible']
+        assert matrix['tableExists'] == row['tableExists'] and matrix['manualProbeExecuted']
+        if name in expected:
+            assert applied == evidence['validatedConfig'][name]
+            assert tuple(applied[k] for k in ['seriesId', 'itemCode', 'cycle', 'itemName', 'unit']) + (
+                matrix['earliestObservation'], matrix['latestObservation'], matrix['observationCount']) == expected[name]
+            assert hashlib.sha256(json.dumps(row['selectedItems'], sort_keys=True, ensure_ascii=False).encode()).hexdigest() == applied['validationEvidenceSha256']
+            assert matrix['semanticMatchVerified'] and row['smoke']['validObservationFound']
+            P.EM.resolve_spec(name, applied, ecos_series=cfg.ecos_series)
+        else:
+            assert applied['itemCode'] is None and applied['cycle'] is None
+            assert matrix['unit'] is None and matrix['earliestObservation'] is None
+            assert not matrix['semanticMatchVerified'] and row['smoke'] is None
+            with pytest.raises(P.EM.AmbiguousSeries):
+                P.EM.resolve_spec(name, applied, ecos_series=cfg.ecos_series)
+    assert readiness['Exports']['sourceStatus'] == 'NOT_AVAILABLE'
+    assert not readiness['Exports']['tableExists']
+    assert not evidence['historicalOutcomeComputed'] and not evidence['modelFitPerformed']
+
+
+def test_retained_ecos_semantic_candidates_preserve_fail_closed_choices():
+    root = Path(__file__).resolve().parents[1]
+    evidence = json.loads((root / 'research_specs/kr-market-context-ecos-evidence-37080934658.json').read_text())
+    for row in evidence['series']:
+        selection, error = P.automatic_selection(row['name'], row['table'], row['semanticAndGroupCandidates'])
+        if row['name'] in evidence['validatedConfig']:
+            assert error is None
+            selected, error = P.validate_selection(row['name'], selection, row['table'], row['semanticAndGroupCandidates'])
+            assert error is None and selected == row['selectedItems']
+        else:
+            assert selection is None and error == row['sourceStatus']

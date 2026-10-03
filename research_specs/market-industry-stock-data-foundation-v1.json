@@ -52,10 +52,10 @@
   "dependencyHashes": {
     ".github/workflows/market-industry-stock-foundation-v1.yml": "7c5c4a56eece31be17f0fa92f9f14660ab2e8f2ea6ebc79cc8d220888f34b1e9",
     ".github/workflows/probes.yml": "6e729b159304ad2005b0878c06bcb672f381acc6401e824cf782e5a8d54ccc34",
-    "config.json": "934769cbc8eb486c1536bc597fbf337f2f011ec18be751266db495efefc9f38c",
+    "config.json": "d1169e1e4a84ded1385e11e591ea01a4b383e7a625960ece9278a0bde3c15273",
     "docs/kr-macro-regime-design-v1.md": "46d9c0c3d154729f216e21776e5439640ad7ac49511f558d5032a12fc7b3d02c",
-    "docs/kr-market-context-foundation-v1.md": "f940123e7fac0345f6168a2bcbe1f6dc370aade767609e7f37f898345ccaf128",
-    "docs/market-industry-stock-data-foundation-v1.md": "b671522ef7e5dd05f7b306e2dc128c1ac8cb71ad33902adefe19de5fac1a1732",
+    "docs/kr-market-context-foundation-v1.md": "95c905d4489e1385967d6d49be335e754ee049b831fb98e13b539fa563853855",
+    "docs/market-industry-stock-data-foundation-v1.md": "22b9bf7896e9f83f792a74633b3685dfd813c2287af351aae61a3b7037fb42de",
     "pipeline/config.py": "217e66ea6b1035716f4a52688aee7b52ed9a68b383bcbcb4ec96851016e18ffa",
     "pipeline/dart_canonical_accounts.py": "d3ba397b84b51404939880a504809876cd01e896b164544142861ef7b615b0a9",
     "pipeline/dart_derive.py": "c18be6391fd8e04118a8e13cb62ace5a20e641f1d67e1c185652ed88572bd457",
@@ -75,6 +75,7 @@
     "pipeline/price_adjustment.py": "ebdde717be22277315186d5f302642cbc8a057fedee84192b7af14b15c405892",
     "pipeline/regime.py": "b5634c109ac19ad6b0e13788f1ce9cde8f20f50019a82a8b4f65f9bc23200aca",
     "pipeline/sectors.py": "1cb470d676eeb24d5fa4976bf8fc0f71f808957f132c908158acb6422fde60ba",
+    "research_specs/kr-market-context-ecos-evidence-37080934658.json": "f3652e539230df3aab8429b810c7bc62888a3919b4b6b13a141dda1dacfe8add",
     "research_specs/kr-market-context-source-v1.schema.json": "b1dc4f00ce6445e237765cc97a40c7507ded16575d64b2ab4cb7ac317cd99900",
     "research_specs/kr-repaired-accounting-snapshot-v1.json": "8dbae2203e1b809060100845f4571016e71fbc78cc09c1b52d9edeb46d38f331",
     "research_specs/market-industry-stock-membership-v1.schema.json": "fa0c826bd6a2665df06da297cb8117738aa733b96255b9f689d7fdd58bd8a11d",
@@ -85,7 +86,7 @@
     "tests/test_alpha_opportunity.py": "e268deece5b79257c188de954e3b417913b5653b03e0fbd8d324e2755e3449ec",
     "tests/test_ecos_macro.py": "de931db0a3f41cb2e0557b71e97690c734d1871672a3aed472f9e9c9f6032028",
     "tests/test_industry_foundation.py": "22137a02c4126609473c428a7b881a0f5bfea99de948aa55e5215fd0590214b9",
-    "tests/test_kr_market_context.py": "7bb5f3f14e410287217826666d7f14cc967172d6b529aaca4a87314e752e93ec"
+    "tests/test_kr_market_context.py": "337ca4fd5ce6b4084f3d2bacf79cd9b20e2b47c5a0c25072b44591f526ec3d48"
   },
   "economicObjective": "Future returns above each relevant market benchmark after realistic investability and costs.",
   "execution": {
@@ -369,7 +370,7 @@
       }
     },
     {
-      "blocker": "live ECOS source validation/release vintages pending",
+      "blocker": "2/9 ECOS source identities validated; seven unresolved definitions/selectors and all historical release vintages remain blocked",
       "family": "krMarketContext",
       "industryPanelStatus": "SEPARATE_STATE_OBJECT",
       "regions": {
@@ -482,6 +483,13 @@
     "contract": "KR_MARKET_CONTEXT_V1",
     "ecosSeriesReadiness": [
       {
+        "appliedConfig": {
+          "cycle": null,
+          "itemCode": null,
+          "seriesId": "722Y001",
+          "sourceStatus": "AMBIGUOUS_SOURCE",
+          "vintageStatus": "REVISED_HISTORY"
+        },
         "availableFrom": null,
         "configuredCandidate": {
           "cycle": null,
@@ -489,21 +497,51 @@
           "seriesId": "722Y001",
           "sourceStatus": "DATA_LINEAGE_UNRESOLVED"
         },
+        "configuredTableCycles": [
+          "A",
+          "D",
+          "M",
+          "Q"
+        ],
+        "configuredTableGroupCounts": {
+          "Group1": 48
+        },
+        "configuredTableItemCount": 48,
         "earliestObservation": null,
         "historicalConfirmatoryEligible": false,
         "itemName": null,
         "latestObservation": null,
-        "manualProbeExecuted": false,
+        "manualProbeExecuted": true,
         "name": "BaseRate",
         "nativeCycle": null,
+        "observationCount": null,
         "publishedAt": null,
+        "selectedItems": null,
         "semanticMatchVerified": false,
-        "sourceStatus": "DATA_LINEAGE_UNRESOLVED",
-        "tableExists": null,
+        "smoke": null,
+        "sourceStatus": "AMBIGUOUS_SOURCE",
+        "table": {
+          "CYCLE": "D",
+          "ORG_NAME": null,
+          "SRCH_YN": "Y",
+          "STAT_CODE": "722Y001",
+          "STAT_NAME": "1.3.1. 한국은행 기준금리 및 여수신금리"
+        },
+        "tableExists": true,
         "unit": null,
         "vintageStatus": "REVISED_HISTORY"
       },
       {
+        "appliedConfig": {
+          "cycle": "D",
+          "itemCode": "010200000",
+          "itemName": "국고채(3년)",
+          "seriesId": "817Y002",
+          "sourceStatus": "LIVE_VALIDATED_SOURCE",
+          "unit": "연%",
+          "validationEvidenceSha256": "6ad1eae9867596e7cf3ea7fb84c1071bf0f209d53ab5dba752e1f1c1f952aed6",
+          "vintageStatus": "REVISED_HISTORY"
+        },
         "availableFrom": null,
         "configuredCandidate": {
           "cycle": null,
@@ -511,21 +549,63 @@
           "seriesId": "817Y002",
           "sourceStatus": "DATA_LINEAGE_UNRESOLVED"
         },
-        "earliestObservation": null,
+        "configuredTableCycles": [
+          "D"
+        ],
+        "configuredTableGroupCounts": {
+          "Group1": 27
+        },
+        "configuredTableItemCount": 27,
+        "earliestObservation": "19981113",
         "historicalConfirmatoryEligible": false,
-        "itemName": null,
-        "latestObservation": null,
-        "manualProbeExecuted": false,
+        "itemName": "국고채(3년)",
+        "latestObservation": "20261002",
+        "manualProbeExecuted": true,
         "name": "KTB_3Y",
-        "nativeCycle": null,
+        "nativeCycle": "D",
+        "observationCount": 6910,
         "publishedAt": null,
-        "semanticMatchVerified": false,
-        "sourceStatus": "DATA_LINEAGE_UNRESOLVED",
-        "tableExists": null,
-        "unit": null,
+        "selectedItems": [
+          {
+            "CYCLE": "D",
+            "DATA_CNT": 6910,
+            "END_TIME": "20261002",
+            "GRP_CODE": "Group1",
+            "GRP_NAME": "계정항목",
+            "ITEM_CODE": "010200000",
+            "ITEM_NAME": "국고채(3년)",
+            "START_TIME": "19981113",
+            "STAT_CODE": "817Y002",
+            "STAT_NAME": "1.3.2.1. 시장금리(일별)",
+            "UNIT_NAME": "연%"
+          }
+        ],
+        "semanticMatchVerified": true,
+        "smoke": {
+          "errorCode": null,
+          "period": "20261002",
+          "validObservationFound": true
+        },
+        "sourceStatus": "LIVE_VALIDATED_SOURCE",
+        "table": {
+          "CYCLE": "D",
+          "ORG_NAME": "한국은행",
+          "SRCH_YN": "Y",
+          "STAT_CODE": "817Y002",
+          "STAT_NAME": "1.3.2.1. 시장금리(일별)"
+        },
+        "tableExists": true,
+        "unit": "연%",
         "vintageStatus": "REVISED_HISTORY"
       },
       {
+        "appliedConfig": {
+          "cycle": null,
+          "itemCode": null,
+          "seriesId": "817Y002",
+          "sourceStatus": "AMBIGUOUS_SOURCE",
+          "vintageStatus": "REVISED_HISTORY"
+        },
         "availableFrom": null,
         "configuredCandidate": {
           "cycle": null,
@@ -533,21 +613,45 @@
           "seriesId": "817Y002",
           "sourceStatus": "DATA_LINEAGE_UNRESOLVED"
         },
+        "configuredTableCycles": [
+          "D"
+        ],
+        "configuredTableGroupCounts": {
+          "Group1": 27
+        },
+        "configuredTableItemCount": 27,
         "earliestObservation": null,
         "historicalConfirmatoryEligible": false,
         "itemName": null,
         "latestObservation": null,
-        "manualProbeExecuted": false,
+        "manualProbeExecuted": true,
         "name": "CorpBond_3Y",
         "nativeCycle": null,
+        "observationCount": null,
         "publishedAt": null,
+        "selectedItems": null,
         "semanticMatchVerified": false,
-        "sourceStatus": "DATA_LINEAGE_UNRESOLVED",
-        "tableExists": null,
+        "smoke": null,
+        "sourceStatus": "AMBIGUOUS_SOURCE",
+        "table": {
+          "CYCLE": "D",
+          "ORG_NAME": "한국은행",
+          "SRCH_YN": "Y",
+          "STAT_CODE": "817Y002",
+          "STAT_NAME": "1.3.2.1. 시장금리(일별)"
+        },
+        "tableExists": true,
         "unit": null,
         "vintageStatus": "REVISED_HISTORY"
       },
       {
+        "appliedConfig": {
+          "cycle": null,
+          "itemCode": null,
+          "seriesId": "901Y009",
+          "sourceStatus": "AMBIGUOUS_SOURCE",
+          "vintageStatus": "REVISED_HISTORY"
+        },
         "availableFrom": null,
         "configuredCandidate": {
           "cycle": null,
@@ -555,21 +659,47 @@
           "seriesId": "901Y009",
           "sourceStatus": "DATA_LINEAGE_UNRESOLVED"
         },
+        "configuredTableCycles": [
+          "A",
+          "M",
+          "Q"
+        ],
+        "configuredTableGroupCounts": {
+          "Group1": 1743
+        },
+        "configuredTableItemCount": 1743,
         "earliestObservation": null,
         "historicalConfirmatoryEligible": false,
         "itemName": null,
         "latestObservation": null,
-        "manualProbeExecuted": false,
+        "manualProbeExecuted": true,
         "name": "CPI",
         "nativeCycle": null,
+        "observationCount": null,
         "publishedAt": null,
+        "selectedItems": null,
         "semanticMatchVerified": false,
-        "sourceStatus": "DATA_LINEAGE_UNRESOLVED",
-        "tableExists": null,
+        "smoke": null,
+        "sourceStatus": "AMBIGUOUS_SOURCE",
+        "table": {
+          "CYCLE": "M",
+          "ORG_NAME": "국가데이터처(02-2012-9114)",
+          "SRCH_YN": "Y",
+          "STAT_CODE": "901Y009",
+          "STAT_NAME": "4.2.1. 소비자물가지수"
+        },
+        "tableExists": true,
         "unit": null,
         "vintageStatus": "REVISED_HISTORY"
       },
       {
+        "appliedConfig": {
+          "cycle": null,
+          "itemCode": null,
+          "seriesId": "901Y010",
+          "sourceStatus": "DATA_LINEAGE_UNRESOLVED",
+          "vintageStatus": "REVISED_HISTORY"
+        },
         "availableFrom": null,
         "configuredCandidate": {
           "cycle": null,
@@ -577,21 +707,47 @@
           "seriesId": "901Y010",
           "sourceStatus": "DATA_LINEAGE_UNRESOLVED"
         },
+        "configuredTableCycles": [
+          "A",
+          "M",
+          "Q"
+        ],
+        "configuredTableGroupCounts": {
+          "Group1": 104
+        },
+        "configuredTableItemCount": 104,
         "earliestObservation": null,
         "historicalConfirmatoryEligible": false,
         "itemName": null,
         "latestObservation": null,
-        "manualProbeExecuted": false,
+        "manualProbeExecuted": true,
         "name": "CoreCPI",
         "nativeCycle": null,
+        "observationCount": null,
         "publishedAt": null,
+        "selectedItems": null,
         "semanticMatchVerified": false,
+        "smoke": null,
         "sourceStatus": "DATA_LINEAGE_UNRESOLVED",
-        "tableExists": null,
+        "table": {
+          "CYCLE": "M",
+          "ORG_NAME": "국가데이터처(02-2012-9114)",
+          "SRCH_YN": "Y",
+          "STAT_CODE": "901Y010",
+          "STAT_NAME": "4.2.2. 소비자물가지수(특수분류)"
+        },
+        "tableExists": true,
         "unit": null,
         "vintageStatus": "REVISED_HISTORY"
       },
       {
+        "appliedConfig": {
+          "cycle": null,
+          "itemCode": null,
+          "seriesId": "901Y033",
+          "sourceStatus": "DATA_LINEAGE_UNRESOLVED",
+          "vintageStatus": "REVISED_HISTORY"
+        },
         "availableFrom": null,
         "configuredCandidate": {
           "cycle": null,
@@ -599,21 +755,51 @@
           "seriesId": "901Y033",
           "sourceStatus": "DATA_LINEAGE_UNRESOLVED"
         },
+        "configuredTableCycles": [
+          "A",
+          "M",
+          "Q"
+        ],
+        "configuredTableGroupCounts": {
+          "Group1": 15,
+          "Group2": 5
+        },
+        "configuredTableItemCount": 20,
         "earliestObservation": null,
         "historicalConfirmatoryEligible": false,
         "itemName": null,
         "latestObservation": null,
-        "manualProbeExecuted": false,
+        "manualProbeExecuted": true,
         "name": "IndustrialProduction",
         "nativeCycle": null,
+        "observationCount": null,
         "publishedAt": null,
+        "selectedItems": null,
         "semanticMatchVerified": false,
+        "smoke": null,
         "sourceStatus": "DATA_LINEAGE_UNRESOLVED",
-        "tableExists": null,
+        "table": {
+          "CYCLE": "M",
+          "ORG_NAME": "국가데이터처(042-481-2148)",
+          "SRCH_YN": "Y",
+          "STAT_CODE": "901Y033",
+          "STAT_NAME": "8.1.4. 전산업생산지수(농림어업제외)"
+        },
+        "tableExists": true,
         "unit": null,
         "vintageStatus": "REVISED_HISTORY"
       },
       {
+        "appliedConfig": {
+          "cycle": "M",
+          "itemCode": "I16E",
+          "itemName": "선행지수순환변동치",
+          "seriesId": "901Y067",
+          "sourceStatus": "LIVE_VALIDATED_SOURCE",
+          "unit": "2020=100",
+          "validationEvidenceSha256": "a1f230f74bb11c3143be51ae0ebd837b1f0c41d0d5c0950a92c5621918844ee4",
+          "vintageStatus": "REVISED_HISTORY"
+        },
         "availableFrom": null,
         "configuredCandidate": {
           "cycle": null,
@@ -621,21 +807,63 @@
           "seriesId": "901Y067",
           "sourceStatus": "DATA_LINEAGE_UNRESOLVED"
         },
-        "earliestObservation": null,
+        "configuredTableCycles": [
+          "M"
+        ],
+        "configuredTableGroupCounts": {
+          "Group1": 5
+        },
+        "configuredTableItemCount": 5,
+        "earliestObservation": "197001",
         "historicalConfirmatoryEligible": false,
-        "itemName": null,
-        "latestObservation": null,
-        "manualProbeExecuted": false,
+        "itemName": "선행지수순환변동치",
+        "latestObservation": "202608",
+        "manualProbeExecuted": true,
         "name": "LeadingIndex",
-        "nativeCycle": null,
+        "nativeCycle": "M",
+        "observationCount": 680,
         "publishedAt": null,
-        "semanticMatchVerified": false,
-        "sourceStatus": "DATA_LINEAGE_UNRESOLVED",
-        "tableExists": null,
-        "unit": null,
+        "selectedItems": [
+          {
+            "CYCLE": "M",
+            "DATA_CNT": 680,
+            "END_TIME": "202608",
+            "GRP_CODE": "Group1",
+            "GRP_NAME": "계정항목",
+            "ITEM_CODE": "I16E",
+            "ITEM_NAME": "선행지수순환변동치",
+            "START_TIME": "197001",
+            "STAT_CODE": "901Y067",
+            "STAT_NAME": "8.1.2. 경기종합지수",
+            "UNIT_NAME": "2020=100"
+          }
+        ],
+        "semanticMatchVerified": true,
+        "smoke": {
+          "errorCode": null,
+          "period": "202608",
+          "validObservationFound": true
+        },
+        "sourceStatus": "LIVE_VALIDATED_SOURCE",
+        "table": {
+          "CYCLE": "M",
+          "ORG_NAME": "국가데이터처 ( ☎ 042-481-2229 )",
+          "SRCH_YN": "Y",
+          "STAT_CODE": "901Y067",
+          "STAT_NAME": "8.1.2. 경기종합지수"
+        },
+        "tableExists": true,
+        "unit": "2020=100",
         "vintageStatus": "REVISED_HISTORY"
       },
       {
+        "appliedConfig": {
+          "cycle": null,
+          "itemCode": null,
+          "seriesId": "901Y011",
+          "sourceStatus": "NOT_AVAILABLE",
+          "vintageStatus": "REVISED_HISTORY"
+        },
         "availableFrom": null,
         "configuredCandidate": {
           "cycle": null,
@@ -643,21 +871,35 @@
           "seriesId": "901Y011",
           "sourceStatus": "DATA_LINEAGE_UNRESOLVED"
         },
+        "configuredTableCycles": [],
+        "configuredTableGroupCounts": {},
+        "configuredTableItemCount": 0,
         "earliestObservation": null,
         "historicalConfirmatoryEligible": false,
         "itemName": null,
         "latestObservation": null,
-        "manualProbeExecuted": false,
+        "manualProbeExecuted": true,
         "name": "Exports",
         "nativeCycle": null,
+        "observationCount": null,
         "publishedAt": null,
+        "selectedItems": null,
         "semanticMatchVerified": false,
-        "sourceStatus": "DATA_LINEAGE_UNRESOLVED",
-        "tableExists": null,
+        "smoke": null,
+        "sourceStatus": "NOT_AVAILABLE",
+        "table": null,
+        "tableExists": false,
         "unit": null,
         "vintageStatus": "REVISED_HISTORY"
       },
       {
+        "appliedConfig": {
+          "cycle": null,
+          "itemCode": null,
+          "seriesId": "101Y004",
+          "sourceStatus": "DATA_LINEAGE_UNRESOLVED",
+          "vintageStatus": "REVISED_HISTORY"
+        },
         "availableFrom": null,
         "configuredCandidate": {
           "cycle": null,
@@ -665,17 +907,36 @@
           "seriesId": "101Y004",
           "sourceStatus": "DATA_LINEAGE_UNRESOLVED"
         },
+        "configuredTableCycles": [
+          "A",
+          "M",
+          "Q"
+        ],
+        "configuredTableGroupCounts": {
+          "Group1": 48
+        },
+        "configuredTableItemCount": 48,
         "earliestObservation": null,
         "historicalConfirmatoryEligible": false,
         "itemName": null,
         "latestObservation": null,
-        "manualProbeExecuted": false,
+        "manualProbeExecuted": true,
         "name": "M2",
         "nativeCycle": null,
+        "observationCount": null,
         "publishedAt": null,
+        "selectedItems": null,
         "semanticMatchVerified": false,
+        "smoke": null,
         "sourceStatus": "DATA_LINEAGE_UNRESOLVED",
-        "tableExists": null,
+        "table": {
+          "CYCLE": "M",
+          "ORG_NAME": null,
+          "SRCH_YN": "Y",
+          "STAT_CODE": "101Y004",
+          "STAT_NAME": "1.7.3.1.2. M2 상품별 구성내역(평잔, 원계열)"
+        },
+        "tableExists": true,
         "unit": null,
         "vintageStatus": "REVISED_HISTORY"
       }
@@ -812,19 +1073,29 @@
     "knowledgeRule": "observedThrough <= t AND availableFrom <= t; revised/current values also fetchedAt <= t",
     "krRegimeLabels": false,
     "manualLiveValidation": {
+      "appliedOffline": true,
+      "artifactDigest": "sha256:6a0f59e13737b55102cfd3bbdf31f812c19ce71e104a0fde9727d86dcbffb1b3",
+      "artifactId": 11258377162,
+      "artifactName": "ecos-market-context-source-metadata-37080934658",
       "branch": "research/market-industry-stock-data-foundation-v1",
-      "dispatchBlocker": "Connector has no dispatch operation; no local authenticated dispatch credential; browser fallback requires permission.",
+      "checkedAt": "2026-10-03T00:15:46.789703+00:00",
+      "evidenceFile": "research_specs/kr-market-context-ecos-evidence-37080934658.json",
+      "evidenceScope": "METADATA_AND_LATEST_PERIOD_SMOKE_ONLY",
       "probe": "ecos-market-context",
+      "runId": 37080934658,
+      "runUrl": "https://github.com/jaehojung1879-netizen/Investment/actions/runs/37080934658",
       "runtimeVariable": "ECOS_API_KEY",
       "secretName": "ECOS",
-      "status": "NOT_DISPATCHED",
+      "sourceHead": "6ebe13922e899b88e938f4f7aec7b8575ec47f34",
+      "sourceReadinessJsonSha256": "8cfb15cdcbf88796831b2b2c7eb25d44ca411a8acf44a53512906dd7f32e6b07",
+      "status": "COMPLETED_SUCCESS",
       "workflow": "probes.yml"
     },
     "primitiveStatus": "READY_CONTEXT_PRIMITIVE",
     "productionWired": false,
     "publicationLagCreatesVintage": false,
     "remainingGaps": [
-      "manual dispatch and exact semantic selections",
+      "seven unresolved ECOS series: native-cycle choices, corporate rating, Core CPI definition, seasonal adjustment/group selectors and export table identity",
       "historical release vintages",
       "PIT breadth/concentration",
       "historical taxonomy/membership",
@@ -966,12 +1237,25 @@
       "status": "NOT_AVAILABLE"
     },
     {
-      "blocker": "Manual metadata/smoke dispatch pending; no item/cycle guessed; historical release vintages absent.",
+      "blocker": "Exact artifact validates 2/9 source identities and latest-period smoke; seven series remain fail-closed; historical release vintages absent.",
       "regions": [
         "KR"
       ],
       "sourceId": "KR_ECOS_NATIVE_MACRO",
-      "status": "DATA_LINEAGE_UNRESOLVED",
+      "status": "PARTIALLY_LIVE_VALIDATED_SOURCE",
+      "unresolvedSeries": [
+        "BaseRate",
+        "CorpBond_3Y",
+        "CPI",
+        "CoreCPI",
+        "IndustrialProduction",
+        "Exports",
+        "M2"
+      ],
+      "validatedSeries": [
+        "KTB_3Y",
+        "LeadingIndex"
+      ],
       "vintageStatus": "REVISED_HISTORY"
     },
     {

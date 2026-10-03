@@ -1,0 +1,752 @@
+{
+  "artifactProvenance": {
+    "artifactDigest": "sha256:6a0f59e13737b55102cfd3bbdf31f812c19ce71e104a0fde9727d86dcbffb1b3",
+    "artifactId": 11258377162,
+    "artifactName": "ecos-market-context-source-metadata-37080934658",
+    "checkedAt": "2026-10-03T00:15:46.789703+00:00",
+    "runId": 37080934658,
+    "runUrl": "https://github.com/jaehojung1879-netizen/Investment/actions/runs/37080934658",
+    "sourceHead": "6ebe13922e899b88e938f4f7aec7b8575ec47f34",
+    "sourceReadinessJsonSha256": "8cfb15cdcbf88796831b2b2c7eb25d44ca411a8acf44a53512906dd7f32e6b07"
+  },
+  "catalogError": null,
+  "checkedAt": "2026-10-03T00:15:46.789703+00:00",
+  "contract": "ECOS_MARKET_CONTEXT_SOURCE_PROBE_V1",
+  "credentialMode": "MANUAL_ACTIONS_SECRET_ECOS",
+  "extractScope": "Exact source fields; candidateTables/candidateItems omitted. Configured-table item counts and semantic/group candidates retained below. Full sanitized JSON is identified by SHA-256 in the exact Actions artifact.",
+  "historicalOutcomeComputed": false,
+  "modelFitPerformed": false,
+  "series": [
+    {
+      "availableFrom": null,
+      "configuredCandidate": {
+        "cycle": null,
+        "itemCode": null,
+        "seriesId": "722Y001",
+        "sourceStatus": "DATA_LINEAGE_UNRESOLVED"
+      },
+      "configuredTableCycles": [
+        "A",
+        "D",
+        "M",
+        "Q"
+      ],
+      "configuredTableGroupCounts": {
+        "Group1": 48
+      },
+      "configuredTableItemCount": 48,
+      "historicalConfirmatoryEligible": false,
+      "name": "BaseRate",
+      "publishedAt": null,
+      "selectedItems": null,
+      "semanticAndGroupCandidates": [
+        {
+          "CYCLE": "A",
+          "DATA_CNT": 27,
+          "END_TIME": "2025",
+          "GRP_CODE": "Group1",
+          "GRP_NAME": "계정항목",
+          "ITEM_CODE": "0101000",
+          "ITEM_NAME": "한국은행 기준금리",
+          "START_TIME": "1999",
+          "STAT_CODE": "722Y001",
+          "STAT_NAME": "1.3.1. 한국은행 기준금리 및 여수신금리",
+          "UNIT_NAME": "연%"
+        },
+        {
+          "CYCLE": "D",
+          "DATA_CNT": 10010,
+          "END_TIME": "20261001",
+          "GRP_CODE": "Group1",
+          "GRP_NAME": "계정항목",
+          "ITEM_CODE": "0101000",
+          "ITEM_NAME": "한국은행 기준금리",
+          "START_TIME": "19990506",
+          "STAT_CODE": "722Y001",
+          "STAT_NAME": "1.3.1. 한국은행 기준금리 및 여수신금리",
+          "UNIT_NAME": "연%"
+        },
+        {
+          "CYCLE": "M",
+          "DATA_CNT": 329,
+          "END_TIME": "202609",
+          "GRP_CODE": "Group1",
+          "GRP_NAME": "계정항목",
+          "ITEM_CODE": "0101000",
+          "ITEM_NAME": "한국은행 기준금리",
+          "START_TIME": "199905",
+          "STAT_CODE": "722Y001",
+          "STAT_NAME": "1.3.1. 한국은행 기준금리 및 여수신금리",
+          "UNIT_NAME": "연%"
+        },
+        {
+          "CYCLE": "Q",
+          "DATA_CNT": 110,
+          "END_TIME": "2026Q3",
+          "GRP_CODE": "Group1",
+          "GRP_NAME": "계정항목",
+          "ITEM_CODE": "0101000",
+          "ITEM_NAME": "한국은행 기준금리",
+          "START_TIME": "1999Q2",
+          "STAT_CODE": "722Y001",
+          "STAT_NAME": "1.3.1. 한국은행 기준금리 및 여수신금리",
+          "UNIT_NAME": "연%"
+        }
+      ],
+      "smoke": null,
+      "sourceStatus": "AMBIGUOUS_SOURCE",
+      "table": {
+        "CYCLE": "D",
+        "ORG_NAME": null,
+        "SRCH_YN": "Y",
+        "STAT_CODE": "722Y001",
+        "STAT_NAME": "1.3.1. 한국은행 기준금리 및 여수신금리"
+      },
+      "tableExists": true,
+      "vintageStatus": "REVISED_HISTORY"
+    },
+    {
+      "availableFrom": null,
+      "configuredCandidate": {
+        "cycle": null,
+        "itemCode": null,
+        "seriesId": "817Y002",
+        "sourceStatus": "DATA_LINEAGE_UNRESOLVED"
+      },
+      "configuredTableCycles": [
+        "D"
+      ],
+      "configuredTableGroupCounts": {
+        "Group1": 27
+      },
+      "configuredTableItemCount": 27,
+      "historicalConfirmatoryEligible": false,
+      "name": "KTB_3Y",
+      "publishedAt": null,
+      "selectedItems": [
+        {
+          "CYCLE": "D",
+          "DATA_CNT": 6910,
+          "END_TIME": "20261002",
+          "GRP_CODE": "Group1",
+          "GRP_NAME": "계정항목",
+          "ITEM_CODE": "010200000",
+          "ITEM_NAME": "국고채(3년)",
+          "START_TIME": "19981113",
+          "STAT_CODE": "817Y002",
+          "STAT_NAME": "1.3.2.1. 시장금리(일별)",
+          "UNIT_NAME": "연%"
+        }
+      ],
+      "semanticAndGroupCandidates": [
+        {
+          "CYCLE": "D",
+          "DATA_CNT": 6910,
+          "END_TIME": "20261002",
+          "GRP_CODE": "Group1",
+          "GRP_NAME": "계정항목",
+          "ITEM_CODE": "010200000",
+          "ITEM_NAME": "국고채(3년)",
+          "START_TIME": "19981113",
+          "STAT_CODE": "817Y002",
+          "STAT_NAME": "1.3.2.1. 시장금리(일별)",
+          "UNIT_NAME": "연%"
+        }
+      ],
+      "smoke": {
+        "errorCode": null,
+        "period": "20261002",
+        "validObservationFound": true
+      },
+      "sourceStatus": "LIVE_VALIDATED_SOURCE",
+      "table": {
+        "CYCLE": "D",
+        "ORG_NAME": "한국은행",
+        "SRCH_YN": "Y",
+        "STAT_CODE": "817Y002",
+        "STAT_NAME": "1.3.2.1. 시장금리(일별)"
+      },
+      "tableExists": true,
+      "vintageStatus": "REVISED_HISTORY"
+    },
+    {
+      "availableFrom": null,
+      "configuredCandidate": {
+        "cycle": null,
+        "itemCode": null,
+        "seriesId": "817Y002",
+        "sourceStatus": "DATA_LINEAGE_UNRESOLVED"
+      },
+      "configuredTableCycles": [
+        "D"
+      ],
+      "configuredTableGroupCounts": {
+        "Group1": 27
+      },
+      "configuredTableItemCount": 27,
+      "historicalConfirmatoryEligible": false,
+      "name": "CorpBond_3Y",
+      "publishedAt": null,
+      "selectedItems": null,
+      "semanticAndGroupCandidates": [
+        {
+          "CYCLE": "D",
+          "DATA_CNT": 8060,
+          "END_TIME": "20261002",
+          "GRP_CODE": "Group1",
+          "GRP_NAME": "계정항목",
+          "ITEM_CODE": "010300000",
+          "ITEM_NAME": "회사채(3년, AA-)",
+          "START_TIME": "19950103",
+          "STAT_CODE": "817Y002",
+          "STAT_NAME": "1.3.2.1. 시장금리(일별)",
+          "UNIT_NAME": "연%"
+        },
+        {
+          "CYCLE": "D",
+          "DATA_CNT": 6538,
+          "END_TIME": "20261002",
+          "GRP_CODE": "Group1",
+          "GRP_NAME": "계정항목",
+          "ITEM_CODE": "010320000",
+          "ITEM_NAME": "회사채(3년, BBB-)",
+          "START_TIME": "20000930",
+          "STAT_CODE": "817Y002",
+          "STAT_NAME": "1.3.2.1. 시장금리(일별)",
+          "UNIT_NAME": "연%"
+        }
+      ],
+      "smoke": null,
+      "sourceStatus": "AMBIGUOUS_SOURCE",
+      "table": {
+        "CYCLE": "D",
+        "ORG_NAME": "한국은행",
+        "SRCH_YN": "Y",
+        "STAT_CODE": "817Y002",
+        "STAT_NAME": "1.3.2.1. 시장금리(일별)"
+      },
+      "tableExists": true,
+      "vintageStatus": "REVISED_HISTORY"
+    },
+    {
+      "availableFrom": null,
+      "configuredCandidate": {
+        "cycle": null,
+        "itemCode": null,
+        "seriesId": "901Y009",
+        "sourceStatus": "DATA_LINEAGE_UNRESOLVED"
+      },
+      "configuredTableCycles": [
+        "A",
+        "M",
+        "Q"
+      ],
+      "configuredTableGroupCounts": {
+        "Group1": 1743
+      },
+      "configuredTableItemCount": 1743,
+      "historicalConfirmatoryEligible": false,
+      "name": "CPI",
+      "publishedAt": null,
+      "selectedItems": null,
+      "semanticAndGroupCandidates": [
+        {
+          "CYCLE": "A",
+          "DATA_CNT": 61,
+          "END_TIME": "2025",
+          "GRP_CODE": "Group1",
+          "GRP_NAME": "계정항목",
+          "ITEM_CODE": "0",
+          "ITEM_NAME": "총지수",
+          "START_TIME": "1965",
+          "STAT_CODE": "901Y009",
+          "STAT_NAME": "4.2.1. 소비자물가지수",
+          "UNIT_NAME": "2020=100"
+        },
+        {
+          "CYCLE": "M",
+          "DATA_CNT": 740,
+          "END_TIME": "202608",
+          "GRP_CODE": "Group1",
+          "GRP_NAME": "계정항목",
+          "ITEM_CODE": "0",
+          "ITEM_NAME": "총지수",
+          "START_TIME": "196501",
+          "STAT_CODE": "901Y009",
+          "STAT_NAME": "4.2.1. 소비자물가지수",
+          "UNIT_NAME": "2020=100"
+        },
+        {
+          "CYCLE": "Q",
+          "DATA_CNT": 246,
+          "END_TIME": "2026Q2",
+          "GRP_CODE": "Group1",
+          "GRP_NAME": "계정항목",
+          "ITEM_CODE": "0",
+          "ITEM_NAME": "총지수",
+          "START_TIME": "1965Q1",
+          "STAT_CODE": "901Y009",
+          "STAT_NAME": "4.2.1. 소비자물가지수",
+          "UNIT_NAME": "2020=100"
+        }
+      ],
+      "smoke": null,
+      "sourceStatus": "AMBIGUOUS_SOURCE",
+      "table": {
+        "CYCLE": "M",
+        "ORG_NAME": "국가데이터처(02-2012-9114)",
+        "SRCH_YN": "Y",
+        "STAT_CODE": "901Y009",
+        "STAT_NAME": "4.2.1. 소비자물가지수"
+      },
+      "tableExists": true,
+      "vintageStatus": "REVISED_HISTORY"
+    },
+    {
+      "availableFrom": null,
+      "configuredCandidate": {
+        "cycle": null,
+        "itemCode": null,
+        "seriesId": "901Y010",
+        "sourceStatus": "DATA_LINEAGE_UNRESOLVED"
+      },
+      "configuredTableCycles": [
+        "A",
+        "M",
+        "Q"
+      ],
+      "configuredTableGroupCounts": {
+        "Group1": 104
+      },
+      "configuredTableItemCount": 104,
+      "historicalConfirmatoryEligible": false,
+      "name": "CoreCPI",
+      "publishedAt": null,
+      "selectedItems": null,
+      "semanticAndGroupCandidates": [
+        {
+          "CYCLE": "A",
+          "DATA_CNT": 51,
+          "END_TIME": "2025",
+          "GRP_CODE": "Group1",
+          "GRP_NAME": "계정항목",
+          "ITEM_CODE": "QB",
+          "ITEM_NAME": "농산물및석유류제외지수 2)",
+          "START_TIME": "1975",
+          "STAT_CODE": "901Y010",
+          "STAT_NAME": "4.2.2. 소비자물가지수(특수분류)",
+          "UNIT_NAME": "2020=100"
+        },
+        {
+          "CYCLE": "M",
+          "DATA_CNT": 620,
+          "END_TIME": "202608",
+          "GRP_CODE": "Group1",
+          "GRP_NAME": "계정항목",
+          "ITEM_CODE": "QB",
+          "ITEM_NAME": "농산물및석유류제외지수 2)",
+          "START_TIME": "197501",
+          "STAT_CODE": "901Y010",
+          "STAT_NAME": "4.2.2. 소비자물가지수(특수분류)",
+          "UNIT_NAME": "2020=100"
+        },
+        {
+          "CYCLE": "Q",
+          "DATA_CNT": 206,
+          "END_TIME": "2026Q2",
+          "GRP_CODE": "Group1",
+          "GRP_NAME": "계정항목",
+          "ITEM_CODE": "QB",
+          "ITEM_NAME": "농산물및석유류제외지수 2)",
+          "START_TIME": "1975Q1",
+          "STAT_CODE": "901Y010",
+          "STAT_NAME": "4.2.2. 소비자물가지수(특수분류)",
+          "UNIT_NAME": "2020=100"
+        },
+        {
+          "CYCLE": "A",
+          "DATA_CNT": 36,
+          "END_TIME": "2025",
+          "GRP_CODE": "Group1",
+          "GRP_NAME": "계정항목",
+          "ITEM_CODE": "DB",
+          "ITEM_NAME": "식료품 및 에너지제외 지수 3)",
+          "START_TIME": "1990",
+          "STAT_CODE": "901Y010",
+          "STAT_NAME": "4.2.2. 소비자물가지수(특수분류)",
+          "UNIT_NAME": "2020=100"
+        },
+        {
+          "CYCLE": "M",
+          "DATA_CNT": 440,
+          "END_TIME": "202608",
+          "GRP_CODE": "Group1",
+          "GRP_NAME": "계정항목",
+          "ITEM_CODE": "DB",
+          "ITEM_NAME": "식료품 및 에너지제외 지수 3)",
+          "START_TIME": "199001",
+          "STAT_CODE": "901Y010",
+          "STAT_NAME": "4.2.2. 소비자물가지수(특수분류)",
+          "UNIT_NAME": "2020=100"
+        },
+        {
+          "CYCLE": "Q",
+          "DATA_CNT": 146,
+          "END_TIME": "2026Q2",
+          "GRP_CODE": "Group1",
+          "GRP_NAME": "계정항목",
+          "ITEM_CODE": "DB",
+          "ITEM_NAME": "식료품 및 에너지제외 지수 3)",
+          "START_TIME": "1990Q1",
+          "STAT_CODE": "901Y010",
+          "STAT_NAME": "4.2.2. 소비자물가지수(특수분류)",
+          "UNIT_NAME": "2020=100"
+        }
+      ],
+      "smoke": null,
+      "sourceStatus": "DATA_LINEAGE_UNRESOLVED",
+      "table": {
+        "CYCLE": "M",
+        "ORG_NAME": "국가데이터처(02-2012-9114)",
+        "SRCH_YN": "Y",
+        "STAT_CODE": "901Y010",
+        "STAT_NAME": "4.2.2. 소비자물가지수(특수분류)"
+      },
+      "tableExists": true,
+      "vintageStatus": "REVISED_HISTORY"
+    },
+    {
+      "availableFrom": null,
+      "configuredCandidate": {
+        "cycle": null,
+        "itemCode": null,
+        "seriesId": "901Y033",
+        "sourceStatus": "DATA_LINEAGE_UNRESOLVED"
+      },
+      "configuredTableCycles": [
+        "A",
+        "M",
+        "Q"
+      ],
+      "configuredTableGroupCounts": {
+        "Group1": 15,
+        "Group2": 5
+      },
+      "configuredTableItemCount": 20,
+      "historicalConfirmatoryEligible": false,
+      "name": "IndustrialProduction",
+      "publishedAt": null,
+      "selectedItems": null,
+      "semanticAndGroupCandidates": [
+        {
+          "CYCLE": "A",
+          "DATA_CNT": 26,
+          "END_TIME": "2025",
+          "GRP_CODE": "Group1",
+          "GRP_NAME": "계정항목",
+          "ITEM_CODE": "A00",
+          "ITEM_NAME": "전산업생산지수(농림어업 제외)",
+          "START_TIME": "2000",
+          "STAT_CODE": "901Y033",
+          "STAT_NAME": "8.1.4. 전산업생산지수(농림어업제외)",
+          "UNIT_NAME": "2020=100"
+        },
+        {
+          "CYCLE": "M",
+          "DATA_CNT": 640,
+          "END_TIME": "202608",
+          "GRP_CODE": "Group1",
+          "GRP_NAME": "계정항목",
+          "ITEM_CODE": "A00",
+          "ITEM_NAME": "전산업생산지수(농림어업 제외)",
+          "START_TIME": "200001",
+          "STAT_CODE": "901Y033",
+          "STAT_NAME": "8.1.4. 전산업생산지수(농림어업제외)",
+          "UNIT_NAME": "2020=100"
+        },
+        {
+          "CYCLE": "Q",
+          "DATA_CNT": 212,
+          "END_TIME": "2026Q2",
+          "GRP_CODE": "Group1",
+          "GRP_NAME": "계정항목",
+          "ITEM_CODE": "A00",
+          "ITEM_NAME": "전산업생산지수(농림어업 제외)",
+          "START_TIME": "2000Q1",
+          "STAT_CODE": "901Y033",
+          "STAT_NAME": "8.1.4. 전산업생산지수(농림어업제외)",
+          "UNIT_NAME": "2020=100"
+        },
+        {
+          "CYCLE": "A",
+          "DATA_CNT": 130,
+          "END_TIME": "2025",
+          "GRP_CODE": "Group2",
+          "GRP_NAME": "구분코드",
+          "ITEM_CODE": "1",
+          "ITEM_NAME": "원계열",
+          "START_TIME": "2000",
+          "STAT_CODE": "901Y033",
+          "STAT_NAME": "8.1.4. 전산업생산지수(농림어업제외)",
+          "UNIT_NAME": null
+        },
+        {
+          "CYCLE": "M",
+          "DATA_CNT": 1600,
+          "END_TIME": "202608",
+          "GRP_CODE": "Group2",
+          "GRP_NAME": "구분코드",
+          "ITEM_CODE": "1",
+          "ITEM_NAME": "원계열",
+          "START_TIME": "200001",
+          "STAT_CODE": "901Y033",
+          "STAT_NAME": "8.1.4. 전산업생산지수(농림어업제외)",
+          "UNIT_NAME": null
+        },
+        {
+          "CYCLE": "Q",
+          "DATA_CNT": 530,
+          "END_TIME": "2026Q2",
+          "GRP_CODE": "Group2",
+          "GRP_NAME": "구분코드",
+          "ITEM_CODE": "1",
+          "ITEM_NAME": "원계열",
+          "START_TIME": "2000Q1",
+          "STAT_CODE": "901Y033",
+          "STAT_NAME": "8.1.4. 전산업생산지수(농림어업제외)",
+          "UNIT_NAME": null
+        },
+        {
+          "CYCLE": "M",
+          "DATA_CNT": 1600,
+          "END_TIME": "202608",
+          "GRP_CODE": "Group2",
+          "GRP_NAME": "구분코드",
+          "ITEM_CODE": "2",
+          "ITEM_NAME": "계절조정",
+          "START_TIME": "200001",
+          "STAT_CODE": "901Y033",
+          "STAT_NAME": "8.1.4. 전산업생산지수(농림어업제외)",
+          "UNIT_NAME": null
+        },
+        {
+          "CYCLE": "Q",
+          "DATA_CNT": 530,
+          "END_TIME": "2026Q2",
+          "GRP_CODE": "Group2",
+          "GRP_NAME": "구분코드",
+          "ITEM_CODE": "2",
+          "ITEM_NAME": "계절조정",
+          "START_TIME": "2000Q1",
+          "STAT_CODE": "901Y033",
+          "STAT_NAME": "8.1.4. 전산업생산지수(농림어업제외)",
+          "UNIT_NAME": null
+        }
+      ],
+      "smoke": null,
+      "sourceStatus": "DATA_LINEAGE_UNRESOLVED",
+      "table": {
+        "CYCLE": "M",
+        "ORG_NAME": "국가데이터처(042-481-2148)",
+        "SRCH_YN": "Y",
+        "STAT_CODE": "901Y033",
+        "STAT_NAME": "8.1.4. 전산업생산지수(농림어업제외)"
+      },
+      "tableExists": true,
+      "vintageStatus": "REVISED_HISTORY"
+    },
+    {
+      "availableFrom": null,
+      "configuredCandidate": {
+        "cycle": null,
+        "itemCode": null,
+        "seriesId": "901Y067",
+        "sourceStatus": "DATA_LINEAGE_UNRESOLVED"
+      },
+      "configuredTableCycles": [
+        "M"
+      ],
+      "configuredTableGroupCounts": {
+        "Group1": 5
+      },
+      "configuredTableItemCount": 5,
+      "historicalConfirmatoryEligible": false,
+      "name": "LeadingIndex",
+      "publishedAt": null,
+      "selectedItems": [
+        {
+          "CYCLE": "M",
+          "DATA_CNT": 680,
+          "END_TIME": "202608",
+          "GRP_CODE": "Group1",
+          "GRP_NAME": "계정항목",
+          "ITEM_CODE": "I16E",
+          "ITEM_NAME": "선행지수순환변동치",
+          "START_TIME": "197001",
+          "STAT_CODE": "901Y067",
+          "STAT_NAME": "8.1.2. 경기종합지수",
+          "UNIT_NAME": "2020=100"
+        }
+      ],
+      "semanticAndGroupCandidates": [
+        {
+          "CYCLE": "M",
+          "DATA_CNT": 680,
+          "END_TIME": "202608",
+          "GRP_CODE": "Group1",
+          "GRP_NAME": "계정항목",
+          "ITEM_CODE": "I16E",
+          "ITEM_NAME": "선행지수순환변동치",
+          "START_TIME": "197001",
+          "STAT_CODE": "901Y067",
+          "STAT_NAME": "8.1.2. 경기종합지수",
+          "UNIT_NAME": "2020=100"
+        }
+      ],
+      "smoke": {
+        "errorCode": null,
+        "period": "202608",
+        "validObservationFound": true
+      },
+      "sourceStatus": "LIVE_VALIDATED_SOURCE",
+      "table": {
+        "CYCLE": "M",
+        "ORG_NAME": "국가데이터처 ( ☎ 042-481-2229 )",
+        "SRCH_YN": "Y",
+        "STAT_CODE": "901Y067",
+        "STAT_NAME": "8.1.2. 경기종합지수"
+      },
+      "tableExists": true,
+      "vintageStatus": "REVISED_HISTORY"
+    },
+    {
+      "availableFrom": null,
+      "configuredCandidate": {
+        "cycle": null,
+        "itemCode": null,
+        "seriesId": "901Y011",
+        "sourceStatus": "DATA_LINEAGE_UNRESOLVED"
+      },
+      "configuredTableCycles": [],
+      "configuredTableGroupCounts": {},
+      "configuredTableItemCount": 0,
+      "historicalConfirmatoryEligible": false,
+      "name": "Exports",
+      "publishedAt": null,
+      "selectedItems": null,
+      "semanticAndGroupCandidates": [],
+      "smoke": null,
+      "sourceStatus": "NOT_AVAILABLE",
+      "table": null,
+      "tableExists": false,
+      "vintageStatus": "REVISED_HISTORY"
+    },
+    {
+      "availableFrom": null,
+      "configuredCandidate": {
+        "cycle": null,
+        "itemCode": null,
+        "seriesId": "101Y004",
+        "sourceStatus": "DATA_LINEAGE_UNRESOLVED"
+      },
+      "configuredTableCycles": [
+        "A",
+        "M",
+        "Q"
+      ],
+      "configuredTableGroupCounts": {
+        "Group1": 48
+      },
+      "configuredTableItemCount": 48,
+      "historicalConfirmatoryEligible": false,
+      "name": "M2",
+      "publishedAt": null,
+      "selectedItems": null,
+      "semanticAndGroupCandidates": [
+        {
+          "CYCLE": "A",
+          "DATA_CNT": 18,
+          "END_TIME": "2003",
+          "GRP_CODE": "Group1",
+          "GRP_NAME": "계정항목",
+          "ITEM_CODE": "BBHA00",
+          "ITEM_NAME": "M2(평잔, 원계열)",
+          "START_TIME": "1986",
+          "STAT_CODE": "101Y004",
+          "STAT_NAME": "1.7.3.1.2. M2 상품별 구성내역(평잔, 원계열)",
+          "UNIT_NAME": "십억원"
+        },
+        {
+          "CYCLE": "M",
+          "DATA_CNT": 225,
+          "END_TIME": "200409",
+          "GRP_CODE": "Group1",
+          "GRP_NAME": "계정항목",
+          "ITEM_CODE": "BBHA00",
+          "ITEM_NAME": "M2(평잔, 원계열)",
+          "START_TIME": "198601",
+          "STAT_CODE": "101Y004",
+          "STAT_NAME": "1.7.3.1.2. M2 상품별 구성내역(평잔, 원계열)",
+          "UNIT_NAME": "십억원"
+        },
+        {
+          "CYCLE": "Q",
+          "DATA_CNT": 75,
+          "END_TIME": "2004Q3",
+          "GRP_CODE": "Group1",
+          "GRP_NAME": "계정항목",
+          "ITEM_CODE": "BBHA00",
+          "ITEM_NAME": "M2(평잔, 원계열)",
+          "START_TIME": "1986Q1",
+          "STAT_CODE": "101Y004",
+          "STAT_NAME": "1.7.3.1.2. M2 상품별 구성내역(평잔, 원계열)",
+          "UNIT_NAME": "십억원"
+        }
+      ],
+      "smoke": null,
+      "sourceStatus": "DATA_LINEAGE_UNRESOLVED",
+      "table": {
+        "CYCLE": "M",
+        "ORG_NAME": null,
+        "SRCH_YN": "Y",
+        "STAT_CODE": "101Y004",
+        "STAT_NAME": "1.7.3.1.2. M2 상품별 구성내역(평잔, 원계열)"
+      },
+      "tableExists": true,
+      "vintageStatus": "REVISED_HISTORY"
+    }
+  ],
+  "sourceHead": "6ebe13922e899b88e938f4f7aec7b8575ec47f34",
+  "validatedConfig": {
+    "KTB_3Y": {
+      "cycle": "D",
+      "itemCode": "010200000",
+      "itemName": "국고채(3년)",
+      "seriesId": "817Y002",
+      "sourceStatus": "LIVE_VALIDATED_SOURCE",
+      "unit": "연%",
+      "validationEvidenceSha256": "6ad1eae9867596e7cf3ea7fb84c1071bf0f209d53ab5dba752e1f1c1f952aed6",
+      "vintageStatus": "REVISED_HISTORY"
+    },
+    "LeadingIndex": {
+      "cycle": "M",
+      "itemCode": "I16E",
+      "itemName": "선행지수순환변동치",
+      "seriesId": "901Y067",
+      "sourceStatus": "LIVE_VALIDATED_SOURCE",
+      "unit": "2020=100",
+      "validationEvidenceSha256": "a1f230f74bb11c3143be51ae0ebd837b1f0c41d0d5c0950a92c5621918844ee4",
+      "vintageStatus": "REVISED_HISTORY"
+    }
+  },
+  "vintageEvidence": {
+    "inventedVintageEndpoint": false,
+    "observationCoverageIsNotPublicationCoverage": true,
+    "servicesInspected": [
+      "StatisticTableList",
+      "StatisticItemList",
+      "StatisticSearch"
+    ],
+    "status": "NO_RELEASE_VINTAGE_EVIDENCE"
+  }
+}

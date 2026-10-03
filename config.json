@@ -232,55 +232,70 @@
         "seriesId": "722Y001",
         "itemCode": null,
         "cycle": null,
-        "sourceStatus": "DATA_LINEAGE_UNRESOLVED"
+        "sourceStatus": "AMBIGUOUS_SOURCE",
+        "vintageStatus": "REVISED_HISTORY"
       },
       "KTB_3Y": {
+        "cycle": "D",
+        "itemCode": "010200000",
+        "itemName": "국고채(3년)",
         "seriesId": "817Y002",
-        "itemCode": null,
-        "cycle": null,
-        "sourceStatus": "DATA_LINEAGE_UNRESOLVED"
+        "sourceStatus": "LIVE_VALIDATED_SOURCE",
+        "unit": "연%",
+        "validationEvidenceSha256": "6ad1eae9867596e7cf3ea7fb84c1071bf0f209d53ab5dba752e1f1c1f952aed6",
+        "vintageStatus": "REVISED_HISTORY"
       },
       "CorpBond_3Y": {
         "seriesId": "817Y002",
         "itemCode": null,
         "cycle": null,
-        "sourceStatus": "DATA_LINEAGE_UNRESOLVED"
+        "sourceStatus": "AMBIGUOUS_SOURCE",
+        "vintageStatus": "REVISED_HISTORY"
       },
       "CPI": {
         "seriesId": "901Y009",
         "itemCode": null,
         "cycle": null,
-        "sourceStatus": "DATA_LINEAGE_UNRESOLVED"
+        "sourceStatus": "AMBIGUOUS_SOURCE",
+        "vintageStatus": "REVISED_HISTORY"
       },
       "CoreCPI": {
         "seriesId": "901Y010",
         "itemCode": null,
         "cycle": null,
-        "sourceStatus": "DATA_LINEAGE_UNRESOLVED"
+        "sourceStatus": "DATA_LINEAGE_UNRESOLVED",
+        "vintageStatus": "REVISED_HISTORY"
       },
       "IndustrialProduction": {
         "seriesId": "901Y033",
         "itemCode": null,
         "cycle": null,
-        "sourceStatus": "DATA_LINEAGE_UNRESOLVED"
+        "sourceStatus": "DATA_LINEAGE_UNRESOLVED",
+        "vintageStatus": "REVISED_HISTORY"
       },
       "LeadingIndex": {
+        "cycle": "M",
+        "itemCode": "I16E",
+        "itemName": "선행지수순환변동치",
         "seriesId": "901Y067",
-        "itemCode": null,
-        "cycle": null,
-        "sourceStatus": "DATA_LINEAGE_UNRESOLVED"
+        "sourceStatus": "LIVE_VALIDATED_SOURCE",
+        "unit": "2020=100",
+        "validationEvidenceSha256": "a1f230f74bb11c3143be51ae0ebd837b1f0c41d0d5c0950a92c5621918844ee4",
+        "vintageStatus": "REVISED_HISTORY"
       },
       "Exports": {
         "seriesId": "901Y011",
         "itemCode": null,
         "cycle": null,
-        "sourceStatus": "DATA_LINEAGE_UNRESOLVED"
+        "sourceStatus": "NOT_AVAILABLE",
+        "vintageStatus": "REVISED_HISTORY"
       },
       "M2": {
         "seriesId": "101Y004",
         "itemCode": null,
         "cycle": null,
-        "sourceStatus": "DATA_LINEAGE_UNRESOLVED"
+        "sourceStatus": "DATA_LINEAGE_UNRESOLVED",
+        "vintageStatus": "REVISED_HISTORY"
       }
     }
   },

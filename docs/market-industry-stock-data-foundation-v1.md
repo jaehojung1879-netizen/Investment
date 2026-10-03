@@ -311,9 +311,14 @@ The reusable KR context and safe ECOS validation path are detailed in
 `docs/kr-market-context-foundation-v1.md`. They implement separate domestic
 growth, inflation, rates, liquidity/credit, external financial conditions
 and equity-market measurements. Revised ECOS history never becomes PIT_EXACT
-through a publication lag. The manual source validation is still awaiting an
-authorized dispatch path; the machine-readable matrix does not claim a live
-run. Source/feature readiness and identity pins now include this layer.
+through a publication lag. Successful manual run `37080934658` supplied artifact
+`11258377162`; its exact ZIP and sanitized JSON hashes were verified offline.
+Only KTB_3Y (`817Y002`, `010200000`, D, 연%) and LeadingIndex
+(`901Y067`, `I16E`, M, 선행지수순환변동치, 2020=100) are source-validated.
+The seven other series retain the artifact's blocked statuses. Observation
+coverage does not establish release visibility or first vintages. The retained
+metadata extract, readiness matrix and identity pins include this evidence;
+no ECOS rerun, historical Alpha outcome or production wiring was performed.
 
 The original alpha-opportunity-model-v1 seal pins shared config/ecos modules.
 Repairing those modules intentionally makes its old closure fail closed; its
