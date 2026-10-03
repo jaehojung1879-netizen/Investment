@@ -36,7 +36,7 @@ Candidate order is KRX native as published, KSIC 2-digit division, then KSIC 3-d
 |---|---:|---:|
 | Each signal-date full-universe coverage | >=90% | 0/120, 0% |
 | Each annual name-date coverage | >=90% | 0% |
-| Adjacent repeated-name classification continuity | >=90% | 0% |
+| Adjacent repeated-name classification availability | >=90% | 0% |
 | Constituents in a sufficient group | >=5 | No admissible groups |
 | Sufficient groups per signal | >=3 | 0 |
 | Classified fraction in sufficient groups | >=90% | null: no classified denominator |
@@ -64,3 +64,52 @@ The research audit covers **610 completed weekly KR signal dates**, 2015-01-02 t
 Run `python scripts/build_kr_industry_membership_foundation.py --verify` for an offline hash-closed reproduction. The standalone spec and SHA-256 sidecar pin the new inputs, raw archives, review decisions, code, tests and outputs. Fresh output directories are required for regeneration; retained inputs are immutable. Unit tests use explicitly synthetic classifications solely for admission/calendar/coverage boundaries. Repository seed validation is a synthetic fixture check, not a historical study.
 
 The bounded two-era collection does not supply continuous annual history. The next useful acquisition is an authoritative dated KRX classification export or a versioned historical KSIC assignment source with explicit subject identity, validity and original release evidence. Access to that source must precede a later preregistered study. Current classifications, filing-year edition guesses and sparse-observation carry-forward cannot repair this gap. No historical industry return, factor performance, Alpha outcome, fit or portfolio result was computed; no sealed prior study or ECOS probe was rerun. Existing research logic, production sector code, terminal-action economics and frozen study files are unchanged. The PR remains Draft and is not merged.
+
+
+## Official KRX OTP -> CSV feasibility extension
+
+Baseline PR head `337192c2591e81944f3a4fb6dcedc2d9fa3930f5` and the completed 413-receipt DART collection remain accepted and unchanged. The separate feasibility plan was published **before any new KRX requests** in commit `6ab3555db4c4a0ae6d63654d9e608b22c0ca4f23`; plan SHA-256 is `1fd169376b2537c603eca2d18a4420addbc5a4ab5c90fb14c93ab8a684787373`.
+
+The exact route tested is form-urlencoded POST `https://data.krx.co.kr/comm/fileDn/GenerateOTP/generate.cmd`, with `url=dbms/MDC/STAT/standard/MDCSTAT03901`, `locale=ko_KR`, `mktId=STK`, explicit historical `trdDd`, `money=1`, `csvxls_isNo=false`, `name=fileDown`; followed conditionally by POST `https://data.krx.co.kr/comm/fileDn/download_csv/download.cmd`, `code=<valid OTP>`. KOSPI/STK is the relevant market because every pinned universe ticker has a KS suffix. No KOSDAQ/current-universe union was added.
+
+Two fixed browser-style Referer profiles were tested: the official dataset page and official Marketplace `mdiLoader`. Each starts with a session GET and uses an anonymous cookie jar, a reasonable browser User-Agent and explicit form Content-Type. No login credentials are used, cookies are not persisted, redirects and retries are disabled. The bounded plan allows 18 requests, one worker, 15 seconds/request and a 2 MiB body ceiling; all 18 planned requests completed. This does not change any taxonomy/admission/coverage gate or authorize full-history collection.
+
+| Requested and effective KR date | Dataset-page OTP | Marketplace-loader OTP | CSV endpoint negative control, both profiles | Historical classification rows |
+|---|---|---|---|---:|
+| 2015-01-02 | HTTP 200, `LOGOUT` | HTTP 200, `LOGOUT` | HTTP 403, error HTML | 0 |
+| 2020-01-02 | HTTP 200, `LOGOUT` | HTTP 200, `LOGOUT` | HTTP 403, error HTML | 0 |
+| 2023-01-02 | HTTP 200, `LOGOUT` | HTTP 200, `LOGOUT` | HTTP 403, error HTML | 0 |
+| 2026-09-01 | HTTP 200, `LOGOUT` | HTTP 200, `LOGOUT` | HTTP 403, error HTML | 0 |
+
+All four dates are trading days under the unchanged pinned KR calendar, so no substitution occurred. A non-session date would use the immediately prior KR session and record both dates and a substitution reason; tests cover that boundary.
+
+**No valid OTP was issued and no genuine OTP exchange occurred.** For each rejected OTP, the preregistered empty-code CSV POST is explicitly `CONTROL_NO_VALID_OTP`, a download-endpoint negative control. `LOGOUT` is never forwarded as a code. The HTTP 403 responses are Korean KRX error-page HTML, not CSV; their full exact error text and bytes are retained. The dataset-page bootstrap returned HTTP 200; the bare `mdiLoader` bootstrap returned HTTP 404 and did not establish a successful loader session. The CSV error page says verbatim: “서비스 제공 불가능”, “일시적 접근 불안정으로 인하여 서비스가 원활하지 않습니다.” These results prove unsuccessful anonymous access in this environment, not that KRX has no historical classifications or that authenticated access is impossible. No full-history acquisition plan was opened or collection expanded.
+
+Artifact identity is the committed `data/kr-industry-membership-foundation-v1/krx-otp-probe/manifest.json` plus immutable `raw/<sha256>.bin` objects. The manifest contains every endpoint/method, exact parameters and form-body hash, request and response timestamp, selected response headers, HTTP status, raw length/hash, date context, failure/control semantics, parser encoding/schema, and error body verbatim. Rejected responses have no admitted data schema or classification rows. A shared body is stored once and referenced by every request that returned it.
+
+| Raw artifact | SHA-256 |
+|---|---|
+| Exact OTP `LOGOUT` bytes | `377b375adcc04b5ba5998c978372401a4c6327ccc218e17e383f72861085cb95` |
+| CSV negative-control HTTP 403 error HTML | `2c860edd6d3458284e3b7f2f727385462a5e2c59d3f32ec4244da90780c0dfa9` |
+| Dataset-page bootstrap HTTP 200 | `26e3ce5e6516b6d5660133959ffa969622b8a27022a4e3c1b5d205c8156c5953` |
+| Marketplace-loader bootstrap HTTP 404 | `484da3401691104462b3cfff75dbf2ec487e04dd3327593ce3a9e85a594f630d` |
+
+The parser rejects HTTP errors, HTML/XML/JSON/login bodies, malformed or empty CSV, missing classification schema, conflicting dates and duplicate subjects. A valid CSV can only produce **review-required observations**, never automatic membership. Only security code/name, industry code/label, market and date values are projected; price/performance values are not examined. A missing industry is UNKNOWN. Request date context alone does not establish original release visibility, taxonomy version or an economic validity interval. Current-dated rows cannot fill an earlier request.
+
+Offline reproduction: `python scripts/probe_krx_industry_otp.py --verify`; the overall foundation verifier also checks this evidence. Raw corruption, changed request parameters, altered substitutions or parser decisions fail verification. Failed KRX sources do not enter the membership proof pool. Actual historical KRX classification rows obtained: **0**. Existing admitted mapping remains empty; full signal and annual coverage remains **0%**, with all 120 securities/date retained and 73,200 research name-dates. Taxonomy and granularity remain null. Final decision remains **`DATA_FOUNDATION_INSUFFICIENT`**.
+
+## Corrected adjacent-date metric semantics
+
+`adjacentContinuityFraction` is renamed to **`adjacentClassificationAvailabilityFraction`**. Numerator: repeated universe-security pairs with a valid classification on both adjacent signal dates. Denominator: every security present in both adjacent universes, including UNKNOWN. An industry or taxonomy-version switch still counts as available on both dates. The original frozen key `minimumAdjacentNameDateContinuityFraction` remains byte-for-byte unchanged at 0.90 and is explicitly interpreted as this availability gate; no threshold is added or tuned.
+
+Separate descriptive metrics use **only both-classified pairs** as their denominator: `adjacentIndustryStabilityFraction` is the share whose `(taxonomy_version, industry_id)` pair did not change; `observedAssignmentSwitchRate` is the share that changed. Their denominator is `bothClassifiedAdjacentNameDatePairs`, and both fractions are null when it is zero. Assignment changes are already listed in `observedAssignmentChanges`. These descriptive metrics have no readiness threshold. Availability stays 0% on the retained real evidence, while stability/switch rate are null, not a claim that assignments were stable. A synthetic switch test proves availability can be positive while stability is zero. Annual/signal coverage, universe and all numerical readiness gates are unchanged.
+
+NO HISTORICAL INDUSTRY RETURN WAS COMPUTED
+
+NO FACTOR OR ALPHA OUTCOME WAS INSPECTED
+
+NO CURRENT INDUSTRY CLASSIFICATION WAS BACKFILLED INTO HISTORY
+
+NO TAXONOMY OR GRANULARITY WAS CHOSEN FROM FUTURE RETURNS
+
+NO SEALED PRIOR STUDY WAS RERUN

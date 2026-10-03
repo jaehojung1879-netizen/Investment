@@ -94,12 +94,12 @@ def test_unknown_names_stay_in_all_coverage_and_continuity_denominators():
     a = K.coverage([r], schedule, r.taxonomy_id, CRITERIA)
     assert a['annual'][0]['universeNameDates'] == 4
     assert a['annual'][0]['coverageFraction'] == .5
-    assert a['adjacentContinuityFraction'] == .5
+    assert a['adjacentClassificationAvailabilityFraction'] == .5
     assert a['dates'][0]['missingSecurityIds'] == ['KRX:000002.KS']
     empty = K.coverage([], schedule, r.taxonomy_id, CRITERIA)
     assert empty['dates'][0]['coverageFraction'] == 0
     assert empty['dates'][0]['classifiedFractionInSufficientGroups'] is None
-    assert empty['adjacentContinuityFraction'] == 0
+    assert empty['adjacentClassificationAvailabilityFraction'] == 0
 
 
 def test_group_size_and_outcome_blind_priority():
@@ -155,3 +155,20 @@ def test_real_source_hashes_and_full_universe_audits_reproduce_without_contact(m
             assert d['classifiedCount'] + len(d['missingSecurityIds']) == 120
         assert a['membershipSha256'] == mapping['membershipSha256']
     assert not any(audit[k] for k in ['historicalOutcomeComputed', 'modelFitPerformed', 'portfolioResultComputed', 'priorStudyRerun'])
+
+
+def test_availability_does_not_mean_unchanged_assignment():
+    old = row(valid_to='2020-01-06')
+    new = row(valid_from='2020-01-06', release_date='2020-01-06', industry_id='SYNTHETIC_SWITCHED')
+    schedule = {d: [old.security_id, 'KRX:000002.KS'] for d in ['2020-01-03', '2020-01-10']}
+    a = K.coverage([old, new], schedule, old.taxonomy_id, CRITERIA)
+    assert a['repeatedUniverseNameDatePairs'] == 2
+    assert a['bothClassifiedAdjacentNameDatePairs'] == 1
+    assert a['adjacentClassificationAvailabilityFraction'] == .5
+    assert a['adjacentIndustryStabilityFraction'] == 0
+    assert a['observedAssignmentSwitchRate'] == 1
+    assert 'adjacentContinuityFraction' not in a
+    empty = K.coverage([], schedule, old.taxonomy_id, CRITERIA)
+    assert empty['adjacentClassificationAvailabilityFraction'] == 0
+    assert empty['adjacentIndustryStabilityFraction'] is None
+    assert empty['observedAssignmentSwitchRate'] is None

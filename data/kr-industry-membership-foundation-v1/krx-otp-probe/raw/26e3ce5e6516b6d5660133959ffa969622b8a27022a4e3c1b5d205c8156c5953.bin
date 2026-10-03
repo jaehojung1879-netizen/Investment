@@ -1,0 +1,917 @@
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+<form class="CI-MDI-COMPONENT-WRAP" name="MDCSTAT039_FORM" id="MDCSTAT039_FORM" action="null" method="post" onsubmit="return false;">
+	<input type="hidden" name="locale" value="ko_KR"/>
+  
+  
+
+
+
+
+
+
+
+
+<h2 class="tit_h2">
+  <p>[12025] 업종분류 현황</p>
+  
+  <p class="address_top">
+    <span><img src="/templets/mdc/img/ico_house.png" alt="홈으로 이동" /></span>
+    
+      
+    
+      
+        <span>통계</span>
+        
+          
+            
+              <span>기본 통계</span>
+              
+                
+                  
+                
+                  
+                    <span>주식</span>
+                    
+                      
+                        
+                      
+                        
+                      
+                        
+                      
+                        
+                      
+                        
+                          <span>세부안내</span>
+                          
+                            
+                              
+                            
+                              
+                            
+                              
+                            
+                              
+                            
+                              
+                            
+                              
+                                <span>업종분류 현황</span>
+                                
+                              
+                            
+                              
+                            
+                          
+                        
+                      
+                    
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+              
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+        
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </p>
+  
+</h2>
+
+  
+
+
+
+
+<div class="search_tb">
+  
+  <div data-component="search" >
+    
+     
+    <table>
+      <colgroup>
+        <col class="fix_w_s5" />
+        <col />
+      </colgroup>
+      <tbody>
+      <tr>
+        <th scope="row">조회구분</th>
+        <td style="letter-spacing:-4px;">
+          
+            
+              <input type="radio" name="mktId" id="mktId__1" value="STK" checked>
+              <label for="mktId__1">KOSPI</label>
+              <input type="radio" name="mktId" id="mktId__2" value="KSQ">
+              <label for="mktId__2">KOSDAQ</label>
+              <div class="childRadioWrap">
+                <span>(</span>
+                <input type="radio" name="segTpCd" id="segTpCd__1" value="ALL" disabled>
+                <label for="segTpCd__1">전체</label>
+                <input type="radio" name="segTpCd" id="segTpCd__2" value="1" disabled>
+                <label for="segTpCd__2">KOSDAQ GLOBAL</label>
+                <span>)</span>
+              </div>
+            
+            
+          
+        </td>
+      </tr>
+      <tr>
+        <th scope="row">조회일자</th>
+        <td>
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="cal-wrap"><input type="text" name="trdDd" id="trdDd" value="20261003"/></div>
+
+
+<script type="text/javascript">
+  mdc.module.setModule({
+    name: 'SEARCH_COMPONENT__153130341',
+    mdi: {
+      name: mdc.module.getMdiModuleName()
+    },
+    function: function (self, api) {
+      var $content = api.getModuleNode();
+      var $element = $content.select('[name="trdDd"]');
+
+      
+
+      
+      var params = {
+        baseName: 'krx.mdc.i18n.component',
+        key: 'B122.bld',
+        locale: 'ko'
+      };
+
+      var queryString = 'null';
+      if (queryString && queryString !== 'null') {
+        var queryArray = queryString.split('&');
+        queryArray.forEach(function (query) {
+          var name = query.split('=')[0];
+          var value = query.split('=')[1] || '';
+          params[name] = value;
+        });
+      }
+      
+
+      
+        
+          var calendarOption = {};
+          var input = [];
+          
+            
+              
+              input.push($content.select('[name="trdDd"]'));
+              
+            
+          
+
+          
+          var date = '';
+          api.util.submitAjax({
+            method: 'GET',
+            url: '/comm/bldAttendant/executeForResourceBundle.cmd',
+            async: false,
+            data: params,
+            success: function (data) {
+              var output = data['result']['output'];
+              output.forEach(function (item) {
+                $.each(item, function (key, value) {
+                  date = value;
+                });
+              });
+            }
+          });
+
+          if (date) {
+            input.forEach(function (item) {
+              item.val(date);
+            });
+
+            //=== (20201028, 김정삼) compIdDateLimit 값을 지정한 경우 이 지정값(bld)으로 달력팝업활성화 종료일 기준을 변경한다
+            
+            calendarOption.limit = date;
+
+            var compIdDateLimit = 'B128';
+            var compId = 'B122';
+            if (compIdDateLimit && compIdDateLimit !== compId) {
+              api.util.submitAjax({
+                method: 'GET',
+                url: '/comm/bldAttendant/executeForResourceBundle.cmd',
+                async: false,
+                data: $.extend(params, {key: compIdDateLimit + '.bld'}),
+                success: function (data) {
+                  var output = data['result']['output'];
+                  output.forEach(function (item) {
+                    $.each(item, function (key, value) {
+                      calendarOption.limit = value;
+                    });
+                  });
+                }
+              });
+            }
+            
+            //===/
+
+            //=== (20201215, 김상훈) restictId 값을 지정한 경우 이 지정값(bld)으로 조회가능 시작일을 제한한다.
+            
+            var restictId = 'B155';
+            var menuId = mdc.getMdiView() ? mdc.getMdiView().id : '';
+
+            if (restictId && (menuId !== '' && menuId !== undefined)) {
+              params['menuId'] = menuId;
+              api.util.submitAjax({
+                method: 'GET',
+                url: '/comm/bldAttendant/executeForResourceBundle.cmd',
+                async: false,
+                data: $.extend(params, {key: restictId + '.bld'}),
+                success: function (data) {
+                  var output = data['result']['output'];
+                  calendarOption.restrictDate = output[0]['restrict_date'];
+                }
+              });
+            }
+            
+            //===/
+
+            
+
+            
+
+          }
+          
+
+          calendarOption.input = input;
+          calendarOption.positionTop = false;
+          calendarOption.showButton = true;
+          calendarOption.disabledDate = 'null';
+          calendarOption.disabledTp = 'null';
+          calendarOption.changeStrtDate = 'false';
+          calendarOption.validatePeriodBusDate = 'B161';
+          $.fn.calendar(calendarOption);
+        
+
+        
+      
+
+      
+
+      
+    }
+  });
+</script>
+
+
+        </td>
+      </tr>
+      </tbody>
+    </table>
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<a href="javascript:void(0);" class="btn_black btn_component_search" name="search" id="jsSearchButton">조회</a>
+
+
+<script type="text/javascript">
+  mdc.module.setModule({
+    name: 'SEARCH_COMPONENT__153130343',
+    mdi: {
+      name: mdc.module.getMdiModuleName()
+    },
+    function: function (self, api) {
+      var $content = api.getModuleNode();
+      var $element = $content.select('[name="search"]');
+
+      
+
+      
+
+      
+
+      
+        $element.on('click', function () {
+          mdc.module.getModule('MDCSTAT039_')['getList']($(this));
+          $('#jsExtendLoginBtn').trigger('click'); //조회버튼 클릭시 로그아웃타이머 갱신
+        });
+      
+
+      
+    }
+  });
+</script>
+
+
+  
+  </div>
+  
+  <button type="button" class="CI-MDI-COMPONENT-BUTTON btn_close_tggle">Close</button>
+  
+</div>
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="CI-MDI-UNIT-WRAP " id="UNIT-WRAP0">
+  <div class="time CI-MDI-UNIT"  data-view-sequence="0">
+    
+    <p class="CI-MDI-UNIT-TIME"></p>
+    
+    
+    <p>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<select class="CI-MDI-UNIT-SHARE" name="share" disabled style="display: none;"><option value="1" selected>주</option><option value="2">천주</option><option value="3">백만주</option></select>
+
+
+
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<select class="CI-MDI-UNIT-MONEY" name="money" disabled style="display: none;"><option value="1" selected>원</option><option value="2">천원</option><option value="3">백만원</option><option value="4">십억원</option></select>
+
+
+
+      
+      
+      
+      
+      <button type="button" class="CI-MDI-UNIT-FILTER"
+      ><img src="/templets/mdc/img/btn_time2.png" title="
+      컬럼필터 팝업" /></button>
+      <button type="button" class="CI-MDI-UNIT-DOWNLOAD"><img src="/templets/mdc/img/btn_time1.png" title="
+      다운로드 팝업" /></button>
+    </p>
+  </div>
+</div>
+
+<script type="text/javascript">
+(function(mdc, $) {
+  var $sel = $('#UNIT-WRAP0 select[name="otherUnit"].CI-MDI-UNIT-MONEY');
+  if ( $('option',$sel).length <= 1 ) { $sel.addClass('bg_none'); }
+
+  var $money = $('#UNIT-WRAP0 select[name="money"].CI-MDI-UNIT-MONEY');
+  if ( $('option',$money).length <= 1 ) { $money.addClass('bg_none'); }
+}(window.mdc, jQuery));
+</script>
+
+
+</form>
+
+
+ 
+<div id="jsGrid_MDCSTAT039_0">
+  <table>
+    <thead>
+    
+			
+		    <tr>
+		      <th scope="col" name="ISU_SRT_CD" width="80px" align="center">종목코드</th>
+		      <th scope="col" name="ISU_ABBRV" width="130px">종목명</th>
+		      <th scope="col" name="MKT_TP_NM" width="90px" align="center">시장구분</th>
+		      <th scope="col" name="IDX_IND_NM" width="120px" align="left">업종명</th>
+		      <th scope="col" name="TDD_CLSPRC" width="90px" align="right">종가</th>
+		      <th scope="col" name="CMPPREVDD_PRC" width="80px" align="right">대비</th>
+		      <th scope="col" name="FLUC_RT" width="80px" align="right">등락률</th>
+		      <th scope="col" name="MKTCAP" width="140px" align="right">시가총액</th>
+		    </tr>
+			
+			
+		    
+    </thead>
+    <tbody>
+    <tr>
+      <td name="ISU_SRT_CD" bind="ISU_SRT_CD"></td>
+      <td name="ISU_ABBRV" bind="ISU_ABBRV"></td>
+      <td name="MKT_TP_NM" bind="MKT_TP_NM"></td>
+      <td name="IDX_IND_NM" bind="IDX_IND_NM"></td>
+      <td name="TDD_CLSPRC" bind="TDD_CLSPRC"></td>
+      <td name="CMPPREVDD_PRC" bind="CMPPREVDD_PRC"></td>
+      <td name="FLUC_RT" bind="FLUC_RT"></td>
+      <td name="MKTCAP" bind="MKTCAP"></td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+
+
+
+
+
+<div class="result_bottom CI-MDI-COMPONENT-FOOTER on2">
+  
+  <button type="button" class="CI-MDI-COMPONENT-BUTTON">Open</button>
+  
+  <div data-component="footer" style="display: none;">
+    
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<span><dfn>컨텐츠 문의</dfn>&nbsp;:&nbsp;(유)주식시장부, &nbsp;(코)코스닥시장부, &nbsp;고객센터 (1577-0088)</span>
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+<p><span class="">주</span><span><em>1.</em><dfn>KOSDAQ IT업종 분류 중단 (2024. 7. 1)<br>(통신서비스, 방송서비스, 인터넷, 디지털컨텐츠, 소프트웨어, 컴퓨터서비스, 통신장비, 정보기기, 반도체, IT부품)</dfn><em>2.</em><dfn>2024. 12. 9 : 업종분류추가(코스피 IT 서비스, 코스피 부동산, 코스피 오락·문화, 코스닥 IT 서비스, 코스닥 통신)</dfn><em>3.</em><dfn>종가는 정규시장(09:00~15:30) 기준입니다.</dfn></span></p>
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<p><img src="/templets/mdc/img/blit_feel.png" alt="">&nbsp;본 정보는 투자참고 사항이며, 오류가 발생하거나 지연될 수 있습니다. 제공된 정보에 의한 투자결과에 대한 법적인 책임을 지지 않습니다.</p>
+
+
+
+
+  </div>
+  
+</div>
+
+
+<script type="text/javascript">
+  mdc.module.setModule({
+    name: 'MDCSTAT039_',
+    init: 'init',
+    mdi: {
+      name: mdc.module.getMdiModuleName(),
+      event: {
+        afterViewActivated: ['resizeGrid'],
+        afterViewSizeChanged: ['resizeGrid']
+      }
+    },
+    function: function (self, api) {
+      var $content = api.getModuleNode();
+      var $f = $content.select('#MDCSTAT039_FORM');
+
+      self.resizeGrid = function (e) {
+        self.grid.setHeight(e.getContentLeftHeight());
+        self.grid.resize();
+      };
+
+      self.init = function () {
+        self.grid = api.util.grid.init({
+          node: api.getModuleNode().getNode(),
+          form: $f,
+          layout: 'no-apply',
+          grid: [
+            { lateInfoYn: true, //20분 지연문구포함여부(true- 20분지연문구가 포함된 시간, false 20분지연문구가 제외된 시간)
+              lateInfoMsgCd: 'ME005',
+              template: $content.select('#jsGrid_MDCSTAT039_0'),
+              bld: 'dbms/MDC/STAT/standard/MDCSTAT03901',
+              bldDataKey: 'block1',
+              unit: {
+                share: [],
+                money: ['MKTCAP']
+              },
+              fluctuation: {
+                reference: 'FLUC_TP_CD',
+                column: [
+                  {
+                    name: 'CMPPREVDD_PRC',
+                    useArrow: true
+                  },
+                  {
+                    name: 'FLUC_RT'
+                  }
+                ]
+              }
+            }
+          ]
+        });
+
+        var kosdaqGlobalYn = '';
+
+        if(kosdaqGlobalYn == "1"){
+          $("input[name=segTpCd]").prop("disabled", false);
+          $content.select('[name="mktId"]:radio[value="KSQ"]').prop('checked', true);
+          $content.select('[name="segTpCd"]:radio[value="1"]').prop('checked', true);
+        }
+
+        $content.select("input[name=mktId]").on("change",function(){
+          if($(this).val() == "KSQ"){
+            $content.select("input[name=segTpCd]").prop("disabled", false);
+            $content.select("input[name=segTpCd]:radio[value='ALL']").prop("checked", true);
+          }else{
+            $content.select("input[name=segTpCd]").prop("disabled", true);
+            $content.select("input[name=segTpCd]").prop("checked", false);
+          }
+        });
+
+        self.getList();
+
+      };
+
+      self.getList = function () {
+        self.grid.appendRow();
+        self.grid.resize();
+      }
+    }
+  });
+</script>

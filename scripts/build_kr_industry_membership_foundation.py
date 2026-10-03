@@ -14,6 +14,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 from pipeline import kr_industry_membership as K  # noqa: E402
 from scripts.collect_kr_industry_membership_sources import classification_markers  # noqa: E402
+from scripts.probe_krx_industry_otp import verify as verify_krx_probe  # noqa: E402
 
 DATA = 'data/kr-industry-membership-foundation-v1'
 CRITERIA = 'research_specs/kr-industry-membership-foundation-v1/criteria.json'
@@ -85,6 +86,11 @@ def verify_sources(root):
                 raise ValueError('REFERENCE_SOURCE_CHANGED')
             if reference['status'] == 200:
                 objects.setdefault(K.sha256(raw), raw)
+    probe = verify_krx_probe(root)
+    for response in probe['requests']:
+        if response['stage'] == 'CSV_EXCHANGE' and response['parsed']['status'] == 'CLASSIFICATION_CSV_REVIEW_REQUIRED':
+            raw = (root / DATA / 'krx-otp-probe' / response['rawFile']).read_bytes()
+            objects.setdefault(K.sha256(raw), raw)
     return records, objects, terminal, calls
 
 
@@ -128,6 +134,7 @@ def build(root=ROOT):
     audits = [K.coverage(rows, schedule, taxonomy, criteria) for taxonomy in criteria['candidateTaxonomiesInPriorityOrder']]
     annual_extended = [K.coverage(rows, extended, taxonomy, criteria) for taxonomy in criteria['candidateTaxonomiesInPriorityOrder']]
     chosen = K.select_taxonomy(audits, criteria)
+    probe = verify_krx_probe(root)
     source = {'plannedReceipts': len(records), 'publicRequests': calls, 'retainedTerminalReceiptsScanned': len(terminal),
               'http200ReceiptPages': sum(r['responses'][0].get('status') == 200 for r in records),
               'http200SectionsParsed': sum(len(r['sections']) for r in records),
@@ -135,6 +142,10 @@ def build(root=ROOT):
               'codeShapedCandidateSections': sum(bool(s['explicitCodeCandidates']) for r in records for s in r['sections']),
               'retainedTerminalCodeRelatedMentionSections': len(read(root, DATA + '/classification-observations.json')['terminalClassificationMentions']),
               'admittedAssignmentRows': len(rows), 'readingListIsNotMembership': True,
+              'krxOtpFeasibility': {'requestCount': probe['requestCount'],
+                  'manifestSha256': K.sha256((root / DATA / 'krx-otp-probe/manifest.json').read_bytes()),
+                  'realClassificationCsvObtained': probe['realClassificationCsvObtained'],
+                  'feasibilityDecision': probe['feasibilityDecision'], 'dateResults': probe['dateResults']},
               'eraStatus': [{'fiscalYear': y, 'plannedReceipts': sum(r['target']['fiscalYear'] == y for r in records),
                              'http200SectionsParsed': sum(len(r['sections']) for r in records if r['target']['fiscalYear'] == y)}
                             for y in sorted({r['target']['fiscalYear'] for r in records})]}

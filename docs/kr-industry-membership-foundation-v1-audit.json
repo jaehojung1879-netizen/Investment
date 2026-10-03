@@ -1,7 +1,8 @@
 {
   "candidateAudits": [
     {
-      "adjacentContinuityFraction": 0.0,
+      "adjacentClassificationAvailabilityFraction": 0.0,
+      "adjacentIndustryStabilityFraction": null,
       "annual": [
         {
           "classifiedNameDates": 0,
@@ -1839,21 +1840,24 @@
           "year": "2026"
         }
       ],
+      "bothClassifiedAdjacentNameDatePairs": 0,
       "classifiedAdjacentNameDatePairs": 0,
       "decision": "DATA_FOUNDATION_INSUFFICIENT",
       "failedCriteria": [
         "SIGNAL_DATE_COVERAGE_BELOW_FLOOR",
         "ANNUAL_COVERAGE_BELOW_FLOOR",
-        "CONTINUITY_BELOW_FLOOR",
+        "ADJACENT_CLASSIFICATION_AVAILABILITY_BELOW_FLOOR",
         "GROUP_SIZE_OR_GROUP_COVERAGE_BELOW_FLOOR"
       ],
       "membershipSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "observedAssignmentChanges": [],
+      "observedAssignmentSwitchRate": null,
       "repeatedUniverseNameDatePairs": 72575,
       "taxonomy_id": "KRX_NATIVE_INDUSTRY_AS_PUBLISHED"
     },
     {
-      "adjacentContinuityFraction": 0.0,
+      "adjacentClassificationAvailabilityFraction": 0.0,
+      "adjacentIndustryStabilityFraction": null,
       "annual": [
         {
           "classifiedNameDates": 0,
@@ -3691,21 +3695,24 @@
           "year": "2026"
         }
       ],
+      "bothClassifiedAdjacentNameDatePairs": 0,
       "classifiedAdjacentNameDatePairs": 0,
       "decision": "DATA_FOUNDATION_INSUFFICIENT",
       "failedCriteria": [
         "SIGNAL_DATE_COVERAGE_BELOW_FLOOR",
         "ANNUAL_COVERAGE_BELOW_FLOOR",
-        "CONTINUITY_BELOW_FLOOR",
+        "ADJACENT_CLASSIFICATION_AVAILABILITY_BELOW_FLOOR",
         "GROUP_SIZE_OR_GROUP_COVERAGE_BELOW_FLOOR"
       ],
       "membershipSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "observedAssignmentChanges": [],
+      "observedAssignmentSwitchRate": null,
       "repeatedUniverseNameDatePairs": 72575,
       "taxonomy_id": "KSIC_DIVISION_2_DIGIT"
     },
     {
-      "adjacentContinuityFraction": 0.0,
+      "adjacentClassificationAvailabilityFraction": 0.0,
+      "adjacentIndustryStabilityFraction": null,
       "annual": [
         {
           "classifiedNameDates": 0,
@@ -5543,16 +5550,18 @@
           "year": "2026"
         }
       ],
+      "bothClassifiedAdjacentNameDatePairs": 0,
       "classifiedAdjacentNameDatePairs": 0,
       "decision": "DATA_FOUNDATION_INSUFFICIENT",
       "failedCriteria": [
         "SIGNAL_DATE_COVERAGE_BELOW_FLOOR",
         "ANNUAL_COVERAGE_BELOW_FLOOR",
-        "CONTINUITY_BELOW_FLOOR",
+        "ADJACENT_CLASSIFICATION_AVAILABILITY_BELOW_FLOOR",
         "GROUP_SIZE_OR_GROUP_COVERAGE_BELOW_FLOOR"
       ],
       "membershipSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
       "observedAssignmentChanges": [],
+      "observedAssignmentSwitchRate": null,
       "repeatedUniverseNameDatePairs": 72575,
       "taxonomy_id": "KSIC_GROUP_3_DIGIT"
     }
@@ -12000,6 +12009,150 @@
     ],
     "http200ReceiptPages": 393,
     "http200SectionsParsed": 786,
+    "krxOtpFeasibility": {
+      "dateResults": [
+        {
+          "classificationRowsObtained": 0,
+          "csvRawSha256": "2c860edd6d3458284e3b7f2f727385462a5e2c59d3f32ec4244da90780c0dfa9",
+          "csvStage": "CONTROL_NO_VALID_OTP",
+          "csvStatus": 403,
+          "effectiveDate": "2015-01-02",
+          "market": "STK",
+          "otpAccepted": false,
+          "otpRawSha256": "377b375adcc04b5ba5998c978372401a4c6327ccc218e17e383f72861085cb95",
+          "otpStatus": 200,
+          "profile": "dataset-page",
+          "reason": "NO_VALID_OTP",
+          "requestedDate": "2015-01-02",
+          "status": "REJECTED",
+          "substituted": false,
+          "substitutionReason": null
+        },
+        {
+          "classificationRowsObtained": 0,
+          "csvRawSha256": "2c860edd6d3458284e3b7f2f727385462a5e2c59d3f32ec4244da90780c0dfa9",
+          "csvStage": "CONTROL_NO_VALID_OTP",
+          "csvStatus": 403,
+          "effectiveDate": "2020-01-02",
+          "market": "STK",
+          "otpAccepted": false,
+          "otpRawSha256": "377b375adcc04b5ba5998c978372401a4c6327ccc218e17e383f72861085cb95",
+          "otpStatus": 200,
+          "profile": "dataset-page",
+          "reason": "NO_VALID_OTP",
+          "requestedDate": "2020-01-02",
+          "status": "REJECTED",
+          "substituted": false,
+          "substitutionReason": null
+        },
+        {
+          "classificationRowsObtained": 0,
+          "csvRawSha256": "2c860edd6d3458284e3b7f2f727385462a5e2c59d3f32ec4244da90780c0dfa9",
+          "csvStage": "CONTROL_NO_VALID_OTP",
+          "csvStatus": 403,
+          "effectiveDate": "2023-01-02",
+          "market": "STK",
+          "otpAccepted": false,
+          "otpRawSha256": "377b375adcc04b5ba5998c978372401a4c6327ccc218e17e383f72861085cb95",
+          "otpStatus": 200,
+          "profile": "dataset-page",
+          "reason": "NO_VALID_OTP",
+          "requestedDate": "2023-01-02",
+          "status": "REJECTED",
+          "substituted": false,
+          "substitutionReason": null
+        },
+        {
+          "classificationRowsObtained": 0,
+          "csvRawSha256": "2c860edd6d3458284e3b7f2f727385462a5e2c59d3f32ec4244da90780c0dfa9",
+          "csvStage": "CONTROL_NO_VALID_OTP",
+          "csvStatus": 403,
+          "effectiveDate": "2026-09-01",
+          "market": "STK",
+          "otpAccepted": false,
+          "otpRawSha256": "377b375adcc04b5ba5998c978372401a4c6327ccc218e17e383f72861085cb95",
+          "otpStatus": 200,
+          "profile": "dataset-page",
+          "reason": "NO_VALID_OTP",
+          "requestedDate": "2026-09-01",
+          "status": "REJECTED",
+          "substituted": false,
+          "substitutionReason": null
+        },
+        {
+          "classificationRowsObtained": 0,
+          "csvRawSha256": "2c860edd6d3458284e3b7f2f727385462a5e2c59d3f32ec4244da90780c0dfa9",
+          "csvStage": "CONTROL_NO_VALID_OTP",
+          "csvStatus": 403,
+          "effectiveDate": "2015-01-02",
+          "market": "STK",
+          "otpAccepted": false,
+          "otpRawSha256": "377b375adcc04b5ba5998c978372401a4c6327ccc218e17e383f72861085cb95",
+          "otpStatus": 200,
+          "profile": "marketplace-loader",
+          "reason": "NO_VALID_OTP",
+          "requestedDate": "2015-01-02",
+          "status": "REJECTED",
+          "substituted": false,
+          "substitutionReason": null
+        },
+        {
+          "classificationRowsObtained": 0,
+          "csvRawSha256": "2c860edd6d3458284e3b7f2f727385462a5e2c59d3f32ec4244da90780c0dfa9",
+          "csvStage": "CONTROL_NO_VALID_OTP",
+          "csvStatus": 403,
+          "effectiveDate": "2020-01-02",
+          "market": "STK",
+          "otpAccepted": false,
+          "otpRawSha256": "377b375adcc04b5ba5998c978372401a4c6327ccc218e17e383f72861085cb95",
+          "otpStatus": 200,
+          "profile": "marketplace-loader",
+          "reason": "NO_VALID_OTP",
+          "requestedDate": "2020-01-02",
+          "status": "REJECTED",
+          "substituted": false,
+          "substitutionReason": null
+        },
+        {
+          "classificationRowsObtained": 0,
+          "csvRawSha256": "2c860edd6d3458284e3b7f2f727385462a5e2c59d3f32ec4244da90780c0dfa9",
+          "csvStage": "CONTROL_NO_VALID_OTP",
+          "csvStatus": 403,
+          "effectiveDate": "2023-01-02",
+          "market": "STK",
+          "otpAccepted": false,
+          "otpRawSha256": "377b375adcc04b5ba5998c978372401a4c6327ccc218e17e383f72861085cb95",
+          "otpStatus": 200,
+          "profile": "marketplace-loader",
+          "reason": "NO_VALID_OTP",
+          "requestedDate": "2023-01-02",
+          "status": "REJECTED",
+          "substituted": false,
+          "substitutionReason": null
+        },
+        {
+          "classificationRowsObtained": 0,
+          "csvRawSha256": "2c860edd6d3458284e3b7f2f727385462a5e2c59d3f32ec4244da90780c0dfa9",
+          "csvStage": "CONTROL_NO_VALID_OTP",
+          "csvStatus": 403,
+          "effectiveDate": "2026-09-01",
+          "market": "STK",
+          "otpAccepted": false,
+          "otpRawSha256": "377b375adcc04b5ba5998c978372401a4c6327ccc218e17e383f72861085cb95",
+          "otpStatus": 200,
+          "profile": "marketplace-loader",
+          "reason": "NO_VALID_OTP",
+          "requestedDate": "2026-09-01",
+          "status": "REJECTED",
+          "substituted": false,
+          "substitutionReason": null
+        }
+      ],
+      "feasibilityDecision": "NO_USABLE_HISTORICAL_CSV_OBTAINED",
+      "manifestSha256": "5cdbcdd9c0ac8383eaf7a217b2d5c8f0b588651dd763bc90730e7e0e59101ce0",
+      "realClassificationCsvObtained": false,
+      "requestCount": 18
+    },
     "plannedReceipts": 413,
     "publicRequests": 1199,
     "readingListIsNotMembership": true,

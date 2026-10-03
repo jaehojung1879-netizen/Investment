@@ -131,7 +131,7 @@ def coverage(rows, schedule, taxonomy_id, criteria):
         record['coverageFraction'] = record['classifiedNameDates'] / record['universeNameDates']
         record['uniqueUniverseSecurities'] = len(record.pop('universeSecurityIds'))
         record['missingSecurityIds'] = sorted(record['missingSecurityIds'])
-    continuity = continuous / repeated if repeated else None
+    availability = continuous / repeated if repeated else None
     failures = []
     if not dates:
         failures.append('EMPTY_SIGNAL_CALENDAR')
@@ -139,15 +139,19 @@ def coverage(rows, schedule, taxonomy_id, criteria):
         failures.append('SIGNAL_DATE_COVERAGE_BELOW_FLOOR')
     if any(r['coverageFraction'] < criteria['minimumAnnualNameDateCoverageFraction'] for r in annual.values()):
         failures.append('ANNUAL_COVERAGE_BELOW_FLOOR')
-    if continuity is None or continuity < criteria['minimumAdjacentNameDateContinuityFraction']:
-        failures.append('CONTINUITY_BELOW_FLOOR')
+    # The frozen numerical gate is continuous availability, not unchanged industry.
+    if availability is None or availability < criteria['minimumAdjacentNameDateContinuityFraction']:
+        failures.append('ADJACENT_CLASSIFICATION_AVAILABILITY_BELOW_FLOOR')
     if any(d['sufficientGroupCount'] < criteria['minimumSufficientGroupsPerSignalDate'] or
            d['classifiedFractionInSufficientGroups'] is None or
            d['classifiedFractionInSufficientGroups'] < criteria['minimumClassifiedFractionInSufficientGroupsPerSignalDate'] for d in dates):
         failures.append('GROUP_SIZE_OR_GROUP_COVERAGE_BELOW_FLOOR')
     return {'taxonomy_id': taxonomy_id, 'membershipSha256': membership_identity(rows), 'dates': dates,
             'annual': list(annual.values()), 'repeatedUniverseNameDatePairs': repeated,
-            'classifiedAdjacentNameDatePairs': continuous, 'adjacentContinuityFraction': continuity,
+            'classifiedAdjacentNameDatePairs': continuous, 'adjacentClassificationAvailabilityFraction': availability,
+            'bothClassifiedAdjacentNameDatePairs': continuous,
+            'adjacentIndustryStabilityFraction': (continuous - len(switches)) / continuous if continuous else None,
+            'observedAssignmentSwitchRate': len(switches) / continuous if continuous else None,
             'observedAssignmentChanges': switches, 'failedCriteria': failures,
             'decision': 'DATA_FOUNDATION_INSUFFICIENT' if failures else 'READY_FOR_INDUSTRY_ANATOMY'}
 
