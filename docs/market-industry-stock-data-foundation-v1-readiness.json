@@ -1,0 +1,1111 @@
+{
+  "auditType": "REPOSITORY_CONTRACT_AND_SOURCE_READINESS; not a historical row audit",
+  "featureMatrix": [
+    {
+      "blocker": "trailing matched-basis prices; dated industry membership; complete frozen cohort",
+      "family": "relativeMomentum",
+      "industryPanelStatus": "DATA_FOUNDATION_REQUIRED",
+      "regions": {
+        "KR": "PARTIAL",
+        "US": "PARTIAL"
+      }
+    },
+    {
+      "blocker": "past-only moving-average/rise measurement; measured and full denominator; membership",
+      "family": "breadth",
+      "industryPanelStatus": "DATA_FOUNDATION_REQUIRED",
+      "regions": {
+        "KR": "PARTIAL",
+        "US": "PARTIAL"
+      }
+    },
+    {
+      "blocker": "same-cohort trailing returns, missingness and distribution semantics",
+      "family": "dispersion",
+      "industryPanelStatus": "DATA_FOUNDATION_REQUIRED",
+      "regions": {
+        "KR": "PARTIAL",
+        "US": "PARTIAL"
+      }
+    },
+    {
+      "blocker": "complete trailing industry blocks; no missing-block bridging",
+      "family": "volatility",
+      "industryPanelStatus": "DATA_FOUNDATION_REQUIRED",
+      "regions": {
+        "KR": "PARTIAL",
+        "US": "PARTIAL"
+      }
+    },
+    {
+      "blocker": "as-traded monetary volume; do not multiply forward adjusted index by volume",
+      "family": "liquidity",
+      "industryPanelStatus": "DATA_FOUNDATION_REQUIRED",
+      "regions": {
+        "KR": "PARTIAL",
+        "US": "PARTIAL"
+      }
+    },
+    {
+      "blocker": "PIT market cap/full universe; historical US cap not universally verified",
+      "family": "concentration",
+      "industryPanelStatus": "DATA_FOUNDATION_REQUIRED",
+      "regions": {
+        "KR": "PARTIAL",
+        "US": "PARTIAL"
+      }
+    },
+    {
+      "blocker": "legacy DART/Finnhub concepts; not proven repaired-KR four-family coverage",
+      "family": "revenue",
+      "industryPanelStatus": "DATA_FOUNDATION_REQUIRED",
+      "regions": {
+        "KR": "PARTIAL",
+        "US": "PARTIAL"
+      }
+    },
+    {
+      "blocker": "legacy DART/Finnhub concepts; independently verify periods/units/basis",
+      "family": "operatingProfit",
+      "industryPanelStatus": "DATA_FOUNDATION_REQUIRED",
+      "regions": {
+        "KR": "PARTIAL",
+        "US": "PARTIAL"
+      }
+    },
+    {
+      "blocker": "repaired KR ProfitLoss includes noncontrolling interests; US account chain; release visibility",
+      "family": "netIncome",
+      "industryPanelStatus": "DATA_FOUNDATION_REQUIRED",
+      "regions": {
+        "KR": "PARTIAL",
+        "US": "PARTIAL"
+      }
+    },
+    {
+      "blocker": "repaired KR CF; same visible TTM chain; incomplete OCF is missing",
+      "family": "operatingCashFlow",
+      "industryPanelStatus": "DATA_FOUNDATION_REQUIRED",
+      "regions": {
+        "KR": "PARTIAL",
+        "US": "PARTIAL"
+      }
+    },
+    {
+      "blocker": "dated balance-sheet totals; sector comparability and statement basis",
+      "family": "assetsLeverage",
+      "industryPanelStatus": "DATA_FOUNDATION_REQUIRED",
+      "regions": {
+        "KR": "PARTIAL",
+        "US": "PARTIAL"
+      }
+    },
+    {
+      "blocker": "matched visible same-name same-stage cohorts; changing membership is not growth",
+      "family": "aggregateChanges",
+      "industryPanelStatus": "DATA_FOUNDATION_REQUIRED",
+      "regions": {
+        "KR": "PARTIAL",
+        "US": "PARTIAL"
+      }
+    },
+    {
+      "blocker": "matched same-stage pairs and measured/full denominators",
+      "family": "improvementBreadth",
+      "industryPanelStatus": "DATA_FOUNDATION_REQUIRED",
+      "regions": {
+        "KR": "PARTIAL",
+        "US": "PARTIAL"
+      }
+    },
+    {
+      "blocker": "sparse KR legacy line item outside repaired four-family guarantee; never missing=0",
+      "family": "capex",
+      "industryPanelStatus": "DATA_FOUNDATION_REQUIRED",
+      "regions": {
+        "KR": "PARTIAL",
+        "US": "PARTIAL"
+      }
+    },
+    {
+      "blocker": "both flows with consistent stage/TTM/unit/currency",
+      "family": "capexSales",
+      "industryPanelStatus": "DATA_FOUNDATION_REQUIRED",
+      "regions": {
+        "KR": "PARTIAL",
+        "US": "PARTIAL"
+      }
+    },
+    {
+      "blocker": "same-stage year-ago positive denominator; no future amended values",
+      "family": "assetGrowth",
+      "industryPanelStatus": "DATA_FOUNDATION_REQUIRED",
+      "regions": {
+        "KR": "PARTIAL",
+        "US": "PARTIAL"
+      }
+    },
+    {
+      "blocker": "No historical estimate store; realised accounting is not expectations.",
+      "family": "analystEpsRevisions",
+      "industryPanelStatus": "NOT_AVAILABLE",
+      "regions": {
+        "KR": "NOT_AVAILABLE",
+        "US": "NOT_AVAILABLE"
+      }
+    },
+    {
+      "blocker": "No historical estimate store; realised accounting is not expectations.",
+      "family": "estimateBreadth",
+      "industryPanelStatus": "NOT_AVAILABLE",
+      "regions": {
+        "KR": "NOT_AVAILABLE",
+        "US": "NOT_AVAILABLE"
+      }
+    },
+    {
+      "blocker": "No historical estimate store; realised accounting is not expectations.",
+      "family": "estimateDispersion",
+      "industryPanelStatus": "NOT_AVAILABLE",
+      "regions": {
+        "KR": "NOT_AVAILABLE",
+        "US": "NOT_AVAILABLE"
+      }
+    },
+    {
+      "blocker": "Official source leads only; taxonomy crosswalk, release/vintage, units and coverage unverified.",
+      "family": "exports",
+      "industryPanelStatus": "DATA_FOUNDATION_REQUIRED",
+      "regions": {
+        "KR": "DATA_FOUNDATION_REQUIRED",
+        "US": "DATA_FOUNDATION_REQUIRED"
+      }
+    },
+    {
+      "blocker": "Official source leads only; taxonomy crosswalk, release/vintage, units and coverage unverified.",
+      "family": "orders",
+      "industryPanelStatus": "DATA_FOUNDATION_REQUIRED",
+      "regions": {
+        "KR": "DATA_FOUNDATION_REQUIRED",
+        "US": "DATA_FOUNDATION_REQUIRED"
+      }
+    },
+    {
+      "blocker": "Official source leads only; taxonomy crosswalk, release/vintage, units and coverage unverified.",
+      "family": "shipments",
+      "industryPanelStatus": "DATA_FOUNDATION_REQUIRED",
+      "regions": {
+        "KR": "DATA_FOUNDATION_REQUIRED",
+        "US": "DATA_FOUNDATION_REQUIRED"
+      }
+    },
+    {
+      "blocker": "Official source leads only; taxonomy crosswalk, release/vintage, units and coverage unverified.",
+      "family": "commodityProductPrices",
+      "industryPanelStatus": "DATA_FOUNDATION_REQUIRED",
+      "regions": {
+        "KR": "DATA_FOUNDATION_REQUIRED",
+        "US": "DATA_FOUNDATION_REQUIRED"
+      }
+    },
+    {
+      "blocker": "Official source leads only; taxonomy crosswalk, release/vintage, units and coverage unverified.",
+      "family": "spreads",
+      "industryPanelStatus": "DATA_FOUNDATION_REQUIRED",
+      "regions": {
+        "KR": "DATA_FOUNDATION_REQUIRED",
+        "US": "DATA_FOUNDATION_REQUIRED"
+      }
+    },
+    {
+      "blocker": "same dated industry cohort, monetary price and compatible visible accounting; no adjusted-index price valuation; history uses only earlier observations",
+      "family": "ownHistoryAndMarketValuation",
+      "industryPanelStatus": "DATA_FOUNDATION_REQUIRED",
+      "regions": {
+        "KR": "PARTIAL",
+        "US": "PARTIAL"
+      }
+    },
+    {
+      "blocker": "matched cohort, visible accounting/statement basis and meaningful positive denominator; financial firms require compatible concepts",
+      "family": "profitabilityBalanceSheetChanges",
+      "industryPanelStatus": "DATA_FOUNDATION_REQUIRED",
+      "regions": {
+        "KR": "PARTIAL",
+        "US": "PARTIAL"
+      }
+    },
+    {
+      "blocker": "same-stage visible trailing financial chains; missing revenue/operating profit do not inherit repaired four-family readiness",
+      "family": "salesEarningsOcfAcceleration",
+      "industryPanelStatus": "DATA_FOUNDATION_REQUIRED",
+      "regions": {
+        "KR": "PARTIAL",
+        "US": "PARTIAL"
+      }
+    },
+    {
+      "blocker": "trailing industry series frozen by signal-known membership; no current-sector substitute",
+      "family": "stockMomentumRelativeToOwnIndustry",
+      "industryPanelStatus": "DATA_FOUNDATION_REQUIRED",
+      "regions": {
+        "KR": "PARTIAL",
+        "US": "PARTIAL"
+      }
+    },
+    {
+      "blocker": "2/9 ECOS source identities validated; seven unresolved definitions/selectors and all historical release vintages remain blocked",
+      "family": "krMarketContext",
+      "industryPanelStatus": "SEPARATE_STATE_OBJECT",
+      "regions": {
+        "KR": "READY_CONTEXT_PRIMITIVE",
+        "US": "EXISTING_DEFINITIONS_UNCHANGED"
+      }
+    },
+    {
+      "blocker": "dated full universe/membership/market cap and denominators",
+      "family": "krEquityBreadthConcentration",
+      "industryPanelStatus": "DATA_FOUNDATION_REQUIRED",
+      "regions": {
+        "KR": "DATA_FOUNDATION_REQUIRED",
+        "US": "EXISTING_ONLY"
+      }
+    }
+  ],
+  "historicalClassificationCoverageFraction": null,
+  "historicalIndustryObservationCount": null,
+  "historicalMembershipRowsVerified": 0,
+  "historicalOutcomeComputed": false,
+  "mainShaUsed": "9504f970a2895781eedcc3a6a1c94126fd4682f8",
+  "marketContextFoundation": {
+    "axes": {
+      "domesticGrowth": [
+        "IndustrialProduction",
+        "Exports",
+        "LeadingIndex"
+      ],
+      "domesticLiquidityCredit": [
+        "M2",
+        "KTB_3Y",
+        "CorpBond_3Y",
+        "KR_CreditSpread"
+      ],
+      "domesticRates": [
+        "BaseRate",
+        "Korea_3M",
+        "Korea_10Y",
+        "KR_TermSpread"
+      ],
+      "equityMarketState": [
+        "KODEX200_TrendAdverse",
+        "KODEX200_Vol63",
+        "Breadth",
+        "Concentration"
+      ],
+      "externalFinancialConditions": [
+        "USD_KRW",
+        "Broad_Dollar",
+        "Real_10Y",
+        "FedFunds",
+        "Treasury_2Y",
+        "Treasury_10Y",
+        "HY_Spread",
+        "VIX"
+      ],
+      "inflation": [
+        "CPI",
+        "CoreCPI"
+      ]
+    },
+    "compositeScore": false,
+    "contract": "KR_MARKET_CONTEXT_V1",
+    "ecosSeriesReadiness": [
+      {
+        "appliedConfig": {
+          "cycle": null,
+          "itemCode": null,
+          "seriesId": "722Y001",
+          "sourceStatus": "AMBIGUOUS_SOURCE",
+          "vintageStatus": "REVISED_HISTORY"
+        },
+        "availableFrom": null,
+        "configuredCandidate": {
+          "cycle": null,
+          "itemCode": null,
+          "seriesId": "722Y001",
+          "sourceStatus": "DATA_LINEAGE_UNRESOLVED"
+        },
+        "configuredTableCycles": [
+          "A",
+          "D",
+          "M",
+          "Q"
+        ],
+        "configuredTableGroupCounts": {
+          "Group1": 48
+        },
+        "configuredTableItemCount": 48,
+        "earliestObservation": null,
+        "historicalConfirmatoryEligible": false,
+        "itemName": null,
+        "latestObservation": null,
+        "manualProbeExecuted": true,
+        "name": "BaseRate",
+        "nativeCycle": null,
+        "observationCount": null,
+        "publishedAt": null,
+        "selectedItems": null,
+        "semanticMatchVerified": false,
+        "smoke": null,
+        "sourceStatus": "AMBIGUOUS_SOURCE",
+        "table": {
+          "CYCLE": "D",
+          "ORG_NAME": null,
+          "SRCH_YN": "Y",
+          "STAT_CODE": "722Y001",
+          "STAT_NAME": "1.3.1. \ud55c\uad6d\uc740\ud589 \uae30\uc900\uae08\ub9ac \ubc0f \uc5ec\uc218\uc2e0\uae08\ub9ac"
+        },
+        "tableExists": true,
+        "unit": null,
+        "vintageStatus": "REVISED_HISTORY"
+      },
+      {
+        "appliedConfig": {
+          "cycle": "D",
+          "itemCode": "010200000",
+          "itemName": "\uad6d\uace0\ucc44(3\ub144)",
+          "seriesId": "817Y002",
+          "sourceStatus": "LIVE_VALIDATED_SOURCE",
+          "unit": "\uc5f0%",
+          "validationEvidenceSha256": "6ad1eae9867596e7cf3ea7fb84c1071bf0f209d53ab5dba752e1f1c1f952aed6",
+          "vintageStatus": "REVISED_HISTORY"
+        },
+        "availableFrom": null,
+        "configuredCandidate": {
+          "cycle": null,
+          "itemCode": null,
+          "seriesId": "817Y002",
+          "sourceStatus": "DATA_LINEAGE_UNRESOLVED"
+        },
+        "configuredTableCycles": [
+          "D"
+        ],
+        "configuredTableGroupCounts": {
+          "Group1": 27
+        },
+        "configuredTableItemCount": 27,
+        "earliestObservation": "19981113",
+        "historicalConfirmatoryEligible": false,
+        "itemName": "\uad6d\uace0\ucc44(3\ub144)",
+        "latestObservation": "20261002",
+        "manualProbeExecuted": true,
+        "name": "KTB_3Y",
+        "nativeCycle": "D",
+        "observationCount": 6910,
+        "publishedAt": null,
+        "selectedItems": [
+          {
+            "CYCLE": "D",
+            "DATA_CNT": 6910,
+            "END_TIME": "20261002",
+            "GRP_CODE": "Group1",
+            "GRP_NAME": "\uacc4\uc815\ud56d\ubaa9",
+            "ITEM_CODE": "010200000",
+            "ITEM_NAME": "\uad6d\uace0\ucc44(3\ub144)",
+            "START_TIME": "19981113",
+            "STAT_CODE": "817Y002",
+            "STAT_NAME": "1.3.2.1. \uc2dc\uc7a5\uae08\ub9ac(\uc77c\ubcc4)",
+            "UNIT_NAME": "\uc5f0%"
+          }
+        ],
+        "semanticMatchVerified": true,
+        "smoke": {
+          "errorCode": null,
+          "period": "20261002",
+          "validObservationFound": true
+        },
+        "sourceStatus": "LIVE_VALIDATED_SOURCE",
+        "table": {
+          "CYCLE": "D",
+          "ORG_NAME": "\ud55c\uad6d\uc740\ud589",
+          "SRCH_YN": "Y",
+          "STAT_CODE": "817Y002",
+          "STAT_NAME": "1.3.2.1. \uc2dc\uc7a5\uae08\ub9ac(\uc77c\ubcc4)"
+        },
+        "tableExists": true,
+        "unit": "\uc5f0%",
+        "vintageStatus": "REVISED_HISTORY"
+      },
+      {
+        "appliedConfig": {
+          "cycle": null,
+          "itemCode": null,
+          "seriesId": "817Y002",
+          "sourceStatus": "AMBIGUOUS_SOURCE",
+          "vintageStatus": "REVISED_HISTORY"
+        },
+        "availableFrom": null,
+        "configuredCandidate": {
+          "cycle": null,
+          "itemCode": null,
+          "seriesId": "817Y002",
+          "sourceStatus": "DATA_LINEAGE_UNRESOLVED"
+        },
+        "configuredTableCycles": [
+          "D"
+        ],
+        "configuredTableGroupCounts": {
+          "Group1": 27
+        },
+        "configuredTableItemCount": 27,
+        "earliestObservation": null,
+        "historicalConfirmatoryEligible": false,
+        "itemName": null,
+        "latestObservation": null,
+        "manualProbeExecuted": true,
+        "name": "CorpBond_3Y",
+        "nativeCycle": null,
+        "observationCount": null,
+        "publishedAt": null,
+        "selectedItems": null,
+        "semanticMatchVerified": false,
+        "smoke": null,
+        "sourceStatus": "AMBIGUOUS_SOURCE",
+        "table": {
+          "CYCLE": "D",
+          "ORG_NAME": "\ud55c\uad6d\uc740\ud589",
+          "SRCH_YN": "Y",
+          "STAT_CODE": "817Y002",
+          "STAT_NAME": "1.3.2.1. \uc2dc\uc7a5\uae08\ub9ac(\uc77c\ubcc4)"
+        },
+        "tableExists": true,
+        "unit": null,
+        "vintageStatus": "REVISED_HISTORY"
+      },
+      {
+        "appliedConfig": {
+          "cycle": null,
+          "itemCode": null,
+          "seriesId": "901Y009",
+          "sourceStatus": "AMBIGUOUS_SOURCE",
+          "vintageStatus": "REVISED_HISTORY"
+        },
+        "availableFrom": null,
+        "configuredCandidate": {
+          "cycle": null,
+          "itemCode": null,
+          "seriesId": "901Y009",
+          "sourceStatus": "DATA_LINEAGE_UNRESOLVED"
+        },
+        "configuredTableCycles": [
+          "A",
+          "M",
+          "Q"
+        ],
+        "configuredTableGroupCounts": {
+          "Group1": 1743
+        },
+        "configuredTableItemCount": 1743,
+        "earliestObservation": null,
+        "historicalConfirmatoryEligible": false,
+        "itemName": null,
+        "latestObservation": null,
+        "manualProbeExecuted": true,
+        "name": "CPI",
+        "nativeCycle": null,
+        "observationCount": null,
+        "publishedAt": null,
+        "selectedItems": null,
+        "semanticMatchVerified": false,
+        "smoke": null,
+        "sourceStatus": "AMBIGUOUS_SOURCE",
+        "table": {
+          "CYCLE": "M",
+          "ORG_NAME": "\uad6d\uac00\ub370\uc774\ud130\ucc98(02-2012-9114)",
+          "SRCH_YN": "Y",
+          "STAT_CODE": "901Y009",
+          "STAT_NAME": "4.2.1. \uc18c\ube44\uc790\ubb3c\uac00\uc9c0\uc218"
+        },
+        "tableExists": true,
+        "unit": null,
+        "vintageStatus": "REVISED_HISTORY"
+      },
+      {
+        "appliedConfig": {
+          "cycle": null,
+          "itemCode": null,
+          "seriesId": "901Y010",
+          "sourceStatus": "DATA_LINEAGE_UNRESOLVED",
+          "vintageStatus": "REVISED_HISTORY"
+        },
+        "availableFrom": null,
+        "configuredCandidate": {
+          "cycle": null,
+          "itemCode": null,
+          "seriesId": "901Y010",
+          "sourceStatus": "DATA_LINEAGE_UNRESOLVED"
+        },
+        "configuredTableCycles": [
+          "A",
+          "M",
+          "Q"
+        ],
+        "configuredTableGroupCounts": {
+          "Group1": 104
+        },
+        "configuredTableItemCount": 104,
+        "earliestObservation": null,
+        "historicalConfirmatoryEligible": false,
+        "itemName": null,
+        "latestObservation": null,
+        "manualProbeExecuted": true,
+        "name": "CoreCPI",
+        "nativeCycle": null,
+        "observationCount": null,
+        "publishedAt": null,
+        "selectedItems": null,
+        "semanticMatchVerified": false,
+        "smoke": null,
+        "sourceStatus": "DATA_LINEAGE_UNRESOLVED",
+        "table": {
+          "CYCLE": "M",
+          "ORG_NAME": "\uad6d\uac00\ub370\uc774\ud130\ucc98(02-2012-9114)",
+          "SRCH_YN": "Y",
+          "STAT_CODE": "901Y010",
+          "STAT_NAME": "4.2.2. \uc18c\ube44\uc790\ubb3c\uac00\uc9c0\uc218(\ud2b9\uc218\ubd84\ub958)"
+        },
+        "tableExists": true,
+        "unit": null,
+        "vintageStatus": "REVISED_HISTORY"
+      },
+      {
+        "appliedConfig": {
+          "cycle": null,
+          "itemCode": null,
+          "seriesId": "901Y033",
+          "sourceStatus": "DATA_LINEAGE_UNRESOLVED",
+          "vintageStatus": "REVISED_HISTORY"
+        },
+        "availableFrom": null,
+        "configuredCandidate": {
+          "cycle": null,
+          "itemCode": null,
+          "seriesId": "901Y033",
+          "sourceStatus": "DATA_LINEAGE_UNRESOLVED"
+        },
+        "configuredTableCycles": [
+          "A",
+          "M",
+          "Q"
+        ],
+        "configuredTableGroupCounts": {
+          "Group1": 15,
+          "Group2": 5
+        },
+        "configuredTableItemCount": 20,
+        "earliestObservation": null,
+        "historicalConfirmatoryEligible": false,
+        "itemName": null,
+        "latestObservation": null,
+        "manualProbeExecuted": true,
+        "name": "IndustrialProduction",
+        "nativeCycle": null,
+        "observationCount": null,
+        "publishedAt": null,
+        "selectedItems": null,
+        "semanticMatchVerified": false,
+        "smoke": null,
+        "sourceStatus": "DATA_LINEAGE_UNRESOLVED",
+        "table": {
+          "CYCLE": "M",
+          "ORG_NAME": "\uad6d\uac00\ub370\uc774\ud130\ucc98(042-481-2148)",
+          "SRCH_YN": "Y",
+          "STAT_CODE": "901Y033",
+          "STAT_NAME": "8.1.4. \uc804\uc0b0\uc5c5\uc0dd\uc0b0\uc9c0\uc218(\ub18d\ub9bc\uc5b4\uc5c5\uc81c\uc678)"
+        },
+        "tableExists": true,
+        "unit": null,
+        "vintageStatus": "REVISED_HISTORY"
+      },
+      {
+        "appliedConfig": {
+          "cycle": "M",
+          "itemCode": "I16E",
+          "itemName": "\uc120\ud589\uc9c0\uc218\uc21c\ud658\ubcc0\ub3d9\uce58",
+          "seriesId": "901Y067",
+          "sourceStatus": "LIVE_VALIDATED_SOURCE",
+          "unit": "2020=100",
+          "validationEvidenceSha256": "a1f230f74bb11c3143be51ae0ebd837b1f0c41d0d5c0950a92c5621918844ee4",
+          "vintageStatus": "REVISED_HISTORY"
+        },
+        "availableFrom": null,
+        "configuredCandidate": {
+          "cycle": null,
+          "itemCode": null,
+          "seriesId": "901Y067",
+          "sourceStatus": "DATA_LINEAGE_UNRESOLVED"
+        },
+        "configuredTableCycles": [
+          "M"
+        ],
+        "configuredTableGroupCounts": {
+          "Group1": 5
+        },
+        "configuredTableItemCount": 5,
+        "earliestObservation": "197001",
+        "historicalConfirmatoryEligible": false,
+        "itemName": "\uc120\ud589\uc9c0\uc218\uc21c\ud658\ubcc0\ub3d9\uce58",
+        "latestObservation": "202608",
+        "manualProbeExecuted": true,
+        "name": "LeadingIndex",
+        "nativeCycle": "M",
+        "observationCount": 680,
+        "publishedAt": null,
+        "selectedItems": [
+          {
+            "CYCLE": "M",
+            "DATA_CNT": 680,
+            "END_TIME": "202608",
+            "GRP_CODE": "Group1",
+            "GRP_NAME": "\uacc4\uc815\ud56d\ubaa9",
+            "ITEM_CODE": "I16E",
+            "ITEM_NAME": "\uc120\ud589\uc9c0\uc218\uc21c\ud658\ubcc0\ub3d9\uce58",
+            "START_TIME": "197001",
+            "STAT_CODE": "901Y067",
+            "STAT_NAME": "8.1.2. \uacbd\uae30\uc885\ud569\uc9c0\uc218",
+            "UNIT_NAME": "2020=100"
+          }
+        ],
+        "semanticMatchVerified": true,
+        "smoke": {
+          "errorCode": null,
+          "period": "202608",
+          "validObservationFound": true
+        },
+        "sourceStatus": "LIVE_VALIDATED_SOURCE",
+        "table": {
+          "CYCLE": "M",
+          "ORG_NAME": "\uad6d\uac00\ub370\uc774\ud130\ucc98 ( \u260e 042-481-2229 )",
+          "SRCH_YN": "Y",
+          "STAT_CODE": "901Y067",
+          "STAT_NAME": "8.1.2. \uacbd\uae30\uc885\ud569\uc9c0\uc218"
+        },
+        "tableExists": true,
+        "unit": "2020=100",
+        "vintageStatus": "REVISED_HISTORY"
+      },
+      {
+        "appliedConfig": {
+          "cycle": null,
+          "itemCode": null,
+          "seriesId": "901Y011",
+          "sourceStatus": "NOT_AVAILABLE",
+          "vintageStatus": "REVISED_HISTORY"
+        },
+        "availableFrom": null,
+        "configuredCandidate": {
+          "cycle": null,
+          "itemCode": null,
+          "seriesId": "901Y011",
+          "sourceStatus": "DATA_LINEAGE_UNRESOLVED"
+        },
+        "configuredTableCycles": [],
+        "configuredTableGroupCounts": {},
+        "configuredTableItemCount": 0,
+        "earliestObservation": null,
+        "historicalConfirmatoryEligible": false,
+        "itemName": null,
+        "latestObservation": null,
+        "manualProbeExecuted": true,
+        "name": "Exports",
+        "nativeCycle": null,
+        "observationCount": null,
+        "publishedAt": null,
+        "selectedItems": null,
+        "semanticMatchVerified": false,
+        "smoke": null,
+        "sourceStatus": "NOT_AVAILABLE",
+        "table": null,
+        "tableExists": false,
+        "unit": null,
+        "vintageStatus": "REVISED_HISTORY"
+      },
+      {
+        "appliedConfig": {
+          "cycle": null,
+          "itemCode": null,
+          "seriesId": "101Y004",
+          "sourceStatus": "DATA_LINEAGE_UNRESOLVED",
+          "vintageStatus": "REVISED_HISTORY"
+        },
+        "availableFrom": null,
+        "configuredCandidate": {
+          "cycle": null,
+          "itemCode": null,
+          "seriesId": "101Y004",
+          "sourceStatus": "DATA_LINEAGE_UNRESOLVED"
+        },
+        "configuredTableCycles": [
+          "A",
+          "M",
+          "Q"
+        ],
+        "configuredTableGroupCounts": {
+          "Group1": 48
+        },
+        "configuredTableItemCount": 48,
+        "earliestObservation": null,
+        "historicalConfirmatoryEligible": false,
+        "itemName": null,
+        "latestObservation": null,
+        "manualProbeExecuted": true,
+        "name": "M2",
+        "nativeCycle": null,
+        "observationCount": null,
+        "publishedAt": null,
+        "selectedItems": null,
+        "semanticMatchVerified": false,
+        "smoke": null,
+        "sourceStatus": "DATA_LINEAGE_UNRESOLVED",
+        "table": {
+          "CYCLE": "M",
+          "ORG_NAME": null,
+          "SRCH_YN": "Y",
+          "STAT_CODE": "101Y004",
+          "STAT_NAME": "1.7.3.1.2. M2 \uc0c1\ud488\ubcc4 \uad6c\uc131\ub0b4\uc5ed(\ud3c9\uc794, \uc6d0\uacc4\uc5f4)"
+        },
+        "tableExists": true,
+        "unit": null,
+        "vintageStatus": "REVISED_HISTORY"
+      }
+    ],
+    "fredGlobalInventory": [
+      {
+        "fetchImplementation": "pipeline.datafeed.fetch_macro",
+        "name": "Treasury_10Y",
+        "releaseEvidenceSuppliedInThisRevision": false,
+        "seriesId": "DGS10",
+        "upgradeRule": "Only actual nonempty release frames reconstructed through pit_data.vintage_column/MacroVintageView",
+        "vintageStatus": "REVISED_HISTORY"
+      },
+      {
+        "fetchImplementation": "pipeline.datafeed.fetch_macro",
+        "name": "Treasury_2Y",
+        "releaseEvidenceSuppliedInThisRevision": false,
+        "seriesId": "DGS2",
+        "upgradeRule": "Only actual nonempty release frames reconstructed through pit_data.vintage_column/MacroVintageView",
+        "vintageStatus": "REVISED_HISTORY"
+      },
+      {
+        "fetchImplementation": "pipeline.datafeed.fetch_macro",
+        "name": "FedFunds",
+        "releaseEvidenceSuppliedInThisRevision": false,
+        "seriesId": "DFF",
+        "upgradeRule": "Only actual nonempty release frames reconstructed through pit_data.vintage_column/MacroVintageView",
+        "vintageStatus": "REVISED_HISTORY"
+      },
+      {
+        "fetchImplementation": "pipeline.datafeed.fetch_macro",
+        "name": "HY_Spread",
+        "releaseEvidenceSuppliedInThisRevision": false,
+        "seriesId": "BAMLH0A0HYM2",
+        "upgradeRule": "Only actual nonempty release frames reconstructed through pit_data.vintage_column/MacroVintageView",
+        "vintageStatus": "REVISED_HISTORY"
+      },
+      {
+        "fetchImplementation": "pipeline.datafeed.fetch_macro",
+        "name": "IG_Spread",
+        "releaseEvidenceSuppliedInThisRevision": false,
+        "seriesId": "BAMLC0A0CM",
+        "upgradeRule": "Only actual nonempty release frames reconstructed through pit_data.vintage_column/MacroVintageView",
+        "vintageStatus": "REVISED_HISTORY"
+      },
+      {
+        "fetchImplementation": "pipeline.datafeed.fetch_macro",
+        "name": "Real_10Y",
+        "releaseEvidenceSuppliedInThisRevision": false,
+        "seriesId": "DFII10",
+        "upgradeRule": "Only actual nonempty release frames reconstructed through pit_data.vintage_column/MacroVintageView",
+        "vintageStatus": "REVISED_HISTORY"
+      },
+      {
+        "fetchImplementation": "pipeline.datafeed.fetch_macro",
+        "name": "NFCI",
+        "releaseEvidenceSuppliedInThisRevision": false,
+        "seriesId": "NFCI",
+        "upgradeRule": "Only actual nonempty release frames reconstructed through pit_data.vintage_column/MacroVintageView",
+        "vintageStatus": "REVISED_HISTORY"
+      },
+      {
+        "fetchImplementation": "pipeline.datafeed.fetch_macro",
+        "name": "ANFCI",
+        "releaseEvidenceSuppliedInThisRevision": false,
+        "seriesId": "ANFCI",
+        "upgradeRule": "Only actual nonempty release frames reconstructed through pit_data.vintage_column/MacroVintageView",
+        "vintageStatus": "REVISED_HISTORY"
+      },
+      {
+        "fetchImplementation": "pipeline.datafeed.fetch_macro",
+        "name": "Broad_Dollar",
+        "releaseEvidenceSuppliedInThisRevision": false,
+        "seriesId": "DTWEXBGS",
+        "upgradeRule": "Only actual nonempty release frames reconstructed through pit_data.vintage_column/MacroVintageView",
+        "vintageStatus": "REVISED_HISTORY"
+      },
+      {
+        "fetchImplementation": "pipeline.datafeed.fetch_macro",
+        "name": "USD_KRW",
+        "releaseEvidenceSuppliedInThisRevision": false,
+        "seriesId": "DEXKOUS",
+        "upgradeRule": "Only actual nonempty release frames reconstructed through pit_data.vintage_column/MacroVintageView",
+        "vintageStatus": "REVISED_HISTORY"
+      },
+      {
+        "fetchImplementation": "pipeline.datafeed.fetch_macro",
+        "name": "Korea_10Y",
+        "releaseEvidenceSuppliedInThisRevision": false,
+        "seriesId": "IRLTLT01KRM156N",
+        "upgradeRule": "Only actual nonempty release frames reconstructed through pit_data.vintage_column/MacroVintageView",
+        "vintageStatus": "REVISED_HISTORY"
+      },
+      {
+        "fetchImplementation": "pipeline.datafeed.fetch_macro",
+        "name": "Korea_3M",
+        "releaseEvidenceSuppliedInThisRevision": false,
+        "seriesId": "IR3TIB01KRM156N",
+        "upgradeRule": "Only actual nonempty release frames reconstructed through pit_data.vintage_column/MacroVintageView",
+        "vintageStatus": "REVISED_HISTORY"
+      },
+      {
+        "economicSource": "CBOE",
+        "fetchImplementation": "pipeline.datafeed.fetch_vix",
+        "name": "VIX",
+        "releaseEvidenceSuppliedInThisRevision": false,
+        "seriesId": "^VIX",
+        "vintageStatus": "REVISED_HISTORY"
+      }
+    ],
+    "futureLabelsInState": false,
+    "industryConnection": {
+      "commonCandidates": [
+        "trailing relative momentum",
+        "breadth",
+        "dispersion",
+        "dated earnings/accounting change",
+        "credit",
+        "liquidity"
+      ],
+      "futureLabel": "industry-market future simple cumulative return gap, only in a separate preregistered study",
+      "industrySpecificCandidates": [
+        "export mix",
+        "bank rates/curve",
+        "producer input costs",
+        "inventory/order cycle"
+      ],
+      "interactionsImplemented": false,
+      "stateObjects": [
+        "MarketContext_t",
+        "IndustryCycleState_s,t"
+      ]
+    },
+    "knowledgeRule": "observedThrough <= t AND availableFrom <= t; revised/current values also fetchedAt <= t",
+    "krRegimeLabels": false,
+    "manualLiveValidation": {
+      "appliedOffline": true,
+      "artifactDigest": "sha256:6a0f59e13737b55102cfd3bbdf31f812c19ce71e104a0fde9727d86dcbffb1b3",
+      "artifactId": 11258377162,
+      "artifactName": "ecos-market-context-source-metadata-37080934658",
+      "branch": "research/market-industry-stock-data-foundation-v1",
+      "checkedAt": "2026-10-03T00:15:46.789703+00:00",
+      "evidenceFile": "research_specs/kr-market-context-ecos-evidence-37080934658.json",
+      "evidenceScope": "METADATA_AND_LATEST_PERIOD_SMOKE_ONLY",
+      "probe": "ecos-market-context",
+      "runId": 37080934658,
+      "runUrl": "https://github.com/jaehojung1879-netizen/Investment/actions/runs/37080934658",
+      "runtimeVariable": "ECOS_API_KEY",
+      "secretName": "ECOS",
+      "sourceHead": "6ebe13922e899b88e938f4f7aec7b8575ec47f34",
+      "sourceReadinessJsonSha256": "8cfb15cdcbf88796831b2b2c7eb25d44ca411a8acf44a53512906dd7f32e6b07",
+      "status": "COMPLETED_SUCCESS",
+      "workflow": "probes.yml"
+    },
+    "primitiveStatus": "READY_CONTEXT_PRIMITIVE",
+    "productionWired": false,
+    "publicationLagCreatesVintage": false,
+    "remainingGaps": [
+      "seven unresolved ECOS series: native-cycle choices, corporate rating, Core CPI definition, seasonal adjustment/group selectors and export table identity",
+      "historical release vintages",
+      "PIT breadth/concentration",
+      "historical taxonomy/membership",
+      "industry studies deliberately deferred"
+    ],
+    "reviewedParentHead": "b0ced85853046488817329220ca3688e7daf6965",
+    "sourceStatusVocabulary": [
+      "LIVE_VALIDATED_SOURCE",
+      "REVISED_HISTORY",
+      "DATA_LINEAGE_UNRESOLVED",
+      "NOT_AVAILABLE",
+      "AMBIGUOUS_SOURCE"
+    ],
+    "unitRule": "native units; changes in native-observation windows; no cross-axis average"
+  },
+  "modelFitPerformed": false,
+  "primitiveStatus": "READY_SYNTHETIC_ONLY",
+  "priorStudyRerun": false,
+  "sourceMatrix": [
+    {
+      "accessibleHistoryVerified": false,
+      "blocker": "No retained historical assignment/codebook/release panel; trade snapshots do not supply industry.",
+      "coverageFraction": null,
+      "historicalMembershipRowsVerified": 0,
+      "regions": [
+        "KR"
+      ],
+      "sourceId": "KR_KRX_HISTORICAL_KSIC",
+      "status": "DATA_FOUNDATION_REQUIRED"
+    },
+    {
+      "accessibleHistoryVerified": false,
+      "blocker": "Official introduction listing verified; detailed release/launch structure not independently verified; no backward projection.",
+      "coverageFraction": null,
+      "historicalMembershipRowsVerified": 0,
+      "regions": [
+        "KR"
+      ],
+      "sourceId": "KRICS_PROSPECTIVE",
+      "status": "DATA_FOUNDATION_REQUIRED"
+    },
+    {
+      "accessibleHistoryVerified": false,
+      "blocker": "Current company API induty_code has no as-of request. Receipt-specific archival classification extraction unbuilt.",
+      "coverageFraction": null,
+      "historicalMembershipRowsVerified": 0,
+      "regions": [
+        "KR"
+      ],
+      "sourceId": "DART_COMPANY_INDUSTRY",
+      "status": "NOT_AVAILABLE"
+    },
+    {
+      "accessibleHistoryVerified": false,
+      "blocker": "Authoritative history exists; entitlement, historical release vintages and security mapping not verified.",
+      "coverageFraction": null,
+      "historicalMembershipRowsVerified": 0,
+      "regions": [
+        "KR",
+        "US"
+      ],
+      "sourceId": "GICS_HISTORY_LICENSED",
+      "status": "DATA_FOUNDATION_REQUIRED"
+    },
+    {
+      "accessibleHistoryVerified": false,
+      "blocker": "Official SUB/header dated SIC source exists; existing repository SEC access refusals, no dated CIK/security collector.",
+      "coverageFraction": null,
+      "historicalMembershipRowsVerified": 0,
+      "regions": [
+        "US"
+      ],
+      "sourceId": "SEC_FILING_SIC",
+      "status": "DATA_FOUNDATION_REQUIRED"
+    },
+    {
+      "accessibleHistoryVerified": false,
+      "blocker": "Current-only values cannot be historical evidence.",
+      "coverageFraction": null,
+      "historicalMembershipRowsVerified": 0,
+      "regions": [
+        "KR",
+        "US"
+      ],
+      "sourceId": "STATIC_YAHOO_CLASSIFICATION",
+      "status": "NOT_AVAILABLE"
+    },
+    {
+      "accessibleHistoryVerified": false,
+      "blocker": "No retained estimate-vintage panel/collector. Official Finnhub history exists but current account entitlement and revision vintages unverified; S&P PIT Estimates is an unacquired licensed lead.",
+      "coverageFraction": null,
+      "historicalMembershipRowsVerified": 0,
+      "regions": [
+        "KR",
+        "US"
+      ],
+      "sourceId": "ANALYST_ESTIMATE_VINTAGES",
+      "status": "NOT_AVAILABLE"
+    },
+    {
+      "blocker": "Exact artifact validates 2/9 source identities and latest-period smoke; seven series remain fail-closed; historical release vintages absent.",
+      "regions": [
+        "KR"
+      ],
+      "sourceId": "KR_ECOS_NATIVE_MACRO",
+      "status": "PARTIALLY_LIVE_VALIDATED_SOURCE",
+      "unresolvedSeries": [
+        "BaseRate",
+        "CorpBond_3Y",
+        "CPI",
+        "CoreCPI",
+        "IndustrialProduction",
+        "Exports",
+        "M2"
+      ],
+      "validatedSeries": [
+        "KTB_3Y",
+        "LeadingIndex"
+      ],
+      "vintageStatus": "REVISED_HISTORY"
+    },
+    {
+      "blocker": "No actual release evidence supplied for an upgrade; aggregate macro-vintage gate remains closed.",
+      "regions": [
+        "KR"
+      ],
+      "sourceId": "KR_FRED_GLOBAL_CONTEXT",
+      "status": "EXISTING_FETCH_REUSABLE",
+      "vintageStatus": "REVISED_HISTORY"
+    }
+  ],
+  "specSha256": "33fb2363076b4c7d961751221f1920913342844a46f862c80d7c2f2cf2ff0fce",
+  "status": "DATA_FOUNDATION_REQUIRED",
+  "studyId": "market-industry-stock-data-foundation-v1",
+  "taxonomyChosenUsingOutcomes": false,
+  "verifiedDependencies": [
+    ".github/workflows/market-industry-stock-foundation-v1.yml",
+    ".github/workflows/probes.yml",
+    "config.json",
+    "docs/kr-macro-regime-design-v1.md",
+    "docs/kr-market-context-foundation-v1.md",
+    "docs/market-industry-stock-data-foundation-v1.md",
+    "pipeline/config.py",
+    "pipeline/dart_canonical_accounts.py",
+    "pipeline/dart_derive.py",
+    "pipeline/dart_xbrl_statements.py",
+    "pipeline/datafeed.py",
+    "pipeline/ecos_macro.py",
+    "pipeline/finnhub_derive.py",
+    "pipeline/industry_foundation.py",
+    "pipeline/kr_market_context.py",
+    "pipeline/kr_market_risk_overlay.py",
+    "pipeline/kr_repaired_accounting_snapshot.py",
+    "pipeline/kr_terminal_corporate_actions.py",
+    "pipeline/krx_universe.py",
+    "pipeline/macro.py",
+    "pipeline/macro_context.py",
+    "pipeline/pit_data.py",
+    "pipeline/price_adjustment.py",
+    "pipeline/regime.py",
+    "pipeline/sectors.py",
+    "research_specs/kr-market-context-ecos-evidence-37080934658.json",
+    "research_specs/kr-market-context-source-v1.schema.json",
+    "research_specs/kr-repaired-accounting-snapshot-v1.json",
+    "research_specs/market-industry-stock-membership-v1.schema.json",
+    "scripts/audit_market_industry_stock_foundation.py",
+    "scripts/probe_ecos_market_context.py",
+    "tests/conftest.py",
+    "tests/fixtures/industry-foundation.synthetic.json",
+    "tests/test_alpha_opportunity.py",
+    "tests/test_ecos_macro.py",
+    "tests/test_industry_foundation.py",
+    "tests/test_kr_market_context.py"
+  ]
+}

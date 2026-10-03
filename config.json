@@ -228,12 +228,76 @@
   },
   "ecos": {
     "KR": {
-      "BaseRate": "722Y001",
-      "KTB_3Y": { "seriesId": "817Y002", "itemCode": null },
-      "CorpBond_3Y": { "seriesId": "817Y002", "itemCode": null },
-      "CPI": "901Y009", "CoreCPI": "901Y010", "IndustrialProduction": "901Y033",
-      "LeadingIndex": "901Y067", "Exports": "901Y011", "M2": "101Y004"
+      "BaseRate": {
+        "seriesId": "722Y001",
+        "itemCode": null,
+        "cycle": null,
+        "sourceStatus": "AMBIGUOUS_SOURCE",
+        "vintageStatus": "REVISED_HISTORY"
+      },
+      "KTB_3Y": {
+        "cycle": "D",
+        "itemCode": "010200000",
+        "itemName": "국고채(3년)",
+        "seriesId": "817Y002",
+        "sourceStatus": "LIVE_VALIDATED_SOURCE",
+        "unit": "연%",
+        "validationEvidenceSha256": "6ad1eae9867596e7cf3ea7fb84c1071bf0f209d53ab5dba752e1f1c1f952aed6",
+        "vintageStatus": "REVISED_HISTORY"
+      },
+      "CorpBond_3Y": {
+        "seriesId": "817Y002",
+        "itemCode": null,
+        "cycle": null,
+        "sourceStatus": "AMBIGUOUS_SOURCE",
+        "vintageStatus": "REVISED_HISTORY"
+      },
+      "CPI": {
+        "seriesId": "901Y009",
+        "itemCode": null,
+        "cycle": null,
+        "sourceStatus": "AMBIGUOUS_SOURCE",
+        "vintageStatus": "REVISED_HISTORY"
+      },
+      "CoreCPI": {
+        "seriesId": "901Y010",
+        "itemCode": null,
+        "cycle": null,
+        "sourceStatus": "DATA_LINEAGE_UNRESOLVED",
+        "vintageStatus": "REVISED_HISTORY"
+      },
+      "IndustrialProduction": {
+        "seriesId": "901Y033",
+        "itemCode": null,
+        "cycle": null,
+        "sourceStatus": "DATA_LINEAGE_UNRESOLVED",
+        "vintageStatus": "REVISED_HISTORY"
+      },
+      "LeadingIndex": {
+        "cycle": "M",
+        "itemCode": "I16E",
+        "itemName": "선행지수순환변동치",
+        "seriesId": "901Y067",
+        "sourceStatus": "LIVE_VALIDATED_SOURCE",
+        "unit": "2020=100",
+        "validationEvidenceSha256": "a1f230f74bb11c3143be51ae0ebd837b1f0c41d0d5c0950a92c5621918844ee4",
+        "vintageStatus": "REVISED_HISTORY"
+      },
+      "Exports": {
+        "seriesId": "901Y011",
+        "itemCode": null,
+        "cycle": null,
+        "sourceStatus": "NOT_AVAILABLE",
+        "vintageStatus": "REVISED_HISTORY"
+      },
+      "M2": {
+        "seriesId": "101Y004",
+        "itemCode": null,
+        "cycle": null,
+        "sourceStatus": "DATA_LINEAGE_UNRESOLVED",
+        "vintageStatus": "REVISED_HISTORY"
+      }
     }
   },
-  "_notes": "core=실제 보유 종목(전체 분석). US universe는 S&P 500 전체 목록(최소 450개)을 확보하지 못하면 fail-closed하며 부분 fallback으로 추천하지 않음. KR universe는 KOSPI 시가총액 기준 구성. FinanceDataReader가 CI 네트워크에서 허용되면 전체 목록 자동 구성. FRED_API_KEY·ECOS_API_KEY는 GitHub Actions Secret으로만 주입. ECOS series IDs are placeholders to be verified against BOK ECOS before a live KR macro build."
+  "_notes": "core=실제 보유 종목(전체 분석). US universe는 S&P 500 전체 목록(최소 450개)을 확보하지 못하면 fail-closed하며 부분 fallback으로 추천하지 않음. KR universe는 KOSPI 시가총액 기준 구성. FinanceDataReader가 CI 네트워크에서 허용되면 전체 목록 자동 구성. FRED_API_KEY·ECOS_API_KEY는 GitHub Actions Secret으로만 주입. ECOS candidates fail closed until manual metadata/smoke validation resolves table, item and native cycle. Runtime ECOS_API_KEY maps from the ECOS secret in the manual probe only."
 }

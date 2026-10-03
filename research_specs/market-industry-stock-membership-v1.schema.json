@@ -1,0 +1,100 @@
+{
+  "$id": "urn:investment:PIT_INDUSTRY_MEMBERSHIP_V1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "Runtime additionally enforces economic/knowledge interval ordering, conservative release visibility and no current-snapshot backfill. Source/identity evidence must be independently verified by an importer.",
+  "properties": {
+    "evidence_kind": {
+      "enum": [
+        "DATED_ASSIGNMENT",
+        "CURRENT_SNAPSHOT_ONLY"
+      ]
+    },
+    "identity_provenance": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "industry_id": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "known_to": {
+      "format": "date",
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "region": {
+      "enum": [
+        "KR",
+        "US"
+      ]
+    },
+    "release_date": {
+      "format": "date",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+      "type": "string"
+    },
+    "security_id": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "source": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "source_date": {
+      "format": "date",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+      "type": "string"
+    },
+    "source_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "taxonomy_id": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "taxonomy_version": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "ticker": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "valid_from": {
+      "format": "date",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+      "type": "string"
+    },
+    "valid_to": {
+      "format": "date",
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  },
+  "required": [
+    "evidence_kind",
+    "identity_provenance",
+    "industry_id",
+    "known_to",
+    "region",
+    "release_date",
+    "security_id",
+    "source",
+    "source_date",
+    "source_sha256",
+    "taxonomy_id",
+    "taxonomy_version",
+    "ticker",
+    "valid_from",
+    "valid_to"
+  ],
+  "title": "PIT industry membership row",
+  "type": "object"
+}

@@ -1,0 +1,1272 @@
+{
+  "confirmations": [
+    "NO HISTORICAL ALPHA OUTCOME WAS COMPUTED",
+    "NO INDUSTRY TAXONOMY WAS SELECTED USING FUTURE RETURNS",
+    "NO PRIOR SEALED STUDY WAS RERUN",
+    "THIS FOUNDATION SERVES THE BROADER OBJECTIVE OF FUTURE BENCHMARK-RELATIVE ALPHA, BUT DOES NOT CLAIM ALPHA ITSELF"
+  ],
+  "crossRegion": {
+    "benchmarkDefinition": "Future protocol pins regional benchmark identity, currency and return basis; no vendor/instrument substitution",
+    "identicalSourcesRequired": false,
+    "identicalTaxonomiesRequired": false,
+    "pooledTrainingAllowed": false,
+    "sharedAbstraction": [
+      "MARKET",
+      "INDUSTRY",
+      "STOCK"
+    ]
+  },
+  "decomposition": {
+    "compounding": "Do not compound gaps separately. Wealth relative composition has cross term. Log ratios add only for positive wealth.",
+    "definition": "simple cumulative same-interval return differences",
+    "identity": "(R_I-R_M)+(R_S-R_I)=R_S-R_M",
+    "selfInclusion": "full industry includes subject; descriptive benchmark gap, not independent causal residual",
+    "signalMembershipFrozen": true
+  },
+  "dependenciesReadForDesign": [
+    "AGENTS.md",
+    "README.md",
+    "docs/alpha-research-philosophy-v2.md",
+    "docs/alpha-data-foundation-v2.md",
+    "docs/alpha-data-foundation-v2-sector-context.md",
+    "docs/alpha-data-foundation-v2-lineage.md",
+    "docs/alpha-data-foundation-v2-gaps.md",
+    "docs/alpha-research-foundation-v2-errata.md",
+    "docs/kr-universe-history-source.md",
+    "docs/kr-accounting-coverage-repair-v1-final-audit.md",
+    "docs/kr-repaired-accounting-snapshot-v1.md",
+    "docs/kr-terminal-action-reconstruction-v2.md",
+    "docs/kr-terminated-security-total-return-foundation-v1.md",
+    "docs/kr-model-overlay-portfolio-v1-research-foundation.md",
+    "docs/kr-factor-anatomy-v1-design.md",
+    "docs/kr-top120-regime-review-v1-design.md",
+    "docs/regional-alpha-model-v1.md",
+    "docs/us-pit-fundamentals-source.md",
+    "docs/results/kr-factor-anatomy-v1-seal-provenance.json",
+    "docs/results/kr-model-overlay-portfolio-v1-seal-provenance.json",
+    "docs/us-alpha-research-design-v1.md (design and source sections only)",
+    "docs/kr-macro-regime-design-v1.md",
+    "docs/kr-model-overlay-portfolio-v1-preregistration.md",
+    "docs/challenger-2-signal-source-feasibility-v1.md (source inventory only)"
+  ],
+  "dependencyHashes": {
+    ".github/workflows/market-industry-stock-foundation-v1.yml": "7c5c4a56eece31be17f0fa92f9f14660ab2e8f2ea6ebc79cc8d220888f34b1e9",
+    ".github/workflows/probes.yml": "6e729b159304ad2005b0878c06bcb672f381acc6401e824cf782e5a8d54ccc34",
+    "config.json": "d1169e1e4a84ded1385e11e591ea01a4b383e7a625960ece9278a0bde3c15273",
+    "docs/kr-macro-regime-design-v1.md": "46d9c0c3d154729f216e21776e5439640ad7ac49511f558d5032a12fc7b3d02c",
+    "docs/kr-market-context-foundation-v1.md": "95c905d4489e1385967d6d49be335e754ee049b831fb98e13b539fa563853855",
+    "docs/market-industry-stock-data-foundation-v1.md": "22b9bf7896e9f83f792a74633b3685dfd813c2287af351aae61a3b7037fb42de",
+    "pipeline/config.py": "217e66ea6b1035716f4a52688aee7b52ed9a68b383bcbcb4ec96851016e18ffa",
+    "pipeline/dart_canonical_accounts.py": "d3ba397b84b51404939880a504809876cd01e896b164544142861ef7b615b0a9",
+    "pipeline/dart_derive.py": "c18be6391fd8e04118a8e13cb62ace5a20e641f1d67e1c185652ed88572bd457",
+    "pipeline/dart_xbrl_statements.py": "0b2e5209eff6c6dbcd9076747ae74e6512e8593e0b8ddaad90f8ff3aa59769a8",
+    "pipeline/datafeed.py": "c9320325332087c49e73b842ed80fde5a15c1f7f47361a12704a64c62b1deefd",
+    "pipeline/ecos_macro.py": "1fe17d6666b7cc6fe483d47928bbffd1b389f19743cd38c0e05b8a00a324c938",
+    "pipeline/finnhub_derive.py": "2ceaf6a081a5fbbd893398a68e58006254da06492629d9e8824e0e835b848b56",
+    "pipeline/industry_foundation.py": "795965170eef879e6e5dac6b7b5f7a32e7d898a2eb4e6eb30a1960e04d4af0d3",
+    "pipeline/kr_market_context.py": "02993292c8f9fba3adf708744534d4e230f1e1ca9cbd7c6c24e72ff0baac018e",
+    "pipeline/kr_market_risk_overlay.py": "983b3aab891a2af2f6d54b9b3d7ca29788651ba898b074da0506a40431ae4c07",
+    "pipeline/kr_repaired_accounting_snapshot.py": "b5b225e8a1d21b1516801c0ced1ef2164189867a457df1e0a51cd8ec95dd63ea",
+    "pipeline/kr_terminal_corporate_actions.py": "6d550fc0900629150d2159b73196dcd726acf66f9e9e9350e1cb7db927c388f3",
+    "pipeline/krx_universe.py": "77008b8c0dcb9cd44b0b1182df94d2f0af62edb6f03b6a41082c04679101d6b8",
+    "pipeline/macro.py": "1f13b5726a9c301eb4c0c1d3a1ba298ca9abebe9f1c77ef8236e46dc853412d0",
+    "pipeline/macro_context.py": "ece4b613c559195337363f6a54e1886af369299f41760094c8d9d5dd033e2244",
+    "pipeline/pit_data.py": "64da89c602ac4b6c67411d0b5defa2909b65c1a7aad0958b32cb7f7dcd567dbf",
+    "pipeline/price_adjustment.py": "ebdde717be22277315186d5f302642cbc8a057fedee84192b7af14b15c405892",
+    "pipeline/regime.py": "b5634c109ac19ad6b0e13788f1ce9cde8f20f50019a82a8b4f65f9bc23200aca",
+    "pipeline/sectors.py": "1cb470d676eeb24d5fa4976bf8fc0f71f808957f132c908158acb6422fde60ba",
+    "research_specs/kr-market-context-ecos-evidence-37080934658.json": "f3652e539230df3aab8429b810c7bc62888a3919b4b6b13a141dda1dacfe8add",
+    "research_specs/kr-market-context-source-v1.schema.json": "b1dc4f00ce6445e237765cc97a40c7507ded16575d64b2ab4cb7ac317cd99900",
+    "research_specs/kr-repaired-accounting-snapshot-v1.json": "8dbae2203e1b809060100845f4571016e71fbc78cc09c1b52d9edeb46d38f331",
+    "research_specs/market-industry-stock-membership-v1.schema.json": "fa0c826bd6a2665df06da297cb8117738aa733b96255b9f689d7fdd58bd8a11d",
+    "scripts/audit_market_industry_stock_foundation.py": "c1a2dd0ecdc894a2068d1724c10998a389ae8b76d12222964367cf6b9d744a26",
+    "scripts/probe_ecos_market_context.py": "6cdf013c9e98d1e7b409defdc2366880f1d3d79ae9fef04db985dfb25a942099",
+    "tests/conftest.py": "404ba3c3fd95d7001d5ef75c6cc88c869dfb1174e89a4332586aad0e5528d6d1",
+    "tests/fixtures/industry-foundation.synthetic.json": "474ec934b225ee64b534a3fd8342a7e9c39edd91ba270f2dabcdbf56dfeb7a49",
+    "tests/test_alpha_opportunity.py": "e268deece5b79257c188de954e3b417913b5653b03e0fbd8d324e2755e3449ec",
+    "tests/test_ecos_macro.py": "de931db0a3f41cb2e0557b71e97690c734d1871672a3aed472f9e9c9f6032028",
+    "tests/test_industry_foundation.py": "22137a02c4126609473c428a7b881a0f5bfea99de948aa55e5215fd0590214b9",
+    "tests/test_kr_market_context.py": "337ca4fd5ce6b4084f3d2bacf79cd9b20e2b47c5a0c25072b44591f526ec3d48"
+  },
+  "economicObjective": "Future returns above each relevant market benchmark after realistic investability and costs.",
+  "execution": {
+    "historicalReturnsAllowed": false,
+    "modelsAllowed": false,
+    "portfolioAllowed": false,
+    "returnPrimitiveScope": "SYNTHETIC_ONLY",
+    "taxonomyOutcomeSelectionAllowed": false,
+    "workflowMode": "METADATA_AUDIT_AND_MANUAL_SOURCE_SMOKE_ONLY"
+  },
+  "externalIndustryObservation": {
+    "requiredFields": [
+      "region",
+      "taxonomyId",
+      "taxonomyVersion",
+      "industryId",
+      "metricId",
+      "unit",
+      "currency",
+      "observationPeriod",
+      "publishedAt",
+      "vintageId",
+      "source",
+      "sourceSha256",
+      "mappingValidity",
+      "mappingReleaseDate"
+    ],
+    "visibility": "publishedAt < signal; observation month alone is insufficient"
+  },
+  "featureMatrix": [
+    {
+      "blocker": "trailing matched-basis prices; dated industry membership; complete frozen cohort",
+      "family": "relativeMomentum",
+      "industryPanelStatus": "DATA_FOUNDATION_REQUIRED",
+      "regions": {
+        "KR": "PARTIAL",
+        "US": "PARTIAL"
+      }
+    },
+    {
+      "blocker": "past-only moving-average/rise measurement; measured and full denominator; membership",
+      "family": "breadth",
+      "industryPanelStatus": "DATA_FOUNDATION_REQUIRED",
+      "regions": {
+        "KR": "PARTIAL",
+        "US": "PARTIAL"
+      }
+    },
+    {
+      "blocker": "same-cohort trailing returns, missingness and distribution semantics",
+      "family": "dispersion",
+      "industryPanelStatus": "DATA_FOUNDATION_REQUIRED",
+      "regions": {
+        "KR": "PARTIAL",
+        "US": "PARTIAL"
+      }
+    },
+    {
+      "blocker": "complete trailing industry blocks; no missing-block bridging",
+      "family": "volatility",
+      "industryPanelStatus": "DATA_FOUNDATION_REQUIRED",
+      "regions": {
+        "KR": "PARTIAL",
+        "US": "PARTIAL"
+      }
+    },
+    {
+      "blocker": "as-traded monetary volume; do not multiply forward adjusted index by volume",
+      "family": "liquidity",
+      "industryPanelStatus": "DATA_FOUNDATION_REQUIRED",
+      "regions": {
+        "KR": "PARTIAL",
+        "US": "PARTIAL"
+      }
+    },
+    {
+      "blocker": "PIT market cap/full universe; historical US cap not universally verified",
+      "family": "concentration",
+      "industryPanelStatus": "DATA_FOUNDATION_REQUIRED",
+      "regions": {
+        "KR": "PARTIAL",
+        "US": "PARTIAL"
+      }
+    },
+    {
+      "blocker": "legacy DART/Finnhub concepts; not proven repaired-KR four-family coverage",
+      "family": "revenue",
+      "industryPanelStatus": "DATA_FOUNDATION_REQUIRED",
+      "regions": {
+        "KR": "PARTIAL",
+        "US": "PARTIAL"
+      }
+    },
+    {
+      "blocker": "legacy DART/Finnhub concepts; independently verify periods/units/basis",
+      "family": "operatingProfit",
+      "industryPanelStatus": "DATA_FOUNDATION_REQUIRED",
+      "regions": {
+        "KR": "PARTIAL",
+        "US": "PARTIAL"
+      }
+    },
+    {
+      "blocker": "repaired KR ProfitLoss includes noncontrolling interests; US account chain; release visibility",
+      "family": "netIncome",
+      "industryPanelStatus": "DATA_FOUNDATION_REQUIRED",
+      "regions": {
+        "KR": "PARTIAL",
+        "US": "PARTIAL"
+      }
+    },
+    {
+      "blocker": "repaired KR CF; same visible TTM chain; incomplete OCF is missing",
+      "family": "operatingCashFlow",
+      "industryPanelStatus": "DATA_FOUNDATION_REQUIRED",
+      "regions": {
+        "KR": "PARTIAL",
+        "US": "PARTIAL"
+      }
+    },
+    {
+      "blocker": "dated balance-sheet totals; sector comparability and statement basis",
+      "family": "assetsLeverage",
+      "industryPanelStatus": "DATA_FOUNDATION_REQUIRED",
+      "regions": {
+        "KR": "PARTIAL",
+        "US": "PARTIAL"
+      }
+    },
+    {
+      "blocker": "matched visible same-name same-stage cohorts; changing membership is not growth",
+      "family": "aggregateChanges",
+      "industryPanelStatus": "DATA_FOUNDATION_REQUIRED",
+      "regions": {
+        "KR": "PARTIAL",
+        "US": "PARTIAL"
+      }
+    },
+    {
+      "blocker": "matched same-stage pairs and measured/full denominators",
+      "family": "improvementBreadth",
+      "industryPanelStatus": "DATA_FOUNDATION_REQUIRED",
+      "regions": {
+        "KR": "PARTIAL",
+        "US": "PARTIAL"
+      }
+    },
+    {
+      "blocker": "sparse KR legacy line item outside repaired four-family guarantee; never missing=0",
+      "family": "capex",
+      "industryPanelStatus": "DATA_FOUNDATION_REQUIRED",
+      "regions": {
+        "KR": "PARTIAL",
+        "US": "PARTIAL"
+      }
+    },
+    {
+      "blocker": "both flows with consistent stage/TTM/unit/currency",
+      "family": "capexSales",
+      "industryPanelStatus": "DATA_FOUNDATION_REQUIRED",
+      "regions": {
+        "KR": "PARTIAL",
+        "US": "PARTIAL"
+      }
+    },
+    {
+      "blocker": "same-stage year-ago positive denominator; no future amended values",
+      "family": "assetGrowth",
+      "industryPanelStatus": "DATA_FOUNDATION_REQUIRED",
+      "regions": {
+        "KR": "PARTIAL",
+        "US": "PARTIAL"
+      }
+    },
+    {
+      "blocker": "No historical estimate store; realised accounting is not expectations.",
+      "family": "analystEpsRevisions",
+      "industryPanelStatus": "NOT_AVAILABLE",
+      "regions": {
+        "KR": "NOT_AVAILABLE",
+        "US": "NOT_AVAILABLE"
+      }
+    },
+    {
+      "blocker": "No historical estimate store; realised accounting is not expectations.",
+      "family": "estimateBreadth",
+      "industryPanelStatus": "NOT_AVAILABLE",
+      "regions": {
+        "KR": "NOT_AVAILABLE",
+        "US": "NOT_AVAILABLE"
+      }
+    },
+    {
+      "blocker": "No historical estimate store; realised accounting is not expectations.",
+      "family": "estimateDispersion",
+      "industryPanelStatus": "NOT_AVAILABLE",
+      "regions": {
+        "KR": "NOT_AVAILABLE",
+        "US": "NOT_AVAILABLE"
+      }
+    },
+    {
+      "blocker": "Official source leads only; taxonomy crosswalk, release/vintage, units and coverage unverified.",
+      "family": "exports",
+      "industryPanelStatus": "DATA_FOUNDATION_REQUIRED",
+      "regions": {
+        "KR": "DATA_FOUNDATION_REQUIRED",
+        "US": "DATA_FOUNDATION_REQUIRED"
+      }
+    },
+    {
+      "blocker": "Official source leads only; taxonomy crosswalk, release/vintage, units and coverage unverified.",
+      "family": "orders",
+      "industryPanelStatus": "DATA_FOUNDATION_REQUIRED",
+      "regions": {
+        "KR": "DATA_FOUNDATION_REQUIRED",
+        "US": "DATA_FOUNDATION_REQUIRED"
+      }
+    },
+    {
+      "blocker": "Official source leads only; taxonomy crosswalk, release/vintage, units and coverage unverified.",
+      "family": "shipments",
+      "industryPanelStatus": "DATA_FOUNDATION_REQUIRED",
+      "regions": {
+        "KR": "DATA_FOUNDATION_REQUIRED",
+        "US": "DATA_FOUNDATION_REQUIRED"
+      }
+    },
+    {
+      "blocker": "Official source leads only; taxonomy crosswalk, release/vintage, units and coverage unverified.",
+      "family": "commodityProductPrices",
+      "industryPanelStatus": "DATA_FOUNDATION_REQUIRED",
+      "regions": {
+        "KR": "DATA_FOUNDATION_REQUIRED",
+        "US": "DATA_FOUNDATION_REQUIRED"
+      }
+    },
+    {
+      "blocker": "Official source leads only; taxonomy crosswalk, release/vintage, units and coverage unverified.",
+      "family": "spreads",
+      "industryPanelStatus": "DATA_FOUNDATION_REQUIRED",
+      "regions": {
+        "KR": "DATA_FOUNDATION_REQUIRED",
+        "US": "DATA_FOUNDATION_REQUIRED"
+      }
+    },
+    {
+      "blocker": "same dated industry cohort, monetary price and compatible visible accounting; no adjusted-index price valuation; history uses only earlier observations",
+      "family": "ownHistoryAndMarketValuation",
+      "industryPanelStatus": "DATA_FOUNDATION_REQUIRED",
+      "regions": {
+        "KR": "PARTIAL",
+        "US": "PARTIAL"
+      }
+    },
+    {
+      "blocker": "matched cohort, visible accounting/statement basis and meaningful positive denominator; financial firms require compatible concepts",
+      "family": "profitabilityBalanceSheetChanges",
+      "industryPanelStatus": "DATA_FOUNDATION_REQUIRED",
+      "regions": {
+        "KR": "PARTIAL",
+        "US": "PARTIAL"
+      }
+    },
+    {
+      "blocker": "same-stage visible trailing financial chains; missing revenue/operating profit do not inherit repaired four-family readiness",
+      "family": "salesEarningsOcfAcceleration",
+      "industryPanelStatus": "DATA_FOUNDATION_REQUIRED",
+      "regions": {
+        "KR": "PARTIAL",
+        "US": "PARTIAL"
+      }
+    },
+    {
+      "blocker": "trailing industry series frozen by signal-known membership; no current-sector substitute",
+      "family": "stockMomentumRelativeToOwnIndustry",
+      "industryPanelStatus": "DATA_FOUNDATION_REQUIRED",
+      "regions": {
+        "KR": "PARTIAL",
+        "US": "PARTIAL"
+      }
+    },
+    {
+      "blocker": "2/9 ECOS source identities validated; seven unresolved definitions/selectors and all historical release vintages remain blocked",
+      "family": "krMarketContext",
+      "industryPanelStatus": "SEPARATE_STATE_OBJECT",
+      "regions": {
+        "KR": "READY_CONTEXT_PRIMITIVE",
+        "US": "EXISTING_DEFINITIONS_UNCHANGED"
+      }
+    },
+    {
+      "blocker": "dated full universe/membership/market cap and denominators",
+      "family": "krEquityBreadthConcentration",
+      "industryPanelStatus": "DATA_FOUNDATION_REQUIRED",
+      "regions": {
+        "KR": "DATA_FOUNDATION_REQUIRED",
+        "US": "EXISTING_ONLY"
+      }
+    }
+  ],
+  "granularity": {
+    "chosenIndustryCount": null,
+    "chosenTaxonomy": null,
+    "criteria": [
+      "historical group counts",
+      "full-universe coverage",
+      "membership continuity",
+      "economic interpretability",
+      "statistical group size",
+      "regional applicability"
+    ],
+    "futureReturnsAllowed": false,
+    "mechanicalMinimumConstituents": 2,
+    "statisticalMinimumConstituents": null
+  },
+  "industryConstruction": {
+    "capDefinition": "publicly available dated full capitalization; same currency; no interpolation",
+    "cashExit": "retain proven cash proceeds to common endpoint with zero yield",
+    "entry": "next regional session close",
+    "maximumCapAge": null,
+    "missingConstituent": "whole block DATA_INSUFFICIENT, return null, no reweight",
+    "productionWeightsAllowed": false,
+    "rebalance": "Future protocol must preregister regional calendar; no historical series constructed",
+    "returnBases": [
+      "PRICE_RETURN",
+      "ADJUSTED_INDEX_RETURN_PARTIAL_DISTRIBUTIONS",
+      "TOTAL_SHAREHOLDER_RETURN"
+    ],
+    "selection": "full PIT universe and signal-date membership; entrants next rebalance",
+    "terminated": "follow old holding entitlements under frozen industry; unresolved blocks",
+    "totalReturnRequires": "complete distributions and resolved entitlements for each constituent and compatible benchmark",
+    "unclassifiedUniverse": "block every industry observation until complete or separately preregistered restricted universe",
+    "weightDrift": "buy-and-hold within block",
+    "weightings": [
+      "EQUAL_WEIGHT",
+      "MARKET_CAP_WEIGHT"
+    ]
+  },
+  "layers": {
+    "INDUSTRY": {
+      "futureTarget": "industry simple cumulative return minus market simple cumulative return"
+    },
+    "MARKET": {
+      "purpose": "Market state and separate risk budget",
+      "stockSelectionAllowed": false
+    },
+    "STOCK_WITHIN_INDUSTRY": {
+      "futureTarget": "stock simple cumulative return minus signal-date industry simple cumulative return"
+    }
+  },
+  "mainShaUsed": "9504f970a2895781eedcc3a6a1c94126fd4682f8",
+  "marketContextFoundation": {
+    "axes": {
+      "domesticGrowth": [
+        "IndustrialProduction",
+        "Exports",
+        "LeadingIndex"
+      ],
+      "domesticLiquidityCredit": [
+        "M2",
+        "KTB_3Y",
+        "CorpBond_3Y",
+        "KR_CreditSpread"
+      ],
+      "domesticRates": [
+        "BaseRate",
+        "Korea_3M",
+        "Korea_10Y",
+        "KR_TermSpread"
+      ],
+      "equityMarketState": [
+        "KODEX200_TrendAdverse",
+        "KODEX200_Vol63",
+        "Breadth",
+        "Concentration"
+      ],
+      "externalFinancialConditions": [
+        "USD_KRW",
+        "Broad_Dollar",
+        "Real_10Y",
+        "FedFunds",
+        "Treasury_2Y",
+        "Treasury_10Y",
+        "HY_Spread",
+        "VIX"
+      ],
+      "inflation": [
+        "CPI",
+        "CoreCPI"
+      ]
+    },
+    "compositeScore": false,
+    "contract": "KR_MARKET_CONTEXT_V1",
+    "ecosSeriesReadiness": [
+      {
+        "appliedConfig": {
+          "cycle": null,
+          "itemCode": null,
+          "seriesId": "722Y001",
+          "sourceStatus": "AMBIGUOUS_SOURCE",
+          "vintageStatus": "REVISED_HISTORY"
+        },
+        "availableFrom": null,
+        "configuredCandidate": {
+          "cycle": null,
+          "itemCode": null,
+          "seriesId": "722Y001",
+          "sourceStatus": "DATA_LINEAGE_UNRESOLVED"
+        },
+        "configuredTableCycles": [
+          "A",
+          "D",
+          "M",
+          "Q"
+        ],
+        "configuredTableGroupCounts": {
+          "Group1": 48
+        },
+        "configuredTableItemCount": 48,
+        "earliestObservation": null,
+        "historicalConfirmatoryEligible": false,
+        "itemName": null,
+        "latestObservation": null,
+        "manualProbeExecuted": true,
+        "name": "BaseRate",
+        "nativeCycle": null,
+        "observationCount": null,
+        "publishedAt": null,
+        "selectedItems": null,
+        "semanticMatchVerified": false,
+        "smoke": null,
+        "sourceStatus": "AMBIGUOUS_SOURCE",
+        "table": {
+          "CYCLE": "D",
+          "ORG_NAME": null,
+          "SRCH_YN": "Y",
+          "STAT_CODE": "722Y001",
+          "STAT_NAME": "1.3.1. 한국은행 기준금리 및 여수신금리"
+        },
+        "tableExists": true,
+        "unit": null,
+        "vintageStatus": "REVISED_HISTORY"
+      },
+      {
+        "appliedConfig": {
+          "cycle": "D",
+          "itemCode": "010200000",
+          "itemName": "국고채(3년)",
+          "seriesId": "817Y002",
+          "sourceStatus": "LIVE_VALIDATED_SOURCE",
+          "unit": "연%",
+          "validationEvidenceSha256": "6ad1eae9867596e7cf3ea7fb84c1071bf0f209d53ab5dba752e1f1c1f952aed6",
+          "vintageStatus": "REVISED_HISTORY"
+        },
+        "availableFrom": null,
+        "configuredCandidate": {
+          "cycle": null,
+          "itemCode": null,
+          "seriesId": "817Y002",
+          "sourceStatus": "DATA_LINEAGE_UNRESOLVED"
+        },
+        "configuredTableCycles": [
+          "D"
+        ],
+        "configuredTableGroupCounts": {
+          "Group1": 27
+        },
+        "configuredTableItemCount": 27,
+        "earliestObservation": "19981113",
+        "historicalConfirmatoryEligible": false,
+        "itemName": "국고채(3년)",
+        "latestObservation": "20261002",
+        "manualProbeExecuted": true,
+        "name": "KTB_3Y",
+        "nativeCycle": "D",
+        "observationCount": 6910,
+        "publishedAt": null,
+        "selectedItems": [
+          {
+            "CYCLE": "D",
+            "DATA_CNT": 6910,
+            "END_TIME": "20261002",
+            "GRP_CODE": "Group1",
+            "GRP_NAME": "계정항목",
+            "ITEM_CODE": "010200000",
+            "ITEM_NAME": "국고채(3년)",
+            "START_TIME": "19981113",
+            "STAT_CODE": "817Y002",
+            "STAT_NAME": "1.3.2.1. 시장금리(일별)",
+            "UNIT_NAME": "연%"
+          }
+        ],
+        "semanticMatchVerified": true,
+        "smoke": {
+          "errorCode": null,
+          "period": "20261002",
+          "validObservationFound": true
+        },
+        "sourceStatus": "LIVE_VALIDATED_SOURCE",
+        "table": {
+          "CYCLE": "D",
+          "ORG_NAME": "한국은행",
+          "SRCH_YN": "Y",
+          "STAT_CODE": "817Y002",
+          "STAT_NAME": "1.3.2.1. 시장금리(일별)"
+        },
+        "tableExists": true,
+        "unit": "연%",
+        "vintageStatus": "REVISED_HISTORY"
+      },
+      {
+        "appliedConfig": {
+          "cycle": null,
+          "itemCode": null,
+          "seriesId": "817Y002",
+          "sourceStatus": "AMBIGUOUS_SOURCE",
+          "vintageStatus": "REVISED_HISTORY"
+        },
+        "availableFrom": null,
+        "configuredCandidate": {
+          "cycle": null,
+          "itemCode": null,
+          "seriesId": "817Y002",
+          "sourceStatus": "DATA_LINEAGE_UNRESOLVED"
+        },
+        "configuredTableCycles": [
+          "D"
+        ],
+        "configuredTableGroupCounts": {
+          "Group1": 27
+        },
+        "configuredTableItemCount": 27,
+        "earliestObservation": null,
+        "historicalConfirmatoryEligible": false,
+        "itemName": null,
+        "latestObservation": null,
+        "manualProbeExecuted": true,
+        "name": "CorpBond_3Y",
+        "nativeCycle": null,
+        "observationCount": null,
+        "publishedAt": null,
+        "selectedItems": null,
+        "semanticMatchVerified": false,
+        "smoke": null,
+        "sourceStatus": "AMBIGUOUS_SOURCE",
+        "table": {
+          "CYCLE": "D",
+          "ORG_NAME": "한국은행",
+          "SRCH_YN": "Y",
+          "STAT_CODE": "817Y002",
+          "STAT_NAME": "1.3.2.1. 시장금리(일별)"
+        },
+        "tableExists": true,
+        "unit": null,
+        "vintageStatus": "REVISED_HISTORY"
+      },
+      {
+        "appliedConfig": {
+          "cycle": null,
+          "itemCode": null,
+          "seriesId": "901Y009",
+          "sourceStatus": "AMBIGUOUS_SOURCE",
+          "vintageStatus": "REVISED_HISTORY"
+        },
+        "availableFrom": null,
+        "configuredCandidate": {
+          "cycle": null,
+          "itemCode": null,
+          "seriesId": "901Y009",
+          "sourceStatus": "DATA_LINEAGE_UNRESOLVED"
+        },
+        "configuredTableCycles": [
+          "A",
+          "M",
+          "Q"
+        ],
+        "configuredTableGroupCounts": {
+          "Group1": 1743
+        },
+        "configuredTableItemCount": 1743,
+        "earliestObservation": null,
+        "historicalConfirmatoryEligible": false,
+        "itemName": null,
+        "latestObservation": null,
+        "manualProbeExecuted": true,
+        "name": "CPI",
+        "nativeCycle": null,
+        "observationCount": null,
+        "publishedAt": null,
+        "selectedItems": null,
+        "semanticMatchVerified": false,
+        "smoke": null,
+        "sourceStatus": "AMBIGUOUS_SOURCE",
+        "table": {
+          "CYCLE": "M",
+          "ORG_NAME": "국가데이터처(02-2012-9114)",
+          "SRCH_YN": "Y",
+          "STAT_CODE": "901Y009",
+          "STAT_NAME": "4.2.1. 소비자물가지수"
+        },
+        "tableExists": true,
+        "unit": null,
+        "vintageStatus": "REVISED_HISTORY"
+      },
+      {
+        "appliedConfig": {
+          "cycle": null,
+          "itemCode": null,
+          "seriesId": "901Y010",
+          "sourceStatus": "DATA_LINEAGE_UNRESOLVED",
+          "vintageStatus": "REVISED_HISTORY"
+        },
+        "availableFrom": null,
+        "configuredCandidate": {
+          "cycle": null,
+          "itemCode": null,
+          "seriesId": "901Y010",
+          "sourceStatus": "DATA_LINEAGE_UNRESOLVED"
+        },
+        "configuredTableCycles": [
+          "A",
+          "M",
+          "Q"
+        ],
+        "configuredTableGroupCounts": {
+          "Group1": 104
+        },
+        "configuredTableItemCount": 104,
+        "earliestObservation": null,
+        "historicalConfirmatoryEligible": false,
+        "itemName": null,
+        "latestObservation": null,
+        "manualProbeExecuted": true,
+        "name": "CoreCPI",
+        "nativeCycle": null,
+        "observationCount": null,
+        "publishedAt": null,
+        "selectedItems": null,
+        "semanticMatchVerified": false,
+        "smoke": null,
+        "sourceStatus": "DATA_LINEAGE_UNRESOLVED",
+        "table": {
+          "CYCLE": "M",
+          "ORG_NAME": "국가데이터처(02-2012-9114)",
+          "SRCH_YN": "Y",
+          "STAT_CODE": "901Y010",
+          "STAT_NAME": "4.2.2. 소비자물가지수(특수분류)"
+        },
+        "tableExists": true,
+        "unit": null,
+        "vintageStatus": "REVISED_HISTORY"
+      },
+      {
+        "appliedConfig": {
+          "cycle": null,
+          "itemCode": null,
+          "seriesId": "901Y033",
+          "sourceStatus": "DATA_LINEAGE_UNRESOLVED",
+          "vintageStatus": "REVISED_HISTORY"
+        },
+        "availableFrom": null,
+        "configuredCandidate": {
+          "cycle": null,
+          "itemCode": null,
+          "seriesId": "901Y033",
+          "sourceStatus": "DATA_LINEAGE_UNRESOLVED"
+        },
+        "configuredTableCycles": [
+          "A",
+          "M",
+          "Q"
+        ],
+        "configuredTableGroupCounts": {
+          "Group1": 15,
+          "Group2": 5
+        },
+        "configuredTableItemCount": 20,
+        "earliestObservation": null,
+        "historicalConfirmatoryEligible": false,
+        "itemName": null,
+        "latestObservation": null,
+        "manualProbeExecuted": true,
+        "name": "IndustrialProduction",
+        "nativeCycle": null,
+        "observationCount": null,
+        "publishedAt": null,
+        "selectedItems": null,
+        "semanticMatchVerified": false,
+        "smoke": null,
+        "sourceStatus": "DATA_LINEAGE_UNRESOLVED",
+        "table": {
+          "CYCLE": "M",
+          "ORG_NAME": "국가데이터처(042-481-2148)",
+          "SRCH_YN": "Y",
+          "STAT_CODE": "901Y033",
+          "STAT_NAME": "8.1.4. 전산업생산지수(농림어업제외)"
+        },
+        "tableExists": true,
+        "unit": null,
+        "vintageStatus": "REVISED_HISTORY"
+      },
+      {
+        "appliedConfig": {
+          "cycle": "M",
+          "itemCode": "I16E",
+          "itemName": "선행지수순환변동치",
+          "seriesId": "901Y067",
+          "sourceStatus": "LIVE_VALIDATED_SOURCE",
+          "unit": "2020=100",
+          "validationEvidenceSha256": "a1f230f74bb11c3143be51ae0ebd837b1f0c41d0d5c0950a92c5621918844ee4",
+          "vintageStatus": "REVISED_HISTORY"
+        },
+        "availableFrom": null,
+        "configuredCandidate": {
+          "cycle": null,
+          "itemCode": null,
+          "seriesId": "901Y067",
+          "sourceStatus": "DATA_LINEAGE_UNRESOLVED"
+        },
+        "configuredTableCycles": [
+          "M"
+        ],
+        "configuredTableGroupCounts": {
+          "Group1": 5
+        },
+        "configuredTableItemCount": 5,
+        "earliestObservation": "197001",
+        "historicalConfirmatoryEligible": false,
+        "itemName": "선행지수순환변동치",
+        "latestObservation": "202608",
+        "manualProbeExecuted": true,
+        "name": "LeadingIndex",
+        "nativeCycle": "M",
+        "observationCount": 680,
+        "publishedAt": null,
+        "selectedItems": [
+          {
+            "CYCLE": "M",
+            "DATA_CNT": 680,
+            "END_TIME": "202608",
+            "GRP_CODE": "Group1",
+            "GRP_NAME": "계정항목",
+            "ITEM_CODE": "I16E",
+            "ITEM_NAME": "선행지수순환변동치",
+            "START_TIME": "197001",
+            "STAT_CODE": "901Y067",
+            "STAT_NAME": "8.1.2. 경기종합지수",
+            "UNIT_NAME": "2020=100"
+          }
+        ],
+        "semanticMatchVerified": true,
+        "smoke": {
+          "errorCode": null,
+          "period": "202608",
+          "validObservationFound": true
+        },
+        "sourceStatus": "LIVE_VALIDATED_SOURCE",
+        "table": {
+          "CYCLE": "M",
+          "ORG_NAME": "국가데이터처 ( ☎ 042-481-2229 )",
+          "SRCH_YN": "Y",
+          "STAT_CODE": "901Y067",
+          "STAT_NAME": "8.1.2. 경기종합지수"
+        },
+        "tableExists": true,
+        "unit": "2020=100",
+        "vintageStatus": "REVISED_HISTORY"
+      },
+      {
+        "appliedConfig": {
+          "cycle": null,
+          "itemCode": null,
+          "seriesId": "901Y011",
+          "sourceStatus": "NOT_AVAILABLE",
+          "vintageStatus": "REVISED_HISTORY"
+        },
+        "availableFrom": null,
+        "configuredCandidate": {
+          "cycle": null,
+          "itemCode": null,
+          "seriesId": "901Y011",
+          "sourceStatus": "DATA_LINEAGE_UNRESOLVED"
+        },
+        "configuredTableCycles": [],
+        "configuredTableGroupCounts": {},
+        "configuredTableItemCount": 0,
+        "earliestObservation": null,
+        "historicalConfirmatoryEligible": false,
+        "itemName": null,
+        "latestObservation": null,
+        "manualProbeExecuted": true,
+        "name": "Exports",
+        "nativeCycle": null,
+        "observationCount": null,
+        "publishedAt": null,
+        "selectedItems": null,
+        "semanticMatchVerified": false,
+        "smoke": null,
+        "sourceStatus": "NOT_AVAILABLE",
+        "table": null,
+        "tableExists": false,
+        "unit": null,
+        "vintageStatus": "REVISED_HISTORY"
+      },
+      {
+        "appliedConfig": {
+          "cycle": null,
+          "itemCode": null,
+          "seriesId": "101Y004",
+          "sourceStatus": "DATA_LINEAGE_UNRESOLVED",
+          "vintageStatus": "REVISED_HISTORY"
+        },
+        "availableFrom": null,
+        "configuredCandidate": {
+          "cycle": null,
+          "itemCode": null,
+          "seriesId": "101Y004",
+          "sourceStatus": "DATA_LINEAGE_UNRESOLVED"
+        },
+        "configuredTableCycles": [
+          "A",
+          "M",
+          "Q"
+        ],
+        "configuredTableGroupCounts": {
+          "Group1": 48
+        },
+        "configuredTableItemCount": 48,
+        "earliestObservation": null,
+        "historicalConfirmatoryEligible": false,
+        "itemName": null,
+        "latestObservation": null,
+        "manualProbeExecuted": true,
+        "name": "M2",
+        "nativeCycle": null,
+        "observationCount": null,
+        "publishedAt": null,
+        "selectedItems": null,
+        "semanticMatchVerified": false,
+        "smoke": null,
+        "sourceStatus": "DATA_LINEAGE_UNRESOLVED",
+        "table": {
+          "CYCLE": "M",
+          "ORG_NAME": null,
+          "SRCH_YN": "Y",
+          "STAT_CODE": "101Y004",
+          "STAT_NAME": "1.7.3.1.2. M2 상품별 구성내역(평잔, 원계열)"
+        },
+        "tableExists": true,
+        "unit": null,
+        "vintageStatus": "REVISED_HISTORY"
+      }
+    ],
+    "fredGlobalInventory": [
+      {
+        "fetchImplementation": "pipeline.datafeed.fetch_macro",
+        "name": "Treasury_10Y",
+        "releaseEvidenceSuppliedInThisRevision": false,
+        "seriesId": "DGS10",
+        "upgradeRule": "Only actual nonempty release frames reconstructed through pit_data.vintage_column/MacroVintageView",
+        "vintageStatus": "REVISED_HISTORY"
+      },
+      {
+        "fetchImplementation": "pipeline.datafeed.fetch_macro",
+        "name": "Treasury_2Y",
+        "releaseEvidenceSuppliedInThisRevision": false,
+        "seriesId": "DGS2",
+        "upgradeRule": "Only actual nonempty release frames reconstructed through pit_data.vintage_column/MacroVintageView",
+        "vintageStatus": "REVISED_HISTORY"
+      },
+      {
+        "fetchImplementation": "pipeline.datafeed.fetch_macro",
+        "name": "FedFunds",
+        "releaseEvidenceSuppliedInThisRevision": false,
+        "seriesId": "DFF",
+        "upgradeRule": "Only actual nonempty release frames reconstructed through pit_data.vintage_column/MacroVintageView",
+        "vintageStatus": "REVISED_HISTORY"
+      },
+      {
+        "fetchImplementation": "pipeline.datafeed.fetch_macro",
+        "name": "HY_Spread",
+        "releaseEvidenceSuppliedInThisRevision": false,
+        "seriesId": "BAMLH0A0HYM2",
+        "upgradeRule": "Only actual nonempty release frames reconstructed through pit_data.vintage_column/MacroVintageView",
+        "vintageStatus": "REVISED_HISTORY"
+      },
+      {
+        "fetchImplementation": "pipeline.datafeed.fetch_macro",
+        "name": "IG_Spread",
+        "releaseEvidenceSuppliedInThisRevision": false,
+        "seriesId": "BAMLC0A0CM",
+        "upgradeRule": "Only actual nonempty release frames reconstructed through pit_data.vintage_column/MacroVintageView",
+        "vintageStatus": "REVISED_HISTORY"
+      },
+      {
+        "fetchImplementation": "pipeline.datafeed.fetch_macro",
+        "name": "Real_10Y",
+        "releaseEvidenceSuppliedInThisRevision": false,
+        "seriesId": "DFII10",
+        "upgradeRule": "Only actual nonempty release frames reconstructed through pit_data.vintage_column/MacroVintageView",
+        "vintageStatus": "REVISED_HISTORY"
+      },
+      {
+        "fetchImplementation": "pipeline.datafeed.fetch_macro",
+        "name": "NFCI",
+        "releaseEvidenceSuppliedInThisRevision": false,
+        "seriesId": "NFCI",
+        "upgradeRule": "Only actual nonempty release frames reconstructed through pit_data.vintage_column/MacroVintageView",
+        "vintageStatus": "REVISED_HISTORY"
+      },
+      {
+        "fetchImplementation": "pipeline.datafeed.fetch_macro",
+        "name": "ANFCI",
+        "releaseEvidenceSuppliedInThisRevision": false,
+        "seriesId": "ANFCI",
+        "upgradeRule": "Only actual nonempty release frames reconstructed through pit_data.vintage_column/MacroVintageView",
+        "vintageStatus": "REVISED_HISTORY"
+      },
+      {
+        "fetchImplementation": "pipeline.datafeed.fetch_macro",
+        "name": "Broad_Dollar",
+        "releaseEvidenceSuppliedInThisRevision": false,
+        "seriesId": "DTWEXBGS",
+        "upgradeRule": "Only actual nonempty release frames reconstructed through pit_data.vintage_column/MacroVintageView",
+        "vintageStatus": "REVISED_HISTORY"
+      },
+      {
+        "fetchImplementation": "pipeline.datafeed.fetch_macro",
+        "name": "USD_KRW",
+        "releaseEvidenceSuppliedInThisRevision": false,
+        "seriesId": "DEXKOUS",
+        "upgradeRule": "Only actual nonempty release frames reconstructed through pit_data.vintage_column/MacroVintageView",
+        "vintageStatus": "REVISED_HISTORY"
+      },
+      {
+        "fetchImplementation": "pipeline.datafeed.fetch_macro",
+        "name": "Korea_10Y",
+        "releaseEvidenceSuppliedInThisRevision": false,
+        "seriesId": "IRLTLT01KRM156N",
+        "upgradeRule": "Only actual nonempty release frames reconstructed through pit_data.vintage_column/MacroVintageView",
+        "vintageStatus": "REVISED_HISTORY"
+      },
+      {
+        "fetchImplementation": "pipeline.datafeed.fetch_macro",
+        "name": "Korea_3M",
+        "releaseEvidenceSuppliedInThisRevision": false,
+        "seriesId": "IR3TIB01KRM156N",
+        "upgradeRule": "Only actual nonempty release frames reconstructed through pit_data.vintage_column/MacroVintageView",
+        "vintageStatus": "REVISED_HISTORY"
+      },
+      {
+        "economicSource": "CBOE",
+        "fetchImplementation": "pipeline.datafeed.fetch_vix",
+        "name": "VIX",
+        "releaseEvidenceSuppliedInThisRevision": false,
+        "seriesId": "^VIX",
+        "vintageStatus": "REVISED_HISTORY"
+      }
+    ],
+    "futureLabelsInState": false,
+    "industryConnection": {
+      "commonCandidates": [
+        "trailing relative momentum",
+        "breadth",
+        "dispersion",
+        "dated earnings/accounting change",
+        "credit",
+        "liquidity"
+      ],
+      "futureLabel": "industry-market future simple cumulative return gap, only in a separate preregistered study",
+      "industrySpecificCandidates": [
+        "export mix",
+        "bank rates/curve",
+        "producer input costs",
+        "inventory/order cycle"
+      ],
+      "interactionsImplemented": false,
+      "stateObjects": [
+        "MarketContext_t",
+        "IndustryCycleState_s,t"
+      ]
+    },
+    "knowledgeRule": "observedThrough <= t AND availableFrom <= t; revised/current values also fetchedAt <= t",
+    "krRegimeLabels": false,
+    "manualLiveValidation": {
+      "appliedOffline": true,
+      "artifactDigest": "sha256:6a0f59e13737b55102cfd3bbdf31f812c19ce71e104a0fde9727d86dcbffb1b3",
+      "artifactId": 11258377162,
+      "artifactName": "ecos-market-context-source-metadata-37080934658",
+      "branch": "research/market-industry-stock-data-foundation-v1",
+      "checkedAt": "2026-10-03T00:15:46.789703+00:00",
+      "evidenceFile": "research_specs/kr-market-context-ecos-evidence-37080934658.json",
+      "evidenceScope": "METADATA_AND_LATEST_PERIOD_SMOKE_ONLY",
+      "probe": "ecos-market-context",
+      "runId": 37080934658,
+      "runUrl": "https://github.com/jaehojung1879-netizen/Investment/actions/runs/37080934658",
+      "runtimeVariable": "ECOS_API_KEY",
+      "secretName": "ECOS",
+      "sourceHead": "6ebe13922e899b88e938f4f7aec7b8575ec47f34",
+      "sourceReadinessJsonSha256": "8cfb15cdcbf88796831b2b2c7eb25d44ca411a8acf44a53512906dd7f32e6b07",
+      "status": "COMPLETED_SUCCESS",
+      "workflow": "probes.yml"
+    },
+    "primitiveStatus": "READY_CONTEXT_PRIMITIVE",
+    "productionWired": false,
+    "publicationLagCreatesVintage": false,
+    "remainingGaps": [
+      "seven unresolved ECOS series: native-cycle choices, corporate rating, Core CPI definition, seasonal adjustment/group selectors and export table identity",
+      "historical release vintages",
+      "PIT breadth/concentration",
+      "historical taxonomy/membership",
+      "industry studies deliberately deferred"
+    ],
+    "reviewedParentHead": "b0ced85853046488817329220ca3688e7daf6965",
+    "sourceStatusVocabulary": [
+      "LIVE_VALIDATED_SOURCE",
+      "REVISED_HISTORY",
+      "DATA_LINEAGE_UNRESOLVED",
+      "NOT_AVAILABLE",
+      "AMBIGUOUS_SOURCE"
+    ],
+    "unitRule": "native units; changes in native-observation windows; no cross-axis average"
+  },
+  "membership": {
+    "ambiguousVisibleAssignments": "RAISE",
+    "currentSnapshotAllowed": false,
+    "historicalIdentityRequired": true,
+    "joinKey": "region/security_id/taxonomy_id/taxonomy_version",
+    "schema": "PIT_INDUSTRY_MEMBERSHIP_V1",
+    "schemaFile": "research_specs/market-industry-stock-membership-v1.schema.json",
+    "taxonomyRevisionPolicy": "Separate dated version; no current-codebook retroactive projection",
+    "validity": "valid_from <= signal_date < valid_to (null means open)",
+    "visibility": "release_date < signal_date <= known_to (null means open)"
+  },
+  "priorExecutionProvenance": {
+    "krFactorAnatomy": {
+      "outcomePayloadRead": false,
+      "sealRun": 36960496371
+    },
+    "krTop120RegimeReview": {
+      "committedResultPresentAtBase": false,
+      "conclusion": "success",
+      "dispatchRun": 37018055459,
+      "lockCommit": "9504f970a2895781eedcc3a6a1c94126fd4682f8",
+      "outcomePayloadRead": false,
+      "permanentStudyLockPresent": true,
+      "resultsArtifactArchiveSha256": "93c0127cebddc7247057fa2e49e97ef58a593f0a375710c585b5e8c12610dcb4",
+      "resultsArtifactId": 11232463461
+    }
+  },
+  "readiness": {
+    "classificationSourceAcquired": false,
+    "historicalGranularityMetrics": null,
+    "historicalIndustryPanel": "DATA_FOUNDATION_REQUIRED",
+    "historicalTaxonomyCoverageFraction": null,
+    "primitiveStatus": "READY_SYNTHETIC_ONLY",
+    "trueTotalShareholderReturn": "DATA_FOUNDATION_REQUIRED"
+  },
+  "roadmap": [
+    "market-industry-stock-data-foundation-v1",
+    "industry-opportunity-anatomy-v1",
+    "within-industry-stock-anatomy-v1",
+    "hierarchical-alpha-model-v1",
+    "separate portfolio/risk-budget preregistration"
+  ],
+  "schemaVersion": 1,
+  "scientificStatus": "DATA_FOUNDATION_AND_RESEARCH_ARCHITECTURE_ONLY",
+  "sourceMatrix": [
+    {
+      "accessibleHistoryVerified": false,
+      "blocker": "No retained historical assignment/codebook/release panel; trade snapshots do not supply industry.",
+      "coverageFraction": null,
+      "historicalMembershipRowsVerified": 0,
+      "regions": [
+        "KR"
+      ],
+      "sourceId": "KR_KRX_HISTORICAL_KSIC",
+      "status": "DATA_FOUNDATION_REQUIRED"
+    },
+    {
+      "accessibleHistoryVerified": false,
+      "blocker": "Official introduction listing verified; detailed release/launch structure not independently verified; no backward projection.",
+      "coverageFraction": null,
+      "historicalMembershipRowsVerified": 0,
+      "regions": [
+        "KR"
+      ],
+      "sourceId": "KRICS_PROSPECTIVE",
+      "status": "DATA_FOUNDATION_REQUIRED"
+    },
+    {
+      "accessibleHistoryVerified": false,
+      "blocker": "Current company API induty_code has no as-of request. Receipt-specific archival classification extraction unbuilt.",
+      "coverageFraction": null,
+      "historicalMembershipRowsVerified": 0,
+      "regions": [
+        "KR"
+      ],
+      "sourceId": "DART_COMPANY_INDUSTRY",
+      "status": "NOT_AVAILABLE"
+    },
+    {
+      "accessibleHistoryVerified": false,
+      "blocker": "Authoritative history exists; entitlement, historical release vintages and security mapping not verified.",
+      "coverageFraction": null,
+      "historicalMembershipRowsVerified": 0,
+      "regions": [
+        "KR",
+        "US"
+      ],
+      "sourceId": "GICS_HISTORY_LICENSED",
+      "status": "DATA_FOUNDATION_REQUIRED"
+    },
+    {
+      "accessibleHistoryVerified": false,
+      "blocker": "Official SUB/header dated SIC source exists; existing repository SEC access refusals, no dated CIK/security collector.",
+      "coverageFraction": null,
+      "historicalMembershipRowsVerified": 0,
+      "regions": [
+        "US"
+      ],
+      "sourceId": "SEC_FILING_SIC",
+      "status": "DATA_FOUNDATION_REQUIRED"
+    },
+    {
+      "accessibleHistoryVerified": false,
+      "blocker": "Current-only values cannot be historical evidence.",
+      "coverageFraction": null,
+      "historicalMembershipRowsVerified": 0,
+      "regions": [
+        "KR",
+        "US"
+      ],
+      "sourceId": "STATIC_YAHOO_CLASSIFICATION",
+      "status": "NOT_AVAILABLE"
+    },
+    {
+      "accessibleHistoryVerified": false,
+      "blocker": "No retained estimate-vintage panel/collector. Official Finnhub history exists but current account entitlement and revision vintages unverified; S&P PIT Estimates is an unacquired licensed lead.",
+      "coverageFraction": null,
+      "historicalMembershipRowsVerified": 0,
+      "regions": [
+        "KR",
+        "US"
+      ],
+      "sourceId": "ANALYST_ESTIMATE_VINTAGES",
+      "status": "NOT_AVAILABLE"
+    },
+    {
+      "blocker": "Exact artifact validates 2/9 source identities and latest-period smoke; seven series remain fail-closed; historical release vintages absent.",
+      "regions": [
+        "KR"
+      ],
+      "sourceId": "KR_ECOS_NATIVE_MACRO",
+      "status": "PARTIALLY_LIVE_VALIDATED_SOURCE",
+      "unresolvedSeries": [
+        "BaseRate",
+        "CorpBond_3Y",
+        "CPI",
+        "CoreCPI",
+        "IndustrialProduction",
+        "Exports",
+        "M2"
+      ],
+      "validatedSeries": [
+        "KTB_3Y",
+        "LeadingIndex"
+      ],
+      "vintageStatus": "REVISED_HISTORY"
+    },
+    {
+      "blocker": "No actual release evidence supplied for an upgrade; aggregate macro-vintage gate remains closed.",
+      "regions": [
+        "KR"
+      ],
+      "sourceId": "KR_FRED_GLOBAL_CONTEXT",
+      "status": "EXISTING_FETCH_REUSABLE",
+      "vintageStatus": "REVISED_HISTORY"
+    }
+  ],
+  "studyId": "market-industry-stock-data-foundation-v1"
+}

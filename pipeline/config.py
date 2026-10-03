@@ -49,15 +49,8 @@ class Config:
     evidence: dict = field(default_factory=dict)
     opportunity: dict = field(default_factory=dict)
     fred_regions: dict[str, dict[str, str]] = field(default_factory=dict)  # region -> {name: series_id}
-    # region -> {name: {"seriesId": ..., "itemCode": ...|None}}. KR macro via
-    # BOK ECOS. A series that needs no item-code sub-selection may be spelled
-    # as a bare series-id string in config.json; `load_config` normalizes it
-    # to the same {"seriesId", "itemCode": None} shape every entry carries
-    # here, so `ecos_macro.py` never has to branch on which form a series was
-    # written in. `itemCode: None` after normalization means "this table's
-    # sub-item has not been resolved yet" (see AGENTS.md's macro-vintage and
-    # alpha-information-inventory invariants on 817Y002's KTB_3Y/CorpBond_3Y
-    # ambiguity) — never a guess standing in for a confirmed value.
+    # Native ECOS table/item/cycle and validation metadata per series.
+    # Legacy strings remain readable but unresolved; no default daily cycle.
     ecos_regions: dict[str, dict[str, dict]] = field(default_factory=dict)
     fred_api_key: str | None = None
     ecos_api_key: str | None = None
@@ -139,7 +132,7 @@ def load_config(path: Path | str = CONFIG_PATH) -> tuple[Config, list[str]]:
         the one shape every entry carries after this function — see the
         `ecos_regions` field's own docstring for why."""
         if isinstance(spec, dict):
-            return {"seriesId": spec.get("seriesId"), "itemCode": spec.get("itemCode")}
+            return {**spec, "seriesId": spec.get("seriesId"), "itemCode": spec.get("itemCode")}
         return {"seriesId": spec, "itemCode": None}
 
     ecos_regions = {region: {name: _normalize_ecos_series(spec) for name, spec in series.items()}

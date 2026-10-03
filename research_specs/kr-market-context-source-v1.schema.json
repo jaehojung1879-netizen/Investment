@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Verified native ECOS selector",
+  "type": "object",
+  "required": ["seriesId", "itemCode", "cycle", "sourceStatus", "vintageStatus", "unit", "itemName", "validationEvidenceSha256"],
+  "properties": {
+    "seriesId": {"type": "string", "minLength": 1},
+    "itemCode": {"type": "string", "minLength": 1},
+    "itemCode2": {"type": "string", "minLength": 1},
+    "itemCode3": {"type": "string", "minLength": 1},
+    "itemCode4": {"type": "string", "minLength": 1},
+    "cycle": {"enum": ["D", "M", "Q", "A"]},
+    "sourceStatus": {"const": "LIVE_VALIDATED_SOURCE"},
+    "vintageStatus": {"const": "REVISED_HISTORY"},
+    "unit": {"type": "string", "minLength": 1},
+    "itemName": {"type": "string", "minLength": 1},
+    "validationEvidenceSha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"}
+  },
+  "additionalProperties": false
+}
