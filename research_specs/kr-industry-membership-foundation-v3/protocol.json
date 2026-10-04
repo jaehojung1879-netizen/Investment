@@ -1,0 +1,70 @@
+{
+  "baseMain": "4ee33a7d0d990fb7415dbc9c638a0e2d53437a65",
+  "contract": "KR_INDUSTRY_MEMBERSHIP_PROTOCOL_V3",
+  "frozenBeforeAnyRequest": true,
+  "gates": "Inherited unchanged from research_specs/kr-industry-membership-foundation-v2/criteria.json; nothing is relaxed after observation.",
+  "noInference": "No label from company name, website, modern sector membership or hindsight.",
+  "openApiBaseInfo": "Not used unless live evidence proves an economic industry field; SECT_TP_NM is 소속부.",
+  "probe": {
+    "concurrency": 1,
+    "maxBodyBytes": 8000000,
+    "maxRequests": 4,
+    "outcomesAllowed": false,
+    "redirects": false,
+    "requests": [
+      {
+        "id": "kind-corp-list-current",
+        "method": "GET",
+        "purpose": "CURRENT_ONLY listed-company table (업종, 주요제품) from the official exchange disclosure site",
+        "url": "https://kind.krx.co.kr/corpgeneral/corpList.do?method=download&searchType=13"
+      },
+      {
+        "id": "krx-mdc-industry-page",
+        "method": "GET",
+        "purpose": "Data Marketplace 업종분류 현황 page bootstrap",
+        "url": "https://data.krx.co.kr/contents/MDC/STAT/standard/MDCSTAT03901.jsp"
+      },
+      {
+        "form": {
+          "csvxls_isNo": "false",
+          "locale": "ko_KR",
+          "mktId": "STK",
+          "money": "1",
+          "name": "fileDown",
+          "trdDd": "20261002",
+          "url": "dbms/MDC/STAT/standard/MDCSTAT03901"
+        },
+        "id": "krx-mdc-industry-otp",
+        "method": "POST",
+        "purpose": "OTP for the same dataset at one recent session date",
+        "url": "https://data.krx.co.kr/comm/fileDn/GenerateOTP/generate.cmd"
+      },
+      {
+        "form": {
+          "currentPageSize": "15",
+          "forward": "details_sub",
+          "fromDate": "2013-01-01",
+          "method": "searchDetailsSub",
+          "orderMode": "1",
+          "orderStat": "D",
+          "pageIndex": "1",
+          "reportNm": "업종변경",
+          "toDate": "2026-10-02"
+        },
+        "id": "kind-industry-change-search",
+        "method": "POST",
+        "purpose": "KIND disclosure search for 업종변경 notices (endpoint form is CANDIDATE_UNCONFIRMED)",
+        "url": "https://kind.krx.co.kr/disclosure/details.do"
+      }
+    ],
+    "retries": 0,
+    "timeoutSeconds": 20
+  },
+  "reconstruction": "Backward from the current anchor over dated events only; oldest interval has no dated start and is UNVERIFIED_START_NOT_PIT; a broken chain leaves older dates UNKNOWN.",
+  "tiers": {
+    "CURRENT_ONLY_CROSSCHECK": "state as of acquisition date; never admitted to any historical date",
+    "KIND_DATED_INDUSTRY_CHANGE_NOTICE": "primary; admitted only if the notice itself states date, before-label and after-label for an exact issuer-security",
+    "SECONDARY_CORROBORATION_ONLY": "DART and retained v1/v2 bytes; identity breaks, mergers, spin-offs, terminal securities, unresolved KIND cases; no new broad DART campaign"
+  },
+  "v1V2Unchanged": "The completed v1/v2 result, its criteria and its DATA_FOUNDATION_INSUFFICIENT_V2 state are never edited or reinterpreted."
+}
