@@ -1,0 +1,46 @@
+{
+  "basedOnAnyReturnResult": false,
+  "checks": {
+    "deterministicConstruction": true,
+    "frozenSpecAndImportClosure": true,
+    "marketCapInputPinnedByKrxCacheDigest": true,
+    "membershipTaxonomyBenchmarkPins": true,
+    "noOutcomeAccess": true,
+    "pitAccountingSnapshotPinnedByContentDigest": true,
+    "priceInputsPinnedByReplayManifest": true,
+    "rawInputArtifactPinnedWithDigest": true,
+    "syntheticTestsPresent": true,
+    "v4MembershipHasClassifiedNameDates": true,
+    "v4TerminalLimitationRecordedNotHidden": true
+  },
+  "counters": {
+    "analysisCalls": 0,
+    "labelCalls": 0,
+    "markerWrites": 0,
+    "outcomeColumnCalls": 0,
+    "targetCalls": 0
+  },
+  "decision": "READY_FOR_INDUSTRY_ANATOMY_EXECUTION",
+  "details": {},
+  "externalObservation": {
+    "archiveDigest": "sha256:42eeb18b7a5c88816629036f472a93057b6a9be4768ad47292ba0d2750b4cce7",
+    "artifactId": 11157875265,
+    "expired": false,
+    "expiresAt": "2026-12-30T09:43:46Z",
+    "matchesSpecPin": true,
+    "name": "kr-model-raw-inputs-36844599518",
+    "observedOn": "2026-10-04",
+    "producingRunId": 36844599518,
+    "what": "GitHub Actions artifact METADATA only (no contents read)"
+  },
+  "historicalExecutionPerformed": false,
+  "mode": "readiness",
+  "scientificStatus": "EXPLORATORY_DEVELOPMENT_ON_PARTIALLY_RECONSTRUCTED_KR_HISTORY",
+  "specSha256": "98278ce5724b27dd19d253eab6cb1e7854ea432a62098441cdad46d067609f55",
+  "studyId": "kr-industry-opportunity-anatomy-v1",
+  "untestedOnRealData": [
+    "sealed v1 prepare on the preserved snapshot",
+    "label-free readiness gates on real frames",
+    "forward_table on real prices"
+  ]
+}
