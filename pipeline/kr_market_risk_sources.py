@@ -104,6 +104,19 @@ VENDOR_CONFLICT_MAX_SHARE = 0.01
 VENDOR_CONFLICT_MIN_COMMON_DATES = 250
 
 
+def identity_ok(entry, identity):
+    """Identity of a retained source against its registry entry, from the vendor's own identity block. Yahoo: the symbol must equal the registered
+    symbol, and the currency is compared ONLY when the registry declares one. FRED: the series id. FDR serves no identity block, so its identity rests
+    on the registered symbol alone (stated, not hidden). The audit written at acquisition time evaluated Yahoo currency even when none was declared and
+    so flagged YAHOO_VIX and YAHOO_KRWX; that recorded flag is kept as it was and readiness uses this function on the retained identity block."""
+    fetch = entry.get("fetch")
+    if fetch == "yahoo_chart":
+        return identity.get("symbol") == entry["symbol"] and (entry.get("currency") is None or identity.get("currency") == entry["currency"])
+    if fetch == "fred":
+        return identity.get("id") == entry["symbol"]
+    return fetch == "fdr"
+
+
 def lag_days(source_id):
     entry = SOURCES[source_id]
     return M.LAG_CALENDAR_DAYS["KR_INDEX_CLOSE" if entry["role"].startswith("KR_") else entry["lagClass"]]

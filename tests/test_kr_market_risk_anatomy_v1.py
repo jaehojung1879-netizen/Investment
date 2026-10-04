@@ -271,6 +271,9 @@ def test_damage_fraction_arithmetic_and_statuses():
     assert summary["episodes"] == 4 and summary["triggered"] == 2 and summary["missed"] == 2
     assert summary["shareTriggeredBefore20pctOfDrawdown"] == pytest.approx(1 / 4) and summary["shareTriggeredBefore50pctOfDrawdown"] == pytest.approx(2 / 4)  # fractions 0.0 and 1/3 of 4 episodes
     assert summary["damageFractions"] == sorted(summary["damageFractions"])
+    none_triggered = M.damage_summary([{"status": "MISSED"}, {"status": "MISSED"}])
+    assert none_triggered["shareTriggeredBefore20pctOfDrawdown"] == 0.0 and none_triggered["shareTriggeredBefore50pctOfDrawdown"] == 0.0 and none_triggered["triggered"] == 0  # not NaN
+    assert M.damage_summary([])["shareTriggeredBefore20pctOfDrawdown"] is None
 
 
 def test_slow_pre_peak_warning_is_kept_separate_from_the_fast_trigger():

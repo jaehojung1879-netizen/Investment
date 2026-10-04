@@ -113,8 +113,7 @@ def acquire_one(sid, entry, key, today, out):
     normalized = P.normalized_csv(rows)
     (directory / "normalized.csv").write_bytes(normalized)
     files["normalized.csv"] = P.sha256(normalized)
-    declared = {"yahoo_chart": identity.get("symbol") == entry["symbol"] and identity.get("currency") in (entry.get("currency"), None),
-                "fred": identity.get("id") == entry["symbol"], "fdr": True}[entry["fetch"]]
+    declared = S.identity_ok(entry, identity)
     record.update(status="ACQUIRED" if rows else "EMPTY", identity=identity, identityOk=bool(declared), files=files, **P.metadata_audit(rows, dropped, total))
     return record
 

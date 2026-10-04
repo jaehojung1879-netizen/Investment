@@ -514,7 +514,7 @@ def damage_summary(results):
     out = {"episodes": n, "triggered": int(len(fractions)), "missed": int(sum(r["status"] in ("MISSED", "ACTIVATED_AFTER_TROUGH") for r in results)),
            "stateUnavailable": int(sum(r["status"] == "STATE_UNAVAILABLE" for r in results)), "damageFractions": [float(x) for x in np.sort(fractions)]}
     for cut in DAMAGE_CUTS:
-        out[f"shareTriggeredBefore{int(cut * 100)}pctOfDrawdown"] = (float(np.mean(fractions < cut)) * len(fractions) / n if n else None)
+        out[f"shareTriggeredBefore{int(cut * 100)}pctOfDrawdown"] = (int((fractions < cut).sum()) / n if n else None)
     if len(fractions):
         out.update(median=float(np.median(fractions)), mean=float(np.mean(fractions)), min=float(fractions.min()), max=float(fractions.max()))
     return out
