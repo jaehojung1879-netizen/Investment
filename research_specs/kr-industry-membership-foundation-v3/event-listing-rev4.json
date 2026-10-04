@@ -1,0 +1,66 @@
+{
+  "concurrency": 1,
+  "contract": "KR_INDUSTRY_V3_EVENT_LISTING_PROTOCOL_REV4",
+  "documentStageRule": "Not executed here. A later stage may fetch each listed notice document once, only if the total listed hits are <= 400; otherwise it stops and reports. Document content, not the title, must state before and after labels.",
+  "frozenBeforeRequests": true,
+  "maxBodyBytes": 8000000,
+  "maxPagesPerWindow": 30,
+  "maxRequests": 150,
+  "outcomesAllowed": false,
+  "query": {
+    "allRepIsuSrtCd": "",
+    "bfrDsclsType": "on",
+    "business": "",
+    "currentPageSize": "15",
+    "disclosureType": "",
+    "disclosureType01": "",
+    "disclosureType02": "",
+    "disclosureType03": "",
+    "disclosureType04": "",
+    "disclosureType05": "",
+    "disclosureType06": "",
+    "forward": "details_sub",
+    "marketType": "",
+    "method": "searchDetailsSub",
+    "oldSearchCorpName": "",
+    "orderMode": "1",
+    "orderStat": "D",
+    "pFundType": "",
+    "repIsuSrtCd": "",
+    "reportCd": "",
+    "reportNm": "업종변경",
+    "searchCodeType": "",
+    "searchCorpName": "",
+    "securities": "",
+    "settlementMonth": "",
+    "submitOfficeName": ""
+  },
+  "reasonForRevision": "Rev3 (retained under events-rev3/) again returned KIND 페이지 오류 for every valid-span window, while the first probe with an over-long span was validated and answered with the 3-year alert. The query is therefore past span validation and failing server-side on an incomplete form. Rev4 sends the complete standard KIND disclosure-search form with all filter fields present and empty; windows, keyword and range are unchanged and no outcome was read.",
+  "redirects": false,
+  "retries": 0,
+  "stopOnAccessDenied": true,
+  "timeoutSeconds": 20,
+  "url": "https://kind.krx.co.kr/disclosure/details.do",
+  "windows": [
+    [
+      "2013-01-01",
+      "2015-12-31"
+    ],
+    [
+      "2016-01-01",
+      "2018-12-31"
+    ],
+    [
+      "2019-01-01",
+      "2021-12-31"
+    ],
+    [
+      "2022-01-01",
+      "2024-12-31"
+    ],
+    [
+      "2025-01-01",
+      "2026-10-02"
+    ]
+  ]
+}

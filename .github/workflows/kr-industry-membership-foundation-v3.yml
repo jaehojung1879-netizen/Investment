@@ -84,19 +84,19 @@ jobs:
       - name: Skip once the frozen listing has been retained
         id: guard
         run: |
-          if [ -d data/kr-industry-membership-foundation-v3/events-rev3 ]; then echo "go=false" >> "$GITHUB_OUTPUT"; else echo "go=true" >> "$GITHUB_OUTPUT"; fi
+          if [ -d data/kr-industry-membership-foundation-v3/events-rev4 ]; then echo "go=false" >> "$GITHUB_OUTPUT"; else echo "go=true" >> "$GITHUB_OUTPUT"; fi
       - uses: actions/setup-python@v5
         if: steps.guard.outputs.go == 'true'
         with:
           python-version: '3.12'
-      - name: Frozen rev3 windowed KIND notice listing (no document fetch, no labels)
+      - name: Frozen rev4 windowed KIND notice listing (no document fetch, no labels)
         if: steps.guard.outputs.go == 'true'
-        run: python -u scripts/collect_kr_industry_v3_events.py --output data/kr-industry-membership-foundation-v3/events-rev3
+        run: python -u scripts/collect_kr_industry_v3_events.py --output data/kr-industry-membership-foundation-v3/events-rev4
       - name: Retain the listing bytes unchanged
         if: steps.guard.outputs.go == 'true'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/kr-industry-membership-foundation-v3/events-rev3
-          git commit -m "Data: retain frozen rev3 KIND industry-change notice listing"
+          git add data/kr-industry-membership-foundation-v3/events-rev4
+          git commit -m "Data: retain frozen rev4 KIND industry-change notice listing"
           git push origin "HEAD:${{ github.head_ref }}"
