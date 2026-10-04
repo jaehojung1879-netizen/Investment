@@ -1,0 +1,38 @@
+{
+  "decisionBasis": "label-free: observation dates, the XKRX session calendar and metadata only",
+  "disclosure": "The v2 rules were written AFTER v1's committed readiness record made the two source-QA defects visible (a 17-day live-freshness rejection of FDR_KS200; a raw-row invalid share for YAHOO_KS11). They are therefore not blind to source METADATA. They are blind to every historical market OUTCOME: no price value, return, drawdown, episode or future label was parsed or computed.",
+  "kind": "SOURCE_ADMISSIBILITY_CORRECTION_PROVENANCE_NO_OUTCOMES",
+  "preReadinessFreeze": {
+    "commit": "0d31297",
+    "contained": [
+      "v2 source-admissibility rules",
+      "v2 lifecycle",
+      "frozen spec and design document",
+      "workflow",
+      "tests"
+    ],
+    "containedAnyOutcome": false,
+    "containedAnyReadinessOutput": false
+  },
+  "predecessor": {
+    "blocker": "PRIMARY_REFERENCE_NOT_SELECTED",
+    "mergedIn": "PR #196 (merge commit 2af700aaf2c354ab16b54e35e56b6ddc45eecf05)",
+    "status": "DATA_BLOCKED_BEFORE_MARKET_RISK_ANATOMY",
+    "studyId": "kr-market-risk-anatomy-v1",
+    "unchanged": true
+  },
+  "readinessProducedAfterFreeze": "docs/results/kr-market-risk-anatomy-v2-readiness.json",
+  "statements": [
+    "No historical market-risk outcome was computed in this change.",
+    "No drawdown, trigger performance, false alarm, recovery cost or anatomy result was inspected.",
+    "No source was selected from future returns.",
+    "No KOSPI 200 / KOSPI composite series was spliced; no FDR / Yahoo splice; no interpolation or forward fill.",
+    "No live-freshness failure is represented as a historical data failure; the selected reference is NOT live-ready (17 days stale against the 10-day live limit).",
+    "No sealed prior study was rerun, edited or reinterpreted; v1 remains DATA_BLOCKED and unchanged.",
+    "No new external acquisition occurred; the exact bytes retained by v1 are the only source input.",
+    "No coverage, continuity or identity threshold was changed from v1; only the freshness gate was removed from historical admissibility and the invalid-share denominator became expected XKRX sessions (same 0.005 limit).",
+    "Execution is not dispatched. The one-shot historical execution needs a merged protocol and a separate explicit authorization."
+  ],
+  "studyId": "kr-market-risk-anatomy-v2",
+  "whyFdrPassesV2ButFailedV1": "v1 mixed LIVE operational freshness into HISTORICAL admissibility and rejected FDR_KS200 solely for STALE_LAST_DATE (last date 2026-09-17, 17 days before the 2026-10-04 acquisition, against a 10-day limit). v2 separates the concepts: every identity, coverage and continuity test v1 applied is unchanged and FDR_KS200 passed them in v1 as well (no other v1 reason was recorded for it). This is a rule correction from source metadata, not outcome tuning."
+}
