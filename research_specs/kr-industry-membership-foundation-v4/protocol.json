@@ -1,0 +1,82 @@
+{
+  "absentSecurities": {
+    "count": 28,
+    "nonTerminalPreferred6": [
+      "005385.KS",
+      "005387.KS",
+      "005935.KS",
+      "051905.KS",
+      "051915.KS",
+      "090435.KS"
+    ],
+    "source": "v3 intervals: securities with no current KIND anchor and no disclosed event",
+    "terminal22": [
+      "000030.KS",
+      "000060.KS",
+      "000830.KS",
+      "001300.KS",
+      "002550.KS",
+      "003410.KS",
+      "003450.KS",
+      "003600.KS",
+      "004940.KS",
+      "008560.KS",
+      "010520.KS",
+      "010620.KS",
+      "011160.KS",
+      "012510.KS",
+      "037620.KS",
+      "042670.KS",
+      "053000.KS",
+      "057050.KS",
+      "067250.KS",
+      "079440.KS",
+      "115390.KS",
+      "117930.KS"
+    ]
+  },
+  "baseMain": "4fee39d3aa5878d0ec8c14c7da41a94283d34d0b",
+  "bounded_probe": {
+    "maxRequests": 1,
+    "purpose": "record the official delisted-company register page and its stated columns, to establish whether it carries an industry field",
+    "request": "GET https://kind.krx.co.kr/investwarn/delcompany.do?method=searchDelCompanyMain",
+    "retries": 0
+  },
+  "contract": "KR_INDUSTRY_MEMBERSHIP_PROTOCOL_V4",
+  "decision": "READY_FOR_INDUSTRY_ANATOMY or DATA_FOUNDATION_INSUFFICIENT_V4",
+  "frozenBeforeAnyNewEvidenceOrTaxonomyEvaluation": true,
+  "gates": "Numeric gates read unchanged from research_specs/kr-industry-membership-foundation-v2/criteria.json: signal 0.90, annual 0.90, terminal 0.90, group size 5, at least 3 sufficient groups, 0.90 of classified in sufficient groups.",
+  "outcomesAllowed": false,
+  "preferredShareIdentityRule": {
+    "applies_to": [
+      "005385.KS",
+      "005387.KS",
+      "005935.KS",
+      "051905.KS",
+      "051915.KS",
+      "090435.KS"
+    ],
+    "basis": "v2 recorded that preferred-share identity needs its own preregistered decision; this is that decision.",
+    "rule": "A preferred share takes the reconstructed intervals of its common stock only if BOTH hold: (a) its stem code (first five digits + 0) is the code of a security with a current KIND anchor, and (b) its recorded name equals that common stock KIND name followed by a preferred suffix (우, 2우B, 우B, 3우B). Intervals are used only over dates the preferred share itself was in the Top120. Status PREFERRED_SHARE_OF_ANCHORED_COMMON. The label comes from the common stock KIND record; the name only corroborates identity."
+  },
+  "sourcePriority": [
+    "1 official historical KIND/KRX issuer or security information (none reached in v3; one bounded page probe below)",
+    "2 official KIND 업종변경/상장폐지/이전상장/합병/분할 records (v3 listing: no notice matched any of the 28)",
+    "3 retained terminal-action evidence (data/kr-terminal-corporate-actions.json): used for termination type and identity breaks only, never for an industry",
+    "4 retained v1/v2/v3 DART evidence, only through the unchanged v2 issuer-only template and v2 admission function, no new template and no new collection",
+    "5 otherwise UNKNOWN"
+  ],
+  "taxonomy": {
+    "candidateOrder": [
+      "OFFICIAL_DIVISION: first four digits of the KIND industry code, accepted only where official notices prove the code structure (structured 6-digit code equals large+middle+small codes stated in a free-text notice for the same label) and only for labels with a retained official code",
+      "OFFICIAL_SECTION: first two digits, same condition",
+      "ECONOMIC_CROSSWALK: research_specs/kr-industry-membership-foundation-v4/crosswalk.json"
+    ],
+    "noReturns": true,
+    "noSplitOrMergeAfterObservation": true,
+    "selection": "The first candidate for which every raw label maps to exactly one group (no UNKNOWN mapping) AND the inherited group gates pass on every signal date AND no single group holds more than 35% of classified name-dates. The 35% dominance limit, like everything else here, is fixed before evaluation and is structural."
+  },
+  "terminal22Rule": "No industry is propagated from a successor or across a merger, spin-off, share transfer or listing transfer. A terminal common stock is classified only by a KIND/KRX record of its own, a retained DART record admitted by the unchanged v2 template, or a verified KIND notice of its own; otherwise UNKNOWN for every date.",
+  "unknownSemantics": "UNKNOWN stays in every denominator; a conflict or unresolved mapping is UNKNOWN; no survivor renormalisation.",
+  "v1v2v3Unchanged": "Completed results and the v3 reconstruction for the 232 anchored securities are reused unchanged and never reinterpreted."
+}
