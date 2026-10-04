@@ -1,0 +1,974 @@
+{
+  "architectureRole": {
+    "laterStudy": "kr-market-risk-model-v1 owns risk-budget backtesting and optimisation",
+    "layer": "MARKET",
+    "mustNot": [
+      "rank stocks",
+      "rank industries",
+      "predict the exact crash date",
+      "search for the best market-timing rule",
+      "size or backtest a portfolio"
+    ],
+    "question": "how much equity risk should be taken"
+  },
+  "baselineTriggers": {
+    "B1_TREND_ADVERSE": "close < mean of the last 200 closes (the existing overlay trend leg)",
+    "B2_VOL_ADVERSE": "annualised vol63 > 25% (the existing overlay vol leg)",
+    "B3_OVERLAY_ANY": "existing overlay count >= 1 (risk multiplier <= 0.7)",
+    "B4_OVERLAY_BOTH": "existing overlay count == 2 (risk multiplier 0.4)",
+    "D10_TRAILING_DRAWDOWN": "close / max of the last 252 closes - 1 <= -10%"
+  },
+  "boundary": {
+    "isAMarketRiskModel": false,
+    "isAPortfolioStudy": false,
+    "isAProductionRecommendation": false,
+    "isEvidenceOfProspectivePredictability": false,
+    "isIndustrySelection": false,
+    "isStockSelection": false,
+    "mayAddAFeatureAfterOutcomes": false,
+    "mayChangeEpisodeAlgorithmAfterOutcomes": false,
+    "mayChangeHorizonsOrCutoffsAfterOutcomes": false,
+    "mayChooseABestFeature": false,
+    "mayChooseABestTrigger": false,
+    "mayNameEpisodesByHand": false,
+    "mayOptimiseAThreshold": false,
+    "outcomeExecutionInThisChange": false,
+    "passFailSemantics": "NONE"
+  },
+  "cadence": {
+    "FAST_MARKET_BREAK": "daily state for event timing; weekly snapshots for statistical tables",
+    "KR_MARKET_INTERNALS": "weekly snapshots",
+    "SLOW_VULNERABILITY": "monthly: last KR session of the month",
+    "TRANSITION_FINANCIAL_STRESS": "weekly: last KR session of the week",
+    "byFamily": {
+      "FAST_MARKET_BREAK": "W",
+      "KR_MARKET_INTERNALS": "W",
+      "SLOW_VULNERABILITY": "M",
+      "TRANSITION_FINANCIAL_STRESS": "W"
+    },
+    "slowerSeriesCarriedForward": "latest KNOWN observation only; carried daily rows are never independent evidence",
+    "stepSessions": {
+      "D": 1,
+      "M": 21,
+      "W": 5
+    }
+  },
+  "conceptualSequence": [
+    "SLOW VULNERABILITY",
+    "TRANSITION / FINANCIAL STRESS",
+    "FAST MARKET BREAK",
+    "eventual future risk-budget decision (not this study)"
+  ],
+  "constants": {
+    "allHorizons": [
+      21,
+      63,
+      126,
+      252
+    ],
+    "annualisation": 252,
+    "commonHorizons": [
+      63,
+      126
+    ],
+    "damageCuts": [
+      0.2,
+      0.5
+    ],
+    "drawdownTriggerCut": -0.1,
+    "easingLookbackSessions": 126,
+    "easingThresholdPp": -0.25,
+    "episodeThresholds": [
+      0.1,
+      0.15,
+      0.2
+    ],
+    "fredDailyStaleDays": 14,
+    "highStatePercentile": 0.8,
+    "inversionLookbackSessions": 504,
+    "lagCalendarDays": {
+      "FRED_DAILY_MARKET": 4,
+      "FRED_H10_WEEKLY": 8,
+      "KR_INDEX_CLOSE": 0,
+      "YAHOO_US_DAILY": 1
+    },
+    "landmarkDrawdowns": [
+      0.05,
+      0.1,
+      0.15
+    ],
+    "landmarkOffsets": [
+      -252,
+      -126,
+      -63,
+      -21
+    ],
+    "lossCuts": [
+      -0.1,
+      -0.15,
+      -0.2
+    ],
+    "minEventsForAuroc": 10,
+    "minNonEventsForAuroc": 10,
+    "minNormalisationObs": {
+      "D": 756,
+      "M": 36,
+      "W": 156
+    },
+    "minTsObs": 36,
+    "minYearObs": {
+      "D": 100,
+      "M": 8,
+      "W": 20
+    },
+    "overlayMultipliers": [
+      1.0,
+      0.7,
+      0.4
+    ],
+    "overlayVolThreshold": 0.25,
+    "primaryEpisodeThreshold": 0.15,
+    "stressWorseningPercentile": 0.75
+  },
+  "drawdownEpisodes": {
+    "algorithm": "running peak P = the latest close >= every earlier close; a close >= P ends any open episode as a recovery and restarts the peak at that date; a close < P opens an episode (peak = the date P was last set) whose trough is the FIRST lowest close; depth = trough/peak-1; an episode open at the last observation is right-censored; missing sessions are skipped (episodes use observed closes only)",
+    "landmarks": {
+      "also": [
+        "peak",
+        "trough"
+      ],
+      "firstDrawdowns": [
+        0.05,
+        0.1,
+        0.15
+      ],
+      "peakOffsetsSessions": [
+        -252,
+        -126,
+        -63,
+        -21
+      ]
+    },
+    "latestKnownStateAtLandmarks": [
+      "yield-curve state",
+      "policy direction",
+      "credit-spread state and change",
+      "VIX",
+      "USD/KRW",
+      "trend",
+      "realised and downside volatility",
+      "available internals"
+    ],
+    "namedEpisodes": "never; episodes are algorithmic only",
+    "primaryThreshold": 0.15,
+    "record": [
+      "peak date",
+      "trough date",
+      "peak-to-trough drawdown",
+      "recovery date or right-censored status"
+    ],
+    "thresholds": [
+      0.1,
+      0.15,
+      0.2
+    ]
+  },
+  "earlyDamage": {
+    "fixedCuts": [
+      0.2,
+      0.5
+    ],
+    "metrics": [
+      "LossAtTrigger = close[trigger]/close[peak]-1",
+      "DamageFractionAtTrigger = |LossAtTrigger|/|depth|",
+      "RemainingDrawdownAfterTrigger = close[trough]/close[trigger]-1",
+      "TriggerDelaySessions = trigger-peak"
+    ],
+    "reportsContinuousDistribution": true,
+    "slowWarnings": "pre-peak lead time reported separately (active at peak with streak onset; on-then-off; never on); never mixed with a fast trigger",
+    "statuses": [
+      "TRIGGERED",
+      "MISSED",
+      "ACTIVATED_AFTER_TROUGH",
+      "STATE_UNAVAILABLE"
+    ],
+    "triggerWindow": "[peak, trough]; a state already on at the peak gives delay 0 and loss 0 and is flagged"
+  },
+  "everyResultStates": [
+    "actual sample start",
+    "actual sample end",
+    "coverage",
+    "exact valid-date counts",
+    "exact event counts"
+  ],
+  "existingOverlayReference": {
+    "module": "pipeline/kr_market_risk_overlay.py",
+    "role": "frozen BASELINE to measure, not the answer; reproduced exactly by a literal replica proven equal to state_at",
+    "rule": "close < mean of the last 200 closes; annualised vol63 > 25%; multipliers 1.0 / 0.7 / 0.4"
+  },
+  "falseAlarmsAndRecovery": {
+    "noReentryOptimisation": true,
+    "perTrigger": [
+      "activations",
+      "share of valid sessions adverse",
+      "share of ON (and OFF) sessions followed within H63/H126 by -10/-15/-20% worst loss",
+      "activation streaks with no -10% drawdown within H63",
+      "after each trough: sessions until the trigger's own off-state and the return missed meanwhile"
+    ],
+    "riskBudgetBacktestingBelongsTo": "kr-market-risk-model-v1"
+  },
+  "features": {
+    "fast_downside_vol_63": {
+      "definition": "sqrt(mean(min(r,0)^2)) over the last 63 returns x sqrt(252)",
+      "family": "FAST_MARKET_BREAK",
+      "orientation": "higher = more downside risk",
+      "tier": "CORE_LONG_HISTORY"
+    },
+    "fast_drawdown_252": {
+      "definition": "minus (close / max of last 252 closes - 1), a depth >= 0",
+      "family": "FAST_MARKET_BREAK",
+      "orientation": "higher = more downside risk",
+      "tier": "CORE_LONG_HISTORY"
+    },
+    "fast_overlay_count": {
+      "definition": "existing overlay: trend adverse (close < mean of last 200) + vol adverse (vol63 > 25%)",
+      "family": "FAST_MARKET_BREAK",
+      "orientation": "higher = more downside risk",
+      "tier": "CORE_LONG_HISTORY"
+    },
+    "fast_realized_vol_21": {
+      "definition": "std (ddof 1) of the last 21 daily returns x sqrt(252)",
+      "family": "FAST_MARKET_BREAK",
+      "orientation": "higher = more downside risk",
+      "tier": "CORE_LONG_HISTORY"
+    },
+    "fast_realized_vol_63": {
+      "definition": "std (ddof 1) of the last 63 daily returns x sqrt(252)",
+      "family": "FAST_MARKET_BREAK",
+      "orientation": "higher = more downside risk",
+      "tier": "CORE_LONG_HISTORY"
+    },
+    "fast_ret_126": {
+      "definition": "minus trailing 126-session return",
+      "family": "FAST_MARKET_BREAK",
+      "orientation": "higher = more downside risk",
+      "tier": "CORE_LONG_HISTORY"
+    },
+    "fast_ret_63": {
+      "definition": "minus trailing 63-session return",
+      "family": "FAST_MARKET_BREAK",
+      "orientation": "higher = more downside risk",
+      "tier": "CORE_LONG_HISTORY"
+    },
+    "fast_sma200_slope_21": {
+      "definition": "minus (SMA200(t) / SMA200(t-21) - 1)",
+      "family": "FAST_MARKET_BREAK",
+      "orientation": "higher = more downside risk",
+      "tier": "CORE_LONG_HISTORY"
+    },
+    "fast_trend_distance_sma200": {
+      "definition": "minus (close / mean of last 200 closes - 1)",
+      "family": "FAST_MARKET_BREAK",
+      "orientation": "higher = more downside risk",
+      "tier": "CORE_LONG_HISTORY"
+    },
+    "fast_vol_acceleration": {
+      "definition": "vol21 / vol63 - 1",
+      "family": "FAST_MARKET_BREAK",
+      "orientation": "higher = more downside risk",
+      "tier": "CORE_LONG_HISTORY"
+    },
+    "int_breadth_above_sma200": {
+      "definition": "minus fraction of PIT members above their SMA200",
+      "family": "KR_MARKET_INTERNALS",
+      "orientation": "higher = more downside risk",
+      "tier": "EXTENDED_KR_INTERNALS"
+    },
+    "int_breadth_deterioration_63": {
+      "definition": "minus (breadth above SMA200 (t) - breadth (t-63 sessions))",
+      "family": "KR_MARKET_INTERNALS",
+      "orientation": "higher = more downside risk",
+      "tier": "EXTENDED_KR_INTERNALS"
+    },
+    "int_capweight_minus_equalweight_63": {
+      "definition": "cap-weighted minus equal-weighted 63-session return of PIT members (narrow leadership = risk)",
+      "family": "KR_MARKET_INTERNALS",
+      "orientation": "higher = more downside risk",
+      "tier": "EXTENDED_KR_INTERNALS"
+    },
+    "int_concentration_top5_share": {
+      "definition": "top five signal-date market-cap share among PIT members",
+      "family": "KR_MARKET_INTERNALS",
+      "orientation": "higher = more downside risk",
+      "tier": "EXTENDED_KR_INTERNALS"
+    },
+    "int_dispersion_63": {
+      "definition": "cross-sectional std of 63-session returns of PIT members",
+      "family": "KR_MARKET_INTERNALS",
+      "orientation": "higher = more downside risk",
+      "tier": "EXTENDED_KR_INTERNALS"
+    },
+    "int_positive_breadth_63": {
+      "definition": "minus fraction of PIT members with a positive 63-session return",
+      "family": "KR_MARKET_INTERNALS",
+      "orientation": "higher = more downside risk",
+      "tier": "EXTENDED_KR_INTERNALS"
+    },
+    "slow_fed_funds_change_126": {
+      "definition": "DFF(t) - DFF(t-126 sessions), percentage points (tightening = risk)",
+      "family": "SLOW_VULNERABILITY",
+      "orientation": "higher = more downside risk",
+      "tier": "CORE_LONG_HISTORY"
+    },
+    "slow_fed_funds_level": {
+      "definition": "DFF level, percent",
+      "family": "SLOW_VULNERABILITY",
+      "orientation": "higher = more downside risk",
+      "tier": "CORE_LONG_HISTORY"
+    },
+    "slow_inversion_duration_10y3m": {
+      "definition": "consecutive month-end observations with 10y-3m < 0 including t",
+      "family": "SLOW_VULNERABILITY",
+      "orientation": "higher = more downside risk",
+      "tier": "CORE_LONG_HISTORY"
+    },
+    "slow_resteepening_flag_10y3m": {
+      "definition": "1 if 10y-3m > 0 now and its minimum over the trailing 504 sessions was < 0, else 0",
+      "family": "SLOW_VULNERABILITY",
+      "orientation": "higher = more downside risk",
+      "tier": "CORE_LONG_HISTORY"
+    },
+    "slow_us_10y2y_flatness": {
+      "definition": "minus (DGS10 - DGS2), percentage points",
+      "family": "SLOW_VULNERABILITY",
+      "orientation": "higher = more downside risk",
+      "tier": "CORE_LONG_HISTORY"
+    },
+    "slow_us_10y3m_flatness": {
+      "definition": "minus (DGS10 - DGS3MO), percentage points",
+      "family": "SLOW_VULNERABILITY",
+      "orientation": "higher = more downside risk",
+      "tier": "CORE_LONG_HISTORY"
+    },
+    "trans_benign_easing_flag": {
+      "definition": "easing, no 10y-3m inversion in the trailing 504 sessions, HY stress not worsening",
+      "family": "TRANSITION_FINANCIAL_STRESS",
+      "orientation": "higher = more downside risk",
+      "tier": "CORE_LONG_HISTORY"
+    },
+    "trans_easing_after_inversion_flag": {
+      "definition": "easing with a 10y-3m inversion in the trailing 504 sessions",
+      "family": "TRANSITION_FINANCIAL_STRESS",
+      "orientation": "higher = more downside risk",
+      "tier": "CORE_LONG_HISTORY"
+    },
+    "trans_easing_flag": {
+      "definition": "1 if DFF(t) - DFF(t-126 sessions) <= -0.25 pp",
+      "family": "TRANSITION_FINANCIAL_STRESS",
+      "orientation": "higher = more downside risk",
+      "tier": "CORE_LONG_HISTORY"
+    },
+    "trans_hy_oas_change_21": {
+      "definition": "HY OAS(t) - HY OAS(t-21 sessions)",
+      "family": "TRANSITION_FINANCIAL_STRESS",
+      "orientation": "higher = more downside risk",
+      "tier": "CORE_LONG_HISTORY"
+    },
+    "trans_hy_oas_change_63": {
+      "definition": "HY OAS(t) - HY OAS(t-63 sessions)",
+      "family": "TRANSITION_FINANCIAL_STRESS",
+      "orientation": "higher = more downside risk",
+      "tier": "CORE_LONG_HISTORY"
+    },
+    "trans_hy_oas_level": {
+      "definition": "BAMLH0A0HYM2 level",
+      "family": "TRANSITION_FINANCIAL_STRESS",
+      "orientation": "higher = more downside risk",
+      "tier": "CORE_LONG_HISTORY"
+    },
+    "trans_ig_oas_change_63": {
+      "definition": "IG OAS(t) - IG OAS(t-63 sessions)",
+      "family": "TRANSITION_FINANCIAL_STRESS",
+      "orientation": "higher = more downside risk",
+      "tier": "CORE_LONG_HISTORY"
+    },
+    "trans_ig_oas_level": {
+      "definition": "BAMLC0A0CM level",
+      "family": "TRANSITION_FINANCIAL_STRESS",
+      "orientation": "higher = more downside risk",
+      "tier": "CORE_LONG_HISTORY"
+    },
+    "trans_post_vulnerability_stress_easing_hy_flag": {
+      "definition": "easing after inversion AND HY stress worsening (expanding percentile of HY level or 63-session change >= 0.75)",
+      "family": "TRANSITION_FINANCIAL_STRESS",
+      "orientation": "higher = more downside risk",
+      "tier": "CORE_LONG_HISTORY"
+    },
+    "trans_post_vulnerability_stress_easing_vix_flag": {
+      "definition": "easing after inversion AND VIX stress worsening (expanding percentile of VIX level or 63-session change >= 0.75)",
+      "family": "TRANSITION_FINANCIAL_STRESS",
+      "orientation": "higher = more downside risk",
+      "tier": "CORE_LONG_HISTORY"
+    },
+    "trans_usdkrw_change_63": {
+      "definition": "log(USDKRW(t)/USDKRW(t-63 sessions)) (KRW weakening = risk)",
+      "family": "TRANSITION_FINANCIAL_STRESS",
+      "orientation": "higher = more downside risk",
+      "tier": "CORE_LONG_HISTORY"
+    },
+    "trans_usdkrw_realized_vol_21": {
+      "definition": "annualised std of the last 21 known log changes",
+      "family": "TRANSITION_FINANCIAL_STRESS",
+      "orientation": "higher = more downside risk",
+      "tier": "CORE_LONG_HISTORY"
+    },
+    "trans_vix_change_21": {
+      "definition": "VIX(t) - VIX(t-21 sessions)",
+      "family": "TRANSITION_FINANCIAL_STRESS",
+      "orientation": "higher = more downside risk",
+      "tier": "CORE_LONG_HISTORY"
+    },
+    "trans_vix_change_63": {
+      "definition": "VIX(t) - VIX(t-63 sessions)",
+      "family": "TRANSITION_FINANCIAL_STRESS",
+      "orientation": "higher = more downside risk",
+      "tier": "CORE_LONG_HISTORY"
+    },
+    "trans_vix_level": {
+      "definition": "VIX level",
+      "family": "TRANSITION_FINANCIAL_STRESS",
+      "orientation": "higher = more downside risk",
+      "tier": "CORE_LONG_HISTORY"
+    }
+  },
+  "horizons": {
+    "byFamily": {
+      "FAST_MARKET_BREAK": [
+        21,
+        63
+      ],
+      "KR_MARKET_INTERNALS": [
+        21,
+        63
+      ],
+      "SLOW_VULNERABILITY": [
+        126,
+        252
+      ],
+      "TRANSITION_FINANCIAL_STRESS": [
+        63,
+        126
+      ]
+    },
+    "common": [
+      63,
+      126
+    ]
+  },
+  "hypotheses": {
+    "H1": "Yield-curve inversion / near-term policy-path weakness is primarily a slow vulnerability signal and should carry more information at H126/H252 than at H21.",
+    "H2": "A policy-rate cut alone is not necessarily adverse; risk may be greater when easing follows prior curve vulnerability AND financial stress is worsening.",
+    "H3": "Widening credit spreads / worsening external financial conditions contain transition information before or during large KR equity drawdowns.",
+    "H4": "Fast trend/volatility deterioration may not predict the ultimate crisis in advance but may identify the early portion of a developing drawdown.",
+    "H5": "The existing SMA200 + Vol63 overlay may reduce remaining drawdown, but its false-alarm and recovery-delay costs must be measured.",
+    "H6": "KR market breadth/internal deterioration may add information beyond the index itself in the shorter PIT-safe extended sample.",
+    "H7": "A slow-warning -> transition -> fast-break sequence may be economically more useful than any one signal; this study does not optimise or select a combination.",
+    "status": "hypotheses, not truths; none is a result"
+  },
+  "kind": "PRE_SOURCE_FREEZE_SCIENTIFIC_DESIGN",
+  "lifecycle": {
+    "executionLock": "refs/tags/kr-market-risk-anatomy-v1-execution-lock plus -<specSha256>, atomic POST /git/refs; any existing ref refuses; failure before the lock spends nothing, after it consumes v1",
+    "markerPath": "docs/results/kr-market-risk-anatomy-v1-execution-started.json",
+    "resultPath": "docs/results/kr-market-risk-anatomy-v1-result.json",
+    "sequence": [
+      "merged current main",
+      "committed exact spec",
+      "exact frozen input identities",
+      "no prior result",
+      "no prior study lock",
+      "label-free readiness gates",
+      "durable lock",
+      "first outcome or episode computation",
+      "result artifact"
+    ]
+  },
+  "limitations": [
+    "One market time series with a handful of independent stress episodes: every statistic is descriptive and heavily autocorrelated",
+    "The sample is historically known to the researchers; a preregistration does not make it independent",
+    "Availability dates are conservative approximations; no release timestamps are retained, so no source is PIT_EXACT",
+    "A price index excludes dividends; drawdowns are price drawdowns, not shareholder total return",
+    "KR policy rate, KR term spread, Near-Term Forward Spread and the Excess Bond Premium are not available as defensible historical predictors",
+    "Extended internals start in 2015 and depend on the preserved raw input artifact",
+    "No multiplicity correction; no feature or trigger is validated or predictive"
+  ],
+  "literatureMotivation": {
+    "references": [
+      "Estrella and Mishkin (1996, 1998): term spread and recessions",
+      "Engstrom and Sharpe (2019): near-term forward spread as a leading indicator",
+      "Federal Reserve staff work comparing term spreads and recession probabilities",
+      "Gilchrist and Zakrajsek (2012): credit spreads and business cycle fluctuations",
+      "Favara, Gilchrist, Lewis and Zakrajsek (2016): recession risk and the excess bond premium (EBP is revised modern data and is not used)"
+    ],
+    "role": "motivation only, never a result of this study"
+  },
+  "normalisation": {
+    "fullSampleZScoreForbidden": true,
+    "invariance": "the state at t is identical whether the data end at t or in 2026 (tested)",
+    "method": "expanding past-only percentile (#less + 0.5 #equal)/n including t",
+    "minimumObservations": {
+      "D": 756,
+      "M": 36,
+      "W": 156
+    },
+    "missing": "NaN, never imputed"
+  },
+  "objective": "Determine whether information observable at time t identifies elevated KR equity-market downside vulnerability and/or detects a developing large drawdown early enough to reduce a meaningful part of the remaining loss.",
+  "phase": "ANATOMY_SOURCE_FOUNDATION_AND_HARNESS_ONLY_NO_OUTCOME_COMPUTED",
+  "pitDiscipline": {
+    "approximateLagsNeverUpgradeAClass": true,
+    "classes": {
+      "MARKET_OBSERVED_UNREVISED_APPROXIMATE_AVAILABILITY": "an unrevised market quote with a conservative availability lag; usable, never called PIT_EXACT",
+      "NOT_AVAILABLE": "not built",
+      "PIT_EXACT": "only with retained release evidence",
+      "REVISED_HISTORY": "never backdated, never a primary predictor"
+    },
+    "currentEcosLeadingIndexIsNeverAPrimaryPredictor": true,
+    "ecos": "ECOS-derived series are REVISED_HISTORY by the repository contract and are excluded as predictors",
+    "lagCalendarDays": {
+      "FRED_DAILY_MARKET": 4,
+      "FRED_H10_WEEKLY": 8,
+      "KR_INDEX_CLOSE": 0,
+      "YAHOO_US_DAILY": 1
+    },
+    "missingStaysMissing": true,
+    "noBackfill": true,
+    "noCurrentValueStampedOnHistory": true,
+    "noFutureInterpolation": true,
+    "rule": "a feature at KR session t sees the latest observation whose availableFrom (observation date + lag) is <= t",
+    "staleCarryForwardDays": 14
+  },
+  "primaryReference": {
+    "basis": "PRICE INDEX LEVEL; never described as total shareholder return; the ETF robustness reference is the as-traded close, dividends not reinvested",
+    "familyOrder": [
+      "KOSPI200",
+      "KOSPI_COMPOSITE"
+    ],
+    "freeze": [
+      "exact instrument identity",
+      "source",
+      "calendar (XKRX sessions of the pinned repository calendar)",
+      "currency",
+      "basis",
+      "first and last usable date",
+      "missing-date semantics (a missing session is missing; no fill)"
+    ],
+    "priority": [
+      "KRX_OPENAPI_KOSPI200",
+      "YAHOO_KS200",
+      "FDR_KS200",
+      "YAHOO_KS11"
+    ],
+    "robustnessReference": "YAHOO_069500",
+    "rule": "Walk the KOSPI 200 routes in REFERENCE_PRIORITY and take the first that passes every identity/coverage/semantics test; only if none passes may the KOSPI composite price index be chosen, and the decision says so. No splice, no silent substitution, never chosen on result quality.",
+    "tests": {
+      "firstDateNoLaterThan": "2005-12-31",
+      "freshnessDays": 10,
+      "fullRangeCoverage": 0.98,
+      "maxConsecutiveMissingSessions": 5,
+      "maxDroppedRowShare": 0.005,
+      "sessionCoverage": 0.99,
+      "windows": {
+        "COVID_2019H2_2020": [
+          "2019-07-01",
+          "2020-12-31"
+        ],
+        "GFC_2007_2009": [
+          "2007-01-01",
+          "2009-12-31"
+        ]
+      }
+    },
+    "vendorCrossCheck": {
+      "effect": "a CONFLICT against another route to the same index blocks the choice",
+      "maxConflictShare": 0.01,
+      "minCommonDates": 250,
+      "relativeTolerance": 0.005
+    }
+  },
+  "readiness": {
+    "coreGates": {
+      "fast": 0.99,
+      "reference": 0.99,
+      "rule": "READY only if the primary reference, at least one slow family, one transition family and one fast benchmark-derived family are covered in 2007-2009, and usable coverage exists around 2020; not every candidate feature must cover the period; each missing candidate keeps its own coverage table",
+      "slow": 0.95,
+      "transition": 0.95,
+      "windows": {
+        "COVID_2019H2_2020": [
+          "2019-07-01",
+          "2020-12-31"
+        ],
+        "GFC_2007_2009": [
+          "2007-01-01",
+          "2009-12-31"
+        ]
+      }
+    },
+    "decisions": [
+      "READY_FOR_MARKET_RISK_ANATOMY_EXECUTION",
+      "DATA_BLOCKED_BEFORE_MARKET_RISK_ANATOMY"
+    ],
+    "extendedTierRequiredForDecision": false,
+    "failureReturns": "DATA_BLOCKED_BEFORE_MARKET_RISK_ANATOMY with exact blockers; the study is never quietly redefined as 2015+",
+    "transitionGateFeatures": "market-stress features only (HY/IG spread, VIX, USD/KRW); policy-only easing flags are tabulated but are not a gate",
+    "transitionGatePrefixes": [
+      "trans_hy_",
+      "trans_ig_",
+      "trans_vix_",
+      "trans_usdkrw_"
+    ]
+  },
+  "rolePriority": {
+    "USDKRW": [
+      "FRED_DEXKOUS",
+      "YAHOO_KRWX"
+    ],
+    "VIX": [
+      "FRED_VIXCLS",
+      "YAHOO_VIX"
+    ]
+  },
+  "rolePriorityRule": "the primary route unless it fails the weekly known-coverage gate in the 2007-2009 window; then the secondary; never both",
+  "scientificStatus": "EXPLORATORY_DEVELOPMENT_ON_OUTCOME_EXPOSED_KR_HISTORY",
+  "scientificStatusMeaning": [
+    "exploratory historical development on a market history that is already known",
+    "rules frozen before this study's formal outcome execution",
+    "not prospective confirmation, not validated, not predictive, not production-ready",
+    "preregistration and one-shot execution protect against post-outcome tuning inside this study; they do not make the sample independent"
+  ],
+  "slowWarnings": {
+    "W1_INVERSION_10Y3M": "10y-3m < 0",
+    "W2_INVERSION_10Y2Y": "10y-2y < 0"
+  },
+  "sourceDiscipline": {
+    "afterFreezeMay": [
+      "verify source identity",
+      "freeze raw bytes",
+      "verify hashes",
+      "verify date coverage",
+      "verify missingness and timestamp integrity",
+      "verify units and semantics"
+    ],
+    "afterFreezeMustNot": [
+      "compute forward returns",
+      "compute drawdowns",
+      "identify crisis episodes",
+      "generate result tables or plots",
+      "tune thresholds, horizons or features",
+      "change hypotheses from observed values"
+    ],
+    "integrityRepair": "may only repair identity, parsing or transport and never the scientific design; a scientific change after outcome-containing history was inspected is a new version",
+    "preSourceFreezeCommit": "contains this design, the pure algorithms and synthetic tests, before any source value is acquired"
+  },
+  "sources": {
+    "ECOS_BASE_RATE": {
+      "excluded": "item and cycle unresolved (AMBIGUOUS_SOURCE) and ECOS is REVISED_HISTORY",
+      "fetch": null,
+      "role": "KR_POLICY",
+      "symbol": "722Y001",
+      "vendor": "ECOS",
+      "vintageClass": "REVISED_HISTORY"
+    },
+    "ECOS_KTB_3Y": {
+      "excluded": "ECOS is REVISED_HISTORY; a KR term spread also lacks a comparable validated short leg",
+      "fetch": null,
+      "role": "KR_RATES",
+      "symbol": "817Y002/010200000",
+      "vendor": "ECOS",
+      "vintageClass": "REVISED_HISTORY"
+    },
+    "ECOS_LEADING_INDEX": {
+      "excluded": "ECOS is REVISED_HISTORY by the repository contract; not a primary historical predictor",
+      "fetch": null,
+      "role": "KR_MACRO",
+      "symbol": "901Y067/I16E",
+      "vendor": "ECOS",
+      "vintageClass": "REVISED_HISTORY"
+    },
+    "EXCESS_BOND_PREMIUM": {
+      "excluded": "a modern revised series; no historical vintage semantics are defensible, so it is never called PIT exact and is not acquired",
+      "fetch": null,
+      "role": "CREDIT_PREMIUM",
+      "symbol": "EBP",
+      "vendor": "FRB_FEDS_NOTES",
+      "vintageClass": "NOT_AVAILABLE"
+    },
+    "FDR_KS200": {
+      "basis": "PRICE_INDEX_LEVEL",
+      "currency": "KRW",
+      "family": "KOSPI200",
+      "fetch": "fdr",
+      "field": "Close",
+      "instrument": "KOSPI 200 price index (FinanceDataReader route)",
+      "role": "KR_REFERENCE",
+      "symbol": "KS200",
+      "unit": "index points",
+      "vendor": "FINANCEDATAREADER",
+      "vintageClass": "MARKET_OBSERVED_UNREVISED_APPROXIMATE_AVAILABILITY"
+    },
+    "FRED_ANFCI": {
+      "excluded": "adjusted index re-estimated with every release (revised history)",
+      "fetch": null,
+      "role": "FINANCIAL_CONDITIONS",
+      "symbol": "ANFCI",
+      "vendor": "FRED",
+      "vintageClass": "REVISED_HISTORY"
+    },
+    "FRED_BAMLC0A0CM": {
+      "fetch": "fred",
+      "instrument": "ICE BofA US corporate option-adjusted spread",
+      "lagClass": "FRED_DAILY_MARKET",
+      "role": "IG_OAS",
+      "symbol": "BAMLC0A0CM",
+      "unit": "percent",
+      "vendor": "FRED",
+      "vintageClass": "MARKET_OBSERVED_UNREVISED_APPROXIMATE_AVAILABILITY"
+    },
+    "FRED_BAMLH0A0HYM2": {
+      "fetch": "fred",
+      "instrument": "ICE BofA US high yield option-adjusted spread",
+      "lagClass": "FRED_DAILY_MARKET",
+      "role": "HY_OAS",
+      "symbol": "BAMLH0A0HYM2",
+      "unit": "percent",
+      "vendor": "FRED",
+      "vintageClass": "MARKET_OBSERVED_UNREVISED_APPROXIMATE_AVAILABILITY"
+    },
+    "FRED_DEXKOUS": {
+      "fetch": "fred",
+      "instrument": "KRW per USD, H.10 noon New York buying rate",
+      "lagClass": "FRED_H10_WEEKLY",
+      "role": "USDKRW",
+      "symbol": "DEXKOUS",
+      "unit": "KRW per USD",
+      "vendor": "FRED",
+      "vintageClass": "MARKET_OBSERVED_UNREVISED_APPROXIMATE_AVAILABILITY"
+    },
+    "FRED_DFF": {
+      "fetch": "fred",
+      "instrument": "effective federal funds rate",
+      "lagClass": "FRED_DAILY_MARKET",
+      "role": "US_POLICY",
+      "symbol": "DFF",
+      "unit": "percent",
+      "vendor": "FRED",
+      "vintageClass": "MARKET_OBSERVED_UNREVISED_APPROXIMATE_AVAILABILITY"
+    },
+    "FRED_DGS10": {
+      "fetch": "fred",
+      "instrument": "10-year Treasury constant maturity yield (H.15)",
+      "lagClass": "FRED_DAILY_MARKET",
+      "role": "US_10Y",
+      "symbol": "DGS10",
+      "unit": "percent",
+      "vendor": "FRED",
+      "vintageClass": "MARKET_OBSERVED_UNREVISED_APPROXIMATE_AVAILABILITY"
+    },
+    "FRED_DGS2": {
+      "fetch": "fred",
+      "instrument": "2-year Treasury constant maturity yield (H.15)",
+      "lagClass": "FRED_DAILY_MARKET",
+      "role": "US_2Y",
+      "symbol": "DGS2",
+      "unit": "percent",
+      "vendor": "FRED",
+      "vintageClass": "MARKET_OBSERVED_UNREVISED_APPROXIMATE_AVAILABILITY"
+    },
+    "FRED_DGS3MO": {
+      "fetch": "fred",
+      "instrument": "3-month Treasury constant maturity yield (H.15)",
+      "lagClass": "FRED_DAILY_MARKET",
+      "role": "US_3M",
+      "symbol": "DGS3MO",
+      "unit": "percent",
+      "vendor": "FRED",
+      "vintageClass": "MARKET_OBSERVED_UNREVISED_APPROXIMATE_AVAILABILITY"
+    },
+    "FRED_NFCI": {
+      "excluded": "weekly index re-estimated with every release (revised history); no retained vintage evidence in this repository",
+      "fetch": null,
+      "role": "FINANCIAL_CONDITIONS",
+      "symbol": "NFCI",
+      "vendor": "FRED",
+      "vintageClass": "REVISED_HISTORY"
+    },
+    "FRED_OECD_KR_10Y": {
+      "excluded": "monthly OECD series; observation date is not publication date; revised history",
+      "fetch": null,
+      "role": "KR_RATES",
+      "symbol": "IRLTLT01KRM156N",
+      "vendor": "FRED_OECD",
+      "vintageClass": "REVISED_HISTORY"
+    },
+    "FRED_OECD_KR_3M": {
+      "excluded": "monthly OECD interbank rate, not a Treasury bill yield; revised history",
+      "fetch": null,
+      "role": "KR_RATES",
+      "symbol": "IR3TIB01KRM156N",
+      "vendor": "FRED_OECD",
+      "vintageClass": "REVISED_HISTORY"
+    },
+    "FRED_VIXCLS": {
+      "fetch": "fred",
+      "instrument": "CBOE VIX close",
+      "lagClass": "FRED_DAILY_MARKET",
+      "role": "VIX",
+      "symbol": "VIXCLS",
+      "unit": "index points",
+      "vendor": "FRED",
+      "vintageClass": "MARKET_OBSERVED_UNREVISED_APPROXIMATE_AVAILABILITY"
+    },
+    "KRX_OPENAPI_KOSPI200": {
+      "basis": "PRICE_INDEX_LEVEL",
+      "documentedBlocker": "service history starts 2010-01-04 (docs/kr-industry-membership-foundation-v1-openapi.md), so it cannot cover 2007-2009; the KRX data portal answered LOGOUT/400 from Actions (AGENTS.md workflow hygiene)",
+      "family": "KOSPI200",
+      "fetch": null,
+      "instrument": "KOSPI 200 price index (official KRX Open API index series)",
+      "role": "KR_REFERENCE",
+      "vendor": "KRX_OPENAPI",
+      "vintageClass": "MARKET_OBSERVED_UNREVISED_APPROXIMATE_AVAILABILITY"
+    },
+    "KR_TERM_SPREAD": {
+      "excluded": "needs exactly comparable KR long and short rate definitions; the only candidates are ECOS or OECD (revised history)",
+      "fetch": null,
+      "role": "SLOW_CURVE",
+      "symbol": "KR 10Y-3M",
+      "vendor": "DERIVED",
+      "vintageClass": "NOT_AVAILABLE"
+    },
+    "NEAR_TERM_FORWARD_SPREAD": {
+      "excluded": "exact source and construction (forward rate from the fitted Treasury curve) are not verified in this repository",
+      "fetch": null,
+      "role": "SLOW_CURVE",
+      "symbol": "NTFS",
+      "vendor": "FRB",
+      "vintageClass": "NOT_AVAILABLE"
+    },
+    "YAHOO_069500": {
+      "basis": "ETF_AS_TRADED_CLOSE_NOT_TOTAL_RETURN",
+      "currency": "KRW",
+      "family": "KODEX200_ETF",
+      "fetch": "yahoo_chart",
+      "field": "close",
+      "instrument": "KODEX 200 ETF as-traded close (dividends NOT reinvested)",
+      "role": "KR_ROBUSTNESS",
+      "symbol": "069500.KS",
+      "unit": "KRW",
+      "vendor": "YAHOO_CHART",
+      "vintageClass": "MARKET_OBSERVED_UNREVISED_APPROXIMATE_AVAILABILITY"
+    },
+    "YAHOO_KRWX": {
+      "fetch": "yahoo_chart",
+      "field": "close",
+      "instrument": "USD/KRW spot quote (Yahoo route)",
+      "lagClass": "YAHOO_US_DAILY",
+      "role": "USDKRW",
+      "symbol": "KRW=X",
+      "unit": "KRW per USD",
+      "vendor": "YAHOO_CHART",
+      "vintageClass": "MARKET_OBSERVED_UNREVISED_APPROXIMATE_AVAILABILITY"
+    },
+    "YAHOO_KS11": {
+      "basis": "PRICE_INDEX_LEVEL",
+      "currency": "KRW",
+      "family": "KOSPI_COMPOSITE",
+      "fetch": "yahoo_chart",
+      "field": "close",
+      "instrument": "KOSPI composite price index (a DIFFERENT instrument from KOSPI 200)",
+      "role": "KR_REFERENCE",
+      "symbol": "^KS11",
+      "unit": "index points",
+      "vendor": "YAHOO_CHART",
+      "vintageClass": "MARKET_OBSERVED_UNREVISED_APPROXIMATE_AVAILABILITY"
+    },
+    "YAHOO_KS200": {
+      "basis": "PRICE_INDEX_LEVEL",
+      "currency": "KRW",
+      "family": "KOSPI200",
+      "fetch": "yahoo_chart",
+      "field": "close",
+      "instrument": "KOSPI 200 price index (vendor quote of the official KRX index)",
+      "role": "KR_REFERENCE",
+      "symbol": "^KS200",
+      "unit": "index points",
+      "vendor": "YAHOO_CHART",
+      "vintageClass": "MARKET_OBSERVED_UNREVISED_APPROXIMATE_AVAILABILITY"
+    },
+    "YAHOO_VIX": {
+      "fetch": "yahoo_chart",
+      "field": "close",
+      "instrument": "CBOE VIX close (Yahoo route)",
+      "lagClass": "YAHOO_US_DAILY",
+      "role": "VIX",
+      "symbol": "^VIX",
+      "unit": "index points",
+      "vendor": "YAHOO_CHART",
+      "vintageClass": "MARKET_OBSERVED_UNREVISED_APPROXIMATE_AVAILABILITY"
+    }
+  },
+  "statistics": {
+    "multiplicity": "none applied; no isolated statistic is evidence",
+    "noValidatedOrPredictiveLanguage": true,
+    "noWinner": true,
+    "oriented": "higher = more risk",
+    "perFeature": [
+      "time-series Spearman versus loss severity (-worst loss)",
+      "versus max-drawdown severity",
+      "versus future realised volatility",
+      "event rates at -10/-15/-20 unconditional and when the past-only percentile state is high (>= 0.80)",
+      "AUROC when >= 10 events and >= 10 non-events",
+      "descriptive Newey-West standard error of the rank correlation (lag ceil(H/step))",
+      "calendar-year table",
+      "exact valid dates and event counts",
+      "start and end"
+    ],
+    "unit": "one market time series (not a cross-sectional IC)"
+  },
+  "studyId": "kr-market-risk-anatomy-v1",
+  "targets": {
+    "cutsFrozen": [
+      -0.1,
+      -0.15,
+      -0.2
+    ],
+    "definitions": {
+      "forwardReturn": "close[p+H]/close[p]-1",
+      "forwardWorstLossFromSignal": "min(close[p+1..p+H])/close[p]-1 (positive when the path never falls below the signal value)",
+      "futureMaxDrawdown": "min over the path close[p..p+H] of close[j]/running max(close[p..j]) - 1 (<= 0; the signal-date value may be the peak)",
+      "futureRealizedVol": "std (ddof 1) of the H daily returns x sqrt(252)"
+    },
+    "downsideEventLabels": [
+      "forward worst loss <= -10%",
+      "forward worst loss <= -15%",
+      "forward worst loss <= -20%"
+    ],
+    "status": {
+      "MATURED": "window inside the data",
+      "PENDING": "window past the last session",
+      "UNRESOLVED_MISSING_SESSION": "any missing or non-positive close in the path (never filled)"
+    }
+  },
+  "tiers": {
+    "CORE_LONG_HISTORY": {
+      "inputs": "KR benchmark price index plus market-observed Treasury, policy-rate, credit, VIX and USD/KRW series",
+      "neverTruncatedTo": "the start of EXTENDED_KR_INTERNALS",
+      "purpose": "span several stress regimes including 2008",
+      "requiredByDecision": true
+    },
+    "EXTENDED_KR_INTERNALS": {
+      "neverReconstructedFrom": "today's constituents",
+      "purpose": "cross-sectional KR market internals where a PIT universe exists",
+      "requiredByDecision": false,
+      "starts": "materially later (PIT Top120 membership from 2015-01-02)"
+    }
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "decisionBasis": "label-free: observation dates and metadata only",
+  "kind": "SOURCE_AND_FREEZE_PROVENANCE_NO_OUTCOMES",
+  "postFreezeChangesAllIdentityOrImplementationOnly": [
+    {
+      "change": "identity_ok registered function added; the acquisition-time identity check compared an undeclared Yahoo currency and flagged YAHOO_VIX and YAHOO_KRWX",
+      "effect": "readiness recomputes identity from the retained vendor identity block; the recorded flag in the immutable audit is kept as recorded; no design rule or threshold changed"
+    },
+    {
+      "change": "damage_summary: share-before-cut for an episode set with no triggered episode was NaN and is now 0 / episodes",
+      "effect": "an edge-case arithmetic repair found by synthetic testing; no definition changed"
+    }
+  ],
+  "preSourceFreeze": {
+    "commit": "8091944a2dea3a7fc91c6135b364222bdc997fd0",
+    "contained": [
+      "design document",
+      "frozen machine-readable design",
+      "pure algorithms and synthetic tests",
+      "source-priority rules",
+      "readiness gates"
+    ],
+    "containedAnySourceValue": false,
+    "designFile": "research_specs/kr-market-risk-anatomy-v1-design.json",
+    "designSha256": "3c398b6e87e6634443ffe25273f95ed100889515a71ddb66eb2ecd7035788aaa"
+  },
+  "sourceAcquisition": {
+    "acquiredOn": "2026-10-04",
+    "artifactDigest": "sha256:22307bdf99cd6c8f7d245d219c164a71069c2aa73e61aa8a11db8e51692ed5b9",
+    "artifactId": 11308459691,
+    "artifactName": "kr-market-risk-anatomy-v1-sources-37217470467",
+    "auditSha256": "29e1b54b249f84be327d9c7a228d6e68a447d38511652414fc7ef2c9f0099345",
+    "committedBy": "github-actions[bot] commit afb14d19126138e169ba073949eb8b8fa34eef1a (bytes unchanged)",
+    "laterRun": "37217553109 (triggered by the bot push, waiting for approval; it would refetch nothing because every source is ACQUIRED)",
+    "runHeadSha": "4e174569feb4e474db29474c2f93338f986fa5c9",
+    "successfulRunId": 37217470467,
+    "workflow": ".github/workflows/kr-market-risk-anatomy-v1-sources.yml"
+  },
+  "statements": [
+    "No forward return, drawdown, episode or result table was computed or inspected in this change.",
+    "No frozen threshold, horizon, feature, orientation or source-priority rule was changed after the source metadata was seen.",
+    "The two KOSPI 200 routes and the composite failed frozen tests (YAHOO_KS200 served one row; FDR_KS200 ends 17 days before acquisition against a 10-day limit; YAHOO_KS11 has a 1.99% invalid-row share against 0.5%); the study is not redefined and a blocked version is never unblocked in place."
+  ],
+  "studyId": "kr-market-risk-anatomy-v1"
+}
