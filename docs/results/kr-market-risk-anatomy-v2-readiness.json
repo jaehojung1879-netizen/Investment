@@ -1,0 +1,754 @@
+{
+  "acquiredOn": "2026-10-04",
+  "basedOnAnyReturnResult": false,
+  "blockers": [],
+  "checks": {
+    "frozenSpecDesignSnapshotAndImportClosure": true,
+    "noOutcomeAccess": true,
+    "sourceRegistryIsPredictorEligibleOnly": true
+  },
+  "coreCoverageTables": {
+    "SLOW_COVID_2019H2_2020": {
+      "slow_fed_funds_change_126": 1.0,
+      "slow_fed_funds_level": 1.0,
+      "slow_inversion_duration_10y3m": 1.0,
+      "slow_resteepening_flag_10y3m": 1.0,
+      "slow_us_10y2y_flatness": 1.0,
+      "slow_us_10y3m_flatness": 1.0
+    },
+    "SLOW_GFC_2007_2009": {
+      "slow_fed_funds_change_126": 1.0,
+      "slow_fed_funds_level": 1.0,
+      "slow_inversion_duration_10y3m": 1.0,
+      "slow_resteepening_flag_10y3m": 1.0,
+      "slow_us_10y2y_flatness": 1.0,
+      "slow_us_10y3m_flatness": 1.0
+    },
+    "TRANSITION_COVID_2019H2_2020": {
+      "trans_hy_oas_change_21": 0.0,
+      "trans_hy_oas_change_63": 0.0,
+      "trans_hy_oas_level": 0.0,
+      "trans_ig_oas_change_63": 0.0,
+      "trans_ig_oas_level": 0.0,
+      "trans_usdkrw_change_63": 1.0,
+      "trans_usdkrw_realized_vol_21": 1.0,
+      "trans_vix_change_21": 1.0,
+      "trans_vix_change_63": 1.0,
+      "trans_vix_level": 1.0
+    },
+    "TRANSITION_GFC_2007_2009": {
+      "trans_hy_oas_change_21": 0.0,
+      "trans_hy_oas_change_63": 0.0,
+      "trans_hy_oas_level": 0.0,
+      "trans_ig_oas_change_63": 0.0,
+      "trans_ig_oas_level": 0.0,
+      "trans_usdkrw_change_63": 1.0,
+      "trans_usdkrw_realized_vol_21": 1.0,
+      "trans_vix_change_21": 1.0,
+      "trans_vix_change_63": 1.0,
+      "trans_vix_level": 1.0
+    }
+  },
+  "counters": {
+    "analysisCalls": 0,
+    "episodeCalls": 0,
+    "forwardTargetCalls": 0,
+    "markerWrites": 0,
+    "valueReads": 0
+  },
+  "covers2008": true,
+  "decision": "READY_FOR_MARKET_RISK_ANATOMY_V2_EXECUTION",
+  "details": {},
+  "documentedBlocker": {
+    "KRX_OPENAPI_KOSPI200": "service history starts 2010-01-04 (docs/kr-industry-membership-foundation-v1-openapi.md), so it cannot cover 2007-2009; the KRX data portal answered LOGOUT/400 from Actions (AGENTS.md workflow hygiene)"
+  },
+  "excludedRevisedOrUnbuiltInputs": {
+    "ECOS_BASE_RATE": {
+      "reason": "item and cycle unresolved (AMBIGUOUS_SOURCE) and ECOS is REVISED_HISTORY",
+      "vintageClass": "REVISED_HISTORY"
+    },
+    "ECOS_KTB_3Y": {
+      "reason": "ECOS is REVISED_HISTORY; a KR term spread also lacks a comparable validated short leg",
+      "vintageClass": "REVISED_HISTORY"
+    },
+    "ECOS_LEADING_INDEX": {
+      "reason": "ECOS is REVISED_HISTORY by the repository contract; not a primary historical predictor",
+      "vintageClass": "REVISED_HISTORY"
+    },
+    "EXCESS_BOND_PREMIUM": {
+      "reason": "a modern revised series; no historical vintage semantics are defensible, so it is never called PIT exact and is not acquired",
+      "vintageClass": "NOT_AVAILABLE"
+    },
+    "FRED_ANFCI": {
+      "reason": "adjusted index re-estimated with every release (revised history)",
+      "vintageClass": "REVISED_HISTORY"
+    },
+    "FRED_NFCI": {
+      "reason": "weekly index re-estimated with every release (revised history); no retained vintage evidence in this repository",
+      "vintageClass": "REVISED_HISTORY"
+    },
+    "FRED_OECD_KR_10Y": {
+      "reason": "monthly OECD series; observation date is not publication date; revised history",
+      "vintageClass": "REVISED_HISTORY"
+    },
+    "FRED_OECD_KR_3M": {
+      "reason": "monthly OECD interbank rate, not a Treasury bill yield; revised history",
+      "vintageClass": "REVISED_HISTORY"
+    },
+    "KR_TERM_SPREAD": {
+      "reason": "needs exactly comparable KR long and short rate definitions; the only candidates are ECOS or OECD (revised history)",
+      "vintageClass": "NOT_AVAILABLE"
+    },
+    "NEAR_TERM_FORWARD_SPREAD": {
+      "reason": "exact source and construction (forward rate from the fitted Treasury curve) are not verified in this repository",
+      "vintageClass": "NOT_AVAILABLE"
+    }
+  },
+  "extendedTier": {
+    "firstPitSignalDate": "2015-01-02",
+    "lastPitSignalDate": "2026-09-11",
+    "neverReconstructedFromTodaysConstituents": true,
+    "pitSignalDates": 610,
+    "rawInputArtifact": {
+      "artifactArchiveSha256": "42eeb18b7a5c88816629036f472a93057b6a9be4768ad47292ba0d2750b4cce7",
+      "artifactId": 11157875265,
+      "artifactName": "kr-model-raw-inputs-36844599518",
+      "producingRunId": 36844599518
+    },
+    "requiredForDecision": false,
+    "startsMateriallyLaterThanCore": true,
+    "status": "STRUCTURALLY_READY_VALUE_COVERAGE_MEASURED_AT_EXECUTION",
+    "tier": "EXTENDED_KR_INTERNALS"
+  },
+  "gates": {
+    "FAST_COVID_2019H2_2020": {
+      "coverage": 1.0,
+      "firstSessionWithFullFeatureWarmup": "1990-11-10",
+      "pass": true
+    },
+    "FAST_GFC_2007_2009": {
+      "coverage": 1.0,
+      "firstSessionWithFullFeatureWarmup": "1990-11-10",
+      "pass": true
+    },
+    "PRIMARY_REFERENCE_SELECTED": {
+      "detail": "PRIMARY_REFERENCE_SELECTED",
+      "pass": true
+    },
+    "REFERENCE_COVID_2019H2_2020": {
+      "coverage": 1.0,
+      "pass": true
+    },
+    "REFERENCE_GFC_2007_2009": {
+      "coverage": 1.0,
+      "pass": true
+    },
+    "SLOW_COVID_2019H2_2020": {
+      "bestCoverage": 1.0,
+      "pass": true
+    },
+    "SLOW_GFC_2007_2009": {
+      "bestCoverage": 1.0,
+      "pass": true
+    },
+    "TRANSITION_COVID_2019H2_2020": {
+      "bestCoverage": 1.0,
+      "pass": true
+    },
+    "TRANSITION_GFC_2007_2009": {
+      "bestCoverage": 1.0,
+      "pass": true
+    }
+  },
+  "historicalExecutionPerformed": false,
+  "mode": "readiness",
+  "newExternalAcquisition": false,
+  "predecessor": "kr-market-risk-anatomy-v1",
+  "primaryReference": {
+    "analysisEnd": "2026-09-17",
+    "basis": "PRICE_INDEX_LEVEL",
+    "composite": false,
+    "decision": "PRIMARY_REFERENCE_SELECTED",
+    "evaluated": {
+      "FDR_KS200": {
+        "eligible": true,
+        "metrics": {
+          "analysisEnd": "2026-09-17",
+          "firstDate": "1990-01-03",
+          "fullRangeCoverage": 1.0,
+          "lastDate": "2026-09-17",
+          "liveOperationalFreshness": {
+            "limitDays": 10,
+            "liveReady": false,
+            "meetsLiveFreshness": false,
+            "role": "FUTURE_LIVE_DEPLOYMENT_QUESTION_NOT_A_HISTORICAL_GATE",
+            "staleDays": 17
+          },
+          "longestMissingRun": 0,
+          "quality": {
+            "badSessionShare": 0.0,
+            "badSessions": 0,
+            "duplicateRawRows": 0,
+            "duplicateValidDates": 0,
+            "expectedSessions": 5108,
+            "invalidExpectedSessions": 0,
+            "missingSessions": 0,
+            "nonSessionRows": 0,
+            "rawDatesAvailable": true,
+            "validSessions": 5108,
+            "windowEnd": "2026-09-17",
+            "windowStart": "2006-01-01"
+          },
+          "sessionCoverage": {
+            "COVID_2019H2_2020": 1.0,
+            "GFC_2007_2009": 1.0
+          }
+        },
+        "reasons": []
+      },
+      "KRX_OPENAPI_KOSPI200": {
+        "eligible": false,
+        "metrics": {},
+        "reasons": [
+          "DOCUMENTED_BLOCKER: service history starts 2010-01-04 (docs/kr-industry-membership-foundation-v1-openapi.md), so it cannot cover 2007-2009; the KRX data portal answered LOGOUT/400 from Actions (AGENTS.md workflow hygiene)"
+        ]
+      },
+      "YAHOO_KS200": {
+        "eligible": false,
+        "metrics": {
+          "analysisEnd": "2026-10-02",
+          "firstDate": "2026-10-02",
+          "fullRangeCoverage": 0.00019542700801250732,
+          "lastDate": "2026-10-02",
+          "liveOperationalFreshness": {
+            "limitDays": 10,
+            "liveReady": false,
+            "meetsLiveFreshness": true,
+            "role": "FUTURE_LIVE_DEPLOYMENT_QUESTION_NOT_A_HISTORICAL_GATE",
+            "staleDays": 2
+          },
+          "longestMissingRun": 5116,
+          "quality": {
+            "badSessionShare": 0.9998045729919874,
+            "badSessions": 5116,
+            "duplicateRawRows": 0,
+            "duplicateValidDates": 0,
+            "expectedSessions": 5117,
+            "invalidExpectedSessions": 0,
+            "missingSessions": 5116,
+            "nonSessionRows": 0,
+            "rawDatesAvailable": true,
+            "validSessions": 1,
+            "windowEnd": "2026-10-02",
+            "windowStart": "2006-01-01"
+          },
+          "sessionCoverage": {
+            "COVID_2019H2_2020": 0.0,
+            "GFC_2007_2009": 0.0
+          }
+        },
+        "reasons": [
+          "HISTORY_STARTS_AFTER_2005-12-31",
+          "TOO_MANY_BAD_EXPECTED_SESSIONS",
+          "COVERAGE_BELOW_0.99_IN_GFC_2007_2009",
+          "COVERAGE_BELOW_0.99_IN_COVID_2019H2_2020",
+          "FULL_RANGE_COVERAGE_BELOW_THRESHOLD",
+          "MISSING_RUN_TOO_LONG"
+        ]
+      }
+    },
+    "family": "KOSPI200",
+    "instrument": "KOSPI 200 price index (FinanceDataReader route)",
+    "primary": "FDR_KS200",
+    "robustnessReference": "YAHOO_069500",
+    "spliced": false
+  },
+  "roleCoverage": {
+    "USDKRW": {
+      "FRED_DEXKOUS": 1.0,
+      "YAHOO_KRWX": 0.9936305732484076
+    },
+    "VIX": {
+      "FRED_VIXCLS": 1.0,
+      "YAHOO_VIX": 1.0
+    }
+  },
+  "roleSources": {
+    "USDKRW": "FRED_DEXKOUS",
+    "VIX": "FRED_VIXCLS"
+  },
+  "scientificStatus": "EXPLORATORY_DEVELOPMENT_ON_OUTCOME_EXPOSED_KR_HISTORY",
+  "selectedReference": {
+    "analysisEnd": "2026-09-17",
+    "firstUsableDate": "1990-01-03",
+    "fullRangeCoverage": 1.0,
+    "identity": {
+      "basis": "PRICE_INDEX_LEVEL",
+      "droppedRowsAsRecorded": 0,
+      "fetchedAtUtc": "2026-10-04T16:38:34.032270+00:00",
+      "firstDate": "1990-01-03",
+      "host": "FinanceDataReader 0.9.110",
+      "id": "FDR_KS200",
+      "identityOkByRegisteredFunction": true,
+      "instrument": "KOSPI 200 price index (FinanceDataReader route)",
+      "lastDate": "2026-09-17",
+      "rawRows": 9470,
+      "retainedFileSha256": {
+        "normalized.csv": "729a94b81dd45d1c5d1ab2ff692ec249bd5c9c4f24598d648d7f88010f193478",
+        "raw_fdr.csv": "49731bdbdfcf9fda103f9d5b17f6e21a790b3748b004b9eb6f4073941bf5aadf"
+      },
+      "symbol": "KS200",
+      "unit": "index points",
+      "validRows": 9470,
+      "vendor": "FINANCEDATAREADER",
+      "vintageClass": "MARKET_OBSERVED_UNREVISED_APPROXIMATE_AVAILABILITY"
+    },
+    "lastUsableDate": "2026-09-17",
+    "liveOperationalFreshness": {
+      "limitDays": 10,
+      "liveReady": false,
+      "meetsLiveFreshness": false,
+      "role": "FUTURE_LIVE_DEPLOYMENT_QUESTION_NOT_A_HISTORICAL_GATE",
+      "staleDays": 17
+    },
+    "longestMissingRun": 0,
+    "quality": {
+      "badSessionShare": 0.0,
+      "badSessions": 0,
+      "duplicateRawRows": 0,
+      "duplicateValidDates": 0,
+      "expectedSessions": 5108,
+      "invalidExpectedSessions": 0,
+      "missingSessions": 0,
+      "nonSessionRows": 0,
+      "rawDatesAvailable": true,
+      "validSessions": 5108,
+      "windowEnd": "2026-09-17",
+      "windowStart": "2006-01-01"
+    },
+    "sessionCoverage": {
+      "COVID_2019H2_2020": 1.0,
+      "GFC_2007_2009": 1.0
+    },
+    "spliced": false,
+    "vintageClass": "MARKET_OBSERVED_UNREVISED_APPROXIMATE_AVAILABILITY"
+  },
+  "sourceCoverage": {
+    "FDR_KS200": {
+      "first": "1990-01-03",
+      "last": "2026-09-17",
+      "role": "KR_REFERENCE",
+      "status": "ACQUIRED",
+      "windows": {
+        "COVID_2019H2_2020": {
+          "monthlyKnownCoverage": null,
+          "sessionCoverage": 1.0,
+          "weeklyKnownCoverage": null
+        },
+        "GFC_2007_2009": {
+          "monthlyKnownCoverage": null,
+          "sessionCoverage": 1.0,
+          "weeklyKnownCoverage": null
+        }
+      }
+    },
+    "FRED_BAMLC0A0CM": {
+      "first": "2023-10-03",
+      "last": "2026-10-01",
+      "role": "IG_OAS",
+      "status": "ACQUIRED",
+      "windows": {
+        "COVID_2019H2_2020": {
+          "monthlyKnownCoverage": 0.0,
+          "sessionCoverage": 0.0,
+          "weeklyKnownCoverage": 0.0
+        },
+        "GFC_2007_2009": {
+          "monthlyKnownCoverage": 0.0,
+          "sessionCoverage": 0.0,
+          "weeklyKnownCoverage": 0.0
+        }
+      }
+    },
+    "FRED_BAMLH0A0HYM2": {
+      "first": "2023-10-03",
+      "last": "2026-10-01",
+      "role": "HY_OAS",
+      "status": "ACQUIRED",
+      "windows": {
+        "COVID_2019H2_2020": {
+          "monthlyKnownCoverage": 0.0,
+          "sessionCoverage": 0.0,
+          "weeklyKnownCoverage": 0.0
+        },
+        "GFC_2007_2009": {
+          "monthlyKnownCoverage": 0.0,
+          "sessionCoverage": 0.0,
+          "weeklyKnownCoverage": 0.0
+        }
+      }
+    },
+    "FRED_DEXKOUS": {
+      "first": "1990-01-03",
+      "last": "2026-09-25",
+      "role": "USDKRW",
+      "status": "ACQUIRED",
+      "windows": {
+        "COVID_2019H2_2020": {
+          "monthlyKnownCoverage": 1.0,
+          "sessionCoverage": 0.9597855227882037,
+          "weeklyKnownCoverage": 1.0
+        },
+        "GFC_2007_2009": {
+          "monthlyKnownCoverage": 1.0,
+          "sessionCoverage": 0.9745649263721553,
+          "weeklyKnownCoverage": 1.0
+        }
+      }
+    },
+    "FRED_DFF": {
+      "first": "1990-01-01",
+      "last": "2026-10-01",
+      "role": "US_POLICY",
+      "status": "ACQUIRED",
+      "windows": {
+        "COVID_2019H2_2020": {
+          "monthlyKnownCoverage": 1.0,
+          "sessionCoverage": 1.0,
+          "weeklyKnownCoverage": 1.0
+        },
+        "GFC_2007_2009": {
+          "monthlyKnownCoverage": 1.0,
+          "sessionCoverage": 1.0,
+          "weeklyKnownCoverage": 1.0
+        }
+      }
+    },
+    "FRED_DGS10": {
+      "first": "1990-01-02",
+      "last": "2026-10-01",
+      "role": "US_10Y",
+      "status": "ACQUIRED",
+      "windows": {
+        "COVID_2019H2_2020": {
+          "monthlyKnownCoverage": 1.0,
+          "sessionCoverage": 0.9624664879356568,
+          "weeklyKnownCoverage": 1.0
+        },
+        "GFC_2007_2009": {
+          "monthlyKnownCoverage": 1.0,
+          "sessionCoverage": 0.9665327978580991,
+          "weeklyKnownCoverage": 1.0
+        }
+      }
+    },
+    "FRED_DGS2": {
+      "first": "1990-01-02",
+      "last": "2026-10-01",
+      "role": "US_2Y",
+      "status": "ACQUIRED",
+      "windows": {
+        "COVID_2019H2_2020": {
+          "monthlyKnownCoverage": 1.0,
+          "sessionCoverage": 0.9624664879356568,
+          "weeklyKnownCoverage": 1.0
+        },
+        "GFC_2007_2009": {
+          "monthlyKnownCoverage": 1.0,
+          "sessionCoverage": 0.9665327978580991,
+          "weeklyKnownCoverage": 1.0
+        }
+      }
+    },
+    "FRED_DGS3MO": {
+      "first": "1990-01-02",
+      "last": "2026-10-01",
+      "role": "US_3M",
+      "status": "ACQUIRED",
+      "windows": {
+        "COVID_2019H2_2020": {
+          "monthlyKnownCoverage": 1.0,
+          "sessionCoverage": 0.9624664879356568,
+          "weeklyKnownCoverage": 1.0
+        },
+        "GFC_2007_2009": {
+          "monthlyKnownCoverage": 1.0,
+          "sessionCoverage": 0.9665327978580991,
+          "weeklyKnownCoverage": 1.0
+        }
+      }
+    },
+    "FRED_VIXCLS": {
+      "first": "1990-01-02",
+      "last": "2026-10-01",
+      "role": "VIX",
+      "status": "ACQUIRED",
+      "windows": {
+        "COVID_2019H2_2020": {
+          "monthlyKnownCoverage": 1.0,
+          "sessionCoverage": 0.9731903485254692,
+          "weeklyKnownCoverage": 1.0
+        },
+        "GFC_2007_2009": {
+          "monthlyKnownCoverage": 1.0,
+          "sessionCoverage": 0.9718875502008032,
+          "weeklyKnownCoverage": 1.0
+        }
+      }
+    },
+    "YAHOO_069500": {
+      "first": "2007-01-29",
+      "last": "2026-10-02",
+      "role": "KR_ROBUSTNESS",
+      "status": "ACQUIRED",
+      "windows": {
+        "COVID_2019H2_2020": {
+          "monthlyKnownCoverage": null,
+          "sessionCoverage": 0.9946380697050938,
+          "weeklyKnownCoverage": null
+        },
+        "GFC_2007_2009": {
+          "monthlyKnownCoverage": null,
+          "sessionCoverage": 0.25167336010709507,
+          "weeklyKnownCoverage": null
+        }
+      }
+    },
+    "YAHOO_KRWX": {
+      "first": "2003-12-01",
+      "last": "2026-10-04",
+      "role": "USDKRW",
+      "status": "ACQUIRED",
+      "windows": {
+        "COVID_2019H2_2020": {
+          "monthlyKnownCoverage": 1.0,
+          "sessionCoverage": 1.0,
+          "weeklyKnownCoverage": 1.0
+        },
+        "GFC_2007_2009": {
+          "monthlyKnownCoverage": 1.0,
+          "sessionCoverage": 0.9718875502008032,
+          "weeklyKnownCoverage": 0.9936305732484076
+        }
+      }
+    },
+    "YAHOO_KS11": {
+      "first": "1996-12-11",
+      "last": "2026-10-02",
+      "role": "KR_REFERENCE",
+      "status": "ACQUIRED",
+      "windows": {
+        "COVID_2019H2_2020": {
+          "monthlyKnownCoverage": null,
+          "sessionCoverage": 1.0,
+          "weeklyKnownCoverage": null
+        },
+        "GFC_2007_2009": {
+          "monthlyKnownCoverage": null,
+          "sessionCoverage": 0.998661311914324,
+          "weeklyKnownCoverage": null
+        }
+      }
+    },
+    "YAHOO_KS200": {
+      "first": "2026-10-02",
+      "last": "2026-10-02",
+      "role": "KR_REFERENCE",
+      "status": "ACQUIRED",
+      "windows": {
+        "COVID_2019H2_2020": {
+          "monthlyKnownCoverage": null,
+          "sessionCoverage": 0.0,
+          "weeklyKnownCoverage": null
+        },
+        "GFC_2007_2009": {
+          "monthlyKnownCoverage": null,
+          "sessionCoverage": 0.0,
+          "weeklyKnownCoverage": null
+        }
+      }
+    },
+    "YAHOO_VIX": {
+      "first": "1990-01-02",
+      "last": "2026-10-02",
+      "role": "VIX",
+      "status": "ACQUIRED",
+      "windows": {
+        "COVID_2019H2_2020": {
+          "monthlyKnownCoverage": 1.0,
+          "sessionCoverage": 0.9731903485254692,
+          "weeklyKnownCoverage": 1.0
+        },
+        "GFC_2007_2009": {
+          "monthlyKnownCoverage": 1.0,
+          "sessionCoverage": 0.9718875502008032,
+          "weeklyKnownCoverage": 1.0
+        }
+      }
+    }
+  },
+  "sourceInventory": {
+    "FDR_KS200": {
+      "droppedRows": 0,
+      "firstDate": "1990-01-03",
+      "identityOkByRegisteredFunction": true,
+      "lastDate": "2026-09-17",
+      "status": "ACQUIRED",
+      "validRows": 9470,
+      "vintageClass": "MARKET_OBSERVED_UNREVISED_APPROXIMATE_AVAILABILITY"
+    },
+    "FRED_BAMLC0A0CM": {
+      "droppedRows": 9,
+      "firstDate": "2023-10-03",
+      "identityOkByRegisteredFunction": true,
+      "lastDate": "2026-10-01",
+      "status": "ACQUIRED",
+      "validRows": 785,
+      "vintageClass": "MARKET_OBSERVED_UNREVISED_APPROXIMATE_AVAILABILITY"
+    },
+    "FRED_BAMLH0A0HYM2": {
+      "droppedRows": 8,
+      "firstDate": "2023-10-03",
+      "identityOkByRegisteredFunction": true,
+      "lastDate": "2026-10-01",
+      "status": "ACQUIRED",
+      "validRows": 786,
+      "vintageClass": "MARKET_OBSERVED_UNREVISED_APPROXIMATE_AVAILABILITY"
+    },
+    "FRED_DEXKOUS": {
+      "droppedRows": 401,
+      "firstDate": "1990-01-03",
+      "identityOkByRegisteredFunction": true,
+      "lastDate": "2026-09-25",
+      "status": "ACQUIRED",
+      "validRows": 9184,
+      "vintageClass": "MARKET_OBSERVED_UNREVISED_APPROXIMATE_AVAILABILITY"
+    },
+    "FRED_DFF": {
+      "droppedRows": 0,
+      "firstDate": "1990-01-01",
+      "identityOkByRegisteredFunction": true,
+      "lastDate": "2026-10-01",
+      "status": "ACQUIRED",
+      "validRows": 13423,
+      "vintageClass": "MARKET_OBSERVED_UNREVISED_APPROXIMATE_AVAILABILITY"
+    },
+    "FRED_DGS10": {
+      "droppedRows": 395,
+      "firstDate": "1990-01-02",
+      "identityOkByRegisteredFunction": true,
+      "lastDate": "2026-10-01",
+      "status": "ACQUIRED",
+      "validRows": 9194,
+      "vintageClass": "MARKET_OBSERVED_UNREVISED_APPROXIMATE_AVAILABILITY"
+    },
+    "FRED_DGS2": {
+      "droppedRows": 395,
+      "firstDate": "1990-01-02",
+      "identityOkByRegisteredFunction": true,
+      "lastDate": "2026-10-01",
+      "status": "ACQUIRED",
+      "validRows": 9194,
+      "vintageClass": "MARKET_OBSERVED_UNREVISED_APPROXIMATE_AVAILABILITY"
+    },
+    "FRED_DGS3MO": {
+      "droppedRows": 395,
+      "firstDate": "1990-01-02",
+      "identityOkByRegisteredFunction": true,
+      "lastDate": "2026-10-01",
+      "status": "ACQUIRED",
+      "validRows": 9194,
+      "vintageClass": "MARKET_OBSERVED_UNREVISED_APPROXIMATE_AVAILABILITY"
+    },
+    "FRED_VIXCLS": {
+      "droppedRows": 302,
+      "firstDate": "1990-01-02",
+      "identityOkByRegisteredFunction": true,
+      "lastDate": "2026-10-01",
+      "status": "ACQUIRED",
+      "validRows": 9286,
+      "vintageClass": "MARKET_OBSERVED_UNREVISED_APPROXIMATE_AVAILABILITY"
+    },
+    "YAHOO_069500": {
+      "droppedRows": 578,
+      "firstDate": "2007-01-29",
+      "identityOkByRegisteredFunction": true,
+      "lastDate": "2026-10-02",
+      "status": "ACQUIRED",
+      "validRows": 4279,
+      "vintageClass": "MARKET_OBSERVED_UNREVISED_APPROXIMATE_AVAILABILITY"
+    },
+    "YAHOO_KRWX": {
+      "droppedRows": 36,
+      "firstDate": "2003-12-01",
+      "identityOkByRegisteredFunction": true,
+      "lastDate": "2026-10-04",
+      "status": "ACQUIRED",
+      "validRows": 5925,
+      "vintageClass": "MARKET_OBSERVED_UNREVISED_APPROXIMATE_AVAILABILITY"
+    },
+    "YAHOO_KS11": {
+      "droppedRows": 149,
+      "firstDate": "1996-12-11",
+      "identityOkByRegisteredFunction": true,
+      "lastDate": "2026-10-02",
+      "status": "ACQUIRED",
+      "validRows": 7337,
+      "vintageClass": "MARKET_OBSERVED_UNREVISED_APPROXIMATE_AVAILABILITY"
+    },
+    "YAHOO_KS200": {
+      "droppedRows": 0,
+      "firstDate": "2026-10-02",
+      "identityOkByRegisteredFunction": true,
+      "lastDate": "2026-10-02",
+      "status": "ACQUIRED",
+      "validRows": 1,
+      "vintageClass": "MARKET_OBSERVED_UNREVISED_APPROXIMATE_AVAILABILITY"
+    },
+    "YAHOO_VIX": {
+      "droppedRows": 331,
+      "firstDate": "1990-01-02",
+      "identityOkByRegisteredFunction": true,
+      "lastDate": "2026-10-02",
+      "status": "ACQUIRED",
+      "validRows": 9258,
+      "vintageClass": "MARKET_OBSERVED_UNREVISED_APPROXIMATE_AVAILABILITY"
+    }
+  },
+  "specSha256": "4be62167585bbacb7a7192768eb120d90e08fbfc6b518695e52929077d1d06f2",
+  "studyId": "kr-market-risk-anatomy-v2",
+  "v1Comparison": {
+    "FDR_KS200": {
+      "v1Eligible": false,
+      "v1Reasons": [
+        "STALE_LAST_DATE"
+      ]
+    },
+    "KRX_OPENAPI_KOSPI200": {
+      "v1Eligible": false,
+      "v1Reasons": [
+        "DOCUMENTED_BLOCKER: service history starts 2010-01-04 (docs/kr-industry-membership-foundation-v1-openapi.md), so it cannot cover 2007-2009; the KRX data portal answered LOGOUT/400 from Actions (AGENTS.md workflow hygiene)"
+      ]
+    },
+    "YAHOO_KS11": {
+      "v1Eligible": false,
+      "v1Reasons": [
+        "TOO_MANY_INVALID_ROWS"
+      ]
+    },
+    "YAHOO_KS200": {
+      "v1Eligible": false,
+      "v1Reasons": [
+        "HISTORY_STARTS_AFTER_2005-12-31",
+        "COVERAGE_BELOW_0.99_IN_GFC_2007_2009",
+        "COVERAGE_BELOW_0.99_IN_COVID_2019H2_2020",
+        "FULL_RANGE_COVERAGE_BELOW_THRESHOLD",
+        "MISSING_RUN_TOO_LONG"
+      ]
+    },
+    "_v1Blockers": [
+      "PRIMARY_REFERENCE_NOT_SELECTED"
+    ],
+    "_v1Decision": "DATA_BLOCKED_BEFORE_MARKET_RISK_ANATOMY"
+  }
+}
