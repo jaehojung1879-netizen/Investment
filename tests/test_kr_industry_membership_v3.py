@@ -85,3 +85,11 @@ def test_retained_listing_and_current_anchor_support_only_the_documented_scope()
     assert hashlib.sha256(raw).hexdigest() == 'e67bc8d33c47c0013d6e31bfc62897d049ad6fadac9013261c8bc100a4380d58'
     anchor = V.parse_current_state(raw, '2026-10-04')
     assert len(anchor['rows']) == 2802 and anchor['tier'] == V.CURRENT_TIER and not anchor['historicalAdmitted']
+
+
+def test_notice_candidates_are_frozen_name_candidates_only():
+    from scripts import collect_kr_industry_v3_notices as N
+    cands, protocol = N.frozen()
+    assert cands['candidateCount'] == len(cands['candidates']) == 81 and cands['listedNotices'] == 968
+    assert all(c['identity_status'].startswith('NAME_CANDIDATE_ONLY') for c in cands['candidates'])
+    assert protocol['retries'] == 0 and protocol['maxRequests'] >= 81 and not protocol['outcomesAllowed']
