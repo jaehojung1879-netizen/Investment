@@ -1,0 +1,167 @@
+{
+  "basedOnAnyReturnResult": false,
+  "checks": {
+    "deterministicConstruction": true,
+    "frozenSpecAndImportClosure": true,
+    "marketCapInputPinnedByKrxCacheDigest": true,
+    "membershipEligibilityMeetsFrozenMinimumsOnCommittedMembership": true,
+    "membershipTaxonomyBenchmarkFeatureAndPriorSealedPins": true,
+    "noOutcomeAccess": true,
+    "noRecollectionRequired": true,
+    "pitAccountingSnapshotPinnedByContentDigest": true,
+    "priceInputsPinnedByReplayManifest": true,
+    "rawInputArtifactPinnedWithDigest": true,
+    "syntheticHarnessEndToEnd": true,
+    "syntheticTestsPresent": true,
+    "v4TerminalLimitationRecordedNotHidden": true
+  },
+  "counters": {
+    "analysisCalls": 0,
+    "labelCalls": 0,
+    "markerWrites": 0,
+    "outcomeColumnCalls": 0,
+    "priorResultReads": 0,
+    "targetCalls": 0
+  },
+  "decision": "READY_FOR_STOCK_WITHIN_INDUSTRY_ANATOMY_EXECUTION",
+  "details": {},
+  "externalObservation": {
+    "archiveDigest": "sha256:42eeb18b7a5c88816629036f472a93057b6a9be4768ad47292ba0d2750b4cce7",
+    "artifactId": 11157875265,
+    "expired": false,
+    "expiresAt": "2026-12-30T09:43:46Z",
+    "matchesSpecPin": true,
+    "name": "kr-model-raw-inputs-36844599518",
+    "observedOn": "2026-10-04",
+    "producingRunId": 36844599518,
+    "what": "GitHub Actions artifact METADATA only (no contents read)"
+  },
+  "historicalExecutionPerformed": false,
+  "membershipOnlyEligibility": {
+    "EXCLUDE_SAMSUNG_ELECTRONICS_AND_SK_HYNIX": {
+      "byStatus": {
+        "ELIGIBLE": 59829,
+        "EXCLUDED_BY_SENSITIVITY": 1220,
+        "INELIGIBLE_BELOW_MINIMUM_INDUSTRY_MEMBERS": 8707,
+        "INELIGIBLE_UNCLASSIFIED": 3444
+      },
+      "datesWithAtLeastMinDateCrossSection": 610,
+      "eligibleByIndustry": {
+        "AUTOS": 345,
+        "BASIC_MATERIALS": 1971,
+        "CAPITAL_GOODS_DEFENSE": 5469,
+        "CHEMICALS": 6587,
+        "COMMUNICATION_MEDIA_SOFTWARE": 6150,
+        "CONSTRUCTION_ENGINEERING": 2463,
+        "CONSUMER_RETAIL_SERVICES": 6758,
+        "ELECTRONICS_ELECTRICAL": 6156,
+        "ENERGY_UTILITIES": 1062,
+        "FINANCIALS": 15575,
+        "FOOD_BEVERAGE_TOBACCO": 1885,
+        "HEALTHCARE": 2538,
+        "HOLDINGS_BUSINESS_SERVICES": 1366,
+        "TRANSPORT_LOGISTICS": 1504
+      },
+      "eligibleIndustryDates": 5818,
+      "eligibleShare": 0.8173360655737705,
+      "eligibleShareByYear": {
+        "2015": 0.8186,
+        "2016": 0.8285,
+        "2017": 0.8123,
+        "2018": 0.758,
+        "2019": 0.8274,
+        "2020": 0.8712,
+        "2021": 0.8383,
+        "2022": 0.8556,
+        "2023": 0.8167,
+        "2024": 0.7862,
+        "2025": 0.7982,
+        "2026": 0.7872
+      },
+      "eligibleStocksPerDate": {
+        "max": 109,
+        "median": 98.0,
+        "min": 88
+      },
+      "industryDates": 8540,
+      "signalDates": 610,
+      "stockDates": 73200,
+      "unknownRetainedInDenominator": 3442
+    },
+    "FULL": {
+      "byStatus": {
+        "ELIGIBLE": 61049,
+        "INELIGIBLE_BELOW_MINIMUM_INDUSTRY_MEMBERS": 8707,
+        "INELIGIBLE_UNCLASSIFIED": 3444
+      },
+      "datesWithAtLeastMinDateCrossSection": 610,
+      "eligibleByIndustry": {
+        "AUTOS": 345,
+        "BASIC_MATERIALS": 1971,
+        "CAPITAL_GOODS_DEFENSE": 5469,
+        "CHEMICALS": 6587,
+        "COMMUNICATION_MEDIA_SOFTWARE": 6150,
+        "CONSTRUCTION_ENGINEERING": 2463,
+        "CONSUMER_RETAIL_SERVICES": 6758,
+        "ELECTRONICS_ELECTRICAL": 7376,
+        "ENERGY_UTILITIES": 1062,
+        "FINANCIALS": 15575,
+        "FOOD_BEVERAGE_TOBACCO": 1885,
+        "HEALTHCARE": 2538,
+        "HOLDINGS_BUSINESS_SERVICES": 1366,
+        "TRANSPORT_LOGISTICS": 1504
+      },
+      "eligibleIndustryDates": 5818,
+      "eligibleShare": 0.8340027322404372,
+      "eligibleShareByYear": {
+        "2015": 0.8352,
+        "2016": 0.8452,
+        "2017": 0.8289,
+        "2018": 0.7747,
+        "2019": 0.8441,
+        "2020": 0.8879,
+        "2021": 0.855,
+        "2022": 0.8723,
+        "2023": 0.8333,
+        "2024": 0.8029,
+        "2025": 0.8149,
+        "2026": 0.8038
+      },
+      "eligibleStocksPerDate": {
+        "max": 111,
+        "median": 100.0,
+        "min": 90
+      },
+      "industryDates": 8540,
+      "signalDates": 610,
+      "stockDates": 73200,
+      "unknownRetainedInDenominator": 3442
+    }
+  },
+  "mode": "readiness",
+  "notMeasuredBeforeExecution": [
+    "signal-date market-cap availability of every peer (cap lens)",
+    "matured-return completeness of every peer under the terminal discipline",
+    "feature finiteness per date and industry",
+    "any forward return"
+  ],
+  "priorExecutionLockTags": {
+    "observedOn": "2026-10-04",
+    "ownStudyLockTag": "absent (never executed)",
+    "tags": [
+      "kr-model-overlay-portfolio-v1-execution-lock-<sha>",
+      "kr-top120-regime-review-v1-execution-lock",
+      "kr-industry-opportunity-anatomy-v1-execution-lock"
+    ]
+  },
+  "scientificStatus": "EXPLORATORY_DEVELOPMENT_ON_OUTCOME_EXPOSED_KR_HISTORY",
+  "specSha256": "cfcec648194e25a8914056266443e241528a68352054a10d75cb6889225e5073",
+  "studyId": "kr-stock-within-industry-anatomy-v1",
+  "untestedOnRealData": [
+    "sealed v1 prepare on the preserved snapshot",
+    "label-free readiness gates on real frames",
+    "forward_table on real prices",
+    "signal-date market-cap availability of peers",
+    "peer terminal completeness"
+  ]
+}

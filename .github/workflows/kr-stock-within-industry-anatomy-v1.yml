@@ -1,0 +1,142 @@
+name: KR stock within-industry anatomy v1
+# EXPLORATORY_DEVELOPMENT_ON_OUTCOME_EXPOSED_KR_HISTORY. Pull requests run `verify` only (synthetic tests plus outcome-free identity).
+# `execute` exists only as a manual workflow_dispatch on merged main, after the guard below. It never reruns
+# kr-model-overlay-portfolio-v1, kr-factor-anatomy-v1, kr-top120-regime-review-v1 or kr-industry-opportunity-anatomy-v1,
+# never invokes any sealed execute workflow and never contacts KRX, DART or KIND.
+# ONE-SHOT: after identities and readiness gates pass (and before any outcome is read) the run creates the git tag
+# refs/tags/kr-stock-within-industry-anatomy-v1-execution-lock (study level) and ...-execution-lock-<specSha256> with atomic
+# POST /git/refs. Tags are never moved or deleted; ANY ref under the ...-execution-lock prefix, for any spec SHA, refuses
+# execution. A failure after the lock permanently consumes the WHOLE study, whatever artifacts exist or expire and whatever
+# later spec revision is committed. A failure before it spends nothing. Artifacts are never the enforcement.
+on:
+  pull_request:
+    paths:
+      - 'pipeline/kr_stock_within_industry_anatomy*'
+      - 'scripts/run_kr_stock_within_industry_anatomy_v1.py'
+      - 'research_specs/kr-stock-within-industry-anatomy-v1*'
+      - 'tests/test_kr_stock_within_industry_anatomy*'
+      - 'docs/kr-stock-within-industry-anatomy-v1-design.md'
+      - '.github/workflows/kr-stock-within-industry-anatomy-v1.yml'
+  workflow_dispatch:
+    inputs:
+      mode:
+        type: choice
+        options: [verify, execute]
+        default: verify
+      inputArtifact:
+        description: Exact preserved raw-input artifact name (required for execute)
+        type: string
+        required: false
+      inputRunId:
+        description: Producing workflow run ID of the exact raw snapshot (required for execute)
+        type: string
+        required: false
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: kr-stock-within-industry-anatomy-v1-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  frozen-machine:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+          cache: pip
+      - run: pip install -r requirements.txt -r requirements-dev.txt
+      - name: Synthetic tests and outcome-free identity verification
+        run: |
+          ruff check .
+          python -m pytest -q tests/test_kr_stock_within_industry_anatomy_v1.py tests/test_kr_stock_within_industry_anatomy_execution_v1.py
+          python scripts/run_kr_stock_within_industry_anatomy_v1.py --mode verify --output run
+          python scripts/run_kr_stock_within_industry_anatomy_v1.py --mode readiness --output run
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: kr-stock-within-industry-anatomy-v1-verify-${{ github.run_id }}
+          path: run
+          retention-days: 30
+  execute:
+    # Never on pull_request. Requires an explicit manual dispatch with mode=execute.
+    if: github.event_name == 'workflow_dispatch' && inputs.mode == 'execute'
+    needs: frozen-machine
+    runs-on: ubuntu-latest
+    timeout-minutes: 240
+    permissions:
+      contents: write      # ONLY to create the one-shot lock tag (git ref); nothing else is pushed
+      actions: read
+    env:
+      ANATOMY_INPUT_ARTIFACT: ${{ inputs.inputArtifact }}
+      ANATOMY_INPUT_RUN_ID: ${{ inputs.inputRunId }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - name: Main-only guard, committed spec, pinned membership, exact preserved artifact, no earlier result
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const fs = require('fs');
+            const cp = require('child_process');
+            if (context.ref !== 'refs/heads/main') throw new Error('MAIN_ONLY');
+            const main = await github.rest.git.getRef({...context.repo, ref: 'heads/main'});
+            if (main.data.object.sha !== context.sha) throw new Error('MAIN_HEAD_CHANGED');
+            const specPath = 'research_specs/kr-stock-within-industry-anatomy-v1.json';
+            for (const p of [specPath, 'research_specs/kr-stock-within-industry-anatomy-v1.sha256']) {
+              const committed = cp.execFileSync('git', ['show', 'HEAD:' + p]);
+              if (!committed.equals(fs.readFileSync(p))) throw new Error('SPEC_NOT_COMMITTED_AT_HEAD');
+            }
+            const spec = JSON.parse(fs.readFileSync(specPath));
+            for (const [rel, want] of Object.entries(spec.membership.files)) {
+              const sha = require('crypto').createHash('sha256').update(fs.readFileSync(rel)).digest('hex');
+              if (sha !== want) throw new Error('MEMBERSHIP_INPUT_CHANGED_' + rel);
+            }
+            const pin = spec.input;
+            if (process.env.ANATOMY_INPUT_ARTIFACT !== pin.artifactName || process.env.ANATOMY_INPUT_RUN_ID !== String(pin.producingRunId)) throw new Error('INPUT_ARTIFACT_IDENTITY_MISMATCH');
+            if (fs.existsSync(spec.lifecycle.resultPath)) throw new Error('STOCK_WITHIN_INDUSTRY_ALREADY_SEALED');
+            if (fs.existsSync(spec.lifecycle.markerPath)) throw new Error('STOCK_WITHIN_INDUSTRY_MARKER_ALREADY_COMMITTED');
+            const lockPrefix = 'tags/' + spec.studyId + '-execution-lock';
+            const matching = await github.rest.git.listMatchingRefs({...context.repo, ref: lockPrefix});
+            const locked = matching.data.length > 0;           // ANY lock for this study, whatever spec SHA it carries
+            if (locked) throw new Error('EXECUTION_LOCK_ALREADY_EXISTS');
+            const art = await github.rest.actions.getArtifact({...context.repo, artifact_id: pin.artifactId});
+            const a = art.data;
+            if (a.expired || a.name !== pin.artifactName || String(a.workflow_run.id) !== String(pin.producingRunId) || a.digest !== 'sha256:' + pin.artifactArchiveSha256) throw new Error('PRESERVED_ARTIFACT_IDENTITY_MISMATCH');
+            const earlier = await github.paginate(github.rest.actions.listArtifactsForRepo, {...context.repo, per_page: 100});
+            if (earlier.some(x => !x.expired && x.name.startsWith('kr-stock-within-industry-anatomy-v1-results-'))) throw new Error('RESULTS_ARTIFACT_ALREADY_EXISTS');
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+          cache: pip
+      - run: pip install -r requirements.txt -r requirements-dev.txt
+      - name: Download the exact preserved raw snapshot
+        uses: actions/download-artifact@v5
+        with:
+          name: ${{ inputs.inputArtifact }}
+          path: inputs
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run-id: ${{ inputs.inputRunId }}
+      - name: Exploratory stock within-industry anatomy execution (identities and gates before the marker, marker before any outcome)
+        id: execution
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python scripts/run_kr_stock_within_industry_anatomy_v1.py --mode execute --inputs inputs --output run
+      - uses: actions/upload-artifact@v4
+        if: always() && steps.execution.outcome == 'success'
+        with:
+          name: kr-stock-within-industry-anatomy-v1-results-${{ github.run_id }}
+          path: run
+          retention-days: 90
+      - uses: actions/upload-artifact@v4
+        if: always() && steps.execution.outcome != 'success'
+        with:
+          name: kr-stock-within-industry-anatomy-v1-attempt-${{ github.run_id }}
+          path: run
+          retention-days: 30
+          if-no-files-found: ignore

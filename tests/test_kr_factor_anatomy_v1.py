@@ -836,7 +836,7 @@ def test_only_the_two_registered_sealed_v1_functions_resolve_and_no_production_m
             E.sealed_v1_function(name)
     mine = {"kr_factor_anatomy", "kr_factor_anatomy_report", "kr_factor_anatomy_execution"}
     for path in (ROOT / "pipeline").glob("*.py"):
-        if path.stem in mine or path.stem.startswith(("kr_top120_regime_review", "kr_industry_anatomy")):        # the exploratory successors reuse, never replace
+        if path.stem in mine or path.stem.startswith(("kr_top120_regime_review", "kr_industry_anatomy", "kr_stock_within_industry_anatomy")):        # the exploratory successors reuse, never replace
             continue
         tree = ast.parse(path.read_text())
         imported = {a.name.split(".")[-1] for n in ast.walk(tree) if isinstance(n, ast.Import) for a in n.names}

@@ -1,0 +1,708 @@
+{
+  "benchmark": "069500.KS",
+  "boundary": {
+    "isAPortfolio": false,
+    "isAProductionRecommendation": false,
+    "isAnAlphaModel": false,
+    "isEvidenceOfProspectivePredictability": false,
+    "isStockSelection": false,
+    "mayAddFeaturesAfterOutcomes": false,
+    "mayAlterOrReinterpretSealedResults": false,
+    "mayCallAnyFeatureValidatedOrPredictive": false,
+    "mayChangeTaxonomyFromOutcomes": false,
+    "mayChooseABestFeature": false,
+    "outcomeExecutionInThisChange": false,
+    "passFailSemantics": "NONE",
+    "pullRequestMayRun": [
+      "verify",
+      "readiness",
+      "synthetic tests"
+    ]
+  },
+  "comparisonToSealedStockAnatomy": {
+    "alsoReported": "the same-sample stock-minus-market reading of THIS study, so a sample difference is not read as an industry effect",
+    "conventions": {
+      "minimumValidDates": 52,
+      "nearZeroIc": 0.01,
+      "survivesRatio": 0.75,
+      "weakensRatio": 0.25
+    },
+    "horizons": [
+      126,
+      252
+    ],
+    "interpretiveOnly": true,
+    "mayNotSay": [
+      "validated",
+      "predictive",
+      "confirmed",
+      "best",
+      "recommended"
+    ],
+    "reference": "mean per-date rank correlation of the SEALED kr-factor-anatomy-v1 (stock minus market, V1_TERMINAL_DISCIPLINE, PIT Top120), read from its result file and never recomputed",
+    "shiftClasses": [
+      "SURVIVES",
+      "WEAKENS_MATERIALLY",
+      "LARGELY_ABSORBED",
+      "ABSORBED_TO_NEAR_ZERO",
+      "CHANGES_SIGN",
+      "REFERENCE_NEAR_ZERO",
+      "DATA_INSUFFICIENT"
+    ],
+    "stability": "sign of the pooled mean over the registered views; SIGN_DEPENDS_ON_VIEW is the instability reading"
+  },
+  "constants": {
+    "annualMinDates": 13,
+    "horizons": [
+      63,
+      126,
+      252
+    ],
+    "minDateCrossSection": 30,
+    "minGroupIndustryN": 6,
+    "minGroupSize": 2,
+    "minIndustriesPerDate": 3,
+    "minIndustryMembers": 5,
+    "minPeers": 4,
+    "minRankPeers": 5,
+    "minSignViews": 4,
+    "minSliceDates": 26,
+    "minStratumCrossSection": 15,
+    "minValidDatesForLabel": 52,
+    "nearZeroIc": 0.01,
+    "primaryHorizon": 126,
+    "survivesRatio": 0.75,
+    "weakensRatio": 0.25
+  },
+  "decomposition": {
+    "alsoReportedForSeparation": [
+      "leave-one-out industry - market",
+      "stock - market on the SAME sample"
+    ],
+    "identity": "stock - market = (industry - market) + (stock - industry), an identity on returns, asserted on every matured row",
+    "rankCorrelationsAreNotAdditive": true,
+    "studied": "stock - leave-one-out industry (the evaluated stock is excluded from the industry cohort AND the industry weights)"
+  },
+  "dependencyHashes": {
+    ".github/workflows/kr-stock-within-industry-anatomy-v1.yml": "a837d79a32a6599a7dd95fa9be3a78c4c2ac81609260bff344e0664fb038090f",
+    "data/kr-industry-membership-foundation-v1/identity-inventory.json": "7dddc6f75ea14adc8f97f3558409a68b2f71ab356b270e7d25d1ecb08875e4fc",
+    "data/kr-industry-membership-foundation-v1/identity-provenance.json": "3f5d031b80c16e965a8111455aa51ab84affc92948c7895112ab8f90b182a5fa",
+    "data/kr-industry-membership-foundation-v1/top120-inputs.json": "d7c464973ad029bf08886c4bdf2517d1b3ece04cce87bcc63706f1230ed53cd0",
+    "data/kr-industry-membership-foundation-v4/state/audit.json.gz": "4135846f16dcf59fe4ff89ab83b3b5aec288dea20fed36172b17abf768d44036",
+    "data/kr-industry-membership-foundation-v4/state/intervals.json.gz": "01a7958608939b73b85f7b96457e6b6420bec1aaa78417526b98dbea3321aae0",
+    "docs/kr-stock-within-industry-anatomy-v1-design.md": "1a7fd9dce4e8d4dfee9e680b3b8fd1bb6f1f27e64556a31cabc4e0eb332a4dfb",
+    "docs/results/kr-factor-anatomy-v1-result.json": "8518ec8cae95d0a23e964aab147e20659f17437fcd6fec6cb7f64cfa2b98a9e7",
+    "docs/results/kr-industry-opportunity-anatomy-v1-result.json": "71a960e3c19ce443d058508c4ec66576e3e5fcbd7a45dc851cf8b832bff62a08",
+    "docs/results/kr-model-overlay-portfolio-v1-result.json": "2c16e4e121abdd771c103eadce8707484b4092eb501188823aa1ac0726ec272a",
+    "pipeline/__init__.py": "187da1ad9a148da44035f9cf25f7cb094c45afe53d3f445ba62392797972dede",
+    "pipeline/accounting_quality.py": "b65c54126ea45bc544d843d5f87b109e71ca7658a1d7a8f99cd435cdf9ea6ada",
+    "pipeline/alpha_inference_calibration_v1.py": "87a6990fd6fc5217824ee00205ee247abe88006a2445d41b5a6086709f551186",
+    "pipeline/alpha_inference_calibration_v3.py": "5afa9a03dbfb5343be522d282a1b2050cbbd01722dc7b8eae1e6e06b55c2bf13",
+    "pipeline/alpha_inference_calibration_v4.py": "024231e1adeeb4d29ea047d187eb7eb5478fd21c442991bd1c8963d6a38cd601",
+    "pipeline/alpha_inference_mc_decision.py": "6d131e20e2bcc212247a95fce2c5f733faa7f1624991b364d9fea96b4962f61e",
+    "pipeline/alpha_opportunity_features.py": "62bfd05894b0f448e2d588f9395fb616c9d114a74503c1f663e20a84dfe0976e",
+    "pipeline/alpha_opportunity_model.py": "998c0b50d713a5c89ce1850bbae1b112215507fe6a38d992d7f1de158476ce83",
+    "pipeline/alpha_opportunity_spec.py": "3d7150c2f62dbd8184ed2f3885828e93c1ba64d8ffe3695b0b5716641734c58e",
+    "pipeline/alpha_opportunity_v2_evaluation.py": "e6f8a6f299945da36b39767a2dc7c7748a9bfee497e27a0d0ec05738bf235c62",
+    "pipeline/alpha_opportunity_v3_spec.py": "1c11c306f9f27a8e69b985d02bfb3bffaf691001c27ac49e6b21266dd315c162",
+    "pipeline/alpha_opportunity_v4_eligibility.py": "8c20c70b35dba244f0341459ee295ca836e0ec6782f3e4989197bc2a220ba204",
+    "pipeline/alpha_opportunity_v4_execution.py": "f6d9dfd3be1558249bb69a29a903e791443d071793b2f591a2e900d492c954ba",
+    "pipeline/alpha_opportunity_v5_evidence.py": "305fc463129a50e6048152d99fec5f238bbd4f526818fc840b0c8e2af486425d",
+    "pipeline/dart_derive.py": "c18be6391fd8e04118a8e13cb62ace5a20e641f1d67e1c185652ed88572bd457",
+    "pipeline/dart_fundamentals.py": "5faad514e864d199a1eb9db41fbb182ab9b4a73a0e7179e7f56ac99b387e579b",
+    "pipeline/dart_ownership_events.py": "fdb4280a7bebdfb324f4ee87c9ad2ac22d640cc0dced10c7fc0f1bcd59c461d8",
+    "pipeline/entry.py": "d9c8e33686a55114bfabb6b11c634ff0198461859ecdaf10dffc7e3c49a191a2",
+    "pipeline/evidence.py": "31e8f67184073395d67f44a165d74f4ed368e468b790e695dbdcc698de7d9e88",
+    "pipeline/finnhub_derive.py": "2ceaf6a081a5fbbd893398a68e58006254da06492629d9e8824e0e835b848b56",
+    "pipeline/finnhub_fundamentals.py": "95b5090f1a306df5bc6231d952c42dfc85097a3a1f9f90a82bb4fa8af4f3a20d",
+    "pipeline/fundamental_acceleration.py": "4aeb649a2a046d9cf11432a7ac5a18a1b6ff993a48f2d7216e3280d446aa02cf",
+    "pipeline/historical_calibration.py": "2c825613bc1a543a225159e421aa15a176a222ce61cac12937de4e8c33db5e11",
+    "pipeline/historical_outcomes.py": "9db74870fe015f26ee5c4ac4709a420d33ef28e5feaab2c4caeedd7e85555569",
+    "pipeline/historical_replay.py": "80ace61f2df0d48ee98349bc998b77f58d8c62a4e8aa01da7b3cdacf158266e9",
+    "pipeline/historical_store.py": "2751be8b5b79260f2038c9fb975cae58d49cb7868751c6658e363b48712016c0",
+    "pipeline/industry_foundation.py": "795965170eef879e6e5dac6b7b5f7a32e7d898a2eb4e6eb30a1960e04d4af0d3",
+    "pipeline/kelly_portfolio.py": "6a4bd54be11e35e7348f64d0c99e7764635c4efcea62306da0b6ca81bfb3b06c",
+    "pipeline/kr_concentrated_portfolio.py": "5059260c02e55dfde5b38b644ef2a66d0ff793dd2fb2e17609331dbb08571b64",
+    "pipeline/kr_factor_anatomy.py": "56b2ad6660ae5b02fb9f646f78f4db1e7040caeb108fcf7f3b10e45354fe3a5a",
+    "pipeline/kr_factor_anatomy_execution.py": "f8aae109d75dca9521b356168f1a56712f092911f556495538c2e5ab6a7b95e8",
+    "pipeline/kr_factor_anatomy_report.py": "855124c2dedb71b4d813aa97acac3b1921c9d74f537bb2a515e0131146f8067d",
+    "pipeline/kr_industry_anatomy.py": "02d3cf8be9b415699099674bbad6c500b6ad5e8468376589dc4f328adeb59886",
+    "pipeline/kr_industry_anatomy_execution.py": "ece54c4020751df065c5391813724b315dc40db1a3d2a6508500165d0787cb1b",
+    "pipeline/kr_industry_membership.py": "ec84de6d94d0f6e0b537dacef4cd96467566515471631f6c5107c39df038433c",
+    "pipeline/kr_industry_membership_v3.py": "c857dcdd9323bc0fed69b2212b8dcc1fca7527c8fb1a0b32d588c8bbc5fa65f5",
+    "pipeline/kr_market_risk_overlay.py": "983b3aab891a2af2f6d54b9b3d7ca29788651ba898b074da0506a40431ae4c07",
+    "pipeline/kr_market_value.py": "49306b8d14c4e8d681ae5846802c2ae82fa5727bb7a8adf356fa313217103c5e",
+    "pipeline/kr_model_overlay_portfolio.py": "b67495886aa63e10315d96ce8b30a023ee75adac6f5fec5a4fab7593b4f70343",
+    "pipeline/kr_model_portfolio_execution.py": "6128ba0af8bb517ac260a76a8b397e486a3225f206b706953dbf0390a5a7bb82",
+    "pipeline/kr_portfolio_diagnostics.py": "9f28a5ddf49a58c95db36d3a573b19e56fe7c86f98ad2ed01d96e8c09e6b5c34",
+    "pipeline/kr_repaired_accounting_snapshot.py": "b5b225e8a1d21b1516801c0ced1ef2164189867a457df1e0a51cd8ec95dd63ea",
+    "pipeline/kr_stock_within_industry_anatomy.py": "e264ae20b71f32a03eec01fec944aeeb8e5947e5effedd25457cb6309c1b117b",
+    "pipeline/kr_stock_within_industry_anatomy_execution.py": "f25321636d2eaeeff851153c52a6410578c693795d6ddc61c77c03001d8c1642",
+    "pipeline/kr_top120_regime_review.py": "43e4ab3438f1fb3765975866f1d948bbde4469dd59047d52049c9752d4f74a31",
+    "pipeline/kr_value_quality_catalyst.py": "1bfd62d1437dd9b574f1ab635836e7d7e69651dbbbaeedf29af84a90de17bb28",
+    "pipeline/krx_universe.py": "77008b8c0dcb9cd44b0b1182df94d2f0af62edb6f03b6a41082c04679101d6b8",
+    "pipeline/liquidity_attention.py": "208c989a70e2d276c040867496a127eda9ca82644012999a7253f7d47bb171a6",
+    "pipeline/longterm.py": "75702c4862545e0ceadbfc5db2585b89ffeadad21f43206b597e2982d171c5f6",
+    "pipeline/market_dates.py": "0182986bf731fd762a8004d5cf838ddfaaee656a2b19b8cfd6b47248c6281e4b",
+    "pipeline/pit_data.py": "64da89c602ac4b6c67411d0b5defa2909b65c1a7aad0958b32cb7f7dcd567dbf",
+    "pipeline/portfolio_validation.py": "a22c18fc31f47b1701ea4c426ff31dec48f3f367163bd1eb3e8cf75c1fadf2a5",
+    "pipeline/price_adjustment.py": "ebdde717be22277315186d5f302642cbc8a057fedee84192b7af14b15c405892",
+    "pipeline/probability_calibration.py": "7e06f855981c7c88dc8a595fd879d201892ca99bfbb4b1dcab1bebaf0e6f62f6",
+    "pipeline/provenance.py": "762a214d6d0a59cef35a1b4612b60e13e2f6197a0a289e97e2b1da1f496c8171",
+    "pipeline/regime.py": "b5634c109ac19ad6b0e13788f1ce9cde8f20f50019a82a8b4f65f9bc23200aca",
+    "pipeline/regional_alpha_features.py": "2fc5eb16d0438ca15763aeaf49e9226146a7ecf209680ae8f33fd42f57555132",
+    "pipeline/replay_calendar.py": "56116f837e8ae3b9ca43c27c87b3be8bcf608172a761879a6b1284a39c9a3ab2",
+    "pipeline/replay_determinism.py": "2233d8341d7be1b5123caecd3ebdb10aef67ecfac7b3c10c687795f66f397153",
+    "pipeline/replay_inputs.py": "dd77b249476b252ba585b1b836fd060a029b0c4d9c3b9a0847caf8be545a5a1d",
+    "pipeline/replay_valuation.py": "18e673a0721077af06b8ca9f774650c27fa58820a489b9ea639a9ccf02693bf3",
+    "pipeline/sectors.py": "1cb470d676eeb24d5fa4976bf8fc0f71f808957f132c908158acb6422fde60ba",
+    "pipeline/selection_null.py": "b00e7419a8a620e284f3b5a15aafa66e9a8f776b81da027a766a72b3eecf5e17",
+    "research_specs/kr-factor-anatomy-v1.json": "1d8e526c05491898e00dacf18ad5b2cd458e04cfc843f4a35ff97bfd4272c393",
+    "research_specs/kr-factor-anatomy-v1.sha256": "a2c2b0cd706b1ad6efacb4105e06cade7df8c0912ced59a22191ad7489b23501",
+    "research_specs/kr-industry-membership-foundation-v4/crosswalk.json": "76166ad309d323240ffe749df74ac089f4693f30ef77231b8cd5ab85365826b5",
+    "research_specs/kr-industry-membership-foundation-v4/crosswalk.json.sha256": "c286ebc550a75b7a903f1db251d2687b2087c4c34fb3989c69400ab2ae7c3c20",
+    "research_specs/kr-industry-membership-foundation-v4/protocol.json": "955fb27793ce8016755b3d0c2e68ec292cad19c9ec84334a50c21d95f9b2d0ce",
+    "research_specs/kr-industry-membership-foundation-v4/protocol.json.sha256": "5821ded833822716bfcbdf9fca25252c6603fcae6443dd579ac970bec795e15f",
+    "research_specs/kr-industry-opportunity-anatomy-v1.json": "e2d1fd23744a65c8dbf99217c8b2531eb68f276bca2aea7de73e4200baf1dada",
+    "research_specs/kr-industry-opportunity-anatomy-v1.sha256": "b46ff330242100b90b353e0d262fd791adbf16931fc2be0eb1ff102d77bc1e53",
+    "research_specs/kr-model-overlay-portfolio-v1.json": "c1cbfd232fdcaa7fa584cd1762e9e28291b4382d37e6244f5ab1a18731fb2df2",
+    "research_specs/kr-model-overlay-portfolio-v1.sha256": "31f5e13ac44f4591b820fffb03849c99653d076fe496c40e275d693723b18cb1",
+    "research_specs/kr-top120-regime-review-v1.json": "79af4fcbaaf92452b2f1f98b7393ca757c5254b539884e8248b25c4959d76c93",
+    "research_specs/kr-top120-regime-review-v1.sha256": "e1e7f101f37a5e2a9c53f7dcfa99afb8efc06e24235b022e57a4dae8c2b98e88",
+    "scripts/build_kr_stock_within_industry_spec.py": "acb6e271a25d61c89331ec691377cb27ec69f8f95876a3b42fca65d3acd15682",
+    "scripts/run_kr_stock_within_industry_anatomy_v1.py": "baf43698b95d333ce453d863f480fabfce35911d24a447901a837b66f9b3ce0f"
+  },
+  "developmentCutoff": "2026-09-14",
+  "eligibility": {
+    "eligibleMembershipStatuses": [
+      "CURRENT_KRX_KIND_ANCHOR",
+      "VERIFIED_KRX_KIND_CHANGE_EVENT",
+      "RECONSTRUCTED_STABLE_NO_CHANGE_EVENT",
+      "PREFERRED_SHARE_OF_ANCHORED_COMMON",
+      "RETAINED_DART_FALLBACK"
+    ],
+    "ineligible": "stays in the denominator with a status and a reason, never zero or neutral",
+    "minimumIndustryMembers": 5,
+    "minimumOtherPeers": 4,
+    "statuses": [
+      "ELIGIBLE",
+      "INELIGIBLE_UNCLASSIFIED",
+      "INELIGIBLE_BELOW_MINIMUM_INDUSTRY_MEMBERS",
+      "EXCLUDED_BY_SENSITIVITY"
+    ],
+    "survivorSubstitution": "never",
+    "targetStatuses": [
+      "MATURED",
+      "PENDING",
+      "INELIGIBLE_INDUSTRY_DATE",
+      "INELIGIBLE_FEWER_THAN_FOUR_PEERS",
+      "INELIGIBLE_CAP_WEIGHT_UNAVAILABLE",
+      "UNRESOLVED_OWN_RETURN",
+      "UNRESOLVED_PEER_RETURN",
+      "UNRESOLVED_BENCHMARK_OR_OWN_RETURN",
+      "INELIGIBLE_STOCK_DATE"
+    ],
+    "taxonomy": "the frozen v4 14-group economic crosswalk, unmodified",
+    "unknownFill": "never"
+  },
+  "entryPoints": [
+    "pipeline/kr_stock_within_industry_anatomy_execution.py",
+    "pipeline/kr_stock_within_industry_anatomy.py"
+  ],
+  "features": {
+    "commonSample": "both feature lenses and all three components are evaluated on the SAME name-dates: eligible, matured target for the lens, finite raw value, finite within-industry rank",
+    "contextVariable": "within-industry percentile of signal-date market cap, used only as the size stratifier of logAdv60; not one of the registered features",
+    "definitions": [
+      {
+        "caveat": "Issue-cap accounting proxy: whole-entity book over one quoted issue's market cap. Preferred shares, holding-company structures and large minority interests distort it.",
+        "family": "VALUE",
+        "name": "bookToMarketProxy",
+        "orientation": "literal; higher = higher feature value",
+        "plain": "Book value of equity (total assets minus total liabilities, same statement, whole entity including minority interests) divided by the KRX market capitalisation at the signal close. Higher = cheaper relative to book. 순자산/시가총액: 높을수록 장부가 대비 저평가."
+      },
+      {
+        "caveat": "Same issue-cap mismatch as book-to-market; a one-off gain inflates it, a one-off loss deflates it.",
+        "family": "VALUE",
+        "name": "earningsYieldProxy",
+        "orientation": "literal; higher = higher feature value",
+        "plain": "Trailing-twelve-month net income (당기순이익, whole entity) divided by KRX market capitalisation. Higher = more earnings per won of market value; loss-makers are negative. 이익수익률."
+      },
+      {
+        "caveat": "Cash flow timing (working capital, capex-heavy cycles) makes a single TTM figure noisy.",
+        "family": "VALUE",
+        "name": "ocfYieldProxy",
+        "orientation": "literal; higher = higher feature value",
+        "plain": "Trailing-twelve-month operating cash flow (영업활동현금흐름) divided by KRX market capitalisation. Higher = more operating cash per won of market value. 영업현금흐름 수익률."
+      },
+      {
+        "caveat": "Banks and other balance-sheet-heavy firms have structurally small ratios; identical numbers mean different things across company types.",
+        "family": "QUALITY",
+        "name": "netIncomeToAssets",
+        "orientation": "literal; higher = higher feature value",
+        "plain": "Trailing-twelve-month net income divided by total assets: a return-on-assets style profitability measure. Higher = more profitable per won of assets. 총자산순이익률."
+      },
+      {
+        "caveat": "Financial companies' operating cash flow is not comparable with industrial companies'.",
+        "family": "QUALITY",
+        "name": "ocfToAssets",
+        "orientation": "literal; higher = higher feature value",
+        "plain": "Trailing-twelve-month operating cash flow divided by total assets. Higher = more operating cash generated per won of assets. 총자산영업현금흐름."
+      },
+      {
+        "caveat": "Large positive values can reflect depreciation-heavy or financing-linked cash flows, not only 'better earnings quality'.",
+        "family": "QUALITY",
+        "name": "negativeAccrualsToAssets",
+        "orientation": "literal; higher = higher feature value",
+        "plain": "(Operating cash flow minus net income) divided by total assets. Higher = profit more fully backed by cash (lower accruals); lower = profit that has not yet become cash. 발생액(음수) / 총자산."
+      },
+      {
+        "caveat": "Measured on the same adjusted-index basis as the outcome (dividends included only where the vendor served them).",
+        "family": "CATALYST",
+        "name": "relative126",
+        "orientation": "literal; higher = higher feature value",
+        "plain": "The stock's adjusted-index return minus the KODEX 200 benchmark's over the 126 sessions ending at the signal close: the prior benchmark-relative run-up (higher) or slide (lower). 직전 126거래일 벤치마크 대비 상대수익률."
+      },
+      {
+        "caveat": "Overlaps in time with relative126; the two are related but not identical.",
+        "family": "CATALYST",
+        "name": "momentum121",
+        "orientation": "literal; higher = higher feature value",
+        "plain": "Stock adjusted-index return from 252 sessions ago to 21 sessions ago (twelve-minus-one-month price momentum, skipping the most recent month). Higher = stronger prior trend. 12-1개월 모멘텀."
+      },
+      {
+        "caveat": "Structurally unobservable before 2018 under the frozen same-stage prior-year rule (fiscal-2015 interim filings lack the statement basis); coverage is reported per year.",
+        "family": "CATALYST",
+        "name": "ocfImprovementToAssets",
+        "orientation": "literal; higher = higher feature value",
+        "plain": "(Latest TTM operating cash flow minus the TTM one year earlier at the same reporting stage) divided by total assets. Positive = operating cash generation improved. 영업현금흐름 개선도."
+      },
+      {
+        "caveat": "Direction is inverted relative to the plain volatility number: a high value here means a quiet stock.",
+        "family": "RISK",
+        "name": "negativeDownsideVol126",
+        "orientation": "higher = LOWER downside volatility",
+        "plain": "Minus the annualised downside semideviation (about zero, denominator all 126 sessions) of daily returns over the last 126 sessions. HIGHER = LOWER downside volatility (calmer). 하방변동성(음수): 높을수록 안정적."
+      },
+      {
+        "caveat": "Liquidity versus large-cap / institutional / index-membership proxy cannot be separated by this variable alone; see the size and liquidity section.",
+        "family": "RISK",
+        "name": "logAdv60",
+        "orientation": "literal; higher = higher feature value",
+        "plain": "Natural log of one plus the 60-session average KRX trading value (KRW). Higher = more liquid, which in a top-120 market-cap universe is also strongly associated with being larger. 60일 평균 거래대금(로그)."
+      }
+    ],
+    "lenses": {
+      "RAW": "the registered feature value itself, ranked across the whole same-date eligible cross-section by the Spearman",
+      "WITHIN_INDUSTRY_RANK": "the average-rank percentile (r-0.5)/n among the finite values of the SAME signal date and the stock's OWN industry"
+    },
+    "names": [
+      "bookToMarketProxy",
+      "earningsYieldProxy",
+      "ocfYieldProxy",
+      "netIncomeToAssets",
+      "ocfToAssets",
+      "negativeAccrualsToAssets",
+      "relative126",
+      "momentum121",
+      "ocfImprovementToAssets",
+      "negativeDownsideVol126",
+      "logAdv60"
+    ],
+    "noFeatureSelection": true,
+    "noNewSignals": true,
+    "relative126Note": "relative126 minus a within-date constant is the stock's own trailing return, so its within-industry rank is a within-industry price-momentum rank",
+    "source": "pipeline/kr_value_quality_catalyst.py (feature_at), signal-date values from the sealed v1 `prepare`",
+    "withinIndustryTransform": {
+      "belowMinimum": "NaN, never zero or neutral",
+      "frozenBeforeOutcomes": true,
+      "minimumFinitePeers": 5,
+      "peers": "classified members of the stock's industry at the signal date after any registered sensitivity exclusion, the stock included",
+      "rankedBeforeAnyOutcomeIsAttached": true,
+      "ties": "average percentile (order independent)",
+      "usesOnlyDate": "signal date t"
+    }
+  },
+  "horizons": [
+    63,
+    126,
+    252
+  ],
+  "input": {
+    "artifactArchiveSha256": "42eeb18b7a5c88816629036f472a93057b6a9be4768ad47292ba0d2750b4cce7",
+    "artifactId": 11157875265,
+    "artifactName": "kr-model-raw-inputs-36844599518",
+    "downloadRule": "execution downloads this exact artifact (name, run id, artifact id and archive digest checked through the Actions API) and verifies the input identity before any outcome is computed",
+    "identitySha256": "233df37ed205cc6b48828121e711417ccf961301dc58aa252430b343db9666a7",
+    "krxCacheSha256": "3419d9d201f942b3c89be146b8f696679c8105a5f00d8adb0dd2c5a655a80037",
+    "pinnedFrom": {
+      "overlaySpec": "research_specs/kr-model-overlay-portfolio-v1.json",
+      "regimeReviewInput": {
+        "artifactArchiveSha256": "42eeb18b7a5c88816629036f472a93057b6a9be4768ad47292ba0d2750b4cce7",
+        "artifactId": 11157875265,
+        "artifactName": "kr-model-raw-inputs-36844599518",
+        "downloadRule": "The execution workflow downloads this exact artifact (name, run id, artifact id and archive digest checked through the Actions API before download) and verifies the input identity before any outcome is computed.",
+        "identityDefinition": "pipeline.kr_model_portfolio_execution.input_identity(root)['sha256'] — NOT the snapshot manifest hash",
+        "identitySha256": "233df37ed205cc6b48828121e711417ccf961301dc58aa252430b343db9666a7",
+        "krxCacheNote": "Pinned provenance. The daily KRX market-value files are covered byte-for-byte by the input identity.",
+        "krxCacheSha256": "3419d9d201f942b3c89be146b8f696679c8105a5f00d8adb0dd2c5a655a80037",
+        "producingRunId": 36844599518,
+        "recollectKrx": false,
+        "replaceSnapshotSilently": false
+      }
+    },
+    "producingRunId": 36844599518,
+    "recollect": false
+  },
+  "lifecycle": {
+    "executionLock": "refs/tags/kr-stock-within-industry-anatomy-v1-execution-lock (study level, atomic POST /git/refs) plus -<specSha256>; any existing ref refuses; post-lock failure consumes the study",
+    "markerPath": "docs/results/kr-stock-within-industry-anatomy-v1-execution-started.json",
+    "resultPath": "docs/results/kr-stock-within-industry-anatomy-v1-result.json",
+    "sequence": [
+      "protocol PR merges",
+      "human dispatches execute once",
+      "identities and gates pass",
+      "durable lock before the first outcome",
+      "result artifact",
+      "seal commit",
+      "later attempts fail closed"
+    ]
+  },
+  "limitations": [
+    "Outcome-exposed single historical sample; exploratory only",
+    "Industry history is a reconstruction (DATA_FOUNDATION_INSUFFICIENT_V4), not PIT exact",
+    "About 14 coarse industries with five to a few dozen members: thin peer sets make the leave-one-out benchmark noisy",
+    "Weekly signals overlap; few independent observations",
+    "Top-120 large caps only",
+    "Return basis has partial distributions; banks and high-dividend names are unreliable",
+    "Issue-cap accounting proxies; whole-entity accounts over one quoted issue's market cap",
+    "No multiplicity correction; no isolated p-value is confirmation",
+    "Terminal common securities are unclassified, so their stock-dates are INELIGIBLE and any peer without a matured return makes the target UNRESOLVED",
+    "A within-industry rank removes industry composition, not size, mega-cap or sector-cycle effects inside an industry"
+  ],
+  "membership": {
+    "coarseGroups": 14,
+    "crosswalkPath": "research_specs/kr-industry-membership-foundation-v4/crosswalk.json",
+    "files": {
+      "data/kr-industry-membership-foundation-v4/state/audit.json.gz": "4135846f16dcf59fe4ff89ab83b3b5aec288dea20fed36172b17abf768d44036",
+      "data/kr-industry-membership-foundation-v4/state/intervals.json.gz": "01a7958608939b73b85f7b96457e6b6420bec1aaa78417526b98dbea3321aae0",
+      "research_specs/kr-industry-membership-foundation-v4/crosswalk.json": "76166ad309d323240ffe749df74ac089f4693f30ef77231b8cd5ab85365826b5",
+      "research_specs/kr-industry-membership-foundation-v4/crosswalk.json.sha256": "c286ebc550a75b7a903f1db251d2687b2087c4c34fb3989c69400ab2ae7c3c20",
+      "research_specs/kr-industry-membership-foundation-v4/protocol.json": "955fb27793ce8016755b3d0c2e68ec292cad19c9ec84334a50c21d95f9b2d0ce",
+      "research_specs/kr-industry-membership-foundation-v4/protocol.json.sha256": "5821ded833822716bfcbdf9fca25252c6603fcae6443dd579ac970bec795e15f"
+    },
+    "limitation": "22 terminal common securities have no historical industry; most classified name-dates rest on a no-change reconstruction; not PIT exact",
+    "mappedRawLabels": 82,
+    "v4Decision": "DATA_FOUNDATION_INSUFFICIENT_V4",
+    "v4Facts": {
+      "classifiedNameDates": 69756,
+      "coarseIndustryCount": 14,
+      "conflictIntervals": {},
+      "everTop120Securities": 260,
+      "nameDates": 73200,
+      "rawIndustryCount": 78,
+      "signalDates": 610,
+      "terminal": {
+        "classified": 0,
+        "denominator": 2345
+      },
+      "unknownNameDates": 3444
+    }
+  },
+  "missingness": {
+    "noMissingIndustryToNeutral": true,
+    "noSurvivorRenormalisation": true,
+    "noUnknownFill": true,
+    "noUnknownToZero": true,
+    "reportedPerFeatureAndTarget": [
+      "stock-dates",
+      "eligible stock-dates",
+      "matured targets",
+      "raw finite",
+      "within-industry rank finite",
+      "common sample"
+    ]
+  },
+  "outcomeAccess": {
+    "counters": [
+      "targetCalls",
+      "labelCalls",
+      "outcomeColumnCalls",
+      "analysisCalls",
+      "markerWrites",
+      "priorResultReads"
+    ],
+    "inThisChange": "NONE",
+    "verifyAndReadinessRequireAllZero": true
+  },
+  "phase": "PROTOCOL_AND_HARNESS_ONLY_NO_OUTCOME_COMPUTED",
+  "primaryHorizon": 126,
+  "priorSealed": {
+    "neverRerun": [
+      "kr-model-overlay-portfolio-v1",
+      "kr-factor-anatomy-v1",
+      "kr-top120-regime-review-v1",
+      "kr-industry-opportunity-anatomy-v1"
+    ],
+    "referenceResult": "docs/results/kr-factor-anatomy-v1-result.json",
+    "resultFiles": {
+      "docs/results/kr-factor-anatomy-v1-result.json": "8518ec8cae95d0a23e964aab147e20659f17437fcd6fec6cb7f64cfa2b98a9e7",
+      "docs/results/kr-industry-opportunity-anatomy-v1-result.json": "71a960e3c19ce443d058508c4ec66576e3e5fcbd7a45dc851cf8b832bff62a08",
+      "docs/results/kr-model-overlay-portfolio-v1-result.json": "2c16e4e121abdd771c103eadce8707484b4092eb501188823aa1ac0726ec272a"
+    },
+    "role": "pinned by hash; only the factor-anatomy result is read, once, at execution, as an interpretive reference"
+  },
+  "question": "After the contemporaneous industry component is removed, do the stock-factor associations previously read against the market benchmark keep their sign and size when the target is the stock's return minus the return of its OWN industry's other members?",
+  "questions": {
+    "Q1_BOOK_TO_MARKET_RETAINS_ASSOCIATION": {
+      "features": [
+        "bookToMarketProxy"
+      ]
+    },
+    "Q2_MOMENTUM_AFTER_INDUSTRY_MOMENTUM_REMOVED": {
+      "features": [
+        "relative126",
+        "momentum121"
+      ]
+    },
+    "Q3_QUALITY_CASHFLOW_IMPROVEMENT_STOCK_SPECIFIC_OR_INDUSTRY": {
+      "features": [
+        "netIncomeToAssets",
+        "ocfToAssets",
+        "negativeAccrualsToAssets",
+        "ocfImprovementToAssets",
+        "ocfYieldProxy",
+        "earningsYieldProxy"
+      ]
+    },
+    "Q4_LIQUIDITY_AFTER_INDUSTRY_CONTROL": {
+      "features": [
+        "logAdv60"
+      ]
+    },
+    "Q5_DOWNSIDE_VOLATILITY_REGIME_AFTER_INDUSTRY_NEUTRALISATION": {
+      "features": [
+        "negativeDownsideVol126"
+      ]
+    }
+  },
+  "readiness": {
+    "failedGateEffect": "writes gates-failed.json; no lock, no outcome read, no budget spent",
+    "gates": [
+      "non-empty PIT name-dates",
+      "no duplicate (date, ticker)",
+      "signal-time columns exist",
+      "signal dates and PIT Top120 equal the v4 membership calendar and universe",
+      "signal-date market cap available",
+      "membership reconstruction exists"
+    ],
+    "minimumNamesWithMarketCapPerDate": 3
+  },
+  "region": "KR",
+  "registry": {
+    "benchmarkStates": [
+      1.0,
+      0.7,
+      0.4
+    ],
+    "components": [
+      "STOCK_MINUS_LOO_INDUSTRY",
+      "LOO_INDUSTRY_MINUS_MARKET",
+      "STOCK_MINUS_MARKET"
+    ],
+    "featureLenses": [
+      "RAW",
+      "WITHIN_INDUSTRY_RANK"
+    ],
+    "questions": {
+      "Q1_BOOK_TO_MARKET_RETAINS_ASSOCIATION": [
+        "bookToMarketProxy"
+      ],
+      "Q2_MOMENTUM_AFTER_INDUSTRY_MOMENTUM_REMOVED": [
+        "relative126",
+        "momentum121"
+      ],
+      "Q3_QUALITY_CASHFLOW_IMPROVEMENT_STOCK_SPECIFIC_OR_INDUSTRY": [
+        "netIncomeToAssets",
+        "ocfToAssets",
+        "negativeAccrualsToAssets",
+        "ocfImprovementToAssets",
+        "ocfYieldProxy",
+        "earningsYieldProxy"
+      ],
+      "Q4_LIQUIDITY_AFTER_INDUSTRY_CONTROL": [
+        "logAdv60"
+      ],
+      "Q5_DOWNSIDE_VOLATILITY_REGIME_AFTER_INDUSTRY_NEUTRALISATION": [
+        "negativeDownsideVol126"
+      ]
+    },
+    "sensitivities": [
+      "FULL",
+      "EXCLUDE_SAMSUNG_ELECTRONICS_AND_SK_HYNIX"
+    ],
+    "signViews": [
+      [
+        "FULL",
+        "CAP_WEIGHTED",
+        126,
+        "FULL_SAMPLE"
+      ],
+      [
+        "FULL",
+        "EQUAL_WEIGHT",
+        126,
+        "FULL_SAMPLE"
+      ],
+      [
+        "EXCLUDE_SAMSUNG_ELECTRONICS_AND_SK_HYNIX",
+        "CAP_WEIGHTED",
+        126,
+        "FULL_SAMPLE"
+      ],
+      [
+        "EXCLUDE_SAMSUNG_ELECTRONICS_AND_SK_HYNIX",
+        "EQUAL_WEIGHT",
+        126,
+        "FULL_SAMPLE"
+      ],
+      [
+        "FULL",
+        "CAP_WEIGHTED",
+        63,
+        "FULL_SAMPLE"
+      ],
+      [
+        "FULL",
+        "CAP_WEIGHTED",
+        252,
+        "FULL_SAMPLE"
+      ],
+      [
+        "FULL",
+        "CAP_WEIGHTED",
+        126,
+        "PRE_2025_COMPLETE_WINDOW"
+      ],
+      [
+        "FULL",
+        "CAP_WEIGHTED",
+        126,
+        "TOUCHES_2025_OR_LATER"
+      ]
+    ],
+    "slices": [
+      "FULL_SAMPLE",
+      "PRE_2025_COMPLETE_WINDOW",
+      "TOUCHES_2025_OR_LATER"
+    ],
+    "weightLenses": [
+      "CAP_WEIGHTED",
+      "EQUAL_WEIGHT"
+    ]
+  },
+  "returnBasis": "BENCHMARK_RELATIVE_ADJUSTED_INDEX_RETURN_PARTIAL_DISTRIBUTIONS",
+  "returnDefinition": {
+    "basis": "adjusted index with partial observed distributions; never called total shareholder return",
+    "cohort": "peer membership and peer weights frozen at the signal date for the whole forward window",
+    "completeness": "a target is MATURED only if the stock AND every peer have a matured return under the accepted terminal discipline; no survivor renormalisation",
+    "entry": "next KR session strictly after the signal date",
+    "exit": "H sessions after entry, repository session calendar, exact endpoints only"
+  },
+  "scientificStatus": "EXPLORATORY_DEVELOPMENT_ON_OUTCOME_EXPOSED_KR_HISTORY",
+  "sealedDataInputs": [
+    ".github/workflows/kr-stock-within-industry-anatomy-v1.yml",
+    "data/kr-industry-membership-foundation-v1/identity-inventory.json",
+    "data/kr-industry-membership-foundation-v1/identity-provenance.json",
+    "data/kr-industry-membership-foundation-v1/top120-inputs.json",
+    "data/kr-industry-membership-foundation-v4/state/audit.json.gz",
+    "data/kr-industry-membership-foundation-v4/state/intervals.json.gz",
+    "docs/kr-stock-within-industry-anatomy-v1-design.md",
+    "docs/results/kr-factor-anatomy-v1-result.json",
+    "docs/results/kr-industry-opportunity-anatomy-v1-result.json",
+    "docs/results/kr-model-overlay-portfolio-v1-result.json",
+    "research_specs/kr-factor-anatomy-v1.json",
+    "research_specs/kr-factor-anatomy-v1.sha256",
+    "research_specs/kr-industry-membership-foundation-v4/crosswalk.json",
+    "research_specs/kr-industry-membership-foundation-v4/crosswalk.json.sha256",
+    "research_specs/kr-industry-membership-foundation-v4/protocol.json",
+    "research_specs/kr-industry-membership-foundation-v4/protocol.json.sha256",
+    "research_specs/kr-industry-opportunity-anatomy-v1.json",
+    "research_specs/kr-industry-opportunity-anatomy-v1.sha256",
+    "research_specs/kr-model-overlay-portfolio-v1.json",
+    "research_specs/kr-model-overlay-portfolio-v1.sha256",
+    "research_specs/kr-top120-regime-review-v1.json",
+    "research_specs/kr-top120-regime-review-v1.sha256",
+    "scripts/build_kr_stock_within_industry_spec.py",
+    "scripts/run_kr_stock_within_industry_anatomy_v1.py"
+  ],
+  "sensitivities": {
+    "excludedMegaCaps": [
+      "005930.KS",
+      "000660.KS"
+    ],
+    "exclusionRule": "removed BEFORE industry cohorts, within-industry ranks and peer weights are formed",
+    "names": [
+      "FULL",
+      "EXCLUDE_SAMSUNG_ELECTRONICS_AND_SK_HYNIX"
+    ],
+    "role": "diagnostics only; none is an alternative strategy-selection route and none is promoted",
+    "slices": [
+      "FULL_SAMPLE",
+      "PRE_2025_COMPLETE_WINDOW",
+      "TOUCHES_2025_OR_LATER"
+    ],
+    "slicesDecidedBy": "outcome window entry and exit dates, boundary 2025-01-01 fixed here",
+    "weightLenses": [
+      "CAP_WEIGHTED",
+      "EQUAL_WEIGHT"
+    ]
+  },
+  "statistics": {
+    "aggregation": "per date first; dates equal-weighted; summaries from pipeline.kr_industry_anatomy.summarize",
+    "minimumCrossSection": 30,
+    "multiplicity": "none applied; no isolated p-value is confirmation; weekly signals overlap so effective dates are far fewer than valid dates",
+    "noBinaryEconomicThreshold": true,
+    "noFeatureSelection": true,
+    "primary": "per signal date, Spearman(within-industry feature rank, H126 stock - leave-one-out CAP_WEIGHTED industry return) across the common-sample stocks of that date; reports mean, median, sign fraction, valid dates, annual values, descriptive HAC standard error",
+    "secondary": {
+      "benchmarkStates": "kr_market_risk_overlay riskMultiplier (1.0 / 0.7 / 0.4) at the signal date, the only market-state split",
+      "components": [
+        "STOCK_MINUS_LOO_INDUSTRY",
+        "LOO_INDUSTRY_MINUS_MARKET",
+        "STOCK_MINUS_MARKET"
+      ],
+      "equalIndustryRankCorrelation": "per industry-date Spearman (n >= 6), equal weight per industry then per date; invariant to the within-industry transform so reported once",
+      "horizons": "H63 and H252 beside H126",
+      "industryDateGroups": {
+        "aggregation": "equal weight per industry within a date (at least 3 industries), then equal weight per date",
+        "groups": "top and bottom k = floor(n/3) stocks by feature inside ONE industry-date",
+        "minimumGroupSize": 2,
+        "minimumIndustryN": 6,
+        "noStockStyleDecilesWhereGroupsAreTooSmall": true,
+        "ordering": "(feature, ticker)",
+        "ties": "a feature value tied across a group boundary invalidates the industry-date; ties inside a group are harmless",
+        "withinGroup": "stocks equal-weighted"
+      },
+      "sizeControlForLogAdv60": "pooled within-industry association inside the lower and upper half of within-industry size, and the rank overlap of the two",
+      "weightLensRobustness": "CAP_WEIGHTED versus EQUAL_WEIGHT leave-one-out benchmark"
+    }
+  },
+  "studyId": "kr-stock-within-industry-anatomy-v1",
+  "targets": {
+    "capLensIneligibleWhen": "any peer lacks a finite positive signal-date market cap",
+    "neverDo": [
+      "use an industry return that contains the evaluated stock",
+      "fill UNKNOWN names into a cohort",
+      "substitute a survivor or successor",
+      "renormalise over surviving peers",
+      "treat a missing peer return as zero"
+    ],
+    "peerWeights": "signal-date market caps of the PEERS only, normalised over the peers; the evaluated stock's own cap is never used",
+    "primary": "stock forward return minus leave-one-out CAP_WEIGHTED industry forward return, H126",
+    "robustness": "stock forward return minus leave-one-out EQUAL_WEIGHT industry forward return",
+    "secondary": [
+      "H63",
+      "H252"
+    ]
+  }
+}
