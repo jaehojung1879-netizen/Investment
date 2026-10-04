@@ -1,0 +1,46 @@
+{
+  "concurrency": 1,
+  "contract": "KR_INDUSTRY_V3_EVENT_LISTING_PROTOCOL_REV3",
+  "documentStageRule": "Not executed here. A later stage may fetch each listed notice document once, only if the total listed hits are <= 400; otherwise it stops and reports. Document content, not the title, must state before and after labels.",
+  "frozenBeforeRequests": true,
+  "maxBodyBytes": 8000000,
+  "maxPagesPerWindow": 30,
+  "maxRequests": 150,
+  "outcomesAllowed": false,
+  "query": {
+    "currentPageSize": "15",
+    "forward": "details_sub",
+    "method": "searchDetailsSub",
+    "orderMode": "1",
+    "orderStat": "D",
+    "reportNm": "업종변경"
+  },
+  "reasonForRevision": "Rev2 (retained under events/, commit b563eb5) received KIND 페이지 오류 error pages for all five windows (identical 1,650-byte body, sha256 42c2976a...), which my parser misread as an empty result; that is a source error, not evidence of no notices. The first probe (page size 15, one 2013..2026 query) was served a valid list page with a 3-year-span alert. Rev3 changes only the page size to the served value 15 and the page/request ceilings; windows, keyword and range are unchanged and no outcome was read.",
+  "redirects": false,
+  "retries": 0,
+  "stopOnAccessDenied": true,
+  "timeoutSeconds": 20,
+  "url": "https://kind.krx.co.kr/disclosure/details.do",
+  "windows": [
+    [
+      "2013-01-01",
+      "2015-12-31"
+    ],
+    [
+      "2016-01-01",
+      "2018-12-31"
+    ],
+    [
+      "2019-01-01",
+      "2021-12-31"
+    ],
+    [
+      "2022-01-01",
+      "2024-12-31"
+    ],
+    [
+      "2025-01-01",
+      "2026-10-02"
+    ]
+  ]
+}

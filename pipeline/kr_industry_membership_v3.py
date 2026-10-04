@@ -153,6 +153,8 @@ def parse_kind_listing(raw):
         return {'status': 'REJECTED', 'reason': 'UNSUPPORTED_ENCODING', 'rows': []}
     if 'Access Denied' in text[:400]:
         return {'status': 'ACCESS_DENIED', 'reason': 'EDGE_DENIAL', 'rows': []}
+    if 'class="errorpage"' in text or '<title>페이지 오류' in text:
+        return {'status': 'SOURCE_ERROR_PAGE', 'reason': 'KIND_PAGE_ERROR', 'rows': []}
     table = _Table()
     table.feed(text)
     rows = []

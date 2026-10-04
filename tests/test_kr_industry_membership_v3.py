@@ -60,6 +60,8 @@ def test_listing_parser_requires_one_receipt_per_row_and_assigns_no_labels():
     assert out['rows'][0]['families'] == ['INDUSTRY_CHANGE'] and 'before_label' not in out['rows'][0]
     assert V.parse_kind_listing(html.replace("openDisclsViewer('20240102000123','')", 'x').encode())['status'] == 'RECEIPT_ROW_MISMATCH'
     assert V.parse_kind_listing(b'<HTML><TITLE>Access Denied</TITLE>')['status'] == 'ACCESS_DENIED'
+    real = (ROOT / 'data/kr-industry-membership-foundation-v3/events/42c2976acb7df0c9718b465c8c50d6c453875b6d2b82c0edc5f4388985caab33.bin').read_bytes()
+    assert V.parse_kind_listing(real)['status'] == 'SOURCE_ERROR_PAGE'
 
 
 def test_event_listing_protocol_is_frozen_windowed_within_the_source_span_limit():
@@ -68,4 +70,4 @@ def test_event_listing_protocol_is_frozen_windowed_within_the_source_span_limit(
     plan = E.load_frozen()
     for a, b in plan['windows']:
         assert (date.fromisoformat(b) - date.fromisoformat(a)).days < 3 * 366
-    assert plan['windows'][0][0] == '2013-01-01' and plan['maxRequests'] <= 100 and plan['retries'] == 0
+    assert plan['windows'][0][0] == '2013-01-01' and plan['maxRequests'] <= 150 and plan['query']['currentPageSize'] == '15' and plan['retries'] == 0

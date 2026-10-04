@@ -1,4 +1,4 @@
-"""Frozen rev2: windowed KIND 업종변경 notice LISTING only (no document fetch, no labels)."""
+"""Frozen rev3: windowed KIND 업종변경 notice LISTING only (no document fetch, no labels)."""
 from __future__ import annotations
 import argparse
 import hashlib
@@ -14,7 +14,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 from pipeline import kr_industry_membership_v3 as V  # noqa: E402
 
-SPEC = ROOT / 'research_specs/kr-industry-membership-foundation-v3/event-listing-rev2.json'
+SPEC = ROOT / 'research_specs/kr-industry-membership-foundation-v3/event-listing-rev3.json'
 
 
 class NoRedirect(HTTPRedirectHandler):
