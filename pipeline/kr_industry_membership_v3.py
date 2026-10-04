@@ -168,3 +168,136 @@ def parse_kind_listing(raw):
         row['receipt_no'] = receipt
         row['families'] = classify_disclosure_title(row['title'])
     return {'status': 'PARSED' if rows else 'EMPTY', 'reason': None, 'rows': rows, 'alert': re.findall(r'alert\("([^"]*)"', text)}
+
+
+NOTICE_PARSER_VERSION = 'kr-industry-v3-notice-parser-2'
+_STRIP_STYLE = re.compile(r'(?is)<style.*?</style>')
+_DATE = re.compile(r'(\d{4})[-.](\d{2})[-.](\d{2})')
+
+
+def viewer_identity(viewer_html):
+    """KIND's own viewer header for a receipt: '<company> (<6-digit stock code>)'."""
+    m = re.search(r'<h1 class="ttl[^"]*">\s*([^<]*?)\s*\((\d{6})\)\s*</h1>', viewer_html or '')
+    return {'company': m[1], 'stock_code': m[2]} if m else None
+
+
+def _norm(label):
+    return ''.join((label or '').split())
+
+
+def parse_notice(document_html, viewer_html):
+    """Only explicitly labelled facts. Returns status PARSED or an UNRESOLVED reason; nothing is inferred."""
+    identity = viewer_identity(viewer_html)
+    out = {'status': 'UNRESOLVED', 'reason': None, 'identity': identity, 'parserVersion': NOTICE_PARSER_VERSION,
+           'before_label': None, 'before_code': None, 'after_label': None, 'after_code': None,
+           'effective_date': None, 'reason_text': None, 'format': None}
+    if identity is None:
+        out['reason'] = 'VIEWER_IDENTITY_NOT_STATED'
+        return out
+    body = _STRIP_STYLE.sub('', document_html or '')
+    table = _Table()
+    table.feed(body)
+    rows = [r for r in table.rows if any(r)]
+    flat = {r[0]: r[1:] for r in rows if r}
+    changed = next((r for r in rows if r and r[0].startswith('2.업종 및 업종코드')), None)
+    if changed is not None:
+        out['format'] = 'STRUCTURED_FORM'
+        phase, labels, codes = None, {}, {}
+        started = False
+        for r in rows:
+            if r and r[0].startswith('2.업종 및 업종코드'):
+                started = True
+                cells = r[1:]
+            elif started:
+                cells = r
+            else:
+                continue
+            if cells and cells[0] in ('변경 전', '변경전', '변경 후', '변경후'):
+                phase = 'before' if '전' in cells[0] else 'after'
+                cells = cells[1:]
+            if cells and cells[0] == '업종' and len(cells) > 1 and phase:
+                labels[phase] = cells[1]
+            elif cells and cells[0] == '업종코드' and len(cells) > 1 and phase:
+                codes[phase] = cells[1]
+            elif cells and r and r[0].startswith('3.'):
+                break
+        out.update(before_label=labels.get('before'), before_code=codes.get('before'),
+                   after_label=labels.get('after'), after_code=codes.get('after'))
+        date_cell = next((v for k, v in flat.items() if k.startswith('3.변경일')), None)
+        reason = next((v for k, v in flat.items() if k.startswith('4.변경사유')), None)
+        out['reason_text'] = ' '.join(reason or []) or None
+        m = _DATE.search(' '.join(date_cell or []))
+    else:
+        text = re.sub(r'\s+', ' ', re.sub(r'<[^>]+>', ' ', body))
+        before = re.search(r'변경\s*전\s*업종\s*및\s*코드(.*?)변경\s*후\s*업종', text)
+        after = re.search(r'변경\s*후\s*업종\s*및\s*코드(.*?)4\.\s*변경일', text)
+        m = re.search(r'변경일\s*:\s*(\d{4}[-.]\d{2}[-.]\d{2})', text)
+        small = re.compile(r'\(소분류\)\s*([^()]+?)\s*\((\d+)\)')
+        if before and after and small.search(before[1]) and small.search(after[1]):
+            out['format'] = 'FREE_TEXT_SMALL_CLASS'
+            b, a = small.search(before[1]), small.search(after[1])
+            out.update(before_label=b[1].strip(), before_code=b[2], after_label=a[1].strip(), after_code=a[2])
+        reason = re.search(r'5\.\s*변경사유\s*:\s*(.*?)\s*6\.', text)
+        out['reason_text'] = reason[1] if reason else None
+    if not m:
+        out['reason'] = 'EFFECTIVE_DATE_NOT_STATED'
+        return out
+    out['effective_date'] = '-'.join(_DATE.search(m[0]).groups())
+    if not out['before_label'] or not out['after_label']:
+        out['reason'] = 'BEFORE_OR_AFTER_NOT_STATED'
+        return out
+    out['status'] = 'PARSED'
+    return out
+
+
+def reconstruct_intervals(anchor_label, events, break_dates=()):
+    """Intervals by disclosed effective date, anchored to a current official label.
+
+    Older label = disclosed before-label; between events the disclosed after-label must equal
+    the next event's before-label; after the last event it must equal the anchor. A mismatch
+    leaves that interval UNKNOWN (CONFLICT). With no event at all the anchor is carried back
+    as RECONSTRUCTED_STABLE_NO_CHANGE_EVENT. An identity break date stops any carrying across it.
+    """
+    usable = sorted((e for e in events if e.get('effective_date') and e.get('before_label') and e.get('after_label')
+                     and _norm(e['before_label']) != _norm(e['after_label'])), key=lambda e: e['effective_date'])
+    dates = [e['effective_date'] for e in usable]
+    if len(set(dates)) != len(dates):
+        return [{'start': None, 'end': None, 'label': None, 'status': 'CONFLICT', 'reason': 'SAME_EFFECTIVE_DATE_EVENTS'}]
+    if not usable:
+        if anchor_label is None:
+            return [{'start': None, 'end': None, 'label': None, 'status': 'UNKNOWN', 'reason': 'NO_ANCHOR_NO_EVENT'}]
+        return [{'start': None, 'end': None, 'label': anchor_label, 'status': 'RECONSTRUCTED_STABLE_NO_CHANGE_EVENT'}]
+    out = [{'start': None, 'end': usable[0]['effective_date'], 'label': usable[0]['before_label'], 'status': 'VERIFIED_KRX_KIND_CHANGE_EVENT', 'notice_date': None}]
+    for i, e in enumerate(usable):
+        end = usable[i + 1]['effective_date'] if i + 1 < len(usable) else None
+        nxt = usable[i + 1]['before_label'] if i + 1 < len(usable) else anchor_label
+        if nxt is None:
+            out.append({'start': e['effective_date'], 'end': end, 'label': None, 'status': 'UNKNOWN', 'reason': 'NO_ANCHOR_AFTER_LAST_EVENT'})
+        elif _norm(e['after_label']) != _norm(nxt):
+            out.append({'start': e['effective_date'], 'end': end, 'label': None, 'status': 'CONFLICT', 'reason': 'AFTER_LABEL_DISAGREES_WITH_NEXT_BEFORE_OR_ANCHOR'})
+        else:
+            out.append({'start': e['effective_date'], 'end': end, 'label': e['after_label'],
+                        'status': 'VERIFIED_KRX_KIND_CHANGE_EVENT' if end else 'CURRENT_KRX_KIND_ANCHOR', 'notice_date': e.get('notice_date')})
+    for stop in break_dates:
+        for iv in out:
+            if iv['label'] and (iv['start'] is None or iv['start'] < stop) and (iv['end'] is None or iv['end'] > stop):
+                iv.update(label=None, status='UNKNOWN', reason='IDENTITY_BREAK_INSIDE_INTERVAL')
+    return out
+
+
+def label_at(intervals, stamp):
+    for iv in intervals:
+        if (iv['start'] is None or stamp >= iv['start']) and (iv['end'] is None or stamp < iv['end']):
+            return iv
+    return None
+
+
+def anchor_map(rows):
+    """Code -> raw current label. Identical duplicate rows collapse; differing labels drop the anchor (conflict)."""
+    seen, conflicts = {}, set()
+    for r in rows:
+        label = r['industry_label']
+        if r['ticker'] in seen and seen[r['ticker']] != label:
+            conflicts.add(r['ticker'])
+        seen.setdefault(r['ticker'], label)
+    return {k: v for k, v in seen.items() if k not in conflicts and v}, sorted(conflicts)
