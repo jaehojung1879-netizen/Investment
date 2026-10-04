@@ -24,6 +24,15 @@ GOOD_ENV = {'GITHUB_ACTIONS': 'true', 'GITHUB_REF': 'refs/heads/main', 'GITHUB_E
             'GH_TOKEN': 't', 'GITHUB_REPOSITORY': 'o/r'}
 
 
+@pytest.fixture(autouse=True)
+def synthetic_lifecycle_paths(monkeypatch):
+    """The study is now sealed (its result and marker are committed), so the synthetic authorization and lifecycle tests, which exercise the
+    rules rather than the repository state, point the result and marker paths at files that do not exist. The sealed state itself is pinned by
+    tests/test_kr_stock_within_industry_anatomy_v1_result_seal.py."""
+    monkeypatch.setattr(E, 'RESULT_PATH', 'docs/results/synthetic-absent-result.json')
+    monkeypatch.setattr(E, 'MARKER_PATH', 'docs/results/synthetic-absent-marker.json')
+
+
 def fake_git(head='a' * 40, committed=True):
     def git(args, root):
         if args[0] == 'rev-parse':
@@ -159,8 +168,7 @@ def test_pull_request_environment_is_never_authorized():
         runner.run('anything')
 
 
-def test_the_protocol_change_commits_no_result_marker_or_lock_evidence():
-    assert not (ROOT / E.RESULT_PATH).exists() and not (ROOT / E.MARKER_PATH).exists()
+def test_lock_prefix_is_the_registered_study_ref():
     assert E.LOCK_PREFIX == 'refs/tags/kr-stock-within-industry-anatomy-v1-execution-lock'
 
 
