@@ -1,0 +1,85 @@
+
+<transaction xmlns="http://www.cyber-i.com/xml/bld" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.cyber-i.com/xml/bld http://www.cyber-i.com/xml/ns/bld-5.0.xsd">
+  <info>
+    <name>유가증권 종목기본정보</name>
+    <description>유가증권 종목기본정보 ('10년01월04일 데이터부터 제공)</description>
+    <author>mdcadmin</author>
+    <id>PiwgMdTwmsenXhmqqxuj</id>
+    <version>1.0</version>
+    <http-access>true</http-access>
+    <status>confirmation</status>
+    <effective-date/>
+    <open-api>true</open-api>
+  </info>
+  <processor-info datasource="idsDS_DBridge" type="dbms">
+    <property name="dbridge.NEED_AUTH_KEY" value="Y"/>
+    <property desc="API process servlet" name="dbridge.PROCESS_SERVLET" value="process"/>
+    <script import="" language="java"></script>
+    <cache>
+      <enable/>
+      <expire/>
+      <group/>
+      <max-object-num/>
+    </cache>
+    <sql id="SQL1">
+      <query type="normal">/**/
+
+SELECT 
+       B.ISU_CD ISU_CD, -- 표준코드
+       SUBSTR(B.ISU_SRT_CD,2) ISU_SRT_CD, -- 단축코드
+       B.ISU_NM, --한글종목명
+       B.ISU_ABBRV, --한글종목약명
+       B.ISU_ENG_NM, --영문종목명
+       B.LIST_DD, --상장일
+       DECODE(B.MKT_ID,'STK','KOSPI','KSQ','KOSDAQ','KNX','KONEX') MKT_TP_NM, --시장구분
+       C.SECUGRP_NM,
+       (SELECT SFMC_CD_NM_LANG (B.SECT_TP_CD, 'SECT_TP_CD', 'ko_KR') MKT_NM FROM DUAL) SECT_TP_NM, --소속부
+       (SELECT SFMC_CD_NM_LANG (B.KIND_STKCERT_TP_CD, 'KIND_STKCERT_TP_CD', 'ko_KR') FROM DUAL) KIND_STKCERT_TP_NM, -- 주식종류
+       NVL((SELECT DECODE(A.PAR_TP_CD, 'N', '무액면', NULL) FROM TBLD_ISU_INST A WHERE REP_ISU_CD = B.ISU_CD), B.PARVAL) PARVAL, --액면가
+       B.LIST_SHRS --상장주식수
+  FROM TBMC_SPOT_ISU B,
+       TBMC_SECU_GRP C
+ WHERE :basDd BETWEEN B.STRT_DD AND B.END_DD
+       AND B.SECUGRP_ID = C.SECUGRP_ID
+       AND B.SECUGRP_ID IN ('ST', 'MF', 'RT', 'SC', 'IF', 'DR', 'FS')
+       AND :basDd BETWEEN C.STRT_DD AND C.END_DD
+       AND B.MKT_ID IN ('STK', 'KSQ', 'KNX')
+       AND B.MKT_ID = 'STK'
+       AND :basDd &lt; TO_CHAR(SYSDATE,'YYYYMMDD')
+       AND :basDd &gt;= '20100104'
+       AND 1 = (CASE WHEN :basDd &lt; SFMC_PRE_RECENT_MKTOPN_DD(TO_CHAR(SYSDATE-1, 'YYYYMMDD')) THEN 1 
+                         WHEN :basDd = SFMC_PRE_RECENT_MKTOPN_DD(TO_CHAR(SYSDATE-1, 'YYYYMMDD')) AND TO_CHAR(SYSDATE, 'HH24') &gt;= '08' THEN 1 
+                         ELSE 0 END)
+ORDER BY B.ISU_NM
+
+/**/</query>
+      <mapping>
+        <setProperty/>
+        <getProperty/>
+      </mapping>
+      <tag/>
+      <description/>
+    </sql>
+  </processor-info>
+  <input>
+    <block id="InBlock_1" label="InBlock_1" name="InBlock_1" repeat="1">
+      <field label="기준일자" name="basDd" size="8" type="string">20200414</field>
+    </block>
+  </input>
+  <output>
+    <block id="OutBlock_1" label="OutBlock_1" name="OutBlock_1">
+      <field label="표준코드" name="ISU_CD" type="string"/>
+      <field label="단축코드" name="ISU_SRT_CD" type="string"/>
+      <field label="한글 종목명" name="ISU_NM" type="string"/>
+      <field label="한글 종목약명" name="ISU_ABBRV" type="string"/>
+      <field label="영문 종목명" name="ISU_ENG_NM" type="string"/>
+      <field label="상장일" name="LIST_DD" type="string"/>
+      <field label="시장구분" name="MKT_TP_NM" type="string"/>
+      <field label="증권구분" name="SECUGRP_NM" type="string"/>
+      <field default="-" label="소속부" name="SECT_TP_NM" type="string"/>
+      <field label="주식종류" name="KIND_STKCERT_TP_NM" type="string"/>
+      <field label="액면가" name="PARVAL" type="string"/>
+      <field label="상장주식수" name="LIST_SHRS" type="string"/>
+    </block>
+  </output>
+</transaction>

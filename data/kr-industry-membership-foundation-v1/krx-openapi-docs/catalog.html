@@ -1,0 +1,785 @@
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+ 
+ 
+<!DOCTYPE html>
+<html lang="ko"> 
+<head>
+	<title>서비스 목록 - KRX | Data Marketplace OPEN API</title>
+	<meta charset="utf-8">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+	<meta name="viewport" content="width=100">
+	<meta name="author" content="한국거래소" />
+	<meta name="robots" content="index, follow" />
+	<meta name="robots" content="noarchive" />
+	<script type="text/javascript">
+		var GLOBAL_VAR = {
+			CONTEXT_PATH: ''
+		}
+	</script>
+	<script type="text/javascript" src="/inc/lib/jquery/jquery-1.12.4.min.js"></script>
+<link rel="stylesheet" type="text/css" href="/inc/lib/jquery/jquery-ui-1.12.1.custom.min.css" />
+<script type="text/javascript" src="/inc/lib/jquery/jquery-ui-1.12.1.custom.min.js"></script>
+<script type="text/javascript" src="/inc/lib/lodash/lodash-3.10.1.min.js"></script>
+
+      <script type="text/javascript">
+      	if (!Object.assign) Object.assign = _.assign;
+      </script>
+      
+<script type="text/javascript" src="/WEB-APP/webponent/ci/agent.js"></script>
+<script type="text/javascript" src="/WEB-APP/webponent/ci/util.js"></script>
+<script type="text/javascript" src="/WEB-APP/webponent/ci/ui.js"></script>
+<!-- getDevice not defined --><script type="text/javascript" src="/inc/js/opp.js?v=20260323_1"></script>
+<script type="text/javascript" src="/inc/js/opp.lang.js?v=20260323_1"></script>
+<script type="text/javascript" src="/inc/js/opp.module.js?v=20260323_1"></script>
+<script type="text/javascript" src="/inc/js/opp.util.js?v=20260323_1"></script>
+<script type="text/javascript" src="/inc/js/opp.layer.js?v=20260323_1"></script>
+<script type="text/javascript" src="/inc/js/opp.validate.js?v=20260323_1"></script>
+
+      <script type="text/javascript">
+      	opp.lang.setLocale(document.querySelector('html').lang);
+				opp.lang.setResources();
+
+				if (!location.origin) {
+					location.origin = location.protocol + '//' + location.hostname;
+					if (location.port) location.origin += ':' + location.port;
+				}
+      </script>
+      
+<script type="text/javascript" src="/inc/js/opp.opp.js?v=20260323_1"></script>
+ 
+	<link rel="stylesheet" type="text/css" href="/WEB-APP/webponent/dialog/dialog.css" />
+<link rel="stylesheet" type="text/css" href="/WEB-APP/webponent/dialog/layerlink.css" />
+<link rel="stylesheet" type="text/css" href="/templets/opp/css/sub.css?v=20260323_1" />
+<link rel="stylesheet" type="text/css" href="/templets/opp/css/opp.css?v=20260323_1" />
+<link rel="stylesheet" type="text/css" href="/inc/lib/calendar/css/pc/calendar.css?v=20260323_1" />
+<link rel="stylesheet" type="text/css" href="/inc/lib/ci-grid/css/ci-grid.css?v=20260323_1" />
+<link rel="stylesheet" type="text/css" href="/inc/lib/highlight/style/androidstudio.min.css" />
+<script type="text/javascript" src="/WEB-APP/webponent/dialog/dialog.js"></script>
+<script type="text/javascript" src="/WEB-APP/webponent/dialog/layerlink.js"></script>
+<script type="text/javascript" src="/inc/lib/jquery/jquery.vticker.min.js"></script>
+<script type="text/javascript" src="/templets/opp/js/ui.js"></script>
+<script type="text/javascript" src="/inc/lib/calendar/calendar.js?v=20260323_1"></script>
+<script type="text/javascript" src="/inc/lib/ci-grid/js/ci-grid-1.00.0.js?v=20260323_1"></script>
+<script type="text/javascript" src="/WEB-APP/webponent/chart2.0/lib/comm/raphael.js"></script>
+<script type="text/javascript" src="/WEB-APP/webponent/chart2.0/lib/comm/webponent.comm.common.js"></script>
+<script type="text/javascript" src="/WEB-APP/webponent/chart2.0/lib/chart/webponent.chart.js"></script>
+<script type="text/javascript" src="/WEB-APP/webponent/chart2.0/lib/visual/webponent.visual.horizon.js"></script>
+<script type="text/javascript" src="/WEB-APP/webponent/chart2.0/lib/visual/webponent.visual.korea.js"></script>
+<script type="text/javascript" src="/WEB-APP/webponent/chart2.0/lib/visual/webponent.visual.pie.js"></script>
+<script type="text/javascript" src="/WEB-APP/webponent/chart2.0/lib/visual/webponent.visual.scatterplot.js"></script>
+<script type="text/javascript" src="/WEB-APP/webponent/chart2.0/lib/visual/webponent.visual.treemap.js"></script>
+<script type="text/javascript" src="/inc/lib/highlight/highlight.min.js"></script>
+<script type="text/javascript" src="/inc/lib/beautify/beautify.min.js"></script>
+<script type="text/javascript" src="/inc/lib/beautify/beautify-html.min.js"></script>
+<script type="text/javascript" src="/inc/lib/beautify/beautify-css.min.js"></script>
+
+	<!--h:s--><!--h:e-->
+</head>
+<body>
+	
+	
+	
+
+	
+	
+	<div id="wrap" class="intro">
+		<div class="skipToNavigation">
+			<a href="#gnb">메뉴 바로가기</a>
+			<a href="#content">본문 바로가기</a>
+		</div>
+
+		<!-- header -->
+		<div id="header" class="">
+			<div class="globalMenu">
+				<div class="inner">
+					<ul class="personal_menu">
+						
+						
+							
+							
+								<li><a href="/contents/OPP/COMS/client/OPPCOMS001.cmd">로그인</a></li>
+								<li><a href="/contents/OPP/COMS/client/OPPCOMS002_S0.cmd">회원가입</a></li>
+							
+						
+					</ul>
+					<a href="https://data.krx.co.kr/contents/MDC/MAIN/main/index.cmd" target="_blank" class="btnKrxCenter" title="KRX Data Marketplace 메인으로 이동">KRX Data Marketplace</a>
+				</div>
+			</div>
+
+			<div class="headerNav">
+				<div class="inner">
+					<h1><a href="/contents/OPP/MAIN/main/index.cmd" title="OPEN API"><img src="/templets/opp/img/common/img_logo.png" alt="KRX OPEN API">KRX OPEN API</a></h1>
+
+					<ul class="gnb">
+						
+							
+						
+							
+								<li><a href="javascript:gotoMenu('/contents/OPP/INFO/OPPINFO001.jsp','OPP01');" title="서비스 소개 이동">서비스 소개</a></li>
+							
+						
+							
+								<li><a href="javascript:gotoMenu('/contents/OPP/USES/service/OPPUSES001_S1.cmd','OPP02');" title="서비스 이용 이동">서비스 이용</a></li>
+							
+						
+							
+								<li><a href="javascript:gotoMenu('/contents/OPP/COMM/notice/OPPCOMM001_S1.cmd','OPP03');" title="소통의 창 이동">소통의 창</a></li>
+							
+						
+							
+								<li><a href="javascript:gotoMenu('/contents/OPP/DATA/OPPDATA001.jsp','OPP04');" title="데이터상품 이동">데이터상품</a></li>
+							
+						
+							
+								<li><a href="javascript:gotoMenu('/contents/OPP/MYPG/mypage/OPPMYPG001.cmd','OPP05');" title="마이페이지 이동">마이페이지</a></li>
+							
+						
+							
+						
+							
+						
+					</ul>
+				</div>
+			</div>
+
+			<div id="headerMenu" class="subMenu">
+				<div class="inner">
+					
+						
+					
+						
+						
+							<ul>
+								
+								
+									<li><a href="javascript:gotoMenu('/contents/OPP/INFO/OPPINFO001.jsp','OPP0101');" title="서비스 소개">서비스 소개</a></li>
+								
+								
+								
+									<li><a href="javascript:gotoMenu('/contents/OPP/INFO/OPPINFO002.jsp','OPP0102');" title="이용약관">이용약관</a></li>
+								
+								
+								
+									<li><a href="javascript:gotoMenu('/contents/OPP/INFO/OPPINFO003.jsp','OPP0103');" title="서비스 이용방법">서비스 이용방법</a></li>
+								
+								
+								
+									<li><a href="javascript:gotoMenu('/contents/OPP/INFO/service/OPPINFO004.cmd','OPP0104');" title="서비스 목록">서비스 목록</a></li>
+								
+								
+							</ul>
+						
+						
+					
+						
+						
+							<ul>
+								
+								
+									<li><a href="javascript:gotoMenu('/contents/OPP/USES/service/OPPUSES001_S1.cmd','OPP0201');" title="지수">지수</a></li>
+								
+								
+								
+									<li><a href="javascript:gotoMenu('/contents/OPP/USES/service/OPPUSES002_S1.cmd','OPP0202');" title="주식">주식</a></li>
+								
+								
+								
+									<li><a href="javascript:gotoMenu('/contents/OPP/USES/service/OPPUSES003_S1.cmd','OPP0203');" title="증권상품">증권상품</a></li>
+								
+								
+								
+									<li><a href="javascript:gotoMenu('/contents/OPP/USES/service/OPPUSES004_S1.cmd','OPP0204');" title="채권">채권</a></li>
+								
+								
+								
+									<li><a href="javascript:gotoMenu('/contents/OPP/USES/service/OPPUSES005_S1.cmd','OPP0205');" title="파생상품">파생상품</a></li>
+								
+								
+								
+									<li><a href="javascript:gotoMenu('/contents/OPP/USES/service/OPPUSES006_S1.cmd','OPP0206');" title="일반상품">일반상품</a></li>
+								
+								
+								
+									<li><a href="javascript:gotoMenu('/contents/OPP/USES/service/OPPUSES007_S1.cmd','OPP0207');" title="ESG">ESG</a></li>
+								
+								
+							</ul>
+						
+						
+					
+						
+						
+							<ul>
+								
+								
+									<li><a href="javascript:gotoMenu('/contents/OPP/COMM/notice/OPPCOMM001_S1.cmd','OPP0301');" title="공지사항">공지사항</a></li>
+								
+								
+								
+								
+								
+								
+								
+									<li><a href="javascript:gotoMenu('/contents/OPP/COMM/faq/OPPCOMM004.cmd','OPP0304');" title="FAQ">FAQ</a></li>
+								
+								
+							</ul>
+						
+						
+					
+						
+						
+							<ul>
+								
+								
+									<li><a href="javascript:gotoMenu('/contents/OPP/DATA/OPPDATA001.jsp','OPP0401');" title="데이터 구입">데이터 구입</a></li>
+								
+								
+								
+									<li><a href="javascript:gotoMenu('/contents/OPP/DATA/OPPDATA002.jsp','OPP0402');" title="데이터 분배">데이터 분배</a></li>
+								
+								
+								
+									<li><a href="javascript:gotoMenu('/contents/OPP/DATA/OPPDATA005.jsp','OPP0403');" title="지수 라이센스">지수 라이센스</a></li>
+								
+								
+							</ul>
+						
+						
+					
+						
+						
+							<ul>
+								
+								
+									<li><a href="javascript:gotoMenu('/contents/OPP/MYPG/mypage/OPPMYPG001.cmd','OPP0105');" title="API 인증키 신청">API 인증키 신청</a></li>
+								
+								
+								
+									<li><a href="javascript:gotoMenu('/contents/OPP/MYPG/mypage/OPPMYPG002.cmd','OPP0501');" title="API 인증키 발급내역">API 인증키 발급내역</a></li>
+								
+								
+								
+									<li><a href="javascript:gotoMenu('/contents/OPP/MYPG/mypage/OPPMYPG003_S1.cmd','OPP0502');" title="이용현황">이용현황</a></li>
+								
+								
+							</ul>
+						
+						
+					
+						
+					
+						
+					
+				</div>
+			</div>
+		</div>
+		<!--// header -->
+
+		<!-- container -->
+		<div id="container">
+			<div id="content">
+				
+				
+					<!-- 상단 타이틀 영역 -->
+					<div class="topArea">
+						<div class="inner">
+							<h2>서비스 소개</h2>
+
+							<ul class="location">
+								<li>HOME</li>
+								
+									
+								
+									
+										<li>서비스 소개</li>
+										
+											
+												
+											
+												
+											
+												
+											
+												
+													<li>서비스 목록</li>
+													
+												
+											
+										
+									
+								
+									
+								
+									
+								
+									
+								
+									
+								
+									
+								
+									
+								
+							</ul>
+						</div>
+					</div>
+					<!--// 상단 타이틀 영역 -->
+
+					<div class="inner">
+
+						<!-- lnb -->
+						
+							<div id="lnb">
+								<ul>
+									
+										
+									
+										
+											
+												
+													
+														<li>
+															<a href="/contents/OPP/INFO/OPPINFO001.jsp" title="서비스 소개">서비스 소개</a>
+															
+														</li>
+													
+												
+													
+														<li>
+															<a href="javascript:void(0);" title="이용약관">이용약관</a>
+															
+																<ul class="sub">
+																	
+																		
+																			<li>
+																				<a href="/contents/OPP/INFO/OPPINFO002.jsp" title="국문">국문</a>
+																			</li>
+																		
+																	
+																		
+																			<li>
+																				<a href="/contents/OPP/INFO/OPPINFO005.jsp" title="영문">영문</a>
+																			</li>
+																		
+																	
+																</ul>
+															
+														</li>
+													
+												
+													
+														<li>
+															<a href="/contents/OPP/INFO/OPPINFO003.jsp" title="서비스 이용방법">서비스 이용방법</a>
+															
+														</li>
+													
+												
+													
+														<li class="on">
+															<a href="/contents/OPP/INFO/service/OPPINFO004.cmd" title="서비스 목록">서비스 목록</a>
+															
+														</li>
+													
+												
+											
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+								</ul>
+							</div>
+						
+						<!--// lnb -->
+
+						<!-- subContent -->
+						<div class="subContent">
+							
+								<div class="contentTit">
+									<h4>서비스 목록</h4>
+									
+									
+									
+										<span>KRX OPEN API는 사용자의 편의를 위해 API 서비스를 제공하고 있습니다.<br>사용목적에 맞는 API를 확인하신 후 자유롭게 이용하세요.</span>
+									
+								</div>
+							
+
+							<div class="content">
+								<!--b:s-->
+  <div class="contentTitSub">
+    <span>※ 데이터 제공 대상기간 : 2010년 이후 데이터</span>
+  </div>
+
+  <div class="tableWrap">
+    <table>
+      <colgroup>
+        <col style="width:100px;" />
+        <col style="width:35%;" />
+        <col style="width:auto;"/>
+      </colgroup>
+      <thead>
+      <tr>
+        <th scope="col">구분</th>
+        <th scope="col">API 명</th>
+        <th scope="col">설명</th>
+      </tr>
+      </thead>
+      <tbody>
+      
+      
+        <tr>
+          
+            <td rowspan="5" class="aC">지수</td>
+          
+          <td><a href="/contents/OPP/USES/service/OPPUSES001_S2.cmd?BO_ID=SsgXTEspyJESKvyXZtCU" class="link">KRX 시리즈 일별시세정보</a></td>
+          <td>KRX 시리즈 지수의 시세정보 제공 ('10년01월04일 데이터부터 제공)</td>
+        </tr>
+      
+        <tr>
+          
+          <td><a href="/contents/OPP/USES/service/OPPUSES001_S2.cmd?BO_ID=EREKZauXnMmxyIlqzeDN" class="link">KOSPI 시리즈 일별시세정보</a></td>
+          <td>KOSPI 시리즈 지수의 시세정보 제공 ('10년01월04일 데이터부터 제공)</td>
+        </tr>
+      
+        <tr>
+          
+          <td><a href="/contents/OPP/USES/service/OPPUSES001_S2.cmd?BO_ID=nimebcamqFNIPNcRrHoO" class="link">KOSDAQ 시리즈 일별시세정보</a></td>
+          <td>KOSDAQ 시리즈 지수의 시세정보 제공 ('10년01월04일 데이터부터 제공)</td>
+        </tr>
+      
+        <tr>
+          
+          <td><a href="/contents/OPP/USES/service/OPPUSES001_S2.cmd?BO_ID=vMxIKCtPBUeRytCqkoFv" class="link">채권지수 시세정보</a></td>
+          <td>채권지수의 시세정보 제공 ('10년01월04일 데이터부터 제공)</td>
+        </tr>
+      
+        <tr>
+          
+          <td><a href="/contents/OPP/USES/service/OPPUSES001_S2.cmd?BO_ID=rPBjbLtScMwmSXWDOYPd" class="link">파생상품지수 시세정보</a></td>
+          <td>파생상품지수의 시세정보를 제공 ('10년01월04일 데이터부터 제공)</td>
+        </tr>
+      
+      
+        <tr>
+          
+            <td rowspan="8" class="aC">주식</td>
+          
+          <td><a href="/contents/OPP/USES/service/OPPUSES002_S2.cmd?BO_ID=JvJFzlAENzZlPBDNGAWC" class="link">유가증권 일별매매정보</a></td>
+          <td>유가증권시장에 상장되어 있는 주권의 매매정보 제공 ('10년01월04일 데이터부터 제공)</td>
+        </tr>
+      
+        <tr>
+          
+          <td><a href="/contents/OPP/USES/service/OPPUSES002_S2.cmd?BO_ID=hZjGpkllgCBCWqeTsYFj" class="link">코스닥 일별매매정보</a></td>
+          <td>코스닥시장에 상장되어 있는 주권의 매매정보 제공 ('10년01월04일 데이터부터 제공)</td>
+        </tr>
+      
+        <tr>
+          
+          <td><a href="/contents/OPP/USES/service/OPPUSES002_S2.cmd?BO_ID=HSiRvxGSYnvaKuAuqpqp" class="link">코넥스 일별매매정보</a></td>
+          <td>코넥스시장에 상장되어 있는 주권의 매매정보 제공 ('13년07월01일 데이터부터 제공)</td>
+        </tr>
+      
+        <tr>
+          
+          <td><a href="/contents/OPP/USES/service/OPPUSES002_S2.cmd?BO_ID=erXKnEAzTqcGnkcoSdGA" class="link">신주인수권증권 일별매매정보</a></td>
+          <td>유가증권/코스닥시장에 상장되어 있는 신주인수권증권의 매매정보 제공 ('10년01월04일 데이터부터 제공)</td>
+        </tr>
+      
+        <tr>
+          
+          <td><a href="/contents/OPP/USES/service/OPPUSES002_S2.cmd?BO_ID=YieGrzzJtKhbaNLuKmhz" class="link">신주인수권증서 일별매매정보</a></td>
+          <td>유가증권/코스닥시장에 상장되어 있는 신주인수권증서의 매매정보 제공 ('10년02월12일 데이터부터 제공)</td>
+        </tr>
+      
+        <tr>
+          
+          <td><a href="/contents/OPP/USES/service/OPPUSES002_S2.cmd?BO_ID=PiwgMdTwmsenXhmqqxuj" class="link">유가증권 종목기본정보</a></td>
+          <td>유가증권 종목기본정보 ('10년01월04일 데이터부터 제공)</td>
+        </tr>
+      
+        <tr>
+          
+          <td><a href="/contents/OPP/USES/service/OPPUSES002_S2.cmd?BO_ID=CifLHplnUFMgpHIMMPXs" class="link">코스닥 종목기본정보</a></td>
+          <td>코스닥 종목기본정보 ('10년01월04일 데이터부터 제공)</td>
+        </tr>
+      
+        <tr>
+          
+          <td><a href="/contents/OPP/USES/service/OPPUSES002_S2.cmd?BO_ID=COgTLqgmGlqyJvaEFNIc" class="link">코넥스 종목기본정보</a></td>
+          <td>코넥스 종목기본정보 ('13년07월01일 데이터부터 제공)</td>
+        </tr>
+      
+      
+        <tr>
+          
+            <td rowspan="3" class="aC">증권상품</td>
+          
+          <td><a href="/contents/OPP/USES/service/OPPUSES003_S2.cmd?BO_ID=nrEpCLaZpoLCTzPUMxuF" class="link">ETF 일별매매정보</a></td>
+          <td>ETF(상장지수펀드)의 매매정보 제공 ('10년01월04일 데이터부터 제공)</td>
+        </tr>
+      
+        <tr>
+          
+          <td><a href="/contents/OPP/USES/service/OPPUSES003_S2.cmd?BO_ID=VujebrcOsZQMybnUuwLk" class="link">ETN 일별매매정보</a></td>
+          <td>ETN(상장지수증권)의 매매정보 제공 ('14년11월17일 데이터부터 제공)</td>
+        </tr>
+      
+        <tr>
+          
+          <td><a href="/contents/OPP/USES/service/OPPUSES003_S2.cmd?BO_ID=brBhSEuDCUNpmfsCslfM" class="link">ELW 일별매매정보</a></td>
+          <td>ELW(주식위런트증권)의 매매정보 제공 ('10년01월04일 데이터부터 제공)</td>
+        </tr>
+      
+      
+        <tr>
+          
+            <td rowspan="3" class="aC">채권</td>
+          
+          <td><a href="/contents/OPP/USES/service/OPPUSES004_S2.cmd?BO_ID=CEnOyORzHgXWpdbUfWyf" class="link">국채전문유통시장 일별매매정보</a></td>
+          <td>국채전문유통시장에 상장되어있는 채권의 매매정보 제공 ('10년01월04일 데이터부터 제공)</td>
+        </tr>
+      
+        <tr>
+          
+          <td><a href="/contents/OPP/USES/service/OPPUSES004_S2.cmd?BO_ID=JfStBNhXISpVVfBHgspT" class="link">일반채권시장 일별매매정보</a></td>
+          <td>일반채권시장에 상장되어있는 채권의 매매정보 제공 ('10년01월04일 데이터부터 제공)</td>
+        </tr>
+      
+        <tr>
+          
+          <td><a href="/contents/OPP/USES/service/OPPUSES004_S2.cmd?BO_ID=yrTTOsXuYzHprbWLuYzd" class="link">소액채권시장 일별매매정보</a></td>
+          <td>소액채권시장에 상장되어있는 채권의 매매정보 제공 ('10년01월04일 데이터부터 제공)</td>
+        </tr>
+      
+      
+        <tr>
+          
+            <td rowspan="6" class="aC">파생상품</td>
+          
+          <td><a href="/contents/OPP/USES/service/OPPUSES005_S2.cmd?BO_ID=ilaVYOabbaicHbKTsqga" class="link">선물 일별매매정보 (주식선물外)</a></td>
+          <td>파생상품시장의 선물 중 주식선물을 제외한 선물의 매매정보 제공 ('10년01월04일 데이터부터 제공)</td>
+        </tr>
+      
+        <tr>
+          
+          <td><a href="/contents/OPP/USES/service/OPPUSES005_S2.cmd?BO_ID=JzVvQnspImpuqtZlFWpJ" class="link">주식선물(유가) 일별매매정보</a></td>
+          <td>파생상품시장의 주식선물 중 기초자산이 유가증권시장에 속하는 주식선물의 거래정보 제공 ('10년01월04일 데이터부터 제공)</td>
+        </tr>
+      
+        <tr>
+          
+          <td><a href="/contents/OPP/USES/service/OPPUSES005_S2.cmd?BO_ID=henfdJADfLTCUCBWIRCj" class="link">주식선물(코스닥) 일별매매정보</a></td>
+          <td>파생상품시장의 주식선물 중 기초자산이 코스닥시장에 속하는 주식선물의 거래정보 제공 ('15년08월03일 데이터부터 제공)</td>
+        </tr>
+      
+        <tr>
+          
+          <td><a href="/contents/OPP/USES/service/OPPUSES005_S2.cmd?BO_ID=AoTvuFpukvuBsfypkZbq" class="link">옵션 일별매매정보 (주식옵션外)</a></td>
+          <td>파생상품시장의 옵션 중 주식옵션을 제외한 옵션의 매매정보 제공 ('10년01월04일 데이터부터 제공)</td>
+        </tr>
+      
+        <tr>
+          
+          <td><a href="/contents/OPP/USES/service/OPPUSES005_S2.cmd?BO_ID=fwWKgzbevDVtAoECgkpA" class="link">주식옵션(유가) 일별매매정보</a></td>
+          <td>파생상품시장의 주식옵션 중 기초자산이 유가증권시장에 속하는 주식옵션의 거래정보 제공 ('10년01월04일 데이터부터 제공)</td>
+        </tr>
+      
+        <tr>
+          
+          <td><a href="/contents/OPP/USES/service/OPPUSES005_S2.cmd?BO_ID=AFNbHSizSPnEssZoUqiS" class="link">주식옵션(코스닥) 일별매매정보</a></td>
+          <td>파생상품시장의 주식옵션 중 기초자산이 코스닥시장에 속하는 주식옵션의 거래정보 제공 ('17년06월26일 데이터부터 제공)</td>
+        </tr>
+      
+      
+        <tr>
+          
+            <td rowspan="3" class="aC">일반상품</td>
+          
+          <td><a href="/contents/OPP/USES/service/OPPUSES006_S2.cmd?BO_ID=rTvrZvAFKfcaLPOggJtW" class="link">석유시장 일별매매정보</a></td>
+          <td>KRX 석유시장의 매매정보 제공 ('12년03월30일 데이터부터 제공)</td>
+        </tr>
+      
+        <tr>
+          
+          <td><a href="/contents/OPP/USES/service/OPPUSES006_S2.cmd?BO_ID=sxveSnWzWNzWxQASsgEG" class="link">금시장 일별매매정보</a></td>
+          <td>KRX 금시장 매매정보 제공 ('14년03월24일 데이터부터 제공)</td>
+        </tr>
+      
+        <tr>
+          
+          <td><a href="/contents/OPP/USES/service/OPPUSES006_S2.cmd?BO_ID=IZiYdcgRQFMeENJPEMKG" class="link">배출권 시장 일별매매정보</a></td>
+          <td>KRX 탄소배출권 시장의 매매정보 제공 ('15년01월12일 데이터부터 제공)</td>
+        </tr>
+      
+      
+        <tr>
+          
+            <td rowspan="3" class="aC">ESG</td>
+          
+          <td><a href="/contents/OPP/USES/service/OPPUSES007_S2.cmd?BO_ID=dpRoGGhdnfSZSrMFtUCz" class="link">ESG 증권상품</a></td>
+          <td>ESG 증권상품 정보를 제공 ('20년01월02일 데이터부터 제공)</td>
+        </tr>
+      
+        <tr>
+          
+          <td><a href="/contents/OPP/USES/service/OPPUSES007_S2.cmd?BO_ID=MwsSXzVIceQhMSJUeCdp" class="link">사회책임투자채권 정보</a></td>
+          <td>사회책임투자채권 정보를 제공 ('19년01월01일 데이터부터 제공)</td>
+        </tr>
+      
+        <tr>
+          
+          <td><a href="/contents/OPP/USES/service/OPPUSES007_S2.cmd?BO_ID=WgFYvEvsseQMARfMVZCq" class="link">ESG 지수</a></td>
+          <td>ESG 지수 정보를 제공 ('20년01월02일 데이터부터 제공)</td>
+        </tr>
+      
+      </tbody>
+    </table>
+  </div>
+<!--b:e-->
+							</div>
+						</div>
+						<!--// subContent -->
+					</div>
+				
+			</div>
+		</div>
+		<!--// container -->
+
+		<!-- footer -->
+		<div id="footer">
+			<div class="inner">
+				<ul class="footerMenu">
+					<li><a href="http://info.krx.co.kr/contents/KRX/06/06070100/KRX06070100.jsp" target="_blank">개인정보처리방침</a></li>
+					<li><a href="http://info.krx.co.kr/contents/KRX/06/06070200/KRX06070200.jsp" target="_blank">법적고지</a></li>
+					
+				</ul>
+				<small>본사 : 48400 부산광역시 남구 문현금융로 40(문현동) TEL : 051-662-2000 사업자 등록번호 : 602-81-35420금융서비스업 대표자 : 정은보 <br />서울 : 07320 서울특별시 영등포구 여의나루로 76(여의도동) TEL : 1577-0088/ 02-3774-9000 통신판매신고 부산남구 : 0036호<br />Copyright  2020 KOREA Exchange all rights reserved. krxdata@krx.co.kr</small>
+
+				<a href="javascript:void(0);" class="btnFamilySite">Family Site</a>
+				<ul class="familyMenu">
+					<li><a href="http://krx.co.kr" target="_blank">KRX 한국거래소</a></li>
+					<li><a href="http://data.krx.co.kr" target="_blank">KRX Data Marketplace</a></li>
+				</ul>
+			</div>
+		</div>
+		<!--// footer -->
+	</div>
+	<div class="dim"></div>
+	<script type="text/javascript">
+
+		function gotoMenu(url, menu_id, popupYn, popupAttr) {
+			var isLogin = false;
+
+			if (!isLogin && (menu_id === 'OPP05' || menu_id === 'OPP0105' || menu_id === 'OPP0501' || menu_id === 'OPP0502')) {
+				alert('로그인 또는 회원가입이 필요합니다. ');
+			}
+
+			location.href = url;
+
+
+		}
+
+
+		opp.module.setModule({
+			name: 'TEMPLET_MODULE',
+			init: 'init',
+			function: function (self, api) {
+
+				var SESSION_TIMEOUT = 30;
+
+				self.init = function () {
+					if ($('#jsLogoutBtn').length > 0) {
+						timeoutForLogout();
+					}
+				};
+
+				var makeDigitNumber = function (number) {
+					var digitNumber = number + '';
+					if (number < 10) {
+						digitNumber = '0' + number;
+					}
+					return digitNumber;
+				};
+
+				var confirmForLogout = function () {
+					api.util.submitAjax({
+						url: '/contents/OPP/MAIN/main/removeSession.cmd',
+						success: function () {
+							api.layer.confirm('세션 만료로 자동 로그아웃 되었습니다.<br><strong>서비스 이용을 위해 재로그인 해주세요.</strong>', function () {
+								location.href = '/contents/OPP/COMS/client/OPPCOMS001.cmd';
+							}, function () {
+								location.href = '/contents/OPP/MAIN/main/index.cmd';
+							});
+						}
+					});
+				};
+
+				var timeoutForLogout = function () {
+					if (self.timeoutForLogout) {
+						clearInterval(self.timeoutForLogout);
+					}
+					var date = new Date();
+					date.setMinutes(date.getMinutes() + SESSION_TIMEOUT);
+					document.cookie = 'opp.client_session=' + encodeURIComponent('true') + '; path=/; secure; expires=' + date.toUTCString() + ';';
+					var minute = SESSION_TIMEOUT;
+					var second = 0;
+					self.timeoutForLogout = setInterval(function () {
+						second -= 1;
+						if (second < 0) {
+							minute -= 1;
+							second = 59;
+						}
+						if (minute < 0 || api.util.getCookie('opp.client_session') !== 'true') {
+							minute = 0;
+							second = 0;
+							confirmForLogout();
+							clearInterval(self.timeoutForLogout);
+						}
+						$('#jsLogoutTime').text(makeDigitNumber(minute) + '분 ' + makeDigitNumber(second) + '초');
+					}, 1000);
+				};
+
+				$('#jsExtendLoginBtn').on('click', function () {
+					api.util.submitAjax({
+						url: '/contents/OPP/MAIN/main/extendSession.cmd',
+						success: function (data) {
+							if (api.util.isErrorCode(data)) {
+								confirmForLogout();
+							} else {
+								$('#jsLogoutTime').text(SESSION_TIMEOUT + '분 00초');
+								timeoutForLogout();
+							}
+						}
+					});
+				});
+
+			}
+		});
+	</script>
+</body>
+</html>

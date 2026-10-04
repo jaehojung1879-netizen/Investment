@@ -1,0 +1,1131 @@
+
+
+
+
+
+
+
+
+<!-- <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> -->
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<title>전자공시 OPENDART 시스템 | 개발가이드 | 상세</title>
+<meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="x-ua-compatible" content="ie=edge" />
+<link rel="stylesheet" type="text/css" href="/css/common.css" />
+<link rel="stylesheet" type="text/css" href="/css/custom.css" />
+<link rel="stylesheet" type="text/css" href="/css/slick.css" />
+<link rel="stylesheet" type="text/css" href="/js/jquery-ui/jquery-ui.min.css" />
+<link rel="shortcut icon" type="image/x-icon" href="data:image/x-icon;," />
+<link rel="icon" href="/favicon.ico">
+<script type="text/javascript" src="/js/jquery-3.7.1.min.js"></script>
+<script type="text/javascript" src="/js/jquery-3.7.1.js"></script>
+<script type="text/javascript" src="/js/cssCommon.js"></script>
+<script type="text/javascript" src="/js/slick.min.js"></script>
+<script type="text/javascript" src="/js/util.js"></script>
+<script type="text/javascript" src="/js/xajax.js"></script>
+<script type="text/javascript" src="/js/search.js"></script>
+<script type="text/javascript" src="/js/searchXdm.js"></script>
+<script type="text/javascript" src="/js/xjs.js"></script>
+<script type="text/javascript" src="/js/jquery-ui/jquery-ui.min.js"></script>
+<script type="text/javascript" src="/js/jquery-ui/datepicker-ko.js"></script>
+<script type="text/javascript" src="/js/dartCommon.js"></script>
+</head>
+<body>
+
+<div class="loadingMask loadingCommon" id="loadingMask" style="display: none;"></div>
+<div class="loadingWrap loadingCommon" id="loadingWrap" style="display: none;">
+    <div class="loadingImg"></div> 
+    <div class="loadingMessage">조회중입니다. 잠시만 기다려주세요.</div> 
+</div>
+
+
+
+<!-- 회사명 찾기 여러개 레이어 팝업 -->
+<div class="mask"></div>
+<div id="layerPop01" class="companyPop wrap">
+</div>
+
+<!-- 업종 상세 찾기 레이어 팝업 2 -->
+<div id="layerPop02" class="layerPop layerPopL">
+</div>
+
+<!-- 기업개황 레이어 팝업 -->
+<div id="layerPop03" class="layerPop layerPopL">
+</div>
+
+<!-- 회사명 찾기 단일 레이어 팝업 -->
+<div id="layerPop04" class="companyPop wrap">
+</div>
+
+<!-- 보고자 찾기 단일 레이어 팝업 -->
+<div id="layerPop05" class="companyPop wrap">
+</div>
+
+<!-- IP 변경 신청 레이어 팝업 -->
+<div id="layerPop06" class="layerPop layerPopL">
+</div>
+
+<!-- 변경 신청 내역 상세 레이어 팝업 -->
+<div id="layerPop07" class="layerPop layerPopL">
+</div>
+
+
+<div id="wrap">
+
+	<!-- 헤더 영역 시작 -->
+	
+
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+
+	function actionLogout()
+	{
+		document.selectOne.action = "/uat/uia/actionLogout.do";
+		document.selectOne.submit();
+		//top.document.location.href = "/j_spring_security_logout";
+	}
+
+    function toSNS(sns, menu) {
+    	var strTitle = document.title;
+    	var strURL = "https://opendart.fss.or.kr/guide/detail.do?apiGrpCd=DS001&amp;apiId=2019002";
+//     	if(menu == "110"){
+//     		strTitle = "대표이사ㆍ신고담당이사 공시서류 확인 및 서명";
+//     	} else if(menu == "120"){
+//     		strTitle = "대표이사ㆍ신고담당이사 이사의 경영진단 및 분석의견";
+//     	} else if(menu == "210"){
+//     		strTitle = "공시실무자 정기 보고서";
+//     	} else if(menu == "220"){
+//     		strTitle = "공시실무자 주요사항 보고서";
+//     	} else if(menu == "230"){
+//     		strTitle = "공시실무자 발행공시";
+//     	} else if(menu == "240"){
+//     		strTitle = "공시실무자 합병";
+//     	} else if(menu == "310"){
+//     		strTitle = "지분공시의무자 대량 보유상황 보고";
+//     	} else if(menu == "320"){
+//     		strTitle = "지분공시의무자 임원 소유상황 보고";
+//     	} else if(menu == "330"){
+//     		strTitle = "지분공시의무자 단기매매차익 반환";
+//     	} else if(menu == "400"){
+//     		strTitle = "공시업무스케쥴";
+//     	} else if(menu == "500"){
+//     		strTitle = "공시의무를 미이행시 어떤 일이 일어날까요?";
+//     	} else{
+//     		strTitle = "기업공시 길라잡이";
+//     	}
+
+     	//strURL = "http://dart.fss.or.kr/introduction/content1.do";
+        if(sns == 'T'){
+        	window.open("//twitter.com/home?status="+encodeURIComponent(strTitle) + ' ' + strURL);
+        }
+        else if(sns == 'F'){
+            window.open("https://www.facebook.com/sharer/sharer.php?u="+strURL+"&t="+strTitle);
+        }
+        else if(sns == 'B'){
+        	window.open("http://blog.naver.com/openapi/share?url=" + encodeURIComponent(strURL) + "&title=" + encodeURIComponent(strTitle));
+        }
+        else if(sns == 'K'){
+       		Kakao.Link.sendDefault({
+       			objectType: 'feed',
+       			content: {
+       				title: strTitle,
+       				description: strTitle,
+       				imageUrl: "http://opendart.fss.or.kr/images/common/logo.gif",
+       				imageWidth: 800,
+       				imageHeight: 450,
+       				link: {
+       					mobileWebUrl: strURL,
+       					webUrl: strURL
+      					}
+       			}
+       		});
+       	}
+        else if(sns == 'M'){
+    		if (window.sidebar && window.sidebar.addPanel) {
+    			// Firefox version < 23
+    			window.sidebar.addPanel(strTitle, strURL, '');
+    		} else if ((window.sidebar && (navigator.userAgent.toLowerCase().indexOf('firefox') > -1)) || (window.opera && window.print)) {
+    			//Firefox version >= 23 and Opera Hotlist
+    			var elem = document.createElement('a');
+    			elem.setAttribute('href',strURL);
+    			elem.setAttribute('title',strTitle);
+    			elem.setAttribute('rel','sidebar');
+    			elem.click();
+    		} else if (window.external && ('AddFavorite' in window.external)) {
+    			// IE Favorite
+    			window.external.AddFavorite(strURL, strTitle);
+    		} else {
+    			// WebKit - Safari/Chrome
+    			alert((navigator.userAgent.toLowerCase().indexOf('mac') != -1 ? 'Cmd' : 'Ctrl') + '+D 키를 눌러 즐겨찾기에 등록하실 수 있습니다.');
+    		}
+        }
+    }
+
+</script>
+
+	<!-- 웹 헤더 영역 시작 -->
+    <div id="header">
+        <div class="headerWrap">
+			<div class="headerTop">
+				<h1><a href="/"><img src="/images/logo.png" alt="오픈다트 로고"/></a></h1>
+				<div class="util_menu">
+				<form name="selectOne" method="post">
+					<ul>	
+						
+							
+							
+								<li><a href='/uat/uia/egovLoginUsr.do'>LOGIN</a></li>
+							
+						
+						<li><a href="/sitemap/main.do">SITE MAP</a></li>
+						<li><a href="https://engopendart.fss.or.kr/" target="_blank" title="ENGLISH" class="languageChoice">ENGLISH</a></li>
+					</ul>
+					</form>
+				</div>
+			</div>
+            <ul class="gnb">
+                <li>
+                    <a href="/intro/main.do">오픈API 소개</a>
+                    <ul class="headerWrap2">
+                        <li><a href="/intro/main.do">오픈API 소개</a></li>
+                        <li><a href="/intro/infoApiList.do">오픈API 서비스 소개</a></li>
+						<li><a href="/intro/terms.do">이용약관</a></li>
+						<li><a href="/intro/confirm.do">개인정보 수집이용동의</a></li>
+                    </ul>
+                </li>
+                <li>
+                  	<a href="/mng/userApiKeyListView.do">인증키 신청/관리</a>
+                    <ul class="headerWrap2">
+						<li><a href="/uss/umt/EgovMberInsertView.do">인증키 신청</a></li>
+						<li><a href="/mng/userApiKeyListView.do">인증키 관리</a></li>
+                        <li><a href="/mng/apiUsageStatusView.do">오픈API 이용현황</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="/guide/main.do?apiGrpCd=DS001">개발가이드</a>
+                    <ul class="headerWrap2">
+                        <li><a href="/guide/main.do?apiGrpCd=DS001">공시정보</a></li>
+						<li><a href="/guide/main.do?apiGrpCd=DS002">정기보고서 주요정보</a></li>
+						<li><a href="/guide/main.do?apiGrpCd=DS003">정기보고서 재무정보</a></li>
+						<li><a href="/guide/main.do?apiGrpCd=DS004">지분공시 종합정보</a></li>
+						<li><a href="/guide/main.do?apiGrpCd=DS005">주요사항보고서 주요정보</a></li>
+						<li><a href="/guide/main.do?apiGrpCd=DS006">증권신고서 주요정보</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="/disclosureinfo/biz/main.do">공시정보 활용마당</a>
+                    <ul class="headerWrap2">
+                        <li><a href="/disclosureinfo/biz/main.do">정기보고서 주요정보조회</a></li>
+						<li><a href="/disclosureinfo/fnltt/singl/main.do">재무정보조회</a></li>
+						<li><a href="/disclosureinfo/fnltt/dwld/main.do">재무정보 다운로드</a></li>
+						<li><a href="/disclosureinfo/qota/main.do">지분공시 종합정보조회</a></li>
+						<li><a href="/disclosureinfo/mainMatter/main.do">주요사항보고서 주요정보조회</a></li>
+                    	<li><a href="/disclosureinfo/scrits/main.do">증권신고서 주요정보조회</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="/cop/bbs/selectArticleList.do?bbsId=B0000000000000000001">소통창구</a>
+                    <ul class="headerWrap2">
+                        <li><a href="/cop/bbs/selectArticleList.do?bbsId=B0000000000000000001">공지사항</a></li>
+						<li><a href="/cop/bbs/selectArticleList.do?bbsId=B0000000000000000002">FAQ </a></li>
+						<li><a href="/cop/bbs/selectArticleList.do?bbsId=B0000000000000000003">Q&A</a></li>
+						<li><a href="/cop/bbs/selectArticleList.do?bbsId=B0000000000000000004">변동내역알림</a></li>
+						<li><a href="/cop/bbs/videoGuide.do">동영상 가이드</a></li>
+                    </ul>
+                </li>
+				 <li>
+                    <a href="/mng/selectUserInfoView.do">마이페이지</a>
+                    <ul class="headerWrap2">
+                        <li><a href="/mng/selectUserInfoView.do">사용자 정보조회</a></li>
+                        <li><a href="/mng/changeUserPwView.do">비밀번호 변경</a></li>
+                        <li><a href="/mng/signOutUserView.do">탈퇴하기</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <div class="bg01"></div>
+    </div>
+	<!-- 웹 헤더 영역 끝 --> 
+
+	<!-- 모바일 헤더 시작 -->
+	<div id="m_header">
+		<div class="area">
+			<h1><a href="/"><img src="/images/mobile/logo.png" alt="다트 로고"/></a></h1>
+			<div class="top_menu"><a href="#none" id="m_menu"><img src="/images/mobile/top_menu.png" alt="메뉴"/></a></div>
+			<div class="m_gnb_wrap">
+				<div class="m_gnb">
+					<!-- languageChoice -->
+				<div class="languageChoice"><a href="https://engopendart.fss.or.kr/" target="_blank" title="englisg">ENGLISH</a></div>
+		
+					
+						
+						
+							<div class="u_menu" >
+								<ul>
+									<li><button type="button" class="u_login_btn" onclick="location.href='/uat/uia/egovLoginUsr.do'">LOGIN</button></li>
+<!-- 									<li><button type="button" class="u_login_btn">SITEMAP</button></li> -->
+								</ul>
+							</div>
+						
+					
+					<ul>
+						<li>
+							<a href="javascript: void(0);">오픈API 소개</a>
+							<ul>
+		                        <li><a href="/intro/main.do">오픈API 소개</a></li>
+		                        <li><a href="/intro/infoApiList.do">오픈API 서비스 소개</a></li>
+								<li><a href="/intro/terms.do">이용약관</a></li>
+								<li><a href="/intro/confirm.do">개인정보 수집이용동의</a></li>
+							</ul>
+						</li>
+						<li>
+							<a href="javascript: void(0);">인증키 신청/관리</a>
+		                    <ul>
+								<li><a href="/uss/umt/EgovMberInsertView.do">인증키 신청</a></li>
+								<li><a href="/mng/userApiKeyListView.do">인증키 관리</a></li>
+		                        <li><a href="/mng/apiUsageStatusView.do">오픈API 이용현황</a></li>
+		                    </ul>
+						</li>
+						<li>
+		                    <a href="javascript: void(0);">개발가이드</a>
+		                    <ul>
+		                        <li><a href="/guide/main.do?apiGrpCd=DS001">공시정보</a></li>
+								<li><a href="/guide/main.do?apiGrpCd=DS002">정기보고서 주요정보</a></li>
+								<li><a href="/guide/main.do?apiGrpCd=DS003">정기보고서 재무정보</a></li>
+								<li><a href="/guide/main.do?apiGrpCd=DS004">지분공시 종합정보</a></li>
+								<li><a href="/guide/main.do?apiGrpCd=DS005">주요사항보고서 주요정보</a></li>
+								<li><a href="/guide/main.do?apiGrpCd=DS006">증권신고서 주요정보</a></li>
+							</ul>
+						</li>
+						<li>
+		                    <a href="javascript: void(0);">공시정보 활용마당</a>
+		                    <ul>
+		                        <li><a href="/disclosureinfo/biz/main.do">정기보고서 주요정보조회</a></li>
+								<li>
+									<a href="javascript: void(0);">재무정보조회</a>
+									<ul>
+										<li><a href="/disclosureinfo/fnltt/singl/main.do">단일회사 재무제표 조회</a></li>
+										<li><a href="/disclosureinfo/fnltt/singlacnt/main.do">단일회사 주요계정 조회</a></li>
+										<li><a href="/disclosureinfo/fnltt/cmpnyacnt/main.do">회사간 주요계정 비교</a></li>
+										<li><a href="/disclosureinfo/fnltt/singlnote/main.do">재무제표 주요 주석 조회</a></li>
+										<li><a href="/disclosureinfo/fnltt/singlindx/main.do">단일회사 주요 재무지표 조회</a></li>
+										<li><a href="/disclosureinfo/fnltt/cmpnyindx/main.do">회사간 주요 재무지표 비교</a></li>
+										
+									</ul>
+								</li>
+								<li>
+								    <a href="javascript: void(0);">재무정보다운로드</a>
+								    <ul>
+								    	<li><a href="/disclosureinfo/fnltt/dwld/main.do">재무정보일괄다운로드</a></li>
+									    <li><a href="/disclosureinfo/fnltt/xbrl/main.do">XBRL재무제표 원문 내려받기</a></li>										
+										<li><a href="/disclosureinfo/fnltt/xbrlnote/main.do">주석 일괄다운로드</a></li>
+									</ul>
+								</li>
+								<li><a href="/disclosureinfo/qota/main.do">지분공시 종합정보조회</a></li>
+								<li><a href="/disclosureinfo/mainMatter/main.do">주요사항보고서 주요정보조회</a></li>
+		                    	<li><a href="/disclosureinfo/scrits/main.do">증권신고서 주요정보조회</a></li>
+		                    </ul>
+						</li>
+						<li>
+		                    <a href="javascript: void(0);">소통창구</a>
+		                    <ul>
+		                        <li><a href="/cop/bbs/selectArticleList.do?bbsId=B0000000000000000001">공지사항</a></li>
+								<li><a href="/cop/bbs/selectArticleList.do?bbsId=B0000000000000000002">FAQ </a></li>
+								<li><a href="/cop/bbs/selectArticleList.do?bbsId=B0000000000000000003">Q&A</a></li>
+								<li><a href="/cop/bbs/selectArticleList.do?bbsId=B0000000000000000004">변동내역알림</a></li>
+								<li><a href="/cop/bbs/videoGuide.do">비디오 가이드</a></li>
+		                    </ul>
+						</li>
+						<li>
+		                    <a href="javascript: void(0);">마이페이지</a>
+		                    <ul>
+		                        <li><a href="/mng/selectUserInfoView.do">사용자 정보조회</a></li>
+		                        <li><a href="/mng/changeUserPwView.do">비밀번호 변경</a></li>
+		                        <li><a href="/mng/signOutUserView.do">탈퇴하기</a></li>
+		                    </ul>
+						</li>
+					</ul>
+					<div class="close_btn"><img src="/images/mobile/close_01.png" alt="닫기"/></div>
+				</div>
+			</div>
+		</div>
+
+		
+			
+				
+				
+				
+				
+				
+				
+					<h2>개발가이드</h2>
+				
+				
+				
+			
+<!-- 			<div class="desc">123</div> -->
+		
+	</div>
+	<!-- //모바일 헤더 끝 -->
+	
+	<!-- 헤더 영역 끝 --> 
+
+	<div id="container"> 
+		<div id="contentsWrap">
+		<!-- 레프트 메뉴 시작 -->
+		
+
+
+
+
+
+
+
+
+	<div id="lnb">
+	
+
+		
+	
+		
+
+		
+
+		
+		
+		
+	
+		
+	
+		
+			<h2>개발가이드</h2>
+			<ul>
+				<li class="on">
+					<a href="/guide/main.do?apiGrpCd=DS001">공시정보</a>
+				</li>
+				<li class="">
+					<a href="/guide/main.do?apiGrpCd=DS002">정기보고서 주요정보</a>
+				</li>
+				<li class="">
+					<a href="/guide/main.do?apiGrpCd=DS003">정기보고서 재무정보</a>
+				</li>
+				<li class="">
+					<a href="/guide/main.do?apiGrpCd=DS004">지분공시 종합정보</a>
+				</li>
+				<li class="">
+					<a href="/guide/main.do?apiGrpCd=DS005">주요사항보고서 주요정보</a>
+				</li>
+				<li class="">
+					<a href="/guide/main.do?apiGrpCd=DS006">증권신고서 주요정보</a>
+				</li>
+			</ul>
+		
+	
+		
+	
+		
+	
+	</div>
+
+
+
+		<!-- 레프트 메뉴 끝-->
+		
+		<div id="contents"> 
+		
+			<!-- 컨텐츠 확대 축소 -->
+			<div class="btn_wide_on"></div>
+			<div class="btn_wide_off"></div>
+			
+			<!-- 메인컨텐츠 영역 시작 -->
+			
+
+
+
+
+
+
+
+
+
+
+
+	
+		
+	
+	
+	
+	
+	
+	
+
+
+<!-- 타이틀 -->
+<div class="head_tit">
+
+	<h3>공시정보</h3>
+	<ul class="navy">
+		<li class="home"><img src="/images/ico_head_title_home.png" alt="홈" /></li>
+		<li>개발가이드</li>
+		<li>공시정보</li>
+		<li>기업개황</li>
+	</ul>
+</div>
+<div class="topImg03"></div>
+
+<!-- 컨텐츠 영역 -->
+<div class="DGTopTitle">
+	<div class="leftWrap">
+		<p><span></span> 기업개황 개발가이드</p>
+	</div>
+	<div class="rightWrap">
+		<form id="errorForm" name="errorForm" action="/guide/reportErrorView.do">
+			<input type="hidden" id="apiId" name="apiId" value="2019002">
+			<input type="hidden" id="userEmail" name="userEmail" value="">
+			<input type="hidden" id="apiNm" name="apiNm" value="">
+			<input type="hidden" id="apiGrpCd" name="apiGrpCd" value="DS001">
+		</form>
+		
+		
+		
+		
+	  	
+	</div> 
+</div>
+<div class="DGCont">
+	<div class="titleWrapToggle"><h5>기본 정보</h5><span class="iconClose"></span></div>
+	<div class="contWrapToggle">
+		<table class="tb02" summary="메서드,요청URL,인코딩,출력포멧 순으로 구성되어 있습니다.">
+		<caption>기본 정보</caption>
+			<colgroup>
+					<col width="10%" />
+					<col width="*" />
+					<col width="15%" />
+					<col width="15%" />
+			</colgroup>
+			<thead>
+				<tr style="height: 49px;">
+					<th scope="col"><label>메서드</label></th>
+					<th scope="col"><label>요청URL</label></th>
+					<th scope="col"><label>인코딩</label></th>
+					<th scope="col"><label>출력포멧</label></th>
+				</tr>
+			</thead>
+			<tbody>
+
+				
+					
+					
+						<tr>
+							<td>GET</td>
+							<td class="tl">https://opendart.fss.or.kr/api/company.json</td>
+							<td>UTF-8</td>
+							<td>JSON</td>
+						</tr> 
+						<tr>
+							<td>GET</td>
+							<td class="tl">https://opendart.fss.or.kr/api/company.xml</td>
+							<td>UTF-8</td>
+							<td>XML</td>
+						</tr> 
+					
+				
+
+			</tbody>
+		</table>
+	</div>
+</div>
+
+<div class="DGCont">
+	<div class="titleWrapToggle"><h5>요청 인자</h5><span class="iconClose"></span></div>
+	<div class="contWrapToggle">
+		<div class="listFull_area">
+			<table class="tb02" summary="요청키,명칭,타입,필수여부,값설명 순으로 구성되어 있습니다.">
+			<caption>요청 인자</caption>
+				<colgroup>
+						<col width="16%" />
+						<col width="16%" />
+						<col width="12%" />
+						<col width="6%" />
+						<col width="*" />
+				</colgroup>
+				<thead>
+					<tr>
+						<th scope="col">요청키</th>
+						<th scope="col">명칭</th>
+						<th scope="col">타입</th>
+						<th scope="col">필수여부</th>
+						<th scope="col">값설명</th>
+					</tr>
+				</thead>
+				<tbody>
+					
+						
+							
+								<tr>
+									<td class="tl">crtfc_key</td>
+									<td class="tl">API 인증키</td>
+									<td>STRING(40)</td>
+									<td>Y</td>
+									<td class="tl">발급받은 인증키(40자리)</td>
+								</tr> 
+							
+								<tr>
+									<td class="tl">corp_code</td>
+									<td class="tl">고유번호</td>
+									<td>STRING(8)</td>
+									<td>Y</td>
+									<td class="tl">공시대상회사의 고유번호(8자리)<br/><span class="em">※ 개발가이드 > 공시정보 > 고유번호 참고</span>
+</td>
+								</tr> 
+							
+						
+						
+					
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+
+
+
+
+
+<div class="DGCont">
+	<div class="titleWrapToggle"><h5>응답 결과</h5><span class="iconClose"></span></div>
+	<div class="contWrapToggle">
+		<table class="tb02" summary="응답키,명칭,출력설명 순으로 구성되어 있습니다.">
+		<caption>응답 결과</caption>
+			<colgroup>
+					<col width="30%" />
+					<col width="*" />
+					<col width="45%" />
+			</colgroup>
+			<thead>
+				<tr>
+					<th scope="col"><label>응답키</label></th>
+					<th scope="col"><label>명칭</label></th>
+					<th scope="col"><label>출력설명</label></th>
+				</tr>
+			</thead>
+			<tbody> 
+				
+					
+						
+								<tr>
+									
+									
+									
+									
+									<td class="tl">
+										<span class="mgl05"></span>
+										<i class="iconArrow"></i>result
+									</td>
+									<td class="tl">응답인자</td>
+									<td class="tl">응답인자</td>
+								</tr>
+						
+								<tr>
+									
+									
+									
+									
+									<td class="tl">
+										<span class="mgl20"></span>
+										<i class="iconFile"></i>status
+									</td>
+									<td class="tl">에러 및 정보 코드</td>
+									<td class="tl">(※메시지 설명 참조)</td>
+								</tr>
+						
+								<tr>
+									
+									
+									
+									
+									<td class="tl">
+										<span class="mgl20"></span>
+										<i class="iconFile"></i>message
+									</td>
+									<td class="tl">에러 및 정보 메시지</td>
+									<td class="tl">(※메시지 설명 참조)</td>
+								</tr>
+						
+								<tr>
+									
+									
+									
+									
+									<td class="tl">
+										<span class="mgl20"></span>
+										<i class="iconFile"></i>corp_name
+									</td>
+									<td class="tl">정식명칭</td>
+									<td class="tl">정식회사명칭</td>
+								</tr>
+						
+								<tr>
+									
+									
+									
+									
+									<td class="tl">
+										<span class="mgl20"></span>
+										<i class="iconFile"></i>corp_name_eng
+									</td>
+									<td class="tl">영문명칭</td>
+									<td class="tl">영문정식회사명칭</td>
+								</tr>
+						
+								<tr>
+									
+									
+									
+									
+									<td class="tl">
+										<span class="mgl20"></span>
+										<i class="iconFile"></i>stock_name
+									</td>
+									<td class="tl">종목명(상장사) 또는 약식명칭(기타법인)</td>
+									<td class="tl">종목명(상장사) 또는 약식명칭(기타법인)</td>
+								</tr>
+						
+								<tr>
+									
+									
+									
+									
+									<td class="tl">
+										<span class="mgl20"></span>
+										<i class="iconFile"></i>stock_code
+									</td>
+									<td class="tl">상장회사인 경우 주식의 종목코드</td>
+									<td class="tl">상장회사의 종목코드(6자리)</td>
+								</tr>
+						
+								<tr>
+									
+									
+									
+									
+									<td class="tl">
+										<span class="mgl20"></span>
+										<i class="iconFile"></i>ceo_nm
+									</td>
+									<td class="tl">대표자명</td>
+									<td class="tl">대표자명</td>
+								</tr>
+						
+								<tr>
+									
+									
+									
+									
+									<td class="tl">
+										<span class="mgl20"></span>
+										<i class="iconFile"></i>corp_cls
+									</td>
+									<td class="tl">법인구분</td>
+									<td class="tl">법인구분 : Y(유가), K(코스닥), N(코넥스), E(기타)</td>
+								</tr>
+						
+								<tr>
+									
+									
+									
+									
+									<td class="tl">
+										<span class="mgl20"></span>
+										<i class="iconFile"></i>jurir_no
+									</td>
+									<td class="tl">법인등록번호</td>
+									<td class="tl">법인등록번호</td>
+								</tr>
+						
+								<tr>
+									
+									
+									
+									
+									<td class="tl">
+										<span class="mgl20"></span>
+										<i class="iconFile"></i>bizr_no
+									</td>
+									<td class="tl">사업자등록번호</td>
+									<td class="tl">사업자등록번호</td>
+								</tr>
+						
+								<tr>
+									
+									
+									
+									
+									<td class="tl">
+										<span class="mgl20"></span>
+										<i class="iconFile"></i>adres
+									</td>
+									<td class="tl">주소</td>
+									<td class="tl">주소</td>
+								</tr>
+						
+								<tr>
+									
+									
+									
+									
+									<td class="tl">
+										<span class="mgl20"></span>
+										<i class="iconFile"></i>hm_url
+									</td>
+									<td class="tl">홈페이지</td>
+									<td class="tl">홈페이지</td>
+								</tr>
+						
+								<tr>
+									
+									
+									
+									
+									<td class="tl">
+										<span class="mgl20"></span>
+										<i class="iconFile"></i>ir_url
+									</td>
+									<td class="tl">IR홈페이지</td>
+									<td class="tl">IR홈페이지</td>
+								</tr>
+						
+								<tr>
+									
+									
+									
+									
+									<td class="tl">
+										<span class="mgl20"></span>
+										<i class="iconFile"></i>phn_no
+									</td>
+									<td class="tl">전화번호</td>
+									<td class="tl">전화번호</td>
+								</tr>
+						
+								<tr>
+									
+									
+									
+									
+									<td class="tl">
+										<span class="mgl20"></span>
+										<i class="iconFile"></i>fax_no
+									</td>
+									<td class="tl">팩스번호</td>
+									<td class="tl">팩스번호</td>
+								</tr>
+						
+								<tr>
+									
+									
+									
+									
+									<td class="tl">
+										<span class="mgl20"></span>
+										<i class="iconFile"></i>induty_code
+									</td>
+									<td class="tl">업종코드</td>
+									<td class="tl">업종코드</td>
+								</tr>
+						
+								<tr>
+									
+									
+									
+									
+									<td class="tl">
+										<span class="mgl20"></span>
+										<i class="iconFile"></i>est_dt
+									</td>
+									<td class="tl">설립일(YYYYMMDD)</td>
+									<td class="tl">설립일(YYYYMMDD)</td>
+								</tr>
+						
+								<tr>
+									
+									
+									
+									
+									<td class="tl">
+										<span class="mgl20"></span>
+										<i class="iconFile"></i>acc_mt
+									</td>
+									<td class="tl">결산월(MM)</td>
+									<td class="tl">결산월(MM)</td>
+								</tr>
+						
+					
+					
+				
+			</tbody>
+		</table>
+	</div>
+</div>
+
+<!--  
+<div class="DGCont">
+	<div class="titleWrapToggle initHidden"><h5>API 샘플</h5><span class="iconClose"></span></div>
+	<div class="contWrapToggle">
+		
+	</div>
+</div>
+-->
+
+<div class="DGCont">
+	<div class="titleWrapToggle"><h5>OpenAPI 테스트</h5><span class="iconClose"></span></div>
+	<div class="contWrapToggle">
+	
+		
+		
+			<span class="desc">OpenAPI 서비스의 요청인자에 값을 입력하고 검색버튼을 클릭하여 해당 서비스의 선택하신 응답을 확인해 볼 수 있습니다.</span>
+			<div class="write_area"> 
+			<form action="" id="testForm" name="testForm" method="get">
+				<input type="hidden" id="apiUrl" name="apiUrl" value="https://opendart.fss.or.kr/api/company">
+				<input type="hidden" id="apiKey" name="apiKey" value="">
+				<table class="write" id="testTable" summary="응답방식,요청인자, API 결과 순으로 구성되어 있습니다">
+				<caption>OpenAPI 테스트</caption>
+					<tbody>
+						<tr>
+							<th scope="row"><label>응답방식</label></th>
+							<td>
+								<span class="frm_radio02"><input type="radio" id="res_type1" name="res_type" value="json" checked="checked"><label for="res_type1">JSON</label></span>
+								<span class="frm_radio02"><input type="radio" id="res_type2" name="res_type" value="xml"><label for="res_type2">XML</label></span>
+								<button type="button" id="submitBtn" class="btn_s_ico" onclick="onTestSubmit()"><span class="search"></span>검색</button>
+							</td>
+						</tr>
+						<tr>
+							<th scope="row"><label>요청인자</label></th>
+							<td>
+								
+									
+										
+											
+												<span class="write_titleWrap">API 인증키<span class="em">*</span></span>
+												<span class="write_inputWrap">xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx &nbsp;<input type="hidden" id="crtfc_key" name="crtfc_key" title="API 인증키" value="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" readonly="readonly"></span>
+											
+										
+											
+												<span class="write_titleWrap">고유번호<span class="em">*</span></span>
+												<span class="write_inputWrap">00126380 &nbsp;<input type="hidden" id="corp_code" name="corp_code" title="고유번호" value="00126380" readonly="readonly"></span>
+											
+										
+									
+									
+								
+							</td>
+						</tr>
+						<tr>
+							<th scope="row"><label>API 결과</label></th>
+							<td>
+								<span class="write_ex01" id="reqUrl"></span>
+								<textarea id="resultTest" name="resultTest" class="intype" readonly="readonly"></textarea>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</form>
+			</div>
+		
+			
+		
+	</div>
+</div>
+
+<div class="DGCont">
+	<div class="titleWrapToggle"><h5>메시지 설명</h5><span class="iconClose"></span></div>
+	<div class="contWrapToggle">
+		<table class="DGInfo" summary="메시지 설명 입니다.">
+		<caption>메시지 설명</caption>
+			<tbody>
+				<tr>
+					<th scope="row">- 000 :</th>
+					<td>정상</td>
+				</tr>
+				<tr>
+					<th scope="row">- 010 :</th>
+					<td>등록되지 않은 키입니다.</td>
+				</tr>
+				<tr>
+					<th scope="row">- 011 :</th>
+					<td>사용할 수 없는 키입니다. 오픈API에 등록되었으나, 일시적으로 사용 중지된 키를 통하여 검색하는 경우 발생합니다.</td>
+				</tr>
+				<tr>
+					<th scope="row">- 012 :</th>
+					<td>접근할 수 없는 IP입니다.</td>
+				</tr>
+				<tr>
+					<th scope="row">- 013 :</th>
+					<td>조회된 데이타가 없습니다.</td>
+				</tr>
+				<tr>
+					<th scope="row">- 014 :</th>
+					<td>파일이 존재하지 않습니다.</td>
+				</tr>
+				<tr>
+					<th scope="row">- 020 :</th>
+					<td>요청 제한을 초과하였습니다. <br/>일반적으로는 20,000건 이상의 요청에 대하여 이 에러 메시지가 발생되나, 요청 제한이 다르게 설정된 경우에는 이에 준하여 발생됩니다.</td>
+				</tr>
+				<tr>
+					<th scope="row">- 021 :</th>
+					<td>조회 가능한 회사 개수가 초과하였습니다.(최대 100건)</td>
+				</tr>
+				<tr>
+					<th scope="row">- 100 :</th>
+					<td>필드의 부적절한 값입니다. 필드 설명에 없는 값을 사용한 경우에 발생하는 메시지입니다.</td>
+				</tr>
+				<tr>
+					<th scope="row">- 101 :</th>
+					<td>부적절한 접근입니다.</td>
+				</tr>
+				<tr>
+					<th scope="row">- 800 :</th>
+					<td>시스템 점검으로 인한  서비스가 중지 중입니다.</td>
+				</tr>
+				<tr>
+					<th scope="row">- 900 :</th>
+					<td>정의되지 않은 오류가 발생하였습니다.</td>
+				</tr>
+				<tr>
+					<th scope="row">- 901 :</th>
+					<td>사용자 계정의 개인정보 보유기간이 만료되어 사용할 수 없는 키입니다. 관리자 이메일(opendart@fss.or.kr)로 문의하시기 바랍니다.</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+
+<!-- 버튼 영역 -->
+<div class="btn_area"> 
+	<a href="/guide/main.do?apiGrpCd=DS001"><button class="btn_l_b" >목록</button></a>
+</div>
+
+
+<script type="text/javaScript" language="javascript">
+$(document).ready(function(){
+	
+	
+	
+});
+
+function fnEmptyCheck(id){
+	if( !Boolean(findForm("testForm")[id].value)){
+		alert(findForm("testForm")[id].title + "(은)는 필수입력 값입니다.");
+		return false;
+	}
+	
+    if (!checkQueryString(findForm("testForm")[id].value)) {
+    	alert(findForm("testForm")[id].title + "의 값에 [! % = \" ' -- < > |] 문자를 입력할 수 없습니다.");
+    	$(findForm("testForm")[id]).focus();
+    	return false;
+    }
+	
+	return true;
+}
+
+function onTestSubmit(){
+	var _table = $("#testTable");
+	var frm = findForm("testForm");
+
+	var res_type = _table.find("input[name=res_type]:checked").val();
+	var _url = $("#apiUrl").val() + "." + res_type + "?";
+	var _param = "";
+	_table.find("input[type='text'], input[type='hidden']").each(function() {
+		var _name = $(this).prop("name");
+		var _val = $(this).val();
+		if(_val){
+			if(_param){
+				_param += "&" + _name + "=" + _val;
+			}else{
+				_param +=  _name + "=" + _val;
+			}
+		}
+	});
+	_url = _url + _param;
+	$("#reqUrl").text( _url );
+
+	dartCommon.ajax({
+		url : _url, 
+		method : "GET",
+		dataType: "html",
+		data : {},
+	}, succ = function(returnData) {
+// 		$("#resultTest").html( returnData.toString() );
+		$("#resultTest").val( returnData.toString() );
+	}, err = function(xhr, textStatus, error) {
+		alert(error);
+	});
+}
+
+function fnErbbsView(){
+	document.errorForm.submit();
+}
+
+function fnGuidedownFile(atchFileId, fileSn){
+	window.open("/cmm/fms/FileDown.do?atchFileId="+atchFileId+"&fileSn="+fileSn+"");
+}
+
+</script>
+
+			<!-- 메인컨텐츠 영역 끝 -->	
+			
+		</div>
+		</div>
+	</div>
+	
+	<!-- 풋터영역 시작-->
+	
+
+	<div id="footer_banner_wrap">
+		<div id="footer_banner">
+			<div class="left_cont">
+				<ul>
+					<li><a href="https://dart.fss.or.kr" target="_blank" ><img src="/images/footer_banner_09.png" alt="전자공시시스템 바로가기"></a></li>
+					<li><a href="http://www.fsc.go.kr" target="_blank" ><img src="/images/footer_banner_02.png" alt="금융위원회 바로가기"></a></li>
+					<li><a href="http://www.ftc.go.kr" target="_blank" ><img src="/images/footer_banner_03.png" alt="공정거래위원회 바로가기"></a></li>
+					<li><a href="https://www.fss.or.kr/fss/job/lrgInfoMain/intro.do?menuNo=200485" target="_blank" ><img src="/images/footer_banner_04.png" alt="금융감독법규 바로가기"></a></li>
+				</ul>
+			</div>
+			<div class="right_cont">
+				<ul>
+					<li><a href="https://www.fss.or.kr/fss/main/sub1Unfair.do?menuNo=200080" target="_blank" ><img src="/images/footer_banner_05.png" alt="인터넷증권 범죄신고 바로가기"></a></li>
+					<li><a href="https://1398.acrc.go.kr/hpg/req/hpgPssStep1.do" target="_blank" ><img src="/images/footer_banner_06.png" alt="복지보조금 부정신고 바로가기"></a></li>
+					<li><a href="https://www.fss.or.kr/fss/main/contents.do?menuNo=200289" target="_blank" ><img src="/images/footer_banner_07.png" alt="금융감독원공익신고 바로가기"></a></li>
+					<li><a href="https://www.fss.or.kr/fss/main/contents.do?menuNo=200705" target="_blank" ><img src="/images/footer_banner_08.png" alt="개인정보처리방침 바로가기"></a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<div id="footer_wrap">
+		<div id="footer">
+			<div class="logo"><a href="https://www.fss.or.kr" target="_blank" ><img src="/images/footer_logo.png" alt="금융감독원 바로가기"></a></div>
+			<div class="line"></div>
+			<div class="copy">서울특별시 영등포구 여의대로 38 (우:07321)  대표전화 : <a href="tel:0231455114">02)3145-5114</a><br>
+				Copyright (c) financial supervisory service. all rights reserved. 
+			</div>
+			<div class="line"></div>
+			<div class="inquiry">홈페이지 : (국번없이) <a href="tel:1332">1332</a> (5번>1번>1번)<br>
+				기업공시 : (국번없이) <a href="tel:1332">1332</a> (5번>1번>2,3,4,5번)
+			</div>
+		</div>
+	</div>
+	<!-- //풋터영역 끝--> 
+	
+</div>
+</body>
+</html>

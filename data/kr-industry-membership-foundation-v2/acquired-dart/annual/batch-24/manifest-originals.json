@@ -1,0 +1,4107 @@
+{
+  "archive": "originals.json.gz",
+  "archiveSha256": "f0e3608ec06357dfff55d76ffed7227f3b52bcd80c99daad4a7909263933e0d1",
+  "contract": "KR_INDUSTRY_PUBLIC_DART_BATCH_V2",
+  "historicalOutcomeComputed": false,
+  "planSha256": "77aef2c461cb55ba32035fe7202fd7aeaa2c4a7b4c3d2112625b1c466559aefa",
+  "records": [
+    {
+      "responses": [
+        {
+          "error": null,
+          "sha256": "284bb0ba7dee4dae234c69c6599b1e08324ba07ec958b391cc8d8dc9b75c4234",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20190401003641"
+        },
+        {
+          "error": null,
+          "section": "company_overview",
+          "sha256": "7cb1538f3d8d376b9b55d8e08516291eaded6c8c5f7fed8097b38b20f713ae92",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20190401003641&dcmNo=6610530&eleId=4&offset=5420&length=86264&dtd=dart3.xsd"
+        },
+        {
+          "error": null,
+          "section": "business_overview",
+          "sha256": "be80daeaeb72b6c145978d7589c67fd3aa4b5dd86c31a85706fd4660b6f1b193",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20190401003641&dcmNo=6610530&eleId=10&offset=125709&length=72236&dtd=dart3.xsd"
+        }
+      ],
+      "sections": [
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [],
+          "node": {
+            "dcmNo": "6610530",
+            "dtd": "dart3.xsd",
+            "eleId": "4",
+            "length": "86264",
+            "offset": "5420",
+            "rcpNo": "20190401003641",
+            "text": "1. 회사의 개요"
+          },
+          "section": "company_overview",
+          "sha256": "7cb1538f3d8d376b9b55d8e08516291eaded6c8c5f7fed8097b38b20f713ae92"
+        },
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [],
+          "node": {
+            "dcmNo": "6610530",
+            "dtd": "dart3.xsd",
+            "eleId": "10",
+            "length": "72236",
+            "offset": "125709",
+            "rcpNo": "20190401003641",
+            "text": "II. 사업의 내용"
+          },
+          "section": "business_overview",
+          "sha256": "be80daeaeb72b6c145978d7589c67fd3aa4b5dd86c31a85706fd4660b6f1b193"
+        }
+      ],
+      "target": {
+        "availableFrom": "2019-04-01",
+        "corpCode": "01319899",
+        "fiscalYear": 2018,
+        "identityBasis": "EXACT_STOCK_CODE",
+        "listingMetadata": {
+          "corp_cls": "Y",
+          "corp_code": "01319899",
+          "corp_name": "SK바이오사이언스",
+          "flr_nm": "SK바이오사이언스",
+          "rcept_dt": "20190401",
+          "rcept_no": "20190401003641",
+          "report_nm": "사업보고서 (2018.12)",
+          "rm": "",
+          "stock_code": "302440"
+        },
+        "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+        "receiptNos": [
+          "20190401003641"
+        ],
+        "reportPeriod": "2018-12",
+        "ticker": "302440.KS"
+      }
+    },
+    {
+      "responses": [
+        {
+          "error": null,
+          "sha256": "4bc924190ad117ef65d6b5987290399785cfb22071175e1ab54edca64df55c8e",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20200330003268"
+        },
+        {
+          "error": null,
+          "section": "company_overview",
+          "sha256": "bcaf5c3b017191c5ed4a42465a71f5627c49c4898d06b36d74d69932d6886e0c",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20200330003268&dcmNo=7198721&eleId=4&offset=5416&length=97219&dtd=dart3.xsd"
+        },
+        {
+          "error": null,
+          "section": "business_overview",
+          "sha256": "5ca9d1bc0d2af39079bdd2cc33cae56992ec2c866dbf862e9f38fbc93eacf673",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20200330003268&dcmNo=7198721&eleId=10&offset=136708&length=80480&dtd=dart3.xsd"
+        }
+      ],
+      "sections": [
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [],
+          "node": {
+            "dcmNo": "7198721",
+            "dtd": "dart3.xsd",
+            "eleId": "4",
+            "length": "97219",
+            "offset": "5416",
+            "rcpNo": "20200330003268",
+            "text": "1. 회사의 개요"
+          },
+          "section": "company_overview",
+          "sha256": "bcaf5c3b017191c5ed4a42465a71f5627c49c4898d06b36d74d69932d6886e0c"
+        },
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [],
+          "node": {
+            "dcmNo": "7198721",
+            "dtd": "dart3.xsd",
+            "eleId": "10",
+            "length": "80480",
+            "offset": "136708",
+            "rcpNo": "20200330003268",
+            "text": "II. 사업의 내용"
+          },
+          "section": "business_overview",
+          "sha256": "5ca9d1bc0d2af39079bdd2cc33cae56992ec2c866dbf862e9f38fbc93eacf673"
+        }
+      ],
+      "target": {
+        "availableFrom": "2020-03-30",
+        "corpCode": "01319899",
+        "fiscalYear": 2019,
+        "identityBasis": "EXACT_STOCK_CODE",
+        "listingMetadata": {
+          "corp_cls": "Y",
+          "corp_code": "01319899",
+          "corp_name": "SK바이오사이언스",
+          "flr_nm": "SK바이오사이언스",
+          "rcept_dt": "20200330",
+          "rcept_no": "20200330003268",
+          "report_nm": "사업보고서 (2019.12)",
+          "rm": "정",
+          "stock_code": "302440"
+        },
+        "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+        "receiptNos": [
+          "20200330003268"
+        ],
+        "reportPeriod": "2019-12",
+        "ticker": "302440.KS"
+      }
+    },
+    {
+      "responses": [
+        {
+          "error": null,
+          "sha256": "f67ffc0040b4b6753348a584e5f87f7ed5b2b304eee843d937322cf5a04697ad",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20210323000842"
+        },
+        {
+          "error": null,
+          "section": "company_overview",
+          "sha256": "f9fc27150e73d349b609b9eb5ee94611efa0cf7f74f85498f201c4e25dd21d48",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20210323000842&dcmNo=7911150&eleId=4&offset=5455&length=105293&dtd=dart3.xsd"
+        },
+        {
+          "error": null,
+          "section": "business_overview",
+          "sha256": "5e08dfc0128eff0bee606260b3abc60a2346cd245caacd89b319e8987117a90d",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20210323000842&dcmNo=7911150&eleId=11&offset=161035&length=131771&dtd=dart3.xsd"
+        }
+      ],
+      "sections": [
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [],
+          "node": {
+            "dcmNo": "7911150",
+            "dtd": "dart3.xsd",
+            "eleId": "4",
+            "length": "105293",
+            "offset": "5455",
+            "rcpNo": "20210323000842",
+            "text": "1. 회사의 개요"
+          },
+          "section": "company_overview",
+          "sha256": "f9fc27150e73d349b609b9eb5ee94611efa0cf7f74f85498f201c4e25dd21d48"
+        },
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [
+            "P450"
+          ],
+          "node": {
+            "dcmNo": "7911150",
+            "dtd": "dart3.xsd",
+            "eleId": "11",
+            "length": "131771",
+            "offset": "161035",
+            "rcpNo": "20210323000842",
+            "text": "II. 사업의 내용"
+          },
+          "section": "business_overview",
+          "sha256": "5e08dfc0128eff0bee606260b3abc60a2346cd245caacd89b319e8987117a90d"
+        }
+      ],
+      "target": {
+        "availableFrom": "2021-03-23",
+        "corpCode": "01319899",
+        "fiscalYear": 2020,
+        "identityBasis": "EXACT_STOCK_CODE",
+        "listingMetadata": {
+          "corp_cls": "Y",
+          "corp_code": "01319899",
+          "corp_name": "SK바이오사이언스",
+          "flr_nm": "SK바이오사이언스",
+          "rcept_dt": "20210323",
+          "rcept_no": "20210323000842",
+          "report_nm": "사업보고서 (2020.12)",
+          "rm": "",
+          "stock_code": "302440"
+        },
+        "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+        "receiptNos": [
+          "20210323000842"
+        ],
+        "reportPeriod": "2020-12",
+        "ticker": "302440.KS"
+      }
+    },
+    {
+      "responses": [
+        {
+          "error": null,
+          "sha256": "cd400c8946e5d116c50e2c351d1baa842707a17629a1c9ed6dd825b11ef12517",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20220316001334"
+        },
+        {
+          "error": null,
+          "section": "company_overview",
+          "sha256": "a6beba149c00079a20a90261ca5870a89c180363f134e83f2f2929dbf59e6dc9",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20220316001334&dcmNo=8467716&eleId=4&offset=5418&length=20751&dtd=dart3.xsd"
+        },
+        {
+          "error": null,
+          "section": "business_overview",
+          "sha256": "eed06ab90c9623b9535e0858fc2bad3fd314c861031cf1720135c944725f9132",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20220316001334&dcmNo=8467716&eleId=10&offset=53556&length=2088&dtd=dart3.xsd"
+        }
+      ],
+      "sections": [
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [],
+          "node": {
+            "dcmNo": "8467716",
+            "dtd": "dart3.xsd",
+            "eleId": "4",
+            "length": "20751",
+            "offset": "5418",
+            "rcpNo": "20220316001334",
+            "text": "1. 회사의 개요"
+          },
+          "section": "company_overview",
+          "sha256": "a6beba149c00079a20a90261ca5870a89c180363f134e83f2f2929dbf59e6dc9"
+        },
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [],
+          "node": {
+            "dcmNo": "8467716",
+            "dtd": "dart3.xsd",
+            "eleId": "10",
+            "length": "2088",
+            "offset": "53556",
+            "rcpNo": "20220316001334",
+            "text": "1. 사업의 개요"
+          },
+          "section": "business_overview",
+          "sha256": "eed06ab90c9623b9535e0858fc2bad3fd314c861031cf1720135c944725f9132"
+        }
+      ],
+      "target": {
+        "availableFrom": "2022-03-16",
+        "corpCode": "01319899",
+        "fiscalYear": 2021,
+        "identityBasis": "EXACT_STOCK_CODE",
+        "listingMetadata": {
+          "corp_cls": "Y",
+          "corp_code": "01319899",
+          "corp_name": "SK바이오사이언스",
+          "flr_nm": "SK바이오사이언스",
+          "rcept_dt": "20220316",
+          "rcept_no": "20220316001334",
+          "report_nm": "사업보고서 (2021.12)",
+          "rm": "",
+          "stock_code": "302440"
+        },
+        "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+        "receiptNos": [
+          "20220316001334"
+        ],
+        "reportPeriod": "2021-12",
+        "ticker": "302440.KS"
+      }
+    },
+    {
+      "responses": [
+        {
+          "error": null,
+          "sha256": "9dad45bf3c95889e557d9af1431048fd95b4b3d8c690fb970760262de2073dae",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20230317000869"
+        },
+        {
+          "error": null,
+          "section": "company_overview",
+          "sha256": "bb4735aae5f415afa7900609288784afe826bdecbd635c16106e10b367c06e61",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20230317000869&dcmNo=9071429&eleId=4&offset=5362&length=21919&dtd=dart3.xsd"
+        },
+        {
+          "error": null,
+          "section": "business_overview",
+          "sha256": "04af8acdf214526f12e10680385f110a5b8485e28364697de54524994657f8bf",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20230317000869&dcmNo=9071429&eleId=10&offset=57111&length=3756&dtd=dart3.xsd"
+        }
+      ],
+      "sections": [
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [],
+          "node": {
+            "dcmNo": "9071429",
+            "dtd": "dart3.xsd",
+            "eleId": "4",
+            "length": "21919",
+            "offset": "5362",
+            "rcpNo": "20230317000869",
+            "text": "1. 회사의 개요"
+          },
+          "section": "company_overview",
+          "sha256": "bb4735aae5f415afa7900609288784afe826bdecbd635c16106e10b367c06e61"
+        },
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [],
+          "node": {
+            "dcmNo": "9071429",
+            "dtd": "dart3.xsd",
+            "eleId": "10",
+            "length": "3756",
+            "offset": "57111",
+            "rcpNo": "20230317000869",
+            "text": "1. 사업의 개요"
+          },
+          "section": "business_overview",
+          "sha256": "04af8acdf214526f12e10680385f110a5b8485e28364697de54524994657f8bf"
+        }
+      ],
+      "target": {
+        "availableFrom": "2023-03-17",
+        "corpCode": "01319899",
+        "fiscalYear": 2022,
+        "identityBasis": "EXACT_STOCK_CODE",
+        "listingMetadata": {
+          "corp_cls": "Y",
+          "corp_code": "01319899",
+          "corp_name": "SK바이오사이언스",
+          "flr_nm": "SK바이오사이언스",
+          "rcept_dt": "20230317",
+          "rcept_no": "20230317000869",
+          "report_nm": "사업보고서 (2022.12)",
+          "rm": "연",
+          "stock_code": "302440"
+        },
+        "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+        "receiptNos": [
+          "20230317000869"
+        ],
+        "reportPeriod": "2022-12",
+        "ticker": "302440.KS"
+      }
+    },
+    {
+      "responses": [
+        {
+          "error": null,
+          "sha256": "bee8bf60576a1dea56b82924039ec8993a3bae5fc25350520191366b08e41f65",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20250317000856"
+        },
+        {
+          "error": null,
+          "section": "company_overview",
+          "sha256": "73ea2557c4065ba49f18cf1fb6f261c3c0962da5953fbebb8209304d2810d983",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20250317000856&dcmNo=10415906&eleId=67&offset=1797666&length=3285&dtd=dart4.xsd"
+        },
+        {
+          "error": null,
+          "section": "business_overview",
+          "sha256": "7f4483aef66f009c4e75b97b9e16e84c1d2c7415ace0ae75fd08457fc3d8b96f",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20250317000856&dcmNo=10415906&eleId=10&offset=66391&length=4211&dtd=dart4.xsd"
+        }
+      ],
+      "sections": [
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [],
+          "node": {
+            "dcmNo": "10415906",
+            "dtd": "dart4.xsd",
+            "eleId": "67",
+            "length": "3285",
+            "offset": "1797666",
+            "rcpNo": "20250317000856",
+            "text": "1. 회사의 개요"
+          },
+          "section": "company_overview",
+          "sha256": "73ea2557c4065ba49f18cf1fb6f261c3c0962da5953fbebb8209304d2810d983"
+        },
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [],
+          "node": {
+            "dcmNo": "10415906",
+            "dtd": "dart4.xsd",
+            "eleId": "10",
+            "length": "4211",
+            "offset": "66391",
+            "rcpNo": "20250317000856",
+            "text": "1. 사업의 개요"
+          },
+          "section": "business_overview",
+          "sha256": "7f4483aef66f009c4e75b97b9e16e84c1d2c7415ace0ae75fd08457fc3d8b96f"
+        }
+      ],
+      "target": {
+        "availableFrom": "2025-03-17",
+        "corpCode": "01319899",
+        "fiscalYear": 2024,
+        "identityBasis": "EXACT_STOCK_CODE",
+        "listingMetadata": {
+          "corp_cls": "Y",
+          "corp_code": "01319899",
+          "corp_name": "SK바이오사이언스",
+          "flr_nm": "SK바이오사이언스",
+          "rcept_dt": "20250317",
+          "rcept_no": "20250317000856",
+          "report_nm": "사업보고서 (2024.12)",
+          "rm": "연",
+          "stock_code": "302440"
+        },
+        "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+        "receiptNos": [
+          "20250317000856"
+        ],
+        "reportPeriod": "2024-12",
+        "ticker": "302440.KS"
+      }
+    },
+    {
+      "responses": [
+        {
+          "error": null,
+          "sha256": "3919fb275710f289a6e27dac037cdcb2952d89f5183526274aa566aee13d8dfa",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260313000936"
+        },
+        {
+          "error": null,
+          "section": "company_overview",
+          "sha256": "f73eb79e7d620eded25802ad0b556e15bfd1065ede8da729f4c055f4422fde27",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20260313000936&dcmNo=11120893&eleId=67&offset=3138821&length=3219&dtd=dart4.xsd"
+        },
+        {
+          "error": null,
+          "section": "business_overview",
+          "sha256": "7092a36fd577280c8be439bd876b055cfec00fe44109df84093d1a3340dc230b",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20260313000936&dcmNo=11120893&eleId=10&offset=64522&length=3966&dtd=dart4.xsd"
+        }
+      ],
+      "sections": [
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [],
+          "node": {
+            "dcmNo": "11120893",
+            "dtd": "dart4.xsd",
+            "eleId": "67",
+            "length": "3219",
+            "offset": "3138821",
+            "rcpNo": "20260313000936",
+            "text": "1. 회사의 개요"
+          },
+          "section": "company_overview",
+          "sha256": "f73eb79e7d620eded25802ad0b556e15bfd1065ede8da729f4c055f4422fde27"
+        },
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [],
+          "node": {
+            "dcmNo": "11120893",
+            "dtd": "dart4.xsd",
+            "eleId": "10",
+            "length": "3966",
+            "offset": "64522",
+            "rcpNo": "20260313000936",
+            "text": "1. 사업의 개요"
+          },
+          "section": "business_overview",
+          "sha256": "7092a36fd577280c8be439bd876b055cfec00fe44109df84093d1a3340dc230b"
+        }
+      ],
+      "target": {
+        "availableFrom": "2026-03-13",
+        "corpCode": "01319899",
+        "fiscalYear": 2025,
+        "identityBasis": "EXACT_STOCK_CODE",
+        "listingMetadata": {
+          "corp_cls": "Y",
+          "corp_code": "01319899",
+          "corp_name": "SK바이오사이언스",
+          "flr_nm": "SK바이오사이언스",
+          "rcept_dt": "20260313",
+          "rcept_no": "20260313000936",
+          "report_nm": "사업보고서 (2025.12)",
+          "rm": "연",
+          "stock_code": "302440"
+        },
+        "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+        "receiptNos": [
+          "20260313000936"
+        ],
+        "reportPeriod": "2025-12",
+        "ticker": "302440.KS"
+      }
+    },
+    {
+      "responses": [
+        {
+          "error": null,
+          "sha256": "0318a56fb8342c28b8b782a2a2e27fb01f9a195dcb5d9550b90d27ba247ebeb9",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20200330004490"
+        },
+        {
+          "error": null,
+          "section": "company_overview",
+          "sha256": "c55bd4f4b13729593fc9de7052f41b5282c474eec0dfd724b379153a917b219f",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20200330004490&dcmNo=7206552&eleId=4&offset=5436&length=139480&dtd=dart3.xsd"
+        },
+        {
+          "error": null,
+          "section": "business_overview",
+          "sha256": "87fe389584ff3c71d8a530e860b9c2d9027c2892c17b80f942274697644cfdf0",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20200330004490&dcmNo=7206552&eleId=10&offset=307451&length=1065722&dtd=dart3.xsd"
+        }
+      ],
+      "sections": [
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [],
+          "node": {
+            "dcmNo": "7206552",
+            "dtd": "dart3.xsd",
+            "eleId": "4",
+            "length": "139480",
+            "offset": "5436",
+            "rcpNo": "20200330004490",
+            "text": "1. 회사의 개요"
+          },
+          "section": "company_overview",
+          "sha256": "c55bd4f4b13729593fc9de7052f41b5282c474eec0dfd724b379153a917b219f"
+        },
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [],
+          "node": {
+            "dcmNo": "7206552",
+            "dtd": "dart3.xsd",
+            "eleId": "10",
+            "length": "1065722",
+            "offset": "307451",
+            "rcpNo": "20200330004490",
+            "text": "II. 사업의 내용"
+          },
+          "section": "business_overview",
+          "sha256": "87fe389584ff3c71d8a530e860b9c2d9027c2892c17b80f942274697644cfdf0"
+        }
+      ],
+      "target": {
+        "availableFrom": "2020-03-30",
+        "corpCode": "01350869",
+        "fiscalYear": 2019,
+        "identityBasis": "EXACT_STOCK_CODE",
+        "listingMetadata": {
+          "corp_cls": "Y",
+          "corp_code": "01350869",
+          "corp_name": "우리금융지주",
+          "flr_nm": "우리금융지주",
+          "rcept_dt": "20200330",
+          "rcept_no": "20200330004490",
+          "report_nm": "사업보고서 (2019.12)",
+          "rm": "연",
+          "stock_code": "316140"
+        },
+        "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+        "receiptNos": [
+          "20200330004490"
+        ],
+        "reportPeriod": "2019-12",
+        "ticker": "316140.KS"
+      }
+    },
+    {
+      "responses": [
+        {
+          "error": null,
+          "sha256": "448a78d9a567a4d36fe4afde4bb497f6af70cab3128c7c4d2ac456c2e9e62cee",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20210318001162"
+        },
+        {
+          "error": null,
+          "section": "company_overview",
+          "sha256": "0c940c0f0f60268873d9f68ad9b191acdc7a60bfd2582dfb41ec55e0e02ee5e3",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20210318001162&dcmNo=7893292&eleId=4&offset=5440&length=162029&dtd=dart3.xsd"
+        },
+        {
+          "error": null,
+          "section": "business_overview",
+          "sha256": "96667f928b6117377ec229c3fff356b0149b9e7dc6e4f6bb7664b5b610951c0f",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20210318001162&dcmNo=7893292&eleId=11&offset=345772&length=1301224&dtd=dart3.xsd"
+        }
+      ],
+      "sections": [
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [],
+          "node": {
+            "dcmNo": "7893292",
+            "dtd": "dart3.xsd",
+            "eleId": "4",
+            "length": "162029",
+            "offset": "5440",
+            "rcpNo": "20210318001162",
+            "text": "1. 회사의 개요"
+          },
+          "section": "company_overview",
+          "sha256": "0c940c0f0f60268873d9f68ad9b191acdc7a60bfd2582dfb41ec55e0e02ee5e3"
+        },
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [],
+          "node": {
+            "dcmNo": "7893292",
+            "dtd": "dart3.xsd",
+            "eleId": "11",
+            "length": "1301224",
+            "offset": "345772",
+            "rcpNo": "20210318001162",
+            "text": "II. 사업의 내용"
+          },
+          "section": "business_overview",
+          "sha256": "96667f928b6117377ec229c3fff356b0149b9e7dc6e4f6bb7664b5b610951c0f"
+        }
+      ],
+      "target": {
+        "availableFrom": "2021-03-18",
+        "corpCode": "01350869",
+        "fiscalYear": 2020,
+        "identityBasis": "EXACT_STOCK_CODE",
+        "listingMetadata": {
+          "corp_cls": "Y",
+          "corp_code": "01350869",
+          "corp_name": "우리금융지주",
+          "flr_nm": "우리금융지주",
+          "rcept_dt": "20210318",
+          "rcept_no": "20210318001162",
+          "report_nm": "사업보고서 (2020.12)",
+          "rm": "연",
+          "stock_code": "316140"
+        },
+        "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+        "receiptNos": [
+          "20210318001162"
+        ],
+        "reportPeriod": "2020-12",
+        "ticker": "316140.KS"
+      }
+    },
+    {
+      "responses": [
+        {
+          "error": null,
+          "sha256": "99c839d90a30e436c220c67726934162048603059768cb2411ae88c40729be42",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20220317001124"
+        },
+        {
+          "error": null,
+          "section": "company_overview",
+          "sha256": "35c49da44bf2720c8b23c2c7d055587382fc9ee8f46dcb1ea3586c4d42bf1076",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20220317001124&dcmNo=8473355&eleId=4&offset=5533&length=49130&dtd=dart3.xsd"
+        },
+        {
+          "error": null,
+          "section": "business_overview",
+          "sha256": "598c41a08856c456bc1dbed7f315283e7e5269acfd455f91690fa9c0a21b64bf",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20220317001124&dcmNo=8473355&eleId=10&offset=204117&length=1484&dtd=dart3.xsd"
+        }
+      ],
+      "sections": [
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [],
+          "node": {
+            "dcmNo": "8473355",
+            "dtd": "dart3.xsd",
+            "eleId": "4",
+            "length": "49130",
+            "offset": "5533",
+            "rcpNo": "20220317001124",
+            "text": "1. 회사의 개요"
+          },
+          "section": "company_overview",
+          "sha256": "35c49da44bf2720c8b23c2c7d055587382fc9ee8f46dcb1ea3586c4d42bf1076"
+        },
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [],
+          "node": {
+            "dcmNo": "8473355",
+            "dtd": "dart3.xsd",
+            "eleId": "10",
+            "length": "1484",
+            "offset": "204117",
+            "rcpNo": "20220317001124",
+            "text": "1. 사업의 개요"
+          },
+          "section": "business_overview",
+          "sha256": "598c41a08856c456bc1dbed7f315283e7e5269acfd455f91690fa9c0a21b64bf"
+        }
+      ],
+      "target": {
+        "availableFrom": "2022-03-17",
+        "corpCode": "01350869",
+        "fiscalYear": 2021,
+        "identityBasis": "EXACT_STOCK_CODE",
+        "listingMetadata": {
+          "corp_cls": "Y",
+          "corp_code": "01350869",
+          "corp_name": "우리금융지주",
+          "flr_nm": "우리금융지주",
+          "rcept_dt": "20220317",
+          "rcept_no": "20220317001124",
+          "report_nm": "사업보고서 (2021.12)",
+          "rm": "연",
+          "stock_code": "316140"
+        },
+        "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+        "receiptNos": [
+          "20220317001124"
+        ],
+        "reportPeriod": "2021-12",
+        "ticker": "316140.KS"
+      }
+    },
+    {
+      "responses": [
+        {
+          "error": null,
+          "sha256": "25569b7378a9f1dd9de6ae4bf1b491e2a7b7a20c3c8edd4cff968f4eba1e395b",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20230316001455"
+        },
+        {
+          "error": null,
+          "section": "company_overview",
+          "sha256": "54d4c8b2b87ec32ef263fccc6fdbff8ac6f271189609dc2573a5979108b044d7",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20230316001455&dcmNo=9067597&eleId=4&offset=5599&length=43614&dtd=dart3.xsd"
+        },
+        {
+          "error": null,
+          "section": "business_overview",
+          "sha256": "42690fe25a24ce90bdb49daa700f3e0229720b6a8852c887d2286f046752d55f",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20230316001455&dcmNo=9067597&eleId=10&offset=201125&length=1300&dtd=dart3.xsd"
+        }
+      ],
+      "sections": [
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [],
+          "node": {
+            "dcmNo": "9067597",
+            "dtd": "dart3.xsd",
+            "eleId": "4",
+            "length": "43614",
+            "offset": "5599",
+            "rcpNo": "20230316001455",
+            "text": "1. 회사의 개요"
+          },
+          "section": "company_overview",
+          "sha256": "54d4c8b2b87ec32ef263fccc6fdbff8ac6f271189609dc2573a5979108b044d7"
+        },
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [],
+          "node": {
+            "dcmNo": "9067597",
+            "dtd": "dart3.xsd",
+            "eleId": "10",
+            "length": "1300",
+            "offset": "201125",
+            "rcpNo": "20230316001455",
+            "text": "1. 사업의 개요"
+          },
+          "section": "business_overview",
+          "sha256": "42690fe25a24ce90bdb49daa700f3e0229720b6a8852c887d2286f046752d55f"
+        }
+      ],
+      "target": {
+        "availableFrom": "2023-03-16",
+        "corpCode": "01350869",
+        "fiscalYear": 2022,
+        "identityBasis": "EXACT_STOCK_CODE",
+        "listingMetadata": {
+          "corp_cls": "Y",
+          "corp_code": "01350869",
+          "corp_name": "우리금융지주",
+          "flr_nm": "우리금융지주",
+          "rcept_dt": "20230316",
+          "rcept_no": "20230316001455",
+          "report_nm": "사업보고서 (2022.12)",
+          "rm": "연",
+          "stock_code": "316140"
+        },
+        "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+        "receiptNos": [
+          "20230316001455"
+        ],
+        "reportPeriod": "2022-12",
+        "ticker": "316140.KS"
+      }
+    },
+    {
+      "responses": [
+        {
+          "error": null,
+          "sha256": "e86ac38531397a19f5be4f6142445428104bf7f56049c2075f2196fcfb5c6545",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20240314001383"
+        },
+        {
+          "error": null,
+          "section": "company_overview",
+          "sha256": "3ab759cf99f6199f6e3a7744e792c13476ae6983212837af7aaa4838478a3afa",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20240314001383&dcmNo=9717108&eleId=4&offset=5729&length=41961&dtd=dart4.xsd"
+        },
+        {
+          "error": null,
+          "section": "business_overview",
+          "sha256": "7b13ff17b6015c5a3e0b94f4460f1fc3ac9df4f0f195ec9acfa097aeec4a5849",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20240314001383&dcmNo=9717108&eleId=10&offset=201477&length=2185&dtd=dart4.xsd"
+        }
+      ],
+      "sections": [
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [],
+          "node": {
+            "dcmNo": "9717108",
+            "dtd": "dart4.xsd",
+            "eleId": "4",
+            "length": "41961",
+            "offset": "5729",
+            "rcpNo": "20240314001383",
+            "text": "1. 회사의 개요"
+          },
+          "section": "company_overview",
+          "sha256": "3ab759cf99f6199f6e3a7744e792c13476ae6983212837af7aaa4838478a3afa"
+        },
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [],
+          "node": {
+            "dcmNo": "9717108",
+            "dtd": "dart4.xsd",
+            "eleId": "10",
+            "length": "2185",
+            "offset": "201477",
+            "rcpNo": "20240314001383",
+            "text": "1. 사업의 개요"
+          },
+          "section": "business_overview",
+          "sha256": "7b13ff17b6015c5a3e0b94f4460f1fc3ac9df4f0f195ec9acfa097aeec4a5849"
+        }
+      ],
+      "target": {
+        "availableFrom": "2024-03-14",
+        "corpCode": "01350869",
+        "fiscalYear": 2023,
+        "identityBasis": "EXACT_STOCK_CODE",
+        "listingMetadata": {
+          "corp_cls": "Y",
+          "corp_code": "01350869",
+          "corp_name": "우리금융지주",
+          "flr_nm": "우리금융지주",
+          "rcept_dt": "20240314",
+          "rcept_no": "20240314001383",
+          "report_nm": "사업보고서 (2023.12)",
+          "rm": "정연",
+          "stock_code": "316140"
+        },
+        "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+        "receiptNos": [
+          "20240314001383"
+        ],
+        "reportPeriod": "2023-12",
+        "ticker": "316140.KS"
+      }
+    },
+    {
+      "responses": [
+        {
+          "error": null,
+          "sha256": "f958a0a198553ac88a44f5c8c5785b29d7222166386eb640665ea40c5dcc7f1e",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20250318001196"
+        },
+        {
+          "error": null,
+          "section": "company_overview",
+          "sha256": "fde71c7c89796f25f05563af543ddf5ff2130d5c0033e5f5243ccb37ba8ea550",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20250318001196&dcmNo=10424024&eleId=4&offset=21134&length=43475&dtd=dart4.xsd"
+        },
+        {
+          "error": null,
+          "section": "business_overview",
+          "sha256": "66a04c52b7ce9a771877d395c7c7f7d9dfa1f6039e3a4aa2a42412724f4414d8",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20250318001196&dcmNo=10424024&eleId=10&offset=223720&length=2452&dtd=dart4.xsd"
+        }
+      ],
+      "sections": [
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [],
+          "node": {
+            "dcmNo": "10424024",
+            "dtd": "dart4.xsd",
+            "eleId": "4",
+            "length": "43475",
+            "offset": "21134",
+            "rcpNo": "20250318001196",
+            "text": "1. 회사의 개요"
+          },
+          "section": "company_overview",
+          "sha256": "fde71c7c89796f25f05563af543ddf5ff2130d5c0033e5f5243ccb37ba8ea550"
+        },
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [],
+          "node": {
+            "dcmNo": "10424024",
+            "dtd": "dart4.xsd",
+            "eleId": "10",
+            "length": "2452",
+            "offset": "223720",
+            "rcpNo": "20250318001196",
+            "text": "1. 사업의 개요"
+          },
+          "section": "business_overview",
+          "sha256": "66a04c52b7ce9a771877d395c7c7f7d9dfa1f6039e3a4aa2a42412724f4414d8"
+        }
+      ],
+      "target": {
+        "availableFrom": "2025-03-18",
+        "corpCode": "01350869",
+        "fiscalYear": 2024,
+        "identityBasis": "EXACT_STOCK_CODE",
+        "listingMetadata": {
+          "corp_cls": "Y",
+          "corp_code": "01350869",
+          "corp_name": "우리금융지주",
+          "flr_nm": "우리금융지주",
+          "rcept_dt": "20250318",
+          "rcept_no": "20250318001196",
+          "report_nm": "사업보고서 (2024.12)",
+          "rm": "정연",
+          "stock_code": "316140"
+        },
+        "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+        "receiptNos": [
+          "20250318001196"
+        ],
+        "reportPeriod": "2024-12",
+        "ticker": "316140.KS"
+      }
+    },
+    {
+      "responses": [
+        {
+          "error": null,
+          "sha256": "38fec8c400e3925f45d6b0a2b59a3602f628e3f31154b4f951ca4e1bcb3ca1d9",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260313001235"
+        },
+        {
+          "error": null,
+          "section": "company_overview",
+          "sha256": "ab646765c40969af6c060d22168ef5f65f3039799868b7034300d3d04a1575a5",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20260313001235&dcmNo=11122112&eleId=4&offset=22216&length=61668&dtd=dart4.xsd"
+        },
+        {
+          "error": null,
+          "section": "business_overview",
+          "sha256": "3a00fa6d009ae90921a3b50b1f0036aa54f4e472fc1a40370be442a23a3e7acd",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20260313001235&dcmNo=11122112&eleId=10&offset=276002&length=1789&dtd=dart4.xsd"
+        }
+      ],
+      "sections": [
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [],
+          "node": {
+            "dcmNo": "11122112",
+            "dtd": "dart4.xsd",
+            "eleId": "4",
+            "length": "61668",
+            "offset": "22216",
+            "rcpNo": "20260313001235",
+            "text": "1. 회사의 개요"
+          },
+          "section": "company_overview",
+          "sha256": "ab646765c40969af6c060d22168ef5f65f3039799868b7034300d3d04a1575a5"
+        },
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [],
+          "node": {
+            "dcmNo": "11122112",
+            "dtd": "dart4.xsd",
+            "eleId": "10",
+            "length": "1789",
+            "offset": "276002",
+            "rcpNo": "20260313001235",
+            "text": "1. 사업의 개요"
+          },
+          "section": "business_overview",
+          "sha256": "3a00fa6d009ae90921a3b50b1f0036aa54f4e472fc1a40370be442a23a3e7acd"
+        }
+      ],
+      "target": {
+        "availableFrom": "2026-03-13",
+        "corpCode": "01350869",
+        "fiscalYear": 2025,
+        "identityBasis": "EXACT_STOCK_CODE",
+        "listingMetadata": {
+          "corp_cls": "Y",
+          "corp_code": "01350869",
+          "corp_name": "우리금융지주",
+          "flr_nm": "우리금융지주",
+          "rcept_dt": "20260313",
+          "rcept_no": "20260313001235",
+          "report_nm": "사업보고서 (2025.12)",
+          "rm": "연",
+          "stock_code": "316140"
+        },
+        "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+        "receiptNos": [
+          "20260313001235"
+        ],
+        "reportPeriod": "2025-12",
+        "ticker": "316140.KS"
+      }
+    },
+    {
+      "responses": [
+        {
+          "error": null,
+          "sha256": "e63615777a8c5526d7e117ca8b5f95df18c93a018b4e7c644a8f38516dac7765",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20250319000952"
+        },
+        {
+          "error": null,
+          "section": "company_overview",
+          "sha256": "0b18edee9fbf4690550f88fb42a2cc84b74e0dc1f366d28b88be00e89b3783ef",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20250319000952&dcmNo=10430358&eleId=4&offset=6180&length=10930&dtd=dart4.xsd"
+        },
+        {
+          "error": null,
+          "section": "business_overview",
+          "sha256": "d452004a29726e6157497ab50a5e1fdfa54634e148d72e2753ab0aee62030296",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20250319000952&dcmNo=10430358&eleId=10&offset=61473&length=823&dtd=dart4.xsd"
+        }
+      ],
+      "sections": [
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [],
+          "node": {
+            "dcmNo": "10430358",
+            "dtd": "dart4.xsd",
+            "eleId": "4",
+            "length": "10930",
+            "offset": "6180",
+            "rcpNo": "20250319000952",
+            "text": "1. 회사의 개요"
+          },
+          "section": "company_overview",
+          "sha256": "0b18edee9fbf4690550f88fb42a2cc84b74e0dc1f366d28b88be00e89b3783ef"
+        },
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [],
+          "node": {
+            "dcmNo": "10430358",
+            "dtd": "dart4.xsd",
+            "eleId": "10",
+            "length": "823",
+            "offset": "61473",
+            "rcpNo": "20250319000952",
+            "text": "1. 사업의 개요"
+          },
+          "section": "business_overview",
+          "sha256": "d452004a29726e6157497ab50a5e1fdfa54634e148d72e2753ab0aee62030296"
+        }
+      ],
+      "target": {
+        "availableFrom": "2025-03-19",
+        "corpCode": "01384787",
+        "fiscalYear": 2024,
+        "identityBasis": "EXACT_STOCK_CODE",
+        "listingMetadata": {
+          "corp_cls": "Y",
+          "corp_code": "01384787",
+          "corp_name": "시프트업",
+          "flr_nm": "시프트업",
+          "rcept_dt": "20250319",
+          "rcept_no": "20250319000952",
+          "report_nm": "사업보고서 (2024.12)",
+          "rm": "",
+          "stock_code": "462870"
+        },
+        "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+        "receiptNos": [
+          "20250319000952"
+        ],
+        "reportPeriod": "2024-12",
+        "ticker": "462870.KS"
+      }
+    },
+    {
+      "responses": [
+        {
+          "error": null,
+          "sha256": "06c6be6942dcf2e0000b9e8ac77d82ab2e676dc42fcbc4e3b9b4bb657fb8c5db",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260318001672"
+        },
+        {
+          "error": null,
+          "section": "company_overview",
+          "sha256": "fdc1142b82056889012f0d36c20d24e6b08d4a0c5ae80b4e379b5b0868daef08",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20260318001672&dcmNo=11144878&eleId=4&offset=6197&length=10960&dtd=dart4.xsd"
+        },
+        {
+          "error": null,
+          "section": "business_overview",
+          "sha256": "584cf0cc1b658655b230739e99a01f96cd623f887e07ba69f4532430d79e21a6",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20260318001672&dcmNo=11144878&eleId=10&offset=107538&length=825&dtd=dart4.xsd"
+        }
+      ],
+      "sections": [
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [],
+          "node": {
+            "dcmNo": "11144878",
+            "dtd": "dart4.xsd",
+            "eleId": "4",
+            "length": "10960",
+            "offset": "6197",
+            "rcpNo": "20260318001672",
+            "text": "1. 회사의 개요"
+          },
+          "section": "company_overview",
+          "sha256": "fdc1142b82056889012f0d36c20d24e6b08d4a0c5ae80b4e379b5b0868daef08"
+        },
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [],
+          "node": {
+            "dcmNo": "11144878",
+            "dtd": "dart4.xsd",
+            "eleId": "10",
+            "length": "825",
+            "offset": "107538",
+            "rcpNo": "20260318001672",
+            "text": "1. 사업의 개요"
+          },
+          "section": "business_overview",
+          "sha256": "584cf0cc1b658655b230739e99a01f96cd623f887e07ba69f4532430d79e21a6"
+        }
+      ],
+      "target": {
+        "availableFrom": "2026-03-18",
+        "corpCode": "01384787",
+        "fiscalYear": 2025,
+        "identityBasis": "EXACT_STOCK_CODE",
+        "listingMetadata": {
+          "corp_cls": "Y",
+          "corp_code": "01384787",
+          "corp_name": "시프트업",
+          "flr_nm": "시프트업",
+          "rcept_dt": "20260318",
+          "rcept_no": "20260318001672",
+          "report_nm": "사업보고서 (2025.12)",
+          "rm": "연",
+          "stock_code": "462870"
+        },
+        "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+        "receiptNos": [
+          "20260318001672"
+        ],
+        "reportPeriod": "2025-12",
+        "ticker": "462870.KS"
+      }
+    },
+    {
+      "responses": [
+        {
+          "error": null,
+          "sha256": "699b88919f23971d0cb8fb4d722d73a5c500bb924334725f60be2617189311be",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20220318000473"
+        },
+        {
+          "error": null,
+          "section": "company_overview",
+          "sha256": "dcf33d6677e1bae628e1ea98d538a0ac4cc065422cdcdc91c9837210b16369a1",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20220318000473&dcmNo=8476312&eleId=4&offset=5437&length=9522&dtd=dart3.xsd"
+        },
+        {
+          "error": null,
+          "section": "business_overview",
+          "sha256": "0011822579339347ef827c4d496f74166ff68d190105e80c12478c7d4da15a8d",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20220318000473&dcmNo=8476312&eleId=10&offset=39456&length=1302&dtd=dart3.xsd"
+        }
+      ],
+      "sections": [
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [],
+          "node": {
+            "dcmNo": "8476312",
+            "dtd": "dart3.xsd",
+            "eleId": "4",
+            "length": "9522",
+            "offset": "5437",
+            "rcpNo": "20220318000473",
+            "text": "1. 회사의 개요"
+          },
+          "section": "company_overview",
+          "sha256": "dcf33d6677e1bae628e1ea98d538a0ac4cc065422cdcdc91c9837210b16369a1"
+        },
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [],
+          "node": {
+            "dcmNo": "8476312",
+            "dtd": "dart3.xsd",
+            "eleId": "10",
+            "length": "1302",
+            "offset": "39456",
+            "rcpNo": "20220318000473",
+            "text": "1. 사업의 개요"
+          },
+          "section": "business_overview",
+          "sha256": "0011822579339347ef827c4d496f74166ff68d190105e80c12478c7d4da15a8d"
+        }
+      ],
+      "target": {
+        "availableFrom": "2022-03-18",
+        "corpCode": "01386916",
+        "fiscalYear": 2021,
+        "identityBasis": "EXACT_STOCK_CODE",
+        "listingMetadata": {
+          "corp_cls": "Y",
+          "corp_code": "01386916",
+          "corp_name": "SK아이이테크놀로지",
+          "flr_nm": "SK아이이테크놀로지",
+          "rcept_dt": "20220318",
+          "rcept_no": "20220318000473",
+          "report_nm": "사업보고서 (2021.12)",
+          "rm": "연",
+          "stock_code": "361610"
+        },
+        "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+        "receiptNos": [
+          "20220318000473"
+        ],
+        "reportPeriod": "2021-12",
+        "ticker": "361610.KS"
+      }
+    },
+    {
+      "responses": [
+        {
+          "error": null,
+          "sha256": "3060bbfadf14def6400053679812f1d55ad4b94d2ca793de5e54812dfd5fdde5",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20230317000887"
+        },
+        {
+          "error": null,
+          "section": "company_overview",
+          "sha256": "8d3e908368ac15453e2f016b5590d2fe8c5b29b0ffc34f7b4cfaebb4c53c40b8",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20230317000887&dcmNo=9071553&eleId=4&offset=5455&length=9279&dtd=dart3.xsd"
+        },
+        {
+          "error": null,
+          "section": "business_overview",
+          "sha256": "d2eec512ccdb6603fd87c9e748f9f427723d810694f668f159d265c2e1884e8f",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20230317000887&dcmNo=9071553&eleId=10&offset=57170&length=1247&dtd=dart3.xsd"
+        }
+      ],
+      "sections": [
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [],
+          "node": {
+            "dcmNo": "9071553",
+            "dtd": "dart3.xsd",
+            "eleId": "4",
+            "length": "9279",
+            "offset": "5455",
+            "rcpNo": "20230317000887",
+            "text": "1. 회사의 개요"
+          },
+          "section": "company_overview",
+          "sha256": "8d3e908368ac15453e2f016b5590d2fe8c5b29b0ffc34f7b4cfaebb4c53c40b8"
+        },
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [],
+          "node": {
+            "dcmNo": "9071553",
+            "dtd": "dart3.xsd",
+            "eleId": "10",
+            "length": "1247",
+            "offset": "57170",
+            "rcpNo": "20230317000887",
+            "text": "1. 사업의 개요"
+          },
+          "section": "business_overview",
+          "sha256": "d2eec512ccdb6603fd87c9e748f9f427723d810694f668f159d265c2e1884e8f"
+        }
+      ],
+      "target": {
+        "availableFrom": "2023-03-17",
+        "corpCode": "01386916",
+        "fiscalYear": 2022,
+        "identityBasis": "EXACT_STOCK_CODE",
+        "listingMetadata": {
+          "corp_cls": "Y",
+          "corp_code": "01386916",
+          "corp_name": "SK아이이테크놀로지",
+          "flr_nm": "SK아이이테크놀로지",
+          "rcept_dt": "20230317",
+          "rcept_no": "20230317000887",
+          "report_nm": "사업보고서 (2022.12)",
+          "rm": "정연",
+          "stock_code": "361610"
+        },
+        "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+        "receiptNos": [
+          "20230317000887"
+        ],
+        "reportPeriod": "2022-12",
+        "ticker": "361610.KS"
+      }
+    },
+    {
+      "responses": [
+        {
+          "error": null,
+          "sha256": "3677eed305de1346d6dfc7792c54d98435106d8d7a7d392dda0def5c1047d15a",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20250317000867"
+        },
+        {
+          "error": null,
+          "section": "company_overview",
+          "sha256": "0eb8d3320bfe1dbaa5b8070e2045c655137161c5a9f6b3f8cf25ba15a0278c67",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20250317000867&dcmNo=10416005&eleId=4&offset=6174&length=18039&dtd=dart4.xsd"
+        },
+        {
+          "error": null,
+          "section": "business_overview",
+          "sha256": "d49a617e9ed4e4b227eff442b8b572f5bf09f6d9abf8e5644e329eee3d3ef25e",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20250317000867&dcmNo=10416005&eleId=10&offset=82030&length=1340&dtd=dart4.xsd"
+        }
+      ],
+      "sections": [
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [],
+          "node": {
+            "dcmNo": "10416005",
+            "dtd": "dart4.xsd",
+            "eleId": "4",
+            "length": "18039",
+            "offset": "6174",
+            "rcpNo": "20250317000867",
+            "text": "1. 회사의 개요"
+          },
+          "section": "company_overview",
+          "sha256": "0eb8d3320bfe1dbaa5b8070e2045c655137161c5a9f6b3f8cf25ba15a0278c67"
+        },
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [],
+          "node": {
+            "dcmNo": "10416005",
+            "dtd": "dart4.xsd",
+            "eleId": "10",
+            "length": "1340",
+            "offset": "82030",
+            "rcpNo": "20250317000867",
+            "text": "1. 사업의 개요"
+          },
+          "section": "business_overview",
+          "sha256": "d49a617e9ed4e4b227eff442b8b572f5bf09f6d9abf8e5644e329eee3d3ef25e"
+        }
+      ],
+      "target": {
+        "availableFrom": "2025-03-17",
+        "corpCode": "01386916",
+        "fiscalYear": 2024,
+        "identityBasis": "EXACT_STOCK_CODE",
+        "listingMetadata": {
+          "corp_cls": "Y",
+          "corp_code": "01386916",
+          "corp_name": "SK아이이테크놀로지",
+          "flr_nm": "SK아이이테크놀로지",
+          "rcept_dt": "20250317",
+          "rcept_no": "20250317000867",
+          "report_nm": "사업보고서 (2024.12)",
+          "rm": "연",
+          "stock_code": "361610"
+        },
+        "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+        "receiptNos": [
+          "20250317000867"
+        ],
+        "reportPeriod": "2024-12",
+        "ticker": "361610.KS"
+      }
+    },
+    {
+      "responses": [
+        {
+          "error": null,
+          "sha256": "ec9e68a3155b795500958e7c335b4c37add8f0d9dce17845dc7bd3ab284b519b",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260316001149"
+        },
+        {
+          "error": null,
+          "section": "company_overview",
+          "sha256": "0eeca1c2033f620dfa0d4cb405aa7aab212a4214902206cb1d51700610fb6b9d",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20260316001149&dcmNo=11127408&eleId=4&offset=6192&length=20434&dtd=dart4.xsd"
+        },
+        {
+          "error": null,
+          "section": "business_overview",
+          "sha256": "d0a806bad6d5a1a14f18287584a8c756fd365bd7d463a6314109b3527e5386f6",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20260316001149&dcmNo=11127408&eleId=10&offset=65430&length=1382&dtd=dart4.xsd"
+        }
+      ],
+      "sections": [
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [],
+          "node": {
+            "dcmNo": "11127408",
+            "dtd": "dart4.xsd",
+            "eleId": "4",
+            "length": "20434",
+            "offset": "6192",
+            "rcpNo": "20260316001149",
+            "text": "1. 회사의 개요"
+          },
+          "section": "company_overview",
+          "sha256": "0eeca1c2033f620dfa0d4cb405aa7aab212a4214902206cb1d51700610fb6b9d"
+        },
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [],
+          "node": {
+            "dcmNo": "11127408",
+            "dtd": "dart4.xsd",
+            "eleId": "10",
+            "length": "1382",
+            "offset": "65430",
+            "rcpNo": "20260316001149",
+            "text": "1. 사업의 개요"
+          },
+          "section": "business_overview",
+          "sha256": "d0a806bad6d5a1a14f18287584a8c756fd365bd7d463a6314109b3527e5386f6"
+        }
+      ],
+      "target": {
+        "availableFrom": "2026-03-16",
+        "corpCode": "01386916",
+        "fiscalYear": 2025,
+        "identityBasis": "EXACT_STOCK_CODE",
+        "listingMetadata": {
+          "corp_cls": "Y",
+          "corp_code": "01386916",
+          "corp_name": "SK아이이테크놀로지",
+          "flr_nm": "SK아이이테크놀로지",
+          "rcept_dt": "20260316",
+          "rcept_no": "20260316001149",
+          "report_nm": "사업보고서 (2025.12)",
+          "rm": "연",
+          "stock_code": "361610"
+        },
+        "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+        "receiptNos": [
+          "20260316001149"
+        ],
+        "reportPeriod": "2025-12",
+        "ticker": "361610.KS"
+      }
+    },
+    {
+      "responses": [
+        {
+          "error": null,
+          "sha256": "49b89bcc3953ffe192a57417385f85d868e6cff10c2ce3fa867c73daba77ea9b",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20210401001108"
+        },
+        {
+          "error": null,
+          "section": "company_overview",
+          "sha256": "a29c60df9a721023730a2f0a629b0fd9f871da9c541a66727cf8ff32101d56af",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20210401001108&dcmNo=7947716&eleId=4&offset=13900&length=17794&dtd=dart3.xsd"
+        },
+        {
+          "error": null,
+          "section": "business_overview",
+          "sha256": "599c7b5f821b07eb5a2a6d5c5b1d17595003b766245a5915ba30492e43ac3319",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20210401001108&dcmNo=7947716&eleId=11&offset=118484&length=180923&dtd=dart3.xsd"
+        }
+      ],
+      "sections": [
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [],
+          "node": {
+            "dcmNo": "7947716",
+            "dtd": "dart3.xsd",
+            "eleId": "4",
+            "length": "17794",
+            "offset": "13900",
+            "rcpNo": "20210401001108",
+            "text": "1. 회사의 개요"
+          },
+          "section": "company_overview",
+          "sha256": "a29c60df9a721023730a2f0a629b0fd9f871da9c541a66727cf8ff32101d56af"
+        },
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [
+            "H32"
+          ],
+          "node": {
+            "dcmNo": "7947716",
+            "dtd": "dart3.xsd",
+            "eleId": "11",
+            "length": "180923",
+            "offset": "118484",
+            "rcpNo": "20210401001108",
+            "text": "II. 사업의 내용"
+          },
+          "section": "business_overview",
+          "sha256": "599c7b5f821b07eb5a2a6d5c5b1d17595003b766245a5915ba30492e43ac3319"
+        }
+      ],
+      "target": {
+        "availableFrom": "2021-04-01",
+        "corpCode": "01390344",
+        "fiscalYear": 2020,
+        "identityBasis": "EXACT_STOCK_CODE",
+        "listingMetadata": {
+          "corp_cls": "Y",
+          "corp_code": "01390344",
+          "corp_name": "HD현대중공업",
+          "flr_nm": "HD현대중공업",
+          "rcept_dt": "20210401",
+          "rcept_no": "20210401001108",
+          "report_nm": "사업보고서 (2020.12)",
+          "rm": "연",
+          "stock_code": "329180"
+        },
+        "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+        "receiptNos": [
+          "20210401001108"
+        ],
+        "reportPeriod": "2020-12",
+        "ticker": "329180.KS"
+      }
+    },
+    {
+      "responses": [
+        {
+          "error": null,
+          "sha256": "0401038e0379d06954732315b8ae7d61a350b41f514732f4fe5f3841b5ceb73a",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20220314000704"
+        },
+        {
+          "error": null,
+          "section": "company_overview",
+          "sha256": "b78349af37dcc80f6a6353943b0ac49e048ff5c0ec8ed6e54ed41da34389c896",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20220314000704&dcmNo=8456425&eleId=4&offset=19182&length=35250&dtd=dart3.xsd"
+        },
+        {
+          "error": null,
+          "section": "business_overview",
+          "sha256": "3574b229311a3d11435952a7937d83f37e5dc03c8547af4880c828013247379e",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20220314000704&dcmNo=8456425&eleId=10&offset=101756&length=12638&dtd=dart3.xsd"
+        }
+      ],
+      "sections": [
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [],
+          "node": {
+            "dcmNo": "8456425",
+            "dtd": "dart3.xsd",
+            "eleId": "4",
+            "length": "35250",
+            "offset": "19182",
+            "rcpNo": "20220314000704",
+            "text": "1. 회사의 개요"
+          },
+          "section": "company_overview",
+          "sha256": "b78349af37dcc80f6a6353943b0ac49e048ff5c0ec8ed6e54ed41da34389c896"
+        },
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [],
+          "node": {
+            "dcmNo": "8456425",
+            "dtd": "dart3.xsd",
+            "eleId": "10",
+            "length": "12638",
+            "offset": "101756",
+            "rcpNo": "20220314000704",
+            "text": "1. 사업의 개요"
+          },
+          "section": "business_overview",
+          "sha256": "3574b229311a3d11435952a7937d83f37e5dc03c8547af4880c828013247379e"
+        }
+      ],
+      "target": {
+        "availableFrom": "2022-03-14",
+        "corpCode": "01390344",
+        "fiscalYear": 2021,
+        "identityBasis": "EXACT_STOCK_CODE",
+        "listingMetadata": {
+          "corp_cls": "Y",
+          "corp_code": "01390344",
+          "corp_name": "HD현대중공업",
+          "flr_nm": "HD현대중공업",
+          "rcept_dt": "20220314",
+          "rcept_no": "20220314000704",
+          "report_nm": "사업보고서 (2021.12)",
+          "rm": "연",
+          "stock_code": "329180"
+        },
+        "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+        "receiptNos": [
+          "20220314000704"
+        ],
+        "reportPeriod": "2021-12",
+        "ticker": "329180.KS"
+      }
+    },
+    {
+      "responses": [
+        {
+          "error": null,
+          "sha256": "30ecca170ec1ec5078905c78f080d888c8c3f48b94154831ca7c1dbf465bfb48",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20230320000790"
+        },
+        {
+          "error": null,
+          "section": "company_overview",
+          "sha256": "9a63eab295c01907337187385b32309c047f36063abfe4539c7855127958adad",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20230320000790&dcmNo=9076032&eleId=4&offset=18995&length=37291&dtd=dart3.xsd"
+        },
+        {
+          "error": null,
+          "section": "business_overview",
+          "sha256": "6c21ff1e8e422d466fb43320369bced05df0d7c5028527936890b857d07b39c5",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20230320000790&dcmNo=9076032&eleId=10&offset=95213&length=9913&dtd=dart3.xsd"
+        }
+      ],
+      "sections": [
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [],
+          "node": {
+            "dcmNo": "9076032",
+            "dtd": "dart3.xsd",
+            "eleId": "4",
+            "length": "37291",
+            "offset": "18995",
+            "rcpNo": "20230320000790",
+            "text": "1. 회사의 개요"
+          },
+          "section": "company_overview",
+          "sha256": "9a63eab295c01907337187385b32309c047f36063abfe4539c7855127958adad"
+        },
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [],
+          "node": {
+            "dcmNo": "9076032",
+            "dtd": "dart3.xsd",
+            "eleId": "10",
+            "length": "9913",
+            "offset": "95213",
+            "rcpNo": "20230320000790",
+            "text": "1. 사업의 개요"
+          },
+          "section": "business_overview",
+          "sha256": "6c21ff1e8e422d466fb43320369bced05df0d7c5028527936890b857d07b39c5"
+        }
+      ],
+      "target": {
+        "availableFrom": "2023-03-20",
+        "corpCode": "01390344",
+        "fiscalYear": 2022,
+        "identityBasis": "EXACT_STOCK_CODE",
+        "listingMetadata": {
+          "corp_cls": "Y",
+          "corp_code": "01390344",
+          "corp_name": "HD현대중공업",
+          "flr_nm": "HD현대중공업",
+          "rcept_dt": "20230320",
+          "rcept_no": "20230320000790",
+          "report_nm": "사업보고서 (2022.12)",
+          "rm": "연",
+          "stock_code": "329180"
+        },
+        "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+        "receiptNos": [
+          "20230320000790"
+        ],
+        "reportPeriod": "2022-12",
+        "ticker": "329180.KS"
+      }
+    },
+    {
+      "responses": [
+        {
+          "error": null,
+          "sha256": "f58a08dc128cfea61c2843a557667a17238238c5861a9996dd4e3a7506959ada",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20250318000897"
+        },
+        {
+          "error": null,
+          "section": "company_overview",
+          "sha256": "a0762ca144da7b3c92ba7c47c646a0e820ac27b8ff89d13e8c6133bc10bb25c2",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20250318000897&dcmNo=10421816&eleId=79&offset=2367578&length=946&dtd=dart4.xsd"
+        },
+        {
+          "error": null,
+          "section": "business_overview",
+          "sha256": "2ae3e800014904afef4a05ad6b7c0924288ca5fd4d31aeb354ad962057be230d",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20250318000897&dcmNo=10421816&eleId=10&offset=132700&length=10302&dtd=dart4.xsd"
+        }
+      ],
+      "sections": [
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [],
+          "node": {
+            "dcmNo": "10421816",
+            "dtd": "dart4.xsd",
+            "eleId": "79",
+            "length": "946",
+            "offset": "2367578",
+            "rcpNo": "20250318000897",
+            "text": "1. 회사의 개요"
+          },
+          "section": "company_overview",
+          "sha256": "a0762ca144da7b3c92ba7c47c646a0e820ac27b8ff89d13e8c6133bc10bb25c2"
+        },
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [],
+          "node": {
+            "dcmNo": "10421816",
+            "dtd": "dart4.xsd",
+            "eleId": "10",
+            "length": "10302",
+            "offset": "132700",
+            "rcpNo": "20250318000897",
+            "text": "1. 사업의 개요"
+          },
+          "section": "business_overview",
+          "sha256": "2ae3e800014904afef4a05ad6b7c0924288ca5fd4d31aeb354ad962057be230d"
+        }
+      ],
+      "target": {
+        "availableFrom": "2025-03-18",
+        "corpCode": "01390344",
+        "fiscalYear": 2024,
+        "identityBasis": "EXACT_STOCK_CODE",
+        "listingMetadata": {
+          "corp_cls": "Y",
+          "corp_code": "01390344",
+          "corp_name": "HD현대중공업",
+          "flr_nm": "HD현대중공업",
+          "rcept_dt": "20250318",
+          "rcept_no": "20250318000897",
+          "report_nm": "사업보고서 (2024.12)",
+          "rm": "연",
+          "stock_code": "329180"
+        },
+        "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+        "receiptNos": [
+          "20250318000897"
+        ],
+        "reportPeriod": "2024-12",
+        "ticker": "329180.KS"
+      }
+    },
+    {
+      "responses": [
+        {
+          "error": null,
+          "sha256": "d50d749d15115c218ed7347942239fbab0d2bd47a7fbdd722d8f266b0002b7c5",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260320000859"
+        },
+        {
+          "error": null,
+          "section": "company_overview",
+          "sha256": "f689a1a989052d0e53a8260fc26de88298a40bdb960ea91e9feb8b041087450d",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20260320000859&dcmNo=11157351&eleId=78&offset=3933196&length=1111&dtd=dart4.xsd"
+        },
+        {
+          "error": null,
+          "section": "business_overview",
+          "sha256": "864af3813c705a4da6e5070826c78d6a685f08c31ff999a8767dc71365346677",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20260320000859&dcmNo=11157351&eleId=10&offset=175059&length=12084&dtd=dart4.xsd"
+        }
+      ],
+      "sections": [
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [],
+          "node": {
+            "dcmNo": "11157351",
+            "dtd": "dart4.xsd",
+            "eleId": "78",
+            "length": "1111",
+            "offset": "3933196",
+            "rcpNo": "20260320000859",
+            "text": "1. 회사의 개요"
+          },
+          "section": "company_overview",
+          "sha256": "f689a1a989052d0e53a8260fc26de88298a40bdb960ea91e9feb8b041087450d"
+        },
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [],
+          "node": {
+            "dcmNo": "11157351",
+            "dtd": "dart4.xsd",
+            "eleId": "10",
+            "length": "12084",
+            "offset": "175059",
+            "rcpNo": "20260320000859",
+            "text": "1. 사업의 개요"
+          },
+          "section": "business_overview",
+          "sha256": "864af3813c705a4da6e5070826c78d6a685f08c31ff999a8767dc71365346677"
+        }
+      ],
+      "target": {
+        "availableFrom": "2026-03-20",
+        "corpCode": "01390344",
+        "fiscalYear": 2025,
+        "identityBasis": "EXACT_STOCK_CODE",
+        "listingMetadata": {
+          "corp_cls": "Y",
+          "corp_code": "01390344",
+          "corp_name": "HD현대중공업",
+          "flr_nm": "HD현대중공업",
+          "rcept_dt": "20260320",
+          "rcept_no": "20260320000859",
+          "report_nm": "사업보고서 (2025.12)",
+          "rm": "연",
+          "stock_code": "329180"
+        },
+        "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+        "receiptNos": [
+          "20260320000859"
+        ],
+        "reportPeriod": "2025-12",
+        "ticker": "329180.KS"
+      }
+    },
+    {
+      "responses": [
+        {
+          "error": null,
+          "sha256": "6ffb37100f31593003cb91332d7d62f8d570bd7f06ea7e8d0444e9ae7800164e",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20200330002854"
+        },
+        {
+          "error": null,
+          "section": "company_overview",
+          "sha256": "588de48b72b231508efd527356a438326c1d8d380e4112052d8854358bf34d86",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20200330002854&dcmNo=7196263&eleId=4&offset=5413&length=15154&dtd=dart3.xsd"
+        },
+        {
+          "error": null,
+          "section": "business_overview",
+          "sha256": "afdcb8aff86e152106743dc373a8db289396031ff0fcf0287e2bbe1cdb11dc85",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20200330002854&dcmNo=7196263&eleId=10&offset=80186&length=74114&dtd=dart3.xsd"
+        }
+      ],
+      "sections": [
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [
+            "C2512",
+            "C2612",
+            "C2811",
+            "C2916",
+            "C2924",
+            "C2928",
+            "F4111",
+            "G4653",
+            "H4921",
+            "J5822",
+            "K6420",
+            "L6811",
+            "M7131",
+            "M7151",
+            "M7212",
+            "N7410",
+            "P8570",
+            "R9119"
+          ],
+          "node": {
+            "dcmNo": "7196263",
+            "dtd": "dart3.xsd",
+            "eleId": "4",
+            "length": "15154",
+            "offset": "5413",
+            "rcpNo": "20200330002854",
+            "text": "1. 회사의 개요"
+          },
+          "section": "company_overview",
+          "sha256": "588de48b72b231508efd527356a438326c1d8d380e4112052d8854358bf34d86"
+        },
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [],
+          "node": {
+            "dcmNo": "7196263",
+            "dtd": "dart3.xsd",
+            "eleId": "10",
+            "length": "74114",
+            "offset": "80186",
+            "rcpNo": "20200330002854",
+            "text": "II. 사업의 내용"
+          },
+          "section": "business_overview",
+          "sha256": "afdcb8aff86e152106743dc373a8db289396031ff0fcf0287e2bbe1cdb11dc85"
+        }
+      ],
+      "target": {
+        "availableFrom": "2020-03-30",
+        "corpCode": "01412725",
+        "fiscalYear": 2019,
+        "identityBasis": "EXACT_STOCK_CODE",
+        "listingMetadata": {
+          "corp_cls": "Y",
+          "corp_code": "01412725",
+          "corp_name": "두산퓨얼셀",
+          "flr_nm": "두산퓨얼셀",
+          "rcept_dt": "20200330",
+          "rcept_no": "20200330002854",
+          "report_nm": "사업보고서 (2019.12)",
+          "rm": "",
+          "stock_code": "336260"
+        },
+        "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+        "receiptNos": [
+          "20200330002854"
+        ],
+        "reportPeriod": "2019-12",
+        "ticker": "336260.KS"
+      }
+    },
+    {
+      "responses": [
+        {
+          "error": null,
+          "sha256": "20fa0408a486c676cefbf22809c32d493142e874b2d4de17c8108141699ca708",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20210319001290"
+        },
+        {
+          "error": null,
+          "section": "company_overview",
+          "sha256": "6eff2c223af45cf9b1902f72745d1b1c84fec81ba79ee7c779c78f327badba0c",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20210319001290&dcmNo=7900862&eleId=4&offset=5437&length=17207&dtd=dart3.xsd"
+        },
+        {
+          "error": null,
+          "section": "business_overview",
+          "sha256": "744177b6b72b1cf3a095246b1d820c19c2533384c57402c72fe06905b6fb29d9",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20210319001290&dcmNo=7900862&eleId=11&offset=89808&length=93849&dtd=dart3.xsd"
+        }
+      ],
+      "sections": [
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [
+            "C2512",
+            "C2612",
+            "C2811",
+            "C2916",
+            "C2924",
+            "C2928",
+            "C3031",
+            "F4111",
+            "G4653",
+            "H4921",
+            "J6202",
+            "L6811",
+            "M7131",
+            "M7151",
+            "M7212",
+            "N7410",
+            "P8570",
+            "R9119"
+          ],
+          "node": {
+            "dcmNo": "7900862",
+            "dtd": "dart3.xsd",
+            "eleId": "4",
+            "length": "17207",
+            "offset": "5437",
+            "rcpNo": "20210319001290",
+            "text": "1. 회사의 개요"
+          },
+          "section": "company_overview",
+          "sha256": "6eff2c223af45cf9b1902f72745d1b1c84fec81ba79ee7c779c78f327badba0c"
+        },
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [],
+          "node": {
+            "dcmNo": "7900862",
+            "dtd": "dart3.xsd",
+            "eleId": "11",
+            "length": "93849",
+            "offset": "89808",
+            "rcpNo": "20210319001290",
+            "text": "II. 사업의 내용"
+          },
+          "section": "business_overview",
+          "sha256": "744177b6b72b1cf3a095246b1d820c19c2533384c57402c72fe06905b6fb29d9"
+        }
+      ],
+      "target": {
+        "availableFrom": "2021-03-19",
+        "corpCode": "01412725",
+        "fiscalYear": 2020,
+        "identityBasis": "EXACT_STOCK_CODE",
+        "listingMetadata": {
+          "corp_cls": "Y",
+          "corp_code": "01412725",
+          "corp_name": "두산퓨얼셀",
+          "flr_nm": "두산퓨얼셀",
+          "rcept_dt": "20210319",
+          "rcept_no": "20210319001290",
+          "report_nm": "사업보고서 (2020.12)",
+          "rm": "",
+          "stock_code": "336260"
+        },
+        "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+        "receiptNos": [
+          "20210319001290"
+        ],
+        "reportPeriod": "2020-12",
+        "ticker": "336260.KS"
+      }
+    },
+    {
+      "responses": [
+        {
+          "error": null,
+          "sha256": "9908de5c849462f5031215d93618cdca77403380dc537ca786f4252bf12e8bae",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20220321001227"
+        },
+        {
+          "error": null,
+          "section": "company_overview",
+          "sha256": "a5c7003502916dcf67d40efdc7a7b08d65243aef1c3078f0d6e3f19bd4188531",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20220321001227&dcmNo=8485641&eleId=4&offset=5416&length=17050&dtd=dart3.xsd"
+        },
+        {
+          "error": null,
+          "section": "business_overview",
+          "sha256": "8d0a767e757cfc05586208dfb1a5bbfc6bb8c4bda71ee2c89e20a8ed0da1122b",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20220321001227&dcmNo=8485641&eleId=10&offset=75496&length=1515&dtd=dart3.xsd"
+        }
+      ],
+      "sections": [
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [],
+          "node": {
+            "dcmNo": "8485641",
+            "dtd": "dart3.xsd",
+            "eleId": "4",
+            "length": "17050",
+            "offset": "5416",
+            "rcpNo": "20220321001227",
+            "text": "1. 회사의 개요"
+          },
+          "section": "company_overview",
+          "sha256": "a5c7003502916dcf67d40efdc7a7b08d65243aef1c3078f0d6e3f19bd4188531"
+        },
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [],
+          "node": {
+            "dcmNo": "8485641",
+            "dtd": "dart3.xsd",
+            "eleId": "10",
+            "length": "1515",
+            "offset": "75496",
+            "rcpNo": "20220321001227",
+            "text": "1. 사업의 개요"
+          },
+          "section": "business_overview",
+          "sha256": "8d0a767e757cfc05586208dfb1a5bbfc6bb8c4bda71ee2c89e20a8ed0da1122b"
+        }
+      ],
+      "target": {
+        "availableFrom": "2022-03-21",
+        "corpCode": "01412725",
+        "fiscalYear": 2021,
+        "identityBasis": "EXACT_STOCK_CODE",
+        "listingMetadata": {
+          "corp_cls": "Y",
+          "corp_code": "01412725",
+          "corp_name": "두산퓨얼셀",
+          "flr_nm": "두산퓨얼셀",
+          "rcept_dt": "20220321",
+          "rcept_no": "20220321001227",
+          "report_nm": "사업보고서 (2021.12)",
+          "rm": "",
+          "stock_code": "336260"
+        },
+        "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+        "receiptNos": [
+          "20220321001227"
+        ],
+        "reportPeriod": "2021-12",
+        "ticker": "336260.KS"
+      }
+    },
+    {
+      "responses": [
+        {
+          "error": null,
+          "sha256": "9c6acfc6fca66a5ea8be61e3527750563b8bbe87c96b40fe94933c62c401a931",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20230321001259"
+        },
+        {
+          "error": null,
+          "section": "company_overview",
+          "sha256": "ed9069687f44ded0883c81fe1a37c037a966665613445ee57e9d6f702b14399f",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20230321001259&dcmNo=9084089&eleId=4&offset=5428&length=17346&dtd=dart3.xsd"
+        },
+        {
+          "error": null,
+          "section": "business_overview",
+          "sha256": "45a77384a52fe1778d1cb7d10ae7181f28f119e1f6fc6b52099da2f17f5a1f04",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20230321001259&dcmNo=9084089&eleId=10&offset=88012&length=1573&dtd=dart3.xsd"
+        }
+      ],
+      "sections": [
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [],
+          "node": {
+            "dcmNo": "9084089",
+            "dtd": "dart3.xsd",
+            "eleId": "4",
+            "length": "17346",
+            "offset": "5428",
+            "rcpNo": "20230321001259",
+            "text": "1. 회사의 개요"
+          },
+          "section": "company_overview",
+          "sha256": "ed9069687f44ded0883c81fe1a37c037a966665613445ee57e9d6f702b14399f"
+        },
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [],
+          "node": {
+            "dcmNo": "9084089",
+            "dtd": "dart3.xsd",
+            "eleId": "10",
+            "length": "1573",
+            "offset": "88012",
+            "rcpNo": "20230321001259",
+            "text": "1. 사업의 개요"
+          },
+          "section": "business_overview",
+          "sha256": "45a77384a52fe1778d1cb7d10ae7181f28f119e1f6fc6b52099da2f17f5a1f04"
+        }
+      ],
+      "target": {
+        "availableFrom": "2023-03-21",
+        "corpCode": "01412725",
+        "fiscalYear": 2022,
+        "identityBasis": "EXACT_STOCK_CODE",
+        "listingMetadata": {
+          "corp_cls": "Y",
+          "corp_code": "01412725",
+          "corp_name": "두산퓨얼셀",
+          "flr_nm": "두산퓨얼셀",
+          "rcept_dt": "20230321",
+          "rcept_no": "20230321001259",
+          "report_nm": "사업보고서 (2022.12)",
+          "rm": "",
+          "stock_code": "336260"
+        },
+        "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+        "receiptNos": [
+          "20230321001259"
+        ],
+        "reportPeriod": "2022-12",
+        "ticker": "336260.KS"
+      }
+    },
+    {
+      "responses": [
+        {
+          "error": null,
+          "sha256": "e260727548fb1941cbdf6c397327feae444b664da2e836c2ed2efdd83fa28903",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20250318001214"
+        },
+        {
+          "error": null,
+          "section": "company_overview",
+          "sha256": "e84de178bfa9433e6796416a2c130fd8a229539adff5bfd01db2bc4670f2c2a9",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20250318001214&dcmNo=10423931&eleId=4&offset=6287&length=19372&dtd=dart4.xsd"
+        },
+        {
+          "error": null,
+          "section": "business_overview",
+          "sha256": "d2e1e5d22abbee86b3bc3acffb0a40f2a15e95077c9622930da8d5d359943a1c",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20250318001214&dcmNo=10423931&eleId=10&offset=106261&length=1606&dtd=dart4.xsd"
+        }
+      ],
+      "sections": [
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [],
+          "node": {
+            "dcmNo": "10423931",
+            "dtd": "dart4.xsd",
+            "eleId": "4",
+            "length": "19372",
+            "offset": "6287",
+            "rcpNo": "20250318001214",
+            "text": "1. 회사의 개요"
+          },
+          "section": "company_overview",
+          "sha256": "e84de178bfa9433e6796416a2c130fd8a229539adff5bfd01db2bc4670f2c2a9"
+        },
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [],
+          "node": {
+            "dcmNo": "10423931",
+            "dtd": "dart4.xsd",
+            "eleId": "10",
+            "length": "1606",
+            "offset": "106261",
+            "rcpNo": "20250318001214",
+            "text": "1. 사업의 개요"
+          },
+          "section": "business_overview",
+          "sha256": "d2e1e5d22abbee86b3bc3acffb0a40f2a15e95077c9622930da8d5d359943a1c"
+        }
+      ],
+      "target": {
+        "availableFrom": "2025-03-18",
+        "corpCode": "01412725",
+        "fiscalYear": 2024,
+        "identityBasis": "EXACT_STOCK_CODE",
+        "listingMetadata": {
+          "corp_cls": "Y",
+          "corp_code": "01412725",
+          "corp_name": "두산퓨얼셀",
+          "flr_nm": "두산퓨얼셀",
+          "rcept_dt": "20250318",
+          "rcept_no": "20250318001214",
+          "report_nm": "사업보고서 (2024.12)",
+          "rm": "연",
+          "stock_code": "336260"
+        },
+        "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+        "receiptNos": [
+          "20250318001214"
+        ],
+        "reportPeriod": "2024-12",
+        "ticker": "336260.KS"
+      }
+    },
+    {
+      "responses": [
+        {
+          "error": null,
+          "sha256": "7a6b000bad6257a83e691d9fa29a901ddb843578f7c42f2cec407fc2eb72864d",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260318001264"
+        },
+        {
+          "error": null,
+          "section": "company_overview",
+          "sha256": "d95a57f6eb9d8e9fec38dfe7abb8608325e45bd8ebab50be482a3b82cf3b6769",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20260318001264&dcmNo=11141327&eleId=4&offset=6187&length=19910&dtd=dart4.xsd"
+        },
+        {
+          "error": null,
+          "section": "business_overview",
+          "sha256": "99e5c247e7f05672de370a2aaaf011b03595101c13027df621871fa803826cbe",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20260318001264&dcmNo=11141327&eleId=10&offset=108423&length=1568&dtd=dart4.xsd"
+        }
+      ],
+      "sections": [
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [],
+          "node": {
+            "dcmNo": "11141327",
+            "dtd": "dart4.xsd",
+            "eleId": "4",
+            "length": "19910",
+            "offset": "6187",
+            "rcpNo": "20260318001264",
+            "text": "1. 회사의 개요"
+          },
+          "section": "company_overview",
+          "sha256": "d95a57f6eb9d8e9fec38dfe7abb8608325e45bd8ebab50be482a3b82cf3b6769"
+        },
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [],
+          "node": {
+            "dcmNo": "11141327",
+            "dtd": "dart4.xsd",
+            "eleId": "10",
+            "length": "1568",
+            "offset": "108423",
+            "rcpNo": "20260318001264",
+            "text": "1. 사업의 개요"
+          },
+          "section": "business_overview",
+          "sha256": "99e5c247e7f05672de370a2aaaf011b03595101c13027df621871fa803826cbe"
+        }
+      ],
+      "target": {
+        "availableFrom": "2026-03-18",
+        "corpCode": "01412725",
+        "fiscalYear": 2025,
+        "identityBasis": "EXACT_STOCK_CODE",
+        "listingMetadata": {
+          "corp_cls": "Y",
+          "corp_code": "01412725",
+          "corp_name": "두산퓨얼셀",
+          "flr_nm": "두산퓨얼셀",
+          "rcept_dt": "20260318",
+          "rcept_no": "20260318001264",
+          "report_nm": "사업보고서 (2025.12)",
+          "rm": "연",
+          "stock_code": "336260"
+        },
+        "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+        "receiptNos": [
+          "20260318001264"
+        ],
+        "reportPeriod": "2025-12",
+        "ticker": "336260.KS"
+      }
+    },
+    {
+      "responses": [
+        {
+          "error": null,
+          "sha256": "e47869eedd6f1ef5a2141d6e7df23cd45a051ed5a7c3c68191f19879d04838cc",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20200330003444"
+        },
+        {
+          "error": null,
+          "section": "company_overview",
+          "sha256": "93910a8947ccb2719fa784936f7dcb524e6b38680aa85222f197a3314b166f2e",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20200330003444&dcmNo=7199787&eleId=4&offset=5558&length=20221&dtd=dart3.xsd"
+        },
+        {
+          "error": null,
+          "section": "business_overview",
+          "sha256": "f2981f4d179e9773dccc7cbad43dde6cc5c82638541c02ed243a868d37d52a5b",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20200330003444&dcmNo=7199787&eleId=10&offset=87034&length=113424&dtd=dart3.xsd"
+        }
+      ],
+      "sections": [
+        {
+          "classificationMarkers": [
+            {
+              "offset": 5680,
+              "text": "10월 1일 설립 / 12월 1일 공정위 계열편입 완료되었음 (주) 해외 법인 정보는 IX. 계열회사 등에 관한 사항을 참고 (주) 영위업종을 공정위 기업집단현황공시상 영위업종 (표준산업분류표상의 세분류 : 영문1자리+숫자4자리)으로 통일하여 표기            아. 신용평가에 관한 사항     해당사항이 없습니다.  \r\n \r\n   \r\n 자. 회사의 주권상장(또는 등록ㆍ지정)여부 및 특례상장에 관한 사항 \r\n \r\n \r\n  \r\n  \r\n  \r\n  \r\n \r\n \r\n \r\n   주권상장 (또는 등록ㆍ지정)여부 \r\n   주권상장 (또는 등록ㆍ지정)일자 \r\n   특례상장 등 여부 \r\n   특례상장 등 적용법규 \r\n \r\n \r\n \r\n \r\n   유가증권시장 \r\n   2019년 10월 18일 \r\n   - \r\n   - \r\n \r\n \r\n \r\n   \r\n   \r\n   \r\n \r\n "
+            }
+          ],
+          "explicitCodeCandidates": [
+            "C2512",
+            "C2612",
+            "C2811",
+            "C2916",
+            "C2924",
+            "C2928",
+            "F4111",
+            "G4653",
+            "H4921",
+            "J5822",
+            "K6420",
+            "L6811",
+            "M7131",
+            "M7151",
+            "M7212",
+            "N7410",
+            "P8570",
+            "R9119"
+          ],
+          "node": {
+            "dcmNo": "7199787",
+            "dtd": "dart3.xsd",
+            "eleId": "4",
+            "length": "20221",
+            "offset": "5558",
+            "rcpNo": "20200330003444",
+            "text": "1. 회사의 개요"
+          },
+          "section": "company_overview",
+          "sha256": "93910a8947ccb2719fa784936f7dcb524e6b38680aa85222f197a3314b166f2e"
+        },
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [],
+          "node": {
+            "dcmNo": "7199787",
+            "dtd": "dart3.xsd",
+            "eleId": "10",
+            "length": "113424",
+            "offset": "87034",
+            "rcpNo": "20200330003444",
+            "text": "II. 사업의 내용"
+          },
+          "section": "business_overview",
+          "sha256": "f2981f4d179e9773dccc7cbad43dde6cc5c82638541c02ed243a868d37d52a5b"
+        }
+      ],
+      "target": {
+        "availableFrom": "2020-03-30",
+        "corpCode": "01412822",
+        "fiscalYear": 2019,
+        "identityBasis": "EXACT_STOCK_CODE",
+        "listingMetadata": {
+          "corp_cls": "Y",
+          "corp_code": "01412822",
+          "corp_name": "솔루스첨단소재",
+          "flr_nm": "솔루스첨단소재",
+          "rcept_dt": "20200330",
+          "rcept_no": "20200330003444",
+          "report_nm": "사업보고서 (2019.12)",
+          "rm": "연",
+          "stock_code": "336370"
+        },
+        "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+        "receiptNos": [
+          "20200330003444"
+        ],
+        "reportPeriod": "2019-12",
+        "ticker": "336370.KS"
+      }
+    },
+    {
+      "responses": [
+        {
+          "error": null,
+          "sha256": "4e9e69df7d669c7d3d936da44ae0a89da8d74fe6fbb12b10805d6098027751bd",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20220316000890"
+        },
+        {
+          "error": null,
+          "section": "company_overview",
+          "sha256": "013ed44a0130de2b3d2b4631ebfd14ece09089d0fa83c38bc45cbf9f1c0e5c53",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20220316000890&dcmNo=8465940&eleId=4&offset=5458&length=9653&dtd=dart3.xsd"
+        },
+        {
+          "error": null,
+          "section": "business_overview",
+          "sha256": "b79cb2738926f368e67cee704ceb6edb73e054d729ca0ffbf11677c7879a0ce8",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20220316000890&dcmNo=8465940&eleId=10&offset=75414&length=5218&dtd=dart3.xsd"
+        }
+      ],
+      "sections": [
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [],
+          "node": {
+            "dcmNo": "8465940",
+            "dtd": "dart3.xsd",
+            "eleId": "4",
+            "length": "9653",
+            "offset": "5458",
+            "rcpNo": "20220316000890",
+            "text": "1. 회사의 개요"
+          },
+          "section": "company_overview",
+          "sha256": "013ed44a0130de2b3d2b4631ebfd14ece09089d0fa83c38bc45cbf9f1c0e5c53"
+        },
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [],
+          "node": {
+            "dcmNo": "8465940",
+            "dtd": "dart3.xsd",
+            "eleId": "10",
+            "length": "5218",
+            "offset": "75414",
+            "rcpNo": "20220316000890",
+            "text": "1. 사업의 개요"
+          },
+          "section": "business_overview",
+          "sha256": "b79cb2738926f368e67cee704ceb6edb73e054d729ca0ffbf11677c7879a0ce8"
+        }
+      ],
+      "target": {
+        "availableFrom": "2022-03-16",
+        "corpCode": "01412822",
+        "fiscalYear": 2021,
+        "identityBasis": "EXACT_STOCK_CODE",
+        "listingMetadata": {
+          "corp_cls": "Y",
+          "corp_code": "01412822",
+          "corp_name": "솔루스첨단소재",
+          "flr_nm": "솔루스첨단소재",
+          "rcept_dt": "20220316",
+          "rcept_no": "20220316000890",
+          "report_nm": "사업보고서 (2021.12)",
+          "rm": "정연",
+          "stock_code": "336370"
+        },
+        "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+        "receiptNos": [
+          "20220316000890"
+        ],
+        "reportPeriod": "2021-12",
+        "ticker": "336370.KS"
+      }
+    },
+    {
+      "responses": [
+        {
+          "error": null,
+          "sha256": "551cd7ecf87ba46ad59bd41f54532748c3dadbbf404ae4cb3fcea8ae4045690a",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20230322001089"
+        },
+        {
+          "error": null,
+          "section": "company_overview",
+          "sha256": "d6e838cd419f5b8b1dd21506073d7f3738224e531230b342dcb0559ba21bb645",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20230322001089&dcmNo=9091274&eleId=4&offset=5496&length=10137&dtd=dart3.xsd"
+        },
+        {
+          "error": null,
+          "section": "business_overview",
+          "sha256": "11591452dfef540b07119df45b77744c82385e1bfb70bce31ea2e5eb703a4218",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20230322001089&dcmNo=9091274&eleId=10&offset=75271&length=4594&dtd=dart3.xsd"
+        }
+      ],
+      "sections": [
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [],
+          "node": {
+            "dcmNo": "9091274",
+            "dtd": "dart3.xsd",
+            "eleId": "4",
+            "length": "10137",
+            "offset": "5496",
+            "rcpNo": "20230322001089",
+            "text": "1. 회사의 개요"
+          },
+          "section": "company_overview",
+          "sha256": "d6e838cd419f5b8b1dd21506073d7f3738224e531230b342dcb0559ba21bb645"
+        },
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [],
+          "node": {
+            "dcmNo": "9091274",
+            "dtd": "dart3.xsd",
+            "eleId": "10",
+            "length": "4594",
+            "offset": "75271",
+            "rcpNo": "20230322001089",
+            "text": "1. 사업의 개요"
+          },
+          "section": "business_overview",
+          "sha256": "11591452dfef540b07119df45b77744c82385e1bfb70bce31ea2e5eb703a4218"
+        }
+      ],
+      "target": {
+        "availableFrom": "2023-03-22",
+        "corpCode": "01412822",
+        "fiscalYear": 2022,
+        "identityBasis": "EXACT_STOCK_CODE",
+        "listingMetadata": {
+          "corp_cls": "Y",
+          "corp_code": "01412822",
+          "corp_name": "솔루스첨단소재",
+          "flr_nm": "솔루스첨단소재",
+          "rcept_dt": "20230322",
+          "rcept_no": "20230322001089",
+          "report_nm": "사업보고서 (2022.12)",
+          "rm": "연",
+          "stock_code": "336370"
+        },
+        "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+        "receiptNos": [
+          "20230322001089"
+        ],
+        "reportPeriod": "2022-12",
+        "ticker": "336370.KS"
+      }
+    },
+    {
+      "responses": [
+        {
+          "error": null,
+          "sha256": "6c4e25606c399bda7aa9d85440d5348b75f7002eca1c75afd94bb59b26603350",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20250319000924"
+        },
+        {
+          "error": null,
+          "section": "company_overview",
+          "sha256": "12f706feec888d824cb4c8a821f949608e3d57d088570c25841c86d593770bfe",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20250319000924&dcmNo=10430192&eleId=4&offset=6387&length=10114&dtd=dart4.xsd"
+        },
+        {
+          "error": null,
+          "section": "business_overview",
+          "sha256": "a42b65098c4a9def03eb5f099b9178e6c205190bcebb37f6ccb44c030b11982c",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20250319000924&dcmNo=10430192&eleId=10&offset=93080&length=1707&dtd=dart4.xsd"
+        }
+      ],
+      "sections": [
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [],
+          "node": {
+            "dcmNo": "10430192",
+            "dtd": "dart4.xsd",
+            "eleId": "4",
+            "length": "10114",
+            "offset": "6387",
+            "rcpNo": "20250319000924",
+            "text": "1. 회사의 개요"
+          },
+          "section": "company_overview",
+          "sha256": "12f706feec888d824cb4c8a821f949608e3d57d088570c25841c86d593770bfe"
+        },
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [],
+          "node": {
+            "dcmNo": "10430192",
+            "dtd": "dart4.xsd",
+            "eleId": "10",
+            "length": "1707",
+            "offset": "93080",
+            "rcpNo": "20250319000924",
+            "text": "1. 사업의 개요"
+          },
+          "section": "business_overview",
+          "sha256": "a42b65098c4a9def03eb5f099b9178e6c205190bcebb37f6ccb44c030b11982c"
+        }
+      ],
+      "target": {
+        "availableFrom": "2025-03-19",
+        "corpCode": "01412822",
+        "fiscalYear": 2024,
+        "identityBasis": "EXACT_STOCK_CODE",
+        "listingMetadata": {
+          "corp_cls": "Y",
+          "corp_code": "01412822",
+          "corp_name": "솔루스첨단소재",
+          "flr_nm": "솔루스첨단소재",
+          "rcept_dt": "20250319",
+          "rcept_no": "20250319000924",
+          "report_nm": "사업보고서 (2024.12)",
+          "rm": "정연",
+          "stock_code": "336370"
+        },
+        "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+        "receiptNos": [
+          "20250319000924"
+        ],
+        "reportPeriod": "2024-12",
+        "ticker": "336370.KS"
+      }
+    },
+    {
+      "responses": [
+        {
+          "error": null,
+          "sha256": "2af50a89e296a7be6720bdb1414ae5e089131f1fa2c581b865377e207e970a2b",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260319000659"
+        },
+        {
+          "error": null,
+          "section": "company_overview",
+          "sha256": "e94bc26a62aa7a4ea5409f19f297e8863b609c09edc79d4b9a59efeabb236731",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20260319000659&dcmNo=11148456&eleId=4&offset=6230&length=10650&dtd=dart4.xsd"
+        },
+        {
+          "error": null,
+          "section": "business_overview",
+          "sha256": "0e9105672dc7ae889812435e5728376d89cd2ff3202e9ae2cf9c7e4756daa6ec",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20260319000659&dcmNo=11148456&eleId=10&offset=90651&length=1628&dtd=dart4.xsd"
+        }
+      ],
+      "sections": [
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [],
+          "node": {
+            "dcmNo": "11148456",
+            "dtd": "dart4.xsd",
+            "eleId": "4",
+            "length": "10650",
+            "offset": "6230",
+            "rcpNo": "20260319000659",
+            "text": "1. 회사의 개요"
+          },
+          "section": "company_overview",
+          "sha256": "e94bc26a62aa7a4ea5409f19f297e8863b609c09edc79d4b9a59efeabb236731"
+        },
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [],
+          "node": {
+            "dcmNo": "11148456",
+            "dtd": "dart4.xsd",
+            "eleId": "10",
+            "length": "1628",
+            "offset": "90651",
+            "rcpNo": "20260319000659",
+            "text": "1. 사업의 개요"
+          },
+          "section": "business_overview",
+          "sha256": "0e9105672dc7ae889812435e5728376d89cd2ff3202e9ae2cf9c7e4756daa6ec"
+        }
+      ],
+      "target": {
+        "availableFrom": "2026-03-19",
+        "corpCode": "01412822",
+        "fiscalYear": 2025,
+        "identityBasis": "EXACT_STOCK_CODE",
+        "listingMetadata": {
+          "corp_cls": "Y",
+          "corp_code": "01412822",
+          "corp_name": "솔루스첨단소재",
+          "flr_nm": "솔루스첨단소재",
+          "rcept_dt": "20260319",
+          "rcept_no": "20260319000659",
+          "report_nm": "사업보고서 (2025.12)",
+          "rm": "연",
+          "stock_code": "336370"
+        },
+        "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+        "receiptNos": [
+          "20260319000659"
+        ],
+        "reportPeriod": "2025-12",
+        "ticker": "336370.KS"
+      }
+    },
+    {
+      "responses": [
+        {
+          "error": null,
+          "sha256": "319c9b9a20eb5285bde83fd68a8ddd9c653facac1e29622fd36c3ea0a6b2f341",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20210317001256"
+        },
+        {
+          "error": null,
+          "section": "company_overview",
+          "sha256": "80b33d7b1df8b674607f62742c8b98941b4593427052288c290e733b48bc2f21",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20210317001256&dcmNo=7887437&eleId=4&offset=14174&length=19811&dtd=dart3.xsd"
+        },
+        {
+          "error": null,
+          "section": "business_overview",
+          "sha256": "09d05d387971811eb83f09693e7a7e7845716995fc19c2aa21bf02f7f73e7e5c",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20210317001256&dcmNo=7887437&eleId=11&offset=114844&length=63111&dtd=dart3.xsd"
+        }
+      ],
+      "sections": [
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [],
+          "node": {
+            "dcmNo": "7887437",
+            "dtd": "dart3.xsd",
+            "eleId": "4",
+            "length": "19811",
+            "offset": "14174",
+            "rcpNo": "20210317001256",
+            "text": "1. 회사의 개요"
+          },
+          "section": "company_overview",
+          "sha256": "80b33d7b1df8b674607f62742c8b98941b4593427052288c290e733b48bc2f21"
+        },
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [
+            "S 10"
+          ],
+          "node": {
+            "dcmNo": "7887437",
+            "dtd": "dart3.xsd",
+            "eleId": "11",
+            "length": "63111",
+            "offset": "114844",
+            "rcpNo": "20210317001256",
+            "text": "II. 사업의 내용"
+          },
+          "section": "business_overview",
+          "sha256": "09d05d387971811eb83f09693e7a7e7845716995fc19c2aa21bf02f7f73e7e5c"
+        }
+      ],
+      "target": {
+        "availableFrom": "2021-03-17",
+        "corpCode": "01478712",
+        "fiscalYear": 2020,
+        "identityBasis": "EXACT_STOCK_CODE",
+        "listingMetadata": {
+          "corp_cls": "Y",
+          "corp_code": "01478712",
+          "corp_name": "대덕전자",
+          "flr_nm": "대덕전자",
+          "rcept_dt": "20210317",
+          "rcept_no": "20210317001256",
+          "report_nm": "사업보고서 (2020.12)",
+          "rm": "연",
+          "stock_code": "353200"
+        },
+        "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+        "receiptNos": [
+          "20210317001256"
+        ],
+        "reportPeriod": "2020-12",
+        "ticker": "353200.KS"
+      }
+    },
+    {
+      "responses": [
+        {
+          "error": null,
+          "sha256": "25b8c4a9132edde35d050d36d2bc86656a2906f8c68f85715ed26fb28bd49823",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20220316001352"
+        },
+        {
+          "error": null,
+          "section": "company_overview",
+          "sha256": "7fee8228bb21238c3f32080a4cdc5c8372ceedfcee7141a4d3986b334a69cf57",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20220316001352&dcmNo=8467810&eleId=4&offset=19139&length=19187&dtd=dart3.xsd"
+        },
+        {
+          "error": null,
+          "section": "business_overview",
+          "sha256": "6b3cf4bf9973482cc416a07c4bdd3b72541e02a05f2bff57e4245aa1f5526dfc",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20220316001352&dcmNo=8467810&eleId=10&offset=84456&length=2923&dtd=dart3.xsd"
+        }
+      ],
+      "sections": [
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [],
+          "node": {
+            "dcmNo": "8467810",
+            "dtd": "dart3.xsd",
+            "eleId": "4",
+            "length": "19187",
+            "offset": "19139",
+            "rcpNo": "20220316001352",
+            "text": "1. 회사의 개요"
+          },
+          "section": "company_overview",
+          "sha256": "7fee8228bb21238c3f32080a4cdc5c8372ceedfcee7141a4d3986b334a69cf57"
+        },
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [],
+          "node": {
+            "dcmNo": "8467810",
+            "dtd": "dart3.xsd",
+            "eleId": "10",
+            "length": "2923",
+            "offset": "84456",
+            "rcpNo": "20220316001352",
+            "text": "1. 사업의 개요"
+          },
+          "section": "business_overview",
+          "sha256": "6b3cf4bf9973482cc416a07c4bdd3b72541e02a05f2bff57e4245aa1f5526dfc"
+        }
+      ],
+      "target": {
+        "availableFrom": "2022-03-16",
+        "corpCode": "01478712",
+        "fiscalYear": 2021,
+        "identityBasis": "EXACT_STOCK_CODE",
+        "listingMetadata": {
+          "corp_cls": "Y",
+          "corp_code": "01478712",
+          "corp_name": "대덕전자",
+          "flr_nm": "대덕전자",
+          "rcept_dt": "20220316",
+          "rcept_no": "20220316001352",
+          "report_nm": "사업보고서 (2021.12)",
+          "rm": "연",
+          "stock_code": "353200"
+        },
+        "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+        "receiptNos": [
+          "20220316001352"
+        ],
+        "reportPeriod": "2021-12",
+        "ticker": "353200.KS"
+      }
+    },
+    {
+      "responses": [
+        {
+          "error": null,
+          "sha256": "a94525befa0980d0b213735ee27b77a764d4cf225752c717d395a5006e212378",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20230314001258"
+        },
+        {
+          "error": null,
+          "section": "company_overview",
+          "sha256": "ba6ca45298c8778d86900cf8a61a81a950fb07e3bf3039bc4ea1b3a6283b4047",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20230314001258&dcmNo=9055833&eleId=4&offset=19166&length=19474&dtd=dart3.xsd"
+        },
+        {
+          "error": null,
+          "section": "business_overview",
+          "sha256": "853ebf491f7aa521736f4af0255d0145f33aa1fcce8dfcd442fd831b0dcdcefa",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20230314001258&dcmNo=9055833&eleId=10&offset=91714&length=2897&dtd=dart3.xsd"
+        }
+      ],
+      "sections": [
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [],
+          "node": {
+            "dcmNo": "9055833",
+            "dtd": "dart3.xsd",
+            "eleId": "4",
+            "length": "19474",
+            "offset": "19166",
+            "rcpNo": "20230314001258",
+            "text": "1. 회사의 개요"
+          },
+          "section": "company_overview",
+          "sha256": "ba6ca45298c8778d86900cf8a61a81a950fb07e3bf3039bc4ea1b3a6283b4047"
+        },
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [],
+          "node": {
+            "dcmNo": "9055833",
+            "dtd": "dart3.xsd",
+            "eleId": "10",
+            "length": "2897",
+            "offset": "91714",
+            "rcpNo": "20230314001258",
+            "text": "1. 사업의 개요"
+          },
+          "section": "business_overview",
+          "sha256": "853ebf491f7aa521736f4af0255d0145f33aa1fcce8dfcd442fd831b0dcdcefa"
+        }
+      ],
+      "target": {
+        "availableFrom": "2023-03-14",
+        "corpCode": "01478712",
+        "fiscalYear": 2022,
+        "identityBasis": "EXACT_STOCK_CODE",
+        "listingMetadata": {
+          "corp_cls": "Y",
+          "corp_code": "01478712",
+          "corp_name": "대덕전자",
+          "flr_nm": "대덕전자",
+          "rcept_dt": "20230314",
+          "rcept_no": "20230314001258",
+          "report_nm": "사업보고서 (2022.12)",
+          "rm": "연",
+          "stock_code": "353200"
+        },
+        "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+        "receiptNos": [
+          "20230314001258"
+        ],
+        "reportPeriod": "2022-12",
+        "ticker": "353200.KS"
+      }
+    },
+    {
+      "responses": [
+        {
+          "error": null,
+          "sha256": "540abdf33f0b5691134f8a50d4d4c9a5d59e59a5e53c4b01693782af016200ce",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20250319000892"
+        },
+        {
+          "error": null,
+          "section": "company_overview",
+          "sha256": "6c5dc4e889a1e8b13580bb596e1edd931443b6dc814415458afe31ea470542c7",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20250319000892&dcmNo=10429994&eleId=4&offset=20512&length=14404&dtd=dart4.xsd"
+        },
+        {
+          "error": null,
+          "section": "business_overview",
+          "sha256": "a327d22ddcbe059acdda9a4316bbd0602d1ec25a97c21aecce83d4dcd2bd93d7",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20250319000892&dcmNo=10429994&eleId=10&offset=98658&length=3071&dtd=dart4.xsd"
+        }
+      ],
+      "sections": [
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [],
+          "node": {
+            "dcmNo": "10429994",
+            "dtd": "dart4.xsd",
+            "eleId": "4",
+            "length": "14404",
+            "offset": "20512",
+            "rcpNo": "20250319000892",
+            "text": "1. 회사의 개요"
+          },
+          "section": "company_overview",
+          "sha256": "6c5dc4e889a1e8b13580bb596e1edd931443b6dc814415458afe31ea470542c7"
+        },
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [],
+          "node": {
+            "dcmNo": "10429994",
+            "dtd": "dart4.xsd",
+            "eleId": "10",
+            "length": "3071",
+            "offset": "98658",
+            "rcpNo": "20250319000892",
+            "text": "1. 사업의 개요"
+          },
+          "section": "business_overview",
+          "sha256": "a327d22ddcbe059acdda9a4316bbd0602d1ec25a97c21aecce83d4dcd2bd93d7"
+        }
+      ],
+      "target": {
+        "availableFrom": "2025-03-19",
+        "corpCode": "01478712",
+        "fiscalYear": 2024,
+        "identityBasis": "EXACT_STOCK_CODE",
+        "listingMetadata": {
+          "corp_cls": "Y",
+          "corp_code": "01478712",
+          "corp_name": "대덕전자",
+          "flr_nm": "대덕전자",
+          "rcept_dt": "20250319",
+          "rcept_no": "20250319000892",
+          "report_nm": "사업보고서 (2024.12)",
+          "rm": "연",
+          "stock_code": "353200"
+        },
+        "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+        "receiptNos": [
+          "20250319000892"
+        ],
+        "reportPeriod": "2024-12",
+        "ticker": "353200.KS"
+      }
+    },
+    {
+      "responses": [
+        {
+          "error": null,
+          "sha256": "1ce239a6af24d719f5f5661432055c7b8fd8a11b78c3f575142ae38f744e6689",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260318001514"
+        },
+        {
+          "error": null,
+          "section": "company_overview",
+          "sha256": "64ea1388ff8554751d63e8869e9555a3a621edc26d54c797c745d12d094e6553",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20260318001514&dcmNo=11143387&eleId=4&offset=22131&length=14253&dtd=dart4.xsd"
+        },
+        {
+          "error": null,
+          "section": "business_overview",
+          "sha256": "168f0fdf0d8c459c051a1ede44dd2d882ce221c4d45aceed50cf3b15b1095307",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20260318001514&dcmNo=11143387&eleId=10&offset=122724&length=3052&dtd=dart4.xsd"
+        }
+      ],
+      "sections": [
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [],
+          "node": {
+            "dcmNo": "11143387",
+            "dtd": "dart4.xsd",
+            "eleId": "4",
+            "length": "14253",
+            "offset": "22131",
+            "rcpNo": "20260318001514",
+            "text": "1. 회사의 개요"
+          },
+          "section": "company_overview",
+          "sha256": "64ea1388ff8554751d63e8869e9555a3a621edc26d54c797c745d12d094e6553"
+        },
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [],
+          "node": {
+            "dcmNo": "11143387",
+            "dtd": "dart4.xsd",
+            "eleId": "10",
+            "length": "3052",
+            "offset": "122724",
+            "rcpNo": "20260318001514",
+            "text": "1. 사업의 개요"
+          },
+          "section": "business_overview",
+          "sha256": "168f0fdf0d8c459c051a1ede44dd2d882ce221c4d45aceed50cf3b15b1095307"
+        }
+      ],
+      "target": {
+        "availableFrom": "2026-03-18",
+        "corpCode": "01478712",
+        "fiscalYear": 2025,
+        "identityBasis": "EXACT_STOCK_CODE",
+        "listingMetadata": {
+          "corp_cls": "Y",
+          "corp_code": "01478712",
+          "corp_name": "대덕전자",
+          "flr_nm": "대덕전자",
+          "rcept_dt": "20260318",
+          "rcept_no": "20260318001514",
+          "report_nm": "사업보고서 (2025.12)",
+          "rm": "연",
+          "stock_code": "353200"
+        },
+        "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+        "receiptNos": [
+          "20260318001514"
+        ],
+        "reportPeriod": "2025-12",
+        "ticker": "353200.KS"
+      }
+    },
+    {
+      "responses": [
+        {
+          "error": null,
+          "sha256": "f952d5ed19f83f5e1fa5942aaaef0b4a4975ab10a5ef91f1c1033a9899516bfc",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20210317000676"
+        },
+        {
+          "error": null,
+          "section": "company_overview",
+          "sha256": "f8c37cef25e2981e205e444f45b043f8fd4a57bbfd0f54588e33ef4821227e74",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20210317000676&dcmNo=7884129&eleId=4&offset=13349&length=114294&dtd=dart3.xsd"
+        },
+        {
+          "error": null,
+          "section": "business_overview",
+          "sha256": "696d67274694ced5a5a2bb9292ba4cbe66c3594da425d04daff54929b1e336a2",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20210317000676&dcmNo=7884129&eleId=11&offset=163337&length=97732&dtd=dart3.xsd"
+        }
+      ],
+      "sections": [
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [],
+          "node": {
+            "dcmNo": "7884129",
+            "dtd": "dart3.xsd",
+            "eleId": "4",
+            "length": "114294",
+            "offset": "13349",
+            "rcpNo": "20210317000676",
+            "text": "1. 회사의 개요"
+          },
+          "section": "company_overview",
+          "sha256": "f8c37cef25e2981e205e444f45b043f8fd4a57bbfd0f54588e33ef4821227e74"
+        },
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [],
+          "node": {
+            "dcmNo": "7884129",
+            "dtd": "dart3.xsd",
+            "eleId": "11",
+            "length": "97732",
+            "offset": "163337",
+            "rcpNo": "20210317000676",
+            "text": "II. 사업의 내용"
+          },
+          "section": "business_overview",
+          "sha256": "696d67274694ced5a5a2bb9292ba4cbe66c3594da425d04daff54929b1e336a2"
+        }
+      ],
+      "target": {
+        "availableFrom": "2021-03-17",
+        "corpCode": "01515323",
+        "fiscalYear": 2020,
+        "identityBasis": "EXACT_STOCK_CODE",
+        "listingMetadata": {
+          "corp_cls": "Y",
+          "corp_code": "01515323",
+          "corp_name": "LG에너지솔루션",
+          "flr_nm": "LG에너지솔루션",
+          "rcept_dt": "20210317",
+          "rcept_no": "20210317000676",
+          "report_nm": "사업보고서 (2020.12)",
+          "rm": "연",
+          "stock_code": "373220"
+        },
+        "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+        "receiptNos": [
+          "20210317000676"
+        ],
+        "reportPeriod": "2020-12",
+        "ticker": "373220.KS"
+      }
+    },
+    {
+      "responses": [
+        {
+          "error": null,
+          "sha256": "98ee998d6c176c442b2112952b95a84b04a68429ff2ee03cc97e17ab7e339dbc",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20220315001026"
+        },
+        {
+          "error": null,
+          "section": "company_overview",
+          "sha256": "cfc74b10e599d54fd5812f88cc7d9625fc73efc0cf8d1580ff6e4cf94934c8ce",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20220315001026&dcmNo=8461433&eleId=4&offset=17442&length=9823&dtd=dart3.xsd"
+        },
+        {
+          "error": null,
+          "section": "business_overview",
+          "sha256": "43644b89fef83092e96f20646c1485baca1fddc74302942c8394cc38a7484f7e",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20220315001026&dcmNo=8461433&eleId=10&offset=54742&length=1050&dtd=dart3.xsd"
+        }
+      ],
+      "sections": [
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [],
+          "node": {
+            "dcmNo": "8461433",
+            "dtd": "dart3.xsd",
+            "eleId": "4",
+            "length": "9823",
+            "offset": "17442",
+            "rcpNo": "20220315001026",
+            "text": "1. 회사의 개요"
+          },
+          "section": "company_overview",
+          "sha256": "cfc74b10e599d54fd5812f88cc7d9625fc73efc0cf8d1580ff6e4cf94934c8ce"
+        },
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [],
+          "node": {
+            "dcmNo": "8461433",
+            "dtd": "dart3.xsd",
+            "eleId": "10",
+            "length": "1050",
+            "offset": "54742",
+            "rcpNo": "20220315001026",
+            "text": "1. 사업의 개요"
+          },
+          "section": "business_overview",
+          "sha256": "43644b89fef83092e96f20646c1485baca1fddc74302942c8394cc38a7484f7e"
+        }
+      ],
+      "target": {
+        "availableFrom": "2022-03-15",
+        "corpCode": "01515323",
+        "fiscalYear": 2021,
+        "identityBasis": "EXACT_STOCK_CODE",
+        "listingMetadata": {
+          "corp_cls": "Y",
+          "corp_code": "01515323",
+          "corp_name": "LG에너지솔루션",
+          "flr_nm": "LG에너지솔루션",
+          "rcept_dt": "20220315",
+          "rcept_no": "20220315001026",
+          "report_nm": "사업보고서 (2021.12)",
+          "rm": "연",
+          "stock_code": "373220"
+        },
+        "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+        "receiptNos": [
+          "20220315001026"
+        ],
+        "reportPeriod": "2021-12",
+        "ticker": "373220.KS"
+      }
+    },
+    {
+      "responses": [
+        {
+          "error": null,
+          "sha256": "5a163706c4915467afa314e91182a06525bcb2ca61d26c52db041bde372a6f4c",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20230315001342"
+        },
+        {
+          "error": null,
+          "section": "company_overview",
+          "sha256": "7e7c764e01850118ce2bbd1e804f21c5f065b00031bf05f0c942606a2f88e25a",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20230315001342&dcmNo=9061117&eleId=4&offset=17403&length=15665&dtd=dart3.xsd"
+        },
+        {
+          "error": null,
+          "section": "business_overview",
+          "sha256": "db4e68d8a90bf072ac73fafaa5da3794fe23578b2e3472d3d1660f90b36c96f5",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20230315001342&dcmNo=9061117&eleId=10&offset=63403&length=930&dtd=dart3.xsd"
+        }
+      ],
+      "sections": [
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [],
+          "node": {
+            "dcmNo": "9061117",
+            "dtd": "dart3.xsd",
+            "eleId": "4",
+            "length": "15665",
+            "offset": "17403",
+            "rcpNo": "20230315001342",
+            "text": "1. 회사의 개요"
+          },
+          "section": "company_overview",
+          "sha256": "7e7c764e01850118ce2bbd1e804f21c5f065b00031bf05f0c942606a2f88e25a"
+        },
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [],
+          "node": {
+            "dcmNo": "9061117",
+            "dtd": "dart3.xsd",
+            "eleId": "10",
+            "length": "930",
+            "offset": "63403",
+            "rcpNo": "20230315001342",
+            "text": "1. 사업의 개요"
+          },
+          "section": "business_overview",
+          "sha256": "db4e68d8a90bf072ac73fafaa5da3794fe23578b2e3472d3d1660f90b36c96f5"
+        }
+      ],
+      "target": {
+        "availableFrom": "2023-03-15",
+        "corpCode": "01515323",
+        "fiscalYear": 2022,
+        "identityBasis": "EXACT_STOCK_CODE",
+        "listingMetadata": {
+          "corp_cls": "Y",
+          "corp_code": "01515323",
+          "corp_name": "LG에너지솔루션",
+          "flr_nm": "LG에너지솔루션",
+          "rcept_dt": "20230315",
+          "rcept_no": "20230315001342",
+          "report_nm": "사업보고서 (2022.12)",
+          "rm": "연",
+          "stock_code": "373220"
+        },
+        "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+        "receiptNos": [
+          "20230315001342"
+        ],
+        "reportPeriod": "2022-12",
+        "ticker": "373220.KS"
+      }
+    },
+    {
+      "responses": [
+        {
+          "error": null,
+          "sha256": "dae2fb26962569e7f74541a4758f7a3e833da3d92c1e40d5faa0148bdbc6eb3a",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20250312000405"
+        },
+        {
+          "error": null,
+          "section": "company_overview",
+          "sha256": "d00711cae016e033304945280ad9db5800c1d709b7df94ba251f95024b1f8ae5",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20250312000405&dcmNo=10395115&eleId=4&offset=19118&length=25874&dtd=dart4.xsd"
+        },
+        {
+          "error": null,
+          "section": "business_overview",
+          "sha256": "8b066b43dd7c742eeb07ade24f8336f99dbd6e4fc3536ec24e83c96a3171e13e",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20250312000405&dcmNo=10395115&eleId=10&offset=97897&length=1296&dtd=dart4.xsd"
+        }
+      ],
+      "sections": [
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [],
+          "node": {
+            "dcmNo": "10395115",
+            "dtd": "dart4.xsd",
+            "eleId": "4",
+            "length": "25874",
+            "offset": "19118",
+            "rcpNo": "20250312000405",
+            "text": "1. 회사의 개요"
+          },
+          "section": "company_overview",
+          "sha256": "d00711cae016e033304945280ad9db5800c1d709b7df94ba251f95024b1f8ae5"
+        },
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [],
+          "node": {
+            "dcmNo": "10395115",
+            "dtd": "dart4.xsd",
+            "eleId": "10",
+            "length": "1296",
+            "offset": "97897",
+            "rcpNo": "20250312000405",
+            "text": "1. 사업의 개요"
+          },
+          "section": "business_overview",
+          "sha256": "8b066b43dd7c742eeb07ade24f8336f99dbd6e4fc3536ec24e83c96a3171e13e"
+        }
+      ],
+      "target": {
+        "availableFrom": "2025-03-12",
+        "corpCode": "01515323",
+        "fiscalYear": 2024,
+        "identityBasis": "EXACT_STOCK_CODE",
+        "listingMetadata": {
+          "corp_cls": "Y",
+          "corp_code": "01515323",
+          "corp_name": "LG에너지솔루션",
+          "flr_nm": "LG에너지솔루션",
+          "rcept_dt": "20250312",
+          "rcept_no": "20250312000405",
+          "report_nm": "사업보고서 (2024.12)",
+          "rm": "연",
+          "stock_code": "373220"
+        },
+        "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+        "receiptNos": [
+          "20250312000405"
+        ],
+        "reportPeriod": "2024-12",
+        "ticker": "373220.KS"
+      }
+    },
+    {
+      "responses": [
+        {
+          "error": null,
+          "sha256": "a81811532780247693e6269c920085e70ce2749b96a200b5bef97e6192990422",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260312000217"
+        },
+        {
+          "error": null,
+          "section": "company_overview",
+          "sha256": "1b1a8dbd9f239f6bd80fd37e3c8a42e4b9a204ab167afe670bf3ee1cf63dde5c",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20260312000217&dcmNo=11112374&eleId=4&offset=19144&length=31549&dtd=dart4.xsd"
+        },
+        {
+          "error": null,
+          "section": "business_overview",
+          "sha256": "9480f9037a24653a032e24a08c635ac32223d867956fba5f6f2977ed393e645d",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20260312000217&dcmNo=11112374&eleId=10&offset=105180&length=1284&dtd=dart4.xsd"
+        }
+      ],
+      "sections": [
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [],
+          "node": {
+            "dcmNo": "11112374",
+            "dtd": "dart4.xsd",
+            "eleId": "4",
+            "length": "31549",
+            "offset": "19144",
+            "rcpNo": "20260312000217",
+            "text": "1. 회사의 개요"
+          },
+          "section": "company_overview",
+          "sha256": "1b1a8dbd9f239f6bd80fd37e3c8a42e4b9a204ab167afe670bf3ee1cf63dde5c"
+        },
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [],
+          "node": {
+            "dcmNo": "11112374",
+            "dtd": "dart4.xsd",
+            "eleId": "10",
+            "length": "1284",
+            "offset": "105180",
+            "rcpNo": "20260312000217",
+            "text": "1. 사업의 개요"
+          },
+          "section": "business_overview",
+          "sha256": "9480f9037a24653a032e24a08c635ac32223d867956fba5f6f2977ed393e645d"
+        }
+      ],
+      "target": {
+        "availableFrom": "2026-03-12",
+        "corpCode": "01515323",
+        "fiscalYear": 2025,
+        "identityBasis": "EXACT_STOCK_CODE",
+        "listingMetadata": {
+          "corp_cls": "Y",
+          "corp_code": "01515323",
+          "corp_name": "LG에너지솔루션",
+          "flr_nm": "LG에너지솔루션",
+          "rcept_dt": "20260312",
+          "rcept_no": "20260312000217",
+          "report_nm": "사업보고서 (2025.12)",
+          "rm": "연",
+          "stock_code": "373220"
+        },
+        "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+        "receiptNos": [
+          "20260312000217"
+        ],
+        "reportPeriod": "2025-12",
+        "ticker": "373220.KS"
+      }
+    },
+    {
+      "responses": [
+        {
+          "error": null,
+          "sha256": "4fd47b028fb3df31a1b51e467abba705171fdfaf26c2fc0e28e21fe5dae6221c",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20220316001326"
+        },
+        {
+          "error": null,
+          "section": "company_overview",
+          "sha256": "6a2529d9c3e7f88cfe05b6e34d1b7374b59e40ecce67cff8013e6906cf80a011",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20220316001326&dcmNo=8467674&eleId=4&offset=5439&length=22016&dtd=dart3.xsd"
+        },
+        {
+          "error": null,
+          "section": "business_overview",
+          "sha256": "3639c0fbb3602482c0e1f2b8d23214bb2701c1b08cb9e58c9dd35b7cde457f98",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20220316001326&dcmNo=8467674&eleId=10&offset=74795&length=987&dtd=dart3.xsd"
+        }
+      ],
+      "sections": [
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [],
+          "node": {
+            "dcmNo": "8467674",
+            "dtd": "dart3.xsd",
+            "eleId": "4",
+            "length": "22016",
+            "offset": "5439",
+            "rcpNo": "20220316001326",
+            "text": "1. 회사의 개요"
+          },
+          "section": "company_overview",
+          "sha256": "6a2529d9c3e7f88cfe05b6e34d1b7374b59e40ecce67cff8013e6906cf80a011"
+        },
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [],
+          "node": {
+            "dcmNo": "8467674",
+            "dtd": "dart3.xsd",
+            "eleId": "10",
+            "length": "987",
+            "offset": "74795",
+            "rcpNo": "20220316001326",
+            "text": "1. 사업의 개요"
+          },
+          "section": "business_overview",
+          "sha256": "3639c0fbb3602482c0e1f2b8d23214bb2701c1b08cb9e58c9dd35b7cde457f98"
+        }
+      ],
+      "target": {
+        "availableFrom": "2022-03-16",
+        "corpCode": "01524093",
+        "fiscalYear": 2021,
+        "identityBasis": "EXACT_STOCK_CODE",
+        "listingMetadata": {
+          "corp_cls": "Y",
+          "corp_code": "01524093",
+          "corp_name": "DL이앤씨",
+          "flr_nm": "DL이앤씨",
+          "rcept_dt": "20220316",
+          "rcept_no": "20220316001326",
+          "report_nm": "사업보고서 (2021.12)",
+          "rm": "연",
+          "stock_code": "375500"
+        },
+        "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+        "receiptNos": [
+          "20220316001326"
+        ],
+        "reportPeriod": "2021-12",
+        "ticker": "375500.KS"
+      }
+    },
+    {
+      "responses": [
+        {
+          "error": null,
+          "sha256": "54f28eafda06abde844c21f69b7d06563be548d9194b072af6fa27b7620300ed",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20230315001420"
+        },
+        {
+          "error": null,
+          "section": "company_overview",
+          "sha256": "323f4bad902a5224d2d1db16c974dbfd03bc1e231ecd70e80b1ad09191be12df",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20230315001420&dcmNo=9061620&eleId=4&offset=5437&length=24788&dtd=dart3.xsd"
+        },
+        {
+          "error": null,
+          "section": "business_overview",
+          "sha256": "5c050683bed1542e7be5f12231b73e1ebfe1d5e13f1d3d1399ba8fb36b6c7593",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20230315001420&dcmNo=9061620&eleId=10&offset=90785&length=4125&dtd=dart3.xsd"
+        }
+      ],
+      "sections": [
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [],
+          "node": {
+            "dcmNo": "9061620",
+            "dtd": "dart3.xsd",
+            "eleId": "4",
+            "length": "24788",
+            "offset": "5437",
+            "rcpNo": "20230315001420",
+            "text": "1. 회사의 개요"
+          },
+          "section": "company_overview",
+          "sha256": "323f4bad902a5224d2d1db16c974dbfd03bc1e231ecd70e80b1ad09191be12df"
+        },
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [],
+          "node": {
+            "dcmNo": "9061620",
+            "dtd": "dart3.xsd",
+            "eleId": "10",
+            "length": "4125",
+            "offset": "90785",
+            "rcpNo": "20230315001420",
+            "text": "1. 사업의 개요"
+          },
+          "section": "business_overview",
+          "sha256": "5c050683bed1542e7be5f12231b73e1ebfe1d5e13f1d3d1399ba8fb36b6c7593"
+        }
+      ],
+      "target": {
+        "availableFrom": "2023-03-15",
+        "corpCode": "01524093",
+        "fiscalYear": 2022,
+        "identityBasis": "EXACT_STOCK_CODE",
+        "listingMetadata": {
+          "corp_cls": "Y",
+          "corp_code": "01524093",
+          "corp_name": "DL이앤씨",
+          "flr_nm": "DL이앤씨",
+          "rcept_dt": "20230315",
+          "rcept_no": "20230315001420",
+          "report_nm": "사업보고서 (2022.12)",
+          "rm": "연",
+          "stock_code": "375500"
+        },
+        "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+        "receiptNos": [
+          "20230315001420"
+        ],
+        "reportPeriod": "2022-12",
+        "ticker": "375500.KS"
+      }
+    },
+    {
+      "responses": [
+        {
+          "error": null,
+          "sha256": "43497b0c4eceeea97302ac9c9c25dc31ef7637048c5c8101b829b6ec12c55b61",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20240313001715"
+        },
+        {
+          "error": null,
+          "section": "company_overview",
+          "sha256": "7293bac116069e75ffc0336f20c4d2ee5849e91a18e728d95e691fb2eb335922",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20240313001715&dcmNo=9711107&eleId=4&offset=5638&length=26710&dtd=dart4.xsd"
+        },
+        {
+          "error": null,
+          "section": "business_overview",
+          "sha256": "f74a1d85e6f29b3fc99030aca828d5a89b381b77638be87026b66de5c3569572",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20240313001715&dcmNo=9711107&eleId=10&offset=141545&length=4243&dtd=dart4.xsd"
+        }
+      ],
+      "sections": [
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [],
+          "node": {
+            "dcmNo": "9711107",
+            "dtd": "dart4.xsd",
+            "eleId": "4",
+            "length": "26710",
+            "offset": "5638",
+            "rcpNo": "20240313001715",
+            "text": "1. 회사의 개요"
+          },
+          "section": "company_overview",
+          "sha256": "7293bac116069e75ffc0336f20c4d2ee5849e91a18e728d95e691fb2eb335922"
+        },
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [],
+          "node": {
+            "dcmNo": "9711107",
+            "dtd": "dart4.xsd",
+            "eleId": "10",
+            "length": "4243",
+            "offset": "141545",
+            "rcpNo": "20240313001715",
+            "text": "1. 사업의 개요"
+          },
+          "section": "business_overview",
+          "sha256": "f74a1d85e6f29b3fc99030aca828d5a89b381b77638be87026b66de5c3569572"
+        }
+      ],
+      "target": {
+        "availableFrom": "2024-03-13",
+        "corpCode": "01524093",
+        "fiscalYear": 2023,
+        "identityBasis": "EXACT_STOCK_CODE",
+        "listingMetadata": {
+          "corp_cls": "Y",
+          "corp_code": "01524093",
+          "corp_name": "DL이앤씨",
+          "flr_nm": "DL이앤씨",
+          "rcept_dt": "20240313",
+          "rcept_no": "20240313001715",
+          "report_nm": "사업보고서 (2023.12)",
+          "rm": "정연",
+          "stock_code": "375500"
+        },
+        "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+        "receiptNos": [
+          "20240313001715"
+        ],
+        "reportPeriod": "2023-12",
+        "ticker": "375500.KS"
+      }
+    },
+    {
+      "responses": [
+        {
+          "error": null,
+          "sha256": "62c13c435553baf7746d46780f2b5421cea51174485e47f30d899f9ac63a284c",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20250314001639"
+        },
+        {
+          "error": null,
+          "section": "company_overview",
+          "sha256": "09cadfe1f7c16448d896a988aa9d1cc7ed0de9b0da718eddbb4f4322c9abb40a",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20250314001639&dcmNo=10410994&eleId=4&offset=6200&length=34888&dtd=dart4.xsd"
+        },
+        {
+          "error": null,
+          "section": "business_overview",
+          "sha256": "730ee807975fa6aa09cd99284e38774fa01cd9b382af6e9614b96fd5809ade1a",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20250314001639&dcmNo=10410994&eleId=10&offset=164142&length=4699&dtd=dart4.xsd"
+        }
+      ],
+      "sections": [
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [],
+          "node": {
+            "dcmNo": "10410994",
+            "dtd": "dart4.xsd",
+            "eleId": "4",
+            "length": "34888",
+            "offset": "6200",
+            "rcpNo": "20250314001639",
+            "text": "1. 회사의 개요"
+          },
+          "section": "company_overview",
+          "sha256": "09cadfe1f7c16448d896a988aa9d1cc7ed0de9b0da718eddbb4f4322c9abb40a"
+        },
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [],
+          "node": {
+            "dcmNo": "10410994",
+            "dtd": "dart4.xsd",
+            "eleId": "10",
+            "length": "4699",
+            "offset": "164142",
+            "rcpNo": "20250314001639",
+            "text": "1. 사업의 개요"
+          },
+          "section": "business_overview",
+          "sha256": "730ee807975fa6aa09cd99284e38774fa01cd9b382af6e9614b96fd5809ade1a"
+        }
+      ],
+      "target": {
+        "availableFrom": "2025-03-14",
+        "corpCode": "01524093",
+        "fiscalYear": 2024,
+        "identityBasis": "EXACT_STOCK_CODE",
+        "listingMetadata": {
+          "corp_cls": "Y",
+          "corp_code": "01524093",
+          "corp_name": "DL이앤씨",
+          "flr_nm": "DL이앤씨",
+          "rcept_dt": "20250314",
+          "rcept_no": "20250314001639",
+          "report_nm": "사업보고서 (2024.12)",
+          "rm": "정연",
+          "stock_code": "375500"
+        },
+        "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+        "receiptNos": [
+          "20250314001639"
+        ],
+        "reportPeriod": "2024-12",
+        "ticker": "375500.KS"
+      }
+    },
+    {
+      "responses": [
+        {
+          "error": null,
+          "sha256": "7e79db7f8ee5bd6651045e602a5a0284d30617cf62c23c33851fccc904575cf3",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260317000887"
+        },
+        {
+          "error": null,
+          "section": "company_overview",
+          "sha256": "fb4bbec80ee35fd8c1dc076be62f55bc37ca9627cfb469405d7e15f58bc378d2",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20260317000887&dcmNo=11134218&eleId=4&offset=6195&length=28742&dtd=dart4.xsd"
+        },
+        {
+          "error": null,
+          "section": "business_overview",
+          "sha256": "f3aba23221f8f0daf7c709935b7f58923c3c398ff60f3558dc91146f92c2efe4",
+          "status": 200,
+          "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20260317000887&dcmNo=11134218&eleId=10&offset=203652&length=4472&dtd=dart4.xsd"
+        }
+      ],
+      "sections": [
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [],
+          "node": {
+            "dcmNo": "11134218",
+            "dtd": "dart4.xsd",
+            "eleId": "4",
+            "length": "28742",
+            "offset": "6195",
+            "rcpNo": "20260317000887",
+            "text": "1. 회사의 개요"
+          },
+          "section": "company_overview",
+          "sha256": "fb4bbec80ee35fd8c1dc076be62f55bc37ca9627cfb469405d7e15f58bc378d2"
+        },
+        {
+          "classificationMarkers": [],
+          "explicitCodeCandidates": [],
+          "node": {
+            "dcmNo": "11134218",
+            "dtd": "dart4.xsd",
+            "eleId": "10",
+            "length": "4472",
+            "offset": "203652",
+            "rcpNo": "20260317000887",
+            "text": "1. 사업의 개요"
+          },
+          "section": "business_overview",
+          "sha256": "f3aba23221f8f0daf7c709935b7f58923c3c398ff60f3558dc91146f92c2efe4"
+        }
+      ],
+      "target": {
+        "availableFrom": "2026-03-17",
+        "corpCode": "01524093",
+        "fiscalYear": 2025,
+        "identityBasis": "EXACT_STOCK_CODE",
+        "listingMetadata": {
+          "corp_cls": "Y",
+          "corp_code": "01524093",
+          "corp_name": "DL이앤씨",
+          "flr_nm": "DL이앤씨",
+          "rcept_dt": "20260317",
+          "rcept_no": "20260317000887",
+          "report_nm": "사업보고서 (2025.12)",
+          "rm": "정연",
+          "stock_code": "375500"
+        },
+        "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+        "receiptNos": [
+          "20260317000887"
+        ],
+        "reportPeriod": "2025-12",
+        "ticker": "375500.KS"
+      }
+    }
+  ],
+  "requests": 153
+}

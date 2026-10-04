@@ -1,0 +1,39 @@
+{
+  "consequence": "No issuer label is claimed as a standardized KSIC group; literal issuer labels remain group_id=LITERAL:*; standardizedTaxonomyReady is false.",
+  "contract": "KR_INDUSTRY_TAXONOMY_SOURCE_EVIDENCE_V2",
+  "derivation": "Deterministic restatement of the retained v1 reference-source fetch results; no new request was made and no source was inferred.",
+  "derivedFrom": "data/kr-industry-membership-foundation-v1/reference-sources/manifest.json",
+  "derivedFromSha256": "7d14d0256f8ec7f6bcb21ea5dd13017d7f3f74b7d64ee9101fb6c8ee9a200240",
+  "effectiveDateTransitionEstablished": false,
+  "taxonomies": {
+    "ksic-10-codebook": {
+      "bytes": 150,
+      "codebookRetained": false,
+      "httpStatus": 502,
+      "note": "Fetch returned a gateway error page, not a codebook; no KSIC edition is verified.",
+      "sha256": "81074a9c8dfb24290e8fc4af14d20f67f5304618d27ac713628b1126e41dbd8e",
+      "status": "UNAVAILABLE_NOT_RETAINED",
+      "url": "https://mods.go.kr/boardDownload.es?bid=107&list_no=358712&seq=3"
+    },
+    "ksic-11-codebook": {
+      "bytes": 150,
+      "codebookRetained": false,
+      "httpStatus": 502,
+      "note": "Fetch returned a gateway error page, not a codebook; no KSIC edition is verified.",
+      "sha256": "81074a9c8dfb24290e8fc4af14d20f67f5304618d27ac713628b1126e41dbd8e",
+      "status": "UNAVAILABLE_NOT_RETAINED",
+      "url": "https://sri.kostat.go.kr/boardDownload.es?bid=107&list_no=428660&seq=6"
+    },
+    "ksic-transition": {
+      "bytes": 150,
+      "codebookRetained": false,
+      "httpStatus": 502,
+      "note": "Fetch returned a gateway error page, not a codebook; no KSIC edition is verified.",
+      "sha256": "81074a9c8dfb24290e8fc4af14d20f67f5304618d27ac713628b1126e41dbd8e",
+      "status": "UNAVAILABLE_NOT_RETAINED",
+      "url": "https://mods.go.kr/board.es?act=view&bid=107&list_no=430619&mid=a10403040000"
+    }
+  },
+  "taxonomyVersionEstablished": false,
+  "verifiedOfficialCodebooks": []
+}

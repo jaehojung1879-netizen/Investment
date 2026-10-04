@@ -1,0 +1,21 @@
+{
+  "acquisitionPlanSha256": "a93786a015964a641c63a5a5da247980cf81ffa32d55ea07dbaa23f3c046b341",
+  "contract": "KR_INDUSTRY_FREEZE_PROVENANCE_V1",
+  "criteriaSha256": "c7163a88dbc90aaebe575da41bda867508272abcf8da74ddf25304a5cf07bb28",
+  "formalSourceRun": 37096833360,
+  "producerCommit": "de2da7cf66a858f7edf78dd80facd05a2a11280b",
+  "recoveredLocalCommitObjects": [
+    {
+      "commitObjectBody": "tree ffc625d389429168f2add3141958895a973fb10e\nparent 922ce0f477bf4efb09a02b0ec4474ceab007d25f\nauthor Codex <codex@openai.com> 1790990800 -0400\ncommitter Codex <codex@openai.com> 1790990800 -0400\n\nFreeze outcome-blind KR industry membership readiness criteria\n",
+      "scope": "Original local preregistration object, not a remote publication timestamp",
+      "sha": "54da1f875e61a30e33daa17baed37e30d5ac210e"
+    },
+    {
+      "commitObjectBody": "tree 39314f18b20c6f7ddffd9130d21d34e3adebe1c3\nparent 54da1f875e61a30e33daa17baed37e30d5ac210e\nauthor Codex <codex@openai.com> 1790991087 -0400\ncommitter Codex <codex@openai.com> 1790991087 -0400\n\nPin complete DART receipt inventory and bounded source acquisition plan\n",
+      "scope": "Original local preregistration object, not a remote publication timestamp",
+      "sha": "e44a8ab2c54ce481237325758cdb56dd99b6e973"
+    }
+  ],
+  "recoveryNote": "Original local freeze object bytes were recovered and SHA-1 verified. The interrupted local source run is archived but excluded from final collection counts. All formal plan targets were reacquired by the bounded source-only GitHub Actions run; no criteria or target selection changed.",
+  "remoteCriteriaAndPlanCommit": "f4d06cfc8d9bd6947623cf00f3269f3ad60d6902"
+}

@@ -1,0 +1,137 @@
+name: KR industry annual originals v2
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/kr-industry-membership-foundation-v2.yml'
+      - 'scripts/discover_kr_industry_annual_v2.py'
+      - 'scripts/collect_kr_industry_chapters_v2.py'
+      - 'scripts/assemble_kr_industry_v2_sources.py'
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: kr-industry-v2-originals
+  cancel-in-progress: false
+jobs:
+  collect:
+    if: github.event.pull_request.head.repo.full_name == github.repository && github.head_ref == 'data/kr-industry-membership-foundation-v1'
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      max-parallel: 4
+      matrix:
+        batch: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Skip any batch with an already frozen inventory
+        id: guard
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SOURCE_BATCH: ${{ matrix.batch }}
+        run: |
+          count=$(gh api "repos/${{ github.repository }}/actions/artifacts?name=kr-industry-v2-original-inventory-$SOURCE_BATCH" --jq ".total_count")
+          if [ "$count" != "0" ]; then echo "go=false" >> "$GITHUB_OUTPUT"; else echo "go=true" >> "$GITHUB_OUTPUT"; fi
+      - uses: actions/setup-python@v5
+        if: steps.guard.outputs.go == 'true'
+        with:
+          python-version: '3.12'
+      - run: pip install -r requirements.txt
+        if: steps.guard.outputs.go == 'true'
+      - name: Freeze exact original annual request list after metadata discovery
+        if: steps.guard.outputs.go == 'true'
+        env:
+          DART_API_KEY: ${{ secrets.DART }}
+          SOURCE_BATCH: ${{ matrix.batch }}
+        run: python scripts/discover_kr_industry_annual_v2.py --batch "$SOURCE_BATCH" --output /tmp/annual-inventory
+      - uses: actions/upload-artifact@v4
+        if: steps.guard.outputs.go == 'true'
+        with:
+          name: kr-industry-v2-original-inventory-${{ matrix.batch }}
+          path: /tmp/annual-inventory/
+          if-no-files-found: error
+      - name: Collect only the previously frozen unretained originals
+        if: steps.guard.outputs.go == 'true'
+        run: python -u scripts/discover_kr_industry_annual_v2.py --plan /tmp/annual-inventory/remaining.json --output /tmp/original-sources
+      - uses: actions/upload-artifact@v4
+        if: steps.guard.outputs.go == 'true'
+        with:
+          name: kr-industry-v2-original-sources-${{ matrix.batch }}
+          path: /tmp/original-sources/
+          if-no-files-found: error
+          retention-days: 90
+  chapters:
+    if: github.event.pull_request.head.repo.full_name == github.repository && github.head_ref == 'data/kr-industry-membership-foundation-v1'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Skip when the frozen chapter requests were already collected
+        id: guard
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          count=$(gh api "repos/${{ github.repository }}/actions/artifacts?name=kr-industry-v2-classification-chapters" --jq '[.artifacts[] | select(.expired==false)] | length')
+          if [ "$count" != "0" ]; then echo "go=false" >> "$GITHUB_OUTPUT"; else echo "go=true" >> "$GITHUB_OUTPUT"; fi
+      - uses: actions/setup-python@v5
+        if: steps.guard.outputs.go == 'true'
+        with:
+          python-version: '3.12'
+      - name: Collect only the 68 frozen chapter requests (no new target is chosen here)
+        if: steps.guard.outputs.go == 'true'
+        run: python -u scripts/collect_kr_industry_chapters_v2.py --output /tmp/chapters
+      - uses: actions/upload-artifact@v4
+        if: steps.guard.outputs.go == 'true'
+        with:
+          name: kr-industry-v2-classification-chapters
+          path: /tmp/chapters/
+          if-no-files-found: error
+          retention-days: 90
+  retain:
+    needs: [collect, chapters]
+    if: github.event.pull_request.head.repo.full_name == github.repository && github.head_ref == 'data/kr-industry-membership-foundation-v1'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: write
+      actions: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+      - name: Locate the exact already-produced artifacts
+        id: where
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if [ -d data/kr-industry-membership-foundation-v2/acquired-dart/chapters ]; then echo "done=true" >> "$GITHUB_OUTPUT"; exit 0; fi
+          echo "done=false" >> "$GITHUB_OUTPUT"
+          echo "orig=37119776441" >> "$GITHUB_OUTPUT"
+          echo "chap=$(gh api "repos/${{ github.repository }}/actions/artifacts?name=kr-industry-v2-classification-chapters" --jq '[.artifacts[] | select(.expired==false)][0].workflow_run.id')" >> "$GITHUB_OUTPUT"
+      - uses: actions/download-artifact@v4
+        if: steps.where.outputs.done == 'false'
+        with:
+          pattern: kr-industry-v2-original-*
+          path: /tmp/downloads
+          run-id: ${{ steps.where.outputs.orig }}
+          github-token: ${{ github.token }}
+      - uses: actions/download-artifact@v4
+        if: steps.where.outputs.done == 'false'
+        with:
+          name: kr-industry-v2-classification-chapters
+          path: /tmp/chapters
+          run-id: ${{ steps.where.outputs.chap }}
+          github-token: ${{ github.token }}
+      - name: Verify hashes and retain the exact bytes in the branch
+        if: steps.where.outputs.done == 'false'
+        run: |
+          python scripts/assemble_kr_industry_v2_sources.py --downloads /tmp/downloads --chapters /tmp/chapters
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/kr-industry-membership-foundation-v2
+          git commit -m "Data: retain frozen v2 annual originals and classification chapters (verified by SHA-256)"
+          git push origin "HEAD:${{ github.head_ref }}"

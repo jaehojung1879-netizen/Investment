@@ -1,0 +1,419 @@
+{
+  "contract": "krx-industry-openapi-feasibility-v1",
+  "acceptedBaselineHead": "f89bf8066e4c2ed54378d8e7bfbec17c2b4cc4bf",
+  "mode": "BOUNDED_FEASIBILITY_ONLY",
+  "dates": [
+    "2015-01-02",
+    "2020-01-02",
+    "2023-01-02",
+    "2026-09-01"
+  ],
+  "dateRepresentation": "YYYYMMDD; no economic-date substitution",
+  "services": [
+    {
+      "serviceId": "sto/stk_isu_base_info",
+      "name": "유가증권 종목기본정보",
+      "endpoint": "https://data-dbg.krx.co.kr/svc/apis/sto/stk_isu_base_info",
+      "documentationUrl": "https://openapi.krx.co.kr/contents/OPP/USES/service/OPPUSES002_S2.cmd?BO_ID=PiwgMdTwmsenXhmqqxuj",
+      "specDownloadUrl": "https://openapi.krx.co.kr/contents/OPP/USES/service/downloadApiDoc.cmd",
+      "downloadParameters": {
+        "path": "sto",
+        "BO_ID": "PiwgMdTwmsenXhmqqxuj",
+        "BO_VER": "1.0",
+        "apiId": "stk_isu_base_info",
+        "apiTestUrl": "/svc/sample/apis/sto/stk_isu_base_info"
+      },
+      "sourceFile": "kospi-basic-spec.docx",
+      "sha256": "a41edb6ec12b41984b6d05935df63647dae04a07c21779a63137770972dbde82",
+      "acquiredAt": "2026-10-03T07:27:15.493184+00:00",
+      "requestFields": [
+        {
+          "label": "기준일자",
+          "name": "basDd",
+          "size": "8",
+          "type": "string"
+        }
+      ],
+      "outputFields": [
+        {
+          "name": "ISU_CD",
+          "label": "표준코드",
+          "type": "string"
+        },
+        {
+          "name": "ISU_SRT_CD",
+          "label": "단축코드",
+          "type": "string"
+        },
+        {
+          "name": "ISU_NM",
+          "label": "한글 종목명",
+          "type": "string"
+        },
+        {
+          "name": "ISU_ABBRV",
+          "label": "한글 종목약명",
+          "type": "string"
+        },
+        {
+          "name": "ISU_ENG_NM",
+          "label": "영문 종목명",
+          "type": "string"
+        },
+        {
+          "name": "LIST_DD",
+          "label": "상장일",
+          "type": "string"
+        },
+        {
+          "name": "MKT_TP_NM",
+          "label": "시장구분",
+          "type": "string"
+        },
+        {
+          "name": "SECUGRP_NM",
+          "label": "증권구분",
+          "type": "string"
+        },
+        {
+          "name": "SECT_TP_NM",
+          "label": "소속부",
+          "type": "string"
+        },
+        {
+          "name": "KIND_STKCERT_TP_NM",
+          "label": "주식종류",
+          "type": "string"
+        },
+        {
+          "name": "PARVAL",
+          "label": "액면가",
+          "type": "string"
+        },
+        {
+          "name": "LIST_SHRS",
+          "label": "상장주식수",
+          "type": "string"
+        }
+      ],
+      "industryFields": [],
+      "dateParameter": "basDd",
+      "historicalMembershipProvenByDocumentation": false,
+      "approvedForRepositoryKey": "NOT_YET_OBSERVED",
+      "sectionFieldSemantics": "SECT_TP_NM = 소속부; not economic industry",
+      "serviceStartDate": "2010-01-04",
+      "documentedReferenceDateSemantics": "Published SQL filters basDd BETWEEN issue and security-group STRT_DD/END_DD. This is reference history, without any economic industry column or release/vintage proof."
+    },
+    {
+      "serviceId": "sto/ksq_isu_base_info",
+      "name": "코스닥 종목기본정보",
+      "endpoint": "https://data-dbg.krx.co.kr/svc/apis/sto/ksq_isu_base_info",
+      "documentationUrl": "https://openapi.krx.co.kr/contents/OPP/USES/service/OPPUSES002_S2.cmd?BO_ID=CifLHplnUFMgpHIMMPXs",
+      "specDownloadUrl": "https://openapi.krx.co.kr/contents/OPP/USES/service/downloadApiDoc.cmd",
+      "downloadParameters": {
+        "path": "sto",
+        "BO_ID": "CifLHplnUFMgpHIMMPXs",
+        "BO_VER": "1.0",
+        "apiId": "ksq_isu_base_info",
+        "apiTestUrl": "/svc/sample/apis/sto/ksq_isu_base_info"
+      },
+      "sourceFile": "kosdaq-basic-spec.docx",
+      "sha256": "d6af7df422a5b46fe4c2dbbd785cdad4dacc2160f53a40fb6bfe19d6d0b76ef7",
+      "acquiredAt": "2026-10-03T07:27:24.540067+00:00",
+      "requestFields": [
+        {
+          "label": "기준일자",
+          "name": "basDd",
+          "size": "8",
+          "type": "string"
+        }
+      ],
+      "outputFields": [
+        {
+          "name": "ISU_CD",
+          "label": "표준코드",
+          "type": "string"
+        },
+        {
+          "name": "ISU_SRT_CD",
+          "label": "단축코드",
+          "type": "string"
+        },
+        {
+          "name": "ISU_NM",
+          "label": "한글 종목명",
+          "type": "string"
+        },
+        {
+          "name": "ISU_ABBRV",
+          "label": "한글 종목약명",
+          "type": "string"
+        },
+        {
+          "name": "ISU_ENG_NM",
+          "label": "영문 종목명",
+          "type": "string"
+        },
+        {
+          "name": "LIST_DD",
+          "label": "상장일",
+          "type": "string"
+        },
+        {
+          "name": "MKT_TP_NM",
+          "label": "시장구분",
+          "type": "string"
+        },
+        {
+          "name": "SECUGRP_NM",
+          "label": "증권구분",
+          "type": "string"
+        },
+        {
+          "name": "SECT_TP_NM",
+          "label": "소속부",
+          "type": "string"
+        },
+        {
+          "name": "KIND_STKCERT_TP_NM",
+          "label": "주식종류",
+          "type": "string"
+        },
+        {
+          "name": "PARVAL",
+          "label": "액면가",
+          "type": "string"
+        },
+        {
+          "name": "LIST_SHRS",
+          "label": "상장주식수",
+          "type": "string"
+        }
+      ],
+      "industryFields": [],
+      "dateParameter": "basDd",
+      "historicalMembershipProvenByDocumentation": false,
+      "approvedForRepositoryKey": "NOT_YET_OBSERVED",
+      "sectionFieldSemantics": "SECT_TP_NM = 소속부; not economic industry",
+      "serviceStartDate": "2010-01-04",
+      "documentedReferenceDateSemantics": "Published SQL filters basDd BETWEEN issue and security-group STRT_DD/END_DD. This is reference history, without any economic industry column or release/vintage proof."
+    },
+    {
+      "serviceId": "sto/knx_isu_base_info",
+      "name": "코넥스 종목기본정보",
+      "endpoint": "https://data-dbg.krx.co.kr/svc/apis/sto/knx_isu_base_info",
+      "documentationUrl": "https://openapi.krx.co.kr/contents/OPP/USES/service/OPPUSES002_S2.cmd?BO_ID=COgTLqgmGlqyJvaEFNIc",
+      "specDownloadUrl": "https://openapi.krx.co.kr/contents/OPP/USES/service/downloadApiDoc.cmd",
+      "downloadParameters": {
+        "path": "sto",
+        "BO_ID": "COgTLqgmGlqyJvaEFNIc",
+        "BO_VER": "1.0",
+        "apiId": "knx_isu_base_info",
+        "apiTestUrl": "/svc/sample/apis/sto/knx_isu_base_info"
+      },
+      "sourceFile": "konex-basic-spec.docx",
+      "sha256": "d35bc6d16f36b98360e5246393dcf60fe1736d619f481f92de1c415de5923480",
+      "acquiredAt": "2026-10-03T07:27:31.513236+00:00",
+      "requestFields": [
+        {
+          "label": "기준일자",
+          "name": "basDd",
+          "size": "8",
+          "type": "string"
+        }
+      ],
+      "outputFields": [
+        {
+          "name": "ISU_CD",
+          "label": "표준코드",
+          "type": "string"
+        },
+        {
+          "name": "ISU_SRT_CD",
+          "label": "단축코드",
+          "type": "string"
+        },
+        {
+          "name": "ISU_NM",
+          "label": "한글 종목명",
+          "type": "string"
+        },
+        {
+          "name": "ISU_ABBRV",
+          "label": "한글 종목약명",
+          "type": "string"
+        },
+        {
+          "name": "ISU_ENG_NM",
+          "label": "영문 종목명",
+          "type": "string"
+        },
+        {
+          "name": "LIST_DD",
+          "label": "상장일",
+          "type": "string"
+        },
+        {
+          "name": "MKT_TP_NM",
+          "label": "시장구분",
+          "type": "string"
+        },
+        {
+          "name": "SECUGRP_NM",
+          "label": "증권구분",
+          "type": "string"
+        },
+        {
+          "name": "SECT_TP_NM",
+          "label": "소속부",
+          "type": "string"
+        },
+        {
+          "name": "KIND_STKCERT_TP_NM",
+          "label": "주식종류",
+          "type": "string"
+        },
+        {
+          "name": "PARVAL",
+          "label": "액면가",
+          "type": "string"
+        },
+        {
+          "name": "LIST_SHRS",
+          "label": "상장주식수",
+          "type": "string"
+        }
+      ],
+      "industryFields": [],
+      "dateParameter": "basDd",
+      "historicalMembershipProvenByDocumentation": false,
+      "approvedForRepositoryKey": "NOT_YET_OBSERVED",
+      "sectionFieldSemantics": "SECT_TP_NM = 소속부; not economic industry",
+      "serviceStartDate": "2013-07-01",
+      "documentedReferenceDateSemantics": "Published SQL filters basDd BETWEEN issue and security-group STRT_DD/END_DD. This is reference history, without any economic industry column or release/vintage proof."
+    },
+    {
+      "serviceId": "sto/stk_bydd_trd",
+      "name": "유가증권 일별매매정보",
+      "endpoint": "https://data-dbg.krx.co.kr/svc/apis/sto/stk_bydd_trd",
+      "documentationUrl": "https://openapi.krx.co.kr/contents/OPP/USES/service/OPPUSES002_S2.cmd?BO_ID=JvJFzlAENzZlPBDNGAWC",
+      "specDownloadUrl": "https://openapi.krx.co.kr/contents/OPP/USES/service/downloadApiDoc.cmd",
+      "downloadParameters": {
+        "path": "sto",
+        "BO_ID": "JvJFzlAENzZlPBDNGAWC",
+        "BO_VER": "1.0",
+        "apiId": "stk_bydd_trd",
+        "apiTestUrl": "/svc/sample/apis/sto/stk_bydd_trd"
+      },
+      "sourceFile": "daily-spec.docx",
+      "sha256": "2c70b2da499eec50dac4d798ac0f39ea6fe95eef429a39e1c272721a3f69b315",
+      "acquiredAt": "2026-10-03T07:27:38.984446+00:00",
+      "requestFields": [
+        {
+          "label": "기준일자",
+          "name": "basDd",
+          "size": "8",
+          "type": "string"
+        }
+      ],
+      "outputFields": [
+        {
+          "name": "BAS_DD",
+          "label": "기준일자",
+          "type": "string"
+        },
+        {
+          "name": "ISU_CD",
+          "label": "종목코드",
+          "type": "string"
+        },
+        {
+          "name": "ISU_NM",
+          "label": "종목명",
+          "type": "string"
+        },
+        {
+          "name": "MKT_NM",
+          "label": "시장구분",
+          "type": "string"
+        },
+        {
+          "name": "SECT_TP_NM",
+          "label": "소속부",
+          "type": "string"
+        },
+        {
+          "name": "TDD_CLSPRC",
+          "label": "종가",
+          "type": "string"
+        },
+        {
+          "name": "CMPPREVDD_PRC",
+          "label": "대비",
+          "type": "string"
+        },
+        {
+          "name": "FLUC_RT",
+          "label": "등락률",
+          "type": "string"
+        },
+        {
+          "name": "TDD_OPNPRC",
+          "label": "시가",
+          "type": "string"
+        },
+        {
+          "name": "TDD_HGPRC",
+          "label": "고가",
+          "type": "string"
+        },
+        {
+          "name": "TDD_LWPRC",
+          "label": "저가",
+          "type": "string"
+        },
+        {
+          "name": "ACC_TRDVOL",
+          "label": "거래량",
+          "type": "string"
+        },
+        {
+          "name": "ACC_TRDVAL",
+          "label": "거래대금",
+          "type": "string"
+        },
+        {
+          "name": "MKTCAP",
+          "label": "시가총액",
+          "type": "string"
+        },
+        {
+          "name": "LIST_SHRS",
+          "label": "상장주식수",
+          "type": "string"
+        }
+      ],
+      "industryFields": [],
+      "dateParameter": "basDd",
+      "historicalMembershipProvenByDocumentation": false,
+      "approvedForRepositoryKey": "NOT_YET_OBSERVED",
+      "sectionFieldSemantics": "SECT_TP_NM = 소속부; not economic industry",
+      "serviceStartDate": "2010-01-04"
+    }
+  ],
+  "officialDocumentationManifestSha256": "c4e6632efe620bcc7423ab25ec7eea67e90907c088cfa732f2f344c4a9ba0d9f",
+  "maxRequests": 16,
+  "maxConcurrency": 1,
+  "minimumIntervalSeconds": 1,
+  "timeoutSeconds": 30,
+  "maximumResponseBytes": 8000000,
+  "retainRawResponses": false,
+  "fullHistoryExpansionAuthorized": false,
+  "authTransport": "AUTH_KEY header only; environment scoped to isolated manual probe step",
+  "retainedEvidence": "Exact safe full-response SHA-256, column names and counts only; no values or request headers",
+  "admissionPolicy": "No automatic membership admission. basDd, service start date, HTTP success and 소속부 cannot prove economic industry membership.",
+  "expansionPolicy": "Separate committed acquisition plan and actual historical membership proof are required before any expansion.",
+  "frozenCriteriaSha256": "c7163a88dbc90aaebe575da41bda867508272abcf8da74ddf25304a5cf07bb28",
+  "preservedResearchSignalDates": 610,
+  "preservedResearchNameDates": 73200
+}

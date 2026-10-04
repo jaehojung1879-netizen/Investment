@@ -15,6 +15,10 @@ contradicted by this file.
 | `KR Top120 regime review v1` (`kr-top120-regime-review-v1.yml`) | PR synthetic tests + outcome-free `verify`; manual `verify` / `execute` | **`verify` any time; `execute` only from merged `main`, by manual dispatch, after the protocol PR merges** | Exploratory post-outcome regime diagnostic over the sealed `kr-factor-anatomy-v1` result and its preserved raw snapshot. Pull requests never execute. `execute` checks main-only, the committed spec, the sealed predecessor identities, the exact artifact name / run / id / digest, the input identity, no committed result or marker and no earlier results artifact; the marker is written only after identities and readiness gates pass. No PASS/FAIL or promotion semantics; see `docs/kr-top120-regime-review-v1-design.md`. State: PROTOCOL ONLY — no outcome has been computed. |
 | `Market industry stock foundation v1 metadata audit` (`market-industry-stock-foundation-v1.yml`) | PR when foundation paths change; manual metadata audit | **No schedule; no execution mode** | Standard-library identity/source-readiness audit only. Does not read prices, historical outcomes or result payloads; cannot fit, select industries or construct a portfolio. Return math is unit-tested on synthetic fixtures separately by Tests. No secrets or write permissions. |
 
+| `KR industry membership foundation v1 source acquisition` (`kr-industry-membership-foundation-v1.yml`) | PR opened on the exact foundation branch only | **No schedule; no outcome execution mode** | Bounded public DART receipt acquisition from the frozen 413-target plan, 21 immutable artifact slices, at most four workers and three requests per receipt. Standard library only; contents read permission; no secrets, ECOS, current-profile backfill, prices, models, portfolios or sealed study execution. Completed source run 37096833360 is retained in the foundation provenance. Synchronize events do not recollect sources. |
+
+| `KR industry annual originals v2` (`kr-industry-membership-foundation-v2.yml`) | PR opened/updated on the exact foundation branch only; jobs `collect`, `chapters`, `retain` | **No schedule; no outcome execution mode** | Outcome-free v2 PIT industry-membership source acquisition. `collect`: frozen 254-issuer annual-original discovery plus collection in 26 immutable artifact slices (skipped per slice when its frozen inventory artifact exists; completed in run 37119776441). `chapters`: only the 68 classification-chapter requests frozen in `classification-chapters.json` before acquisition (skipped when its artifact exists). `retain`: downloads those exact artifacts, verifies every frozen-plan and archive SHA-256, and commits the bytes unchanged to the foundation branch (`contents: write`, same-repository branch only, skipped when already committed). Standard library collectors; DART key only in the discovery step; no prices, returns, models, portfolios or sealed-study execution. |
+
 ## Foundation observation on existing lifecycle (2026-10-03 KST)
 
 The older PROTOCOL ONLY descriptions above record their authors' then-current state;
@@ -33,3 +37,14 @@ credential. It reads BOK metadata and at most latest-period smoke observations,
 saves only sanitized source identities/coverage/status, and computes no Alpha
 outcomes. No schedule, production wiring or sealed study rerun is introduced.
 The foundation metadata workflow remains credential-free on PR events.
+
+## KRX authenticated reference-source extension (Draft PR #189)
+
+`probes.yml` adds `krx-industry-openapi` to the existing manual menu. Its isolated
+workflow_dispatch-only job receives KRX_API_KEY as AUTH_KEY only in the exact probe
+step, uses read-only contents and persist-credentials:false, and excludes generic
+probe jobs. Sixteen fixed requests at concurrency one inspect official reference
+schemas and date acceptance; no price/return values, raw authenticated responses,
+headers or logs are uploaded. No schedule, full-history acquisition, outcome execution
+or automatic membership promotion. Plan and public official documentation hashes
+are verified before authentication. Execution remains pending manual dispatch.

@@ -1,0 +1,77 @@
+[
+  {
+    "bytes": 15733,
+    "name": "krx-industry-page",
+    "requestParameters": null,
+    "sha256": "b3f2c51c7149900ec251eacbb66e47080898611518394d916a8b90c923a6468f",
+    "sourceFile": "data/kr-industry-membership-foundation-v1/reference-sources/krx-industry-page.bin",
+    "status": 200,
+    "url": "https://data.krx.co.kr/contents/MDC/STAT/standard/MDCSTAT039.jsp"
+  },
+  {
+    "bytes": 36852,
+    "name": "dart-company-guide",
+    "requestParameters": null,
+    "sha256": "4e3565fb79920ad4c362a36e18e78fc6aca0513431c6f60af738d07f1d265cec",
+    "sourceFile": "data/kr-industry-membership-foundation-v1/reference-sources/dart-company-guide.bin",
+    "status": 200,
+    "url": "https://opendart.fss.or.kr/guide/detail.do?apiGrpCd=DS001&apiId=2019002"
+  },
+  {
+    "bytes": 150,
+    "name": "ksic-10-codebook",
+    "requestParameters": null,
+    "sha256": "81074a9c8dfb24290e8fc4af14d20f67f5304618d27ac713628b1126e41dbd8e",
+    "sourceFile": "data/kr-industry-membership-foundation-v1/reference-sources/ksic-10-codebook.bin",
+    "status": 502,
+    "url": "https://mods.go.kr/boardDownload.es?bid=107&list_no=358712&seq=3"
+  },
+  {
+    "bytes": 150,
+    "name": "ksic-11-codebook",
+    "requestParameters": null,
+    "sha256": "81074a9c8dfb24290e8fc4af14d20f67f5304618d27ac713628b1126e41dbd8e",
+    "sourceFile": "data/kr-industry-membership-foundation-v1/reference-sources/ksic-11-codebook.bin",
+    "status": 502,
+    "url": "https://sri.kostat.go.kr/boardDownload.es?bid=107&list_no=428660&seq=6"
+  },
+  {
+    "bytes": 150,
+    "name": "ksic-transition",
+    "requestParameters": null,
+    "sha256": "81074a9c8dfb24290e8fc4af14d20f67f5304618d27ac713628b1126e41dbd8e",
+    "sourceFile": "data/kr-industry-membership-foundation-v1/reference-sources/ksic-transition.bin",
+    "status": 502,
+    "url": "https://mods.go.kr/board.es?act=view&bid=107&list_no=430619&mid=a10403040000"
+  },
+  {
+    "bytes": 2613,
+    "name": "krx-history-20130102",
+    "requestParameters": {
+      "bld": "dbms/MDC/STAT/standard/MDCSTAT03901",
+      "csvxls_isNo": "false",
+      "mktId": "STK",
+      "money": "1",
+      "trdDd": "20130102"
+    },
+    "sha256": "2c860edd6d3458284e3b7f2f727385462a5e2c59d3f32ec4244da90780c0dfa9",
+    "sourceFile": "data/kr-industry-membership-foundation-v1/reference-sources/krx-history-20130102.bin",
+    "status": 403,
+    "url": "https://data.krx.co.kr/comm/bldAttendant/getJsonData.cmd"
+  },
+  {
+    "bytes": 2613,
+    "name": "krx-history-20260901",
+    "requestParameters": {
+      "bld": "dbms/MDC/STAT/standard/MDCSTAT03901",
+      "csvxls_isNo": "false",
+      "mktId": "STK",
+      "money": "1",
+      "trdDd": "20260901"
+    },
+    "sha256": "2c860edd6d3458284e3b7f2f727385462a5e2c59d3f32ec4244da90780c0dfa9",
+    "sourceFile": "data/kr-industry-membership-foundation-v1/reference-sources/krx-history-20260901.bin",
+    "status": 403,
+    "url": "https://data.krx.co.kr/comm/bldAttendant/getJsonData.cmd"
+  }
+]

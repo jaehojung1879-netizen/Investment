@@ -1,0 +1,2520 @@
+{
+  "batch": 9,
+  "contract": "KR_INDUSTRY_ORIGINAL_ANNUAL_REQUEST_LIST_V2",
+  "discoveryRequests": 10,
+  "historicalOutcomeComputed": false,
+  "issuerInventorySha256": "d39cf40567a1fdd3e0819e1294bdae7043da25687c8473244a378210f8d18e90",
+  "maxBodyBytes": 4000000,
+  "maxCalls": 327,
+  "maxWorkers": 4,
+  "targets": [
+    {
+      "availableFrom": "2014-03-31",
+      "corpCode": "00145880",
+      "fiscalYear": 2013,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "listingMetadata": {
+        "corp_cls": "Y",
+        "corp_code": "00145880",
+        "corp_name": "현대제철",
+        "flr_nm": "현대제철",
+        "rcept_dt": "20140331",
+        "rcept_no": "20140331003028",
+        "report_nm": "사업보고서 (2013.12)",
+        "rm": "연",
+        "stock_code": "004020"
+      },
+      "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+      "receiptNos": [
+        "20140331003028"
+      ],
+      "reportPeriod": "2013-12",
+      "ticker": "004020.KS"
+    },
+    {
+      "availableFrom": "2015-03-31",
+      "corpCode": "00145880",
+      "fiscalYear": 2014,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "listingMetadata": {
+        "corp_cls": "Y",
+        "corp_code": "00145880",
+        "corp_name": "현대제철",
+        "flr_nm": "현대제철",
+        "rcept_dt": "20150331",
+        "rcept_no": "20150331003781",
+        "report_nm": "사업보고서 (2014.12)",
+        "rm": "정연",
+        "stock_code": "004020"
+      },
+      "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+      "receiptNos": [
+        "20150331003781"
+      ],
+      "reportPeriod": "2014-12",
+      "ticker": "004020.KS"
+    },
+    {
+      "availableFrom": "2017-03-31",
+      "corpCode": "00145880",
+      "fiscalYear": 2016,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "listingMetadata": {
+        "corp_cls": "Y",
+        "corp_code": "00145880",
+        "corp_name": "현대제철",
+        "flr_nm": "현대제철",
+        "rcept_dt": "20170331",
+        "rcept_no": "20170331004560",
+        "report_nm": "사업보고서 (2016.12)",
+        "rm": "연",
+        "stock_code": "004020"
+      },
+      "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+      "receiptNos": [
+        "20170331004560"
+      ],
+      "reportPeriod": "2016-12",
+      "ticker": "004020.KS"
+    },
+    {
+      "availableFrom": "2018-04-02",
+      "corpCode": "00145880",
+      "fiscalYear": 2017,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "listingMetadata": {
+        "corp_cls": "Y",
+        "corp_code": "00145880",
+        "corp_name": "현대제철",
+        "flr_nm": "현대제철",
+        "rcept_dt": "20180402",
+        "rcept_no": "20180402004372",
+        "report_nm": "사업보고서 (2017.12)",
+        "rm": "연",
+        "stock_code": "004020"
+      },
+      "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+      "receiptNos": [
+        "20180402004372"
+      ],
+      "reportPeriod": "2017-12",
+      "ticker": "004020.KS"
+    },
+    {
+      "availableFrom": "2019-04-01",
+      "corpCode": "00145880",
+      "fiscalYear": 2018,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "listingMetadata": {
+        "corp_cls": "Y",
+        "corp_code": "00145880",
+        "corp_name": "현대제철",
+        "flr_nm": "현대제철",
+        "rcept_dt": "20190401",
+        "rcept_no": "20190401004415",
+        "report_nm": "사업보고서 (2018.12)",
+        "rm": "연",
+        "stock_code": "004020"
+      },
+      "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+      "receiptNos": [
+        "20190401004415"
+      ],
+      "reportPeriod": "2018-12",
+      "ticker": "004020.KS"
+    },
+    {
+      "availableFrom": "2020-03-30",
+      "corpCode": "00145880",
+      "fiscalYear": 2019,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "listingMetadata": {
+        "corp_cls": "Y",
+        "corp_code": "00145880",
+        "corp_name": "현대제철",
+        "flr_nm": "현대제철",
+        "rcept_dt": "20200330",
+        "rcept_no": "20200330003634",
+        "report_nm": "사업보고서 (2019.12)",
+        "rm": "연",
+        "stock_code": "004020"
+      },
+      "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+      "receiptNos": [
+        "20200330003634"
+      ],
+      "reportPeriod": "2019-12",
+      "ticker": "004020.KS"
+    },
+    {
+      "availableFrom": "2021-03-15",
+      "corpCode": "00145880",
+      "fiscalYear": 2020,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "listingMetadata": {
+        "corp_cls": "Y",
+        "corp_code": "00145880",
+        "corp_name": "현대제철",
+        "flr_nm": "현대제철",
+        "rcept_dt": "20210315",
+        "rcept_no": "20210315000949",
+        "report_nm": "사업보고서 (2020.12)",
+        "rm": "연",
+        "stock_code": "004020"
+      },
+      "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+      "receiptNos": [
+        "20210315000949"
+      ],
+      "reportPeriod": "2020-12",
+      "ticker": "004020.KS"
+    },
+    {
+      "availableFrom": "2022-03-15",
+      "corpCode": "00145880",
+      "fiscalYear": 2021,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "listingMetadata": {
+        "corp_cls": "Y",
+        "corp_code": "00145880",
+        "corp_name": "현대제철",
+        "flr_nm": "현대제철",
+        "rcept_dt": "20220315",
+        "rcept_no": "20220315000651",
+        "report_nm": "사업보고서 (2021.12)",
+        "rm": "연",
+        "stock_code": "004020"
+      },
+      "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+      "receiptNos": [
+        "20220315000651"
+      ],
+      "reportPeriod": "2021-12",
+      "ticker": "004020.KS"
+    },
+    {
+      "availableFrom": "2023-03-14",
+      "corpCode": "00145880",
+      "fiscalYear": 2022,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "listingMetadata": {
+        "corp_cls": "Y",
+        "corp_code": "00145880",
+        "corp_name": "현대제철",
+        "flr_nm": "현대제철",
+        "rcept_dt": "20230314",
+        "rcept_no": "20230314001097",
+        "report_nm": "사업보고서 (2022.12)",
+        "rm": "연",
+        "stock_code": "004020"
+      },
+      "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+      "receiptNos": [
+        "20230314001097"
+      ],
+      "reportPeriod": "2022-12",
+      "ticker": "004020.KS"
+    },
+    {
+      "availableFrom": "2025-03-17",
+      "corpCode": "00145880",
+      "fiscalYear": 2024,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "listingMetadata": {
+        "corp_cls": "Y",
+        "corp_code": "00145880",
+        "corp_name": "현대제철",
+        "flr_nm": "현대제철",
+        "rcept_dt": "20250317",
+        "rcept_no": "20250317000668",
+        "report_nm": "사업보고서 (2024.12)",
+        "rm": "연",
+        "stock_code": "004020"
+      },
+      "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+      "receiptNos": [
+        "20250317000668"
+      ],
+      "reportPeriod": "2024-12",
+      "ticker": "004020.KS"
+    },
+    {
+      "availableFrom": "2026-03-18",
+      "corpCode": "00145880",
+      "fiscalYear": 2025,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "listingMetadata": {
+        "corp_cls": "Y",
+        "corp_code": "00145880",
+        "corp_name": "현대제철",
+        "flr_nm": "현대제철",
+        "rcept_dt": "20260318",
+        "rcept_no": "20260318001506",
+        "report_nm": "사업보고서 (2025.12)",
+        "rm": "정연",
+        "stock_code": "004020"
+      },
+      "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+      "receiptNos": [
+        "20260318001506"
+      ],
+      "reportPeriod": "2025-12",
+      "ticker": "004020.KS"
+    },
+    {
+      "availableFrom": "2014-06-30",
+      "corpCode": "00146454",
+      "fiscalYear": 2014,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "listingMetadata": {
+        "corp_cls": "Y",
+        "corp_code": "00146454",
+        "corp_name": "일양약품",
+        "flr_nm": "일양약품",
+        "rcept_dt": "20140630",
+        "rcept_no": "20140630000024",
+        "report_nm": "사업보고서 (2014.03)",
+        "rm": "",
+        "stock_code": "007570"
+      },
+      "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+      "receiptNos": [
+        "20140630000024"
+      ],
+      "reportPeriod": "2014-03",
+      "ticker": "007570.KS"
+    },
+    {
+      "availableFrom": "2015-06-29",
+      "corpCode": "00146454",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "listingMetadata": {
+        "corp_cls": "Y",
+        "corp_code": "00146454",
+        "corp_name": "일양약품",
+        "flr_nm": "일양약품",
+        "rcept_dt": "20150629",
+        "rcept_no": "20150629000400",
+        "report_nm": "사업보고서 (2015.03)",
+        "rm": "연",
+        "stock_code": "007570"
+      },
+      "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+      "receiptNos": [
+        "20150629000400"
+      ],
+      "reportPeriod": "2015-03",
+      "ticker": "007570.KS"
+    },
+    {
+      "availableFrom": "2017-03-31",
+      "corpCode": "00146454",
+      "fiscalYear": 2016,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "listingMetadata": {
+        "corp_cls": "Y",
+        "corp_code": "00146454",
+        "corp_name": "일양약품",
+        "flr_nm": "일양약품",
+        "rcept_dt": "20170331",
+        "rcept_no": "20170331002362",
+        "report_nm": "사업보고서 (2016.12)",
+        "rm": "연",
+        "stock_code": "007570"
+      },
+      "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+      "receiptNos": [
+        "20170331002362"
+      ],
+      "reportPeriod": "2016-12",
+      "ticker": "007570.KS"
+    },
+    {
+      "availableFrom": "2018-04-02",
+      "corpCode": "00146454",
+      "fiscalYear": 2017,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "listingMetadata": {
+        "corp_cls": "Y",
+        "corp_code": "00146454",
+        "corp_name": "일양약품",
+        "flr_nm": "일양약품",
+        "rcept_dt": "20180402",
+        "rcept_no": "20180402003602",
+        "report_nm": "사업보고서 (2017.12)",
+        "rm": "정연",
+        "stock_code": "007570"
+      },
+      "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+      "receiptNos": [
+        "20180402003602"
+      ],
+      "reportPeriod": "2017-12",
+      "ticker": "007570.KS"
+    },
+    {
+      "availableFrom": "2019-04-01",
+      "corpCode": "00146454",
+      "fiscalYear": 2018,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "listingMetadata": {
+        "corp_cls": "Y",
+        "corp_code": "00146454",
+        "corp_name": "일양약품",
+        "flr_nm": "일양약품",
+        "rcept_dt": "20190401",
+        "rcept_no": "20190401003542",
+        "report_nm": "사업보고서 (2018.12)",
+        "rm": "정연",
+        "stock_code": "007570"
+      },
+      "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+      "receiptNos": [
+        "20190401003542"
+      ],
+      "reportPeriod": "2018-12",
+      "ticker": "007570.KS"
+    },
+    {
+      "availableFrom": "2020-03-30",
+      "corpCode": "00146454",
+      "fiscalYear": 2019,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "listingMetadata": {
+        "corp_cls": "Y",
+        "corp_code": "00146454",
+        "corp_name": "일양약품",
+        "flr_nm": "일양약품",
+        "rcept_dt": "20200330",
+        "rcept_no": "20200330000518",
+        "report_nm": "사업보고서 (2019.12)",
+        "rm": "연",
+        "stock_code": "007570"
+      },
+      "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+      "receiptNos": [
+        "20200330000518"
+      ],
+      "reportPeriod": "2019-12",
+      "ticker": "007570.KS"
+    },
+    {
+      "availableFrom": "2021-03-18",
+      "corpCode": "00146454",
+      "fiscalYear": 2020,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "listingMetadata": {
+        "corp_cls": "Y",
+        "corp_code": "00146454",
+        "corp_name": "일양약품",
+        "flr_nm": "일양약품",
+        "rcept_dt": "20210318",
+        "rcept_no": "20210318001085",
+        "report_nm": "사업보고서 (2020.12)",
+        "rm": "연",
+        "stock_code": "007570"
+      },
+      "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+      "receiptNos": [
+        "20210318001085"
+      ],
+      "reportPeriod": "2020-12",
+      "ticker": "007570.KS"
+    },
+    {
+      "availableFrom": "2022-03-17",
+      "corpCode": "00146454",
+      "fiscalYear": 2021,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "listingMetadata": {
+        "corp_cls": "Y",
+        "corp_code": "00146454",
+        "corp_name": "일양약품",
+        "flr_nm": "일양약품",
+        "rcept_dt": "20220317",
+        "rcept_no": "20220317000353",
+        "report_nm": "사업보고서 (2021.12)",
+        "rm": "연",
+        "stock_code": "007570"
+      },
+      "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+      "receiptNos": [
+        "20220317000353"
+      ],
+      "reportPeriod": "2021-12",
+      "ticker": "007570.KS"
+    },
+    {
+      "availableFrom": "2023-03-16",
+      "corpCode": "00146454",
+      "fiscalYear": 2022,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "listingMetadata": {
+        "corp_cls": "Y",
+        "corp_code": "00146454",
+        "corp_name": "일양약품",
+        "flr_nm": "일양약품",
+        "rcept_dt": "20230316",
+        "rcept_no": "20230316000222",
+        "report_nm": "사업보고서 (2022.12)",
+        "rm": "정연",
+        "stock_code": "007570"
+      },
+      "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+      "receiptNos": [
+        "20230316000222"
+      ],
+      "reportPeriod": "2022-12",
+      "ticker": "007570.KS"
+    },
+    {
+      "availableFrom": "2024-03-14",
+      "corpCode": "00146454",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "listingMetadata": {
+        "corp_cls": "Y",
+        "corp_code": "00146454",
+        "corp_name": "일양약품",
+        "flr_nm": "일양약품",
+        "rcept_dt": "20240314",
+        "rcept_no": "20240314000963",
+        "report_nm": "사업보고서 (2023.12)",
+        "rm": "정연",
+        "stock_code": "007570"
+      },
+      "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+      "receiptNos": [
+        "20240314000963"
+      ],
+      "reportPeriod": "2023-12",
+      "ticker": "007570.KS"
+    },
+    {
+      "availableFrom": "2025-03-27",
+      "corpCode": "00146454",
+      "fiscalYear": 2024,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "listingMetadata": {
+        "corp_cls": "Y",
+        "corp_code": "00146454",
+        "corp_name": "일양약품",
+        "flr_nm": "일양약품",
+        "rcept_dt": "20250327",
+        "rcept_no": "20250327001173",
+        "report_nm": "사업보고서 (2024.12)",
+        "rm": "연",
+        "stock_code": "007570"
+      },
+      "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+      "receiptNos": [
+        "20250327001173"
+      ],
+      "reportPeriod": "2024-12",
+      "ticker": "007570.KS"
+    },
+    {
+      "availableFrom": "2026-03-18",
+      "corpCode": "00146454",
+      "fiscalYear": 2025,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "listingMetadata": {
+        "corp_cls": "Y",
+        "corp_code": "00146454",
+        "corp_name": "일양약품",
+        "flr_nm": "일양약품",
+        "rcept_dt": "20260318",
+        "rcept_no": "20260318000595",
+        "report_nm": "사업보고서 (2025.12)",
+        "rm": "연",
+        "stock_code": "007570"
+      },
+      "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+      "receiptNos": [
+        "20260318000595"
+      ],
+      "reportPeriod": "2025-12",
+      "ticker": "007570.KS"
+    },
+    {
+      "availableFrom": "2014-03-31",
+      "corpCode": "00148276",
+      "fiscalYear": 2013,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "listingMetadata": {
+        "corp_cls": "Y",
+        "corp_code": "00148276",
+        "corp_name": "제일기획",
+        "flr_nm": "제일기획",
+        "rcept_dt": "20140331",
+        "rcept_no": "20140331002715",
+        "report_nm": "사업보고서 (2013.12)",
+        "rm": "연",
+        "stock_code": "030000"
+      },
+      "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+      "receiptNos": [
+        "20140331002715"
+      ],
+      "reportPeriod": "2013-12",
+      "ticker": "030000.KS"
+    },
+    {
+      "availableFrom": "2015-03-31",
+      "corpCode": "00148276",
+      "fiscalYear": 2014,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "listingMetadata": {
+        "corp_cls": "Y",
+        "corp_code": "00148276",
+        "corp_name": "제일기획",
+        "flr_nm": "제일기획",
+        "rcept_dt": "20150331",
+        "rcept_no": "20150331004683",
+        "report_nm": "사업보고서 (2014.12)",
+        "rm": "정연",
+        "stock_code": "030000"
+      },
+      "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+      "receiptNos": [
+        "20150331004683"
+      ],
+      "reportPeriod": "2014-12",
+      "ticker": "030000.KS"
+    },
+    {
+      "availableFrom": "2016-03-30",
+      "corpCode": "00148276",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "listingMetadata": {
+        "corp_cls": "Y",
+        "corp_code": "00148276",
+        "corp_name": "제일기획",
+        "flr_nm": "제일기획",
+        "rcept_dt": "20160330",
+        "rcept_no": "20160330003659",
+        "report_nm": "사업보고서 (2015.12)",
+        "rm": "정연",
+        "stock_code": "030000"
+      },
+      "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+      "receiptNos": [
+        "20160330003659"
+      ],
+      "reportPeriod": "2015-12",
+      "ticker": "030000.KS"
+    },
+    {
+      "availableFrom": "2017-03-31",
+      "corpCode": "00148276",
+      "fiscalYear": 2016,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "listingMetadata": {
+        "corp_cls": "Y",
+        "corp_code": "00148276",
+        "corp_name": "제일기획",
+        "flr_nm": "제일기획",
+        "rcept_dt": "20170331",
+        "rcept_no": "20170331005053",
+        "report_nm": "사업보고서 (2016.12)",
+        "rm": "연",
+        "stock_code": "030000"
+      },
+      "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+      "receiptNos": [
+        "20170331005053"
+      ],
+      "reportPeriod": "2016-12",
+      "ticker": "030000.KS"
+    },
+    {
+      "availableFrom": "2018-04-02",
+      "corpCode": "00148276",
+      "fiscalYear": 2017,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "listingMetadata": {
+        "corp_cls": "Y",
+        "corp_code": "00148276",
+        "corp_name": "제일기획",
+        "flr_nm": "제일기획",
+        "rcept_dt": "20180402",
+        "rcept_no": "20180402004687",
+        "report_nm": "사업보고서 (2017.12)",
+        "rm": "정연",
+        "stock_code": "030000"
+      },
+      "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+      "receiptNos": [
+        "20180402004687"
+      ],
+      "reportPeriod": "2017-12",
+      "ticker": "030000.KS"
+    },
+    {
+      "availableFrom": "2019-04-01",
+      "corpCode": "00148276",
+      "fiscalYear": 2018,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "listingMetadata": {
+        "corp_cls": "Y",
+        "corp_code": "00148276",
+        "corp_name": "제일기획",
+        "flr_nm": "제일기획",
+        "rcept_dt": "20190401",
+        "rcept_no": "20190401002642",
+        "report_nm": "사업보고서 (2018.12)",
+        "rm": "연",
+        "stock_code": "030000"
+      },
+      "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+      "receiptNos": [
+        "20190401002642"
+      ],
+      "reportPeriod": "2018-12",
+      "ticker": "030000.KS"
+    },
+    {
+      "availableFrom": "2020-03-30",
+      "corpCode": "00148276",
+      "fiscalYear": 2019,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "listingMetadata": {
+        "corp_cls": "Y",
+        "corp_code": "00148276",
+        "corp_name": "제일기획",
+        "flr_nm": "제일기획",
+        "rcept_dt": "20200330",
+        "rcept_no": "20200330002125",
+        "report_nm": "사업보고서 (2019.12)",
+        "rm": "연",
+        "stock_code": "030000"
+      },
+      "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+      "receiptNos": [
+        "20200330002125"
+      ],
+      "reportPeriod": "2019-12",
+      "ticker": "030000.KS"
+    },
+    {
+      "availableFrom": "2021-03-10",
+      "corpCode": "00148276",
+      "fiscalYear": 2020,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "listingMetadata": {
+        "corp_cls": "Y",
+        "corp_code": "00148276",
+        "corp_name": "제일기획",
+        "flr_nm": "제일기획",
+        "rcept_dt": "20210310",
+        "rcept_no": "20210310001200",
+        "report_nm": "사업보고서 (2020.12)",
+        "rm": "정연",
+        "stock_code": "030000"
+      },
+      "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+      "receiptNos": [
+        "20210310001200"
+      ],
+      "reportPeriod": "2020-12",
+      "ticker": "030000.KS"
+    },
+    {
+      "availableFrom": "2022-03-08",
+      "corpCode": "00148276",
+      "fiscalYear": 2021,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "listingMetadata": {
+        "corp_cls": "Y",
+        "corp_code": "00148276",
+        "corp_name": "제일기획",
+        "flr_nm": "제일기획",
+        "rcept_dt": "20220308",
+        "rcept_no": "20220308000752",
+        "report_nm": "사업보고서 (2021.12)",
+        "rm": "정연",
+        "stock_code": "030000"
+      },
+      "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+      "receiptNos": [
+        "20220308000752"
+      ],
+      "reportPeriod": "2021-12",
+      "ticker": "030000.KS"
+    },
+    {
+      "availableFrom": "2023-03-08",
+      "corpCode": "00148276",
+      "fiscalYear": 2022,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "listingMetadata": {
+        "corp_cls": "Y",
+        "corp_code": "00148276",
+        "corp_name": "제일기획",
+        "flr_nm": "제일기획",
+        "rcept_dt": "20230308",
+        "rcept_no": "20230308000451",
+        "report_nm": "사업보고서 (2022.12)",
+        "rm": "연",
+        "stock_code": "030000"
+      },
+      "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+      "receiptNos": [
+        "20230308000451"
+      ],
+      "reportPeriod": "2022-12",
+      "ticker": "030000.KS"
+    },
+    {
+      "availableFrom": "2025-03-11",
+      "corpCode": "00148276",
+      "fiscalYear": 2024,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "listingMetadata": {
+        "corp_cls": "Y",
+        "corp_code": "00148276",
+        "corp_name": "제일기획",
+        "flr_nm": "제일기획",
+        "rcept_dt": "20250311",
+        "rcept_no": "20250311000974",
+        "report_nm": "사업보고서 (2024.12)",
+        "rm": "연",
+        "stock_code": "030000"
+      },
+      "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+      "receiptNos": [
+        "20250311000974"
+      ],
+      "reportPeriod": "2024-12",
+      "ticker": "030000.KS"
+    },
+    {
+      "availableFrom": "2026-03-10",
+      "corpCode": "00148276",
+      "fiscalYear": 2025,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "listingMetadata": {
+        "corp_cls": "Y",
+        "corp_code": "00148276",
+        "corp_name": "제일기획",
+        "flr_nm": "제일기획",
+        "rcept_dt": "20260310",
+        "rcept_no": "20260310002959",
+        "report_nm": "사업보고서 (2025.12)",
+        "rm": "연",
+        "stock_code": "030000"
+      },
+      "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+      "receiptNos": [
+        "20260310002959"
+      ],
+      "reportPeriod": "2025-12",
+      "ticker": "030000.KS"
+    },
+    {
+      "availableFrom": "2014-03-31",
+      "corpCode": "00148328",
+      "fiscalYear": 2013,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "listingMetadata": {
+        "corp_cls": "E",
+        "corp_code": "00148328",
+        "corp_name": "제일모직",
+        "flr_nm": "제일모직",
+        "rcept_dt": "20140331",
+        "rcept_no": "20140331001272",
+        "report_nm": "사업보고서 (2013.12)",
+        "rm": "연",
+        "stock_code": "001300"
+      },
+      "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+      "receiptNos": [
+        "20140331001272"
+      ],
+      "reportPeriod": "2013-12",
+      "ticker": "001300.KS"
+    },
+    {
+      "availableFrom": "2014-03-31",
+      "corpCode": "00148540",
+      "fiscalYear": 2013,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "listingMetadata": {
+        "corp_cls": "Y",
+        "corp_code": "00148540",
+        "corp_name": "CJ",
+        "flr_nm": "CJ",
+        "rcept_dt": "20140331",
+        "rcept_no": "20140331003031",
+        "report_nm": "사업보고서 (2013.12)",
+        "rm": "정연",
+        "stock_code": "001040"
+      },
+      "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+      "receiptNos": [
+        "20140331003031"
+      ],
+      "reportPeriod": "2013-12",
+      "ticker": "001040.KS"
+    },
+    {
+      "availableFrom": "2015-03-31",
+      "corpCode": "00148540",
+      "fiscalYear": 2014,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "listingMetadata": {
+        "corp_cls": "Y",
+        "corp_code": "00148540",
+        "corp_name": "CJ",
+        "flr_nm": "CJ",
+        "rcept_dt": "20150331",
+        "rcept_no": "20150331004081",
+        "report_nm": "사업보고서 (2014.12)",
+        "rm": "정연",
+        "stock_code": "001040"
+      },
+      "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+      "receiptNos": [
+        "20150331004081"
+      ],
+      "reportPeriod": "2014-12",
+      "ticker": "001040.KS"
+    },
+    {
+      "availableFrom": "2017-03-31",
+      "corpCode": "00148540",
+      "fiscalYear": 2016,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "listingMetadata": {
+        "corp_cls": "Y",
+        "corp_code": "00148540",
+        "corp_name": "CJ",
+        "flr_nm": "CJ",
+        "rcept_dt": "20170331",
+        "rcept_no": "20170331004642",
+        "report_nm": "사업보고서 (2016.12)",
+        "rm": "연",
+        "stock_code": "001040"
+      },
+      "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+      "receiptNos": [
+        "20170331004642"
+      ],
+      "reportPeriod": "2016-12",
+      "ticker": "001040.KS"
+    },
+    {
+      "availableFrom": "2018-03-30",
+      "corpCode": "00148540",
+      "fiscalYear": 2017,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "listingMetadata": {
+        "corp_cls": "Y",
+        "corp_code": "00148540",
+        "corp_name": "CJ",
+        "flr_nm": "CJ",
+        "rcept_dt": "20180330",
+        "rcept_no": "20180330003087",
+        "report_nm": "사업보고서 (2017.12)",
+        "rm": "연",
+        "stock_code": "001040"
+      },
+      "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+      "receiptNos": [
+        "20180330003087"
+      ],
+      "reportPeriod": "2017-12",
+      "ticker": "001040.KS"
+    },
+    {
+      "availableFrom": "2019-03-29",
+      "corpCode": "00148540",
+      "fiscalYear": 2018,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "listingMetadata": {
+        "corp_cls": "Y",
+        "corp_code": "00148540",
+        "corp_name": "CJ",
+        "flr_nm": "CJ",
+        "rcept_dt": "20190329",
+        "rcept_no": "20190329004141",
+        "report_nm": "사업보고서 (2018.12)",
+        "rm": "연",
+        "stock_code": "001040"
+      },
+      "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+      "receiptNos": [
+        "20190329004141"
+      ],
+      "reportPeriod": "2018-12",
+      "ticker": "001040.KS"
+    },
+    {
+      "availableFrom": "2020-03-30",
+      "corpCode": "00148540",
+      "fiscalYear": 2019,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "listingMetadata": {
+        "corp_cls": "Y",
+        "corp_code": "00148540",
+        "corp_name": "CJ",
+        "flr_nm": "CJ",
+        "rcept_dt": "20200330",
+        "rcept_no": "20200330004294",
+        "report_nm": "사업보고서 (2019.12)",
+        "rm": "연",
+        "stock_code": "001040"
+      },
+      "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+      "receiptNos": [
+        "20200330004294"
+      ],
+      "reportPeriod": "2019-12",
+      "ticker": "001040.KS"
+    },
+    {
+      "availableFrom": "2021-03-23",
+      "corpCode": "00148540",
+      "fiscalYear": 2020,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "listingMetadata": {
+        "corp_cls": "Y",
+        "corp_code": "00148540",
+        "corp_name": "CJ",
+        "flr_nm": "CJ",
+        "rcept_dt": "20210323",
+        "rcept_no": "20210323001025",
+        "report_nm": "사업보고서 (2020.12)",
+        "rm": "연",
+        "stock_code": "001040"
+      },
+      "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+      "receiptNos": [
+        "20210323001025"
+      ],
+      "reportPeriod": "2020-12",
+      "ticker": "001040.KS"
+    },
+    {
+      "availableFrom": "2022-03-21",
+      "corpCode": "00148540",
+      "fiscalYear": 2021,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "listingMetadata": {
+        "corp_cls": "Y",
+        "corp_code": "00148540",
+        "corp_name": "CJ",
+        "flr_nm": "CJ",
+        "rcept_dt": "20220321",
+        "rcept_no": "20220321001352",
+        "report_nm": "사업보고서 (2021.12)",
+        "rm": "연",
+        "stock_code": "001040"
+      },
+      "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+      "receiptNos": [
+        "20220321001352"
+      ],
+      "reportPeriod": "2021-12",
+      "ticker": "001040.KS"
+    },
+    {
+      "availableFrom": "2023-03-21",
+      "corpCode": "00148540",
+      "fiscalYear": 2022,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "listingMetadata": {
+        "corp_cls": "Y",
+        "corp_code": "00148540",
+        "corp_name": "CJ",
+        "flr_nm": "CJ",
+        "rcept_dt": "20230321",
+        "rcept_no": "20230321001305",
+        "report_nm": "사업보고서 (2022.12)",
+        "rm": "연",
+        "stock_code": "001040"
+      },
+      "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+      "receiptNos": [
+        "20230321001305"
+      ],
+      "reportPeriod": "2022-12",
+      "ticker": "001040.KS"
+    },
+    {
+      "availableFrom": "2025-03-18",
+      "corpCode": "00148540",
+      "fiscalYear": 2024,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "listingMetadata": {
+        "corp_cls": "Y",
+        "corp_code": "00148540",
+        "corp_name": "CJ",
+        "flr_nm": "CJ",
+        "rcept_dt": "20250318",
+        "rcept_no": "20250318001349",
+        "report_nm": "사업보고서 (2024.12)",
+        "rm": "정연",
+        "stock_code": "001040"
+      },
+      "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+      "receiptNos": [
+        "20250318001349"
+      ],
+      "reportPeriod": "2024-12",
+      "ticker": "001040.KS"
+    },
+    {
+      "availableFrom": "2026-03-18",
+      "corpCode": "00148540",
+      "fiscalYear": 2025,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "listingMetadata": {
+        "corp_cls": "Y",
+        "corp_code": "00148540",
+        "corp_name": "CJ",
+        "flr_nm": "CJ",
+        "rcept_dt": "20260318",
+        "rcept_no": "20260318001509",
+        "report_nm": "사업보고서 (2025.12)",
+        "rm": "연",
+        "stock_code": "001040"
+      },
+      "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+      "receiptNos": [
+        "20260318001509"
+      ],
+      "reportPeriod": "2025-12",
+      "ticker": "001040.KS"
+    },
+    {
+      "availableFrom": "2014-03-31",
+      "corpCode": "00148896",
+      "fiscalYear": 2013,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "listingMetadata": {
+        "corp_cls": "Y",
+        "corp_code": "00148896",
+        "corp_name": "OCI홀딩스",
+        "flr_nm": "OCI홀딩스",
+        "rcept_dt": "20140331",
+        "rcept_no": "20140331001913",
+        "report_nm": "사업보고서 (2013.12)",
+        "rm": "연",
+        "stock_code": "010060"
+      },
+      "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+      "receiptNos": [
+        "20140331001913"
+      ],
+      "reportPeriod": "2013-12",
+      "ticker": "010060.KS"
+    },
+    {
+      "availableFrom": "2015-03-31",
+      "corpCode": "00148896",
+      "fiscalYear": 2014,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "listingMetadata": {
+        "corp_cls": "Y",
+        "corp_code": "00148896",
+        "corp_name": "OCI홀딩스",
+        "flr_nm": "OCI홀딩스",
+        "rcept_dt": "20150331",
+        "rcept_no": "20150331003549",
+        "report_nm": "사업보고서 (2014.12)",
+        "rm": "정연",
+        "stock_code": "010060"
+      },
+      "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+      "receiptNos": [
+        "20150331003549"
+      ],
+      "reportPeriod": "2014-12",
+      "ticker": "010060.KS"
+    },
+    {
+      "availableFrom": "2016-03-30",
+      "corpCode": "00148896",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "listingMetadata": {
+        "corp_cls": "Y",
+        "corp_code": "00148896",
+        "corp_name": "OCI홀딩스",
+        "flr_nm": "OCI홀딩스",
+        "rcept_dt": "20160330",
+        "rcept_no": "20160330004470",
+        "report_nm": "사업보고서 (2015.12)",
+        "rm": "정연",
+        "stock_code": "010060"
+      },
+      "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+      "receiptNos": [
+        "20160330004470"
+      ],
+      "reportPeriod": "2015-12",
+      "ticker": "010060.KS"
+    },
+    {
+      "availableFrom": "2017-03-30",
+      "corpCode": "00148896",
+      "fiscalYear": 2016,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "listingMetadata": {
+        "corp_cls": "Y",
+        "corp_code": "00148896",
+        "corp_name": "OCI홀딩스",
+        "flr_nm": "OCI홀딩스",
+        "rcept_dt": "20170330",
+        "rcept_no": "20170330001496",
+        "report_nm": "사업보고서 (2016.12)",
+        "rm": "연",
+        "stock_code": "010060"
+      },
+      "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+      "receiptNos": [
+        "20170330001496"
+      ],
+      "reportPeriod": "2016-12",
+      "ticker": "010060.KS"
+    },
+    {
+      "availableFrom": "2018-03-30",
+      "corpCode": "00148896",
+      "fiscalYear": 2017,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "listingMetadata": {
+        "corp_cls": "Y",
+        "corp_code": "00148896",
+        "corp_name": "OCI홀딩스",
+        "flr_nm": "OCI홀딩스",
+        "rcept_dt": "20180330",
+        "rcept_no": "20180330002993",
+        "report_nm": "사업보고서 (2017.12)",
+        "rm": "정연",
+        "stock_code": "010060"
+      },
+      "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+      "receiptNos": [
+        "20180330002993"
+      ],
+      "reportPeriod": "2017-12",
+      "ticker": "010060.KS"
+    },
+    {
+      "availableFrom": "2019-03-29",
+      "corpCode": "00148896",
+      "fiscalYear": 2018,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "listingMetadata": {
+        "corp_cls": "Y",
+        "corp_code": "00148896",
+        "corp_name": "OCI홀딩스",
+        "flr_nm": "OCI홀딩스",
+        "rcept_dt": "20190329",
+        "rcept_no": "20190329003340",
+        "report_nm": "사업보고서 (2018.12)",
+        "rm": "연",
+        "stock_code": "010060"
+      },
+      "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+      "receiptNos": [
+        "20190329003340"
+      ],
+      "reportPeriod": "2018-12",
+      "ticker": "010060.KS"
+    },
+    {
+      "availableFrom": "2020-03-30",
+      "corpCode": "00148896",
+      "fiscalYear": 2019,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "listingMetadata": {
+        "corp_cls": "Y",
+        "corp_code": "00148896",
+        "corp_name": "OCI홀딩스",
+        "flr_nm": "OCI홀딩스",
+        "rcept_dt": "20200330",
+        "rcept_no": "20200330001981",
+        "report_nm": "사업보고서 (2019.12)",
+        "rm": "연",
+        "stock_code": "010060"
+      },
+      "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+      "receiptNos": [
+        "20200330001981"
+      ],
+      "reportPeriod": "2019-12",
+      "ticker": "010060.KS"
+    },
+    {
+      "availableFrom": "2021-03-16",
+      "corpCode": "00148896",
+      "fiscalYear": 2020,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "listingMetadata": {
+        "corp_cls": "Y",
+        "corp_code": "00148896",
+        "corp_name": "OCI홀딩스",
+        "flr_nm": "OCI홀딩스",
+        "rcept_dt": "20210316",
+        "rcept_no": "20210316000573",
+        "report_nm": "사업보고서 (2020.12)",
+        "rm": "정연",
+        "stock_code": "010060"
+      },
+      "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+      "receiptNos": [
+        "20210316000573"
+      ],
+      "reportPeriod": "2020-12",
+      "ticker": "010060.KS"
+    },
+    {
+      "availableFrom": "2022-03-11",
+      "corpCode": "00148896",
+      "fiscalYear": 2021,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "listingMetadata": {
+        "corp_cls": "Y",
+        "corp_code": "00148896",
+        "corp_name": "OCI홀딩스",
+        "flr_nm": "OCI홀딩스",
+        "rcept_dt": "20220311",
+        "rcept_no": "20220311000911",
+        "report_nm": "사업보고서 (2021.12)",
+        "rm": "연",
+        "stock_code": "010060"
+      },
+      "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+      "receiptNos": [
+        "20220311000911"
+      ],
+      "reportPeriod": "2021-12",
+      "ticker": "010060.KS"
+    },
+    {
+      "availableFrom": "2023-03-06",
+      "corpCode": "00148896",
+      "fiscalYear": 2022,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "listingMetadata": {
+        "corp_cls": "Y",
+        "corp_code": "00148896",
+        "corp_name": "OCI홀딩스",
+        "flr_nm": "OCI홀딩스",
+        "rcept_dt": "20230306",
+        "rcept_no": "20230306000254",
+        "report_nm": "사업보고서 (2022.12)",
+        "rm": "연",
+        "stock_code": "010060"
+      },
+      "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+      "receiptNos": [
+        "20230306000254"
+      ],
+      "reportPeriod": "2022-12",
+      "ticker": "010060.KS"
+    },
+    {
+      "availableFrom": "2024-03-21",
+      "corpCode": "00148896",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "listingMetadata": {
+        "corp_cls": "Y",
+        "corp_code": "00148896",
+        "corp_name": "OCI홀딩스",
+        "flr_nm": "OCI홀딩스",
+        "rcept_dt": "20240321",
+        "rcept_no": "20240321001023",
+        "report_nm": "사업보고서 (2023.12)",
+        "rm": "정연",
+        "stock_code": "010060"
+      },
+      "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+      "receiptNos": [
+        "20240321001023"
+      ],
+      "reportPeriod": "2023-12",
+      "ticker": "010060.KS"
+    },
+    {
+      "availableFrom": "2025-03-18",
+      "corpCode": "00148896",
+      "fiscalYear": 2024,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "listingMetadata": {
+        "corp_cls": "Y",
+        "corp_code": "00148896",
+        "corp_name": "OCI홀딩스",
+        "flr_nm": "OCI홀딩스",
+        "rcept_dt": "20250318",
+        "rcept_no": "20250318000381",
+        "report_nm": "사업보고서 (2024.12)",
+        "rm": "정연",
+        "stock_code": "010060"
+      },
+      "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+      "receiptNos": [
+        "20250318000381"
+      ],
+      "reportPeriod": "2024-12",
+      "ticker": "010060.KS"
+    },
+    {
+      "availableFrom": "2026-03-18",
+      "corpCode": "00148896",
+      "fiscalYear": 2025,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "listingMetadata": {
+        "corp_cls": "Y",
+        "corp_code": "00148896",
+        "corp_name": "OCI홀딩스",
+        "flr_nm": "OCI홀딩스",
+        "rcept_dt": "20260318",
+        "rcept_no": "20260318000617",
+        "report_nm": "사업보고서 (2025.12)",
+        "rm": "연",
+        "stock_code": "010060"
+      },
+      "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+      "receiptNos": [
+        "20260318000617"
+      ],
+      "reportPeriod": "2025-12",
+      "ticker": "010060.KS"
+    },
+    {
+      "availableFrom": "2014-03-31",
+      "corpCode": "00149646",
+      "fiscalYear": 2013,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "listingMetadata": {
+        "corp_cls": "Y",
+        "corp_code": "00149646",
+        "corp_name": "기업은행",
+        "flr_nm": "기업은행",
+        "rcept_dt": "20140331",
+        "rcept_no": "20140331003602",
+        "report_nm": "사업보고서 (2013.12)",
+        "rm": "정연",
+        "stock_code": "024110"
+      },
+      "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+      "receiptNos": [
+        "20140331003602"
+      ],
+      "reportPeriod": "2013-12",
+      "ticker": "024110.KS"
+    },
+    {
+      "availableFrom": "2015-03-31",
+      "corpCode": "00149646",
+      "fiscalYear": 2014,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "listingMetadata": {
+        "corp_cls": "Y",
+        "corp_code": "00149646",
+        "corp_name": "기업은행",
+        "flr_nm": "기업은행",
+        "rcept_dt": "20150331",
+        "rcept_no": "20150331004130",
+        "report_nm": "사업보고서 (2014.12)",
+        "rm": "연",
+        "stock_code": "024110"
+      },
+      "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+      "receiptNos": [
+        "20150331004130"
+      ],
+      "reportPeriod": "2014-12",
+      "ticker": "024110.KS"
+    },
+    {
+      "availableFrom": "2016-03-30",
+      "corpCode": "00149646",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "listingMetadata": {
+        "corp_cls": "Y",
+        "corp_code": "00149646",
+        "corp_name": "기업은행",
+        "flr_nm": "기업은행",
+        "rcept_dt": "20160330",
+        "rcept_no": "20160330003986",
+        "report_nm": "사업보고서 (2015.12)",
+        "rm": "연",
+        "stock_code": "024110"
+      },
+      "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+      "receiptNos": [
+        "20160330003986"
+      ],
+      "reportPeriod": "2015-12",
+      "ticker": "024110.KS"
+    },
+    {
+      "availableFrom": "2017-03-31",
+      "corpCode": "00149646",
+      "fiscalYear": 2016,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "listingMetadata": {
+        "corp_cls": "Y",
+        "corp_code": "00149646",
+        "corp_name": "기업은행",
+        "flr_nm": "기업은행",
+        "rcept_dt": "20170331",
+        "rcept_no": "20170331004847",
+        "report_nm": "사업보고서 (2016.12)",
+        "rm": "연",
+        "stock_code": "024110"
+      },
+      "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+      "receiptNos": [
+        "20170331004847"
+      ],
+      "reportPeriod": "2016-12",
+      "ticker": "024110.KS"
+    },
+    {
+      "availableFrom": "2018-04-02",
+      "corpCode": "00149646",
+      "fiscalYear": 2017,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "listingMetadata": {
+        "corp_cls": "Y",
+        "corp_code": "00149646",
+        "corp_name": "기업은행",
+        "flr_nm": "기업은행",
+        "rcept_dt": "20180402",
+        "rcept_no": "20180402004413",
+        "report_nm": "사업보고서 (2017.12)",
+        "rm": "정연",
+        "stock_code": "024110"
+      },
+      "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+      "receiptNos": [
+        "20180402004413"
+      ],
+      "reportPeriod": "2017-12",
+      "ticker": "024110.KS"
+    },
+    {
+      "availableFrom": "2019-04-01",
+      "corpCode": "00149646",
+      "fiscalYear": 2018,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "listingMetadata": {
+        "corp_cls": "Y",
+        "corp_code": "00149646",
+        "corp_name": "기업은행",
+        "flr_nm": "기업은행",
+        "rcept_dt": "20190401",
+        "rcept_no": "20190401004404",
+        "report_nm": "사업보고서 (2018.12)",
+        "rm": "정연",
+        "stock_code": "024110"
+      },
+      "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+      "receiptNos": [
+        "20190401004404"
+      ],
+      "reportPeriod": "2018-12",
+      "ticker": "024110.KS"
+    },
+    {
+      "availableFrom": "2020-03-30",
+      "corpCode": "00149646",
+      "fiscalYear": 2019,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "listingMetadata": {
+        "corp_cls": "Y",
+        "corp_code": "00149646",
+        "corp_name": "기업은행",
+        "flr_nm": "기업은행",
+        "rcept_dt": "20200330",
+        "rcept_no": "20200330004624",
+        "report_nm": "사업보고서 (2019.12)",
+        "rm": "연",
+        "stock_code": "024110"
+      },
+      "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+      "receiptNos": [
+        "20200330004624"
+      ],
+      "reportPeriod": "2019-12",
+      "ticker": "024110.KS"
+    },
+    {
+      "availableFrom": "2021-03-17",
+      "corpCode": "00149646",
+      "fiscalYear": 2020,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "listingMetadata": {
+        "corp_cls": "Y",
+        "corp_code": "00149646",
+        "corp_name": "기업은행",
+        "flr_nm": "기업은행",
+        "rcept_dt": "20210317",
+        "rcept_no": "20210317000931",
+        "report_nm": "사업보고서 (2020.12)",
+        "rm": "연",
+        "stock_code": "024110"
+      },
+      "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+      "receiptNos": [
+        "20210317000931"
+      ],
+      "reportPeriod": "2020-12",
+      "ticker": "024110.KS"
+    },
+    {
+      "availableFrom": "2022-03-16",
+      "corpCode": "00149646",
+      "fiscalYear": 2021,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "listingMetadata": {
+        "corp_cls": "Y",
+        "corp_code": "00149646",
+        "corp_name": "기업은행",
+        "flr_nm": "기업은행",
+        "rcept_dt": "20220316",
+        "rcept_no": "20220316001255",
+        "report_nm": "사업보고서 (2021.12)",
+        "rm": "연",
+        "stock_code": "024110"
+      },
+      "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+      "receiptNos": [
+        "20220316001255"
+      ],
+      "reportPeriod": "2021-12",
+      "ticker": "024110.KS"
+    },
+    {
+      "availableFrom": "2023-03-15",
+      "corpCode": "00149646",
+      "fiscalYear": 2022,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "listingMetadata": {
+        "corp_cls": "Y",
+        "corp_code": "00149646",
+        "corp_name": "기업은행",
+        "flr_nm": "기업은행",
+        "rcept_dt": "20230315",
+        "rcept_no": "20230315001098",
+        "report_nm": "사업보고서 (2022.12)",
+        "rm": "연",
+        "stock_code": "024110"
+      },
+      "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+      "receiptNos": [
+        "20230315001098"
+      ],
+      "reportPeriod": "2022-12",
+      "ticker": "024110.KS"
+    },
+    {
+      "availableFrom": "2024-03-18",
+      "corpCode": "00149646",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "listingMetadata": {
+        "corp_cls": "Y",
+        "corp_code": "00149646",
+        "corp_name": "기업은행",
+        "flr_nm": "기업은행",
+        "rcept_dt": "20240318",
+        "rcept_no": "20240318000636",
+        "report_nm": "사업보고서 (2023.12)",
+        "rm": "정연",
+        "stock_code": "024110"
+      },
+      "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+      "receiptNos": [
+        "20240318000636"
+      ],
+      "reportPeriod": "2023-12",
+      "ticker": "024110.KS"
+    },
+    {
+      "availableFrom": "2025-03-18",
+      "corpCode": "00149646",
+      "fiscalYear": 2024,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "listingMetadata": {
+        "corp_cls": "Y",
+        "corp_code": "00149646",
+        "corp_name": "기업은행",
+        "flr_nm": "기업은행",
+        "rcept_dt": "20250318",
+        "rcept_no": "20250318001325",
+        "report_nm": "사업보고서 (2024.12)",
+        "rm": "연",
+        "stock_code": "024110"
+      },
+      "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+      "receiptNos": [
+        "20250318001325"
+      ],
+      "reportPeriod": "2024-12",
+      "ticker": "024110.KS"
+    },
+    {
+      "availableFrom": "2026-03-18",
+      "corpCode": "00149646",
+      "fiscalYear": 2025,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "listingMetadata": {
+        "corp_cls": "Y",
+        "corp_code": "00149646",
+        "corp_name": "기업은행",
+        "flr_nm": "기업은행",
+        "rcept_dt": "20260318",
+        "rcept_no": "20260318000761",
+        "report_nm": "사업보고서 (2025.12)",
+        "rm": "연",
+        "stock_code": "024110"
+      },
+      "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+      "receiptNos": [
+        "20260318000761"
+      ],
+      "reportPeriod": "2025-12",
+      "ticker": "024110.KS"
+    },
+    {
+      "availableFrom": "2014-03-25",
+      "corpCode": "00149655",
+      "fiscalYear": 2013,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "listingMetadata": {
+        "corp_cls": "Y",
+        "corp_code": "00149655",
+        "corp_name": "삼성물산",
+        "flr_nm": "삼성물산",
+        "rcept_dt": "20140325",
+        "rcept_no": "20140325000592",
+        "report_nm": "사업보고서 (2013.12)",
+        "rm": "정연",
+        "stock_code": "028260"
+      },
+      "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+      "receiptNos": [
+        "20140325000592"
+      ],
+      "reportPeriod": "2013-12",
+      "ticker": "028260.KS"
+    },
+    {
+      "availableFrom": "2015-03-31",
+      "corpCode": "00149655",
+      "fiscalYear": 2014,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "listingMetadata": {
+        "corp_cls": "Y",
+        "corp_code": "00149655",
+        "corp_name": "삼성물산",
+        "flr_nm": "삼성물산",
+        "rcept_dt": "20150331",
+        "rcept_no": "20150331002796",
+        "report_nm": "사업보고서 (2014.12)",
+        "rm": "연",
+        "stock_code": "028260"
+      },
+      "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+      "receiptNos": [
+        "20150331002796"
+      ],
+      "reportPeriod": "2014-12",
+      "ticker": "028260.KS"
+    },
+    {
+      "availableFrom": "2017-03-31",
+      "corpCode": "00149655",
+      "fiscalYear": 2016,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "listingMetadata": {
+        "corp_cls": "Y",
+        "corp_code": "00149655",
+        "corp_name": "삼성물산",
+        "flr_nm": "삼성물산",
+        "rcept_dt": "20170331",
+        "rcept_no": "20170331003913",
+        "report_nm": "사업보고서 (2016.12)",
+        "rm": "연",
+        "stock_code": "028260"
+      },
+      "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+      "receiptNos": [
+        "20170331003913"
+      ],
+      "reportPeriod": "2016-12",
+      "ticker": "028260.KS"
+    },
+    {
+      "availableFrom": "2018-04-02",
+      "corpCode": "00149655",
+      "fiscalYear": 2017,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "listingMetadata": {
+        "corp_cls": "Y",
+        "corp_code": "00149655",
+        "corp_name": "삼성물산",
+        "flr_nm": "삼성물산",
+        "rcept_dt": "20180402",
+        "rcept_no": "20180402004872",
+        "report_nm": "사업보고서 (2017.12)",
+        "rm": "연",
+        "stock_code": "028260"
+      },
+      "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+      "receiptNos": [
+        "20180402004872"
+      ],
+      "reportPeriod": "2017-12",
+      "ticker": "028260.KS"
+    },
+    {
+      "availableFrom": "2019-04-01",
+      "corpCode": "00149655",
+      "fiscalYear": 2018,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "listingMetadata": {
+        "corp_cls": "Y",
+        "corp_code": "00149655",
+        "corp_name": "삼성물산",
+        "flr_nm": "삼성물산",
+        "rcept_dt": "20190401",
+        "rcept_no": "20190401004022",
+        "report_nm": "사업보고서 (2018.12)",
+        "rm": "정연",
+        "stock_code": "028260"
+      },
+      "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+      "receiptNos": [
+        "20190401004022"
+      ],
+      "reportPeriod": "2018-12",
+      "ticker": "028260.KS"
+    },
+    {
+      "availableFrom": "2020-03-30",
+      "corpCode": "00149655",
+      "fiscalYear": 2019,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "listingMetadata": {
+        "corp_cls": "Y",
+        "corp_code": "00149655",
+        "corp_name": "삼성물산",
+        "flr_nm": "삼성물산",
+        "rcept_dt": "20200330",
+        "rcept_no": "20200330003962",
+        "report_nm": "사업보고서 (2019.12)",
+        "rm": "연",
+        "stock_code": "028260"
+      },
+      "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+      "receiptNos": [
+        "20200330003962"
+      ],
+      "reportPeriod": "2019-12",
+      "ticker": "028260.KS"
+    },
+    {
+      "availableFrom": "2021-03-11",
+      "corpCode": "00149655",
+      "fiscalYear": 2020,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "listingMetadata": {
+        "corp_cls": "Y",
+        "corp_code": "00149655",
+        "corp_name": "삼성물산",
+        "flr_nm": "삼성물산",
+        "rcept_dt": "20210311",
+        "rcept_no": "20210311001003",
+        "report_nm": "사업보고서 (2020.12)",
+        "rm": "연",
+        "stock_code": "028260"
+      },
+      "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+      "receiptNos": [
+        "20210311001003"
+      ],
+      "reportPeriod": "2020-12",
+      "ticker": "028260.KS"
+    },
+    {
+      "availableFrom": "2022-03-10",
+      "corpCode": "00149655",
+      "fiscalYear": 2021,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "listingMetadata": {
+        "corp_cls": "Y",
+        "corp_code": "00149655",
+        "corp_name": "삼성물산",
+        "flr_nm": "삼성물산",
+        "rcept_dt": "20220310",
+        "rcept_no": "20220310000790",
+        "report_nm": "사업보고서 (2021.12)",
+        "rm": "정연",
+        "stock_code": "028260"
+      },
+      "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+      "receiptNos": [
+        "20220310000790"
+      ],
+      "reportPeriod": "2021-12",
+      "ticker": "028260.KS"
+    },
+    {
+      "availableFrom": "2023-03-09",
+      "corpCode": "00149655",
+      "fiscalYear": 2022,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "listingMetadata": {
+        "corp_cls": "Y",
+        "corp_code": "00149655",
+        "corp_name": "삼성물산",
+        "flr_nm": "삼성물산",
+        "rcept_dt": "20230309",
+        "rcept_no": "20230309000761",
+        "report_nm": "사업보고서 (2022.12)",
+        "rm": "연",
+        "stock_code": "028260"
+      },
+      "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+      "receiptNos": [
+        "20230309000761"
+      ],
+      "reportPeriod": "2022-12",
+      "ticker": "028260.KS"
+    },
+    {
+      "availableFrom": "2024-03-07",
+      "corpCode": "00149655",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "listingMetadata": {
+        "corp_cls": "Y",
+        "corp_code": "00149655",
+        "corp_name": "삼성물산",
+        "flr_nm": "삼성물산",
+        "rcept_dt": "20240307",
+        "rcept_no": "20240307000811",
+        "report_nm": "사업보고서 (2023.12)",
+        "rm": "정연",
+        "stock_code": "028260"
+      },
+      "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+      "receiptNos": [
+        "20240307000811"
+      ],
+      "reportPeriod": "2023-12",
+      "ticker": "028260.KS"
+    },
+    {
+      "availableFrom": "2025-03-06",
+      "corpCode": "00149655",
+      "fiscalYear": 2024,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "listingMetadata": {
+        "corp_cls": "Y",
+        "corp_code": "00149655",
+        "corp_name": "삼성물산",
+        "flr_nm": "삼성물산",
+        "rcept_dt": "20250306",
+        "rcept_no": "20250306000575",
+        "report_nm": "사업보고서 (2024.12)",
+        "rm": "정연",
+        "stock_code": "028260"
+      },
+      "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+      "receiptNos": [
+        "20250306000575"
+      ],
+      "reportPeriod": "2024-12",
+      "ticker": "028260.KS"
+    },
+    {
+      "availableFrom": "2026-03-12",
+      "corpCode": "00149655",
+      "fiscalYear": 2025,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "listingMetadata": {
+        "corp_cls": "Y",
+        "corp_code": "00149655",
+        "corp_name": "삼성물산",
+        "flr_nm": "삼성물산",
+        "rcept_dt": "20260312",
+        "rcept_no": "20260312000856",
+        "report_nm": "사업보고서 (2025.12)",
+        "rm": "연",
+        "stock_code": "028260"
+      },
+      "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+      "receiptNos": [
+        "20260312000856"
+      ],
+      "reportPeriod": "2025-12",
+      "ticker": "028260.KS"
+    },
+    {
+      "availableFrom": "2014-03-31",
+      "corpCode": "00150244",
+      "fiscalYear": 2013,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "listingMetadata": {
+        "corp_cls": "Y",
+        "corp_code": "00150244",
+        "corp_name": "하이트진로",
+        "flr_nm": "하이트진로",
+        "rcept_dt": "20140331",
+        "rcept_no": "20140331001947",
+        "report_nm": "사업보고서 (2013.12)",
+        "rm": "정연",
+        "stock_code": "000080"
+      },
+      "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+      "receiptNos": [
+        "20140331001947"
+      ],
+      "reportPeriod": "2013-12",
+      "ticker": "000080.KS"
+    },
+    {
+      "availableFrom": "2015-03-31",
+      "corpCode": "00150244",
+      "fiscalYear": 2014,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "listingMetadata": {
+        "corp_cls": "Y",
+        "corp_code": "00150244",
+        "corp_name": "하이트진로",
+        "flr_nm": "하이트진로",
+        "rcept_dt": "20150331",
+        "rcept_no": "20150331001292",
+        "report_nm": "사업보고서 (2014.12)",
+        "rm": "연",
+        "stock_code": "000080"
+      },
+      "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+      "receiptNos": [
+        "20150331001292"
+      ],
+      "reportPeriod": "2014-12",
+      "ticker": "000080.KS"
+    },
+    {
+      "availableFrom": "2017-03-31",
+      "corpCode": "00150244",
+      "fiscalYear": 2016,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "listingMetadata": {
+        "corp_cls": "Y",
+        "corp_code": "00150244",
+        "corp_name": "하이트진로",
+        "flr_nm": "하이트진로",
+        "rcept_dt": "20170331",
+        "rcept_no": "20170331000549",
+        "report_nm": "사업보고서 (2016.12)",
+        "rm": "정연",
+        "stock_code": "000080"
+      },
+      "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+      "receiptNos": [
+        "20170331000549"
+      ],
+      "reportPeriod": "2016-12",
+      "ticker": "000080.KS"
+    },
+    {
+      "availableFrom": "2018-03-30",
+      "corpCode": "00150244",
+      "fiscalYear": 2017,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "listingMetadata": {
+        "corp_cls": "Y",
+        "corp_code": "00150244",
+        "corp_name": "하이트진로",
+        "flr_nm": "하이트진로",
+        "rcept_dt": "20180330",
+        "rcept_no": "20180330000582",
+        "report_nm": "사업보고서 (2017.12)",
+        "rm": "정연",
+        "stock_code": "000080"
+      },
+      "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+      "receiptNos": [
+        "20180330000582"
+      ],
+      "reportPeriod": "2017-12",
+      "ticker": "000080.KS"
+    },
+    {
+      "availableFrom": "2019-04-01",
+      "corpCode": "00150244",
+      "fiscalYear": 2018,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "listingMetadata": {
+        "corp_cls": "Y",
+        "corp_code": "00150244",
+        "corp_name": "하이트진로",
+        "flr_nm": "하이트진로",
+        "rcept_dt": "20190401",
+        "rcept_no": "20190401001777",
+        "report_nm": "사업보고서 (2018.12)",
+        "rm": "정연",
+        "stock_code": "000080"
+      },
+      "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+      "receiptNos": [
+        "20190401001777"
+      ],
+      "reportPeriod": "2018-12",
+      "ticker": "000080.KS"
+    },
+    {
+      "availableFrom": "2020-03-30",
+      "corpCode": "00150244",
+      "fiscalYear": 2019,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "listingMetadata": {
+        "corp_cls": "Y",
+        "corp_code": "00150244",
+        "corp_name": "하이트진로",
+        "flr_nm": "하이트진로",
+        "rcept_dt": "20200330",
+        "rcept_no": "20200330002059",
+        "report_nm": "사업보고서 (2019.12)",
+        "rm": "연",
+        "stock_code": "000080"
+      },
+      "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+      "receiptNos": [
+        "20200330002059"
+      ],
+      "reportPeriod": "2019-12",
+      "ticker": "000080.KS"
+    },
+    {
+      "availableFrom": "2021-03-18",
+      "corpCode": "00150244",
+      "fiscalYear": 2020,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "listingMetadata": {
+        "corp_cls": "Y",
+        "corp_code": "00150244",
+        "corp_name": "하이트진로",
+        "flr_nm": "하이트진로",
+        "rcept_dt": "20210318",
+        "rcept_no": "20210318000644",
+        "report_nm": "사업보고서 (2020.12)",
+        "rm": "연",
+        "stock_code": "000080"
+      },
+      "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+      "receiptNos": [
+        "20210318000644"
+      ],
+      "reportPeriod": "2020-12",
+      "ticker": "000080.KS"
+    },
+    {
+      "availableFrom": "2022-03-17",
+      "corpCode": "00150244",
+      "fiscalYear": 2021,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "listingMetadata": {
+        "corp_cls": "Y",
+        "corp_code": "00150244",
+        "corp_name": "하이트진로",
+        "flr_nm": "하이트진로",
+        "rcept_dt": "20220317",
+        "rcept_no": "20220317000772",
+        "report_nm": "사업보고서 (2021.12)",
+        "rm": "연",
+        "stock_code": "000080"
+      },
+      "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+      "receiptNos": [
+        "20220317000772"
+      ],
+      "reportPeriod": "2021-12",
+      "ticker": "000080.KS"
+    },
+    {
+      "availableFrom": "2023-03-16",
+      "corpCode": "00150244",
+      "fiscalYear": 2022,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "listingMetadata": {
+        "corp_cls": "Y",
+        "corp_code": "00150244",
+        "corp_name": "하이트진로",
+        "flr_nm": "하이트진로",
+        "rcept_dt": "20230316",
+        "rcept_no": "20230316001349",
+        "report_nm": "사업보고서 (2022.12)",
+        "rm": "연",
+        "stock_code": "000080"
+      },
+      "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+      "receiptNos": [
+        "20230316001349"
+      ],
+      "reportPeriod": "2022-12",
+      "ticker": "000080.KS"
+    },
+    {
+      "availableFrom": "2025-03-13",
+      "corpCode": "00150244",
+      "fiscalYear": 2024,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "listingMetadata": {
+        "corp_cls": "Y",
+        "corp_code": "00150244",
+        "corp_name": "하이트진로",
+        "flr_nm": "하이트진로",
+        "rcept_dt": "20250313",
+        "rcept_no": "20250313000666",
+        "report_nm": "사업보고서 (2024.12)",
+        "rm": "정연",
+        "stock_code": "000080"
+      },
+      "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+      "receiptNos": [
+        "20250313000666"
+      ],
+      "reportPeriod": "2024-12",
+      "ticker": "000080.KS"
+    },
+    {
+      "availableFrom": "2026-03-18",
+      "corpCode": "00150244",
+      "fiscalYear": 2025,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "listingMetadata": {
+        "corp_cls": "Y",
+        "corp_code": "00150244",
+        "corp_name": "하이트진로",
+        "flr_nm": "하이트진로",
+        "rcept_dt": "20260318",
+        "rcept_no": "20260318000752",
+        "report_nm": "사업보고서 (2025.12)",
+        "rm": "연",
+        "stock_code": "000080"
+      },
+      "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+      "receiptNos": [
+        "20260318000752"
+      ],
+      "reportPeriod": "2025-12",
+      "ticker": "000080.KS"
+    },
+    {
+      "availableFrom": "2014-03-31",
+      "corpCode": "00153393",
+      "fiscalYear": 2013,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "listingMetadata": {
+        "corp_cls": "Y",
+        "corp_code": "00153393",
+        "corp_name": "태광산업",
+        "flr_nm": "태광산업",
+        "rcept_dt": "20140331",
+        "rcept_no": "20140331002661",
+        "report_nm": "사업보고서 (2013.12)",
+        "rm": "정연",
+        "stock_code": "003240"
+      },
+      "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+      "receiptNos": [
+        "20140331002661"
+      ],
+      "reportPeriod": "2013-12",
+      "ticker": "003240.KS"
+    },
+    {
+      "availableFrom": "2015-03-31",
+      "corpCode": "00153393",
+      "fiscalYear": 2014,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "listingMetadata": {
+        "corp_cls": "Y",
+        "corp_code": "00153393",
+        "corp_name": "태광산업",
+        "flr_nm": "태광산업",
+        "rcept_dt": "20150331",
+        "rcept_no": "20150331003737",
+        "report_nm": "사업보고서 (2014.12)",
+        "rm": "정연",
+        "stock_code": "003240"
+      },
+      "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+      "receiptNos": [
+        "20150331003737"
+      ],
+      "reportPeriod": "2014-12",
+      "ticker": "003240.KS"
+    },
+    {
+      "availableFrom": "2016-03-30",
+      "corpCode": "00153393",
+      "fiscalYear": 2015,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "listingMetadata": {
+        "corp_cls": "Y",
+        "corp_code": "00153393",
+        "corp_name": "태광산업",
+        "flr_nm": "태광산업",
+        "rcept_dt": "20160330",
+        "rcept_no": "20160330003861",
+        "report_nm": "사업보고서 (2015.12)",
+        "rm": "정연",
+        "stock_code": "003240"
+      },
+      "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+      "receiptNos": [
+        "20160330003861"
+      ],
+      "reportPeriod": "2015-12",
+      "ticker": "003240.KS"
+    },
+    {
+      "availableFrom": "2017-03-31",
+      "corpCode": "00153393",
+      "fiscalYear": 2016,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "listingMetadata": {
+        "corp_cls": "Y",
+        "corp_code": "00153393",
+        "corp_name": "태광산업",
+        "flr_nm": "태광산업",
+        "rcept_dt": "20170331",
+        "rcept_no": "20170331005032",
+        "report_nm": "사업보고서 (2016.12)",
+        "rm": "정연",
+        "stock_code": "003240"
+      },
+      "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+      "receiptNos": [
+        "20170331005032"
+      ],
+      "reportPeriod": "2016-12",
+      "ticker": "003240.KS"
+    },
+    {
+      "availableFrom": "2018-04-02",
+      "corpCode": "00153393",
+      "fiscalYear": 2017,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "listingMetadata": {
+        "corp_cls": "Y",
+        "corp_code": "00153393",
+        "corp_name": "태광산업",
+        "flr_nm": "태광산업",
+        "rcept_dt": "20180402",
+        "rcept_no": "20180402004743",
+        "report_nm": "사업보고서 (2017.12)",
+        "rm": "정연",
+        "stock_code": "003240"
+      },
+      "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+      "receiptNos": [
+        "20180402004743"
+      ],
+      "reportPeriod": "2017-12",
+      "ticker": "003240.KS"
+    },
+    {
+      "availableFrom": "2019-04-01",
+      "corpCode": "00153393",
+      "fiscalYear": 2018,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "listingMetadata": {
+        "corp_cls": "Y",
+        "corp_code": "00153393",
+        "corp_name": "태광산업",
+        "flr_nm": "태광산업",
+        "rcept_dt": "20190401",
+        "rcept_no": "20190401004723",
+        "report_nm": "사업보고서 (2018.12)",
+        "rm": "정연",
+        "stock_code": "003240"
+      },
+      "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+      "receiptNos": [
+        "20190401004723"
+      ],
+      "reportPeriod": "2018-12",
+      "ticker": "003240.KS"
+    },
+    {
+      "availableFrom": "2020-03-30",
+      "corpCode": "00153393",
+      "fiscalYear": 2019,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "listingMetadata": {
+        "corp_cls": "Y",
+        "corp_code": "00153393",
+        "corp_name": "태광산업",
+        "flr_nm": "태광산업",
+        "rcept_dt": "20200330",
+        "rcept_no": "20200330002868",
+        "report_nm": "사업보고서 (2019.12)",
+        "rm": "연",
+        "stock_code": "003240"
+      },
+      "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+      "receiptNos": [
+        "20200330002868"
+      ],
+      "reportPeriod": "2019-12",
+      "ticker": "003240.KS"
+    },
+    {
+      "availableFrom": "2021-03-18",
+      "corpCode": "00153393",
+      "fiscalYear": 2020,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "listingMetadata": {
+        "corp_cls": "Y",
+        "corp_code": "00153393",
+        "corp_name": "태광산업",
+        "flr_nm": "태광산업",
+        "rcept_dt": "20210318",
+        "rcept_no": "20210318001243",
+        "report_nm": "사업보고서 (2020.12)",
+        "rm": "정연",
+        "stock_code": "003240"
+      },
+      "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+      "receiptNos": [
+        "20210318001243"
+      ],
+      "reportPeriod": "2020-12",
+      "ticker": "003240.KS"
+    },
+    {
+      "availableFrom": "2022-03-17",
+      "corpCode": "00153393",
+      "fiscalYear": 2021,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "listingMetadata": {
+        "corp_cls": "Y",
+        "corp_code": "00153393",
+        "corp_name": "태광산업",
+        "flr_nm": "태광산업",
+        "rcept_dt": "20220317",
+        "rcept_no": "20220317001199",
+        "report_nm": "사업보고서 (2021.12)",
+        "rm": "연",
+        "stock_code": "003240"
+      },
+      "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+      "receiptNos": [
+        "20220317001199"
+      ],
+      "reportPeriod": "2021-12",
+      "ticker": "003240.KS"
+    },
+    {
+      "availableFrom": "2023-03-23",
+      "corpCode": "00153393",
+      "fiscalYear": 2022,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "listingMetadata": {
+        "corp_cls": "Y",
+        "corp_code": "00153393",
+        "corp_name": "태광산업",
+        "flr_nm": "태광산업",
+        "rcept_dt": "20230323",
+        "rcept_no": "20230323001281",
+        "report_nm": "사업보고서 (2022.12)",
+        "rm": "연",
+        "stock_code": "003240"
+      },
+      "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+      "receiptNos": [
+        "20230323001281"
+      ],
+      "reportPeriod": "2022-12",
+      "ticker": "003240.KS"
+    },
+    {
+      "availableFrom": "2024-03-21",
+      "corpCode": "00153393",
+      "fiscalYear": 2023,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "listingMetadata": {
+        "corp_cls": "Y",
+        "corp_code": "00153393",
+        "corp_name": "태광산업",
+        "flr_nm": "태광산업",
+        "rcept_dt": "20240321",
+        "rcept_no": "20240321002014",
+        "report_nm": "사업보고서 (2023.12)",
+        "rm": "정연",
+        "stock_code": "003240"
+      },
+      "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+      "receiptNos": [
+        "20240321002014"
+      ],
+      "reportPeriod": "2023-12",
+      "ticker": "003240.KS"
+    },
+    {
+      "availableFrom": "2025-03-20",
+      "corpCode": "00153393",
+      "fiscalYear": 2024,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "listingMetadata": {
+        "corp_cls": "Y",
+        "corp_code": "00153393",
+        "corp_name": "태광산업",
+        "flr_nm": "태광산업",
+        "rcept_dt": "20250320",
+        "rcept_no": "20250320001386",
+        "report_nm": "사업보고서 (2024.12)",
+        "rm": "정연",
+        "stock_code": "003240"
+      },
+      "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+      "receiptNos": [
+        "20250320001386"
+      ],
+      "reportPeriod": "2024-12",
+      "ticker": "003240.KS"
+    },
+    {
+      "availableFrom": "2026-03-23",
+      "corpCode": "00153393",
+      "fiscalYear": 2025,
+      "identityBasis": "EXACT_STOCK_CODE",
+      "listingMetadata": {
+        "corp_cls": "Y",
+        "corp_code": "00153393",
+        "corp_name": "태광산업",
+        "flr_nm": "태광산업",
+        "rcept_dt": "20260323",
+        "rcept_no": "20260323001584",
+        "report_nm": "사업보고서 (2025.12)",
+        "rm": "연",
+        "stock_code": "003240"
+      },
+      "originalStatus": "EARLIEST_NON_CORRECTION_ANNUAL_LIST_ROW",
+      "receiptNos": [
+        "20260323001584"
+      ],
+      "reportPeriod": "2025-12",
+      "ticker": "003240.KS"
+    }
+  ],
+  "timeoutSeconds": 15
+}
