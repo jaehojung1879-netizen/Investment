@@ -1,0 +1,32 @@
+name: KR industry v3 source feasibility
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/kr-industry-membership-foundation-v3.yml'
+      - 'scripts/probe_kr_industry_v3_sources.py'
+      - 'research_specs/kr-industry-membership-foundation-v3/**'
+permissions:
+  contents: read
+concurrency:
+  group: kr-industry-v3-probe
+  cancel-in-progress: false
+jobs:
+  probe:
+    if: github.event.pull_request.head.repo.full_name == github.repository && github.head_ref == 'data/kr-industry-membership-foundation-v3'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Run only the four frozen requests (no secrets, no retry, no redirect)
+        run: python -u scripts/probe_kr_industry_v3_sources.py --output /tmp/v3-probe
+      - uses: actions/upload-artifact@v4
+        with:
+          name: kr-industry-v3-probe-${{ github.run_id }}
+          path: /tmp/v3-probe/
+          if-no-files-found: error
+          retention-days: 90
