@@ -1,0 +1,413 @@
+{
+  "benchmark": "069500.KS",
+  "boundary": {
+    "isAPortfolio": false,
+    "isAProductionRecommendation": false,
+    "isAnAlphaModel": false,
+    "isEvidenceOfProspectivePredictability": false,
+    "isStockSelection": false,
+    "mayChangeTaxonomyFromOutcomes": false,
+    "mayChooseABestFeature": false,
+    "mayRelabelV4Decision": false,
+    "outcomeExecutionInThisChange": false,
+    "passFailSemantics": "NONE",
+    "pullRequestMayRun": [
+      "verify",
+      "readiness",
+      "synthetic tests"
+    ]
+  },
+  "constants": {
+    "horizons": [
+      63,
+      126,
+      252
+    ],
+    "minCrossSection": 8,
+    "minFundamentalCount": 3,
+    "minFundamentalShare": 0.6,
+    "minMembers": 5,
+    "minStratumCrossSection": 5,
+    "minTercileCrossSection": 9,
+    "primaryHorizon": 126,
+    "stratumTop1ShareCutoff": 0.35
+  },
+  "dependencyHashes": {
+    ".github/workflows/kr-industry-opportunity-anatomy-v1.yml": "cbe86b48d419a42c6f2a92f25c8e23b3be263a1ccb9ffaf0acdd5ec757975eb5",
+    "data/kr-industry-membership-foundation-v1/identity-inventory.json": "7dddc6f75ea14adc8f97f3558409a68b2f71ab356b270e7d25d1ecb08875e4fc",
+    "data/kr-industry-membership-foundation-v1/identity-provenance.json": "3f5d031b80c16e965a8111455aa51ab84affc92948c7895112ab8f90b182a5fa",
+    "data/kr-industry-membership-foundation-v1/top120-inputs.json": "d7c464973ad029bf08886c4bdf2517d1b3ece04cce87bcc63706f1230ed53cd0",
+    "data/kr-industry-membership-foundation-v4/state/audit.json.gz": "4135846f16dcf59fe4ff89ab83b3b5aec288dea20fed36172b17abf768d44036",
+    "data/kr-industry-membership-foundation-v4/state/intervals.json.gz": "01a7958608939b73b85f7b96457e6b6420bec1aaa78417526b98dbea3321aae0",
+    "docs/kr-industry-opportunity-anatomy-v1-design.md": "06700c9938cde51d2b2ea8f99bad0712975f69190d038f8fba4d705548bc915c",
+    "pipeline/__init__.py": "187da1ad9a148da44035f9cf25f7cb094c45afe53d3f445ba62392797972dede",
+    "pipeline/accounting_quality.py": "b65c54126ea45bc544d843d5f87b109e71ca7658a1d7a8f99cd435cdf9ea6ada",
+    "pipeline/alpha_inference_calibration_v1.py": "87a6990fd6fc5217824ee00205ee247abe88006a2445d41b5a6086709f551186",
+    "pipeline/alpha_inference_calibration_v3.py": "5afa9a03dbfb5343be522d282a1b2050cbbd01722dc7b8eae1e6e06b55c2bf13",
+    "pipeline/alpha_inference_calibration_v4.py": "024231e1adeeb4d29ea047d187eb7eb5478fd21c442991bd1c8963d6a38cd601",
+    "pipeline/alpha_inference_mc_decision.py": "6d131e20e2bcc212247a95fce2c5f733faa7f1624991b364d9fea96b4962f61e",
+    "pipeline/alpha_opportunity_features.py": "62bfd05894b0f448e2d588f9395fb616c9d114a74503c1f663e20a84dfe0976e",
+    "pipeline/alpha_opportunity_model.py": "998c0b50d713a5c89ce1850bbae1b112215507fe6a38d992d7f1de158476ce83",
+    "pipeline/alpha_opportunity_spec.py": "3d7150c2f62dbd8184ed2f3885828e93c1ba64d8ffe3695b0b5716641734c58e",
+    "pipeline/alpha_opportunity_v2_evaluation.py": "e6f8a6f299945da36b39767a2dc7c7748a9bfee497e27a0d0ec05738bf235c62",
+    "pipeline/alpha_opportunity_v3_spec.py": "1c11c306f9f27a8e69b985d02bfb3bffaf691001c27ac49e6b21266dd315c162",
+    "pipeline/alpha_opportunity_v4_eligibility.py": "8c20c70b35dba244f0341459ee295ca836e0ec6782f3e4989197bc2a220ba204",
+    "pipeline/alpha_opportunity_v4_execution.py": "f6d9dfd3be1558249bb69a29a903e791443d071793b2f591a2e900d492c954ba",
+    "pipeline/alpha_opportunity_v5_evidence.py": "305fc463129a50e6048152d99fec5f238bbd4f526818fc840b0c8e2af486425d",
+    "pipeline/dart_derive.py": "c18be6391fd8e04118a8e13cb62ace5a20e641f1d67e1c185652ed88572bd457",
+    "pipeline/dart_fundamentals.py": "5faad514e864d199a1eb9db41fbb182ab9b4a73a0e7179e7f56ac99b387e579b",
+    "pipeline/dart_ownership_events.py": "fdb4280a7bebdfb324f4ee87c9ad2ac22d640cc0dced10c7fc0f1bcd59c461d8",
+    "pipeline/entry.py": "d9c8e33686a55114bfabb6b11c634ff0198461859ecdaf10dffc7e3c49a191a2",
+    "pipeline/evidence.py": "31e8f67184073395d67f44a165d74f4ed368e468b790e695dbdcc698de7d9e88",
+    "pipeline/finnhub_derive.py": "2ceaf6a081a5fbbd893398a68e58006254da06492629d9e8824e0e835b848b56",
+    "pipeline/finnhub_fundamentals.py": "95b5090f1a306df5bc6231d952c42dfc85097a3a1f9f90a82bb4fa8af4f3a20d",
+    "pipeline/fundamental_acceleration.py": "4aeb649a2a046d9cf11432a7ac5a18a1b6ff993a48f2d7216e3280d446aa02cf",
+    "pipeline/historical_calibration.py": "2c825613bc1a543a225159e421aa15a176a222ce61cac12937de4e8c33db5e11",
+    "pipeline/historical_outcomes.py": "9db74870fe015f26ee5c4ac4709a420d33ef28e5feaab2c4caeedd7e85555569",
+    "pipeline/historical_replay.py": "80ace61f2df0d48ee98349bc998b77f58d8c62a4e8aa01da7b3cdacf158266e9",
+    "pipeline/historical_store.py": "2751be8b5b79260f2038c9fb975cae58d49cb7868751c6658e363b48712016c0",
+    "pipeline/industry_foundation.py": "795965170eef879e6e5dac6b7b5f7a32e7d898a2eb4e6eb30a1960e04d4af0d3",
+    "pipeline/kelly_portfolio.py": "6a4bd54be11e35e7348f64d0c99e7764635c4efcea62306da0b6ca81bfb3b06c",
+    "pipeline/kr_concentrated_portfolio.py": "5059260c02e55dfde5b38b644ef2a66d0ff793dd2fb2e17609331dbb08571b64",
+    "pipeline/kr_factor_anatomy.py": "56b2ad6660ae5b02fb9f646f78f4db1e7040caeb108fcf7f3b10e45354fe3a5a",
+    "pipeline/kr_factor_anatomy_execution.py": "f8aae109d75dca9521b356168f1a56712f092911f556495538c2e5ab6a7b95e8",
+    "pipeline/kr_factor_anatomy_report.py": "855124c2dedb71b4d813aa97acac3b1921c9d74f537bb2a515e0131146f8067d",
+    "pipeline/kr_industry_anatomy.py": "02d3cf8be9b415699099674bbad6c500b6ad5e8468376589dc4f328adeb59886",
+    "pipeline/kr_industry_anatomy_execution.py": "d496f9fb12f9d3534f923049dc10f088b60be41e816f1095d2a7d7759b351f0a",
+    "pipeline/kr_industry_membership.py": "ec84de6d94d0f6e0b537dacef4cd96467566515471631f6c5107c39df038433c",
+    "pipeline/kr_industry_membership_v3.py": "c857dcdd9323bc0fed69b2212b8dcc1fca7527c8fb1a0b32d588c8bbc5fa65f5",
+    "pipeline/kr_market_risk_overlay.py": "983b3aab891a2af2f6d54b9b3d7ca29788651ba898b074da0506a40431ae4c07",
+    "pipeline/kr_market_value.py": "49306b8d14c4e8d681ae5846802c2ae82fa5727bb7a8adf356fa313217103c5e",
+    "pipeline/kr_model_overlay_portfolio.py": "b67495886aa63e10315d96ce8b30a023ee75adac6f5fec5a4fab7593b4f70343",
+    "pipeline/kr_model_portfolio_execution.py": "6128ba0af8bb517ac260a76a8b397e486a3225f206b706953dbf0390a5a7bb82",
+    "pipeline/kr_portfolio_diagnostics.py": "9f28a5ddf49a58c95db36d3a573b19e56fe7c86f98ad2ed01d96e8c09e6b5c34",
+    "pipeline/kr_repaired_accounting_snapshot.py": "b5b225e8a1d21b1516801c0ced1ef2164189867a457df1e0a51cd8ec95dd63ea",
+    "pipeline/kr_top120_regime_review.py": "43e4ab3438f1fb3765975866f1d948bbde4469dd59047d52049c9752d4f74a31",
+    "pipeline/kr_value_quality_catalyst.py": "1bfd62d1437dd9b574f1ab635836e7d7e69651dbbbaeedf29af84a90de17bb28",
+    "pipeline/krx_universe.py": "77008b8c0dcb9cd44b0b1182df94d2f0af62edb6f03b6a41082c04679101d6b8",
+    "pipeline/liquidity_attention.py": "208c989a70e2d276c040867496a127eda9ca82644012999a7253f7d47bb171a6",
+    "pipeline/longterm.py": "75702c4862545e0ceadbfc5db2585b89ffeadad21f43206b597e2982d171c5f6",
+    "pipeline/market_dates.py": "0182986bf731fd762a8004d5cf838ddfaaee656a2b19b8cfd6b47248c6281e4b",
+    "pipeline/pit_data.py": "64da89c602ac4b6c67411d0b5defa2909b65c1a7aad0958b32cb7f7dcd567dbf",
+    "pipeline/portfolio_validation.py": "a22c18fc31f47b1701ea4c426ff31dec48f3f367163bd1eb3e8cf75c1fadf2a5",
+    "pipeline/price_adjustment.py": "ebdde717be22277315186d5f302642cbc8a057fedee84192b7af14b15c405892",
+    "pipeline/probability_calibration.py": "7e06f855981c7c88dc8a595fd879d201892ca99bfbb4b1dcab1bebaf0e6f62f6",
+    "pipeline/provenance.py": "762a214d6d0a59cef35a1b4612b60e13e2f6197a0a289e97e2b1da1f496c8171",
+    "pipeline/regime.py": "b5634c109ac19ad6b0e13788f1ce9cde8f20f50019a82a8b4f65f9bc23200aca",
+    "pipeline/regional_alpha_features.py": "2fc5eb16d0438ca15763aeaf49e9226146a7ecf209680ae8f33fd42f57555132",
+    "pipeline/replay_calendar.py": "56116f837e8ae3b9ca43c27c87b3be8bcf608172a761879a6b1284a39c9a3ab2",
+    "pipeline/replay_determinism.py": "2233d8341d7be1b5123caecd3ebdb10aef67ecfac7b3c10c687795f66f397153",
+    "pipeline/replay_inputs.py": "dd77b249476b252ba585b1b836fd060a029b0c4d9c3b9a0847caf8be545a5a1d",
+    "pipeline/replay_valuation.py": "18e673a0721077af06b8ca9f774650c27fa58820a489b9ea639a9ccf02693bf3",
+    "pipeline/sectors.py": "1cb470d676eeb24d5fa4976bf8fc0f71f808957f132c908158acb6422fde60ba",
+    "pipeline/selection_null.py": "b00e7419a8a620e284f3b5a15aafa66e9a8f776b81da027a766a72b3eecf5e17",
+    "research_specs/kr-factor-anatomy-v1.json": "1d8e526c05491898e00dacf18ad5b2cd458e04cfc843f4a35ff97bfd4272c393",
+    "research_specs/kr-factor-anatomy-v1.sha256": "a2c2b0cd706b1ad6efacb4105e06cade7df8c0912ced59a22191ad7489b23501",
+    "research_specs/kr-industry-membership-foundation-v4/crosswalk.json": "76166ad309d323240ffe749df74ac089f4693f30ef77231b8cd5ab85365826b5",
+    "research_specs/kr-industry-membership-foundation-v4/crosswalk.json.sha256": "c286ebc550a75b7a903f1db251d2687b2087c4c34fb3989c69400ab2ae7c3c20",
+    "research_specs/kr-industry-membership-foundation-v4/protocol.json": "955fb27793ce8016755b3d0c2e68ec292cad19c9ec84334a50c21d95f9b2d0ce",
+    "research_specs/kr-industry-membership-foundation-v4/protocol.json.sha256": "5821ded833822716bfcbdf9fca25252c6603fcae6443dd579ac970bec795e15f",
+    "research_specs/kr-model-overlay-portfolio-v1.json": "c1cbfd232fdcaa7fa584cd1762e9e28291b4382d37e6244f5ab1a18731fb2df2",
+    "research_specs/kr-model-overlay-portfolio-v1.sha256": "31f5e13ac44f4591b820fffb03849c99653d076fe496c40e275d693723b18cb1",
+    "research_specs/kr-top120-regime-review-v1.json": "79af4fcbaaf92452b2f1f98b7393ca757c5254b539884e8248b25c4959d76c93",
+    "research_specs/kr-top120-regime-review-v1.sha256": "e1e7f101f37a5e2a9c53f7dcfa99afb8efc06e24235b022e57a4dae8c2b98e88",
+    "scripts/build_kr_industry_anatomy_spec.py": "4715275167c06f54017832451cddebc59f987fe03d5e2371d5354e265535ea4a",
+    "scripts/run_kr_industry_anatomy_v1.py": "7ea7705101bea7ed075042bfc84833221d3b9469540540561b054968e5dcf8c1"
+  },
+  "developmentCutoff": "2026-09-14",
+  "eligibility": {
+    "coverageReported": [
+      "constituent count",
+      "classified coverage",
+      "top-1 and top-2 cap share",
+      "HHI",
+      "missing cap share",
+      "eligible and ineligible industry-dates"
+    ],
+    "eligibleMembershipStatuses": [
+      "CURRENT_KRX_KIND_ANCHOR",
+      "VERIFIED_KRX_KIND_CHANGE_EVENT",
+      "RECONSTRUCTED_STABLE_NO_CHANGE_EVENT",
+      "PREFERRED_SHARE_OF_ANCHORED_COMMON",
+      "RETAINED_DART_FALLBACK"
+    ],
+    "ineligible": "stays INELIGIBLE with a reason, never zero or neutral",
+    "minimumClassifiedMembers": 5,
+    "survivorSubstitution": "never",
+    "taxonomy": "the frozen v4 14-group economic crosswalk, unmodified",
+    "unknownFill": "never"
+  },
+  "entryPoints": [
+    "pipeline/kr_industry_anatomy_execution.py",
+    "pipeline/kr_industry_anatomy.py"
+  ],
+  "features": {
+    "definitions": {
+      "BREADTH_ABOVE_MA_126": "fraction of members whose close at t exceeds the mean of the last 126 closes ending at t",
+      "BREADTH_POSITIVE_126": "fraction of members with positive trailing 126-session return",
+      "BREADTH_REL_MOM_POSITIVE_126": "fraction of members whose trailing 126 return exceeds the benchmark's",
+      "CONSTITUENT_DISPERSION_126": "population standard deviation of members' trailing 126 returns",
+      "DOWNSIDE_VOL_126": "sqrt(mean(min(r,0)^2))*sqrt(252) of the fixed-weight industry daily series over 126 sessions",
+      "MEDIAN_<fundamental>": "median of the member PIT accounting ratio under the coverage rule; missing is NaN, never zero",
+      "MEDIAN_LOG_ADV60": "median of member logAdv60 under the fundamental coverage rule",
+      "REL_MOM_h": "cap-weighted trailing h-session return of the frozen cohort minus the benchmark's, closes at or before t",
+      "TOP1_CAP_SHARE / TOP2_CAP_SHARE / CONSTITUENT_COUNT": "signal-date cap shares and member count"
+    },
+    "excluded": [
+      "ECOS or FRED revised macro history",
+      "any series without a historical knowledge timestamp",
+      "industry-specific cycle data"
+    ],
+    "fundamentalColumns": [
+      "bookToMarketProxy",
+      "earningsYieldProxy",
+      "ocfYieldProxy",
+      "netIncomeToAssets",
+      "ocfToAssets",
+      "negativeAccrualsToAssets",
+      "ocfImprovementToAssets",
+      "netIncomeImprovementToAssets"
+    ],
+    "marketState": "riskMultiplier is constant across industries on a date: descriptive conditioning only, never a cross-sectional feature",
+    "names": [
+      "REL_MOM_63",
+      "REL_MOM_126",
+      "BREADTH_POSITIVE_126",
+      "BREADTH_ABOVE_MA_126",
+      "BREADTH_REL_MOM_POSITIVE_126",
+      "DOWNSIDE_VOL_126",
+      "CONSTITUENT_DISPERSION_126",
+      "TOP1_CAP_SHARE",
+      "TOP2_CAP_SHARE",
+      "CONSTITUENT_COUNT",
+      "MEDIAN_LOG_ADV60",
+      "MEDIAN_bookToMarketProxy",
+      "MEDIAN_earningsYieldProxy",
+      "MEDIAN_ocfYieldProxy",
+      "MEDIAN_netIncomeToAssets",
+      "MEDIAN_ocfToAssets",
+      "MEDIAN_negativeAccrualsToAssets",
+      "MEDIAN_ocfImprovementToAssets",
+      "MEDIAN_netIncomeImprovementToAssets"
+    ],
+    "pastOnly": true,
+    "windows": {
+      "breadth": 126,
+      "risk": 126,
+      "trailing": [
+        63,
+        126
+      ]
+    }
+  },
+  "fundamentalImprovement": "absolute industry return, benchmark-relative industry return and cross-sectional peer position are never conflated",
+  "horizons": [
+    63,
+    126,
+    252
+  ],
+  "input": {
+    "artifactArchiveSha256": "42eeb18b7a5c88816629036f472a93057b6a9be4768ad47292ba0d2750b4cce7",
+    "artifactId": 11157875265,
+    "artifactName": "kr-model-raw-inputs-36844599518",
+    "downloadRule": "execution downloads this exact artifact (name, run id, artifact id and archive digest checked through the Actions API) and verifies the input identity before any outcome is computed",
+    "identitySha256": "233df37ed205cc6b48828121e711417ccf961301dc58aa252430b343db9666a7",
+    "krxCacheSha256": "3419d9d201f942b3c89be146b8f696679c8105a5f00d8adb0dd2c5a655a80037",
+    "pinnedFrom": {
+      "overlaySpec": "research_specs/kr-model-overlay-portfolio-v1.json",
+      "regimeReviewInput": {
+        "artifactArchiveSha256": "42eeb18b7a5c88816629036f472a93057b6a9be4768ad47292ba0d2750b4cce7",
+        "artifactId": 11157875265,
+        "artifactName": "kr-model-raw-inputs-36844599518",
+        "downloadRule": "The execution workflow downloads this exact artifact (name, run id, artifact id and archive digest checked through the Actions API before download) and verifies the input identity before any outcome is computed.",
+        "identityDefinition": "pipeline.kr_model_portfolio_execution.input_identity(root)['sha256'] — NOT the snapshot manifest hash",
+        "identitySha256": "233df37ed205cc6b48828121e711417ccf961301dc58aa252430b343db9666a7",
+        "krxCacheNote": "Pinned provenance. The daily KRX market-value files are covered byte-for-byte by the input identity.",
+        "krxCacheSha256": "3419d9d201f942b3c89be146b8f696679c8105a5f00d8adb0dd2c5a655a80037",
+        "producingRunId": 36844599518,
+        "recollectKrx": false,
+        "replaceSnapshotSilently": false
+      }
+    },
+    "producingRunId": 36844599518,
+    "recollect": false
+  },
+  "lenses": {
+    "CAP_WEIGHTED": "PRIMARY economic lens; weights are signal-date market caps; any member without a cap makes the lens INELIGIBLE",
+    "EQUAL_WEIGHT": "ROBUSTNESS / breadth lens; roles fixed before outcomes"
+  },
+  "lifecycle": {
+    "executionLock": "refs/tags/kr-industry-opportunity-anatomy-v1-execution-lock (study level, atomic POST /git/refs) plus -<specSha256>; any existing ref refuses; post-lock failure consumes the study",
+    "markerPath": "docs/results/kr-industry-opportunity-anatomy-v1-execution-started.json",
+    "resultPath": "docs/results/kr-industry-opportunity-anatomy-v1-result.json",
+    "sequence": [
+      "protocol PR merges",
+      "human dispatches execute once",
+      "identities and gates pass",
+      "durable lock before the first outcome",
+      "result artifact",
+      "seal commit",
+      "later attempts fail closed"
+    ]
+  },
+  "limitations": [
+    "Outcome-exposed single historical sample; exploratory only",
+    "Industry history is a reconstruction (DATA_FOUNDATION_INSUFFICIENT_V4), not PIT exact",
+    "About 14 coarse industries: small cross-sections, no stock-style deciles",
+    "Weekly signals overlap; few independent observations",
+    "Top-120 large caps only",
+    "Return basis has partial distributions; banks and high-dividend names are unreliable",
+    "No multiplicity correction; no isolated p-value is confirmation",
+    "Terminal common securities are unclassified, so some industry-dates are INELIGIBLE or UNRESOLVED"
+  ],
+  "membership": {
+    "coarseGroups": 14,
+    "crosswalkPath": "research_specs/kr-industry-membership-foundation-v4/crosswalk.json",
+    "files": {
+      "data/kr-industry-membership-foundation-v4/state/audit.json.gz": "4135846f16dcf59fe4ff89ab83b3b5aec288dea20fed36172b17abf768d44036",
+      "data/kr-industry-membership-foundation-v4/state/intervals.json.gz": "01a7958608939b73b85f7b96457e6b6420bec1aaa78417526b98dbea3321aae0",
+      "research_specs/kr-industry-membership-foundation-v4/crosswalk.json": "76166ad309d323240ffe749df74ac089f4693f30ef77231b8cd5ab85365826b5",
+      "research_specs/kr-industry-membership-foundation-v4/crosswalk.json.sha256": "c286ebc550a75b7a903f1db251d2687b2087c4c34fb3989c69400ab2ae7c3c20",
+      "research_specs/kr-industry-membership-foundation-v4/protocol.json": "955fb27793ce8016755b3d0c2e68ec292cad19c9ec84334a50c21d95f9b2d0ce",
+      "research_specs/kr-industry-membership-foundation-v4/protocol.json.sha256": "5821ded833822716bfcbdf9fca25252c6603fcae6443dd579ac970bec795e15f"
+    },
+    "limitation": "22 terminal common securities have no historical industry; most classified name-dates rest on a no-change reconstruction; not PIT exact",
+    "mappedRawLabels": 82,
+    "v4Decision": "DATA_FOUNDATION_INSUFFICIENT_V4",
+    "v4Facts": {
+      "classifiedNameDates": 69756,
+      "coarseIndustryCount": 14,
+      "conflictIntervals": {},
+      "everTop120Securities": 260,
+      "nameDates": 73200,
+      "rawIndustryCount": 78,
+      "signalDates": 610,
+      "terminal": {
+        "classified": 0,
+        "denominator": 2345
+      },
+      "unknownNameDates": 3444
+    }
+  },
+  "missingness": {
+    "noMissingIndustryToNeutral": true,
+    "noSurvivorRenormalisation": true,
+    "noUnknownToZero": true,
+    "reportedPerFeatureAndTarget": [
+      "eligible industry-dates",
+      "ineligible industry-dates",
+      "constituent count",
+      "membership coverage",
+      "feature coverage"
+    ]
+  },
+  "outcomeAccess": {
+    "counters": [
+      "targetCalls",
+      "labelCalls",
+      "outcomeColumnCalls",
+      "analysisCalls",
+      "markerWrites"
+    ],
+    "inThisChange": "NONE",
+    "verifyAndReadinessRequireAllZero": true
+  },
+  "phase": "PROTOCOL_AND_HARNESS_ONLY_NO_OUTCOME_COMPUTED",
+  "primaryHorizon": 126,
+  "question": "Do observable industry states at signal date t show a stable historical association with the subsequent benchmark-relative industry return?",
+  "readiness": {
+    "failedGateEffect": "writes gates-failed.json; no lock, no outcome read, no budget spent",
+    "gates": [
+      "non-empty PIT name-dates",
+      "no duplicate (date, ticker)",
+      "signal-time columns exist",
+      "signal dates and PIT Top120 equal the v4 membership calendar and universe",
+      "signal-date market cap available",
+      "membership reconstruction exists"
+    ],
+    "minimumNamesWithMarketCapPerDate": 3
+  },
+  "region": "KR",
+  "returnBasis": "BENCHMARK_RELATIVE_ADJUSTED_INDEX_RETURN_PARTIAL_DISTRIBUTIONS",
+  "returnDefinition": {
+    "basis": "adjusted index with partial observed distributions; never called total shareholder return",
+    "cohort": "membership and weights frozen at the signal date for the whole forward window",
+    "completeness": "a lens is MATURED only if every cohort member has a matured return under the accepted terminal discipline; no survivor renormalisation",
+    "entry": "next KR session strictly after the signal date",
+    "exit": "H sessions after entry, repository session calendar, exact endpoints only"
+  },
+  "scientificStatus": "EXPLORATORY_DEVELOPMENT_ON_PARTIALLY_RECONSTRUCTED_KR_HISTORY",
+  "sealedDataInputs": [
+    ".github/workflows/kr-industry-opportunity-anatomy-v1.yml",
+    "data/kr-industry-membership-foundation-v1/identity-inventory.json",
+    "data/kr-industry-membership-foundation-v1/identity-provenance.json",
+    "data/kr-industry-membership-foundation-v1/top120-inputs.json",
+    "data/kr-industry-membership-foundation-v4/state/audit.json.gz",
+    "data/kr-industry-membership-foundation-v4/state/intervals.json.gz",
+    "docs/kr-industry-opportunity-anatomy-v1-design.md",
+    "research_specs/kr-factor-anatomy-v1.json",
+    "research_specs/kr-factor-anatomy-v1.sha256",
+    "research_specs/kr-industry-membership-foundation-v4/crosswalk.json",
+    "research_specs/kr-industry-membership-foundation-v4/crosswalk.json.sha256",
+    "research_specs/kr-industry-membership-foundation-v4/protocol.json",
+    "research_specs/kr-industry-membership-foundation-v4/protocol.json.sha256",
+    "research_specs/kr-model-overlay-portfolio-v1.json",
+    "research_specs/kr-model-overlay-portfolio-v1.sha256",
+    "research_specs/kr-top120-regime-review-v1.json",
+    "research_specs/kr-top120-regime-review-v1.sha256",
+    "scripts/build_kr_industry_anatomy_spec.py",
+    "scripts/run_kr_industry_anatomy_v1.py"
+  ],
+  "sensitivities": {
+    "excludedMegaCaps": [
+      "005930.KS",
+      "000660.KS"
+    ],
+    "names": [
+      "FULL",
+      "LEAVE_LARGEST_CONSTITUENT_OUT",
+      "EXCLUDE_SAMSUNG_ELECTRONICS_AND_SK_HYNIX"
+    ],
+    "role": "diagnostics only; none is an alternative strategy-selection route",
+    "strata": {
+      "names": [
+        "TOP1_CAP_SHARE_LOW",
+        "TOP1_CAP_SHARE_HIGH"
+      ],
+      "top1ShareCutoff": 0.35
+    }
+  },
+  "statistics": {
+    "multiplicity": "none applied; no isolated p-value is confirmation",
+    "noBinaryEconomicThreshold": true,
+    "noFeatureSelection": true,
+    "primary": [
+      "per-date Spearman(feature, H126 CAP_WEIGHTED relative target): mean, median, sign fraction, valid dates, year table",
+      "top-minus-bottom tercile spread, k=floor(n/3), n>=9, ordering (feature, industry id), tie across a boundary invalidates the date"
+    ],
+    "regimeSlices": [
+      "FULL_SAMPLE",
+      "PRE_2025_COMPLETE_WINDOW",
+      "TOUCHES_2025_OR_LATER",
+      "TOUCHES_2026"
+    ],
+    "secondary": [
+      "H63 and H252",
+      "cap vs equal weight and their per-date rank agreement",
+      "outcome-window slices",
+      "descriptive HAC standard error, lag ceil(h/5), labelled descriptive"
+    ],
+    "slicesDecidedBy": "outcome window entry and exit dates, boundaries 2025-01-01 and 2026-01-01 fixed here"
+  },
+  "studyId": "kr-industry-opportunity-anatomy-v1",
+  "targets": {
+    "primary": "CAP_WEIGHTED H126 industry return minus same-window benchmark return",
+    "secondary": [
+      "CAP_WEIGHTED H63",
+      "CAP_WEIGHTED H252",
+      "EQUAL_WEIGHT H63",
+      "EQUAL_WEIGHT H126",
+      "EQUAL_WEIGHT H252"
+    ]
+  }
+}
