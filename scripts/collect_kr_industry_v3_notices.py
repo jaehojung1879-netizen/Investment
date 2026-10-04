@@ -9,6 +9,7 @@ import re
 import sys
 import time
 from urllib.error import HTTPError
+from urllib.parse import urlencode, urljoin
 from urllib.request import HTTPRedirectHandler, Request, build_opener
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -17,7 +18,9 @@ from pipeline import kr_industry_membership_v3 as V  # noqa: E402
 
 BASE = ROOT / 'research_specs/kr-industry-membership-foundation-v3'
 VIEWER = 'https://kind.krx.co.kr/common/disclsviewer.do?method=search&acptno={r}&docno=&viewerhost=&viewerport='
-DOC_URL = re.compile(r'https?://kind\.krx\.co\.kr/external/[^\'"\s<>)]+\.html?')
+DOC_PATH = re.compile(r'(?:https?://kind\.krx\.co\.kr)?/[A-Za-z0-9_./-]+\.html?')
+DOCNO = re.compile(r"<option value=['\"](\d{10,}\|[YN])['\"]")
+POST_URL = 'https://kind.krx.co.kr/common/disclsviewer.do'
 
 
 class NoRedirect(HTTPRedirectHandler):
@@ -27,24 +30,25 @@ class NoRedirect(HTTPRedirectHandler):
 
 def frozen():
     out = {}
-    for name in ('top120-notice-candidates.json', 'notice-document-protocol-rev5.json'):
+    for name in ('top120-notice-candidates.json', 'notice-document-protocol-rev6.json'):
         raw = (BASE / name).read_bytes()
         if hashlib.sha256(raw).hexdigest() != (BASE / (name + '.sha256')).read_text().strip():
             raise ValueError('UNFROZEN:' + name)
         out[name] = json.loads(raw)
-    return out['top120-notice-candidates.json'], out['notice-document-protocol-rev5.json']
+    return out['top120-notice-candidates.json'], out['notice-document-protocol-rev6.json']
 
 
-def fetch(opener, url, protocol):
+def fetch(opener, url, protocol, form=None):
     stamp = datetime.now(timezone.utc).isoformat()
+    data = urlencode(form).encode() if form else None
     try:
-        with opener.open(Request(url, headers={'User-Agent': 'Mozilla/5.0 (KR industry source feasibility)', 'Referer': 'https://kind.krx.co.kr/'}), timeout=protocol['timeoutSeconds']) as r:
+        with opener.open(Request(url, data=data, method='POST' if form else 'GET', headers={'User-Agent': 'Mozilla/5.0 (KR industry source feasibility)', 'Referer': 'https://kind.krx.co.kr/'}), timeout=protocol['timeoutSeconds']) as r:
             body, status = r.read(protocol['maxBodyBytes'] + 1), r.status
     except HTTPError as exc:
         body, status = exc.read(protocol['maxBodyBytes'] + 1), exc.code
     except Exception as exc:
-        return {'url': url, 'requestedAt': stamp, 'status': None, 'error': type(exc).__name__}, None
-    return {'url': url, 'requestedAt': stamp, 'status': status, 'bytes': len(body), 'sha256': hashlib.sha256(body).hexdigest(), 'error': None}, body
+        return {'url': url, 'form': form, 'requestedAt': stamp, 'status': None, 'error': type(exc).__name__}, None
+    return {'url': url, 'form': form, 'requestedAt': stamp, 'status': status, 'bytes': len(body), 'sha256': hashlib.sha256(body).hexdigest(), 'error': None}, body
 
 
 def run(output):
@@ -58,37 +62,49 @@ def run(output):
         if state.get(receipt, {}).get('status') == 'SERVED':
             continue
         record = {'receipt_no': receipt, 'company': cand['company'], 'candidate_securities': cand['candidate_securities'], 'responses': [], 'status': 'UNRESOLVED', 'reason': None}
-        urls = [VIEWER.format(r=receipt)]
-        seen = set()
-        while urls and len(seen) < 4:
-            url = urls.pop(0)
-            if url in seen:
-                continue
-            seen.add(url)
-            if requests >= protocol['maxRequests']:
-                raise ValueError('CALL_BUDGET_EXCEEDED')
+        record['responses'] = []
+        prior = state.get(receipt, {}).get('responses', [])
+        viewer = next((m for m in prior if m.get('url') == VIEWER.format(r=receipt) and m.get('status') == 200 and (output / (m['sha256'] + '.bin')).exists()), None)
+        if viewer is None:
             requests += 1
-            meta, body = fetch(opener, url, protocol)
+            viewer, body = fetch(opener, VIEWER.format(r=receipt), protocol)
+            if body is not None:
+                (output / (viewer['sha256'] + '.bin')).write_bytes(body)
+            time.sleep(1)
+        record['responses'].append(viewer)
+        text = V.decode((output / (viewer['sha256'] + '.bin')).read_bytes())[0] if viewer.get('sha256') else None
+        doc_nos = sorted(set(DOCNO.findall(text or '')))
+        if not doc_nos:
+            record['reason'] = 'NO_DOCNO_IN_VIEWER' if viewer.get('status') == 200 else 'EDGE_DENIAL_OR_ERROR'
+        for doc_no in doc_nos[:2]:
+            requests += 1
+            meta, body = fetch(opener, POST_URL, protocol, {'method': 'searchContents', 'docNo': doc_no.split('|')[0]})
+            meta['stage'] = 'searchContents'
             if body is not None:
                 (output / (meta['sha256'] + '.bin')).write_bytes(body)
-                if len(seen) == 1:
-                    text, _ = V.decode(body)
-                    urls.extend(sorted(set(DOC_URL.findall(text or '')))[:3])
-                if meta['status'] == 200 and body[:400].find(b'Access Denied') < 0:
-                    meta['isDocument'] = len(seen) > 1
             record['responses'].append(meta)
             time.sleep(1)
-        docs = [m for m in record['responses'][1:] if m.get('status') == 200 and m.get('isDocument')]
-        if docs:
+            if body is None or meta['status'] != 200:
+                continue
+            paths = sorted(set(DOC_PATH.findall(V.decode(body)[0] or '')))[:3]
+            meta['namedPaths'] = paths
+            for path in paths:
+                requests += 1
+                doc_meta, doc_body = fetch(opener, urljoin('https://kind.krx.co.kr/', path), protocol)
+                doc_meta['stage'] = 'document'
+                if doc_body is not None:
+                    (output / (doc_meta['sha256'] + '.bin')).write_bytes(doc_body)
+                record['responses'].append(doc_meta)
+                time.sleep(1)
+        if any(m.get('stage') == 'document' and m.get('status') == 200 for m in record['responses']):
             record.update(status='SERVED', reason=None)
-        else:
-            denied = any(m.get('status') == 403 for m in record['responses'])
-            record['reason'] = 'EDGE_DENIAL' if denied else ('NO_DOCUMENT_URL_IN_VIEWER' if len(record['responses']) == 1 and record['responses'][0].get('status') == 200 else 'NOT_SERVED')
+        elif record['reason'] is None:
+            record['reason'] = 'NO_DOCUMENT_PATH_IN_SEARCHCONTENTS' if any(m.get('stage') == 'searchContents' for m in record['responses']) else 'NOT_SERVED'
         state[receipt] = record
         state_path.write_text(json.dumps(state, ensure_ascii=False, sort_keys=True, indent=2) + '\n')
-        print(json.dumps({'receipt': receipt, 'status': record['status'], 'reason': record['reason'], 'n': len(record['responses'])}, ensure_ascii=False), flush=True)
+        print(json.dumps({'receipt': receipt, 'status': record['status'], 'reason': record['reason'], 'n': len(record['responses']), 'paths': [m.get('namedPaths') for m in record['responses'] if m.get('stage') == 'searchContents']}, ensure_ascii=False), flush=True)
     manifest = {'contract': 'KR_INDUSTRY_V3_NOTICE_DOCUMENT_RESULT', 'candidateSha256': (BASE / 'top120-notice-candidates.json.sha256').read_text().strip(),
-                'protocolSha256': (BASE / 'notice-document-protocol-rev5.json.sha256').read_text().strip(), 'candidates': len(cands['candidates']),
+                'protocolSha256': (BASE / 'notice-document-protocol-rev6.json.sha256').read_text().strip(), 'candidates': len(cands['candidates']),
                 'served': sum(1 for v in state.values() if v['status'] == 'SERVED'), 'unresolved': sum(1 for v in state.values() if v['status'] != 'SERVED'),
                 'requestsThisRun': requests, 'historicalOutcomeComputed': False}
     (output / 'manifest.json').write_text(json.dumps(manifest, ensure_ascii=False, sort_keys=True, indent=2) + '\n')
