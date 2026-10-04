@@ -50,3 +50,22 @@ def test_event_without_stated_labels_date_or_identity_is_refused(bad):
 def test_title_match_is_reading_list_not_assignment():
     assert V.classify_disclosure_title('업종변경 안내') == ['INDUSTRY_CHANGE']
     assert 'before_label' not in V.classify_disclosure_title('합병 결정')
+
+
+def test_listing_parser_requires_one_receipt_per_row_and_assigns_no_labels():
+    html = ('<script>alert("x");</script><table><tr><td>1</td><td>2024-01-02 10:00</td><td>가</td>'
+            "<td><a onclick=\"openDisclsViewer('20240102000123','')\">업종변경 안내</a></td><td>가</td></tr></table>")
+    out = V.parse_kind_listing(html.encode())
+    assert out['status'] == 'PARSED' and out['rows'][0]['receipt_no'] == '20240102000123'
+    assert out['rows'][0]['families'] == ['INDUSTRY_CHANGE'] and 'before_label' not in out['rows'][0]
+    assert V.parse_kind_listing(html.replace("openDisclsViewer('20240102000123','')", 'x').encode())['status'] == 'RECEIPT_ROW_MISMATCH'
+    assert V.parse_kind_listing(b'<HTML><TITLE>Access Denied</TITLE>')['status'] == 'ACCESS_DENIED'
+
+
+def test_event_listing_protocol_is_frozen_windowed_within_the_source_span_limit():
+    from datetime import date
+    from scripts import collect_kr_industry_v3_events as E
+    plan = E.load_frozen()
+    for a, b in plan['windows']:
+        assert (date.fromisoformat(b) - date.fromisoformat(a)).days < 3 * 366
+    assert plan['windows'][0][0] == '2013-01-01' and plan['maxRequests'] <= 100 and plan['retries'] == 0

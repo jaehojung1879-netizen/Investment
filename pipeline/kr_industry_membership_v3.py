@@ -144,3 +144,25 @@ FAMILIES = (('INDUSTRY_CHANGE', r'업종\s*변경'), ('TRADE_NAME_CHANGE', r'상
 def classify_disclosure_title(title):
     """A title match is a reading list entry, never a before/after assignment."""
     return [name for name, pattern in FAMILIES if re.search(pattern, title or '')]
+
+
+def parse_kind_listing(raw):
+    """Rows of a KIND disclosure list: receipt number, date, company, title. A title is a reading list entry."""
+    text, _ = decode(raw)
+    if text is None:
+        return {'status': 'REJECTED', 'reason': 'UNSUPPORTED_ENCODING', 'rows': []}
+    if 'Access Denied' in text[:400]:
+        return {'status': 'ACCESS_DENIED', 'reason': 'EDGE_DENIAL', 'rows': []}
+    table = _Table()
+    table.feed(text)
+    rows = []
+    for row in table.rows:
+        if len(row) >= 4 and re.fullmatch(r'\d+', row[0] or ''):
+            rows.append({'seq': row[0], 'time': row[1], 'company': row[2], 'title': row[3]})
+    receipts = re.findall(r"openDisclsViewer\('(\d{14})'", text)
+    if len(receipts) != len(rows):
+        return {'status': 'RECEIPT_ROW_MISMATCH', 'reason': f'{len(receipts)} receipts vs {len(rows)} rows', 'rows': []}
+    for row, receipt in zip(rows, receipts):
+        row['receipt_no'] = receipt
+        row['families'] = classify_disclosure_title(row['title'])
+    return {'status': 'PARSED' if rows else 'EMPTY', 'reason': None, 'rows': rows, 'alert': re.findall(r'alert\("([^"]*)"', text)}
