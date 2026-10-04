@@ -60,7 +60,7 @@ def run(output):
         text, _ = V.decode(body)
         entry['head'] = (text or '')[:300]
         results.append(entry)
-        print(json.dumps({k: entry.get(k) for k in ('id', 'status', 'bytes', 'parse')}, ensure_ascii=False), flush=True)
+        print(json.dumps({k: entry.get(k) for k in ('id', 'status', 'bytes', 'contentType', 'parse', 'head')}, ensure_ascii=False), flush=True)
         time.sleep(1)
     manifest = {'contract': 'KR_INDUSTRY_V3_PROBE_RESULT', 'protocolSha256': SPEC.with_suffix('.json.sha256').read_text().strip(),
                 'results': results, 'historicalOutcomeComputed': False, 'historicalAdmitted': False}
