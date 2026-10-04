@@ -1,0 +1,27 @@
+{
+  "candidateList": "research_specs/kr-industry-membership-foundation-v3/top120-notice-candidates.json (sha256 sidecar)",
+  "concurrency": 1,
+  "contract": "KR_INDUSTRY_V3_NOTICE_DOCUMENT_PROTOCOL_REV5",
+  "extraction": "Only values explicitly labelled in the document (variants of 변경 전 / 변경 후 업종, 변경일 / 적용일, 종목코드, 사유) are extracted from table cells; no industry is read from prose, name or website. Parser version is recorded; a parser change after seeing document structure is recorded as a new parser version and never alters the candidate list.",
+  "frozenBeforeAnyNoticeBodyFetch": true,
+  "gates": "Numeric gates read from research_specs/kr-industry-membership-foundation-v2/criteria.json unchanged (signal 0.90, annual 0.90, terminal 0.90, group size 5, >=3 sufficient groups, 0.90 of classified in sufficient groups). KSIC normalisation is reported, not required. Decision: READY_FOR_INDUSTRY_ANATOMY or DATA_FOUNDATION_INSUFFICIENT_V3.",
+  "identity": "A notice becomes an event only if its document states a stock code equal to the code of exactly one candidate security. Otherwise it stays unresolved.",
+  "maxBodyBytes": 8000000,
+  "maxRequests": 400,
+  "outcomesAllowed": false,
+  "reconstruction": {
+    "absentFromCurrentTable": "UNKNOWN unless retained v2 DART observations exist (RETAINED_DART_FALLBACK, prefixed group ids) or historical KIND evidence; no new DART collection",
+    "anchor": "raw KIND current-table 업종 label of the exact stock code (CURRENT_KRX_KIND_ANCHOR)",
+    "blockedContinuity": "merger, spin-off, listing transfer, code change, identity break, terminal: no fill across them unless existing retained identity/terminal evidence proves continuity",
+    "intervals": "by disclosed effective date; after = disclosed new label, before = disclosed previous label; labels compared exactly after whitespace normalisation; inconsistent or incomplete chain leaves older interval UNKNOWN",
+    "noEventStable": "RECONSTRUCTED_STABLE_NO_CHANGE_EVENT only for a security with a current anchor, no candidate notice, and a retained complete 업종변경 listing covering 2013-01-01..2026-10-02 (paging stopped on a short page in all five windows). Limits stated: keyword 업종변경 only; name-based notice discovery can miss a notice filed under a name absent from the universe record; this is reconstruction, never PIT_EXACT."
+  },
+  "redirects": false,
+  "requestsPerReceipt": [
+    "GET https://kind.krx.co.kr/common/disclsviewer.do?method=search&acptno=<receipt>&docno=&viewerhost=&viewerport= (viewer page)",
+    "GET each document URL under https://kind.krx.co.kr/external/ that the viewer page itself names (at most 3)"
+  ],
+  "resume": "A receipt whose retained status is SERVED is never requested again. A receipt that answered an edge denial or transport error may be requested again by a later run of this same frozen list; no receipt is ever added, removed or substituted.",
+  "retries": 0,
+  "timeoutSeconds": 20
+}
