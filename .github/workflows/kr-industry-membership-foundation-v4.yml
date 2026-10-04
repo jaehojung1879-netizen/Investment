@@ -1,0 +1,41 @@
+name: KR industry v4 delisted-register probe
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/kr-industry-membership-foundation-v4.yml'
+      - 'scripts/probe_kr_industry_v4_delisted.py'
+permissions:
+  contents: read
+concurrency:
+  group: kr-industry-v4-probe
+  cancel-in-progress: false
+jobs:
+  probe:
+    if: github.event.pull_request.head.repo.full_name == github.repository && github.head_ref == 'data/kr-industry-membership-foundation-v4'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+      - name: Skip once the single frozen request is retained
+        id: guard
+        run: |
+          if [ -d data/kr-industry-membership-foundation-v4/delisted-register ]; then echo "go=false" >> "$GITHUB_OUTPUT"; else echo "go=true" >> "$GITHUB_OUTPUT"; fi
+      - uses: actions/setup-python@v5
+        if: steps.guard.outputs.go == 'true'
+        with:
+          python-version: '3.12'
+      - name: One frozen request (no secrets, no retry, no redirect)
+        if: steps.guard.outputs.go == 'true'
+        run: python -u scripts/probe_kr_industry_v4_delisted.py --output data/kr-industry-membership-foundation-v4/delisted-register
+      - name: Retain the bytes unchanged
+        if: steps.guard.outputs.go == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/kr-industry-membership-foundation-v4
+          git commit -m "Data: retain the single frozen delisted-register request"
+          git push origin "HEAD:${{ github.head_ref }}"

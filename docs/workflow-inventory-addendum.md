@@ -21,6 +21,8 @@ contradicted by this file.
 
 | `KR industry v3 source feasibility` (`kr-industry-membership-foundation-v3.yml`) | PR on the exact v3 foundation branch only | **No schedule; no outcome execution mode** | Runs only the four requests frozen in `research_specs/kr-industry-membership-foundation-v3/protocol.json` (KIND listed-company table, KRX 업종분류 현황 page and OTP, KIND 업종변경 search), standard library, no secrets, no retries or redirects, read-only contents. Retains raw bytes and hashes; admits nothing historical. |
 
+| `KR industry v4 delisted-register probe` (`kr-industry-membership-foundation-v4.yml`) | PR on the exact v4 foundation branch only | **No schedule; no outcome execution mode** | Issues the single request frozen in `research_specs/kr-industry-membership-foundation-v4/protocol.json` (the official KIND delisted-company register page), standard library, no secrets, no retry or redirect; commits the raw bytes unchanged to the branch (`contents: write`, same-repository branch only). Admits nothing historical. |
+
 ## Foundation observation on existing lifecycle (2026-10-03 KST)
 
 The older PROTOCOL ONLY descriptions above record their authors' then-current state;
