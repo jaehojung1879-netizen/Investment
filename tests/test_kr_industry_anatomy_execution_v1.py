@@ -19,6 +19,15 @@ GOOD_ENV = {'GITHUB_ACTIONS': 'true', 'GITHUB_REF': 'refs/heads/main', 'GITHUB_E
             'GH_TOKEN': 't', 'GITHUB_REPOSITORY': 'o/r'}
 
 
+@pytest.fixture(autouse=True)
+def synthetic_lifecycle_paths(monkeypatch):
+    """The study is now sealed (its result and marker are committed), so the synthetic authorization and lifecycle tests, which
+    exercise the rules rather than the repository state, point the result and marker paths at files that do not exist.
+    The sealed state itself is pinned by tests/test_kr_industry_opportunity_anatomy_v1_result_seal.py."""
+    monkeypatch.setattr(E, 'RESULT_PATH', 'docs/results/synthetic-absent-result.json')
+    monkeypatch.setattr(E, 'MARKER_PATH', 'docs/results/synthetic-absent-marker.json')
+
+
 def fake_git(head='a' * 40, committed=True):
     def git(args, root):
         if args[0] == 'rev-parse':

@@ -1,0 +1,67 @@
+{
+  "artifactArchiveSha256": "ee336dc4ff51cbef21f3f8adbb780c5987e93525d677cdc7bdb5a7dd5400f4ba",
+  "artifactId": 11295658265,
+  "artifactName": "kr-industry-opportunity-anatomy-v1-results-37182657697",
+  "committedFiles": {
+    "docs/results/kr-industry-opportunity-anatomy-v1-execution-started.json": {
+      "bytes": 447,
+      "sha256": "414911b0ebb340332bbfe0340428f40959bc3fbc73b23cb2c2f92a30390f3bfb",
+      "sourceFile": "execution-started.json"
+    },
+    "docs/results/kr-industry-opportunity-anatomy-v1-manifest.json": {
+      "bytes": 923,
+      "sha256": "b8814d43f2e592fea0db7b7e4e7d77485f04881140dc46a197610086383621df",
+      "sourceFile": "manifest.json"
+    },
+    "docs/results/kr-industry-opportunity-anatomy-v1-result.json": {
+      "bytes": 1155199,
+      "sha256": "71a960e3c19ce443d058508c4ec66576e3e5fcbd7a45dc851cf8b832bff62a08",
+      "sourceFile": "industry-anatomy.json"
+    }
+  },
+  "committedTables": {
+    "data/kr-industry-opportunity-anatomy-v1/tables/exclude_samsung_electronics_and_sk_hynix.csv.gz": {
+      "bytes": 855558,
+      "sha256": "2857859d8790106bac8988def55198a991ef98d660a12bb7c74b97536b3a1a1d",
+      "sourceFile": "tables/exclude_samsung_electronics_and_sk_hynix.csv.gz"
+    },
+    "data/kr-industry-opportunity-anatomy-v1/tables/full.csv.gz": {
+      "bytes": 856656,
+      "sha256": "97a489faf73585880be3a9e647d3f6718e6beca74af68ad5e6d7870ccc59be0d",
+      "sourceFile": "tables/full.csv.gz"
+    },
+    "data/kr-industry-opportunity-anatomy-v1/tables/leave_largest_constituent_out.csv.gz": {
+      "bytes": 692633,
+      "sha256": "7ef0bbf688a428611bb059126097261380fcc0663f1c8bdd2f5a6372bc080764",
+      "sourceFile": "tables/leave_largest_constituent_out.csv.gz"
+    }
+  },
+  "executionLock": {
+    "lockRefInMarker": "refs/tags/kr-industry-opportunity-anatomy-v1-execution-lock-98278ce5724b27dd19d253eab6cb1e7854ea432a62098441cdad46d067609f55",
+    "lockedMainSha": "f830b92efabab6011f9190293f2e060e9b4fe70b",
+    "observedRefs": [
+      {
+        "ref": "refs/tags/kr-industry-opportunity-anatomy-v1-execution-lock",
+        "sha": "f830b92efabab6011f9190293f2e060e9b4fe70b"
+      },
+      {
+        "ref": "refs/tags/kr-industry-opportunity-anatomy-v1-execution-lock-98278ce5724b27dd19d253eab6cb1e7854ea432a62098441cdad46d067609f55",
+        "sha": "f830b92efabab6011f9190293f2e060e9b4fe70b"
+      }
+    ]
+  },
+  "executionRunId": 37182657697,
+  "executionSha": "f830b92efabab6011f9190293f2e060e9b4fe70b",
+  "inputIdentitySha256": "233df37ed205cc6b48828121e711417ccf961301dc58aa252430b343db9666a7",
+  "kind": "RESULT_SEAL_EXACT_ARTIFACT_BYTES",
+  "scientificStatus": "EXPLORATORY_DEVELOPMENT_ON_PARTIALLY_RECONSTRUCTED_KR_HISTORY",
+  "sealedAtUtc": "2026-10-04T07:07:34Z",
+  "specSha256": "98278ce5724b27dd19d253eab6cb1e7854ea432a62098441cdad46d067609f55",
+  "statements": [
+    "No scientific statistic was recomputed by this seal.",
+    "The committed result, manifest, execution marker and tables are the exact bytes of the artifact members (result renamed only).",
+    "Committing the result and marker paths makes the anatomy code refuse any further execution; the git-tag lock already consumed the study."
+  ],
+  "statisticsRecomputed": false,
+  "studyId": "kr-industry-opportunity-anatomy-v1"
+}
