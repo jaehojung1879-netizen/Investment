@@ -1,0 +1,92 @@
+{
+  "contract": "KR_INDUSTRY_V3_PROBE_RESULT",
+  "historicalAdmitted": false,
+  "historicalOutcomeComputed": false,
+  "protocolSha256": "e3ae7fe7801de6adce6aa70fe386e266524b2dfc432c082369408acdc70ecc25",
+  "results": [
+    {
+      "bytes": 1263824,
+      "contentType": "application/vnd.ms-excel; charset=EUC-KR",
+      "error": null,
+      "form": null,
+      "head": "\r\n\r\n\r\n\r\n\r\n\r\n<html xmlns=\"http://www.w3.org/1999/xhtml\">\r\n<head>\r\n<meta http-equiv=\"Content-Type\" content=\"text/html; charset=euc-kr\" />\r\n<title>상장법인목록(EXCEL)</title>\r\n</head>\r\n<body>\r\n\t<table cellpadding=\"0\" cellspacing=\"1\" class=\"bbs_tb\" border=\"1\">\r\n\t\r\n\t<col width=\"20%\" />\r\n\t<col width=\"10%\" />\r\n\t",
+      "id": "kind-corp-list-current",
+      "method": "GET",
+      "parse": {
+        "columns": [
+          "회사명",
+          "시장구분",
+          "종목코드",
+          "업종",
+          "주요제품",
+          "상장일",
+          "결산월",
+          "대표자명",
+          "홈페이지",
+          "지역"
+        ],
+        "reason": null,
+        "rows": 2802,
+        "rowsWithIndustry": 2802,
+        "status": "PARSED_CURRENT_ONLY"
+      },
+      "sha256": "e67bc8d33c47c0013d6e31bfc62897d049ad6fadac9013261c8bc100a4380d58",
+      "status": 200,
+      "url": "https://kind.krx.co.kr/corpgeneral/corpList.do?method=download&searchType=13"
+    },
+    {
+      "bytes": 2952,
+      "contentType": "text/html;charset=UTF-8",
+      "error": null,
+      "form": null,
+      "head": "\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n \r\n \r\n\r\n\r\n\t\r\n\t\t<html>\r\n<head>\r\n  <title>에러페이지 - 한국거래소 | 정보데이터시스템</title>\r\n  <meta charset=\"utf-8\">\r\n  <meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">\r\n  <meta http-equiv=\"X-UA-Compatible\" content=\"IE=Edge\">\r\n  <meta name=\"viewport\" content=\"width=device-width, i",
+      "id": "krx-mdc-industry-page",
+      "method": "GET",
+      "sha256": "60206037d44be1558a87c22a2b84751a064abebafbd89a69faed95977048a42f",
+      "status": 200,
+      "url": "https://data.krx.co.kr/contents/MDC/STAT/standard/MDCSTAT03901.jsp"
+    },
+    {
+      "bytes": 6,
+      "contentType": "text/html; charset=UTF-8",
+      "error": null,
+      "form": {
+        "csvxls_isNo": "false",
+        "locale": "ko_KR",
+        "mktId": "STK",
+        "money": "1",
+        "name": "fileDown",
+        "trdDd": "20261002",
+        "url": "dbms/MDC/STAT/standard/MDCSTAT03901"
+      },
+      "head": "LOGOUT",
+      "id": "krx-mdc-industry-otp",
+      "method": "POST",
+      "sha256": "377b375adcc04b5ba5998c978372401a4c6327ccc218e17e383f72861085cb95",
+      "status": 200,
+      "url": "https://data.krx.co.kr/comm/fileDn/GenerateOTP/generate.cmd"
+    },
+    {
+      "bytes": 1047,
+      "contentType": "text/html; charset=UTF-8",
+      "error": null,
+      "form": {
+        "currentPageSize": "15",
+        "forward": "details_sub",
+        "fromDate": "2013-01-01",
+        "method": "searchDetailsSub",
+        "orderMode": "1",
+        "orderStat": "D",
+        "pageIndex": "1",
+        "reportNm": "업종변경",
+        "toDate": "2026-10-02"
+      },
+      "head": "\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\t\r\n\t\t\r\n\t\t<script>alert(\"조회기간은  3년 이내만 가능합니다.\");</script>\r\n\t\t\r\n\t\t\r\n\t\t\r\n\t\t<table class=\"list type-00 tmt30\" summary=\"번호, 시간, 회사명, 공시제목, 제출인, 차트/주가\">\r\n\t\t\t<caption>목록</caption>\r\n\t\t\t<colgroup>\r\n\t\t\t\t<col width=\"8%\" />\r\n\t\t\t\t<col width=\"17%\" />\r\n\t\t\t\t<col width=\"21%\" />\r\n\t\t\t\t<col width=\"*\" />",
+      "id": "kind-industry-change-search",
+      "method": "POST",
+      "sha256": "78fc475929fe66e85b9da32ec240abf432d037140841c4c5d105ff2c63c6de58",
+      "status": 200,
+      "url": "https://kind.krx.co.kr/disclosure/details.do"
+    }
+  ]
+}

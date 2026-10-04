@@ -1,0 +1,46 @@
+{
+  "concurrency": 1,
+  "contract": "KR_INDUSTRY_V3_EVENT_LISTING_PROTOCOL_REV2",
+  "documentStageRule": "Not executed here. A later stage may fetch each listed notice document once, only if the total listed hits are <= 400; otherwise it stops and reports. Document content, not the title, must state before and after labels.",
+  "frozenBeforeRequests": true,
+  "maxBodyBytes": 8000000,
+  "maxPagesPerWindow": 20,
+  "maxRequests": 100,
+  "outcomesAllowed": false,
+  "query": {
+    "currentPageSize": "100",
+    "forward": "details_sub",
+    "method": "searchDetailsSub",
+    "orderMode": "1",
+    "orderStat": "D",
+    "reportNm": "업종변경"
+  },
+  "reasonForRevision": "Run 37170219625 showed the KIND disclosure search endpoint form is accepted and enforces a 3-year maximum span per query; Data Marketplace returned an error page and OTP LOGOUT. The only change is mechanical windowing of the already-frozen 2013-01-01..2026-10-02 range; no outcome was read.",
+  "redirects": false,
+  "retries": 0,
+  "stopOnAccessDenied": true,
+  "timeoutSeconds": 20,
+  "url": "https://kind.krx.co.kr/disclosure/details.do",
+  "windows": [
+    [
+      "2013-01-01",
+      "2015-12-31"
+    ],
+    [
+      "2016-01-01",
+      "2018-12-31"
+    ],
+    [
+      "2019-01-01",
+      "2021-12-31"
+    ],
+    [
+      "2022-01-01",
+      "2024-12-31"
+    ],
+    [
+      "2025-01-01",
+      "2026-10-02"
+    ]
+  ]
+}

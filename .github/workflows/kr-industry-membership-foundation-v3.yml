@@ -1,0 +1,133 @@
+name: KR industry v3 source feasibility
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/kr-industry-membership-foundation-v3.yml'
+      - 'scripts/probe_kr_industry_v3_sources.py'
+      - 'scripts/collect_kr_industry_v3_events.py'
+      - 'scripts/collect_kr_industry_v3_notices.py'
+      - 'research_specs/kr-industry-membership-foundation-v3/**'
+permissions:
+  contents: read
+concurrency:
+  group: kr-industry-v3-probe
+  cancel-in-progress: false
+jobs:
+  probe:
+    if: github.event.pull_request.head.repo.full_name == github.repository && github.head_ref == 'data/kr-industry-membership-foundation-v3'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Skip once the first observed run has been retained in the branch
+        id: guard
+        run: |
+          if [ -d data/kr-industry-membership-foundation-v3/probe ]; then echo "go=false" >> "$GITHUB_OUTPUT"; else echo "go=true" >> "$GITHUB_OUTPUT"; fi
+      - uses: actions/setup-python@v5
+        if: steps.guard.outputs.go == 'true'
+        with:
+          python-version: '3.12'
+      - name: Run only the four frozen requests (no secrets, no retry, no redirect)
+        if: steps.guard.outputs.go == 'true'
+        run: python -u scripts/probe_kr_industry_v3_sources.py --output /tmp/v3-probe
+      - uses: actions/upload-artifact@v4
+        if: steps.guard.outputs.go == 'true'
+        with:
+          name: kr-industry-v3-probe-${{ github.run_id }}
+          path: /tmp/v3-probe/
+          if-no-files-found: error
+          retention-days: 90
+  retain:
+    needs: probe
+    if: github.event.pull_request.head.repo.full_name == github.repository && github.head_ref == 'data/kr-industry-membership-foundation-v3'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+      actions: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+      - name: Is the first observed run already retained
+        id: where
+        run: |
+          if [ -d data/kr-industry-membership-foundation-v3/probe ]; then echo "done=true" >> "$GITHUB_OUTPUT"; else echo "done=false" >> "$GITHUB_OUTPUT"; fi
+      - uses: actions/download-artifact@v4
+        if: steps.where.outputs.done == 'false'
+        with:
+          name: kr-industry-v3-probe-37170219625
+          path: data/kr-industry-membership-foundation-v3/probe/run-37170219625
+          run-id: 37170219625
+          github-token: ${{ github.token }}
+      - name: Retain the exact first-run bytes unchanged
+        if: steps.where.outputs.done == 'false'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/kr-industry-membership-foundation-v3/probe
+          git commit -m "Data: retain exact first observed v3 probe responses (run 37170219625)"
+          git push origin "HEAD:${{ github.head_ref }}"
+  events:
+    needs: retain
+    if: github.event.pull_request.head.repo.full_name == github.repository && github.head_ref == 'data/kr-industry-membership-foundation-v3'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: write
+      actions: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+      - name: Skip once the frozen listing has been retained
+        id: guard
+        run: |
+          if [ -d data/kr-industry-membership-foundation-v3/events-rev4 ]; then echo "go=false" >> "$GITHUB_OUTPUT"; else echo "go=true" >> "$GITHUB_OUTPUT"; fi
+      - uses: actions/setup-python@v5
+        if: steps.guard.outputs.go == 'true'
+        with:
+          python-version: '3.12'
+      - name: Frozen rev4 windowed KIND notice listing (no document fetch, no labels)
+        if: steps.guard.outputs.go == 'true'
+        run: python -u scripts/collect_kr_industry_v3_events.py --output data/kr-industry-membership-foundation-v3/events-rev4
+      - name: Retain the listing bytes unchanged
+        if: steps.guard.outputs.go == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/kr-industry-membership-foundation-v3/events-rev4
+          git commit -m "Data: retain frozen rev4 KIND industry-change notice listing"
+          git push origin "HEAD:${{ github.head_ref }}"
+  notices:
+    needs: events
+    if: github.event.pull_request.head.repo.full_name == github.repository && github.head_ref == 'data/kr-industry-membership-foundation-v3'
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+      - name: Skip once every frozen candidate is retained as served
+        id: guard
+        run: |
+          if [ -f data/kr-industry-membership-foundation-v3/notices/manifest.json ] && python -c "import json,sys; m=json.load(open('data/kr-industry-membership-foundation-v3/notices/manifest.json')); sys.exit(0 if m['unresolved']==0 else 1)"; then echo "go=false" >> "$GITHUB_OUTPUT"; else echo "go=true" >> "$GITHUB_OUTPUT"; fi
+      - uses: actions/setup-python@v5
+        if: steps.guard.outputs.go == 'true'
+        with:
+          python-version: '3.12'
+      - name: Fetch only the frozen Top120-scoped notice documents (resume, no substitution)
+        if: steps.guard.outputs.go == 'true'
+        run: python -u scripts/collect_kr_industry_v3_notices.py --output data/kr-industry-membership-foundation-v3/notices
+      - name: Retain the document bytes unchanged
+        if: steps.guard.outputs.go == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/kr-industry-membership-foundation-v3/notices
+          git commit -m "Data: retain frozen Top120-scoped KIND notice documents" || exit 0
+          git push origin "HEAD:${{ github.head_ref }}"

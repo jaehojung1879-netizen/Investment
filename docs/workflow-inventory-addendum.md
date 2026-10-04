@@ -19,6 +19,8 @@ contradicted by this file.
 
 | `KR industry annual originals v2` (`kr-industry-membership-foundation-v2.yml`) | PR opened/updated on the exact foundation branch only; jobs `collect`, `chapters`, `retain` | **No schedule; no outcome execution mode** | Outcome-free v2 PIT industry-membership source acquisition. `collect`: frozen 254-issuer annual-original discovery plus collection in 26 immutable artifact slices (skipped per slice when its frozen inventory artifact exists; completed in run 37119776441). `chapters`: only the 68 classification-chapter requests frozen in `classification-chapters.json` before acquisition (skipped when its artifact exists). `retain`: downloads those exact artifacts, verifies every frozen-plan and archive SHA-256, and commits the bytes unchanged to the foundation branch (`contents: write`, same-repository branch only, skipped when already committed). Standard library collectors; DART key only in the discovery step; no prices, returns, models, portfolios or sealed-study execution. |
 
+| `KR industry v3 source feasibility` (`kr-industry-membership-foundation-v3.yml`) | PR on the exact v3 foundation branch only | **No schedule; no outcome execution mode** | Runs only the four requests frozen in `research_specs/kr-industry-membership-foundation-v3/protocol.json` (KIND listed-company table, KRX 업종분류 현황 page and OTP, KIND 업종변경 search), standard library, no secrets, no retries or redirects, read-only contents. Retains raw bytes and hashes; admits nothing historical. |
+
 ## Foundation observation on existing lifecycle (2026-10-03 KST)
 
 The older PROTOCOL ONLY descriptions above record their authors' then-current state;
