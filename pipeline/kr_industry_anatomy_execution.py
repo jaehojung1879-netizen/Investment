@@ -26,9 +26,8 @@ from . import kr_factor_anatomy_execution as AE
 from . import kr_industry_anatomy as I
 from . import kr_model_portfolio_execution as X
 from . import replay_calendar as RC
-from .alpha_opportunity_v3_spec import import_closure
 
-digest, file_hash = X.digest, X.file_hash
+digest, file_hash, import_closure = X.digest, X.file_hash, X.import_closure
 ROOT = Path(__file__).resolve().parents[1]
 STUDY = I.STUDY
 SPEC_PATH = "research_specs/" + STUDY + ".json"
