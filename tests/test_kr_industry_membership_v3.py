@@ -71,3 +71,15 @@ def test_event_listing_protocol_is_frozen_windowed_within_the_source_span_limit(
     for a, b in plan['windows']:
         assert (date.fromisoformat(b) - date.fromisoformat(a)).days < 3 * 366
     assert plan['windows'][0][0] == '2013-01-01' and plan['maxRequests'] <= 150 and plan['query']['currentPageSize'] == '15' and plan['retries'] == 0
+
+
+def test_retained_listing_and_current_anchor_support_only_the_documented_scope():
+    m = json.loads((ROOT / 'data/kr-industry-membership-foundation-v3/events-rev4/manifest.json').read_text())
+    assert (m['requests'], m['listedRows'], m['uniqueReceipts']) == (67, 968, 968) and not m['labelsAssigned']
+    assert all(r['families'] == ['INDUSTRY_CHANGE'] and 'before_label' not in r for r in m['rows'])
+    assert m['listedRows'] > 400  # frozen rule: the document stage stops and reports above 400 hits
+    probe = ROOT / 'data/kr-industry-membership-foundation-v3/probe/run-37170219625'
+    raw = (probe / 'e67bc8d33c47c0013d6e31bfc62897d049ad6fadac9013261c8bc100a4380d58.bin').read_bytes()
+    assert hashlib.sha256(raw).hexdigest() == 'e67bc8d33c47c0013d6e31bfc62897d049ad6fadac9013261c8bc100a4380d58'
+    anchor = V.parse_current_state(raw, '2026-10-04')
+    assert len(anchor['rows']) == 2802 and anchor['tier'] == V.CURRENT_TIER and not anchor['historicalAdmitted']
