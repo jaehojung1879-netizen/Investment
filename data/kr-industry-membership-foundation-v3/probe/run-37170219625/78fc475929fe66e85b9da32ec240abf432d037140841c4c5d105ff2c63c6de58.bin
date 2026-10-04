@@ -1,0 +1,48 @@
+
+
+
+
+
+
+
+
+	
+		
+		<script>alert("조회기간은  3년 이내만 가능합니다.");</script>
+		
+		
+		
+		<table class="list type-00 tmt30" summary="번호, 시간, 회사명, 공시제목, 제출인, 차트/주가">
+			<caption>목록</caption>
+			<colgroup>
+				<col width="8%" />
+				<col width="17%" />
+				<col width="21%" />
+				<col width="*" />
+				<col width="15%" />
+				<col width="9%" />
+			</colgroup>
+			<thead>
+				<tr class="first" id="title-contents">
+				</tr>
+			</thead>
+			<tbody>
+			<tr class="first">
+					<td class="first null" colspan="6">조회된 결과값이 없습니다.</td>
+					</tr>			
+			</tbody>
+		</table>
+	
+
+
+
+<script type="text/JavaScript">
+$(document).ready(function(){
+	var svrGubun = "";
+	if( svrGubun.indexOf("dr") >= 0 ){
+		fn_InitTitle("번호,시간,회사명,공시제목,제출인", "false,true,true,true,true");
+	} else {
+		fn_InitTitle("번호,시간,회사명,공시제목,제출인,차트/주가", "false,true,true,true,true,false");
+	}
+});
+</script>
