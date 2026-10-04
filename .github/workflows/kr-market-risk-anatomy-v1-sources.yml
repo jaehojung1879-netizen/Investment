@@ -1,0 +1,49 @@
+name: KR market risk anatomy v1 source snapshot
+# SOURCE ACQUISITION ONLY, AFTER THE PRE-SOURCE FREEZE. Runs on the exact study branch's pull request and nowhere else: no schedule, no dispatch,
+# no execution mode. It retains the raw vendor bytes of the frozen source registry, verifies identity / hashes / dates / missingness / units, and commits
+# them unchanged to the branch (write permission on contents, same-repository branch only). It computes no return, drawdown, episode or result table and cannot change the
+# frozen scientific design. An ACQUIRED source is immutable; later runs retry only sources that are not ACQUIRED (a transport or identity repair), at most three times each.
+on:
+  pull_request:
+    types: [opened, reopened, synchronize]
+    paths:
+      - 'scripts/acquire_kr_market_risk_sources.py'
+      - 'pipeline/kr_market_risk_source_parse.py'
+      - '.github/workflows/kr-market-risk-anatomy-v1-sources.yml'
+permissions:
+  contents: write
+concurrency:
+  group: kr-market-risk-anatomy-v1-sources
+  cancel-in-progress: false
+jobs:
+  snapshot:
+    if: github.event.pull_request.head.repo.full_name == github.repository && github.head_ref == 'claude/gifted-carson-g7rcbx'
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.head_ref }}
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+          cache: pip
+      - run: pip install -r requirements.txt -r requirements-dev.txt
+      - name: Acquire raw bytes and the metadata audit (no outcome is computed; ACQUIRED sources are never refetched)
+        env:
+          FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
+        run: python scripts/acquire_kr_market_risk_sources.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: kr-market-risk-anatomy-v1-sources-${{ github.run_id }}
+          path: data/kr-market-risk-anatomy-v1/sources
+          retention-days: 90
+      - name: Commit the immutable snapshot unchanged
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/kr-market-risk-anatomy-v1/sources
+          if git diff --cached --quiet; then echo "nothing new to commit"; exit 0; fi
+          git commit -q -m "Data: immutable source snapshot for kr-market-risk-anatomy-v1 (raw vendor bytes, hashes and metadata audit; no outcome computed)"
+          git push origin "HEAD:${{ github.head_ref }}"
