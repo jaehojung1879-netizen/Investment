@@ -1,0 +1,210 @@
+name: KR market risk model v1
+# PREREGISTRATION + HARNESS. EXPLORATORY_DEVELOPMENT_ON_OUTCOME_EXPOSED_KR_HISTORY: the design is informed by the sealed, outcome-exposed
+# kr-market-risk-anatomy-v2, so every historical number this study can produce is DEVELOPMENT evidence, never validation.
+# Pull requests run synthetic tests plus outcome-free `verify` and `readiness` (observation dates only) and nothing else.
+# `execute` exists only as a manual workflow_dispatch on merged main. It never reruns kr-market-risk-anatomy-v1/v2 or any other sealed study,
+# never invokes another workflow and never contacts a data vendor: it reads the immutable source bytes already committed.
+# ONE-SHOT: after identities and outcome-free gates pass (and before any value is read) the run creates refs/tags/kr-market-risk-model-v1-execution-lock
+# and ...-execution-lock-<specSha256> with atomic POST /git/refs. Tags are never moved or deleted; ANY ref under the prefix refuses execution. A failure
+# after the lock consumes the study permanently: DO NOT RETRY. A failure before it spends nothing.
+# SEAL: when `execute` succeeds, the `seal` job verifies the run, the artifact digest and file list, manifest, marker, spec and both lock refs, copies the
+# exact bytes plus a provenance record to research/kr-market-risk-model-v1-result-seal-<runId> and opens ONE Draft pull request. It never reruns an
+# outcome, never rewrites a result byte, never merges and never marks the PR ready. `mode: seal` re-attempts ONLY the seal for an earlier execution run.
+on:
+  pull_request:
+    paths:
+      - 'pipeline/kr_market_risk_model*'
+      - 'pipeline/kr_market_risk_anatomy*'
+      - 'pipeline/kr_market_risk_overlay.py'
+      - 'scripts/run_kr_market_risk_model_v1.py'
+      - 'scripts/seal_kr_market_risk_model_v1.py'
+      - 'scripts/build_kr_market_risk_model_v1_spec.py'
+      - 'research_specs/kr-market-risk-model-v1*'
+      - 'tests/test_kr_market_risk_model_v1*'
+      - 'docs/kr-market-risk-model-v1-design.md'
+      - 'docs/results/kr-market-risk-model-v1-*'
+      - '.github/workflows/kr-market-risk-model-v1.yml'
+  workflow_dispatch:
+    inputs:
+      mode:
+        type: choice
+        options: [verify, execute, seal]
+        default: verify
+      executionRunId:
+        description: For mode=seal only, the run id of the earlier successful execute run whose artifact is sealed (nothing is executed)
+        type: string
+        required: false
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: kr-market-risk-model-v1-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  frozen-machine:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+          cache: pip
+      - run: pip install -r requirements.txt -r requirements-dev.txt
+      - name: Synthetic tests and outcome-free identity and readiness (dates only)
+        run: |
+          ruff check .
+          python -m pytest -q tests/test_kr_market_risk_model_v1.py tests/test_kr_market_risk_model_v1_lifecycle.py tests/test_kr_market_risk_model_v1_result_seal.py
+          python scripts/run_kr_market_risk_model_v1.py --mode verify --output run
+          python scripts/run_kr_market_risk_model_v1.py --mode readiness --output run
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: kr-market-risk-model-v1-verify-${{ github.run_id }}
+          path: run
+          retention-days: 30
+  execute:
+    # Never on pull_request. Requires an explicit manual dispatch with mode=execute.
+    name: execute
+    if: github.event_name == 'workflow_dispatch' && inputs.mode == 'execute'
+    needs: frozen-machine
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    permissions:
+      contents: write      # ONLY to create the one-shot lock tags (git refs); nothing is pushed by this job
+      actions: read
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - name: Main-only guard, committed spec, nothing sealed, no lock, no earlier results artifact
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const fs = require('fs');
+            const cp = require('child_process');
+            if (context.ref !== 'refs/heads/main') throw new Error('MAIN_ONLY');
+            const main = await github.rest.git.getRef({...context.repo, ref: 'heads/main'});
+            if (main.data.object.sha !== context.sha) throw new Error('MAIN_HEAD_CHANGED');
+            const specPath = 'research_specs/kr-market-risk-model-v1.json';
+            for (const p of [specPath, 'research_specs/kr-market-risk-model-v1.sha256']) {
+              const committed = cp.execFileSync('git', ['show', 'HEAD:' + p]);
+              if (!committed.equals(fs.readFileSync(p))) throw new Error('SPEC_NOT_COMMITTED_AT_HEAD');
+            }
+            const spec = JSON.parse(fs.readFileSync(specPath));
+            for (const p of [spec.lifecycle.resultPath, spec.lifecycle.markerPath, spec.lifecycle.manifestPath]) {
+              if (fs.existsSync(p)) throw new Error('MARKET_RISK_MODEL_ALREADY_SEALED');
+            }
+            const matching = await github.rest.git.listMatchingRefs({...context.repo, ref: 'tags/' + spec.studyId + '-execution-lock'});
+            if (matching.data.length > 0) throw new Error('EXECUTION_LOCK_ALREADY_EXISTS');
+            const earlier = await github.paginate(github.rest.actions.listArtifactsForRepo, {...context.repo, per_page: 100});
+            if (earlier.some(x => !x.expired && x.name.startsWith('kr-market-risk-model-v1-results-'))) throw new Error('RESULTS_ARTIFACT_ALREADY_EXISTS');
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+          cache: pip
+      - run: pip install -r requirements.txt -r requirements-dev.txt
+      - name: Development execution (pins and gates before the lock, lock before the marker, marker before any value)
+        id: execution
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python scripts/run_kr_market_risk_model_v1.py --mode execute --output run
+      - uses: actions/upload-artifact@v4
+        if: always() && steps.execution.outcome == 'success'
+        with:
+          name: kr-market-risk-model-v1-results-${{ github.run_id }}
+          path: run
+          retention-days: 90
+      - uses: actions/upload-artifact@v4
+        if: always() && steps.execution.outcome != 'success'
+        with:
+          name: kr-market-risk-model-v1-attempt-${{ github.run_id }}
+          path: run
+          retention-days: 90
+          if-no-files-found: ignore
+      - name: Report a consumed failed attempt (no retry)
+        if: failure()
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const matching = await github.rest.git.listMatchingRefs({...context.repo, ref: 'tags/kr-market-risk-model-v1-execution-lock'});
+            const consumed = matching.data.length > 0;
+            await core.summary.addHeading(consumed ? 'STUDY CONSUMED: the lock exists and the execution failed after it. DO NOT RETRY.'
+                                                   : 'Stopped before the lock: nothing was spent.').write();
+  seal:
+    name: seal
+    needs: [frozen-machine, execute]
+    if: >-
+      always() && github.event_name == 'workflow_dispatch' && needs.frozen-machine.result == 'success' &&
+      ((inputs.mode == 'execute' && needs.execute.result == 'success') || inputs.mode == 'seal')
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: write        # push the seal branch only
+      pull-requests: write   # open ONE Draft pull request; nothing is merged
+      actions: read
+    env:
+      GH_TOKEN: ${{ github.token }}
+      RUN_ID: ${{ inputs.mode == 'seal' && inputs.executionRunId || github.run_id }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+      - name: Execution run identity and the exact formal results artifact (never an attempt artifact)
+        run: |
+          set -euo pipefail
+          [ "$GITHUB_REF" = "refs/heads/main" ] || { echo "MAIN_ONLY"; exit 1; }
+          case "$RUN_ID" in ''|*[!0-9]*) echo "EXECUTION_RUN_ID_REQUIRED"; exit 1;; esac
+          api() { curl -fsS -H "Authorization: Bearer $GH_TOKEN" -H "Accept: application/vnd.github+json" "https://api.github.com/repos/${GITHUB_REPOSITORY}/$1"; }
+          api "actions/runs/${RUN_ID}" > run.json
+          api "actions/runs/${RUN_ID}/jobs?per_page=100" > jobs.json
+          api "actions/runs/${RUN_ID}/artifacts?per_page=100" > artifacts.json
+          python - <<'PY'
+          import json, os
+          run = json.load(open("run.json"))
+          if run.get("path") != ".github/workflows/kr-market-risk-model-v1.yml":
+              raise SystemExit("NOT_THIS_WORKFLOW")
+          name = "kr-market-risk-model-v1-results-" + os.environ["RUN_ID"]
+          hits = [a for a in json.load(open("artifacts.json"))["artifacts"] if a["name"] == name]
+          if len(hits) != 1:
+              raise SystemExit("FORMAL_RESULTS_ARTIFACT_NOT_FOUND")
+          json.dump(hits[0], open("artifact-metadata.json", "w"))
+          open(os.environ["GITHUB_ENV"], "a").write("EXEC_SHA=" + run["head_sha"] + "\nARTIFACT_ID=" + str(hits[0]["id"]) + "\n")
+          PY
+      - name: Base the seal on the execution commit; nothing sealed yet; seal branch absent
+        run: |
+          set -euo pipefail
+          git checkout -q --detach "$EXEC_SHA"
+          [ "$(git rev-parse HEAD)" = "$EXEC_SHA" ] || { echo "NOT_ON_THE_EXECUTION_COMMIT"; exit 1; }
+          python scripts/seal_kr_market_risk_model_v1.py check-main --root .
+          git fetch -q origin main
+          if git cat-file -e origin/main:docs/results/kr-market-risk-model-v1-result.json 2>/dev/null; then echo "ALREADY_SEALED_ON_MAIN"; exit 1; fi
+          SEAL_BRANCH="research/kr-market-risk-model-v1-result-seal-${RUN_ID}"
+          if git ls-remote --exit-code --heads origin "$SEAL_BRANCH" >/dev/null 2>&1; then echo "SEAL_BRANCH_EXISTS"; exit 1; fi
+          echo "SEAL_BRANCH=$SEAL_BRANCH" >> "$GITHUB_ENV"
+      - name: Download the exact archive (its digest is verified before anything is extracted)
+        run: |
+          set -euo pipefail
+          curl -fsSL -H "Authorization: Bearer $GH_TOKEN" -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/artifacts/${ARTIFACT_ID}/zip" -o artifact.zip
+      - name: Verify every identity, copy exact bytes, write provenance (no outcome is recomputed)
+        run: |
+          set -euo pipefail
+          python scripts/seal_kr_market_risk_model_v1.py seal --root . --run-id "$RUN_ID" --main-sha "$EXEC_SHA" --run run.json --jobs jobs.json \
+            --metadata artifact-metadata.json --archive artifact.zip --sealed-at "$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+      - name: Commit to the seal branch and open ONE Draft pull request (never merged here)
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -q -b "$SEAL_BRANCH"
+          git add docs/results/kr-market-risk-model-v1-result.json docs/results/kr-market-risk-model-v1-execution-started.json \
+            docs/results/kr-market-risk-model-v1-manifest.json docs/results/kr-market-risk-model-v1-seal-provenance.json
+          git commit -q -m "Research: seal kr-market-risk-model-v1 development result (exact artifact bytes, provenance; nothing recomputed)"
+          git push origin "$SEAL_BRANCH"
+          python scripts/seal_kr_market_risk_model_v1.py open-pr --root . --head "$SEAL_BRANCH"
