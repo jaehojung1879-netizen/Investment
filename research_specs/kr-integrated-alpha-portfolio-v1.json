@@ -210,7 +210,7 @@
     "docs/kr-factor-anatomy-v1-design.md": "b2e6402d118b6fbcbba0f62497b1efd92d28ab513d1a64661c62b2454839694d",
     "docs/kr-industry-opportunity-anatomy-v1-design.md": "06700c9938cde51d2b2ea8f99bad0712975f69190d038f8fba4d705548bc915c",
     "docs/kr-industry-opportunity-anatomy-v1-result-seal.md": "1a8db9c8b25e2fe15f34be0c88e24d5b0ff9e5d0ff433b0a5df42a633fc9a2bd",
-    "docs/kr-integrated-alpha-portfolio-v1-design.md": "d043a1c1c057ad7be2a16b0e34b44dea1815d1c6521b7a9844dc2ebf4321c558",
+    "docs/kr-integrated-alpha-portfolio-v1-design.md": "c27c0b2c704d254f306a3359ec962f6de11170dc3c32ba1226832eaa5687f0cc",
     "docs/kr-market-risk-anatomy-v1-design.md": "bcbb8679bdf8fbef80bb60a4b078bf9a33bbab957ca931b78d19cbcba9516033",
     "docs/kr-market-risk-anatomy-v1-source-readiness.md": "e3ad771242034071b41beff856525eea0ca0359614487fed204fccf3c43b750f",
     "docs/kr-market-risk-anatomy-v2-design.md": "6cbed6c7074ae6817f13f2a57976969f12ea7383744789f43cd46ab47fbbd0f5",
@@ -301,10 +301,10 @@
     "pipeline/kr_industry_anatomy_execution.py": "ece54c4020751df065c5391813724b315dc40db1a3d2a6508500165d0787cb1b",
     "pipeline/kr_industry_membership.py": "ec84de6d94d0f6e0b537dacef4cd96467566515471631f6c5107c39df038433c",
     "pipeline/kr_industry_membership_v3.py": "c857dcdd9323bc0fed69b2212b8dcc1fca7527c8fb1a0b32d588c8bbc5fa65f5",
-    "pipeline/kr_integrated_alpha_portfolio.py": "6c5839511ae68f4e9efb93c019de8d2698750b5839f9aa8e29c358dbade642ef",
-    "pipeline/kr_integrated_alpha_portfolio_execution.py": "ebb731b806d28d46b764cd095dc63e3bb5e67318670ecbe00bf93d50ca882ea3",
-    "pipeline/kr_integrated_alpha_portfolio_receipts.py": "61d6a445874dc760d11cbe2fbaf1f96332877e7d5d563ee1a9f61f3ddf833a47",
-    "pipeline/kr_integrated_alpha_portfolio_replay.py": "e735f361c2dc06a3369f854a10e5251ed660823d3c74b7a535cab43213ce63ed",
+    "pipeline/kr_integrated_alpha_portfolio.py": "4a0a77b65edcec21a1658ea4c64c7ad1e9d5ef187a586397f1a61fae2a6c842f",
+    "pipeline/kr_integrated_alpha_portfolio_execution.py": "2c0086891cbdd02432ecf6ae60dde869351057bc60d21e397861ad1853f7b626",
+    "pipeline/kr_integrated_alpha_portfolio_receipts.py": "734820cdd8db0b2c4774d68fad31ebf2b5bbff9788de9661901fe86971e5476d",
+    "pipeline/kr_integrated_alpha_portfolio_replay.py": "e621c95e53b76047587a23a12022763091fe9656326a9fcf08f771c119318ad2",
     "pipeline/kr_integrated_alpha_portfolio_seal.py": "0d08dc3ae6b605d971d7781c01aeb7cdfb436ff83aedd66bb74f346ed881df43",
     "pipeline/kr_market_risk_anatomy.py": "e97887dd5b0bbb15b37ed40473b1da8e40a8f3fea2125d9fb176fa94dac6e978",
     "pipeline/kr_market_risk_anatomy_analysis.py": "8565be7de14d990619c4ca3789dc4a403c547790663f6cd4139f61e0d972f8c6",
@@ -366,7 +366,7 @@
     "research_specs/kr-stock-within-industry-anatomy-v1.sha256": "c6215d25195ee61b303b4a94cf27f77275f14be5a329c3a457804c539a1abaf6",
     "research_specs/kr-top120-regime-review-v1.json": "79af4fcbaaf92452b2f1f98b7393ca757c5254b539884e8248b25c4959d76c93",
     "research_specs/kr-top120-regime-review-v1.sha256": "e1e7f101f37a5e2a9c53f7dcfa99afb8efc06e24235b022e57a4dae8c2b98e88",
-    "scripts/build_kr_integrated_alpha_portfolio_v1_spec.py": "b435c0979e2ebdbb5961816fc3b24f028f96f1828eefeeed77e6a14e56ea28f4",
+    "scripts/build_kr_integrated_alpha_portfolio_v1_spec.py": "7daf4ed840ca72cc1f7fdac26fa3ef6d3de8efaa8d2ef7d8e1b882995bae3963",
     "scripts/run_kr_integrated_alpha_portfolio_v1.py": "7a4c4f41ecd1161eab1835623b4f75e6757d5ef2aa8e7484b9314c500c2fab74",
     "scripts/seal_kr_integrated_alpha_portfolio_v1.py": "781cfceac163a7d5a323dfc51f060d6212452eb4efbc6a68c82a6730d5850e4f"
   },
@@ -425,7 +425,7 @@
       "fitted industry weights",
       "any macro series"
     ],
-    "rankabilityRule": "every rebalance anchor must rank at least the minimum industries, otherwise the run stops BEFORE the lock",
+    "rankabilityRule": "a NEW I+S decision exists at an anchor only when at least the minimum industries are ranked; otherwise that anchor is SIGNAL_UNAVAILABLE_NO_STOCK_REBALANCE for the I+S book (see missingSignal). The S book does not read the industry score and is unaffected.",
     "role": "OPTIONAL: when ON it re-orders eligible stocks by the state of their industry; when OFF it contributes exactly zero"
   },
   "input": {
@@ -469,7 +469,7 @@
   "lifecycle": {
     "executionLock": "refs/tags/kr-integrated-alpha-portfolio-v1-execution-lock plus -<specSha256>; any existing ref under the prefix refuses; never moved or deleted",
     "failureAfterLock": "consumes the study permanently; never retried; the attempt artifact is preserved under -attempt-<runId>",
-    "failureBeforeLock": "spends nothing",
+    "failureBeforeLock": "spends nothing (formal run 37299251812 was such a pre-lock refusal and did not consume the study)",
     "manifestPath": "docs/results/kr-integrated-alpha-portfolio-v1-manifest.json",
     "markerPath": "docs/results/kr-integrated-alpha-portfolio-v1-execution-started.json",
     "resultPath": "docs/results/kr-integrated-alpha-portfolio-v1-result.json",
@@ -490,7 +490,7 @@
       "workflow_dispatch on merged main",
       "committed exact spec and sidecar",
       "every pin verified",
-      "signal-time feature assembly and the registered depth / ranking gates (can stop before anything is spent)",
+      "signal-time feature assembly and the registered availability audit and study-level signal-coverage gate (can stop before anything is spent)",
       "no committed result, marker or manifest",
       "no execution lock under the study prefix",
       "durable exclusive lock (atomic POST /git/refs)",
@@ -753,6 +753,49 @@
       "costStress x1/x2/x3"
     ]
   },
+  "missingSignal": {
+    "anchorCalendar": "identical for all six architectures; an unavailable anchor is a NO-TRADE anchor, never a removed anchor",
+    "beforeTheFirstValidDecision": "the book holds zero equities (100% cash); an initial portfolio is never fabricated",
+    "marketLayerIndependent": "the sealed C0 / C1 schedule is untouched by stock or industry availability and may still scale the already-held book at its own dates; a missing stock or industry signal never changes C0 or C1",
+    "meaning": "a scheduled anchor at which a NEW valid ranking cannot be constructed from signal-time information; DATA AVAILABILITY, not a model parameter and not a licence to lower an alpha standard",
+    "notImputation": [
+      "no missing feature is zero-filled",
+      "no other factor is substituted",
+      "no finiteness rule is relaxed",
+      "no future observation is used",
+      "no minimum depth or industry count was changed"
+    ],
+    "outcomeFree": "the availability audit reads signal-time decisions only: no price after the signal, no return, no NAV, no benchmark excess",
+    "perBookIndependently": {
+      "I+S": "new decision iff at least the minimum eligible stocks (COMBINED_SCORE finite and investable) AND at least the minimum industries ranked",
+      "S": "new decision iff at least the minimum eligible stocks (STOCK_SCORE finite and investable)"
+    },
+    "recovery": "when the signal becomes valid again the normal registered decision is computed at that anchor and the book rebalances normally",
+    "reported": [
+      "scheduled anchors",
+      "valid-decision anchors",
+      "unavailable anchors",
+      "unavailable signal dates with causes",
+      "consecutive unavailable runs",
+      "first and last valid decision",
+      "availability share",
+      "exact industry-unrankable anchors",
+      "per path: no-trade anchors and sessions in cash before the first valid decision"
+    ],
+    "sharedUnderlying": "A, B and C share one S underlying state; D, E and F share one I+S underlying state (availability included)",
+    "status": "REGISTERED_BEFORE_ANY_OUTCOME (pre-outcome revision MISSING_SIGNAL_NO_TRADE_REVISION_1)",
+    "studyLevelCoverageGate": {
+      "appliesTo": "EACH of the S book and the I+S book, separately",
+      "minimumAvailabilityPercent": 80,
+      "rule": "at least one valid new decision AND (valid decisions x 100 >= scheduled anchors x 80); evaluated from signal-time availability only, BEFORE the lock; a miss stops the run having spent nothing",
+      "whyEightyPercent": "a round, economically defensible floor chosen before any outcome and not fitted to the five anchors observed in the first pre-lock refusal: a ranking that cannot be built at more than one anchor in five is a different strategy -- mostly holding a stale book -- and the comparison of six architectures would mostly be a comparison of how long each held its first book. Roughly four in five new decisions keeps each book recognisably the registered rule; the observed history clears it by a wide margin, so the number is not a threshold the history barely passes"
+    },
+    "unchangedQualityConditions": {
+      "minimumEligiblePerDate": 10,
+      "minimumIndustriesRanked": 5
+    },
+    "whenUnavailable": "SIGNAL_UNAVAILABLE_NO_STOCK_REBALANCE: that book generates NO NEW STOCK REBALANCE at that anchor; the previously held stock book continues unchanged (drifted, no trade, no cost, no liquidation, no substitution of another architecture's names)"
+  },
   "outcomeAccess": {
     "counters": [
       "featureBuilds",
@@ -866,6 +909,61 @@
       "unchanged": [
         "every exact-byte seal verification",
         "the Draft-only, never-merge, never-ready rules"
+      ]
+    },
+    {
+      "id": "MISSING_SIGNAL_NO_TRADE_REVISION_1",
+      "madeBeforeAnyOutcome": true,
+      "now": "an anchor without a valid new ranking is SIGNAL_UNAVAILABLE_NO_STOCK_REBALANCE for that book (hold the previous stock book, 100% cash before the first valid decision, market C0 / C1 independent); the depth and industry minimums stay as the quality conditions for a NEW decision; an outcome-blind study-level coverage gate (at least one valid decision and at least 80% of scheduled anchors, for each of S and I+S) runs before the lock",
+      "outcomeCountersAtRevision": "ALL_ZERO",
+      "provenance": {
+        "counters": {
+          "cashSensitivityCalls": 0,
+          "decisionCalls": 0,
+          "featureBuilds": 1,
+          "markerWrites": 0,
+          "marketStateComputations": 0,
+          "marketValueReads": 0,
+          "metricCalls": 0,
+          "replayCalls": 0
+        },
+        "formalExecutionRun": "37299251812",
+        "lockExists": false,
+        "note": "a pre-lock refusal spends nothing; the one-shot is unspent and no outcome was read",
+        "refusalReasonsFromTheJobLog": [
+          "STOCK_DEPTH_BELOW_MINIMUM:S:2017-01-13",
+          "STOCK_DEPTH_BELOW_MINIMUM:S:2017-02-10",
+          "STOCK_DEPTH_BELOW_MINIMUM:S:2017-03-17",
+          "STOCK_DEPTH_BELOW_MINIMUM:I+S:2017-01-13",
+          "STOCK_DEPTH_BELOW_MINIMUM:I+S:2017-02-10",
+          "STOCK_DEPTH_BELOW_MINIMUM:I+S:2017-03-17",
+          "STOCK_DEPTH_BELOW_MINIMUM:I+S:2021-09-24",
+          "STOCK_DEPTH_BELOW_MINIMUM:I+S:2021-10-29",
+          "INDUSTRY_LAYER_UNRANKABLE:2021-09-24",
+          "INDUSTRY_LAYER_UNRANKABLE:2021-10-29"
+        ],
+        "stoppedBefore": "THE_EXECUTION_LOCK",
+        "studyConsumed": false
+      },
+      "reason": "that is data-availability behaviour (a thin or unrankable cross-section at an anchor), not evidence about any architecture; stopping the study on it confuses 'a new ranking cannot be built on this date' with 'the model cannot be evaluated'",
+      "replaced": "the registered depth and industry-ranking minimums were required to hold at EVERY rebalance anchor, so one anchor without a full new cross-section stopped the whole historical study before the lock",
+      "unchanged": [
+        "the S and Industry score definitions",
+        "the 50/50 combination",
+        "C0 and C1",
+        "every factor input and finiteness rule",
+        "the ADV and downside-volatility gates",
+        "MIN_ELIGIBLE_PER_DATE",
+        "MIN_INDUSTRIES_RANKED",
+        "5 holdings and the 30% cap",
+        "costs",
+        "the 21-session anchor calendar",
+        "the start date",
+        "the benchmark",
+        "the cutoff",
+        "the decision bands",
+        "the cash-yield sensitivity",
+        "the prospective receipt design"
       ]
     }
   ],
@@ -1104,7 +1202,7 @@
   "stockLayer": {
     "eligibility": {
       "classifiedInEligibleIndustry": true,
-      "depthRule": "every rebalance anchor must leave at least the minimum eligible stocks for the S book and for the I+S book, otherwise the run stops BEFORE the lock (signal-time fact; spends nothing). 0-5 holdings remain valid when executability leaves fewer.",
+      "depthRule": "a NEW decision for the S book (and for the I+S book) exists at an anchor only when at least the minimum eligible stocks remain; otherwise that anchor is SIGNAL_UNAVAILABLE_NO_STOCK_REBALANCE (see missingSignal): the minimum is a quality condition for producing a decision, not a condition every anchor must meet for the study to run. 0-5 holdings remain valid when executability leaves fewer.",
       "minimumAdv60Krw": 3000000000.0,
       "minimumDownsideVol126": 0.01,
       "minimumEligiblePerDate": 10,

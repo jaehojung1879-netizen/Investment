@@ -1,0 +1,178 @@
+{
+  "I+S": {
+    "availabilityShare": 0.9557522123893806,
+    "consecutiveUnavailableRuns": [
+      {
+        "anchors": 3,
+        "firstSignalDate": "2017-01-13",
+        "lastSignalDate": "2017-03-17"
+      },
+      {
+        "anchors": 2,
+        "firstSignalDate": "2021-09-24",
+        "lastSignalDate": "2021-10-29"
+      }
+    ],
+    "firstValidDecision": {
+      "anchor": "2017-04-18",
+      "signalDate": "2017-04-14"
+    },
+    "lastValidDecision": {
+      "anchor": "2026-08-24",
+      "signalDate": "2026-08-21"
+    },
+    "longestUnavailableRun": 3,
+    "meetsStudyCoverage": true,
+    "scheduledAnchors": 113,
+    "unavailableAnchorDays": [
+      "2017-01-16",
+      "2017-02-16",
+      "2017-03-20",
+      "2021-09-30",
+      "2021-11-02"
+    ],
+    "unavailableAnchorNumbers": [
+      1,
+      2,
+      3,
+      56,
+      57
+    ],
+    "unavailableAnchors": 5,
+    "unavailableCauses": {
+      "2017-01-13": [
+        "STOCK_DEPTH_BELOW_MINIMUM"
+      ],
+      "2017-02-10": [
+        "STOCK_DEPTH_BELOW_MINIMUM"
+      ],
+      "2017-03-17": [
+        "STOCK_DEPTH_BELOW_MINIMUM"
+      ],
+      "2021-09-24": [
+        "STOCK_DEPTH_BELOW_MINIMUM",
+        "INDUSTRY_LAYER_UNRANKABLE"
+      ],
+      "2021-10-29": [
+        "STOCK_DEPTH_BELOW_MINIMUM",
+        "INDUSTRY_LAYER_UNRANKABLE"
+      ]
+    },
+    "unavailableSignalDates": [
+      "2017-01-13",
+      "2017-02-10",
+      "2017-03-17",
+      "2021-09-24",
+      "2021-10-29"
+    ],
+    "validDecisionAnchors": 108
+  },
+  "S": {
+    "availabilityShare": 0.9734513274336283,
+    "consecutiveUnavailableRuns": [
+      {
+        "anchors": 3,
+        "firstSignalDate": "2017-01-13",
+        "lastSignalDate": "2017-03-17"
+      }
+    ],
+    "firstValidDecision": {
+      "anchor": "2017-04-18",
+      "signalDate": "2017-04-14"
+    },
+    "lastValidDecision": {
+      "anchor": "2026-08-24",
+      "signalDate": "2026-08-21"
+    },
+    "longestUnavailableRun": 3,
+    "meetsStudyCoverage": true,
+    "scheduledAnchors": 113,
+    "unavailableAnchorDays": [
+      "2017-01-16",
+      "2017-02-16",
+      "2017-03-20"
+    ],
+    "unavailableAnchorNumbers": [
+      1,
+      2,
+      3
+    ],
+    "unavailableAnchors": 3,
+    "unavailableCauses": {
+      "2017-01-13": [
+        "STOCK_DEPTH_BELOW_MINIMUM"
+      ],
+      "2017-02-10": [
+        "STOCK_DEPTH_BELOW_MINIMUM"
+      ],
+      "2017-03-17": [
+        "STOCK_DEPTH_BELOW_MINIMUM"
+      ]
+    },
+    "unavailableSignalDates": [
+      "2017-01-13",
+      "2017-02-10",
+      "2017-03-17"
+    ],
+    "validDecisionAnchors": 110
+  },
+  "anchorIndexByUnavailableSignalDate": {
+    "2017-01-13": 1,
+    "2017-02-10": 2,
+    "2017-03-17": 3,
+    "2021-09-24": 56,
+    "2021-10-29": 57
+  },
+  "anyReturnNavOrBenchmarkExcessRead": false,
+  "firstAnchor": "2017-01-16",
+  "industryUnrankable": {
+    "anchorNumbers": [
+      56,
+      57
+    ],
+    "anchors": 2,
+    "signalDates": [
+      "2021-09-24",
+      "2021-10-29"
+    ]
+  },
+  "kind": "PRE_LOCK_SIGNAL_AVAILABILITY_PROFILE_DERIVED_FROM_THE_FIRST_FORMAL_ATTEMPT_REFUSAL_LIST",
+  "lastAnchor": "2026-08-24",
+  "minimumEligiblePerDate": 10,
+  "minimumIndustriesRanked": 5,
+  "note": "Measured from signal-time information and the calendar only. No forward return, NAV, benchmark excess or drawdown exists in this file.",
+  "outcomeFree": true,
+  "provenance": {
+    "counters": {
+      "cashSensitivityCalls": 0,
+      "decisionCalls": 0,
+      "featureBuilds": 1,
+      "markerWrites": 0,
+      "marketStateComputations": 0,
+      "marketValueReads": 0,
+      "metricCalls": 0,
+      "replayCalls": 0
+    },
+    "derivation": "The scheduled anchors come from the trading calendar alone (calendar_anchors). The deficient signal dates are exactly the ten refusal reasons the pre-lock gate printed in the job log of the run (the gate lists every deficient anchor; 10 reasons, all printed). Valid-decision counts follow arithmetically. The preserved raw-input artifact is not reachable from the authoring sandbox, so this profile was NOT recomputed from raw inputs here; the revised pre-lock gate recomputes and publishes the same profile from signal-time inputs on the next formal run.",
+    "formalExecutionRun": "37299251812",
+    "lockExists": false,
+    "refusalReasons": [
+      "STOCK_DEPTH_BELOW_MINIMUM:S:2017-01-13",
+      "STOCK_DEPTH_BELOW_MINIMUM:S:2017-02-10",
+      "STOCK_DEPTH_BELOW_MINIMUM:S:2017-03-17",
+      "STOCK_DEPTH_BELOW_MINIMUM:I+S:2017-01-13",
+      "STOCK_DEPTH_BELOW_MINIMUM:I+S:2017-02-10",
+      "STOCK_DEPTH_BELOW_MINIMUM:I+S:2017-03-17",
+      "STOCK_DEPTH_BELOW_MINIMUM:I+S:2021-09-24",
+      "STOCK_DEPTH_BELOW_MINIMUM:I+S:2021-10-29",
+      "INDUSTRY_LAYER_UNRANKABLE:2021-09-24",
+      "INDUSTRY_LAYER_UNRANKABLE:2021-10-29"
+    ],
+    "stoppedBefore": "THE_EXECUTION_LOCK",
+    "studyConsumed": false
+  },
+  "scheduledAnchors": 113,
+  "scientificStatus": "EXPLORATORY_DEVELOPMENT_ON_OUTCOME_EXPOSED_KR_HISTORY",
+  "studyCoverageMinimumPercent": 80,
+  "studyId": "kr-integrated-alpha-portfolio-v1"
+}

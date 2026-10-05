@@ -51,8 +51,46 @@ plus square-root impact; ×2 and ×3 stress are descriptive. Holdings are 0 to 5
 eligible names under the common rules. A held name with no observed close, no observed zero-volume quote and no terminal economics **blocks that architecture's
 path** (it never silently disappears and no successor is substituted). **No architecture has a trading rule of its own.**
 
-**Depth.** Before any outcome, every anchor must leave at least **10** eligible stocks for the S book and for the I+S book (twice the book size) and rank at
-least **5** industries; otherwise the run stops before the lock, spending nothing. The pre-lock gates report eligible stocks per date.
+**Depth is a quality condition for a NEW decision, not a global gate on every anchor.** A new S decision needs at least **10** eligible stocks (twice the
+book size); a new I+S decision needs the same **and** at least **5** ranked industries. Both minimums are unchanged. At an anchor that fails them the book has
+no valid new ranking and the registered missing-signal rule below applies. What can stop the run before the lock is the *study-level* availability of new
+decisions (section 4a), not one thin date.
+
+### 4a. Missing-signal / no-trade semantics (registered before any outcome)
+
+A scheduled anchor at which a new valid ranking cannot be built from signal-time information is **data availability**, not evidence about any architecture and
+not permission to lower an alpha standard. The rule applies to each underlying book independently:
+
+* **S**: a new decision exists only if the registered stock depth holds; otherwise `SIGNAL_UNAVAILABLE_NO_STOCK_REBALANCE`.
+* **I+S**: a new decision exists only if the registered stock depth **and** the registered industry ranking hold; otherwise the same state.
+* **Unavailable anchor**: no new stock rebalance is generated, and the previously held stock book continues unchanged (it drifts; no trade, no cost, no
+  liquidation, no names from another architecture). This is hold-previous / no-trade behaviour, not imputation: no feature is zero-filled, no factor is
+  substituted, no finiteness rule is relaxed, no future observation is used.
+* **Before a book's first valid decision**: zero equities (100% cash). An initial portfolio is never fabricated.
+* **Recovery**: when the signal is valid again the normal registered decision is computed at that anchor and the book rebalances normally.
+* **Calendar and sharing**: the 21-session anchor calendar is identical for all six architectures; an unavailable anchor is a no-trade anchor, not a removed one.
+  A, B and C share one S underlying state and D, E and F share one I+S underlying state, availability included.
+* **Market layer**: C0 / C1 are independent. They may still scale the already-held book at their own sealed dates; a missing stock or industry signal never
+  changes C0 or C1.
+
+The following are reported for S and I+S separately: valid-decision anchors, unavailable anchors with their dates and causes, consecutive unavailable runs, the
+first and last valid decision and the availability share, plus the exact industry-unrankable anchors. They are measured from signal-time decisions only, before
+the lock; no price after the signal, return, NAV or benchmark excess enters.
+
+**Study-level coverage gate (before the lock).** For **each** of S and I+S: at least one valid new decision, and at least **80%** of the scheduled anchors must
+permit one (integer arithmetic: valid x 100 >= anchors x 80). 80% is a round, economically defensible floor fixed before any outcome and not fitted to the five
+anchors seen in the first refusal: a ranking that cannot be built at more than one anchor in five is mostly a stale book, and comparing six architectures would
+mostly compare how long each held its first book. A stricter number such as 90% would be an arbitrary tightening; a looser one would let a mostly-missing study
+run. A miss stops the run having spent nothing.
+
+**Provenance of this revision.** The first formal attempt (Actions run `37299251812`, on merged `main` `85e89cda`) passed the frozen machine, the exact input
+identity and the exact raw-artifact download, then **stopped in the signal-time pre-lock gate** because the preregistration had required every anchor to have a
+full new cross-section. The refusals were `STOCK_DEPTH_BELOW_MINIMUM` for S and I+S at the signal dates 2017-01-13, 2017-02-10 and 2017-03-17, and for I+S plus
+`INDUSTRY_LAYER_UNRANKABLE` at 2021-09-24 and 2021-10-29. `gates-failed.json` recorded `featureBuilds = 1` and every other counter zero. That is a **pre-lock
+refusal**: no execution lock was created, no marker was written, no market value was read and no portfolio outcome was computed, so the one-shot is **unspent** and
+the study is **not consumed**. The revision (`MISSING_SIGNAL_NO_TRADE_REVISION_1`) changes only the handling of an anchor without a valid new ranking and adds the
+outcome-blind coverage gate; the scores, weights, minimum depth and industry count, portfolio rules, costs, calendar, start date, benchmark, cutoff, bands, C0 / C1
+mappings, cash sensitivity and receipt design are untouched.
 
 ## 5. Cash yield is a sensitivity, not a model input
 
@@ -99,12 +137,13 @@ Bands are inherited unchanged from the sealed market model's nomination (none in
 Each future decision date writes one immutable receipt **before** any outcome: all input identities, the industry membership used, the registered feature values,
 `STOCK_SCORE` / `INDUSTRY_SCORE` / `COMBINED_SCORE`, the eligible names, both underlying books, the C0 and C1 states and multipliers, **all six target portfolios**, the
 spec SHA, the code identity, the creation time and a receipt digest. The six targets are derived (underlying × multiplier), so the shared-underlying identity cannot be
-broken by a typo. The ledger is append-only; nothing is written or scheduled by this change.
+broken by a typo. A book with no valid new decision on that date is recorded as `available: false` and its targets carry `targetStatus:
+HOLD_PREVIOUS_BOOK_SIGNAL_UNAVAILABLE_NO_STOCK_REBALANCE` (never as a 100%-cash target). The ledger is append-only; nothing is written or scheduled by this change.
 
 ## 9. Lifecycle
 
 `workflow_dispatch` on merged `main` only → committed spec and every pin (prior sealed studies byte-for-byte, the market mappings against the model's own sealed spec,
-the inherited portfolio values against the overlay study, the cash source, the raw-input artifact) → signal-time feature assembly and the registered gates (can stop
+the inherited portfolio values against the overlay study, the cash source, the raw-input artifact) → signal-time feature assembly, the outcome-free availability audit and the study-level coverage gate (can stop
 before anything is spent) → no prior result, marker or lock → durable exclusive lock (`refs/tags/kr-integrated-alpha-portfolio-v1-execution-lock` and `-<specSha256>`,
 atomic POST, any existing ref refuses) → execution marker → first market value read → exactly one result artifact → automatic exact-byte **Draft** seal PR → a human merges.
 A failure after the lock consumes the study; it is never silently rerun.
@@ -127,4 +166,5 @@ no top-k search, no cap or cost change. No sealed prior study is rerun or modifi
 Outcome-exposed single sample reused by three prior studies; industry membership is a reconstruction (most classified name-dates rest on a no-change inference, the 22
 terminal securities are unclassified); issue-cap accounting proxies; the return basis has only partial distributions (banks and high-dividend names are unreliable); the
 market scale-trade uses drifted proportions and is an engineering choice of this study; weekly signals and 21-session windows overlap; only large caps; no multiplicity
-correction. A final architecture is something to **record prospectively**, not something that has been shown to work.
+correction. A book that cannot be re-ranked at some anchors holds a stale book there; the number and length of those runs are reported, never hidden, and the
+availability of new decisions is part of what each architecture is. A final architecture is something to **record prospectively**, not something that has been shown to work.

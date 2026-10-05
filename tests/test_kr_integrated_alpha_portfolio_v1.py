@@ -96,9 +96,12 @@ def test_the_industry_score_is_order_independent_and_uses_nothing_but_its_two_fe
     assert M.industry_scores(extra) == M.industry_scores(features)
 
 
+WORLD_INDUSTRIES = ("X", "Y", "Z", "U", "V", "W")
+
+
 def world_rows(industry_score=None):
-    scored = M.stock_scores(frame(n_per_industry=6))
-    industry = industry_score or {"X": 0.8, "Y": 0.2}
+    scored = M.stock_scores(frame(n_per_industry=6, industries=WORLD_INDUSTRIES))
+    industry = industry_score or {"X": 0.8, "Y": 0.2, "Z": 0.6, "U": 0.4, "V": 0.5, "W": 0.3}
     return M.decision_rows(scored, {k: {"INDUSTRY_SCORE": v} for k, v in industry.items()})
 
 
@@ -112,7 +115,7 @@ def test_combined_score_is_half_stock_half_industry_and_exists_only_when_both_do
 
 def test_industry_off_contributes_exactly_zero_and_on_reorders_only():
     rows = world_rows()
-    flipped = world_rows({"X": 0.2, "Y": 0.8})
+    flipped = world_rows({"X": 0.2, "Y": 0.8, "Z": 0.9, "U": 0.1, "V": 0.5, "W": 0.7})
     assert M.underlying_decision(rows, False) == M.underlying_decision(flipped, False)          # S never reads the industry score
     on, flipped_on = M.underlying_decision(rows, True), M.underlying_decision(flipped, True)
     assert on["selected"] != flipped_on["selected"] and on["scoreUsed"] == "COMBINED_SCORE"
@@ -123,30 +126,32 @@ def test_industry_off_contributes_exactly_zero_and_on_reorders_only():
 # Eligibility, selection, sizing, shared underlying
 # ---------------------------------------------------------------------------------------------------------------------------------------
 def test_selection_is_top_five_by_score_with_ticker_ties_and_only_investable_names():
-    rows = [{"ticker": f"T{i}", "industry": "X", "STOCK_SCORE": 0.5, "INDUSTRY_SCORE": 0.5, "COMBINED_SCORE": 0.5, "tradable": True, "adv60": 6e9, "downsideVol126": 0.2}
-            for i in range(8)]
+    rows = [{"ticker": f"T{i:02d}", "industry": "X", "STOCK_SCORE": 0.5, "INDUSTRY_SCORE": 0.5, "COMBINED_SCORE": 0.5, "tradable": True, "adv60": 6e9, "downsideVol126": 0.2}
+            for i in range(14)]
     decision = M.underlying_decision(rows, False)
-    assert decision["selected"] == ["T0", "T1", "T2", "T3", "T4"] and decision["eligibleCount"] == 8 and decision["depthOk"] is False
+    assert decision["selected"] == ["T00", "T01", "T02", "T03", "T04"] and decision["eligibleCount"] == 14 and decision["depthOk"] is True and decision["available"] is True
     assert M.underlying_decision(list(reversed(rows)), False) == decision                    # input order never matters
     rows[0].update(tradable=False)
     rows[1].update(adv60=2.9e9)
     rows[2].update(downsideVol126=0.005)
     rows[3].update(STOCK_SCORE=np.nan)
     again = M.underlying_decision(rows, False)
-    assert again["selected"] == ["T4", "T5", "T6", "T7"] and again["eligibleCount"] == 4        # 0-5 holdings: fewer when eligibility leaves fewer
+    assert again["selected"] == ["T04", "T05", "T06", "T07", "T08"] and again["eligibleCount"] == 10 and again["available"] is True
     assert M.underlying_decision([], False)["selected"] == [] and M.underlying_decision([], False)["baseWeights"] == {}
+    assert M.underlying_decision([], False)["available"] is False
 
 
 def test_depth_flag_follows_the_frozen_minimum():
     rows = [{"ticker": f"T{i}", "industry": "X", "STOCK_SCORE": i / 20, "INDUSTRY_SCORE": 0.5, "COMBINED_SCORE": i / 20, "tradable": True, "adv60": 6e9,
              "downsideVol126": 0.2} for i in range(M.MIN_ELIGIBLE_PER_DATE)]
     assert M.underlying_decision(rows, False)["depthOk"] is True and M.underlying_decision(rows[:-1], False)["depthOk"] is False
+    assert M.underlying_decision(rows, False)["available"] is True and M.underlying_decision(rows[:-1], False)["available"] is False
     assert M.MIN_ELIGIBLE_PER_DATE == 2 * M.MAX_HOLDINGS
 
 
 def test_sizing_is_the_sealed_water_fill_under_the_name_cap_with_residual_cash_and_no_market_input():
     rows = [{"ticker": f"T{i}", "industry": "X", "STOCK_SCORE": 1 - i / 10, "INDUSTRY_SCORE": 0.5, "COMBINED_SCORE": 1 - i / 10, "tradable": True, "adv60": 6e9,
-             "downsideVol126": 0.1 + 0.05 * i} for i in range(6)]
+             "downsideVol126": 0.1 + 0.05 * i} for i in range(12)]
     decision = M.underlying_decision(rows, False)
     chosen = [r for r in rows if r["ticker"] in decision["selected"]]
     assert decision["baseWeights"] == P.size(chosen, M.PORTFOLIO)
@@ -379,3 +384,62 @@ def test_output_keys_with_forbidden_semantics_are_refused():
 
 def test_industry_layer_percentile_function_is_the_sealed_one():
     assert S.MIN_RANK_PEERS == 5 and S.MIN_INDUSTRY_MEMBERS == 5
+
+
+# ---------------------------------------------------------------------------------------------------------------------------------------
+# Registered missing-signal semantics (SIGNAL_UNAVAILABLE_NO_STOCK_REBALANCE)
+# ---------------------------------------------------------------------------------------------------------------------------------------
+def thin_rows(count, industries=3):
+    return [{"ticker": f"T{i:02d}", "industry": f"I{i % industries}", "STOCK_SCORE": 0.9 - i / 100, "INDUSTRY_SCORE": 0.5, "COMBINED_SCORE": 0.9 - i / 100,
+             "tradable": True, "adv60": 6e9, "downsideVol126": 0.2} for i in range(count)]
+
+
+def test_a_cross_section_below_the_registered_depth_has_no_new_decision_and_nothing_is_selected_sized_or_filled():
+    rows = thin_rows(M.MIN_ELIGIBLE_PER_DATE - 1, industries=6)
+    for with_industry in (False, True):
+        decision = M.underlying_decision(rows, with_industry, industries_ranked=6)
+        assert decision["available"] is False and decision["unavailable"] == M.SIGNAL_UNAVAILABLE and "STOCK_DEPTH_BELOW_MINIMUM" in decision["unavailableCauses"]
+        assert decision["selected"] == [] and decision["baseWeights"] == {} and decision["scores"] == {} and decision["eligibleCount"] == len(rows)
+    ok = M.underlying_decision(thin_rows(M.MIN_ELIGIBLE_PER_DATE, industries=6), False)
+    assert ok["available"] is True and ok["unavailable"] is None and len(ok["selected"]) == M.MAX_HOLDINGS
+
+
+def test_an_unrankable_industry_layer_makes_only_the_i_plus_s_book_unavailable():
+    rows = thin_rows(14, industries=6)
+    pair = M.underlying_pair(rows, industries_ranked=M.MIN_INDUSTRIES_RANKED - 1)
+    assert pair["S"]["available"] is True and len(pair["S"]["selected"]) == M.MAX_HOLDINGS            # the S book never reads the industry score
+    assert pair["I+S"]["available"] is False and pair["I+S"]["unavailableCauses"] == ["INDUSTRY_LAYER_UNRANKABLE"] and pair["I+S"]["selected"] == []
+    assert M.underlying_pair(rows, industries_ranked=M.MIN_INDUSTRIES_RANKED)["I+S"]["available"] is True
+    derived = M.underlying_pair(thin_rows(14, industries=3))                                        # without an explicit count the ranked industries are read from the rows
+    assert derived["I+S"]["available"] is False and derived["S"]["available"] is True
+
+
+def test_nothing_is_zero_filled_substituted_or_relaxed_to_reach_a_decision():
+    rows = thin_rows(M.MIN_ELIGIBLE_PER_DATE, industries=6)
+    rows[0]["STOCK_SCORE"] = np.nan                                                                 # one missing score is NOT turned into a number
+    decision = M.underlying_decision(rows, False)
+    assert decision["eligibleCount"] == M.MIN_ELIGIBLE_PER_DATE - 1 and decision["available"] is False and "T00" not in decision["scores"]
+    rows[0]["STOCK_SCORE"] = 0.0                                                                    # only a real stated value makes the depth
+    assert M.underlying_decision(rows, False)["available"] is True
+    assert (M.MIN_ELIGIBLE_PER_DATE, M.MIN_INDUSTRIES_RANKED, M.MAX_HOLDINGS) == (10, 5, 5)           # the quality conditions did not move
+    assert M.COMBINED_WEIGHTS == {"STOCK_SCORE": 0.5, "INDUSTRY_SCORE": 0.5} and M.PORTFOLIO["singleNameCap"] == 0.3
+
+
+def test_availability_profile_reports_runs_first_last_valid_and_the_share():
+    flags = [("d%d" % i, "s%d" % i, ok, [] if ok else ["STOCK_DEPTH_BELOW_MINIMUM"]) for i, ok in enumerate([False, False, True, True, False, True, False, False, False, True])]
+    profile = M.availability_profile(flags)
+    assert (profile["scheduledAnchors"], profile["validDecisionAnchors"], profile["unavailableAnchors"]) == (10, 4, 6) and profile["availabilityShare"] == 0.4
+    assert profile["unavailableSignalDates"] == ["s0", "s1", "s4", "s6", "s7", "s8"] and profile["longestUnavailableRun"] == 3
+    assert [r["anchors"] for r in profile["consecutiveUnavailableRuns"]] == [2, 1, 3]
+    assert profile["firstValidDecision"] == {"anchor": "d2", "signalDate": "s2"} and profile["lastValidDecision"] == {"anchor": "d9", "signalDate": "s9"}
+    assert profile["meetsStudyCoverage"] is False
+    assert M.availability_profile([])["meetsStudyCoverage"] is False and M.availability_profile([])["availabilityShare"] is None
+
+
+def test_the_study_level_coverage_floor_is_exact_integer_arithmetic_at_eighty_percent():
+    def meets(valid, total):
+        return M.availability_profile([("d", "s", i < valid, []) for i in range(total)])["meetsStudyCoverage"]
+    assert M.MIN_AVAILABILITY_PERCENT == 80
+    assert meets(80, 100) is True and meets(79, 100) is False
+    assert meets(91, 113) is True and meets(90, 113) is False                                         # 113 scheduled anchors: 91 needed (ceil of 90.4)
+    assert meets(1, 1) is True and meets(0, 5) is False                                              # at least one valid decision is always required

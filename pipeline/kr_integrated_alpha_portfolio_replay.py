@@ -133,11 +133,19 @@ def replay_architecture(architecture, decisions, anchors, market_table, ctx, cfg
             if target is None:
                 raise ValueError("MARKET_TARGET_UNAVAILABLE: " + day)
             cost = turnover = 0.0
-            kind, replaced, added, execution = None, 0, 0, None
-            if day in anchor_by_day:
-                signal = anchor_by_day[day]
-                if signal not in decisions:
-                    raise ValueError("MISSING_UNDERLYING_DECISION: " + signal)
+            kind, replaced, added, execution, unavailable = None, 0, 0, None, False
+            signal = anchor_by_day.get(day)
+            if signal is not None and signal not in decisions:
+                raise ValueError("MISSING_UNDERLYING_DECISION: " + signal)
+            if signal is not None and not decisions[signal].get("available", True):
+                # REGISTERED MISSING-SIGNAL RULE: no new decision exists for this book at this anchor, so NO STOCK TRADE is generated. The held book (if any)
+                # continues unchanged and drifts; before the first valid decision the book is 100% cash. Nothing is imputed, substituted or liquidated.
+                kind, unavailable = "NO_TRADE_SIGNAL_UNAVAILABLE", True
+                if not started:
+                    started = True
+                    previous_benchmark = mark_price(ctx, ctx.benchmark, day)
+                signal = None
+            if signal is not None:
                 decision = decisions[signal]
                 desired = {t: w * target for t, w in decision["baseWeights"].items()}
                 adv = adv_map(ctx, set(positions) | set(desired), signal, day)
@@ -170,7 +178,7 @@ def replay_architecture(architecture, decisions, anchors, market_table, ctx, cfg
                 current_multiplier = target
                 records.append({"date": day, "nav": nav, "grossNav": gross_nav, "benchmarkNav": benchmark_nav, "cost": cost, "turnover": turnover,
                                 "holdings": len(positions), "cashWeight": 1 - sum(positions.values()), "weights": dict(positions), "kind": kind,
-                                "marketMultiplier": current_multiplier, "replaced": replaced, "added": added,
+                                "signalUnavailable": unavailable, "marketMultiplier": current_multiplier, "replaced": replaced, "added": added,
                                 "overlayConstraintBinding": execution["overlayConstraintBinding"] if execution else None,
                                 "overlayExcessDueToDeferredExit": execution["overlayExcessDueToDeferredExit"] if execution else None})
     except ValueError as error:
@@ -257,7 +265,8 @@ def summarize_path(path, nav_override=None):
         "annualizedVolatility": float(np.std(returns, ddof=1) * math.sqrt(ANNUALISATION)), "downsideVolatility": K.downside_volatility(returns),
         "totalOneWayTurnover": float(sum(r["turnover"] for r in path)), "annualizedOneWayTurnover": float(sum(r["turnover"] for r in path) / years),
         "totalCostFractionOfNav": float(sum(r["cost"] for r in path)), "replacements": int(replaced), "annualizedReplacements": float(replaced / years),
-        "anchorRebalances": len(anchor_rows), "marketScaleTrades": sum(1 for r in path if r["kind"] == "MARKET"),
+        "anchorRebalances": len(anchor_rows), "noTradeSignalUnavailableAnchors": sum(1 for r in path if r.get("signalUnavailable")),
+        "sessionsFullyInCashBeforeFirstValidDecision": next((i for i, r in enumerate(path) if r["kind"] == "ANCHOR"), len(path)), "marketScaleTrades": sum(1 for r in path if r["kind"] == "MARKET"),
         "averageHoldings": float(np.mean([r["holdings"] for r in path])), "averageCashShare": float(np.mean([r["cashWeight"] for r in path])),
         "averageGrossEquityExposure": float(np.mean([1 - r["cashWeight"] for r in path])),
         "meanHerfindahl": float(np.mean(herfindahl)) if herfindahl else None, "meanMaxWeight": float(np.mean(max_weight)) if max_weight else None,
