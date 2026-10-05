@@ -60,8 +60,11 @@ def target_portfolios(underlying, multipliers):
         market = M.ARCHITECTURES[arch]["market"]
         multiplier = 1.0 if market is None else multipliers[market]
         weights = {t: w * multiplier for t, w in sorted(underlying[layer]["baseWeights"].items())}
+        available = underlying[layer].get("available", True)
+        # an unavailable signal is NOT a 100%-cash target: no NEW stock decision exists and the previously held book continues (registered missing-signal rule)
         out[arch] = {"name": M.ARCHITECTURES[arch]["name"], "underlying": layer, "marketCandidate": market, "equityRiskMultiplier": multiplier,
-                     "selected": list(underlying[layer]["selected"]), "weights": weights, "cashWeight": 1.0 - math.fsum(weights.values())}
+                     "targetStatus": "NEW_DECISION" if available else "HOLD_PREVIOUS_BOOK_" + M.SIGNAL_UNAVAILABLE,
+                     "selected": list(underlying[layer]["selected"]), "weights": weights, "cashWeight": 1.0 - math.fsum(weights.values()) if available else None}
     return out
 
 
@@ -84,7 +87,8 @@ def build_receipt(*, signal_date, input_identities, industry_membership, stock_f
                "executionDate": str(calendar[1].date()), "createdAtUtc": created_at_utc, "inputIdentities": dict(sorted(input_identities.items())),
                "industryMembership": dict(sorted(industry_membership.items())), "stockFeatures": stock_features, "industryFeatures": industry_features,
                "scores": scores, "eligible": {k: sorted(v) for k, v in eligible.items()},
-               "underlying": {k: {"selected": list(v["selected"]), "baseWeights": dict(sorted(v["baseWeights"].items()))} for k, v in underlying.items()},
+               "underlying": {k: {"available": v.get("available", True), "unavailable": v.get("unavailable"), "selected": list(v["selected"]),
+                                  "baseWeights": dict(sorted(v["baseWeights"].items()))} for k, v in underlying.items()},
                "market": market, "targets": target_portfolios(underlying, multipliers), "developmentDecision": development_decision,
                "evaluationHorizons": list(EVALUATION_HORIZONS), "evidenceClass": EVIDENCE_CLASS}
     receipt["receiptSha256"] = receipt_digest(receipt)

@@ -2356,9 +2356,31 @@
   The one thing this study adds is how a multiplier CHANGE meets an already-held 0-5 name book: a pure scale of the held proportions (drifted weights kept,
   re-expressed at multiplier 1, renormalised to at most 1, times the new target), executed by the same `execute_rebalance` as every other trade. That is an
   engineering choice of this study and is stated as one.
-- DEPTH IS FROZEN BEFORE OUTCOMES AND GATES CAN STOP THE RUN WITHOUT SPENDING IT. Every anchor must leave at least 10 eligible stocks (twice the book) for the
-  S book and the I+S book and rank at least 5 industries (the sealed minimum observed was 6), checked on signal-time information before the lock. A short date
-  is a registered stop, not a rule invented at execution; 0-5 holdings stay valid when executability leaves fewer, and there is no absolute "do not invest" threshold.
+- DEPTH IS A QUALITY CONDITION FOR A NEW DECISION, NOT A GATE EVERY ANCHOR MUST PASS. A new S decision needs at least 10 eligible stocks (twice the book) and a
+  new I+S decision the same plus at least 5 ranked industries (the sealed minimum observed was 6); 0-5 holdings stay valid when executability leaves fewer, and there
+  is no absolute "do not invest" threshold. The first draft required those minimums at EVERY anchor before the lock. Formal run `37299251812` proved that wrong the
+  hard way (see the missing-signal bullets below): five of 113 anchors had no valid new cross-section and the whole historical study was refused for it.
+- A THIN OR UNRANKABLE ANCHOR IS DATA AVAILABILITY, AND IT IS HANDLED BY A RULE REGISTERED BEFORE ANY OUTCOME. `SIGNAL_UNAVAILABLE_NO_STOCK_REBALANCE`, per book
+  independently: no new decision, no stock trade, the previously held stock book continues unchanged (it drifts; no cost, no liquidation, no names borrowed from
+  another architecture); 100% cash before a book's first valid decision, never a fabricated initial portfolio; the normal registered decision and a normal
+  rebalance when the signal is valid again; the 21-session calendar identical for all six architectures (a no-trade anchor, not a removed one); A/B/C share one S
+  state and D/E/F one I+S state; C0 and C1 stay independent and may still scale the held book. This is hold-previous, not imputation: no feature is zero-filled, no
+  factor is substituted, no finiteness rule is relaxed, no future observation is used, and MIN_ELIGIBLE_PER_DATE / MIN_INDUSTRIES_RANKED did not move. Lowering
+  either number to make the observed dates pass is exactly what this rule exists to avoid.
+- AVAILABILITY IS REPORTED, AND A MOSTLY-MISSING STUDY STILL CANNOT RUN. For S and I+S separately the result and any pre-lock refusal expose valid-decision and
+  unavailable anchors, the unavailable signal dates with causes, consecutive unavailable runs, the first and last valid decision, the availability share and the
+  exact industry-unrankable anchors, all from signal-time decisions with no price after the signal, return, NAV or excess. The study-level gate before the lock
+  needs, for EACH book, at least one valid decision and at least 80% of the scheduled anchors (integer arithmetic). 80% is round and defensible, not fitted to the
+  five anchors seen: a book that cannot be re-ranked at more than one anchor in five is mostly a stale book. The observed history clears it by a wide margin
+  (S 110 of 113, I+S 108 of 113 by the refusal list), so the number is not one the history barely passes.
+- A PRE-LOCK REFUSAL IS NOT A CONSUMED STUDY, AND THE RECORD SAYS WHICH IT WAS. Run `37299251812` passed the frozen machine, the exact input identity and the exact
+  raw-artifact download, and stopped at the signal-time gate with `featureBuilds = 1` and every other counter zero: no lock, no marker, no market value, no
+  portfolio outcome. The one-shot is unspent. The revision is recorded in the spec (`MISSING_SIGNAL_NO_TRADE_REVISION_1`, with the run id and the ten refusal
+  reasons from the job log) and in the design document, so it is part of the sealed identity and not a silent edit. The attempt artifact stays an `-attempt-`
+  artifact and never trips the `-results-` guard.
+- THE PROSPECTIVE RECEIPT STAYS HONEST ABOUT AN UNAVAILABLE BOOK. A receipt records `available: false` and the targets of that book carry `targetStatus
+  HOLD_PREVIOUS_BOOK_SIGNAL_UNAVAILABLE_NO_STOCK_REBALANCE`; an unavailable book is never written as an explicit 100%-cash target, because the registered rule is to
+  hold, not to liquidate. This is additive: no schema field, digest rule or append rule changed.
 - AN UNRESOLVED HELD MARK BLOCKS THAT ARCHITECTURE'S PATH. A name with no observed close, no observed zero-volume quote to carry and no terminal economics makes
   `complete: false` for the paths that hold it; the others stay published, a pair needing a blocked path is `NOT_EVALUABLE_BLOCKED_PATH`, and the final architecture
   is then `NO_FINAL_ARCHITECTURE_BLOCKED_PATH`. Nothing is dropped, substituted or zero-filled.

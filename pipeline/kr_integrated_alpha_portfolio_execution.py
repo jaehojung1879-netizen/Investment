@@ -7,7 +7,7 @@ record prospectively; none is validation.
 On pull requests only `verify` and `readiness` run. Neither values a portfolio, reads a forward quantity or touches the preserved raw artifact: they
 check identities, replay a tiny SYNTHETIC world through the whole six-path machinery, and push date-presence proxies through the sealed market state
 machine. `execute` refuses unless a workflow_dispatch on merged main carries this exact committed spec with every pin intact and no prior result,
-marker or lock. Signal-time feature construction and the registered depth / ranking gates run first and can stop the run before anything is spent. ONLY
+marker or lock. Signal-time feature construction, the outcome-free availability audit and the study-level signal-coverage gate run first and can stop the run before anything is spent. ONLY
 THEN is the durable exclusive git-tag lock created, then the marker, and only after both is a market value read or a portfolio valued. A failure before
 the lock spends nothing; a failure after it consumes the study for good.
 """
@@ -176,8 +176,9 @@ def stock_layer_definition():
         "eligibility": {"classifiedInEligibleIndustry": True, "stockScoreFinite": True, "tradable": "observed positive volume and trading value at the signal close",
                         "minimumAdv60Krw": M.PORTFOLIO["minimumAdvKrw"], "minimumDownsideVol126": M.PORTFOLIO["minimumDownsideVol"],
                         "minimumEligiblePerDate": M.MIN_ELIGIBLE_PER_DATE,
-                        "depthRule": "every rebalance anchor must leave at least the minimum eligible stocks for the S book and for the I+S book, otherwise the run "
-                                     "stops BEFORE the lock (signal-time fact; spends nothing). 0-5 holdings remain valid when executability leaves fewer.",
+                        "depthRule": "a NEW decision for the S book (and for the I+S book) exists at an anchor only when at least the minimum eligible stocks remain; otherwise "
+                                     "that anchor is SIGNAL_UNAVAILABLE_NO_STOCK_REBALANCE (see missingSignal): the minimum is a quality condition for producing a decision, "
+                                     "not a condition every anchor must meet for the study to run. 0-5 holdings remain valid when executability leaves fewer.",
                         "noAbsoluteDoNotInvestThreshold": True},
         "missingStaysMissing": True}
 
@@ -193,7 +194,8 @@ def industry_layer_definition():
         "combinedScore": {"weights": M.COMBINED_WEIGHTS, "rule": "50% STOCK_SCORE + 50% INDUSTRY_SCORE of the stock's industry, fixed and untuned; requires both"},
         "notUsed": ["constituent dispersion", "OCF yield", "book-to-market of the industry", "fitted industry weights", "any macro series"],
         "cohort": "the sealed anatomy's FULL cohort (no mega-cap exclusion), frozen at the signal date",
-        "rankabilityRule": "every rebalance anchor must rank at least the minimum industries, otherwise the run stops BEFORE the lock"}
+        "rankabilityRule": "a NEW I+S decision exists at an anchor only when at least the minimum industries are ranked; otherwise that anchor is "
+                           "SIGNAL_UNAVAILABLE_NO_STOCK_REBALANCE for the I+S book (see missingSignal). The S book does not read the industry score and is unaffected."}
 
 
 def market_layer_definition():
@@ -228,6 +230,38 @@ def portfolio_definition():
                                        "(complete: false); no survivor or successor is substituted and no name silently disappears",
         "futureInformation": "none: every score, state and decision is computed from information at or before the signal date",
         "parameters": dict(M.PORTFOLIO)}
+
+
+def missing_signal_definition():
+    return {
+        "status": "REGISTERED_BEFORE_ANY_OUTCOME (pre-outcome revision MISSING_SIGNAL_NO_TRADE_REVISION_1)",
+        "meaning": "a scheduled anchor at which a NEW valid ranking cannot be constructed from signal-time information; DATA AVAILABILITY, not a model parameter and "
+                   "not a licence to lower an alpha standard",
+        "perBookIndependently": {"S": "new decision iff at least the minimum eligible stocks (STOCK_SCORE finite and investable)",
+                                 "I+S": "new decision iff at least the minimum eligible stocks (COMBINED_SCORE finite and investable) AND at least the minimum industries ranked"},
+        "whenUnavailable": M.SIGNAL_UNAVAILABLE + ": that book generates NO NEW STOCK REBALANCE at that anchor; the previously held stock book continues unchanged "
+                           "(drifted, no trade, no cost, no liquidation, no substitution of another architecture's names)",
+        "beforeTheFirstValidDecision": "the book holds zero equities (100% cash); an initial portfolio is never fabricated",
+        "recovery": "when the signal becomes valid again the normal registered decision is computed at that anchor and the book rebalances normally",
+        "anchorCalendar": "identical for all six architectures; an unavailable anchor is a NO-TRADE anchor, never a removed anchor",
+        "sharedUnderlying": "A, B and C share one S underlying state; D, E and F share one I+S underlying state (availability included)",
+        "marketLayerIndependent": "the sealed C0 / C1 schedule is untouched by stock or industry availability and may still scale the already-held book at its own dates; "
+                                  "a missing stock or industry signal never changes C0 or C1",
+        "notImputation": ["no missing feature is zero-filled", "no other factor is substituted", "no finiteness rule is relaxed", "no future observation is used",
+                          "no minimum depth or industry count was changed"],
+        "unchangedQualityConditions": {"minimumEligiblePerDate": M.MIN_ELIGIBLE_PER_DATE, "minimumIndustriesRanked": M.MIN_INDUSTRIES_RANKED},
+        "studyLevelCoverageGate": {"minimumAvailabilityPercent": M.MIN_AVAILABILITY_PERCENT, "appliesTo": "EACH of the S book and the I+S book, separately",
+                                   "rule": "at least one valid new decision AND (valid decisions x 100 >= scheduled anchors x 80); evaluated from signal-time availability only, "
+                                           "BEFORE the lock; a miss stops the run having spent nothing",
+                                   "whyEightyPercent": "a round, economically defensible floor chosen before any outcome and not fitted to the five anchors observed in the first "
+                                                       "pre-lock refusal: a ranking that cannot be built at more than one anchor in five is a different strategy -- mostly holding a "
+                                                       "stale book -- and the comparison of six architectures would mostly be a comparison of how long each held its first book. "
+                                                       "Roughly four in five new decisions keeps each book recognisably the registered rule; the observed history clears it by a wide "
+                                                       "margin, so the number is not a threshold the history barely passes"},
+        "reported": ["scheduled anchors", "valid-decision anchors", "unavailable anchors", "unavailable signal dates with causes", "consecutive unavailable runs",
+                     "first and last valid decision", "availability share", "exact industry-unrankable anchors", "per path: no-trade anchors and sessions in cash before the "
+                     "first valid decision"],
+        "outcomeFree": "the availability audit reads signal-time decisions only: no price after the signal, no return, no NAV, no benchmark excess"}
 
 
 def architecture_definition():
@@ -310,7 +344,27 @@ def pre_outcome_revisions():
          "reason": "the kr-market-risk-model-v1 seal succeeded and pushed its branch, then GITHUB_TOKEN could not create the Draft PR and a human opened it by hand",
          "now": "that refusal is classified RECOVERABLE_SEAL_HANDOFF_FAILURE (exit 3, job summary with manual steps); the branch is verified at the sealed commit and stays "
                 "immutable; transient failures are retried a bounded number of times; a second PR is never opened; no credential or permission changes; the execution is never rerun",
-         "unchanged": ["every exact-byte seal verification", "the Draft-only, never-merge, never-ready rules"]}]
+         "unchanged": ["every exact-byte seal verification", "the Draft-only, never-merge, never-ready rules"]},
+        {"id": "MISSING_SIGNAL_NO_TRADE_REVISION_1", "madeBeforeAnyOutcome": True, "outcomeCountersAtRevision": "ALL_ZERO",
+         "replaced": "the registered depth and industry-ranking minimums were required to hold at EVERY rebalance anchor, so one anchor without a full new cross-section stopped the "
+                     "whole historical study before the lock",
+         "reason": "that is data-availability behaviour (a thin or unrankable cross-section at an anchor), not evidence about any architecture; stopping the study on it confuses "
+                   "'a new ranking cannot be built on this date' with 'the model cannot be evaluated'",
+         "now": "an anchor without a valid new ranking is SIGNAL_UNAVAILABLE_NO_STOCK_REBALANCE for that book (hold the previous stock book, 100% cash before the first valid decision, "
+                "market C0 / C1 independent); the depth and industry minimums stay as the quality conditions for a NEW decision; an outcome-blind study-level coverage gate "
+                "(at least one valid decision and at least 80% of scheduled anchors, for each of S and I+S) runs before the lock",
+         "provenance": {"formalExecutionRun": "37299251812", "stoppedBefore": "THE_EXECUTION_LOCK", "studyConsumed": False, "lockExists": False,
+                        "counters": {"featureBuilds": 1, "marketValueReads": 0, "marketStateComputations": 0, "replayCalls": 0, "metricCalls": 0, "cashSensitivityCalls": 0,
+                                     "decisionCalls": 0, "markerWrites": 0},
+                        "refusalReasonsFromTheJobLog": ["STOCK_DEPTH_BELOW_MINIMUM:S:2017-01-13", "STOCK_DEPTH_BELOW_MINIMUM:S:2017-02-10", "STOCK_DEPTH_BELOW_MINIMUM:S:2017-03-17",
+                                                         "STOCK_DEPTH_BELOW_MINIMUM:I+S:2017-01-13", "STOCK_DEPTH_BELOW_MINIMUM:I+S:2017-02-10",
+                                                         "STOCK_DEPTH_BELOW_MINIMUM:I+S:2017-03-17", "STOCK_DEPTH_BELOW_MINIMUM:I+S:2021-09-24",
+                                                         "STOCK_DEPTH_BELOW_MINIMUM:I+S:2021-10-29", "INDUSTRY_LAYER_UNRANKABLE:2021-09-24",
+                                                         "INDUSTRY_LAYER_UNRANKABLE:2021-10-29"],
+                        "note": "a pre-lock refusal spends nothing; the one-shot is unspent and no outcome was read"},
+         "unchanged": ["the S and Industry score definitions", "the 50/50 combination", "C0 and C1", "every factor input and finiteness rule", "the ADV and downside-volatility gates",
+                       "MIN_ELIGIBLE_PER_DATE", "MIN_INDUSTRIES_RANKED", "5 holdings and the 30% cap", "costs", "the 21-session anchor calendar", "the start date", "the benchmark",
+                       "the cutoff", "the decision bands", "the cash-yield sensitivity", "the prospective receipt design"]}]
 
 
 # --------------------------------------------------------------------------- #
@@ -367,7 +421,7 @@ def load_spec(root=ROOT):
             raise ValueError("HARNESS_OR_DEPENDENCY_CHANGED: " + rel)
     verify_pins(spec, root)
     for key, built in (("stockLayer", stock_layer_definition()), ("industryLayer", industry_layer_definition()), ("marketLayer", market_layer_definition()),
-                       ("portfolio", portfolio_definition()), ("architectures", architecture_definition()), ("metrics", metrics_definition()),
+                       ("portfolio", portfolio_definition()), ("missingSignal", missing_signal_definition()), ("architectures", architecture_definition()), ("metrics", metrics_definition()),
                        ("decision", decision_definition()), ("cashYield", M.CASH_YIELD), ("governance", governance_definition()),
                        ("preOutcomeRevisions", pre_outcome_revisions())):
         if json.loads(json.dumps(spec[key])) != json.loads(json.dumps(built)):
@@ -489,9 +543,10 @@ def decisions_for_date(date, members, features, membership, cohorts, past, panel
     frame = frame[frame.industry.isin(set(eligible_industries))]
     columns = ["date", "industry", "ticker", *M.STOCK_FEATURES, "tradable", "adv60", "downsideVol126"]
     scored = M.stock_scores(frame[columns]) if len(frame) else frame.assign(STOCK_SCORE=np.nan, VALUE_SCORE=np.nan, RISK_SCORE=np.nan)
-    pair = M.underlying_pair(M.decision_rows(scored, iscores))
+    ranked = int(sum(v["ranked"] for v in iscores.values()))
+    pair = M.underlying_pair(M.decision_rows(scored, iscores), industries_ranked=ranked)
     return pair, {"members": len(members), "classifiedInEligibleIndustry": int(len(frame)), "eligibleIndustries": len(eligible_industries),
-                  "industriesRanked": int(sum(v["ranked"] for v in iscores.values())), "eligibleS": pair["S"]["eligibleCount"],
+                  "industriesRanked": ranked, "eligibleS": pair["S"]["eligibleCount"],
                   "eligibleIS": pair["I+S"]["eligibleCount"]}
 
 
@@ -547,8 +602,37 @@ def depth_summary(depth, anchors):
             "minimumEligiblePerDate": M.MIN_ELIGIBLE_PER_DATE, "minimumIndustriesRanked": M.MIN_INDUSTRIES_RANKED}
 
 
+def availability_audit(decisions, anchors, depth):
+    """OUTCOME-FREE signal availability of the S and I+S underlying books over the scheduled anchors, from the signal-time decisions alone, plus the exact
+    industry-unrankable anchors. A deficient anchor is SIGNAL_UNAVAILABLE_NO_STOCK_REBALANCE (the book is held / stays cash), never a readiness failure on its own."""
+    out = {"rule": "SIGNAL_UNAVAILABLE_NO_STOCK_REBALANCE: no new decision, no stock trade, the previously held book continues unchanged; 100% cash before the first valid "
+                   "decision; nothing imputed, substituted or relaxed",
+           "minimumEligiblePerDate": M.MIN_ELIGIBLE_PER_DATE, "minimumIndustriesRanked": M.MIN_INDUSTRIES_RANKED,
+           "studyCoverageMinimumPercent": M.MIN_AVAILABILITY_PERCENT, "scheduledAnchors": len(anchors)}
+    for layer in ("S", "I+S"):
+        out[layer] = M.availability_profile([(day, signal, decisions[signal][layer]["available"], decisions[signal][layer]["unavailableCauses"])
+                                             for day, signal in anchors])
+    unrankable = [(day, signal) for day, signal in anchors if depth[signal]["industriesRanked"] < M.MIN_INDUSTRIES_RANKED]
+    out["industryUnrankable"] = {"anchors": len(unrankable), "signalDates": [signal for _, signal in unrankable], "anchorDays": [day for day, _ in unrankable]}
+    return out
+
+
+def availability_reasons(audit):
+    """Study-level signal-coverage gate (before the lock): every underlying book needs at least one valid decision and at least the registered share of
+    anchors permitting a NEW decision. Reads availability only."""
+    reasons = []
+    for layer in ("S", "I+S"):
+        profile = audit[layer]
+        if profile["validDecisionAnchors"] < 1:
+            reasons.append("NO_VALID_DECISION:" + layer)
+        elif not profile["meetsStudyCoverage"]:
+            reasons.append("SIGNAL_COVERAGE_BELOW_%d_PERCENT:%s:%d_OF_%d" % (M.MIN_AVAILABILITY_PERCENT, layer, profile["validDecisionAnchors"], profile["scheduledAnchors"]))
+    return reasons
+
+
 def pre_lock_gates(bundle, spec, root):
-    """Label-free, value-free reasons the study cannot run; empty means ready. Registered depth and ranking gates at EVERY anchor."""
+    """Label-free, value-free reasons the study cannot run; empty means ready. A single deficient anchor is NOT a reason: it is a registered no-trade anchor.
+    What can stop the run before the lock is the integrity of the signal-time inputs and the STUDY-LEVEL availability of new decisions."""
     reasons = []
     features, schedule, anchors, depth = bundle["features"], bundle["schedule"], bundle["anchors"], bundle["depth"]
     if features.empty or not anchors:
@@ -564,14 +648,7 @@ def pre_lock_gates(bundle, spec, root):
     per_date = pd.to_numeric(features.marketCap, errors="coerce").notna().groupby(features.date).sum()
     if (per_date < spec["readiness"]["minimumNamesWithMarketCapPerDate"]).any():
         reasons.append("MARKET_CAP_UNAVAILABLE")
-    for _, signal in anchors:
-        facts = depth[signal]
-        if facts["eligibleS"] < M.MIN_ELIGIBLE_PER_DATE:
-            reasons.append("STOCK_DEPTH_BELOW_MINIMUM:S:" + signal)
-        if facts["eligibleIS"] < M.MIN_ELIGIBLE_PER_DATE:
-            reasons.append("STOCK_DEPTH_BELOW_MINIMUM:I+S:" + signal)
-        if facts["industriesRanked"] < M.MIN_INDUSTRIES_RANKED:
-            reasons.append("INDUSTRY_LAYER_UNRANKABLE:" + signal)
+    reasons += availability_reasons(availability_audit(bundle["decisions"], anchors, depth))
     return sorted(set(reasons))
 
 
@@ -667,10 +744,11 @@ def assemble(results, decisions, anchors, depth, counters, root, spec, permit, l
                                         else {"status": "DATA_UNAVAILABLE", "reason": document})
     layer_decisions = M.decide({a: {**s, "complete": s.get("complete", False)} for a, s in summaries.items()})
     counters.decisionCalls += 1
-    underlying_audit = {"anchors": len(anchors), "identicalUnderlyingPerAxis": True,
-                        "meanNamesDifferingBetweenSAndIS": float(np.mean([len(set(decisions[s]["S"]["selected"]) ^ set(decisions[s]["I+S"]["selected"])) / 2
-                                                                         for _, s in anchors])),
-                        "anchorsWithIdenticalSelection": int(sum(decisions[s]["S"]["selected"] == decisions[s]["I+S"]["selected"] for _, s in anchors))}
+    both = [s for _, s in anchors if decisions[s]["S"]["available"] and decisions[s]["I+S"]["available"]]
+    underlying_audit = {"anchors": len(anchors), "anchorsWithBothBooksAvailable": len(both), "identicalUnderlyingPerAxis": True,
+                        "meanNamesDifferingBetweenSAndIS": float(np.mean([len(set(decisions[s]["S"]["selected"]) ^ set(decisions[s]["I+S"]["selected"])) / 2 for s in both]))
+                        if both else None,
+                        "anchorsWithIdenticalSelection": int(sum(decisions[s]["S"]["selected"] == decisions[s]["I+S"]["selected"] for s in both))}
     return {"summaries": summaries, "costStress": stress_table, "monthEndNav": navs, "blockedPaths": blocked, "passive": passive,
             "comparisons": M.comparisons({a: s for a, s in summaries.items()}), "attribution": M.attribution(summaries), "interaction": M.interaction(summaries),
             "layerDecisions": layer_decisions, "underlyingAudit": underlying_audit, "stockLayerDepth": depth_summary(depth, anchors),
@@ -706,6 +784,7 @@ def execute(input_root, output, spec, sha, permit, root=ROOT, env=None, api=gith
     if reasons:
         Path(output).mkdir(parents=True, exist_ok=True)
         atomic_write(Path(output) / "gates-failed.json", {"studyId": STUDY, "reasons": reasons, "depth": depth_summary(bundle["depth"], bundle["anchors"]) if bundle["anchors"] else None,
+                                                         "signalAvailability": availability_audit(bundle["decisions"], bundle["anchors"], bundle["depth"]) if bundle["anchors"] else None,
                                                          "counters": asdict(counters)})
         raise ValueError("READINESS_GATE_FAILED: " + ";".join(reasons[:20]))
     lock = claim_execution_lock(sha, env, api)
@@ -715,6 +794,7 @@ def execute(input_root, output, spec, sha, permit, root=ROOT, env=None, api=gith
     ctx = R.Context(bundle["prices"], bundle["market"], bundle["days"], spec["benchmark"])
     results = run_architectures(bundle["decisions"], bundle["anchors"], tables, ctx, counters, permit, lock, sha)
     assembled = assemble(results, bundle["decisions"], bundle["anchors"], bundle["depth"], counters, root, spec, permit, lock, sha)
+    assembled["signalAvailability"] = availability_audit(bundle["decisions"], bundle["anchors"], bundle["depth"])
     result = {"studyId": STUDY, "scientificStatus": SCIENTIFIC_STATUS, "developmentStatement": M.DEVELOPMENT_STATEMENT, "specSha256": sha,
               "returnBasis": M.RETURN_BASIS, "benchmark": spec["benchmark"], "lockRef": lock.ref, "lockedMainSha": lock.mainSha,
               "window": {"firstAnchor": bundle["anchors"][0][0], "lastAnchor": bundle["anchors"][-1][0], "anchors": len(bundle["anchors"]),
@@ -820,13 +900,20 @@ def synthetic_world(start="2015-01-01", end="2017-12-29", evaluation_start="2016
     weekly = [str(d.date()) for d in pd.Series(days, index=days).groupby(days.to_period("W")).max()]
     anchors = R.anchor_schedule(days, weekly, evaluation_start)
     decisions = {}
-    for signal in sorted({s for _, s in anchors}):
+    for index, signal in enumerate(sorted({s for _, s in anchors})):
         rows = []
         for i, t in enumerate(tickers):
             h = int(hashlib.sha256((signal + t).encode()).hexdigest()[:6], 16) / 0xFFFFFF
-            ind = 0.7 if i < 6 else 0.3
-            rows.append({"ticker": t, "industry": "X" if i < 6 else "Y", "STOCK_SCORE": h, "VALUE_SCORE": h, "RISK_SCORE": h, "INDUSTRY_SCORE": ind,
+            ind = 0.1 + 0.15 * (i // 2)                                 # six industries of two names each
+            rows.append({"ticker": t, "industry": "X%d" % (i // 2), "STOCK_SCORE": h, "VALUE_SCORE": h, "RISK_SCORE": h, "INDUSTRY_SCORE": ind,
                          "COMBINED_SCORE": 0.5 * h + 0.5 * ind, "tradable": True, "adv60": 6e9, "downsideVol126": 0.18 + 0.01 * i})
+        if index in (0, 1):                                              # a thin cross-section: below the registered depth for BOTH books -> cash before the first valid decision
+            rows = rows[:6]
+        if index == 6:                                                   # industry layer unrankable (only 3 ranked): S stays valid, I+S is a no-trade anchor
+            for r in rows:
+                r["INDUSTRY_SCORE"], r["COMBINED_SCORE"] = float("nan"), float("nan")
+            for r in rows[:6]:
+                r["INDUSTRY_SCORE"], r["COMBINED_SCORE"] = 0.5, 0.5 * r["STOCK_SCORE"] + 0.25
         decisions[signal] = M.underlying_pair(rows)
     executions = pd.DatetimeIndex([days[400], days[480], days[560]])
     table = pd.DataFrame({"decisionDate": executions - pd.Timedelta(days=3), "executionDate": executions, "target": [0.7, 0.4, 1.0]})

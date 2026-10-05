@@ -55,7 +55,7 @@ def build():
                    "rule": "the exact immutable bytes the sealed studies read; the preserved raw-input artifact is pinned by name, run, id, archive digest and identity"},
         "input": stock["input"], "membership": stock["membership"], "readiness": {"minimumNamesWithMarketCapPerDate": 3},
         "stockLayer": E.stock_layer_definition(), "industryLayer": E.industry_layer_definition(), "marketLayer": E.market_layer_definition(),
-        "portfolio": E.portfolio_definition(), "architectures": E.architecture_definition(), "metrics": E.metrics_definition(), "decision": E.decision_definition(),
+        "portfolio": E.portfolio_definition(), "missingSignal": E.missing_signal_definition(), "architectures": E.architecture_definition(), "metrics": E.metrics_definition(), "decision": E.decision_definition(),
         "cashYield": M.CASH_YIELD, "governance": E.governance_definition(), "preOutcomeRevisions": E.pre_outcome_revisions(),
         "prospective": {"receiptSchemaPath": E.RECEIPT_SCHEMA_PATH, "receiptSchemaSha256": E.file_hash(ROOT / E.RECEIPT_SCHEMA_PATH),
                         "module": "pipeline/kr_integrated_alpha_portfolio_receipts.py", "evidenceClass": "PROSPECTIVE_PAPER", "horizons": [21, 63, 126],
@@ -69,12 +69,12 @@ def build():
                         "status": "DESIGNED_NOT_RUNNING: no receipt is written and no schedule exists in this change"},
         "lifecycle": {
             "sequence": ["workflow_dispatch on merged main", "committed exact spec and sidecar", "every pin verified", "signal-time feature assembly and the registered "
-                         "depth / ranking gates (can stop before anything is spent)", "no committed result, marker or manifest", "no execution lock under the study prefix",
+                         "availability audit and study-level signal-coverage gate (can stop before anything is spent)", "no committed result, marker or manifest", "no execution lock under the study prefix",
                          "durable exclusive lock (atomic POST /git/refs)", "execution marker", "first market-value read", "six paths x three cost stresses", "immutable result artifact",
                          "automatic seal: verify run, artifact digest, file list, manifest, marker, spec and lock refs", "copy exact bytes plus provenance", "ONE Draft pull request",
                          "a human reviews and merges"],
             "executionLock": "refs/tags/" + STUDY + "-execution-lock plus -<specSha256>; any existing ref under the prefix refuses; never moved or deleted",
-            "failureBeforeLock": "spends nothing", "failureAfterLock": "consumes the study permanently; never retried; the attempt artifact is preserved under -attempt-<runId>",
+            "failureBeforeLock": "spends nothing (formal run 37299251812 was such a pre-lock refusal and did not consume the study)", "failureAfterLock": "consumes the study permanently; never retried; the attempt artifact is preserved under -attempt-<runId>",
             "resultPath": E.RESULT_PATH, "markerPath": E.MARKER_PATH, "manifestPath": E.MANIFEST_PATH,
             "seal": {"module": "pipeline/kr_integrated_alpha_portfolio_seal.py", "script": "scripts/seal_kr_integrated_alpha_portfolio_v1.py",
                      "never": ["rerun outcomes", "change or reformat a result byte", "tune anything", "reinterpret a layer decision", "merge", "mark ready for review",

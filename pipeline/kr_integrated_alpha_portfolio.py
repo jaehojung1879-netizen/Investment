@@ -80,6 +80,8 @@ INDUSTRY_COMPONENTS = ("REL_MOM_126", "BREADTH_ABOVE_MA_126")
 INDUSTRY_WEIGHTS = {"REL_MOM_126": 0.5, "BREADTH_ABOVE_MA_126": 0.5}
 COMBINED_WEIGHTS = {"STOCK_SCORE": 0.5, "INDUSTRY_SCORE": 0.5}
 MIN_INDUSTRIES_RANKED = 5                   # a cross-industry percentile of fewer than five industries is degenerate; the sealed minimum is 6 eligible per date
+SIGNAL_UNAVAILABLE = "SIGNAL_UNAVAILABLE_NO_STOCK_REBALANCE"
+MIN_AVAILABILITY_PERCENT = 80               # study-level: at least 80% of the scheduled anchors must permit a NEW decision for EACH underlying book (integer arithmetic)
 
 # ---- portfolio (inherited unchanged from kr-model-overlay-portfolio-v1) --------------------------------------------------------------------------
 PORTFOLIO = {"maximumHoldings": MAX_HOLDINGS, "singleNameCap": 0.3, "minimumAdvKrw": 3000000000.0, "minimumDownsideVol": 0.01,
@@ -209,27 +211,70 @@ def decision_rows(scored, industry_map):
     return rows
 
 
-def underlying_decision(rows, with_industry, cfg=PORTFOLIO):
+def underlying_decision(rows, with_industry, cfg=PORTFOLIO, industries_ranked=None):
     """The underlying (pre-market) portfolio decision of ONE signal date for the S book (`with_industry` False, ordered by STOCK_SCORE) or the I+S
     book (True, ordered by COMBINED_SCORE). Eligible = score finite AND investable. Up to five by (-score, ticker); inverse-downside-volatility
-    water-fill sizing with the 30% name cap and the ADV capacity cap; residual stays cash. The market multiplier is NOT an input."""
+    water-fill sizing with the 30% name cap and the ADV capacity cap; residual stays cash. The market multiplier is NOT an input.
+
+    MISSING-SIGNAL RULE (frozen before any outcome): a NEW decision exists only when the registered quality conditions hold -- at least
+    MIN_ELIGIBLE_PER_DATE eligible stocks and, for the I+S book, at least MIN_INDUSTRIES_RANKED ranked industries. Otherwise the decision is
+    `available: False` (SIGNAL_UNAVAILABLE_NO_STOCK_REBALANCE): it selects and sizes nothing, and the replay trades nothing for this book at that anchor.
+    Nothing is imputed, zero-filled, substituted or relaxed; the deficient scores are simply not a ranking."""
     key = "COMBINED_SCORE" if with_industry else "STOCK_SCORE"
     seen = [r["ticker"] for r in rows]
     if len(set(seen)) != len(seen):
         raise ValueError("DUPLICATE_SELECTION_SECURITY")
     eligible = [r for r in rows if finite(r.get(key)) and investable(r, cfg)]
+    causes = []
+    if len(eligible) < MIN_ELIGIBLE_PER_DATE:
+        causes.append("STOCK_DEPTH_BELOW_MINIMUM")
+    ranked = None
+    if with_industry:
+        ranked = len({r["industry"] for r in rows if finite(r.get("INDUSTRY_SCORE"))}) if industries_ranked is None else int(industries_ranked)
+        if ranked < MIN_INDUSTRIES_RANKED:
+            causes.append("INDUSTRY_LAYER_UNRANKABLE")
+    available = not causes
     ordered = sorted(eligible, key=lambda r: (-r[key], r["ticker"]))
-    chosen = ordered[:cfg["maximumHoldings"]]
+    chosen = ordered[:cfg["maximumHoldings"]] if available else []
     base = P.size(chosen, cfg) if chosen else {}
     kept = ("STOCK_SCORE", "INDUSTRY_SCORE", "COMBINED_SCORE") if with_industry else ("STOCK_SCORE",)       # OFF: the industry appears nowhere in the S book
     return {"layer": "I+S" if with_industry else "S", "scoreUsed": key, "eligibleCount": len(eligible),
-            "depthOk": len(eligible) >= MIN_ELIGIBLE_PER_DATE, "selected": [r["ticker"] for r in chosen], "baseWeights": base,
+            "depthOk": len(eligible) >= MIN_ELIGIBLE_PER_DATE, "available": available,
+            "unavailable": None if available else SIGNAL_UNAVAILABLE, "unavailableCauses": causes, "industriesRanked": ranked,
+            "selected": [r["ticker"] for r in chosen], "baseWeights": base,
             "scores": {r["ticker"]: {k: (None if not finite(r.get(k)) else float(r[k])) for k in kept} for r in chosen}}
 
 
-def underlying_pair(rows, cfg=PORTFOLIO):
+def underlying_pair(rows, cfg=PORTFOLIO, industries_ranked=None):
     """Both underlying decisions of one signal date. The market layer is applied to these AFTER they exist, never to build them."""
-    return {"S": underlying_decision(rows, False, cfg), "I+S": underlying_decision(rows, True, cfg)}
+    return {"S": underlying_decision(rows, False, cfg), "I+S": underlying_decision(rows, True, cfg, industries_ranked)}
+
+
+def availability_profile(flags):
+    """Outcome-free availability of ONE underlying book over the scheduled anchors. `flags` = [(anchorDay, signalDate, available, causes)] in anchor order.
+    Reports valid / unavailable counts, the unavailable signal dates with their causes, consecutive unavailable runs, first and last valid decision and the
+    availability share. Reads no price, return or outcome."""
+    total = len(flags)
+    valid = [f for f in flags if f[2]]
+    runs, current = [], []
+    for f in flags:
+        if f[2]:
+            if current:
+                runs.append(current)
+            current = []
+        else:
+            current.append(f)
+    if current:
+        runs.append(current)
+    return {"scheduledAnchors": total, "validDecisionAnchors": len(valid), "unavailableAnchors": total - len(valid),
+            "availabilityShare": (len(valid) / total) if total else None,
+            "unavailableSignalDates": [f[1] for f in flags if not f[2]], "unavailableAnchorDays": [f[0] for f in flags if not f[2]],
+            "unavailableCauses": {f[1]: list(f[3]) for f in flags if not f[2]},
+            "consecutiveUnavailableRuns": [{"firstSignalDate": r[0][1], "lastSignalDate": r[-1][1], "anchors": len(r)} for r in runs],
+            "longestUnavailableRun": max((len(r) for r in runs), default=0),
+            "firstValidDecision": {"anchor": valid[0][0], "signalDate": valid[0][1]} if valid else None,
+            "lastValidDecision": {"anchor": valid[-1][0], "signalDate": valid[-1][1]} if valid else None,
+            "meetsStudyCoverage": bool(total and valid and len(valid) * 100 >= total * MIN_AVAILABILITY_PERCENT)}
 
 
 def decision_for(architecture, pair):

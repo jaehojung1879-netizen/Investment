@@ -26,6 +26,10 @@ def run(world, arch, ctx=None, table="default", stress=1.0, decisions=None):
     return R.replay_architecture(arch, decisions, world["anchors"], market, ctx, stress=stress)
 
 
+def world_first_anchor(results):
+    return results["A"]["path"][0]["date"]
+
+
 @pytest.fixture(scope="module")
 def paths(world):
     """All six architectures, with every execute_rebalance call recorded (architecture, desired targets, selected names, multiplier)."""
@@ -61,8 +65,9 @@ def test_all_six_paths_complete_on_one_calendar_with_one_passive_reference(paths
     assert len({tuple(d) for d in dates.values()}) == 1                                  # same sessions
     bench = {a: [r["benchmarkNav"] for r in results[a]["path"]] for a in M.ARCH_ORDER}
     assert all(bench[a] == bench["A"] for a in bench)                                    # the passive reference is the same in every path
-    anchor_days = {a: [r["date"] for r in results[a]["path"] if r["kind"] == "ANCHOR"] for a in M.ARCH_ORDER}
-    assert all(anchor_days[a] == anchor_days["A"] for a in anchor_days) and anchor_days["A"][0] == dates["A"][0]
+    anchor_days = {a: [r["date"] for r in results[a]["path"] if r["kind"] == "ANCHOR"] for a in "ABC"}
+    assert all(anchor_days[a] == anchor_days["A"] for a in anchor_days)
+    assert {a: dates[a][0] for a in M.ARCH_ORDER} == {a: world_first_anchor(results) for a in M.ARCH_ORDER}
 
 
 def test_the_underlying_decision_is_shared_and_the_market_only_scales_it(paths, world):
@@ -70,7 +75,8 @@ def test_the_underlying_decision_is_shared_and_the_market_only_scales_it(paths, 
     by_arch = {a: [c for c in calls if c["arch"] == a] for a in M.ARCH_ORDER}
     for group, layer in (("ABC", "S"), ("DEF", "I+S")):
         anchor_calls = {a: [c for c in by_arch[a] if c["selected"]] for a in group}
-        signals = [s for _, s in world["anchors"]]
+        signals = [s for _, s in world["anchors"] if world["decisions"][s][layer]["available"]]
+        assert signals and len(signals) < len(world["anchors"])                               # the invented world includes registered no-trade anchors
         for index, signal in enumerate(signals):
             base = world["decisions"][signal][layer]
             for a in group:
@@ -201,7 +207,7 @@ def test_a_zero_volume_quote_carries_a_held_mark_but_a_missing_one_does_not(worl
 
 
 def test_an_order_without_an_observed_execution_quote_is_deferred_not_filled(world):
-    first_day, signal = world["anchors"][0]
+    first_day, signal = next((d, s) for d, s in world["anchors"] if world["decisions"][s]["S"]["available"])
     wanted = world["decisions"][signal]["S"]["selected"][0]
 
     class Suspended(X.SyntheticMarket):
@@ -209,8 +215,9 @@ def test_an_order_without_an_observed_execution_quote_is_deferred_not_filled(wor
             return {"volume": 0, "tradingValue": 0, "marketCap": 1e12} if (ticker, day) == (wanted, first_day) else super().at(ticker, day)
     ctx = R.Context(world["prices"], Suspended(world["days"]), world["days"])
     result = run(world, "A", ctx=ctx)
-    assert result["complete"] and wanted not in result["path"][0]["weights"]
-    assert len(result["path"][0]["weights"]) == len(world["decisions"][signal]["S"]["selected"]) - 1
+    record = next(r for r in result["path"] if r["date"] == first_day)
+    assert result["complete"] and wanted not in record["weights"]
+    assert len(record["weights"]) == len(world["decisions"][signal]["S"]["selected"]) - 1
 
 
 def test_scaled_targets_keep_drifted_proportions_and_never_exceed_one():
@@ -266,3 +273,130 @@ def test_a_market_scale_trade_with_a_suspended_holding_defers_that_name_and_neve
     others = [t for t in before["weights"] if t != stuck]
     assert all(record["weights"].get(t, 0) < before["weights"][t] for t in others)                           # the executable names were scaled down
     assert record["overlayExcessDueToDeferredExit"] >= 0 and sum(record["weights"].values()) <= 1 + 1e-9
+
+
+# ---------------------------------------------------------------------------------------------------------------------------------------
+# Registered missing-signal / no-trade semantics (SIGNAL_UNAVAILABLE_NO_STOCK_REBALANCE)
+# ---------------------------------------------------------------------------------------------------------------------------------------
+def with_unavailable(world, layer, signals):
+    """The same decisions with the named signal dates made unavailable for ONE book (selection and sizing emptied, exactly as the model emits them)."""
+    out = {}
+    for signal, pair in world["decisions"].items():
+        decision = pair[layer]
+        if signal in signals:
+            decision = dict(decision, available=False, unavailable=M.SIGNAL_UNAVAILABLE, unavailableCauses=["STOCK_DEPTH_BELOW_MINIMUM"], selected=[], baseWeights={}, scores={})
+        out[signal] = decision
+    return out
+
+
+def signal_of(world, index):
+    return sorted({s for _, s in world["anchors"]})[index]
+
+
+def anchor_day(world, signal):
+    return next(d for d, s in world["anchors"] if s == signal)
+
+
+def record_on(result, day):
+    return next(r for r in result["path"] if r["date"] == day)
+
+
+def previous_record(result, day):
+    dates = [r["date"] for r in result["path"]]
+    return result["path"][dates.index(day) - 1]
+
+
+def test_before_the_first_valid_decision_every_book_is_one_hundred_percent_cash_and_nothing_is_fabricated(paths, world):
+    results, _ = paths
+    first_valid = {"S": next(d for d, s in world["anchors"] if world["decisions"][s]["S"]["available"]),
+                   "I+S": next(d for d, s in world["anchors"] if world["decisions"][s]["I+S"]["available"])}
+    assert first_valid["S"] == first_valid["I+S"] and first_valid["S"] != world["anchors"][0][0]
+    for arch in M.ARCH_ORDER:
+        path = results[arch]["path"]
+        assert path[0]["date"] == world["anchors"][0][0]                                    # the calendar starts at the first scheduled anchor for all six
+        cash = [r for r in path if r["date"] < first_valid["S"]]
+        assert cash and all(r["weights"] == {} and r["cashWeight"] == 1 and r["holdings"] == 0 and r["nav"] == 1.0 and r["cost"] == 0.0 and r["turnover"] == 0.0 for r in cash)
+        assert all(r["kind"] in (None, "NO_TRADE_SIGNAL_UNAVAILABLE") for r in cash) and cash[0]["signalUnavailable"] is True
+        assert sum(r["signalUnavailable"] for r in cash) == 2                              # exactly the two deficient anchors
+    benchmarks = results["A"]["path"][0]["benchmarkNav"], results["A"]["path"][-1]["benchmarkNav"]
+    assert benchmarks[0] == 1.0 and benchmarks[1] != 1.0                                     # the passive reference runs from the same first anchor
+    summary = R.summarize_path(results["A"]["path"])
+    assert summary["noTradeSignalUnavailableAnchors"] >= 2 and summary["sessionsFullyInCashBeforeFirstValidDecision"] > 0
+
+
+def test_a_later_unavailable_s_anchor_carries_the_previous_s_holdings_exactly_and_recovery_rebalances_normally(world):
+    signal = signal_of(world, 5)
+    day, recovery = anchor_day(world, signal), anchor_day(world, signal_of(world, 6))
+    decisions = with_unavailable(world, "S", {signal})
+    calls = []
+    real = P.execute_rebalance
+
+    def spy(before, desired, adv, selected, multiplier, cfg, **kwargs):
+        calls.append({"desired": dict(desired), "selected": list(selected), "multiplier": multiplier})
+        return real(before, desired, adv, selected, multiplier, cfg, **kwargs)
+    with pytest.MonkeyPatch.context() as mp:
+        mp.setattr(P, "execute_rebalance", spy)
+        result = run(world, "A", decisions=decisions)
+    assert result["complete"]
+    held, before = record_on(result, day), previous_record(result, day)
+    assert before["weights"] and held["kind"] == "NO_TRADE_SIGNAL_UNAVAILABLE" and held["signalUnavailable"] is True
+    assert set(held["weights"]) == set(before["weights"]) and held["turnover"] == 0.0 and held["cost"] == 0.0 and held["replaced"] == 0 and held["added"] == 0
+    assert held["holdings"] == before["holdings"] and held["cashWeight"] >= -1e-9
+    assert not any(c["selected"] and c["selected"] == world["decisions"][signal]["S"]["selected"] for c in calls)      # the deficient anchor generated no order
+    normal = world["decisions"][signal_of(world, 6)]["S"]
+    again = record_on(result, recovery)
+    assert again["kind"] == "ANCHOR" and any(c["selected"] == normal["selected"] and c["desired"] == normal["baseWeights"] for c in calls)      # a normal registered rebalance
+    assert set(again["weights"]) <= set(normal["selected"])
+    # the same path with no unavailable anchor differs ONLY from that anchor on (history before it is identical)
+    plain = run(world, "A")
+    assert [r["nav"] for r in result["path"] if r["date"] < day] == [r["nav"] for r in plain["path"] if r["date"] < day]
+
+
+def test_a_later_unavailable_i_plus_s_anchor_carries_the_previous_book_while_the_s_book_trades_normally(paths, world):
+    results, _ = paths
+    signal = next(s for _, s in world["anchors"] if world["decisions"][s]["S"]["available"] and not world["decisions"][s]["I+S"]["available"]
+                  and s > signal_of(world, 3))
+    day = anchor_day(world, signal)
+    assert "INDUSTRY_LAYER_UNRANKABLE" in world["decisions"][signal]["I+S"]["unavailableCauses"] and world["decisions"][signal]["S"]["available"]
+    for arch in "DEF":
+        held, before = record_on(results[arch], day), previous_record(results[arch], day)
+        assert held["signalUnavailable"] is True and set(held["weights"]) == set(before["weights"]) and held["replaced"] == 0 and held["added"] == 0
+        assert held["kind"] in ("NO_TRADE_SIGNAL_UNAVAILABLE", "MARKET")
+    assert record_on(results["A"], day)["kind"] == "ANCHOR" and record_on(results["A"], day)["signalUnavailable"] is False         # S is untouched by an industry gap
+
+
+def test_market_scaling_still_changes_while_the_underlying_stock_signal_is_held(world):
+    decisions = with_unavailable(world, "S", {s for s in world["decisions"] if s > signal_of(world, 4)})
+    plain = run(world, "A", decisions=decisions)
+    with_market = {arch: run(world, arch, decisions=decisions) for arch in "BC"}
+    frozen_at = anchor_day(world, signal_of(world, 4))
+    names = set(record_on(plain, frozen_at)["weights"])
+    assert names
+    after = [r for r in plain["path"] if r["date"] > frozen_at]
+    assert all(set(r["weights"]) == names and r["turnover"] == 0.0 and r["kind"] in (None, "NO_TRADE_SIGNAL_UNAVAILABLE") for r in after)      # market OFF: held book, no trade at all
+    for arch, result in with_market.items():
+        later = [r for r in result["path"] if r["date"] > frozen_at]
+        scale = [r for r in later if r["kind"] == "MARKET"]
+        assert scale and {r["marketMultiplier"] for r in later} >= {0.7}                                                             # the overlay kept acting on the held book
+        assert all(set(r["weights"]) <= names and r["added"] == 0 and r["replaced"] == 0 for r in later)                              # same names; never a new one
+        assert any(r["signalUnavailable"] for r in later)
+
+
+def test_the_unavailable_state_is_shared_by_abc_and_by_def_and_the_market_layer_is_independent_of_it(paths, world):
+    results, _ = paths
+    for group, layer in (("ABC", "S"), ("DEF", "I+S")):
+        for day, signal in world["anchors"]:
+            flags = {a: record_on(results[a], day)["signalUnavailable"] for a in group}
+            assert set(flags.values()) == {not world["decisions"][signal][layer]["available"]}
+    # C0 / C1 targets come from the sealed market table alone: replacing every stock decision leaves the multiplier sequence untouched
+    unavailable_all = with_unavailable(world, "S", set(world["decisions"]))
+    alone = run(world, "B", decisions=unavailable_all)
+    assert [r["marketMultiplier"] for r in alone["path"]] == [r["marketMultiplier"] for r in results["B"]["path"]]
+    assert all(r["weights"] == {} for r in alone["path"])                                    # never a fabricated book, whatever the overlay says
+
+
+def test_an_unavailable_anchor_is_a_no_trade_anchor_not_a_removed_one(paths, world):
+    results, _ = paths
+    for arch in M.ARCH_ORDER:
+        days = {r["date"] for r in results[arch]["path"]}
+        assert all(day in days for day, _ in world["anchors"] if day <= results[arch]["path"][-1]["date"])         # the calendar is identical and complete

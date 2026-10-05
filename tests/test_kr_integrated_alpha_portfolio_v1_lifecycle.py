@@ -10,6 +10,7 @@ Synthetic lifecycle tests run on `pre_seal_root`, an isolated copy of ONLY the f
 real one-shot protections without depending on the state of the real repository. Separate tests prove the real repository refuses re-execution.
 Invented values, synthetic repositories and fake GitHub APIs only; no test reads a historical market value or computes a historical outcome."""
 import ast
+import copy
 import hashlib
 import inspect
 import io
@@ -94,7 +95,7 @@ def test_the_frozen_spec_carries_the_module_rules_the_development_label_and_no_o
     assert SPEC["boundary"]["isValidation"] is False and SPEC["boundary"]["usesMachineLearning"] is False and SPEC["boundary"]["mayRerunAnyPriorStudy"] is False
     assert SPEC["boundary"]["mayTuneAThresholdOrWeightFromOutcomes"] is False and SPEC["boundary"]["mayChangeC0OrC1"] is False
     assert all(r["madeBeforeAnyOutcome"] is True and r["outcomeCountersAtRevision"] == "ALL_ZERO" for r in SPEC["preOutcomeRevisions"])
-    assert SPEC["governance"]["lastLargeHistoricalArchitectureStudy"] is True and [r["id"] for r in SPEC["preOutcomeRevisions"]] == ["C0_VS_C1_TRADE_OFF_REVISION_1", "CASH_SOURCE_DESCRIPTION_REVISION_1", "SEAL_HANDOFF_REVISION_1"]
+    assert SPEC["governance"]["lastLargeHistoricalArchitectureStudy"] is True and [r["id"] for r in SPEC["preOutcomeRevisions"]] == ["C0_VS_C1_TRADE_OFF_REVISION_1", "CASH_SOURCE_DESCRIPTION_REVISION_1", "SEAL_HANDOFF_REVISION_1", "MISSING_SIGNAL_NO_TRADE_REVISION_1"]
     assert list(SPEC["architectures"]["order"]) == list(M.ARCH_ORDER) and SPEC["architectures"]["matrix"]["F"] == {"name": "I+S+M1", "industry": True, "market": "C1"}
     assert SPEC["decision"]["finalArchitecture"]["noPostHocTieBreak"] is True and SPEC["decision"]["bands"]["source"].startswith("inherited unchanged")
     assert SPEC["portfolio"]["anchors"]["architectureSpecificTradingRules"] == "NONE" and SPEC["stockLayer"]["eligibility"]["noAbsoluteDoNotInvestThreshold"] is True
@@ -391,23 +392,48 @@ def test_market_values_and_portfolio_valuation_need_both_the_permit_and_the_lock
 # ---------------------------------------------------------------------------------------------------------------------------------------
 # The registered gates
 # ---------------------------------------------------------------------------------------------------------------------------------------
-def gate_bundle(world, **overrides):
+def clean_decisions(world):
+    """Every scheduled signal carries a fully available decision (a copy of one the invented world computed normally)."""
+    template = world["decisions"][sorted(world["decisions"])[7]]
+    assert template["S"]["available"] and template["I+S"]["available"]
+    return {s: copy.deepcopy(template) for s in world["decisions"]}
+
+
+def depth_of(decisions):
+    return {s: {"eligibleS": p["S"]["eligibleCount"], "eligibleIS": p["I+S"]["eligibleCount"], "industriesRanked": p["I+S"]["industriesRanked"], "eligibleIndustries": 6,
+                "members": 12, "classifiedInEligibleIndustry": 12} for s, p in decisions.items()}
+
+
+def gate_bundle(world, decisions=None, **overrides):
     signals = sorted({s for _, s in world["anchors"]})
     rows = [{"date": s, "ticker": t, "marketCap": 1e12, "accountingProvenance": {"availableFrom": "2000-01-01"}} for s in signals for t in world["tickers"]]
-    depth = {s: {"eligibleS": 12, "eligibleIS": 12, "industriesRanked": 6, "eligibleIndustries": 6, "members": 12, "classifiedInEligibleIndustry": 12} for s in signals}
-    bundle = {"features": pd.DataFrame(rows), "schedule": {s: sorted(world["tickers"]) for s in signals}, "anchors": world["anchors"], "depth": depth}
+    decisions = decisions if decisions is not None else clean_decisions(world)
+    bundle = {"features": pd.DataFrame(rows), "schedule": {s: sorted(world["tickers"]) for s in signals}, "anchors": world["anchors"], "decisions": decisions,
+              "depth": depth_of(decisions)}
     bundle.update(overrides)
     return bundle
 
 
-def test_pre_lock_gates_stop_a_short_book_an_unrankable_industry_layer_and_bad_signal_inputs(world, monkeypatch):
+def make_unavailable(decisions, layer, signals):
+    out = copy.deepcopy(decisions)
+    for signal in signals:
+        out[signal][layer].update(available=False, unavailable=M.SIGNAL_UNAVAILABLE, unavailableCauses=["STOCK_DEPTH_BELOW_MINIMUM"], selected=[], baseWeights={}, scores={})
+    return out
+
+
+def test_pre_lock_gates_stop_bad_signal_inputs_but_a_deficient_anchor_is_a_no_trade_anchor_not_a_gate_failure(world, monkeypatch):
     bundle = gate_bundle(world)
     monkeypatch.setattr(E, "v4_schedule", lambda root: dict(bundle["schedule"]))
     assert E.pre_lock_gates(bundle, SPEC, ROOT) == []
-    signal = world["anchors"][3][1]
-    short = gate_bundle(world)
-    short["depth"][signal] = dict(short["depth"][signal], eligibleS=M.MIN_ELIGIBLE_PER_DATE - 1, eligibleIS=M.MIN_ELIGIBLE_PER_DATE - 1, industriesRanked=M.MIN_INDUSTRIES_RANKED - 1)
-    assert set(E.pre_lock_gates(short, SPEC, ROOT)) == {"STOCK_DEPTH_BELOW_MINIMUM:S:" + signal, "STOCK_DEPTH_BELOW_MINIMUM:I+S:" + signal, "INDUSTRY_LAYER_UNRANKABLE:" + signal}
+    signals = sorted(bundle["decisions"])
+    # the exact failure of the first formal attempt: a few anchors without a valid new ranking. They are registered no-trade anchors now, not a refusal.
+    deficient = gate_bundle(world, make_unavailable(bundle["decisions"], "I+S", signals[:2] + signals[3:4]))
+    deficient["decisions"] = make_unavailable(deficient["decisions"], "S", signals[:2])
+    monkeypatch.setattr(E, "v4_schedule", lambda root: dict(deficient["schedule"]))
+    assert E.pre_lock_gates(deficient, SPEC, ROOT) == []
+    audit = E.availability_audit(deficient["decisions"], deficient["anchors"], deficient["depth"])
+    assert audit["S"]["unavailableAnchors"] == 2 and audit["I+S"]["unavailableAnchors"] == 3
+    monkeypatch.setattr(E, "v4_schedule", lambda root: dict(bundle["schedule"]))
     duplicated = gate_bundle(world)
     duplicated["features"] = pd.concat([duplicated["features"], duplicated["features"].iloc[:1]], ignore_index=True)
     assert "DUPLICATE_PIT_NAME_DATE" in E.pre_lock_gates(duplicated, SPEC, ROOT)
@@ -424,11 +450,74 @@ def test_pre_lock_gates_stop_a_short_book_an_unrankable_industry_layer_and_bad_s
     assert E.pre_lock_gates(dict(bundle, anchors=[]), SPEC, ROOT) == ["NO_PIT_NAME_DATES_OR_ANCHORS"]
 
 
+def test_insufficient_study_wide_signal_coverage_blocks_before_the_lock_for_each_book_separately(world, monkeypatch):
+    bundle = gate_bundle(world)
+    monkeypatch.setattr(E, "v4_schedule", lambda root: dict(bundle["schedule"]))
+    signals = sorted(bundle["decisions"])
+    total = len(world["anchors"])
+    assert [s for _, s in world["anchors"]] == signals and total >= 10
+    allowed = total - -(-total * M.MIN_AVAILABILITY_PERCENT // 100)                      # the most anchors that may be unavailable at exactly the registered floor
+    edge = gate_bundle(world, make_unavailable(bundle["decisions"], "S", signals[:allowed]))
+    assert E.pre_lock_gates(edge, SPEC, ROOT) == []                                       # exactly at the floor: still permitted
+    over = gate_bundle(world, make_unavailable(bundle["decisions"], "S", signals[:allowed + 1]))
+    assert E.pre_lock_gates(over, SPEC, ROOT) == ["SIGNAL_COVERAGE_BELOW_80_PERCENT:S:%d_OF_%d" % (total - allowed - 1, total)]
+    only_is = gate_bundle(world, make_unavailable(bundle["decisions"], "I+S", signals[:allowed + 1]))
+    assert E.pre_lock_gates(only_is, SPEC, ROOT) == ["SIGNAL_COVERAGE_BELOW_80_PERCENT:I+S:%d_OF_%d" % (total - allowed - 1, total)]   # judged per book
+    none = gate_bundle(world, make_unavailable(make_unavailable(bundle["decisions"], "S", signals), "I+S", signals))
+    assert sorted(E.pre_lock_gates(none, SPEC, ROOT)) == ["NO_VALID_DECISION:I+S", "NO_VALID_DECISION:S"]
+    assert (M.MIN_ELIGIBLE_PER_DATE, M.MIN_INDUSTRIES_RANKED, M.MIN_AVAILABILITY_PERCENT) == (10, 5, 80)       # the quality conditions are untouched; the floor is a round 80%
+
+
+def test_the_availability_audit_is_outcome_free_and_reports_the_registered_facts(world, monkeypatch):
+    counters = E.Counters()
+    for name in ("load_market_values", "market_tables", "run_architectures", "assemble"):
+        monkeypatch.setattr(E, name, lambda *a, **k: (_ for _ in ()).throw(AssertionError("OUTCOME_FUNCTION_TOUCHED")))
+    monkeypatch.setattr(R, "replay_architecture", lambda *a, **k: (_ for _ in ()).throw(AssertionError("REPLAY_TOUCHED")))
+    bundle = gate_bundle(world, world["decisions"])
+    audit = E.availability_audit(bundle["decisions"], bundle["anchors"], depth_of(world["decisions"]))
+    assert counters.zero() and audit["scheduledAnchors"] == len(world["anchors"])
+    for layer in ("S", "I+S"):
+        profile = audit[layer]
+        assert set(profile) >= {"scheduledAnchors", "validDecisionAnchors", "unavailableAnchors", "unavailableSignalDates", "unavailableCauses", "consecutiveUnavailableRuns",
+                                "firstValidDecision", "lastValidDecision", "availabilityShare", "meetsStudyCoverage"}
+        assert profile["validDecisionAnchors"] + profile["unavailableAnchors"] == profile["scheduledAnchors"]
+    signals = [s for _, s in world["anchors"]]
+    assert audit["S"]["unavailableSignalDates"] == signals[:2] and audit["S"]["consecutiveUnavailableRuns"] == [{"firstSignalDate": signals[0], "lastSignalDate": signals[1], "anchors": 2}]
+    assert audit["S"]["firstValidDecision"]["signalDate"] == signals[2]
+    assert audit["I+S"]["unavailableSignalDates"] == signals[:2] + [signals[6]] and audit["industryUnrankable"]["signalDates"] == signals[:2] + [signals[6]]
+    assert audit["I+S"]["unavailableCauses"][signals[6]] == ["STOCK_DEPTH_BELOW_MINIMUM", "INDUSTRY_LAYER_UNRANKABLE"]       # the 2021 pattern: both causes, S unaffected
+    def keys(value):
+        if isinstance(value, dict):
+            for k, v in value.items():
+                yield str(k)
+                yield from keys(v)
+        elif isinstance(value, list):
+            for v in value:
+                yield from keys(v)
+    assert not any(any(word in key.lower() for word in ("return", "drawdown", "excess", "sharpe", "cagr")) or key.lower() in ("nav", "grossnav") for key in keys(audit))     # no outcome quantity is even a field
+
+
+def test_the_first_formal_attempt_was_a_pre_lock_refusal_and_did_not_consume_the_study(pre_seal_root):
+    revision = next(r for r in SPEC["preOutcomeRevisions"] if r["id"] == "MISSING_SIGNAL_NO_TRADE_REVISION_1")
+    provenance = revision["provenance"]
+    assert provenance["formalExecutionRun"] == "37299251812" and provenance["stoppedBefore"] == "THE_EXECUTION_LOCK"
+    assert provenance["studyConsumed"] is False and provenance["lockExists"] is False
+    assert provenance["counters"] == {"featureBuilds": 1, "marketValueReads": 0, "marketStateComputations": 0, "replayCalls": 0, "metricCalls": 0, "cashSensitivityCalls": 0,
+                                      "decisionCalls": 0, "markerWrites": 0}
+    assert len(provenance["refusalReasonsFromTheJobLog"]) == 10
+    # not consumed: no lock ref exists, authorization does not refuse, and the attempt artifact is neither a results artifact nor a committed result
+    assert E.lock_exists(None, GOOD_ENV, FakeApi()) is False
+    assert isinstance(E.authorize_execution(SPEC, SHA, pre_seal_root, GOOD_ENV, fake_git(), lambda: False), E.ExecutionPermit)
+    assert "kr-integrated-alpha-portfolio-v1-attempt-${{ github.run_id }}" in WORKFLOW and "x.name.startsWith('kr-integrated-alpha-portfolio-v1-results-')" in WORKFLOW
+    for rel in (E.RESULT_PATH, E.MARKER_PATH, E.MANIFEST_PATH):
+        assert repository_state() == "POST_SEAL" or not (ROOT / rel).exists()
+
+
 # ---------------------------------------------------------------------------------------------------------------------------------------
 # The full gated execute path on INVENTED inputs
 # ---------------------------------------------------------------------------------------------------------------------------------------
 def synthetic_bundle(world):
-    depth = {s: {"eligibleS": p["S"]["eligibleCount"], "eligibleIS": p["I+S"]["eligibleCount"], "industriesRanked": 6, "eligibleIndustries": 6, "members": 12,
+    depth = {s: {"eligibleS": p["S"]["eligibleCount"], "eligibleIS": p["I+S"]["eligibleCount"], "industriesRanked": p["I+S"]["industriesRanked"], "eligibleIndustries": 6, "members": 12,
                  "classifiedInEligibleIndustry": 12} for s, p in world["decisions"].items()}
     return {"features": pd.DataFrame(), "schedule": {}, "decisions": world["decisions"], "depth": depth, "anchors": world["anchors"], "days": world["days"],
             "prices": world["prices"], "market": world["market"]}
@@ -791,7 +880,7 @@ def test_the_workflow_inventory_addendum_documents_the_workflow():
 # Prospective receipts (designed here; nothing is written or scheduled)
 # ---------------------------------------------------------------------------------------------------------------------------------------
 def _receipt(day="2026-10-06", c0=0.7, c1=1.0):
-    rows = [{"ticker": f"T{i:02d}.KS", "industry": "X" if i < 6 else "Y", "STOCK_SCORE": i / 12, "VALUE_SCORE": i / 12, "RISK_SCORE": i / 12,
+    rows = [{"ticker": f"T{i:02d}.KS", "industry": "X%d" % (i // 2), "STOCK_SCORE": i / 12, "VALUE_SCORE": i / 12, "RISK_SCORE": i / 12,
              "INDUSTRY_SCORE": 0.7 if i < 6 else 0.3, "COMBINED_SCORE": 0.5 * i / 12 + 0.5 * (0.7 if i < 6 else 0.3), "tradable": True, "adv60": 6e9,
              "downsideVol126": 0.18 + 0.01 * i} for i in range(12)]
     pair = M.underlying_pair(rows)
