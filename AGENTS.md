@@ -2338,6 +2338,63 @@
 - A SET REBUILT INSIDE A COMPREHENSION IS A QUADRATIC LOOP. The first readiness spent 73 of 93 seconds rebuilding
   `set(reference dates)` for each of 5,108 sessions; build it once.
 
+## KR integrated alpha portfolio protocol invariants (v2.45)
+
+- A COMPARISON OF SIX FIXED ARCHITECTURES IS NOT A SEARCH, AND IT IS THE LAST LARGE ONE. `kr-integrated-alpha-portfolio-v1` compares Stock-only (A),
+  +Market C0 (B), +Market C1 (C), Industry+Stock (D), +C0 (E) and +C1 (F) on one calendar, one set of costs and one execution engine, and stops. Nothing
+  is discovered, tuned, fitted or added after an outcome: no new factor, macro predictor, machine learning, threshold, weight, horizon, benchmark, top-k, cost
+  or cap. After an unfavourable sealed result there is no v1.1; the default next step is prospective receipts of all six targets. Every Korean date is
+  outcome-exposed and the three component studies were read before this was designed, so everything it can produce is `EXPLORATORY_DEVELOPMENT_ON_OUTCOME_EXPOSED_KR_HISTORY`.
+- THE SIX PATHS DIFFER ONLY ALONG THE TWO REGISTERED AXES, AND THE ENGINE NEVER READS WHICH PATH IT IS RUNNING. `replay_architecture` takes the underlying
+  decisions (S or I+S) and the market table (none, C0, C1); the architecture label is output only, and a test swaps it and requires byte-identical paths. A, B and C
+  are handed the SAME decision objects, D, E and F the same, and a spy proves that identity from the call arguments rather than asserting it in prose.
+- A LAYER THAT ONLY SCALES CANNOT REORDER. The market multiplier is applied to the book already selected and sized; it is not an input to eligibility,
+  scoring or order. Stock-only is always on; Industry OFF contributes exactly zero (the S decision does not even record an industry score); a missing component makes
+  a score missing and is never substituted (`VALUE_SCORE` needs BOTH of its percentiles, `STOCK_SCORE` and `COMBINED_SCORE` need every part).
+- THE MARKET LAYER IS THE SEALED MODEL, CALLED NOT COPIED. Layer states, the weekly schedule, the hold-on-missing rule and the C0 / C1 mapping tables come from
+  `kr_market_risk_model` directly; the frozen spec carries the mapping tables and the bands and `load_spec` compares them with the market model's own sealed spec.
+  The one thing this study adds is how a multiplier CHANGE meets an already-held 0-5 name book: a pure scale of the held proportions (drifted weights kept,
+  re-expressed at multiplier 1, renormalised to at most 1, times the new target), executed by the same `execute_rebalance` as every other trade. That is an
+  engineering choice of this study and is stated as one.
+- DEPTH IS FROZEN BEFORE OUTCOMES AND GATES CAN STOP THE RUN WITHOUT SPENDING IT. Every anchor must leave at least 10 eligible stocks (twice the book) for the
+  S book and the I+S book and rank at least 5 industries (the sealed minimum observed was 6), checked on signal-time information before the lock. A short date
+  is a registered stop, not a rule invented at execution; 0-5 holdings stay valid when executability leaves fewer, and there is no absolute "do not invest" threshold.
+- AN UNRESOLVED HELD MARK BLOCKS THAT ARCHITECTURE'S PATH. A name with no observed close, no observed zero-volume quote to carry and no terminal economics makes
+  `complete: false` for the paths that hold it; the others stay published, a pair needing a blocked path is `NOT_EVALUABLE_BLOCKED_PATH`, and the final architecture
+  is then `NO_FINAL_ARCHITECTURE_BLOCKED_PATH`. Nothing is dropped, substituted or zero-filled.
+- BANDS ARE INHERITED, NOT INVENTED, AND "JUSTIFIED" IS DEFINED, NOT ASSUMED. The pair classes use the sealed market model's own return band (0.50 pp/yr) and
+  drawdown bands (110% / 90% of the base's). Return participation lost to a market overlay is justified only while it stays inside the non-inferiority band; a larger
+  loss bought with a larger drawdown reduction is a risk-preference choice the study does not make, so it is `TRADE_OFF` and the final architecture is
+  `NO_UNAMBIGUOUS_FINAL_ARCHITECTURE`. Each layer is decided on its own (Industry on D vs A with E vs B and F vs C as context that must not be `WORSE`; C0 and C1
+  separately on the same underlying book) and the final architecture is assembled mechanically: no composite score, no post-hoc tie-break. When BOTH overlays are
+  supported, C1 vs C0 decides: `IMPROVES` -> C1, `WORSE` -> C0, `NON_INFERIOR_NO_MEANINGFUL_GAIN` -> C0 retained as the existing control with that stated, and
+  `TRADE_OFF` -> `NO_UNAMBIGUOUS_FINAL_ARCHITECTURE` (`C0_VS_C1_PARETO_TRADE_OFF`). The first draft silently kept C0 on a trade-off, which is a hidden preference for
+  the control and exactly what "a genuine trade-off is never ranked away" forbids; it was corrected before any outcome. C1's formal non-nomination in the sealed
+  market model is untouched.
+- CASH YIELD IS AN ACCOUNTING OVERLAY ON THE FINISHED PRIMARY PATH. The series (the repository's dated Bank of Korea base-rate proxy, effective on its event date,
+  rate of the previous session applied) was frozen before any portfolio outcome was read. The sensitivity adds `cash weight x cash return` to each primary session
+  return and so cannot change a name, weight, market state, trade, cost, layer decision or nomination. KOFR is not assumed to have full-span history. An ECOS adapter DOES exist
+  (`pipeline/ecos_macro.py`; the first draft wrongly said the fetch layer did not exist) but no exact, full-span, pinned investable KRW cash-return / CD91 series is
+  registered for this study and no item code is guessed, so the series stays `BOK_POLICY_RATE_PROXY`: not an investable deposit, MMF, CD or bill return. The file is
+  verified through 2026-09-07 against a 2026-09-14 cutoff; the official page was unreachable from the authoring sandbox, so the later sessions are
+  `CARRIED_FROM_LAST_VERIFIED`, never called verified. An unreadable source is `DATA_UNAVAILABLE` without blocking the primary study. Sharpe and Sortino are not reported.
+- A PRIOR STUDY'S EXACT FILES ARE PINNED, NEVER A NAME PREFIX. `priors.sealedArtifacts` lists every file of the eight sealed prior studies by SHA-256 (built from
+  the files that exist, not from a pattern the next study could silently match), and each component's own sealed `dependencyHashes` are compared with the bytes on disk.
+  A seal commit of THIS study adds exactly four files, none of which is pinned.
+- READINESS SHOWS THE MACHINE WORKS WITHOUT TOUCHING A REAL VALUE. It replays an invented six-path world twice (complete and deterministic), pushes date-presence
+  proxies through the sealed market state machine (where each candidate is determinable, never what a state is), reads only committed membership for depth upper
+  bounds and the frozen cash source, and its counters prove no market value was read and no portfolio valued. The invented world is a separate `Counters`, so the
+  outcome counters of `verify` and `readiness` are literally zero while the synthetic replay still exercises the real engine.
+- THE ONE-SHOT IS A DURABLE GITHUB-SIDE LOCK, TAKEN AFTER THE SIGNAL-TIME GATES AND BEFORE THE FIRST MARKET VALUE. `featureBuilds` (past-only feature construction)
+  is the only counter allowed to be non-zero before the lock; the marker records `valuesReadBeforeThisMarker == 0`. `workflow_dispatch` on merged main only, exact
+  committed spec, exact preserved raw-input artifact, no earlier result, marker or lock ref under the study prefix, then one result artifact and an automatic
+  exact-byte DRAFT seal PR (stdlib only, imports nothing it could rerun with). A failure after the lock consumes the study. A Draft-PR API refusal AFTER the
+  exact-byte seal is pushed is a `RECOVERABLE_SEAL_HANDOFF_FAILURE` (exit 3, job summary), not an execution failure: the branch is verified at the sealed commit, stays
+  immutable, no credential or permission is changed, transient failures are retried a bounded number of times, a second PR is never opened, and a human opens the
+  Draft PR from the pushed branch. The execution is never rerun because a PR could not be created.
+- NO HISTORICAL OUTCOME WAS COMPUTED IN THE PROTOCOL CHANGE. The workflow was not dispatched, no lock exists, no sealed prior result changed, and every number in this
+  section is a design fact, not a result.
+
 ## Lint gate invariants (v2.11)
 
 - The enabled rule set reports ZERO findings on `main`. A rule is turned on in the

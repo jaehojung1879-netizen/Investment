@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "kr-integrated-alpha-portfolio-v1-receipt.schema.json",
+  "title": "KR integrated alpha portfolio v1 prospective decision receipt",
+  "description": "One immutable, append-only record per future decision date, written BEFORE any outcome exists. Built and validated by pipeline/kr_integrated_alpha_portfolio_receipts.py. A receipt carries every input identity, the industry membership used, the registered feature values, the three scores, the eligible names, both underlying books, the C0 and C1 states and multipliers and ALL SIX target portfolios; it contains no future quantity. Receipts are evaluated only after their horizon matures on the KR calendar; no historical row is ever rewritten. Prospective evidence is the only route to validation for this architecture; every historical number is development evidence.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "studyId", "specSha256", "codeIdentity", "signalDate", "executionDate", "createdAtUtc", "inputIdentities", "industryMembership", "stockFeatures", "industryFeatures", "scores", "eligible", "underlying", "market", "targets", "developmentDecision", "evaluationHorizons", "evidenceClass", "receiptSha256"],
+  "properties": {
+    "schemaVersion": {"const": 1},
+    "studyId": {"const": "kr-integrated-alpha-portfolio-v1"},
+    "specSha256": {"type": "string", "pattern": "^[0-9a-f]{64}$", "description": "canonical SHA-256 of research_specs/kr-integrated-alpha-portfolio-v1.json (its .sha256 sidecar)"},
+    "codeIdentity": {"type": "object", "minProperties": 1, "description": "commit SHA plus SHA-256 of every file in the frozen dependency closure that produced the receipt"},
+    "signalDate": {"type": "string", "format": "date", "description": "the KR session whose close every signal is computed at"},
+    "executionDate": {"type": "string", "format": "date", "description": "the next KR session; targets apply from its close"},
+    "createdAtUtc": {"type": "string", "description": "wall-clock time the receipt was written; must precede the execution-session close"},
+    "inputIdentities": {"type": "object", "minProperties": 1, "additionalProperties": {"type": "string", "pattern": "^[0-9a-f]{64}$"}, "description": "SHA-256 of every input snapshot read (prices and caps, PIT accounting, industry membership, market sources)"},
+    "industryMembership": {"type": "object", "additionalProperties": {"type": ["string", "null"]}, "description": "ticker -> frozen 14-group industry (null when unclassified) as used on this date"},
+    "stockFeatures": {"type": "object", "description": "ticker -> the registered stock features (bookToMarketProxy, earningsYieldProxy, negativeDownsideVol126); null when missing"},
+    "industryFeatures": {"type": "object", "description": "industry -> REL_MOM_126 and BREADTH_ABOVE_MA_126; null when missing"},
+    "scores": {"type": "object", "description": "ticker -> STOCK_SCORE, INDUSTRY_SCORE, COMBINED_SCORE (null when missing)"},
+    "eligible": {"type": "object", "required": ["S", "I+S"], "description": "tickers eligible for the S book and for the I+S book"},
+    "underlying": {"type": "object", "required": ["S", "I+S"], "description": "selected names and base weights BEFORE any market scaling"},
+    "market": {"type": "object", "required": ["C0", "C1"], "description": "per candidate: layer states, multiplier in {1.0, 0.7, 0.4} and whether it was held for a missing state"},
+    "targets": {"type": "object", "required": ["A", "B", "C", "D", "E", "F"], "description": "all six target portfolios, derived as underlying x multiplier; at most five names, no leverage"},
+    "developmentDecision": {"type": "string", "description": "the sealed development architecture decision (or its no-decision outcome) this ledger was opened under; all six targets are recorded either way"},
+    "evaluationHorizons": {"const": [21, 63, 126]},
+    "evidenceClass": {"const": "PROSPECTIVE_PAPER"},
+    "receiptSha256": {"type": "string", "pattern": "^[0-9a-f]{64}$", "description": "SHA-256 of the canonical JSON of every other field"}
+  }
+}

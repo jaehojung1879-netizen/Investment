@@ -1,0 +1,90 @@
+{
+  "anchors": 113,
+  "basedOnAnyReturnResult": false,
+  "blockers": [],
+  "cashYieldSource": {
+    "basis": "BOK_POLICY_RATE_PROXY",
+    "carriedSessionStatus": "CARRIED_FROM_LAST_VERIFIED: the last verified rate is held; these sessions are not verified",
+    "coversFeatureStart": true,
+    "events": 36,
+    "firstEvent": "2009-02-13",
+    "lastEvent": "2026-08-28",
+    "limitation": "BOK_POLICY_RATE_PROXY only: not an investable deposit, MMF, CD or bill return; descriptive sensitivity that cannot affect selection, layer decisions or the final architecture",
+    "sessionsCarriedFromLastVerified": 5,
+    "source": "https://www.bok.or.kr/portal/singl/baseRate/list.do?dataSeCd=01&menuNo=200643",
+    "status": "FROZEN_PROXY",
+    "verifiedThrough": "2026-09-07"
+  },
+  "checks": {
+    "anchorsFromTheCalendarAlone": true,
+    "cashYieldSensitivityStatus": "FROZEN_PROXY",
+    "committedMembershipCanSupportTheRegisteredDepth": true,
+    "frozenSpecPinsAndImportClosure": true,
+    "marketCandidatesDeterminableFromDatePresence": true,
+    "marketMappingsAreTheSealedModelsOwn": true,
+    "noOutcomeAccess": true,
+    "priorStudiesUnchangedAndNotRerun": true,
+    "syntheticSixPathWorldCompleteAndDeterministic": true,
+    "syntheticTestsPresent": true
+  },
+  "counters": {
+    "cashSensitivityCalls": 0,
+    "decisionCalls": 0,
+    "featureBuilds": 0,
+    "markerWrites": 0,
+    "marketStateComputations": 0,
+    "marketValueReads": 0,
+    "metricCalls": 0,
+    "replayCalls": 0
+  },
+  "decision": "READY_FOR_INTEGRATED_ALPHA_PORTFOLIO_V1_EXECUTION",
+  "details": {},
+  "firstAnchor": "2017-01-16",
+  "historicalExecutionPerformed": false,
+  "lastAnchor": "2026-08-24",
+  "marketPresence": {
+    "decisionDates": 1027,
+    "determinable": {
+      "C0": {
+        "decisionDates": 1027,
+        "determinable": 1027,
+        "firstDecisionDeterminable": true,
+        "share": 1.0
+      },
+      "C1": {
+        "decisionDates": 1027,
+        "determinable": 1027,
+        "firstDecisionDeterminable": true,
+        "share": 1.0
+      }
+    },
+    "firstDecisionDate": "2007-01-05",
+    "ok": true
+  },
+  "membershipDepthUpperBounds": {
+    "anchorDaysInPortfolioCalendar": true,
+    "anchors": 113,
+    "classifiedStocksInEligibleIndustriesPerDate": {
+      "max": 111,
+      "median": 100.0,
+      "min": 90
+    },
+    "eligibleIndustriesPerDate": {
+      "max": 12,
+      "median": 10.0,
+      "min": 6
+    },
+    "firstAnchor": "2017-01-16",
+    "lastAnchor": "2026-08-24",
+    "note": "membership-only upper bounds; tradability, ADV, downside volatility and finite scores are signal-time facts measured by the pre-lock gates",
+    "signalDates": 113
+  },
+  "mode": "readiness",
+  "notMeasuredBeforeExecution": [
+    "signal-date feature finiteness, tradability and ADV of the PIT members (measured by the pre-lock gates)",
+    "any market value, return, drawdown or portfolio outcome"
+  ],
+  "scientificStatus": "EXPLORATORY_DEVELOPMENT_ON_OUTCOME_EXPOSED_KR_HISTORY",
+  "specSha256": "dcd2fed7c2ef64d0ad0c5b2920f518e00c3752a96e24b66919f5e3b156a7f6ea",
+  "studyId": "kr-integrated-alpha-portfolio-v1"
+}
