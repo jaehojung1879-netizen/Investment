@@ -4,11 +4,13 @@
   "blockers": [],
   "cashYieldSource": {
     "basis": "BOK_POLICY_RATE_PROXY",
+    "carriedSessionStatus": "CARRIED_FROM_LAST_VERIFIED: the last verified rate is held; these sessions are not verified",
     "coversFeatureStart": true,
     "events": 36,
     "firstEvent": "2009-02-13",
     "lastEvent": "2026-08-28",
-    "sessionsAfterVerifiedThroughCarriedAtTheLastRate": 5,
+    "limitation": "BOK_POLICY_RATE_PROXY only: not an investable deposit, MMF, CD or bill return; descriptive sensitivity that cannot affect selection, layer decisions or the final architecture",
+    "sessionsCarriedFromLastVerified": 5,
     "source": "https://www.bok.or.kr/portal/singl/baseRate/list.do?dataSeCd=01&menuNo=200643",
     "status": "FROZEN_PROXY",
     "verifiedThrough": "2026-09-07"
@@ -83,6 +85,6 @@
     "any market value, return, drawdown or portfolio outcome"
   ],
   "scientificStatus": "EXPLORATORY_DEVELOPMENT_ON_OUTCOME_EXPOSED_KR_HISTORY",
-  "specSha256": "2cc18d72ed6e15000b381197fdcc2ba1f4580455b535cb6758c414884e490fbe",
+  "specSha256": "dcd2fed7c2ef64d0ad0c5b2920f518e00c3752a96e24b66919f5e3b156a7f6ea",
   "studyId": "kr-integrated-alpha-portfolio-v1"
 }

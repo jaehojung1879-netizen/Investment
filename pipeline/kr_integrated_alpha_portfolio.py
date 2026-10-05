@@ -104,7 +104,13 @@ CASH_YIELD = {"series": "BOK_POLICY_RATE_PROXY", "path": "data/bok-policy-rates.
               "floorReason": "the source supports no negative investable rate", "changes": "ONLY the return earned by residual cash",
               "neverChanges": ["names", "weights", "market state", "trades", "costs", "layer decisions", "the final architecture"],
               "status": "FROZEN_PROXY_NOT_AN_INVESTABLE_DEPOSIT_OR_BILL_INDEX",
-              "notUsed": {"KOFR": "no full-span history is assumed", "ECOS": "an item code is never guessed and the repository's ECOS fetch layer does not exist"}}
+              "notUsed": {"KOFR": "no full-span history is assumed",
+                          "ECOS": "an ECOS adapter exists (pipeline/ecos_macro.py, read-only, manual workflows only) but this study has NO exact, full-span, pinned investable KRW "
+                                  "cash-return / CD91 series registered for use; no ECOS item code is guessed"},
+              "limitation": "BOK_POLICY_RATE_PROXY only: not an investable deposit, MMF, CD or bill return; descriptive sensitivity that cannot affect selection, layer decisions or the final architecture",
+              "verification": {"fileVerifiedThrough": "2026-09-07", "studyCutoff": DEVELOPMENT_CUTOFF,
+                               "sessionsAfterFileVerifiedThrough": "CARRIED_FROM_LAST_VERIFIED (the rate in force at the last verified date is held; never described as verified)",
+                               "reverification": "the official bok.or.kr base-rate page could not be reached from the authoring sandbox (egress denied), so the committed metadata is kept unchanged"}}
 
 FORBIDDEN_OUTPUT_KEY_FRAGMENTS = ("winner", "optimal", "best", "promot", "validated", "verdict", "passfail", "recommend", "productionready")
 LAYER_STATUS = {"SUPPORTED": "DEVELOPMENT_SUPPORTED", "NOT_SUPPORTED": "NOT_SUPPORTED", "TRADE_OFF": "PARETO_TRADE_OFF", "BLOCKED": "NOT_EVALUABLE_BLOCKED_PATH"}
@@ -112,6 +118,7 @@ INDUSTRY_NOT_SUPPORTED = "INDUSTRY_LAYER_NOT_SUPPORTED"
 MARKET_NOT_SUPPORTED = "MARKET_OVERLAY_NOT_SUPPORTED_FOR_FINAL_PORTFOLIO"
 NO_UNAMBIGUOUS = "NO_UNAMBIGUOUS_FINAL_ARCHITECTURE"
 NO_FINAL_BLOCKED = "NO_FINAL_ARCHITECTURE_BLOCKED_PATH"
+C0_VS_C1_TRADE_OFF = "C0_VS_C1_PARETO_TRADE_OFF"
 PAIR_CLASSES = ("IMPROVES", "NON_INFERIOR_NO_MEANINGFUL_GAIN", "TRADE_OFF", "WORSE", "NOT_EVALUABLE_BLOCKED_PATH")
 
 
@@ -336,12 +343,21 @@ def final_architecture(industry, market):
         return {"finalArchitecture": NO_FINAL_BLOCKED, "reason": "MARKET_LAYER_NOT_EVALUABLE", "underlying": base}
     supported = [cid for cid in MARKET_CANDIDATES if statuses[cid] == LAYER_STATUS["SUPPORTED"]]
     if supported:
-        pick = supported[0]
+        pick, relation, note = supported[0], None, None
         if len(supported) == 2:
-            pick = "C1" if chosen["C1_vs_C0"] == "IMPROVES" else "C0"
+            # Both overlays clear their own bar on this book: how they relate to EACH OTHER decides, and a genuine trade-off is never ranked away.
+            relation = chosen["C1_vs_C0"]
+            if relation == "NOT_EVALUABLE_BLOCKED_PATH":
+                return {"finalArchitecture": NO_FINAL_BLOCKED, "reason": "C0_VS_C1_NOT_EVALUABLE", "underlying": base, "c1VsC0": relation}
+            if relation == "TRADE_OFF":
+                return {"finalArchitecture": NO_UNAMBIGUOUS, "reason": C0_VS_C1_TRADE_OFF, "underlying": base, "c1VsC0": relation}
+            pick = "C1" if relation == "IMPROVES" else "C0"
+            note = {"IMPROVES": "C1_IMPROVES_ON_C0", "WORSE": "C1_WORSE_THAN_C0_C0_RETAINED",
+                    "NON_INFERIOR_NO_MEANINGFUL_GAIN": "NO_MEANINGFUL_INCREMENTAL_C1_GAIN_C0_RETAINED_AS_THE_EXISTING_CONTROL"}[relation]
         letter = BASES[base][pick]
         return {"finalArchitecture": letter, "name": ARCHITECTURES[letter]["name"], "underlying": base, "marketCandidate": pick,
-                "marketLayer": "DEVELOPMENT_SUPPORTED:" + "+".join(supported), "reason": "ASSEMBLED_FROM_LAYER_DECISIONS"}
+                "marketLayer": "DEVELOPMENT_SUPPORTED:" + "+".join(supported), "reason": "ASSEMBLED_FROM_LAYER_DECISIONS",
+                "c1VsC0": relation, "c1VsC0Note": note}
     if any(s == LAYER_STATUS["TRADE_OFF"] for s in statuses.values()):
         return {"finalArchitecture": NO_UNAMBIGUOUS, "reason": "MARKET_LAYER_PARETO_TRADE_OFF", "underlying": base}
     letter = BASES[base]["off"]

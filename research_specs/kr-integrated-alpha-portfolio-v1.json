@@ -84,6 +84,7 @@
     "floorReason": "the source supports no negative investable rate",
     "haircutAnnualPp": 0.5,
     "lag": "the rate in force on the PREVIOUS session's calendar date applies to the return earned between the previous and this session's close",
+    "limitation": "BOK_POLICY_RATE_PROXY only: not an investable deposit, MMF, CD or bill return; descriptive sensitivity that cannot affect selection, layer decisions or the final architecture",
     "meaning": "Bank of Korea base rate, step function of its dated decision history (event date = first calendar day the rate applies)",
     "neverChanges": [
       "names",
@@ -95,7 +96,7 @@
       "the final architecture"
     ],
     "notUsed": {
-      "ECOS": "an item code is never guessed and the repository's ECOS fetch layer does not exist",
+      "ECOS": "an ECOS adapter exists (pipeline/ecos_macro.py, read-only, manual workflows only) but this study has NO exact, full-span, pinned investable KRW cash-return / CD91 series registered for use; no ECOS item code is guessed",
       "KOFR": "no full-span history is assumed"
     },
     "path": "data/bok-policy-rates.json",
@@ -105,7 +106,13 @@
       "ZERO",
       "PROXY",
       "PROXY_MINUS_HAIRCUT"
-    ]
+    ],
+    "verification": {
+      "fileVerifiedThrough": "2026-09-07",
+      "reverification": "the official bok.or.kr base-rate page could not be reached from the authoring sandbox (egress denied), so the committed metadata is kept unchanged",
+      "sessionsAfterFileVerifiedThrough": "CARRIED_FROM_LAST_VERIFIED (the rate in force at the last verified date is held; never described as verified)",
+      "studyCutoff": "2026-09-14"
+    }
   },
   "decision": {
     "axes": [
@@ -160,7 +167,13 @@
     },
     "marketLayer": {
       "DEVELOPMENT_SUPPORTED": "primary pair on the final underlying portfolio IMPROVES and the same overlay is not WORSE on the other portfolio",
-      "c1VsC0": "recorded beside; C1 replaces C0 only when BOTH are supported and C1 vs C0 IMPROVES",
+      "bothSupported": {
+        "C1_vs_C0 IMPROVES": "choose C1",
+        "C1_vs_C0 NON_INFERIOR_NO_MEANINGFUL_GAIN": "retain C0 as the existing control and state that no meaningful incremental C1 gain was established",
+        "C1_vs_C0 NOT_EVALUABLE_BLOCKED_PATH": "NO_FINAL_ARCHITECTURE_BLOCKED_PATH",
+        "C1_vs_C0 TRADE_OFF": "NO_UNAMBIGUOUS_FINAL_ARCHITECTURE with reason C0_VS_C1_PARETO_TRADE_OFF (a genuine trade-off is never ranked away)",
+        "C1_vs_C0 WORSE": "choose C0"
+      },
       "judged": "C0 and C1 SEPARATELY, each on the SAME underlying portfolio without the overlay (B vs A, C vs A, E vs D, F vs D)",
       "justification": "return participation lost is justified only while it stays inside the non-inferiority band; a larger loss bought with a larger drawdown reduction is a risk-preference choice and is reported as a trade-off",
       "notSupported": "MARKET_OVERLAY_NOT_SUPPORTED_FOR_FINAL_PORTFOLIO"
@@ -182,7 +195,7 @@
     }
   },
   "dependencyHashes": {
-    ".github/workflows/kr-integrated-alpha-portfolio-v1.yml": "27bcde32740c49e800ed10d1dc8dd05d29b527bea4ac2e4da8838b12b7f99f10",
+    ".github/workflows/kr-integrated-alpha-portfolio-v1.yml": "d3932bd9f3ebe12b7f5022d72b3045e5667ed1de061618570bd819164bb0a0b5",
     "data/bok-policy-rates.json": "a7edf0e532c7b54da9d962ebf12ff2552c90c783439fef99d7c761c5b9ea69ff",
     "data/kr-industry-membership-foundation-v1/identity-inventory.json": "7dddc6f75ea14adc8f97f3558409a68b2f71ab356b270e7d25d1ecb08875e4fc",
     "data/kr-industry-membership-foundation-v1/identity-provenance.json": "3f5d031b80c16e965a8111455aa51ab84affc92948c7895112ab8f90b182a5fa",
@@ -197,7 +210,7 @@
     "docs/kr-factor-anatomy-v1-design.md": "b2e6402d118b6fbcbba0f62497b1efd92d28ab513d1a64661c62b2454839694d",
     "docs/kr-industry-opportunity-anatomy-v1-design.md": "06700c9938cde51d2b2ea8f99bad0712975f69190d038f8fba4d705548bc915c",
     "docs/kr-industry-opportunity-anatomy-v1-result-seal.md": "1a8db9c8b25e2fe15f34be0c88e24d5b0ff9e5d0ff433b0a5df42a633fc9a2bd",
-    "docs/kr-integrated-alpha-portfolio-v1-design.md": "26240ea30b68b1528de61c4da3ce3a99345c4735a2bfa404f442623db8587751",
+    "docs/kr-integrated-alpha-portfolio-v1-design.md": "d043a1c1c057ad7be2a16b0e34b44dea1815d1c6521b7a9844dc2ebf4321c558",
     "docs/kr-market-risk-anatomy-v1-design.md": "bcbb8679bdf8fbef80bb60a4b078bf9a33bbab957ca931b78d19cbcba9516033",
     "docs/kr-market-risk-anatomy-v1-source-readiness.md": "e3ad771242034071b41beff856525eea0ca0359614487fed204fccf3c43b750f",
     "docs/kr-market-risk-anatomy-v2-design.md": "6cbed6c7074ae6817f13f2a57976969f12ea7383744789f43cd46ab47fbbd0f5",
@@ -288,11 +301,11 @@
     "pipeline/kr_industry_anatomy_execution.py": "ece54c4020751df065c5391813724b315dc40db1a3d2a6508500165d0787cb1b",
     "pipeline/kr_industry_membership.py": "ec84de6d94d0f6e0b537dacef4cd96467566515471631f6c5107c39df038433c",
     "pipeline/kr_industry_membership_v3.py": "c857dcdd9323bc0fed69b2212b8dcc1fca7527c8fb1a0b32d588c8bbc5fa65f5",
-    "pipeline/kr_integrated_alpha_portfolio.py": "fe7355c05637f91a6eb03185529ec7c0a7859d7b4f6658fdce42065d055d6588",
-    "pipeline/kr_integrated_alpha_portfolio_execution.py": "cee2583c64a17f734f1da867b92d241b6a4dabd1b9cec94dc377129f630f6ed8",
+    "pipeline/kr_integrated_alpha_portfolio.py": "6c5839511ae68f4e9efb93c019de8d2698750b5839f9aa8e29c358dbade642ef",
+    "pipeline/kr_integrated_alpha_portfolio_execution.py": "ebb731b806d28d46b764cd095dc63e3bb5e67318670ecbe00bf93d50ca882ea3",
     "pipeline/kr_integrated_alpha_portfolio_receipts.py": "61d6a445874dc760d11cbe2fbaf1f96332877e7d5d563ee1a9f61f3ddf833a47",
     "pipeline/kr_integrated_alpha_portfolio_replay.py": "e735f361c2dc06a3369f854a10e5251ed660823d3c74b7a535cab43213ce63ed",
-    "pipeline/kr_integrated_alpha_portfolio_seal.py": "63f98e13fe45d7ebdc42fd7e14fb90582a3c0738a6483a0d5ce290aea2519f11",
+    "pipeline/kr_integrated_alpha_portfolio_seal.py": "0d08dc3ae6b605d971d7781c01aeb7cdfb436ff83aedd66bb74f346ed881df43",
     "pipeline/kr_market_risk_anatomy.py": "e97887dd5b0bbb15b37ed40473b1da8e40a8f3fea2125d9fb176fa94dac6e978",
     "pipeline/kr_market_risk_anatomy_analysis.py": "8565be7de14d990619c4ca3789dc4a403c547790663f6cd4139f61e0d972f8c6",
     "pipeline/kr_market_risk_model.py": "568ba9fe963881699e6abaa6d2d6c8a747583485e3436eda7620032facdca54a",
@@ -355,7 +368,7 @@
     "research_specs/kr-top120-regime-review-v1.sha256": "e1e7f101f37a5e2a9c53f7dcfa99afb8efc06e24235b022e57a4dae8c2b98e88",
     "scripts/build_kr_integrated_alpha_portfolio_v1_spec.py": "b435c0979e2ebdbb5961816fc3b24f028f96f1828eefeeed77e6a14e56ea28f4",
     "scripts/run_kr_integrated_alpha_portfolio_v1.py": "7a4c4f41ecd1161eab1835623b4f75e6757d5ef2aa8e7484b9314c500c2fab74",
-    "scripts/seal_kr_integrated_alpha_portfolio_v1.py": "5b1dc9c1fc2ea0407c9a8e2e2481bf735158773e1c9cb88725c8f2e0dc53962e"
+    "scripts/seal_kr_integrated_alpha_portfolio_v1.py": "781cfceac163a7d5a323dfc51f060d6212452eb4efbc6a68c82a6730d5850e4f"
   },
   "developmentCutoff": "2026-09-14",
   "developmentStatement": "This integrated architecture is built from three sealed, outcome-exposed component studies (market risk model, industry anatomy, stock within-industry anatomy) on KR history that is already outcome-exposed. Every historical number it produces is DEVELOPMENT evidence for choosing an architecture to record prospectively; it has no prospective validity and validates nothing.",
@@ -813,7 +826,49 @@
     "tieBreak": "ticker ascending",
     "unresolvedTerminalEconomics": "a held name with no observed close, no observed zero-volume quote and no terminal economics blocks THAT architecture's path (complete: false); no survivor or successor is substituted and no name silently disappears"
   },
-  "preOutcomeRevisions": [],
+  "preOutcomeRevisions": [
+    {
+      "id": "C0_VS_C1_TRADE_OFF_REVISION_1",
+      "madeBeforeAnyOutcome": true,
+      "now": "IMPROVES -> C1; WORSE -> C0; NON_INFERIOR_NO_MEANINGFUL_GAIN -> C0 retained as the existing control with that stated; TRADE_OFF -> NO_UNAMBIGUOUS_FINAL_ARCHITECTURE (C0_VS_C1_PARETO_TRADE_OFF); NOT_EVALUABLE -> NO_FINAL_ARCHITECTURE_BLOCKED_PATH",
+      "outcomeCountersAtRevision": "ALL_ZERO",
+      "reason": "that is a hidden preference for the control and contradicts the frozen principle that a genuine return / drawdown trade-off is never ranked away",
+      "replaced": "when both overlays were supported the final architecture chose C1 only if C1 vs C0 IMPROVED and otherwise silently kept C0",
+      "unchanged": [
+        "the 0.50 pp / 10% bands",
+        "pair classes",
+        "layer decisions",
+        "C0 and C1 mappings"
+      ]
+    },
+    {
+      "id": "CASH_SOURCE_DESCRIPTION_REVISION_1",
+      "madeBeforeAnyOutcome": true,
+      "now": "the Bank of Korea base-rate history stays BOK_POLICY_RATE_PROXY (not an investable return), descriptive only; sessions after its verifiedThrough are CARRIED_FROM_LAST_VERIFIED because the official page was unreachable from the authoring sandbox",
+      "outcomeCountersAtRevision": "ALL_ZERO",
+      "reason": "pipeline/ecos_macro.py exists; the true limitation is that no exact full-span pinned investable KRW cash-return / CD91 series is registered for this study",
+      "replaced": "the spec said the repository's ECOS fetch layer does not exist",
+      "unchanged": [
+        "the series",
+        "the lag",
+        "the accrual",
+        "the variants",
+        "its non-decision role"
+      ]
+    },
+    {
+      "id": "SEAL_HANDOFF_REVISION_1",
+      "madeBeforeAnyOutcome": true,
+      "now": "that refusal is classified RECOVERABLE_SEAL_HANDOFF_FAILURE (exit 3, job summary with manual steps); the branch is verified at the sealed commit and stays immutable; transient failures are retried a bounded number of times; a second PR is never opened; no credential or permission changes; the execution is never rerun",
+      "outcomeCountersAtRevision": "ALL_ZERO",
+      "reason": "the kr-market-risk-model-v1 seal succeeded and pushed its branch, then GITHUB_TOKEN could not create the Draft PR and a human opened it by hand",
+      "replaced": "a refused Draft PR creation after the seal branch was pushed failed the seal job like any other error",
+      "unchanged": [
+        "every exact-byte seal verification",
+        "the Draft-only, never-merge, never-ready rules"
+      ]
+    }
+  ],
   "priors": {
     "neverRerun": [
       "kr-market-risk-anatomy-v1",

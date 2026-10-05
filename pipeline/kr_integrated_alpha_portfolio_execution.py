@@ -269,7 +269,11 @@ def decision_definition():
                         "justification": "return participation lost is justified only while it stays inside the non-inferiority band; a larger loss bought with a larger "
                                          "drawdown reduction is a risk-preference choice and is reported as a trade-off",
                         "DEVELOPMENT_SUPPORTED": "primary pair on the final underlying portfolio IMPROVES and the same overlay is not WORSE on the other portfolio",
-                        "notSupported": M.MARKET_NOT_SUPPORTED, "c1VsC0": "recorded beside; C1 replaces C0 only when BOTH are supported and C1 vs C0 IMPROVES"},
+                        "notSupported": M.MARKET_NOT_SUPPORTED,
+                        "bothSupported": {"C1_vs_C0 IMPROVES": "choose C1", "C1_vs_C0 WORSE": "choose C0",
+                                          "C1_vs_C0 NON_INFERIOR_NO_MEANINGFUL_GAIN": "retain C0 as the existing control and state that no meaningful incremental C1 gain was established",
+                                          "C1_vs_C0 TRADE_OFF": M.NO_UNAMBIGUOUS + " with reason " + M.C0_VS_C1_TRADE_OFF + " (a genuine trade-off is never ranked away)",
+                                          "C1_vs_C0 NOT_EVALUABLE_BLOCKED_PATH": M.NO_FINAL_BLOCKED}},
         "finalArchitecture": {"rule": "assembled mechanically: industry supported -> I+S else S; then the supported market candidate on that portfolio else none",
                               "mapping": {"S": "A", "S+M0": "B", "S+M1": "C", "I+S": "D", "I+S+M0": "E", "I+S+M1": "F"},
                               "genuineTradeOff": M.NO_UNAMBIGUOUS, "blockedPath": M.NO_FINAL_BLOCKED,
@@ -286,7 +290,27 @@ def governance_definition():
 
 
 def pre_outcome_revisions():
-    return []
+    """Frozen design corrections made after the first protocol commit and before ANY outcome access, each with its reason. Recorded in the spec so the
+    revision is part of the sealed identity rather than a silent edit. None changes a band, a weight, a mapping, a multiplier, a cost or a window."""
+    return [
+        {"id": "C0_VS_C1_TRADE_OFF_REVISION_1", "madeBeforeAnyOutcome": True, "outcomeCountersAtRevision": "ALL_ZERO",
+         "replaced": "when both overlays were supported the final architecture chose C1 only if C1 vs C0 IMPROVED and otherwise silently kept C0",
+         "reason": "that is a hidden preference for the control and contradicts the frozen principle that a genuine return / drawdown trade-off is never ranked away",
+         "now": "IMPROVES -> C1; WORSE -> C0; NON_INFERIOR_NO_MEANINGFUL_GAIN -> C0 retained as the existing control with that stated; TRADE_OFF -> "
+                + M.NO_UNAMBIGUOUS + " (" + M.C0_VS_C1_TRADE_OFF + "); NOT_EVALUABLE -> " + M.NO_FINAL_BLOCKED,
+         "unchanged": ["the 0.50 pp / 10% bands", "pair classes", "layer decisions", "C0 and C1 mappings"]},
+        {"id": "CASH_SOURCE_DESCRIPTION_REVISION_1", "madeBeforeAnyOutcome": True, "outcomeCountersAtRevision": "ALL_ZERO",
+         "replaced": "the spec said the repository's ECOS fetch layer does not exist",
+         "reason": "pipeline/ecos_macro.py exists; the true limitation is that no exact full-span pinned investable KRW cash-return / CD91 series is registered for this study",
+         "now": "the Bank of Korea base-rate history stays BOK_POLICY_RATE_PROXY (not an investable return), descriptive only; sessions after its verifiedThrough "
+                "are CARRIED_FROM_LAST_VERIFIED because the official page was unreachable from the authoring sandbox",
+         "unchanged": ["the series", "the lag", "the accrual", "the variants", "its non-decision role"]},
+        {"id": "SEAL_HANDOFF_REVISION_1", "madeBeforeAnyOutcome": True, "outcomeCountersAtRevision": "ALL_ZERO",
+         "replaced": "a refused Draft PR creation after the seal branch was pushed failed the seal job like any other error",
+         "reason": "the kr-market-risk-model-v1 seal succeeded and pushed its branch, then GITHUB_TOKEN could not create the Draft PR and a human opened it by hand",
+         "now": "that refusal is classified RECOVERABLE_SEAL_HANDOFF_FAILURE (exit 3, job summary with manual steps); the branch is verified at the sealed commit and stays "
+                "immutable; transient failures are retried a bounded number of times; a second PR is never opened; no credential or permission changes; the execution is never rerun",
+         "unchanged": ["every exact-byte seal verification", "the Draft-only, never-merge, never-ready rules"]}]
 
 
 # --------------------------------------------------------------------------- #
@@ -754,7 +778,9 @@ def cash_source_audit(root, spec):
     days = RC.sessions(spec["featureStart"], spec["developmentCutoff"], "KR")
     beyond = int(sum(str(d.date()) > document["verifiedThrough"] for d in days))
     return {"status": "FROZEN_PROXY", "events": len(events), "firstEvent": first, "lastEvent": last, "verifiedThrough": document["verifiedThrough"],
-            "coversFeatureStart": first <= spec["featureStart"], "sessionsAfterVerifiedThroughCarriedAtTheLastRate": beyond,
+            "coversFeatureStart": first <= spec["featureStart"], "sessionsCarriedFromLastVerified": beyond,
+            "carriedSessionStatus": "CARRIED_FROM_LAST_VERIFIED: the last verified rate is held; these sessions are not verified" if beyond else "ALL_SESSIONS_WITHIN_VERIFIED_RANGE",
+            "limitation": M.CASH_YIELD["limitation"],
             "basis": document.get("basis"), "source": document.get("source")}
 
 

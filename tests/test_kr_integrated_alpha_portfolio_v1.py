@@ -273,6 +273,34 @@ def test_final_architecture_is_assembled_mechanically_from_the_layer_decisions()
     assert decide(D=ax(0.11, -0.30), E=ax(0.11, -0.26))["name"] == "I+S+M0"
 
 
+def test_when_both_overlays_are_supported_how_they_relate_to_each_other_decides_and_a_genuine_trade_off_is_never_ranked_away():
+    base = ax(0.10, -0.30)
+    # both clear Market OFF; C vs B is a genuine return / drawdown trade-off (C earns +0.6pp more but its drawdown is beyond B's +10% band)
+    trade = summaries(B=ax(0.10, -0.26), C=ax(0.106, -0.29))
+    assert M.classify_pair(trade["B"], base) == "IMPROVES" and M.classify_pair(trade["C"], base) == "IMPROVES"
+    result = M.decide(trade)
+    assert result["market"]["S"]["C1_vs_C0"] == "TRADE_OFF" and result["market"]["S"]["C0"]["status"] == result["market"]["S"]["C1"]["status"] == "DEVELOPMENT_SUPPORTED"
+    assert result["finalArchitecture"] == M.NO_UNAMBIGUOUS and result["reason"] == "C0_VS_C1_PARETO_TRADE_OFF" and "marketCandidate" not in result
+    # the same trade-off on the Industry+Stock book
+    on_industry = M.decide(summaries(D=ax(0.11, -0.30), E=ax(0.11, -0.26), F=ax(0.116, -0.29)))
+    assert on_industry["industry"]["layerDecision"] == "INDUSTRY_LAYER_DEVELOPMENT_SUPPORTED" and on_industry["market"]["I+S"]["C1_vs_C0"] == "TRADE_OFF"
+    assert on_industry["finalArchitecture"] == M.NO_UNAMBIGUOUS and on_industry["reason"] == M.C0_VS_C1_TRADE_OFF
+    # C1 WORSE than C0 -> C0 ; no meaningful incremental gain -> C0 retained and said so ; IMPROVES -> C1
+    worse = M.decide(summaries(B=ax(0.11, -0.24), C=ax(0.106, -0.29)))
+    assert worse["market"]["S"]["C1_vs_C0"] == "WORSE" and worse["finalArchitecture"] == "B" and worse["c1VsC0Note"] == "C1_WORSE_THAN_C0_C0_RETAINED"
+    tie = M.decide(summaries(B=ax(0.10, -0.26), C=ax(0.10, -0.26)))
+    assert tie["market"]["S"]["C1_vs_C0"] == "NON_INFERIOR_NO_MEANINGFUL_GAIN" and tie["finalArchitecture"] == "B"
+    assert tie["c1VsC0Note"] == "NO_MEANINGFUL_INCREMENTAL_C1_GAIN_C0_RETAINED_AS_THE_EXISTING_CONTROL"
+    better = M.decide(summaries(B=ax(0.10, -0.26), C=ax(0.11, -0.20)))
+    assert better["finalArchitecture"] == "C" and better["c1VsC0Note"] == "C1_IMPROVES_ON_C0"
+    # a blocked comparison never picks a side
+    blocked = M.final_architecture({"status": "NOT_SUPPORTED"},
+                                   {"S": {"C0": {"status": "DEVELOPMENT_SUPPORTED"}, "C1": {"status": "DEVELOPMENT_SUPPORTED"}, "C1_vs_C0": "NOT_EVALUABLE_BLOCKED_PATH"}})
+    assert blocked["finalArchitecture"] == M.NO_FINAL_BLOCKED and blocked["reason"] == "C0_VS_C1_NOT_EVALUABLE"
+    # the bands themselves are untouched by this repair
+    assert (M.RETURN_BAND, M.MEANINGFUL_DRAWDOWN_IMPROVEMENT, M.NON_INFERIORITY_DRAWDOWN_BAND) == (0.005, 0.10, 0.10)
+
+
 def test_comparisons_attribution_and_interaction_use_the_registered_pairs():
     s = summaries(B=ax(0.099, -0.26), E=ax(0.10, -0.29), D=ax(0.105, -0.31))
     for entry in s.values():
@@ -336,6 +364,10 @@ def test_cash_yield_source_is_the_repository_s_dated_policy_rate_and_covers_the_
     assert document["basis"] == "BOK_POLICY_RATE_PROXY" and document["events"][0]["date"] <= M.FEATURE_START
     assert [e["date"] for e in document["events"]] == sorted(e["date"] for e in document["events"])
     assert "KOFR" in M.CASH_YIELD["notUsed"] and "ECOS" in M.CASH_YIELD["notUsed"] and M.CASH_YIELD["neverChanges"]
+    assert (ROOT / "pipeline/ecos_macro.py").is_file() and "does not exist" not in M.CASH_YIELD["notUsed"]["ECOS"]        # an adapter exists; no series is registered
+    assert "NO exact, full-span, pinned investable" in M.CASH_YIELD["notUsed"]["ECOS"] and "not an investable deposit" in M.CASH_YIELD["limitation"]
+    assert document["verifiedThrough"] == M.CASH_YIELD["verification"]["fileVerifiedThrough"] < M.DEVELOPMENT_CUTOFF
+    assert M.CASH_YIELD["verification"]["sessionsAfterFileVerifiedThrough"].startswith("CARRIED_FROM_LAST_VERIFIED")
 
 
 def test_output_keys_with_forbidden_semantics_are_refused():

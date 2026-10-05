@@ -10,6 +10,9 @@ name: KR integrated alpha portfolio v1
 # SEAL: when `execute` succeeds, the `seal` job verifies the run, the artifact digest and file list, manifest, marker, spec and both lock refs, copies the
 # exact bytes plus a provenance record to research/kr-integrated-alpha-portfolio-v1-result-seal-<runId> and opens ONE Draft pull request. It never reruns
 # an outcome, never rewrites a result byte, never merges and never marks the PR ready. `mode: seal` re-attempts ONLY the seal for an earlier execution run.
+# SEAL HANDOFF: if the exact-byte seal branch is pushed but GITHUB_TOKEN is refused permission to create the Draft PR (the kr-market-risk-model-v1 precedent),
+# the failure is classified RECOVERABLE_SEAL_HANDOFF_FAILURE (exit 3, job summary with the manual steps). The branch stays immutable, the execution is never
+# rerun, no credential or permission is changed here, and a human opens the Draft PR by hand from the pushed branch.
 on:
   pull_request:
     paths:
@@ -222,7 +225,7 @@ jobs:
           set -euo pipefail
           python scripts/seal_kr_integrated_alpha_portfolio_v1.py seal --root . --run-id "$RUN_ID" --main-sha "$EXEC_SHA" --run run.json --jobs jobs.json \
             --metadata artifact-metadata.json --archive artifact.zip --sealed-at "$(date -u +%Y-%m-%dT%H:%M:%SZ)"
-      - name: Commit to the seal branch and open ONE Draft pull request (never merged here)
+      - name: Commit and push the immutable seal branch (nothing is merged here)
         run: |
           set -euo pipefail
           git config user.name "github-actions[bot]"
@@ -232,4 +235,14 @@ jobs:
             docs/results/kr-integrated-alpha-portfolio-v1-manifest.json docs/results/kr-integrated-alpha-portfolio-v1-seal-provenance.json
           git commit -q -m "Research: seal kr-integrated-alpha-portfolio-v1 development result (exact artifact bytes, provenance; nothing recomputed)"
           git push origin "$SEAL_BRANCH"
+          [ "$(git ls-remote origin "refs/heads/$SEAL_BRANCH" | cut -f1)" = "$(git rev-parse HEAD)" ] || { echo "SEAL_BRANCH_NOT_AT_THE_SEALED_COMMIT"; exit 1; }
+      - name: Open ONE Draft pull request (a refusal here is a RECOVERABLE SEAL-HANDOFF failure, never an execution failure)
+        run: |
+          set -uo pipefail
           python scripts/seal_kr_integrated_alpha_portfolio_v1.py open-pr --root . --head "$SEAL_BRANCH"
+          rc=$?
+          if [ "$rc" = "3" ]; then
+            echo "::error title=RECOVERABLE SEAL-HANDOFF FAILURE::The formal execution SUCCEEDED and the exact-byte seal is on the pushed branch $SEAL_BRANCH. Only the Draft PR API call was refused. DO NOT RERUN THE EXECUTION. A human opens the Draft PR by hand (see the job summary)."
+            exit 1
+          fi
+          exit "$rc"

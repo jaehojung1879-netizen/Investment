@@ -3,7 +3,9 @@
 
 check-main  the frozen spec exists and nothing is sealed on the checked-out commit
 seal        verify run, jobs, artifact metadata, archive digest, file list, manifest, marker, spec and lock refs; copy the exact bytes; write provenance
-open-pr     re-verify the written bytes against provenance and open ONE Draft pull request (never merges, never marks ready)
+open-pr     re-verify the written bytes against provenance and open ONE Draft pull request (never merges, never marks ready). If only the PR API call
+            is refused it exits 3 with a RECOVERABLE_SEAL_HANDOFF_FAILURE record: the exact bytes are already on the pushed branch and a human opens the
+            Draft PR by hand; the execution is never rerun
 
 It never recomputes, reruns or reinterprets an outcome. Any mismatch stops with a non-zero exit and no pull request.
 """
@@ -14,6 +16,7 @@ import json
 import os
 from pathlib import Path
 import sys
+import time
 import urllib.error
 import urllib.request
 
@@ -33,6 +36,8 @@ def github_api(method, path, payload=None):
             return response.status, json.loads(response.read() or b"{}")
     except urllib.error.HTTPError as error:
         return error.code, {}
+    except (urllib.error.URLError, TimeoutError):
+        return 0, {}
 
 
 def seal(args, api=github_api):
@@ -72,8 +77,15 @@ def main(argv=None):
         print(json.dumps(seal(args), sort_keys=True))
     else:
         record = SEAL.verify_written(args.root)
-        print(SEAL.open_draft_pr(github_api, args.head, "main", record))
-
-
-if __name__ == "__main__":
-    main()
+        try:
+            print(SEAL.open_draft_pr(github_api, args.head, "main", record, owner=os.environ["GITHUB_REPOSITORY"].split("/")[0], sleep=time.sleep))
+        except SEAL.RecoverableSealHandoff as error:
+            handoff = SEAL.manual_handoff(error.head, error.base, error.record)
+            print(json.dumps(dict(handoff, httpStatus=error.status), sort_keys=True))
+            summary = os.environ.get("GITHUB_STEP_SUMMARY")
+            if summary:
+                with open(summary, "a") as stream:
+                    stream.write("## " + SEAL.HANDOFF_CLASSIFICATION + "\n\nThe formal execution SUCCEEDED and the exact-byte seal is on the pushed branch `" + error.head
+                                 + "`. Only the Draft PR API call was refused (HTTP " + str(error.status) + "). This is not an execution or scientific failure and "
+                                 "the execution must NOT be rerun.\n\n" + "\n".join("- " + step for step in handoff["manualSteps"]) + "\n")
+            sys.exit(SEAL.HANDOFF_EXIT_CODE)

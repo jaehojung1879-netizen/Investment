@@ -2366,12 +2366,18 @@
   drawdown bands (110% / 90% of the base's). Return participation lost to a market overlay is justified only while it stays inside the non-inferiority band; a larger
   loss bought with a larger drawdown reduction is a risk-preference choice the study does not make, so it is `TRADE_OFF` and the final architecture is
   `NO_UNAMBIGUOUS_FINAL_ARCHITECTURE`. Each layer is decided on its own (Industry on D vs A with E vs B and F vs C as context that must not be `WORSE`; C0 and C1
-  separately on the same underlying book) and the final architecture is assembled mechanically: no composite score, no post-hoc tie-break, C1 replaces C0 only
-  when both are supported and C1 vs C0 itself `IMPROVES`. C1's formal non-nomination in the sealed market model is untouched.
+  separately on the same underlying book) and the final architecture is assembled mechanically: no composite score, no post-hoc tie-break. When BOTH overlays are
+  supported, C1 vs C0 decides: `IMPROVES` -> C1, `WORSE` -> C0, `NON_INFERIOR_NO_MEANINGFUL_GAIN` -> C0 retained as the existing control with that stated, and
+  `TRADE_OFF` -> `NO_UNAMBIGUOUS_FINAL_ARCHITECTURE` (`C0_VS_C1_PARETO_TRADE_OFF`). The first draft silently kept C0 on a trade-off, which is a hidden preference for
+  the control and exactly what "a genuine trade-off is never ranked away" forbids; it was corrected before any outcome. C1's formal non-nomination in the sealed
+  market model is untouched.
 - CASH YIELD IS AN ACCOUNTING OVERLAY ON THE FINISHED PRIMARY PATH. The series (the repository's dated Bank of Korea base-rate proxy, effective on its event date,
   rate of the previous session applied) was frozen before any portfolio outcome was read. The sensitivity adds `cash weight x cash return` to each primary session
-  return and so cannot change a name, weight, market state, trade, cost, layer decision or nomination. KOFR is not assumed to have full-span history, no ECOS item
-  code is guessed, and an unreadable source is `DATA_UNAVAILABLE` without blocking the primary study. Sharpe and Sortino are not reported.
+  return and so cannot change a name, weight, market state, trade, cost, layer decision or nomination. KOFR is not assumed to have full-span history. An ECOS adapter DOES exist
+  (`pipeline/ecos_macro.py`; the first draft wrongly said the fetch layer did not exist) but no exact, full-span, pinned investable KRW cash-return / CD91 series is
+  registered for this study and no item code is guessed, so the series stays `BOK_POLICY_RATE_PROXY`: not an investable deposit, MMF, CD or bill return. The file is
+  verified through 2026-09-07 against a 2026-09-14 cutoff; the official page was unreachable from the authoring sandbox, so the later sessions are
+  `CARRIED_FROM_LAST_VERIFIED`, never called verified. An unreadable source is `DATA_UNAVAILABLE` without blocking the primary study. Sharpe and Sortino are not reported.
 - A PRIOR STUDY'S EXACT FILES ARE PINNED, NEVER A NAME PREFIX. `priors.sealedArtifacts` lists every file of the eight sealed prior studies by SHA-256 (built from
   the files that exist, not from a pattern the next study could silently match), and each component's own sealed `dependencyHashes` are compared with the bytes on disk.
   A seal commit of THIS study adds exactly four files, none of which is pinned.
@@ -2382,7 +2388,10 @@
 - THE ONE-SHOT IS A DURABLE GITHUB-SIDE LOCK, TAKEN AFTER THE SIGNAL-TIME GATES AND BEFORE THE FIRST MARKET VALUE. `featureBuilds` (past-only feature construction)
   is the only counter allowed to be non-zero before the lock; the marker records `valuesReadBeforeThisMarker == 0`. `workflow_dispatch` on merged main only, exact
   committed spec, exact preserved raw-input artifact, no earlier result, marker or lock ref under the study prefix, then one result artifact and an automatic
-  exact-byte DRAFT seal PR (stdlib only, imports nothing it could rerun with). A failure after the lock consumes the study.
+  exact-byte DRAFT seal PR (stdlib only, imports nothing it could rerun with). A failure after the lock consumes the study. A Draft-PR API refusal AFTER the
+  exact-byte seal is pushed is a `RECOVERABLE_SEAL_HANDOFF_FAILURE` (exit 3, job summary), not an execution failure: the branch is verified at the sealed commit, stays
+  immutable, no credential or permission is changed, transient failures are retried a bounded number of times, a second PR is never opened, and a human opens the
+  Draft PR from the pushed branch. The execution is never rerun because a PR could not be created.
 - NO HISTORICAL OUTCOME WAS COMPUTED IN THE PROTOCOL CHANGE. The workflow was not dispatched, no lock exists, no sealed prior result changed, and every number in this
   section is a design fact, not a result.
 

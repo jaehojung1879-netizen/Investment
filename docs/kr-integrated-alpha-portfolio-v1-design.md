@@ -61,7 +61,11 @@ The primary path earns zero KRW on cash. The repository already holds one defens
 any portfolio outcome is read, with the rate in force on the previous session's calendar date applying to each session's return. Variants: zero, the proxy, and the
 proxy minus a 0.50 pp annual haircut floored at zero (the source supports no negative investable rate). The sensitivity is an **accounting overlay on the finished
 primary path** — it adds `cash weight × cash return` to each session — so it can never change a name, a weight, a market state, a trade, a cost, a layer decision or
-the final architecture. KOFR is not assumed to have full-span history and no ECOS item code is guessed. If the file cannot be read the sensitivity is marked
+the final architecture. KOFR is not assumed to have full-span history. An ECOS adapter exists in the repository (`pipeline/ecos_macro.py`, read-only, manual workflows only) but this study has
+**no exact, full-span, pinned investable KRW cash-return / CD91 series registered**, and no ECOS item code is guessed, so the base-rate history remains only
+`BOK_POLICY_RATE_PROXY`: not an investable deposit, MMF, CD or bill return, descriptive only. The file is verified through 2026-09-07 while the study cutoff is
+2026-09-14; the official page could not be reached from the authoring sandbox (egress denied), so the metadata is unchanged and the 5 later sessions are classified
+`CARRIED_FROM_LAST_VERIFIED` (the last verified rate held), never described as verified. If the file cannot be read the sensitivity is marked
 `DATA_UNAVAILABLE` and the primary study is unaffected. It is a policy-rate proxy, not an investable deposit or bill index. Sharpe and Sortino are not reported: a
 risk-free assumption would have to be defended and none is claimed.
 
@@ -83,7 +87,10 @@ Bands are inherited unchanged from the sealed market model's nomination (none in
   `PARETO_TRADE_OFF`. Otherwise `INDUSTRY_LAYER_NOT_SUPPORTED`.
 * **Market:** C0 and C1 are each judged on the **same** underlying portfolio without the overlay. Return participation lost is "justified" only while it stays inside the
   non-inferiority band; a larger loss bought with a larger drawdown reduction is a risk-preference choice this study does not make and is reported as a trade-off. If
-  neither clears: `MARKET_OVERLAY_NOT_SUPPORTED_FOR_FINAL_PORTFOLIO`.
+  neither clears: `MARKET_OVERLAY_NOT_SUPPORTED_FOR_FINAL_PORTFOLIO`. When **both** are supported on the final book, C1 vs C0 decides and a genuine trade-off is never
+  ranked away: `IMPROVES` → C1; `WORSE` → C0; `NON_INFERIOR_NO_MEANINGFUL_GAIN` → C0 is retained as the existing control and the result states that no meaningful
+  incremental C1 gain was established; `TRADE_OFF` → `NO_UNAMBIGUOUS_FINAL_ARCHITECTURE` with reason `C0_VS_C1_PARETO_TRADE_OFF`; an unevaluable pair →
+  `NO_FINAL_ARCHITECTURE_BLOCKED_PATH`.
 * **Final architecture** is assembled mechanically: Industry supported → I+S else S; then the supported market candidate on that portfolio, else none. A genuine trade-off
   gives `NO_UNAMBIGUOUS_FINAL_ARCHITECTURE`; an incomplete needed path gives `NO_FINAL_ARCHITECTURE_BLOCKED_PATH`. There is no post-hoc tie-break and no weighted utility.
 
@@ -101,6 +108,14 @@ the inherited portfolio values against the overlay study, the cash source, the r
 before anything is spent) → no prior result, marker or lock → durable exclusive lock (`refs/tags/kr-integrated-alpha-portfolio-v1-execution-lock` and `-<specSha256>`,
 atomic POST, any existing ref refuses) → execution marker → first market value read → exactly one result artifact → automatic exact-byte **Draft** seal PR → a human merges.
 A failure after the lock consumes the study; it is never silently rerun.
+
+**Seal hand-off.** If the exact-byte seal branch is pushed but `GITHUB_TOKEN` is refused permission to create the Draft PR (the `kr-market-risk-model-v1` precedent),
+the failure is classified `RECOVERABLE_SEAL_HANDOFF_FAILURE` (script exit 3, a job-summary with the manual steps), not an execution or scientific failure. The branch
+`research/kr-integrated-alpha-portfolio-v1-result-seal-<runId>` is verified to sit at the sealed commit before the attempt, is never force-pushed, amended or
+deleted, and no credential or permission is changed. Transient 5xx / network failures are retried a bounded number of times; repeating the step never opens a second PR.
+Manual path: open ONE **Draft** PR from that branch into `main` with the recorded title and body (GitHub UI → *Compare & pull request* → *Create draft pull request*),
+check the four committed files against the provenance record, and a human merges. The repository setting *Allow GitHub Actions to create and approve pull requests* is the
+usual cause; changing it is a human decision. The formal execution is never rerun because a PR could not be created (the lock refuses it anyway).
 
 ## 10. Governance
 

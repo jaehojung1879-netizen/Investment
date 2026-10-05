@@ -93,7 +93,8 @@ def test_the_frozen_spec_carries_the_module_rules_the_development_label_and_no_o
     assert SPEC["phase"] == "PREREGISTRATION_AND_HARNESS_ONLY_NO_OUTCOME_COMPUTED" and SPEC["outcomeAccess"]["inThisChange"] == "NONE"
     assert SPEC["boundary"]["isValidation"] is False and SPEC["boundary"]["usesMachineLearning"] is False and SPEC["boundary"]["mayRerunAnyPriorStudy"] is False
     assert SPEC["boundary"]["mayTuneAThresholdOrWeightFromOutcomes"] is False and SPEC["boundary"]["mayChangeC0OrC1"] is False
-    assert SPEC["governance"]["lastLargeHistoricalArchitectureStudy"] is True and SPEC["preOutcomeRevisions"] == []
+    assert all(r["madeBeforeAnyOutcome"] is True and r["outcomeCountersAtRevision"] == "ALL_ZERO" for r in SPEC["preOutcomeRevisions"])
+    assert SPEC["governance"]["lastLargeHistoricalArchitectureStudy"] is True and [r["id"] for r in SPEC["preOutcomeRevisions"]] == ["C0_VS_C1_TRADE_OFF_REVISION_1", "CASH_SOURCE_DESCRIPTION_REVISION_1", "SEAL_HANDOFF_REVISION_1"]
     assert list(SPEC["architectures"]["order"]) == list(M.ARCH_ORDER) and SPEC["architectures"]["matrix"]["F"] == {"name": "I+S+M1", "industry": True, "market": "C1"}
     assert SPEC["decision"]["finalArchitecture"]["noPostHocTieBreak"] is True and SPEC["decision"]["bands"]["source"].startswith("inherited unchanged")
     assert SPEC["portfolio"]["anchors"]["architectureSpecificTradingRules"] == "NONE" and SPEC["stockLayer"]["eligibility"]["noAbsoluteDoNotInvestThreshold"] is True
@@ -653,6 +654,87 @@ def test_the_seal_refuses_anything_but_the_exact_formal_artifact(executed):
             SEAL.verify_run(run, jobs, MAIN)
 
 
+def _sealed_root(executed, tmp_path):
+    out, _, _, _ = executed
+    data, digest = _archive(out)
+    files = SEAL.read_archive(data, digest)
+    root = tmp_path / "repo"
+    (root / "research_specs").mkdir(parents=True)
+    for rel in (E.SPEC_PATH, E.SPEC_SIDECAR):
+        shutil.copy2(ROOT / rel, root / rel)
+    record = SEAL.write_seal(files, root, {"executionRunId": 1, "executionSha": MAIN, "artifactName": SEAL.RESULTS_ARTIFACT_PREFIX + "1", "artifactId": 2,
+                                           "artifactArchiveSha256": digest, "specSha256": SHA})
+    return root, record, files
+
+
+def test_a_refused_draft_pr_after_the_seal_branch_is_pushed_is_a_recoverable_handoff_failure_not_an_execution_failure(executed, tmp_path, monkeypatch):
+    root, record, files = _sealed_root(executed, tmp_path)
+    before = {rel: (root / rel).read_bytes() for rel in list(SEAL.COMMITTED.values()) + [SEAL.PROVENANCE_PATH]}
+    for name in ("run_architectures", "load_market_values", "execute", "claim_execution_lock"):
+        monkeypatch.setattr(E, name, lambda *a, **k: (_ for _ in ()).throw(AssertionError("RERUN")))
+    calls = []
+
+    def refuse(method, path, payload=None):
+        calls.append((method, path))
+        return (200, []) if method == "GET" else (403, {"message": "GitHub Actions is not permitted to create or approve pull requests"})
+    with pytest.raises(SEAL.RecoverableSealHandoff) as caught:
+        SEAL.open_draft_pr(refuse, SEAL.SEAL_BRANCH_PREFIX + "1", "main", record, owner="o")
+    assert isinstance(caught.value, ValueError) and caught.value.status == 403 and "DRAFT_PULL_REQUEST_NOT_CREATED" in str(caught.value)
+    assert [m for m, _ in calls].count("POST") == 1                                  # a permission refusal is not retried
+    assert not any("merge" in p or "ready" in p for _, p in calls)
+    handoff = SEAL.manual_handoff(caught.value.head, caught.value.base, caught.value.record)
+    assert handoff["classification"] == "RECOVERABLE_SEAL_HANDOFF_FAILURE" == SEAL.HANDOFF_CLASSIFICATION and handoff["executionRerunAllowed"] is False
+    assert handoff["draft"] is True and handoff["branch"] == SEAL.SEAL_BRANCH_PREFIX + "1" and handoff["base"] == "main" and handoff["title"] == SEAL.PR_TITLE
+    assert len(handoff["committedFiles"]) == 3 and any("do NOT rerun" in step for step in handoff["manualSteps"])
+    assert any("Allow GitHub Actions to create and approve pull requests" in step and "no credential or permission is changed" in step for step in handoff["manualSteps"])
+    assert "token" not in json.dumps(handoff).lower().replace("github_token", "")           # the hand-off carries no secret
+    assert {rel: (root / rel).read_bytes() for rel in before} == before                # the sealed bytes are untouched by the failed hand-off
+    assert SEAL.verify_written(root)["specSha256"] == SHA
+
+
+def test_the_draft_pr_step_retries_only_transient_failures_and_is_idempotent(executed, tmp_path):
+    root, record, files = _sealed_root(executed, tmp_path)
+    head, slept = SEAL.SEAL_BRANCH_PREFIX + "1", []
+    sequence = iter([(503, {}), (0, {}), (201, {"number": 9, "draft": True})])
+    posts = []
+
+    def flaky(method, path, payload=None):
+        if method == "GET":
+            return 200, []
+        posts.append(payload["draft"])
+        return next(sequence)
+    assert SEAL.open_draft_pr(flaky, head, "main", record, owner="o", sleep=slept.append) == 9 and posts == [True, True, True] and slept == [2, 4]
+    always = lambda method, path, payload=None: (200, []) if method == "GET" else (502, {})       # noqa: E731
+    with pytest.raises(SEAL.RecoverableSealHandoff):
+        SEAL.open_draft_pr(always, head, "main", record, owner="o", sleep=lambda s: None)
+    already = lambda method, path, payload=None: (200, [{"number": 4}]) if method == "GET" else (_ for _ in ()).throw(AssertionError("SECOND_PR"))   # noqa: E731
+    assert SEAL.open_draft_pr(already, head, "main", record, owner="o") == 4                      # repeating the step never opens a second pull request
+    with pytest.raises(ValueError, match="DRAFT_PULL_REQUEST_NOT_CREATED") as not_draft:
+        SEAL.open_draft_pr(lambda m, p, d=None: (200, []) if m == "GET" else (201, {"number": 5, "draft": False}), head, "main", record, owner="o")
+    assert not isinstance(not_draft.value, SEAL.RecoverableSealHandoff)                           # a PR that is not a draft is a violation, not a hand-off
+
+
+def test_the_seal_cli_exits_3_with_a_classified_summary_on_a_refused_pr_and_never_touches_the_branch(executed, tmp_path, monkeypatch, capsys):
+    import importlib.util
+    root, record, files = _sealed_root(executed, tmp_path)
+    spec = importlib.util.spec_from_file_location("seal_cli", ROOT / "scripts/seal_kr_integrated_alpha_portfolio_v1.py")
+    cli = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(cli)
+    seen = []
+    monkeypatch.setattr(cli, "github_api", lambda method, path, payload=None: (seen.append((method, path)) or ((200, []) if method == "GET" else (403, {}))))
+    monkeypatch.setenv("GITHUB_REPOSITORY", "o/r")
+    summary = tmp_path / "summary.md"
+    monkeypatch.setenv("GITHUB_STEP_SUMMARY", str(summary))
+    with pytest.raises(SystemExit) as exit_:
+        cli.main(["open-pr", "--root", str(root), "--head", SEAL.SEAL_BRANCH_PREFIX + "1"])
+    assert exit_.value.code == SEAL.HANDOFF_EXIT_CODE == 3
+    printed = json.loads(capsys.readouterr().out.strip().splitlines()[-1])
+    assert printed["classification"] == "RECOVERABLE_SEAL_HANDOFF_FAILURE" and printed["httpStatus"] == 403 and printed["executionRerunAllowed"] is False
+    text = summary.read_text()
+    assert "RECOVERABLE_SEAL_HANDOFF_FAILURE" in text and "must NOT be rerun" in text and SEAL.SEAL_BRANCH_PREFIX + "1" in text
+    assert {m for m, _ in seen} <= {"GET", "POST"}
+
+
 def _imports(path):
     names = set()
     for node in ast.walk(ast.parse(Path(path).read_text())):
@@ -690,6 +772,8 @@ def test_the_workflow_never_executes_or_seals_on_pull_requests_and_holds_minimal
     assert "PRESERVED_ARTIFACT_IDENTITY_MISMATCH" in execute and "INPUT_ARTIFACT_IDENTITY_MISMATCH" in execute and "PRIOR_SEALED_ARTIFACT_CHANGED" in execute
     assert "kr-integrated-alpha-portfolio-v1-results-${{ github.run_id }}" in execute and "kr-integrated-alpha-portfolio-v1-attempt-${{ github.run_id }}" in execute
     assert "DO NOT RETRY" in execute and "MAIN_ONLY" in execute and "EXECUTION_LOCK_ALREADY_EXISTS" in execute
+    assert "RECOVERABLE SEAL-HANDOFF FAILURE" in seal and 'rc" = "3"' in seal and "DO NOT RERUN THE EXECUTION" in seal and "SEAL_BRANCH_NOT_AT_THE_SEALED_COMMIT" in seal
+    assert seal.index("git push origin") < seal.index("open-pr") and "ls-remote" in seal and "SEAL_BRANCH_EXISTS" in seal
     assert "needs.execute.result == 'success'" in seal and "github.event_name == 'workflow_dispatch'" in seal and "pull-requests: write" in seal
     assert "kr-integrated-alpha-portfolio-v1-results-" in seal and "MAIN_ONLY" in seal and "open-pr" in seal
     frozen = WORKFLOW[WORKFLOW.index("\n  frozen-machine:"):WORKFLOW.index("\n  execute:")]
