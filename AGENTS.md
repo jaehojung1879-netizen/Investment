@@ -2286,6 +2286,42 @@
   merge and repaired. Authorization and lock tests build their own synthetic repository and fake GitHub API (the lesson of the
   anatomy authorization-test repair).
 
+## KR market risk model v1 preregistration invariants (v2.44)
+
+- AN ANATOMY THAT MOTIVATES A DESIGN MAKES EVERY LATER HISTORICAL NUMBER DEVELOPMENT EVIDENCE. `kr-market-risk-model-v1`
+  is built from what the sealed `kr-market-risk-anatomy-v2` showed (fast volatility clearest, re-steepening over inversion,
+  VIX level over VIX change, the overlay's either/both trade-off), so its spec carries `developmentStatement` verbatim and
+  `load_spec` refuses a spec without it. The anatomy is pinned by hash, never rerun, never re-thresholded. Only prospective
+  receipts can turn this model into evidence.
+- THE NEXT STEP AFTER AN ANATOMY IS AN ACTION QUESTION, NOT A WIDER SIGNAL SEARCH. The study owns one number,
+  `equityRiskMultiplier` in {1.0, 0.7, 0.4}: no industry or stock selection, no Kelly, no leverage, no machine learning. Its
+  modules import no selection module and no function takes a ticker (tested).
+- A LADDER IS STRUCTURE ON ONE VOCABULARY. Two switches — GATING (one FAST warning needs SLOW or TRANSITION confirmation) and
+  PREEMPTION (SLOW and TRANSITION both adverse step down one level) — make a 2 x 2: C0 the existing overlay, C1, C2, and C3,
+  which is provably the multi-layer consensus count. Every rung moves one thing; every candidate uses the control's own
+  1.0 / 0.7 / 0.4; no window, threshold, lag or multiplier is new; the twelve-cell tables are computed from the module and
+  compared with the spec on every load.
+- MISSING IS NEITHER BENIGN NOR ADVERSE, AND A DETERMINED ANSWER IS NOT MISSING. A multiplier exists only when every
+  completion of the missing layers the candidate reads agrees; otherwise the candidate holds its previous target and the hold
+  is counted. Re-entry is the same memoryless state map — no trough, no rebound threshold, no hysteresis.
+- A SAMPLING DATE COMES FROM THE CALENDAR, NOT FROM WHERE THE DATA STOP. Grouping the sessions that happen to be present marks
+  the last available session as a period end, so a state would move when the data end moves. Week- and month-ends are sessions
+  whose NEXT exchange session lies in a later period; the end-date-invariance test truncates mid-week and mid-month.
+- READINESS CAN MEASURE DEFINEDNESS WITHOUT A VALUE. A presence proxy (1.0 on every observed date) pushed through the same
+  state machine shows exactly where each candidate is determinable (tested equal to the real-valued pattern on synthetic
+  inputs). Outcome-free readiness on the committed bytes: READY, 1,027 weekly decisions from 2007-01-05, every candidate
+  determinable on all of them, all counters zero.
+- THE DECISION IS PARETO FIRST AND ITS TOLERANCES ARE FIXED BEFORE OUTCOMES. Dominance on net annualized return, maximum
+  drawdown and share of sessions de-risked (the passive path can eliminate, never be nominated); then |MDD| <= 0.90 x C0's,
+  net return >= C0's - 0.50 pp, and the simplest of survivors within 0.50 pp of the lead. No weighted utility; neither CAGR
+  nor drawdown alone decides; no survivor retains the control.
+- A RESULT SEAL THAT CAN ONLY COPY CANNOT REINTERPRET. The automatic seal module imports only the standard library, verifies
+  run, archive digest, file list, manifest, marker, spec and both lock refs, copies bytes it never parses back out, and its
+  only pull-request write is a `draft: true` create. It never merges, marks ready or seals an attempt artifact; a failure
+  after the lock consumes the study and is never retried.
+- A SET REBUILT INSIDE A COMPREHENSION IS A QUADRATIC LOOP. The first readiness spent 73 of 93 seconds rebuilding
+  `set(reference dates)` for each of 5,108 sessions; build it once.
+
 ## Lint gate invariants (v2.11)
 
 - The enabled rule set reports ZERO findings on `main`. A rule is turned on in the

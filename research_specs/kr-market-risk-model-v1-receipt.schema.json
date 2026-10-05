@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "kr-market-risk-model-v1-receipt.schema.json",
+  "title": "KR market risk model v1 prospective state receipt",
+  "description": "One immutable, append-only record per future decision date, written BEFORE the outcome exists. Built and validated by pipeline/kr_market_risk_model_receipts.py. Receipts are evaluated only after their horizon matures on the KR calendar; no historical row is ever rewritten. Prospective evidence is the only route to validation for this model; every historical number is development evidence.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "studyId", "modelVersion", "specSha256", "codeIdentity", "signalDate", "executionDate", "createdAtUtc", "inputIdentities", "layerInputs", "states", "candidateMultipliers", "heldForMissingState", "finalArchitecture", "finalEquityRiskMultiplier", "nominationSource", "evaluationHorizons", "evidenceClass", "receiptSha256"],
+  "properties": {
+    "schemaVersion": {"const": 1},
+    "studyId": {"const": "kr-market-risk-model-v1"},
+    "modelVersion": {"const": "kr-market-risk-model-v1"},
+    "specSha256": {"type": "string", "pattern": "^[0-9a-f]{64}$", "description": "canonical SHA-256 of research_specs/kr-market-risk-model-v1.json (its .sha256 sidecar)"},
+    "codeIdentity": {"type": "object", "description": "commit SHA plus SHA-256 of every file in the frozen dependency closure that produced the states", "minProperties": 1},
+    "signalDate": {"type": "string", "format": "date", "description": "the KR session whose close the states are computed at"},
+    "executionDate": {"type": "string", "format": "date", "description": "the next KR session; the multiplier applies from its close"},
+    "createdAtUtc": {"type": "string", "description": "wall-clock time the receipt was written; must precede the execution-session close"},
+    "inputIdentities": {"type": "object", "additionalProperties": {"type": "string", "pattern": "^[0-9a-f]{64}$"}, "minProperties": 1, "description": "SHA-256 of every input snapshot read (reference, VIX, 10y, 3m)"},
+    "layerInputs": {"type": "object", "description": "the latest known inputs behind each state (close, SMA200, vol63, VIX percentile, sampled spread) for audit; never used to recompute history"},
+    "states": {"type": "object", "additionalProperties": false, "required": ["slow", "transition", "fast"], "properties": {
+      "slow": {"enum": [0, 1, null]}, "transition": {"enum": [0, 1, null]}, "fast": {"enum": [0, 1, 2, null]}}},
+    "candidateMultipliers": {"type": "object", "additionalProperties": false, "required": ["C0", "C1", "C2", "C3"], "properties": {
+      "C0": {"enum": [1.0, 0.7, 0.4]}, "C1": {"enum": [1.0, 0.7, 0.4]}, "C2": {"enum": [1.0, 0.7, 0.4]}, "C3": {"enum": [1.0, 0.7, 0.4]}},
+      "description": "every candidate is recorded so the prospective record does not depend on the development nomination"},
+    "heldForMissingState": {"type": "object", "additionalProperties": {"type": "boolean"}},
+    "finalArchitecture": {"enum": ["C0", "C1", "C2", "C3"], "description": "the sealed development nomination, or C0 when none was nominated"},
+    "finalEquityRiskMultiplier": {"enum": [1.0, 0.7, 0.4]},
+    "nominationSource": {"type": "string", "description": "SHA-256 of the sealed result file the nomination was read from"},
+    "evaluationHorizons": {"const": [21, 63, 126]},
+    "evidenceClass": {"const": "PROSPECTIVE_PAPER"},
+    "receiptSha256": {"type": "string", "pattern": "^[0-9a-f]{64}$", "description": "SHA-256 of the canonical JSON of every other field"}
+  }
+}
