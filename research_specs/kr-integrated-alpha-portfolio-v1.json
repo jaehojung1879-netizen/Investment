@@ -1,0 +1,1103 @@
+{
+  "architectures": {
+    "axes": {
+      "industry": [
+        "OFF",
+        "ON"
+      ],
+      "market": [
+        "OFF",
+        "C0",
+        "C1"
+      ]
+    },
+    "identity": "A, B, C share ONE underlying decision (same names, same base weights) and D, E, F share ONE; the six differ only along the two registered axes",
+    "matrix": {
+      "A": {
+        "industry": false,
+        "market": null,
+        "name": "S"
+      },
+      "B": {
+        "industry": false,
+        "market": "C0",
+        "name": "S+M0"
+      },
+      "C": {
+        "industry": false,
+        "market": "C1",
+        "name": "S+M1"
+      },
+      "D": {
+        "industry": true,
+        "market": null,
+        "name": "I+S"
+      },
+      "E": {
+        "industry": true,
+        "market": "C0",
+        "name": "I+S+M0"
+      },
+      "F": {
+        "industry": true,
+        "market": "C1",
+        "name": "I+S+M1"
+      }
+    },
+    "order": [
+      "A",
+      "B",
+      "C",
+      "D",
+      "E",
+      "F"
+    ],
+    "passiveReference": {
+      "id": "PASSIVE_069500",
+      "instrument": "069500.KS",
+      "notClaimed": "complete shareholder total return",
+      "returnBasis": "BENCHMARK_RELATIVE_ADJUSTED_INDEX_RETURN_PARTIAL_DISTRIBUTIONS",
+      "role": "reported separately; never a candidate"
+    }
+  },
+  "benchmark": "069500.KS",
+  "boundary": {
+    "changeAfterOutcomeAccessRequires": "a NEW study identity",
+    "isProductionModel": false,
+    "isProspective": false,
+    "isValidation": false,
+    "mayAddAnArchitectureAfterOutcomes": false,
+    "mayAddMacroPredictors": false,
+    "mayChangeBenchmarkOrHorizons": false,
+    "mayChangeC0OrC1": false,
+    "mayDiscoverNewFactors": false,
+    "mayRedesignIndustryMembership": false,
+    "mayRerunAnyPriorStudy": false,
+    "mayTuneAThresholdOrWeightFromOutcomes": false,
+    "outcomeExecutionInThisChange": false,
+    "usesMachineLearning": false
+  },
+  "cashYield": {
+    "accrual": "(1 + rate/100) ** (calendar days between the two sessions / 365) - 1, on the primary path's cash weight at the start of the session",
+    "changes": "ONLY the return earned by residual cash",
+    "floor": "ZERO",
+    "floorReason": "the source supports no negative investable rate",
+    "haircutAnnualPp": 0.5,
+    "lag": "the rate in force on the PREVIOUS session's calendar date applies to the return earned between the previous and this session's close",
+    "meaning": "Bank of Korea base rate, step function of its dated decision history (event date = first calendar day the rate applies)",
+    "neverChanges": [
+      "names",
+      "weights",
+      "market state",
+      "trades",
+      "costs",
+      "layer decisions",
+      "the final architecture"
+    ],
+    "notUsed": {
+      "ECOS": "an item code is never guessed and the repository's ECOS fetch layer does not exist",
+      "KOFR": "no full-span history is assumed"
+    },
+    "path": "data/bok-policy-rates.json",
+    "series": "BOK_POLICY_RATE_PROXY",
+    "status": "FROZEN_PROXY_NOT_AN_INVESTABLE_DEPOSIT_OR_BILL_INDEX",
+    "variants": [
+      "ZERO",
+      "PROXY",
+      "PROXY_MINUS_HAIRCUT"
+    ]
+  },
+  "decision": {
+    "axes": [
+      "net annualized return (1x costs)",
+      "max drawdown (1x costs)"
+    ],
+    "bands": {
+      "bandEpsilon": 1e-12,
+      "meaningfulDrawdownImprovement": 0.1,
+      "nonInferiorityDrawdownBand": 0.1,
+      "returnBandAnnual": 0.005,
+      "source": "inherited unchanged from the sealed kr-market-risk-model-v1 nomination; none is invented or tuned here"
+    },
+    "descriptiveOnly": [
+      "halves",
+      "calendar years",
+      "episodes",
+      "cost stress",
+      "cash-yield sensitivity",
+      "interaction",
+      "worst H63 / H126",
+      "volatility"
+    ],
+    "finalArchitecture": {
+      "blockedPath": "NO_FINAL_ARCHITECTURE_BLOCKED_PATH",
+      "cagrAloneDecides": false,
+      "drawdownAloneDecides": false,
+      "genuineTradeOff": "NO_UNAMBIGUOUS_FINAL_ARCHITECTURE",
+      "mapping": {
+        "I+S": "D",
+        "I+S+M0": "E",
+        "I+S+M1": "F",
+        "S": "A",
+        "S+M0": "B",
+        "S+M1": "C"
+      },
+      "meaning": "a DEVELOPMENT architecture to record prospectively; never validation, never production",
+      "noPostHocTieBreak": true,
+      "noWeightedUtility": true,
+      "rule": "assembled mechanically: industry supported -> I+S else S; then the supported market candidate on that portfolio else none"
+    },
+    "industryLayer": {
+      "DEVELOPMENT_SUPPORTED": "primary IMPROVES and no context pair is WORSE",
+      "NOT_SUPPORTED": "INDUSTRY_LAYER_NOT_SUPPORTED",
+      "PARETO_TRADE_OFF": "primary TRADE_OFF",
+      "blocked": "any needed path incomplete -> NOT_EVALUABLE_BLOCKED_PATH",
+      "contexts": [
+        "E vs B (C0)",
+        "F vs C (C1)"
+      ],
+      "primary": "I+S vs S under market OFF (D vs A)"
+    },
+    "marketLayer": {
+      "DEVELOPMENT_SUPPORTED": "primary pair on the final underlying portfolio IMPROVES and the same overlay is not WORSE on the other portfolio",
+      "c1VsC0": "recorded beside; C1 replaces C0 only when BOTH are supported and C1 vs C0 IMPROVES",
+      "judged": "C0 and C1 SEPARATELY, each on the SAME underlying portfolio without the overlay (B vs A, C vs A, E vs D, F vs D)",
+      "justification": "return participation lost is justified only while it stays inside the non-inferiority band; a larger loss bought with a larger drawdown reduction is a risk-preference choice and is reported as a trade-off",
+      "notSupported": "MARKET_OVERLAY_NOT_SUPPORTED_FOR_FINAL_PORTFOLIO"
+    },
+    "pairClasses": [
+      "IMPROVES",
+      "NON_INFERIOR_NO_MEANINGFUL_GAIN",
+      "TRADE_OFF",
+      "WORSE",
+      "NOT_EVALUABLE_BLOCKED_PATH"
+    ],
+    "pairRule": {
+      "IMPROVES": "non-inferior with a meaningful gain",
+      "NON_INFERIOR_NO_MEANINGFUL_GAIN": "non-inferior without one",
+      "TRADE_OFF": "fails non-inferiority on one axis but gains meaningfully on the other: a risk-preference choice this study does not make",
+      "WORSE": "fails non-inferiority and gains nothing",
+      "meaningfulGain": "return >= base + 0.50 pp (efficiency) OR |MDD| <= 0.90 x base's (protection)",
+      "nonInferior": "return >= base - 0.50 pp AND |MDD| <= 1.10 x base's"
+    }
+  },
+  "dependencyHashes": {
+    ".github/workflows/kr-integrated-alpha-portfolio-v1.yml": "27bcde32740c49e800ed10d1dc8dd05d29b527bea4ac2e4da8838b12b7f99f10",
+    "data/bok-policy-rates.json": "a7edf0e532c7b54da9d962ebf12ff2552c90c783439fef99d7c761c5b9ea69ff",
+    "data/kr-industry-membership-foundation-v1/identity-inventory.json": "7dddc6f75ea14adc8f97f3558409a68b2f71ab356b270e7d25d1ecb08875e4fc",
+    "data/kr-industry-membership-foundation-v1/identity-provenance.json": "3f5d031b80c16e965a8111455aa51ab84affc92948c7895112ab8f90b182a5fa",
+    "data/kr-industry-membership-foundation-v1/top120-inputs.json": "d7c464973ad029bf08886c4bdf2517d1b3ece04cce87bcc63706f1230ed53cd0",
+    "data/kr-industry-membership-foundation-v4/state/audit.json.gz": "4135846f16dcf59fe4ff89ab83b3b5aec288dea20fed36172b17abf768d44036",
+    "data/kr-industry-membership-foundation-v4/state/intervals.json.gz": "01a7958608939b73b85f7b96457e6b6420bec1aaa78417526b98dbea3321aae0",
+    "data/kr-market-risk-anatomy-v1/sources/FDR_KS200/normalized.csv": "729a94b81dd45d1c5d1ab2ff692ec249bd5c9c4f24598d648d7f88010f193478",
+    "data/kr-market-risk-anatomy-v1/sources/FRED_DGS10/normalized.csv": "db7dc41d9d40ad5608e0ead00086ec15f5969cf785aa378f05cda576a160bc92",
+    "data/kr-market-risk-anatomy-v1/sources/FRED_DGS3MO/normalized.csv": "7ce2bdbe2547e4fc16c18a36295871d16099d60f51f10edfc2cd8d42218dc06c",
+    "data/kr-market-risk-anatomy-v1/sources/FRED_VIXCLS/normalized.csv": "dd0ccfe0a13f5e72a842dc27d53733748f24fb380808a7b2fb9babb40caa00ef",
+    "data/kr-market-risk-anatomy-v1/sources/audit.json": "29e1b54b249f84be327d9c7a228d6e68a447d38511652414fc7ef2c9f0099345",
+    "docs/kr-factor-anatomy-v1-design.md": "b2e6402d118b6fbcbba0f62497b1efd92d28ab513d1a64661c62b2454839694d",
+    "docs/kr-industry-opportunity-anatomy-v1-design.md": "06700c9938cde51d2b2ea8f99bad0712975f69190d038f8fba4d705548bc915c",
+    "docs/kr-industry-opportunity-anatomy-v1-result-seal.md": "1a8db9c8b25e2fe15f34be0c88e24d5b0ff9e5d0ff433b0a5df42a633fc9a2bd",
+    "docs/kr-integrated-alpha-portfolio-v1-design.md": "26240ea30b68b1528de61c4da3ce3a99345c4735a2bfa404f442623db8587751",
+    "docs/kr-market-risk-anatomy-v1-design.md": "bcbb8679bdf8fbef80bb60a4b078bf9a33bbab957ca931b78d19cbcba9516033",
+    "docs/kr-market-risk-anatomy-v1-source-readiness.md": "e3ad771242034071b41beff856525eea0ca0359614487fed204fccf3c43b750f",
+    "docs/kr-market-risk-anatomy-v2-design.md": "6cbed6c7074ae6817f13f2a57976969f12ea7383744789f43cd46ab47fbbd0f5",
+    "docs/kr-market-risk-anatomy-v2-final-result.md": "d74ad3414f94e12f1a425b86fb88a6b1d6de61db354b832be47a5e0c1a9997d9",
+    "docs/kr-market-risk-anatomy-v2-source-readiness.md": "27f2a8aa7a32045b816ba894f0bdaf9c76ade6b590788de48cc346bee2e560b7",
+    "docs/kr-market-risk-model-v1-design.md": "dfd3e270c08c64f392aee3cc8e7a474ac1f43ce35c4b4867b3481b201ead09fe",
+    "docs/kr-model-overlay-portfolio-v1-data-audit.md": "2e502a0ced4708054700d959f04e446b6b7fb9fc7ba9b6281d53c8447e1b55e4",
+    "docs/kr-model-overlay-portfolio-v1-design.md": "e048cacc9562a4d82aec0f68ffeb489e80d557970dd93299a16ed0f9a891de8b",
+    "docs/kr-model-overlay-portfolio-v1-execution.md": "faedb373e2e1630f00a0050ba48a87044148b2051ab596d40c3164024eb6e009",
+    "docs/kr-model-overlay-portfolio-v1-final-postmortem.md": "20d79907b78dab5a1a1094794c66a318bb8cc4deb4bed7f6256d210d9009f41b",
+    "docs/kr-model-overlay-portfolio-v1-handoff.md": "8fb42db25b2cb2173918e060100a5bdf179324e13caf6d9c1fe33b0eccb54604",
+    "docs/kr-model-overlay-portfolio-v1-preregistration.md": "48f75b72807d679d878fb71ffbf6c2f8e7c64cc508632c8977c2b5dceb73edd1",
+    "docs/kr-model-overlay-portfolio-v1-prospective.md": "4c52bf37a42a42dc906b4f5e8dc1eca5a00605fe5724d5606da427de79614b00",
+    "docs/kr-model-overlay-portfolio-v1-raw-snapshot-diagnosis.md": "a153c4a069357ad6dad651f9d09ab8a7743472aa223f75918bf4745d688444a6",
+    "docs/kr-model-overlay-portfolio-v1-research-foundation.md": "477a4b8a1627b9c3808a62b0d83422a69d415aa20b43128dd70a90c11f7b2672",
+    "docs/kr-stock-within-industry-anatomy-v1-design.md": "1a7fd9dce4e8d4dfee9e680b3b8fd1bb6f1f27e64556a31cabc4e0eb332a4dfb",
+    "docs/kr-stock-within-industry-anatomy-v1-result-seal.md": "118c8d6e48821013fc5a89cef38f2f4efb502f4473df1ff5e87afb612f4c3c42",
+    "docs/kr-top120-regime-review-v1-design.md": "991e4b567b5204fc78cd6cb425096976de0ae1a14d9b781f2f1a4c6578f516cf",
+    "docs/results/kr-factor-anatomy-v1-input-scope-audit.json": "5f9d4f3e96540f1325ab5a4cd3034b61ed289551797e25beeb62a3d85c4dc9b9",
+    "docs/results/kr-factor-anatomy-v1-manifest.json": "3f8cdd9e5cf82b58f8526078c545b9ce8e116b3bf196e474e807a22a4cd59df9",
+    "docs/results/kr-factor-anatomy-v1-report.md": "2ffbb3458660c74fcbacd148cb2b8d7c7013ac7967978a6c8334b6af7b9f892e",
+    "docs/results/kr-factor-anatomy-v1-result.json": "8518ec8cae95d0a23e964aab147e20659f17437fcd6fec6cb7f64cfa2b98a9e7",
+    "docs/results/kr-factor-anatomy-v1-seal-provenance.json": "eeba9641810d60c539935d5542ca48c7ae6a48859d63be5292bbe5e88ce4c2fa",
+    "docs/results/kr-industry-opportunity-anatomy-v1-execution-started.json": "414911b0ebb340332bbfe0340428f40959bc3fbc73b23cb2c2f92a30390f3bfb",
+    "docs/results/kr-industry-opportunity-anatomy-v1-manifest.json": "b8814d43f2e592fea0db7b7e4e7d77485f04881140dc46a197610086383621df",
+    "docs/results/kr-industry-opportunity-anatomy-v1-readiness.json": "e1e4d1f1e317f853fdf8b96006fd0085a1f68b7463460e9f37b9c8acfc22b8fa",
+    "docs/results/kr-industry-opportunity-anatomy-v1-report.md": "d3cd184e14816e63cd008450f9cfa51709f14dbc865fea0f575b7fea775bc3f6",
+    "docs/results/kr-industry-opportunity-anatomy-v1-result.json": "71a960e3c19ce443d058508c4ec66576e3e5fcbd7a45dc851cf8b832bff62a08",
+    "docs/results/kr-industry-opportunity-anatomy-v1-seal-provenance.json": "1d47495c70c4243b0709cb27adb17669f0a1a6796ac6e1f9cf6c51764f009e90",
+    "docs/results/kr-market-risk-anatomy-v1-readiness.json": "979550af82383c40765bc159b0761ff57d63a4517b2bc8f9555f09656c16d0ff",
+    "docs/results/kr-market-risk-anatomy-v1-source-provenance.json": "c3a48159181819b92b0152d2fd5d48ed2788525580e435e71fc1b21b0fa985d6",
+    "docs/results/kr-market-risk-anatomy-v2-execution-started.json": "391b6ff013d5a89d5e0342fdc767c4304bc6d7ad6bc8d63247a45a71794c73bc",
+    "docs/results/kr-market-risk-anatomy-v2-manifest.json": "d32efef61916ef761a662723a4e18edcbf32ad737a22b9835cd81733204e0067",
+    "docs/results/kr-market-risk-anatomy-v2-provenance.json": "1236b5ae9ecc9e10882c6de66c8734667997e22b94df397902fa2ccb1bf615f4",
+    "docs/results/kr-market-risk-anatomy-v2-readiness.json": "223e41b35a9f7e5a4d21aab418c0e8afdffda7b2c79a22714c6cfe3cdc19b9c2",
+    "docs/results/kr-market-risk-anatomy-v2-result.json": "7be4f68f30cf57b01cde88f106b3c0c2ed88fc9942ca2a14007664ffbe4ca769",
+    "docs/results/kr-market-risk-anatomy-v2-seal-provenance.json": "e7405713b72bf98f8b8adb58315ed54ef3c8f613b05b65e2a7a0bf3a1ae0293f",
+    "docs/results/kr-market-risk-model-v1-execution-started.json": "9d5e322ba54a0c7da3e467c72111ce955c365d650827282f9c9bf379c2ca307f",
+    "docs/results/kr-market-risk-model-v1-manifest.json": "81dc4408bf8f9f2464ce827b2783be2cf486e1ae232e3fec7b65a282114f8445",
+    "docs/results/kr-market-risk-model-v1-result.json": "2578bbfa245a6540235cc05e231441b4ebb4da165240a84e715756477a897c4b",
+    "docs/results/kr-market-risk-model-v1-seal-provenance.json": "d2d7a6129aa23eda9f5b9f805f964b164add4cbe71763b33734c6a83a2faa763",
+    "docs/results/kr-model-overlay-portfolio-v1-diagnostic-summary.json.gz": "d00effa09a05418ba6f11debd95a64d8c1fcbdf90de46b6aa0c820f49b3171ad",
+    "docs/results/kr-model-overlay-portfolio-v1-execution-started.json": "ba0747b92d30409c5c310fd844413e9e1c95c3924517716ac358194943df83d4",
+    "docs/results/kr-model-overlay-portfolio-v1-machine-audit.json": "57ad41fc02acde4b6110aeee979eb81f009bef1dd9e5a38c3bb9453413c872a6",
+    "docs/results/kr-model-overlay-portfolio-v1-machine-audit.json.sha256": "ed4f5c9aa2a815049dd6f51863cec93e16dbfd075c5797e319be87e9e539d821",
+    "docs/results/kr-model-overlay-portfolio-v1-result.json": "2c16e4e121abdd771c103eadce8707484b4092eb501188823aa1ac0726ec272a",
+    "docs/results/kr-model-overlay-portfolio-v1-result.sha256.json": "c1311e67bd88fff24c2701ba5dc03daf329415ba4be60b3510ef66b1c162722a",
+    "docs/results/kr-model-overlay-portfolio-v1-seal-provenance.json": "95d131e9512c68b51d43f7a314128c057e58c9e8fa4caf57a332c4ddc8d02b71",
+    "docs/results/kr-stock-within-industry-anatomy-v1-execution-started.json": "81e81c1e8b060bd5c3cf6b83e07523352bbfd48cdb8cbd422e8b12978b96a5b1",
+    "docs/results/kr-stock-within-industry-anatomy-v1-manifest.json": "b458ca96c4db70dc6b9ae01d4d9181f238e1a63ffb95e98179e83bb1941cf30b",
+    "docs/results/kr-stock-within-industry-anatomy-v1-readiness.json": "b1b863220f764d234173e763c7a23d74877276891685976813f2172f6d4286b7",
+    "docs/results/kr-stock-within-industry-anatomy-v1-report.md": "cd4c7ffda6ff229538b327dd666ce802eafd121caa30323fd0089ff555392384",
+    "docs/results/kr-stock-within-industry-anatomy-v1-result.json": "3862c390a52f6f19abaa7849e41620858cd154735136647ee36c958624c2739f",
+    "docs/results/kr-stock-within-industry-anatomy-v1-seal-provenance.json": "7873f4c00b50bff6d9529bf2eb3ebdf4f40c3a3c38b36441c800847cdef11bf3",
+    "pipeline/__init__.py": "187da1ad9a148da44035f9cf25f7cb094c45afe53d3f445ba62392797972dede",
+    "pipeline/accounting_quality.py": "b65c54126ea45bc544d843d5f87b109e71ca7658a1d7a8f99cd435cdf9ea6ada",
+    "pipeline/alpha_inference_calibration_v1.py": "87a6990fd6fc5217824ee00205ee247abe88006a2445d41b5a6086709f551186",
+    "pipeline/alpha_inference_calibration_v3.py": "5afa9a03dbfb5343be522d282a1b2050cbbd01722dc7b8eae1e6e06b55c2bf13",
+    "pipeline/alpha_inference_calibration_v4.py": "024231e1adeeb4d29ea047d187eb7eb5478fd21c442991bd1c8963d6a38cd601",
+    "pipeline/alpha_inference_mc_decision.py": "6d131e20e2bcc212247a95fce2c5f733faa7f1624991b364d9fea96b4962f61e",
+    "pipeline/alpha_opportunity_features.py": "62bfd05894b0f448e2d588f9395fb616c9d114a74503c1f663e20a84dfe0976e",
+    "pipeline/alpha_opportunity_model.py": "998c0b50d713a5c89ce1850bbae1b112215507fe6a38d992d7f1de158476ce83",
+    "pipeline/alpha_opportunity_spec.py": "3d7150c2f62dbd8184ed2f3885828e93c1ba64d8ffe3695b0b5716641734c58e",
+    "pipeline/alpha_opportunity_v2_evaluation.py": "e6f8a6f299945da36b39767a2dc7c7748a9bfee497e27a0d0ec05738bf235c62",
+    "pipeline/alpha_opportunity_v3_spec.py": "1c11c306f9f27a8e69b985d02bfb3bffaf691001c27ac49e6b21266dd315c162",
+    "pipeline/alpha_opportunity_v4_eligibility.py": "8c20c70b35dba244f0341459ee295ca836e0ec6782f3e4989197bc2a220ba204",
+    "pipeline/alpha_opportunity_v4_execution.py": "f6d9dfd3be1558249bb69a29a903e791443d071793b2f591a2e900d492c954ba",
+    "pipeline/alpha_opportunity_v5_evidence.py": "305fc463129a50e6048152d99fec5f238bbd4f526818fc840b0c8e2af486425d",
+    "pipeline/dart_derive.py": "c18be6391fd8e04118a8e13cb62ace5a20e641f1d67e1c185652ed88572bd457",
+    "pipeline/dart_fundamentals.py": "5faad514e864d199a1eb9db41fbb182ab9b4a73a0e7179e7f56ac99b387e579b",
+    "pipeline/dart_ownership_events.py": "fdb4280a7bebdfb324f4ee87c9ad2ac22d640cc0dced10c7fc0f1bcd59c461d8",
+    "pipeline/entry.py": "d9c8e33686a55114bfabb6b11c634ff0198461859ecdaf10dffc7e3c49a191a2",
+    "pipeline/evidence.py": "31e8f67184073395d67f44a165d74f4ed368e468b790e695dbdcc698de7d9e88",
+    "pipeline/finnhub_derive.py": "2ceaf6a081a5fbbd893398a68e58006254da06492629d9e8824e0e835b848b56",
+    "pipeline/finnhub_fundamentals.py": "95b5090f1a306df5bc6231d952c42dfc85097a3a1f9f90a82bb4fa8af4f3a20d",
+    "pipeline/fundamental_acceleration.py": "4aeb649a2a046d9cf11432a7ac5a18a1b6ff993a48f2d7216e3280d446aa02cf",
+    "pipeline/historical_calibration.py": "2c825613bc1a543a225159e421aa15a176a222ce61cac12937de4e8c33db5e11",
+    "pipeline/historical_outcomes.py": "9db74870fe015f26ee5c4ac4709a420d33ef28e5feaab2c4caeedd7e85555569",
+    "pipeline/historical_replay.py": "80ace61f2df0d48ee98349bc998b77f58d8c62a4e8aa01da7b3cdacf158266e9",
+    "pipeline/historical_store.py": "2751be8b5b79260f2038c9fb975cae58d49cb7868751c6658e363b48712016c0",
+    "pipeline/industry_foundation.py": "795965170eef879e6e5dac6b7b5f7a32e7d898a2eb4e6eb30a1960e04d4af0d3",
+    "pipeline/kelly_portfolio.py": "6a4bd54be11e35e7348f64d0c99e7764635c4efcea62306da0b6ca81bfb3b06c",
+    "pipeline/kr_concentrated_portfolio.py": "5059260c02e55dfde5b38b644ef2a66d0ff793dd2fb2e17609331dbb08571b64",
+    "pipeline/kr_factor_anatomy.py": "56b2ad6660ae5b02fb9f646f78f4db1e7040caeb108fcf7f3b10e45354fe3a5a",
+    "pipeline/kr_factor_anatomy_execution.py": "f8aae109d75dca9521b356168f1a56712f092911f556495538c2e5ab6a7b95e8",
+    "pipeline/kr_factor_anatomy_report.py": "855124c2dedb71b4d813aa97acac3b1921c9d74f537bb2a515e0131146f8067d",
+    "pipeline/kr_industry_anatomy.py": "02d3cf8be9b415699099674bbad6c500b6ad5e8468376589dc4f328adeb59886",
+    "pipeline/kr_industry_anatomy_execution.py": "ece54c4020751df065c5391813724b315dc40db1a3d2a6508500165d0787cb1b",
+    "pipeline/kr_industry_membership.py": "ec84de6d94d0f6e0b537dacef4cd96467566515471631f6c5107c39df038433c",
+    "pipeline/kr_industry_membership_v3.py": "c857dcdd9323bc0fed69b2212b8dcc1fca7527c8fb1a0b32d588c8bbc5fa65f5",
+    "pipeline/kr_integrated_alpha_portfolio.py": "fe7355c05637f91a6eb03185529ec7c0a7859d7b4f6658fdce42065d055d6588",
+    "pipeline/kr_integrated_alpha_portfolio_execution.py": "cee2583c64a17f734f1da867b92d241b6a4dabd1b9cec94dc377129f630f6ed8",
+    "pipeline/kr_integrated_alpha_portfolio_receipts.py": "61d6a445874dc760d11cbe2fbaf1f96332877e7d5d563ee1a9f61f3ddf833a47",
+    "pipeline/kr_integrated_alpha_portfolio_replay.py": "e735f361c2dc06a3369f854a10e5251ed660823d3c74b7a535cab43213ce63ed",
+    "pipeline/kr_integrated_alpha_portfolio_seal.py": "63f98e13fe45d7ebdc42fd7e14fb90582a3c0738a6483a0d5ce290aea2519f11",
+    "pipeline/kr_market_risk_anatomy.py": "e97887dd5b0bbb15b37ed40473b1da8e40a8f3fea2125d9fb176fa94dac6e978",
+    "pipeline/kr_market_risk_anatomy_analysis.py": "8565be7de14d990619c4ca3789dc4a403c547790663f6cd4139f61e0d972f8c6",
+    "pipeline/kr_market_risk_model.py": "568ba9fe963881699e6abaa6d2d6c8a747583485e3436eda7620032facdca54a",
+    "pipeline/kr_market_risk_model_execution.py": "1cbc36f36b8b611a7c7d465237e0173ce3b0b33bce977285790ce9bc3d33c3af",
+    "pipeline/kr_market_risk_overlay.py": "983b3aab891a2af2f6d54b9b3d7ca29788651ba898b074da0506a40431ae4c07",
+    "pipeline/kr_market_risk_source_parse.py": "44b30dae50b02a94c1bc3ab0f2f004dd9e1fcffe5cefeca8b7e96e8db90b6f05",
+    "pipeline/kr_market_risk_sources.py": "40a3c70e6eeb5d4376485ab4dacfeb5551634b1ae3b1abf3c53ff3acce4693d5",
+    "pipeline/kr_market_value.py": "49306b8d14c4e8d681ae5846802c2ae82fa5727bb7a8adf356fa313217103c5e",
+    "pipeline/kr_model_overlay_portfolio.py": "b67495886aa63e10315d96ce8b30a023ee75adac6f5fec5a4fab7593b4f70343",
+    "pipeline/kr_model_portfolio_execution.py": "6128ba0af8bb517ac260a76a8b397e486a3225f206b706953dbf0390a5a7bb82",
+    "pipeline/kr_portfolio_diagnostics.py": "9f28a5ddf49a58c95db36d3a573b19e56fe7c86f98ad2ed01d96e8c09e6b5c34",
+    "pipeline/kr_repaired_accounting_snapshot.py": "b5b225e8a1d21b1516801c0ced1ef2164189867a457df1e0a51cd8ec95dd63ea",
+    "pipeline/kr_stock_within_industry_anatomy.py": "e264ae20b71f32a03eec01fec944aeeb8e5947e5effedd25457cb6309c1b117b",
+    "pipeline/kr_stock_within_industry_anatomy_execution.py": "f25321636d2eaeeff851153c52a6410578c693795d6ddc61c77c03001d8c1642",
+    "pipeline/kr_top120_regime_review.py": "43e4ab3438f1fb3765975866f1d948bbde4469dd59047d52049c9752d4f74a31",
+    "pipeline/kr_value_quality_catalyst.py": "1bfd62d1437dd9b574f1ab635836e7d7e69651dbbbaeedf29af84a90de17bb28",
+    "pipeline/krx_universe.py": "77008b8c0dcb9cd44b0b1182df94d2f0af62edb6f03b6a41082c04679101d6b8",
+    "pipeline/liquidity_attention.py": "208c989a70e2d276c040867496a127eda9ca82644012999a7253f7d47bb171a6",
+    "pipeline/longterm.py": "75702c4862545e0ceadbfc5db2585b89ffeadad21f43206b597e2982d171c5f6",
+    "pipeline/market_dates.py": "0182986bf731fd762a8004d5cf838ddfaaee656a2b19b8cfd6b47248c6281e4b",
+    "pipeline/pit_data.py": "64da89c602ac4b6c67411d0b5defa2909b65c1a7aad0958b32cb7f7dcd567dbf",
+    "pipeline/portfolio_validation.py": "a22c18fc31f47b1701ea4c426ff31dec48f3f367163bd1eb3e8cf75c1fadf2a5",
+    "pipeline/price_adjustment.py": "ebdde717be22277315186d5f302642cbc8a057fedee84192b7af14b15c405892",
+    "pipeline/probability_calibration.py": "7e06f855981c7c88dc8a595fd879d201892ca99bfbb4b1dcab1bebaf0e6f62f6",
+    "pipeline/provenance.py": "762a214d6d0a59cef35a1b4612b60e13e2f6197a0a289e97e2b1da1f496c8171",
+    "pipeline/regime.py": "b5634c109ac19ad6b0e13788f1ce9cde8f20f50019a82a8b4f65f9bc23200aca",
+    "pipeline/regional_alpha_features.py": "2fc5eb16d0438ca15763aeaf49e9226146a7ecf209680ae8f33fd42f57555132",
+    "pipeline/replay_calendar.py": "56116f837e8ae3b9ca43c27c87b3be8bcf608172a761879a6b1284a39c9a3ab2",
+    "pipeline/replay_determinism.py": "2233d8341d7be1b5123caecd3ebdb10aef67ecfac7b3c10c687795f66f397153",
+    "pipeline/replay_inputs.py": "dd77b249476b252ba585b1b836fd060a029b0c4d9c3b9a0847caf8be545a5a1d",
+    "pipeline/replay_valuation.py": "18e673a0721077af06b8ca9f774650c27fa58820a489b9ea639a9ccf02693bf3",
+    "pipeline/sectors.py": "1cb470d676eeb24d5fa4976bf8fc0f71f808957f132c908158acb6422fde60ba",
+    "pipeline/selection_null.py": "b00e7419a8a620e284f3b5a15aafa66e9a8f776b81da027a766a72b3eecf5e17",
+    "research_specs/kr-factor-anatomy-v1.json": "1d8e526c05491898e00dacf18ad5b2cd458e04cfc843f4a35ff97bfd4272c393",
+    "research_specs/kr-factor-anatomy-v1.sha256": "a2c2b0cd706b1ad6efacb4105e06cade7df8c0912ced59a22191ad7489b23501",
+    "research_specs/kr-industry-membership-foundation-v4/crosswalk.json": "76166ad309d323240ffe749df74ac089f4693f30ef77231b8cd5ab85365826b5",
+    "research_specs/kr-industry-membership-foundation-v4/crosswalk.json.sha256": "c286ebc550a75b7a903f1db251d2687b2087c4c34fb3989c69400ab2ae7c3c20",
+    "research_specs/kr-industry-membership-foundation-v4/protocol.json": "955fb27793ce8016755b3d0c2e68ec292cad19c9ec84334a50c21d95f9b2d0ce",
+    "research_specs/kr-industry-membership-foundation-v4/protocol.json.sha256": "5821ded833822716bfcbdf9fca25252c6603fcae6443dd579ac970bec795e15f",
+    "research_specs/kr-industry-opportunity-anatomy-v1.json": "e2d1fd23744a65c8dbf99217c8b2531eb68f276bca2aea7de73e4200baf1dada",
+    "research_specs/kr-industry-opportunity-anatomy-v1.sha256": "b46ff330242100b90b353e0d262fd791adbf16931fc2be0eb1ff102d77bc1e53",
+    "research_specs/kr-integrated-alpha-portfolio-v1-receipt.schema.json": "27ccc8cf0296cb91e8f8d933ed0cca3b217bb137ed604371f6e375c13442d6e2",
+    "research_specs/kr-market-risk-anatomy-v1-design.json": "cff420288e4937ef86ec6f06155fe4846719192c89a63fa4ccd9d493e7063b9e",
+    "research_specs/kr-market-risk-anatomy-v1-design.sha256": "113d1526136b2da79f10bb90aaf17492ed1cdda2d96c713106af9cd1e5386d86",
+    "research_specs/kr-market-risk-anatomy-v1.json": "8b2014bb2264d1cdd1bbc96387e4981392a7bf117b33f297901423435e2fc73a",
+    "research_specs/kr-market-risk-anatomy-v1.sha256": "b8ac231ff28e9efe622dd245ab4825f929e3e2e932462cff659814f6945dadda",
+    "research_specs/kr-market-risk-anatomy-v2.json": "6555ce3a2eac1f5ff0c647969690e39ff6dc2fcaef2e1e9cd979e237bec519b3",
+    "research_specs/kr-market-risk-anatomy-v2.sha256": "62ec916cdb1cfd543026aee5d1b158eab48e58ace7db368d680eda2ed7717544",
+    "research_specs/kr-market-risk-model-v1-receipt.schema.json": "f02fdea12d4f3f57c46109850515ee7895fefd705414498ddb8750a4137d2e80",
+    "research_specs/kr-market-risk-model-v1.json": "fa7484c690d125089d628654a86199a23ad95dcfeb9b1b0682bdc704588ae1b4",
+    "research_specs/kr-market-risk-model-v1.sha256": "194f65b655ae28c5861b17652be681b4c6647436af107d3fd81b0ecbc3666339",
+    "research_specs/kr-model-overlay-portfolio-v1-diagnostics-v1.json": "9777c9b1a37f14236b72b46c9f3be575755ede5d59c62231b1b13acb09da4ae4",
+    "research_specs/kr-model-overlay-portfolio-v1-diagnostics-v1.sha256": "5f59875c6fe1d08888bb3e5f16b59eb4327405345027e4d339c31341bcdc1e6b",
+    "research_specs/kr-model-overlay-portfolio-v1-execution-authorization.json": "f7746b9f3547ba1e8619c01def8795880f4d1e6ee3d1dd8ad0bcf81fa147ce20",
+    "research_specs/kr-model-overlay-portfolio-v1.json": "c1cbfd232fdcaa7fa584cd1762e9e28291b4382d37e6244f5ab1a18731fb2df2",
+    "research_specs/kr-model-overlay-portfolio-v1.sha256": "31f5e13ac44f4591b820fffb03849c99653d076fe496c40e275d693723b18cb1",
+    "research_specs/kr-stock-within-industry-anatomy-v1.json": "133ad66e9908b576b45cdddf215f451e7813bec1d9c1e6305d77e3e155388c6f",
+    "research_specs/kr-stock-within-industry-anatomy-v1.sha256": "c6215d25195ee61b303b4a94cf27f77275f14be5a329c3a457804c539a1abaf6",
+    "research_specs/kr-top120-regime-review-v1.json": "79af4fcbaaf92452b2f1f98b7393ca757c5254b539884e8248b25c4959d76c93",
+    "research_specs/kr-top120-regime-review-v1.sha256": "e1e7f101f37a5e2a9c53f7dcfa99afb8efc06e24235b022e57a4dae8c2b98e88",
+    "scripts/build_kr_integrated_alpha_portfolio_v1_spec.py": "b435c0979e2ebdbb5961816fc3b24f028f96f1828eefeeed77e6a14e56ea28f4",
+    "scripts/run_kr_integrated_alpha_portfolio_v1.py": "7a4c4f41ecd1161eab1835623b4f75e6757d5ef2aa8e7484b9314c500c2fab74",
+    "scripts/seal_kr_integrated_alpha_portfolio_v1.py": "5b1dc9c1fc2ea0407c9a8e2e2481bf735158773e1c9cb88725c8f2e0dc53962e"
+  },
+  "developmentCutoff": "2026-09-14",
+  "developmentStatement": "This integrated architecture is built from three sealed, outcome-exposed component studies (market risk model, industry anatomy, stock within-industry anatomy) on KR history that is already outcome-exposed. Every historical number it produces is DEVELOPMENT evidence for choosing an architecture to record prospectively; it has no prospective validity and validates nothing.",
+  "entryPoints": [
+    "pipeline/kr_integrated_alpha_portfolio_execution.py",
+    "pipeline/kr_integrated_alpha_portfolio.py",
+    "pipeline/kr_integrated_alpha_portfolio_replay.py",
+    "pipeline/kr_integrated_alpha_portfolio_receipts.py",
+    "pipeline/kr_integrated_alpha_portfolio_seal.py"
+  ],
+  "evaluationStart": "2017-01-01",
+  "featureStart": "2015-01-01",
+  "governance": {
+    "afterAnUnfavourableResult": "no v1.1, no threshold sweep, no new factor blend, no new market rule, no top-k search, no cap or cost change",
+    "defaultNextStep": "prospective receipts of all six target portfolios",
+    "doesNotReopen": [
+      "kr-market-risk-anatomy-v1",
+      "kr-market-risk-anatomy-v2",
+      "kr-market-risk-model-v1",
+      "kr-industry-opportunity-anatomy-v1",
+      "kr-stock-within-industry-anatomy-v1",
+      "kr-model-overlay-portfolio-v1",
+      "kr-factor-anatomy-v1",
+      "kr-top120-regime-review-v1"
+    ],
+    "lastLargeHistoricalArchitectureStudy": true,
+    "supersedes": []
+  },
+  "industryLayer": {
+    "cohort": "the sealed anatomy's FULL cohort (no mega-cap exclusion), frozen at the signal date",
+    "combinedScore": {
+      "rule": "50% STOCK_SCORE + 50% INDUSTRY_SCORE of the stock's industry, fixed and untuned; requires both",
+      "weights": {
+        "INDUSTRY_SCORE": 0.5,
+        "STOCK_SCORE": 0.5
+      }
+    },
+    "features": {
+      "BREADTH_ABOVE_MA_126": "share of the industry's members above their own 126-session moving average (same function)",
+      "REL_MOM_126": "cap-weighted trailing-126-session return of the industry minus the benchmark's (kr_industry_anatomy.industry_features)"
+    },
+    "industryScore": {
+      "minimumIndustriesRanked": 5,
+      "rule": "50% cross-industry average-rank percentile of REL_MOM_126 + 50% of BREADTH_ABOVE_MA_126; BOTH required; computed over the eligible industries (at least 5 classified members) with both finite on that date",
+      "weights": {
+        "BREADTH_ABOVE_MA_126": 0.5,
+        "REL_MOM_126": 0.5
+      }
+    },
+    "notUsed": [
+      "constituent dispersion",
+      "OCF yield",
+      "book-to-market of the industry",
+      "fitted industry weights",
+      "any macro series"
+    ],
+    "rankabilityRule": "every rebalance anchor must rank at least the minimum industries, otherwise the run stops BEFORE the lock",
+    "role": "OPTIONAL: when ON it re-orders eligible stocks by the state of their industry; when OFF it contributes exactly zero"
+  },
+  "input": {
+    "artifactArchiveSha256": "42eeb18b7a5c88816629036f472a93057b6a9be4768ad47292ba0d2750b4cce7",
+    "artifactId": 11157875265,
+    "artifactName": "kr-model-raw-inputs-36844599518",
+    "downloadRule": "execution downloads this exact artifact (name, run id, artifact id and archive digest checked through the Actions API) and verifies the input identity before any outcome is computed",
+    "identitySha256": "233df37ed205cc6b48828121e711417ccf961301dc58aa252430b343db9666a7",
+    "krxCacheSha256": "3419d9d201f942b3c89be146b8f696679c8105a5f00d8adb0dd2c5a655a80037",
+    "pinnedFrom": {
+      "overlaySpec": "research_specs/kr-model-overlay-portfolio-v1.json",
+      "regimeReviewInput": {
+        "artifactArchiveSha256": "42eeb18b7a5c88816629036f472a93057b6a9be4768ad47292ba0d2750b4cce7",
+        "artifactId": 11157875265,
+        "artifactName": "kr-model-raw-inputs-36844599518",
+        "downloadRule": "The execution workflow downloads this exact artifact (name, run id, artifact id and archive digest checked through the Actions API before download) and verifies the input identity before any outcome is computed.",
+        "identityDefinition": "pipeline.kr_model_portfolio_execution.input_identity(root)['sha256'] — NOT the snapshot manifest hash",
+        "identitySha256": "233df37ed205cc6b48828121e711417ccf961301dc58aa252430b343db9666a7",
+        "krxCacheNote": "Pinned provenance. The daily KRX market-value files are covered byte-for-byte by the input identity.",
+        "krxCacheSha256": "3419d9d201f942b3c89be146b8f696679c8105a5f00d8adb0dd2c5a655a80037",
+        "producingRunId": 36844599518,
+        "recollectKrx": false,
+        "replaceSnapshotSilently": false
+      }
+    },
+    "producingRunId": 36844599518,
+    "recollect": false
+  },
+  "inputs": {
+    "cashYieldFileSha256": "a7edf0e532c7b54da9d962ebf12ff2552c90c783439fef99d7c761c5b9ea69ff",
+    "marketSourceFiles": {
+      "data/kr-market-risk-anatomy-v1/sources/FDR_KS200/normalized.csv": "729a94b81dd45d1c5d1ab2ff692ec249bd5c9c4f24598d648d7f88010f193478",
+      "data/kr-market-risk-anatomy-v1/sources/FRED_DGS10/normalized.csv": "db7dc41d9d40ad5608e0ead00086ec15f5969cf785aa378f05cda576a160bc92",
+      "data/kr-market-risk-anatomy-v1/sources/FRED_DGS3MO/normalized.csv": "7ce2bdbe2547e4fc16c18a36295871d16099d60f51f10edfc2cd8d42218dc06c",
+      "data/kr-market-risk-anatomy-v1/sources/FRED_VIXCLS/normalized.csv": "dd0ccfe0a13f5e72a842dc27d53733748f24fb380808a7b2fb9babb40caa00ef",
+      "data/kr-market-risk-anatomy-v1/sources/audit.json": "29e1b54b249f84be327d9c7a228d6e68a447d38511652414fc7ef2c9f0099345"
+    },
+    "newExternalAcquisition": false,
+    "rule": "the exact immutable bytes the sealed studies read; the preserved raw-input artifact is pinned by name, run, id, archive digest and identity"
+  },
+  "lifecycle": {
+    "executionLock": "refs/tags/kr-integrated-alpha-portfolio-v1-execution-lock plus -<specSha256>; any existing ref under the prefix refuses; never moved or deleted",
+    "failureAfterLock": "consumes the study permanently; never retried; the attempt artifact is preserved under -attempt-<runId>",
+    "failureBeforeLock": "spends nothing",
+    "manifestPath": "docs/results/kr-integrated-alpha-portfolio-v1-manifest.json",
+    "markerPath": "docs/results/kr-integrated-alpha-portfolio-v1-execution-started.json",
+    "resultPath": "docs/results/kr-integrated-alpha-portfolio-v1-result.json",
+    "seal": {
+      "module": "pipeline/kr_integrated_alpha_portfolio_seal.py",
+      "never": [
+        "rerun outcomes",
+        "change or reformat a result byte",
+        "tune anything",
+        "reinterpret a layer decision",
+        "merge",
+        "mark ready for review",
+        "seal an attempt artifact"
+      ],
+      "script": "scripts/seal_kr_integrated_alpha_portfolio_v1.py"
+    },
+    "sequence": [
+      "workflow_dispatch on merged main",
+      "committed exact spec and sidecar",
+      "every pin verified",
+      "signal-time feature assembly and the registered depth / ranking gates (can stop before anything is spent)",
+      "no committed result, marker or manifest",
+      "no execution lock under the study prefix",
+      "durable exclusive lock (atomic POST /git/refs)",
+      "execution marker",
+      "first market-value read",
+      "six paths x three cost stresses",
+      "immutable result artifact",
+      "automatic seal: verify run, artifact digest, file list, manifest, marker, spec and lock refs",
+      "copy exact bytes plus provenance",
+      "ONE Draft pull request",
+      "a human reviews and merges"
+    ]
+  },
+  "marketLayer": {
+    "application": "a pure scale of the held book (drifted proportions kept, no new name, no swap), re-expressed at multiplier 1, renormalised to at most 1, times the new target; executed by the same sealed execute_rebalance as every other trade (ADV caps, partial fills, costs)",
+    "atAnchors": "the multiplier in force scales the freshly sized base weights of that anchor's underlying decision",
+    "c1Status": "SHADOW_CHALLENGER: the sealed model's formal non-nomination of C1 is preserved; this study judges C0 and C1 separately and promotes neither",
+    "candidates": {
+      "C0": {
+        "gating": false,
+        "name": "C0_EXISTING_BASELINE_CONTROL",
+        "preemption": false,
+        "table": [
+          {
+            "equityRiskMultiplier": 1.0,
+            "fast": 0,
+            "slow": 0,
+            "transition": 0
+          },
+          {
+            "equityRiskMultiplier": 0.7,
+            "fast": 1,
+            "slow": 0,
+            "transition": 0
+          },
+          {
+            "equityRiskMultiplier": 0.4,
+            "fast": 2,
+            "slow": 0,
+            "transition": 0
+          },
+          {
+            "equityRiskMultiplier": 1.0,
+            "fast": 0,
+            "slow": 0,
+            "transition": 1
+          },
+          {
+            "equityRiskMultiplier": 0.7,
+            "fast": 1,
+            "slow": 0,
+            "transition": 1
+          },
+          {
+            "equityRiskMultiplier": 0.4,
+            "fast": 2,
+            "slow": 0,
+            "transition": 1
+          },
+          {
+            "equityRiskMultiplier": 1.0,
+            "fast": 0,
+            "slow": 1,
+            "transition": 0
+          },
+          {
+            "equityRiskMultiplier": 0.7,
+            "fast": 1,
+            "slow": 1,
+            "transition": 0
+          },
+          {
+            "equityRiskMultiplier": 0.4,
+            "fast": 2,
+            "slow": 1,
+            "transition": 0
+          },
+          {
+            "equityRiskMultiplier": 1.0,
+            "fast": 0,
+            "slow": 1,
+            "transition": 1
+          },
+          {
+            "equityRiskMultiplier": 0.7,
+            "fast": 1,
+            "slow": 1,
+            "transition": 1
+          },
+          {
+            "equityRiskMultiplier": 0.4,
+            "fast": 2,
+            "slow": 1,
+            "transition": 1
+          }
+        ]
+      },
+      "C1": {
+        "gating": true,
+        "name": "C1_CONFIRMATION_GATED",
+        "preemption": false,
+        "table": [
+          {
+            "equityRiskMultiplier": 1.0,
+            "fast": 0,
+            "slow": 0,
+            "transition": 0
+          },
+          {
+            "equityRiskMultiplier": 1.0,
+            "fast": 1,
+            "slow": 0,
+            "transition": 0
+          },
+          {
+            "equityRiskMultiplier": 0.4,
+            "fast": 2,
+            "slow": 0,
+            "transition": 0
+          },
+          {
+            "equityRiskMultiplier": 1.0,
+            "fast": 0,
+            "slow": 0,
+            "transition": 1
+          },
+          {
+            "equityRiskMultiplier": 0.7,
+            "fast": 1,
+            "slow": 0,
+            "transition": 1
+          },
+          {
+            "equityRiskMultiplier": 0.4,
+            "fast": 2,
+            "slow": 0,
+            "transition": 1
+          },
+          {
+            "equityRiskMultiplier": 1.0,
+            "fast": 0,
+            "slow": 1,
+            "transition": 0
+          },
+          {
+            "equityRiskMultiplier": 0.7,
+            "fast": 1,
+            "slow": 1,
+            "transition": 0
+          },
+          {
+            "equityRiskMultiplier": 0.4,
+            "fast": 2,
+            "slow": 1,
+            "transition": 0
+          },
+          {
+            "equityRiskMultiplier": 1.0,
+            "fast": 0,
+            "slow": 1,
+            "transition": 1
+          },
+          {
+            "equityRiskMultiplier": 0.7,
+            "fast": 1,
+            "slow": 1,
+            "transition": 1
+          },
+          {
+            "equityRiskMultiplier": 0.4,
+            "fast": 2,
+            "slow": 1,
+            "transition": 1
+          }
+        ]
+      }
+    },
+    "marketOff": "multiplier 1.0 throughout; no market trade",
+    "missingState": "the sealed hold rule (hold the previous target; undefined at the first decision is refused)",
+    "multiplierVocabulary": [
+      1.0,
+      0.7,
+      0.4
+    ],
+    "reference": "FDR_KS200",
+    "role": "RISK OVERLAY ONLY: never changes eligibility or order. The identical underlying S or I+S book is built first and the already-selected book is scaled",
+    "source": "kr-market-risk-model-v1",
+    "timing": "weekly decision at the calendar week-end close; trade at the NEXT KR session's close, only when the multiplier changes",
+    "unchanged": "states, thresholds, windows, lags, missing-state hold rule, decision cadence, multiplier tables and timing are the sealed model's functions called directly"
+  },
+  "membership": {
+    "coarseGroups": 14,
+    "crosswalkPath": "research_specs/kr-industry-membership-foundation-v4/crosswalk.json",
+    "files": {
+      "data/kr-industry-membership-foundation-v4/state/audit.json.gz": "4135846f16dcf59fe4ff89ab83b3b5aec288dea20fed36172b17abf768d44036",
+      "data/kr-industry-membership-foundation-v4/state/intervals.json.gz": "01a7958608939b73b85f7b96457e6b6420bec1aaa78417526b98dbea3321aae0",
+      "research_specs/kr-industry-membership-foundation-v4/crosswalk.json": "76166ad309d323240ffe749df74ac089f4693f30ef77231b8cd5ab85365826b5",
+      "research_specs/kr-industry-membership-foundation-v4/crosswalk.json.sha256": "c286ebc550a75b7a903f1db251d2687b2087c4c34fb3989c69400ab2ae7c3c20",
+      "research_specs/kr-industry-membership-foundation-v4/protocol.json": "955fb27793ce8016755b3d0c2e68ec292cad19c9ec84334a50c21d95f9b2d0ce",
+      "research_specs/kr-industry-membership-foundation-v4/protocol.json.sha256": "5821ded833822716bfcbdf9fca25252c6603fcae6443dd579ac970bec795e15f"
+    },
+    "limitation": "22 terminal common securities have no historical industry; most classified name-dates rest on a no-change reconstruction; not PIT exact",
+    "mappedRawLabels": 82,
+    "v4Decision": "DATA_FOUNDATION_INSUFFICIENT_V4",
+    "v4Facts": {
+      "classifiedNameDates": 69756,
+      "coarseIndustryCount": 14,
+      "conflictIntervals": {},
+      "everTop120Securities": 260,
+      "nameDates": 73200,
+      "rawIndustryCount": 78,
+      "signalDates": 610,
+      "terminal": {
+        "classified": 0,
+        "denominator": 2345
+      },
+      "unknownNameDates": 3444
+    }
+  },
+  "metrics": {
+    "annualisation": "calendar years (days / 365.2425) for returns; 252 sessions for volatility",
+    "attribution": [
+      "industryOnVsOff",
+      "c0VsOff",
+      "c1VsOff",
+      "c1VsC0",
+      "interaction"
+    ],
+    "implementation": [
+      "annualizedOneWayTurnover",
+      "replacements",
+      "totalCostFractionOfNav",
+      "averageHoldings",
+      "averageCashShare",
+      "meanHerfindahl",
+      "maxSecurityWeight",
+      "averageGrossEquityExposure"
+    ],
+    "overlap": "daily path statistics; rolling windows overlap and are descriptive; no significance test; no multiplicity correction",
+    "return": [
+      "cumulativeNetReturn",
+      "netAnnualizedReturn",
+      "excessAnnualizedVsPassive",
+      "terminalExcessVsPassive",
+      "cumulativeGrossReturn",
+      "annualizedCostDrag"
+    ],
+    "risk": [
+      "maxDrawdown",
+      "worstRollingReturnH63",
+      "worstRollingReturnH126",
+      "annualizedVolatility",
+      "downsideVolatility",
+      "recoverySessions"
+    ],
+    "stability": [
+      "halves",
+      "calendarYears",
+      "episodes",
+      "costStress x1/x2/x3"
+    ]
+  },
+  "outcomeAccess": {
+    "counters": [
+      "featureBuilds",
+      "marketValueReads",
+      "marketStateComputations",
+      "replayCalls",
+      "metricCalls",
+      "cashSensitivityCalls",
+      "decisionCalls",
+      "markerWrites"
+    ],
+    "inThisChange": "NONE",
+    "outcomeCounters": [
+      "marketValueReads",
+      "marketStateComputations",
+      "replayCalls",
+      "metricCalls",
+      "cashSensitivityCalls",
+      "decisionCalls"
+    ],
+    "verifyAndReadinessRequireAllZero": true
+  },
+  "phase": "PREREGISTRATION_AND_HARNESS_ONLY_NO_OUTCOME_COMPUTED",
+  "portfolio": {
+    "anchors": {
+      "architectureSpecificTradingRules": "NONE",
+      "betweenAnchors": "drifted holdings, no retarget",
+      "execution": "the anchor's close",
+      "firstAnchorOnOrAfter": "2017-01-01",
+      "origin": "2015-01-01",
+      "sameForAllSix": true,
+      "signal": "the last weekly KR signal strictly before the anchor",
+      "strideKrSessions": 21
+    },
+    "cash": {
+      "primary": "ZERO_KRW_NOMINAL",
+      "sharpeSortino": "NOT REPORTED: a risk-free assumption would have to be defended and none is claimed"
+    },
+    "costs": {
+      "buyFixedCost": 0.0015,
+      "impactAtOnePercent": 0.0005,
+      "primary": 1.0,
+      "sellFixedCost": 0.0045,
+      "semantics": "assumptions for every date, not statutory schedules; stress runs are descriptive",
+      "stress": [
+        1.0,
+        2.0,
+        3.0
+      ]
+    },
+    "executionQuote": "an observed positive-volume quote at the execution close is required; otherwise the order is deferred (no fictitious fill)",
+    "futureInformation": "none: every score, state and decision is computed from information at or before the signal date",
+    "inheritedFrom": "kr-model-overlay-portfolio-v1 (values compared with the sealed spec on every load)",
+    "leverage": "NONE",
+    "maximumHoldings": 5,
+    "minimumHoldings": 0,
+    "parameters": {
+      "advLookback": 60,
+      "buyFixedCost": 0.0015,
+      "downsideLookback": 126,
+      "impactAtOnePercent": 0.0005,
+      "maximumAdvFraction": 0.01,
+      "maximumHoldings": 5,
+      "minimumAdvKrw": 3000000000.0,
+      "minimumDownsideVol": 0.01,
+      "referenceNavKrw": 100000000.0,
+      "sellFixedCost": 0.0045,
+      "singleNameCap": 0.3
+    },
+    "sizing": "inverse downside-volatility proportional water-fill under the 30% single-name cap and the 1% ADV capacity cap (kr_concentrated_portfolio.size); residual cash",
+    "tieBreak": "ticker ascending",
+    "unresolvedTerminalEconomics": "a held name with no observed close, no observed zero-volume quote and no terminal economics blocks THAT architecture's path (complete: false); no survivor or successor is substituted and no name silently disappears"
+  },
+  "preOutcomeRevisions": [],
+  "priors": {
+    "neverRerun": [
+      "kr-market-risk-anatomy-v1",
+      "kr-market-risk-anatomy-v2",
+      "kr-market-risk-model-v1",
+      "kr-industry-opportunity-anatomy-v1",
+      "kr-stock-within-industry-anatomy-v1",
+      "kr-model-overlay-portfolio-v1",
+      "kr-factor-anatomy-v1",
+      "kr-top120-regime-review-v1"
+    ],
+    "rule": "every prior sealed study is pinned byte-for-byte; none is rerun, re-thresholded, reinterpreted or altered; the component studies motivated this architecture and are the reason every historical number here is development evidence",
+    "sealedArtifacts": {
+      "docs/kr-factor-anatomy-v1-design.md": "b2e6402d118b6fbcbba0f62497b1efd92d28ab513d1a64661c62b2454839694d",
+      "docs/kr-industry-opportunity-anatomy-v1-design.md": "06700c9938cde51d2b2ea8f99bad0712975f69190d038f8fba4d705548bc915c",
+      "docs/kr-industry-opportunity-anatomy-v1-result-seal.md": "1a8db9c8b25e2fe15f34be0c88e24d5b0ff9e5d0ff433b0a5df42a633fc9a2bd",
+      "docs/kr-market-risk-anatomy-v1-design.md": "bcbb8679bdf8fbef80bb60a4b078bf9a33bbab957ca931b78d19cbcba9516033",
+      "docs/kr-market-risk-anatomy-v1-source-readiness.md": "e3ad771242034071b41beff856525eea0ca0359614487fed204fccf3c43b750f",
+      "docs/kr-market-risk-anatomy-v2-design.md": "6cbed6c7074ae6817f13f2a57976969f12ea7383744789f43cd46ab47fbbd0f5",
+      "docs/kr-market-risk-anatomy-v2-final-result.md": "d74ad3414f94e12f1a425b86fb88a6b1d6de61db354b832be47a5e0c1a9997d9",
+      "docs/kr-market-risk-anatomy-v2-source-readiness.md": "27f2a8aa7a32045b816ba894f0bdaf9c76ade6b590788de48cc346bee2e560b7",
+      "docs/kr-market-risk-model-v1-design.md": "dfd3e270c08c64f392aee3cc8e7a474ac1f43ce35c4b4867b3481b201ead09fe",
+      "docs/kr-model-overlay-portfolio-v1-data-audit.md": "2e502a0ced4708054700d959f04e446b6b7fb9fc7ba9b6281d53c8447e1b55e4",
+      "docs/kr-model-overlay-portfolio-v1-design.md": "e048cacc9562a4d82aec0f68ffeb489e80d557970dd93299a16ed0f9a891de8b",
+      "docs/kr-model-overlay-portfolio-v1-execution.md": "faedb373e2e1630f00a0050ba48a87044148b2051ab596d40c3164024eb6e009",
+      "docs/kr-model-overlay-portfolio-v1-final-postmortem.md": "20d79907b78dab5a1a1094794c66a318bb8cc4deb4bed7f6256d210d9009f41b",
+      "docs/kr-model-overlay-portfolio-v1-handoff.md": "8fb42db25b2cb2173918e060100a5bdf179324e13caf6d9c1fe33b0eccb54604",
+      "docs/kr-model-overlay-portfolio-v1-preregistration.md": "48f75b72807d679d878fb71ffbf6c2f8e7c64cc508632c8977c2b5dceb73edd1",
+      "docs/kr-model-overlay-portfolio-v1-prospective.md": "4c52bf37a42a42dc906b4f5e8dc1eca5a00605fe5724d5606da427de79614b00",
+      "docs/kr-model-overlay-portfolio-v1-raw-snapshot-diagnosis.md": "a153c4a069357ad6dad651f9d09ab8a7743472aa223f75918bf4745d688444a6",
+      "docs/kr-model-overlay-portfolio-v1-research-foundation.md": "477a4b8a1627b9c3808a62b0d83422a69d415aa20b43128dd70a90c11f7b2672",
+      "docs/kr-stock-within-industry-anatomy-v1-design.md": "1a7fd9dce4e8d4dfee9e680b3b8fd1bb6f1f27e64556a31cabc4e0eb332a4dfb",
+      "docs/kr-stock-within-industry-anatomy-v1-result-seal.md": "118c8d6e48821013fc5a89cef38f2f4efb502f4473df1ff5e87afb612f4c3c42",
+      "docs/kr-top120-regime-review-v1-design.md": "991e4b567b5204fc78cd6cb425096976de0ae1a14d9b781f2f1a4c6578f516cf",
+      "docs/results/kr-factor-anatomy-v1-input-scope-audit.json": "5f9d4f3e96540f1325ab5a4cd3034b61ed289551797e25beeb62a3d85c4dc9b9",
+      "docs/results/kr-factor-anatomy-v1-manifest.json": "3f8cdd9e5cf82b58f8526078c545b9ce8e116b3bf196e474e807a22a4cd59df9",
+      "docs/results/kr-factor-anatomy-v1-report.md": "2ffbb3458660c74fcbacd148cb2b8d7c7013ac7967978a6c8334b6af7b9f892e",
+      "docs/results/kr-factor-anatomy-v1-result.json": "8518ec8cae95d0a23e964aab147e20659f17437fcd6fec6cb7f64cfa2b98a9e7",
+      "docs/results/kr-factor-anatomy-v1-seal-provenance.json": "eeba9641810d60c539935d5542ca48c7ae6a48859d63be5292bbe5e88ce4c2fa",
+      "docs/results/kr-industry-opportunity-anatomy-v1-execution-started.json": "414911b0ebb340332bbfe0340428f40959bc3fbc73b23cb2c2f92a30390f3bfb",
+      "docs/results/kr-industry-opportunity-anatomy-v1-manifest.json": "b8814d43f2e592fea0db7b7e4e7d77485f04881140dc46a197610086383621df",
+      "docs/results/kr-industry-opportunity-anatomy-v1-readiness.json": "e1e4d1f1e317f853fdf8b96006fd0085a1f68b7463460e9f37b9c8acfc22b8fa",
+      "docs/results/kr-industry-opportunity-anatomy-v1-report.md": "d3cd184e14816e63cd008450f9cfa51709f14dbc865fea0f575b7fea775bc3f6",
+      "docs/results/kr-industry-opportunity-anatomy-v1-result.json": "71a960e3c19ce443d058508c4ec66576e3e5fcbd7a45dc851cf8b832bff62a08",
+      "docs/results/kr-industry-opportunity-anatomy-v1-seal-provenance.json": "1d47495c70c4243b0709cb27adb17669f0a1a6796ac6e1f9cf6c51764f009e90",
+      "docs/results/kr-market-risk-anatomy-v1-readiness.json": "979550af82383c40765bc159b0761ff57d63a4517b2bc8f9555f09656c16d0ff",
+      "docs/results/kr-market-risk-anatomy-v1-source-provenance.json": "c3a48159181819b92b0152d2fd5d48ed2788525580e435e71fc1b21b0fa985d6",
+      "docs/results/kr-market-risk-anatomy-v2-execution-started.json": "391b6ff013d5a89d5e0342fdc767c4304bc6d7ad6bc8d63247a45a71794c73bc",
+      "docs/results/kr-market-risk-anatomy-v2-manifest.json": "d32efef61916ef761a662723a4e18edcbf32ad737a22b9835cd81733204e0067",
+      "docs/results/kr-market-risk-anatomy-v2-provenance.json": "1236b5ae9ecc9e10882c6de66c8734667997e22b94df397902fa2ccb1bf615f4",
+      "docs/results/kr-market-risk-anatomy-v2-readiness.json": "223e41b35a9f7e5a4d21aab418c0e8afdffda7b2c79a22714c6cfe3cdc19b9c2",
+      "docs/results/kr-market-risk-anatomy-v2-result.json": "7be4f68f30cf57b01cde88f106b3c0c2ed88fc9942ca2a14007664ffbe4ca769",
+      "docs/results/kr-market-risk-anatomy-v2-seal-provenance.json": "e7405713b72bf98f8b8adb58315ed54ef3c8f613b05b65e2a7a0bf3a1ae0293f",
+      "docs/results/kr-market-risk-model-v1-execution-started.json": "9d5e322ba54a0c7da3e467c72111ce955c365d650827282f9c9bf379c2ca307f",
+      "docs/results/kr-market-risk-model-v1-manifest.json": "81dc4408bf8f9f2464ce827b2783be2cf486e1ae232e3fec7b65a282114f8445",
+      "docs/results/kr-market-risk-model-v1-result.json": "2578bbfa245a6540235cc05e231441b4ebb4da165240a84e715756477a897c4b",
+      "docs/results/kr-market-risk-model-v1-seal-provenance.json": "d2d7a6129aa23eda9f5b9f805f964b164add4cbe71763b33734c6a83a2faa763",
+      "docs/results/kr-model-overlay-portfolio-v1-diagnostic-summary.json.gz": "d00effa09a05418ba6f11debd95a64d8c1fcbdf90de46b6aa0c820f49b3171ad",
+      "docs/results/kr-model-overlay-portfolio-v1-execution-started.json": "ba0747b92d30409c5c310fd844413e9e1c95c3924517716ac358194943df83d4",
+      "docs/results/kr-model-overlay-portfolio-v1-machine-audit.json": "57ad41fc02acde4b6110aeee979eb81f009bef1dd9e5a38c3bb9453413c872a6",
+      "docs/results/kr-model-overlay-portfolio-v1-machine-audit.json.sha256": "ed4f5c9aa2a815049dd6f51863cec93e16dbfd075c5797e319be87e9e539d821",
+      "docs/results/kr-model-overlay-portfolio-v1-result.json": "2c16e4e121abdd771c103eadce8707484b4092eb501188823aa1ac0726ec272a",
+      "docs/results/kr-model-overlay-portfolio-v1-result.sha256.json": "c1311e67bd88fff24c2701ba5dc03daf329415ba4be60b3510ef66b1c162722a",
+      "docs/results/kr-model-overlay-portfolio-v1-seal-provenance.json": "95d131e9512c68b51d43f7a314128c057e58c9e8fa4caf57a332c4ddc8d02b71",
+      "docs/results/kr-stock-within-industry-anatomy-v1-execution-started.json": "81e81c1e8b060bd5c3cf6b83e07523352bbfd48cdb8cbd422e8b12978b96a5b1",
+      "docs/results/kr-stock-within-industry-anatomy-v1-manifest.json": "b458ca96c4db70dc6b9ae01d4d9181f238e1a63ffb95e98179e83bb1941cf30b",
+      "docs/results/kr-stock-within-industry-anatomy-v1-readiness.json": "b1b863220f764d234173e763c7a23d74877276891685976813f2172f6d4286b7",
+      "docs/results/kr-stock-within-industry-anatomy-v1-report.md": "cd4c7ffda6ff229538b327dd666ce802eafd121caa30323fd0089ff555392384",
+      "docs/results/kr-stock-within-industry-anatomy-v1-result.json": "3862c390a52f6f19abaa7849e41620858cd154735136647ee36c958624c2739f",
+      "docs/results/kr-stock-within-industry-anatomy-v1-seal-provenance.json": "7873f4c00b50bff6d9529bf2eb3ebdf4f40c3a3c38b36441c800847cdef11bf3",
+      "research_specs/kr-factor-anatomy-v1.json": "1d8e526c05491898e00dacf18ad5b2cd458e04cfc843f4a35ff97bfd4272c393",
+      "research_specs/kr-factor-anatomy-v1.sha256": "a2c2b0cd706b1ad6efacb4105e06cade7df8c0912ced59a22191ad7489b23501",
+      "research_specs/kr-industry-opportunity-anatomy-v1.json": "e2d1fd23744a65c8dbf99217c8b2531eb68f276bca2aea7de73e4200baf1dada",
+      "research_specs/kr-industry-opportunity-anatomy-v1.sha256": "b46ff330242100b90b353e0d262fd791adbf16931fc2be0eb1ff102d77bc1e53",
+      "research_specs/kr-market-risk-anatomy-v1-design.json": "cff420288e4937ef86ec6f06155fe4846719192c89a63fa4ccd9d493e7063b9e",
+      "research_specs/kr-market-risk-anatomy-v1-design.sha256": "113d1526136b2da79f10bb90aaf17492ed1cdda2d96c713106af9cd1e5386d86",
+      "research_specs/kr-market-risk-anatomy-v1.json": "8b2014bb2264d1cdd1bbc96387e4981392a7bf117b33f297901423435e2fc73a",
+      "research_specs/kr-market-risk-anatomy-v1.sha256": "b8ac231ff28e9efe622dd245ab4825f929e3e2e932462cff659814f6945dadda",
+      "research_specs/kr-market-risk-anatomy-v2.json": "6555ce3a2eac1f5ff0c647969690e39ff6dc2fcaef2e1e9cd979e237bec519b3",
+      "research_specs/kr-market-risk-anatomy-v2.sha256": "62ec916cdb1cfd543026aee5d1b158eab48e58ace7db368d680eda2ed7717544",
+      "research_specs/kr-market-risk-model-v1-receipt.schema.json": "f02fdea12d4f3f57c46109850515ee7895fefd705414498ddb8750a4137d2e80",
+      "research_specs/kr-market-risk-model-v1.json": "fa7484c690d125089d628654a86199a23ad95dcfeb9b1b0682bdc704588ae1b4",
+      "research_specs/kr-market-risk-model-v1.sha256": "194f65b655ae28c5861b17652be681b4c6647436af107d3fd81b0ecbc3666339",
+      "research_specs/kr-model-overlay-portfolio-v1-diagnostics-v1.json": "9777c9b1a37f14236b72b46c9f3be575755ede5d59c62231b1b13acb09da4ae4",
+      "research_specs/kr-model-overlay-portfolio-v1-diagnostics-v1.sha256": "5f59875c6fe1d08888bb3e5f16b59eb4327405345027e4d339c31341bcdc1e6b",
+      "research_specs/kr-model-overlay-portfolio-v1-execution-authorization.json": "f7746b9f3547ba1e8619c01def8795880f4d1e6ee3d1dd8ad0bcf81fa147ce20",
+      "research_specs/kr-model-overlay-portfolio-v1.json": "c1cbfd232fdcaa7fa584cd1762e9e28291b4382d37e6244f5ab1a18731fb2df2",
+      "research_specs/kr-model-overlay-portfolio-v1.sha256": "31f5e13ac44f4591b820fffb03849c99653d076fe496c40e275d693723b18cb1",
+      "research_specs/kr-stock-within-industry-anatomy-v1.json": "133ad66e9908b576b45cdddf215f451e7813bec1d9c1e6305d77e3e155388c6f",
+      "research_specs/kr-stock-within-industry-anatomy-v1.sha256": "c6215d25195ee61b303b4a94cf27f77275f14be5a329c3a457804c539a1abaf6",
+      "research_specs/kr-top120-regime-review-v1.json": "79af4fcbaaf92452b2f1f98b7393ca757c5254b539884e8248b25c4959d76c93",
+      "research_specs/kr-top120-regime-review-v1.sha256": "e1e7f101f37a5e2a9c53f7dcfa99afb8efc06e24235b022e57a4dae8c2b98e88"
+    },
+    "studies": [
+      "kr-market-risk-anatomy-v1",
+      "kr-market-risk-anatomy-v2",
+      "kr-market-risk-model-v1",
+      "kr-industry-opportunity-anatomy-v1",
+      "kr-stock-within-industry-anatomy-v1",
+      "kr-model-overlay-portfolio-v1",
+      "kr-factor-anatomy-v1",
+      "kr-top120-regime-review-v1"
+    ]
+  },
+  "prospective": {
+    "evidenceClass": "PROSPECTIVE_PAPER",
+    "horizons": [
+      21,
+      63,
+      126
+    ],
+    "module": "pipeline/kr_integrated_alpha_portfolio_receipts.py",
+    "receiptSchemaPath": "research_specs/kr-integrated-alpha-portfolio-v1-receipt.schema.json",
+    "receiptSchemaSha256": "27ccc8cf0296cb91e8f8d933ed0cca3b217bb137ed604371f6e375c13442d6e2",
+    "rules": [
+      "one immutable receipt per future decision date, appended before the execution-session close",
+      "every input identity, the industry membership used, the registered feature values, the three scores, the eligible names, both underlying books, the C0 and C1 states and multipliers and all six target portfolios are recorded; no future outcome exists at creation",
+      "the six targets are derived as underlying x multiplier, never accepted from the caller",
+      "append-only JSON Lines; a duplicate key, an out-of-order date, a changed spec or an altered earlier row refuses the append",
+      "a receipt is evaluated only after its horizon has matured; no historical receipt is rewritten",
+      "historical development results and prospective receipts are separate evidence classes and are never pooled"
+    ],
+    "status": "DESIGNED_NOT_RUNNING: no receipt is written and no schedule exists in this change"
+  },
+  "question": "Which fixed combination of the sealed Market, Industry and Stock components is worth recording prospectively: S, S+M0, S+M1, I+S, I+S+M0 or I+S+M1?",
+  "readiness": {
+    "minimumNamesWithMarketCapPerDate": 3
+  },
+  "returnBasis": "BENCHMARK_RELATIVE_ADJUSTED_INDEX_RETURN_PARTIAL_DISTRIBUTIONS",
+  "scientificStatus": "EXPLORATORY_DEVELOPMENT_ON_OUTCOME_EXPOSED_KR_HISTORY",
+  "sealedDataInputs": [
+    ".github/workflows/kr-integrated-alpha-portfolio-v1.yml",
+    "data/bok-policy-rates.json",
+    "data/kr-industry-membership-foundation-v1/identity-inventory.json",
+    "data/kr-industry-membership-foundation-v1/identity-provenance.json",
+    "data/kr-industry-membership-foundation-v1/top120-inputs.json",
+    "data/kr-industry-membership-foundation-v4/state/audit.json.gz",
+    "data/kr-industry-membership-foundation-v4/state/intervals.json.gz",
+    "data/kr-market-risk-anatomy-v1/sources/FDR_KS200/normalized.csv",
+    "data/kr-market-risk-anatomy-v1/sources/FRED_DGS10/normalized.csv",
+    "data/kr-market-risk-anatomy-v1/sources/FRED_DGS3MO/normalized.csv",
+    "data/kr-market-risk-anatomy-v1/sources/FRED_VIXCLS/normalized.csv",
+    "data/kr-market-risk-anatomy-v1/sources/audit.json",
+    "docs/kr-factor-anatomy-v1-design.md",
+    "docs/kr-industry-opportunity-anatomy-v1-design.md",
+    "docs/kr-industry-opportunity-anatomy-v1-result-seal.md",
+    "docs/kr-integrated-alpha-portfolio-v1-design.md",
+    "docs/kr-market-risk-anatomy-v1-design.md",
+    "docs/kr-market-risk-anatomy-v1-source-readiness.md",
+    "docs/kr-market-risk-anatomy-v2-design.md",
+    "docs/kr-market-risk-anatomy-v2-final-result.md",
+    "docs/kr-market-risk-anatomy-v2-source-readiness.md",
+    "docs/kr-market-risk-model-v1-design.md",
+    "docs/kr-model-overlay-portfolio-v1-data-audit.md",
+    "docs/kr-model-overlay-portfolio-v1-design.md",
+    "docs/kr-model-overlay-portfolio-v1-execution.md",
+    "docs/kr-model-overlay-portfolio-v1-final-postmortem.md",
+    "docs/kr-model-overlay-portfolio-v1-handoff.md",
+    "docs/kr-model-overlay-portfolio-v1-preregistration.md",
+    "docs/kr-model-overlay-portfolio-v1-prospective.md",
+    "docs/kr-model-overlay-portfolio-v1-raw-snapshot-diagnosis.md",
+    "docs/kr-model-overlay-portfolio-v1-research-foundation.md",
+    "docs/kr-stock-within-industry-anatomy-v1-design.md",
+    "docs/kr-stock-within-industry-anatomy-v1-result-seal.md",
+    "docs/kr-top120-regime-review-v1-design.md",
+    "docs/results/kr-factor-anatomy-v1-input-scope-audit.json",
+    "docs/results/kr-factor-anatomy-v1-manifest.json",
+    "docs/results/kr-factor-anatomy-v1-report.md",
+    "docs/results/kr-factor-anatomy-v1-result.json",
+    "docs/results/kr-factor-anatomy-v1-seal-provenance.json",
+    "docs/results/kr-industry-opportunity-anatomy-v1-execution-started.json",
+    "docs/results/kr-industry-opportunity-anatomy-v1-manifest.json",
+    "docs/results/kr-industry-opportunity-anatomy-v1-readiness.json",
+    "docs/results/kr-industry-opportunity-anatomy-v1-report.md",
+    "docs/results/kr-industry-opportunity-anatomy-v1-result.json",
+    "docs/results/kr-industry-opportunity-anatomy-v1-seal-provenance.json",
+    "docs/results/kr-market-risk-anatomy-v1-readiness.json",
+    "docs/results/kr-market-risk-anatomy-v1-source-provenance.json",
+    "docs/results/kr-market-risk-anatomy-v2-execution-started.json",
+    "docs/results/kr-market-risk-anatomy-v2-manifest.json",
+    "docs/results/kr-market-risk-anatomy-v2-provenance.json",
+    "docs/results/kr-market-risk-anatomy-v2-readiness.json",
+    "docs/results/kr-market-risk-anatomy-v2-result.json",
+    "docs/results/kr-market-risk-anatomy-v2-seal-provenance.json",
+    "docs/results/kr-market-risk-model-v1-execution-started.json",
+    "docs/results/kr-market-risk-model-v1-manifest.json",
+    "docs/results/kr-market-risk-model-v1-result.json",
+    "docs/results/kr-market-risk-model-v1-seal-provenance.json",
+    "docs/results/kr-model-overlay-portfolio-v1-diagnostic-summary.json.gz",
+    "docs/results/kr-model-overlay-portfolio-v1-execution-started.json",
+    "docs/results/kr-model-overlay-portfolio-v1-machine-audit.json",
+    "docs/results/kr-model-overlay-portfolio-v1-machine-audit.json.sha256",
+    "docs/results/kr-model-overlay-portfolio-v1-result.json",
+    "docs/results/kr-model-overlay-portfolio-v1-result.sha256.json",
+    "docs/results/kr-model-overlay-portfolio-v1-seal-provenance.json",
+    "docs/results/kr-stock-within-industry-anatomy-v1-execution-started.json",
+    "docs/results/kr-stock-within-industry-anatomy-v1-manifest.json",
+    "docs/results/kr-stock-within-industry-anatomy-v1-readiness.json",
+    "docs/results/kr-stock-within-industry-anatomy-v1-report.md",
+    "docs/results/kr-stock-within-industry-anatomy-v1-result.json",
+    "docs/results/kr-stock-within-industry-anatomy-v1-seal-provenance.json",
+    "research_specs/kr-factor-anatomy-v1.json",
+    "research_specs/kr-factor-anatomy-v1.sha256",
+    "research_specs/kr-industry-membership-foundation-v4/crosswalk.json",
+    "research_specs/kr-industry-membership-foundation-v4/crosswalk.json.sha256",
+    "research_specs/kr-industry-membership-foundation-v4/protocol.json",
+    "research_specs/kr-industry-membership-foundation-v4/protocol.json.sha256",
+    "research_specs/kr-industry-opportunity-anatomy-v1.json",
+    "research_specs/kr-industry-opportunity-anatomy-v1.sha256",
+    "research_specs/kr-integrated-alpha-portfolio-v1-receipt.schema.json",
+    "research_specs/kr-market-risk-anatomy-v1-design.json",
+    "research_specs/kr-market-risk-anatomy-v1-design.sha256",
+    "research_specs/kr-market-risk-anatomy-v1.json",
+    "research_specs/kr-market-risk-anatomy-v1.sha256",
+    "research_specs/kr-market-risk-anatomy-v2.json",
+    "research_specs/kr-market-risk-anatomy-v2.sha256",
+    "research_specs/kr-market-risk-model-v1-receipt.schema.json",
+    "research_specs/kr-market-risk-model-v1.json",
+    "research_specs/kr-market-risk-model-v1.sha256",
+    "research_specs/kr-model-overlay-portfolio-v1-diagnostics-v1.json",
+    "research_specs/kr-model-overlay-portfolio-v1-diagnostics-v1.sha256",
+    "research_specs/kr-model-overlay-portfolio-v1-execution-authorization.json",
+    "research_specs/kr-model-overlay-portfolio-v1.json",
+    "research_specs/kr-model-overlay-portfolio-v1.sha256",
+    "research_specs/kr-stock-within-industry-anatomy-v1.json",
+    "research_specs/kr-stock-within-industry-anatomy-v1.sha256",
+    "research_specs/kr-top120-regime-review-v1.json",
+    "research_specs/kr-top120-regime-review-v1.sha256",
+    "scripts/build_kr_integrated_alpha_portfolio_v1_spec.py",
+    "scripts/run_kr_integrated_alpha_portfolio_v1.py",
+    "scripts/seal_kr_integrated_alpha_portfolio_v1.py"
+  ],
+  "stockLayer": {
+    "eligibility": {
+      "classifiedInEligibleIndustry": true,
+      "depthRule": "every rebalance anchor must leave at least the minimum eligible stocks for the S book and for the I+S book, otherwise the run stops BEFORE the lock (signal-time fact; spends nothing). 0-5 holdings remain valid when executability leaves fewer.",
+      "minimumAdv60Krw": 3000000000.0,
+      "minimumDownsideVol126": 0.01,
+      "minimumEligiblePerDate": 10,
+      "noAbsoluteDoNotInvestThreshold": true,
+      "stockScoreFinite": true,
+      "tradable": "observed positive volume and trading value at the signal close"
+    },
+    "excludedFromPrimaryScore": {
+      "logAdv60": "liquidity is investability (ADV60 floor), never alpha",
+      "momentum121": "stock momentum is an industry-layer / catalyst question, not part of the stock score",
+      "negativeAccrualsToAssets": "quality family not in the registered score",
+      "netIncomeToAssets": "quality family not in the registered score",
+      "ocfImprovementToAssets": "descriptive only in the sealed anatomy; not a primary score input",
+      "ocfToAssets": "quality family not in the registered score",
+      "ocfYieldProxy": "not part of the registered VALUE_SCORE",
+      "relative126": "stock momentum is an industry-layer / catalyst question, not part of the stock score"
+    },
+    "missingStaysMissing": true,
+    "peerGroup": "the frozen PIT industry membership (kr-industry-membership-foundation-v4, 14 groups) used ONLY as the peer group; at least 5 classified members",
+    "percentile": "kr_stock_within_industry_anatomy.within_industry_percentiles: average-rank (r - 0.5) / n among the finite values of the SAME signal date and the stock's own industry; at least 5 finite values or NaN; ties share one percentile; past-only; fixed before any outcome",
+    "riskScore": {
+      "component": "negativeDownsideVol126",
+      "meaning": "higher = calmer (negative annualised downside semideviation over 126 sessions)",
+      "rule": "within-industry percentile rank"
+    },
+    "role": "ALWAYS ON and identical in all six architectures: orders eligible stocks by cheapness and calm WITHIN their own industry",
+    "stockScore": {
+      "rule": "equal-weight mean of VALUE_SCORE and the within-industry percentile of negativeDownsideVol126; requires every primary component; higher = more attractive",
+      "weights": {
+        "RISK_SCORE": 0.5,
+        "VALUE_SCORE": 0.5
+      }
+    },
+    "valueScore": {
+      "components": [
+        "bookToMarketProxy",
+        "earningsYieldProxy"
+      ],
+      "neverSubstituted": "a missing component makes VALUE_SCORE missing; one component is never used for the other",
+      "rule": "mean of the within-industry percentile ranks; BOTH components must be finite"
+    }
+  },
+  "strideKrSessions": 21,
+  "studyId": "kr-integrated-alpha-portfolio-v1",
+  "tests": [
+    "test_kr_integrated_alpha_portfolio_v1.py",
+    "test_kr_integrated_alpha_portfolio_v1_replay.py",
+    "test_kr_integrated_alpha_portfolio_v1_lifecycle.py",
+    "test_kr_integrated_alpha_portfolio_v1_result_seal.py"
+  ]
+}
