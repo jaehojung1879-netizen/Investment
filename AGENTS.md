@@ -2417,6 +2417,41 @@
 - NO HISTORICAL OUTCOME WAS COMPUTED IN THE PROTOCOL CHANGE. The workflow was not dispatched, no lock exists, no sealed prior result changed, and every number in this
   section is a design fact, not a result.
 
+## KR integrated alpha portfolio post-outcome concentration audit invariants (v2.46)
+
+- A SPENT FORMAL RESULT IS DIAGNOSED, NEVER REDONE. `kr-integrated-alpha-portfolio-v1` consumed its one execution (run `37374530672`, commit `33237df6`, spec
+  `eea6128c...`; both execution-lock tags exist and point at that commit); the later seal job failed at its commit step, which is an infrastructure failure and not
+  permission to execute again. `kr-integrated-alpha-portfolio-v1-postoutcome-concentration-audit-v1` is `EXPLORATORY_POST_OUTCOME_DESCRIPTIVE_DIAGNOSTIC`: it is not a
+  confirmatory experiment, a model rescue, an architecture selection or a promotion decision, and it adds no pre-registration. No audit module may reference the lock,
+  marker, permit, `execute`, `load_market_values` or any GitHub write (an AST test enforces it) and its workflow has read-only permissions and no pull-request trigger.
+- EVIDENCE CLASSES ARE NEVER BLENDED. `FORMAL_REPORTED_RESULT` (copied from the exact artifact), `POST_OUTCOME_DIAGNOSTIC_RECONSTRUCTION` (the frozen code replayed
+  read-only, admitted only after it reproduces the formal metrics and every month-end NAV; otherwise `D_PATH_RECONSTRUCTION_MISMATCH` with the first divergence and no
+  attribution), `POST_OUTCOME_COUNTERFACTUAL_SENSITIVITY` (exactly one: D without 005930.KS and 000660.KS, removed after scoring and before selection, every other frozen
+  rule unchanged, no other exclusion set) and `POST_OUTCOME_DESCRIPTIVE_PROXY`. A proxy is never called the KODEX 200 / KOSPI 200 weight or return.
+- AN ARTIFACT THE ENVIRONMENT CANNOT REACH IS REPORTED AS UNREACHABLE, NOT INFERRED. The formal result (19.5 KB) and the raw snapshot (336 MB) live on Azure blob
+  storage that the authoring sandbox cannot reach (CONNECT 403), the daily KRX market-value files in that snapshot are not stored in git, and no official KODEX 200 source
+  was reachable. Everything needing them is `NOT_RUN_IN_THIS_ENVIRONMENT` and runs through `kr-integrated-alpha-portfolio-v1-postoutcome-audit.yml` (manual dispatch). The
+  quoted ~20.24% passive CAGR was reproduced from the frozen series; the artifact's own value was not read.
+- THE PASSIVE FIGURE IS A RECENT-REGIME FIGURE, MEASURED NOT ASSUMED. On the frozen 069500.KS series (reproduced from hash-verified replay-v16 objects) 2017-2024
+  annualizes +6.89%, 2025 returned +98.72% and 2026 to the cutoff +75.73%; those last two spans carry 70.2% of the window's log wealth and 85.8% of its terminal gain. The
+  full-window +20.24% is therefore not a long-run Korean return. Fixed spans, no optimised breakpoint.
+- THE BENCHMARK IS REPRODUCIBLE AND STILL QUESTIONED. Complete against the registered calendar (3,860 sessions, none missing, none duplicated), but its excess over the
+  committed KS200 price index is +3.87% to +5.25% in every full year 2018-2025, +4.53% a year over 2017-2024, against +1.85% for a same-data constituent total-return reference,
+  and it does not shrink in 2025 when the index rose 90.67%. The snapshot stores only the total-return close, not the applied distribution events, so the gap cannot be
+  decomposed from it. Classified `BENCHMARK_EXTERNAL_RECONCILIATION_UNRESOLVED`; no official number was quoted, and no corrected benchmark was constructed.
+- CONCENTRATION IS A MARKET-CAP PROXY INSIDE THE STUDY'S PIT TOP120. Samsung Electronics + SK Hynix: median 28.5% in the formal window, 34.6% at the end of 2025, a maximum
+  of 57.2% (2026-07-01), 52.6% on 2026-09-01; above 40% in 8 and above 50% in 4 monthly snapshots, all in 2026; never above 60%. In the cap-weighted Top120 reference they
+  contributed about 65% of the 2025 + 2026 gain (approximate; monthly proxy weights), and the reference without them returned +56.4% (2025) and +26.6% (2026) against
+  +86.9% and +65.1%. These are descriptions of reference portfolios, not a statement that the real passive alternative should exclude them: the primary benchmark stays
+  `069500.KS`, concentration included, and "the model beats the benchmark once the two names are removed" is outcome-selected reasoning that is forbidden.
+- SIGNAL ASSOCIATION AND IMPLEMENTED PORTFOLIO DEPEND ON THE TWO NAMES DIFFERENTLY. The sealed anatomy reports (read, not rerun) show the industry REL_MOM_126 and
+  BREADTH_ABOVE_MA_126 associations and the four stock features keeping their sign when only the two names are removed. That says nothing about whether a five-name book held
+  them or what they earned; that needs the D reconstruction and the registered sensitivity.
+- ATTRIBUTION MUST CLOSE TWICE. `security_contributions` requires each day's residual cost to equal the engine's own `costFraction` times the pre-trade NAV (otherwise the
+  identity nav_T - 1 = gross - cost would be a tautology) and the whole identity to hold to 1e-9. Transaction cost is reported on its own and never allocated to a name.
+- NO FORMAL FILE MOVED. The formal spec, model, replay, receipts, seal and workflow bytes are untouched (`load_spec` still verifies every pin), the formal result was not
+  committed or rewritten, and the seal workflow bug is left for its own change.
+
 ## Lint gate invariants (v2.11)
 
 - The enabled rule set reports ZERO findings on `main`. A rule is turned on in the

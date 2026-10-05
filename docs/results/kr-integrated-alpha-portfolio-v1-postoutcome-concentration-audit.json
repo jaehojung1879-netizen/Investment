@@ -1,0 +1,2025 @@
+{
+  "approximateBenchmarkContribution": {
+    "evidenceClass": "POST_OUTCOME_DESCRIPTIVE_PROXY",
+    "explanation": "Contribution of Samsung Electronics and SK Hynix to the return of the CAP-WEIGHTED TOP120 reference (monthly market-cap weights, buy-and-hold between snapshots, chained daily as nav_{t-1} * w_{t-1} * r_t). It is NOT the contribution to the KODEX 200 benchmark: the weights are proxy weights and the reference is a different portfolio. Official PIT KODEX 200 / KOSPI 200 constituent weights were unreachable.",
+    "label": "APPROXIMATE_WEIGHTED_CONTRIBUTION_USING_MONTHLY_WEIGHT_SNAPSHOTS",
+    "periods": {
+      "A_2017_to_2024": {
+        "combined": {
+          "contributionNavUnits": 0.258839913985,
+          "contributionPointsOfOpeningNav": 0.258839913985,
+          "shareOfSpanGain": 0.677680188815
+        },
+        "description": "2017-01-16 through the last session of 2024",
+        "fromSession": "2017-01-16",
+        "gain": 0.381949949633,
+        "navEnd": 1.381949949633,
+        "navStart": 1.0,
+        "residual": {
+          "contributionNavUnits": 0.123110035648,
+          "contributionPointsOfOpeningNav": 0.123110035648,
+          "shareOfSpanGain": 0.322319811185
+        },
+        "securities": {
+          "000660.KS": {
+            "contributionNavUnits": 0.084789751539,
+            "contributionPointsOfOpeningNav": 0.084789751539,
+            "name": "SK Hynix",
+            "shareOfSpanGain": 0.221991786151
+          },
+          "005930.KS": {
+            "contributionNavUnits": 0.174050162446,
+            "contributionPointsOfOpeningNav": 0.174050162446,
+            "name": "Samsung Electronics",
+            "shareOfSpanGain": 0.455688402664
+          }
+        },
+        "toSession": "2024-12-30"
+      },
+      "B_2025": {
+        "combined": {
+          "contributionNavUnits": 0.625906883148,
+          "contributionPointsOfOpeningNav": 0.452915739324,
+          "shareOfSpanGain": 0.52133653454
+        },
+        "description": "calendar 2025",
+        "fromSession": "2024-12-30",
+        "gain": 1.200581278462,
+        "navEnd": 2.582531228095,
+        "navStart": 1.381949949633,
+        "residual": {
+          "contributionNavUnits": 0.574674395315,
+          "contributionPointsOfOpeningNav": 0.415843131994,
+          "shareOfSpanGain": 0.47866346546
+        },
+        "securities": {
+          "000660.KS": {
+            "contributionNavUnits": 0.289714652971,
+            "contributionPointsOfOpeningNav": 0.209641928818,
+            "name": "SK Hynix",
+            "shareOfSpanGain": 0.241311986259
+          },
+          "005930.KS": {
+            "contributionNavUnits": 0.336192230176,
+            "contributionPointsOfOpeningNav": 0.243273810506,
+            "name": "Samsung Electronics",
+            "shareOfSpanGain": 0.280024548281
+          }
+        },
+        "toSession": "2025-12-30"
+      },
+      "C_2026_to_cutoff": {
+        "combined": {
+          "contributionNavUnits": 1.258063390565,
+          "contributionPointsOfOpeningNav": 0.48714353456,
+          "shareOfSpanGain": 0.747833209013
+        },
+        "description": "2026-01-01 through the formal cutoff",
+        "fromSession": "2025-12-30",
+        "gain": 1.682278047301,
+        "navEnd": 4.264809275397,
+        "navStart": 2.582531228095,
+        "residual": {
+          "contributionNavUnits": 0.424214656736,
+          "contributionPointsOfOpeningNav": 0.164263127633,
+          "shareOfSpanGain": 0.252166790987
+        },
+        "securities": {
+          "000660.KS": {
+            "contributionNavUnits": 0.621077679424,
+            "contributionPointsOfOpeningNav": 0.240491837104,
+            "name": "SK Hynix",
+            "shareOfSpanGain": 0.369188482499
+          },
+          "005930.KS": {
+            "contributionNavUnits": 0.636985711141,
+            "contributionPointsOfOpeningNav": 0.246651697455,
+            "name": "Samsung Electronics",
+            "shareOfSpanGain": 0.378644726514
+          }
+        },
+        "toSession": "2026-09-14"
+      },
+      "D_full_window": {
+        "combined": {
+          "contributionNavUnits": 2.142810187698,
+          "contributionPointsOfOpeningNav": 2.142810187698,
+          "shareOfSpanGain": 0.656335487603
+        },
+        "description": "the full formal window",
+        "fromSession": "2017-01-16",
+        "gain": 3.264809275397,
+        "navEnd": 4.264809275397,
+        "navStart": 1.0,
+        "residual": {
+          "contributionNavUnits": 1.121999087699,
+          "contributionPointsOfOpeningNav": 1.121999087699,
+          "shareOfSpanGain": 0.343664512397
+        },
+        "securities": {
+          "000660.KS": {
+            "contributionNavUnits": 0.995582083935,
+            "contributionPointsOfOpeningNav": 0.995582083935,
+            "name": "SK Hynix",
+            "shareOfSpanGain": 0.304943413215
+          },
+          "005930.KS": {
+            "contributionNavUnits": 1.147228103763,
+            "contributionPointsOfOpeningNav": 1.147228103763,
+            "name": "Samsung Electronics",
+            "shareOfSpanGain": 0.351392074388
+          }
+        },
+        "toSession": "2026-09-14"
+      }
+    }
+  },
+  "benchmarkIntegrity": {
+    "calendarSessions": 3860,
+    "dailyMovesAtLeast10Percent": [
+      {
+        "date": "2026-03-04",
+        "return": -0.124612580821
+      },
+      {
+        "date": "2026-03-05",
+        "return": 0.101044926537
+      },
+      {
+        "date": "2026-06-23",
+        "return": -0.104710379856
+      },
+      {
+        "date": "2026-07-28",
+        "return": -0.111902746645
+      },
+      {
+        "date": "2026-07-31",
+        "return": 0.241741313402
+      }
+    ],
+    "dailyMovesAtLeast10PercentCountAllHistory": 5,
+    "evidenceClass": "POST_OUTCOME_DIAGNOSTIC_RECONSTRUCTION",
+    "firstSession": "2011-01-03",
+    "largestDailyMoveInWindow": {
+      "date": "2026-07-31",
+      "return": 0.241741313402
+    },
+    "lastSession": "2026-09-14",
+    "nonPositiveOrNonFiniteLevels": 0,
+    "sessions": 3860,
+    "sessionsMissingFromSeries": [],
+    "sessionsNotInCalendar": [],
+    "status": "FROZEN_SERIES_READ_AND_HASH_VERIFIED",
+    "windowFirstSession": "2017-01-16",
+    "windowLastSession": "2026-09-14",
+    "windowSessionsAfterStart": 2367
+  },
+  "benchmarkPassiveReproduction": {
+    "evidenceClass": "POST_OUTCOME_DIAGNOSTIC_RECONSTRUCTION",
+    "formalArtifactComparison": "NOT_RUN_IN_THIS_ENVIRONMENT",
+    "formalArtifactComparisonReason": "the formal result artifact is stored on Azure blob storage, unreachable from the authoring sandbox (CONNECT 403)",
+    "formalPassiveAnnualizedReturnQuotedInTheTask": 0.2024,
+    "formula": "(level[cutoff] / level[first anchor]) ** (365.2425 / calendar days) - 1, the formula pipeline.kr_integrated_alpha_portfolio_replay.summarize_path applies to the passive path",
+    "reproducedPassiveAnnualizedReturn": 0.202413366754,
+    "reproducedPassiveCumulativeReturn": 4.932892814649,
+    "reproducesTheQuotedFormalFigureToFourDecimals": true,
+    "windowFirstSession": "2017-01-16",
+    "windowLastSession": "2026-09-14",
+    "windowSessionsIncludingStart": 2368,
+    "years": 9.659335920655
+  },
+  "benchmarkPeriods": {
+    "calendarYears": {
+      "2017": {
+        "fromSession": "2017-01-16",
+        "return": 0.269217782378,
+        "toSession": "2017-12-28"
+      },
+      "2018": {
+        "fromSession": "2017-12-28",
+        "return": -0.15368335645,
+        "toSession": "2018-12-28"
+      },
+      "2019": {
+        "fromSession": "2018-12-28",
+        "return": 0.173075524252,
+        "toSession": "2019-12-30"
+      },
+      "2020": {
+        "fromSession": "2019-12-30",
+        "return": 0.389569784834,
+        "toSession": "2020-12-30"
+      },
+      "2021": {
+        "fromSession": "2020-12-30",
+        "return": 0.053392743155,
+        "toSession": "2021-12-30"
+      },
+      "2022": {
+        "fromSession": "2021-12-30",
+        "return": -0.222727182054,
+        "toSession": "2022-12-29"
+      },
+      "2023": {
+        "fromSession": "2022-12-29",
+        "return": 0.277326609636,
+        "toSession": "2023-12-28"
+      },
+      "2024": {
+        "fromSession": "2023-12-28",
+        "return": -0.072226908908,
+        "toSession": "2024-12-30"
+      },
+      "2025": {
+        "fromSession": "2024-12-30",
+        "return": 0.987177000168,
+        "toSession": "2025-12-30"
+      },
+      "2026": {
+        "fromSession": "2025-12-30",
+        "return": 0.757304619307,
+        "toSession": "2026-09-14"
+      }
+    },
+    "checkpoints": [
+      {
+        "checkpoint": "2024-12-30",
+        "level": 41550.11075941723,
+        "session": "2024-12-30",
+        "yearBaseSession": "2023-12-28",
+        "yearToDateReturn": -0.072226908908
+      },
+      {
+        "checkpoint": "2025-12-30",
+        "level": 82567.42445552915,
+        "session": "2025-12-30",
+        "yearBaseSession": "2024-12-30",
+        "yearToDateReturn": 0.987177000168
+      },
+      {
+        "checkpoint": "2026-01-30",
+        "level": 105038.9864714388,
+        "session": "2026-01-30",
+        "yearBaseSession": "2025-12-30",
+        "yearToDateReturn": 0.272160142624
+      },
+      {
+        "checkpoint": "2026-04-30",
+        "level": 136960.9951616038,
+        "session": "2026-04-30",
+        "yearBaseSession": "2025-12-30",
+        "yearToDateReturn": 0.658777611931
+      },
+      {
+        "checkpoint": "2026-09-14",
+        "level": 145096.1163999662,
+        "session": "2026-09-14",
+        "yearBaseSession": "2025-12-30",
+        "yearToDateReturn": 0.757304619307
+      }
+    ],
+    "evidenceClass": "POST_OUTCOME_DIAGNOSTIC_RECONSTRUCTION",
+    "levels": [
+      {
+        "annualizationNote": null,
+        "annualizedReturn": 0.068908784959,
+        "cumulativeReturn": 0.698959005167,
+        "description": "2017-01-16 through the last session of 2024",
+        "endLevel": 41550.11075941723,
+        "fromSession": "2017-01-16",
+        "logShareOfTerminalWealth": 0.297676026373,
+        "period": "A_2017_to_2024",
+        "sessions": 1953,
+        "shareOfTerminalGain": 0.141693531854,
+        "startLevel": 24456.217385506305,
+        "toSession": "2024-12-30",
+        "years": 7.953619855302
+      },
+      {
+        "annualizationNote": null,
+        "annualizedReturn": 0.988083840994,
+        "cumulativeReturn": 0.987177000168,
+        "description": "calendar 2025",
+        "endLevel": 82567.42445552915,
+        "fromSession": "2024-12-30",
+        "logShareOfTerminalWealth": 0.385684044315,
+        "period": "B_2025",
+        "sessions": 242,
+        "shareOfTerminalGain": 0.339997911397,
+        "startLevel": 41550.11075941723,
+        "toSession": "2025-12-30",
+        "years": 0.999336057551
+      },
+      {
+        "annualizationNote": "SPAN_SHORTER_THAN_ONE_YEAR_NOT_ANNUALIZED",
+        "annualizedReturn": null,
+        "cumulativeReturn": 0.757304619307,
+        "description": "2026-01-01 through the formal cutoff",
+        "endLevel": 145096.1163999662,
+        "fromSession": "2025-12-30",
+        "logShareOfTerminalWealth": 0.316639929313,
+        "period": "C_2026_to_cutoff",
+        "sessions": 172,
+        "shareOfTerminalGain": 0.518308556748,
+        "startLevel": 82567.42445552915,
+        "toSession": "2026-09-14",
+        "years": 0.706380007803
+      },
+      {
+        "annualizationNote": null,
+        "annualizedReturn": 0.202413366754,
+        "cumulativeReturn": 4.932892814649,
+        "description": "the full formal window",
+        "endLevel": 145096.1163999662,
+        "fromSession": "2017-01-16",
+        "logShareOfTerminalWealth": 1.0,
+        "period": "D_full_window",
+        "sessions": 2367,
+        "shareOfTerminalGain": 1.0,
+        "startLevel": 24456.217385506305,
+        "toSession": "2026-09-14",
+        "years": 9.659335920655
+      }
+    ]
+  },
+  "concentrationProxy": {
+    "checkpoints": [
+      {
+        "SK Hynix": 0.029987420455,
+        "Samsung Electronics": 0.229300061818,
+        "checkpoint": "2016-12-31",
+        "combined": 0.259287482273,
+        "members": 120,
+        "snapshot": "2016-12-01"
+      },
+      {
+        "SK Hynix": 0.041077695086,
+        "Samsung Electronics": 0.239237380365,
+        "checkpoint": "2017-12-31",
+        "combined": 0.280315075451,
+        "members": 120,
+        "snapshot": "2017-12-01"
+      },
+      {
+        "SK Hynix": 0.042442705783,
+        "Samsung Electronics": 0.229591925966,
+        "checkpoint": "2018-12-31",
+        "combined": 0.272034631749,
+        "members": 120,
+        "snapshot": "2018-12-03"
+      },
+      {
+        "SK Hynix": 0.049094338144,
+        "Samsung Electronics": 0.252052951686,
+        "checkpoint": "2019-12-31",
+        "combined": 0.30114728983,
+        "members": 120,
+        "snapshot": "2019-12-02"
+      },
+      {
+        "SK Hynix": 0.047023265132,
+        "Samsung Electronics": 0.260137005022,
+        "checkpoint": "2020-12-31",
+        "combined": 0.307160270154,
+        "members": 120,
+        "snapshot": "2020-12-01"
+      },
+      {
+        "SK Hynix": 0.04664345161,
+        "Samsung Electronics": 0.24426622062,
+        "checkpoint": "2021-12-31",
+        "combined": 0.290909672231,
+        "members": 120,
+        "snapshot": "2021-12-01"
+      },
+      {
+        "SK Hynix": 0.037096886652,
+        "Samsung Electronics": 0.224829921054,
+        "checkpoint": "2022-12-31",
+        "combined": 0.261926807706,
+        "members": 120,
+        "snapshot": "2022-12-01"
+      },
+      {
+        "SK Hynix": 0.056354156226,
+        "Samsung Electronics": 0.250923100955,
+        "checkpoint": "2023-12-31",
+        "combined": 0.307277257181,
+        "members": 120,
+        "snapshot": "2023-12-01"
+      },
+      {
+        "SK Hynix": 0.066929245712,
+        "Samsung Electronics": 0.185249030673,
+        "checkpoint": "2024-12-31",
+        "combined": 0.252178276386,
+        "members": 120,
+        "snapshot": "2024-12-02"
+      },
+      {
+        "SK Hynix": 0.137070311505,
+        "Samsung Electronics": 0.208825730688,
+        "checkpoint": "2025-12-31",
+        "combined": 0.345896042193,
+        "members": 120,
+        "snapshot": "2025-12-01"
+      },
+      {
+        "SK Hynix": 0.235395024671,
+        "Samsung Electronics": 0.290432127055,
+        "checkpoint": "2026-09-14",
+        "combined": 0.525827151725,
+        "members": 120,
+        "snapshot": "2026-09-01"
+      }
+    ],
+    "evidenceClass": "POST_OUTCOME_DESCRIPTIVE_PROXY",
+    "formalWindowSnapshots": [
+      {
+        "combined": 0.261674794391,
+        "date": "2017-01-02",
+        "samsung": 0.23130290335,
+        "skHynix": 0.030371891041
+      },
+      {
+        "combined": 0.276085197858,
+        "date": "2017-02-01",
+        "samsung": 0.241572780151,
+        "skHynix": 0.034512417706
+      },
+      {
+        "combined": 0.273336400792,
+        "date": "2017-03-02",
+        "samsung": 0.243118789093,
+        "skHynix": 0.030217611699
+      },
+      {
+        "combined": 0.277105081256,
+        "date": "2017-04-03",
+        "samsung": 0.245361954169,
+        "skHynix": 0.031743127087
+      },
+      {
+        "combined": 0.289613389758,
+        "date": "2017-05-02",
+        "samsung": 0.256605201403,
+        "skHynix": 0.033008188356
+      },
+      {
+        "combined": 0.260564870686,
+        "date": "2017-06-01",
+        "samsung": 0.22843425361,
+        "skHynix": 0.032130617076
+      },
+      {
+        "combined": 0.271849162198,
+        "date": "2017-07-03",
+        "samsung": 0.235071843811,
+        "skHynix": 0.036777318387
+      },
+      {
+        "combined": 0.273371689047,
+        "date": "2017-08-01",
+        "samsung": 0.23767839449,
+        "skHynix": 0.035693294557
+      },
+      {
+        "combined": 0.270354615551,
+        "date": "2017-09-01",
+        "samsung": 0.231897234273,
+        "skHynix": 0.038457381278
+      },
+      {
+        "combined": 0.301747058353,
+        "date": "2017-11-01",
+        "samsung": 0.258508643188,
+        "skHynix": 0.043238415165
+      },
+      {
+        "combined": 0.280315075451,
+        "date": "2017-12-01",
+        "samsung": 0.239237380365,
+        "skHynix": 0.041077695086
+      },
+      {
+        "combined": 0.28018370621,
+        "date": "2018-01-02",
+        "samsung": 0.239610784238,
+        "skHynix": 0.040572921971
+      },
+      {
+        "combined": 0.26635428128,
+        "date": "2018-02-01",
+        "samsung": 0.227959778444,
+        "skHynix": 0.038394502836
+      },
+      {
+        "combined": 0.25996729053,
+        "date": "2018-03-02",
+        "samsung": 0.218324464343,
+        "skHynix": 0.041642826187
+      },
+      {
+        "combined": 0.268989433781,
+        "date": "2018-04-02",
+        "samsung": 0.226051460823,
+        "skHynix": 0.042937972958
+      },
+      {
+        "combined": 0.283576373154,
+        "date": "2018-05-02",
+        "samsung": 0.240764765927,
+        "skHynix": 0.042811607227
+      },
+      {
+        "combined": 0.288480373733,
+        "date": "2018-06-01",
+        "samsung": 0.23998908121,
+        "skHynix": 0.048491292523
+      },
+      {
+        "combined": 0.27577745103,
+        "date": "2018-07-02",
+        "samsung": 0.228218581316,
+        "skHynix": 0.047558869714
+      },
+      {
+        "combined": 0.277080249691,
+        "date": "2018-08-01",
+        "samsung": 0.229267836981,
+        "skHynix": 0.04781241271
+      },
+      {
+        "combined": 0.279100651296,
+        "date": "2018-09-03",
+        "samsung": 0.234019559176,
+        "skHynix": 0.045081092119
+      },
+      {
+        "combined": 0.265706834284,
+        "date": "2018-10-01",
+        "samsung": 0.225112865596,
+        "skHynix": 0.040593968687
+      },
+      {
+        "combined": 0.276998352156,
+        "date": "2018-11-01",
+        "samsung": 0.233997439221,
+        "skHynix": 0.043000912935
+      },
+      {
+        "combined": 0.272034631749,
+        "date": "2018-12-03",
+        "samsung": 0.229591925966,
+        "skHynix": 0.042442705783
+      },
+      {
+        "combined": 0.247089329144,
+        "date": "2019-01-02",
+        "samsung": 0.207514148344,
+        "skHynix": 0.0395751808
+      },
+      {
+        "combined": 0.27025981985,
+        "date": "2019-02-01",
+        "samsung": 0.225273849232,
+        "skHynix": 0.044985970617
+      },
+      {
+        "combined": 0.262397406794,
+        "date": "2019-03-04",
+        "samsung": 0.220390336253,
+        "skHynix": 0.042007070541
+      },
+      {
+        "combined": 0.269407308789,
+        "date": "2019-04-01",
+        "samsung": 0.223138990347,
+        "skHynix": 0.046268318443
+      },
+      {
+        "combined": 0.270533519043,
+        "date": "2019-05-02",
+        "samsung": 0.222770406128,
+        "skHynix": 0.047763112915
+      },
+      {
+        "combined": 0.26796172689,
+        "date": "2019-06-03",
+        "samsung": 0.226046470504,
+        "skHynix": 0.041915256386
+      },
+      {
+        "combined": 0.275907614074,
+        "date": "2019-07-01",
+        "samsung": 0.233190886524,
+        "skHynix": 0.04271672755
+      },
+      {
+        "combined": 0.286496548341,
+        "date": "2019-08-01",
+        "samsung": 0.236846107057,
+        "skHynix": 0.049650441283
+      },
+      {
+        "combined": 0.285917211464,
+        "date": "2019-09-02",
+        "samsung": 0.235118885246,
+        "skHynix": 0.050798326218
+      },
+      {
+        "combined": 0.29854620125,
+        "date": "2019-10-01",
+        "samsung": 0.247817326435,
+        "skHynix": 0.050728874815
+      },
+      {
+        "combined": 0.305436631468,
+        "date": "2019-11-01",
+        "samsung": 0.254970959629,
+        "skHynix": 0.050465671839
+      },
+      {
+        "combined": 0.30114728983,
+        "date": "2019-12-02",
+        "samsung": 0.252052951686,
+        "skHynix": 0.049094338144
+      },
+      {
+        "combined": 0.319902035324,
+        "date": "2020-01-02",
+        "samsung": 0.264554284334,
+        "skHynix": 0.05534775099
+      },
+      {
+        "combined": 0.334813875232,
+        "date": "2020-02-03",
+        "samsung": 0.278571364523,
+        "skHynix": 0.056242510709
+      },
+      {
+        "combined": 0.340110999483,
+        "date": "2020-03-02",
+        "samsung": 0.282435595095,
+        "skHynix": 0.057675404388
+      },
+      {
+        "combined": 0.33850390778,
+        "date": "2020-04-01",
+        "samsung": 0.280044778528,
+        "skHynix": 0.058459129252
+      },
+      {
+        "combined": 0.320609209519,
+        "date": "2020-05-04",
+        "samsung": 0.266360710856,
+        "skHynix": 0.054248498663
+      },
+      {
+        "combined": 0.309134704883,
+        "date": "2020-06-01",
+        "samsung": 0.257801731151,
+        "skHynix": 0.051332973732
+      },
+      {
+        "combined": 0.308441201776,
+        "date": "2020-07-01",
+        "samsung": 0.257515116512,
+        "skHynix": 0.050926085264
+      },
+      {
+        "combined": 0.303694768506,
+        "date": "2020-08-03",
+        "samsung": 0.258326855328,
+        "skHynix": 0.045367913178
+      },
+      {
+        "combined": 0.276517251506,
+        "date": "2020-09-01",
+        "samsung": 0.236501834598,
+        "skHynix": 0.040015416909
+      },
+      {
+        "combined": 0.299130075294,
+        "date": "2020-10-05",
+        "samsung": 0.255046321591,
+        "skHynix": 0.044083753703
+      },
+      {
+        "combined": 0.296678959593,
+        "date": "2020-11-02",
+        "samsung": 0.253764274127,
+        "skHynix": 0.042914685465
+      },
+      {
+        "combined": 0.307160270154,
+        "date": "2020-12-01",
+        "samsung": 0.260137005022,
+        "skHynix": 0.047023265132
+      },
+      {
+        "combined": 0.33358967256,
+        "date": "2021-01-04",
+        "samsung": 0.281480412177,
+        "skHynix": 0.052109260384
+      },
+      {
+        "combined": 0.320880620509,
+        "date": "2021-02-01",
+        "samsung": 0.271092696692,
+        "skHynix": 0.049787923817
+      },
+      {
+        "combined": 0.332416515213,
+        "date": "2021-03-02",
+        "samsung": 0.274546702204,
+        "skHynix": 0.057869813009
+      },
+      {
+        "combined": 0.323076742672,
+        "date": "2021-04-01",
+        "samsung": 0.267740449894,
+        "skHynix": 0.055336292779
+      },
+      {
+        "combined": 0.313253712414,
+        "date": "2021-05-03",
+        "samsung": 0.261856325109,
+        "skHynix": 0.051397387305
+      },
+      {
+        "combined": 0.301191113468,
+        "date": "2021-06-01",
+        "samsung": 0.252165027879,
+        "skHynix": 0.049026085589
+      },
+      {
+        "combined": 0.292920361622,
+        "date": "2021-07-01",
+        "samsung": 0.246245827327,
+        "skHynix": 0.046674534294
+      },
+      {
+        "combined": 0.291154277487,
+        "date": "2021-08-02",
+        "samsung": 0.247079012088,
+        "skHynix": 0.0440752654
+      },
+      {
+        "combined": 0.274526042932,
+        "date": "2021-09-01",
+        "samsung": 0.234339368486,
+        "skHynix": 0.040186674446
+      },
+      {
+        "combined": 0.27675789459,
+        "date": "2021-10-01",
+        "samsung": 0.237235529283,
+        "skHynix": 0.039522365308
+      },
+      {
+        "combined": 0.272609226006,
+        "date": "2021-11-01",
+        "samsung": 0.229894693555,
+        "skHynix": 0.042714532451
+      },
+      {
+        "combined": 0.290909672231,
+        "date": "2021-12-01",
+        "samsung": 0.24426622062,
+        "skHynix": 0.04664345161
+      },
+      {
+        "combined": 0.30126717383,
+        "date": "2022-01-03",
+        "samsung": 0.251188327652,
+        "skHynix": 0.050078846178
+      },
+      {
+        "combined": 0.291119327176,
+        "date": "2022-02-03",
+        "samsung": 0.241333131969,
+        "skHynix": 0.049786195207
+      },
+      {
+        "combined": 0.289272252712,
+        "date": "2022-03-02",
+        "samsung": 0.238555198527,
+        "skHynix": 0.050717054185
+      },
+      {
+        "combined": 0.274685478613,
+        "date": "2022-04-01",
+        "samsung": 0.228008275108,
+        "skHynix": 0.046677203505
+      },
+      {
+        "combined": 0.272507296883,
+        "date": "2022-05-02",
+        "samsung": 0.227046564621,
+        "skHynix": 0.045460732262
+      },
+      {
+        "combined": 0.270593137191,
+        "date": "2022-06-02",
+        "samsung": 0.226318733053,
+        "skHynix": 0.044274404138
+      },
+      {
+        "combined": 0.261155092195,
+        "date": "2022-07-01",
+        "samsung": 0.219482871142,
+        "skHynix": 0.041672221053
+      },
+      {
+        "combined": 0.267318861844,
+        "date": "2022-08-01",
+        "samsung": 0.224041439331,
+        "skHynix": 0.043277422513
+      },
+      {
+        "combined": 0.259094820479,
+        "date": "2022-09-01",
+        "samsung": 0.217189252392,
+        "skHynix": 0.041905568086
+      },
+      {
+        "combined": 0.266451840632,
+        "date": "2022-10-04",
+        "samsung": 0.223827645416,
+        "skHynix": 0.042624195215
+      },
+      {
+        "combined": 0.266747963548,
+        "date": "2022-11-01",
+        "samsung": 0.227887689908,
+        "skHynix": 0.03886027364
+      },
+      {
+        "combined": 0.261926807706,
+        "date": "2022-12-01",
+        "samsung": 0.224829921054,
+        "skHynix": 0.037096886652
+      },
+      {
+        "combined": 0.26015268351,
+        "date": "2023-01-02",
+        "samsung": 0.223051898533,
+        "skHynix": 0.037100784977
+      },
+      {
+        "combined": 0.265255470518,
+        "date": "2023-02-01",
+        "samsung": 0.22472486225,
+        "skHynix": 0.040530608268
+      },
+      {
+        "combined": 0.263683155653,
+        "date": "2023-03-02",
+        "samsung": 0.224086206048,
+        "skHynix": 0.039596949604
+      },
+      {
+        "combined": 0.265751716572,
+        "date": "2023-04-03",
+        "samsung": 0.227425151653,
+        "skHynix": 0.038326564919
+      },
+      {
+        "combined": 0.269051035645,
+        "date": "2023-05-02",
+        "samsung": 0.230465740913,
+        "skHynix": 0.038585294732
+      },
+      {
+        "combined": 0.289480434514,
+        "date": "2023-06-01",
+        "samsung": 0.243318974837,
+        "skHynix": 0.046161459677
+      },
+      {
+        "combined": 0.295391659122,
+        "date": "2023-07-03",
+        "samsung": 0.246889473149,
+        "skHynix": 0.048502185974
+      },
+      {
+        "combined": 0.28386718084,
+        "date": "2023-08-01",
+        "samsung": 0.233718921748,
+        "skHynix": 0.050148259092
+      },
+      {
+        "combined": 0.294056997034,
+        "date": "2023-09-01",
+        "samsung": 0.243806299166,
+        "skHynix": 0.050250697868
+      },
+      {
+        "combined": 0.29855421819,
+        "date": "2023-10-04",
+        "samsung": 0.247048196954,
+        "skHynix": 0.051506021236
+      },
+      {
+        "combined": 0.317607787348,
+        "date": "2023-11-01",
+        "samsung": 0.261652547985,
+        "skHynix": 0.055955239363
+      },
+      {
+        "combined": 0.307277257181,
+        "date": "2023-12-01",
+        "samsung": 0.250923100955,
+        "skHynix": 0.056354156226
+      },
+      {
+        "combined": 0.313316318524,
+        "date": "2024-01-02",
+        "samsung": 0.257204985956,
+        "skHynix": 0.056111332569
+      },
+      {
+        "combined": 0.302841973318,
+        "date": "2024-02-01",
+        "samsung": 0.248257434062,
+        "skHynix": 0.054584539255
+      },
+      {
+        "combined": 0.302957219653,
+        "date": "2024-03-04",
+        "samsung": 0.238345224371,
+        "skHynix": 0.064611995282
+      },
+      {
+        "combined": 0.323174923536,
+        "date": "2024-04-01",
+        "samsung": 0.253297706907,
+        "skHynix": 0.069877216629
+      },
+      {
+        "combined": 0.315508840701,
+        "date": "2024-05-02",
+        "samsung": 0.24815621238,
+        "skHynix": 0.067352628322
+      },
+      {
+        "combined": 0.31707245795,
+        "date": "2024-06-03",
+        "samsung": 0.241515742768,
+        "skHynix": 0.075556715182
+      },
+      {
+        "combined": 0.334489209567,
+        "date": "2024-07-01",
+        "samsung": 0.247570868908,
+        "skHynix": 0.086918340659
+      },
+      {
+        "combined": 0.3258129308,
+        "date": "2024-08-01",
+        "samsung": 0.253814692935,
+        "skHynix": 0.071998237865
+      },
+      {
+        "combined": 0.302012055439,
+        "date": "2024-09-02",
+        "samsung": 0.234992133823,
+        "skHynix": 0.067019921616
+      },
+      {
+        "combined": 0.273044949815,
+        "date": "2024-10-02",
+        "samsung": 0.204313622018,
+        "skHynix": 0.068731327798
+      },
+      {
+        "combined": 0.270839508633,
+        "date": "2024-11-01",
+        "samsung": 0.196102311227,
+        "skHynix": 0.074737197406
+      },
+      {
+        "combined": 0.252178276386,
+        "date": "2024-12-02",
+        "samsung": 0.185249030673,
+        "skHynix": 0.066929245712
+      },
+      {
+        "combined": 0.263668032613,
+        "date": "2025-01-02",
+        "samsung": 0.189557767546,
+        "skHynix": 0.074110265067
+      },
+      {
+        "combined": 0.257179367248,
+        "date": "2025-02-03",
+        "samsung": 0.176577462906,
+        "skHynix": 0.080601904342
+      },
+      {
+        "combined": 0.259670722051,
+        "date": "2025-03-04",
+        "samsung": 0.183329823281,
+        "skHynix": 0.07634089877
+      },
+      {
+        "combined": 0.276680656678,
+        "date": "2025-04-01",
+        "samsung": 0.195945612133,
+        "skHynix": 0.080735044545
+      },
+      {
+        "combined": 0.254931613796,
+        "date": "2025-05-02",
+        "samsung": 0.179370080239,
+        "skHynix": 0.075561533557
+      },
+      {
+        "combined": 0.258137336034,
+        "date": "2025-06-02",
+        "samsung": 0.178115421871,
+        "skHynix": 0.080021914163
+      },
+      {
+        "combined": 0.25991362237,
+        "date": "2025-07-01",
+        "samsung": 0.164165653816,
+        "skHynix": 0.095747968554
+      },
+      {
+        "combined": 0.269084330984,
+        "date": "2025-08-01",
+        "samsung": 0.184240103531,
+        "skHynix": 0.084844227452
+      },
+      {
+        "combined": 0.262852689461,
+        "date": "2025-09-01",
+        "samsung": 0.179332703646,
+        "skHynix": 0.083519985814
+      },
+      {
+        "combined": 0.310206598873,
+        "date": "2025-10-01",
+        "samsung": 0.20478335908,
+        "skHynix": 0.105423239793
+      },
+      {
+        "combined": 0.356933888126,
+        "date": "2025-11-03",
+        "samsung": 0.211666643297,
+        "skHynix": 0.145267244829
+      },
+      {
+        "combined": 0.345896042193,
+        "date": "2025-12-01",
+        "samsung": 0.208825730688,
+        "skHynix": 0.137070311505
+      },
+      {
+        "combined": 0.393175955254,
+        "date": "2026-01-02",
+        "samsung": 0.238588835616,
+        "skHynix": 0.154587119638
+      },
+      {
+        "combined": 0.404004495583,
+        "date": "2026-02-02",
+        "samsung": 0.240667323826,
+        "skHynix": 0.163337171756
+      },
+      {
+        "combined": 0.420628281058,
+        "date": "2026-03-03",
+        "samsung": 0.266311917478,
+        "skHynix": 0.154316363579
+      },
+      {
+        "combined": 0.430357987366,
+        "date": "2026-04-01",
+        "samsung": 0.274628286505,
+        "skHynix": 0.155729700861
+      },
+      {
+        "combined": 0.458602808242,
+        "date": "2026-05-04",
+        "samsung": 0.260761302835,
+        "skHynix": 0.197841505406
+      },
+      {
+        "combined": 0.548205540819,
+        "date": "2026-06-01",
+        "samsung": 0.300319985388,
+        "skHynix": 0.24788555543
+      },
+      {
+        "combined": 0.572186405899,
+        "date": "2026-07-01",
+        "samsung": 0.287197266646,
+        "skHynix": 0.284989139253
+      },
+      {
+        "combined": 0.527974822018,
+        "date": "2026-08-03",
+        "samsung": 0.290491510386,
+        "skHynix": 0.237483311632
+      },
+      {
+        "combined": 0.525827151725,
+        "date": "2026-09-01",
+        "samsung": 0.290432127055,
+        "skHynix": 0.235395024671
+      }
+    ],
+    "label": "MARKET_CAP_SHARE_INSIDE_THE_PIT_TOP120_NOT_KODEX200_OR_KOSPI200_WEIGHT",
+    "limitations": [
+      "total (not free-float) market capitalisation",
+      "the study's PIT Top120, not the KOSPI 200 constituent list",
+      "monthly snapshots on the first trading day of each month",
+      "no index cap or methodology adjustment",
+      "Samsung Electronics preferred shares (005935.KS) are not included in the named security"
+    ],
+    "thresholds": {
+      "allHistory": {
+        "latest": 0.525827151725,
+        "latestDate": "2026-09-01",
+        "maximum": 0.572186405899,
+        "maximumDate": "2026-07-01",
+        "median": 0.270716322912,
+        "minimum": 0.1881402869,
+        "minimumDate": "2016-02-01",
+        "snapshots": 164,
+        "thresholds": {
+          "0.30": {
+            "first": "2017-11-01",
+            "last": "2026-09-01",
+            "runs": [
+              {
+                "from": "2017-11-01",
+                "to": "2017-11-01"
+              },
+              {
+                "from": "2019-11-01",
+                "to": "2020-08-03"
+              },
+              {
+                "from": "2020-12-01",
+                "to": "2021-06-01"
+              },
+              {
+                "from": "2022-01-03",
+                "to": "2022-01-03"
+              },
+              {
+                "from": "2023-11-01",
+                "to": "2024-09-02"
+              },
+              {
+                "from": "2025-10-01",
+                "to": "2026-09-01"
+              }
+            ],
+            "snapshotsAbove": 42
+          },
+          "0.40": {
+            "first": "2026-02-02",
+            "last": "2026-09-01",
+            "runs": [
+              {
+                "from": "2026-02-02",
+                "to": "2026-09-01"
+              }
+            ],
+            "snapshotsAbove": 8
+          },
+          "0.50": {
+            "first": "2026-06-01",
+            "last": "2026-09-01",
+            "runs": [
+              {
+                "from": "2026-06-01",
+                "to": "2026-09-01"
+              }
+            ],
+            "snapshotsAbove": 4
+          },
+          "0.60": {
+            "first": null,
+            "last": null,
+            "runs": [],
+            "snapshotsAbove": 0
+          }
+        }
+      },
+      "formalWindow": {
+        "latest": 0.525827151725,
+        "latestDate": "2026-09-01",
+        "maximum": 0.572186405899,
+        "maximumDate": "2026-07-01",
+        "median": 0.284892196152,
+        "minimum": 0.247089329144,
+        "minimumDate": "2019-01-02",
+        "snapshots": 116,
+        "thresholds": {
+          "0.30": {
+            "first": "2017-11-01",
+            "last": "2026-09-01",
+            "runs": [
+              {
+                "from": "2017-11-01",
+                "to": "2017-11-01"
+              },
+              {
+                "from": "2019-11-01",
+                "to": "2020-08-03"
+              },
+              {
+                "from": "2020-12-01",
+                "to": "2021-06-01"
+              },
+              {
+                "from": "2022-01-03",
+                "to": "2022-01-03"
+              },
+              {
+                "from": "2023-11-01",
+                "to": "2024-09-02"
+              },
+              {
+                "from": "2025-10-01",
+                "to": "2026-09-01"
+              }
+            ],
+            "snapshotsAbove": 42
+          },
+          "0.40": {
+            "first": "2026-02-02",
+            "last": "2026-09-01",
+            "runs": [
+              {
+                "from": "2026-02-02",
+                "to": "2026-09-01"
+              }
+            ],
+            "snapshotsAbove": 8
+          },
+          "0.50": {
+            "first": "2026-06-01",
+            "last": "2026-09-01",
+            "runs": [
+              {
+                "from": "2026-06-01",
+                "to": "2026-09-01"
+              }
+            ],
+            "snapshotsAbove": 4
+          },
+          "0.60": {
+            "first": null,
+            "last": null,
+            "runs": [],
+            "snapshotsAbove": 0
+          }
+        }
+      }
+    }
+  },
+  "evidenceClasses": [
+    "FORMAL_REPORTED_RESULT",
+    "POST_OUTCOME_DIAGNOSTIC_RECONSTRUCTION",
+    "POST_OUTCOME_COUNTERFACTUAL_SENSITIVITY",
+    "POST_OUTCOME_DESCRIPTIVE_PROXY"
+  ],
+  "externalReconciliation": {
+    "basisToCompare": "the frozen series is an as-traded-close total return with forward-accumulated Yahoo distributions: compare with Samsung AM's DISTRIBUTION-REINVESTED market-price or NAV return, never with a price-only return or a different date window",
+    "benchmarkDistributionEvidence": "the frozen store keeps only the total-return close for 069500.KS; its distribution events were applied upstream (Yahoo, as-traded) and are NOT stored as a separate component, so the applied events cannot be listed from the snapshot. They can only be inferred as the jump of the series over the price index on ex-dates (see trackingCrossCheck)",
+    "frozenValuesToReconcile": [
+      {
+        "checkpoint": "2024-12-30",
+        "level": 41550.11075941723,
+        "session": "2024-12-30",
+        "yearBaseSession": "2023-12-28",
+        "yearToDateReturn": -0.072226908908
+      },
+      {
+        "checkpoint": "2025-12-30",
+        "level": 82567.42445552915,
+        "session": "2025-12-30",
+        "yearBaseSession": "2024-12-30",
+        "yearToDateReturn": 0.987177000168
+      },
+      {
+        "checkpoint": "2026-01-30",
+        "level": 105038.9864714388,
+        "session": "2026-01-30",
+        "yearBaseSession": "2025-12-30",
+        "yearToDateReturn": 0.272160142624
+      },
+      {
+        "checkpoint": "2026-04-30",
+        "level": 136960.9951616038,
+        "session": "2026-04-30",
+        "yearBaseSession": "2025-12-30",
+        "yearToDateReturn": 0.658777611931
+      },
+      {
+        "checkpoint": "2026-09-14",
+        "level": 145096.1163999662,
+        "session": "2026-09-14",
+        "yearBaseSession": "2025-12-30",
+        "yearToDateReturn": 0.757304619307
+      }
+    ],
+    "possibleExplanationsToDecompose": [
+      "market price vs NAV",
+      "distribution reinvestment",
+      "ex-date treatment",
+      "split treatment",
+      "benchmark publication date mismatch",
+      "closing-price timing",
+      "missing event",
+      "incorrect event application",
+      "raw vendor discrepancy",
+      "simple date-window mismatch"
+    ],
+    "reason": "samsungfund.com, kodex.com and data.krx.co.kr are not reachable from the authoring sandbox (outbound HTTPS is allow-listed); no official value was retrieved, so no number below is an official number",
+    "sourcesAttempted": [
+      {
+        "issuer": "Samsung Asset Management (Samsung Fund) KODEX 200 official product page and monthly factsheet",
+        "retrievalStatus": "UNREACHABLE",
+        "sourceId": "SAMSUNG_KODEX200_FACTSHEET",
+        "urlFamily": "https://www.samsungfund.com / https://www.kodex.com",
+        "value": null
+      },
+      {
+        "issuer": "Korea Exchange (KRX) official ETF and KOSPI 200 data",
+        "retrievalStatus": "UNREACHABLE",
+        "sourceId": "KRX_KODEX200_DATA",
+        "urlFamily": "https://data.krx.co.kr",
+        "value": null
+      },
+      {
+        "issuer": "Official KODEX 200 distribution disclosures",
+        "retrievalStatus": "UNREACHABLE",
+        "sourceId": "KODEX200_DISTRIBUTION_DISCLOSURE",
+        "urlFamily": "https://www.samsungfund.com / https://kind.krx.co.kr",
+        "value": null
+      }
+    ],
+    "status": "BENCHMARK_EXTERNAL_RECONCILIATION_UNRESOLVED"
+  },
+  "formalIdentity": {
+    "executeJob": "success",
+    "executionSha": "33237df6d69e31a396959529378a0f881af9a58e",
+    "expectedArtifactFiles": [
+      "execution-started.json",
+      "integrated-alpha-portfolio.json",
+      "manifest.json"
+    ],
+    "lockRefs": [
+      "refs/tags/kr-integrated-alpha-portfolio-v1-execution-lock",
+      "refs/tags/kr-integrated-alpha-portfolio-v1-execution-lock-eea6128cd55260904c7f74ba78698f67e522626620fd11d757c27de89c758f77"
+    ],
+    "markerFile": "execution-started.json",
+    "markerFileSha256": "2108f3ca01ea0d1d5f90ec9fc74bbfcad1ebdfcf687161879a60b44f8e789b5a",
+    "rawInputArtifactDigest": "sha256:42eeb18b7a5c88816629036f472a93057b6a9be4768ad47292ba0d2750b4cce7",
+    "rawInputArtifactId": 11157875265,
+    "rawInputArtifactName": "kr-model-raw-inputs-36844599518",
+    "rawInputRunId": 36844599518,
+    "resultArtifactDigest": "sha256:bb29676403068b8330b12808ff30f6a5766fee35d4e66e96594591eaae766722",
+    "resultArtifactId": 11371812532,
+    "resultArtifactName": "kr-integrated-alpha-portfolio-v1-results-37374530672",
+    "resultFile": "integrated-alpha-portfolio.json",
+    "resultFileSha256": "a204148896de57207e3bf7b6335397ad181afbb0868c21b9e584aefe050707ab",
+    "sealJob": "failure",
+    "specSha256": "eea6128cd55260904c7f74ba78698f67e522626620fd11d757c27de89c758f77",
+    "workflowRunId": 37374530672
+  },
+  "formalStateObservedOnGitHub": {
+    "executeLogManifest": {
+      "counters": {
+        "cashSensitivityCalls": 6,
+        "decisionCalls": 1,
+        "featureBuilds": 1,
+        "markerWrites": 1,
+        "marketStateComputations": 1,
+        "marketValueReads": 4,
+        "metricCalls": 18,
+        "replayCalls": 18
+      },
+      "execution-started.json": "2108f3ca01ea0d1d5f90ec9fc74bbfcad1ebdfcf687161879a60b44f8e789b5a",
+      "inputIdentitySha256": "233df37ed205cc6b48828121e711417ccf961301dc58aa252430b343db9666a7",
+      "integrated-alpha-portfolio.json": "a204148896de57207e3bf7b6335397ad181afbb0868c21b9e584aefe050707ab",
+      "specSha256": "eea6128cd55260904c7f74ba78698f67e522626620fd11d757c27de89c758f77"
+    },
+    "jobs": {
+      "execute": "success",
+      "frozen-machine": "success",
+      "seal": "failure (Commit and push the immutable seal branch)"
+    },
+    "limitation": "the result artifact's contents were not readable: GitHub redirects the download to Azure blob storage, which the authoring sandbox cannot reach",
+    "lockRefsPointAt": "33237df6d69e31a396959529378a0f881af9a58e",
+    "lockRefsPresent": [
+      "refs/tags/kr-integrated-alpha-portfolio-v1-execution-lock",
+      "refs/tags/kr-integrated-alpha-portfolio-v1-execution-lock-eea6128cd55260904c7f74ba78698f67e522626620fd11d757c27de89c758f77"
+    ],
+    "observedOn": "2026-10-05",
+    "rawInputArtifact": {
+      "digest": "sha256:42eeb18b7a5c88816629036f472a93057b6a9be4768ad47292ba0d2750b4cce7",
+      "id": 11157875265,
+      "name": "kr-model-raw-inputs-36844599518",
+      "sizeBytes": 335950804
+    },
+    "resultArtifact": {
+      "digest": "sha256:bb29676403068b8330b12808ff30f6a5766fee35d4e66e96594591eaae766722",
+      "expired": false,
+      "headSha": "33237df6d69e31a396959529378a0f881af9a58e",
+      "id": 11371812532,
+      "name": "kr-integrated-alpha-portfolio-v1-results-37374530672",
+      "sizeBytes": 19516,
+      "workflowRunId": 37374530672
+    },
+    "via": "GitHub REST API and git ls-remote"
+  },
+  "inputsVerified": {
+    "benchmarkDuplicateSessions": 0,
+    "ks200PriceIndex": {
+      "path": "data/kr-market-risk-anatomy-v1/sources/FDR_KS200/normalized.csv",
+      "pinnedBy": "research_specs/kr-integrated-alpha-portfolio-v1.json",
+      "sha256": "729a94b81dd45d1c5d1ab2ff692ec249bd5c9c4f24598d648d7f88010f193478"
+    },
+    "priceTickers": 260,
+    "replay": {
+      "objectVerification": "RI.InputStore.load_component re-hashes every object against the manifest on read",
+      "objectsCopied": 380,
+      "replayManifestPinnedBy": "research_specs/kr-model-overlay-portfolio-v1.json",
+      "replayManifestSha256": "f0781292f508a123c234ded6d28aa8e84a0dc3cc29500e14989dc0b68f53b4d2"
+    },
+    "universeBlobPins": {
+      "ledger/universe/kr/krx-universe-2013.jsonl.gz": "e711a6c5e07c89e9b0cf12a94078120ceeb3b9a4",
+      "ledger/universe/kr/krx-universe-2014.jsonl.gz": "395477e6dd72c117615919f850173d2830b2cc1f",
+      "ledger/universe/kr/krx-universe-2015.jsonl.gz": "029bcef52056d4b172d78094779a5eff9c89ff89",
+      "ledger/universe/kr/krx-universe-2016.jsonl.gz": "402910f37a4f75887f8c8f7e501aec1afe90b14d",
+      "ledger/universe/kr/krx-universe-2017.jsonl.gz": "db9b0436c970eb1bf4f2456bab7060432558f6e6",
+      "ledger/universe/kr/krx-universe-2018.jsonl.gz": "9a08628f96aa3aeb5d47b11612d14ab551519abc",
+      "ledger/universe/kr/krx-universe-2019.jsonl.gz": "c1f7990b38b0e17b71c88327b5262c768dcfe16d",
+      "ledger/universe/kr/krx-universe-2020.jsonl.gz": "baf7d4e2609aaaa7091cab087cabdbc5a3c58619",
+      "ledger/universe/kr/krx-universe-2021.jsonl.gz": "c09f60669adf36d81def38dfed6cb0d4dd6c456d",
+      "ledger/universe/kr/krx-universe-2022.jsonl.gz": "a1b303c61dd1d114149c3da51763f1dccb711137",
+      "ledger/universe/kr/krx-universe-2023.jsonl.gz": "024abba6a91153259a8030f6e441497a28c723de",
+      "ledger/universe/kr/krx-universe-2024.jsonl.gz": "a4329587eccc43f015f97524f27a660a6448e263",
+      "ledger/universe/kr/krx-universe-2025.jsonl.gz": "070296ad800a3a57735bbcbaf24f5885d82162e8",
+      "ledger/universe/kr/krx-universe-2026.jsonl.gz": "ccc098c5ce029412a67bf8b85113e0b6a19891dc"
+    },
+    "universeShardsVerifiedAgainstPinnedGitBlobs": 14,
+    "universeSnapshots": 164
+  },
+  "notRunSections": {
+    "dExcludeSamsungHynixSensitivity": {
+      "howToRun": "dispatch .github/workflows/kr-integrated-alpha-portfolio-v1-postoutcome-audit.yml (workflow_dispatch, read-only, never touches a lock) which downloads the two exact artifacts, verifies their identities, reproduces the formal A and D paths and only then attributes them",
+      "reason": "needs the exact formal result artifact and/or the 336 MB raw-input snapshot, both stored on Azure blob storage that the authoring sandbox cannot reach (CONNECT 403); the KRX daily market-value files in that snapshot are not stored in git",
+      "status": "NOT_RUN_IN_THIS_ENVIRONMENT"
+    },
+    "dHoldingsAndIndustryAttribution": {
+      "howToRun": "dispatch .github/workflows/kr-integrated-alpha-portfolio-v1-postoutcome-audit.yml (workflow_dispatch, read-only, never touches a lock) which downloads the two exact artifacts, verifies their identities, reproduces the formal A and D paths and only then attributes them",
+      "reason": "needs the exact formal result artifact and/or the 336 MB raw-input snapshot, both stored on Azure blob storage that the authoring sandbox cannot reach (CONNECT 403); the KRX daily market-value files in that snapshot are not stored in git",
+      "status": "NOT_RUN_IN_THIS_ENVIRONMENT"
+    },
+    "dMinusAChronology": {
+      "howToRun": "dispatch .github/workflows/kr-integrated-alpha-portfolio-v1-postoutcome-audit.yml (workflow_dispatch, read-only, never touches a lock) which downloads the two exact artifacts, verifies their identities, reproduces the formal A and D paths and only then attributes them",
+      "reason": "needs the exact formal result artifact and/or the 336 MB raw-input snapshot, both stored on Azure blob storage that the authoring sandbox cannot reach (CONNECT 403); the KRX daily market-value files in that snapshot are not stored in git",
+      "status": "NOT_RUN_IN_THIS_ENVIRONMENT"
+    },
+    "dPathReconstruction": {
+      "howToRun": "dispatch .github/workflows/kr-integrated-alpha-portfolio-v1-postoutcome-audit.yml (workflow_dispatch, read-only, never touches a lock) which downloads the two exact artifacts, verifies their identities, reproduces the formal A and D paths and only then attributes them",
+      "reason": "needs the exact formal result artifact and/or the 336 MB raw-input snapshot, both stored on Azure blob storage that the authoring sandbox cannot reach (CONNECT 403); the KRX daily market-value files in that snapshot are not stored in git",
+      "status": "NOT_RUN_IN_THIS_ENVIRONMENT"
+    },
+    "formalResultExtraction": {
+      "howToRun": "dispatch .github/workflows/kr-integrated-alpha-portfolio-v1-postoutcome-audit.yml (workflow_dispatch, read-only, never touches a lock) which downloads the two exact artifacts, verifies their identities, reproduces the formal A and D paths and only then attributes them",
+      "reason": "needs the exact formal result artifact and/or the 336 MB raw-input snapshot, both stored on Azure blob storage that the authoring sandbox cannot reach (CONNECT 403); the KRX daily market-value files in that snapshot are not stored in git",
+      "status": "NOT_RUN_IN_THIS_ENVIRONMENT"
+    },
+    "namedSecurityExposureInD": {
+      "howToRun": "dispatch .github/workflows/kr-integrated-alpha-portfolio-v1-postoutcome-audit.yml (workflow_dispatch, read-only, never touches a lock) which downloads the two exact artifacts, verifies their identities, reproduces the formal A and D paths and only then attributes them",
+      "reason": "needs the exact formal result artifact and/or the 336 MB raw-input snapshot, both stored on Azure blob storage that the authoring sandbox cannot reach (CONNECT 403); the KRX daily market-value files in that snapshot are not stored in git",
+      "status": "NOT_RUN_IN_THIS_ENVIRONMENT"
+    },
+    "strategyPeriodDecomposition": {
+      "howToRun": "dispatch .github/workflows/kr-integrated-alpha-portfolio-v1-postoutcome-audit.yml (workflow_dispatch, read-only, never touches a lock) which downloads the two exact artifacts, verifies their identities, reproduces the formal A and D paths and only then attributes them",
+      "reason": "needs the exact formal result artifact and/or the 336 MB raw-input snapshot, both stored on Azure blob storage that the authoring sandbox cannot reach (CONNECT 403); the KRX daily market-value files in that snapshot are not stored in git",
+      "status": "NOT_RUN_IN_THIS_ENVIRONMENT"
+    }
+  },
+  "priceIndexPeriods": {
+    "calendarYears": {
+      "2017": {
+        "fromSession": "2017-01-16",
+        "return": 0.22013901935,
+        "toSession": "2017-12-28"
+      },
+      "2018": {
+        "fromSession": "2017-12-28",
+        "return": -0.193262302149,
+        "toSession": "2018-12-28"
+      },
+      "2019": {
+        "fromSession": "2018-12-28",
+        "return": 0.12134514085,
+        "toSession": "2019-12-30"
+      },
+      "2020": {
+        "fromSession": "2019-12-30",
+        "return": 0.325152330054,
+        "toSession": "2020-12-30"
+      },
+      "2021": {
+        "fromSession": "2020-12-30",
+        "return": 0.012587017391,
+        "toSession": "2021-12-30"
+      },
+      "2022": {
+        "fromSession": "2021-12-30",
+        "return": -0.261523630736,
+        "toSession": "2022-12-29"
+      },
+      "2023": {
+        "fromSession": "2022-12-29",
+        "return": 0.229783579526,
+        "toSession": "2023-12-28"
+      },
+      "2024": {
+        "fromSession": "2023-12-28",
+        "return": -0.112209838264,
+        "toSession": "2024-12-30"
+      },
+      "2025": {
+        "fromSession": "2024-12-30",
+        "return": 0.906676735259,
+        "toSession": "2025-12-30"
+      },
+      "2026": {
+        "fromSession": "2025-12-30",
+        "return": 0.734100135318,
+        "toSession": "2026-09-14"
+      }
+    },
+    "checkpoints": [
+      {
+        "checkpoint": "2024-12-30",
+        "level": 317.82,
+        "session": "2024-12-30",
+        "yearBaseSession": "2023-12-28",
+        "yearToDateReturn": -0.112209838264
+      },
+      {
+        "checkpoint": "2025-12-30",
+        "level": 605.98,
+        "session": "2025-12-30",
+        "yearBaseSession": "2024-12-30",
+        "yearToDateReturn": 0.906676735259
+      },
+      {
+        "checkpoint": "2026-01-30",
+        "level": 768.41,
+        "session": "2026-01-30",
+        "yearBaseSession": "2025-12-30",
+        "yearToDateReturn": 0.268045150005
+      },
+      {
+        "checkpoint": "2026-04-30",
+        "level": 992.15,
+        "session": "2026-04-30",
+        "yearBaseSession": "2025-12-30",
+        "yearToDateReturn": 0.637265256279
+      },
+      {
+        "checkpoint": "2026-09-14",
+        "level": 1050.83,
+        "session": "2026-09-14",
+        "yearBaseSession": "2025-12-30",
+        "yearToDateReturn": 0.734100135318
+      }
+    ],
+    "description": "the committed FinanceDataReader KS200 PRICE index (no distributions), an independent route to the same market",
+    "evidenceClass": "POST_OUTCOME_DESCRIPTIVE_PROXY",
+    "levels": [
+      {
+        "annualizationNote": null,
+        "annualizedReturn": 0.022558140659,
+        "cumulativeReturn": 0.194138643622,
+        "description": "2017-01-16 through the last session of 2024",
+        "endLevel": 317.82,
+        "fromSession": "2017-01-16",
+        "logShareOfTerminalWealth": 0.129198488602,
+        "period": "A_2017_to_2024",
+        "sessions": 1953,
+        "shareOfTerminalGain": 0.065848498751,
+        "startLevel": 266.15,
+        "toSession": "2024-12-30",
+        "years": 7.953619855302
+      },
+      {
+        "annualizationNote": null,
+        "annualizedReturn": 0.907494432078,
+        "cumulativeReturn": 0.906676735259,
+        "description": "calendar 2025",
+        "endLevel": 605.98,
+        "fromSession": "2024-12-30",
+        "logShareOfTerminalWealth": 0.469943412764,
+        "period": "B_2025",
+        "sessions": 242,
+        "shareOfTerminalGain": 0.367232502421,
+        "startLevel": 317.82,
+        "toSession": "2025-12-30",
+        "years": 0.999336057551
+      },
+      {
+        "annualizationNote": "SPAN_SHORTER_THAN_ONE_YEAR_NOT_ANNUALIZED",
+        "annualizedReturn": null,
+        "cumulativeReturn": 0.734100135318,
+        "description": "2026-01-01 through the formal cutoff",
+        "endLevel": 1050.83,
+        "fromSession": "2025-12-30",
+        "logShareOfTerminalWealth": 0.400858098634,
+        "period": "C_2026_to_cutoff",
+        "sessions": 172,
+        "shareOfTerminalGain": 0.566918998828,
+        "startLevel": 605.98,
+        "toSession": "2026-09-14",
+        "years": 0.706380007803
+      },
+      {
+        "annualizationNote": null,
+        "annualizedReturn": 0.152773529279,
+        "cumulativeReturn": 2.948262258125,
+        "description": "the full formal window",
+        "endLevel": 1050.83,
+        "fromSession": "2017-01-16",
+        "logShareOfTerminalWealth": 1.0,
+        "period": "D_full_window",
+        "sessions": 2367,
+        "shareOfTerminalGain": 1.0,
+        "startLevel": 266.15,
+        "toSession": "2026-09-14",
+        "years": 9.659335920655
+      }
+    ]
+  },
+  "questionMatrix": [
+    {
+      "basis": "frozen benchmark series, fixed spans (reproduction of the benchmark path)",
+      "classification": "SUPPORTED_BY_AUDIT",
+      "evidence": "On the frozen benchmark the last two spans (2025 and 2026 to the cutoff) carry 70.2% of the window's log wealth; 2017-2024 alone annualizes 6.89% against 20.24% for the full window.",
+      "question": "Q1. Is the formal passive CAGR a normal long-run Korean equity return, or heavily elevated by the 2025-2026 endpoint regime?"
+    },
+    {
+      "basis": "internal consistency only; no official value retrieved",
+      "classification": "PARTIALLY_SUPPORTED",
+      "evidence": "Hash-verified, complete against the registered calendar, no duplicate or non-positive level, and it reproduces the quoted passive CAGR. But its excess over the committed price index is 4.53% a year over 2017-2024, against 1.85% for a same-data constituent total-return reference over the same span; the distribution events behind it are not stored, so the gap cannot be decomposed from the snapshot.",
+      "question": "Q2. Is the frozen KODEX 200 benchmark internally correct?"
+    },
+    {
+      "basis": "BENCHMARK_EXTERNAL_RECONCILIATION_UNRESOLVED",
+      "classification": "UNRESOLVED_DATA_LIMITATION",
+      "evidence": "No official source was reachable. The frozen values to reconcile are recorded for five fixed checkpoints.",
+      "question": "Q3. Does it reconcile with authoritative external KODEX 200 evidence?"
+    },
+    {
+      "basis": "PROXY_NOT_OFFICIAL_WEIGHT",
+      "classification": "PARTIALLY_SUPPORTED",
+      "evidence": "Inside the PIT Top120 their combined market-cap share has a median of 28.5%, a maximum of 57.2% (2026-07-01) and a latest value of 52.6% (2026-09-01). This is a proxy for, not a measurement of, the KODEX 200 weight.",
+      "question": "Q4. How much benchmark concentration is explained by Samsung Electronics and SK Hynix?"
+    },
+    {
+      "basis": "APPROXIMATE_WEIGHTED_CONTRIBUTION_USING_MONTHLY_WEIGHT_SNAPSHOTS",
+      "classification": "PARTIALLY_SUPPORTED",
+      "evidence": "In the cap-weighted Top120 reference they contributed 65.4% of its combined 2025 and 2026-to-cutoff gain (APPROXIMATE_WEIGHTED_CONTRIBUTION_USING_MONTHLY_WEIGHT_SNAPSHOTS). Not exact for KODEX 200.",
+      "question": "Q5. How much of the benchmark's 2025-2026 return is attributable to them?"
+    },
+    {
+      "basis": "NOT_RUN_IN_THIS_ENVIRONMENT",
+      "classification": "UNRESOLVED_DATA_LIMITATION",
+      "evidence": "Needs the formal result artifact and the raw snapshot; not run in this environment.",
+      "question": "Q6. How much of D's 2025-2026 performance comes from Samsung Electronics and SK Hynix directly?"
+    },
+    {
+      "basis": "NOT_RUN_IN_THIS_ENVIRONMENT",
+      "classification": "UNRESOLVED_DATA_LIMITATION",
+      "evidence": "Needs the formal result artifact and the raw snapshot; not run in this environment.",
+      "question": "Q7. How much comes from the broader industry exposure selected by the Industry layer?"
+    },
+    {
+      "basis": "NOT_RUN_IN_THIS_ENVIRONMENT",
+      "classification": "UNRESOLVED_DATA_LIMITATION",
+      "evidence": "Needs the formal result artifact and the raw snapshot; not run in this environment.",
+      "question": "Q8. Did Industry help persistently over 2017-2024, or mostly in the recent industry-led regime?"
+    },
+    {
+      "basis": "NOT_RUN_IN_THIS_ENVIRONMENT",
+      "classification": "UNRESOLVED_DATA_LIMITATION",
+      "evidence": "Needs the formal result artifact and the raw snapshot; not run in this environment.",
+      "question": "Q9. Does D_EXCLUDE_SAMSUNG_HYNIX materially change the descriptive result?"
+    },
+    {
+      "basis": "BENCHMARK_EXTERNAL_RECONCILIATION_UNRESOLVED",
+      "classification": "UNRESOLVED_DATA_LIMITATION",
+      "evidence": "The internal cross-check flags an unexplained excess of the frozen benchmark over both the price index and a same-data reference. If it were an error it would overstate the passive path and therefore understate every architecture's excess; its size and direction cannot be settled without the official distribution history.",
+      "question": "Q10. Does any benchmark or data-integrity issue require distrusting the formal economic comparison?"
+    }
+  ],
+  "referencePortfolios": {
+    "annualizedFullWindow": {
+      "REF_TOP120_CAP_WEIGHTED": 0.162014326104,
+      "REF_TOP120_CAP_WEIGHTED_EX_SAMSUNG_HYNIX": 0.090949800562,
+      "REF_TOP120_EQUAL_WEIGHT": 0.119192900417
+    },
+    "evidenceClass": "POST_OUTCOME_DESCRIPTIVE_PROXY",
+    "namesWithoutPriceAtRebalance": {
+      "REF_TOP120_CAP_WEIGHTED": 0,
+      "REF_TOP120_CAP_WEIGHTED_EX_SAMSUNG_HYNIX": 0,
+      "REF_TOP120_EQUAL_WEIGHT": 0
+    },
+    "notTheFormalBenchmark": true,
+    "periods": {
+      "REF_TOP120_CAP_WEIGHTED": {
+        "A_2017_to_2024": {
+          "annualizedReturn": 0.041511204334,
+          "cumulativeReturn": 0.381949949633,
+          "fromSession": "2017-01-16",
+          "logShareOfTerminalWealth": 0.223039213322,
+          "toSession": "2024-12-30"
+        },
+        "B_2025": {
+          "annualizedReturn": 0.869535356332,
+          "cumulativeReturn": 0.868758871319,
+          "fromSession": "2024-12-30",
+          "logShareOfTerminalWealth": 0.431105625859,
+          "toSession": "2025-12-30"
+        },
+        "C_2026_to_cutoff": {
+          "annualizedReturn": null,
+          "cumulativeReturn": 0.651406662192,
+          "fromSession": "2025-12-30",
+          "logShareOfTerminalWealth": 0.345855160819,
+          "toSession": "2026-09-14"
+        },
+        "D_full_window": {
+          "annualizedReturn": 0.162014326104,
+          "cumulativeReturn": 3.264809275397,
+          "fromSession": "2017-01-16",
+          "logShareOfTerminalWealth": 1.0,
+          "toSession": "2026-09-14"
+        }
+      },
+      "REF_TOP120_CAP_WEIGHTED_EX_SAMSUNG_HYNIX": {
+        "A_2017_to_2024": {
+          "annualizedReturn": 0.019993647028,
+          "cumulativeReturn": 0.170525778423,
+          "fromSession": "2017-01-16",
+          "logShareOfTerminalWealth": 0.187258482162,
+          "toSession": "2024-12-30"
+        },
+        "B_2025": {
+          "annualizedReturn": 0.564675398013,
+          "cumulativeReturn": 0.564210394452,
+          "fromSession": "2024-12-30",
+          "logShareOfTerminalWealth": 0.532069250671,
+          "toSession": "2025-12-30"
+        },
+        "C_2026_to_cutoff": {
+          "annualizedReturn": null,
+          "cumulativeReturn": 0.266172264306,
+          "fromSession": "2025-12-30",
+          "logShareOfTerminalWealth": 0.280672267168,
+          "toSession": "2026-09-14"
+        },
+        "D_full_window": {
+          "annualizedReturn": 0.090949800562,
+          "cumulativeReturn": 1.318296321501,
+          "fromSession": "2017-01-16",
+          "logShareOfTerminalWealth": 1.0,
+          "toSession": "2026-09-14"
+        }
+      },
+      "REF_TOP120_EQUAL_WEIGHT": {
+        "A_2017_to_2024": {
+          "annualizedReturn": 0.038462820529,
+          "cumulativeReturn": 0.350104560123,
+          "fromSession": "2017-01-16",
+          "logShareOfTerminalWealth": 0.275974502877,
+          "toSession": "2024-12-30"
+        },
+        "B_2025": {
+          "annualizedReturn": 0.674991321494,
+          "cumulativeReturn": 0.674417790762,
+          "fromSession": "2024-12-30",
+          "logShareOfTerminalWealth": 0.4738969034,
+          "toSession": "2025-12-30"
+        },
+        "C_2026_to_cutoff": {
+          "annualizedReturn": null,
+          "cumulativeReturn": 0.312677596015,
+          "fromSession": "2025-12-30",
+          "logShareOfTerminalWealth": 0.250128593723,
+          "toSession": "2026-09-14"
+        },
+        "D_full_window": {
+          "annualizedReturn": 0.119192900417,
+          "cumulativeReturn": 1.967490292499,
+          "fromSession": "2017-01-16",
+          "logShareOfTerminalWealth": 1.0,
+          "toSession": "2026-09-14"
+        }
+      }
+    },
+    "rebalances": {
+      "REF_TOP120_CAP_WEIGHTED": 116,
+      "REF_TOP120_CAP_WEIGHTED_EX_SAMSUNG_HYNIX": 116,
+      "REF_TOP120_EQUAL_WEIGHT": 116
+    },
+    "rule": "Top120 members of each monthly universe snapshot; formed at the snapshot close; buy-and-hold between snapshots; no cost; same frozen total-return closes the study used; a missing mark carries the previous close"
+  },
+  "returnBasisNote": "The frozen benchmark is 069500.KS on the repository's AS_TRADED_CLOSE_WITH_FORWARD_ACCUMULATED_TOTAL_RETURN basis (KRX/FDR sessions joined to Yahoo distributions via the krx-total-return route). It is an adjusted-index return with partial distributions: neither a price return nor a complete shareholder total return. The primary formal benchmark remains 069500.KS; nothing below replaces it.",
+  "scientificStatus": "EXPLORATORY_POST_OUTCOME_DESCRIPTIVE_DIAGNOSTIC",
+  "sealedAnatomyEvidence": {
+    "industryAnatomy_FULL_vs_EXCLUDE_vs_LEAVE_LARGEST_OUT": {
+      "features": {
+        "BREADTH_ABOVE_MA_126": {
+          "EXCLUDE_SAMSUNG_ELECTRONICS_AND_SK_HYNIX": {
+            "icDates": 405,
+            "icMean": 0.042,
+            "tercileDates": 171,
+            "tercileSpreadPp": 3.2
+          },
+          "FULL": {
+            "icDates": 405,
+            "icMean": 0.059,
+            "tercileDates": 174,
+            "tercileSpreadPp": 3.2
+          },
+          "LEAVE_LARGEST_CONSTITUENT_OUT": {
+            "icDates": 200,
+            "icMean": 0.044,
+            "tercileDates": 70,
+            "tercileSpreadPp": 0.1
+          }
+        },
+        "REL_MOM_126": {
+          "EXCLUDE_SAMSUNG_ELECTRONICS_AND_SK_HYNIX": {
+            "icDates": 404,
+            "icMean": 0.071,
+            "tercileDates": 294,
+            "tercileSpreadPp": 5.4
+          },
+          "FULL": {
+            "icDates": 404,
+            "icMean": 0.066,
+            "tercileDates": 294,
+            "tercileSpreadPp": 5.4
+          },
+          "LEAVE_LARGEST_CONSTITUENT_OUT": {
+            "icDates": 200,
+            "icMean": 0.071,
+            "tercileDates": 98,
+            "tercileSpreadPp": 0.1
+          }
+        }
+      },
+      "view": "CAP_WEIGHTED H126; IC mean and top-minus-bottom tercile spread in percentage points"
+    },
+    "interpretation": {
+      "A_signalAssociationSurvivesRemovingTheTwoNames": "In the sealed readings the REL_MOM_126 and BREADTH_ABOVE_MA_126 industry associations keep their sign when only the two names are removed; leaving the single largest constituent out of each industry shrinks the REL_MOM_126 tercile spread to near zero. The four stock features keep their sign and most of their size when the two names are removed.",
+      "B_implementedConcentratedPortfolioDependsOnThem": "NOT ANSWERED by these reports. They measure rank associations over the whole cross-section; they say nothing about whether a five-name book held the two names, how large their weights were, or what they earned. That is what the D reconstruction and the D_EXCLUDE_SAMSUNG_HYNIX sensitivity are for.",
+      "caveat": "both sealed studies are exploratory, overlap-heavy, outcome-exposed and carry the partial-distribution return basis"
+    },
+    "provenance": {
+      "fileSha256": {
+        "docs/results/kr-industry-opportunity-anatomy-v1-report.md": "d3cd184e14816e63cd008450f9cfa51709f14dbc865fea0f575b7fea775bc3f6",
+        "docs/results/kr-stock-within-industry-anatomy-v1-report.md": "cd4c7ffda6ff229538b327dd666ce802eafd121caa30323fd0089ff555392384"
+      },
+      "industryAnatomyReport": "docs/results/kr-industry-opportunity-anatomy-v1-report.md",
+      "stockAnatomyReport": "docs/results/kr-stock-within-industry-anatomy-v1-report.md",
+      "studiesRerun": false
+    },
+    "stockWithinIndustryAnatomy_FULL_vs_EXCLUDE": {
+      "features": {
+        "bookToMarketProxy": {
+          "EXCLUDE_SAMSUNG_ELECTRONICS_AND_SK_HYNIX_CAP_H126": 0.087,
+          "FULL_CAP_H126": 0.086
+        },
+        "earningsYieldProxy": {
+          "EXCLUDE_SAMSUNG_ELECTRONICS_AND_SK_HYNIX_CAP_H126": 0.069,
+          "FULL_CAP_H126": 0.073
+        },
+        "negativeDownsideVol126": {
+          "EXCLUDE_SAMSUNG_ELECTRONICS_AND_SK_HYNIX_CAP_H126": 0.062,
+          "FULL_CAP_H126": 0.062
+        },
+        "relative126": {
+          "EXCLUDE_SAMSUNG_ELECTRONICS_AND_SK_HYNIX_CAP_H126": 0.027,
+          "FULL_CAP_H126": 0.028
+        }
+      },
+      "view": "within-industry rank, CAP_WEIGHTED H126, mean per-date rank correlation"
+    }
+  },
+  "sourceStudy": "kr-integrated-alpha-portfolio-v1",
+  "statement": "POST-OUTCOME DESCRIPTIVE DIAGNOSTIC ONLY. It diagnoses an already-exposed result; it is not a new confirmatory experiment, a model rescue, an architecture selection, a promotion decision or prospective evidence, and it cannot alter the formal result or any frozen rule.",
+  "studyId": "kr-integrated-alpha-portfolio-v1-postoutcome-concentration-audit-v1",
+  "trackingCrossCheck": {
+    "byCalendarYear": {
+      "2017": {
+        "benchmark": 0.269217782378,
+        "benchmarkOverIndexRelative": 0.040223910759,
+        "index": 0.22013901935,
+        "refCapWeightedTop120": 0.241091864178,
+        "refCapWeightedTop120OverIndexRelative": 0.017172506162
+      },
+      "2018": {
+        "benchmark": -0.15368335645,
+        "benchmarkOverIndexRelative": 0.049060488688,
+        "index": -0.193262302149,
+        "refCapWeightedTop120": -0.172218061688,
+        "refCapWeightedTop120OverIndexRelative": 0.026085604426
+      },
+      "2019": {
+        "benchmark": 0.173075524252,
+        "benchmarkOverIndexRelative": 0.046132436408,
+        "index": 0.12134514085,
+        "refCapWeightedTop120": 0.131754561788,
+        "refCapWeightedTop120OverIndexRelative": 0.009282976809
+      },
+      "2020": {
+        "benchmark": 0.389569784834,
+        "benchmarkOverIndexRelative": 0.048611358346,
+        "index": 0.325152330054,
+        "refCapWeightedTop120": 0.361091408482,
+        "refCapWeightedTop120OverIndexRelative": 0.027120714813
+      },
+      "2021": {
+        "benchmark": 0.053392743155,
+        "benchmarkOverIndexRelative": 0.040298487995,
+        "index": 0.012587017391,
+        "refCapWeightedTop120": 0.02550367393,
+        "refCapWeightedTop120OverIndexRelative": 0.012756095346
+      },
+      "2022": {
+        "benchmark": -0.222727182054,
+        "benchmarkOverIndexRelative": 0.052535802495,
+        "index": -0.261523630736,
+        "refCapWeightedTop120": -0.238113591841,
+        "refCapWeightedTop120OverIndexRelative": 0.031700457686
+      },
+      "2023": {
+        "benchmark": 0.277326609636,
+        "benchmarkOverIndexRelative": 0.03865967224,
+        "index": 0.229783579526,
+        "refCapWeightedTop120": 0.220730483008,
+        "refCapWeightedTop120OverIndexRelative": -0.007361536346
+      },
+      "2024": {
+        "benchmark": -0.072226908908,
+        "benchmarkOverIndexRelative": 0.045036463659,
+        "index": -0.112209838264,
+        "refCapWeightedTop120": -0.084442431276,
+        "refCapWeightedTop120OverIndexRelative": 0.031276993353
+      },
+      "2025": {
+        "benchmark": 0.987177000168,
+        "benchmarkOverIndexRelative": 0.042220195705,
+        "index": 0.906676735259,
+        "refCapWeightedTop120": 0.868758871319,
+        "refCapWeightedTop120OverIndexRelative": -0.01988688656
+      },
+      "2026": {
+        "benchmark": 0.757304619307,
+        "benchmarkOverIndexRelative": 0.013381282612,
+        "index": 0.734100135318,
+        "refCapWeightedTop120": 0.651406662192,
+        "refCapWeightedTop120OverIndexRelative": -0.04768667705
+      }
+    },
+    "evidenceClass": "POST_OUTCOME_DESCRIPTIVE_PROXY",
+    "span2017To2024": {
+      "benchmark": 0.698959005167,
+      "benchmarkOverIndexRelative": 0.422748534469,
+      "benchmarkOverIndexRelativePerYear": 0.045328126056,
+      "index": 0.194138643622,
+      "refCapWeightedTop120": 0.381949949633,
+      "refCapWeightedTop120OverIndexRelative": 0.157277638584,
+      "refCapWeightedTop120OverIndexRelativePerYear": 0.018534949673
+    },
+    "spanFullWindow": {
+      "benchmark": 4.932892814649,
+      "benchmarkOverIndexRelative": 0.502659252799,
+      "benchmarkOverIndexRelativePerYear": 0.043061222534,
+      "index": 2.948262258125,
+      "refCapWeightedTop120": 3.264809275397,
+      "refCapWeightedTop120OverIndexRelative": 0.080173756599,
+      "refCapWeightedTop120OverIndexRelativePerYear": 0.008016142452
+    }
+  }
+}

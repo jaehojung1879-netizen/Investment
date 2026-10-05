@@ -1,0 +1,93 @@
+name: KR integrated alpha portfolio v1 post-outcome audit
+# POST-OUTCOME DESCRIPTIVE DIAGNOSTIC ONLY. This workflow diagnoses the ALREADY-SPENT formal result of kr-integrated-alpha-portfolio-v1 (run 37374530672). It is a
+# manual workflow_dispatch and nothing else: it never runs on a pull request, never calls the formal `execute` path, never creates, moves or deletes an execution lock
+# (read-only permissions: it could not), never writes a formal result and never commits. Its only output is a 90-day artifact.
+# It downloads the EXACT formal result artifact and the EXACT preserved raw-input snapshot, verifies their identities, replays the frozen code read-only for
+# architectures A and D, and attributes the paths ONLY if the replay reproduces the formal result (otherwise it reports D_PATH_RECONSTRUCTION_MISMATCH).
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: kr-integrated-alpha-portfolio-v1-postoutcome-audit
+  cancel-in-progress: false
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    env:
+      FORMAL_RUN_ID: '37374530672'
+      FORMAL_EXECUTION_SHA: 33237df6d69e31a396959529378a0f881af9a58e
+      FORMAL_SPEC_SHA256: eea6128cd55260904c7f74ba78698f67e522626620fd11d757c27de89c758f77
+      RESULT_ARTIFACT_ID: '11371812532'
+      RESULT_ARTIFACT_NAME: kr-integrated-alpha-portfolio-v1-results-37374530672
+      RESULT_ARTIFACT_DIGEST: sha256:bb29676403068b8330b12808ff30f6a5766fee35d4e66e96594591eaae766722
+      RAW_ARTIFACT_ID: '11157875265'
+      RAW_ARTIFACT_NAME: kr-model-raw-inputs-36844599518
+      RAW_ARTIFACT_DIGEST: sha256:42eeb18b7a5c88816629036f472a93057b6a9be4768ad47292ba0d2750b4cce7
+      RAW_RUN_ID: '36844599518'
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - name: Verify the formal identities through the Actions API (read-only) and the frozen code
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const cp = require('child_process');
+            const e = process.env;
+            // 1. the formal run: execute job succeeded, on the execution commit
+            const run = await github.rest.actions.getWorkflowRun({...context.repo, run_id: Number(e.FORMAL_RUN_ID)});
+            if (run.data.head_sha !== e.FORMAL_EXECUTION_SHA) throw new Error('FORMAL_RUN_SHA_MISMATCH');
+            const jobs = await github.rest.actions.listJobsForWorkflowRun({...context.repo, run_id: Number(e.FORMAL_RUN_ID), per_page: 50});
+            const exec = jobs.data.jobs.find(j => j.name === 'execute');
+            if (!exec || exec.conclusion !== 'success') throw new Error('FORMAL_EXECUTE_JOB_NOT_SUCCESSFUL');
+            // 2. both artifacts, by id, name, digest and producing run
+            for (const [id, name, digest, runId] of [[e.RESULT_ARTIFACT_ID, e.RESULT_ARTIFACT_NAME, e.RESULT_ARTIFACT_DIGEST, e.FORMAL_RUN_ID], [e.RAW_ARTIFACT_ID, e.RAW_ARTIFACT_NAME, e.RAW_ARTIFACT_DIGEST, e.RAW_RUN_ID]]) {
+              const a = (await github.rest.actions.getArtifact({...context.repo, artifact_id: Number(id)})).data;
+              if (a.expired || a.name !== name || a.digest !== digest || String(a.workflow_run.id) !== String(runId)) throw new Error('ARTIFACT_IDENTITY_MISMATCH_' + id);
+            }
+            // 3. both execution-lock refs exist and point at the execution commit (they are only READ here)
+            const refs = await github.paginate(github.rest.git.listMatchingRefs, {...context.repo, ref: 'tags/kr-integrated-alpha-portfolio-v1-execution-lock'});
+            const want = ['refs/tags/kr-integrated-alpha-portfolio-v1-execution-lock', 'refs/tags/kr-integrated-alpha-portfolio-v1-execution-lock-' + e.FORMAL_SPEC_SHA256];
+            for (const w of want) {
+              const r = refs.find(x => x.ref === w);
+              if (!r || r.object.sha !== e.FORMAL_EXECUTION_SHA) throw new Error('LOCK_REF_MISSING_OR_MOVED_' + w);
+            }
+            // 4. the frozen pipeline files at this checkout are byte-identical to the execution commit's
+            const frozen = cp.execFileSync('git', ['diff', '--name-only', e.FORMAL_EXECUTION_SHA, 'HEAD', '--', 'pipeline/kr_integrated_alpha_portfolio.py', 'pipeline/kr_integrated_alpha_portfolio_execution.py',
+              'pipeline/kr_integrated_alpha_portfolio_replay.py', 'pipeline/kr_integrated_alpha_portfolio_receipts.py', 'pipeline/kr_integrated_alpha_portfolio_seal.py',
+              'research_specs/kr-integrated-alpha-portfolio-v1.json', 'research_specs/kr-integrated-alpha-portfolio-v1.sha256']).toString().trim();
+            if (frozen) throw new Error('FROZEN_FILES_CHANGED_SINCE_THE_EXECUTION_COMMIT: ' + frozen);
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+          cache: pip
+      - run: pip install -r requirements.txt -r requirements-dev.txt
+      - name: Download the exact formal result artifact
+        uses: actions/download-artifact@v5
+        with:
+          name: ${{ env.RESULT_ARTIFACT_NAME }}
+          path: formal
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run-id: ${{ env.FORMAL_RUN_ID }}
+      - name: Download the exact preserved raw snapshot
+        uses: actions/download-artifact@v5
+        with:
+          name: ${{ env.RAW_ARTIFACT_NAME }}
+          path: inputs
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run-id: ${{ env.RAW_RUN_ID }}
+      - name: Read-only reconstruction, reproduction check, attribution and the one registered sensitivity
+        run: |
+          set -euo pipefail
+          test "$(ls formal | sort | tr '\n' ' ')" = "execution-started.json integrated-alpha-portfolio.json manifest.json " || { echo "FORMAL_ARTIFACT_FILE_LIST_UNEXPECTED"; ls formal; exit 1; }
+          python scripts/run_kr_integrated_alpha_portfolio_postoutcome_audit.py --mode full --inputs inputs --formal-result formal/integrated-alpha-portfolio.json --output audit
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: kr-integrated-alpha-portfolio-v1-postoutcome-audit-${{ github.run_id }}
+          path: audit
+          retention-days: 90
+          if-no-files-found: warn
