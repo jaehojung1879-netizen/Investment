@@ -527,7 +527,12 @@ def security_contributions(path, mark, spans=None):
         # is not attributing the engine's path, and refusing is the only honest answer.
         if abs(cost - pre_trade_nav * r["cost"]) > 1e-9 * max(1.0, pre_trade_nav):
             raise ValueError("ATTRIBUTION_DOES_NOT_CLOSE_TO_THE_PATH_NAV: " + r["date"])
-        daily.append({"date": r["date"], "contributions": contributions, "cost": cost})
+        # Traded notional by name (NAV units): |post-trade notional - pre-trade notional after the day's drift|. Used only to allocate the day's cost, descriptively.
+        traded = {}
+        for t in set(previous_w) | set(r["weights"]):
+            pre = previous_nav * previous_w.get(t, 0.0) + contributions.get(t, 0.0)
+            traded[t] = abs(r["nav"] * r["weights"].get(t, 0.0) - pre)
+        daily.append({"date": r["date"], "contributions": contributions, "cost": cost, "traded": traded})
         previous_nav = r["nav"]
         previous_w = dict(r["weights"])
         for t in previous_w:
@@ -547,9 +552,20 @@ def security_contributions(path, mark, spans=None):
                 by_security[t] = by_security.get(t, 0.0) + c
         cost = sum(d["cost"] for d in rows)
         gross = sum(by_security.values())
+        traded_by, cost_by = {}, {}
+        for d in rows:
+            total_traded = sum(d["traded"].values())
+            for t, v in d["traded"].items():
+                traded_by[t] = traded_by.get(t, 0.0) + v
+                if total_traded > 0:
+                    cost_by[t] = cost_by.get(t, 0.0) + d["cost"] * v / total_traded
         ordered = sorted(by_security.items(), key=lambda kv: (-kv[1], kv[0]))
         out[label] = {"description": text, "grossContributionNavUnits": gross, "transactionCostNavUnits": cost, "cashContributionNavUnits": 0.0,
                       "netChangeNavUnits": gross - cost, "bySecurity": {t: c for t, c in ordered},
+                      "tradedNotionalNavUnitsBySecurity": {t: traded_by[t] for t in sorted(traded_by)},
+                      "costAllocatedProportionalToTradedNotional": {t: cost_by[t] for t in sorted(cost_by)},
+                      "costAllocationNote": "DESCRIPTIVE ALLOCATION ONLY: each day's cost split in proportion to that day's traded notional by name; the engine charges cost per trade by region and side, so this is not a per-name cost measurement",
+                      "totalTradedNotionalNavUnits": sum(traded_by.values()),
                       "top10Contributors": [{"ticker": t, "contribution": c} for t, c in ordered[:10]],
                       "top10Detractors": [{"ticker": t, "contribution": c} for t, c in sorted(by_security.items(), key=lambda kv: (kv[1], kv[0]))[:10]]}
     return out, daily
@@ -584,7 +600,7 @@ def d_minus_a(decisions_a, decisions_d, anchors, path_a, path_d, contributions_a
     nav_d = {r["date"]: r["nav"] for r in path_d}
     first = path_a[0]["date"]
     for label, text, a, b in spans:
-        both, same, differing, only_a, only_d = 0, [], [], [], []
+        both, identical, same, differing, only_a, only_d = 0, 0, [], [], [], []
         for day, signal in anchors:
             if not _in_span(day, a, b, first):
                 continue
@@ -593,6 +609,7 @@ def d_minus_a(decisions_a, decisions_d, anchors, path_a, path_d, contributions_a
                 continue
             both += 1
             sa, sd = set(da["selected"]), set(dd["selected"])
+            identical += int(sa == sd)
             n = max(len(sa), len(sd), 1)
             same.append(len(sa & sd) / n)
             differing.append(len(sa ^ sd) / 2)
@@ -603,7 +620,7 @@ def d_minus_a(decisions_a, decisions_d, anchors, path_a, path_d, contributions_a
         names = sorted(set(gross_a) | set(gross_d))
         diff = {t: gross_d.get(t, 0.0) - gross_a.get(t, 0.0) for t in names}
         ordered = sorted(diff.items(), key=lambda kv: (-kv[1], kv[0]))
-        out[label] = {"description": text, "anchorsBothBooksHadAValidDecision": both,
+        out[label] = {"description": text, "anchorsBothBooksHadAValidDecision": both, "anchorsWithIdenticalSelection": identical,
                       "meanSameNameShare": float(np.mean(same)) if same else None, "meanDifferingNames": float(np.mean(differing)) if differing else None,
                       "meanNamesOnlyInA": float(np.mean(only_a)) if only_a else None, "meanNamesOnlyInD": float(np.mean(only_d)) if only_d else None,
                       "returnA": ra, "returnD": rd, "returnDMinusA": rd - ra,
@@ -637,6 +654,146 @@ def industry_map_provider(membership_by_signal, anchors, path):
     def industry_of(day, ticker):
         return by_day.get(day, {}).get(ticker, "UNCLASSIFIED")
     return industry_of
+
+
+# =======================================================================================================================================
+# Holdings anatomy, period metrics and named-security detail (records and decisions only)
+# =======================================================================================================================================
+def period_metrics(path, spans=None):
+    """Per fixed span: cumulative / annualized net return, maximum drawdown inside the span, passive return over the same span, one-way turnover, summed cost fraction,
+    replacements and anchor counts. Read off the replayed records only; the opening level of a span is the previous span's closing NAV (1.0 for the first record)."""
+    spans = spans or record_spans(path)
+    first = path[0]["date"]
+    nav = {r["date"]: r["nav"] for r in path}
+    bench = {r["date"]: r["benchmarkNav"] for r in path}
+    out = {}
+    for label, text, a, b in spans:
+        rows = [r for r in path if _in_span(r["date"], a, b, first)]
+        open_nav, open_bench = (1.0, 1.0) if a == first else (nav[a], bench[a])
+        series = [open_nav] + [r["nav"] for r in rows]
+        peak, mdd = series[0], 0.0
+        for v in series:
+            peak = max(peak, v)
+            mdd = min(mdd, v / peak - 1)
+        years = _years(a, b)
+        cumulative, passive = nav[b] / open_nav - 1, bench[b] / open_bench - 1
+        anchor_rows = [r for r in rows if r["kind"] == "ANCHOR"]
+        out[label] = {"description": text, "fromSession": a, "toSession": b, "years": years, "sessions": len(rows),
+                      "cumulativeNetReturn": cumulative, "annualizedNetReturn": (1 + cumulative) ** (1 / years) - 1 if years >= MIN_ANNUALIZATION_YEARS else None,
+                      "cumulativePassiveReturn": passive, "annualizedPassiveReturn": (1 + passive) ** (1 / years) - 1 if years >= MIN_ANNUALIZATION_YEARS else None,
+                      "maxDrawdownWithinSpan": mdd, "oneWayTurnoverSum": sum(r["turnover"] for r in rows),
+                      "annualizedOneWayTurnover": sum(r["turnover"] for r in rows) / years if years >= MIN_ANNUALIZATION_YEARS else None,
+                      "costFractionSum": sum(r["cost"] for r in rows), "replacements": int(sum(r["replaced"] for r in anchor_rows)),
+                      "anchorRebalances": len(anchor_rows), "signalUnavailableAnchors": int(sum(1 for r in rows if r.get("signalUnavailable")))}
+    return out
+
+
+def holding_spells(path, industry_of, daily, decisions_by_signal, anchors):
+    """Every continuous holding of a name: entry and exit session, the PIT industry the strategy used, the rank of the name among the selected names at entry, the target
+    weight the decision gave it, the average and maximum realised weight, the gross contribution and the proportionally-allocated cost. A name that leaves and returns is two
+    spells. Contribution on a date accrues to the name held at the previous close, so a spell's contribution runs from the session after entry to the first session without it."""
+    signal_of = dict(anchors)
+    spells, open_spell = [], {}
+    for i, r in enumerate(path):
+        for t in list(open_spell):
+            if t not in r["weights"]:
+                spells.append(_close_spell(open_spell.pop(t), i, path, daily, exited=True))
+        for t, w in r["weights"].items():
+            if t not in open_spell:
+                signal = signal_of.get(r["date"]) if r["kind"] == "ANCHOR" else None
+                decision = decisions_by_signal.get(signal) if signal else None
+                selected = list(decision["selected"]) if decision and decision.get("available", True) else []
+                open_spell[t] = {"ticker": t, "entryIndex": i, "entryDate": r["date"], "industry": industry_of(r["date"], t),
+                                 "entryRankAmongSelected": selected.index(t) + 1 if t in selected else None,
+                                 "targetWeightAtEntry": float(decision["baseWeights"].get(t)) if decision and t in decision.get("baseWeights", {}) else None}
+    for spell in open_spell.values():
+        spells.append(_close_spell(spell, len(path) - 1, path, daily, exited=False))
+    return sorted(spells, key=lambda x: (x["entryDate"], x["ticker"]))
+
+
+def _close_spell(spell, end_index, path, daily, exited):
+    t, start = spell["ticker"], spell["entryIndex"]
+    last_held = end_index - 1 if exited else end_index
+    weights = [path[j]["weights"][t] for j in range(start, last_held + 1)]
+    contribution, cost = 0.0, 0.0
+    for j in range(start + 1, end_index + 1):
+        contribution += daily[j]["contributions"].get(t, 0.0)
+    for j in range(start, end_index + 1):
+        total = sum(daily[j]["traded"].values())
+        if total > 0:
+            cost += daily[j]["cost"] * daily[j]["traded"].get(t, 0.0) / total
+    out = {k: v for k, v in spell.items() if k != "entryIndex"}
+    out.update({"lastHeldDate": path[last_held]["date"], "exitedOn": path[end_index]["date"] if exited else None, "sessionsHeld": len(weights),
+                "averageWeight": float(np.mean(weights)), "maximumWeight": float(max(weights)), "grossContributionNavUnits": contribution,
+                "allocatedCostNavUnits": cost, "stillHeldAtCutoff": not exited})
+    return out
+
+
+def spell_summary(spells):
+    """Top and bottom contributors and the repeat-holding frequency over the spells of one book."""
+    by_name = {}
+    for sp in spells:
+        d = by_name.setdefault(sp["ticker"], {"spells": 0, "sessions": 0, "contribution": 0.0})
+        d["spells"] += 1
+        d["sessions"] += sp["sessionsHeld"]
+        d["contribution"] += sp["grossContributionNavUnits"]
+    ordered = sorted(by_name.items(), key=lambda kv: (-kv[1]["contribution"], kv[0]))
+    return {"spells": len(spells), "distinctNames": len(by_name), "namesHeldInMoreThanOneSpell": sum(1 for v in by_name.values() if v["spells"] > 1),
+            "shareOfSpellsThatAreRepeats": 1 - len(by_name) / len(spells) if spells else None,
+            "medianSpellSessions": float(np.median([sp["sessionsHeld"] for sp in spells])) if spells else None,
+            "topContributors": [{"ticker": t, **v} for t, v in ordered[:10]], "bottomContributors": [{"ticker": t, **v} for t, v in ordered[::-1][:10]],
+            "byName": {t: v for t, v in ordered}}
+
+
+SEMICONDUCTOR_LABEL_HINTS = ("semiconductor", "반도체", "electronic", "전기전자", "전자", "it hardware", "technology hardware")
+
+
+def gain_concentration(by_span, industry_by_span):
+    """Where the full-window gross gain came from, from the contributions of one book. Shares are of the full-window gross contribution (NAV units); the
+    2025-2026 share is the sum of the 2025 and 2026-to-cutoff spans over the same total. Industry labels are the canonical PIT labels the strategy used; a label that
+    merely CONTAINS a semiconductor/electronics word is flagged as a label match, never as a theme classification."""
+    full = by_span["D_full_window"]
+    total = full["grossContributionNavUnits"]
+    values = sorted(full["bySecurity"].values(), reverse=True)
+
+    def share(n):
+        return sum(values[:n]) / total if total else None
+    industry_full = industry_by_span["D_full_window"]["byIndustry"]
+    ranked = sorted(industry_full.items(), key=lambda kv: (-kv[1], kv[0]))
+    flagged = {k: v for k, v in industry_full.items() if any(h in k.lower() for h in SEMICONDUCTOR_LABEL_HINTS)}
+    late = by_span["B_2025"]["grossContributionNavUnits"] + by_span["C_2026_to_cutoff"]["grossContributionNavUnits"]
+    return {"fullWindowGrossContributionNavUnits": total, "netChangeNavUnits": full["netChangeNavUnits"],
+            "shareFrom2025And2026Spans": late / total if total else None,
+            "shareFromTop1Security": share(1), "shareFromTop2Securities": share(2), "shareFromTop5Securities": share(5),
+            "topIndustry": {"label": ranked[0][0], "contribution": ranked[0][1], "share": ranked[0][1] / total if total else None} if ranked else None,
+            "industriesWithASemiconductorOrElectronicsWordInTheLabel": flagged, "semiconductorOrElectronicsLabelShare": sum(flagged.values()) / total if total and flagged else 0.0,
+            "labelNote": "label match on the canonical PIT industry text only; no theme classification was created"}
+
+
+def named_security_report(path, daily, contributions, decisions_by_signal, anchors, tickers=NAMED):
+    """Q9, per book: how often each named security was SELECTED at a valid decision, its holding sessions, average and maximum weight while held, gross contribution and
+    proportionally-allocated cost per fixed span, and the combined contribution of the pair. Actual strategy exposure, never a benchmark proxy."""
+    first = path[0]["date"]
+    valid = [(day, sig) for day, sig in anchors if day >= first and decisions_by_signal[sig].get("available", True)]
+    out = {"decisionsWithAValidSelection": len(valid), "securities": {}, "bySpan": {}}
+    for t in tickers:
+        picked = sum(1 for _, sig in valid if t in decisions_by_signal[sig]["selected"])
+        held = [r["weights"][t] for r in path if r["weights"].get(t, 0.0) > 0]
+        out["securities"][t] = {"name": NAMED_SECURITIES.get(t, t), "decisionsSelected": picked, "shareOfValidDecisionsSelected": picked / len(valid) if valid else None,
+                                "sessionsHeld": len(held), "shareOfSessionsHeld": len(held) / len(path), "averageWeightWhileHeld": float(np.mean(held)) if held else None,
+                                "maximumWeight": float(max(held)) if held else None}
+    for label, by in contributions.items():
+        total = by["grossContributionNavUnits"]
+        row = {"grossContributionNavUnitsOfBook": total, "netChangeNavUnitsOfBook": by["netChangeNavUnits"]}
+        for t in tickers:
+            row[t] = {"grossContributionNavUnits": by["bySecurity"].get(t, 0.0), "allocatedCostNavUnits": by["costAllocatedProportionalToTradedNotional"].get(t, 0.0),
+                      "tradedNotionalNavUnits": by["tradedNotionalNavUnitsBySecurity"].get(t, 0.0)}
+        pair = sum(by["bySecurity"].get(t, 0.0) for t in tickers)
+        row["combinedGrossContributionNavUnits"] = pair
+        row["combinedShareOfBookGrossContribution"] = pair / total if total else None
+        row["combinedAllocatedCostNavUnits"] = sum(by["costAllocatedProportionalToTradedNotional"].get(t, 0.0) for t in tickers)
+        out["bySpan"][label] = row
+    return out
 
 
 # =======================================================================================================================================

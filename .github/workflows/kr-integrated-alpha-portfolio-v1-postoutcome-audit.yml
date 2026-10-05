@@ -84,6 +84,19 @@ jobs:
           set -euo pipefail
           test "$(ls formal | sort | tr '\n' ' ')" = "execution-started.json integrated-alpha-portfolio.json manifest.json " || { echo "FORMAL_ARTIFACT_FILE_LIST_UNEXPECTED"; ls formal; exit 1; }
           python scripts/run_kr_integrated_alpha_portfolio_postoutcome_audit.py --mode full --inputs inputs --formal-result formal/integrated-alpha-portfolio.json --output audit
+      - name: Print the audit file to the job log (gzip + base64) so it can be read without downloading the artifact
+        if: always()
+        run: |
+          f=audit/postoutcome-audit-full.json
+          if [ -f "$f" ]; then
+            echo "AUDIT_FULL_JSON_SHA256=$(sha256sum "$f" | cut -d' ' -f1)"
+            echo "AUDIT_FULL_JSON_BYTES=$(wc -c < "$f")"
+            echo "AUDIT_FULL_BEGIN"
+            gzip -9n < "$f" | base64 -w 200 | sed 's/^/AJ /'
+            echo "AUDIT_FULL_END"
+          else
+            echo "AUDIT_FULL_JSON_NOT_WRITTEN"
+          fi
       - uses: actions/upload-artifact@v4
         if: always()
         with:

@@ -553,6 +553,15 @@ def test_full_mode_attributes_only_after_the_replay_reproduces_the_formal_a_and_
     assert cf["name"] == "D_EXCLUDE_SAMSUNG_HYNIX" and cf["evidenceClass"] == A.COUNTERFACTUAL and cf["formalDecisionsUnchanged"] is True and cf["excluded"] == list(A.NAMED)
     assert cf["differenceVersusD"]["cumulativeNetReturn"] == pytest.approx(0.0, abs=1e-12)            # the stub bundle ignores the exclusion, so the sensitivity equals D here
     assert report["attribution"]["architectures"]["D"]["securityContributions"]["D_full_window"]["cashContributionNavUnits"] == 0.0
+    d = report["attribution"]["architectures"]["D"]
+    assert {"periodMetrics", "namedSecurities", "gainConcentration", "holdingSpells", "spellSummary"} <= set(d)
+    assert set(d["namedSecurities"]["securities"]) == set(A.NAMED) and d["spellSummary"]["spells"] == len(d["holdingSpells"]) > 0
+    pm = d["periodMetrics"]["D_full_window"]
+    assert pm["cumulativeNetReturn"] == pytest.approx(d["periods"]["periods"][-1]["cumulativeReturn"], abs=1e-9)
+    by = d["securityContributions"]["D_full_window"]
+    assert sum(by["costAllocatedProportionalToTradedNotional"].values()) == pytest.approx(by["transactionCostNavUnits"], abs=1e-9)
+    assert sum(sp["grossContributionNavUnits"] for sp in d["holdingSpells"]) == pytest.approx(by["grossContributionNavUnits"], abs=1e-9)
+    assert "anchorsWithIdenticalSelection" in report["attribution"]["dMinusA"]["D_full_window"] and "consistencyWithPriorAuditFacts" in report["attribution"]
     assert not (tmp_path.parent / "docs").exists() and sorted(p.name for p in tmp_path.iterdir()) == ["postoutcome-audit-full.json"]
 
 

@@ -65,12 +65,17 @@ def strategy_periods(path):
     return {"periods": A.period_decomposition(nav_with_open, first, path[-1]["date"]), "calendarYears": A.calendar_year_returns(nav_with_open, first, path[-1]["date"])}
 
 
-def attribute(arch, path, ctx, membership, anchors):
+def attribute(arch, path, ctx, membership, anchors, decisions_by_signal):
     spans = A.record_spans(path)
     industry_of = A.industry_map_provider(membership, anchors, path)
     contributions, daily = A.security_contributions(path, lambda t, day, prev: R.mark_price(ctx, t, day, prev), spans)
-    return {"concentration": A.holdings_concentration(path, industry_of, spans), "namedExposure": A.named_exposure(path, spans=spans), "securityContributions": contributions,
-            "industryContributions": A.industry_contributions(daily, industry_of, spans), "periods": strategy_periods(path)}, contributions
+    industries = A.industry_contributions(daily, industry_of, spans)
+    spells = A.holding_spells(path, industry_of, daily, decisions_by_signal, anchors)
+    report = {"concentration": A.holdings_concentration(path, industry_of, spans), "namedExposure": A.named_exposure(path, spans=spans), "securityContributions": contributions,
+              "industryContributions": industries, "periods": strategy_periods(path), "periodMetrics": A.period_metrics(path, spans),
+              "namedSecurities": A.named_security_report(path, daily, contributions, decisions_by_signal, anchors), "gainConcentration": A.gain_concentration(contributions, industries),
+              "holdingSpells": spells, "spellSummary": A.spell_summary(spells)}
+    return report, contributions
 
 
 def run(input_root, formal_result_path, output, root=ROOT):
@@ -99,17 +104,25 @@ def run(input_root, formal_result_path, output, root=ROOT):
     membership = membership_by_signal(bundle, root)
     attribution, contributions = {}, {}
     for arch in ARCHITECTURES:
-        attribution[arch], contributions[arch] = attribute(arch, paths[arch], ctx, membership, bundle["anchors"])
+        attribution[arch], contributions[arch] = attribute(arch, paths[arch], ctx, membership, bundle["anchors"], decisions[LAYER[arch]])
     spans = A.record_spans(paths["D"])
     report["attribution"] = {"evidenceClass": A.RECONSTRUCTION, "architectures": attribution,
                              "dMinusA": A.d_minus_a(decisions["S"], decisions["I+S"], bundle["anchors"], paths["A"], paths["D"], contributions["A"], contributions["D"], spans)}
+    full = report["attribution"]["dMinusA"]["D_full_window"]
+    report["attribution"]["consistencyWithPriorAuditFacts"] = {
+        "evidenceClass": A.RECONSTRUCTION, "note": "facts quoted from the earlier read-only audit, compared here with the reconstruction rather than trusted",
+        "expectedAnchorsWithBothBooksAvailable": 108, "reconstructedAnchorsWithBothBooksAvailable": full["anchorsBothBooksHadAValidDecision"],
+        "expectedAnchorsWithIdenticalSelection": 0, "reconstructedAnchorsWithIdenticalSelection": full["anchorsWithIdenticalSelection"],
+        "expectedMeanDifferingNames": 3.2407, "reconstructedMeanDifferingNames": full["meanDifferingNames"],
+        "agrees": full["anchorsBothBooksHadAValidDecision"] == 108 and full["anchorsWithIdenticalSelection"] == 0
+                  and full["meanDifferingNames"] is not None and abs(full["meanDifferingNames"] - 3.2407) < 5e-4}
     # The ONE authorised counterfactual: the frozen functions, with the two named tickers removed after scoring and before selection.
     counters_excl = E.Counters()
     with A.exclude_named_from_selection():
         bundle_excl = E.build_signal_bundle(input_root, spec, root, counters_excl)
     paths_excl, ctx_excl, decisions_excl = replay_paths(bundle_excl, spec, ("D",))
     path_d_excl = paths_excl["D"]
-    attribution_excl, _ = attribute("D", path_d_excl, ctx_excl, membership_by_signal(bundle_excl, root), bundle_excl["anchors"])
+    attribution_excl, _ = attribute("D", path_d_excl, ctx_excl, membership_by_signal(bundle_excl, root), bundle_excl["anchors"], decisions_excl["I+S"])
     summary_d, summary_excl = R.summarize_path(paths["D"]), R.summarize_path(path_d_excl)
     keys = ("cumulativeNetReturn", "netAnnualizedReturn", "maxDrawdown", "annualizedOneWayTurnover", "totalCostFractionOfNav", "averageHoldings")
     report["counterfactual"] = {
@@ -117,7 +130,10 @@ def run(input_root, formal_result_path, output, root=ROOT):
         "rule": "005930.KS and 000660.KS removed after stock and industry scoring and before selection; every other frozen rule unchanged; next eligible ranked names fill the book",
         "summary": {k: summary_excl[k] for k in keys}, "formalD": {k: summary_d[k] for k in keys},
         "differenceVersusD": {k: summary_excl[k] - summary_d[k] for k in keys if summary_excl[k] is not None and summary_d[k] is not None},
-        "periods": strategy_periods(path_d_excl), "concentration": attribution_excl["concentration"], "securityContributions": attribution_excl["securityContributions"],
+        "periods": strategy_periods(path_d_excl), "periodMetrics": attribution_excl["periodMetrics"], "concentration": attribution_excl["concentration"],
+        "securityContributions": attribution_excl["securityContributions"], "namedSecurities": attribution_excl["namedSecurities"],
+        "gainConcentration": attribution_excl["gainConcentration"], "spellSummary": attribution_excl["spellSummary"],
+        "labels": ["POST_OUTCOME_DESCRIPTIVE_SENSITIVITY", "NOT_CONFIRMATORY", "NOT_ELIGIBLE_FOR_MODEL_SELECTION"],
         "signalAvailability": E.availability_audit(bundle_excl["decisions"], bundle_excl["anchors"], bundle_excl["depth"])["I+S"],
         "formalDecisionsUnchanged": True}
     return _write(report, output)
@@ -128,6 +144,7 @@ def _write(report, output):
     path = Path(output)
     path.mkdir(parents=True, exist_ok=True)
     target = path / "postoutcome-audit-full.json"
-    target.write_text(json.dumps(A._round_floats(report), sort_keys=True, indent=2, ensure_ascii=False, default=str) + "\n")
-    return {"status": report["status"], "file": str(target)}
+    text = json.dumps(A._round_floats(report), sort_keys=True, indent=2, ensure_ascii=False, default=str) + "\n"
+    target.write_text(text)
+    return {"status": report["status"], "file": str(target), "sha256": hashlib.sha256(text.encode()).hexdigest(), "bytes": len(text.encode())}
 
