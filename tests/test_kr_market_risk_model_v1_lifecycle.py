@@ -1,7 +1,15 @@
 """kr-market-risk-model-v1: frozen identity, outcome-free readiness, one-shot lifecycle, automatic Draft seal, prospective receipts and workflow.
 
-Synthetic values, synthetic repositories and fake GitHub APIs only. Readiness reads observation DATES of the committed snapshot and nothing else.
-No test reads a historical market value or computes a historical outcome."""
+The repository has exactly two valid lifecycle states and every test here is correct in both:
+
+* PRE_SEAL  - the result, marker, manifest and seal provenance are all absent; readiness may report READY.
+* POST_SEAL - all four exist together (the exact formal bytes, pinned byte-for-byte by test_kr_market_risk_model_v1_result_seal.py); readiness
+  and authorization REFUSE any new formal execution, and that refusal is the correct, permanent behaviour of a sealed study - not a failure.
+
+Synthetic lifecycle tests (readiness READY, the full gated execute path, a refused lock) run on `pre_seal_root`, an isolated copy of ONLY the frozen
+preregistration inputs with no result files, so they exercise the real one-shot protections without depending on the state of the real repository.
+Separate tests prove the real repository refuses re-execution. Synthetic values, synthetic repositories and fake GitHub APIs only; no test reads a
+historical market value or computes a historical outcome."""
 import ast
 import hashlib
 import io
@@ -25,6 +33,18 @@ MAIN = "a" * 40
 GOOD_ENV = {"GITHUB_ACTIONS": "true", "GITHUB_REF": "refs/heads/main", "GITHUB_EVENT_NAME": "workflow_dispatch", "GITHUB_SHA": MAIN,
             "GH_TOKEN": "t", "GITHUB_REPOSITORY": "o/r"}
 WORKFLOW = (ROOT / ".github/workflows/kr-market-risk-model-v1.yml").read_text()
+SEAL_FILES = (E.RESULT_PATH, E.MARKER_PATH, E.MANIFEST_PATH, SEAL.PROVENANCE_PATH)
+ALREADY_COMMITTED = ["MARKET_RISK_MODEL_RESULT_ALREADY_COMMITTED", "MARKET_RISK_MODEL_MARKER_ALREADY_COMMITTED", "MARKET_RISK_MODEL_MANIFEST_ALREADY_COMMITTED"]
+
+
+def repository_state(root=ROOT):
+    """PRE_SEAL (no seal file) or POST_SEAL (all four). Any mixture is a broken repository and fails loudly instead of choosing a side."""
+    present = {rel: (Path(root) / rel).exists() for rel in SEAL_FILES}
+    if all(present.values()):
+        return "POST_SEAL"
+    if not any(present.values()):
+        return "PRE_SEAL"
+    raise AssertionError("PARTIAL_SEAL_STATE: " + json.dumps(present, sort_keys=True))
 
 
 class FakeApi:
@@ -88,7 +108,7 @@ def test_the_frozen_spec_carries_the_module_rules_the_development_label_and_no_o
     for rel in (".github/workflows/kr-market-risk-model-v1.yml", "docs/kr-market-risk-model-v1-design.md", "pipeline/kr_market_risk_model_seal.py",
                 "pipeline/kr_market_risk_overlay.py", E.RECEIPT_SCHEMA_PATH):
         assert rel in SPEC["dependencyHashes"]
-    assert not any((ROOT / p).exists() for p in (E.RESULT_PATH, E.MARKER_PATH, E.MANIFEST_PATH, SEAL.PROVENANCE_PATH))
+    assert repository_state() in ("PRE_SEAL", "POST_SEAL")                         # all four seal files exist together, or none does
 
 
 def _copy_closure(tmp_path):
@@ -97,6 +117,16 @@ def _copy_closure(tmp_path):
         target.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(ROOT / rel, target)
     return tmp_path
+
+
+@pytest.fixture(scope="module")
+def pre_seal_root(tmp_path_factory):
+    """An isolated repository root holding ONLY the frozen preregistration inputs (spec, sidecar and every pinned file) and no result, marker,
+    manifest or provenance. The real one-shot protections run unmodified against it; the real repository is never touched."""
+    root = _copy_closure(tmp_path_factory.mktemp("pre_seal_root"))
+    assert repository_state(root) == "PRE_SEAL"
+    assert E.load_spec(root)[1] == SHA
+    return root
 
 
 def test_any_change_to_a_rule_a_pin_a_closure_file_or_the_spec_refuses_to_load(tmp_path, monkeypatch):
@@ -136,7 +166,7 @@ def test_no_sealed_prior_study_file_changed_and_the_control_module_is_the_one_th
 # ---------------------------------------------------------------------------------------------------------------------------------------
 # Outcome-free readiness and verify
 # ---------------------------------------------------------------------------------------------------------------------------------------
-def test_readiness_and_verify_read_dates_only_and_never_touch_an_outcome_function(monkeypatch):
+def _spy_on_every_outcome_function(monkeypatch):
     def boom(*a, **k):
         raise AssertionError("OUTCOME_FUNCTION_CALLED")
     for module, names in ((E, ("load_values", "evaluate", "claim_execution_lock", "write_execution_marker", "write_outputs")),
@@ -144,12 +174,31 @@ def test_readiness_and_verify_read_dates_only_and_never_touch_an_outcome_functio
                           (M, ("forward_targets", "underwater_episodes")), (E.P, ("read_normalized",))):
         for name in names:
             monkeypatch.setattr(module, name, boom)
-    report = E.readiness_audit(ROOT)
+
+
+def test_readiness_and_verify_in_the_pre_seal_state_read_dates_only_and_report_ready(monkeypatch, pre_seal_root):
+    _spy_on_every_outcome_function(monkeypatch)
+    report = E.readiness_audit(pre_seal_root)
     assert report["decision"] == E.DECISION_READY and report["blockers"] == [] and all(v == 0 for v in report["counters"].values())
     assert report["firstDecisionDate"] == "2007-01-05" and report["referenceMissingSessionsFrom2006"] == []
     assert all(v["share"] >= E.MIN_DETERMINABLE_SHARE and v["firstDecisionDeterminable"] for v in report["determinable"].values())
-    verified = E.verify(ROOT, {})
+    verified = E.verify(pre_seal_root, {})
     assert verified["status"] == "VERIFIED" and verified["stoppedBeforeOutcomes"] and verified["executeAuthorizedInThisEnvironment"] is False
+
+
+def test_the_real_repository_is_ready_before_the_seal_and_recognised_as_sealed_after_it(monkeypatch):
+    """Both states are valid. After the seal the ONLY reason readiness is not READY is that the study already ran: every date gate still passes."""
+    _spy_on_every_outcome_function(monkeypatch)
+    report, verified = E.readiness_audit(ROOT), E.verify(ROOT, {})
+    assert all(v == 0 for v in report["counters"].values()) and report["checks"]["noOutcomeAccess"] is True
+    assert verified["status"] == "VERIFIED" and verified["stoppedBeforeOutcomes"] and verified["executeAuthorizedInThisEnvironment"] is False
+    if repository_state() == "PRE_SEAL":
+        assert report["decision"] == E.DECISION_READY and report["blockers"] == []
+        return
+    assert report["decision"] != E.DECISION_READY and report["decision"] == E.DECISION_BLOCKED          # a sealed study is never READY again
+    assert report["blockers"] == ALREADY_COMMITTED                                                       # ... and nothing else is wrong with it
+    assert report["checks"]["frozenSpecPinsAndImportClosure"] is True and report["checks"]["referenceCompleteFrom2006"] is True
+    assert all(v for k, v in report["checks"].items() if k.startswith("determinable_"))
 
 
 def test_presence_proxy_gives_exactly_the_definedness_of_real_valued_inputs():
@@ -172,14 +221,74 @@ def test_execute_is_actions_main_dispatch_only(env, reason):
         E.authorize_execution(SPEC, SHA, ROOT, dict(GOOD_ENV, **env), fake_git(), lambda: False)
 
 
-def test_authorization_refuses_an_uncommitted_spec_a_committed_result_or_any_lock(monkeypatch):
+def test_authorization_refuses_an_uncommitted_spec_any_committed_result_file_or_any_lock(pre_seal_root):
+    """The real protections, run against the isolated pre-seal root: each committed file refuses on its own, then the lock."""
     with pytest.raises(ValueError, match="SPEC_NOT_COMMITTED_AT_HEAD"):
-        E.authorize_execution(SPEC, SHA, ROOT, GOOD_ENV, fake_git(committed=False), lambda: False)
+        E.authorize_execution(SPEC, SHA, pre_seal_root, GOOD_ENV, fake_git(committed=False), lambda: False)
+    assert isinstance(E.authorize_execution(SPEC, SHA, pre_seal_root, GOOD_ENV, fake_git(), lambda: False), E.ExecutionPermit)
     with pytest.raises(ValueError, match="EXECUTION_LOCK_ALREADY_EXISTS"):
-        E.authorize_execution(SPEC, SHA, ROOT, GOOD_ENV, fake_git(), lambda: True)
-    monkeypatch.setattr(E, "RESULT_PATH", E.SPEC_PATH)                            # any existing file at the result path refuses
-    with pytest.raises(ValueError, match="RESULT_ALREADY_COMMITTED"):
-        E.authorize_execution(SPEC, SHA, ROOT, GOOD_ENV, fake_git(), lambda: False)
+        E.authorize_execution(SPEC, SHA, pre_seal_root, GOOD_ENV, fake_git(), lambda: True)
+    for rel, code in zip((E.RESULT_PATH, E.MARKER_PATH, E.MANIFEST_PATH), ALREADY_COMMITTED):
+        target = pre_seal_root / rel
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_text("{}\n")
+        try:
+            with pytest.raises(ValueError, match=code):
+                E.authorize_execution(SPEC, SHA, pre_seal_root, GOOD_ENV, fake_git(), lambda: False)
+        finally:
+            target.unlink()
+    assert repository_state(pre_seal_root) == "PRE_SEAL"                           # the shared fixture root is left exactly as it was
+
+
+def _load_runner():
+    import importlib.util
+    spec = importlib.util.spec_from_file_location("run_kr_market_risk_model_v1", ROOT / "scripts/run_kr_market_risk_model_v1.py")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+def test_the_real_repository_refuses_every_new_formal_execution_once_sealed(tmp_path, monkeypatch):
+    """A sealed study is permanently non-re-executable. Before the seal the same real repository is simply authorizable (the pre-seal protections are
+    exercised on `pre_seal_root`); after it, every path to a new execution refuses BEFORE a lock is claimed or a value is read."""
+    if repository_state() == "PRE_SEAL":
+        assert isinstance(E.authorize_execution(SPEC, SHA, ROOT, GOOD_ENV, fake_git(), lambda: False), E.ExecutionPermit)
+        return
+    # 1. authorization: the committed result refuses first, whether or not a lock probe finds one (the lock is a second, independent barrier)
+    for probe in (lambda: False, lambda: True):
+        with pytest.raises(ValueError, match="MARKET_RISK_MODEL_RESULT_ALREADY_COMMITTED"):
+            E.authorize_execution(SPEC, SHA, ROOT, GOOD_ENV, fake_git(), probe)
+    # 2. each sealed file independently blocks authorization: remove nothing - prove it on copies of the real root with a single file missing
+    for missing in (E.MARKER_PATH, E.MANIFEST_PATH):
+        partial = tmp_path / ("without-" + Path(missing).name)
+        _copy_closure(partial)
+        for rel in SEAL_FILES:
+            if rel != missing:
+                (partial / rel).parent.mkdir(parents=True, exist_ok=True)
+                shutil.copy2(ROOT / rel, partial / rel)
+        with pytest.raises(AssertionError, match="PARTIAL_SEAL_STATE"):
+            repository_state(partial)
+        with pytest.raises(ValueError, match="ALREADY_COMMITTED"):
+            E.authorize_execution(SPEC, SHA, partial, GOOD_ENV, fake_git(), lambda: False)
+    # 3. the durable lock tags recorded by the seal still refuse a second claim, using only GET
+    provenance = json.loads((ROOT / SEAL.PROVENANCE_PATH).read_text())
+    assert provenance["lockRefs"] == [E.STUDY_LOCK_REF, E.lock_ref(SHA)] and provenance["specSha256"] == SHA
+    api = FakeApi(existing=provenance["lockRefs"])
+    assert E.lock_exists(SHA, GOOD_ENV, api) is True
+    with pytest.raises(ValueError, match="EXECUTION_LOCK_ALREADY_EXISTS"):
+        E.claim_execution_lock(SHA, GOOD_ENV, api)
+    assert {m for m, _ in api.calls} == {"GET"}
+    # 4. the runner, which is what the workflow invokes: refuses before any lock, marker or value read (only git plumbing is faked, as above)
+    monkeypatch.setattr(E, "_git", fake_git())
+    for name in ("load_values", "claim_execution_lock", "write_execution_marker", "evaluate", "github_api"):
+        monkeypatch.setattr(E, name, lambda *a, **k: (_ for _ in ()).throw(AssertionError("REACHED_AFTER_THE_SEAL")))
+    out = tmp_path / "runner-output"
+    with pytest.raises(ValueError, match="MARKET_RISK_MODEL_RESULT_ALREADY_COMMITTED"):
+        _load_runner().run("execute", output=str(out), root=ROOT, env=dict(GOOD_ENV))
+    assert not out.exists()
+    # 5. the seal cannot be written a second time
+    with pytest.raises(ValueError, match="RESULT_ALREADY_SEALED"):
+        SEAL.check_main(ROOT)
 
 
 def test_the_lock_is_study_level_exclusive_and_only_post_and_get_are_issued():
@@ -207,7 +316,7 @@ def test_values_and_outcomes_need_both_the_permit_and_the_lock():
 
 
 @pytest.fixture(scope="module")
-def executed(tmp_path_factory):
+def executed(tmp_path_factory, pre_seal_root):
     """The full execute path on SYNTHETIC values (load_values is replaced): records the order of every step."""
     order, api = [], FakeApi()
     real_readiness, real_claim, real_marker, real_evaluate = E.readiness_audit, E.claim_execution_lock, E.write_execution_marker, E.evaluate
@@ -219,13 +328,13 @@ def executed(tmp_path_factory):
         counters.valueReads += 4
         return synthetic_values()
     with pytest.MonkeyPatch.context() as mp:
-        mp.setattr(E, "readiness_audit", lambda root=ROOT: order.append("readiness") or real_readiness(root))
+        mp.setattr(E, "readiness_audit", lambda root=pre_seal_root: order.append("readiness") or real_readiness(root))
         mp.setattr(E, "claim_execution_lock", lambda *a, **k: order.append("lock") or real_claim(*a, **k))
         mp.setattr(E, "write_execution_marker", lambda *a, **k: order.append("marker") or real_marker(*a, **k))
         mp.setattr(E, "load_values", load)
         mp.setattr(E, "evaluate", lambda *a, **k: order.append("evaluate") or real_evaluate(*a, **k))
         out = tmp_path_factory.mktemp("synthetic") / "run"
-        manifest = E.execute(out, SPEC, SHA, E.ExecutionPermit(SHA, E._PERMIT_TOKEN), ROOT, GOOD_ENV, api)
+        manifest = E.execute(out, SPEC, SHA, E.ExecutionPermit(SHA, E._PERMIT_TOKEN), pre_seal_root, GOOD_ENV, api)
     return out, manifest, order, api
 
 
@@ -245,21 +354,21 @@ def test_lock_follows_every_gate_the_marker_follows_the_lock_and_values_and_arti
         assert {"falseAlarm", "episodes", "halves", "calendarYears", "stress"} <= set(c)
 
 
-def test_a_blocked_gate_creates_no_lock_no_marker_and_reads_no_value(tmp_path, monkeypatch):
+def test_a_blocked_gate_creates_no_lock_no_marker_and_reads_no_value(tmp_path, monkeypatch, pre_seal_root):
     api = FakeApi()
-    monkeypatch.setattr(E, "readiness_audit", lambda root=ROOT: {"decision": E.DECISION_BLOCKED, "blockers": ["X"]})
+    monkeypatch.setattr(E, "readiness_audit", lambda root=pre_seal_root: {"decision": E.DECISION_BLOCKED, "blockers": ["X"]})
     monkeypatch.setattr(E, "load_values", lambda *a, **k: (_ for _ in ()).throw(AssertionError("VALUE_READ")))
     with pytest.raises(ValueError, match="READINESS_GATE_BLOCKED"):
-        E.execute(tmp_path / "o", SPEC, SHA, E.ExecutionPermit(SHA, E._PERMIT_TOKEN), ROOT, GOOD_ENV, api)
+        E.execute(tmp_path / "o", SPEC, SHA, E.ExecutionPermit(SHA, E._PERMIT_TOKEN), pre_seal_root, GOOD_ENV, api)
     assert api.refs == {} and api.calls == [] and not (tmp_path / "o" / "execution-started.json").exists()
     assert not (tmp_path / "o" / "market-risk-model.json").exists()
 
 
-def test_a_refused_lock_reads_no_value_and_writes_no_artifact(tmp_path, monkeypatch):
+def test_a_refused_lock_reads_no_value_and_writes_no_artifact(tmp_path, monkeypatch, pre_seal_root):
     api = FakeApi(existing=[E.STUDY_LOCK_REF])
     monkeypatch.setattr(E, "load_values", lambda *a, **k: (_ for _ in ()).throw(AssertionError("VALUE_READ")))
     with pytest.raises(ValueError, match="EXECUTION_LOCK_ALREADY_EXISTS"):
-        E.execute(tmp_path / "o", SPEC, SHA, E.ExecutionPermit(SHA, E._PERMIT_TOKEN), ROOT, GOOD_ENV, api)
+        E.execute(tmp_path / "o", SPEC, SHA, E.ExecutionPermit(SHA, E._PERMIT_TOKEN), pre_seal_root, GOOD_ENV, api)
     assert not (tmp_path / "o").exists() or not any((tmp_path / "o").iterdir())
 
 

@@ -1,0 +1,47 @@
+{
+  "artifactArchiveSha256": "0a862936b9f0c6e5d0e53c19629c56702a6f74b6fd9e62554d57a749b80ed447",
+  "artifactFileList": [
+    "execution-started.json",
+    "manifest.json",
+    "market-risk-model.json"
+  ],
+  "artifactGithubDigest": "sha256:0a862936b9f0c6e5d0e53c19629c56702a6f74b6fd9e62554d57a749b80ed447",
+  "artifactId": 11326695136,
+  "artifactName": "kr-market-risk-model-v1-results-37264780778",
+  "committedFiles": {
+    "docs/results/kr-market-risk-model-v1-execution-started.json": {
+      "bytes": 475,
+      "sha256": "9d5e322ba54a0c7da3e467c72111ce955c365d650827282f9c9bf379c2ca307f",
+      "sourceFile": "execution-started.json"
+    },
+    "docs/results/kr-market-risk-model-v1-manifest.json": {
+      "bytes": 1200,
+      "sha256": "81dc4408bf8f9f2464ce827b2783be2cf486e1ae232e3fec7b65a282114f8445",
+      "sourceFile": "manifest.json"
+    },
+    "docs/results/kr-market-risk-model-v1-result.json": {
+      "bytes": 72695,
+      "sha256": "2578bbfa245a6540235cc05e231441b4ebb4da165240a84e715756477a897c4b",
+      "sourceFile": "market-risk-model.json"
+    }
+  },
+  "executionRunId": 37264780778,
+  "executionSha": "1abebd9c948f83e804cf63c76b3ca028d03e2f1f",
+  "lockRefs": [
+    "refs/tags/kr-market-risk-model-v1-execution-lock",
+    "refs/tags/kr-market-risk-model-v1-execution-lock-711f17ba946daa77ceb8f2fb18936ce45812585103f749f793f254aaeced3ad3"
+  ],
+  "runConclusionOfExecuteJob": "success",
+  "runEvent": "workflow_dispatch",
+  "scientificStatus": "EXPLORATORY_DEVELOPMENT_ON_OUTCOME_EXPOSED_KR_HISTORY",
+  "sealBranchBaseSha": "1abebd9c948f83e804cf63c76b3ca028d03e2f1f",
+  "sealRules": [
+    "exact artifact bytes, renamed only",
+    "no statistic recomputed",
+    "no outcome re-executed",
+    "draft pull request only; a human merges"
+  ],
+  "sealedAtUtc": "2026-10-05T04:52:10Z",
+  "specSha256": "711f17ba946daa77ceb8f2fb18936ce45812585103f749f793f254aaeced3ad3",
+  "studyId": "kr-market-risk-model-v1"
+}
