@@ -247,32 +247,89 @@ def test_metrics_on_a_hand_checked_path():
 
 
 # ---------------------------------------------------------------------------------------------------------------------------------------
-# The preregistered decision
+# The preregistered decision: Pareto, symmetric non-inferiority / meaningful-improvement bands, no forced winner
 # ---------------------------------------------------------------------------------------------------------------------------------------
 def _s(r, mdd, share):
     return {"netAnnualizedReturn": r, "maxDrawdown": mdd, "reducedSessionShare": share}
 
 
-def test_dominated_candidates_are_eliminated_and_neither_cagr_nor_drawdown_alone_decides():
-    base = {K.PASSIVE: _s(0.06, -0.55, 0.0), "C0": _s(0.050, -0.40, 0.50)}
-    out = K.development_nomination({**base, "C1": _s(0.040, -0.45, 0.60), "C2": _s(0.051, -0.35, 0.30), "C3": _s(0.052, -0.20, 0.20)})
-    assert out["steps"]["C1"]["dominatedBy"] and out["developmentNomination"] == "C3"
-    highest_cagr_shallow_gain = K.development_nomination({**base, "C1": _s(0.070, -0.39, 0.30), "C2": _s(0.02, -0.10, 0.9), "C3": _s(0.02, -0.10, 0.95)})
-    assert highest_cagr_shallow_gain["developmentNomination"] == K.NOMINATION_NONE   # C1: not a meaningful drawdown gain; C2/C3: return not preserved
+BASE = {K.PASSIVE: _s(0.060, -0.55, 0.0), "C0": _s(0.050, -0.40, 0.50)}
 
 
-def test_indistinguishable_returns_go_to_the_simpler_architecture():
-    base = {K.PASSIVE: _s(0.06, -0.55, 0.0), "C0": _s(0.050, -0.40, 0.50)}
-    out = K.development_nomination({**base, "C1": _s(0.049, -0.30, 0.20), "C2": _s(0.050, -0.32, 0.25), "C3": _s(0.053, -0.31, 0.21)})
-    assert out["steps"]["C2"]["dominatedBy"] == ["C3"]                            # lower return, deeper drawdown and more time de-risked than C3
-    assert out["survivors"] == ["C1", "C3"] and set(out["indistinguishableFromLead"]) == {"C1", "C3"} and out["developmentNomination"] == "C1"
+def _decide(**candidates):
+    filler = {c: _s(0.0, -0.99, 0.99) for c in ("C1", "C2", "C3")}                  # a hopeless candidate: dominated, never survives
+    return K.development_nomination({**BASE, **filler, **{k.upper(): v for k, v in candidates.items()}})
 
 
-def test_the_passive_path_can_eliminate_but_is_never_nominated_and_the_output_carries_no_forbidden_semantics():
-    out = K.development_nomination({K.PASSIVE: _s(0.06, -0.30, 0.0), "C0": _s(0.05, -0.40, 0.5), "C1": _s(0.05, -0.33, 0.1),
-                                    "C2": _s(0.04, -0.20, 0.4), "C3": _s(0.04, -0.20, 0.4)})
-    assert K.PASSIVE in out["steps"]["C1"]["dominatedBy"] and out["developmentNomination"] in ("C2", K.NOMINATION_NONE)
+def test_the_bands_are_symmetric_round_preregistered_numbers_and_the_old_rule_is_gone():
+    assert (K.RETURN_BAND, K.MEANINGFUL_DRAWDOWN_IMPROVEMENT, K.NON_INFERIORITY_DRAWDOWN_BAND) == (0.005, 0.10, 0.10)
+    assert not hasattr(K, "SIMPLICITY_ORDER") and not hasattr(K, "RETURN_INDISTINGUISHABLE_PP")
+    assert K.ROUTES == ("EFFICIENCY_ROUTE", "PROTECTION_ROUTE") and K.NOMINATION_TRADEOFF == "NO_UNAMBIGUOUS_NOMINATION_PARETO_TRADEOFF"
+
+
+def test_c1_can_be_nominated_by_the_efficiency_route_without_any_drawdown_gain():
+    """C1 is never more de-risked than C0, so it cannot be required to improve drawdown: more return, fewer costly false alarms, drawdown within +10%."""
+    out = _decide(c1=_s(0.0555, -0.42, 0.25))
+    assert out["developmentNomination"] == "C1" and out["steps"]["C1"]["routes"] == ["EFFICIENCY_ROUTE"]
+    assert out["steps"]["C1"]["drawdownNonInferiorVersusControl"] and not out["steps"]["C1"]["meaningfulDrawdownImprovementVersusControl"]
+
+
+def test_the_protection_route_nominates_a_candidate_with_meaningfully_shallower_drawdown_and_non_inferior_return():
+    out = _decide(c2=_s(0.0460, -0.34, 0.45))
+    assert out["developmentNomination"] == "C2" and out["steps"]["C2"]["routes"] == ["PROTECTION_ROUTE"]
+    assert out["steps"]["C2"]["returnNonInferiorVersusControl"] and not out["steps"]["C2"]["meaningfulReturnImprovementVersusControl"]
+
+
+def test_non_inferiority_is_required_on_both_axes_before_any_improvement_counts():
+    assert _decide(c1=_s(0.0600, -0.45, 0.20))["developmentNomination"] == K.NOMINATION_NONE        # +1.0pp return, but drawdown 12.5% deeper
+    assert _decide(c2=_s(0.0440, -0.20, 0.40))["developmentNomination"] == K.NOMINATION_NONE        # drawdown halved, but return 0.6pp below the margin
+    both = _decide(c3=_s(0.0520, -0.39, 0.45))                                                      # inside both bands, improving neither route
+    assert both["developmentNomination"] == K.NOMINATION_NONE and both["steps"]["C3"]["routes"] == [] and not both["steps"]["C3"]["survives"]
+
+
+def test_a_value_exactly_on_a_band_edge_counts_as_inside_it_and_a_missing_value_never_passes():
+    assert _decide(c1=_s(0.055, -0.44, 0.30))["steps"]["C1"]["survives"]                            # +0.50pp return and 110% drawdown, both exactly on the edge
+    assert _decide(c2=_s(0.045, -0.36, 0.30))["steps"]["C2"]["survives"]                            # -0.50pp return and 90% drawdown, both exactly on the edge
+    assert not _decide(c1=_s(0.0549, -0.40, 0.30))["steps"]["C1"]["meaningfulReturnImprovementVersusControl"]
+    assert not _decide(c1=_s(0.055, -0.4401, 0.30))["steps"]["C1"]["survives"]
+    for hole in (_s(None, -0.30, 0.2), _s(0.06, None, 0.2)):
+        step = _decide(c1=hole)["steps"]["C1"]
+        assert not step["survives"] and not step["returnNonInferiorVersusControl"] and step["routes"] == []
+
+
+def test_pareto_elimination_comes_first_and_the_passive_path_can_eliminate_but_is_never_nominated():
+    # inside both bands and on the efficiency route, yet the passive path is better on return AND drawdown at zero time de-risked.
+    out = K.development_nomination({K.PASSIVE: _s(0.070, -0.30, 0.0), "C0": _s(0.050, -0.40, 0.50), "C1": _s(0.0556, -0.41, 0.30),
+                                    "C2": _s(0.0, -0.99, 0.99), "C3": _s(0.0, -0.99, 0.99)})
+    assert out["steps"]["C1"]["dominatedBy"] == [K.PASSIVE] and out["steps"]["C1"]["returnNonInferiorVersusControl"]
+    assert not out["steps"]["C1"]["survives"] and out["developmentNomination"] == K.NOMINATION_NONE
+    # a candidate dominated by ANOTHER CANDIDATE is eliminated even though it clears every band against C0
+    out = _decide(c1=_s(0.0540, -0.41, 0.30), c3=_s(0.0556, -0.40, 0.20))
+    assert out["steps"]["C1"]["dominatedBy"] == ["C3"] and out["steps"]["C1"]["returnNonInferiorVersusControl"] and not out["steps"]["C1"]["survives"]
+    assert out["developmentNomination"] == "C3"
+    assert out["controlDominatedBy"] == ["C3"]                                                   # better return, equal drawdown, less time de-risked
+
+
+def test_several_mutually_non_dominated_survivors_are_a_reported_trade_off_and_nothing_is_forced():
+    out = _decide(c1=_s(0.0560, -0.42, 0.25), c2=_s(0.0480, -0.34, 0.45))                       # C1 keeps return, C2 buys protection: a genuine trade-off
+    assert out["survivors"] == ["C1", "C2"] and out["steps"]["C1"]["dominatedBy"] == [] and out["steps"]["C2"]["dominatedBy"] == []
+    assert out["developmentNomination"] == K.NOMINATION_TRADEOFF and out["mutuallyNonDominatedSurvivors"] == ["C1", "C2"]
+    three = _decide(c1=_s(0.0560, -0.42, 0.25), c2=_s(0.0480, -0.34, 0.45), c3=_s(0.0520, -0.35, 0.40))
+    assert three["developmentNomination"] == K.NOMINATION_TRADEOFF
+    # no tie-break: neither the simplest, nor the highest return, nor the shallowest drawdown is chosen
+    assert all(three["developmentNomination"] != c for c in K.CANDIDATE_ORDER)
+
+
+def test_identical_survivors_are_also_not_forced_and_no_survivor_keeps_the_control():
+    same = _decide(c1=_s(0.0560, -0.42, 0.25), c2=_s(0.0560, -0.42, 0.25))
+    assert same["survivors"] == ["C1", "C2"] and same["developmentNomination"] == K.NOMINATION_TRADEOFF
+    assert _decide()["developmentNomination"] == K.NOMINATION_NONE and _decide()["survivors"] == []
+
+
+def test_the_decision_output_carries_no_forbidden_semantics_and_no_utility_score():
+    out = _decide(c1=_s(0.0560, -0.42, 0.25), c2=_s(0.0480, -0.34, 0.45))
     assert K.assert_no_forbidden_keys(out)
+    assert not any("score" in key.lower() or "utility" in key.lower() for step in out["steps"].values() for key in step)
     with pytest.raises(ValueError, match="FORBIDDEN_OUTPUT_KEY"):
         K.assert_no_forbidden_keys({"bestCandidate": 1})
 

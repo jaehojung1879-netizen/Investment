@@ -23,7 +23,7 @@
       "C0": {"enum": [1.0, 0.7, 0.4]}, "C1": {"enum": [1.0, 0.7, 0.4]}, "C2": {"enum": [1.0, 0.7, 0.4]}, "C3": {"enum": [1.0, 0.7, 0.4]}},
       "description": "every candidate is recorded so the prospective record does not depend on the development nomination"},
     "heldForMissingState": {"type": "object", "additionalProperties": {"type": "boolean"}},
-    "finalArchitecture": {"enum": ["C0", "C1", "C2", "C3"], "description": "the sealed development nomination, or C0 when none was nominated"},
+    "finalArchitecture": {"enum": ["C0", "C1", "C2", "C3"], "description": "the sealed development nomination; C0 (the control) when none was nominated, including NO_CANDIDATE_NOMINATED_CONTROL_RETAINED and NO_UNAMBIGUOUS_NOMINATION_PARETO_TRADEOFF. All four candidates are recorded in every receipt either way."},
     "finalEquityRiskMultiplier": {"enum": [1.0, 0.7, 0.4]},
     "nominationSource": {"type": "string", "description": "SHA-256 of the sealed result file the nomination was read from"},
     "evaluationHorizons": {"const": [21, 63, 126]},

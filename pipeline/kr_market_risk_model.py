@@ -79,7 +79,6 @@ CANDIDATES = {
 }
 CANDIDATE_ORDER = ("C0", "C1", "C2", "C3")
 CONTROL = "C0"
-SIMPLICITY_ORDER = ("C0", "C1", "C2", "C3")     # fewer layers first; among three-layer rules, the one that can only act LESS than C0 first, one switch before two
 PASSIVE = "PASSIVE_FULL_EXPOSURE"                # always 1.0; a dominance reference, never a candidate
 
 # ---- portfolio and cost (repository KR conventions, unchanged) ----------------------------------------------------------------------------------
@@ -97,11 +96,16 @@ REBOUND_HORIZONS = (63, 126)
 EPISODE_THRESHOLDS = M.EPISODE_THRESHOLDS
 PRIMARY_EPISODE_THRESHOLD = M.PRIMARY_EPISODE_THRESHOLD
 
-# ---- decision (frozen before any outcome; Pareto first, no weighted utility) ----------------------------------------------------------------------
+# ---- decision (frozen before any outcome; Pareto first, symmetric bands versus C0, no weighted utility) -----------------------------------------
 DOMINANCE_AXES = (("netAnnualizedReturn", "HIGHER"), ("maxDrawdown", "HIGHER"), ("reducedSessionShare", "LOWER"))
-MEANINGFUL_DRAWDOWN_IMPROVEMENT = 0.10           # |MDD| at most 90% of C0's |MDD|
-RETURN_INDISTINGUISHABLE_PP = 0.005              # 0.50 pp per year of net annualized return
+# Two economically distinct routes to a nomination, one symmetric band each. Round development tolerances fixed before any candidate outcome.
+RETURN_BAND = 0.005                              # 0.50 pp per year of net annualized return: the non-inferiority margin AND the meaningful-improvement margin
+MEANINGFUL_DRAWDOWN_IMPROVEMENT = 0.10           # |MDD| at most 90% of C0's |MDD| (protection route) ...
+NON_INFERIORITY_DRAWDOWN_BAND = 0.10             # ... and at most 110% of it for non-inferiority (efficiency route)
+BAND_EPSILON = 1e-12                             # a value exactly on a band edge counts as inside it despite float representation
 NOMINATION_NONE = "NO_CANDIDATE_NOMINATED_CONTROL_RETAINED"
+NOMINATION_TRADEOFF = "NO_UNAMBIGUOUS_NOMINATION_PARETO_TRADEOFF"
+ROUTES = ("EFFICIENCY_ROUTE", "PROTECTION_ROUTE")
 
 FORBIDDEN_OUTPUT_KEY_FRAGMENTS = ("winner", "optimal", "best", "promot", "validated", "verdict", "passfail", "recommend", "productionready",
                                   "timingrule", "proven", "alpha")
@@ -476,7 +480,7 @@ def summarise_episodes(rows, key):
 
 
 # =======================================================================================================================================
-# The preregistered decision (Pareto first; two frozen tolerances; simplicity tie-break)
+# The preregistered decision (Pareto first; symmetric non-inferiority / meaningful-improvement bands versus C0; no forced winner)
 # =======================================================================================================================================
 def dominates(a, b):
     """a dominates b: at least as good on every axis and strictly better on one."""
@@ -497,32 +501,40 @@ def dominates(a, b):
 def development_nomination(summaries):
     """`summaries`: {id: {netAnnualizedReturn, maxDrawdown, reducedSessionShare}} for C0..C3 and PASSIVE_FULL_EXPOSURE.
 
-    1. A candidate dominated by any other candidate or by the passive reference is eliminated.
-    2. A survivor must show MEANINGFUL downside improvement versus C0: |maxDrawdown| <= (1 - 0.10) x |C0 maxDrawdown|.
-    3. ... and must preserve return: net annualized return >= C0's - 0.50 pp.
-    4. Among survivors the highest net annualized return leads; any survivor within 0.50 pp of it is economically indistinguishable, and the
-       simplest of those (SIMPLICITY_ORDER) is nominated.
-    No survivor -> NO_CANDIDATE_NOMINATED_CONTROL_RETAINED. A nomination is DEVELOPMENT evidence for later integration, never validation."""
+    1. PARETO ELIMINATION. A candidate dominated by any other candidate or by the passive reference is eliminated.
+    2. NON-INFERIORITY versus C0, BOTH required: net annualized return >= C0's - 0.50 pp, and |maxDrawdown| <= 1.10 x |C0 maxDrawdown|.
+    3. AT LEAST ONE MEANINGFUL IMPROVEMENT versus C0:
+         EFFICIENCY_ROUTE  net annualized return >= C0's + 0.50 pp (drawdown being non-inferior), or
+         PROTECTION_ROUTE  |maxDrawdown| <= 0.90 x |C0 maxDrawdown| (return being non-inferior).
+    4. Exactly one survivor -> it is the development nomination. No survivor -> NO_CANDIDATE_NOMINATED_CONTROL_RETAINED. More than one survivor
+       -> NO_UNAMBIGUOUS_NOMINATION_PARETO_TRADEOFF: survivors are mutually non-dominated (step 1 removed every dominated candidate), so choosing
+       among them would need a preference between the hypotheses (fewer false alarms, less lateness, both) that this protocol does not own. No
+       simplicity order, return ranking or utility is applied; every candidate stays in the prospective receipts either way.
+    A nomination is DEVELOPMENT evidence for later integration, never validation."""
     pool = {k: v for k, v in summaries.items()}
     control = pool[CONTROL]
     dominated = {k: sorted(o for o in pool if o != k and dominates(pool[o], pool[k])) for k in CANDIDATE_ORDER}
+    c_ret, c_dd = control["netAnnualizedReturn"], control["maxDrawdown"]
     steps = {}
     for k in CANDIDATE_ORDER[1:]:
-        s = pool[k]
-        meaningful = (s["maxDrawdown"] is not None and control["maxDrawdown"] is not None
-                      and abs(s["maxDrawdown"]) <= (1.0 - MEANINGFUL_DRAWDOWN_IMPROVEMENT) * abs(control["maxDrawdown"]))
-        preserved = (s["netAnnualizedReturn"] is not None and control["netAnnualizedReturn"] is not None
-                     and s["netAnnualizedReturn"] >= control["netAnnualizedReturn"] - RETURN_INDISTINGUISHABLE_PP)
-        steps[k] = {"dominatedBy": dominated[k], "meaningfulDrawdownImprovementVersusControl": bool(meaningful),
-                    "returnPreservedVersusControl": bool(preserved), "survives": not dominated[k] and meaningful and preserved}
+        r, dd = pool[k]["netAnnualizedReturn"], pool[k]["maxDrawdown"]
+        known = None not in (r, dd, c_ret, c_dd)
+        return_ok = known and r >= c_ret - RETURN_BAND - BAND_EPSILON
+        drawdown_ok = known and abs(dd) <= (1.0 + NON_INFERIORITY_DRAWDOWN_BAND) * abs(c_dd) + BAND_EPSILON
+        return_better = known and r >= c_ret + RETURN_BAND - BAND_EPSILON
+        drawdown_better = known and abs(dd) <= (1.0 - MEANINGFUL_DRAWDOWN_IMPROVEMENT) * abs(c_dd) + BAND_EPSILON
+        non_inferior = bool(return_ok and drawdown_ok)
+        routes = [name for name, hit in (("EFFICIENCY_ROUTE", return_better), ("PROTECTION_ROUTE", drawdown_better)) if hit]
+        steps[k] = {"dominatedBy": dominated[k], "returnNonInferiorVersusControl": bool(return_ok), "drawdownNonInferiorVersusControl": bool(drawdown_ok),
+                    "meaningfulReturnImprovementVersusControl": bool(return_better), "meaningfulDrawdownImprovementVersusControl": bool(drawdown_better),
+                    "routes": routes if non_inferior else [], "survives": bool(not dominated[k] and non_inferior and routes)}
     survivors = [k for k in CANDIDATE_ORDER[1:] if steps[k]["survives"]]
+    out = {"survivors": survivors, "steps": steps, "controlDominatedBy": dominated[CONTROL]}
     if not survivors:
-        return {"developmentNomination": NOMINATION_NONE, "survivors": [], "steps": steps, "controlDominatedBy": dominated[CONTROL]}
-    lead = max(pool[k]["netAnnualizedReturn"] for k in survivors)
-    indistinguishable = [k for k in survivors if pool[k]["netAnnualizedReturn"] >= lead - RETURN_INDISTINGUISHABLE_PP]
-    chosen = min(indistinguishable, key=SIMPLICITY_ORDER.index)
-    return {"developmentNomination": chosen, "survivors": survivors, "indistinguishableFromLead": indistinguishable, "steps": steps,
-            "controlDominatedBy": dominated[CONTROL]}
+        return {"developmentNomination": NOMINATION_NONE, **out}
+    if len(survivors) > 1:
+        return {"developmentNomination": NOMINATION_TRADEOFF, "mutuallyNonDominatedSurvivors": survivors, **out}
+    return {"developmentNomination": survivors[0], **out}
 
 
 def assert_no_forbidden_keys(value, path=""):

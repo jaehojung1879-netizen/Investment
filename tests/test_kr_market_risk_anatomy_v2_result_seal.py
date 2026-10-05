@@ -99,13 +99,97 @@ def test_a_sealed_result_refuses_every_future_execution():
     assert E.lock_exists(sha_, env, lambda *a, **k: (200, [{"ref": E.LOCK_PREFIX}, {"ref": E.lock_ref(sha_)}]))
 
 
+# The frozen anatomy machinery is an EXACT file set, never a name prefix: a prefix such as "pipeline/kr_market_risk" also matches every later,
+# legitimate kr_market_risk_* study. The set is derived from what the sealed v1 / v2 specs themselves hash (import closure plus sealed data inputs),
+# plus the few anatomy-owned files that sit outside those closures, listed exactly.
+ANATOMY_OWNED_OUTSIDE_THE_CLOSURES = (
+    "research_specs/kr-market-risk-anatomy-v2.json", "research_specs/kr-market-risk-anatomy-v2.sha256",
+    ".github/workflows/kr-market-risk-anatomy-v1-sources.yml",
+    "scripts/acquire_kr_market_risk_sources.py", "scripts/write_kr_market_risk_readiness.py", "scripts/write_kr_market_risk_v2_readiness.py",
+    "docs/kr-market-risk-anatomy-v1-design.md", "docs/kr-market-risk-anatomy-v2-source-readiness.md",
+    "docs/results/kr-market-risk-anatomy-v2-readiness.json", "docs/results/kr-market-risk-anatomy-v2-provenance.json")
+# The result, manifest, marker, provenance and final-result document are CREATED by the seal commit, so they are legitimately absent from the seal base
+# and present in every later diff against it; their bytes are pinned by test_committed_result_files_are_pinned_byte_for_byte and the provenance tests.
+SEAL_CREATED = ("docs/kr-market-risk-anatomy-v2-final-result.md", "docs/results/kr-market-risk-anatomy-v2-result.json", "docs/results/kr-market-risk-anatomy-v2-manifest.json",
+                "docs/results/kr-market-risk-anatomy-v2-execution-started.json", "docs/results/kr-market-risk-anatomy-v2-seal-provenance.json")
+
+
+def frozen_anatomy_paths(root=ROOT):
+    """Exact protected set: every file the sealed v1 and v2 specs hash, plus the anatomy-owned files listed above."""
+    paths = set(ANATOMY_OWNED_OUTSIDE_THE_CLOSURES)
+    for name in ("kr-market-risk-anatomy-v1", "kr-market-risk-anatomy-v2"):
+        paths |= set(json.loads((Path(root) / "research_specs" / (name + ".json")).read_text())["dependencyHashes"])
+    return frozenset(paths)
+
+
+def frozen_changes(changed, protected):
+    return sorted(p for p in changed if p in protected)
+
+
+def git_changed(base, root=ROOT):
+    return subprocess.check_output(["git", "diff", "--name-only", base, "HEAD"], cwd=str(root), text=True).split()
+
+
 def test_seal_change_touches_no_frozen_machinery():
-    """Against the seal base, no frozen v2 / v1 machinery, spec, workflow or retained source byte changed."""
+    """Against the seal base, no frozen v2 / v1 machinery, spec, workflow or retained source byte changed. Later commits on main may add unrelated
+    files, including later kr_market_risk_* studies; only the exact frozen set matters."""
     try:
-        changed = subprocess.check_output(["git", "diff", "--name-only", MAIN_SHA, "HEAD"], cwd=str(ROOT), text=True).split()
+        changed = git_changed(MAIN_SHA)
     except (subprocess.CalledProcessError, OSError):
         pytest.skip("seal base commit not available in this checkout")
-    # later commits on main may add unrelated files; the frozen v2 machinery must never be among the changes
-    frozen = [p for p in changed if p.startswith(("pipeline/kr_market_risk", "research_specs/kr-market-risk-anatomy", ".github/workflows/kr-market-risk-anatomy", "scripts/run_kr_market_risk",
-                                                 "scripts/build_kr_market_risk", "data/kr-market-risk-anatomy-v1/"))]
-    assert frozen == []
+    assert frozen_changes(changed, frozen_anatomy_paths()) == []
+
+
+def test_the_protected_set_is_exact_derived_from_the_sealed_specs_and_never_a_name_prefix():
+    protected = frozen_anatomy_paths()
+    v2 = json.loads((ROOT / "research_specs/kr-market-risk-anatomy-v2.json").read_text())["dependencyHashes"]
+    v1 = json.loads((ROOT / "research_specs/kr-market-risk-anatomy-v1.json").read_text())["dependencyHashes"]
+    assert set(v2) | set(v1) <= protected and len(protected) >= len(set(v2) | set(v1))
+    for path in ("pipeline/kr_market_risk_anatomy.py", "pipeline/kr_market_risk_anatomy_analysis.py", "pipeline/kr_market_risk_anatomy_execution.py",
+                 "pipeline/kr_market_risk_anatomy_v2_execution.py", "pipeline/kr_market_risk_sources.py", "pipeline/kr_market_risk_sources_v2.py",
+                 "pipeline/kr_market_risk_source_parse.py", "pipeline/kr_market_risk_overlay.py", "scripts/run_kr_market_risk_anatomy_v1.py",
+                 "scripts/run_kr_market_risk_anatomy_v2.py", ".github/workflows/kr-market-risk-anatomy-v2.yml", "research_specs/kr-market-risk-anatomy-v2.json",
+                 "data/kr-market-risk-anatomy-v1/sources/FDR_KS200/normalized.csv", "docs/results/kr-market-risk-anatomy-v2-readiness.json"):
+        assert path in protected, path
+    assert not [p for p in protected if "kr_market_risk_model" in p or "kr-market-risk-model" in p]
+    assert not set(SEAL_CREATED) & protected and all((ROOT / p).exists() for p in SEAL_CREATED)
+
+
+def test_a_genuinely_frozen_anatomy_file_is_still_detected_and_a_later_market_risk_model_file_is_not_a_false_mutation():
+    protected = frozen_anatomy_paths()
+    dependency = sorted(json.loads((ROOT / "research_specs/kr-market-risk-anatomy-v2.json").read_text())["dependencyHashes"])[0]
+    for frozen in ("pipeline/kr_market_risk_anatomy.py", "pipeline/kr_market_risk_sources_v2.py", ".github/workflows/kr-market-risk-anatomy-v2.yml",
+                   "research_specs/kr-market-risk-anatomy-v2.sha256", "docs/results/kr-market-risk-anatomy-v2-provenance.json", dependency):
+        assert frozen_changes([frozen, "README.md"], protected) == [frozen]
+    later = ["pipeline/kr_market_risk_model.py", "pipeline/kr_market_risk_model_execution.py", "pipeline/kr_market_risk_model_receipts.py",
+             "pipeline/kr_market_risk_model_seal.py", "scripts/build_kr_market_risk_model_v1_spec.py", "scripts/run_kr_market_risk_model_v1.py",
+             "scripts/seal_kr_market_risk_model_v1.py", ".github/workflows/kr-market-risk-model-v1.yml", "research_specs/kr-market-risk-model-v1.json",
+             "docs/results/kr-market-risk-model-v1-result.json",
+             # a hypothetical future study sharing the family name must never be caught either
+             "pipeline/kr_market_risk_model_v2.py", "pipeline/kr_market_risk_regime.py", "scripts/run_kr_market_risk_model_v2.py",
+             "scripts/build_kr_market_risk_regime_spec.py", "research_specs/kr-market-risk-regime-v1.json"]
+    assert frozen_changes(later, protected) == []
+
+
+def test_the_real_git_diff_path_flags_a_frozen_edit_and_ignores_a_new_model_file(tmp_path):
+    """The same diff plumbing the real test uses, on a throwaway repository seeded with the real sealed specs."""
+    def git(*args):
+        return subprocess.check_output(["git", "-c", "user.name=t", "-c", "user.email=t@t", *args], cwd=str(tmp_path), text=True)
+    (tmp_path / "research_specs").mkdir()
+    for name in ("kr-market-risk-anatomy-v1.json", "kr-market-risk-anatomy-v2.json"):
+        (tmp_path / "research_specs" / name).write_bytes((ROOT / "research_specs" / name).read_bytes())
+    (tmp_path / "pipeline").mkdir()
+    (tmp_path / "pipeline/kr_market_risk_anatomy.py").write_text("x = 1\n")
+    git("init", "-q")
+    git("add", "-A")
+    git("commit", "-q", "-m", "base")
+    base = git("rev-parse", "HEAD").strip()
+    (tmp_path / "pipeline/kr_market_risk_model.py").write_text("y = 1\n")
+    git("add", "-A")
+    git("commit", "-q", "-m", "new model file")
+    protected = frozen_anatomy_paths(tmp_path)
+    assert git_changed(base, tmp_path) == ["pipeline/kr_market_risk_model.py"] and frozen_changes(git_changed(base, tmp_path), protected) == []
+    (tmp_path / "pipeline/kr_market_risk_anatomy.py").write_text("x = 2\n")
+    git("add", "-A")
+    git("commit", "-q", "-m", "frozen edit")
+    assert frozen_changes(git_changed(base, tmp_path), protected) == ["pipeline/kr_market_risk_anatomy.py"]

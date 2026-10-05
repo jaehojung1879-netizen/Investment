@@ -209,15 +209,37 @@ def decision_definition():
     return {
         "axes": [{"metric": a, "better": d} for a, d in K.DOMINANCE_AXES],
         "axisBasis": "net of 1x repository costs over the full evaluation window",
-        "steps": ["eliminate any candidate dominated by another candidate or by the passive reference",
-                  "require meaningful downside improvement versus C0: |maxDrawdown| <= 0.90 x |C0 maxDrawdown|",
-                  "require return preservation versus C0: net annualized return >= C0's - 0.50 pp",
-                  "among survivors prefer the highest net annualized return; survivors within 0.50 pp of it are indistinguishable and the simplest of them is nominated"],
-        "meaningfulDrawdownImprovement": K.MEANINGFUL_DRAWDOWN_IMPROVEMENT, "returnIndistinguishablePp": K.RETURN_INDISTINGUISHABLE_PP,
-        "simplicityOrder": list(K.SIMPLICITY_ORDER), "noSurvivor": K.NOMINATION_NONE,
+        "steps": ["PARETO: eliminate any candidate dominated by another candidate or by the passive reference",
+                  "NON-INFERIORITY versus C0, both required: net annualized return >= C0's - 0.50 pp, and |maxDrawdown| <= 1.10 x |C0 maxDrawdown|",
+                  "MEANINGFUL IMPROVEMENT versus C0, at least one: EFFICIENCY_ROUTE net annualized return >= C0's + 0.50 pp, "
+                  "or PROTECTION_ROUTE |maxDrawdown| <= 0.90 x |C0 maxDrawdown|",
+                  "exactly one survivor is nominated; none keeps the control; several mutually non-dominated survivors are reported as a Pareto trade-off "
+                  "and none is nominated"],
+        "returnBand": K.RETURN_BAND, "nonInferiorityDrawdownBand": K.NON_INFERIORITY_DRAWDOWN_BAND,
+        "meaningfulDrawdownImprovement": K.MEANINGFUL_DRAWDOWN_IMPROVEMENT, "bandEpsilon": K.BAND_EPSILON, "routes": list(K.ROUTES),
+        "noSurvivor": K.NOMINATION_NONE, "severalSurvivors": K.NOMINATION_TRADEOFF,
+        "tieBreak": "NONE: survivors are mutually non-dominated, and ranking them (by return, simplicity or anything else) would silently prefer one hypothesis "
+                    "(fewer false alarms, less lateness, both) over another; every candidate stays in the prospective receipts either way",
+        "prospectiveFinalArchitecture": "the nominated candidate, otherwise C0 (the control) for both NO_CANDIDATE_NOMINATED_CONTROL_RETAINED and "
+                                        "NO_UNAMBIGUOUS_NOMINATION_PARETO_TRADEOFF; all four candidates' multipliers are recorded in every receipt regardless",
         "meaning": "a DEVELOPMENT nomination of an architecture for later Market x Industry x Stock integration and prospective receipts; never validation, never production",
         "weightedUtility": "NONE", "cagrAloneDecides": False, "drawdownAloneDecides": False,
     }
+
+
+def pre_outcome_revisions():
+    """Frozen design changes made after the first protocol commit and before ANY outcome access, each with its reason. Recorded in the spec so the
+    revision is part of the sealed identity rather than a silent edit."""
+    return [{
+        "id": "NOMINATION_RULE_REVISION_1", "madeBeforeAnyOutcome": True, "outcomeCountersAtRevision": "ALL_ZERO",
+        "replaced": "every candidate had to improve max drawdown by >= 10% versus C0; survivors within 0.50 pp of the lead return were ranked by a simplicity order",
+        "reason": "C1 can never be more de-risked than C0 (it differs only in leaving an isolated FAST==1 warning at 1.0), so its hypothesis is fewer false alarms, "
+                  "less time de-risked and better participation at acceptable protection; a mandatory 10% drawdown gain made it ineligible by construction, and a "
+                  "simplicity order would have silently preferred the least-structured hypothesis",
+        "now": "Pareto elimination, symmetric non-inferiority bands versus C0 (return -0.50 pp, drawdown +10% relative), at least one meaningful improvement "
+               "(efficiency route +0.50 pp return, or protection route -10% relative drawdown), no tie-break: several survivors are a reported Pareto trade-off",
+        "unchanged": ["candidates and mapping tables", "states and thresholds", "multiplier vocabulary", "evaluation window", "costs", "diagnostics",
+                      "prospective receipts", "lifecycle"]}]
 
 
 # --------------------------------------------------------------------------- #
@@ -259,7 +281,7 @@ def load_spec(root=ROOT):
             raise ValueError("HARNESS_OR_DEPENDENCY_CHANGED: " + rel)
     verify_pins(spec, root)
     for key, built in (("model", model_definition()), ("portfolio", portfolio_definition()), ("evaluation", evaluation_definition()),
-                       ("decision", decision_definition())):
+                       ("decision", decision_definition()), ("preOutcomeRevisions", pre_outcome_revisions())):
         if json.loads(json.dumps(spec[key])) != json.loads(json.dumps(built)):
             raise ValueError("MODULE_RULE_DIFFERS_FROM_FROZEN_SPEC: " + key)
     if spec["prospective"]["receiptSchemaSha256"] != file_hash(root / RECEIPT_SCHEMA_PATH):

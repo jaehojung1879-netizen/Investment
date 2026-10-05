@@ -79,6 +79,10 @@ def test_the_frozen_spec_carries_the_module_rules_the_development_label_and_no_o
     assert SPEC["scientificStatus"] == "EXPLORATORY_DEVELOPMENT_ON_OUTCOME_EXPOSED_KR_HISTORY" and SPEC["developmentStatement"] == K.DEVELOPMENT_STATEMENT
     assert SPEC["phase"] == "PREREGISTRATION_AND_HARNESS_ONLY_NO_OUTCOME_COMPUTED" and SPEC["outcomeAccess"]["inThisChange"] == "NONE"
     assert SPEC["boundary"]["isValidation"] is False and SPEC["boundary"]["usesMachineLearning"] is False
+    revision = SPEC["preOutcomeRevisions"][0]
+    assert revision["id"] == "NOMINATION_RULE_REVISION_1" and revision["madeBeforeAnyOutcome"] is True and revision["outcomeCountersAtRevision"] == "ALL_ZERO"
+    assert SPEC["decision"]["tieBreak"].startswith("NONE") and SPEC["decision"]["severalSurvivors"] == K.NOMINATION_TRADEOFF
+    assert SPEC["decision"]["routes"] == ["EFFICIENCY_ROUTE", "PROTECTION_ROUTE"] and "simplicityOrder" not in SPEC["decision"]
     assert [c["equityRiskMultiplier"] for c in SPEC["model"]["candidates"]["C1"]["table"]] == [c["equityRiskMultiplier"] for c in K.mapping_table("C1")]
     assert SPEC["inherited"] == {"primaryReference": "FDR_KS200", "analysisEnd": "2026-09-17", "vixRoleSource": "FRED_VIXCLS"}
     for rel in (".github/workflows/kr-market-risk-model-v1.yml", "docs/kr-market-risk-model-v1-design.md", "pipeline/kr_market_risk_model_seal.py",
@@ -233,7 +237,7 @@ def test_lock_follows_every_gate_the_marker_follows_the_lock_and_values_and_arti
     assert sorted(p.name for p in out.iterdir()) == sorted(E.ARTIFACT_FILES)
     assert manifest["counters"]["markerWrites"] == 1 and manifest["counters"]["valueReads"] == 4 and manifest["specSha256"] == SHA
     result = json.loads((out / "market-risk-model.json").read_text())
-    assert result["decision"]["developmentNomination"] in K.CANDIDATE_ORDER + (K.NOMINATION_NONE,) and set(result["candidates"]) == set(K.CANDIDATE_ORDER)
+    assert result["decision"]["developmentNomination"] in K.CANDIDATE_ORDER[1:] + (K.NOMINATION_NONE, K.NOMINATION_TRADEOFF) and set(result["candidates"]) == set(K.CANDIDATE_ORDER)
     assert result["window"]["firstDecisionDate"] == "2007-01-05" and K.assert_no_forbidden_keys(result)
     for cid in K.CANDIDATE_ORDER:
         c = result["candidates"][cid]

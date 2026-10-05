@@ -2311,10 +2311,26 @@
   state machine shows exactly where each candidate is determinable (tested equal to the real-valued pattern on synthetic
   inputs). Outcome-free readiness on the committed bytes: READY, 1,027 weekly decisions from 2007-01-05, every candidate
   determinable on all of them, all counters zero.
-- THE DECISION IS PARETO FIRST AND ITS TOLERANCES ARE FIXED BEFORE OUTCOMES. Dominance on net annualized return, maximum
-  drawdown and share of sessions de-risked (the passive path can eliminate, never be nominated); then |MDD| <= 0.90 x C0's,
-  net return >= C0's - 0.50 pp, and the simplest of survivors within 0.50 pp of the lead. No weighted utility; neither CAGR
-  nor drawdown alone decides; no survivor retains the control.
+- THE DECISION IS PARETO FIRST, SYMMETRIC AND DOES NOT FORCE A WINNER, AND ITS TOLERANCES ARE FIXED BEFORE OUTCOMES. Dominance
+  on net annualized return, maximum drawdown and share of sessions de-risked (the passive path can eliminate, never be
+  nominated); then non-inferiority versus C0 on BOTH axes (return >= C0 - 0.50 pp, |MDD| <= 1.10 x C0's); then at least one
+  meaningful improvement (efficiency route: return >= C0 + 0.50 pp; protection route: |MDD| <= 0.90 x C0's). One survivor is
+  nominated, none keeps the control, and several mutually non-dominated survivors are `NO_UNAMBIGUOUS_NOMINATION_PARETO_TRADEOFF`
+  with every candidate kept in the prospective receipts. No weighted utility; neither CAGR nor drawdown alone decides.
+- A GATE THAT A CANDIDATE CANNOT STRUCTURALLY PASS IS NOT A TEST OF THAT CANDIDATE. The first nomination rule demanded a 10%
+  drawdown gain from every candidate, but C1 can never be more de-risked than C0 (it only leaves an isolated FAST == 1 warning
+  at 1.0): its hypothesis is fewer false alarms and better participation at acceptable protection, so the rule made it
+  ineligible by construction. A simplicity tie-break would also have silently preferred the least-structured hypothesis. Both
+  were replaced BEFORE any outcome access (all counters zero) and the revision is recorded in the spec (`preOutcomeRevisions`)
+  with its reason, so it is part of the sealed identity rather than a silent edit. Ask of every success criterion: can each
+  candidate pass it for the reason it was built?
+- A PREDECESSOR'S TAMPER GUARD PROTECTS ITS EXACT FILES, NEVER A NAME PREFIX. `test_seal_change_touches_no_frozen_machinery`
+  matched `pipeline/kr_market_risk*`, so the first legitimate `kr_market_risk_model*` study read as a mutation of the sealed
+  anatomy and failed full CI. The protected set is now the files the sealed v1 and v2 specs themselves hash (import closure plus
+  sealed data inputs) plus an exact list of the few anatomy-owned files outside those closures; files the seal commit created
+  are byte-pinned by their own tests rather than listed against a base that predates them. Regression tests prove a genuinely
+  frozen file is still caught, a later `kr_market_risk_model*` / `kr_market_risk_regime*` file is not, and the same diff
+  plumbing flags a frozen edit in a throwaway git repository.
 - A RESULT SEAL THAT CAN ONLY COPY CANNOT REINTERPRET. The automatic seal module imports only the standard library, verifies
   run, archive digest, file list, manifest, marker, spec and both lock refs, copies bytes it never parses back out, and its
   only pull-request write is a `draft: true` create. It never merges, marks ready or seals an attempt artifact; a failure

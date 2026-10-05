@@ -29,24 +29,27 @@
       }
     ],
     "axisBasis": "net of 1x repository costs over the full evaluation window",
+    "bandEpsilon": 1e-12,
     "cagrAloneDecides": false,
     "drawdownAloneDecides": false,
     "meaning": "a DEVELOPMENT nomination of an architecture for later Market x Industry x Stock integration and prospective receipts; never validation, never production",
     "meaningfulDrawdownImprovement": 0.1,
     "noSurvivor": "NO_CANDIDATE_NOMINATED_CONTROL_RETAINED",
-    "returnIndistinguishablePp": 0.005,
-    "simplicityOrder": [
-      "C0",
-      "C1",
-      "C2",
-      "C3"
+    "nonInferiorityDrawdownBand": 0.1,
+    "prospectiveFinalArchitecture": "the nominated candidate, otherwise C0 (the control) for both NO_CANDIDATE_NOMINATED_CONTROL_RETAINED and NO_UNAMBIGUOUS_NOMINATION_PARETO_TRADEOFF; all four candidates' multipliers are recorded in every receipt regardless",
+    "returnBand": 0.005,
+    "routes": [
+      "EFFICIENCY_ROUTE",
+      "PROTECTION_ROUTE"
     ],
+    "severalSurvivors": "NO_UNAMBIGUOUS_NOMINATION_PARETO_TRADEOFF",
     "steps": [
-      "eliminate any candidate dominated by another candidate or by the passive reference",
-      "require meaningful downside improvement versus C0: |maxDrawdown| <= 0.90 x |C0 maxDrawdown|",
-      "require return preservation versus C0: net annualized return >= C0's - 0.50 pp",
-      "among survivors prefer the highest net annualized return; survivors within 0.50 pp of it are indistinguishable and the simplest of them is nominated"
+      "PARETO: eliminate any candidate dominated by another candidate or by the passive reference",
+      "NON-INFERIORITY versus C0, both required: net annualized return >= C0's - 0.50 pp, and |maxDrawdown| <= 1.10 x |C0 maxDrawdown|",
+      "MEANINGFUL IMPROVEMENT versus C0, at least one: EFFICIENCY_ROUTE net annualized return >= C0's + 0.50 pp, or PROTECTION_ROUTE |maxDrawdown| <= 0.90 x |C0 maxDrawdown|",
+      "exactly one survivor is nominated; none keeps the control; several mutually non-dominated survivors are reported as a Pareto trade-off and none is nominated"
     ],
+    "tieBreak": "NONE: survivors are mutually non-dominated, and ranking them (by return, simplicity or anything else) would silently prefer one hypothesis (fewer false alarms, less lateness, both) over another; every candidate stays in the prospective receipts either way",
     "weightedUtility": "NONE"
   },
   "dependencyHashes": {
@@ -57,7 +60,7 @@
     "data/kr-market-risk-anatomy-v1/sources/FRED_VIXCLS/normalized.csv": "dd0ccfe0a13f5e72a842dc27d53733748f24fb380808a7b2fb9babb40caa00ef",
     "data/kr-market-risk-anatomy-v1/sources/audit.json": "29e1b54b249f84be327d9c7a228d6e68a447d38511652414fc7ef2c9f0099345",
     "docs/kr-market-risk-anatomy-v2-final-result.md": "d74ad3414f94e12f1a425b86fb88a6b1d6de61db354b832be47a5e0c1a9997d9",
-    "docs/kr-market-risk-model-v1-design.md": "90b79fe30d151f6184c42862f19d769ef7a0dc831915d136dda4734a6671cd4f",
+    "docs/kr-market-risk-model-v1-design.md": "dfd3e270c08c64f392aee3cc8e7a474ac1f43ce35c4b4867b3481b201ead09fe",
     "docs/results/kr-market-risk-anatomy-v2-execution-started.json": "391b6ff013d5a89d5e0342fdc767c4304bc6d7ad6bc8d63247a45a71794c73bc",
     "docs/results/kr-market-risk-anatomy-v2-manifest.json": "d32efef61916ef761a662723a4e18edcbf32ad737a22b9835cd81733204e0067",
     "docs/results/kr-market-risk-anatomy-v2-readiness.json": "223e41b35a9f7e5a4d21aab418c0e8afdffda7b2c79a22714c6cfe3cdc19b9c2",
@@ -96,8 +99,8 @@
     "pipeline/kr_industry_membership_v3.py": "c857dcdd9323bc0fed69b2212b8dcc1fca7527c8fb1a0b32d588c8bbc5fa65f5",
     "pipeline/kr_market_risk_anatomy.py": "e97887dd5b0bbb15b37ed40473b1da8e40a8f3fea2125d9fb176fa94dac6e978",
     "pipeline/kr_market_risk_anatomy_analysis.py": "8565be7de14d990619c4ca3789dc4a403c547790663f6cd4139f61e0d972f8c6",
-    "pipeline/kr_market_risk_model.py": "f45f64bc4fb125cb95abfd42236bb9b51cc5e6fabde04f20fb87bedc9d557e53",
-    "pipeline/kr_market_risk_model_execution.py": "a0de9ed7bb5527f13d6b0510d74e66d63b433ad6a8551bfc664b15f0f64fe478",
+    "pipeline/kr_market_risk_model.py": "568ba9fe963881699e6abaa6d2d6c8a747583485e3436eda7620032facdca54a",
+    "pipeline/kr_market_risk_model_execution.py": "1cbc36f36b8b611a7c7d465237e0173ce3b0b33bce977285790ce9bc3d33c3af",
     "pipeline/kr_market_risk_model_receipts.py": "1871bfbca2cc548eda2be5972c5b79ea750c099c1aa23042984f19696ecc232e",
     "pipeline/kr_market_risk_model_seal.py": "eb0bdbbb7365dedbefd742818eef5b2771833e2f680237e1d514f7dcf34dfff3",
     "pipeline/kr_market_risk_overlay.py": "983b3aab891a2af2f6d54b9b3d7ca29788651ba898b074da0506a40431ae4c07",
@@ -129,8 +132,8 @@
     "pipeline/selection_null.py": "b00e7419a8a620e284f3b5a15aafa66e9a8f776b81da027a766a72b3eecf5e17",
     "research_specs/kr-market-risk-anatomy-v2.json": "6555ce3a2eac1f5ff0c647969690e39ff6dc2fcaef2e1e9cd979e237bec519b3",
     "research_specs/kr-market-risk-anatomy-v2.sha256": "62ec916cdb1cfd543026aee5d1b158eab48e58ace7db368d680eda2ed7717544",
-    "research_specs/kr-market-risk-model-v1-receipt.schema.json": "37f691a24f3cfa9b5e399ae773831b5df7f8aec7bafcafb47f70a9ed096abcb4",
-    "scripts/build_kr_market_risk_model_v1_spec.py": "baec57d94045caac44b932087b96f66d6e295e5a9d844568346f4a7df9fca765",
+    "research_specs/kr-market-risk-model-v1-receipt.schema.json": "f02fdea12d4f3f57c46109850515ee7895fefd705414498ddb8750a4137d2e80",
+    "scripts/build_kr_market_risk_model_v1_spec.py": "d525fa9c21dcbdbe481e87cc88d4b79f2a71985995d57131ee8789cfd4bb08ec",
     "scripts/run_kr_market_risk_model_v1.py": "c46fa8dd2b626eebdb3326323c444fe1b7a751a1a0e7e9e584f31cfe2add5ad9",
     "scripts/seal_kr_market_risk_model_v1.py": "258708d5320e72dff9521bbe43041269e7ccac2e6d24040d801742c2f55950a5"
   },
@@ -735,6 +738,26 @@
     "trade": "exactly to target x post-cost NAV at the execution-session close; costs paid from cash",
     "whyNotTheEtf": "the retained KODEX 200 route (YAHOO_069500) starts 2007-01-29, is an as-traded close without dividends and never passed the anatomy's source-quality gates"
   },
+  "preOutcomeRevisions": [
+    {
+      "id": "NOMINATION_RULE_REVISION_1",
+      "madeBeforeAnyOutcome": true,
+      "now": "Pareto elimination, symmetric non-inferiority bands versus C0 (return -0.50 pp, drawdown +10% relative), at least one meaningful improvement (efficiency route +0.50 pp return, or protection route -10% relative drawdown), no tie-break: several survivors are a reported Pareto trade-off",
+      "outcomeCountersAtRevision": "ALL_ZERO",
+      "reason": "C1 can never be more de-risked than C0 (it differs only in leaving an isolated FAST==1 warning at 1.0), so its hypothesis is fewer false alarms, less time de-risked and better participation at acceptable protection; a mandatory 10% drawdown gain made it ineligible by construction, and a simplicity order would have silently preferred the least-structured hypothesis",
+      "replaced": "every candidate had to improve max drawdown by >= 10% versus C0; survivors within 0.50 pp of the lead return were ranked by a simplicity order",
+      "unchanged": [
+        "candidates and mapping tables",
+        "states and thresholds",
+        "multiplier vocabulary",
+        "evaluation window",
+        "costs",
+        "diagnostics",
+        "prospective receipts",
+        "lifecycle"
+      ]
+    }
+  ],
   "predecessor": {
     "rule": "the anatomy is closed: never rerun, altered, re-thresholded or read as prospective validation; it motivated this architecture and is the reason every historical number here is development evidence",
     "sealedArtifacts": {
@@ -759,7 +782,7 @@
     ],
     "module": "pipeline/kr_market_risk_model_receipts.py",
     "receiptSchemaPath": "research_specs/kr-market-risk-model-v1-receipt.schema.json",
-    "receiptSchemaSha256": "37f691a24f3cfa9b5e399ae773831b5df7f8aec7bafcafb47f70a9ed096abcb4",
+    "receiptSchemaSha256": "f02fdea12d4f3f57c46109850515ee7895fefd705414498ddb8750a4137d2e80",
     "rules": [
       "one immutable receipt per future decision date, appended before the execution-session close",
       "every candidate's multiplier is recorded, plus the final multiplier of the sealed nomination (C0 when none)",

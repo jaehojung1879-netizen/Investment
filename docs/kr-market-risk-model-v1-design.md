@@ -136,20 +136,37 @@ For every candidate (net at 1×, and gross; the stress paths report return and c
 
 Overlapping windows are descriptive: no significance test, no multiplicity correction.
 
-## 8. Preregistered decision (Pareto first, no weighted utility)
+## 8. Preregistered decision (Pareto first, symmetric bands, no weighted utility, no forced winner)
+
+> **Pre-outcome revision 1 (made before any outcome access; all counters zero).** The first version of this section required every candidate to
+> improve maximum drawdown by at least 10% versus C0 and then broke ties with a simplicity order. Review showed that is incompatible with C1's own
+> hypothesis: C1 is never more de-risked than C0 (it differs only in leaving an isolated FAST = 1 warning at 1.0), so it exists to cut false alarms
+> and time de-risked at acceptable protection, and a mandatory 10% drawdown gain made it ineligible by construction. A simplicity order would also
+> have silently preferred the least-structured hypothesis. Both were replaced below. The revision is recorded in the spec (`preOutcomeRevisions`)
+> and changes no candidate, state, threshold, multiplier, cost, window or diagnostic.
 
 Axes, all net of 1× cost over the full window: **net annualized return** (higher), **maximum drawdown** (higher, i.e. shallower), **share of sessions
 de-risked** (lower).
 
-1. Eliminate any candidate dominated by another candidate or by the passive path (at least as good on every axis, strictly better on one).
-2. Require **meaningful downside improvement versus C0**: |MDD| ≤ 0.90 × |C0 MDD|.
-3. Require **return preservation versus C0**: net annualized return ≥ C0's − 0.50 pp.
-4. Among survivors, the highest net annualized return leads; survivors within 0.50 pp of it are economically indistinguishable and the **simplest** is
-   nominated (C0 < C1 < C2 < C3: fewer layers first; among three-layer rules the one that can only act less than C0, then one switch before two).
+1. **Pareto elimination.** Remove any candidate dominated by another candidate or by the passive path (at least as good on every axis, strictly
+   better on one).
+2. **Non-inferiority versus C0 — both required.** Net annualized return ≥ C0's − 0.50 pp, **and** |max drawdown| ≤ 1.10 × |C0's|.
+3. **At least one meaningful improvement versus C0.**
+   - *Efficiency route:* net annualized return ≥ C0's + 0.50 pp (drawdown being non-inferior), for fewer costly false alarms and better participation.
+   - *Protection route:* |max drawdown| ≤ 0.90 × |C0's| (return being non-inferior), for meaningfully shallower losses.
+4. **Outcome.**
+   - Exactly one survivor → it is the development nomination.
+   - No survivor → `NO_CANDIDATE_NOMINATED_CONTROL_RETAINED`.
+   - Several survivors → `NO_UNAMBIGUOUS_NOMINATION_PARETO_TRADEOFF`. Step 1 already removed every dominated candidate, so survivors are mutually
+     non-dominated: each beats another on some axis. Ranking them (by return, by simplicity, by anything) would be a preference between hypotheses —
+     fewer false alarms, less lateness, both — that this protocol does not own, so **no tie-break exists**. The trade-off is reported, and every
+     candidate remains in the prospective receipts.
 
-No survivor → `NO_CANDIDATE_NOMINATED_CONTROL_RETAINED`. The two tolerances (10% of C0's drawdown, 0.50 pp a year) are round numbers fixed here
-before any outcome; neither CAGR alone nor drawdown alone can decide. A nomination is a **development** choice of architecture for prospective
-receipts and later integration — never validation, never production.
+The 0.50 pp and ±10% bands are round development tolerances fixed here before any candidate outcome, applied symmetrically (the same band is the
+non-inferiority margin and the meaningful-improvement margin). No threshold is fitted; no weighted score exists; neither CAGR nor drawdown alone can
+decide. A value exactly on a band edge counts as inside it (a 1e-12 float tolerance, frozen). Missing values never pass a band. A nomination is a
+**development** result for later integration and prospective receipts — never validation, never production. For prospective receipts the final
+architecture is the nominated candidate, otherwise C0.
 
 ## 9. Prospective contract (designed; not running)
 

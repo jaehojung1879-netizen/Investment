@@ -43,6 +43,7 @@ def build():
         "inputs": {"sources": E.SOURCES, "files": inputs, "newExternalAcquisition": False,
                    "rule": "the exact immutable bytes kr-market-risk-anatomy-v1 retained (and v2 read); nothing is re-acquired; no vendor is contacted"},
         "model": E.model_definition(), "portfolio": E.portfolio_definition(), "evaluation": E.evaluation_definition(), "decision": E.decision_definition(),
+        "preOutcomeRevisions": E.pre_outcome_revisions(),
         "prospective": {"receiptSchemaPath": E.RECEIPT_SCHEMA_PATH, "receiptSchemaSha256": E.file_hash(ROOT / E.RECEIPT_SCHEMA_PATH),
                         "module": "pipeline/kr_market_risk_model_receipts.py", "evidenceClass": "PROSPECTIVE_PAPER", "horizons": [21, 63, 126],
                         "rules": ["one immutable receipt per future decision date, appended before the execution-session close",
