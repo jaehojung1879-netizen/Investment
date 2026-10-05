@@ -1,0 +1,75 @@
+{
+  "artifactArchiveSha256": "f7f9f17a3a2aaa9bdb7b4ae488717d5cb1bbfc6228400664d4295557af37450f",
+  "artifactFileList": [
+    "execution-started.json",
+    "manifest.json",
+    "market-risk-anatomy.json"
+  ],
+  "artifactGithubDigest": "sha256:f7f9f17a3a2aaa9bdb7b4ae488717d5cb1bbfc6228400664d4295557af37450f",
+  "artifactId": 11318254649,
+  "artifactName": "kr-market-risk-anatomy-v2-results-37244866236",
+  "artifactObtainedVia": "operator-supplied ZIP downloaded directly from the formal run; its SHA-256 equals GitHub's recorded artifact digest (the authoring sandbox's egress could not reach the artifact host)",
+  "committedFiles": {
+    "docs/results/kr-market-risk-anatomy-v2-execution-started.json": {
+      "bytes": 507,
+      "sha256": "391b6ff013d5a89d5e0342fdc767c4304bc6d7ad6bc8d63247a45a71794c73bc",
+      "sourceFile": "execution-started.json"
+    },
+    "docs/results/kr-market-risk-anatomy-v2-manifest.json": {
+      "bytes": 572,
+      "sha256": "d32efef61916ef761a662723a4e18edcbf32ad737a22b9835cd81733204e0067",
+      "sourceFile": "manifest.json"
+    },
+    "docs/results/kr-market-risk-anatomy-v2-result.json": {
+      "bytes": 437787,
+      "sha256": "7be4f68f30cf57b01cde88f106b3c0c2ed88fc9942ca2a14007664ffbe4ca769",
+      "sourceFile": "market-risk-anatomy.json"
+    }
+  },
+  "designSha256": "3c398b6e87e6634443ffe25273f95ed100889515a71ddb66eb2ecd7035788aaa",
+  "executionCounters": {
+    "analysisCalls": 1,
+    "episodeCalls": 1,
+    "forwardTargetCalls": 1,
+    "markerWrites": 1,
+    "valueReads": 14
+  },
+  "executionLock": {
+    "lockRefInMarker": "refs/tags/kr-market-risk-anatomy-v2-execution-lock-4be62167585bbacb7a7192768eb120d90e08fbfc6b518695e52929077d1d06f2",
+    "lockedMainSha": "5b73b20d676537c7ed3e613986b61fdade7c9b8d",
+    "observedRefs": [
+      {
+        "ref": "refs/tags/kr-market-risk-anatomy-v2-execution-lock",
+        "sha": "5b73b20d676537c7ed3e613986b61fdade7c9b8d"
+      },
+      {
+        "ref": "refs/tags/kr-market-risk-anatomy-v2-execution-lock-4be62167585bbacb7a7192768eb120d90e08fbfc6b518695e52929077d1d06f2",
+        "sha": "5b73b20d676537c7ed3e613986b61fdade7c9b8d"
+      }
+    ]
+  },
+  "executionRunId": 37244866236,
+  "executionSha": "5b73b20d676537c7ed3e613986b61fdade7c9b8d",
+  "kind": "RESULT_SEAL_EXACT_ARTIFACT_BYTES",
+  "markerValuesReadBeforeThisMarker": 0,
+  "predecessor": "kr-market-risk-anatomy-v1",
+  "runAttempt": 1,
+  "runConclusion": "success",
+  "runEvent": "workflow_dispatch",
+  "scientificStatus": "EXPLORATORY_DEVELOPMENT_ON_OUTCOME_EXPOSED_KR_HISTORY",
+  "sealBranchBaseSha": "5b73b20d676537c7ed3e613986b61fdade7c9b8d",
+  "sealedAtUtc": "2026-10-05T01:55:43Z",
+  "sourceAuditSha256": "29e1b54b249f84be327d9c7a228d6e68a447d38511652414fc7ef2c9f0099345",
+  "specSha256": "4be62167585bbacb7a7192768eb120d90e08fbfc6b518695e52929077d1d06f2",
+  "statements": [
+    "The committed result, marker and manifest are byte-for-byte the formal GitHub Actions artifact files; nothing was pretty-printed, reordered, recomputed or edited.",
+    "No workflow was dispatched and no historical outcome was recomputed in the seal change.",
+    "Both execution-lock tags exist and were neither moved, deleted nor recreated; the study is permanently consumed.",
+    "The frozen spec, inherited design and source audit are unchanged."
+  ],
+  "statisticsRecomputed": false,
+  "studyId": "kr-market-risk-anatomy-v2",
+  "workflow": "KR market risk anatomy v2",
+  "workflowPath": ".github/workflows/kr-market-risk-anatomy-v2.yml",
+  "workflowRerun": false
+}
