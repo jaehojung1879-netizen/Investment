@@ -681,9 +681,10 @@ def test_the_seal_code_cannot_rerun_an_outcome_and_never_merges():
 def test_the_workflow_never_executes_or_seals_on_pull_requests_and_holds_minimal_permissions():
     execute = WORKFLOW[WORKFLOW.index("\n  execute:"):WORKFLOW.index("\n  seal:")]
     seal = WORKFLOW[WORKFLOW.index("\n  seal:"):]
-    import yaml
-    triggers = yaml.safe_load(WORKFLOW)[True]
-    assert set(triggers) == {"pull_request", "workflow_dispatch"} and "gh workflow run" not in WORKFLOW
+    import re
+    on_block = WORKFLOW[WORKFLOW.index("\non:\n"):WORKFLOW.index("\npermissions:")]
+    triggers = set(re.findall(r"^  ([a-z_]+):", on_block, flags=re.M))
+    assert triggers == {"pull_request", "workflow_dispatch"} and "gh workflow run" not in WORKFLOW
     assert "github.event_name == 'workflow_dispatch' && inputs.mode == 'execute'" in execute and "contents: write" in execute
     assert "pull-requests" not in execute and "listMatchingRefs" in execute and "RESULTS_ARTIFACT_ALREADY_EXISTS" in execute
     assert "PRESERVED_ARTIFACT_IDENTITY_MISMATCH" in execute and "INPUT_ARTIFACT_IDENTITY_MISMATCH" in execute and "PRIOR_SEALED_ARTIFACT_CHANGED" in execute
