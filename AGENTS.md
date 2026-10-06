@@ -2483,6 +2483,47 @@
   the passive path over the full window (+15.01% vs +20.24% a year, drawdown -57.86% vs -40.69%).
 - SUCCESSOR MODEL DESIGN IS OUTSIDE THIS AUDIT. It adds no model, factor, weight, exclusion set or benchmark, reruns no formal or anatomy study and touches no lock.
 
+## KR alpha discovery tournament v1 preregistration invariants (v2.48)
+
+- THE OBJECT UNDER TEST IS A PROCESS, NOT A MODEL. `kr-alpha-discovery-tournament-v1` freezes a bounded tournament (5 fitted families -- ridge,
+  elastic net, shallow HGB, pairwise ranker, weighted PLS -- x 4 targets x 11 hyperparameter configurations x 3 recency schemes = 120 configurations,
+  123 effective trials with the ensemble rule, the decision-focused challenger and baseline 1) and publishes what the pre-registered SELECTION PROCESS
+  would have done from information available at each date. "The full-history best model is X" is never a result.
+- A STUDY THAT ADDS NO NEW RAW INFORMATION SAYS SO BEFORE IT IS BUILT. It differs from `regional-alpha-model-v1` and `kr-model-overlay-portfolio-v1`
+  in representation (industry state, within-industry ranks, valuation yields v1 excluded, magnitude-preserving liquidity), targets (LOO-industry
+  residual, tail event), selection architecture and objective, but not in raw information: investor flow, ownership, short selling and vintage-safe macro
+  are not ready. An `INFORMATION_LIMITED` verdict therefore closes model search on THIS information set permanently.
+- ALL FLEXIBILITY LIVES INSIDE THE PAST. Outer fold Y trains only on labels exiting strictly before the signal date of its first anchor; inner blocks
+  purge every label exiting at or after the block's first entry and embargo 21 sessions; hyperparameters, recency, calibration and uncertainty are fitted
+  inside that set. A test poisons every label that exits on or after the cutoff and requires byte-identical fold forecasts.
+- PASSIVE CAPITAL IS THE DEFAULT, SIMULATED IN ONE LEDGER. The book is 069500.KS plus long-only active overweights (gross <= 1, no cash target); an
+  active name must pay its shrunk forecast's covariance penalty and the cost of buying it AND selling the passive leg. The passive leg's 15 bp each way is
+  an assumption, stated as one; the benchmark's unexplained accrual is carried unrepaired and biases the comparison against active capital.
+- CALIBRATION CANNOT CREATE ALPHA AND UNCERTAINTY CAN ONLY SUBTRACT. Native scores become within-date ranks; the slope on the economic label is
+  positive-part James-Stein shrunk with a Newey-West SE; universe carry is never credited; kappa = mu^2/(mu^2+sigma^2) with disagreement + calibration
+  variance is asserted a contraction on every row. No coarse buckets.
+- MULTIPLE TESTING IS PAID, AND THE VERDICT IS FROZEN BEFORE NUMBERS EXIST. DSR (N = 123), CSCV PBO, Hansen SPA and a 126-session block bootstrap are
+  implemented; A requires all nine registered checks, missing evidence never passes one, and the order E, A, B, C, D is code. The first SPA draft
+  recentred GOOD strategies (it kept every mean above the threshold); a synthetic test with a planted edge caught it before any outcome existed.
+- A SEAL SCRIPT WITHOUT A MAIN GUARD IS A SILENT NO-OP. `scripts/seal_kr_integrated_alpha_portfolio_v1.py` has no `if __name__ == "__main__": main()`,
+  so run `37374530672`'s `check-main` and `seal` steps succeeded while doing nothing and the commit step found no file. This study's seal script is run
+  as a real subprocess by a test and its commit step refuses a missing sealed file. The integrated script itself is not repaired here.
+- PREREGISTERED, NOT EXECUTED. No label of this study was built, no real fit or portfolio exists, no lock ref exists and no workflow was dispatched;
+  readiness reads the calendar, committed membership and an invented world, with every real-outcome counter at zero.
+- AN UNRESOLVED BENCHMARK INTERCEPT NEVER ENTERS A CROSS-SECTIONAL FORECAST. The calibration's per-date intercept is stock minus 069500.KS, a
+  same-date constant carrying the unresolved accrual anomaly; `min(0, carry)` would have debited it from every forecast and read the benchmark's
+  construction as missing selection skill. The credited intercept is 0, the carry is reported only, mu(s) = b* x (s - 0.5), and a test shifts every
+  date by a different constant and requires identical forecasts. 069500.KS is unchanged in the passive core, the replay and the evaluation.
+- ONE PAST-ONLY ECONOMIC BLOCK CANNOT CHOOSE AMONG 120 CONFIGURATIONS. An outer year becomes active only with 3 valid inner folds and >= 2 finite
+  economic folds; otherwise it is `PASSIVE_DEFAULT_INSUFFICIENT_INNER_EVIDENCE`, distinct from `PASSIVE_DEFAULT_NO_STABLE_CANDIDATE`. 2018 is passive by
+  the calendar alone; no date moves and its sessions stay in the final evaluation. Readiness blocks only if NO year could become active.
+- A ONE-STRATEGY BOOTSTRAP IS NOT THE TOURNAMENT'S SPA. The A verdict gates on `spaUniverse` (primary, baseline 1, challenger, every configuration);
+  `spaPrimary` is descriptive and is not a verdict input. DSR and PBO are unchanged.
+- A REPAIR CAN WALK A HARNESS INTO A STATE IT NEVER REACHED. Without the debited carry the invented world's primary went fully invested (sum w = 1,
+  always permitted) and hit two latent ledger defects: the passive-leg key was dropped at weight 0 (next-day KeyError) and the allocator's eta = 0
+  starting projection divided by zero when the held book summed to 1 plus rounding. Both are fixed with tests that fail on the old code; in a formal
+  run either would have struck after the lock and consumed the study.
+
 ## Lint gate invariants (v2.11)
 
 - The enabled rule set reports ZERO findings on `main`. A rule is turned on in the
