@@ -2417,6 +2417,72 @@
 - NO HISTORICAL OUTCOME WAS COMPUTED IN THE PROTOCOL CHANGE. The workflow was not dispatched, no lock exists, no sealed prior result changed, and every number in this
   section is a design fact, not a result.
 
+## KR integrated alpha portfolio post-outcome concentration audit invariants (v2.46)
+
+- A SPENT FORMAL RESULT IS DIAGNOSED, NEVER REDONE. `kr-integrated-alpha-portfolio-v1` consumed its one execution (run `37374530672`, commit `33237df6`, spec
+  `eea6128c...`; both execution-lock tags exist and point at that commit); the later seal job failed at its commit step, which is an infrastructure failure and not
+  permission to execute again. `kr-integrated-alpha-portfolio-v1-postoutcome-concentration-audit-v1` is `EXPLORATORY_POST_OUTCOME_DESCRIPTIVE_DIAGNOSTIC`: it is not a
+  confirmatory experiment, a model rescue, an architecture selection or a promotion decision, and it adds no pre-registration. No audit module may reference the lock,
+  marker, permit, `execute`, `load_market_values` or any GitHub write (an AST test enforces it) and its workflow has read-only permissions and no pull-request trigger.
+- EVIDENCE CLASSES ARE NEVER BLENDED. `FORMAL_REPORTED_RESULT` (copied from the exact artifact), `POST_OUTCOME_DIAGNOSTIC_RECONSTRUCTION` (the frozen code replayed
+  read-only, admitted only after it reproduces the formal metrics and every month-end NAV; otherwise `D_PATH_RECONSTRUCTION_MISMATCH` with the first divergence and no
+  attribution), `POST_OUTCOME_COUNTERFACTUAL_SENSITIVITY` (exactly one: D without 005930.KS and 000660.KS, removed after scoring and before selection, every other frozen
+  rule unchanged, no other exclusion set) and `POST_OUTCOME_DESCRIPTIVE_PROXY`. A proxy is never called the KODEX 200 / KOSPI 200 weight or return.
+- AN ARTIFACT THE ENVIRONMENT CANNOT REACH IS REPORTED AS UNREACHABLE, NOT INFERRED. The formal result (19.5 KB) and the raw snapshot (336 MB) live on Azure blob
+  storage that the authoring sandbox cannot reach (CONNECT 403), the daily KRX market-value files in that snapshot are not stored in git, and no official KODEX 200 source
+  was reachable. Everything needing them is `NOT_RUN_IN_THIS_ENVIRONMENT` and runs through `kr-integrated-alpha-portfolio-v1-postoutcome-audit.yml` (manual dispatch). The
+  quoted ~20.24% passive CAGR was reproduced from the frozen series; the artifact's own value was not read.
+- THE PASSIVE FIGURE IS A RECENT-REGIME FIGURE, MEASURED NOT ASSUMED. On the frozen 069500.KS series (reproduced from hash-verified replay-v16 objects) 2017-2024
+  annualizes +6.89%, 2025 returned +98.72% and 2026 to the cutoff +75.73%; those last two spans carry 70.2% of the window's log wealth and 85.8% of its terminal gain. The
+  full-window +20.24% is therefore not a long-run Korean return. Fixed spans, no optimised breakpoint.
+- THE BENCHMARK IS REPRODUCIBLE AND STILL QUESTIONED. Complete against the registered calendar (3,860 sessions, none missing, none duplicated), but its excess over the
+  committed KS200 price index is +3.87% to +5.25% in every full year 2018-2025, +4.53% a year over 2017-2024, against +1.85% for a same-data constituent total-return reference,
+  and it does not shrink in 2025 when the index rose 90.67%. The snapshot stores only the total-return close, not the applied distribution events, so the gap cannot be
+  decomposed from it. Classified `BENCHMARK_EXTERNAL_RECONCILIATION_UNRESOLVED`; no official number was quoted, and no corrected benchmark was constructed.
+- CONCENTRATION IS A MARKET-CAP PROXY INSIDE THE STUDY'S PIT TOP120. Samsung Electronics + SK Hynix: median 28.5% in the formal window, 34.6% at the end of 2025, a maximum
+  of 57.2% (2026-07-01), 52.6% on 2026-09-01; above 40% in 8 and above 50% in 4 monthly snapshots, all in 2026; never above 60%. In the cap-weighted Top120 reference they
+  contributed about 65% of the 2025 + 2026 gain (approximate; monthly proxy weights), and the reference without them returned +56.4% (2025) and +26.6% (2026) against
+  +86.9% and +65.1%. These are descriptions of reference portfolios, not a statement that the real passive alternative should exclude them: the primary benchmark stays
+  `069500.KS`, concentration included, and "the model beats the benchmark once the two names are removed" is outcome-selected reasoning that is forbidden.
+- SIGNAL ASSOCIATION AND IMPLEMENTED PORTFOLIO DEPEND ON THE TWO NAMES DIFFERENTLY. The sealed anatomy reports (read, not rerun) show the industry REL_MOM_126 and
+  BREADTH_ABOVE_MA_126 associations and the four stock features keeping their sign when only the two names are removed. That says nothing about whether a five-name book held
+  them or what they earned; that needs the D reconstruction and the registered sensitivity.
+- ATTRIBUTION MUST CLOSE TWICE. `security_contributions` requires each day's residual cost to equal the engine's own `costFraction` times the pre-trade NAV (otherwise the
+  identity nav_T - 1 = gross - cost would be a tautology) and the whole identity to hold to 1e-9. Transaction cost is reported on its own and never allocated to a name.
+- NO FORMAL FILE MOVED. The formal spec, model, replay, receipts, seal and workflow bytes are untouched (`load_spec` still verifies every pin), the formal result was not
+  committed or rewritten, and the seal workflow bug is left for its own change.
+
+## KR integrated alpha portfolio post-outcome audit completion invariants (v2.47)
+
+- AN AUDIT THAT COULD NOT RUN IN THE AUTHORING SANDBOX RAN WHERE THE ARTIFACTS ARE, AND THE v2.46 "NOT_RUN" SECTIONS ARE NOW ANSWERED. Actions run `37451761441`
+  (workflow definition on `main`, `audit_ref` `11b0d67a`, conclusion success) downloaded the exact result and raw-input artifacts, re-verified their identities and both lock
+  refs, replayed the frozen A and D books read-only and printed `RECONSTRUCTION_REPRODUCES_THE_FORMAL_A_AND_D_PATHS`: 0 divergences in 18 metrics and 117 month-end NAVs each
+  at 1e-9, with every day's residual cost equal to the engine's `costFraction` times pre-trade NAV. Q6-Q10 moved from `UNRESOLVED_DATA_LIMITATION` to answered; Q3 stays unresolved.
+- THE FULL AUDIT FILE IS AN ACTIONS-ONLY ARTIFACT AND IS REFERENCED BY ITS BYTES, NOT COMMITTED. 539,839 bytes, SHA-256 `b316a6ef2ffbf77a0b4ce5646df5b7b6b0bfc079aa3a9e795727d0e7f7e39bbc`
+  (the run's own printed value). The authoring environment cannot download artifacts (blob storage is unreachable), so the file was decoded from the gzip+base64 the workflow
+  printed to its job log and its size and digest were recomputed and matched. A handoff message quoted a different digest; it was a transcription error and is not repeated.
+  `pipeline/kr_integrated_alpha_portfolio_postoutcome_completed.py` turns the file into a compact committed record and refuses any other bytes; the report is rendered from it.
+- A WORKFLOW THAT EXISTS ONLY ON A PR BRANCH CANNOT BE DISPATCHED, AND A WORKFLOW'S OWN JAVASCRIPT IS PART OF ITS EVIDENCE. The session's token answers dispatch with 403; the
+  audit workflow was installed on `main` (#204) with an explicit `audit_ref` input, and its first run failed at parse time because `actions/github-script` injects `exec` and the script
+  declared `const exec` (#205). It failed before any artifact download or audit code, which the step list shows. The fix compiled the whole script with the injected names first.
+- D BEAT A ONLY AFTER 2024, AND THAT IS THE FINDING. Net of costs D trailed A in 2017-2024 (-17.34% vs -12.57%, passive +69.90%) and led it in 2025 (+132.28% vs +51.81%) and in
+  2026 to the cutoff (+101.04% vs +29.77%); 98.2% of D's gross NAV-unit contribution arrived in those two spans. NAV-unit shares weigh late periods more because NAV had compounded,
+  so percentage returns by span are read beside them.
+- D IS AN INDUSTRY BOOK BY CONSTRUCTION. It held three or more names of one industry on 76.3% of held sessions (A 10.0%), a mean top-industry share of 62.6% (A 44.0%) and 83.5%
+  in 2026; `ELECTRONICS_ELECTRICAL` supplied 59.5% of its gross and five securities 87.1%. That is development support concentrated in a regime and an industry, not broad support.
+- THE TWO NAMED MEGA-CAPS ARE NOT WHERE D'S GAIN CAME FROM. Samsung Electronics +0.531 and SK Hynix -0.236 NAV units are 9.2% of D's gross; SK Hynix subtracted, mostly in 2026. The
+  single registered sensitivity `D_EXCLUDE_SAMSUNG_HYNIX` moved cumulative return +15.82pp (+301.85% vs +286.02%) with the book moving to other members of the same industry. It shows
+  independence from two securities, not from their industry, and it is `POST_OUTCOME_DESCRIPTIVE_SENSITIVITY`, `NOT_CONFIRMATORY`, `NOT_ELIGIBLE_FOR_MODEL_SELECTION`.
+- A BENCHMARK CAN BE REPRODUCIBLE AND STILL CARRY AN UNEXPLAINED ACCRUAL, AND BOTH ARE REPORTED. The five >=10% daily moves are market moves (the committed price index moved the same
+  way on all five). The benchmark's excess over that index is +4.53% a year over 2017-2024 against +1.85% for the same-data constituent reference; 13 single days in late April and
+  late December of 2017-2025 carry +1.1% to +2.0% each and the 2026-07-31 / 2026-08-03 pair (+3.50% / -3.38%) reverses at once, which reads as quote timing. The stored series carries
+  no event list, so double application, wrong date or wrong size cannot be tested: `INTERNAL_CONSTRUCTION_ANOMALY_FOUND`, `BENCHMARK_EXTERNAL_RECONCILIATION_UNRESOLVED`. No corrected
+  benchmark is built and no official number is quoted.
+- THE FORMAL DECISION AND ITS ECONOMIC READING ARE KEPT APART. Formal and unchanged: `INDUSTRY_LAYER_DEVELOPMENT_SUPPORTED`, `NO_UNAMBIGUOUS_FINAL_ARCHITECTURE`,
+  `MARKET_LAYER_PARETO_TRADE_OFF`. Post-outcome reading: regime-dependent and industry-concentrated development support, not dependent on the two named securities, and D did not beat
+  the passive path over the full window (+15.01% vs +20.24% a year, drawdown -57.86% vs -40.69%).
+- SUCCESSOR MODEL DESIGN IS OUTSIDE THIS AUDIT. It adds no model, factor, weight, exclusion set or benchmark, reruns no formal or anatomy study and touches no lock.
+
 ## Lint gate invariants (v2.11)
 
 - The enabled rule set reports ZERO findings on `main`. A rule is turned on in the
