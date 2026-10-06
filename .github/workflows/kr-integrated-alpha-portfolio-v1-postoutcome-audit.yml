@@ -1,0 +1,136 @@
+name: KR integrated alpha portfolio v1 post-outcome audit
+# POST-OUTCOME DESCRIPTIVE DIAGNOSTIC ONLY. This workflow diagnoses the ALREADY-SPENT formal result of kr-integrated-alpha-portfolio-v1 (run 37374530672). It is a
+# manual workflow_dispatch and nothing else: it never runs on a push, a pull request or a schedule, never calls the formal `execute` path, never creates, moves or deletes an
+# execution lock (read-only permissions: it could not), never writes a formal result and never commits. Its outputs are a 90-day artifact and the audit file printed (gzip +
+# base64) to the job log.
+# The workflow DEFINITION lives on the default branch so that GitHub lists it for dispatch; the audit IMPLEMENTATION is read from the explicit `audit_ref` input (a branch
+# name or, preferably, a full 40-character commit SHA). There is no default: nothing is silently taken from main. The ref is resolved, must contain the audit entry point,
+# must descend from the formal execution commit, and its resolved SHA is printed and written to the job summary.
+# It downloads the EXACT formal result artifact and the EXACT preserved raw-input snapshot, verifies their identities, replays the frozen code read-only for
+# architectures A and D, and attributes the paths ONLY if the replay reproduces the formal result (otherwise it reports D_PATH_RECONSTRUCTION_MISMATCH).
+on:
+  workflow_dispatch:
+    inputs:
+      audit_ref:
+        description: 'Exact commit SHA (40 hex) or branch name holding the post-outcome audit implementation, e.g. the head of claude/practical-lovelace-7gwa65 (PR #203)'
+        required: true
+        type: string
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: kr-integrated-alpha-portfolio-v1-postoutcome-audit
+  cancel-in-progress: false
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    env:
+      AUDIT_REF: ${{ inputs.audit_ref }}
+      FORMAL_RUN_ID: '37374530672'
+      FORMAL_EXECUTION_SHA: 33237df6d69e31a396959529378a0f881af9a58e
+      FORMAL_SPEC_SHA256: eea6128cd55260904c7f74ba78698f67e522626620fd11d757c27de89c758f77
+      RESULT_ARTIFACT_ID: '11371812532'
+      RESULT_ARTIFACT_NAME: kr-integrated-alpha-portfolio-v1-results-37374530672
+      RESULT_ARTIFACT_DIGEST: sha256:bb29676403068b8330b12808ff30f6a5766fee35d4e66e96594591eaae766722
+      RAW_ARTIFACT_ID: '11157875265'
+      RAW_ARTIFACT_NAME: kr-model-raw-inputs-36844599518
+      RAW_ARTIFACT_DIGEST: sha256:42eeb18b7a5c88816629036f472a93057b6a9be4768ad47292ba0d2750b4cce7
+      RAW_RUN_ID: '36844599518'
+    steps:
+      - name: Refuse a malformed audit_ref before anything is checked out
+        run: |
+          set -euo pipefail
+          if [ -z "${AUDIT_REF}" ]; then echo "AUDIT_REF_REQUIRED"; exit 1; fi
+          if ! printf '%s' "${AUDIT_REF}" | grep -Eq '^([0-9a-f]{40}|[A-Za-z0-9][A-Za-z0-9._/-]{0,199})$' || printf '%s' "${AUDIT_REF}" | grep -Fq '..'; then
+            echo "AUDIT_REF_MALFORMED"; exit 1
+          fi
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ inputs.audit_ref }}
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Pin and display the resolved audit SHA; require the audit entry point and the formal execution commit as an ancestor
+        run: |
+          set -euo pipefail
+          resolved="$(git rev-parse HEAD)"
+          echo "AUDIT_REF_REQUESTED=${AUDIT_REF}"
+          echo "AUDIT_REF_RESOLVED_SHA=${resolved}"
+          { echo "### Post-outcome audit target"; echo; echo "- requested audit_ref: \`${AUDIT_REF}\`"; echo "- resolved SHA: \`${resolved}\`"; } >> "$GITHUB_STEP_SUMMARY"
+          test -f scripts/run_kr_integrated_alpha_portfolio_postoutcome_audit.py || { echo "AUDIT_ENTRY_POINT_MISSING_AT_AUDIT_REF"; exit 1; }
+          test -f pipeline/kr_integrated_alpha_portfolio_postoutcome_full.py || { echo "AUDIT_FULL_MODULE_MISSING_AT_AUDIT_REF"; exit 1; }
+          git cat-file -e "${FORMAL_EXECUTION_SHA}^{commit}" || { echo "FORMAL_EXECUTION_COMMIT_NOT_IN_HISTORY"; exit 1; }
+          git merge-base --is-ancestor "${FORMAL_EXECUTION_SHA}" "${resolved}" || { echo "AUDIT_REF_DOES_NOT_DESCEND_FROM_THE_FORMAL_EXECUTION_COMMIT"; exit 1; }
+      - name: Verify the formal identities through the Actions API (read-only) and the frozen code
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const cp = require('child_process');
+            const e = process.env;
+            // 1. the formal run: execute job succeeded, on the execution commit
+            const run = await github.rest.actions.getWorkflowRun({...context.repo, run_id: Number(e.FORMAL_RUN_ID)});
+            if (run.data.head_sha !== e.FORMAL_EXECUTION_SHA) throw new Error('FORMAL_RUN_SHA_MISMATCH');
+            const jobs = await github.rest.actions.listJobsForWorkflowRun({...context.repo, run_id: Number(e.FORMAL_RUN_ID), per_page: 50});
+            const exec = jobs.data.jobs.find(j => j.name === 'execute');
+            if (!exec || exec.conclusion !== 'success') throw new Error('FORMAL_EXECUTE_JOB_NOT_SUCCESSFUL');
+            // 2. both artifacts, by id, name, digest and producing run
+            for (const [id, name, digest, runId] of [[e.RESULT_ARTIFACT_ID, e.RESULT_ARTIFACT_NAME, e.RESULT_ARTIFACT_DIGEST, e.FORMAL_RUN_ID], [e.RAW_ARTIFACT_ID, e.RAW_ARTIFACT_NAME, e.RAW_ARTIFACT_DIGEST, e.RAW_RUN_ID]]) {
+              const a = (await github.rest.actions.getArtifact({...context.repo, artifact_id: Number(id)})).data;
+              if (a.expired || a.name !== name || a.digest !== digest || String(a.workflow_run.id) !== String(runId)) throw new Error('ARTIFACT_IDENTITY_MISMATCH_' + id);
+            }
+            // 3. both execution-lock refs exist and point at the execution commit (they are only READ here)
+            const refs = await github.paginate(github.rest.git.listMatchingRefs, {...context.repo, ref: 'tags/kr-integrated-alpha-portfolio-v1-execution-lock'});
+            const want = ['refs/tags/kr-integrated-alpha-portfolio-v1-execution-lock', 'refs/tags/kr-integrated-alpha-portfolio-v1-execution-lock-' + e.FORMAL_SPEC_SHA256];
+            for (const w of want) {
+              const r = refs.find(x => x.ref === w);
+              if (!r || r.object.sha !== e.FORMAL_EXECUTION_SHA) throw new Error('LOCK_REF_MISSING_OR_MOVED_' + w);
+            }
+            // 4. the frozen pipeline files at the audit ref are byte-identical to the execution commit's
+            const frozen = cp.execFileSync('git', ['diff', '--name-only', e.FORMAL_EXECUTION_SHA, 'HEAD', '--', 'pipeline/kr_integrated_alpha_portfolio.py', 'pipeline/kr_integrated_alpha_portfolio_execution.py',
+              'pipeline/kr_integrated_alpha_portfolio_replay.py', 'pipeline/kr_integrated_alpha_portfolio_receipts.py', 'pipeline/kr_integrated_alpha_portfolio_seal.py',
+              'research_specs/kr-integrated-alpha-portfolio-v1.json', 'research_specs/kr-integrated-alpha-portfolio-v1.sha256']).toString().trim();
+            if (frozen) throw new Error('FROZEN_FILES_CHANGED_SINCE_THE_EXECUTION_COMMIT: ' + frozen);
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+          cache: pip
+      - run: pip install -r requirements.txt -r requirements-dev.txt
+      - name: Download the exact formal result artifact
+        uses: actions/download-artifact@v5
+        with:
+          name: ${{ env.RESULT_ARTIFACT_NAME }}
+          path: formal
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run-id: ${{ env.FORMAL_RUN_ID }}
+      - name: Download the exact preserved raw snapshot
+        uses: actions/download-artifact@v5
+        with:
+          name: ${{ env.RAW_ARTIFACT_NAME }}
+          path: inputs
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run-id: ${{ env.RAW_RUN_ID }}
+      - name: Read-only reconstruction, reproduction check, attribution and the one registered sensitivity
+        run: |
+          set -euo pipefail
+          test "$(ls formal | sort | tr '\n' ' ')" = "execution-started.json integrated-alpha-portfolio.json manifest.json " || { echo "FORMAL_ARTIFACT_FILE_LIST_UNEXPECTED"; ls formal; exit 1; }
+          python scripts/run_kr_integrated_alpha_portfolio_postoutcome_audit.py --mode full --inputs inputs --formal-result formal/integrated-alpha-portfolio.json --output audit
+      - name: Print the audit file to the job log (gzip + base64) so it can be read without downloading the artifact
+        if: always()
+        run: |
+          f=audit/postoutcome-audit-full.json
+          if [ -f "$f" ]; then
+            echo "AUDIT_FULL_JSON_SHA256=$(sha256sum "$f" | cut -d' ' -f1)"
+            echo "AUDIT_FULL_JSON_BYTES=$(wc -c < "$f")"
+            echo "AUDIT_FULL_BEGIN"
+            gzip -9n < "$f" | base64 -w 200 | sed 's/^/AJ /'
+            echo "AUDIT_FULL_END"
+          else
+            echo "AUDIT_FULL_JSON_NOT_WRITTEN"
+          fi
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: kr-integrated-alpha-portfolio-v1-postoutcome-audit-${{ github.run_id }}
+          path: audit
+          retention-days: 90
+          if-no-files-found: warn
