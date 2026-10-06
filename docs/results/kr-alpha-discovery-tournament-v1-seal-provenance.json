@@ -1,0 +1,47 @@
+{
+  "artifactArchiveSha256": "2079eb4adff331be02126c163084b92737828eb6be9aa49ece832b23f749ae85",
+  "artifactFileList": [
+    "execution-started.json",
+    "manifest.json",
+    "tournament-result.json"
+  ],
+  "artifactGithubDigest": "sha256:2079eb4adff331be02126c163084b92737828eb6be9aa49ece832b23f749ae85",
+  "artifactId": 11449586098,
+  "artifactName": "kr-alpha-discovery-tournament-v1-results-37535814142",
+  "committedFiles": {
+    "docs/results/kr-alpha-discovery-tournament-v1-execution-started.json": {
+      "bytes": 650,
+      "sha256": "58df59ec3781681d82c1209192cabfbb1d788dbbcc824374993157ee057f26c7",
+      "sourceFile": "execution-started.json"
+    },
+    "docs/results/kr-alpha-discovery-tournament-v1-manifest.json": {
+      "bytes": 557,
+      "sha256": "ff926754234cc6ce0e5b327553d8a72e0ca49ffc130e9398dc6c72fcf3822a1e",
+      "sourceFile": "manifest.json"
+    },
+    "docs/results/kr-alpha-discovery-tournament-v1-result.json": {
+      "bytes": 415840,
+      "sha256": "4a117ed23d30f9d716c87dbd987e1b80798484b0ab3558638379bf65cf9ccc5d",
+      "sourceFile": "tournament-result.json"
+    }
+  },
+  "executionRunId": 37535814142,
+  "executionSha": "eac50fdf725ac797e5c37044246e2a7ffa9b1e64",
+  "lockRefs": [
+    "refs/tags/kr-alpha-discovery-tournament-v1-execution-lock",
+    "refs/tags/kr-alpha-discovery-tournament-v1-execution-lock-a8acb44c4b685e06ce7692e44461147110e2e2d32a119adef0dd216476f50e7f"
+  ],
+  "runConclusionOfExecuteJob": "success",
+  "runEvent": "workflow_dispatch",
+  "scientificStatus": "EXPLORATORY_DEVELOPMENT_ON_OUTCOME_EXPOSED_KR_HISTORY",
+  "sealBranchBaseSha": "eac50fdf725ac797e5c37044246e2a7ffa9b1e64",
+  "sealRules": [
+    "exact artifact bytes, renamed only",
+    "no statistic recomputed",
+    "no outcome re-executed",
+    "draft pull request only; a human merges"
+  ],
+  "sealedAtUtc": "2026-10-06T22:43:35Z",
+  "specSha256": "a8acb44c4b685e06ce7692e44461147110e2e2d32a119adef0dd216476f50e7f",
+  "studyId": "kr-alpha-discovery-tournament-v1"
+}
