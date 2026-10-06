@@ -204,6 +204,58 @@ def tracking_cross_check(benchmark, index, references, start=WINDOW_START, cutof
     return {"byCalendarYear": rows, "span2017To2024": span(start, end_2024), "spanFullWindow": span(start, cutoff)}
 
 
+INTERNAL_CONSTRUCTION_VERIFIED = "INTERNAL_CONSTRUCTION_VERIFIED"
+INTERNAL_CONSTRUCTION_ANOMALY_FOUND = "INTERNAL_CONSTRUCTION_ANOMALY_FOUND"
+EVENT_DAY_THRESHOLD = 0.01                  # a round, descriptive number: a day on which the benchmark and the price index differ by at least 1%
+GAP_FLAG_PP_PER_YEAR = 0.01                 # flag when the benchmark's annual excess over the index exceeds the same-data constituent reference's by more than 1pp
+
+
+def benchmark_event_audit(benchmark, index, reference_gap_per_year, start=WINDOW_START, cutoff=CUTOFF, threshold=EVENT_DAY_THRESHOLD):
+    """Where the benchmark's excess over the price index accrues, from the two committed series only (no vendor data, no guessed events).
+
+    The frozen store keeps only the total-return close, so an applied distribution can only be INFERRED as a one-day jump of the benchmark over the index. Days whose relative
+    move reaches `threshold` are listed, the calendar-year excess is split into those days and the rest, and a jump that is reversed on the adjacent session is flagged: that is a
+    quote-timing difference, not an applied event. Nothing here corrects, edits or replaces the benchmark."""
+    b = pd.Series(benchmark).sort_index()
+    i = pd.Series(index).sort_index()
+    b.index, i.index = b.index.astype(str), i.index.astype(str)
+    both = pd.concat([b.pct_change(fill_method=None), i.pct_change(fill_method=None)], axis=1, keys=["b", "i"]).dropna()
+    both = both[(both.index > start) & (both.index <= cutoff)]
+    both["rel"] = (1 + both.b) / (1 + both.i) - 1
+    days = list(both.index)
+    events = both[both.rel.abs() >= threshold]
+    rows = []
+    for d, r in events.iterrows():
+        k = days.index(d)
+        nxt = both.rel.iloc[k + 1] if k + 1 < len(days) else None
+        prev = both.rel.iloc[k - 1] if k > 0 else None
+        in_pair = (nxt is not None and abs(nxt) >= threshold and nxt * r.rel < 0) or (prev is not None and abs(prev) >= threshold and prev * r.rel < 0)
+        rows.append({"date": d, "benchmarkReturn": float(r.b), "indexReturn": float(r.i), "relativeMove": float(r.rel), "inReversingPair": bool(in_pair),
+                     "monthDay": d[5:]})
+    by_year = {}
+    for y in sorted({d[:4] for d in days}):
+        g = both[both.index.str[:4] == y]
+        quiet = g.rel[g.rel.abs() < threshold]
+        big = g.rel[g.rel.abs() >= threshold]
+        by_year[y] = {"sessions": int(len(g)), "totalRelativeExcess": float(np.expm1(np.log1p(g.rel).sum())), "eventDays": int(len(big)),
+                      "eventDayRelativeExcess": float(np.expm1(np.log1p(big).sum())) if len(big) else 0.0, "otherDaysRelativeExcess": float(np.expm1(np.log1p(quiet).sum()))}
+    non_reversing = [r for r in rows if not r["inReversingPair"] and r["date"][5:7] in ("04", "12")]
+    large = [{"date": d, "benchmarkReturn": float(r.b), "indexReturn": float(r.i), "relativeMove": float(r.rel), "sameDirection": bool(r.b * r.i > 0)} for d, r in both[both.b.abs() >= 0.10].iterrows()]
+    gap = float(reference_gap_per_year)
+    flagged = gap > GAP_FLAG_PP_PER_YEAR
+    return {"evidenceClass": RECONSTRUCTION, "threshold": threshold, "sessionsCompared": int(len(both)),
+            "medianAbsDailyRelativeMove": float(both.rel.abs().median()), "eventDays": rows, "byCalendarYear": by_year,
+            "eventDaysInLateAprilOrLateDecember": [r["date"] for r in non_reversing], "largeBenchmarkMovesAgainstTheIndex": large,
+            "eventDaysInAReversingPair": [r["date"] for r in rows if r["inReversingPair"]],
+            "benchmarkExcessOverReferencePerYear2017To2024": gap, "gapFlagThresholdPerYear": GAP_FLAG_PP_PER_YEAR,
+            "status": INTERNAL_CONSTRUCTION_ANOMALY_FOUND if flagged else INTERNAL_CONSTRUCTION_VERIFIED,
+            "whatThisCannotSay": ("The stored series carries no event list, so whether any distribution or split was applied twice, on the wrong date or at the wrong size is NOT "
+                                  "testable from it; an unexplained accrual is reported as unexplained, not as an error and not as income."),
+            "constructionRead": ("pipeline.price_adjustment.to_total_return: the as-traded close times a forward-accumulated factor 1 / (1 - dividend / previous close) per distribution "
+                                 "event, joined to KRX / FinanceDataReader sessions through the krx-total-return route (pipeline.benchmark_source); one factor per event, applied from the event "
+                                 "date forward, no back-adjustment. Read from the code; no event was observed.")}
+
+
 # =======================================================================================================================================
 # Concentration of the two named securities
 # =======================================================================================================================================
@@ -872,7 +924,7 @@ def frozen_checkpoints(levels, checkpoints=EXTERNAL_CHECKPOINTS):
     return rows
 
 
-def build_local_result(*, benchmark, index_levels, close, universe, sessions, calendar_sessions, identities, sealed_evidence, observed_github_state):
+def build_local_result(*, benchmark, index_levels, close, universe, sessions, calendar_sessions, identities, sealed_evidence, observed_github_state, completed=None):
     """Everything this audit can establish from frozen, repository-resident inputs alone.
 
     benchmark / index_levels: date -> level Series (the frozen 069500.KS total-return close; the committed FDR KS200 price index). close: date x ticker DataFrame of the
@@ -954,6 +1006,10 @@ def build_local_result(*, benchmark, index_levels, close, universe, sessions, ca
             "periods": cap_contribution},
         "sealedAnatomyEvidence": sealed_evidence,
     }
+    result["benchmarkEventAudit"] = benchmark_event_audit(bench, index, result["trackingCrossCheck"]["span2017To2024"]["benchmarkOverIndexRelativePerYear"]
+                                                          - result["trackingCrossCheck"]["span2017To2024"]["refCapWeightedTop120OverIndexRelativePerYear"])
+    if completed is not None:
+        result["completedAudit"] = completed
     return _round_floats(result)
 
 
@@ -970,6 +1026,9 @@ def not_run_sections():
 
 def question_matrix(local):
     """The ten registered questions, classified only with the four registered labels. Rule-based from the computed numbers where the local evidence decides it."""
+    if "completedAudit" in local:
+        from . import kr_integrated_alpha_portfolio_postoutcome_report as REPORT
+        return REPORT.question_matrix(local)
     levels = {r["period"]: r for r in local["benchmarkPeriods"]["levels"]}
     late_share = levels["B_2025"]["logShareOfTerminalWealth"] + levels["C_2026_to_cutoff"]["logShareOfTerminalWealth"]
     early_cagr = levels["A_2017_to_2024"]["annualizedReturn"]
@@ -1072,6 +1131,9 @@ def sealed_anatomy_evidence(industry_report, stock_report, hashes):
 
 def markdown_report(result):
     """Human-readable report rendered from the result dict (and nothing else), so the prose cannot disagree with the JSON."""
+    if "completedAudit" in result:
+        from . import kr_integrated_alpha_portfolio_postoutcome_report as REPORT
+        return REPORT.markdown_report(result)
     L = []
     add = L.append
     levels = {r["period"]: r for r in result["benchmarkPeriods"]["levels"]}

@@ -2452,6 +2452,37 @@
 - NO FORMAL FILE MOVED. The formal spec, model, replay, receipts, seal and workflow bytes are untouched (`load_spec` still verifies every pin), the formal result was not
   committed or rewritten, and the seal workflow bug is left for its own change.
 
+## KR integrated alpha portfolio post-outcome audit completion invariants (v2.47)
+
+- AN AUDIT THAT COULD NOT RUN IN THE AUTHORING SANDBOX RAN WHERE THE ARTIFACTS ARE, AND THE v2.46 "NOT_RUN" SECTIONS ARE NOW ANSWERED. Actions run `37451761441`
+  (workflow definition on `main`, `audit_ref` `11b0d67a`, conclusion success) downloaded the exact result and raw-input artifacts, re-verified their identities and both lock
+  refs, replayed the frozen A and D books read-only and printed `RECONSTRUCTION_REPRODUCES_THE_FORMAL_A_AND_D_PATHS`: 0 divergences in 18 metrics and 117 month-end NAVs each
+  at 1e-9, with every day's residual cost equal to the engine's `costFraction` times pre-trade NAV. Q6-Q10 moved from `UNRESOLVED_DATA_LIMITATION` to answered; Q3 stays unresolved.
+- THE FULL AUDIT FILE IS AN ACTIONS-ONLY ARTIFACT AND IS REFERENCED BY ITS BYTES, NOT COMMITTED. 539,839 bytes, SHA-256 `b316a6ef2ffbf77a0b4ce5646df5b7b6b0bfc079aa3a9e795727d0e7f7e39bbc`
+  (the run's own printed value). The authoring environment cannot download artifacts (blob storage is unreachable), so the file was decoded from the gzip+base64 the workflow
+  printed to its job log and its size and digest were recomputed and matched. A handoff message quoted a different digest; it was a transcription error and is not repeated.
+  `pipeline/kr_integrated_alpha_portfolio_postoutcome_completed.py` turns the file into a compact committed record and refuses any other bytes; the report is rendered from it.
+- A WORKFLOW THAT EXISTS ONLY ON A PR BRANCH CANNOT BE DISPATCHED, AND A WORKFLOW'S OWN JAVASCRIPT IS PART OF ITS EVIDENCE. The session's token answers dispatch with 403; the
+  audit workflow was installed on `main` (#204) with an explicit `audit_ref` input, and its first run failed at parse time because `actions/github-script` injects `exec` and the script
+  declared `const exec` (#205). It failed before any artifact download or audit code, which the step list shows. The fix compiled the whole script with the injected names first.
+- D BEAT A ONLY AFTER 2024, AND THAT IS THE FINDING. Net of costs D trailed A in 2017-2024 (-17.34% vs -12.57%, passive +69.90%) and led it in 2025 (+132.28% vs +51.81%) and in
+  2026 to the cutoff (+101.04% vs +29.77%); 98.2% of D's gross NAV-unit contribution arrived in those two spans. NAV-unit shares weigh late periods more because NAV had compounded,
+  so percentage returns by span are read beside them.
+- D IS AN INDUSTRY BOOK BY CONSTRUCTION. It held three or more names of one industry on 76.3% of held sessions (A 10.0%), a mean top-industry share of 62.6% (A 44.0%) and 83.5%
+  in 2026; `ELECTRONICS_ELECTRICAL` supplied 59.5% of its gross and five securities 87.1%. That is development support concentrated in a regime and an industry, not broad support.
+- THE TWO NAMED MEGA-CAPS ARE NOT WHERE D'S GAIN CAME FROM. Samsung Electronics +0.531 and SK Hynix -0.236 NAV units are 9.2% of D's gross; SK Hynix subtracted, mostly in 2026. The
+  single registered sensitivity `D_EXCLUDE_SAMSUNG_HYNIX` moved cumulative return +15.82pp (+301.85% vs +286.02%) with the book moving to other members of the same industry. It shows
+  independence from two securities, not from their industry, and it is `POST_OUTCOME_DESCRIPTIVE_SENSITIVITY`, `NOT_CONFIRMATORY`, `NOT_ELIGIBLE_FOR_MODEL_SELECTION`.
+- A BENCHMARK CAN BE REPRODUCIBLE AND STILL CARRY AN UNEXPLAINED ACCRUAL, AND BOTH ARE REPORTED. The five >=10% daily moves are market moves (the committed price index moved the same
+  way on all five). The benchmark's excess over that index is +4.53% a year over 2017-2024 against +1.85% for the same-data constituent reference; 13 single days in late April and
+  late December of 2017-2025 carry +1.1% to +2.0% each and the 2026-07-31 / 2026-08-03 pair (+3.50% / -3.38%) reverses at once, which reads as quote timing. The stored series carries
+  no event list, so double application, wrong date or wrong size cannot be tested: `INTERNAL_CONSTRUCTION_ANOMALY_FOUND`, `BENCHMARK_EXTERNAL_RECONCILIATION_UNRESOLVED`. No corrected
+  benchmark is built and no official number is quoted.
+- THE FORMAL DECISION AND ITS ECONOMIC READING ARE KEPT APART. Formal and unchanged: `INDUSTRY_LAYER_DEVELOPMENT_SUPPORTED`, `NO_UNAMBIGUOUS_FINAL_ARCHITECTURE`,
+  `MARKET_LAYER_PARETO_TRADE_OFF`. Post-outcome reading: regime-dependent and industry-concentrated development support, not dependent on the two named securities, and D did not beat
+  the passive path over the full window (+15.01% vs +20.24% a year, drawdown -57.86% vs -40.69%).
+- SUCCESSOR MODEL DESIGN IS OUTSIDE THIS AUDIT. It adds no model, factor, weight, exclusion set or benchmark, reruns no formal or anatomy study and touches no lock.
+
 ## Lint gate invariants (v2.11)
 
 - The enabled rule set reports ZERO findings on `main`. A rule is turned on in the

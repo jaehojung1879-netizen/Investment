@@ -14,14 +14,18 @@ import pytest
 from pipeline import kr_integrated_alpha_portfolio as M
 from pipeline import kr_integrated_alpha_portfolio_execution as E
 from pipeline import kr_integrated_alpha_portfolio_postoutcome_audit as A
+from pipeline import kr_integrated_alpha_portfolio_postoutcome_completed as C
 from pipeline import kr_integrated_alpha_portfolio_postoutcome_full as FULL
 from pipeline import kr_integrated_alpha_portfolio_replay as R
 
 ROOT = Path(__file__).resolve().parents[1]
 RESULT_JSON = ROOT / "docs/results/kr-integrated-alpha-portfolio-v1-postoutcome-concentration-audit.json"
 REPORT_MD = ROOT / "docs/kr-integrated-alpha-portfolio-v1-postoutcome-concentration-audit.md"
+COMPLETED_JSON = ROOT / "docs/results/kr-integrated-alpha-portfolio-v1-postoutcome-completed-audit.json"
+STALE_HANDOFF_DIGEST_PREFIX = "b316a6ef11dcee"           # a transcription error in a handoff message; it must not appear in any new documentation
 WORKFLOW = (ROOT / ".github/workflows/kr-integrated-alpha-portfolio-v1-postoutcome-audit.yml").read_text()
 AUDIT_FILES = ("pipeline/kr_integrated_alpha_portfolio_postoutcome_audit.py", "pipeline/kr_integrated_alpha_portfolio_postoutcome_full.py",
+               "pipeline/kr_integrated_alpha_portfolio_postoutcome_completed.py", "pipeline/kr_integrated_alpha_portfolio_postoutcome_report.py",
                "scripts/run_kr_integrated_alpha_portfolio_postoutcome_audit.py")
 
 
@@ -477,7 +481,7 @@ def test_the_committed_result_is_the_labelled_post_outcome_diagnostic_and_names_
     assert committed["concentrationProxy"]["label"] == "MARKET_CAP_SHARE_INSIDE_THE_PIT_TOP120_NOT_KODEX200_OR_KOSPI200_WEIGHT"
     assert committed["approximateBenchmarkContribution"]["label"] == "APPROXIMATE_WEIGHTED_CONTRIBUTION_USING_MONTHLY_WEIGHT_SNAPSHOTS"
     assert committed["referencePortfolios"]["notTheFormalBenchmark"] is True
-    assert all(v["status"] == A.NOT_RUN for v in committed["notRunSections"].values())
+    assert "notRunSections" not in committed and committed["completedAudit"]["evidenceClass"] == A.RECONSTRUCTION      # the artifact-dependent sections ran in Actions
     assert committed["externalReconciliation"]["status"] == A.EXTERNAL_UNRESOLVED
     assert committed["benchmarkIntegrity"]["sessionsMissingFromSeries"] == [] and committed["benchmarkIntegrity"]["nonPositiveOrNonFiniteLevels"] == 0
     assert committed["inputsVerified"]["universeShardsVerifiedAgainstPinnedGitBlobs"] == 14 and committed["inputsVerified"]["benchmarkDuplicateSessions"] == 0
@@ -486,7 +490,7 @@ def test_the_committed_result_is_the_labelled_post_outcome_diagnostic_and_names_
 def test_the_committed_benchmark_reproduces_the_quoted_passive_figure_and_the_fixed_spans_chain(committed):
     rep = committed["benchmarkPassiveReproduction"]
     assert rep["reproducesTheQuotedFormalFigureToFourDecimals"] is True and round(rep["reproducedPassiveAnnualizedReturn"], 4) == 0.2024
-    assert rep["windowFirstSession"] == "2017-01-16" and rep["windowLastSession"] == "2026-09-14" and rep["formalArtifactComparison"] == A.NOT_RUN
+    assert rep["windowFirstSession"] == "2017-01-16" and rep["windowLastSession"] == "2026-09-14"
     rows = {r["period"]: r for r in committed["benchmarkPeriods"]["levels"]}
     chained = (1 + rows["A_2017_to_2024"]["cumulativeReturn"]) * (1 + rows["B_2025"]["cumulativeReturn"]) * (1 + rows["C_2026_to_cutoff"]["cumulativeReturn"]) - 1
     assert chained == pytest.approx(rows["D_full_window"]["cumulativeReturn"], rel=1e-9)
@@ -497,25 +501,29 @@ def test_the_committed_benchmark_reproduces_the_quoted_passive_figure_and_the_fi
     assert (1 + years["2025"]["return"]) == pytest.approx(rows["B_2025"]["endLevel"] / rows["B_2025"]["startLevel"], rel=1e-9)
 
 
-def test_the_committed_question_matrix_uses_only_the_four_labels_and_leaves_the_artifact_dependent_questions_unresolved(committed):
+def test_the_committed_question_matrix_answers_q1_to_q10_with_only_the_four_registered_labels(committed):
     matrix = committed["questionMatrix"]
     assert len(matrix) == 10 and all(q["classification"] in A.CLASSIFICATIONS for q in matrix)
-    by = {q["question"][:3].strip(". "): q for q in matrix}
-    for name in ("Q3", "Q6", "Q7", "Q8", "Q9", "Q10"):
-        assert by[name]["classification"] == A.UNRESOLVED
-    assert by["Q1"]["classification"] == A.SUPPORTED and by["Q2"]["classification"] == A.PARTIAL
+    by = {q["question"][:3].strip(". "): q["classification"] for q in matrix}
+    assert by == {"Q1": A.SUPPORTED, "Q2": A.PARTIAL, "Q3": A.UNRESOLVED, "Q4": A.PARTIAL, "Q5": A.PARTIAL, "Q6": A.SUPPORTED, "Q7": A.PARTIAL, "Q8": A.SUPPORTED, "Q9": A.SUPPORTED, "Q10": A.SUPPORTED}
+    assert not any(q["classification"] == A.UNRESOLVED and q["basis"] == A.NOT_RUN for q in matrix)           # nothing is left unresolved merely for want of the artifacts
 
 
 def test_the_committed_report_is_exactly_rendered_from_the_committed_result(committed):
     assert REPORT_MD.read_text() == A.markdown_report(committed)
     text = REPORT_MD.read_text()
-    assert "POST-OUTCOME DESCRIPTIVE DIAGNOSTIC ONLY" in text and "NOT_RUN_IN_THIS_ENVIRONMENT" in text and "BENCHMARK_EXTERNAL_RECONCILIATION_UNRESOLVED" in text
-    assert re.search(r"^## 13\. Consequence for the next research step", text, re.M)
+    assert "POST-OUTCOME DESCRIPTIVE DIAGNOSTIC ONLY" in text and "BENCHMARK_EXTERNAL_RECONCILIATION_UNRESOLVED" in text and "NOT_RUN_IN_THIS_ENVIRONMENT" not in text
+    headings = re.findall(r"^## (\d+)\. ", text, re.M)
+    assert headings == [str(i) for i in range(1, 15)]
+    assert C.COMPLETED_RUN["fullAuditJsonSha256"] in text and "539,839 bytes" in text and "RECONSTRUCTION_REPRODUCES_THE_FORMAL_A_AND_D_PATHS" in text
+    assert STALE_HANDOFF_DIGEST_PREFIX not in text and STALE_HANDOFF_DIGEST_PREFIX not in COMPLETED_JSON.read_text() and STALE_HANDOFF_DIGEST_PREFIX not in RESULT_JSON.read_text()
+    assert "INDUSTRY_LAYER_DEVELOPMENT_SUPPORTED" in text and "NO_UNAMBIGUOUS_FINAL_ARCHITECTURE" in text and "MARKET_LAYER_PARETO_TRADE_OFF" in text
+    assert "POST_OUTCOME_DESCRIPTIVE_SENSITIVITY" in text and "NOT_CONFIRMATORY" in text and "NOT_ELIGIBLE_FOR_MODEL_SELECTION" in text
 
 
 def test_no_existing_result_file_and_no_frozen_artifact_is_touched_by_this_audit():
     sealed = ROOT / "docs/results"
-    new = {RESULT_JSON.name}
+    new = {RESULT_JSON.name, COMPLETED_JSON.name}
     existing = {p.name for p in sealed.glob("kr-integrated-alpha-portfolio-v1-*")}
     assert existing - new <= {"kr-integrated-alpha-portfolio-v1-readiness.json", "kr-integrated-alpha-portfolio-v1-prelock-availability-profile.json"}
     assert not (sealed / "kr-integrated-alpha-portfolio-v1-result.json").exists()           # the formal result was never committed by this audit
@@ -572,3 +580,98 @@ def test_full_mode_stops_with_the_first_divergence_and_attributes_nothing_when_t
     report = json.loads(Path(out["file"]).read_text())
     assert report["attribution"] == A.NOT_RUN and "counterfactual" not in report
     assert report["firstDivergence"]["architecture"] == "D" and report["firstDivergence"]["path"].startswith("monthEndNav/")
+
+
+# ---------------------------------------------------------------------------------------------------------------------------------------
+# The completed audit: compact record, benchmark event audit, internal consistency of the committed numbers
+# ---------------------------------------------------------------------------------------------------------------------------------------
+@pytest.fixture(scope="module")
+def completed():
+    return json.loads(COMPLETED_JSON.read_text())
+
+
+def test_the_compact_record_refuses_any_file_that_is_not_the_completed_runs_exact_bytes():
+    with pytest.raises(ValueError, match="FULL_AUDIT_JSON_DIFFERS_FROM_THE_COMPLETED_RUN"):
+        C.verify_full_bytes(b"{}")
+    with pytest.raises(ValueError, match="FULL_AUDIT_JSON_DIFFERS_FROM_THE_COMPLETED_RUN"):
+        C.verify_full_bytes(b"x" * C.COMPLETED_RUN["fullAuditJsonBytes"])
+    with pytest.raises(ValueError, match="AUDIT_DID_NOT_REPRODUCE_THE_FORMAL_PATHS"):
+        C.compact({"status": A.D_PATH_RECONSTRUCTION_MISMATCH})
+
+
+def test_the_compact_record_carries_the_runs_own_digest_and_no_stale_digest(completed):
+    prov = completed["provenance"]
+    assert prov == C.COMPLETED_RUN
+    assert prov["workflowRunId"] == 37451761441 and prov["artifactId"] == 11406929754 and prov["fullAuditJsonBytes"] == 539839
+    assert prov["fullAuditJsonSha256"] == "b316a6ef2ffbf77a0b4ce5646df5b7b6b0bfc079aa3a9e795727d0e7f7e39bbc"
+    rec = completed["reconstruction"]
+    assert rec["status"] == "RECONSTRUCTION_REPRODUCES_THE_FORMAL_A_AND_D_PATHS" and rec["tolerance"] == 1e-9
+    assert all(r["reproduced"] and r["divergenceCount"] == 0 and r["monthEndNavDates"] == 117 for r in rec["architectures"].values())
+    assert rec["priorAuditFacts"]["agrees"] is True and rec["sideEffectCounters"]["markerWrites"] == 0 and rec["sideEffectCounters"]["replayCalls"] == 0
+
+
+def test_the_committed_attribution_chains_and_reconciles(completed):
+    for arch in ("A", "D"):
+        pm = completed["books"][arch]["periodMetrics"]
+        chained = (1 + pm["A_2017_to_2024"]["cumulativeNetReturn"]) * (1 + pm["B_2025"]["cumulativeNetReturn"]) * (1 + pm["C_2026_to_cutoff"]["cumulativeNetReturn"]) - 1
+        assert chained == pytest.approx(pm["D_full_window"]["cumulativeNetReturn"], abs=1e-9)
+        formal = completed["formalReported"]["summaries"][arch]
+        assert pm["D_full_window"]["cumulativeNetReturn"] == pytest.approx(formal["cumulativeNetReturn"], abs=1e-9)           # reconstruction == formal
+        assert pm["D_full_window"]["annualizedNetReturn"] == pytest.approx(formal["netAnnualizedReturn"], abs=1e-9)
+        assert pm["D_full_window"]["maxDrawdownWithinSpan"] == pytest.approx(formal["maxDrawdown"], abs=1e-9)
+        sc = completed["books"][arch]["securityContribution"]
+        for span in ("A_2017_to_2024", "B_2025", "C_2026_to_cutoff", "D_full_window"):
+            assert sc[span]["grossContributionNavUnits"] - sc[span]["transactionCostNavUnits"] == pytest.approx(sc[span]["netChangeNavUnits"], abs=1e-9)
+        spans = [sc[k]["netChangeNavUnits"] for k in ("A_2017_to_2024", "B_2025", "C_2026_to_cutoff")]
+        assert sum(spans) == pytest.approx(sc["D_full_window"]["netChangeNavUnits"], abs=1e-9)
+        assert sc["D_full_window"]["netChangeNavUnits"] == pytest.approx(formal["cumulativeNetReturn"], abs=1e-9)             # nav_T - 1 = gross - cost
+        named = completed["books"][arch]["namedSecurities"]["bySpan"]["D_full_window"]
+        assert named["combinedGrossContributionNavUnits"] == pytest.approx(named["005930.KS"]["grossContributionNavUnits"] + named["000660.KS"]["grossContributionNavUnits"], abs=1e-9)
+    d_a = completed["dMinusA"]["D_full_window"]
+    assert d_a["returnDMinusA"] == pytest.approx(completed["formalReported"]["summaries"]["D"]["cumulativeNetReturn"] - completed["formalReported"]["summaries"]["A"]["cumulativeNetReturn"], abs=1e-9)
+    assert d_a["anchorsBothBooksHadAValidDecision"] == 108 and d_a["anchorsWithIdenticalSelection"] == 0 and round(d_a["meanDifferingNames"], 4) == 3.2407
+
+
+def test_the_one_sensitivity_is_the_registered_one_and_removes_exactly_the_two_names(completed):
+    cf = completed["counterfactual"]
+    assert cf["name"] == "D_EXCLUDE_SAMSUNG_HYNIX" and cf["excluded"] == ["005930.KS", "000660.KS"] and cf["formalDecisionsUnchanged"] is True
+    assert cf["labels"] == ["POST_OUTCOME_DESCRIPTIVE_SENSITIVITY", "NOT_CONFIRMATORY", "NOT_ELIGIBLE_FOR_MODEL_SELECTION"]
+    assert all(v["sessionsHeld"] == 0 and v["decisionsSelected"] == 0 for v in cf["namedSecurities"].values())
+    assert cf["formalD"]["cumulativeNetReturn"] == pytest.approx(completed["formalReported"]["summaries"]["D"]["cumulativeNetReturn"], abs=1e-9)
+    assert cf["differenceVersusD"]["cumulativeNetReturn"] == pytest.approx(cf["summary"]["cumulativeNetReturn"] - cf["formalD"]["cumulativeNetReturn"], abs=1e-9)
+    assert cf["summary"]["averageHoldings"] == pytest.approx(cf["formalD"]["averageHoldings"], abs=1e-12)           # the frozen portfolio rules imply no change in holdings
+
+
+def test_the_formal_decisions_are_carried_unchanged(completed):
+    f = completed["formalReported"]
+    assert f["industryLayerDecision"] == "INDUSTRY_LAYER_DEVELOPMENT_SUPPORTED" and f["finalArchitecture"] == "NO_UNAMBIGUOUS_FINAL_ARCHITECTURE" and f["reason"] == "MARKET_LAYER_PARETO_TRADE_OFF"
+    assert round(f["summaries"]["A"]["netAnnualizedReturn"], 4) == 0.0579 and round(f["summaries"]["D"]["netAnnualizedReturn"], 4) == 0.1501 and round(f["passive"]["annualizedReturn"], 4) == 0.2024
+
+
+def test_benchmark_event_audit_lists_jumps_splits_the_excess_and_flags_a_reversal():
+    days = sessions("2017-01-02", "2026-09-14")
+    n = len(days)
+    index_ret = np.full(n, 0.0002)
+    bench_ret = index_ret.copy()
+    k = days.index("2025-04-29")
+    bench_ret[k] += 0.015
+    j = days.index("2026-07-31")
+    bench_ret[j] += 0.035
+    bench_ret[j + 1] -= 0.034
+    bench, idx = levels_with(bench_ret, days), levels_with(index_ret, days)
+    out = A.benchmark_event_audit(bench, idx, 0.027)
+    dates = [r["date"] for r in out["eventDays"]]
+    assert dates == ["2025-04-29", "2026-07-31", "2026-08-03"]
+    assert out["eventDaysInAReversingPair"] == ["2026-07-31", "2026-08-03"] and out["eventDaysInLateAprilOrLateDecember"] == ["2025-04-29"]
+    assert out["byCalendarYear"]["2025"]["eventDays"] == 1 and out["byCalendarYear"]["2025"]["eventDayRelativeExcess"] == pytest.approx(0.015, abs=1e-3)
+    assert out["status"] == A.INTERNAL_CONSTRUCTION_ANOMALY_FOUND
+    assert A.benchmark_event_audit(bench, idx, 0.004)["status"] == A.INTERNAL_CONSTRUCTION_VERIFIED
+    assert "NOT testable" in out["whatThisCannotSay"]
+
+
+def test_the_committed_benchmark_event_audit_matches_the_report_and_changes_no_benchmark_value(committed):
+    ev = committed["benchmarkEventAudit"]
+    assert ev["status"] == A.INTERNAL_CONSTRUCTION_ANOMALY_FOUND and len(ev["eventDays"]) == 15 and len(ev["eventDaysInLateAprilOrLateDecember"]) == 13
+    assert ev["eventDaysInAReversingPair"] == ["2026-07-31", "2026-08-03"]
+    assert all(r["sameDirection"] for r in ev["largeBenchmarkMovesAgainstTheIndex"]) and len(ev["largeBenchmarkMovesAgainstTheIndex"]) == 5
+    assert committed["externalReconciliation"]["status"] == A.EXTERNAL_UNRESOLVED

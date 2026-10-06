@@ -8,6 +8,7 @@ local   Computes everything that can be established from frozen, repository-resi
         sealed anatomy reports. Reads the replay-v16 objects and the pinned universe snapshots from the ``signal-history`` branch (verified against their pinned
         hashes before use) and writes the committed JSON and Markdown. No network, no formal artifact, no lock.
 full    The read-only reconstruction against the exact formal artifacts (see pipeline notes below). Run only through the audit workflow.
+compact Turns the completed audit's full file (an Actions-only artifact, verified by byte count and SHA-256) into the small committed record the report is rendered from.
 
 It never calls the formal ``execute`` path, never creates, moves or deletes an execution lock, never writes a formal result and never reruns a sealed study.
 """
@@ -27,11 +28,13 @@ sys.path.insert(0, str(ROOT))
 import pandas as pd  # noqa: E402
 
 from pipeline import kr_integrated_alpha_portfolio_postoutcome_audit as A  # noqa: E402
+from pipeline import kr_integrated_alpha_portfolio_postoutcome_completed as COMPLETED  # noqa: E402
 from pipeline import replay_calendar as RC  # noqa: E402
 from pipeline import replay_inputs as RI  # noqa: E402
 
 JSON_OUT = "docs/results/kr-integrated-alpha-portfolio-v1-postoutcome-concentration-audit.json"
 MD_OUT = "docs/kr-integrated-alpha-portfolio-v1-postoutcome-concentration-audit.md"
+COMPLETED_OUT = "docs/results/kr-integrated-alpha-portfolio-v1-postoutcome-completed-audit.json"
 OVERLAY_SPEC = "research_specs/kr-model-overlay-portfolio-v1.json"
 INTEGRATED_SPEC = "research_specs/kr-integrated-alpha-portfolio-v1.json"
 KS200_CSV = "data/kr-market-risk-anatomy-v1/sources/FDR_KS200/normalized.csv"
@@ -137,6 +140,28 @@ def load_ks200():
     return series, {"path": KS200_CSV, "sha256": pinned, "pinnedBy": INTEGRATED_SPEC}
 
 
+def load_completed():
+    """The committed compact record of the completed audit, if present; its provenance must still carry the completed run's pinned digest."""
+    path = ROOT / COMPLETED_OUT
+    if not path.exists():
+        return None
+    completed = json.loads(path.read_text())
+    prov = completed["provenance"]
+    if prov["fullAuditJsonSha256"] != COMPLETED.COMPLETED_RUN["fullAuditJsonSha256"] or prov["fullAuditJsonBytes"] != COMPLETED.COMPLETED_RUN["fullAuditJsonBytes"]:
+        raise ValueError("COMPLETED_AUDIT_RECORD_DOES_NOT_CARRY_THE_COMPLETED_RUNS_DIGEST")
+    return completed
+
+
+def run_compact(full_json, output=None):
+    data = Path(full_json).read_bytes()
+    record = COMPLETED.compact(COMPLETED.verify_full_bytes(data))
+    text = json.dumps(record, sort_keys=True, indent=2, ensure_ascii=False) + "\n"
+    target = Path(output or ROOT / COMPLETED_OUT)
+    target.parent.mkdir(parents=True, exist_ok=True)
+    target.write_text(text)
+    return {"file": str(target), "bytes": len(text.encode()), "sha256": sha256_bytes(text.encode())}
+
+
 def run_local(ref, output_json=None, output_md=None):
     with tempfile.TemporaryDirectory() as tmp:
         manifest, store, replay_identity = materialize_replay(ref, Path(tmp))
@@ -150,8 +175,9 @@ def run_local(ref, output_json=None, output_md=None):
     identities = {"replay": replay_identity, "benchmarkDuplicateSessions": duplicates, "universeShardsVerifiedAgainstPinnedGitBlobs": len(universe_pins),
                   "universeBlobPins": universe_pins, "ks200PriceIndex": ks_identity, "priceTickers": int(close.shape[1]), "universeSnapshots": int(universe.date.nunique())}
     result = A.build_local_result(benchmark=benchmark, index_levels=ks200, close=close, universe=universe, sessions=sessions, calendar_sessions=calendar, identities=identities,
-                                  sealed_evidence=evidence, observed_github_state=OBSERVED_AT_AUTHORING)
-    result["notRunSections"] = A.not_run_sections()
+                                  sealed_evidence=evidence, observed_github_state=OBSERVED_AT_AUTHORING, completed=load_completed())
+    if "completedAudit" not in result:
+        result["notRunSections"] = A.not_run_sections()
     result["questionMatrix"] = A.question_matrix(result)
     A.assert_clean_language(result)
     text = json.dumps(result, sort_keys=True, indent=2, ensure_ascii=False) + "\n"
@@ -166,7 +192,8 @@ def run_local(ref, output_json=None, output_md=None):
 
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--mode", choices=("local", "full"), default="local")
+    parser.add_argument("--mode", choices=("local", "full", "compact"), default="local")
+    parser.add_argument("--full-json")
     parser.add_argument("--signal-history-ref", default="origin/signal-history")
     parser.add_argument("--output-json", default=str(ROOT / JSON_OUT))
     parser.add_argument("--output-md", default=str(ROOT / MD_OUT))
@@ -174,6 +201,9 @@ def main(argv=None):
     parser.add_argument("--formal-result")
     parser.add_argument("--output")
     args = parser.parse_args(argv)
+    if args.mode == "compact":
+        print(json.dumps(run_compact(args.full_json, args.output), sort_keys=True))
+        return
     if args.mode == "local":
         run_local(args.signal_history_ref, args.output_json, args.output_md)
         print(json.dumps({"mode": "local", "json": args.output_json, "md": args.output_md}))

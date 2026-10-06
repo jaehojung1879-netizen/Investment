@@ -134,6 +134,267 @@
       }
     }
   },
+  "benchmarkEventAudit": {
+    "benchmarkExcessOverReferencePerYear2017To2024": 0.026793176383,
+    "byCalendarYear": {
+      "2017": {
+        "eventDayRelativeExcess": 0.020234742494,
+        "eventDays": 1,
+        "otherDaysRelativeExcess": 0.019592714728,
+        "sessions": 232,
+        "totalRelativeExcess": 0.040223910759
+      },
+      "2018": {
+        "eventDayRelativeExcess": 0.032106222984,
+        "eventDays": 2,
+        "otherDaysRelativeExcess": 0.016426861234,
+        "sessions": 244,
+        "totalRelativeExcess": 0.049060488688
+      },
+      "2019": {
+        "eventDayRelativeExcess": 0.031217689127,
+        "eventDays": 2,
+        "otherDaysRelativeExcess": 0.014463238401,
+        "sessions": 246,
+        "totalRelativeExcess": 0.046132436408
+      },
+      "2020": {
+        "eventDayRelativeExcess": 0.032669401471,
+        "eventDays": 2,
+        "otherDaysRelativeExcess": 0.015437619099,
+        "sessions": 248,
+        "totalRelativeExcess": 0.048611358346
+      },
+      "2021": {
+        "eventDayRelativeExcess": 0.017018633128,
+        "eventDays": 1,
+        "otherDaysRelativeExcess": 0.022890293361,
+        "sessions": 248,
+        "totalRelativeExcess": 0.040298487995
+      },
+      "2022": {
+        "eventDayRelativeExcess": 0.026322793741,
+        "eventDays": 2,
+        "otherDaysRelativeExcess": 0.025540706017,
+        "sessions": 246,
+        "totalRelativeExcess": 0.052535802495
+      },
+      "2023": {
+        "eventDayRelativeExcess": 0.01471059007,
+        "eventDays": 1,
+        "otherDaysRelativeExcess": 0.023601884522,
+        "sessions": 245,
+        "totalRelativeExcess": 0.03865967224
+      },
+      "2024": {
+        "eventDayRelativeExcess": 0.013021164286,
+        "eventDays": 1,
+        "otherDaysRelativeExcess": 0.031603781344,
+        "sessions": 244,
+        "totalRelativeExcess": 0.045036463659
+      },
+      "2025": {
+        "eventDayRelativeExcess": 0.014028411809,
+        "eventDays": 1,
+        "otherDaysRelativeExcess": 0.027801769228,
+        "sessions": 242,
+        "totalRelativeExcess": 0.042220195705
+      },
+      "2026": {
+        "eventDayRelativeExcess": -3.5685289e-05,
+        "eventDays": 2,
+        "otherDaysRelativeExcess": 0.013417446707,
+        "sessions": 172,
+        "totalRelativeExcess": 0.013381282612
+      }
+    },
+    "constructionRead": "pipeline.price_adjustment.to_total_return: the as-traded close times a forward-accumulated factor 1 / (1 - dividend / previous close) per distribution event, joined to KRX / FinanceDataReader sessions through the krx-total-return route (pipeline.benchmark_source); one factor per event, applied from the event date forward, no back-adjustment. Read from the code; no event was observed.",
+    "eventDays": [
+      {
+        "benchmarkReturn": 0.022226971575,
+        "date": "2017-04-27",
+        "inReversingPair": false,
+        "indexReturn": 0.001952716368,
+        "monthDay": "04-27",
+        "relativeMove": 0.020234742494
+      },
+      {
+        "benchmarkReturn": 0.026555672744,
+        "date": "2018-04-27",
+        "inReversingPair": false,
+        "indexReturn": 0.008551307847,
+        "monthDay": "04-27",
+        "relativeMove": 0.017851709434
+      },
+      {
+        "benchmarkReturn": 0.012411506407,
+        "date": "2018-12-27",
+        "inReversingPair": false,
+        "indexReturn": -0.001571001609,
+        "monthDay": "12-27",
+        "relativeMove": 0.014004509123
+      },
+      {
+        "benchmarkReturn": 0.040041797283,
+        "date": "2019-04-29",
+        "inReversingPair": false,
+        "indexReturn": 0.019371578873,
+        "monthDay": "04-29",
+        "relativeMove": 0.020277412907
+      },
+      {
+        "benchmarkReturn": 0.014641174409,
+        "date": "2019-12-27",
+        "inReversingPair": false,
+        "indexReturn": 0.003876759845,
+        "monthDay": "12-27",
+        "relativeMove": 0.010722844671
+      },
+      {
+        "benchmarkReturn": 0.025163178033,
+        "date": "2020-04-28",
+        "inReversingPair": false,
+        "indexReturn": 0.006082247685,
+        "monthDay": "04-28",
+        "relativeMove": 0.018965577011
+      },
+      {
+        "benchmarkReturn": 0.017023159758,
+        "date": "2020-12-29",
+        "inReversingPair": false,
+        "indexReturn": 0.003526965494,
+        "monthDay": "12-29",
+        "relativeMove": 0.013448760949
+      },
+      {
+        "benchmarkReturn": 0.014163710419,
+        "date": "2021-04-29",
+        "inReversingPair": false,
+        "indexReturn": -0.002807148872,
+        "monthDay": "04-29",
+        "relativeMove": 0.017018633128
+      },
+      {
+        "benchmarkReturn": 0.025868909697,
+        "date": "2022-04-28",
+        "inReversingPair": false,
+        "indexReturn": 0.011409260276,
+        "monthDay": "04-28",
+        "relativeMove": 0.014296536515
+      },
+      {
+        "benchmarkReturn": -0.011858125993,
+        "date": "2022-12-28",
+        "inReversingPair": false,
+        "indexReturn": -0.023436986391,
+        "monthDay": "12-28",
+        "relativeMove": 0.011856746813
+      },
+      {
+        "benchmarkReturn": 0.018218556428,
+        "date": "2023-04-27",
+        "inReversingPair": false,
+        "indexReturn": 0.003457110226,
+        "monthDay": "04-27",
+        "relativeMove": 0.01471059007
+      },
+      {
+        "benchmarkReturn": 0.022729915126,
+        "date": "2024-04-29",
+        "inReversingPair": false,
+        "indexReturn": 0.009583956568,
+        "monthDay": "04-29",
+        "relativeMove": 0.013021164286
+      },
+      {
+        "benchmarkReturn": 0.019984790875,
+        "date": "2025-04-29",
+        "inReversingPair": false,
+        "indexReturn": 0.005873976504,
+        "monthDay": "04-29",
+        "relativeMove": 0.014028411809
+      },
+      {
+        "benchmarkReturn": 0.241741313402,
+        "date": "2026-07-31",
+        "inReversingPair": true,
+        "indexReturn": 0.1997959862,
+        "monthDay": "07-31",
+        "relativeMove": 0.034960383002
+      },
+      {
+        "benchmarkReturn": -0.089275868407,
+        "date": "2026-08-03",
+        "inReversingPair": true,
+        "indexReturn": -0.05740296711,
+        "monthDay": "08-03",
+        "relativeMove": -0.033813920673
+      }
+    ],
+    "eventDaysInAReversingPair": [
+      "2026-07-31",
+      "2026-08-03"
+    ],
+    "eventDaysInLateAprilOrLateDecember": [
+      "2017-04-27",
+      "2018-04-27",
+      "2018-12-27",
+      "2019-04-29",
+      "2019-12-27",
+      "2020-04-28",
+      "2020-12-29",
+      "2021-04-29",
+      "2022-04-28",
+      "2022-12-28",
+      "2023-04-27",
+      "2024-04-29",
+      "2025-04-29"
+    ],
+    "evidenceClass": "POST_OUTCOME_DIAGNOSTIC_RECONSTRUCTION",
+    "gapFlagThresholdPerYear": 0.01,
+    "largeBenchmarkMovesAgainstTheIndex": [
+      {
+        "benchmarkReturn": -0.124612580821,
+        "date": "2026-03-04",
+        "indexReturn": -0.119397253898,
+        "relativeMove": -0.005922451351,
+        "sameDirection": true
+      },
+      {
+        "benchmarkReturn": 0.101044926537,
+        "date": "2026-03-05",
+        "indexReturn": 0.098349608214,
+        "relativeMove": 0.002453971216,
+        "sameDirection": true
+      },
+      {
+        "benchmarkReturn": -0.104710379856,
+        "date": "2026-06-23",
+        "indexReturn": -0.105278834568,
+        "relativeMove": 0.000635342868,
+        "sameDirection": true
+      },
+      {
+        "benchmarkReturn": -0.111902746645,
+        "date": "2026-07-28",
+        "indexReturn": -0.115532818316,
+        "relativeMove": 0.004104246881,
+        "sameDirection": true
+      },
+      {
+        "benchmarkReturn": 0.241741313402,
+        "date": "2026-07-31",
+        "indexReturn": 0.1997959862,
+        "relativeMove": 0.034960383002,
+        "sameDirection": true
+      }
+    ],
+    "medianAbsDailyRelativeMove": 0.000806592984,
+    "sessionsCompared": 2367,
+    "status": "INTERNAL_CONSTRUCTION_ANOMALY_FOUND",
+    "threshold": 0.01,
+    "whatThisCannotSay": "The stored series carries no event list, so whether any distribution or split was applied twice, on the wrong date or at the wrong size is NOT testable from it; an unexplained accrual is reported as unexplained, not as an error and not as income."
+  },
   "benchmarkIntegrity": {
     "calendarSessions": 3860,
     "dailyMovesAtLeast10Percent": [
@@ -342,6 +603,3804 @@
         "years": 9.659335920655
       }
     ]
+  },
+  "completedAudit": {
+    "books": {
+      "A": {
+        "concentration": {
+          "A_2017_to_2024": {
+            "averageCashWeight": 0.03251137529,
+            "averageHoldings": 4.838792221085,
+            "averageLargestNameWeightOfNav": 0.270550774888,
+            "maximumLargestNameWeightOfNav": 0.335140684453,
+            "maximumTopIndustryShareOfInvested": 0.782918637621,
+            "meanHhi": 0.211669005777,
+            "meanTopIndustryShareOfInvested": 0.444221717279,
+            "sessions": 1954,
+            "shareOfHeldSessionsWithThreeOrMoreNamesInOneIndustry": 0.122157588577
+          },
+          "B_2025": {
+            "averageCashWeight": -0.0,
+            "averageHoldings": 5.0,
+            "averageLargestNameWeightOfNav": 0.260890967699,
+            "maximumLargestNameWeightOfNav": 0.318930711566,
+            "maximumTopIndustryShareOfInvested": 0.531244608914,
+            "meanHhi": 0.210806919411,
+            "meanTopIndustryShareOfInvested": 0.45391086367,
+            "sessions": 242,
+            "shareOfHeldSessionsWithThreeOrMoreNamesInOneIndustry": 0.0
+          },
+          "C_2026_to_cutoff": {
+            "averageCashWeight": 0.0,
+            "averageHoldings": 5.0,
+            "averageLargestNameWeightOfNav": 0.256645459864,
+            "maximumLargestNameWeightOfNav": 0.306041165643,
+            "maximumTopIndustryShareOfInvested": 0.511989410139,
+            "meanHhi": 0.208791776936,
+            "meanTopIndustryShareOfInvested": 0.376356527304,
+            "sessions": 172,
+            "shareOfHeldSessionsWithThreeOrMoreNamesInOneIndustry": 0.0
+          },
+          "D_full_window": {
+            "averageCashWeight": 0.0268273764,
+            "averageHoldings": 4.866976351351,
+            "averageLargestNameWeightOfNav": 0.268498979867,
+            "maximumLargestNameWeightOfNav": 0.335140684453,
+            "maximumTopIndustryShareOfInvested": 0.782918637621,
+            "meanHhi": 0.211363796119,
+            "meanTopIndustryShareOfInvested": 0.440174845587,
+            "sessions": 2368,
+            "shareOfHeldSessionsWithThreeOrMoreNamesInOneIndustry": 0.10021691974
+          }
+        },
+        "gainConcentration": {
+          "fullWindowGrossContributionNavUnits": 0.885514015958,
+          "industriesWithASemiconductorOrElectronicsWordInTheLabel": {
+            "ELECTRONICS_ELECTRICAL": 0.255075285241
+          },
+          "labelNote": "label match on the canonical PIT industry text only; no theme classification was created",
+          "netChangeNavUnits": 0.722512644104,
+          "semiconductorOrElectronicsLabelShare": 0.288053357309,
+          "shareFrom2025And2026Spans": 0.998446597662,
+          "shareFromTop1Security": 0.309822116999,
+          "shareFromTop2Securities": 0.505548661263,
+          "shareFromTop5Securities": 0.870642065421,
+          "topIndustry": {
+            "contribution": 0.318101032237,
+            "label": "COMMUNICATION_MEDIA_SOFTWARE",
+            "share": 0.359227552026
+          }
+        },
+        "holdings": {
+          "bottomContributors": [
+            {
+              "contribution": -0.100124727808,
+              "sessions": 189,
+              "spells": 3,
+              "ticker": "034220.KS"
+            },
+            {
+              "contribution": -0.070298750945,
+              "sessions": 168,
+              "spells": 1,
+              "ticker": "000120.KS"
+            },
+            {
+              "contribution": -0.052920741713,
+              "sessions": 84,
+              "spells": 1,
+              "ticker": "000720.KS"
+            },
+            {
+              "contribution": -0.044122047385,
+              "sessions": 121,
+              "spells": 1,
+              "ticker": "012450.KS"
+            },
+            {
+              "contribution": -0.038685640758,
+              "sessions": 336,
+              "spells": 6,
+              "ticker": "011780.KS"
+            },
+            {
+              "contribution": -0.034543239834,
+              "sessions": 42,
+              "spells": 2,
+              "ticker": "006360.KS"
+            },
+            {
+              "contribution": -0.033437968057,
+              "sessions": 168,
+              "spells": 3,
+              "ticker": "002380.KS"
+            },
+            {
+              "contribution": -0.027849709106,
+              "sessions": 273,
+              "spells": 2,
+              "ticker": "011170.KS"
+            },
+            {
+              "contribution": -0.027624494047,
+              "sessions": 504,
+              "spells": 4,
+              "ticker": "069960.KS"
+            },
+            {
+              "contribution": -0.019385004916,
+              "sessions": 63,
+              "spells": 3,
+              "ticker": "000660.KS"
+            }
+          ],
+          "distinctNames": 43,
+          "entries": 141,
+          "exits": 136,
+          "medianSpellSessions": 42.0,
+          "namesHeldInMoreThanOneSpell": 29,
+          "shareOfSpellsThatAreRepeats": 0.695035460993,
+          "spells": 141,
+          "stillHeldAtCutoff": 5,
+          "topContributors": [
+            {
+              "contribution": 0.274351827056,
+              "sessions": 504,
+              "spells": 4,
+              "ticker": "066570.KS"
+            },
+            {
+              "contribution": 0.173318598241,
+              "sessions": 1948,
+              "spells": 7,
+              "ticker": "030200.KS"
+            },
+            {
+              "contribution": 0.116446885973,
+              "sessions": 273,
+              "spells": 9,
+              "ticker": "078930.KS"
+            },
+            {
+              "contribution": 0.103808082454,
+              "sessions": 436,
+              "spells": 2,
+              "ticker": "024110.KS"
+            },
+            {
+              "contribution": 0.10304035809,
+              "sessions": 273,
+              "spells": 6,
+              "ticker": "028260.KS"
+            },
+            {
+              "contribution": 0.100205705396,
+              "sessions": 84,
+              "spells": 1,
+              "ticker": "028050.KS"
+            },
+            {
+              "contribution": 0.086307216135,
+              "sessions": 882,
+              "spells": 11,
+              "ticker": "017670.KS"
+            },
+            {
+              "contribution": 0.072415975413,
+              "sessions": 1108,
+              "spells": 7,
+              "ticker": "032640.KS"
+            },
+            {
+              "contribution": 0.068804871945,
+              "sessions": 1050,
+              "spells": 16,
+              "ticker": "005930.KS"
+            },
+            {
+              "contribution": 0.057386884789,
+              "sessions": 126,
+              "spells": 1,
+              "ticker": "047810.KS"
+            }
+          ]
+        },
+        "industryContribution": {
+          "A_2017_to_2024": {
+            "bottom": [
+              {
+                "contribution": -0.186995447435,
+                "industry": "ELECTRONICS_ELECTRICAL"
+              },
+              {
+                "contribution": -0.102793659159,
+                "industry": "CHEMICALS"
+              },
+              {
+                "contribution": -0.071692599274,
+                "industry": "TRANSPORT_LOGISTICS"
+              },
+              {
+                "contribution": -0.069870372093,
+                "industry": "CONSTRUCTION_ENGINEERING"
+              },
+              {
+                "contribution": -0.003528132462,
+                "industry": "BASIC_MATERIALS"
+              }
+            ],
+            "byIndustry": {
+              "BASIC_MATERIALS": -0.003528132462,
+              "CAPITAL_GOODS_DEFENSE": 0.031030394102,
+              "CHEMICALS": -0.102793659159,
+              "COMMUNICATION_MEDIA_SOFTWARE": 0.1532654778,
+              "CONSTRUCTION_ENGINEERING": -0.069870372093,
+              "CONSUMER_RETAIL_SERVICES": 0.079262007767,
+              "ELECTRONICS_ELECTRICAL": -0.186995447435,
+              "ENERGY_UTILITIES": 0.014480258229,
+              "FINANCIALS": 0.014245866402,
+              "FOOD_BEVERAGE_TOBACCO": 0.005313424209,
+              "HEALTHCARE": 0.062549062589,
+              "HOLDINGS_BUSINESS_SERVICES": 0.058485004784,
+              "TRANSPORT_LOGISTICS": -0.071692599274,
+              "UNCLASSIFIED": 0.017624274083
+            },
+            "industriesTouched": 14,
+            "top": [
+              {
+                "contribution": 0.1532654778,
+                "industry": "COMMUNICATION_MEDIA_SOFTWARE"
+              },
+              {
+                "contribution": 0.079262007767,
+                "industry": "CONSUMER_RETAIL_SERVICES"
+              },
+              {
+                "contribution": 0.062549062589,
+                "industry": "HEALTHCARE"
+              },
+              {
+                "contribution": 0.058485004784,
+                "industry": "HOLDINGS_BUSINESS_SERVICES"
+              },
+              {
+                "contribution": 0.031030394102,
+                "industry": "CAPITAL_GOODS_DEFENSE"
+              }
+            ]
+          },
+          "B_2025": {
+            "bottom": [
+              {
+                "contribution": 0.009576580473,
+                "industry": "CONSUMER_RETAIL_SERVICES"
+              },
+              {
+                "contribution": 0.013992888321,
+                "industry": "UNCLASSIFIED"
+              },
+              {
+                "contribution": 0.037197004703,
+                "industry": "CAPITAL_GOODS_DEFENSE"
+              },
+              {
+                "contribution": 0.128008343743,
+                "industry": "ELECTRONICS_ELECTRICAL"
+              },
+              {
+                "contribution": 0.132451282971,
+                "industry": "COMMUNICATION_MEDIA_SOFTWARE"
+              }
+            ],
+            "byIndustry": {
+              "CAPITAL_GOODS_DEFENSE": 0.037197004703,
+              "COMMUNICATION_MEDIA_SOFTWARE": 0.132451282971,
+              "CONSUMER_RETAIL_SERVICES": 0.009576580473,
+              "ELECTRONICS_ELECTRICAL": 0.128008343743,
+              "FINANCIALS": 0.154186656089,
+              "UNCLASSIFIED": 0.013992888321
+            },
+            "industriesTouched": 6,
+            "top": [
+              {
+                "contribution": 0.154186656089,
+                "industry": "FINANCIALS"
+              },
+              {
+                "contribution": 0.132451282971,
+                "industry": "COMMUNICATION_MEDIA_SOFTWARE"
+              },
+              {
+                "contribution": 0.128008343743,
+                "industry": "ELECTRONICS_ELECTRICAL"
+              },
+              {
+                "contribution": 0.037197004703,
+                "industry": "CAPITAL_GOODS_DEFENSE"
+              },
+              {
+                "contribution": 0.013992888321,
+                "industry": "UNCLASSIFIED"
+              }
+            ]
+          },
+          "C_2026_to_cutoff": {
+            "bottom": [
+              {
+                "contribution": -0.016209992602,
+                "industry": "FINANCIALS"
+              },
+              {
+                "contribution": 0.000758435421,
+                "industry": "CAPITAL_GOODS_DEFENSE"
+              },
+              {
+                "contribution": 0.007544532512,
+                "industry": "UNCLASSIFIED"
+              },
+              {
+                "contribution": 0.032384271466,
+                "industry": "COMMUNICATION_MEDIA_SOFTWARE"
+              },
+              {
+                "contribution": 0.070186064385,
+                "industry": "CONSTRUCTION_ENGINEERING"
+              }
+            ],
+            "byIndustry": {
+              "CAPITAL_GOODS_DEFENSE": 0.000758435421,
+              "COMMUNICATION_MEDIA_SOFTWARE": 0.032384271466,
+              "CONSTRUCTION_ENGINEERING": 0.070186064385,
+              "ELECTRONICS_ELECTRICAL": 0.314062388933,
+              "FINANCIALS": -0.016209992602,
+              "UNCLASSIFIED": 0.007544532512
+            },
+            "industriesTouched": 6,
+            "top": [
+              {
+                "contribution": 0.314062388933,
+                "industry": "ELECTRONICS_ELECTRICAL"
+              },
+              {
+                "contribution": 0.070186064385,
+                "industry": "CONSTRUCTION_ENGINEERING"
+              },
+              {
+                "contribution": 0.032384271466,
+                "industry": "COMMUNICATION_MEDIA_SOFTWARE"
+              },
+              {
+                "contribution": 0.007544532512,
+                "industry": "UNCLASSIFIED"
+              },
+              {
+                "contribution": 0.000758435421,
+                "industry": "CAPITAL_GOODS_DEFENSE"
+              }
+            ]
+          },
+          "D_full_window": {
+            "bottom": [
+              {
+                "contribution": -0.102793659159,
+                "industry": "CHEMICALS"
+              },
+              {
+                "contribution": -0.071692599274,
+                "industry": "TRANSPORT_LOGISTICS"
+              },
+              {
+                "contribution": -0.003528132462,
+                "industry": "BASIC_MATERIALS"
+              },
+              {
+                "contribution": 0.000315692292,
+                "industry": "CONSTRUCTION_ENGINEERING"
+              },
+              {
+                "contribution": 0.005313424209,
+                "industry": "FOOD_BEVERAGE_TOBACCO"
+              }
+            ],
+            "byIndustry": {
+              "BASIC_MATERIALS": -0.003528132462,
+              "CAPITAL_GOODS_DEFENSE": 0.068985834227,
+              "CHEMICALS": -0.102793659159,
+              "COMMUNICATION_MEDIA_SOFTWARE": 0.318101032237,
+              "CONSTRUCTION_ENGINEERING": 0.000315692292,
+              "CONSUMER_RETAIL_SERVICES": 0.08883858824,
+              "ELECTRONICS_ELECTRICAL": 0.255075285241,
+              "ENERGY_UTILITIES": 0.014480258229,
+              "FINANCIALS": 0.152222529889,
+              "FOOD_BEVERAGE_TOBACCO": 0.005313424209,
+              "HEALTHCARE": 0.062549062589,
+              "HOLDINGS_BUSINESS_SERVICES": 0.058485004784,
+              "TRANSPORT_LOGISTICS": -0.071692599274,
+              "UNCLASSIFIED": 0.039161694916
+            },
+            "industriesTouched": 14,
+            "top": [
+              {
+                "contribution": 0.318101032237,
+                "industry": "COMMUNICATION_MEDIA_SOFTWARE"
+              },
+              {
+                "contribution": 0.255075285241,
+                "industry": "ELECTRONICS_ELECTRICAL"
+              },
+              {
+                "contribution": 0.152222529889,
+                "industry": "FINANCIALS"
+              },
+              {
+                "contribution": 0.08883858824,
+                "industry": "CONSUMER_RETAIL_SERVICES"
+              },
+              {
+                "contribution": 0.068985834227,
+                "industry": "CAPITAL_GOODS_DEFENSE"
+              }
+            ]
+          }
+        },
+        "industryHolding": {
+          "BASIC_MATERIALS": {
+            "averageWeightOfNavOverAllSessions": 0.006760322285,
+            "nameSessions": 105,
+            "shareOfNameSessions": 0.009110629067,
+            "spells": 5
+          },
+          "CAPITAL_GOODS_DEFENSE": {
+            "averageWeightOfNavOverAllSessions": 0.036851258137,
+            "nameSessions": 599,
+            "shareOfNameSessions": 0.051973969631,
+            "spells": 10
+          },
+          "CHEMICALS": {
+            "averageWeightOfNavOverAllSessions": 0.094476682588,
+            "nameSessions": 1533,
+            "shareOfNameSessions": 0.133015184382,
+            "spells": 20
+          },
+          "COMMUNICATION_MEDIA_SOFTWARE": {
+            "averageWeightOfNavOverAllSessions": 0.4042998986,
+            "nameSessions": 3938,
+            "shareOfNameSessions": 0.34169197397,
+            "spells": 25
+          },
+          "CONSTRUCTION_ENGINEERING": {
+            "averageWeightOfNavOverAllSessions": 0.035270145854,
+            "nameSessions": 483,
+            "shareOfNameSessions": 0.041908893709,
+            "spells": 7
+          },
+          "CONSUMER_RETAIL_SERVICES": {
+            "averageWeightOfNavOverAllSessions": 0.086485307198,
+            "nameSessions": 1071,
+            "shareOfNameSessions": 0.092928416486,
+            "spells": 18
+          },
+          "ELECTRONICS_ELECTRICAL": {
+            "averageWeightOfNavOverAllSessions": 0.140655620212,
+            "nameSessions": 1806,
+            "shareOfNameSessions": 0.156702819957,
+            "spells": 26
+          },
+          "ENERGY_UTILITIES": {
+            "averageWeightOfNavOverAllSessions": 0.009534364177,
+            "nameSessions": 126,
+            "shareOfNameSessions": 0.010932754881,
+            "spells": 2
+          },
+          "FINANCIALS": {
+            "averageWeightOfNavOverAllSessions": 0.11199340173,
+            "nameSessions": 1276,
+            "shareOfNameSessions": 0.110715835141,
+            "spells": 19
+          },
+          "FOOD_BEVERAGE_TOBACCO": {
+            "averageWeightOfNavOverAllSessions": 0.006815686307,
+            "nameSessions": 84,
+            "shareOfNameSessions": 0.007288503254,
+            "spells": 1
+          },
+          "HEALTHCARE": {
+            "averageWeightOfNavOverAllSessions": 0.021916630523,
+            "nameSessions": 273,
+            "shareOfNameSessions": 0.023687635575,
+            "spells": 6
+          },
+          "HOLDINGS_BUSINESS_SERVICES": {
+            "averageWeightOfNavOverAllSessions": 0.005795051342,
+            "nameSessions": 63,
+            "shareOfNameSessions": 0.00546637744,
+            "spells": 1
+          },
+          "TRANSPORT_LOGISTICS": {
+            "averageWeightOfNavOverAllSessions": 0.012318254646,
+            "nameSessions": 168,
+            "shareOfNameSessions": 0.014577006508,
+            "spells": 1
+          }
+        },
+        "namedCombinedExposure": {
+          "A_2017_to_2024": {
+            "averageCombinedWeight": 0.101915179102,
+            "maximumCombinedWeight": 0.376736157237,
+            "securities": {
+              "000660.KS": {
+                "averageWeightOverAllSessions": 0.005003813161,
+                "averageWeightWhenHeld": 0.155197633596,
+                "name": "SK Hynix",
+                "sessionsHeld": 63
+              },
+              "005930.KS": {
+                "averageWeightOverAllSessions": 0.096911365941,
+                "averageWeightWhenHeld": 0.204940269534,
+                "name": "Samsung Electronics",
+                "sessionsHeld": 924
+              }
+            },
+            "sessions": 1954,
+            "sessionsBothHeld": 21,
+            "sessionsEitherHeld": 966
+          },
+          "B_2025": {
+            "averageCombinedWeight": 0.083374647382,
+            "maximumCombinedWeight": 0.213089594723,
+            "securities": {
+              "000660.KS": {
+                "averageWeightOverAllSessions": 0.0,
+                "averageWeightWhenHeld": null,
+                "name": "SK Hynix",
+                "sessionsHeld": 0
+              },
+              "005930.KS": {
+                "averageWeightOverAllSessions": 0.083374647382,
+                "averageWeightWhenHeld": 0.160132259257,
+                "name": "Samsung Electronics",
+                "sessionsHeld": 126
+              }
+            },
+            "sessions": 242,
+            "sessionsBothHeld": 0,
+            "sessionsEitherHeld": 126
+          },
+          "C_2026_to_cutoff": {
+            "averageCombinedWeight": 0.0,
+            "maximumCombinedWeight": 0.0,
+            "securities": {
+              "000660.KS": {
+                "averageWeightOverAllSessions": 0.0,
+                "averageWeightWhenHeld": null,
+                "name": "SK Hynix",
+                "sessionsHeld": 0
+              },
+              "005930.KS": {
+                "averageWeightOverAllSessions": 0.0,
+                "averageWeightWhenHeld": null,
+                "name": "Samsung Electronics",
+                "sessionsHeld": 0
+              }
+            },
+            "sessions": 172,
+            "sessionsBothHeld": 0,
+            "sessionsEitherHeld": 0
+          },
+          "D_full_window": {
+            "averageCombinedWeight": 0.092617789118,
+            "maximumCombinedWeight": 0.376736157237,
+            "securities": {
+              "000660.KS": {
+                "averageWeightOverAllSessions": 0.004128991097,
+                "averageWeightWhenHeld": 0.155197633596,
+                "name": "SK Hynix",
+                "sessionsHeld": 63
+              },
+              "005930.KS": {
+                "averageWeightOverAllSessions": 0.088488798022,
+                "averageWeightWhenHeld": 0.199563308301,
+                "name": "Samsung Electronics",
+                "sessionsHeld": 1050
+              }
+            },
+            "sessions": 2368,
+            "sessionsBothHeld": 21,
+            "sessionsEitherHeld": 1092
+          }
+        },
+        "namedSecurities": {
+          "bySpan": {
+            "A_2017_to_2024": {
+              "000660.KS": {
+                "allocatedCostNavUnits": 0.002427734925,
+                "grossContributionNavUnits": -0.019385004916,
+                "tradedNotionalNavUnits": 0.783120163633
+              },
+              "005930.KS": {
+                "allocatedCostNavUnits": 0.016631693688,
+                "grossContributionNavUnits": -0.037315713686,
+                "tradedNotionalNavUnits": 5.365630760216
+              },
+              "combinedAllocatedCostNavUnits": 0.019059428613,
+              "combinedGrossContributionNavUnits": -0.056700718602,
+              "combinedShareOfBookGrossContribution": -41.220112123947,
+              "grossContributionNavUnitsOfBook": 0.001375559543,
+              "netChangeNavUnitsOfBook": -0.125665697597
+            },
+            "B_2025": {
+              "000660.KS": {
+                "allocatedCostNavUnits": 0.0,
+                "grossContributionNavUnits": 0.0,
+                "tradedNotionalNavUnits": 0.0
+              },
+              "005930.KS": {
+                "allocatedCostNavUnits": 0.002247720922,
+                "grossContributionNavUnits": 0.106120585631,
+                "tradedNotionalNavUnits": 0.72019955292
+              },
+              "combinedAllocatedCostNavUnits": 0.002247720922,
+              "combinedGrossContributionNavUnits": 0.106120585631,
+              "combinedShareOfBookGrossContribution": 0.223217791749,
+              "grossContributionNavUnitsOfBook": 0.475412756301,
+              "netChangeNavUnitsOfBook": 0.452994589168
+            },
+            "C_2026_to_cutoff": {
+              "000660.KS": {
+                "allocatedCostNavUnits": 0.0,
+                "grossContributionNavUnits": 0.0,
+                "tradedNotionalNavUnits": 0.0
+              },
+              "005930.KS": {
+                "allocatedCostNavUnits": 0.0,
+                "grossContributionNavUnits": 0.0,
+                "tradedNotionalNavUnits": 0.0
+              },
+              "combinedAllocatedCostNavUnits": 0.0,
+              "combinedGrossContributionNavUnits": 0.0,
+              "combinedShareOfBookGrossContribution": 0.0,
+              "grossContributionNavUnitsOfBook": 0.408725700114,
+              "netChangeNavUnitsOfBook": 0.395183752533
+            },
+            "D_full_window": {
+              "000660.KS": {
+                "allocatedCostNavUnits": 0.002427734925,
+                "grossContributionNavUnits": -0.019385004916,
+                "tradedNotionalNavUnits": 0.783120163633
+              },
+              "005930.KS": {
+                "allocatedCostNavUnits": 0.01887941461,
+                "grossContributionNavUnits": 0.068804871945,
+                "tradedNotionalNavUnits": 6.085830313136
+              },
+              "combinedAllocatedCostNavUnits": 0.021307149535,
+              "combinedGrossContributionNavUnits": 0.049419867029,
+              "combinedShareOfBookGrossContribution": 0.055809243149,
+              "grossContributionNavUnitsOfBook": 0.885514015958,
+              "netChangeNavUnitsOfBook": 0.722512644104
+            }
+          },
+          "decisionsWithAValidSelection": 110,
+          "securities": {
+            "000660.KS": {
+              "averageWeightWhileHeld": 0.155197633596,
+              "decisionsSelected": 3,
+              "maximumWeight": 0.18330654551,
+              "name": "SK Hynix",
+              "sessionsHeld": 63,
+              "shareOfSessionsHeld": 0.02660472973,
+              "shareOfValidDecisionsSelected": 0.027272727273
+            },
+            "005930.KS": {
+              "averageWeightWhileHeld": 0.199563308301,
+              "decisionsSelected": 51,
+              "maximumWeight": 0.282391462594,
+              "name": "Samsung Electronics",
+              "sessionsHeld": 1050,
+              "shareOfSessionsHeld": 0.443412162162,
+              "shareOfValidDecisionsSelected": 0.463636363636
+            }
+          }
+        },
+        "namedSpells": {
+          "000660.KS": [
+            {
+              "allocatedCostNavUnits": 0.000799321912,
+              "averageWeight": 0.151814302974,
+              "entryDate": "2018-11-08",
+              "entryRankAmongSelected": 5,
+              "exitedOn": "2018-12-07",
+              "grossContributionNavUnits": -0.011212612524,
+              "industry": "ELECTRONICS_ELECTRICAL",
+              "lastHeldDate": "2018-12-06",
+              "maximumWeight": 0.159836235652,
+              "sessionsHeld": 21,
+              "targetWeightAtEntry": 0.158198862896
+            },
+            {
+              "allocatedCostNavUnits": 0.000840465363,
+              "averageWeight": 0.144501097456,
+              "entryDate": "2022-04-06",
+              "entryRankAmongSelected": 5,
+              "exitedOn": "2022-05-06",
+              "grossContributionNavUnits": -0.006746108481,
+              "industry": "ELECTRONICS_ELECTRICAL",
+              "lastHeldDate": "2022-05-04",
+              "maximumWeight": 0.149996358371,
+              "sessionsHeld": 21,
+              "targetWeightAtEntry": 0.146784737174
+            },
+            {
+              "allocatedCostNavUnits": 0.00078794765,
+              "averageWeight": 0.169277500357,
+              "entryDate": "2022-10-11",
+              "entryRankAmongSelected": 5,
+              "exitedOn": "2022-11-09",
+              "grossContributionNavUnits": -0.001426283911,
+              "industry": "ELECTRONICS_ELECTRICAL",
+              "lastHeldDate": "2022-11-08",
+              "maximumWeight": 0.18330654551,
+              "sessionsHeld": 21,
+              "targetWeightAtEntry": 0.175739816421
+            }
+          ],
+          "005930.KS": [
+            {
+              "allocatedCostNavUnits": 0.001342718542,
+              "averageWeight": 0.1902581607,
+              "entryDate": "2017-11-27",
+              "entryRankAmongSelected": 5,
+              "exitedOn": "2018-01-29",
+              "grossContributionNavUnits": -0.004722459874,
+              "industry": "ELECTRONICS_ELECTRICAL",
+              "lastHeldDate": "2018-01-26",
+              "maximumWeight": 0.212395717231,
+              "sessionsHeld": 42,
+              "targetWeightAtEntry": 0.210686160308
+            },
+            {
+              "allocatedCostNavUnits": 0.001188659139,
+              "averageWeight": 0.191438260406,
+              "entryDate": "2018-09-04",
+              "entryRankAmongSelected": 4,
+              "exitedOn": "2019-03-15",
+              "grossContributionNavUnits": -0.008589369063,
+              "industry": "ELECTRONICS_ELECTRICAL",
+              "lastHeldDate": "2019-03-14",
+              "maximumWeight": 0.216899921585,
+              "sessionsHeld": 126,
+              "targetWeightAtEntry": 0.19154168795
+            },
+            {
+              "allocatedCostNavUnits": 0.000945136981,
+              "averageWeight": 0.17612981857,
+              "entryDate": "2019-04-15",
+              "entryRankAmongSelected": 5,
+              "exitedOn": "2019-06-17",
+              "grossContributionNavUnits": -0.011177329586,
+              "industry": "ELECTRONICS_ELECTRICAL",
+              "lastHeldDate": "2019-06-14",
+              "maximumWeight": 0.188399100904,
+              "sessionsHeld": 42,
+              "targetWeightAtEntry": 0.187215336764
+            },
+            {
+              "allocatedCostNavUnits": 0.000923424534,
+              "averageWeight": 0.176199484416,
+              "entryDate": "2019-07-16",
+              "entryRankAmongSelected": 3,
+              "exitedOn": "2019-10-18",
+              "grossContributionNavUnits": 0.008798637841,
+              "industry": "ELECTRONICS_ELECTRICAL",
+              "lastHeldDate": "2019-10-17",
+              "maximumWeight": 0.190779957092,
+              "sessionsHeld": 63,
+              "targetWeightAtEntry": 0.178909871085
+            },
+            {
+              "allocatedCostNavUnits": 0.000998755853,
+              "averageWeight": 0.196506435694,
+              "entryDate": "2020-04-21",
+              "entryRankAmongSelected": 4,
+              "exitedOn": "2020-10-26",
+              "grossContributionNavUnits": 0.031049080052,
+              "industry": "ELECTRONICS_ELECTRICAL",
+              "lastHeldDate": "2020-10-23",
+              "maximumWeight": 0.216156683679,
+              "sessionsHeld": 126,
+              "targetWeightAtEntry": 0.188886806803
+            },
+            {
+              "allocatedCostNavUnits": 0.001235124638,
+              "averageWeight": 0.201614438219,
+              "entryDate": "2021-01-26",
+              "entryRankAmongSelected": 5,
+              "exitedOn": "2021-05-31",
+              "grossContributionNavUnits": -0.013263019756,
+              "industry": "ELECTRONICS_ELECTRICAL",
+              "lastHeldDate": "2021-05-28",
+              "maximumWeight": 0.21579312076,
+              "sessionsHeld": 84,
+              "targetWeightAtEntry": 0.215995432823
+            },
+            {
+              "allocatedCostNavUnits": 0.001586586741,
+              "averageWeight": 0.229078650637,
+              "entryDate": "2021-06-29",
+              "entryRankAmongSelected": 5,
+              "exitedOn": "2021-09-30",
+              "grossContributionNavUnits": -0.018530911206,
+              "industry": "ELECTRONICS_ELECTRICAL",
+              "lastHeldDate": "2021-09-29",
+              "maximumWeight": 0.25489845966,
+              "sessionsHeld": 63,
+              "targetWeightAtEntry": 0.214997501563
+            },
+            {
+              "allocatedCostNavUnits": 0.001360940207,
+              "averageWeight": 0.242419091067,
+              "entryDate": "2022-02-03",
+              "entryRankAmongSelected": 5,
+              "exitedOn": "2022-03-07",
+              "grossContributionNavUnits": -0.009735599596,
+              "industry": "ELECTRONICS_ELECTRICAL",
+              "lastHeldDate": "2022-03-04",
+              "maximumWeight": 0.248549751289,
+              "sessionsHeld": 21,
+              "targetWeightAtEntry": 0.248790082172
+            },
+            {
+              "allocatedCostNavUnits": 0.001532578419,
+              "averageWeight": 0.256508828312,
+              "entryDate": "2022-06-08",
+              "entryRankAmongSelected": 3,
+              "exitedOn": "2022-10-11",
+              "grossContributionNavUnits": -0.034428970762,
+              "industry": "ELECTRONICS_ELECTRICAL",
+              "lastHeldDate": "2022-10-07",
+              "maximumWeight": 0.282391462594,
+              "sessionsHeld": 84,
+              "targetWeightAtEntry": 0.280565145038
+            },
+            {
+              "allocatedCostNavUnits": 0.001098581477,
+              "averageWeight": 0.225982643081,
+              "entryDate": "2022-11-09",
+              "entryRankAmongSelected": 4,
+              "exitedOn": "2022-12-08",
+              "grossContributionNavUnits": -0.008258203963,
+              "industry": "ELECTRONICS_ELECTRICAL",
+              "lastHeldDate": "2022-12-07",
+              "maximumWeight": 0.23334319396,
+              "sessionsHeld": 21,
+              "targetWeightAtEntry": 0.229443024918
+            },
+            {
+              "allocatedCostNavUnits": 0.000950528968,
+              "averageWeight": 0.196665680503,
+              "entryDate": "2023-03-13",
+              "entryRankAmongSelected": 4,
+              "exitedOn": "2023-04-11",
+              "grossContributionNavUnits": 0.015199028301,
+              "industry": "ELECTRONICS_ELECTRICAL",
+              "lastHeldDate": "2023-04-10",
+              "maximumWeight": 0.20546836663,
+              "sessionsHeld": 21,
+              "targetWeightAtEntry": 0.191356651374
+            },
+            {
+              "allocatedCostNavUnits": 0.001421456229,
+              "averageWeight": 0.209572461945,
+              "entryDate": "2023-06-14",
+              "entryRankAmongSelected": 5,
+              "exitedOn": "2024-03-21",
+              "grossContributionNavUnits": 0.019271166856,
+              "industry": "ELECTRONICS_ELECTRICAL",
+              "lastHeldDate": "2024-03-20",
+              "maximumWeight": 0.232916403873,
+              "sessionsHeld": 189,
+              "targetWeightAtEntry": 0.209684388842
+            },
+            {
+              "allocatedCostNavUnits": 0.00105575081,
+              "averageWeight": 0.188146743254,
+              "entryDate": "2024-05-24",
+              "entryRankAmongSelected": 5,
+              "exitedOn": "2024-06-25",
+              "grossContributionNavUnits": 0.010637860018,
+              "industry": "ELECTRONICS_ELECTRICAL",
+              "lastHeldDate": "2024-06-24",
+              "maximumWeight": 0.194851775613,
+              "sessionsHeld": 21,
+              "targetWeightAtEntry": 0.18997057896
+            },
+            {
+              "allocatedCostNavUnits": 0.000991451149,
+              "averageWeight": 0.169233937661,
+              "entryDate": "2024-09-26",
+              "entryRankAmongSelected": 3,
+              "exitedOn": "2024-10-30",
+              "grossContributionNavUnits": -0.013565622949,
+              "industry": "ELECTRONICS_ELECTRICAL",
+              "lastHeldDate": "2024-10-29",
+              "maximumWeight": 0.174694620245,
+              "sessionsHeld": 21,
+              "targetWeightAtEntry": 0.174274880924
+            },
+            {
+              "allocatedCostNavUnits": 0.000812874111,
+              "averageWeight": 0.136809327617,
+              "entryDate": "2025-03-07",
+              "entryRankAmongSelected": 2,
+              "exitedOn": "2025-05-09",
+              "grossContributionNavUnits": 0.003204267831,
+              "industry": "ELECTRONICS_ELECTRICAL",
+              "lastHeldDate": "2025-05-08",
+              "maximumWeight": 0.153628987744,
+              "sessionsHeld": 42,
+              "targetWeightAtEntry": 0.136546375007
+            },
+            {
+              "allocatedCostNavUnits": 0.001434846811,
+              "averageWeight": 0.171793725078,
+              "entryDate": "2025-06-11",
+              "entryRankAmongSelected": 4,
+              "exitedOn": "2025-10-15",
+              "grossContributionNavUnits": 0.1029163178,
+              "industry": "ELECTRONICS_ELECTRICAL",
+              "lastHeldDate": "2025-10-14",
+              "maximumWeight": 0.213089594723,
+              "sessionsHeld": 84,
+              "targetWeightAtEntry": 0.165722551383
+            }
+          ]
+        },
+        "periodMetrics": {
+          "A_2017_to_2024": {
+            "anchorRebalances": 91,
+            "annualizedNetReturn": -0.016742704406,
+            "annualizedOneWayTurnover": 3.011771048165,
+            "annualizedPassiveReturn": 0.068908784959,
+            "costFractionSum": 0.148252587083,
+            "cumulativeNetReturn": -0.125665697597,
+            "cumulativePassiveReturn": 0.698959005167,
+            "fromSession": "2017-01-16",
+            "maxDrawdownWithinSpan": -0.586734669979,
+            "oneWayTurnoverSum": 23.954482008307,
+            "replacements": 116,
+            "sessions": 1954,
+            "signalUnavailableAnchors": 3,
+            "toSession": "2024-12-30",
+            "years": 7.953619855302
+          },
+          "B_2025": {
+            "anchorRebalances": 11,
+            "annualizedNetReturn": 0.518523383219,
+            "annualizedOneWayTurnover": 3.161211595772,
+            "annualizedPassiveReturn": 0.988083840994,
+            "costFractionSum": 0.01984593429,
+            "cumulativeNetReturn": 0.518102272692,
+            "cumulativePassiveReturn": 0.987177000168,
+            "fromSession": "2024-12-30",
+            "maxDrawdownWithinSpan": -0.081448725438,
+            "oneWayTurnoverSum": 3.159112733203,
+            "replacements": 15,
+            "sessions": 242,
+            "signalUnavailableAnchors": 0,
+            "toSession": "2025-12-30",
+            "years": 0.999336057551
+          },
+          "C_2026_to_cutoff": {
+            "anchorRebalances": 8,
+            "annualizedNetReturn": null,
+            "annualizedOneWayTurnover": null,
+            "annualizedPassiveReturn": null,
+            "costFractionSum": 0.008132735432,
+            "cumulativeNetReturn": 0.297728584862,
+            "cumulativePassiveReturn": 0.757304619307,
+            "fromSession": "2025-12-30",
+            "maxDrawdownWithinSpan": -0.195169323271,
+            "oneWayTurnoverSum": 1.30371228212,
+            "replacements": 5,
+            "sessions": 172,
+            "signalUnavailableAnchors": 0,
+            "toSession": "2026-09-14",
+            "years": 0.706380007803
+          },
+          "D_full_window": {
+            "anchorRebalances": 110,
+            "annualizedNetReturn": 0.057911007827,
+            "annualizedOneWayTurnover": 2.941952454812,
+            "annualizedPassiveReturn": 0.202413366754,
+            "costFractionSum": 0.176231256805,
+            "cumulativeNetReturn": 0.722512644104,
+            "cumulativePassiveReturn": 4.932892814649,
+            "fromSession": "2017-01-16",
+            "maxDrawdownWithinSpan": -0.586734669979,
+            "oneWayTurnoverSum": 28.41730702363,
+            "replacements": 136,
+            "sessions": 2368,
+            "signalUnavailableAnchors": 3,
+            "toSession": "2026-09-14",
+            "years": 9.659335920655
+          }
+        },
+        "periodReturns": {
+          "calendarYears": {
+            "2017": {
+              "fromSession": "2017-01-16",
+              "return": 0.063713602552,
+              "toSession": "2017-12-28"
+            },
+            "2018": {
+              "fromSession": "2017-12-28",
+              "return": -0.202808510465,
+              "toSession": "2018-12-28"
+            },
+            "2019": {
+              "fromSession": "2018-12-28",
+              "return": -0.065669524592,
+              "toSession": "2019-12-30"
+            },
+            "2020": {
+              "fromSession": "2019-12-30",
+              "return": 0.0975884153,
+              "toSession": "2020-12-30"
+            },
+            "2021": {
+              "fromSession": "2020-12-30",
+              "return": 0.126541308836,
+              "toSession": "2021-12-30"
+            },
+            "2022": {
+              "fromSession": "2021-12-30",
+              "return": -0.224602920507,
+              "toSession": "2022-12-29"
+            },
+            "2023": {
+              "fromSession": "2022-12-29",
+              "return": 0.095347296067,
+              "toSession": "2023-12-28"
+            },
+            "2024": {
+              "fromSession": "2023-12-28",
+              "return": 0.050816778491,
+              "toSession": "2024-12-30"
+            },
+            "2025": {
+              "fromSession": "2024-12-30",
+              "return": 0.518102272692,
+              "toSession": "2025-12-30"
+            },
+            "2026": {
+              "fromSession": "2025-12-30",
+              "return": 0.297728584862,
+              "toSession": "2026-09-14"
+            }
+          },
+          "periods": [
+            {
+              "annualizedReturn": -0.016742704406,
+              "cumulativeReturn": -0.125665697597,
+              "fromSession": "2017-01-16",
+              "period": "A_2017_to_2024",
+              "toSession": "2024-12-30",
+              "years": 7.953619855302
+            },
+            {
+              "annualizedReturn": 0.518523383219,
+              "cumulativeReturn": 0.518102272692,
+              "fromSession": "2024-12-30",
+              "period": "B_2025",
+              "toSession": "2025-12-30",
+              "years": 0.999336057551
+            },
+            {
+              "annualizedReturn": null,
+              "cumulativeReturn": 0.297728584862,
+              "fromSession": "2025-12-30",
+              "period": "C_2026_to_cutoff",
+              "toSession": "2026-09-14",
+              "years": 0.706380007803
+            },
+            {
+              "annualizedReturn": 0.057911007827,
+              "cumulativeReturn": 0.722512644104,
+              "fromSession": "2017-01-16",
+              "period": "D_full_window",
+              "toSession": "2026-09-14",
+              "years": 9.659335920655
+            }
+          ]
+        },
+        "securityContribution": {
+          "A_2017_to_2024": {
+            "grossContributionNavUnits": 0.001375559543,
+            "netChangeNavUnits": -0.125665697597,
+            "top10Contributors": [
+              {
+                "contribution": 0.146929515907,
+                "ticker": "030200.KS"
+              },
+              {
+                "contribution": 0.10304035809,
+                "ticker": "028260.KS"
+              },
+              {
+                "contribution": 0.083578114133,
+                "ticker": "017670.KS"
+              },
+              {
+                "contribution": 0.074489610598,
+                "ticker": "078930.KS"
+              },
+              {
+                "contribution": 0.054338733047,
+                "ticker": "000100.KS"
+              },
+              {
+                "contribution": 0.027378621062,
+                "ticker": "034020.KS"
+              },
+              {
+                "contribution": 0.026565204397,
+                "ticker": "267250.KS"
+              },
+              {
+                "contribution": 0.018107941833,
+                "ticker": "010060.KS"
+              },
+              {
+                "contribution": 0.017940336603,
+                "ticker": "139480.KS"
+              },
+              {
+                "contribution": 0.01574972926,
+                "ticker": "035250.KS"
+              }
+            ],
+            "top10Detractors": [
+              {
+                "contribution": -0.100124727808,
+                "ticker": "034220.KS"
+              },
+              {
+                "contribution": -0.070298750945,
+                "ticker": "000120.KS"
+              },
+              {
+                "contribution": -0.063662217511,
+                "ticker": "032640.KS"
+              },
+              {
+                "contribution": -0.052920741713,
+                "ticker": "000720.KS"
+              },
+              {
+                "contribution": -0.038685640758,
+                "ticker": "011780.KS"
+              },
+              {
+                "contribution": -0.037315713686,
+                "ticker": "005930.KS"
+              },
+              {
+                "contribution": -0.036103834076,
+                "ticker": "066570.KS"
+              },
+              {
+                "contribution": -0.034543239834,
+                "ticker": "006360.KS"
+              },
+              {
+                "contribution": -0.033437968057,
+                "ticker": "002380.KS"
+              },
+              {
+                "contribution": -0.027849709106,
+                "ticker": "011170.KS"
+              }
+            ],
+            "totalTradedNotionalNavUnits": 41.117764406435,
+            "transactionCostNavUnits": 0.127041257141
+          },
+          "B_2025": {
+            "grossContributionNavUnits": 0.475412756301,
+            "netChangeNavUnits": 0.452994589168,
+            "top10Contributors": [
+              {
+                "contribution": 0.110174210577,
+                "ticker": "032640.KS"
+              },
+              {
+                "contribution": 0.106120585631,
+                "ticker": "005930.KS"
+              },
+              {
+                "contribution": 0.103940640303,
+                "ticker": "024110.KS"
+              },
+              {
+                "contribution": 0.048302727579,
+                "ticker": "047810.KS"
+              },
+              {
+                "contribution": 0.041957275374,
+                "ticker": "078930.KS"
+              },
+              {
+                "contribution": 0.029419415942,
+                "ticker": "066570.KS"
+              },
+              {
+                "contribution": 0.019908793214,
+                "ticker": "030200.KS"
+              },
+              {
+                "contribution": 0.010545463219,
+                "ticker": "138930.KS"
+              },
+              {
+                "contribution": 0.007815370271,
+                "ticker": "035250.KS"
+              },
+              {
+                "contribution": 0.002729102002,
+                "ticker": "017670.KS"
+              }
+            ],
+            "top10Detractors": [
+              {
+                "contribution": -0.007616888776,
+                "ticker": "017800.KS"
+              },
+              {
+                "contribution": 0.002116060965,
+                "ticker": "316140.KS"
+              },
+              {
+                "contribution": 0.002729102002,
+                "ticker": "017670.KS"
+              },
+              {
+                "contribution": 0.007815370271,
+                "ticker": "035250.KS"
+              },
+              {
+                "contribution": 0.010545463219,
+                "ticker": "138930.KS"
+              },
+              {
+                "contribution": 0.019908793214,
+                "ticker": "030200.KS"
+              },
+              {
+                "contribution": 0.029419415942,
+                "ticker": "066570.KS"
+              },
+              {
+                "contribution": 0.041957275374,
+                "ticker": "078930.KS"
+              },
+              {
+                "contribution": 0.048302727579,
+                "ticker": "047810.KS"
+              },
+              {
+                "contribution": 0.103940640303,
+                "ticker": "024110.KS"
+              }
+            ],
+            "totalTradedNotionalNavUnits": 7.136046132066,
+            "transactionCostNavUnits": 0.022418167133
+          },
+          "C_2026_to_cutoff": {
+            "grossContributionNavUnits": 0.408725700114,
+            "netChangeNavUnits": 0.395183752533,
+            "top10Contributors": [
+              {
+                "contribution": 0.281036245191,
+                "ticker": "066570.KS"
+              },
+              {
+                "contribution": 0.100205705396,
+                "ticker": "028050.KS"
+              },
+              {
+                "contribution": 0.0272983311,
+                "ticker": "017800.KS"
+              },
+              {
+                "contribution": 0.025903982347,
+                "ticker": "032640.KS"
+              },
+              {
+                "contribution": 0.020963181154,
+                "ticker": "267270.KS"
+              },
+              {
+                "contribution": 0.006480289119,
+                "ticker": "030200.KS"
+              },
+              {
+                "contribution": -0.002396359785,
+                "ticker": "024110.KS"
+              },
+              {
+                "contribution": -0.006643627022,
+                "ticker": "138930.KS"
+              },
+              {
+                "contribution": -0.044122047385,
+                "ticker": "012450.KS"
+              }
+            ],
+            "top10Detractors": [
+              {
+                "contribution": -0.044122047385,
+                "ticker": "012450.KS"
+              },
+              {
+                "contribution": -0.006643627022,
+                "ticker": "138930.KS"
+              },
+              {
+                "contribution": -0.002396359785,
+                "ticker": "024110.KS"
+              },
+              {
+                "contribution": 0.006480289119,
+                "ticker": "030200.KS"
+              },
+              {
+                "contribution": 0.020963181154,
+                "ticker": "267270.KS"
+              },
+              {
+                "contribution": 0.025903982347,
+                "ticker": "032640.KS"
+              },
+              {
+                "contribution": 0.0272983311,
+                "ticker": "017800.KS"
+              },
+              {
+                "contribution": 0.100205705396,
+                "ticker": "028050.KS"
+              },
+              {
+                "contribution": 0.281036245191,
+                "ticker": "066570.KS"
+              }
+            ],
+            "totalTradedNotionalNavUnits": 4.342361244082,
+            "transactionCostNavUnits": 0.013541947581
+          },
+          "D_full_window": {
+            "grossContributionNavUnits": 0.885514015958,
+            "netChangeNavUnits": 0.722512644104,
+            "top10Contributors": [
+              {
+                "contribution": 0.274351827056,
+                "ticker": "066570.KS"
+              },
+              {
+                "contribution": 0.173318598241,
+                "ticker": "030200.KS"
+              },
+              {
+                "contribution": 0.116446885973,
+                "ticker": "078930.KS"
+              },
+              {
+                "contribution": 0.103808082454,
+                "ticker": "024110.KS"
+              },
+              {
+                "contribution": 0.10304035809,
+                "ticker": "028260.KS"
+              },
+              {
+                "contribution": 0.100205705396,
+                "ticker": "028050.KS"
+              },
+              {
+                "contribution": 0.086307216135,
+                "ticker": "017670.KS"
+              },
+              {
+                "contribution": 0.072415975413,
+                "ticker": "032640.KS"
+              },
+              {
+                "contribution": 0.068804871945,
+                "ticker": "005930.KS"
+              },
+              {
+                "contribution": 0.057386884789,
+                "ticker": "047810.KS"
+              }
+            ],
+            "top10Detractors": [
+              {
+                "contribution": -0.100124727808,
+                "ticker": "034220.KS"
+              },
+              {
+                "contribution": -0.070298750945,
+                "ticker": "000120.KS"
+              },
+              {
+                "contribution": -0.052920741713,
+                "ticker": "000720.KS"
+              },
+              {
+                "contribution": -0.044122047385,
+                "ticker": "012450.KS"
+              },
+              {
+                "contribution": -0.038685640758,
+                "ticker": "011780.KS"
+              },
+              {
+                "contribution": -0.034543239834,
+                "ticker": "006360.KS"
+              },
+              {
+                "contribution": -0.033437968057,
+                "ticker": "002380.KS"
+              },
+              {
+                "contribution": -0.027849709106,
+                "ticker": "011170.KS"
+              },
+              {
+                "contribution": -0.027624494047,
+                "ticker": "069960.KS"
+              },
+              {
+                "contribution": -0.019385004916,
+                "ticker": "000660.KS"
+              }
+            ],
+            "totalTradedNotionalNavUnits": 52.596171782582,
+            "transactionCostNavUnits": 0.163001371855
+          }
+        }
+      },
+      "D": {
+        "concentration": {
+          "A_2017_to_2024": {
+            "averageCashWeight": 0.033279406505,
+            "averageHoldings": 4.838792221085,
+            "averageLargestNameWeightOfNav": 0.263835789729,
+            "maximumLargestNameWeightOfNav": 0.3352984292,
+            "maximumTopIndustryShareOfInvested": 1.0,
+            "meanHhi": 0.209530108077,
+            "meanTopIndustryShareOfInvested": 0.599898171204,
+            "sessions": 1954,
+            "shareOfHeldSessionsWithThreeOrMoreNamesInOneIndustry": 0.74457958752
+          },
+          "B_2025": {
+            "averageCashWeight": -0.0,
+            "averageHoldings": 5.0,
+            "averageLargestNameWeightOfNav": 0.268340275497,
+            "maximumLargestNameWeightOfNav": 0.32110810417,
+            "maximumTopIndustryShareOfInvested": 1.0,
+            "meanHhi": 0.210973637594,
+            "meanTopIndustryShareOfInvested": 0.681442368906,
+            "sessions": 242,
+            "shareOfHeldSessionsWithThreeOrMoreNamesInOneIndustry": 0.826446280992
+          },
+          "C_2026_to_cutoff": {
+            "averageCashWeight": 0.0,
+            "averageHoldings": 5.0,
+            "averageLargestNameWeightOfNav": 0.241927197373,
+            "maximumLargestNameWeightOfNav": 0.294243686935,
+            "maximumTopIndustryShareOfInvested": 1.0,
+            "meanHhi": 0.20458426271,
+            "meanTopIndustryShareOfInvested": 0.835104794245,
+            "sessions": 172,
+            "shareOfHeldSessionsWithThreeOrMoreNamesInOneIndustry": 0.877906976744
+          },
+          "D_full_window": {
+            "averageCashWeight": 0.027461131888,
+            "averageHoldings": 4.866976351351,
+            "averageLargestNameWeightOfNav": 0.262673884163,
+            "maximumLargestNameWeightOfNav": 0.3352984292,
+            "maximumTopIndustryShareOfInvested": 1.0,
+            "meanHhi": 0.209312602107,
+            "meanTopIndustryShareOfInvested": 0.626010637584,
+            "sessions": 2368,
+            "shareOfHeldSessionsWithThreeOrMoreNamesInOneIndustry": 0.763123644252
+          }
+        },
+        "gainConcentration": {
+          "fullWindowGrossContributionNavUnits": 3.228677009311,
+          "industriesWithASemiconductorOrElectronicsWordInTheLabel": {
+            "ELECTRONICS_ELECTRICAL": 1.921252622234
+          },
+          "labelNote": "label match on the canonical PIT industry text only; no theme classification was created",
+          "netChangeNavUnits": 2.860249076712,
+          "semiconductorOrElectronicsLabelShare": 0.595058786213,
+          "shareFrom2025And2026Spans": 0.982484560024,
+          "shareFromTop1Security": 0.291171311695,
+          "shareFromTop2Securities": 0.470326915668,
+          "shareFromTop5Securities": 0.870809941284,
+          "topIndustry": {
+            "contribution": 1.921252622234,
+            "label": "ELECTRONICS_ELECTRICAL",
+            "share": 0.595058786213
+          }
+        },
+        "holdings": {
+          "bottomContributors": [
+            {
+              "contribution": -0.235633429192,
+              "sessions": 294,
+              "spells": 8,
+              "ticker": "000660.KS"
+            },
+            {
+              "contribution": -0.094855459883,
+              "sessions": 84,
+              "spells": 3,
+              "ticker": "000720.KS"
+            },
+            {
+              "contribution": -0.088391446849,
+              "sessions": 315,
+              "spells": 5,
+              "ticker": "034220.KS"
+            },
+            {
+              "contribution": -0.080268904009,
+              "sessions": 210,
+              "spells": 7,
+              "ticker": "018880.KS"
+            },
+            {
+              "contribution": -0.076362553912,
+              "sessions": 21,
+              "spells": 1,
+              "ticker": "103590.KS"
+            },
+            {
+              "contribution": -0.072029547319,
+              "sessions": 273,
+              "spells": 4,
+              "ticker": "000120.KS"
+            },
+            {
+              "contribution": -0.062851392724,
+              "sessions": 840,
+              "spells": 10,
+              "ticker": "030200.KS"
+            },
+            {
+              "contribution": -0.061896497399,
+              "sessions": 79,
+              "spells": 2,
+              "ticker": "138930.KS"
+            },
+            {
+              "contribution": -0.04864053658,
+              "sessions": 84,
+              "spells": 2,
+              "ticker": "069960.KS"
+            },
+            {
+              "contribution": -0.048621231513,
+              "sessions": 294,
+              "spells": 7,
+              "ticker": "000880.KS"
+            }
+          ],
+          "distinctNames": 80,
+          "entries": 275,
+          "exits": 270,
+          "medianSpellSessions": 21.0,
+          "namesHeldInMoreThanOneSpell": 61,
+          "shareOfSpellsThatAreRepeats": 0.709090909091,
+          "spells": 275,
+          "stillHeldAtCutoff": 5,
+          "topContributors": [
+            {
+              "contribution": 0.940098119842,
+              "sessions": 189,
+              "spells": 3,
+              "ticker": "011070.KS"
+            },
+            {
+              "contribution": 0.578435579635,
+              "sessions": 525,
+              "spells": 8,
+              "ticker": "066570.KS"
+            },
+            {
+              "contribution": 0.531238026754,
+              "sessions": 840,
+              "spells": 14,
+              "ticker": "005930.KS"
+            },
+            {
+              "contribution": 0.457728670909,
+              "sessions": 273,
+              "spells": 8,
+              "ticker": "009150.KS"
+            },
+            {
+              "contribution": 0.304063639762,
+              "sessions": 504,
+              "spells": 9,
+              "ticker": "010140.KS"
+            },
+            {
+              "contribution": 0.26301141318,
+              "sessions": 336,
+              "spells": 4,
+              "ticker": "034020.KS"
+            },
+            {
+              "contribution": 0.179393179416,
+              "sessions": 273,
+              "spells": 2,
+              "ticker": "047810.KS"
+            },
+            {
+              "contribution": 0.172684149234,
+              "sessions": 100,
+              "spells": 4,
+              "ticker": "316140.KS"
+            },
+            {
+              "contribution": 0.113630262194,
+              "sessions": 42,
+              "spells": 2,
+              "ticker": "028050.KS"
+            },
+            {
+              "contribution": 0.102574120525,
+              "sessions": 105,
+              "spells": 3,
+              "ticker": "035250.KS"
+            }
+          ]
+        },
+        "industryContribution": {
+          "A_2017_to_2024": {
+            "bottom": [
+              {
+                "contribution": -0.226931632764,
+                "industry": "ELECTRONICS_ELECTRICAL"
+              },
+              {
+                "contribution": -0.179799340672,
+                "industry": "TRANSPORT_LOGISTICS"
+              },
+              {
+                "contribution": -0.126014383474,
+                "industry": "FINANCIALS"
+              },
+              {
+                "contribution": -0.063344080157,
+                "industry": "COMMUNICATION_MEDIA_SOFTWARE"
+              },
+              {
+                "contribution": -0.011426467716,
+                "industry": "FOOD_BEVERAGE_TOBACCO"
+              }
+            ],
+            "byIndustry": {
+              "BASIC_MATERIALS": 0.100922848751,
+              "CAPITAL_GOODS_DEFENSE": 0.289803179511,
+              "CHEMICALS": 0.050404616746,
+              "COMMUNICATION_MEDIA_SOFTWARE": -0.063344080157,
+              "CONSTRUCTION_ENGINEERING": 0.142332271356,
+              "CONSUMER_RETAIL_SERVICES": 0.012809158539,
+              "ELECTRONICS_ELECTRICAL": -0.226931632764,
+              "ENERGY_UTILITIES": -0.007345338255,
+              "FINANCIALS": -0.126014383474,
+              "FOOD_BEVERAGE_TOBACCO": -0.011426467716,
+              "HEALTHCARE": 0.046393232969,
+              "TRANSPORT_LOGISTICS": -0.179799340672,
+              "UNCLASSIFIED": 0.028747633524
+            },
+            "industriesTouched": 13,
+            "top": [
+              {
+                "contribution": 0.289803179511,
+                "industry": "CAPITAL_GOODS_DEFENSE"
+              },
+              {
+                "contribution": 0.142332271356,
+                "industry": "CONSTRUCTION_ENGINEERING"
+              },
+              {
+                "contribution": 0.100922848751,
+                "industry": "BASIC_MATERIALS"
+              },
+              {
+                "contribution": 0.050404616746,
+                "industry": "CHEMICALS"
+              },
+              {
+                "contribution": 0.046393232969,
+                "industry": "HEALTHCARE"
+              }
+            ]
+          },
+          "B_2025": {
+            "bottom": [
+              {
+                "contribution": -0.028709851156,
+                "industry": "FOOD_BEVERAGE_TOBACCO"
+              },
+              {
+                "contribution": -0.00342227663,
+                "industry": "COMMUNICATION_MEDIA_SOFTWARE"
+              },
+              {
+                "contribution": 0.04649167031,
+                "industry": "UNCLASSIFIED"
+              },
+              {
+                "contribution": 0.096339753532,
+                "industry": "CONSUMER_RETAIL_SERVICES"
+              },
+              {
+                "contribution": 0.107775824027,
+                "industry": "FINANCIALS"
+              }
+            ],
+            "byIndustry": {
+              "CAPITAL_GOODS_DEFENSE": 0.476073009113,
+              "COMMUNICATION_MEDIA_SOFTWARE": -0.00342227663,
+              "CONSUMER_RETAIL_SERVICES": 0.096339753532,
+              "ELECTRONICS_ELECTRICAL": 0.444995491728,
+              "FINANCIALS": 0.107775824027,
+              "FOOD_BEVERAGE_TOBACCO": -0.028709851156,
+              "UNCLASSIFIED": 0.04649167031
+            },
+            "industriesTouched": 7,
+            "top": [
+              {
+                "contribution": 0.476073009113,
+                "industry": "CAPITAL_GOODS_DEFENSE"
+              },
+              {
+                "contribution": 0.444995491728,
+                "industry": "ELECTRONICS_ELECTRICAL"
+              },
+              {
+                "contribution": 0.107775824027,
+                "industry": "FINANCIALS"
+              },
+              {
+                "contribution": 0.096339753532,
+                "industry": "CONSUMER_RETAIL_SERVICES"
+              },
+              {
+                "contribution": 0.04649167031,
+                "industry": "UNCLASSIFIED"
+              }
+            ]
+          },
+          "C_2026_to_cutoff": {
+            "bottom": [
+              {
+                "contribution": -0.04274934727,
+                "industry": "UNCLASSIFIED"
+              },
+              {
+                "contribution": 0.098186762389,
+                "industry": "CAPITAL_GOODS_DEFENSE"
+              },
+              {
+                "contribution": 0.107110856957,
+                "industry": "CONSTRUCTION_ENGINEERING"
+              },
+              {
+                "contribution": 0.166844654685,
+                "industry": "FINANCIALS"
+              },
+              {
+                "contribution": 1.703188763271,
+                "industry": "ELECTRONICS_ELECTRICAL"
+              }
+            ],
+            "byIndustry": {
+              "CAPITAL_GOODS_DEFENSE": 0.098186762389,
+              "CONSTRUCTION_ENGINEERING": 0.107110856957,
+              "ELECTRONICS_ELECTRICAL": 1.703188763271,
+              "FINANCIALS": 0.166844654685,
+              "UNCLASSIFIED": -0.04274934727
+            },
+            "industriesTouched": 5,
+            "top": [
+              {
+                "contribution": 1.703188763271,
+                "industry": "ELECTRONICS_ELECTRICAL"
+              },
+              {
+                "contribution": 0.166844654685,
+                "industry": "FINANCIALS"
+              },
+              {
+                "contribution": 0.107110856957,
+                "industry": "CONSTRUCTION_ENGINEERING"
+              },
+              {
+                "contribution": 0.098186762389,
+                "industry": "CAPITAL_GOODS_DEFENSE"
+              },
+              {
+                "contribution": -0.04274934727,
+                "industry": "UNCLASSIFIED"
+              }
+            ]
+          },
+          "D_full_window": {
+            "bottom": [
+              {
+                "contribution": -0.179799340672,
+                "industry": "TRANSPORT_LOGISTICS"
+              },
+              {
+                "contribution": -0.066766356788,
+                "industry": "COMMUNICATION_MEDIA_SOFTWARE"
+              },
+              {
+                "contribution": -0.040136318873,
+                "industry": "FOOD_BEVERAGE_TOBACCO"
+              },
+              {
+                "contribution": -0.007345338255,
+                "industry": "ENERGY_UTILITIES"
+              },
+              {
+                "contribution": 0.032489956564,
+                "industry": "UNCLASSIFIED"
+              }
+            ],
+            "byIndustry": {
+              "BASIC_MATERIALS": 0.100922848751,
+              "CAPITAL_GOODS_DEFENSE": 0.864062951013,
+              "CHEMICALS": 0.050404616746,
+              "COMMUNICATION_MEDIA_SOFTWARE": -0.066766356788,
+              "CONSTRUCTION_ENGINEERING": 0.249443128313,
+              "CONSUMER_RETAIL_SERVICES": 0.109148912071,
+              "ELECTRONICS_ELECTRICAL": 1.921252622234,
+              "ENERGY_UTILITIES": -0.007345338255,
+              "FINANCIALS": 0.148606095238,
+              "FOOD_BEVERAGE_TOBACCO": -0.040136318873,
+              "HEALTHCARE": 0.046393232969,
+              "TRANSPORT_LOGISTICS": -0.179799340672,
+              "UNCLASSIFIED": 0.032489956564
+            },
+            "industriesTouched": 13,
+            "top": [
+              {
+                "contribution": 1.921252622234,
+                "industry": "ELECTRONICS_ELECTRICAL"
+              },
+              {
+                "contribution": 0.864062951013,
+                "industry": "CAPITAL_GOODS_DEFENSE"
+              },
+              {
+                "contribution": 0.249443128313,
+                "industry": "CONSTRUCTION_ENGINEERING"
+              },
+              {
+                "contribution": 0.148606095238,
+                "industry": "FINANCIALS"
+              },
+              {
+                "contribution": 0.109148912071,
+                "industry": "CONSUMER_RETAIL_SERVICES"
+              }
+            ]
+          }
+        },
+        "industryHolding": {
+          "BASIC_MATERIALS": {
+            "averageWeightOfNavOverAllSessions": 0.038549289627,
+            "nameSessions": 462,
+            "shareOfNameSessions": 0.040086767896,
+            "spells": 13
+          },
+          "CAPITAL_GOODS_DEFENSE": {
+            "averageWeightOfNavOverAllSessions": 0.168193473587,
+            "nameSessions": 2268,
+            "shareOfNameSessions": 0.196789587852,
+            "spells": 50
+          },
+          "CHEMICALS": {
+            "averageWeightOfNavOverAllSessions": 0.09000818424,
+            "nameSessions": 1134,
+            "shareOfNameSessions": 0.098394793926,
+            "spells": 32
+          },
+          "COMMUNICATION_MEDIA_SOFTWARE": {
+            "averageWeightOfNavOverAllSessions": 0.176573680363,
+            "nameSessions": 1722,
+            "shareOfNameSessions": 0.149414316703,
+            "spells": 31
+          },
+          "CONSTRUCTION_ENGINEERING": {
+            "averageWeightOfNavOverAllSessions": 0.036962403498,
+            "nameSessions": 462,
+            "shareOfNameSessions": 0.040086767896,
+            "spells": 13
+          },
+          "CONSUMER_RETAIL_SERVICES": {
+            "averageWeightOfNavOverAllSessions": 0.058131821363,
+            "nameSessions": 630,
+            "shareOfNameSessions": 0.054663774403,
+            "spells": 20
+          },
+          "ELECTRONICS_ELECTRICAL": {
+            "averageWeightOfNavOverAllSessions": 0.216523545476,
+            "nameSessions": 2667,
+            "shareOfNameSessions": 0.231409978308,
+            "spells": 56
+          },
+          "ENERGY_UTILITIES": {
+            "averageWeightOfNavOverAllSessions": 0.003394308939,
+            "nameSessions": 42,
+            "shareOfNameSessions": 0.003644251627,
+            "spells": 1
+          },
+          "FINANCIALS": {
+            "averageWeightOfNavOverAllSessions": 0.083595427571,
+            "nameSessions": 920,
+            "shareOfNameSessions": 0.079826464208,
+            "spells": 30
+          },
+          "FOOD_BEVERAGE_TOBACCO": {
+            "averageWeightOfNavOverAllSessions": 0.011902722329,
+            "nameSessions": 126,
+            "shareOfNameSessions": 0.010932754881,
+            "spells": 4
+          },
+          "HEALTHCARE": {
+            "averageWeightOfNavOverAllSessions": 0.041093050521,
+            "nameSessions": 462,
+            "shareOfNameSessions": 0.040086767896,
+            "spells": 14
+          },
+          "TRANSPORT_LOGISTICS": {
+            "averageWeightOfNavOverAllSessions": 0.047610960597,
+            "nameSessions": 630,
+            "shareOfNameSessions": 0.054663774403,
+            "spells": 11
+          }
+        },
+        "namedCombinedExposure": {
+          "A_2017_to_2024": {
+            "averageCombinedWeight": 0.099183234226,
+            "maximumCombinedWeight": 0.510847021152,
+            "securities": {
+              "000660.KS": {
+                "averageWeightOverAllSessions": 0.022671301661,
+                "averageWeightWhenHeld": 0.162270049252,
+                "name": "SK Hynix",
+                "sessionsHeld": 273
+              },
+              "005930.KS": {
+                "averageWeightOverAllSessions": 0.076511932565,
+                "averageWeightWhenHeld": 0.229653327544,
+                "name": "Samsung Electronics",
+                "sessionsHeld": 651
+              }
+            },
+            "sessions": 1954,
+            "sessionsBothHeld": 252,
+            "sessionsEitherHeld": 672
+          },
+          "B_2025": {
+            "averageCombinedWeight": 0.065718304935,
+            "maximumCombinedWeight": 0.253687064412,
+            "securities": {
+              "000660.KS": {
+                "averageWeightOverAllSessions": 0.0,
+                "averageWeightWhenHeld": null,
+                "name": "SK Hynix",
+                "sessionsHeld": 0
+              },
+              "005930.KS": {
+                "averageWeightOverAllSessions": 0.065718304935,
+                "averageWeightWhenHeld": 0.212051063924,
+                "name": "Samsung Electronics",
+                "sessionsHeld": 75
+              }
+            },
+            "sessions": 242,
+            "sessionsBothHeld": 0,
+            "sessionsEitherHeld": 75
+          },
+          "C_2026_to_cutoff": {
+            "averageCombinedWeight": 0.155713632784,
+            "maximumCombinedWeight": 0.443569736708,
+            "securities": {
+              "000660.KS": {
+                "averageWeightOverAllSessions": 0.022672582117,
+                "averageWeightWhenHeld": 0.185699244006,
+                "name": "SK Hynix",
+                "sessionsHeld": 21
+              },
+              "005930.KS": {
+                "averageWeightOverAllSessions": 0.133041050667,
+                "averageWeightWhenHeld": 0.200728602761,
+                "name": "Samsung Electronics",
+                "sessionsHeld": 114
+              }
+            },
+            "sessions": 172,
+            "sessionsBothHeld": 21,
+            "sessionsEitherHeld": 114
+          },
+          "D_full_window": {
+            "averageCombinedWeight": 0.099869347259,
+            "maximumCombinedWeight": 0.510847021152,
+            "securities": {
+              "000660.KS": {
+                "averageWeightOverAllSessions": 0.020354479548,
+                "averageWeightWhenHeld": 0.163943563163,
+                "name": "SK Hynix",
+                "sessionsHeld": 294
+              },
+              "005930.KS": {
+                "averageWeightOverAllSessions": 0.079514867711,
+                "averageWeightWhenHeld": 0.2241561985,
+                "name": "Samsung Electronics",
+                "sessionsHeld": 840
+              }
+            },
+            "sessions": 2368,
+            "sessionsBothHeld": 273,
+            "sessionsEitherHeld": 861
+          }
+        },
+        "namedSecurities": {
+          "bySpan": {
+            "A_2017_to_2024": {
+              "000660.KS": {
+                "allocatedCostNavUnits": 0.006249396186,
+                "grossContributionNavUnits": -0.025446108405,
+                "tradedNotionalNavUnits": 2.004408090889
+              },
+              "005930.KS": {
+                "allocatedCostNavUnits": 0.014305665664,
+                "grossContributionNavUnits": 0.013924631964,
+                "tradedNotionalNavUnits": 4.700875818146
+              },
+              "combinedAllocatedCostNavUnits": 0.02055506185,
+              "combinedGrossContributionNavUnits": -0.011521476441,
+              "combinedShareOfBookGrossContribution": -0.203733517751,
+              "grossContributionNavUnitsOfBook": 0.056551698357,
+              "netChangeNavUnitsOfBook": -0.173366459544
+            },
+            "B_2025": {
+              "000660.KS": {
+                "allocatedCostNavUnits": 0.0,
+                "grossContributionNavUnits": 0.0,
+                "tradedNotionalNavUnits": 0.0
+              },
+              "005930.KS": {
+                "allocatedCostNavUnits": 0.00131784503,
+                "grossContributionNavUnits": 0.195342146626,
+                "tradedNotionalNavUnits": 0.418333202501
+              },
+              "combinedAllocatedCostNavUnits": 0.00131784503,
+              "combinedGrossContributionNavUnits": 0.195342146626,
+              "combinedShareOfBookGrossContribution": 0.171421385755,
+              "grossContributionNavUnitsOfBook": 1.139543620922,
+              "netChangeNavUnitsOfBook": 1.093476076834
+            },
+            "C_2026_to_cutoff": {
+              "000660.KS": {
+                "allocatedCostNavUnits": 0.00464508844,
+                "grossContributionNavUnits": -0.210187320787,
+                "tradedNotionalNavUnits": 1.478581876103
+              },
+              "005930.KS": {
+                "allocatedCostNavUnits": 0.006181255134,
+                "grossContributionNavUnits": 0.321971248164,
+                "tradedNotionalNavUnits": 1.969435275569
+              },
+              "combinedAllocatedCostNavUnits": 0.010826343574,
+              "combinedGrossContributionNavUnits": 0.111783927377,
+              "combinedShareOfBookGrossContribution": 0.054996031857,
+              "grossContributionNavUnitsOfBook": 2.032581690032,
+              "netChangeNavUnitsOfBook": 1.940139459422
+            },
+            "D_full_window": {
+              "000660.KS": {
+                "allocatedCostNavUnits": 0.010894484626,
+                "grossContributionNavUnits": -0.235633429192,
+                "tradedNotionalNavUnits": 3.482989966992
+              },
+              "005930.KS": {
+                "allocatedCostNavUnits": 0.021804765828,
+                "grossContributionNavUnits": 0.531238026754,
+                "tradedNotionalNavUnits": 7.088644296217
+              },
+              "combinedAllocatedCostNavUnits": 0.032699250454,
+              "combinedGrossContributionNavUnits": 0.295604597562,
+              "combinedShareOfBookGrossContribution": 0.091555952085,
+              "grossContributionNavUnitsOfBook": 3.228677009311,
+              "netChangeNavUnitsOfBook": 2.860249076712
+            }
+          },
+          "decisionsWithAValidSelection": 108,
+          "securities": {
+            "000660.KS": {
+              "averageWeightWhileHeld": 0.163943563163,
+              "decisionsSelected": 14,
+              "maximumWeight": 0.208693481648,
+              "name": "SK Hynix",
+              "sessionsHeld": 294,
+              "shareOfSessionsHeld": 0.124155405405,
+              "shareOfValidDecisionsSelected": 0.12962962963
+            },
+            "005930.KS": {
+              "averageWeightWhileHeld": 0.2241561985,
+              "decisionsSelected": 40,
+              "maximumWeight": 0.304858123218,
+              "name": "Samsung Electronics",
+              "sessionsHeld": 840,
+              "shareOfSessionsHeld": 0.35472972973,
+              "shareOfValidDecisionsSelected": 0.37037037037
+            }
+          }
+        },
+        "namedSpells": {
+          "000660.KS": [
+            {
+              "allocatedCostNavUnits": 0.001180518724,
+              "averageWeight": 0.174720507593,
+              "entryDate": "2017-09-20",
+              "entryRankAmongSelected": 4,
+              "exitedOn": "2017-12-27",
+              "grossContributionNavUnits": -0.00818256013,
+              "industry": "ELECTRONICS_ELECTRICAL",
+              "lastHeldDate": "2017-12-26",
+              "maximumWeight": 0.198005780713,
+              "sessionsHeld": 63,
+              "targetWeightAtEntry": 0.179715444803
+            },
+            {
+              "allocatedCostNavUnits": 0.00111335088,
+              "averageWeight": 0.164018764363,
+              "entryDate": "2018-08-03",
+              "entryRankAmongSelected": 2,
+              "exitedOn": "2018-10-10",
+              "grossContributionNavUnits": -0.026766032235,
+              "industry": "ELECTRONICS_ELECTRICAL",
+              "lastHeldDate": "2018-10-08",
+              "maximumWeight": 0.18649086461,
+              "sessionsHeld": 42,
+              "targetWeightAtEntry": 0.186550438883
+            },
+            {
+              "allocatedCostNavUnits": 0.000720678076,
+              "averageWeight": 0.136873334485,
+              "entryDate": "2019-06-17",
+              "entryRankAmongSelected": 5,
+              "exitedOn": "2019-08-14",
+              "grossContributionNavUnits": 0.021409244907,
+              "industry": "ELECTRONICS_ELECTRICAL",
+              "lastHeldDate": "2019-08-13",
+              "maximumWeight": 0.15668113493,
+              "sessionsHeld": 42,
+              "targetWeightAtEntry": 0.134153004963
+            },
+            {
+              "allocatedCostNavUnits": 0.000729533483,
+              "averageWeight": 0.134700005765,
+              "entryDate": "2019-11-18",
+              "entryRankAmongSelected": 5,
+              "exitedOn": "2020-01-20",
+              "grossContributionNavUnits": 0.018354930926,
+              "industry": "ELECTRONICS_ELECTRICAL",
+              "lastHeldDate": "2020-01-17",
+              "maximumWeight": 0.154031961048,
+              "sessionsHeld": 42,
+              "targetWeightAtEntry": 0.122440628933
+            },
+            {
+              "allocatedCostNavUnits": 0.000937766012,
+              "averageWeight": 0.168773599718,
+              "entryDate": "2021-03-30",
+              "entryRankAmongSelected": 5,
+              "exitedOn": "2021-04-28",
+              "grossContributionNavUnits": -0.00515526147,
+              "industry": "ELECTRONICS_ELECTRICAL",
+              "lastHeldDate": "2021-04-27",
+              "maximumWeight": 0.175953447091,
+              "sessionsHeld": 21,
+              "targetWeightAtEntry": 0.167683391611
+            },
+            {
+              "allocatedCostNavUnits": 0.000952866702,
+              "averageWeight": 0.188846947074,
+              "entryDate": "2021-12-30",
+              "entryRankAmongSelected": 3,
+              "exitedOn": "2022-03-07",
+              "grossContributionNavUnits": -0.013898217132,
+              "industry": "ELECTRONICS_ELECTRICAL",
+              "lastHeldDate": "2022-03-04",
+              "maximumWeight": 0.208693481648,
+              "sessionsHeld": 42,
+              "targetWeightAtEntry": 0.180111374235
+            },
+            {
+              "allocatedCostNavUnits": 0.00061468231,
+              "averageWeight": 0.167697414412,
+              "entryDate": "2023-02-09",
+              "entryRankAmongSelected": 5,
+              "exitedOn": "2023-03-13",
+              "grossContributionNavUnits": -0.01120821327,
+              "industry": "ELECTRONICS_ELECTRICAL",
+              "lastHeldDate": "2023-03-10",
+              "maximumWeight": 0.178672363399,
+              "sessionsHeld": 21,
+              "targetWeightAtEntry": 0.178672363399
+            },
+            {
+              "allocatedCostNavUnits": 0.00464508844,
+              "averageWeight": 0.185699244006,
+              "entryDate": "2026-06-23",
+              "entryRankAmongSelected": 5,
+              "exitedOn": "2026-07-23",
+              "grossContributionNavUnits": -0.210187320787,
+              "industry": "ELECTRONICS_ELECTRICAL",
+              "lastHeldDate": "2026-07-22",
+              "maximumWeight": 0.206959891092,
+              "sessionsHeld": 21,
+              "targetWeightAtEntry": 0.19235312088
+            }
+          ],
+          "005930.KS": [
+            {
+              "allocatedCostNavUnits": 0.001109210933,
+              "averageWeight": 0.228404864303,
+              "entryDate": "2017-04-18",
+              "entryRankAmongSelected": 1,
+              "exitedOn": "2017-05-23",
+              "grossContributionNavUnits": 0.018116356826,
+              "industry": "ELECTRONICS_ELECTRICAL",
+              "lastHeldDate": "2017-05-22",
+              "maximumWeight": 0.237361800678,
+              "sessionsHeld": 21,
+              "targetWeightAtEntry": 0.22019019442
+            },
+            {
+              "allocatedCostNavUnits": 0.001674111526,
+              "averageWeight": 0.244969930233,
+              "entryDate": "2017-06-22",
+              "entryRankAmongSelected": 2,
+              "exitedOn": "2017-12-27",
+              "grossContributionNavUnits": 0.010916291322,
+              "industry": "ELECTRONICS_ELECTRICAL",
+              "lastHeldDate": "2017-12-26",
+              "maximumWeight": 0.273328021442,
+              "sessionsHeld": 126,
+              "targetWeightAtEntry": 0.234364433506
+            },
+            {
+              "allocatedCostNavUnits": 0.001397453034,
+              "averageWeight": 0.218991643069,
+              "entryDate": "2018-09-04",
+              "entryRankAmongSelected": 1,
+              "exitedOn": "2018-10-10",
+              "grossContributionNavUnits": -0.009708000036,
+              "industry": "ELECTRONICS_ELECTRICAL",
+              "lastHeldDate": "2018-10-08",
+              "maximumWeight": 0.224833353862,
+              "sessionsHeld": 21,
+              "targetWeightAtEntry": 0.222537904667
+            },
+            {
+              "allocatedCostNavUnits": 0.001182724756,
+              "averageWeight": 0.216619406673,
+              "entryDate": "2019-04-15",
+              "entryRankAmongSelected": 3,
+              "exitedOn": "2019-05-16",
+              "grossContributionNavUnits": -0.023451697727,
+              "industry": "ELECTRONICS_ELECTRICAL",
+              "lastHeldDate": "2019-05-15",
+              "maximumWeight": 0.226515081983,
+              "sessionsHeld": 21,
+              "targetWeightAtEntry": 0.216711521569
+            },
+            {
+              "allocatedCostNavUnits": 0.001368366041,
+              "averageWeight": 0.193002700131,
+              "entryDate": "2019-06-17",
+              "entryRankAmongSelected": 1,
+              "exitedOn": "2020-02-20",
+              "grossContributionNavUnits": 0.052301816504,
+              "industry": "ELECTRONICS_ELECTRICAL",
+              "lastHeldDate": "2020-02-19",
+              "maximumWeight": 0.233204943364,
+              "sessionsHeld": 168,
+              "targetWeightAtEntry": 0.211533515816
+            },
+            {
+              "allocatedCostNavUnits": 0.000634764199,
+              "averageWeight": 0.169223007375,
+              "entryDate": "2020-03-20",
+              "entryRankAmongSelected": 5,
+              "exitedOn": "2020-04-21",
+              "grossContributionNavUnits": 0.009077772443,
+              "industry": "ELECTRONICS_ELECTRICAL",
+              "lastHeldDate": "2020-04-20",
+              "maximumWeight": 0.180457015585,
+              "sessionsHeld": 21,
+              "targetWeightAtEntry": 0.173542122176
+            },
+            {
+              "allocatedCostNavUnits": 0.00159091275,
+              "averageWeight": 0.239968221244,
+              "entryDate": "2021-01-26",
+              "entryRankAmongSelected": 4,
+              "exitedOn": "2021-05-31",
+              "grossContributionNavUnits": -0.015856118244,
+              "industry": "ELECTRONICS_ELECTRICAL",
+              "lastHeldDate": "2021-05-28",
+              "maximumWeight": 0.26245699333,
+              "sessionsHeld": 84,
+              "targetWeightAtEntry": 0.254465096558
+            },
+            {
+              "allocatedCostNavUnits": 0.00145554821,
+              "averageWeight": 0.283901128919,
+              "entryDate": "2021-12-01",
+              "entryRankAmongSelected": 4,
+              "exitedOn": "2022-03-07",
+              "grossContributionNavUnits": -0.014658913119,
+              "industry": "ELECTRONICS_ELECTRICAL",
+              "lastHeldDate": "2022-03-04",
+              "maximumWeight": 0.304858123218,
+              "sessionsHeld": 63,
+              "targetWeightAtEntry": 0.260372956937
+            },
+            {
+              "allocatedCostNavUnits": 0.000856672199,
+              "averageWeight": 0.232059873295,
+              "entryDate": "2023-02-09",
+              "entryRankAmongSelected": 3,
+              "exitedOn": "2023-03-13",
+              "grossContributionNavUnits": -0.006742504078,
+              "industry": "ELECTRONICS_ELECTRICAL",
+              "lastHeldDate": "2023-03-10",
+              "maximumWeight": 0.24469302061,
+              "sessionsHeld": 21,
+              "targetWeightAtEntry": 0.241496526188
+            },
+            {
+              "allocatedCostNavUnits": 0.000918895223,
+              "averageWeight": 0.237455199245,
+              "entryDate": "2023-04-11",
+              "entryRankAmongSelected": 3,
+              "exitedOn": "2023-05-12",
+              "grossContributionNavUnits": -0.004094320149,
+              "industry": "ELECTRONICS_ELECTRICAL",
+              "lastHeldDate": "2023-05-11",
+              "maximumWeight": 0.239746100469,
+              "sessionsHeld": 21,
+              "targetWeightAtEntry": 0.239317652284
+            },
+            {
+              "allocatedCostNavUnits": 0.001130214926,
+              "averageWeight": 0.250538004804,
+              "entryDate": "2023-06-14",
+              "entryRankAmongSelected": 2,
+              "exitedOn": "2023-09-12",
+              "grossContributionNavUnits": -0.00305445708,
+              "industry": "ELECTRONICS_ELECTRICAL",
+              "lastHeldDate": "2023-09-11",
+              "maximumWeight": 0.262677360294,
+              "sessionsHeld": 63,
+              "targetWeightAtEntry": 0.251331753131
+            },
+            {
+              "allocatedCostNavUnits": 0.000986791868,
+              "averageWeight": 0.239467691319,
+              "entryDate": "2023-11-16",
+              "entryRankAmongSelected": 5,
+              "exitedOn": "2023-12-15",
+              "grossContributionNavUnits": 0.001078405303,
+              "industry": "ELECTRONICS_ELECTRICAL",
+              "lastHeldDate": "2023-12-14",
+              "maximumWeight": 0.244331399065,
+              "sessionsHeld": 21,
+              "targetWeightAtEntry": 0.241125024933
+            },
+            {
+              "allocatedCostNavUnits": 0.002902878215,
+              "averageWeight": 0.215287182355,
+              "entryDate": "2025-09-09",
+              "entryRankAmongSelected": 1,
+              "exitedOn": "2026-01-15",
+              "grossContributionNavUnits": 0.280568258453,
+              "industry": "ELECTRONICS_ELECTRICAL",
+              "lastHeldDate": "2026-01-14",
+              "maximumWeight": 0.253687064412,
+              "sessionsHeld": 84,
+              "targetWeightAtEntry": 0.213196848007
+            },
+            {
+              "allocatedCostNavUnits": 0.004596221949,
+              "averageWeight": 0.197169211345,
+              "entryDate": "2026-02-13",
+              "entryRankAmongSelected": 5,
+              "exitedOn": "2026-07-23",
+              "grossContributionNavUnits": 0.236745136337,
+              "industry": "ELECTRONICS_ELECTRICAL",
+              "lastHeldDate": "2026-07-22",
+              "maximumWeight": 0.238257697857,
+              "sessionsHeld": 105,
+              "targetWeightAtEntry": 0.187097420973
+            }
+          ]
+        },
+        "periodMetrics": {
+          "A_2017_to_2024": {
+            "anchorRebalances": 89,
+            "annualizedNetReturn": -0.023653764694,
+            "annualizedOneWayTurnover": 5.742353820497,
+            "annualizedPassiveReturn": 0.068908784959,
+            "costFractionSum": 0.284620713237,
+            "cumulativeNetReturn": -0.173366459544,
+            "cumulativePassiveReturn": 0.698959005167,
+            "fromSession": "2017-01-16",
+            "maxDrawdownWithinSpan": -0.578619686133,
+            "oneWayTurnoverSum": 45.672499362868,
+            "replacements": 224,
+            "sessions": 1954,
+            "signalUnavailableAnchors": 5,
+            "toSession": "2024-12-30",
+            "years": 7.953619855302
+          },
+          "B_2025": {
+            "anchorRebalances": 11,
+            "annualizedNetReturn": 1.324107291457,
+            "annualizedOneWayTurnover": 5.640464685793,
+            "annualizedPassiveReturn": 0.988083840994,
+            "costFractionSum": 0.035725861519,
+            "cumulativeNetReturn": 1.322806326284,
+            "cumulativePassiveReturn": 0.987177000168,
+            "fromSession": "2024-12-30",
+            "maxDrawdownWithinSpan": -0.078737080365,
+            "oneWayTurnoverSum": 5.636719741855,
+            "replacements": 25,
+            "sessions": 242,
+            "signalUnavailableAnchors": 0,
+            "toSession": "2025-12-30",
+            "years": 0.999336057551
+          },
+          "C_2026_to_cutoff": {
+            "anchorRebalances": 8,
+            "annualizedNetReturn": null,
+            "annualizedOneWayTurnover": null,
+            "annualizedPassiveReturn": null,
+            "costFractionSum": 0.026709666949,
+            "cumulativeNetReturn": 1.010431613878,
+            "cumulativePassiveReturn": 0.757304619307,
+            "fromSession": "2025-12-30",
+            "maxDrawdownWithinSpan": -0.447237497421,
+            "oneWayTurnoverSum": 4.254603176289,
+            "replacements": 21,
+            "sessions": 172,
+            "signalUnavailableAnchors": 0,
+            "toSession": "2026-09-14",
+            "years": 0.706380007803
+          },
+          "D_full_window": {
+            "anchorRebalances": 108,
+            "annualizedNetReturn": 0.15008621853,
+            "annualizedOneWayTurnover": 5.752343922753,
+            "annualizedPassiveReturn": 0.202413366754,
+            "costFractionSum": 0.347056241705,
+            "cumulativeNetReturn": 2.860249076712,
+            "cumulativePassiveReturn": 4.932892814649,
+            "fromSession": "2017-01-16",
+            "maxDrawdownWithinSpan": -0.578619686133,
+            "oneWayTurnoverSum": 55.563822281013,
+            "replacements": 270,
+            "sessions": 2368,
+            "signalUnavailableAnchors": 5,
+            "toSession": "2026-09-14",
+            "years": 9.659335920655
+          }
+        },
+        "periodReturns": {
+          "calendarYears": {
+            "2017": {
+              "fromSession": "2017-01-16",
+              "return": 0.065538398469,
+              "toSession": "2017-12-28"
+            },
+            "2018": {
+              "fromSession": "2017-12-28",
+              "return": -0.08668255073,
+              "toSession": "2018-12-28"
+            },
+            "2019": {
+              "fromSession": "2018-12-28",
+              "return": -0.167033389538,
+              "toSession": "2019-12-30"
+            },
+            "2020": {
+              "fromSession": "2019-12-30",
+              "return": -0.000968077512,
+              "toSession": "2020-12-30"
+            },
+            "2021": {
+              "fromSession": "2020-12-30",
+              "return": 0.074804463442,
+              "toSession": "2021-12-30"
+            },
+            "2022": {
+              "fromSession": "2021-12-30",
+              "return": -0.359867429734,
+              "toSession": "2022-12-29"
+            },
+            "2023": {
+              "fromSession": "2022-12-29",
+              "return": 0.232891472327,
+              "toSession": "2023-12-28"
+            },
+            "2024": {
+              "fromSession": "2023-12-28",
+              "return": 0.203347248411,
+              "toSession": "2024-12-30"
+            },
+            "2025": {
+              "fromSession": "2024-12-30",
+              "return": 1.322806326284,
+              "toSession": "2025-12-30"
+            },
+            "2026": {
+              "fromSession": "2025-12-30",
+              "return": 1.010431613878,
+              "toSession": "2026-09-14"
+            }
+          },
+          "periods": [
+            {
+              "annualizedReturn": -0.023653764694,
+              "cumulativeReturn": -0.173366459544,
+              "fromSession": "2017-01-16",
+              "period": "A_2017_to_2024",
+              "toSession": "2024-12-30",
+              "years": 7.953619855302
+            },
+            {
+              "annualizedReturn": 1.324107291457,
+              "cumulativeReturn": 1.322806326284,
+              "fromSession": "2024-12-30",
+              "period": "B_2025",
+              "toSession": "2025-12-30",
+              "years": 0.999336057551
+            },
+            {
+              "annualizedReturn": null,
+              "cumulativeReturn": 1.010431613878,
+              "fromSession": "2025-12-30",
+              "period": "C_2026_to_cutoff",
+              "toSession": "2026-09-14",
+              "years": 0.706380007803
+            },
+            {
+              "annualizedReturn": 0.15008621853,
+              "cumulativeReturn": 2.860249076712,
+              "fromSession": "2017-01-16",
+              "period": "D_full_window",
+              "toSession": "2026-09-14",
+              "years": 9.659335920655
+            }
+          ]
+        },
+        "securityContribution": {
+          "A_2017_to_2024": {
+            "grossContributionNavUnits": 0.056551698357,
+            "netChangeNavUnits": -0.173366459544,
+            "top10Contributors": [
+              {
+                "contribution": 0.182701328254,
+                "ticker": "010140.KS"
+              },
+              {
+                "contribution": 0.098870366273,
+                "ticker": "011170.KS"
+              },
+              {
+                "contribution": 0.090241854915,
+                "ticker": "005490.KS"
+              },
+              {
+                "contribution": 0.086643030464,
+                "ticker": "000720.KS"
+              },
+              {
+                "contribution": 0.061308566898,
+                "ticker": "006360.KS"
+              },
+              {
+                "contribution": 0.056720757092,
+                "ticker": "047810.KS"
+              },
+              {
+                "contribution": 0.049295316696,
+                "ticker": "329180.KS"
+              },
+              {
+                "contribution": 0.047549226954,
+                "ticker": "028260.KS"
+              },
+              {
+                "contribution": 0.042715516344,
+                "ticker": "064350.KS"
+              },
+              {
+                "contribution": 0.041294614011,
+                "ticker": "002790.KS"
+              }
+            ],
+            "top10Detractors": [
+              {
+                "contribution": -0.099174862353,
+                "ticker": "034220.KS"
+              },
+              {
+                "contribution": -0.072029547319,
+                "ticker": "000120.KS"
+              },
+              {
+                "contribution": -0.06690496326,
+                "ticker": "018880.KS"
+              },
+              {
+                "contribution": -0.060338226217,
+                "ticker": "066570.KS"
+              },
+              {
+                "contribution": -0.04864053658,
+                "ticker": "069960.KS"
+              },
+              {
+                "contribution": -0.048621231513,
+                "ticker": "000880.KS"
+              },
+              {
+                "contribution": -0.047451762263,
+                "ticker": "010120.KS"
+              },
+              {
+                "contribution": -0.047301258332,
+                "ticker": "034730.KS"
+              },
+              {
+                "contribution": -0.047018994003,
+                "ticker": "030200.KS"
+              },
+              {
+                "contribution": -0.039906125767,
+                "ticker": "086280.KS"
+              }
+            ],
+            "totalTradedNotionalNavUnits": 73.848075310173,
+            "transactionCostNavUnits": 0.229918157901
+          },
+          "B_2025": {
+            "grossContributionNavUnits": 1.139543620922,
+            "netChangeNavUnits": 1.093476076834,
+            "top10Contributors": [
+              {
+                "contribution": 0.228969221216,
+                "ticker": "034020.KS"
+              },
+              {
+                "contribution": 0.195342146626,
+                "ticker": "005930.KS"
+              },
+              {
+                "contribution": 0.122786510138,
+                "ticker": "011070.KS"
+              },
+              {
+                "contribution": 0.122672422324,
+                "ticker": "047810.KS"
+              },
+              {
+                "contribution": 0.121362311508,
+                "ticker": "010140.KS"
+              },
+              {
+                "contribution": 0.112767664683,
+                "ticker": "009150.KS"
+              },
+              {
+                "contribution": 0.100502032837,
+                "ticker": "024110.KS"
+              },
+              {
+                "contribution": 0.096339753532,
+                "ticker": "035250.KS"
+              },
+              {
+                "contribution": 0.056097442105,
+                "ticker": "066570.KS"
+              },
+              {
+                "contribution": 0.055618505146,
+                "ticker": "316140.KS"
+              }
+            ],
+            "top10Detractors": [
+              {
+                "contribution": -0.041998271824,
+                "ticker": "006400.KS"
+              },
+              {
+                "contribution": -0.038785111387,
+                "ticker": "271560.KS"
+              },
+              {
+                "contribution": -0.019816313013,
+                "ticker": "078930.KS"
+              },
+              {
+                "contribution": -0.015832398721,
+                "ticker": "030200.KS"
+              },
+              {
+                "contribution": -0.013363940749,
+                "ticker": "018880.KS"
+              },
+              {
+                "contribution": 0.002468654434,
+                "ticker": "017800.KS"
+              },
+              {
+                "contribution": 0.002644654079,
+                "ticker": "017670.KS"
+              },
+              {
+                "contribution": 0.006418507746,
+                "ticker": "032640.KS"
+              },
+              {
+                "contribution": 0.006908544932,
+                "ticker": "012450.KS"
+              },
+              {
+                "contribution": 0.009164787802,
+                "ticker": "097950.KS"
+              }
+            ],
+            "totalTradedNotionalNavUnits": 14.551075485657,
+            "transactionCostNavUnits": 0.046067544087
+          },
+          "C_2026_to_cutoff": {
+            "grossContributionNavUnits": 2.032581690032,
+            "netChangeNavUnits": 1.940139459422,
+            "top10Contributors": [
+              {
+                "contribution": 0.826269894149,
+                "ticker": "011070.KS"
+              },
+              {
+                "contribution": 0.582676363748,
+                "ticker": "066570.KS"
+              },
+              {
+                "contribution": 0.321971248164,
+                "ticker": "005930.KS"
+              },
+              {
+                "contribution": 0.316609548399,
+                "ticker": "009150.KS"
+              },
+              {
+                "contribution": 0.1372973889,
+                "ticker": "316140.KS"
+              },
+              {
+                "contribution": 0.127439671039,
+                "ticker": "078930.KS"
+              },
+              {
+                "contribution": 0.113630262194,
+                "ticker": "028050.KS"
+              },
+              {
+                "contribution": 0.089474386193,
+                "ticker": "000990.KS"
+              },
+              {
+                "contribution": 0.056500794779,
+                "ticker": "017800.KS"
+              },
+              {
+                "contribution": 0.040628173811,
+                "ticker": "012450.KS"
+              }
+            ],
+            "top10Detractors": [
+              {
+                "contribution": -0.210187320787,
+                "ticker": "000660.KS"
+              },
+              {
+                "contribution": -0.181498490348,
+                "ticker": "000720.KS"
+              },
+              {
+                "contribution": -0.076362553912,
+                "ticker": "103590.KS"
+              },
+              {
+                "contribution": -0.064259532477,
+                "ticker": "138930.KS"
+              },
+              {
+                "contribution": -0.045402322889,
+                "ticker": "029780.KS"
+              },
+              {
+                "contribution": -0.039048009797,
+                "ticker": "373220.KS"
+              },
+              {
+                "contribution": -0.000472964284,
+                "ticker": "024110.KS"
+              },
+              {
+                "contribution": -0.0,
+                "ticker": "010140.KS"
+              },
+              {
+                "contribution": 0.002532725175,
+                "ticker": "001450.KS"
+              },
+              {
+                "contribution": 0.010783415504,
+                "ticker": "034220.KS"
+              }
+            ],
+            "totalTradedNotionalNavUnits": 29.435655216389,
+            "transactionCostNavUnits": 0.092442230611
+          },
+          "D_full_window": {
+            "grossContributionNavUnits": 3.228677009311,
+            "netChangeNavUnits": 2.860249076712,
+            "top10Contributors": [
+              {
+                "contribution": 0.940098119842,
+                "ticker": "011070.KS"
+              },
+              {
+                "contribution": 0.578435579635,
+                "ticker": "066570.KS"
+              },
+              {
+                "contribution": 0.531238026754,
+                "ticker": "005930.KS"
+              },
+              {
+                "contribution": 0.457728670909,
+                "ticker": "009150.KS"
+              },
+              {
+                "contribution": 0.304063639762,
+                "ticker": "010140.KS"
+              },
+              {
+                "contribution": 0.26301141318,
+                "ticker": "034020.KS"
+              },
+              {
+                "contribution": 0.179393179416,
+                "ticker": "047810.KS"
+              },
+              {
+                "contribution": 0.172684149234,
+                "ticker": "316140.KS"
+              },
+              {
+                "contribution": 0.113630262194,
+                "ticker": "028050.KS"
+              },
+              {
+                "contribution": 0.102574120525,
+                "ticker": "035250.KS"
+              }
+            ],
+            "top10Detractors": [
+              {
+                "contribution": -0.235633429192,
+                "ticker": "000660.KS"
+              },
+              {
+                "contribution": -0.094855459883,
+                "ticker": "000720.KS"
+              },
+              {
+                "contribution": -0.088391446849,
+                "ticker": "034220.KS"
+              },
+              {
+                "contribution": -0.080268904009,
+                "ticker": "018880.KS"
+              },
+              {
+                "contribution": -0.076362553912,
+                "ticker": "103590.KS"
+              },
+              {
+                "contribution": -0.072029547319,
+                "ticker": "000120.KS"
+              },
+              {
+                "contribution": -0.062851392724,
+                "ticker": "030200.KS"
+              },
+              {
+                "contribution": -0.061896497399,
+                "ticker": "138930.KS"
+              },
+              {
+                "contribution": -0.04864053658,
+                "ticker": "069960.KS"
+              },
+              {
+                "contribution": -0.048621231513,
+                "ticker": "000880.KS"
+              }
+            ],
+            "totalTradedNotionalNavUnits": 117.834806012219,
+            "transactionCostNavUnits": 0.368427932599
+          }
+        }
+      }
+    },
+    "counterfactual": {
+      "bottomContributors": [
+        {
+          "contribution": -0.103578077766,
+          "sessions": 84,
+          "spells": 3,
+          "ticker": "000720.KS"
+        },
+        {
+          "contribution": -0.095656121473,
+          "sessions": 21,
+          "spells": 1,
+          "ticker": "443060.KS"
+        },
+        {
+          "contribution": -0.093811133578,
+          "sessions": 378,
+          "spells": 7,
+          "ticker": "034220.KS"
+        },
+        {
+          "contribution": -0.080403778141,
+          "sessions": 252,
+          "spells": 8,
+          "ticker": "018880.KS"
+        },
+        {
+          "contribution": -0.07739112842,
+          "sessions": 21,
+          "spells": 1,
+          "ticker": "267260.KS"
+        },
+        {
+          "contribution": -0.074757834511,
+          "sessions": 21,
+          "spells": 1,
+          "ticker": "103590.KS"
+        },
+        {
+          "contribution": -0.070578686636,
+          "sessions": 273,
+          "spells": 4,
+          "ticker": "000120.KS"
+        },
+        {
+          "contribution": -0.067679239617,
+          "sessions": 147,
+          "spells": 4,
+          "ticker": "069960.KS"
+        }
+      ],
+      "concentration": {
+        "A_2017_to_2024": {
+          "averageCashWeight": 0.033053442807,
+          "averageHoldings": 4.838792221085,
+          "averageLargestNameWeightOfNav": 0.262772294681,
+          "maximumLargestNameWeightOfNav": 0.3352984292,
+          "maximumTopIndustryShareOfInvested": 1.0,
+          "meanHhi": 0.209202366974,
+          "meanTopIndustryShareOfInvested": 0.599638060053,
+          "sessions": 1954,
+          "shareOfHeldSessionsWithThreeOrMoreNamesInOneIndustry": 0.711263881544
+        },
+        "B_2025": {
+          "averageCashWeight": 0.0,
+          "averageHoldings": 5.0,
+          "averageLargestNameWeightOfNav": 0.269627151088,
+          "maximumLargestNameWeightOfNav": 0.32110810417,
+          "maximumTopIndustryShareOfInvested": 0.837169680512,
+          "meanHhi": 0.211654940235,
+          "meanTopIndustryShareOfInvested": 0.617617096027,
+          "sessions": 242,
+          "shareOfHeldSessionsWithThreeOrMoreNamesInOneIndustry": 0.826446280992
+        },
+        "C_2026_to_cutoff": {
+          "averageCashWeight": 0.00048911249,
+          "averageHoldings": 5.0,
+          "averageLargestNameWeightOfNav": 0.243275436868,
+          "maximumLargestNameWeightOfNav": 0.298073733408,
+          "maximumTopIndustryShareOfInvested": 1.0,
+          "meanHhi": 0.205154502905,
+          "meanTopIndustryShareOfInvested": 0.812625852063,
+          "sessions": 172,
+          "shareOfHeldSessionsWithThreeOrMoreNamesInOneIndustry": 0.877906976744
+        },
+        "D_full_window": {
+          "averageCashWeight": 0.027310200419,
+          "averageHoldings": 4.866976351351,
+          "averageLargestNameWeightOfNav": 0.262037117113,
+          "maximumLargestNameWeightOfNav": 0.3352984292,
+          "maximumTopIndustryShareOfInvested": 1.0,
+          "meanHhi": 0.209157807368,
+          "meanTopIndustryShareOfInvested": 0.617418896032,
+          "sessions": 2368,
+          "shareOfHeldSessionsWithThreeOrMoreNamesInOneIndustry": 0.73579175705
+        }
+      },
+      "differenceVersusD": {
+        "annualizedOneWayTurnover": 0.093596622133,
+        "averageHoldings": 0.0,
+        "cumulativeNetReturn": 0.158236061185,
+        "maxDrawdown": -0.001539359086,
+        "netAnnualizedReturn": 0.004793182592,
+        "totalCostFractionOfNav": 0.006921071998
+      },
+      "evidenceClass": "POST_OUTCOME_COUNTERFACTUAL_SENSITIVITY",
+      "excluded": [
+        "005930.KS",
+        "000660.KS"
+      ],
+      "formalD": {
+        "annualizedOneWayTurnover": 5.752343922753,
+        "averageHoldings": 4.866976351351,
+        "cumulativeNetReturn": 2.860249076712,
+        "maxDrawdown": -0.578619686133,
+        "netAnnualizedReturn": 0.15008621853,
+        "totalCostFractionOfNav": 0.347056241705
+      },
+      "formalDecisionsUnchanged": true,
+      "gainConcentration": {
+        "fullWindowGrossContributionNavUnits": 3.398226960743,
+        "industriesWithASemiconductorOrElectronicsWordInTheLabel": {
+          "ELECTRONICS_ELECTRICAL": 1.952724241576
+        },
+        "labelNote": "label match on the canonical PIT industry text only; no theme classification was created",
+        "netChangeNavUnits": 3.018485137897,
+        "semiconductorOrElectronicsLabelShare": 0.574630318732,
+        "shareFrom2025And2026Spans": 0.981280681609,
+        "shareFromTop1Security": 0.266389165736,
+        "shareFromTop2Securities": 0.532129106669,
+        "shareFromTop5Securities": 0.854046696311,
+        "topIndustry": {
+          "contribution": 1.952724241576,
+          "label": "ELECTRONICS_ELECTRICAL",
+          "share": 0.574630318732
+        }
+      },
+      "holdings": {
+        "distinctNames": 84,
+        "medianSpellSessions": 21.0,
+        "namesHeldInMoreThanOneSpell": 60,
+        "shareOfSpellsThatAreRepeats": 0.697841726619,
+        "spells": 278
+      },
+      "labels": [
+        "POST_OUTCOME_DESCRIPTIVE_SENSITIVITY",
+        "NOT_CONFIRMATORY",
+        "NOT_ELIGIBLE_FOR_MODEL_SELECTION"
+      ],
+      "name": "D_EXCLUDE_SAMSUNG_HYNIX",
+      "namedSecurities": {
+        "000660.KS": {
+          "averageWeightWhileHeld": null,
+          "decisionsSelected": 0,
+          "maximumWeight": null,
+          "name": "SK Hynix",
+          "sessionsHeld": 0,
+          "shareOfSessionsHeld": 0.0,
+          "shareOfValidDecisionsSelected": 0.0
+        },
+        "005930.KS": {
+          "averageWeightWhileHeld": null,
+          "decisionsSelected": 0,
+          "maximumWeight": null,
+          "name": "Samsung Electronics",
+          "sessionsHeld": 0,
+          "shareOfSessionsHeld": 0.0,
+          "shareOfValidDecisionsSelected": 0.0
+        }
+      },
+      "periodMetrics": {
+        "A_2017_to_2024": {
+          "anchorRebalances": 89,
+          "annualizedNetReturn": -0.022257508765,
+          "annualizedOneWayTurnover": 5.766668717373,
+          "annualizedPassiveReturn": 0.068908784959,
+          "costFractionSum": 0.286785667794,
+          "cumulativeNetReturn": -0.163917170097,
+          "cumulativePassiveReturn": 0.698959005167,
+          "fromSession": "2017-01-16",
+          "maxDrawdownWithinSpan": -0.580159045219,
+          "oneWayTurnoverSum": 45.865890809445,
+          "replacements": 224,
+          "sessions": 1954,
+          "signalUnavailableAnchors": 5,
+          "toSession": "2024-12-30",
+          "years": 7.953619855302
+        },
+        "B_2025": {
+          "anchorRebalances": 11,
+          "annualizedNetReturn": 1.207749071023,
+          "annualizedOneWayTurnover": 6.301201522694,
+          "annualizedPassiveReturn": 0.988083840994,
+          "costFractionSum": 0.040127734408,
+          "cumulativeNetReturn": 1.206588486947,
+          "cumulativePassiveReturn": 0.987177000168,
+          "fromSession": "2024-12-30",
+          "maxDrawdownWithinSpan": -0.078738719968,
+          "oneWayTurnoverSum": 6.297017887523,
+          "replacements": 28,
+          "sessions": 242,
+          "signalUnavailableAnchors": 0,
+          "toSession": "2025-12-30",
+          "years": 0.999336057551
+        },
+        "C_2026_to_cutoff": {
+          "anchorRebalances": 8,
+          "annualizedNetReturn": null,
+          "annualizedOneWayTurnover": null,
+          "annualizedPassiveReturn": null,
+          "costFractionSum": 0.027063911501,
+          "cumulativeNetReturn": 1.178169707506,
+          "cumulativePassiveReturn": 0.757304619307,
+          "fromSession": "2025-12-30",
+          "maxDrawdownWithinSpan": -0.431196972338,
+          "oneWayTurnoverSum": 4.304994798264,
+          "replacements": 21,
+          "sessions": 172,
+          "signalUnavailableAnchors": 0,
+          "toSession": "2026-09-14",
+          "years": 0.706380007803
+        },
+        "D_full_window": {
+          "anchorRebalances": 108,
+          "annualizedNetReturn": 0.154879401122,
+          "annualizedOneWayTurnover": 5.845940544886,
+          "annualizedPassiveReturn": 0.202413366754,
+          "costFractionSum": 0.353977313702,
+          "cumulativeNetReturn": 3.018485137897,
+          "cumulativePassiveReturn": 4.932892814649,
+          "fromSession": "2017-01-16",
+          "maxDrawdownWithinSpan": -0.580159045219,
+          "oneWayTurnoverSum": 56.467903495231,
+          "replacements": 273,
+          "sessions": 2368,
+          "signalUnavailableAnchors": 5,
+          "toSession": "2026-09-14",
+          "years": 9.659335920655
+        }
+      },
+      "rule": "005930.KS and 000660.KS removed after stock and industry scoring and before selection; every other frozen rule unchanged; next eligible ranked names fill the book",
+      "signalAvailability": {
+        "availabilityShare": 0.955752212389,
+        "meetsStudyCoverage": true,
+        "scheduledAnchors": 113,
+        "unavailableAnchors": 5,
+        "unavailableCauses": {
+          "2017-01-13": [
+            "STOCK_DEPTH_BELOW_MINIMUM"
+          ],
+          "2017-02-10": [
+            "STOCK_DEPTH_BELOW_MINIMUM"
+          ],
+          "2017-03-17": [
+            "STOCK_DEPTH_BELOW_MINIMUM"
+          ],
+          "2021-09-24": [
+            "STOCK_DEPTH_BELOW_MINIMUM",
+            "INDUSTRY_LAYER_UNRANKABLE"
+          ],
+          "2021-10-29": [
+            "STOCK_DEPTH_BELOW_MINIMUM",
+            "INDUSTRY_LAYER_UNRANKABLE"
+          ]
+        },
+        "validDecisionAnchors": 108
+      },
+      "summary": {
+        "annualizedOneWayTurnover": 5.845940544886,
+        "averageHoldings": 4.866976351351,
+        "cumulativeNetReturn": 3.018485137897,
+        "maxDrawdown": -0.580159045219,
+        "netAnnualizedReturn": 0.154879401122,
+        "totalCostFractionOfNav": 0.353977313702
+      },
+      "topContributors": [
+        {
+          "contribution": 0.905250845054,
+          "sessions": 357,
+          "spells": 9,
+          "ticker": "009150.KS"
+        },
+        {
+          "contribution": 0.903044631825,
+          "sessions": 189,
+          "spells": 3,
+          "ticker": "011070.KS"
+        },
+        {
+          "contribution": 0.518540126422,
+          "sessions": 609,
+          "spells": 8,
+          "ticker": "066570.KS"
+        },
+        {
+          "contribution": 0.310229861951,
+          "sessions": 504,
+          "spells": 9,
+          "ticker": "010140.KS"
+        },
+        {
+          "contribution": 0.265179043885,
+          "sessions": 336,
+          "spells": 4,
+          "ticker": "034020.KS"
+        },
+        {
+          "contribution": 0.251811158732,
+          "sessions": 105,
+          "spells": 2,
+          "ticker": "000990.KS"
+        },
+        {
+          "contribution": 0.218101355152,
+          "sessions": 231,
+          "spells": 8,
+          "ticker": "078930.KS"
+        },
+        {
+          "contribution": 0.178712612177,
+          "sessions": 100,
+          "spells": 4,
+          "ticker": "316140.KS"
+        }
+      ]
+    },
+    "dMinusA": {
+      "A_2017_to_2024": {
+        "anchorsBothBooksHadAValidDecision": 89,
+        "anchorsWithIdenticalSelection": 0,
+        "costNavUnitsA": 0.127041257141,
+        "costNavUnitsD": 0.229918157901,
+        "grossContributionDifferenceNavUnits": 0.055176138814,
+        "meanDifferingNames": 3.247191011236,
+        "meanNamesOnlyInA": 3.247191011236,
+        "meanNamesOnlyInD": 3.247191011236,
+        "meanSameNameShare": 0.350561797753,
+        "returnA": -0.125665697597,
+        "returnD": -0.173366459544,
+        "returnDMinusA": -0.047700761947,
+        "topNamesAddingToDMinusA": [
+          {
+            "difference": 0.182701328254,
+            "ticker": "010140.KS"
+          },
+          {
+            "difference": 0.139563772177,
+            "ticker": "000720.KS"
+          },
+          {
+            "difference": 0.126720075379,
+            "ticker": "011170.KS"
+          },
+          {
+            "difference": 0.095851806732,
+            "ticker": "006360.KS"
+          },
+          {
+            "difference": 0.076360805722,
+            "ticker": "005490.KS"
+          },
+          {
+            "difference": 0.075249400332,
+            "ticker": "032640.KS"
+          },
+          {
+            "difference": 0.05124034565,
+            "ticker": "005930.KS"
+          },
+          {
+            "difference": 0.049295316696,
+            "ticker": "329180.KS"
+          }
+        ],
+        "topNamesSubtractingFromDMinusA": [
+          {
+            "difference": -0.19394850991,
+            "ticker": "030200.KS"
+          },
+          {
+            "difference": -0.095364687492,
+            "ticker": "078930.KS"
+          },
+          {
+            "difference": -0.075927725715,
+            "ticker": "017670.KS"
+          },
+          {
+            "difference": -0.06690496326,
+            "ticker": "018880.KS"
+          },
+          {
+            "difference": -0.059712325636,
+            "ticker": "000880.KS"
+          },
+          {
+            "difference": -0.055491131135,
+            "ticker": "028260.KS"
+          },
+          {
+            "difference": -0.047451762263,
+            "ticker": "010120.KS"
+          },
+          {
+            "difference": -0.039906125767,
+            "ticker": "086280.KS"
+          }
+        ]
+      },
+      "B_2025": {
+        "anchorsBothBooksHadAValidDecision": 11,
+        "anchorsWithIdenticalSelection": 0,
+        "costNavUnitsA": 0.022418167133,
+        "costNavUnitsD": 0.046067544087,
+        "grossContributionDifferenceNavUnits": 0.664130864621,
+        "meanDifferingNames": 3.090909090909,
+        "meanNamesOnlyInA": 3.090909090909,
+        "meanNamesOnlyInD": 3.090909090909,
+        "meanSameNameShare": 0.381818181818,
+        "returnA": 0.518102272692,
+        "returnD": 1.322806326284,
+        "returnDMinusA": 0.804704053592,
+        "topNamesAddingToDMinusA": [
+          {
+            "difference": 0.228969221216,
+            "ticker": "034020.KS"
+          },
+          {
+            "difference": 0.122786510138,
+            "ticker": "011070.KS"
+          },
+          {
+            "difference": 0.121362311508,
+            "ticker": "010140.KS"
+          },
+          {
+            "difference": 0.112767664683,
+            "ticker": "009150.KS"
+          },
+          {
+            "difference": 0.089221560996,
+            "ticker": "005930.KS"
+          },
+          {
+            "difference": 0.088524383261,
+            "ticker": "035250.KS"
+          },
+          {
+            "difference": 0.074369694745,
+            "ticker": "047810.KS"
+          },
+          {
+            "difference": 0.053502444181,
+            "ticker": "316140.KS"
+          }
+        ],
+        "topNamesSubtractingFromDMinusA": [
+          {
+            "difference": -0.103755702831,
+            "ticker": "032640.KS"
+          },
+          {
+            "difference": -0.061773588387,
+            "ticker": "078930.KS"
+          },
+          {
+            "difference": -0.041998271824,
+            "ticker": "006400.KS"
+          },
+          {
+            "difference": -0.038785111387,
+            "ticker": "271560.KS"
+          },
+          {
+            "difference": -0.035741191935,
+            "ticker": "030200.KS"
+          },
+          {
+            "difference": -0.013363940749,
+            "ticker": "018880.KS"
+          },
+          {
+            "difference": -0.010545463219,
+            "ticker": "138930.KS"
+          },
+          {
+            "difference": -0.003438607466,
+            "ticker": "024110.KS"
+          }
+        ]
+      },
+      "C_2026_to_cutoff": {
+        "anchorsBothBooksHadAValidDecision": 8,
+        "anchorsWithIdenticalSelection": 0,
+        "costNavUnitsA": 0.013541947581,
+        "costNavUnitsD": 0.092442230611,
+        "grossContributionDifferenceNavUnits": 1.623855989918,
+        "meanDifferingNames": 3.375,
+        "meanNamesOnlyInA": 3.375,
+        "meanNamesOnlyInD": 3.375,
+        "meanSameNameShare": 0.325,
+        "returnA": 0.297728584862,
+        "returnD": 1.010431613878,
+        "returnDMinusA": 0.712703029017,
+        "topNamesAddingToDMinusA": [
+          {
+            "difference": 0.826269894149,
+            "ticker": "011070.KS"
+          },
+          {
+            "difference": 0.321971248164,
+            "ticker": "005930.KS"
+          },
+          {
+            "difference": 0.316609548399,
+            "ticker": "009150.KS"
+          },
+          {
+            "difference": 0.301640118558,
+            "ticker": "066570.KS"
+          },
+          {
+            "difference": 0.1372973889,
+            "ticker": "316140.KS"
+          },
+          {
+            "difference": 0.127439671039,
+            "ticker": "078930.KS"
+          },
+          {
+            "difference": 0.089474386193,
+            "ticker": "000990.KS"
+          },
+          {
+            "difference": 0.084750221197,
+            "ticker": "012450.KS"
+          }
+        ],
+        "topNamesSubtractingFromDMinusA": [
+          {
+            "difference": -0.210187320787,
+            "ticker": "000660.KS"
+          },
+          {
+            "difference": -0.181498490348,
+            "ticker": "000720.KS"
+          },
+          {
+            "difference": -0.076362553912,
+            "ticker": "103590.KS"
+          },
+          {
+            "difference": -0.057615905455,
+            "ticker": "138930.KS"
+          },
+          {
+            "difference": -0.045402322889,
+            "ticker": "029780.KS"
+          },
+          {
+            "difference": -0.039048009797,
+            "ticker": "373220.KS"
+          },
+          {
+            "difference": -0.025903982347,
+            "ticker": "032640.KS"
+          },
+          {
+            "difference": -0.020963181154,
+            "ticker": "267270.KS"
+          }
+        ]
+      },
+      "D_full_window": {
+        "anchorsBothBooksHadAValidDecision": 108,
+        "anchorsWithIdenticalSelection": 0,
+        "costNavUnitsA": 0.163001371855,
+        "costNavUnitsD": 0.368427932599,
+        "grossContributionDifferenceNavUnits": 2.343162993353,
+        "meanDifferingNames": 3.240740740741,
+        "meanNamesOnlyInA": 3.240740740741,
+        "meanNamesOnlyInD": 3.240740740741,
+        "meanSameNameShare": 0.351851851852,
+        "returnA": 0.722512644104,
+        "returnD": 2.860249076712,
+        "returnDMinusA": 2.137736432608,
+        "topNamesAddingToDMinusA": [
+          {
+            "difference": 0.940098119842,
+            "ticker": "011070.KS"
+          },
+          {
+            "difference": 0.462433154809,
+            "ticker": "005930.KS"
+          },
+          {
+            "difference": 0.457728670909,
+            "ticker": "009150.KS"
+          },
+          {
+            "difference": 0.304083752579,
+            "ticker": "066570.KS"
+          },
+          {
+            "difference": 0.304063639762,
+            "ticker": "010140.KS"
+          },
+          {
+            "difference": 0.235632792119,
+            "ticker": "034020.KS"
+          },
+          {
+            "difference": 0.186114410614,
+            "ticker": "316140.KS"
+          },
+          {
+            "difference": 0.126720075379,
+            "ticker": "011170.KS"
+          }
+        ],
+        "topNamesSubtractingFromDMinusA": [
+          {
+            "difference": -0.236169990964,
+            "ticker": "030200.KS"
+          },
+          {
+            "difference": -0.216248424276,
+            "ticker": "000660.KS"
+          },
+          {
+            "difference": -0.080268904009,
+            "ticker": "018880.KS"
+          },
+          {
+            "difference": -0.076362553912,
+            "ticker": "103590.KS"
+          },
+          {
+            "difference": -0.076012173638,
+            "ticker": "017670.KS"
+          },
+          {
+            "difference": -0.065402319393,
+            "ticker": "138930.KS"
+          },
+          {
+            "difference": -0.059712325636,
+            "ticker": "000880.KS"
+          },
+          {
+            "difference": -0.055491131135,
+            "ticker": "028260.KS"
+          }
+        ]
+      }
+    },
+    "evidenceClass": "POST_OUTCOME_DIAGNOSTIC_RECONSTRUCTION",
+    "formalReported": {
+      "evidenceClass": "FORMAL_REPORTED_RESULT",
+      "finalArchitecture": "NO_UNAMBIGUOUS_FINAL_ARCHITECTURE",
+      "industryLayerDecision": "INDUSTRY_LAYER_DEVELOPMENT_SUPPORTED",
+      "industryPairClasses": {
+        "marketOff": "IMPROVES",
+        "underC0": "IMPROVES",
+        "underC1": "IMPROVES"
+      },
+      "marketLayer": {
+        "I+S": {
+          "C0": {
+            "contextPairOnOtherPortfolio": "TRADE_OFF",
+            "primaryPair": "TRADE_OFF",
+            "status": "PARETO_TRADE_OFF"
+          },
+          "C1": {
+            "contextPairOnOtherPortfolio": "WORSE",
+            "primaryPair": "WORSE",
+            "status": "NOT_SUPPORTED"
+          },
+          "C1_vs_C0": "WORSE"
+        },
+        "S": {
+          "C0": {
+            "contextPairOnOtherPortfolio": "TRADE_OFF",
+            "primaryPair": "TRADE_OFF",
+            "status": "PARETO_TRADE_OFF"
+          },
+          "C1": {
+            "contextPairOnOtherPortfolio": "WORSE",
+            "primaryPair": "WORSE",
+            "status": "NOT_SUPPORTED"
+          },
+          "C1_vs_C0": "WORSE"
+        }
+      },
+      "passive": {
+        "annualizedReturn": 0.202413366754,
+        "annualizedVolatility": 0.26269090796,
+        "cumulativeReturn": 4.932892814649,
+        "maxDrawdown": -0.406881823908,
+        "note": "adjusted-index return with partial distributions: neither a price return nor a complete shareholder total return; no entry cost is charged",
+        "returnBasis": "BENCHMARK_RELATIVE_ADJUSTED_INDEX_RETURN_PARTIAL_DISTRIBUTIONS"
+      },
+      "reason": "MARKET_LAYER_PARETO_TRADE_OFF",
+      "signalAvailability": {
+        "I+S": {
+          "availabilityShare": 0.955752212389,
+          "scheduledAnchors": 113,
+          "unavailableAnchors": 5,
+          "validDecisionAnchors": 108
+        },
+        "S": {
+          "availabilityShare": 0.973451327434,
+          "scheduledAnchors": 113,
+          "unavailableAnchors": 3,
+          "validDecisionAnchors": 110
+        }
+      },
+      "summaries": {
+        "A": {
+          "anchorRebalances": null,
+          "annualizedCostDrag": 0.009949088796,
+          "annualizedOneWayTurnover": 2.941952454812,
+          "averageCashShare": 0.0268273764,
+          "averageHoldings": 4.866976351351,
+          "cumulativeNetReturn": 0.722512644104,
+          "excessAnnualizedVsPassive": -0.144502358927,
+          "firstDate": "2017-01-16",
+          "lastDate": "2026-09-14",
+          "maxDrawdown": -0.586734669979,
+          "netAnnualizedReturn": 0.057911007827,
+          "noTradeSignalUnavailableAnchors": null,
+          "replacements": 136,
+          "sessions": 2368
+        },
+        "D": {
+          "anchorRebalances": null,
+          "annualizedCostDrag": 0.010905015356,
+          "annualizedOneWayTurnover": 5.752343922753,
+          "averageCashShare": 0.027461131888,
+          "averageHoldings": 4.866976351351,
+          "cumulativeNetReturn": 2.860249076712,
+          "excessAnnualizedVsPassive": -0.052327148224,
+          "firstDate": "2017-01-16",
+          "lastDate": "2026-09-14",
+          "maxDrawdown": -0.578619686133,
+          "netAnnualizedReturn": 0.15008621853,
+          "noTradeSignalUnavailableAnchors": null,
+          "replacements": 270,
+          "sessions": 2368
+        }
+      },
+      "underlying": "I+S"
+    },
+    "provenance": {
+      "artifactArchiveBytes": 73273,
+      "artifactArchiveDigest": "sha256:959069da0126b6aeb85f6819d488500016474d9fc7708ed6aa6604cff5397f0a",
+      "artifactId": 11406929754,
+      "artifactName": "kr-integrated-alpha-portfolio-v1-postoutcome-audit-37451761441",
+      "auditRefRequested": "11b0d67a22be8079ef6c33a6f6bdb94e7eaaca64",
+      "auditRefResolvedSha": "11b0d67a22be8079ef6c33a6f6bdb94e7eaaca64",
+      "conclusion": "success",
+      "event": "workflow_dispatch",
+      "fullAuditFile": "postoutcome-audit-full.json",
+      "fullAuditJsonBytes": 539839,
+      "fullAuditJsonSha256": "b316a6ef2ffbf77a0b4ce5646df5b7b6b0bfc079aa3a9e795727d0e7f7e39bbc",
+      "handoffDigestNote": "an earlier handoff message quoted a different SHA-256 for this file; that was a transcription error, and the run's own value above is authoritative",
+      "howTheFileWasReadHere": "the workflow printed the file (gzip + base64) to its job log; the authoring environment cannot download Actions artifacts (blob storage is unreachable), so the file was decoded from the log and its byte count and SHA-256 were recomputed and found equal to the values the run printed itself",
+      "status": "RECONSTRUCTION_REPRODUCES_THE_FORMAL_A_AND_D_PATHS",
+      "workflow": "KR integrated alpha portfolio v1 post-outcome audit",
+      "workflowDefinitionBranch": "main",
+      "workflowDefinitionSha": "288204683c3ab49d8789b647dadd69a02c0a90f5",
+      "workflowRunId": 37451761441
+    },
+    "reconstruction": {
+      "architectures": {
+        "A": {
+          "divergenceCount": 0,
+          "monthEndNavDates": 117,
+          "reproduced": true
+        },
+        "D": {
+          "divergenceCount": 0,
+          "monthEndNavDates": 117,
+          "reproduced": true
+        }
+      },
+      "attributionClosure": "security_contributions raised on any day whose residual cost differed from the engine's costFraction x pre-trade NAV, and on any whole-path identity miss at 1e-9; neither raised",
+      "metricsCompared": [
+        "cumulativeNetReturn",
+        "netAnnualizedReturn",
+        "excessAnnualizedVsPassive",
+        "cumulativeGrossReturn",
+        "maxDrawdown",
+        "annualizedOneWayTurnover",
+        "totalOneWayTurnover",
+        "totalCostFractionOfNav",
+        "annualizedCostDrag",
+        "replacements",
+        "averageHoldings",
+        "averageCashShare",
+        "annualizedVolatility",
+        "calendarYears",
+        "halves",
+        "firstDate",
+        "lastDate",
+        "sessions"
+      ],
+      "priorAuditFacts": {
+        "agrees": true,
+        "evidenceClass": "POST_OUTCOME_DIAGNOSTIC_RECONSTRUCTION",
+        "expectedAnchorsWithBothBooksAvailable": 108,
+        "expectedAnchorsWithIdenticalSelection": 0,
+        "expectedMeanDifferingNames": 3.2407,
+        "note": "facts quoted from the earlier read-only audit, compared here with the reconstruction rather than trusted",
+        "reconstructedAnchorsWithBothBooksAvailable": 108,
+        "reconstructedAnchorsWithIdenticalSelection": 0,
+        "reconstructedMeanDifferingNames": 3.240740740741
+      },
+      "sideEffectCounters": {
+        "cashSensitivityCalls": 0,
+        "decisionCalls": 0,
+        "featureBuilds": 1,
+        "markerWrites": 0,
+        "marketStateComputations": 0,
+        "marketValueReads": 0,
+        "metricCalls": 0,
+        "replayCalls": 0
+      },
+      "status": "RECONSTRUCTION_REPRODUCES_THE_FORMAL_A_AND_D_PATHS",
+      "tolerance": 1e-09
+    }
   },
   "concentrationProxy": {
     "checkpoints": [
@@ -1476,43 +5535,6 @@
     "universeShardsVerifiedAgainstPinnedGitBlobs": 14,
     "universeSnapshots": 164
   },
-  "notRunSections": {
-    "dExcludeSamsungHynixSensitivity": {
-      "howToRun": "dispatch .github/workflows/kr-integrated-alpha-portfolio-v1-postoutcome-audit.yml (workflow_dispatch, read-only, never touches a lock) which downloads the two exact artifacts, verifies their identities, reproduces the formal A and D paths and only then attributes them",
-      "reason": "needs the exact formal result artifact and/or the 336 MB raw-input snapshot, both stored on Azure blob storage that the authoring sandbox cannot reach (CONNECT 403); the KRX daily market-value files in that snapshot are not stored in git",
-      "status": "NOT_RUN_IN_THIS_ENVIRONMENT"
-    },
-    "dHoldingsAndIndustryAttribution": {
-      "howToRun": "dispatch .github/workflows/kr-integrated-alpha-portfolio-v1-postoutcome-audit.yml (workflow_dispatch, read-only, never touches a lock) which downloads the two exact artifacts, verifies their identities, reproduces the formal A and D paths and only then attributes them",
-      "reason": "needs the exact formal result artifact and/or the 336 MB raw-input snapshot, both stored on Azure blob storage that the authoring sandbox cannot reach (CONNECT 403); the KRX daily market-value files in that snapshot are not stored in git",
-      "status": "NOT_RUN_IN_THIS_ENVIRONMENT"
-    },
-    "dMinusAChronology": {
-      "howToRun": "dispatch .github/workflows/kr-integrated-alpha-portfolio-v1-postoutcome-audit.yml (workflow_dispatch, read-only, never touches a lock) which downloads the two exact artifacts, verifies their identities, reproduces the formal A and D paths and only then attributes them",
-      "reason": "needs the exact formal result artifact and/or the 336 MB raw-input snapshot, both stored on Azure blob storage that the authoring sandbox cannot reach (CONNECT 403); the KRX daily market-value files in that snapshot are not stored in git",
-      "status": "NOT_RUN_IN_THIS_ENVIRONMENT"
-    },
-    "dPathReconstruction": {
-      "howToRun": "dispatch .github/workflows/kr-integrated-alpha-portfolio-v1-postoutcome-audit.yml (workflow_dispatch, read-only, never touches a lock) which downloads the two exact artifacts, verifies their identities, reproduces the formal A and D paths and only then attributes them",
-      "reason": "needs the exact formal result artifact and/or the 336 MB raw-input snapshot, both stored on Azure blob storage that the authoring sandbox cannot reach (CONNECT 403); the KRX daily market-value files in that snapshot are not stored in git",
-      "status": "NOT_RUN_IN_THIS_ENVIRONMENT"
-    },
-    "formalResultExtraction": {
-      "howToRun": "dispatch .github/workflows/kr-integrated-alpha-portfolio-v1-postoutcome-audit.yml (workflow_dispatch, read-only, never touches a lock) which downloads the two exact artifacts, verifies their identities, reproduces the formal A and D paths and only then attributes them",
-      "reason": "needs the exact formal result artifact and/or the 336 MB raw-input snapshot, both stored on Azure blob storage that the authoring sandbox cannot reach (CONNECT 403); the KRX daily market-value files in that snapshot are not stored in git",
-      "status": "NOT_RUN_IN_THIS_ENVIRONMENT"
-    },
-    "namedSecurityExposureInD": {
-      "howToRun": "dispatch .github/workflows/kr-integrated-alpha-portfolio-v1-postoutcome-audit.yml (workflow_dispatch, read-only, never touches a lock) which downloads the two exact artifacts, verifies their identities, reproduces the formal A and D paths and only then attributes them",
-      "reason": "needs the exact formal result artifact and/or the 336 MB raw-input snapshot, both stored on Azure blob storage that the authoring sandbox cannot reach (CONNECT 403); the KRX daily market-value files in that snapshot are not stored in git",
-      "status": "NOT_RUN_IN_THIS_ENVIRONMENT"
-    },
-    "strategyPeriodDecomposition": {
-      "howToRun": "dispatch .github/workflows/kr-integrated-alpha-portfolio-v1-postoutcome-audit.yml (workflow_dispatch, read-only, never touches a lock) which downloads the two exact artifacts, verifies their identities, reproduces the formal A and D paths and only then attributes them",
-      "reason": "needs the exact formal result artifact and/or the 336 MB raw-input snapshot, both stored on Azure blob storage that the authoring sandbox cannot reach (CONNECT 403); the KRX daily market-value files in that snapshot are not stored in git",
-      "status": "NOT_RUN_IN_THIS_ENVIRONMENT"
-    }
-  },
   "priceIndexPeriods": {
     "calendarYears": {
       "2017": {
@@ -1670,64 +5692,64 @@
   },
   "questionMatrix": [
     {
-      "basis": "frozen benchmark series, fixed spans (reproduction of the benchmark path)",
+      "basis": "frozen benchmark series, fixed spans",
       "classification": "SUPPORTED_BY_AUDIT",
-      "evidence": "On the frozen benchmark the last two spans (2025 and 2026 to the cutoff) carry 70.2% of the window's log wealth; 2017-2024 alone annualizes 6.89% against 20.24% for the full window.",
-      "question": "Q1. Is the formal passive CAGR a normal long-run Korean equity return, or heavily elevated by the 2025-2026 endpoint regime?"
+      "evidence": "Frozen benchmark: +6.89% a year over 2017-01-16 → 2024, +98.72% in 2025 and +75.73% in 2026 to the cutoff; those last two spans carry 70.2% of the window's log wealth. The full-window +20.24% a year (+493.29%) is not a normal long-run KOSPI 200 return; it is a recent-regime figure. The years are kept and the benchmark is unchanged.",
+      "question": "Q1. Was the ~20.24% benchmark CAGR a broad decade-long phenomenon or driven by the recent regime?"
     },
     {
-      "basis": "internal consistency only; no official value retrieved",
+      "basis": "internal evidence only",
       "classification": "PARTIALLY_SUPPORTED",
-      "evidence": "Hash-verified, complete against the registered calendar, no duplicate or non-positive level, and it reproduces the quoted passive CAGR. But its excess over the committed price index is 4.53% a year over 2017-2024, against 1.85% for a same-data constituent total-return reference over the same span; the distribution events behind it are not stored, so the gap cannot be decomposed from the snapshot.",
-      "question": "Q2. Is the frozen KODEX 200 benchmark internally correct?"
+      "evidence": "Reproducible: hash-verified series, complete against the registered calendar, and the completed audit reproduced both A and D (which carry the benchmark path) at 1e-9 over 117 month-end NAVs; the formal passive path reads +20.24% a year / +493.29% / MDD -40.69%. Not consistent: its excess over the committed price index is +4.53% a year over 2017-2024 against +1.85% for the same-data constituent reference, and it accrues on 15 single days. Status `INTERNAL_CONSTRUCTION_ANOMALY_FOUND`; the cause is not determinable from stored data.",
+      "question": "Q2. Is the frozen benchmark internally reproducible and internally consistent?"
     },
     {
       "basis": "BENCHMARK_EXTERNAL_RECONCILIATION_UNRESOLVED",
       "classification": "UNRESOLVED_DATA_LIMITATION",
-      "evidence": "No official source was reachable. The frozen values to reconcile are recorded for five fixed checkpoints.",
-      "question": "Q3. Does it reconcile with authoritative external KODEX 200 evidence?"
+      "evidence": "No official source was reachable; no official number is quoted. The frozen values to reconcile are recorded for five fixed checkpoints.",
+      "question": "Q3. Is the frozen benchmark externally reconciled to an authoritative, definition-compatible KODEX 200 / KRX series?"
     },
     {
       "basis": "PROXY_NOT_OFFICIAL_WEIGHT",
       "classification": "PARTIALLY_SUPPORTED",
-      "evidence": "Inside the PIT Top120 their combined market-cap share has a median of 28.5%, a maximum of 57.2% (2026-07-01) and a latest value of 52.6% (2026-09-01). This is a proxy for, not a measurement of, the KODEX 200 weight.",
-      "question": "Q4. How much benchmark concentration is explained by Samsung Electronics and SK Hynix?"
+      "evidence": "Inside the PIT Top120 their combined market-cap share has a median of 28.5%, a maximum of 57.2% (2026-07-01) and 52.6% on 2026-09-01. A same-data market-cap proxy, not the KODEX 200 weight.",
+      "question": "Q4. How concentrated did Samsung Electronics + SK Hynix become?"
     },
     {
       "basis": "APPROXIMATE_WEIGHTED_CONTRIBUTION_USING_MONTHLY_WEIGHT_SNAPSHOTS",
       "classification": "PARTIALLY_SUPPORTED",
-      "evidence": "In the cap-weighted Top120 reference they contributed 65.4% of its combined 2025 and 2026-to-cutoff gain (APPROXIMATE_WEIGHTED_CONTRIBUTION_USING_MONTHLY_WEIGHT_SNAPSHOTS). Not exact for KODEX 200.",
-      "question": "Q5. How much of the benchmark's 2025-2026 return is attributable to them?"
+      "evidence": "In the cap-weighted Top120 reference they contributed 65.4% of the 2025 plus 2026-to-cutoff gain (monthly proxy weights). Not exact for KODEX 200.",
+      "question": "Q5. How much of the recent benchmark proxy gain did they explain?"
     },
     {
-      "basis": "NOT_RUN_IN_THIS_ENVIRONMENT",
-      "classification": "UNRESOLVED_DATA_LIMITATION",
-      "evidence": "Needs the formal result artifact and the raw snapshot; not run in this environment.",
-      "question": "Q6. How much of D's 2025-2026 performance comes from Samsung Electronics and SK Hynix directly?"
+      "basis": "reconstructed paths, reproduced at 1e-9",
+      "classification": "SUPPORTED_BY_AUDIT",
+      "evidence": "A (Stock only): 43 distinct names in 141 holding spells, 110 valid decisions; D (Industry + Stock): 80 names in 275 spells, 108 valid decisions. D's mean top-industry share of invested weight is 62.6% against 44.0% for A, and D held three or more names of one industry on 76.3% of held sessions (A 10.0%).",
+      "question": "Q6. What did A and D actually hold?"
     },
     {
-      "basis": "NOT_RUN_IN_THIS_ENVIRONMENT",
-      "classification": "UNRESOLVED_DATA_LIMITATION",
-      "evidence": "Needs the formal result artifact and the raw snapshot; not run in this environment.",
-      "question": "Q7. How much comes from the broader industry exposure selected by the Industry layer?"
+      "basis": "reconstructed attribution, descriptive",
+      "classification": "PARTIALLY_SUPPORTED",
+      "evidence": "Full window D +286.02% vs A +72.25%. By fixed span D − A in cumulative return is -4.77pp (2017-2024), +80.47pp (2025) and +71.27pp (2026): D trailed A before 2025 and led only after. The books differ on every one of the 108 shared anchors (identical selections 0, mean 3.2407 of 5 names differ) and the gap is largely carried by a few names in one industry, not by costs (D paid +0.205 more NAV units). The decomposition is direct; why the Industry layer chose those names is not tested.",
+      "question": "Q7. Why did D outperform A?"
     },
     {
-      "basis": "NOT_RUN_IN_THIS_ENVIRONMENT",
-      "classification": "UNRESOLVED_DATA_LIMITATION",
-      "evidence": "Needs the formal result artifact and the raw snapshot; not run in this environment.",
-      "question": "Q8. Did Industry help persistently over 2017-2024, or mostly in the recent industry-led regime?"
+      "basis": "reconstructed attribution, fixed spans",
+      "classification": "SUPPORTED_BY_AUDIT",
+      "evidence": "Concentrated. 98.2% of D's gross contribution (NAV units) falls in the 2025 and 2026 spans (A 99.8%); the top security is 29.1%, top two 47.0%, top five 87.1%; the top industry (ELECTRONICS_ELECTRICAL) is 59.5%. NAV-unit contributions weigh late periods more because NAV had compounded, so the percentage return by span (D -17.34% / +132.28% / +101.04%) is read beside them.",
+      "question": "Q8. Was D's performance broad through time, or concentrated in 2025-2026 and a few industries / names?"
     },
     {
-      "basis": "NOT_RUN_IN_THIS_ENVIRONMENT",
-      "classification": "UNRESOLVED_DATA_LIMITATION",
-      "evidence": "Needs the formal result artifact and the raw snapshot; not run in this environment.",
-      "question": "Q9. Does D_EXCLUDE_SAMSUNG_HYNIX materially change the descriptive result?"
+      "basis": "reconstructed D holdings",
+      "classification": "SUPPORTED_BY_AUDIT",
+      "evidence": "Directly little: the two names contributed +0.296 of +3.229 gross NAV units (9.2%); Samsung Electronics +0.531, SK Hynix -0.236 (a net detractor). Through their PIT industry a great deal: ELECTRONICS_ELECTRICAL contributed 59.5% of D's gross.",
+      "question": "Q9. How much of D's realised result came directly from Samsung Electronics / SK Hynix and their PIT industry?"
     },
     {
-      "basis": "BENCHMARK_EXTERNAL_RECONCILIATION_UNRESOLVED",
-      "classification": "UNRESOLVED_DATA_LIMITATION",
-      "evidence": "The internal cross-check flags an unexplained excess of the frozen benchmark over both the price index and a same-data reference. If it were an error it would overstate the passive path and therefore understate every architecture's excess; its size and direction cannot be settled without the official distribution history.",
-      "question": "Q10. Does any benchmark or data-integrity issue require distrusting the formal economic comparison?"
+      "basis": "single registered counterfactual",
+      "classification": "SUPPORTED_BY_AUDIT",
+      "evidence": "With the two securities unavailable, D reads +15.49% a year / +301.85% / MDD -58.02% against +15.01% / +286.02% / -57.86% for D: +15.82pp cumulative, turnover 5.85x vs 5.75x. POST_OUTCOME_DESCRIPTIVE_SENSITIVITY, NOT_CONFIRMATORY, NOT_ELIGIBLE_FOR_MODEL_SELECTION.",
+      "question": "Q10. What does the pre-registered D_EXCLUDE_SAMSUNG_HYNIX descriptive sensitivity show?"
     }
   ],
   "referencePortfolios": {
