@@ -1,0 +1,130 @@
+name: KR alpha discovery tournament v1 post-outcome integrity audit
+# POST_OUTCOME_FORENSIC_DIAGNOSTIC ONLY. The formal kr-alpha-discovery-tournament-v1 execution (run 37535814142, commit eac50fdf) is CONSUMED and
+# SEALED as BLOCKED_BY_DATA_INTEGRITY (pathsComplete=false). This workflow diagnoses WHY four registered paths were incomplete. It is a manual
+# workflow_dispatch and nothing else: no push, pull_request or schedule trigger. It never calls the formal `execute` mode, never creates, moves or
+# deletes an execution lock (read-only permissions: it could not), never writes a marker or a formal result and never commits. Its outputs are a
+# 90-day artifact and the audit file printed (gzip + base64) to the job log.
+# The workflow DEFINITION must live on the default branch for GitHub to list it; the audit IMPLEMENTATION is read from the explicit `audit_ref`
+# input (branch or full commit SHA). There is no default. The ref must contain the audit entry point, must descend from the formal execution commit,
+# and its frozen tournament files must be byte-identical to that commit's.
+# It downloads the EXACT preserved raw-input artifact, verifies the formal run, both artifacts and both lock refs read-only, replays the frozen
+# process read-only, and attributes the incomplete paths ONLY if the replay reproduces the sealed result (otherwise RECONSTRUCTION_MISMATCH).
+on:
+  workflow_dispatch:
+    inputs:
+      audit_ref:
+        description: 'Exact commit SHA (40 hex) or branch name holding the integrity-audit implementation'
+        required: true
+        type: string
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: kr-alpha-discovery-tournament-v1-postoutcome-integrity-audit
+  cancel-in-progress: false
+env:
+  OMP_NUM_THREADS: '1'
+  OPENBLAS_NUM_THREADS: '1'
+  MKL_NUM_THREADS: '1'
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
+    env:
+      AUDIT_REF: ${{ inputs.audit_ref }}
+      FORMAL_RUN_ID: '37535814142'
+      FORMAL_EXECUTION_SHA: eac50fdf725ac797e5c37044246e2a7ffa9b1e64
+      FORMAL_SPEC_SHA256: a8acb44c4b685e06ce7692e44461147110e2e2d32a119adef0dd216476f50e7f
+      RESULT_ARTIFACT_ID: '11449586098'
+      RESULT_ARTIFACT_NAME: kr-alpha-discovery-tournament-v1-results-37535814142
+      RESULT_ARTIFACT_DIGEST: sha256:2079eb4adff331be02126c163084b92737828eb6be9aa49ece832b23f749ae85
+      RAW_ARTIFACT_ID: '11157875265'
+      RAW_ARTIFACT_NAME: kr-model-raw-inputs-36844599518
+      RAW_ARTIFACT_DIGEST: sha256:42eeb18b7a5c88816629036f472a93057b6a9be4768ad47292ba0d2750b4cce7
+      RAW_RUN_ID: '36844599518'
+    steps:
+      - name: Refuse a malformed audit_ref before anything is checked out
+        run: |
+          set -euo pipefail
+          if [ -z "${AUDIT_REF}" ]; then echo "AUDIT_REF_REQUIRED"; exit 1; fi
+          if ! printf '%s' "${AUDIT_REF}" | grep -Eq '^([0-9a-f]{40}|[A-Za-z0-9][A-Za-z0-9._/-]{0,199})$' || printf '%s' "${AUDIT_REF}" | grep -Fq '..'; then
+            echo "AUDIT_REF_MALFORMED"; exit 1
+          fi
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ inputs.audit_ref }}
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Pin and display the resolved audit SHA; require the entry point and the formal execution commit as an ancestor
+        run: |
+          set -euo pipefail
+          resolved="$(git rev-parse HEAD)"
+          echo "AUDIT_REF_REQUESTED=${AUDIT_REF}"
+          echo "AUDIT_REF_RESOLVED_SHA=${resolved}"
+          { echo "### Integrity-audit target"; echo; echo "- requested audit_ref: \`${AUDIT_REF}\`"; echo "- resolved SHA: \`${resolved}\`"; } >> "$GITHUB_STEP_SUMMARY"
+          test -f scripts/run_kr_alpha_discovery_tournament_v1_postoutcome_integrity_audit.py || { echo "AUDIT_ENTRY_POINT_MISSING_AT_AUDIT_REF"; exit 1; }
+          git cat-file -e "${FORMAL_EXECUTION_SHA}^{commit}" || { echo "FORMAL_EXECUTION_COMMIT_NOT_IN_HISTORY"; exit 1; }
+          git merge-base --is-ancestor "${FORMAL_EXECUTION_SHA}" "${resolved}" || { echo "AUDIT_REF_DOES_NOT_DESCEND_FROM_THE_FORMAL_EXECUTION_COMMIT"; exit 1; }
+          frozen="$(git diff --name-only "${FORMAL_EXECUTION_SHA}" HEAD -- 'pipeline/kr_alpha_tournament.py' 'pipeline/kr_alpha_tournament_evaluation.py' \
+            'pipeline/kr_alpha_tournament_execution.py' 'pipeline/kr_alpha_tournament_features.py' 'pipeline/kr_alpha_tournament_models.py' \
+            'pipeline/kr_alpha_tournament_portfolio.py' 'pipeline/kr_alpha_tournament_receipts.py' 'pipeline/kr_alpha_tournament_seal.py' \
+            'pipeline/kr_alpha_tournament_study.py' 'pipeline/kr_alpha_tournament_walkforward.py' \
+            'research_specs/kr-alpha-discovery-tournament-v1.json' 'research_specs/kr-alpha-discovery-tournament-v1.sha256')"
+          if [ -n "${frozen}" ]; then echo "FROZEN_FILES_CHANGED_SINCE_THE_EXECUTION_COMMIT: ${frozen}"; exit 1; fi
+      - name: Verify the formal run, both artifacts and both lock refs through the Actions API (read-only)
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const e = process.env;
+            const run = await github.rest.actions.getWorkflowRun({...context.repo, run_id: Number(e.FORMAL_RUN_ID)});
+            if (run.data.head_sha !== e.FORMAL_EXECUTION_SHA) throw new Error('FORMAL_RUN_SHA_MISMATCH');
+            const jobs = await github.rest.actions.listJobsForWorkflowRun({...context.repo, run_id: Number(e.FORMAL_RUN_ID), per_page: 50});
+            const executeJob = jobs.data.jobs.find(j => j.name === 'execute');
+            if (!executeJob || executeJob.conclusion !== 'success') throw new Error('FORMAL_EXECUTE_JOB_NOT_SUCCESSFUL');
+            for (const [id, name, digest, runId] of [[e.RESULT_ARTIFACT_ID, e.RESULT_ARTIFACT_NAME, e.RESULT_ARTIFACT_DIGEST, e.FORMAL_RUN_ID], [e.RAW_ARTIFACT_ID, e.RAW_ARTIFACT_NAME, e.RAW_ARTIFACT_DIGEST, e.RAW_RUN_ID]]) {
+              const a = (await github.rest.actions.getArtifact({...context.repo, artifact_id: Number(id)})).data;
+              if (a.expired || a.name !== name || a.digest !== digest || String(a.workflow_run.id) !== String(runId)) throw new Error('ARTIFACT_IDENTITY_MISMATCH_' + id);
+            }
+            const refs = await github.paginate(github.rest.git.listMatchingRefs, {...context.repo, ref: 'tags/kr-alpha-discovery-tournament-v1-execution-lock'});
+            const want = ['refs/tags/kr-alpha-discovery-tournament-v1-execution-lock', 'refs/tags/kr-alpha-discovery-tournament-v1-execution-lock-' + e.FORMAL_SPEC_SHA256];
+            for (const w of want) {
+              const r = refs.find(x => x.ref === w);
+              if (!r || r.object.sha !== e.FORMAL_EXECUTION_SHA) throw new Error('LOCK_REF_MISSING_OR_MOVED_' + w);
+            }
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+          cache: pip
+      - run: pip install -r requirements.txt -r requirements-dev.txt
+      - name: Download the exact preserved raw snapshot
+        uses: actions/download-artifact@v5
+        with:
+          name: ${{ env.RAW_ARTIFACT_NAME }}
+          path: inputs
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run-id: ${{ env.RAW_RUN_ID }}
+      - name: Model-free scan and read-only reconstruction (reproduction gate before any attribution)
+        run: |
+          set -euo pipefail
+          python scripts/run_kr_alpha_discovery_tournament_v1_postoutcome_integrity_audit.py --mode scan --replay-root inputs --output audit/model-free-scan.json
+          python scripts/run_kr_alpha_discovery_tournament_v1_postoutcome_integrity_audit.py --mode full --inputs inputs --output audit/integrity-audit-full.json
+      - name: Print the audit files to the job log (gzip + base64) so they can be read without downloading the artifact
+        if: always()
+        run: |
+          for f in audit/model-free-scan.json audit/integrity-audit-full.json; do
+            if [ -f "$f" ]; then
+              echo "AUDIT_FILE=$f SHA256=$(sha256sum "$f" | cut -d' ' -f1) BYTES=$(wc -c < "$f")"
+              echo "AUDIT_BEGIN $f"
+              gzip -9n < "$f" | base64 -w 200 | sed 's/^/AJ /'
+              echo "AUDIT_END $f"
+            else
+              echo "AUDIT_FILE_NOT_WRITTEN $f"
+            fi
+          done
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: kr-alpha-discovery-tournament-v1-postoutcome-integrity-audit-${{ github.run_id }}
+          path: audit
+          retention-days: 90
+          if-no-files-found: warn
