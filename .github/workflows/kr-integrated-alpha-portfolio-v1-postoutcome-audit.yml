@@ -71,8 +71,8 @@ jobs:
             const run = await github.rest.actions.getWorkflowRun({...context.repo, run_id: Number(e.FORMAL_RUN_ID)});
             if (run.data.head_sha !== e.FORMAL_EXECUTION_SHA) throw new Error('FORMAL_RUN_SHA_MISMATCH');
             const jobs = await github.rest.actions.listJobsForWorkflowRun({...context.repo, run_id: Number(e.FORMAL_RUN_ID), per_page: 50});
-            const exec = jobs.data.jobs.find(j => j.name === 'execute');
-            if (!exec || exec.conclusion !== 'success') throw new Error('FORMAL_EXECUTE_JOB_NOT_SUCCESSFUL');
+            const executeJob = jobs.data.jobs.find(j => j.name === 'execute');
+            if (!executeJob || executeJob.conclusion !== 'success') throw new Error('FORMAL_EXECUTE_JOB_NOT_SUCCESSFUL');
             // 2. both artifacts, by id, name, digest and producing run
             for (const [id, name, digest, runId] of [[e.RESULT_ARTIFACT_ID, e.RESULT_ARTIFACT_NAME, e.RESULT_ARTIFACT_DIGEST, e.FORMAL_RUN_ID], [e.RAW_ARTIFACT_ID, e.RAW_ARTIFACT_NAME, e.RAW_ARTIFACT_DIGEST, e.RAW_RUN_ID]]) {
               const a = (await github.rest.actions.getArtifact({...context.repo, artifact_id: Number(id)})).data;
