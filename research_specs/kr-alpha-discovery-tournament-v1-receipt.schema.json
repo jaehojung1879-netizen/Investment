@@ -1,0 +1,164 @@
+{
+ "$id": "kr-alpha-discovery-tournament-v1-receipt",
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "additionalProperties": false,
+ "description": "One immutable receipt per future decision date, written before its outcome exists; receiptSha256 = SHA-256 of the canonical JSON of every other field. DESIGNED_NOT_RUNNING.",
+ "properties": {
+  "activePortfolio": {
+   "additionalProperties": {
+    "maximum": 1,
+    "minimum": 0,
+    "type": "number"
+   },
+   "type": "object"
+  },
+  "asOfTimestampUtc": {
+   "type": "string"
+  },
+  "candidateRegistryDigest": {
+   "pattern": "^[0-9a-f]{64}$",
+   "type": "string"
+  },
+  "codeSha": {
+   "pattern": "^[0-9a-f]{40}$",
+   "type": "string"
+  },
+  "costsAssumed": {
+   "type": "object"
+  },
+  "dataSnapshotIdentity": {
+   "type": "object"
+  },
+  "decisionDate": {
+   "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+   "type": "string"
+  },
+  "ensembleWeights": {
+   "additionalProperties": {
+    "maximum": 1,
+    "minimum": 0,
+    "type": "number"
+   },
+   "type": "object"
+  },
+  "evidenceClass": {
+   "const": "PROSPECTIVE_PAPER"
+  },
+  "passiveWeight": {
+   "maximum": 1,
+   "minimum": 0,
+   "type": "number"
+  },
+  "predictions": {
+   "items": {
+    "additionalProperties": false,
+    "properties": {
+     "contraction": {
+      "maximum": 1,
+      "minimum": 0,
+      "type": [
+       "number",
+       "null"
+      ]
+     },
+     "eligible": {
+      "type": "boolean"
+     },
+     "expectedIncrementalReturn": {
+      "type": [
+       "number",
+       "null"
+      ]
+     },
+     "memberScores": {
+      "additionalProperties": {
+       "type": [
+        "number",
+        "null"
+       ]
+      },
+      "type": "object"
+     },
+     "rank": {
+      "type": [
+       "number",
+       "null"
+      ]
+     },
+     "shrunkExpectedIncrementalReturn": {
+      "type": [
+       "number",
+       "null"
+      ]
+     },
+     "ticker": {
+      "type": "string"
+     },
+     "uncertaintyVariance": {
+      "type": [
+       "number",
+       "null"
+      ]
+     }
+    },
+    "required": [
+     "ticker",
+     "eligible",
+     "memberScores",
+     "rank",
+     "expectedIncrementalReturn",
+     "uncertaintyVariance",
+     "contraction",
+     "shrunkExpectedIncrementalReturn"
+    ],
+    "type": "object"
+   },
+   "type": "array"
+  },
+  "receiptSha256": {
+   "pattern": "^[0-9a-f]{64}$",
+   "type": "string"
+  },
+  "receiptVersion": {
+   "const": "kr-alpha-discovery-tournament-v1-receipt-1"
+  },
+  "selectedModels": {
+   "items": {
+    "type": "string"
+   },
+   "maxItems": 3,
+   "type": "array"
+  },
+  "specSha256": {
+   "pattern": "^[0-9a-f]{64}$",
+   "type": "string"
+  },
+  "studyId": {
+   "const": "kr-alpha-discovery-tournament-v1"
+  },
+  "trainingCutoff": {
+   "type": "string"
+  }
+ },
+ "required": [
+  "studyId",
+  "receiptVersion",
+  "asOfTimestampUtc",
+  "decisionDate",
+  "codeSha",
+  "specSha256",
+  "dataSnapshotIdentity",
+  "trainingCutoff",
+  "candidateRegistryDigest",
+  "selectedModels",
+  "ensembleWeights",
+  "predictions",
+  "passiveWeight",
+  "activePortfolio",
+  "costsAssumed",
+  "evidenceClass",
+  "receiptSha256"
+ ],
+ "title": "KR alpha discovery tournament v1 prospective receipt",
+ "type": "object"
+}

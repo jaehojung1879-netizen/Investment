@@ -1,0 +1,401 @@
+{
+  "calendarFoldPlan": {
+    "anchors": 113,
+    "folds": [
+      {
+        "anchors": 11,
+        "calendarTrainingDates": 133,
+        "cutoff": "2018-01-26",
+        "firstTrainingSignal": "2015-01-02",
+        "innerBlocks": [
+          {
+            "embargoThrough": "2016-03-10",
+            "innerTrainingDates": 40,
+            "purgeRule": "exit < 2016-04-11",
+            "status": "INSUFFICIENT",
+            "validFrom": "2016-04-08",
+            "validTo": "2016-09-09",
+            "validationDates": 23
+          },
+          {
+            "embargoThrough": "2016-08-12",
+            "innerTrainingDates": 63,
+            "purgeRule": "exit < 2016-09-19",
+            "status": "VALID",
+            "validFrom": "2016-09-13",
+            "validTo": "2017-02-10",
+            "validationDates": 22
+          },
+          {
+            "embargoThrough": "2017-01-17",
+            "innerTrainingDates": 85,
+            "purgeRule": "exit < 2017-02-20",
+            "status": "VALID",
+            "validFrom": "2017-02-17",
+            "validTo": "2017-07-14",
+            "validationDates": 22
+          }
+        ],
+        "lastTrainingSignal": "2017-07-14",
+        "year": 2018
+      },
+      {
+        "anchors": 12,
+        "calendarTrainingDates": 181,
+        "cutoff": "2019-01-04",
+        "firstTrainingSignal": "2015-01-02",
+        "innerBlocks": [
+          {
+            "embargoThrough": "2016-08-22",
+            "innerTrainingDates": 64,
+            "purgeRule": "exit < 2016-09-26",
+            "status": "VALID",
+            "validFrom": "2016-09-23",
+            "validTo": "2017-04-21",
+            "validationDates": 31
+          },
+          {
+            "embargoThrough": "2017-03-30",
+            "innerTrainingDates": 95,
+            "purgeRule": "exit < 2017-05-02",
+            "status": "VALID",
+            "validFrom": "2017-04-28",
+            "validTo": "2017-11-24",
+            "validationDates": 30
+          },
+          {
+            "embargoThrough": "2017-11-02",
+            "innerTrainingDates": 126,
+            "purgeRule": "exit < 2017-12-04",
+            "status": "VALID",
+            "validFrom": "2017-12-01",
+            "validTo": "2018-06-22",
+            "validationDates": 30
+          }
+        ],
+        "lastTrainingSignal": "2018-06-22",
+        "year": 2019
+      },
+      {
+        "anchors": 12,
+        "calendarTrainingDates": 235,
+        "cutoff": "2020-01-17",
+        "firstTrainingSignal": "2015-01-02",
+        "innerBlocks": [
+          {
+            "embargoThrough": "2017-03-02",
+            "innerTrainingDates": 91,
+            "purgeRule": "exit < 2017-04-03",
+            "status": "VALID",
+            "validFrom": "2017-03-31",
+            "validTo": "2018-01-05",
+            "validationDates": 40
+          },
+          {
+            "embargoThrough": "2017-12-11",
+            "innerTrainingDates": 131,
+            "purgeRule": "exit < 2018-01-15",
+            "status": "VALID",
+            "validFrom": "2018-01-12",
+            "validTo": "2018-10-05",
+            "validationDates": 39
+          },
+          {
+            "embargoThrough": "2018-09-06",
+            "innerTrainingDates": 169,
+            "purgeRule": "exit < 2018-10-15",
+            "status": "VALID",
+            "validFrom": "2018-10-12",
+            "validTo": "2019-07-05",
+            "validationDates": 39
+          }
+        ],
+        "lastTrainingSignal": "2019-07-05",
+        "year": 2020
+      },
+      {
+        "anchors": 12,
+        "calendarTrainingDates": 288,
+        "cutoff": "2021-01-22",
+        "firstTrainingSignal": "2015-01-02",
+        "innerBlocks": [
+          {
+            "embargoThrough": "2017-09-06",
+            "innerTrainingDates": 118,
+            "purgeRule": "exit < 2017-10-16",
+            "status": "VALID",
+            "validFrom": "2017-10-13",
+            "validTo": "2018-09-07",
+            "validationDates": 48
+          },
+          {
+            "embargoThrough": "2018-08-16",
+            "innerTrainingDates": 166,
+            "purgeRule": "exit < 2018-09-17",
+            "status": "VALID",
+            "validFrom": "2018-09-14",
+            "validTo": "2019-08-09",
+            "validationDates": 48
+          },
+          {
+            "embargoThrough": "2019-07-17",
+            "innerTrainingDates": 214,
+            "purgeRule": "exit < 2019-08-19",
+            "status": "VALID",
+            "validFrom": "2019-08-16",
+            "validTo": "2020-07-10",
+            "validationDates": 48
+          }
+        ],
+        "lastTrainingSignal": "2020-07-10",
+        "year": 2021
+      },
+      {
+        "anchors": 11,
+        "calendarTrainingDates": 342,
+        "cutoff": "2022-01-28",
+        "firstTrainingSignal": "2015-01-02",
+        "innerBlocks": [
+          {
+            "embargoThrough": "2018-03-22",
+            "innerTrainingDates": 145,
+            "purgeRule": "exit < 2018-04-23",
+            "status": "VALID",
+            "validFrom": "2018-04-20",
+            "validTo": "2019-05-17",
+            "validationDates": 57
+          },
+          {
+            "embargoThrough": "2019-04-23",
+            "innerTrainingDates": 201,
+            "purgeRule": "exit < 2019-05-27",
+            "status": "VALID",
+            "validFrom": "2019-05-24",
+            "validTo": "2020-06-19",
+            "validationDates": 57
+          },
+          {
+            "embargoThrough": "2020-05-28",
+            "innerTrainingDates": 258,
+            "purgeRule": "exit < 2020-06-29",
+            "status": "VALID",
+            "validFrom": "2020-06-26",
+            "validTo": "2021-07-23",
+            "validationDates": 57
+          }
+        ],
+        "lastTrainingSignal": "2021-07-23",
+        "year": 2022
+      },
+      {
+        "anchors": 12,
+        "calendarTrainingDates": 391,
+        "cutoff": "2023-01-06",
+        "firstTrainingSignal": "2015-01-02",
+        "innerBlocks": [
+          {
+            "embargoThrough": "2018-08-31",
+            "innerTrainingDates": 168,
+            "purgeRule": "exit < 2018-10-08",
+            "status": "VALID",
+            "validFrom": "2018-10-05",
+            "validTo": "2020-01-03",
+            "validationDates": 66
+          },
+          {
+            "embargoThrough": "2019-12-09",
+            "innerTrainingDates": 235,
+            "purgeRule": "exit < 2020-01-13",
+            "status": "VALID",
+            "validFrom": "2020-01-10",
+            "validTo": "2021-04-02",
+            "validationDates": 65
+          },
+          {
+            "embargoThrough": "2021-03-11",
+            "innerTrainingDates": 300,
+            "purgeRule": "exit < 2021-04-12",
+            "status": "VALID",
+            "validFrom": "2021-04-09",
+            "validTo": "2022-07-01",
+            "validationDates": 65
+          }
+        ],
+        "lastTrainingSignal": "2022-07-01",
+        "year": 2023
+      },
+      {
+        "anchors": 12,
+        "calendarTrainingDates": 443,
+        "cutoff": "2024-01-12",
+        "firstTrainingSignal": "2015-01-02",
+        "innerBlocks": [
+          {
+            "embargoThrough": "2019-03-07",
+            "innerTrainingDates": 194,
+            "purgeRule": "exit < 2019-04-08",
+            "status": "VALID",
+            "validFrom": "2019-04-05",
+            "validTo": "2020-08-28",
+            "validationDates": 74
+          },
+          {
+            "embargoThrough": "2020-08-05",
+            "innerTrainingDates": 269,
+            "purgeRule": "exit < 2020-09-07",
+            "status": "VALID",
+            "validFrom": "2020-09-04",
+            "validTo": "2022-01-28",
+            "validationDates": 74
+          },
+          {
+            "embargoThrough": "2022-01-03",
+            "innerTrainingDates": 342,
+            "purgeRule": "exit < 2022-02-07",
+            "status": "VALID",
+            "validFrom": "2022-02-04",
+            "validTo": "2023-06-30",
+            "validationDates": 74
+          }
+        ],
+        "lastTrainingSignal": "2023-06-30",
+        "year": 2024
+      },
+      {
+        "anchors": 11,
+        "calendarTrainingDates": 497,
+        "cutoff": "2025-01-31",
+        "firstTrainingSignal": "2015-01-02",
+        "innerBlocks": [
+          {
+            "embargoThrough": "2019-09-06",
+            "innerTrainingDates": 222,
+            "purgeRule": "exit < 2019-10-14",
+            "status": "VALID",
+            "validFrom": "2019-10-11",
+            "validTo": "2021-05-07",
+            "validationDates": 83
+          },
+          {
+            "embargoThrough": "2021-04-14",
+            "innerTrainingDates": 305,
+            "purgeRule": "exit < 2021-05-17",
+            "status": "VALID",
+            "validFrom": "2021-05-14",
+            "validTo": "2022-12-09",
+            "validationDates": 83
+          },
+          {
+            "embargoThrough": "2022-11-17",
+            "innerTrainingDates": 388,
+            "purgeRule": "exit < 2022-12-19",
+            "status": "VALID",
+            "validFrom": "2022-12-16",
+            "validTo": "2024-07-12",
+            "validationDates": 83
+          }
+        ],
+        "lastTrainingSignal": "2024-07-12",
+        "year": 2025
+      },
+      {
+        "anchors": 8,
+        "calendarTrainingDates": 547,
+        "cutoff": "2026-01-09",
+        "firstTrainingSignal": "2015-01-02",
+        "innerBlocks": [
+          {
+            "embargoThrough": "2020-03-05",
+            "innerTrainingDates": 247,
+            "purgeRule": "exit < 2020-04-06",
+            "status": "VALID",
+            "validFrom": "2020-04-03",
+            "validTo": "2021-12-30",
+            "validationDates": 92
+          },
+          {
+            "embargoThrough": "2021-12-08",
+            "innerTrainingDates": 339,
+            "purgeRule": "exit < 2022-01-10",
+            "status": "VALID",
+            "validFrom": "2022-01-07",
+            "validTo": "2023-09-27",
+            "validationDates": 91
+          },
+          {
+            "embargoThrough": "2023-09-01",
+            "innerTrainingDates": 429,
+            "purgeRule": "exit < 2023-10-10",
+            "status": "VALID",
+            "validFrom": "2023-10-06",
+            "validTo": "2025-06-27",
+            "validationDates": 91
+          }
+        ],
+        "lastTrainingSignal": "2025-06-27",
+        "year": 2026
+      }
+    ],
+    "outerAnchors": 101,
+    "weeklyDates": 610
+  },
+  "counters": {
+    "allocatorSolves": 0,
+    "featureBuilds": 0,
+    "labelBuilds": 0,
+    "ledgerReplays": 0,
+    "markerWrites": 0,
+    "metricCalls": 0,
+    "modelFits": 0,
+    "predictions": 0
+  },
+  "decision": "READY_FOR_ONE_HISTORICAL_DEVELOPMENT_EXECUTION_AFTER_MERGE",
+  "membershipDepth": {
+    "maxMembers": 120,
+    "minMembers": 120,
+    "source": "data/kr-industry-membership-foundation-v1/top120-inputs.json",
+    "weeklyDates": 610
+  },
+  "note": "dates, committed membership and an invented world only; no price after any signal date, no label, no real fit, no real portfolio",
+  "rawArtifactTouched": false,
+  "realOutcomesRead": false,
+  "reasons": [],
+  "specSha256": "ac0e13ddb7666a83299ba8ca8950b4e29d9569bd4c51ce21dc36b3c0f91d21f2",
+  "studyId": "kr-alpha-discovery-tournament-v1",
+  "synthetic": {
+    "deterministic": true,
+    "registry": "FULL",
+    "resultDigest": "15eef3387a27412a6007a2fdd9183159ed172d2005a825331f4fb608e6d08fc7",
+    "world": "INVENTED: no market data, no claim about any market"
+  },
+  "trialLedger": {
+    "configurationsPerFamily": {
+      "LATENT_FACTOR": 24,
+      "LEARNING_TO_RANK": 12,
+      "SHALLOW_TREE": 24,
+      "SHRUNK_LINEAR": 36,
+      "SPARSE_LINEAR": 24
+    },
+    "fittedConfigurations": 120,
+    "fittedModelFamilies": 5,
+    "fittedModelsAcrossOuterFolds": 4320,
+    "hyperparameterConfigurations": 11,
+    "hyperparameterConfigurationsPerFamily": {
+      "LATENT_FACTOR": 2,
+      "LEARNING_TO_RANK": 2,
+      "SHALLOW_TREE": 2,
+      "SHRUNK_LINEAR": 3,
+      "SPARSE_LINEAR": 2
+    },
+    "modelFamilies": 6,
+    "otherTrials": {
+      "baseline1Translator": 1,
+      "decisionFocusedChallenger": 1,
+      "ensembleRule": 1
+    },
+    "outerFolds": 9,
+    "recencySchemes": 3,
+    "targetArchitectures": 4,
+    "totalEffectiveTrials": 123
+  }
+}

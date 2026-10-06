@@ -1,0 +1,2134 @@
+{
+ "benchmark": "069500.KS",
+ "calibration": {
+  "cannotCreateAlpha": "|mu| is bounded by |min(0,a)| + b*/2 and b* <= b; a candidate with b <= 0 has no positive ordering credit",
+  "carry": "credited intercept = min(0, mean a_t): universe carry over the benchmark is never credited to the ranking; a lagging universe is charged",
+  "input": "s = within-date average-rank percentile of the candidate's raw prediction among scored names (native scales differ; a rank is common)",
+  "mapping": "mu(s) = min(0, a) + b* x (s - 0.5); slope uncertainty sd(s) = SE(b) x |s - 0.5|",
+  "noBuckets": "continuous in rank: no coarse bucket map recreates the alpha-reliability-v1 resolution problem",
+  "perDate": "OLS slope b_t and intercept a_t of the ECONOMIC label (stock minus 069500.KS, H126) on (s - 0.5); dates with >= 20 names",
+  "pooled": "b = mean b_t; SE(b) = Bartlett/Newey-West over the date series with lag ceil(126/5) = 26 weekly overlaps",
+  "shrinkage": "b* = b x max(0, 1 - SE(b)^2 / b^2) when b > 0 else 0 (positive-part James-Stein toward zero)"
+ },
+ "calibrationHacLag": 26,
+ "candidates": {
+  "excluded": {
+   "DEEP_NETWORK": "no effective sample; complexity for its own sake is excluded",
+   "DYNAMIC_MODEL_AVERAGING": "the annual outer re-selection already lets the process change family through history using past evidence only",
+   "FAMA_MACBETH_PER_DATE_AVERAGING": "equivalent in spirit to the date-balanced pooled ridge (each date carries equal total weight); a second linear family would spend trials on a near-duplicate",
+   "IPCA": "needs a balanced characteristic panel and alternating least squares with many latent dimensions; PLS1 on the same characteristics is the deterministic, auditable latent-factor challenger",
+   "LIGHTGBM_XGBOOST": "lightgbm is pinned but its thread-dependent histogram build adds a determinism risk HistGradientBoosting (one thread) avoids for no new idea",
+   "LISTWISE_RANKING": "pairwise covers relative-order learning with far fewer moving parts",
+   "QUANTILE_REGRESSION": "uncertainty comes from calibration error and model disagreement, both past-only; a quantile head would be another set of hyperparameters with no economic role in the allocator",
+   "ROBUST_HUBER_REGRESSION": "robust z clipping already bounds feature leverage; outcome outliers are handled by rank / event targets C and D",
+   "SHALLOW_NEURAL_NETWORK": "about 120 names x ~600 weekly dates of heavily overlapping H126 labels is ~600 x 120 / 26 effective cross-sections; too little effective sample for a network to earn its variance",
+   "UNCONSTRAINED_MEAN_VARIANCE": "raw noisy forecasts into an unconstrained optimizer manufacture weights; the allocator shrinks, caps and costs",
+   "VALIDATION_WEIGHTED_CONVEX_ENSEMBLE": "weights fitted on two or three inner folds are noise; equal weights over a diverse top-K are the frozen rule"
+  },
+  "families": {
+   "ENSEMBLE": {
+    "K": 3,
+    "design": "none",
+    "estimator": "equal-weight average of the calibrated expected incremental returns of the top-K validated candidates, at most one per family",
+    "grid": {},
+    "targets": []
+   },
+   "LATENT_FACTOR": {
+    "design": "linear",
+    "estimator": "weighted PLS1 (NIPALS, deterministic) on the linear design: characteristic-conditioned latent directions",
+    "grid": {
+     "n_components": [
+      2,
+      4
+     ]
+    },
+    "targets": [
+     "A_MAGNITUDE_VS_SAME_DATA_UNIVERSE",
+     "B_RESIDUAL_VS_LOO_INDUSTRY",
+     "C_CROSS_SECTIONAL_RANK",
+     "D_TOP_QUINTILE_EVENT"
+    ]
+   },
+   "LEARNING_TO_RANK": {
+    "design": "linear",
+    "estimator": "pairwise logistic ranker (RankNet-style, linear): within-date pairs from the top and bottom halves of the target, both orientations, sklearn LogisticRegression(fit_intercept=False, lbfgs, max_iter=1000)",
+    "grid": {
+     "C": [
+      0.1,
+      1.0
+     ]
+    },
+    "pairsPerDate": 50,
+    "targets": [
+     "C_CROSS_SECTIONAL_RANK",
+     "B_RESIDUAL_VS_LOO_INDUSTRY"
+    ]
+   },
+   "SHALLOW_TREE": {
+    "design": "tree",
+    "estimator": "sklearn HistGradientBoostingRegressor(learning_rate=0.05, max_iter=150, min_samples_leaf=200, l2_regularization=10, early_stopping=False, random_state=0), one thread",
+    "grid": {
+     "max_depth": [
+      2,
+      3
+     ]
+    },
+    "targets": [
+     "A_MAGNITUDE_VS_SAME_DATA_UNIVERSE",
+     "B_RESIDUAL_VS_LOO_INDUSTRY",
+     "C_CROSS_SECTIONAL_RANK",
+     "D_TOP_QUINTILE_EVENT"
+    ]
+   },
+   "SHRUNK_LINEAR": {
+    "design": "linear",
+    "estimator": "weighted ridge (closed form, training-only standardisation), date-balanced pooled cross-sectional regression",
+    "grid": {
+     "alphaPerUnitWeight": [
+      0.01,
+      0.1,
+      1.0
+     ]
+    },
+    "targets": [
+     "A_MAGNITUDE_VS_SAME_DATA_UNIVERSE",
+     "B_RESIDUAL_VS_LOO_INDUSTRY",
+     "C_CROSS_SECTIONAL_RANK",
+     "D_TOP_QUINTILE_EVENT"
+    ]
+   },
+   "SPARSE_LINEAR": {
+    "design": "linear",
+    "estimator": "sklearn ElasticNet(l1_ratio=0.5, selection='cyclic', max_iter=5000, tol=1e-4) on a training-standardised target",
+    "grid": {
+     "alpha": [
+      0.005,
+      0.02
+     ]
+    },
+    "targets": [
+     "A_MAGNITUDE_VS_SAME_DATA_UNIVERSE",
+     "B_RESIDUAL_VS_LOO_INDUSTRY",
+     "C_CROSS_SECTIONAL_RANK",
+     "D_TOP_QUINTILE_EVENT"
+    ]
+   }
+  },
+  "recency": {
+   "HALF_LIFE_2Y": 2.0,
+   "HALF_LIFE_5Y": 5.0,
+   "NO_DECAY": null
+  },
+  "registry": [
+   {
+    "family": "SHRUNK_LINEAR",
+    "id": "SHRUNK_LINEAR|A_MAGNITUDE_VS_SAME_DATA_UNIVERSE|NO_DECAY|alphaPerUnitWeight=0.01",
+    "params": {
+     "alphaPerUnitWeight": 0.01
+    },
+    "recency": "NO_DECAY",
+    "target": "A_MAGNITUDE_VS_SAME_DATA_UNIVERSE"
+   },
+   {
+    "family": "SHRUNK_LINEAR",
+    "id": "SHRUNK_LINEAR|A_MAGNITUDE_VS_SAME_DATA_UNIVERSE|NO_DECAY|alphaPerUnitWeight=0.1",
+    "params": {
+     "alphaPerUnitWeight": 0.1
+    },
+    "recency": "NO_DECAY",
+    "target": "A_MAGNITUDE_VS_SAME_DATA_UNIVERSE"
+   },
+   {
+    "family": "SHRUNK_LINEAR",
+    "id": "SHRUNK_LINEAR|A_MAGNITUDE_VS_SAME_DATA_UNIVERSE|NO_DECAY|alphaPerUnitWeight=1.0",
+    "params": {
+     "alphaPerUnitWeight": 1.0
+    },
+    "recency": "NO_DECAY",
+    "target": "A_MAGNITUDE_VS_SAME_DATA_UNIVERSE"
+   },
+   {
+    "family": "SHRUNK_LINEAR",
+    "id": "SHRUNK_LINEAR|A_MAGNITUDE_VS_SAME_DATA_UNIVERSE|HALF_LIFE_5Y|alphaPerUnitWeight=0.01",
+    "params": {
+     "alphaPerUnitWeight": 0.01
+    },
+    "recency": "HALF_LIFE_5Y",
+    "target": "A_MAGNITUDE_VS_SAME_DATA_UNIVERSE"
+   },
+   {
+    "family": "SHRUNK_LINEAR",
+    "id": "SHRUNK_LINEAR|A_MAGNITUDE_VS_SAME_DATA_UNIVERSE|HALF_LIFE_5Y|alphaPerUnitWeight=0.1",
+    "params": {
+     "alphaPerUnitWeight": 0.1
+    },
+    "recency": "HALF_LIFE_5Y",
+    "target": "A_MAGNITUDE_VS_SAME_DATA_UNIVERSE"
+   },
+   {
+    "family": "SHRUNK_LINEAR",
+    "id": "SHRUNK_LINEAR|A_MAGNITUDE_VS_SAME_DATA_UNIVERSE|HALF_LIFE_5Y|alphaPerUnitWeight=1.0",
+    "params": {
+     "alphaPerUnitWeight": 1.0
+    },
+    "recency": "HALF_LIFE_5Y",
+    "target": "A_MAGNITUDE_VS_SAME_DATA_UNIVERSE"
+   },
+   {
+    "family": "SHRUNK_LINEAR",
+    "id": "SHRUNK_LINEAR|A_MAGNITUDE_VS_SAME_DATA_UNIVERSE|HALF_LIFE_2Y|alphaPerUnitWeight=0.01",
+    "params": {
+     "alphaPerUnitWeight": 0.01
+    },
+    "recency": "HALF_LIFE_2Y",
+    "target": "A_MAGNITUDE_VS_SAME_DATA_UNIVERSE"
+   },
+   {
+    "family": "SHRUNK_LINEAR",
+    "id": "SHRUNK_LINEAR|A_MAGNITUDE_VS_SAME_DATA_UNIVERSE|HALF_LIFE_2Y|alphaPerUnitWeight=0.1",
+    "params": {
+     "alphaPerUnitWeight": 0.1
+    },
+    "recency": "HALF_LIFE_2Y",
+    "target": "A_MAGNITUDE_VS_SAME_DATA_UNIVERSE"
+   },
+   {
+    "family": "SHRUNK_LINEAR",
+    "id": "SHRUNK_LINEAR|A_MAGNITUDE_VS_SAME_DATA_UNIVERSE|HALF_LIFE_2Y|alphaPerUnitWeight=1.0",
+    "params": {
+     "alphaPerUnitWeight": 1.0
+    },
+    "recency": "HALF_LIFE_2Y",
+    "target": "A_MAGNITUDE_VS_SAME_DATA_UNIVERSE"
+   },
+   {
+    "family": "SHRUNK_LINEAR",
+    "id": "SHRUNK_LINEAR|B_RESIDUAL_VS_LOO_INDUSTRY|NO_DECAY|alphaPerUnitWeight=0.01",
+    "params": {
+     "alphaPerUnitWeight": 0.01
+    },
+    "recency": "NO_DECAY",
+    "target": "B_RESIDUAL_VS_LOO_INDUSTRY"
+   },
+   {
+    "family": "SHRUNK_LINEAR",
+    "id": "SHRUNK_LINEAR|B_RESIDUAL_VS_LOO_INDUSTRY|NO_DECAY|alphaPerUnitWeight=0.1",
+    "params": {
+     "alphaPerUnitWeight": 0.1
+    },
+    "recency": "NO_DECAY",
+    "target": "B_RESIDUAL_VS_LOO_INDUSTRY"
+   },
+   {
+    "family": "SHRUNK_LINEAR",
+    "id": "SHRUNK_LINEAR|B_RESIDUAL_VS_LOO_INDUSTRY|NO_DECAY|alphaPerUnitWeight=1.0",
+    "params": {
+     "alphaPerUnitWeight": 1.0
+    },
+    "recency": "NO_DECAY",
+    "target": "B_RESIDUAL_VS_LOO_INDUSTRY"
+   },
+   {
+    "family": "SHRUNK_LINEAR",
+    "id": "SHRUNK_LINEAR|B_RESIDUAL_VS_LOO_INDUSTRY|HALF_LIFE_5Y|alphaPerUnitWeight=0.01",
+    "params": {
+     "alphaPerUnitWeight": 0.01
+    },
+    "recency": "HALF_LIFE_5Y",
+    "target": "B_RESIDUAL_VS_LOO_INDUSTRY"
+   },
+   {
+    "family": "SHRUNK_LINEAR",
+    "id": "SHRUNK_LINEAR|B_RESIDUAL_VS_LOO_INDUSTRY|HALF_LIFE_5Y|alphaPerUnitWeight=0.1",
+    "params": {
+     "alphaPerUnitWeight": 0.1
+    },
+    "recency": "HALF_LIFE_5Y",
+    "target": "B_RESIDUAL_VS_LOO_INDUSTRY"
+   },
+   {
+    "family": "SHRUNK_LINEAR",
+    "id": "SHRUNK_LINEAR|B_RESIDUAL_VS_LOO_INDUSTRY|HALF_LIFE_5Y|alphaPerUnitWeight=1.0",
+    "params": {
+     "alphaPerUnitWeight": 1.0
+    },
+    "recency": "HALF_LIFE_5Y",
+    "target": "B_RESIDUAL_VS_LOO_INDUSTRY"
+   },
+   {
+    "family": "SHRUNK_LINEAR",
+    "id": "SHRUNK_LINEAR|B_RESIDUAL_VS_LOO_INDUSTRY|HALF_LIFE_2Y|alphaPerUnitWeight=0.01",
+    "params": {
+     "alphaPerUnitWeight": 0.01
+    },
+    "recency": "HALF_LIFE_2Y",
+    "target": "B_RESIDUAL_VS_LOO_INDUSTRY"
+   },
+   {
+    "family": "SHRUNK_LINEAR",
+    "id": "SHRUNK_LINEAR|B_RESIDUAL_VS_LOO_INDUSTRY|HALF_LIFE_2Y|alphaPerUnitWeight=0.1",
+    "params": {
+     "alphaPerUnitWeight": 0.1
+    },
+    "recency": "HALF_LIFE_2Y",
+    "target": "B_RESIDUAL_VS_LOO_INDUSTRY"
+   },
+   {
+    "family": "SHRUNK_LINEAR",
+    "id": "SHRUNK_LINEAR|B_RESIDUAL_VS_LOO_INDUSTRY|HALF_LIFE_2Y|alphaPerUnitWeight=1.0",
+    "params": {
+     "alphaPerUnitWeight": 1.0
+    },
+    "recency": "HALF_LIFE_2Y",
+    "target": "B_RESIDUAL_VS_LOO_INDUSTRY"
+   },
+   {
+    "family": "SHRUNK_LINEAR",
+    "id": "SHRUNK_LINEAR|C_CROSS_SECTIONAL_RANK|NO_DECAY|alphaPerUnitWeight=0.01",
+    "params": {
+     "alphaPerUnitWeight": 0.01
+    },
+    "recency": "NO_DECAY",
+    "target": "C_CROSS_SECTIONAL_RANK"
+   },
+   {
+    "family": "SHRUNK_LINEAR",
+    "id": "SHRUNK_LINEAR|C_CROSS_SECTIONAL_RANK|NO_DECAY|alphaPerUnitWeight=0.1",
+    "params": {
+     "alphaPerUnitWeight": 0.1
+    },
+    "recency": "NO_DECAY",
+    "target": "C_CROSS_SECTIONAL_RANK"
+   },
+   {
+    "family": "SHRUNK_LINEAR",
+    "id": "SHRUNK_LINEAR|C_CROSS_SECTIONAL_RANK|NO_DECAY|alphaPerUnitWeight=1.0",
+    "params": {
+     "alphaPerUnitWeight": 1.0
+    },
+    "recency": "NO_DECAY",
+    "target": "C_CROSS_SECTIONAL_RANK"
+   },
+   {
+    "family": "SHRUNK_LINEAR",
+    "id": "SHRUNK_LINEAR|C_CROSS_SECTIONAL_RANK|HALF_LIFE_5Y|alphaPerUnitWeight=0.01",
+    "params": {
+     "alphaPerUnitWeight": 0.01
+    },
+    "recency": "HALF_LIFE_5Y",
+    "target": "C_CROSS_SECTIONAL_RANK"
+   },
+   {
+    "family": "SHRUNK_LINEAR",
+    "id": "SHRUNK_LINEAR|C_CROSS_SECTIONAL_RANK|HALF_LIFE_5Y|alphaPerUnitWeight=0.1",
+    "params": {
+     "alphaPerUnitWeight": 0.1
+    },
+    "recency": "HALF_LIFE_5Y",
+    "target": "C_CROSS_SECTIONAL_RANK"
+   },
+   {
+    "family": "SHRUNK_LINEAR",
+    "id": "SHRUNK_LINEAR|C_CROSS_SECTIONAL_RANK|HALF_LIFE_5Y|alphaPerUnitWeight=1.0",
+    "params": {
+     "alphaPerUnitWeight": 1.0
+    },
+    "recency": "HALF_LIFE_5Y",
+    "target": "C_CROSS_SECTIONAL_RANK"
+   },
+   {
+    "family": "SHRUNK_LINEAR",
+    "id": "SHRUNK_LINEAR|C_CROSS_SECTIONAL_RANK|HALF_LIFE_2Y|alphaPerUnitWeight=0.01",
+    "params": {
+     "alphaPerUnitWeight": 0.01
+    },
+    "recency": "HALF_LIFE_2Y",
+    "target": "C_CROSS_SECTIONAL_RANK"
+   },
+   {
+    "family": "SHRUNK_LINEAR",
+    "id": "SHRUNK_LINEAR|C_CROSS_SECTIONAL_RANK|HALF_LIFE_2Y|alphaPerUnitWeight=0.1",
+    "params": {
+     "alphaPerUnitWeight": 0.1
+    },
+    "recency": "HALF_LIFE_2Y",
+    "target": "C_CROSS_SECTIONAL_RANK"
+   },
+   {
+    "family": "SHRUNK_LINEAR",
+    "id": "SHRUNK_LINEAR|C_CROSS_SECTIONAL_RANK|HALF_LIFE_2Y|alphaPerUnitWeight=1.0",
+    "params": {
+     "alphaPerUnitWeight": 1.0
+    },
+    "recency": "HALF_LIFE_2Y",
+    "target": "C_CROSS_SECTIONAL_RANK"
+   },
+   {
+    "family": "SHRUNK_LINEAR",
+    "id": "SHRUNK_LINEAR|D_TOP_QUINTILE_EVENT|NO_DECAY|alphaPerUnitWeight=0.01",
+    "params": {
+     "alphaPerUnitWeight": 0.01
+    },
+    "recency": "NO_DECAY",
+    "target": "D_TOP_QUINTILE_EVENT"
+   },
+   {
+    "family": "SHRUNK_LINEAR",
+    "id": "SHRUNK_LINEAR|D_TOP_QUINTILE_EVENT|NO_DECAY|alphaPerUnitWeight=0.1",
+    "params": {
+     "alphaPerUnitWeight": 0.1
+    },
+    "recency": "NO_DECAY",
+    "target": "D_TOP_QUINTILE_EVENT"
+   },
+   {
+    "family": "SHRUNK_LINEAR",
+    "id": "SHRUNK_LINEAR|D_TOP_QUINTILE_EVENT|NO_DECAY|alphaPerUnitWeight=1.0",
+    "params": {
+     "alphaPerUnitWeight": 1.0
+    },
+    "recency": "NO_DECAY",
+    "target": "D_TOP_QUINTILE_EVENT"
+   },
+   {
+    "family": "SHRUNK_LINEAR",
+    "id": "SHRUNK_LINEAR|D_TOP_QUINTILE_EVENT|HALF_LIFE_5Y|alphaPerUnitWeight=0.01",
+    "params": {
+     "alphaPerUnitWeight": 0.01
+    },
+    "recency": "HALF_LIFE_5Y",
+    "target": "D_TOP_QUINTILE_EVENT"
+   },
+   {
+    "family": "SHRUNK_LINEAR",
+    "id": "SHRUNK_LINEAR|D_TOP_QUINTILE_EVENT|HALF_LIFE_5Y|alphaPerUnitWeight=0.1",
+    "params": {
+     "alphaPerUnitWeight": 0.1
+    },
+    "recency": "HALF_LIFE_5Y",
+    "target": "D_TOP_QUINTILE_EVENT"
+   },
+   {
+    "family": "SHRUNK_LINEAR",
+    "id": "SHRUNK_LINEAR|D_TOP_QUINTILE_EVENT|HALF_LIFE_5Y|alphaPerUnitWeight=1.0",
+    "params": {
+     "alphaPerUnitWeight": 1.0
+    },
+    "recency": "HALF_LIFE_5Y",
+    "target": "D_TOP_QUINTILE_EVENT"
+   },
+   {
+    "family": "SHRUNK_LINEAR",
+    "id": "SHRUNK_LINEAR|D_TOP_QUINTILE_EVENT|HALF_LIFE_2Y|alphaPerUnitWeight=0.01",
+    "params": {
+     "alphaPerUnitWeight": 0.01
+    },
+    "recency": "HALF_LIFE_2Y",
+    "target": "D_TOP_QUINTILE_EVENT"
+   },
+   {
+    "family": "SHRUNK_LINEAR",
+    "id": "SHRUNK_LINEAR|D_TOP_QUINTILE_EVENT|HALF_LIFE_2Y|alphaPerUnitWeight=0.1",
+    "params": {
+     "alphaPerUnitWeight": 0.1
+    },
+    "recency": "HALF_LIFE_2Y",
+    "target": "D_TOP_QUINTILE_EVENT"
+   },
+   {
+    "family": "SHRUNK_LINEAR",
+    "id": "SHRUNK_LINEAR|D_TOP_QUINTILE_EVENT|HALF_LIFE_2Y|alphaPerUnitWeight=1.0",
+    "params": {
+     "alphaPerUnitWeight": 1.0
+    },
+    "recency": "HALF_LIFE_2Y",
+    "target": "D_TOP_QUINTILE_EVENT"
+   },
+   {
+    "family": "SPARSE_LINEAR",
+    "id": "SPARSE_LINEAR|A_MAGNITUDE_VS_SAME_DATA_UNIVERSE|NO_DECAY|alpha=0.005",
+    "params": {
+     "alpha": 0.005
+    },
+    "recency": "NO_DECAY",
+    "target": "A_MAGNITUDE_VS_SAME_DATA_UNIVERSE"
+   },
+   {
+    "family": "SPARSE_LINEAR",
+    "id": "SPARSE_LINEAR|A_MAGNITUDE_VS_SAME_DATA_UNIVERSE|NO_DECAY|alpha=0.02",
+    "params": {
+     "alpha": 0.02
+    },
+    "recency": "NO_DECAY",
+    "target": "A_MAGNITUDE_VS_SAME_DATA_UNIVERSE"
+   },
+   {
+    "family": "SPARSE_LINEAR",
+    "id": "SPARSE_LINEAR|A_MAGNITUDE_VS_SAME_DATA_UNIVERSE|HALF_LIFE_5Y|alpha=0.005",
+    "params": {
+     "alpha": 0.005
+    },
+    "recency": "HALF_LIFE_5Y",
+    "target": "A_MAGNITUDE_VS_SAME_DATA_UNIVERSE"
+   },
+   {
+    "family": "SPARSE_LINEAR",
+    "id": "SPARSE_LINEAR|A_MAGNITUDE_VS_SAME_DATA_UNIVERSE|HALF_LIFE_5Y|alpha=0.02",
+    "params": {
+     "alpha": 0.02
+    },
+    "recency": "HALF_LIFE_5Y",
+    "target": "A_MAGNITUDE_VS_SAME_DATA_UNIVERSE"
+   },
+   {
+    "family": "SPARSE_LINEAR",
+    "id": "SPARSE_LINEAR|A_MAGNITUDE_VS_SAME_DATA_UNIVERSE|HALF_LIFE_2Y|alpha=0.005",
+    "params": {
+     "alpha": 0.005
+    },
+    "recency": "HALF_LIFE_2Y",
+    "target": "A_MAGNITUDE_VS_SAME_DATA_UNIVERSE"
+   },
+   {
+    "family": "SPARSE_LINEAR",
+    "id": "SPARSE_LINEAR|A_MAGNITUDE_VS_SAME_DATA_UNIVERSE|HALF_LIFE_2Y|alpha=0.02",
+    "params": {
+     "alpha": 0.02
+    },
+    "recency": "HALF_LIFE_2Y",
+    "target": "A_MAGNITUDE_VS_SAME_DATA_UNIVERSE"
+   },
+   {
+    "family": "SPARSE_LINEAR",
+    "id": "SPARSE_LINEAR|B_RESIDUAL_VS_LOO_INDUSTRY|NO_DECAY|alpha=0.005",
+    "params": {
+     "alpha": 0.005
+    },
+    "recency": "NO_DECAY",
+    "target": "B_RESIDUAL_VS_LOO_INDUSTRY"
+   },
+   {
+    "family": "SPARSE_LINEAR",
+    "id": "SPARSE_LINEAR|B_RESIDUAL_VS_LOO_INDUSTRY|NO_DECAY|alpha=0.02",
+    "params": {
+     "alpha": 0.02
+    },
+    "recency": "NO_DECAY",
+    "target": "B_RESIDUAL_VS_LOO_INDUSTRY"
+   },
+   {
+    "family": "SPARSE_LINEAR",
+    "id": "SPARSE_LINEAR|B_RESIDUAL_VS_LOO_INDUSTRY|HALF_LIFE_5Y|alpha=0.005",
+    "params": {
+     "alpha": 0.005
+    },
+    "recency": "HALF_LIFE_5Y",
+    "target": "B_RESIDUAL_VS_LOO_INDUSTRY"
+   },
+   {
+    "family": "SPARSE_LINEAR",
+    "id": "SPARSE_LINEAR|B_RESIDUAL_VS_LOO_INDUSTRY|HALF_LIFE_5Y|alpha=0.02",
+    "params": {
+     "alpha": 0.02
+    },
+    "recency": "HALF_LIFE_5Y",
+    "target": "B_RESIDUAL_VS_LOO_INDUSTRY"
+   },
+   {
+    "family": "SPARSE_LINEAR",
+    "id": "SPARSE_LINEAR|B_RESIDUAL_VS_LOO_INDUSTRY|HALF_LIFE_2Y|alpha=0.005",
+    "params": {
+     "alpha": 0.005
+    },
+    "recency": "HALF_LIFE_2Y",
+    "target": "B_RESIDUAL_VS_LOO_INDUSTRY"
+   },
+   {
+    "family": "SPARSE_LINEAR",
+    "id": "SPARSE_LINEAR|B_RESIDUAL_VS_LOO_INDUSTRY|HALF_LIFE_2Y|alpha=0.02",
+    "params": {
+     "alpha": 0.02
+    },
+    "recency": "HALF_LIFE_2Y",
+    "target": "B_RESIDUAL_VS_LOO_INDUSTRY"
+   },
+   {
+    "family": "SPARSE_LINEAR",
+    "id": "SPARSE_LINEAR|C_CROSS_SECTIONAL_RANK|NO_DECAY|alpha=0.005",
+    "params": {
+     "alpha": 0.005
+    },
+    "recency": "NO_DECAY",
+    "target": "C_CROSS_SECTIONAL_RANK"
+   },
+   {
+    "family": "SPARSE_LINEAR",
+    "id": "SPARSE_LINEAR|C_CROSS_SECTIONAL_RANK|NO_DECAY|alpha=0.02",
+    "params": {
+     "alpha": 0.02
+    },
+    "recency": "NO_DECAY",
+    "target": "C_CROSS_SECTIONAL_RANK"
+   },
+   {
+    "family": "SPARSE_LINEAR",
+    "id": "SPARSE_LINEAR|C_CROSS_SECTIONAL_RANK|HALF_LIFE_5Y|alpha=0.005",
+    "params": {
+     "alpha": 0.005
+    },
+    "recency": "HALF_LIFE_5Y",
+    "target": "C_CROSS_SECTIONAL_RANK"
+   },
+   {
+    "family": "SPARSE_LINEAR",
+    "id": "SPARSE_LINEAR|C_CROSS_SECTIONAL_RANK|HALF_LIFE_5Y|alpha=0.02",
+    "params": {
+     "alpha": 0.02
+    },
+    "recency": "HALF_LIFE_5Y",
+    "target": "C_CROSS_SECTIONAL_RANK"
+   },
+   {
+    "family": "SPARSE_LINEAR",
+    "id": "SPARSE_LINEAR|C_CROSS_SECTIONAL_RANK|HALF_LIFE_2Y|alpha=0.005",
+    "params": {
+     "alpha": 0.005
+    },
+    "recency": "HALF_LIFE_2Y",
+    "target": "C_CROSS_SECTIONAL_RANK"
+   },
+   {
+    "family": "SPARSE_LINEAR",
+    "id": "SPARSE_LINEAR|C_CROSS_SECTIONAL_RANK|HALF_LIFE_2Y|alpha=0.02",
+    "params": {
+     "alpha": 0.02
+    },
+    "recency": "HALF_LIFE_2Y",
+    "target": "C_CROSS_SECTIONAL_RANK"
+   },
+   {
+    "family": "SPARSE_LINEAR",
+    "id": "SPARSE_LINEAR|D_TOP_QUINTILE_EVENT|NO_DECAY|alpha=0.005",
+    "params": {
+     "alpha": 0.005
+    },
+    "recency": "NO_DECAY",
+    "target": "D_TOP_QUINTILE_EVENT"
+   },
+   {
+    "family": "SPARSE_LINEAR",
+    "id": "SPARSE_LINEAR|D_TOP_QUINTILE_EVENT|NO_DECAY|alpha=0.02",
+    "params": {
+     "alpha": 0.02
+    },
+    "recency": "NO_DECAY",
+    "target": "D_TOP_QUINTILE_EVENT"
+   },
+   {
+    "family": "SPARSE_LINEAR",
+    "id": "SPARSE_LINEAR|D_TOP_QUINTILE_EVENT|HALF_LIFE_5Y|alpha=0.005",
+    "params": {
+     "alpha": 0.005
+    },
+    "recency": "HALF_LIFE_5Y",
+    "target": "D_TOP_QUINTILE_EVENT"
+   },
+   {
+    "family": "SPARSE_LINEAR",
+    "id": "SPARSE_LINEAR|D_TOP_QUINTILE_EVENT|HALF_LIFE_5Y|alpha=0.02",
+    "params": {
+     "alpha": 0.02
+    },
+    "recency": "HALF_LIFE_5Y",
+    "target": "D_TOP_QUINTILE_EVENT"
+   },
+   {
+    "family": "SPARSE_LINEAR",
+    "id": "SPARSE_LINEAR|D_TOP_QUINTILE_EVENT|HALF_LIFE_2Y|alpha=0.005",
+    "params": {
+     "alpha": 0.005
+    },
+    "recency": "HALF_LIFE_2Y",
+    "target": "D_TOP_QUINTILE_EVENT"
+   },
+   {
+    "family": "SPARSE_LINEAR",
+    "id": "SPARSE_LINEAR|D_TOP_QUINTILE_EVENT|HALF_LIFE_2Y|alpha=0.02",
+    "params": {
+     "alpha": 0.02
+    },
+    "recency": "HALF_LIFE_2Y",
+    "target": "D_TOP_QUINTILE_EVENT"
+   },
+   {
+    "family": "SHALLOW_TREE",
+    "id": "SHALLOW_TREE|A_MAGNITUDE_VS_SAME_DATA_UNIVERSE|NO_DECAY|max_depth=2",
+    "params": {
+     "max_depth": 2
+    },
+    "recency": "NO_DECAY",
+    "target": "A_MAGNITUDE_VS_SAME_DATA_UNIVERSE"
+   },
+   {
+    "family": "SHALLOW_TREE",
+    "id": "SHALLOW_TREE|A_MAGNITUDE_VS_SAME_DATA_UNIVERSE|NO_DECAY|max_depth=3",
+    "params": {
+     "max_depth": 3
+    },
+    "recency": "NO_DECAY",
+    "target": "A_MAGNITUDE_VS_SAME_DATA_UNIVERSE"
+   },
+   {
+    "family": "SHALLOW_TREE",
+    "id": "SHALLOW_TREE|A_MAGNITUDE_VS_SAME_DATA_UNIVERSE|HALF_LIFE_5Y|max_depth=2",
+    "params": {
+     "max_depth": 2
+    },
+    "recency": "HALF_LIFE_5Y",
+    "target": "A_MAGNITUDE_VS_SAME_DATA_UNIVERSE"
+   },
+   {
+    "family": "SHALLOW_TREE",
+    "id": "SHALLOW_TREE|A_MAGNITUDE_VS_SAME_DATA_UNIVERSE|HALF_LIFE_5Y|max_depth=3",
+    "params": {
+     "max_depth": 3
+    },
+    "recency": "HALF_LIFE_5Y",
+    "target": "A_MAGNITUDE_VS_SAME_DATA_UNIVERSE"
+   },
+   {
+    "family": "SHALLOW_TREE",
+    "id": "SHALLOW_TREE|A_MAGNITUDE_VS_SAME_DATA_UNIVERSE|HALF_LIFE_2Y|max_depth=2",
+    "params": {
+     "max_depth": 2
+    },
+    "recency": "HALF_LIFE_2Y",
+    "target": "A_MAGNITUDE_VS_SAME_DATA_UNIVERSE"
+   },
+   {
+    "family": "SHALLOW_TREE",
+    "id": "SHALLOW_TREE|A_MAGNITUDE_VS_SAME_DATA_UNIVERSE|HALF_LIFE_2Y|max_depth=3",
+    "params": {
+     "max_depth": 3
+    },
+    "recency": "HALF_LIFE_2Y",
+    "target": "A_MAGNITUDE_VS_SAME_DATA_UNIVERSE"
+   },
+   {
+    "family": "SHALLOW_TREE",
+    "id": "SHALLOW_TREE|B_RESIDUAL_VS_LOO_INDUSTRY|NO_DECAY|max_depth=2",
+    "params": {
+     "max_depth": 2
+    },
+    "recency": "NO_DECAY",
+    "target": "B_RESIDUAL_VS_LOO_INDUSTRY"
+   },
+   {
+    "family": "SHALLOW_TREE",
+    "id": "SHALLOW_TREE|B_RESIDUAL_VS_LOO_INDUSTRY|NO_DECAY|max_depth=3",
+    "params": {
+     "max_depth": 3
+    },
+    "recency": "NO_DECAY",
+    "target": "B_RESIDUAL_VS_LOO_INDUSTRY"
+   },
+   {
+    "family": "SHALLOW_TREE",
+    "id": "SHALLOW_TREE|B_RESIDUAL_VS_LOO_INDUSTRY|HALF_LIFE_5Y|max_depth=2",
+    "params": {
+     "max_depth": 2
+    },
+    "recency": "HALF_LIFE_5Y",
+    "target": "B_RESIDUAL_VS_LOO_INDUSTRY"
+   },
+   {
+    "family": "SHALLOW_TREE",
+    "id": "SHALLOW_TREE|B_RESIDUAL_VS_LOO_INDUSTRY|HALF_LIFE_5Y|max_depth=3",
+    "params": {
+     "max_depth": 3
+    },
+    "recency": "HALF_LIFE_5Y",
+    "target": "B_RESIDUAL_VS_LOO_INDUSTRY"
+   },
+   {
+    "family": "SHALLOW_TREE",
+    "id": "SHALLOW_TREE|B_RESIDUAL_VS_LOO_INDUSTRY|HALF_LIFE_2Y|max_depth=2",
+    "params": {
+     "max_depth": 2
+    },
+    "recency": "HALF_LIFE_2Y",
+    "target": "B_RESIDUAL_VS_LOO_INDUSTRY"
+   },
+   {
+    "family": "SHALLOW_TREE",
+    "id": "SHALLOW_TREE|B_RESIDUAL_VS_LOO_INDUSTRY|HALF_LIFE_2Y|max_depth=3",
+    "params": {
+     "max_depth": 3
+    },
+    "recency": "HALF_LIFE_2Y",
+    "target": "B_RESIDUAL_VS_LOO_INDUSTRY"
+   },
+   {
+    "family": "SHALLOW_TREE",
+    "id": "SHALLOW_TREE|C_CROSS_SECTIONAL_RANK|NO_DECAY|max_depth=2",
+    "params": {
+     "max_depth": 2
+    },
+    "recency": "NO_DECAY",
+    "target": "C_CROSS_SECTIONAL_RANK"
+   },
+   {
+    "family": "SHALLOW_TREE",
+    "id": "SHALLOW_TREE|C_CROSS_SECTIONAL_RANK|NO_DECAY|max_depth=3",
+    "params": {
+     "max_depth": 3
+    },
+    "recency": "NO_DECAY",
+    "target": "C_CROSS_SECTIONAL_RANK"
+   },
+   {
+    "family": "SHALLOW_TREE",
+    "id": "SHALLOW_TREE|C_CROSS_SECTIONAL_RANK|HALF_LIFE_5Y|max_depth=2",
+    "params": {
+     "max_depth": 2
+    },
+    "recency": "HALF_LIFE_5Y",
+    "target": "C_CROSS_SECTIONAL_RANK"
+   },
+   {
+    "family": "SHALLOW_TREE",
+    "id": "SHALLOW_TREE|C_CROSS_SECTIONAL_RANK|HALF_LIFE_5Y|max_depth=3",
+    "params": {
+     "max_depth": 3
+    },
+    "recency": "HALF_LIFE_5Y",
+    "target": "C_CROSS_SECTIONAL_RANK"
+   },
+   {
+    "family": "SHALLOW_TREE",
+    "id": "SHALLOW_TREE|C_CROSS_SECTIONAL_RANK|HALF_LIFE_2Y|max_depth=2",
+    "params": {
+     "max_depth": 2
+    },
+    "recency": "HALF_LIFE_2Y",
+    "target": "C_CROSS_SECTIONAL_RANK"
+   },
+   {
+    "family": "SHALLOW_TREE",
+    "id": "SHALLOW_TREE|C_CROSS_SECTIONAL_RANK|HALF_LIFE_2Y|max_depth=3",
+    "params": {
+     "max_depth": 3
+    },
+    "recency": "HALF_LIFE_2Y",
+    "target": "C_CROSS_SECTIONAL_RANK"
+   },
+   {
+    "family": "SHALLOW_TREE",
+    "id": "SHALLOW_TREE|D_TOP_QUINTILE_EVENT|NO_DECAY|max_depth=2",
+    "params": {
+     "max_depth": 2
+    },
+    "recency": "NO_DECAY",
+    "target": "D_TOP_QUINTILE_EVENT"
+   },
+   {
+    "family": "SHALLOW_TREE",
+    "id": "SHALLOW_TREE|D_TOP_QUINTILE_EVENT|NO_DECAY|max_depth=3",
+    "params": {
+     "max_depth": 3
+    },
+    "recency": "NO_DECAY",
+    "target": "D_TOP_QUINTILE_EVENT"
+   },
+   {
+    "family": "SHALLOW_TREE",
+    "id": "SHALLOW_TREE|D_TOP_QUINTILE_EVENT|HALF_LIFE_5Y|max_depth=2",
+    "params": {
+     "max_depth": 2
+    },
+    "recency": "HALF_LIFE_5Y",
+    "target": "D_TOP_QUINTILE_EVENT"
+   },
+   {
+    "family": "SHALLOW_TREE",
+    "id": "SHALLOW_TREE|D_TOP_QUINTILE_EVENT|HALF_LIFE_5Y|max_depth=3",
+    "params": {
+     "max_depth": 3
+    },
+    "recency": "HALF_LIFE_5Y",
+    "target": "D_TOP_QUINTILE_EVENT"
+   },
+   {
+    "family": "SHALLOW_TREE",
+    "id": "SHALLOW_TREE|D_TOP_QUINTILE_EVENT|HALF_LIFE_2Y|max_depth=2",
+    "params": {
+     "max_depth": 2
+    },
+    "recency": "HALF_LIFE_2Y",
+    "target": "D_TOP_QUINTILE_EVENT"
+   },
+   {
+    "family": "SHALLOW_TREE",
+    "id": "SHALLOW_TREE|D_TOP_QUINTILE_EVENT|HALF_LIFE_2Y|max_depth=3",
+    "params": {
+     "max_depth": 3
+    },
+    "recency": "HALF_LIFE_2Y",
+    "target": "D_TOP_QUINTILE_EVENT"
+   },
+   {
+    "family": "LEARNING_TO_RANK",
+    "id": "LEARNING_TO_RANK|C_CROSS_SECTIONAL_RANK|NO_DECAY|C=0.1",
+    "params": {
+     "C": 0.1
+    },
+    "recency": "NO_DECAY",
+    "target": "C_CROSS_SECTIONAL_RANK"
+   },
+   {
+    "family": "LEARNING_TO_RANK",
+    "id": "LEARNING_TO_RANK|C_CROSS_SECTIONAL_RANK|NO_DECAY|C=1.0",
+    "params": {
+     "C": 1.0
+    },
+    "recency": "NO_DECAY",
+    "target": "C_CROSS_SECTIONAL_RANK"
+   },
+   {
+    "family": "LEARNING_TO_RANK",
+    "id": "LEARNING_TO_RANK|C_CROSS_SECTIONAL_RANK|HALF_LIFE_5Y|C=0.1",
+    "params": {
+     "C": 0.1
+    },
+    "recency": "HALF_LIFE_5Y",
+    "target": "C_CROSS_SECTIONAL_RANK"
+   },
+   {
+    "family": "LEARNING_TO_RANK",
+    "id": "LEARNING_TO_RANK|C_CROSS_SECTIONAL_RANK|HALF_LIFE_5Y|C=1.0",
+    "params": {
+     "C": 1.0
+    },
+    "recency": "HALF_LIFE_5Y",
+    "target": "C_CROSS_SECTIONAL_RANK"
+   },
+   {
+    "family": "LEARNING_TO_RANK",
+    "id": "LEARNING_TO_RANK|C_CROSS_SECTIONAL_RANK|HALF_LIFE_2Y|C=0.1",
+    "params": {
+     "C": 0.1
+    },
+    "recency": "HALF_LIFE_2Y",
+    "target": "C_CROSS_SECTIONAL_RANK"
+   },
+   {
+    "family": "LEARNING_TO_RANK",
+    "id": "LEARNING_TO_RANK|C_CROSS_SECTIONAL_RANK|HALF_LIFE_2Y|C=1.0",
+    "params": {
+     "C": 1.0
+    },
+    "recency": "HALF_LIFE_2Y",
+    "target": "C_CROSS_SECTIONAL_RANK"
+   },
+   {
+    "family": "LEARNING_TO_RANK",
+    "id": "LEARNING_TO_RANK|B_RESIDUAL_VS_LOO_INDUSTRY|NO_DECAY|C=0.1",
+    "params": {
+     "C": 0.1
+    },
+    "recency": "NO_DECAY",
+    "target": "B_RESIDUAL_VS_LOO_INDUSTRY"
+   },
+   {
+    "family": "LEARNING_TO_RANK",
+    "id": "LEARNING_TO_RANK|B_RESIDUAL_VS_LOO_INDUSTRY|NO_DECAY|C=1.0",
+    "params": {
+     "C": 1.0
+    },
+    "recency": "NO_DECAY",
+    "target": "B_RESIDUAL_VS_LOO_INDUSTRY"
+   },
+   {
+    "family": "LEARNING_TO_RANK",
+    "id": "LEARNING_TO_RANK|B_RESIDUAL_VS_LOO_INDUSTRY|HALF_LIFE_5Y|C=0.1",
+    "params": {
+     "C": 0.1
+    },
+    "recency": "HALF_LIFE_5Y",
+    "target": "B_RESIDUAL_VS_LOO_INDUSTRY"
+   },
+   {
+    "family": "LEARNING_TO_RANK",
+    "id": "LEARNING_TO_RANK|B_RESIDUAL_VS_LOO_INDUSTRY|HALF_LIFE_5Y|C=1.0",
+    "params": {
+     "C": 1.0
+    },
+    "recency": "HALF_LIFE_5Y",
+    "target": "B_RESIDUAL_VS_LOO_INDUSTRY"
+   },
+   {
+    "family": "LEARNING_TO_RANK",
+    "id": "LEARNING_TO_RANK|B_RESIDUAL_VS_LOO_INDUSTRY|HALF_LIFE_2Y|C=0.1",
+    "params": {
+     "C": 0.1
+    },
+    "recency": "HALF_LIFE_2Y",
+    "target": "B_RESIDUAL_VS_LOO_INDUSTRY"
+   },
+   {
+    "family": "LEARNING_TO_RANK",
+    "id": "LEARNING_TO_RANK|B_RESIDUAL_VS_LOO_INDUSTRY|HALF_LIFE_2Y|C=1.0",
+    "params": {
+     "C": 1.0
+    },
+    "recency": "HALF_LIFE_2Y",
+    "target": "B_RESIDUAL_VS_LOO_INDUSTRY"
+   },
+   {
+    "family": "LATENT_FACTOR",
+    "id": "LATENT_FACTOR|A_MAGNITUDE_VS_SAME_DATA_UNIVERSE|NO_DECAY|n_components=2",
+    "params": {
+     "n_components": 2
+    },
+    "recency": "NO_DECAY",
+    "target": "A_MAGNITUDE_VS_SAME_DATA_UNIVERSE"
+   },
+   {
+    "family": "LATENT_FACTOR",
+    "id": "LATENT_FACTOR|A_MAGNITUDE_VS_SAME_DATA_UNIVERSE|NO_DECAY|n_components=4",
+    "params": {
+     "n_components": 4
+    },
+    "recency": "NO_DECAY",
+    "target": "A_MAGNITUDE_VS_SAME_DATA_UNIVERSE"
+   },
+   {
+    "family": "LATENT_FACTOR",
+    "id": "LATENT_FACTOR|A_MAGNITUDE_VS_SAME_DATA_UNIVERSE|HALF_LIFE_5Y|n_components=2",
+    "params": {
+     "n_components": 2
+    },
+    "recency": "HALF_LIFE_5Y",
+    "target": "A_MAGNITUDE_VS_SAME_DATA_UNIVERSE"
+   },
+   {
+    "family": "LATENT_FACTOR",
+    "id": "LATENT_FACTOR|A_MAGNITUDE_VS_SAME_DATA_UNIVERSE|HALF_LIFE_5Y|n_components=4",
+    "params": {
+     "n_components": 4
+    },
+    "recency": "HALF_LIFE_5Y",
+    "target": "A_MAGNITUDE_VS_SAME_DATA_UNIVERSE"
+   },
+   {
+    "family": "LATENT_FACTOR",
+    "id": "LATENT_FACTOR|A_MAGNITUDE_VS_SAME_DATA_UNIVERSE|HALF_LIFE_2Y|n_components=2",
+    "params": {
+     "n_components": 2
+    },
+    "recency": "HALF_LIFE_2Y",
+    "target": "A_MAGNITUDE_VS_SAME_DATA_UNIVERSE"
+   },
+   {
+    "family": "LATENT_FACTOR",
+    "id": "LATENT_FACTOR|A_MAGNITUDE_VS_SAME_DATA_UNIVERSE|HALF_LIFE_2Y|n_components=4",
+    "params": {
+     "n_components": 4
+    },
+    "recency": "HALF_LIFE_2Y",
+    "target": "A_MAGNITUDE_VS_SAME_DATA_UNIVERSE"
+   },
+   {
+    "family": "LATENT_FACTOR",
+    "id": "LATENT_FACTOR|B_RESIDUAL_VS_LOO_INDUSTRY|NO_DECAY|n_components=2",
+    "params": {
+     "n_components": 2
+    },
+    "recency": "NO_DECAY",
+    "target": "B_RESIDUAL_VS_LOO_INDUSTRY"
+   },
+   {
+    "family": "LATENT_FACTOR",
+    "id": "LATENT_FACTOR|B_RESIDUAL_VS_LOO_INDUSTRY|NO_DECAY|n_components=4",
+    "params": {
+     "n_components": 4
+    },
+    "recency": "NO_DECAY",
+    "target": "B_RESIDUAL_VS_LOO_INDUSTRY"
+   },
+   {
+    "family": "LATENT_FACTOR",
+    "id": "LATENT_FACTOR|B_RESIDUAL_VS_LOO_INDUSTRY|HALF_LIFE_5Y|n_components=2",
+    "params": {
+     "n_components": 2
+    },
+    "recency": "HALF_LIFE_5Y",
+    "target": "B_RESIDUAL_VS_LOO_INDUSTRY"
+   },
+   {
+    "family": "LATENT_FACTOR",
+    "id": "LATENT_FACTOR|B_RESIDUAL_VS_LOO_INDUSTRY|HALF_LIFE_5Y|n_components=4",
+    "params": {
+     "n_components": 4
+    },
+    "recency": "HALF_LIFE_5Y",
+    "target": "B_RESIDUAL_VS_LOO_INDUSTRY"
+   },
+   {
+    "family": "LATENT_FACTOR",
+    "id": "LATENT_FACTOR|B_RESIDUAL_VS_LOO_INDUSTRY|HALF_LIFE_2Y|n_components=2",
+    "params": {
+     "n_components": 2
+    },
+    "recency": "HALF_LIFE_2Y",
+    "target": "B_RESIDUAL_VS_LOO_INDUSTRY"
+   },
+   {
+    "family": "LATENT_FACTOR",
+    "id": "LATENT_FACTOR|B_RESIDUAL_VS_LOO_INDUSTRY|HALF_LIFE_2Y|n_components=4",
+    "params": {
+     "n_components": 4
+    },
+    "recency": "HALF_LIFE_2Y",
+    "target": "B_RESIDUAL_VS_LOO_INDUSTRY"
+   },
+   {
+    "family": "LATENT_FACTOR",
+    "id": "LATENT_FACTOR|C_CROSS_SECTIONAL_RANK|NO_DECAY|n_components=2",
+    "params": {
+     "n_components": 2
+    },
+    "recency": "NO_DECAY",
+    "target": "C_CROSS_SECTIONAL_RANK"
+   },
+   {
+    "family": "LATENT_FACTOR",
+    "id": "LATENT_FACTOR|C_CROSS_SECTIONAL_RANK|NO_DECAY|n_components=4",
+    "params": {
+     "n_components": 4
+    },
+    "recency": "NO_DECAY",
+    "target": "C_CROSS_SECTIONAL_RANK"
+   },
+   {
+    "family": "LATENT_FACTOR",
+    "id": "LATENT_FACTOR|C_CROSS_SECTIONAL_RANK|HALF_LIFE_5Y|n_components=2",
+    "params": {
+     "n_components": 2
+    },
+    "recency": "HALF_LIFE_5Y",
+    "target": "C_CROSS_SECTIONAL_RANK"
+   },
+   {
+    "family": "LATENT_FACTOR",
+    "id": "LATENT_FACTOR|C_CROSS_SECTIONAL_RANK|HALF_LIFE_5Y|n_components=4",
+    "params": {
+     "n_components": 4
+    },
+    "recency": "HALF_LIFE_5Y",
+    "target": "C_CROSS_SECTIONAL_RANK"
+   },
+   {
+    "family": "LATENT_FACTOR",
+    "id": "LATENT_FACTOR|C_CROSS_SECTIONAL_RANK|HALF_LIFE_2Y|n_components=2",
+    "params": {
+     "n_components": 2
+    },
+    "recency": "HALF_LIFE_2Y",
+    "target": "C_CROSS_SECTIONAL_RANK"
+   },
+   {
+    "family": "LATENT_FACTOR",
+    "id": "LATENT_FACTOR|C_CROSS_SECTIONAL_RANK|HALF_LIFE_2Y|n_components=4",
+    "params": {
+     "n_components": 4
+    },
+    "recency": "HALF_LIFE_2Y",
+    "target": "C_CROSS_SECTIONAL_RANK"
+   },
+   {
+    "family": "LATENT_FACTOR",
+    "id": "LATENT_FACTOR|D_TOP_QUINTILE_EVENT|NO_DECAY|n_components=2",
+    "params": {
+     "n_components": 2
+    },
+    "recency": "NO_DECAY",
+    "target": "D_TOP_QUINTILE_EVENT"
+   },
+   {
+    "family": "LATENT_FACTOR",
+    "id": "LATENT_FACTOR|D_TOP_QUINTILE_EVENT|NO_DECAY|n_components=4",
+    "params": {
+     "n_components": 4
+    },
+    "recency": "NO_DECAY",
+    "target": "D_TOP_QUINTILE_EVENT"
+   },
+   {
+    "family": "LATENT_FACTOR",
+    "id": "LATENT_FACTOR|D_TOP_QUINTILE_EVENT|HALF_LIFE_5Y|n_components=2",
+    "params": {
+     "n_components": 2
+    },
+    "recency": "HALF_LIFE_5Y",
+    "target": "D_TOP_QUINTILE_EVENT"
+   },
+   {
+    "family": "LATENT_FACTOR",
+    "id": "LATENT_FACTOR|D_TOP_QUINTILE_EVENT|HALF_LIFE_5Y|n_components=4",
+    "params": {
+     "n_components": 4
+    },
+    "recency": "HALF_LIFE_5Y",
+    "target": "D_TOP_QUINTILE_EVENT"
+   },
+   {
+    "family": "LATENT_FACTOR",
+    "id": "LATENT_FACTOR|D_TOP_QUINTILE_EVENT|HALF_LIFE_2Y|n_components=2",
+    "params": {
+     "n_components": 2
+    },
+    "recency": "HALF_LIFE_2Y",
+    "target": "D_TOP_QUINTILE_EVENT"
+   },
+   {
+    "family": "LATENT_FACTOR",
+    "id": "LATENT_FACTOR|D_TOP_QUINTILE_EVENT|HALF_LIFE_2Y|n_components=4",
+    "params": {
+     "n_components": 4
+    },
+    "recency": "HALF_LIFE_2Y",
+    "target": "D_TOP_QUINTILE_EVENT"
+   }
+  ]
+ },
+ "dependencyHashes": {
+  ".github/workflows/kr-alpha-discovery-tournament-v1.yml": "6628a74fe7140e99e5a92bd6a72add7623bd512876195bbb1f57ddad4004d430",
+  "data/kr-industry-membership-foundation-v1/top120-inputs.json": "d7c464973ad029bf08886c4bdf2517d1b3ece04cce87bcc63706f1230ed53cd0",
+  "docs/kr-alpha-discovery-tournament-v1-design.md": "0b820c59da2692f9ca079a1a0b0df8ab2b75475c4986665045ed296b2ee6031c",
+  "pipeline/__init__.py": "187da1ad9a148da44035f9cf25f7cb094c45afe53d3f445ba62392797972dede",
+  "pipeline/accounting_quality.py": "b65c54126ea45bc544d843d5f87b109e71ca7658a1d7a8f99cd435cdf9ea6ada",
+  "pipeline/alpha_inference_calibration_v1.py": "87a6990fd6fc5217824ee00205ee247abe88006a2445d41b5a6086709f551186",
+  "pipeline/alpha_inference_calibration_v3.py": "5afa9a03dbfb5343be522d282a1b2050cbbd01722dc7b8eae1e6e06b55c2bf13",
+  "pipeline/alpha_inference_calibration_v4.py": "024231e1adeeb4d29ea047d187eb7eb5478fd21c442991bd1c8963d6a38cd601",
+  "pipeline/alpha_inference_mc_decision.py": "6d131e20e2bcc212247a95fce2c5f733faa7f1624991b364d9fea96b4962f61e",
+  "pipeline/alpha_opportunity_features.py": "62bfd05894b0f448e2d588f9395fb616c9d114a74503c1f663e20a84dfe0976e",
+  "pipeline/alpha_opportunity_model.py": "998c0b50d713a5c89ce1850bbae1b112215507fe6a38d992d7f1de158476ce83",
+  "pipeline/alpha_opportunity_spec.py": "3d7150c2f62dbd8184ed2f3885828e93c1ba64d8ffe3695b0b5716641734c58e",
+  "pipeline/alpha_opportunity_v2_evaluation.py": "e6f8a6f299945da36b39767a2dc7c7748a9bfee497e27a0d0ec05738bf235c62",
+  "pipeline/alpha_opportunity_v3_spec.py": "1c11c306f9f27a8e69b985d02bfb3bffaf691001c27ac49e6b21266dd315c162",
+  "pipeline/alpha_opportunity_v4_eligibility.py": "8c20c70b35dba244f0341459ee295ca836e0ec6782f3e4989197bc2a220ba204",
+  "pipeline/alpha_opportunity_v4_execution.py": "f6d9dfd3be1558249bb69a29a903e791443d071793b2f591a2e900d492c954ba",
+  "pipeline/alpha_opportunity_v5_evidence.py": "305fc463129a50e6048152d99fec5f238bbd4f526818fc840b0c8e2af486425d",
+  "pipeline/dart_derive.py": "c18be6391fd8e04118a8e13cb62ace5a20e641f1d67e1c185652ed88572bd457",
+  "pipeline/dart_fundamentals.py": "5faad514e864d199a1eb9db41fbb182ab9b4a73a0e7179e7f56ac99b387e579b",
+  "pipeline/dart_ownership_events.py": "fdb4280a7bebdfb324f4ee87c9ad2ac22d640cc0dced10c7fc0f1bcd59c461d8",
+  "pipeline/entry.py": "d9c8e33686a55114bfabb6b11c634ff0198461859ecdaf10dffc7e3c49a191a2",
+  "pipeline/evidence.py": "31e8f67184073395d67f44a165d74f4ed368e468b790e695dbdcc698de7d9e88",
+  "pipeline/finnhub_derive.py": "2ceaf6a081a5fbbd893398a68e58006254da06492629d9e8824e0e835b848b56",
+  "pipeline/finnhub_fundamentals.py": "95b5090f1a306df5bc6231d952c42dfc85097a3a1f9f90a82bb4fa8af4f3a20d",
+  "pipeline/fundamental_acceleration.py": "4aeb649a2a046d9cf11432a7ac5a18a1b6ff993a48f2d7216e3280d446aa02cf",
+  "pipeline/historical_calibration.py": "2c825613bc1a543a225159e421aa15a176a222ce61cac12937de4e8c33db5e11",
+  "pipeline/historical_outcomes.py": "9db74870fe015f26ee5c4ac4709a420d33ef28e5feaab2c4caeedd7e85555569",
+  "pipeline/historical_replay.py": "80ace61f2df0d48ee98349bc998b77f58d8c62a4e8aa01da7b3cdacf158266e9",
+  "pipeline/historical_store.py": "2751be8b5b79260f2038c9fb975cae58d49cb7868751c6658e363b48712016c0",
+  "pipeline/industry_foundation.py": "795965170eef879e6e5dac6b7b5f7a32e7d898a2eb4e6eb30a1960e04d4af0d3",
+  "pipeline/kelly_portfolio.py": "6a4bd54be11e35e7348f64d0c99e7764635c4efcea62306da0b6ca81bfb3b06c",
+  "pipeline/kr_alpha_tournament.py": "8bc4d81b24fb231f551bf9fa74c595f6405ab6f1061466abaaed4e4a1b87517e",
+  "pipeline/kr_alpha_tournament_evaluation.py": "c8c73368102e224c87acce8f4a5a1f8327ff3c2757c28d875e5e88de15a30581",
+  "pipeline/kr_alpha_tournament_execution.py": "60d49690e1f95053da7aca5ea377b4c81e000b3e381ff1f32bc44586fd8c42f0",
+  "pipeline/kr_alpha_tournament_features.py": "6aa679bedb8b554b42c0613b3ee8a457c1b11f7fb045886cffba29bed740d2a2",
+  "pipeline/kr_alpha_tournament_models.py": "4f40e6b99a1e0b0745227d964d764440107d870bad4bcaea5fe8408a057784dc",
+  "pipeline/kr_alpha_tournament_portfolio.py": "599bc181f2bf12d37de011ab02bea5e834f323608247bb65d7b71e1fad206b2b",
+  "pipeline/kr_alpha_tournament_receipts.py": "b54ae664761267bde87ea88f8844e22097b03a9898d2719b8ba03444a9287637",
+  "pipeline/kr_alpha_tournament_seal.py": "49968473f487f64c4c941bb6ce1fc1eae456fa46273ae29e61fde70071add12b",
+  "pipeline/kr_alpha_tournament_study.py": "347d3460527b179e036e288f22818158d9c04d1e49fe38c0590585316243a247",
+  "pipeline/kr_alpha_tournament_walkforward.py": "7ab6a8d95ae76d35591c258d5e79d531b948d2710ba3e578f313bcf56185ef94",
+  "pipeline/kr_concentrated_portfolio.py": "5059260c02e55dfde5b38b644ef2a66d0ff793dd2fb2e17609331dbb08571b64",
+  "pipeline/kr_factor_anatomy.py": "56b2ad6660ae5b02fb9f646f78f4db1e7040caeb108fcf7f3b10e45354fe3a5a",
+  "pipeline/kr_factor_anatomy_execution.py": "f8aae109d75dca9521b356168f1a56712f092911f556495538c2e5ab6a7b95e8",
+  "pipeline/kr_factor_anatomy_report.py": "855124c2dedb71b4d813aa97acac3b1921c9d74f537bb2a515e0131146f8067d",
+  "pipeline/kr_industry_anatomy.py": "02d3cf8be9b415699099674bbad6c500b6ad5e8468376589dc4f328adeb59886",
+  "pipeline/kr_industry_anatomy_execution.py": "ece54c4020751df065c5391813724b315dc40db1a3d2a6508500165d0787cb1b",
+  "pipeline/kr_industry_membership.py": "ec84de6d94d0f6e0b537dacef4cd96467566515471631f6c5107c39df038433c",
+  "pipeline/kr_industry_membership_v3.py": "c857dcdd9323bc0fed69b2212b8dcc1fca7527c8fb1a0b32d588c8bbc5fa65f5",
+  "pipeline/kr_integrated_alpha_portfolio.py": "4a0a77b65edcec21a1658ea4c64c7ad1e9d5ef187a586397f1a61fae2a6c842f",
+  "pipeline/kr_integrated_alpha_portfolio_replay.py": "e621c95e53b76047587a23a12022763091fe9656326a9fcf08f771c119318ad2",
+  "pipeline/kr_market_risk_anatomy.py": "e97887dd5b0bbb15b37ed40473b1da8e40a8f3fea2125d9fb176fa94dac6e978",
+  "pipeline/kr_market_risk_model.py": "568ba9fe963881699e6abaa6d2d6c8a747583485e3436eda7620032facdca54a",
+  "pipeline/kr_market_risk_overlay.py": "983b3aab891a2af2f6d54b9b3d7ca29788651ba898b074da0506a40431ae4c07",
+  "pipeline/kr_market_value.py": "49306b8d14c4e8d681ae5846802c2ae82fa5727bb7a8adf356fa313217103c5e",
+  "pipeline/kr_model_overlay_portfolio.py": "b67495886aa63e10315d96ce8b30a023ee75adac6f5fec5a4fab7593b4f70343",
+  "pipeline/kr_model_portfolio_execution.py": "6128ba0af8bb517ac260a76a8b397e486a3225f206b706953dbf0390a5a7bb82",
+  "pipeline/kr_portfolio_diagnostics.py": "9f28a5ddf49a58c95db36d3a573b19e56fe7c86f98ad2ed01d96e8c09e6b5c34",
+  "pipeline/kr_repaired_accounting_snapshot.py": "b5b225e8a1d21b1516801c0ced1ef2164189867a457df1e0a51cd8ec95dd63ea",
+  "pipeline/kr_stock_within_industry_anatomy.py": "e264ae20b71f32a03eec01fec944aeeb8e5947e5effedd25457cb6309c1b117b",
+  "pipeline/kr_top120_regime_review.py": "43e4ab3438f1fb3765975866f1d948bbde4469dd59047d52049c9752d4f74a31",
+  "pipeline/kr_value_quality_catalyst.py": "1bfd62d1437dd9b574f1ab635836e7d7e69651dbbbaeedf29af84a90de17bb28",
+  "pipeline/krx_universe.py": "77008b8c0dcb9cd44b0b1182df94d2f0af62edb6f03b6a41082c04679101d6b8",
+  "pipeline/liquidity_attention.py": "208c989a70e2d276c040867496a127eda9ca82644012999a7253f7d47bb171a6",
+  "pipeline/longterm.py": "75702c4862545e0ceadbfc5db2585b89ffeadad21f43206b597e2982d171c5f6",
+  "pipeline/market_dates.py": "0182986bf731fd762a8004d5cf838ddfaaee656a2b19b8cfd6b47248c6281e4b",
+  "pipeline/pit_data.py": "64da89c602ac4b6c67411d0b5defa2909b65c1a7aad0958b32cb7f7dcd567dbf",
+  "pipeline/portfolio_validation.py": "a22c18fc31f47b1701ea4c426ff31dec48f3f367163bd1eb3e8cf75c1fadf2a5",
+  "pipeline/price_adjustment.py": "ebdde717be22277315186d5f302642cbc8a057fedee84192b7af14b15c405892",
+  "pipeline/probability_calibration.py": "7e06f855981c7c88dc8a595fd879d201892ca99bfbb4b1dcab1bebaf0e6f62f6",
+  "pipeline/provenance.py": "762a214d6d0a59cef35a1b4612b60e13e2f6197a0a289e97e2b1da1f496c8171",
+  "pipeline/regime.py": "b5634c109ac19ad6b0e13788f1ce9cde8f20f50019a82a8b4f65f9bc23200aca",
+  "pipeline/regional_alpha_features.py": "2fc5eb16d0438ca15763aeaf49e9226146a7ecf209680ae8f33fd42f57555132",
+  "pipeline/replay_calendar.py": "56116f837e8ae3b9ca43c27c87b3be8bcf608172a761879a6b1284a39c9a3ab2",
+  "pipeline/replay_determinism.py": "2233d8341d7be1b5123caecd3ebdb10aef67ecfac7b3c10c687795f66f397153",
+  "pipeline/replay_inputs.py": "dd77b249476b252ba585b1b836fd060a029b0c4d9c3b9a0847caf8be545a5a1d",
+  "pipeline/replay_valuation.py": "18e673a0721077af06b8ca9f774650c27fa58820a489b9ea639a9ccf02693bf3",
+  "pipeline/sectors.py": "1cb470d676eeb24d5fa4976bf8fc0f71f808957f132c908158acb6422fde60ba",
+  "pipeline/selection_null.py": "b00e7419a8a620e284f3b5a15aafa66e9a8f776b81da027a766a72b3eecf5e17",
+  "research_specs/kr-alpha-discovery-tournament-v1-receipt.schema.json": "6697912a58e7c0f8dedb141d6f1747d75a9b001be1a6e64f9025ca76851d0a10",
+  "scripts/run_kr_alpha_discovery_tournament_v1.py": "c0d718da85048061367169bd4012e597c8102aafcfd28c122017eb4bcfad8d97",
+  "scripts/seal_kr_alpha_discovery_tournament_v1.py": "a918e43e28ba42db28429aa39bdea308135a7d064de0add28747c94058eb4504"
+ },
+ "developmentCutoff": "2026-09-14",
+ "developmentStatement": "Every KR date through the development cutoff is outcome-exposed, and the factor, industry, stock-within-industry and integrated-portfolio studies (and the post-outcome audit) were read before this tournament was designed. Every historical number it produces is DEVELOPMENT evidence about a pre-registered model-selection PROCESS, never validation; only prospective receipts written before outcomes can confirm it.",
+ "duplicateResearchAudit": {
+  "closedPredecessors": {
+   "alpha-opportunity-model-v5": {
+    "decision": "no portfolio fields",
+    "status": "INCONCLUSIVE (KR H21, H126)"
+   },
+   "kr-integrated-alpha-portfolio-v1": {
+    "decision": "hand-weighted 50/50 scores, fixed top-5",
+    "status": "CONSUMED; INDUSTRY_LAYER_DEVELOPMENT_SUPPORTED; NO_UNAMBIGUOUS_FINAL_ARCHITECTURE"
+   },
+   "kr-model-overlay-portfolio-v1": {
+    "decision": "top-5 inverse-downside-vol book, fixed overlay",
+    "matrix": "11 sealed KR features (value/quality/catalyst/risk) + 4 fixed family interactions",
+    "models": "Ridge 10 + one HGB, no search",
+    "status": "DEVELOPMENT_REJECT",
+    "target": "stock minus 069500 at H126/H252"
+   },
+   "regional-alpha-model-v1": {
+    "decision": "IC / quintile classification; no portfolio",
+    "matrix": "31 features: price/trend/risk percentiles + fundamental LEVEL (roe, margins, D/E, growth) + four fundamental-acceleration deltas + KR market cap; valuation yields EXCLUDED; no sector/industry",
+    "models": "Ridge alpha=10, one HGBR",
+    "selection": "none (two fixed models)",
+    "status": "EXECUTED / NO_MODEL_EVIDENCE (KR and US) / HISTORICAL_DISCOVERY_CLOSED_ON_EXISTING_FEATURE_SET",
+    "target": "within-date percentile rank of 126D return minus benchmark"
+   }
+  },
+  "conclusion": "MATERIALLY_DIFFERENT_IN_REPRESENTATION_TARGET_SELECTION_AND_OBJECTIVE_NOT_IN_RAW_INFORMATION",
+  "materialDifferences": {
+   "informationRepresentation": "industry-state context (8 v4-membership features incl. leave-one-out industry momentum), within-industry percentiles, robust z beside percentiles (magnitude kept), magnitude-preserving liquidity shock, a past-only market state, and VALUATION YIELDS that regional-alpha-model-v1 excluded outright",
+   "modelSelectionArchitecture": "a nested, purged walk-forward tournament over 5 fitted families x 4 targets x 3 recency schemes with an inner economic selection rule and a diversity-constrained ensemble; no predecessor selected anything",
+   "objective": "net geometric wealth over a passive core via an uncertainty-shrunk fractional-Kelly allocator with dynamic breadth; predecessors used IC or a fixed top-5 book",
+   "targets": "four frozen target architectures including the leave-one-out industry residual (B) and the tail event (D); regional-alpha-model-v1 had one rank target"
+  },
+  "notDifferent": "NO genuinely new raw information source: investor flow, ownership, short selling and vintage-safe macro are not ready. Every raw input here was already measured by an anatomy or a model study. An INFORMATION_LIMITED verdict therefore closes model search on THIS information set rather than suggesting another algorithm."
+ },
+ "entryPoints": [
+  "pipeline/kr_alpha_tournament_execution.py",
+  "pipeline/kr_alpha_tournament_seal.py"
+ ],
+ "evaluation": {
+  "bootstrapBlockSessions": 126,
+  "bootstrapDraws": 2000,
+  "descriptive": [
+   "LEAVE_LARGEST_CONTRIBUTOR_OUT",
+   "PERIOD_SLICES",
+   "SECONDARY_H252_PREDICTION",
+   "OPTIMIZER_VALUE_VS_BASELINE_1",
+   "DECISION_FOCUSED_CHALLENGER",
+   "CLASSIFICATION_ACCURACY_DIAGNOSTIC_ONLY"
+  ],
+  "multiplicity": {
+   "assumptions": "DSR treats the block series as i.i.d. with skew/kurtosis; PBO assumes exchangeable groups; SPA uses a stationary bootstrap for the 126-session overlap. Overlapping daily series are never given naive p-values",
+   "bootstrap": "moving-block bootstrap (block 126 sessions, B = 2000, fixed seed) of the daily log-growth difference primary minus passive",
+   "cheapTranslator": "per configuration and outer anchor: equal-weight top-quintile of its predictions held 21 sessions, minus passive; gross; used ONLY to give PBO / DSR / SPA a configuration universe, never to select",
+   "deflatedSharpe": "Bailey & Lopez de Prado DSR of the primary's non-overlapping 21-session active log-return blocks; N = total effective trials; variance of trial Sharpes from every configuration's outer cheap-translator blocks",
+   "pbo": "CSCV probability of backtest overfitting over the configuration universe's outer cheap-translator block returns, S = 16 contiguous groups",
+   "spa": "Hansen SPA (consistent p-value) that no strategy in {primary, baseline 1, challenger, every configuration} beats passive; stationary bootstrap, mean block 6 blocks (126 / 21), B = 2000, fixed seed",
+   "trialLedger": "every family x hyperparameter x target x recency configuration (fitted in every outer fold), plus the ensemble rule, the decision-focused challenger and the two non-passive translators"
+  },
+  "noBespokeRescue": "no named-security exclusion (the Samsung / SK Hynix exclusion was already studied in the post-outcome audit)",
+  "outerIcHacLag": 6,
+  "pboGroups": 16,
+  "periodNote": "outer decisions start in 2018, so the 2017_2020 slice holds 2018-2020 sessions only (registered before outcomes)",
+  "periods": {
+   "2017_2020": [
+    "2017-01-01",
+    "2020-12-31"
+   ],
+   "2021_2024": [
+    "2021-01-01",
+    "2024-12-31"
+   ],
+   "2025": [
+    "2025-01-01",
+    "2025-12-31"
+   ],
+   "2026_TO_CUTOFF": [
+    "2026-01-01",
+    "2026-09-14"
+   ]
+  },
+  "seed": 20261006,
+  "spaMeanBlock": 6,
+  "stresses": {
+   "BASE": {
+    "advFractionMultiplier": 1.0,
+    "costMultiplier": 1.0,
+    "executionDelaySessions": 0
+   },
+   "COST_X2": {
+    "advFractionMultiplier": 1.0,
+    "costMultiplier": 2.0,
+    "executionDelaySessions": 0
+   },
+   "EXECUTION_DELAY_ONE_SESSION": {
+    "advFractionMultiplier": 1.0,
+    "costMultiplier": 1.0,
+    "executionDelaySessions": 1
+   },
+   "LIQUIDITY_HAIRCUT_HALF_ADV": {
+    "advFractionMultiplier": 0.5,
+    "costMultiplier": 1.0,
+    "executionDelaySessions": 0
+   }
+  }
+ },
+ "evaluationStart": "2017-01-01",
+ "featureStart": "2015-01-01",
+ "features": {
+  "industry": [
+   "REL_MOM_63",
+   "REL_MOM_126",
+   "BREADTH_ABOVE_MA_126",
+   "CONSTITUENT_DISPERSION_126",
+   "TOP1_CAP_SHARE",
+   "MEDIAN_LOG_ADV60",
+   "DOWNSIDE_VOL_126"
+  ],
+  "industryMinRanked": 5,
+  "interactions": [
+   [
+    "z_relative126",
+    "mkt_marketTrendAdverse"
+   ],
+   [
+    "z_negativeDownsideVol126",
+    "mkt_marketTrendAdverse"
+   ],
+   [
+    "z_bookToMarketProxy",
+    "ic_REL_MOM_126"
+   ],
+   [
+    "z_relative126",
+    "ic_REL_MOM_126"
+   ]
+  ],
+  "linearColumns": [
+   "z_bookToMarketProxy",
+   "pc_bookToMarketProxy",
+   "wc_bookToMarketProxy",
+   "m_bookToMarketProxy",
+   "z_earningsYieldProxy",
+   "pc_earningsYieldProxy",
+   "wc_earningsYieldProxy",
+   "m_earningsYieldProxy",
+   "z_ocfYieldProxy",
+   "pc_ocfYieldProxy",
+   "wc_ocfYieldProxy",
+   "m_ocfYieldProxy",
+   "z_netIncomeToAssets",
+   "pc_netIncomeToAssets",
+   "wc_netIncomeToAssets",
+   "m_netIncomeToAssets",
+   "z_ocfToAssets",
+   "pc_ocfToAssets",
+   "wc_ocfToAssets",
+   "m_ocfToAssets",
+   "z_negativeAccrualsToAssets",
+   "pc_negativeAccrualsToAssets",
+   "wc_negativeAccrualsToAssets",
+   "m_negativeAccrualsToAssets",
+   "z_relative126",
+   "pc_relative126",
+   "wc_relative126",
+   "m_relative126",
+   "z_momentum121",
+   "pc_momentum121",
+   "wc_momentum121",
+   "m_momentum121",
+   "z_ocfImprovementToAssets",
+   "pc_ocfImprovementToAssets",
+   "wc_ocfImprovementToAssets",
+   "m_ocfImprovementToAssets",
+   "z_negativeDownsideVol126",
+   "pc_negativeDownsideVol126",
+   "wc_negativeDownsideVol126",
+   "m_negativeDownsideVol126",
+   "z_logAdv60",
+   "pc_logAdv60",
+   "wc_logAdv60",
+   "m_logAdv60",
+   "z_ret21",
+   "pc_ret21",
+   "wc_ret21",
+   "m_ret21",
+   "z_ret63",
+   "pc_ret63",
+   "wc_ret63",
+   "m_ret63",
+   "z_dist252High",
+   "pc_dist252High",
+   "wc_dist252High",
+   "m_dist252High",
+   "z_ma200Distance",
+   "pc_ma200Distance",
+   "wc_ma200Distance",
+   "m_ma200Distance",
+   "z_vol63",
+   "pc_vol63",
+   "wc_vol63",
+   "m_vol63",
+   "z_beta252",
+   "pc_beta252",
+   "wc_beta252",
+   "m_beta252",
+   "z_maxDrawdown252",
+   "pc_maxDrawdown252",
+   "wc_maxDrawdown252",
+   "m_maxDrawdown252",
+   "z_logVolumeShock5_60",
+   "pc_logVolumeShock5_60",
+   "wc_logVolumeShock5_60",
+   "m_logVolumeShock5_60",
+   "z_logAmihud60",
+   "pc_logAmihud60",
+   "wc_logAmihud60",
+   "m_logAmihud60",
+   "z_logMarketCap",
+   "pc_logMarketCap",
+   "wc_logMarketCap",
+   "m_logMarketCap",
+   "z_stockMinusLooIndustry126",
+   "pc_stockMinusLooIndustry126",
+   "wc_stockMinusLooIndustry126",
+   "m_stockMinusLooIndustry126",
+   "ic_REL_MOM_63",
+   "im_REL_MOM_63",
+   "ic_REL_MOM_126",
+   "im_REL_MOM_126",
+   "ic_BREADTH_ABOVE_MA_126",
+   "im_BREADTH_ABOVE_MA_126",
+   "ic_CONSTITUENT_DISPERSION_126",
+   "im_CONSTITUENT_DISPERSION_126",
+   "ic_TOP1_CAP_SHARE",
+   "im_TOP1_CAP_SHARE",
+   "ic_MEDIAN_LOG_ADV60",
+   "im_MEDIAN_LOG_ADV60",
+   "ic_DOWNSIDE_VOL_126",
+   "im_DOWNSIDE_VOL_126",
+   "mkt_marketTrendAdverse",
+   "mkt_marketVol63",
+   "z_relative126*mkt_marketTrendAdverse",
+   "z_negativeDownsideVol126*mkt_marketTrendAdverse",
+   "z_bookToMarketProxy*ic_REL_MOM_126",
+   "z_relative126*ic_REL_MOM_126"
+  ],
+  "linearImputation": "centred representations (z, p-0.5, w-0.5, i-0.5) are 0 where missing, beside an explicit missingness indicator; labels are never imputed",
+  "market": [
+   "marketTrendAdverse",
+   "marketVol63"
+  ],
+  "rawMagnitudeRule": "raw cross-date levels are NOT a representation: they are non-stationary across a decade; magnitude within a date is carried by the robust z, which preserves relative distances that a percentile discards",
+  "representations": {
+   "i": "industry-state feature as the cross-industry percentile of the stock's industry (>= 5 ranked industries), mapped to members",
+   "m": "missingness indicator (1 when the raw signal-time value is not finite)",
+   "mkt": "date-level market state (trend-adverse flag, 63-session benchmark volatility); only trees and registered interactions can use it",
+   "p": "cross-sectional average-rank percentile in (0, 1) over the same signal date",
+   "w": "within-industry average-rank percentile (same date and industry, >= 5 finite peers; eligible v4 industries only)",
+   "z": "robust cross-sectional z: (x - median) / (1.4826 * MAD) over the same signal date, clipped to [-5, 5]; NaN with < 10 finite values or MAD = 0"
+  },
+  "robustZClip": 5.0,
+  "robustZMinFinite": 10,
+  "stock": [
+   "bookToMarketProxy",
+   "earningsYieldProxy",
+   "ocfYieldProxy",
+   "netIncomeToAssets",
+   "ocfToAssets",
+   "negativeAccrualsToAssets",
+   "relative126",
+   "momentum121",
+   "ocfImprovementToAssets",
+   "negativeDownsideVol126",
+   "logAdv60",
+   "ret21",
+   "ret63",
+   "dist252High",
+   "ma200Distance",
+   "vol63",
+   "beta252",
+   "maxDrawdown252",
+   "logVolumeShock5_60",
+   "logAmihud60",
+   "logMarketCap",
+   "stockMinusLooIndustry126"
+  ],
+  "treeColumns": [
+   "z_bookToMarketProxy",
+   "p_bookToMarketProxy",
+   "w_bookToMarketProxy",
+   "z_earningsYieldProxy",
+   "p_earningsYieldProxy",
+   "w_earningsYieldProxy",
+   "z_ocfYieldProxy",
+   "p_ocfYieldProxy",
+   "w_ocfYieldProxy",
+   "z_netIncomeToAssets",
+   "p_netIncomeToAssets",
+   "w_netIncomeToAssets",
+   "z_ocfToAssets",
+   "p_ocfToAssets",
+   "w_ocfToAssets",
+   "z_negativeAccrualsToAssets",
+   "p_negativeAccrualsToAssets",
+   "w_negativeAccrualsToAssets",
+   "z_relative126",
+   "p_relative126",
+   "w_relative126",
+   "z_momentum121",
+   "p_momentum121",
+   "w_momentum121",
+   "z_ocfImprovementToAssets",
+   "p_ocfImprovementToAssets",
+   "w_ocfImprovementToAssets",
+   "z_negativeDownsideVol126",
+   "p_negativeDownsideVol126",
+   "w_negativeDownsideVol126",
+   "z_logAdv60",
+   "p_logAdv60",
+   "w_logAdv60",
+   "z_ret21",
+   "p_ret21",
+   "w_ret21",
+   "z_ret63",
+   "p_ret63",
+   "w_ret63",
+   "z_dist252High",
+   "p_dist252High",
+   "w_dist252High",
+   "z_ma200Distance",
+   "p_ma200Distance",
+   "w_ma200Distance",
+   "z_vol63",
+   "p_vol63",
+   "w_vol63",
+   "z_beta252",
+   "p_beta252",
+   "w_beta252",
+   "z_maxDrawdown252",
+   "p_maxDrawdown252",
+   "w_maxDrawdown252",
+   "z_logVolumeShock5_60",
+   "p_logVolumeShock5_60",
+   "w_logVolumeShock5_60",
+   "z_logAmihud60",
+   "p_logAmihud60",
+   "w_logAmihud60",
+   "z_logMarketCap",
+   "p_logMarketCap",
+   "w_logMarketCap",
+   "z_stockMinusLooIndustry126",
+   "p_stockMinusLooIndustry126",
+   "w_stockMinusLooIndustry126",
+   "i_REL_MOM_63",
+   "i_REL_MOM_126",
+   "i_BREADTH_ABOVE_MA_126",
+   "i_CONSTITUENT_DISPERSION_126",
+   "i_TOP1_CAP_SHARE",
+   "i_MEDIAN_LOG_ADV60",
+   "i_DOWNSIDE_VOL_126",
+   "mkt_marketTrendAdverse",
+   "mkt_marketVol63"
+  ],
+  "treeImputation": "NaN passed through to the native missing-value branch of HistGradientBoosting",
+  "withinIndustryMinPeers": 5
+ },
+ "horizons": {
+  "innerBlock": 21,
+  "primary": 126,
+  "secondary": 252,
+  "secondaryRole": "descriptive evaluation of the same H126 process predictions; never trained on; cannot rescue"
+ },
+ "information": {
+  "classes": {
+   "A": "READY_AND_PIT_SAFE",
+   "B": "READY_BUT_REPRESENTATION_MUST_BE_DERIVED",
+   "C": "PARTIAL_HISTORY",
+   "D": "REVISED_HISTORY_NOT_PIT_SAFE",
+   "E": "COLLECTION_CODE_EXISTS_HISTORICAL_DATA_NOT_READY",
+   "F": "NOT_AVAILABLE"
+  },
+  "registry": {
+   "ANALYST_REVISIONS": {
+    "class": "F",
+    "reason": "no free PIT history in either region; FnGuide ToS-blocked"
+   },
+   "DART_OWNERSHIP_5PCT": {
+    "class": "C",
+    "reason": "BLOCKED_HISTORICAL_DEPTH: collected receipts span 2024-09-24..2026-09-23 only; prospective only"
+   },
+   "INDUSTRY_STATE": {
+    "class": "B",
+    "fields": [
+     "REL_MOM_63",
+     "REL_MOM_126",
+     "BREADTH_ABOVE_MA_126",
+     "CONSTITUENT_DISPERSION_126",
+     "TOP1_CAP_SHARE",
+     "MEDIAN_LOG_ADV60",
+     "DOWNSIDE_VOL_126",
+     "stockMinusLooIndustry126"
+    ],
+    "note": "membership is DATA_FOUNDATION_INSUFFICIENT_V4 (no-change reconstruction; 22 terminal names unclassified); used as context",
+    "source": "kr-industry-membership-foundation-v4 (14 groups, PIT reconstruction) x replay Close"
+   },
+   "KR_INVESTOR_FLOW": {
+    "class": "E",
+    "reason": "collector and probe exist; KRX portal answered LOGOUT/400 (BLOCKED_SOURCE); no historical ledger"
+   },
+   "KR_MACRO_ECOS": {
+    "class": "D",
+    "reason": "an ECOS adapter exists (pipeline/ecos_macro.py) but no pinned release-vintage series; revised history only"
+   },
+   "KR_SHORT_SELLING": {
+    "class": "E",
+    "reason": "collector exists; source access unresolved; three regulatory regimes (bans 2020-03..2021-05, 2023-11..2025-03)"
+   },
+   "LIQUIDITY_ATTENTION": {
+    "class": "B",
+    "fields": [
+     "logAdv60",
+     "logVolumeShock5_60",
+     "logAmihud60",
+     "logMarketCap"
+    ],
+    "note": "magnitude-preserving log shock, not a percentile only (alpha-information-inventory-v1 data map)",
+    "source": "KRX stk_bydd_trd tradingValue / volume / marketCap (preserved raw artifact)"
+   },
+   "MARKET_STATE_MACRO_FRED_VIX": {
+    "class": "D",
+    "reason": "FRED / VIX series carry a current/revised-history contract; 10 of 28 panel columns have no ALFRED vintages (macro vintage invariants); a revised value may not masquerade as PIT"
+   },
+   "MARKET_STATE_PRICE": {
+    "class": "A",
+    "fields": [
+     "marketTrendAdverse",
+     "marketVol63"
+    ],
+    "source": "069500.KS replay Close via the sealed kr_market_risk_overlay.state_at (past-only)"
+   },
+   "PIT_SECTOR_HISTORY_OFFICIAL": {
+    "class": "F",
+    "reason": "no dated official sector history; v4 reconstruction used as context only"
+   },
+   "PRICE_RISK": {
+    "class": "A",
+    "fields": [
+     "negativeDownsideVol126",
+     "vol63",
+     "beta252",
+     "maxDrawdown252"
+    ],
+    "source": "replay-v16 Close"
+   },
+   "PRICE_TREND": {
+    "class": "A",
+    "fields": [
+     "relative126",
+     "momentum121",
+     "ret21",
+     "ret63",
+     "dist252High",
+     "ma200Distance"
+    ],
+    "note": "trailing windows end at the signal close; entry is the NEXT session close",
+    "source": "replay-v16 Close (adjusted index, partial distributions) in the preserved raw artifact"
+   },
+   "QUALITY_ACCOUNTING": {
+    "class": "B",
+    "fields": [
+     "netIncomeToAssets",
+     "ocfToAssets",
+     "negativeAccrualsToAssets",
+     "ocfImprovementToAssets"
+    ],
+    "note": "receipt-date availability; KR fundamentals dark in 2015 and partial in 2016 (published, not imputed away)",
+    "source": "repaired PIT DART accounting snapshot"
+   },
+   "TERMINAL_CONSIDERATION": {
+    "class": "C",
+    "reason": "PARTIALLY_REPAIRED foundation; terminal economics unresolved for the 22 audited securities"
+   },
+   "TOTAL_SHAREHOLDER_RETURN": {
+    "class": "C",
+    "reason": "Yahoo distributions only where served; 22 delisted names have none; basis is partial"
+   },
+   "VALUATION": {
+    "class": "B",
+    "fields": [
+     "bookToMarketProxy",
+     "earningsYieldProxy",
+     "ocfYieldProxy"
+    ],
+    "note": "issue-cap proxies; regional-alpha-model-v1 EXCLUDED every valuation yield, so this family is new to a learned model here",
+    "source": "repaired PIT DART accounting snapshot x signal-date KRX market cap"
+   }
+  },
+  "usableClasses": [
+   "A",
+   "B"
+  ]
+ },
+ "input": {
+  "artifactArchiveSha256": "42eeb18b7a5c88816629036f472a93057b6a9be4768ad47292ba0d2750b4cce7",
+  "artifactId": 11157875265,
+  "artifactName": "kr-model-raw-inputs-36844599518",
+  "downloadRule": "execution downloads this exact artifact (name, run id, artifact id and archive digest checked through the Actions API) and verifies the input identity before any outcome is computed",
+  "identitySha256": "233df37ed205cc6b48828121e711417ccf961301dc58aa252430b343db9666a7",
+  "krxCacheSha256": "3419d9d201f942b3c89be146b8f696679c8105a5f00d8adb0dd2c5a655a80037",
+  "pinnedFrom": {
+   "overlaySpec": "research_specs/kr-model-overlay-portfolio-v1.json",
+   "regimeReviewInput": {
+    "artifactArchiveSha256": "42eeb18b7a5c88816629036f472a93057b6a9be4768ad47292ba0d2750b4cce7",
+    "artifactId": 11157875265,
+    "artifactName": "kr-model-raw-inputs-36844599518",
+    "downloadRule": "The execution workflow downloads this exact artifact (name, run id, artifact id and archive digest checked through the Actions API before download) and verifies the input identity before any outcome is computed.",
+    "identityDefinition": "pipeline.kr_model_portfolio_execution.input_identity(root)['sha256'] — NOT the snapshot manifest hash",
+    "identitySha256": "233df37ed205cc6b48828121e711417ccf961301dc58aa252430b343db9666a7",
+    "krxCacheNote": "Pinned provenance. The daily KRX market-value files are covered byte-for-byte by the input identity.",
+    "krxCacheSha256": "3419d9d201f942b3c89be146b8f696679c8105a5f00d8adb0dd2c5a655a80037",
+    "producingRunId": 36844599518,
+    "recollectKrx": false,
+    "replaceSnapshotSilently": false
+   }
+  },
+  "producingRunId": 36844599518,
+  "recollect": false
+ },
+ "lifecycle": {
+  "attemptArtifactPrefix": "kr-alpha-discovery-tournament-v1-attempt-",
+  "consumed": "a failure after the lock consumes the study permanently; it is never rerun",
+  "lockPrefix": "refs/tags/kr-alpha-discovery-tournament-v1-execution-lock",
+  "manifestPath": "docs/results/kr-alpha-discovery-tournament-v1-manifest.json",
+  "markerPath": "docs/results/kr-alpha-discovery-tournament-v1-execution-started.json",
+  "order": [
+   "workflow_dispatch on merged main only",
+   "committed spec and sidecar at HEAD, every pin intact",
+   "no committed result / marker / manifest, no lock ref under the prefix, no unexpired results artifact",
+   "exact preserved raw-input artifact (name, run, id, archive digest) downloaded and its identity verified",
+   "signal-time features and every label-free gate (a failure here spends nothing)",
+   "durable exclusive git-tag lock (atomic POST /git/refs; only POST and GET are ever issued)",
+   "execution marker (zero values read before it)",
+   "first label, then the tournament, the paths and the verdict",
+   "one results artifact, then the exact-byte Draft seal PR (stdlib only; never merges, never marks ready)"
+  ],
+  "readinessPath": "docs/results/kr-alpha-discovery-tournament-v1-readiness.json",
+  "resultPath": "docs/results/kr-alpha-discovery-tournament-v1-result.json",
+  "resultsArtifactPrefix": "kr-alpha-discovery-tournament-v1-results-",
+  "sealLesson": "scripts/seal_kr_integrated_alpha_portfolio_v1.py has no `if __name__ == '__main__': main()`, so every seal subcommand of run 37374530672 was a silent no-op and its commit step found no file; this study's seal script is exercised as a real subprocess by a test"
+ },
+ "membership": {
+  "coarseGroups": 14,
+  "crosswalkPath": "research_specs/kr-industry-membership-foundation-v4/crosswalk.json",
+  "files": {
+   "data/kr-industry-membership-foundation-v4/state/audit.json.gz": "4135846f16dcf59fe4ff89ab83b3b5aec288dea20fed36172b17abf768d44036",
+   "data/kr-industry-membership-foundation-v4/state/intervals.json.gz": "01a7958608939b73b85f7b96457e6b6420bec1aaa78417526b98dbea3321aae0",
+   "research_specs/kr-industry-membership-foundation-v4/crosswalk.json": "76166ad309d323240ffe749df74ac089f4693f30ef77231b8cd5ab85365826b5",
+   "research_specs/kr-industry-membership-foundation-v4/crosswalk.json.sha256": "c286ebc550a75b7a903f1db251d2687b2087c4c34fb3989c69400ab2ae7c3c20",
+   "research_specs/kr-industry-membership-foundation-v4/protocol.json": "955fb27793ce8016755b3d0c2e68ec292cad19c9ec84334a50c21d95f9b2d0ce",
+   "research_specs/kr-industry-membership-foundation-v4/protocol.json.sha256": "5821ded833822716bfcbdf9fca25252c6603fcae6443dd579ac970bec795e15f"
+  },
+  "limitation": "22 terminal common securities have no historical industry; most classified name-dates rest on a no-change reconstruction; not PIT exact",
+  "mappedRawLabels": 82,
+  "v4Decision": "DATA_FOUNDATION_INSUFFICIENT_V4",
+  "v4Facts": {
+   "classifiedNameDates": 69756,
+   "coarseIndustryCount": 14,
+   "conflictIntervals": {},
+   "everTop120Securities": 260,
+   "nameDates": 73200,
+   "rawIndustryCount": 78,
+   "signalDates": 610,
+   "terminal": {
+    "classified": 0,
+    "denominator": 2345
+   },
+   "unknownNameDates": 3444
+  }
+ },
+ "objective": "Maximize realistic long-run net geometric wealth growth from information this repository can actually know at each date, after costs, liquidity and estimation error, long-only and unlevered. 069500.KS (KODEX 200) is the passive opportunity cost and the default destination of capital: an active name must displace passive capital by clearing its cost and its uncertainty, and with no convincing active opportunity the book stays passive.",
+ "outcomeAccess": {
+  "afterLockOnly": [
+   "forward prices and labels",
+   "fits on real labels",
+   "valued portfolios",
+   "every metric"
+  ],
+  "beforeLock": [
+   "calendar",
+   "committed membership",
+   "signal-time features (past-only)",
+   "input identity"
+  ]
+ },
+ "phase": "PREREGISTRATION_HARNESS_SYNTHETIC_TESTS_ONLY_NO_HISTORICAL_OUTCOME_COMPUTED",
+ "portfolio": {
+  "allocator": {
+   "breadth": "the number of active names is whatever the objective chooses: no Top-N, no minimum, no fixed five",
+   "constraints": [
+    "w_i >= 0 (long-only)",
+    "w_i <= min(singleNameCap, maximumAdvFraction x ADV60 / referenceNav)",
+    "sum w <= 1 (passive = 1 - sum w)",
+    "no leverage, no short, no cash target"
+   ],
+   "covariance": "Ledoit-Wolf shrinkage (sklearn.covariance.LedoitWolf) of 252 trailing daily ACTIVE returns (stock - 069500.KS) ending at the signal date, scaled by 126; c_eb = sample covariance of each active return with the benchmark daily return, scaled by 126",
+   "eligibility": "finite mu_post, tradable at the execution close (positive volume), ADV60 >= minimumAdvKrw, 252 finite trailing daily returns",
+   "heldIneligible": "a held name without a current eligible forecast is targeted to 0 (sold) when executable; a non-executable order is deferred",
+   "kellyFraction": 0.5,
+   "objective": "maximise w'(mu_post - c_eb) - (1 / (2 lambda)) w' Sigma_e w - TC(w; w0) over active weights w >= 0",
+   "solver": "FISTA proximal gradient, step 1 / L with L = largest eigenvalue of Sigma_e / lambda, exact prox of the asymmetric cost + box with a bisected budget multiplier; 2000 iterations max, tolerance 1e-10; deterministic",
+   "transactionCosts": "linear: buying stock i from the passive leg costs buy + passive sell; selling it back costs sell + passive buy; the ledger additionally charges the inherited square-root impact"
+  },
+  "covarianceLookback": 252,
+  "decisionFocusedChallenger": {
+   "concentrationDiagnostic": "max active weight, active HHI and HHI x n per anchor are reported; the construction bounds any weight by 1/N_t",
+   "gamma": 0.001,
+   "policy": "parametric portfolio policy (Brandt / Santa-Clara / Valkanov style), long-only: active weight w_i = sigmoid(theta0 + z_i' theta) / N_t (so sum w <= 1), capped at the name cap; passive residual",
+   "sameAs": "same inputs (linear design), costs, constraints, outer walk-forward and evaluation as the primary",
+   "status": "QUARANTINED_CHALLENGER_CANNOT_CHANGE_THE_VERDICT",
+   "theta0Start": -2.0,
+   "training": "maximise mean over training rows' dates of log(1 + sum_i w_i (e_i - roundTripCost)) - gamma ||theta||^2 on the H126 economic label of the OUTER training set only (same exit-before-cutoff rule), L-BFGS from theta = 0, theta0 = -2"
+  },
+  "inherited": {
+   "advLookback": 60,
+   "buyFixedCost": 0.0015,
+   "impactAtOnePercent": 0.0005,
+   "maximumAdvFraction": 0.01,
+   "minimumAdvKrw": 3000000000.0,
+   "minimumDownsideVol": 0.01,
+   "referenceNavKrw": 100000000.0,
+   "sellFixedCost": 0.0045,
+   "singleNameCap": 0.3
+  },
+  "passiveLeg": {
+   "benchmarkCaveat": "the 069500.KS series carries an unexplained accrual vs the same-data constituent reference (+4.53%/yr vs +1.85%/yr over 2017-2024, INTERNAL_CONSTRUCTION_ANOMALY_FOUND); holding it as the passive core inflates the passive leg for EVERY path and therefore biases the active-vs-passive comparison AGAINST active capital; it is not repaired",
+   "costAssumption": "ASSUMPTION_NOT_MEASURED: the ETF leg pays the inherited stock BUY-side fixed cost (15 bp) on buys AND sells as a stand-in for commission and half-spread; no securities-transaction tax is applied to the ETF leg; no impact (KRW 100m reference NAV)",
+   "costEachWay": 0.0015,
+   "instrument": "069500.KS",
+   "mark": "replay Close of 069500.KS (the repository's accepted return basis)"
+  },
+  "translators": {
+   "BASELINE_0_PASSIVE": "100% 069500.KS from the first outer anchor, never traded",
+   "BASELINE_1_EQUAL_WEIGHT_SLEEVE": "the names whose mu_post exceeds their round-trip active cost (the primary's own admission rule, no new threshold), each at min(1/n, its cap), passive residual",
+   "PRIMARY_ROBUST_KELLY": "the allocator above"
+  }
+ },
+ "priors": {
+  "docs/alpha-opportunity-model-v5-final-postmortem.md": "6813ff8181f4039e060afe999c604e96ee3bd3dc413690f403e5e980aee27eca",
+  "docs/alpha-research-foundation-v2-errata.md": "74acd67d8db985474dfa2c7ae847ca0bc4f1382d3c6b174ea672be4dc8b0bbfe",
+  "docs/regional-alpha-model-v1.md": "eb282623773549a530e26f250480a1fd7322a04d02b9be4c14fad3b62c927a36",
+  "docs/results/kr-factor-anatomy-v1-result.json": "8518ec8cae95d0a23e964aab147e20659f17437fcd6fec6cb7f64cfa2b98a9e7",
+  "docs/results/kr-industry-opportunity-anatomy-v1-result.json": "71a960e3c19ce443d058508c4ec66576e3e5fcbd7a45dc851cf8b832bff62a08",
+  "docs/results/kr-integrated-alpha-portfolio-v1-postoutcome-completed-audit.json": "4349b4400946559190eec104bd4986a5a799c73925146937d92d471c37c7f5e4",
+  "docs/results/kr-model-overlay-portfolio-v1-result.json": "2c16e4e121abdd771c103eadce8707484b4092eb501188823aa1ac0726ec272a",
+  "docs/results/kr-stock-within-industry-anatomy-v1-result.json": "3862c390a52f6f19abaa7849e41620858cd154735136647ee36c958624c2739f",
+  "research_specs/kr-integrated-alpha-portfolio-v1.json": "33ee50b6029346f01d7734c0bf40e63ace73c86cbfef0608375393c51df93be5",
+  "research_specs/kr-model-overlay-portfolio-v1.json": "c1cbfd232fdcaa7fa584cd1762e9e28291b4382d37e6244f5ab1a18731fb2df2"
+ },
+ "prospective": {
+  "evidenceClass": "PROSPECTIVE_PAPER",
+  "fields": [
+   "studyId",
+   "receiptVersion",
+   "asOfTimestampUtc",
+   "decisionDate",
+   "codeSha",
+   "specSha256",
+   "dataSnapshotIdentity",
+   "trainingCutoff",
+   "candidateRegistryDigest",
+   "selectedModels",
+   "ensembleWeights",
+   "predictions",
+   "passiveWeight",
+   "activePortfolio",
+   "costsAssumed",
+   "evidenceClass",
+   "receiptSha256"
+  ],
+  "module": "pipeline/kr_alpha_tournament_receipts.py",
+  "receiptSchemaPath": "research_specs/kr-alpha-discovery-tournament-v1-receipt.schema.json",
+  "rules": [
+   "one receipt per future decision date, appended before the execution-session close; no future outcome exists at creation",
+   "every eligible security carries its member scores, rank, calibrated expected incremental return, uncertainty and shrunk forecast",
+   "the active portfolio and the passive weight are derived from the frozen allocator, never typed in by hand",
+   "receiptSha256 is the SHA-256 of the canonical JSON of every other field; a reader recomputes it",
+   "append-only JSON Lines; a duplicate decision date, an out-of-order date, a changed spec or an altered earlier row refuses the append",
+   "a receipt is evaluated only after its H126 horizon has matured; no receipt is rewritten",
+   "historical development results and prospective receipts are separate evidence classes and are never pooled"
+  ],
+  "status": "DESIGNED_NOT_RUNNING: no receipt is written and no schedule exists in this change"
+ },
+ "receiptSchemaSha256": "6697912a58e7c0f8dedb141d6f1747d75a9b001be1a6e64f9025ca76851d0a10",
+ "returnBasis": "BENCHMARK_RELATIVE_ADJUSTED_INDEX_RETURN_PARTIAL_DISTRIBUTIONS",
+ "scientificStatus": "EXPLORATORY_DEVELOPMENT_ON_OUTCOME_EXPOSED_KR_HISTORY",
+ "sealedDataInputs": [
+  ".github/workflows/kr-alpha-discovery-tournament-v1.yml",
+  "docs/kr-alpha-discovery-tournament-v1-design.md",
+  "research_specs/kr-alpha-discovery-tournament-v1-receipt.schema.json",
+  "scripts/run_kr_alpha_discovery_tournament_v1.py",
+  "scripts/seal_kr_alpha_discovery_tournament_v1.py",
+  "data/kr-industry-membership-foundation-v1/top120-inputs.json"
+ ],
+ "selection": {
+  "K": 3,
+  "minCoverage": 0.9,
+  "minIcFoldShare": [
+   2,
+   3
+  ],
+  "minNamesPerIcDate": 20,
+  "step1Stability": {
+   "calibration": "pooled HAC calibration slope of the candidate's out-of-fold predictions > 0 (no catastrophic calibration failure)",
+   "coverage": "predictions for at least 90% of label-eligible validation name-dates",
+   "directionalIcFoldShare": "mean within-date Spearman IC (score vs realised H126 return rank) > 0 on at least ceil(2/3 x valid folds) inner folds",
+   "economics": "finite inner economic score on every economic fold"
+  },
+  "step2Rank": "survivors ranked by mean inner economic score: annualised net log growth of (common translator portfolio) minus (100% passive) on anchor-spaced 21-session blocks of V2 and V3; ties by candidate id",
+  "step3Ensemble": "walk the ranked survivors and keep the best candidate of each family until K = 3 (diversity); equal weights on calibrated expected incremental returns; 1 or 2 survivors -> an ensemble of those; 0 survivors -> PASSIVE_DEFAULT for that outer year"
+ },
+ "stopRules": {
+  "ANY_VERDICT": "no v1.1, no re-seed, no grid widening, no target or horizon added; the frozen process issues prospective receipts; development evidence is never promotion",
+  "INFORMATION_LIMITED": "historical model search on THIS information set closes permanently: no Expected Alpha v2 on the same data, no further algorithms, no weight moves, no horizon change, no rescue. The next step is NEW information whose PIT history is genuinely ready (KR investor flow, DART 5% ownership, short selling, a vintage-safe KR macro context)"
+ },
+ "strideKrSessions": 21,
+ "studyId": "kr-alpha-discovery-tournament-v1",
+ "targets": {
+  "economicLabel": "H126 stock return minus H126 069500.KS return over the SAME endpoints (target_from_sessions semantics); calibration and evaluation only",
+  "minNamesPerLabelDate": 20,
+  "registry": {
+   "A_MAGNITUDE_VS_SAME_DATA_UNIVERSE": {
+    "definition": "H126 stock return minus the signal-date-cap-weighted H126 return of the OTHER label-eligible PIT Top120 members",
+    "loss": "squared",
+    "minimumOtherNames": 50,
+    "why": "the 069500.KS series carries an unexplained accrual (BENCHMARK_EXTERNAL_RECONCILIATION_UNRESOLVED); a same-data reference is used for LEARNING only and the benchmark is never repaired"
+   },
+   "B_RESIDUAL_VS_LOO_INDUSTRY": {
+    "definition": "H126 stock return minus the cap-weighted leave-one-out industry return (sealed kr_stock_within_industry_anatomy.stock_targets, CAP_WEIGHTED lens, STOCK_MINUS_LOO_INDUSTRY; every peer must be matured)",
+    "loss": "squared"
+   },
+   "C_CROSS_SECTIONAL_RANK": {
+    "definition": "within-date average-rank percentile of the H126 stock return among label-eligible members, minus 0.5",
+    "loss": "squared"
+   },
+   "D_TOP_QUINTILE_EVENT": {
+    "definition": "1 when the within-date percentile of the H126 stock return exceeds 0.8, else 0",
+    "loss": "squared",
+    "note": "a linear-probability / regression-tree fit of the event; the common calibration converts it to a return scale"
+   }
+  }
+ },
+ "trialLedger": {
+  "configurationsPerFamily": {
+   "LATENT_FACTOR": 24,
+   "LEARNING_TO_RANK": 12,
+   "SHALLOW_TREE": 24,
+   "SHRUNK_LINEAR": 36,
+   "SPARSE_LINEAR": 24
+  },
+  "fittedConfigurations": 120,
+  "fittedModelFamilies": 5,
+  "hyperparameterConfigurations": 11,
+  "hyperparameterConfigurationsPerFamily": {
+   "LATENT_FACTOR": 2,
+   "LEARNING_TO_RANK": 2,
+   "SHALLOW_TREE": 2,
+   "SHRUNK_LINEAR": 3,
+   "SPARSE_LINEAR": 2
+  },
+  "modelFamilies": 6,
+  "otherTrials": {
+   "baseline1Translator": 1,
+   "decisionFocusedChallenger": 1,
+   "ensembleRule": 1
+  },
+  "recencySchemes": 3,
+  "targetArchitectures": 4,
+  "totalEffectiveTrials": 123
+ },
+ "uncertainty": {
+  "calibration": "mean across members of sd(s)^2",
+  "contraction": "kappa = mu^2 / (mu^2 + sigma^2) in [0, 1]; mu_post = kappa x mu; |mu_post| <= |mu|, sign preserved (asserted on every row)",
+  "disagreement": "population variance across ensemble members of their calibrated mu for the same name (0 with one member)",
+  "notCertainty": "kappa is a signal-to-noise contraction, never a probability of being right",
+  "total": "sigma^2 = disagreement + calibration"
+ },
+ "verdict": {
+  "codes": {
+   "A": "ROBUST_ACTIVE_VALUE_FOUND",
+   "B": "WEAK_OR_REGIME_DEPENDENT_VALUE",
+   "C": "PREDICTIVE_SIGNAL_WITHOUT_ECONOMIC_VALUE",
+   "D": "INFORMATION_LIMITED",
+   "E": "BLOCKED_BY_DATA_INTEGRITY"
+  },
+  "dsrMin": 0.95,
+  "meaningfulGPp": 1.0,
+  "minPeriodsPositive": 3,
+  "minSignalCoveragePercent": 80,
+  "pboMax": 0.5,
+  "rules": {
+   "A": [
+    "G >= 1.0 pp/yr",
+    "block-bootstrap 95% lower bound of G > 0",
+    "G under COST_X2 > 0",
+    "G > 0 in at least 3 of the 4 registered periods",
+    "G with the largest single contributor removed > 0",
+    "DSR >= 0.95",
+    "SPA p-value of the primary vs passive <= 0.05",
+    "PBO <= 0.5",
+    "outer ensemble rank IC HAC 95% lower bound > 0"
+   ],
+   "B": "G > 0 and not A",
+   "C": "G <= 0 and the outer ensemble rank IC HAC 95% lower bound > 0 (forecast information that costs, risk or transfer destroy)",
+   "D": "G <= 0 and no predictive evidence (outer rank IC lower bound <= 0) -> INFORMATION_LIMITED",
+   "E": "the primary or passive path is incomplete (unresolved held mark), the frozen identity moved during the run, or fewer than 80% of outer anchors had a valid signal-time cross-section",
+   "G": "net annualised log-growth difference, primary minus 100% passive, over every session from the first outer anchor to the cutoff (pp/yr)",
+   "order": "E is checked first; then A, B, C, D exactly as written; nothing is decided after the numbers exist"
+  },
+  "spaMaxP": 0.05
+ },
+ "walkForward": {
+  "embargoSessions": 21,
+  "inner": {
+   "blocks": 3,
+   "economicScoreFolds": "V2 and V3 (calibration for Vj is fitted on the candidate's OUT-OF-FOLD predictions of V1..Vj-1 only)",
+   "minimumTrainingDates": 52,
+   "minimumValidFolds": 2,
+   "minimumValidationDates": 13,
+   "rule": "the most recent half of the fold's training signal dates is split into 3 contiguous equal validation blocks V1 < V2 < V3; for Vj the inner training set is every row whose label exit is strictly before the FIRST entry date of Vj (purge) and whose signal date is at least EMBARGO_SESSIONS sessions before the first signal of Vj (embargo); validation rows must themselves exit before C_Y",
+   "validationShare": 0.5
+  },
+  "noRandomSplit": true,
+  "noShuffle": true,
+  "outer": {
+   "firstYear": 2018,
+   "refit": "annual: one outer fold per calendar year from OUTER_FIRST_YEAR; its information cutoff C_Y is the signal date of the year's first anchor; every anchor of year Y uses the fold-Y process",
+   "trainingRule": "a row trains only if its H126 label exit date is STRICTLY before C_Y; labels of later exits do not exist for that fold",
+   "untouchable": "nothing with an exit date >= C_Y enters fitting, inner selection, hyperparameters, recency choice, calibration or uncertainty for fold Y"
+  },
+  "signalGrid": "last KR session of each completed calendar week (regional_alpha_features.weekly_grid) from FEATURE_START",
+  "standardisation": "fitted on the training rows of the fold only; representations are per-date cross-sectional transforms (no cross-date fit)"
+ }
+}
