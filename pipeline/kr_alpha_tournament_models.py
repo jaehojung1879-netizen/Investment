@@ -237,14 +237,15 @@ def calibrate(dates, s, y_econ, *, min_names=T.MIN_NAMES_PER_CALIBRATION_DATE, l
     hac = I.newey_west_mean(slopes, lag)
     b, se = hac["mean"], hac["se"]
     b_star = b * max(0.0, 1.0 - se ** 2 / b ** 2) if b > 0 and se is not None else 0.0
-    carry = float(np.mean(intercepts))
-    return {"status": "CALIBRATED", "dates": len(slopes), "b": b, "se": se, "bStar": b_star, "carry": carry, "credited": min(0.0, carry),
+    carry = float(np.mean(intercepts))         # DIAGNOSTIC ONLY: universe minus 069500.KS, which carries the unresolved benchmark anomaly
+    return {"status": "CALIBRATED", "dates": len(slopes), "b": b, "se": se, "bStar": b_star, "carry": carry, "credited": 0.0,
             "slopeSe": se if se is not None else 0.0}
 
 
 def apply_calibration(cal, s):
+    """mu(s) = b* x (s - 0.5): the cross-sectional relationship only. The intercept is never credited or debited (see T.CALIBRATION['carry'])."""
     s = np.asarray(s, float)
-    mu = cal["credited"] + cal["bStar"] * (s - 0.5)
+    mu = cal["bStar"] * (s - 0.5)
     sd = cal["slopeSe"] * np.abs(s - 0.5)
     return mu, sd
 

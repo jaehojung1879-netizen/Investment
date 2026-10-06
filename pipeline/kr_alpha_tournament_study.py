@@ -200,7 +200,7 @@ def assemble(process, paths, labels, signal_coverage_percent, identity_unchanged
     prediction = E.prediction_diagnostics(process["anchors"], labels, cb + cs, secondary_column="C252")
     evidence = {"integrity": {"pathsComplete": complete, "identityUnchanged": identity_unchanged, "signalCoveragePercent": signal_coverage_percent},
                 "gPp": None, "bootstrapLower": None, "gCostX2Pp": None, "periodsPositive": None, "gLeaveLargestOutPp": None, "dsr": None,
-                "spaP": None, "pbo": None, "icLower95": prediction["rankIc"]["lower95"]}
+                "spaUniverseP": None, "pbo": None, "icLower95": prediction["rankIc"]["lower95"]}
     comparisons = {}
     if complete:
         primary = paths[("PRIMARY_ROBUST_KELLY", "BASE")]
@@ -221,11 +221,14 @@ def assemble(process, paths, labels, signal_coverage_percent, identity_unchanged
         strategy_blocks = [E.blocks(E.log_growth_difference(paths[(k, "BASE")]["path"], passive["path"])[1])[:n]
                            for k in ("PRIMARY_ROBUST_KELLY", "BASELINE_1_EQUAL_WEIGHT_SLEEVE", "DECISION_FOCUSED_CHALLENGER")]
         spa_all = E.spa_test(np.column_stack(strategy_blocks + [universe[:n]]) if n else np.zeros((0, 0)))
+        spa_all["role"] = "TOURNAMENT_WIDE_HANSEN_SPA_GATES_THE_A_VERDICT"
+        # one strategy only: a stationary-bootstrap comparison with passive that pays for no search -> descriptive, never a verdict input
         spa_primary = E.spa_test(strategy_blocks[0][:, None]) if n else {"status": "TOO_SHORT", "pValue": None}
+        spa_primary["role"] = "DESCRIPTIVE_ONE_STRATEGY_STATIONARY_BOOTSTRAP_COMPARISON_NOT_TOURNAMENT_WIDE_SPA"
         pbo = E.pbo_cscv(universe)
         evidence.update(gPp=g, bootstrapLower=boot["lower95"], gCostX2Pp=comparisons.get("PRIMARY_ROBUST_KELLY:COST_X2"),
                         periodsPositive=sum(1 for s in slices.values() if s["gPp"] is not None and s["gPp"] > 0), gLeaveLargestOutPp=llo["gPp"],
-                        dsr=dsr.get("dsr"), spaP=spa_primary.get("pValue"), pbo=pbo.get("pbo"))
+                        dsr=dsr.get("dsr"), spaUniverseP=spa_all.get("pValue"), pbo=pbo.get("pbo"))
         result.update(gPp=g, periods=slices, bootstrap=boot, leaveLargestContributorOut=llo, deflatedSharpe=dsr, spaPrimary=spa_primary,
                       spaUniverse=spa_all, pbo=pbo, comparisonsVsPassivePp=comparisons, universeConfigurations=len(ids),
                       optimizerValueVsBaseline1Pp=(g - comparisons["BASELINE_1_EQUAL_WEIGHT_SLEEVE:BASE"]) if g is not None else None)
@@ -239,17 +242,19 @@ def assemble(process, paths, labels, signal_coverage_percent, identity_unchanged
 def process_summary(process):
     folds = []
     for f in process["folds"]:
-        folds.append({k: f[k] for k in ("year", "cutoff", "trainingRows", "trainingDates", "innerBlocks", "ensemble", "state", "memberCalibration",
+        folds.append({k: f[k] for k in ("year", "cutoff", "trainingRows", "trainingDates", "innerBlocks", "innerEvidence", "ensemble", "state",
+                                         "memberCalibration",
                                          "decisionFocusedChallenger")}
                      | {"candidates": [{k: c[k] for k in ("id", "positiveIcFolds", "requiredPositiveIcFolds", "calibration", "coverage",
-                                                           "economicScore", "survives", "rejections")} for c in f["candidates"]]})
+                                                           "finiteEconomicFolds", "economicScore", "survives", "rejections")} for c in f["candidates"]]})
     families = {}
     for f in process["folds"]:
         for m in f["ensemble"]:
             fam = m.split("|")[0]
             families[fam] = families.get(fam, 0) + 1
     return {"folds": folds, "ensembleFamilyCounts": dict(sorted(families.items())),
-            "passiveDefaultYears": [f["year"] for f in process["folds"] if not f["ensemble"]]}
+            "passiveDefaultYears": [f["year"] for f in process["folds"] if not f["ensemble"]],
+            "passiveInsufficientInnerEvidenceYears": [f["year"] for f in process["folds"] if f["state"] == T.PASSIVE_INSUFFICIENT_EVIDENCE]}
 
 
 # --------------------------------------------------------------------------- #

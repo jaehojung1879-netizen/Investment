@@ -126,7 +126,9 @@ evaluation of the same H126 predictions, never a training target and never a res
 * **Inner** (inside the past): the most recent half of the fold's training dates is split into 3 contiguous validation blocks. For block Vj, inner
   training rows must exit strictly before Vj's **first entry** date (**purge**) and have signal dates at least 21 sessions before Vj's first signal
   (**embargo**; implied by the purge at H126, enforced explicitly). No random or shuffled split. A block needs ≥ 52 training and ≥ 13 validation
-  dates; a fold needs ≥ 2 valid blocks. Calendar-only readiness: 2018 has 2 valid blocks, every later year 3.
+  dates. **An outer year may become active only with 3 valid inner folds AND ≥ 2 finite past-only economic-scoring folds** (V2 and V3); otherwise
+  that year is `PASSIVE_DEFAULT_INSUFFICIENT_INNER_EVIDENCE` (100% passive). Calendar-only readiness: 2018 has 2 valid blocks (one economic fold) and
+  is therefore passive by registration; every later year has 3. No date is shifted to rescue 2018 and its sessions stay in every final statistic.
 * Representations are per-date transforms; the only fitted transform (standardisation) is fitted on training rows.
 
 ## 10. How are hyperparameters chosen?
@@ -138,10 +140,13 @@ translator = **123 effective trials**; 9 outer folds × (3 inner + 1 refit) = 4,
 
 ## 13. The frozen inner selection rule
 
-1. **Stability**: IC > 0 on ≥ ⌈2/3 × valid folds⌉ inner folds; pooled HAC calibration slope > 0; ≥ 90% prediction coverage; finite economic score.
+1. **Stability**: 3 scored inner folds and ≥ 2 finite economic folds; IC > 0 on ≥ ⌈2/3 × valid folds⌉ inner folds; pooled HAC calibration slope > 0;
+   ≥ 90% prediction coverage; finite economic score.
 2. **Economics**: survivors ranked by mean inner score = annualised net log growth of the common translator minus 100% passive on non-overlapping
    21-session blocks of V2/V3 (calibration for Vj fitted on the candidate's out-of-fold predictions of earlier blocks only).
-3. **Ensemble**: best candidate per family until K = 3, equal weights; 1-2 survivors → those; 0 → `PASSIVE_DEFAULT` for that outer year.
+3. **Ensemble**: best candidate per family until K = 3, equal weights; 1-2 survivors → those; 0 → `PASSIVE_DEFAULT` for that outer year, recorded as
+   `PASSIVE_DEFAULT_INSUFFICIENT_INNER_EVIDENCE` (too little inner history) or `PASSIVE_DEFAULT_NO_STABLE_CANDIDATE` (the evidence existed and no
+   candidate passed it).
 
 The process may change family through history; the selection algorithm is the object under test.
 
@@ -149,8 +154,12 @@ The process may change family through history; the selection algorithm is the ob
 
 **Calibration** (per member, past-only, on inner out-of-fold predictions): s = within-date rank of the native score; per-date slope of the economic
 label on (s − 0.5); pooled slope b with a Newey-West SE (lag 26 weekly overlaps); positive-part James-Stein shrinkage b* = b·max(0, 1 − SE²/b²);
-universe carry is never credited (intercept = min(0, mean carry)). μ(s) = min(0, a) + b*·(s − 0.5). Continuous in rank — no coarse buckets — and it
-cannot create alpha the ranking did not show.
+**credited intercept = 0**: the mean per-date intercept (universe minus 069500.KS) is reported as a diagnostic only and is neither credited nor
+debited. That intercept is a same-date constant that carries the unresolved 069500.KS accrual anomaly, so a negative carry must not be injected into
+every forecast and then read as missing stock-selection information. μ(s) = b*·(s − 0.5): the cross-sectional relationship only, invariant to any
+same-date benchmark-level constant (tested). 069500.KS is unchanged in the passive core, the self-financing replay and the final active-vs-passive
+evaluation; this is isolation of an unresolved intercept, not a benchmark repair. Continuous in rank — no coarse buckets — and it cannot create
+alpha the ranking did not show.
 
 **Uncertainty**: σ² = variance of calibrated μ across ensemble members (disagreement) + mean of (SE·|s − 0.5|)² (calibration). Contraction
 κ = μ²/(μ² + σ²) ∈ [0, 1]; μ_post = κ·μ, asserted |μ_post| ≤ |μ| with sign preserved. κ is a signal-to-noise contraction, never a probability.
@@ -176,7 +185,9 @@ capacity, one-session execution delay; slices 2017-2020 (outer decisions exist f
 
 Trial ledger (above); **Deflated Sharpe** of the primary's non-overlapping 21-session active log-return blocks with N = 123 and the trial-Sharpe
 variance taken from every configuration's outer cheap-translator blocks; **PBO** by CSCV (16 contiguous groups, 12,870 splits) over the configuration
-universe; **Hansen SPA** (consistent p, stationary bootstrap, mean block 6 = 126/21, B = 2,000) for the primary vs passive and for the whole universe;
+universe; **tournament-wide Hansen SPA** `spaUniverse` (consistent p, stationary bootstrap, mean block 6 = 126/21, B = 2,000) over {primary,
+baseline 1, challenger, every configuration} vs passive — the SPA the verdict uses; `spaPrimary`, the same statistic on the primary alone, is a
+one-strategy stationary-bootstrap comparison that pays for no search and is descriptive only;
 **moving-block bootstrap** (126-session blocks, B = 2,000) CI of G. Assumptions are stated in the spec; overlapping daily series never get naive
 p-values. The cheap translator (equal-weight top quintile, 21 sessions) exists only to give these diagnostics a universe; it never selects.
 
@@ -186,7 +197,8 @@ Checked in this order, frozen in `kr_alpha_tournament_evaluation.verdict`:
 
 * **E BLOCKED_BY_DATA_INTEGRITY** — a path is incomplete, the input identity moved during the run, or < 80% of outer anchors had a valid cross-section.
 * **A ROBUST_ACTIVE_VALUE_FOUND** — ALL of: G ≥ 1.0 pp/yr; bootstrap lower 95% > 0; G under ×2 cost > 0; G > 0 in ≥ 3 of 4 periods; G after removing
-  the largest contributor > 0; DSR ≥ 0.95; primary SPA p ≤ 0.05; PBO ≤ 0.5; outer ensemble rank-IC HAC lower 95% > 0.
+  the largest contributor > 0; DSR ≥ 0.95; **tournament-wide SPA (`spaUniverse`) p ≤ 0.05**; PBO ≤ 0.5; outer ensemble rank-IC HAC lower 95% > 0.
+  A primary-only SPA pass cannot satisfy the SPA check.
 * **B WEAK_OR_REGIME_DEPENDENT_VALUE** — G > 0 and not A.
 * **C PREDICTIVE_SIGNAL_WITHOUT_ECONOMIC_VALUE** — G ≤ 0 and rank-IC lower 95% > 0.
 * **D INFORMATION_LIMITED** — G ≤ 0 and no predictive evidence. **Stop**: historical model search on this information set closes permanently — no
@@ -194,6 +206,17 @@ Checked in this order, frozen in `kr_alpha_tournament_evaluation.verdict`:
   history is genuinely ready (KR investor flow, DART ownership, short selling, vintage-safe KR macro).
 
 Missing evidence never passes a check. For every verdict: no v1.1, no re-seed, no grid widening.
+
+## Pre-outcome revisions (independent review, before any outcome)
+
+Recorded in the spec (`preOutcomeRevisions`), so they are part of the sealed identity: (1) credited calibration intercept 0, carry diagnostic only;
+(2) activation requires 3 valid inner folds and ≥ 2 finite economic folds, else `PASSIVE_DEFAULT_INSUFFICIENT_INNER_EVIDENCE`; (3) the A verdict
+gates on the tournament-wide SPA, `spaPrimary` descriptive. Larger, un-debited forecasts drove the invented world's book to a fully invested state
+(Σw = 1, passive 0, which the allocator always allowed) for the first time and exposed two latent ledger defects, fixed with regression tests: the
+ledger dropped the passive-leg key at weight 0 (next-day `KeyError`), and the allocator's starting projection divided by a zero step when a fully
+invested held book summed to 1 plus rounding. A synthetic-path test that required the DAILY max weight to stay under the 30% cap now checks it at trade
+sessions, which is where the registered constraint applies (prices may drift a held name above it between rebalances). No outcome of this study was
+computed, and no lock, marker or result exists.
 
 ## 19. What happens prospectively?
 

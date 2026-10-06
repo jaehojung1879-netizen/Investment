@@ -264,7 +264,9 @@ def spa_test(differentials, draws=T.BOOTSTRAP_DRAWS, mean_block=T.SPA_MEAN_BLOCK
 # --------------------------------------------------------------------------- #
 def verdict(evidence):
     """`evidence` keys: integrity {pathsComplete, identityUnchanged, signalCoveragePercent}, gPp, bootstrapLower, gCostX2Pp, periodsPositive,
-    gLeaveLargestOutPp, dsr, spaP, pbo, icLower95. Returns {code, verdict, checks}. Missing evidence never passes a check."""
+    gLeaveLargestOutPp, dsr, spaUniverseP, pbo, icLower95. Returns {code, verdict, checks}. Missing evidence never passes a check.
+    The SPA check reads the TOURNAMENT-WIDE Hansen SPA p-value (`spaUniverseP`); the one-strategy primary comparison is descriptive only and is
+    not an input here."""
     integ = evidence["integrity"]
     if not integ["pathsComplete"] or not integ["identityUnchanged"] or integ["signalCoveragePercent"] < T.MIN_SIGNAL_COVERAGE_PERCENT:
         return {"code": "E", "verdict": T.VERDICTS["E"], "checks": {"integrity": integ}}
@@ -281,7 +283,7 @@ def verdict(evidence):
     checks = {"gAtLeastMeaningful": ge(g, T.MEANINGFUL_G_PP), "bootstrapLowerAboveZero": gt(evidence["bootstrapLower"], 0.0),
               "costX2Positive": gt(evidence["gCostX2Pp"], 0.0), "periodsPositive": (evidence["periodsPositive"] or 0) >= T.MIN_PERIODS_POSITIVE,
               "leaveLargestOutPositive": gt(evidence["gLeaveLargestOutPp"], 0.0), "dsr": ge(evidence["dsr"], T.DSR_MIN),
-              "spa": le(evidence["spaP"], T.SPA_MAX_P), "pbo": le(evidence["pbo"], T.PBO_MAX), "predictiveIc": gt(evidence["icLower95"], 0.0)}
+              "spaUniverse": le(evidence["spaUniverseP"], T.SPA_MAX_P), "pbo": le(evidence["pbo"], T.PBO_MAX), "predictiveIc": gt(evidence["icLower95"], 0.0)}
     checks = {k: bool(v) for k, v in checks.items()}
     if all(checks.values()):
         code = "A"

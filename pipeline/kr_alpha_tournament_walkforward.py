@@ -190,10 +190,13 @@ def evaluate_inner(candidate, data, labels, blocks, cutoff, risk, calendar, coun
     need = math.ceil(T.SELECTION["minIcFoldShare"][0] * len(scored) / T.SELECTION["minIcFoldShare"][1]) if scored else 1
     pooled = M.calibrate(oof["dates"], oof["s"], oof["y"])
     coverage = coverage_hits / coverage_rows if coverage_rows else 0.0
+    finite_econ = sum(1 for e in econ if np.isfinite(e))
     econ_ok = bool(econ) and all(np.isfinite(e) for e in econ)
     reasons = []
     if len(scored) < T.MIN_VALID_FOLDS:
         reasons.append("TOO_FEW_VALID_INNER_FOLDS")
+    if finite_econ < T.MIN_ECONOMIC_FOLDS:
+        reasons.append("TOO_FEW_FINITE_ECONOMIC_FOLDS")
     if positives < need:
         reasons.append("IC_DIRECTION_UNSTABLE")
     if not (pooled["b"] is not None and pooled["b"] > 0):
@@ -204,8 +207,20 @@ def evaluate_inner(candidate, data, labels, blocks, cutoff, risk, calendar, coun
         reasons.append("ECONOMIC_SCORE_NOT_FINITE")
     return {"id": candidate["id"], "family": candidate["family"], "folds": folds, "positiveIcFolds": positives, "requiredPositiveIcFolds": need,
             "calibration": {k: pooled[k] for k in ("status", "dates", "b", "se", "bStar", "carry")}, "coverage": coverage,
-            "economicScores": econ, "economicScore": float(np.mean(econ)) if econ_ok else None, "survives": not reasons, "rejections": reasons,
+            "economicScores": econ, "finiteEconomicFolds": finite_econ, "economicScore": float(np.mean(econ)) if econ_ok else None,
+            "survives": not reasons, "rejections": reasons,
             "oof": oof}
+
+
+def fold_state(enough, members, results):
+    """ENSEMBLE, or which passive default: insufficient inner evidence (the calendar gave fewer than 3 valid inner folds / 2 economic folds, or no
+    candidate reached 3 scored folds with 2 finite economic folds) is a different fact from candidates that had the evidence and failed it."""
+    if members:
+        return "ENSEMBLE"
+    evidence_only = {"TOO_FEW_VALID_INNER_FOLDS", "TOO_FEW_FINITE_ECONOMIC_FOLDS"}
+    if not enough or (results and all(set(r["rejections"]) & evidence_only for r in results)):
+        return T.PASSIVE_INSUFFICIENT_EVIDENCE
+    return T.PASSIVE_NO_STABLE_CANDIDATE
 
 
 def select_ensemble(results, k=T.SELECTION["K"]):
@@ -273,13 +288,17 @@ def run_outer_fold(fold, data, labels, registry, risk, calendar, counters=None):
     log["innerBlocks"] = [{k: b[k] for k in b if k not in ("train", "valid")} for b in blocks]
     valid = [b for b in blocks if b["status"] == "VALID"]
     results = []
-    if len(valid) >= T.MIN_VALID_FOLDS:
+    enough = len(valid) >= T.MIN_VALID_FOLDS and len(valid) - 1 >= T.MIN_ECONOMIC_FOLDS
+    if enough:
         for cand in registry:
             results.append(evaluate_inner(cand, data, labels, blocks, cutoff, risk, calendar, counters))
     members = select_ensemble(results)
     log["candidates"] = [{k: r[k] for k in r if k != "oof"} for r in results]
     log["ensemble"] = members
-    log["state"] = "ENSEMBLE" if members else "PASSIVE_DEFAULT_NO_STABLE_CANDIDATE"
+    log["innerEvidence"] = {"validInnerFolds": len(valid), "economicScoringFoldsAvailable": max(0, len(valid) - 1),
+                            "requiredValidInnerFolds": T.MIN_VALID_FOLDS, "requiredFiniteEconomicFolds": T.MIN_ECONOMIC_FOLDS,
+                            "sufficient": enough}
+    log["state"] = fold_state(enough, members, results)
     by_id = {c["id"]: c for c in registry}
     oof = {r["id"]: r["oof"] for r in results}
     fitted, cals = {}, {}

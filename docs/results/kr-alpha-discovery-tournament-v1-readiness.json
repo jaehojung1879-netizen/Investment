@@ -36,6 +36,15 @@
             "validationDates": 22
           }
         ],
+        "innerEvidence": {
+          "economicScoringFoldsAvailable": 1,
+          "keptInFinalEvaluation": true,
+          "plannedState": "PASSIVE_DEFAULT_INSUFFICIENT_INNER_EVIDENCE",
+          "requiredFiniteEconomicFolds": 2,
+          "requiredValidInnerFolds": 3,
+          "sufficient": false,
+          "validInnerFolds": 2
+        },
         "lastTrainingSignal": "2017-07-14",
         "year": 2018
       },
@@ -73,6 +82,15 @@
             "validationDates": 30
           }
         ],
+        "innerEvidence": {
+          "economicScoringFoldsAvailable": 2,
+          "keptInFinalEvaluation": true,
+          "plannedState": "ELIGIBLE_FOR_INNER_SELECTION",
+          "requiredFiniteEconomicFolds": 2,
+          "requiredValidInnerFolds": 3,
+          "sufficient": true,
+          "validInnerFolds": 3
+        },
         "lastTrainingSignal": "2018-06-22",
         "year": 2019
       },
@@ -110,6 +128,15 @@
             "validationDates": 39
           }
         ],
+        "innerEvidence": {
+          "economicScoringFoldsAvailable": 2,
+          "keptInFinalEvaluation": true,
+          "plannedState": "ELIGIBLE_FOR_INNER_SELECTION",
+          "requiredFiniteEconomicFolds": 2,
+          "requiredValidInnerFolds": 3,
+          "sufficient": true,
+          "validInnerFolds": 3
+        },
         "lastTrainingSignal": "2019-07-05",
         "year": 2020
       },
@@ -147,6 +174,15 @@
             "validationDates": 48
           }
         ],
+        "innerEvidence": {
+          "economicScoringFoldsAvailable": 2,
+          "keptInFinalEvaluation": true,
+          "plannedState": "ELIGIBLE_FOR_INNER_SELECTION",
+          "requiredFiniteEconomicFolds": 2,
+          "requiredValidInnerFolds": 3,
+          "sufficient": true,
+          "validInnerFolds": 3
+        },
         "lastTrainingSignal": "2020-07-10",
         "year": 2021
       },
@@ -184,6 +220,15 @@
             "validationDates": 57
           }
         ],
+        "innerEvidence": {
+          "economicScoringFoldsAvailable": 2,
+          "keptInFinalEvaluation": true,
+          "plannedState": "ELIGIBLE_FOR_INNER_SELECTION",
+          "requiredFiniteEconomicFolds": 2,
+          "requiredValidInnerFolds": 3,
+          "sufficient": true,
+          "validInnerFolds": 3
+        },
         "lastTrainingSignal": "2021-07-23",
         "year": 2022
       },
@@ -221,6 +266,15 @@
             "validationDates": 65
           }
         ],
+        "innerEvidence": {
+          "economicScoringFoldsAvailable": 2,
+          "keptInFinalEvaluation": true,
+          "plannedState": "ELIGIBLE_FOR_INNER_SELECTION",
+          "requiredFiniteEconomicFolds": 2,
+          "requiredValidInnerFolds": 3,
+          "sufficient": true,
+          "validInnerFolds": 3
+        },
         "lastTrainingSignal": "2022-07-01",
         "year": 2023
       },
@@ -258,6 +312,15 @@
             "validationDates": 74
           }
         ],
+        "innerEvidence": {
+          "economicScoringFoldsAvailable": 2,
+          "keptInFinalEvaluation": true,
+          "plannedState": "ELIGIBLE_FOR_INNER_SELECTION",
+          "requiredFiniteEconomicFolds": 2,
+          "requiredValidInnerFolds": 3,
+          "sufficient": true,
+          "validInnerFolds": 3
+        },
         "lastTrainingSignal": "2023-06-30",
         "year": 2024
       },
@@ -295,6 +358,15 @@
             "validationDates": 83
           }
         ],
+        "innerEvidence": {
+          "economicScoringFoldsAvailable": 2,
+          "keptInFinalEvaluation": true,
+          "plannedState": "ELIGIBLE_FOR_INNER_SELECTION",
+          "requiredFiniteEconomicFolds": 2,
+          "requiredValidInnerFolds": 3,
+          "sufficient": true,
+          "validInnerFolds": 3
+        },
         "lastTrainingSignal": "2024-07-12",
         "year": 2025
       },
@@ -332,11 +404,24 @@
             "validationDates": 91
           }
         ],
+        "innerEvidence": {
+          "economicScoringFoldsAvailable": 2,
+          "keptInFinalEvaluation": true,
+          "plannedState": "ELIGIBLE_FOR_INNER_SELECTION",
+          "requiredFiniteEconomicFolds": 2,
+          "requiredValidInnerFolds": 3,
+          "sufficient": true,
+          "validInnerFolds": 3
+        },
         "lastTrainingSignal": "2025-06-27",
         "year": 2026
       }
     ],
     "outerAnchors": 101,
+    "passiveInsufficientInnerEvidenceYearsByCalendar": [
+      2018
+    ],
+    "passiveYearsNote": "a year listed here is 100% passive because too little past-only inner history existed at its cutoff; it is not moved, re-dated or dropped, and its sessions stay in every final active-vs-passive statistic",
     "weeklyDates": 610
   },
   "counters": {
@@ -360,12 +445,12 @@
   "rawArtifactTouched": false,
   "realOutcomesRead": false,
   "reasons": [],
-  "specSha256": "ac0e13ddb7666a83299ba8ca8950b4e29d9569bd4c51ce21dc36b3c0f91d21f2",
+  "specSha256": "a8acb44c4b685e06ce7692e44461147110e2e2d32a119adef0dd216476f50e7f",
   "studyId": "kr-alpha-discovery-tournament-v1",
   "synthetic": {
     "deterministic": true,
     "registry": "FULL",
-    "resultDigest": "15eef3387a27412a6007a2fdd9183159ed172d2005a825331f4fb608e6d08fc7",
+    "resultDigest": "9406a86a3733743efd1cbc2124848036916916bc1bd6665f40029dfa6534e6f7",
     "world": "INVENTED: no market data, no claim about any market"
   },
   "trialLedger": {

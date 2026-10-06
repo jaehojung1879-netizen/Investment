@@ -66,6 +66,19 @@ def test_committed_readiness_is_outcome_free_and_matches_the_spec():
     assert readiness["calendarFoldPlan"] == E.calendar_fold_plan()
 
 
+def test_calendar_plan_marks_the_thin_early_year_passive_without_moving_or_dropping_it():
+    plan = E.calendar_fold_plan()
+    by_year = {f["year"]: f for f in plan["folds"]}
+    first = by_year[2018]["innerEvidence"]
+    assert first["validInnerFolds"] == 2 and first["sufficient"] is False and first["plannedState"] == T.PASSIVE_INSUFFICIENT_EVIDENCE
+    assert first["keptInFinalEvaluation"] is True and by_year[2018]["cutoff"] == "2018-01-26" and by_year[2018]["anchors"] == 11
+    assert plan["passiveInsufficientInnerEvidenceYearsByCalendar"] == [2018] and (plan["anchors"], plan["outerAnchors"]) == (113, 101)
+    assert all(by_year[y]["innerEvidence"]["sufficient"] for y in by_year if y != 2018)
+    assert E.calendar_plan_reasons(plan) == []
+    none = {**plan, "folds": [{**f, "innerEvidence": {**f["innerEvidence"], "sufficient": False}} for f in plan["folds"]]}
+    assert E.calendar_plan_reasons(none) == ["NO_OUTER_YEAR_HAS_SUFFICIENT_INNER_EVIDENCE_BY_CALENDAR"]
+
+
 def test_verify_and_readiness_never_touch_real_data(monkeypatch):
     def refuse(*a, **k):
         raise AssertionError("REAL_DATA_TOUCHED")

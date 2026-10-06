@@ -194,8 +194,12 @@ WALK_FORWARD = {
                       "Vj the inner training set is every row whose label exit is strictly before the FIRST entry date of Vj (purge) and whose "
                       "signal date is at least EMBARGO_SESSIONS sessions before the first signal of Vj (embargo); validation rows must themselves "
                       "exit before C_Y",
-              "minimumTrainingDates": 52, "minimumValidationDates": 13, "minimumValidFolds": 2,
-              "economicScoreFolds": "V2 and V3 (calibration for Vj is fitted on the candidate's OUT-OF-FOLD predictions of V1..Vj-1 only)"},
+              "minimumTrainingDates": 52, "minimumValidationDates": 13, "minimumValidFolds": 3, "minimumEconomicFolds": 2,
+              "economicScoreFolds": "V2 and V3 (calibration for Vj is fitted on the candidate's OUT-OF-FOLD predictions of V1..Vj-1 only)",
+              "activation": "an outer year may become active ONLY when all 3 inner blocks are VALID by the calendar and a candidate has 3 scored inner "
+                            "folds AND at least 2 finite past-only economic-scoring folds; otherwise the year is "
+                            "PASSIVE_DEFAULT_INSUFFICIENT_INNER_EVIDENCE (100% passive). No date is shifted and no outcome is consulted to make an "
+                            "early year eligible; a passive year stays in the final evaluation"},
     "embargoSessions": 21,
     "noRandomSplit": True, "noShuffle": True,
     "standardisation": "fitted on the training rows of the fold only; representations are per-date cross-sectional transforms (no cross-date fit)",
@@ -205,6 +209,9 @@ INNER_BLOCKS = WALK_FORWARD["inner"]["blocks"]
 MIN_TRAIN_DATES = WALK_FORWARD["inner"]["minimumTrainingDates"]
 MIN_VALID_DATES = WALK_FORWARD["inner"]["minimumValidationDates"]
 MIN_VALID_FOLDS = WALK_FORWARD["inner"]["minimumValidFolds"]
+MIN_ECONOMIC_FOLDS = WALK_FORWARD["inner"]["minimumEconomicFolds"]
+PASSIVE_INSUFFICIENT_EVIDENCE = "PASSIVE_DEFAULT_INSUFFICIENT_INNER_EVIDENCE"
+PASSIVE_NO_STABLE_CANDIDATE = "PASSIVE_DEFAULT_NO_STABLE_CANDIDATE"
 
 # =======================================================================================================================================
 # 13-14. Inner selection, ensemble, uncertainty, calibration
@@ -218,7 +225,9 @@ SELECTION = {
     "step2Rank": "survivors ranked by mean inner economic score: annualised net log growth of (common translator portfolio) minus (100% passive) on "
                  "anchor-spaced 21-session blocks of V2 and V3; ties by candidate id",
     "step3Ensemble": "walk the ranked survivors and keep the best candidate of each family until K = 3 (diversity); equal weights on calibrated "
-                     "expected incremental returns; 1 or 2 survivors -> an ensemble of those; 0 survivors -> PASSIVE_DEFAULT for that outer year",
+                     "expected incremental returns; 1 or 2 survivors -> an ensemble of those; 0 survivors -> PASSIVE_DEFAULT for that outer year "
+                     "(PASSIVE_DEFAULT_INSUFFICIENT_INNER_EVIDENCE when fewer than 3 valid inner folds or 2 finite economic folds existed, "
+                     "PASSIVE_DEFAULT_NO_STABLE_CANDIDATE otherwise)",
     "K": 3, "minIcFoldShare": [2, 3], "minCoverage": 0.9, "minNamesPerIcDate": 20,
 }
 CALIBRATION = {
@@ -226,10 +235,14 @@ CALIBRATION = {
     "perDate": "OLS slope b_t and intercept a_t of the ECONOMIC label (stock minus 069500.KS, H126) on (s - 0.5); dates with >= 20 names",
     "pooled": "b = mean b_t; SE(b) = Bartlett/Newey-West over the date series with lag ceil(126/5) = 26 weekly overlaps",
     "shrinkage": "b* = b x max(0, 1 - SE(b)^2 / b^2) when b > 0 else 0 (positive-part James-Stein toward zero)",
-    "carry": "credited intercept = min(0, mean a_t): universe carry over the benchmark is never credited to the ranking; a lagging universe is charged",
-    "mapping": "mu(s) = min(0, a) + b* x (s - 0.5); slope uncertainty sd(s) = SE(b) x |s - 0.5|",
+    "carry": "credited intercept = 0: the measured mean a_t (universe minus 069500.KS) is REPORTED as a diagnostic only and is neither credited "
+             "nor debited. The 069500.KS accrual anomaly (post-outcome audit: BENCHMARK_EXTERNAL_RECONCILIATION_UNRESOLVED, "
+             "INTERNAL_CONSTRUCTION_ANOMALY_FOUND) sits in exactly this same-date constant, so it must not enter a cross-sectional stock-selection "
+             "forecast. 069500.KS is unchanged in the passive core, the self-financing replay and the final active-vs-passive evaluation",
+    "mapping": "mu(s) = b* x (s - 0.5); slope uncertainty sd(s) = SE(b) x |s - 0.5|; a same-date constant added to every label of a date changes "
+               "a_t only and cannot change mu",
     "noBuckets": "continuous in rank: no coarse bucket map recreates the alpha-reliability-v1 resolution problem",
-    "cannotCreateAlpha": "|mu| is bounded by |min(0,a)| + b*/2 and b* <= b; a candidate with b <= 0 has no positive ordering credit",
+    "cannotCreateAlpha": "|mu| is bounded by b*/2 and b* <= b; a candidate with b <= 0 has no positive ordering credit",
 }
 CALIBRATION_HAC_LAG = math.ceil(PRIMARY_HORIZON / 5)
 MIN_NAMES_PER_CALIBRATION_DATE = 20
@@ -313,8 +326,11 @@ MULTIPLICITY = {
     "deflatedSharpe": "Bailey & Lopez de Prado DSR of the primary's non-overlapping 21-session active log-return blocks; N = total effective trials; "
                       "variance of trial Sharpes from every configuration's outer cheap-translator blocks",
     "pbo": "CSCV probability of backtest overfitting over the configuration universe's outer cheap-translator block returns, S = 16 contiguous groups",
-    "spa": "Hansen SPA (consistent p-value) that no strategy in {primary, baseline 1, challenger, every configuration} beats passive; stationary "
-           "bootstrap, mean block 6 blocks (126 / 21), B = 2000, fixed seed",
+    "spa": "tournament-wide Hansen SPA (consistent p-value, `spaUniverse`) that no strategy in {primary, baseline 1, challenger, every "
+           "configuration} beats passive; stationary bootstrap, mean block 6 blocks (126 / 21), B = 2000, fixed seed. This is the SPA the A "
+           "verdict gates on",
+    "spaPrimaryDescriptive": "`spaPrimary`: the same statistic on the primary alone, i.e. a one-strategy stationary-bootstrap comparison with "
+                             "passive. It pays for no search, is NOT tournament-wide Hansen SPA evidence, and is a descriptive diagnostic only",
     "bootstrap": "moving-block bootstrap (block 126 sessions, B = 2000, fixed seed) of the daily log-growth difference primary minus passive",
     "cheapTranslator": "per configuration and outer anchor: equal-weight top-quintile of its predictions held 21 sessions, minus passive; gross; used "
                        "ONLY to give PBO / DSR / SPA a configuration universe, never to select",
@@ -334,7 +350,9 @@ VERDICT_RULES = {
     "E": "the primary or passive path is incomplete (unresolved held mark), the frozen identity moved during the run, or fewer than 80% of outer "
          "anchors had a valid signal-time cross-section",
     "A": ["G >= 1.0 pp/yr", "block-bootstrap 95% lower bound of G > 0", "G under COST_X2 > 0", "G > 0 in at least 3 of the 4 registered periods",
-          "G with the largest single contributor removed > 0", "DSR >= 0.95", "SPA p-value of the primary vs passive <= 0.05", "PBO <= 0.5",
+          "G with the largest single contributor removed > 0", "DSR >= 0.95",
+          "tournament-wide Hansen SPA (spaUniverse: primary, baseline 1, challenger and every configuration vs passive) p-value <= 0.05",
+          "PBO <= 0.5",
           "outer ensemble rank IC HAC 95% lower bound > 0"],
     "B": "G > 0 and not A",
     "C": "G <= 0 and the outer ensemble rank IC HAC 95% lower bound > 0 (forecast information that costs, risk or transfer destroy)",
@@ -355,6 +373,21 @@ STOP_RULES = {
     "ANY_VERDICT": "no v1.1, no re-seed, no grid widening, no target or horizon added; the frozen process issues prospective receipts; development "
                    "evidence is never promotion",
 }
+PRE_OUTCOME_REVISIONS = [
+    {"id": "REVIEW_REPAIR_1_ZERO_CREDITED_INTERCEPT",
+     "change": "calibration credited intercept min(0, carry) -> 0; the measured carry is reported as a diagnostic only",
+     "reason": "the per-date intercept is stock minus 069500.KS and therefore carries the unresolved 069500.KS accrual anomaly; a negative "
+               "carry injected into every forecast would be read as missing stock-selection information. The benchmark itself is unchanged"},
+    {"id": "REVIEW_REPAIR_2_THREE_VALID_INNER_FOLDS_TWO_ECONOMIC_FOLDS",
+     "change": "minimumValidFolds 2 -> 3 and minimumEconomicFolds = 2; otherwise PASSIVE_DEFAULT_INSUFFICIENT_INNER_EVIDENCE for that outer year",
+     "reason": "with two valid inner folds only one later fold yields a past-only economic score, too weak to select among 120 configurations. "
+               "By the calendar alone 2018 has 2 valid inner blocks and becomes passive; it is kept in the final evaluation"},
+    {"id": "REVIEW_REPAIR_3_A_VERDICT_GATES_ON_TOURNAMENT_WIDE_SPA",
+     "change": "the A verdict's SPA check reads spaUniverse instead of spaPrimary; spaPrimary stays as a descriptive diagnostic",
+     "reason": "a one-strategy stationary-bootstrap comparison pays for none of the tournament's model search; DSR and PBO are unchanged"},
+]
+PRE_OUTCOME_REVISIONS_NOTE = ("made after independent review and BEFORE any historical outcome of this study was computed: no execution lock, "
+                              "marker or result exists, and no label, fit on a real label or valued portfolio was produced")
 
 
 # =======================================================================================================================================

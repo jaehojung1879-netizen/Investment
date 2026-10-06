@@ -70,6 +70,17 @@ def _prox_budget(v, eta, w0, cb, cs, lower, upper):
     w = _prox(v, eta, w0, cb, cs, lower, upper)
     if w.sum() <= 1.0 + 1e-15:
         return w
+    if eta <= 0.0:
+        # the starting-point projection (eta = 0) of a held book that is fully invested up to rounding: bisect the budget shift directly,
+        # since the multiplier parameterisation below divides by eta
+        lo, hi = 0.0, float(np.max(v)) + 1.0
+        for _ in range(200):
+            mid = (lo + hi) / 2
+            if _prox(v - mid, eta, w0, cb, cs, lower, upper).sum() > 1.0:
+                lo = mid
+            else:
+                hi = mid
+        return _prox(v - hi, eta, w0, cb, cs, lower, upper)
     lo, hi = 0.0, (float(np.max(v)) + 1.0) / eta + 1.0
     for _ in range(200):
         mid = (lo + hi) / 2
@@ -184,7 +195,10 @@ def execute(before, target_stock, adv, nav_krw, stress=1.0, fixed=()):
     if k <= 0 or k + cost > pre + 1e-9:
         raise ValueError("UNFUNDED_TRANSACTION_COSTS")
     turnover = sum(abs(amounts.get(t, 0.0) - before.get(t, 0.0)) for t in set(before) | set(amounts)) / 2
-    return {"weights": {t: a / k for t, a in amounts.items() if a > 0}, "navFactor": k, "costFraction": cost, "turnover": turnover}
+    # the passive leg stays a key even at weight 0 (a fully invested book, sum w = 1, is a registered state): the next session's benchmark return
+    # is read from it, and dropping the key made that read raise KeyError
+    return {"weights": {t: a / k for t, a in amounts.items() if a > 0 or t == T.BENCHMARK}, "navFactor": k, "costFraction": cost,
+            "turnover": turnover}
 
 
 def replay(days, start, end, mark, executable, adv_of, decide, stress=1.0, delay=0, nav0_krw=T.PORTFOLIO["referenceNavKrw"]):

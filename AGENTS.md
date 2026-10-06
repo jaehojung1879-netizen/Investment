@@ -2510,6 +2510,19 @@
   as a real subprocess by a test and its commit step refuses a missing sealed file. The integrated script itself is not repaired here.
 - PREREGISTERED, NOT EXECUTED. No label of this study was built, no real fit or portfolio exists, no lock ref exists and no workflow was dispatched;
   readiness reads the calendar, committed membership and an invented world, with every real-outcome counter at zero.
+- AN UNRESOLVED BENCHMARK INTERCEPT NEVER ENTERS A CROSS-SECTIONAL FORECAST. The calibration's per-date intercept is stock minus 069500.KS, a
+  same-date constant carrying the unresolved accrual anomaly; `min(0, carry)` would have debited it from every forecast and read the benchmark's
+  construction as missing selection skill. The credited intercept is 0, the carry is reported only, mu(s) = b* x (s - 0.5), and a test shifts every
+  date by a different constant and requires identical forecasts. 069500.KS is unchanged in the passive core, the replay and the evaluation.
+- ONE PAST-ONLY ECONOMIC BLOCK CANNOT CHOOSE AMONG 120 CONFIGURATIONS. An outer year becomes active only with 3 valid inner folds and >= 2 finite
+  economic folds; otherwise it is `PASSIVE_DEFAULT_INSUFFICIENT_INNER_EVIDENCE`, distinct from `PASSIVE_DEFAULT_NO_STABLE_CANDIDATE`. 2018 is passive by
+  the calendar alone; no date moves and its sessions stay in the final evaluation. Readiness blocks only if NO year could become active.
+- A ONE-STRATEGY BOOTSTRAP IS NOT THE TOURNAMENT'S SPA. The A verdict gates on `spaUniverse` (primary, baseline 1, challenger, every configuration);
+  `spaPrimary` is descriptive and is not a verdict input. DSR and PBO are unchanged.
+- A REPAIR CAN WALK A HARNESS INTO A STATE IT NEVER REACHED. Without the debited carry the invented world's primary went fully invested (sum w = 1,
+  always permitted) and hit two latent ledger defects: the passive-leg key was dropped at weight 0 (next-day KeyError) and the allocator's eta = 0
+  starting projection divided by zero when the held book summed to 1 plus rounding. Both are fixed with tests that fail on the old code; in a formal
+  run either would have struck after the lock and consumed the study.
 
 ## Lint gate invariants (v2.11)
 

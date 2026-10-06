@@ -1,10 +1,10 @@
 {
  "benchmark": "069500.KS",
  "calibration": {
-  "cannotCreateAlpha": "|mu| is bounded by |min(0,a)| + b*/2 and b* <= b; a candidate with b <= 0 has no positive ordering credit",
-  "carry": "credited intercept = min(0, mean a_t): universe carry over the benchmark is never credited to the ranking; a lagging universe is charged",
+  "cannotCreateAlpha": "|mu| is bounded by b*/2 and b* <= b; a candidate with b <= 0 has no positive ordering credit",
+  "carry": "credited intercept = 0: the measured mean a_t (universe minus 069500.KS) is REPORTED as a diagnostic only and is neither credited nor debited. The 069500.KS accrual anomaly (post-outcome audit: BENCHMARK_EXTERNAL_RECONCILIATION_UNRESOLVED, INTERNAL_CONSTRUCTION_ANOMALY_FOUND) sits in exactly this same-date constant, so it must not enter a cross-sectional stock-selection forecast. 069500.KS is unchanged in the passive core, the self-financing replay and the final active-vs-passive evaluation",
   "input": "s = within-date average-rank percentile of the candidate's raw prediction among scored names (native scales differ; a rank is common)",
-  "mapping": "mu(s) = min(0, a) + b* x (s - 0.5); slope uncertainty sd(s) = SE(b) x |s - 0.5|",
+  "mapping": "mu(s) = b* x (s - 0.5); slope uncertainty sd(s) = SE(b) x |s - 0.5|; a same-date constant added to every label of a date changes a_t only and cannot change mu",
   "noBuckets": "continuous in rank: no coarse bucket map recreates the alpha-reliability-v1 resolution problem",
   "perDate": "OLS slope b_t and intercept a_t of the ECONOMIC label (stock minus 069500.KS, H126) on (s - 0.5); dates with >= 20 names",
   "pooled": "b = mean b_t; SE(b) = Bartlett/Newey-West over the date series with lag ceil(126/5) = 26 weekly overlaps",
@@ -1205,7 +1205,7 @@
  "dependencyHashes": {
   ".github/workflows/kr-alpha-discovery-tournament-v1.yml": "6628a74fe7140e99e5a92bd6a72add7623bd512876195bbb1f57ddad4004d430",
   "data/kr-industry-membership-foundation-v1/top120-inputs.json": "d7c464973ad029bf08886c4bdf2517d1b3ece04cce87bcc63706f1230ed53cd0",
-  "docs/kr-alpha-discovery-tournament-v1-design.md": "0b820c59da2692f9ca079a1a0b0df8ab2b75475c4986665045ed296b2ee6031c",
+  "docs/kr-alpha-discovery-tournament-v1-design.md": "fc596e75af94637183bb6b136aed9b16785943261cb01db0d728b59f9419d8c2",
   "pipeline/__init__.py": "187da1ad9a148da44035f9cf25f7cb094c45afe53d3f445ba62392797972dede",
   "pipeline/accounting_quality.py": "b65c54126ea45bc544d843d5f87b109e71ca7658a1d7a8f99cd435cdf9ea6ada",
   "pipeline/alpha_inference_calibration_v1.py": "87a6990fd6fc5217824ee00205ee247abe88006a2445d41b5a6086709f551186",
@@ -1234,16 +1234,16 @@
   "pipeline/historical_store.py": "2751be8b5b79260f2038c9fb975cae58d49cb7868751c6658e363b48712016c0",
   "pipeline/industry_foundation.py": "795965170eef879e6e5dac6b7b5f7a32e7d898a2eb4e6eb30a1960e04d4af0d3",
   "pipeline/kelly_portfolio.py": "6a4bd54be11e35e7348f64d0c99e7764635c4efcea62306da0b6ca81bfb3b06c",
-  "pipeline/kr_alpha_tournament.py": "8bc4d81b24fb231f551bf9fa74c595f6405ab6f1061466abaaed4e4a1b87517e",
-  "pipeline/kr_alpha_tournament_evaluation.py": "c8c73368102e224c87acce8f4a5a1f8327ff3c2757c28d875e5e88de15a30581",
-  "pipeline/kr_alpha_tournament_execution.py": "60d49690e1f95053da7aca5ea377b4c81e000b3e381ff1f32bc44586fd8c42f0",
+  "pipeline/kr_alpha_tournament.py": "ba6cc33154a6c5d52674608a724ffd1b83729a37172c0f2ffddec010e0b4a4c2",
+  "pipeline/kr_alpha_tournament_evaluation.py": "6fb808ff535c38b16dd67f77c75c4f5d72cc8d71e9ceeccca855d872b7de8c9d",
+  "pipeline/kr_alpha_tournament_execution.py": "0b5a8880747240f156c48145f0e73c9f83254a1a7b50fdf225a24b96801babb8",
   "pipeline/kr_alpha_tournament_features.py": "6aa679bedb8b554b42c0613b3ee8a457c1b11f7fb045886cffba29bed740d2a2",
-  "pipeline/kr_alpha_tournament_models.py": "4f40e6b99a1e0b0745227d964d764440107d870bad4bcaea5fe8408a057784dc",
-  "pipeline/kr_alpha_tournament_portfolio.py": "599bc181f2bf12d37de011ab02bea5e834f323608247bb65d7b71e1fad206b2b",
+  "pipeline/kr_alpha_tournament_models.py": "a761030d70fa73929e5bb5d7c10fe1a98f13704907f76d99ed99520c7285148a",
+  "pipeline/kr_alpha_tournament_portfolio.py": "1c276ba39313df104f0c914f8f4d129bb83eaefb66092df448f8f78b4017a0e3",
   "pipeline/kr_alpha_tournament_receipts.py": "b54ae664761267bde87ea88f8844e22097b03a9898d2719b8ba03444a9287637",
   "pipeline/kr_alpha_tournament_seal.py": "49968473f487f64c4c941bb6ce1fc1eae456fa46273ae29e61fde70071add12b",
-  "pipeline/kr_alpha_tournament_study.py": "347d3460527b179e036e288f22818158d9c04d1e49fe38c0590585316243a247",
-  "pipeline/kr_alpha_tournament_walkforward.py": "7ab6a8d95ae76d35591c258d5e79d531b948d2710ba3e578f313bcf56185ef94",
+  "pipeline/kr_alpha_tournament_study.py": "fde9c8591985772e3569fec0c09622a09ec0b2bdba03961a93f5a30e4738351f",
+  "pipeline/kr_alpha_tournament_walkforward.py": "14cafdd4b4038147a6666fa301f2f34b8a5f4732d76ed868fa0955b42baa6ddb",
   "pipeline/kr_concentrated_portfolio.py": "5059260c02e55dfde5b38b644ef2a66d0ff793dd2fb2e17609331dbb08571b64",
   "pipeline/kr_factor_anatomy.py": "56b2ad6660ae5b02fb9f646f78f4db1e7040caeb108fcf7f3b10e45354fe3a5a",
   "pipeline/kr_factor_anatomy_execution.py": "f8aae109d75dca9521b356168f1a56712f092911f556495538c2e5ab6a7b95e8",
@@ -1344,7 +1344,8 @@
    "cheapTranslator": "per configuration and outer anchor: equal-weight top-quintile of its predictions held 21 sessions, minus passive; gross; used ONLY to give PBO / DSR / SPA a configuration universe, never to select",
    "deflatedSharpe": "Bailey & Lopez de Prado DSR of the primary's non-overlapping 21-session active log-return blocks; N = total effective trials; variance of trial Sharpes from every configuration's outer cheap-translator blocks",
    "pbo": "CSCV probability of backtest overfitting over the configuration universe's outer cheap-translator block returns, S = 16 contiguous groups",
-   "spa": "Hansen SPA (consistent p-value) that no strategy in {primary, baseline 1, challenger, every configuration} beats passive; stationary bootstrap, mean block 6 blocks (126 / 21), B = 2000, fixed seed",
+   "spa": "tournament-wide Hansen SPA (consistent p-value, `spaUniverse`) that no strategy in {primary, baseline 1, challenger, every configuration} beats passive; stationary bootstrap, mean block 6 blocks (126 / 21), B = 2000, fixed seed. This is the SPA the A verdict gates on",
+   "spaPrimaryDescriptive": "`spaPrimary`: the same statistic on the primary alone, i.e. a one-strategy stationary-bootstrap comparison with passive. It pays for no search, is NOT tournament-wide Hansen SPA evidence, and is a descriptive diagnostic only",
    "trialLedger": "every family x hyperparameter x target x recency configuration (fitted in every outer fold), plus the ensemble rule, the decision-focused challenger and the two non-passive translators"
   },
   "noBespokeRescue": "no named-security exclusion (the Samsung / SK Hynix exclusion was already studied in the post-outcome audit)",
@@ -1935,6 +1936,26 @@
    "PRIMARY_ROBUST_KELLY": "the allocator above"
   }
  },
+ "preOutcomeRevisions": {
+  "note": "made after independent review and BEFORE any historical outcome of this study was computed: no execution lock, marker or result exists, and no label, fit on a real label or valued portfolio was produced",
+  "revisions": [
+   {
+    "change": "calibration credited intercept min(0, carry) -> 0; the measured carry is reported as a diagnostic only",
+    "id": "REVIEW_REPAIR_1_ZERO_CREDITED_INTERCEPT",
+    "reason": "the per-date intercept is stock minus 069500.KS and therefore carries the unresolved 069500.KS accrual anomaly; a negative carry injected into every forecast would be read as missing stock-selection information. The benchmark itself is unchanged"
+   },
+   {
+    "change": "minimumValidFolds 2 -> 3 and minimumEconomicFolds = 2; otherwise PASSIVE_DEFAULT_INSUFFICIENT_INNER_EVIDENCE for that outer year",
+    "id": "REVIEW_REPAIR_2_THREE_VALID_INNER_FOLDS_TWO_ECONOMIC_FOLDS",
+    "reason": "with two valid inner folds only one later fold yields a past-only economic score, too weak to select among 120 configurations. By the calendar alone 2018 has 2 valid inner blocks and becomes passive; it is kept in the final evaluation"
+   },
+   {
+    "change": "the A verdict's SPA check reads spaUniverse instead of spaPrimary; spaPrimary stays as a descriptive diagnostic",
+    "id": "REVIEW_REPAIR_3_A_VERDICT_GATES_ON_TOURNAMENT_WIDE_SPA",
+    "reason": "a one-strategy stationary-bootstrap comparison pays for none of the tournament's model search; DSR and PBO are unchanged"
+   }
+  ]
+ },
  "priors": {
   "docs/alpha-opportunity-model-v5-final-postmortem.md": "6813ff8181f4039e060afe999c604e96ee3bd3dc413690f403e5e980aee27eca",
   "docs/alpha-research-foundation-v2-errata.md": "74acd67d8db985474dfa2c7ae847ca0bc4f1382d3c6b174ea672be4dc8b0bbfe",
@@ -2007,7 +2028,7 @@
    "economics": "finite inner economic score on every economic fold"
   },
   "step2Rank": "survivors ranked by mean inner economic score: annualised net log growth of (common translator portfolio) minus (100% passive) on anchor-spaced 21-session blocks of V2 and V3; ties by candidate id",
-  "step3Ensemble": "walk the ranked survivors and keep the best candidate of each family until K = 3 (diversity); equal weights on calibrated expected incremental returns; 1 or 2 survivors -> an ensemble of those; 0 survivors -> PASSIVE_DEFAULT for that outer year"
+  "step3Ensemble": "walk the ranked survivors and keep the best candidate of each family until K = 3 (diversity); equal weights on calibrated expected incremental returns; 1 or 2 survivors -> an ensemble of those; 0 survivors -> PASSIVE_DEFAULT for that outer year (PASSIVE_DEFAULT_INSUFFICIENT_INNER_EVIDENCE when fewer than 3 valid inner folds or 2 finite economic folds existed, PASSIVE_DEFAULT_NO_STABLE_CANDIDATE otherwise)"
  },
  "stopRules": {
   "ANY_VERDICT": "no v1.1, no re-seed, no grid widening, no target or horizon added; the frozen process issues prospective receipts; development evidence is never promotion",
@@ -2096,7 +2117,7 @@
     "G > 0 in at least 3 of the 4 registered periods",
     "G with the largest single contributor removed > 0",
     "DSR >= 0.95",
-    "SPA p-value of the primary vs passive <= 0.05",
+    "tournament-wide Hansen SPA (spaUniverse: primary, baseline 1, challenger and every configuration vs passive) p-value <= 0.05",
     "PBO <= 0.5",
     "outer ensemble rank IC HAC 95% lower bound > 0"
    ],
@@ -2112,10 +2133,12 @@
  "walkForward": {
   "embargoSessions": 21,
   "inner": {
+   "activation": "an outer year may become active ONLY when all 3 inner blocks are VALID by the calendar and a candidate has 3 scored inner folds AND at least 2 finite past-only economic-scoring folds; otherwise the year is PASSIVE_DEFAULT_INSUFFICIENT_INNER_EVIDENCE (100% passive). No date is shifted and no outcome is consulted to make an early year eligible; a passive year stays in the final evaluation",
    "blocks": 3,
    "economicScoreFolds": "V2 and V3 (calibration for Vj is fitted on the candidate's OUT-OF-FOLD predictions of V1..Vj-1 only)",
+   "minimumEconomicFolds": 2,
    "minimumTrainingDates": 52,
-   "minimumValidFolds": 2,
+   "minimumValidFolds": 3,
    "minimumValidationDates": 13,
    "rule": "the most recent half of the fold's training signal dates is split into 3 contiguous equal validation blocks V1 < V2 < V3; for Vj the inner training set is every row whose label exit is strictly before the FIRST entry date of Vj (purge) and whose signal date is at least EMBARGO_SESSIONS sessions before the first signal of Vj (embargo); validation rows must themselves exit before C_Y",
    "validationShare": 0.5

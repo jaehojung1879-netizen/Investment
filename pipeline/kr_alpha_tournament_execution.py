@@ -102,6 +102,7 @@ def frozen_sections():
         "candidates": {"families": T.MODEL_FAMILIES, "recency": T.RECENCY_SCHEMES, "excluded": T.EXCLUDED_METHODS,
                        "registry": T.candidate_registry()},
         "trialLedger": T.trial_ledger(),
+        "preOutcomeRevisions": {"revisions": T.PRE_OUTCOME_REVISIONS, "note": T.PRE_OUTCOME_REVISIONS_NOTE},
         "walkForward": T.WALK_FORWARD, "selection": T.SELECTION, "calibration": T.CALIBRATION, "calibrationHacLag": T.CALIBRATION_HAC_LAG,
         "uncertainty": T.UNCERTAINTY,
         "portfolio": {"inherited": T.PORTFOLIO, "passiveLeg": T.PASSIVE_LEG, "allocator": T.ALLOCATOR, "translators": T.PORTFOLIO_TRANSLATORS,
@@ -426,10 +427,15 @@ def pre_lock_gates(bundle, spec, root):
     coverage, _ = signal_coverage(features, bundle["anchors"])
     if coverage < T.MIN_SIGNAL_COVERAGE_PERCENT:
         reasons.append("SIGNAL_COVERAGE_BELOW_%d_PERCENT" % T.MIN_SIGNAL_COVERAGE_PERCENT)
-    for fold in calendar_fold_plan()["folds"]:
-        if sum(b["status"] == "VALID" for b in fold["innerBlocks"]) < T.MIN_VALID_FOLDS:
-            reasons.append("TOO_FEW_VALID_INNER_FOLDS_BY_CALENDAR:" + str(fold["year"]))
+    reasons += calendar_plan_reasons(calendar_fold_plan())
     return sorted(set(reasons))
+
+
+def calendar_plan_reasons(plan):
+    """A year with too little inner history is a registered PASSIVE year, not a blocker; only a plan with NO year able to become active blocks."""
+    if not any(f["innerEvidence"]["sufficient"] for f in plan["folds"]):
+        return ["NO_OUTER_YEAR_HAS_SUFFICIENT_INNER_EVIDENCE_BY_CALENDAR"]
+    return []
 
 
 def calendar_fold_plan():
@@ -450,9 +456,19 @@ def calendar_fold_plan():
             plan.append({"validFrom": b[0], "validTo": b[-1], "validationDates": len(b), "innerTrainingDates": len(inner_train),
                          "purgeRule": "exit < " + first_entry, "embargoThrough": emb,
                          "status": "VALID" if len(inner_train) >= T.MIN_TRAIN_DATES and len(b) >= T.MIN_VALID_DATES else "INSUFFICIENT"})
+        valid = sum(b["status"] == "VALID" for b in plan)
+        sufficient = valid >= T.MIN_VALID_FOLDS and valid - 1 >= T.MIN_ECONOMIC_FOLDS
         folds.append({"year": fold["year"], "cutoff": fold["cutoff"], "anchors": len(fold["anchors"]), "calendarTrainingDates": len(train),
-                      "firstTrainingSignal": train[0] if train else None, "lastTrainingSignal": train[-1] if train else None, "innerBlocks": plan})
-    return {"weeklyDates": len(weekly), "anchors": len(anchors), "outerAnchors": sum(f["anchors"] for f in folds), "folds": folds}
+                      "firstTrainingSignal": train[0] if train else None, "lastTrainingSignal": train[-1] if train else None, "innerBlocks": plan,
+                      "innerEvidence": {"validInnerFolds": valid, "economicScoringFoldsAvailable": max(0, valid - 1),
+                                        "requiredValidInnerFolds": T.MIN_VALID_FOLDS, "requiredFiniteEconomicFolds": T.MIN_ECONOMIC_FOLDS,
+                                        "sufficient": sufficient,
+                                        "plannedState": "ELIGIBLE_FOR_INNER_SELECTION" if sufficient else T.PASSIVE_INSUFFICIENT_EVIDENCE,
+                                        "keptInFinalEvaluation": True}})
+    return {"weeklyDates": len(weekly), "anchors": len(anchors), "outerAnchors": sum(f["anchors"] for f in folds), "folds": folds,
+            "passiveInsufficientInnerEvidenceYearsByCalendar": [f["year"] for f in folds if not f["innerEvidence"]["sufficient"]],
+            "passiveYearsNote": "a year listed here is 100% passive because too little past-only inner history existed at its cutoff; it is not "
+                                "moved, re-dated or dropped, and its sessions stay in every final active-vs-passive statistic"}
 
 
 # --------------------------------------------------------------------------- #
@@ -630,10 +646,7 @@ def readiness_audit(root=ROOT, full_registry=False):
     plan = calendar_fold_plan()
     spec, sha = load_spec(root)
     synthetic = synthetic_determinism(full=full_registry)
-    reasons = []
-    for f in plan["folds"]:
-        if sum(b["status"] == "VALID" for b in f["innerBlocks"]) < T.MIN_VALID_FOLDS:
-            reasons.append("TOO_FEW_VALID_INNER_FOLDS_BY_CALENDAR:" + str(f["year"]))
+    reasons = calendar_plan_reasons(plan)
     if not synthetic["deterministic"]:
         reasons.append("SYNTHETIC_TOURNAMENT_NOT_DETERMINISTIC")
     if not outcomes_zero(counters):

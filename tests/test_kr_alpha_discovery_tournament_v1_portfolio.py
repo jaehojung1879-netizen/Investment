@@ -172,6 +172,25 @@ def test_nav_identity_holds_through_trades():
     assert path[5]["activeNames"] == 2 and path[20]["activeNames"] == 1
 
 
+def test_a_fully_invested_book_keeps_the_passive_leg_key_and_keeps_valuing():
+    """sum w = 1 (passive = 0) is a registered allocator state; the ledger must still read the next session's benchmark return."""
+    out = P.execute({B: 1.0}, {"S1": 0.5, "S2": 0.5}, {"S1": 5e10, "S2": 5e10}, 1e8)
+    assert out["weights"][B] == 0.0 and sum(out["weights"].values()) == pytest.approx(1.0)
+    w = World()
+    path = _replay(w, {w.days[5]: {"S1": 0.5, "S2": 0.5}, w.days[20]: {"S1": 0.2}})
+    assert path["complete"] and len(path["path"]) == len(w.days)
+    assert path["path"][6]["activeWeight"] == pytest.approx(1.0) and path["path"][20]["activeNames"] == 1
+
+
+def test_allocator_starts_from_a_fully_invested_book_that_rounds_above_one():
+    mu, cov, ceb = _problem(n=5, seed=8)
+    w0 = np.full(5, 0.2) * (1 + 4e-15)                 # a drifted, renormalised fully invested book: sum w0 = 1 + rounding
+    assert w0.sum() > 1.0 + 1e-15
+    lower, upper = np.zeros(5), np.full(5, 1.0)
+    w, info = P.allocate(mu, cov, ceb, w0, 0.002, 0.004, lower, upper)
+    assert w.sum() <= 1.0 + 1e-9 and (w >= 0).all() and np.isfinite(info["objective"])
+
+
 def test_a_non_executable_holding_is_deferred_not_sold():
     w = World(frozen={("S1", "2021-01-21")})
     out = _replay(w, {w.days[5]: {"S1": 0.25}, w.days[20]: {}})

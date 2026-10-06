@@ -274,11 +274,33 @@ def test_calibration_shrinks_never_credits_carry_and_cannot_create_alpha():
     assert flat["bStar"] == 0.0
 
 
-def test_lagging_universe_is_charged_not_credited():
+def test_carry_is_reported_but_neither_credited_nor_debited():
     dates = np.repeat(np.arange(20).astype(str), 30)
     s = np.tile((np.arange(30) + 0.5) / 30, 20)
-    cal = M.calibrate(dates, s, -0.03 + 0.0 * s)
-    assert cal["credited"] == pytest.approx(-0.03)
+    for level in (-0.03, 0.03):
+        cal = M.calibrate(dates, s, level + 0.0 * s)
+        assert cal["carry"] == pytest.approx(level) and cal["credited"] == 0.0
+        mu, _ = M.apply_calibration(cal, s)
+        assert np.allclose(mu, 0.0, atol=1e-15, rtol=0)
+
+
+def test_a_same_date_benchmark_constant_cannot_change_calibrated_forecasts():
+    """069500.KS enters the economic label as one constant per date; shifting it (the unresolved accrual anomaly) moves only the diagnostic carry."""
+    rng = np.random.default_rng(21)
+    n_dates, n_names = 40, 30
+    dates = np.repeat(np.arange(n_dates).astype(str), n_names)
+    s = np.tile((np.arange(n_names) + 0.5) / n_names, n_dates)
+    y = 0.03 * (s - 0.5) + rng.normal(0, 0.04, len(s))
+    shift = np.repeat(rng.normal(-0.05, 0.08, n_dates), n_names)       # a different benchmark-level constant on every date
+    a, b = M.calibrate(dates, s, y), M.calibrate(dates, s, y - shift)
+    assert a["b"] == pytest.approx(b["b"], abs=1e-12) and a["bStar"] == pytest.approx(b["bStar"], abs=1e-12)
+    assert a["carry"] != pytest.approx(b["carry"])
+    s_new = (np.arange(25) + 0.5) / 25
+    (mu_a, sd_a), (mu_b, sd_b) = M.apply_calibration(a, s_new), M.apply_calibration(b, s_new)
+    assert np.allclose(mu_a, mu_b, atol=1e-12, rtol=0) and np.allclose(sd_a, sd_b, atol=1e-12, rtol=0)
+    ca, cb = M.contract(mu_a[None, :], sd_a[None, :]), M.contract(mu_b[None, :], sd_b[None, :])
+    assert np.allclose(ca["muPost"], cb["muPost"], atol=1e-12, rtol=0)
+    assert T.CALIBRATION["mapping"].startswith("mu(s) = b* x (s - 0.5)") and "credited intercept = 0" in T.CALIBRATION["carry"]
 
 
 def test_contraction_is_a_contraction_and_disagreement_shrinks():
@@ -312,6 +334,66 @@ def test_selection_keeps_one_per_family_ranks_by_economics_and_can_return_passiv
                {"id": "SPARSE_LINEAR|a", "family": "SPARSE_LINEAR", "survives": True, "economicScore": 0.001}]
     assert W.select_ensemble(results) == ["SHRUNK_LINEAR|b", "SHALLOW_TREE|a", "LEARNING_TO_RANK|a"]
     assert W.select_ensemble([dict(r, survives=False) for r in results]) == []
+
+
+# --------------------------------------------------------------------------- #
+# Inner evidence required before an outer year can become active
+# --------------------------------------------------------------------------- #
+def _world_fold():
+    """The invented world's 2019 outer fold, whose three inner blocks are all VALID by construction (its 2018 fold has one)."""
+    world = ST.SyntheticWorld(names=24, industries=4, end="2019-06-28")
+    rows = world.signal_rows()
+    data = W.prepare_data(F.represent(rows))
+    labels = W.align_labels(data, ST.build_labels(rows, world.calendar, world.close_at, world.through))
+    return world, data, labels, [f for f in W.outer_folds(world.anchors) if f["year"] == 2019][0]
+
+
+def test_activation_thresholds_are_three_valid_folds_and_two_economic_folds():
+    assert T.MIN_VALID_FOLDS == 3 and T.MIN_ECONOMIC_FOLDS == 2
+    assert T.WALK_FORWARD["inner"]["minimumValidFolds"] == 3 and T.WALK_FORWARD["inner"]["minimumEconomicFolds"] == 2
+
+
+@pytest.mark.parametrize("valid_blocks", [0, 1, 2])
+def test_an_outer_year_with_fewer_than_three_valid_inner_folds_stays_passive(monkeypatch, valid_blocks):
+    world, data, labels, fold = _world_fold()
+    real = W.inner_blocks
+
+    def fewer(*a, **k):
+        blocks = real(*a, **k)
+        keep = [b for b in blocks if b["status"] == "VALID"][-valid_blocks:] if valid_blocks else []
+        return [b if any(b is k for k in keep) else {**b, "status": "INSUFFICIENT"} for b in blocks]
+    monkeypatch.setattr(W, "inner_blocks", fewer)
+    evaluated = []
+    monkeypatch.setattr(W, "evaluate_inner", lambda *a, **k: evaluated.append(1))
+    log, anchors = W.run_outer_fold(fold, data, labels, ST.synthetic_registry()[:2], world.risk(), world.calendar)
+    assert log["state"] == T.PASSIVE_INSUFFICIENT_EVIDENCE and log["ensemble"] == [] and evaluated == []
+    assert log["innerEvidence"]["sufficient"] is False and log["innerEvidence"]["validInnerFolds"] == valid_blocks
+    assert all("muPost" not in a for a in anchors.values())
+
+
+def test_a_candidate_with_fewer_than_two_finite_economic_folds_cannot_survive(monkeypatch):
+    world, data, labels, fold = _world_fold()
+    train = W.training_mask(labels, fold["cutoff"])
+    blocks = W.inner_blocks(data["dates"], train, labels, world.calendar)
+    assert sum(b["status"] == "VALID" for b in blocks) == 3
+    cand = ST.synthetic_registry()[0]
+    v3 = [b for b in blocks if b["status"] == "VALID"][2]["firstSignal"]     # V2 scores finitely, V3's economic score is not finite
+    monkeypatch.setattr(W, "inner_economic_block", lambda rows, mu, risk, w: (np.nan if rows["date"].iloc[0] >= v3 else 0.01, w))
+    r = W.evaluate_inner(cand, data, labels, blocks, fold["cutoff"], world.risk(), world.calendar)
+    assert r["finiteEconomicFolds"] == 1 and "TOO_FEW_FINITE_ECONOMIC_FOLDS" in r["rejections"] and not r["survives"]
+    assert W.fold_state(True, W.select_ensemble([r]), [r]) == T.PASSIVE_INSUFFICIENT_EVIDENCE
+    two_valid = [b if b["block"] != 0 else {**b, "status": "INSUFFICIENT"} for b in blocks]
+    monkeypatch.setattr(W, "inner_economic_block", lambda rows, mu, risk, w: (0.01, w))
+    r2 = W.evaluate_inner(cand, data, labels, two_valid, fold["cutoff"], world.risk(), world.calendar)
+    assert {"TOO_FEW_VALID_INNER_FOLDS", "TOO_FEW_FINITE_ECONOMIC_FOLDS"} <= set(r2["rejections"]) and not r2["survives"]
+
+
+def test_fold_state_separates_insufficient_evidence_from_no_stable_candidate():
+    unstable = [{"rejections": ["IC_DIRECTION_UNSTABLE"]}]
+    assert W.fold_state(True, ["X"], unstable) == "ENSEMBLE"
+    assert W.fold_state(False, [], []) == T.PASSIVE_INSUFFICIENT_EVIDENCE
+    assert W.fold_state(True, [], unstable) == T.PASSIVE_NO_STABLE_CANDIDATE
+    assert W.fold_state(True, [], [{"rejections": ["TOO_FEW_FINITE_ECONOMIC_FOLDS"]}]) == T.PASSIVE_INSUFFICIENT_EVIDENCE
 
 
 # --------------------------------------------------------------------------- #
@@ -353,8 +435,10 @@ def test_synthetic_tournament_reports_breadth_and_every_translator(synthetic):
     paths = synthetic["result"]["paths"]
     assert {k.split(":")[0] for k in paths} == set(ST.TRANSLATORS)
     assert paths["BASELINE_0_PASSIVE:BASE"]["meanActiveNames"] == 0.0
-    for k, v in paths.items():
-        assert v["maxActiveWeight"] <= T.PORTFOLIO["singleNameCap"] + 1e-9
+    for key, p in synthetic["paths"].items():           # the name cap is a TRADE-TIME constraint; prices may drift a held name above it
+        traded = [r["maxActiveWeight"] for r in p["path"] if r["trade"]]
+        assert all(w <= T.PORTFOLIO["singleNameCap"] + 1e-9 for w in traded), key
+        assert all(r["activeWeight"] <= 1 + 1e-9 for r in p["path"]), key
 
 
 # --------------------------------------------------------------------------- #
@@ -406,7 +490,8 @@ def test_spa_rejects_a_real_edge_and_not_noise():
 # --------------------------------------------------------------------------- #
 def _evidence(**kw):
     base = {"integrity": {"pathsComplete": True, "identityUnchanged": True, "signalCoveragePercent": 100.0}, "gPp": 2.0, "bootstrapLower": 0.2,
-            "gCostX2Pp": 1.0, "periodsPositive": 4, "gLeaveLargestOutPp": 0.5, "dsr": 0.97, "spaP": 0.01, "pbo": 0.2, "icLower95": 0.01}
+            "gCostX2Pp": 1.0, "periodsPositive": 4, "gLeaveLargestOutPp": 0.5, "dsr": 0.97, "spaUniverseP": 0.01, "pbo": 0.2,
+            "icLower95": 0.01}
     base.update(kw)
     return base
 
@@ -425,3 +510,23 @@ def test_missing_evidence_never_passes_a_check():
     out = E.verdict(_evidence(dsr=None, pbo=None))
     assert out["code"] == "B" and not out["checks"]["dsr"] and not out["checks"]["pbo"]
     assert E.verdict(_evidence(gPp=None, icLower95=None))["code"] == "D"
+
+
+def test_robust_verdict_needs_the_tournament_wide_spa_not_the_primary_one():
+    out = E.verdict(_evidence(spaUniverseP=0.2, spaPrimaryP=0.001))
+    assert out["code"] == "B" and out["checks"]["spaUniverse"] is False and "spa" not in out["checks"]
+    assert E.verdict(_evidence(spaUniverseP=None))["code"] == "B"
+    assert E.verdict(_evidence(spaUniverseP=0.05))["code"] == "A"
+    assert "spaUniverse" in T.VERDICT_RULES["A"][6] and "spaPrimaryDescriptive" in T.MULTIPLICITY
+
+
+def test_assemble_feeds_the_universe_spa_to_the_verdict_and_keeps_primary_descriptive(synthetic, monkeypatch):
+    def fake_spa(d, *a, **k):
+        d = np.asarray(d)
+        return {"status": "OK", "pValue": 0.001 if d.ndim == 2 and d.shape[1] == 1 else 0.6}
+    monkeypatch.setattr(E, "spa_test", fake_spa)
+    out = ST.assemble(synthetic["process"], synthetic["paths"], synthetic["labels"], 100.0)
+    assert out["spaPrimary"]["pValue"] == 0.001 and out["spaUniverse"]["pValue"] == 0.6
+    assert out["evidence"]["spaUniverseP"] == 0.6 and "spaP" not in out["evidence"]
+    assert out["verdict"]["code"] != "A" and out["verdict"]["checks"]["spaUniverse"] is False
+    assert out["spaPrimary"]["role"].startswith("DESCRIPTIVE") and out["spaUniverse"]["role"].startswith("TOURNAMENT_WIDE")
