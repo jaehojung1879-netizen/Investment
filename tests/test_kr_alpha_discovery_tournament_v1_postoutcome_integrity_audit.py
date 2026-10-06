@@ -222,17 +222,45 @@ def test_audit_code_never_references_a_lock_marker_or_the_formal_execute(path):
     assert "urllib" not in text and "requests" not in text and "subprocess" not in text
 
 
+def _top_level_block(text, key):
+    """The lines of one top-level YAML block (`key:` at column 0) up to the next top-level key (no YAML library is a dependency here)."""
+    lines = text.splitlines()
+    i = lines.index(key + ":")
+    out = []
+    for line in lines[i + 1:]:
+        if line and not line.startswith((" ", "#")):
+            break
+        out.append(line)
+    return [line for line in out if line.strip() and not line.strip().startswith("#")]
+
+
+def _github_scripts(text):
+    """Every `script: |` body, de-indented, read from the workflow text."""
+    lines, out = text.splitlines(), []
+    for i, line in enumerate(lines):
+        if line.strip() == "script: |":
+            indent = len(line) - len(line.lstrip())
+            body = []
+            for nxt in lines[i + 1:]:
+                if nxt.strip() and len(nxt) - len(nxt.lstrip()) <= indent:
+                    break
+                body.append(nxt)
+            width = min(len(b) - len(b.lstrip()) for b in body if b.strip())
+            out.append("\n".join(b[width:] for b in body))
+    return out
+
+
 def test_workflow_is_manual_read_only_and_never_executes_or_writes():
     text = WORKFLOW.read_text()
-    import yaml
-    doc = yaml.safe_load(text)
-    triggers = doc.get(True, doc.get("on"))
-    assert set(triggers) == {"workflow_dispatch"} and triggers["workflow_dispatch"]["inputs"]["audit_ref"]["required"] is True
-    assert doc["permissions"] == {"contents": "read", "actions": "read"}
-    for job in doc["jobs"].values():
-        assert "permissions" not in job
-    for bad in ("--mode execute", "contents: write", "git push", "createRef", "POST /git/refs", "deleteRef", "updateRef", "mode: seal"):
-        assert bad not in text, bad
+    on = _top_level_block(text, "on")
+    assert [line.strip() for line in on if len(line) - len(line.lstrip()) == 2] == ["workflow_dispatch:"]
+    assert "required: true" in "\n".join(on) and "audit_ref:" in "\n".join(on)
+    assert [line.strip() for line in _top_level_block(text, "permissions")] == ["contents: read", "actions: read"]
+    code = [line for line in text.splitlines() if not line.lstrip().startswith("#")]
+    assert sum("permissions:" in line for line in code) == 1             # top level only: no job widens it
+    for bad in ("--mode execute", "contents: write", "git push", "createRef", "POST /git/refs", "deleteRef", "updateRef", "mode: seal",
+                "pull_request", "schedule:", "push:"):
+        assert not any(bad in line for line in code), bad
     assert "--mode scan" in text and "--mode full" in text and A.FORMAL["rawInputArtifactName"] in text
 
 
@@ -240,10 +268,8 @@ def test_workflow_github_script_compiles_with_the_injected_names(tmp_path):
     node = shutil.which("node")
     if node is None:
         pytest.skip("node not available")
-    import yaml
-    doc = yaml.safe_load(WORKFLOW.read_text())
-    scripts = [s["with"]["script"] for s in doc["jobs"]["audit"]["steps"] if "github-script" in str(s.get("uses", ""))]
-    assert scripts
+    scripts = _github_scripts(WORKFLOW.read_text())
+    assert len(scripts) == 1 and "listMatchingRefs" in scripts[0]
     for i, body in enumerate(scripts):
         src = tmp_path / ("s%d.js" % i)
         src.write_text("const AsyncFunction = Object.getPrototypeOf(async function(){}).constructor;\n"
