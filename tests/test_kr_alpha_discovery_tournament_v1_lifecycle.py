@@ -7,6 +7,7 @@ import hashlib
 import io
 import json
 from pathlib import Path
+import re
 import subprocess
 import sys
 import zipfile
@@ -51,10 +52,32 @@ def test_spec_inherits_the_integrated_studys_exact_input_and_membership_pins():
 
 
 def test_nothing_has_been_executed_sealed_or_locked_in_this_checkout():
-    for rel in (E.RESULT_PATH, E.MARKER_PATH, E.MANIFEST_PATH, SEAL.PROVENANCE_PATH):
-        assert not (ROOT / rel).exists(), rel
-    tags = subprocess.run(["git", "tag", "--list", T.STUDY + "*"], cwd=ROOT, capture_output=True, text=True).stdout.strip()
-    assert tags == ""
+    """POST-SEAL STATE (result seal #207 merged): the study is CONSUMED. The result, marker and manifest exist byte-for-byte as the formal run produced
+    them and match the committed seal provenance. (The name is kept so the node id is stable; before the seal this test asserted the opposite. Lock tags
+    are not asserted here: they live on GitHub and a checkout may not have fetched them, so lock identity is pinned through the marker and provenance.)"""
+    provenance = json.loads((ROOT / SEAL.PROVENANCE_PATH).read_text())
+    spec_sha = (ROOT / E.SPEC_SIDECAR).read_text().strip()
+    assert provenance["studyId"] == T.STUDY and provenance["specSha256"] == spec_sha and provenance["runConclusionOfExecuteJob"] == "success"
+    assert SEAL.COMMITTED == {"tournament-result.json": E.RESULT_PATH, "execution-started.json": E.MARKER_PATH, "manifest.json": E.MANIFEST_PATH}
+    assert set(provenance["committedFiles"]) == {E.RESULT_PATH, E.MARKER_PATH, E.MANIFEST_PATH}
+    files = {}
+    for name, rel in SEAL.COMMITTED.items():
+        path = ROOT / rel
+        assert path.is_file(), rel                                  # the sealed result, the execution marker and the manifest all exist
+        raw = path.read_bytes()
+        entry = provenance["committedFiles"][rel]
+        assert hashlib.sha256(raw).hexdigest() == entry["sha256"] and len(raw) == entry["bytes"] and entry["sourceFile"] == name, rel
+        files[name] = raw
+    # the identities the formal run's own seal step verified, re-checked on the committed bytes by the same production function
+    SEAL.verify_bundle(files, spec_sha, provenance["executionSha"])
+    marker = json.loads(files["execution-started.json"])
+    assert provenance["lockRefs"] == [SEAL.LOCK_PREFIX, SEAL.LOCK_PREFIX + "-" + spec_sha]
+    assert marker["lockRef"] == provenance["lockRefs"][1] and marker["studyLockRef"] == provenance["lockRefs"][0]
+    assert marker["lockedMainSha"] == provenance["executionSha"] and marker["valuesReadBeforeThisMarker"] == 0
+    # consumed: a fresh authorization is impossible even if the lock probe (wrongly) reported no lock
+    spec, sha, env = _env()
+    with pytest.raises(ValueError, match="TOURNAMENT_RESULT_ALREADY_COMMITTED"):
+        E.authorize_execution(spec, sha, ROOT, env, git=_git_committed, lock_probe=lambda: False)
 
 
 def test_committed_readiness_is_outcome_free_and_matches_the_spec():
@@ -80,13 +103,16 @@ def test_calendar_plan_marks_the_thin_early_year_passive_without_moving_or_dropp
 
 
 def test_verify_and_readiness_never_touch_real_data(monkeypatch):
+    """POST-SEAL STATE: `verify` refuses immediately because a sealed result is present (the study is consumed), and neither `verify` nor
+    `readiness` touches real data, the lock API or the network. A spy raises AssertionError (not ValueError) on any such touch."""
     def refuse(*a, **k):
-        raise AssertionError("REAL_DATA_TOUCHED")
-    for name in ("build_signal_bundle", "terminal_ineligible", "cross_check_endpoints", "RealContext"):
+        raise AssertionError("REAL_DATA_LOCK_OR_NETWORK_TOUCHED")
+    for name in ("build_signal_bundle", "terminal_ineligible", "cross_check_endpoints", "RealContext", "claim_execution_lock", "lock_exists", "github_api"):
         monkeypatch.setattr(E, name, refuse)
     monkeypatch.setattr(E.X, "load_sources", refuse)
     monkeypatch.setattr(E, "synthetic_determinism", lambda full=False: {"deterministic": True})
-    assert E.verify(ROOT)["verified"]
+    with pytest.raises(ValueError, match="RESULT_ALREADY_PRESENT_IN_A_PREREGISTRATION_CHECKOUT: " + re.escape(E.RESULT_PATH)):
+        E.verify(ROOT)
     assert E.readiness_audit(ROOT)["realOutcomesRead"] is False
 
 
@@ -118,15 +144,21 @@ def test_authorization_refuses_anything_but_the_registered_dispatch(override, co
 
 
 def test_authorization_refuses_when_any_lock_exists_or_its_state_is_unknown():
+    """POST-SEAL STATE: authorization is impossible. The committed result is checked before the lock probe, so the lock-exists refusal is no longer the
+    one reached; the test accepts either registered refusal and proves the sealed result alone is enough (a probe reporting NO lock still refuses)."""
     spec, sha, env = _env()
-    with pytest.raises(ValueError, match="EXECUTION_LOCK_ALREADY_EXISTS"):
+    with pytest.raises(ValueError, match="TOURNAMENT_RESULT_ALREADY_COMMITTED|EXECUTION_LOCK_ALREADY_EXISTS"):
         E.authorize_execution(spec, sha, ROOT, env, git=_git_committed, lock_probe=lambda: True)
+    with pytest.raises(ValueError, match="TOURNAMENT_RESULT_ALREADY_COMMITTED"):          # only the sealed result can refuse here
+        E.authorize_execution(spec, sha, ROOT, env, git=_git_committed, lock_probe=lambda: False)
     with pytest.raises(ValueError, match="UNVERIFIABLE"):
         E.lock_exists({}, api=lambda *a: (200, []))
     with pytest.raises(ValueError, match="UNVERIFIABLE"):
         E.lock_exists({"GH_TOKEN": "x", "GITHUB_REPOSITORY": "o/r"}, api=lambda *a: (500, {}))
-    permit = E.authorize_execution(spec, sha, ROOT, env, git=_git_committed, lock_probe=lambda: False)
+    permit = E.ExecutionPermit(sha, E._PERMIT_TOKEN)         # authorize_execution can no longer issue one; require_permit is still checked directly
     assert E.require_permit(permit) is permit
+    with pytest.raises(ValueError, match="WITHOUT_PERMIT"):
+        E.require_permit(object())
 
 
 # --------------------------------------------------------------------------- #
@@ -241,8 +273,16 @@ def test_seal_script_actually_runs_its_subcommands(tmp_path):
     """The integrated study's seal script had no main() guard, so every subcommand was a silent no-op (run 37374530672). Run this one for real."""
     script = ROOT / "scripts/seal_kr_alpha_discovery_tournament_v1.py"
     assert 'if __name__ == "__main__":' in script.read_text()
-    out = subprocess.run([sys.executable, str(script), "check-main", "--root", str(ROOT)], capture_output=True, text=True, check=True)
-    assert out.stdout.strip() == (ROOT / E.SPEC_SIDECAR).read_text().strip()
+    # POST-SEAL STATE: the real checkout is sealed, so check-main must REFUSE it with the registered error (a no-op script would exit 0)
+    sealed = subprocess.run([sys.executable, str(script), "check-main", "--root", str(ROOT)], capture_output=True, text=True)
+    assert sealed.returncode != 0 and "RESULT_ALREADY_SEALED: " + E.RESULT_PATH in sealed.stderr and sealed.stdout.strip() == ""
+    # the success path is still proven for real, on a synthetic UNSEALED root (spec files only), so the subcommand's output is exercised too
+    clean = tmp_path / "clean"
+    (clean / "research_specs").mkdir(parents=True)
+    (clean / "research_specs" / (T.STUDY + ".json")).write_text("{}")
+    (clean / "research_specs" / (T.STUDY + ".sha256")).write_text("deadbeef\n")
+    ok = subprocess.run([sys.executable, str(script), "check-main", "--root", str(clean)], capture_output=True, text=True, check=True)
+    assert ok.stdout.strip() == "deadbeef"
     (tmp_path / "research_specs").mkdir()
     (tmp_path / "research_specs" / (T.STUDY + ".json")).write_text("{}")
     (tmp_path / "research_specs" / (T.STUDY + ".sha256")).write_text("x\n")

@@ -2524,6 +2524,31 @@
   starting projection divided by zero when the held book summed to 1 plus rounding. Both are fixed with tests that fail on the old code; in a formal
   run either would have struck after the lock and consumed the study.
 
+## KR alpha discovery tournament v1 post-outcome integrity audit invariants (v2.49)
+
+- A CONSUMED STUDY IS DIAGNOSED, NEVER REDONE. `kr-alpha-discovery-tournament-v1` spent its one execution (run `37535814142`, commit `eac50fdf`, spec
+  `a8acb44c...`) and is sealed as `BLOCKED_BY_DATA_INTEGRITY` (`pathsComplete: false`; four of seven registered paths incomplete). The integrity audit
+  is `POST_OUTCOME_FORENSIC_DIAGNOSTIC_NOT_CONFIRMATORY`: it never claims, reads as authorisation, moves or deletes a lock, never writes a marker, never
+  writes or edits the sealed result (`verify_sealed_result` checks its bytes; the CLI refuses that path as an output), and tunes nothing. An AST test
+  forbids every lock / marker / permit / formal-execute name in the audit code, and its workflow is manual, read-only and has no pull-request trigger.
+- A REASON THE HARNESS DISCARDED CANNOT BE READ BACK FROM THE RESULT. `replay` returns the failing `ticker:day`; `assemble` keeps only the boolean,
+  and the job log prints only the verdict. The first failures exist nowhere committed and can only come from a read-only re-run of the frozen process
+  on the exact raw-input artifact. A later harness should keep the reason string beside the boolean.
+- TRACING OBSERVES, IT NEVER REIMPLEMENTS. The reconstruction calls the frozen `build_signal_bundle`, `run_process`, `make_decider` and `replay`.
+  Wrappers record the mark, decision and execution calls and return exactly what they wrap. The held book is read from `replay`'s own `weights`, and
+  `P.execute` is observed by swapping the module attribute for one call. A trade loop's price lookup for a new order (previous = None) is never
+  recorded as the path's failure: the ledger skips that order itself. A test shows the traced path loop is byte-identical to `run_paths` (paths and
+  counters) on the invented world, and nothing is attributed unless the reconstruction reproduces the sealed result.
+- A MODEL-FREE SCAN BOUNDS WHAT A MODEL-DEPENDENT REPLAY CAN FIND. From the replay-v16 panels and PIT membership alone, with the manifest digest the
+  formal run requires: across 2,116 sessions the benchmark has no missing close and no Top120 name has a mid-series gap. Exactly eight terminal ends
+  fall in the window, all in the 22-name terminated inventory, each after a 12-22 session pre-delisting suspension (unchanged close, zero volume),
+  and all with the terminal action chain BLOCKED. Every incomplete path's first failure must be one of those eight first-unpriced sessions. A held
+  name cannot be sold during the suspension (the ledger defers a non-executable trade), and the ledger has no terminal-economics path. That is the
+  registered conservative rule meeting an unresolved foundation, not a `mark()` defect. Which path held what is left to the reconstruction.
+- A BASELINE THAT NEVER TRADES IS A MEASUREMENT. `BASELINE_1_EQUAL_WEIGHT_SLEEVE` is identical to 100% passive on every session, so no shrunk forecast
+  ever cleared the 0.9% round-trip cost. Whatever active weight the primary paths held relied at least partly on the allocator's covariance terms.
+  This is recorded as a fact about the sealed bytes, not a reinterpretation, and is not decomposed here.
+
 ## Lint gate invariants (v2.11)
 
 - The enabled rule set reports ZERO findings on `main`. A rule is turned on in the
