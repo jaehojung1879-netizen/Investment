@@ -1,0 +1,36 @@
+{
+ "auditId": "kr-alpha-discovery-tournament-v1-postoutcome-integrity-audit",
+ "formal": {
+  "executionRunId": 37535814142,
+  "executionSha": "eac50fdf725ac797e5c37044246e2a7ffa9b1e64",
+  "incompletePaths": [
+   "DECISION_FOCUSED_CHALLENGER:BASE",
+   "PRIMARY_ROBUST_KELLY:BASE",
+   "PRIMARY_ROBUST_KELLY:EXECUTION_DELAY_ONE_SESSION",
+   "PRIMARY_ROBUST_KELLY:LIQUIDITY_HAIRCUT_HALF_ADV"
+  ],
+  "inputIdentitySha256": "233df37ed205cc6b48828121e711417ccf961301dc58aa252430b343db9666a7",
+  "lockRefs": [
+   "refs/tags/kr-alpha-discovery-tournament-v1-execution-lock",
+   "refs/tags/kr-alpha-discovery-tournament-v1-execution-lock-a8acb44c4b685e06ce7692e44461147110e2e2d32a119adef0dd216476f50e7f"
+  ],
+  "rawInputArtifactDigest": "sha256:42eeb18b7a5c88816629036f472a93057b6a9be4768ad47292ba0d2750b4cce7",
+  "rawInputArtifactId": 11157875265,
+  "rawInputArtifactName": "kr-model-raw-inputs-36844599518",
+  "rawInputRunId": 36844599518,
+  "replayManifestSha256": "f0781292f508a123c234ded6d28aa8e84a0dc3cc29500e14989dc0b68f53b4d2",
+  "resultArtifactDigest": "sha256:2079eb4adff331be02126c163084b92737828eb6be9aa49ece832b23f749ae85",
+  "resultArtifactId": 11449586098,
+  "resultArtifactName": "kr-alpha-discovery-tournament-v1-results-37535814142",
+  "resultPath": "docs/results/kr-alpha-discovery-tournament-v1-result.json",
+  "resultSha256": "4a117ed23d30f9d716c87dbd987e1b80798484b0ab3558638379bf65cf9ccc5d",
+  "specSha256": "a8acb44c4b685e06ce7692e44461147110e2e2d32a119adef0dd216476f50e7f",
+  "verdict": "BLOCKED_BY_DATA_INTEGRITY"
+ },
+ "inputIdentityAfterSha256": "233df37ed205cc6b48828121e711417ccf961301dc58aa252430b343db9666a7",
+ "reproduction": {
+  "firstDivergence": "paths/PRIMARY_ROBUST_KELLY:COST_X2/annualLogGrowth (0.10176568680470117 vs 0.101765555609953)",
+  "status": "RECONSTRUCTION_MISMATCH"
+ },
+ "status": "POST_OUTCOME_FORENSIC_DIAGNOSTIC_NOT_CONFIRMATORY"
+}

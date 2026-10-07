@@ -1,0 +1,55 @@
+{
+  "evidenceClass": "POST_OUTCOME_FORENSIC_DIAGNOSTIC_NOT_CONFIRMATORY",
+  "failure": {
+    "cause": "OUTPUT_ONLY_KEYERROR",
+    "evidenceThatTheFileWasWrittenFirst": "the next step printed integrity-audit-full.json with the sha256 and size recorded below, and the artifact upload (step 11) succeeded.",
+    "exception": "KeyError: 'evidenceClass'",
+    "mechanism": "dict.get(key, default) evaluates its default eagerly; a full document has reproduction.status and no evidenceClass.",
+    "occurredAfterResultCreation": true,
+    "where": "scripts/run_kr_alpha_discovery_tournament_v1_postoutcome_integrity_audit.py, the final status print"
+  },
+  "files": {
+    "audit/integrity-audit-full.json": {
+      "bytes": 1875,
+      "committedAs": "docs/results/kr-alpha-discovery-tournament-v1-postoutcome-integrity-audit-run37688582489-full.json",
+      "sha256": "3de415bf6e0646dbae6cde2d7da8a6645c50776697e6663122a97f94fc01766c"
+    },
+    "audit/model-free-scan.json": {
+      "bytes": 16012,
+      "committedAs": "docs/results/kr-alpha-discovery-tournament-v1-postoutcome-integrity-audit-run37688582489-model-free-scan.json",
+      "sha256": "9dca9508dc8899db01ca1d78777da986acc90b074f7fe973f1468df74f4f4e1f"
+    }
+  },
+  "formalTournamentRerun": false,
+  "lockTouched": false,
+  "modelsFitted": false,
+  "note": "The full document is the audit's own complete output for this run. It is 1,875 bytes because the reproduction gate returned RECONSTRUCTION_MISMATCH and the audit, by design, then attributes nothing.",
+  "reconstructionRerun": false,
+  "recordId": "kr-alpha-discovery-tournament-v1-postoutcome-integrity-audit-recovery-v1",
+  "recoveryRoute": {
+    "decode": "strip the 'AJ ' prefixes, concatenate, base64 -d, gzip -dc",
+    "route": "JOB_LOG_GZIP_BASE64",
+    "step": "Print the audit files to the job log (gzip + base64) so they can be read without downloading the artifact",
+    "verifiedAgainst": "the sha256 and byte size the same step printed and the values quoted in the task"
+  },
+  "sealedResultTouched": false,
+  "sourceArtifact": {
+    "expiresAt": "2027-01-05T21:19:36Z",
+    "id": 11516337822,
+    "name": "kr-alpha-discovery-tournament-v1-postoutcome-integrity-audit-37688582489",
+    "zipBytes": 3729,
+    "zipSha256": "f4ff29d8b85b284f186c7846e2fc8089a8dda6343d17aa80c033905292e5fe73",
+    "zipSha256Source": "the Actions API artifact digest and the upload step's own log line; the ZIP itself was NOT downloaded here (the blob host answers CONNECT 403 from the authoring sandbox), so this digest is quoted, not recomputed"
+  },
+  "sourceAuditRun": {
+    "conclusion": "failure",
+    "failedStep": "Model-free scan and read-only reconstruction (reproduction gate before any attribution)",
+    "failedStepCompletedAt": "2026-10-07T22:53:01Z",
+    "failedStepStartedAt": "2026-10-07T21:21:37Z",
+    "headSha": "20c45d2ac56a7019cf0b613f074d77a62dca638a",
+    "jobId": 113022667916,
+    "jobName": "audit",
+    "runId": 37688582489
+  },
+  "what": "Exact bytes of the two files the post-outcome integrity audit wrote in Actions run 37688582489, preserved as produced. Nothing was recomputed."
+}
