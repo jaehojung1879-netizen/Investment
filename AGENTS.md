@@ -3120,3 +3120,27 @@
   the complete flags, fold states, ensemble IDs by year, counters and process structure matched, the maximum numeric differences before and beyond the refusal point, and the
   environment comparison. No ticker, event date, weight or cause appears, and a test checks that every attribution call in `reconstruct` sits after the gate's return.
 - NOTHING WAS DISPATCHED. The expensive audit was not run by this change, and no sealed tournament file, spec, result or lock moved.
+
+## KR alpha discovery tournament v1 closure and kr-alpha-signal-v2 foundation invariants (v2.52)
+
+- A REPRODUCED RESULT IS STILL THE RESULT IT REPRODUCED. Audit run `37757869994` (code `685b33de`, `PYTHON_ENVIRONMENT_EXACT_MATCH`, host image
+  differing and non-gating) read `RECONSTRUCTION_REPRODUCES_THE_SEALED_RESULT` with no divergence at 1e-9. The formal verdict stays
+  `BLOCKED_BY_DATA_INTEGRITY`, not eligible for promotion, and no performance gate was ever evaluated. Exact audit bytes were decoded from the job log
+  and matched to the digests the run printed (`…-run37757869994-{full,environment-parity,provenance}.json`). The investigation is closed:
+  `docs/kr-alpha-discovery-tournament-v1-forensic-closure.md`.
+- ALL FOUR INCOMPLETE PATHS FAIL ON TERMINAL ECONOMICS OF A NAME THEY ACTUALLY HELD: 000030.KS 우리은행 (`SHARE_TRANSFER`) on 2019-02-13 and 079440.KS
+  오렌지라이프 (`SHARE_EXCHANGE`) on 2020-02-14. Each was held through a 15-22 session pre-delisting suspension with the consideration `BLOCKED`. No
+  registered information class carried the termination, and `COST_X2` completed only because it never entered either name. A small held weight is
+  not a measured immateriality. Not rebuilding historical corporate-action economics now is a prioritization decision, not an integrity waiver.
+- A NEW RECEIPT FORMAT IS AN OLD ONE PLUS RULES, NOT A SECOND FORMAT. `prospective_receipt_core` keeps the canonical JSON, digest rule, JSON Lines
+  ledger and `PROSPECTIVE_PAPER` class of the three sealed study receipts (a test proves the bytes agree) and adds a no-backdating window (after
+  the signal close, before the next open), a prospective boundary strictly after the KST date of the authorizing merge, outcome records kept apart
+  and built only after maturity, and the terminal rule: a held name without a cited consideration makes the portfolio outcome `None`.
+- kr-alpha-signal-v2 IS A DIFFERENT CONSTRUCTION OF ALREADY-MEASURED INFORMATION, AND SAYS SO. Value (book-to-market, earnings yield) within
+  industry, confirmed by three signs at zero (net income, OCF, OCF improvement), with no fitted parameter. These are the same accounting fields
+  `kr-model-overlay-portfolio-v1` fitted and was rejected on. A negative result closes this construction on this information set. Its primary
+  tests (confirmed vs unconfirmed cheap; confirmed vs 069500.KS after costs) and its controls (the same contrast among expensive names; permuted
+  confirmation) were written before any number exists. Ownership (H3) is the next information bet, and its history starts 2024-09-24.
+- NO FORECAST, NO WEIGHT. Until a separately authorized calibration supplies an expected return and SE, every decision is `NOT_READY` and carries no
+  holdings. Coverage below 60% is `BLOCKED` with no per-name signal. `REGISTERED_AUTHORIZATION` is `None`, so no live receipt can be written.
+  Nothing here is scheduled or imported by production.

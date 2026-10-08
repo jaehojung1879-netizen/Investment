@@ -1,0 +1,2003 @@
+{
+ "auditId": "kr-alpha-discovery-tournament-v1-postoutcome-integrity-audit",
+ "costX2": [
+  {
+   "baseTargetAtEntryDecision": null,
+   "costX2EntryTradeDays": [],
+   "costX2EverEntered": false,
+   "costX2HeldWeightOnFailingSession": 0.0,
+   "costX2HeldWeightOnSuspensionStart": 0.0,
+   "costX2LastTradeChangingWeight": null,
+   "costX2TargetAtFailingPathEntryDecision": null,
+   "failingPath": "DECISION_FOCUSED_CHALLENGER:BASE",
+   "failingSession": "2019-02-13",
+   "ticker": "000030.KS"
+  },
+  {
+   "baseTargetAtEntryDecision": 0.0006719359028577309,
+   "costX2EntryTradeDays": [],
+   "costX2EverEntered": false,
+   "costX2HeldWeightOnFailingSession": 0.0,
+   "costX2HeldWeightOnSuspensionStart": 0.0,
+   "costX2LastTradeChangingWeight": null,
+   "costX2TargetAtFailingPathEntryDecision": null,
+   "failingPath": "PRIMARY_ROBUST_KELLY:BASE",
+   "failingSession": "2020-02-14",
+   "ticker": "079440.KS"
+  },
+  {
+   "baseTargetAtEntryDecision": null,
+   "costX2EntryTradeDays": [],
+   "costX2EverEntered": false,
+   "costX2HeldWeightOnFailingSession": 0.0,
+   "costX2HeldWeightOnSuspensionStart": 0.0,
+   "costX2LastTradeChangingWeight": null,
+   "costX2TargetAtFailingPathEntryDecision": null,
+   "failingPath": "PRIMARY_ROBUST_KELLY:EXECUTION_DELAY_ONE_SESSION",
+   "failingSession": "2020-02-14",
+   "ticker": "079440.KS"
+  },
+  {
+   "baseTargetAtEntryDecision": 0.0006719359028577309,
+   "costX2EntryTradeDays": [],
+   "costX2EverEntered": false,
+   "costX2HeldWeightOnFailingSession": 0.0,
+   "costX2HeldWeightOnSuspensionStart": 0.0,
+   "costX2LastTradeChangingWeight": null,
+   "costX2TargetAtFailingPathEntryDecision": null,
+   "failingPath": "PRIMARY_ROBUST_KELLY:LIQUIDITY_HAIRCUT_HALF_ADV",
+   "failingSession": "2020-02-14",
+   "ticker": "079440.KS"
+  }
+ ],
+ "evidenceClass": "POST_OUTCOME_FORENSIC_RECONSTRUCTION",
+ "firstFailures": [
+  {
+   "decisionTargetsSinceEntry": {
+    "2018-01-29": 0.0003280407116196805,
+    "2018-03-02": 0.0002325181896532987,
+    "2018-04-02": 0.0001139630383082584,
+    "2018-05-02": 0.00020629695127386655,
+    "2018-06-04": 0.00035308447133572033,
+    "2018-07-05": 0.0007738090677895342,
+    "2018-08-03": 0.0009968860592019261,
+    "2018-09-04": 0.0009317327719115102,
+    "2018-10-10": 0.0011625560501540538,
+    "2018-11-08": 0.00026933147467345146,
+    "2018-12-07": 0.0002286690827330372,
+    "2019-01-10": 0.00012850588321554576
+   },
+   "deferredAtTrades": [
+    {
+     "day": "2019-01-10",
+     "heldWeight": 0.00021541652844479876,
+     "targetWeight": 0.0
+    }
+   ],
+   "entrySignalDate": "2018-01-26",
+   "entryTradeDay": "2018-01-29",
+   "firstFailingSession": "2019-02-13",
+   "heldBookImmediatelyBeforeFailure": {
+    "000030.KS": 0.0002019466572746799,
+    "000060.KS": 4.6077077869997654e-05,
+    "000100.KS": 3.597855043232401e-06,
+    "000120.KS": 3.0889931272483007e-05,
+    "000150.KS": 3.147277345565881e-05,
+    "000210.KS": 0.00010995960336908122,
+    "000270.KS": 0.0002782160632812079,
+    "000660.KS": 1.4370299052150593e-06,
+    "000720.KS": 0.00016812013782072037,
+    "000810.KS": 9.493000112467246e-06,
+    "000880.KS": 8.570709879739213e-08,
+    "001040.KS": 3.616931607412299e-07,
+    "001450.KS": 1.837401152088259e-05,
+    "002380.KS": 1.0812138828014942e-05,
+    "002790.KS": 6.361002354247991e-06,
+    "003410.KS": 8.83508528062206e-05,
+    "003490.KS": 0.00020930638030276875,
+    "003550.KS": 2.6681506715999437e-06,
+    "004020.KS": 4.885254111715777e-05,
+    "004170.KS": 7.491540770493291e-05,
+    "004990.KS": 7.184086129764169e-05,
+    "005380.KS": 0.00038973591529612876,
+    "005385.KS": 3.526636001913078e-05,
+    "005387.KS": 7.634073969458436e-05,
+    "005490.KS": 0.00011880815674753398,
+    "005830.KS": 1.5651592144713217e-05,
+    "005930.KS": 2.1118377361864653e-06,
+    "005935.KS": 5.991491396132096e-05,
+    "005940.KS": 0.00011983641940083198,
+    "006280.KS": 0.00010135056331321336,
+    "006360.KS": 9.782767596078628e-05,
+    "006400.KS": 0.00011712237909894894,
+    "006800.KS": 7.544940783894396e-05,
+    "007070.KS": 7.331996654478215e-05,
+    "007310.KS": 9.019932451877148e-06,
+    "008560.KS": 0.00023770896872387347,
+    "008770.KS": 0.00017228456710994617,
+    "008930.KS": 0.00010168286063994633,
+    "009150.KS": 4.405664826953413e-05,
+    "009240.KS": 0.00034008370425569,
+    "009420.KS": 0.0003451941846714616,
+    "009540.KS": 0.0014378984046570895,
+    "009830.KS": 3.886525948054529e-06,
+    "010060.KS": 1.150063926422801e-06,
+    "010130.KS": 3.225880114582575e-05,
+    "010140.KS": 0.002932451992372399,
+    "010620.KS": 7.33258830298206e-05,
+    "010950.KS": 5.165415613997909e-06,
+    "011070.KS": 3.705645419343986e-05,
+    "011170.KS": 2.386785542117804e-07,
+    "011780.KS": 1.2105993044401727e-06,
+    "012330.KS": 5.664568916708866e-05,
+    "012450.KS": 0.003637696233301346,
+    "012750.KS": 2.872674322813032e-05,
+    "015760.KS": 0.00010167588135076677,
+    "016360.KS": 6.846995685144401e-05,
+    "017670.KS": 1.7843798367348165e-06,
+    "017800.KS": 0.0013026863562380715,
+    "018260.KS": 0.00015179734598360603,
+    "018880.KS": 2.1727671296543886e-05,
+    "020150.KS": 0.00022404446863219673,
+    "021240.KS": 1.3870030578972766e-05,
+    "023530.KS": 8.433550300828761e-05,
+    "024110.KS": 1.2437064259743515e-05,
+    "026960.KS": 2.4514217657445923e-05,
+    "028050.KS": 6.61446821023503e-05,
+    "028260.KS": 0.0010151529362991828,
+    "028670.KS": 4.134246309588515e-05,
+    "029780.KS": 1.3174708447294338e-05,
+    "030000.KS": 2.692179127743399e-05,
+    "030200.KS": 1.1335491058890901e-05,
+    "032640.KS": 1.2209114322721877e-05,
+    "032830.KS": 1.7507791819748323e-05,
+    "033780.KS": 6.0871294809661e-05,
+    "034220.KS": 1.3751644221709748e-05,
+    "034730.KS": 3.2344682390561996e-07,
+    "035250.KS": 3.948412037066875e-06,
+    "035720.KS": 0.00319398384593715,
+    "036460.KS": 2.4062775078747387e-05,
+    "036570.KS": 1.907714052327231e-05,
+    "039490.KS": 0.0002319823684437064,
+    "042660.KS": 0.007138120909091269,
+    "047040.KS": 9.140026427651233e-06,
+    "047050.KS": 9.889264878983022e-05,
+    "047810.KS": 0.0006720098327281503,
+    "051900.KS": 1.1713603335530907e-05,
+    "051910.KS": 4.273566702128707e-06,
+    "055550.KS": 2.4768917961407822e-05,
+    "064350.KS": 0.0011965098548671143,
+    "066570.KS": 6.543330511242661e-06,
+    "068270.KS": 0.0003422857533141069,
+    "069500.KS": 0.9661815170360656,
+    "069620.KS": 2.9497008454254047e-05,
+    "069960.KS": 8.499550073367269e-06,
+    "071050.KS": 0.00011209059643784233,
+    "078930.KS": 8.64876513047051e-07,
+    "079440.KS": 3.761464847195669e-05,
+    "081660.KS": 2.7969442731052343e-05,
+    "086280.KS": 8.461812717111181e-05,
+    "086790.KS": 3.596763854346896e-05,
+    "088350.KS": 2.4175538488767338e-05,
+    "088980.KS": 7.492380716840407e-06,
+    "090430.KS": 3.471586288522793e-05,
+    "096770.KS": 2.159667887541932e-06,
+    "097950.KS": 2.540836422102955e-06,
+    "105560.KS": 2.796440536907158e-05,
+    "111770.KS": 1.589559525817221e-05,
+    "128940.KS": 5.2984609536569926e-05,
+    "138930.KS": 2.16944860997665e-05,
+    "139480.KS": 3.651818219445273e-05,
+    "161390.KS": 2.6429310680588237e-05,
+    "180640.KS": 3.785933089917466e-05,
+    "241560.KS": 2.0346493368017296e-06,
+    "251270.KS": 0.0045782070193571825,
+    "267250.KS": 4.698489731150126e-05,
+    "271560.KS": 7.428006783649886e-05,
+    "282330.KS": 3.241585494707365e-05
+   },
+   "heldWeightImmediatelyBeforeFailure": 0.0002019466572746799,
+   "heldWeightLast40Sessions": [
+    [
+     "2018-12-12",
+     0.00023146330640864358
+    ],
+    [
+     "2018-12-13",
+     0.00022698087202277913
+    ],
+    [
+     "2018-12-14",
+     0.00022640034616399767
+    ],
+    [
+     "2018-12-17",
+     0.00023149263463808812
+    ],
+    [
+     "2018-12-18",
+     0.00023384986048561893
+    ],
+    [
+     "2018-12-19",
+     0.00023910147800357124
+    ],
+    [
+     "2018-12-20",
+     0.00023767127669223304
+    ],
+    [
+     "2018-12-21",
+     0.00024050241272787244
+    ],
+    [
+     "2018-12-24",
+     0.00024440747032333446
+    ],
+    [
+     "2018-12-26",
+     0.00024214655305743836
+    ],
+    [
+     "2018-12-27",
+     0.00024246767116286013
+    ],
+    [
+     "2018-12-28",
+     0.00023264601857496303
+    ],
+    [
+     "2019-01-02",
+     0.0002302595640543867
+    ],
+    [
+     "2019-01-03",
+     0.0002300397499817062
+    ],
+    [
+     "2019-01-04",
+     0.0002359006705169331
+    ],
+    [
+     "2019-01-07",
+     0.00023030510876525864
+    ],
+    [
+     "2019-01-08",
+     0.000214539025077721
+    ],
+    [
+     "2019-01-09",
+     0.00021970545418353973
+    ],
+    [
+     "2019-01-10",
+     0.00021529709891090993
+    ],
+    [
+     "2019-01-11",
+     0.0002154392197411088
+    ],
+    [
+     "2019-01-14",
+     0.00021417061177852478
+    ],
+    [
+     "2019-01-15",
+     0.0002159714479711998
+    ],
+    [
+     "2019-01-16",
+     0.00021179370353518285
+    ],
+    [
+     "2019-01-17",
+     0.00021094875760791033
+    ],
+    [
+     "2019-01-18",
+     0.000210614742475474
+    ],
+    [
+     "2019-01-21",
+     0.00020907906299848263
+    ],
+    [
+     "2019-01-22",
+     0.00020887496084774857
+    ],
+    [
+     "2019-01-23",
+     0.000209865632479328
+    ],
+    [
+     "2019-01-24",
+     0.00020862673212638895
+    ],
+    [
+     "2019-01-25",
+     0.00020701806106284803
+    ],
+    [
+     "2019-01-28",
+     0.0002033786544259219
+    ],
+    [
+     "2019-01-29",
+     0.0002034044257916234
+    ],
+    [
+     "2019-01-30",
+     0.0002024534378163647
+    ],
+    [
+     "2019-01-31",
+     0.00020008932563024735
+    ],
+    [
+     "2019-02-01",
+     0.00020026038870114084
+    ],
+    [
+     "2019-02-07",
+     0.0002005990605298454
+    ],
+    [
+     "2019-02-08",
+     0.00020054651798926597
+    ],
+    [
+     "2019-02-11",
+     0.00020334077576236113
+    ],
+    [
+     "2019-02-12",
+     0.0002029950568644396
+    ],
+    [
+     "2019-02-13",
+     0.0002019466572746799
+    ]
+   ],
+   "krxQuoteOnFailureSession": null,
+   "krxQuoteOnLastPricedSession": {
+    "close": 14800.0,
+    "date": "2019-02-12",
+    "listedShares": 676000000.0,
+    "marketCap": 10004800000000.0,
+    "securityId": "000030.KS",
+    "source": "KRX:sto/stk_bydd_trd",
+    "tradingValue": 0.0,
+    "volume": 0.0
+   },
+   "labelWithheldByHindsightTerminalRuleAtEntrySignal": false,
+   "lastTradeChangingWeight": {
+    "after": 0.0002286690827330372,
+    "before": 0.00026769367221108725,
+    "day": "2018-12-07"
+   },
+   "markFailureReason": "PORTFOLIO_MARK_OR_TERMINAL_ECONOMICS_UNRESOLVED: 000030.KS:2019-02-13",
+   "mechanism": "RAW_PRICE_ABSENT_AFTER_LAST_TRADING_DATE_HELD_THROUGH_PRE_TERMINAL_TRADING_SUSPENSION",
+   "path": "DECISION_FOCUSED_CHALLENGER:BASE",
+   "signalTimeTradableAtEntrySignal": true,
+   "terminalFoundation": {
+    "foundationStatus": "PARTIALLY_REPAIRED",
+    "inTerminatedSecurityInventory": true,
+    "inventoryTerminationType": "TERMINATION_TYPE_UNRESOLVED",
+    "krxName": "우리은행",
+    "lastMembershipDate": "2019-02-01",
+    "lastTradingDate": "2019-02-12",
+    "reconstructionCompleteness": {
+     "amendmentChainResolved": "BLOCKED",
+     "dartIssuerResolved": "READY",
+     "dividendLineageResolved": "READY",
+     "effectiveDateResolved": "READY",
+     "exDateSemanticsResolved": "BLOCKED",
+     "exchangeRatioResolved": "BLOCKED",
+     "lastTradingDateResolved": "READY",
+     "rawEvidenceRetained": "READY",
+     "sourceProvenanceRetained": "READY",
+     "successorResolvedWhereRequired": "READY",
+     "terminalActionChainResolved": "BLOCKED",
+     "terminalConsiderationResolved": "BLOCKED",
+     "terminationTypeResolved": "READY"
+    },
+    "reconstructionTerminationType": "SHARE_TRANSFER"
+   },
+   "terminalWindow": {
+    "firstUnpricedSession": "2019-02-13",
+    "lastOuterAnchorBeforeSuspension": [
+     "2018-12-07",
+     "2018-11-30"
+    ],
+    "lastPositiveVolumeSession": "2019-01-08",
+    "lastPricedSession": "2019-02-12",
+    "outerAnchorsDuringSuspension": [
+     [
+      "2019-01-10",
+      "2019-01-04"
+     ]
+    ],
+    "suspendedSessions": 22,
+    "suspensionStart": "2019-01-09"
+   },
+   "terminationInformationAvailableToTheFrozenProcess": false,
+   "terminationInformationNote": "no registered information class carries a corporate-action / delisting announcement (DART events are excluded as not PIT-ready); the terminal label rule is a hindsight LABEL rule the decider never reads",
+   "ticker": "000030.KS"
+  },
+  {
+   "decisionTargetsSinceEntry": {
+    "2019-01-10": 0.0006719359028577309,
+    "2019-02-13": 0.000795853924401612,
+    "2019-03-15": 0.0008850565671009834,
+    "2019-04-15": 0.0007821876643193982,
+    "2019-05-16": 0.0041527187475207585,
+    "2019-06-17": 0.005878074788172956,
+    "2019-07-16": 0.007461217463311781,
+    "2019-08-14": 0.006483422721232133,
+    "2019-09-17": 0.006833349368469462,
+    "2019-10-18": 0.007886679716628826,
+    "2019-11-18": 0.007826510220486946,
+    "2019-12-17": 0.00780659352551451,
+    "2020-01-20": 0.007122497442434954
+   },
+   "deferredAtTrades": [],
+   "entrySignalDate": "2019-01-04",
+   "entryTradeDay": "2019-01-10",
+   "firstFailingSession": "2020-02-14",
+   "heldBookImmediatelyBeforeFailure": {
+    "000060.KS": 0.0008461880633453321,
+    "000080.KS": 0.013362361507924532,
+    "000810.KS": 0.010493793917156803,
+    "004990.KS": 0.00030849375924488866,
+    "012510.KS": 0.010825778139200276,
+    "012750.KS": 0.01232928013529841,
+    "015760.KS": 0.017682165031114635,
+    "017670.KS": 0.026888741332907855,
+    "030000.KS": 0.005818084976759364,
+    "030200.KS": 0.051941229411107306,
+    "032640.KS": 0.011815215874691058,
+    "033780.KS": 0.03776559303851542,
+    "035250.KS": 0.004411432051582907,
+    "036570.KS": 0.0024594370121327346,
+    "069500.KS": 0.646573720332557,
+    "079440.KS": 0.007299101212389451,
+    "088980.KS": 0.13013044279219496,
+    "097950.KS": 0.0029750464833497303,
+    "180640.KS": 0.003139187895106173,
+    "207940.KS": 0.0008315599039995196,
+    "282330.KS": 0.0021031471294211605
+   },
+   "heldWeightImmediatelyBeforeFailure": 0.007299101212389451,
+   "heldWeightLast40Sessions": [
+    [
+     "2019-12-16",
+     0.008183342295291631
+    ],
+    [
+     "2019-12-17",
+     0.00792832389871988
+    ],
+    [
+     "2019-12-18",
+     0.00780659352551451
+    ],
+    [
+     "2019-12-19",
+     0.008013817684443343
+    ],
+    [
+     "2019-12-20",
+     0.008017298509941253
+    ],
+    [
+     "2019-12-23",
+     0.008002991703811286
+    ],
+    [
+     "2019-12-24",
+     0.008091581606680881
+    ],
+    [
+     "2019-12-26",
+     0.008043266660219654
+    ],
+    [
+     "2019-12-27",
+     0.008128648282441302
+    ],
+    [
+     "2019-12-30",
+     0.007651258374368535
+    ],
+    [
+     "2020-01-02",
+     0.007534887163927957
+    ],
+    [
+     "2020-01-03",
+     0.007492534053016258
+    ],
+    [
+     "2020-01-06",
+     0.007528058441792041
+    ],
+    [
+     "2020-01-07",
+     0.007501111848039423
+    ],
+    [
+     "2020-01-08",
+     0.0075482909429119265
+    ],
+    [
+     "2020-01-09",
+     0.0074566049254904294
+    ],
+    [
+     "2020-01-10",
+     0.007401395337221123
+    ],
+    [
+     "2020-01-13",
+     0.007254697926504253
+    ],
+    [
+     "2020-01-14",
+     0.007262360363578483
+    ],
+    [
+     "2020-01-15",
+     0.007300555668937842
+    ],
+    [
+     "2020-01-16",
+     0.007247724675083925
+    ],
+    [
+     "2020-01-17",
+     0.007177157141100065
+    ],
+    [
+     "2020-01-20",
+     0.007117033376027014
+    ],
+    [
+     "2020-01-21",
+     0.007122497442434954
+    ],
+    [
+     "2020-01-22",
+     0.00724716708089493
+    ],
+    [
+     "2020-01-23",
+     0.007176590538049164
+    ],
+    [
+     "2020-01-28",
+     0.007247029001858314
+    ],
+    [
+     "2020-01-29",
+     0.00743044871952576
+    ],
+    [
+     "2020-01-30",
+     0.0073937306220368945
+    ],
+    [
+     "2020-01-31",
+     0.007491472186696227
+    ],
+    [
+     "2020-02-03",
+     0.0075520152508149535
+    ],
+    [
+     "2020-02-04",
+     0.0075674676255321005
+    ],
+    [
+     "2020-02-05",
+     0.007490518532336108
+    ],
+    [
+     "2020-02-06",
+     0.007456450170409216
+    ],
+    [
+     "2020-02-07",
+     0.00730830590886858
+    ],
+    [
+     "2020-02-10",
+     0.0073446855750042075
+    ],
+    [
+     "2020-02-11",
+     0.007383033911146114
+    ],
+    [
+     "2020-02-12",
+     0.0073327870148777825
+    ],
+    [
+     "2020-02-13",
+     0.0072841904227861284
+    ],
+    [
+     "2020-02-14",
+     0.007299101212389451
+    ]
+   ],
+   "krxQuoteOnFailureSession": null,
+   "krxQuoteOnLastPricedSession": {
+    "close": 27500.0,
+    "date": "2020-02-13",
+    "listedShares": 82000000.0,
+    "marketCap": 2255000000000.0,
+    "securityId": "079440.KS",
+    "source": "KRX:sto/stk_bydd_trd",
+    "tradingValue": 0.0,
+    "volume": 0.0
+   },
+   "labelWithheldByHindsightTerminalRuleAtEntrySignal": false,
+   "lastTradeChangingWeight": {
+    "after": 0.007886679716628826,
+    "before": 0.00691852093081328,
+    "day": "2019-10-18"
+   },
+   "markFailureReason": "PORTFOLIO_MARK_OR_TERMINAL_ECONOMICS_UNRESOLVED: 079440.KS:2020-02-14",
+   "mechanism": "RAW_PRICE_ABSENT_AFTER_LAST_TRADING_DATE_HELD_THROUGH_PRE_TERMINAL_TRADING_SUSPENSION",
+   "path": "PRIMARY_ROBUST_KELLY:BASE",
+   "signalTimeTradableAtEntrySignal": true,
+   "terminalFoundation": {
+    "foundationStatus": "PARTIALLY_REPAIRED",
+    "inTerminatedSecurityInventory": true,
+    "inventoryTerminationType": "TERMINATION_TYPE_UNRESOLVED",
+    "krxName": "오렌지라이프",
+    "lastMembershipDate": "2020-02-03",
+    "lastTradingDate": "2020-02-13",
+    "reconstructionCompleteness": {
+     "amendmentChainResolved": "BLOCKED",
+     "dartIssuerResolved": "READY",
+     "dividendLineageResolved": "READY",
+     "effectiveDateResolved": "BLOCKED",
+     "exDateSemanticsResolved": "BLOCKED",
+     "exchangeRatioResolved": "BLOCKED",
+     "lastTradingDateResolved": "READY",
+     "rawEvidenceRetained": "READY",
+     "sourceProvenanceRetained": "READY",
+     "successorResolvedWhereRequired": "BLOCKED",
+     "terminalActionChainResolved": "BLOCKED",
+     "terminalConsiderationResolved": "BLOCKED",
+     "terminationTypeResolved": "READY"
+    },
+    "reconstructionTerminationType": "SHARE_EXCHANGE"
+   },
+   "terminalWindow": {
+    "firstUnpricedSession": "2020-02-14",
+    "lastOuterAnchorBeforeSuspension": [
+     "2020-01-20",
+     "2020-01-17"
+    ],
+    "lastPositiveVolumeSession": "2020-01-21",
+    "lastPricedSession": "2020-02-13",
+    "outerAnchorsDuringSuspension": [],
+    "suspendedSessions": 15,
+    "suspensionStart": "2020-01-22"
+   },
+   "terminationInformationAvailableToTheFrozenProcess": false,
+   "terminationInformationNote": "no registered information class carries a corporate-action / delisting announcement (DART events are excluded as not PIT-ready); the terminal label rule is a hindsight LABEL rule the decider never reads",
+   "ticker": "079440.KS"
+  },
+  {
+   "decisionTargetsSinceEntry": {
+    "2019-02-13": 0.000807115342924974,
+    "2019-03-15": 0.000913989938814045,
+    "2019-04-15": 0.00080365771945159,
+    "2019-05-16": 0.004124622308856733,
+    "2019-06-17": 0.005813402281839563,
+    "2019-07-16": 0.007399722562321804,
+    "2019-08-14": 0.006403898376146934,
+    "2019-09-17": 0.006888877200144635,
+    "2019-10-18": 0.007580944919321329,
+    "2019-11-18": 0.007485343621112844,
+    "2019-12-17": 0.007362391213005911,
+    "2020-01-20": 0.006544501927715615
+   },
+   "deferredAtTrades": [],
+   "entrySignalDate": null,
+   "entryTradeDay": "2019-01-11",
+   "firstFailingSession": "2020-02-14",
+   "heldBookImmediatelyBeforeFailure": {
+    "000060.KS": 0.0006940717325541115,
+    "000080.KS": 0.012345597120015166,
+    "000810.KS": 0.010049019987665903,
+    "004990.KS": 0.0003378705211209692,
+    "012510.KS": 0.010327861887594108,
+    "012750.KS": 0.011935285292032674,
+    "015760.KS": 0.017192414550343885,
+    "017670.KS": 0.025673589357586506,
+    "030000.KS": 0.005719867229423026,
+    "030200.KS": 0.0524709636777978,
+    "032640.KS": 0.011405575732335922,
+    "033780.KS": 0.03674322818746586,
+    "035250.KS": 0.004550837421491136,
+    "036570.KS": 0.0023807850920361698,
+    "069500.KS": 0.6480545041546183,
+    "079440.KS": 0.006590692507249725,
+    "088980.KS": 0.13467568656965997,
+    "097950.KS": 0.0027126102269015165,
+    "180640.KS": 0.003213717166967568,
+    "207940.KS": 0.0008352282290999554,
+    "282330.KS": 0.002090593356039786
+   },
+   "heldWeightImmediatelyBeforeFailure": 0.006590692507249725,
+   "heldWeightLast40Sessions": [
+    [
+     "2019-12-16",
+     0.007717470267177597
+    ],
+    [
+     "2019-12-17",
+     0.007476724898884113
+    ],
+    [
+     "2019-12-18",
+     0.007362391213005911
+    ],
+    [
+     "2019-12-19",
+     0.007362391213005911
+    ],
+    [
+     "2019-12-20",
+     0.007366207129589365
+    ],
+    [
+     "2019-12-23",
+     0.007352952906997478
+    ],
+    [
+     "2019-12-24",
+     0.00743384979131075
+    ],
+    [
+     "2019-12-26",
+     0.0073891344037391804
+    ],
+    [
+     "2019-12-27",
+     0.007467677810023106
+    ],
+    [
+     "2019-12-30",
+     0.007029469147913228
+    ],
+    [
+     "2020-01-02",
+     0.006922589040414733
+    ],
+    [
+     "2020-01-03",
+     0.006883016758739735
+    ],
+    [
+     "2020-01-06",
+     0.006915477195037039
+    ],
+    [
+     "2020-01-07",
+     0.00689049210690879
+    ],
+    [
+     "2020-01-08",
+     0.006934406014391947
+    ],
+    [
+     "2020-01-09",
+     0.006849592982162992
+    ],
+    [
+     "2020-01-10",
+     0.006799499833296405
+    ],
+    [
+     "2020-01-13",
+     0.006664175800942846
+    ],
+    [
+     "2020-01-14",
+     0.006671327374924724
+    ],
+    [
+     "2020-01-15",
+     0.006707423503172418
+    ],
+    [
+     "2020-01-16",
+     0.006659148219060521
+    ],
+    [
+     "2020-01-17",
+     0.006594369889616207
+    ],
+    [
+     "2020-01-20",
+     0.006539417490646338
+    ],
+    [
+     "2020-01-21",
+     0.006544501927715615
+    ],
+    [
+     "2020-01-22",
+     0.006544501927715615
+    ],
+    [
+     "2020-01-23",
+     0.0064808360868391385
+    ],
+    [
+     "2020-01-28",
+     0.00654436362398488
+    ],
+    [
+     "2020-01-29",
+     0.00670988790141143
+    ],
+    [
+     "2020-01-30",
+     0.006676481888538994
+    ],
+    [
+     "2020-01-31",
+     0.006764456839846332
+    ],
+    [
+     "2020-02-03",
+     0.006819068307388893
+    ],
+    [
+     "2020-02-04",
+     0.006832860760725971
+    ],
+    [
+     "2020-02-05",
+     0.006763136023768855
+    ],
+    [
+     "2020-02-06",
+     0.006732542661636563
+    ],
+    [
+     "2020-02-07",
+     0.006598532997294904
+    ],
+    [
+     "2020-02-10",
+     0.006631726506421808
+    ],
+    [
+     "2020-02-11",
+     0.0066660729252679945
+    ],
+    [
+     "2020-02-12",
+     0.006620769152193905
+    ],
+    [
+     "2020-02-13",
+     0.006577240684861476
+    ],
+    [
+     "2020-02-14",
+     0.006590692507249725
+    ]
+   ],
+   "krxQuoteOnFailureSession": null,
+   "krxQuoteOnLastPricedSession": {
+    "close": 27500.0,
+    "date": "2020-02-13",
+    "listedShares": 82000000.0,
+    "marketCap": 2255000000000.0,
+    "securityId": "079440.KS",
+    "source": "KRX:sto/stk_bydd_trd",
+    "tradingValue": 0.0,
+    "volume": 0.0
+   },
+   "labelWithheldByHindsightTerminalRuleAtEntrySignal": null,
+   "lastTradeChangingWeight": {
+    "after": 0.006544501927715615,
+    "before": 0.006658869947626413,
+    "day": "2020-01-21"
+   },
+   "markFailureReason": "PORTFOLIO_MARK_OR_TERMINAL_ECONOMICS_UNRESOLVED: 079440.KS:2020-02-14",
+   "mechanism": "RAW_PRICE_ABSENT_AFTER_LAST_TRADING_DATE_HELD_THROUGH_PRE_TERMINAL_TRADING_SUSPENSION",
+   "path": "PRIMARY_ROBUST_KELLY:EXECUTION_DELAY_ONE_SESSION",
+   "signalTimeTradableAtEntrySignal": null,
+   "terminalFoundation": {
+    "foundationStatus": "PARTIALLY_REPAIRED",
+    "inTerminatedSecurityInventory": true,
+    "inventoryTerminationType": "TERMINATION_TYPE_UNRESOLVED",
+    "krxName": "오렌지라이프",
+    "lastMembershipDate": "2020-02-03",
+    "lastTradingDate": "2020-02-13",
+    "reconstructionCompleteness": {
+     "amendmentChainResolved": "BLOCKED",
+     "dartIssuerResolved": "READY",
+     "dividendLineageResolved": "READY",
+     "effectiveDateResolved": "BLOCKED",
+     "exDateSemanticsResolved": "BLOCKED",
+     "exchangeRatioResolved": "BLOCKED",
+     "lastTradingDateResolved": "READY",
+     "rawEvidenceRetained": "READY",
+     "sourceProvenanceRetained": "READY",
+     "successorResolvedWhereRequired": "BLOCKED",
+     "terminalActionChainResolved": "BLOCKED",
+     "terminalConsiderationResolved": "BLOCKED",
+     "terminationTypeResolved": "READY"
+    },
+    "reconstructionTerminationType": "SHARE_EXCHANGE"
+   },
+   "terminalWindow": {
+    "firstUnpricedSession": "2020-02-14",
+    "lastOuterAnchorBeforeSuspension": [
+     "2020-01-20",
+     "2020-01-17"
+    ],
+    "lastPositiveVolumeSession": "2020-01-21",
+    "lastPricedSession": "2020-02-13",
+    "outerAnchorsDuringSuspension": [],
+    "suspendedSessions": 15,
+    "suspensionStart": "2020-01-22"
+   },
+   "terminationInformationAvailableToTheFrozenProcess": false,
+   "terminationInformationNote": "no registered information class carries a corporate-action / delisting announcement (DART events are excluded as not PIT-ready); the terminal label rule is a hindsight LABEL rule the decider never reads",
+   "ticker": "079440.KS"
+  },
+  {
+   "decisionTargetsSinceEntry": {
+    "2019-01-10": 0.0006719359028577309,
+    "2019-02-13": 0.000795853924401612,
+    "2019-03-15": 0.0008850565671009834,
+    "2019-04-15": 0.0007821876643193982,
+    "2019-05-16": 0.0041527187475207585,
+    "2019-06-17": 0.005878074788172956,
+    "2019-07-16": 0.007461217463311781,
+    "2019-08-14": 0.006483422721232133,
+    "2019-09-17": 0.006833349368469462,
+    "2019-10-18": 0.007886679716628826,
+    "2019-11-18": 0.007826510220486946,
+    "2019-12-17": 0.00780659352551451,
+    "2020-01-20": 0.007122497442434954
+   },
+   "deferredAtTrades": [],
+   "entrySignalDate": "2019-01-04",
+   "entryTradeDay": "2019-01-10",
+   "firstFailingSession": "2020-02-14",
+   "heldBookImmediatelyBeforeFailure": {
+    "000060.KS": 0.0008461880633453321,
+    "000080.KS": 0.013362361507924532,
+    "000810.KS": 0.010493793917156803,
+    "004990.KS": 0.00030849375924488866,
+    "012510.KS": 0.010825778139200276,
+    "012750.KS": 0.01232928013529841,
+    "015760.KS": 0.017682165031114635,
+    "017670.KS": 0.026888741332907855,
+    "030000.KS": 0.005818084976759364,
+    "030200.KS": 0.051941229411107306,
+    "032640.KS": 0.011815215874691058,
+    "033780.KS": 0.03776559303851542,
+    "035250.KS": 0.004411432051582907,
+    "036570.KS": 0.0024594370121327346,
+    "069500.KS": 0.646573720332557,
+    "079440.KS": 0.007299101212389451,
+    "088980.KS": 0.13013044279219496,
+    "097950.KS": 0.0029750464833497303,
+    "180640.KS": 0.003139187895106173,
+    "207940.KS": 0.0008315599039995196,
+    "282330.KS": 0.0021031471294211605
+   },
+   "heldWeightImmediatelyBeforeFailure": 0.007299101212389451,
+   "heldWeightLast40Sessions": [
+    [
+     "2019-12-16",
+     0.008183342295291631
+    ],
+    [
+     "2019-12-17",
+     0.00792832389871988
+    ],
+    [
+     "2019-12-18",
+     0.00780659352551451
+    ],
+    [
+     "2019-12-19",
+     0.008013817684443343
+    ],
+    [
+     "2019-12-20",
+     0.008017298509941253
+    ],
+    [
+     "2019-12-23",
+     0.008002991703811286
+    ],
+    [
+     "2019-12-24",
+     0.008091581606680881
+    ],
+    [
+     "2019-12-26",
+     0.008043266660219654
+    ],
+    [
+     "2019-12-27",
+     0.008128648282441302
+    ],
+    [
+     "2019-12-30",
+     0.007651258374368535
+    ],
+    [
+     "2020-01-02",
+     0.007534887163927957
+    ],
+    [
+     "2020-01-03",
+     0.007492534053016258
+    ],
+    [
+     "2020-01-06",
+     0.007528058441792041
+    ],
+    [
+     "2020-01-07",
+     0.007501111848039423
+    ],
+    [
+     "2020-01-08",
+     0.0075482909429119265
+    ],
+    [
+     "2020-01-09",
+     0.0074566049254904294
+    ],
+    [
+     "2020-01-10",
+     0.007401395337221123
+    ],
+    [
+     "2020-01-13",
+     0.007254697926504253
+    ],
+    [
+     "2020-01-14",
+     0.007262360363578483
+    ],
+    [
+     "2020-01-15",
+     0.007300555668937842
+    ],
+    [
+     "2020-01-16",
+     0.007247724675083925
+    ],
+    [
+     "2020-01-17",
+     0.007177157141100065
+    ],
+    [
+     "2020-01-20",
+     0.007117033376027014
+    ],
+    [
+     "2020-01-21",
+     0.007122497442434954
+    ],
+    [
+     "2020-01-22",
+     0.00724716708089493
+    ],
+    [
+     "2020-01-23",
+     0.007176590538049164
+    ],
+    [
+     "2020-01-28",
+     0.007247029001858314
+    ],
+    [
+     "2020-01-29",
+     0.00743044871952576
+    ],
+    [
+     "2020-01-30",
+     0.0073937306220368945
+    ],
+    [
+     "2020-01-31",
+     0.007491472186696227
+    ],
+    [
+     "2020-02-03",
+     0.0075520152508149535
+    ],
+    [
+     "2020-02-04",
+     0.0075674676255321005
+    ],
+    [
+     "2020-02-05",
+     0.007490518532336108
+    ],
+    [
+     "2020-02-06",
+     0.007456450170409216
+    ],
+    [
+     "2020-02-07",
+     0.00730830590886858
+    ],
+    [
+     "2020-02-10",
+     0.0073446855750042075
+    ],
+    [
+     "2020-02-11",
+     0.007383033911146114
+    ],
+    [
+     "2020-02-12",
+     0.0073327870148777825
+    ],
+    [
+     "2020-02-13",
+     0.0072841904227861284
+    ],
+    [
+     "2020-02-14",
+     0.007299101212389451
+    ]
+   ],
+   "krxQuoteOnFailureSession": null,
+   "krxQuoteOnLastPricedSession": {
+    "close": 27500.0,
+    "date": "2020-02-13",
+    "listedShares": 82000000.0,
+    "marketCap": 2255000000000.0,
+    "securityId": "079440.KS",
+    "source": "KRX:sto/stk_bydd_trd",
+    "tradingValue": 0.0,
+    "volume": 0.0
+   },
+   "labelWithheldByHindsightTerminalRuleAtEntrySignal": false,
+   "lastTradeChangingWeight": {
+    "after": 0.007886679716628826,
+    "before": 0.00691852093081328,
+    "day": "2019-10-18"
+   },
+   "markFailureReason": "PORTFOLIO_MARK_OR_TERMINAL_ECONOMICS_UNRESOLVED: 079440.KS:2020-02-14",
+   "mechanism": "RAW_PRICE_ABSENT_AFTER_LAST_TRADING_DATE_HELD_THROUGH_PRE_TERMINAL_TRADING_SUSPENSION",
+   "path": "PRIMARY_ROBUST_KELLY:LIQUIDITY_HAIRCUT_HALF_ADV",
+   "signalTimeTradableAtEntrySignal": true,
+   "terminalFoundation": {
+    "foundationStatus": "PARTIALLY_REPAIRED",
+    "inTerminatedSecurityInventory": true,
+    "inventoryTerminationType": "TERMINATION_TYPE_UNRESOLVED",
+    "krxName": "오렌지라이프",
+    "lastMembershipDate": "2020-02-03",
+    "lastTradingDate": "2020-02-13",
+    "reconstructionCompleteness": {
+     "amendmentChainResolved": "BLOCKED",
+     "dartIssuerResolved": "READY",
+     "dividendLineageResolved": "READY",
+     "effectiveDateResolved": "BLOCKED",
+     "exDateSemanticsResolved": "BLOCKED",
+     "exchangeRatioResolved": "BLOCKED",
+     "lastTradingDateResolved": "READY",
+     "rawEvidenceRetained": "READY",
+     "sourceProvenanceRetained": "READY",
+     "successorResolvedWhereRequired": "BLOCKED",
+     "terminalActionChainResolved": "BLOCKED",
+     "terminalConsiderationResolved": "BLOCKED",
+     "terminationTypeResolved": "READY"
+    },
+    "reconstructionTerminationType": "SHARE_EXCHANGE"
+   },
+   "terminalWindow": {
+    "firstUnpricedSession": "2020-02-14",
+    "lastOuterAnchorBeforeSuspension": [
+     "2020-01-20",
+     "2020-01-17"
+    ],
+    "lastPositiveVolumeSession": "2020-01-21",
+    "lastPricedSession": "2020-02-13",
+    "outerAnchorsDuringSuspension": [],
+    "suspendedSessions": 15,
+    "suspensionStart": "2020-01-22"
+   },
+   "terminationInformationAvailableToTheFrozenProcess": false,
+   "terminationInformationNote": "no registered information class carries a corporate-action / delisting announcement (DART events are excluded as not PIT-ready); the terminal label rule is a hindsight LABEL rule the decider never reads",
+   "ticker": "079440.KS"
+  }
+ ],
+ "formal": {
+  "executionRunId": 37535814142,
+  "executionSha": "eac50fdf725ac797e5c37044246e2a7ffa9b1e64",
+  "incompletePaths": [
+   "DECISION_FOCUSED_CHALLENGER:BASE",
+   "PRIMARY_ROBUST_KELLY:BASE",
+   "PRIMARY_ROBUST_KELLY:EXECUTION_DELAY_ONE_SESSION",
+   "PRIMARY_ROBUST_KELLY:LIQUIDITY_HAIRCUT_HALF_ADV"
+  ],
+  "inputIdentitySha256": "233df37ed205cc6b48828121e711417ccf961301dc58aa252430b343db9666a7",
+  "lockRefs": [
+   "refs/tags/kr-alpha-discovery-tournament-v1-execution-lock",
+   "refs/tags/kr-alpha-discovery-tournament-v1-execution-lock-a8acb44c4b685e06ce7692e44461147110e2e2d32a119adef0dd216476f50e7f"
+  ],
+  "rawInputArtifactDigest": "sha256:42eeb18b7a5c88816629036f472a93057b6a9be4768ad47292ba0d2750b4cce7",
+  "rawInputArtifactId": 11157875265,
+  "rawInputArtifactName": "kr-model-raw-inputs-36844599518",
+  "rawInputRunId": 36844599518,
+  "replayManifestSha256": "f0781292f508a123c234ded6d28aa8e84a0dc3cc29500e14989dc0b68f53b4d2",
+  "resultArtifactDigest": "sha256:2079eb4adff331be02126c163084b92737828eb6be9aa49ece832b23f749ae85",
+  "resultArtifactId": 11449586098,
+  "resultArtifactName": "kr-alpha-discovery-tournament-v1-results-37535814142",
+  "resultPath": "docs/results/kr-alpha-discovery-tournament-v1-result.json",
+  "resultSha256": "4a117ed23d30f9d716c87dbd987e1b80798484b0ab3558638379bf65cf9ccc5d",
+  "specSha256": "a8acb44c4b685e06ce7692e44461147110e2e2d32a119adef0dd216476f50e7f",
+  "verdict": "BLOCKED_BY_DATA_INTEGRITY"
+ },
+ "inputIdentityAfterSha256": "233df37ed205cc6b48828121e711417ccf961301dc58aa252430b343db9666a7",
+ "modelFreeScan": {
+  "benchmarkMissingSessions": [],
+  "events": [
+   {
+    "firstMissing": "2019-02-13",
+    "lastMissing": "2026-09-14",
+    "lastPricedBefore": "2019-02-12",
+    "lastTop120SignalBefore": "2019-02-08",
+    "resumes": false,
+    "sessions": 1864,
+    "ticker": "000030.KS"
+   },
+   {
+    "firstMissing": "2023-02-21",
+    "lastMissing": "2026-09-14",
+    "lastPricedBefore": "2023-02-20",
+    "lastTop120SignalBefore": "2023-02-03",
+    "resumes": false,
+    "sessions": 869,
+    "ticker": "000060.KS"
+   },
+   {
+    "firstMissing": "2024-07-09",
+    "lastMissing": "2026-09-14",
+    "lastPricedBefore": "2024-07-08",
+    "lastTop120SignalBefore": "2024-06-21",
+    "resumes": false,
+    "sessions": 531,
+    "ticker": "003410.KS"
+   },
+   {
+    "firstMissing": "2023-04-25",
+    "lastMissing": "2026-09-14",
+    "lastPricedBefore": "2023-04-24",
+    "lastTop120SignalBefore": "2023-04-07",
+    "resumes": false,
+    "sessions": 825,
+    "ticker": "008560.KS"
+   },
+   {
+    "firstMissing": "2025-12-15",
+    "lastMissing": "2026-09-14",
+    "lastPricedBefore": "2025-12-12",
+    "lastTop120SignalBefore": "2025-12-05",
+    "resumes": false,
+    "sessions": 183,
+    "ticker": "010620.KS"
+   },
+   {
+    "firstMissing": "2026-07-15",
+    "lastMissing": "2026-09-14",
+    "lastPricedBefore": "2026-07-14",
+    "lastTop120SignalBefore": "2021-10-29",
+    "resumes": false,
+    "sessions": 42,
+    "ticker": "012510.KS"
+   },
+   {
+    "firstMissing": "2026-01-26",
+    "lastMissing": "2026-09-14",
+    "lastPricedBefore": "2026-01-23",
+    "lastTop120SignalBefore": "2023-08-04",
+    "resumes": false,
+    "sessions": 156,
+    "ticker": "042670.KS"
+   },
+   {
+    "firstMissing": "2020-02-14",
+    "lastMissing": "2026-09-14",
+    "lastPricedBefore": "2020-02-13",
+    "lastTop120SignalBefore": "2020-01-17",
+    "resumes": false,
+    "sessions": 1616,
+    "ticker": "079440.KS"
+   }
+  ],
+  "evidenceClass": "POST_OUTCOME_MODEL_FREE_DATA_SCAN",
+  "midSeriesGaps": [],
+  "terminalEnds": [
+   {
+    "firstMissing": "2019-02-13",
+    "lastMissing": "2026-09-14",
+    "lastPricedBefore": "2019-02-12",
+    "lastTop120SignalBefore": "2019-02-08",
+    "resumes": false,
+    "sessions": 1864,
+    "ticker": "000030.KS"
+   },
+   {
+    "firstMissing": "2023-02-21",
+    "lastMissing": "2026-09-14",
+    "lastPricedBefore": "2023-02-20",
+    "lastTop120SignalBefore": "2023-02-03",
+    "resumes": false,
+    "sessions": 869,
+    "ticker": "000060.KS"
+   },
+   {
+    "firstMissing": "2024-07-09",
+    "lastMissing": "2026-09-14",
+    "lastPricedBefore": "2024-07-08",
+    "lastTop120SignalBefore": "2024-06-21",
+    "resumes": false,
+    "sessions": 531,
+    "ticker": "003410.KS"
+   },
+   {
+    "firstMissing": "2023-04-25",
+    "lastMissing": "2026-09-14",
+    "lastPricedBefore": "2023-04-24",
+    "lastTop120SignalBefore": "2023-04-07",
+    "resumes": false,
+    "sessions": 825,
+    "ticker": "008560.KS"
+   },
+   {
+    "firstMissing": "2025-12-15",
+    "lastMissing": "2026-09-14",
+    "lastPricedBefore": "2025-12-12",
+    "lastTop120SignalBefore": "2025-12-05",
+    "resumes": false,
+    "sessions": 183,
+    "ticker": "010620.KS"
+   },
+   {
+    "firstMissing": "2026-07-15",
+    "lastMissing": "2026-09-14",
+    "lastPricedBefore": "2026-07-14",
+    "lastTop120SignalBefore": "2021-10-29",
+    "resumes": false,
+    "sessions": 42,
+    "ticker": "012510.KS"
+   },
+   {
+    "firstMissing": "2026-01-26",
+    "lastMissing": "2026-09-14",
+    "lastPricedBefore": "2026-01-23",
+    "lastTop120SignalBefore": "2023-08-04",
+    "resumes": false,
+    "sessions": 156,
+    "ticker": "042670.KS"
+   },
+   {
+    "firstMissing": "2020-02-14",
+    "lastMissing": "2026-09-14",
+    "lastPricedBefore": "2020-02-13",
+    "lastTop120SignalBefore": "2020-01-17",
+    "resumes": false,
+    "sessions": 1616,
+    "ticker": "079440.KS"
+   }
+  ],
+  "terminalFoundation": {
+   "000030.KS": {
+    "foundationStatus": "PARTIALLY_REPAIRED",
+    "inTerminatedSecurityInventory": true,
+    "inventoryTerminationType": "TERMINATION_TYPE_UNRESOLVED",
+    "krxName": "우리은행",
+    "lastMembershipDate": "2019-02-01",
+    "lastTradingDate": "2019-02-12",
+    "reconstructionCompleteness": {
+     "amendmentChainResolved": "BLOCKED",
+     "dartIssuerResolved": "READY",
+     "dividendLineageResolved": "READY",
+     "effectiveDateResolved": "READY",
+     "exDateSemanticsResolved": "BLOCKED",
+     "exchangeRatioResolved": "BLOCKED",
+     "lastTradingDateResolved": "READY",
+     "rawEvidenceRetained": "READY",
+     "sourceProvenanceRetained": "READY",
+     "successorResolvedWhereRequired": "READY",
+     "terminalActionChainResolved": "BLOCKED",
+     "terminalConsiderationResolved": "BLOCKED",
+     "terminationTypeResolved": "READY"
+    },
+    "reconstructionTerminationType": "SHARE_TRANSFER"
+   },
+   "000060.KS": {
+    "foundationStatus": "PARTIALLY_REPAIRED",
+    "inTerminatedSecurityInventory": true,
+    "inventoryTerminationType": "TERMINATION_TYPE_UNRESOLVED",
+    "krxName": "메리츠화재",
+    "lastMembershipDate": "2023-02-01",
+    "lastTradingDate": "2023-02-20",
+    "reconstructionCompleteness": {
+     "amendmentChainResolved": "READY",
+     "dartIssuerResolved": "READY",
+     "dividendLineageResolved": "READY",
+     "effectiveDateResolved": "READY",
+     "exDateSemanticsResolved": "BLOCKED",
+     "exchangeRatioResolved": "READY",
+     "lastTradingDateResolved": "READY",
+     "rawEvidenceRetained": "READY",
+     "sourceProvenanceRetained": "READY",
+     "successorResolvedWhereRequired": "READY",
+     "terminalActionChainResolved": "BLOCKED",
+     "terminalConsiderationResolved": "READY",
+     "terminationTypeResolved": "READY"
+    },
+    "reconstructionTerminationType": "SHARE_EXCHANGE"
+   },
+   "003410.KS": {
+    "foundationStatus": "PARTIALLY_REPAIRED",
+    "inTerminatedSecurityInventory": true,
+    "inventoryTerminationType": "TERMINATION_TYPE_UNRESOLVED",
+    "krxName": "쌍용C&E",
+    "lastMembershipDate": "2024-07-01",
+    "lastTradingDate": "2024-07-08",
+    "reconstructionCompleteness": {
+     "amendmentChainResolved": "BLOCKED",
+     "dartIssuerResolved": "READY",
+     "dividendLineageResolved": "READY",
+     "effectiveDateResolved": "READY",
+     "exDateSemanticsResolved": "BLOCKED",
+     "exchangeRatioResolved": "NOT_APPLICABLE",
+     "lastTradingDateResolved": "READY",
+     "rawEvidenceRetained": "READY",
+     "sourceProvenanceRetained": "READY",
+     "successorResolvedWhereRequired": "NOT_APPLICABLE",
+     "terminalActionChainResolved": "BLOCKED",
+     "terminalConsiderationResolved": "READY",
+     "terminationTypeResolved": "READY"
+    },
+    "reconstructionTerminationType": "CASH_SHARE_EXCHANGE"
+   },
+   "008560.KS": {
+    "foundationStatus": "PARTIALLY_REPAIRED",
+    "inTerminatedSecurityInventory": true,
+    "inventoryTerminationType": "TERMINATION_TYPE_UNRESOLVED",
+    "krxName": "메리츠증권",
+    "lastMembershipDate": "2023-04-03",
+    "lastTradingDate": "2023-04-24",
+    "reconstructionCompleteness": {
+     "amendmentChainResolved": "READY",
+     "dartIssuerResolved": "READY",
+     "dividendLineageResolved": "READY",
+     "effectiveDateResolved": "READY",
+     "exDateSemanticsResolved": "BLOCKED",
+     "exchangeRatioResolved": "READY",
+     "lastTradingDateResolved": "READY",
+     "rawEvidenceRetained": "READY",
+     "sourceProvenanceRetained": "READY",
+     "successorResolvedWhereRequired": "READY",
+     "terminalActionChainResolved": "BLOCKED",
+     "terminalConsiderationResolved": "READY",
+     "terminationTypeResolved": "READY"
+    },
+    "reconstructionTerminationType": "SHARE_EXCHANGE"
+   },
+   "010620.KS": {
+    "foundationStatus": "PARTIALLY_REPAIRED",
+    "inTerminatedSecurityInventory": true,
+    "inventoryTerminationType": "TERMINATION_TYPE_UNRESOLVED",
+    "krxName": "HD현대미포",
+    "lastMembershipDate": "2025-12-01",
+    "lastTradingDate": "2025-12-12",
+    "reconstructionCompleteness": {
+     "amendmentChainResolved": "READY",
+     "dartIssuerResolved": "READY",
+     "dividendLineageResolved": "READY",
+     "effectiveDateResolved": "READY",
+     "exDateSemanticsResolved": "BLOCKED",
+     "exchangeRatioResolved": "READY",
+     "lastTradingDateResolved": "READY",
+     "rawEvidenceRetained": "READY",
+     "sourceProvenanceRetained": "READY",
+     "successorResolvedWhereRequired": "READY",
+     "terminalActionChainResolved": "BLOCKED",
+     "terminalConsiderationResolved": "READY",
+     "terminationTypeResolved": "READY"
+    },
+    "reconstructionTerminationType": "MERGER_STOCK"
+   },
+   "012510.KS": {
+    "foundationStatus": "PARTIALLY_REPAIRED",
+    "inTerminatedSecurityInventory": true,
+    "inventoryTerminationType": "TERMINATION_TYPE_UNRESOLVED",
+    "krxName": "더존비즈온",
+    "lastMembershipDate": "2021-10-01",
+    "lastTradingDate": "2026-07-14",
+    "reconstructionCompleteness": {
+     "amendmentChainResolved": "READY",
+     "dartIssuerResolved": "READY",
+     "dividendLineageResolved": "READY",
+     "effectiveDateResolved": "READY",
+     "exDateSemanticsResolved": "BLOCKED",
+     "exchangeRatioResolved": "NOT_APPLICABLE",
+     "lastTradingDateResolved": "READY",
+     "rawEvidenceRetained": "READY",
+     "sourceProvenanceRetained": "READY",
+     "successorResolvedWhereRequired": "NOT_APPLICABLE",
+     "terminalActionChainResolved": "BLOCKED",
+     "terminalConsiderationResolved": "READY",
+     "terminationTypeResolved": "READY"
+    },
+    "reconstructionTerminationType": "CASH_SHARE_EXCHANGE"
+   },
+   "042670.KS": {
+    "foundationStatus": "PARTIALLY_REPAIRED",
+    "inTerminatedSecurityInventory": true,
+    "inventoryTerminationType": "TERMINATION_TYPE_UNRESOLVED",
+    "krxName": "HD현대인프라코어",
+    "lastMembershipDate": "2023-08-01",
+    "lastTradingDate": "2026-01-23",
+    "reconstructionCompleteness": {
+     "amendmentChainResolved": "READY",
+     "dartIssuerResolved": "READY",
+     "dividendLineageResolved": "READY",
+     "effectiveDateResolved": "READY",
+     "exDateSemanticsResolved": "BLOCKED",
+     "exchangeRatioResolved": "READY",
+     "lastTradingDateResolved": "READY",
+     "rawEvidenceRetained": "READY",
+     "sourceProvenanceRetained": "READY",
+     "successorResolvedWhereRequired": "BLOCKED",
+     "terminalActionChainResolved": "BLOCKED",
+     "terminalConsiderationResolved": "BLOCKED",
+     "terminationTypeResolved": "READY"
+    },
+    "reconstructionTerminationType": "MERGER_STOCK"
+   },
+   "079440.KS": {
+    "foundationStatus": "PARTIALLY_REPAIRED",
+    "inTerminatedSecurityInventory": true,
+    "inventoryTerminationType": "TERMINATION_TYPE_UNRESOLVED",
+    "krxName": "오렌지라이프",
+    "lastMembershipDate": "2020-02-03",
+    "lastTradingDate": "2020-02-13",
+    "reconstructionCompleteness": {
+     "amendmentChainResolved": "BLOCKED",
+     "dartIssuerResolved": "READY",
+     "dividendLineageResolved": "READY",
+     "effectiveDateResolved": "BLOCKED",
+     "exDateSemanticsResolved": "BLOCKED",
+     "exchangeRatioResolved": "BLOCKED",
+     "lastTradingDateResolved": "READY",
+     "rawEvidenceRetained": "READY",
+     "sourceProvenanceRetained": "READY",
+     "successorResolvedWhereRequired": "BLOCKED",
+     "terminalActionChainResolved": "BLOCKED",
+     "terminalConsiderationResolved": "BLOCKED",
+     "terminationTypeResolved": "READY"
+    },
+    "reconstructionTerminationType": "SHARE_EXCHANGE"
+   }
+  },
+  "terminalWindows": {
+   "000030.KS": {
+    "firstUnpricedSession": "2019-02-13",
+    "lastOuterAnchorBeforeSuspension": [
+     "2018-12-07",
+     "2018-11-30"
+    ],
+    "lastPositiveVolumeSession": "2019-01-08",
+    "lastPricedSession": "2019-02-12",
+    "outerAnchorsDuringSuspension": [
+     [
+      "2019-01-10",
+      "2019-01-04"
+     ]
+    ],
+    "suspendedSessions": 22,
+    "suspensionStart": "2019-01-09"
+   },
+   "000060.KS": {
+    "firstUnpricedSession": "2023-02-21",
+    "lastOuterAnchorBeforeSuspension": [
+     "2023-01-09",
+     "2023-01-06"
+    ],
+    "lastPositiveVolumeSession": "2023-01-27",
+    "lastPricedSession": "2023-02-20",
+    "outerAnchorsDuringSuspension": [
+     [
+      "2023-02-09",
+      "2023-02-03"
+     ]
+    ],
+    "suspendedSessions": 16,
+    "suspensionStart": "2023-01-30"
+   },
+   "003410.KS": {
+    "firstUnpricedSession": "2024-07-09",
+    "lastOuterAnchorBeforeSuspension": [
+     "2024-05-24",
+     "2024-05-17"
+    ],
+    "lastPositiveVolumeSession": "2024-06-20",
+    "lastPricedSession": "2024-07-08",
+    "outerAnchorsDuringSuspension": [
+     [
+      "2024-06-25",
+      "2024-06-21"
+     ]
+    ],
+    "suspendedSessions": 12,
+    "suspensionStart": "2024-06-21"
+   },
+   "008560.KS": {
+    "firstUnpricedSession": "2023-04-25",
+    "lastOuterAnchorBeforeSuspension": [
+     "2023-03-13",
+     "2023-03-10"
+    ],
+    "lastPositiveVolumeSession": "2023-03-31",
+    "lastPricedSession": "2023-04-24",
+    "outerAnchorsDuringSuspension": [
+     [
+      "2023-04-11",
+      "2023-04-07"
+     ]
+    ],
+    "suspendedSessions": 16,
+    "suspensionStart": "2023-04-03"
+   },
+   "010620.KS": {
+    "firstUnpricedSession": "2025-12-15",
+    "lastOuterAnchorBeforeSuspension": [
+     "2025-11-13",
+     "2025-11-07"
+    ],
+    "lastPositiveVolumeSession": "2025-11-26",
+    "lastPricedSession": "2025-12-12",
+    "outerAnchorsDuringSuspension": [
+     [
+      "2025-12-12",
+      "2025-12-05"
+     ]
+    ],
+    "suspendedSessions": 12,
+    "suspensionStart": "2025-11-27"
+   },
+   "012510.KS": {
+    "firstUnpricedSession": "2026-07-15",
+    "lastOuterAnchorBeforeSuspension": [
+     "2026-06-23",
+     "2026-06-19"
+    ],
+    "lastPositiveVolumeSession": "2026-06-25",
+    "lastPricedSession": "2026-07-14",
+    "outerAnchorsDuringSuspension": [],
+    "suspendedSessions": 13,
+    "suspensionStart": "2026-06-26"
+   },
+   "042670.KS": {
+    "firstUnpricedSession": "2026-01-26",
+    "lastOuterAnchorBeforeSuspension": [
+     "2025-12-12",
+     "2025-12-05"
+    ],
+    "lastPositiveVolumeSession": "2025-12-26",
+    "lastPricedSession": "2026-01-23",
+    "outerAnchorsDuringSuspension": [
+     [
+      "2026-01-15",
+      "2026-01-09"
+     ]
+    ],
+    "suspendedSessions": 18,
+    "suspensionStart": "2025-12-29"
+   },
+   "079440.KS": {
+    "firstUnpricedSession": "2020-02-14",
+    "lastOuterAnchorBeforeSuspension": [
+     "2020-01-20",
+     "2020-01-17"
+    ],
+    "lastPositiveVolumeSession": "2020-01-21",
+    "lastPricedSession": "2020-02-13",
+    "outerAnchorsDuringSuspension": [],
+    "suspendedSessions": 15,
+    "suspensionStart": "2020-01-22"
+   }
+  }
+ },
+ "pathsWithoutFailure": [
+  "BASELINE_0_PASSIVE:BASE",
+  "BASELINE_1_EQUAL_WEIGHT_SLEEVE:BASE",
+  "PRIMARY_ROBUST_KELLY:COST_X2"
+ ],
+ "reproduction": {
+  "firstDivergence": null,
+  "keysCompared": [
+   "complete",
+   "paths",
+   "process",
+   "prediction",
+   "evidence",
+   "verdict",
+   "outerAnchors",
+   "signalCoveragePercent",
+   "inputIdentitySha256",
+   "counters"
+  ],
+  "status": "RECONSTRUCTION_REPRODUCES_THE_SEALED_RESULT"
+ },
+ "status": "POST_OUTCOME_FORENSIC_DIAGNOSTIC_NOT_CONFIRMATORY",
+ "terminalExposure": {
+  "BASELINE_0_PASSIVE:BASE": {
+   "000030.KS": {
+    "lastPricedSession": 0.0,
+    "suspensionStart": 0.0
+   },
+   "000060.KS": {
+    "lastPricedSession": 0.0,
+    "suspensionStart": 0.0
+   },
+   "003410.KS": {
+    "lastPricedSession": 0.0,
+    "suspensionStart": 0.0
+   },
+   "008560.KS": {
+    "lastPricedSession": 0.0,
+    "suspensionStart": 0.0
+   },
+   "010620.KS": {
+    "lastPricedSession": 0.0,
+    "suspensionStart": 0.0
+   },
+   "012510.KS": {
+    "lastPricedSession": 0.0,
+    "suspensionStart": 0.0
+   },
+   "042670.KS": {
+    "lastPricedSession": 0.0,
+    "suspensionStart": 0.0
+   },
+   "079440.KS": {
+    "lastPricedSession": 0.0,
+    "suspensionStart": 0.0
+   }
+  },
+  "BASELINE_1_EQUAL_WEIGHT_SLEEVE:BASE": {
+   "000030.KS": {
+    "lastPricedSession": 0.0,
+    "suspensionStart": 0.0
+   },
+   "000060.KS": {
+    "lastPricedSession": 0.0,
+    "suspensionStart": 0.0
+   },
+   "003410.KS": {
+    "lastPricedSession": 0.0,
+    "suspensionStart": 0.0
+   },
+   "008560.KS": {
+    "lastPricedSession": 0.0,
+    "suspensionStart": 0.0
+   },
+   "010620.KS": {
+    "lastPricedSession": 0.0,
+    "suspensionStart": 0.0
+   },
+   "012510.KS": {
+    "lastPricedSession": 0.0,
+    "suspensionStart": 0.0
+   },
+   "042670.KS": {
+    "lastPricedSession": 0.0,
+    "suspensionStart": 0.0
+   },
+   "079440.KS": {
+    "lastPricedSession": 0.0,
+    "suspensionStart": 0.0
+   }
+  },
+  "DECISION_FOCUSED_CHALLENGER:BASE": {
+   "000030.KS": {
+    "lastPricedSession": 0.0002029950568644396,
+    "suspensionStart": 0.00021970545418353973
+   },
+   "000060.KS": {
+    "lastPricedSession": null,
+    "suspensionStart": null
+   },
+   "003410.KS": {
+    "lastPricedSession": null,
+    "suspensionStart": null
+   },
+   "008560.KS": {
+    "lastPricedSession": null,
+    "suspensionStart": null
+   },
+   "010620.KS": {
+    "lastPricedSession": null,
+    "suspensionStart": null
+   },
+   "012510.KS": {
+    "lastPricedSession": null,
+    "suspensionStart": null
+   },
+   "042670.KS": {
+    "lastPricedSession": null,
+    "suspensionStart": null
+   },
+   "079440.KS": {
+    "lastPricedSession": null,
+    "suspensionStart": null
+   }
+  },
+  "PRIMARY_ROBUST_KELLY:BASE": {
+   "000030.KS": {
+    "lastPricedSession": 0.0,
+    "suspensionStart": 0.0
+   },
+   "000060.KS": {
+    "lastPricedSession": null,
+    "suspensionStart": null
+   },
+   "003410.KS": {
+    "lastPricedSession": null,
+    "suspensionStart": null
+   },
+   "008560.KS": {
+    "lastPricedSession": null,
+    "suspensionStart": null
+   },
+   "010620.KS": {
+    "lastPricedSession": null,
+    "suspensionStart": null
+   },
+   "012510.KS": {
+    "lastPricedSession": null,
+    "suspensionStart": null
+   },
+   "042670.KS": {
+    "lastPricedSession": null,
+    "suspensionStart": null
+   },
+   "079440.KS": {
+    "lastPricedSession": 0.0072841904227861284,
+    "suspensionStart": 0.00724716708089493
+   }
+  },
+  "PRIMARY_ROBUST_KELLY:COST_X2": {
+   "000030.KS": {
+    "lastPricedSession": 0.0,
+    "suspensionStart": 0.0
+   },
+   "000060.KS": {
+    "lastPricedSession": 0.0,
+    "suspensionStart": 0.0
+   },
+   "003410.KS": {
+    "lastPricedSession": 0.0,
+    "suspensionStart": 0.0
+   },
+   "008560.KS": {
+    "lastPricedSession": 0.0,
+    "suspensionStart": 0.0
+   },
+   "010620.KS": {
+    "lastPricedSession": 0.0,
+    "suspensionStart": 0.0
+   },
+   "012510.KS": {
+    "lastPricedSession": 0.0,
+    "suspensionStart": 0.0
+   },
+   "042670.KS": {
+    "lastPricedSession": 0.0,
+    "suspensionStart": 0.0
+   },
+   "079440.KS": {
+    "lastPricedSession": 0.0,
+    "suspensionStart": 0.0
+   }
+  },
+  "PRIMARY_ROBUST_KELLY:EXECUTION_DELAY_ONE_SESSION": {
+   "000030.KS": {
+    "lastPricedSession": 0.0,
+    "suspensionStart": 0.0
+   },
+   "000060.KS": {
+    "lastPricedSession": null,
+    "suspensionStart": null
+   },
+   "003410.KS": {
+    "lastPricedSession": null,
+    "suspensionStart": null
+   },
+   "008560.KS": {
+    "lastPricedSession": null,
+    "suspensionStart": null
+   },
+   "010620.KS": {
+    "lastPricedSession": null,
+    "suspensionStart": null
+   },
+   "012510.KS": {
+    "lastPricedSession": null,
+    "suspensionStart": null
+   },
+   "042670.KS": {
+    "lastPricedSession": null,
+    "suspensionStart": null
+   },
+   "079440.KS": {
+    "lastPricedSession": 0.006577240684861476,
+    "suspensionStart": 0.006544501927715615
+   }
+  },
+  "PRIMARY_ROBUST_KELLY:LIQUIDITY_HAIRCUT_HALF_ADV": {
+   "000030.KS": {
+    "lastPricedSession": 0.0,
+    "suspensionStart": 0.0
+   },
+   "000060.KS": {
+    "lastPricedSession": null,
+    "suspensionStart": null
+   },
+   "003410.KS": {
+    "lastPricedSession": null,
+    "suspensionStart": null
+   },
+   "008560.KS": {
+    "lastPricedSession": null,
+    "suspensionStart": null
+   },
+   "010620.KS": {
+    "lastPricedSession": null,
+    "suspensionStart": null
+   },
+   "012510.KS": {
+    "lastPricedSession": null,
+    "suspensionStart": null
+   },
+   "042670.KS": {
+    "lastPricedSession": null,
+    "suspensionStart": null
+   },
+   "079440.KS": {
+    "lastPricedSession": 0.0072841904227861284,
+    "suspensionStart": 0.00724716708089493
+   }
+  }
+ },
+ "tradeCounts": {
+  "BASELINE_0_PASSIVE:BASE": 0,
+  "BASELINE_1_EQUAL_WEIGHT_SLEEVE:BASE": 101,
+  "DECISION_FOCUSED_CHALLENGER:BASE": 12,
+  "PRIMARY_ROBUST_KELLY:BASE": 24,
+  "PRIMARY_ROBUST_KELLY:COST_X2": 101,
+  "PRIMARY_ROBUST_KELLY:EXECUTION_DELAY_ONE_SESSION": 24,
+  "PRIMARY_ROBUST_KELLY:LIQUIDITY_HAIRCUT_HALF_ADV": 24
+ }
+}
