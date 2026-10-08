@@ -9,6 +9,12 @@ name: KR alpha discovery tournament v1 post-outcome integrity audit
 # and its frozen tournament files must be byte-identical to that commit's.
 # It downloads the EXACT preserved raw-input artifact, verifies the formal run, both artifacts and both lock refs read-only, replays the frozen
 # process read-only, and attributes the incomplete paths ONLY if the replay reproduces the sealed result (otherwise RECONSTRUCTION_MISMATCH).
+# ENVIRONMENT (v2.51). The first run (37688582489) ran Python 3.11.17 with three drifted pure-Python packages on a newer runner image and read
+# RECONSTRUCTION_MISMATCH. This workflow now runs the formal execution's exact CPython patch release (3.11.16) with an AUDIT-ONLY constraint file holding every
+# package version pip installed in the formal execute job (constraints/kr-alpha-discovery-tournament-v1-formal-env-37535814142.txt, derived from that job's own log),
+# and a cheap parity preflight STOPS the job before the raw snapshot is downloaded if the Python environment is not that one. The runner image, CPU and BLAS kernel
+# set cannot be pinned on GitHub-hosted runners (and the formal log did not record the CPU): they are recorded and classified, never gating. The 1e-9 reproduction
+# gate is unchanged. The sealed formal workflow is not edited (it is byte-pinned by the sealed spec).
 on:
   workflow_dispatch:
     inputs:
@@ -28,7 +34,7 @@ env:
   MKL_NUM_THREADS: '1'
 jobs:
   audit:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 300
     env:
       AUDIT_REF: ${{ inputs.audit_ref }}
@@ -69,6 +75,7 @@ jobs:
             'pipeline/kr_alpha_tournament_execution.py' 'pipeline/kr_alpha_tournament_features.py' 'pipeline/kr_alpha_tournament_models.py' \
             'pipeline/kr_alpha_tournament_portfolio.py' 'pipeline/kr_alpha_tournament_receipts.py' 'pipeline/kr_alpha_tournament_seal.py' \
             'pipeline/kr_alpha_tournament_study.py' 'pipeline/kr_alpha_tournament_walkforward.py' \
+            '.github/workflows/kr-alpha-discovery-tournament-v1.yml' \
             'research_specs/kr-alpha-discovery-tournament-v1.json' 'research_specs/kr-alpha-discovery-tournament-v1.sha256')"
           if [ -n "${frozen}" ]; then echo "FROZEN_FILES_CHANGED_SINCE_THE_EXECUTION_COMMIT: ${frozen}"; exit 1; fi
       - name: Verify the formal run, both artifacts and both lock refs through the Actions API (read-only)
@@ -91,11 +98,17 @@ jobs:
               const r = refs.find(x => x.ref === w);
               if (!r || r.object.sha !== e.FORMAL_EXECUTION_SHA) throw new Error('LOCK_REF_MISSING_OR_MOVED_' + w);
             }
-      - uses: actions/setup-python@v6
+      - name: Python at the formal execution's exact patch release (3.11.16)
+        uses: actions/setup-python@v6
         with:
-          python-version: '3.11'
-          cache: pip
-      - run: pip install -r requirements.txt -r requirements-dev.txt
+          python-version: '3.11.16'
+          check-latest: false
+      - name: Install the normal requirements PLUS the audit-only constraints of the formal execute job
+        run: pip install -r requirements.txt -r requirements-dev.txt -c constraints/kr-alpha-discovery-tournament-v1-formal-env-37535814142.txt
+      - name: Environment parity preflight (cheap). A Python-environment mismatch STOPS the job here, before the 336 MB snapshot and the 1.5 h reconstruction
+        run: |
+          set -euo pipefail
+          python scripts/check_kr_alpha_tournament_formal_environment.py --output audit/environment-parity.json
       - name: Download the exact preserved raw snapshot
         uses: actions/download-artifact@v5
         with:
@@ -111,7 +124,7 @@ jobs:
       - name: Print the audit files to the job log (gzip + base64) so they can be read without downloading the artifact
         if: always()
         run: |
-          for f in audit/model-free-scan.json audit/integrity-audit-full.json; do
+          for f in audit/environment-parity.json audit/model-free-scan.json audit/integrity-audit-full.json; do
             if [ -f "$f" ]; then
               echo "AUDIT_FILE=$f SHA256=$(sha256sum "$f" | cut -d' ' -f1) BYTES=$(wc -c < "$f")"
               echo "AUDIT_BEGIN $f"

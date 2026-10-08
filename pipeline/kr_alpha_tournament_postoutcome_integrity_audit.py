@@ -491,6 +491,142 @@ def reproduction_check(reconstructed, sealed):
 
 
 # --------------------------------------------------------------------------- #
+# Reproduction DIAGNOSTICS (v2.51). Read-only descriptions of HOW a failed reproduction failed. They never change the gate's status, never loosen
+# FLOAT_TOLERANCE, and never name a ticker, a date of an event, a held weight or a cause. Only attached when the gate refused.
+# --------------------------------------------------------------------------- #
+SUCCESS_STATUS = "RECONSTRUCTION_REPRODUCES_THE_SEALED_RESULT"
+
+
+def reproduction_allows_attribution(gate):
+    """The only condition under which the forensic sections below the gate may run: the exact registered success status and nothing else."""
+    return isinstance(gate, dict) and gate.get("status") == SUCCESS_STATUS and gate.get("firstDivergence") is None
+
+
+def _is_number(x):
+    return isinstance(x, (int, float)) and not isinstance(x, bool) and x == x
+
+
+def _numeric_pairs(a, b, path, out):
+    """Every numeric pair present on both sides, in the same traversal order `_first_divergence` uses (sorted dict keys, list index)."""
+    if isinstance(a, dict) and isinstance(b, dict):
+        for k in sorted(set(a) & set(b)):
+            _numeric_pairs(a[k], b[k], path + "/" + str(k), out)
+    elif isinstance(a, list) and isinstance(b, list) and len(a) == len(b):
+        for i, (x, y) in enumerate(zip(a, b)):
+            _numeric_pairs(x, y, path + "[%d]" % i, out)
+    elif _is_number(a) and _is_number(b):
+        out.append((path, float(a), float(b)))
+
+
+def _walk_until_divergence(a, b, path, visited, tol=FLOAT_TOLERANCE):
+    """`_first_divergence` with a record of the numeric pairs it compared on the way. Returns (divergence or None, the diverging numeric pair or None)."""
+    if isinstance(a, dict) and isinstance(b, dict):
+        for k in sorted(set(a) | set(b)):
+            if k not in a or k not in b:
+                return path + "/" + str(k) + " (missing on one side)", None
+            d, pair = _walk_until_divergence(a[k], b[k], path + "/" + str(k), visited, tol)
+            if d:
+                return d, pair
+        return None, None
+    if isinstance(a, list) and isinstance(b, list):
+        if len(a) != len(b):
+            return path + " (length %d vs %d)" % (len(a), len(b)), None
+        for i, (x, y) in enumerate(zip(a, b)):
+            d, pair = _walk_until_divergence(x, y, path + "[%d]" % i, visited, tol)
+            if d:
+                return d, pair
+        return None, None
+    if isinstance(a, bool) or isinstance(b, bool) or a is None or b is None or isinstance(a, str) or isinstance(b, str):
+        return (None, None) if a == b else (path + " (%r vs %r)" % (a, b), None)
+    if isinstance(a, (int, float)) and isinstance(b, (int, float)):
+        if math.isclose(float(a), float(b), rel_tol=tol, abs_tol=tol):
+            visited.append((path, float(a), float(b)))
+            return None, None
+        return path + " (%r vs %r)" % (a, b), (float(a), float(b))
+    return (None, None) if a == b else (path + " (%r vs %r)" % (a, b), None)
+
+
+def _summary(pairs):
+    if not pairs:
+        return {"numericFieldsCompared": 0, "maxAbsoluteDifference": None, "maxRelativeDifference": None, "fieldsBeyondTolerance": 0}
+    abs_d = [abs(x - y) for _, x, y in pairs]
+    rel_d = [abs(x - y) / abs(y) if y != 0 else (0.0 if x == y else float("inf")) for _, x, y in pairs]
+    beyond = sum(1 for _, x, y in pairs if not math.isclose(x, y, rel_tol=FLOAT_TOLERANCE, abs_tol=FLOAT_TOLERANCE))
+    return {"numericFieldsCompared": len(pairs), "maxAbsoluteDifference": max(abs_d), "maxRelativeDifference": max(rel_d), "fieldsBeyondTolerance": beyond}
+
+
+def _same_structure(a, b):
+    """Same keys, same list lengths, same scalar KINDS; no value is compared."""
+    if isinstance(a, dict) and isinstance(b, dict):
+        return sorted(a) == sorted(b) and all(_same_structure(a[k], b[k]) for k in a)
+    if isinstance(a, list) and isinstance(b, list):
+        return len(a) == len(b) and all(_same_structure(x, y) for x, y in zip(a, b))
+    if isinstance(a, (dict, list)) or isinstance(b, (dict, list)):
+        return False
+    return (a is None) == (b is None) and (isinstance(a, str) == isinstance(b, str)) and (_is_number(a) == _is_number(b))
+
+
+def _by_year(document, field):
+    folds = ((document or {}).get("process") or {}).get("folds") or []
+    return {f.get("year"): f.get(field) for f in folds if isinstance(f, dict)}
+
+
+def reproduction_diagnostics(reconstructed, sealed, environment=None):
+    """HOW a failed reproduction failed. Descriptive only: no cause, no ticker, no event date, no path attribution."""
+    registered = list(REPRODUCED_KEYS) + ["counters"]
+    mine_counters = {k: v for k, v in (reconstructed.get("counters") or {}).items() if k != "markerWrites"}
+    sealed_counters = {k: v for k, v in (sealed.get("counters") or {}).items() if k != "markerWrites"}
+    views = {k: (reconstructed.get(k), sealed.get(k)) for k in REPRODUCED_KEYS}
+    views["counters"] = (mine_counters, sealed_counters)
+
+    # the walk exactly as the gate takes it: registered key order, stopping at the first divergence
+    visited, refusal, pair = [], None, None
+    for key in registered:
+        d, p = _walk_until_divergence(views[key][0], views[key][1], key, visited)
+        if d:
+            refusal, pair = d, p
+            break
+    divergent = None
+    if pair is not None:
+        x, y = pair
+        divergent = {"reconstructed": x, "sealed": y, "absoluteDifference": abs(x - y), "relativeDifference": abs(x - y) / abs(y) if y else None}
+
+    per_key, everything = {}, []
+    for key in registered:
+        pairs = []
+        _numeric_pairs(views[key][0], views[key][1], key, pairs)
+        everything.extend(pairs)
+        per_key[key] = {"matched": _first_divergence(views[key][0], views[key][1], key) is None, **_summary(pairs)}
+
+    complete_r, complete_s = reconstructed.get("complete") or {}, sealed.get("complete") or {}
+    states_r, states_s = _by_year(reconstructed, "state"), _by_year(sealed, "state")
+    ens_r, ens_s = _by_year(reconstructed, "ensemble"), _by_year(sealed, "ensemble")
+    return {
+        "diagnosticOnly": True, "noFailureAttribution": True, "tolerance": {"relTol": FLOAT_TOLERANCE, "absTol": FLOAT_TOLERANCE},
+        "firstDivergence": refusal, "firstDivergentNumericPair": divergent,
+        "completePathFlags": {"matched": complete_r == complete_s, "differingPathKeys": sorted(k for k in set(complete_r) | set(complete_s) if complete_r.get(k) != complete_s.get(k))},
+        "outerFoldStates": {"matched": states_r == states_s, "differingYears": sorted(y for y in set(states_r) | set(states_s) if states_r.get(y) != states_s.get(y))},
+        "selectedEnsembleIdsByYear": {"matched": ens_r == ens_s, "differingYears": sorted(y for y in set(ens_r) | set(ens_s) if ens_r.get(y) != ens_s.get(y))},
+        "counters": {"matched": mine_counters == sealed_counters, "differing": sorted(k for k in set(mine_counters) | set(sealed_counters) if mine_counters.get(k) != sealed_counters.get(k)),
+                     "markerWritesIgnoredByTheGate": True},
+        "processStructure": {"matched": _same_structure(reconstructed.get("process"), sealed.get("process"))},
+        "maxNumericalDifference": {"beforeTheRefusalPoint": {"description": "numeric fields the gate compared, in its own order, before the first divergence", **_summary(visited)},
+                                   "acrossAllRegisteredFields": {"description": "every numeric field present on both sides of every registered key; a magnitude, not a cause", **_summary(everything)}},
+        "perRegisteredKey": per_key,
+        "environment": environment,
+    }
+
+
+def _environment_comparison(root):
+    """The formal-versus-this-run environment comparison embedded in a refused reproduction. A record, never a gate, and never allowed to raise."""
+    try:
+        from . import kr_alpha_tournament_formal_environment as FE
+        return FE.compact_comparison(FE.load_manifest(root), FE.observe_environment())
+    except Exception as exc:                                       # the diagnostic must not turn a refusal into a crash
+        return {"unavailable": type(exc).__name__ + ": " + str(exc)[:200]}
+
+
+# --------------------------------------------------------------------------- #
 # The full forensic reconstruction (Actions only: needs the exact preserved raw-input artifact)
 # --------------------------------------------------------------------------- #
 def reconstruct(input_root, root):
@@ -535,7 +671,8 @@ def reconstruct(input_root, root):
                                  "inputIdentitySha256": identity_before, **assessed, "counters": dict(counters, markerWrites=1)})
     gate = reproduction_check(reconstructed, sealed)
     out = {"auditId": AUDIT_ID, "status": STATUS, "formal": FORMAL, "reproduction": gate, "inputIdentityAfterSha256": identity_after}
-    if gate["status"] != "RECONSTRUCTION_REPRODUCES_THE_SEALED_RESULT":
+    if not reproduction_allows_attribution(gate):
+        out["reproduction"] = dict(gate, diagnostics=reproduction_diagnostics(reconstructed, sealed, _environment_comparison(root)))
         return out                                               # no attribution without exact reproduction
     window_days = [d for d in days if first <= d <= T.DEVELOPMENT_CUTOFF]
     outer_anchors = [tuple(a) for f in outer for a in f["anchors"]]
