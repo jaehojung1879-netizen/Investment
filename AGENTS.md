@@ -3096,3 +3096,27 @@
   snapshot: 2,116 sessions, no benchmark gap, no mid-series gap, eight terminal ends.
 - THE FIX TO THE ENTRY POINT IS OUTPUT-ONLY. `status_of` replaces the eager default; it touches no tournament module, spec, result, lock or workflow, and
   is not part of the tournament's sealed closure (verified against `dependencyHashes`). Regression tests cover both document shapes and `main` end to end.
+
+## KR alpha discovery tournament v1 audit-environment invariants (v2.51)
+
+- A RECONSTRUCTION THAT REFUSES AT 1e-9 IS NOT FIXED BY LOOSENING 1e-9, AND IT IS NOT FIXED BY GUESSING THE ENVIRONMENT EITHER. The first post-outcome audit (run
+  `37688582489`) read `RECONSTRUCTION_MISMATCH` at 1.31e-07 in a different environment from the formal execution (run `37535814142`). Both job logs were read
+  directly: the formal result was computed in the `execute` job (not `frozen-machine`), on CPython 3.11.16 and runner image `20260927.320.1`; the audit ran 3.11.17
+  on `20261004.327.1`. Of 47 installed packages exactly three differ (`iniconfig`, `peewee`, `toolz`), all pure Python and outside the numerical path; the numpy,
+  scipy, scikit-learn, pandas and lightgbm wheel files are identical. The prompt's package list equalled the formal log's list exactly; it was verified, not assumed.
+- THE ENVIRONMENT RECORD IS DERIVED FROM THE LOG AND IS AUDIT-ONLY. `docs/results/...-formal-environment-37535814142.json` and
+  `constraints/...-formal-env-37535814142.txt` are not in the sealed tournament's dependency closure, the sealed workflow is byte-identical (a test compares it with the
+  spec's own pin), and pip's resolver run against `requirements*.txt` plus the constraints selects exactly the 47 formal versions. pip's "Successfully installed"
+  line lists only what pip installed that run, so `pip`, `setuptools` and `wheel` are not recorded and are not compared.
+- A PREFLIGHT SPENDS SECONDS TO AVOID SPENDING 90 MINUTES IN A KNOWINGLY DIFFERENT ENVIRONMENT. It runs after the install and before the snapshot download:
+  exact CPython patch release, every package version, the three thread variables, and the constraint file against its manifest. A failure exits non-zero and the job
+  stops; the parity record (with `pip freeze`, `numpy.show_config()`, threadpool/OpenBLAS architecture, CPU) is written and uploaded either way.
+- THE PYTHON ENVIRONMENT AND THE HOST ARE DIFFERENT CLAIMS. `PYTHON_ENVIRONMENT_EXACT_MATCH` gates; `HOST_HARDWARE_IMAGE_MATCH` never does and cannot be reached today,
+  because the formal log recorded no CPU and no BLAS architecture. A hosted runner image cannot be re-selected, so the honest values are `DIFFERS` or `UNVERIFIABLE`.
+- AN ENVIRONMENT HYPOTHESIS IS STATED AS ONE. Bundled OpenBLAS can choose different kernels on a different CPU generation, and a 3,960-fit, 24,231-solve pipeline can
+  amplify a last-bit difference; that is plausible and unproven, and the formal result may simply not be reproducible across hosts, in which case the refusal is the registered
+  outcome. The gate was not softened to avoid it.
+- A REFUSED REPRODUCTION NOW SAYS HOW IT FAILED, WITHOUT SAYING WHY. `reproduction.diagnostics` records the first divergence and its absolute and relative difference, whether
+  the complete flags, fold states, ensemble IDs by year, counters and process structure matched, the maximum numeric differences before and beyond the refusal point, and the
+  environment comparison. No ticker, event date, weight or cause appears, and a test checks that every attribution call in `reconstruct` sits after the gate's return.
+- NOTHING WAS DISPATCHED. The expensive audit was not run by this change, and no sealed tournament file, spec, result or lock moved.

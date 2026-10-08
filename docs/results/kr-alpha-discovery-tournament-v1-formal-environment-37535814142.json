@@ -1,0 +1,141 @@
+{
+  "digest": "06c53d2e0d5ed8aecad7471929f1b2cd94d103579c04e58f9875f1f28e3a62e3",
+  "evidenceClass": "FORMAL_RUN_ENVIRONMENT_RECORD_DERIVED_FROM_THE_ACTIONS_JOB_LOG",
+  "firstPostOutcomeAudit": {
+    "host": {
+      "imageName": "ubuntu-24.04",
+      "imageVersion": "20261004.327.1",
+      "os": "Ubuntu 24.04.5 LTS",
+      "provisionerVersion": "20261002.596",
+      "region": "northcentralus",
+      "runnerVersion": "2.337.0"
+    },
+    "jobId": 113022667916,
+    "numericalWheelFilesIdentical": true,
+    "packageDifferencesFromFormal": {
+      "iniconfig": {
+        "firstAudit": "2.3.1",
+        "formal": "2.3.0"
+      },
+      "peewee": {
+        "firstAudit": "4.5.3",
+        "formal": "4.5.2"
+      },
+      "toolz": {
+        "firstAudit": "1.2.0",
+        "formal": "1.1.0"
+      }
+    },
+    "python": "3.11.17",
+    "runId": 37688582489,
+    "threadEnvironment": "identical (1, 1, 1)"
+  },
+  "formalRun": {
+    "computedIn": "the execute job (the frozen-machine job of the same run installed separately and computed no result)",
+    "executionSha": "eac50fdf725ac797e5c37044246e2a7ffa9b1e64",
+    "installCommand": "pip install -r requirements.txt -r requirements-dev.txt",
+    "jobId": 112519474120,
+    "jobName": "execute",
+    "jobStartedAt": "2026-10-06T21:50:53Z",
+    "logSha256AsRetrieved": "a313f22b082d32fd2850c5c165d3510445863ed041aeab3248030a39a0e2d458",
+    "pipInstallStepAt": "2026-10-06T21:52:11Z-2026-10-06T21:52:25Z",
+    "runId": 37535814142,
+    "runnerName": "GitHub Actions 1000005162"
+  },
+  "host": {
+    "architecture": "x86_64",
+    "cpuFlags": null,
+    "cpuModel": null,
+    "imageName": "ubuntu-24.04",
+    "imageVersion": "20260927.320.1",
+    "kernel": null,
+    "notRecordedInTheFormalLog": [
+      "CPU model and flags",
+      "OpenBLAS dynamic-dispatch architecture (threadpoolctl)",
+      "numpy.show_config()",
+      "kernel and uname",
+      "locale",
+      "TZ",
+      "PYTHONHASHSEED",
+      "pip, setuptools and wheel versions"
+    ],
+    "openblasArchitecture": null,
+    "os": "Ubuntu 24.04.5 LTS",
+    "provisionerVersion": "20260901.588",
+    "region": "centralus",
+    "runnerVersion": "2.337.0"
+  },
+  "manifestId": "kr-alpha-discovery-tournament-v1-formal-environment-37535814142",
+  "numericalWheelFiles": {
+    "lightgbm": "lightgbm-4.6.0-py3-none-manylinux_2_28_x86_64.whl",
+    "numpy": "numpy-2.3.1-cp311-cp311-manylinux_2_28_x86_64.whl",
+    "pandas": "pandas-2.3.0-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+    "scikit-learn": "scikit_learn-1.7.0-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+    "scipy": "scipy-1.16.0-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.whl"
+  },
+  "packages": {
+    "beautifulsoup4": "4.15.0",
+    "certifi": "2026.7.22",
+    "cffi": "2.1.1",
+    "charset-normalizer": "3.5.2",
+    "cloudpickle": "3.1.2",
+    "curl-cffi": "0.16.3",
+    "exchange-calendars": "4.11.1",
+    "finance-datareader": "0.9.110",
+    "fredapi": "0.5.2",
+    "frozendict": "2.4.7",
+    "idna": "3.20",
+    "iniconfig": "2.3.0",
+    "joblib": "1.6.0",
+    "korean-lunar-calendar": "0.4.0",
+    "lightgbm": "4.6.0",
+    "lxml": "6.1.3",
+    "multitasking": "0.0.13",
+    "narwhals": "2.26.0",
+    "numpy": "2.3.1",
+    "packaging": "26.3",
+    "pandas": "2.3.0",
+    "peewee": "4.5.2",
+    "platformdirs": "4.12.3",
+    "plotly": "7.1.0",
+    "pluggy": "1.6.0",
+    "protobuf": "7.36.2",
+    "pycparser": "3.0",
+    "pygments": "2.21.0",
+    "pyluach": "2.3.0",
+    "pytest": "8.4.1",
+    "python-dateutil": "2.9.0.post0",
+    "pytz": "2026.5",
+    "requests": "2.34.2",
+    "requests-file": "3.0.1",
+    "ruff": "0.15.8",
+    "scikit-learn": "1.7.0",
+    "scipy": "1.16.0",
+    "six": "1.17.0",
+    "soupsieve": "2.10",
+    "threadpoolctl": "3.7.0",
+    "toolz": "1.1.0",
+    "tqdm": "4.70.1",
+    "typing-extensions": "4.16.0",
+    "tzdata": "2026.5",
+    "urllib3": "2.8.0",
+    "websockets": "17.2",
+    "yfinance": "0.2.65"
+  },
+  "packagesRecordedBy": "pip's 'Successfully installed' line for the execute job. pip lists only packages it installed that run, so the runner's pre-installed tooling (pip, setuptools, wheel) is NOT recorded here and is not compared.",
+  "purpose": "The Python environment the formal execution ran in, recorded so the post-outcome audit can be run in the same one. Audit-only: it is not an input to the sealed tournament, is not pinned by its spec, and changes no scientific rule.",
+  "python": {
+    "architecture": "x64 (setup-python cache key 'Linux-x64-24.04')",
+    "implementation": "CPython",
+    "logLine": "Successfully set up CPython (3.11.16)",
+    "requested": "3.11",
+    "setupAction": "actions/setup-python@v6",
+    "setupPythonCacheKey": "setup-python-Linux-x64-24.04-Ubuntu-python-3.11.16-pip-1bb05840ac4752f93cdf6493430c86669f70348143ab8ad28969c78d11593231",
+    "version": "3.11.16"
+  },
+  "threadEnvironment": {
+    "MKL_NUM_THREADS": "1",
+    "OMP_NUM_THREADS": "1",
+    "OPENBLAS_NUM_THREADS": "1"
+  }
+}
