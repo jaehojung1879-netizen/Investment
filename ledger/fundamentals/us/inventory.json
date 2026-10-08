@@ -1,105 +1,127 @@
 {
-  "filings": 1,
+  "filings": 588,
   "periodLengthByForm": {
+    "10-K": {
+      "year (316-400d)": 43
+    },
     "10-Q": {
-      "half (136-225d)": 1
+      "half (136-225d)": 473,
+      "three quarters (226-315d)": 43,
+      "quarter (46-135d)": 29
     }
   },
   "filingsWithNoPeriodLength": 0,
   "filingsByFreq": {
-    "quarterly": 1
+    "quarterly": 545,
+    "annual": 43
   },
   "formsByFreq": {
+    "annual": {
+      "10-K": 43
+    },
     "quarterly": {
-      "10-Q": 1
+      "10-Q": 545
     }
   },
   "conceptsBySection": {
     "bs": 0,
-    "ic": 23,
-    "cf": 29
+    "ic": 1525,
+    "cf": 2989
   },
   "conceptsBySectionCollapsed": {
     "bs": 0,
-    "ic": 23,
-    "cf": 29
+    "ic": 1525,
+    "cf": 2989
   },
   "topConcepts": {
     "bs": [],
     "ic": [
-      "us-gaap_Revenues",
-      "us-gaap_CostOfRevenue",
-      "us-gaap_SellingAndMarketingExpense",
-      "us-gaap_ResearchAndDevelopmentExpense",
-      "us-gaap_GeneralAndAdministrativeExpense",
-      "us-gaap_OperatingIncomeLoss",
-      "us-gaap_InterestExpenseNonoperating",
-      "us-gaap_NonoperatingIncomeExpense",
-      "us-gaap_IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest",
       "us-gaap_IncomeTaxExpenseBenefit",
+      "us-gaap_EarningsPerShareDiluted",
+      "us-gaap_EarningsPerShareBasic",
+      "us-gaap_ComprehensiveIncomeNetOfTax",
       "us-gaap_NetIncomeLoss",
-      "us-gaap_EarningsPerShareBasic"
+      "us-gaap_IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest",
+      "us-gaap_WeightedAverageNumberOfSharesOutstandingBasic",
+      "us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
+      "us-gaap_OperatingIncomeLoss",
+      "us-gaap_RevenueFromContractWithCustomerExcludingAssessedTax",
+      "us-gaap_SellingGeneralAndAdministrativeExpense",
+      "us-gaap_OtherNonoperatingIncomeExpense"
     ],
     "cf": [
-      "us-gaap_NetIncomeLoss",
-      "nflx_AdditionstoStreamingContentAssets",
-      "nflx_ChangeInStreamingContentLiabilities",
-      "nflx_CostofServicesAmortizationofStreamingContentAssets",
-      "us-gaap_DepreciationDepletionAndAmortization",
+      "us-gaap_NetCashProvidedByUsedInFinancingActivities",
+      "us-gaap_NetCashProvidedByUsedInInvestingActivities",
+      "us-gaap_NetCashProvidedByUsedInOperatingActivities",
+      "us-gaap_CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseIncludingExchangeRateEffect",
       "us-gaap_ShareBasedCompensation",
-      "us-gaap_ForeignCurrencyTransactionGainLossBeforeTax",
-      "us-gaap_OtherNoncashIncomeExpense",
-      "nflx_DeferredIncomeTaxExpenseBenefitIncludingReclassifications",
-      "us-gaap_IncreaseDecreaseInOtherCurrentAssets",
-      "us-gaap_IncreaseDecreaseInAccountsPayable",
-      "us-gaap_IncreaseDecreaseInAccruedLiabilities"
+      "us-gaap_PaymentsForRepurchaseOfCommonStock",
+      "us-gaap_PaymentsToAcquirePropertyPlantAndEquipment",
+      "us-gaap_PaymentsForProceedsFromOtherInvestingActivities",
+      "us-gaap_ProceedsFromPaymentsForOtherFinancingActivities",
+      "us-gaap_ProfitLoss",
+      "us-gaap_EffectOfExchangeRateOnCashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents",
+      "us-gaap_IncreaseDecreaseInInventories"
     ]
   },
   "topConceptsCollapsed": {
     "bs": [],
     "ic": [
-      "Revenues",
-      "CostOfRevenue",
-      "SellingAndMarketingExpense",
-      "ResearchAndDevelopmentExpense",
-      "GeneralAndAdministrativeExpense",
-      "OperatingIncomeLoss",
-      "InterestExpenseNonoperating",
-      "NonoperatingIncomeExpense",
-      "IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest",
       "IncomeTaxExpenseBenefit",
+      "EarningsPerShareDiluted",
+      "EarningsPerShareBasic",
+      "ComprehensiveIncomeNetOfTax",
       "NetIncomeLoss",
-      "EarningsPerShareBasic"
+      "IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest",
+      "WeightedAverageNumberOfSharesOutstandingBasic",
+      "WeightedAverageNumberOfDilutedSharesOutstanding",
+      "OperatingIncomeLoss",
+      "RevenueFromContractWithCustomerExcludingAssessedTax",
+      "SellingGeneralAndAdministrativeExpense",
+      "OtherNonoperatingIncomeExpense"
     ],
     "cf": [
-      "NetIncomeLoss",
-      "nflx_AdditionstoStreamingContentAssets",
-      "nflx_ChangeInStreamingContentLiabilities",
-      "nflx_CostofServicesAmortizationofStreamingContentAssets",
-      "DepreciationDepletionAndAmortization",
+      "NetCashProvidedByUsedInFinancingActivities",
+      "NetCashProvidedByUsedInInvestingActivities",
+      "NetCashProvidedByUsedInOperatingActivities",
+      "CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseIncludingExchangeRateEffect",
       "ShareBasedCompensation",
-      "ForeignCurrencyTransactionGainLossBeforeTax",
-      "OtherNoncashIncomeExpense",
-      "nflx_DeferredIncomeTaxExpenseBenefitIncludingReclassifications",
-      "IncreaseDecreaseInOtherCurrentAssets",
-      "IncreaseDecreaseInAccountsPayable",
-      "IncreaseDecreaseInAccruedLiabilities"
+      "PaymentsForRepurchaseOfCommonStock",
+      "PaymentsToAcquirePropertyPlantAndEquipment",
+      "PaymentsForProceedsFromOtherInvestingActivities",
+      "ProceedsFromPaymentsForOtherFinancingActivities",
+      "ProfitLoss",
+      "EffectOfExchangeRateOnCashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents",
+      "IncreaseDecreaseInInventories"
     ]
   },
   "units": {
-    "usd": 48,
-    "usd/share": 2,
-    "shares": 2
+    "usd": 28956,
+    "u_usd": 2848,
+    "usd/share": 1294,
+    "shares": 805,
+    "unit_usd": 131,
+    "u_unitedstatesofamericadollarsshare": 113,
+    "u_shares": 85,
+    "unit_standard_usd_8vryovilh0ejch_9cmwafa": 75,
+    "unit12": 67,
+    "unit_standard_usd_oyym9xxoie2sqmbgkslk0g": 67,
+    "unit_standard_usd_znwdyh8tjemgv9l8zsin_w": 67,
+    "unit_standard_usd_rurvxyuifu-n2qwtrat0da": 64
   },
   "unitClasses": {
-    "currency": 48,
-    "perShare": 2,
-    "shares": 2
+    "currency": 33210,
+    "perShare": 1362,
+    "shares": 940,
+    "unclassified": 274
   },
   "unitClassesResolved": {
-    "currency": 48,
-    "perShare": 2,
-    "shares": 2
+    "currency": 33321,
+    "perShare": 1487,
+    "shares": 944,
+    "unclassified": 34
   },
-  "unclassifiedUnits": {}
+  "unclassifiedUnits": {
+    "number": 34
+  }
 }
