@@ -34,6 +34,10 @@ Guards: call counters and spy tests prove no target or forward price is built, t
 Stops when: the readiness report is merged. Registry statuses are updated from measured coverage, so a feature can move from DERIVABLE to READY,
 or to `DATA_BUILD_REQUIRED` if its coverage is below the 60% floor. Nothing waits for every gap to close.
 
+**Status (Phase B PR):** items 1, 2 and 4 are built and run on the pinned real inputs; item 3 found the existing probe evidence sufficient, so no re-probe was spent.
+The outcome-blind matrix, the readiness report, the Phase C eligibility manifest, the source and broader-universe feasibility register and the weekly dry run are described in
+`docs/kr-alpha-atlas-phase-b.md`. The registry file is not edited: the report's `measuredStatus` is the measured overlay.
+
 ## Phase C — one registered development evaluation (one registration PR, then one execution)
 
 The registration PR freezes, by hash, before any outcome: the data identity; the eligible feature list (READY features from Phase B only); baselines

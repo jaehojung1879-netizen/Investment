@@ -1,0 +1,325 @@
+{
+ "sources": {
+  "contract": "KR_ALPHA_ATLAS_FEASIBILITY_V1",
+  "cutoff": "2026-09-14",
+  "decision": "AT MOST ONE re-probe per blocked source in Phase B; the latest existing evidence below is sufficient, so NONE was repeated and none was dispatched",
+  "evidenceRef": {
+   "commit": "551af2d8ebbcf92eecfbab87ec318914bab51760",
+   "files": [
+    "ledger/dart-ownership-events/manifest.json",
+    "ledger/kr-investor-flow/manifest.json"
+   ],
+   "note": "small collector manifests read at this commit; they are evidence about source access, not inputs to the matrix",
+   "ref": "origin/signal-history"
+  },
+  "sources": [
+   {
+    "doNotDo": [
+     "substitute an OHLCV accumulation proxy (D11) for investor-type flow",
+     "scrape around the portal's terms",
+     "guess flows"
+    ],
+    "features": [
+     "G01_foreignNetBuying",
+     "G02_institutionalNetBuying",
+     "G03_retailNetBuying",
+     "G04_investorTypePersistence",
+     "G05_flowMomentumConfirmation"
+    ],
+    "latestEvidence": {
+     "also": "AGENTS.md workflow-hygiene invariants (v2.25): the portal answered HTTP 400 LOGOUT on every candidate on a real Actions run",
+     "artifact": "signal-history ledger/kr-investor-flow/manifest.json",
+     "calls": 0,
+     "recordsWritten": 0,
+     "remainingPairs": 426377,
+     "stopReason": "REFUSED: HTTP 400: b'LOGOUT'",
+     "updatedAt": "2026-09-24T06:23:26Z"
+    },
+    "optionalOneReprobe": {
+     "inputs": {
+      "args": "",
+      "probe": "kr-investor-flow"
+     },
+     "when": "only if a human has reason to believe KRX access changed since 2026-09-24; a result other than SERVED leaves the status unchanged",
+     "workflow": ".github/workflows/probes.yml"
+    },
+    "source": "KRX investor-type net trading (data.krx.co.kr)",
+    "status": "SOURCE_BLOCKED"
+   },
+   {
+    "features": [
+     "G08_shortSellingVolume",
+     "G09_shortBalanceChange"
+    ],
+    "latestEvidence": {
+     "artifact": "AGENTS.md v2.25: both axes of the investor-flow collector measured BLOCKED_SOURCE; no short-selling ledger exists on signal-history",
+     "regimes": "three regulatory regimes inside the window (bans 2020-03-16..2021-05-02 and 2023-11-05..2025-03-31): a factor must carry the regime"
+    },
+    "optionalOneReprobe": {
+     "inputs": {
+      "args": "",
+      "probe": "kr-short-selling"
+     },
+     "when": "as above",
+     "workflow": ".github/workflows/probes.yml"
+    },
+    "source": "KRX short-selling statistics (MDCSTAT301 / MDCSTAT305)",
+    "status": "SOURCE_BLOCKED"
+   },
+   {
+    "features": [
+     "G06_largeHolderAccumulation",
+     "G07_largeHolderReduction"
+    ],
+    "latestEvidence": {
+     "artifact": "signal-history ledger/dart-ownership-events/manifest.json",
+     "companiesQueried": 254,
+     "earliestObservedEventDate": "2024-09-24",
+     "eventCount": 2496,
+     "latestObservedEventDate": "2026-09-23",
+     "noRowsMeaning": "NO_ROWS_RETURNED_BY_BOUNDED_ENDPOINT_NOT_PROOF_OF_NO_HISTORICAL_FILINGS",
+     "pitAvailabilityRule": "DART_RECEIPT_DATE_NOT_TRANSACTION_OR_REFERENCE_DATE"
+    },
+    "reading": "the endpoint serves only about two years (from 2024-09-24) and 'no rows' is not proof of no filing, so an absence cannot be read as a zero. Prospective collection, not a historical feature; it stays DATA_BUILD_REQUIRED and is not computed in the matrix",
+    "source": "DART majorstock.json (5% large-holding disclosures)",
+    "status": "PIT_SAFE_BUT_HISTORY_TOO_SHORT"
+   },
+   {
+    "features": [
+     "J02_dividendPolicyChange",
+     "J03_buybackAnnouncement",
+     "J04_materialDisclosure"
+    ],
+    "latestEvidence": {
+     "artifact": "signal-history ledger/kr-corporate-actions",
+     "scope": "the 22 terminated securities only (451 disclosures)"
+    },
+    "nextStep": "a bounded work list for the ever-top-120 issuers (254) would be a new collector scope; report-name matching is a reading list, never a verdict. Not built in Phase B.",
+    "source": "DART alotMatter.json / list.json (disclosure families)",
+    "status": "DATA_BUILD_REQUIRED"
+   },
+   {
+    "features": [
+     "I04_krPolicyRate"
+    ],
+    "latestEvidence": {
+     "basis": "BOK_POLICY_RATE_PROXY",
+     "events": 36,
+     "firstEvent": "2009-02-13",
+     "verifiedThrough": "2026-09-07"
+    },
+    "reading": "a dated event series that predates the replay, effective on its event date, is point-in-time safe for the LEVEL of the policy rate. The registry classed I04 DATA_BUILD_REQUIRED because the ECOS fetch layer is unbuilt; this file is a repository-carried alternative. No registered comparison reads I04, so it is not computed here and the registry status is unchanged. It is a policy-rate proxy, not an investable rate.",
+    "source": "data/bok-policy-rates.json",
+    "status": "SOURCE_AVAILABLE_NOT_COMPUTED"
+   },
+   {
+    "features": [
+     "I03_krTermSpread",
+     "I06_krInflation",
+     "I07_krExportsActivity",
+     "I08_usdKrw",
+     "I09_fxBeta26w",
+     "I11_globalFinancialConditions"
+    ],
+    "reading": "only revised history is served, or the publication time is unresolved against the KRX close; ALFRED vintages do not exist for these series",
+    "source": "ECOS / FRED / ALFRED",
+    "status": "PIT_UNSAFE"
+   },
+   {
+    "features": [
+     "B04_freeCashFlowYield",
+     "C06_cashConversion",
+     "C15_capexIntensity",
+     "C16_grossProfitability"
+    ],
+    "reading": "computed in the matrix on the pinned store and judged on measured coverage like any other feature. kr-canonical-v2 exists on signal-history but is not pinned by the sealed studies; using it needs its own pinned identity, so it is not mixed in here",
+    "source": "DART fnlttSinglAcntAll via the sealed candidate-merged store",
+    "status": "DATA_BUILD_REQUIRED"
+   },
+   {
+    "features": [
+     "E08_trueBidAskSpread",
+     "J06_searchAttention",
+     "J07_newsTextSentiment",
+     "J08_analystRevisions"
+    ],
+    "reading": "no point-in-time source: quote data, search volume, news text and historical consensus are not available in the repository or on a free tier",
+    "source": "none",
+    "status": "NOT_FEASIBLE"
+   }
+  ]
+ },
+ "universe": {
+  "acquisitionEstimate": {
+   "alsoRequired": [
+    "a price panel for the extra names through the replay input store (a new replay generation or an additive input; the sealed replay-v16 is not edited)",
+    "industry reconstruction for the extra names (kr_industry_membership_v4 covers only the studied securities)",
+    "terminal economics for any delisted extra name (unaudited)"
+   ],
+   "callsPerTickerUpperBound": 144,
+   "callsUpperBound": 48240,
+   "extraTickersNeedingDartCollection": 335,
+   "perRunBudgetReference": "1,500 calls per run (AGENTS.md PIT fundamentals invariants)",
+   "runsUpperBound": 33,
+   "status": "ESTIMATE_FROM_COLLECTOR_STRUCTURE_NOT_A_MEASUREMENT"
+  },
+  "barLedger": {
+   "commit": "4ea107ed0cde289f0a049a65ff13d2441a786710",
+   "meanNamesPerSession": 506.8,
+   "reading": "the bar ledger is a storage-bounded subset of KOSPI (krx_prices.bar_rows `keep`), not the exchange",
+   "tickersEver": 624,
+   "vendorIssuesPerSession": "about 930 on 2013-01-02 (registry universe evidence, sto/stk_bydd_trd)"
+  },
+  "byYear": {
+   "2014": {
+    "meanQualifiedNames": 256.9,
+    "meanQualifiedOutsideTop120": 139.2,
+    "meanTop120": 120.0,
+    "monthlySamples": 12,
+    "outsideIndustryLabelPct": 34.25,
+    "outsideReplayPricePanelPct": 39.28,
+    "outsideVisibleDartFilingPct": 0.0,
+    "qualifiedVisibleDartFilingPct": 0.0
+   },
+   "2015": {
+    "meanQualifiedNames": 305.7,
+    "meanQualifiedOutsideTop120": 188.1,
+    "meanTop120": 120.0,
+    "monthlySamples": 12,
+    "outsideIndustryLabelPct": 29.51,
+    "outsideReplayPricePanelPct": 34.34,
+    "outsideVisibleDartFilingPct": 20.69,
+    "qualifiedVisibleDartFilingPct": 32.8
+   },
+   "2016": {
+    "meanQualifiedNames": 291.8,
+    "meanQualifiedOutsideTop120": 173.8,
+    "meanTop120": 120.0,
+    "monthlySamples": 12,
+    "outsideIndustryLabelPct": 31.4,
+    "outsideReplayPricePanelPct": 36.29,
+    "outsideVisibleDartFilingPct": 32.36,
+    "qualifiedVisibleDartFilingPct": 51.71
+   },
+   "2017": {
+    "meanQualifiedNames": 278.3,
+    "meanQualifiedOutsideTop120": 163.0,
+    "meanTop120": 120.0,
+    "monthlySamples": 12,
+    "outsideIndustryLabelPct": 36.61,
+    "outsideReplayPricePanelPct": 39.62,
+    "outsideVisibleDartFilingPct": 36.96,
+    "qualifiedVisibleDartFilingPct": 54.1
+   },
+   "2018": {
+    "meanQualifiedNames": 302.1,
+    "meanQualifiedOutsideTop120": 185.3,
+    "meanTop120": 120.0,
+    "monthlySamples": 12,
+    "outsideIndustryLabelPct": 37.46,
+    "outsideReplayPricePanelPct": 39.25,
+    "outsideVisibleDartFilingPct": 37.05,
+    "qualifiedVisibleDartFilingPct": 53.35
+   },
+   "2019": {
+    "meanQualifiedNames": 273.8,
+    "meanQualifiedOutsideTop120": 155.7,
+    "meanTop120": 120.0,
+    "monthlySamples": 12,
+    "outsideIndustryLabelPct": 41.65,
+    "outsideReplayPricePanelPct": 43.79,
+    "outsideVisibleDartFilingPct": 41.22,
+    "qualifiedVisibleDartFilingPct": 57.84
+   },
+   "2020": {
+    "meanQualifiedNames": 328.1,
+    "meanQualifiedOutsideTop120": 209.7,
+    "meanTop120": 120.0,
+    "monthlySamples": 12,
+    "outsideIndustryLabelPct": 36.53,
+    "outsideReplayPricePanelPct": 38.51,
+    "outsideVisibleDartFilingPct": 35.61,
+    "qualifiedVisibleDartFilingPct": 51.94
+   },
+   "2021": {
+    "meanQualifiedNames": 407.7,
+    "meanQualifiedOutsideTop120": 291.5,
+    "meanTop120": 120.0,
+    "monthlySamples": 12,
+    "outsideIndustryLabelPct": 31.28,
+    "outsideReplayPricePanelPct": 32.65,
+    "outsideVisibleDartFilingPct": 29.96,
+    "qualifiedVisibleDartFilingPct": 44.62
+   },
+   "2022": {
+    "meanQualifiedNames": 331.6,
+    "meanQualifiedOutsideTop120": 212.2,
+    "meanTop120": 120.0,
+    "monthlySamples": 12,
+    "outsideIndustryLabelPct": 40.87,
+    "outsideReplayPricePanelPct": 42.4,
+    "outsideVisibleDartFilingPct": 38.83,
+    "qualifiedVisibleDartFilingPct": 53.98
+   },
+   "2023": {
+    "meanQualifiedNames": 309.8,
+    "meanQualifiedOutsideTop120": 191.0,
+    "meanTop120": 120.0,
+    "monthlySamples": 12,
+    "outsideIndustryLabelPct": 43.59,
+    "outsideReplayPricePanelPct": 44.72,
+    "outsideVisibleDartFilingPct": 42.54,
+    "qualifiedVisibleDartFilingPct": 57.58
+   },
+   "2024": {
+    "meanQualifiedNames": 309.2,
+    "meanQualifiedOutsideTop120": 190.7,
+    "meanTop120": 120.0,
+    "monthlySamples": 12,
+    "outsideIndustryLabelPct": 44.32,
+    "outsideReplayPricePanelPct": 45.5,
+    "outsideVisibleDartFilingPct": 44.71,
+    "qualifiedVisibleDartFilingPct": 64.37
+   },
+   "2025": {
+    "meanQualifiedNames": 324.6,
+    "meanQualifiedOutsideTop120": 205.8,
+    "meanTop120": 120.0,
+    "monthlySamples": 12,
+    "outsideIndustryLabelPct": 42.37,
+    "outsideReplayPricePanelPct": 43.3,
+    "outsideVisibleDartFilingPct": 42.61,
+    "qualifiedVisibleDartFilingPct": 62.39
+   },
+   "2026": {
+    "meanQualifiedNames": 358.9,
+    "meanQualifiedOutsideTop120": 240.1,
+    "meanTop120": 120.0,
+    "monthlySamples": 9,
+    "outsideIndustryLabelPct": 39.84,
+    "outsideReplayPricePanelPct": 40.21,
+    "outsideVisibleDartFilingPct": 39.7,
+    "qualifiedVisibleDartFilingPct": 58.45
+   }
+  },
+  "contract": "KR_ALPHA_ATLAS_FEASIBILITY_V1",
+  "delistedQualifiedInTerminationInventory": 18,
+  "delistedQualifiedTickers": 49,
+  "delistedQualifiedWithoutTerminalEconomics": 31,
+  "qualification": {
+   "rule": "median 60-session as-traded close x volume >= 1000000000 KRW",
+   "source": "kr_alpha_signal_v2.MIN_MEDIAN_TRADED_VALUE_KRW"
+  },
+  "qualifiedTickersEver": 592,
+  "qualifiedTickersEverOutsideTop120": 335,
+  "qualifiedTickersWithoutAnyDartRecord": 345,
+  "qualifiedTickersWithoutAnyDartRecordOutsideTop120": 335,
+  "scope": "FEASIBILITY_ONLY: nothing here enters Phase C; the PIT Top120 stays the reference universe",
+  "terminalEconomics": "BLOCKED for the 22 inventoried securities (kr-terminal-action-reconstruction-v2); not audited at all for any other delisted name",
+  "verdict": {
+   "reason": "on average 196 qualified names sit outside the Top120, but only 34.0% of those name-months have a visible DART filing in the sealed store, and there is no price panel, industry label or terminal economics for them",
+   "reason_ko": "유동성 기준을 통과하는 종목 중 상위 120 밖은 평균 196개이지만, 그 종목-월 중 봉인된 저장소에 보이는 DART 공시가 있는 비율은 34.0%뿐이고, 가격 패널·산업 라벨·상장폐지 대가 자료도 없습니다.",
+   "status": "BROADER_UNIVERSE_NOT_READY_KEEP_TOP120"
+  }
+ }
+}

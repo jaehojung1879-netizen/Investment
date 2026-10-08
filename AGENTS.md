@@ -3165,3 +3165,61 @@
 - A SESSION THAT EXISTS HAS NOT NECESSARILY CLOSED. An outcome is final only once the maturity session itself (the H-th KR session after execution, by
   the pinned calendar) is final at 18:00 KST (09:00 UTC), the latest moment any KRX day variant can change its close, judged by the writer's own clock
   on the live path, and only from prices of that session. The receipt window uses the same 18:00 KST lower bound.
+
+## KR alpha atlas Phase B invariants (v2.54)
+
+- A READINESS COUNT IS A COUNT OF MEASURED CELLS, NEVER A STATEMENT ABOUT ALPHA. `docs/results/kr-alpha-atlas-phase-b-readiness.json` reports, for every one of the 106
+  registered features, how many point-in-time cells exist, on what denominator, in which years, industries and liquidity tiers, and why the rest are missing. It reads no label,
+  forward price, outcome or model prediction; counters and spies on every label / outcome / training entry point read zero in the build and in the dry run. `MEASURED_READY` means
+  "enough data to attempt the registered comparison"; it is the measured overlay of the registry's design-time `readinessStatus`, which this change does not edit.
+- ONE DEFINITION, TWO USES. `kr_alpha_atlas_matrix.build_matrix` is called by the historical matrix and by the weekly dry run, and every number it holds comes from the existing
+  function `kr_alpha_atlas_catalogue` names (`liquidity_attention`, `accounting_quality`, `dart_derive`, the sealed anatomy and overlay functions, `kr_alpha_signal_v2.cross_section`).
+  A feature with no existing function carries its own arithmetic in the catalogue under `addsArithmetic`, and every place an implemented definition is narrower than the registry text
+  (A10 and F04 use a market residual only) is stated under `deviationFromRegistryText`. A matrix column that was a second implementation of an economic feature would let the historical
+  evidence and the prospective process drift apart without a test noticing.
+- THE REAL RUN WAS REPRODUCED AND AUDITED. 714 weekly decision sessions (2013-01-04 to 2026-09-11) x the PIT Top120 = 85,680 member-dates over 260 tickers and 76 columns, from the inputs
+  `kr-model-overlay-portfolio-v1` pinned (blob and content hashes verified by the sealed loader) plus the KRX bar ledger and the DART share counts read at the same `signal-history` commit
+  `4ea107ed`; matrix digest `32e49b57a7541eea66f76373baef50c6302a394247b313f6099f718d46d54b0c`, identical across two independent full runs (CPython 3.13, pandas 2.3.0, numpy 2.3.1; CI runs 3.11 and did not rerun the real build). 805,676 filing-based cells were checked and none became
+  visible on or after its signal date; all 1,542,935 missing cells carry a reason from a closed vocabulary. Four volume and traded-value features (D01, D02, D03, E03) at three tickers on two dates were recomputed
+  from the raw ledger rows without the module and agreed to ten digits. A passing unit test proves the code; this paragraph is the only claim about the real data, and it is limited to what it names.
+- A SPLIT IS ADJUSTED ONLY ONCE IT WAS KNOWABLE. A clean par-value ratio moving the price by at least 42.5% is a corporate action the market cannot manufacture, but only the listed-share
+  count says WHICH one, and it can lag the ex-date by weeks (064960.KS: 33 days). `kr_alpha_atlas_bars.split_events` returns each confirmed split with the first session on which the share
+  count had moved. A feature window containing a split-shaped move that is not confirmed by the signal date is MISSING (`UNCONFIRMED_CORPORATE_ACTION_IN_WINDOW`), never adjusted with
+  later knowledge; a turnover window touching the stale share-count interval is MISSING (`STALE_SHARE_COUNT_IN_WINDOW`); a move above the daily limit that no ratio explains is
+  `UNEXPLAINED_PRICE_MOVE_IN_WINDOW`. A confirmed split is volume-neutral by test (the same series with and without a split gives the same features to 1e-7).
+- VOLUME, TRADED VALUE AND TURNOVER ARE THREE QUANTITIES. Traded value is as-traded close x as-traded volume in KRW (a split cannot move it), turnover is volume over listed shares on one split
+  basis, and a shock is a ratio that cancels a constant volume scale; scaling shares changes only turnover, scaling volume changes traded value and turnover but not a shock (all tested).
+  The official KRX `ACC_TRDVAL` lives only in the preserved raw-input artifact (`kr-model-raw-inputs-36844599518`), not in git, so this run used the close x volume PROXY and says so
+  (`tradingValueBasis`). The proxy's gap to the official figure was not measured. The loader finds `market/` and uses the official values when run against that artifact.
+- A SUSPENSION IS NOT A SESSION. KRX carries a halted issue's last close at zero volume; those rows are NaN, a window containing one is missing, and nothing is filled with a fabricated trade.
+  Suspensions are counted on their own (E07). The replay-v16 price panel was adjusted for splits with the share count's LATER confirmation, so the A/F windows it feeds are masked by the
+  same rule; the panel is still not a signal-date reproduction, and that is a stated limitation. Replay and ledger daily returns agree within 0.1% on 99.57% of 727,883 compared sessions, the
+  remainder dominated by ex-dividend sessions (the replay accumulates dividends, the KRX bars carry none).
+- AN UNDEFINED DENOMINATOR IS MISSING, NOT AN ORDINARY NUMBER. Cash conversion needs positive net income, ROE positive equity, growth a positive prior level, capex intensity positive revenue,
+  and a figure whose inputs span a consolidated/separate mix is dropped, not blended. Filings become visible the day AFTER their receipt date, and a figure is derived from the filings visible
+  then, never from a whole-history derive that is filtered afterwards.
+- ACCOUNTING READINESS WAS MEASURED, NOT CARRIED FROM AN EARLIER REGISTRY NOTE. The registry cited KR capex on 7.74% of filings (`alpha-research-foundation-v2`, the sealed `kr` store); the pinned
+  `kr-candidate-merged` store carries it on 87.86% of 9,351 filings, and `B04_freeCashFlowYield` is measured on 62.3% of rows within its usable range. The two stores are different
+  objects and the registry note is not edited; the report publishes the measured one. Coverage is dark for 2013-2015, 6.5% in 2016 and about 40% in 2017, and financials (20% of member-dates)
+  rarely state revenue or operating income: C03, C04, C06 and C15 are below the 60% floor (52.9%-56.6%) and are excluded, not repaired.
+- A DENOMINATOR CORRECTION IS PUBLISHED WITH BOTH NUMBERS. The first run measured `B08_valueBusinessConfirmation` on every member-date and read 55.3% within its usable range, below the floor.
+  B08 is a state defined only on names the sealed H2 contract does not itself exclude (preferred share, untraded, below the 1 billion KRW median-traded-value floor, unclassified industry), so those
+  are definitional exclusions, not data gaps. The denominator was changed to the contract's eligible set for B08 and X1 alone (69.1% and 75.9%); the all-member figure stays in the report and the
+  revision is recorded in `preOutcomeRevisions`. No outcome existed to motivate it. A pass that clears a floor by under five points is flagged `thinOverFloor` beside the number (B04, C02, C11, C12, C14, H07).
+- JOINT COVERAGE IS NOT THE PRODUCT OF MARGINAL COVERAGES, AND IT IS WHAT A COMPARISON NEEDS. Two features each measured on 70% of rows are measured together on about 49% (tested), so the six
+  Level 3 interactions are classified on their own joint coverage, evaluable dates and 2x2 corner-cell sizes. X1, X2, X3, X5 and X6 are READY (447, 686, 616, 661 and 293 evaluable weekly dates);
+  X4 is SOURCE_BLOCKED and its OHLCV-proxy control is never a substitute. The baselines B0-B4 are READY because every member is individually usable; their complete-case coverage (B4: 44.3%) is published
+  because the reference model carries missingness indicators rather than dropping rows.
+- BLOCKED SOURCES STAY BLOCKED AND THE LATEST EVIDENCE IS QUOTED, NOT REPEATED. The investor-flow collector's manifest (2026-09-24) reads `REFUSED: HTTP 400: b'LOGOUT'` with 0 records, so no re-probe
+  was dispatched; the exact `Probes` inputs for the one permitted re-probe per source are in the manifest. DART large-holding events are PIT-safe but start 2024-09-24 and "no rows" is not proof of no
+  filing, so they are prospective, not a historical feature. `data/bok-policy-rates.json` could make I04 derivable, but no registered comparison reads it, so it is reported and not computed.
+- THE BROADER UNIVERSE IS NOT READY AND IS NOT ADDED. By the 1 billion KRW median-traded-value rule an average of 196 qualified names a month sit outside the Top120 (2014-2026), but only about 34%
+  of those name-months have a visible DART filing in the sealed store, and there is no price panel, industry label or terminal economics for them. 335 qualified-ever tickers outside the Top120 have
+  no DART record (an estimate of up to 48,240 collector calls, about 33 runs, from the collector's own call structure). The PIT Top120 stays the reference universe.
+- THE DRY RUN CAN ONLY SAY NOT_READY OR BLOCKED, AND ITS FIRST REAL RUN FOUND A BUG A SYNTHETIC TEST COULD NOT. Reading the matrix back through a DataFrame turned the Python `False` that
+  `kr_alpha_signal_v2` tests with `is not False` into `numpy.bool_(False)`, so all 120 names read as preferred shares and the H2 gate reported BLOCKED. The row builder now coerces, and the dry run
+  builds 160 earlier weekly dates because B06, B07 and H07 read the name's own earlier rows (with none they honestly read `INSUFFICIENT_OWN_HISTORY`). The result carries no weight, position,
+  holding, entry state, tier, forecast or portfolio key (a scanner refuses one), writes no receipt, and never reads `REGISTERED_AUTHORIZATION` except to ask whether it is `None`.
+- WHAT PHASE B DOES NOT SETTLE. It builds no label engine, fits no baseline model, runs no Level 1-3 statistic and chooses no horizon, feature or threshold from a return. The 52-date and 3-name
+  gates are introduced here and stated as such; 60% and 30 names are inherited. The 22 terminated securities' terminal economics, the benchmark's external reconciliation and the official traded
+  value remain open and are listed in the manifest's prerequisites. Phase C registration is the next step and is not started here.

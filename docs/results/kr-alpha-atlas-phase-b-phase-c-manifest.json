@@ -1,0 +1,2238 @@
+{
+ "alreadyTestedPolicy": "ALREADY_TESTED features keep their sealed study references and are never re-run; those computed here enter Level 2 only as baselines or controls",
+ "baselineAndControlFeatures": [
+  "A05_relative126",
+  "A07_momentum12_1",
+  "A09_industryRelativeMomentum126",
+  "B01_bookToMarket",
+  "B02_earningsYield",
+  "B03_ocfYield",
+  "B05_industryRelativeValue",
+  "C01_returnOnAssets",
+  "C05_ocfToAssets",
+  "C07_negativeAccruals",
+  "C08_netIncomeMinusOcf",
+  "C14_ocfImprovement",
+  "E02_logAdv60",
+  "F02_downsideVol126",
+  "H01_industryRelMom126",
+  "H02_industryRelMom63",
+  "H03_industryBreadthAboveMA126",
+  "H04_withinIndustryDispersion126",
+  "H06_industryConcentrationTop1",
+  "H12_industryValuationContext",
+  "I01_kospiTrendVolState"
+ ],
+ "baselines": {
+  "B0_MARKET_INDUSTRY_PRICE_REFERENCE": {
+   "membersBelowFloor": [],
+   "status": "READY"
+  },
+  "B1_VALUE_PROFITABILITY": {
+   "membersBelowFloor": [],
+   "status": "READY"
+  },
+  "B2_PRICE_MOMENTUM": {
+   "membersBelowFloor": [],
+   "status": "READY"
+  },
+  "B3_VOLUME_LIQUIDITY": {
+   "membersBelowFloor": [],
+   "status": "READY"
+  },
+  "B4_COMBINED_SIMPLE": {
+   "membersBelowFloor": [],
+   "status": "READY"
+  }
+ },
+ "benchmark": {
+  "reading": "reproducible from the frozen series, with an unexplained accrual against the committed price index; no corrected benchmark is constructed and none is changed here",
+  "reconciliationStatus": "BENCHMARK_EXTERNAL_RECONCILIATION_UNRESOLVED",
+  "source": "docs/results/kr-integrated-alpha-portfolio-v1-postoutcome-concentration-audit.json",
+  "symbol": "069500.KS"
+ },
+ "computedFeatureCount": 76,
+ "constructionAndEligibilityFeatures": {
+  "E03_capacityMedianTradedValue60": "COST_CAPACITY",
+  "E04_tradabilityGuard20": "ELIGIBILITY_FILTER",
+  "E05_highLowSpreadProxy": "COST_CAPACITY",
+  "E07_suspensionStaleRisk": "ELIGIBILITY_FILTER",
+  "F05_maxDrawdown252": "RISK_CONSTRUCTION",
+  "F06_crashExposure": "RISK_CONSTRUCTION",
+  "F07_benchmarkCorrelation252": "RISK_CONSTRUCTION"
+ },
+ "contextConditioningFeatures": [
+  "H05_crossIndustryDispersion",
+  "H07_leadershipPersistence",
+  "H09_marketBreadth",
+  "H10_marketConcentrationTop2",
+  "J05_shortSellingRegime"
+ ],
+ "contract": "KR_ALPHA_ATLAS_PHASE_C_ELIGIBILITY_MANIFEST_V1",
+ "eligibleDateRange": {
+  "developmentCutoff": "2026-09-14",
+  "lastMaturableSignalDate": {
+   "H126": "2026-03-06",
+   "H21": "2026-08-07",
+   "H252": "2025-08-29",
+   "H63": "2026-06-12"
+  },
+  "matrix": [
+   "2013-01-04",
+   "2026-09-11"
+  ],
+  "perFeatureUsableRanges": "see eligibleFeatures[*].usableRange; the Phase C registration freezes one range per comparison, never one global window"
+ },
+ "eligibleFeatures": [
+  {
+   "coveragePct": 92.51634,
+   "coverageWithinUsableRangePct": 99.934443,
+   "family": "A",
+   "featureId": "A01_return1d",
+   "horizonUsability": {
+    "H126": {
+     "lastMaturableSignalDate": "2026-03-06",
+     "usable": true,
+     "usableSignalDatesBeforeThat": 634
+    },
+    "H21": {
+     "lastMaturableSignalDate": "2026-08-07",
+     "usable": true,
+     "usableSignalDatesBeforeThat": 656
+    }
+   },
+   "pitSafetyVerdict": "PIT_SAFE",
+   "registeredHorizons": [
+    126,
+    21
+   ],
+   "usableRange": [
+    "2014-01-10",
+    "2026-09-11"
+   ],
+   "usableSignalDates": 661,
+   "usableYears": [
+    "2014",
+    "2015",
+    "2016",
+    "2017",
+    "2018",
+    "2019",
+    "2020",
+    "2021",
+    "2022",
+    "2023",
+    "2024",
+    "2025",
+    "2026"
+   ]
+  },
+  {
+   "coveragePct": 92.489496,
+   "coverageWithinUsableRangePct": 99.905446,
+   "family": "A",
+   "featureId": "A02_return5d",
+   "horizonUsability": {
+    "H126": {
+     "lastMaturableSignalDate": "2026-03-06",
+     "usable": true,
+     "usableSignalDatesBeforeThat": 634
+    },
+    "H21": {
+     "lastMaturableSignalDate": "2026-08-07",
+     "usable": true,
+     "usableSignalDatesBeforeThat": 656
+    }
+   },
+   "pitSafetyVerdict": "PIT_SAFE",
+   "registeredHorizons": [
+    126,
+    21
+   ],
+   "usableRange": [
+    "2014-01-10",
+    "2026-09-11"
+   ],
+   "usableSignalDates": 661,
+   "usableYears": [
+    "2014",
+    "2015",
+    "2016",
+    "2017",
+    "2018",
+    "2019",
+    "2020",
+    "2021",
+    "2022",
+    "2023",
+    "2024",
+    "2025",
+    "2026"
+   ]
+  },
+  {
+   "coveragePct": 92.347106,
+   "coverageWithinUsableRangePct": 99.751639,
+   "family": "A",
+   "featureId": "A03_return21d",
+   "horizonUsability": {
+    "H126": {
+     "lastMaturableSignalDate": "2026-03-06",
+     "usable": true,
+     "usableSignalDatesBeforeThat": 634
+    },
+    "H21": {
+     "lastMaturableSignalDate": "2026-08-07",
+     "usable": true,
+     "usableSignalDatesBeforeThat": 656
+    }
+   },
+   "pitSafetyVerdict": "PIT_SAFE",
+   "registeredHorizons": [
+    126,
+    21
+   ],
+   "usableRange": [
+    "2014-01-10",
+    "2026-09-11"
+   ],
+   "usableSignalDates": 661,
+   "usableYears": [
+    "2014",
+    "2015",
+    "2016",
+    "2017",
+    "2018",
+    "2019",
+    "2020",
+    "2021",
+    "2022",
+    "2023",
+    "2024",
+    "2025",
+    "2026"
+   ]
+  },
+  {
+   "coveragePct": 91.860411,
+   "coverageWithinUsableRangePct": 99.22592,
+   "family": "A",
+   "featureId": "A04_return63d",
+   "horizonUsability": {
+    "H126": {
+     "lastMaturableSignalDate": "2026-03-06",
+     "usable": true,
+     "usableSignalDatesBeforeThat": 634
+    },
+    "H21": {
+     "lastMaturableSignalDate": "2026-08-07",
+     "usable": true,
+     "usableSignalDatesBeforeThat": 656
+    }
+   },
+   "pitSafetyVerdict": "PIT_SAFE",
+   "registeredHorizons": [
+    126,
+    21
+   ],
+   "usableRange": [
+    "2014-01-10",
+    "2026-09-11"
+   ],
+   "usableSignalDates": 661,
+   "usableYears": [
+    "2014",
+    "2015",
+    "2016",
+    "2017",
+    "2018",
+    "2019",
+    "2020",
+    "2021",
+    "2022",
+    "2023",
+    "2024",
+    "2025",
+    "2026"
+   ]
+  },
+  {
+   "coveragePct": 89.933473,
+   "coverageWithinUsableRangePct": 97.144478,
+   "family": "A",
+   "featureId": "A06_return252d",
+   "horizonUsability": {
+    "H126": {
+     "lastMaturableSignalDate": "2026-03-06",
+     "usable": true,
+     "usableSignalDatesBeforeThat": 634
+    },
+    "H21": {
+     "lastMaturableSignalDate": "2026-08-07",
+     "usable": true,
+     "usableSignalDatesBeforeThat": 656
+    }
+   },
+   "pitSafetyVerdict": "PIT_SAFE",
+   "registeredHorizons": [
+    126,
+    21
+   ],
+   "usableRange": [
+    "2014-01-10",
+    "2026-09-11"
+   ],
+   "usableSignalDates": 661,
+   "usableYears": [
+    "2014",
+    "2015",
+    "2016",
+    "2017",
+    "2018",
+    "2019",
+    "2020",
+    "2021",
+    "2022",
+    "2023",
+    "2024",
+    "2025",
+    "2026"
+   ]
+  },
+  {
+   "coveragePct": 91.19281,
+   "coverageWithinUsableRangePct": 98.504791,
+   "family": "A",
+   "featureId": "A08_momentum6",
+   "horizonUsability": {
+    "H126": {
+     "lastMaturableSignalDate": "2026-03-06",
+     "usable": true,
+     "usableSignalDatesBeforeThat": 634
+    },
+    "H21": {
+     "lastMaturableSignalDate": "2026-08-07",
+     "usable": true,
+     "usableSignalDatesBeforeThat": 656
+    }
+   },
+   "pitSafetyVerdict": "PIT_SAFE",
+   "registeredHorizons": [
+    126,
+    21
+   ],
+   "usableRange": [
+    "2014-01-10",
+    "2026-09-11"
+   ],
+   "usableSignalDates": 661,
+   "usableYears": [
+    "2014",
+    "2015",
+    "2016",
+    "2017",
+    "2018",
+    "2019",
+    "2020",
+    "2021",
+    "2022",
+    "2023",
+    "2024",
+    "2025",
+    "2026"
+   ]
+  },
+  {
+   "coveragePct": 89.933473,
+   "coverageWithinUsableRangePct": 97.144478,
+   "family": "A",
+   "featureId": "A10_residualMomentum126",
+   "horizonUsability": {
+    "H126": {
+     "lastMaturableSignalDate": "2026-03-06",
+     "usable": true,
+     "usableSignalDatesBeforeThat": 634
+    },
+    "H21": {
+     "lastMaturableSignalDate": "2026-08-07",
+     "usable": true,
+     "usableSignalDatesBeforeThat": 656
+    }
+   },
+   "pitSafetyVerdict": "PIT_SAFE",
+   "registeredHorizons": [
+    126,
+    21
+   ],
+   "usableRange": [
+    "2014-01-10",
+    "2026-09-11"
+   ],
+   "usableSignalDates": 661,
+   "usableYears": [
+    "2014",
+    "2015",
+    "2016",
+    "2017",
+    "2018",
+    "2019",
+    "2020",
+    "2021",
+    "2022",
+    "2023",
+    "2024",
+    "2025",
+    "2026"
+   ]
+  },
+  {
+   "coveragePct": 89.940476,
+   "coverageWithinUsableRangePct": 97.152042,
+   "family": "A",
+   "featureId": "A11_distance52wHigh",
+   "horizonUsability": {
+    "H126": {
+     "lastMaturableSignalDate": "2026-03-06",
+     "usable": true,
+     "usableSignalDatesBeforeThat": 634
+    },
+    "H21": {
+     "lastMaturableSignalDate": "2026-08-07",
+     "usable": true,
+     "usableSignalDatesBeforeThat": 656
+    }
+   },
+   "pitSafetyVerdict": "PIT_SAFE",
+   "registeredHorizons": [
+    126,
+    21
+   ],
+   "usableRange": [
+    "2014-01-10",
+    "2026-09-11"
+   ],
+   "usableSignalDates": 661,
+   "usableYears": [
+    "2014",
+    "2015",
+    "2016",
+    "2017",
+    "2018",
+    "2019",
+    "2020",
+    "2021",
+    "2022",
+    "2023",
+    "2024",
+    "2025",
+    "2026"
+   ]
+  },
+  {
+   "coveragePct": 89.933473,
+   "coverageWithinUsableRangePct": 97.144478,
+   "family": "A",
+   "featureId": "A12_momentumPersistence",
+   "horizonUsability": {
+    "H126": {
+     "lastMaturableSignalDate": "2026-03-06",
+     "usable": true,
+     "usableSignalDatesBeforeThat": 634
+    },
+    "H21": {
+     "lastMaturableSignalDate": "2026-08-07",
+     "usable": true,
+     "usableSignalDatesBeforeThat": 656
+    }
+   },
+   "pitSafetyVerdict": "PIT_SAFE",
+   "registeredHorizons": [
+    126,
+    21
+   ],
+   "usableRange": [
+    "2014-01-10",
+    "2026-09-11"
+   ],
+   "usableSignalDates": 661,
+   "usableYears": [
+    "2014",
+    "2015",
+    "2016",
+    "2017",
+    "2018",
+    "2019",
+    "2020",
+    "2021",
+    "2022",
+    "2023",
+    "2024",
+    "2025",
+    "2026"
+   ]
+  },
+  {
+   "coveragePct": 92.099673,
+   "coverageWithinUsableRangePct": 99.484367,
+   "family": "A",
+   "featureId": "A13_momentumAcceleration21",
+   "horizonUsability": {
+    "H126": {
+     "lastMaturableSignalDate": "2026-03-06",
+     "usable": true,
+     "usableSignalDatesBeforeThat": 634
+    },
+    "H21": {
+     "lastMaturableSignalDate": "2026-08-07",
+     "usable": true,
+     "usableSignalDatesBeforeThat": 656
+    }
+   },
+   "pitSafetyVerdict": "PIT_SAFE",
+   "registeredHorizons": [
+    126,
+    21
+   ],
+   "usableRange": [
+    "2014-01-10",
+    "2026-09-11"
+   ],
+   "usableSignalDates": 661,
+   "usableYears": [
+    "2014",
+    "2015",
+    "2016",
+    "2017",
+    "2018",
+    "2019",
+    "2020",
+    "2021",
+    "2022",
+    "2023",
+    "2024",
+    "2025",
+    "2026"
+   ]
+  },
+  {
+   "coveragePct": 90.433007,
+   "coverageWithinUsableRangePct": 97.684065,
+   "family": "A",
+   "featureId": "A14_ma200Distance",
+   "horizonUsability": {
+    "H126": {
+     "lastMaturableSignalDate": "2026-03-06",
+     "usable": true,
+     "usableSignalDatesBeforeThat": 634
+    },
+    "H21": {
+     "lastMaturableSignalDate": "2026-08-07",
+     "usable": true,
+     "usableSignalDatesBeforeThat": 656
+    }
+   },
+   "pitSafetyVerdict": "PIT_SAFE",
+   "registeredHorizons": [
+    126,
+    21
+   ],
+   "usableRange": [
+    "2014-01-10",
+    "2026-09-11"
+   ],
+   "usableSignalDates": 661,
+   "usableYears": [
+    "2014",
+    "2015",
+    "2016",
+    "2017",
+    "2018",
+    "2019",
+    "2020",
+    "2021",
+    "2022",
+    "2023",
+    "2024",
+    "2025",
+    "2026"
+   ]
+  },
+  {
+   "coveragePct": 47.546685,
+   "coverageWithinUsableRangePct": 62.29052,
+   "family": "B",
+   "featureId": "B04_freeCashFlowYield",
+   "horizonUsability": {
+    "H126": {
+     "lastMaturableSignalDate": "2026-03-06",
+     "usable": true,
+     "usableSignalDatesBeforeThat": 472
+    },
+    "H252": {
+     "lastMaturableSignalDate": "2025-08-29",
+     "usable": true,
+     "usableSignalDatesBeforeThat": 445
+    }
+   },
+   "pitSafetyVerdict": "PIT_SAFE",
+   "registeredHorizons": [
+    126,
+    252
+   ],
+   "usableRange": [
+    "2016-04-01",
+    "2026-09-11"
+   ],
+   "usableSignalDates": 499,
+   "usableYears": [
+    "2017",
+    "2018",
+    "2019",
+    "2020",
+    "2021",
+    "2022",
+    "2023",
+    "2024",
+    "2025",
+    "2026"
+   ]
+  },
+  {
+   "coveragePct": 42.376284,
+   "coverageWithinUsableRangePct": 68.609221,
+   "family": "B",
+   "featureId": "B06_ownHistoryValuation",
+   "horizonUsability": {
+    "H126": {
+     "lastMaturableSignalDate": "2026-03-06",
+     "usable": true,
+     "usableSignalDatesBeforeThat": 414
+    },
+    "H252": {
+     "lastMaturableSignalDate": "2025-08-29",
+     "usable": true,
+     "usableSignalDatesBeforeThat": 387
+    }
+   },
+   "pitSafetyVerdict": "PIT_SAFE",
+   "registeredHorizons": [
+    126,
+    252
+   ],
+   "usableRange": [
+    "2018-04-06",
+    "2026-09-11"
+   ],
+   "usableSignalDates": 441,
+   "usableYears": [
+    "2018",
+    "2019",
+    "2020",
+    "2021",
+    "2022",
+    "2023",
+    "2024",
+    "2025",
+    "2026"
+   ]
+  },
+  {
+   "coveragePct": 57.561858,
+   "coverageWithinUsableRangePct": 79.342021,
+   "family": "B",
+   "featureId": "B07_valuationChange126",
+   "horizonUsability": {
+    "H126": {
+     "lastMaturableSignalDate": "2026-03-06",
+     "usable": true,
+     "usableSignalDatesBeforeThat": 491
+    },
+    "H252": {
+     "lastMaturableSignalDate": "2025-08-29",
+     "usable": true,
+     "usableSignalDatesBeforeThat": 464
+    }
+   },
+   "pitSafetyVerdict": "PIT_SAFE",
+   "registeredHorizons": [
+    126,
+    252
+   ],
+   "usableRange": [
+    "2016-10-07",
+    "2026-09-11"
+   ],
+   "usableSignalDates": 518,
+   "usableYears": [
+    "2016",
+    "2017",
+    "2018",
+    "2019",
+    "2020",
+    "2021",
+    "2022",
+    "2023",
+    "2024",
+    "2025",
+    "2026"
+   ]
+  },
+  {
+   "coveragePct": 53.551864,
+   "coverageWithinUsableRangePct": 69.067578,
+   "family": "B",
+   "featureId": "B08_valueBusinessConfirmation",
+   "horizonUsability": {
+    "H126": {
+     "lastMaturableSignalDate": "2026-03-06",
+     "usable": true,
+     "usableSignalDatesBeforeThat": 472
+    },
+    "H252": {
+     "lastMaturableSignalDate": "2025-08-29",
+     "usable": true,
+     "usableSignalDatesBeforeThat": 445
+    }
+   },
+   "pitSafetyVerdict": "PIT_SAFE",
+   "registeredHorizons": [
+    126,
+    252
+   ],
+   "usableRange": [
+    "2016-04-01",
+    "2026-09-11"
+   ],
+   "usableSignalDates": 499,
+   "usableYears": [
+    "2017",
+    "2018",
+    "2019",
+    "2020",
+    "2021",
+    "2022",
+    "2023",
+    "2024",
+    "2025",
+    "2026"
+   ]
+  },
+  {
+   "coveragePct": 48.499066,
+   "coverageWithinUsableRangePct": 63.538226,
+   "family": "C",
+   "featureId": "C02_returnOnEquity",
+   "horizonUsability": {
+    "H126": {
+     "lastMaturableSignalDate": "2026-03-06",
+     "usable": true,
+     "usableSignalDatesBeforeThat": 472
+    },
+    "H252": {
+     "lastMaturableSignalDate": "2025-08-29",
+     "usable": true,
+     "usableSignalDatesBeforeThat": 445
+    }
+   },
+   "pitSafetyVerdict": "PIT_SAFE",
+   "registeredHorizons": [
+    126,
+    252
+   ],
+   "usableRange": [
+    "2016-04-01",
+    "2026-09-11"
+   ],
+   "usableSignalDates": 499,
+   "usableYears": [
+    "2017",
+    "2018",
+    "2019",
+    "2020",
+    "2021",
+    "2022",
+    "2023",
+    "2024",
+    "2025",
+    "2026"
+   ]
+  },
+  {
+   "coveragePct": 55.30112,
+   "coverageWithinUsableRangePct": 80.238821,
+   "family": "C",
+   "featureId": "C09_assetGrowth",
+   "horizonUsability": {
+    "H126": {
+     "lastMaturableSignalDate": "2026-03-06",
+     "usable": true,
+     "usableSignalDatesBeforeThat": 465
+    },
+    "H252": {
+     "lastMaturableSignalDate": "2025-08-29",
+     "usable": true,
+     "usableSignalDatesBeforeThat": 438
+    }
+   },
+   "pitSafetyVerdict": "PIT_SAFE",
+   "registeredHorizons": [
+    126,
+    252
+   ],
+   "usableRange": [
+    "2017-04-07",
+    "2026-09-11"
+   ],
+   "usableSignalDates": 492,
+   "usableYears": [
+    "2017",
+    "2018",
+    "2019",
+    "2020",
+    "2021",
+    "2022",
+    "2023",
+    "2024",
+    "2025",
+    "2026"
+   ]
+  },
+  {
+   "coveragePct": 55.361811,
+   "coverageWithinUsableRangePct": 80.326897,
+   "family": "C",
+   "featureId": "C10_liabilityGrowth",
+   "horizonUsability": {
+    "H126": {
+     "lastMaturableSignalDate": "2026-03-06",
+     "usable": true,
+     "usableSignalDatesBeforeThat": 465
+    },
+    "H252": {
+     "lastMaturableSignalDate": "2025-08-29",
+     "usable": true,
+     "usableSignalDatesBeforeThat": 438
+    }
+   },
+   "pitSafetyVerdict": "PIT_SAFE",
+   "registeredHorizons": [
+    126,
+    252
+   ],
+   "usableRange": [
+    "2017-04-07",
+    "2026-09-11"
+   ],
+   "usableSignalDates": 492,
+   "usableYears": [
+    "2017",
+    "2018",
+    "2019",
+    "2020",
+    "2021",
+    "2022",
+    "2023",
+    "2024",
+    "2025",
+    "2026"
+   ]
+  },
+  {
+   "coveragePct": 43.516573,
+   "coverageWithinUsableRangePct": 63.150407,
+   "family": "C",
+   "featureId": "C11_shareDilution",
+   "horizonUsability": {
+    "H126": {
+     "lastMaturableSignalDate": "2026-03-06",
+     "usable": true,
+     "usableSignalDatesBeforeThat": 465
+    },
+    "H252": {
+     "lastMaturableSignalDate": "2025-08-29",
+     "usable": true,
+     "usableSignalDatesBeforeThat": 438
+    }
+   },
+   "pitSafetyVerdict": "PIT_SAFE",
+   "registeredHorizons": [
+    126,
+    252
+   ],
+   "usableRange": [
+    "2017-04-07",
+    "2026-09-11"
+   ],
+   "usableSignalDates": 492,
+   "usableYears": [
+    "2017",
+    "2018",
+    "2019",
+    "2020",
+    "2021",
+    "2022",
+    "2023",
+    "2024",
+    "2025",
+    "2026"
+   ]
+  },
+  {
+   "coveragePct": 41.538282,
+   "coverageWithinUsableRangePct": 61.025377,
+   "family": "C",
+   "featureId": "C12_profitabilityPersistence",
+   "horizonUsability": {
+    "H126": {
+     "lastMaturableSignalDate": "2026-03-06",
+     "usable": true,
+     "usableSignalDatesBeforeThat": 459
+    },
+    "H252": {
+     "lastMaturableSignalDate": "2025-08-29",
+     "usable": true,
+     "usableSignalDatesBeforeThat": 432
+    }
+   },
+   "pitSafetyVerdict": "PIT_SAFE",
+   "registeredHorizons": [
+    126,
+    252
+   ],
+   "usableRange": [
+    "2017-05-19",
+    "2026-09-11"
+   ],
+   "usableSignalDates": 486,
+   "usableYears": [
+    "2017",
+    "2018",
+    "2019",
+    "2020",
+    "2021",
+    "2022",
+    "2023",
+    "2024",
+    "2025",
+    "2026"
+   ]
+  },
+  {
+   "coveragePct": 96.653828,
+   "coverageWithinUsableRangePct": 98.30603,
+   "family": "D",
+   "featureId": "D01_volumeSurge5_60",
+   "horizonUsability": {
+    "H21": {
+     "lastMaturableSignalDate": "2026-08-07",
+     "usable": true,
+     "usableSignalDatesBeforeThat": 697
+    },
+    "H63": {
+     "lastMaturableSignalDate": "2026-06-12",
+     "usable": true,
+     "usableSignalDatesBeforeThat": 689
+    }
+   },
+   "pitSafetyVerdict": "PIT_SAFE",
+   "registeredHorizons": [
+    21,
+    63
+   ],
+   "usableRange": [
+    "2013-03-29",
+    "2026-09-11"
+   ],
+   "usableSignalDates": 702,
+   "usableYears": [
+    "2013",
+    "2014",
+    "2015",
+    "2016",
+    "2017",
+    "2018",
+    "2019",
+    "2020",
+    "2021",
+    "2022",
+    "2023",
+    "2024",
+    "2025",
+    "2026"
+   ]
+  },
+  {
+   "coveragePct": 96.653828,
+   "coverageWithinUsableRangePct": 98.30603,
+   "family": "D",
+   "featureId": "D02_logVolumeShock60",
+   "horizonUsability": {
+    "H21": {
+     "lastMaturableSignalDate": "2026-08-07",
+     "usable": true,
+     "usableSignalDatesBeforeThat": 697
+    },
+    "H63": {
+     "lastMaturableSignalDate": "2026-06-12",
+     "usable": true,
+     "usableSignalDatesBeforeThat": 689
+    }
+   },
+   "pitSafetyVerdict": "PIT_SAFE",
+   "registeredHorizons": [
+    21,
+    63
+   ],
+   "usableRange": [
+    "2013-03-29",
+    "2026-09-11"
+   ],
+   "usableSignalDates": 702,
+   "usableYears": [
+    "2013",
+    "2014",
+    "2015",
+    "2016",
+    "2017",
+    "2018",
+    "2019",
+    "2020",
+    "2021",
+    "2022",
+    "2023",
+    "2024",
+    "2025",
+    "2026"
+   ]
+  },
+  {
+   "coveragePct": 96.653828,
+   "coverageWithinUsableRangePct": 98.30603,
+   "family": "D",
+   "featureId": "D03_tradingValueShock5_60",
+   "horizonUsability": {
+    "H21": {
+     "lastMaturableSignalDate": "2026-08-07",
+     "usable": true,
+     "usableSignalDatesBeforeThat": 697
+    },
+    "H63": {
+     "lastMaturableSignalDate": "2026-06-12",
+     "usable": true,
+     "usableSignalDatesBeforeThat": 689
+    }
+   },
+   "pitSafetyVerdict": "PIT_SAFE",
+   "registeredHorizons": [
+    21,
+    63
+   ],
+   "usableRange": [
+    "2013-03-29",
+    "2026-09-11"
+   ],
+   "usableSignalDates": 702,
+   "usableYears": [
+    "2013",
+    "2014",
+    "2015",
+    "2016",
+    "2017",
+    "2018",
+    "2019",
+    "2020",
+    "2021",
+    "2022",
+    "2023",
+    "2024",
+    "2025",
+    "2026"
+   ]
+  },
+  {
+   "coveragePct": 96.418067,
+   "coverageWithinUsableRangePct": 98.206134,
+   "family": "D",
+   "featureId": "D04_shockPersistence5d",
+   "horizonUsability": {
+    "H21": {
+     "lastMaturableSignalDate": "2026-08-07",
+     "usable": true,
+     "usableSignalDatesBeforeThat": 696
+    },
+    "H63": {
+     "lastMaturableSignalDate": "2026-06-12",
+     "usable": true,
+     "usableSignalDatesBeforeThat": 688
+    }
+   },
+   "pitSafetyVerdict": "PIT_SAFE",
+   "registeredHorizons": [
+    21,
+    63
+   ],
+   "usableRange": [
+    "2013-04-05",
+    "2026-09-11"
+   ],
+   "usableSignalDates": 701,
+   "usableYears": [
+    "2013",
+    "2014",
+    "2015",
+    "2016",
+    "2017",
+    "2018",
+    "2019",
+    "2020",
+    "2021",
+    "2022",
+    "2023",
+    "2024",
+    "2025",
+    "2026"
+   ]
+  },
+  {
+   "coveragePct": 96.590803,
+   "coverageWithinUsableRangePct": 98.241928,
+   "family": "D",
+   "featureId": "D05_turnoverToMarketCap60",
+   "horizonUsability": {
+    "H21": {
+     "lastMaturableSignalDate": "2026-08-07",
+     "usable": true,
+     "usableSignalDatesBeforeThat": 697
+    },
+    "H63": {
+     "lastMaturableSignalDate": "2026-06-12",
+     "usable": true,
+     "usableSignalDatesBeforeThat": 689
+    }
+   },
+   "pitSafetyVerdict": "PIT_SAFE",
+   "registeredHorizons": [
+    21,
+    63
+   ],
+   "usableRange": [
+    "2013-03-29",
+    "2026-09-11"
+   ],
+   "usableSignalDates": 702,
+   "usableYears": [
+    "2013",
+    "2014",
+    "2015",
+    "2016",
+    "2017",
+    "2018",
+    "2019",
+    "2020",
+    "2021",
+    "2022",
+    "2023",
+    "2024",
+    "2025",
+    "2026"
+   ]
+  },
+  {
+   "coveragePct": 95.669935,
+   "coverageWithinUsableRangePct": 97.862942,
+   "family": "D",
+   "featureId": "D06_priceVolumeDivergence",
+   "horizonUsability": {
+    "H21": {
+     "lastMaturableSignalDate": "2026-08-07",
+     "usable": true,
+     "usableSignalDatesBeforeThat": 693
+    },
+    "H63": {
+     "lastMaturableSignalDate": "2026-06-12",
+     "usable": true,
+     "usableSignalDatesBeforeThat": 685
+    }
+   },
+   "pitSafetyVerdict": "PIT_SAFE",
+   "registeredHorizons": [
+    21,
+    63
+   ],
+   "usableRange": [
+    "2013-04-26",
+    "2026-09-11"
+   ],
+   "usableSignalDates": 698,
+   "usableYears": [
+    "2013",
+    "2014",
+    "2015",
+    "2016",
+    "2017",
+    "2018",
+    "2019",
+    "2020",
+    "2021",
+    "2022",
+    "2023",
+    "2024",
+    "2025",
+    "2026"
+   ]
+  },
+  {
+   "coveragePct": 96.652661,
+   "coverageWithinUsableRangePct": 98.304843,
+   "family": "D",
+   "featureId": "D07_volumePriceAlignment",
+   "horizonUsability": {
+    "H21": {
+     "lastMaturableSignalDate": "2026-08-07",
+     "usable": true,
+     "usableSignalDatesBeforeThat": 697
+    },
+    "H63": {
+     "lastMaturableSignalDate": "2026-06-12",
+     "usable": true,
+     "usableSignalDatesBeforeThat": 689
+    }
+   },
+   "pitSafetyVerdict": "PIT_SAFE",
+   "registeredHorizons": [
+    21,
+    63
+   ],
+   "usableRange": [
+    "2013-03-29",
+    "2026-09-11"
+   ],
+   "usableSignalDates": 702,
+   "usableYears": [
+    "2013",
+    "2014",
+    "2015",
+    "2016",
+    "2017",
+    "2018",
+    "2019",
+    "2020",
+    "2021",
+    "2022",
+    "2023",
+    "2024",
+    "2025",
+    "2026"
+   ]
+  },
+  {
+   "coveragePct": 95.612745,
+   "coverageWithinUsableRangePct": 97.804441,
+   "family": "D",
+   "featureId": "D08_abnormalVolumeUpClose",
+   "horizonUsability": {
+    "H21": {
+     "lastMaturableSignalDate": "2026-08-07",
+     "usable": true,
+     "usableSignalDatesBeforeThat": 693
+    },
+    "H63": {
+     "lastMaturableSignalDate": "2026-06-12",
+     "usable": true,
+     "usableSignalDatesBeforeThat": 685
+    }
+   },
+   "pitSafetyVerdict": "PIT_SAFE",
+   "registeredHorizons": [
+    21,
+    63
+   ],
+   "usableRange": [
+    "2013-04-26",
+    "2026-09-11"
+   ],
+   "usableSignalDates": 698,
+   "usableYears": [
+    "2013",
+    "2014",
+    "2015",
+    "2016",
+    "2017",
+    "2018",
+    "2019",
+    "2020",
+    "2021",
+    "2022",
+    "2023",
+    "2024",
+    "2025",
+    "2026"
+   ]
+  },
+  {
+   "coveragePct": 95.612745,
+   "coverageWithinUsableRangePct": 97.804441,
+   "family": "D",
+   "featureId": "D09_abnormalVolumeDownClose",
+   "horizonUsability": {
+    "H21": {
+     "lastMaturableSignalDate": "2026-08-07",
+     "usable": true,
+     "usableSignalDatesBeforeThat": 693
+    },
+    "H63": {
+     "lastMaturableSignalDate": "2026-06-12",
+     "usable": true,
+     "usableSignalDatesBeforeThat": 685
+    }
+   },
+   "pitSafetyVerdict": "PIT_SAFE",
+   "registeredHorizons": [
+    21,
+    63
+   ],
+   "usableRange": [
+    "2013-04-26",
+    "2026-09-11"
+   ],
+   "usableSignalDates": 698,
+   "usableYears": [
+    "2013",
+    "2014",
+    "2015",
+    "2016",
+    "2017",
+    "2018",
+    "2019",
+    "2020",
+    "2021",
+    "2022",
+    "2023",
+    "2024",
+    "2025",
+    "2026"
+   ]
+  },
+  {
+   "coveragePct": 93.521242,
+   "coverageWithinUsableRangePct": 96.914611,
+   "family": "D",
+   "featureId": "D10_liquidityAcceleration",
+   "horizonUsability": {
+    "H21": {
+     "lastMaturableSignalDate": "2026-08-07",
+     "usable": true,
+     "usableSignalDatesBeforeThat": 684
+    },
+    "H63": {
+     "lastMaturableSignalDate": "2026-06-12",
+     "usable": true,
+     "usableSignalDatesBeforeThat": 676
+    }
+   },
+   "pitSafetyVerdict": "PIT_SAFE",
+   "registeredHorizons": [
+    21,
+    63
+   ],
+   "usableRange": [
+    "2013-06-28",
+    "2026-09-11"
+   ],
+   "usableSignalDates": 689,
+   "usableYears": [
+    "2013",
+    "2014",
+    "2015",
+    "2016",
+    "2017",
+    "2018",
+    "2019",
+    "2020",
+    "2021",
+    "2022",
+    "2023",
+    "2024",
+    "2025",
+    "2026"
+   ]
+  },
+  {
+   "coveragePct": 98.661298,
+   "coverageWithinUsableRangePct": 99.217136,
+   "family": "D",
+   "featureId": "D11_accumulationDistributionProxy",
+   "horizonUsability": {
+    "H21": {
+     "lastMaturableSignalDate": "2026-08-07",
+     "usable": true,
+     "usableSignalDatesBeforeThat": 705
+    },
+    "H63": {
+     "lastMaturableSignalDate": "2026-06-12",
+     "usable": true,
+     "usableSignalDatesBeforeThat": 697
+    }
+   },
+   "pitSafetyVerdict": "PIT_SAFE",
+   "registeredHorizons": [
+    21,
+    63
+   ],
+   "usableRange": [
+    "2013-02-01",
+    "2026-09-11"
+   ],
+   "usableSignalDates": 710,
+   "usableYears": [
+    "2013",
+    "2014",
+    "2015",
+    "2016",
+    "2017",
+    "2018",
+    "2019",
+    "2020",
+    "2021",
+    "2022",
+    "2023",
+    "2024",
+    "2025",
+    "2026"
+   ]
+  },
+  {
+   "coveragePct": 96.626984,
+   "coverageWithinUsableRangePct": 98.278727,
+   "family": "E",
+   "featureId": "E01_amihudIlliquidity60",
+   "horizonUsability": {
+    "H126": {
+     "lastMaturableSignalDate": "2026-03-06",
+     "usable": true,
+     "usableSignalDatesBeforeThat": 675
+    },
+    "H21": {
+     "lastMaturableSignalDate": "2026-08-07",
+     "usable": true,
+     "usableSignalDatesBeforeThat": 697
+    }
+   },
+   "pitSafetyVerdict": "PIT_SAFE",
+   "registeredHorizons": [
+    126,
+    21
+   ],
+   "usableRange": [
+    "2013-03-29",
+    "2026-09-11"
+   ],
+   "usableSignalDates": 702,
+   "usableYears": [
+    "2013",
+    "2014",
+    "2015",
+    "2016",
+    "2017",
+    "2018",
+    "2019",
+    "2020",
+    "2021",
+    "2022",
+    "2023",
+    "2024",
+    "2025",
+    "2026"
+   ]
+  },
+  {
+   "coveragePct": 96.603641,
+   "coverageWithinUsableRangePct": 98.254986,
+   "family": "E",
+   "featureId": "E06_volatilityConditionalOnVolume",
+   "horizonUsability": {
+    "H126": {
+     "lastMaturableSignalDate": "2026-03-06",
+     "usable": true,
+     "usableSignalDatesBeforeThat": 675
+    },
+    "H21": {
+     "lastMaturableSignalDate": "2026-08-07",
+     "usable": true,
+     "usableSignalDatesBeforeThat": 697
+    }
+   },
+   "pitSafetyVerdict": "PIT_SAFE",
+   "registeredHorizons": [
+    126,
+    21
+   ],
+   "usableRange": [
+    "2013-03-29",
+    "2026-09-11"
+   ],
+   "usableSignalDates": 702,
+   "usableYears": [
+    "2013",
+    "2014",
+    "2015",
+    "2016",
+    "2017",
+    "2018",
+    "2019",
+    "2020",
+    "2021",
+    "2022",
+    "2023",
+    "2024",
+    "2025",
+    "2026"
+   ]
+  },
+  {
+   "coveragePct": 91.860411,
+   "coverageWithinUsableRangePct": 99.22592,
+   "family": "F",
+   "featureId": "F01_totalVolatility63",
+   "horizonUsability": {
+    "H126": {
+     "lastMaturableSignalDate": "2026-03-06",
+     "usable": true,
+     "usableSignalDatesBeforeThat": 634
+    }
+   },
+   "pitSafetyVerdict": "PIT_SAFE",
+   "registeredHorizons": [
+    126,
+    null
+   ],
+   "usableRange": [
+    "2014-01-10",
+    "2026-09-11"
+   ],
+   "usableSignalDates": 661,
+   "usableYears": [
+    "2014",
+    "2015",
+    "2016",
+    "2017",
+    "2018",
+    "2019",
+    "2020",
+    "2021",
+    "2022",
+    "2023",
+    "2024",
+    "2025",
+    "2026"
+   ]
+  },
+  {
+   "coveragePct": 89.933473,
+   "coverageWithinUsableRangePct": 97.144478,
+   "family": "F",
+   "featureId": "F03_beta252",
+   "horizonUsability": {
+    "H126": {
+     "lastMaturableSignalDate": "2026-03-06",
+     "usable": true,
+     "usableSignalDatesBeforeThat": 634
+    }
+   },
+   "pitSafetyVerdict": "PIT_SAFE",
+   "registeredHorizons": [
+    126,
+    null
+   ],
+   "usableRange": [
+    "2014-01-10",
+    "2026-09-11"
+   ],
+   "usableSignalDates": 661,
+   "usableYears": [
+    "2014",
+    "2015",
+    "2016",
+    "2017",
+    "2018",
+    "2019",
+    "2020",
+    "2021",
+    "2022",
+    "2023",
+    "2024",
+    "2025",
+    "2026"
+   ]
+  },
+  {
+   "coveragePct": 89.933473,
+   "coverageWithinUsableRangePct": 97.144478,
+   "family": "F",
+   "featureId": "F04_idiosyncraticVol",
+   "horizonUsability": {
+    "H126": {
+     "lastMaturableSignalDate": "2026-03-06",
+     "usable": true,
+     "usableSignalDatesBeforeThat": 634
+    }
+   },
+   "pitSafetyVerdict": "PIT_SAFE",
+   "registeredHorizons": [
+    126,
+    null
+   ],
+   "usableRange": [
+    "2014-01-10",
+    "2026-09-11"
+   ],
+   "usableSignalDates": 661,
+   "usableYears": [
+    "2014",
+    "2015",
+    "2016",
+    "2017",
+    "2018",
+    "2019",
+    "2020",
+    "2021",
+    "2022",
+    "2023",
+    "2024",
+    "2025",
+    "2026"
+   ]
+  },
+  {
+   "coveragePct": 67.507003,
+   "coverageWithinUsableRangePct": 70.05814,
+   "family": "H",
+   "featureId": "H08_equalVsCapWeightIndustry",
+   "horizonUsability": {
+    "H126": {
+     "lastMaturableSignalDate": "2026-03-06",
+     "usable": true,
+     "usableSignalDatesBeforeThat": 655
+    },
+    "H63": {
+     "lastMaturableSignalDate": "2026-06-12",
+     "usable": true,
+     "usableSignalDatesBeforeThat": 669
+    }
+   },
+   "pitSafetyVerdict": "PIT_SAFE",
+   "registeredHorizons": [
+    126,
+    63
+   ],
+   "usableRange": [
+    "2013-07-05",
+    "2026-09-11"
+   ],
+   "usableSignalDates": 682,
+   "usableYears": [
+    "2013",
+    "2014",
+    "2015",
+    "2016",
+    "2017",
+    "2018",
+    "2019",
+    "2020",
+    "2021",
+    "2022",
+    "2023",
+    "2024",
+    "2025",
+    "2026"
+   ]
+  },
+  {
+   "coveragePct": 69.227358,
+   "coverageWithinUsableRangePct": 83.766949,
+   "family": "J",
+   "featureId": "J01_periodicFilingEvent",
+   "horizonUsability": {
+    "H21": {
+     "lastMaturableSignalDate": "2026-08-07",
+     "usable": true,
+     "usableSignalDatesBeforeThat": 585
+    },
+    "H63": {
+     "lastMaturableSignalDate": "2026-06-12",
+     "usable": true,
+     "usableSignalDatesBeforeThat": 577
+    }
+   },
+   "pitSafetyVerdict": "PIT_SAFE",
+   "registeredHorizons": [
+    21,
+    63
+   ],
+   "usableRange": [
+    "2015-05-22",
+    "2026-09-11"
+   ],
+   "usableSignalDates": 590,
+   "usableYears": [
+    "2015",
+    "2016",
+    "2017",
+    "2018",
+    "2019",
+    "2020",
+    "2021",
+    "2022",
+    "2023",
+    "2024",
+    "2025",
+    "2026"
+   ]
+  }
+ ],
+ "excludedFeatures": [
+  {
+   "featureId": "C03_operatingMargin",
+   "measuredStatus": "MEASURED_BELOW_COVERAGE_FLOOR",
+   "reason": "measured on 54.203364% of rows within its usable range over 499 usable dates; main missingness: NO_VISIBLE_FILING=26366, INPUT_NOT_STATED_OR_UNDEFINED_RATIO=9916, UNKNOWN_OR_MIXED_STATEMENT_BASIS=8619"
+  },
+  {
+   "featureId": "C04_profitMargin",
+   "measuredStatus": "MEASURED_BELOW_COVERAGE_FLOOR",
+   "reason": "measured on 55.17737% of rows within its usable range over 499 usable dates; main missingness: NO_VISIBLE_FILING=26366, INPUT_NOT_STATED_OR_UNDEFINED_RATIO=9279, UNKNOWN_OR_MIXED_STATEMENT_BASIS=8619"
+  },
+  {
+   "featureId": "C06_cashConversion",
+   "measuredStatus": "MEASURED_BELOW_COVERAGE_FLOOR",
+   "reason": "measured on 56.62844% of rows within its usable range over 499 usable dates; main missingness: NO_VISIBLE_FILING=26366, UNKNOWN_OR_MIXED_STATEMENT_BASIS=8619, INPUT_NOT_STATED_OR_UNDEFINED_RATIO=8330"
+  },
+  {
+   "featureId": "C15_capexIntensity",
+   "measuredStatus": "MEASURED_BELOW_COVERAGE_FLOOR",
+   "reason": "measured on 52.896024% of rows within its usable range over 499 usable dates; main missingness: NO_VISIBLE_FILING=26366, INPUT_NOT_STATED_OR_UNDEFINED_RATIO=10771, UNKNOWN_OR_MIXED_STATEMENT_BASIS=8619"
+  },
+  {
+   "featureId": "C16_grossProfitability",
+   "measuredStatus": "NOT_COMPUTED_DATA_BUILD_REQUIRED",
+   "reason": "no gross-profit or cost-of-sales line in dart_fundamentals.WANTED_ACCOUNTS; raw-statement store (dart_raw_statements) keeps all rows but kr-canonical-v2 has not landed"
+  },
+  {
+   "featureId": "E08_trueBidAskSpread",
+   "measuredStatus": "NOT_COMPUTED_NOT_FEASIBLE",
+   "reason": "no quote or order-book source exists in this repository and none was found free; daily OHLCV proxies (E05) are not a substitute"
+  },
+  {
+   "featureId": "F08_bookConcentration",
+   "measuredStatus": "NOT_A_MATRIX_COLUMN",
+   "reason": "PORTFOLIO_LAYER_ONLY: a property of a 0-5 name book, not of a name on a date"
+  },
+  {
+   "featureId": "G01_foreignNetBuying",
+   "measuredStatus": "NOT_COMPUTED_SOURCE_BLOCKED",
+   "reason": "KRX data portal (MDCSTAT02302/02303) answered HTTP 400 LOGOUT on every candidate from Actions; the Open API key does not reach investor-type statistics (workflow-hygiene v2.25)"
+  },
+  {
+   "featureId": "G02_institutionalNetBuying",
+   "measuredStatus": "NOT_COMPUTED_SOURCE_BLOCKED",
+   "reason": "KRX data portal (MDCSTAT02302/02303) answered HTTP 400 LOGOUT on every candidate from Actions; the Open API key does not reach investor-type statistics (workflow-hygiene v2.25)"
+  },
+  {
+   "featureId": "G03_retailNetBuying",
+   "measuredStatus": "NOT_COMPUTED_SOURCE_BLOCKED",
+   "reason": "KRX data portal (MDCSTAT02302/02303) answered HTTP 400 LOGOUT on every candidate from Actions; the Open API key does not reach investor-type statistics (workflow-hygiene v2.25)"
+  },
+  {
+   "featureId": "G04_investorTypePersistence",
+   "measuredStatus": "NOT_COMPUTED_SOURCE_BLOCKED",
+   "reason": "KRX data portal (MDCSTAT02302/02303) answered HTTP 400 LOGOUT on every candidate from Actions; the Open API key does not reach investor-type statistics (workflow-hygiene v2.25)"
+  },
+  {
+   "featureId": "G05_flowMomentumConfirmation",
+   "measuredStatus": "NOT_COMPUTED_SOURCE_BLOCKED",
+   "reason": "KRX data portal (MDCSTAT02302/02303) answered HTTP 400 LOGOUT on every candidate from Actions; the Open API key does not reach investor-type statistics (workflow-hygiene v2.25)"
+  },
+  {
+   "featureId": "G06_largeHolderAccumulation",
+   "measuredStatus": "NOT_COMPUTED_DATA_BUILD_REQUIRED",
+   "reason": "majorstock.json serves a rolling two years: collected receipts span 2024-09-24..2026-09-23 (1,285 events, 119 current names); older history needs an official filing-document parser (BLOCKED_HISTORICAL_DEPTH, docs/dart-ownership-history-replay-integrity-v1.md)"
+  },
+  {
+   "featureId": "G07_largeHolderReduction",
+   "measuredStatus": "NOT_COMPUTED_DATA_BUILD_REQUIRED",
+   "reason": "majorstock.json serves a rolling two years: collected receipts span 2024-09-24..2026-09-23 (1,285 events, 119 current names); older history needs an official filing-document parser (BLOCKED_HISTORICAL_DEPTH, docs/dart-ownership-history-replay-integrity-v1.md)"
+  },
+  {
+   "featureId": "G08_shortSellingVolume",
+   "measuredStatus": "NOT_COMPUTED_SOURCE_BLOCKED",
+   "reason": "KRX short-selling screens MDCSTAT301/305: bld codes unresolved and the portal unreachable; full bans 2020-03..2021-05 and 2023-11-05..2025-03-31 make the variable regime-dependent (kr_short_selling.regime_label)"
+  },
+  {
+   "featureId": "G09_shortBalanceChange",
+   "measuredStatus": "NOT_COMPUTED_SOURCE_BLOCKED",
+   "reason": "KRX short-selling screens MDCSTAT301/305: bld codes unresolved and the portal unreachable; full bans 2020-03..2021-05 and 2023-11-05..2025-03-31 make the variable regime-dependent (kr_short_selling.regime_label)"
+  },
+  {
+   "featureId": "H11_industryEarningsContext",
+   "measuredStatus": "ALREADY_TESTED_COMPUTED_BELOW_COVERAGE_FLOOR",
+   "reason": "measured on 58.437309% of rows within its usable range over 499 usable dates; main missingness: INDUSTRY_COHORT_MEMBER_MISSING_INPUT=33309, INDUSTRY_COHORT_BELOW_MINIMUM=9555, INDUSTRY_UNCLASSIFIED=4598"
+  },
+  {
+   "featureId": "I03_krTermSpread",
+   "measuredStatus": "NOT_COMPUTED_PIT_UNSAFE",
+   "reason": "ECOS series carry vintageStatus REVISED_HISTORY; a historical value is usable only from its retained fetch (kr_market_context)"
+  },
+  {
+   "featureId": "I04_krPolicyRate",
+   "measuredStatus": "NOT_COMPUTED_DATA_BUILD_REQUIRED",
+   "reason": "config.json ecos.KR.BaseRate sourceStatus AMBIGUOUS_SOURCE (item code unresolved)"
+  },
+  {
+   "featureId": "I05_krCreditSpread",
+   "measuredStatus": "NOT_COMPUTED_DATA_BUILD_REQUIRED",
+   "reason": "CorpBond_3Y sourceStatus AMBIGUOUS_SOURCE (817Y002 item code for the corporate series unresolved)"
+  },
+  {
+   "featureId": "I06_krInflation",
+   "measuredStatus": "NOT_COMPUTED_PIT_UNSAFE",
+   "reason": "CPI AMBIGUOUS_SOURCE / CoreCPI DATA_LINEAGE_UNRESOLVED, revised history without release vintages"
+  },
+  {
+   "featureId": "I07_krExportsActivity",
+   "measuredStatus": "NOT_COMPUTED_PIT_UNSAFE",
+   "reason": "Exports NOT_AVAILABLE; IndustrialProduction DATA_LINEAGE_UNRESOLVED; LeadingIndex revised without vintages"
+  },
+  {
+   "featureId": "I08_usdKrw",
+   "measuredStatus": "NOT_COMPUTED_PIT_UNSAFE",
+   "reason": "FX_PUBLICATION_TIME_UNRESOLVED (alpha-information-inventory-v1)"
+  },
+  {
+   "featureId": "I09_fxBeta26w",
+   "measuredStatus": "NOT_COMPUTED_PIT_UNSAFE",
+   "reason": "FX_PUBLICATION_TIME_UNRESOLVED; excluded by regional_alpha_features"
+  },
+  {
+   "featureId": "I10_semiconductorCycleSOX",
+   "measuredStatus": "NOT_COMPUTED_DATA_BUILD_REQUIRED",
+   "reason": "dashboard-only fetch; no pinned historical snapshot"
+  },
+  {
+   "featureId": "I11_globalFinancialConditions",
+   "measuredStatus": "NOT_COMPUTED_PIT_UNSAFE",
+   "reason": "10 of 28 FRED panel columns have no ALFRED vintages (macro vintage invariants v2.9)"
+  },
+  {
+   "featureId": "I12_commodityExposure",
+   "measuredStatus": "NOT_COMPUTED_DATA_BUILD_REQUIRED",
+   "reason": "no commodity price series is collected"
+  },
+  {
+   "featureId": "J02_dividendPolicyChange",
+   "measuredStatus": "NOT_COMPUTED_DATA_BUILD_REQUIRED",
+   "reason": "alotMatter.json not collected universe-wide; endpointConfidence CANDIDATE_UNCONFIRMED"
+  },
+  {
+   "featureId": "J03_buybackAnnouncement",
+   "measuredStatus": "NOT_COMPUTED_DATA_BUILD_REQUIRED",
+   "reason": "list.json disclosure families not collected universe-wide"
+  },
+  {
+   "featureId": "J04_materialDisclosure",
+   "measuredStatus": "NOT_COMPUTED_DATA_BUILD_REQUIRED",
+   "reason": "as J03; M&A outcomes carry hindsight risk (terminal economics unresolved)"
+  },
+  {
+   "featureId": "J06_searchAttention",
+   "measuredStatus": "NOT_COMPUTED_NOT_FEASIBLE",
+   "reason": "no source with verified point-in-time history and permitted use"
+  },
+  {
+   "featureId": "J07_newsTextSentiment",
+   "measuredStatus": "NOT_COMPUTED_NOT_FEASIBLE",
+   "reason": "no archived PIT news source; a large NLP project is out of scope"
+  },
+  {
+   "featureId": "J08_analystRevisions",
+   "measuredStatus": "NOT_COMPUTED_NOT_FEASIBLE",
+   "reason": "FnGuide/FnSpace ToS-blocked; no free PIT history (alpha-information-inventory-v1)"
+  }
+ ],
+ "horizons": {
+  "A": {
+   "primary": 126,
+   "secondary": 21
+  },
+  "B": {
+   "primary": 126,
+   "secondary": 252
+  },
+  "C": {
+   "primary": 126,
+   "secondary": 252
+  },
+  "D": {
+   "primary": 21,
+   "secondary": 63
+  },
+  "E": {
+   "primary": 126,
+   "secondary": 21
+  },
+  "F": {
+   "primary": 126,
+   "secondary": null
+  },
+  "G": {
+   "primary": 21,
+   "secondary": 63
+  },
+  "H": {
+   "primary": 126,
+   "secondary": 63
+  },
+  "I": {
+   "primary": 126,
+   "secondary": null
+  },
+  "J": {
+   "primary": 21,
+   "secondary": 63
+  }
+ },
+ "humanTriggeredAcquisition": [
+  {
+   "blockedHere": "the authoring sandbox cannot reach the Actions artifact blob host (CONNECT 403); no official value was read",
+   "how": [
+    "download the Actions artifact kr-model-raw-inputs-36844599518 (artifact id 11157875265, archive sha256 42eeb18b7a5c88816629036f472a93057b6a9be4768ad47292ba0d2750b4cce7, run 36844599518) and extract it to an empty directory <ART>",
+    "python scripts/build_kr_alpha_atlas_phase_b.py --scratch <ART>   (the loader finds market/ and uses the official values; the git-pinned files it verifies are identical)",
+    "compare tradingValueBasis and the matrix digest in the new report with this one; commit the new outputs as a separate revision, never over this one silently"
+   ],
+   "id": "OFFICIAL_TRADED_VALUE_RERUN",
+   "required": "ONLY_IF_THE_PHASE_C_REGISTRATION_CHOOSES_OFFICIAL_ACC_TRDVAL",
+   "why": "traded value in this report is the as-traded close x volume proxy; the official KRX ACC_TRDVAL exists only in the preserved raw-input artifact"
+  },
+  {
+   "how": [
+    "Actions > Probes > Run workflow: probe=kr-investor-flow, args empty (https://github.com/jaehojung1879-netizen/Investment/actions/workflows/probes.yml)",
+    "anything other than SERVED leaves G01-G05 SOURCE_BLOCKED; at most ONE re-probe per source in Phase B"
+   ],
+   "id": "OPTIONAL_REPROBE_INVESTOR_FLOW",
+   "required": "NO",
+   "why": "latest evidence (signal-history manifest, 2026-09-24) is REFUSED: HTTP 400 LOGOUT with 0 records; it is sufficient, so none was repeated"
+  },
+  {
+   "how": [
+    "Actions > Probes > Run workflow: probe=kr-short-selling, args empty"
+   ],
+   "id": "OPTIONAL_REPROBE_SHORT_SELLING",
+   "required": "NO",
+   "why": "same as above for KRX short-selling statistics"
+  }
+ ],
+ "identity": {
+  "catalogueSha256": "144ce823c4f84567897f8b1aaa1f752ae43fa10ba088ccfb3b0cde1ce745b4e3",
+  "codeFileSha256": {
+   "pipeline/kr_alpha_atlas_bars.py": "7e9cf779edc2ef9b319c9caf1a6ab582ed3cef8fcc79d76f8ba7b8989699859c",
+   "pipeline/kr_alpha_atlas_catalogue.py": "05c61e76c5d92aa1f82fecffabae29d796c60ef4c1e4a6e75df0929f1ec9461b",
+   "pipeline/kr_alpha_atlas_dry_run.py": "52476750805fcc6b639efbe0b1610c407f696070dfce0efbb17502ec3eb2f4d1",
+   "pipeline/kr_alpha_atlas_feasibility.py": "e0ed0189a50bdf53941197ab271e658f1d77e0f1af839bf81ca4a499926434a1",
+   "pipeline/kr_alpha_atlas_inputs.py": "c74a242c063530dba88a45968118e62422f0f009f07551f9ea1d5a6f981d188f",
+   "pipeline/kr_alpha_atlas_matrix.py": "60aaac1312f0484196cb94d57ace65cfd52fc53dacf7ab3c8d0096f404dd7c3b",
+   "pipeline/kr_alpha_atlas_readiness.py": "2d78617bd31a9734e627f853a879a6b74692cd52c9416f461dd88192acb95442",
+   "pipeline/kr_alpha_atlas_report.py": "c563667849c1a1435424aadd0386270a31650e5af1f664376d188ca86462f9d2",
+   "scripts/build_kr_alpha_atlas_phase_b.py": "b7df16586b4522a072b5a64bf626430175afa278d3843301dc090e6ae21a2297"
+  },
+  "inputs": {
+   "accountingBlobSha1": {
+    "dart-2015.jsonl.gz": "ee23f00aea08bc28548872a8d8153f1afbb53500",
+    "dart-2016.jsonl.gz": "65be7342d1d47bcbcda84db99f218312d2adb03d",
+    "dart-2017.jsonl.gz": "2b0146e9c1b8363fecdc1c3b1af0b21b68c8e237",
+    "dart-2018.jsonl.gz": "2316d0b0125fb207f9c721323c368120ff10428e",
+    "dart-2019.jsonl.gz": "4a41f94a2748256efae16c50b04f30e2d7578b56",
+    "dart-2020.jsonl.gz": "932292695b4906b9b179f5cef506299a43c96c1a",
+    "dart-2021.jsonl.gz": "46ccf6e760fd2d5037ab67fca0ab2a6ebd1f25dc",
+    "dart-2022.jsonl.gz": "056694d86b9cefbd6b62eb44c91a610d6b5a08b0",
+    "dart-2023.jsonl.gz": "8a0dd4f040d37ffb43d6078721d2f9a763e9539d",
+    "dart-2024.jsonl.gz": "78619db28718f2b49f69893057a10ef459e53c12",
+    "dart-2025.jsonl.gz": "b60daa3620adba7374155837cdbdc96def57dd7a",
+    "dart-2026.jsonl.gz": "5caf06224466fcf30cf0d8e412fb50e24f8b94c6"
+   },
+   "accountingContentSha256": "e0199d98679357f405de9a95a4091045db814d65af61e2c698af1a70d54fda58",
+   "barLedgerBlobSha1": {
+    "ledger/prices/kr/krx-prices-2013.jsonl.gz": "84783e389a49f91b34446952e811d9dc4b25a26e",
+    "ledger/prices/kr/krx-prices-2014.jsonl.gz": "355d5c80a4f38c9aefddf83f5fc72bca16a8a75c",
+    "ledger/prices/kr/krx-prices-2015.jsonl.gz": "dfc64c6eaaf66015e001061fd4877211b03804a4",
+    "ledger/prices/kr/krx-prices-2016.jsonl.gz": "8cbe7a6ddc7feb5729e8636a0066cc33d5b0c839",
+    "ledger/prices/kr/krx-prices-2017.jsonl.gz": "aa70e56056a5486846d6af5f7506f7b31ed17d73",
+    "ledger/prices/kr/krx-prices-2018.jsonl.gz": "d1316f27d5d4ae79205082a191974facabaa5721",
+    "ledger/prices/kr/krx-prices-2019.jsonl.gz": "7568625868d99faa31703019f1cc441a755113ed",
+    "ledger/prices/kr/krx-prices-2020.jsonl.gz": "8ee2e5776d315585772682cebec883e27be5869c",
+    "ledger/prices/kr/krx-prices-2021.jsonl.gz": "45a356de93880272e005114af23cdf5892ca66f4",
+    "ledger/prices/kr/krx-prices-2022.jsonl.gz": "aa999d58f8a299fd749c79b0f34949c3ada11fc0",
+    "ledger/prices/kr/krx-prices-2023.jsonl.gz": "4c50fd23448aef8f3a8bd71badda84534701c4bd",
+    "ledger/prices/kr/krx-prices-2024.jsonl.gz": "f59e014c5d58397bf83c80ee4954c427a940d51c",
+    "ledger/prices/kr/krx-prices-2025.jsonl.gz": "827dae314862285fdbc84ec5393583438fc39885",
+    "ledger/prices/kr/krx-prices-2026.jsonl.gz": "2223ffbaf95389f1c70e69a955ab5f5d9d069c3b"
+   },
+   "calendarVersion": "xkrx-xnys-4.11.1-v2-kr-2026-closures",
+   "contract": "KR_ALPHA_ATLAS_INPUTS_V1",
+   "dartSharesBlobSha1": "a515ca2c4f237d688566b45b2f4cc5afd3d6f0fb",
+   "frozenSpecSha256": "563b64ee6f4709a263719669f795ad55e7828e340f082358af1599453253b6fd",
+   "industryFoundation": {
+    "data/kr-industry-membership-foundation-v1/identity-inventory.json": "28274f2d76da50dc39007bc24fba0f6e57ce76b9",
+    "data/kr-industry-membership-foundation-v1/identity-provenance.json": "330c4b61a89031810293c0cf939e5321a2d3f3d7",
+    "data/kr-industry-membership-foundation-v4/state/intervals.json.gz": "03a3122c3afdb9b6999a61f19b817bfa5a1fb6f6",
+    "research_specs/kr-industry-membership-foundation-v4/crosswalk.json": "9379aa8e72dd50658a3a2f8c53048e049d2a52f3"
+   },
+   "marketValueStore": "ABSENT_NOT_IN_GIT",
+   "replayManifestSha256": "f0781292f508a123c234ded6d28aa8e84a0dc3cc29500e14989dc0b68f53b4d2",
+   "sha256": "3e4d7aa35e2c4b273e4ecef0e2e8ea7a8a27077f0de14bb3d5ea6a696a97f1a5",
+   "sourceCommit": "4ea107ed0cde289f0a049a65ff13d2441a786710",
+   "universeBlobSha1": {
+    "ledger/universe/kr/krx-universe-2013.jsonl.gz": "e711a6c5e07c89e9b0cf12a94078120ceeb3b9a4",
+    "ledger/universe/kr/krx-universe-2014.jsonl.gz": "395477e6dd72c117615919f850173d2830b2cc1f",
+    "ledger/universe/kr/krx-universe-2015.jsonl.gz": "029bcef52056d4b172d78094779a5eff9c89ff89",
+    "ledger/universe/kr/krx-universe-2016.jsonl.gz": "402910f37a4f75887f8c8f7e501aec1afe90b14d",
+    "ledger/universe/kr/krx-universe-2017.jsonl.gz": "db9b0436c970eb1bf4f2456bab7060432558f6e6",
+    "ledger/universe/kr/krx-universe-2018.jsonl.gz": "9a08628f96aa3aeb5d47b11612d14ab551519abc",
+    "ledger/universe/kr/krx-universe-2019.jsonl.gz": "c1f7990b38b0e17b71c88327b5262c768dcfe16d",
+    "ledger/universe/kr/krx-universe-2020.jsonl.gz": "baf7d4e2609aaaa7091cab087cabdbc5a3c58619",
+    "ledger/universe/kr/krx-universe-2021.jsonl.gz": "c09f60669adf36d81def38dfed6cb0d4dd6c456d",
+    "ledger/universe/kr/krx-universe-2022.jsonl.gz": "a1b303c61dd1d114149c3da51763f1dccb711137",
+    "ledger/universe/kr/krx-universe-2023.jsonl.gz": "024abba6a91153259a8030f6e441497a28c723de",
+    "ledger/universe/kr/krx-universe-2024.jsonl.gz": "a4329587eccc43f015f97524f27a660a6448e263",
+    "ledger/universe/kr/krx-universe-2025.jsonl.gz": "070296ad800a3a57735bbcbaf24f5885d82162e8",
+    "ledger/universe/kr/krx-universe-2026.jsonl.gz": "ccc098c5ce029412a67bf8b85113e0b6a19891dc"
+   }
+  },
+  "matrixDigest": "32e49b57a7541eea66f76373baef50c6302a394247b313f6099f718d46d54b0c",
+  "registryId": "kr-alpha-atlas-registry-v1",
+  "registrySha256": "e60f8c441cf799eb9f47d55b5d4c83efaadc097191fb5712e89788af513d2c7e",
+  "rules": {
+   "minCellNames": 3,
+   "minDatesPerYear": 13,
+   "minEvaluableDates": 52,
+   "minFeatureCoverage": 0.6,
+   "minMeasuredNamesPerDate": 30
+  },
+  "tradingValueBasis": "PROXY_ASTRADED_CLOSE_X_VOLUME"
+ },
+ "interactions": {
+  "X1_valueByBusinessConfirmation": {
+   "evaluableDates": 447,
+   "evaluableRange": [
+    "2017-04-07",
+    "2026-09-11"
+   ],
+   "jointCoveragePct": 53.486719,
+   "reason": "447 evaluable weekly dates (need 52); joint coverage within the evaluable range 75.873184% (need 60%)",
+   "status": "READY",
+   "thin": false
+  },
+  "X2_momentumByAbnormalVolume": {
+   "evaluableDates": 686,
+   "evaluableRange": [
+    "2013-07-05",
+    "2026-09-11"
+   ],
+   "jointCoveragePct": 93.907563,
+   "reason": "686 evaluable weekly dates (need 52); joint coverage within the evaluable range 97.456395% (need 60%)",
+   "status": "READY",
+   "thin": false
+  },
+  "X3_industryLeadershipByStockStrength": {
+   "evaluableDates": 616,
+   "evaluableRange": [
+    "2013-07-05",
+    "2026-08-28"
+   ],
+   "jointCoveragePct": 67.507003,
+   "reason": "616 evaluable weekly dates (need 52); joint coverage within the evaluable range 70.036443% (need 60%)",
+   "status": "READY",
+   "thin": false
+  },
+  "X4_priceLeadershipByInvestorAccumulation": {
+   "evaluableDates": null,
+   "evaluableRange": null,
+   "jointCoveragePct": null,
+   "reason": "component(s) G01_foreignNetBuying SOURCE_BLOCKED; the OHLCV accumulation proxy D11 is never a substitute",
+   "status": "SOURCE_BLOCKED",
+   "thin": null
+  },
+  "X5_volatilityByLiquidity": {
+   "evaluableDates": 661,
+   "evaluableRange": [
+    "2014-01-10",
+    "2026-09-11"
+   ],
+   "jointCoveragePct": 90.923203,
+   "reason": "661 evaluable weekly dates (need 52); joint coverage within the evaluable range 98.213565% (need 60%)",
+   "status": "READY",
+   "thin": false
+  },
+  "X6_marketRegimeByRelativeMomentum": {
+   "evaluableDates": 293,
+   "evaluableRange": [
+    "2013-10-25",
+    "2026-09-11"
+   ],
+   "jointCoveragePct": 92.70775,
+   "reason": "293 evaluable weekly dates (need 52); joint coverage within the evaluable range 98.501984% (need 60%)",
+   "status": "READY",
+   "thin": false
+  }
+ },
+ "knownLimitations": [
+  "EVERY KOREAN DATE IS OUTCOME-EXPOSED DEVELOPMENT HISTORY (through 2026-09-14): whatever Phase C finds is EXPLORATORY_DEVELOPMENT_ON_OUTCOME_EXPOSED_KR_HISTORY, never confirmation",
+  "UNIVERSE: the PIT Top120 by monthly KRX market-cap snapshot strictly older than the signal date; the 22 securities that terminated inside it have unresolved terminal economics, so a label for a held terminating name cannot be valued (the Phase C registration must declare how it is withheld)",
+  "INDUSTRY LABELS ARE RECONSTRUCTED (PIT_RECONSTRUCTED_MEMBERSHIP): current KRX/KIND anchors plus verified change events, not vendor-historical labels; 22 terminated names are unclassified; an industry cohort needs >= 5 classified members",
+  "PRICE PANEL: replay-v16 closes are split-continuous and dividend-forward-accumulated, built with the listed-share count's LATER confirmation of each split; windows touching a split not confirmed at the signal date are masked here, but the panel is not itself a signal-date reproduction",
+  "TRADED VALUE IS A PROXY (as-traded close x volume) because the official KRX ACC_TRDVAL exists only in the preserved raw-input artifact; the difference (closing price against the session's volume-weighted price) was not measured",
+  "DART ACCOUNTING IS DARK 2013-2015 and mostly 2016 (DART serves from 2015 and the TTM roll-forward needs prior-year quarters), covers 250 collected tickers, and financials rarely state revenue or operating income, which is why margin, cash-conversion and capex-intensity features sit below the floor",
+  "DART ACCOUNTING VISIBILITY: a filing is visible on the day AFTER its receipt date; a restatement arrives as its own filing; an amendment served in place of an original (27.6% of the sealed store by an earlier audit) is PIT-honest and costs coverage",
+  "BENCHMARK 069500.KS is reproducible but its external reconciliation is unresolved (BENCHMARK_EXTERNAL_RECONCILIATION_UNRESOLVED); no corrected benchmark was built and none was changed",
+  "THE READINESS THRESHOLDS ARE GATES, NOT TESTS: 60% coverage and 30 names per date are inherited; 52 evaluable dates and 3 names per 2x2 corner are introduced here and stated as such"
+ ],
+ "preOutcomeRevisions": [
+  {
+   "after": {
+    "coverageWithinUsableRangePct": 69.067578,
+    "status": "MEASURED_READY"
+   },
+   "disclosed": "both figures are published; the correction was decided on the definition, and a reader who prefers the all-member denominator can read it directly",
+   "id": "B08_DENOMINATOR_IS_THE_H2_CONTRACTS_OWN_ELIGIBLE_SET",
+   "madeBefore": "any return was read; no outcome exists in this change",
+   "what": "the first full run measured B08 on every PIT member-date and read 55.30581% within its usable range (below the 60% floor). B08 is a state defined only on names the sealed H2 contract does not itself exclude (preferred share, untraded, below the liquidity floor, unclassified industry), so those exclusions are definitional, not data gaps. The denominator was changed to that eligible set for B08 and for the X1 interaction only; every other feature and interaction keeps the all-member-rows denominator"
+  }
+ ],
+ "prerequisitesBeforePhaseC": [
+  "Phase C registration PR: freeze this manifest's identity, the eligible list, baselines B0-B4, horizons, Level 1-3 statistics, costs and verdict table BEFORE any outcome (docs/kr-alpha-atlas-methodology.md section 9)",
+  "decide, before registering, whether the evaluation runs on the close x volume traded-value proxy used here or on the official KRX ACC_TRDVAL held only in the preserved raw-input artifact; the choice is frozen in the registration, never made after a result",
+  "build the label engine and the date-balanced baseline model OUTSIDE the sealed closures (the same arrangement alpha-opportunity-model-v4/v5 used); none exists yet",
+  "interactions not READY are reported BLOCKED or INSUFFICIENT_COVERAGE in the evaluation, not repaired: X4_priceLeadershipByInvestorAccumulation"
+ ],
+ "recommendation": {
+  "familiesWithUsableReadyFeature": [
+   "A",
+   "B",
+   "C",
+   "D",
+   "E",
+   "F",
+   "H",
+   "J"
+  ],
+  "reason": "8 information families have at least one alpha candidate measured on >= 60% of rows over >= 52 evaluable weekly dates",
+  "verdict": "PROCEED_TO_PHASE_C_PREREGISTRATION"
+ },
+ "referenceUniverse": {
+  "broaderUniverse": {
+   "reason": "on average 196 qualified names sit outside the Top120, but only 34.0% of those name-months have a visible DART filing in the sealed store, and there is no price panel, industry label or terminal economics for them",
+   "reason_ko": "유동성 기준을 통과하는 종목 중 상위 120 밖은 평균 196개이지만, 그 종목-월 중 봉인된 저장소에 보이는 DART 공시가 있는 비율은 34.0%뿐이고, 가격 패널·산업 라벨·상장폐지 대가 자료도 없습니다.",
+   "status": "BROADER_UNIVERSE_NOT_READY_KEEP_TOP120"
+  },
+  "firstDate": "2013-01-04",
+  "lastDate": "2026-09-11",
+  "memberDates": 85680,
+  "source": "KRX sto/stk_bydd_trd monthly snapshot strictly older than the signal date",
+  "universeId": "PIT_KRX_TOP120",
+  "weeklyDates": 714
+ },
+ "sourceBlockers": [
+  {
+   "features": [
+    "G01_foreignNetBuying",
+    "G02_institutionalNetBuying",
+    "G03_retailNetBuying",
+    "G04_investorTypePersistence",
+    "G05_flowMomentumConfirmation"
+   ],
+   "status": "SOURCE_BLOCKED"
+  },
+  {
+   "features": [
+    "G08_shortSellingVolume",
+    "G09_shortBalanceChange"
+   ],
+   "status": "SOURCE_BLOCKED"
+  },
+  {
+   "features": [
+    "G06_largeHolderAccumulation",
+    "G07_largeHolderReduction"
+   ],
+   "status": "PIT_SAFE_BUT_HISTORY_TOO_SHORT"
+  },
+  {
+   "features": [
+    "J02_dividendPolicyChange",
+    "J03_buybackAnnouncement",
+    "J04_materialDisclosure"
+   ],
+   "status": "DATA_BUILD_REQUIRED"
+  },
+  {
+   "features": [
+    "I04_krPolicyRate"
+   ],
+   "status": "SOURCE_AVAILABLE_NOT_COMPUTED"
+  },
+  {
+   "features": [
+    "I03_krTermSpread",
+    "I06_krInflation",
+    "I07_krExportsActivity",
+    "I08_usdKrw",
+    "I09_fxBeta26w",
+    "I11_globalFinancialConditions"
+   ],
+   "status": "PIT_UNSAFE"
+  },
+  {
+   "features": [
+    "B04_freeCashFlowYield",
+    "C06_cashConversion",
+    "C15_capexIntensity",
+    "C16_grossProfitability"
+   ],
+   "status": "DATA_BUILD_REQUIRED"
+  },
+  {
+   "features": [
+    "E08_trueBidAskSpread",
+    "J06_searchAttention",
+    "J07_newsTextSentiment",
+    "J08_analystRevisions"
+   ],
+   "status": "NOT_FEASIBLE"
+  }
+ ],
+ "statement": "Inputs the Phase C registration may pin. No feature was selected using a return; the eligible list is the set that cleared the declared coverage gates.",
+ "status": "OUTCOME_BLIND_MANIFEST_NOT_A_PREREGISTRATION",
+ "terminalEventRisks": {
+  "completenessByField": {
+   "dartIssuerResolved": 0,
+   "dividendLineageResolved": 0,
+   "effectiveDateResolved": 0,
+   "exDateSemanticsResolved": 0,
+   "lastTradingDateResolved": 22,
+   "rawEvidenceRetained": 0,
+   "sourceProvenanceRetained": 0,
+   "successorResolvedWhereRequired": 0,
+   "terminalConsiderationResolved": 0,
+   "terminationTypeResolved": 0
+  },
+  "foundationStatus": "BLOCKED_BY_SOURCE_ACCESS",
+  "inventoriedSecurities": 22,
+  "namesInTop120AtAnOuterSignal": 218,
+  "reading": "every terminal consideration is unresolved; a held name that terminates cannot be valued, so the Phase C registration must declare how a label for such a name is withheld (alpha-opportunity-model-v4's security-level eligibility policy is the precedent). Phase B corrects none of this.",
+  "sources": [
+   "docs/results/kr-termination-inventory.json",
+   "docs/results/kr-alpha-discovery-tournament-v1-postoutcome-integrity-audit-model-free-scan.json"
+  ],
+  "terminalEndsInTheReplayWindow": 8,
+  "terminationTypeBreakdown": {
+   "TERMINATION_TYPE_UNRESOLVED": 22
+  }
+ }
+}
