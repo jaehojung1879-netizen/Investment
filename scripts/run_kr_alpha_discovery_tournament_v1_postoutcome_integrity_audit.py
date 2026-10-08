@@ -27,6 +27,13 @@ def _write(path, document):
     Path(path).write_text(json.dumps(document, sort_keys=True, indent=1, ensure_ascii=False) + "\n")
 
 
+def status_of(document):
+    """The one-line status printed after the document is written. Lazy on purpose: a full document carries `reproduction.status` and no
+    `evidenceClass`, a scan document the reverse, and `dict.get(key, default)` evaluates its default eagerly, so
+    `document.get("reproduction", {}).get("status", document["evidenceClass"])` raised KeyError on every full run, after the file was written."""
+    return (document.get("reproduction") or {}).get("status") or document.get("evidenceClass") or "UNKNOWN"
+
+
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--mode", choices=("scan", "full"), required=True)
@@ -44,8 +51,7 @@ def main(argv=None):
             raise SystemExit("FULL_REQUIRES_INPUTS")
         document = A.reconstruct(args.inputs, ROOT)
     _write(args.output, document)
-    print(json.dumps({"auditId": A.AUDIT_ID, "mode": args.mode, "status": document.get("reproduction", {}).get("status", document["evidenceClass"])},
-                     sort_keys=True))
+    print(json.dumps({"auditId": A.AUDIT_ID, "mode": args.mode, "status": status_of(document)}, sort_keys=True))
 
 
 if __name__ == "__main__":

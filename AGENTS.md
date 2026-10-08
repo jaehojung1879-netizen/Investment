@@ -3076,3 +3076,23 @@
   every t-statistic and effective sample in the system.
 - Thresholds that gate a claim are calibrated against a simulated null of that same gate,
   and the simulated rejection rates are recorded next to the constant.
+
+## KR alpha discovery tournament v1 audit-recovery invariants (v2.50)
+
+- A RUN THAT FINISHED ITS WORK AND DIED IN ITS LAST LINE IS RECOVERED, NOT RERUN. `kr-alpha-discovery-tournament-v1`'s post-outcome audit (run
+  `37688582489`) spent 1h31m on the reconstruction, wrote its full document, and then raised `KeyError: 'evidenceClass'` in the final status print:
+  `dict.get(key, default)` evaluates `default` eagerly. The job log's own gzip + base64 print step had already carried both files, so the exact bytes
+  were recovered from the log and checked against the recorded sha256 and size (`9dca9508…` / 16,012 and `3de415bf…` / 1,875) with no recomputation.
+  The artifact ZIP could not be downloaded (the blob host refuses the sandbox); its digest `f4ff29d8…` is quoted, not recomputed, and says so.
+- THE RECOVERED RESULT IS `RECONSTRUCTION_MISMATCH`, AND THAT STOPS INTERPRETATION. First divergence: `PRIMARY_ROBUST_KELLY:COST_X2/annualLogGrowth`,
+  reconstructed 0.10176568680470117 against sealed 0.101765555609953, a gap of 1.31e-07 against a registered tolerance of 1e-9. It is small and it is
+  not softened. The 1,875-byte document therefore carries no per-path attribution by design, none was invented, and the nine audit questions about
+  the four incomplete paths and COST_X2 remain `not determined`.
+- A SMALL, STABLE DIVERGENCE IS NOT A DATA-FOUNDATION OR LEDGER VERDICT. The pinned requirements and the tournament workflow are identical between
+  the formal commit and the audited main and both runs set one thread, so the cause is untested (unpinned transitive packages, Python patch release,
+  hardware are candidates). Whether the mismatch is stable is a question for a second, separately dispatched run, or a cheap outcome-free comparison
+  of the dependency versions both job logs printed; neither is done here.
+- THE RECOVERED MODEL-FREE SCAN REPLICATES THE COMMITTED ONE. Identical in every substantive field (two prose provenance strings differ), on the real raw
+  snapshot: 2,116 sessions, no benchmark gap, no mid-series gap, eight terminal ends.
+- THE FIX TO THE ENTRY POINT IS OUTPUT-ONLY. `status_of` replaces the eager default; it touches no tournament module, spec, result, lock or workflow, and
+  is not part of the tournament's sealed closure (verified against `dependencyHashes`). Regression tests cover both document shapes and `main` end to end.

@@ -1,0 +1,512 @@
+{
+ "auditId": "kr-alpha-discovery-tournament-v1-postoutcome-integrity-audit",
+ "benchmarkMissingSessions": [],
+ "events": [
+  {
+   "firstMissing": "2019-02-13",
+   "lastMissing": "2026-09-14",
+   "lastPricedBefore": "2019-02-12",
+   "lastTop120SignalBefore": "2019-02-08",
+   "resumes": false,
+   "sessions": 1864,
+   "ticker": "000030.KS"
+  },
+  {
+   "firstMissing": "2023-02-21",
+   "lastMissing": "2026-09-14",
+   "lastPricedBefore": "2023-02-20",
+   "lastTop120SignalBefore": "2023-02-03",
+   "resumes": false,
+   "sessions": 869,
+   "ticker": "000060.KS"
+  },
+  {
+   "firstMissing": "2024-07-09",
+   "lastMissing": "2026-09-14",
+   "lastPricedBefore": "2024-07-08",
+   "lastTop120SignalBefore": "2024-06-21",
+   "resumes": false,
+   "sessions": 531,
+   "ticker": "003410.KS"
+  },
+  {
+   "firstMissing": "2023-04-25",
+   "lastMissing": "2026-09-14",
+   "lastPricedBefore": "2023-04-24",
+   "lastTop120SignalBefore": "2023-04-07",
+   "resumes": false,
+   "sessions": 825,
+   "ticker": "008560.KS"
+  },
+  {
+   "firstMissing": "2025-12-15",
+   "lastMissing": "2026-09-14",
+   "lastPricedBefore": "2025-12-12",
+   "lastTop120SignalBefore": "2025-12-05",
+   "resumes": false,
+   "sessions": 183,
+   "ticker": "010620.KS"
+  },
+  {
+   "firstMissing": "2026-07-15",
+   "lastMissing": "2026-09-14",
+   "lastPricedBefore": "2026-07-14",
+   "lastTop120SignalBefore": "2021-10-29",
+   "resumes": false,
+   "sessions": 42,
+   "ticker": "012510.KS"
+  },
+  {
+   "firstMissing": "2026-01-26",
+   "lastMissing": "2026-09-14",
+   "lastPricedBefore": "2026-01-23",
+   "lastTop120SignalBefore": "2023-08-04",
+   "resumes": false,
+   "sessions": 156,
+   "ticker": "042670.KS"
+  },
+  {
+   "firstMissing": "2020-02-14",
+   "lastMissing": "2026-09-14",
+   "lastPricedBefore": "2020-02-13",
+   "lastTop120SignalBefore": "2020-01-17",
+   "resumes": false,
+   "sessions": 1616,
+   "ticker": "079440.KS"
+  }
+ ],
+ "evidenceClass": "POST_OUTCOME_MODEL_FREE_DATA_SCAN",
+ "midSeriesGaps": [],
+ "namesInTop120AtAnOuterSignal": 218,
+ "note": "a model-free bound only: it names every session on which ANY path could have failed, and cannot say which path held what",
+ "provenance": {
+  "replayManifestSha256": "f0781292f508a123c234ded6d28aa8e84a0dc3cc29500e14989dc0b68f53b4d2",
+  "universeBlobs": {
+   "ledger/universe/kr/krx-universe-2013.jsonl.gz": "e711a6c5e07c89e9b0cf12a94078120ceeb3b9a4",
+   "ledger/universe/kr/krx-universe-2014.jsonl.gz": "395477e6dd72c117615919f850173d2830b2cc1f",
+   "ledger/universe/kr/krx-universe-2015.jsonl.gz": "029bcef52056d4b172d78094779a5eff9c89ff89",
+   "ledger/universe/kr/krx-universe-2016.jsonl.gz": "402910f37a4f75887f8c8f7e501aec1afe90b14d",
+   "ledger/universe/kr/krx-universe-2017.jsonl.gz": "db9b0436c970eb1bf4f2456bab7060432558f6e6",
+   "ledger/universe/kr/krx-universe-2018.jsonl.gz": "9a08628f96aa3aeb5d47b11612d14ab551519abc",
+   "ledger/universe/kr/krx-universe-2019.jsonl.gz": "c1f7990b38b0e17b71c88327b5262c768dcfe16d",
+   "ledger/universe/kr/krx-universe-2020.jsonl.gz": "baf7d4e2609aaaa7091cab087cabdbc5a3c58619",
+   "ledger/universe/kr/krx-universe-2021.jsonl.gz": "c09f60669adf36d81def38dfed6cb0d4dd6c456d",
+   "ledger/universe/kr/krx-universe-2022.jsonl.gz": "a1b303c61dd1d114149c3da51763f1dccb711137",
+   "ledger/universe/kr/krx-universe-2023.jsonl.gz": "024abba6a91153259a8030f6e441497a28c723de",
+   "ledger/universe/kr/krx-universe-2024.jsonl.gz": "a4329587eccc43f015f97524f27a660a6448e263",
+   "ledger/universe/kr/krx-universe-2025.jsonl.gz": "070296ad800a3a57735bbcbaf24f5885d82162e8",
+   "ledger/universe/kr/krx-universe-2026.jsonl.gz": "ccc098c5ce029412a67bf8b85113e0b6a19891dc"
+  }
+ },
+ "replayWindow": {
+  "cutoff": "2026-09-14",
+  "firstOuterAnchor": "2018-01-29",
+  "outerAnchors": 101,
+  "sessions": 2116
+ },
+ "status": "POST_OUTCOME_FORENSIC_DIAGNOSTIC_NOT_CONFIRMATORY",
+ "terminalEnds": [
+  {
+   "firstMissing": "2019-02-13",
+   "lastMissing": "2026-09-14",
+   "lastPricedBefore": "2019-02-12",
+   "lastTop120SignalBefore": "2019-02-08",
+   "resumes": false,
+   "sessions": 1864,
+   "ticker": "000030.KS"
+  },
+  {
+   "firstMissing": "2023-02-21",
+   "lastMissing": "2026-09-14",
+   "lastPricedBefore": "2023-02-20",
+   "lastTop120SignalBefore": "2023-02-03",
+   "resumes": false,
+   "sessions": 869,
+   "ticker": "000060.KS"
+  },
+  {
+   "firstMissing": "2024-07-09",
+   "lastMissing": "2026-09-14",
+   "lastPricedBefore": "2024-07-08",
+   "lastTop120SignalBefore": "2024-06-21",
+   "resumes": false,
+   "sessions": 531,
+   "ticker": "003410.KS"
+  },
+  {
+   "firstMissing": "2023-04-25",
+   "lastMissing": "2026-09-14",
+   "lastPricedBefore": "2023-04-24",
+   "lastTop120SignalBefore": "2023-04-07",
+   "resumes": false,
+   "sessions": 825,
+   "ticker": "008560.KS"
+  },
+  {
+   "firstMissing": "2025-12-15",
+   "lastMissing": "2026-09-14",
+   "lastPricedBefore": "2025-12-12",
+   "lastTop120SignalBefore": "2025-12-05",
+   "resumes": false,
+   "sessions": 183,
+   "ticker": "010620.KS"
+  },
+  {
+   "firstMissing": "2026-07-15",
+   "lastMissing": "2026-09-14",
+   "lastPricedBefore": "2026-07-14",
+   "lastTop120SignalBefore": "2021-10-29",
+   "resumes": false,
+   "sessions": 42,
+   "ticker": "012510.KS"
+  },
+  {
+   "firstMissing": "2026-01-26",
+   "lastMissing": "2026-09-14",
+   "lastPricedBefore": "2026-01-23",
+   "lastTop120SignalBefore": "2023-08-04",
+   "resumes": false,
+   "sessions": 156,
+   "ticker": "042670.KS"
+  },
+  {
+   "firstMissing": "2020-02-14",
+   "lastMissing": "2026-09-14",
+   "lastPricedBefore": "2020-02-13",
+   "lastTop120SignalBefore": "2020-01-17",
+   "resumes": false,
+   "sessions": 1616,
+   "ticker": "079440.KS"
+  }
+ ],
+ "terminalFoundation": {
+  "000030.KS": {
+   "foundationStatus": "PARTIALLY_REPAIRED",
+   "inTerminatedSecurityInventory": true,
+   "inventoryTerminationType": "TERMINATION_TYPE_UNRESOLVED",
+   "krxName": "우리은행",
+   "lastMembershipDate": "2019-02-01",
+   "lastTradingDate": "2019-02-12",
+   "reconstructionCompleteness": {
+    "amendmentChainResolved": "BLOCKED",
+    "dartIssuerResolved": "READY",
+    "dividendLineageResolved": "READY",
+    "effectiveDateResolved": "READY",
+    "exDateSemanticsResolved": "BLOCKED",
+    "exchangeRatioResolved": "BLOCKED",
+    "lastTradingDateResolved": "READY",
+    "rawEvidenceRetained": "READY",
+    "sourceProvenanceRetained": "READY",
+    "successorResolvedWhereRequired": "READY",
+    "terminalActionChainResolved": "BLOCKED",
+    "terminalConsiderationResolved": "BLOCKED",
+    "terminationTypeResolved": "READY"
+   },
+   "reconstructionTerminationType": "SHARE_TRANSFER"
+  },
+  "000060.KS": {
+   "foundationStatus": "PARTIALLY_REPAIRED",
+   "inTerminatedSecurityInventory": true,
+   "inventoryTerminationType": "TERMINATION_TYPE_UNRESOLVED",
+   "krxName": "메리츠화재",
+   "lastMembershipDate": "2023-02-01",
+   "lastTradingDate": "2023-02-20",
+   "reconstructionCompleteness": {
+    "amendmentChainResolved": "READY",
+    "dartIssuerResolved": "READY",
+    "dividendLineageResolved": "READY",
+    "effectiveDateResolved": "READY",
+    "exDateSemanticsResolved": "BLOCKED",
+    "exchangeRatioResolved": "READY",
+    "lastTradingDateResolved": "READY",
+    "rawEvidenceRetained": "READY",
+    "sourceProvenanceRetained": "READY",
+    "successorResolvedWhereRequired": "READY",
+    "terminalActionChainResolved": "BLOCKED",
+    "terminalConsiderationResolved": "READY",
+    "terminationTypeResolved": "READY"
+   },
+   "reconstructionTerminationType": "SHARE_EXCHANGE"
+  },
+  "003410.KS": {
+   "foundationStatus": "PARTIALLY_REPAIRED",
+   "inTerminatedSecurityInventory": true,
+   "inventoryTerminationType": "TERMINATION_TYPE_UNRESOLVED",
+   "krxName": "쌍용C&E",
+   "lastMembershipDate": "2024-07-01",
+   "lastTradingDate": "2024-07-08",
+   "reconstructionCompleteness": {
+    "amendmentChainResolved": "BLOCKED",
+    "dartIssuerResolved": "READY",
+    "dividendLineageResolved": "READY",
+    "effectiveDateResolved": "READY",
+    "exDateSemanticsResolved": "BLOCKED",
+    "exchangeRatioResolved": "NOT_APPLICABLE",
+    "lastTradingDateResolved": "READY",
+    "rawEvidenceRetained": "READY",
+    "sourceProvenanceRetained": "READY",
+    "successorResolvedWhereRequired": "NOT_APPLICABLE",
+    "terminalActionChainResolved": "BLOCKED",
+    "terminalConsiderationResolved": "READY",
+    "terminationTypeResolved": "READY"
+   },
+   "reconstructionTerminationType": "CASH_SHARE_EXCHANGE"
+  },
+  "008560.KS": {
+   "foundationStatus": "PARTIALLY_REPAIRED",
+   "inTerminatedSecurityInventory": true,
+   "inventoryTerminationType": "TERMINATION_TYPE_UNRESOLVED",
+   "krxName": "메리츠증권",
+   "lastMembershipDate": "2023-04-03",
+   "lastTradingDate": "2023-04-24",
+   "reconstructionCompleteness": {
+    "amendmentChainResolved": "READY",
+    "dartIssuerResolved": "READY",
+    "dividendLineageResolved": "READY",
+    "effectiveDateResolved": "READY",
+    "exDateSemanticsResolved": "BLOCKED",
+    "exchangeRatioResolved": "READY",
+    "lastTradingDateResolved": "READY",
+    "rawEvidenceRetained": "READY",
+    "sourceProvenanceRetained": "READY",
+    "successorResolvedWhereRequired": "READY",
+    "terminalActionChainResolved": "BLOCKED",
+    "terminalConsiderationResolved": "READY",
+    "terminationTypeResolved": "READY"
+   },
+   "reconstructionTerminationType": "SHARE_EXCHANGE"
+  },
+  "010620.KS": {
+   "foundationStatus": "PARTIALLY_REPAIRED",
+   "inTerminatedSecurityInventory": true,
+   "inventoryTerminationType": "TERMINATION_TYPE_UNRESOLVED",
+   "krxName": "HD현대미포",
+   "lastMembershipDate": "2025-12-01",
+   "lastTradingDate": "2025-12-12",
+   "reconstructionCompleteness": {
+    "amendmentChainResolved": "READY",
+    "dartIssuerResolved": "READY",
+    "dividendLineageResolved": "READY",
+    "effectiveDateResolved": "READY",
+    "exDateSemanticsResolved": "BLOCKED",
+    "exchangeRatioResolved": "READY",
+    "lastTradingDateResolved": "READY",
+    "rawEvidenceRetained": "READY",
+    "sourceProvenanceRetained": "READY",
+    "successorResolvedWhereRequired": "READY",
+    "terminalActionChainResolved": "BLOCKED",
+    "terminalConsiderationResolved": "READY",
+    "terminationTypeResolved": "READY"
+   },
+   "reconstructionTerminationType": "MERGER_STOCK"
+  },
+  "012510.KS": {
+   "foundationStatus": "PARTIALLY_REPAIRED",
+   "inTerminatedSecurityInventory": true,
+   "inventoryTerminationType": "TERMINATION_TYPE_UNRESOLVED",
+   "krxName": "더존비즈온",
+   "lastMembershipDate": "2021-10-01",
+   "lastTradingDate": "2026-07-14",
+   "reconstructionCompleteness": {
+    "amendmentChainResolved": "READY",
+    "dartIssuerResolved": "READY",
+    "dividendLineageResolved": "READY",
+    "effectiveDateResolved": "READY",
+    "exDateSemanticsResolved": "BLOCKED",
+    "exchangeRatioResolved": "NOT_APPLICABLE",
+    "lastTradingDateResolved": "READY",
+    "rawEvidenceRetained": "READY",
+    "sourceProvenanceRetained": "READY",
+    "successorResolvedWhereRequired": "NOT_APPLICABLE",
+    "terminalActionChainResolved": "BLOCKED",
+    "terminalConsiderationResolved": "READY",
+    "terminationTypeResolved": "READY"
+   },
+   "reconstructionTerminationType": "CASH_SHARE_EXCHANGE"
+  },
+  "042670.KS": {
+   "foundationStatus": "PARTIALLY_REPAIRED",
+   "inTerminatedSecurityInventory": true,
+   "inventoryTerminationType": "TERMINATION_TYPE_UNRESOLVED",
+   "krxName": "HD현대인프라코어",
+   "lastMembershipDate": "2023-08-01",
+   "lastTradingDate": "2026-01-23",
+   "reconstructionCompleteness": {
+    "amendmentChainResolved": "READY",
+    "dartIssuerResolved": "READY",
+    "dividendLineageResolved": "READY",
+    "effectiveDateResolved": "READY",
+    "exDateSemanticsResolved": "BLOCKED",
+    "exchangeRatioResolved": "READY",
+    "lastTradingDateResolved": "READY",
+    "rawEvidenceRetained": "READY",
+    "sourceProvenanceRetained": "READY",
+    "successorResolvedWhereRequired": "BLOCKED",
+    "terminalActionChainResolved": "BLOCKED",
+    "terminalConsiderationResolved": "BLOCKED",
+    "terminationTypeResolved": "READY"
+   },
+   "reconstructionTerminationType": "MERGER_STOCK"
+  },
+  "079440.KS": {
+   "foundationStatus": "PARTIALLY_REPAIRED",
+   "inTerminatedSecurityInventory": true,
+   "inventoryTerminationType": "TERMINATION_TYPE_UNRESOLVED",
+   "krxName": "오렌지라이프",
+   "lastMembershipDate": "2020-02-03",
+   "lastTradingDate": "2020-02-13",
+   "reconstructionCompleteness": {
+    "amendmentChainResolved": "BLOCKED",
+    "dartIssuerResolved": "READY",
+    "dividendLineageResolved": "READY",
+    "effectiveDateResolved": "BLOCKED",
+    "exDateSemanticsResolved": "BLOCKED",
+    "exchangeRatioResolved": "BLOCKED",
+    "lastTradingDateResolved": "READY",
+    "rawEvidenceRetained": "READY",
+    "sourceProvenanceRetained": "READY",
+    "successorResolvedWhereRequired": "BLOCKED",
+    "terminalActionChainResolved": "BLOCKED",
+    "terminalConsiderationResolved": "BLOCKED",
+    "terminationTypeResolved": "READY"
+   },
+   "reconstructionTerminationType": "SHARE_EXCHANGE"
+  }
+ },
+ "terminalWindows": {
+  "000030.KS": {
+   "firstUnpricedSession": "2019-02-13",
+   "lastOuterAnchorBeforeSuspension": [
+    "2018-12-07",
+    "2018-11-30"
+   ],
+   "lastPositiveVolumeSession": "2019-01-08",
+   "lastPricedSession": "2019-02-12",
+   "outerAnchorsDuringSuspension": [
+    [
+     "2019-01-10",
+     "2019-01-04"
+    ]
+   ],
+   "suspendedSessions": 22,
+   "suspensionStart": "2019-01-09"
+  },
+  "000060.KS": {
+   "firstUnpricedSession": "2023-02-21",
+   "lastOuterAnchorBeforeSuspension": [
+    "2023-01-09",
+    "2023-01-06"
+   ],
+   "lastPositiveVolumeSession": "2023-01-27",
+   "lastPricedSession": "2023-02-20",
+   "outerAnchorsDuringSuspension": [
+    [
+     "2023-02-09",
+     "2023-02-03"
+    ]
+   ],
+   "suspendedSessions": 16,
+   "suspensionStart": "2023-01-30"
+  },
+  "003410.KS": {
+   "firstUnpricedSession": "2024-07-09",
+   "lastOuterAnchorBeforeSuspension": [
+    "2024-05-24",
+    "2024-05-17"
+   ],
+   "lastPositiveVolumeSession": "2024-06-20",
+   "lastPricedSession": "2024-07-08",
+   "outerAnchorsDuringSuspension": [
+    [
+     "2024-06-25",
+     "2024-06-21"
+    ]
+   ],
+   "suspendedSessions": 12,
+   "suspensionStart": "2024-06-21"
+  },
+  "008560.KS": {
+   "firstUnpricedSession": "2023-04-25",
+   "lastOuterAnchorBeforeSuspension": [
+    "2023-03-13",
+    "2023-03-10"
+   ],
+   "lastPositiveVolumeSession": "2023-03-31",
+   "lastPricedSession": "2023-04-24",
+   "outerAnchorsDuringSuspension": [
+    [
+     "2023-04-11",
+     "2023-04-07"
+    ]
+   ],
+   "suspendedSessions": 16,
+   "suspensionStart": "2023-04-03"
+  },
+  "010620.KS": {
+   "firstUnpricedSession": "2025-12-15",
+   "lastOuterAnchorBeforeSuspension": [
+    "2025-11-13",
+    "2025-11-07"
+   ],
+   "lastPositiveVolumeSession": "2025-11-26",
+   "lastPricedSession": "2025-12-12",
+   "outerAnchorsDuringSuspension": [
+    [
+     "2025-12-12",
+     "2025-12-05"
+    ]
+   ],
+   "suspendedSessions": 12,
+   "suspensionStart": "2025-11-27"
+  },
+  "012510.KS": {
+   "firstUnpricedSession": "2026-07-15",
+   "lastOuterAnchorBeforeSuspension": [
+    "2026-06-23",
+    "2026-06-19"
+   ],
+   "lastPositiveVolumeSession": "2026-06-25",
+   "lastPricedSession": "2026-07-14",
+   "outerAnchorsDuringSuspension": [],
+   "suspendedSessions": 13,
+   "suspensionStart": "2026-06-26"
+  },
+  "042670.KS": {
+   "firstUnpricedSession": "2026-01-26",
+   "lastOuterAnchorBeforeSuspension": [
+    "2025-12-12",
+    "2025-12-05"
+   ],
+   "lastPositiveVolumeSession": "2025-12-26",
+   "lastPricedSession": "2026-01-23",
+   "outerAnchorsDuringSuspension": [
+    [
+     "2026-01-15",
+     "2026-01-09"
+    ]
+   ],
+   "suspendedSessions": 18,
+   "suspensionStart": "2025-12-29"
+  },
+  "079440.KS": {
+   "firstUnpricedSession": "2020-02-14",
+   "lastOuterAnchorBeforeSuspension": [
+    "2020-01-20",
+    "2020-01-17"
+   ],
+   "lastPositiveVolumeSession": "2020-01-21",
+   "lastPricedSession": "2020-02-13",
+   "outerAnchorsDuringSuspension": [],
+   "suspendedSessions": 15,
+   "suspensionStart": "2020-01-22"
+  }
+ },
+ "top120AtTheLastOuterSignalBeforeSuspension": [
+  "000030.KS",
+  "000060.KS",
+  "003410.KS",
+  "008560.KS",
+  "010620.KS",
+  "079440.KS"
+ ]
+}

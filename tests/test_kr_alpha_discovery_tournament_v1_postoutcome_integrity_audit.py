@@ -307,3 +307,84 @@ def test_traced_paths_reproduce_run_paths_exactly_on_the_invented_tournament_wor
     a = ST.assemble(process, frozen, labels, 100.0)
     b = ST.assemble(process, traced, labels, 100.0)
     assert A.reproduction_check(E.json_safe(dict(a, counters={})), E.json_safe(dict(b, counters={})))["status"].startswith("RECONSTRUCTION_REPRODUCES")
+
+
+# --------------------------------------------------------------------------- #
+# Recovery of run 37688582489 (the audit finished its work, then died in the final status print)
+# --------------------------------------------------------------------------- #
+RUN_PREFIX = "docs/results/kr-alpha-discovery-tournament-v1-postoutcome-integrity-audit-run37688582489"
+ENTRY_POINT = ROOT / "scripts/run_kr_alpha_discovery_tournament_v1_postoutcome_integrity_audit.py"
+
+
+def _entry_point():
+    import importlib.util
+    spec = importlib.util.spec_from_file_location("audit_entry_point_under_test", ENTRY_POINT)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+def test_status_of_reads_a_full_document_that_has_no_evidence_class():
+    status_of = _entry_point().status_of
+    # exactly the shape that raised KeyError: 'evidenceClass' after a 1h31m run
+    assert status_of({"reproduction": {"status": "RECONSTRUCTION_MISMATCH"}, "status": "X"}) == "RECONSTRUCTION_MISMATCH"
+    assert status_of({"reproduction": {"status": "RECONSTRUCTION_REPRODUCES_THE_SEALED_RESULT"}}) == "RECONSTRUCTION_REPRODUCES_THE_SEALED_RESULT"
+
+
+def test_status_of_still_reads_a_scan_document_and_never_raises():
+    status_of = _entry_point().status_of
+    assert status_of({"evidenceClass": "POST_OUTCOME_MODEL_FREE_DATA_SCAN"}) == "POST_OUTCOME_MODEL_FREE_DATA_SCAN"
+    assert status_of({"reproduction": {}, "evidenceClass": "E"}) == "E"
+    assert status_of({"reproduction": None, "evidenceClass": "E"}) == "E"
+    assert status_of({}) == "UNKNOWN"
+
+
+@pytest.mark.parametrize("mode,document,expected", [
+    ("full", {"reproduction": {"status": "RECONSTRUCTION_MISMATCH", "firstDivergence": "x"}, "status": "S"}, "RECONSTRUCTION_MISMATCH"),
+    ("scan", {"evidenceClass": "POST_OUTCOME_MODEL_FREE_DATA_SCAN", "status": "S"}, "POST_OUTCOME_MODEL_FREE_DATA_SCAN")])
+def test_main_writes_then_prints_for_both_document_shapes(tmp_path, monkeypatch, capsys, mode, document, expected):
+    entry = _entry_point()
+    monkeypatch.setattr(entry.A, "verify_sealed_result", lambda root: {})
+    monkeypatch.setattr(entry.A, "model_free_scan", lambda replay_root, root: document)
+    monkeypatch.setattr(entry.A, "reconstruct", lambda inputs, root: document)
+    out = tmp_path / "audit.json"
+    argv = ["--mode", mode, "--output", str(out)] + (["--replay-root", str(tmp_path)] if mode == "scan" else ["--inputs", str(tmp_path)])
+    entry.main(argv)
+    assert json.loads(out.read_text()) == document  # the file exists before the print, and the print no longer fails
+    assert json.loads(capsys.readouterr().out)["status"] == expected
+
+
+def test_recovered_run_files_are_the_exact_bytes_the_provenance_names():
+    record = json.loads((ROOT / (RUN_PREFIX + "-recovery-provenance.json")).read_text())
+    assert record["sourceAuditRun"]["runId"] == 37688582489 and record["sourceAuditRun"]["conclusion"] == "failure"
+    assert record["failure"]["cause"] == "OUTPUT_ONLY_KEYERROR" and record["failure"]["occurredAfterResultCreation"] is True
+    assert record["reconstructionRerun"] is False and record["formalTournamentRerun"] is False
+    assert record["modelsFitted"] is False and record["lockTouched"] is False and record["sealedResultTouched"] is False
+    assert record["sourceArtifact"]["zipSha256"] == "f4ff29d8b85b284f186c7846e2fc8089a8dda6343d17aa80c033905292e5fe73"
+    for entry in record["files"].values():
+        data = (ROOT / entry["committedAs"]).read_bytes()
+        assert len(data) == entry["bytes"] and hashlib.sha256(data).hexdigest() == entry["sha256"]
+    assert record["files"]["audit/integrity-audit-full.json"]["sha256"] == "3de415bf6e0646dbae6cde2d7da8a6645c50776697e6663122a97f94fc01766c"
+    assert record["files"]["audit/model-free-scan.json"]["sha256"] == "9dca9508dc8899db01ca1d78777da986acc90b074f7fe973f1468df74f4f4e1f"
+
+
+def test_recovered_full_result_is_a_mismatch_with_no_attribution_and_matches_the_sealed_value():
+    full = json.loads((ROOT / (RUN_PREFIX + "-full.json")).read_text())
+    sealed = json.loads((ROOT / "docs/results/kr-alpha-discovery-tournament-v1-result.json").read_text())
+    assert full["reproduction"]["status"] == "RECONSTRUCTION_MISMATCH"
+    assert set(full) == {"auditId", "formal", "inputIdentityAfterSha256", "reproduction", "status"}  # the gate withholds every attribution section
+    reconstructed, sealed_value = 0.10176568680470117, sealed["paths"]["PRIMARY_ROBUST_KELLY:COST_X2"]["annualLogGrowth"]
+    assert full["reproduction"]["firstDivergence"] == "paths/PRIMARY_ROBUST_KELLY:COST_X2/annualLogGrowth (%r vs %r)" % (reconstructed, sealed_value)
+    assert abs(reconstructed - sealed_value) > A.FLOAT_TOLERANCE  # the gate is not softened
+    assert A._first_divergence({"v": reconstructed}, {"v": sealed_value}, "v")
+    assert full["formal"]["resultSha256"] == hashlib.sha256((ROOT / "docs/results/kr-alpha-discovery-tournament-v1-result.json").read_bytes()).hexdigest()
+    assert full["inputIdentityAfterSha256"] == sealed["inputIdentitySha256"]  # the raw inputs were not swapped during the run
+
+
+def test_recovered_scan_replicates_the_committed_scan_apart_from_two_prose_strings():
+    recovered = json.loads((ROOT / (RUN_PREFIX + "-model-free-scan.json")).read_text())
+    committed = json.loads(SCAN.read_text())
+    prose = {"sameBytesAsRawInputArtifact", "source"}
+    assert set(committed["provenance"]) - set(recovered["provenance"]) <= prose
+    committed["provenance"] = {k: v for k, v in committed["provenance"].items() if k in recovered["provenance"]}
+    assert recovered == committed
