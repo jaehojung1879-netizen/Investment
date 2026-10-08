@@ -131,6 +131,8 @@ A date enters P1 only with at least 3 confirmed and 3 unconfirmed cheap names. O
 - **Fallback:** `PASSIVE_BENCHMARK` (069500.KS) is the primary policy and `CASH` is a separate one. Every receipt names which one is in force, and
   the comparison with passive is always made on the same capital base.
 - **Risk:** per-name downside volatility and 252-day max drawdown are recorded on every candidate. They do not size anything in this version.
+- **A blocked week makes no new decision:** the previously held book continues unchanged and the receipt records `previousHoldings`. Nothing is
+  liquidated or bought on a week whose inputs fail readiness (the integrated study's registered missing-signal rule).
 - **Weekly at most:** receipts exist only on the last KR session of an ISO week, decided from the exchange calendar.
 - **Terminal events, conservatively:** a held name that stops trading is never marked at its last price, dropped or assumed to receive anything.
   Its outcome is `TERMINAL_ECONOMICS_UNRESOLVED` until a cited consideration exists, and the portfolio outcome is then `None`
