@@ -1,0 +1,65 @@
+{
+  "evidenceClass": "POST_OUTCOME_FORENSIC_DIAGNOSTIC_NOT_CONFIRMATORY",
+  "files": {
+    "audit/environment-parity.json": {
+      "bytes": 8958,
+      "committedAs": "docs/results/kr-alpha-discovery-tournament-v1-postoutcome-integrity-audit-run37757869994-environment-parity.json",
+      "sha256": "ea35959f275d0ea1f356bd1b958f3166c8845d2b627aa1f631bb039daf474f03"
+    },
+    "audit/integrity-audit-full.json": {
+      "bytes": 53450,
+      "committedAs": "docs/results/kr-alpha-discovery-tournament-v1-postoutcome-integrity-audit-run37757869994-full.json",
+      "sha256": "75093ed65887a3424142a9d2c6faa87dc887b26b6fd648affb32dab1da5e730c"
+    },
+    "audit/model-free-scan.json": {
+      "bytes": 16012,
+      "committedAs": "docs/results/kr-alpha-discovery-tournament-v1-postoutcome-integrity-audit-run37688582489-model-free-scan.json",
+      "note": "byte-identical (same sha256 and size) to the scan the earlier run 37688582489 wrote, which is already committed; it is not committed a second time",
+      "sha256": "9dca9508dc8899db01ca1d78777da986acc90b074f7fe973f1468df74f4f4e1f"
+    }
+  },
+  "formalTournamentRerun": false,
+  "lockTouched": false,
+  "lockRefsVerifiedAt": {
+    "how": "git ls-remote against origin from the authoring session, 2026-10-08",
+    "refs/tags/kr-alpha-discovery-tournament-v1-execution-lock": "eac50fdf725ac797e5c37044246e2a7ffa9b1e64",
+    "refs/tags/kr-alpha-discovery-tournament-v1-execution-lock-a8acb44c4b685e06ce7692e44461147110e2e2d32a119adef0dd216476f50e7f": "eac50fdf725ac797e5c37044246e2a7ffa9b1e64"
+  },
+  "modelsFittedInAuthoringSession": false,
+  "reconstructionRerunInAuthoringSession": false,
+  "recordId": "kr-alpha-discovery-tournament-v1-postoutcome-integrity-audit-run37757869994-provenance-v1",
+  "recoveryRoute": {
+    "decode": "strip the timestamp and the 'AJ ' prefix from each line between AUDIT_BEGIN and AUDIT_END, concatenate, base64 -d, gzip -dc",
+    "reason": "the authoring sandbox cannot reach the Actions artifact or log blob hosts (CONNECT 403), so the files were read from the job log the GitHub API serves",
+    "route": "JOB_LOG_GZIP_BASE64",
+    "step": "Print the audit files to the job log (gzip + base64) so they can be read without downloading the artifact",
+    "verifiedAgainst": "the sha256 and byte count the same step printed (AUDIT_FILE=... SHA256=... BYTES=...) for each file"
+  },
+  "sealedResultTouched": false,
+  "sourceArtifact": {
+    "expiresAt": "2027-01-06T09:36:51Z",
+    "id": 11543019315,
+    "name": "kr-alpha-discovery-tournament-v1-postoutcome-integrity-audit-37757869994",
+    "zipBytes": 14318,
+    "zipSha256": "1fed282b676509c84a34bc3caaf65e350567a5bc70f4ab0725336901da3bceac",
+    "zipSha256Source": "the Actions API artifact digest and the upload step's own log line; the ZIP was not downloaded here, so this digest is quoted, not recomputed"
+  },
+  "sourceAuditRun": {
+    "auditRef": "685b33dea77a032a56f6780d6213c396802da367",
+    "conclusion": "success",
+    "event": "workflow_dispatch",
+    "headBranch": "main",
+    "headSha": "685b33dea77a032a56f6780d6213c396802da367",
+    "jobId": 113246784127,
+    "jobName": "audit",
+    "printedStatus": {
+      "full": "RECONSTRUCTION_REPRODUCES_THE_SEALED_RESULT",
+      "scan": "POST_OUTCOME_MODEL_FREE_DATA_SCAN"
+    },
+    "reconstructionStepCompletedAt": "2026-10-08T10:30:12Z",
+    "reconstructionStepStartedAt": "2026-10-08T09:39:35Z",
+    "runId": 37757869994,
+    "workflow": ".github/workflows/kr-alpha-discovery-tournament-v1-postoutcome-integrity-audit.yml"
+  },
+  "what": "Exact bytes of the files the post-outcome integrity audit wrote in Actions run 37757869994, preserved as produced. Nothing was recomputed in the authoring session."
+}

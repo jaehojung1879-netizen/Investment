@@ -3120,3 +3120,48 @@
   the complete flags, fold states, ensemble IDs by year, counters and process structure matched, the maximum numeric differences before and beyond the refusal point, and the
   environment comparison. No ticker, event date, weight or cause appears, and a test checks that every attribution call in `reconstruct` sits after the gate's return.
 - NOTHING WAS DISPATCHED. The expensive audit was not run by this change, and no sealed tournament file, spec, result or lock moved.
+
+## KR alpha discovery tournament v1 closure and kr-alpha-signal-v2 foundation invariants (v2.52)
+
+- A REPRODUCED RESULT IS STILL THE RESULT IT REPRODUCED. Audit run `37757869994` (code `685b33de`, `PYTHON_ENVIRONMENT_EXACT_MATCH`, host image
+  differing and non-gating) read `RECONSTRUCTION_REPRODUCES_THE_SEALED_RESULT` with no divergence at 1e-9. The formal verdict stays
+  `BLOCKED_BY_DATA_INTEGRITY`, not eligible for promotion, and no performance gate was ever evaluated. Exact audit bytes were decoded from the job log
+  and matched to the digests the run printed (`…-run37757869994-{full,environment-parity,provenance}.json`). The investigation is closed:
+  `docs/kr-alpha-discovery-tournament-v1-forensic-closure.md`.
+- ALL FOUR INCOMPLETE PATHS FAIL ON TERMINAL ECONOMICS OF A NAME THEY ACTUALLY HELD: 000030.KS 우리은행 (`SHARE_TRANSFER`) on 2019-02-13 and 079440.KS
+  오렌지라이프 (`SHARE_EXCHANGE`) on 2020-02-14. Each was held through a 15-22 session pre-delisting suspension with the consideration `BLOCKED`. No
+  registered information class carried the termination, and `COST_X2` completed only because it never entered either name. A small held weight is
+  not a measured immateriality. Not rebuilding historical corporate-action economics now is a prioritization decision, not an integrity waiver.
+- A NEW RECEIPT FORMAT IS AN OLD ONE PLUS RULES, NOT A SECOND FORMAT. `prospective_receipt_core` keeps the canonical JSON, digest rule, JSON Lines
+  ledger and `PROSPECTIVE_PAPER` class of the three sealed study receipts (a test proves the bytes agree) and adds a no-backdating window (after
+  the signal close, before the next open), a prospective boundary strictly after the KST date of the authorizing merge, outcome records kept apart
+  and built only after maturity, and the terminal rule: a held name without a cited consideration makes the portfolio outcome `None`.
+- kr-alpha-signal-v2 IS A DIFFERENT CONSTRUCTION OF ALREADY-MEASURED INFORMATION, AND SAYS SO. Value (book-to-market, earnings yield) within
+  industry, confirmed by three signs at zero (net income, OCF, OCF improvement), with no fitted parameter. These are the same accounting fields
+  `kr-model-overlay-portfolio-v1` fitted and was rejected on. A negative result closes this construction on this information set. Its primary
+  tests (confirmed vs unconfirmed cheap; confirmed vs 069500.KS after costs) and its controls (the same contrast among expensive names; permuted
+  confirmation) were written before any number exists. Ownership (H3) is the next information bet, and its history starts 2024-09-24.
+- NO FORECAST, NO WEIGHT. Until a separately authorized calibration supplies an expected return and SE, every decision is `NOT_READY` and carries no
+  holdings. Coverage below 60% is `BLOCKED` with no per-name signal. `REGISTERED_AUTHORIZATION` is `None`, so no live receipt can be written.
+  Nothing here is scheduled or imported by production.
+
+## KR alpha research completion program invariants (v2.53)
+
+- ONE BOUNDED PROGRAM, NOT ANOTHER NARROW HYPOTHESIS. `kr-alpha-atlas` (`docs/kr-alpha-atlas-methodology.md`) evaluates all ten information families in
+  one registered development evaluation and then closes Korean historical research (`docs/kr-alpha-atlas-execution-roadmap.md`), whatever it finds.
+  kr-alpha-signal-v2 (H2) is one `CANDIDATE_SIGNAL_FAMILY` inside it (interaction X1). The v2.52 bullet that framed H2 as the direction is superseded,
+  not deleted.
+- READINESS IS NOT EVIDENCE, AND EVIDENCE IS NOT A VERDICT. `research_specs/kr-alpha-atlas-registry-v1.json` keeps `readinessStatus` (data/PIT) and
+  `existingResearchStatus` (prior development evidence) apart, and `pipeline/kr_alpha_atlas_registry.validate` refuses: a usable feature without a
+  safe PIT status; a feature a prior study measured or used jointly labelled `UNTESTED`; `ALREADY_TESTED` without an individual measurement; an OHLCV
+  source in the investor-flow family; a cost, capacity or eligibility quantity inside an alpha baseline; and verdict words anywhere in the registry.
+  `docs/kr-alpha-atlas-information-map.md` is rendered from the registry, never edited by hand.
+- AN ALREADY-MEASURED FEATURE IS NOT RE-MEASURED ON THE SAME HISTORY. `ALREADY_TESTED` features reuse their sealed anatomy readings and enter Level 2
+  only as baselines; the program spends outcome access only on what was never measured individually.
+- A LIVE RECEIPT IS BUILT FROM THE REGISTERED AUTHORIZATION ONLY. `build_live_receipt` takes no authorization, spec hash, code hash or timestamp: it
+  reads `REGISTERED_AUTHORIZATION`, hashes the spec, the authorized code files and the data snapshots from disk, requires the running commit to contain
+  the authorizing merge, and uses the writer's own clock. Synthetic fixtures are labelled `SYNTHETIC_FIXTURE` and can never enter a live ledger; no
+  flag converts one pathway into the other.
+- A SESSION THAT EXISTS HAS NOT NECESSARILY CLOSED. An outcome is final only once the maturity session itself (the H-th KR session after execution, by
+  the pinned calendar) is final at 18:00 KST (09:00 UTC), the latest moment any KRX day variant can change its close, judged by the writer's own clock
+  on the live path, and only from prices of that session. The receipt window uses the same 18:00 KST lower bound.
