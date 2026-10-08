@@ -9,8 +9,8 @@ agree. What it adds is what each study re-implemented or left out:
 * a no-backdating window: a receipt is created after its signal session closed and before the next session opens;
 * a prospective-eligibility boundary: the first eligible signal session is strictly AFTER the KR date of the authorizing merge, so same-day
   observations are excluded even when the merge came before the close;
-* outcomes live in a SEPARATE record that references a receipt by digest, can only be built once the horizon has matured, and never rewrites
-  the receipt;
+* outcomes live in a SEPARATE record that references a receipt by digest, can only be built once the maturity session itself has closed (by
+  the writer's own clock on a live path), and never rewrites the receipt;
 * a held name that stopped trading without a cited terminal consideration makes the portfolio outcome `None`, never a last-price mark.
 
 Nothing here schedules, writes or evaluates a real receipt.
@@ -33,9 +33,12 @@ OUTCOME_EVIDENCE_CLASS = "PROSPECTIVE_OUTCOME"
 # `kr_integrated_alpha_portfolio_receipts.FORBIDDEN_RECEIPT_KEY_FRAGMENTS`.
 FORBIDDEN_KEY_FRAGMENTS = ("forward", "realized", "realised", "outcome", "sharpe", "cagr", "label", "nextreturn", "pnl", "actualreturn",
                            "maturedreturn", "futurereturn")
-# KRX regular session: 09:00-15:30 KST (UTC+9, no daylight saving) = 00:00-06:30 UTC.
+# KRX regular session 09:00-15:30 KST (UTC+9, no daylight saving) = 00:00-06:30 UTC. Some sessions open late and close late (the first session of
+# the year opens at 10:00; the college-entrance-exam day runs 10:00-16:30), and the after-hours closing-price window runs to 18:00 KST. A session is
+# therefore treated as FINAL only from 18:00 KST = 09:00 UTC, the latest moment any variant of a KRX day can still change its close. Opening late
+# never makes 09:00 KST unsafe as the earliest open, so the next session's 00:00 UTC stays the upper bound of the receipt window.
 KR_OPEN_UTC = pd.Timedelta(hours=0)
-KR_CLOSE_UTC = pd.Timedelta(hours=6, minutes=30)
+KR_CLOSE_FINAL_UTC = pd.Timedelta(hours=9)
 KST = pd.Timedelta(hours=9)
 HEX64 = frozenset("0123456789abcdef")
 
@@ -134,18 +137,37 @@ def check_timing(*, signal_date, created_at_utc, now_utc, merged_at_utc):
     if created > now:
         raise ValueError("RECEIPT_CREATED_IN_THE_FUTURE")
     execution = next_kr_session(day)
-    if created < (day + KR_CLOSE_UTC).tz_localize("UTC"):
+    if created < (day + KR_CLOSE_FINAL_UTC).tz_localize("UTC"):
         raise ValueError("RECEIPT_CREATED_BEFORE_SIGNAL_CLOSE")
     if created >= (execution + KR_OPEN_UTC).tz_localize("UTC"):
         raise ValueError("RECEIPT_CREATED_AFTER_EXECUTION_OPEN_BACKDATED")
     return execution
 
 
-def matured(execution_date, as_of, horizon):
-    """True only once `horizon` KR sessions after the execution session have closed on or before `as_of`."""
+def system_utc_now():
+    """The writer's own clock. A LIVE path reads time only from here and never accepts a caller-supplied timestamp as proof that a session closed."""
+    return pd.Timestamp.now(tz="UTC")
+
+
+def maturity_session(execution_date, horizon):
+    """The KR session `horizon` sessions after the execution session (the execution session is session 0). Holidays and weekends are skipped by the
+    pinned exchange calendar, never by where price data happen to stop."""
+    if not isinstance(horizon, int) or horizon <= 0:
+        raise ValueError("HORIZON_MUST_BE_A_POSITIVE_SESSION_COUNT")
     start = pd.Timestamp(execution_date).normalize()
-    sessions = RC.sessions(str(start.date()), str(pd.Timestamp(as_of).date()), "KR")
-    return len(sessions) - 1 >= horizon
+    sessions = RC.sessions(str(start.date()), str((start + pd.Timedelta(days=2 * horizon + 30)).date()), "KR")
+    if len(sessions) <= horizon or sessions[0] != start:
+        raise ValueError("EXECUTION_DATE_IS_NOT_A_KR_SESSION_OR_CALENDAR_TOO_SHORT")
+    return sessions[horizon]
+
+
+def maturity_close_utc(execution_date, horizon):
+    return (maturity_session(execution_date, horizon) + KR_CLOSE_FINAL_UTC).tz_localize("UTC")
+
+
+def has_matured(execution_date, horizon, now_utc):
+    """True only once the maturity session itself has closed (final at 09:00 UTC on that date), judged by a timezone-aware clock."""
+    return utc(now_utc) >= maturity_close_utc(execution_date, horizon)
 
 
 # --------------------------------------------------------------------------- #
@@ -202,22 +224,27 @@ def portfolio_outcome(weights, name_outcomes):
     return {"status": "COMPLETE", "unresolvedTickers": [], "heldExcessReturn": value}
 
 
-def build_outcome_record(receipt, *, validate, horizon, as_of, name_outcomes, created_at_utc, weights_field=("portfolio", "weights")):
-    """A separate outcome record keyed by the receipt's digest. Refuses before maturity and refuses a receipt whose digest no longer verifies.
+def build_outcome_record(receipt, *, validate, horizon, name_outcomes, now_utc, weights_field=("portfolio", "weights")):
+    """A separate outcome record keyed by the receipt's digest. Refuses a receipt whose digest no longer verifies, refuses before the maturity
+    session has closed by `now_utc`, and refuses a PRICED name whose exit price is not from the maturity session itself.
 
-    The receipt object is not modified: the caller stores this record in a different ledger."""
+    The receipt object is not modified: the caller stores this record in a different ledger. `now_utc` must come from the writer's own clock on a
+    live path (`system_utc_now`); only synthetic fixtures may pass a test clock."""
     validate(receipt)
-    if not matured(receipt["executionDate"], as_of, horizon):
-        raise ValueError("HORIZON_NOT_MATURED")
-    if utc(created_at_utc).tz_localize(None).normalize() < pd.Timestamp(as_of).normalize():
-        raise ValueError("OUTCOME_RECORD_PREDATES_ITS_AS_OF")
+    now = utc(now_utc)
+    exit_session = maturity_session(receipt["executionDate"], horizon)
+    if not has_matured(receipt["executionDate"], horizon, now):
+        raise ValueError("HORIZON_NOT_MATURED: maturity session %s closes %s" % (exit_session.date(), maturity_close_utc(receipt["executionDate"], horizon)))
+    for ticker, outcome in name_outcomes.items():
+        if outcome.get("state") == "PRICED" and outcome.get("exitSession") != str(exit_session.date()):
+            raise ValueError("NAME_OUTCOME_NOT_PRICED_AT_THE_MATURITY_SESSION: " + ticker)
     block = receipt
     for part in weights_field:
         block = (block or {}).get(part)
     weights = dict(block or {})
     record = {"evidenceClass": OUTCOME_EVIDENCE_CLASS, "receiptSha256": receipt["receiptSha256"], "studyId": receipt["studyId"],
               "signalDate": receipt["signalDate"], "executionDate": receipt["executionDate"], "horizonSessions": int(horizon),
-              "asOf": str(pd.Timestamp(as_of).date()), "createdAtUtc": created_at_utc,
+              "maturitySession": str(exit_session.date()), "createdAtUtc": now.isoformat(),
               "nameOutcomes": {t: dict(v) for t, v in sorted(name_outcomes.items())},
               "portfolio": portfolio_outcome(weights, name_outcomes)}
     record["recordSha256"] = hashlib.sha256(canonical(record)).hexdigest()

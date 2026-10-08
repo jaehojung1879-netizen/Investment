@@ -3144,3 +3144,24 @@
 - NO FORECAST, NO WEIGHT. Until a separately authorized calibration supplies an expected return and SE, every decision is `NOT_READY` and carries no
   holdings. Coverage below 60% is `BLOCKED` with no per-name signal. `REGISTERED_AUTHORIZATION` is `None`, so no live receipt can be written.
   Nothing here is scheduled or imported by production.
+
+## KR alpha research completion program invariants (v2.53)
+
+- ONE BOUNDED PROGRAM, NOT ANOTHER NARROW HYPOTHESIS. `kr-alpha-atlas` (`docs/kr-alpha-atlas-methodology.md`) evaluates all ten information families in
+  one registered development evaluation and then closes Korean historical research (`docs/kr-alpha-atlas-execution-roadmap.md`), whatever it finds.
+  kr-alpha-signal-v2 (H2) is one `CANDIDATE_SIGNAL_FAMILY` inside it (interaction X1). The v2.52 bullet that framed H2 as the direction is superseded,
+  not deleted.
+- READINESS IS NOT EVIDENCE, AND EVIDENCE IS NOT A VERDICT. `research_specs/kr-alpha-atlas-registry-v1.json` keeps `readinessStatus` (data/PIT) and
+  `existingResearchStatus` (prior development evidence) apart, and `pipeline/kr_alpha_atlas_registry.validate` refuses: a usable feature without a
+  safe PIT status; a feature a prior study measured or used jointly labelled `UNTESTED`; `ALREADY_TESTED` without an individual measurement; an OHLCV
+  source in the investor-flow family; a cost, capacity or eligibility quantity inside an alpha baseline; and verdict words anywhere in the registry.
+  `docs/kr-alpha-atlas-information-map.md` is rendered from the registry, never edited by hand.
+- AN ALREADY-MEASURED FEATURE IS NOT RE-MEASURED ON THE SAME HISTORY. `ALREADY_TESTED` features reuse their sealed anatomy readings and enter Level 2
+  only as baselines; the program spends outcome access only on what was never measured individually.
+- A LIVE RECEIPT IS BUILT FROM THE REGISTERED AUTHORIZATION ONLY. `build_live_receipt` takes no authorization, spec hash, code hash or timestamp: it
+  reads `REGISTERED_AUTHORIZATION`, hashes the spec, the authorized code files and the data snapshots from disk, requires the running commit to contain
+  the authorizing merge, and uses the writer's own clock. Synthetic fixtures are labelled `SYNTHETIC_FIXTURE` and can never enter a live ledger; no
+  flag converts one pathway into the other.
+- A SESSION THAT EXISTS HAS NOT NECESSARILY CLOSED. An outcome is final only once the maturity session itself (the H-th KR session after execution, by
+  the pinned calendar) is final at 18:00 KST (09:00 UTC), the latest moment any KRX day variant can change its close, judged by the writer's own clock
+  on the live path, and only from prices of that session. The receipt window uses the same 18:00 KST lower bound.

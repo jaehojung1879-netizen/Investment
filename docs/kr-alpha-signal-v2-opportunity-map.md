@@ -1,4 +1,11 @@
-# kr-alpha-signal-v2 — opportunity map (three hypotheses, one first direction)
+# kr-alpha-signal-v2 — opportunity map (three hypotheses)
+
+> **SCOPE CORRECTION (same PR, before merge).** This map first named H2 as "the" first direction for Korean research. That framing is
+> withdrawn. The governing architecture is now the **KR Alpha Research Completion Program** (`kr-alpha-atlas`):
+> `docs/kr-alpha-atlas-methodology.md`, `docs/kr-alpha-atlas-information-map.md`, `docs/kr-alpha-atlas-execution-roadmap.md`. H2 is one
+> **`CANDIDATE_SIGNAL_FAMILY`** inside it: Level 3 interaction `X1_valueByBusinessConfirmation`, registry feature `B08_valueBusinessConfirmation`.
+> H1 and H3 also live on as registry features (`H01`, `X3`; `G01`-`G07`, `X4`). The analysis below stays as it was written, so the reasoning
+> that produced the narrower choice can be read next to the correction.
 
 Status: `DESIGN_ONLY`. No outcome was computed, inspected or re-read to write this. Every number quoted below is copied from a result already
 committed in `docs/results/`, and all of it is **development evidence on outcome-exposed Korean history through 2026-09-14**. None of it confirms
@@ -107,7 +114,7 @@ this information set. It is not an invitation to re-weight the same fields, and 
 | 5. Implementation complexity | low-moderate | **low** (existing feature code) | moderate-high (classification, depth) |
 | 6. Prospective testability | yes | **yes, from the next PR** | yes, once collection is scheduled; slow to accumulate |
 
-## 5. Selected first direction: H2
+## 5. Selected first direction: H2 (superseded as the program direction; retained as a CANDIDATE_SIGNAL_FAMILY)
 
 H3 wins on the first criterion and loses on every one that decides whether a study can run. It cannot produce development evidence, most names
 carry no event in most weeks, and the depth problem is a property of the source. H1 is the least distinct and repeats the regime-concentrated

@@ -59,7 +59,8 @@ def receipt(**kw):
     args = dict(rows=rows(), signal_date=SIGNAL, created_at_utc=CREATED, now_utc=NOW, spec_sha256=SPEC, code_identity=CODE, data_identity=DATA,
                 authorization=AUTH)
     args.update(kw)
-    return R.build_receipt(**args)
+    args["test_clock_utc"] = args.pop("now_utc")
+    return R.build_synthetic_receipt(**args)
 
 
 # --------------------------------------------------------------------------- #
@@ -241,7 +242,7 @@ def test_only_cheap_confirmed_names_can_be_held_and_at_most_two_per_industry():
     many = rows() + [_row("A%d" % i, "INDUSTRY_A", 0.1 * i, 0.01 * i) for i in range(7, 13)]
     names = {t: {"expectedExcessReturn": 0.08, "standardError": 0.01, "contributions": {"x": 0.08}}
              for t in ("A9", "A10", "A11", "A12", "A5")}
-    decision = R.build_receipt(rows=many, signal_date=SIGNAL, created_at_utc=CREATED, now_utc=NOW, spec_sha256=SPEC, code_identity=CODE,
+    decision = R.build_synthetic_receipt(rows=many, signal_date=SIGNAL, created_at_utc=CREATED, test_clock_utc=NOW, spec_sha256=SPEC, code_identity=CODE,
                                data_identity=DATA, authorization=AUTH, forecasts=forecasts(names=names))["decision"]
     assert sorted(decision["weights"]) == ["A10", "A11"]       # equal margins break ties by ticker; the industry cap stops at two
     assert {c["ticker"] for c in decision["candidates"]} == {"A9", "A10", "A11", "A12"}  # A5 is no longer cheap and is never a candidate
@@ -268,6 +269,7 @@ def test_a_receipt_without_its_identities_is_refused(kw, code):
 
 @pytest.mark.parametrize("created,now,code", [
     ("2026-10-16T06:00:00+00:00", "2026-10-16T06:05:00+00:00", "RECEIPT_CREATED_BEFORE_SIGNAL_CLOSE"),
+    ("2026-10-16T08:59:00+00:00", "2026-10-16T09:05:00+00:00", "RECEIPT_CREATED_BEFORE_SIGNAL_CLOSE"),  # before 18:00 KST, the final close
     ("2026-10-19T00:00:00+00:00", "2026-10-19T00:05:00+00:00", "RECEIPT_CREATED_AFTER_EXECUTION_OPEN_BACKDATED"),
     ("2026-11-02T09:00:00+00:00", "2026-11-02T09:00:00+00:00", "RECEIPT_CREATED_AFTER_EXECUTION_OPEN_BACKDATED"),
     ("2026-10-16T09:00:00+00:00", "2026-10-16T08:00:00+00:00", "RECEIPT_CREATED_IN_THE_FUTURE"),
@@ -313,62 +315,71 @@ def _second():
 def test_append_refuses_a_duplicate_an_earlier_date_and_a_changed_spec(tmp_path):
     ledger = tmp_path / "receipts.jsonl"
     first = receipt()
-    R.append_receipt(ledger, first)
+    R.append_synthetic_receipt(ledger, first)
     with pytest.raises(ValueError, match="RECEIPT_ALREADY_EXISTS"):
-        R.append_receipt(ledger, receipt(forecasts=forecasts()))
-    R.append_receipt(ledger, _second())
+        R.append_synthetic_receipt(ledger, receipt(forecasts=forecasts()))
+    R.append_synthetic_receipt(ledger, _second())
     with pytest.raises(ValueError, match="RECEIPT_ALREADY_EXISTS"):
-        R.append_receipt(ledger, first)
+        R.append_synthetic_receipt(ledger, first)
     other_spec = "3" * 64
     later = receipt(signal_date="2026-10-30", created_at_utc="2026-10-30T09:00:00+00:00", now_utc="2026-10-30T09:01:00+00:00",
                     spec_sha256=other_spec, authorization=dict(AUTH, specSha256=other_spec))
     with pytest.raises(ValueError, match="RECEIPT_SPEC_CHANGED_WITHIN_A_LEDGER"):
-        R.append_receipt(ledger, later)
-    assert [r["signalDate"] for r in R.read_ledger(ledger)] == [SIGNAL, "2026-10-23"]
+        R.append_synthetic_receipt(ledger, later)
+    assert [r["signalDate"] for r in R.read_synthetic_ledger(ledger)] == [SIGNAL, "2026-10-23"]
 
 
 def test_append_refuses_out_of_order(tmp_path):
     ledger = tmp_path / "receipts.jsonl"
-    R.append_receipt(ledger, _second())
+    R.append_synthetic_receipt(ledger, _second())
     with pytest.raises(ValueError, match="RECEIPT_OUT_OF_ORDER"):
-        R.append_receipt(ledger, receipt())
+        R.append_synthetic_receipt(ledger, receipt())
 
 
 def test_appending_never_rewrites_existing_bytes_and_a_tampered_row_stops_the_ledger(tmp_path):
     ledger = tmp_path / "receipts.jsonl"
-    R.append_receipt(ledger, receipt())
+    R.append_synthetic_receipt(ledger, receipt())
     before = ledger.read_bytes()
-    R.append_receipt(ledger, _second())
+    R.append_synthetic_receipt(ledger, _second())
     assert ledger.read_bytes().startswith(before)
     tampered = ledger.read_text().replace('"A6"', '"Z9"', 1)
     ledger.write_text(tampered)
     with pytest.raises(ValueError, match="RECEIPT_DIGEST_MISMATCH"):
-        R.read_ledger(ledger)
+        R.read_synthetic_ledger(ledger)
 
 
 # --------------------------------------------------------------------------- #
 # Forecasts and outcomes stay apart
 # --------------------------------------------------------------------------- #
+EXIT = str(C.maturity_session("2026-10-19", 126).date())           # the 126th KR session after the execution session
+AFTER = EXIT + "T09:00:00+00:00"                                    # 18:00 KST on the maturity session: final
+
+
+def _outcomes(**states):
+    out = {"A6": {"state": "PRICED", "excessReturn": 0.05, "exitSession": EXIT}, "B5": {"state": "PRICED", "excessReturn": -0.01, "exitSession": EXIT}}
+    out.update(states)
+    return out
+
+
 def test_an_outcome_record_needs_maturity_and_never_touches_the_receipt():
     r = receipt(forecasts=forecasts())
     frozen = copy.deepcopy(r)
-    outcomes = {"A6": {"state": "PRICED", "excessReturn": 0.05}, "B5": {"state": "PRICED", "excessReturn": -0.01}}
     with pytest.raises(ValueError, match="HORIZON_NOT_MATURED"):
-        R.build_outcome_record(r, horizon=126, as_of="2027-01-15", name_outcomes=outcomes, created_at_utc="2027-01-15T09:00:00+00:00")
-    record = R.build_outcome_record(r, horizon=126, as_of="2027-06-30", name_outcomes=outcomes, created_at_utc="2027-06-30T09:00:00+00:00")
+        R.build_synthetic_outcome_record(r, horizon=126, name_outcomes=_outcomes(), test_clock_utc="2027-01-15T09:00:00+00:00")
+    record = R.build_synthetic_outcome_record(r, horizon=126, name_outcomes=_outcomes(), test_clock_utc=AFTER)
     assert r == frozen and record["receiptSha256"] == r["receiptSha256"] and record["evidenceClass"] == "PROSPECTIVE_OUTCOME"
+    assert record["maturitySession"] == EXIT
     assert record["portfolio"] == {"status": "COMPLETE", "unresolvedTickers": [], "heldExcessReturn": pytest.approx(0.2 * 0.05 + 0.2 * -0.01)}
     with pytest.raises(ValueError, match="UNREGISTERED_HORIZON"):
-        R.build_outcome_record(r, horizon=63, as_of="2027-06-30", name_outcomes=outcomes, created_at_utc="2027-06-30T09:00:00+00:00")
+        R.build_synthetic_outcome_record(r, horizon=63, name_outcomes=_outcomes(), test_clock_utc=AFTER)
 
 
 def test_a_held_name_without_terminal_economics_is_never_marked():
     r = receipt(forecasts=forecasts())
-    outcomes = {"A6": {"state": "TERMINAL_ECONOMICS_UNRESOLVED", "excessReturn": None}, "B5": {"state": "PRICED", "excessReturn": 0.02}}
-    record = R.build_outcome_record(r, horizon=126, as_of="2027-06-30", name_outcomes=outcomes, created_at_utc="2027-06-30T09:00:00+00:00")
+    unresolved = _outcomes(A6={"state": "TERMINAL_ECONOMICS_UNRESOLVED", "excessReturn": None})
+    record = R.build_synthetic_outcome_record(r, horizon=126, name_outcomes=unresolved, test_clock_utc=AFTER)
     assert record["portfolio"] == {"status": "TERMINAL_ECONOMICS_UNRESOLVED", "unresolvedTickers": ["A6"], "heldExcessReturn": None}
-    missing = R.build_outcome_record(r, horizon=126, as_of="2027-06-30", name_outcomes={"B5": outcomes["B5"]},
-                                     created_at_utc="2027-06-30T09:00:00+00:00")
+    missing = R.build_synthetic_outcome_record(r, horizon=126, name_outcomes={"B5": _outcomes()["B5"]}, test_clock_utc=AFTER)
     assert missing["portfolio"]["status"] == "NAME_OUTCOME_MISSING" and missing["portfolio"]["heldExcessReturn"] is None
 
 
@@ -376,7 +387,46 @@ def test_an_outcome_record_cannot_be_built_from_an_altered_receipt():
     r = receipt(forecasts=forecasts())
     r["decision"]["weights"] = {"A6": 0.2}
     with pytest.raises(ValueError):
-        R.build_outcome_record(r, horizon=126, as_of="2027-06-30", name_outcomes={}, created_at_utc="2027-06-30T09:00:00+00:00")
+        R.build_synthetic_outcome_record(r, horizon=126, name_outcomes={}, test_clock_utc=AFTER)
+
+
+# --------------------------------------------------------------------------- #
+# Repair B: an outcome is final only after the maturity session itself has closed
+# --------------------------------------------------------------------------- #
+def test_same_day_outcome_before_the_maturity_close_is_refused_and_after_it_is_accepted():
+    r = receipt(forecasts=forecasts())
+    for clock in (EXIT + "T00:00:00+00:00", EXIT + "T06:30:00+00:00", EXIT + "T08:59:59+00:00"):   # the session exists but is not final
+        with pytest.raises(ValueError, match="HORIZON_NOT_MATURED"):
+            R.build_synthetic_outcome_record(r, horizon=126, name_outcomes=_outcomes(), test_clock_utc=clock)
+    assert R.build_synthetic_outcome_record(r, horizon=126, name_outcomes=_outcomes(), test_clock_utc=AFTER)["maturitySession"] == EXIT
+
+
+def test_maturity_counts_exchange_sessions_across_weekends_and_holidays():
+    import pandas as pd
+    # 2026-10-08 (Thu) is followed by Hangul Day (Fri 10-09) and a weekend: one session later is Monday 10-12.
+    assert str(C.maturity_session("2026-10-08", 1).date()) == "2026-10-12"
+    assert C.maturity_close_utc("2026-10-08", 1) == pd.Timestamp("2026-10-12T09:00:00Z")
+    assert not C.has_matured("2026-10-08", 1, "2026-10-09T23:00:00+00:00")       # a holiday has no close
+    assert C.has_matured("2026-10-08", 1, "2026-10-12T09:00:00+00:00")
+    with pytest.raises(ValueError, match="EXECUTION_DATE_IS_NOT_A_KR_SESSION"):
+        C.maturity_session("2026-10-09", 1)
+    with pytest.raises(ValueError, match="TIMESTAMP_WITHOUT_TIMEZONE"):
+        C.has_matured("2026-10-08", 1, "2026-10-12T09:00:00")
+
+
+def test_a_priced_outcome_must_come_from_the_maturity_session():
+    r = receipt(forecasts=forecasts())
+    stale = _outcomes(A6={"state": "PRICED", "excessReturn": 0.05, "exitSession": "2027-04-01"})
+    with pytest.raises(ValueError, match="NOT_PRICED_AT_THE_MATURITY_SESSION"):
+        R.build_synthetic_outcome_record(r, horizon=126, name_outcomes=stale, test_clock_utc=AFTER)
+
+
+def test_the_live_outcome_writer_takes_no_timestamp_and_reads_its_own_clock(monkeypatch):
+    import inspect
+    assert "now_utc" not in inspect.signature(R.build_live_outcome_record).parameters
+    assert "test_clock_utc" not in inspect.signature(R.build_live_outcome_record).parameters
+    with pytest.raises(ValueError, match="SYNTHETIC_RECEIPT_REFUSED_ON_THE_LIVE_PATH|NOT_AUTHORIZED"):
+        R.build_live_outcome_record(receipt(forecasts=forecasts()), horizon=126, name_outcomes=_outcomes())
 
 
 # --------------------------------------------------------------------------- #
@@ -390,7 +440,7 @@ def test_storage_format_is_byte_compatible_with_the_existing_receipt_modules():
     for module in (T, I, M):
         assert module.canonical(payload) == C.canonical(payload)
     assert C.receipt_digest(payload) == T.seal(payload) == I.receipt_digest(payload) == M.receipt_digest(payload)
-    assert R.EVIDENCE_CLASS == I.EVIDENCE_CLASS == M.EVIDENCE_CLASS == "PROSPECTIVE_PAPER"
+    assert R.EVIDENCE_CLASS_BY_PATHWAY[R.LIVE] == I.EVIDENCE_CLASS == M.EVIDENCE_CLASS == "PROSPECTIVE_PAPER"
     assert set(I.FORBIDDEN_RECEIPT_KEY_FRAGMENTS) <= set(C.FORBIDDEN_KEY_FRAGMENTS)
 
 
@@ -407,3 +457,140 @@ def test_the_new_modules_import_nothing_from_a_sealed_study():
         tree = ast.parse((ROOT / "pipeline" / (name + ".py")).read_text())
         local = {a.name for n in ast.walk(tree) if isinstance(n, ast.ImportFrom) and n.level for a in n.names}
         assert local <= {"replay_calendar", "prospective_receipt_core", "kr_alpha_signal_v2"}, (name, local)
+
+
+# --------------------------------------------------------------------------- #
+# Repair A: a live receipt needs the REGISTERED authorization, identities hashed from disk and the writer's own clock
+# --------------------------------------------------------------------------- #
+LIVE_CLOCK = "2026-10-16T10:00:00+00:00"
+
+
+@pytest.fixture
+def live(tmp_path, monkeypatch):
+    """A synthetic repository root with a registered authorization, a fake git and a fixed system clock. Test-only patching of module state."""
+    import hashlib
+    import pandas as pd
+    (tmp_path / "spec.json").write_text('{"frozen": true}')
+    (tmp_path / "code.py").write_text("x = 1\n")
+    data = {}
+    for key in R.DATA_IDENTITY_KEYS:
+        (tmp_path / (key + ".bin")).write_bytes(key.encode())
+        data[key] = str(tmp_path / (key + ".bin"))
+    sha = lambda p: hashlib.sha256((tmp_path / p).read_bytes()).hexdigest()  # noqa: E731
+    auth = {"specSha256": sha("spec.json"), "specPath": "spec.json", "mergeCommitSha": "b" * 40, "mergedAtUtc": "2026-10-05T03:00:00+00:00",
+            "codeFileHashes": {"code.py": sha("code.py")}}
+    monkeypatch.setattr(R, "REGISTERED_AUTHORIZATION", auth)
+    monkeypatch.setattr(C, "system_utc_now", lambda: pd.Timestamp(LIVE_CLOCK))
+
+    class Done:
+        def __init__(self, code, out=""):
+            self.returncode, self.stdout = code, out
+    state = {"ancestor": 0}
+    monkeypatch.setattr(R, "_git", lambda *a, root=None: Done(0, "c" * 40 + "\n") if a[0] == "rev-parse" else Done(state["ancestor"]))
+    return {"root": tmp_path, "data": data, "auth": auth, "git": state}
+
+
+def _live(live, **kw):
+    args = dict(rows=rows(), signal_date=SIGNAL, data_files=live["data"], root=live["root"])
+    args.update(kw)
+    return R.build_live_receipt(**args)
+
+
+def test_the_live_builder_accepts_no_authorization_spec_code_identity_or_timestamp():
+    import inspect
+    params = set(inspect.signature(R.build_live_receipt).parameters)
+    assert not params & {"authorization", "spec_sha256", "code_identity", "data_identity", "created_at_utc", "now_utc", "test_clock_utc"}
+
+
+def test_without_a_registered_authorization_nothing_live_can_be_built_or_appended(tmp_path):
+    with pytest.raises(ValueError, match="NOT_AUTHORIZED"):
+        R.build_live_receipt(rows=rows(), signal_date=SIGNAL, data_files={})
+    with pytest.raises(ValueError, match="SYNTHETIC_RECEIPT_REFUSED_ON_THE_LIVE_PATH"):
+        R.append_live_receipt(tmp_path / "live.jsonl", receipt())
+    assert not (tmp_path / "live.jsonl").exists()
+
+
+def test_a_live_receipt_carries_hashed_identities_and_the_writers_own_clock(live, tmp_path):
+    r = _live(live)
+    assert r["pathway"] == "LIVE" and r["evidenceClass"] == "PROSPECTIVE_PAPER" and r["createdAtUtc"].startswith("2026-10-16T10:00:00")
+    assert r["specSha256"] == live["auth"]["specSha256"] and r["codeIdentity"] == {"commitSha": "c" * 40, "files": live["auth"]["codeFileHashes"]}
+    assert R.validate_live_receipt(r)
+    ledger = tmp_path / "live.jsonl"
+    R.append_live_receipt(ledger, r)
+    with pytest.raises(ValueError, match="RECEIPT_ALREADY_EXISTS"):
+        R.append_live_receipt(ledger, _live(live))
+    assert [x["signalDate"] for x in R.read_live_ledger(ledger)] == [SIGNAL]
+
+
+def test_live_identity_mismatches_are_refused(live):
+    (live["root"] / "code.py").write_text("x = 2\n")
+    with pytest.raises(ValueError, match="CODE_CHANGED_SINCE_AUTHORIZATION"):
+        _live(live)
+    (live["root"] / "code.py").write_text("x = 1\n")
+    (live["root"] / "spec.json").write_text('{"frozen": false}')
+    with pytest.raises(ValueError, match="SPEC_FILE_DIFFERS_FROM_THE_AUTHORIZED_SPEC"):
+        _live(live)
+    (live["root"] / "spec.json").write_text('{"frozen": true}')
+    live["git"]["ancestor"] = 1
+    with pytest.raises(ValueError, match="RUNNING_COMMIT_DOES_NOT_CONTAIN_THE_AUTHORIZING_MERGE"):
+        _live(live)
+    live["git"]["ancestor"] = 0
+    with pytest.raises(ValueError, match="DATA_SNAPSHOT_IDENTITY_REQUIRED"):
+        _live(live, data_files={"pitFeatureSnapshot": live["data"]["pitFeatureSnapshot"]})
+
+
+def test_a_receipt_with_another_authorization_cannot_enter_the_live_ledger(live, tmp_path):
+    forged = _live(live)
+    forged["authorization"]["mergeCommitSha"] = "d" * 40
+    forged["receiptSha256"] = C.receipt_digest(forged)
+    with pytest.raises(ValueError, match="RECEIPT_AUTHORIZATION_IS_NOT_THE_REGISTERED_ONE"):
+        R.append_live_receipt(tmp_path / "live.jsonl", forged)
+
+
+def test_live_and_synthetic_ledgers_never_mix(live, tmp_path):
+    with pytest.raises(ValueError, match="SYNTHETIC_RECEIPT_REFUSED_ON_THE_LIVE_PATH"):
+        R.append_live_receipt(tmp_path / "live.jsonl", receipt())
+    with pytest.raises(ValueError, match="LIVE_RECEIPT_REFUSED_ON_THE_SYNTHETIC_PATH"):
+        R.append_synthetic_receipt(tmp_path / "synthetic.jsonl", _live(live))
+    relabelled = receipt()
+    relabelled["pathway"] = "LIVE"
+    relabelled["receiptSha256"] = C.receipt_digest(relabelled)
+    with pytest.raises(ValueError, match="RECEIPT_IDENTITY_MISMATCH"):      # evidence class still says SYNTHETIC_FIXTURE
+        R.validate_receipt(relabelled)
+
+
+def test_a_live_receipt_before_the_registered_merge_or_before_the_close_is_refused(live, monkeypatch):
+    import pandas as pd
+    monkeypatch.setitem(live["auth"], "mergedAtUtc", "2026-10-16T01:00:00+00:00")   # same KST day as the signal
+    with pytest.raises(ValueError, match="SIGNAL_BEFORE_PROSPECTIVE_ELIGIBILITY"):
+        _live(live)
+    monkeypatch.setitem(live["auth"], "mergedAtUtc", "2026-10-05T03:00:00+00:00")
+    monkeypatch.setattr(C, "system_utc_now", lambda: pd.Timestamp("2026-10-16T07:00:00+00:00"))
+    with pytest.raises(ValueError, match="RECEIPT_CREATED_BEFORE_SIGNAL_CLOSE"):
+        _live(live)
+    monkeypatch.setattr(C, "system_utc_now", lambda: pd.Timestamp("2026-10-20T03:00:00+00:00"))  # a week-old signal written late
+    with pytest.raises(ValueError, match="RECEIPT_CREATED_AFTER_EXECUTION_OPEN_BACKDATED"):
+        _live(live)
+
+
+def test_a_tampered_timestamp_is_refused_with_or_without_a_recomputed_digest():
+    r = receipt()
+    r["createdAtUtc"] = "2026-10-20T09:00:00+00:00"
+    with pytest.raises(ValueError, match="RECEIPT_DIGEST_MISMATCH"):
+        R.validate_receipt(r)
+    r["receiptSha256"] = C.receipt_digest(r)
+    with pytest.raises(ValueError, match="RECEIPT_TIMESTAMP_OUTSIDE_ITS_WINDOW"):
+        R.validate_receipt(r)
+
+
+def test_the_live_outcome_writer_uses_only_the_system_clock(live, monkeypatch):
+    import pandas as pd
+    r = _live(live, forecasts=forecasts())
+    with pytest.raises(ValueError, match="HORIZON_NOT_MATURED"):          # the system clock still says 2026-10-16
+        R.build_live_outcome_record(r, horizon=126, name_outcomes=_outcomes())
+    monkeypatch.setattr(C, "system_utc_now", lambda: pd.Timestamp(EXIT + "T08:59:59+00:00"))
+    with pytest.raises(ValueError, match="HORIZON_NOT_MATURED"):
+        R.build_live_outcome_record(r, horizon=126, name_outcomes=_outcomes())
+    monkeypatch.setattr(C, "system_utc_now", lambda: pd.Timestamp(AFTER))
+    record = R.build_live_outcome_record(r, horizon=126, name_outcomes=_outcomes())
+    assert record["maturitySession"] == EXIT and record["createdAtUtc"].startswith(EXIT + "T09:00:00")

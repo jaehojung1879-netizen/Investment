@@ -1,0 +1,3358 @@
+{
+ "registryId": "kr-alpha-atlas-registry-v1",
+ "program": "kr-alpha-atlas",
+ "programName": "KR ALPHA RESEARCH COMPLETION PROGRAM",
+ "status": "DESIGN_REGISTRY_NOT_A_PREREGISTRATION",
+ "statement": "readinessStatus describes data and PIT readiness only; existingResearchStatus describes prior DEVELOPMENT evidence on outcome-exposed KR history only. Neither is an investment verdict, and no prior positive development reading is confirmation.",
+ "region": "KR",
+ "benchmark": "069500.KS",
+ "developmentCutoff": "2026-09-14",
+ "readinessStatuses": [
+  "READY",
+  "DERIVABLE_FROM_EXISTING_DATA",
+  "DATA_BUILD_REQUIRED",
+  "SOURCE_BLOCKED",
+  "PIT_UNSAFE",
+  "ALREADY_TESTED",
+  "NOT_FEASIBLE"
+ ],
+ "priorEvidenceStatuses": [
+  "PRIOR_POSITIVE_DEVELOPMENT",
+  "PRIOR_NEGATIVE_DEVELOPMENT",
+  "PRIOR_INCONCLUSIVE",
+  "UNTESTED",
+  "BLOCKED",
+  "NOT_APPLICABLE"
+ ],
+ "roles": [
+  "ALPHA_CANDIDATE",
+  "CONTROL",
+  "CONTEXT_CONDITIONING",
+  "RISK_CONSTRUCTION",
+  "COST_CAPACITY",
+  "ELIGIBILITY_FILTER"
+ ],
+ "pitStatuses": {
+  "safe": [
+   "PIT_SIGNAL_CLOSE",
+   "PIT_RECEIPT_DATED",
+   "PIT_RECONSTRUCTED_MEMBERSHIP",
+   "PIT_DATED_CALENDAR"
+  ],
+  "unsafe": [
+   "REVISED_HISTORY",
+   "CURRENT_SNAPSHOT_ONLY",
+   "PUBLICATION_TIME_UNRESOLVED",
+   "NO_SOURCE"
+  ]
+ },
+ "missingnessStatuses": [
+  "MEASURED_LOW",
+  "MEASURED_MODERATE",
+  "MEASURED_HIGH",
+  "NOT_YET_MEASURED",
+  "NO_DATA"
+ ],
+ "survivorshipRisks": [
+  "LOW",
+  "MODERATE",
+  "HIGH"
+ ],
+ "sourceClasses": {
+  "G": [
+   "KRX_INVESTOR_TYPE",
+   "DART_OWNERSHIP",
+   "KRX_SHORT_SELLING"
+  ]
+ },
+ "families": {
+  "A": {
+   "name": "Price, momentum and reversal",
+   "primaryHorizon": 126,
+   "secondaryHorizon": 21,
+   "secondaryJustification": "short-term reversal is a different mechanism with a monthly half-life"
+  },
+  "B": {
+   "name": "Value",
+   "primaryHorizon": 126,
+   "secondaryHorizon": 252,
+   "secondaryJustification": "valuation resolves over one to two reporting cycles"
+  },
+  "C": {
+   "name": "Profitability and accounting quality",
+   "primaryHorizon": 126,
+   "secondaryHorizon": 252,
+   "secondaryJustification": "accounting information resolves over one to two reporting cycles"
+  },
+  "D": {
+   "name": "Volume and trading activity",
+   "primaryHorizon": 21,
+   "secondaryHorizon": 63,
+   "secondaryJustification": "turnover level and liquidity trends are slower than shocks"
+  },
+  "E": {
+   "name": "Liquidity and market microstructure",
+   "primaryHorizon": 126,
+   "secondaryHorizon": 21,
+   "secondaryJustification": "cost proxies and suspension checks act at the trading horizon"
+  },
+  "F": {
+   "name": "Risk characteristics",
+   "primaryHorizon": 126,
+   "secondaryHorizon": null,
+   "secondaryJustification": null
+  },
+  "G": {
+   "name": "Investor flow and ownership",
+   "primaryHorizon": 21,
+   "secondaryHorizon": 63,
+   "secondaryJustification": "accumulation is read over weeks; disclosures resolve over a quarter"
+  },
+  "H": {
+   "name": "Industry and cross-sectional structure",
+   "primaryHorizon": 126,
+   "secondaryHorizon": 63,
+   "secondaryJustification": "industry anatomy measured REL_MOM_63 as the shorter leadership reading"
+  },
+  "I": {
+   "name": "Macro, FX and global exposures",
+   "primaryHorizon": 126,
+   "secondaryHorizon": null,
+   "secondaryJustification": null
+  },
+  "J": {
+   "name": "Events and alternative information",
+   "primaryHorizon": 21,
+   "secondaryHorizon": 63,
+   "secondaryJustification": "payout-policy events resolve over a quarter"
+  }
+ },
+ "priorStudies": {
+  "kr-factor-anatomy-v1": {
+   "resultPath": "docs/results/kr-factor-anatomy-v1-result.json",
+   "verdict": "DESCRIPTIVE_MAP",
+   "evidenceClass": "EXPLORATORY_DEVELOPMENT_ON_OUTCOME_EXPOSED_KR_HISTORY",
+   "featuresMeasuredIndividually": [
+    "A05_relative126",
+    "A07_momentum12_1",
+    "B01_bookToMarket",
+    "B02_earningsYield",
+    "B03_ocfYield",
+    "C01_returnOnAssets",
+    "C05_ocfToAssets",
+    "C07_negativeAccruals",
+    "C08_netIncomeMinusOcf",
+    "C14_ocfImprovement",
+    "E02_logAdv60",
+    "F02_downsideVol126"
+   ],
+   "featuresUsedJointly": []
+  },
+  "kr-industry-opportunity-anatomy-v1": {
+   "resultPath": "docs/results/kr-industry-opportunity-anatomy-v1-result.json",
+   "verdict": "DESCRIPTIVE_MAP",
+   "evidenceClass": "EXPLORATORY_DEVELOPMENT_ON_PARTIALLY_RECONSTRUCTED_KR_HISTORY",
+   "featuresMeasuredIndividually": [
+    "H01_industryRelMom126",
+    "H02_industryRelMom63",
+    "H03_industryBreadthAboveMA126",
+    "H04_withinIndustryDispersion126",
+    "H06_industryConcentrationTop1",
+    "H11_industryEarningsContext",
+    "H12_industryValuationContext"
+   ],
+   "featuresUsedJointly": []
+  },
+  "kr-stock-within-industry-anatomy-v1": {
+   "resultPath": "docs/results/kr-stock-within-industry-anatomy-v1-result.json",
+   "verdict": "DESCRIPTIVE_MAP",
+   "evidenceClass": "EXPLORATORY_DEVELOPMENT_ON_OUTCOME_EXPOSED_KR_HISTORY",
+   "featuresMeasuredIndividually": [
+    "A05_relative126",
+    "A07_momentum12_1",
+    "A09_industryRelativeMomentum126",
+    "B01_bookToMarket",
+    "B02_earningsYield",
+    "B03_ocfYield",
+    "B05_industryRelativeValue",
+    "C01_returnOnAssets",
+    "C05_ocfToAssets",
+    "C07_negativeAccruals",
+    "C14_ocfImprovement",
+    "E02_logAdv60",
+    "F02_downsideVol126"
+   ],
+   "featuresUsedJointly": []
+  },
+  "kr-model-overlay-portfolio-v1": {
+   "resultPath": "docs/results/kr-model-overlay-portfolio-v1-result.json",
+   "verdict": "DEVELOPMENT_REJECT",
+   "evidenceClass": "DEVELOPMENT_ON_OUTCOME_EXPOSED_HISTORY",
+   "featuresMeasuredIndividually": [],
+   "featuresUsedJointly": [
+    "A05_relative126",
+    "B01_bookToMarket",
+    "B02_earningsYield",
+    "B03_ocfYield",
+    "B08_valueBusinessConfirmation",
+    "C01_returnOnAssets",
+    "C05_ocfToAssets",
+    "C07_negativeAccruals",
+    "C14_ocfImprovement",
+    "E02_logAdv60",
+    "F02_downsideVol126"
+   ]
+  },
+  "kr-integrated-alpha-portfolio-v1": {
+   "resultPath": "docs/results/kr-integrated-alpha-portfolio-v1-postoutcome-completed-audit.json",
+   "verdict": "INDUSTRY_LAYER_DEVELOPMENT_SUPPORTED; NO_UNAMBIGUOUS_FINAL_ARCHITECTURE",
+   "evidenceClass": "EXPLORATORY_DEVELOPMENT_ON_OUTCOME_EXPOSED_KR_HISTORY",
+   "featuresMeasuredIndividually": [],
+   "featuresUsedJointly": [
+    "B05_industryRelativeValue",
+    "H01_industryRelMom126",
+    "H03_industryBreadthAboveMA126"
+   ]
+  },
+  "kr-alpha-discovery-tournament-v1": {
+   "resultPath": "docs/results/kr-alpha-discovery-tournament-v1-result.json",
+   "verdict": "BLOCKED_BY_DATA_INTEGRITY",
+   "evidenceClass": "EXPLORATORY_DEVELOPMENT_ON_OUTCOME_EXPOSED_KR_HISTORY",
+   "featuresMeasuredIndividually": [],
+   "featuresUsedJointly": [
+    "A03_return21d",
+    "A04_return63d",
+    "A09_industryRelativeMomentum126",
+    "A11_distance52wHigh",
+    "A14_ma200Distance",
+    "D03_tradingValueShock5_60",
+    "E01_amihudIlliquidity60",
+    "F01_totalVolatility63",
+    "F03_beta252",
+    "F05_maxDrawdown252",
+    "H01_industryRelMom126"
+   ]
+  },
+  "kr-market-risk-model-v1": {
+   "resultPath": "docs/results/kr-market-risk-model-v1-result.json",
+   "verdict": "NO_CANDIDATE_NOMINATED_CONTROL_RETAINED",
+   "evidenceClass": "EXPLORATORY_DEVELOPMENT_ON_OUTCOME_EXPOSED_KR_HISTORY",
+   "featuresMeasuredIndividually": [
+    "I01_kospiTrendVolState",
+    "I02_vixLevel",
+    "I03_krTermSpread"
+   ],
+   "featuresUsedJointly": []
+  },
+  "regional-alpha-model-v1": {
+   "resultPath": "docs/alpha-research-foundation-v2-errata.md",
+   "verdict": "NO_MODEL_EVIDENCE",
+   "evidenceClass": "HISTORICAL_DISCOVERY_CLOSED_ON_EXISTING_FEATURE_SET",
+   "featuresMeasuredIndividually": [],
+   "featuresUsedJointly": [
+    "A03_return21d",
+    "A04_return63d",
+    "A05_relative126",
+    "A06_return252d",
+    "A07_momentum12_1",
+    "A08_momentum6",
+    "A11_distance52wHigh",
+    "A14_ma200Distance",
+    "C02_returnOnEquity",
+    "C03_operatingMargin",
+    "C04_profitMargin",
+    "C13_fundamentalAcceleration",
+    "D01_volumeSurge5_60",
+    "F01_totalVolatility63",
+    "F03_beta252",
+    "F05_maxDrawdown252"
+   ]
+  },
+  "alpha-opportunity-model-v5": {
+   "resultPath": "docs/results/alpha-opportunity-model-v5-result.json",
+   "verdict": "INCONCLUSIVE",
+   "evidenceClass": "HISTORICAL_DISCOVERY_ON_AN_EXPOSED_SAMPLE",
+   "featuresMeasuredIndividually": [],
+   "featuresUsedJointly": [
+    "A05_relative126",
+    "A13_momentumAcceleration21",
+    "C09_assetGrowth",
+    "C10_liabilityGrowth",
+    "D02_logVolumeShock60",
+    "D04_shockPersistence5d",
+    "D07_volumePriceAlignment",
+    "F01_totalVolatility63"
+   ]
+  },
+  "fundamental-acceleration-discovery-v1": {
+   "resultPath": "docs/results/fundamental-acceleration-discovery-report.json",
+   "verdict": "CASE_D_NO_DISCOVERY_EVIDENCE",
+   "evidenceClass": "HISTORICAL_DISCOVERY",
+   "featuresMeasuredIndividually": [
+    "C13_fundamentalAcceleration"
+   ],
+   "featuresUsedJointly": []
+  },
+  "four-factor-signal-attribution-audit-v1": {
+   "resultPath": "docs/results/four-factor-signal-attribution-audit-report.json",
+   "verdict": "WEAK_AND_REGION_SIGN_UNSTABLE",
+   "evidenceClass": "HISTORICAL_AUDIT",
+   "featuresMeasuredIndividually": [],
+   "featuresUsedJointly": [
+    "A07_momentum12_1",
+    "C02_returnOnEquity",
+    "F02_downsideVol126"
+   ]
+  },
+  "opportunity-radar-model": {
+   "resultPath": "docs/alpha-information-inventory-v1-research-map.md",
+   "verdict": "REJECTED_ACCEPTANCE_FAILED",
+   "evidenceClass": "HISTORICAL_DISCOVERY",
+   "featuresMeasuredIndividually": [],
+   "featuresUsedJointly": [
+    "A13_momentumAcceleration21",
+    "D01_volumeSurge5_60"
+   ]
+  }
+ },
+ "universes": [
+  {
+   "universeId": "PIT_KRX_TOP120",
+   "readinessStatus": "READY",
+   "role": "REFERENCE_UNIVERSE",
+   "evidence": "krx_universe members_on_date; 260 securities ever held the rank 2013-2026; price panels and DART fundamentals exist for them",
+   "blockingReason": null
+  },
+  {
+   "universeId": "KOSPI_LIQUIDITY_QUALIFIED_BROAD",
+   "readinessStatus": "DATA_BUILD_REQUIRED",
+   "role": "FEASIBILITY_ONLY",
+   "evidence": "KRX sto/stk_bydd_trd is point-in-time for all KOSPI issues (930 issues on 2013-01-02) with MKTCAP and LIST_SHRS",
+   "blockingReason": "price panels and DART fundamentals exist only for the 260 ever-top-120 securities; delisting and terminal economics outside them unaudited"
+  },
+  {
+   "universeId": "KOSDAQ",
+   "readinessStatus": "SOURCE_BLOCKED",
+   "role": "FEASIBILITY_ONLY",
+   "evidence": "sto/ksq_bydd_trd answers Unauthorized API Call under the current key (vendor refusal invariants)",
+   "blockingReason": "KOSDAQ daily statistics not authorized for the subscribed key"
+  }
+ ],
+ "levelTwoBaselines": {
+  "B0_MARKET_INDUSTRY_PRICE_REFERENCE": [
+   "H01_industryRelMom126",
+   "A05_relative126"
+  ],
+  "B1_VALUE_PROFITABILITY": [
+   "B01_bookToMarket",
+   "B02_earningsYield",
+   "C01_returnOnAssets",
+   "C05_ocfToAssets"
+  ],
+  "B2_PRICE_MOMENTUM": [
+   "A05_relative126",
+   "A07_momentum12_1",
+   "A11_distance52wHigh"
+  ],
+  "B3_VOLUME_LIQUIDITY": [
+   "D02_logVolumeShock60",
+   "E01_amihudIlliquidity60",
+   "E02_logAdv60"
+  ],
+  "B4_COMBINED_SIMPLE": [
+   "H01_industryRelMom126",
+   "A05_relative126",
+   "A07_momentum12_1",
+   "B01_bookToMarket",
+   "B02_earningsYield",
+   "C01_returnOnAssets",
+   "C05_ocfToAssets",
+   "D02_logVolumeShock60",
+   "E01_amihudIlliquidity60"
+  ]
+ },
+ "levelThreeInteractions": [
+  {
+   "interactionId": "X1_valueByBusinessConfirmation",
+   "features": [
+    "B05_industryRelativeValue",
+    "B08_valueBusinessConfirmation"
+   ],
+   "economicArgument": "cheapness with a sound business is mispricing; cheapness with a deteriorating one is a value trap (H2, CANDIDATE_SIGNAL_FAMILY)",
+   "horizon": 126,
+   "negativeControl": "the same confirmation contrast among expensive names"
+  },
+  {
+   "interactionId": "X2_momentumByAbnormalVolume",
+   "features": [
+    "A05_relative126",
+    "D05_turnoverToMarketCap60"
+   ],
+   "economicArgument": "Lee-Swaminathan: turnover tells whether momentum is early (low turnover) or late (high turnover)",
+   "horizon": 126,
+   "negativeControl": "turnover interacted with a permuted momentum rank"
+  },
+  {
+   "interactionId": "X3_industryLeadershipByStockStrength",
+   "features": [
+    "H01_industryRelMom126",
+    "A09_industryRelativeMomentum126"
+   ],
+   "economicArgument": "a leader inside a leading industry versus a laggard riding the industry",
+   "horizon": 126,
+   "negativeControl": "stock strength inside lagging industries"
+  },
+  {
+   "interactionId": "X4_priceLeadershipByInvestorAccumulation",
+   "features": [
+    "A05_relative126",
+    "G01_foreignNetBuying"
+   ],
+   "economicArgument": "leadership confirmed by identified capital is less likely to be noise",
+   "horizon": 21,
+   "negativeControl": "OHLCV accumulation proxy (D11) in place of investor flow"
+  },
+  {
+   "interactionId": "X5_volatilityByLiquidity",
+   "features": [
+    "F01_totalVolatility63",
+    "E01_amihudIlliquidity60"
+   ],
+   "economicArgument": "the low-volatility effect may live only in liquid names where arbitrage is cheap",
+   "horizon": 126,
+   "negativeControl": "volatility interacted with a permuted liquidity rank"
+  },
+  {
+   "interactionId": "X6_marketRegimeByRelativeMomentum",
+   "features": [
+    "I01_kospiTrendVolState",
+    "A05_relative126"
+   ],
+   "economicArgument": "momentum crashes cluster in market rebounds after stress",
+   "horizon": 126,
+   "negativeControl": "the same split on a lagged (one-year-old) regime label"
+  }
+ ],
+ "maxInteractions": 6,
+ "multipleTesting": {
+  "level1": "BENJAMINI_YEKUTIELI_FDR_Q0.10_WITHIN_FAMILY",
+  "level2": "HOLM_FWER_0.05_ACROSS_FAMILY_ABLATIONS",
+  "level3": "HOLM_FWER_0.05_ACROSS_INTERACTIONS",
+  "declaredBeforeOutcomes": true
+ },
+ "features": [
+  {
+   "featureId": "A01_return1d",
+   "family": "A",
+   "economicMechanism": "One-day overreaction to liquidity or news reverses as liquidity providers are paid",
+   "source": "KRX sto/stk_bydd_trd daily OHLCV + Yahoo distributions (replay-v16 panels; raw-input artifact kr-model-raw-inputs-36844599518)",
+   "sourceClass": "KRX_DAILY_OHLCV",
+   "existingImplementation": [
+    "pipeline/krx_prices.py",
+    "pipeline/kr_alpha_tournament_features.py"
+   ],
+   "pitStatus": "PIT_SIGNAL_CLOSE",
+   "availableFromSemantics": "close of the signal session T; every window ends at T",
+   "historyCoverage": "2013-01 to 2026-09, the 260 ever-top-120 KOSPI securities (PIT top-120 membership)",
+   "missingnessStatus": "NOT_YET_MEASURED",
+   "survivorshipRisk": "MODERATE",
+   "existingResearchStatus": "UNTESTED",
+   "priorEvidenceReference": [],
+   "incrementalInformationHypothesis": "short-term reversal is not spanned by 126-252 day momentum or value",
+   "primaryHorizon": 21,
+   "role": "ALPHA_CANDIDATE",
+   "readinessStatus": "DERIVABLE_FROM_EXISTING_DATA",
+   "blockingReason": null,
+   "nextAction": "compute in the Phase B matrix; Level 1 at H21 only",
+   "overlapsWith": [],
+   "limitations": "bid-ask bounce cannot be separated without quote data (E09)"
+  },
+  {
+   "featureId": "A02_return5d",
+   "family": "A",
+   "economicMechanism": "Weekly reversal of liquidity-driven price pressure",
+   "source": "KRX sto/stk_bydd_trd daily OHLCV + Yahoo distributions (replay-v16 panels; raw-input artifact kr-model-raw-inputs-36844599518)",
+   "sourceClass": "KRX_DAILY_OHLCV",
+   "existingImplementation": [
+    "pipeline/krx_prices.py",
+    "pipeline/kr_alpha_tournament_features.py"
+   ],
+   "pitStatus": "PIT_SIGNAL_CLOSE",
+   "availableFromSemantics": "close of the signal session T; every window ends at T",
+   "historyCoverage": "2013-01 to 2026-09, the 260 ever-top-120 KOSPI securities (PIT top-120 membership)",
+   "missingnessStatus": "NOT_YET_MEASURED",
+   "survivorshipRisk": "MODERATE",
+   "existingResearchStatus": "UNTESTED",
+   "priorEvidenceReference": [],
+   "incrementalInformationHypothesis": "weekly reversal distinct from monthly momentum",
+   "primaryHorizon": 21,
+   "role": "ALPHA_CANDIDATE",
+   "readinessStatus": "DERIVABLE_FROM_EXISTING_DATA",
+   "blockingReason": null,
+   "nextAction": "compute in the Phase B matrix",
+   "overlapsWith": [
+    "A01_return1d"
+   ],
+   "limitations": ""
+  },
+  {
+   "featureId": "A03_return21d",
+   "family": "A",
+   "economicMechanism": "One-month return: reversal at short horizon, start of momentum at longer ones",
+   "source": "KRX sto/stk_bydd_trd daily OHLCV + Yahoo distributions (replay-v16 panels; raw-input artifact kr-model-raw-inputs-36844599518)",
+   "sourceClass": "KRX_DAILY_OHLCV",
+   "existingImplementation": [
+    "pipeline/krx_prices.py",
+    "pipeline/kr_alpha_tournament_features.py"
+   ],
+   "pitStatus": "PIT_SIGNAL_CLOSE",
+   "availableFromSemantics": "close of the signal session T; every window ends at T",
+   "historyCoverage": "2013-01 to 2026-09, the 260 ever-top-120 KOSPI securities (PIT top-120 membership)",
+   "missingnessStatus": "MEASURED_LOW",
+   "survivorshipRisk": "MODERATE",
+   "existingResearchStatus": "PRIOR_INCONCLUSIVE",
+   "priorEvidenceReference": [
+    "regional-alpha-model-v1",
+    "kr-alpha-discovery-tournament-v1"
+   ],
+   "incrementalInformationHypothesis": "only joint use so far; its own relation was never isolated",
+   "primaryHorizon": 21,
+   "role": "ALPHA_CANDIDATE",
+   "readinessStatus": "READY",
+   "blockingReason": null,
+   "nextAction": "Level 1 at H21 (reversal reading)",
+   "overlapsWith": [],
+   "limitations": ""
+  },
+  {
+   "featureId": "A04_return63d",
+   "family": "A",
+   "economicMechanism": "Quarter return; intermediate momentum",
+   "source": "KRX sto/stk_bydd_trd daily OHLCV + Yahoo distributions (replay-v16 panels; raw-input artifact kr-model-raw-inputs-36844599518)",
+   "sourceClass": "KRX_DAILY_OHLCV",
+   "existingImplementation": [
+    "pipeline/krx_prices.py",
+    "pipeline/kr_alpha_tournament_features.py"
+   ],
+   "pitStatus": "PIT_SIGNAL_CLOSE",
+   "availableFromSemantics": "close of the signal session T; every window ends at T",
+   "historyCoverage": "2013-01 to 2026-09, the 260 ever-top-120 KOSPI securities (PIT top-120 membership)",
+   "missingnessStatus": "MEASURED_LOW",
+   "survivorshipRisk": "MODERATE",
+   "existingResearchStatus": "PRIOR_INCONCLUSIVE",
+   "priorEvidenceReference": [
+    "regional-alpha-model-v1",
+    "kr-alpha-discovery-tournament-v1"
+   ],
+   "incrementalInformationHypothesis": "joint use only",
+   "primaryHorizon": 126,
+   "role": "ALPHA_CANDIDATE",
+   "readinessStatus": "READY",
+   "blockingReason": null,
+   "nextAction": "Level 1 at H126",
+   "overlapsWith": [
+    "A05_relative126"
+   ],
+   "limitations": ""
+  },
+  {
+   "featureId": "A05_relative126",
+   "family": "A",
+   "economicMechanism": "Six-month return over 069500.KS: under-reaction to slowly diffusing news",
+   "source": "KRX sto/stk_bydd_trd daily OHLCV + Yahoo distributions (replay-v16 panels; raw-input artifact kr-model-raw-inputs-36844599518)",
+   "sourceClass": "KRX_DAILY_OHLCV",
+   "existingImplementation": [
+    "pipeline/krx_prices.py",
+    "pipeline/kr_alpha_tournament_features.py"
+   ],
+   "pitStatus": "PIT_SIGNAL_CLOSE",
+   "availableFromSemantics": "close of the signal session T; every window ends at T",
+   "historyCoverage": "2013-01 to 2026-09, the 260 ever-top-120 KOSPI securities (PIT top-120 membership)",
+   "missingnessStatus": "MEASURED_LOW",
+   "survivorshipRisk": "MODERATE",
+   "existingResearchStatus": "PRIOR_INCONCLUSIVE",
+   "priorEvidenceReference": [
+    "kr-factor-anatomy-v1",
+    "kr-stock-within-industry-anatomy-v1",
+    "regional-alpha-model-v1",
+    "alpha-opportunity-model-v5",
+    "kr-model-overlay-portfolio-v1"
+   ],
+   "incrementalInformationHypothesis": "the momentum baseline every other family is measured against",
+   "primaryHorizon": 126,
+   "role": "CONTROL",
+   "readinessStatus": "ALREADY_TESTED",
+   "blockingReason": null,
+   "nextAction": "reuse the sealed anatomy readings; enters Level 2 as baseline B2, never re-measured at Level 1",
+   "overlapsWith": [],
+   "limitations": "factor anatomy: CONCENTRATED_IN_SPECIFIC_STRATA (H126 D10-D1 +10.3pp, 73% of years positive); within industry WEAKENS_MATERIALLY"
+  },
+  {
+   "featureId": "A06_return252d",
+   "family": "A",
+   "economicMechanism": "Twelve-month return including the last month",
+   "source": "KRX sto/stk_bydd_trd daily OHLCV + Yahoo distributions (replay-v16 panels; raw-input artifact kr-model-raw-inputs-36844599518)",
+   "sourceClass": "KRX_DAILY_OHLCV",
+   "existingImplementation": [
+    "pipeline/krx_prices.py",
+    "pipeline/kr_alpha_tournament_features.py"
+   ],
+   "pitStatus": "PIT_SIGNAL_CLOSE",
+   "availableFromSemantics": "close of the signal session T; every window ends at T",
+   "historyCoverage": "2013-01 to 2026-09, the 260 ever-top-120 KOSPI securities (PIT top-120 membership)",
+   "missingnessStatus": "MEASURED_LOW",
+   "survivorshipRisk": "MODERATE",
+   "existingResearchStatus": "PRIOR_INCONCLUSIVE",
+   "priorEvidenceReference": [
+    "regional-alpha-model-v1"
+   ],
+   "incrementalInformationHypothesis": "joint use only; contaminated by one-month reversal",
+   "primaryHorizon": 126,
+   "role": "ALPHA_CANDIDATE",
+   "readinessStatus": "READY",
+   "blockingReason": null,
+   "nextAction": "Level 1 at H126",
+   "overlapsWith": [
+    "A07_momentum12_1"
+   ],
+   "limitations": ""
+  },
+  {
+   "featureId": "A07_momentum12_1",
+   "family": "A",
+   "economicMechanism": "Jegadeesh-Titman 12-1 momentum: skip the reversal month",
+   "source": "KRX sto/stk_bydd_trd daily OHLCV + Yahoo distributions (replay-v16 panels; raw-input artifact kr-model-raw-inputs-36844599518)",
+   "sourceClass": "KRX_DAILY_OHLCV",
+   "existingImplementation": [
+    "pipeline/krx_prices.py",
+    "pipeline/kr_alpha_tournament_features.py"
+   ],
+   "pitStatus": "PIT_SIGNAL_CLOSE",
+   "availableFromSemantics": "close of the signal session T; every window ends at T",
+   "historyCoverage": "2013-01 to 2026-09, the 260 ever-top-120 KOSPI securities (PIT top-120 membership)",
+   "missingnessStatus": "MEASURED_LOW",
+   "survivorshipRisk": "MODERATE",
+   "existingResearchStatus": "PRIOR_INCONCLUSIVE",
+   "priorEvidenceReference": [
+    "kr-factor-anatomy-v1",
+    "kr-stock-within-industry-anatomy-v1",
+    "regional-alpha-model-v1",
+    "four-factor-signal-attribution-audit-v1"
+   ],
+   "incrementalInformationHypothesis": "classic momentum; baseline B2",
+   "primaryHorizon": 126,
+   "role": "CONTROL",
+   "readinessStatus": "ALREADY_TESTED",
+   "blockingReason": null,
+   "nextAction": "reuse sealed readings; Level 2 baseline only",
+   "overlapsWith": [],
+   "limitations": "factor anatomy UNSTABLE_OR_REGIME_DEPENDENT; within industry ABSORBED_TO_NEAR_ZERO"
+  },
+  {
+   "featureId": "A08_momentum6",
+   "family": "A",
+   "economicMechanism": "Medium-term (6-month) momentum",
+   "source": "KRX sto/stk_bydd_trd daily OHLCV + Yahoo distributions (replay-v16 panels; raw-input artifact kr-model-raw-inputs-36844599518)",
+   "sourceClass": "KRX_DAILY_OHLCV",
+   "existingImplementation": [
+    "pipeline/krx_prices.py",
+    "pipeline/kr_alpha_tournament_features.py"
+   ],
+   "pitStatus": "PIT_SIGNAL_CLOSE",
+   "availableFromSemantics": "close of the signal session T; every window ends at T",
+   "historyCoverage": "2013-01 to 2026-09, the 260 ever-top-120 KOSPI securities (PIT top-120 membership)",
+   "missingnessStatus": "MEASURED_LOW",
+   "survivorshipRisk": "MODERATE",
+   "existingResearchStatus": "PRIOR_INCONCLUSIVE",
+   "priorEvidenceReference": [
+    "regional-alpha-model-v1"
+   ],
+   "incrementalInformationHypothesis": "joint use only",
+   "primaryHorizon": 126,
+   "role": "ALPHA_CANDIDATE",
+   "readinessStatus": "READY",
+   "blockingReason": null,
+   "nextAction": "Level 1 at H126; expected redundant with A05/A07 (redundancy map decides)",
+   "overlapsWith": [
+    "A05_relative126",
+    "A07_momentum12_1"
+   ],
+   "limitations": ""
+  },
+  {
+   "featureId": "A09_industryRelativeMomentum126",
+   "family": "A",
+   "economicMechanism": "Stock return minus its leave-one-out industry: stock-level leadership inside an industry",
+   "source": "KRX sto/stk_bydd_trd daily OHLCV + Yahoo distributions (replay-v16 panels; raw-input artifact kr-model-raw-inputs-36844599518)",
+   "sourceClass": "KRX_DAILY_OHLCV",
+   "existingImplementation": [
+    "pipeline/kr_alpha_tournament_features.py",
+    "pipeline/kr_stock_within_industry_anatomy.py"
+   ],
+   "pitStatus": "PIT_RECONSTRUCTED_MEMBERSHIP",
+   "availableFromSemantics": "close of the signal session T; every window ends at T; v4 economic crosswalk over the KIND/KRX label observable at T; 22 terminated names unclassified",
+   "historyCoverage": "2013-01 to 2026-09, the 260 ever-top-120 KOSPI securities (PIT top-120 membership)",
+   "missingnessStatus": "MEASURED_LOW",
+   "survivorshipRisk": "MODERATE",
+   "existingResearchStatus": "PRIOR_INCONCLUSIVE",
+   "priorEvidenceReference": [
+    "kr-stock-within-industry-anatomy-v1",
+    "kr-alpha-discovery-tournament-v1"
+   ],
+   "incrementalInformationHypothesis": "separates stock selection from industry allocation",
+   "primaryHorizon": 126,
+   "role": "ALPHA_CANDIDATE",
+   "readinessStatus": "ALREADY_TESTED",
+   "blockingReason": null,
+   "nextAction": "reuse within-industry anatomy reading; Level 3 X3 component",
+   "overlapsWith": [],
+   "limitations": "within-industry relative126 +0.028 (mean/se +1.1), 55% of years positive"
+  },
+  {
+   "featureId": "A10_residualMomentum126",
+   "family": "A",
+   "economicMechanism": "Momentum in the part of the return not explained by market and industry: firm-specific news diffusion",
+   "source": "KRX sto/stk_bydd_trd daily OHLCV + Yahoo distributions (replay-v16 panels; raw-input artifact kr-model-raw-inputs-36844599518)",
+   "sourceClass": "KRX_DAILY_OHLCV",
+   "existingImplementation": [
+    "pipeline/krx_prices.py",
+    "pipeline/kr_alpha_tournament_features.py"
+   ],
+   "pitStatus": "PIT_SIGNAL_CLOSE",
+   "availableFromSemantics": "close of the signal session T; every window ends at T; betas estimated on the 252 sessions ending at T",
+   "historyCoverage": "2013-01 to 2026-09, the 260 ever-top-120 KOSPI securities (PIT top-120 membership)",
+   "missingnessStatus": "NOT_YET_MEASURED",
+   "survivorshipRisk": "MODERATE",
+   "existingResearchStatus": "UNTESTED",
+   "priorEvidenceReference": [],
+   "incrementalInformationHypothesis": "removes the market/industry beta component that total-return momentum carries into crashes",
+   "primaryHorizon": 126,
+   "role": "ALPHA_CANDIDATE",
+   "readinessStatus": "DERIVABLE_FROM_EXISTING_DATA",
+   "blockingReason": null,
+   "nextAction": "compute in Phase B",
+   "overlapsWith": [
+    "A09_industryRelativeMomentum126"
+   ],
+   "limitations": ""
+  },
+  {
+   "featureId": "A11_distance52wHigh",
+   "family": "A",
+   "economicMechanism": "Anchoring to the 52-week high delays reaction to good news",
+   "source": "KRX sto/stk_bydd_trd daily OHLCV + Yahoo distributions (replay-v16 panels; raw-input artifact kr-model-raw-inputs-36844599518)",
+   "sourceClass": "KRX_DAILY_OHLCV",
+   "existingImplementation": [
+    "pipeline/krx_prices.py",
+    "pipeline/kr_alpha_tournament_features.py"
+   ],
+   "pitStatus": "PIT_SIGNAL_CLOSE",
+   "availableFromSemantics": "close of the signal session T; every window ends at T",
+   "historyCoverage": "2013-01 to 2026-09, the 260 ever-top-120 KOSPI securities (PIT top-120 membership)",
+   "missingnessStatus": "MEASURED_LOW",
+   "survivorshipRisk": "MODERATE",
+   "existingResearchStatus": "PRIOR_INCONCLUSIVE",
+   "priorEvidenceReference": [
+    "regional-alpha-model-v1",
+    "kr-alpha-discovery-tournament-v1"
+   ],
+   "incrementalInformationHypothesis": "joint use only",
+   "primaryHorizon": 126,
+   "role": "ALPHA_CANDIDATE",
+   "readinessStatus": "READY",
+   "blockingReason": null,
+   "nextAction": "Level 1 at H126",
+   "overlapsWith": [],
+   "limitations": ""
+  },
+  {
+   "featureId": "A12_momentumPersistence",
+   "family": "A",
+   "economicMechanism": "Share of the last 12 months with positive relative return: smooth versus lumpy momentum",
+   "source": "KRX sto/stk_bydd_trd daily OHLCV + Yahoo distributions (replay-v16 panels; raw-input artifact kr-model-raw-inputs-36844599518)",
+   "sourceClass": "KRX_DAILY_OHLCV",
+   "existingImplementation": [
+    "pipeline/krx_prices.py",
+    "pipeline/kr_alpha_tournament_features.py"
+   ],
+   "pitStatus": "PIT_SIGNAL_CLOSE",
+   "availableFromSemantics": "close of the signal session T; every window ends at T",
+   "historyCoverage": "2013-01 to 2026-09, the 260 ever-top-120 KOSPI securities (PIT top-120 membership)",
+   "missingnessStatus": "NOT_YET_MEASURED",
+   "survivorshipRisk": "MODERATE",
+   "existingResearchStatus": "UNTESTED",
+   "priorEvidenceReference": [],
+   "incrementalInformationHypothesis": "path quality of momentum, not its level",
+   "primaryHorizon": 126,
+   "role": "ALPHA_CANDIDATE",
+   "readinessStatus": "DERIVABLE_FROM_EXISTING_DATA",
+   "blockingReason": null,
+   "nextAction": "compute in Phase B",
+   "overlapsWith": [
+    "A07_momentum12_1"
+   ],
+   "limitations": ""
+  },
+  {
+   "featureId": "A13_momentumAcceleration21",
+   "family": "A",
+   "economicMechanism": "Change in short-horizon momentum: new information arriving",
+   "source": "KRX sto/stk_bydd_trd daily OHLCV + Yahoo distributions (replay-v16 panels; raw-input artifact kr-model-raw-inputs-36844599518)",
+   "sourceClass": "KRX_DAILY_OHLCV",
+   "existingImplementation": [
+    "pipeline/alpha_opportunity_v5_execution.py"
+   ],
+   "pitStatus": "PIT_SIGNAL_CLOSE",
+   "availableFromSemantics": "close of the signal session T; every window ends at T",
+   "historyCoverage": "2013-01 to 2026-09, the 260 ever-top-120 KOSPI securities (PIT top-120 membership)",
+   "missingnessStatus": "MEASURED_LOW",
+   "survivorshipRisk": "MODERATE",
+   "existingResearchStatus": "PRIOR_INCONCLUSIVE",
+   "priorEvidenceReference": [
+    "alpha-opportunity-model-v5",
+    "opportunity-radar-model"
+   ],
+   "incrementalInformationHypothesis": "joint use only (v5 INCONCLUSIVE; opportunity radar rejected)",
+   "primaryHorizon": 21,
+   "role": "ALPHA_CANDIDATE",
+   "readinessStatus": "READY",
+   "blockingReason": null,
+   "nextAction": "Level 1 at H21",
+   "overlapsWith": [],
+   "limitations": ""
+  },
+  {
+   "featureId": "A14_ma200Distance",
+   "family": "A",
+   "economicMechanism": "Price versus its 200-session trend",
+   "source": "KRX sto/stk_bydd_trd daily OHLCV + Yahoo distributions (replay-v16 panels; raw-input artifact kr-model-raw-inputs-36844599518)",
+   "sourceClass": "KRX_DAILY_OHLCV",
+   "existingImplementation": [
+    "pipeline/krx_prices.py",
+    "pipeline/kr_alpha_tournament_features.py"
+   ],
+   "pitStatus": "PIT_SIGNAL_CLOSE",
+   "availableFromSemantics": "close of the signal session T; every window ends at T",
+   "historyCoverage": "2013-01 to 2026-09, the 260 ever-top-120 KOSPI securities (PIT top-120 membership)",
+   "missingnessStatus": "MEASURED_LOW",
+   "survivorshipRisk": "MODERATE",
+   "existingResearchStatus": "PRIOR_INCONCLUSIVE",
+   "priorEvidenceReference": [
+    "regional-alpha-model-v1",
+    "kr-alpha-discovery-tournament-v1"
+   ],
+   "incrementalInformationHypothesis": "near-duplicate of A06/A11; kept to measure redundancy, not as new information",
+   "primaryHorizon": 126,
+   "role": "ALPHA_CANDIDATE",
+   "readinessStatus": "READY",
+   "blockingReason": null,
+   "nextAction": "redundancy map only unless it separates from A06/A11",
+   "overlapsWith": [
+    "A06_return252d",
+    "A11_distance52wHigh"
+   ],
+   "limitations": ""
+  },
+  {
+   "featureId": "B01_bookToMarket",
+   "family": "B",
+   "economicMechanism": "Cheap assets: compensation for distress risk or mispricing of out-of-favour firms",
+   "source": "DART fnlttSinglAcntAll filings (receipt-dated) x signal-date KRX market cap",
+   "sourceClass": "DART_FILINGS",
+   "existingImplementation": [
+    "pipeline/kr_value_quality_catalyst.py",
+    "pipeline/dart_derive.py"
+   ],
+   "pitStatus": "PIT_RECEIPT_DATED",
+   "availableFromSemantics": "DART receipt date (availableFrom) <= T; latest visible report period; TTM roll-forward, never annualised",
+   "historyCoverage": "DART from fiscal 2015 (dark 2013-2014, partial 2016); 126 of 260 ever-top-120 tickers collected in the sealed store",
+   "missingnessStatus": "MEASURED_MODERATE",
+   "survivorshipRisk": "MODERATE",
+   "existingResearchStatus": "PRIOR_POSITIVE_DEVELOPMENT",
+   "priorEvidenceReference": [
+    "kr-factor-anatomy-v1",
+    "kr-stock-within-industry-anatomy-v1",
+    "kr-model-overlay-portfolio-v1"
+   ],
+   "incrementalInformationHypothesis": "value baseline B1",
+   "primaryHorizon": 126,
+   "role": "CONTROL",
+   "readinessStatus": "ALREADY_TESTED",
+   "blockingReason": null,
+   "nextAction": "reuse sealed readings; Level 2 baseline B1",
+   "overlapsWith": [],
+   "limitations": "factor anatomy H126 BROADLY_POSITIVE_HISTORICAL_ASSOCIATION (D10-D1 +6.5pp, 80% of years); within-industry +0.086 (mean/se +2.9); 75% raw coverage of eligible name-dates. ISSUE_CAP_ACCOUNTING_PROXY: whole-entity accounts over one issue's cap; distorted for preferreds and holding companies; return basis understates high-dividend names"
+  },
+  {
+   "featureId": "B02_earningsYield",
+   "family": "B",
+   "economicMechanism": "Cheap earnings",
+   "source": "DART fnlttSinglAcntAll filings (receipt-dated) x signal-date KRX market cap",
+   "sourceClass": "DART_FILINGS",
+   "existingImplementation": [
+    "pipeline/kr_value_quality_catalyst.py",
+    "pipeline/dart_derive.py"
+   ],
+   "pitStatus": "PIT_RECEIPT_DATED",
+   "availableFromSemantics": "DART receipt date (availableFrom) <= T; latest visible report period; TTM roll-forward, never annualised",
+   "historyCoverage": "DART from fiscal 2015 (dark 2013-2014, partial 2016); 126 of 260 ever-top-120 tickers collected in the sealed store",
+   "missingnessStatus": "MEASURED_HIGH",
+   "survivorshipRisk": "MODERATE",
+   "existingResearchStatus": "PRIOR_INCONCLUSIVE",
+   "priorEvidenceReference": [
+    "kr-factor-anatomy-v1",
+    "kr-stock-within-industry-anatomy-v1",
+    "kr-model-overlay-portfolio-v1"
+   ],
+   "incrementalInformationHypothesis": "value baseline B1",
+   "primaryHorizon": 126,
+   "role": "CONTROL",
+   "readinessStatus": "ALREADY_TESTED",
+   "blockingReason": null,
+   "nextAction": "reuse sealed readings",
+   "overlapsWith": [],
+   "limitations": "market-wide UNSTABLE_OR_REGIME_DEPENDENT; within industry +0.073 (+2.6); 61% raw coverage. ISSUE_CAP_ACCOUNTING_PROXY: whole-entity accounts over one issue's cap; distorted for preferreds and holding companies; return basis understates high-dividend names"
+  },
+  {
+   "featureId": "B03_ocfYield",
+   "family": "B",
+   "economicMechanism": "Cheap operating cash flow",
+   "source": "DART fnlttSinglAcntAll filings (receipt-dated) x signal-date KRX market cap",
+   "sourceClass": "DART_FILINGS",
+   "existingImplementation": [
+    "pipeline/kr_value_quality_catalyst.py",
+    "pipeline/dart_derive.py"
+   ],
+   "pitStatus": "PIT_RECEIPT_DATED",
+   "availableFromSemantics": "DART receipt date (availableFrom) <= T; latest visible report period; TTM roll-forward, never annualised",
+   "historyCoverage": "DART from fiscal 2015 (dark 2013-2014, partial 2016); 126 of 260 ever-top-120 tickers collected in the sealed store",
+   "missingnessStatus": "MEASURED_HIGH",
+   "survivorshipRisk": "MODERATE",
+   "existingResearchStatus": "PRIOR_NEGATIVE_DEVELOPMENT",
+   "priorEvidenceReference": [
+    "kr-factor-anatomy-v1",
+    "kr-stock-within-industry-anatomy-v1",
+    "kr-model-overlay-portfolio-v1"
+   ],
+   "incrementalInformationHypothesis": "no separate role beyond B01/B02 expected",
+   "primaryHorizon": 126,
+   "role": "ALPHA_CANDIDATE",
+   "readinessStatus": "ALREADY_TESTED",
+   "blockingReason": null,
+   "nextAction": "no new Level 1; redundancy map only",
+   "overlapsWith": [],
+   "limitations": "factor anatomy H126 D10-D1 -4.1pp, 11% of years positive; ISSUE_CAP_ACCOUNTING_PROXY: whole-entity accounts over one issue's cap; distorted for preferreds and holding companies; return basis understates high-dividend names"
+  },
+  {
+   "featureId": "B04_freeCashFlowYield",
+   "family": "B",
+   "economicMechanism": "Cheap free cash flow after maintenance capex",
+   "source": "DART fnlttSinglAcntAll filings (receipt-dated) x signal-date KRX market cap",
+   "sourceClass": "DART_FILINGS",
+   "existingImplementation": [
+    "pipeline/accounting_quality.py",
+    "pipeline/dart_derive.py"
+   ],
+   "pitStatus": "PIT_RECEIPT_DATED",
+   "availableFromSemantics": "DART receipt date (availableFrom) <= T; latest visible report period; TTM roll-forward, never annualised",
+   "historyCoverage": "DART from fiscal 2015 (dark 2013-2014, partial 2016); 126 of 260 ever-top-120 tickers collected in the sealed store",
+   "missingnessStatus": "MEASURED_HIGH",
+   "survivorshipRisk": "MODERATE",
+   "existingResearchStatus": "UNTESTED",
+   "priorEvidenceReference": [],
+   "incrementalInformationHypothesis": "cash yield net of investment needs",
+   "primaryHorizon": 126,
+   "role": "ALPHA_CANDIDATE",
+   "readinessStatus": "DATA_BUILD_REQUIRED",
+   "blockingReason": "KR capex (유형자산의취득) present on 7.74% of KR filings and fcfToNetIncome on 4.31% (alpha-research-foundation-v2); kr-canonical-v2 raw-statement repair not landed",
+   "nextAction": "re-measure coverage after kr-canonical-v2 lands; exclude if still below the 60% floor",
+   "overlapsWith": [],
+   "limitations": ""
+  },
+  {
+   "featureId": "B05_industryRelativeValue",
+   "family": "B",
+   "economicMechanism": "Cheap against industry peers: removes industry-wide valuation differences that are not mispricing",
+   "source": "DART fnlttSinglAcntAll filings (receipt-dated) x signal-date KRX market cap",
+   "sourceClass": "DART_FILINGS",
+   "existingImplementation": [
+    "pipeline/kr_value_quality_catalyst.py",
+    "pipeline/dart_derive.py",
+    "pipeline/kr_stock_within_industry_anatomy.py"
+   ],
+   "pitStatus": "PIT_RECEIPT_DATED",
+   "availableFromSemantics": "DART receipt date (availableFrom) <= T; latest visible report period; TTM roll-forward, never annualised; v4 economic crosswalk over the KIND/KRX label observable at T; 22 terminated names unclassified",
+   "historyCoverage": "DART from fiscal 2015 (dark 2013-2014, partial 2016); 126 of 260 ever-top-120 tickers collected in the sealed store",
+   "missingnessStatus": "MEASURED_MODERATE",
+   "survivorshipRisk": "MODERATE",
+   "existingResearchStatus": "PRIOR_POSITIVE_DEVELOPMENT",
+   "priorEvidenceReference": [
+    "kr-stock-within-industry-anatomy-v1",
+    "kr-integrated-alpha-portfolio-v1"
+   ],
+   "incrementalInformationHypothesis": "within-industry value; the value leg of H2",
+   "primaryHorizon": 126,
+   "role": "ALPHA_CANDIDATE",
+   "readinessStatus": "ALREADY_TESTED",
+   "blockingReason": null,
+   "nextAction": "reuse sealed reading; Level 3 X1 component",
+   "overlapsWith": [],
+   "limitations": "B/M and EY both SURVIVE the move to industry-relative targets; the outcome-exposed anatomy was read before H2 was designed"
+  },
+  {
+   "featureId": "B06_ownHistoryValuation",
+   "family": "B",
+   "economicMechanism": "Cheap against its own past: mean reversion of a firm's own multiple",
+   "source": "DART fnlttSinglAcntAll filings (receipt-dated) x signal-date KRX market cap",
+   "sourceClass": "DART_FILINGS",
+   "existingImplementation": [
+    "pipeline/kr_value_quality_catalyst.py",
+    "pipeline/dart_derive.py"
+   ],
+   "pitStatus": "PIT_RECEIPT_DATED",
+   "availableFromSemantics": "DART receipt date (availableFrom) <= T; latest visible report period; TTM roll-forward, never annualised; own trailing 3-year median",
+   "historyCoverage": "usable from about 2018 (needs three years of receipt-dated filings)",
+   "missingnessStatus": "NOT_YET_MEASURED",
+   "survivorshipRisk": "MODERATE",
+   "existingResearchStatus": "UNTESTED",
+   "priorEvidenceReference": [],
+   "incrementalInformationHypothesis": "time-series cheapness, distinct from cross-sectional cheapness",
+   "primaryHorizon": 126,
+   "role": "ALPHA_CANDIDATE",
+   "readinessStatus": "DERIVABLE_FROM_EXISTING_DATA",
+   "blockingReason": null,
+   "nextAction": "compute in Phase B; report its first measurable year",
+   "overlapsWith": [],
+   "limitations": ""
+  },
+  {
+   "featureId": "B07_valuationChange126",
+   "family": "B",
+   "economicMechanism": "Change in book-to-market over 126 sessions: mostly price driven, so a value-momentum mix",
+   "source": "DART fnlttSinglAcntAll filings (receipt-dated) x signal-date KRX market cap",
+   "sourceClass": "DART_FILINGS",
+   "existingImplementation": [
+    "pipeline/kr_value_quality_catalyst.py",
+    "pipeline/dart_derive.py"
+   ],
+   "pitStatus": "PIT_RECEIPT_DATED",
+   "availableFromSemantics": "DART receipt date (availableFrom) <= T; latest visible report period; TTM roll-forward, never annualised",
+   "historyCoverage": "DART from fiscal 2015 (dark 2013-2014, partial 2016); 126 of 260 ever-top-120 tickers collected in the sealed store",
+   "missingnessStatus": "NOT_YET_MEASURED",
+   "survivorshipRisk": "MODERATE",
+   "existingResearchStatus": "UNTESTED",
+   "priorEvidenceReference": [],
+   "incrementalInformationHypothesis": "expected to be largely the negative of A05; kept only to measure that",
+   "primaryHorizon": 126,
+   "role": "ALPHA_CANDIDATE",
+   "readinessStatus": "DERIVABLE_FROM_EXISTING_DATA",
+   "blockingReason": null,
+   "nextAction": "redundancy map before any Level 1 reading",
+   "overlapsWith": [
+    "A05_relative126",
+    "B01_bookToMarket"
+   ],
+   "limitations": ""
+  },
+  {
+   "featureId": "B08_valueBusinessConfirmation",
+   "family": "B",
+   "economicMechanism": "H2: cheap within industry AND profitable, cash-backed, not deteriorating; separates mispricing from value traps",
+   "source": "DART fnlttSinglAcntAll filings (receipt-dated) x signal-date KRX market cap",
+   "sourceClass": "DART_FILINGS",
+   "existingImplementation": [
+    "pipeline/kr_alpha_signal_v2.py"
+   ],
+   "pitStatus": "PIT_RECEIPT_DATED",
+   "availableFromSemantics": "DART receipt date (availableFrom) <= T; latest visible report period; TTM roll-forward, never annualised; v4 economic crosswalk over the KIND/KRX label observable at T; 22 terminated names unclassified",
+   "historyCoverage": "DART from fiscal 2015 (dark 2013-2014, partial 2016); 126 of 260 ever-top-120 tickers collected in the sealed store",
+   "missingnessStatus": "NOT_YET_MEASURED",
+   "survivorshipRisk": "MODERATE",
+   "existingResearchStatus": "PRIOR_INCONCLUSIVE",
+   "priorEvidenceReference": [
+    "kr-model-overlay-portfolio-v1"
+   ],
+   "incrementalInformationHypothesis": "conditional contrast, no fitted parameter; the same fields entered the rejected overlay only as fitted products",
+   "primaryHorizon": 126,
+   "role": "ALPHA_CANDIDATE",
+   "readinessStatus": "DERIVABLE_FROM_EXISTING_DATA",
+   "blockingReason": null,
+   "nextAction": "CANDIDATE_SIGNAL_FAMILY; Level 3 interaction X1 (docs/kr-alpha-signal-v2-design.md)",
+   "overlapsWith": [
+    "B05_industryRelativeValue",
+    "C01_returnOnAssets",
+    "C05_ocfToAssets",
+    "C14_ocfImprovement"
+   ],
+   "limitations": ""
+  },
+  {
+   "featureId": "C01_returnOnAssets",
+   "family": "C",
+   "economicMechanism": "Profitable firms earn more: risk or under-pricing of persistent profitability",
+   "source": "DART fnlttSinglAcntAll filings (receipt-dated) x signal-date KRX market cap",
+   "sourceClass": "DART_FILINGS",
+   "existingImplementation": [
+    "pipeline/kr_value_quality_catalyst.py",
+    "pipeline/dart_derive.py"
+   ],
+   "pitStatus": "PIT_RECEIPT_DATED",
+   "availableFromSemantics": "DART receipt date (availableFrom) <= T; latest visible report period; TTM roll-forward, never annualised",
+   "historyCoverage": "DART from fiscal 2015 (dark 2013-2014, partial 2016); 126 of 260 ever-top-120 tickers collected in the sealed store",
+   "missingnessStatus": "MEASURED_HIGH",
+   "survivorshipRisk": "MODERATE",
+   "existingResearchStatus": "PRIOR_INCONCLUSIVE",
+   "priorEvidenceReference": [
+    "kr-factor-anatomy-v1",
+    "kr-stock-within-industry-anatomy-v1",
+    "kr-model-overlay-portfolio-v1"
+   ],
+   "incrementalInformationHypothesis": "profitability baseline B1",
+   "primaryHorizon": 126,
+   "role": "CONTROL",
+   "readinessStatus": "ALREADY_TESTED",
+   "blockingReason": null,
+   "nextAction": "reuse sealed readings",
+   "overlapsWith": [],
+   "limitations": "factor anatomy NO_CLEAR_MONOTONIC_PATTERN; within industry +0.036 (+1.0); 61% raw coverage"
+  },
+  {
+   "featureId": "C02_returnOnEquity",
+   "family": "C",
+   "economicMechanism": "Return on book equity",
+   "source": "DART fnlttSinglAcntAll filings (receipt-dated) x signal-date KRX market cap",
+   "sourceClass": "DART_FILINGS",
+   "existingImplementation": [
+    "pipeline/dart_derive.py",
+    "pipeline/regional_alpha_features.py"
+   ],
+   "pitStatus": "PIT_RECEIPT_DATED",
+   "availableFromSemantics": "DART receipt date (availableFrom) <= T; latest visible report period; TTM roll-forward, never annualised",
+   "historyCoverage": "DART from fiscal 2015 (dark 2013-2014, partial 2016); 126 of 260 ever-top-120 tickers collected in the sealed store",
+   "missingnessStatus": "MEASURED_HIGH",
+   "survivorshipRisk": "MODERATE",
+   "existingResearchStatus": "PRIOR_INCONCLUSIVE",
+   "priorEvidenceReference": [
+    "regional-alpha-model-v1",
+    "four-factor-signal-attribution-audit-v1"
+   ],
+   "incrementalInformationHypothesis": "joint use only; production quality sleeve region-sign-unstable",
+   "primaryHorizon": 126,
+   "role": "ALPHA_CANDIDATE",
+   "readinessStatus": "READY",
+   "blockingReason": null,
+   "nextAction": "Level 1 at H126",
+   "overlapsWith": [
+    "C01_returnOnAssets"
+   ],
+   "limitations": "undefined on negative equity (None, never a number)"
+  },
+  {
+   "featureId": "C03_operatingMargin",
+   "family": "C",
+   "economicMechanism": "Operating margin: pricing power",
+   "source": "DART fnlttSinglAcntAll filings (receipt-dated) x signal-date KRX market cap",
+   "sourceClass": "DART_FILINGS",
+   "existingImplementation": [
+    "pipeline/dart_derive.py",
+    "pipeline/regional_alpha_features.py"
+   ],
+   "pitStatus": "PIT_RECEIPT_DATED",
+   "availableFromSemantics": "DART receipt date (availableFrom) <= T; latest visible report period; TTM roll-forward, never annualised",
+   "historyCoverage": "DART from fiscal 2015 (dark 2013-2014, partial 2016); 126 of 260 ever-top-120 tickers collected in the sealed store",
+   "missingnessStatus": "MEASURED_HIGH",
+   "survivorshipRisk": "MODERATE",
+   "existingResearchStatus": "PRIOR_INCONCLUSIVE",
+   "priorEvidenceReference": [
+    "regional-alpha-model-v1"
+   ],
+   "incrementalInformationHypothesis": "joint use only",
+   "primaryHorizon": 126,
+   "role": "ALPHA_CANDIDATE",
+   "readinessStatus": "READY",
+   "blockingReason": null,
+   "nextAction": "Level 1 at H126",
+   "overlapsWith": [],
+   "limitations": ""
+  },
+  {
+   "featureId": "C04_profitMargin",
+   "family": "C",
+   "economicMechanism": "Net margin",
+   "source": "DART fnlttSinglAcntAll filings (receipt-dated) x signal-date KRX market cap",
+   "sourceClass": "DART_FILINGS",
+   "existingImplementation": [
+    "pipeline/dart_derive.py",
+    "pipeline/regional_alpha_features.py"
+   ],
+   "pitStatus": "PIT_RECEIPT_DATED",
+   "availableFromSemantics": "DART receipt date (availableFrom) <= T; latest visible report period; TTM roll-forward, never annualised",
+   "historyCoverage": "DART from fiscal 2015 (dark 2013-2014, partial 2016); 126 of 260 ever-top-120 tickers collected in the sealed store",
+   "missingnessStatus": "MEASURED_HIGH",
+   "survivorshipRisk": "MODERATE",
+   "existingResearchStatus": "PRIOR_INCONCLUSIVE",
+   "priorEvidenceReference": [
+    "regional-alpha-model-v1"
+   ],
+   "incrementalInformationHypothesis": "near-duplicate of C03; redundancy map decides",
+   "primaryHorizon": 126,
+   "role": "ALPHA_CANDIDATE",
+   "readinessStatus": "READY",
+   "blockingReason": null,
+   "nextAction": "redundancy map first",
+   "overlapsWith": [
+    "C03_operatingMargin"
+   ],
+   "limitations": ""
+  },
+  {
+   "featureId": "C05_ocfToAssets",
+   "family": "C",
+   "economicMechanism": "Cash profitability: earnings backed by cash",
+   "source": "DART fnlttSinglAcntAll filings (receipt-dated) x signal-date KRX market cap",
+   "sourceClass": "DART_FILINGS",
+   "existingImplementation": [
+    "pipeline/kr_value_quality_catalyst.py",
+    "pipeline/dart_derive.py"
+   ],
+   "pitStatus": "PIT_RECEIPT_DATED",
+   "availableFromSemantics": "DART receipt date (availableFrom) <= T; latest visible report period; TTM roll-forward, never annualised",
+   "historyCoverage": "DART from fiscal 2015 (dark 2013-2014, partial 2016); 126 of 260 ever-top-120 tickers collected in the sealed store",
+   "missingnessStatus": "MEASURED_HIGH",
+   "survivorshipRisk": "MODERATE",
+   "existingResearchStatus": "PRIOR_INCONCLUSIVE",
+   "priorEvidenceReference": [
+    "kr-factor-anatomy-v1",
+    "kr-stock-within-industry-anatomy-v1",
+    "kr-model-overlay-portfolio-v1"
+   ],
+   "incrementalInformationHypothesis": "cash leg of H2's confirmation",
+   "primaryHorizon": 126,
+   "role": "CONTROL",
+   "readinessStatus": "ALREADY_TESTED",
+   "blockingReason": null,
+   "nextAction": "reuse sealed readings",
+   "overlapsWith": [],
+   "limitations": "60% raw coverage"
+  },
+  {
+   "featureId": "C06_cashConversion",
+   "family": "C",
+   "economicMechanism": "Operating cash flow over net income: earnings quality",
+   "source": "DART fnlttSinglAcntAll filings (receipt-dated) x signal-date KRX market cap",
+   "sourceClass": "DART_FILINGS",
+   "existingImplementation": [
+    "pipeline/accounting_quality.py",
+    "pipeline/dart_derive.py"
+   ],
+   "pitStatus": "PIT_RECEIPT_DATED",
+   "availableFromSemantics": "DART receipt date (availableFrom) <= T; latest visible report period; TTM roll-forward, never annualised",
+   "historyCoverage": "DART from fiscal 2015 (dark 2013-2014, partial 2016); 126 of 260 ever-top-120 tickers collected in the sealed store",
+   "missingnessStatus": "MEASURED_HIGH",
+   "survivorshipRisk": "MODERATE",
+   "existingResearchStatus": "UNTESTED",
+   "priorEvidenceReference": [],
+   "incrementalInformationHypothesis": "earnings quality beyond the level of profit",
+   "primaryHorizon": 126,
+   "role": "ALPHA_CANDIDATE",
+   "readinessStatus": "DATA_BUILD_REQUIRED",
+   "blockingReason": "KR net income absent from 72% of 2024-2025 quarterly filings in the sealed store (v2.33); v5 removed ocfToNetIncomePct for an unapproved state contract",
+   "nextAction": "re-measure after kr-canonical-v2 lands",
+   "overlapsWith": [],
+   "limitations": ""
+  },
+  {
+   "featureId": "C07_negativeAccruals",
+   "family": "C",
+   "economicMechanism": "Sloan accruals: earnings not backed by cash reverse",
+   "source": "DART fnlttSinglAcntAll filings (receipt-dated) x signal-date KRX market cap",
+   "sourceClass": "DART_FILINGS",
+   "existingImplementation": [
+    "pipeline/kr_value_quality_catalyst.py",
+    "pipeline/dart_derive.py"
+   ],
+   "pitStatus": "PIT_RECEIPT_DATED",
+   "availableFromSemantics": "DART receipt date (availableFrom) <= T; latest visible report period; TTM roll-forward, never annualised",
+   "historyCoverage": "DART from fiscal 2015 (dark 2013-2014, partial 2016); 126 of 260 ever-top-120 tickers collected in the sealed store",
+   "missingnessStatus": "MEASURED_HIGH",
+   "survivorshipRisk": "MODERATE",
+   "existingResearchStatus": "PRIOR_NEGATIVE_DEVELOPMENT",
+   "priorEvidenceReference": [
+    "kr-factor-anatomy-v1",
+    "kr-stock-within-industry-anatomy-v1",
+    "kr-model-overlay-portfolio-v1"
+   ],
+   "incrementalInformationHypothesis": "accrual reversal",
+   "primaryHorizon": 126,
+   "role": "ALPHA_CANDIDATE",
+   "readinessStatus": "ALREADY_TESTED",
+   "blockingReason": null,
+   "nextAction": "no new Level 1",
+   "overlapsWith": [],
+   "limitations": "factor anatomy D10-D1 -1.0pp, 33% of years positive; within industry ABSORBED_TO_NEAR_ZERO"
+  },
+  {
+   "featureId": "C08_netIncomeMinusOcf",
+   "family": "C",
+   "economicMechanism": "Net income minus operating cash flow (scaled): the same accrual information as C07",
+   "source": "DART fnlttSinglAcntAll filings (receipt-dated) x signal-date KRX market cap",
+   "sourceClass": "DART_FILINGS",
+   "existingImplementation": [
+    "pipeline/kr_value_quality_catalyst.py",
+    "pipeline/dart_derive.py"
+   ],
+   "pitStatus": "PIT_RECEIPT_DATED",
+   "availableFromSemantics": "DART receipt date (availableFrom) <= T; latest visible report period; TTM roll-forward, never annualised",
+   "historyCoverage": "DART from fiscal 2015 (dark 2013-2014, partial 2016); 126 of 260 ever-top-120 tickers collected in the sealed store",
+   "missingnessStatus": "MEASURED_HIGH",
+   "survivorshipRisk": "MODERATE",
+   "existingResearchStatus": "PRIOR_NEGATIVE_DEVELOPMENT",
+   "priorEvidenceReference": [
+    "kr-factor-anatomy-v1"
+   ],
+   "incrementalInformationHypothesis": "a transformation of C07, NOT independent information",
+   "primaryHorizon": 126,
+   "role": "ALPHA_CANDIDATE",
+   "readinessStatus": "ALREADY_TESTED",
+   "blockingReason": null,
+   "nextAction": "none: covered by C07",
+   "overlapsWith": [
+    "C07_negativeAccruals"
+   ],
+   "limitations": ""
+  },
+  {
+   "featureId": "C09_assetGrowth",
+   "family": "C",
+   "economicMechanism": "Investment factor: aggressive asset growth predicts lower returns",
+   "source": "DART fnlttSinglAcntAll filings (receipt-dated) x signal-date KRX market cap",
+   "sourceClass": "DART_FILINGS",
+   "existingImplementation": [
+    "pipeline/accounting_quality.py",
+    "pipeline/dart_derive.py"
+   ],
+   "pitStatus": "PIT_RECEIPT_DATED",
+   "availableFromSemantics": "DART receipt date (availableFrom) <= T; latest visible report period; TTM roll-forward, never annualised; same report code one year earlier",
+   "historyCoverage": "DART from fiscal 2015 (dark 2013-2014, partial 2016); 126 of 260 ever-top-120 tickers collected in the sealed store; 2016 structurally dark (no fiscal-2015 quarterlies)",
+   "missingnessStatus": "MEASURED_LOW",
+   "survivorshipRisk": "MODERATE",
+   "existingResearchStatus": "PRIOR_INCONCLUSIVE",
+   "priorEvidenceReference": [
+    "alpha-opportunity-model-v5"
+   ],
+   "incrementalInformationHypothesis": "investment (CMA) dimension absent from all KR anatomies",
+   "primaryHorizon": 126,
+   "role": "ALPHA_CANDIDATE",
+   "readinessStatus": "READY",
+   "blockingReason": null,
+   "nextAction": "Level 1 at H126",
+   "overlapsWith": [],
+   "limitations": "96-97% coverage where filings exist; joint use only in v5 (INCONCLUSIVE)"
+  },
+  {
+   "featureId": "C10_liabilityGrowth",
+   "family": "C",
+   "economicMechanism": "Growth of total liabilities (부채총계, not interest-bearing debt)",
+   "source": "DART fnlttSinglAcntAll filings (receipt-dated) x signal-date KRX market cap",
+   "sourceClass": "DART_FILINGS",
+   "existingImplementation": [
+    "pipeline/accounting_quality.py",
+    "pipeline/dart_derive.py"
+   ],
+   "pitStatus": "PIT_RECEIPT_DATED",
+   "availableFromSemantics": "DART receipt date (availableFrom) <= T; latest visible report period; TTM roll-forward, never annualised",
+   "historyCoverage": "DART from fiscal 2015 (dark 2013-2014, partial 2016); 126 of 260 ever-top-120 tickers collected in the sealed store",
+   "missingnessStatus": "MEASURED_LOW",
+   "survivorshipRisk": "MODERATE",
+   "existingResearchStatus": "PRIOR_INCONCLUSIVE",
+   "priorEvidenceReference": [
+    "alpha-opportunity-model-v5"
+   ],
+   "incrementalInformationHypothesis": "financing aggressiveness",
+   "primaryHorizon": 126,
+   "role": "ALPHA_CANDIDATE",
+   "readinessStatus": "READY",
+   "blockingReason": null,
+   "nextAction": "Level 1 at H126",
+   "overlapsWith": [
+    "C09_assetGrowth"
+   ],
+   "limitations": ""
+  },
+  {
+   "featureId": "C11_shareDilution",
+   "family": "C",
+   "economicMechanism": "Change in shares outstanding net of treasury stock: issuers time equity sales",
+   "source": "DART fnlttSinglAcntAll filings (receipt-dated) x signal-date KRX market cap",
+   "sourceClass": "DART_FILINGS",
+   "existingImplementation": [
+    "pipeline/accounting_quality.py",
+    "pipeline/dart_derive.py"
+   ],
+   "pitStatus": "PIT_RECEIPT_DATED",
+   "availableFromSemantics": "DART receipt date (availableFrom) <= T; latest visible report period; TTM roll-forward, never annualised",
+   "historyCoverage": "DART from fiscal 2015 (dark 2013-2014, partial 2016); 126 of 260 ever-top-120 tickers collected in the sealed store",
+   "missingnessStatus": "MEASURED_LOW",
+   "survivorshipRisk": "MODERATE",
+   "existingResearchStatus": "UNTESTED",
+   "priorEvidenceReference": [],
+   "incrementalInformationHypothesis": "net issuance never entered any KR study",
+   "primaryHorizon": 126,
+   "role": "ALPHA_CANDIDATE",
+   "readinessStatus": "DERIVABLE_FROM_EXISTING_DATA",
+   "blockingReason": null,
+   "nextAction": "compute in Phase B",
+   "overlapsWith": [],
+   "limitations": "quarterly share counts carried forward from earlier filings where not restated (AS_FILED vs CARRIED_FORWARD published)"
+  },
+  {
+   "featureId": "C12_profitabilityPersistence",
+   "family": "C",
+   "economicMechanism": "Stability of profitability across consecutive filings",
+   "source": "DART fnlttSinglAcntAll filings (receipt-dated) x signal-date KRX market cap",
+   "sourceClass": "DART_FILINGS",
+   "existingImplementation": [
+    "pipeline/kr_value_quality_catalyst.py",
+    "pipeline/dart_derive.py"
+   ],
+   "pitStatus": "PIT_RECEIPT_DATED",
+   "availableFromSemantics": "DART receipt date (availableFrom) <= T; latest visible report period; TTM roll-forward, never annualised",
+   "historyCoverage": "usable from about 2017",
+   "missingnessStatus": "NOT_YET_MEASURED",
+   "survivorshipRisk": "MODERATE",
+   "existingResearchStatus": "UNTESTED",
+   "priorEvidenceReference": [],
+   "incrementalInformationHypothesis": "persistence rather than level",
+   "primaryHorizon": 126,
+   "role": "ALPHA_CANDIDATE",
+   "readinessStatus": "DERIVABLE_FROM_EXISTING_DATA",
+   "blockingReason": null,
+   "nextAction": "compute in Phase B",
+   "overlapsWith": [],
+   "limitations": ""
+  },
+  {
+   "featureId": "C13_fundamentalAcceleration",
+   "family": "C",
+   "economicMechanism": "Filing-over-filing change in ROE, margins and growth",
+   "source": "DART fnlttSinglAcntAll filings (receipt-dated) x signal-date KRX market cap",
+   "sourceClass": "DART_FILINGS",
+   "existingImplementation": [
+    "pipeline/fundamental_acceleration.py"
+   ],
+   "pitStatus": "PIT_RECEIPT_DATED",
+   "availableFromSemantics": "DART receipt date (availableFrom) <= T; latest visible report period; TTM roll-forward, never annualised",
+   "historyCoverage": "DART from fiscal 2015 (dark 2013-2014, partial 2016); 126 of 260 ever-top-120 tickers collected in the sealed store",
+   "missingnessStatus": "MEASURED_HIGH",
+   "survivorshipRisk": "MODERATE",
+   "existingResearchStatus": "PRIOR_NEGATIVE_DEVELOPMENT",
+   "priorEvidenceReference": [
+    "fundamental-acceleration-discovery-v1",
+    "regional-alpha-model-v1"
+   ],
+   "incrementalInformationHypothesis": "closed: CASE D NO_DISCOVERY_EVIDENCE; KR data-sufficient ratio 13.76%",
+   "primaryHorizon": 126,
+   "role": "ALPHA_CANDIDATE",
+   "readinessStatus": "ALREADY_TESTED",
+   "blockingReason": null,
+   "nextAction": "none; prospective sealing stays separate",
+   "overlapsWith": [],
+   "limitations": ""
+  },
+  {
+   "featureId": "C14_ocfImprovement",
+   "family": "C",
+   "economicMechanism": "Trailing OCF above its level a year earlier: improving business",
+   "source": "DART fnlttSinglAcntAll filings (receipt-dated) x signal-date KRX market cap",
+   "sourceClass": "DART_FILINGS",
+   "existingImplementation": [
+    "pipeline/kr_value_quality_catalyst.py",
+    "pipeline/dart_derive.py"
+   ],
+   "pitStatus": "PIT_RECEIPT_DATED",
+   "availableFromSemantics": "DART receipt date (availableFrom) <= T; latest visible report period; TTM roll-forward, never annualised",
+   "historyCoverage": "DART from fiscal 2015 (dark 2013-2014, partial 2016); 126 of 260 ever-top-120 tickers collected in the sealed store",
+   "missingnessStatus": "MEASURED_HIGH",
+   "survivorshipRisk": "MODERATE",
+   "existingResearchStatus": "PRIOR_INCONCLUSIVE",
+   "priorEvidenceReference": [
+    "kr-factor-anatomy-v1",
+    "kr-stock-within-industry-anatomy-v1",
+    "kr-model-overlay-portfolio-v1"
+   ],
+   "incrementalInformationHypothesis": "improvement leg of H2's confirmation",
+   "primaryHorizon": 126,
+   "role": "ALPHA_CANDIDATE",
+   "readinessStatus": "ALREADY_TESTED",
+   "blockingReason": null,
+   "nextAction": "reuse sealed readings",
+   "overlapsWith": [],
+   "limitations": "factor anatomy UNSTABLE_OR_REGIME_DEPENDENT; within industry +0.044 (+1.8) SURVIVES; 51% raw coverage"
+  },
+  {
+   "featureId": "C15_capexIntensity",
+   "family": "C",
+   "economicMechanism": "Capex over assets: investment intensity",
+   "source": "DART fnlttSinglAcntAll filings (receipt-dated) x signal-date KRX market cap",
+   "sourceClass": "DART_FILINGS",
+   "existingImplementation": [
+    "pipeline/accounting_quality.py",
+    "pipeline/dart_derive.py"
+   ],
+   "pitStatus": "PIT_RECEIPT_DATED",
+   "availableFromSemantics": "DART receipt date (availableFrom) <= T; latest visible report period; TTM roll-forward, never annualised",
+   "historyCoverage": "DART from fiscal 2015 (dark 2013-2014, partial 2016); 126 of 260 ever-top-120 tickers collected in the sealed store",
+   "missingnessStatus": "MEASURED_HIGH",
+   "survivorshipRisk": "MODERATE",
+   "existingResearchStatus": "UNTESTED",
+   "priorEvidenceReference": [],
+   "incrementalInformationHypothesis": "investment dimension complementary to C09",
+   "primaryHorizon": 126,
+   "role": "ALPHA_CANDIDATE",
+   "readinessStatus": "DATA_BUILD_REQUIRED",
+   "blockingReason": "KR capex coverage 7.74% (alpha-research-foundation-v2)",
+   "nextAction": "re-measure after kr-canonical-v2",
+   "overlapsWith": [],
+   "limitations": ""
+  },
+  {
+   "featureId": "C16_grossProfitability",
+   "family": "C",
+   "economicMechanism": "Novy-Marx gross profits over assets",
+   "source": "DART fnlttSinglAcntAll filings (receipt-dated) x signal-date KRX market cap",
+   "sourceClass": "DART_FILINGS",
+   "existingImplementation": [
+    "pipeline/dart_raw_statements.py"
+   ],
+   "pitStatus": "PIT_RECEIPT_DATED",
+   "availableFromSemantics": "DART receipt date (availableFrom) <= T; latest visible report period; TTM roll-forward, never annualised",
+   "historyCoverage": "DART from fiscal 2015 (dark 2013-2014, partial 2016); 126 of 260 ever-top-120 tickers collected in the sealed store",
+   "missingnessStatus": "NO_DATA",
+   "survivorshipRisk": "MODERATE",
+   "existingResearchStatus": "UNTESTED",
+   "priorEvidenceReference": [],
+   "incrementalInformationHypothesis": "gross profitability is the strongest profitability measure in the literature and is absent here",
+   "primaryHorizon": 126,
+   "role": "ALPHA_CANDIDATE",
+   "readinessStatus": "DATA_BUILD_REQUIRED",
+   "blockingReason": "no gross-profit or cost-of-sales line in dart_fundamentals.WANTED_ACCOUNTS; raw-statement store (dart_raw_statements) keeps all rows but kr-canonical-v2 has not landed",
+   "nextAction": "add a canonical account rule in the data-foundation line, then measure coverage",
+   "overlapsWith": [],
+   "limitations": ""
+  },
+  {
+   "featureId": "D01_volumeSurge5_60",
+   "family": "D",
+   "economicMechanism": "Relative volume: attention and information arrival",
+   "source": "KRX sto/stk_bydd_trd daily OHLCV + Yahoo distributions (replay-v16 panels; raw-input artifact kr-model-raw-inputs-36844599518)",
+   "sourceClass": "KRX_DAILY_OHLCV",
+   "existingImplementation": [
+    "pipeline/liquidity_attention.py",
+    "pipeline/krx_prices.py"
+   ],
+   "pitStatus": "PIT_SIGNAL_CLOSE",
+   "availableFromSemantics": "close of the signal session T; every window ends at T",
+   "historyCoverage": "2013-01 to 2026-09, the 260 ever-top-120 KOSPI securities (PIT top-120 membership)",
+   "missingnessStatus": "MEASURED_LOW",
+   "survivorshipRisk": "MODERATE",
+   "existingResearchStatus": "PRIOR_INCONCLUSIVE",
+   "priorEvidenceReference": [
+    "regional-alpha-model-v1",
+    "opportunity-radar-model"
+   ],
+   "incrementalInformationHypothesis": "rank-only representation used so far",
+   "primaryHorizon": 21,
+   "role": "ALPHA_CANDIDATE",
+   "readinessStatus": "READY",
+   "blockingReason": null,
+   "nextAction": "Level 1 at H21, magnitude and rank side by side",
+   "overlapsWith": [],
+   "limitations": ""
+  },
+  {
+   "featureId": "D02_logVolumeShock60",
+   "family": "D",
+   "economicMechanism": "Magnitude-preserving volume shock: a 15x day is not a 2x day",
+   "source": "KRX sto/stk_bydd_trd daily OHLCV + Yahoo distributions (replay-v16 panels; raw-input artifact kr-model-raw-inputs-36844599518)",
+   "sourceClass": "KRX_DAILY_OHLCV",
+   "existingImplementation": [
+    "pipeline/liquidity_attention.py",
+    "pipeline/krx_prices.py"
+   ],
+   "pitStatus": "PIT_SIGNAL_CLOSE",
+   "availableFromSemantics": "close of the signal session T; every window ends at T",
+   "historyCoverage": "2013-01 to 2026-09, the 260 ever-top-120 KOSPI securities (PIT top-120 membership)",
+   "missingnessStatus": "MEASURED_LOW",
+   "survivorshipRisk": "MODERATE",
+   "existingResearchStatus": "PRIOR_INCONCLUSIVE",
+   "priorEvidenceReference": [
+    "alpha-opportunity-model-v5"
+   ],
+   "incrementalInformationHypothesis": "joint use only (v5 INCONCLUSIVE)",
+   "primaryHorizon": 21,
+   "role": "ALPHA_CANDIDATE",
+   "readinessStatus": "READY",
+   "blockingReason": null,
+   "nextAction": "Level 1 at H21; baseline B3",
+   "overlapsWith": [
+    "D01_volumeSurge5_60"
+   ],
+   "limitations": ""
+  },
+  {
+   "featureId": "D03_tradingValueShock5_60",
+   "family": "D",
+   "economicMechanism": "KRW traded-value shock (price x volume): capital-weighted attention",
+   "source": "KRX sto/stk_bydd_trd daily OHLCV + Yahoo distributions (replay-v16 panels; raw-input artifact kr-model-raw-inputs-36844599518)",
+   "sourceClass": "KRX_DAILY_OHLCV",
+   "existingImplementation": [
+    "pipeline/kr_alpha_tournament_features.py",
+    "pipeline/liquidity_attention.py"
+   ],
+   "pitStatus": "PIT_SIGNAL_CLOSE",
+   "availableFromSemantics": "close of the signal session T; every window ends at T",
+   "historyCoverage": "2013-01 to 2026-09, the 260 ever-top-120 KOSPI securities (PIT top-120 membership)",
+   "missingnessStatus": "MEASURED_LOW",
+   "survivorshipRisk": "MODERATE",
+   "existingResearchStatus": "PRIOR_INCONCLUSIVE",
+   "priorEvidenceReference": [
+    "kr-alpha-discovery-tournament-v1"
+   ],
+   "incrementalInformationHypothesis": "joint use only (tournament BLOCKED)",
+   "primaryHorizon": 21,
+   "role": "ALPHA_CANDIDATE",
+   "readinessStatus": "READY",
+   "blockingReason": null,
+   "nextAction": "Level 1 at H21",
+   "overlapsWith": [
+    "D02_logVolumeShock60"
+   ],
+   "limitations": ""
+  },
+  {
+   "featureId": "D04_shockPersistence5d",
+   "family": "D",
+   "economicMechanism": "Number of recent high-volume days: sustained versus one-off attention",
+   "source": "KRX sto/stk_bydd_trd daily OHLCV + Yahoo distributions (replay-v16 panels; raw-input artifact kr-model-raw-inputs-36844599518)",
+   "sourceClass": "KRX_DAILY_OHLCV",
+   "existingImplementation": [
+    "pipeline/liquidity_attention.py",
+    "pipeline/krx_prices.py"
+   ],
+   "pitStatus": "PIT_SIGNAL_CLOSE",
+   "availableFromSemantics": "close of the signal session T; every window ends at T",
+   "historyCoverage": "2013-01 to 2026-09, the 260 ever-top-120 KOSPI securities (PIT top-120 membership)",
+   "missingnessStatus": "MEASURED_LOW",
+   "survivorshipRisk": "MODERATE",
+   "existingResearchStatus": "PRIOR_INCONCLUSIVE",
+   "priorEvidenceReference": [
+    "alpha-opportunity-model-v5"
+   ],
+   "incrementalInformationHypothesis": "joint use only",
+   "primaryHorizon": 21,
+   "role": "ALPHA_CANDIDATE",
+   "readinessStatus": "READY",
+   "blockingReason": null,
+   "nextAction": "Level 1 at H21",
+   "overlapsWith": [],
+   "limitations": ""
+  },
+  {
+   "featureId": "D05_turnoverToMarketCap60",
+   "family": "D",
+   "economicMechanism": "Traded value over market cap: investor disagreement and glamour (Lee-Swaminathan)",
+   "source": "KRX sto/stk_bydd_trd daily OHLCV + Yahoo distributions (replay-v16 panels; raw-input artifact kr-model-raw-inputs-36844599518)",
+   "sourceClass": "KRX_DAILY_OHLCV",
+   "existingImplementation": [
+    "pipeline/liquidity_attention.py",
+    "pipeline/krx_prices.py",
+    "pipeline/kr_market_value.py"
+   ],
+   "pitStatus": "PIT_SIGNAL_CLOSE",
+   "availableFromSemantics": "close of the signal session T; every window ends at T",
+   "historyCoverage": "2013-01 to 2026-09, the 260 ever-top-120 KOSPI securities (PIT top-120 membership)",
+   "missingnessStatus": "NOT_YET_MEASURED",
+   "survivorshipRisk": "MODERATE",
+   "existingResearchStatus": "UNTESTED",
+   "priorEvidenceReference": [],
+   "incrementalInformationHypothesis": "turnover level as a characteristic, distinct from a shock",
+   "primaryHorizon": 63,
+   "role": "ALPHA_CANDIDATE",
+   "readinessStatus": "DERIVABLE_FROM_EXISTING_DATA",
+   "blockingReason": null,
+   "nextAction": "compute in Phase B",
+   "overlapsWith": [],
+   "limitations": ""
+  },
+  {
+   "featureId": "D06_priceVolumeDivergence",
+   "family": "D",
+   "economicMechanism": "Volume rising while price stalls (or the reverse)",
+   "source": "KRX sto/stk_bydd_trd daily OHLCV + Yahoo distributions (replay-v16 panels; raw-input artifact kr-model-raw-inputs-36844599518)",
+   "sourceClass": "KRX_DAILY_OHLCV",
+   "existingImplementation": [
+    "pipeline/liquidity_attention.py",
+    "pipeline/krx_prices.py"
+   ],
+   "pitStatus": "PIT_SIGNAL_CLOSE",
+   "availableFromSemantics": "close of the signal session T; every window ends at T",
+   "historyCoverage": "2013-01 to 2026-09, the 260 ever-top-120 KOSPI securities (PIT top-120 membership)",
+   "missingnessStatus": "NOT_YET_MEASURED",
+   "survivorshipRisk": "MODERATE",
+   "existingResearchStatus": "UNTESTED",
+   "priorEvidenceReference": [],
+   "incrementalInformationHypothesis": "not spanned by volume level or price level alone",
+   "primaryHorizon": 21,
+   "role": "ALPHA_CANDIDATE",
+   "readinessStatus": "DERIVABLE_FROM_EXISTING_DATA",
+   "blockingReason": null,
+   "nextAction": "compute in Phase B",
+   "overlapsWith": [],
+   "limitations": ""
+  },
+  {
+   "featureId": "D07_volumePriceAlignment",
+   "family": "D",
+   "economicMechanism": "Signed volume shock: heavy volume on up versus down days",
+   "source": "KRX sto/stk_bydd_trd daily OHLCV + Yahoo distributions (replay-v16 panels; raw-input artifact kr-model-raw-inputs-36844599518)",
+   "sourceClass": "KRX_DAILY_OHLCV",
+   "existingImplementation": [
+    "pipeline/liquidity_attention.py",
+    "pipeline/krx_prices.py"
+   ],
+   "pitStatus": "PIT_SIGNAL_CLOSE",
+   "availableFromSemantics": "close of the signal session T; every window ends at T",
+   "historyCoverage": "2013-01 to 2026-09, the 260 ever-top-120 KOSPI securities (PIT top-120 membership)",
+   "missingnessStatus": "MEASURED_LOW",
+   "survivorshipRisk": "MODERATE",
+   "existingResearchStatus": "PRIOR_INCONCLUSIVE",
+   "priorEvidenceReference": [
+    "alpha-opportunity-model-v5"
+   ],
+   "incrementalInformationHypothesis": "joint use only",
+   "primaryHorizon": 21,
+   "role": "ALPHA_CANDIDATE",
+   "readinessStatus": "READY",
+   "blockingReason": null,
+   "nextAction": "Level 1 at H21",
+   "overlapsWith": [],
+   "limitations": ""
+  },
+  {
+   "featureId": "D08_abnormalVolumeUpClose",
+   "family": "D",
+   "economicMechanism": "Volume shock with a close near the high: buying pressure absorbed",
+   "source": "KRX sto/stk_bydd_trd daily OHLCV + Yahoo distributions (replay-v16 panels; raw-input artifact kr-model-raw-inputs-36844599518)",
+   "sourceClass": "KRX_DAILY_OHLCV",
+   "existingImplementation": [
+    "pipeline/liquidity_attention.py",
+    "pipeline/krx_prices.py"
+   ],
+   "pitStatus": "PIT_SIGNAL_CLOSE",
+   "availableFromSemantics": "close of the signal session T; every window ends at T",
+   "historyCoverage": "2013-01 to 2026-09, the 260 ever-top-120 KOSPI securities (PIT top-120 membership)",
+   "missingnessStatus": "NOT_YET_MEASURED",
+   "survivorshipRisk": "MODERATE",
+   "existingResearchStatus": "UNTESTED",
+   "priorEvidenceReference": [],
+   "incrementalInformationHypothesis": "direction of the shock from the intraday range",
+   "primaryHorizon": 21,
+   "role": "ALPHA_CANDIDATE",
+   "readinessStatus": "DERIVABLE_FROM_EXISTING_DATA",
+   "blockingReason": null,
+   "nextAction": "compute in Phase B (KRX bars carry high/low)",
+   "overlapsWith": [],
+   "limitations": ""
+  },
+  {
+   "featureId": "D09_abnormalVolumeDownClose",
+   "family": "D",
+   "economicMechanism": "Volume shock with a close near the low: distribution",
+   "source": "KRX sto/stk_bydd_trd daily OHLCV + Yahoo distributions (replay-v16 panels; raw-input artifact kr-model-raw-inputs-36844599518)",
+   "sourceClass": "KRX_DAILY_OHLCV",
+   "existingImplementation": [
+    "pipeline/liquidity_attention.py",
+    "pipeline/krx_prices.py"
+   ],
+   "pitStatus": "PIT_SIGNAL_CLOSE",
+   "availableFromSemantics": "close of the signal session T; every window ends at T",
+   "historyCoverage": "2013-01 to 2026-09, the 260 ever-top-120 KOSPI securities (PIT top-120 membership)",
+   "missingnessStatus": "NOT_YET_MEASURED",
+   "survivorshipRisk": "MODERATE",
+   "existingResearchStatus": "UNTESTED",
+   "priorEvidenceReference": [],
+   "incrementalInformationHypothesis": "mirror of D08",
+   "primaryHorizon": 21,
+   "role": "ALPHA_CANDIDATE",
+   "readinessStatus": "DERIVABLE_FROM_EXISTING_DATA",
+   "blockingReason": null,
+   "nextAction": "compute in Phase B",
+   "overlapsWith": [
+    "D08_abnormalVolumeUpClose"
+   ],
+   "limitations": ""
+  },
+  {
+   "featureId": "D10_liquidityAcceleration",
+   "family": "D",
+   "economicMechanism": "Change in traded value (20 vs 120 sessions): a name entering or leaving investors' attention",
+   "source": "KRX sto/stk_bydd_trd daily OHLCV + Yahoo distributions (replay-v16 panels; raw-input artifact kr-model-raw-inputs-36844599518)",
+   "sourceClass": "KRX_DAILY_OHLCV",
+   "existingImplementation": [
+    "pipeline/liquidity_attention.py",
+    "pipeline/krx_prices.py"
+   ],
+   "pitStatus": "PIT_SIGNAL_CLOSE",
+   "availableFromSemantics": "close of the signal session T; every window ends at T",
+   "historyCoverage": "2013-01 to 2026-09, the 260 ever-top-120 KOSPI securities (PIT top-120 membership)",
+   "missingnessStatus": "NOT_YET_MEASURED",
+   "survivorshipRisk": "MODERATE",
+   "existingResearchStatus": "UNTESTED",
+   "priorEvidenceReference": [],
+   "incrementalInformationHypothesis": "trend in liquidity, not its level",
+   "primaryHorizon": 63,
+   "role": "ALPHA_CANDIDATE",
+   "readinessStatus": "DERIVABLE_FROM_EXISTING_DATA",
+   "blockingReason": null,
+   "nextAction": "compute in Phase B",
+   "overlapsWith": [],
+   "limitations": ""
+  },
+  {
+   "featureId": "D11_accumulationDistributionProxy",
+   "family": "D",
+   "economicMechanism": "Close-location value x volume: OHLCV accumulation PROXY, never investor-type flow",
+   "source": "KRX sto/stk_bydd_trd daily OHLCV + Yahoo distributions (replay-v16 panels; raw-input artifact kr-model-raw-inputs-36844599518)",
+   "sourceClass": "KRX_DAILY_OHLCV",
+   "existingImplementation": [
+    "pipeline/liquidity_attention.py",
+    "pipeline/krx_prices.py"
+   ],
+   "pitStatus": "PIT_SIGNAL_CLOSE",
+   "availableFromSemantics": "close of the signal session T; every window ends at T",
+   "historyCoverage": "2013-01 to 2026-09, the 260 ever-top-120 KOSPI securities (PIT top-120 membership)",
+   "missingnessStatus": "NOT_YET_MEASURED",
+   "survivorshipRisk": "MODERATE",
+   "existingResearchStatus": "UNTESTED",
+   "priorEvidenceReference": [],
+   "incrementalInformationHypothesis": "price-volume pattern only; says nothing about who traded",
+   "primaryHorizon": 21,
+   "role": "ALPHA_CANDIDATE",
+   "readinessStatus": "DERIVABLE_FROM_EXISTING_DATA",
+   "blockingReason": null,
+   "nextAction": "compute in Phase B; label OHLCV_PROXY_NOT_INVESTOR_FLOW",
+   "overlapsWith": [
+    "D08_abnormalVolumeUpClose"
+   ],
+   "limitations": ""
+  },
+  {
+   "featureId": "E01_amihudIlliquidity60",
+   "family": "E",
+   "economicMechanism": "Illiquidity premium: holders of illiquid names are paid for it (Amihud)",
+   "source": "KRX sto/stk_bydd_trd daily OHLCV + Yahoo distributions (replay-v16 panels; raw-input artifact kr-model-raw-inputs-36844599518)",
+   "sourceClass": "KRX_DAILY_OHLCV",
+   "existingImplementation": [
+    "pipeline/kr_alpha_tournament_features.py",
+    "pipeline/liquidity_attention.py"
+   ],
+   "pitStatus": "PIT_SIGNAL_CLOSE",
+   "availableFromSemantics": "close of the signal session T; every window ends at T",
+   "historyCoverage": "2013-01 to 2026-09, the 260 ever-top-120 KOSPI securities (PIT top-120 membership)",
+   "missingnessStatus": "MEASURED_LOW",
+   "survivorshipRisk": "MODERATE",
+   "existingResearchStatus": "PRIOR_INCONCLUSIVE",
+   "priorEvidenceReference": [
+    "kr-alpha-discovery-tournament-v1"
+   ],
+   "incrementalInformationHypothesis": "liquidity as an expected-return CHARACTERISTIC; never also counted as a free cost saving",
+   "primaryHorizon": 126,
+   "role": "ALPHA_CANDIDATE",
+   "readinessStatus": "READY",
+   "blockingReason": null,
+   "nextAction": "Level 1 at H126; baseline B3",
+   "overlapsWith": [],
+   "limitations": ""
+  },
+  {
+   "featureId": "E02_logAdv60",
+   "family": "E",
+   "economicMechanism": "Size of daily trading: liquidity level",
+   "source": "KRX sto/stk_bydd_trd daily OHLCV + Yahoo distributions (replay-v16 panels; raw-input artifact kr-model-raw-inputs-36844599518)",
+   "sourceClass": "KRX_DAILY_OHLCV",
+   "existingImplementation": [
+    "pipeline/kr_factor_anatomy.py",
+    "pipeline/kr_value_quality_catalyst.py"
+   ],
+   "pitStatus": "PIT_SIGNAL_CLOSE",
+   "availableFromSemantics": "close of the signal session T; every window ends at T",
+   "historyCoverage": "2013-01 to 2026-09, the 260 ever-top-120 KOSPI securities (PIT top-120 membership)",
+   "missingnessStatus": "MEASURED_LOW",
+   "survivorshipRisk": "MODERATE",
+   "existingResearchStatus": "PRIOR_INCONCLUSIVE",
+   "priorEvidenceReference": [
+    "kr-factor-anatomy-v1",
+    "kr-stock-within-industry-anatomy-v1",
+    "kr-model-overlay-portfolio-v1"
+   ],
+   "incrementalInformationHypothesis": "liquidity characteristic baseline B3",
+   "primaryHorizon": 126,
+   "role": "CONTROL",
+   "readinessStatus": "ALREADY_TESTED",
+   "blockingReason": null,
+   "nextAction": "reuse sealed readings",
+   "overlapsWith": [],
+   "limitations": "factor anatomy UNSTABLE_OR_REGIME_DEPENDENT; within industry +0.041 (+1.6)"
+  },
+  {
+   "featureId": "E03_capacityMedianTradedValue60",
+   "family": "E",
+   "economicMechanism": "How much can be traded without moving the price: capacity CONSTRAINT",
+   "source": "KRX sto/stk_bydd_trd daily OHLCV + Yahoo distributions (replay-v16 panels; raw-input artifact kr-model-raw-inputs-36844599518)",
+   "sourceClass": "KRX_DAILY_OHLCV",
+   "existingImplementation": [
+    "pipeline/kr_alpha_signal_v2.py"
+   ],
+   "pitStatus": "PIT_SIGNAL_CLOSE",
+   "availableFromSemantics": "close of the signal session T; every window ends at T",
+   "historyCoverage": "2013-01 to 2026-09, the 260 ever-top-120 KOSPI securities (PIT top-120 membership)",
+   "missingnessStatus": "MEASURED_LOW",
+   "survivorshipRisk": "MODERATE",
+   "existingResearchStatus": "NOT_APPLICABLE",
+   "priorEvidenceReference": [],
+   "incrementalInformationHypothesis": "not a return predictor; sizes and filters orders",
+   "primaryHorizon": 126,
+   "role": "COST_CAPACITY",
+   "readinessStatus": "READY",
+   "blockingReason": null,
+   "nextAction": "portfolio layer only (order <= 1% of median traded value)",
+   "overlapsWith": [],
+   "limitations": ""
+  },
+  {
+   "featureId": "E04_tradabilityGuard20",
+   "family": "E",
+   "economicMechanism": "Positive volume on each of the last 20 sessions: the name can actually be traded",
+   "source": "KRX sto/stk_bydd_trd daily OHLCV + Yahoo distributions (replay-v16 panels; raw-input artifact kr-model-raw-inputs-36844599518)",
+   "sourceClass": "KRX_DAILY_OHLCV",
+   "existingImplementation": [
+    "pipeline/kr_alpha_signal_v2.py"
+   ],
+   "pitStatus": "PIT_SIGNAL_CLOSE",
+   "availableFromSemantics": "close of the signal session T; every window ends at T",
+   "historyCoverage": "2013-01 to 2026-09, the 260 ever-top-120 KOSPI securities (PIT top-120 membership)",
+   "missingnessStatus": "MEASURED_LOW",
+   "survivorshipRisk": "MODERATE",
+   "existingResearchStatus": "NOT_APPLICABLE",
+   "priorEvidenceReference": [],
+   "incrementalInformationHypothesis": "eligibility filter, never a score",
+   "primaryHorizon": 126,
+   "role": "ELIGIBILITY_FILTER",
+   "readinessStatus": "READY",
+   "blockingReason": null,
+   "nextAction": "eligibility only",
+   "overlapsWith": [],
+   "limitations": ""
+  },
+  {
+   "featureId": "E05_highLowSpreadProxy",
+   "family": "E",
+   "economicMechanism": "Corwin-Schultz style spread estimate from daily high/low: a COST proxy, not a quoted spread",
+   "source": "KRX sto/stk_bydd_trd daily OHLCV + Yahoo distributions (replay-v16 panels; raw-input artifact kr-model-raw-inputs-36844599518)",
+   "sourceClass": "KRX_DAILY_OHLCV",
+   "existingImplementation": [
+    "pipeline/liquidity_attention.py",
+    "pipeline/krx_prices.py"
+   ],
+   "pitStatus": "PIT_SIGNAL_CLOSE",
+   "availableFromSemantics": "close of the signal session T; every window ends at T",
+   "historyCoverage": "2013-01 to 2026-09, the 260 ever-top-120 KOSPI securities (PIT top-120 membership)",
+   "missingnessStatus": "NOT_YET_MEASURED",
+   "survivorshipRisk": "MODERATE",
+   "existingResearchStatus": "NOT_APPLICABLE",
+   "priorEvidenceReference": [],
+   "incrementalInformationHypothesis": "trading-cost input for the cost model",
+   "primaryHorizon": 21,
+   "role": "COST_CAPACITY",
+   "readinessStatus": "DERIVABLE_FROM_EXISTING_DATA",
+   "blockingReason": null,
+   "nextAction": "compute in Phase B for the cost model only",
+   "overlapsWith": [],
+   "limitations": ""
+  },
+  {
+   "featureId": "E06_volatilityConditionalOnVolume",
+   "family": "E",
+   "economicMechanism": "Abnormal range on abnormal volume: price impact of trading",
+   "source": "KRX sto/stk_bydd_trd daily OHLCV + Yahoo distributions (replay-v16 panels; raw-input artifact kr-model-raw-inputs-36844599518)",
+   "sourceClass": "KRX_DAILY_OHLCV",
+   "existingImplementation": [
+    "pipeline/liquidity_attention.py",
+    "pipeline/krx_prices.py"
+   ],
+   "pitStatus": "PIT_SIGNAL_CLOSE",
+   "availableFromSemantics": "close of the signal session T; every window ends at T",
+   "historyCoverage": "2013-01 to 2026-09, the 260 ever-top-120 KOSPI securities (PIT top-120 membership)",
+   "missingnessStatus": "NOT_YET_MEASURED",
+   "survivorshipRisk": "MODERATE",
+   "existingResearchStatus": "UNTESTED",
+   "priorEvidenceReference": [],
+   "incrementalInformationHypothesis": "impact-sensitive names may carry a premium",
+   "primaryHorizon": 126,
+   "role": "ALPHA_CANDIDATE",
+   "readinessStatus": "DERIVABLE_FROM_EXISTING_DATA",
+   "blockingReason": null,
+   "nextAction": "compute in Phase B",
+   "overlapsWith": [
+    "E01_amihudIlliquidity60"
+   ],
+   "limitations": ""
+  },
+  {
+   "featureId": "E07_suspensionStaleRisk",
+   "family": "E",
+   "economicMechanism": "Unchanged close with zero volume: a suspension, often before a terminal event",
+   "source": "KRX sto/stk_bydd_trd daily OHLCV + Yahoo distributions (replay-v16 panels; raw-input artifact kr-model-raw-inputs-36844599518)",
+   "sourceClass": "KRX_DAILY_OHLCV",
+   "existingImplementation": [
+    "pipeline/kr_alpha_tournament_postoutcome_integrity_audit.py"
+   ],
+   "pitStatus": "PIT_SIGNAL_CLOSE",
+   "availableFromSemantics": "close of the signal session T; every window ends at T",
+   "historyCoverage": "2013-01 to 2026-09, the 260 ever-top-120 KOSPI securities (PIT top-120 membership)",
+   "missingnessStatus": "MEASURED_LOW",
+   "survivorshipRisk": "HIGH",
+   "existingResearchStatus": "NOT_APPLICABLE",
+   "priorEvidenceReference": [],
+   "incrementalInformationHypothesis": "a held name entering a suspension cannot be sold; this is a risk/eligibility fact, not alpha",
+   "primaryHorizon": 21,
+   "role": "ELIGIBILITY_FILTER",
+   "readinessStatus": "READY",
+   "blockingReason": null,
+   "nextAction": "eligibility and terminal-event handling (tournament closure)",
+   "overlapsWith": [],
+   "limitations": ""
+  },
+  {
+   "featureId": "E08_trueBidAskSpread",
+   "family": "E",
+   "economicMechanism": "Quoted bid-ask spread and depth",
+   "source": "KRX quote / order-book data",
+   "sourceClass": "NO_SOURCE",
+   "existingImplementation": [],
+   "pitStatus": "NO_SOURCE",
+   "availableFromSemantics": "not collected",
+   "historyCoverage": "none",
+   "missingnessStatus": "NO_DATA",
+   "survivorshipRisk": "MODERATE",
+   "existingResearchStatus": "NOT_APPLICABLE",
+   "priorEvidenceReference": [],
+   "incrementalInformationHypothesis": "true trading cost",
+   "primaryHorizon": 21,
+   "role": "COST_CAPACITY",
+   "readinessStatus": "NOT_FEASIBLE",
+   "blockingReason": "no quote or order-book source exists in this repository and none was found free; daily OHLCV proxies (E05) are not a substitute",
+   "nextAction": "none; use E05 proxy with that label",
+   "overlapsWith": [],
+   "limitations": ""
+  },
+  {
+   "featureId": "F01_totalVolatility63",
+   "family": "F",
+   "economicMechanism": "Low-volatility anomaly: leverage-constrained investors overpay for volatile names",
+   "source": "KRX sto/stk_bydd_trd daily OHLCV + Yahoo distributions (replay-v16 panels; raw-input artifact kr-model-raw-inputs-36844599518)",
+   "sourceClass": "KRX_DAILY_OHLCV",
+   "existingImplementation": [
+    "pipeline/krx_prices.py",
+    "pipeline/kr_alpha_tournament_features.py"
+   ],
+   "pitStatus": "PIT_SIGNAL_CLOSE",
+   "availableFromSemantics": "close of the signal session T; every window ends at T",
+   "historyCoverage": "2013-01 to 2026-09, the 260 ever-top-120 KOSPI securities (PIT top-120 membership)",
+   "missingnessStatus": "MEASURED_LOW",
+   "survivorshipRisk": "MODERATE",
+   "existingResearchStatus": "PRIOR_INCONCLUSIVE",
+   "priorEvidenceReference": [
+    "regional-alpha-model-v1",
+    "kr-alpha-discovery-tournament-v1",
+    "alpha-opportunity-model-v5"
+   ],
+   "incrementalInformationHypothesis": "joint use only",
+   "primaryHorizon": 126,
+   "role": "ALPHA_CANDIDATE",
+   "readinessStatus": "READY",
+   "blockingReason": null,
+   "nextAction": "Level 1 at H126; decide alpha versus construction role",
+   "overlapsWith": [],
+   "limitations": ""
+  },
+  {
+   "featureId": "F02_downsideVol126",
+   "family": "F",
+   "economicMechanism": "Downside volatility: crash-prone names",
+   "source": "KRX sto/stk_bydd_trd daily OHLCV + Yahoo distributions (replay-v16 panels; raw-input artifact kr-model-raw-inputs-36844599518)",
+   "sourceClass": "KRX_DAILY_OHLCV",
+   "existingImplementation": [
+    "pipeline/kr_factor_anatomy.py",
+    "pipeline/kr_value_quality_catalyst.py"
+   ],
+   "pitStatus": "PIT_SIGNAL_CLOSE",
+   "availableFromSemantics": "close of the signal session T; every window ends at T",
+   "historyCoverage": "2013-01 to 2026-09, the 260 ever-top-120 KOSPI securities (PIT top-120 membership)",
+   "missingnessStatus": "MEASURED_LOW",
+   "survivorshipRisk": "MODERATE",
+   "existingResearchStatus": "PRIOR_INCONCLUSIVE",
+   "priorEvidenceReference": [
+    "kr-factor-anatomy-v1",
+    "kr-stock-within-industry-anatomy-v1",
+    "kr-model-overlay-portfolio-v1",
+    "four-factor-signal-attribution-audit-v1"
+   ],
+   "incrementalInformationHypothesis": "risk baseline",
+   "primaryHorizon": 126,
+   "role": "CONTROL",
+   "readinessStatus": "ALREADY_TESTED",
+   "blockingReason": null,
+   "nextAction": "reuse sealed readings; portfolio-construction role decided in Level 4",
+   "overlapsWith": [],
+   "limitations": "market-wide NO_CLEAR_MONOTONIC_PATTERN; within industry +0.062 (+2.6); KR lowvol sleeve +0.0511 regional reading, not pooled"
+  },
+  {
+   "featureId": "F03_beta252",
+   "family": "F",
+   "economicMechanism": "Market beta: betting-against-beta",
+   "source": "KRX sto/stk_bydd_trd daily OHLCV + Yahoo distributions (replay-v16 panels; raw-input artifact kr-model-raw-inputs-36844599518)",
+   "sourceClass": "KRX_DAILY_OHLCV",
+   "existingImplementation": [
+    "pipeline/krx_prices.py",
+    "pipeline/kr_alpha_tournament_features.py"
+   ],
+   "pitStatus": "PIT_SIGNAL_CLOSE",
+   "availableFromSemantics": "close of the signal session T; every window ends at T",
+   "historyCoverage": "2013-01 to 2026-09, the 260 ever-top-120 KOSPI securities (PIT top-120 membership)",
+   "missingnessStatus": "MEASURED_LOW",
+   "survivorshipRisk": "MODERATE",
+   "existingResearchStatus": "PRIOR_INCONCLUSIVE",
+   "priorEvidenceReference": [
+    "regional-alpha-model-v1",
+    "kr-alpha-discovery-tournament-v1"
+   ],
+   "incrementalInformationHypothesis": "joint use only",
+   "primaryHorizon": 126,
+   "role": "ALPHA_CANDIDATE",
+   "readinessStatus": "READY",
+   "blockingReason": null,
+   "nextAction": "Level 1 at H126",
+   "overlapsWith": [],
+   "limitations": ""
+  },
+  {
+   "featureId": "F04_idiosyncraticVol",
+   "family": "F",
+   "economicMechanism": "Residual volatility after market and industry",
+   "source": "KRX sto/stk_bydd_trd daily OHLCV + Yahoo distributions (replay-v16 panels; raw-input artifact kr-model-raw-inputs-36844599518)",
+   "sourceClass": "KRX_DAILY_OHLCV",
+   "existingImplementation": [
+    "pipeline/krx_prices.py",
+    "pipeline/kr_alpha_tournament_features.py"
+   ],
+   "pitStatus": "PIT_SIGNAL_CLOSE",
+   "availableFromSemantics": "close of the signal session T; every window ends at T",
+   "historyCoverage": "2013-01 to 2026-09, the 260 ever-top-120 KOSPI securities (PIT top-120 membership)",
+   "missingnessStatus": "NOT_YET_MEASURED",
+   "survivorshipRisk": "MODERATE",
+   "existingResearchStatus": "UNTESTED",
+   "priorEvidenceReference": [],
+   "incrementalInformationHypothesis": "stock-specific risk separate from systematic risk",
+   "primaryHorizon": 126,
+   "role": "ALPHA_CANDIDATE",
+   "readinessStatus": "DERIVABLE_FROM_EXISTING_DATA",
+   "blockingReason": null,
+   "nextAction": "compute in Phase B",
+   "overlapsWith": [
+    "F01_totalVolatility63"
+   ],
+   "limitations": ""
+  },
+  {
+   "featureId": "F05_maxDrawdown252",
+   "family": "F",
+   "economicMechanism": "Trailing maximum drawdown",
+   "source": "KRX sto/stk_bydd_trd daily OHLCV + Yahoo distributions (replay-v16 panels; raw-input artifact kr-model-raw-inputs-36844599518)",
+   "sourceClass": "KRX_DAILY_OHLCV",
+   "existingImplementation": [
+    "pipeline/krx_prices.py",
+    "pipeline/kr_alpha_tournament_features.py"
+   ],
+   "pitStatus": "PIT_SIGNAL_CLOSE",
+   "availableFromSemantics": "close of the signal session T; every window ends at T",
+   "historyCoverage": "2013-01 to 2026-09, the 260 ever-top-120 KOSPI securities (PIT top-120 membership)",
+   "missingnessStatus": "MEASURED_LOW",
+   "survivorshipRisk": "MODERATE",
+   "existingResearchStatus": "PRIOR_INCONCLUSIVE",
+   "priorEvidenceReference": [
+    "regional-alpha-model-v1",
+    "kr-alpha-discovery-tournament-v1"
+   ],
+   "incrementalInformationHypothesis": "joint use only",
+   "primaryHorizon": 126,
+   "role": "RISK_CONSTRUCTION",
+   "readinessStatus": "READY",
+   "blockingReason": null,
+   "nextAction": "risk diagnostics in Level 4",
+   "overlapsWith": [],
+   "limitations": ""
+  },
+  {
+   "featureId": "F06_crashExposure",
+   "family": "F",
+   "economicMechanism": "Downside beta / co-skewness with 069500.KS",
+   "source": "KRX sto/stk_bydd_trd daily OHLCV + Yahoo distributions (replay-v16 panels; raw-input artifact kr-model-raw-inputs-36844599518)",
+   "sourceClass": "KRX_DAILY_OHLCV",
+   "existingImplementation": [
+    "pipeline/krx_prices.py",
+    "pipeline/kr_alpha_tournament_features.py"
+   ],
+   "pitStatus": "PIT_SIGNAL_CLOSE",
+   "availableFromSemantics": "close of the signal session T; every window ends at T",
+   "historyCoverage": "2013-01 to 2026-09, the 260 ever-top-120 KOSPI securities (PIT top-120 membership)",
+   "missingnessStatus": "NOT_YET_MEASURED",
+   "survivorshipRisk": "MODERATE",
+   "existingResearchStatus": "NOT_APPLICABLE",
+   "priorEvidenceReference": [],
+   "incrementalInformationHypothesis": "portfolio crash risk",
+   "primaryHorizon": 126,
+   "role": "RISK_CONSTRUCTION",
+   "readinessStatus": "DERIVABLE_FROM_EXISTING_DATA",
+   "blockingReason": null,
+   "nextAction": "Level 4 risk diagnostics",
+   "overlapsWith": [],
+   "limitations": ""
+  },
+  {
+   "featureId": "F07_benchmarkCorrelation252",
+   "family": "F",
+   "economicMechanism": "Correlation with 069500.KS: how much active risk a position adds",
+   "source": "KRX sto/stk_bydd_trd daily OHLCV + Yahoo distributions (replay-v16 panels; raw-input artifact kr-model-raw-inputs-36844599518)",
+   "sourceClass": "KRX_DAILY_OHLCV",
+   "existingImplementation": [
+    "pipeline/krx_prices.py",
+    "pipeline/kr_alpha_tournament_features.py"
+   ],
+   "pitStatus": "PIT_SIGNAL_CLOSE",
+   "availableFromSemantics": "close of the signal session T; every window ends at T",
+   "historyCoverage": "2013-01 to 2026-09, the 260 ever-top-120 KOSPI securities (PIT top-120 membership)",
+   "missingnessStatus": "NOT_YET_MEASURED",
+   "survivorshipRisk": "MODERATE",
+   "existingResearchStatus": "NOT_APPLICABLE",
+   "priorEvidenceReference": [],
+   "incrementalInformationHypothesis": "tracking-error contribution",
+   "primaryHorizon": 126,
+   "role": "RISK_CONSTRUCTION",
+   "readinessStatus": "DERIVABLE_FROM_EXISTING_DATA",
+   "blockingReason": null,
+   "nextAction": "Level 4 risk diagnostics",
+   "overlapsWith": [],
+   "limitations": ""
+  },
+  {
+   "featureId": "F08_bookConcentration",
+   "family": "F",
+   "economicMechanism": "Name, industry and covariance concentration of a 0-5 name book",
+   "source": "KRX sto/stk_bydd_trd daily OHLCV + Yahoo distributions (replay-v16 panels; raw-input artifact kr-model-raw-inputs-36844599518)",
+   "sourceClass": "KRX_DAILY_OHLCV",
+   "existingImplementation": [
+    "pipeline/kr_alpha_signal_v2.py"
+   ],
+   "pitStatus": "PIT_SIGNAL_CLOSE",
+   "availableFromSemantics": "close of the signal session T; every window ends at T",
+   "historyCoverage": "2013-01 to 2026-09, the 260 ever-top-120 KOSPI securities (PIT top-120 membership)",
+   "missingnessStatus": "NOT_YET_MEASURED",
+   "survivorshipRisk": "MODERATE",
+   "existingResearchStatus": "NOT_APPLICABLE",
+   "priorEvidenceReference": [],
+   "incrementalInformationHypothesis": "construction risk, never a return predictor",
+   "primaryHorizon": 126,
+   "role": "RISK_CONSTRUCTION",
+   "readinessStatus": "DERIVABLE_FROM_EXISTING_DATA",
+   "blockingReason": null,
+   "nextAction": "Level 4 risk diagnostics",
+   "overlapsWith": [],
+   "limitations": ""
+  },
+  {
+   "featureId": "G01_foreignNetBuying",
+   "family": "G",
+   "economicMechanism": "Foreign investors' net buying: informed or flow-driven demand",
+   "source": "KRX investor-type trading statistics",
+   "sourceClass": "KRX_INVESTOR_TYPE",
+   "existingImplementation": [
+    "pipeline/kr_investor_flow.py",
+    "scripts/collect_kr_investor_flow.py"
+   ],
+   "pitStatus": "NO_SOURCE",
+   "availableFromSemantics": "next KRX session after the trade date (publication time to be verified)",
+   "historyCoverage": "none collected",
+   "missingnessStatus": "NO_DATA",
+   "survivorshipRisk": "MODERATE",
+   "existingResearchStatus": "BLOCKED",
+   "priorEvidenceReference": [],
+   "incrementalInformationHypothesis": "who trades, not what price/accounts say",
+   "primaryHorizon": 21,
+   "role": "ALPHA_CANDIDATE",
+   "readinessStatus": "SOURCE_BLOCKED",
+   "blockingReason": "KRX data portal (MDCSTAT02302/02303) answered HTTP 400 LOGOUT on every candidate from Actions; the Open API key does not reach investor-type statistics (workflow-hygiene v2.25)",
+   "nextAction": "one bounded re-probe through the Probes dropdown only if the source condition changes",
+   "overlapsWith": [],
+   "limitations": ""
+  },
+  {
+   "featureId": "G02_institutionalNetBuying",
+   "family": "G",
+   "economicMechanism": "Institutional net buying",
+   "source": "KRX investor-type trading statistics",
+   "sourceClass": "KRX_INVESTOR_TYPE",
+   "existingImplementation": [
+    "pipeline/kr_investor_flow.py",
+    "scripts/collect_kr_investor_flow.py"
+   ],
+   "pitStatus": "NO_SOURCE",
+   "availableFromSemantics": "next KRX session after the trade date (publication time to be verified)",
+   "historyCoverage": "none collected",
+   "missingnessStatus": "NO_DATA",
+   "survivorshipRisk": "MODERATE",
+   "existingResearchStatus": "BLOCKED",
+   "priorEvidenceReference": [],
+   "incrementalInformationHypothesis": "institutional accumulation",
+   "primaryHorizon": 21,
+   "role": "ALPHA_CANDIDATE",
+   "readinessStatus": "SOURCE_BLOCKED",
+   "blockingReason": "KRX data portal (MDCSTAT02302/02303) answered HTTP 400 LOGOUT on every candidate from Actions; the Open API key does not reach investor-type statistics (workflow-hygiene v2.25)",
+   "nextAction": "one bounded re-probe through the Probes dropdown only if the source condition changes",
+   "overlapsWith": [],
+   "limitations": ""
+  },
+  {
+   "featureId": "G03_retailNetBuying",
+   "family": "G",
+   "economicMechanism": "Retail net buying (often a contrarian indicator)",
+   "source": "KRX investor-type trading statistics",
+   "sourceClass": "KRX_INVESTOR_TYPE",
+   "existingImplementation": [
+    "pipeline/kr_investor_flow.py",
+    "scripts/collect_kr_investor_flow.py"
+   ],
+   "pitStatus": "NO_SOURCE",
+   "availableFromSemantics": "next KRX session after the trade date (publication time to be verified)",
+   "historyCoverage": "none collected",
+   "missingnessStatus": "NO_DATA",
+   "survivorshipRisk": "MODERATE",
+   "existingResearchStatus": "BLOCKED",
+   "priorEvidenceReference": [],
+   "incrementalInformationHypothesis": "retail sentiment",
+   "primaryHorizon": 21,
+   "role": "ALPHA_CANDIDATE",
+   "readinessStatus": "SOURCE_BLOCKED",
+   "blockingReason": "KRX data portal (MDCSTAT02302/02303) answered HTTP 400 LOGOUT on every candidate from Actions; the Open API key does not reach investor-type statistics (workflow-hygiene v2.25)",
+   "nextAction": "one bounded re-probe through the Probes dropdown only if the source condition changes",
+   "overlapsWith": [],
+   "limitations": ""
+  },
+  {
+   "featureId": "G04_investorTypePersistence",
+   "family": "G",
+   "economicMechanism": "Persistence of investor-type flow over 5-20 sessions",
+   "source": "KRX investor-type trading statistics",
+   "sourceClass": "KRX_INVESTOR_TYPE",
+   "existingImplementation": [
+    "pipeline/kr_investor_flow.py",
+    "scripts/collect_kr_investor_flow.py"
+   ],
+   "pitStatus": "NO_SOURCE",
+   "availableFromSemantics": "next KRX session after the trade date (publication time to be verified)",
+   "historyCoverage": "none collected",
+   "missingnessStatus": "NO_DATA",
+   "survivorshipRisk": "MODERATE",
+   "existingResearchStatus": "BLOCKED",
+   "priorEvidenceReference": [],
+   "incrementalInformationHypothesis": "sustained versus one-off flow",
+   "primaryHorizon": 21,
+   "role": "ALPHA_CANDIDATE",
+   "readinessStatus": "SOURCE_BLOCKED",
+   "blockingReason": "KRX data portal (MDCSTAT02302/02303) answered HTTP 400 LOGOUT on every candidate from Actions; the Open API key does not reach investor-type statistics (workflow-hygiene v2.25)",
+   "nextAction": "one bounded re-probe through the Probes dropdown only if the source condition changes",
+   "overlapsWith": [],
+   "limitations": ""
+  },
+  {
+   "featureId": "G05_flowMomentumConfirmation",
+   "family": "G",
+   "economicMechanism": "Price leadership confirmed by foreign/institutional accumulation",
+   "source": "KRX investor-type trading statistics",
+   "sourceClass": "KRX_INVESTOR_TYPE",
+   "existingImplementation": [
+    "pipeline/kr_investor_flow.py",
+    "scripts/collect_kr_investor_flow.py"
+   ],
+   "pitStatus": "NO_SOURCE",
+   "availableFromSemantics": "next KRX session after the trade date (publication time to be verified)",
+   "historyCoverage": "none collected",
+   "missingnessStatus": "NO_DATA",
+   "survivorshipRisk": "MODERATE",
+   "existingResearchStatus": "BLOCKED",
+   "priorEvidenceReference": [],
+   "incrementalInformationHypothesis": "the interaction X4",
+   "primaryHorizon": 21,
+   "role": "ALPHA_CANDIDATE",
+   "readinessStatus": "SOURCE_BLOCKED",
+   "blockingReason": "KRX data portal (MDCSTAT02302/02303) answered HTTP 400 LOGOUT on every candidate from Actions; the Open API key does not reach investor-type statistics (workflow-hygiene v2.25)",
+   "nextAction": "one bounded re-probe through the Probes dropdown only if the source condition changes",
+   "overlapsWith": [],
+   "limitations": ""
+  },
+  {
+   "featureId": "G06_largeHolderAccumulation",
+   "family": "G",
+   "economicMechanism": "A disclosed 5%+ holder increasing its stake: identified capital committing",
+   "source": "DART majorstock.json (DS004)",
+   "sourceClass": "DART_OWNERSHIP",
+   "existingImplementation": [
+    "pipeline/dart_ownership_events.py",
+    "pipeline/dart_ownership_universe.py"
+   ],
+   "pitStatus": "PIT_RECEIPT_DATED",
+   "availableFromSemantics": "DART receipt date; never the transaction date",
+   "historyCoverage": "2024-09-24 onward only",
+   "missingnessStatus": "NOT_YET_MEASURED",
+   "survivorshipRisk": "HIGH",
+   "existingResearchStatus": "BLOCKED",
+   "priorEvidenceReference": [],
+   "incrementalInformationHypothesis": "identified holder conviction; absent from every KR study",
+   "primaryHorizon": 21,
+   "role": "ALPHA_CANDIDATE",
+   "readinessStatus": "DATA_BUILD_REQUIRED",
+   "blockingReason": "majorstock.json serves a rolling two years: collected receipts span 2024-09-24..2026-09-23 (1,285 events, 119 current names); older history needs an official filing-document parser (BLOCKED_HISTORICAL_DEPTH, docs/dart-ownership-history-replay-integrity-v1.md)",
+   "nextAction": "schedule prospective collection (separate change); no historical evaluation possible",
+   "overlapsWith": [],
+   "limitations": "report_tp raw values (일반/약식) are not translated; report_resn is raw text; reporter type unclassified"
+  },
+  {
+   "featureId": "G07_largeHolderReduction",
+   "family": "G",
+   "economicMechanism": "A disclosed holder reducing or exiting",
+   "source": "DART majorstock.json (DS004)",
+   "sourceClass": "DART_OWNERSHIP",
+   "existingImplementation": [
+    "pipeline/dart_ownership_events.py"
+   ],
+   "pitStatus": "PIT_RECEIPT_DATED",
+   "availableFromSemantics": "DART receipt date",
+   "historyCoverage": "2024-09-24 onward only",
+   "missingnessStatus": "NOT_YET_MEASURED",
+   "survivorshipRisk": "HIGH",
+   "existingResearchStatus": "BLOCKED",
+   "priorEvidenceReference": [],
+   "incrementalInformationHypothesis": "mirror of G06",
+   "primaryHorizon": 21,
+   "role": "ALPHA_CANDIDATE",
+   "readinessStatus": "DATA_BUILD_REQUIRED",
+   "blockingReason": "majorstock.json serves a rolling two years: collected receipts span 2024-09-24..2026-09-23 (1,285 events, 119 current names); older history needs an official filing-document parser (BLOCKED_HISTORICAL_DEPTH, docs/dart-ownership-history-replay-integrity-v1.md)",
+   "nextAction": "as G06",
+   "overlapsWith": [
+    "G06_largeHolderAccumulation"
+   ],
+   "limitations": ""
+  },
+  {
+   "featureId": "G08_shortSellingVolume",
+   "family": "G",
+   "economicMechanism": "Short-sale share of volume: informed pessimism",
+   "source": "KRX short-selling statistics",
+   "sourceClass": "KRX_SHORT_SELLING",
+   "existingImplementation": [
+    "pipeline/kr_short_selling.py"
+   ],
+   "pitStatus": "NO_SOURCE",
+   "availableFromSemantics": "trade date + 1 session (to verify)",
+   "historyCoverage": "none collected",
+   "missingnessStatus": "NO_DATA",
+   "survivorshipRisk": "MODERATE",
+   "existingResearchStatus": "BLOCKED",
+   "priorEvidenceReference": [],
+   "incrementalInformationHypothesis": "negative information not in prices",
+   "primaryHorizon": 21,
+   "role": "ALPHA_CANDIDATE",
+   "readinessStatus": "SOURCE_BLOCKED",
+   "blockingReason": "KRX short-selling screens MDCSTAT301/305: bld codes unresolved and the portal unreachable; full bans 2020-03..2021-05 and 2023-11-05..2025-03-31 make the variable regime-dependent (kr_short_selling.regime_label)",
+   "nextAction": "Probes dropdown only",
+   "overlapsWith": [],
+   "limitations": ""
+  },
+  {
+   "featureId": "G09_shortBalanceChange",
+   "family": "G",
+   "economicMechanism": "Change in outstanding net short position",
+   "source": "KRX net short position (reported with a 2-day lag)",
+   "sourceClass": "KRX_SHORT_SELLING",
+   "existingImplementation": [
+    "pipeline/kr_short_selling.py"
+   ],
+   "pitStatus": "NO_SOURCE",
+   "availableFromSemantics": "position date + NET_POSITION_REPORT_LAG_DAYS",
+   "historyCoverage": "none collected",
+   "missingnessStatus": "NO_DATA",
+   "survivorshipRisk": "MODERATE",
+   "existingResearchStatus": "BLOCKED",
+   "priorEvidenceReference": [],
+   "incrementalInformationHypothesis": "slow-moving short interest",
+   "primaryHorizon": 21,
+   "role": "ALPHA_CANDIDATE",
+   "readinessStatus": "SOURCE_BLOCKED",
+   "blockingReason": "KRX short-selling screens MDCSTAT301/305: bld codes unresolved and the portal unreachable; full bans 2020-03..2021-05 and 2023-11-05..2025-03-31 make the variable regime-dependent (kr_short_selling.regime_label)",
+   "nextAction": "Probes dropdown only",
+   "overlapsWith": [],
+   "limitations": ""
+  },
+  {
+   "featureId": "H01_industryRelMom126",
+   "family": "H",
+   "economicMechanism": "Industry leadership persists while its economics keep improving",
+   "source": "KRX sto/stk_bydd_trd daily OHLCV + Yahoo distributions (replay-v16 panels; raw-input artifact kr-model-raw-inputs-36844599518)",
+   "sourceClass": "KRX_DAILY_OHLCV",
+   "existingImplementation": [
+    "pipeline/kr_industry_membership_v4.py",
+    "pipeline/kr_industry_anatomy.py"
+   ],
+   "pitStatus": "PIT_RECONSTRUCTED_MEMBERSHIP",
+   "availableFromSemantics": "close of the signal session T; every window ends at T; v4 economic crosswalk over the KIND/KRX label observable at T; 22 terminated names unclassified",
+   "historyCoverage": "2013-2026 on the v4 reconstruction (95.3% of 73,200 name-dates classified; DATA_FOUNDATION_INSUFFICIENT_V4 under its own gates)",
+   "missingnessStatus": "MEASURED_LOW",
+   "survivorshipRisk": "MODERATE",
+   "existingResearchStatus": "PRIOR_POSITIVE_DEVELOPMENT",
+   "priorEvidenceReference": [
+    "kr-industry-opportunity-anatomy-v1",
+    "kr-integrated-alpha-portfolio-v1",
+    "kr-alpha-discovery-tournament-v1"
+   ],
+   "incrementalInformationHypothesis": "industry allocation, kept apart from stock selection",
+   "primaryHorizon": 126,
+   "role": "CONTROL",
+   "readinessStatus": "ALREADY_TESTED",
+   "blockingReason": null,
+   "nextAction": "reuse sealed readings; baseline B0",
+   "overlapsWith": [],
+   "limitations": "IC +0.066 (mean/se +1.2) but year IC -0.18..+0.29; leave-largest-out tercile +5.4pp -> +0.1pp; integrated D trailed A 2017-2024 and led only in 2025-2026 (regime- and industry-concentrated)"
+  },
+  {
+   "featureId": "H02_industryRelMom63",
+   "family": "H",
+   "economicMechanism": "Shorter industry leadership",
+   "source": "KRX sto/stk_bydd_trd daily OHLCV + Yahoo distributions (replay-v16 panels; raw-input artifact kr-model-raw-inputs-36844599518)",
+   "sourceClass": "KRX_DAILY_OHLCV",
+   "existingImplementation": [
+    "pipeline/kr_industry_membership_v4.py",
+    "pipeline/kr_industry_anatomy.py"
+   ],
+   "pitStatus": "PIT_RECONSTRUCTED_MEMBERSHIP",
+   "availableFromSemantics": "close of the signal session T; every window ends at T; v4 economic crosswalk over the KIND/KRX label observable at T; 22 terminated names unclassified",
+   "historyCoverage": "2013-2026 on the v4 reconstruction (95.3% of 73,200 name-dates classified; DATA_FOUNDATION_INSUFFICIENT_V4 under its own gates)",
+   "missingnessStatus": "MEASURED_LOW",
+   "survivorshipRisk": "MODERATE",
+   "existingResearchStatus": "PRIOR_INCONCLUSIVE",
+   "priorEvidenceReference": [
+    "kr-industry-opportunity-anatomy-v1"
+   ],
+   "incrementalInformationHypothesis": "redundant with H01 expected",
+   "primaryHorizon": 63,
+   "role": "ALPHA_CANDIDATE",
+   "readinessStatus": "ALREADY_TESTED",
+   "blockingReason": null,
+   "nextAction": "reuse sealed reading",
+   "overlapsWith": [
+    "H01_industryRelMom126"
+   ],
+   "limitations": ""
+  },
+  {
+   "featureId": "H03_industryBreadthAboveMA126",
+   "family": "H",
+   "economicMechanism": "Broad participation inside an industry: leadership not driven by one name",
+   "source": "KRX sto/stk_bydd_trd daily OHLCV + Yahoo distributions (replay-v16 panels; raw-input artifact kr-model-raw-inputs-36844599518)",
+   "sourceClass": "KRX_DAILY_OHLCV",
+   "existingImplementation": [
+    "pipeline/kr_industry_membership_v4.py",
+    "pipeline/kr_industry_anatomy.py"
+   ],
+   "pitStatus": "PIT_RECONSTRUCTED_MEMBERSHIP",
+   "availableFromSemantics": "close of the signal session T; every window ends at T; v4 economic crosswalk over the KIND/KRX label observable at T; 22 terminated names unclassified",
+   "historyCoverage": "2013-2026 on the v4 reconstruction (95.3% of 73,200 name-dates classified; DATA_FOUNDATION_INSUFFICIENT_V4 under its own gates)",
+   "missingnessStatus": "MEASURED_LOW",
+   "survivorshipRisk": "MODERATE",
+   "existingResearchStatus": "PRIOR_POSITIVE_DEVELOPMENT",
+   "priorEvidenceReference": [
+    "kr-industry-opportunity-anatomy-v1",
+    "kr-integrated-alpha-portfolio-v1"
+   ],
+   "incrementalInformationHypothesis": "industry breadth, part of the integrated INDUSTRY_SCORE",
+   "primaryHorizon": 126,
+   "role": "ALPHA_CANDIDATE",
+   "readinessStatus": "ALREADY_TESTED",
+   "blockingReason": null,
+   "nextAction": "reuse sealed reading",
+   "overlapsWith": [],
+   "limitations": "IC +0.059 (+1.2); formal INDUSTRY_LAYER_DEVELOPMENT_SUPPORTED is regime- and industry-concentrated"
+  },
+  {
+   "featureId": "H04_withinIndustryDispersion126",
+   "family": "H",
+   "economicMechanism": "Dispersion of member returns inside an industry: room for stock selection",
+   "source": "KRX sto/stk_bydd_trd daily OHLCV + Yahoo distributions (replay-v16 panels; raw-input artifact kr-model-raw-inputs-36844599518)",
+   "sourceClass": "KRX_DAILY_OHLCV",
+   "existingImplementation": [
+    "pipeline/kr_industry_membership_v4.py",
+    "pipeline/kr_industry_anatomy.py"
+   ],
+   "pitStatus": "PIT_RECONSTRUCTED_MEMBERSHIP",
+   "availableFromSemantics": "close of the signal session T; every window ends at T; v4 economic crosswalk over the KIND/KRX label observable at T; 22 terminated names unclassified",
+   "historyCoverage": "2013-2026 on the v4 reconstruction (95.3% of 73,200 name-dates classified; DATA_FOUNDATION_INSUFFICIENT_V4 under its own gates)",
+   "missingnessStatus": "MEASURED_LOW",
+   "survivorshipRisk": "MODERATE",
+   "existingResearchStatus": "PRIOR_INCONCLUSIVE",
+   "priorEvidenceReference": [
+    "kr-industry-opportunity-anatomy-v1"
+   ],
+   "incrementalInformationHypothesis": "conditions where within-industry selection can pay",
+   "primaryHorizon": 126,
+   "role": "CONTEXT_CONDITIONING",
+   "readinessStatus": "ALREADY_TESTED",
+   "blockingReason": null,
+   "nextAction": "reuse sealed reading; conditioning only",
+   "overlapsWith": [],
+   "limitations": "IC +0.069 (+1.2), survives leave-largest-out"
+  },
+  {
+   "featureId": "H05_crossIndustryDispersion",
+   "family": "H",
+   "economicMechanism": "Dispersion across industry returns: how much industry allocation matters at T",
+   "source": "KRX sto/stk_bydd_trd daily OHLCV + Yahoo distributions (replay-v16 panels; raw-input artifact kr-model-raw-inputs-36844599518)",
+   "sourceClass": "KRX_DAILY_OHLCV",
+   "existingImplementation": [
+    "pipeline/kr_industry_membership_v4.py",
+    "pipeline/kr_industry_anatomy.py"
+   ],
+   "pitStatus": "PIT_RECONSTRUCTED_MEMBERSHIP",
+   "availableFromSemantics": "close of the signal session T; every window ends at T; v4 economic crosswalk over the KIND/KRX label observable at T; 22 terminated names unclassified",
+   "historyCoverage": "2013-2026 on the v4 reconstruction (95.3% of 73,200 name-dates classified; DATA_FOUNDATION_INSUFFICIENT_V4 under its own gates)",
+   "missingnessStatus": "NOT_YET_MEASURED",
+   "survivorshipRisk": "MODERATE",
+   "existingResearchStatus": "UNTESTED",
+   "priorEvidenceReference": [],
+   "incrementalInformationHypothesis": "market-level state for the industry layer",
+   "primaryHorizon": 126,
+   "role": "CONTEXT_CONDITIONING",
+   "readinessStatus": "DERIVABLE_FROM_EXISTING_DATA",
+   "blockingReason": null,
+   "nextAction": "compute in Phase B",
+   "overlapsWith": [],
+   "limitations": ""
+  },
+  {
+   "featureId": "H06_industryConcentrationTop1",
+   "family": "H",
+   "economicMechanism": "Largest member's cap share inside an industry",
+   "source": "KRX sto/stk_bydd_trd daily OHLCV + Yahoo distributions (replay-v16 panels; raw-input artifact kr-model-raw-inputs-36844599518)",
+   "sourceClass": "KRX_DAILY_OHLCV",
+   "existingImplementation": [
+    "pipeline/kr_industry_membership_v4.py",
+    "pipeline/kr_industry_anatomy.py"
+   ],
+   "pitStatus": "PIT_RECONSTRUCTED_MEMBERSHIP",
+   "availableFromSemantics": "close of the signal session T; every window ends at T; v4 economic crosswalk over the KIND/KRX label observable at T; 22 terminated names unclassified",
+   "historyCoverage": "2013-2026 on the v4 reconstruction (95.3% of 73,200 name-dates classified; DATA_FOUNDATION_INSUFFICIENT_V4 under its own gates)",
+   "missingnessStatus": "MEASURED_LOW",
+   "survivorshipRisk": "MODERATE",
+   "existingResearchStatus": "PRIOR_INCONCLUSIVE",
+   "priorEvidenceReference": [
+    "kr-industry-opportunity-anatomy-v1"
+   ],
+   "incrementalInformationHypothesis": "concentration can make industry signals one-name signals",
+   "primaryHorizon": 126,
+   "role": "CONTEXT_CONDITIONING",
+   "readinessStatus": "ALREADY_TESTED",
+   "blockingReason": null,
+   "nextAction": "reuse sealed reading",
+   "overlapsWith": [],
+   "limitations": ""
+  },
+  {
+   "featureId": "H07_leadershipPersistence",
+   "family": "H",
+   "economicMechanism": "Rank autocorrelation of industry leadership",
+   "source": "KRX sto/stk_bydd_trd daily OHLCV + Yahoo distributions (replay-v16 panels; raw-input artifact kr-model-raw-inputs-36844599518)",
+   "sourceClass": "KRX_DAILY_OHLCV",
+   "existingImplementation": [
+    "pipeline/kr_industry_membership_v4.py",
+    "pipeline/kr_industry_anatomy.py"
+   ],
+   "pitStatus": "PIT_RECONSTRUCTED_MEMBERSHIP",
+   "availableFromSemantics": "close of the signal session T; every window ends at T; v4 economic crosswalk over the KIND/KRX label observable at T; 22 terminated names unclassified",
+   "historyCoverage": "2013-2026 on the v4 reconstruction (95.3% of 73,200 name-dates classified; DATA_FOUNDATION_INSUFFICIENT_V4 under its own gates)",
+   "missingnessStatus": "NOT_YET_MEASURED",
+   "survivorshipRisk": "MODERATE",
+   "existingResearchStatus": "UNTESTED",
+   "priorEvidenceReference": [],
+   "incrementalInformationHypothesis": "whether leadership itself persists, distinct from its level",
+   "primaryHorizon": 126,
+   "role": "CONTEXT_CONDITIONING",
+   "readinessStatus": "DERIVABLE_FROM_EXISTING_DATA",
+   "blockingReason": null,
+   "nextAction": "compute in Phase B",
+   "overlapsWith": [],
+   "limitations": ""
+  },
+  {
+   "featureId": "H08_equalVsCapWeightIndustry",
+   "family": "H",
+   "economicMechanism": "Equal-weight minus cap-weight trailing industry return: broad versus mega-cap-led moves",
+   "source": "KRX sto/stk_bydd_trd daily OHLCV + Yahoo distributions (replay-v16 panels; raw-input artifact kr-model-raw-inputs-36844599518)",
+   "sourceClass": "KRX_DAILY_OHLCV",
+   "existingImplementation": [
+    "pipeline/kr_industry_membership_v4.py",
+    "pipeline/kr_industry_anatomy.py"
+   ],
+   "pitStatus": "PIT_RECONSTRUCTED_MEMBERSHIP",
+   "availableFromSemantics": "close of the signal session T; every window ends at T; v4 economic crosswalk over the KIND/KRX label observable at T; 22 terminated names unclassified",
+   "historyCoverage": "2013-2026 on the v4 reconstruction (95.3% of 73,200 name-dates classified; DATA_FOUNDATION_INSUFFICIENT_V4 under its own gates)",
+   "missingnessStatus": "NOT_YET_MEASURED",
+   "survivorshipRisk": "MODERATE",
+   "existingResearchStatus": "UNTESTED",
+   "priorEvidenceReference": [],
+   "incrementalInformationHypothesis": "breadth of an industry move",
+   "primaryHorizon": 126,
+   "role": "ALPHA_CANDIDATE",
+   "readinessStatus": "DERIVABLE_FROM_EXISTING_DATA",
+   "blockingReason": null,
+   "nextAction": "compute in Phase B",
+   "overlapsWith": [
+    "H03_industryBreadthAboveMA126"
+   ],
+   "limitations": ""
+  },
+  {
+   "featureId": "H09_marketBreadth",
+   "family": "H",
+   "economicMechanism": "Share of top-120 names above their 200-session mean",
+   "source": "KRX sto/stk_bydd_trd daily OHLCV + Yahoo distributions (replay-v16 panels; raw-input artifact kr-model-raw-inputs-36844599518)",
+   "sourceClass": "KRX_DAILY_OHLCV",
+   "existingImplementation": [
+    "pipeline/sentiment.py",
+    "pipeline/krx_universe.py"
+   ],
+   "pitStatus": "PIT_SIGNAL_CLOSE",
+   "availableFromSemantics": "close of the signal session T; every window ends at T",
+   "historyCoverage": "2013-01 to 2026-09, the 260 ever-top-120 KOSPI securities (PIT top-120 membership)",
+   "missingnessStatus": "NOT_YET_MEASURED",
+   "survivorshipRisk": "MODERATE",
+   "existingResearchStatus": "UNTESTED",
+   "priorEvidenceReference": [],
+   "incrementalInformationHypothesis": "market state for conditioning, not stock alpha",
+   "primaryHorizon": 126,
+   "role": "CONTEXT_CONDITIONING",
+   "readinessStatus": "DERIVABLE_FROM_EXISTING_DATA",
+   "blockingReason": null,
+   "nextAction": "compute in Phase B (measured names and denominator published)",
+   "overlapsWith": [],
+   "limitations": ""
+  },
+  {
+   "featureId": "H10_marketConcentrationTop2",
+   "family": "H",
+   "economicMechanism": "Samsung Electronics + SK Hynix share of the top-120 cap",
+   "source": "KRX sto/stk_bydd_trd daily OHLCV + Yahoo distributions (replay-v16 panels; raw-input artifact kr-model-raw-inputs-36844599518)",
+   "sourceClass": "KRX_DAILY_OHLCV",
+   "existingImplementation": [
+    "pipeline/krx_universe.py",
+    "pipeline/kr_market_value.py"
+   ],
+   "pitStatus": "PIT_SIGNAL_CLOSE",
+   "availableFromSemantics": "close of the signal session T; every window ends at T",
+   "historyCoverage": "2013-01 to 2026-09, the 260 ever-top-120 KOSPI securities (PIT top-120 membership)",
+   "missingnessStatus": "MEASURED_LOW",
+   "survivorshipRisk": "MODERATE",
+   "existingResearchStatus": "UNTESTED",
+   "priorEvidenceReference": [],
+   "incrementalInformationHypothesis": "benchmark concentration regime (median 28.5%, max 57.2% in the formal window)",
+   "primaryHorizon": 126,
+   "role": "CONTEXT_CONDITIONING",
+   "readinessStatus": "DERIVABLE_FROM_EXISTING_DATA",
+   "blockingReason": null,
+   "nextAction": "compute in Phase B",
+   "overlapsWith": [],
+   "limitations": ""
+  },
+  {
+   "featureId": "H11_industryEarningsContext",
+   "family": "H",
+   "economicMechanism": "Median net-income improvement inside an industry",
+   "source": "DART fnlttSinglAcntAll filings (receipt-dated) x signal-date KRX market cap",
+   "sourceClass": "DART_FILINGS",
+   "existingImplementation": [
+    "pipeline/kr_industry_membership_v4.py",
+    "pipeline/kr_industry_anatomy.py"
+   ],
+   "pitStatus": "PIT_RECEIPT_DATED",
+   "availableFromSemantics": "DART receipt date (availableFrom) <= T; latest visible report period; TTM roll-forward, never annualised; v4 economic crosswalk over the KIND/KRX label observable at T; 22 terminated names unclassified",
+   "historyCoverage": "2013-2026 on the v4 reconstruction (95.3% of 73,200 name-dates classified; DATA_FOUNDATION_INSUFFICIENT_V4 under its own gates)",
+   "missingnessStatus": "MEASURED_HIGH",
+   "survivorshipRisk": "MODERATE",
+   "existingResearchStatus": "PRIOR_NEGATIVE_DEVELOPMENT",
+   "priorEvidenceReference": [
+    "kr-industry-opportunity-anatomy-v1"
+   ],
+   "incrementalInformationHypothesis": "earnings-backed leadership (H1 refinement)",
+   "primaryHorizon": 126,
+   "role": "ALPHA_CANDIDATE",
+   "readinessStatus": "ALREADY_TESTED",
+   "blockingReason": null,
+   "nextAction": "no new Level 1",
+   "overlapsWith": [],
+   "limitations": "IC -0.185 (mean/se -3.0), 248 valid dates"
+  },
+  {
+   "featureId": "H12_industryValuationContext",
+   "family": "H",
+   "economicMechanism": "Median book-to-market inside an industry",
+   "source": "DART fnlttSinglAcntAll filings (receipt-dated) x signal-date KRX market cap",
+   "sourceClass": "DART_FILINGS",
+   "existingImplementation": [
+    "pipeline/kr_industry_membership_v4.py",
+    "pipeline/kr_industry_anatomy.py"
+   ],
+   "pitStatus": "PIT_RECEIPT_DATED",
+   "availableFromSemantics": "DART receipt date (availableFrom) <= T; latest visible report period; TTM roll-forward, never annualised; v4 economic crosswalk over the KIND/KRX label observable at T; 22 terminated names unclassified",
+   "historyCoverage": "2013-2026 on the v4 reconstruction (95.3% of 73,200 name-dates classified; DATA_FOUNDATION_INSUFFICIENT_V4 under its own gates)",
+   "missingnessStatus": "MEASURED_HIGH",
+   "survivorshipRisk": "MODERATE",
+   "existingResearchStatus": "PRIOR_INCONCLUSIVE",
+   "priorEvidenceReference": [
+    "kr-industry-opportunity-anatomy-v1"
+   ],
+   "incrementalInformationHypothesis": "industry-level value",
+   "primaryHorizon": 126,
+   "role": "ALPHA_CANDIDATE",
+   "readinessStatus": "ALREADY_TESTED",
+   "blockingReason": null,
+   "nextAction": "reuse sealed reading",
+   "overlapsWith": [],
+   "limitations": "IC -0.059 (-0.8)"
+  },
+  {
+   "featureId": "I01_kospiTrendVolState",
+   "family": "I",
+   "economicMechanism": "069500.KS below its 200-session mean and/or annualised vol63 > 25%: the FAST market layer",
+   "source": "KRX sto/stk_bydd_trd daily OHLCV + Yahoo distributions (replay-v16 panels; raw-input artifact kr-model-raw-inputs-36844599518)",
+   "sourceClass": "KRX_DAILY_OHLCV",
+   "existingImplementation": [
+    "pipeline/kr_market_risk_overlay.py",
+    "pipeline/kr_market_risk_model.py"
+   ],
+   "pitStatus": "PIT_SIGNAL_CLOSE",
+   "availableFromSemantics": "close of the signal session T; every window ends at T",
+   "historyCoverage": "2007-2026 (069500.KS)",
+   "missingnessStatus": "MEASURED_LOW",
+   "survivorshipRisk": "LOW",
+   "existingResearchStatus": "PRIOR_INCONCLUSIVE",
+   "priorEvidenceReference": [
+    "kr-market-risk-model-v1"
+   ],
+   "incrementalInformationHypothesis": "market state for conditioning and the market layer, never stock alpha",
+   "primaryHorizon": 126,
+   "role": "CONTEXT_CONDITIONING",
+   "readinessStatus": "ALREADY_TESTED",
+   "blockingReason": null,
+   "nextAction": "reuse sealed model; conditioning variable for X6",
+   "overlapsWith": [],
+   "limitations": "market risk model v1: NO_CANDIDATE_NOMINATED_CONTROL_RETAINED"
+  },
+  {
+   "featureId": "I02_vixLevel",
+   "family": "I",
+   "economicMechanism": "Global risk appetite (VIX level in its own past-only distribution): the TRANSITION market layer",
+   "source": "FRED VIXCLS (as sealed in kr-market-risk-anatomy-v2)",
+   "sourceClass": "KRX_DAILY_OHLCV",
+   "existingImplementation": [
+    "pipeline/kr_market_risk_model.py"
+   ],
+   "pitStatus": "PIT_SIGNAL_CLOSE",
+   "availableFromSemantics": "previous US close (US close follows the KRX close of the same date)",
+   "historyCoverage": "1990-2026",
+   "missingnessStatus": "MEASURED_LOW",
+   "survivorshipRisk": "LOW",
+   "existingResearchStatus": "PRIOR_INCONCLUSIVE",
+   "priorEvidenceReference": [
+    "kr-market-risk-model-v1"
+   ],
+   "incrementalInformationHypothesis": "conditioning only",
+   "primaryHorizon": 126,
+   "role": "CONTEXT_CONDITIONING",
+   "readinessStatus": "ALREADY_TESTED",
+   "blockingReason": null,
+   "nextAction": "reuse sealed model",
+   "overlapsWith": [],
+   "limitations": "the tournament excluded the FRED family as revised-history; VIX is a market close, used only as the sealed market model uses it"
+  },
+  {
+   "featureId": "I03_krTermSpread",
+   "family": "I",
+   "economicMechanism": "Korean 10y-3m slope: the SLOW layer (re-steepening after inversion)",
+   "source": "BOK ECOS via pipeline/ecos_macro.py; config.json ecos.KR and OECD 3M",
+   "sourceClass": "ECOS_MACRO",
+   "existingImplementation": [
+    "pipeline/ecos_macro.py",
+    "pipeline/kr_market_context.py",
+    "pipeline/kr_market_risk_model.py"
+   ],
+   "pitStatus": "REVISED_HISTORY",
+   "availableFromSemantics": "knownFrom = retained fetch time; no release vintage",
+   "historyCoverage": "2007-2026",
+   "missingnessStatus": "MEASURED_LOW",
+   "survivorshipRisk": "LOW",
+   "existingResearchStatus": "PRIOR_INCONCLUSIVE",
+   "priorEvidenceReference": [
+    "kr-market-risk-model-v1"
+   ],
+   "incrementalInformationHypothesis": "rates regime",
+   "primaryHorizon": 126,
+   "role": "CONTEXT_CONDITIONING",
+   "readinessStatus": "PIT_UNSAFE",
+   "blockingReason": "ECOS series carry vintageStatus REVISED_HISTORY; a historical value is usable only from its retained fetch (kr_market_context)",
+   "nextAction": "prospective use only",
+   "overlapsWith": [],
+   "limitations": ""
+  },
+  {
+   "featureId": "I04_krPolicyRate",
+   "family": "I",
+   "economicMechanism": "BOK base rate level and change",
+   "source": "BOK ECOS via pipeline/ecos_macro.py; config.json ecos.KR",
+   "sourceClass": "ECOS_MACRO",
+   "existingImplementation": [
+    "pipeline/ecos_macro.py",
+    "pipeline/kr_market_context.py"
+   ],
+   "pitStatus": "REVISED_HISTORY",
+   "availableFromSemantics": "event date of the rate decision",
+   "historyCoverage": "dated decisions; ECOS item AMBIGUOUS_SOURCE",
+   "missingnessStatus": "NOT_YET_MEASURED",
+   "survivorshipRisk": "LOW",
+   "existingResearchStatus": "UNTESTED",
+   "priorEvidenceReference": [],
+   "incrementalInformationHypothesis": "monetary regime",
+   "primaryHorizon": 126,
+   "role": "CONTEXT_CONDITIONING",
+   "readinessStatus": "DATA_BUILD_REQUIRED",
+   "blockingReason": "config.json ecos.KR.BaseRate sourceStatus AMBIGUOUS_SOURCE (item code unresolved)",
+   "nextAction": "resolve the ECOS item code in the market-context line",
+   "overlapsWith": [],
+   "limitations": ""
+  },
+  {
+   "featureId": "I05_krCreditSpread",
+   "family": "I",
+   "economicMechanism": "Corporate minus government 3y yield",
+   "source": "BOK ECOS via pipeline/ecos_macro.py; config.json ecos.KR",
+   "sourceClass": "ECOS_MACRO",
+   "existingImplementation": [
+    "pipeline/ecos_macro.py",
+    "pipeline/kr_market_context.py"
+   ],
+   "pitStatus": "REVISED_HISTORY",
+   "availableFromSemantics": "retained fetch time",
+   "historyCoverage": "unresolved",
+   "missingnessStatus": "NO_DATA",
+   "survivorshipRisk": "LOW",
+   "existingResearchStatus": "UNTESTED",
+   "priorEvidenceReference": [],
+   "incrementalInformationHypothesis": "credit regime",
+   "primaryHorizon": 126,
+   "role": "CONTEXT_CONDITIONING",
+   "readinessStatus": "DATA_BUILD_REQUIRED",
+   "blockingReason": "CorpBond_3Y sourceStatus AMBIGUOUS_SOURCE (817Y002 item code for the corporate series unresolved)",
+   "nextAction": "resolve item code",
+   "overlapsWith": [],
+   "limitations": ""
+  },
+  {
+   "featureId": "I06_krInflation",
+   "family": "I",
+   "economicMechanism": "CPI / core CPI change",
+   "source": "BOK ECOS via pipeline/ecos_macro.py; config.json ecos.KR",
+   "sourceClass": "ECOS_MACRO",
+   "existingImplementation": [
+    "pipeline/ecos_macro.py",
+    "pipeline/kr_market_context.py"
+   ],
+   "pitStatus": "REVISED_HISTORY",
+   "availableFromSemantics": "retained fetch time",
+   "historyCoverage": "unresolved",
+   "missingnessStatus": "NO_DATA",
+   "survivorshipRisk": "LOW",
+   "existingResearchStatus": "UNTESTED",
+   "priorEvidenceReference": [],
+   "incrementalInformationHypothesis": "inflation regime",
+   "primaryHorizon": 126,
+   "role": "CONTEXT_CONDITIONING",
+   "readinessStatus": "PIT_UNSAFE",
+   "blockingReason": "CPI AMBIGUOUS_SOURCE / CoreCPI DATA_LINEAGE_UNRESOLVED, revised history without release vintages",
+   "nextAction": "prospective only",
+   "overlapsWith": [],
+   "limitations": ""
+  },
+  {
+   "featureId": "I07_krExportsActivity",
+   "family": "I",
+   "economicMechanism": "Exports, industrial production, leading index: export-cycle regime",
+   "source": "BOK ECOS via pipeline/ecos_macro.py; config.json ecos.KR",
+   "sourceClass": "ECOS_MACRO",
+   "existingImplementation": [
+    "pipeline/ecos_macro.py",
+    "pipeline/kr_market_context.py"
+   ],
+   "pitStatus": "REVISED_HISTORY",
+   "availableFromSemantics": "retained fetch time",
+   "historyCoverage": "LeadingIndex validated; Exports NOT_AVAILABLE",
+   "missingnessStatus": "NO_DATA",
+   "survivorshipRisk": "LOW",
+   "existingResearchStatus": "UNTESTED",
+   "priorEvidenceReference": [],
+   "incrementalInformationHypothesis": "export cycle",
+   "primaryHorizon": 126,
+   "role": "CONTEXT_CONDITIONING",
+   "readinessStatus": "PIT_UNSAFE",
+   "blockingReason": "Exports NOT_AVAILABLE; IndustrialProduction DATA_LINEAGE_UNRESOLVED; LeadingIndex revised without vintages",
+   "nextAction": "prospective only",
+   "overlapsWith": [],
+   "limitations": ""
+  },
+  {
+   "featureId": "I08_usdKrw",
+   "family": "I",
+   "economicMechanism": "KRW/USD level and change",
+   "source": "FRED DEXKOUS (noon New York) / ECOS 731Y001 (unbuilt)",
+   "sourceClass": "FX",
+   "existingImplementation": [
+    "pipeline/kr_market_context.py"
+   ],
+   "pitStatus": "PUBLICATION_TIME_UNRESOLVED",
+   "availableFromSemantics": "noon New York rate does not align with the 15:30 KST close",
+   "historyCoverage": "2013-2026 (FRED)",
+   "missingnessStatus": "MEASURED_LOW",
+   "survivorshipRisk": "LOW",
+   "existingResearchStatus": "UNTESTED",
+   "priorEvidenceReference": [],
+   "incrementalInformationHypothesis": "FX regime",
+   "primaryHorizon": 126,
+   "role": "CONTEXT_CONDITIONING",
+   "readinessStatus": "PIT_UNSAFE",
+   "blockingReason": "FX_PUBLICATION_TIME_UNRESOLVED (alpha-information-inventory-v1)",
+   "nextAction": "ECOS 731Y001 with a verified fixing time",
+   "overlapsWith": [],
+   "limitations": ""
+  },
+  {
+   "featureId": "I09_fxBeta26w",
+   "family": "I",
+   "economicMechanism": "Stock-level exposure to KRW/USD",
+   "source": "price + FX",
+   "sourceClass": "FX",
+   "existingImplementation": [
+    "pipeline/regional_alpha_features.py"
+   ],
+   "pitStatus": "PUBLICATION_TIME_UNRESOLVED",
+   "availableFromSemantics": "excluded in the regional matrix",
+   "historyCoverage": "none",
+   "missingnessStatus": "NO_DATA",
+   "survivorshipRisk": "MODERATE",
+   "existingResearchStatus": "UNTESTED",
+   "priorEvidenceReference": [],
+   "incrementalInformationHypothesis": "exporter versus importer exposure",
+   "primaryHorizon": 126,
+   "role": "ALPHA_CANDIDATE",
+   "readinessStatus": "PIT_UNSAFE",
+   "blockingReason": "FX_PUBLICATION_TIME_UNRESOLVED; excluded by regional_alpha_features",
+   "nextAction": "after I08 is resolved",
+   "overlapsWith": [],
+   "limitations": ""
+  },
+  {
+   "featureId": "I10_semiconductorCycleSOX",
+   "family": "I",
+   "economicMechanism": "Philadelphia semiconductor index trend: global chip cycle for the KR electronics industry",
+   "source": "Yahoo ^SOX (dashboard fetch in pipeline/indices.py)",
+   "sourceClass": "GLOBAL_MARKET",
+   "existingImplementation": [
+    "pipeline/indices.py"
+   ],
+   "pitStatus": "NO_SOURCE",
+   "availableFromSemantics": "previous US close; must lag one KR session",
+   "historyCoverage": "no sealed history",
+   "missingnessStatus": "NO_DATA",
+   "survivorshipRisk": "LOW",
+   "existingResearchStatus": "UNTESTED",
+   "priorEvidenceReference": [],
+   "incrementalInformationHypothesis": "global driver of the industry that carried 2025-2026",
+   "primaryHorizon": 126,
+   "role": "CONTEXT_CONDITIONING",
+   "readinessStatus": "DATA_BUILD_REQUIRED",
+   "blockingReason": "dashboard-only fetch; no pinned historical snapshot",
+   "nextAction": "snapshot with the benchmark acquisition rules",
+   "overlapsWith": [],
+   "limitations": ""
+  },
+  {
+   "featureId": "I11_globalFinancialConditions",
+   "family": "I",
+   "economicMechanism": "US HY spread, real yields, NFCI",
+   "source": "FRED",
+   "sourceClass": "FRED_MACRO",
+   "existingImplementation": [
+    "pipeline/macro_context.py"
+   ],
+   "pitStatus": "REVISED_HISTORY",
+   "availableFromSemantics": "FRED current history",
+   "historyCoverage": "2013-2026",
+   "missingnessStatus": "MEASURED_LOW",
+   "survivorshipRisk": "LOW",
+   "existingResearchStatus": "UNTESTED",
+   "priorEvidenceReference": [],
+   "incrementalInformationHypothesis": "global financial conditions",
+   "primaryHorizon": 126,
+   "role": "CONTEXT_CONDITIONING",
+   "readinessStatus": "PIT_UNSAFE",
+   "blockingReason": "10 of 28 FRED panel columns have no ALFRED vintages (macro vintage invariants v2.9)",
+   "nextAction": "none historically",
+   "overlapsWith": [],
+   "limitations": ""
+  },
+  {
+   "featureId": "I12_commodityExposure",
+   "family": "I",
+   "economicMechanism": "Oil and metals price trends for commodity-sensitive industries",
+   "source": "none in repository",
+   "sourceClass": "GLOBAL_MARKET",
+   "existingImplementation": [],
+   "pitStatus": "NO_SOURCE",
+   "availableFromSemantics": "n/a",
+   "historyCoverage": "none",
+   "missingnessStatus": "NO_DATA",
+   "survivorshipRisk": "LOW",
+   "existingResearchStatus": "UNTESTED",
+   "priorEvidenceReference": [],
+   "incrementalInformationHypothesis": "input-cost regime",
+   "primaryHorizon": 126,
+   "role": "CONTEXT_CONDITIONING",
+   "readinessStatus": "DATA_BUILD_REQUIRED",
+   "blockingReason": "no commodity price series is collected",
+   "nextAction": "optional; lowest priority",
+   "overlapsWith": [],
+   "limitations": ""
+  },
+  {
+   "featureId": "J01_periodicFilingEvent",
+   "family": "J",
+   "economicMechanism": "Post-filing drift: prices under-react to the fundamental change a new periodic report reveals",
+   "source": "DART fnlttSinglAcntAll filings (receipt-dated) x signal-date KRX market cap",
+   "sourceClass": "DART_FILINGS",
+   "existingImplementation": [
+    "pipeline/dart_derive.py",
+    "pipeline/fundamental_acceleration.py"
+   ],
+   "pitStatus": "PIT_RECEIPT_DATED",
+   "availableFromSemantics": "DART receipt date of the new filing",
+   "historyCoverage": "DART from fiscal 2015 (dark 2013-2014, partial 2016); 126 of 260 ever-top-120 tickers collected in the sealed store",
+   "missingnessStatus": "MEASURED_HIGH",
+   "survivorshipRisk": "MODERATE",
+   "existingResearchStatus": "UNTESTED",
+   "priorEvidenceReference": [],
+   "incrementalInformationHypothesis": "event-time reading of the change at the moment it becomes public; no consensus exists, so no surprise",
+   "primaryHorizon": 21,
+   "role": "ALPHA_CANDIDATE",
+   "readinessStatus": "DERIVABLE_FROM_EXISTING_DATA",
+   "blockingReason": null,
+   "nextAction": "compute in Phase B from receipt dates",
+   "overlapsWith": [
+    "C13_fundamentalAcceleration"
+   ],
+   "limitations": ""
+  },
+  {
+   "featureId": "J02_dividendPolicyChange",
+   "family": "J",
+   "economicMechanism": "Dividend initiation, increase or cut: management's signal about durability",
+   "source": "DART alotMatter.json",
+   "sourceClass": "DART_FILINGS",
+   "existingImplementation": [
+    "pipeline/kr_corporate_action_events.py"
+   ],
+   "pitStatus": "PIT_RECEIPT_DATED",
+   "availableFromSemantics": "DART receipt date",
+   "historyCoverage": "collected only for the 22 terminated and a 25-name continuing sample",
+   "missingnessStatus": "NO_DATA",
+   "survivorshipRisk": "MODERATE",
+   "existingResearchStatus": "UNTESTED",
+   "priorEvidenceReference": [],
+   "incrementalInformationHypothesis": "payout policy, absent from KR studies",
+   "primaryHorizon": 63,
+   "role": "ALPHA_CANDIDATE",
+   "readinessStatus": "DATA_BUILD_REQUIRED",
+   "blockingReason": "alotMatter.json not collected universe-wide; endpointConfidence CANDIDATE_UNCONFIRMED",
+   "nextAction": "bounded collection for the ever-top-120 list",
+   "overlapsWith": [],
+   "limitations": ""
+  },
+  {
+   "featureId": "J03_buybackAnnouncement",
+   "family": "J",
+   "economicMechanism": "Treasury-share acquisition decision: managers buying when they see value",
+   "source": "DART list.json (주요사항보고서)",
+   "sourceClass": "DART_FILINGS",
+   "existingImplementation": [
+    "pipeline/kr_corporate_action_events.py"
+   ],
+   "pitStatus": "PIT_RECEIPT_DATED",
+   "availableFromSemantics": "DART receipt date",
+   "historyCoverage": "classifier exists; collected only for the 22 terminated names",
+   "missingnessStatus": "NO_DATA",
+   "survivorshipRisk": "MODERATE",
+   "existingResearchStatus": "UNTESTED",
+   "priorEvidenceReference": [],
+   "incrementalInformationHypothesis": "corporate insider-like signal",
+   "primaryHorizon": 21,
+   "role": "ALPHA_CANDIDATE",
+   "readinessStatus": "DATA_BUILD_REQUIRED",
+   "blockingReason": "list.json disclosure families not collected universe-wide",
+   "nextAction": "bounded list.json collection; report-name match is a reading list, never a verdict",
+   "overlapsWith": [],
+   "limitations": ""
+  },
+  {
+   "featureId": "J04_materialDisclosure",
+   "family": "J",
+   "economicMechanism": "Material events (capital raise, M&A, contracts)",
+   "source": "DART list.json",
+   "sourceClass": "DART_FILINGS",
+   "existingImplementation": [
+    "pipeline/kr_corporate_action_events.py"
+   ],
+   "pitStatus": "PIT_RECEIPT_DATED",
+   "availableFromSemantics": "DART receipt date",
+   "historyCoverage": "as J03",
+   "missingnessStatus": "NO_DATA",
+   "survivorshipRisk": "HIGH",
+   "existingResearchStatus": "UNTESTED",
+   "priorEvidenceReference": [],
+   "incrementalInformationHypothesis": "event information",
+   "primaryHorizon": 21,
+   "role": "ALPHA_CANDIDATE",
+   "readinessStatus": "DATA_BUILD_REQUIRED",
+   "blockingReason": "as J03; M&A outcomes carry hindsight risk (terminal economics unresolved)",
+   "nextAction": "after J03",
+   "overlapsWith": [],
+   "limitations": ""
+  },
+  {
+   "featureId": "J05_shortSellingRegime",
+   "family": "J",
+   "economicMechanism": "Dated short-selling ban regimes",
+   "source": "regulatory calendar",
+   "sourceClass": "CALENDAR",
+   "existingImplementation": [
+    "pipeline/kr_short_selling.py"
+   ],
+   "pitStatus": "PIT_DATED_CALENDAR",
+   "availableFromSemantics": "dated regime boundaries in kr_short_selling.regime_label",
+   "historyCoverage": "2013-2026",
+   "missingnessStatus": "MEASURED_LOW",
+   "survivorshipRisk": "LOW",
+   "existingResearchStatus": "NOT_APPLICABLE",
+   "priorEvidenceReference": [],
+   "incrementalInformationHypothesis": "regime marker for conditioning and for any future G08/G09 work",
+   "primaryHorizon": 21,
+   "role": "CONTEXT_CONDITIONING",
+   "readinessStatus": "READY",
+   "blockingReason": null,
+   "nextAction": "conditioning marker only",
+   "overlapsWith": [],
+   "limitations": ""
+  },
+  {
+   "featureId": "J06_searchAttention",
+   "family": "J",
+   "economicMechanism": "Search-volume attention",
+   "source": "none in repository",
+   "sourceClass": "NO_SOURCE",
+   "existingImplementation": [],
+   "pitStatus": "NO_SOURCE",
+   "availableFromSemantics": "n/a",
+   "historyCoverage": "none",
+   "missingnessStatus": "NO_DATA",
+   "survivorshipRisk": "LOW",
+   "existingResearchStatus": "NOT_APPLICABLE",
+   "priorEvidenceReference": [],
+   "incrementalInformationHypothesis": "retail attention",
+   "primaryHorizon": 21,
+   "role": "ALPHA_CANDIDATE",
+   "readinessStatus": "NOT_FEASIBLE",
+   "blockingReason": "no source with verified point-in-time history and permitted use",
+   "nextAction": "none",
+   "overlapsWith": [],
+   "limitations": ""
+  },
+  {
+   "featureId": "J07_newsTextSentiment",
+   "family": "J",
+   "economicMechanism": "News or text sentiment",
+   "source": "none in repository",
+   "sourceClass": "NO_SOURCE",
+   "existingImplementation": [],
+   "pitStatus": "NO_SOURCE",
+   "availableFromSemantics": "n/a",
+   "historyCoverage": "none",
+   "missingnessStatus": "NO_DATA",
+   "survivorshipRisk": "LOW",
+   "existingResearchStatus": "NOT_APPLICABLE",
+   "priorEvidenceReference": [],
+   "incrementalInformationHypothesis": "text information",
+   "primaryHorizon": 21,
+   "role": "ALPHA_CANDIDATE",
+   "readinessStatus": "NOT_FEASIBLE",
+   "blockingReason": "no archived PIT news source; a large NLP project is out of scope",
+   "nextAction": "none",
+   "overlapsWith": [],
+   "limitations": ""
+  },
+  {
+   "featureId": "J08_analystRevisions",
+   "family": "J",
+   "economicMechanism": "Consensus estimate revisions",
+   "source": "FnGuide / paid vendors",
+   "sourceClass": "NO_SOURCE",
+   "existingImplementation": [],
+   "pitStatus": "NO_SOURCE",
+   "availableFromSemantics": "n/a",
+   "historyCoverage": "none",
+   "missingnessStatus": "NO_DATA",
+   "survivorshipRisk": "LOW",
+   "existingResearchStatus": "BLOCKED",
+   "priorEvidenceReference": [],
+   "incrementalInformationHypothesis": "expectation changes",
+   "primaryHorizon": 63,
+   "role": "ALPHA_CANDIDATE",
+   "readinessStatus": "NOT_FEASIBLE",
+   "blockingReason": "FnGuide/FnSpace ToS-blocked; no free PIT history (alpha-information-inventory-v1)",
+   "nextAction": "none",
+   "overlapsWith": [],
+   "limitations": ""
+  }
+ ]
+}

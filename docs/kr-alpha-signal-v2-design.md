@@ -1,6 +1,9 @@
 # kr-alpha-signal-v2 — research design (KR, H126): value with business confirmation, within industry
 
-Status: `DESIGN_DRAFT_NOT_PREREGISTERED`. This document defines a signal, its tests and its prospective record. **It computes nothing on
+Status: `DESIGN_DRAFT_NOT_PREREGISTERED`; role: **`CANDIDATE_SIGNAL_FAMILY`** inside the KR Alpha Research Completion Program (`kr-alpha-atlas`,
+`docs/kr-alpha-atlas-methodology.md`). H2 is evaluated there as interaction `X1_valueByBusinessConfirmation` alongside every other information
+family. It is not the program's sole or final direction. The §11 roadmap below is superseded by `docs/kr-alpha-atlas-execution-roadmap.md`. The
+receipt contract in §10 now has separate LIVE and SYNTHETIC_FIXTURE pathways and an outcome is final only after the maturity session closes. This document defines a signal, its tests and its prospective record. **It computes nothing on
 historical outcomes, authorizes no evaluation and registers no prospective start.** Code in this change is the signal and receipt contract with
 synthetic tests (`pipeline/kr_alpha_signal_v2.py`, `pipeline/kr_alpha_signal_v2_receipts.py`, `pipeline/prospective_receipt_core.py`). No
 production path imports it. Why this hypothesis: `docs/kr-alpha-signal-v2-opportunity-map.md`.
@@ -144,10 +147,16 @@ A date enters P1 only with at least 3 confirmed and 3 unconfirmed cheap names. O
 Contract: `pipeline/kr_alpha_signal_v2_receipts.py` and `research_specs/kr-alpha-signal-v2-receipt.schema.json`, on the storage format of
 `pipeline/prospective_receipt_core.py`. That format is byte-compatible with the three existing study receipts (tested).
 
+- **Two pathways that never meet.** `LIVE` (`build_live_receipt`, `append_live_receipt`, `build_live_outcome_record`) reads the authorization only
+  from `REGISTERED_AUTHORIZATION`, hashes the spec, the authorized code files and the data snapshots from disk itself, requires the running commit to
+  contain the authorizing merge, and takes its time only from the writer's own clock (no timestamp argument exists). `SYNTHETIC_FIXTURE`
+  (`build_synthetic_receipt`, ...) takes an explicit authorization and test clock, is labelled `evidenceClass: SYNTHETIC_FIXTURE`, and can never pass
+  live validation or enter a live ledger. No flag turns one into the other.
 - **Identity:** spec SHA-256, design digest, commit SHA plus per-file SHA-256, PIT feature / universe / industry snapshot SHA-256, forecast model
-  SHA-256 and training cutoff. A receipt without any of them is refused.
-- **Timing:** created after T's 15:30 KST close and before the execution session's 09:00 KST open, not in the future of the writer's clock. The
-  public proof is the commit or artifact time of the ledger row.
+  SHA-256 and training cutoff. A receipt without any of them is refused; a live receipt whose authorization is not the registered one is refused.
+- **Timing:** created at or after 18:00 KST (09:00 UTC) of T, the latest moment any KRX day variant (late opening, exam-day 16:30 close, after-hours
+  closing-price window) can still change its close, and before the execution session's 09:00 KST open. A tampered timestamp fails the digest, and
+  one re-digested outside the window fails validation. The public proof is the commit or artifact time of the ledger row.
 - **Eligibility:** only for T on or after the first KR session strictly after the KST date of the authorizing merge, so same-day observations are
   excluded. `REGISTERED_AUTHORIZATION` is `None`, so no live receipt can be written yet.
 - **States:** `BLOCKED` (identities and counts only), `NOT_READY` (research-only signal, no weights), `NO_ELIGIBLE_OPPORTUNITY`, `CANDIDATE_PORTFOLIO`.
@@ -155,10 +164,11 @@ Contract: `pipeline/kr_alpha_signal_v2_receipts.py` and `research_specs/kr-alpha
 - **No leakage:** any outcome-named key at any depth is refused; a forecast trained on a target that had not matured by T is refused.
 - **Append-only:** a duplicate `(studyId, signalDate)`, an earlier date, a changed spec or an altered earlier row refuses the append. Bytes are
   never rewritten.
-- **Outcomes:** a separate `PROSPECTIVE_OUTCOME` record keyed by `receiptSha256`, built only after 126 KR sessions have closed. The receipt is never
-  modified.
+- **Outcomes:** a separate `PROSPECTIVE_OUTCOME` record keyed by `receiptSha256`, built only once the maturity session itself (the 126th KR session
+  after execution, holidays skipped by the pinned calendar) has closed at 18:00 KST by the writer's clock, and only from prices of that session. The
+  receipt is never modified.
 
-## 11. Roadmap and gates
+## 11. Roadmap and gates (superseded by `docs/kr-alpha-atlas-execution-roadmap.md`; kept as written)
 
 | Step | Scope | Depends on | Gate to pass |
 |---|---|---|---|
