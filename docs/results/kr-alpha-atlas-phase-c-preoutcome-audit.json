@@ -1,0 +1,621 @@
+{
+  "artifactType": "ENGINEERING_PREOUTCOME_AUDIT_NOT_A_FORMAL_STUDY_RESULT",
+  "verifiedMainSha": "a0e71399e9f231a33d6c208e528d4fcacdff31f1",
+  "phaseA": {
+    "pr": 211,
+    "state": "MERGED",
+    "mergeSha": "68895fc30a4d1832a3303f2bbc551f36864f9d45"
+  },
+  "phaseB": {
+    "pr": 212,
+    "state": "MERGED",
+    "mergeSha": "a0e71399e9f231a33d6c208e528d4fcacdff31f1"
+  },
+  "specFileSha256": "458af82cdc71461ae277c5fb870349ac1e30dd803896fc56514f9cfc260eff8e",
+  "dependencyManifestSha256": "0c9f312eb5a551c62972d7160f9d19eddbf02528d41481405ad68cb3cee1248b",
+  "dependencyFiles": 113,
+  "protectedMainFiles": 235,
+  "protectedMainManifestSha256": "0e50ce91a4df25380cf202b9ea552b458d12a4f069846f2322b48573b7a5fece",
+  "protectedMainBytesUnchanged": true,
+  "calendar": {
+    "sessionCount": 3364,
+    "weeklyDates": 714,
+    "maturity": {
+      "H21": "2026-08-07",
+      "H63": "2026-06-12",
+      "H126": "2026-03-06",
+      "H252": "2025-08-29"
+    },
+    "calendarSha256": "547b211513cedee707943a239bc43761954cc6141e2e649f72c2ebf94468d060",
+    "outcomeReads": 0
+  },
+  "selectedInputs": {
+    "gitObjects": {
+      "dart-2015.jsonl.gz": "ee23f00aea08bc28548872a8d8153f1afbb53500",
+      "dart-2016.jsonl.gz": "65be7342d1d47bcbcda84db99f218312d2adb03d",
+      "dart-2017.jsonl.gz": "2b0146e9c1b8363fecdc1c3b1af0b21b68c8e237",
+      "dart-2018.jsonl.gz": "2316d0b0125fb207f9c721323c368120ff10428e",
+      "dart-2019.jsonl.gz": "4a41f94a2748256efae16c50b04f30e2d7578b56",
+      "dart-2020.jsonl.gz": "932292695b4906b9b179f5cef506299a43c96c1a",
+      "dart-2021.jsonl.gz": "46ccf6e760fd2d5037ab67fca0ab2a6ebd1f25dc",
+      "dart-2022.jsonl.gz": "056694d86b9cefbd6b62eb44c91a610d6b5a08b0",
+      "dart-2023.jsonl.gz": "8a0dd4f040d37ffb43d6078721d2f9a763e9539d",
+      "dart-2024.jsonl.gz": "78619db28718f2b49f69893057a10ef459e53c12",
+      "dart-2025.jsonl.gz": "b60daa3620adba7374155837cdbdc96def57dd7a",
+      "dart-2026.jsonl.gz": "5caf06224466fcf30cf0d8e412fb50e24f8b94c6",
+      "ledger/prices/kr/krx-prices-2013.jsonl.gz": "84783e389a49f91b34446952e811d9dc4b25a26e",
+      "ledger/prices/kr/krx-prices-2014.jsonl.gz": "355d5c80a4f38c9aefddf83f5fc72bca16a8a75c",
+      "ledger/prices/kr/krx-prices-2015.jsonl.gz": "dfc64c6eaaf66015e001061fd4877211b03804a4",
+      "ledger/prices/kr/krx-prices-2016.jsonl.gz": "8cbe7a6ddc7feb5729e8636a0066cc33d5b0c839",
+      "ledger/prices/kr/krx-prices-2017.jsonl.gz": "aa70e56056a5486846d6af5f7506f7b31ed17d73",
+      "ledger/prices/kr/krx-prices-2018.jsonl.gz": "d1316f27d5d4ae79205082a191974facabaa5721",
+      "ledger/prices/kr/krx-prices-2019.jsonl.gz": "7568625868d99faa31703019f1cc441a755113ed",
+      "ledger/prices/kr/krx-prices-2020.jsonl.gz": "8ee2e5776d315585772682cebec883e27be5869c",
+      "ledger/prices/kr/krx-prices-2021.jsonl.gz": "45a356de93880272e005114af23cdf5892ca66f4",
+      "ledger/prices/kr/krx-prices-2022.jsonl.gz": "aa999d58f8a299fd749c79b0f34949c3ada11fc0",
+      "ledger/prices/kr/krx-prices-2023.jsonl.gz": "4c50fd23448aef8f3a8bd71badda84534701c4bd",
+      "ledger/prices/kr/krx-prices-2024.jsonl.gz": "f59e014c5d58397bf83c80ee4954c427a940d51c",
+      "ledger/prices/kr/krx-prices-2025.jsonl.gz": "827dae314862285fdbc84ec5393583438fc39885",
+      "ledger/prices/kr/krx-prices-2026.jsonl.gz": "2223ffbaf95389f1c70e69a955ab5f5d9d069c3b",
+      "ledger/universe/kr/krx-universe-2013.jsonl.gz": "e711a6c5e07c89e9b0cf12a94078120ceeb3b9a4",
+      "ledger/universe/kr/krx-universe-2014.jsonl.gz": "395477e6dd72c117615919f850173d2830b2cc1f",
+      "ledger/universe/kr/krx-universe-2015.jsonl.gz": "029bcef52056d4b172d78094779a5eff9c89ff89",
+      "ledger/universe/kr/krx-universe-2016.jsonl.gz": "402910f37a4f75887f8c8f7e501aec1afe90b14d",
+      "ledger/universe/kr/krx-universe-2017.jsonl.gz": "db9b0436c970eb1bf4f2456bab7060432558f6e6",
+      "ledger/universe/kr/krx-universe-2018.jsonl.gz": "9a08628f96aa3aeb5d47b11612d14ab551519abc",
+      "ledger/universe/kr/krx-universe-2019.jsonl.gz": "c1f7990b38b0e17b71c88327b5262c768dcfe16d",
+      "ledger/universe/kr/krx-universe-2020.jsonl.gz": "baf7d4e2609aaaa7091cab087cabdbc5a3c58619",
+      "ledger/universe/kr/krx-universe-2021.jsonl.gz": "c09f60669adf36d81def38dfed6cb0d4dd6c456d",
+      "ledger/universe/kr/krx-universe-2022.jsonl.gz": "a1b303c61dd1d114149c3da51763f1dccb711137",
+      "ledger/universe/kr/krx-universe-2023.jsonl.gz": "024abba6a91153259a8030f6e441497a28c723de",
+      "ledger/universe/kr/krx-universe-2024.jsonl.gz": "a4329587eccc43f015f97524f27a660a6448e263",
+      "ledger/universe/kr/krx-universe-2025.jsonl.gz": "070296ad800a3a57735bbcbaf24f5885d82162e8",
+      "ledger/universe/kr/krx-universe-2026.jsonl.gz": "ccc098c5ce029412a67bf8b85113e0b6a19891dc",
+      "ledger/fundamentals/kr/shares.jsonl.gz": "a515ca2c4f237d688566b45b2f4cc5afd3d6f0fb"
+    },
+    "replayManifestSha256": "f0781292f508a123c234ded6d28aa8e84a0dc3cc29500e14989dc0b68f53b4d2",
+    "replaySchemaVerified": true,
+    "realOutcomeReads": 0
+  },
+  "selectedSourceSchemas": {
+    "selectedSourceSchemas": {
+      "ledger/fundamentals/kr-candidate-merged/dart-2015.jsonl.gz": {
+        "gitBlobSha1": "ee23f00aea08bc28548872a8d8153f1afbb53500",
+        "fields": [
+          "accounts",
+          "accountsFound",
+          "accountsWanted",
+          "availableFrom",
+          "canonicalization",
+          "collectedAt",
+          "corpCode",
+          "currency",
+          "fiscalYear",
+          "fsDiv",
+          "id",
+          "receiptNos",
+          "reportCode",
+          "reportName",
+          "source",
+          "stockCode",
+          "ticker"
+        ],
+        "requiredFields": [
+          "availableFrom",
+          "fiscalYear",
+          "reportCode",
+          "ticker"
+        ],
+        "firstRecordSchema": "PASS",
+        "valueTypes": {
+          "availableFrom": "str",
+          "fiscalYear": "int",
+          "reportCode": "str",
+          "ticker": "str"
+        }
+      },
+      "ledger/universe/kr/krx-universe-2013.jsonl.gz": {
+        "gitBlobSha1": "e711a6c5e07c89e9b0cf12a94078120ceeb3b9a4",
+        "fields": [
+          "code",
+          "date",
+          "id",
+          "listedShares",
+          "marketCap",
+          "name",
+          "rank",
+          "region",
+          "ticker"
+        ],
+        "requiredFields": [
+          "date",
+          "marketCap",
+          "rank",
+          "ticker"
+        ],
+        "firstRecordSchema": "PASS",
+        "valueTypes": {
+          "date": "str",
+          "marketCap": "float",
+          "rank": "int",
+          "ticker": "str"
+        }
+      },
+      "ledger/prices/kr/krx-prices-2013.jsonl.gz": {
+        "gitBlobSha1": "84783e389a49f91b34446952e811d9dc4b25a26e",
+        "fields": [
+          "close",
+          "date",
+          "high",
+          "id",
+          "listedShares",
+          "low",
+          "open",
+          "region",
+          "ticker",
+          "volume"
+        ],
+        "requiredFields": [
+          "close",
+          "date",
+          "listedShares",
+          "ticker",
+          "volume"
+        ],
+        "firstRecordSchema": "PASS",
+        "valueTypes": {
+          "close": "float",
+          "date": "str",
+          "listedShares": "float",
+          "ticker": "str",
+          "volume": "float"
+        }
+      },
+      "ledger/fundamentals/kr/shares.jsonl.gz": {
+        "gitBlobSha1": "a515ca2c4f237d688566b45b2f4cc5afd3d6f0fb",
+        "fields": [
+          "collectedAt",
+          "fiscalYear",
+          "id",
+          "reportCode",
+          "sharesOutstanding",
+          "source",
+          "ticker"
+        ],
+        "requiredFields": [
+          "fiscalYear",
+          "reportCode",
+          "sharesOutstanding",
+          "ticker"
+        ],
+        "firstRecordSchema": "PASS",
+        "valueTypes": {
+          "fiscalYear": "int",
+          "reportCode": "str",
+          "sharesOutstanding": "float",
+          "ticker": "str"
+        }
+      }
+    },
+    "realLabels": 0,
+    "realModelFits": 0,
+    "realOutcomeReads": 0,
+    "scope": "first-record schema only; no source values published or return paths analyzed"
+  },
+  "computeContract": {
+    "workers": 1,
+    "threads": 1,
+    "wallSeconds": 5400,
+    "memoryBytes": 8589934592,
+    "maxRows": 85680,
+    "maxSignalDates": 714,
+    "maxPriceCells": 1100000,
+    "maxProjectionFits": 52122,
+    "maxConditionalSlopeFits": 52122,
+    "maxEconomicPolicies": 492,
+    "maxBootstrapDraws": 245508,
+    "noSearch": true,
+    "failure": "resource limit before lock engineering blocker; after lock consumed failure, durable attempt, no retry",
+    "featureHorizonTests": 73,
+    "standaloneBaselineCells": 20,
+    "fullModelCells": 4,
+    "familyComparisonCells": 30,
+    "registeredInteractions": 6,
+    "executableInteractions": 5,
+    "modelGroups": {
+      "21": [
+        "B0_MARKET_INDUSTRY_PRICE_REFERENCE",
+        "B1_VALUE_PROFITABILITY",
+        "B2_PRICE_MOMENTUM",
+        "B3_VOLUME_LIQUIDITY",
+        "B4_COMBINED_SIMPLE",
+        "FULL",
+        "ADD_A",
+        "REMOVE_A",
+        "ADD_D",
+        "REMOVE_D",
+        "ADD_E",
+        "REMOVE_E",
+        "ADD_J",
+        "REMOVE_J"
+      ],
+      "63": [
+        "B0_MARKET_INDUSTRY_PRICE_REFERENCE",
+        "B1_VALUE_PROFITABILITY",
+        "B2_PRICE_MOMENTUM",
+        "B3_VOLUME_LIQUIDITY",
+        "B4_COMBINED_SIMPLE",
+        "FULL",
+        "ADD_D",
+        "REMOVE_D",
+        "ADD_H",
+        "REMOVE_H",
+        "ADD_J",
+        "REMOVE_J"
+      ],
+      "126": [
+        "B0_MARKET_INDUSTRY_PRICE_REFERENCE",
+        "B1_VALUE_PROFITABILITY",
+        "B2_PRICE_MOMENTUM",
+        "B3_VOLUME_LIQUIDITY",
+        "B4_COMBINED_SIMPLE",
+        "FULL",
+        "ADD_A",
+        "REMOVE_A",
+        "ADD_B",
+        "REMOVE_B",
+        "ADD_C",
+        "REMOVE_C",
+        "ADD_E",
+        "REMOVE_E",
+        "ADD_F",
+        "REMOVE_F",
+        "ADD_H",
+        "REMOVE_H"
+      ],
+      "252": [
+        "B0_MARKET_INDUSTRY_PRICE_REFERENCE",
+        "B1_VALUE_PROFITABILITY",
+        "B2_PRICE_MOMENTUM",
+        "B3_VOLUME_LIQUIDITY",
+        "B4_COMBINED_SIMPLE",
+        "FULL",
+        "ADD_B",
+        "REMOVE_B",
+        "ADD_C",
+        "REMOVE_C"
+      ]
+    },
+    "plannedPredictiveFits": 574,
+    "calendarRefitSchedule": [
+      {
+        "horizon": 21,
+        "year": 2016,
+        "calendarPastTargets": 148,
+        "models": 14,
+        "status": "PLANNED_SUBJECT_TO_VALID_TRAINING_ROWS"
+      },
+      {
+        "horizon": 21,
+        "year": 2017,
+        "calendarPastTargets": 201,
+        "models": 14,
+        "status": "PLANNED_SUBJECT_TO_VALID_TRAINING_ROWS"
+      },
+      {
+        "horizon": 21,
+        "year": 2018,
+        "calendarPastTargets": 251,
+        "models": 14,
+        "status": "PLANNED_SUBJECT_TO_VALID_TRAINING_ROWS"
+      },
+      {
+        "horizon": 21,
+        "year": 2019,
+        "calendarPastTargets": 303,
+        "models": 14,
+        "status": "PLANNED_SUBJECT_TO_VALID_TRAINING_ROWS"
+      },
+      {
+        "horizon": 21,
+        "year": 2020,
+        "calendarPastTargets": 355,
+        "models": 14,
+        "status": "PLANNED_SUBJECT_TO_VALID_TRAINING_ROWS"
+      },
+      {
+        "horizon": 21,
+        "year": 2021,
+        "calendarPastTargets": 408,
+        "models": 14,
+        "status": "PLANNED_SUBJECT_TO_VALID_TRAINING_ROWS"
+      },
+      {
+        "horizon": 21,
+        "year": 2022,
+        "calendarPastTargets": 461,
+        "models": 14,
+        "status": "PLANNED_SUBJECT_TO_VALID_TRAINING_ROWS"
+      },
+      {
+        "horizon": 21,
+        "year": 2023,
+        "calendarPastTargets": 513,
+        "models": 14,
+        "status": "PLANNED_SUBJECT_TO_VALID_TRAINING_ROWS"
+      },
+      {
+        "horizon": 21,
+        "year": 2024,
+        "calendarPastTargets": 564,
+        "models": 14,
+        "status": "PLANNED_SUBJECT_TO_VALID_TRAINING_ROWS"
+      },
+      {
+        "horizon": 21,
+        "year": 2025,
+        "calendarPastTargets": 616,
+        "models": 14,
+        "status": "PLANNED_SUBJECT_TO_VALID_TRAINING_ROWS"
+      },
+      {
+        "horizon": 21,
+        "year": 2026,
+        "calendarPastTargets": 668,
+        "models": 14,
+        "status": "PLANNED_SUBJECT_TO_VALID_TRAINING_ROWS"
+      },
+      {
+        "horizon": 63,
+        "year": 2016,
+        "calendarPastTargets": 139,
+        "models": 12,
+        "status": "PLANNED_SUBJECT_TO_VALID_TRAINING_ROWS"
+      },
+      {
+        "horizon": 63,
+        "year": 2017,
+        "calendarPastTargets": 191,
+        "models": 12,
+        "status": "PLANNED_SUBJECT_TO_VALID_TRAINING_ROWS"
+      },
+      {
+        "horizon": 63,
+        "year": 2018,
+        "calendarPastTargets": 243,
+        "models": 12,
+        "status": "PLANNED_SUBJECT_TO_VALID_TRAINING_ROWS"
+      },
+      {
+        "horizon": 63,
+        "year": 2019,
+        "calendarPastTargets": 294,
+        "models": 12,
+        "status": "PLANNED_SUBJECT_TO_VALID_TRAINING_ROWS"
+      },
+      {
+        "horizon": 63,
+        "year": 2020,
+        "calendarPastTargets": 346,
+        "models": 12,
+        "status": "PLANNED_SUBJECT_TO_VALID_TRAINING_ROWS"
+      },
+      {
+        "horizon": 63,
+        "year": 2021,
+        "calendarPastTargets": 399,
+        "models": 12,
+        "status": "PLANNED_SUBJECT_TO_VALID_TRAINING_ROWS"
+      },
+      {
+        "horizon": 63,
+        "year": 2022,
+        "calendarPastTargets": 451,
+        "models": 12,
+        "status": "PLANNED_SUBJECT_TO_VALID_TRAINING_ROWS"
+      },
+      {
+        "horizon": 63,
+        "year": 2023,
+        "calendarPastTargets": 503,
+        "models": 12,
+        "status": "PLANNED_SUBJECT_TO_VALID_TRAINING_ROWS"
+      },
+      {
+        "horizon": 63,
+        "year": 2024,
+        "calendarPastTargets": 555,
+        "models": 12,
+        "status": "PLANNED_SUBJECT_TO_VALID_TRAINING_ROWS"
+      },
+      {
+        "horizon": 63,
+        "year": 2025,
+        "calendarPastTargets": 607,
+        "models": 12,
+        "status": "PLANNED_SUBJECT_TO_VALID_TRAINING_ROWS"
+      },
+      {
+        "horizon": 63,
+        "year": 2026,
+        "calendarPastTargets": 659,
+        "models": 12,
+        "status": "PLANNED_SUBJECT_TO_VALID_TRAINING_ROWS"
+      },
+      {
+        "horizon": 126,
+        "year": 2016,
+        "calendarPastTargets": 126,
+        "models": 18,
+        "status": "PLANNED_SUBJECT_TO_VALID_TRAINING_ROWS"
+      },
+      {
+        "horizon": 126,
+        "year": 2017,
+        "calendarPastTargets": 178,
+        "models": 18,
+        "status": "PLANNED_SUBJECT_TO_VALID_TRAINING_ROWS"
+      },
+      {
+        "horizon": 126,
+        "year": 2018,
+        "calendarPastTargets": 230,
+        "models": 18,
+        "status": "PLANNED_SUBJECT_TO_VALID_TRAINING_ROWS"
+      },
+      {
+        "horizon": 126,
+        "year": 2019,
+        "calendarPastTargets": 281,
+        "models": 18,
+        "status": "PLANNED_SUBJECT_TO_VALID_TRAINING_ROWS"
+      },
+      {
+        "horizon": 126,
+        "year": 2020,
+        "calendarPastTargets": 333,
+        "models": 18,
+        "status": "PLANNED_SUBJECT_TO_VALID_TRAINING_ROWS"
+      },
+      {
+        "horizon": 126,
+        "year": 2021,
+        "calendarPastTargets": 386,
+        "models": 18,
+        "status": "PLANNED_SUBJECT_TO_VALID_TRAINING_ROWS"
+      },
+      {
+        "horizon": 126,
+        "year": 2022,
+        "calendarPastTargets": 438,
+        "models": 18,
+        "status": "PLANNED_SUBJECT_TO_VALID_TRAINING_ROWS"
+      },
+      {
+        "horizon": 126,
+        "year": 2023,
+        "calendarPastTargets": 490,
+        "models": 18,
+        "status": "PLANNED_SUBJECT_TO_VALID_TRAINING_ROWS"
+      },
+      {
+        "horizon": 126,
+        "year": 2024,
+        "calendarPastTargets": 542,
+        "models": 18,
+        "status": "PLANNED_SUBJECT_TO_VALID_TRAINING_ROWS"
+      },
+      {
+        "horizon": 126,
+        "year": 2025,
+        "calendarPastTargets": 594,
+        "models": 18,
+        "status": "PLANNED_SUBJECT_TO_VALID_TRAINING_ROWS"
+      },
+      {
+        "horizon": 126,
+        "year": 2026,
+        "calendarPastTargets": 646,
+        "models": 18,
+        "status": "PLANNED_SUBJECT_TO_VALID_TRAINING_ROWS"
+      },
+      {
+        "horizon": 252,
+        "year": 2016,
+        "calendarPastTargets": 99,
+        "models": 0,
+        "status": "CALENDAR_BLOCKED_NO_FIT"
+      },
+      {
+        "horizon": 252,
+        "year": 2017,
+        "calendarPastTargets": 151,
+        "models": 10,
+        "status": "PLANNED_SUBJECT_TO_VALID_TRAINING_ROWS"
+      },
+      {
+        "horizon": 252,
+        "year": 2018,
+        "calendarPastTargets": 203,
+        "models": 10,
+        "status": "PLANNED_SUBJECT_TO_VALID_TRAINING_ROWS"
+      },
+      {
+        "horizon": 252,
+        "year": 2019,
+        "calendarPastTargets": 254,
+        "models": 10,
+        "status": "PLANNED_SUBJECT_TO_VALID_TRAINING_ROWS"
+      },
+      {
+        "horizon": 252,
+        "year": 2020,
+        "calendarPastTargets": 306,
+        "models": 10,
+        "status": "PLANNED_SUBJECT_TO_VALID_TRAINING_ROWS"
+      },
+      {
+        "horizon": 252,
+        "year": 2021,
+        "calendarPastTargets": 359,
+        "models": 10,
+        "status": "PLANNED_SUBJECT_TO_VALID_TRAINING_ROWS"
+      },
+      {
+        "horizon": 252,
+        "year": 2022,
+        "calendarPastTargets": 412,
+        "models": 10,
+        "status": "PLANNED_SUBJECT_TO_VALID_TRAINING_ROWS"
+      },
+      {
+        "horizon": 252,
+        "year": 2023,
+        "calendarPastTargets": 464,
+        "models": 10,
+        "status": "PLANNED_SUBJECT_TO_VALID_TRAINING_ROWS"
+      },
+      {
+        "horizon": 252,
+        "year": 2024,
+        "calendarPastTargets": 515,
+        "models": 10,
+        "status": "PLANNED_SUBJECT_TO_VALID_TRAINING_ROWS"
+      },
+      {
+        "horizon": 252,
+        "year": 2025,
+        "calendarPastTargets": 566,
+        "models": 10,
+        "status": "PLANNED_SUBJECT_TO_VALID_TRAINING_ROWS"
+      },
+      {
+        "horizon": 252,
+        "year": 2026,
+        "calendarPastTargets": 618,
+        "models": 0,
+        "status": "CALENDAR_BLOCKED_NO_FIT"
+      }
+    ],
+    "maxPredictiveFits": 574,
+    "residualCrossSectionFits": "at most 73*714 outcome-free projections",
+    "conditionalSlopeFits": "at most 73*714 descriptive date regressions",
+    "annualPreprocessingFits": 574,
+    "annualResidualEquivalentBudget": 794,
+    "estimatedMinutes": {
+      "featurePreparation": 30,
+      "labelsAnalysisModelsEconomics": 45,
+      "persistenceMargin": 15
+    }
+  },
+  "tradingValueBasis": "PROXY_ASTRADED_CLOSE_X_VOLUME",
+  "formalExecutionOccurred": false,
+  "realOutcomeReads": 0,
+  "realLabels": 0,
+  "realModelFits": 0,
+  "realHistoricalStudyArtifacts": 0,
+  "newPermanentExecutionLocks": 0,
+  "productionPathsModified": false,
+  "boundary": "Source object hashes and first-record schemas only; no historical return path, forward label, IC, model or portfolio analyzed.",
+  "validationLocation": "PR checks and final handoff record completed lint, pytest and deterministic synthetic integration; this audit pins outcome-free identities."
+}

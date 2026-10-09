@@ -23,7 +23,11 @@ concurrency:
 jobs:
   pytest:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 30
+    env:
+      OMP_NUM_THREADS: "1"
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
     steps:
       # Full history: `pipeline.kr_xbrl_value_validation` proves by
       # `git merge-base --is-ancestor` that the pre-source freeze commit is in

@@ -1,0 +1,311 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "kr-alpha-atlas-phase-c-result-schema-v1",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "studyId",
+    "evidenceClass",
+    "mode",
+    "registrationSha256",
+    "inputIdentity",
+    "tradingValueBasis",
+    "cutoff",
+    "readiness",
+    "benchmarkIntegrity",
+    "labels",
+    "level1",
+    "level2",
+    "residualInformation",
+    "trainingOnlyRedundancy",
+    "level3",
+    "level4",
+    "multiplicity",
+    "verdicts",
+    "interactionVerdicts",
+    "prospectiveNominations",
+    "modelAudit",
+    "compute",
+    "counters",
+    "limitations",
+    "closure"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schemaVersion": {
+      "const": 1
+    },
+    "studyId": {
+      "type": "string"
+    },
+    "evidenceClass": {
+      "enum": [
+        "SYNTHETIC_SOFTWARE_VALIDATION_ONLY",
+        "EXPLORATORY_DEVELOPMENT_ON_OUTCOME_EXPOSED_KR_HISTORY"
+      ]
+    },
+    "mode": {
+      "enum": [
+        "SYNTHETIC",
+        "FORMAL_DEVELOPMENT"
+      ]
+    },
+    "registrationSha256": {
+      "type": "string"
+    },
+    "inputIdentity": {
+      "type": "string"
+    },
+    "tradingValueBasis": {
+      "type": "string"
+    },
+    "cutoff": {
+      "type": "string"
+    },
+    "readiness": {
+      "type": "object"
+    },
+    "benchmarkIntegrity": {
+      "type": "object"
+    },
+    "labels": {
+      "type": "object",
+      "required": [
+        "attrition",
+        "horizons",
+        "validityRecords"
+      ],
+      "properties": {
+        "attrition": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "horizon",
+              "preGate",
+              "evaluable",
+              "affectedSecurities",
+              "affectedNameDateHorizon",
+              "referenceUniverseShare",
+              "lostByYear",
+              "lostByIndustry",
+              "missingReasons",
+              "validityMaskSha256"
+            ]
+          }
+        },
+        "validityRecords": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "ticker",
+                "securityIdentity",
+                "date",
+                "entry",
+                "exit",
+                "horizon",
+                "sourceIdentity",
+                "corporateActionTreatment",
+                "basisAudit",
+                "state",
+                "missingReason",
+                "gross",
+                "benchmark",
+                "benchmarkRelative",
+                "industryRelative",
+                "industryState",
+                "industryReason"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "level1": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "required": [
+          "featureId",
+          "family",
+          "horizon",
+          "direction",
+          "counts",
+          "observedSecurities",
+          "statistics",
+          "stability",
+          "liquidityTiers",
+          "missingnessReasons",
+          "sampleSha256"
+        ],
+        "properties": {
+          "statistics": {
+            "type": "object",
+            "required": [
+              "rankIC",
+              "withinIndustryRankIC",
+              "tercileSpread",
+              "withinIndustryTercileSpread",
+              "topExcess"
+            ],
+            "properties": {
+              "tercileSpread": {
+                "$ref": "#/$defs/linearStatistic"
+              },
+              "withinIndustryTercileSpread": {
+                "$ref": "#/$defs/linearStatistic"
+              },
+              "topExcess": {
+                "$ref": "#/$defs/linearStatistic"
+              }
+            }
+          }
+        }
+      }
+    },
+    "level2": {
+      "type": "object"
+    },
+    "residualInformation": {
+      "type": "object"
+    },
+    "trainingOnlyRedundancy": {
+      "type": "object"
+    },
+    "level3": {
+      "type": "object"
+    },
+    "level4": {
+      "type": "object"
+    },
+    "multiplicity": {
+      "type": "object"
+    },
+    "verdicts": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "required": [
+          "verdict",
+          "primaryHorizon",
+          "level1Key",
+          "level2Key",
+          "level4Status",
+          "evidenceClass"
+        ],
+        "properties": {
+          "verdict": {
+            "enum": [
+              "BLOCKED",
+              "NO_DEVELOPMENT_EVIDENCE",
+              "UNSTABLE",
+              "REDUNDANT",
+              "NOT_ECONOMIC",
+              "INDEPENDENT_DEVELOPMENT_SUPPORT"
+            ]
+          }
+        }
+      }
+    },
+    "interactionVerdicts": {
+      "type": "object"
+    },
+    "prospectiveNominations": {
+      "type": "array"
+    },
+    "modelAudit": {
+      "type": "array"
+    },
+    "compute": {
+      "type": "object"
+    },
+    "counters": {
+      "type": "object"
+    },
+    "limitations": {
+      "type": "array"
+    },
+    "closure": {
+      "type": "string"
+    }
+  },
+  "$defs": {
+    "linearStatistic": {
+      "type": "object",
+      "required": [
+        "estimate",
+        "nDates",
+        "nObservations",
+        "scheduledDates",
+        "evaluableShare",
+        "perDate",
+        "interval",
+        "p",
+        "inferenceStatus",
+        "calendarWeeks"
+      ],
+      "properties": {
+        "estimate": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "p": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 1
+        },
+        "inferenceStatus": {
+          "type": "string"
+        },
+        "nDates": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "nObservations": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "scheduledDates": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "evaluableShare": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "perDate": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "date",
+              "value",
+              "names"
+            ]
+          }
+        },
+        "interval": {
+          "type": [
+            "object",
+            "null"
+          ]
+        },
+        "calendarWeeks": {
+          "type": "integer"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "description": "All registered slots must exist. BLOCKED values null with explicit reason. H63/H252 p null. D risk exposure is nested descriptive, not additive. Synthetic is not historical evidence."
+}
