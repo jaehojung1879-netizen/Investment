@@ -444,8 +444,8 @@ def test_building_the_matrix_and_the_dry_run_touch_no_label_outcome_or_model_ent
 
 def test_the_new_modules_import_no_label_outcome_or_model_module():
     allowed = {"kr_alpha_atlas_bars", "kr_alpha_atlas_catalogue", "kr_alpha_atlas_inputs", "kr_alpha_atlas_matrix", "kr_alpha_atlas_readiness", "kr_alpha_atlas_feasibility",
-               "kr_alpha_atlas_report", "kr_alpha_atlas_dry_run", "kr_alpha_atlas_registry", "accounting_quality", "alpha_opportunity_features", "dart_derive", "historical_store",
-               "kr_alpha_signal_v2", "kr_alpha_signal_v2_receipts", "kr_alpha_tournament", "kr_alpha_tournament_features", "kr_factor_anatomy", "kr_industry_anatomy",
+               "kr_alpha_atlas_report", "kr_alpha_atlas_dry_run", "kr_alpha_atlas_registry", "accounting_quality", "dart_derive", "historical_store",
+               "kr_alpha_signal_v2", "kr_alpha_signal_v2_receipts", "kr_alpha_tournament", "kr_alpha_tournament_features", "kr_industry_anatomy",
                "kr_industry_anatomy_execution", "kr_market_risk_overlay", "kr_model_portfolio_execution", "kr_model_raw_snapshot", "kr_repaired_accounting_snapshot",
                "kr_short_selling", "kr_stock_within_industry_anatomy", "kr_value_quality_catalyst", "krx_prices", "liquidity_attention", "longterm", "price_adjustment",
                "prospective_receipt_core", "replay_calendar", "kr_continuing_dividend_sample", "regional_alpha_features"}

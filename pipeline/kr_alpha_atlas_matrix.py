@@ -19,16 +19,15 @@ import math
 
 import numpy as np
 import pandas as pd
+from scipy.stats import rankdata
 
 from . import accounting_quality as AQ
-from . import alpha_opportunity_features as AOF
 from . import dart_derive as DD
 from . import kr_alpha_atlas_bars as B
 from . import kr_alpha_atlas_catalogue as C
 from . import kr_alpha_signal_v2 as S2
 from . import kr_alpha_tournament as T
 from . import kr_alpha_tournament_features as TF
-from . import kr_factor_anatomy as FA
 from . import kr_industry_anatomy as I
 from . import kr_industry_anatomy_execution as IE
 from . import kr_market_risk_overlay as O
@@ -162,7 +161,7 @@ def accounting_features(records, shares_by_key, signal_date, market_cap, days):
     values, reasons, available = {}, {}, {}
     names = ("B04_freeCashFlowYield", "C02_returnOnEquity", "C03_operatingMargin", "C04_profitMargin", "C06_cashConversion", "C09_assetGrowth",
              "C10_liabilityGrowth", "C11_shareDilution", "C12_profitabilityPersistence", "C15_capexIntensity", "J01_periodicFilingEvent")
-    visible = AOF.visible_filings(records or [], signal_date, "KR")
+    visible = VQ.visible_filings(records or [], signal_date, "KR")
     index = DD.index_filings(visible)
     if not index:
         return values, dict.fromkeys(names, "NO_VISIBLE_FILING"), available, {"status": "NO_VISIBLE_FILING"}
@@ -264,8 +263,15 @@ def liquidity_tiers(values):
 
 
 def _spearman(a, b):
-    rank = FA.spearman(np.asarray(a, float), np.asarray(b, float))
-    return float(rank) if np.isfinite(rank) else None
+    """Spearman rank correlation (average ranks), None when it is undefined. The same arithmetic as the sealed anatomy's, which production modules may not import."""
+    a, b = np.asarray(a, float), np.asarray(b, float)
+    ok = np.isfinite(a) & np.isfinite(b)
+    if ok.sum() < 3:
+        return None
+    x, y = rankdata(a[ok]), rankdata(b[ok])
+    if np.std(x) == 0 or np.std(y) == 0:
+        return None
+    return float(np.corrcoef(x, y)[0, 1])
 
 
 def build_matrix(inputs, dates, counters=None):

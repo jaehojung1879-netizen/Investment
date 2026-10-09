@@ -18,10 +18,10 @@ import json
 import numpy as np
 import pandas as pd
 
-from . import alpha_opportunity_features as AOF
 from . import kr_alpha_signal_v2 as S2
 from . import kr_industry_anatomy as I
 from . import kr_alpha_atlas_inputs as AI
+from . import kr_value_quality_catalyst as VQ
 
 CONTRACT = "KR_ALPHA_ATLAS_FEASIBILITY_V1"
 
@@ -57,7 +57,7 @@ def universe_feasibility(inputs, repo, commit, cutoff, termination_inventory):
         members = set(snapshot["members"]) if snapshot else set()
         qualified = set(median60.loc[date][median60.loc[date] >= S2.MIN_MEDIAN_TRADED_VALUE_KRW].index)
         qualified_ever |= qualified
-        with_filing = {t for t in qualified if AOF.visible_filings(inputs.accounting.get(t, []), date, "KR")}
+        with_filing = {t for t in qualified if VQ.visible_filings(inputs.accounting.get(t, []), date, "KR")}
         with_industry = {t for t in qualified if I.industry_of(intervals, crosswalk, t, date)[0] is not None}
         with_panel = {t for t in qualified if t in inputs.prices}
         rows.append({"date": date, "ledgerNames": int(tv.loc[date].notna().sum()), "qualified": len(qualified), "top120": len(members),
