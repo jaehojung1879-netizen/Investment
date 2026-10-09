@@ -1,0 +1,68 @@
+{
+  "additionalDependencyHashes": {
+    ".github/workflows/kr-alpha-atlas-phase-c-amended.yml": "9c61359ca7a968c108958f127e072610a495248fe164617cf11341ed23de4474",
+    "docs/audits/kr-alpha-atlas-phase-c-integrity/benchmark-reconciliation-corrected.json": "58580c4370ec2c5afa124f849afbc4fa7b5c879012e75ebbd48ee7c7a0e659a9",
+    "docs/audits/kr-alpha-atlas-phase-c-integrity/corrected-inputs.json": "a7f473a6b81d45e5687910dcad7605a3bc6ef1dbf951c02d6129bde812841703",
+    "docs/audits/kr-alpha-atlas-phase-c-integrity/stock-price-integrity.json": "82b2e938b01a905873d9442d4504297e882f04777fed3dbf160bbd9e4b51991e",
+    "docs/workflow-inventory-phase-c-amendment.md": "0bae1f6c60cb34c6a9f1802eb8c4d9110692d0db32b99ad4833ef3b20ed6a6db",
+    "pipeline/kr_alpha_atlas_benchmark_audit.py": "6f3b3b9c8e54447eeb506c075558c307c204ef0644a55a5158ac703e8dd5c8a8",
+    "pipeline/kr_alpha_atlas_integrity_audit.py": "a8d18521501479e01af09b859628bb56a643f037feffdab4eec3ffb17a3bf7b5",
+    "pipeline/kr_alpha_atlas_phase_c_amendment.py": "bb9cc00a71087cd7375adbfefe96589569813786e7a09ffa2521174b856f6b7c",
+    "pipeline/kr_alpha_atlas_price_integrity.py": "a0f83e9fa6b02eea8ad5bac28a8144f7299f647073682d99b0d9f7b89bf25541",
+    "scripts/audit_kr_alpha_atlas_price_integrity.py": "3836421cb12b8eabdfb5c0e98b8c05bbc4fce6ddb6c170eb76003e77b38cd6b0",
+    "scripts/run_kr_alpha_atlas_phase_c_amended.py": "8099d4a21435365260e3dbab832277b17bce320c8db070ff424418309b0e6d0e",
+    "tests/test_kr_alpha_atlas_phase_c_amendment.py": "e9b0660deda2cfd14ed69dd7e967ff6fd4f43db514d4455ab3fb55f436b1f759",
+    "tests/test_workflow_inventory.py": "fe2e94791f0b54882c2a394eac950f6e3f18c23ffeafed87d2d8368691c3ce08"
+  },
+  "amendedDependencyManifestSha256": "aa53e794528f494688c6a4b3edc5adf6b9ea6ad0f5a1e3d7b2db4970c9b92924",
+  "amendmentClass": "EXPLICIT_USER_AUTHORIZED_PRE_OUTCOME_INPUT_INTEGRITY_CORRECTION_NOT_NEW_STUDY",
+  "amendmentId": "kr-alpha-atlas-phase-c-v2-input-integrity",
+  "approvalRequirements": {
+    "bothVersionsCannotExecute": true,
+    "doNotAuthorizeOriginalV1Inputs": true,
+    "manualMainOwnerDispatchOnly": true,
+    "mergeIsNotExecutionApproval": true,
+    "ownerCommittedExactAmendmentAndEffectiveAndDependencyHashes": true,
+    "separateExplicitHumanInstructionRequired": true
+  },
+  "correctedMatrixDigest": "a7517a934089385f566f8969cc2407d7e3b5cea6ab926ad85480dfa9baa1a0ca",
+  "correctionFileSha256": "a7f473a6b81d45e5687910dcad7605a3bc6ef1dbf951c02d6129bde812841703",
+  "correctionPath": "docs/audits/kr-alpha-atlas-phase-c-integrity/corrected-inputs.json",
+  "effectiveContractSha256": "81d4e06f59f6e81fe6ed3227dd798480de3fa22ec1b994f84e961b927e5dcd3e",
+  "formalExecutionAuthorized": false,
+  "globalOneShotLock": "refs/tags/kr-alpha-atlas-phase-c-v1-execution-lock",
+  "independentEvidenceLimit": "Independent price publishers share the authoritative official distribution history. No claim of two independent cash sources, signal-date reproduction of every corporate-action panel, or complete shareholder economics for all stocks.",
+  "justification": [
+    "Official raw ETF market prices plus fully bridged gross cash distributions eliminate double adjustment; authoritative annual same-definition reconciliation is within unchanged 0.005 threshold in all 2013-2026 years.",
+    "Stock audit sample fixed before source inspection; ordinary cash double adjustment was not observed across the sample. 006800.KS has unresolved action basis in 2018 and 2026, requiring full-security symmetric price refusal, not an invented patch or payoff.",
+    "Fixed all-name final-session source audit identifies an incompatible stored last vendor bar. Reconstruct only same-session original pinned KRX quotes with a verified previous-session quotation scale and positive volume. Missing/suspended quotes remain invalid."
+  ],
+  "modifiedProvisions": [
+    "Source/view identities and corrected matrix digest",
+    "Benchmark gross shareholder total-return definition and VERIFIED benchmark-only integrity gate in v2 effective contract",
+    "Full unresolved 006800.KS price-basis refusal and final-session pinned KRX source repairs",
+    "Source limitations and separate owner-committed exact v2 authorization path",
+    "Additive wrapper/audit/workflow/test dependency closure"
+  ],
+  "noAlphaOutcomesAccessed": true,
+  "noSealedAlphaResultsUsed": true,
+  "originalMatrixDigest": "32e49b57a7541eea66f76373baef50c6302a394247b313f6099f718d46d54b0c",
+  "originalSpecFileSha256": "b57be30ce54abf1dd26388954053e99d4b1bf71fa06f3598787317e953988db0",
+  "originalSpecPath": "research_specs/kr-alpha-atlas-phase-c-v1.json",
+  "preOutcomeAuthoringRevision": {
+    "archivedAt": "docs/audits/kr-alpha-atlas-phase-c-integrity/proposed-amendment-before-source-refusal.json",
+    "previousDraftFileSha256": "119d66d6d338b1645704301656ef197e27b9617e415f99eae3bb740671f64b2d",
+    "realAlphaOutcomesAccessed": 0,
+    "reason": "Full outcome-free preparation revealed H08 source coverage below the original floor. Preserve the strict formal refusal and persist an explicit blocked audit receipt instead of losing coverage diagnostics. Document the added workflow in a third inventory layer, preserving both frozen inventories. No input values, scientific thresholds or hypotheses changed."
+  },
+  "preservedScientificChoices": [
+    "All original feature IDs, hypotheses, roles, family/horizon tests, B0-B4 groups, expanding/purged/embargoed chronology, inference/calibration and multiplicity thresholds, long-only policy, costs, proxy capacity, decision chain, compute bounds and Phase D closure"
+  ],
+  "registeredAtUtcDate": "2026-10-09",
+  "sameStudyId": "kr-alpha-atlas-phase-c-v1",
+  "sharedArtifactPrefix": "kr-alpha-atlas-phase-c-v1-results-",
+  "sharedResultPath": "docs/results/kr-alpha-atlas-phase-c-v1-result.json",
+  "stockBasisRemainsPartialDistributionIndex": true,
+  "supersedesV1InputChoiceForTheOneFormalRun": true,
+  "version": 2
+}

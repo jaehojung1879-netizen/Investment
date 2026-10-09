@@ -16,6 +16,9 @@ DOC = ROOT / "docs" / "workflow-inventory.md"
 # The main inventory is byte-pinned by the sealed kr-model-overlay-portfolio-v1 spec, so workflows added after that
 # seal are documented in this addendum instead (same ACTIVE-table format). Both documents are read below.
 ADDENDUM = ROOT / "docs" / "workflow-inventory-addendum.md"
+# The addendum is itself frozen by Phase C v1. Preserve both old inventories;
+# register the new input-amendment workflow in a separate inventory layer.
+PHASE_C_INPUT_AMENDMENT = ROOT / "docs" / "workflow-inventory-phase-c-amendment.md"
 
 _YML_NAME = re.compile(r"[A-Za-z0-9][\w.-]*\.yml")
 
@@ -37,7 +40,7 @@ def test_the_inventory_doc_exists():
 
 
 def _all_docs() -> list[str]:
-    return [p.read_text(encoding="utf-8") for p in (DOC, ADDENDUM) if p.is_file()]
+    return [p.read_text(encoding="utf-8") for p in (DOC, ADDENDUM, PHASE_C_INPUT_AMENDMENT) if p.is_file()]
 
 
 def _active_named() -> set[str]:
