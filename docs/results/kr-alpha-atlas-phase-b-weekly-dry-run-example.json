@@ -1,0 +1,203 @@
+{
+ "authorization": "NOT_REGISTERED",
+ "blockers": [],
+ "clock": "EXPLICIT_REPLAY_OF_A_PAST_INSTANT",
+ "clockUtc": "2026-09-14 10:00:00+00:00",
+ "contract": "KR_ALPHA_ATLAS_WEEKLY_DRY_RUN_V1",
+ "evidenceClass": "DRY_RUN_NOT_A_RECEIPT",
+ "featureRows": 120,
+ "featuresBelowThirtyMeasuredNames": [],
+ "h2Decision": {
+  "reasons": [
+   "NO_AUTHORIZED_CALIBRATED_FORECAST"
+  ],
+  "status": "NOT_READY"
+ },
+ "h2Readiness": {
+  "coverage": {
+   "cheap": 23,
+   "confirmationMeasured": 23,
+   "confirmationMeasuredShare": 1.0,
+   "eligible": 88,
+   "stateCounts": {
+    "CHEAP_CONFIRMATION_UNMEASURED": 0,
+    "CHEAP_CONFIRMED": 14,
+    "CHEAP_UNCONFIRMED": 9,
+    "INELIGIBLE": 32,
+    "MISSING_VALUE_INPUT": 3,
+    "NOT_CHEAP": 62
+   },
+   "universe": 120,
+   "valueMeasured": 85,
+   "valueMeasuredShare": 0.9659090909090909
+  },
+  "ready": true,
+  "reasons": []
+ },
+ "historyWeeksBuilt": 160,
+ "inputIdentitySha256": "3e4d7aa35e2c4b273e4ecef0e2e8ea7a8a27077f0de14bb3d5ea6a696a97f1a5",
+ "matrixDigestOverTheBuiltWindow": "9f9c5d88cf072d3aa58e5cac09afe1a43e2187840c7d32a2f9477f5738e22627",
+ "measuredNamesPerFeature": [
+  {
+   "feature": "A01_return1d",
+   "measuredNames": 120
+  },
+  {
+   "feature": "A02_return5d",
+   "measuredNames": 120
+  },
+  {
+   "feature": "A03_return21d",
+   "measuredNames": 120
+  },
+  {
+   "feature": "A04_return63d",
+   "measuredNames": 117
+  },
+  {
+   "feature": "A06_return252d",
+   "measuredNames": 114
+  },
+  {
+   "feature": "A08_momentum6",
+   "measuredNames": 116
+  },
+  {
+   "feature": "A10_residualMomentum126",
+   "measuredNames": 114
+  },
+  {
+   "feature": "A11_distance52wHigh",
+   "measuredNames": 114
+  },
+  {
+   "feature": "A12_momentumPersistence",
+   "measuredNames": 114
+  },
+  {
+   "feature": "A13_momentumAcceleration21",
+   "measuredNames": 118
+  },
+  {
+   "feature": "A14_ma200Distance",
+   "measuredNames": 114
+  },
+  {
+   "feature": "B04_freeCashFlowYield",
+   "measuredNames": 107
+  },
+  {
+   "feature": "B06_ownHistoryValuation",
+   "measuredNames": 96
+  },
+  {
+   "feature": "B07_valuationChange126",
+   "measuredNames": 109
+  },
+  {
+   "feature": "B08_valueBusinessConfirmation",
+   "measuredNames": 85
+  },
+  {
+   "feature": "C02_returnOnEquity",
+   "measuredNames": 113
+  },
+  {
+   "feature": "C09_assetGrowth",
+   "measuredNames": 114
+  },
+  {
+   "feature": "C10_liabilityGrowth",
+   "measuredNames": 114
+  },
+  {
+   "feature": "C11_shareDilution",
+   "measuredNames": 114
+  },
+  {
+   "feature": "C12_profitabilityPersistence",
+   "measuredNames": 78
+  },
+  {
+   "feature": "D01_volumeSurge5_60",
+   "measuredNames": 116
+  },
+  {
+   "feature": "D02_logVolumeShock60",
+   "measuredNames": 116
+  },
+  {
+   "feature": "D03_tradingValueShock5_60",
+   "measuredNames": 116
+  },
+  {
+   "feature": "D04_shockPersistence5d",
+   "measuredNames": 116
+  },
+  {
+   "feature": "D05_turnoverToMarketCap60",
+   "measuredNames": 116
+  },
+  {
+   "feature": "D06_priceVolumeDivergence",
+   "measuredNames": 116
+  },
+  {
+   "feature": "D07_volumePriceAlignment",
+   "measuredNames": 116
+  },
+  {
+   "feature": "D08_abnormalVolumeUpClose",
+   "measuredNames": 116
+  },
+  {
+   "feature": "D09_abnormalVolumeDownClose",
+   "measuredNames": 116
+  },
+  {
+   "feature": "D10_liquidityAcceleration",
+   "measuredNames": 114
+  },
+  {
+   "feature": "D11_accumulationDistributionProxy",
+   "measuredNames": 119
+  },
+  {
+   "feature": "E01_amihudIlliquidity60",
+   "measuredNames": 116
+  },
+  {
+   "feature": "E06_volatilityConditionalOnVolume",
+   "measuredNames": 116
+  },
+  {
+   "feature": "F01_totalVolatility63",
+   "measuredNames": 117
+  },
+  {
+   "feature": "F03_beta252",
+   "measuredNames": 114
+  },
+  {
+   "feature": "F04_idiosyncraticVol",
+   "measuredNames": 114
+  },
+  {
+   "feature": "H08_equalVsCapWeightIndustry",
+   "measuredNames": 93
+  },
+  {
+   "feature": "J01_periodicFilingEvent",
+   "measuredNames": 116
+  }
+ ],
+ "membershipSnapshotDate": "2026-09-01",
+ "notes": [
+  "NOT_READY because no authorization is registered; coverage above says what the data would support, not that a decision exists"
+ ],
+ "signalCloseFinalUtc": "2026-09-11 09:00:00+00:00",
+ "signalSession": "2026-09-11",
+ "state": "NOT_READY",
+ "tradingValueBasis": "PROXY_ASTRADED_CLOSE_X_VOLUME",
+ "universe": 120
+}
