@@ -1,0 +1,4487 @@
+{
+  "studyId": "kr-alpha-atlas-phase-c-v1",
+  "version": 1,
+  "evidenceClass": "EXPLORATORY_DEVELOPMENT_ON_OUTCOME_EXPOSED_KR_HISTORY",
+  "question": "Which observable information adds stable stock-selection information beyond B4 and survives realistic long-only economics?",
+  "confirmation": "NONE: reused KR history through cutoff is development; only genuinely prospective preregistered receipts can confirm.",
+  "developmentCutoff": "2026-09-14",
+  "benchmark": "069500.KS",
+  "universe": {
+    "broaderUniverse": {
+      "reason": "on average 196 qualified names sit outside the Top120, but only 34.0% of those name-months have a visible DART filing in the sealed store, and there is no price panel, industry label or terminal economics for them",
+      "reason_ko": "유동성 기준을 통과하는 종목 중 상위 120 밖은 평균 196개이지만, 그 종목-월 중 봉인된 저장소에 보이는 DART 공시가 있는 비율은 34.0%뿐이고, 가격 패널·산업 라벨·상장폐지 대가 자료도 없습니다.",
+      "status": "BROADER_UNIVERSE_NOT_READY_KEEP_TOP120"
+    },
+    "firstDate": "2013-01-04",
+    "lastDate": "2026-09-11",
+    "memberDates": 85680,
+    "source": "KRX sto/stk_bydd_trd monthly snapshot strictly older than the signal date",
+    "universeId": "PIT_KRX_TOP120",
+    "weeklyDates": 714
+  },
+  "eligibleFeatures": [
+    {
+      "coveragePct": 92.51634,
+      "coverageWithinUsableRangePct": 99.934443,
+      "family": "A",
+      "featureId": "A01_return1d",
+      "horizonUsability": {
+        "H126": {
+          "lastMaturableSignalDate": "2026-03-06",
+          "usable": true,
+          "usableSignalDatesBeforeThat": 634
+        },
+        "H21": {
+          "lastMaturableSignalDate": "2026-08-07",
+          "usable": true,
+          "usableSignalDatesBeforeThat": 656
+        }
+      },
+      "pitSafetyVerdict": "PIT_SAFE",
+      "registeredHorizons": [
+        126,
+        21
+      ],
+      "usableRange": [
+        "2014-01-10",
+        "2026-09-11"
+      ],
+      "usableSignalDates": 661,
+      "usableYears": [
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025",
+        "2026"
+      ],
+      "role": "ALPHA_CANDIDATE",
+      "expectedDirection": -1
+    },
+    {
+      "coveragePct": 92.489496,
+      "coverageWithinUsableRangePct": 99.905446,
+      "family": "A",
+      "featureId": "A02_return5d",
+      "horizonUsability": {
+        "H126": {
+          "lastMaturableSignalDate": "2026-03-06",
+          "usable": true,
+          "usableSignalDatesBeforeThat": 634
+        },
+        "H21": {
+          "lastMaturableSignalDate": "2026-08-07",
+          "usable": true,
+          "usableSignalDatesBeforeThat": 656
+        }
+      },
+      "pitSafetyVerdict": "PIT_SAFE",
+      "registeredHorizons": [
+        126,
+        21
+      ],
+      "usableRange": [
+        "2014-01-10",
+        "2026-09-11"
+      ],
+      "usableSignalDates": 661,
+      "usableYears": [
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025",
+        "2026"
+      ],
+      "role": "ALPHA_CANDIDATE",
+      "expectedDirection": -1
+    },
+    {
+      "coveragePct": 92.347106,
+      "coverageWithinUsableRangePct": 99.751639,
+      "family": "A",
+      "featureId": "A03_return21d",
+      "horizonUsability": {
+        "H126": {
+          "lastMaturableSignalDate": "2026-03-06",
+          "usable": true,
+          "usableSignalDatesBeforeThat": 634
+        },
+        "H21": {
+          "lastMaturableSignalDate": "2026-08-07",
+          "usable": true,
+          "usableSignalDatesBeforeThat": 656
+        }
+      },
+      "pitSafetyVerdict": "PIT_SAFE",
+      "registeredHorizons": [
+        126,
+        21
+      ],
+      "usableRange": [
+        "2014-01-10",
+        "2026-09-11"
+      ],
+      "usableSignalDates": 661,
+      "usableYears": [
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025",
+        "2026"
+      ],
+      "role": "ALPHA_CANDIDATE",
+      "expectedDirection": -1
+    },
+    {
+      "coveragePct": 91.860411,
+      "coverageWithinUsableRangePct": 99.22592,
+      "family": "A",
+      "featureId": "A04_return63d",
+      "horizonUsability": {
+        "H126": {
+          "lastMaturableSignalDate": "2026-03-06",
+          "usable": true,
+          "usableSignalDatesBeforeThat": 634
+        },
+        "H21": {
+          "lastMaturableSignalDate": "2026-08-07",
+          "usable": true,
+          "usableSignalDatesBeforeThat": 656
+        }
+      },
+      "pitSafetyVerdict": "PIT_SAFE",
+      "registeredHorizons": [
+        126,
+        21
+      ],
+      "usableRange": [
+        "2014-01-10",
+        "2026-09-11"
+      ],
+      "usableSignalDates": 661,
+      "usableYears": [
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025",
+        "2026"
+      ],
+      "role": "ALPHA_CANDIDATE",
+      "expectedDirection": 1
+    },
+    {
+      "coveragePct": 89.933473,
+      "coverageWithinUsableRangePct": 97.144478,
+      "family": "A",
+      "featureId": "A06_return252d",
+      "horizonUsability": {
+        "H126": {
+          "lastMaturableSignalDate": "2026-03-06",
+          "usable": true,
+          "usableSignalDatesBeforeThat": 634
+        },
+        "H21": {
+          "lastMaturableSignalDate": "2026-08-07",
+          "usable": true,
+          "usableSignalDatesBeforeThat": 656
+        }
+      },
+      "pitSafetyVerdict": "PIT_SAFE",
+      "registeredHorizons": [
+        126,
+        21
+      ],
+      "usableRange": [
+        "2014-01-10",
+        "2026-09-11"
+      ],
+      "usableSignalDates": 661,
+      "usableYears": [
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025",
+        "2026"
+      ],
+      "role": "ALPHA_CANDIDATE",
+      "expectedDirection": 1
+    },
+    {
+      "coveragePct": 91.19281,
+      "coverageWithinUsableRangePct": 98.504791,
+      "family": "A",
+      "featureId": "A08_momentum6",
+      "horizonUsability": {
+        "H126": {
+          "lastMaturableSignalDate": "2026-03-06",
+          "usable": true,
+          "usableSignalDatesBeforeThat": 634
+        },
+        "H21": {
+          "lastMaturableSignalDate": "2026-08-07",
+          "usable": true,
+          "usableSignalDatesBeforeThat": 656
+        }
+      },
+      "pitSafetyVerdict": "PIT_SAFE",
+      "registeredHorizons": [
+        126,
+        21
+      ],
+      "usableRange": [
+        "2014-01-10",
+        "2026-09-11"
+      ],
+      "usableSignalDates": 661,
+      "usableYears": [
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025",
+        "2026"
+      ],
+      "role": "ALPHA_CANDIDATE",
+      "expectedDirection": 1
+    },
+    {
+      "coveragePct": 89.933473,
+      "coverageWithinUsableRangePct": 97.144478,
+      "family": "A",
+      "featureId": "A10_residualMomentum126",
+      "horizonUsability": {
+        "H126": {
+          "lastMaturableSignalDate": "2026-03-06",
+          "usable": true,
+          "usableSignalDatesBeforeThat": 634
+        },
+        "H21": {
+          "lastMaturableSignalDate": "2026-08-07",
+          "usable": true,
+          "usableSignalDatesBeforeThat": 656
+        }
+      },
+      "pitSafetyVerdict": "PIT_SAFE",
+      "registeredHorizons": [
+        126,
+        21
+      ],
+      "usableRange": [
+        "2014-01-10",
+        "2026-09-11"
+      ],
+      "usableSignalDates": 661,
+      "usableYears": [
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025",
+        "2026"
+      ],
+      "role": "ALPHA_CANDIDATE",
+      "expectedDirection": 1
+    },
+    {
+      "coveragePct": 89.940476,
+      "coverageWithinUsableRangePct": 97.152042,
+      "family": "A",
+      "featureId": "A11_distance52wHigh",
+      "horizonUsability": {
+        "H126": {
+          "lastMaturableSignalDate": "2026-03-06",
+          "usable": true,
+          "usableSignalDatesBeforeThat": 634
+        },
+        "H21": {
+          "lastMaturableSignalDate": "2026-08-07",
+          "usable": true,
+          "usableSignalDatesBeforeThat": 656
+        }
+      },
+      "pitSafetyVerdict": "PIT_SAFE",
+      "registeredHorizons": [
+        126,
+        21
+      ],
+      "usableRange": [
+        "2014-01-10",
+        "2026-09-11"
+      ],
+      "usableSignalDates": 661,
+      "usableYears": [
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025",
+        "2026"
+      ],
+      "role": "ALPHA_CANDIDATE",
+      "expectedDirection": 1
+    },
+    {
+      "coveragePct": 89.933473,
+      "coverageWithinUsableRangePct": 97.144478,
+      "family": "A",
+      "featureId": "A12_momentumPersistence",
+      "horizonUsability": {
+        "H126": {
+          "lastMaturableSignalDate": "2026-03-06",
+          "usable": true,
+          "usableSignalDatesBeforeThat": 634
+        },
+        "H21": {
+          "lastMaturableSignalDate": "2026-08-07",
+          "usable": true,
+          "usableSignalDatesBeforeThat": 656
+        }
+      },
+      "pitSafetyVerdict": "PIT_SAFE",
+      "registeredHorizons": [
+        126,
+        21
+      ],
+      "usableRange": [
+        "2014-01-10",
+        "2026-09-11"
+      ],
+      "usableSignalDates": 661,
+      "usableYears": [
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025",
+        "2026"
+      ],
+      "role": "ALPHA_CANDIDATE",
+      "expectedDirection": 1
+    },
+    {
+      "coveragePct": 92.099673,
+      "coverageWithinUsableRangePct": 99.484367,
+      "family": "A",
+      "featureId": "A13_momentumAcceleration21",
+      "horizonUsability": {
+        "H126": {
+          "lastMaturableSignalDate": "2026-03-06",
+          "usable": true,
+          "usableSignalDatesBeforeThat": 634
+        },
+        "H21": {
+          "lastMaturableSignalDate": "2026-08-07",
+          "usable": true,
+          "usableSignalDatesBeforeThat": 656
+        }
+      },
+      "pitSafetyVerdict": "PIT_SAFE",
+      "registeredHorizons": [
+        126,
+        21
+      ],
+      "usableRange": [
+        "2014-01-10",
+        "2026-09-11"
+      ],
+      "usableSignalDates": 661,
+      "usableYears": [
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025",
+        "2026"
+      ],
+      "role": "ALPHA_CANDIDATE",
+      "expectedDirection": 1
+    },
+    {
+      "coveragePct": 90.433007,
+      "coverageWithinUsableRangePct": 97.684065,
+      "family": "A",
+      "featureId": "A14_ma200Distance",
+      "horizonUsability": {
+        "H126": {
+          "lastMaturableSignalDate": "2026-03-06",
+          "usable": true,
+          "usableSignalDatesBeforeThat": 634
+        },
+        "H21": {
+          "lastMaturableSignalDate": "2026-08-07",
+          "usable": true,
+          "usableSignalDatesBeforeThat": 656
+        }
+      },
+      "pitSafetyVerdict": "PIT_SAFE",
+      "registeredHorizons": [
+        126,
+        21
+      ],
+      "usableRange": [
+        "2014-01-10",
+        "2026-09-11"
+      ],
+      "usableSignalDates": 661,
+      "usableYears": [
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025",
+        "2026"
+      ],
+      "role": "ALPHA_CANDIDATE",
+      "expectedDirection": 1
+    },
+    {
+      "coveragePct": 47.546685,
+      "coverageWithinUsableRangePct": 62.29052,
+      "family": "B",
+      "featureId": "B04_freeCashFlowYield",
+      "horizonUsability": {
+        "H126": {
+          "lastMaturableSignalDate": "2026-03-06",
+          "usable": true,
+          "usableSignalDatesBeforeThat": 472
+        },
+        "H252": {
+          "lastMaturableSignalDate": "2025-08-29",
+          "usable": true,
+          "usableSignalDatesBeforeThat": 445
+        }
+      },
+      "pitSafetyVerdict": "PIT_SAFE",
+      "registeredHorizons": [
+        126,
+        252
+      ],
+      "usableRange": [
+        "2016-04-01",
+        "2026-09-11"
+      ],
+      "usableSignalDates": 499,
+      "usableYears": [
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025",
+        "2026"
+      ],
+      "role": "ALPHA_CANDIDATE",
+      "expectedDirection": 1
+    },
+    {
+      "coveragePct": 42.376284,
+      "coverageWithinUsableRangePct": 68.609221,
+      "family": "B",
+      "featureId": "B06_ownHistoryValuation",
+      "horizonUsability": {
+        "H126": {
+          "lastMaturableSignalDate": "2026-03-06",
+          "usable": true,
+          "usableSignalDatesBeforeThat": 414
+        },
+        "H252": {
+          "lastMaturableSignalDate": "2025-08-29",
+          "usable": true,
+          "usableSignalDatesBeforeThat": 387
+        }
+      },
+      "pitSafetyVerdict": "PIT_SAFE",
+      "registeredHorizons": [
+        126,
+        252
+      ],
+      "usableRange": [
+        "2018-04-06",
+        "2026-09-11"
+      ],
+      "usableSignalDates": 441,
+      "usableYears": [
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025",
+        "2026"
+      ],
+      "role": "ALPHA_CANDIDATE",
+      "expectedDirection": 1
+    },
+    {
+      "coveragePct": 57.561858,
+      "coverageWithinUsableRangePct": 79.342021,
+      "family": "B",
+      "featureId": "B07_valuationChange126",
+      "horizonUsability": {
+        "H126": {
+          "lastMaturableSignalDate": "2026-03-06",
+          "usable": true,
+          "usableSignalDatesBeforeThat": 491
+        },
+        "H252": {
+          "lastMaturableSignalDate": "2025-08-29",
+          "usable": true,
+          "usableSignalDatesBeforeThat": 464
+        }
+      },
+      "pitSafetyVerdict": "PIT_SAFE",
+      "registeredHorizons": [
+        126,
+        252
+      ],
+      "usableRange": [
+        "2016-10-07",
+        "2026-09-11"
+      ],
+      "usableSignalDates": 518,
+      "usableYears": [
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025",
+        "2026"
+      ],
+      "role": "ALPHA_CANDIDATE",
+      "expectedDirection": 1
+    },
+    {
+      "coveragePct": 53.551864,
+      "coverageWithinUsableRangePct": 69.067578,
+      "family": "B",
+      "featureId": "B08_valueBusinessConfirmation",
+      "horizonUsability": {
+        "H126": {
+          "lastMaturableSignalDate": "2026-03-06",
+          "usable": true,
+          "usableSignalDatesBeforeThat": 472
+        },
+        "H252": {
+          "lastMaturableSignalDate": "2025-08-29",
+          "usable": true,
+          "usableSignalDatesBeforeThat": 445
+        }
+      },
+      "pitSafetyVerdict": "PIT_SAFE",
+      "registeredHorizons": [
+        126,
+        252
+      ],
+      "usableRange": [
+        "2016-04-01",
+        "2026-09-11"
+      ],
+      "usableSignalDates": 499,
+      "usableYears": [
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025",
+        "2026"
+      ],
+      "role": "ALPHA_CANDIDATE",
+      "expectedDirection": 1
+    },
+    {
+      "coveragePct": 48.499066,
+      "coverageWithinUsableRangePct": 63.538226,
+      "family": "C",
+      "featureId": "C02_returnOnEquity",
+      "horizonUsability": {
+        "H126": {
+          "lastMaturableSignalDate": "2026-03-06",
+          "usable": true,
+          "usableSignalDatesBeforeThat": 472
+        },
+        "H252": {
+          "lastMaturableSignalDate": "2025-08-29",
+          "usable": true,
+          "usableSignalDatesBeforeThat": 445
+        }
+      },
+      "pitSafetyVerdict": "PIT_SAFE",
+      "registeredHorizons": [
+        126,
+        252
+      ],
+      "usableRange": [
+        "2016-04-01",
+        "2026-09-11"
+      ],
+      "usableSignalDates": 499,
+      "usableYears": [
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025",
+        "2026"
+      ],
+      "role": "ALPHA_CANDIDATE",
+      "expectedDirection": 1
+    },
+    {
+      "coveragePct": 55.30112,
+      "coverageWithinUsableRangePct": 80.238821,
+      "family": "C",
+      "featureId": "C09_assetGrowth",
+      "horizonUsability": {
+        "H126": {
+          "lastMaturableSignalDate": "2026-03-06",
+          "usable": true,
+          "usableSignalDatesBeforeThat": 465
+        },
+        "H252": {
+          "lastMaturableSignalDate": "2025-08-29",
+          "usable": true,
+          "usableSignalDatesBeforeThat": 438
+        }
+      },
+      "pitSafetyVerdict": "PIT_SAFE",
+      "registeredHorizons": [
+        126,
+        252
+      ],
+      "usableRange": [
+        "2017-04-07",
+        "2026-09-11"
+      ],
+      "usableSignalDates": 492,
+      "usableYears": [
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025",
+        "2026"
+      ],
+      "role": "ALPHA_CANDIDATE",
+      "expectedDirection": -1
+    },
+    {
+      "coveragePct": 55.361811,
+      "coverageWithinUsableRangePct": 80.326897,
+      "family": "C",
+      "featureId": "C10_liabilityGrowth",
+      "horizonUsability": {
+        "H126": {
+          "lastMaturableSignalDate": "2026-03-06",
+          "usable": true,
+          "usableSignalDatesBeforeThat": 465
+        },
+        "H252": {
+          "lastMaturableSignalDate": "2025-08-29",
+          "usable": true,
+          "usableSignalDatesBeforeThat": 438
+        }
+      },
+      "pitSafetyVerdict": "PIT_SAFE",
+      "registeredHorizons": [
+        126,
+        252
+      ],
+      "usableRange": [
+        "2017-04-07",
+        "2026-09-11"
+      ],
+      "usableSignalDates": 492,
+      "usableYears": [
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025",
+        "2026"
+      ],
+      "role": "ALPHA_CANDIDATE",
+      "expectedDirection": -1
+    },
+    {
+      "coveragePct": 43.516573,
+      "coverageWithinUsableRangePct": 63.150407,
+      "family": "C",
+      "featureId": "C11_shareDilution",
+      "horizonUsability": {
+        "H126": {
+          "lastMaturableSignalDate": "2026-03-06",
+          "usable": true,
+          "usableSignalDatesBeforeThat": 465
+        },
+        "H252": {
+          "lastMaturableSignalDate": "2025-08-29",
+          "usable": true,
+          "usableSignalDatesBeforeThat": 438
+        }
+      },
+      "pitSafetyVerdict": "PIT_SAFE",
+      "registeredHorizons": [
+        126,
+        252
+      ],
+      "usableRange": [
+        "2017-04-07",
+        "2026-09-11"
+      ],
+      "usableSignalDates": 492,
+      "usableYears": [
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025",
+        "2026"
+      ],
+      "role": "ALPHA_CANDIDATE",
+      "expectedDirection": -1
+    },
+    {
+      "coveragePct": 41.538282,
+      "coverageWithinUsableRangePct": 61.025377,
+      "family": "C",
+      "featureId": "C12_profitabilityPersistence",
+      "horizonUsability": {
+        "H126": {
+          "lastMaturableSignalDate": "2026-03-06",
+          "usable": true,
+          "usableSignalDatesBeforeThat": 459
+        },
+        "H252": {
+          "lastMaturableSignalDate": "2025-08-29",
+          "usable": true,
+          "usableSignalDatesBeforeThat": 432
+        }
+      },
+      "pitSafetyVerdict": "PIT_SAFE",
+      "registeredHorizons": [
+        126,
+        252
+      ],
+      "usableRange": [
+        "2017-05-19",
+        "2026-09-11"
+      ],
+      "usableSignalDates": 486,
+      "usableYears": [
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025",
+        "2026"
+      ],
+      "role": "ALPHA_CANDIDATE",
+      "expectedDirection": 1
+    },
+    {
+      "coveragePct": 96.653828,
+      "coverageWithinUsableRangePct": 98.30603,
+      "family": "D",
+      "featureId": "D01_volumeSurge5_60",
+      "horizonUsability": {
+        "H21": {
+          "lastMaturableSignalDate": "2026-08-07",
+          "usable": true,
+          "usableSignalDatesBeforeThat": 697
+        },
+        "H63": {
+          "lastMaturableSignalDate": "2026-06-12",
+          "usable": true,
+          "usableSignalDatesBeforeThat": 689
+        }
+      },
+      "pitSafetyVerdict": "PIT_SAFE",
+      "registeredHorizons": [
+        21,
+        63
+      ],
+      "usableRange": [
+        "2013-03-29",
+        "2026-09-11"
+      ],
+      "usableSignalDates": 702,
+      "usableYears": [
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025",
+        "2026"
+      ],
+      "role": "ALPHA_CANDIDATE",
+      "expectedDirection": 1
+    },
+    {
+      "coveragePct": 96.653828,
+      "coverageWithinUsableRangePct": 98.30603,
+      "family": "D",
+      "featureId": "D02_logVolumeShock60",
+      "horizonUsability": {
+        "H21": {
+          "lastMaturableSignalDate": "2026-08-07",
+          "usable": true,
+          "usableSignalDatesBeforeThat": 697
+        },
+        "H63": {
+          "lastMaturableSignalDate": "2026-06-12",
+          "usable": true,
+          "usableSignalDatesBeforeThat": 689
+        }
+      },
+      "pitSafetyVerdict": "PIT_SAFE",
+      "registeredHorizons": [
+        21,
+        63
+      ],
+      "usableRange": [
+        "2013-03-29",
+        "2026-09-11"
+      ],
+      "usableSignalDates": 702,
+      "usableYears": [
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025",
+        "2026"
+      ],
+      "role": "ALPHA_CANDIDATE",
+      "expectedDirection": 1
+    },
+    {
+      "coveragePct": 96.653828,
+      "coverageWithinUsableRangePct": 98.30603,
+      "family": "D",
+      "featureId": "D03_tradingValueShock5_60",
+      "horizonUsability": {
+        "H21": {
+          "lastMaturableSignalDate": "2026-08-07",
+          "usable": true,
+          "usableSignalDatesBeforeThat": 697
+        },
+        "H63": {
+          "lastMaturableSignalDate": "2026-06-12",
+          "usable": true,
+          "usableSignalDatesBeforeThat": 689
+        }
+      },
+      "pitSafetyVerdict": "PIT_SAFE",
+      "registeredHorizons": [
+        21,
+        63
+      ],
+      "usableRange": [
+        "2013-03-29",
+        "2026-09-11"
+      ],
+      "usableSignalDates": 702,
+      "usableYears": [
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025",
+        "2026"
+      ],
+      "role": "ALPHA_CANDIDATE",
+      "expectedDirection": 1
+    },
+    {
+      "coveragePct": 96.418067,
+      "coverageWithinUsableRangePct": 98.206134,
+      "family": "D",
+      "featureId": "D04_shockPersistence5d",
+      "horizonUsability": {
+        "H21": {
+          "lastMaturableSignalDate": "2026-08-07",
+          "usable": true,
+          "usableSignalDatesBeforeThat": 696
+        },
+        "H63": {
+          "lastMaturableSignalDate": "2026-06-12",
+          "usable": true,
+          "usableSignalDatesBeforeThat": 688
+        }
+      },
+      "pitSafetyVerdict": "PIT_SAFE",
+      "registeredHorizons": [
+        21,
+        63
+      ],
+      "usableRange": [
+        "2013-04-05",
+        "2026-09-11"
+      ],
+      "usableSignalDates": 701,
+      "usableYears": [
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025",
+        "2026"
+      ],
+      "role": "ALPHA_CANDIDATE",
+      "expectedDirection": 1
+    },
+    {
+      "coveragePct": 96.590803,
+      "coverageWithinUsableRangePct": 98.241928,
+      "family": "D",
+      "featureId": "D05_turnoverToMarketCap60",
+      "horizonUsability": {
+        "H21": {
+          "lastMaturableSignalDate": "2026-08-07",
+          "usable": true,
+          "usableSignalDatesBeforeThat": 697
+        },
+        "H63": {
+          "lastMaturableSignalDate": "2026-06-12",
+          "usable": true,
+          "usableSignalDatesBeforeThat": 689
+        }
+      },
+      "pitSafetyVerdict": "PIT_SAFE",
+      "registeredHorizons": [
+        21,
+        63
+      ],
+      "usableRange": [
+        "2013-03-29",
+        "2026-09-11"
+      ],
+      "usableSignalDates": 702,
+      "usableYears": [
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025",
+        "2026"
+      ],
+      "role": "ALPHA_CANDIDATE",
+      "expectedDirection": 1
+    },
+    {
+      "coveragePct": 95.669935,
+      "coverageWithinUsableRangePct": 97.862942,
+      "family": "D",
+      "featureId": "D06_priceVolumeDivergence",
+      "horizonUsability": {
+        "H21": {
+          "lastMaturableSignalDate": "2026-08-07",
+          "usable": true,
+          "usableSignalDatesBeforeThat": 693
+        },
+        "H63": {
+          "lastMaturableSignalDate": "2026-06-12",
+          "usable": true,
+          "usableSignalDatesBeforeThat": 685
+        }
+      },
+      "pitSafetyVerdict": "PIT_SAFE",
+      "registeredHorizons": [
+        21,
+        63
+      ],
+      "usableRange": [
+        "2013-04-26",
+        "2026-09-11"
+      ],
+      "usableSignalDates": 698,
+      "usableYears": [
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025",
+        "2026"
+      ],
+      "role": "ALPHA_CANDIDATE",
+      "expectedDirection": 1
+    },
+    {
+      "coveragePct": 96.652661,
+      "coverageWithinUsableRangePct": 98.304843,
+      "family": "D",
+      "featureId": "D07_volumePriceAlignment",
+      "horizonUsability": {
+        "H21": {
+          "lastMaturableSignalDate": "2026-08-07",
+          "usable": true,
+          "usableSignalDatesBeforeThat": 697
+        },
+        "H63": {
+          "lastMaturableSignalDate": "2026-06-12",
+          "usable": true,
+          "usableSignalDatesBeforeThat": 689
+        }
+      },
+      "pitSafetyVerdict": "PIT_SAFE",
+      "registeredHorizons": [
+        21,
+        63
+      ],
+      "usableRange": [
+        "2013-03-29",
+        "2026-09-11"
+      ],
+      "usableSignalDates": 702,
+      "usableYears": [
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025",
+        "2026"
+      ],
+      "role": "ALPHA_CANDIDATE",
+      "expectedDirection": 1
+    },
+    {
+      "coveragePct": 95.612745,
+      "coverageWithinUsableRangePct": 97.804441,
+      "family": "D",
+      "featureId": "D08_abnormalVolumeUpClose",
+      "horizonUsability": {
+        "H21": {
+          "lastMaturableSignalDate": "2026-08-07",
+          "usable": true,
+          "usableSignalDatesBeforeThat": 693
+        },
+        "H63": {
+          "lastMaturableSignalDate": "2026-06-12",
+          "usable": true,
+          "usableSignalDatesBeforeThat": 685
+        }
+      },
+      "pitSafetyVerdict": "PIT_SAFE",
+      "registeredHorizons": [
+        21,
+        63
+      ],
+      "usableRange": [
+        "2013-04-26",
+        "2026-09-11"
+      ],
+      "usableSignalDates": 698,
+      "usableYears": [
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025",
+        "2026"
+      ],
+      "role": "ALPHA_CANDIDATE",
+      "expectedDirection": 1
+    },
+    {
+      "coveragePct": 95.612745,
+      "coverageWithinUsableRangePct": 97.804441,
+      "family": "D",
+      "featureId": "D09_abnormalVolumeDownClose",
+      "horizonUsability": {
+        "H21": {
+          "lastMaturableSignalDate": "2026-08-07",
+          "usable": true,
+          "usableSignalDatesBeforeThat": 693
+        },
+        "H63": {
+          "lastMaturableSignalDate": "2026-06-12",
+          "usable": true,
+          "usableSignalDatesBeforeThat": 685
+        }
+      },
+      "pitSafetyVerdict": "PIT_SAFE",
+      "registeredHorizons": [
+        21,
+        63
+      ],
+      "usableRange": [
+        "2013-04-26",
+        "2026-09-11"
+      ],
+      "usableSignalDates": 698,
+      "usableYears": [
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025",
+        "2026"
+      ],
+      "role": "ALPHA_CANDIDATE",
+      "expectedDirection": -1
+    },
+    {
+      "coveragePct": 93.521242,
+      "coverageWithinUsableRangePct": 96.914611,
+      "family": "D",
+      "featureId": "D10_liquidityAcceleration",
+      "horizonUsability": {
+        "H21": {
+          "lastMaturableSignalDate": "2026-08-07",
+          "usable": true,
+          "usableSignalDatesBeforeThat": 684
+        },
+        "H63": {
+          "lastMaturableSignalDate": "2026-06-12",
+          "usable": true,
+          "usableSignalDatesBeforeThat": 676
+        }
+      },
+      "pitSafetyVerdict": "PIT_SAFE",
+      "registeredHorizons": [
+        21,
+        63
+      ],
+      "usableRange": [
+        "2013-06-28",
+        "2026-09-11"
+      ],
+      "usableSignalDates": 689,
+      "usableYears": [
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025",
+        "2026"
+      ],
+      "role": "ALPHA_CANDIDATE",
+      "expectedDirection": 1
+    },
+    {
+      "coveragePct": 98.661298,
+      "coverageWithinUsableRangePct": 99.217136,
+      "family": "D",
+      "featureId": "D11_accumulationDistributionProxy",
+      "horizonUsability": {
+        "H21": {
+          "lastMaturableSignalDate": "2026-08-07",
+          "usable": true,
+          "usableSignalDatesBeforeThat": 705
+        },
+        "H63": {
+          "lastMaturableSignalDate": "2026-06-12",
+          "usable": true,
+          "usableSignalDatesBeforeThat": 697
+        }
+      },
+      "pitSafetyVerdict": "PIT_SAFE",
+      "registeredHorizons": [
+        21,
+        63
+      ],
+      "usableRange": [
+        "2013-02-01",
+        "2026-09-11"
+      ],
+      "usableSignalDates": 710,
+      "usableYears": [
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025",
+        "2026"
+      ],
+      "role": "ALPHA_CANDIDATE",
+      "expectedDirection": 1
+    },
+    {
+      "coveragePct": 96.626984,
+      "coverageWithinUsableRangePct": 98.278727,
+      "family": "E",
+      "featureId": "E01_amihudIlliquidity60",
+      "horizonUsability": {
+        "H126": {
+          "lastMaturableSignalDate": "2026-03-06",
+          "usable": true,
+          "usableSignalDatesBeforeThat": 675
+        },
+        "H21": {
+          "lastMaturableSignalDate": "2026-08-07",
+          "usable": true,
+          "usableSignalDatesBeforeThat": 697
+        }
+      },
+      "pitSafetyVerdict": "PIT_SAFE",
+      "registeredHorizons": [
+        126,
+        21
+      ],
+      "usableRange": [
+        "2013-03-29",
+        "2026-09-11"
+      ],
+      "usableSignalDates": 702,
+      "usableYears": [
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025",
+        "2026"
+      ],
+      "role": "ALPHA_CANDIDATE",
+      "expectedDirection": 1
+    },
+    {
+      "coveragePct": 96.603641,
+      "coverageWithinUsableRangePct": 98.254986,
+      "family": "E",
+      "featureId": "E06_volatilityConditionalOnVolume",
+      "horizonUsability": {
+        "H126": {
+          "lastMaturableSignalDate": "2026-03-06",
+          "usable": true,
+          "usableSignalDatesBeforeThat": 675
+        },
+        "H21": {
+          "lastMaturableSignalDate": "2026-08-07",
+          "usable": true,
+          "usableSignalDatesBeforeThat": 697
+        }
+      },
+      "pitSafetyVerdict": "PIT_SAFE",
+      "registeredHorizons": [
+        126,
+        21
+      ],
+      "usableRange": [
+        "2013-03-29",
+        "2026-09-11"
+      ],
+      "usableSignalDates": 702,
+      "usableYears": [
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025",
+        "2026"
+      ],
+      "role": "ALPHA_CANDIDATE",
+      "expectedDirection": 1
+    },
+    {
+      "coveragePct": 91.860411,
+      "coverageWithinUsableRangePct": 99.22592,
+      "family": "F",
+      "featureId": "F01_totalVolatility63",
+      "horizonUsability": {
+        "H126": {
+          "lastMaturableSignalDate": "2026-03-06",
+          "usable": true,
+          "usableSignalDatesBeforeThat": 634
+        }
+      },
+      "pitSafetyVerdict": "PIT_SAFE",
+      "registeredHorizons": [
+        126
+      ],
+      "usableRange": [
+        "2014-01-10",
+        "2026-09-11"
+      ],
+      "usableSignalDates": 661,
+      "usableYears": [
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025",
+        "2026"
+      ],
+      "role": "ALPHA_CANDIDATE",
+      "expectedDirection": -1
+    },
+    {
+      "coveragePct": 89.933473,
+      "coverageWithinUsableRangePct": 97.144478,
+      "family": "F",
+      "featureId": "F03_beta252",
+      "horizonUsability": {
+        "H126": {
+          "lastMaturableSignalDate": "2026-03-06",
+          "usable": true,
+          "usableSignalDatesBeforeThat": 634
+        }
+      },
+      "pitSafetyVerdict": "PIT_SAFE",
+      "registeredHorizons": [
+        126
+      ],
+      "usableRange": [
+        "2014-01-10",
+        "2026-09-11"
+      ],
+      "usableSignalDates": 661,
+      "usableYears": [
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025",
+        "2026"
+      ],
+      "role": "ALPHA_CANDIDATE",
+      "expectedDirection": -1
+    },
+    {
+      "coveragePct": 89.933473,
+      "coverageWithinUsableRangePct": 97.144478,
+      "family": "F",
+      "featureId": "F04_idiosyncraticVol",
+      "horizonUsability": {
+        "H126": {
+          "lastMaturableSignalDate": "2026-03-06",
+          "usable": true,
+          "usableSignalDatesBeforeThat": 634
+        }
+      },
+      "pitSafetyVerdict": "PIT_SAFE",
+      "registeredHorizons": [
+        126
+      ],
+      "usableRange": [
+        "2014-01-10",
+        "2026-09-11"
+      ],
+      "usableSignalDates": 661,
+      "usableYears": [
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025",
+        "2026"
+      ],
+      "role": "ALPHA_CANDIDATE",
+      "expectedDirection": -1
+    },
+    {
+      "coveragePct": 67.507003,
+      "coverageWithinUsableRangePct": 70.05814,
+      "family": "H",
+      "featureId": "H08_equalVsCapWeightIndustry",
+      "horizonUsability": {
+        "H126": {
+          "lastMaturableSignalDate": "2026-03-06",
+          "usable": true,
+          "usableSignalDatesBeforeThat": 655
+        },
+        "H63": {
+          "lastMaturableSignalDate": "2026-06-12",
+          "usable": true,
+          "usableSignalDatesBeforeThat": 669
+        }
+      },
+      "pitSafetyVerdict": "PIT_SAFE",
+      "registeredHorizons": [
+        126,
+        63
+      ],
+      "usableRange": [
+        "2013-07-05",
+        "2026-09-11"
+      ],
+      "usableSignalDates": 682,
+      "usableYears": [
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025",
+        "2026"
+      ],
+      "role": "ALPHA_CANDIDATE",
+      "expectedDirection": 1
+    },
+    {
+      "coveragePct": 69.227358,
+      "coverageWithinUsableRangePct": 83.766949,
+      "family": "J",
+      "featureId": "J01_periodicFilingEvent",
+      "horizonUsability": {
+        "H21": {
+          "lastMaturableSignalDate": "2026-08-07",
+          "usable": true,
+          "usableSignalDatesBeforeThat": 585
+        },
+        "H63": {
+          "lastMaturableSignalDate": "2026-06-12",
+          "usable": true,
+          "usableSignalDatesBeforeThat": 577
+        }
+      },
+      "pitSafetyVerdict": "PIT_SAFE",
+      "registeredHorizons": [
+        21,
+        63
+      ],
+      "usableRange": [
+        "2015-05-22",
+        "2026-09-11"
+      ],
+      "usableSignalDates": 590,
+      "usableYears": [
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025",
+        "2026"
+      ],
+      "role": "ALPHA_CANDIDATE",
+      "expectedDirection": 1
+    }
+  ],
+  "roles": {
+    "baselineControl": [
+      "A05_relative126",
+      "A07_momentum12_1",
+      "A09_industryRelativeMomentum126",
+      "B01_bookToMarket",
+      "B02_earningsYield",
+      "B03_ocfYield",
+      "B05_industryRelativeValue",
+      "C01_returnOnAssets",
+      "C05_ocfToAssets",
+      "C07_negativeAccruals",
+      "C08_netIncomeMinusOcf",
+      "C14_ocfImprovement",
+      "E02_logAdv60",
+      "F02_downsideVol126",
+      "H01_industryRelMom126",
+      "H02_industryRelMom63",
+      "H03_industryBreadthAboveMA126",
+      "H04_withinIndustryDispersion126",
+      "H06_industryConcentrationTop1",
+      "H12_industryValuationContext",
+      "I01_kospiTrendVolState"
+    ],
+    "contextOnly": [
+      "H05_crossIndustryDispersion",
+      "H07_leadershipPersistence",
+      "H09_marketBreadth",
+      "H10_marketConcentrationTop2",
+      "J05_shortSellingRegime"
+    ],
+    "constructionOnly": {
+      "E03_capacityMedianTradedValue60": "COST_CAPACITY",
+      "E04_tradabilityGuard20": "ELIGIBILITY_FILTER",
+      "E05_highLowSpreadProxy": "COST_CAPACITY",
+      "E07_suspensionStaleRisk": "ELIGIBILITY_FILTER",
+      "F05_maxDrawdown252": "RISK_CONSTRUCTION",
+      "F06_crashExposure": "RISK_CONSTRUCTION",
+      "F07_benchmarkCorrelation252": "RISK_CONSTRUCTION"
+    }
+  },
+  "excludedFeatures": [
+    {
+      "featureId": "C03_operatingMargin",
+      "genuineSourceBlocker": null,
+      "implementationStatus": "IMPLEMENTED",
+      "measuredStatus": "MEASURED_BELOW_COVERAGE_FLOOR",
+      "reason": "measured on 54.203364% of rows within its usable range over 499 usable dates; main missingness: NO_VISIBLE_FILING=26366, INPUT_NOT_STATED_OR_UNDEFINED_RATIO=9916, UNKNOWN_OR_MIXED_STATEMENT_BASIS=8619",
+      "registryReadinessStatus": "READY"
+    },
+    {
+      "featureId": "C04_profitMargin",
+      "genuineSourceBlocker": null,
+      "implementationStatus": "IMPLEMENTED",
+      "measuredStatus": "MEASURED_BELOW_COVERAGE_FLOOR",
+      "reason": "measured on 55.17737% of rows within its usable range over 499 usable dates; main missingness: NO_VISIBLE_FILING=26366, INPUT_NOT_STATED_OR_UNDEFINED_RATIO=9279, UNKNOWN_OR_MIXED_STATEMENT_BASIS=8619",
+      "registryReadinessStatus": "READY"
+    },
+    {
+      "featureId": "C06_cashConversion",
+      "genuineSourceBlocker": null,
+      "implementationStatus": "IMPLEMENTED",
+      "measuredStatus": "MEASURED_BELOW_COVERAGE_FLOOR",
+      "reason": "measured on 56.62844% of rows within its usable range over 499 usable dates; main missingness: NO_VISIBLE_FILING=26366, UNKNOWN_OR_MIXED_STATEMENT_BASIS=8619, INPUT_NOT_STATED_OR_UNDEFINED_RATIO=8330",
+      "registryReadinessStatus": "DATA_BUILD_REQUIRED"
+    },
+    {
+      "featureId": "C15_capexIntensity",
+      "genuineSourceBlocker": null,
+      "implementationStatus": "IMPLEMENTED",
+      "measuredStatus": "MEASURED_BELOW_COVERAGE_FLOOR",
+      "reason": "measured on 52.896024% of rows within its usable range over 499 usable dates; main missingness: NO_VISIBLE_FILING=26366, INPUT_NOT_STATED_OR_UNDEFINED_RATIO=10771, UNKNOWN_OR_MIXED_STATEMENT_BASIS=8619",
+      "registryReadinessStatus": "DATA_BUILD_REQUIRED"
+    },
+    {
+      "featureId": "C16_grossProfitability",
+      "genuineSourceBlocker": "DATA_BUILD_GAP",
+      "implementationStatus": "NOT_COMPUTED",
+      "measuredStatus": "NOT_COMPUTED_DATA_BUILD_REQUIRED",
+      "reason": "no gross-profit or cost-of-sales line in dart_fundamentals.WANTED_ACCOUNTS; raw-statement store (dart_raw_statements) keeps all rows but kr-canonical-v2 has not landed",
+      "registryReadinessStatus": "DATA_BUILD_REQUIRED"
+    },
+    {
+      "featureId": "E08_trueBidAskSpread",
+      "genuineSourceBlocker": "NO_POINT_IN_TIME_SOURCE",
+      "implementationStatus": "NOT_COMPUTED",
+      "measuredStatus": "NOT_COMPUTED_NOT_FEASIBLE",
+      "reason": "no quote or order-book source exists in this repository and none was found free; daily OHLCV proxies (E05) are not a substitute",
+      "registryReadinessStatus": "NOT_FEASIBLE"
+    },
+    {
+      "featureId": "F08_bookConcentration",
+      "genuineSourceBlocker": null,
+      "implementationStatus": "NOT_A_MATRIX_COLUMN",
+      "measuredStatus": "NOT_A_MATRIX_COLUMN",
+      "reason": "PORTFOLIO_LAYER_ONLY: a property of a 0-5 name book, not of a name on a date",
+      "registryReadinessStatus": "DERIVABLE_FROM_EXISTING_DATA"
+    },
+    {
+      "featureId": "G01_foreignNetBuying",
+      "genuineSourceBlocker": "SOURCE_ACCESS_REFUSED",
+      "implementationStatus": "NOT_COMPUTED",
+      "measuredStatus": "NOT_COMPUTED_SOURCE_BLOCKED",
+      "reason": "KRX data portal (MDCSTAT02302/02303) answered HTTP 400 LOGOUT on every candidate from Actions; the Open API key does not reach investor-type statistics (workflow-hygiene v2.25)",
+      "registryReadinessStatus": "SOURCE_BLOCKED"
+    },
+    {
+      "featureId": "G02_institutionalNetBuying",
+      "genuineSourceBlocker": "SOURCE_ACCESS_REFUSED",
+      "implementationStatus": "NOT_COMPUTED",
+      "measuredStatus": "NOT_COMPUTED_SOURCE_BLOCKED",
+      "reason": "KRX data portal (MDCSTAT02302/02303) answered HTTP 400 LOGOUT on every candidate from Actions; the Open API key does not reach investor-type statistics (workflow-hygiene v2.25)",
+      "registryReadinessStatus": "SOURCE_BLOCKED"
+    },
+    {
+      "featureId": "G03_retailNetBuying",
+      "genuineSourceBlocker": "SOURCE_ACCESS_REFUSED",
+      "implementationStatus": "NOT_COMPUTED",
+      "measuredStatus": "NOT_COMPUTED_SOURCE_BLOCKED",
+      "reason": "KRX data portal (MDCSTAT02302/02303) answered HTTP 400 LOGOUT on every candidate from Actions; the Open API key does not reach investor-type statistics (workflow-hygiene v2.25)",
+      "registryReadinessStatus": "SOURCE_BLOCKED"
+    },
+    {
+      "featureId": "G04_investorTypePersistence",
+      "genuineSourceBlocker": "SOURCE_ACCESS_REFUSED",
+      "implementationStatus": "NOT_COMPUTED",
+      "measuredStatus": "NOT_COMPUTED_SOURCE_BLOCKED",
+      "reason": "KRX data portal (MDCSTAT02302/02303) answered HTTP 400 LOGOUT on every candidate from Actions; the Open API key does not reach investor-type statistics (workflow-hygiene v2.25)",
+      "registryReadinessStatus": "SOURCE_BLOCKED"
+    },
+    {
+      "featureId": "G05_flowMomentumConfirmation",
+      "genuineSourceBlocker": "SOURCE_ACCESS_REFUSED",
+      "implementationStatus": "NOT_COMPUTED",
+      "measuredStatus": "NOT_COMPUTED_SOURCE_BLOCKED",
+      "reason": "KRX data portal (MDCSTAT02302/02303) answered HTTP 400 LOGOUT on every candidate from Actions; the Open API key does not reach investor-type statistics (workflow-hygiene v2.25)",
+      "registryReadinessStatus": "SOURCE_BLOCKED"
+    },
+    {
+      "featureId": "G06_largeHolderAccumulation",
+      "genuineSourceBlocker": "DATA_BUILD_GAP",
+      "implementationStatus": "NOT_COMPUTED",
+      "measuredStatus": "NOT_COMPUTED_DATA_BUILD_REQUIRED",
+      "reason": "majorstock.json serves a rolling two years: collected receipts span 2024-09-24..2026-09-23 (1,285 events, 119 current names); older history needs an official filing-document parser (BLOCKED_HISTORICAL_DEPTH, docs/dart-ownership-history-replay-integrity-v1.md)",
+      "registryReadinessStatus": "DATA_BUILD_REQUIRED"
+    },
+    {
+      "featureId": "G07_largeHolderReduction",
+      "genuineSourceBlocker": "DATA_BUILD_GAP",
+      "implementationStatus": "NOT_COMPUTED",
+      "measuredStatus": "NOT_COMPUTED_DATA_BUILD_REQUIRED",
+      "reason": "majorstock.json serves a rolling two years: collected receipts span 2024-09-24..2026-09-23 (1,285 events, 119 current names); older history needs an official filing-document parser (BLOCKED_HISTORICAL_DEPTH, docs/dart-ownership-history-replay-integrity-v1.md)",
+      "registryReadinessStatus": "DATA_BUILD_REQUIRED"
+    },
+    {
+      "featureId": "G08_shortSellingVolume",
+      "genuineSourceBlocker": "SOURCE_ACCESS_REFUSED",
+      "implementationStatus": "NOT_COMPUTED",
+      "measuredStatus": "NOT_COMPUTED_SOURCE_BLOCKED",
+      "reason": "KRX short-selling screens MDCSTAT301/305: bld codes unresolved and the portal unreachable; full bans 2020-03..2021-05 and 2023-11-05..2025-03-31 make the variable regime-dependent (kr_short_selling.regime_label)",
+      "registryReadinessStatus": "SOURCE_BLOCKED"
+    },
+    {
+      "featureId": "G09_shortBalanceChange",
+      "genuineSourceBlocker": "SOURCE_ACCESS_REFUSED",
+      "implementationStatus": "NOT_COMPUTED",
+      "measuredStatus": "NOT_COMPUTED_SOURCE_BLOCKED",
+      "reason": "KRX short-selling screens MDCSTAT301/305: bld codes unresolved and the portal unreachable; full bans 2020-03..2021-05 and 2023-11-05..2025-03-31 make the variable regime-dependent (kr_short_selling.regime_label)",
+      "registryReadinessStatus": "SOURCE_BLOCKED"
+    },
+    {
+      "featureId": "H11_industryEarningsContext",
+      "genuineSourceBlocker": null,
+      "implementationStatus": "COMPUTED_ALREADY_TESTED",
+      "measuredStatus": "ALREADY_TESTED_COMPUTED_BELOW_COVERAGE_FLOOR",
+      "reason": "measured on 58.437309% of rows within its usable range over 499 usable dates; main missingness: INDUSTRY_COHORT_MEMBER_MISSING_INPUT=33309, INDUSTRY_COHORT_BELOW_MINIMUM=9555, INDUSTRY_UNCLASSIFIED=4598",
+      "registryReadinessStatus": "ALREADY_TESTED"
+    },
+    {
+      "featureId": "I03_krTermSpread",
+      "genuineSourceBlocker": "PIT_UNSAFE",
+      "implementationStatus": "NOT_COMPUTED",
+      "measuredStatus": "NOT_COMPUTED_PIT_UNSAFE",
+      "reason": "ECOS series carry vintageStatus REVISED_HISTORY; a historical value is usable only from its retained fetch (kr_market_context)",
+      "registryReadinessStatus": "PIT_UNSAFE"
+    },
+    {
+      "featureId": "I04_krPolicyRate",
+      "genuineSourceBlocker": "DATA_BUILD_GAP",
+      "implementationStatus": "NOT_COMPUTED",
+      "measuredStatus": "NOT_COMPUTED_DATA_BUILD_REQUIRED",
+      "reason": "config.json ecos.KR.BaseRate sourceStatus AMBIGUOUS_SOURCE (item code unresolved)",
+      "registryReadinessStatus": "DATA_BUILD_REQUIRED"
+    },
+    {
+      "featureId": "I05_krCreditSpread",
+      "genuineSourceBlocker": "DATA_BUILD_GAP",
+      "implementationStatus": "NOT_COMPUTED",
+      "measuredStatus": "NOT_COMPUTED_DATA_BUILD_REQUIRED",
+      "reason": "CorpBond_3Y sourceStatus AMBIGUOUS_SOURCE (817Y002 item code for the corporate series unresolved)",
+      "registryReadinessStatus": "DATA_BUILD_REQUIRED"
+    },
+    {
+      "featureId": "I06_krInflation",
+      "genuineSourceBlocker": "PIT_UNSAFE",
+      "implementationStatus": "NOT_COMPUTED",
+      "measuredStatus": "NOT_COMPUTED_PIT_UNSAFE",
+      "reason": "CPI AMBIGUOUS_SOURCE / CoreCPI DATA_LINEAGE_UNRESOLVED, revised history without release vintages",
+      "registryReadinessStatus": "PIT_UNSAFE"
+    },
+    {
+      "featureId": "I07_krExportsActivity",
+      "genuineSourceBlocker": "PIT_UNSAFE",
+      "implementationStatus": "NOT_COMPUTED",
+      "measuredStatus": "NOT_COMPUTED_PIT_UNSAFE",
+      "reason": "Exports NOT_AVAILABLE; IndustrialProduction DATA_LINEAGE_UNRESOLVED; LeadingIndex revised without vintages",
+      "registryReadinessStatus": "PIT_UNSAFE"
+    },
+    {
+      "featureId": "I08_usdKrw",
+      "genuineSourceBlocker": "PIT_UNSAFE",
+      "implementationStatus": "NOT_COMPUTED",
+      "measuredStatus": "NOT_COMPUTED_PIT_UNSAFE",
+      "reason": "FX_PUBLICATION_TIME_UNRESOLVED (alpha-information-inventory-v1)",
+      "registryReadinessStatus": "PIT_UNSAFE"
+    },
+    {
+      "featureId": "I09_fxBeta26w",
+      "genuineSourceBlocker": "PIT_UNSAFE",
+      "implementationStatus": "NOT_COMPUTED",
+      "measuredStatus": "NOT_COMPUTED_PIT_UNSAFE",
+      "reason": "FX_PUBLICATION_TIME_UNRESOLVED; excluded by regional_alpha_features",
+      "registryReadinessStatus": "PIT_UNSAFE"
+    },
+    {
+      "featureId": "I10_semiconductorCycleSOX",
+      "genuineSourceBlocker": "DATA_BUILD_GAP",
+      "implementationStatus": "NOT_COMPUTED",
+      "measuredStatus": "NOT_COMPUTED_DATA_BUILD_REQUIRED",
+      "reason": "dashboard-only fetch; no pinned historical snapshot",
+      "registryReadinessStatus": "DATA_BUILD_REQUIRED"
+    },
+    {
+      "featureId": "I11_globalFinancialConditions",
+      "genuineSourceBlocker": "PIT_UNSAFE",
+      "implementationStatus": "NOT_COMPUTED",
+      "measuredStatus": "NOT_COMPUTED_PIT_UNSAFE",
+      "reason": "10 of 28 FRED panel columns have no ALFRED vintages (macro vintage invariants v2.9)",
+      "registryReadinessStatus": "PIT_UNSAFE"
+    },
+    {
+      "featureId": "I12_commodityExposure",
+      "genuineSourceBlocker": "DATA_BUILD_GAP",
+      "implementationStatus": "NOT_COMPUTED",
+      "measuredStatus": "NOT_COMPUTED_DATA_BUILD_REQUIRED",
+      "reason": "no commodity price series is collected",
+      "registryReadinessStatus": "DATA_BUILD_REQUIRED"
+    },
+    {
+      "featureId": "J02_dividendPolicyChange",
+      "genuineSourceBlocker": "DATA_BUILD_GAP",
+      "implementationStatus": "NOT_COMPUTED",
+      "measuredStatus": "NOT_COMPUTED_DATA_BUILD_REQUIRED",
+      "reason": "alotMatter.json not collected universe-wide; endpointConfidence CANDIDATE_UNCONFIRMED",
+      "registryReadinessStatus": "DATA_BUILD_REQUIRED"
+    },
+    {
+      "featureId": "J03_buybackAnnouncement",
+      "genuineSourceBlocker": "DATA_BUILD_GAP",
+      "implementationStatus": "NOT_COMPUTED",
+      "measuredStatus": "NOT_COMPUTED_DATA_BUILD_REQUIRED",
+      "reason": "list.json disclosure families not collected universe-wide",
+      "registryReadinessStatus": "DATA_BUILD_REQUIRED"
+    },
+    {
+      "featureId": "J04_materialDisclosure",
+      "genuineSourceBlocker": "DATA_BUILD_GAP",
+      "implementationStatus": "NOT_COMPUTED",
+      "measuredStatus": "NOT_COMPUTED_DATA_BUILD_REQUIRED",
+      "reason": "as J03; M&A outcomes carry hindsight risk (terminal economics unresolved)",
+      "registryReadinessStatus": "DATA_BUILD_REQUIRED"
+    },
+    {
+      "featureId": "J06_searchAttention",
+      "genuineSourceBlocker": "NO_POINT_IN_TIME_SOURCE",
+      "implementationStatus": "NOT_COMPUTED",
+      "measuredStatus": "NOT_COMPUTED_NOT_FEASIBLE",
+      "reason": "no source with verified point-in-time history and permitted use",
+      "registryReadinessStatus": "NOT_FEASIBLE"
+    },
+    {
+      "featureId": "J07_newsTextSentiment",
+      "genuineSourceBlocker": "NO_POINT_IN_TIME_SOURCE",
+      "implementationStatus": "NOT_COMPUTED",
+      "measuredStatus": "NOT_COMPUTED_NOT_FEASIBLE",
+      "reason": "no archived PIT news source; a large NLP project is out of scope",
+      "registryReadinessStatus": "NOT_FEASIBLE"
+    },
+    {
+      "featureId": "J08_analystRevisions",
+      "genuineSourceBlocker": "NO_POINT_IN_TIME_SOURCE",
+      "implementationStatus": "NOT_COMPUTED",
+      "measuredStatus": "NOT_COMPUTED_NOT_FEASIBLE",
+      "reason": "FnGuide/FnSpace ToS-blocked; no free PIT history (alpha-information-inventory-v1)",
+      "registryReadinessStatus": "NOT_FEASIBLE"
+    }
+  ],
+  "featureStatusLedger": [
+    {
+      "coverageWithinUsableRangePct": 99.934443,
+      "featureId": "A01_return1d",
+      "genuineSourceBlocker": null,
+      "implementationStatus": "IMPLEMENTED",
+      "measuredStatus": "MEASURED_READY",
+      "registryReadinessStatus": "DERIVABLE_FROM_EXISTING_DATA"
+    },
+    {
+      "coverageWithinUsableRangePct": 99.905446,
+      "featureId": "A02_return5d",
+      "genuineSourceBlocker": null,
+      "implementationStatus": "IMPLEMENTED",
+      "measuredStatus": "MEASURED_READY",
+      "registryReadinessStatus": "DERIVABLE_FROM_EXISTING_DATA"
+    },
+    {
+      "coverageWithinUsableRangePct": 99.751639,
+      "featureId": "A03_return21d",
+      "genuineSourceBlocker": null,
+      "implementationStatus": "IMPLEMENTED",
+      "measuredStatus": "MEASURED_READY",
+      "registryReadinessStatus": "READY"
+    },
+    {
+      "coverageWithinUsableRangePct": 99.22592,
+      "featureId": "A04_return63d",
+      "genuineSourceBlocker": null,
+      "implementationStatus": "IMPLEMENTED",
+      "measuredStatus": "MEASURED_READY",
+      "registryReadinessStatus": "READY"
+    },
+    {
+      "coverageWithinUsableRangePct": 98.528343,
+      "featureId": "A05_relative126",
+      "genuineSourceBlocker": null,
+      "implementationStatus": "COMPUTED_ALREADY_TESTED",
+      "measuredStatus": "ALREADY_TESTED_COMPUTED_READY",
+      "registryReadinessStatus": "ALREADY_TESTED"
+    },
+    {
+      "coverageWithinUsableRangePct": 97.144478,
+      "featureId": "A06_return252d",
+      "genuineSourceBlocker": null,
+      "implementationStatus": "IMPLEMENTED",
+      "measuredStatus": "MEASURED_READY",
+      "registryReadinessStatus": "READY"
+    },
+    {
+      "coverageWithinUsableRangePct": 97.1823,
+      "featureId": "A07_momentum12_1",
+      "genuineSourceBlocker": null,
+      "implementationStatus": "COMPUTED_ALREADY_TESTED",
+      "measuredStatus": "ALREADY_TESTED_COMPUTED_READY",
+      "registryReadinessStatus": "ALREADY_TESTED"
+    },
+    {
+      "coverageWithinUsableRangePct": 98.504791,
+      "featureId": "A08_momentum6",
+      "genuineSourceBlocker": null,
+      "implementationStatus": "IMPLEMENTED",
+      "measuredStatus": "MEASURED_READY",
+      "registryReadinessStatus": "READY"
+    },
+    {
+      "coverageWithinUsableRangePct": 70.233769,
+      "featureId": "A09_industryRelativeMomentum126",
+      "genuineSourceBlocker": null,
+      "implementationStatus": "COMPUTED_ALREADY_TESTED",
+      "measuredStatus": "ALREADY_TESTED_COMPUTED_READY",
+      "registryReadinessStatus": "ALREADY_TESTED"
+    },
+    {
+      "coverageWithinUsableRangePct": 97.144478,
+      "featureId": "A10_residualMomentum126",
+      "genuineSourceBlocker": null,
+      "implementationStatus": "IMPLEMENTED",
+      "measuredStatus": "MEASURED_READY",
+      "registryReadinessStatus": "DERIVABLE_FROM_EXISTING_DATA"
+    },
+    {
+      "coverageWithinUsableRangePct": 97.152042,
+      "featureId": "A11_distance52wHigh",
+      "genuineSourceBlocker": null,
+      "implementationStatus": "IMPLEMENTED",
+      "measuredStatus": "MEASURED_READY",
+      "registryReadinessStatus": "READY"
+    },
+    {
+      "coverageWithinUsableRangePct": 97.144478,
+      "featureId": "A12_momentumPersistence",
+      "genuineSourceBlocker": null,
+      "implementationStatus": "IMPLEMENTED",
+      "measuredStatus": "MEASURED_READY",
+      "registryReadinessStatus": "DERIVABLE_FROM_EXISTING_DATA"
+    },
+    {
+      "coverageWithinUsableRangePct": 99.484367,
+      "featureId": "A13_momentumAcceleration21",
+      "genuineSourceBlocker": null,
+      "implementationStatus": "IMPLEMENTED",
+      "measuredStatus": "MEASURED_READY",
+      "registryReadinessStatus": "READY"
+    },
+    {
+      "coverageWithinUsableRangePct": 97.684065,
+      "featureId": "A14_ma200Distance",
+      "genuineSourceBlocker": null,
+      "implementationStatus": "IMPLEMENTED",
+      "measuredStatus": "MEASURED_READY",
+      "registryReadinessStatus": "READY"
+    },
+    {
+      "coverageWithinUsableRangePct": 83.458716,
+      "featureId": "B01_bookToMarket",
+      "genuineSourceBlocker": null,
+      "implementationStatus": "COMPUTED_ALREADY_TESTED",
+      "measuredStatus": "ALREADY_TESTED_COMPUTED_READY",
+      "registryReadinessStatus": "ALREADY_TESTED"
+    },
+    {
+      "coverageWithinUsableRangePct": 67.383792,
+      "featureId": "B02_earningsYield",
+      "genuineSourceBlocker": null,
+      "implementationStatus": "COMPUTED_ALREADY_TESTED",
+      "measuredStatus": "ALREADY_TESTED_COMPUTED_READY",
+      "registryReadinessStatus": "ALREADY_TESTED"
+    },
+    {
+      "coverageWithinUsableRangePct": 66.911315,
+      "featureId": "B03_ocfYield",
+      "genuineSourceBlocker": null,
+      "implementationStatus": "COMPUTED_ALREADY_TESTED",
+      "measuredStatus": "ALREADY_TESTED_COMPUTED_READY",
+      "registryReadinessStatus": "ALREADY_TESTED"
+    },
+    {
+      "coverageWithinUsableRangePct": 62.29052,
+      "featureId": "B04_freeCashFlowYield",
+      "genuineSourceBlocker": null,
+      "implementationStatus": "IMPLEMENTED",
+      "measuredStatus": "MEASURED_READY",
+      "registryReadinessStatus": "DATA_BUILD_REQUIRED"
+    },
+    {
+      "coverageWithinUsableRangePct": 69.876147,
+      "featureId": "B05_industryRelativeValue",
+      "genuineSourceBlocker": null,
+      "implementationStatus": "COMPUTED_ALREADY_TESTED",
+      "measuredStatus": "ALREADY_TESTED_COMPUTED_READY",
+      "registryReadinessStatus": "ALREADY_TESTED"
+    },
+    {
+      "coverageWithinUsableRangePct": 68.609221,
+      "featureId": "B06_ownHistoryValuation",
+      "genuineSourceBlocker": null,
+      "implementationStatus": "IMPLEMENTED",
+      "measuredStatus": "MEASURED_READY",
+      "registryReadinessStatus": "DERIVABLE_FROM_EXISTING_DATA"
+    },
+    {
+      "coverageWithinUsableRangePct": 79.342021,
+      "featureId": "B07_valuationChange126",
+      "genuineSourceBlocker": null,
+      "implementationStatus": "IMPLEMENTED",
+      "measuredStatus": "MEASURED_READY",
+      "registryReadinessStatus": "DERIVABLE_FROM_EXISTING_DATA"
+    },
+    {
+      "coverageWithinUsableRangePct": 69.067578,
+      "featureId": "B08_valueBusinessConfirmation",
+      "genuineSourceBlocker": null,
+      "implementationStatus": "IMPLEMENTED",
+      "measuredStatus": "MEASURED_READY",
+      "registryReadinessStatus": "DERIVABLE_FROM_EXISTING_DATA"
+    },
+    {
+      "coverageWithinUsableRangePct": 67.53211,
+      "featureId": "C01_returnOnAssets",
+      "genuineSourceBlocker": null,
+      "implementationStatus": "COMPUTED_ALREADY_TESTED",
+      "measuredStatus": "ALREADY_TESTED_COMPUTED_READY",
+      "registryReadinessStatus": "ALREADY_TESTED"
+    },
+    {
+      "coverageWithinUsableRangePct": 63.538226,
+      "featureId": "C02_returnOnEquity",
+      "genuineSourceBlocker": null,
+      "implementationStatus": "IMPLEMENTED",
+      "measuredStatus": "MEASURED_READY",
+      "registryReadinessStatus": "READY"
+    },
+    {
+      "coverageWithinUsableRangePct": 54.203364,
+      "featureId": "C03_operatingMargin",
+      "genuineSourceBlocker": null,
+      "implementationStatus": "IMPLEMENTED",
+      "measuredStatus": "MEASURED_BELOW_COVERAGE_FLOOR",
+      "registryReadinessStatus": "READY"
+    },
+    {
+      "coverageWithinUsableRangePct": 55.17737,
+      "featureId": "C04_profitMargin",
+      "genuineSourceBlocker": null,
+      "implementationStatus": "IMPLEMENTED",
+      "measuredStatus": "MEASURED_BELOW_COVERAGE_FLOOR",
+      "registryReadinessStatus": "READY"
+    },
+    {
+      "coverageWithinUsableRangePct": 67.085627,
+      "featureId": "C05_ocfToAssets",
+      "genuineSourceBlocker": null,
+      "implementationStatus": "COMPUTED_ALREADY_TESTED",
+      "measuredStatus": "ALREADY_TESTED_COMPUTED_READY",
+      "registryReadinessStatus": "ALREADY_TESTED"
+    },
+    {
+      "coverageWithinUsableRangePct": 56.62844,
+      "featureId": "C06_cashConversion",
+      "genuineSourceBlocker": null,
+      "implementationStatus": "IMPLEMENTED",
+      "measuredStatus": "MEASURED_BELOW_COVERAGE_FLOOR",
+      "registryReadinessStatus": "DATA_BUILD_REQUIRED"
+    },
+    {
+      "coverageWithinUsableRangePct": 65.394495,
+      "featureId": "C07_negativeAccruals",
+      "genuineSourceBlocker": null,
+      "implementationStatus": "COMPUTED_ALREADY_TESTED",
+      "measuredStatus": "ALREADY_TESTED_COMPUTED_READY",
+      "registryReadinessStatus": "ALREADY_TESTED"
+    },
+    {
+      "coverageWithinUsableRangePct": 65.394495,
+      "featureId": "C08_netIncomeMinusOcf",
+      "genuineSourceBlocker": null,
+      "implementationStatus": "COMPUTED_ALREADY_TESTED",
+      "measuredStatus": "ALREADY_TESTED_COMPUTED_READY",
+      "registryReadinessStatus": "ALREADY_TESTED"
+    },
+    {
+      "coverageWithinUsableRangePct": 80.238821,
+      "featureId": "C09_assetGrowth",
+      "genuineSourceBlocker": null,
+      "implementationStatus": "IMPLEMENTED",
+      "measuredStatus": "MEASURED_READY",
+      "registryReadinessStatus": "READY"
+    },
+    {
+      "coverageWithinUsableRangePct": 80.326897,
+      "featureId": "C10_liabilityGrowth",
+      "genuineSourceBlocker": null,
+      "implementationStatus": "IMPLEMENTED",
+      "measuredStatus": "MEASURED_READY",
+      "registryReadinessStatus": "READY"
+    },
+    {
+      "coverageWithinUsableRangePct": 63.150407,
+      "featureId": "C11_shareDilution",
+      "genuineSourceBlocker": null,
+      "implementationStatus": "IMPLEMENTED",
+      "measuredStatus": "MEASURED_READY",
+      "registryReadinessStatus": "DERIVABLE_FROM_EXISTING_DATA"
+    },
+    {
+      "coverageWithinUsableRangePct": 61.025377,
+      "featureId": "C12_profitabilityPersistence",
+      "genuineSourceBlocker": null,
+      "implementationStatus": "IMPLEMENTED",
+      "measuredStatus": "MEASURED_READY",
+      "registryReadinessStatus": "DERIVABLE_FROM_EXISTING_DATA"
+    },
+    {
+      "coverageWithinUsableRangePct": null,
+      "featureId": "C13_fundamentalAcceleration",
+      "genuineSourceBlocker": null,
+      "implementationStatus": "REFERENCED_NOT_RECOMPUTED",
+      "measuredStatus": "REFERENCED_ALREADY_TESTED",
+      "registryReadinessStatus": "ALREADY_TESTED"
+    },
+    {
+      "coverageWithinUsableRangePct": 63.040312,
+      "featureId": "C14_ocfImprovement",
+      "genuineSourceBlocker": null,
+      "implementationStatus": "COMPUTED_ALREADY_TESTED",
+      "measuredStatus": "ALREADY_TESTED_COMPUTED_READY",
+      "registryReadinessStatus": "ALREADY_TESTED"
+    },
+    {
+      "coverageWithinUsableRangePct": 52.896024,
+      "featureId": "C15_capexIntensity",
+      "genuineSourceBlocker": null,
+      "implementationStatus": "IMPLEMENTED",
+      "measuredStatus": "MEASURED_BELOW_COVERAGE_FLOOR",
+      "registryReadinessStatus": "DATA_BUILD_REQUIRED"
+    },
+    {
+      "coverageWithinUsableRangePct": null,
+      "featureId": "C16_grossProfitability",
+      "genuineSourceBlocker": {
+        "kind": "DATA_BUILD_GAP",
+        "statement": "no gross-profit or cost-of-sales line in dart_fundamentals.WANTED_ACCOUNTS; raw-statement store (dart_raw_statements) keeps all rows but kr-canonical-v2 has not landed"
+      },
+      "implementationStatus": "NOT_COMPUTED",
+      "measuredStatus": "NOT_COMPUTED_DATA_BUILD_REQUIRED",
+      "registryReadinessStatus": "DATA_BUILD_REQUIRED"
+    },
+    {
+      "coverageWithinUsableRangePct": 98.30603,
+      "featureId": "D01_volumeSurge5_60",
+      "genuineSourceBlocker": null,
+      "implementationStatus": "IMPLEMENTED",
+      "measuredStatus": "MEASURED_READY",
+      "registryReadinessStatus": "READY"
+    },
+    {
+      "coverageWithinUsableRangePct": 98.30603,
+      "featureId": "D02_logVolumeShock60",
+      "genuineSourceBlocker": null,
+      "implementationStatus": "IMPLEMENTED",
+      "measuredStatus": "MEASURED_READY",
+      "registryReadinessStatus": "READY"
+    },
+    {
+      "coverageWithinUsableRangePct": 98.30603,
+      "featureId": "D03_tradingValueShock5_60",
+      "genuineSourceBlocker": null,
+      "implementationStatus": "IMPLEMENTED",
+      "measuredStatus": "MEASURED_READY",
+      "registryReadinessStatus": "READY"
+    },
+    {
+      "coverageWithinUsableRangePct": 98.206134,
+      "featureId": "D04_shockPersistence5d",
+      "genuineSourceBlocker": null,
+      "implementationStatus": "IMPLEMENTED",
+      "measuredStatus": "MEASURED_READY",
+      "registryReadinessStatus": "READY"
+    },
+    {
+      "coverageWithinUsableRangePct": 98.241928,
+      "featureId": "D05_turnoverToMarketCap60",
+      "genuineSourceBlocker": null,
+      "implementationStatus": "IMPLEMENTED",
+      "measuredStatus": "MEASURED_READY",
+      "registryReadinessStatus": "DERIVABLE_FROM_EXISTING_DATA"
+    },
+    {
+      "coverageWithinUsableRangePct": 97.862942,
+      "featureId": "D06_priceVolumeDivergence",
+      "genuineSourceBlocker": null,
+      "implementationStatus": "IMPLEMENTED",
+      "measuredStatus": "MEASURED_READY",
+      "registryReadinessStatus": "DERIVABLE_FROM_EXISTING_DATA"
+    },
+    {
+      "coverageWithinUsableRangePct": 98.304843,
+      "featureId": "D07_volumePriceAlignment",
+      "genuineSourceBlocker": null,
+      "implementationStatus": "IMPLEMENTED",
+      "measuredStatus": "MEASURED_READY",
+      "registryReadinessStatus": "READY"
+    },
+    {
+      "coverageWithinUsableRangePct": 97.804441,
+      "featureId": "D08_abnormalVolumeUpClose",
+      "genuineSourceBlocker": null,
+      "implementationStatus": "IMPLEMENTED",
+      "measuredStatus": "MEASURED_READY",
+      "registryReadinessStatus": "DERIVABLE_FROM_EXISTING_DATA"
+    },
+    {
+      "coverageWithinUsableRangePct": 97.804441,
+      "featureId": "D09_abnormalVolumeDownClose",
+      "genuineSourceBlocker": null,
+      "implementationStatus": "IMPLEMENTED",
+      "measuredStatus": "MEASURED_READY",
+      "registryReadinessStatus": "DERIVABLE_FROM_EXISTING_DATA"
+    },
+    {
+      "coverageWithinUsableRangePct": 96.914611,
+      "featureId": "D10_liquidityAcceleration",
+      "genuineSourceBlocker": null,
+      "implementationStatus": "IMPLEMENTED",
+      "measuredStatus": "MEASURED_READY",
+      "registryReadinessStatus": "DERIVABLE_FROM_EXISTING_DATA"
+    },
+    {
+      "coverageWithinUsableRangePct": 99.217136,
+      "featureId": "D11_accumulationDistributionProxy",
+      "genuineSourceBlocker": null,
+      "implementationStatus": "IMPLEMENTED",
+      "measuredStatus": "MEASURED_READY",
+      "registryReadinessStatus": "DERIVABLE_FROM_EXISTING_DATA"
+    },
+    {
+      "coverageWithinUsableRangePct": 98.278727,
+      "featureId": "E01_amihudIlliquidity60",
+      "genuineSourceBlocker": null,
+      "implementationStatus": "IMPLEMENTED",
+      "measuredStatus": "MEASURED_READY",
+      "registryReadinessStatus": "READY"
+    },
+    {
+      "coverageWithinUsableRangePct": 98.405745,
+      "featureId": "E02_logAdv60",
+      "genuineSourceBlocker": null,
+      "implementationStatus": "COMPUTED_ALREADY_TESTED",
+      "measuredStatus": "ALREADY_TESTED_COMPUTED_READY",
+      "registryReadinessStatus": "ALREADY_TESTED"
+    },
+    {
+      "coverageWithinUsableRangePct": 98.30603,
+      "featureId": "E03_capacityMedianTradedValue60",
+      "genuineSourceBlocker": null,
+      "implementationStatus": "IMPLEMENTED",
+      "measuredStatus": "MEASURED_READY",
+      "registryReadinessStatus": "READY"
+    },
+    {
+      "coverageWithinUsableRangePct": 99.88615,
+      "featureId": "E04_tradabilityGuard20",
+      "genuineSourceBlocker": null,
+      "implementationStatus": "IMPLEMENTED",
+      "measuredStatus": "MEASURED_READY",
+      "registryReadinessStatus": "READY"
+    },
+    {
+      "coverageWithinUsableRangePct": 99.226526,
+      "featureId": "E05_highLowSpreadProxy",
+      "genuineSourceBlocker": null,
+      "implementationStatus": "IMPLEMENTED",
+      "measuredStatus": "MEASURED_READY",
+      "registryReadinessStatus": "DERIVABLE_FROM_EXISTING_DATA"
+    },
+    {
+      "coverageWithinUsableRangePct": 98.254986,
+      "featureId": "E06_volatilityConditionalOnVolume",
+      "genuineSourceBlocker": null,
+      "implementationStatus": "IMPLEMENTED",
+      "measuredStatus": "MEASURED_READY",
+      "registryReadinessStatus": "DERIVABLE_FROM_EXISTING_DATA"
+    },
+    {
+      "coverageWithinUsableRangePct": 99.88615,
+      "featureId": "E07_suspensionStaleRisk",
+      "genuineSourceBlocker": null,
+      "implementationStatus": "IMPLEMENTED",
+      "measuredStatus": "MEASURED_READY",
+      "registryReadinessStatus": "READY"
+    },
+    {
+      "coverageWithinUsableRangePct": null,
+      "featureId": "E08_trueBidAskSpread",
+      "genuineSourceBlocker": {
+        "kind": "NO_POINT_IN_TIME_SOURCE",
+        "statement": "no quote or order-book source exists in this repository and none was found free; daily OHLCV proxies (E05) are not a substitute"
+      },
+      "implementationStatus": "NOT_COMPUTED",
+      "measuredStatus": "NOT_COMPUTED_NOT_FEASIBLE",
+      "registryReadinessStatus": "NOT_FEASIBLE"
+    },
+    {
+      "coverageWithinUsableRangePct": 99.22592,
+      "featureId": "F01_totalVolatility63",
+      "genuineSourceBlocker": null,
+      "implementationStatus": "IMPLEMENTED",
+      "measuredStatus": "MEASURED_READY",
+      "registryReadinessStatus": "READY"
+    },
+    {
+      "coverageWithinUsableRangePct": 98.528343,
+      "featureId": "F02_downsideVol126",
+      "genuineSourceBlocker": null,
+      "implementationStatus": "COMPUTED_ALREADY_TESTED",
+      "measuredStatus": "ALREADY_TESTED_COMPUTED_READY",
+      "registryReadinessStatus": "ALREADY_TESTED"
+    },
+    {
+      "coverageWithinUsableRangePct": 97.144478,
+      "featureId": "F03_beta252",
+      "genuineSourceBlocker": null,
+      "implementationStatus": "IMPLEMENTED",
+      "measuredStatus": "MEASURED_READY",
+      "registryReadinessStatus": "READY"
+    },
+    {
+      "coverageWithinUsableRangePct": 97.144478,
+      "featureId": "F04_idiosyncraticVol",
+      "genuineSourceBlocker": null,
+      "implementationStatus": "IMPLEMENTED",
+      "measuredStatus": "MEASURED_READY",
+      "registryReadinessStatus": "DERIVABLE_FROM_EXISTING_DATA"
+    },
+    {
+      "coverageWithinUsableRangePct": 97.152042,
+      "featureId": "F05_maxDrawdown252",
+      "genuineSourceBlocker": null,
+      "implementationStatus": "IMPLEMENTED",
+      "measuredStatus": "MEASURED_READY",
+      "registryReadinessStatus": "READY"
+    },
+    {
+      "coverageWithinUsableRangePct": 97.144478,
+      "featureId": "F06_crashExposure",
+      "genuineSourceBlocker": null,
+      "implementationStatus": "IMPLEMENTED",
+      "measuredStatus": "MEASURED_READY",
+      "registryReadinessStatus": "DERIVABLE_FROM_EXISTING_DATA"
+    },
+    {
+      "coverageWithinUsableRangePct": 97.126828,
+      "featureId": "F07_benchmarkCorrelation252",
+      "genuineSourceBlocker": null,
+      "implementationStatus": "IMPLEMENTED",
+      "measuredStatus": "MEASURED_READY",
+      "registryReadinessStatus": "DERIVABLE_FROM_EXISTING_DATA"
+    },
+    {
+      "coverageWithinUsableRangePct": null,
+      "featureId": "F08_bookConcentration",
+      "genuineSourceBlocker": null,
+      "implementationStatus": "NOT_A_MATRIX_COLUMN",
+      "measuredStatus": "NOT_A_MATRIX_COLUMN",
+      "registryReadinessStatus": "DERIVABLE_FROM_EXISTING_DATA"
+    },
+    {
+      "coverageWithinUsableRangePct": null,
+      "featureId": "G01_foreignNetBuying",
+      "genuineSourceBlocker": {
+        "kind": "SOURCE_ACCESS_REFUSED",
+        "statement": "KRX data portal (MDCSTAT02302/02303) answered HTTP 400 LOGOUT on every candidate from Actions; the Open API key does not reach investor-type statistics (workflow-hygiene v2.25)"
+      },
+      "implementationStatus": "NOT_COMPUTED",
+      "measuredStatus": "NOT_COMPUTED_SOURCE_BLOCKED",
+      "registryReadinessStatus": "SOURCE_BLOCKED"
+    },
+    {
+      "coverageWithinUsableRangePct": null,
+      "featureId": "G02_institutionalNetBuying",
+      "genuineSourceBlocker": {
+        "kind": "SOURCE_ACCESS_REFUSED",
+        "statement": "KRX data portal (MDCSTAT02302/02303) answered HTTP 400 LOGOUT on every candidate from Actions; the Open API key does not reach investor-type statistics (workflow-hygiene v2.25)"
+      },
+      "implementationStatus": "NOT_COMPUTED",
+      "measuredStatus": "NOT_COMPUTED_SOURCE_BLOCKED",
+      "registryReadinessStatus": "SOURCE_BLOCKED"
+    },
+    {
+      "coverageWithinUsableRangePct": null,
+      "featureId": "G03_retailNetBuying",
+      "genuineSourceBlocker": {
+        "kind": "SOURCE_ACCESS_REFUSED",
+        "statement": "KRX data portal (MDCSTAT02302/02303) answered HTTP 400 LOGOUT on every candidate from Actions; the Open API key does not reach investor-type statistics (workflow-hygiene v2.25)"
+      },
+      "implementationStatus": "NOT_COMPUTED",
+      "measuredStatus": "NOT_COMPUTED_SOURCE_BLOCKED",
+      "registryReadinessStatus": "SOURCE_BLOCKED"
+    },
+    {
+      "coverageWithinUsableRangePct": null,
+      "featureId": "G04_investorTypePersistence",
+      "genuineSourceBlocker": {
+        "kind": "SOURCE_ACCESS_REFUSED",
+        "statement": "KRX data portal (MDCSTAT02302/02303) answered HTTP 400 LOGOUT on every candidate from Actions; the Open API key does not reach investor-type statistics (workflow-hygiene v2.25)"
+      },
+      "implementationStatus": "NOT_COMPUTED",
+      "measuredStatus": "NOT_COMPUTED_SOURCE_BLOCKED",
+      "registryReadinessStatus": "SOURCE_BLOCKED"
+    },
+    {
+      "coverageWithinUsableRangePct": null,
+      "featureId": "G05_flowMomentumConfirmation",
+      "genuineSourceBlocker": {
+        "kind": "SOURCE_ACCESS_REFUSED",
+        "statement": "KRX data portal (MDCSTAT02302/02303) answered HTTP 400 LOGOUT on every candidate from Actions; the Open API key does not reach investor-type statistics (workflow-hygiene v2.25)"
+      },
+      "implementationStatus": "NOT_COMPUTED",
+      "measuredStatus": "NOT_COMPUTED_SOURCE_BLOCKED",
+      "registryReadinessStatus": "SOURCE_BLOCKED"
+    },
+    {
+      "coverageWithinUsableRangePct": null,
+      "featureId": "G06_largeHolderAccumulation",
+      "genuineSourceBlocker": {
+        "kind": "DATA_BUILD_GAP",
+        "statement": "majorstock.json serves a rolling two years: collected receipts span 2024-09-24..2026-09-23 (1,285 events, 119 current names); older history needs an official filing-document parser (BLOCKED_HISTORICAL_DEPTH, docs/dart-ownership-history-replay-integrity-v1.md)"
+      },
+      "implementationStatus": "NOT_COMPUTED",
+      "measuredStatus": "NOT_COMPUTED_DATA_BUILD_REQUIRED",
+      "registryReadinessStatus": "DATA_BUILD_REQUIRED"
+    },
+    {
+      "coverageWithinUsableRangePct": null,
+      "featureId": "G07_largeHolderReduction",
+      "genuineSourceBlocker": {
+        "kind": "DATA_BUILD_GAP",
+        "statement": "majorstock.json serves a rolling two years: collected receipts span 2024-09-24..2026-09-23 (1,285 events, 119 current names); older history needs an official filing-document parser (BLOCKED_HISTORICAL_DEPTH, docs/dart-ownership-history-replay-integrity-v1.md)"
+      },
+      "implementationStatus": "NOT_COMPUTED",
+      "measuredStatus": "NOT_COMPUTED_DATA_BUILD_REQUIRED",
+      "registryReadinessStatus": "DATA_BUILD_REQUIRED"
+    },
+    {
+      "coverageWithinUsableRangePct": null,
+      "featureId": "G08_shortSellingVolume",
+      "genuineSourceBlocker": {
+        "kind": "SOURCE_ACCESS_REFUSED",
+        "statement": "KRX short-selling screens MDCSTAT301/305: bld codes unresolved and the portal unreachable; full bans 2020-03..2021-05 and 2023-11-05..2025-03-31 make the variable regime-dependent (kr_short_selling.regime_label)"
+      },
+      "implementationStatus": "NOT_COMPUTED",
+      "measuredStatus": "NOT_COMPUTED_SOURCE_BLOCKED",
+      "registryReadinessStatus": "SOURCE_BLOCKED"
+    },
+    {
+      "coverageWithinUsableRangePct": null,
+      "featureId": "G09_shortBalanceChange",
+      "genuineSourceBlocker": {
+        "kind": "SOURCE_ACCESS_REFUSED",
+        "statement": "KRX short-selling screens MDCSTAT301/305: bld codes unresolved and the portal unreachable; full bans 2020-03..2021-05 and 2023-11-05..2025-03-31 make the variable regime-dependent (kr_short_selling.regime_label)"
+      },
+      "implementationStatus": "NOT_COMPUTED",
+      "measuredStatus": "NOT_COMPUTED_SOURCE_BLOCKED",
+      "registryReadinessStatus": "SOURCE_BLOCKED"
+    },
+    {
+      "coverageWithinUsableRangePct": 70.05814,
+      "featureId": "H01_industryRelMom126",
+      "genuineSourceBlocker": null,
+      "implementationStatus": "COMPUTED_ALREADY_TESTED",
+      "measuredStatus": "ALREADY_TESTED_COMPUTED_READY",
+      "registryReadinessStatus": "ALREADY_TESTED"
+    },
+    {
+      "coverageWithinUsableRangePct": 76.236329,
+      "featureId": "H02_industryRelMom63",
+      "genuineSourceBlocker": null,
+      "implementationStatus": "COMPUTED_ALREADY_TESTED",
+      "measuredStatus": "ALREADY_TESTED_COMPUTED_READY",
+      "registryReadinessStatus": "ALREADY_TESTED"
+    },
+    {
+      "coverageWithinUsableRangePct": 71.872578,
+      "featureId": "H03_industryBreadthAboveMA126",
+      "genuineSourceBlocker": null,
+      "implementationStatus": "COMPUTED_ALREADY_TESTED",
+      "measuredStatus": "ALREADY_TESTED_COMPUTED_READY",
+      "registryReadinessStatus": "ALREADY_TESTED"
+    },
+    {
+      "coverageWithinUsableRangePct": 71.795058,
+      "featureId": "H04_withinIndustryDispersion126",
+      "genuineSourceBlocker": null,
+      "implementationStatus": "COMPUTED_ALREADY_TESTED",
+      "measuredStatus": "ALREADY_TESTED_COMPUTED_READY",
+      "registryReadinessStatus": "ALREADY_TESTED"
+    },
+    {
+      "coverageWithinUsableRangePct": 67.697063,
+      "featureId": "H05_crossIndustryDispersion",
+      "genuineSourceBlocker": null,
+      "implementationStatus": "IMPLEMENTED",
+      "measuredStatus": "MEASURED_READY",
+      "registryReadinessStatus": "DERIVABLE_FROM_EXISTING_DATA"
+    },
+    {
+      "coverageWithinUsableRangePct": 81.666667,
+      "featureId": "H06_industryConcentrationTop1",
+      "genuineSourceBlocker": null,
+      "implementationStatus": "COMPUTED_ALREADY_TESTED",
+      "measuredStatus": "ALREADY_TESTED_COMPUTED_READY",
+      "registryReadinessStatus": "ALREADY_TESTED"
+    },
+    {
+      "coverageWithinUsableRangePct": 62.140575,
+      "featureId": "H07_leadershipPersistence",
+      "genuineSourceBlocker": null,
+      "implementationStatus": "IMPLEMENTED",
+      "measuredStatus": "MEASURED_READY",
+      "registryReadinessStatus": "DERIVABLE_FROM_EXISTING_DATA"
+    },
+    {
+      "coverageWithinUsableRangePct": 70.05814,
+      "featureId": "H08_equalVsCapWeightIndustry",
+      "genuineSourceBlocker": null,
+      "implementationStatus": "IMPLEMENTED",
+      "measuredStatus": "MEASURED_READY",
+      "registryReadinessStatus": "DERIVABLE_FROM_EXISTING_DATA"
+    },
+    {
+      "coverageWithinUsableRangePct": 100.0,
+      "featureId": "H09_marketBreadth",
+      "genuineSourceBlocker": null,
+      "implementationStatus": "IMPLEMENTED",
+      "measuredStatus": "MEASURED_READY",
+      "registryReadinessStatus": "DERIVABLE_FROM_EXISTING_DATA"
+    },
+    {
+      "coverageWithinUsableRangePct": 100.0,
+      "featureId": "H10_marketConcentrationTop2",
+      "genuineSourceBlocker": null,
+      "implementationStatus": "IMPLEMENTED",
+      "measuredStatus": "MEASURED_READY",
+      "registryReadinessStatus": "DERIVABLE_FROM_EXISTING_DATA"
+    },
+    {
+      "coverageWithinUsableRangePct": 58.437309,
+      "featureId": "H11_industryEarningsContext",
+      "genuineSourceBlocker": null,
+      "implementationStatus": "COMPUTED_ALREADY_TESTED",
+      "measuredStatus": "ALREADY_TESTED_COMPUTED_BELOW_COVERAGE_FLOOR",
+      "registryReadinessStatus": "ALREADY_TESTED"
+    },
+    {
+      "coverageWithinUsableRangePct": 67.981651,
+      "featureId": "H12_industryValuationContext",
+      "genuineSourceBlocker": null,
+      "implementationStatus": "COMPUTED_ALREADY_TESTED",
+      "measuredStatus": "ALREADY_TESTED_COMPUTED_READY",
+      "registryReadinessStatus": "ALREADY_TESTED"
+    },
+    {
+      "coverageWithinUsableRangePct": 100.0,
+      "featureId": "I01_kospiTrendVolState",
+      "genuineSourceBlocker": null,
+      "implementationStatus": "COMPUTED_ALREADY_TESTED",
+      "measuredStatus": "ALREADY_TESTED_COMPUTED_READY",
+      "registryReadinessStatus": "ALREADY_TESTED"
+    },
+    {
+      "coverageWithinUsableRangePct": null,
+      "featureId": "I02_vixLevel",
+      "genuineSourceBlocker": null,
+      "implementationStatus": "REFERENCED_NOT_RECOMPUTED",
+      "measuredStatus": "REFERENCED_ALREADY_TESTED",
+      "registryReadinessStatus": "ALREADY_TESTED"
+    },
+    {
+      "coverageWithinUsableRangePct": null,
+      "featureId": "I03_krTermSpread",
+      "genuineSourceBlocker": {
+        "kind": "PIT_UNSAFE",
+        "statement": "ECOS series carry vintageStatus REVISED_HISTORY; a historical value is usable only from its retained fetch (kr_market_context)"
+      },
+      "implementationStatus": "NOT_COMPUTED",
+      "measuredStatus": "NOT_COMPUTED_PIT_UNSAFE",
+      "registryReadinessStatus": "PIT_UNSAFE"
+    },
+    {
+      "coverageWithinUsableRangePct": null,
+      "featureId": "I04_krPolicyRate",
+      "genuineSourceBlocker": {
+        "kind": "DATA_BUILD_GAP",
+        "statement": "config.json ecos.KR.BaseRate sourceStatus AMBIGUOUS_SOURCE (item code unresolved)"
+      },
+      "implementationStatus": "NOT_COMPUTED",
+      "measuredStatus": "NOT_COMPUTED_DATA_BUILD_REQUIRED",
+      "registryReadinessStatus": "DATA_BUILD_REQUIRED"
+    },
+    {
+      "coverageWithinUsableRangePct": null,
+      "featureId": "I05_krCreditSpread",
+      "genuineSourceBlocker": {
+        "kind": "DATA_BUILD_GAP",
+        "statement": "CorpBond_3Y sourceStatus AMBIGUOUS_SOURCE (817Y002 item code for the corporate series unresolved)"
+      },
+      "implementationStatus": "NOT_COMPUTED",
+      "measuredStatus": "NOT_COMPUTED_DATA_BUILD_REQUIRED",
+      "registryReadinessStatus": "DATA_BUILD_REQUIRED"
+    },
+    {
+      "coverageWithinUsableRangePct": null,
+      "featureId": "I06_krInflation",
+      "genuineSourceBlocker": {
+        "kind": "PIT_UNSAFE",
+        "statement": "CPI AMBIGUOUS_SOURCE / CoreCPI DATA_LINEAGE_UNRESOLVED, revised history without release vintages"
+      },
+      "implementationStatus": "NOT_COMPUTED",
+      "measuredStatus": "NOT_COMPUTED_PIT_UNSAFE",
+      "registryReadinessStatus": "PIT_UNSAFE"
+    },
+    {
+      "coverageWithinUsableRangePct": null,
+      "featureId": "I07_krExportsActivity",
+      "genuineSourceBlocker": {
+        "kind": "PIT_UNSAFE",
+        "statement": "Exports NOT_AVAILABLE; IndustrialProduction DATA_LINEAGE_UNRESOLVED; LeadingIndex revised without vintages"
+      },
+      "implementationStatus": "NOT_COMPUTED",
+      "measuredStatus": "NOT_COMPUTED_PIT_UNSAFE",
+      "registryReadinessStatus": "PIT_UNSAFE"
+    },
+    {
+      "coverageWithinUsableRangePct": null,
+      "featureId": "I08_usdKrw",
+      "genuineSourceBlocker": {
+        "kind": "PIT_UNSAFE",
+        "statement": "FX_PUBLICATION_TIME_UNRESOLVED (alpha-information-inventory-v1)"
+      },
+      "implementationStatus": "NOT_COMPUTED",
+      "measuredStatus": "NOT_COMPUTED_PIT_UNSAFE",
+      "registryReadinessStatus": "PIT_UNSAFE"
+    },
+    {
+      "coverageWithinUsableRangePct": null,
+      "featureId": "I09_fxBeta26w",
+      "genuineSourceBlocker": {
+        "kind": "PIT_UNSAFE",
+        "statement": "FX_PUBLICATION_TIME_UNRESOLVED; excluded by regional_alpha_features"
+      },
+      "implementationStatus": "NOT_COMPUTED",
+      "measuredStatus": "NOT_COMPUTED_PIT_UNSAFE",
+      "registryReadinessStatus": "PIT_UNSAFE"
+    },
+    {
+      "coverageWithinUsableRangePct": null,
+      "featureId": "I10_semiconductorCycleSOX",
+      "genuineSourceBlocker": {
+        "kind": "DATA_BUILD_GAP",
+        "statement": "dashboard-only fetch; no pinned historical snapshot"
+      },
+      "implementationStatus": "NOT_COMPUTED",
+      "measuredStatus": "NOT_COMPUTED_DATA_BUILD_REQUIRED",
+      "registryReadinessStatus": "DATA_BUILD_REQUIRED"
+    },
+    {
+      "coverageWithinUsableRangePct": null,
+      "featureId": "I11_globalFinancialConditions",
+      "genuineSourceBlocker": {
+        "kind": "PIT_UNSAFE",
+        "statement": "10 of 28 FRED panel columns have no ALFRED vintages (macro vintage invariants v2.9)"
+      },
+      "implementationStatus": "NOT_COMPUTED",
+      "measuredStatus": "NOT_COMPUTED_PIT_UNSAFE",
+      "registryReadinessStatus": "PIT_UNSAFE"
+    },
+    {
+      "coverageWithinUsableRangePct": null,
+      "featureId": "I12_commodityExposure",
+      "genuineSourceBlocker": {
+        "kind": "DATA_BUILD_GAP",
+        "statement": "no commodity price series is collected"
+      },
+      "implementationStatus": "NOT_COMPUTED",
+      "measuredStatus": "NOT_COMPUTED_DATA_BUILD_REQUIRED",
+      "registryReadinessStatus": "DATA_BUILD_REQUIRED"
+    },
+    {
+      "coverageWithinUsableRangePct": 83.766949,
+      "featureId": "J01_periodicFilingEvent",
+      "genuineSourceBlocker": null,
+      "implementationStatus": "IMPLEMENTED",
+      "measuredStatus": "MEASURED_READY",
+      "registryReadinessStatus": "DERIVABLE_FROM_EXISTING_DATA"
+    },
+    {
+      "coverageWithinUsableRangePct": null,
+      "featureId": "J02_dividendPolicyChange",
+      "genuineSourceBlocker": {
+        "kind": "DATA_BUILD_GAP",
+        "statement": "alotMatter.json not collected universe-wide; endpointConfidence CANDIDATE_UNCONFIRMED"
+      },
+      "implementationStatus": "NOT_COMPUTED",
+      "measuredStatus": "NOT_COMPUTED_DATA_BUILD_REQUIRED",
+      "registryReadinessStatus": "DATA_BUILD_REQUIRED"
+    },
+    {
+      "coverageWithinUsableRangePct": null,
+      "featureId": "J03_buybackAnnouncement",
+      "genuineSourceBlocker": {
+        "kind": "DATA_BUILD_GAP",
+        "statement": "list.json disclosure families not collected universe-wide"
+      },
+      "implementationStatus": "NOT_COMPUTED",
+      "measuredStatus": "NOT_COMPUTED_DATA_BUILD_REQUIRED",
+      "registryReadinessStatus": "DATA_BUILD_REQUIRED"
+    },
+    {
+      "coverageWithinUsableRangePct": null,
+      "featureId": "J04_materialDisclosure",
+      "genuineSourceBlocker": {
+        "kind": "DATA_BUILD_GAP",
+        "statement": "as J03; M&A outcomes carry hindsight risk (terminal economics unresolved)"
+      },
+      "implementationStatus": "NOT_COMPUTED",
+      "measuredStatus": "NOT_COMPUTED_DATA_BUILD_REQUIRED",
+      "registryReadinessStatus": "DATA_BUILD_REQUIRED"
+    },
+    {
+      "coverageWithinUsableRangePct": 100.0,
+      "featureId": "J05_shortSellingRegime",
+      "genuineSourceBlocker": null,
+      "implementationStatus": "IMPLEMENTED",
+      "measuredStatus": "MEASURED_READY",
+      "registryReadinessStatus": "READY"
+    },
+    {
+      "coverageWithinUsableRangePct": null,
+      "featureId": "J06_searchAttention",
+      "genuineSourceBlocker": {
+        "kind": "NO_POINT_IN_TIME_SOURCE",
+        "statement": "no source with verified point-in-time history and permitted use"
+      },
+      "implementationStatus": "NOT_COMPUTED",
+      "measuredStatus": "NOT_COMPUTED_NOT_FEASIBLE",
+      "registryReadinessStatus": "NOT_FEASIBLE"
+    },
+    {
+      "coverageWithinUsableRangePct": null,
+      "featureId": "J07_newsTextSentiment",
+      "genuineSourceBlocker": {
+        "kind": "NO_POINT_IN_TIME_SOURCE",
+        "statement": "no archived PIT news source; a large NLP project is out of scope"
+      },
+      "implementationStatus": "NOT_COMPUTED",
+      "measuredStatus": "NOT_COMPUTED_NOT_FEASIBLE",
+      "registryReadinessStatus": "NOT_FEASIBLE"
+    },
+    {
+      "coverageWithinUsableRangePct": null,
+      "featureId": "J08_analystRevisions",
+      "genuineSourceBlocker": {
+        "kind": "NO_POINT_IN_TIME_SOURCE",
+        "statement": "FnGuide/FnSpace ToS-blocked; no free PIT history (alpha-information-inventory-v1)"
+      },
+      "implementationStatus": "NOT_COMPUTED",
+      "measuredStatus": "NOT_COMPUTED_NOT_FEASIBLE",
+      "registryReadinessStatus": "NOT_FEASIBLE"
+    }
+  ],
+  "alreadyTested": {
+    "policy": "ALREADY_TESTED features keep their sealed study references and are never re-run; those computed here enter Level 2 only as baselines or controls",
+    "sealedReferences": {
+      "A05_relative126": [
+        "kr-factor-anatomy-v1",
+        "kr-stock-within-industry-anatomy-v1",
+        "regional-alpha-model-v1",
+        "alpha-opportunity-model-v5",
+        "kr-model-overlay-portfolio-v1"
+      ],
+      "A07_momentum12_1": [
+        "kr-factor-anatomy-v1",
+        "kr-stock-within-industry-anatomy-v1",
+        "regional-alpha-model-v1",
+        "four-factor-signal-attribution-audit-v1"
+      ],
+      "A09_industryRelativeMomentum126": [
+        "kr-stock-within-industry-anatomy-v1",
+        "kr-alpha-discovery-tournament-v1"
+      ],
+      "B01_bookToMarket": [
+        "kr-factor-anatomy-v1",
+        "kr-stock-within-industry-anatomy-v1",
+        "kr-model-overlay-portfolio-v1"
+      ],
+      "B02_earningsYield": [
+        "kr-factor-anatomy-v1",
+        "kr-stock-within-industry-anatomy-v1",
+        "kr-model-overlay-portfolio-v1"
+      ],
+      "B03_ocfYield": [
+        "kr-factor-anatomy-v1",
+        "kr-stock-within-industry-anatomy-v1",
+        "kr-model-overlay-portfolio-v1"
+      ],
+      "B05_industryRelativeValue": [
+        "kr-stock-within-industry-anatomy-v1",
+        "kr-integrated-alpha-portfolio-v1"
+      ],
+      "C01_returnOnAssets": [
+        "kr-factor-anatomy-v1",
+        "kr-stock-within-industry-anatomy-v1",
+        "kr-model-overlay-portfolio-v1"
+      ],
+      "C05_ocfToAssets": [
+        "kr-factor-anatomy-v1",
+        "kr-stock-within-industry-anatomy-v1",
+        "kr-model-overlay-portfolio-v1"
+      ],
+      "C07_negativeAccruals": [
+        "kr-factor-anatomy-v1",
+        "kr-stock-within-industry-anatomy-v1",
+        "kr-model-overlay-portfolio-v1"
+      ],
+      "C08_netIncomeMinusOcf": [
+        "kr-factor-anatomy-v1"
+      ],
+      "C13_fundamentalAcceleration": [
+        "fundamental-acceleration-discovery-v1",
+        "regional-alpha-model-v1"
+      ],
+      "C14_ocfImprovement": [
+        "kr-factor-anatomy-v1",
+        "kr-stock-within-industry-anatomy-v1",
+        "kr-model-overlay-portfolio-v1"
+      ],
+      "E02_logAdv60": [
+        "kr-factor-anatomy-v1",
+        "kr-stock-within-industry-anatomy-v1",
+        "kr-model-overlay-portfolio-v1"
+      ],
+      "F02_downsideVol126": [
+        "kr-factor-anatomy-v1",
+        "kr-stock-within-industry-anatomy-v1",
+        "kr-model-overlay-portfolio-v1",
+        "four-factor-signal-attribution-audit-v1"
+      ],
+      "H01_industryRelMom126": [
+        "kr-industry-opportunity-anatomy-v1",
+        "kr-integrated-alpha-portfolio-v1",
+        "kr-alpha-discovery-tournament-v1"
+      ],
+      "H02_industryRelMom63": [
+        "kr-industry-opportunity-anatomy-v1"
+      ],
+      "H03_industryBreadthAboveMA126": [
+        "kr-industry-opportunity-anatomy-v1",
+        "kr-integrated-alpha-portfolio-v1"
+      ],
+      "H04_withinIndustryDispersion126": [
+        "kr-industry-opportunity-anatomy-v1"
+      ],
+      "H06_industryConcentrationTop1": [
+        "kr-industry-opportunity-anatomy-v1"
+      ],
+      "H11_industryEarningsContext": [
+        "kr-industry-opportunity-anatomy-v1"
+      ],
+      "H12_industryValuationContext": [
+        "kr-industry-opportunity-anatomy-v1"
+      ],
+      "I01_kospiTrendVolState": [
+        "kr-market-risk-model-v1"
+      ],
+      "I02_vixLevel": [
+        "kr-market-risk-model-v1"
+      ]
+    }
+  },
+  "phaseBIdentity": {
+    "catalogueSha256": "144ce823c4f84567897f8b1aaa1f752ae43fa10ba088ccfb3b0cde1ce745b4e3",
+    "codeFileSha256": {
+      "pipeline/kr_alpha_atlas_bars.py": "7e9cf779edc2ef9b319c9caf1a6ab582ed3cef8fcc79d76f8ba7b8989699859c",
+      "pipeline/kr_alpha_atlas_catalogue.py": "05c61e76c5d92aa1f82fecffabae29d796c60ef4c1e4a6e75df0929f1ec9461b",
+      "pipeline/kr_alpha_atlas_dry_run.py": "52476750805fcc6b639efbe0b1610c407f696070dfce0efbb17502ec3eb2f4d1",
+      "pipeline/kr_alpha_atlas_feasibility.py": "4fa6a59648628b58b2b457cb1c9ac5dafa4c30508d5b716426052c9912307398",
+      "pipeline/kr_alpha_atlas_inputs.py": "c74a242c063530dba88a45968118e62422f0f009f07551f9ea1d5a6f981d188f",
+      "pipeline/kr_alpha_atlas_matrix.py": "1b706dc452181e6916572c5ecd45bc5bebe098f7cd3bd37512ae314be74ff00c",
+      "pipeline/kr_alpha_atlas_readiness.py": "ef655f09d50154da0e256c1786ce70ab2af01ac1d3811de7c666c01d5888dcb3",
+      "pipeline/kr_alpha_atlas_report.py": "740b84de731e91d21fe132c1dc1573d5cac5923499eb38c9b2166fdb17fe5187",
+      "scripts/build_kr_alpha_atlas_phase_b.py": "f832b8fb4993fb9c9e54cbeed71881099ffeb12b07feffb17d2fe9cefff847bf"
+    },
+    "inputs": {
+      "accountingBlobSha1": {
+        "dart-2015.jsonl.gz": "ee23f00aea08bc28548872a8d8153f1afbb53500",
+        "dart-2016.jsonl.gz": "65be7342d1d47bcbcda84db99f218312d2adb03d",
+        "dart-2017.jsonl.gz": "2b0146e9c1b8363fecdc1c3b1af0b21b68c8e237",
+        "dart-2018.jsonl.gz": "2316d0b0125fb207f9c721323c368120ff10428e",
+        "dart-2019.jsonl.gz": "4a41f94a2748256efae16c50b04f30e2d7578b56",
+        "dart-2020.jsonl.gz": "932292695b4906b9b179f5cef506299a43c96c1a",
+        "dart-2021.jsonl.gz": "46ccf6e760fd2d5037ab67fca0ab2a6ebd1f25dc",
+        "dart-2022.jsonl.gz": "056694d86b9cefbd6b62eb44c91a610d6b5a08b0",
+        "dart-2023.jsonl.gz": "8a0dd4f040d37ffb43d6078721d2f9a763e9539d",
+        "dart-2024.jsonl.gz": "78619db28718f2b49f69893057a10ef459e53c12",
+        "dart-2025.jsonl.gz": "b60daa3620adba7374155837cdbdc96def57dd7a",
+        "dart-2026.jsonl.gz": "5caf06224466fcf30cf0d8e412fb50e24f8b94c6"
+      },
+      "accountingContentSha256": "e0199d98679357f405de9a95a4091045db814d65af61e2c698af1a70d54fda58",
+      "barLedgerBlobSha1": {
+        "ledger/prices/kr/krx-prices-2013.jsonl.gz": "84783e389a49f91b34446952e811d9dc4b25a26e",
+        "ledger/prices/kr/krx-prices-2014.jsonl.gz": "355d5c80a4f38c9aefddf83f5fc72bca16a8a75c",
+        "ledger/prices/kr/krx-prices-2015.jsonl.gz": "dfc64c6eaaf66015e001061fd4877211b03804a4",
+        "ledger/prices/kr/krx-prices-2016.jsonl.gz": "8cbe7a6ddc7feb5729e8636a0066cc33d5b0c839",
+        "ledger/prices/kr/krx-prices-2017.jsonl.gz": "aa70e56056a5486846d6af5f7506f7b31ed17d73",
+        "ledger/prices/kr/krx-prices-2018.jsonl.gz": "d1316f27d5d4ae79205082a191974facabaa5721",
+        "ledger/prices/kr/krx-prices-2019.jsonl.gz": "7568625868d99faa31703019f1cc441a755113ed",
+        "ledger/prices/kr/krx-prices-2020.jsonl.gz": "8ee2e5776d315585772682cebec883e27be5869c",
+        "ledger/prices/kr/krx-prices-2021.jsonl.gz": "45a356de93880272e005114af23cdf5892ca66f4",
+        "ledger/prices/kr/krx-prices-2022.jsonl.gz": "aa999d58f8a299fd749c79b0f34949c3ada11fc0",
+        "ledger/prices/kr/krx-prices-2023.jsonl.gz": "4c50fd23448aef8f3a8bd71badda84534701c4bd",
+        "ledger/prices/kr/krx-prices-2024.jsonl.gz": "f59e014c5d58397bf83c80ee4954c427a940d51c",
+        "ledger/prices/kr/krx-prices-2025.jsonl.gz": "827dae314862285fdbc84ec5393583438fc39885",
+        "ledger/prices/kr/krx-prices-2026.jsonl.gz": "2223ffbaf95389f1c70e69a955ab5f5d9d069c3b"
+      },
+      "calendarVersion": "xkrx-xnys-4.11.1-v2-kr-2026-closures",
+      "contract": "KR_ALPHA_ATLAS_INPUTS_V1",
+      "dartSharesBlobSha1": "a515ca2c4f237d688566b45b2f4cc5afd3d6f0fb",
+      "frozenSpecSha256": "563b64ee6f4709a263719669f795ad55e7828e340f082358af1599453253b6fd",
+      "industryFoundation": {
+        "data/kr-industry-membership-foundation-v1/identity-inventory.json": "28274f2d76da50dc39007bc24fba0f6e57ce76b9",
+        "data/kr-industry-membership-foundation-v1/identity-provenance.json": "330c4b61a89031810293c0cf939e5321a2d3f3d7",
+        "data/kr-industry-membership-foundation-v4/state/intervals.json.gz": "03a3122c3afdb9b6999a61f19b817bfa5a1fb6f6",
+        "research_specs/kr-industry-membership-foundation-v4/crosswalk.json": "9379aa8e72dd50658a3a2f8c53048e049d2a52f3"
+      },
+      "marketValueStore": "ABSENT_NOT_IN_GIT",
+      "replayManifestSha256": "f0781292f508a123c234ded6d28aa8e84a0dc3cc29500e14989dc0b68f53b4d2",
+      "sha256": "3e4d7aa35e2c4b273e4ecef0e2e8ea7a8a27077f0de14bb3d5ea6a696a97f1a5",
+      "sourceCommit": "4ea107ed0cde289f0a049a65ff13d2441a786710",
+      "universeBlobSha1": {
+        "ledger/universe/kr/krx-universe-2013.jsonl.gz": "e711a6c5e07c89e9b0cf12a94078120ceeb3b9a4",
+        "ledger/universe/kr/krx-universe-2014.jsonl.gz": "395477e6dd72c117615919f850173d2830b2cc1f",
+        "ledger/universe/kr/krx-universe-2015.jsonl.gz": "029bcef52056d4b172d78094779a5eff9c89ff89",
+        "ledger/universe/kr/krx-universe-2016.jsonl.gz": "402910f37a4f75887f8c8f7e501aec1afe90b14d",
+        "ledger/universe/kr/krx-universe-2017.jsonl.gz": "db9b0436c970eb1bf4f2456bab7060432558f6e6",
+        "ledger/universe/kr/krx-universe-2018.jsonl.gz": "9a08628f96aa3aeb5d47b11612d14ab551519abc",
+        "ledger/universe/kr/krx-universe-2019.jsonl.gz": "c1f7990b38b0e17b71c88327b5262c768dcfe16d",
+        "ledger/universe/kr/krx-universe-2020.jsonl.gz": "baf7d4e2609aaaa7091cab087cabdbc5a3c58619",
+        "ledger/universe/kr/krx-universe-2021.jsonl.gz": "c09f60669adf36d81def38dfed6cb0d4dd6c456d",
+        "ledger/universe/kr/krx-universe-2022.jsonl.gz": "a1b303c61dd1d114149c3da51763f1dccb711137",
+        "ledger/universe/kr/krx-universe-2023.jsonl.gz": "024abba6a91153259a8030f6e441497a28c723de",
+        "ledger/universe/kr/krx-universe-2024.jsonl.gz": "a4329587eccc43f015f97524f27a660a6448e263",
+        "ledger/universe/kr/krx-universe-2025.jsonl.gz": "070296ad800a3a57735bbcbaf24f5885d82162e8",
+        "ledger/universe/kr/krx-universe-2026.jsonl.gz": "ccc098c5ce029412a67bf8b85113e0b6a19891dc"
+      }
+    },
+    "matrixDigest": "32e49b57a7541eea66f76373baef50c6302a394247b313f6099f718d46d54b0c",
+    "registryId": "kr-alpha-atlas-registry-v1",
+    "registrySha256": "e60f8c441cf799eb9f47d55b5d4c83efaadc097191fb5712e89788af513d2c7e",
+    "rules": {
+      "minCellNames": 3,
+      "minDatesPerYear": 13,
+      "minEvaluableDates": 52,
+      "minFeatureCoverage": 0.6,
+      "minMeasuredNamesPerDate": 30
+    },
+    "tradingValueBasis": "PROXY_ASTRADED_CLOSE_X_VOLUME"
+  },
+  "primaryFrozenSnapshot": "PHASE_B_GIT_PINNED_PROXY_SNAPSHOT: exact inputs identity 3e4d7aa35e2c4b273e4ecef0e2e8ea7a8a27077f0de14bb3d5ea6a696a97f1a5; original Actions official market bytes are not selected",
+  "frozenArtifact": {
+    "requiredForThisStudy": false,
+    "role": "PRESERVED_LINEAGE_ONLY_NOT_SELECTED_INPUT",
+    "artifactName": "kr-model-raw-inputs-36844599518",
+    "artifactId": 11157875265,
+    "producingRunId": 36844599518,
+    "archiveSha256": "42eeb18b7a5c88816629036f472a93057b6a9be4768ad47292ba0d2750b4cce7",
+    "inputIdentitySha256": "233df37ed205cc6b48828121e711417ccf961301dc58aa252430b343db9666a7",
+    "krxCacheSha256": "3419d9d201f942b3c89be146b8f696679c8105a5f00d8adb0dd2c5a655a80037"
+  },
+  "tradingValueBasis": "PROXY_ASTRADED_CLOSE_X_VOLUME",
+  "proxyLimitation": "Close times volume is not official ACC_TRDVAL. Capacity is a proxy-based research assumption, never a measured intraday execution claim.",
+  "horizons": [
+    21,
+    63,
+    126,
+    252
+  ],
+  "familyHorizons": {
+    "A": {
+      "primary": 126,
+      "secondary": 21
+    },
+    "B": {
+      "primary": 126,
+      "secondary": 252
+    },
+    "C": {
+      "primary": 126,
+      "secondary": 252
+    },
+    "D": {
+      "primary": 21,
+      "secondary": 63
+    },
+    "E": {
+      "primary": 126,
+      "secondary": 21
+    },
+    "F": {
+      "primary": 126,
+      "secondary": null
+    },
+    "G": {
+      "primary": 21,
+      "secondary": 63
+    },
+    "H": {
+      "primary": 126,
+      "secondary": 63
+    },
+    "I": {
+      "primary": 126,
+      "secondary": null
+    },
+    "J": {
+      "primary": 21,
+      "secondary": 63
+    }
+  },
+  "calendar": {
+    "version": "xkrx-xnys-4.11.1-v2-kr-2026-closures",
+    "signal": "LAST_KR_SESSION_OF_COMPLETED_WEEK",
+    "entry": "NEXT_KR_SESSION_CLOSE",
+    "exit": "H_KR_SESSIONS_AFTER_ENTRY_CLOSE",
+    "signalInformationFinalAt": "18:00 KST",
+    "maturity": {
+      "H126": "2026-03-06",
+      "H21": "2026-08-07",
+      "H252": "2025-08-29",
+      "H63": "2026-06-12"
+    }
+  },
+  "targets": {
+    "basis": "BENCHMARK_RELATIVE_ADJUSTED_INDEX_RETURN_PARTIAL_DISTRIBUTIONS",
+    "gross": "Close[exit]/Close[entry]-1; replay split-continuous dividend-forward accumulated index, not complete shareholder total return",
+    "benchmarkRelative": "gross-stock minus gross-069500.KS on identical sessions",
+    "industryRelative": "stock minus signal-cap-weighted leave-one-out industry; >=5 classified members, all peers valid, no renormalization over missing outcomes",
+    "modelTarget": "within-date demeaned benchmarkRelative; common valid outcome mask; benchmark same-date intercept cannot affect ordering"
+  },
+  "baselines": {
+    "B0_MARKET_INDUSTRY_PRICE_REFERENCE": [
+      "H01_industryRelMom126",
+      "A05_relative126"
+    ],
+    "B1_VALUE_PROFITABILITY": [
+      "B01_bookToMarket",
+      "B02_earningsYield",
+      "C01_returnOnAssets",
+      "C05_ocfToAssets"
+    ],
+    "B2_PRICE_MOMENTUM": [
+      "A05_relative126",
+      "A07_momentum12_1",
+      "A11_distance52wHigh"
+    ],
+    "B3_VOLUME_LIQUIDITY": [
+      "D02_logVolumeShock60",
+      "E01_amihudIlliquidity60",
+      "E02_logAdv60"
+    ],
+    "B4_COMBINED_SIMPLE": [
+      "H01_industryRelMom126",
+      "A05_relative126",
+      "A07_momentum12_1",
+      "B01_bookToMarket",
+      "B02_earningsYield",
+      "C01_returnOnAssets",
+      "C05_ocfToAssets",
+      "D02_logVolumeShock60",
+      "E01_amihudIlliquidity60"
+    ]
+  },
+  "chronology": {
+    "trainingStart": "2013-01-04",
+    "evaluationYears": [
+      2016,
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+    ],
+    "refit": "ANNUAL_EXPANDING",
+    "purge": "target exit strictly before training cutoff",
+    "embargoSessions": 21,
+    "cutoff": "21 KR sessions before first registered weekly signal of evaluation year",
+    "minTrainingDates": 104,
+    "minNamesPerTrainingDate": 30,
+    "outcomeSelection": false
+  },
+  "preprocessing": {
+    "percentiles": "within full signal-date measured cross-section; average ties; fixed before validity gates",
+    "imputation": "training-only date-balanced median percentile; all-missing training column inactive at evaluation",
+    "missingIndicators": "one per registered feature, always present; no missing target imputation",
+    "scaling": "training-only date-balanced mean and population SD; zero variance column scaled by 1",
+    "evaluationMask": "common outcome-valid rows, >=one measured B4 column; augmented model cannot select a different population"
+  },
+  "linearModel": {
+    "family": "DATE_BALANCED_RIDGE",
+    "penalty": 1.0,
+    "objective": "weighted mean squared error + penalty * sum(beta^2); intercept unpenalized",
+    "dateWeight": "each training date weight 1/nDates; each eligible row 1/nNamesOnDate",
+    "hyperparameterSearch": false
+  },
+  "level1": {
+    "statistics": [
+      "rankIC",
+      "withinIndustryRankIC",
+      "tercileSpread",
+      "withinIndustryTercileSpread",
+      "topExcess"
+    ],
+    "primary": "direction-oriented raw top-minus-bottom tercile spread",
+    "calibratedGate": "primary calibrated SN lower bound >0 in addition to BY q<=0.10",
+    "ranksBeforeOutcomeGate": true,
+    "binaryEventGroups": "J01 uses its frozen0/1 values for raw/within-industry groups, not arbitrary tied percentile cuts",
+    "minMeasuredNames": 30,
+    "minIndustryMembers": 5,
+    "minGroupNames": 3,
+    "minDates": 52,
+    "minEvaluableShare": 0.8,
+    "minYearDates": 13,
+    "stability": [
+      "year",
+      "chronologicalHalves",
+      "I01_marketState",
+      "liquidityTier"
+    ],
+    "positiveYearShare": 0.6,
+    "halves": "both direction-oriented spread estimates strictly positive"
+  },
+  "level2": {
+    "comparisons": [
+      "standaloneBaselines",
+      "addOneFamily",
+      "leaveOneFamilyOut",
+      "residualizedInformation",
+      "conditionalSlopes",
+      "trainingOnlyRedundancy"
+    ],
+    "incrementalMetrics": [
+      "pairedMseImprovement",
+      "pairedRankWeightedSpreadImprovement"
+    ],
+    "redundancy": "training-only within-date Spearman, equal mean across dates with >=30 paired names; absolute rho>=0.8 connected components",
+    "primaryP": "max(two two-sided calendar-time SN p-values); both estimates must be positive",
+    "residualization": "per signal date OLS projection of candidate percentile on B4 percentiles/indicators, without outcomes; slope with same B4 controls",
+    "conditionalSlopes": "date OLS with B4 controls and fixed 0.5 imputation/indicators; non-identifiable candidate slope withheld; outcomes common-mask only",
+    "residualVariationFloor": 1e-10,
+    "residualGate": "at least52 dates and80% scheduled share with positive oriented residual spread; exact/numerical B4 duplication cannot piggyback a family increment; no extra significance claim",
+    "conditionalSlopeErrors": "Newey-West lag ceil(H/5)-1 on date slopes; DESCRIPTIVE, never gates",
+    "identicalPredictions": "qualified identical common-sample forecasts are structurally REDUNDANT; zero self-normalizer is not claimed significant",
+    "commonSample": "one validity mask and identical row identities for paired metrics, no complete-case comparison"
+  },
+  "interactions": [
+    {
+      "interactionId": "X1_valueByBusinessConfirmation",
+      "features": [
+        "B05_industryRelativeValue",
+        "B08_valueBusinessConfirmation"
+      ],
+      "economicArgument": "cheapness with a sound business is mispricing; cheapness with a deteriorating one is a value trap (H2, CANDIDATE_SIGNAL_FAMILY)",
+      "horizon": 126,
+      "negativeControl": "the same confirmation contrast among expensive names",
+      "readiness": {
+        "evaluableDates": 447,
+        "evaluableRange": [
+          "2017-04-07",
+          "2026-09-11"
+        ],
+        "jointCoveragePct": 53.486719,
+        "reason": "447 evaluable weekly dates (need 52); joint coverage within the evaluable range 75.873184% (need 60%)",
+        "status": "READY",
+        "thin": false
+      }
+    },
+    {
+      "interactionId": "X2_momentumByAbnormalVolume",
+      "features": [
+        "A05_relative126",
+        "D05_turnoverToMarketCap60"
+      ],
+      "economicArgument": "Lee-Swaminathan: turnover tells whether momentum is early (low turnover) or late (high turnover)",
+      "horizon": 126,
+      "negativeControl": "turnover interacted with a permuted momentum rank",
+      "readiness": {
+        "evaluableDates": 686,
+        "evaluableRange": [
+          "2013-07-05",
+          "2026-09-11"
+        ],
+        "jointCoveragePct": 93.907563,
+        "reason": "686 evaluable weekly dates (need 52); joint coverage within the evaluable range 97.456395% (need 60%)",
+        "status": "READY",
+        "thin": false
+      }
+    },
+    {
+      "interactionId": "X3_industryLeadershipByStockStrength",
+      "features": [
+        "H01_industryRelMom126",
+        "A09_industryRelativeMomentum126"
+      ],
+      "economicArgument": "a leader inside a leading industry versus a laggard riding the industry",
+      "horizon": 126,
+      "negativeControl": "stock strength inside lagging industries",
+      "readiness": {
+        "evaluableDates": 616,
+        "evaluableRange": [
+          "2013-07-05",
+          "2026-08-28"
+        ],
+        "jointCoveragePct": 67.507003,
+        "reason": "616 evaluable weekly dates (need 52); joint coverage within the evaluable range 70.036443% (need 60%)",
+        "status": "READY",
+        "thin": false
+      }
+    },
+    {
+      "interactionId": "X4_priceLeadershipByInvestorAccumulation",
+      "features": [
+        "A05_relative126",
+        "G01_foreignNetBuying"
+      ],
+      "economicArgument": "leadership confirmed by identified capital is less likely to be noise",
+      "horizon": 21,
+      "negativeControl": "OHLCV accumulation proxy (D11) in place of investor flow",
+      "readiness": {
+        "evaluableDates": null,
+        "evaluableRange": null,
+        "jointCoveragePct": null,
+        "reason": "component(s) G01_foreignNetBuying SOURCE_BLOCKED; the OHLCV accumulation proxy D11 is never a substitute",
+        "status": "SOURCE_BLOCKED",
+        "thin": null
+      }
+    },
+    {
+      "interactionId": "X5_volatilityByLiquidity",
+      "features": [
+        "F01_totalVolatility63",
+        "E01_amihudIlliquidity60"
+      ],
+      "economicArgument": "the low-volatility effect may live only in liquid names where arbitrage is cheap",
+      "horizon": 126,
+      "negativeControl": "volatility interacted with a permuted liquidity rank",
+      "readiness": {
+        "evaluableDates": 661,
+        "evaluableRange": [
+          "2014-01-10",
+          "2026-09-11"
+        ],
+        "jointCoveragePct": 90.923203,
+        "reason": "661 evaluable weekly dates (need 52); joint coverage within the evaluable range 98.213565% (need 60%)",
+        "status": "READY",
+        "thin": false
+      }
+    },
+    {
+      "interactionId": "X6_marketRegimeByRelativeMomentum",
+      "features": [
+        "I01_kospiTrendVolState",
+        "A05_relative126"
+      ],
+      "economicArgument": "momentum crashes cluster in market rebounds after stress",
+      "horizon": 126,
+      "negativeControl": "the same split on a lagged (one-year-old) regime label",
+      "readiness": {
+        "evaluableDates": 293,
+        "evaluableRange": [
+          "2013-10-25",
+          "2026-09-11"
+        ],
+        "jointCoveragePct": 92.70775,
+        "reason": "293 evaluable weekly dates (need 52); joint coverage within the evaluable range 98.501984% (need 60%)",
+        "status": "READY",
+        "thin": false
+      }
+    }
+  ],
+  "level3": {
+    "cells": "Phase B average-rank terciles; X1 rows.b08Confirmed binary; X6 I01<1 stressed, >=1 normal, across dates",
+    "contrast": "(HH-HL)-(LH-LL); X1 confirmation spread cheap vs expensive; X3 stock spread leading vs lagging",
+    "negativeControls": "X2 permute momentum, X5 permute liquidity with seed/date hash; X6 last weekly regime at or before date minus one year; X4 blocked and proxy never substituted",
+    "seed": 20261009,
+    "minCell": 3,
+    "minNames": 30,
+    "minDatesPerState": 52,
+    "familyP": "X1/X3 primary four-corner contrast already subtracts the expensive/lagging control once; X2/X5 max(primary and primary-minus-permuted-control SN p); X6 descriptive",
+    "nomination": "X1-X5 require corrected interaction support and Levels 1-2 for an untested component; X6 descriptive regime contrast cannot nominate"
+  },
+  "inference": {
+    "engine": "pipeline.alpha_inference_calibration_v4.calendar_time_sn_interval",
+    "criticalValue": 66.57,
+    "nearZeroTolerance": 1e-12,
+    "inferentialHorizons": [
+      21,
+      126
+    ],
+    "descriptiveHorizons": [
+      63,
+      252
+    ],
+    "minCalendarWeeks": {
+      "21": 78,
+      "126": 312
+    },
+    "attribution": "exact telescoping per-session increments; sum calendar contribution equals sum signal-date statistic to 1e-9",
+    "pValue": "scalar SN Brownian-bridge limit tail: 2/pi integral_0^(pi/2) sqrt(a/sinh(a)) dtheta, a=sqrt(pivot)/sin(theta)",
+    "pValueLimit": "asymptotic development p, NOT finite-sample tail calibration; no Gaussian t substitution for SN; X6 unequal state contrasts descriptive",
+    "rankIC": "DESCRIPTIVE_NW_ONLY",
+    "portfolioBootstrap": {
+      "blockSessions": 126,
+      "draws": 499,
+      "seed": 20261009,
+      "role": "descriptive only"
+    }
+  },
+  "multiplicity": {
+    "level1": {
+      "method": "BY",
+      "q": 0.1,
+      "scope": "within family over every inferential feature-horizon primary spread; unavailable p=1 retained"
+    },
+    "level2": {
+      "method": "HOLM",
+      "alpha": 0.05,
+      "scope": "all registered add/remove family-horizon comparisons; descriptive/blocked slots p=1 retained"
+    },
+    "level3": {
+      "method": "HOLM",
+      "alpha": 0.05,
+      "scope": "six registered hypotheses, including blocked X4 and descriptive X6 p=1"
+    }
+  },
+  "terminalPolicy": {
+    "basisPolicyFunction": "pipeline.alpha_opportunity_v4_eligibility.label_eligibility",
+    "uniformEvidenceRule": "all securities evaluated identically from own completeness evidence, never a future-termination flag",
+    "knownBasisGap": "withhold every observation whose security has unresolved audited distribution basis; unknown unaudited basis explicitly qualified",
+    "unknownConsideration": "invalid window, NEVER zero payoff, last-price exit, successor guess or unilateral model exclusion",
+    "resolvedExchange": "requires cited cash/stock consideration and full successor distribution-adjusted path; unavailable pinned chain blocks",
+    "portfolioRule": "select on signal information BEFORE label mask; any selected or reference constituent unpriceable blocks the whole paired portfolio comparison",
+    "statisticalRule": "symmetric valid-name mask; qualified surviving-sample development associations allowed; no unconditional delisting-risk claim",
+    "disclosures": [
+      "affectedSecurities",
+      "affectedNameDateHorizon",
+      "referenceUniverseShare",
+      "lostByYear",
+      "lostByIndustry",
+      "preGate",
+      "evaluable"
+    ]
+  },
+  "economics": {
+    "conditionalPolicies": {
+      "X1": "cheap B05 top tercile AND b08Confirmed=1; rank B05",
+      "X2": "A05 top tercile AND D05 bottom tercile; rank A05",
+      "X5": "F01 bottom tercile AND E01 bottom tercile (liquid); rank negative F01",
+      "forecast": "existing FULL H126, no new fitted model",
+      "trigger": "interaction Holm passes AND any previously untested component passes primary Levels1/2/residual/stability gates",
+      "X3": "control-only components: earlier untested-component gate unavailable; conditional economics NOT_TRIGGERED",
+      "X4": "SOURCE_BLOCKED",
+      "X6": "DESCRIPTIVE_ONLY_NOT_TRIGGERED"
+    },
+    "basket": "equal-weight direction-oriented top tercile, diagnostic only",
+    "slots": {
+      "maximum": 5,
+      "weight": 0.2,
+      "maxPerIndustry": 2
+    },
+    "fallbacks": [
+      "CASH",
+      "PASSIVE_BENCHMARK"
+    ],
+    "cashReturn": 0.0,
+    "cashMeaning": "zero-yield KRW accounting assumption",
+    "entryRule": "positive OOF date-centered forecast greater than stock+fallback round-trip costs, top oriented tercile and signal tradable/capacity gates",
+    "exAnteCosts": "entry eligibility uses signal-date tax and fees only; realized exit uses exit-date effective tax, never future tax information for selection",
+    "capitalKrw": 50000000,
+    "capitalEvolution": "initial capital compounded by prior valid net block returns; unpriceable prior NAV blocks every later block, no fixed-capital capacity fiction",
+    "feeFinancing": "20% slots are cash budgets inclusive of entry fees; executed asset weight=budget/(1+entry fee), including passive fallback and reference; no borrowing",
+    "pairedPolicies": "identical predetermined anchors; any unpriceable policy blocks the joint policy comparison; valid isolated diagnostics retain explicit boundaries",
+    "orderShareMedianValue": 0.01,
+    "medianWindow": 60,
+    "rebalance": "nonoverlapping H-session blocks anchored to first registered evaluation signal within feature usable range, no data-dependent rescheduling",
+    "roundTrips": "fully liquidate every registered block, charge dated entry and exit, no leverage or optimizer",
+    "liquidity": "ALL/HIGH/LOW in both diagnostic and slot policies, both fallbacks; only ALL/HIGH gate; top/bottom halves of signal-date E03; E03 only capacity, E01 only alpha; never double count cost savings",
+    "decomposition": [
+      "A_marketExposure",
+      "B_industryAllocation",
+      "C_stockSelection",
+      "D_riskFactorExposure",
+      "E_cost",
+      "F_fallback",
+      "G_residual"
+    ],
+    "attributionIdentity": "gross=A+B+C+F+G; net adds E; D is a descriptive nested explanation of C, not a second additive credit",
+    "riskFactorColumns": [
+      "A05_relative126",
+      "A07_momentum12_1",
+      "B01_bookToMarket",
+      "B02_earningsYield",
+      "C01_returnOnAssets",
+      "C05_ocfToAssets",
+      "D02_logVolumeShock60",
+      "E01_amihudIlliquidity60",
+      "F01_totalVolatility63",
+      "H01_industryRelMom126"
+    ],
+    "riskExposure": "descriptive block excess and C regressions on B4 columns plus registered F01 factor-mimicking rank spreads; intercepts cannot establish alpha",
+    "support": "net top basket excess positive in both fallbacks and high liquidity half; slot stock-selection positive; reconciled benchmark required"
+  },
+  "costs": {
+    "commissionBps": 5.0,
+    "quotedSpreadBps": 12.0,
+    "benchmarkEachWayBps": 15.0,
+    "commissionSpreadSource": "docs/kr-alpha-atlas-methodology.md",
+    "sellTaxSource": "pipeline/benchmark_alpha.py REALISTIC_COSTS[KR].sellTaxSchedule",
+    "sellTaxSchedule": [
+      {
+        "effectiveFrom": "1900-01-01",
+        "sellTaxBps": 30.0
+      },
+      {
+        "effectiveFrom": "2019-06-03",
+        "sellTaxBps": 25.0
+      },
+      {
+        "effectiveFrom": "2021-01-01",
+        "sellTaxBps": 23.0
+      },
+      {
+        "effectiveFrom": "2023-01-01",
+        "sellTaxBps": 20.0
+      },
+      {
+        "effectiveFrom": "2024-01-01",
+        "sellTaxBps": 18.0
+      },
+      {
+        "effectiveFrom": "2025-01-01",
+        "sellTaxBps": 15.0
+      },
+      {
+        "effectiveFrom": "2026-01-01",
+        "sellTaxBps": 20.0
+      }
+    ],
+    "benchmarkCostIsAssumption": true
+  },
+  "benchmarkIntegrity": {
+    "status": "BENCHMARK_EXTERNAL_RECONCILIATION_UNRESOLVED",
+    "claimGate": "BLOCKED_UNVERIFIED",
+    "externalCheck": "authoritative definition-compatible same-session annual total return differences <=0.005 in every year",
+    "frozenDecision": "no compatible external input pinned: absolute economic claims blocked for this run; rankings and within-date contrasts retained"
+  },
+  "decision": {
+    "verdicts": [
+      "BLOCKED",
+      "NO_DEVELOPMENT_EVIDENCE",
+      "UNSTABLE",
+      "REDUNDANT",
+      "NOT_ECONOMIC",
+      "INDEPENDENT_DEVELOPMENT_SUPPORT"
+    ],
+    "order": [
+      "BLOCKED",
+      "NO_DEVELOPMENT_EVIDENCE",
+      "UNSTABLE",
+      "REDUNDANT",
+      "NOT_ECONOMIC",
+      "INDEPENDENT_DEVELOPMENT_SUPPORT"
+    ],
+    "level4Trigger": "primary family horizon Level1 BY passes + stability + Level2 ADD family Holm passes; interactions also need Holm and controls",
+    "noCandidateAllowed": true,
+    "supportMeaning": "independent of simpler factors in DEVELOPMENT, never independent confirmation or promotion"
+  },
+  "sourceLimitations": [
+    "EVERY KOREAN DATE IS OUTCOME-EXPOSED DEVELOPMENT HISTORY (through 2026-09-14): whatever Phase C finds is EXPLORATORY_DEVELOPMENT_ON_OUTCOME_EXPOSED_KR_HISTORY, never confirmation",
+    "UNIVERSE: the PIT Top120 by monthly KRX market-cap snapshot strictly older than the signal date; the 22 securities that terminated inside it have unresolved terminal economics, so a label for a held terminating name cannot be valued (the Phase C registration must declare how it is withheld)",
+    "INDUSTRY LABELS ARE RECONSTRUCTED (PIT_RECONSTRUCTED_MEMBERSHIP): current KRX/KIND anchors plus verified change events, not vendor-historical labels; 22 terminated names are unclassified; an industry cohort needs >= 5 classified members",
+    "PRICE PANEL: replay-v16 closes are split-continuous and dividend-forward-accumulated, built with the listed-share count's LATER confirmation of each split; windows touching a split not confirmed at the signal date are masked here, but the panel is not itself a signal-date reproduction",
+    "TRADED VALUE IS A PROXY (as-traded close x volume) because the official KRX ACC_TRDVAL exists only in the preserved raw-input artifact; the difference (closing price against the session's volume-weighted price) was not measured",
+    "DART ACCOUNTING IS DARK 2013-2015 and mostly 2016 (DART serves from 2015 and the TTM roll-forward needs prior-year quarters), covers 250 collected tickers, and financials rarely state revenue or operating income, which is why margin, cash-conversion and capex-intensity features sit below the floor",
+    "DART ACCOUNTING VISIBILITY: a filing is visible on the day AFTER its receipt date; a restatement arrives as its own filing; an amendment served in place of an original (27.6% of the sealed store by an earlier audit) is PIT-honest and costs coverage",
+    "BENCHMARK 069500.KS is reproducible but its external reconciliation is unresolved (BENCHMARK_EXTERNAL_RECONCILIATION_UNRESOLVED); no corrected benchmark was built and none was changed",
+    "THE READINESS THRESHOLDS ARE GATES, NOT TESTS: 60% coverage and 30 names per date are inherited; 52 evaluable dates and 3 names per 2x2 corner are introduced here and stated as such"
+  ],
+  "untestedQuestion": "Inflation/growth-conditioned CPI or labor-market sign reversals: untested, PIT macro unavailable; prospective or later US program only. X6 is market trend/volatility.",
+  "compute": {
+    "workers": 1,
+    "threads": 1,
+    "wallSeconds": 5400,
+    "memoryBytes": 8589934592,
+    "maxRows": 85680,
+    "maxSignalDates": 714,
+    "maxPriceCells": 1100000,
+    "maxProjectionFits": 52122,
+    "maxConditionalSlopeFits": 52122,
+    "maxEconomicPolicies": 492,
+    "maxBootstrapDraws": 245508,
+    "noSearch": true,
+    "failure": "resource limit before lock engineering blocker; after lock consumed failure, durable attempt, no retry",
+    "featureHorizonTests": 73,
+    "standaloneBaselineCells": 20,
+    "fullModelCells": 4,
+    "familyComparisonCells": 30,
+    "registeredInteractions": 6,
+    "executableInteractions": 5,
+    "modelGroups": {
+      "21": [
+        "B0_MARKET_INDUSTRY_PRICE_REFERENCE",
+        "B1_VALUE_PROFITABILITY",
+        "B2_PRICE_MOMENTUM",
+        "B3_VOLUME_LIQUIDITY",
+        "B4_COMBINED_SIMPLE",
+        "FULL",
+        "ADD_A",
+        "REMOVE_A",
+        "ADD_D",
+        "REMOVE_D",
+        "ADD_E",
+        "REMOVE_E",
+        "ADD_J",
+        "REMOVE_J"
+      ],
+      "63": [
+        "B0_MARKET_INDUSTRY_PRICE_REFERENCE",
+        "B1_VALUE_PROFITABILITY",
+        "B2_PRICE_MOMENTUM",
+        "B3_VOLUME_LIQUIDITY",
+        "B4_COMBINED_SIMPLE",
+        "FULL",
+        "ADD_D",
+        "REMOVE_D",
+        "ADD_H",
+        "REMOVE_H",
+        "ADD_J",
+        "REMOVE_J"
+      ],
+      "126": [
+        "B0_MARKET_INDUSTRY_PRICE_REFERENCE",
+        "B1_VALUE_PROFITABILITY",
+        "B2_PRICE_MOMENTUM",
+        "B3_VOLUME_LIQUIDITY",
+        "B4_COMBINED_SIMPLE",
+        "FULL",
+        "ADD_A",
+        "REMOVE_A",
+        "ADD_B",
+        "REMOVE_B",
+        "ADD_C",
+        "REMOVE_C",
+        "ADD_E",
+        "REMOVE_E",
+        "ADD_F",
+        "REMOVE_F",
+        "ADD_H",
+        "REMOVE_H"
+      ],
+      "252": [
+        "B0_MARKET_INDUSTRY_PRICE_REFERENCE",
+        "B1_VALUE_PROFITABILITY",
+        "B2_PRICE_MOMENTUM",
+        "B3_VOLUME_LIQUIDITY",
+        "B4_COMBINED_SIMPLE",
+        "FULL",
+        "ADD_B",
+        "REMOVE_B",
+        "ADD_C",
+        "REMOVE_C"
+      ]
+    },
+    "plannedPredictiveFits": 574,
+    "calendarRefitSchedule": [
+      {
+        "horizon": 21,
+        "year": 2016,
+        "calendarPastTargets": 148,
+        "models": 14,
+        "status": "PLANNED_SUBJECT_TO_VALID_TRAINING_ROWS"
+      },
+      {
+        "horizon": 21,
+        "year": 2017,
+        "calendarPastTargets": 201,
+        "models": 14,
+        "status": "PLANNED_SUBJECT_TO_VALID_TRAINING_ROWS"
+      },
+      {
+        "horizon": 21,
+        "year": 2018,
+        "calendarPastTargets": 251,
+        "models": 14,
+        "status": "PLANNED_SUBJECT_TO_VALID_TRAINING_ROWS"
+      },
+      {
+        "horizon": 21,
+        "year": 2019,
+        "calendarPastTargets": 303,
+        "models": 14,
+        "status": "PLANNED_SUBJECT_TO_VALID_TRAINING_ROWS"
+      },
+      {
+        "horizon": 21,
+        "year": 2020,
+        "calendarPastTargets": 355,
+        "models": 14,
+        "status": "PLANNED_SUBJECT_TO_VALID_TRAINING_ROWS"
+      },
+      {
+        "horizon": 21,
+        "year": 2021,
+        "calendarPastTargets": 408,
+        "models": 14,
+        "status": "PLANNED_SUBJECT_TO_VALID_TRAINING_ROWS"
+      },
+      {
+        "horizon": 21,
+        "year": 2022,
+        "calendarPastTargets": 461,
+        "models": 14,
+        "status": "PLANNED_SUBJECT_TO_VALID_TRAINING_ROWS"
+      },
+      {
+        "horizon": 21,
+        "year": 2023,
+        "calendarPastTargets": 513,
+        "models": 14,
+        "status": "PLANNED_SUBJECT_TO_VALID_TRAINING_ROWS"
+      },
+      {
+        "horizon": 21,
+        "year": 2024,
+        "calendarPastTargets": 564,
+        "models": 14,
+        "status": "PLANNED_SUBJECT_TO_VALID_TRAINING_ROWS"
+      },
+      {
+        "horizon": 21,
+        "year": 2025,
+        "calendarPastTargets": 616,
+        "models": 14,
+        "status": "PLANNED_SUBJECT_TO_VALID_TRAINING_ROWS"
+      },
+      {
+        "horizon": 21,
+        "year": 2026,
+        "calendarPastTargets": 668,
+        "models": 14,
+        "status": "PLANNED_SUBJECT_TO_VALID_TRAINING_ROWS"
+      },
+      {
+        "horizon": 63,
+        "year": 2016,
+        "calendarPastTargets": 139,
+        "models": 12,
+        "status": "PLANNED_SUBJECT_TO_VALID_TRAINING_ROWS"
+      },
+      {
+        "horizon": 63,
+        "year": 2017,
+        "calendarPastTargets": 191,
+        "models": 12,
+        "status": "PLANNED_SUBJECT_TO_VALID_TRAINING_ROWS"
+      },
+      {
+        "horizon": 63,
+        "year": 2018,
+        "calendarPastTargets": 243,
+        "models": 12,
+        "status": "PLANNED_SUBJECT_TO_VALID_TRAINING_ROWS"
+      },
+      {
+        "horizon": 63,
+        "year": 2019,
+        "calendarPastTargets": 294,
+        "models": 12,
+        "status": "PLANNED_SUBJECT_TO_VALID_TRAINING_ROWS"
+      },
+      {
+        "horizon": 63,
+        "year": 2020,
+        "calendarPastTargets": 346,
+        "models": 12,
+        "status": "PLANNED_SUBJECT_TO_VALID_TRAINING_ROWS"
+      },
+      {
+        "horizon": 63,
+        "year": 2021,
+        "calendarPastTargets": 399,
+        "models": 12,
+        "status": "PLANNED_SUBJECT_TO_VALID_TRAINING_ROWS"
+      },
+      {
+        "horizon": 63,
+        "year": 2022,
+        "calendarPastTargets": 451,
+        "models": 12,
+        "status": "PLANNED_SUBJECT_TO_VALID_TRAINING_ROWS"
+      },
+      {
+        "horizon": 63,
+        "year": 2023,
+        "calendarPastTargets": 503,
+        "models": 12,
+        "status": "PLANNED_SUBJECT_TO_VALID_TRAINING_ROWS"
+      },
+      {
+        "horizon": 63,
+        "year": 2024,
+        "calendarPastTargets": 555,
+        "models": 12,
+        "status": "PLANNED_SUBJECT_TO_VALID_TRAINING_ROWS"
+      },
+      {
+        "horizon": 63,
+        "year": 2025,
+        "calendarPastTargets": 607,
+        "models": 12,
+        "status": "PLANNED_SUBJECT_TO_VALID_TRAINING_ROWS"
+      },
+      {
+        "horizon": 63,
+        "year": 2026,
+        "calendarPastTargets": 659,
+        "models": 12,
+        "status": "PLANNED_SUBJECT_TO_VALID_TRAINING_ROWS"
+      },
+      {
+        "horizon": 126,
+        "year": 2016,
+        "calendarPastTargets": 126,
+        "models": 18,
+        "status": "PLANNED_SUBJECT_TO_VALID_TRAINING_ROWS"
+      },
+      {
+        "horizon": 126,
+        "year": 2017,
+        "calendarPastTargets": 178,
+        "models": 18,
+        "status": "PLANNED_SUBJECT_TO_VALID_TRAINING_ROWS"
+      },
+      {
+        "horizon": 126,
+        "year": 2018,
+        "calendarPastTargets": 230,
+        "models": 18,
+        "status": "PLANNED_SUBJECT_TO_VALID_TRAINING_ROWS"
+      },
+      {
+        "horizon": 126,
+        "year": 2019,
+        "calendarPastTargets": 281,
+        "models": 18,
+        "status": "PLANNED_SUBJECT_TO_VALID_TRAINING_ROWS"
+      },
+      {
+        "horizon": 126,
+        "year": 2020,
+        "calendarPastTargets": 333,
+        "models": 18,
+        "status": "PLANNED_SUBJECT_TO_VALID_TRAINING_ROWS"
+      },
+      {
+        "horizon": 126,
+        "year": 2021,
+        "calendarPastTargets": 386,
+        "models": 18,
+        "status": "PLANNED_SUBJECT_TO_VALID_TRAINING_ROWS"
+      },
+      {
+        "horizon": 126,
+        "year": 2022,
+        "calendarPastTargets": 438,
+        "models": 18,
+        "status": "PLANNED_SUBJECT_TO_VALID_TRAINING_ROWS"
+      },
+      {
+        "horizon": 126,
+        "year": 2023,
+        "calendarPastTargets": 490,
+        "models": 18,
+        "status": "PLANNED_SUBJECT_TO_VALID_TRAINING_ROWS"
+      },
+      {
+        "horizon": 126,
+        "year": 2024,
+        "calendarPastTargets": 542,
+        "models": 18,
+        "status": "PLANNED_SUBJECT_TO_VALID_TRAINING_ROWS"
+      },
+      {
+        "horizon": 126,
+        "year": 2025,
+        "calendarPastTargets": 594,
+        "models": 18,
+        "status": "PLANNED_SUBJECT_TO_VALID_TRAINING_ROWS"
+      },
+      {
+        "horizon": 126,
+        "year": 2026,
+        "calendarPastTargets": 646,
+        "models": 18,
+        "status": "PLANNED_SUBJECT_TO_VALID_TRAINING_ROWS"
+      },
+      {
+        "horizon": 252,
+        "year": 2016,
+        "calendarPastTargets": 99,
+        "models": 0,
+        "status": "CALENDAR_BLOCKED_NO_FIT"
+      },
+      {
+        "horizon": 252,
+        "year": 2017,
+        "calendarPastTargets": 151,
+        "models": 10,
+        "status": "PLANNED_SUBJECT_TO_VALID_TRAINING_ROWS"
+      },
+      {
+        "horizon": 252,
+        "year": 2018,
+        "calendarPastTargets": 203,
+        "models": 10,
+        "status": "PLANNED_SUBJECT_TO_VALID_TRAINING_ROWS"
+      },
+      {
+        "horizon": 252,
+        "year": 2019,
+        "calendarPastTargets": 254,
+        "models": 10,
+        "status": "PLANNED_SUBJECT_TO_VALID_TRAINING_ROWS"
+      },
+      {
+        "horizon": 252,
+        "year": 2020,
+        "calendarPastTargets": 306,
+        "models": 10,
+        "status": "PLANNED_SUBJECT_TO_VALID_TRAINING_ROWS"
+      },
+      {
+        "horizon": 252,
+        "year": 2021,
+        "calendarPastTargets": 359,
+        "models": 10,
+        "status": "PLANNED_SUBJECT_TO_VALID_TRAINING_ROWS"
+      },
+      {
+        "horizon": 252,
+        "year": 2022,
+        "calendarPastTargets": 412,
+        "models": 10,
+        "status": "PLANNED_SUBJECT_TO_VALID_TRAINING_ROWS"
+      },
+      {
+        "horizon": 252,
+        "year": 2023,
+        "calendarPastTargets": 464,
+        "models": 10,
+        "status": "PLANNED_SUBJECT_TO_VALID_TRAINING_ROWS"
+      },
+      {
+        "horizon": 252,
+        "year": 2024,
+        "calendarPastTargets": 515,
+        "models": 10,
+        "status": "PLANNED_SUBJECT_TO_VALID_TRAINING_ROWS"
+      },
+      {
+        "horizon": 252,
+        "year": 2025,
+        "calendarPastTargets": 566,
+        "models": 10,
+        "status": "PLANNED_SUBJECT_TO_VALID_TRAINING_ROWS"
+      },
+      {
+        "horizon": 252,
+        "year": 2026,
+        "calendarPastTargets": 618,
+        "models": 0,
+        "status": "CALENDAR_BLOCKED_NO_FIT"
+      }
+    ],
+    "maxPredictiveFits": 574,
+    "residualCrossSectionFits": "at most 73*714 outcome-free projections",
+    "conditionalSlopeFits": "at most 73*714 descriptive date regressions",
+    "annualPreprocessingFits": 574,
+    "annualResidualEquivalentBudget": 794,
+    "estimatedMinutes": {
+      "featurePreparation": 30,
+      "labelsAnalysisModelsEconomics": 45,
+      "persistenceMargin": 15
+    }
+  },
+  "runtime": {
+    "python": "3.11.16",
+    "numericalExtras": {
+      "threadpoolctl": "3.7.0",
+      "joblib": "1.6.0"
+    },
+    "packages": {
+      "yfinance": "0.2.65",
+      "fredapi": "0.5.2",
+      "lightgbm": "4.6.0",
+      "scikit-learn": "1.7.0",
+      "scipy": "1.16.0",
+      "pandas": "2.3.0",
+      "numpy": "2.3.1",
+      "finance-datareader": "0.9.110",
+      "pytest": "8.4.1",
+      "exchange-calendars": "4.11.1",
+      "korean-lunar-calendar": "0.4.0"
+    },
+    "environment": {
+      "OMP_NUM_THREADS": "1",
+      "OPENBLAS_NUM_THREADS": "1",
+      "MKL_NUM_THREADS": "1"
+    }
+  },
+  "lifecycle": {
+    "authorizationPath": "research_specs/kr-alpha-atlas-phase-c-execution-authorization.json",
+    "authorizationPresent": false,
+    "lockPrefix": "refs/tags/kr-alpha-atlas-phase-c-v1-execution-lock",
+    "resultPath": "docs/results/kr-alpha-atlas-phase-c-v1-result.json",
+    "artifactPrefix": "kr-alpha-atlas-phase-c-v1-results-",
+    "order": [
+      "actualMergedMain",
+      "explicitCommittedHumanAuthorization",
+      "specAndCodeHashes",
+      "noPreviousResult",
+      "noLock",
+      "retrieveExactSnapshot",
+      "verifyEveryInput",
+      "outcomeFreeReadiness",
+      "runtime",
+      "syntheticChecks",
+      "permanentAtomicLock",
+      "firstOutcomeAccess",
+      "oneIntegratedStudy",
+      "durablePersistence",
+      "STOP"
+    ],
+    "postLockFailure": "consumed, no unlock/retry/re-fit/rethreshold; only exact-byte recovery of already-written files/logs is permitted",
+    "postOutcomeDiagnostic": "requires separate explicit authorization, labelled EXPLORATORY_POST_OUTCOME, cannot change result"
+  },
+  "stopping": [
+    "one formal execution only",
+    "structured partial results retain unaffected comparisons",
+    "zero candidates valid",
+    "Phase D closes KR history regardless of outcome"
+  ],
+  "dependencyHashes": {
+    ".github/workflows/kr-alpha-atlas-phase-c.yml": "e8f335f44024156abd93cebbbd0bb64ce4a5a1737a37d5838c9c761733c0fa8a",
+    ".github/workflows/tests.yml": "1f270bcd6e19f332595b737286e75c4b611ddb0320c16d2c5b972a26ba057ec5",
+    "AGENTS.md": "3211c5ebb2ebd591eb01b9486fe8baf475bec5f1ad67b8ea7bc384d7cc0ae7f2",
+    "docs/kr-alpha-atlas-execution-roadmap.md": "ac4c2ddfc3ae7098e117b7520c070537d91cf81a1bd39711d9389014be7fa2a3",
+    "docs/kr-alpha-atlas-methodology.md": "5680dafb71870934a438e11f7e9b0f6fee2f65d24478fb0da212069b0af68631",
+    "docs/kr-alpha-atlas-phase-c-readiness-ko.md": "139ad1a924a2e7efc31c7c11127dda17388e254f1f178789586b474ce0e300f7",
+    "docs/kr-alpha-atlas-phase-c.md": "61706d6018df968740cb120cc1e0eae0e7d7f86e691a6294937066c82c7e761e",
+    "docs/results/kr-alpha-atlas-phase-b-phase-c-manifest.json": "e5f5a48fbbeff51ef06b81ba01cb4bc38d64b07de723b17a60dc42fe42df1a75",
+    "docs/results/kr-alpha-atlas-phase-b-readiness.json": "ddb2702c3343b7f63f09c25749322bcbb299cce0620af44a9bed25608eae4af0",
+    "docs/results/kr-alpha-atlas-phase-b-source-feasibility.json": "eafba3f23f849ced070d5966ff5459616797d3fc641910aa3ff8a9c0808aea1a",
+    "docs/results/kr-terminal-action-reconstruction-v2.json": "b1d2dcb0a8064139e601c4efab51a44e1323f93910ae70228054338a90629017",
+    "docs/workflow-inventory-addendum.md": "eb2028fde46c3b0cd134b410ec8f411706963b37625f1949a845e70598ac411e",
+    "pipeline/__init__.py": "187da1ad9a148da44035f9cf25f7cb094c45afe53d3f445ba62392797972dede",
+    "pipeline/accounting_quality.py": "b65c54126ea45bc544d843d5f87b109e71ca7658a1d7a8f99cd435cdf9ea6ada",
+    "pipeline/alpha_inference_calibration_v1.py": "87a6990fd6fc5217824ee00205ee247abe88006a2445d41b5a6086709f551186",
+    "pipeline/alpha_inference_calibration_v3.py": "5afa9a03dbfb5343be522d282a1b2050cbbd01722dc7b8eae1e6e06b55c2bf13",
+    "pipeline/alpha_inference_calibration_v4.py": "024231e1adeeb4d29ea047d187eb7eb5478fd21c442991bd1c8963d6a38cd601",
+    "pipeline/alpha_inference_mc_decision.py": "6d131e20e2bcc212247a95fce2c5f733faa7f1624991b364d9fea96b4962f61e",
+    "pipeline/alpha_opportunity_features.py": "62bfd05894b0f448e2d588f9395fb616c9d114a74503c1f663e20a84dfe0976e",
+    "pipeline/alpha_opportunity_model.py": "998c0b50d713a5c89ce1850bbae1b112215507fe6a38d992d7f1de158476ce83",
+    "pipeline/alpha_opportunity_spec.py": "3d7150c2f62dbd8184ed2f3885828e93c1ba64d8ffe3695b0b5716641734c58e",
+    "pipeline/alpha_opportunity_v2_evaluation.py": "e6f8a6f299945da36b39767a2dc7c7748a9bfee497e27a0d0ec05738bf235c62",
+    "pipeline/alpha_opportunity_v3_identity.py": "b04f3f4bace0b7a2f637372929cfb6d350e893130bb456e6d02fc577db944291",
+    "pipeline/alpha_opportunity_v3_spec.py": "1c11c306f9f27a8e69b985d02bfb3bffaf691001c27ac49e6b21266dd315c162",
+    "pipeline/alpha_opportunity_v3_survivorship.py": "60b8364ac28f636c18d4f39c0ae366fb55c15e937495d04b5a31d28021b22952",
+    "pipeline/alpha_opportunity_v4_eligibility.py": "8c20c70b35dba244f0341459ee295ca836e0ec6782f3e4989197bc2a220ba204",
+    "pipeline/alpha_opportunity_v4_execution.py": "f6d9dfd3be1558249bb69a29a903e791443d071793b2f591a2e900d492c954ba",
+    "pipeline/alpha_opportunity_v5_evidence.py": "305fc463129a50e6048152d99fec5f238bbd4f526818fc840b0c8e2af486425d",
+    "pipeline/benchmark_alpha.py": "9a2aeaeaf9fb92831a44df499e0a2dc420bd3dde45943a93e83281a7ac3445cf",
+    "pipeline/collector_outcomes.py": "e1252bc7a2120c0013f30dcc39e415fea472d40fc5edd18f35a991f1b2209b1a",
+    "pipeline/dart_derive.py": "c18be6391fd8e04118a8e13cb62ace5a20e641f1d67e1c185652ed88572bd457",
+    "pipeline/dart_fundamentals.py": "5faad514e864d199a1eb9db41fbb182ab9b4a73a0e7179e7f56ac99b387e579b",
+    "pipeline/dart_ownership_events.py": "fdb4280a7bebdfb324f4ee87c9ad2ac22d640cc0dced10c7fc0f1bcd59c461d8",
+    "pipeline/entry.py": "d9c8e33686a55114bfabb6b11c634ff0198461859ecdaf10dffc7e3c49a191a2",
+    "pipeline/evidence.py": "31e8f67184073395d67f44a165d74f4ed368e468b790e695dbdcc698de7d9e88",
+    "pipeline/finnhub_derive.py": "2ceaf6a081a5fbbd893398a68e58006254da06492629d9e8824e0e835b848b56",
+    "pipeline/finnhub_fundamentals.py": "95b5090f1a306df5bc6231d952c42dfc85097a3a1f9f90a82bb4fa8af4f3a20d",
+    "pipeline/fundamental_acceleration.py": "4aeb649a2a046d9cf11432a7ac5a18a1b6ff993a48f2d7216e3280d446aa02cf",
+    "pipeline/historical_calibration.py": "2c825613bc1a543a225159e421aa15a176a222ce61cac12937de4e8c33db5e11",
+    "pipeline/historical_outcomes.py": "9db74870fe015f26ee5c4ac4709a420d33ef28e5feaab2c4caeedd7e85555569",
+    "pipeline/historical_replay.py": "80ace61f2df0d48ee98349bc998b77f58d8c62a4e8aa01da7b3cdacf158266e9",
+    "pipeline/historical_store.py": "2751be8b5b79260f2038c9fb975cae58d49cb7868751c6658e363b48712016c0",
+    "pipeline/industry_foundation.py": "795965170eef879e6e5dac6b7b5f7a32e7d898a2eb4e6eb30a1960e04d4af0d3",
+    "pipeline/kelly_portfolio.py": "6a4bd54be11e35e7348f64d0c99e7764635c4efcea62306da0b6ca81bfb3b06c",
+    "pipeline/kr_alpha_atlas_bars.py": "7e9cf779edc2ef9b319c9caf1a6ab582ed3cef8fcc79d76f8ba7b8989699859c",
+    "pipeline/kr_alpha_atlas_catalogue.py": "05c61e76c5d92aa1f82fecffabae29d796c60ef4c1e4a6e75df0929f1ec9461b",
+    "pipeline/kr_alpha_atlas_inputs.py": "c74a242c063530dba88a45968118e62422f0f009f07551f9ea1d5a6f981d188f",
+    "pipeline/kr_alpha_atlas_matrix.py": "1b706dc452181e6916572c5ecd45bc5bebe098f7cd3bd37512ae314be74ff00c",
+    "pipeline/kr_alpha_atlas_phase_c/__init__.py": "9c7e5d874df47e271d11cdd3ae13039390ad5afd996948aba63625c8ed3cd756",
+    "pipeline/kr_alpha_atlas_phase_c/contract.py": "b88ba29321c562c1c57af8232ae654644efcfe7d5680c8a6ff901e0dee671596",
+    "pipeline/kr_alpha_atlas_phase_c/economics.py": "98440b2af885ef2b94c1398789238ad7556614c43cab60990c01fb2a69a6eb50",
+    "pipeline/kr_alpha_atlas_phase_c/executor.py": "09726f36ab04a8cb9a7986791a5625bb15526655a25c807d6820e6e5c6fcdfaf",
+    "pipeline/kr_alpha_atlas_phase_c/interactions.py": "f3cdfdc8bb2778f80989ce36d7b137a4686cd23d94f704a2547ca75230462395",
+    "pipeline/kr_alpha_atlas_phase_c/labels.py": "bcdfeeb9a54dab9abadb0741178709a6d78d592c63e920313326d636df352a73",
+    "pipeline/kr_alpha_atlas_phase_c/lifecycle.py": "47b73072d3a63bd5d07ce08c126d3db710d4679b892d69bab0b87f2cbccf491f",
+    "pipeline/kr_alpha_atlas_phase_c/models.py": "f77d58d390aad87221ed3257f1920bbb21b2fcfce3e7a7bb9f541c8bdaf873f5",
+    "pipeline/kr_alpha_atlas_phase_c/preflight.py": "4685cd878cc733e54a9a5617c38981d9cc9000d14fc98f78f020fbef687d8fdd",
+    "pipeline/kr_alpha_atlas_phase_c/retrieval.py": "438f907415ab04c2e19a7dc0603afab7090feae1f79e3258c1432d98b9357a2d",
+    "pipeline/kr_alpha_atlas_phase_c/schema.py": "ccd5c8f506ddfabe70a28bd2f10e96c51bce752a653670b6b775bc9316c6417d",
+    "pipeline/kr_alpha_atlas_phase_c/statistics.py": "a17f4e7099ea68d2c1e2c2bbc3bc053f9c5f267b10821cf98e6c44d8fb853d08",
+    "pipeline/kr_alpha_atlas_phase_c/synthetic.py": "6a5c82386ba38131651ecae8ff1acff5f9e46e3d9ce0ced52cf38be804ba3c54",
+    "pipeline/kr_alpha_atlas_readiness.py": "ef655f09d50154da0e256c1786ce70ab2af01ac1d3811de7c666c01d5888dcb3",
+    "pipeline/kr_alpha_atlas_registry.py": "7ce54aff4bbf81999f1cad7227773a9f323bcdc8caf0dae7080ce4be126a8bbd",
+    "pipeline/kr_alpha_signal_v2.py": "0bb7bec4f6774244f949697e0309021d63c8b39c477a91f7731a73cc27245b1e",
+    "pipeline/kr_alpha_tournament.py": "ba6cc33154a6c5d52674608a724ffd1b83729a37172c0f2ffddec010e0b4a4c2",
+    "pipeline/kr_alpha_tournament_features.py": "6aa679bedb8b554b42c0613b3ee8a457c1b11f7fb045886cffba29bed740d2a2",
+    "pipeline/kr_concentrated_portfolio.py": "5059260c02e55dfde5b38b644ef2a66d0ff793dd2fb2e17609331dbb08571b64",
+    "pipeline/kr_continuing_dividend_sample.py": "13ed8109bb5d905572039deff57b84089c5694e8b5db09c1ff4bf8efdcc4d0a3",
+    "pipeline/kr_factor_anatomy.py": "56b2ad6660ae5b02fb9f646f78f4db1e7040caeb108fcf7f3b10e45354fe3a5a",
+    "pipeline/kr_factor_anatomy_execution.py": "f8aae109d75dca9521b356168f1a56712f092911f556495538c2e5ab6a7b95e8",
+    "pipeline/kr_factor_anatomy_report.py": "855124c2dedb71b4d813aa97acac3b1921c9d74f537bb2a515e0131146f8067d",
+    "pipeline/kr_industry_anatomy.py": "02d3cf8be9b415699099674bbad6c500b6ad5e8468376589dc4f328adeb59886",
+    "pipeline/kr_industry_anatomy_execution.py": "ece54c4020751df065c5391813724b315dc40db1a3d2a6508500165d0787cb1b",
+    "pipeline/kr_industry_membership.py": "ec84de6d94d0f6e0b537dacef4cd96467566515471631f6c5107c39df038433c",
+    "pipeline/kr_industry_membership_v3.py": "c857dcdd9323bc0fed69b2212b8dcc1fca7527c8fb1a0b32d588c8bbc5fa65f5",
+    "pipeline/kr_market_risk_overlay.py": "983b3aab891a2af2f6d54b9b3d7ca29788651ba898b074da0506a40431ae4c07",
+    "pipeline/kr_market_value.py": "49306b8d14c4e8d681ae5846802c2ae82fa5727bb7a8adf356fa313217103c5e",
+    "pipeline/kr_model_overlay_portfolio.py": "b67495886aa63e10315d96ce8b30a023ee75adac6f5fec5a4fab7593b4f70343",
+    "pipeline/kr_model_portfolio_execution.py": "6128ba0af8bb517ac260a76a8b397e486a3225f206b706953dbf0390a5a7bb82",
+    "pipeline/kr_model_raw_snapshot.py": "1e53a06dc5a04eeaa6f7182f8e733c9eab7793ee355c36dab5cb72459c3c970b",
+    "pipeline/kr_portfolio_diagnostics.py": "9f28a5ddf49a58c95db36d3a573b19e56fe7c86f98ad2ed01d96e8c09e6b5c34",
+    "pipeline/kr_repaired_accounting_snapshot.py": "b5b225e8a1d21b1516801c0ced1ef2164189867a457df1e0a51cd8ec95dd63ea",
+    "pipeline/kr_short_selling.py": "db3273c55bd79d6b13a934837eda61c60acda15fc782e6d8e146f362d6f06a25",
+    "pipeline/kr_stock_within_industry_anatomy.py": "e264ae20b71f32a03eec01fec944aeeb8e5947e5effedd25457cb6309c1b117b",
+    "pipeline/kr_top120_regime_review.py": "43e4ab3438f1fb3765975866f1d948bbde4469dd59047d52049c9752d4f74a31",
+    "pipeline/kr_value_quality_catalyst.py": "1bfd62d1437dd9b574f1ab635836e7d7e69651dbbbaeedf29af84a90de17bb28",
+    "pipeline/krx_prices.py": "d9b5ce5eecb3c820d41c6d709d57c7a2567bb4b047c4357569ac6b1959f5dd7e",
+    "pipeline/krx_universe.py": "77008b8c0dcb9cd44b0b1182df94d2f0af62edb6f03b6a41082c04679101d6b8",
+    "pipeline/liquidity_attention.py": "208c989a70e2d276c040867496a127eda9ca82644012999a7253f7d47bb171a6",
+    "pipeline/longterm.py": "75702c4862545e0ceadbfc5db2585b89ffeadad21f43206b597e2982d171c5f6",
+    "pipeline/market_dates.py": "0182986bf731fd762a8004d5cf838ddfaaee656a2b19b8cfd6b47248c6281e4b",
+    "pipeline/pit_data.py": "64da89c602ac4b6c67411d0b5defa2909b65c1a7aad0958b32cb7f7dcd567dbf",
+    "pipeline/portfolio_validation.py": "a22c18fc31f47b1701ea4c426ff31dec48f3f367163bd1eb3e8cf75c1fadf2a5",
+    "pipeline/price_adjustment.py": "ebdde717be22277315186d5f302642cbc8a057fedee84192b7af14b15c405892",
+    "pipeline/probability_calibration.py": "7e06f855981c7c88dc8a595fd879d201892ca99bfbb4b1dcab1bebaf0e6f62f6",
+    "pipeline/prospective_receipt_core.py": "0f5344b09e28a4b9e9df5839bb6fc11f8ace70a4c71c01c6915ae753857ef90f",
+    "pipeline/provenance.py": "762a214d6d0a59cef35a1b4612b60e13e2f6197a0a289e97e2b1da1f496c8171",
+    "pipeline/regime.py": "b5634c109ac19ad6b0e13788f1ce9cde8f20f50019a82a8b4f65f9bc23200aca",
+    "pipeline/regional_alpha_features.py": "2fc5eb16d0438ca15763aeaf49e9226146a7ecf209680ae8f33fd42f57555132",
+    "pipeline/replay_calendar.py": "56116f837e8ae3b9ca43c27c87b3be8bcf608172a761879a6b1284a39c9a3ab2",
+    "pipeline/replay_determinism.py": "2233d8341d7be1b5123caecd3ebdb10aef67ecfac7b3c10c687795f66f397153",
+    "pipeline/replay_inputs.py": "dd77b249476b252ba585b1b836fd060a029b0c4d9c3b9a0847caf8be545a5a1d",
+    "pipeline/replay_valuation.py": "18e673a0721077af06b8ca9f774650c27fa58820a489b9ea639a9ccf02693bf3",
+    "pipeline/sectors.py": "1cb470d676eeb24d5fa4976bf8fc0f71f808957f132c908158acb6422fde60ba",
+    "pipeline/selection_null.py": "b00e7419a8a620e284f3b5a15aafa66e9a8f776b81da027a766a72b3eecf5e17",
+    "pipeline/selection_value.py": "d603e3c913bb2c15d81fe237f3d52acea3c5b1cc12c9ab594db5d1f6706324a2",
+    "requirements-dev.txt": "a79bc887434c85f6748879e766d15a95d7c97ae0d8fa84eb0d29bc112a0a462d",
+    "requirements-kr-alpha-atlas-phase-c.txt": "3a3d9da9700d6eb278d49e25d81f50fd707a321d81de3d2677c5ed02964f0853",
+    "requirements.txt": "b874e2c2c8bd5f4b0bc01b99f988d37d13c9d5018e7fb09992a6cdde6e94edb8",
+    "research_specs/kr-alpha-atlas-phase-c-result-schema-v1.json": "88847d2ca1197d2b7db7559c2f84b41b288255577249c41275913ab8fceb934a",
+    "research_specs/kr-alpha-atlas-registry-v1.json": "e60f8c441cf799eb9f47d55b5d4c83efaadc097191fb5712e89788af513d2c7e",
+    "scripts/run_kr_alpha_atlas_phase_c.py": "2c23a804259129aae529a5a29c26c2c053b91af620418b22f866e1e8e9b5ef61",
+    "tests/test_kr_alpha_atlas_phase_c.py": "186ab58ab6901a536d2f69a815994f16ef9c849e1f8563e3c87cf7f3ba01ce89"
+  },
+  "protectedHashes": {
+    "research_specs/alpha-inference-calibration-v1.json": "195a365c5224e10671e91fb601353a29fe39e6efa633d6e053fc67360461b433",
+    "research_specs/alpha-inference-calibration-v2.json": "df82d685d62b0c55a789e79076d97a99b1fd37c344f8615b7312d280302e3973",
+    "research_specs/alpha-inference-calibration-v3.json": "e8340ac3541e8981983996b8a66b54030757c2cd0419aab2140f8e3fe41d1d59",
+    "research_specs/alpha-inference-calibration-v4.json": "012e43177b8e8ec7143eff30d7280c4cf8015b32b464bcddd87c09f75c984a5d",
+    "research_specs/alpha-inference-calibration-v5.json": "b32e1fad5f06ad61e11fb80801b8ba833f1b26d1a3a95233e48395d50a6bf5cc",
+    "research_specs/alpha-opportunity-model-v1-features.json": "72f52c9c95d4045ba48c33980ad43f0e4df8bc072cbcc2b099a1c6f503323895",
+    "research_specs/alpha-opportunity-model-v1-inputs.json": "12325967d8e5fbccfc06a5b54d46db2388eadef09ffdff47c067cabfe0ab61b4",
+    "research_specs/alpha-opportunity-model-v1-us-membership.json.gz": "397b27270255d7a14a36d075a3e2889129d9351d817420614c8ccd289d74c30f",
+    "research_specs/alpha-opportunity-model-v1.json": "4c185128f3fc78ee17fcd4afe875ce3a1ed471ab5dec8dfdfadefda33c469cc4",
+    "research_specs/alpha-opportunity-model-v1.sha256": "8ae32e45708bbf5c01b999641f3f3d0dc4cba8b33a2d3c598dcbbcc77b60f010",
+    "research_specs/alpha-opportunity-model-v2.json": "f9514c0f5e7ef5522d50f57aa579b7a08b5b62ee6026a8fd4941cb44f5a8bf7a",
+    "research_specs/alpha-opportunity-model-v2.sha256": "2b400b8adf6edd4a97ed206abc089eba70fd5cfc9a5bf9094cedbe88058a79e4",
+    "research_specs/alpha-opportunity-model-v3-us-identity-evidence.json.gz": "b10f9ca163ce2b20fb408be7d70dfb107875c7fcccccec49eb17fd96f2ebf220",
+    "research_specs/alpha-opportunity-model-v3.json": "319b450e97878bc0095301775a30f0d92d789680c78fd608e9c68bca4fb19f9b",
+    "research_specs/alpha-opportunity-model-v3.sha256": "9e23f25454a731a6cd53909a463f8d1ee5be557606c13c33a66a55b43ad81591",
+    "research_specs/alpha-opportunity-model-v4.json": "49296a9221993066e54632ef5effbcd07823467a49991176ee4e20e97981373e",
+    "research_specs/alpha-opportunity-model-v4.sha256": "4edae95da91360189b7005626b1aeb8f377fc8905f72910d0dd109fe07462122",
+    "research_specs/alpha-opportunity-model-v5-diagnostics-v1.json": "25b8b092dadbafeb0b14fd934bdff7424e30694f703cac3fdbbc6663597184e8",
+    "research_specs/alpha-opportunity-model-v5-diagnostics-v1.sha256": "a99ae7114b9495ab03194168fb8112c0bd5d49c7aafadc59d0005fa64dec3e09",
+    "research_specs/alpha-opportunity-model-v5-execution-authorization.json": "1ac1e0b41e8b2b27efe635d68fb5be6f91c581a1dbec60dc6a83f7567e6cbe76",
+    "research_specs/alpha-opportunity-model-v5.json": "8a0a42a3f9414dbefa3ab8ec47f00ad71f8d7436febb125dff150f3c1e50d54c",
+    "research_specs/alpha-opportunity-model-v5.sha256": "0844b9c5eece485a527cc0212096cb3c18c56bdeae4aa16432e104d92a1b10cb",
+    "research_specs/alpha-research-design-review-v1-sources.json": "b6f8d273465c9e58a85b9d5a572641bc92f01f053eb74103d41f05ea22b6444f",
+    "research_specs/alpha-research-design-review-v1.json": "73ffd04b1cf59588fb388cd5a0b9423d1afccc83835bc750f8c865c5b5177d16",
+    "research_specs/kr-alpha-atlas-registry-v1.json": "e60f8c441cf799eb9f47d55b5d4c83efaadc097191fb5712e89788af513d2c7e",
+    "research_specs/kr-alpha-discovery-tournament-v1-receipt.schema.json": "6697912a58e7c0f8dedb141d6f1747d75a9b001be1a6e64f9025ca76851d0a10",
+    "research_specs/kr-alpha-discovery-tournament-v1.json": "18d4413a5e780da5d4bb821b0de00588d69cb7a6b689720c57ada2a6b0e3f81d",
+    "research_specs/kr-alpha-discovery-tournament-v1.sha256": "113d6ac19d71d335d43124fb453ac4f701fd4a8bcbff3a33ea34d0507c709e48",
+    "research_specs/kr-alpha-signal-v2-receipt.schema.json": "ef90a2b68d3f406848ef20d59dad2296d2ece56909e20c2128e8e027c65a8721",
+    "research_specs/kr-factor-anatomy-v1.json": "1d8e526c05491898e00dacf18ad5b2cd458e04cfc843f4a35ff97bfd4272c393",
+    "research_specs/kr-factor-anatomy-v1.sha256": "a2c2b0cd706b1ad6efacb4105e06cade7df8c0912ced59a22191ad7489b23501",
+    "research_specs/kr-industry-membership-foundation-v1/acquisition-plan.json": "a93786a015964a641c63a5a5da247980cf81ffa32d55ea07dbaa23f3c046b341",
+    "research_specs/kr-industry-membership-foundation-v1/criteria.json": "c7163a88dbc90aaebe575da41bda867508272abcf8da74ddf25304a5cf07bb28",
+    "research_specs/kr-industry-membership-foundation-v1/freeze-provenance.json": "7ad7a058834436b204435dd575f45fbb61bcb82ccc53ea515d3ebbabb2fcd84d",
+    "research_specs/kr-industry-membership-foundation-v1/krx-openapi-feasibility-plan.json": "7d011f12dddf226d85b31ab65f3dac5db91f29e03309e87d3ec0d38ea9e548f3",
+    "research_specs/kr-industry-membership-foundation-v1/krx-openapi-feasibility-plan.sha256": "6f7142ca04677ca34bbdd6d4413667c11c1830321dd3047ff1fc6f026e9eb27f",
+    "research_specs/kr-industry-membership-foundation-v1/krx-otp-feasibility-plan.json": "1fd169376b2537c603eca2d18a4420addbc5a4ab5c90fb14c93ab8a684787373",
+    "research_specs/kr-industry-membership-foundation-v1/krx-otp-feasibility-plan.sha256": "a2b62c64e6da50d6640b4a1d4e5216cfe80f58c68388b6d3076f7c1386e59b8e",
+    "research_specs/kr-industry-membership-foundation-v1.json": "8793afc7117fa36138e24fcbcacc7bf9a606b9445075983624095c448a8cdec5",
+    "research_specs/kr-industry-membership-foundation-v1.sha256": "3d2dd8de971152dc307e5880d7a090b5aa7b71b7b24785cc134f960a40ca2ceb",
+    "research_specs/kr-industry-membership-foundation-v2/acquisition-plan.json": "9ce5a93562e47ea2f6114c493396617595353fb75cb035b160adb432a4cab34d",
+    "research_specs/kr-industry-membership-foundation-v2/acquisition-plan.json.sha256": "2e10dcefbe977654a68e79287cb07218e5403dfa566877114aa561ca0eba1e35",
+    "research_specs/kr-industry-membership-foundation-v2/classification-chapters.json": "8172a7fd15fb2ff03bd0af99deb6a650e7b74b19f454820aa1301882add0cab0",
+    "research_specs/kr-industry-membership-foundation-v2/classification-chapters.json.sha256": "0661a6d96e4c75d40cd04957ec378490dbc2ee2fdd3f94ed7b145bd0fd9d38f9",
+    "research_specs/kr-industry-membership-foundation-v2/criteria.json": "fcf7da7207d2e1c666895743b93d21fb3d50c64002c60ad5f9ebffc0361acf6a",
+    "research_specs/kr-industry-membership-foundation-v2/criteria.json.sha256": "48a7603b02ccf6b0230930f52ce14c84a7c5c86fd6d9358911184a9102e72872",
+    "research_specs/kr-industry-membership-foundation-v2/issuer-year-inventory.json": "d39cf40567a1fdd3e0819e1294bdae7043da25687c8473244a378210f8d18e90",
+    "research_specs/kr-industry-membership-foundation-v2/issuer-year-inventory.json.sha256": "fcdc265942b425382af97f7b537f26d9c694859254414172cd676d25ef29e591",
+    "research_specs/kr-industry-membership-foundation-v2/public-seed-checkpoint.json": "bb1d23374ce8b0da581afdc7c27eaf8fed68953954bb488576b3554f3ca9b158",
+    "research_specs/kr-industry-membership-foundation-v2/public-seed-checkpoint.json.sha256": "a35fd6e48c302f9b5ffb7eb83d76caf4b9e530502dd60a2118d98db82caa327a",
+    "research_specs/kr-industry-membership-foundation-v3/event-listing-rev2.json": "b0e56ab6ea3fa66094b7d18557142528dcaa67b6a2d637fb40f28115058170d8",
+    "research_specs/kr-industry-membership-foundation-v3/event-listing-rev2.json.sha256": "225b8d99efa0655a8dadb21507fcd53c3a48fa33b5535476ddedf4bf6f825c09",
+    "research_specs/kr-industry-membership-foundation-v3/event-listing-rev3.json": "7a57432b06b3eeed30fafb13c69171084f05380a09872060c04cc0bef1ade636",
+    "research_specs/kr-industry-membership-foundation-v3/event-listing-rev3.json.sha256": "523b2ecf16bf63a5fbffffc2b1be6e5dc01217c46be3e273dde03c6526fcd452",
+    "research_specs/kr-industry-membership-foundation-v3/event-listing-rev4.json": "b7602e357e7e5e9e55b2cce7893bba233538d911cc851819d892f3baa0d90c37",
+    "research_specs/kr-industry-membership-foundation-v3/event-listing-rev4.json.sha256": "c04838d170efea2b8a87841ad9588e9057852f41ae0928c8afc3aab345dd8673",
+    "research_specs/kr-industry-membership-foundation-v3/notice-document-protocol-rev5.json": "67eead05c8c3a7b32692598d33e9c65619f2d6c7fefaeac41ac6ad1ede822731",
+    "research_specs/kr-industry-membership-foundation-v3/notice-document-protocol-rev5.json.sha256": "8add95688b09c815d22bf1878cb5058c5f9a3c348616b9f8ade931ea98047339",
+    "research_specs/kr-industry-membership-foundation-v3/notice-document-protocol-rev6.json": "f146c327d9afab8be99c46240fce7ce597dfcb296057744799ed45bed1a1a7f7",
+    "research_specs/kr-industry-membership-foundation-v3/notice-document-protocol-rev6.json.sha256": "2830a475bea54e1463a61cf482e93a8bc8d16f9552170bf827efdeb1fbf238cb",
+    "research_specs/kr-industry-membership-foundation-v3/protocol.json": "e3ae7fe7801de6adce6aa70fe386e266524b2dfc432c082369408acdc70ecc25",
+    "research_specs/kr-industry-membership-foundation-v3/protocol.json.sha256": "f37dad5f01288e4b4a57a12ad024cb9161e346bba4487b72c19b4ed1b724b925",
+    "research_specs/kr-industry-membership-foundation-v3/top120-notice-candidates.json": "ea79816aa4cdef5f009dd64f4f2b47c9838f83df84571ba0b762e7002c5202dd",
+    "research_specs/kr-industry-membership-foundation-v3/top120-notice-candidates.json.sha256": "35232bd1c5f52b073f2120b1fe987106b84ee6364210a402cd2bc4f782cfea5a",
+    "research_specs/kr-industry-membership-foundation-v4/crosswalk.json": "76166ad309d323240ffe749df74ac089f4693f30ef77231b8cd5ab85365826b5",
+    "research_specs/kr-industry-membership-foundation-v4/crosswalk.json.sha256": "c286ebc550a75b7a903f1db251d2687b2087c4c34fb3989c69400ab2ae7c3c20",
+    "research_specs/kr-industry-membership-foundation-v4/protocol.json": "955fb27793ce8016755b3d0c2e68ec292cad19c9ec84334a50c21d95f9b2d0ce",
+    "research_specs/kr-industry-membership-foundation-v4/protocol.json.sha256": "5821ded833822716bfcbdf9fca25252c6603fcae6443dd579ac970bec795e15f",
+    "research_specs/kr-industry-opportunity-anatomy-v1.json": "e2d1fd23744a65c8dbf99217c8b2531eb68f276bca2aea7de73e4200baf1dada",
+    "research_specs/kr-industry-opportunity-anatomy-v1.sha256": "b46ff330242100b90b353e0d262fd791adbf16931fc2be0eb1ff102d77bc1e53",
+    "research_specs/kr-integrated-alpha-portfolio-v1-receipt.schema.json": "27ccc8cf0296cb91e8f8d933ed0cca3b217bb137ed604371f6e375c13442d6e2",
+    "research_specs/kr-integrated-alpha-portfolio-v1.json": "33ee50b6029346f01d7734c0bf40e63ace73c86cbfef0608375393c51df93be5",
+    "research_specs/kr-integrated-alpha-portfolio-v1.sha256": "1f5deede2b56a55f17d69683612bfd822baa73b3ae34d96d11d886e97044b5b1",
+    "research_specs/kr-market-context-ecos-evidence-37080934658.json": "f3652e539230df3aab8429b810c7bc62888a3919b4b6b13a141dda1dacfe8add",
+    "research_specs/kr-market-context-source-v1.schema.json": "b1dc4f00ce6445e237765cc97a40c7507ded16575d64b2ab4cb7ac317cd99900",
+    "research_specs/kr-market-risk-anatomy-v1-design.json": "cff420288e4937ef86ec6f06155fe4846719192c89a63fa4ccd9d493e7063b9e",
+    "research_specs/kr-market-risk-anatomy-v1-design.sha256": "113d1526136b2da79f10bb90aaf17492ed1cdda2d96c713106af9cd1e5386d86",
+    "research_specs/kr-market-risk-anatomy-v1.json": "8b2014bb2264d1cdd1bbc96387e4981392a7bf117b33f297901423435e2fc73a",
+    "research_specs/kr-market-risk-anatomy-v1.sha256": "b8ac231ff28e9efe622dd245ab4825f929e3e2e932462cff659814f6945dadda",
+    "research_specs/kr-market-risk-anatomy-v2.json": "6555ce3a2eac1f5ff0c647969690e39ff6dc2fcaef2e1e9cd979e237bec519b3",
+    "research_specs/kr-market-risk-anatomy-v2.sha256": "62ec916cdb1cfd543026aee5d1b158eab48e58ace7db368d680eda2ed7717544",
+    "research_specs/kr-market-risk-model-v1-receipt.schema.json": "f02fdea12d4f3f57c46109850515ee7895fefd705414498ddb8750a4137d2e80",
+    "research_specs/kr-market-risk-model-v1.json": "fa7484c690d125089d628654a86199a23ad95dcfeb9b1b0682bdc704588ae1b4",
+    "research_specs/kr-market-risk-model-v1.sha256": "194f65b655ae28c5861b17652be681b4c6647436af107d3fd81b0ecbc3666339",
+    "research_specs/kr-model-overlay-portfolio-v1-diagnostics-v1.json": "9777c9b1a37f14236b72b46c9f3be575755ede5d59c62231b1b13acb09da4ae4",
+    "research_specs/kr-model-overlay-portfolio-v1-diagnostics-v1.sha256": "5f59875c6fe1d08888bb3e5f16b59eb4327405345027e4d339c31341bcdc1e6b",
+    "research_specs/kr-model-overlay-portfolio-v1-execution-authorization.json": "f7746b9f3547ba1e8619c01def8795880f4d1e6ee3d1dd8ad0bcf81fa147ce20",
+    "research_specs/kr-model-overlay-portfolio-v1.json": "c1cbfd232fdcaa7fa584cd1762e9e28291b4382d37e6244f5ab1a18731fb2df2",
+    "research_specs/kr-model-overlay-portfolio-v1.sha256": "31f5e13ac44f4591b820fffb03849c99653d076fe496c40e275d693723b18cb1",
+    "research_specs/kr-original-xbrl-presentation-evidence-diagnostic-v1-live-authorization.json": "256cefcadc7f50b7cdc7196079cbcb9ea17b5c6bfe2fe171661eee1ce9f40436",
+    "research_specs/kr-original-xbrl-presentation-evidence-diagnostic-v1.json": "fe3a17e5dce5ad78e16936d6907fb85f57fdc74eb35f3b396e1c1fdf6e9b593e",
+    "research_specs/kr-original-xbrl-value-validation-v1-sample.json": "590513ede1c8bd06d701f22f4b1aa01bcf8b004aa30b9410540865696e863e70",
+    "research_specs/kr-original-xbrl-value-validation-v1.json": "0aec37a4daed0d0765a25846cbdcbc410d70098fbed9340926a5376dd791cb0a",
+    "research_specs/kr-original-xbrl-value-validation-v2-live-authorization.json": "664eee2bdf7d7f91b973c260971dfda14d91a0c07ac71bd8a6ad94c8dc9b3074",
+    "research_specs/kr-original-xbrl-value-validation-v2.json": "a0251b2459de1ed820c7306c822e29429d92b18b72e2063d044e34ba8db3871d",
+    "research_specs/kr-original-xbrl-value-validation-v3-live-authorization.json": "3fb841fc44991f52b0c87f44bb2f8a87bc8d32c544974b040956c70a12dd4c43",
+    "research_specs/kr-original-xbrl-value-validation-v3.json": "302fc108b9ed37053dc1e006c1079fa730dfff5aab907fe705f008485939fe84",
+    "research_specs/kr-repaired-accounting-snapshot-v1.json": "8dbae2203e1b809060100845f4571016e71fbc78cc09c1b52d9edeb46d38f331",
+    "research_specs/kr-stock-within-industry-anatomy-v1.json": "133ad66e9908b576b45cdddf215f451e7813bec1d9c1e6305d77e3e155388c6f",
+    "research_specs/kr-stock-within-industry-anatomy-v1.sha256": "c6215d25195ee61b303b4a94cf27f77275f14be5a329c3a457804c539a1abaf6",
+    "research_specs/kr-top120-regime-review-v1.json": "79af4fcbaaf92452b2f1f98b7393ca757c5254b539884e8248b25c4959d76c93",
+    "research_specs/kr-top120-regime-review-v1.sha256": "e1e7f101f37a5e2a9c53f7dcfa99afb8efc06e24235b022e57a4dae8c2b98e88",
+    "research_specs/market-industry-stock-data-foundation-v1.json": "d2dd802fa7acf56efa52ffc8dd5eb23855d0e68ad2a405e7020d8ac545008af3",
+    "research_specs/market-industry-stock-data-foundation-v1.sha256": "5e64fdc23876b5b43bfff48ce1790227f366ca0db12c46520e796e40f27ab212",
+    "research_specs/market-industry-stock-membership-v1.schema.json": "fa0c826bd6a2665df06da297cb8117738aa733b96255b9f689d7fdd58bd8a11d",
+    "docs/results/alpha-calibration-resolution-report.json": "9e69be1628d93318c9220c6dcca60dc70ee8dd06ac094173bc6c45e92c815cc2",
+    "docs/results/alpha-calibration-resolution-report.md": "4485b4d9c50c8847ed5de36e414da3c69bd813513f93d2841abe900f2d3e3c3c",
+    "docs/results/alpha-data-foundation-v2.json": "37c324eeee97e0dc51b4d1cbbb30e98b8479e9b31015337f5e6833ed69c9bda9",
+    "docs/results/alpha-inference-calibration-v1-report.md": "9185d1ff09ab6c968aa075afbba69d0e379a2fa63be145de3474fecf473749a1",
+    "docs/results/alpha-inference-calibration-v2-report.md": "ccb41ef9e113a28acc74d461a42ad2fbcb5b61fbc34a4f44afd5f5ad55e9dcc2",
+    "docs/results/alpha-inference-calibration-v3-report.md": "49b5dd5bde20a7f3c8b4d6ef8e00c836c2ae6b2bdc4f7888b643e40adbce295c",
+    "docs/results/alpha-inference-calibration-v4-development-diagnostics.json": "d7cc725831ce46c5929736dc20dafd63285046aaa8cfdca8650a0e029f8d9eba",
+    "docs/results/alpha-inference-calibration-v4-report.md": "ec6a3e0bfe5697f2f76cf34f25731aa026eef4ca65defd85ca8bda55bb684712",
+    "docs/results/alpha-inference-calibration-v5-precision-diagnostics.json": "94f80c9cde37b770225745d7878ba03c05a5e441ab7dfdff52bc5296d6776dde",
+    "docs/results/alpha-information-inventory-v1.json": "84138e829d9532ab1baaf9b166e7a5d9ff3a650a37df9fa0e4414de56ae6da5d",
+    "docs/results/alpha-opportunity-model-v1-input-audit.json": "e047190aa04f1679ec0dfec6f774938887fd2f5436574263f32ecccd31ee4e68",
+    "docs/results/alpha-opportunity-model-v1-readiness.json": "84898f6b977ea3fd94473f58e406e7ef79e901f4b5baba023ce75e49ccc74aab",
+    "docs/results/alpha-opportunity-model-v2-input-audit.json": "ec1bc239484b786cae53703852f0416b2b5bce5570562d379c3d7a7978d67cd6",
+    "docs/results/alpha-opportunity-model-v2-readiness.json": "ee137d0b28fe94b84cebd3b24d414b597ce762b27143b47dd8c6ff03b580d8ed",
+    "docs/results/alpha-opportunity-model-v3-readiness.json": "ae886a2abfc5c6903cb2c42032fd4240b4fa48b1103321fbc178fd0e08c49c84",
+    "docs/results/alpha-opportunity-model-v3-survivorship-audit.json": "f0d9ed09880ffb75c6cc698dbb001e6f6879dee1991ede6ff6d365cc50f22902",
+    "docs/results/alpha-opportunity-model-v4-eligibility-policy.json": "f5fdc9c47a2873e454796c0bc50b82c43fa89455984201c4ae5eaed8189f6efd",
+    "docs/results/alpha-opportunity-model-v4-execution-report.json": "fcd4ad48c274d42ddfd8c0e959c013f5a5780c25fc058ba740cd9da290e16ebc",
+    "docs/results/alpha-opportunity-model-v4-execution-run1-defective.json": "37cd88e0051fc1803f8b0c560ade7e981573f2da78ecbd856c0e0f6c63832dbd",
+    "docs/results/alpha-opportunity-model-v4-execution-run2-region-year-mismatch.json": "08fc55fd0fe85b982bb0c7bfcdf5d8e6d78f54bd546016afff3fbfab6533a0ea",
+    "docs/results/alpha-opportunity-model-v5-diagnostic-models.json": "b43d7d42e95375619c0cd0c1fa2ee28e95273ad485a54fb9d46803ae3831db98",
+    "docs/results/alpha-opportunity-model-v5-diagnostic-references.json": "cf580b0c47b4023dfda707b4f9906796e8aabe88f4aa347b62ac8e23d3d67d2e",
+    "docs/results/alpha-opportunity-model-v5-diagnostic-summary.json": "37c6d8996f5a2696c7bd34863f96a9f74fc4a4a50bf694b5a772b1a4cafc304d",
+    "docs/results/alpha-opportunity-model-v5-result.json": "e06aa3fe17fb5986dd7e6a36272cc1bda59f78f97bfa4e6efaa68d1359d020d4",
+    "docs/results/alpha-opportunity-model-v5-result.sha256": "d34ac290a368747deb5d1c572510b46d5799ef4bc094b0e1b86adf7d76837550",
+    "docs/results/alpha-reliability-report.json": "15284a0dade2ea9483c1a00a509d55ae8143b5e0c82f4d30724099d0e6b535bf",
+    "docs/results/alpha-reliability-report.md": "80d8e55108e125ba3b938bcbba46370b0552a0c02e63e520e4d4e47ad0cc4cb7",
+    "docs/results/alpha-risk-separation-diagnostics-report.json": "fa8f9c763e04dde2e48a696f790d28c567f4a254b7f8be5e450b67b1698f2ca3",
+    "docs/results/alpha-risk-separation-diagnostics-report.md": "4ef614ffa5f2ec933194b7de16dd91cf221914be7ff89a184c15fb86d9edb22e",
+    "docs/results/alpha-risk-separation-report.json": "f737ba4a267ab54f06ade095487baec0cbf8e25657b15bfb7802f1ffc2b7da0d",
+    "docs/results/alpha-risk-separation-report.md": "f2c89945fb2b3e74c65b0ced06cf80d228442dc0fd8e801a86a010f9720f945e",
+    "docs/results/benchmark-alpha-report.json": "0dfe0d9b10bdc5784db6d036733f80c8c4fbeadb7c319f3e65c905569a5d9839",
+    "docs/results/benchmark-alpha-report.md": "20b908a29349948f788e4e5eb5bf92d61bdcaa3701e7a0d38a9a79d9b6f47c38",
+    "docs/results/dynamic-breadth-report.json": "a880b60a2fc3064112f8f355592975f5a2299a11ba40c59862a515569df463c4",
+    "docs/results/dynamic-breadth-report.md": "8da0c1dcf5192b04f4cee5f7cd32210b13dbdbe6150a5ea08addefdb615bbf3c",
+    "docs/results/entry-selection-separation-report.json": "5e07ddbc98f330bc170389b189fd8931fb8be921433984d82e463cbd719ebc67",
+    "docs/results/entry-selection-separation-report.md": "6841df21865f57176274d5ee7c4a02a4220341bb8431cb65e78586f9f5216623",
+    "docs/results/four-factor-signal-attribution-audit-report.json": "d843950b5baee865cfc9bba7965ece9252a0212ef993e9e8ca8efea01cc4850d",
+    "docs/results/four-factor-signal-attribution-audit-report.md": "89be030d7fb453653be78d1c55a6872a9bed362ca84a111ccea11a8bec46aa7a",
+    "docs/results/fundamental-acceleration-discovery-report.json": "2b8a3921e20f32b4e0690c9666c76287ede2730545d734198a5594c9e75efe55",
+    "docs/results/fundamental-acceleration-discovery-report.md": "ff8b79c7dab6278cafd641a28b414fabcdee8b7fbecc7c8fc4b856105b35026c",
+    "docs/results/guru-decision-atlas-data-v1.json": "b5141e6f27a4a6dac937a3421f54cae44288fc49d67f4db4b7f5f7fa6dea00cd",
+    "docs/results/kr-accounting-coverage-audit.json": "8bde6c2a9f68a6416ef80d037536f17ad68133015baf15cf6776171bfe3c5059",
+    "docs/results/kr-accounting-coverage-filings.jsonl.gz": "5039711c12616b4a657501c4304d2191a72cc19d2cbe08317f5c35e475faaa45",
+    "docs/results/kr-alpha-atlas-phase-b-phase-c-manifest.json": "e5f5a48fbbeff51ef06b81ba01cb4bc38d64b07de723b17a60dc42fe42df1a75",
+    "docs/results/kr-alpha-atlas-phase-b-readiness.json": "ddb2702c3343b7f63f09c25749322bcbb299cce0620af44a9bed25608eae4af0",
+    "docs/results/kr-alpha-atlas-phase-b-source-feasibility.json": "eafba3f23f849ced070d5966ff5459616797d3fc641910aa3ff8a9c0808aea1a",
+    "docs/results/kr-alpha-atlas-phase-b-weekly-dry-run-example.json": "7e7bf11940928df1a2a12846e9f65f0b86ff38c3a9e3ec8c80aba7fff1e254e9",
+    "docs/results/kr-alpha-discovery-tournament-v1-execution-started.json": "58df59ec3781681d82c1209192cabfbb1d788dbbcc824374993157ee057f26c7",
+    "docs/results/kr-alpha-discovery-tournament-v1-formal-environment-37535814142.json": "63acf0adce9cc1b84057c135a088ace3e4dd765289f942b39538c41ee85c8abf",
+    "docs/results/kr-alpha-discovery-tournament-v1-manifest.json": "ff926754234cc6ce0e5b327553d8a72e0ca49ffc130e9398dc6c72fcf3822a1e",
+    "docs/results/kr-alpha-discovery-tournament-v1-postoutcome-integrity-audit-model-free-scan.json": "986fcafa21873d30f20b6636cff4525bb95608a209bcffa9ad246414b578b8c0",
+    "docs/results/kr-alpha-discovery-tournament-v1-postoutcome-integrity-audit-run37688582489-full.json": "3de415bf6e0646dbae6cde2d7da8a6645c50776697e6663122a97f94fc01766c",
+    "docs/results/kr-alpha-discovery-tournament-v1-postoutcome-integrity-audit-run37688582489-model-free-scan.json": "9dca9508dc8899db01ca1d78777da986acc90b074f7fe973f1468df74f4f4e1f",
+    "docs/results/kr-alpha-discovery-tournament-v1-postoutcome-integrity-audit-run37688582489-recovery-provenance.json": "a0345b12db2501e6d31a2dbf3b5a392e8d1036cba636c8b242c3531d5a15f84e",
+    "docs/results/kr-alpha-discovery-tournament-v1-postoutcome-integrity-audit-run37757869994-environment-parity.json": "ea35959f275d0ea1f356bd1b958f3166c8845d2b627aa1f631bb039daf474f03",
+    "docs/results/kr-alpha-discovery-tournament-v1-postoutcome-integrity-audit-run37757869994-full.json": "75093ed65887a3424142a9d2c6faa87dc887b26b6fd648affb32dab1da5e730c",
+    "docs/results/kr-alpha-discovery-tournament-v1-postoutcome-integrity-audit-run37757869994-provenance.json": "1d40db4cdd0bd462a218f471e19c96cca7f3c76f6049b58dc1d6f0572e056bfc",
+    "docs/results/kr-alpha-discovery-tournament-v1-readiness.json": "92778195ad8d8d1d9c927ff5724f3cec981e0731b524e9ee6be017b50ed2893d",
+    "docs/results/kr-alpha-discovery-tournament-v1-result.json": "4a117ed23d30f9d716c87dbd987e1b80798484b0ab3558638379bf65cf9ccc5d",
+    "docs/results/kr-alpha-discovery-tournament-v1-seal-provenance.json": "41e9e2b960e23c9f254f5f1e49b6eb0ab173e448c53732470fdf539ac39a42a8",
+    "docs/results/kr-dividend-amount-lineage-v2.json": "2c3c7d93159b1959f1358d0f4df0a78e14035ad916d53e8fa3356155c311e621",
+    "docs/results/kr-dividend-amount-lineage-v2.json.sha256": "069f9f18afc1989666f16d43100fd722d16f093293cd26a17c861358c43293eb",
+    "docs/results/kr-factor-anatomy-v1-input-scope-audit.json": "5f9d4f3e96540f1325ab5a4cd3034b61ed289551797e25beeb62a3d85c4dc9b9",
+    "docs/results/kr-factor-anatomy-v1-manifest.json": "3f8cdd9e5cf82b58f8526078c545b9ce8e116b3bf196e474e807a22a4cd59df9",
+    "docs/results/kr-factor-anatomy-v1-report.md": "2ffbb3458660c74fcbacd148cb2b8d7c7013ac7967978a6c8334b6af7b9f892e",
+    "docs/results/kr-factor-anatomy-v1-result.json": "8518ec8cae95d0a23e964aab147e20659f17437fcd6fec6cb7f64cfa2b98a9e7",
+    "docs/results/kr-factor-anatomy-v1-seal-provenance.json": "eeba9641810d60c539935d5542ca48c7ae6a48859d63be5292bbe5e88ce4c2fa",
+    "docs/results/kr-industry-opportunity-anatomy-v1-execution-started.json": "414911b0ebb340332bbfe0340428f40959bc3fbc73b23cb2c2f92a30390f3bfb",
+    "docs/results/kr-industry-opportunity-anatomy-v1-manifest.json": "b8814d43f2e592fea0db7b7e4e7d77485f04881140dc46a197610086383621df",
+    "docs/results/kr-industry-opportunity-anatomy-v1-readiness.json": "e1e4d1f1e317f853fdf8b96006fd0085a1f68b7463460e9f37b9c8acfc22b8fa",
+    "docs/results/kr-industry-opportunity-anatomy-v1-report.md": "d3cd184e14816e63cd008450f9cfa51709f14dbc865fea0f575b7fea775bc3f6",
+    "docs/results/kr-industry-opportunity-anatomy-v1-result.json": "71a960e3c19ce443d058508c4ec66576e3e5fcbd7a45dc851cf8b832bff62a08",
+    "docs/results/kr-industry-opportunity-anatomy-v1-seal-provenance.json": "1d47495c70c4243b0709cb27adb17669f0a1a6796ac6e1f9cf6c51764f009e90",
+    "docs/results/kr-integrated-alpha-portfolio-v1-postoutcome-completed-audit.json": "4349b4400946559190eec104bd4986a5a799c73925146937d92d471c37c7f5e4",
+    "docs/results/kr-integrated-alpha-portfolio-v1-postoutcome-concentration-audit.json": "f1f8ef2a60e6c78f1fda6519895825da4e24b21e06c851c85692c1144bdbc574",
+    "docs/results/kr-integrated-alpha-portfolio-v1-prelock-availability-profile.json": "a2e6f29ea11e7a97d7d1bf3e57411535e2f85ca127cc907ee234d6922f7964a1",
+    "docs/results/kr-integrated-alpha-portfolio-v1-readiness.json": "6b33bd9a20a09583da4c190a970d485fea13175fd11280256e2eeed022c1d733",
+    "docs/results/kr-market-risk-anatomy-v1-readiness.json": "979550af82383c40765bc159b0761ff57d63a4517b2bc8f9555f09656c16d0ff",
+    "docs/results/kr-market-risk-anatomy-v1-source-provenance.json": "c3a48159181819b92b0152d2fd5d48ed2788525580e435e71fc1b21b0fa985d6",
+    "docs/results/kr-market-risk-anatomy-v2-execution-started.json": "391b6ff013d5a89d5e0342fdc767c4304bc6d7ad6bc8d63247a45a71794c73bc",
+    "docs/results/kr-market-risk-anatomy-v2-manifest.json": "d32efef61916ef761a662723a4e18edcbf32ad737a22b9835cd81733204e0067",
+    "docs/results/kr-market-risk-anatomy-v2-provenance.json": "1236b5ae9ecc9e10882c6de66c8734667997e22b94df397902fa2ccb1bf615f4",
+    "docs/results/kr-market-risk-anatomy-v2-readiness.json": "223e41b35a9f7e5a4d21aab418c0e8afdffda7b2c79a22714c6cfe3cdc19b9c2",
+    "docs/results/kr-market-risk-anatomy-v2-result.json": "7be4f68f30cf57b01cde88f106b3c0c2ed88fc9942ca2a14007664ffbe4ca769",
+    "docs/results/kr-market-risk-anatomy-v2-seal-provenance.json": "e7405713b72bf98f8b8adb58315ed54ef3c8f613b05b65e2a7a0bf3a1ae0293f",
+    "docs/results/kr-market-risk-model-v1-execution-started.json": "9d5e322ba54a0c7da3e467c72111ce955c365d650827282f9c9bf379c2ca307f",
+    "docs/results/kr-market-risk-model-v1-manifest.json": "81dc4408bf8f9f2464ce827b2783be2cf486e1ae232e3fec7b65a282114f8445",
+    "docs/results/kr-market-risk-model-v1-result.json": "2578bbfa245a6540235cc05e231441b4ebb4da165240a84e715756477a897c4b",
+    "docs/results/kr-market-risk-model-v1-seal-provenance.json": "d2d7a6129aa23eda9f5b9f805f964b164add4cbe71763b33734c6a83a2faa763",
+    "docs/results/kr-model-overlay-portfolio-v1-diagnostic-summary.json.gz": "d00effa09a05418ba6f11debd95a64d8c1fcbdf90de46b6aa0c820f49b3171ad",
+    "docs/results/kr-model-overlay-portfolio-v1-execution-started.json": "ba0747b92d30409c5c310fd844413e9e1c95c3924517716ac358194943df83d4",
+    "docs/results/kr-model-overlay-portfolio-v1-machine-audit.json": "57ad41fc02acde4b6110aeee979eb81f009bef1dd9e5a38c3bb9453413c872a6",
+    "docs/results/kr-model-overlay-portfolio-v1-machine-audit.json.sha256": "ed4f5c9aa2a815049dd6f51863cec93e16dbfd075c5797e319be87e9e539d821",
+    "docs/results/kr-model-overlay-portfolio-v1-result.json": "2c16e4e121abdd771c103eadce8707484b4092eb501188823aa1ac0726ec272a",
+    "docs/results/kr-model-overlay-portfolio-v1-result.sha256.json": "c1311e67bd88fff24c2701ba5dc03daf329415ba4be60b3510ef66b1c162722a",
+    "docs/results/kr-model-overlay-portfolio-v1-seal-provenance.json": "95d131e9512c68b51d43f7a314128c057e58c9e8fa4caf57a332c4ddc8d02b71",
+    "docs/results/kr-original-xbrl-presentation-evidence-diagnostic-v1-report.json": "0457b0a072b47134cc0f13130611aafcaf3f7c1011713d2a5f694ef5bb88fcb1",
+    "docs/results/kr-original-xbrl-presentation-evidence-diagnostic-v1-report.md": "0c2294316cb6bfe45d6d0c3e1ede7bec465f484e7ea3c0ba18129479fcab8d8d",
+    "docs/results/kr-original-xbrl-value-validation-v1-report.json": "6341d0aae30c014c8f15b2cae7261609742b52dae7f698d2bc33fe0b5a74380b",
+    "docs/results/kr-original-xbrl-value-validation-v1-report.md": "4b227798560eeed29df10d537ddb77fae6f7e9a5d62d72a39d73ac322b15327b",
+    "docs/results/kr-original-xbrl-value-validation-v2-report.json": "19ac9a3d5a8a1448b7e0be1f142c089eb895399c83fc10d56e6b0e1de3cebf96",
+    "docs/results/kr-original-xbrl-value-validation-v2-report.md": "b6b5d50d4b2e50c93d4bf597c0dc74efd1fcfd4e140bf0b66c8a562c16f35749",
+    "docs/results/kr-original-xbrl-value-validation-v3-report.json": "d178cf9474ac0a490fc14dba564fbfea874e73c0055267075537d23bfff79956",
+    "docs/results/kr-original-xbrl-value-validation-v3-report.md": "e34d9650af728a972b36c16692830ee9999052d025964e04d34096f605c754c2",
+    "docs/results/kr-stock-within-industry-anatomy-v1-execution-started.json": "81e81c1e8b060bd5c3cf6b83e07523352bbfd48cdb8cbd422e8b12978b96a5b1",
+    "docs/results/kr-stock-within-industry-anatomy-v1-manifest.json": "b458ca96c4db70dc6b9ae01d4d9181f238e1a63ffb95e98179e83bb1941cf30b",
+    "docs/results/kr-stock-within-industry-anatomy-v1-readiness.json": "b1b863220f764d234173e763c7a23d74877276891685976813f2172f6d4286b7",
+    "docs/results/kr-stock-within-industry-anatomy-v1-report.md": "cd4c7ffda6ff229538b327dd666ce802eafd121caa30323fd0089ff555392384",
+    "docs/results/kr-stock-within-industry-anatomy-v1-result.json": "3862c390a52f6f19abaa7849e41620858cd154735136647ee36c958624c2739f",
+    "docs/results/kr-stock-within-industry-anatomy-v1-seal-provenance.json": "7873f4c00b50bff6d9529bf2eb3ebdf4f40c3a3c38b36441c800847cdef11bf3",
+    "docs/results/kr-terminal-action-reconstruction-v2.json": "b1d2dcb0a8064139e601c4efab51a44e1323f93910ae70228054338a90629017",
+    "docs/results/kr-terminal-action-reconstruction-v2.json.sha256": "102535d12a4f41402dfba582e24fdd1f4623c938e8946ba075e693f295b3e8c5",
+    "docs/results/kr-terminal-document-parsing.json": "df41ffa10d2e8eb49f37c89b0f3b8fe460040b1479cbcdd8e2237f7815a833c8",
+    "docs/results/kr-terminal-document-parsing.json.sha256": "3dddd57877a8016bb2c5a36de81ed9489bc6fc04eb7c8d44357f2d4e8ac0ac39",
+    "docs/results/kr-termination-inventory.json": "b58ecb2c4500302c40784613318c8451beee663ece5ee76ada26873a4292f93f",
+    "docs/results/kr-termination-inventory.json.sha256": "1ae14f9e6841dda2183051cdfa0662470e6ef8d36c2560c7e0e83ce04371f9cb",
+    "docs/results/lowvol-alpha-separation-report.json": "d7c817a4254698a547bde49786e8b39813405d256de19c99faeefc41d5a6053b",
+    "docs/results/lowvol-alpha-separation-report.md": "c13e1e4de5f16d964c6eb80f3d3f74ed17b58101c64381611d47bba060c13e50",
+    "docs/results/region-quota-removal-report.json": "99aa5393be54c21a4c58b8c7b5520ca057ae72f4aa7abe188f61a54842a88df2",
+    "docs/results/region-quota-removal-report.md": "15c6d40eeaac2076bc03e065065f770da32ef10af215ace9b536da031acf304d",
+    "docs/results/regional-rotation-report.json": "ef788b7a843403cd92adfdd659279f117d760e16e76f767ef6a63afedbe8999a",
+    "docs/results/regional-rotation-report.md": "043a5c3b195af7ee7454409d7e03b46ec22df3ceae191a0735873ab5ec71d1cd",
+    "docs/results/regional-standalone-paths.json.gz": "7a09751f99f5d892821cac6bbb4f28359049d58364cb40db1814fac4f93210cb",
+    "docs/results/selection-value-report.json": "a61e992a3013ac068ee91f2c53f6ebde2c9769e4ca9b7cf73a4c0a6392c5302c",
+    "docs/results/selection-value-report.md": "07a8cd8a5922baea50de25e00b0bb91337f803ae19725830c5b6192d9f260da3",
+    "docs/results/signal-persistence-report.json": "751ef12ff9ce8e813f6845660cfa50ae6820b50993a401121f31d0fe6cfda82d",
+    "docs/results/signal-persistence-report.md": "74441fd705fc13513a4eacc83a8c8c7328d119194115a1c2562a46daeb623b64",
+    "docs/results/switch-hurdle-report.json": "d62dc6f331f8d283f24db7b0d0d80257808c6e78e44b9362a2d9e5a3cd30da4c",
+    "docs/results/switch-hurdle-report.md": "c1d236987b09c51af241b92fe31be66c2a03288f1aba0804c9ac3f7bb036512d"
+  }
+}

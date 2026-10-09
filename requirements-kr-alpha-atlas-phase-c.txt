@@ -1,0 +1,5 @@
+# Formal research only. No production dependency changes.
+-r requirements.txt
+-r requirements-dev.txt
+threadpoolctl==3.7.0
+joblib==1.6.0
