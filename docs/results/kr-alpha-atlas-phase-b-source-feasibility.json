@@ -1,5 +1,85 @@
 {
  "sources": {
+  "computedWithCoverageVerdict": [
+   {
+    "coverageWithinUsableRangePct": 62.29052,
+    "featureId": "B04_freeCashFlowYield",
+    "genuineSourceBlocker": null,
+    "implementationStatus": "IMPLEMENTED",
+    "marginOverCoverageFloorPct": 2.29052,
+    "measuredStatus": "MEASURED_READY",
+    "reading": "computed and measured; the registry's design-time note about a build requirement is superseded by this measurement. It is a coverage verdict, not a source blocker",
+    "registryBlockingNote": "KR capex (유형자산의취득) present on 7.74% of KR filings and fcfToNetIncome on 4.31% (alpha-research-foundation-v2); kr-canonical-v2 raw-statement repair not landed",
+    "registryNoteStatus": "SUPERSEDED_BY_MEASUREMENT",
+    "registryReadinessStatus": "DATA_BUILD_REQUIRED",
+    "thinOverFloor": true
+   },
+   {
+    "coverageWithinUsableRangePct": 54.203364,
+    "featureId": "C03_operatingMargin",
+    "genuineSourceBlocker": null,
+    "implementationStatus": "IMPLEMENTED",
+    "marginOverCoverageFloorPct": -5.796636,
+    "measuredStatus": "MEASURED_BELOW_COVERAGE_FLOOR",
+    "reading": "computed and measured, and below the 60% coverage floor within its usable range. That is a statement about how many cells were measured, not about a source",
+    "registryBlockingNote": null,
+    "registryNoteStatus": "NONE",
+    "registryReadinessStatus": "READY",
+    "thinOverFloor": false
+   },
+   {
+    "coverageWithinUsableRangePct": 55.17737,
+    "featureId": "C04_profitMargin",
+    "genuineSourceBlocker": null,
+    "implementationStatus": "IMPLEMENTED",
+    "marginOverCoverageFloorPct": -4.82263,
+    "measuredStatus": "MEASURED_BELOW_COVERAGE_FLOOR",
+    "reading": "computed and measured, and below the 60% coverage floor within its usable range. That is a statement about how many cells were measured, not about a source",
+    "registryBlockingNote": null,
+    "registryNoteStatus": "NONE",
+    "registryReadinessStatus": "READY",
+    "thinOverFloor": false
+   },
+   {
+    "coverageWithinUsableRangePct": 56.62844,
+    "featureId": "C06_cashConversion",
+    "genuineSourceBlocker": null,
+    "implementationStatus": "IMPLEMENTED",
+    "marginOverCoverageFloorPct": -3.37156,
+    "measuredStatus": "MEASURED_BELOW_COVERAGE_FLOOR",
+    "reading": "computed and measured, and below the 60% coverage floor within its usable range. That is a statement about how many cells were measured, not about a source",
+    "registryBlockingNote": "KR net income absent from 72% of 2024-2025 quarterly filings in the sealed store (v2.33); v5 removed ocfToNetIncomePct for an unapproved state contract",
+    "registryNoteStatus": "SUPERSEDED_BY_MEASUREMENT",
+    "registryReadinessStatus": "DATA_BUILD_REQUIRED",
+    "thinOverFloor": false
+   },
+   {
+    "coverageWithinUsableRangePct": 52.896024,
+    "featureId": "C15_capexIntensity",
+    "genuineSourceBlocker": null,
+    "implementationStatus": "IMPLEMENTED",
+    "marginOverCoverageFloorPct": -7.103976,
+    "measuredStatus": "MEASURED_BELOW_COVERAGE_FLOOR",
+    "reading": "computed and measured, and below the 60% coverage floor within its usable range. That is a statement about how many cells were measured, not about a source",
+    "registryBlockingNote": "KR capex coverage 7.74% (alpha-research-foundation-v2)",
+    "registryNoteStatus": "SUPERSEDED_BY_MEASUREMENT",
+    "registryReadinessStatus": "DATA_BUILD_REQUIRED",
+    "thinOverFloor": false
+   },
+   {
+    "coverageWithinUsableRangePct": 58.437309,
+    "featureId": "H11_industryEarningsContext",
+    "genuineSourceBlocker": null,
+    "implementationStatus": "COMPUTED_ALREADY_TESTED",
+    "marginOverCoverageFloorPct": -1.562691,
+    "measuredStatus": "ALREADY_TESTED_COMPUTED_BELOW_COVERAGE_FLOOR",
+    "reading": "computed and measured, and below the 60% coverage floor within its usable range. That is a statement about how many cells were measured, not about a source",
+    "registryBlockingNote": null,
+    "registryNoteStatus": "NONE",
+    "registryReadinessStatus": "ALREADY_TESTED",
+    "thinOverFloor": false
+   }
+  ],
   "contract": "KR_ALPHA_ATLAS_FEASIBILITY_V1",
   "cutoff": "2026-09-14",
   "decision": "AT MOST ONE re-probe per blocked source in Phase B; the latest existing evidence below is sufficient, so NONE was repeated and none was dispatched",
@@ -43,6 +123,63 @@
      "when": "only if a human has reason to believe KRX access changed since 2026-09-24; a result other than SERVED leaves the status unchanged",
      "workflow": ".github/workflows/probes.yml"
     },
+    "rows": [
+     {
+      "coverageWithinUsableRangePct": null,
+      "featureId": "G01_foreignNetBuying",
+      "genuineSourceBlocker": {
+       "kind": "SOURCE_ACCESS_REFUSED",
+       "statement": "KRX data portal (MDCSTAT02302/02303) answered HTTP 400 LOGOUT on every candidate from Actions; the Open API key does not reach investor-type statistics (workflow-hygiene v2.25)"
+      },
+      "implementationStatus": "NOT_COMPUTED",
+      "measuredStatus": "NOT_COMPUTED_SOURCE_BLOCKED",
+      "registryReadinessStatus": "SOURCE_BLOCKED"
+     },
+     {
+      "coverageWithinUsableRangePct": null,
+      "featureId": "G02_institutionalNetBuying",
+      "genuineSourceBlocker": {
+       "kind": "SOURCE_ACCESS_REFUSED",
+       "statement": "KRX data portal (MDCSTAT02302/02303) answered HTTP 400 LOGOUT on every candidate from Actions; the Open API key does not reach investor-type statistics (workflow-hygiene v2.25)"
+      },
+      "implementationStatus": "NOT_COMPUTED",
+      "measuredStatus": "NOT_COMPUTED_SOURCE_BLOCKED",
+      "registryReadinessStatus": "SOURCE_BLOCKED"
+     },
+     {
+      "coverageWithinUsableRangePct": null,
+      "featureId": "G03_retailNetBuying",
+      "genuineSourceBlocker": {
+       "kind": "SOURCE_ACCESS_REFUSED",
+       "statement": "KRX data portal (MDCSTAT02302/02303) answered HTTP 400 LOGOUT on every candidate from Actions; the Open API key does not reach investor-type statistics (workflow-hygiene v2.25)"
+      },
+      "implementationStatus": "NOT_COMPUTED",
+      "measuredStatus": "NOT_COMPUTED_SOURCE_BLOCKED",
+      "registryReadinessStatus": "SOURCE_BLOCKED"
+     },
+     {
+      "coverageWithinUsableRangePct": null,
+      "featureId": "G04_investorTypePersistence",
+      "genuineSourceBlocker": {
+       "kind": "SOURCE_ACCESS_REFUSED",
+       "statement": "KRX data portal (MDCSTAT02302/02303) answered HTTP 400 LOGOUT on every candidate from Actions; the Open API key does not reach investor-type statistics (workflow-hygiene v2.25)"
+      },
+      "implementationStatus": "NOT_COMPUTED",
+      "measuredStatus": "NOT_COMPUTED_SOURCE_BLOCKED",
+      "registryReadinessStatus": "SOURCE_BLOCKED"
+     },
+     {
+      "coverageWithinUsableRangePct": null,
+      "featureId": "G05_flowMomentumConfirmation",
+      "genuineSourceBlocker": {
+       "kind": "SOURCE_ACCESS_REFUSED",
+       "statement": "KRX data portal (MDCSTAT02302/02303) answered HTTP 400 LOGOUT on every candidate from Actions; the Open API key does not reach investor-type statistics (workflow-hygiene v2.25)"
+      },
+      "implementationStatus": "NOT_COMPUTED",
+      "measuredStatus": "NOT_COMPUTED_SOURCE_BLOCKED",
+      "registryReadinessStatus": "SOURCE_BLOCKED"
+     }
+    ],
     "source": "KRX investor-type net trading (data.krx.co.kr)",
     "status": "SOURCE_BLOCKED"
    },
@@ -63,6 +200,30 @@
      "when": "as above",
      "workflow": ".github/workflows/probes.yml"
     },
+    "rows": [
+     {
+      "coverageWithinUsableRangePct": null,
+      "featureId": "G08_shortSellingVolume",
+      "genuineSourceBlocker": {
+       "kind": "SOURCE_ACCESS_REFUSED",
+       "statement": "KRX short-selling screens MDCSTAT301/305: bld codes unresolved and the portal unreachable; full bans 2020-03..2021-05 and 2023-11-05..2025-03-31 make the variable regime-dependent (kr_short_selling.regime_label)"
+      },
+      "implementationStatus": "NOT_COMPUTED",
+      "measuredStatus": "NOT_COMPUTED_SOURCE_BLOCKED",
+      "registryReadinessStatus": "SOURCE_BLOCKED"
+     },
+     {
+      "coverageWithinUsableRangePct": null,
+      "featureId": "G09_shortBalanceChange",
+      "genuineSourceBlocker": {
+       "kind": "SOURCE_ACCESS_REFUSED",
+       "statement": "KRX short-selling screens MDCSTAT301/305: bld codes unresolved and the portal unreachable; full bans 2020-03..2021-05 and 2023-11-05..2025-03-31 make the variable regime-dependent (kr_short_selling.regime_label)"
+      },
+      "implementationStatus": "NOT_COMPUTED",
+      "measuredStatus": "NOT_COMPUTED_SOURCE_BLOCKED",
+      "registryReadinessStatus": "SOURCE_BLOCKED"
+     }
+    ],
     "source": "KRX short-selling statistics (MDCSTAT301 / MDCSTAT305)",
     "status": "SOURCE_BLOCKED"
    },
@@ -80,7 +241,31 @@
      "noRowsMeaning": "NO_ROWS_RETURNED_BY_BOUNDED_ENDPOINT_NOT_PROOF_OF_NO_HISTORICAL_FILINGS",
      "pitAvailabilityRule": "DART_RECEIPT_DATE_NOT_TRANSACTION_OR_REFERENCE_DATE"
     },
-    "reading": "the endpoint serves only about two years (from 2024-09-24) and 'no rows' is not proof of no filing, so an absence cannot be read as a zero. Prospective collection, not a historical feature; it stays DATA_BUILD_REQUIRED and is not computed in the matrix",
+    "reading": "the endpoint serves only about two years (from 2024-09-24) and 'no rows' is not proof of no filing, so an absence cannot be read as a zero. Prospective collection, not a historical feature; the registry's DATA_BUILD_REQUIRED is unchanged and it is not computed in the matrix",
+    "rows": [
+     {
+      "coverageWithinUsableRangePct": null,
+      "featureId": "G06_largeHolderAccumulation",
+      "genuineSourceBlocker": {
+       "kind": "DATA_BUILD_GAP",
+       "statement": "majorstock.json serves a rolling two years: collected receipts span 2024-09-24..2026-09-23 (1,285 events, 119 current names); older history needs an official filing-document parser (BLOCKED_HISTORICAL_DEPTH, docs/dart-ownership-history-replay-integrity-v1.md)"
+      },
+      "implementationStatus": "NOT_COMPUTED",
+      "measuredStatus": "NOT_COMPUTED_DATA_BUILD_REQUIRED",
+      "registryReadinessStatus": "DATA_BUILD_REQUIRED"
+     },
+     {
+      "coverageWithinUsableRangePct": null,
+      "featureId": "G07_largeHolderReduction",
+      "genuineSourceBlocker": {
+       "kind": "DATA_BUILD_GAP",
+       "statement": "majorstock.json serves a rolling two years: collected receipts span 2024-09-24..2026-09-23 (1,285 events, 119 current names); older history needs an official filing-document parser (BLOCKED_HISTORICAL_DEPTH, docs/dart-ownership-history-replay-integrity-v1.md)"
+      },
+      "implementationStatus": "NOT_COMPUTED",
+      "measuredStatus": "NOT_COMPUTED_DATA_BUILD_REQUIRED",
+      "registryReadinessStatus": "DATA_BUILD_REQUIRED"
+     }
+    ],
     "source": "DART majorstock.json (5% large-holding disclosures)",
     "status": "PIT_SAFE_BUT_HISTORY_TOO_SHORT"
    },
@@ -95,6 +280,41 @@
      "scope": "the 22 terminated securities only (451 disclosures)"
     },
     "nextStep": "a bounded work list for the ever-top-120 issuers (254) would be a new collector scope; report-name matching is a reading list, never a verdict. Not built in Phase B.",
+    "rows": [
+     {
+      "coverageWithinUsableRangePct": null,
+      "featureId": "J02_dividendPolicyChange",
+      "genuineSourceBlocker": {
+       "kind": "DATA_BUILD_GAP",
+       "statement": "alotMatter.json not collected universe-wide; endpointConfidence CANDIDATE_UNCONFIRMED"
+      },
+      "implementationStatus": "NOT_COMPUTED",
+      "measuredStatus": "NOT_COMPUTED_DATA_BUILD_REQUIRED",
+      "registryReadinessStatus": "DATA_BUILD_REQUIRED"
+     },
+     {
+      "coverageWithinUsableRangePct": null,
+      "featureId": "J03_buybackAnnouncement",
+      "genuineSourceBlocker": {
+       "kind": "DATA_BUILD_GAP",
+       "statement": "list.json disclosure families not collected universe-wide"
+      },
+      "implementationStatus": "NOT_COMPUTED",
+      "measuredStatus": "NOT_COMPUTED_DATA_BUILD_REQUIRED",
+      "registryReadinessStatus": "DATA_BUILD_REQUIRED"
+     },
+     {
+      "coverageWithinUsableRangePct": null,
+      "featureId": "J04_materialDisclosure",
+      "genuineSourceBlocker": {
+       "kind": "DATA_BUILD_GAP",
+       "statement": "as J03; M&A outcomes carry hindsight risk (terminal economics unresolved)"
+      },
+      "implementationStatus": "NOT_COMPUTED",
+      "measuredStatus": "NOT_COMPUTED_DATA_BUILD_REQUIRED",
+      "registryReadinessStatus": "DATA_BUILD_REQUIRED"
+     }
+    ],
     "source": "DART alotMatter.json / list.json (disclosure families)",
     "status": "DATA_BUILD_REQUIRED"
    },
@@ -109,6 +329,19 @@
      "verifiedThrough": "2026-09-07"
     },
     "reading": "a dated event series that predates the replay, effective on its event date, is point-in-time safe for the LEVEL of the policy rate. The registry classed I04 DATA_BUILD_REQUIRED because the ECOS fetch layer is unbuilt; this file is a repository-carried alternative. No registered comparison reads I04, so it is not computed here and the registry status is unchanged. It is a policy-rate proxy, not an investable rate.",
+    "rows": [
+     {
+      "coverageWithinUsableRangePct": null,
+      "featureId": "I04_krPolicyRate",
+      "genuineSourceBlocker": {
+       "kind": "DATA_BUILD_GAP",
+       "statement": "config.json ecos.KR.BaseRate sourceStatus AMBIGUOUS_SOURCE (item code unresolved)"
+      },
+      "implementationStatus": "NOT_COMPUTED",
+      "measuredStatus": "NOT_COMPUTED_DATA_BUILD_REQUIRED",
+      "registryReadinessStatus": "DATA_BUILD_REQUIRED"
+     }
+    ],
     "source": "data/bok-policy-rates.json",
     "status": "SOURCE_AVAILABLE_NOT_COMPUTED"
    },
@@ -122,18 +355,150 @@
      "I11_globalFinancialConditions"
     ],
     "reading": "only revised history is served, or the publication time is unresolved against the KRX close; ALFRED vintages do not exist for these series",
+    "rows": [
+     {
+      "coverageWithinUsableRangePct": null,
+      "featureId": "I03_krTermSpread",
+      "genuineSourceBlocker": {
+       "kind": "PIT_UNSAFE",
+       "statement": "ECOS series carry vintageStatus REVISED_HISTORY; a historical value is usable only from its retained fetch (kr_market_context)"
+      },
+      "implementationStatus": "NOT_COMPUTED",
+      "measuredStatus": "NOT_COMPUTED_PIT_UNSAFE",
+      "registryReadinessStatus": "PIT_UNSAFE"
+     },
+     {
+      "coverageWithinUsableRangePct": null,
+      "featureId": "I06_krInflation",
+      "genuineSourceBlocker": {
+       "kind": "PIT_UNSAFE",
+       "statement": "CPI AMBIGUOUS_SOURCE / CoreCPI DATA_LINEAGE_UNRESOLVED, revised history without release vintages"
+      },
+      "implementationStatus": "NOT_COMPUTED",
+      "measuredStatus": "NOT_COMPUTED_PIT_UNSAFE",
+      "registryReadinessStatus": "PIT_UNSAFE"
+     },
+     {
+      "coverageWithinUsableRangePct": null,
+      "featureId": "I07_krExportsActivity",
+      "genuineSourceBlocker": {
+       "kind": "PIT_UNSAFE",
+       "statement": "Exports NOT_AVAILABLE; IndustrialProduction DATA_LINEAGE_UNRESOLVED; LeadingIndex revised without vintages"
+      },
+      "implementationStatus": "NOT_COMPUTED",
+      "measuredStatus": "NOT_COMPUTED_PIT_UNSAFE",
+      "registryReadinessStatus": "PIT_UNSAFE"
+     },
+     {
+      "coverageWithinUsableRangePct": null,
+      "featureId": "I08_usdKrw",
+      "genuineSourceBlocker": {
+       "kind": "PIT_UNSAFE",
+       "statement": "FX_PUBLICATION_TIME_UNRESOLVED (alpha-information-inventory-v1)"
+      },
+      "implementationStatus": "NOT_COMPUTED",
+      "measuredStatus": "NOT_COMPUTED_PIT_UNSAFE",
+      "registryReadinessStatus": "PIT_UNSAFE"
+     },
+     {
+      "coverageWithinUsableRangePct": null,
+      "featureId": "I09_fxBeta26w",
+      "genuineSourceBlocker": {
+       "kind": "PIT_UNSAFE",
+       "statement": "FX_PUBLICATION_TIME_UNRESOLVED; excluded by regional_alpha_features"
+      },
+      "implementationStatus": "NOT_COMPUTED",
+      "measuredStatus": "NOT_COMPUTED_PIT_UNSAFE",
+      "registryReadinessStatus": "PIT_UNSAFE"
+     },
+     {
+      "coverageWithinUsableRangePct": null,
+      "featureId": "I11_globalFinancialConditions",
+      "genuineSourceBlocker": {
+       "kind": "PIT_UNSAFE",
+       "statement": "10 of 28 FRED panel columns have no ALFRED vintages (macro vintage invariants v2.9)"
+      },
+      "implementationStatus": "NOT_COMPUTED",
+      "measuredStatus": "NOT_COMPUTED_PIT_UNSAFE",
+      "registryReadinessStatus": "PIT_UNSAFE"
+     }
+    ],
     "source": "ECOS / FRED / ALFRED",
     "status": "PIT_UNSAFE"
    },
    {
     "features": [
-     "B04_freeCashFlowYield",
-     "C06_cashConversion",
-     "C15_capexIntensity",
      "C16_grossProfitability"
     ],
-    "reading": "computed in the matrix on the pinned store and judged on measured coverage like any other feature. kr-canonical-v2 exists on signal-history but is not pinned by the sealed studies; using it needs its own pinned identity, so it is not mixed in here",
+    "reading": "NOT computed: neither a gross-profit nor a cost-of-sales line is among dart_fundamentals.WANTED_ACCOUNTS, so the pinned store cannot state it. kr-canonical-v2 exists on signal-history but is not pinned by the sealed studies; using it needs its own pinned identity and a canonical account rule, so it is not mixed in here. B04, C06 and C15 are NOT in this group: they were computed on the same store and carry a coverage verdict (see computedWithCoverageVerdict), not a source blocker",
+    "rows": [
+     {
+      "coverageWithinUsableRangePct": null,
+      "featureId": "C16_grossProfitability",
+      "genuineSourceBlocker": {
+       "kind": "DATA_BUILD_GAP",
+       "statement": "no gross-profit or cost-of-sales line in dart_fundamentals.WANTED_ACCOUNTS; raw-statement store (dart_raw_statements) keeps all rows but kr-canonical-v2 has not landed"
+      },
+      "implementationStatus": "NOT_COMPUTED",
+      "measuredStatus": "NOT_COMPUTED_DATA_BUILD_REQUIRED",
+      "registryReadinessStatus": "DATA_BUILD_REQUIRED"
+     }
+    ],
     "source": "DART fnlttSinglAcntAll via the sealed candidate-merged store",
+    "status": "DATA_BUILD_REQUIRED"
+   },
+   {
+    "features": [
+     "I05_krCreditSpread"
+    ],
+    "reading": "the corporate-bond series shares table 817Y002 with the government series and is told apart only by an item code the config schema has no field for; revised history only (REVISED_HISTORY)",
+    "rows": [
+     {
+      "coverageWithinUsableRangePct": null,
+      "featureId": "I05_krCreditSpread",
+      "genuineSourceBlocker": {
+       "kind": "DATA_BUILD_GAP",
+       "statement": "CorpBond_3Y sourceStatus AMBIGUOUS_SOURCE (817Y002 item code for the corporate series unresolved)"
+      },
+      "implementationStatus": "NOT_COMPUTED",
+      "measuredStatus": "NOT_COMPUTED_DATA_BUILD_REQUIRED",
+      "registryReadinessStatus": "DATA_BUILD_REQUIRED"
+     }
+    ],
+    "source": "BOK ECOS via pipeline/ecos_macro.py",
+    "status": "DATA_BUILD_REQUIRED"
+   },
+   {
+    "features": [
+     "I10_semiconductorCycleSOX",
+     "I12_commodityExposure"
+    ],
+    "reading": "I10 is a dashboard-only fetch with no pinned historical snapshot (it would need the benchmark acquisition rules); I12 has no collected commodity series at all",
+    "rows": [
+     {
+      "coverageWithinUsableRangePct": null,
+      "featureId": "I10_semiconductorCycleSOX",
+      "genuineSourceBlocker": {
+       "kind": "DATA_BUILD_GAP",
+       "statement": "dashboard-only fetch; no pinned historical snapshot"
+      },
+      "implementationStatus": "NOT_COMPUTED",
+      "measuredStatus": "NOT_COMPUTED_DATA_BUILD_REQUIRED",
+      "registryReadinessStatus": "DATA_BUILD_REQUIRED"
+     },
+     {
+      "coverageWithinUsableRangePct": null,
+      "featureId": "I12_commodityExposure",
+      "genuineSourceBlocker": {
+       "kind": "DATA_BUILD_GAP",
+       "statement": "no commodity price series is collected"
+      },
+      "implementationStatus": "NOT_COMPUTED",
+      "measuredStatus": "NOT_COMPUTED_DATA_BUILD_REQUIRED",
+      "registryReadinessStatus": "DATA_BUILD_REQUIRED"
+     }
+    ],
+    "source": "Yahoo ^SOX dashboard fetch / none in the repository",
     "status": "DATA_BUILD_REQUIRED"
    },
    {
@@ -144,10 +509,63 @@
      "J08_analystRevisions"
     ],
     "reading": "no point-in-time source: quote data, search volume, news text and historical consensus are not available in the repository or on a free tier",
+    "rows": [
+     {
+      "coverageWithinUsableRangePct": null,
+      "featureId": "E08_trueBidAskSpread",
+      "genuineSourceBlocker": {
+       "kind": "NO_POINT_IN_TIME_SOURCE",
+       "statement": "no quote or order-book source exists in this repository and none was found free; daily OHLCV proxies (E05) are not a substitute"
+      },
+      "implementationStatus": "NOT_COMPUTED",
+      "measuredStatus": "NOT_COMPUTED_NOT_FEASIBLE",
+      "registryReadinessStatus": "NOT_FEASIBLE"
+     },
+     {
+      "coverageWithinUsableRangePct": null,
+      "featureId": "J06_searchAttention",
+      "genuineSourceBlocker": {
+       "kind": "NO_POINT_IN_TIME_SOURCE",
+       "statement": "no source with verified point-in-time history and permitted use"
+      },
+      "implementationStatus": "NOT_COMPUTED",
+      "measuredStatus": "NOT_COMPUTED_NOT_FEASIBLE",
+      "registryReadinessStatus": "NOT_FEASIBLE"
+     },
+     {
+      "coverageWithinUsableRangePct": null,
+      "featureId": "J07_newsTextSentiment",
+      "genuineSourceBlocker": {
+       "kind": "NO_POINT_IN_TIME_SOURCE",
+       "statement": "no archived PIT news source; a large NLP project is out of scope"
+      },
+      "implementationStatus": "NOT_COMPUTED",
+      "measuredStatus": "NOT_COMPUTED_NOT_FEASIBLE",
+      "registryReadinessStatus": "NOT_FEASIBLE"
+     },
+     {
+      "coverageWithinUsableRangePct": null,
+      "featureId": "J08_analystRevisions",
+      "genuineSourceBlocker": {
+       "kind": "NO_POINT_IN_TIME_SOURCE",
+       "statement": "FnGuide/FnSpace ToS-blocked; no free PIT history (alpha-information-inventory-v1)"
+      },
+      "implementationStatus": "NOT_COMPUTED",
+      "measuredStatus": "NOT_COMPUTED_NOT_FEASIBLE",
+      "registryReadinessStatus": "NOT_FEASIBLE"
+     }
+    ],
     "source": "none",
     "status": "NOT_FEASIBLE"
    }
-  ]
+  ],
+  "statusAxes": {
+   "genuineSourceBlocker": "non-null ONLY for a feature that was not computed, naming the barrier (SOURCE_ACCESS_REFUSED / PIT_UNSAFE / NO_POINT_IN_TIME_SOURCE / DATA_BUILD_GAP); null for every computed feature",
+   "group status": "a verdict on the SOURCE (access, point-in-time safety, history length), made at the group level; it is not a statement about any computed feature",
+   "implementationStatus": "whether this build wrote the feature: IMPLEMENTED, COMPUTED_ALREADY_TESTED, REFERENCED_NOT_RECOMPUTED, NOT_COMPUTED or NOT_A_MATRIX_COLUMN",
+   "measuredStatus": "the coverage verdict on the real matrix for a computed feature (MEASURED_READY / MEASURED_BELOW_COVERAGE_FLOOR / ALREADY_TESTED_*), or the reason it was not computed",
+   "registryReadinessStatus": "the registry's DESIGN-time status (READY / DERIVABLE_FROM_EXISTING_DATA / ALREADY_TESTED / DATA_BUILD_REQUIRED / SOURCE_BLOCKED / PIT_UNSAFE / NOT_FEASIBLE); never edited"
+  }
  },
  "universe": {
   "acquisitionEstimate": {

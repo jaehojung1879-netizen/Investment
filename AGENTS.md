@@ -3223,3 +3223,9 @@
 - WHAT PHASE B DOES NOT SETTLE. It builds no label engine, fits no baseline model, runs no Level 1-3 statistic and chooses no horizon, feature or threshold from a return. The 52-date and 3-name
   gates are introduced here and stated as such; 60% and 30 names are inherited. The 22 terminated securities' terminal economics, the benchmark's external reconciliation and the official traded
   value remain open and are listed in the manifest's prerequisites. Phase C registration is the next step and is not started here.
+- A REGISTRY'S DESIGN-TIME STATUS, AN IMPLEMENTATION STATUS, A MEASURED COVERAGE VERDICT AND A GENUINE SOURCE BLOCKER ARE FOUR FACTS, AND A REGISTER THAT FOLDS THEM INTO ONE CONTRADICTS ITSELF.
+  The first Phase B outputs listed B04, C06 and C15 under `sourceBlockers` as `DATA_BUILD_REQUIRED` (copied from the registry's design-time status) while the same report had computed
+  them (B04 `MEASURED_READY`, thin, 62.29%; C06 56.63% and C15 52.90% below the floor), and the Korean summary described them as "not computed". The register is now reconciled to the
+  report: `genuineSourceBlocker` is non-null only for a feature that was not computed, computed features appear in `coverageVerdicts`, the registry's note is kept verbatim as a
+  superseded `registryBlockingNote`, `reconcile_sources` raises on a computed feature in a source group or a non-computed feature with no source verdict, and the I05, I10 and I12 gaps
+  that no group named are now covered. A below-floor verdict is a statement about measured cells, not about a source. No measurement, gate, source identity or matrix digest changed.

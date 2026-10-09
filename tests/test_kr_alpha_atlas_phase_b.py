@@ -540,6 +540,136 @@ def test_the_manifest_agrees_with_the_report_and_the_registry(committed):
     assert report["counters"]["labelsBuilt"] == 0 and report["counters"]["modelsFitted"] == 0 and report["counters"]["forwardPriceReads"] == 0
 
 
+COMPUTED_IMPLEMENTATIONS = ("IMPLEMENTED", "COMPUTED_ALREADY_TESTED")
+
+
+def _korean_section(text, heading):
+    start = text.index(heading)
+    nxt = text.find("\n## ", start + 1)
+    return text[start:nxt if nxt != -1 else len(text)]
+
+
+def test_the_source_register_never_lists_a_feature_the_matrix_computed(committed):
+    report, manifest, sources = committed["readiness"], committed["manifest"], committed["sources"]["sources"]
+    features = report["features"]
+    computed = {k for k, r in features.items() if r["implementation"] in COMPUTED_IMPLEMENTATIONS}
+    not_computed = {k for k, r in features.items() if r["measuredStatus"].startswith("NOT_COMPUTED")}
+    in_register = [row["featureId"] for g in sources["sources"] for row in g["rows"]]
+    in_manifest = [f for b in manifest["sourceBlockers"] for f in b["features"]]
+    # a computed feature is never a source blocker, in either file, and a non-computed one is covered exactly once
+    assert not computed & set(in_register) and not computed & set(in_manifest)
+    assert sorted(in_register) == sorted(in_manifest) == sorted(not_computed)
+    assert len(in_register) == len(set(in_register))
+    for g in sources["sources"]:
+        assert [r["featureId"] for r in g["rows"]] == g["features"]
+        for row in g["rows"]:
+            assert row["genuineSourceBlocker"] and row["genuineSourceBlocker"]["kind"] and row["genuineSourceBlocker"]["statement"]
+
+
+def test_each_feature_carries_four_separate_status_axes_that_agree_across_every_file(committed):
+    report, manifest, sources = committed["readiness"], committed["manifest"], committed["sources"]["sources"]
+    features = report["features"]
+    registry = {f["featureId"]: f for f in REGISTRY["features"]}
+    assert set(features) == set(registry) == {r["featureId"] for r in manifest["featureStatusLedger"]}
+    kinds = {"SOURCE_BLOCKED": "SOURCE_ACCESS_REFUSED", "PIT_UNSAFE": "PIT_UNSAFE", "NOT_FEASIBLE": "NO_POINT_IN_TIME_SOURCE", "DATA_BUILD_REQUIRED": "DATA_BUILD_GAP"}
+    for row in manifest["featureStatusLedger"]:
+        r = features[row["featureId"]]
+        # (1) the registry's design-time status is never edited, (2) implementation and (3) the measured verdict come from the report
+        assert row["registryReadinessStatus"] == registry[row["featureId"]]["readinessStatus"] == r["registryReadinessStatus"]
+        assert (row["implementationStatus"], row["measuredStatus"]) == (r["implementation"], r["measuredStatus"])
+        # (4) a barrier exists only for a feature that was not computed, and names the registry's own status
+        if r["implementation"] in COMPUTED_IMPLEMENTATIONS:
+            assert r["genuineSourceBlocker"] is None and row["genuineSourceBlocker"] is None
+            assert r["measuredStatus"].startswith(("MEASURED_", "ALREADY_TESTED_COMPUTED_"))
+        elif r["measuredStatus"].startswith("NOT_COMPUTED"):
+            assert row["genuineSourceBlocker"]["kind"] == kinds[r["registryReadinessStatus"]]
+        else:
+            assert r["genuineSourceBlocker"] is None
+    for g in sources["sources"]:
+        for row in g["rows"]:
+            assert row == next(x for x in manifest["featureStatusLedger"] if x["featureId"] == row["featureId"])
+    for ex in manifest["excludedFeatures"]:
+        r = features[ex["featureId"]]
+        assert (ex["registryReadinessStatus"], ex["implementationStatus"], ex["measuredStatus"]) == (r["registryReadinessStatus"], r["implementation"], r["measuredStatus"])
+        assert ex["genuineSourceBlocker"] == (r["genuineSourceBlocker"] or {}).get("kind")
+
+
+def test_features_the_registry_expected_to_need_a_build_but_were_computed_carry_a_coverage_verdict_not_a_blocker(committed):
+    report, manifest, sources = committed["readiness"], committed["manifest"], committed["sources"]["sources"]
+    f = report["features"]
+    verdicts = {v["featureId"]: v for v in manifest["coverageVerdicts"]}
+    assert {v["featureId"] for v in sources["computedWithCoverageVerdict"]} == set(verdicts)
+    for fid in ("B04_freeCashFlowYield", "C06_cashConversion", "C15_capexIntensity"):
+        assert f[fid]["registryReadinessStatus"] == "DATA_BUILD_REQUIRED" and f[fid]["implementation"] == "IMPLEMENTED"
+        assert fid in verdicts and verdicts[fid]["genuineSourceBlocker"] is None and verdicts[fid]["measuredStatus"] == f[fid]["measuredStatus"]
+        assert f[fid]["registryNoteStatus"] == "SUPERSEDED_BY_MEASUREMENT" and f[fid]["registryBlockingNote"]
+    # the measured verdicts are unchanged by the relabelling: B04 clears the floor (thin), C06 and C15 do not
+    assert f["B04_freeCashFlowYield"]["measuredStatus"] == "MEASURED_READY" and f["B04_freeCashFlowYield"]["coverageWithinUsableRangePct"] == pytest.approx(62.29, abs=0.005)
+    assert f["B04_freeCashFlowYield"]["thinOverFloor"] is True
+    assert f["C06_cashConversion"]["measuredStatus"] == "MEASURED_BELOW_COVERAGE_FLOOR" and f["C06_cashConversion"]["coverageWithinUsableRangePct"] == pytest.approx(56.63, abs=0.005)
+    assert f["C15_capexIntensity"]["measuredStatus"] == "MEASURED_BELOW_COVERAGE_FLOOR" and f["C15_capexIntensity"]["coverageWithinUsableRangePct"] == pytest.approx(52.90, abs=0.005)
+    # C16 is the one feature of that registry group that genuinely was not computed, and it IS a blocker
+    assert f["C16_grossProfitability"]["measuredStatus"] == "NOT_COMPUTED_DATA_BUILD_REQUIRED" and "C16_grossProfitability" not in verdicts
+    assert any("C16_grossProfitability" in b["features"] and b["blockerKinds"] == ["DATA_BUILD_GAP"] for b in manifest["sourceBlockers"])
+    # every below-floor computed feature is a coverage verdict as well
+    below = {k for k, r in f.items() if r["measuredStatus"].endswith("BELOW_COVERAGE_FLOOR")}
+    assert below <= set(verdicts)
+
+
+def test_the_committed_status_counts_and_gates_are_preserved(committed):
+    import collections
+    report = committed["readiness"]
+    assert report["identity"]["matrixDigest"] == "32e49b57a7541eea66f76373baef50c6302a394247b313f6099f718d46d54b0c"
+    counts = collections.Counter(r["measuredStatus"] for r in report["features"].values())
+    assert dict(counts) == {"MEASURED_READY": 50, "ALREADY_TESTED_COMPUTED_READY": 21, "MEASURED_BELOW_COVERAGE_FLOOR": 4, "ALREADY_TESTED_COMPUTED_BELOW_COVERAGE_FLOOR": 1,
+                            "REFERENCED_ALREADY_TESTED": 2, "NOT_COMPUTED_DATA_BUILD_REQUIRED": 10, "NOT_COMPUTED_NOT_FEASIBLE": 4, "NOT_A_MATRIX_COLUMN": 1,
+                            "NOT_COMPUTED_SOURCE_BLOCKED": 7, "NOT_COMPUTED_PIT_UNSAFE": 6}
+    assert report["identity"]["rules"] == RD.RULES and report["recommendation"]["verdict"] == "PROCEED_TO_PHASE_C_PREREGISTRATION"
+    assert {k: v["status"] for k, v in report["interactions"].items()} == {
+        "X1_valueByBusinessConfirmation": "READY", "X2_momentumByAbnormalVolume": "READY", "X3_industryLeadershipByStockStrength": "READY",
+        "X4_priceLeadershipByInvestorAccumulation": "SOURCE_BLOCKED", "X5_volatilityByLiquidity": "READY", "X6_marketRegimeByRelativeMomentum": "READY"}
+    assert {k: v["status"] for k, v in report["baselines"].items()} == {k: "READY" for k in ("B0_MARKET_INDUSTRY_PRICE_REFERENCE", "B1_VALUE_PROFITABILITY", "B2_PRICE_MOMENTUM",
+                                                                                            "B3_VOLUME_LIQUIDITY", "B4_COMBINED_SIMPLE")}
+
+
+def test_the_korean_summary_names_computed_features_as_computed_and_blockers_only_as_blockers(committed):
+    text = (ROOT / "docs/kr-alpha-atlas-phase-b-readiness-ko.md").read_text(encoding="utf-8")
+    report, manifest = committed["readiness"], committed["manifest"]
+    blockers = _korean_section(text, "## 계산하지 못한 특성과 데이터 출처")
+    computed_verdicts = _korean_section(text, "## 계산했지만 등록 당시")
+    for fid, r in report["features"].items():
+        if r["implementation"] in COMPUTED_IMPLEMENTATIONS:
+            assert fid not in blockers, fid                        # a computed feature is never described in the blocker section
+    for fid in ("B04_freeCashFlowYield", "C06_cashConversion", "C15_capexIntensity"):
+        assert fid in computed_verdicts and "출처 장애" in computed_verdicts
+        row = next(line for line in computed_verdicts.splitlines() if line.startswith("| " + fid))
+        assert ("%.2f%%" % report["features"][fid]["coverageWithinUsableRangePct"]) in row and row.rstrip().endswith("없음 |")
+    for b in manifest["sourceBlockers"]:
+        assert all(f in blockers for f in b["features"])
+    assert "C16_grossProfitability" in blockers and "계산하지 않았습니다" not in computed_verdicts
+
+
+def test_reconcile_sources_refuses_a_computed_feature_in_a_source_group_and_an_unclassified_gap():
+    from pipeline import kr_alpha_atlas_feasibility as FE
+    sources = FE.source_register(REGISTRY, OWN, FLOW, POLICY, "2026-09-14")
+    matrix = _synthetic_matrix(n_dates=60)
+    features = RD.build_features_report(matrix, REGISTRY, "2026-09-14")
+    reconciled = FE.reconcile_sources(sources, features)
+    assert FE.reconcile_sources(reconciled, features) == reconciled                      # idempotent
+    # the former B04/C06/C15/C16 group is gone: only C16 remains a blocker, the other three are coverage verdicts
+    assert "B04_freeCashFlowYield" not in {r["featureId"] for g in reconciled["sources"] for r in g["rows"]}
+    assert {v["featureId"] for v in reconciled["computedWithCoverageVerdict"]} >= {"B04_freeCashFlowYield", "C06_cashConversion", "C15_capexIntensity"}
+    bad = {**sources, "sources": sources["sources"] + [{"features": ["B04_freeCashFlowYield"], "source": "x", "status": "DATA_BUILD_REQUIRED"}]}
+    with pytest.raises(ValueError, match="COMPUTED_FEATURE_LISTED_AS_SOURCE_BLOCKER"):
+        FE.reconcile_sources(bad, features)
+    gap = {**sources, "sources": [g for g in sources["sources"] if "C16_grossProfitability" not in g["features"]]}
+    with pytest.raises(ValueError, match="NOT_COMPUTED_FEATURE_HAS_NO_SOURCE_VERDICT"):
+        FE.reconcile_sources(gap, features)
+    twice = {**sources, "sources": sources["sources"] + [{"features": ["G01_foreignNetBuying"], "source": "x", "status": "SOURCE_BLOCKED"}]}
+    with pytest.raises(ValueError, match="FEATURE_IN_TWO_SOURCE_GROUPS"):
+        FE.reconcile_sources(twice, features)
+
+
 def test_the_committed_dry_run_is_not_ready_or_blocked_and_carries_no_actionable_key(committed):
     dry = committed["dryRun"]
     assert dry["state"] in DR.STATES and dry["evidenceClass"] == "DRY_RUN_NOT_A_RECEIPT" and dry["authorization"] == "NOT_REGISTERED"

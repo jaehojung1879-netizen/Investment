@@ -7,6 +7,7 @@ from __future__ import annotations
 from pathlib import Path
 
 from . import kr_alpha_atlas_catalogue as C
+from . import kr_alpha_atlas_feasibility as FE
 from . import kr_alpha_atlas_readiness as RD
 
 CONTRACT = "KR_ALPHA_ATLAS_PHASE_B_REPORT_V1"
@@ -41,6 +42,7 @@ def code_identity(root=ROOT):
 
 def assemble(matrix, registry, *, cutoff, universe, sources, termination, benchmark, input_audit=None, root=ROOT):
     features = RD.build_features_report(matrix, registry, cutoff)
+    sources = FE.reconcile_sources(sources, features)
     families = RD.family_summary(features, registry)
     interactions = RD.interaction_readiness(matrix, registry, features)
     baselines = RD.baseline_readiness(registry, features, matrix)
@@ -90,13 +92,22 @@ def assemble(matrix, registry, *, cutoff, universe, sources, termination, benchm
                                              and r["measuredStatus"] == "ALREADY_TESTED_COMPUTED_READY"),
         "contextConditioningFeatures": sorted(r["featureId"] for r in ready if r["role"] == "CONTEXT_CONDITIONING"),
         "constructionAndEligibilityFeatures": {r["featureId"]: r["role"] for r in sorted(ready, key=lambda r: r["featureId"]) if r["role"] in CONSTRUCTION_ROLES},
-        "excludedFeatures": [{"featureId": r["featureId"], "measuredStatus": r["measuredStatus"], "reason": r.get("notComputedReason") or _below_floor(r)}
+        "excludedFeatures": [{"featureId": r["featureId"], "registryReadinessStatus": r["registryReadinessStatus"], "implementationStatus": r["implementation"],
+                              "measuredStatus": r["measuredStatus"], "genuineSourceBlocker": (r.get("genuineSourceBlocker") or {}).get("kind"),
+                              "reason": r.get("notComputedReason") or _below_floor(r)}
                              for r in sorted(features.values(), key=lambda r: r["featureId"])
                              if r["measuredStatus"] not in ("MEASURED_READY", "ALREADY_TESTED_COMPUTED_READY", "REFERENCED_ALREADY_TESTED")],
         "baselines": {k: {"status": v["status"], "membersBelowFloor": v["membersBelowFloor"]} for k, v in baselines.items()},
         "interactions": {k: {"status": v["status"], "reason": v["reason"], "evaluableDates": v.get("evaluableDates"), "jointCoveragePct": v.get("jointCoveragePct"),
                              "evaluableRange": v.get("evaluableRange"), "thin": v.get("thin")} for k, v in interactions.items()},
-        "sourceBlockers": [{"features": s["features"], "status": s["status"]} for s in sources["sources"]],
+        # four separate axes, never one: the registry's design-time status, whether this build implemented the feature, the coverage verdict measured on the real matrix,
+        # and (only for a feature that was NOT computed) the genuine barrier. sourceBlockers lists barriers only; a computed feature is in coverageVerdicts instead.
+        "statusAxes": FE.STATUS_AXES,
+        "featureStatusLedger": [FE.feature_status_row(r) for _, r in sorted(features.items())],
+        "sourceBlockers": [{"features": s["features"], "sourceVerdict": s["status"], "source": s["source"],
+                            "blockerKinds": sorted({r["genuineSourceBlocker"]["kind"] for r in s["rows"]})} for s in sources["sources"]],
+        "coverageVerdicts": [{k: v[k] for k in ("featureId", "registryReadinessStatus", "implementationStatus", "measuredStatus", "coverageWithinUsableRangePct", "thinOverFloor",
+                                                "genuineSourceBlocker")} for v in sources["computedWithCoverageVerdict"]],
         "terminalEventRisks": termination, "benchmark": benchmark,
         "alreadyTestedPolicy": "ALREADY_TESTED features keep their sealed study references and are never re-run; those computed here enter Level 2 only as baselines or controls",
         "prerequisitesBeforePhaseC": _prerequisites(recommendation, universe, interactions, features),
@@ -124,7 +135,7 @@ def _below_floor(r):
         top = sorted(r["missingness"].items(), key=lambda kv: -kv[1])[:3]
         return "measured on %s%% of rows within its usable range over %d usable dates; main missingness: %s" % (
             r.get("coverageWithinUsableRangePct"), r["usableSignalDates"], ", ".join("%s=%d" % kv for kv in top))
-    return r.get("blockingReason")
+    return (r.get("genuineSourceBlocker") or {}).get("statement") or r.get("notComputedReason")
 
 
 def _eligible_entry(r):
@@ -185,6 +196,7 @@ INTERACTION_KO = {"READY": "준비됨", "INSUFFICIENT_COVERAGE": "표본 부족"
 
 def render_summary_ko(report, manifest, universe, sources):
     f = report["features"]
+    sources = FE.reconcile_sources(sources, f)
     fam = report["families"]
     m = report["matrix"]
     rec = report["recommendation"]
@@ -206,11 +218,12 @@ def render_summary_ko(report, manifest, universe, sources):
              "- 거래대금은 **%s** 입니다(공식 KRX 거래대금 파일은 Actions 산출물에만 있어 이 환경에서 읽지 못했습니다)." % (
                  "종가×거래량 대용치" if "PROXY" in (report["identity"].get("tradingValueBasis") or "") else "공식 KRX 거래대금"), "",
              "## 상태 구분 (코드 구현 / 실제 데이터로 검증 / 미달 / 차단)", "",
+             "특성마다 서로 다른 네 가지를 따로 적습니다: ① 등록 당시 상태(설계 시점의 예상, 수정하지 않음) ② 구현 상태(이번에 코드로 계산했는지) ③ 측정 판정(실제 매트릭스의 커버리지) ④ 진짜 출처 장애(계산하지 못한 특성에만 붙음). **계산한 특성은 등록 당시 상태가 '데이터 구축 필요'였더라도 출처 장애가 아니며**, 커버리지 판정만 가집니다.", "",
              "- **실제 데이터로 측정 완료·사용 가능** (코드 구현됨 + 실제 입력으로 계산, 커버리지 기준 통과): " + ", ".join(sorted(k for k, r in f.items() if r["measuredStatus"] in ("MEASURED_READY", "ALREADY_TESTED_COMPUTED_READY"))),
              "- **코드는 구현됐지만 커버리지 기준 미달 (NOT_READY)**: " + (", ".join("%s(%s%%)" % (k, r["coverageWithinUsableRangePct"]) for k, r in sorted(f.items()) if r["measuredStatus"].endswith("BELOW_COVERAGE_FLOOR")) or "없음"),
              "- **출처 차단 (SOURCE_BLOCKED)**: " + ", ".join(sorted(k for k, r in f.items() if r["measuredStatus"] == "NOT_COMPUTED_SOURCE_BLOCKED")),
              "- **시점 안전성 없음 (PIT_UNSAFE)**: " + ", ".join(sorted(k for k, r in f.items() if r["measuredStatus"] == "NOT_COMPUTED_PIT_UNSAFE")),
-             "- **데이터 구축 필요 / 구할 수 없음**: " + ", ".join(sorted(k for k, r in f.items() if r["measuredStatus"] in ("NOT_COMPUTED_DATA_BUILD_REQUIRED", "NOT_COMPUTED_NOT_FEASIBLE"))),
+             "- **데이터 구축 필요 / 구할 수 없음 (계산하지 않음)**: " + ", ".join(sorted(k for k, r in f.items() if r["measuredStatus"] in ("NOT_COMPUTED_DATA_BUILD_REQUIRED", "NOT_COMPUTED_NOT_FEASIBLE"))),
              "- **기존 연구 결과만 인용(재계산 안 함)**: " + ", ".join(sorted(k for k, r in f.items() if r["measuredStatus"] == "REFERENCED_ALREADY_TESTED")),
              "- 사전 수정(결과를 보기 전): " + "; ".join(x["id"] for x in report["preOutcomeRevisions"]) + " — 자세한 내용은 JSON의 `preOutcomeRevisions`.", "",
              "## 정보군별 결과", "",
@@ -237,7 +250,13 @@ def render_summary_ko(report, manifest, universe, sources):
     for k, v in report["baselines"].items():
         lines.append("| %s | %s | %s | %s |" % (k, INTERACTION_KO[v["status"]], ", ".join(v["membersBelowFloor"]) or "—",
                                                  "%s%%" % v["completeCaseCoverageWithinCommonRangePct"] if v.get("completeCaseCoverageWithinCommonRangePct") is not None else "—"))
-    lines += ["", "## 계산하지 못한 특성과 데이터 출처", ""]
+    lines += ["", "## 계산했지만 등록 당시 '데이터 구축 필요'였거나 기준에 못 미친 특성 (출처 장애 아님)", "",
+              "| 특성 | 등록 당시 상태 | 구현 | 측정 판정 | 사용 범위 내 커버리지 | 출처 장애 |", "|---|---|---|---:|---:|---|"]
+    for v in sources["computedWithCoverageVerdict"]:
+        lines.append("| %s | %s | %s | %s%s | %s%% | 없음 |" % (v["featureId"], v["registryReadinessStatus"], v["implementationStatus"], STATUS_KO[v["measuredStatus"]],
+                                                          " (얇음)" if v["thinOverFloor"] and v["measuredStatus"].endswith("READY") else "", "%.2f" % v["coverageWithinUsableRangePct"]))
+    lines += ["", "등록부에 적힌 당시의 기대('KR 설비투자 7.74%' 등)는 설계 시점 메모이며, 이번 측정(고정된 후보 병합 저장소)이 그것을 대체합니다. 두 저장소는 서로 다른 대상이라 등록부 메모는 고치지 않았습니다.", "",
+              "## 계산하지 못한 특성과 데이터 출처 (진짜 장애만)", ""]
     for s in sources["sources"]:
         lines.append("- **%s** — %s: %s" % (", ".join(s["features"]), s["status"], SOURCE_KO.get(s["status"], s["source"])))
     lines += ["", "외국인·기관 순매수와 공매도는 최신 기록(%s)에서도 KRX 포털이 접근을 거부해(`%s`) **출처 차단**으로 유지합니다. 이번 단계에서 다시 확인하지 않았고, 일봉으로 만든 매집 지표(D11)를 투자자 수급 대용으로 쓰지 않습니다. 한 번 더 확인하려면 Actions의 `Probes` 워크플로우에서 `probe=kr-investor-flow` 또는 `kr-short-selling`을 선택해 실행합니다." % (

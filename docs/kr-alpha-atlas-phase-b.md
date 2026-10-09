@@ -67,6 +67,16 @@ python scripts/build_kr_alpha_atlas_phase_b.py --scratch <empty directory>     #
 python scripts/build_kr_alpha_atlas_phase_b.py --check                         # the summary and canonical form match the committed JSON
 ```
 
+## Four status axes (revision: status reconciliation)
+
+Every feature carries four separate facts, read from the readiness report and repeated unchanged in the manifest (`featureStatusLedger`) and the source register (`rows`):
+the registry's **design-time status** (`registryReadinessStatus`, never edited), the **implementation status** (did this build write it), the **measured coverage verdict**
+(`measuredStatus`), and a **genuine source blocker** (`genuineSourceBlocker`, non-null only for a feature that was NOT computed). A feature computed on the real matrix is never a
+source blocker, whatever the registry expected: B04 (`MEASURED_READY`, thin, 62.29%), C06 (56.63%) and C15 (52.90%) were `DATA_BUILD_REQUIRED` by design and are published under
+`coverageVerdicts`; the registry's own note on them is kept verbatim as `registryBlockingNote` with `registryNoteStatus: SUPERSEDED_BY_MEASUREMENT`. C16 is the one feature of that
+registry group that was not computed (no gross-profit account), and it stays a blocker. `reconcile_sources` refuses a computed feature inside a source group and a non-computed
+feature that has no source verdict; tests compare the report, manifest, source register and Korean summary feature by feature. No measurement, gate or source identity moved.
+
 ## What this does not do
 
 It does not evaluate any feature, fit any model, build any label, select a winner or authorise anything. The registry (`readinessStatus`) is not edited: the report's `measuredStatus` is the

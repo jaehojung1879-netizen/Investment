@@ -299,7 +299,6 @@
  },
  "features": {
   "A01_return1d": {
-   "blockingReason": null,
    "catalogue": {
     "addsArithmetic": "one division",
     "categorical": false,
@@ -515,6 +514,7 @@
    "eligibleObservations": 85680,
    "family": "A",
    "featureId": "A01_return1d",
+   "genuineSourceBlocker": null,
    "horizonUsability": {
     "H126": {
      "lastMaturableSignalDate": "2026-03-06",
@@ -544,7 +544,9 @@
     126,
     21
    ],
+   "registryBlockingNote": null,
    "registryLimitations": "bid-ask bounce cannot be separated without quote data (E09)",
+   "registryNoteStatus": "NONE",
    "registryPitStatus": "PIT_SIGNAL_CLOSE",
    "registryPriorEvidence": "UNTESTED",
    "registryReadinessStatus": "DERIVABLE_FROM_EXISTING_DATA",
@@ -570,7 +572,6 @@
    ]
   },
   "A02_return5d": {
-   "blockingReason": null,
    "catalogue": {
     "addsArithmetic": "one division",
     "categorical": false,
@@ -786,6 +787,7 @@
    "eligibleObservations": 85680,
    "family": "A",
    "featureId": "A02_return5d",
+   "genuineSourceBlocker": null,
    "horizonUsability": {
     "H126": {
      "lastMaturableSignalDate": "2026-03-06",
@@ -816,7 +818,9 @@
     126,
     21
    ],
+   "registryBlockingNote": null,
    "registryLimitations": "",
+   "registryNoteStatus": "NONE",
    "registryPitStatus": "PIT_SIGNAL_CLOSE",
    "registryPriorEvidence": "UNTESTED",
    "registryReadinessStatus": "DERIVABLE_FROM_EXISTING_DATA",
@@ -842,7 +846,6 @@
    ]
   },
   "A03_return21d": {
-   "blockingReason": null,
    "catalogue": {
     "addsArithmetic": null,
     "categorical": false,
@@ -1060,6 +1063,7 @@
    "eligibleObservations": 85680,
    "family": "A",
    "featureId": "A03_return21d",
+   "genuineSourceBlocker": null,
    "horizonUsability": {
     "H126": {
      "lastMaturableSignalDate": "2026-03-06",
@@ -1090,7 +1094,9 @@
     126,
     21
    ],
+   "registryBlockingNote": null,
    "registryLimitations": "",
+   "registryNoteStatus": "NONE",
    "registryPitStatus": "PIT_SIGNAL_CLOSE",
    "registryPriorEvidence": "PRIOR_INCONCLUSIVE",
    "registryReadinessStatus": "READY",
@@ -1116,7 +1122,6 @@
    ]
   },
   "A04_return63d": {
-   "blockingReason": null,
    "catalogue": {
     "addsArithmetic": null,
     "categorical": false,
@@ -1334,6 +1339,7 @@
    "eligibleObservations": 85680,
    "family": "A",
    "featureId": "A04_return63d",
+   "genuineSourceBlocker": null,
    "horizonUsability": {
     "H126": {
      "lastMaturableSignalDate": "2026-03-06",
@@ -1364,7 +1370,9 @@
     126,
     21
    ],
+   "registryBlockingNote": null,
    "registryLimitations": "",
+   "registryNoteStatus": "NONE",
    "registryPitStatus": "PIT_SIGNAL_CLOSE",
    "registryPriorEvidence": "PRIOR_INCONCLUSIVE",
    "registryReadinessStatus": "READY",
@@ -1390,7 +1398,6 @@
    ]
   },
   "A05_relative126": {
-   "blockingReason": null,
    "catalogue": {
     "addsArithmetic": null,
     "categorical": false,
@@ -1608,6 +1615,7 @@
    "eligibleObservations": 85680,
    "family": "A",
    "featureId": "A05_relative126",
+   "genuineSourceBlocker": null,
    "horizonUsability": {
     "H126": {
      "lastMaturableSignalDate": "2026-03-06",
@@ -1637,7 +1645,9 @@
     126,
     21
    ],
+   "registryBlockingNote": null,
    "registryLimitations": "factor anatomy: CONCENTRATED_IN_SPECIFIC_STRATA (H126 D10-D1 +10.3pp, 73% of years positive); within industry WEAKENS_MATERIALLY",
+   "registryNoteStatus": "NONE",
    "registryPitStatus": "PIT_SIGNAL_CLOSE",
    "registryPriorEvidence": "PRIOR_INCONCLUSIVE",
    "registryReadinessStatus": "ALREADY_TESTED",
@@ -1664,7 +1674,6 @@
    ]
   },
   "A06_return252d": {
-   "blockingReason": null,
    "catalogue": {
     "addsArithmetic": "one division",
     "categorical": false,
@@ -1880,6 +1889,7 @@
    "eligibleObservations": 85680,
    "family": "A",
    "featureId": "A06_return252d",
+   "genuineSourceBlocker": null,
    "horizonUsability": {
     "H126": {
      "lastMaturableSignalDate": "2026-03-06",
@@ -1909,7 +1919,9 @@
     126,
     21
    ],
+   "registryBlockingNote": null,
    "registryLimitations": "",
+   "registryNoteStatus": "NONE",
    "registryPitStatus": "PIT_SIGNAL_CLOSE",
    "registryPriorEvidence": "PRIOR_INCONCLUSIVE",
    "registryReadinessStatus": "READY",
@@ -1935,7 +1947,6 @@
    ]
   },
   "A07_momentum12_1": {
-   "blockingReason": null,
    "catalogue": {
     "addsArithmetic": null,
     "categorical": false,
@@ -2153,6 +2164,7 @@
    "eligibleObservations": 85680,
    "family": "A",
    "featureId": "A07_momentum12_1",
+   "genuineSourceBlocker": null,
    "horizonUsability": {
     "H126": {
      "lastMaturableSignalDate": "2026-03-06",
@@ -2181,7 +2193,9 @@
     126,
     21
    ],
+   "registryBlockingNote": null,
    "registryLimitations": "factor anatomy UNSTABLE_OR_REGIME_DEPENDENT; within industry ABSORBED_TO_NEAR_ZERO",
+   "registryNoteStatus": "NONE",
    "registryPitStatus": "PIT_SIGNAL_CLOSE",
    "registryPriorEvidence": "PRIOR_INCONCLUSIVE",
    "registryReadinessStatus": "ALREADY_TESTED",
@@ -2207,7 +2221,6 @@
    ]
   },
   "A08_momentum6": {
-   "blockingReason": null,
    "catalogue": {
     "addsArithmetic": null,
     "categorical": false,
@@ -2425,6 +2438,7 @@
    "eligibleObservations": 85680,
    "family": "A",
    "featureId": "A08_momentum6",
+   "genuineSourceBlocker": null,
    "horizonUsability": {
     "H126": {
      "lastMaturableSignalDate": "2026-03-06",
@@ -2455,7 +2469,9 @@
     126,
     21
    ],
+   "registryBlockingNote": null,
    "registryLimitations": "",
+   "registryNoteStatus": "NONE",
    "registryPitStatus": "PIT_SIGNAL_CLOSE",
    "registryPriorEvidence": "PRIOR_INCONCLUSIVE",
    "registryReadinessStatus": "READY",
@@ -2481,7 +2497,6 @@
    ]
   },
   "A09_industryRelativeMomentum126": {
-   "blockingReason": null,
    "catalogue": {
     "addsArithmetic": null,
     "categorical": false,
@@ -2699,6 +2714,7 @@
    "eligibleObservations": 85680,
    "family": "A",
    "featureId": "A09_industryRelativeMomentum126",
+   "genuineSourceBlocker": null,
    "horizonUsability": {
     "H126": {
      "lastMaturableSignalDate": "2026-03-06",
@@ -2727,7 +2743,9 @@
     126,
     21
    ],
+   "registryBlockingNote": null,
    "registryLimitations": "within-industry relative126 +0.028 (mean/se +1.1), 55% of years positive",
+   "registryNoteStatus": "NONE",
    "registryPitStatus": "PIT_RECONSTRUCTED_MEMBERSHIP",
    "registryPriorEvidence": "PRIOR_INCONCLUSIVE",
    "registryReadinessStatus": "ALREADY_TESTED",
@@ -2754,7 +2772,6 @@
    ]
   },
   "A10_residualMomentum126": {
-   "blockingReason": null,
    "catalogue": {
     "addsArithmetic": "one subtraction",
     "categorical": false,
@@ -2972,6 +2989,7 @@
    "eligibleObservations": 85680,
    "family": "A",
    "featureId": "A10_residualMomentum126",
+   "genuineSourceBlocker": null,
    "horizonUsability": {
     "H126": {
      "lastMaturableSignalDate": "2026-03-06",
@@ -3001,7 +3019,9 @@
     126,
     21
    ],
+   "registryBlockingNote": null,
    "registryLimitations": "",
+   "registryNoteStatus": "NONE",
    "registryPitStatus": "PIT_SIGNAL_CLOSE",
    "registryPriorEvidence": "UNTESTED",
    "registryReadinessStatus": "DERIVABLE_FROM_EXISTING_DATA",
@@ -3027,7 +3047,6 @@
    ]
   },
   "A11_distance52wHigh": {
-   "blockingReason": null,
    "catalogue": {
     "addsArithmetic": null,
     "categorical": false,
@@ -3245,6 +3264,7 @@
    "eligibleObservations": 85680,
    "family": "A",
    "featureId": "A11_distance52wHigh",
+   "genuineSourceBlocker": null,
    "horizonUsability": {
     "H126": {
      "lastMaturableSignalDate": "2026-03-06",
@@ -3274,7 +3294,9 @@
     126,
     21
    ],
+   "registryBlockingNote": null,
    "registryLimitations": "",
+   "registryNoteStatus": "NONE",
    "registryPitStatus": "PIT_SIGNAL_CLOSE",
    "registryPriorEvidence": "PRIOR_INCONCLUSIVE",
    "registryReadinessStatus": "READY",
@@ -3300,7 +3322,6 @@
    ]
   },
   "A12_momentumPersistence": {
-   "blockingReason": null,
    "catalogue": {
     "addsArithmetic": "12 window comparisons",
     "categorical": false,
@@ -3516,6 +3537,7 @@
    "eligibleObservations": 85680,
    "family": "A",
    "featureId": "A12_momentumPersistence",
+   "genuineSourceBlocker": null,
    "horizonUsability": {
     "H126": {
      "lastMaturableSignalDate": "2026-03-06",
@@ -3545,7 +3567,9 @@
     126,
     21
    ],
+   "registryBlockingNote": null,
    "registryLimitations": "",
+   "registryNoteStatus": "NONE",
    "registryPitStatus": "PIT_SIGNAL_CLOSE",
    "registryPriorEvidence": "UNTESTED",
    "registryReadinessStatus": "DERIVABLE_FROM_EXISTING_DATA",
@@ -3571,7 +3595,6 @@
    ]
   },
   "A13_momentumAcceleration21": {
-   "blockingReason": null,
    "catalogue": {
     "addsArithmetic": "one subtraction",
     "categorical": false,
@@ -3787,6 +3810,7 @@
    "eligibleObservations": 85680,
    "family": "A",
    "featureId": "A13_momentumAcceleration21",
+   "genuineSourceBlocker": null,
    "horizonUsability": {
     "H126": {
      "lastMaturableSignalDate": "2026-03-06",
@@ -3817,7 +3841,9 @@
     126,
     21
    ],
+   "registryBlockingNote": null,
    "registryLimitations": "",
+   "registryNoteStatus": "NONE",
    "registryPitStatus": "PIT_SIGNAL_CLOSE",
    "registryPriorEvidence": "PRIOR_INCONCLUSIVE",
    "registryReadinessStatus": "READY",
@@ -3843,7 +3869,6 @@
    ]
   },
   "A14_ma200Distance": {
-   "blockingReason": null,
    "catalogue": {
     "addsArithmetic": null,
     "categorical": false,
@@ -4061,6 +4086,7 @@
    "eligibleObservations": 85680,
    "family": "A",
    "featureId": "A14_ma200Distance",
+   "genuineSourceBlocker": null,
    "horizonUsability": {
     "H126": {
      "lastMaturableSignalDate": "2026-03-06",
@@ -4091,7 +4117,9 @@
     126,
     21
    ],
+   "registryBlockingNote": null,
    "registryLimitations": "",
+   "registryNoteStatus": "NONE",
    "registryPitStatus": "PIT_SIGNAL_CLOSE",
    "registryPriorEvidence": "PRIOR_INCONCLUSIVE",
    "registryReadinessStatus": "READY",
@@ -4117,7 +4145,6 @@
    ]
   },
   "B01_bookToMarket": {
-   "blockingReason": null,
    "catalogue": {
     "addsArithmetic": null,
     "categorical": false,
@@ -4335,6 +4362,7 @@
    "eligibleObservations": 85680,
    "family": "B",
    "featureId": "B01_bookToMarket",
+   "genuineSourceBlocker": null,
    "horizonUsability": {
     "H126": {
      "lastMaturableSignalDate": "2026-03-06",
@@ -4364,7 +4392,9 @@
     126,
     252
    ],
+   "registryBlockingNote": null,
    "registryLimitations": "factor anatomy H126 BROADLY_POSITIVE_HISTORICAL_ASSOCIATION (D10-D1 +6.5pp, 80% of years); within-industry +0.086 (mean/se +2.9); 75% raw coverage of eligible name-dates. ISSUE_CAP_ACCOUNTING_PROXY: whole-entity accounts over one issue's cap; distorted for preferreds and holding companies; return basis understates high-dividend names",
+   "registryNoteStatus": "NONE",
    "registryPitStatus": "PIT_RECEIPT_DATED",
    "registryPriorEvidence": "PRIOR_POSITIVE_DEVELOPMENT",
    "registryReadinessStatus": "ALREADY_TESTED",
@@ -4388,7 +4418,6 @@
    ]
   },
   "B02_earningsYield": {
-   "blockingReason": null,
    "catalogue": {
     "addsArithmetic": null,
     "categorical": false,
@@ -4606,6 +4635,7 @@
    "eligibleObservations": 85680,
    "family": "B",
    "featureId": "B02_earningsYield",
+   "genuineSourceBlocker": null,
    "horizonUsability": {
     "H126": {
      "lastMaturableSignalDate": "2026-03-06",
@@ -4635,7 +4665,9 @@
     126,
     252
    ],
+   "registryBlockingNote": null,
    "registryLimitations": "market-wide UNSTABLE_OR_REGIME_DEPENDENT; within industry +0.073 (+2.6); 61% raw coverage. ISSUE_CAP_ACCOUNTING_PROXY: whole-entity accounts over one issue's cap; distorted for preferreds and holding companies; return basis understates high-dividend names",
+   "registryNoteStatus": "NONE",
    "registryPitStatus": "PIT_RECEIPT_DATED",
    "registryPriorEvidence": "PRIOR_INCONCLUSIVE",
    "registryReadinessStatus": "ALREADY_TESTED",
@@ -4658,7 +4690,6 @@
    ]
   },
   "B03_ocfYield": {
-   "blockingReason": null,
    "catalogue": {
     "addsArithmetic": null,
     "categorical": false,
@@ -4876,6 +4907,7 @@
    "eligibleObservations": 85680,
    "family": "B",
    "featureId": "B03_ocfYield",
+   "genuineSourceBlocker": null,
    "horizonUsability": {
     "H126": {
      "lastMaturableSignalDate": "2026-03-06",
@@ -4905,7 +4937,9 @@
     126,
     252
    ],
+   "registryBlockingNote": null,
    "registryLimitations": "factor anatomy H126 D10-D1 -4.1pp, 11% of years positive; ISSUE_CAP_ACCOUNTING_PROXY: whole-entity accounts over one issue's cap; distorted for preferreds and holding companies; return basis understates high-dividend names",
+   "registryNoteStatus": "NONE",
    "registryPitStatus": "PIT_RECEIPT_DATED",
    "registryPriorEvidence": "PRIOR_NEGATIVE_DEVELOPMENT",
    "registryReadinessStatus": "ALREADY_TESTED",
@@ -4928,7 +4962,6 @@
    ]
   },
   "B04_freeCashFlowYield": {
-   "blockingReason": "KR capex (유형자산의취득) present on 7.74% of KR filings and fcfToNetIncome on 4.31% (alpha-research-foundation-v2); kr-canonical-v2 raw-statement repair not landed",
    "catalogue": {
     "addsArithmetic": "one division",
     "categorical": false,
@@ -5146,6 +5179,7 @@
    "eligibleObservations": 85680,
    "family": "B",
    "featureId": "B04_freeCashFlowYield",
+   "genuineSourceBlocker": null,
    "horizonUsability": {
     "H126": {
      "lastMaturableSignalDate": "2026-03-06",
@@ -5175,7 +5209,9 @@
     126,
     252
    ],
+   "registryBlockingNote": "KR capex (유형자산의취득) present on 7.74% of KR filings and fcfToNetIncome on 4.31% (alpha-research-foundation-v2); kr-canonical-v2 raw-statement repair not landed",
    "registryLimitations": "",
+   "registryNoteStatus": "SUPERSEDED_BY_MEASUREMENT",
    "registryPitStatus": "PIT_RECEIPT_DATED",
    "registryPriorEvidence": "UNTESTED",
    "registryReadinessStatus": "DATA_BUILD_REQUIRED",
@@ -5198,7 +5234,6 @@
    ]
   },
   "B05_industryRelativeValue": {
-   "blockingReason": null,
    "catalogue": {
     "addsArithmetic": null,
     "categorical": false,
@@ -5416,6 +5451,7 @@
    "eligibleObservations": 85680,
    "family": "B",
    "featureId": "B05_industryRelativeValue",
+   "genuineSourceBlocker": null,
    "horizonUsability": {
     "H126": {
      "lastMaturableSignalDate": "2026-03-06",
@@ -5445,7 +5481,9 @@
     126,
     252
    ],
+   "registryBlockingNote": null,
    "registryLimitations": "B/M and EY both SURVIVE the move to industry-relative targets; the outcome-exposed anatomy was read before H2 was designed",
+   "registryNoteStatus": "NONE",
    "registryPitStatus": "PIT_RECEIPT_DATED",
    "registryPriorEvidence": "PRIOR_POSITIVE_DEVELOPMENT",
    "registryReadinessStatus": "ALREADY_TESTED",
@@ -5469,7 +5507,6 @@
    ]
   },
   "B06_ownHistoryValuation": {
-   "blockingReason": null,
    "catalogue": {
     "addsArithmetic": "a median over the ticker's own earlier matrix rows",
     "categorical": false,
@@ -5685,6 +5722,7 @@
    "eligibleObservations": 85680,
    "family": "B",
    "featureId": "B06_ownHistoryValuation",
+   "genuineSourceBlocker": null,
    "horizonUsability": {
     "H126": {
      "lastMaturableSignalDate": "2026-03-06",
@@ -5712,7 +5750,9 @@
     126,
     252
    ],
+   "registryBlockingNote": null,
    "registryLimitations": "",
+   "registryNoteStatus": "NONE",
    "registryPitStatus": "PIT_RECEIPT_DATED",
    "registryPriorEvidence": "UNTESTED",
    "registryReadinessStatus": "DERIVABLE_FROM_EXISTING_DATA",
@@ -5734,7 +5774,6 @@
    ]
   },
   "B07_valuationChange126": {
-   "blockingReason": null,
    "catalogue": {
     "addsArithmetic": "one log ratio",
     "categorical": false,
@@ -5950,6 +5989,7 @@
    "eligibleObservations": 85680,
    "family": "B",
    "featureId": "B07_valuationChange126",
+   "genuineSourceBlocker": null,
    "horizonUsability": {
     "H126": {
      "lastMaturableSignalDate": "2026-03-06",
@@ -5977,7 +6017,9 @@
     126,
     252
    ],
+   "registryBlockingNote": null,
    "registryLimitations": "",
+   "registryNoteStatus": "NONE",
    "registryPitStatus": "PIT_RECEIPT_DATED",
    "registryPriorEvidence": "UNTESTED",
    "registryReadinessStatus": "DERIVABLE_FROM_EXISTING_DATA",
@@ -6001,7 +6043,6 @@
    ]
   },
   "B08_valueBusinessConfirmation": {
-   "blockingReason": null,
    "catalogue": {
     "addsArithmetic": null,
     "categorical": true,
@@ -6211,6 +6252,7 @@
    "eligibleObservations": 67542,
    "family": "B",
    "featureId": "B08_valueBusinessConfirmation",
+   "genuineSourceBlocker": null,
    "horizonUsability": {
     "H126": {
      "lastMaturableSignalDate": "2026-03-06",
@@ -6237,7 +6279,9 @@
     126,
     252
    ],
+   "registryBlockingNote": null,
    "registryLimitations": "",
+   "registryNoteStatus": "NONE",
    "registryPitStatus": "PIT_RECEIPT_DATED",
    "registryPriorEvidence": "PRIOR_INCONCLUSIVE",
    "registryReadinessStatus": "DERIVABLE_FROM_EXISTING_DATA",
@@ -6260,7 +6304,6 @@
    ]
   },
   "C01_returnOnAssets": {
-   "blockingReason": null,
    "catalogue": {
     "addsArithmetic": null,
     "categorical": false,
@@ -6478,6 +6521,7 @@
    "eligibleObservations": 85680,
    "family": "C",
    "featureId": "C01_returnOnAssets",
+   "genuineSourceBlocker": null,
    "horizonUsability": {
     "H126": {
      "lastMaturableSignalDate": "2026-03-06",
@@ -6506,7 +6550,9 @@
     126,
     252
    ],
+   "registryBlockingNote": null,
    "registryLimitations": "factor anatomy NO_CLEAR_MONOTONIC_PATTERN; within industry +0.036 (+1.0); 61% raw coverage",
+   "registryNoteStatus": "NONE",
    "registryPitStatus": "PIT_RECEIPT_DATED",
    "registryPriorEvidence": "PRIOR_INCONCLUSIVE",
    "registryReadinessStatus": "ALREADY_TESTED",
@@ -6529,7 +6575,6 @@
    ]
   },
   "C02_returnOnEquity": {
-   "blockingReason": null,
    "catalogue": {
     "addsArithmetic": null,
     "categorical": false,
@@ -6747,6 +6792,7 @@
    "eligibleObservations": 85680,
    "family": "C",
    "featureId": "C02_returnOnEquity",
+   "genuineSourceBlocker": null,
    "horizonUsability": {
     "H126": {
      "lastMaturableSignalDate": "2026-03-06",
@@ -6776,7 +6822,9 @@
     126,
     252
    ],
+   "registryBlockingNote": null,
    "registryLimitations": "undefined on negative equity (None, never a number)",
+   "registryNoteStatus": "NONE",
    "registryPitStatus": "PIT_RECEIPT_DATED",
    "registryPriorEvidence": "PRIOR_INCONCLUSIVE",
    "registryReadinessStatus": "READY",
@@ -6799,7 +6847,6 @@
    ]
   },
   "C03_operatingMargin": {
-   "blockingReason": null,
    "catalogue": {
     "addsArithmetic": null,
     "categorical": false,
@@ -7017,6 +7064,7 @@
    "eligibleObservations": 85680,
    "family": "C",
    "featureId": "C03_operatingMargin",
+   "genuineSourceBlocker": null,
    "horizonUsability": {
     "H126": {
      "lastMaturableSignalDate": "2026-03-06",
@@ -7046,7 +7094,9 @@
     126,
     252
    ],
+   "registryBlockingNote": null,
    "registryLimitations": "",
+   "registryNoteStatus": "NONE",
    "registryPitStatus": "PIT_RECEIPT_DATED",
    "registryPriorEvidence": "PRIOR_INCONCLUSIVE",
    "registryReadinessStatus": "READY",
@@ -7069,7 +7119,6 @@
    ]
   },
   "C04_profitMargin": {
-   "blockingReason": null,
    "catalogue": {
     "addsArithmetic": null,
     "categorical": false,
@@ -7287,6 +7336,7 @@
    "eligibleObservations": 85680,
    "family": "C",
    "featureId": "C04_profitMargin",
+   "genuineSourceBlocker": null,
    "horizonUsability": {
     "H126": {
      "lastMaturableSignalDate": "2026-03-06",
@@ -7316,7 +7366,9 @@
     126,
     252
    ],
+   "registryBlockingNote": null,
    "registryLimitations": "",
+   "registryNoteStatus": "NONE",
    "registryPitStatus": "PIT_RECEIPT_DATED",
    "registryPriorEvidence": "PRIOR_INCONCLUSIVE",
    "registryReadinessStatus": "READY",
@@ -7339,7 +7391,6 @@
    ]
   },
   "C05_ocfToAssets": {
-   "blockingReason": null,
    "catalogue": {
     "addsArithmetic": null,
     "categorical": false,
@@ -7557,6 +7608,7 @@
    "eligibleObservations": 85680,
    "family": "C",
    "featureId": "C05_ocfToAssets",
+   "genuineSourceBlocker": null,
    "horizonUsability": {
     "H126": {
      "lastMaturableSignalDate": "2026-03-06",
@@ -7585,7 +7637,9 @@
     126,
     252
    ],
+   "registryBlockingNote": null,
    "registryLimitations": "60% raw coverage",
+   "registryNoteStatus": "NONE",
    "registryPitStatus": "PIT_RECEIPT_DATED",
    "registryPriorEvidence": "PRIOR_INCONCLUSIVE",
    "registryReadinessStatus": "ALREADY_TESTED",
@@ -7608,7 +7662,6 @@
    ]
   },
   "C06_cashConversion": {
-   "blockingReason": "KR net income absent from 72% of 2024-2025 quarterly filings in the sealed store (v2.33); v5 removed ocfToNetIncomePct for an unapproved state contract",
    "catalogue": {
     "addsArithmetic": "a positive-denominator guard: a cash-conversion ratio on a loss has no economic reading",
     "categorical": false,
@@ -7826,6 +7879,7 @@
    "eligibleObservations": 85680,
    "family": "C",
    "featureId": "C06_cashConversion",
+   "genuineSourceBlocker": null,
    "horizonUsability": {
     "H126": {
      "lastMaturableSignalDate": "2026-03-06",
@@ -7855,7 +7909,9 @@
     126,
     252
    ],
+   "registryBlockingNote": "KR net income absent from 72% of 2024-2025 quarterly filings in the sealed store (v2.33); v5 removed ocfToNetIncomePct for an unapproved state contract",
    "registryLimitations": "",
+   "registryNoteStatus": "SUPERSEDED_BY_MEASUREMENT",
    "registryPitStatus": "PIT_RECEIPT_DATED",
    "registryPriorEvidence": "UNTESTED",
    "registryReadinessStatus": "DATA_BUILD_REQUIRED",
@@ -7878,7 +7934,6 @@
    ]
   },
   "C07_negativeAccruals": {
-   "blockingReason": null,
    "catalogue": {
     "addsArithmetic": null,
     "categorical": false,
@@ -8096,6 +8151,7 @@
    "eligibleObservations": 85680,
    "family": "C",
    "featureId": "C07_negativeAccruals",
+   "genuineSourceBlocker": null,
    "horizonUsability": {
     "H126": {
      "lastMaturableSignalDate": "2026-03-06",
@@ -8124,7 +8180,9 @@
     126,
     252
    ],
+   "registryBlockingNote": null,
    "registryLimitations": "factor anatomy D10-D1 -1.0pp, 33% of years positive; within industry ABSORBED_TO_NEAR_ZERO",
+   "registryNoteStatus": "NONE",
    "registryPitStatus": "PIT_RECEIPT_DATED",
    "registryPriorEvidence": "PRIOR_NEGATIVE_DEVELOPMENT",
    "registryReadinessStatus": "ALREADY_TESTED",
@@ -8147,7 +8205,6 @@
    ]
   },
   "C08_netIncomeMinusOcf": {
-   "blockingReason": null,
    "catalogue": {
     "addsArithmetic": "a sign flip",
     "categorical": false,
@@ -8365,6 +8422,7 @@
    "eligibleObservations": 85680,
    "family": "C",
    "featureId": "C08_netIncomeMinusOcf",
+   "genuineSourceBlocker": null,
    "horizonUsability": {
     "H126": {
      "lastMaturableSignalDate": "2026-03-06",
@@ -8393,7 +8451,9 @@
     126,
     252
    ],
+   "registryBlockingNote": null,
    "registryLimitations": "",
+   "registryNoteStatus": "NONE",
    "registryPitStatus": "PIT_RECEIPT_DATED",
    "registryPriorEvidence": "PRIOR_NEGATIVE_DEVELOPMENT",
    "registryReadinessStatus": "ALREADY_TESTED",
@@ -8416,7 +8476,6 @@
    ]
   },
   "C09_assetGrowth": {
-   "blockingReason": null,
    "catalogue": {
     "addsArithmetic": null,
     "categorical": false,
@@ -8634,6 +8693,7 @@
    "eligibleObservations": 85680,
    "family": "C",
    "featureId": "C09_assetGrowth",
+   "genuineSourceBlocker": null,
    "horizonUsability": {
     "H126": {
      "lastMaturableSignalDate": "2026-03-06",
@@ -8663,7 +8723,9 @@
     126,
     252
    ],
+   "registryBlockingNote": null,
    "registryLimitations": "96-97% coverage where filings exist; joint use only in v5 (INCONCLUSIVE)",
+   "registryNoteStatus": "NONE",
    "registryPitStatus": "PIT_RECEIPT_DATED",
    "registryPriorEvidence": "PRIOR_INCONCLUSIVE",
    "registryReadinessStatus": "READY",
@@ -8686,7 +8748,6 @@
    ]
   },
   "C10_liabilityGrowth": {
-   "blockingReason": null,
    "catalogue": {
     "addsArithmetic": null,
     "categorical": false,
@@ -8904,6 +8965,7 @@
    "eligibleObservations": 85680,
    "family": "C",
    "featureId": "C10_liabilityGrowth",
+   "genuineSourceBlocker": null,
    "horizonUsability": {
     "H126": {
      "lastMaturableSignalDate": "2026-03-06",
@@ -8932,7 +8994,9 @@
     126,
     252
    ],
+   "registryBlockingNote": null,
    "registryLimitations": "",
+   "registryNoteStatus": "NONE",
    "registryPitStatus": "PIT_RECEIPT_DATED",
    "registryPriorEvidence": "PRIOR_INCONCLUSIVE",
    "registryReadinessStatus": "READY",
@@ -8955,7 +9019,6 @@
    ]
   },
   "C11_shareDilution": {
-   "blockingReason": null,
    "catalogue": {
     "addsArithmetic": null,
     "categorical": false,
@@ -9174,6 +9237,7 @@
    "eligibleObservations": 85680,
    "family": "C",
    "featureId": "C11_shareDilution",
+   "genuineSourceBlocker": null,
    "horizonUsability": {
     "H126": {
      "lastMaturableSignalDate": "2026-03-06",
@@ -9203,7 +9267,9 @@
     126,
     252
    ],
+   "registryBlockingNote": null,
    "registryLimitations": "quarterly share counts carried forward from earlier filings where not restated (AS_FILED vs CARRIED_FORWARD published)",
+   "registryNoteStatus": "NONE",
    "registryPitStatus": "PIT_RECEIPT_DATED",
    "registryPriorEvidence": "UNTESTED",
    "registryReadinessStatus": "DERIVABLE_FROM_EXISTING_DATA",
@@ -9226,7 +9292,6 @@
    ]
   },
   "C12_profitabilityPersistence": {
-   "blockingReason": null,
    "catalogue": {
     "addsArithmetic": null,
     "categorical": false,
@@ -9445,6 +9510,7 @@
    "eligibleObservations": 85680,
    "family": "C",
    "featureId": "C12_profitabilityPersistence",
+   "genuineSourceBlocker": null,
    "horizonUsability": {
     "H126": {
      "lastMaturableSignalDate": "2026-03-06",
@@ -9473,7 +9539,9 @@
     126,
     252
    ],
+   "registryBlockingNote": null,
    "registryLimitations": "",
+   "registryNoteStatus": "NONE",
    "registryPitStatus": "PIT_RECEIPT_DATED",
    "registryPriorEvidence": "UNTESTED",
    "registryReadinessStatus": "DERIVABLE_FROM_EXISTING_DATA",
@@ -9496,9 +9564,9 @@
    ]
   },
   "C13_fundamentalAcceleration": {
-   "blockingReason": null,
    "family": "C",
    "featureId": "C13_fundamentalAcceleration",
+   "genuineSourceBlocker": null,
    "implementation": "REFERENCED_NOT_RECOMPUTED",
    "measuredStatus": "REFERENCED_ALREADY_TESTED",
    "nextAction": "sealed prior reading stands; not re-run",
@@ -9508,7 +9576,9 @@
     126,
     252
    ],
+   "registryBlockingNote": null,
    "registryLimitations": "",
+   "registryNoteStatus": "NONE",
    "registryPitStatus": "PIT_RECEIPT_DATED",
    "registryPriorEvidence": "PRIOR_NEGATIVE_DEVELOPMENT",
    "registryReadinessStatus": "ALREADY_TESTED",
@@ -9517,7 +9587,6 @@
    "sourceClass": "DART_FILINGS"
   },
   "C14_ocfImprovement": {
-   "blockingReason": null,
    "catalogue": {
     "addsArithmetic": null,
     "categorical": false,
@@ -9735,6 +9804,7 @@
    "eligibleObservations": 85680,
    "family": "C",
    "featureId": "C14_ocfImprovement",
+   "genuineSourceBlocker": null,
    "horizonUsability": {
     "H126": {
      "lastMaturableSignalDate": "2026-03-06",
@@ -9763,7 +9833,9 @@
     126,
     252
    ],
+   "registryBlockingNote": null,
    "registryLimitations": "factor anatomy UNSTABLE_OR_REGIME_DEPENDENT; within industry +0.044 (+1.8) SURVIVES; 51% raw coverage",
+   "registryNoteStatus": "NONE",
    "registryPitStatus": "PIT_RECEIPT_DATED",
    "registryPriorEvidence": "PRIOR_INCONCLUSIVE",
    "registryReadinessStatus": "ALREADY_TESTED",
@@ -9785,7 +9857,6 @@
    ]
   },
   "C15_capexIntensity": {
-   "blockingReason": "KR capex coverage 7.74% (alpha-research-foundation-v2)",
    "catalogue": {
     "addsArithmetic": null,
     "categorical": false,
@@ -10003,6 +10074,7 @@
    "eligibleObservations": 85680,
    "family": "C",
    "featureId": "C15_capexIntensity",
+   "genuineSourceBlocker": null,
    "horizonUsability": {
     "H126": {
      "lastMaturableSignalDate": "2026-03-06",
@@ -10032,7 +10104,9 @@
     126,
     252
    ],
+   "registryBlockingNote": "KR capex coverage 7.74% (alpha-research-foundation-v2)",
    "registryLimitations": "",
+   "registryNoteStatus": "SUPERSEDED_BY_MEASUREMENT",
    "registryPitStatus": "PIT_RECEIPT_DATED",
    "registryPriorEvidence": "UNTESTED",
    "registryReadinessStatus": "DATA_BUILD_REQUIRED",
@@ -10055,9 +10129,12 @@
    ]
   },
   "C16_grossProfitability": {
-   "blockingReason": "no gross-profit or cost-of-sales line in dart_fundamentals.WANTED_ACCOUNTS; raw-statement store (dart_raw_statements) keeps all rows but kr-canonical-v2 has not landed",
    "family": "C",
    "featureId": "C16_grossProfitability",
+   "genuineSourceBlocker": {
+    "kind": "DATA_BUILD_GAP",
+    "statement": "no gross-profit or cost-of-sales line in dart_fundamentals.WANTED_ACCOUNTS; raw-statement store (dart_raw_statements) keeps all rows but kr-canonical-v2 has not landed"
+   },
    "implementation": "NOT_COMPUTED",
    "measuredStatus": "NOT_COMPUTED_DATA_BUILD_REQUIRED",
    "nextAction": "add a canonical account rule in the data-foundation line, then measure coverage",
@@ -10067,7 +10144,9 @@
     126,
     252
    ],
+   "registryBlockingNote": "no gross-profit or cost-of-sales line in dart_fundamentals.WANTED_ACCOUNTS; raw-statement store (dart_raw_statements) keeps all rows but kr-canonical-v2 has not landed",
    "registryLimitations": "",
+   "registryNoteStatus": "CURRENT",
    "registryPitStatus": "PIT_RECEIPT_DATED",
    "registryPriorEvidence": "UNTESTED",
    "registryReadinessStatus": "DATA_BUILD_REQUIRED",
@@ -10076,7 +10155,6 @@
    "sourceClass": "DART_FILINGS"
   },
   "D01_volumeSurge5_60": {
-   "blockingReason": null,
    "catalogue": {
     "addsArithmetic": null,
     "categorical": false,
@@ -10294,6 +10372,7 @@
    "eligibleObservations": 85680,
    "family": "D",
    "featureId": "D01_volumeSurge5_60",
+   "genuineSourceBlocker": null,
    "horizonUsability": {
     "H21": {
      "lastMaturableSignalDate": "2026-08-07",
@@ -10324,7 +10403,9 @@
     21,
     63
    ],
+   "registryBlockingNote": null,
    "registryLimitations": "",
+   "registryNoteStatus": "NONE",
    "registryPitStatus": "PIT_SIGNAL_CLOSE",
    "registryPriorEvidence": "PRIOR_INCONCLUSIVE",
    "registryReadinessStatus": "READY",
@@ -10351,7 +10432,6 @@
    ]
   },
   "D02_logVolumeShock60": {
-   "blockingReason": null,
    "catalogue": {
     "addsArithmetic": null,
     "categorical": false,
@@ -10569,6 +10649,7 @@
    "eligibleObservations": 85680,
    "family": "D",
    "featureId": "D02_logVolumeShock60",
+   "genuineSourceBlocker": null,
    "horizonUsability": {
     "H21": {
      "lastMaturableSignalDate": "2026-08-07",
@@ -10599,7 +10680,9 @@
     21,
     63
    ],
+   "registryBlockingNote": null,
    "registryLimitations": "",
+   "registryNoteStatus": "NONE",
    "registryPitStatus": "PIT_SIGNAL_CLOSE",
    "registryPriorEvidence": "PRIOR_INCONCLUSIVE",
    "registryReadinessStatus": "READY",
@@ -10626,7 +10709,6 @@
    ]
   },
   "D03_tradingValueShock5_60": {
-   "blockingReason": null,
    "catalogue": {
     "addsArithmetic": "vectorised rolling means, tested equal to the sealed function",
     "categorical": false,
@@ -10844,6 +10926,7 @@
    "eligibleObservations": 85680,
    "family": "D",
    "featureId": "D03_tradingValueShock5_60",
+   "genuineSourceBlocker": null,
    "horizonUsability": {
     "H21": {
      "lastMaturableSignalDate": "2026-08-07",
@@ -10874,7 +10957,9 @@
     21,
     63
    ],
+   "registryBlockingNote": null,
    "registryLimitations": "",
+   "registryNoteStatus": "NONE",
    "registryPitStatus": "PIT_SIGNAL_CLOSE",
    "registryPriorEvidence": "PRIOR_INCONCLUSIVE",
    "registryReadinessStatus": "READY",
@@ -10901,7 +10986,6 @@
    ]
   },
   "D04_shockPersistence5d": {
-   "blockingReason": null,
    "catalogue": {
     "addsArithmetic": null,
     "categorical": false,
@@ -11119,6 +11203,7 @@
    "eligibleObservations": 85680,
    "family": "D",
    "featureId": "D04_shockPersistence5d",
+   "genuineSourceBlocker": null,
    "horizonUsability": {
     "H21": {
      "lastMaturableSignalDate": "2026-08-07",
@@ -11149,7 +11234,9 @@
     21,
     63
    ],
+   "registryBlockingNote": null,
    "registryLimitations": "",
+   "registryNoteStatus": "NONE",
    "registryPitStatus": "PIT_SIGNAL_CLOSE",
    "registryPriorEvidence": "PRIOR_INCONCLUSIVE",
    "registryReadinessStatus": "READY",
@@ -11176,7 +11263,6 @@
    ]
   },
   "D05_turnoverToMarketCap60": {
-   "blockingReason": null,
    "catalogue": {
     "addsArithmetic": "a 60-session mean of the daily turnover",
     "categorical": false,
@@ -11394,6 +11480,7 @@
    "eligibleObservations": 85680,
    "family": "D",
    "featureId": "D05_turnoverToMarketCap60",
+   "genuineSourceBlocker": null,
    "horizonUsability": {
     "H21": {
      "lastMaturableSignalDate": "2026-08-07",
@@ -11425,7 +11512,9 @@
     21,
     63
    ],
+   "registryBlockingNote": null,
    "registryLimitations": "",
+   "registryNoteStatus": "NONE",
    "registryPitStatus": "PIT_SIGNAL_CLOSE",
    "registryPriorEvidence": "UNTESTED",
    "registryReadinessStatus": "DERIVABLE_FROM_EXISTING_DATA",
@@ -11452,7 +11541,6 @@
    ]
   },
   "D06_priceVolumeDivergence": {
-   "blockingReason": null,
    "catalogue": {
     "addsArithmetic": null,
     "categorical": false,
@@ -11670,6 +11758,7 @@
    "eligibleObservations": 85680,
    "family": "D",
    "featureId": "D06_priceVolumeDivergence",
+   "genuineSourceBlocker": null,
    "horizonUsability": {
     "H21": {
      "lastMaturableSignalDate": "2026-08-07",
@@ -11700,7 +11789,9 @@
     21,
     63
    ],
+   "registryBlockingNote": null,
    "registryLimitations": "",
+   "registryNoteStatus": "NONE",
    "registryPitStatus": "PIT_SIGNAL_CLOSE",
    "registryPriorEvidence": "UNTESTED",
    "registryReadinessStatus": "DERIVABLE_FROM_EXISTING_DATA",
@@ -11727,7 +11818,6 @@
    ]
   },
   "D07_volumePriceAlignment": {
-   "blockingReason": null,
    "catalogue": {
     "addsArithmetic": null,
     "categorical": false,
@@ -11945,6 +12035,7 @@
    "eligibleObservations": 85680,
    "family": "D",
    "featureId": "D07_volumePriceAlignment",
+   "genuineSourceBlocker": null,
    "horizonUsability": {
     "H21": {
      "lastMaturableSignalDate": "2026-08-07",
@@ -11975,7 +12066,9 @@
     21,
     63
    ],
+   "registryBlockingNote": null,
    "registryLimitations": "",
+   "registryNoteStatus": "NONE",
    "registryPitStatus": "PIT_SIGNAL_CLOSE",
    "registryPriorEvidence": "PRIOR_INCONCLUSIVE",
    "registryReadinessStatus": "READY",
@@ -12002,7 +12095,6 @@
    ]
   },
   "D08_abnormalVolumeUpClose": {
-   "blockingReason": null,
    "catalogue": {
     "addsArithmetic": "a 21-session count of a daily indicator that is never a false 0",
     "categorical": false,
@@ -12220,6 +12312,7 @@
    "eligibleObservations": 85680,
    "family": "D",
    "featureId": "D08_abnormalVolumeUpClose",
+   "genuineSourceBlocker": null,
    "horizonUsability": {
     "H21": {
      "lastMaturableSignalDate": "2026-08-07",
@@ -12251,7 +12344,9 @@
     21,
     63
    ],
+   "registryBlockingNote": null,
    "registryLimitations": "",
+   "registryNoteStatus": "NONE",
    "registryPitStatus": "PIT_SIGNAL_CLOSE",
    "registryPriorEvidence": "UNTESTED",
    "registryReadinessStatus": "DERIVABLE_FROM_EXISTING_DATA",
@@ -12278,7 +12373,6 @@
    ]
   },
   "D09_abnormalVolumeDownClose": {
-   "blockingReason": null,
    "catalogue": {
     "addsArithmetic": "a 21-session count of a daily indicator that is never a false 0",
     "categorical": false,
@@ -12496,6 +12590,7 @@
    "eligibleObservations": 85680,
    "family": "D",
    "featureId": "D09_abnormalVolumeDownClose",
+   "genuineSourceBlocker": null,
    "horizonUsability": {
     "H21": {
      "lastMaturableSignalDate": "2026-08-07",
@@ -12527,7 +12622,9 @@
     21,
     63
    ],
+   "registryBlockingNote": null,
    "registryLimitations": "",
+   "registryNoteStatus": "NONE",
    "registryPitStatus": "PIT_SIGNAL_CLOSE",
    "registryPriorEvidence": "UNTESTED",
    "registryReadinessStatus": "DERIVABLE_FROM_EXISTING_DATA",
@@ -12554,7 +12651,6 @@
    ]
   },
   "D10_liquidityAcceleration": {
-   "blockingReason": null,
    "catalogue": {
     "addsArithmetic": "one log ratio",
     "categorical": false,
@@ -12770,6 +12866,7 @@
    "eligibleObservations": 85680,
    "family": "D",
    "featureId": "D10_liquidityAcceleration",
+   "genuineSourceBlocker": null,
    "horizonUsability": {
     "H21": {
      "lastMaturableSignalDate": "2026-08-07",
@@ -12800,7 +12897,9 @@
     21,
     63
    ],
+   "registryBlockingNote": null,
    "registryLimitations": "",
+   "registryNoteStatus": "NONE",
    "registryPitStatus": "PIT_SIGNAL_CLOSE",
    "registryPriorEvidence": "UNTESTED",
    "registryReadinessStatus": "DERIVABLE_FROM_EXISTING_DATA",
@@ -12827,7 +12926,6 @@
    ]
   },
   "D11_accumulationDistributionProxy": {
-   "blockingReason": null,
    "catalogue": {
     "addsArithmetic": "a volume-weighted mean of the close location",
     "categorical": false,
@@ -13045,6 +13143,7 @@
    "eligibleObservations": 85680,
    "family": "D",
    "featureId": "D11_accumulationDistributionProxy",
+   "genuineSourceBlocker": null,
    "horizonUsability": {
     "H21": {
      "lastMaturableSignalDate": "2026-08-07",
@@ -13076,7 +13175,9 @@
     21,
     63
    ],
+   "registryBlockingNote": null,
    "registryLimitations": "",
+   "registryNoteStatus": "NONE",
    "registryPitStatus": "PIT_SIGNAL_CLOSE",
    "registryPriorEvidence": "UNTESTED",
    "registryReadinessStatus": "DERIVABLE_FROM_EXISTING_DATA",
@@ -13103,7 +13204,6 @@
    ]
   },
   "E01_amihudIlliquidity60": {
-   "blockingReason": null,
    "catalogue": {
     "addsArithmetic": null,
     "categorical": false,
@@ -13321,6 +13421,7 @@
    "eligibleObservations": 85680,
    "family": "E",
    "featureId": "E01_amihudIlliquidity60",
+   "genuineSourceBlocker": null,
    "horizonUsability": {
     "H126": {
      "lastMaturableSignalDate": "2026-03-06",
@@ -13351,7 +13452,9 @@
     126,
     21
    ],
+   "registryBlockingNote": null,
    "registryLimitations": "",
+   "registryNoteStatus": "NONE",
    "registryPitStatus": "PIT_SIGNAL_CLOSE",
    "registryPriorEvidence": "PRIOR_INCONCLUSIVE",
    "registryReadinessStatus": "READY",
@@ -13378,7 +13481,6 @@
    ]
   },
   "E02_logAdv60": {
-   "blockingReason": null,
    "catalogue": {
     "addsArithmetic": null,
     "categorical": false,
@@ -13596,6 +13698,7 @@
    "eligibleObservations": 85680,
    "family": "E",
    "featureId": "E02_logAdv60",
+   "genuineSourceBlocker": null,
    "horizonUsability": {
     "H126": {
      "lastMaturableSignalDate": "2026-03-06",
@@ -13627,7 +13730,9 @@
     126,
     21
    ],
+   "registryBlockingNote": null,
    "registryLimitations": "factor anatomy UNSTABLE_OR_REGIME_DEPENDENT; within industry +0.041 (+1.6)",
+   "registryNoteStatus": "NONE",
    "registryPitStatus": "PIT_SIGNAL_CLOSE",
    "registryPriorEvidence": "PRIOR_INCONCLUSIVE",
    "registryReadinessStatus": "ALREADY_TESTED",
@@ -13654,7 +13759,6 @@
    ]
   },
   "E03_capacityMedianTradedValue60": {
-   "blockingReason": null,
    "catalogue": {
     "addsArithmetic": "a rolling median",
     "categorical": false,
@@ -13870,6 +13974,7 @@
    "eligibleObservations": 85680,
    "family": "E",
    "featureId": "E03_capacityMedianTradedValue60",
+   "genuineSourceBlocker": null,
    "horizonUsability": {
     "H126": {
      "lastMaturableSignalDate": "2026-03-06",
@@ -13900,7 +14005,9 @@
     126,
     21
    ],
+   "registryBlockingNote": null,
    "registryLimitations": "",
+   "registryNoteStatus": "NONE",
    "registryPitStatus": "PIT_SIGNAL_CLOSE",
    "registryPriorEvidence": "NOT_APPLICABLE",
    "registryReadinessStatus": "READY",
@@ -13927,7 +14034,6 @@
    ]
   },
   "E04_tradabilityGuard20": {
-   "blockingReason": null,
    "catalogue": {
     "addsArithmetic": "a count",
     "categorical": false,
@@ -14143,6 +14249,7 @@
    "eligibleObservations": 85680,
    "family": "E",
    "featureId": "E04_tradabilityGuard20",
+   "genuineSourceBlocker": null,
    "horizonUsability": {
     "H126": {
      "lastMaturableSignalDate": "2026-03-06",
@@ -14170,7 +14277,9 @@
     126,
     21
    ],
+   "registryBlockingNote": null,
    "registryLimitations": "",
+   "registryNoteStatus": "NONE",
    "registryPitStatus": "PIT_SIGNAL_CLOSE",
    "registryPriorEvidence": "NOT_APPLICABLE",
    "registryReadinessStatus": "READY",
@@ -14197,7 +14306,6 @@
    ]
   },
   "E05_highLowSpreadProxy": {
-   "blockingReason": null,
    "catalogue": {
     "addsArithmetic": "the published estimator",
     "categorical": false,
@@ -14413,6 +14521,7 @@
    "eligibleObservations": 85680,
    "family": "E",
    "featureId": "E05_highLowSpreadProxy",
+   "genuineSourceBlocker": null,
    "horizonUsability": {
     "H126": {
      "lastMaturableSignalDate": "2026-03-06",
@@ -14443,7 +14552,9 @@
     126,
     21
    ],
+   "registryBlockingNote": null,
    "registryLimitations": "",
+   "registryNoteStatus": "NONE",
    "registryPitStatus": "PIT_SIGNAL_CLOSE",
    "registryPriorEvidence": "NOT_APPLICABLE",
    "registryReadinessStatus": "DERIVABLE_FROM_EXISTING_DATA",
@@ -14470,7 +14581,6 @@
    ]
   },
   "E06_volatilityConditionalOnVolume": {
-   "blockingReason": null,
    "catalogue": {
     "addsArithmetic": null,
     "categorical": false,
@@ -14688,6 +14798,7 @@
    "eligibleObservations": 85680,
    "family": "E",
    "featureId": "E06_volatilityConditionalOnVolume",
+   "genuineSourceBlocker": null,
    "horizonUsability": {
     "H126": {
      "lastMaturableSignalDate": "2026-03-06",
@@ -14718,7 +14829,9 @@
     126,
     21
    ],
+   "registryBlockingNote": null,
    "registryLimitations": "",
+   "registryNoteStatus": "NONE",
    "registryPitStatus": "PIT_SIGNAL_CLOSE",
    "registryPriorEvidence": "UNTESTED",
    "registryReadinessStatus": "DERIVABLE_FROM_EXISTING_DATA",
@@ -14745,7 +14858,6 @@
    ]
   },
   "E07_suspensionStaleRisk": {
-   "blockingReason": null,
    "catalogue": {
     "addsArithmetic": "a count",
     "categorical": false,
@@ -14961,6 +15073,7 @@
    "eligibleObservations": 85680,
    "family": "E",
    "featureId": "E07_suspensionStaleRisk",
+   "genuineSourceBlocker": null,
    "horizonUsability": {
     "H126": {
      "lastMaturableSignalDate": "2026-03-06",
@@ -14988,7 +15101,9 @@
     126,
     21
    ],
+   "registryBlockingNote": null,
    "registryLimitations": "",
+   "registryNoteStatus": "NONE",
    "registryPitStatus": "PIT_SIGNAL_CLOSE",
    "registryPriorEvidence": "NOT_APPLICABLE",
    "registryReadinessStatus": "READY",
@@ -15015,9 +15130,12 @@
    ]
   },
   "E08_trueBidAskSpread": {
-   "blockingReason": "no quote or order-book source exists in this repository and none was found free; daily OHLCV proxies (E05) are not a substitute",
    "family": "E",
    "featureId": "E08_trueBidAskSpread",
+   "genuineSourceBlocker": {
+    "kind": "NO_POINT_IN_TIME_SOURCE",
+    "statement": "no quote or order-book source exists in this repository and none was found free; daily OHLCV proxies (E05) are not a substitute"
+   },
    "implementation": "NOT_COMPUTED",
    "measuredStatus": "NOT_COMPUTED_NOT_FEASIBLE",
    "nextAction": "none; use E05 proxy with that label",
@@ -15027,7 +15145,9 @@
     126,
     21
    ],
+   "registryBlockingNote": "no quote or order-book source exists in this repository and none was found free; daily OHLCV proxies (E05) are not a substitute",
    "registryLimitations": "",
+   "registryNoteStatus": "CURRENT",
    "registryPitStatus": "NO_SOURCE",
    "registryPriorEvidence": "NOT_APPLICABLE",
    "registryReadinessStatus": "NOT_FEASIBLE",
@@ -15036,7 +15156,6 @@
    "sourceClass": "NO_SOURCE"
   },
   "F01_totalVolatility63": {
-   "blockingReason": null,
    "catalogue": {
     "addsArithmetic": null,
     "categorical": false,
@@ -15254,6 +15373,7 @@
    "eligibleObservations": 85680,
    "family": "F",
    "featureId": "F01_totalVolatility63",
+   "genuineSourceBlocker": null,
    "horizonUsability": {
     "H126": {
      "lastMaturableSignalDate": "2026-03-06",
@@ -15279,7 +15399,9 @@
     126,
     null
    ],
+   "registryBlockingNote": null,
    "registryLimitations": "",
+   "registryNoteStatus": "NONE",
    "registryPitStatus": "PIT_SIGNAL_CLOSE",
    "registryPriorEvidence": "PRIOR_INCONCLUSIVE",
    "registryReadinessStatus": "READY",
@@ -15305,7 +15427,6 @@
    ]
   },
   "F02_downsideVol126": {
-   "blockingReason": null,
    "catalogue": {
     "addsArithmetic": null,
     "categorical": false,
@@ -15523,6 +15644,7 @@
    "eligibleObservations": 85680,
    "family": "F",
    "featureId": "F02_downsideVol126",
+   "genuineSourceBlocker": null,
    "horizonUsability": {
     "H126": {
      "lastMaturableSignalDate": "2026-03-06",
@@ -15547,7 +15669,9 @@
     126,
     null
    ],
+   "registryBlockingNote": null,
    "registryLimitations": "market-wide NO_CLEAR_MONOTONIC_PATTERN; within industry +0.062 (+2.6); KR lowvol sleeve +0.0511 regional reading, not pooled",
+   "registryNoteStatus": "NONE",
    "registryPitStatus": "PIT_SIGNAL_CLOSE",
    "registryPriorEvidence": "PRIOR_INCONCLUSIVE",
    "registryReadinessStatus": "ALREADY_TESTED",
@@ -15574,7 +15698,6 @@
    ]
   },
   "F03_beta252": {
-   "blockingReason": null,
    "catalogue": {
     "addsArithmetic": null,
     "categorical": false,
@@ -15792,6 +15915,7 @@
    "eligibleObservations": 85680,
    "family": "F",
    "featureId": "F03_beta252",
+   "genuineSourceBlocker": null,
    "horizonUsability": {
     "H126": {
      "lastMaturableSignalDate": "2026-03-06",
@@ -15816,7 +15940,9 @@
     126,
     null
    ],
+   "registryBlockingNote": null,
    "registryLimitations": "",
+   "registryNoteStatus": "NONE",
    "registryPitStatus": "PIT_SIGNAL_CLOSE",
    "registryPriorEvidence": "PRIOR_INCONCLUSIVE",
    "registryReadinessStatus": "READY",
@@ -15842,7 +15968,6 @@
    ]
   },
   "F04_idiosyncraticVol": {
-   "blockingReason": null,
    "catalogue": {
     "addsArithmetic": "an OLS residual standard deviation",
     "categorical": false,
@@ -16058,6 +16183,7 @@
    "eligibleObservations": 85680,
    "family": "F",
    "featureId": "F04_idiosyncraticVol",
+   "genuineSourceBlocker": null,
    "horizonUsability": {
     "H126": {
      "lastMaturableSignalDate": "2026-03-06",
@@ -16082,7 +16208,9 @@
     126,
     null
    ],
+   "registryBlockingNote": null,
    "registryLimitations": "",
+   "registryNoteStatus": "NONE",
    "registryPitStatus": "PIT_SIGNAL_CLOSE",
    "registryPriorEvidence": "UNTESTED",
    "registryReadinessStatus": "DERIVABLE_FROM_EXISTING_DATA",
@@ -16108,7 +16236,6 @@
    ]
   },
   "F05_maxDrawdown252": {
-   "blockingReason": null,
    "catalogue": {
     "addsArithmetic": null,
     "categorical": false,
@@ -16326,6 +16453,7 @@
    "eligibleObservations": 85680,
    "family": "F",
    "featureId": "F05_maxDrawdown252",
+   "genuineSourceBlocker": null,
    "horizonUsability": {
     "H126": {
      "lastMaturableSignalDate": "2026-03-06",
@@ -16350,7 +16478,9 @@
     126,
     null
    ],
+   "registryBlockingNote": null,
    "registryLimitations": "",
+   "registryNoteStatus": "NONE",
    "registryPitStatus": "PIT_SIGNAL_CLOSE",
    "registryPriorEvidence": "PRIOR_INCONCLUSIVE",
    "registryReadinessStatus": "READY",
@@ -16376,7 +16506,6 @@
    ]
   },
   "F06_crashExposure": {
-   "blockingReason": null,
    "catalogue": {
     "addsArithmetic": "a conditional OLS beta",
     "categorical": false,
@@ -16592,6 +16721,7 @@
    "eligibleObservations": 85680,
    "family": "F",
    "featureId": "F06_crashExposure",
+   "genuineSourceBlocker": null,
    "horizonUsability": {
     "H126": {
      "lastMaturableSignalDate": "2026-03-06",
@@ -16616,7 +16746,9 @@
     126,
     null
    ],
+   "registryBlockingNote": null,
    "registryLimitations": "",
+   "registryNoteStatus": "NONE",
    "registryPitStatus": "PIT_SIGNAL_CLOSE",
    "registryPriorEvidence": "NOT_APPLICABLE",
    "registryReadinessStatus": "DERIVABLE_FROM_EXISTING_DATA",
@@ -16642,7 +16774,6 @@
    ]
   },
   "F07_benchmarkCorrelation252": {
-   "blockingReason": null,
    "catalogue": {
     "addsArithmetic": "a correlation",
     "categorical": false,
@@ -16858,6 +16989,7 @@
    "eligibleObservations": 85680,
    "family": "F",
    "featureId": "F07_benchmarkCorrelation252",
+   "genuineSourceBlocker": null,
    "horizonUsability": {
     "H126": {
      "lastMaturableSignalDate": "2026-03-06",
@@ -16882,7 +17014,9 @@
     126,
     null
    ],
+   "registryBlockingNote": null,
    "registryLimitations": "",
+   "registryNoteStatus": "NONE",
    "registryPitStatus": "PIT_SIGNAL_CLOSE",
    "registryPriorEvidence": "NOT_APPLICABLE",
    "registryReadinessStatus": "DERIVABLE_FROM_EXISTING_DATA",
@@ -16908,9 +17042,9 @@
    ]
   },
   "F08_bookConcentration": {
-   "blockingReason": null,
    "family": "F",
    "featureId": "F08_bookConcentration",
+   "genuineSourceBlocker": null,
    "implementation": "NOT_A_MATRIX_COLUMN",
    "measuredStatus": "NOT_A_MATRIX_COLUMN",
    "nextAction": "Level 4 risk diagnostics",
@@ -16920,7 +17054,9 @@
     126,
     null
    ],
+   "registryBlockingNote": null,
    "registryLimitations": "",
+   "registryNoteStatus": "NONE",
    "registryPitStatus": "PIT_SIGNAL_CLOSE",
    "registryPriorEvidence": "NOT_APPLICABLE",
    "registryReadinessStatus": "DERIVABLE_FROM_EXISTING_DATA",
@@ -16929,9 +17065,12 @@
    "sourceClass": "KRX_DAILY_OHLCV"
   },
   "G01_foreignNetBuying": {
-   "blockingReason": "KRX data portal (MDCSTAT02302/02303) answered HTTP 400 LOGOUT on every candidate from Actions; the Open API key does not reach investor-type statistics (workflow-hygiene v2.25)",
    "family": "G",
    "featureId": "G01_foreignNetBuying",
+   "genuineSourceBlocker": {
+    "kind": "SOURCE_ACCESS_REFUSED",
+    "statement": "KRX data portal (MDCSTAT02302/02303) answered HTTP 400 LOGOUT on every candidate from Actions; the Open API key does not reach investor-type statistics (workflow-hygiene v2.25)"
+   },
    "implementation": "NOT_COMPUTED",
    "measuredStatus": "NOT_COMPUTED_SOURCE_BLOCKED",
    "nextAction": "stays SOURCE_BLOCKED; at most one re-probe through the Probes workflow, never a substitute",
@@ -16941,7 +17080,9 @@
     21,
     63
    ],
+   "registryBlockingNote": "KRX data portal (MDCSTAT02302/02303) answered HTTP 400 LOGOUT on every candidate from Actions; the Open API key does not reach investor-type statistics (workflow-hygiene v2.25)",
    "registryLimitations": "",
+   "registryNoteStatus": "CURRENT",
    "registryPitStatus": "NO_SOURCE",
    "registryPriorEvidence": "BLOCKED",
    "registryReadinessStatus": "SOURCE_BLOCKED",
@@ -16950,9 +17091,12 @@
    "sourceClass": "KRX_INVESTOR_TYPE"
   },
   "G02_institutionalNetBuying": {
-   "blockingReason": "KRX data portal (MDCSTAT02302/02303) answered HTTP 400 LOGOUT on every candidate from Actions; the Open API key does not reach investor-type statistics (workflow-hygiene v2.25)",
    "family": "G",
    "featureId": "G02_institutionalNetBuying",
+   "genuineSourceBlocker": {
+    "kind": "SOURCE_ACCESS_REFUSED",
+    "statement": "KRX data portal (MDCSTAT02302/02303) answered HTTP 400 LOGOUT on every candidate from Actions; the Open API key does not reach investor-type statistics (workflow-hygiene v2.25)"
+   },
    "implementation": "NOT_COMPUTED",
    "measuredStatus": "NOT_COMPUTED_SOURCE_BLOCKED",
    "nextAction": "stays SOURCE_BLOCKED; at most one re-probe through the Probes workflow, never a substitute",
@@ -16962,7 +17106,9 @@
     21,
     63
    ],
+   "registryBlockingNote": "KRX data portal (MDCSTAT02302/02303) answered HTTP 400 LOGOUT on every candidate from Actions; the Open API key does not reach investor-type statistics (workflow-hygiene v2.25)",
    "registryLimitations": "",
+   "registryNoteStatus": "CURRENT",
    "registryPitStatus": "NO_SOURCE",
    "registryPriorEvidence": "BLOCKED",
    "registryReadinessStatus": "SOURCE_BLOCKED",
@@ -16971,9 +17117,12 @@
    "sourceClass": "KRX_INVESTOR_TYPE"
   },
   "G03_retailNetBuying": {
-   "blockingReason": "KRX data portal (MDCSTAT02302/02303) answered HTTP 400 LOGOUT on every candidate from Actions; the Open API key does not reach investor-type statistics (workflow-hygiene v2.25)",
    "family": "G",
    "featureId": "G03_retailNetBuying",
+   "genuineSourceBlocker": {
+    "kind": "SOURCE_ACCESS_REFUSED",
+    "statement": "KRX data portal (MDCSTAT02302/02303) answered HTTP 400 LOGOUT on every candidate from Actions; the Open API key does not reach investor-type statistics (workflow-hygiene v2.25)"
+   },
    "implementation": "NOT_COMPUTED",
    "measuredStatus": "NOT_COMPUTED_SOURCE_BLOCKED",
    "nextAction": "stays SOURCE_BLOCKED; at most one re-probe through the Probes workflow, never a substitute",
@@ -16983,7 +17132,9 @@
     21,
     63
    ],
+   "registryBlockingNote": "KRX data portal (MDCSTAT02302/02303) answered HTTP 400 LOGOUT on every candidate from Actions; the Open API key does not reach investor-type statistics (workflow-hygiene v2.25)",
    "registryLimitations": "",
+   "registryNoteStatus": "CURRENT",
    "registryPitStatus": "NO_SOURCE",
    "registryPriorEvidence": "BLOCKED",
    "registryReadinessStatus": "SOURCE_BLOCKED",
@@ -16992,9 +17143,12 @@
    "sourceClass": "KRX_INVESTOR_TYPE"
   },
   "G04_investorTypePersistence": {
-   "blockingReason": "KRX data portal (MDCSTAT02302/02303) answered HTTP 400 LOGOUT on every candidate from Actions; the Open API key does not reach investor-type statistics (workflow-hygiene v2.25)",
    "family": "G",
    "featureId": "G04_investorTypePersistence",
+   "genuineSourceBlocker": {
+    "kind": "SOURCE_ACCESS_REFUSED",
+    "statement": "KRX data portal (MDCSTAT02302/02303) answered HTTP 400 LOGOUT on every candidate from Actions; the Open API key does not reach investor-type statistics (workflow-hygiene v2.25)"
+   },
    "implementation": "NOT_COMPUTED",
    "measuredStatus": "NOT_COMPUTED_SOURCE_BLOCKED",
    "nextAction": "stays SOURCE_BLOCKED; at most one re-probe through the Probes workflow, never a substitute",
@@ -17004,7 +17158,9 @@
     21,
     63
    ],
+   "registryBlockingNote": "KRX data portal (MDCSTAT02302/02303) answered HTTP 400 LOGOUT on every candidate from Actions; the Open API key does not reach investor-type statistics (workflow-hygiene v2.25)",
    "registryLimitations": "",
+   "registryNoteStatus": "CURRENT",
    "registryPitStatus": "NO_SOURCE",
    "registryPriorEvidence": "BLOCKED",
    "registryReadinessStatus": "SOURCE_BLOCKED",
@@ -17013,9 +17169,12 @@
    "sourceClass": "KRX_INVESTOR_TYPE"
   },
   "G05_flowMomentumConfirmation": {
-   "blockingReason": "KRX data portal (MDCSTAT02302/02303) answered HTTP 400 LOGOUT on every candidate from Actions; the Open API key does not reach investor-type statistics (workflow-hygiene v2.25)",
    "family": "G",
    "featureId": "G05_flowMomentumConfirmation",
+   "genuineSourceBlocker": {
+    "kind": "SOURCE_ACCESS_REFUSED",
+    "statement": "KRX data portal (MDCSTAT02302/02303) answered HTTP 400 LOGOUT on every candidate from Actions; the Open API key does not reach investor-type statistics (workflow-hygiene v2.25)"
+   },
    "implementation": "NOT_COMPUTED",
    "measuredStatus": "NOT_COMPUTED_SOURCE_BLOCKED",
    "nextAction": "stays SOURCE_BLOCKED; at most one re-probe through the Probes workflow, never a substitute",
@@ -17025,7 +17184,9 @@
     21,
     63
    ],
+   "registryBlockingNote": "KRX data portal (MDCSTAT02302/02303) answered HTTP 400 LOGOUT on every candidate from Actions; the Open API key does not reach investor-type statistics (workflow-hygiene v2.25)",
    "registryLimitations": "",
+   "registryNoteStatus": "CURRENT",
    "registryPitStatus": "NO_SOURCE",
    "registryPriorEvidence": "BLOCKED",
    "registryReadinessStatus": "SOURCE_BLOCKED",
@@ -17034,9 +17195,12 @@
    "sourceClass": "KRX_INVESTOR_TYPE"
   },
   "G06_largeHolderAccumulation": {
-   "blockingReason": "majorstock.json serves a rolling two years: collected receipts span 2024-09-24..2026-09-23 (1,285 events, 119 current names); older history needs an official filing-document parser (BLOCKED_HISTORICAL_DEPTH, docs/dart-ownership-history-replay-integrity-v1.md)",
    "family": "G",
    "featureId": "G06_largeHolderAccumulation",
+   "genuineSourceBlocker": {
+    "kind": "DATA_BUILD_GAP",
+    "statement": "majorstock.json serves a rolling two years: collected receipts span 2024-09-24..2026-09-23 (1,285 events, 119 current names); older history needs an official filing-document parser (BLOCKED_HISTORICAL_DEPTH, docs/dart-ownership-history-replay-integrity-v1.md)"
+   },
    "implementation": "NOT_COMPUTED",
    "measuredStatus": "NOT_COMPUTED_DATA_BUILD_REQUIRED",
    "nextAction": "schedule prospective collection (separate change); no historical evaluation possible",
@@ -17046,7 +17210,9 @@
     21,
     63
    ],
+   "registryBlockingNote": "majorstock.json serves a rolling two years: collected receipts span 2024-09-24..2026-09-23 (1,285 events, 119 current names); older history needs an official filing-document parser (BLOCKED_HISTORICAL_DEPTH, docs/dart-ownership-history-replay-integrity-v1.md)",
    "registryLimitations": "report_tp raw values (일반/약식) are not translated; report_resn is raw text; reporter type unclassified",
+   "registryNoteStatus": "CURRENT",
    "registryPitStatus": "PIT_RECEIPT_DATED",
    "registryPriorEvidence": "BLOCKED",
    "registryReadinessStatus": "DATA_BUILD_REQUIRED",
@@ -17055,9 +17221,12 @@
    "sourceClass": "DART_OWNERSHIP"
   },
   "G07_largeHolderReduction": {
-   "blockingReason": "majorstock.json serves a rolling two years: collected receipts span 2024-09-24..2026-09-23 (1,285 events, 119 current names); older history needs an official filing-document parser (BLOCKED_HISTORICAL_DEPTH, docs/dart-ownership-history-replay-integrity-v1.md)",
    "family": "G",
    "featureId": "G07_largeHolderReduction",
+   "genuineSourceBlocker": {
+    "kind": "DATA_BUILD_GAP",
+    "statement": "majorstock.json serves a rolling two years: collected receipts span 2024-09-24..2026-09-23 (1,285 events, 119 current names); older history needs an official filing-document parser (BLOCKED_HISTORICAL_DEPTH, docs/dart-ownership-history-replay-integrity-v1.md)"
+   },
    "implementation": "NOT_COMPUTED",
    "measuredStatus": "NOT_COMPUTED_DATA_BUILD_REQUIRED",
    "nextAction": "as G06",
@@ -17067,7 +17236,9 @@
     21,
     63
    ],
+   "registryBlockingNote": "majorstock.json serves a rolling two years: collected receipts span 2024-09-24..2026-09-23 (1,285 events, 119 current names); older history needs an official filing-document parser (BLOCKED_HISTORICAL_DEPTH, docs/dart-ownership-history-replay-integrity-v1.md)",
    "registryLimitations": "",
+   "registryNoteStatus": "CURRENT",
    "registryPitStatus": "PIT_RECEIPT_DATED",
    "registryPriorEvidence": "BLOCKED",
    "registryReadinessStatus": "DATA_BUILD_REQUIRED",
@@ -17076,9 +17247,12 @@
    "sourceClass": "DART_OWNERSHIP"
   },
   "G08_shortSellingVolume": {
-   "blockingReason": "KRX short-selling screens MDCSTAT301/305: bld codes unresolved and the portal unreachable; full bans 2020-03..2021-05 and 2023-11-05..2025-03-31 make the variable regime-dependent (kr_short_selling.regime_label)",
    "family": "G",
    "featureId": "G08_shortSellingVolume",
+   "genuineSourceBlocker": {
+    "kind": "SOURCE_ACCESS_REFUSED",
+    "statement": "KRX short-selling screens MDCSTAT301/305: bld codes unresolved and the portal unreachable; full bans 2020-03..2021-05 and 2023-11-05..2025-03-31 make the variable regime-dependent (kr_short_selling.regime_label)"
+   },
    "implementation": "NOT_COMPUTED",
    "measuredStatus": "NOT_COMPUTED_SOURCE_BLOCKED",
    "nextAction": "stays SOURCE_BLOCKED; at most one re-probe through the Probes workflow, never a substitute",
@@ -17088,7 +17262,9 @@
     21,
     63
    ],
+   "registryBlockingNote": "KRX short-selling screens MDCSTAT301/305: bld codes unresolved and the portal unreachable; full bans 2020-03..2021-05 and 2023-11-05..2025-03-31 make the variable regime-dependent (kr_short_selling.regime_label)",
    "registryLimitations": "",
+   "registryNoteStatus": "CURRENT",
    "registryPitStatus": "NO_SOURCE",
    "registryPriorEvidence": "BLOCKED",
    "registryReadinessStatus": "SOURCE_BLOCKED",
@@ -17097,9 +17273,12 @@
    "sourceClass": "KRX_SHORT_SELLING"
   },
   "G09_shortBalanceChange": {
-   "blockingReason": "KRX short-selling screens MDCSTAT301/305: bld codes unresolved and the portal unreachable; full bans 2020-03..2021-05 and 2023-11-05..2025-03-31 make the variable regime-dependent (kr_short_selling.regime_label)",
    "family": "G",
    "featureId": "G09_shortBalanceChange",
+   "genuineSourceBlocker": {
+    "kind": "SOURCE_ACCESS_REFUSED",
+    "statement": "KRX short-selling screens MDCSTAT301/305: bld codes unresolved and the portal unreachable; full bans 2020-03..2021-05 and 2023-11-05..2025-03-31 make the variable regime-dependent (kr_short_selling.regime_label)"
+   },
    "implementation": "NOT_COMPUTED",
    "measuredStatus": "NOT_COMPUTED_SOURCE_BLOCKED",
    "nextAction": "stays SOURCE_BLOCKED; at most one re-probe through the Probes workflow, never a substitute",
@@ -17109,7 +17288,9 @@
     21,
     63
    ],
+   "registryBlockingNote": "KRX short-selling screens MDCSTAT301/305: bld codes unresolved and the portal unreachable; full bans 2020-03..2021-05 and 2023-11-05..2025-03-31 make the variable regime-dependent (kr_short_selling.regime_label)",
    "registryLimitations": "",
+   "registryNoteStatus": "CURRENT",
    "registryPitStatus": "NO_SOURCE",
    "registryPriorEvidence": "BLOCKED",
    "registryReadinessStatus": "SOURCE_BLOCKED",
@@ -17118,7 +17299,6 @@
    "sourceClass": "KRX_SHORT_SELLING"
   },
   "H01_industryRelMom126": {
-   "blockingReason": null,
    "catalogue": {
     "addsArithmetic": null,
     "categorical": false,
@@ -17336,6 +17516,7 @@
    "eligibleObservations": 85680,
    "family": "H",
    "featureId": "H01_industryRelMom126",
+   "genuineSourceBlocker": null,
    "horizonUsability": {
     "H126": {
      "lastMaturableSignalDate": "2026-03-06",
@@ -17364,7 +17545,9 @@
     126,
     63
    ],
+   "registryBlockingNote": null,
    "registryLimitations": "IC +0.066 (mean/se +1.2) but year IC -0.18..+0.29; leave-largest-out tercile +5.4pp -> +0.1pp; integrated D trailed A 2017-2024 and led only in 2025-2026 (regime- and industry-concentrated)",
+   "registryNoteStatus": "NONE",
    "registryPitStatus": "PIT_RECONSTRUCTED_MEMBERSHIP",
    "registryPriorEvidence": "PRIOR_POSITIVE_DEVELOPMENT",
    "registryReadinessStatus": "ALREADY_TESTED",
@@ -17391,7 +17574,6 @@
    ]
   },
   "H02_industryRelMom63": {
-   "blockingReason": null,
    "catalogue": {
     "addsArithmetic": null,
     "categorical": false,
@@ -17609,6 +17791,7 @@
    "eligibleObservations": 85680,
    "family": "H",
    "featureId": "H02_industryRelMom63",
+   "genuineSourceBlocker": null,
    "horizonUsability": {
     "H126": {
      "lastMaturableSignalDate": "2026-03-06",
@@ -17637,7 +17820,9 @@
     126,
     63
    ],
+   "registryBlockingNote": null,
    "registryLimitations": "",
+   "registryNoteStatus": "NONE",
    "registryPitStatus": "PIT_RECONSTRUCTED_MEMBERSHIP",
    "registryPriorEvidence": "PRIOR_INCONCLUSIVE",
    "registryReadinessStatus": "ALREADY_TESTED",
@@ -17664,7 +17849,6 @@
    ]
   },
   "H03_industryBreadthAboveMA126": {
-   "blockingReason": null,
    "catalogue": {
     "addsArithmetic": null,
     "categorical": false,
@@ -17882,6 +18066,7 @@
    "eligibleObservations": 85680,
    "family": "H",
    "featureId": "H03_industryBreadthAboveMA126",
+   "genuineSourceBlocker": null,
    "horizonUsability": {
     "H126": {
      "lastMaturableSignalDate": "2026-03-06",
@@ -17910,7 +18095,9 @@
     126,
     63
    ],
+   "registryBlockingNote": null,
    "registryLimitations": "IC +0.059 (+1.2); formal INDUSTRY_LAYER_DEVELOPMENT_SUPPORTED is regime- and industry-concentrated",
+   "registryNoteStatus": "NONE",
    "registryPitStatus": "PIT_RECONSTRUCTED_MEMBERSHIP",
    "registryPriorEvidence": "PRIOR_POSITIVE_DEVELOPMENT",
    "registryReadinessStatus": "ALREADY_TESTED",
@@ -17937,7 +18124,6 @@
    ]
   },
   "H04_withinIndustryDispersion126": {
-   "blockingReason": null,
    "catalogue": {
     "addsArithmetic": null,
     "categorical": false,
@@ -18155,6 +18341,7 @@
    "eligibleObservations": 85680,
    "family": "H",
    "featureId": "H04_withinIndustryDispersion126",
+   "genuineSourceBlocker": null,
    "horizonUsability": {
     "H126": {
      "lastMaturableSignalDate": "2026-03-06",
@@ -18183,7 +18370,9 @@
     126,
     63
    ],
+   "registryBlockingNote": null,
    "registryLimitations": "IC +0.069 (+1.2), survives leave-largest-out",
+   "registryNoteStatus": "NONE",
    "registryPitStatus": "PIT_RECONSTRUCTED_MEMBERSHIP",
    "registryPriorEvidence": "PRIOR_INCONCLUSIVE",
    "registryReadinessStatus": "ALREADY_TESTED",
@@ -18210,7 +18399,6 @@
    ]
   },
   "H05_crossIndustryDispersion": {
-   "blockingReason": null,
    "catalogue": {
     "addsArithmetic": "one standard deviation per date",
     "categorical": false,
@@ -18428,6 +18616,7 @@
    "eligibleObservations": 85680,
    "family": "H",
    "featureId": "H05_crossIndustryDispersion",
+   "genuineSourceBlocker": null,
    "horizonUsability": {
     "H126": {
      "lastMaturableSignalDate": "2026-03-06",
@@ -18454,7 +18643,9 @@
     126,
     63
    ],
+   "registryBlockingNote": null,
    "registryLimitations": "",
+   "registryNoteStatus": "NONE",
    "registryPitStatus": "PIT_RECONSTRUCTED_MEMBERSHIP",
    "registryPriorEvidence": "UNTESTED",
    "registryReadinessStatus": "DERIVABLE_FROM_EXISTING_DATA",
@@ -18478,7 +18669,6 @@
    ]
   },
   "H06_industryConcentrationTop1": {
-   "blockingReason": null,
    "catalogue": {
     "addsArithmetic": null,
     "categorical": false,
@@ -18696,6 +18886,7 @@
    "eligibleObservations": 85680,
    "family": "H",
    "featureId": "H06_industryConcentrationTop1",
+   "genuineSourceBlocker": null,
    "horizonUsability": {
     "H126": {
      "lastMaturableSignalDate": "2026-03-06",
@@ -18724,7 +18915,9 @@
     126,
     63
    ],
+   "registryBlockingNote": null,
    "registryLimitations": "",
+   "registryNoteStatus": "NONE",
    "registryPitStatus": "PIT_RECONSTRUCTED_MEMBERSHIP",
    "registryPriorEvidence": "PRIOR_INCONCLUSIVE",
    "registryReadinessStatus": "ALREADY_TESTED",
@@ -18751,7 +18944,6 @@
    ]
   },
   "H07_leadershipPersistence": {
-   "blockingReason": null,
    "catalogue": {
     "addsArithmetic": "one rank correlation per date",
     "categorical": false,
@@ -18967,6 +19159,7 @@
    "eligibleObservations": 85680,
    "family": "H",
    "featureId": "H07_leadershipPersistence",
+   "genuineSourceBlocker": null,
    "horizonUsability": {
     "H126": {
      "lastMaturableSignalDate": "2026-03-06",
@@ -18993,7 +19186,9 @@
     126,
     63
    ],
+   "registryBlockingNote": null,
    "registryLimitations": "",
+   "registryNoteStatus": "NONE",
    "registryPitStatus": "PIT_RECONSTRUCTED_MEMBERSHIP",
    "registryPriorEvidence": "UNTESTED",
    "registryReadinessStatus": "DERIVABLE_FROM_EXISTING_DATA",
@@ -19016,7 +19211,6 @@
    ]
   },
   "H08_equalVsCapWeightIndustry": {
-   "blockingReason": null,
    "catalogue": {
     "addsArithmetic": "an equal-weight mean beside the sealed cap-weighted one",
     "categorical": false,
@@ -19234,6 +19428,7 @@
    "eligibleObservations": 85680,
    "family": "H",
    "featureId": "H08_equalVsCapWeightIndustry",
+   "genuineSourceBlocker": null,
    "horizonUsability": {
     "H126": {
      "lastMaturableSignalDate": "2026-03-06",
@@ -19262,7 +19457,9 @@
     126,
     63
    ],
+   "registryBlockingNote": null,
    "registryLimitations": "",
+   "registryNoteStatus": "NONE",
    "registryPitStatus": "PIT_RECONSTRUCTED_MEMBERSHIP",
    "registryPriorEvidence": "UNTESTED",
    "registryReadinessStatus": "DERIVABLE_FROM_EXISTING_DATA",
@@ -19289,7 +19486,6 @@
    ]
   },
   "H09_marketBreadth": {
-   "blockingReason": null,
    "catalogue": {
     "addsArithmetic": "a share with its denominator",
     "categorical": false,
@@ -19507,6 +19703,7 @@
    "eligibleObservations": 85680,
    "family": "H",
    "featureId": "H09_marketBreadth",
+   "genuineSourceBlocker": null,
    "horizonUsability": {
     "H126": {
      "lastMaturableSignalDate": "2026-03-06",
@@ -19533,7 +19730,9 @@
     126,
     63
    ],
+   "registryBlockingNote": null,
    "registryLimitations": "",
+   "registryNoteStatus": "NONE",
    "registryPitStatus": "PIT_SIGNAL_CLOSE",
    "registryPriorEvidence": "UNTESTED",
    "registryReadinessStatus": "DERIVABLE_FROM_EXISTING_DATA",
@@ -19559,7 +19758,6 @@
    ]
   },
   "H10_marketConcentrationTop2": {
-   "blockingReason": null,
    "catalogue": {
     "addsArithmetic": "a share",
     "categorical": false,
@@ -19775,6 +19973,7 @@
    "eligibleObservations": 85680,
    "family": "H",
    "featureId": "H10_marketConcentrationTop2",
+   "genuineSourceBlocker": null,
    "horizonUsability": {
     "H126": {
      "lastMaturableSignalDate": "2026-03-06",
@@ -19799,7 +19998,9 @@
     126,
     63
    ],
+   "registryBlockingNote": null,
    "registryLimitations": "",
+   "registryNoteStatus": "NONE",
    "registryPitStatus": "PIT_SIGNAL_CLOSE",
    "registryPriorEvidence": "UNTESTED",
    "registryReadinessStatus": "DERIVABLE_FROM_EXISTING_DATA",
@@ -19826,7 +20027,6 @@
    ]
   },
   "H11_industryEarningsContext": {
-   "blockingReason": null,
    "catalogue": {
     "addsArithmetic": null,
     "categorical": false,
@@ -20044,6 +20244,7 @@
    "eligibleObservations": 85680,
    "family": "H",
    "featureId": "H11_industryEarningsContext",
+   "genuineSourceBlocker": null,
    "horizonUsability": {
     "H126": {
      "lastMaturableSignalDate": "2026-03-06",
@@ -20072,7 +20273,9 @@
     126,
     63
    ],
+   "registryBlockingNote": null,
    "registryLimitations": "IC -0.185 (mean/se -3.0), 248 valid dates",
+   "registryNoteStatus": "NONE",
    "registryPitStatus": "PIT_RECEIPT_DATED",
    "registryPriorEvidence": "PRIOR_NEGATIVE_DEVELOPMENT",
    "registryReadinessStatus": "ALREADY_TESTED",
@@ -20095,7 +20298,6 @@
    ]
   },
   "H12_industryValuationContext": {
-   "blockingReason": null,
    "catalogue": {
     "addsArithmetic": null,
     "categorical": false,
@@ -20313,6 +20515,7 @@
    "eligibleObservations": 85680,
    "family": "H",
    "featureId": "H12_industryValuationContext",
+   "genuineSourceBlocker": null,
    "horizonUsability": {
     "H126": {
      "lastMaturableSignalDate": "2026-03-06",
@@ -20341,7 +20544,9 @@
     126,
     63
    ],
+   "registryBlockingNote": null,
    "registryLimitations": "IC -0.059 (-0.8)",
+   "registryNoteStatus": "NONE",
    "registryPitStatus": "PIT_RECEIPT_DATED",
    "registryPriorEvidence": "PRIOR_INCONCLUSIVE",
    "registryReadinessStatus": "ALREADY_TESTED",
@@ -20365,7 +20570,6 @@
    ]
   },
   "I01_kospiTrendVolState": {
-   "blockingReason": null,
    "catalogue": {
     "addsArithmetic": null,
     "categorical": false,
@@ -20583,6 +20787,7 @@
    "eligibleObservations": 85680,
    "family": "I",
    "featureId": "I01_kospiTrendVolState",
+   "genuineSourceBlocker": null,
    "horizonUsability": {
     "H126": {
      "lastMaturableSignalDate": "2026-03-06",
@@ -20604,7 +20809,9 @@
     126,
     null
    ],
+   "registryBlockingNote": null,
    "registryLimitations": "market risk model v1: NO_CANDIDATE_NOMINATED_CONTROL_RETAINED",
+   "registryNoteStatus": "NONE",
    "registryPitStatus": "PIT_SIGNAL_CLOSE",
    "registryPriorEvidence": "PRIOR_INCONCLUSIVE",
    "registryReadinessStatus": "ALREADY_TESTED",
@@ -20630,9 +20837,9 @@
    ]
   },
   "I02_vixLevel": {
-   "blockingReason": null,
    "family": "I",
    "featureId": "I02_vixLevel",
+   "genuineSourceBlocker": null,
    "implementation": "REFERENCED_NOT_RECOMPUTED",
    "measuredStatus": "REFERENCED_ALREADY_TESTED",
    "nextAction": "sealed prior reading stands; not re-run",
@@ -20642,7 +20849,9 @@
     126,
     null
    ],
+   "registryBlockingNote": null,
    "registryLimitations": "the tournament excluded the FRED family as revised-history; VIX is a market close, used only as the sealed market model uses it",
+   "registryNoteStatus": "NONE",
    "registryPitStatus": "PIT_SIGNAL_CLOSE",
    "registryPriorEvidence": "PRIOR_INCONCLUSIVE",
    "registryReadinessStatus": "ALREADY_TESTED",
@@ -20651,9 +20860,12 @@
    "sourceClass": "KRX_DAILY_OHLCV"
   },
   "I03_krTermSpread": {
-   "blockingReason": "ECOS series carry vintageStatus REVISED_HISTORY; a historical value is usable only from its retained fetch (kr_market_context)",
    "family": "I",
    "featureId": "I03_krTermSpread",
+   "genuineSourceBlocker": {
+    "kind": "PIT_UNSAFE",
+    "statement": "ECOS series carry vintageStatus REVISED_HISTORY; a historical value is usable only from its retained fetch (kr_market_context)"
+   },
    "implementation": "NOT_COMPUTED",
    "measuredStatus": "NOT_COMPUTED_PIT_UNSAFE",
    "nextAction": "prospective use only",
@@ -20663,7 +20875,9 @@
     126,
     null
    ],
+   "registryBlockingNote": "ECOS series carry vintageStatus REVISED_HISTORY; a historical value is usable only from its retained fetch (kr_market_context)",
    "registryLimitations": "",
+   "registryNoteStatus": "CURRENT",
    "registryPitStatus": "REVISED_HISTORY",
    "registryPriorEvidence": "PRIOR_INCONCLUSIVE",
    "registryReadinessStatus": "PIT_UNSAFE",
@@ -20672,9 +20886,12 @@
    "sourceClass": "ECOS_MACRO"
   },
   "I04_krPolicyRate": {
-   "blockingReason": "config.json ecos.KR.BaseRate sourceStatus AMBIGUOUS_SOURCE (item code unresolved)",
    "family": "I",
    "featureId": "I04_krPolicyRate",
+   "genuineSourceBlocker": {
+    "kind": "DATA_BUILD_GAP",
+    "statement": "config.json ecos.KR.BaseRate sourceStatus AMBIGUOUS_SOURCE (item code unresolved)"
+   },
    "implementation": "NOT_COMPUTED",
    "measuredStatus": "NOT_COMPUTED_DATA_BUILD_REQUIRED",
    "nextAction": "resolve the ECOS item code in the market-context line",
@@ -20684,7 +20901,9 @@
     126,
     null
    ],
+   "registryBlockingNote": "config.json ecos.KR.BaseRate sourceStatus AMBIGUOUS_SOURCE (item code unresolved)",
    "registryLimitations": "",
+   "registryNoteStatus": "CURRENT",
    "registryPitStatus": "REVISED_HISTORY",
    "registryPriorEvidence": "UNTESTED",
    "registryReadinessStatus": "DATA_BUILD_REQUIRED",
@@ -20693,9 +20912,12 @@
    "sourceClass": "ECOS_MACRO"
   },
   "I05_krCreditSpread": {
-   "blockingReason": "CorpBond_3Y sourceStatus AMBIGUOUS_SOURCE (817Y002 item code for the corporate series unresolved)",
    "family": "I",
    "featureId": "I05_krCreditSpread",
+   "genuineSourceBlocker": {
+    "kind": "DATA_BUILD_GAP",
+    "statement": "CorpBond_3Y sourceStatus AMBIGUOUS_SOURCE (817Y002 item code for the corporate series unresolved)"
+   },
    "implementation": "NOT_COMPUTED",
    "measuredStatus": "NOT_COMPUTED_DATA_BUILD_REQUIRED",
    "nextAction": "resolve item code",
@@ -20705,7 +20927,9 @@
     126,
     null
    ],
+   "registryBlockingNote": "CorpBond_3Y sourceStatus AMBIGUOUS_SOURCE (817Y002 item code for the corporate series unresolved)",
    "registryLimitations": "",
+   "registryNoteStatus": "CURRENT",
    "registryPitStatus": "REVISED_HISTORY",
    "registryPriorEvidence": "UNTESTED",
    "registryReadinessStatus": "DATA_BUILD_REQUIRED",
@@ -20714,9 +20938,12 @@
    "sourceClass": "ECOS_MACRO"
   },
   "I06_krInflation": {
-   "blockingReason": "CPI AMBIGUOUS_SOURCE / CoreCPI DATA_LINEAGE_UNRESOLVED, revised history without release vintages",
    "family": "I",
    "featureId": "I06_krInflation",
+   "genuineSourceBlocker": {
+    "kind": "PIT_UNSAFE",
+    "statement": "CPI AMBIGUOUS_SOURCE / CoreCPI DATA_LINEAGE_UNRESOLVED, revised history without release vintages"
+   },
    "implementation": "NOT_COMPUTED",
    "measuredStatus": "NOT_COMPUTED_PIT_UNSAFE",
    "nextAction": "prospective only",
@@ -20726,7 +20953,9 @@
     126,
     null
    ],
+   "registryBlockingNote": "CPI AMBIGUOUS_SOURCE / CoreCPI DATA_LINEAGE_UNRESOLVED, revised history without release vintages",
    "registryLimitations": "",
+   "registryNoteStatus": "CURRENT",
    "registryPitStatus": "REVISED_HISTORY",
    "registryPriorEvidence": "UNTESTED",
    "registryReadinessStatus": "PIT_UNSAFE",
@@ -20735,9 +20964,12 @@
    "sourceClass": "ECOS_MACRO"
   },
   "I07_krExportsActivity": {
-   "blockingReason": "Exports NOT_AVAILABLE; IndustrialProduction DATA_LINEAGE_UNRESOLVED; LeadingIndex revised without vintages",
    "family": "I",
    "featureId": "I07_krExportsActivity",
+   "genuineSourceBlocker": {
+    "kind": "PIT_UNSAFE",
+    "statement": "Exports NOT_AVAILABLE; IndustrialProduction DATA_LINEAGE_UNRESOLVED; LeadingIndex revised without vintages"
+   },
    "implementation": "NOT_COMPUTED",
    "measuredStatus": "NOT_COMPUTED_PIT_UNSAFE",
    "nextAction": "prospective only",
@@ -20747,7 +20979,9 @@
     126,
     null
    ],
+   "registryBlockingNote": "Exports NOT_AVAILABLE; IndustrialProduction DATA_LINEAGE_UNRESOLVED; LeadingIndex revised without vintages",
    "registryLimitations": "",
+   "registryNoteStatus": "CURRENT",
    "registryPitStatus": "REVISED_HISTORY",
    "registryPriorEvidence": "UNTESTED",
    "registryReadinessStatus": "PIT_UNSAFE",
@@ -20756,9 +20990,12 @@
    "sourceClass": "ECOS_MACRO"
   },
   "I08_usdKrw": {
-   "blockingReason": "FX_PUBLICATION_TIME_UNRESOLVED (alpha-information-inventory-v1)",
    "family": "I",
    "featureId": "I08_usdKrw",
+   "genuineSourceBlocker": {
+    "kind": "PIT_UNSAFE",
+    "statement": "FX_PUBLICATION_TIME_UNRESOLVED (alpha-information-inventory-v1)"
+   },
    "implementation": "NOT_COMPUTED",
    "measuredStatus": "NOT_COMPUTED_PIT_UNSAFE",
    "nextAction": "ECOS 731Y001 with a verified fixing time",
@@ -20768,7 +21005,9 @@
     126,
     null
    ],
+   "registryBlockingNote": "FX_PUBLICATION_TIME_UNRESOLVED (alpha-information-inventory-v1)",
    "registryLimitations": "",
+   "registryNoteStatus": "CURRENT",
    "registryPitStatus": "PUBLICATION_TIME_UNRESOLVED",
    "registryPriorEvidence": "UNTESTED",
    "registryReadinessStatus": "PIT_UNSAFE",
@@ -20777,9 +21016,12 @@
    "sourceClass": "FX"
   },
   "I09_fxBeta26w": {
-   "blockingReason": "FX_PUBLICATION_TIME_UNRESOLVED; excluded by regional_alpha_features",
    "family": "I",
    "featureId": "I09_fxBeta26w",
+   "genuineSourceBlocker": {
+    "kind": "PIT_UNSAFE",
+    "statement": "FX_PUBLICATION_TIME_UNRESOLVED; excluded by regional_alpha_features"
+   },
    "implementation": "NOT_COMPUTED",
    "measuredStatus": "NOT_COMPUTED_PIT_UNSAFE",
    "nextAction": "after I08 is resolved",
@@ -20789,7 +21031,9 @@
     126,
     null
    ],
+   "registryBlockingNote": "FX_PUBLICATION_TIME_UNRESOLVED; excluded by regional_alpha_features",
    "registryLimitations": "",
+   "registryNoteStatus": "CURRENT",
    "registryPitStatus": "PUBLICATION_TIME_UNRESOLVED",
    "registryPriorEvidence": "UNTESTED",
    "registryReadinessStatus": "PIT_UNSAFE",
@@ -20798,9 +21042,12 @@
    "sourceClass": "FX"
   },
   "I10_semiconductorCycleSOX": {
-   "blockingReason": "dashboard-only fetch; no pinned historical snapshot",
    "family": "I",
    "featureId": "I10_semiconductorCycleSOX",
+   "genuineSourceBlocker": {
+    "kind": "DATA_BUILD_GAP",
+    "statement": "dashboard-only fetch; no pinned historical snapshot"
+   },
    "implementation": "NOT_COMPUTED",
    "measuredStatus": "NOT_COMPUTED_DATA_BUILD_REQUIRED",
    "nextAction": "snapshot with the benchmark acquisition rules",
@@ -20810,7 +21057,9 @@
     126,
     null
    ],
+   "registryBlockingNote": "dashboard-only fetch; no pinned historical snapshot",
    "registryLimitations": "",
+   "registryNoteStatus": "CURRENT",
    "registryPitStatus": "NO_SOURCE",
    "registryPriorEvidence": "UNTESTED",
    "registryReadinessStatus": "DATA_BUILD_REQUIRED",
@@ -20819,9 +21068,12 @@
    "sourceClass": "GLOBAL_MARKET"
   },
   "I11_globalFinancialConditions": {
-   "blockingReason": "10 of 28 FRED panel columns have no ALFRED vintages (macro vintage invariants v2.9)",
    "family": "I",
    "featureId": "I11_globalFinancialConditions",
+   "genuineSourceBlocker": {
+    "kind": "PIT_UNSAFE",
+    "statement": "10 of 28 FRED panel columns have no ALFRED vintages (macro vintage invariants v2.9)"
+   },
    "implementation": "NOT_COMPUTED",
    "measuredStatus": "NOT_COMPUTED_PIT_UNSAFE",
    "nextAction": "none historically",
@@ -20831,7 +21083,9 @@
     126,
     null
    ],
+   "registryBlockingNote": "10 of 28 FRED panel columns have no ALFRED vintages (macro vintage invariants v2.9)",
    "registryLimitations": "",
+   "registryNoteStatus": "CURRENT",
    "registryPitStatus": "REVISED_HISTORY",
    "registryPriorEvidence": "UNTESTED",
    "registryReadinessStatus": "PIT_UNSAFE",
@@ -20840,9 +21094,12 @@
    "sourceClass": "FRED_MACRO"
   },
   "I12_commodityExposure": {
-   "blockingReason": "no commodity price series is collected",
    "family": "I",
    "featureId": "I12_commodityExposure",
+   "genuineSourceBlocker": {
+    "kind": "DATA_BUILD_GAP",
+    "statement": "no commodity price series is collected"
+   },
    "implementation": "NOT_COMPUTED",
    "measuredStatus": "NOT_COMPUTED_DATA_BUILD_REQUIRED",
    "nextAction": "optional; lowest priority",
@@ -20852,7 +21109,9 @@
     126,
     null
    ],
+   "registryBlockingNote": "no commodity price series is collected",
    "registryLimitations": "",
+   "registryNoteStatus": "CURRENT",
    "registryPitStatus": "NO_SOURCE",
    "registryPriorEvidence": "UNTESTED",
    "registryReadinessStatus": "DATA_BUILD_REQUIRED",
@@ -20861,7 +21120,6 @@
    "sourceClass": "GLOBAL_MARKET"
   },
   "J01_periodicFilingEvent": {
-   "blockingReason": null,
    "catalogue": {
     "addsArithmetic": "a session count between two dates",
     "categorical": false,
@@ -21079,6 +21337,7 @@
    "eligibleObservations": 85680,
    "family": "J",
    "featureId": "J01_periodicFilingEvent",
+   "genuineSourceBlocker": null,
    "horizonUsability": {
     "H21": {
      "lastMaturableSignalDate": "2026-08-07",
@@ -21105,7 +21364,9 @@
     21,
     63
    ],
+   "registryBlockingNote": null,
    "registryLimitations": "",
+   "registryNoteStatus": "NONE",
    "registryPitStatus": "PIT_RECEIPT_DATED",
    "registryPriorEvidence": "UNTESTED",
    "registryReadinessStatus": "DERIVABLE_FROM_EXISTING_DATA",
@@ -21130,9 +21391,12 @@
    ]
   },
   "J02_dividendPolicyChange": {
-   "blockingReason": "alotMatter.json not collected universe-wide; endpointConfidence CANDIDATE_UNCONFIRMED",
    "family": "J",
    "featureId": "J02_dividendPolicyChange",
+   "genuineSourceBlocker": {
+    "kind": "DATA_BUILD_GAP",
+    "statement": "alotMatter.json not collected universe-wide; endpointConfidence CANDIDATE_UNCONFIRMED"
+   },
    "implementation": "NOT_COMPUTED",
    "measuredStatus": "NOT_COMPUTED_DATA_BUILD_REQUIRED",
    "nextAction": "bounded collection for the ever-top-120 list",
@@ -21142,7 +21406,9 @@
     21,
     63
    ],
+   "registryBlockingNote": "alotMatter.json not collected universe-wide; endpointConfidence CANDIDATE_UNCONFIRMED",
    "registryLimitations": "",
+   "registryNoteStatus": "CURRENT",
    "registryPitStatus": "PIT_RECEIPT_DATED",
    "registryPriorEvidence": "UNTESTED",
    "registryReadinessStatus": "DATA_BUILD_REQUIRED",
@@ -21151,9 +21417,12 @@
    "sourceClass": "DART_FILINGS"
   },
   "J03_buybackAnnouncement": {
-   "blockingReason": "list.json disclosure families not collected universe-wide",
    "family": "J",
    "featureId": "J03_buybackAnnouncement",
+   "genuineSourceBlocker": {
+    "kind": "DATA_BUILD_GAP",
+    "statement": "list.json disclosure families not collected universe-wide"
+   },
    "implementation": "NOT_COMPUTED",
    "measuredStatus": "NOT_COMPUTED_DATA_BUILD_REQUIRED",
    "nextAction": "bounded list.json collection; report-name match is a reading list, never a verdict",
@@ -21163,7 +21432,9 @@
     21,
     63
    ],
+   "registryBlockingNote": "list.json disclosure families not collected universe-wide",
    "registryLimitations": "",
+   "registryNoteStatus": "CURRENT",
    "registryPitStatus": "PIT_RECEIPT_DATED",
    "registryPriorEvidence": "UNTESTED",
    "registryReadinessStatus": "DATA_BUILD_REQUIRED",
@@ -21172,9 +21443,12 @@
    "sourceClass": "DART_FILINGS"
   },
   "J04_materialDisclosure": {
-   "blockingReason": "as J03; M&A outcomes carry hindsight risk (terminal economics unresolved)",
    "family": "J",
    "featureId": "J04_materialDisclosure",
+   "genuineSourceBlocker": {
+    "kind": "DATA_BUILD_GAP",
+    "statement": "as J03; M&A outcomes carry hindsight risk (terminal economics unresolved)"
+   },
    "implementation": "NOT_COMPUTED",
    "measuredStatus": "NOT_COMPUTED_DATA_BUILD_REQUIRED",
    "nextAction": "after J03",
@@ -21184,7 +21458,9 @@
     21,
     63
    ],
+   "registryBlockingNote": "as J03; M&A outcomes carry hindsight risk (terminal economics unresolved)",
    "registryLimitations": "",
+   "registryNoteStatus": "CURRENT",
    "registryPitStatus": "PIT_RECEIPT_DATED",
    "registryPriorEvidence": "UNTESTED",
    "registryReadinessStatus": "DATA_BUILD_REQUIRED",
@@ -21193,7 +21469,6 @@
    "sourceClass": "DART_FILINGS"
   },
   "J05_shortSellingRegime": {
-   "blockingReason": null,
    "catalogue": {
     "addsArithmetic": "an ordinal code",
     "categorical": false,
@@ -21411,6 +21686,7 @@
    "eligibleObservations": 85680,
    "family": "J",
    "featureId": "J05_shortSellingRegime",
+   "genuineSourceBlocker": null,
    "horizonUsability": {
     "H21": {
      "lastMaturableSignalDate": "2026-08-07",
@@ -21435,7 +21711,9 @@
     21,
     63
    ],
+   "registryBlockingNote": null,
    "registryLimitations": "",
+   "registryNoteStatus": "NONE",
    "registryPitStatus": "PIT_DATED_CALENDAR",
    "registryPriorEvidence": "NOT_APPLICABLE",
    "registryReadinessStatus": "READY",
@@ -21462,9 +21740,12 @@
    ]
   },
   "J06_searchAttention": {
-   "blockingReason": "no source with verified point-in-time history and permitted use",
    "family": "J",
    "featureId": "J06_searchAttention",
+   "genuineSourceBlocker": {
+    "kind": "NO_POINT_IN_TIME_SOURCE",
+    "statement": "no source with verified point-in-time history and permitted use"
+   },
    "implementation": "NOT_COMPUTED",
    "measuredStatus": "NOT_COMPUTED_NOT_FEASIBLE",
    "nextAction": "none",
@@ -21474,7 +21755,9 @@
     21,
     63
    ],
+   "registryBlockingNote": "no source with verified point-in-time history and permitted use",
    "registryLimitations": "",
+   "registryNoteStatus": "CURRENT",
    "registryPitStatus": "NO_SOURCE",
    "registryPriorEvidence": "NOT_APPLICABLE",
    "registryReadinessStatus": "NOT_FEASIBLE",
@@ -21483,9 +21766,12 @@
    "sourceClass": "NO_SOURCE"
   },
   "J07_newsTextSentiment": {
-   "blockingReason": "no archived PIT news source; a large NLP project is out of scope",
    "family": "J",
    "featureId": "J07_newsTextSentiment",
+   "genuineSourceBlocker": {
+    "kind": "NO_POINT_IN_TIME_SOURCE",
+    "statement": "no archived PIT news source; a large NLP project is out of scope"
+   },
    "implementation": "NOT_COMPUTED",
    "measuredStatus": "NOT_COMPUTED_NOT_FEASIBLE",
    "nextAction": "none",
@@ -21495,7 +21781,9 @@
     21,
     63
    ],
+   "registryBlockingNote": "no archived PIT news source; a large NLP project is out of scope",
    "registryLimitations": "",
+   "registryNoteStatus": "CURRENT",
    "registryPitStatus": "NO_SOURCE",
    "registryPriorEvidence": "NOT_APPLICABLE",
    "registryReadinessStatus": "NOT_FEASIBLE",
@@ -21504,9 +21792,12 @@
    "sourceClass": "NO_SOURCE"
   },
   "J08_analystRevisions": {
-   "blockingReason": "FnGuide/FnSpace ToS-blocked; no free PIT history (alpha-information-inventory-v1)",
    "family": "J",
    "featureId": "J08_analystRevisions",
+   "genuineSourceBlocker": {
+    "kind": "NO_POINT_IN_TIME_SOURCE",
+    "statement": "FnGuide/FnSpace ToS-blocked; no free PIT history (alpha-information-inventory-v1)"
+   },
    "implementation": "NOT_COMPUTED",
    "measuredStatus": "NOT_COMPUTED_NOT_FEASIBLE",
    "nextAction": "none",
@@ -21516,7 +21807,9 @@
     21,
     63
    ],
+   "registryBlockingNote": "FnGuide/FnSpace ToS-blocked; no free PIT history (alpha-information-inventory-v1)",
    "registryLimitations": "",
+   "registryNoteStatus": "CURRENT",
    "registryPitStatus": "NO_SOURCE",
    "registryPriorEvidence": "BLOCKED",
    "registryReadinessStatus": "NOT_FEASIBLE",
@@ -21531,12 +21824,12 @@
    "pipeline/kr_alpha_atlas_bars.py": "7e9cf779edc2ef9b319c9caf1a6ab582ed3cef8fcc79d76f8ba7b8989699859c",
    "pipeline/kr_alpha_atlas_catalogue.py": "05c61e76c5d92aa1f82fecffabae29d796c60ef4c1e4a6e75df0929f1ec9461b",
    "pipeline/kr_alpha_atlas_dry_run.py": "52476750805fcc6b639efbe0b1610c407f696070dfce0efbb17502ec3eb2f4d1",
-   "pipeline/kr_alpha_atlas_feasibility.py": "7f261a9e015fc8526677c309dd3dee057375f19a1fcc0fd6d0ca57fefe42943e",
+   "pipeline/kr_alpha_atlas_feasibility.py": "4fa6a59648628b58b2b457cb1c9ac5dafa4c30508d5b716426052c9912307398",
    "pipeline/kr_alpha_atlas_inputs.py": "c74a242c063530dba88a45968118e62422f0f009f07551f9ea1d5a6f981d188f",
    "pipeline/kr_alpha_atlas_matrix.py": "1b706dc452181e6916572c5ecd45bc5bebe098f7cd3bd37512ae314be74ff00c",
-   "pipeline/kr_alpha_atlas_readiness.py": "2d78617bd31a9734e627f853a879a6b74692cd52c9416f461dd88192acb95442",
-   "pipeline/kr_alpha_atlas_report.py": "c563667849c1a1435424aadd0386270a31650e5af1f664376d188ca86462f9d2",
-   "scripts/build_kr_alpha_atlas_phase_b.py": "b7df16586b4522a072b5a64bf626430175afa278d3843301dc090e6ae21a2297"
+   "pipeline/kr_alpha_atlas_readiness.py": "ef655f09d50154da0e256c1786ce70ab2af01ac1d3811de7c666c01d5888dcb3",
+   "pipeline/kr_alpha_atlas_report.py": "740b84de731e91d21fe132c1dc1573d5cac5923499eb38c9b2166fdb17fe5187",
+   "scripts/build_kr_alpha_atlas_phase_b.py": "f832b8fb4993fb9c9e54cbeed71881099ffeb12b07feffb17d2fe9cefff847bf"
   },
   "inputs": {
    "accountingBlobSha1": {

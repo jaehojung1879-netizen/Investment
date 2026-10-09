@@ -219,7 +219,7 @@ def source_register(registry, ownership_manifest, investor_flow_manifest, policy
                                 "companiesQueried": ownership_manifest.get("companiesQueried"), "pitAvailabilityRule": ownership_manifest["endpointSemantics"]["pitAvailabilityRule"],
                                 "noRowsMeaning": ownership_manifest["endpointSemantics"]["noRowsMeaning"]},
              "reading": "the endpoint serves only about two years (from %s) and 'no rows' is not proof of no filing, so an absence cannot be read as a zero. Prospective collection, "
-                        "not a historical feature; it stays DATA_BUILD_REQUIRED and is not computed in the matrix" % first_event},
+                        "not a historical feature; the registry's DATA_BUILD_REQUIRED is unchanged and it is not computed in the matrix" % first_event},
             {"features": ["J02_dividendPolicyChange", "J03_buybackAnnouncement", "J04_materialDisclosure"], "source": "DART alotMatter.json / list.json (disclosure families)",
              "status": "DATA_BUILD_REQUIRED",
              "latestEvidence": {"artifact": "signal-history ledger/kr-corporate-actions", "scope": "the 22 terminated securities only (451 disclosures)"},
@@ -232,11 +232,68 @@ def source_register(registry, ownership_manifest, investor_flow_manifest, policy
                         "here and the registry status is unchanged. It is a policy-rate proxy, not an investable rate."},
             {"features": ["I03_krTermSpread", "I06_krInflation", "I07_krExportsActivity", "I08_usdKrw", "I09_fxBeta26w", "I11_globalFinancialConditions"], "source": "ECOS / FRED / ALFRED",
              "status": "PIT_UNSAFE", "reading": "only revised history is served, or the publication time is unresolved against the KRX close; ALFRED vintages do not exist for these series"},
-            {"features": ["B04_freeCashFlowYield", "C06_cashConversion", "C15_capexIntensity", "C16_grossProfitability"], "source": "DART fnlttSinglAcntAll via the sealed candidate-merged store",
-             "status": "DATA_BUILD_REQUIRED", "reading": "computed in the matrix on the pinned store and judged on measured coverage like any other feature. kr-canonical-v2 exists on signal-history "
-                        "but is not pinned by the sealed studies; using it needs its own pinned identity, so it is not mixed in here"},
+            {"features": ["C16_grossProfitability"], "source": "DART fnlttSinglAcntAll via the sealed candidate-merged store", "status": "DATA_BUILD_REQUIRED",
+             "reading": "NOT computed: neither a gross-profit nor a cost-of-sales line is among dart_fundamentals.WANTED_ACCOUNTS, so the pinned store cannot state it. kr-canonical-v2 exists on "
+                        "signal-history but is not pinned by the sealed studies; using it needs its own pinned identity and a canonical account rule, so it is not mixed in here. "
+                        "B04, C06 and C15 are NOT in this group: they were computed on the same store and carry a coverage verdict (see computedWithCoverageVerdict), not a source blocker"},
+            {"features": ["I05_krCreditSpread"], "source": "BOK ECOS via pipeline/ecos_macro.py", "status": "DATA_BUILD_REQUIRED",
+             "reading": "the corporate-bond series shares table 817Y002 with the government series and is told apart only by an item code the config schema has no field for; revised history only (REVISED_HISTORY)"},
+            {"features": ["I10_semiconductorCycleSOX", "I12_commodityExposure"], "source": "Yahoo ^SOX dashboard fetch / none in the repository", "status": "DATA_BUILD_REQUIRED",
+             "reading": "I10 is a dashboard-only fetch with no pinned historical snapshot (it would need the benchmark acquisition rules); I12 has no collected commodity series at all"},
             {"features": ["E08_trueBidAskSpread", "J06_searchAttention", "J07_newsTextSentiment", "J08_analystRevisions"], "source": "none", "status": "NOT_FEASIBLE",
              "reading": "no point-in-time source: quote data, search volume, news text and historical consensus are not available in the repository or on a free tier"},
         ],
         "cutoff": cutoff,
     }
+
+
+# --------------------------------------------------------------------------- #
+# Reconciling the register with the measurements
+# --------------------------------------------------------------------------- #
+STATUS_AXES = {
+    "registryReadinessStatus": "the registry's DESIGN-time status (READY / DERIVABLE_FROM_EXISTING_DATA / ALREADY_TESTED / DATA_BUILD_REQUIRED / SOURCE_BLOCKED / PIT_UNSAFE / NOT_FEASIBLE); never edited",
+    "implementationStatus": "whether this build wrote the feature: IMPLEMENTED, COMPUTED_ALREADY_TESTED, REFERENCED_NOT_RECOMPUTED, NOT_COMPUTED or NOT_A_MATRIX_COLUMN",
+    "measuredStatus": "the coverage verdict on the real matrix for a computed feature (MEASURED_READY / MEASURED_BELOW_COVERAGE_FLOOR / ALREADY_TESTED_*), or the reason it was not computed",
+    "genuineSourceBlocker": "non-null ONLY for a feature that was not computed, naming the barrier (SOURCE_ACCESS_REFUSED / PIT_UNSAFE / NO_POINT_IN_TIME_SOURCE / DATA_BUILD_GAP); null for every computed feature",
+    "group status": "a verdict on the SOURCE (access, point-in-time safety, history length), made at the group level; it is not a statement about any computed feature"}
+COMPUTED = ("IMPLEMENTED", "COMPUTED_ALREADY_TESTED")
+
+
+def feature_status_row(r):
+    """The four axes for one feature, read from the readiness report and from nowhere else."""
+    return {"featureId": r["featureId"], "registryReadinessStatus": r["registryReadinessStatus"], "implementationStatus": r["implementation"], "measuredStatus": r["measuredStatus"],
+            "coverageWithinUsableRangePct": r.get("coverageWithinUsableRangePct"), "genuineSourceBlocker": r.get("genuineSourceBlocker")}
+
+
+def reconcile_sources(sources, features):
+    """Return the source register with every feature carrying its four status axes from the readiness report, so the register cannot disagree with the measurements.
+
+    It refuses (rather than silently repairs) two inconsistencies: a COMPUTED feature listed inside a source group, and a feature that was NOT computed yet appears in no group.
+    A feature computed in the matrix is never a source blocker; one whose registry status was DATA_BUILD_REQUIRED is published separately, with its measured coverage verdict.
+    Idempotent: the output reconciles to itself."""
+    groups = []
+    seen = {}
+    for group in sources["sources"]:
+        rows = []
+        for fid in group["features"]:
+            r = features[fid]
+            if r["implementation"] in COMPUTED:
+                raise ValueError("COMPUTED_FEATURE_LISTED_AS_SOURCE_BLOCKER: %s (%s, %s)" % (fid, r["implementation"], r["measuredStatus"]))
+            if fid in seen:
+                raise ValueError("FEATURE_IN_TWO_SOURCE_GROUPS: %s" % fid)
+            seen[fid] = group["source"]
+            rows.append(feature_status_row(r))
+        groups.append({**{k: v for k, v in group.items() if k != "rows"}, "rows": rows})
+    uncovered = sorted(fid for fid, r in features.items() if r["measuredStatus"].startswith("NOT_COMPUTED") and fid not in seen)
+    if uncovered:
+        raise ValueError("NOT_COMPUTED_FEATURE_HAS_NO_SOURCE_VERDICT: " + ", ".join(uncovered))
+    verdicts = [{**feature_status_row(r), "registryBlockingNote": r["registryBlockingNote"], "registryNoteStatus": r["registryNoteStatus"],
+                 "thinOverFloor": bool(r.get("thinOverFloor")), "marginOverCoverageFloorPct": r.get("marginOverCoverageFloorPct"),
+                 "reading": ("computed and measured; the registry's design-time note about a build requirement is superseded by this measurement. It is a coverage verdict, not a source blocker"
+                             if r["measuredStatus"] in ("MEASURED_READY", "ALREADY_TESTED_COMPUTED_READY") else
+                             "computed and measured, and below the %d%% coverage floor within its usable range. That is a statement about how many cells were measured, not about a source" % 60)}
+                for fid, r in sorted(features.items())
+                if r["implementation"] in COMPUTED and (r["registryReadinessStatus"] == "DATA_BUILD_REQUIRED" or r["measuredStatus"].endswith("BELOW_COVERAGE_FLOOR"))]
+    out = {**{k: v for k, v in sources.items() if k not in ("sources", "computedWithCoverageVerdict", "statusAxes")}, "statusAxes": STATUS_AXES, "sources": groups,
+           "computedWithCoverageVerdict": verdicts}
+    return out

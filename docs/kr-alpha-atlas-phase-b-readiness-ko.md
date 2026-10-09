@@ -13,11 +13,13 @@
 
 ## 상태 구분 (코드 구현 / 실제 데이터로 검증 / 미달 / 차단)
 
+특성마다 서로 다른 네 가지를 따로 적습니다: ① 등록 당시 상태(설계 시점의 예상, 수정하지 않음) ② 구현 상태(이번에 코드로 계산했는지) ③ 측정 판정(실제 매트릭스의 커버리지) ④ 진짜 출처 장애(계산하지 못한 특성에만 붙음). **계산한 특성은 등록 당시 상태가 '데이터 구축 필요'였더라도 출처 장애가 아니며**, 커버리지 판정만 가집니다.
+
 - **실제 데이터로 측정 완료·사용 가능** (코드 구현됨 + 실제 입력으로 계산, 커버리지 기준 통과): A01_return1d, A02_return5d, A03_return21d, A04_return63d, A05_relative126, A06_return252d, A07_momentum12_1, A08_momentum6, A09_industryRelativeMomentum126, A10_residualMomentum126, A11_distance52wHigh, A12_momentumPersistence, A13_momentumAcceleration21, A14_ma200Distance, B01_bookToMarket, B02_earningsYield, B03_ocfYield, B04_freeCashFlowYield, B05_industryRelativeValue, B06_ownHistoryValuation, B07_valuationChange126, B08_valueBusinessConfirmation, C01_returnOnAssets, C02_returnOnEquity, C05_ocfToAssets, C07_negativeAccruals, C08_netIncomeMinusOcf, C09_assetGrowth, C10_liabilityGrowth, C11_shareDilution, C12_profitabilityPersistence, C14_ocfImprovement, D01_volumeSurge5_60, D02_logVolumeShock60, D03_tradingValueShock5_60, D04_shockPersistence5d, D05_turnoverToMarketCap60, D06_priceVolumeDivergence, D07_volumePriceAlignment, D08_abnormalVolumeUpClose, D09_abnormalVolumeDownClose, D10_liquidityAcceleration, D11_accumulationDistributionProxy, E01_amihudIlliquidity60, E02_logAdv60, E03_capacityMedianTradedValue60, E04_tradabilityGuard20, E05_highLowSpreadProxy, E06_volatilityConditionalOnVolume, E07_suspensionStaleRisk, F01_totalVolatility63, F02_downsideVol126, F03_beta252, F04_idiosyncraticVol, F05_maxDrawdown252, F06_crashExposure, F07_benchmarkCorrelation252, H01_industryRelMom126, H02_industryRelMom63, H03_industryBreadthAboveMA126, H04_withinIndustryDispersion126, H05_crossIndustryDispersion, H06_industryConcentrationTop1, H07_leadershipPersistence, H08_equalVsCapWeightIndustry, H09_marketBreadth, H10_marketConcentrationTop2, H12_industryValuationContext, I01_kospiTrendVolState, J01_periodicFilingEvent, J05_shortSellingRegime
 - **코드는 구현됐지만 커버리지 기준 미달 (NOT_READY)**: C03_operatingMargin(54.203364%), C04_profitMargin(55.17737%), C06_cashConversion(56.62844%), C15_capexIntensity(52.896024%), H11_industryEarningsContext(58.437309%)
 - **출처 차단 (SOURCE_BLOCKED)**: G01_foreignNetBuying, G02_institutionalNetBuying, G03_retailNetBuying, G04_investorTypePersistence, G05_flowMomentumConfirmation, G08_shortSellingVolume, G09_shortBalanceChange
 - **시점 안전성 없음 (PIT_UNSAFE)**: I03_krTermSpread, I06_krInflation, I07_krExportsActivity, I08_usdKrw, I09_fxBeta26w, I11_globalFinancialConditions
-- **데이터 구축 필요 / 구할 수 없음**: C16_grossProfitability, E08_trueBidAskSpread, G06_largeHolderAccumulation, G07_largeHolderReduction, I04_krPolicyRate, I05_krCreditSpread, I10_semiconductorCycleSOX, I12_commodityExposure, J02_dividendPolicyChange, J03_buybackAnnouncement, J04_materialDisclosure, J06_searchAttention, J07_newsTextSentiment, J08_analystRevisions
+- **데이터 구축 필요 / 구할 수 없음 (계산하지 않음)**: C16_grossProfitability, E08_trueBidAskSpread, G06_largeHolderAccumulation, G07_largeHolderReduction, I04_krPolicyRate, I05_krCreditSpread, I10_semiconductorCycleSOX, I12_commodityExposure, J02_dividendPolicyChange, J03_buybackAnnouncement, J04_materialDisclosure, J06_searchAttention, J07_newsTextSentiment, J08_analystRevisions
 - **기존 연구 결과만 인용(재계산 안 함)**: C13_fundamentalAcceleration, I02_vixLevel
 - 사전 수정(결과를 보기 전): B08_DENOMINATOR_IS_THE_H2_CONTRACTS_OWN_ELIGIBLE_SET — 자세한 내용은 JSON의 `preOutcomeRevisions`.
 
@@ -142,7 +144,20 @@
 | B3_VOLUME_LIQUIDITY | 준비됨 | — | 98.214625% |
 | B4_COMBINED_SIMPLE | 준비됨 | — | 44.319572% |
 
-## 계산하지 못한 특성과 데이터 출처
+## 계산했지만 등록 당시 '데이터 구축 필요'였거나 기준에 못 미친 특성 (출처 장애 아님)
+
+| 특성 | 등록 당시 상태 | 구현 | 측정 판정 | 사용 범위 내 커버리지 | 출처 장애 |
+|---|---|---|---:|---:|---|
+| B04_freeCashFlowYield | DATA_BUILD_REQUIRED | IMPLEMENTED | 측정 완료·사용 가능 (얇음) | 62.29% | 없음 |
+| C03_operatingMargin | READY | IMPLEMENTED | 측정했으나 기준 미달 | 54.20% | 없음 |
+| C04_profitMargin | READY | IMPLEMENTED | 측정했으나 기준 미달 | 55.18% | 없음 |
+| C06_cashConversion | DATA_BUILD_REQUIRED | IMPLEMENTED | 측정했으나 기준 미달 | 56.63% | 없음 |
+| C15_capexIntensity | DATA_BUILD_REQUIRED | IMPLEMENTED | 측정했으나 기준 미달 | 52.90% | 없음 |
+| H11_industryEarningsContext | ALREADY_TESTED | COMPUTED_ALREADY_TESTED | 기존 검증·비교용(기준 미달) | 58.44% | 없음 |
+
+등록부에 적힌 당시의 기대('KR 설비투자 7.74%' 등)는 설계 시점 메모이며, 이번 측정(고정된 후보 병합 저장소)이 그것을 대체합니다. 두 저장소는 서로 다른 대상이라 등록부 메모는 고치지 않았습니다.
+
+## 계산하지 못한 특성과 데이터 출처 (진짜 장애만)
 
 - **G01_foreignNetBuying, G02_institutionalNetBuying, G03_retailNetBuying, G04_investorTypePersistence, G05_flowMomentumConfirmation** — SOURCE_BLOCKED: 출처가 막혀 있어 계산하지 않았고, 다른 지표로 대체하지 않습니다.
 - **G08_shortSellingVolume, G09_shortBalanceChange** — SOURCE_BLOCKED: 출처가 막혀 있어 계산하지 않았고, 다른 지표로 대체하지 않습니다.
@@ -150,7 +165,9 @@
 - **J02_dividendPolicyChange, J03_buybackAnnouncement, J04_materialDisclosure** — DATA_BUILD_REQUIRED: 수집·구축이 더 필요해 이번에 계산하지 않았습니다.
 - **I04_krPolicyRate** — SOURCE_AVAILABLE_NOT_COMPUTED: 저장소에 날짜가 붙은 정책금리 파일이 있어 시점 안전하게 만들 수 있지만, 등록된 비교가 읽지 않아 계산하지 않았습니다(정책금리 대용치이며 투자 가능한 금리가 아닙니다).
 - **I03_krTermSpread, I06_krInflation, I07_krExportsActivity, I08_usdKrw, I09_fxBeta26w, I11_globalFinancialConditions** — PIT_UNSAFE: 수정된 값만 제공되거나 공표 시각이 확정되지 않아 시점 안전하지 않습니다.
-- **B04_freeCashFlowYield, C06_cashConversion, C15_capexIntensity, C16_grossProfitability** — DATA_BUILD_REQUIRED: 수집·구축이 더 필요해 이번에 계산하지 않았습니다.
+- **C16_grossProfitability** — DATA_BUILD_REQUIRED: 수집·구축이 더 필요해 이번에 계산하지 않았습니다.
+- **I05_krCreditSpread** — DATA_BUILD_REQUIRED: 수집·구축이 더 필요해 이번에 계산하지 않았습니다.
+- **I10_semiconductorCycleSOX, I12_commodityExposure** — DATA_BUILD_REQUIRED: 수집·구축이 더 필요해 이번에 계산하지 않았습니다.
 - **E08_trueBidAskSpread, J06_searchAttention, J07_newsTextSentiment, J08_analystRevisions** — NOT_FEASIBLE: 시점 기준으로 쓸 수 있는 출처가 없습니다.
 
 외국인·기관 순매수와 공매도는 최신 기록(2026-09-24T06:23:26Z)에서도 KRX 포털이 접근을 거부해(`REFUSED: HTTP 400: b'LOGOUT'`) **출처 차단**으로 유지합니다. 이번 단계에서 다시 확인하지 않았고, 일봉으로 만든 매집 지표(D11)를 투자자 수급 대용으로 쓰지 않습니다. 한 번 더 확인하려면 Actions의 `Probes` 워크플로우에서 `probe=kr-investor-flow` 또는 `kr-short-selling`을 선택해 실행합니다.

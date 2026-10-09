@@ -321,7 +321,12 @@ def build_features_report(matrix, registry, cutoff):
         cat = C.CATALOGUE.get(fid)
         entry = {"featureId": fid, "family": f["family"], "role": f["role"], "registryReadinessStatus": f["readinessStatus"],
                  "registryPriorEvidence": f["existingResearchStatus"], "registryPitStatus": f["pitStatus"], "registeredHorizons": horizons,
-                 "source": f["source"], "sourceClass": f.get("sourceClass"), "registryLimitations": f["limitations"], "blockingReason": f.get("blockingReason"),
+                 "source": f["source"], "sourceClass": f.get("sourceClass"), "registryLimitations": f["limitations"],
+                 # the registry's own design-time note, verbatim. For a feature this build computed it describes the DESIGN-time expectation and is superseded by the
+                 # measurement beside it; it is never a blocker of a computed feature (genuineSourceBlocker is the only field that says a barrier exists)
+                 "registryBlockingNote": f.get("blockingReason"),
+                 "registryNoteStatus": "SUPERSEDED_BY_MEASUREMENT" if implemented and f.get("blockingReason") else "CURRENT" if f.get("blockingReason") else "NONE",
+                 "genuineSourceBlocker": genuine_source_blocker(f, implemented),
                  "implementation": ("COMPUTED_ALREADY_TESTED" if implemented and f["readinessStatus"] == "ALREADY_TESTED"
                                     else "IMPLEMENTED" if implemented else "NOT_A_MATRIX_COLUMN" if fid in C.NOT_A_MATRIX_COLUMN
                                     else "REFERENCED_NOT_RECOMPUTED" if f["readinessStatus"] == "ALREADY_TESTED" else "NOT_COMPUTED")}
@@ -338,6 +343,20 @@ def build_features_report(matrix, registry, cutoff):
         entry["nextAction"] = _next_action(entry, f)
         out[fid] = entry
     return out
+
+
+GENUINE_BLOCKER_KINDS = {"SOURCE_BLOCKED": "SOURCE_ACCESS_REFUSED", "PIT_UNSAFE": "PIT_UNSAFE", "NOT_FEASIBLE": "NO_POINT_IN_TIME_SOURCE",
+                         "DATA_BUILD_REQUIRED": "DATA_BUILD_GAP"}
+
+
+def genuine_source_blocker(registry_feature, implemented):
+    """A barrier exists only for a feature this build did NOT compute. A computed feature has no source blocker whatever the registry's design-time status said:
+    it has a coverage verdict instead (measuredStatus), and a below-floor verdict is a statement about how many cells were measured, not about a source."""
+    fid = registry_feature["featureId"]
+    if implemented or fid in C.NOT_A_MATRIX_COLUMN or registry_feature["readinessStatus"] not in GENUINE_BLOCKER_KINDS:
+        return None
+    return {"kind": GENUINE_BLOCKER_KINDS[registry_feature["readinessStatus"]],
+            "statement": registry_feature.get("blockingReason") or registry_feature.get("nextAction") or "no statement in the registry"}
 
 
 def _next_action(entry, f):

@@ -94,6 +94,7 @@ def build(args):
     report["counters"] = {"featureRowsBuilt": counters.get("featureRowsBuilt"), "labelsBuilt": 0, "modelsFitted": 0, "forwardPriceReads": 0}
     dry = DR.run(inputs, now_utc=DRY_RUN_REPLAY_INSTANT, eligible_features=[e["featureId"] for e in manifest["eligibleFeatures"]] or None, replay_of_instant=True, history_weeks=DRY_RUN_HISTORY_WEEKS)
     universe.pop("_tradingValueBasis", None)
+    sources = FE.reconcile_sources(sources, report["features"])    # every feature in the register carries the four status axes read from the report just built
     return report, manifest, {"sources": sources, "universe": universe}, dry
 
 
