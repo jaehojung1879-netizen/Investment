@@ -1,0 +1,79 @@
+{
+  "auditId": "KR_ATLAS_SOURCE_PRICE_INTEGRITY_20261009",
+  "classification": "OUTCOME_BLIND_SOURCE_LEVEL_ONLY",
+  "failurePolicy": "Missing source or unknown actions remain explicitly UNRESOLVED; do not infer zero distributions or generalize this six-name audit to all 260.",
+  "frozenAtUtc": "2026-10-09T13:21:06.009601+00:00",
+  "operationsAllowed": [
+    "same-session Close/High/Low/Open quote comparisons",
+    "same-session Volume and ListedShares checks",
+    "vendor-to-raw quote scale, before/after corporate-event factor (no stock holding returns)",
+    "corporate-action source metadata and absence disclosures"
+  ],
+  "phaseBInputsSha256": "3e4d7aa35e2c4b273e4ecef0e2e8ea7a8a27077f0de14bb3d5ea6a696a97f1a5",
+  "prohibited": [
+    "stock forward returns",
+    "stock-minus-benchmark returns",
+    "factor IC or spread",
+    "model fitting or predictions versus outcomes",
+    "portfolio backtests",
+    "formal execution or authorization or locks"
+  ],
+  "referenceUniverseCount": 260,
+  "securities": [
+    {
+      "name": "대덕전자",
+      "role": "HASH_SELECTED",
+      "selectionHash": "0060b7efb50918d74919b664134137d0b76699d662351f890be341adda58445f",
+      "ticker": "353200.KS"
+    },
+    {
+      "name": "미래에셋증권",
+      "role": "HASH_SELECTED",
+      "selectionHash": "01441b130022fd59908e9c3559d77e7870f23e912068b347555c42c156689760",
+      "ticker": "006800.KS"
+    },
+    {
+      "name": "솔루스첨단소재",
+      "role": "HASH_SELECTED",
+      "selectionHash": "043927acd1f32bdd819557a6f584f06b47e0d15d58daa5a017d6852dbbaf9262",
+      "ticker": "336370.KS"
+    },
+    {
+      "name": "LG상사",
+      "role": "HASH_SELECTED",
+      "selectionHash": "08250c5f88f6200ebebb9e5137815240c76a7bf43ec48a12bac4c12134c88b15",
+      "ticker": "001120.KS"
+    },
+    {
+      "name": "삼성전자",
+      "role": "PREDECLARED_SPLIT_CONTROL",
+      "selectionHash": "7f032cc98ef1218013f52ee3094a938714d98d0d837d1ff76a77bde2352387cb",
+      "ticker": "005930.KS"
+    },
+    {
+      "name": "NAVER",
+      "role": "PREDECLARED_SPLIT_CONTROL",
+      "selectionHash": "7fc72aff82a5a329f1eb1c3873ef3d561c8599e0fbf6bdfab8c78e4dd7b8cc86",
+      "ticker": "035420.KS"
+    }
+  ],
+  "selectionRule": "First four distinct Top120-ever ticker IDs sorted by SHA256(UTF8(KR_ATLAS_PRICE_AUDIT_20261009: + ticker)); plus fixed Samsung Electronics and NAVER split controls. No price, return or model outcome used for selection. Includes delisted control if hash-selected.",
+  "sourceCommit": "4ea107ed0cde289f0a049a65ff13d2441a786710",
+  "sourceWindows": [
+    {
+      "end": "2018-06-15",
+      "purpose": "split-basis source-level comparison",
+      "start": "2017-12-01"
+    },
+    {
+      "end": "2024-05-31",
+      "purpose": "cash-distribution source-basis comparison",
+      "start": "2023-12-01"
+    },
+    {
+      "end": "2026-09-14",
+      "purpose": "latest same-session source-basis comparison",
+      "start": "2025-12-01"
+    }
+  ]
+}

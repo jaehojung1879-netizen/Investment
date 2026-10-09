@@ -1,0 +1,23 @@
+{
+  "allowedOperation": "Same-session replay/raw KRX quotation-scale consistency, corrected solely for preserved corporate-event factors; not stock returns.",
+  "auditId": "FIXED_FINAL_SESSION_SOURCE_VERIFICATION",
+  "dates": [
+    "2026-09-10",
+    "2026-09-11",
+    "2026-09-14"
+  ],
+  "frozenAtUtc": "2026-10-09T13:50:52.882164+00:00",
+  "prohibited": [
+    "labels",
+    "stock holding returns",
+    "IC",
+    "models",
+    "portfolios",
+    "execution",
+    "locks"
+  ],
+  "selectionRule": "Every one of the 260 PIT Top120-ever IDs from frozen membership, on fixed sessions 2026-09-10, 2026-09-11, 2026-09-14. No selection by stock returns.",
+  "sourceCommit": "4ea107ed0cde289f0a049a65ff13d2441a786710",
+  "thresholdPolicy": "Report exact scales and deviations; no benchmark-threshold reuse or new alpha decision threshold. If final-session source comparability cannot be established, withhold that session for the entire reference universe, symmetrically across every comparison.",
+  "trigger": "Six-name source audit found same-session pinned replay versus raw KRX scale disagreements concentrated at the registered last input session, without computing any holding return."
+}
