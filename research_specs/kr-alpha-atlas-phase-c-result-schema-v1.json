@@ -127,62 +127,1260 @@
     "level1": {
       "type": "object",
       "additionalProperties": {
-        "type": "object",
-        "required": [
-          "featureId",
-          "family",
-          "horizon",
-          "direction",
-          "counts",
-          "observedSecurities",
-          "statistics",
-          "stability",
-          "liquidityTiers",
-          "missingnessReasons",
-          "sampleSha256"
-        ],
-        "properties": {
-          "statistics": {
-            "type": "object",
-            "required": [
-              "rankIC",
-              "withinIndustryRankIC",
-              "tercileSpread",
-              "withinIndustryTercileSpread",
-              "topExcess"
-            ],
-            "properties": {
-              "tercileSpread": {
-                "$ref": "#/$defs/linearStatistic"
-              },
-              "withinIndustryTercileSpread": {
-                "$ref": "#/$defs/linearStatistic"
-              },
-              "topExcess": {
-                "$ref": "#/$defs/linearStatistic"
-              }
-            }
-          }
-        }
+        "$ref": "#/$defs/factorReading"
       }
     },
     "level2": {
-      "type": "object"
+      "type": "object",
+      "required": [
+        "21",
+        "63",
+        "126",
+        "252"
+      ],
+      "properties": {
+        "21": {
+          "type": "object",
+          "required": [
+            "baselines",
+            "comparisons"
+          ],
+          "properties": {
+            "baselines": {
+              "type": "object",
+              "required": [
+                "B0_MARKET_INDUSTRY_PRICE_REFERENCE",
+                "B1_VALUE_PROFITABILITY",
+                "B2_PRICE_MOMENTUM",
+                "B3_VOLUME_LIQUIDITY",
+                "B4_COMBINED_SIMPLE",
+                "FULL"
+              ],
+              "properties": {
+                "B0_MARKET_INDUSTRY_PRICE_REFERENCE": {
+                  "$ref": "#/$defs/baseline"
+                },
+                "B1_VALUE_PROFITABILITY": {
+                  "$ref": "#/$defs/baseline"
+                },
+                "B2_PRICE_MOMENTUM": {
+                  "$ref": "#/$defs/baseline"
+                },
+                "B3_VOLUME_LIQUIDITY": {
+                  "$ref": "#/$defs/baseline"
+                },
+                "B4_COMBINED_SIMPLE": {
+                  "$ref": "#/$defs/baseline"
+                },
+                "FULL": {
+                  "$ref": "#/$defs/baseline"
+                }
+              },
+              "additionalProperties": false
+            },
+            "comparisons": {
+              "type": "object",
+              "required": [
+                "ADD_A_H21",
+                "REMOVE_A_H21",
+                "ADD_D_H21",
+                "REMOVE_D_H21",
+                "ADD_E_H21",
+                "REMOVE_E_H21",
+                "ADD_J_H21",
+                "REMOVE_J_H21"
+              ],
+              "properties": {
+                "ADD_A_H21": {
+                  "$ref": "#/$defs/matchedComparison"
+                },
+                "REMOVE_A_H21": {
+                  "$ref": "#/$defs/matchedComparison"
+                },
+                "ADD_D_H21": {
+                  "$ref": "#/$defs/matchedComparison"
+                },
+                "REMOVE_D_H21": {
+                  "$ref": "#/$defs/matchedComparison"
+                },
+                "ADD_E_H21": {
+                  "$ref": "#/$defs/matchedComparison"
+                },
+                "REMOVE_E_H21": {
+                  "$ref": "#/$defs/matchedComparison"
+                },
+                "ADD_J_H21": {
+                  "$ref": "#/$defs/matchedComparison"
+                },
+                "REMOVE_J_H21": {
+                  "$ref": "#/$defs/matchedComparison"
+                }
+              },
+              "additionalProperties": false
+            }
+          },
+          "additionalProperties": false
+        },
+        "63": {
+          "type": "object",
+          "required": [
+            "baselines",
+            "comparisons"
+          ],
+          "properties": {
+            "baselines": {
+              "type": "object",
+              "required": [
+                "B0_MARKET_INDUSTRY_PRICE_REFERENCE",
+                "B1_VALUE_PROFITABILITY",
+                "B2_PRICE_MOMENTUM",
+                "B3_VOLUME_LIQUIDITY",
+                "B4_COMBINED_SIMPLE",
+                "FULL"
+              ],
+              "properties": {
+                "B0_MARKET_INDUSTRY_PRICE_REFERENCE": {
+                  "$ref": "#/$defs/baseline"
+                },
+                "B1_VALUE_PROFITABILITY": {
+                  "$ref": "#/$defs/baseline"
+                },
+                "B2_PRICE_MOMENTUM": {
+                  "$ref": "#/$defs/baseline"
+                },
+                "B3_VOLUME_LIQUIDITY": {
+                  "$ref": "#/$defs/baseline"
+                },
+                "B4_COMBINED_SIMPLE": {
+                  "$ref": "#/$defs/baseline"
+                },
+                "FULL": {
+                  "$ref": "#/$defs/baseline"
+                }
+              },
+              "additionalProperties": false
+            },
+            "comparisons": {
+              "type": "object",
+              "required": [
+                "ADD_D_H63",
+                "REMOVE_D_H63",
+                "ADD_H_H63",
+                "REMOVE_H_H63",
+                "ADD_J_H63",
+                "REMOVE_J_H63"
+              ],
+              "properties": {
+                "ADD_D_H63": {
+                  "$ref": "#/$defs/matchedComparison"
+                },
+                "REMOVE_D_H63": {
+                  "$ref": "#/$defs/matchedComparison"
+                },
+                "ADD_H_H63": {
+                  "$ref": "#/$defs/matchedComparison"
+                },
+                "REMOVE_H_H63": {
+                  "$ref": "#/$defs/matchedComparison"
+                },
+                "ADD_J_H63": {
+                  "$ref": "#/$defs/matchedComparison"
+                },
+                "REMOVE_J_H63": {
+                  "$ref": "#/$defs/matchedComparison"
+                }
+              },
+              "additionalProperties": false
+            }
+          },
+          "additionalProperties": false
+        },
+        "126": {
+          "type": "object",
+          "required": [
+            "baselines",
+            "comparisons"
+          ],
+          "properties": {
+            "baselines": {
+              "type": "object",
+              "required": [
+                "B0_MARKET_INDUSTRY_PRICE_REFERENCE",
+                "B1_VALUE_PROFITABILITY",
+                "B2_PRICE_MOMENTUM",
+                "B3_VOLUME_LIQUIDITY",
+                "B4_COMBINED_SIMPLE",
+                "FULL"
+              ],
+              "properties": {
+                "B0_MARKET_INDUSTRY_PRICE_REFERENCE": {
+                  "$ref": "#/$defs/baseline"
+                },
+                "B1_VALUE_PROFITABILITY": {
+                  "$ref": "#/$defs/baseline"
+                },
+                "B2_PRICE_MOMENTUM": {
+                  "$ref": "#/$defs/baseline"
+                },
+                "B3_VOLUME_LIQUIDITY": {
+                  "$ref": "#/$defs/baseline"
+                },
+                "B4_COMBINED_SIMPLE": {
+                  "$ref": "#/$defs/baseline"
+                },
+                "FULL": {
+                  "$ref": "#/$defs/baseline"
+                }
+              },
+              "additionalProperties": false
+            },
+            "comparisons": {
+              "type": "object",
+              "required": [
+                "ADD_A_H126",
+                "REMOVE_A_H126",
+                "ADD_B_H126",
+                "REMOVE_B_H126",
+                "ADD_C_H126",
+                "REMOVE_C_H126",
+                "ADD_E_H126",
+                "REMOVE_E_H126",
+                "ADD_F_H126",
+                "REMOVE_F_H126",
+                "ADD_H_H126",
+                "REMOVE_H_H126"
+              ],
+              "properties": {
+                "ADD_A_H126": {
+                  "$ref": "#/$defs/matchedComparison"
+                },
+                "REMOVE_A_H126": {
+                  "$ref": "#/$defs/matchedComparison"
+                },
+                "ADD_B_H126": {
+                  "$ref": "#/$defs/matchedComparison"
+                },
+                "REMOVE_B_H126": {
+                  "$ref": "#/$defs/matchedComparison"
+                },
+                "ADD_C_H126": {
+                  "$ref": "#/$defs/matchedComparison"
+                },
+                "REMOVE_C_H126": {
+                  "$ref": "#/$defs/matchedComparison"
+                },
+                "ADD_E_H126": {
+                  "$ref": "#/$defs/matchedComparison"
+                },
+                "REMOVE_E_H126": {
+                  "$ref": "#/$defs/matchedComparison"
+                },
+                "ADD_F_H126": {
+                  "$ref": "#/$defs/matchedComparison"
+                },
+                "REMOVE_F_H126": {
+                  "$ref": "#/$defs/matchedComparison"
+                },
+                "ADD_H_H126": {
+                  "$ref": "#/$defs/matchedComparison"
+                },
+                "REMOVE_H_H126": {
+                  "$ref": "#/$defs/matchedComparison"
+                }
+              },
+              "additionalProperties": false
+            }
+          },
+          "additionalProperties": false
+        },
+        "252": {
+          "type": "object",
+          "required": [
+            "baselines",
+            "comparisons"
+          ],
+          "properties": {
+            "baselines": {
+              "type": "object",
+              "required": [
+                "B0_MARKET_INDUSTRY_PRICE_REFERENCE",
+                "B1_VALUE_PROFITABILITY",
+                "B2_PRICE_MOMENTUM",
+                "B3_VOLUME_LIQUIDITY",
+                "B4_COMBINED_SIMPLE",
+                "FULL"
+              ],
+              "properties": {
+                "B0_MARKET_INDUSTRY_PRICE_REFERENCE": {
+                  "$ref": "#/$defs/baseline"
+                },
+                "B1_VALUE_PROFITABILITY": {
+                  "$ref": "#/$defs/baseline"
+                },
+                "B2_PRICE_MOMENTUM": {
+                  "$ref": "#/$defs/baseline"
+                },
+                "B3_VOLUME_LIQUIDITY": {
+                  "$ref": "#/$defs/baseline"
+                },
+                "B4_COMBINED_SIMPLE": {
+                  "$ref": "#/$defs/baseline"
+                },
+                "FULL": {
+                  "$ref": "#/$defs/baseline"
+                }
+              },
+              "additionalProperties": false
+            },
+            "comparisons": {
+              "type": "object",
+              "required": [
+                "ADD_B_H252",
+                "REMOVE_B_H252",
+                "ADD_C_H252",
+                "REMOVE_C_H252"
+              ],
+              "properties": {
+                "ADD_B_H252": {
+                  "$ref": "#/$defs/matchedComparison"
+                },
+                "REMOVE_B_H252": {
+                  "$ref": "#/$defs/matchedComparison"
+                },
+                "ADD_C_H252": {
+                  "$ref": "#/$defs/matchedComparison"
+                },
+                "REMOVE_C_H252": {
+                  "$ref": "#/$defs/matchedComparison"
+                }
+              },
+              "additionalProperties": false
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
     },
     "residualInformation": {
-      "type": "object"
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/$defs/residualReading"
+      }
     },
     "trainingOnlyRedundancy": {
-      "type": "object"
+      "type": "object",
+      "additionalProperties": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": [
+            "year",
+            "trainingCutoff",
+            "features",
+            "spearman",
+            "clusters",
+            "edgesAbsRhoAtLeast08",
+            "outcomeSelection"
+          ],
+          "properties": {
+            "year": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "trainingCutoff": {
+              "type": "string"
+            },
+            "features": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "spearman": {
+              "type": "array",
+              "items": {
+                "type": "array",
+                "items": {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                }
+              }
+            },
+            "clusters": {
+              "type": "array",
+              "items": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "edgesAbsRhoAtLeast08": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": [
+                  "a",
+                  "b",
+                  "rho"
+                ],
+                "properties": {
+                  "a": {
+                    "type": "string"
+                  },
+                  "b": {
+                    "type": "string"
+                  },
+                  "rho": {
+                    "type": "number"
+                  }
+                },
+                "additionalProperties": false
+              }
+            },
+            "outcomeSelection": {
+              "const": false
+            }
+          },
+          "additionalProperties": false
+        }
+      }
     },
     "level3": {
-      "type": "object"
+      "type": "object",
+      "required": [
+        "X1_valueByBusinessConfirmation",
+        "X2_momentumByAbnormalVolume",
+        "X3_industryLeadershipByStockStrength",
+        "X4_priceLeadershipByInvestorAccumulation",
+        "X5_volatilityByLiquidity",
+        "X6_marketRegimeByRelativeMomentum"
+      ],
+      "properties": {
+        "X1_valueByBusinessConfirmation": {
+          "type": "object",
+          "required": [
+            "interactionId",
+            "horizon",
+            "features",
+            "status",
+            "p",
+            "adjustedP",
+            "contrast",
+            "negativeControl",
+            "pairedVersusNegativeControl",
+            "cells"
+          ],
+          "properties": {
+            "interactionId": {
+              "type": "string"
+            },
+            "horizon": {
+              "enum": [
+                21,
+                63,
+                126,
+                252
+              ]
+            },
+            "features": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "status": {
+              "type": "string"
+            },
+            "p": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "minimum": 0,
+              "maximum": 1
+            },
+            "adjustedP": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "minimum": 0,
+              "maximum": 1
+            },
+            "reason": {
+              "type": "string"
+            },
+            "negativeControlStatus": {
+              "type": "string"
+            },
+            "contrast": {
+              "$ref": "#/$defs/linearStatistic"
+            },
+            "pairedVersusNegativeControl": {
+              "$ref": "#/$defs/linearStatistic"
+            },
+            "negativeControl": {
+              "type": "object"
+            },
+            "cells": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": [
+                  "date",
+                  "HH_HL_LH_LL",
+                  "names"
+                ],
+                "properties": {
+                  "date": {
+                    "type": "string"
+                  },
+                  "HH_HL_LH_LL": {
+                    "type": "array",
+                    "items": {
+                      "type": "integer",
+                      "minimum": 0
+                    }
+                  },
+                  "names": {
+                    "type": "integer",
+                    "minimum": 0
+                  }
+                },
+                "additionalProperties": false
+              }
+            },
+            "regimeSlopes": {
+              "type": "object",
+              "additionalProperties": {
+                "$ref": "#/$defs/dateNwStatistic"
+              }
+            },
+            "perDateByState": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": [
+                    "date",
+                    "value"
+                  ],
+                  "properties": {
+                    "date": {
+                      "type": "string"
+                    },
+                    "value": {
+                      "type": "number"
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              }
+            },
+            "negativeControlLag": {
+              "type": "string"
+            },
+            "claim": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "X2_momentumByAbnormalVolume": {
+          "type": "object",
+          "required": [
+            "interactionId",
+            "horizon",
+            "features",
+            "status",
+            "p",
+            "adjustedP",
+            "contrast",
+            "negativeControl",
+            "pairedVersusNegativeControl",
+            "cells"
+          ],
+          "properties": {
+            "interactionId": {
+              "type": "string"
+            },
+            "horizon": {
+              "enum": [
+                21,
+                63,
+                126,
+                252
+              ]
+            },
+            "features": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "status": {
+              "type": "string"
+            },
+            "p": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "minimum": 0,
+              "maximum": 1
+            },
+            "adjustedP": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "minimum": 0,
+              "maximum": 1
+            },
+            "reason": {
+              "type": "string"
+            },
+            "negativeControlStatus": {
+              "type": "string"
+            },
+            "contrast": {
+              "$ref": "#/$defs/linearStatistic"
+            },
+            "pairedVersusNegativeControl": {
+              "$ref": "#/$defs/linearStatistic"
+            },
+            "negativeControl": {
+              "type": "object"
+            },
+            "cells": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": [
+                  "date",
+                  "HH_HL_LH_LL",
+                  "names"
+                ],
+                "properties": {
+                  "date": {
+                    "type": "string"
+                  },
+                  "HH_HL_LH_LL": {
+                    "type": "array",
+                    "items": {
+                      "type": "integer",
+                      "minimum": 0
+                    }
+                  },
+                  "names": {
+                    "type": "integer",
+                    "minimum": 0
+                  }
+                },
+                "additionalProperties": false
+              }
+            },
+            "regimeSlopes": {
+              "type": "object",
+              "additionalProperties": {
+                "$ref": "#/$defs/dateNwStatistic"
+              }
+            },
+            "perDateByState": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": [
+                    "date",
+                    "value"
+                  ],
+                  "properties": {
+                    "date": {
+                      "type": "string"
+                    },
+                    "value": {
+                      "type": "number"
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              }
+            },
+            "negativeControlLag": {
+              "type": "string"
+            },
+            "claim": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "X3_industryLeadershipByStockStrength": {
+          "type": "object",
+          "required": [
+            "interactionId",
+            "horizon",
+            "features",
+            "status",
+            "p",
+            "adjustedP",
+            "contrast",
+            "negativeControl",
+            "pairedVersusNegativeControl",
+            "cells"
+          ],
+          "properties": {
+            "interactionId": {
+              "type": "string"
+            },
+            "horizon": {
+              "enum": [
+                21,
+                63,
+                126,
+                252
+              ]
+            },
+            "features": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "status": {
+              "type": "string"
+            },
+            "p": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "minimum": 0,
+              "maximum": 1
+            },
+            "adjustedP": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "minimum": 0,
+              "maximum": 1
+            },
+            "reason": {
+              "type": "string"
+            },
+            "negativeControlStatus": {
+              "type": "string"
+            },
+            "contrast": {
+              "$ref": "#/$defs/linearStatistic"
+            },
+            "pairedVersusNegativeControl": {
+              "$ref": "#/$defs/linearStatistic"
+            },
+            "negativeControl": {
+              "type": "object"
+            },
+            "cells": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": [
+                  "date",
+                  "HH_HL_LH_LL",
+                  "names"
+                ],
+                "properties": {
+                  "date": {
+                    "type": "string"
+                  },
+                  "HH_HL_LH_LL": {
+                    "type": "array",
+                    "items": {
+                      "type": "integer",
+                      "minimum": 0
+                    }
+                  },
+                  "names": {
+                    "type": "integer",
+                    "minimum": 0
+                  }
+                },
+                "additionalProperties": false
+              }
+            },
+            "regimeSlopes": {
+              "type": "object",
+              "additionalProperties": {
+                "$ref": "#/$defs/dateNwStatistic"
+              }
+            },
+            "perDateByState": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": [
+                    "date",
+                    "value"
+                  ],
+                  "properties": {
+                    "date": {
+                      "type": "string"
+                    },
+                    "value": {
+                      "type": "number"
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              }
+            },
+            "negativeControlLag": {
+              "type": "string"
+            },
+            "claim": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "X4_priceLeadershipByInvestorAccumulation": {
+          "type": "object",
+          "required": [
+            "interactionId",
+            "horizon",
+            "features",
+            "status",
+            "p",
+            "adjustedP",
+            "reason",
+            "negativeControlStatus"
+          ],
+          "properties": {
+            "interactionId": {
+              "type": "string"
+            },
+            "horizon": {
+              "enum": [
+                21,
+                63,
+                126,
+                252
+              ]
+            },
+            "features": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "status": {
+              "type": "string"
+            },
+            "p": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "minimum": 0,
+              "maximum": 1
+            },
+            "adjustedP": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "minimum": 0,
+              "maximum": 1
+            },
+            "reason": {
+              "type": "string"
+            },
+            "negativeControlStatus": {
+              "type": "string"
+            },
+            "contrast": {
+              "$ref": "#/$defs/linearStatistic"
+            },
+            "pairedVersusNegativeControl": {
+              "$ref": "#/$defs/linearStatistic"
+            },
+            "negativeControl": {
+              "type": "object"
+            },
+            "cells": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": [
+                  "date",
+                  "HH_HL_LH_LL",
+                  "names"
+                ],
+                "properties": {
+                  "date": {
+                    "type": "string"
+                  },
+                  "HH_HL_LH_LL": {
+                    "type": "array",
+                    "items": {
+                      "type": "integer",
+                      "minimum": 0
+                    }
+                  },
+                  "names": {
+                    "type": "integer",
+                    "minimum": 0
+                  }
+                },
+                "additionalProperties": false
+              }
+            },
+            "regimeSlopes": {
+              "type": "object",
+              "additionalProperties": {
+                "$ref": "#/$defs/dateNwStatistic"
+              }
+            },
+            "perDateByState": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": [
+                    "date",
+                    "value"
+                  ],
+                  "properties": {
+                    "date": {
+                      "type": "string"
+                    },
+                    "value": {
+                      "type": "number"
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              }
+            },
+            "negativeControlLag": {
+              "type": "string"
+            },
+            "claim": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "X5_volatilityByLiquidity": {
+          "type": "object",
+          "required": [
+            "interactionId",
+            "horizon",
+            "features",
+            "status",
+            "p",
+            "adjustedP",
+            "contrast",
+            "negativeControl",
+            "pairedVersusNegativeControl",
+            "cells"
+          ],
+          "properties": {
+            "interactionId": {
+              "type": "string"
+            },
+            "horizon": {
+              "enum": [
+                21,
+                63,
+                126,
+                252
+              ]
+            },
+            "features": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "status": {
+              "type": "string"
+            },
+            "p": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "minimum": 0,
+              "maximum": 1
+            },
+            "adjustedP": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "minimum": 0,
+              "maximum": 1
+            },
+            "reason": {
+              "type": "string"
+            },
+            "negativeControlStatus": {
+              "type": "string"
+            },
+            "contrast": {
+              "$ref": "#/$defs/linearStatistic"
+            },
+            "pairedVersusNegativeControl": {
+              "$ref": "#/$defs/linearStatistic"
+            },
+            "negativeControl": {
+              "type": "object"
+            },
+            "cells": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": [
+                  "date",
+                  "HH_HL_LH_LL",
+                  "names"
+                ],
+                "properties": {
+                  "date": {
+                    "type": "string"
+                  },
+                  "HH_HL_LH_LL": {
+                    "type": "array",
+                    "items": {
+                      "type": "integer",
+                      "minimum": 0
+                    }
+                  },
+                  "names": {
+                    "type": "integer",
+                    "minimum": 0
+                  }
+                },
+                "additionalProperties": false
+              }
+            },
+            "regimeSlopes": {
+              "type": "object",
+              "additionalProperties": {
+                "$ref": "#/$defs/dateNwStatistic"
+              }
+            },
+            "perDateByState": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": [
+                    "date",
+                    "value"
+                  ],
+                  "properties": {
+                    "date": {
+                      "type": "string"
+                    },
+                    "value": {
+                      "type": "number"
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              }
+            },
+            "negativeControlLag": {
+              "type": "string"
+            },
+            "claim": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "X6_marketRegimeByRelativeMomentum": {
+          "type": "object",
+          "required": [
+            "interactionId",
+            "horizon",
+            "features",
+            "status",
+            "p",
+            "adjustedP",
+            "regimeSlopes",
+            "perDateByState",
+            "negativeControl",
+            "negativeControlLag",
+            "claim"
+          ],
+          "properties": {
+            "interactionId": {
+              "type": "string"
+            },
+            "horizon": {
+              "enum": [
+                21,
+                63,
+                126,
+                252
+              ]
+            },
+            "features": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "status": {
+              "type": "string"
+            },
+            "p": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "minimum": 0,
+              "maximum": 1
+            },
+            "adjustedP": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "minimum": 0,
+              "maximum": 1
+            },
+            "reason": {
+              "type": "string"
+            },
+            "negativeControlStatus": {
+              "type": "string"
+            },
+            "contrast": {
+              "$ref": "#/$defs/linearStatistic"
+            },
+            "pairedVersusNegativeControl": {
+              "$ref": "#/$defs/linearStatistic"
+            },
+            "negativeControl": {
+              "type": "object"
+            },
+            "cells": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": [
+                  "date",
+                  "HH_HL_LH_LL",
+                  "names"
+                ],
+                "properties": {
+                  "date": {
+                    "type": "string"
+                  },
+                  "HH_HL_LH_LL": {
+                    "type": "array",
+                    "items": {
+                      "type": "integer",
+                      "minimum": 0
+                    }
+                  },
+                  "names": {
+                    "type": "integer",
+                    "minimum": 0
+                  }
+                },
+                "additionalProperties": false
+              }
+            },
+            "regimeSlopes": {
+              "type": "object",
+              "additionalProperties": {
+                "$ref": "#/$defs/dateNwStatistic"
+              }
+            },
+            "perDateByState": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": [
+                    "date",
+                    "value"
+                  ],
+                  "properties": {
+                    "date": {
+                      "type": "string"
+                    },
+                    "value": {
+                      "type": "number"
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              }
+            },
+            "negativeControlLag": {
+              "type": "string"
+            },
+            "claim": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
     },
     "level4": {
-      "type": "object"
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/$defs/economicHypothesis"
+      }
     },
     "multiplicity": {
-      "type": "object"
+      "type": "object",
+      "required": [
+        "level1",
+        "level2Slots",
+        "level3Slots",
+        "blockedSlotsRetainedAsP1"
+      ],
+      "properties": {
+        "level1": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "level2Slots": {
+          "const": 30
+        },
+        "level3Slots": {
+          "const": 6
+        },
+        "blockedSlotsRetainedAsP1": {
+          "const": true
+        }
+      },
+      "additionalProperties": false
     },
     "verdicts": {
       "type": "object",
@@ -211,19 +1409,486 @@
       }
     },
     "interactionVerdicts": {
-      "type": "object"
+      "type": "object",
+      "required": [
+        "X1_valueByBusinessConfirmation",
+        "X2_momentumByAbnormalVolume",
+        "X3_industryLeadershipByStockStrength",
+        "X4_priceLeadershipByInvestorAccumulation",
+        "X5_volatilityByLiquidity",
+        "X6_marketRegimeByRelativeMomentum"
+      ],
+      "properties": {
+        "X1_valueByBusinessConfirmation": {
+          "type": "object",
+          "required": [
+            "verdict",
+            "eligibleComponents",
+            "reason",
+            "level4Status",
+            "noAdditionalHypotheses"
+          ],
+          "properties": {
+            "verdict": {
+              "enum": [
+                "BLOCKED",
+                "NO_DEVELOPMENT_EVIDENCE",
+                "UNSTABLE",
+                "REDUNDANT",
+                "NOT_ECONOMIC",
+                "INDEPENDENT_DEVELOPMENT_SUPPORT"
+              ]
+            },
+            "eligibleComponents": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "reason": {
+              "type": "string"
+            },
+            "level4Status": {
+              "enum": [
+                "EXECUTED",
+                "NOT_TRIGGERED"
+              ]
+            },
+            "noAdditionalHypotheses": {
+              "const": true
+            }
+          },
+          "additionalProperties": false
+        },
+        "X2_momentumByAbnormalVolume": {
+          "type": "object",
+          "required": [
+            "verdict",
+            "eligibleComponents",
+            "reason",
+            "level4Status",
+            "noAdditionalHypotheses"
+          ],
+          "properties": {
+            "verdict": {
+              "enum": [
+                "BLOCKED",
+                "NO_DEVELOPMENT_EVIDENCE",
+                "UNSTABLE",
+                "REDUNDANT",
+                "NOT_ECONOMIC",
+                "INDEPENDENT_DEVELOPMENT_SUPPORT"
+              ]
+            },
+            "eligibleComponents": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "reason": {
+              "type": "string"
+            },
+            "level4Status": {
+              "enum": [
+                "EXECUTED",
+                "NOT_TRIGGERED"
+              ]
+            },
+            "noAdditionalHypotheses": {
+              "const": true
+            }
+          },
+          "additionalProperties": false
+        },
+        "X3_industryLeadershipByStockStrength": {
+          "type": "object",
+          "required": [
+            "verdict",
+            "eligibleComponents",
+            "reason",
+            "level4Status",
+            "noAdditionalHypotheses"
+          ],
+          "properties": {
+            "verdict": {
+              "enum": [
+                "BLOCKED",
+                "NO_DEVELOPMENT_EVIDENCE",
+                "UNSTABLE",
+                "REDUNDANT",
+                "NOT_ECONOMIC",
+                "INDEPENDENT_DEVELOPMENT_SUPPORT"
+              ]
+            },
+            "eligibleComponents": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "reason": {
+              "type": "string"
+            },
+            "level4Status": {
+              "enum": [
+                "EXECUTED",
+                "NOT_TRIGGERED"
+              ]
+            },
+            "noAdditionalHypotheses": {
+              "const": true
+            }
+          },
+          "additionalProperties": false
+        },
+        "X4_priceLeadershipByInvestorAccumulation": {
+          "type": "object",
+          "required": [
+            "verdict",
+            "eligibleComponents",
+            "reason",
+            "level4Status",
+            "noAdditionalHypotheses"
+          ],
+          "properties": {
+            "verdict": {
+              "enum": [
+                "BLOCKED",
+                "NO_DEVELOPMENT_EVIDENCE",
+                "UNSTABLE",
+                "REDUNDANT",
+                "NOT_ECONOMIC",
+                "INDEPENDENT_DEVELOPMENT_SUPPORT"
+              ]
+            },
+            "eligibleComponents": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "reason": {
+              "type": "string"
+            },
+            "level4Status": {
+              "enum": [
+                "EXECUTED",
+                "NOT_TRIGGERED"
+              ]
+            },
+            "noAdditionalHypotheses": {
+              "const": true
+            }
+          },
+          "additionalProperties": false
+        },
+        "X5_volatilityByLiquidity": {
+          "type": "object",
+          "required": [
+            "verdict",
+            "eligibleComponents",
+            "reason",
+            "level4Status",
+            "noAdditionalHypotheses"
+          ],
+          "properties": {
+            "verdict": {
+              "enum": [
+                "BLOCKED",
+                "NO_DEVELOPMENT_EVIDENCE",
+                "UNSTABLE",
+                "REDUNDANT",
+                "NOT_ECONOMIC",
+                "INDEPENDENT_DEVELOPMENT_SUPPORT"
+              ]
+            },
+            "eligibleComponents": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "reason": {
+              "type": "string"
+            },
+            "level4Status": {
+              "enum": [
+                "EXECUTED",
+                "NOT_TRIGGERED"
+              ]
+            },
+            "noAdditionalHypotheses": {
+              "const": true
+            }
+          },
+          "additionalProperties": false
+        },
+        "X6_marketRegimeByRelativeMomentum": {
+          "type": "object",
+          "required": [
+            "verdict",
+            "eligibleComponents",
+            "reason",
+            "level4Status",
+            "noAdditionalHypotheses"
+          ],
+          "properties": {
+            "verdict": {
+              "enum": [
+                "BLOCKED",
+                "NO_DEVELOPMENT_EVIDENCE",
+                "UNSTABLE",
+                "REDUNDANT",
+                "NOT_ECONOMIC",
+                "INDEPENDENT_DEVELOPMENT_SUPPORT"
+              ]
+            },
+            "eligibleComponents": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "reason": {
+              "type": "string"
+            },
+            "level4Status": {
+              "enum": [
+                "EXECUTED",
+                "NOT_TRIGGERED"
+              ]
+            },
+            "noAdditionalHypotheses": {
+              "const": true
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
     },
     "prospectiveNominations": {
-      "type": "array"
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
     },
     "modelAudit": {
-      "type": "array"
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "status",
+          "year"
+        ],
+        "properties": {
+          "status": {
+            "type": "string"
+          },
+          "year": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "model": {
+            "type": "string"
+          },
+          "models": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "horizon": {
+            "enum": [
+              21,
+              63,
+              126,
+              252
+            ]
+          },
+          "trainingCutoff": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "lastTrainingTargetExit": {
+            "type": "string"
+          },
+          "firstEvaluationSignal": {
+            "type": "string"
+          },
+          "trainingDates": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "trainingRows": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "evaluationRows": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "transform": {
+            "type": "object",
+            "required": [
+              "columns",
+              "inactiveTrainingColumns",
+              "medians",
+              "means",
+              "sd",
+              "trainingDigest"
+            ],
+            "properties": {
+              "columns": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "inactiveTrainingColumns": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "medians": {
+                "type": "array",
+                "items": {
+                  "type": "number"
+                }
+              },
+              "means": {
+                "type": "array",
+                "items": {
+                  "type": "number"
+                }
+              },
+              "sd": {
+                "type": "array",
+                "items": {
+                  "type": "number"
+                }
+              },
+              "trainingDigest": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": false
+          },
+          "coefficients": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            }
+          },
+          "intercept": {
+            "type": "number"
+          },
+          "trainingSampleSha256": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false,
+        "if": {
+          "required": [
+            "status"
+          ],
+          "properties": {
+            "status": {
+              "const": "FITTED"
+            }
+          }
+        },
+        "then": {
+          "required": [
+            "status",
+            "year",
+            "model",
+            "horizon",
+            "trainingCutoff",
+            "lastTrainingTargetExit",
+            "firstEvaluationSignal",
+            "trainingDates",
+            "trainingRows",
+            "evaluationRows",
+            "transform",
+            "coefficients",
+            "intercept",
+            "trainingSampleSha256"
+          ]
+        }
+      }
     },
     "compute": {
-      "type": "object"
+      "type": "object",
+      "required": [
+        "predictiveFits",
+        "projectionFits",
+        "conditionalSlopeFits",
+        "maxPredictiveFits"
+      ],
+      "properties": {
+        "predictiveFits": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 574
+        },
+        "projectionFits": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 52122
+        },
+        "conditionalSlopeFits": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 52122
+        },
+        "maxPredictiveFits": {
+          "const": 574
+        }
+      },
+      "additionalProperties": false
     },
     "counters": {
-      "type": "object"
+      "type": "object",
+      "required": [
+        "realOutcomeReads",
+        "realLabels",
+        "realModelFits",
+        "syntheticOutcomeReads",
+        "syntheticLabels",
+        "syntheticModelFits"
+      ],
+      "properties": {
+        "realOutcomeReads": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "realLabels": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "realModelFits": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "syntheticOutcomeReads": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "syntheticLabels": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "syntheticModelFits": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "additionalProperties": false
     },
     "limitations": {
       "type": "array"
@@ -302,6 +1967,949 @@
         },
         "calendarWeeks": {
           "type": "integer"
+        }
+      },
+      "additionalProperties": false
+    },
+    "dateNwStatistic": {
+      "type": "object",
+      "required": [
+        "mean",
+        "se",
+        "nDates",
+        "status"
+      ],
+      "properties": {
+        "mean": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "se": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "nDates": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "lagObservations": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "status": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "baseline": {
+      "type": "object",
+      "required": [
+        "rankWeightedSpread",
+        "rankIC",
+        "dateBalancedMse",
+        "observations"
+      ],
+      "properties": {
+        "rankWeightedSpread": {
+          "$ref": "#/$defs/linearStatistic"
+        },
+        "rankIC": {
+          "$ref": "#/$defs/dateNwStatistic"
+        },
+        "dateBalancedMse": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "observations": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "additionalProperties": false
+    },
+    "matchedComparison": {
+      "type": "object",
+      "required": [
+        "pairedMseImprovement",
+        "pairedRankWeightedSpreadImprovement",
+        "commonObservations",
+        "sampleSha256",
+        "identicalEvaluationPopulation",
+        "identicalPredictionsOnCommonSample",
+        "preCommonBase",
+        "preCommonAlternative",
+        "base",
+        "alternative",
+        "family",
+        "horizon",
+        "p",
+        "adjustedP",
+        "positive"
+      ],
+      "properties": {
+        "pairedMseImprovement": {
+          "$ref": "#/$defs/linearStatistic"
+        },
+        "pairedRankWeightedSpreadImprovement": {
+          "$ref": "#/$defs/linearStatistic"
+        },
+        "commonObservations": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "sampleSha256": {
+          "type": "string"
+        },
+        "identicalEvaluationPopulation": {
+          "const": true
+        },
+        "identicalPredictionsOnCommonSample": {
+          "type": "boolean"
+        },
+        "preCommonBase": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "preCommonAlternative": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "base": {
+          "type": "string"
+        },
+        "alternative": {
+          "type": "string"
+        },
+        "family": {
+          "type": "string"
+        },
+        "horizon": {
+          "enum": [
+            21,
+            63,
+            126,
+            252
+          ]
+        },
+        "p": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 1
+        },
+        "adjustedP": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 1
+        },
+        "positive": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false
+    },
+    "factorReading": {
+      "type": "object",
+      "required": [
+        "featureId",
+        "family",
+        "horizon",
+        "direction",
+        "counts",
+        "observedSecurities",
+        "statistics",
+        "stability",
+        "liquidityTiers",
+        "missingnessReasons",
+        "sampleSha256"
+      ],
+      "properties": {
+        "statistics": {
+          "type": "object",
+          "required": [
+            "rankIC",
+            "withinIndustryRankIC",
+            "tercileSpread",
+            "withinIndustryTercileSpread",
+            "topExcess"
+          ],
+          "properties": {
+            "tercileSpread": {
+              "$ref": "#/$defs/linearStatistic"
+            },
+            "withinIndustryTercileSpread": {
+              "$ref": "#/$defs/linearStatistic"
+            },
+            "topExcess": {
+              "$ref": "#/$defs/linearStatistic"
+            },
+            "rankIC": {
+              "$ref": "#/$defs/dateNwStatistic"
+            },
+            "withinIndustryRankIC": {
+              "$ref": "#/$defs/dateNwStatistic"
+            }
+          }
+        },
+        "counts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "date",
+              "preGateMeasured",
+              "validMeasured",
+              "lost"
+            ],
+            "properties": {
+              "date": {
+                "type": "string"
+              },
+              "preGateMeasured": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "validMeasured": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "lost": {
+                "type": "integer",
+                "minimum": 0
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "observedSecurities": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "missingnessReasons": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "sampleSha256": {
+          "type": "string"
+        },
+        "liquidityTiers": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/linearStatistic"
+          }
+        }
+      }
+    },
+    "residualReading": {
+      "type": "object",
+      "required": [
+        "featureId",
+        "horizon",
+        "residualized",
+        "conditionalSlope",
+        "slopeObservations",
+        "slopeMethod",
+        "outcomeFreeResidualization"
+      ],
+      "properties": {
+        "featureId": {
+          "type": "string"
+        },
+        "horizon": {
+          "enum": [
+            21,
+            63,
+            126,
+            252
+          ]
+        },
+        "residualized": {
+          "$ref": "#/$defs/factorReading"
+        },
+        "conditionalSlope": {
+          "$ref": "#/$defs/dateNwStatistic"
+        },
+        "slopeObservations": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "slopeMethod": {
+          "const": "FAMA_MACBETH_DATE_OLS_DESCRIPTIVE_NW"
+        },
+        "outcomeFreeResidualization": {
+          "const": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "interaction": {
+      "type": "object",
+      "required": [
+        "interactionId",
+        "horizon",
+        "features",
+        "status",
+        "p",
+        "adjustedP"
+      ],
+      "properties": {
+        "interactionId": {
+          "type": "string"
+        },
+        "horizon": {
+          "enum": [
+            21,
+            63,
+            126,
+            252
+          ]
+        },
+        "features": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "status": {
+          "type": "string"
+        },
+        "p": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 1
+        },
+        "adjustedP": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 1
+        },
+        "reason": {
+          "type": "string"
+        },
+        "negativeControlStatus": {
+          "type": "string"
+        },
+        "contrast": {
+          "$ref": "#/$defs/linearStatistic"
+        },
+        "pairedVersusNegativeControl": {
+          "$ref": "#/$defs/linearStatistic"
+        },
+        "negativeControl": {
+          "type": "object"
+        },
+        "cells": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "date",
+              "HH_HL_LH_LL",
+              "names"
+            ],
+            "properties": {
+              "date": {
+                "type": "string"
+              },
+              "HH_HL_LH_LL": {
+                "type": "array",
+                "items": {
+                  "type": "integer",
+                  "minimum": 0
+                }
+              },
+              "names": {
+                "type": "integer",
+                "minimum": 0
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "regimeSlopes": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/dateNwStatistic"
+          }
+        },
+        "perDateByState": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "date",
+                "value"
+              ],
+              "properties": {
+                "date": {
+                  "type": "string"
+                },
+                "value": {
+                  "type": "number"
+                }
+              },
+              "additionalProperties": false
+            }
+          }
+        },
+        "negativeControlLag": {
+          "type": "string"
+        },
+        "claim": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "economicBlock": {
+      "type": "object",
+      "required": [
+        "date",
+        "status"
+      ],
+      "properties": {
+        "date": {
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "BLOCKED",
+            "DEVELOPMENT_DIAGNOSTIC"
+          ]
+        },
+        "reason": {
+          "type": "string"
+        },
+        "selected": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "invalidSelected": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "participation": {
+          "type": "number"
+        },
+        "entry": {
+          "type": "string"
+        },
+        "exit": {
+          "type": "string"
+        },
+        "weights": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          }
+        },
+        "executedWeights": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          }
+        },
+        "entryCapitalKrw": {
+          "type": "number",
+          "minimum": 0
+        },
+        "entryCashWeight": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "entryFeeWeight": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "executedFallbackWeight": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "selectedCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "industryWeights": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "number"
+          }
+        },
+        "terminalWeights": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "number"
+          }
+        },
+        "unusedWeight": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "grossReturn": {
+          "type": "number"
+        },
+        "netReturn": {
+          "type": "number"
+        },
+        "benchmarkReturn": {
+          "type": "number"
+        },
+        "benchmarkNetReturn": {
+          "type": "number"
+        },
+        "grossExcess": {
+          "type": "number"
+        },
+        "netExcess": {
+          "type": "number"
+        },
+        "turnoverBuy": {
+          "type": "number",
+          "minimum": 0
+        },
+        "turnoverSell": {
+          "type": "number",
+          "minimum": 0
+        },
+        "costReturn": {
+          "type": "number",
+          "minimum": 0
+        },
+        "maximumProxyParticipation": {
+          "type": "number",
+          "minimum": 0
+        },
+        "dailyGrossWealth": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "dailyNetWealth": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "dailyBenchmarkNetReturns": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "attribution": {
+          "type": "object",
+          "required": [
+            "A_marketExposure",
+            "B_industryAllocation",
+            "C_stockSelection",
+            "D_riskFactorExposure",
+            "E_cost",
+            "F_fallback",
+            "G_residual"
+          ],
+          "properties": {
+            "A_marketExposure": {
+              "type": "number"
+            },
+            "B_industryAllocation": {
+              "type": "number"
+            },
+            "C_stockSelection": {
+              "type": "number"
+            },
+            "D_riskFactorExposure": {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            "E_cost": {
+              "type": "number"
+            },
+            "F_fallback": {
+              "type": "number"
+            },
+            "G_residual": {
+              "type": "number"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false,
+      "if": {
+        "required": [
+          "status"
+        ],
+        "properties": {
+          "status": {
+            "const": "DEVELOPMENT_DIAGNOSTIC"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "date",
+          "status",
+          "entry",
+          "exit",
+          "weights",
+          "executedWeights",
+          "entryCapitalKrw",
+          "entryCashWeight",
+          "entryFeeWeight",
+          "executedFallbackWeight",
+          "selectedCount",
+          "industryWeights",
+          "terminalWeights",
+          "unusedWeight",
+          "grossReturn",
+          "netReturn",
+          "benchmarkReturn",
+          "benchmarkNetReturn",
+          "grossExcess",
+          "netExcess",
+          "turnoverBuy",
+          "turnoverSell",
+          "costReturn",
+          "maximumProxyParticipation",
+          "dailyGrossWealth",
+          "dailyNetWealth",
+          "dailyBenchmarkNetReturns",
+          "attribution"
+        ]
+      }
+    },
+    "economicPolicy": {
+      "type": "object",
+      "required": [
+        "status",
+        "blocks",
+        "netExcess",
+        "riskFactorExposure"
+      ],
+      "properties": {
+        "status": {
+          "type": "string"
+        },
+        "reason": {
+          "type": "string"
+        },
+        "blocks": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/economicBlock"
+          }
+        },
+        "validBlocks": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "blockedBlocks": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "netExcess": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "claimStatus": {
+          "type": "string"
+        },
+        "grossGrowth": {
+          "type": "number"
+        },
+        "netGrowth": {
+          "type": "number"
+        },
+        "benchmarkNetGrowth": {
+          "type": "number"
+        },
+        "marketExposure": {
+          "type": "object"
+        },
+        "arithmeticAttribution": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "number"
+          }
+        },
+        "drawdown": {
+          "type": "number"
+        },
+        "descriptiveBootstrap": {
+          "type": "object",
+          "required": [
+            "status",
+            "draws"
+          ],
+          "properties": {
+            "status": {
+              "type": "string"
+            },
+            "draws": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "blockSessions": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "pairedMeanDailyExcessQuantiles": {
+              "type": "array",
+              "items": {
+                "type": "number"
+              }
+            }
+          },
+          "additionalProperties": false
+        },
+        "downsideDailyVolatility": {
+          "type": "number"
+        },
+        "concentrationMaximum": {
+          "type": "number"
+        },
+        "industryConcentrationMaximum": {
+          "type": "number"
+        },
+        "zeroSelectedSessionShare": {
+          "type": "number"
+        },
+        "holdingChangeTurnover": {
+          "type": "object"
+        },
+        "turnoverDefinition": {
+          "type": "string"
+        },
+        "turnoverMean": {
+          "type": "number"
+        },
+        "implementationCostsMean": {
+          "type": "number"
+        },
+        "compounding": {
+          "type": "object"
+        },
+        "riskFactorExposure": {
+          "type": "object",
+          "required": [
+            "status",
+            "additive"
+          ],
+          "properties": {
+            "status": {
+              "type": "string"
+            },
+            "additive": {
+              "const": false
+            },
+            "columns": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "blocks": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "excessLoadings": {
+              "type": "array",
+              "items": {
+                "type": "number"
+              }
+            },
+            "stockSelectionLoadings": {
+              "type": "array",
+              "items": {
+                "type": "number"
+              }
+            },
+            "intercept": {
+              "type": "number"
+            },
+            "selectionResidualIntercept": {
+              "type": "number"
+            },
+            "claim": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false,
+      "if": {
+        "required": [
+          "status"
+        ],
+        "properties": {
+          "status": {
+            "const": "DEVELOPMENT_DIAGNOSTIC"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "status",
+          "blocks",
+          "validBlocks",
+          "blockedBlocks",
+          "netExcess",
+          "claimStatus",
+          "grossGrowth",
+          "netGrowth",
+          "benchmarkNetGrowth",
+          "marketExposure",
+          "arithmeticAttribution",
+          "drawdown",
+          "descriptiveBootstrap",
+          "downsideDailyVolatility",
+          "concentrationMaximum",
+          "industryConcentrationMaximum",
+          "zeroSelectedSessionShare",
+          "holdingChangeTurnover",
+          "turnoverDefinition",
+          "turnoverMean",
+          "implementationCostsMean",
+          "compounding",
+          "riskFactorExposure"
+        ]
+      }
+    },
+    "economicHypothesis": {
+      "type": "object",
+      "required": [
+        "featureId",
+        "interactionId",
+        "horizon",
+        "policies",
+        "benchmarkClaimStatus",
+        "pairedPolicyComparisonStatus",
+        "tradingValueBasis"
+      ],
+      "properties": {
+        "featureId": {
+          "type": "string"
+        },
+        "interactionId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "horizon": {
+          "enum": [
+            21,
+            63,
+            126,
+            252
+          ]
+        },
+        "policies": {
+          "type": "object",
+          "required": [
+            "DIAGNOSTIC_CASH",
+            "DIAGNOSTIC_PASSIVE_BENCHMARK",
+            "DIAGNOSTIC_HIGH_LIQUIDITY_CASH",
+            "DIAGNOSTIC_HIGH_LIQUIDITY_PASSIVE_BENCHMARK",
+            "DIAGNOSTIC_LOW_LIQUIDITY_CASH",
+            "DIAGNOSTIC_LOW_LIQUIDITY_PASSIVE_BENCHMARK",
+            "SLOTS_CASH",
+            "SLOTS_PASSIVE_BENCHMARK",
+            "SLOTS_HIGH_LIQUIDITY_CASH",
+            "SLOTS_HIGH_LIQUIDITY_PASSIVE_BENCHMARK",
+            "SLOTS_LOW_LIQUIDITY_CASH",
+            "SLOTS_LOW_LIQUIDITY_PASSIVE_BENCHMARK"
+          ],
+          "properties": {
+            "DIAGNOSTIC_CASH": {
+              "$ref": "#/$defs/economicPolicy"
+            },
+            "DIAGNOSTIC_PASSIVE_BENCHMARK": {
+              "$ref": "#/$defs/economicPolicy"
+            },
+            "DIAGNOSTIC_HIGH_LIQUIDITY_CASH": {
+              "$ref": "#/$defs/economicPolicy"
+            },
+            "DIAGNOSTIC_HIGH_LIQUIDITY_PASSIVE_BENCHMARK": {
+              "$ref": "#/$defs/economicPolicy"
+            },
+            "DIAGNOSTIC_LOW_LIQUIDITY_CASH": {
+              "$ref": "#/$defs/economicPolicy"
+            },
+            "DIAGNOSTIC_LOW_LIQUIDITY_PASSIVE_BENCHMARK": {
+              "$ref": "#/$defs/economicPolicy"
+            },
+            "SLOTS_CASH": {
+              "$ref": "#/$defs/economicPolicy"
+            },
+            "SLOTS_PASSIVE_BENCHMARK": {
+              "$ref": "#/$defs/economicPolicy"
+            },
+            "SLOTS_HIGH_LIQUIDITY_CASH": {
+              "$ref": "#/$defs/economicPolicy"
+            },
+            "SLOTS_HIGH_LIQUIDITY_PASSIVE_BENCHMARK": {
+              "$ref": "#/$defs/economicPolicy"
+            },
+            "SLOTS_LOW_LIQUIDITY_CASH": {
+              "$ref": "#/$defs/economicPolicy"
+            },
+            "SLOTS_LOW_LIQUIDITY_PASSIVE_BENCHMARK": {
+              "$ref": "#/$defs/economicPolicy"
+            }
+          },
+          "additionalProperties": false
+        },
+        "benchmarkClaimStatus": {
+          "type": "string"
+        },
+        "pairedPolicyComparisonStatus": {
+          "enum": [
+            "BLOCKED",
+            "MATCHED_ANCHORS"
+          ]
+        },
+        "tradingValueBasis": {
+          "const": "PROXY_ASTRADED_CLOSE_X_VOLUME"
         }
       },
       "additionalProperties": false

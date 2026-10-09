@@ -229,6 +229,24 @@ def test_M_complete_determinism_full_schema_and_durable_bytes(complete, spec, tm
     changed["verdicts"].clear()
     with pytest.raises(ValueError):
         executor.validate_result(changed, spec)
+    # A result cannot claim complete analysis after dropping a registered cell,
+    # matched-population identity, control contrast or funded order accounting.
+    ix = next(k for k in first["level3"] if k.startswith("X2"))
+    economic = next(iter(first["level4"]))
+    paths = [
+        ("level2", "21", "comparisons", "ADD_A_H21"),
+        ("level2", "21", "comparisons", "ADD_A_H21", "sampleSha256"),
+        ("level3", ix, "contrast"),
+        ("level4", economic, "policies", "DIAGNOSTIC_CASH", "blocks", 0, "executedWeights"),
+    ]
+    for path in paths:
+        changed = deepcopy(first)
+        target = changed
+        for key in path[:-1]:
+            target = target[key]
+        del target[path[-1]]
+        with pytest.raises(ValueError, match="RESULT_SCHEMA_REQUIRED"):
+            executor.validate_result(changed, spec)
 
 
 def test_N_permanent_lock_order_before_and_after_boundary():

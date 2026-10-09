@@ -13,6 +13,15 @@ def validate(document, schema):
                 target = target[part]
             walk(value, target, path)
             return
+        if "if" in node:
+            try:
+                walk(value, node["if"], path)
+            except ValueError:
+                branch = "else"
+            else:
+                branch = "then"
+            if branch in node:
+                walk(value, node[branch], path)
         if "const" in node and value != node["const"]:
             raise ValueError("RESULT_SCHEMA_CONST: " + path)
         if "enum" in node and value not in node["enum"]:

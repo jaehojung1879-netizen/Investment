@@ -103,7 +103,7 @@ def block(data, book, date, weights, fallback, spec, *, capital=None):
     budget = sum(weights.values())
     if min(weights.values(), default=0) < 0 or budget > 1 + 1e-10 or capital <= 0:
         raise ValueError("LONG_ONLY_BUDGET_FAILURE")
-    unused = 1 - budget
+    unused = max(0.0, 1 - budget)  # Equal-weight summation may exceed one by a float ulp.
     buy_fee = stock_cost(spec, entry_day)
     bench_fee = spec["costs"]["benchmarkEachWayBps"] / 10000
     executed = {i: w / (1 + buy_fee) for i, w in weights.items()}
