@@ -41,6 +41,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
 
       - name: Set up Python
         uses: actions/setup-python@v6
@@ -53,6 +55,13 @@ jobs:
 
       - name: Compile check
         run: python -m compileall pipeline
+
+      # Match the existing Tests workflow: these exact source commits are not
+      # ancestors of main. Identity and ancestry tests must not be weakened.
+      - name: Fetch the pinned KR accounting and sealed raw-input commits
+        run: |
+          git fetch --no-tags --depth=1 origin fb6e83743fd8cdba647d1522a4645b662a9d5647
+          git fetch --no-tags --depth=1 --filter=blob:none origin 4ea107ed0cde289f0a049a65ff13d2441a786710
 
       - name: Run tests
         run: pytest -q

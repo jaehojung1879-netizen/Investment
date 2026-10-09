@@ -1,0 +1,40 @@
+{
+  "schema": "KR_ALPHA_ATLAS_BENCHMARK_SOURCE_SNAPSHOT_V1",
+  "ticker": "069500.KS",
+  "issuerFundId": "2ETF01",
+  "capturedFor": "USER_AUTHORIZED_BENCHMARK_ONLY_PRE_OUTCOME_AUDIT",
+  "files": {
+    "issuerPrices": {
+      "path": "issuer-standard.xls",
+      "url": "https://www.samsungfund.com/excel_standar.do?fId=2ETF01&gijunYMD=20261007",
+      "sha256": "cbdd7a0ce340228ddcfc714de637c512f73c2d691d84ae59a28cfb406d8437b9",
+      "bytes": 1202176,
+      "capturedAtUtc": "2026-10-09T08:15:02.916288+00:00",
+      "definition": "KODEX 200 official ETF market close, raw NAV and tax NAV; NOT a total-return price panel"
+    },
+    "issuerDistributions": {
+      "path": "issuer-dividends.json",
+      "url": "https://www.samsungfund.com/api/v1/kodex/divid-info.do?id=2ETF01",
+      "sha256": "3f23e3a8ce9c34506e1316bc8b6263c85cfa78086c3725743e02a3d653eeb0df",
+      "bytes": 3020,
+      "capturedAtUtc": "2026-10-09T08:09:23.689071+00:00",
+      "definition": "20 most recent official gross distributions; record and payment dates"
+    },
+    "issuerDistributionsXls": {
+      "path": "issuer-dividends.xls",
+      "url": "https://www.samsungfund.com/excel-divid-list.do?id=2ETF01",
+      "sha256": "7ed6c79dce2e4baaf9791311e489b7d5bb4294d8a6db34f7572b45110394bab1",
+      "bytes": 15360,
+      "capturedAtUtc": "2026-10-09T08:09:25.924738+00:00",
+      "definition": "independent format of same issuer cash records"
+    },
+    "vendorPrices": {
+      "path": "naver-benchmark.json",
+      "url": "https://api.finance.naver.com/siseJson.naver?symbol=069500&requestType=1&startTime=20120101&endTime=20260914&timeframe=day",
+      "sha256": "3697d1dc608563a012ec55571a8ae4b5145cfbfa4a630de673059ecfe9b5759d",
+      "bytes": 221415,
+      "capturedAtUtc": "2026-10-09T08:24:14.925343+00:00",
+      "definition": "fresh original-vendor lineage, diagnostic ONLY; never relabelled as frozen snapshot"
+    }
+  }
+}
