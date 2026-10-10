@@ -1,6 +1,6 @@
 # 주간 투자 판단 — 운영 안내
 
-정책: [`weekly-passive-first-v1`](weekly-passive-first-v1.md) · 사양: [`research_specs/weekly-passive-first-v1.json`](../research_specs/weekly-passive-first-v1.json)
+정책: [`weekly-passive-first-v1`](weekly-passive-first-v1.md) · 사양: [`docs/weekly-decision/weekly-passive-first-v1.json`](weekly-decision/weekly-passive-first-v1.json)
 
 ## 매주 무엇이 나오는가
 

@@ -17,7 +17,7 @@ component, named where it is used:
 
 Unused capital is held in the regional benchmark ETF, not cash, and the weights
 always sum to 100%. Zero stocks is a normal, fully specified outcome. The frozen
-specification is ``research_specs/weekly-passive-first-v1.json``; this module
+specification is ``docs/weekly-decision/weekly-passive-first-v1.json``; this module
 must agree with it (a test compares the constants).
 
 KR and US are decided independently: no cross-region ranking, no pooled
@@ -41,7 +41,7 @@ from . import replay_calendar as RC
 
 POLICY_VERSION = "weekly-passive-first-v1"
 POLICY_STATUS = "EXPLORATORY_WEEKLY_DECISION"
-SPEC_PATH = "research_specs/weekly-passive-first-v1.json"
+SPEC_PATH = "docs/weekly-decision/weekly-passive-first-v1.json"
 BENCHMARKS = {"KR": "069500.KS", "US": "SPY"}
 BENCHMARK_NAMES = {"KR": "KODEX 200", "US": "SPDR S&P 500 ETF"}
 CURRENCY = {"KR": "KRW", "US": "USD"}

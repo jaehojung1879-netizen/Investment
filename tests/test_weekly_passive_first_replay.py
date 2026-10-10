@@ -8,8 +8,8 @@ import pytest
 from scripts import run_weekly_passive_first_replay as R
 
 ROOT = Path(__file__).resolve().parent.parent
-RESULT = ROOT / "docs/results/weekly-passive-first-v1-replay.json"
-SPEC = ROOT / "research_specs/weekly-passive-first-v1.json"
+RESULT = ROOT / "docs/weekly-decision/weekly-passive-first-v1-replay.json"
+SPEC = ROOT / "docs/weekly-decision/weekly-passive-first-v1.json"
 
 
 def _row(date, end, weights, daily, terminal, region="KR"):

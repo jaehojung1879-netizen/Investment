@@ -14,7 +14,7 @@ from pathlib import Path
 
 from .config import REPO_ROOT
 
-REPLAY_RESULT = REPO_ROOT / "docs" / "results" / "weekly-passive-first-v1-replay.json"
+REPLAY_RESULT = REPO_ROOT / "docs" / "weekly-decision" / "weekly-passive-first-v1-replay.json"
 INTEGRATED_AUDIT = REPO_ROOT / "docs" / "results" / "kr-integrated-alpha-portfolio-v1-postoutcome-completed-audit.json"
 BENCHMARK_RECON = REPO_ROOT / "docs" / "audits" / "kr-alpha-atlas-phase-c-integrity" / "benchmark-reconciliation.json"
 BENCHMARK_RECON_CORRECTED = (REPO_ROOT / "docs" / "audits" / "kr-alpha-atlas-phase-c-integrity"

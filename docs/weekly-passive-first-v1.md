@@ -1,7 +1,11 @@
 # weekly-passive-first-v1 — 주간 지역별 판단 규칙 (사전 고정)
 
 **상태:** `EXPLORATORY_WEEKLY_DECISION` · 승격 불가 · `liveValidated=false`
-**기계 판독 사양:** [`research_specs/weekly-passive-first-v1.json`](../research_specs/weekly-passive-first-v1.json)
+**기계 판독 사양:** [`docs/weekly-decision/weekly-passive-first-v1.json`](weekly-decision/weekly-passive-first-v1.json)
+
+사양·결과 파일은 `docs/weekly-decision/`에 둔다. `research_specs/`와 `docs/results/`는 봉인된
+kr-alpha-atlas Phase C 등록이 폴더 전체를 보호 해시로 고정하므로 새 파일을 추가하면 그 등록이 깨진다.
+사양은 커밋 `001f1385`에서 `research_specs/`에 먼저 푸시됐고, 바이트 그대로 이동했다(결과의 `specSha256`로 대조).
 
 이 문서와 사양 파일은 이 규칙의 과거 재현 결과(P1·C2)를 계산하기 **전에** 커밋되었다.
 다만 작성자는 기존 replay-v16 연구 결과 전부와, 2026-10-10 전체 원장 기준 운영 보정에서

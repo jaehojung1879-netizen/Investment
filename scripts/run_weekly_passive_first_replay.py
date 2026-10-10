@@ -1,6 +1,6 @@
 """One bounded replay of weekly-passive-first-v1 against its passive benchmark.
 
-Protocol: research_specs/weekly-passive-first-v1.json ("historicalComparisonProtocol"),
+Protocol: docs/weekly-decision/weekly-passive-first-v1.json ("historicalComparisonProtocol"),
 committed before this script computed anything. Paths P0, P1, C1, C2 per region.
 
 Read-only on the sealed ledger; refuses to write inside it or overwrite a result.
@@ -9,7 +9,7 @@ POST_OUTCOME_EXPOSED_EXPLORATORY_PORTFOLIO_REPLAY evidence and never a validatio
 
     python scripts/run_weekly_passive_first_replay.py <ledger_dir> \
         --regional-paths docs/results/regional-standalone-paths.json.gz \
-        --output docs/results/weekly-passive-first-v1-replay.json
+        --output docs/weekly-decision/weekly-passive-first-v1-replay.json
 """
 from __future__ import annotations
 
