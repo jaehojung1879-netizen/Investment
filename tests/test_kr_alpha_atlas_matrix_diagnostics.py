@@ -11,7 +11,7 @@ from pipeline import kr_alpha_atlas_matrix_diagnostics as D
 
 
 def invented():
-    rows = pd.DataFrame({'date': ['2020-01-03']*2, 'ticker': ['SYN2', 'SYN1'],
+    rows = pd.DataFrame({'date': ['2020-01-03']*2, 'pitSnapshotDate': ['2020-01-02']*2, 'ticker': ['SYN2', 'SYN1'],
                          'industry': ['SYN', 'SYN'], 'liquidityTier': ['LOW', 'HIGH']})
     values = pd.DataFrame({'A01_return1d': [np.nan, .1]})
     reasons = pd.DataFrame({'A01_return1d': ['NO_PRICE_PANEL', '']})
