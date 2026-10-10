@@ -1,0 +1,30 @@
+{
+  "id": "weekly-passive-first-v1-corrected-benchmark-accounting",
+  "policyVersion": "weekly-passive-first-v1",
+  "authoredOn": "2026-10-10",
+  "evidenceClass": "POST_OUTCOME_EXPOSED_EXPLORATORY_PORTFOLIO_REPLAY",
+  "promotionEligible": false,
+  "liveValidated": false,
+  "why": "The replay-v16 069500.KS series applies each cash distribution about twice (benchmark audit: docs/weekly-decision/kodex200-benchmark-audit.md). This is a second ACCOUNTING version of the same replays: the 069500.KS leg is re-marked with Phase C's reconciled gross ETF market-price total-return index. Nothing else moves.",
+  "preOutcomeDisclosure": "Written and pushed before either corrected path is computed. The author has seen the replay-v16-basis results (21-session KR P0 14.861%, P1 14.720%, C1 10.395%, C2 15.225%) and Phase C's annual gap table. The correction is decided by the integrity audit, not by any result, and changes no decision.",
+  "correctedSeries": {
+    "file": "docs/audits/kr-alpha-atlas-phase-c-integrity/benchmark-reconciliation-corrected.json",
+    "sha256": "58580c4370ec2c5afa124f849afbc4fa7b5c879012e75ebbd48ee7c7a0e659a9",
+    "field": "correctedBenchmarkQuotes",
+    "definition": "GROSS_ETF_MARKET_PRICE_TOTAL_RETURN_EX_DATE_CLOSE_CASH_REINVESTMENT (Phase C aggregateStatus PASS; 46 official distributions from 2012; before investor tax)"
+  },
+  "unchanged": [
+    "every decision, holding, weight, candidate and calibration (the rule reads no benchmark price at decision time)",
+    "the replay-v16 outcome ledger the calibration reads (sealed; its 126-session excess is measured against the uncorrected benchmark)",
+    "stock legs (replay-v16 basis; the Phase C six-name stock audit found no ordinary-cash double adjustment, with 006800.KS as a declared exception)",
+    "costs, calendars, valuation engine, initial capital",
+    "the replay-v16-basis result files, which stay committed beside the corrected ones"
+  ],
+  "scope": "KR only. US paths do not hold 069500.KS and are reported unchanged.",
+  "paths": "P0, P1 (both cadences) and C2 (21-session only) are re-marked; C1 holds no 069500.KS and keeps its NAV, its excess is re-measured against the corrected P0.",
+  "limits": [
+    "Phase C reconstructs pre-2021 distributions from official archived six-payment tables; the issuer's live list only certifies the last 20.",
+    "The calibration's expected excess remains measured against the uncorrected benchmark, which understates stock excess by roughly the annual gap; ordering tests are unaffected because the shift is common to every name on a date."
+  ],
+  "forbidden": ["changing any decision or rule parameter", "replacing or deleting the replay-v16-basis results", "using the corrected paths to choose a rule"]
+}

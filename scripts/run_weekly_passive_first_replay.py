@@ -46,6 +46,23 @@ HORIZON = W.EDGE_HORIZON_SESSIONS
 SPEC = ROOT / W.SPEC_PATH
 WEEKLY_PROTOCOL = ROOT / "docs/weekly-decision/weekly-passive-first-v1-weekly-replay-protocol.json"
 WEEKLY = "weekly"
+BASIS_PROTOCOL = ROOT / "docs/weekly-decision/weekly-passive-first-v1-benchmark-basis-protocol.json"
+REPLAY_BASIS = "replay-v16"
+CORRECTED_BASIS = "phase-c-corrected"
+
+
+def corrected_benchmark_series() -> pd.Series:
+    """Phase C's reconciled 069500.KS gross total-return index, hash-checked against the protocol."""
+    protocol = json.loads(BASIS_PROTOCOL.read_text())["correctedSeries"]
+    path = ROOT / protocol["file"]
+    raw = path.read_bytes()
+    if hashlib.sha256(raw).hexdigest() != protocol["sha256"]:
+        raise ValueError("corrected benchmark file differs from the one the protocol pins")
+    rows = json.loads(raw)[protocol["field"]]
+    series = pd.Series({pd.Timestamp(r["date"]): float(r["Close"]) for r in rows}).sort_index()
+    if series.index.has_duplicates or not (series > 0).all():
+        raise ValueError("corrected benchmark series is malformed")
+    return series
 
 
 def weekly_calendar(start: str, through: str) -> list[dict]:
@@ -271,6 +288,9 @@ def main(argv=None) -> int:
     parser.add_argument("--cadence", choices=("21", WEEKLY), default="21",
                         help="21: the original 155-anchor reference; weekly: the protocol in "
                              "docs/weekly-decision/weekly-passive-first-v1-weekly-replay-protocol.json")
+    parser.add_argument("--benchmark-basis", choices=(REPLAY_BASIS, CORRECTED_BASIS), default=REPLAY_BASIS,
+                        help="phase-c-corrected re-marks the 069500.KS leg per "
+                             "docs/weekly-decision/weekly-passive-first-v1-benchmark-basis-protocol.json")
     args = parser.parse_args(argv)
     ledger = Path(args.ledger_dir)
     output = _guard(args.output, ledger)
@@ -337,6 +357,10 @@ def main(argv=None) -> int:
         frozen["prices"], cfg.benchmarks, frozen["fx"], frozen["risk_free"],
         through=manifest["through"], risk_free_through=frozen["risk_free_source"]["verifiedThrough"],
         corporate_actions=frozen.get("corporate_actions"))
+    corrected = args.benchmark_basis == CORRECTED_BASIS
+    if corrected:
+        series = corrected_benchmark_series()
+        valuation.prices[W.BENCHMARKS["KR"]] = series.loc[:manifest["through"]]
     print("loading projected signals", flush=True)
     signals = HS.load(ledger, HS.SIGNALS, provenance.REPLAY_VERSION, project=HS.audit_projection)
     contexts = BA._contexts(signals, cfg.longterm)
@@ -403,8 +427,9 @@ def main(argv=None) -> int:
             "headlineEligible": region == "KR",
             "status": ("DEFINITION_INTERNAL_REPLAY_V16" if region == "KR"
                        else "SURVIVORSHIP_BIASED_PARTIAL"),
-            "benchmarkDefinition": "BENCHMARK_DEFINITION_REPLAY_V16_NOT_RECONCILED" if region == "KR"
-            else "REPLAY_V16_SPY_IN_KRW",
+            "benchmarkDefinition": (("PHASE_C_RECONCILED_GROSS_ETF_TOTAL_RETURN" if corrected
+                                     else "BENCHMARK_DEFINITION_REPLAY_V16_NOT_RECONCILED")
+                                    if region == "KR" else "REPLAY_V16_SPY_IN_KRW"),
             "baseCurrency": "KRW", "fxReturnsIncluded": region == "US",
             "paths": summaries,
             "weeklyNav": {k: weekly_nav(p) for k, p in paths.items() if p is not None},
@@ -415,7 +440,9 @@ def main(argv=None) -> int:
         print(region, {k: (v.get("cagrPct"), v.get("excessCagrPp")) for k, v in summaries.items()}, flush=True)
 
     report = {
-        "id": "weekly-passive-first-v1-weekly-replay" if weekly else "weekly-passive-first-v1-replay",
+        "id": (("weekly-passive-first-v1-weekly-replay" if weekly else "weekly-passive-first-v1-replay")
+               + ("-corrected-benchmark" if corrected else "")),
+        "benchmarkBasis": args.benchmark_basis,
         "policyVersion": W.POLICY_VERSION,
         "evidenceClass": "POST_OUTCOME_EXPOSED_EXPLORATORY_PORTFOLIO_REPLAY",
         "promotionEligible": False, "liveValidated": False,
@@ -429,6 +456,8 @@ def main(argv=None) -> int:
         "finalAnchorCalibration": final_calibration,
         "regions": result_regions,
         **({"weeklyProtocolSha256": hashlib.sha256(WEEKLY_PROTOCOL.read_bytes()).hexdigest()} if weekly else {}),
+        **({"benchmarkBasisProtocolSha256": hashlib.sha256(BASIS_PROTOCOL.read_bytes()).hexdigest()}
+           if corrected else {}),
         "runtimeSec": round(time.time() - started),
     }
     output.parent.mkdir(parents=True, exist_ok=True)
