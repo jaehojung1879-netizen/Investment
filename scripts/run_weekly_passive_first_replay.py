@@ -44,6 +44,28 @@ from pipeline.config import load_config                      # noqa: E402
 REGIONS = ("KR", "US")
 HORIZON = W.EDGE_HORIZON_SESSIONS
 SPEC = ROOT / W.SPEC_PATH
+WEEKLY_PROTOCOL = ROOT / "docs/weekly-decision/weekly-passive-first-v1-weekly-replay-protocol.json"
+WEEKLY = "weekly"
+
+
+def weekly_calendar(start: str, through: str) -> list[dict]:
+    """One block per completed week: signal on the week's last UNION session,
+    executed on the first COMMON session strictly after it, held to the next
+    week's execution session. Only blocks ending on or before ``through``."""
+    grid = RC.signal_grid(start, through, "W")
+    end = (pd.Timestamp(through) + pd.Timedelta(days=30)).strftime("%Y-%m-%d")
+    common = RC.sessions(start, end, "COMMON")
+    execution = []
+    for signal in grid:
+        later = common[common > pd.Timestamp(signal)]
+        execution.append(later[0].strftime("%Y-%m-%d") if len(later) else None)
+    blocks = []
+    for i in range(len(grid) - 1):
+        date, nxt = execution[i], execution[i + 1]
+        if date is None or nxt is None or nxt <= date or nxt > through:
+            continue
+        blocks.append({"date": date, "endDate": nxt, "signalDate": grid[i], "anchorIndex": i})
+    return blocks
 _OUTCOMES: list[dict] = []
 _DIAG: dict = {}
 _CAL_CFG: dict = {}
@@ -246,6 +268,9 @@ def main(argv=None) -> int:
     parser.add_argument("--output", required=True)
     parser.add_argument("--calibration-cache", default=None)
     parser.add_argument("--workers", type=int, default=3)
+    parser.add_argument("--cadence", choices=("21", WEEKLY), default="21",
+                        help="21: the original 155-anchor reference; weekly: the protocol in "
+                             "docs/weekly-decision/weekly-passive-first-v1-weekly-replay-protocol.json")
     args = parser.parse_args(argv)
     ledger = Path(args.ledger_dir)
     output = _guard(args.output, ledger)
@@ -278,20 +303,24 @@ def main(argv=None) -> int:
     print("loading outcomes and diagnostics", flush=True)
     _OUTCOMES = HS.load(ledger, HS.OUTCOMES, provenance.REPLAY_VERSION)
     _DIAG = json.loads((ledger / "historical-diagnostics.json").read_text())
-    calendar = [b for b in RC.schedule(replay_cfg.get("start", RC.ORIGIN), manifest["through"],
-                                       PV.HEADLINE_HORIZON, replay_cfg.get("frequency", "W"))
-                if b["endDate"] <= manifest["through"]]
+    weekly = args.cadence == WEEKLY
+    if weekly:
+        calendar = weekly_calendar(replay_cfg.get("start", RC.ORIGIN), manifest["through"])
+    else:
+        calendar = [b for b in RC.schedule(replay_cfg.get("start", RC.ORIGIN), manifest["through"],
+                                           PV.HEADLINE_HORIZON, replay_cfg.get("frequency", "W"))
+                    if b["endDate"] <= manifest["through"]]
     print(f"{len(calendar)} blocks; {len(_OUTCOMES)} outcomes", flush=True)
 
     # Point-in-time calibrations, one per anchor.
     cache_path = Path(args.calibration_cache) if args.calibration_cache else None
-    if cache_path and cache_path.exists():
-        cached = json.loads(cache_path.read_text())
-        calibrations = cached["calibrations"]
-    else:
-        dates = [b["signalDate"] for b in calendar]
+    # A cache only ever holds calibrate() output for a signal date, which is a
+    # pure function of that date; missing dates are computed and added.
+    calibrations = json.loads(cache_path.read_text())["calibrations"] if cache_path and cache_path.exists() else {}
+    missing = sorted({b["signalDate"] for b in calendar} - set(calibrations))
+    if missing:
         with mp.get_context("fork").Pool(args.workers) as pool:
-            calibrations = dict(pool.imap_unordered(_anchor_calibration, dates))
+            calibrations.update(dict(pool.imap_unordered(_anchor_calibration, missing)))
         if cache_path:
             cache_path.write_text(json.dumps({"calibrations": calibrations}, sort_keys=True))
     # The stubbed calibrate must reproduce production's bucket output.
@@ -318,7 +347,7 @@ def main(argv=None) -> int:
     for region in REGIONS:
         bench = W.BENCHMARKS[region]
         sealed_rows = {r["date"]: r for r in regional["regional"][region]}
-        rows = {"P0": [], "P1": [], "C1": [], "C2": []}
+        rows = {"P0": [], "P1": []} if weekly else {"P0": [], "P1": [], "C1": [], "C2": []}
         failures = {k: [] for k in rows}
         decisions = []
         incumbents: set[str] = set()
@@ -334,8 +363,10 @@ def main(argv=None) -> int:
                               "candidates": len(candidates)})
             plans = {"P0": {bench: 1.0},
                      "P1": dict(decision["weights"])}
-            sealed = sealed_rows.get(block["date"])
-            if sealed is None:
+            sealed = None if weekly else sealed_rows.get(block["date"])
+            if weekly:
+                pass
+            elif sealed is None:
                 failures["C1"].append({"date": block["date"], "reason": "SEALED_BLOCK_MISSING"})
                 failures["C2"].append({"date": block["date"], "reason": "SEALED_BLOCK_MISSING"})
             else:
@@ -384,17 +415,20 @@ def main(argv=None) -> int:
         print(region, {k: (v.get("cagrPct"), v.get("excessCagrPp")) for k, v in summaries.items()}, flush=True)
 
     report = {
-        "id": "weekly-passive-first-v1-replay", "policyVersion": W.POLICY_VERSION,
+        "id": "weekly-passive-first-v1-weekly-replay" if weekly else "weekly-passive-first-v1-replay",
+        "policyVersion": W.POLICY_VERSION,
         "evidenceClass": "POST_OUTCOME_EXPOSED_EXPLORATORY_PORTFOLIO_REPLAY",
         "promotionEligible": False, "liveValidated": False,
         "specSha256": hashlib.sha256(SPEC.read_bytes()).hexdigest(),
         "inputManifestSha256": manifest["sha256"], "through": manifest["through"],
         "regionalPathsSha256": regional["sha256"],
         "calendar": {"blocks": len(calendar), "first": calendar[0], "last": calendar[-1],
-                     "cadence": "21_SESSION_ANCHORS_NOT_WEEKLY"},
+                     "cadence": ("WEEKLY_SIGNAL_NEXT_COMMON_SESSION_EXECUTION" if weekly
+                                 else "21_SESSION_ANCHORS_NOT_WEEKLY")},
         "candidatePool": "PV._research_candidates(price_proxy=True), the convention every replay-v16 portfolio harness uses",
         "finalAnchorCalibration": final_calibration,
         "regions": result_regions,
+        **({"weeklyProtocolSha256": hashlib.sha256(WEEKLY_PROTOCOL.read_bytes()).hexdigest()} if weekly else {}),
         "runtimeSec": round(time.time() - started),
     }
     output.parent.mkdir(parents=True, exist_ok=True)
