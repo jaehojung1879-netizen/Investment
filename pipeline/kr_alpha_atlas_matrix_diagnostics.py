@@ -50,6 +50,50 @@ def _json_digest(obj):
     return hashlib.sha256(json.dumps(obj).encode()).hexdigest()
 
 
+def payload_digest(payload):
+    """Exact Matrix.digest byte recipe applied to its already rounded diagnostic."""
+    h = hashlib.sha256()
+    h.update(json.dumps(sorted(payload['values'])).encode())
+    for col in sorted(payload['values']):
+        h.update(col.encode())
+        h.update(json.dumps(payload['values'][col]).encode())
+        h.update(json.dumps(payload['reasons'][col]).encode())
+    h.update(json.dumps(payload['rows']).encode())
+    return h.hexdigest()
+
+
+def canonical_bridge(full_work, original_bars_work, original_loo_work):
+    """Source-only proof: explain the original hash with independent old kernels.
+
+    Never modifies a research matrix or suppresses a gate. It restores only the
+    canonical E05/A09 diagnostic cells, proving whether they explain ALL bytes.
+    """
+    dirs = [Path(p) for p in (full_work, original_bars_work, original_loo_work)]
+    docs = [json.loads((p/'matrix-diagnostic.json').read_text()) for p in dirs]
+    cells = [json.loads(gzip.decompress((p/'matrix-cells.json.gz').read_bytes())) for p in dirs]
+    full = cells[0]
+    if payload_digest(full) != docs[0]['actualMatrixDigest'] or any(d['preparedInputs'] != docs[0]['preparedInputs'] for d in docs[1:]):
+        raise ValueError('IDENTICAL_PREPARED_SOURCES_AND_PAYLOAD_REQUIRED')
+    differences = {}
+    for source, col in zip(cells[1:], ('E05_highLowSpreadProxy', 'A09_industryRelativeMomentum126')):
+        if ([r[:2] for r in source['rows']] != [r[:2] for r in full['rows']] or
+                source['reasons'][col] != full['reasons'][col]):
+            raise ValueError('IDENTICAL_ORDERED_POPULATION_AND_REASONS_REQUIRED')
+        diffs = [{'date': full['rows'][i][0], 'ticker': full['rows'][i][1],
+                  'fixedCanonical': a, 'originalCanonical': b, 'absoluteDifference': abs(a-b)}
+                 for i, (a, b) in enumerate(zip(full['values'][col], source['values'][col])) if a != b]
+        differences[col] = diffs
+        full['values'][col] = source['values'][col]
+    original = payload_digest(full)
+    if original != docs[0]['expectedMatrixDigest']:
+        raise ValueError('NUMERICAL_CAUSE_DOES_NOT_EXPLAIN_PUBLISHED_DIGEST')
+    return {'reconstructedOriginalCanonicalDigest': original,
+            'actualMatrixDigest': docs[0]['actualMatrixDigest'],
+            'changedCanonicalCells': sum(len(v) for v in differences.values()),
+            'differences': differences, 'onlyTwoIndependentKernelColumnsRestored': True,
+            'identicalInputBitsRowsAndReasons': True}
+
+
 def prepared_inputs(inputs):
     """Bitwise source/preprocessing fingerprints; never construct target windows."""
     prices = {}
@@ -86,6 +130,37 @@ def bar_projection(inputs, dates):
             values.append({k: v.get(k, np.nan) for k in B.BARS_FEATURES})
             reasons.append({k: '' if k in v else r[k] for k in B.BARS_FEATURES})
     import pandas as pd
+    frame = pd.DataFrame(rows)
+    return MX.Matrix(frame, pd.DataFrame(values), pd.DataFrame(reasons),
+                     pd.DataFrame(index=frame.index), pd.DataFrame(), inputs.identity)
+
+
+def loo_projection(inputs, dates):
+    """Isolate the frozen past-only leave-one-out dot product; no accounting/targets."""
+    import pandas as pd
+    market = MX.BarsMarket(inputs.bars)
+    schedule = {d: list(inputs.memberships.on(d)['members']) for d in dates if inputs.memberships.on(d) is not None}
+    membership = MX.I.membership_table(schedule, *inputs.industry)
+    caps = {(d, t): (market.at(t, d) or {}).get('marketCap', np.nan) for d, names in schedule.items() for t in names}
+    frame = pd.DataFrame([{'date': d, 'ticker': t, 'marketCap': c} for (d, t), c in caps.items()])
+    cohorts, stock_cohorts = MX.I.build_cohorts(membership, frame), MX.S.build_cohorts(membership)
+    industry = {(r.date, r.ticker): r.industry for r in membership.itertuples() if isinstance(r.industry, str)}
+    rows, values, reasons = [], [], []
+    col = 'A09_industryRelativeMomentum126'
+    for date, members in sorted(schedule.items()):
+        past = MX.IE.past_features(inputs.prices, members, inputs.calendar, date)
+        trail = {t: past.get(t, {}).get('trail126', np.nan) for t in members}
+        cap = {t: caps[(date, t)] for t in members}
+        for ticker in members:
+            ind = industry.get((date, ticker))
+            peers = MX.S.peers_of(stock_cohorts.get((date, ind)), ticker)
+            eligible = cohorts.get((date, ind), {}).get('status') == 'ELIGIBLE'
+            value = MX.TF.loo_industry_momentum(ticker, peers, trail, cap) if eligible and peers else None
+            reason = ('INDUSTRY_UNCLASSIFIED' if ind is None else 'INDUSTRY_COHORT_BELOW_MINIMUM' if not eligible else 'INDUSTRY_COHORT_MEMBER_MISSING_INPUT')
+            rows.append({'date': date, 'ticker': ticker, 'industry': ind, 'liquidityTier': 'NOT_COMPUTED',
+                         'pitSnapshotDate': inputs.memberships.on(date)['date']})
+            values.append({col: value if value is not None else np.nan})
+            reasons.append({col: '' if value is not None else reason})
     frame = pd.DataFrame(rows)
     return MX.Matrix(frame, pd.DataFrame(values), pd.DataFrame(reasons),
                      pd.DataFrame(index=frame.index), pd.DataFrame(), inputs.identity)
@@ -150,7 +225,7 @@ def run(root, work, mode, expected_main=None):
                'counters': asdict(AuditCounters())}
     try:
         with outcome_free_firewall() as attempts:
-            if mode in ('sample', 'bars'):
+            if mode in ('sample', 'bars', 'loo'):
                 with R.corrected_loader(root):
                     inputs = AI.load_inputs(spec['phaseBIdentity']['inputs']['sourceCommit'], work/'inputs', root)
                     if inputs.identity != spec['phaseBIdentity']['inputs']:
@@ -159,13 +234,14 @@ def run(root, work, mode, expected_main=None):
                         matrix = MX.build_matrix(inputs, list(SAMPLE_DATES))
                     else:
                         from pipeline.regional_alpha_features import weekly_grid
-                        matrix = bar_projection(inputs, weekly_grid('2013-01-01', spec['developmentCutoff'], 'KR'))
+                        projection = bar_projection if mode == 'bars' else loo_projection
+                        matrix = projection(inputs, weekly_grid('2013-01-01', spec['developmentCutoff'], 'KR'))
                 write_diagnostic(matrix, mode.upper()+'_NOT_FULL_REGISTERED_DIGEST', work, inputs)
             elif mode == 'preflight':
                 with observe(spec['phaseBIdentity']['matrixDigest'], work):
                     R.audit(root, work/'preflight', expected_main)
             else:
-                raise ValueError('SAFE_SAMPLE_BARS_OR_PREFLIGHT_ONLY')
+                raise ValueError('SAFE_SOURCE_DIAGNOSTIC_OR_PREFLIGHT_ONLY')
             receipt.update(status='PASS', firewallBlockedCalls=attempts)
     except Exception as error:
         receipt.update(status='FAIL_GATE_PRESERVED', errorClass=type(error).__name__, error=str(error))

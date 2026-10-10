@@ -10,7 +10,7 @@ from pipeline.kr_alpha_atlas_phase_c import contract  # noqa: E402
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('action', choices=['sample', 'bars', 'preflight'])
+    parser.add_argument('action', choices=['sample', 'bars', 'loo', 'preflight'])
     parser.add_argument('--work', required=True, type=Path)
     parser.add_argument('--expected-main')
     args = parser.parse_args()
