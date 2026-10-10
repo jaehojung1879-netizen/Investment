@@ -7,25 +7,25 @@
     "plumbingComponentsIgnored": [
       "daily-session"
     ],
-    "excludedPriorModelOutcomes": 9905,
+    "excludedPriorModelOutcomes": 9891,
     "excludedPriorModelPortfolioOutcomes": 14
   },
   "validationStatus": {
-    "paperDays": 60,
-    "trackingDays": 60,
+    "paperDays": 61,
+    "trackingDays": 61,
     "maturedObservationDays": 0,
     "modelVersion": "longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
     "generationIsolated": true,
     "excludedPriorModelSignals": 9957,
-    "excludedPriorModelOutcomes": 9905,
-    "signalsRecorded": 21300,
-    "uniqueDates": 39,
+    "excludedPriorModelOutcomes": 9891,
+    "signalsRecorded": 21801,
+    "uniqueDates": 40,
     "maturedUniqueDates": 0,
     "firstSignalDate": "2026-07-17",
-    "lastSignalDate": "2026-10-08",
+    "lastSignalDate": "2026-10-09",
     "maturedSignals": 0,
     "maturedByHorizon": {
-      "21": 9673,
+      "21": 10154,
       "63": 0,
       "126": 0,
       "252": 0
@@ -45,7 +45,7 @@
   },
   "horizons": {
     "21": {
-      "n": 497,
+      "n": 496,
       "horizon": 21,
       "rankIC": 0.13,
       "rankICMedian": 0.13,
@@ -58,11 +58,11 @@
           "median": 0.13,
           "hitRatio": 1.0,
           "nDates": 1,
-          "nSignals": 496
+          "nSignals": 495
         }
       },
-      "meanExcess": -0.0149,
-      "meanExcessAfterCost": -0.0159,
+      "meanExcess": -0.015,
+      "meanExcessAfterCost": -0.016,
       "positiveHitRate": 0.312,
       "mdd": 0.0,
       "cvar95": -0.0345,
@@ -72,8 +72,8 @@
           "meanFwd": -0.0345
         },
         "NEUTRAL": {
-          "n": 160,
-          "meanFwd": -0.0316
+          "n": 159,
+          "meanFwd": -0.0318
         },
         "NEGATIVE": {
           "n": 164,
