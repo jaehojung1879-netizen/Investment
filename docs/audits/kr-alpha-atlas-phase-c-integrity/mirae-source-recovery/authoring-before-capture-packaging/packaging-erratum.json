@@ -1,0 +1,35 @@
+{
+  "class": "PRE_PUBLICATION_STORAGE_ONLY_ERRATUM_NO_PRICE_FACT_OR_RULE_CHANGE",
+  "reason": "Preserve original non-UTF8 issuer/KIND raw bytes as gzip rather than editable HTML; do not weaken encoding test.",
+  "priorRegistrationSha256": "d681eedf76f783eb37c01b9560fefc3a2972eb4c6f3ce4c3d415218ff517f7d9",
+  "inputIdentityUnchanged": "d0b9746c26397f604474515e46bd1bdc06183aadb6c4119d703a56826cb7c3c2",
+  "matrixDigestUnchanged": "c3d66a99f1e1a1c525a9a659b0bee3cc1bf04109796234b310f0513b222187e7",
+  "changes": [
+    {
+      "priorPath": "2018-rights-decision-final.html",
+      "packedPath": "2018-rights-decision-final.html.gz",
+      "rawSha256Unchanged": "97016dd17cdae17addcc0b963fe44033bac267315a38e8e23ab80472a6057413"
+    },
+    {
+      "priorPath": "2026-issuer-dividend.html",
+      "packedPath": "2026-issuer-dividend.html.gz",
+      "rawSha256Unchanged": "3418050d4f830b74eee0b1bf94671eabd5e1ef9a960be32f7199beef4dd699cd"
+    },
+    {
+      "priorPath": "2026-issuer-announcement.html",
+      "packedPath": "2026-issuer-announcement.html.gz",
+      "rawSha256Unchanged": "b32593f85b316ba2da548878390a09aba092ece739fc3c25453d9a420fcbf0b9"
+    }
+  ],
+  "firstFullPytest": {
+    "passed": 4186,
+    "failed": 1,
+    "failure": "test_tracked_source_files_are_valid_utf8",
+    "skipped": 1,
+    "xfailed": 4,
+    "warnings": 274,
+    "seconds": 1319.74
+  },
+  "allOriginalBytesRetainedByExactGzipDecodeAndSourcePolicyCommit": "021c1852375f0512e4e7317dd13f94af52041973",
+  "formalOutcomeAndLockCounters": 0
+}

@@ -1,0 +1,345 @@
+{
+  "status": "PASS_PREOUTCOME_SOURCE_REPAIR_LOCAL_VALIDATION",
+  "capturedAt": "2026-10-10T00:35:26.096851+00:00",
+  "actualMain": "b4ff60b4af19a9267313c50efbfe1f177cb7cfc6",
+  "mergedPr214Head": "2a046c93a73484e1dc98ca4c9309ce37572c154f",
+  "recoveredPostMergedHeadCommit": "021c1852375f0512e4e7317dd13f94af52041973",
+  "mainIntegratedWithoutDiscardingWorkCommit": "5d540f0",
+  "newBranch": "fix/kr-atlas-006800-source-integrity",
+  "specification": {
+    "originalV1FileSha256": "b57be30ce54abf1dd26388954053e99d4b1bf71fa06f3598787317e953988db0",
+    "parentV2FileSha256": "ca2564703dc018474a3d041f95d86bf16aa053a91ca4453cb975801c17a577bb",
+    "repairAddendumFileSha256": "64c742408331d7da91e8def6a6eba6fde52d5f19734b011e1287e8a7622c8198",
+    "effectiveContractSha256": "b8e436b24da0907d3bd7fc802984628a912516f592f7968d7adf33bb2d2a6361",
+    "dependencyManifestSha256": "3109afd5256d6af6b83c9d4a0ca4a61faceac2b21fcb0d9495892fd6b5787e9a",
+    "transitiveDependenciesVerified": 149,
+    "originalProtectedFilesVerified": 235,
+    "originalScientificChoicesChanged": false
+  },
+  "realInputPreflight": {
+    "receipt": "docs/audits/kr-alpha-atlas-phase-c-integrity/mirae-source-recovery/full-input-preflight-packed.json",
+    "receiptSha256": "3f4b6978cba8c249ec817939f0f4fa03b2ad69ac359567b02eb0b325618f3aa9",
+    "status": "PASS_OUTCOME_FREE_CORRECTED_PREPARATION",
+    "actualMatrixDigest": "c3d66a99f1e1a1c525a9a659b0bee3cc1bf04109796234b310f0513b222187e7",
+    "expectedMatrixDigest": "c3d66a99f1e1a1c525a9a659b0bee3cc1bf04109796234b310f0513b222187e7",
+    "inputsSha256": "d0b9746c26397f604474515e46bd1bdc06183aadb6c4119d703a56826cb7c3c2",
+    "elapsedSeconds": 923.205,
+    "maxRssBytes": 1808793600,
+    "rows": 85680,
+    "signalDates": 714,
+    "columns": 76,
+    "securities": 260,
+    "pit": {
+      "availableFromNotBeforeSignalDate": 0,
+      "filingBasedCellsChecked": 805676,
+      "membershipSnapshotNotOlderThanSignalDate": 0,
+      "pass": true
+    },
+    "missingness": {
+      "measuredCellsCarryingAReason": 0,
+      "missingCells": 1550874,
+      "missingWithoutReason": 0,
+      "pass": true,
+      "reasonsOutsideVocabulary": []
+    },
+    "readiness": "READY",
+    "runtime": {
+      "packages": {
+        "exchange-calendars": "4.11.1",
+        "finance-datareader": "0.9.110",
+        "fredapi": "0.5.2",
+        "joblib": "1.6.0",
+        "korean-lunar-calendar": "0.4.0",
+        "lightgbm": "4.6.0",
+        "numpy": "2.3.1",
+        "pandas": "2.3.0",
+        "pytest": "8.4.1",
+        "scikit-learn": "1.7.0",
+        "scipy": "1.16.0",
+        "threadpoolctl": "3.7.0",
+        "yfinance": "0.2.65"
+      },
+      "platform": "Linux-6.18.44-x86_64-with-glibc2.41",
+      "processor": "",
+      "python": "3.11.16",
+      "threadEnvironment": {
+        "MKL_NUM_THREADS": "1",
+        "OMP_NUM_THREADS": "1",
+        "OPENBLAS_NUM_THREADS": "1"
+      }
+    },
+    "sourceGitObjectsVerified": 41,
+    "persistenceProbe": {
+      "differentBytesRefused": true,
+      "exactByteRepeat": true,
+      "status": "PASS"
+    },
+    "outcomeFirewallForbiddenCalls": []
+  },
+  "coverage": {
+    "H01_industryRelMom126": {
+      "blockedToRepairedRestored": {
+        "byIndustry": {
+          "FINANCIALS": 12680
+        },
+        "byYear": {
+          "2013": 442,
+          "2014": 880,
+          "2015": 940,
+          "2016": 869,
+          "2017": 694,
+          "2018": 722,
+          "2019": 772,
+          "2020": 1273,
+          "2021": 681,
+          "2022": 767,
+          "2023": 1477,
+          "2024": 1651,
+          "2025": 1035,
+          "2026": 477
+        },
+        "firstSignal": "2013-07-05",
+        "lastSignal": "2026-09-11",
+        "nameDateObservations": 12680,
+        "securities": 45,
+        "signalDates": 538
+      },
+      "commonDenominator": 82560,
+      "originalCoverageFloorPct": 60.0,
+      "originalPhaseBMeasuredRows": 57840,
+      "originalPhaseBUsableRangeCoveragePct": 70.05814,
+      "originalToBlockedLost": {
+        "byIndustry": {
+          "FINANCIALS": 13465
+        },
+        "byYear": {
+          "2013": 442,
+          "2014": 880,
+          "2015": 940,
+          "2016": 869,
+          "2017": 694,
+          "2018": 1507,
+          "2019": 772,
+          "2020": 1273,
+          "2021": 681,
+          "2022": 767,
+          "2023": 1477,
+          "2024": 1651,
+          "2025": 1035,
+          "2026": 477
+        },
+        "firstSignal": "2013-07-05",
+        "lastSignal": "2026-09-11",
+        "nameDateObservations": 13465,
+        "securities": 45,
+        "signalDates": 565
+      },
+      "originalToRepairedLost": {
+        "byIndustry": {
+          "FINANCIALS": 785
+        },
+        "byYear": {
+          "2018": 785
+        },
+        "firstSignal": "2018-01-26",
+        "lastSignal": "2018-07-27",
+        "nameDateObservations": 785,
+        "securities": 30,
+        "signalDates": 27
+      },
+      "publishedBlockedV2MeasuredRows": 44375,
+      "publishedBlockedV2UsableRangeCoveragePct": 53.74878875968992,
+      "reasons": {
+        "boundary": "2018-01-23 unvalued preferred subscription right; no endpoint bridge",
+        "direct": "NON_FINITE_PRICE_IN_WINDOW",
+        "peerIndustry": "INDUSTRY_COHORT_MEMBER_MISSING_INPUT"
+      },
+      "sourceRepairedMeasuredRows": 57055,
+      "sourceRepairedUsableRangeCoveragePct": 69.10731589147287,
+      "unchangedUsableRange": [
+        "2013-07-05",
+        "2026-09-11"
+      ],
+      "unrelatedIndustriesAdditionalMissingRows": 0
+    },
+    "H08_equalVsCapWeightIndustry": {
+      "blockedToRepairedRestored": {
+        "byIndustry": {
+          "FINANCIALS": 12680
+        },
+        "byYear": {
+          "2013": 442,
+          "2014": 880,
+          "2015": 940,
+          "2016": 869,
+          "2017": 694,
+          "2018": 722,
+          "2019": 772,
+          "2020": 1273,
+          "2021": 681,
+          "2022": 767,
+          "2023": 1477,
+          "2024": 1651,
+          "2025": 1035,
+          "2026": 477
+        },
+        "firstSignal": "2013-07-05",
+        "lastSignal": "2026-09-11",
+        "nameDateObservations": 12680,
+        "securities": 45,
+        "signalDates": 538
+      },
+      "commonDenominator": 82560,
+      "originalCoverageFloorPct": 60.0,
+      "originalPhaseBMeasuredRows": 57840,
+      "originalPhaseBUsableRangeCoveragePct": 70.05814,
+      "originalToBlockedLost": {
+        "byIndustry": {
+          "FINANCIALS": 13465
+        },
+        "byYear": {
+          "2013": 442,
+          "2014": 880,
+          "2015": 940,
+          "2016": 869,
+          "2017": 694,
+          "2018": 1507,
+          "2019": 772,
+          "2020": 1273,
+          "2021": 681,
+          "2022": 767,
+          "2023": 1477,
+          "2024": 1651,
+          "2025": 1035,
+          "2026": 477
+        },
+        "firstSignal": "2013-07-05",
+        "lastSignal": "2026-09-11",
+        "nameDateObservations": 13465,
+        "securities": 45,
+        "signalDates": 565
+      },
+      "originalToRepairedLost": {
+        "byIndustry": {
+          "FINANCIALS": 785
+        },
+        "byYear": {
+          "2018": 785
+        },
+        "firstSignal": "2018-01-26",
+        "lastSignal": "2018-07-27",
+        "nameDateObservations": 785,
+        "securities": 30,
+        "signalDates": 27
+      },
+      "publishedBlockedV2MeasuredRows": 44375,
+      "publishedBlockedV2UsableRangeCoveragePct": 53.74878875968992,
+      "reasons": {
+        "boundary": "2018-01-23 unvalued preferred subscription right; no endpoint bridge",
+        "direct": "NON_FINITE_PRICE_IN_WINDOW",
+        "peerIndustry": "INDUSTRY_COHORT_MEMBER_MISSING_INPUT"
+      },
+      "sourceRepairedMeasuredRows": 57055,
+      "sourceRepairedUsableRangeCoveragePct": 69.10731589147287,
+      "unchangedUsableRange": [
+        "2013-07-05",
+        "2026-09-11"
+      ],
+      "unrelatedIndustriesAdditionalMissingRows": 0
+    }
+  },
+  "synthetic": {
+    "status": "SYNTHETIC_ONLY",
+    "canonicalSha256": "49e7c4d637aa5a4f0732c5b9b2809ae49350ffaf34069a8ca37c504c966605d5",
+    "featureHorizonTests": 73,
+    "familyComparisons": 30,
+    "interactions": 6,
+    "modelFits": 196,
+    "counters": {
+      "realLabels": 0,
+      "realModelFits": 0,
+      "realOutcomeReads": 0,
+      "syntheticLabels": 43392,
+      "syntheticModelFits": 196,
+      "syntheticOutcomeReads": 43392
+    },
+    "noRealInvestmentEvidence": true,
+    "input": "INVENTED",
+    "repairAddendumFileSha256": "64c742408331d7da91e8def6a6eba6fde52d5f19734b011e1287e8a7622c8198",
+    "effectiveContractSha256": "b8e436b24da0907d3bd7fc802984628a912516f592f7968d7adf33bb2d2a6361"
+  },
+  "syntheticScenarios": {
+    "A": "known standalone direction",
+    "B": "noise refused independent support",
+    "C": "redundancy",
+    "D": "matched incremental information",
+    "E": "costs remove gross opportunity",
+    "F": "industry is not stock selection",
+    "G": "outcome-dependent missingness",
+    "H": "unvalued terminal refusal",
+    "I": "identical comparison population",
+    "J": "future filing/transform refused",
+    "K": "regime sign reversal",
+    "L": "blocked source retained",
+    "M": "determinism/schema/exact-byte persistence",
+    "N": "pre/post-boundary lock ordering"
+  },
+  "validation": {
+    "fullPytest": {
+      "passed": 4187,
+      "skipped": 1,
+      "xfailed": 4,
+      "failed": 0,
+      "warnings": 274,
+      "seconds": 1327.4
+    },
+    "ruffCheck": "PASS",
+    "compileallPipeline": "PASS",
+    "entryPointImportsAndScriptCompile": "PASS",
+    "seedGeneration": "PASS",
+    "seedArtifactValidation": "PASS",
+    "registeredMapValidation": "PASS",
+    "sourceEncodingInvariant": "PASS_WITH_UNCHANGED_TEST",
+    "initialAuthoringFailure": "One source UTF-8 failure; original official raw bytes gzip-packed and hash-bound authoring archive preserved. No source facts, numerical inputs or scientific rules changed.",
+    "priorMainChangeRefusal": "LATEST_MAIN_CHANGED before preparation after external PR214 merge; preserved work, verified new main and repeated source-only preparation in a fresh directory."
+  },
+  "github": {
+    "mainTests": {
+      "runId": 38005460120,
+      "status": "SUCCESS"
+    },
+    "mainPages": {
+      "runId": 38005460166,
+      "status": "SUCCESS"
+    },
+    "finalPrHeadCi": "TO_BE_INSPECTED_AFTER_PUSH_AND_RECORDED_IN_PR_HANDOFF"
+  },
+  "oneShotSafety": {
+    "globalLock": "refs/tags/kr-alpha-atlas-phase-c-v1-execution-lock",
+    "sameStudy": "kr-alpha-atlas-phase-c-v1",
+    "sameResultNamespace": "docs/results/kr-alpha-atlas-phase-c-v1-result.json",
+    "freshExactHashOwnerApprovalRequired": true,
+    "authorizationCreated": false,
+    "lockCreated": false,
+    "formalStudyDispatched": false,
+    "prMergeIsAuthorization": false,
+    "postLockFailure": "CONSUMED_NO_RETRY; existing exact-byte recovery only"
+  },
+  "counters": {
+    "formalExecutionDispatches": 0,
+    "permanentExecutionLocksCreated": 0,
+    "realForwardLabels": 0,
+    "realHistoricalAlphaOutcomeReads": 0,
+    "realHistoricalModelFits": 0,
+    "realPortfolioBacktests": 0,
+    "realStockReturnOutcomeAnalyses": 0
+  },
+  "remainingLimitations": [
+    "2018-01-23 unlisted preferred subscription right has no verified payoff; crossing feature/holding windows stay invalid.",
+    "Legacy partial stock distribution index is not certified complete shareholder total return.",
+    "Three other unverified final-session securities and unresolved terminal economics retain their original refusal.",
+    "X4 investor-flow interaction stays SOURCE_BLOCKED.",
+    "Fresh merged-main runner preflight and separately committed exact-hash owner execution authorization remain human actions."
+  ],
+  "noRealInvestmentEvidence": true
+}
