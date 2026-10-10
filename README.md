@@ -11,6 +11,19 @@ Replay v7의 고정 평가 달력과 성과 정의는 [v7 평가 문서](docs/re
 확인된 Actions 실패와 benchmark lineage/가격 기준 수정은
 [v10 Actions 복구 문서](docs/replay-v10-actions-repair.md)에 정리했습니다.
 
+## 주간 투자 판단 (weekly-passive-first-v1) — 사이트 첫 화면
+
+매주 한국(`069500.KS` KODEX 200)과 미국(`SPY`)을 **각각 독립적으로** 판단합니다: 비용을 넘는 방어 가능한 우위가
+확인된 종목만 최대 5개(종목당 15%) 담고 나머지는 지역 지수, 근거가 없으면 지수 100%. 우위 추정은 production
+과거 보정(126거래일)을 그대로 쓰며 순위 정렬이 통계적으로 확인되지 않으면 "추정 불가"입니다(현재 KR·US 모두 미확인 → 지수 100%).
+탐색적 정책이며 검증된 시스템이 아니고 매매를 실행하지 않습니다.
+
+- 규칙·사전 고정 비교 프로토콜: [docs/weekly-passive-first-v1.md](docs/weekly-passive-first-v1.md)
+- 운영(갱신 시점·영수증·워크플로): [docs/weekly-decision-operations.md](docs/weekly-decision-operations.md)
+- 결과 노출된 과거 재현(2013-01~2026-09, 155블록, replay-v16): [docs/weekly-decision/weekly-passive-first-v1-replay.json](docs/weekly-decision/weekly-passive-first-v1-replay.json)
+  — KR 규칙 CAGR 14.72% vs KODEX 200 14.86%(−0.14%p/년, 155개 중 1개 앵커만 종목 보유). 기존 CHAMPION 선택기는 잔여 현금 10.40%,
+  잔여를 지수로 두면 15.23%. replay-v16 KODEX 200 수준은 Phase C 공식 대조보다 매년 +1.1~+4.5%p 높아 절대 수준은 과대일 수 있습니다.
+
 ## KR model-overlay-portfolio v1 — machine frozen, execution unauthorized
 
 `kr-model-overlay-portfolio-v1` separates H126/H252 Value–Quality–Catalyst stock forecasts, benchmark risk budgeting and a 0–5-stock concentrated portfolio. The KR history through 2026-09-14 is outcome-exposed development evidence; this PR computes no historical labels or strategy outcomes. Daily official KRX market-value cache and joined coverage remain pending. Historical sectors are deferred.
