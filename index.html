@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Investment Research — 결론·포트폴리오·근거</title>
+    <title>주간 투자 판단 — 한국·미국</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Noto+Serif+KR:wght@600;700&display=swap" rel="stylesheet" />
@@ -18,12 +18,10 @@
           <span id="dataStatus" class="muted"></span>
         </div>
         <nav class="nav" aria-label="주요 메뉴">
-          <a href="#today">결론</a>
-          <a href="#context">시장 그래프</a>
-          <a href="#portfolio">포트폴리오</a>
-          <a href="#institutional">13F·국민연금</a>
-          <a href="#radar">기회·경고</a>
-          <a href="#evidence">검증·방법론</a>
+          <a href="#decision">이번 주 판단</a>
+          <a href="#holdings-view">포트폴리오</a>
+          <a href="#performance">과거 성과</a>
+          <a href="#research">리서치</a>
         </nav>
         <div class="topbar-right">
           <div class="freshness muted">
@@ -37,12 +35,56 @@
     <div id="staleBanner" class="stale" hidden></div>
 
     <main class="wrap">
-      <!-- ── 1. 오늘의 결론 ─────────────────────────────────────────── -->
-      <section id="today" class="block block-hero">
+      <!-- ── A. 이번 주 판단 (weekly-passive-first-v1) ─────────────────── -->
+      <section id="decision" class="block wk-hero" aria-labelledby="wkTitle">
         <div class="block-head">
           <div>
-            <span class="overline">오늘의 결론</span>
-            <h1 id="heroHeadline">무엇을, 얼마나, 왜</h1>
+            <span class="overline">이번 주 투자 판단 · 지역별 독립</span>
+            <h1 id="wkTitle">지수를 그대로 들고 갈까, 개별 종목을 살까</h1>
+          </div>
+          <span id="wkGenerated" class="muted"></span>
+        </div>
+        <div id="wkRegions" class="wk-regions" aria-live="polite"><div class="wk-empty">주간 판단을 불러오는 중…</div></div>
+        <p id="wkPolicyNote" class="wk-note"></p>
+      </section>
+
+      <!-- ── B. 포트폴리오 ─────────────────────────────────────────────── -->
+      <section id="holdings-view" class="block" aria-labelledby="wkHoldTitle">
+        <div class="block-head">
+          <div><span class="overline">포트폴리오</span><h2 id="wkHoldTitle">무엇을 얼마나 보유하는가</h2></div>
+          <div class="wk-switch" role="tablist" aria-label="지역 선택" data-wk-switch></div>
+        </div>
+        <div id="wkPortfolio"></div>
+      </section>
+
+      <!-- ── C. 과거 성과 ──────────────────────────────────────────────── -->
+      <section id="performance" class="block" aria-labelledby="wkPerfTitle">
+        <div class="block-head">
+          <div><span class="overline">과거 성과 · 결과 노출된 재현</span><h2 id="wkPerfTitle">이 방식을 과거에 썼다면</h2></div>
+          <div class="wk-switch" role="tablist" aria-label="지역 선택" data-wk-switch></div>
+        </div>
+        <div id="wkPerformance"></div>
+      </section>
+
+      <!-- ── D. 리서치 (기존 상세 모듈) ───────────────────────────────── -->
+      <section id="research" class="block research-intro" aria-labelledby="researchTitle">
+        <div class="block-head">
+          <div><span class="overline">리서치 · 상세 근거</span><h2 id="researchTitle">판단을 뒷받침하는 연구 자료</h2></div>
+        </div>
+        <p class="section-intro">아래 자료는 주간 판단의 근거와 별도 연구입니다. 결합 Kelly 모델 포트폴리오, 레이더, 단기 신호는 <b>연구용</b>이며 위의 주간 판단을 바꾸지 않습니다.</p>
+        <nav class="research-nav" aria-label="리서치 목차">
+          <a href="#today">연구용 모델 포트폴리오</a><a href="#context">시장 그래프</a><a href="#portfolio">모델 제약</a>
+          <a href="#institutional">13F·국민연금</a><a href="#radar">기회·경고</a><a href="#selection">선정 과정</a>
+          <a href="#watchlist">리서치 후보</a><a href="#evidence">검증·방법론</a>
+        </nav>
+      </section>
+
+      <!-- ── 1. 연구용 모델 포트폴리오 (기존) ───────────────────────── -->
+      <section id="today" class="block">
+        <div class="block-head">
+          <div>
+            <span class="overline">연구용 · 결합 KR+US Kelly shadow 포트폴리오 (주간 판단과 별개)</span>
+            <h2 id="heroHeadline">무엇을, 얼마나, 왜</h2>
           </div>
           <span id="overviewAsOf" class="muted"></span>
         </div>

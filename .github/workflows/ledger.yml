@@ -98,6 +98,30 @@ jobs:
       - name: Append signals + refresh outcomes
         run: python scripts/update_ledger.py data/site-data.json ledger-work/ledger
 
+      # weekly-passive-first-v1: per-region 0-5 stocks / benchmark fallback,
+      # derived from the same validated artifact the paper ledger records.
+      # Writes the published decision (ledger/weekly-decisions/latest.json, read
+      # by the site) and appends FINAL week-end receipts; an existing
+      # (policy, region, asOfDate) receipt is never rewritten. Kept in this
+      # workflow because pages.yml and the workflow census are byte-pinned by
+      # sealed studies. No order is placed and no notification is sent.
+      # A refused weekly publication must never cost the paper ledger its day:
+      # the step warns, writes nothing, and the site keeps showing the last
+      # published decision with its own true asOfDate.
+      - name: Weekly decision and append-only receipts
+        continue-on-error: true
+        run: |
+          mkdir -p ledger-work/ledger/weekly-decisions .state/weekly
+          if python -m pipeline.weekly_publish data/site-data.json \
+               ledger-work/ledger/weekly-decisions/receipts.jsonl \
+               .state/weekly/latest.json .state/weekly/receipts.jsonl; then
+            cp .state/weekly/latest.json ledger-work/ledger/weekly-decisions/latest.json
+            cp .state/weekly/receipts.jsonl ledger-work/ledger/weekly-decisions/receipts.jsonl
+          else
+            echo "::warning::weekly decision refused; nothing written"
+            exit 1
+          fi
+
       - name: Commit & push to signal-history
         run: |
           cd ledger-work
