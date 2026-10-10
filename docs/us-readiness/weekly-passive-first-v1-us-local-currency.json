@@ -1,0 +1,29 @@
+{
+ "basis": "USD",
+ "evidenceClass": "POST_OUTCOME_EXPOSED_EXPLORATORY_PORTFOLIO_REPLAY",
+ "id": "weekly-passive-first-v1-us-local-currency",
+ "method": "KRW path x fx(start)/fx(t); exact only for all-US-asset paths",
+ "paths": {
+  "C2": {
+   "cagrPct": 10.971,
+   "finalNav": 4.155591,
+   "fxEnd": 1340.3,
+   "fxStart": 1062.5
+  },
+  "P0": {
+   "cagrPct": 14.734,
+   "finalNav": 6.558505,
+   "fxEnd": 1340.3,
+   "fxStart": 1062.5
+  },
+  "P1": {
+   "cagrPct": 14.734,
+   "finalNav": 6.558505,
+   "fxEnd": 1340.3,
+   "fxStart": 1062.5
+  }
+ },
+ "replaySha256Source": "docs/weekly-decision/weekly-passive-first-v1-replay.json",
+ "status": "SURVIVORSHIP_BIASED_PARTIAL",
+ "usdKrwChangePct": 26.146
+}

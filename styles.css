@@ -1200,3 +1200,7 @@ body { font-size: 15px; line-height: 1.58; }
   .wk-table td { flex-wrap: wrap; }
   .wk-table td small { flex-basis: 100%; text-align: right; }
 }
+.wk-banner.bad { background: rgba(255,107,138,.08); border-color: rgba(255,107,138,.35); margin-bottom: 8px; }
+.wk-banner.bad b { color: var(--red); }
+.wk-table td.wk-left { text-align: left; }
+.wk-compare td, .wk-compare thead th { text-align: left; }

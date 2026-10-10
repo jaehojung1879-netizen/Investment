@@ -1812,7 +1812,8 @@ const wkPerformance = () => {
   const studies = history.existingStudies || {};
   const ia = studies.integratedAlphaPortfolio || {};
   const pc = studies.phaseC || {};
-  return `
+  const usBanner = blob.headlineEligible ? '' : `<div class="wk-banner bad"><b>생존편향 · 헤드라인 아님</b> 미국 경로는 퇴출된 S&amp;P 500 종목 194개(정체성 재집계 212개)의 가격이 없어 살아남은 종목만으로 계산됐습니다. 규칙(P1)은 이 기간 미국 종목을 한 번도 담지 않아 SPY와 같고, 기존 선택기(C1·C2) 수치는 실제보다 좋게 나왔을 가능성이 있습니다. 원화 수치에는 환율이 들어 있습니다.</div>`;
+  return `${usBanner}
     <div class="wk-banner"><b>결과 노출된 과거 재현 · 검증 아님</b> 이 규칙과 기준값은 과거 결과를 이미 본 뒤 만들어졌습니다. 아래 수치는 "그때 알 수 있었던 최선"이 아니라 기술적 비교입니다. 재현은 주간이 아니라 21거래일마다 재판단합니다.</div>
     <p class="wk-lede">${head}</p>
     <div class="wk-lines" role="group" aria-label="표시할 경로">${avail.map((k) => `<label><input type="checkbox" data-wk-line="${k}" ${WK_LINES[k] ? 'checked' : ''}> <i style="background:${WK_LINE_STYLE[k][0]}"></i>${wkEsc(labels[k])}</label>`).join('')}</div>
@@ -1837,6 +1838,7 @@ const wkPerformance = () => {
       </ul>
       ${gap.available && WK_REGION === 'KR' ? `<div class="wk-table-wrap"><table class="wk-table wk-gap"><thead><tr><th scope="col">연도</th><th scope="col">replay-v16</th><th scope="col">공식 대조</th><th scope="col">차이</th></tr></thead><tbody>${gap.rows.map((r) => `<tr><th scope="row">${r.year}</th><td>${wkSignedPct(r.replayV16Pct, 2)}</td><td>${wkSignedPct(r.reconciledPct, 2)}</td><td>${wkPp(r.gapPp)}</td></tr>`).join('')}</tbody></table></div>` : ''}
     </details>
+    ${WK_REGION === 'US' ? wkUsReadiness(history) : ''}
     ${WK_REGION === 'KR' ? `<details class="wk-fold"><summary>기존 봉인 연구 결과 (따로 보기, 합산 금지)</summary>
       <ul class="wk-reasons">
         <li><b>${wkEsc(pc.study || 'Phase C/D')}</b> — ${wkEsc(pc.summaryKo || '')}</li>
@@ -1846,12 +1848,79 @@ const wkPerformance = () => {
     </details>` : ''}`;
 };
 
+
+// ── KR / US comparison (same frozen calendar; never a ranking) ──────────
+const wkCompare = () => {
+  const regions = WEEKLY?.regions || {};
+  const replay = WEEKLY?.history?.replay || {};
+  const rr = replay.regions || {};
+  const rows = ['KR', 'US'].map((r) => {
+    const b = regions[r] || {};
+    const p = rr[r]?.paths?.P1 || {};
+    const p0 = rr[r]?.paths?.P0 || {};
+    const ord = b.calibrationOrdering || {};
+    return { r, b, p, p0, ord, blob: rr[r] || {} };
+  });
+  const line = (label, f) => `<tr><th scope="row">${label}</th>${rows.map((x) => `<td data-l="${WK_REGION_KO[x.r]}">${f(x)}</td>`).join('')}</tr>`;
+  const usLocal = WEEKLY?.history?.usLocalCurrency || {};
+  return `
+    <div class="wk-table-wrap"><table class="wk-table wk-compare">
+      <caption class="sr-only">한국과 미국 비교</caption>
+      <thead><tr><th scope="col">항목</th><th scope="col">한국 · KODEX 200</th><th scope="col">미국 · SPY</th></tr></thead>
+      <tbody>
+        ${line('판단 기준일', (x) => wkDate(x.b.asOfDate || x.b.lastValidReceipt?.asOfDate))}
+        ${line('이번 주 배분', (x) => (x.b.weights && Object.keys(x.b.weights).length ? `종목 ${x.b.stockCount}개 · 지수 ${wkPct(x.b.benchmarkWeightPct, 0)}` : wkEsc((WK_STATUS[x.b.status] || [])[1] || '—')))}
+        ${line('순위의 수익 정렬(t, 기준 1.96)', (x) => (wkNum(x.ord.topMinusBottomTStat) ? `${x.ord.topMinusBottomTStat.toFixed(2)} · ${x.ord.established ? '확인' : '미확인'}` : '—'))}
+        ${line('재현 기간 · 블록', (x) => (x.p.available ? `${wkEsc(x.p.startDate)}~${wkEsc(x.p.endDate)} · ${x.p.blocks}` : '—'))}
+        ${line('규칙 순 CAGR (원화)', (x) => (x.p.available ? wkPct(x.p.cagrPct, 2) : '—'))}
+        ${line('지수 CAGR (원화)', (x) => (x.p.available ? wkPct(x.p.benchmarkCagrPct, 2) : '—'))}
+        ${line('초과 CAGR', (x) => (x.p.available ? wkPp(x.p.excessCagrPp) : '—'))}
+        ${line('최대 낙폭', (x) => (x.p.available ? wkPct(x.p.maxDrawdownPct, 1) : '—'))}
+        ${line('현지통화 기준 (참고)', (x) => (x.r === 'KR' ? '원화 = 현지통화' : (usLocal.paths?.P1 ? `규칙 ${wkPct(usLocal.paths.P1.cagrPct, 2)} · SPY ${wkPct(usLocal.paths.P0.cagrPct, 2)} (USD, 원/달러 ${wkSignedPct(usLocal.usdKrwChangePct, 1)})` : '미산출')))}
+        ${line('증거 상태', (x) => wkEsc({ DEFINITION_INTERNAL_REPLAY_V16: 'replay-v16 내부 비교 · 지수 정의 미대조', SURVIVORSHIP_BIASED_PARTIAL: '생존편향 · 부분 · 헤드라인 아님' }[x.blob.status] || x.blob.status || '—'))}
+        ${line('비용 기준', (x) => (x.r === 'KR' ? '수수료+스프레드+연도별 증권거래세, ETF 거래세 면제' : '수수료+스프레드+규제수수료 근사'))}
+      </tbody>
+    </table></div>
+    <p class="wk-note">두 지역은 같은 155개 고정 블록 달력에서 재현했지만 의미가 다릅니다. 한국 수치는 replay-v16 가격 정의(지수 수준 과대 가능), 미국 수치는 퇴출 종목 가격 결손으로 생존편향이 있어 <b>어느 지역이 낫다고 순위를 매기지 않습니다</b>. 미국 원화 수치에는 원/달러 환율 변동이 들어 있으며 이는 종목 선택 능력이 아닙니다.</p>`;
+};
+
+const WK_US_STATUS_KO = {
+  AVAILABLE_WITH_DOCUMENTED_IDENTITY_LIMITS: ['ok', '사용 가능(한계 문서화)'],
+  BLOCKED_PAID_SOURCE: ['bad', '유료로만 확인'],
+  AVAILABLE_PRICED_NAMES_ONLY: ['warn', '가격 있는 종목만'],
+  PARTIAL: ['warn', '부분'],
+  AVAILABLE_VIA_FINNHUB_SEC_DIRECT_BLOCKED: ['ok', 'Finnhub 경유 가능'],
+  AVAILABLE_MEASURED_BELOW: ['ok', '사용 가능(측정)'],
+  DERIVABLE_NOT_YET_DERIVED: ['warn', '파생 가능·미구축'],
+  ALREADY_TESTED_CLOSED: ['passive', '이미 시험·종료'],
+  BLOCKED_SOURCE: ['bad', '차단'],
+  NOT_PROBED: ['warn', '미시험'],
+};
+const wkUsReadiness = (history) => {
+  const r = history?.usReadiness || {};
+  if (!r.available) return '';
+  const store = r.pitStore || {};
+  const delay = store.filingDelayDays || {};
+  const yrs = Object.entries(store.byYear || {});
+  return `<details class="wk-fold"><summary>미국 데이터 준비도 (결과 비노출 조사)</summary>
+    <p class="wk-note">미국 역사적 알파 탐색 단계: <b>${wkEsc(r.historicalDiscoveryPhase)}</b> — 단 한 번의 탐색 예산을 regional-alpha-model-v1(증거 없음)에서 사용했습니다. 새 연구는 새 정보 축을 전향(prospective) 기록으로만 평가합니다.</p>
+    <div class="wk-table-wrap"><table class="wk-table"><thead><tr><th scope="col">정보 축</th><th scope="col">상태</th><th scope="col">설명</th></tr></thead><tbody>
+      ${(r.inventory || []).map((row) => { const [c, l] = WK_US_STATUS_KO[row.status] || ['warn', row.status]; return `<tr><th scope="row">${wkEsc(row.axis)}</th><td data-l="상태"><span class="wk-badge ${c}">${wkEsc(l)}</span></td><td data-l="설명" class="wk-left">${wkEsc(row.detailKo)}${row.minimumToUnblock ? `<small>해소 조건: ${wkEsc(row.minimumToUnblock)}</small>` : ''}</td></tr>`; }).join('')}
+    </tbody></table></div>
+    <p class="wk-note">PIT 재무 저장소: ${store.tickers ?? '—'}개 종목 · ${store.filings ?? '—'}건 공시. 공시 지연 중앙값 10-Q ${delay['10-Q']?.median ?? '—'}일 · 10-K ${delay['10-K']?.median ?? '—'}일(기간 종료→SEC 접수).</p>
+    <div class="wk-table-wrap"><table class="wk-table wk-years"><thead><tr><th scope="col">회계연도</th><th scope="col">현금배당 지급</th><th scope="col">주당배당</th><th scope="col">주식 수</th><th scope="col">자사주 매입</th><th scope="col">영업현금흐름</th></tr></thead><tbody>
+      ${yrs.map(([y, v]) => `<tr><th scope="row">${y}</th><td data-l="현금배당">${wkPct(v.cashDividendsPaid, 0)}</td><td data-l="주당배당">${wkPct(v.dividendPerShare, 0)}</td><td data-l="주식 수">${wkPct(v.shareCount, 0)}</td><td data-l="자사주">${wkPct(v.buyback, 0)}</td><td data-l="영업CF">${wkPct(v.operatingCashFlow, 0)}</td></tr>`).join('')}
+    </tbody></table></div>
+    <p class="muted">공시 중 해당 항목을 명시한 비율입니다. 배당을 하지 않는 회사의 공백은 실제 부재라 결측이 아닙니다. 주당배당 항목은 2019년 이후 보고율이 급락해(약 50%→12%) 쓰지 않고, 현금흐름표의 배당 지급을 씁니다.</p>
+  </details>`;
+};
+
 const renderWeekly = () => {
   const host = $('#wkRegions');
   if (!host) return;
   if (!WEEKLY) {
     host.innerHTML = '<div class="wk-empty warn">주간 판단 파일을 아직 불러오지 못했습니다(매일 00:10 UTC 원장 워크플로가 signal-history에 기록). 판단이 없을 때 기본값은 각 지역 지수입니다.</div>';
-    $('#wkPortfolio').innerHTML = ''; $('#wkPerformance').innerHTML = '';
+    $('#wkPortfolio').innerHTML = ''; $('#wkPerformance').innerHTML = ''; if ($('#wkCompare')) $('#wkCompare').innerHTML = '';
     wkSwitches();
     return;
   }
@@ -1862,6 +1931,7 @@ const renderWeekly = () => {
   wkSwitches();
   $('#wkPortfolio').innerHTML = wkPortfolio(regions[WK_REGION]);
   $('#wkPerformance').innerHTML = wkPerformance();
+  const cmp = $('#wkCompare'); if (cmp) cmp.innerHTML = wkCompare();
 };
 
 document.addEventListener('click', (e) => {

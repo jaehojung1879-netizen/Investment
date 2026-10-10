@@ -23,6 +23,8 @@ Replay v7의 고정 평가 달력과 성과 정의는 [v7 평가 문서](docs/re
 - 결과 노출된 과거 재현(2013-01~2026-09, 155블록, replay-v16): [docs/weekly-decision/weekly-passive-first-v1-replay.json](docs/weekly-decision/weekly-passive-first-v1-replay.json)
   — KR 규칙 CAGR 14.72% vs KODEX 200 14.86%(−0.14%p/년, 155개 중 1개 앵커만 종목 보유). 기존 CHAMPION 선택기는 잔여 현금 10.40%,
   잔여를 지수로 두면 15.23%. replay-v16 KODEX 200 수준은 Phase C 공식 대조보다 매년 +1.1~+4.5%p 높아 절대 수준은 과대일 수 있습니다.
+- 미국 데이터 준비도(결과 비노출): [docs/us-source-readiness-v1.md](docs/us-source-readiness-v1.md) — 역사 탐색 단계 CLOSED,
+  퇴출 종목 가격은 유료로만 확인(미국 과거 성과는 생존편향·헤드라인 아님), 미국 규칙은 재현 기간 내내 SPY 100%(USD CAGR 14.73%, 원화 16.70%).
 
 ## KR model-overlay-portfolio v1 — machine frozen, execution unauthorized
 
