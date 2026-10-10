@@ -1,119 +1,102 @@
 {
-  "filings": 28,
+  "filings": 1,
   "periodLengthByForm": {
-    "10-K": {
-      "year (316-400d)": 1
-    },
     "10-Q": {
-      "half (136-225d)": 24,
-      "quarter (46-135d)": 2,
       "three quarters (226-315d)": 1
     }
   },
   "filingsWithNoPeriodLength": 0,
   "filingsByFreq": {
-    "quarterly": 27,
-    "annual": 1
+    "quarterly": 1
   },
   "formsByFreq": {
-    "annual": {
-      "10-K": 1
-    },
     "quarterly": {
-      "10-Q": 27
+      "10-Q": 1
     }
   },
   "conceptsBySection": {
     "bs": 0,
-    "ic": 239,
-    "cf": 366
+    "ic": 28,
+    "cf": 17
   },
   "conceptsBySectionCollapsed": {
     "bs": 0,
-    "ic": 239,
-    "cf": 366
+    "ic": 28,
+    "cf": 17
   },
   "topConcepts": {
     "bs": [],
     "ic": [
-      "us-gaap_IncomeTaxExpenseBenefit",
-      "us-gaap_EarningsPerShareBasic",
-      "us-gaap_EarningsPerShareDiluted",
-      "us-gaap_NetIncomeLoss",
-      "us-gaap_ComprehensiveIncomeNetOfTax",
-      "us-gaap_WeightedAverageNumberOfSharesOutstandingBasic",
-      "us-gaap_WeightedAverageNumberOfDilutedSharesOutstanding",
-      "us-gaap_IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest",
-      "us-gaap_OperatingIncomeLoss",
-      "us-gaap_OtherNonoperatingIncomeExpense",
-      "us-gaap_ProfitLoss",
-      "us-gaap_RevenueFromContractWithCustomerExcludingAssessedTax"
+      "us-gaap_RevenueFromContractWithCustomerExcludingAssessedTax",
+      "us-gaap_LaborAndRelatedExpense",
+      "us-gaap_FuelCosts",
+      "dal_RefineryExpenses",
+      "us-gaap_ProfessionalAndContractServicesExpense",
+      "us-gaap_LandingFeesAndOtherRentals",
+      "us-gaap_AircraftMaintenanceMaterialsAndRepairs",
+      "us-gaap_SellingAndMarketingExpense",
+      "us-gaap_AirlineCapacityPurchaseArrangements",
+      "us-gaap_DepreciationDepletionAndAmortization",
+      "us-gaap_CostOfServicesCatering",
+      "us-gaap_OtherLaborRelatedExpenses"
     ],
     "cf": [
       "us-gaap_NetCashProvidedByUsedInOperatingActivities",
-      "us-gaap_NetCashProvidedByUsedInInvestingActivities",
-      "us-gaap_NetCashProvidedByUsedInFinancingActivities",
-      "us-gaap_CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseIncludingExchangeRateEffect",
-      "us-gaap_ShareBasedCompensation",
-      "us-gaap_ProceedsFromPaymentsForOtherFinancingActivities",
-      "us-gaap_ProfitLoss",
-      "us-gaap_PaymentsToAcquirePropertyPlantAndEquipment",
+      "us-gaap_PaymentsForFlightEquipment",
+      "us-gaap_PaymentsToAcquireOtherProductiveAssets",
+      "us-gaap_PaymentsToAcquireLongtermInvestments",
       "us-gaap_PaymentsForProceedsFromOtherInvestingActivities",
-      "us-gaap_PaymentsForRepurchaseOfCommonStock",
-      "us-gaap_EffectOfExchangeRateOnCashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents",
-      "us-gaap_OtherNoncashIncomeExpense"
+      "us-gaap_NetCashProvidedByUsedInInvestingActivities",
+      "us-gaap_ProceedsFromShortTermDebt",
+      "us-gaap_ProceedsFromIssuanceOfLongTermDebt",
+      "us-gaap_RepaymentsOfLongTermDebtAndCapitalSecurities",
+      "us-gaap_PaymentsOfDividends",
+      "us-gaap_ProceedsFromPaymentsForOtherFinancingActivities",
+      "us-gaap_NetCashProvidedByUsedInFinancingActivities"
     ]
   },
   "topConceptsCollapsed": {
     "bs": [],
     "ic": [
-      "IncomeTaxExpenseBenefit",
-      "EarningsPerShareBasic",
-      "EarningsPerShareDiluted",
-      "NetIncomeLoss",
-      "ComprehensiveIncomeNetOfTax",
-      "WeightedAverageNumberOfSharesOutstandingBasic",
-      "WeightedAverageNumberOfDilutedSharesOutstanding",
-      "IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest",
-      "OperatingIncomeLoss",
-      "OtherNonoperatingIncomeExpense",
-      "ProfitLoss",
-      "RevenueFromContractWithCustomerExcludingAssessedTax"
+      "RevenueFromContractWithCustomerExcludingAssessedTax",
+      "LaborAndRelatedExpense",
+      "FuelCosts",
+      "dal_RefineryExpenses",
+      "ProfessionalAndContractServicesExpense",
+      "LandingFeesAndOtherRentals",
+      "AircraftMaintenanceMaterialsAndRepairs",
+      "SellingAndMarketingExpense",
+      "AirlineCapacityPurchaseArrangements",
+      "DepreciationDepletionAndAmortization",
+      "CostOfServicesCatering",
+      "OtherLaborRelatedExpenses"
     ],
     "cf": [
       "NetCashProvidedByUsedInOperatingActivities",
-      "NetCashProvidedByUsedInInvestingActivities",
-      "NetCashProvidedByUsedInFinancingActivities",
-      "CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseIncludingExchangeRateEffect",
-      "ShareBasedCompensation",
-      "ProceedsFromPaymentsForOtherFinancingActivities",
-      "ProfitLoss",
-      "PaymentsToAcquirePropertyPlantAndEquipment",
+      "PaymentsForFlightEquipment",
+      "PaymentsToAcquireOtherProductiveAssets",
+      "PaymentsToAcquireLongtermInvestments",
       "PaymentsForProceedsFromOtherInvestingActivities",
-      "PaymentsForRepurchaseOfCommonStock",
-      "EffectOfExchangeRateOnCashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents",
-      "OtherNoncashIncomeExpense"
+      "NetCashProvidedByUsedInInvestingActivities",
+      "ProceedsFromShortTermDebt",
+      "ProceedsFromIssuanceOfLongTermDebt",
+      "RepaymentsOfLongTermDebtAndCapitalSecurities",
+      "PaymentsOfDividends",
+      "ProceedsFromPaymentsForOtherFinancingActivities",
+      "NetCashProvidedByUsedInFinancingActivities"
     ]
   },
   "units": {
-    "usd": 1241,
-    "u_usd": 366,
-    "usd/share": 49,
-    "shares": 32,
-    "u_unitedstatesofamericadollarsshare": 15,
-    "u_shares": 12,
-    "u_usdollarshare": 2
+    "usd": 43,
+    "usd/share": 2
   },
   "unitClasses": {
-    "currency": 1607,
-    "perShare": 49,
-    "shares": 44,
-    "unclassified": 17
+    "currency": 43,
+    "perShare": 2
   },
   "unitClassesResolved": {
-    "currency": 1607,
-    "perShare": 66,
-    "shares": 44
+    "currency": 43,
+    "perShare": 2
   },
   "unclassifiedUnits": {}
 }
