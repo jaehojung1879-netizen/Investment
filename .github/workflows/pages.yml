@@ -61,8 +61,8 @@ jobs:
         run: |
           git fetch --no-tags --depth=1 origin fb6e83743fd8cdba647d1522a4645b662a9d5647
           git fetch --no-tags --depth=1 --filter=blob:none origin 4ea107ed0cde289f0a049a65ff13d2441a786710
-      - name: Bounded PIT sample
-        run: python scripts/diagnose_kr_alpha_atlas_matrix.py sample --work /tmp/atlas-matrix-sample
+      - name: Bounded bar-column isolation, never an outcome
+        run: python scripts/diagnose_kr_alpha_atlas_matrix.py bars --work /tmp/atlas-matrix-sample
       - uses: actions/upload-artifact@v4
         if: always()
         with:

@@ -23,6 +23,7 @@ from threadpoolctl import threadpool_info
 from pipeline import kr_alpha_atlas_inputs as AI, kr_alpha_atlas_matrix as MX
 from pipeline import kr_alpha_atlas_mirae_repair as R
 from pipeline import kr_alpha_atlas_readiness as RD
+from pipeline import kr_alpha_atlas_bars as B
 from pipeline import kr_model_raw_snapshot as RAW
 from pipeline.kr_alpha_atlas_integrity_audit import AuditCounters, outcome_free_firewall
 from pipeline.kr_alpha_atlas_phase_c import contract
@@ -49,6 +50,47 @@ def _json_digest(obj):
     return hashlib.sha256(json.dumps(obj).encode()).hexdigest()
 
 
+def prepared_inputs(inputs):
+    """Bitwise source/preprocessing fingerprints; never construct target windows."""
+    prices = {}
+    for ticker, frame in sorted(inputs.prices.items()):
+        h = hashlib.sha256()
+        h.update(contract.canonical(frame.index.astype(str).tolist()))
+        for col in sorted(set(frame.columns) & {'Open', 'High', 'Low', 'Close', 'Volume'}):
+            a = frame[col].to_numpy(dtype='<f8', copy=True)
+            a[np.isnan(a)] = np.nan  # one NaN representation, independent of payload bits
+            h.update(col.encode())
+            h.update(a.tobytes())
+        prices[ticker] = h.hexdigest()
+    return {'pricePanels': prices, 'pricePanelsDigest': contract.digest(prices),
+            'calendarDigest': contract.digest(inputs.calendar.astype(str).tolist()),
+            'membershipDigest': contract.digest(inputs.memberships.snapshots),
+            'accountingDigest': contract.digest(inputs.accounting)}
+
+
+def bar_projection(inputs, dates):
+    """Cheap diagnostic of the SAME bar lookup for every registered member-date.
+
+    Not the research matrix: excludes expensive accounting/cross-section builds.
+    Its individual bar-column values/reasons can be compared with the full matrix.
+    """
+    rows, values, reasons = [], [], []
+    for date in dates:
+        snapshot = inputs.memberships.on(date)
+        if snapshot is None:
+            continue
+        for ticker in snapshot['members']:
+            v, r = inputs.bars[ticker].features_at(date)
+            rows.append({'date': date, 'ticker': ticker, 'pitSnapshotDate': snapshot['date'],
+                         'industry': 'SOURCE_BAR_PROJECTION', 'liquidityTier': 'NOT_COMPUTED'})
+            values.append({k: v.get(k, np.nan) for k in B.BARS_FEATURES})
+            reasons.append({k: '' if k in v else r[k] for k in B.BARS_FEATURES})
+    import pandas as pd
+    frame = pd.DataFrame(rows)
+    return MX.Matrix(frame, pd.DataFrame(values), pd.DataFrame(reasons),
+                     pd.DataFrame(index=frame.index), pd.DataFrame(), inputs.identity)
+
+
 def diagnostic(matrix, expected):
     order = matrix.rows.sort_values(['date', 'ticker']).index
     rows = matrix.rows.loc[order, ['date', 'ticker', 'industry', 'liquidityTier']].astype(str).values.tolist()
@@ -69,10 +111,12 @@ def diagnostic(matrix, expected):
             'counters': asdict(AuditCounters())}, {'rows': rows, 'values': values, 'reasons': reasons}
 
 
-def write_diagnostic(matrix, expected, work):
+def write_diagnostic(matrix, expected, work, inputs=None):
     work = Path(work)
     work.mkdir(parents=True, exist_ok=True)
     report, payload = diagnostic(matrix, expected)
+    if inputs is not None:
+        report['preparedInputs'] = prepared_inputs(inputs)
     RAW.immutable_bytes(work/'matrix-diagnostic.json', contract.canonical(report)+b'\n')
     # Bounded source-feature cells, not return targets; useful for exact cell comparison.
     RAW.immutable_bytes(work/'matrix-cells.json.gz', gzip.compress(contract.canonical(payload), mtime=0))
@@ -87,7 +131,7 @@ def observe(expected, work):
 
     def measured(*args, **kwargs):
         matrix = original(*args, **kwargs)
-        write_diagnostic(matrix, expected, work)
+        write_diagnostic(matrix, expected, work, args[0])
         return matrix  # Original gate receives identical object and digest.
 
     with patch.object(MX, 'build_matrix', measured):
@@ -106,18 +150,22 @@ def run(root, work, mode, expected_main=None):
                'counters': asdict(AuditCounters())}
     try:
         with outcome_free_firewall() as attempts:
-            if mode == 'sample':
+            if mode in ('sample', 'bars'):
                 with R.corrected_loader(root):
                     inputs = AI.load_inputs(spec['phaseBIdentity']['inputs']['sourceCommit'], work/'inputs', root)
                     if inputs.identity != spec['phaseBIdentity']['inputs']:
                         raise ValueError('PINNED_INPUT_IDENTITY_CHANGED')
-                    matrix = MX.build_matrix(inputs, list(SAMPLE_DATES))
-                write_diagnostic(matrix, 'SAMPLE_NOT_FULL_REGISTERED_DIGEST', work)
+                    if mode == 'sample':
+                        matrix = MX.build_matrix(inputs, list(SAMPLE_DATES))
+                    else:
+                        from pipeline.regional_alpha_features import weekly_grid
+                        matrix = bar_projection(inputs, weekly_grid('2013-01-01', spec['developmentCutoff'], 'KR'))
+                write_diagnostic(matrix, mode.upper()+'_NOT_FULL_REGISTERED_DIGEST', work, inputs)
             elif mode == 'preflight':
                 with observe(spec['phaseBIdentity']['matrixDigest'], work):
                     R.audit(root, work/'preflight', expected_main)
             else:
-                raise ValueError('SAFE_SAMPLE_OR_PREFLIGHT_ONLY')
+                raise ValueError('SAFE_SAMPLE_BARS_OR_PREFLIGHT_ONLY')
             receipt.update(status='PASS', firewallBlockedCalls=attempts)
     except Exception as error:
         receipt.update(status='FAIL_GATE_PRESERVED', errorClass=type(error).__name__, error=str(error))
