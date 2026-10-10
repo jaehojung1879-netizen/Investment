@@ -114,10 +114,17 @@ def test_runtime_restriction_and_cli_bootstrap_order():
     assert text.index('bootstrap()') < text.index('import kr_alpha_atlas_reproducibility')
     spec = V4.load()
     assert spec['runtime']['environment']['OPENBLAS_CORETYPE'] == 'Haswell'
+    from pipeline.kr_alpha_atlas_phase_c import preflight
+    with patch.object(preflight.platform, 'python_version', return_value='SYN_UNSUPPORTED'):
+        with pytest.raises(ValueError, match='PINNED_PYTHON_RUNTIME_REQUIRED'):
+            NR.verify(spec)
     fake = deepcopy(spec)
     fake['runtime']['environment']['OPENBLAS_CORETYPE'] = 'Unsupported'
-    with pytest.raises(ValueError, match='SINGLE_THREAD_ENVIRONMENT_REQUIRED'):
-        NR.verify(fake)
+    # Isolate the environment guard even when ordinary CI uses a newer Python.
+    # Actual formal preflight still requires precisely the registered interpreter.
+    with patch.object(preflight.platform, 'python_version', return_value=spec['runtime']['python']):
+        with pytest.raises(ValueError, match='SINGLE_THREAD_ENVIRONMENT_REQUIRED'):
+            NR.verify(fake)
 
 
 def test_wrong_cpu_is_refused_before_the_parent_input_path(tmp_path):
