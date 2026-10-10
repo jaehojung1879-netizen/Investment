@@ -1,6 +1,16 @@
 name: Build insight data and deploy Pages
 
 on:
+  pull_request:
+    paths:
+      - 'pipeline/kr_alpha_atlas_matrix_diagnostics.py'
+      - 'scripts/diagnose_kr_alpha_atlas_matrix.py'
+      - 'pipeline/kr_alpha_atlas_numeric_runtime.py'
+      - 'pipeline/kr_alpha_atlas_reproducibility.py'
+      - 'scripts/run_kr_alpha_atlas_phase_c_reproducible.py'
+      - 'research_specs/kr-alpha-atlas-phase-c-v4-*'
+      - 'tests/test_kr_alpha_atlas*reproducibility.py'
+      - '.github/workflows/pages.yml'
   push:
     branches: [main]
   schedule:
@@ -11,6 +21,12 @@ on:
     # and FinanceDataReader publish final KOSPI/KOSDAQ rows before cross-check.
     - cron: "15 8 * * 1-5"
   workflow_dispatch:
+    inputs:
+      atlas_action:
+        description: 'Pages normally; matrix actions are separate Phase C v4 guards'
+        type: choice
+        options: [pages, matrix-validate, matrix-preflight, matrix-execute]
+        default: pages
   workflow_run:
     workflows: ["Historical point-in-time replay"]
     types: [completed]
@@ -28,12 +44,100 @@ permissions:
 # and each push below rebases and retries, so the shared lock bought nothing
 # that the retry does not.
 concurrency:
-  group: pages-deploy
+  group: ${{ github.event_name == 'pull_request' && format('atlas-matrix-diagnostic-{0}', github.event.pull_request.number) || (startsWith(inputs.atlas_action, 'matrix-') && 'kr-alpha-atlas-phase-c-v1-single-attempt' || 'pages-deploy') }}
   cancel-in-progress: false
 
 jobs:
+  matrix-diagnostic:
+    if: github.event_name == 'pull_request' || (github.event_name == 'workflow_dispatch' && (inputs.atlas_action == 'matrix-validate' || inputs.atlas_action == 'matrix-preflight'))
+    runs-on: ubuntu-24.04
+    timeout-minutes: 70
+    permissions:
+      contents: read
+      actions: read
+    env:
+      OMP_NUM_THREADS: '1'
+      OPENBLAS_NUM_THREADS: '1'
+      MKL_NUM_THREADS: '1'
+      PYTHONHASHSEED: '1'
+      OPENBLAS_CORETYPE: Haswell
+      NPY_DISABLE_CPU_FEATURES: AVX512F,AVX512CD,AVX512_SKX,AVX512_CLX,AVX512_CNL,AVX512_ICL
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11.16'
+      - run: python -m pip install -r requirements-kr-alpha-atlas-phase-c.txt
+      - name: Exact source acquisition, no outcome action
+        run: |
+          git fetch --no-tags --depth=1 origin fb6e83743fd8cdba647d1522a4645b662a9d5647
+          git fetch --no-tags --depth=1 --filter=blob:none origin 4ea107ed0cde289f0a049a65ff13d2441a786710
+      - name: Registration and exact numerical kernel
+        run: python scripts/run_kr_alpha_atlas_phase_c_reproducible.py validate
+      - name: Real full-input preflight behind the outcome firewall
+        if: github.event_name == 'pull_request' || inputs.atlas_action == 'matrix-preflight'
+        run: |
+          python scripts/run_kr_alpha_atlas_phase_c_reproducible.py preflight \
+            --expected-main "$(git rev-parse origin/main)" --work /tmp/atlas-matrix-v4-preflight
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: atlas-matrix-diagnostic-${{ github.run_id }}
+          path: |
+            /tmp/atlas-matrix-v4-preflight/*.json
+            /tmp/atlas-matrix-v4-preflight/inputs/matrix-diagnostics/*.*
+          if-no-files-found: warn
+          retention-days: 90
+  matrix-formal-owner-only:
+    if: github.event_name == 'workflow_dispatch' && inputs.atlas_action == 'matrix-execute' && github.ref == 'refs/heads/main' && github.actor == 'jaehojung1879-netizen'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 110
+    permissions:
+      contents: write
+      actions: read
+    env:
+      OMP_NUM_THREADS: '1'
+      OPENBLAS_NUM_THREADS: '1'
+      MKL_NUM_THREADS: '1'
+      PYTHONHASHSEED: '1'
+      OPENBLAS_CORETYPE: Haswell
+      NPY_DISABLE_CPU_FEATURES: AVX512F,AVX512CD,AVX512_SKX,AVX512_CLX,AVX512_CNL,AVX512_ICL
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11.16'
+      - run: python -m pip install -r requirements-kr-alpha-atlas-phase-c.txt
+      - name: Exact original inputs, before any lock
+        run: |
+          git fetch --no-tags --depth=1 origin fb6e83743fd8cdba647d1522a4645b662a9d5647
+          git fetch --no-tags --depth=1 --filter=blob:none origin 4ea107ed0cde289f0a049a65ff13d2441a786710
+      - name: One original study only after committed exact v4 owner authorization
+        # The same frozen synthetic checks also run inside formal preflight.
+        run: python scripts/run_kr_alpha_atlas_phase_c_reproducible.py execute --work /tmp/atlas-phase-c-v4-formal
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: kr-alpha-atlas-phase-c-v1-results-${{ github.run_id }}
+          path: /tmp/atlas-phase-c-v4-formal/results/
+          if-no-files-found: ignore
+          retention-days: 90
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: atlas-matrix-pre-lock-${{ github.run_id }}
+          path: /tmp/atlas-phase-c-v4-formal/inputs/matrix-diagnostics/*.*
+          if-no-files-found: ignore
+          retention-days: 90
   build-and-deploy:
-    if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success' }}
+    if: ${{ github.event_name != 'pull_request' && (github.event_name != 'workflow_dispatch' || !inputs.atlas_action || inputs.atlas_action == 'pages') && (github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success') }}
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
