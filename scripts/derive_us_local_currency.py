@@ -41,18 +41,22 @@ def main(argv=None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("ledger_dir")
     parser.add_argument("--output", required=True)
+    parser.add_argument("--result", default=str(RESULT),
+                        help="a committed replay result (21-session or weekly)")
     args = parser.parse_args(argv)
-    result = json.loads(RESULT.read_text())
+    source = Path(args.result)
+    result = json.loads(source.read_text())
     store = RI.InputStore(Path(args.ledger_dir), provenance.REPLAY_VERSION, provenance.DATA_VERSION)
     manifest = store.manifest()
     if manifest["sha256"] != result["inputManifestSha256"]:
         raise ValueError("frozen inputs differ from the replay's")
     fx = RV.normalize_daily_series(RI.unpack(store.load(manifest, valuation_only=True))["fx"]).dropna()
     us = result["regions"]["US"]
-    out = {"id": "weekly-passive-first-v1-us-local-currency", "basis": "USD",
+    out = {"id": result["id"] + "-us-local-currency", "basis": "USD",
+           "cadence": (result.get("calendar") or {}).get("cadence"),
            "method": "KRW path x fx(start)/fx(t); exact only for all-US-asset paths",
            "evidenceClass": result["evidenceClass"], "status": us["status"],
-           "replaySha256Source": "docs/weekly-decision/weekly-passive-first-v1-replay.json",
+           "replaySource": str(source.resolve().relative_to(ROOT)),
            "paths": {}}
     for key in CONVERTIBLE:
         summary = us["paths"].get(key) or {}

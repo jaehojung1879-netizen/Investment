@@ -2004,36 +2004,48 @@ const wkPerformance = () => {
 // ── KR / US comparison (same frozen calendar; never a ranking) ──────────
 const wkCompare = () => {
   const regions = WEEKLY?.regions || {};
-  const replay = WEEKLY?.history?.replay || {};
-  const rr = replay.regions || {};
+  const history = WEEKLY?.history || {};
+  // The same simulation for both regions where it exists: weekly cadence first.
+  // KR reads the corrected-benchmark accounting; US is unaffected by it.
+  const pick = (r) => {
+    const order = r === 'KR' ? ['weeklyReplayCorrected', 'weeklyReplay', 'replayCorrected', 'replay'] : ['weeklyReplay', 'replay'];
+    for (const key of order) { const blob = history[key]?.available && (history[key].regions || {})[r]; if (blob) return { key, blob }; }
+    return { key: null, blob: {} };
+  };
   const rows = ['KR', 'US'].map((r) => {
     const b = regions[r] || {};
-    const p = rr[r]?.paths?.P1 || {};
-    const p0 = rr[r]?.paths?.P0 || {};
-    const ord = b.calibrationOrdering || {};
-    return { r, b, p, p0, ord, blob: rr[r] || {} };
+    const { key, blob } = pick(r);
+    const shown = WK_DECIDED.has(b.status) ? b : (b.lastValidReceipt || b);
+    return { r, b, shown, key, blob, p: blob.paths?.P1 || {}, p0: blob.paths?.P0 || {}, ord: shown.calibrationOrdering || {} };
   });
+  const levelOk = (x) => x.r !== 'KR' || (x.key || '').endsWith('Corrected');
   const line = (label, f) => `<tr><th scope="row">${label}</th>${rows.map((x) => `<td data-l="${WK_REGION_KO[x.r]}">${f(x)}</td>`).join('')}</tr>`;
-  const usLocal = WEEKLY?.history?.usLocalCurrency || {};
+  const weeklyLocal = history.usLocalCurrencyWeekly?.paths ? history.usLocalCurrencyWeekly : null;
+  const usLocal = (rows[1].key || '').startsWith('weekly') ? weeklyLocal : (history.usLocalCurrency?.paths ? history.usLocalCurrency : null);
+  const sim = (x) => ({ weeklyReplayCorrected: '주간 · 공식 대조 지수', weeklyReplay: '주간', replayCorrected: '21거래일 · 공식 대조 지수', replay: '21거래일' }[x.key] || '—');
+  const evidence = (x) => (x.r === 'US' ? '생존편향 · 부분 · 헤드라인 아님' : (levelOk(x) ? '지수: 공식 분배 대조 · 종목: 표본 감사' : '수익률 원천 미대조'));
   return `
     <div class="wk-table-wrap"><table class="wk-table wk-compare">
       <caption class="sr-only">한국과 미국 비교</caption>
       <thead><tr><th scope="col">항목</th><th scope="col">한국 · KODEX 200</th><th scope="col">미국 · SPY</th></tr></thead>
       <tbody>
-        ${line('판단 기준일', (x) => wkDate(x.b.asOfDate || x.b.lastValidReceipt?.asOfDate))}
-        ${line('이번 주 배분', (x) => (x.b.weights && Object.keys(x.b.weights).length ? `종목 ${x.b.stockCount}개 · 지수 ${wkPct(x.b.benchmarkWeightPct, 0)}` : wkEsc((WK_STATUS[x.b.status] || [])[1] || '—')))}
+        ${line('판단 기준일', (x) => wkDate(x.shown.asOfDate))}
+        ${line('이번 주 배분', (x) => (x.shown.weights && Object.keys(x.shown.weights).length ? `종목 ${x.shown.stockCount}개 · 지수 ${wkPct(x.shown.benchmarkWeightPct, 0)}` : wkEsc((WK_STATUS[x.b.status] || [])[1] || '—')))}
+        ${line('관찰 후보 1위', (x) => { const w = (x.shown.watchlist || [])[0]; return w ? `${wkName(w)} <span class="tk">${wkEsc(w.ticker)}</span>` : '—'; })}
         ${line('순위의 수익 정렬(t, 기준 1.96)', (x) => (wkNum(x.ord.topMinusBottomTStat) ? `${x.ord.topMinusBottomTStat.toFixed(2)} · ${x.ord.established ? '확인' : '미확인'}` : '—'))}
-        ${line('재현 기간 · 블록', (x) => (x.p.available ? `${wkEsc(x.p.startDate)}~${wkEsc(x.p.endDate)} · ${x.p.blocks}` : '—'))}
-        ${line('규칙 순 CAGR (원화)', (x) => (x.p.available ? wkPct(x.p.cagrPct, 2) : '—'))}
-        ${line('지수 CAGR (원화)', (x) => (x.p.available ? wkPct(x.p.benchmarkCagrPct, 2) : '—'))}
-        ${line('초과 CAGR', (x) => (x.p.available ? wkPp(x.p.excessCagrPp) : '—'))}
+        ${line('과거 시뮬레이션', (x) => (x.p.available ? `${sim(x)} · ${wkEsc(x.p.startDate)}~${wkEsc(x.p.endDate)} · ${x.p.blocks}회` : '—'))}
+        ${line('종목을 담은 판단', (x) => (x.blob.anchorsWithStocks ?? '—'))}
+        ${line('규칙 순 CAGR (원화)', (x) => (x.p.available && levelOk(x) ? wkPct(x.p.cagrPct, 2) : (x.p.available ? '미대조' : '—')))}
+        ${line('지수 CAGR (원화)', (x) => (x.p.available && levelOk(x) ? wkPct(x.p.benchmarkCagrPct, 2) : (x.p.available ? '미대조' : '—')))}
+        ${line('지수 대비 차이', (x) => (x.p.available && levelOk(x) ? wkPp(x.p.excessCagrPp) : (x.p.available ? '미대조' : '—')))}
         ${line('최대 낙폭', (x) => (x.p.available ? wkPct(x.p.maxDrawdownPct, 1) : '—'))}
-        ${line('현지통화 기준 (참고)', (x) => (x.r === 'KR' ? '원화 = 현지통화' : (usLocal.paths?.P1 ? `규칙 ${wkPct(usLocal.paths.P1.cagrPct, 2)} · SPY ${wkPct(usLocal.paths.P0.cagrPct, 2)} (USD, 원/달러 ${wkSignedPct(usLocal.usdKrwChangePct, 1)})` : '미산출')))}
-        ${line('증거 상태', (x) => wkEsc({ DEFINITION_INTERNAL_REPLAY_V16: 'replay-v16 내부 비교 · 지수 정의 미대조', SURVIVORSHIP_BIASED_PARTIAL: '생존편향 · 부분 · 헤드라인 아님' }[x.blob.status] || x.blob.status || '—'))}
+        ${line('현지통화 기준', (x) => (x.r === 'KR' ? '원화 = 현지통화' : (usLocal?.paths?.P1 ? `규칙 ${wkPct(usLocal.paths.P1.cagrPct, 2)} · SPY ${wkPct(usLocal.paths.P0.cagrPct, 2)} (USD)` : '미산출')))}
+        ${line('환율 효과', (x) => (x.r === 'KR' ? '없음' : (usLocal?.paths?.P0 ? `원/달러 ${wkSignedPct(usLocal.usdKrwChangePct, 1)} · 원화 수치 − USD 수치 ≈ ${wkPp((x.p0.cagrPct ?? NaN) - usLocal.paths.P0.cagrPct)}/년` : '—')))}
+        ${line('증거 상태', (x) => wkEsc(evidence(x)))}
         ${line('비용 기준', (x) => (x.r === 'KR' ? '수수료+스프레드+연도별 증권거래세, ETF 거래세 면제' : '수수료+스프레드+규제수수료 근사'))}
       </tbody>
     </table></div>
-    <p class="wk-note">두 지역은 같은 155개 고정 블록 달력에서 재현했지만 의미가 다릅니다. 한국 수치는 replay-v16 가격 정의(지수 수준 과대 가능), 미국 수치는 퇴출 종목 가격 결손으로 생존편향이 있어 <b>어느 지역이 낫다고 순위를 매기지 않습니다</b>. 미국 원화 수치에는 원/달러 환율 변동이 들어 있으며 이는 종목 선택 능력이 아닙니다.</p>`;
+    <p class="wk-note">두 지역은 같은 신호 달력으로 재현했지만 의미가 다릅니다. 한국은 기준지수를 공식 분배금으로 다시 평가했지만 종목 시세는 표본 감사뿐이고, 미국은 퇴출 종목 가격 결손으로 생존편향이 있어 <b>어느 지역이 낫다고 순위를 매기지 않습니다</b>. 미국 원화 수치에는 원/달러 환율 변동이 들어 있으며 이는 종목 선택 능력이 아닙니다.</p>`;
 };
 
 const WK_US_STATUS_KO = {

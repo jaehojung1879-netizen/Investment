@@ -19,6 +19,7 @@ REPLAY_RESULT = REPO_ROOT / "docs" / "weekly-decision" / "weekly-passive-first-v
 INTEGRATED_AUDIT = REPO_ROOT / "docs" / "results" / "kr-integrated-alpha-portfolio-v1-postoutcome-completed-audit.json"
 US_READINESS = REPO_ROOT / "docs" / "us-readiness" / "us-source-readiness-v1.json"
 US_LOCAL = REPO_ROOT / "docs" / "us-readiness" / "weekly-passive-first-v1-us-local-currency.json"
+US_LOCAL_WEEKLY = REPO_ROOT / "docs" / "us-readiness" / "weekly-passive-first-v1-weekly-us-local-currency.json"
 BENCHMARK_RECON = REPO_ROOT / "docs" / "audits" / "kr-alpha-atlas-phase-c-integrity" / "benchmark-reconciliation.json"
 BENCHMARK_RECON_CORRECTED = (REPO_ROOT / "docs" / "audits" / "kr-alpha-atlas-phase-c-integrity"
                              / "benchmark-reconciliation-corrected.json")
@@ -256,6 +257,7 @@ def build_history(regions=("KR", "US")) -> dict:
     return {
         "usReadiness": us_readiness_block(_load(US_READINESS)),
         "usLocalCurrency": _load(US_LOCAL) or {"available": False},
+        "usLocalCurrencyWeekly": _load(US_LOCAL_WEEKLY) or {"available": False},
         "replay": replay_block(_load(REPLAY_RESULT), regions),
         "replayCorrected": replay_block(_load(REPLAY_RESULT_CORRECTED), regions),
         "weeklyReplay": replay_block(_load(REPLAY_RESULT_WEEKLY), regions),
