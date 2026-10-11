@@ -72,6 +72,11 @@ ledger.yml (매일 00:10 UTC)
 
 ## CI(Tests) 타임아웃 — 측정된 진단 (2026-10-11)
 
+이 절의 실행 시간은 당시의 측정 기록입니다. 30분 제한과 새 해시 등록 제안은
+[CI timeout/provenance v1](ci/pytest-timeout-and-provenance-v1.md)에서 해결했습니다.
+현재 제한은 60분이며, 원본 연구 명세를 다시 생성하지 않고 등록 커밋의 과거
+workflow와 검증기 바이트를 확인합니다. 30분 제한 때문에 반복 재시도하던 운용을 대체합니다.
+
 - **느린 테스트는 이 PR과 무관하며 main에 이미 있습니다.** 전체 스위트(4,260개)를 `--durations`로 로컬 측정(34분 17초)한 결과 가장 느린 것은
   모두 봉인된 Phase C 테스트입니다: `test_kr_alpha_atlas_phase_c.py::test_M_complete_determinism_full_schema_and_durable_bytes` 224초,
   같은 파일 `test_A_true_standalone_direction` 준비 단계 206초, `test_full_size_safe_synthetic_memory_and_masks` 86초,

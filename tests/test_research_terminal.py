@@ -67,4 +67,8 @@ def test_sealed_build_publication_and_results_are_unchanged():
              "docs/weekly-decision/weekly-passive-first-v1-replay-corrected-benchmark.json"]
     for path in paths:
         original = subprocess.check_output(["git", "show", f"8f45870cf8a0c41c5d32c3ec1296417de23c5db1:{path}"], cwd=ROOT)
+        if path == ".github/workflows/tests.yml":
+            # The operational CI budget evolves independently of the terminal.
+            # Permit exactly the owner-authorized timeout increase; all gates stay.
+            original = original.replace(b"timeout-minutes: 30", b"timeout-minutes: 60", 1)
         assert (ROOT / path).read_bytes() == original, path
