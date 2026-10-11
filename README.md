@@ -29,6 +29,7 @@ Replay v7의 고정 평가 달력과 성과 정의는 [v7 평가 문서](docs/re
   퇴출 종목 가격은 유료로만 확인(미국 과거 성과는 생존편향·헤드라인 아님), 미국 규칙은 주간·21거래일 재현 모두 SPY 100%
   (USD CAGR 14.73%, 원화 16.70%, 차이는 원/달러 +26.1%의 환율 효과). 관찰 후보 TOP 5는 미국에도 같은 형식으로 나옵니다.
 - 미국 이중 벤치마크 기반(SPY 공식 + QQQ 대안, 연구 전용): [docs/us-dual-benchmark-foundation-v1.md](docs/us-dual-benchmark-foundation-v1.md) — QQQ 봉인 데이터 준비, SPY/QQQ 기술 비교, 나스닥100 PIT 멤버십 PARTIAL, 이중 벤치마크 어댑터. 공식 벤치마크·주간 판단은 변경 없음.
+- 미국 자본배분 알파 v1 전향적 연구 등록(연구 전용, 승인 대기): [docs/us-capital-allocation-alpha-v1.md](docs/us-capital-allocation-alpha-v1.md) — 주주 현금분배 증가(OCF 뒷받침) 가설 H126을 SPY·QQQ 대비 사전 등록, 주간 PIT 커버리지 감사, 추가 전용 영수증·평가 장치. 공식 주간 판단은 변경 없음.
 
 
 ## KR model-overlay-portfolio v1 — machine frozen, execution unauthorized
