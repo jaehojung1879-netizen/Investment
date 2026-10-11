@@ -70,18 +70,24 @@ ledger.yml (매일 00:10 UTC)
   (raw.githubusercontent.com 캐시는 최대 약 5분이라 그보다 짧은 지연은 정상 전파 지연입니다).
 - 원장 워크플로 앞 단계(빌드·검증)가 실패하면 판단 단계 자체가 실행되지 않으므로, 이 경우는 위의 3일 지연 표시로 드러납니다.
 
-## CI(Tests) 타임아웃 — 현재 차단 사항
+## CI(Tests) 타임아웃 — 측정된 진단 (2026-10-11)
 
-- 증상: Tests 워크플로가 30분 제한(`timeout-minutes: 30`)에 걸려 취소됩니다. PR만의 문제가 아니라 **main 자체**(실행 38043294031,
-  문서만 바꾼 #217 병합)도 같은 이유로 취소됐습니다.
-- 원인: 스위트(약 4,250개)가 빠른 러너에서 17분 30초(실행 38036614239, 같은 날 main 성공)였고, 느린 러너에서는 같은 구간이
-  1.6–1.9배 느렸습니다(예: 41→42% 구간 6분 대 11분). 여유가 12분뿐이라 러너 편차만으로 30분을 넘습니다. 이 PR이 더한
-  테스트는 약 50개·10초 미만입니다.
-- 차단: `.github/workflows/tests.yml`은 `research_specs/kr-alpha-atlas-phase-c-v1.json`의 `dependencyHashes`에
-  sha256 `1f270bcd6e19f332595b737286e75c4b611ddb0320c16d2c5b972a26ba057ec5`로 고정되어 있어, 제한 시간을 바꾸면 봉인된
-  Phase C v1 등록이 깨집니다. 그래서 이 PR에서는 바꾸지 않았고 테스트를 지우거나 건너뛰지도 않았습니다.
-- 제안(소유자 승인 필요): Phase C 계약에 tests.yml 변경을 명시적으로 허용하는 별도 사전 등록 개정 후
-  `timeout-minutes: 45`로 올리거나, `pytest-xdist`로 2개 작업에 나눠 실행. 둘 다 새 워크플로 파일 없이 tests.yml만 바꿉니다.
+- **느린 테스트는 이 PR과 무관하며 main에 이미 있습니다.** 전체 스위트(4,260개)를 `--durations`로 로컬 측정(34분 17초)한 결과 가장 느린 것은
+  모두 봉인된 Phase C 테스트입니다: `test_kr_alpha_atlas_phase_c.py::test_M_complete_determinism_full_schema_and_durable_bytes` 224초,
+  같은 파일 `test_A_true_standalone_direction` 준비 단계 206초, `test_full_size_safe_synthetic_memory_and_masks` 86초,
+  `test_kr_alpha_atlas_mirae_repair.py::test_complete_synthetic_study_uses_the_same_repaired_contract` 215초. 5초 넘는 62개 항목 합계 1,641초 중
+  `phase_c.py` 635초 + `mirae_repair` 234초가 53%입니다. CI 로그에서 41%→42% 구간이 6분(빠른 러너)에서 11분(느린 러너)으로 늘어난 바로 그 위치입니다
+  (collect 순서상 `mirae_repair`·`phase_b`·`phase_c`가 41–44%).
+- **이 PR이 더한 테스트는 `tests/test_us_source_readiness.py`(8개) 하나이고 0.44초입니다.** main과 PR의 `tests/`·`.github/` diff는 이 파일뿐입니다.
+- **러너 편차가 크고 30분 제한 안팎에서 갈립니다.** 같은 pytest 내용의 최근 실행: 성공 17.5분(main 38036614239), 19분(38097353800), 22.6분(38098935635),
+  20분(38106217306); 30분 제한 취소 38097268802, 38099014804, 38106151051(main), 38107321054(모두 70% 안팎, 실패 0건). 즉 최근 8회 중 4회가 취소입니다.
+- **고칠 수 없는 이유(우회하지 않음):** 느린 테스트 파일은 `research_specs/kr-alpha-atlas-phase-c-v1.json`(`tests/test_kr_alpha_atlas_phase_c.py`
+  sha256 `186ab58a…`)과 `kr-alpha-atlas-phase-c-v3-price-repair.json`(`tests/test_kr_alpha_atlas_mirae_repair.py` sha256 `b707fd1b…`)이 바이트 해시로 고정하고,
+  공유 `tests/conftest.py`는 `market-industry-stock-data-foundation-v1.json`이 고정합니다. 합성 입력 캐싱 등으로 줄이려면 이 파일들을 고쳐야 해서 봉인 계약이 깨집니다.
+  `tests.yml`도 `kr-alpha-atlas-phase-c-v1.json`의 `dependencyHashes`(sha256 `1f270bcd…`)로 고정되어 제한 시간을 바꿀 수 없습니다.
+- **가장 작은 소유자 승인 변경:** Phase C 계약 개정(pre-outcome addendum)으로 `tests.yml`의 `timeout-minutes: 30`을 60으로 올리는 한 줄 변경과 새 해시 등록.
+  (대안: 위 두 테스트 파일의 합성 입력 생성 캐싱 — 두 봉인 해시 모두 개정 필요, 변경 범위가 더 큼.) 그 전까지는 취소된 실행을 "Re-run jobs"로 다시 돌리는 것이 유일한 방법이며
+  빠른 러너에서는 약 20분에 통과합니다.
 
 ## 안전 규칙
 
@@ -94,3 +100,14 @@ ledger.yml (매일 00:10 UTC)
 
 Actions → **Append paper-signal ledger** → Run workflow. 판단 단계가 검증에 실패하면 경고만 남기고 아무것도 쓰지 않으며,
 페이퍼 원장 기록은 그대로 진행됩니다.
+
+## 첫 게시 확인 (2026-10-11 기준)
+
+- #218 병합(`123ce7d8`, 2026-10-11 02:45 UTC) 직후 확인: `signal-history`에 `ledger/weekly-decisions/`가 **아직 없음** →
+  사이트는 두 지역 카드를 "미게시"로 표시하고 비중을 그리지 않습니다(`NOT_PUBLISHED_YET`). 이는 정상 상태입니다.
+- 원장 워크플로는 예약상 00:10 UTC이지만 실제로는 05:40 UTC 전후에 시작해 왔습니다(최근 4회). 병합 후 첫 예약 실행이
+  `main`의 새 단계를 실행하면 `latest.json`, `receipts.jsonl`, `publication-status.json`이 처음 생깁니다.
+- 토요일(KST) 실행에서 나온 판단만 `FINAL_WEEKLY` 영수증이 됩니다. 주중 실행 결과는 미리보기로만 표시되고 기록되지 않습니다.
+- 수동으로 먼저 확인하려면 Actions → **Append paper-signal ledger** → Run workflow(소유자 실행). 이 세션은 실행하지 않았습니다.
+- 확인 순서: ① 실행 로그의 "Weekly decision and append-only receipts" 단계 출력(`regions`·`receipts`) ② signal-history의 세 파일
+  ③ 사이트 첫 화면 카드의 기준일·상태 ④ 다음 주 같은 기준일 영수증의 다이제스트가 바뀌지 않았는지.

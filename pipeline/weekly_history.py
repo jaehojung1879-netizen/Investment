@@ -17,6 +17,9 @@ from .config import REPO_ROOT
 
 REPLAY_RESULT = REPO_ROOT / "docs" / "weekly-decision" / "weekly-passive-first-v1-replay.json"
 INTEGRATED_AUDIT = REPO_ROOT / "docs" / "results" / "kr-integrated-alpha-portfolio-v1-postoutcome-completed-audit.json"
+US_READINESS = REPO_ROOT / "docs" / "us-readiness" / "us-source-readiness-v1.json"
+US_LOCAL = REPO_ROOT / "docs" / "us-readiness" / "weekly-passive-first-v1-us-local-currency.json"
+US_LOCAL_WEEKLY = REPO_ROOT / "docs" / "us-readiness" / "weekly-passive-first-v1-weekly-us-local-currency.json"
 BENCHMARK_RECON = REPO_ROOT / "docs" / "audits" / "kr-alpha-atlas-phase-c-integrity" / "benchmark-reconciliation.json"
 BENCHMARK_RECON_CORRECTED = (REPO_ROOT / "docs" / "audits" / "kr-alpha-atlas-phase-c-integrity"
                              / "benchmark-reconciliation-corrected.json")
@@ -231,8 +234,30 @@ PHASE_C = {
 }
 
 
-def build_history(regions=("KR",)) -> dict:
+def us_readiness_block(report: dict | None) -> dict:
+    """Compact, outcome-blind US source readiness for the site."""
+    if not report:
+        return {"available": False}
+    store = report.get("pitStore") or {}
+    years = store.get("byFiscalYearPctOfFilings") or {}
+    keep = [y for y in sorted(years) if "2013" <= y <= "2026"]
     return {
+        "available": True, "evidenceClass": report.get("evidenceClass"),
+        "historicalDiscoveryPhase": report.get("historicalDiscoveryPhase"),
+        "inventory": [{k: row.get(k) for k in ("axis", "status", "detailKo", "minimumToUnblock")}
+                      for row in report.get("inventory") or []],
+        "closedStudies": report.get("closedStudies") or [],
+        "pitStore": {"tickers": store.get("tickers"), "filings": store.get("filings"),
+                     "filingDelayDays": store.get("filingDelayDays"),
+                     "byYear": {y: years[y] for y in keep}},
+    }
+
+
+def build_history(regions=("KR", "US")) -> dict:
+    return {
+        "usReadiness": us_readiness_block(_load(US_READINESS)),
+        "usLocalCurrency": _load(US_LOCAL) or {"available": False},
+        "usLocalCurrencyWeekly": _load(US_LOCAL_WEEKLY) or {"available": False},
         "replay": replay_block(_load(REPLAY_RESULT), regions),
         "replayCorrected": replay_block(_load(REPLAY_RESULT_CORRECTED), regions),
         "weeklyReplay": replay_block(_load(REPLAY_RESULT_WEEKLY), regions),

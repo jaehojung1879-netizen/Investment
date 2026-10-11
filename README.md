@@ -25,6 +25,10 @@ Replay v7의 고정 평가 달력과 성과 정의는 [v7 평가 문서](docs/re
   (규칙 12.39%). replay-v16의 KODEX 200은 분배금을 두 번 반영해 연 +1.1~+4.5%p 부풀려져 있었고(검증 가능한 분배락 20건 중 19건),
   그 기준의 수치(14.86%·14.72% 등)는 보존용으로만 남깁니다 — [감사](docs/weekly-decision/kodex200-benchmark-audit.md),
   [결과 요약](docs/weekly-passive-first-v1.md#과거-시뮬레이션-결과-결과-노출--검증-아님--2026-10-11-추가).
+- 미국 데이터 준비도(결과 비노출): [docs/us-source-readiness-v1.md](docs/us-source-readiness-v1.md) — 역사 탐색 단계 CLOSED,
+  퇴출 종목 가격은 유료로만 확인(미국 과거 성과는 생존편향·헤드라인 아님), 미국 규칙은 주간·21거래일 재현 모두 SPY 100%
+  (USD CAGR 14.73%, 원화 16.70%, 차이는 원/달러 +26.1%의 환율 효과). 관찰 후보 TOP 5는 미국에도 같은 형식으로 나옵니다.
+
 
 ## KR model-overlay-portfolio v1 — machine frozen, execution unauthorized
 

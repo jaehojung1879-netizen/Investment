@@ -1200,6 +1200,10 @@ body { font-size: 15px; line-height: 1.58; }
   .wk-table td { flex-wrap: wrap; }
   .wk-table td small { flex-basis: 100%; text-align: right; }
 }
+.wk-banner.bad { background: rgba(255,107,138,.08); border-color: rgba(255,107,138,.35); margin-bottom: 8px; }
+.wk-banner.bad b { color: var(--red); }
+.wk-table td.wk-left { text-align: left; }
+.wk-compare td, .wk-compare thead th { text-align: left; }
 
 /* Weekly: freshness, watchlist (output B), simulation hierarchy, load notices */
 .wk-regions > .wk-empty { grid-column: 1 / -1; }
@@ -1238,3 +1242,16 @@ body { font-size: 15px; line-height: 1.58; }
   .wk-watch-grid { grid-template-columns: minmax(0, 1fr); }
   .wk-subhead { font-size: .95rem; }
 }
+
+/* KR/US comparison: one plain sentence per region above the matrices */
+.wk-cmp-verdicts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.wk-cmp-verdict { margin: 0; padding: 10px 12px; border: 1px solid var(--line); border-left: 4px solid var(--wk-passive); border-radius: 10px; font-size: .9rem; line-height: 1.5; }
+.wk-cmp-verdict.warn { border-left-color: var(--gold); color: var(--gold); }
+.wk-cmp-notes { margin-top: 10px; }
+@media (max-width: 760px) { .wk-cmp-verdicts { grid-template-columns: minmax(0, 1fr); } }
+.wk-compare tbody th[scope="row"] { min-width: 150px; }
+@media (max-width: 760px) { .wk-compare tbody th[scope="row"] { min-width: 0; } }
+.wk-incl { margin: 0 0 6px; font-size: .78rem; color: var(--muted); }
+.wk-incl.in b { color: var(--accent); }
+.wk-facts-fold { margin-top: 4px; }
+.wk-facts-fold summary { font-size: .76rem; }

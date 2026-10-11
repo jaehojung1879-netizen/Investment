@@ -1613,6 +1613,10 @@ const wkSignedPct = (v, d = 2) => (wkNum(v) ? `${v >= 0 ? '+' : ''}${v.toFixed(d
 const wkPp = (v, d = 2) => (wkNum(v) ? `${v >= 0 ? '+' : ''}${v.toFixed(d)}%p` : '—');
 const wkKrw = (v) => (wkNum(v) ? `${Math.round(v / 10000).toLocaleString('ko-KR')}만원` : '—');
 const wkDate = (iso) => { if (!iso) return '—'; const d = new Date(`${iso}T00:00:00Z`); return `${iso} (${WK_DOW[d.getUTCDay()]})`; };
+// How old a recorded decision is, in calendar days from the viewer's clock.
+const wkAge = (iso) => { const d = Math.floor((Date.now() - Date.parse(`${iso}T00:00:00Z`)) / 86400000); return Number.isFinite(d) ? (d <= 0 ? '오늘' : `${d}일 전`) : '—'; };
+// Ticker shown beside a name only when a real company name exists.
+const wkTk = (row) => ((row?.name || NAMES[row?.ticker]) && (row?.name || NAMES[row?.ticker]) !== row?.ticker ? ` <span class="tk">${wkEsc(row.ticker)}</span>` : '');
 const wkName = (row) => wkEsc(row?.name || NAMES[row?.ticker] || row?.ticker || '');
 const WK_STATUS = {
   STOCKS_SELECTED: ['ok', '개별 종목 편입'],
@@ -1690,7 +1694,8 @@ const wkFreshLine = (b) => {
 };
 
 const wkRegionCard = (region, b) => {
-  if (!b) return `<article class="wk-card"><h3>${WK_REGION_KO[region]}</h3><p class="wk-empty">판단 없음</p></article>`;
+  if (!b) return `<article class="wk-card warn" aria-label="${WK_REGION_KO[region]} 판단"><header><h3>${WK_REGION_KO[region]} <span class="muted">· 기준 ${region === 'KR' ? 'KODEX 200' : 'SPY'}</span></h3><span class="wk-badge warn">미게시</span></header>
+    <p class="wk-sentence">이번 주 공식 판단 영수증이 아직 게시되지 않았습니다. 비중을 임의로 표시하지 않습니다.</p></article>`;
   const [cls, label] = WK_STATUS[b.status] || ['warn', b.status || '상태 미상'];
   const week = b.weekStatus === 'FINAL_WEEKLY' ? '주간 확정' : b.weekStatus === 'INTRA_WEEK_PREVIEW' ? '주중 미리보기' : '';
   const ord = b.calibrationOrdering || {};
@@ -1704,7 +1709,7 @@ const wkRegionCard = (region, b) => {
       <span class="wk-badge ${cls}">${wkEsc(label)}</span></header>
     <p class="wk-sentence">${wkSentence(region, b)}</p>
     ${wkFreshLine(b)}
-    ${last ? `<p class="wk-asof">마지막 확정: ${wkDate(last.asOfDate)} ${WK_MARKET[region]} 기준</p>${wkAllocationBar(last)}` : ''}
+    ${last ? `<p class="wk-asof">마지막 확정: ${wkDate(last.asOfDate)} ${WK_MARKET[region]} 기준 · <b>${wkAge(last.asOfDate)}</b></p>${wkAllocationBar(last)}` : ''}
     <ul class="wk-evidence" aria-label="증거 상태">${WK_EVIDENCE.map(([k, v]) => `<li><span>${k}</span>${v}</li>`).join('')}</ul>
   </article>`;
   }
@@ -1796,7 +1801,7 @@ const wkWatch = (b) => {
   let note = '';
   if (!WK_DECIDED.has(b.status)) {
     src = b.lastValidReceipt || {};
-    note = `<div class="wk-empty warn">이번 주 관찰 후보를 새로 만들지 않았습니다(${wkEsc((WK_STATUS[b.status] || [])[1] || b.status)}).${src.asOfDate ? ` 아래는 ${wkEsc(src.asOfDate)} 기준 기록입니다.` : ''}</div>`;
+    note = `<div class="wk-empty warn">이번 주 관찰 후보를 새로 만들지 않았습니다(${wkEsc((WK_STATUS[b.status] || [])[1] || b.status)}).${src.asOfDate ? ` 아래는 ${wkEsc(src.asOfDate)} 기준 기록입니다(${wkAge(src.asOfDate)}).` : ''}</div>`;
   }
   const rows = src.watchlist || [];
   if (!rows.length) return `${note}<div class="wk-empty">관찰 후보 기록이 없습니다.</div>`;
@@ -1811,20 +1816,21 @@ const wkWatch = (b) => {
     const rc = w.rankChange || {};
     return `<article class="wk-watch-card" aria-label="${w.rank}위 ${wkName(w)}">
       <header><span class="wk-rank">${w.rank}</span>
-        <div><h3><span class="tklink" data-tk="${wkEsc(w.ticker)}">${wkName(w)}</span> <span class="tk">${wkEsc(w.ticker)}</span></h3>
+        <div><h3><span class="tklink" data-tk="${wkEsc(w.ticker)}">${wkName(w)}</span>${wkTk(w)}</h3>
         <p class="muted">${WK_REGION_KO[w.region] || w.region} · ${wkEsc(w.sectorKo || w.sector || '미분류')} · 리서치 점수 ${wkFmt(w.researchScore, 3)} (알파 ${wkFmt(w.alphaPercentile, 0)}p)</p></div>
         <span class="wk-chip ${rc.previousRank == null && rc.available ? 'new' : ''}">${wkEsc(rc.labelKo || '—')}</span></header>
       <p class="wk-edge ${edge.statisticallySupported ? 'ok' : 'no'}"><b>${edge.statisticallySupported ? '통계적 우위 근거 있음' : '통계적 우위 근거 없음'}</b> ${wkEsc(edge.reasonKo || '')}</p>
       <div class="wk-sw"><div><span>강점</span>${(w.strengthsKo || []).map(wkEsc).join(' · ') || '—'}</div>
         <div><span>약점</span>${(w.weaknessesKo || []).map(wkEsc).join(' · ') || '—'}</div></div>
+      <p class="wk-incl ${w.inModelHoldings ? 'in' : ''}">${w.inModelHoldings ? '<b>모델 보유안에 포함</b>' : `보유안 제외 — ${(w.exclusionReasonsKo || []).map(wkEsc).join(' · ') || '—'}`}</p>
+      <details class="wk-fold wk-facts-fold"><summary>세부 지표 (가격·가치·위험·데이터)</summary>
       <dl class="wk-facts">
         <div><dt>가격·모멘텀</dt><dd>12-1M ${wkSignedPct(pm.mom12_1Pct, 1)} · 3M ${wkSignedPct(pm.mom63Pct, 1)} · 52주 고점 대비 ${wkFmt(pm.pct52wHigh, 0, '%')} · ${pm.aboveMA200 === true ? '200일선 위' : pm.aboveMA200 === false ? '200일선 아래' : '—'}</dd></div>
         <div><dt>가치·수익성</dt><dd>PER ${wkFmt(vp.trailingPE, 1)} · PBR ${wkFmt(vp.priceToBook, 2)} · ROE ${wkNum(vp.roe) ? `${(vp.roe * 100).toFixed(1)}%` : '—'} · 영업이익률 ${wkNum(vp.operatingMargin) ? `${(vp.operatingMargin * 100).toFixed(1)}%` : '—'} <small>${wkEsc(vp.basisKo || '')}</small></dd></div>
         <div><dt>유동성·하방위험</dt><dd>하방변동 ${wkFmt(lr.downsideVolPct, 1, '%')} · 1년 최대낙폭 ${wkFmt(lr.maxDD252Pct, 1, '%')} · CVaR95 ${wkFmt(lr.cvar95Pct, 2, '%')}${lr.liquidityKo ? ` <small>${wkEsc(lr.liquidityKo)}</small>` : ''}</dd></div>
         <div><dt>팩터 백분위</dt><dd>모멘텀 ${wkFmt(fp.momentum, 0)} · 가치 ${wkFmt(fp.value, 0)} · 퀄리티 ${wkFmt(fp.quality, 0)} · 저변동 ${wkFmt(fp.lowvol, 0)}</dd></div>
         <div><dt>데이터 범위</dt><dd>근거 ${wkNum(cov.evidenceCoverage) ? `${Math.round(cov.evidenceCoverage * 100)}%` : '—'} · 재무 ${wkNum(cov.dataCompleteness) ? `${Math.round(cov.dataCompleteness * 100)}%` : '—'} · 팩터 ${cov.sleevesPresent ?? '—'}/4 · 시세 ${wkEsc(pm.asOf || '—')}</dd></div>
-        <div><dt>보유안 편입</dt><dd>${w.inModelHoldings ? '<b>모델 보유안에 포함</b>' : `제외 — ${(w.exclusionReasonsKo || []).map(wkEsc).join(' · ') || '—'}`}</dd></div>
-      </dl>
+      </dl></details>
     </article>`;
   }).join('');
   return `${note}<div class="wk-banner warn"><b>${wkEsc(label)}</b> production 리서치 순위 상위 5개를 설명할 뿐입니다. 비중·확률·기대수익률을 붙이지 않으며, 위 보유안(A)과 별개입니다. 순위 변화는 직전 주간 확정 기록 대비입니다.</div>
@@ -1955,7 +1961,8 @@ const wkPerformance = () => {
   const studies = history.existingStudies || {};
   const ia = studies.integratedAlphaPortfolio || {};
   const pc = studies.phaseC || {};
-  return `
+  const usBanner = blob.headlineEligible ? '' : `<div class="wk-banner bad"><b>생존편향 · 헤드라인 아님</b> 미국 경로는 퇴출된 S&amp;P 500 종목 194개(정체성 재집계 212개)의 가격이 없어 살아남은 종목만으로 계산됐습니다. 규칙(P1)이 미국 종목을 담은 판단은 ${blob.anchorsWithStocks ?? '—'}회이고, 기존 선택기(C1·C2) 수치는 실제보다 좋게 나왔을 가능성이 있습니다. 원화 수치에는 환율이 들어 있습니다.</div>`;
+  return `${usBanner}
     <div class="wk-banner"><b>과거 시뮬레이션 · 결과 노출 · 검증 아님</b> 규칙과 기준값은 과거 결과를 이미 본 뒤 만들어졌습니다. "그때 알 수 있었던 최선"이 아니라 기술적 비교입니다. 실전 검증 기록은 없습니다.</div>
     ${wkLiveRecord()}
     <h3 class="wk-subhead">${leadTitle} ${wkBasisNote(corrected || WK_REGION !== 'KR')}</h3>
@@ -1989,6 +1996,7 @@ const wkPerformance = () => {
         <li>평가 불가 구간을 0이나 마지막 가격으로 메우지 않습니다. 보유 종목 가격이 없으면 해당 경로를 '불완전'으로 표시합니다.</li>
       </ul>
     </details>
+    ${WK_REGION === 'US' ? wkUsReadiness(history) : ''}
     ${WK_REGION === 'KR' ? `<details class="wk-fold"><summary>기존 봉인 연구 결과 (따로 보기, 합산 금지)</summary>
       <ul class="wk-reasons">
         <li><b>${wkEsc(pc.study || 'Phase C/D')}</b> — ${wkEsc(pc.summaryKo || '')}</li>
@@ -1998,12 +2006,136 @@ const wkPerformance = () => {
     </details>` : ''}`;
 };
 
+
+// ── KR / US comparison (same frozen calendar; never a ranking) ──────────
+// ── KR / US comparison: current decisions, then history; never a ranking ──
+const WK_CMP_SIM = { weeklyReplayCorrected: '주간 · 기준지수 공식 대조', weeklyReplay: '주간', replayCorrected: '21거래일 · 기준지수 공식 대조', replay: '21거래일' };
+const WK_CMP_COVERAGE = {
+  KR: '시점별 KOSPI 상위 120 종목 · 퇴출 종목 가격 포함 · 기준지수 공식 분배 대조 · 종목 시세는 6종목 표본 감사',
+  US: 'S&P 500 시점별 구성 · 퇴출 종목 324개 중 212개 가격 없음(생존편향)',
+};
+const WK_CMP_COST = {
+  KR: '수수료·스프레드 + 연도별 증권거래세(30→15→20bp), ETF 거래세 면제',
+  US: '수수료·스프레드 + 규제수수료 근사',
+};
+const wkCmpPick = (history, r) => {
+  const order = r === 'KR' ? ['weeklyReplayCorrected', 'weeklyReplay', 'replayCorrected', 'replay'] : ['weeklyReplay', 'replay'];
+  for (const key of order) { const blob = history[key]?.available && (history[key].regions || {})[r]; if (blob) return { key, blob }; }
+  return { key: null, blob: {} };
+};
+// One plain sentence per region, built only from what the records say.
+const wkCmpVerdict = (r, x) => {
+  const name = WK_REGION_KO[r];
+  const bench = r === 'KR' ? 'KODEX 200' : 'SPY';
+  if (!x.published) return `${name}: 이번 주 공식 판단 미게시 — 게시되기 전까지 기본값은 ${bench} 100%입니다.`;
+  if (x.b.status === 'DATA_BLOCKED') return `${name}: 데이터 안전 차단 — 판단을 표시하지 않습니다.`;
+  if (!WK_DECIDED.has(x.b.status)) return `${name}: ${(WK_STATUS[x.b.status] || [])[1] || '새 판단 없음'} — 마지막 확정 판단을 유지합니다.`;
+  if (x.shown.stockCount > 0) return `${name}: ${x.shown.stockCount}개 종목이 비용 차감 후 기준을 통과 → 종목 ${wkPct(x.shown.stockWeightPct, 0)} + ${bench} ${wkPct(x.shown.benchmarkWeightPct, 0)}`;
+  return `${name}: 개별 종목 선정 근거 부족 → ${bench} 100%`;
+};
+const wkCompare = () => {
+  const regions = WEEKLY?.regions || {};
+  const history = WEEKLY?.history || {};
+  const rows = ['KR', 'US'].map((r) => {
+    const b = regions[r] || {};
+    const { key, blob } = wkCmpPick(history, r);
+    const shown = WK_DECIDED.has(b.status) ? b : (b.lastValidReceipt || {});
+    return { r, b, shown, key, blob, published: Boolean(WEEKLY && regions[r]), p: blob.paths?.P1 || {}, p0: blob.paths?.P0 || {}, ord: shown.calibrationOrdering || b.calibrationOrdering || {} };
+  });
+  const [kr, us] = rows;
+  const levelOk = (x) => x.r !== 'KR' || (x.key || '').endsWith('Corrected');
+  const cell = (x, f) => `<td data-l="${WK_REGION_KO[x.r]}">${f(x)}</td>`;
+  const line = (label, f) => `<tr><th scope="row">${label}</th>${rows.map((x) => cell(x, f)).join('')}</tr>`;
+  const head = '<thead><tr><th scope="col">항목</th><th scope="col">한국 · KODEX 200</th><th scope="col">미국 · SPY</th></tr></thead>';
+  const weeklyLocal = history.usLocalCurrencyWeekly?.paths ? history.usLocalCurrencyWeekly : null;
+  const usLocal = (us.key || '').startsWith('weekly') ? weeklyLocal : (history.usLocalCurrency?.paths ? history.usLocalCurrency : null);
+  const lvl = (x, v, f) => (!x.p.available ? '—' : (levelOk(x) ? f(v) : '미대조'));
+  // Common period: only what both simulations actually cover.
+  const starts = rows.filter((x) => x.p.available).map((x) => x.p.startDate);
+  const ends = rows.filter((x) => x.p.available).map((x) => x.p.endDate);
+  const samePeriod = starts.length === 2 && starts[0] === starts[1] && ends[0] === ends[1];
+  const notes = [];
+  if (us.blob.anchorsWithStocks === 0 && us.p.available) notes.push(`미국: 과거 시뮬레이션 ${us.blob.blocks}회 판단 중 종목을 담은 판단이 한 번도 없어, 규칙의 추가 종목 선택 효과는 관측되지 않았습니다(결과 = SPY).`);
+  if (kr.p.available && levelOk(kr)) notes.push(`한국: ${kr.blob.blocks}회 판단 중 ${kr.blob.anchorsWithStocks}회만 종목을 담았고, 지수 대비 연 ${wkPp(kr.p.excessCagrPp)}였습니다. 결과를 이미 본 뒤의 시뮬레이션이라 검증된 성과가 아닙니다.`);
+  if (usLocal?.paths?.P0 && us.p0.available) notes.push(`두 시장의 원화 수익률 차이에는 환율이 들어 있습니다. 같은 기간 원/달러 ${wkSignedPct(usLocal.usdKrwChangePct, 1)}로, 미국 원화 연수익률 중 약 ${wkPp(us.p0.cagrPct - usLocal.paths.P0.cagrPct)}/년은 환율 효과입니다.`);
+  notes.push('미국 종목 전략의 과거 수익률은 퇴출 종목 가격 결손 때문에 투자 가능한 성과로 주장할 수 없습니다. 지수(SPY) 경로 자체는 이 결손의 영향을 받지 않습니다.');
+  return `
+    <div class="wk-cmp-verdicts">${rows.map((x) => `<p class="wk-cmp-verdict ${x.published && WK_DECIDED.has(x.b.status) ? '' : 'warn'}"><b>${wkEsc(wkCmpVerdict(x.r, x))}</b></p>`).join('')}</div>
+    <h3 class="wk-subhead">이번 주 판단 비교</h3>
+    <div class="wk-table-wrap"><table class="wk-table wk-compare">
+      <caption class="sr-only">한국과 미국의 이번 주 판단</caption>${head}
+      <tbody>
+        ${line('판단 기준일', (x) => (x.published ? `${wkDate(x.shown.asOfDate)}${x.b.status && !WK_DECIDED.has(x.b.status) ? ' <small>(마지막 확정)</small>' : ''}` : '<span class="wk-hidden">미게시</span>'))}
+        ${line('종목 비중', (x) => (x.shown.weights && Object.keys(x.shown.weights).length ? wkPct(x.shown.stockWeightPct, 0) : '—'))}
+        ${line('지수 비중', (x) => (x.shown.weights && Object.keys(x.shown.weights).length ? wkPct(x.shown.benchmarkWeightPct, 0) : '—'))}
+        ${line('선정 종목 수', (x) => (x.shown.weights && Object.keys(x.shown.weights).length ? `${x.shown.stockCount}개` : '—'))}
+        ${line('관찰 후보 TOP 5', (x) => { const w = x.shown.watchlist || []; return w.length ? `${w.length}개 · 1위 ${wkName(w[0])}` : '없음'; })}
+        ${line('근거 수준', (x) => (wkNum(x.ord.topMinusBottomTStat) ? `순위-수익 정렬 t=${x.ord.topMinusBottomTStat.toFixed(2)} (기준 1.96) · ${x.ord.established ? '확인' : '미확인'}` : '—'))}
+        ${line('데이터 신선도', (x) => (x.b.freshness ? `${x.b.freshness.status === 'FRESH' ? '최신' : '지연'} · 지수 ${wkEsc(x.b.freshness.observedSession || '없음')}` : '—'))}
+        ${line('판단의 핵심 이유', (x) => wkEsc(WK_CODE_KO[x.shown.noTradeReason] || (x.shown.stockCount ? '비용 차감 후 기대 우위가 양(+)인 종목' : '—')))}
+      </tbody>
+    </table></div>
+    <h3 class="wk-subhead">과거 시뮬레이션 비교 <span class="wk-chip">결과 노출 · 검증 아님</span></h3>
+    <p class="wk-note">${samePeriod ? `공통 기간: ${wkEsc(starts[0])} ~ ${wkEsc(ends[0])} · 같은 주간 신호 달력.` : '두 지역의 시뮬레이션 기간이 달라 같은 기간 비교가 아닙니다.'} 기간은 같아도 종목 범위와 데이터 무결성이 달라 공정한 1:1 비교는 아닙니다.</p>
+    <div class="wk-table-wrap"><table class="wk-table wk-compare">
+      <caption class="sr-only">한국과 미국의 과거 시뮬레이션</caption>${head}
+      <tbody>
+        ${line('시뮬레이션', (x) => (x.p.available ? `${wkEsc(WK_CMP_SIM[x.key] || '—')} · ${x.p.blocks ?? x.blob.blocks}회` : '—'))}
+        ${line('규칙 순 CAGR (원화)', (x) => lvl(x, x.p.cagrPct, (v) => wkPct(v, 2)))}
+        ${line('지수 순 CAGR (원화)', (x) => lvl(x, x.p0.cagrPct, (v) => wkPct(v, 2)))}
+        ${line('지수 대비', (x) => lvl(x, x.p.excessCagrPp, wkPp))}
+        ${line('현지통화 CAGR', (x) => (x.r === 'KR' ? '원화와 같음' : (usLocal?.paths?.P1 ? `규칙 ${wkPct(usLocal.paths.P1.cagrPct, 2)} · SPY ${wkPct(usLocal.paths.P0.cagrPct, 2)} (USD)` : '미산출')))}
+        ${line('환율 효과', (x) => (x.r === 'KR' ? '없음' : (usLocal?.paths?.P0 && x.p0.available ? `원/달러 ${wkSignedPct(usLocal.usdKrwChangePct, 1)} · ≈${wkPp(x.p0.cagrPct - usLocal.paths.P0.cagrPct)}/년` : '—')))}
+        ${line('최대 낙폭 (원화)', (x) => (x.p.available ? wkPct(x.p.maxDrawdownPct, 1) : '—'))}
+        ${line('연 변동성 (원화)', (x) => (x.p.available ? `${wkPct(x.p.annualizedVolatilityPct, 1)}${x.r === 'US' ? ' <small>환율 포함</small>' : ''}` : '—'))}
+        ${line('연 회전율(편도)', (x) => (x.p.available ? `${wkNum(x.p.oneWayTurnoverPerYear) ? x.p.oneWayTurnoverPerYear.toFixed(2) : '—'}배` : '—'))}
+        ${line('비용 손실(연)', (x) => (x.p.available ? wkPp(-x.p.annualizedCostDragPct) : '—'))}
+        ${line('비용 가정', (x) => WK_CMP_COST[x.r])}
+        ${line('데이터 범위', (x) => WK_CMP_COVERAGE[x.r])}
+        ${line('증거 종류', () => '과거 시뮬레이션(결과 노출) · 실제 주간 기록은 아직 평가 불가')}
+      </tbody>
+    </table></div>
+    <ul class="wk-reasons wk-cmp-notes">${notes.map((n) => `<li>${n}</li>`).join('')}</ul>
+    <p class="wk-note"><b>결론으로 삼지 말 것:</b> 어느 시장이 더 낫다는 순위, 한국 원화 수익률과 미국 원화 수익률의 직접 비교(환율 포함), 과거 시뮬레이션을 미래 성과로 보는 것.</p>`;
+};
+
+const WK_US_STATUS_KO = {
+  AVAILABLE_WITH_DOCUMENTED_IDENTITY_LIMITS: ['ok', '사용 가능(한계 문서화)'],
+  BLOCKED_PAID_SOURCE: ['bad', '유료로만 확인'],
+  AVAILABLE_PRICED_NAMES_ONLY: ['warn', '가격 있는 종목만'],
+  PARTIAL: ['warn', '부분'],
+  AVAILABLE_VIA_FINNHUB_SEC_DIRECT_BLOCKED: ['ok', 'Finnhub 경유 가능'],
+  AVAILABLE_MEASURED_BELOW: ['ok', '사용 가능(측정)'],
+  DERIVABLE_NOT_YET_DERIVED: ['warn', '파생 가능·미구축'],
+  ALREADY_TESTED_CLOSED: ['passive', '이미 시험·종료'],
+  BLOCKED_SOURCE: ['bad', '차단'],
+  NOT_PROBED: ['warn', '미시험'],
+};
+const wkUsReadiness = (history) => {
+  const r = history?.usReadiness || {};
+  if (!r.available) return '';
+  const store = r.pitStore || {};
+  const delay = store.filingDelayDays || {};
+  const yrs = Object.entries(store.byYear || {});
+  return `<details class="wk-fold"><summary>미국 데이터 준비도 (결과 비노출 조사)</summary>
+    <p class="wk-note">미국 역사적 알파 탐색 단계: <b>${wkEsc(r.historicalDiscoveryPhase)}</b> — 단 한 번의 탐색 예산을 regional-alpha-model-v1(증거 없음)에서 사용했습니다. 새 연구는 새 정보 축을 전향(prospective) 기록으로만 평가합니다.</p>
+    <div class="wk-table-wrap"><table class="wk-table"><thead><tr><th scope="col">정보 축</th><th scope="col">상태</th><th scope="col">설명</th></tr></thead><tbody>
+      ${(r.inventory || []).map((row) => { const [c, l] = WK_US_STATUS_KO[row.status] || ['warn', row.status]; return `<tr><th scope="row">${wkEsc(row.axis)}</th><td data-l="상태"><span class="wk-badge ${c}">${wkEsc(l)}</span></td><td data-l="설명" class="wk-left">${wkEsc(row.detailKo)}${row.minimumToUnblock ? `<small>해소 조건: ${wkEsc(row.minimumToUnblock)}</small>` : ''}</td></tr>`; }).join('')}
+    </tbody></table></div>
+    <p class="wk-note">PIT 재무 저장소: ${store.tickers ?? '—'}개 종목 · ${store.filings ?? '—'}건 공시. 공시 지연 중앙값 10-Q ${delay['10-Q']?.median ?? '—'}일 · 10-K ${delay['10-K']?.median ?? '—'}일(기간 종료→SEC 접수).</p>
+    <div class="wk-table-wrap"><table class="wk-table wk-years"><thead><tr><th scope="col">회계연도</th><th scope="col">현금배당 지급</th><th scope="col">주당배당</th><th scope="col">주식 수</th><th scope="col">자사주 매입</th><th scope="col">영업현금흐름</th></tr></thead><tbody>
+      ${yrs.map(([y, v]) => `<tr><th scope="row">${y}</th><td data-l="현금배당">${wkPct(v.cashDividendsPaid, 0)}</td><td data-l="주당배당">${wkPct(v.dividendPerShare, 0)}</td><td data-l="주식 수">${wkPct(v.shareCount, 0)}</td><td data-l="자사주">${wkPct(v.buyback, 0)}</td><td data-l="영업CF">${wkPct(v.operatingCashFlow, 0)}</td></tr>`).join('')}
+    </tbody></table></div>
+    <p class="muted">공시 중 해당 항목을 명시한 비율입니다. 배당을 하지 않는 회사의 공백은 실제 부재라 결측이 아닙니다. 주당배당 항목은 2019년 이후 보고율이 급락해(약 50%→12%) 쓰지 않고, 현금흐름표의 배당 지급을 씁니다.</p>
+  </details>`;
+};
+
 const renderWeekly = () => {
   const host = $('#wkRegions');
   if (!host) return;
   if (!WEEKLY) {
-    host.innerHTML = WK_LOAD.state === 'loading' ? '<div class="wk-empty">주간 판단을 불러오는 중…</div>' : wkLoadNotice();
-    $('#wkPortfolio').innerHTML = ''; $('#wkPerformance').innerHTML = ''; if ($('#wkWatch')) $('#wkWatch').innerHTML = '';
+    host.innerHTML = WK_LOAD.state === 'loading' ? '<div class="wk-empty">주간 판단을 불러오는 중…</div>' : wkLoadNotice() + wkRegionCard('KR', null) + wkRegionCard('US', null);
+    $('#wkPortfolio').innerHTML = ''; $('#wkPerformance').innerHTML = ''; if ($('#wkWatch')) $('#wkWatch').innerHTML = ''; if ($('#wkCompare')) $('#wkCompare').innerHTML = WK_LOAD.state === 'loading' ? '' : '<div class="wk-empty warn">게시된 주간 판단 파일이 없어 비교할 기록이 없습니다.</div>';
     wkSwitches();
     return;
   }
@@ -2015,6 +2147,7 @@ const renderWeekly = () => {
   $('#wkPortfolio').innerHTML = wkPortfolio(regions[WK_REGION]);
   if ($('#wkWatch')) $('#wkWatch').innerHTML = wkWatch(regions[WK_REGION]);
   $('#wkPerformance').innerHTML = wkPerformance();
+  const cmp = $('#wkCompare'); if (cmp) cmp.innerHTML = wkCompare();
 };
 
 document.addEventListener('click', (e) => {
