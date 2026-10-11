@@ -77,3 +77,12 @@ def test_usd_conversion_is_an_exact_identity():
     # A KRW path that is pure FX appreciation is flat in USD.
     out = convert([["2021-01-04", 1.1], ["2022-01-03", 1.21]], fx, "2020-01-02", "2022-01-03")
     assert out["finalNav"] == 1.0 and abs(out["cagrPct"]) < 1e-9
+
+
+def test_weekly_us_local_currency_matches_its_replay():
+    from pipeline import weekly_history as H
+    weekly = H.build_history()["usLocalCurrencyWeekly"]
+    assert weekly["basis"] == "USD" and weekly["cadence"] == "WEEKLY_SIGNAL_NEXT_COMMON_SESSION_EXECUTION"
+    assert weekly["replaySource"] == "docs/weekly-decision/weekly-passive-first-v1-weekly-replay.json"
+    assert weekly["paths"]["P1"] == weekly["paths"]["P0"]  # the US rule never left SPY
+    assert weekly["usdKrwChangePct"] > 0
