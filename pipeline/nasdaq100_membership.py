@@ -49,7 +49,7 @@ class MembershipEvent:
     eventId: str
     sourceId: str
     sourceSha256: str | None
-    announcementDate: str
+    announcementDate: str | None
     effectiveDate: str
     added: tuple = ()
     removed: tuple = ()
@@ -58,8 +58,18 @@ class MembershipEvent:
     note: str = ""
 
     def __post_init__(self):
-        if pd.Timestamp(self.effectiveDate) < pd.Timestamp(self.announcementDate):
+        if self.announcementDate and pd.Timestamp(self.effectiveDate) < pd.Timestamp(self.announcementDate):
             raise ValueError(f"EFFECTIVE_BEFORE_ANNOUNCEMENT {self.eventId}")
+
+    @property
+    def knowableFrom(self) -> str:
+        """Announcement when evidenced; otherwise the effective date.
+
+        An index change is always announced before it takes effect, so falling
+        back to the effective date can only make a change knowable LATER than
+        it really was — it loses the pending window, never adds foresight.
+        """
+        return self.announcementDate or self.effectiveDate
 
 
 @dataclass(frozen=True)
@@ -89,7 +99,7 @@ def membership_knowable_on(signal_date: str, base: BaseSnapshot | None,
     ambiguous, unverified, pending = [], [], []
     ordered = sorted(events, key=lambda e: (e.effectiveDate, e.announcementDate, e.eventId))
     for event in ordered:
-        announced = pd.Timestamp(event.announcementDate)
+        announced = pd.Timestamp(event.knowableFrom)
         effective = pd.Timestamp(event.effectiveDate)
         if effective <= pd.Timestamp(base.asOfDate):
             continue
@@ -138,3 +148,117 @@ def classify_reconstruction(base: BaseSnapshot | None, events: list[MembershipEv
         status = READY
     return {"status": status, "baseSnapshot": None if base is None else base.sourceId,
             "events": len(events), "yearGaps": gaps, "openIdentities": open_ids}
+
+
+# --------------------------------------------------------------------------- #
+# The n100tickers yearly files (MIT, derived from the public change record)
+# --------------------------------------------------------------------------- #
+def parse_yearly_yaml(text: str) -> dict:
+    """The strictyaml subset the n100tickers files use, without a YAML dependency.
+
+    ``year: N``, ``tickers_on_Jan_1:`` list, ``changes:`` mapping of quoted
+    dates to ``union`` / ``difference`` lists. Comments directly above a date
+    are kept as that change's note, because the maintainers record renames and
+    known omissions there.
+    """
+    out = {"year": None, "tickers_on_Jan_1": [], "changes": {}, "notes": {}}
+    section = date = op = None
+    pending_comment: list[str] = []
+    for raw in text.splitlines():
+        line = raw.rstrip()
+        stripped = line.strip()
+        if not stripped or stripped == "---":
+            continue
+        indent = len(line) - len(line.lstrip())
+        if stripped.startswith("#"):
+            if section == "changes":
+                pending_comment.append(stripped.lstrip("# ").strip())
+            continue
+        if indent == 0:
+            key, _, value = stripped.partition(":")
+            section = key
+            if key == "year":
+                out["year"] = int(value.strip())
+            continue
+        if section == "tickers_on_Jan_1" and stripped.startswith("- "):
+            out["tickers_on_Jan_1"].append(stripped[2:].strip())
+        elif section == "changes":
+            if stripped.endswith(":") and not stripped.startswith("- ") and indent <= 2:
+                date = stripped[:-1].strip().strip("'\"")
+                out["changes"][date] = {}
+                if pending_comment:
+                    out["notes"][date] = " ".join(pending_comment)
+                pending_comment = []
+            elif stripped in ("union:", "difference:"):
+                op = stripped[:-1]
+                out["changes"][date][op] = []
+            elif stripped.startswith("- "):
+                out["changes"][date][op].append(stripped[2:].strip())
+            else:
+                raise ValueError(f"UNPARSED_LINE {raw!r}")
+    if out["year"] is None:
+        raise ValueError("YEAR_MISSING")
+    return out
+
+
+def apply_year(doc: dict, through: str | None = None) -> set:
+    members = set(doc["tickers_on_Jan_1"])
+    for date in sorted(doc["changes"]):
+        if through is not None and date > through:
+            break
+        ops = doc["changes"][date]
+        members |= set(ops.get("union", []))
+        members -= set(ops.get("difference", []))
+    return members
+
+
+def chain_consistency(docs: dict[int, dict]) -> list[dict]:
+    """Applying year y's changes to its 1 January list must give year y+1's."""
+    out = []
+    for year in sorted(docs):
+        if year + 1 not in docs:
+            continue
+        derived = apply_year(docs[year])
+        stated = set(docs[year + 1]["tickers_on_Jan_1"])
+        out.append({"year": year, "consistent": derived == stated,
+                    "onlyDerived": sorted(derived - stated), "onlyStated": sorted(stated - derived)})
+    return out
+
+
+def events_from_yearly(docs: dict[int, dict], source_id: str, sha_by_year: dict[int, str]) -> list[MembershipEvent]:
+    events = []
+    for year in sorted(docs):
+        for date in sorted(docs[year]["changes"]):
+            ops = docs[year]["changes"][date]
+            added = tuple(Security(t, issuer="", identityStatus=STATUS_CONFIRMED) for t in ops.get("union", []))
+            removed = tuple(Security(t, issuer="", identityStatus=STATUS_CONFIRMED) for t in ops.get("difference", []))
+            big_december = date[5:7] == "12" and len(added) + len(removed) >= 4
+            events.append(MembershipEvent(
+                eventId=f"n100tickers:{date}", sourceId=source_id, sourceSha256=sha_by_year.get(year),
+                announcementDate=None, effectiveDate=date, added=added, removed=removed,
+                kind="ANNUAL_RECONSTITUTION" if big_december else "REPLACEMENT_OR_CORPORATE_ACTION",
+                status=STATUS_CONFIRMED, note=docs[year]["notes"].get(date, "")))
+    return events
+
+
+def membership_intervals(docs: dict[int, dict], start: str, end: str) -> dict[str, list[list[str]]]:
+    """Effective-date membership spans per ticker inside [start, end]."""
+    first_year, last_year = int(start[:4]), int(end[:4])
+    if first_year not in docs:
+        raise ValueError(f"NO_BASE_FOR_{first_year}")
+    current = apply_year(docs[first_year], through=start)
+    spans: dict[str, list[list[str]]] = {t: [[start, None]] for t in current}
+    for year in range(first_year, last_year + 1):
+        for date in sorted(docs[year]["changes"]):
+            if date <= start or date > end:
+                continue
+            ops = docs[year]["changes"][date]
+            for ticker in ops.get("difference", []):
+                if ticker in current:
+                    spans[ticker][-1][1] = date
+                    current.discard(ticker)
+            for ticker in ops.get("union", []):
+                if ticker not in current:
+                    spans.setdefault(ticker, []).append([date, None])
+                    current.add(ticker)
+    return spans

@@ -1,0 +1,152 @@
+{
+ "evidenceClass": "OUTCOME_BLIND_COVERAGE_AUDIT",
+ "finnhubStoreMeasured": {
+  "filings": 34945,
+  "readinessDocStated": {
+   "filings": 34941,
+   "note": "us-source-readiness-v1 excluded 4 filings with abnormal fiscal years",
+   "tickers": 782
+  },
+  "tickers": 782
+ },
+ "id": "us-universe-coverage-gap-v1",
+ "inputs": {
+  "freeVendorRefused": "data/us-unpriced-members.json",
+  "fundamentals": "signal-history@704d7db6 ledger/fundamentals/us (Finnhub)",
+  "nasdaq100Membership": "n100tickers@ec99dfb8",
+  "prices": "replay-v16 sealed price panels (Yahoo unadjusted with actions)",
+  "sp500Identity": "docs/results/alpha-opportunity-model-v3-survivorship-audit.json",
+  "sp500Membership": "replay-v16 sealed universe component (US)"
+ },
+ "manifest": {
+  "path": "data/research/us-dual-benchmark-v1/us-universe-coverage-manifest.csv.gz",
+  "rows": 885,
+  "sha256": "b1f5fbbafeb4f7dd4b50534cd86e9942233ae3d5f94922970a7c854569c5bfb1"
+ },
+ "nasdaq100OnlyWithoutPrices": [
+  "ALAB",
+  "ALNY",
+  "ARM",
+  "ASML",
+  "AZN",
+  "BATRA",
+  "BATRK",
+  "BIDU",
+  "BMRN",
+  "CCEP",
+  "CHKP",
+  "CRWV",
+  "CTRP",
+  "CTRX",
+  "DOCU",
+  "FER",
+  "GFS",
+  "GOLD",
+  "INSM",
+  "JD",
+  "LBTYA",
+  "LBTYK",
+  "LCID",
+  "LILA",
+  "LILAK",
+  "LINTA",
+  "LMCA",
+  "LMCK",
+  "MDB",
+  "MELI",
+  "MSTR",
+  "NBIS",
+  "NTES",
+  "NUAN",
+  "OKTA",
+  "PDD",
+  "PTON",
+  "QRTEA",
+  "QVCA",
+  "RIVN",
+  "RKLB",
+  "SGEN",
+  "SHOP",
+  "SHPG",
+  "SIRI",
+  "SOLS",
+  "SPCX",
+  "SPLK",
+  "STRZA",
+  "TCOM",
+  "TEAM",
+  "TRI",
+  "VIP",
+  "VMED",
+  "VOD",
+  "VSNT",
+  "ZM",
+  "ZS"
+ ],
+ "statusPrecedence": [
+  "NOT_EVALUABLE",
+  "NEEDS_IDENTITY_REPAIR",
+  "BLOCKED_PAID_SOURCE",
+  "NEEDS_PRICE_HISTORY",
+  "NEEDS_FUNDAMENTALS",
+  "NEEDS_MEMBERSHIP_EVIDENCE"
+ ],
+ "summary": {
+  "both": {
+   "BLOCKED_PAID_SOURCE": 31,
+   "NEEDS_FUNDAMENTALS": 0,
+   "NEEDS_IDENTITY_REPAIR": 12,
+   "NEEDS_MEMBERSHIP_EVIDENCE": 0,
+   "NEEDS_PRICE_HISTORY": 0,
+   "NOT_EVALUABLE": 0,
+   "READY": 132,
+   "symbols": 175
+  },
+  "nasdaq100": {
+   "BLOCKED_PAID_SOURCE": 31,
+   "NEEDS_FUNDAMENTALS": 0,
+   "NEEDS_IDENTITY_REPAIR": 12,
+   "NEEDS_MEMBERSHIP_EVIDENCE": 0,
+   "NEEDS_PRICE_HISTORY": 58,
+   "NOT_EVALUABLE": 0,
+   "READY": 132,
+   "symbols": 233
+  },
+  "nasdaq100Only": {
+   "BLOCKED_PAID_SOURCE": 0,
+   "NEEDS_FUNDAMENTALS": 0,
+   "NEEDS_IDENTITY_REPAIR": 0,
+   "NEEDS_MEMBERSHIP_EVIDENCE": 0,
+   "NEEDS_PRICE_HISTORY": 58,
+   "NOT_EVALUABLE": 0,
+   "READY": 0,
+   "symbols": 58
+  },
+  "sp500": {
+   "BLOCKED_PAID_SOURCE": 183,
+   "NEEDS_FUNDAMENTALS": 0,
+   "NEEDS_IDENTITY_REPAIR": 38,
+   "NEEDS_MEMBERSHIP_EVIDENCE": 0,
+   "NEEDS_PRICE_HISTORY": 0,
+   "NOT_EVALUABLE": 0,
+   "READY": 606,
+   "symbols": 827
+  },
+  "union": {
+   "BLOCKED_PAID_SOURCE": 183,
+   "NEEDS_FUNDAMENTALS": 0,
+   "NEEDS_IDENTITY_REPAIR": 38,
+   "NEEDS_MEMBERSHIP_EVIDENCE": 0,
+   "NEEDS_PRICE_HISTORY": 58,
+   "NOT_EVALUABLE": 0,
+   "READY": 606,
+   "symbols": 885
+  },
+  "withFinnhubFilings": 785,
+  "withOwnPriceCoverage": 606
+ },
+ "window": [
+  "2013-01-01",
+  "2026-09-14"
+ ]
+}
