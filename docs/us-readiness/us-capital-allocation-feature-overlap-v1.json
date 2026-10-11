@@ -1,0 +1,955 @@
+{
+ "evidenceClass": "OUTCOME_BLIND_FEATURE_OVERLAP",
+ "existingFeatures": {
+  "families": {
+   "acceleration": [
+    "delta_roe",
+    "delta_operatingMargin",
+    "delta_profitMargin",
+    "delta_earningsGrowth"
+   ],
+   "leadership": [
+    "relativeStrengthBreadth52w"
+   ],
+   "priceMomentum": [
+    "mom121",
+    "return126",
+    "relative126",
+    "relative121",
+    "high52Distance",
+    "ma200Distance",
+    "rsi14"
+   ],
+   "priceRisk": [
+    "vol252",
+    "vol60",
+    "downsideVol252",
+    "maxDD252",
+    "beta252"
+   ],
+   "quality": [
+    "roe",
+    "operatingMargin",
+    "profitMargin",
+    "debtToEquity",
+    "earningsGrowth"
+   ]
+  },
+  "qualityCaveat": "fundamental fields are the sealed store's, not re-vetted against raw filings as the original matrix does",
+  "source": "pipeline/regional_alpha_features.py price_features, weekly_breadth, FA.resolve_filing_pair (replay-v16 sealed inputs)",
+  "value": {
+   "definitionalNote": "the candidate features are scaled by operating cash flow, not by price, so they are not a price-denominated value ratio by construction",
+   "reason": "the existing matrix excludes earningsYield/bookYield/fcfYield (per-share numerator price basis unresolved) and market cap (not PIT)",
+   "status": "NOT_MEASURED"
+  }
+ },
+ "fitsModels": false,
+ "flaggedPairs": [],
+ "forwardPricesRead": false,
+ "id": "us-capital-allocation-feature-overlap-v1",
+ "inputs": {
+  "manifestSha256": "f0781292f508a123c234ded6d28aa8e84a0dc3cc29500e14989dc0b68f53b4d2",
+  "through": "2026-09-14"
+ },
+ "meaning": "a high rank correlation means similar ordering, not predictive value; none of this reads a return",
+ "pairwiseRankCorrelation": {
+  "distributionToOCF": {
+   "acceleration": {
+    "delta_earningsGrowth": {
+     "dates": 49,
+     "flaggedRedundant": false,
+     "meanRho": -0.0825,
+     "medianRho": -0.0933,
+     "p10": -0.2504,
+     "p90": 0.076
+    },
+    "delta_operatingMargin": {
+     "dates": 50,
+     "flaggedRedundant": false,
+     "meanRho": -0.063,
+     "medianRho": -0.0845,
+     "p10": -0.21,
+     "p90": 0.1251
+    },
+    "delta_profitMargin": {
+     "dates": 50,
+     "flaggedRedundant": false,
+     "meanRho": -0.059,
+     "medianRho": -0.0709,
+     "p10": -0.2163,
+     "p90": 0.1675
+    },
+    "delta_roe": {
+     "dates": 50,
+     "flaggedRedundant": false,
+     "meanRho": 0.012,
+     "medianRho": -0.0005,
+     "p10": -0.2301,
+     "p90": 0.2307
+    }
+   },
+   "leadership": {
+    "relativeStrengthBreadth52w": {
+     "dates": 50,
+     "flaggedRedundant": false,
+     "meanRho": -0.0659,
+     "medianRho": -0.0958,
+     "p10": -0.1675,
+     "p90": 0.097
+    }
+   },
+   "priceMomentum": {
+    "high52Distance": {
+     "dates": 50,
+     "flaggedRedundant": false,
+     "meanRho": -0.0024,
+     "medianRho": 0.0116,
+     "p10": -0.1671,
+     "p90": 0.1344
+    },
+    "ma200Distance": {
+     "dates": 50,
+     "flaggedRedundant": false,
+     "meanRho": -0.0582,
+     "medianRho": -0.0618,
+     "p10": -0.2354,
+     "p90": 0.0986
+    },
+    "mom121": {
+     "dates": 50,
+     "flaggedRedundant": false,
+     "meanRho": -0.099,
+     "medianRho": -0.117,
+     "p10": -0.2657,
+     "p90": 0.0988
+    },
+    "relative121": {
+     "dates": 50,
+     "flaggedRedundant": false,
+     "meanRho": -0.099,
+     "medianRho": -0.117,
+     "p10": -0.2657,
+     "p90": 0.0988
+    },
+    "relative126": {
+     "dates": 50,
+     "flaggedRedundant": false,
+     "meanRho": -0.0631,
+     "medianRho": -0.0863,
+     "p10": -0.2135,
+     "p90": 0.1238
+    },
+    "return126": {
+     "dates": 50,
+     "flaggedRedundant": false,
+     "meanRho": -0.0631,
+     "medianRho": -0.0863,
+     "p10": -0.2135,
+     "p90": 0.1238
+    },
+    "rsi14": {
+     "dates": 50,
+     "flaggedRedundant": false,
+     "meanRho": -0.0055,
+     "medianRho": -0.0051,
+     "p10": -0.1262,
+     "p90": 0.1337
+    }
+   },
+   "priceRisk": {
+    "beta252": {
+     "dates": 50,
+     "flaggedRedundant": false,
+     "meanRho": -0.0223,
+     "medianRho": -0.0199,
+     "p10": -0.1494,
+     "p90": 0.0795
+    },
+    "downsideVol252": {
+     "dates": 50,
+     "flaggedRedundant": false,
+     "meanRho": -0.076,
+     "medianRho": -0.0834,
+     "p10": -0.1873,
+     "p90": 0.0891
+    },
+    "maxDD252": {
+     "dates": 50,
+     "flaggedRedundant": false,
+     "meanRho": 0.0177,
+     "medianRho": 0.0369,
+     "p10": -0.1409,
+     "p90": 0.1528
+    },
+    "vol252": {
+     "dates": 50,
+     "flaggedRedundant": false,
+     "meanRho": -0.0995,
+     "medianRho": -0.1295,
+     "p10": -0.2322,
+     "p90": 0.0618
+    },
+    "vol60": {
+     "dates": 50,
+     "flaggedRedundant": false,
+     "meanRho": -0.0887,
+     "medianRho": -0.092,
+     "p10": -0.2372,
+     "p90": 0.0732
+    }
+   },
+   "quality": {
+    "debtToEquity": {
+     "dates": 50,
+     "flaggedRedundant": false,
+     "meanRho": -0.0081,
+     "medianRho": 0.0027,
+     "p10": -0.1462,
+     "p90": 0.1368
+    },
+    "earningsGrowth": {
+     "dates": 50,
+     "flaggedRedundant": false,
+     "meanRho": -0.0443,
+     "medianRho": -0.0567,
+     "p10": -0.1912,
+     "p90": 0.1456
+    },
+    "operatingMargin": {
+     "dates": 50,
+     "flaggedRedundant": false,
+     "meanRho": 0.1391,
+     "medianRho": 0.1437,
+     "p10": -0.0399,
+     "p90": 0.3053
+    },
+    "profitMargin": {
+     "dates": 50,
+     "flaggedRedundant": false,
+     "meanRho": 0.144,
+     "medianRho": 0.1275,
+     "p10": -0.0029,
+     "p90": 0.303
+    },
+    "roe": {
+     "dates": 50,
+     "flaggedRedundant": false,
+     "meanRho": 0.3587,
+     "medianRho": 0.3516,
+     "p10": 0.1999,
+     "p90": 0.542
+    }
+   }
+  },
+  "incrementalDistributionOverOCF": {
+   "acceleration": {
+    "delta_earningsGrowth": {
+     "dates": 49,
+     "flaggedRedundant": false,
+     "meanRho": -0.036,
+     "medianRho": -0.0273,
+     "p10": -0.1775,
+     "p90": 0.1507
+    },
+    "delta_operatingMargin": {
+     "dates": 50,
+     "flaggedRedundant": false,
+     "meanRho": 0.0922,
+     "medianRho": 0.1045,
+     "p10": -0.0065,
+     "p90": 0.209
+    },
+    "delta_profitMargin": {
+     "dates": 50,
+     "flaggedRedundant": false,
+     "meanRho": 0.091,
+     "medianRho": 0.1035,
+     "p10": -0.0405,
+     "p90": 0.2183
+    },
+    "delta_roe": {
+     "dates": 50,
+     "flaggedRedundant": false,
+     "meanRho": 0.1333,
+     "medianRho": 0.1348,
+     "p10": -0.042,
+     "p90": 0.309
+    }
+   },
+   "leadership": {
+    "relativeStrengthBreadth52w": {
+     "dates": 50,
+     "flaggedRedundant": false,
+     "meanRho": 0.0099,
+     "medianRho": 0.0054,
+     "p10": -0.0886,
+     "p90": 0.1286
+    }
+   },
+   "priceMomentum": {
+    "high52Distance": {
+     "dates": 50,
+     "flaggedRedundant": false,
+     "meanRho": 0.0213,
+     "medianRho": 0.0365,
+     "p10": -0.1104,
+     "p90": 0.1446
+    },
+    "ma200Distance": {
+     "dates": 50,
+     "flaggedRedundant": false,
+     "meanRho": -0.006,
+     "medianRho": 0.0059,
+     "p10": -0.1834,
+     "p90": 0.1456
+    },
+    "mom121": {
+     "dates": 50,
+     "flaggedRedundant": false,
+     "meanRho": -0.013,
+     "medianRho": 0.0039,
+     "p10": -0.18,
+     "p90": 0.1231
+    },
+    "relative121": {
+     "dates": 50,
+     "flaggedRedundant": false,
+     "meanRho": -0.013,
+     "medianRho": 0.0039,
+     "p10": -0.18,
+     "p90": 0.1231
+    },
+    "relative126": {
+     "dates": 50,
+     "flaggedRedundant": false,
+     "meanRho": -0.0075,
+     "medianRho": -0.0251,
+     "p10": -0.1715,
+     "p90": 0.1529
+    },
+    "return126": {
+     "dates": 50,
+     "flaggedRedundant": false,
+     "meanRho": -0.0075,
+     "medianRho": -0.0251,
+     "p10": -0.1715,
+     "p90": 0.1529
+    },
+    "rsi14": {
+     "dates": 50,
+     "flaggedRedundant": false,
+     "meanRho": 0.0025,
+     "medianRho": 0.0033,
+     "p10": -0.1084,
+     "p90": 0.1331
+    }
+   },
+   "priceRisk": {
+    "beta252": {
+     "dates": 50,
+     "flaggedRedundant": false,
+     "meanRho": 0.008,
+     "medianRho": 0.0015,
+     "p10": -0.2072,
+     "p90": 0.1922
+    },
+    "downsideVol252": {
+     "dates": 50,
+     "flaggedRedundant": false,
+     "meanRho": -0.0237,
+     "medianRho": -0.028,
+     "p10": -0.1347,
+     "p90": 0.1013
+    },
+    "maxDD252": {
+     "dates": 50,
+     "flaggedRedundant": false,
+     "meanRho": 0.0129,
+     "medianRho": 0.0193,
+     "p10": -0.1289,
+     "p90": 0.1226
+    },
+    "vol252": {
+     "dates": 50,
+     "flaggedRedundant": false,
+     "meanRho": -0.0457,
+     "medianRho": -0.0513,
+     "p10": -0.1709,
+     "p90": 0.091
+    },
+    "vol60": {
+     "dates": 50,
+     "flaggedRedundant": false,
+     "meanRho": -0.04,
+     "medianRho": -0.0352,
+     "p10": -0.1561,
+     "p90": 0.0755
+    }
+   },
+   "quality": {
+    "debtToEquity": {
+     "dates": 50,
+     "flaggedRedundant": false,
+     "meanRho": -0.0313,
+     "medianRho": -0.0285,
+     "p10": -0.1985,
+     "p90": 0.1418
+    },
+    "earningsGrowth": {
+     "dates": 50,
+     "flaggedRedundant": false,
+     "meanRho": 0.2023,
+     "medianRho": 0.1994,
+     "p10": 0.0536,
+     "p90": 0.3478
+    },
+    "operatingMargin": {
+     "dates": 50,
+     "flaggedRedundant": false,
+     "meanRho": 0.0974,
+     "medianRho": 0.1074,
+     "p10": -0.0287,
+     "p90": 0.2282
+    },
+    "profitMargin": {
+     "dates": 50,
+     "flaggedRedundant": false,
+     "meanRho": 0.122,
+     "medianRho": 0.1293,
+     "p10": -0.02,
+     "p90": 0.2408
+    },
+    "roe": {
+     "dates": 50,
+     "flaggedRedundant": false,
+     "meanRho": 0.1329,
+     "medianRho": 0.1215,
+     "p10": 0.0089,
+     "p90": 0.2713
+    }
+   }
+  },
+  "totalCashDistributionChangeYoY": {
+   "acceleration": {
+    "delta_earningsGrowth": {
+     "dates": 49,
+     "flaggedRedundant": false,
+     "meanRho": -0.0396,
+     "medianRho": -0.034,
+     "p10": -0.1907,
+     "p90": 0.1153
+    },
+    "delta_operatingMargin": {
+     "dates": 50,
+     "flaggedRedundant": false,
+     "meanRho": 0.1008,
+     "medianRho": 0.1205,
+     "p10": -0.0355,
+     "p90": 0.221
+    },
+    "delta_profitMargin": {
+     "dates": 50,
+     "flaggedRedundant": false,
+     "meanRho": 0.0913,
+     "medianRho": 0.1043,
+     "p10": -0.0562,
+     "p90": 0.2421
+    },
+    "delta_roe": {
+     "dates": 50,
+     "flaggedRedundant": false,
+     "meanRho": 0.1173,
+     "medianRho": 0.111,
+     "p10": -0.0583,
+     "p90": 0.295
+    }
+   },
+   "leadership": {
+    "relativeStrengthBreadth52w": {
+     "dates": 50,
+     "flaggedRedundant": false,
+     "meanRho": 0.0177,
+     "medianRho": 0.021,
+     "p10": -0.1124,
+     "p90": 0.1357
+    }
+   },
+   "priceMomentum": {
+    "high52Distance": {
+     "dates": 50,
+     "flaggedRedundant": false,
+     "meanRho": 0.0202,
+     "medianRho": 0.0383,
+     "p10": -0.1272,
+     "p90": 0.132
+    },
+    "ma200Distance": {
+     "dates": 50,
+     "flaggedRedundant": false,
+     "meanRho": -0.0103,
+     "medianRho": 0.0067,
+     "p10": -0.175,
+     "p90": 0.1236
+    },
+    "mom121": {
+     "dates": 50,
+     "flaggedRedundant": false,
+     "meanRho": -0.0063,
+     "medianRho": 0.0256,
+     "p10": -0.1505,
+     "p90": 0.1275
+    },
+    "relative121": {
+     "dates": 50,
+     "flaggedRedundant": false,
+     "meanRho": -0.0063,
+     "medianRho": 0.0256,
+     "p10": -0.1505,
+     "p90": 0.1275
+    },
+    "relative126": {
+     "dates": 50,
+     "flaggedRedundant": false,
+     "meanRho": -0.0124,
+     "medianRho": -0.0156,
+     "p10": -0.143,
+     "p90": 0.1417
+    },
+    "return126": {
+     "dates": 50,
+     "flaggedRedundant": false,
+     "meanRho": -0.0124,
+     "medianRho": -0.0156,
+     "p10": -0.143,
+     "p90": 0.1417
+    },
+    "rsi14": {
+     "dates": 50,
+     "flaggedRedundant": false,
+     "meanRho": -0.0001,
+     "medianRho": 0.01,
+     "p10": -0.1385,
+     "p90": 0.1374
+    }
+   },
+   "priceRisk": {
+    "beta252": {
+     "dates": 50,
+     "flaggedRedundant": false,
+     "meanRho": 0.0091,
+     "medianRho": 0.0241,
+     "p10": -0.2288,
+     "p90": 0.2235
+    },
+    "downsideVol252": {
+     "dates": 50,
+     "flaggedRedundant": false,
+     "meanRho": -0.0131,
+     "medianRho": -0.0313,
+     "p10": -0.1344,
+     "p90": 0.1689
+    },
+    "maxDD252": {
+     "dates": 50,
+     "flaggedRedundant": false,
+     "meanRho": 0.01,
+     "medianRho": 0.0052,
+     "p10": -0.1196,
+     "p90": 0.1438
+    },
+    "vol252": {
+     "dates": 50,
+     "flaggedRedundant": false,
+     "meanRho": -0.0343,
+     "medianRho": -0.0611,
+     "p10": -0.1609,
+     "p90": 0.1543
+    },
+    "vol60": {
+     "dates": 50,
+     "flaggedRedundant": false,
+     "meanRho": -0.0326,
+     "medianRho": -0.0478,
+     "p10": -0.196,
+     "p90": 0.1456
+    }
+   },
+   "quality": {
+    "debtToEquity": {
+     "dates": 50,
+     "flaggedRedundant": false,
+     "meanRho": -0.0439,
+     "medianRho": -0.0507,
+     "p10": -0.2073,
+     "p90": 0.0827
+    },
+    "earningsGrowth": {
+     "dates": 50,
+     "flaggedRedundant": false,
+     "meanRho": 0.2158,
+     "medianRho": 0.2188,
+     "p10": 0.0783,
+     "p90": 0.3848
+    },
+    "operatingMargin": {
+     "dates": 50,
+     "flaggedRedundant": false,
+     "meanRho": 0.098,
+     "medianRho": 0.1087,
+     "p10": 0.0063,
+     "p90": 0.2045
+    },
+    "profitMargin": {
+     "dates": 50,
+     "flaggedRedundant": false,
+     "meanRho": 0.125,
+     "medianRho": 0.1316,
+     "p10": 0.0015,
+     "p90": 0.2452
+    },
+    "roe": {
+     "dates": 50,
+     "flaggedRedundant": false,
+     "meanRho": 0.104,
+     "medianRho": 0.1061,
+     "p10": -0.0162,
+     "p90": 0.2551
+    }
+   }
+  },
+  "totalCashDistributionTTM": {
+   "acceleration": {
+    "delta_earningsGrowth": {
+     "dates": 49,
+     "flaggedRedundant": false,
+     "meanRho": -0.037,
+     "medianRho": -0.0442,
+     "p10": -0.1431,
+     "p90": 0.0785
+    },
+    "delta_operatingMargin": {
+     "dates": 50,
+     "flaggedRedundant": false,
+     "meanRho": 0.0239,
+     "medianRho": 0.0242,
+     "p10": -0.1445,
+     "p90": 0.2266
+    },
+    "delta_profitMargin": {
+     "dates": 50,
+     "flaggedRedundant": false,
+     "meanRho": -0.0057,
+     "medianRho": -0.0407,
+     "p10": -0.1488,
+     "p90": 0.1693
+    },
+    "delta_roe": {
+     "dates": 50,
+     "flaggedRedundant": false,
+     "meanRho": 0.0471,
+     "medianRho": 0.0388,
+     "p10": -0.0966,
+     "p90": 0.2243
+    }
+   },
+   "leadership": {
+    "relativeStrengthBreadth52w": {
+     "dates": 50,
+     "flaggedRedundant": false,
+     "meanRho": 0.0213,
+     "medianRho": 0.0187,
+     "p10": -0.1089,
+     "p90": 0.1602
+    }
+   },
+   "priceMomentum": {
+    "high52Distance": {
+     "dates": 50,
+     "flaggedRedundant": false,
+     "meanRho": 0.0539,
+     "medianRho": 0.0673,
+     "p10": -0.1054,
+     "p90": 0.2004
+    },
+    "ma200Distance": {
+     "dates": 50,
+     "flaggedRedundant": false,
+     "meanRho": 0.0211,
+     "medianRho": 0.0046,
+     "p10": -0.1238,
+     "p90": 0.1795
+    },
+    "mom121": {
+     "dates": 50,
+     "flaggedRedundant": false,
+     "meanRho": 0.0207,
+     "medianRho": 0.021,
+     "p10": -0.1168,
+     "p90": 0.1536
+    },
+    "relative121": {
+     "dates": 50,
+     "flaggedRedundant": false,
+     "meanRho": 0.0207,
+     "medianRho": 0.021,
+     "p10": -0.1168,
+     "p90": 0.1536
+    },
+    "relative126": {
+     "dates": 50,
+     "flaggedRedundant": false,
+     "meanRho": 0.0157,
+     "medianRho": 0.0,
+     "p10": -0.1573,
+     "p90": 0.1695
+    },
+    "return126": {
+     "dates": 50,
+     "flaggedRedundant": false,
+     "meanRho": 0.0157,
+     "medianRho": 0.0,
+     "p10": -0.1573,
+     "p90": 0.1695
+    },
+    "rsi14": {
+     "dates": 50,
+     "flaggedRedundant": false,
+     "meanRho": 0.0091,
+     "medianRho": 0.0015,
+     "p10": -0.146,
+     "p90": 0.2189
+    }
+   },
+   "priceRisk": {
+    "beta252": {
+     "dates": 50,
+     "flaggedRedundant": false,
+     "meanRho": -0.0321,
+     "medianRho": -0.07,
+     "p10": -0.1815,
+     "p90": 0.1946
+    },
+    "downsideVol252": {
+     "dates": 50,
+     "flaggedRedundant": false,
+     "meanRho": -0.1002,
+     "medianRho": -0.0975,
+     "p10": -0.2358,
+     "p90": 0.013
+    },
+    "maxDD252": {
+     "dates": 50,
+     "flaggedRedundant": false,
+     "meanRho": 0.0828,
+     "medianRho": 0.0711,
+     "p10": -0.0199,
+     "p90": 0.1858
+    },
+    "vol252": {
+     "dates": 50,
+     "flaggedRedundant": false,
+     "meanRho": -0.1071,
+     "medianRho": -0.1036,
+     "p10": -0.2408,
+     "p90": 0.0108
+    },
+    "vol60": {
+     "dates": 50,
+     "flaggedRedundant": false,
+     "meanRho": -0.0983,
+     "medianRho": -0.0979,
+     "p10": -0.2036,
+     "p90": 0.0174
+    }
+   },
+   "quality": {
+    "debtToEquity": {
+     "dates": 50,
+     "flaggedRedundant": false,
+     "meanRho": 0.2022,
+     "medianRho": 0.2057,
+     "p10": 0.1086,
+     "p90": 0.3014
+    },
+    "earningsGrowth": {
+     "dates": 50,
+     "flaggedRedundant": false,
+     "meanRho": 0.0125,
+     "medianRho": 0.0256,
+     "p10": -0.1228,
+     "p90": 0.1293
+    },
+    "operatingMargin": {
+     "dates": 50,
+     "flaggedRedundant": false,
+     "meanRho": 0.1049,
+     "medianRho": 0.1125,
+     "p10": 0.0284,
+     "p90": 0.1892
+    },
+    "profitMargin": {
+     "dates": 50,
+     "flaggedRedundant": false,
+     "meanRho": 0.1191,
+     "medianRho": 0.1252,
+     "p10": 0.0359,
+     "p90": 0.1958
+    },
+    "roe": {
+     "dates": 50,
+     "flaggedRedundant": false,
+     "meanRho": 0.2342,
+     "medianRho": 0.251,
+     "p10": 0.1054,
+     "p90": 0.3409
+    }
+   }
+  }
+ },
+ "rankRSquaredOnAllExistingFeatures": {
+  "distributionToOCF": {
+   "dates": 47,
+   "meanAdjustedR2": 0.2042
+  },
+  "incrementalDistributionOverOCF": {
+   "dates": 47,
+   "meanAdjustedR2": 0.065
+  },
+  "totalCashDistributionChangeYoY": {
+   "dates": 47,
+   "meanAdjustedR2": 0.0583
+  },
+  "totalCashDistributionTTM": {
+   "dates": 47,
+   "meanAdjustedR2": 0.1519
+  }
+ },
+ "rankRSquaredOnExistingFamilies": {
+  "distributionToOCF": {
+   "acceleration": {
+    "dates": 48,
+    "meanAdjustedR2": 0.0348
+   },
+   "leadership": {
+    "dates": 50,
+    "meanAdjustedR2": 0.0037
+   },
+   "priceMomentum": {
+    "dates": 50,
+    "meanAdjustedR2": 0.0041
+   },
+   "priceRisk": {
+    "dates": 50,
+    "meanAdjustedR2": 0.0215
+   },
+   "quality": {
+    "dates": 49,
+    "meanAdjustedR2": 0.19
+   }
+  },
+  "incrementalDistributionOverOCF": {
+   "acceleration": {
+    "dates": 48,
+    "meanAdjustedR2": 0.0497
+   },
+   "leadership": {
+    "dates": 50,
+    "meanAdjustedR2": -0.0032
+   },
+   "priceMomentum": {
+    "dates": 50,
+    "meanAdjustedR2": -0.0114
+   },
+   "priceRisk": {
+    "dates": 50,
+    "meanAdjustedR2": 0.0161
+   },
+   "quality": {
+    "dates": 49,
+    "meanAdjustedR2": 0.0632
+   }
+  },
+  "totalCashDistributionChangeYoY": {
+   "acceleration": {
+    "dates": 48,
+    "meanAdjustedR2": 0.0406
+   },
+   "leadership": {
+    "dates": 50,
+    "meanAdjustedR2": -0.0016
+   },
+   "priceMomentum": {
+    "dates": 50,
+    "meanAdjustedR2": -0.007
+   },
+   "priceRisk": {
+    "dates": 50,
+    "meanAdjustedR2": 0.0217
+   },
+   "quality": {
+    "dates": 49,
+    "meanAdjustedR2": 0.0671
+   }
+  },
+  "totalCashDistributionTTM": {
+   "acceleration": {
+    "dates": 48,
+    "meanAdjustedR2": 0.0112
+   },
+   "leadership": {
+    "dates": 50,
+    "meanAdjustedR2": -0.0007
+   },
+   "priceMomentum": {
+    "dates": 50,
+    "meanAdjustedR2": -0.0028
+   },
+   "priceRisk": {
+    "dates": 50,
+    "meanAdjustedR2": 0.0292
+   },
+   "quality": {
+    "dates": 49,
+    "meanAdjustedR2": 0.1116
+   }
+  }
+ },
+ "readsLabels": false,
+ "readsReturns": false,
+ "redundancyThreshold": 0.7,
+ "sampling": {
+  "datesSampled": 50,
+  "firstDate": "2014-04-04",
+  "lastDate": "2026-06-18",
+  "rows": 4960,
+  "rule": "every 13th weekly signal date, dates with at least 30 measured names"
+ },
+ "selectedNamesPercentileProfile": {
+  "meanPercentileWithinDate": {
+   "beta252": 0.519,
+   "debtToEquity": 0.3944,
+   "delta_earningsGrowth": 0.4821,
+   "delta_operatingMargin": 0.5451,
+   "delta_profitMargin": 0.5486,
+   "delta_roe": 0.5592,
+   "downsideVol252": 0.5675,
+   "earningsGrowth": 0.613,
+   "high52Distance": 0.5047,
+   "ma200Distance": 0.5253,
+   "maxDD252": 0.4814,
+   "mom121": 0.5351,
+   "operatingMargin": 0.471,
+   "profitMargin": 0.4836,
+   "relative121": 0.5351,
+   "relative126": 0.5344,
+   "relativeStrengthBreadth52w": 0.5612,
+   "return126": 0.5344,
+   "roe": 0.5663,
+   "rsi14": 0.5103,
+   "vol252": 0.5687,
+   "vol60": 0.5565
+  },
+  "picks": 250,
+  "reading": "0.5 = no tilt; descriptive only"
+ }
+}

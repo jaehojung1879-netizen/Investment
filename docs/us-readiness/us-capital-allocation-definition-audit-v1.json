@@ -1,0 +1,279 @@
+{
+ "amendmentChronology": {
+  "failures": [],
+  "results": {
+   "CHRONOLOGY_RESPECTED": 265,
+   "SAME_DAY_PAIR_ORDER_BY_ACCEPTANCE": 19,
+   "SLOT_NOT_REFERENCED_BY_ANY_FEATURE": 4
+  },
+  "rule": "as_of(T) sees only filings with max(availableFrom, acceptedDate) < T; a later filing replaces its slot only after it is visible",
+  "slotsChecked": 288,
+  "slotsWithMoreThanOneFiling": 288
+ },
+ "cumulativeSemantics": {
+  "NetCashProvidedByUsedInOperatingActivities": {
+   "counts": {
+    "Q2OverQ1": 5956,
+    "Q3OverFY": 6696,
+    "Q3OverQ1": 5506
+   },
+   "medians": {
+    "Q2OverQ1": 2.1289609967885457,
+    "Q3OverFY": 0.7019490889327195,
+    "Q3OverQ1": 3.4445390391230184
+   },
+   "verdict": "CUMULATIVE_CORROBORATED"
+  },
+  "PaymentsForRepurchaseOfCommonStock": {
+   "counts": {
+    "Q2OverQ1": 4943,
+    "Q3OverFY": 5389,
+    "Q3OverQ1": 4641
+   },
+   "medians": {
+    "Q2OverQ1": 1.8695652173913044,
+    "Q3OverFY": 0.774339914080224,
+    "Q3OverQ1": 2.73697270471464
+   },
+   "verdict": "CUMULATIVE_CORROBORATED"
+  },
+  "PaymentsOfDividendsCommonStock": {
+   "counts": {
+    "Q2OverQ1": 3416,
+    "Q3OverFY": 3318,
+    "Q3OverQ1": 3192
+   },
+   "medians": {
+    "Q2OverQ1": 2.0,
+    "Q3OverFY": 0.7486639984992038,
+    "Q3OverQ1": 3.0041379625243283
+   },
+   "verdict": "CUMULATIVE_CORROBORATED"
+  },
+  "PaymentsToAcquirePropertyPlantAndEquipment": {
+   "counts": {
+    "Q2OverQ1": 5829,
+    "Q3OverFY": 5537,
+    "Q3OverQ1": 5506
+   },
+   "medians": {
+    "Q2OverQ1": 2.0688004463120766,
+    "Q3OverFY": 0.7134111244832819,
+    "Q3OverQ1": 3.209850424471096
+   },
+   "verdict": "CUMULATIVE_CORROBORATED"
+  }
+ },
+ "dilution": {
+  "periodEndShareCountFilings": {
+   "count": 619,
+   "pct": 1.7714
+  },
+  "smallestRepair": "a per-filing source of period-end common shares with class and split-adjustment basis (for example the XBRL dei/us-gaap context facts), pinned by commit and hashed; weighted averages are not a substitute",
+  "status": "BLOCKED",
+  "weightedAverageShareFilings": {
+   "count": 25967,
+   "pct": 74.3082
+  },
+  "whyBlocked": "the flattened rows lack the XBRL context (period-end date, share class, split basis) that a share-count change needs; SharesBasisEvidence is absent for every ticker pair"
+ },
+ "dividends": {
+  "admittedConcept": "PaymentsOfDividendsCommonStock",
+  "agreementWhereBothExist": {
+   "DIFFER_OVER_1PCT": 51,
+   "WITHIN_1PCT": 13
+  },
+  "exactCommonPct": 41.3879,
+  "filingsByConceptClass": {
+   "EXACT_COMMON": {
+    "filings": 12456,
+    "pct": 35.6446
+   },
+   "EXACT_COMMON+PREFERRED_PRESENT": {
+    "filings": 2007,
+    "pct": 5.7433
+   },
+   "NONE": {
+    "filings": 9334,
+    "pct": 26.7105
+   },
+   "NONE+PREFERRED_PRESENT": {
+    "filings": 234,
+    "pct": 0.6696
+   },
+   "ONLY_GENERAL": {
+    "filings": 9431,
+    "pct": 26.9881
+   },
+   "ONLY_GENERAL+PREFERRED_PRESENT": {
+    "filings": 29,
+    "pct": 0.083
+   },
+   "ONLY_GENERAL_ORDINARY": {
+    "filings": 18,
+    "pct": 0.0515
+   },
+   "ONLY_GENERAL_ORDINARY+PREFERRED_PRESENT": {
+    "filings": 1,
+    "pct": 0.0029
+   },
+   "ONLY_ORDINARY": {
+    "filings": 1423,
+    "pct": 4.0721
+   },
+   "ONLY_ORDINARY+PREFERRED_PRESENT": {
+    "filings": 12,
+    "pct": 0.0343
+   }
+  },
+  "onlyRelatedGeneralOrOrdinaryPct": 31.2319,
+  "reading": "A filing that carries only a general/ordinary dividend line is refused by the feature (AMBIGUOUS_ACCOUNTING), not read as common dividends. That rule protects against preferred and noncontrolling payments but costs coverage; the size of that cost is the 'onlyRelated' share. Adopting an alias is a new feature version and an owner decision."
+ },
+ "evidenceClass": "OUTCOME_BLIND_DEFINITION_AUDIT",
+ "featureVersion": "US_SHAREHOLDER_DISTRIBUTION_V1",
+ "filings": 34945,
+ "fitsModels": false,
+ "formCensus": {
+  "10-K": 8542,
+  "10-Q": 26403
+ },
+ "id": "us-capital-allocation-definition-audit-v1",
+ "operatingCashFlow": {
+  "admittedConcept": "NetCashProvidedByUsedInOperatingActivities",
+  "filingsByClass": {
+   "EXACT": {
+    "filings": 30212,
+    "pct": 86.4559
+   },
+   "NONE": {
+    "filings": 328,
+    "pct": 0.9386
+   },
+   "ONLY_CONTINUING_OPERATIONS": {
+    "filings": 4405,
+    "pct": 12.6055
+   }
+  }
+ },
+ "proposesNoDefinitionChange": true,
+ "readsLabels": false,
+ "readsPrices": false,
+ "readsReturns": false,
+ "repurchases": {
+  "admittedConcept": "PaymentsForRepurchaseOfCommonStock",
+  "exactPct": 68.6908,
+  "filingsWithExact": 24004,
+  "reading": "Other repurchase tags exist in the store and are not admitted; absence of the exact tag is NOT_REPORTED, never zero.",
+  "repurchaseOrTreasuryConceptsSeenInCashFlow": {
+   "GainLossOnRepurchaseOfDebtInstrument": 181,
+   "IncreaseDecreaseInFederalFundsPurchasedAndSecuritiesSoldUnderAgreementsToRepurchaseNet": 315,
+   "IncreaseDecreaseInPayablesUnderRepurchaseAgreements": 95,
+   "PaymentsForRepurchaseOfCommonStock": 24095,
+   "PaymentsForRepurchaseOfEquity": 613,
+   "PaymentsForRepurchaseOfOtherEquity": 394,
+   "PaymentsForRepurchaseOfPreferredStockAndPreferenceStock": 680,
+   "PaymentsForRepurchaseOfRedeemableConvertiblePreferredStock": 73,
+   "PaymentsForRepurchaseOfRedeemableNoncontrollingInterest": 737,
+   "PaymentsForRepurchaseOfRedeemablePreferredStock": 379,
+   "PaymentsForRepurchaseOfWarrants": 95,
+   "ProceedsFromPaymentsForInSecuritiesSoldUnderAgreementsToRepurchase": 148,
+   "ProceedsFromRepurchaseOfEquity": 232,
+   "ProceedsFromSaleOfTreasuryStock": 723,
+   "pru_ProceedsFromPaymentsForSecuritiesSoldUnderAgreementsToRepurchaseAndCashCollateralForLoanedSecurities": 53
+  }
+ },
+ "shards": [
+  {
+   "gitBlob": "ad078b05c0c633d80de4e74b2671d9c4d13261a4",
+   "name": "finnhub-2011.jsonl.gz",
+   "sha256": "023a2f3a0ce111a3e91d1565d39cc382607a44b75850b92899211931d026ea8c"
+  },
+  {
+   "gitBlob": "1b8432242a926da902cbccc8dcf669cd27d79495",
+   "name": "finnhub-2012.jsonl.gz",
+   "sha256": "5e5fa041838be0c2c077fd8ee94dffe840db713f0e6213837b679ad3c34e7b27"
+  },
+  {
+   "gitBlob": "0f5fca28a2013bff1f4868ce69209bdc4499d0b9",
+   "name": "finnhub-2013.jsonl.gz",
+   "sha256": "29135f2c7544bea499a15b0cfd49525260304bdf33e83815f621fdcadf9b0f95"
+  },
+  {
+   "gitBlob": "f6c4e3d8ad4820920d3f1d5c7196ed22d66e1d83",
+   "name": "finnhub-2014.jsonl.gz",
+   "sha256": "2216355dfd621570f463f7bd8901ae1fea17a004a5c710764f5addaf457b3177"
+  },
+  {
+   "gitBlob": "2068d2a4fdf554b71d811019e23b0fe1b54b8baf",
+   "name": "finnhub-2015.jsonl.gz",
+   "sha256": "be5cf365cce7f14682ccba551a79d5064ebcbd70163c0c2fb0359a959f5c0648"
+  },
+  {
+   "gitBlob": "3036db2f0026629d0ad0aeb514683e6f41628513",
+   "name": "finnhub-2016.jsonl.gz",
+   "sha256": "6c48667b143891e8ce28caf65fc5c8464c410de2064e3b7597c163e73150cd50"
+  },
+  {
+   "gitBlob": "33d711411b2465fa8b5d635955e4df784a8b4fbe",
+   "name": "finnhub-2017.jsonl.gz",
+   "sha256": "6fe3dbc7a26715738e763d81ae2a0b65c9d26470a716bc5dcdba425ad5f5c6ba"
+  },
+  {
+   "gitBlob": "67e480d78a2706eeecaf6b91a55dbc83e0970e1b",
+   "name": "finnhub-2018.jsonl.gz",
+   "sha256": "71a95470b3cadff59838cd7889e8c36fc63737aed54b710f3110cc0322029617"
+  },
+  {
+   "gitBlob": "5bcd0acb2afa2841af92fd7b3946a660c8f90cce",
+   "name": "finnhub-2019.jsonl.gz",
+   "sha256": "4e5947ff06ab2cbc37d0afdd0a681dac66db63f4c67e72825347cc59dc4ed65d"
+  },
+  {
+   "gitBlob": "fc9f7b2b192b96f8ba0901937a20f0924d2a0186",
+   "name": "finnhub-2020.jsonl.gz",
+   "sha256": "2b921e4bb1fdd8b47ded342c2234633ab2f3820db8e588b41fe8322a9919d11a"
+  },
+  {
+   "gitBlob": "2e058b903d65010ef2179fd89478cf1838e3f874",
+   "name": "finnhub-2021.jsonl.gz",
+   "sha256": "89975f24adcdf9f4b1d3252b129994ca2cd182e72fc6855f1cd5d1f1f899c8f1"
+  },
+  {
+   "gitBlob": "ce3cfb8e589c3f77530e36ae96fdd3a04ef5d2da",
+   "name": "finnhub-2022.jsonl.gz",
+   "sha256": "5703add3cfa98fb7dca3beb8c79d9171a1d2106cc41b7b76abfda8e2408a8897"
+  },
+  {
+   "gitBlob": "00eb05bcf243d1421ce9e097d8a0f54d95e9da2f",
+   "name": "finnhub-2023.jsonl.gz",
+   "sha256": "c507b7bb846cd3ea4cc693a0ea91547e241404a9c71b51ef2bdd10ef13026221"
+  },
+  {
+   "gitBlob": "3bc11fbdbf1c0be8a1845391c09c23f1c9edcc3c",
+   "name": "finnhub-2024.jsonl.gz",
+   "sha256": "2dc6a3c770932e5a6995cc51ea2e9a0d08fc70e2e9372d47847f9c8570e06858"
+  },
+  {
+   "gitBlob": "23fb95064b8a6a01e40105a74e9caf57483a2849",
+   "name": "finnhub-2025.jsonl.gz",
+   "sha256": "49e91cedf1d27c3dfee8de66056dacaabbf56d04b84105ded30f6cf4b6fba9fa"
+  },
+  {
+   "gitBlob": "16a1633e11e36ae9e626cd2ed2ff26751c874ccc",
+   "name": "finnhub-2026.jsonl.gz",
+   "sha256": "c9c809b8678b3bb69b692d4f6ab1c4b5b984c703a48db17333303422d8bb77b1"
+  },
+  {
+   "gitBlob": "07dbf4771026a51b954fbd0a3244e356dff98c89",
+   "name": "finnhub-2027.jsonl.gz",
+   "sha256": "625df8ee283b85393b11d7ba2e80cd9b347d9486c8a6591c31280e1935a11d37"
+  }
+ ],
+ "sourceCommit": "704d7db6d5b00def771aba5d2665d0846d6bc776",
+ "yearOverYear": {
+  "chainRequired": "FY: current FY and prior FY for the TTM, plus the two years earlier for the prior-year TTM; quarter: current cumulative, prior FY, prior same-stage cumulative, and the same three one year earlier",
+  "definition": "same fiscal stage, current TTM over prior-year TTM minus one; the prior value must be strictly positive",
+  "staleReportLimitDays": 180,
+  "zeroBase": "a prior-year TTM of zero is NOT_APPLICABLE (a payout that STARTED), never +100% and never 0%"
+ }
+}
