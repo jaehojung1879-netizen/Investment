@@ -1,0 +1,153 @@
+{
+  "version": "RESEARCH_TERMINAL_BROWSER_V2",
+  "sourceMain": "8f45870cf8a0c41c5d32c3ec1296417de23c5db1",
+  "receiptCommit": "6a6b7e753814cc9adf56811ca78abdcaef0d69ea",
+  "fixtureObservationTime": "2026-10-11T12:00:00Z",
+  "frontendSha256": {
+    "index.html": "fc8684e38e2a4879e750a10bad7374972e37241e70da00b041a71ef93a90a57b",
+    "app.js": "4dbc18521f787dd834c5541d32e14fab3422b23638d5c4917bb14c022a0c0c88",
+    "styles.css": "e035b9379fa58ac0ac9c074451e0cd48d7b2d28da1f06781972f5587db63f32c"
+  },
+  "screenshots": [
+    "kr-390.png",
+    "kr-1280.png",
+    "us-1280.png",
+    "kr-21-session-1280.png"
+  ],
+  "viewports": [
+    {
+      "width": 375,
+      "market": "KR",
+      "pageOverflowPx": 0
+    },
+    {
+      "width": 375,
+      "market": "US",
+      "pageOverflowPx": 0
+    },
+    {
+      "width": 390,
+      "market": "KR",
+      "pageOverflowPx": 0
+    },
+    {
+      "width": 390,
+      "market": "US",
+      "pageOverflowPx": 0
+    },
+    {
+      "width": 768,
+      "market": "KR",
+      "pageOverflowPx": 0
+    },
+    {
+      "width": 768,
+      "market": "US",
+      "pageOverflowPx": 0
+    },
+    {
+      "width": 1280,
+      "market": "KR",
+      "pageOverflowPx": 0
+    },
+    {
+      "width": 1280,
+      "market": "US",
+      "pageOverflowPx": 0
+    },
+    {
+      "width": 375,
+      "market": "KR",
+      "study": "anchors",
+      "pageOverflowPx": 0
+    },
+    {
+      "width": 390,
+      "market": "KR",
+      "study": "anchors",
+      "pageOverflowPx": 0
+    },
+    {
+      "width": 768,
+      "market": "KR",
+      "study": "anchors",
+      "pageOverflowPx": 0
+    },
+    {
+      "width": 1280,
+      "market": "KR",
+      "study": "anchors",
+      "pageOverflowPx": 0
+    },
+    {
+      "width": 375,
+      "market": "KR",
+      "study": "anchors",
+      "expanded": true,
+      "pageOverflowPx": 0
+    },
+    {
+      "width": 390,
+      "market": "KR",
+      "study": "anchors",
+      "expanded": true,
+      "pageOverflowPx": 0
+    },
+    {
+      "width": 768,
+      "market": "KR",
+      "study": "anchors",
+      "expanded": true,
+      "pageOverflowPx": 0
+    },
+    {
+      "width": 1280,
+      "market": "KR",
+      "study": "anchors",
+      "expanded": true,
+      "pageOverflowPx": 0
+    }
+  ],
+  "checks": [
+    "market switch and session retention; all four sections coherent; US no fake selection timeline",
+    "713 weekly versus 155 anchors isolated; exact C2 evidence; holdings detail; chart toggle",
+    "synthetic safety scenarios: 1–5 exact recorded stock weights and residual; no synthetic return path",
+    "refused/stale/blocked/preview/missing/digest mismatch fail closed without invented positions"
+  ],
+  "live": {
+    "status": "PASS",
+    "observedAt": "2026-10-11T08:57:01.938Z",
+    "tlsVerified": true,
+    "managedProxyTransport": true,
+    "requests": [
+      {
+        "url": "https://raw.githubusercontent.com/jaehojung1879-netizen/Investment/8f45870cf8a0c41c5d32c3ec1296417de23c5db1/docs/weekly-decision/weekly-passive-first-v1-weekly-replay-corrected-benchmark.json",
+        "status": 200
+      },
+      {
+        "url": "https://raw.githubusercontent.com/jaehojung1879-netizen/Investment/8f45870cf8a0c41c5d32c3ec1296417de23c5db1/docs/us-readiness/weekly-passive-first-v1-weekly-us-local-currency.json",
+        "status": 200
+      },
+      {
+        "url": "https://api.github.com/repos/jaehojung1879-netizen/Investment/git/ref/heads/signal-history",
+        "status": 200
+      },
+      {
+        "url": "https://raw.githubusercontent.com/jaehojung1879-netizen/Investment/1bf7dc066fb1ecccde47a3e2f8f5e88502717351/ledger/weekly-decisions/receipts.jsonl",
+        "status": 200
+      },
+      {
+        "url": "https://raw.githubusercontent.com/jaehojung1879-netizen/Investment/1bf7dc066fb1ecccde47a3e2f8f5e88502717351/ledger/weekly-decisions/latest.json",
+        "status": 200
+      },
+      {
+        "url": "https://raw.githubusercontent.com/jaehojung1879-netizen/Investment/1bf7dc066fb1ecccde47a3e2f8f5e88502717351/ledger/weekly-decisions/publication-status.json",
+        "status": 200
+      }
+    ],
+    "consoleErrors": []
+  },
+  "browser": "154.0.8037.57",
+  "applicationErrors": [],
+  "consoleErrors": []
+}

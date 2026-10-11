@@ -1,3 +1,5 @@
+# Legacy UI contracts intentionally target the preserved, undeployed v1 archive.
+# Live terminal contracts are in test_research_terminal.py.
 """v2 engine tests: honesty, region-separation, sector/name caps, entry-state
 separation, regime degradation, point-in-time, expert staleness, ledger
 immutability, blocked-state withholding."""
@@ -593,7 +595,7 @@ def test_a_held_name_on_warning_is_stated_beside_the_weights():
 
 def test_the_frontend_states_the_held_name_warning():
     import pathlib
-    app = pathlib.Path("app.js").read_text(encoding="utf-8")
+    app = pathlib.Path("docs/archive/dashboard-v1/app.js").read_text(encoding="utf-8")
     assert "heldNameWarnings" in app
     assert "flaggedWeightPct" in app
 
