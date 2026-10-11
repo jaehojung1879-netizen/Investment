@@ -19,7 +19,8 @@
         </div>
         <nav class="nav" aria-label="주요 메뉴">
           <a href="#decision">이번 주 판단</a>
-          <a href="#holdings-view">포트폴리오</a>
+          <a href="#holdings-view">보유안</a>
+          <a href="#wk-watch">관찰 후보</a>
           <a href="#performance">과거 성과</a>
           <a href="#compare">한·미 비교</a>
           <a href="#research">리서치</a>
@@ -52,16 +53,25 @@
       <!-- ── B. 포트폴리오 ─────────────────────────────────────────────── -->
       <section id="holdings-view" class="block" aria-labelledby="wkHoldTitle">
         <div class="block-head">
-          <div><span class="overline">포트폴리오</span><h2 id="wkHoldTitle">무엇을 얼마나 보유하는가</h2></div>
+          <div><span class="overline">A · 이번 주 모델 보유안</span><h2 id="wkHoldTitle">규칙이 고른 0–5종목과 지수 비중</h2></div>
           <div class="wk-switch" role="tablist" aria-label="지역 선택" data-wk-switch></div>
         </div>
         <div id="wkPortfolio"></div>
       </section>
 
+      <!-- ── B. 관찰 후보 TOP 5 (보유안과 별개) ─────────────────────────── -->
+      <section id="wk-watch" class="block" aria-labelledby="wkWatchTitle">
+        <div class="block-head">
+          <div><span class="overline">B · 이번 주 주목 종목 TOP 5</span><h2 id="wkWatchTitle">관찰 후보 — 통계적으로 검증된 매수 추천이 아님</h2></div>
+          <div class="wk-switch" role="tablist" aria-label="지역 선택" data-wk-switch></div>
+        </div>
+        <div id="wkWatch"></div>
+      </section>
+
       <!-- ── C. 과거 성과 ──────────────────────────────────────────────── -->
       <section id="performance" class="block" aria-labelledby="wkPerfTitle">
         <div class="block-head">
-          <div><span class="overline">과거 성과 · 결과 노출된 재현</span><h2 id="wkPerfTitle">이 방식을 과거에 썼다면</h2></div>
+          <div><span class="overline">과거 시뮬레이션 · 결과 노출 · 검증 아님</span><h2 id="wkPerfTitle">이 규칙을 과거에 적용했다면</h2></div>
           <div class="wk-switch" role="tablist" aria-label="지역 선택" data-wk-switch></div>
         </div>
         <div id="wkPerformance"></div>

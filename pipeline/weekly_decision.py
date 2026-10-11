@@ -67,10 +67,19 @@ SELECTION_CFG = {
 STATUS_KO = {
     "PASSIVE_NO_DEFENSIBLE_EDGE": "지수 대비 비용을 넘는 방어 가능한 우위를 확인한 종목이 없어 지수 100%",
     "STOCKS_SELECTED": "지수 대비 비용 차감 후 기대 우위가 양(+)인 종목만 담고 나머지는 지수",
-    "STALE_DATA_NO_NEW_DECISION": "최신 완료 세션 데이터가 아직 없어 새 판단을 내지 않음",
-    "BLOCKED": "데이터 안전 차단 상태 — 종목·비중을 표시하지 않음",
     "NO_CANDIDATES": "리서치 후보가 없어 지수 100%",
+    "STALE_DATA": "지역 지수 시세가 마지막 완료 거래일보다 오래되어 새 판단을 내지 않음",
+    "SOURCE_INCOMPLETE": "지수 시세는 최신이지만 보정 자료나 후보 시세가 불완전해 새 판단을 내지 않음",
+    "DATA_BLOCKED": "데이터 안전 차단 상태 — 종목·비중·관찰 후보를 표시하지 않음",
 }
+# Statuses that are a decision (and become a receipt). The others publish no
+# new allocation and point at the last recorded one instead.
+DECISION_STATUSES = ("PASSIVE_NO_DEFENSIBLE_EDGE", "STOCKS_SELECTED", "NO_CANDIDATES")
+# The region's own index tape is the evidence that a session's data arrived.
+# One current security cannot stand in for a region (the first version took the
+# newest ``details.*.asOf`` of any name, so a single fresh quote masked a stale
+# cross-section).
+SESSION_EVIDENCE = {"KR": "^KS11", "US": "^GSPC"}
 EXCLUSION_KO = {
     "CALIBRATION_UNAVAILABLE": "과거 보정 자료 없음",
     "ORDERING_NOT_ESTABLISHED": "알파 순위의 수익 정렬이 통계적으로 확인되지 않음",
@@ -79,8 +88,10 @@ EXCLUSION_KO = {
     "ENTRY_OR_RESEARCH_STATE_BLOCKS_SIZING": "진입/리서치 상태가 편입을 막음",
     "DOWNSIDE_RISK_UNAVAILABLE": "하방위험 측정 불가",
     "BELOW_TARGET_COUNT_CUTOFF": "5종목 한도 밖",
+    "NOT_IN_RESEARCH_SLEEVE": "리서치 슬리브(보유 후보 풀) 밖 — 관찰만",
     "SECTOR_NAME_LIMIT": "섹터당 2종목 한도",
     "REGION_NAME_LIMIT": "지역 한도",
+    "STALE_CANDIDATE_DATA": "이 종목 시세가 지역 기준 거래일보다 오래됨",
 }
 
 
@@ -147,9 +158,15 @@ def edge_estimate(calibration: dict | None, region: str, alpha_percentile) -> di
 
 
 def score_candidates(candidates: list[dict], calibration: dict | None, region: str,
-                     as_of: str, incumbents: set[str] | None = None) -> list[dict]:
-    """Score one region's candidates. Absent edges stay absent; nothing is zero-filled."""
+                     as_of: str, incumbents: set[str] | None = None,
+                     stale: set[str] | None = None) -> list[dict]:
+    """Score one region's candidates. Absent edges stay absent; nothing is zero-filled.
+
+    ``stale``: tickers whose own last quote is older than the region's session;
+    they stay visible with STALE_CANDIDATE_DATA and can never be held.
+    """
     incumbents = incumbents or set()
+    stale = stale or set()
     costs = cost_breakdown(region, as_of)
     switch = float(costs["switchCostPct"])
     rows = []
@@ -171,8 +188,11 @@ def score_candidates(candidates: list[dict], calibration: dict | None, region: s
             excluded.append("ENTRY_OR_RESEARCH_STATE_BLOCKS_SIZING")
         if risk is None or risk <= 0:
             excluded.append("DOWNSIDE_RISK_UNAVAILABLE")
+        if candidate.get("ticker") in stale:
+            excluded.append("STALE_CANDIDATE_DATA")
         score = ((net + credit) / (risk * 100) * state
-                 if net is not None and risk and risk > 0 and state > 0 else -1e12)
+                 if net is not None and risk and risk > 0 and state > 0
+                 and candidate.get("ticker") not in stale else -1e12)
         entry = (candidate.get("entry") or {}).get("entryState") or candidate.get("entryState")
         rows.append({
             "ticker": candidate["ticker"], "name": candidate.get("name"),
@@ -198,12 +218,14 @@ def score_candidates(candidates: list[dict], calibration: dict | None, region: s
 # Decision
 # --------------------------------------------------------------------------- #
 def decide(region: str, candidates: list[dict], calibration: dict | None, as_of: str,
-           incumbents: set[str] | None = None) -> dict:
+           incumbents: set[str] | None = None, stale: set[str] | None = None) -> dict:
     """Apply the fixed 0-5 rule. Pure: same inputs, same output."""
     benchmark = BENCHMARKS[region]
-    scored = score_candidates(candidates, calibration, region, as_of, incumbents)
-    pool = [c for c in candidates if (c.get("region") or region) == region]
-    selected, meta = KP.select_portfolio_by_scores(pool, scored, SELECTION_CFG,
+    stale = stale or set()
+    scored = score_candidates(candidates, calibration, region, as_of, incumbents, stale)
+    # A stale name keeps its row and reasons; STALE_CANDIDATE_DATA makes it ineligible.
+    regional = [c for c in candidates if (c.get("region") or region) == region]
+    selected, meta = KP.select_portfolio_by_scores(regional, scored, SELECTION_CFG,
                                                    method=POLICY_VERSION)
     chosen = [c["ticker"] for c in selected]
     by_ticker = {r["ticker"]: r for r in meta.get("ranking") or []}
@@ -227,7 +249,7 @@ def decide(region: str, candidates: list[dict], calibration: dict | None, as_of:
                "reasonKo": (f"보정 기대초과 {row['edge'].get('expectedExcessPct'):+.2f}%p(126거래일) − "
                             f"전환비용 {row['switchCostPct']:.2f}%p = 순우위 "
                             f"{row['expectedNetAdvantagePct']:+.2f}%p")})
-    if not pool:
+    if not regional:
         status = "NO_CANDIDATES"
     elif chosen:
         status = "STOCKS_SELECTED"
@@ -255,8 +277,9 @@ def decide(region: str, candidates: list[dict], calibration: dict | None, as_of:
             for r in sorted(scored, key=lambda r: (-r["score"], r["ticker"]))],
         "excluded": excluded,
         "noTradeReason": None if chosen else (
-            "ORDERING_NOT_ESTABLISHED" if pool and not ordering.get("established")
-            else ("NO_CANDIDATES" if not pool else "NO_POSITIVE_NET_ADVANTAGE")),
+            "ORDERING_NOT_ESTABLISHED" if regional and not ordering.get("established")
+            else ("NO_CANDIDATES" if not regional else "NO_POSITIVE_NET_ADVANTAGE")),
+        "staleCandidates": sorted(t for t in stale if any(c.get("ticker") == t for c in regional)),
         "calibrationOrdering": {k: ordering.get(k) for k in (
             "established", "reason", "topMinusBottomTStat", "rankICTStat", "meanRankIC",
             "topBucketSpreadPct") if k in ordering},
@@ -409,6 +432,126 @@ def latest_final(receipts: list[dict], region: str, before: str | None = None) -
 
 
 # --------------------------------------------------------------------------- #
+# Observation watchlist (output B) — never an allocation
+# --------------------------------------------------------------------------- #
+WATCHLIST_SIZE = 5
+WATCHLIST_LABEL_KO = "관찰 후보 — 통계적으로 검증된 매수 추천이 아님"
+WATCHLIST_SOURCE = "longTerm.regions.<R>.researchTable (production 알파 순위 상위, 데이터 충분 종목)"
+FACTOR_KO = {"momentum": "모멘텀", "value": "가치", "quality": "퀄리티", "lowvol": "저변동"}
+STRENGTH_PCTILE = 70
+WEAKNESS_PCTILE = 40
+FUNDAMENTAL_KEYS = ("trailingPE", "forwardPE", "priceToBook", "roe", "operatingMargin",
+                    "profitMargin", "fcfYield", "debtToEquity")
+
+
+def _strengths_weaknesses(row: dict) -> tuple[list[str], list[str]]:
+    """Descriptive, from the production research row only. No probability, no forecast."""
+    strengths, weaknesses = [], []
+    for key, label in FACTOR_KO.items():
+        value = (row.get("factorPercentiles") or {}).get(key)
+        if value is None:
+            weaknesses.append(f"{label} 팩터 측정 불가")
+        elif value >= STRENGTH_PCTILE:
+            strengths.append(f"{label} {value}p")
+        elif value <= WEAKNESS_PCTILE:
+            weaknesses.append(f"{label} {value}p")
+    if row.get("aboveMA200") is True:
+        strengths.append("200일선 위")
+    elif row.get("aboveMA200") is False:
+        weaknesses.append("200일선 아래")
+    if row.get("valueTrap"):
+        weaknesses.append("가치함정 경고")
+    for rule in row.get("invalidation") or []:
+        if rule.get("state") not in (None, "OK"):
+            weaknesses.append(f"{rule.get('labelKo')} 경고({rule.get('currentKo')})")
+    return strengths, weaknesses
+
+
+def _rank_change(ticker: str, rank: int, prior: dict | None) -> dict:
+    if not prior or not prior.get("watchlist"):
+        return {"available": False, "labelKo": "직전 기록 없음"}
+    before = {w["ticker"]: w["rank"] for w in prior["watchlist"]}
+    previous = before.get(ticker)
+    if previous is None:
+        label = "신규 진입"
+    elif previous == rank:
+        label = "순위 유지"
+    else:
+        label = f"{previous}위 → {rank}위"
+    return {"available": True, "priorAsOfDate": prior.get("asOfDate"),
+            "previousRank": previous, "labelKo": label}
+
+
+def watchlist(region: str, research_rows: list[dict], details: dict, calibration: dict | None,
+              decision: dict, prior: dict | None, names: dict | None = None,
+              stale: set[str] | None = None) -> list[dict]:
+    """Top names of the production research ranking, described, never sized.
+
+    The order is production's own (``researchTable`` is already ranked); this
+    module adds no score. An edge is shown only where the calibration bucket is
+    usable, and is otherwise reported as absent, never as a number.
+    """
+    names, stale = names or {}, stale or set()
+    held = {h["ticker"] for h in decision.get("holdings") or []}
+    by_candidate = {c["ticker"]: c for c in decision.get("candidates") or []}
+    out = []
+    rows = [r for r in research_rows if (r.get("region") or region) == region][:WATCHLIST_SIZE]
+    for rank, row in enumerate(rows, 1):
+        ticker = row["ticker"]
+        detail = details.get(ticker) or {}
+        fundamentals = detail.get("fundamentals") or {}
+        edge = edge_estimate(calibration, region, row.get("alphaPercentile"))
+        strengths, weaknesses = _strengths_weaknesses(row)
+        risk = row.get("risk") or {}
+        candidate = by_candidate.get(ticker)
+        if ticker in held:
+            exclusion = []
+        elif ticker in stale:
+            exclusion = ["STALE_CANDIDATE_DATA"]
+        elif candidate is not None:
+            exclusion = list(candidate.get("exclusionCodes") or [])
+        else:
+            exclusion = ["NOT_IN_RESEARCH_SLEEVE"]
+        out.append({
+            "rank": rank, "ticker": ticker, "name": names.get(ticker) or row.get("name"),
+            "region": region, "sector": row.get("sector"), "sectorKo": row.get("sectorKo"),
+            "researchScore": row.get("alpha"), "alphaPercentile": row.get("alphaPercentile"),
+            "researchView": row.get("longTermResearchView"), "thesisKo": row.get("thesisKo"),
+            "factorPercentiles": row.get("factorPercentiles"),
+            "strengthsKo": strengths, "weaknessesKo": weaknesses,
+            "priceMomentum": {"lastClose": detail.get("lastClose"), "asOf": detail.get("asOf"),
+                              "mom12_1Pct": row.get("mom12_1Pct"), "mom63Pct": detail.get("mom63"),
+                              "pct52wHigh": detail.get("pct52wHigh"),
+                              "aboveMA200": row.get("aboveMA200")},
+            "valuationProfitability": {
+                **{k: fundamentals.get(k) for k in FUNDAMENTAL_KEYS if fundamentals.get(k) is not None},
+                "pointInTime": bool(fundamentals.get("pointInTime")),
+                "basisKo": "현재 스냅샷(시점 기준 아님)" if fundamentals and not fundamentals.get("pointInTime")
+                else ("시점 기준" if fundamentals else "재무 자료 없음")},
+            "liquidityRisk": {"marketCap": row.get("marketCap"),
+                              "liquidityKo": "시가총액·거래대금 자료 미제공" if row.get("marketCap") is None
+                              else None,
+                              "downsideVolPct": risk.get("downsideVolPct"), "vol252Pct": risk.get("vol252Pct"),
+                              "maxDD252Pct": risk.get("maxDD252Pct"), "cvar95Pct": risk.get("cvar95Pct"),
+                              "beta": risk.get("beta")},
+            "edgeSupport": {"statisticallySupported": bool(edge.get("available")),
+                            "reason": edge.get("reason"),
+                            "reasonKo": ("보정 버킷 사용 가능(126거래일 기대초과 "
+                                         f"{edge.get('expectedExcessPct'):+.2f}%p)"
+                                         if edge.get("available")
+                                         else EXCLUSION_KO.get(edge.get("reason"), edge.get("reason")))},
+            "coverage": {"evidenceCoverage": row.get("evidenceCoverage"),
+                         "dataCompleteness": row.get("dataCompleteness"),
+                         "sleevesPresent": row.get("sleevesPresent")},
+            "inModelHoldings": ticker in held,
+            "exclusionCodes": exclusion,
+            "exclusionReasonsKo": [EXCLUSION_KO.get(c, c) for c in exclusion],
+            "rankChange": _rank_change(ticker, rank, prior),
+        })
+    return out
+
+
+# --------------------------------------------------------------------------- #
 # Site payload
 # --------------------------------------------------------------------------- #
 EVIDENCE = {
@@ -420,34 +563,47 @@ EVIDENCE = {
 }
 
 
+def _candidate_session(region: str, detail: dict | None) -> str | None:
+    as_of = (detail or {}).get("asOf")
+    if not as_of:
+        return None
+    try:
+        return session_on_or_before(region, as_of)
+    except ValueError:
+        return None
+
+
 def build(long_term: dict | None, calibration: dict | None, observed_sessions: dict,
           *, now: datetime | None = None, blocked: bool = False,
           prior_receipts: list[dict] | None = None, names: dict | None = None,
-          input_identity: dict | None = None, history: dict | None = None) -> dict:
-    """Assemble ``weeklyDecision`` for site-data. Never raises on missing inputs."""
+          input_identity: dict | None = None, history: dict | None = None,
+          details: dict | None = None) -> dict:
+    """Assemble the weekly decision artifact. Never raises on missing inputs.
+
+    ``observed_sessions`` is each region's INDEX tape date (``SESSION_EVIDENCE``),
+    and ``details`` gives each name's own last quote date, so a stale name is
+    excluded individually and a stale region publishes no new decision.
+    """
     now = now or datetime.now(timezone.utc)
     generated = now.astimezone(timezone.utc).isoformat()
     names = names or {}
+    details = details or {}
     prior_receipts = prior_receipts or []
     regions = {}
     for region in ("KR", "US"):
+        base = {"region": region, "benchmark": BENCHMARKS[region], "benchmarkName": BENCHMARK_NAMES[region],
+                "policyVersion": POLICY_VERSION, "holdings": [], "weights": {}, "watchlist": []}
         if blocked:
-            regions[region] = {"region": region, "status": "BLOCKED", "statusKo": STATUS_KO["BLOCKED"],
-                               "benchmark": BENCHMARKS[region], "holdings": [], "weights": {},
-                               "policyVersion": POLICY_VERSION}
+            regions[region] = {**base, "status": "DATA_BLOCKED", "statusKo": STATUS_KO["DATA_BLOCKED"]}
             continue
-        observed = observed_sessions.get(region)
-        fresh = freshness(region, observed, now)
+        fresh = freshness(region, observed_sessions.get(region), now)
+        fresh["sessionEvidence"] = SESSION_EVIDENCE[region]
         last = latest_final(prior_receipts, region)
         if fresh["status"] == "STALE":
-            regions[region] = {
-                "region": region, "status": "STALE_DATA_NO_NEW_DECISION",
-                "statusKo": STATUS_KO["STALE_DATA_NO_NEW_DECISION"],
-                "benchmark": BENCHMARKS[region], "freshness": fresh,
-                "policyVersion": POLICY_VERSION, "holdings": [], "weights": {},
-                "lastValidReceipt": last,
-            }
+            regions[region] = {**base, "status": "STALE_DATA", "statusKo": STATUS_KO["STALE_DATA"],
+                               "freshness": fresh, "lastValidReceipt": last}
             continue
+        observed = fresh["observedSession"]
         blob = ((long_term or {}).get("regions") or {}).get(region) or {}
         candidates = []
         for row in blob.get("picks") or []:
@@ -455,15 +611,35 @@ def build(long_term: dict | None, calibration: dict | None, observed_sessions: d
             item["region"] = region
             item["name"] = names.get(item["ticker"]) or item.get("name")
             candidates.append(item)
-        observed = fresh["observedSession"]
+        research = list(blob.get("researchTable") or [])
+        watched = {r["ticker"] for r in research[:WATCHLIST_SIZE]}
+        stale = {t for t in {c["ticker"] for c in candidates} | watched
+                 if (_candidate_session(region, details.get(t)) or "") < observed}
+        fresh["staleNames"] = sorted(stale)
+        incomplete = []
+        if not (calibration or {}).get("available"):
+            incomplete.append("CALIBRATION_UNAVAILABLE")
+        if candidates and all(c["ticker"] in stale for c in candidates):
+            incomplete.append("ALL_CANDIDATE_QUOTES_STALE")
+        if incomplete:
+            regions[region] = {**base, "status": "SOURCE_INCOMPLETE",
+                               "statusKo": STATUS_KO["SOURCE_INCOMPLETE"],
+                               "incompleteReasons": incomplete, "freshness": fresh,
+                               "lastValidReceipt": last}
+            continue
         prior = latest_final(prior_receipts, region, before=observed)
         incumbents = {h["ticker"] for h in (prior or {}).get("holdings") or []}
-        decision = decide(region, candidates, calibration, observed, incumbents)
+        decision = decide(region, candidates, calibration, observed, incumbents, stale)
+        decision["watchlist"] = watchlist(region, research, details, calibration, decision, prior,
+                                          names, stale)
+        decision["watchlistLabelKo"] = WATCHLIST_LABEL_KO
+        decision["watchlistSource"] = WATCHLIST_SOURCE
         week_status = "FINAL_WEEKLY" if fresh.get("weekEnd") else "INTRA_WEEK_PREVIEW"
         inputs = {"calibrationHorizonSessions": (calibration or {}).get("horizonDays"),
                   "calibrationAvailable": bool((calibration or {}).get("available")),
                   "candidatePool": "longTerm.regions.%s.picks" % region,
-                  "candidateCount": len(candidates), **(input_identity or {})}
+                  "candidateCount": len(candidates), "sessionEvidence": SESSION_EVIDENCE[region],
+                  **(input_identity or {})}
         receipt = build_receipt(decision, generated_at=generated, inputs=inputs,
                                 evidence=EVIDENCE, week_status=week_status, prior=prior)
         receipt["freshness"] = fresh
@@ -474,6 +650,7 @@ def build(long_term: dict | None, calibration: dict | None, observed_sessions: d
         "evidence": EVIDENCE, "liveValidated": False,
         "regions": regions,
         "history": history or {"available": False, "reason": "REPLAY_RESULT_NOT_SUPPLIED"},
+        "watchlistLabelKo": WATCHLIST_LABEL_KO,
         "disclaimerKo": ("탐색적 주간 판단입니다. 검증된 투자 시스템이 아니며 매매를 실행하지 않습니다. "
                          "근거가 부족하면 지역 지수를 기본값으로 둡니다."),
     }

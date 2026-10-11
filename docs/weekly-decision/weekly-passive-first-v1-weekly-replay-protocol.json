@@ -1,0 +1,31 @@
+{
+  "id": "weekly-passive-first-v1-weekly-replay",
+  "policyVersion": "weekly-passive-first-v1",
+  "authoredOn": "2026-10-10",
+  "evidenceClass": "POST_OUTCOME_EXPOSED_EXPLORATORY_PORTFOLIO_REPLAY",
+  "promotionEligible": false,
+  "liveValidated": false,
+  "why": "The policy decides weekly, but the first replay (weekly-passive-first-v1-replay.json) re-decided only every 21 common sessions (155 anchors). That replay stays unchanged as the 21-session reference. This protocol adds ONE weekly replay of the SAME rule.",
+  "preOutcomeDisclosure": "Written and pushed before the weekly path is computed. The author has seen the 21-session replay (KR rule 14.720% vs KODEX 200 14.861%; US rule = SPY) and the full-ledger calibration. Nothing below was chosen from those results; every parameter is the frozen rule's.",
+  "rule": "Identical to docs/weekly-decision/weekly-passive-first-v1.json 'rule' (module pipeline/weekly_decision.py, unchanged): calibrated 126-session edge only where the bucket is usable, minus stock + ETF round-trip cost, > 0; max 5 names x 15%; max 2 per sector; residual in the regional benchmark ETF; retention credit orders but never admits.",
+  "calendar": {
+    "signalDates": "replay_calendar.signal_grid('2013-01-01', through, 'W'): the last UNION (KRX or NYSE) session of each completed ISO week, 715 dates through 2026-09-11. These are the dates the sealed replay-v16 signal ledger was generated on.",
+    "execution": "The first COMMON (KRX and NYSE both open) session strictly after the signal date. A signal is never executed on its own date.",
+    "holding": "From that execution session to the next week's execution session; one block per week.",
+    "matured": "Only blocks whose end session is on or before the frozen input's through date (2026-09-14)."
+  },
+  "pointInTime": {
+    "candidates": "benchmark_alpha._contexts over the replay-v16 signal ledger: each week's research sleeve uses only that week's signal rows and the previous week's rank-buffer state (price_proxy=True, the convention of every replay-v16 portfolio harness).",
+    "calibration": "historical_calibration.calibrate on outcomes whose 126-session endDate is on or before that week's signal date; probability block skipped (never read by the rule) with the same full-ledger equality check as the 21-session replay.",
+    "noFutureLabels": "An outcome maturing after the signal date never enters that week's calibration."
+  },
+  "valuation": "replay_valuation.ValuationData.window, the same engine and frozen inputs as the 21-session replay; a held name without a valid mark makes the path PARTIAL, never zero-filled.",
+  "costs": "Identical dated cost table (benchmark_alpha.REALISTIC_COSTS; KR ETF leg without securities transaction tax), charged on every traded weight at every weekly execution.",
+  "paths": {
+    "P0": "Regional benchmark ETF 100%, bought once.",
+    "P1": "The weekly rule."
+  },
+  "notIncluded": "C1/C2 (legacy CHAMPION) exist only on the sealed 21-session calendar and are not re-selected weekly.",
+  "benchmarkDefinition": "Same replay-v16 accumulated-index price recipe for stocks and benchmark; NOT reconciled to Phase C's corrected KODEX 200 total return. Headline CAGR cards must not be shown from this replay while that holds.",
+  "forbidden": ["changing any rule parameter after seeing the weekly path", "replacing the 21-session reference file", "presenting the weekly path as validated or forward evidence"]
+}
