@@ -72,3 +72,49 @@ def test_committed_result_matches_the_frozen_spec_and_is_labelled():
         assert p1["benchmarkCagrPct"] == p0["cagrPct"]
         assert len(region["decisions"]) == result["calendar"]["blocks"] == 155
         assert all(d["stockCount"] <= 5 for d in region["decisions"])
+
+
+WEEKLY = ROOT / "docs/weekly-decision/weekly-passive-first-v1-weekly-replay.json"
+WEEKLY_PROTOCOL = ROOT / "docs/weekly-decision/weekly-passive-first-v1-weekly-replay-protocol.json"
+CORRECTED = {
+    "21": ROOT / "docs/weekly-decision/weekly-passive-first-v1-replay-corrected-benchmark.json",
+    "weekly": ROOT / "docs/weekly-decision/weekly-passive-first-v1-weekly-replay-corrected-benchmark.json",
+}
+BASIS_PROTOCOL = ROOT / "docs/weekly-decision/weekly-passive-first-v1-benchmark-basis-protocol.json"
+
+
+def _sha(path):
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def test_weekly_replay_is_the_preregistered_protocol_and_stays_separate():
+    result = json.loads(WEEKLY.read_text())
+    assert result["id"] == "weekly-passive-first-v1-weekly-replay"
+    assert result["specSha256"] == _sha(SPEC) and result["weeklyProtocolSha256"] == _sha(WEEKLY_PROTOCOL)
+    assert result["calendar"]["cadence"] == "WEEKLY_SIGNAL_NEXT_COMMON_SESSION_EXECUTION"
+    assert result["promotionEligible"] is False and result["liveValidated"] is False
+    assert set(result["regions"]["KR"]["paths"]) == {"P0", "P1"}  # C1/C2 exist only on the 21-session calendar
+    blocks = result["calendar"]["blocks"]
+    for region in result["regions"].values():
+        assert len(region["decisions"]) == blocks
+        assert all(d["date"] > d["signalDate"] for d in region["decisions"])  # never executed on its own date
+        assert all(d["stockCount"] <= 5 for d in region["decisions"])
+    # The 21-session reference is untouched and still its own file.
+    assert json.loads(RESULT.read_text())["calendar"]["cadence"] == "21_SESSION_ANCHORS_NOT_WEEKLY"
+
+
+def test_corrected_benchmark_versions_change_only_the_benchmark_leg():
+    protocol_sha = _sha(BASIS_PROTOCOL)
+    for cadence, path in CORRECTED.items():
+        corrected = json.loads(path.read_text())
+        original = json.loads((WEEKLY if cadence == "weekly" else RESULT).read_text())
+        assert corrected["benchmarkBasis"] == "phase-c-corrected"
+        assert corrected["benchmarkBasisProtocolSha256"] == protocol_sha
+        assert corrected["id"] == original["id"] + "-corrected-benchmark"
+        kr_new, kr_old = corrected["regions"]["KR"], original["regions"]["KR"]
+        assert kr_new["benchmarkDefinition"] == "PHASE_C_RECONCILED_GROSS_ETF_TOTAL_RETURN"
+        # Same decisions, week by week: the rule reads no benchmark price.
+        assert kr_new["decisions"] == kr_old["decisions"]
+        assert kr_new["paths"]["P0"]["cagrPct"] < kr_old["paths"]["P0"]["cagrPct"]
+        # US holds no 069500.KS and is unchanged.
+        assert corrected["regions"]["US"]["paths"] == original["regions"]["US"]["paths"]
