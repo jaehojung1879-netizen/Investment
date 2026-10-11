@@ -48,6 +48,7 @@ on:
           - guru-13f-access
           - ecos-market-context
           - krx-industry-openapi
+          - nasdaq100-sources
       args:
         description: "스크립트에 그대로 넘길 인자 (비우면 스크립트 기본값)"
         type: string
@@ -98,6 +99,7 @@ jobs:
             kr-investor-flow)      script=probe_kr_investor_flow.py;       deps=no  ;;
             kr-short-selling)      script=probe_kr_short_selling.py;       deps=no  ;;
             guru-13f-access)       script=probe_guru_13f_access.py;        deps=no  ;;
+            nasdaq100-sources)     script=probe_nasdaq100_sources.py;      deps=no  ;;
             *) echo "unknown probe: ${{ inputs.probe }}" >&2; exit 2 ;;
           esac
           echo "script=$script" >> "$GITHUB_OUTPUT"
