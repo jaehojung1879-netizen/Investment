@@ -94,3 +94,14 @@ ledger.yml (매일 00:10 UTC)
 
 Actions → **Append paper-signal ledger** → Run workflow. 판단 단계가 검증에 실패하면 경고만 남기고 아무것도 쓰지 않으며,
 페이퍼 원장 기록은 그대로 진행됩니다.
+
+## 첫 게시 확인 (2026-10-11 기준)
+
+- #218 병합(`123ce7d8`, 2026-10-11 02:45 UTC) 직후 확인: `signal-history`에 `ledger/weekly-decisions/`가 **아직 없음** →
+  사이트는 두 지역 카드를 "미게시"로 표시하고 비중을 그리지 않습니다(`NOT_PUBLISHED_YET`). 이는 정상 상태입니다.
+- 원장 워크플로는 예약상 00:10 UTC이지만 실제로는 05:40 UTC 전후에 시작해 왔습니다(최근 4회). 병합 후 첫 예약 실행이
+  `main`의 새 단계를 실행하면 `latest.json`, `receipts.jsonl`, `publication-status.json`이 처음 생깁니다.
+- 토요일(KST) 실행에서 나온 판단만 `FINAL_WEEKLY` 영수증이 됩니다. 주중 실행 결과는 미리보기로만 표시되고 기록되지 않습니다.
+- 수동으로 먼저 확인하려면 Actions → **Append paper-signal ledger** → Run workflow(소유자 실행). 이 세션은 실행하지 않았습니다.
+- 확인 순서: ① 실행 로그의 "Weekly decision and append-only receipts" 단계 출력(`regions`·`receipts`) ② signal-history의 세 파일
+  ③ 사이트 첫 화면 카드의 기준일·상태 ④ 다음 주 같은 기준일 영수증의 다이제스트가 바뀌지 않았는지.

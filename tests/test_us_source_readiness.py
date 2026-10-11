@@ -86,3 +86,27 @@ def test_weekly_us_local_currency_matches_its_replay():
     assert weekly["replaySource"] == "docs/weekly-decision/weekly-passive-first-v1-weekly-replay.json"
     assert weekly["paths"]["P1"] == weekly["paths"]["P0"]  # the US rule never left SPY
     assert weekly["usdKrwChangePct"] > 0
+
+
+def test_comparison_inputs_exist_and_keep_their_bases():
+    """Every field the KR/US comparison reads is in the committed history, on its stated basis."""
+    from pipeline import weekly_history as H
+    history = H.build_history()
+    kr = history["weeklyReplayCorrected"]["regions"]["KR"]
+    us = history["weeklyReplay"]["regions"]["US"]
+    assert kr["benchmarkDefinition"] == "PHASE_C_RECONCILED_GROSS_ETF_TOTAL_RETURN"
+    assert us["status"] == "SURVIVORSHIP_BIASED_PARTIAL" and us["headlineEligible"] is False
+    for blob in (kr, us):
+        p0, p1 = blob["paths"]["P0"], blob["paths"]["P1"]
+        assert (p0["startDate"], p0["endDate"]) == (p1["startDate"], p1["endDate"])
+        for key in ("cagrPct", "maxDrawdownPct", "annualizedVolatilityPct", "oneWayTurnoverPerYear",
+                    "annualizedCostDragPct", "blocks"):
+            assert p1.get(key) is not None, key
+    # Same weekly calendar in both regions, so the common period is the whole span.
+    assert (kr["paths"]["P1"]["startDate"], kr["paths"]["P1"]["endDate"]) == \
+        (us["paths"]["P1"]["startDate"], us["paths"]["P1"]["endDate"])
+    # The US rule never held a stock, so the screen may say no selection effect was observed.
+    assert us["anchorsWithStocks"] == 0 and us["paths"]["P1"]["excessCagrPp"] == 0.0
+    # The FX effect quoted on the screen is the KRW-minus-USD gap of the same SPY path.
+    usd = history["usLocalCurrencyWeekly"]["paths"]["P0"]["cagrPct"]
+    assert round(us["paths"]["P0"]["cagrPct"] - usd, 3) == round(16.698 - 14.734, 3)
