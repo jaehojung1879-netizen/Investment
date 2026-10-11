@@ -109,22 +109,18 @@ def test_current_registration_sidecar_and_adapter_mutation_refused(scratch, path
 @pytest.mark.parametrize("failure", ["missing", "corrupt", "unrelated"])
 def test_unavailable_corrupt_or_unrelated_git_history_fails_closed(scratch, monkeypatch, failure):
     root, spec, current = scratch
-    show, run = subprocess.check_output, subprocess.run
-
-    def git_show(args, **kwargs):
-        if args[-1] == REGISTRATION + ":" + WORKFLOW:
-            if failure == "missing":
-                raise subprocess.CalledProcessError(128, args)
-            if failure == "corrupt":
-                return b"wrong historical workflow"
-        return show(args, **kwargs)
+    run = subprocess.run
 
     def git_run(args, **kwargs):
         if failure == "unrelated" and args[:2] == ["git", "merge-base"]:
             raise subprocess.CalledProcessError(1, args)
+        if args[-1] == REGISTRATION + ":" + WORKFLOW:
+            if failure == "missing":
+                raise subprocess.CalledProcessError(128, args)
+            if failure == "corrupt":
+                return subprocess.CompletedProcess(args, 0, b"wrong historical workflow", b"")
         return run(args, **kwargs)
 
-    monkeypatch.setattr(subprocess, "check_output", git_show)
     monkeypatch.setattr(subprocess, "run", git_run)
     with pytest.raises(ValueError, match="GIT_OBJECT_UNAVAILABLE|DEPENDENCY_CHANGED|NOT_ANCESTOR"):
         C.historical_ci_dependencies(spec, current, root)

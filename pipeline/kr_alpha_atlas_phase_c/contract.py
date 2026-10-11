@@ -523,8 +523,8 @@ def historical_ci_dependencies(spec, expected, root):
 
     def registered_bytes(path):
         try:
-            return subprocess.check_output(["git", "show", registration + ":" + path], cwd=root,
-                                           stderr=subprocess.PIPE)
+            return subprocess.run(["git", "show", registration + ":" + path], cwd=root, check=True,
+                                  stdout=subprocess.PIPE, stderr=subprocess.PIPE).stdout
         except subprocess.CalledProcessError as exc:
             raise ValueError("HISTORICAL_CI_GIT_OBJECT_UNAVAILABLE") from exc
 

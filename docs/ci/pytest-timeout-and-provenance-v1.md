@@ -30,7 +30,7 @@ script, test and documentation references were searched for the workflow path.
 | `kr-alpha-atlas-phase-c-v1.json` | Direct `dependencyHashes` pin; 113 dependencies and 235 protected identities remain unchanged. |
 | `kr-alpha-atlas-phase-c-v2-amendment.json` / `kr_alpha_atlas_phase_c_amendment.load` | Inherits the v1 dependency map via `contract.load`; additional pins still verify current bytes. |
 | `kr-alpha-atlas-phase-c-v3-price-repair.json` / `kr_alpha_atlas_mirae_repair.load` | Inherits v2/v1; effective contract and dependency digest still verified. |
-| `kr-alpha-atlas-phase-c-v4-numerical-reproducibility.json` / `kr_alpha_atlas_reproducibility.load` | Inherits v3/v2/v1; exact numerical/environment and effective-contract checks unchanged. |
+| `kr-alpha-atlas-phase-c-v4-reproducibility.json` / `kr_alpha_atlas_reproducibility.load` | Inherits v3/v2/v1; exact numerical/environment and effective-contract checks unchanged. |
 | `alpha-research-design-review-v1-sources.json` | Historical review receipt, explicitly `isSeal: false`; hash `818b2cd9…` verified at its `baseMainCommit` `2c5b6849…`. It is also protected opaquely by Phase C. No current-workflow enforcement or receipt rewrite. |
 | `kr_alpha_atlas_phase_c.contract.build/validate/load` | `build` used current bytes, including its own source. `validate` now resolves only the two explicitly registered compatibility identities before the original complete-registration comparison. |
 | Phase C lifecycle and v2/v3/v4 formal paths | Still call the validators before input/lock/outcome boundaries. No authorization, lock, result namespace or formal workflow changes. |
@@ -86,8 +86,8 @@ an old study. Do not run `freeze` to update a historical registration.
 
 ## Validation and execution-time assessment
 
-Focused validation: 85 tests passed, including chronology/provenance, inherited
-amendment integrity, and terminal guards. Ruff, pipeline compilation and the same
+Focused validation: 95 tests passed, including chronology/provenance, inherited
+amendment integrity, v4 approval refusal, and terminal guards. Ruff, pipeline compilation and the same
 entry-point import/script compilation check used by CI passed. Seed validation
 runs only on isolated synthetic output in `/tmp`, with production rejection
 preserved.
