@@ -1,11 +1,13 @@
+# Legacy UI contracts intentionally target the preserved, undeployed v1 archive.
+# Live terminal contracts are in test_research_terminal.py.
 """Static DOM/rendering contracts for the dependency-free dashboard."""
 from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
-APP = (ROOT / "app.js").read_text(encoding="utf-8")
-HTML = (ROOT / "index.html").read_text(encoding="utf-8")
-CSS = (ROOT / "styles.css").read_text(encoding="utf-8")
+APP = (ROOT / "docs/archive/dashboard-v1/app.js").read_text(encoding="utf-8")
+HTML = (ROOT / "docs/archive/dashboard-v1/index.html").read_text(encoding="utf-8")
+CSS = (ROOT / "docs/archive/dashboard-v1/styles.css").read_text(encoding="utf-8")
 
 
 def test_market_card_and_dialog_use_explicit_three_month_contract():

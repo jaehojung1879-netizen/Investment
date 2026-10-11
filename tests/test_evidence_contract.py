@@ -1,3 +1,5 @@
+# Legacy UI contracts intentionally target the preserved, undeployed v1 archive.
+# Live terminal contracts are in test_research_terminal.py.
 """Artifact and UI contracts for the two evidence classes.
 
 The single failure this file exists to prevent: a reader looking at the
@@ -17,9 +19,9 @@ from pipeline import provenance as prov_mod
 from pipeline import validate as V
 
 ROOT = Path(__file__).resolve().parents[1]
-APP = (ROOT / "app.js").read_text(encoding="utf-8")
-HTML = (ROOT / "index.html").read_text(encoding="utf-8")
-CSS = (ROOT / "styles.css").read_text(encoding="utf-8")
+APP = (ROOT / "docs/archive/dashboard-v1/app.js").read_text(encoding="utf-8")
+HTML = (ROOT / "docs/archive/dashboard-v1/index.html").read_text(encoding="utf-8")
+CSS = (ROOT / "docs/archive/dashboard-v1/styles.css").read_text(encoding="utf-8")
 CONFIG = json.loads((ROOT / "config.json").read_text(encoding="utf-8"))
 
 

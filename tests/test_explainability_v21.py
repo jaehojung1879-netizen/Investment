@@ -1,3 +1,5 @@
+# Legacy UI contracts intentionally target the preserved, undeployed v1 archive.
+# Live terminal contracts are in test_research_terminal.py.
 """Explainability contracts for the macro and expert-consensus panels."""
 from __future__ import annotations
 
@@ -130,8 +132,8 @@ def test_expert_queue_explains_exactly_why_consensus_is_empty():
 
 
 def test_frontend_surfaces_regime_rule_and_consensus_exclusion_details():
-    app = (ROOT / "app.js").read_text(encoding="utf-8")
-    styles = (ROOT / "styles.css").read_text(encoding="utf-8")
+    app = (ROOT / "docs/archive/dashboard-v1/app.js").read_text(encoding="utf-8")
+    styles = (ROOT / "docs/archive/dashboard-v1/styles.css").read_text(encoding="utf-8")
 
     assert "왜 이 국면인가" in app
     assert "signalSummaryKo" in app

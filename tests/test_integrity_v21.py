@@ -1,3 +1,5 @@
+# Legacy UI contracts intentionally target the preserved, undeployed v1 archive.
+# Live terminal contracts are in test_research_terminal.py.
 """Regression tests for the v2.1 integrity patch."""
 from __future__ import annotations
 
@@ -389,7 +391,7 @@ def test_longterm_exposes_evidence_quality_not_prediction_confidence():
 
 
 def test_frontend_labels_completeness_as_data_quality_with_legacy_fallback():
-    app = (ROOT / "app.js").read_text(encoding="utf-8")
+    app = (ROOT / "docs/archive/dashboard-v1/app.js").read_text(encoding="utf-8")
     assert "근거 커버리지" in app
     assert "p.dataCompleteness ?? p.financialCoverage" in app
     assert "신뢰도 <b>${Math.round((p.confidence" not in app

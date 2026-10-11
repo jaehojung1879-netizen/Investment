@@ -1,3 +1,5 @@
+# Legacy UI contracts intentionally target the preserved, undeployed v1 archive.
+# Live terminal contracts are in test_research_terminal.py.
 import json
 from pathlib import Path
 
@@ -298,14 +300,14 @@ def test_pit_contract_accepts_named_roe_and_fcf_fields_without_backfill(tmp_path
 
 
 def test_frontend_keeps_historical_and_prospective_gaps_visibly_separate():
-    app = Path("app.js").read_text(encoding="utf-8")
+    app = Path("docs/archive/dashboard-v1/app.js").read_text(encoding="utf-8")
     for text in ("Historical OOS audit gap", "Prospective paper gap",
                  "NOT_YET_MATURED", "Historical와 prospective를 하나의 성과로 합산하지 않습니다"):
         assert text in app
 
 
 def test_frontend_shows_effective_sample_and_price_sleeve_limitation():
-    app = Path("app.js").read_text(encoding="utf-8")
+    app = Path("docs/archive/dashboard-v1/app.js").read_text(encoding="utf-8")
     assert "유효독립" in app
     # The HAC lag is derived from the replay grid, not fixed at horizon-1: on a
     # weekly grid a 126-session overlap spans ~26 observations. The UI has to
@@ -354,14 +356,14 @@ def test_bucket_diagnostics_separate_carry_from_the_ranking_contribution():
 
 
 def test_frontend_shows_the_contribution_column_not_only_benchmark_excess():
-    app = Path("app.js").read_text(encoding="utf-8")
+    app = Path("docs/archive/dashboard-v1/app.js").read_text(encoding="utf-8")
     assert "유니버스 캐리" in app
     assert "유니버스 대비(기여)" in app
     assert "하위 버킷도 양수로 보일 수 있습니다" in app
 
 
 def test_frontend_separates_universe_carry_from_selection_alpha():
-    app = Path("app.js").read_text(encoding="utf-8")
+    app = Path("docs/archive/dashboard-v1/app.js").read_text(encoding="utf-8")
     assert "알파 귀속" in app
     assert "유니버스 캐리" in app and "알파 스프레드" in app
     assert "정렬 미확인" in app
@@ -369,7 +371,7 @@ def test_frontend_separates_universe_carry_from_selection_alpha():
 
 def test_challenger_never_changes_production_selector():
     assert KP.SELECTION_METHOD == "ALPHA_RANK_PER_DOWNSIDE_RISK"
-    app = Path("app.js").read_text(encoding="utf-8")
+    app = Path("docs/archive/dashboard-v1/app.js").read_text(encoding="utf-8")
     assert "Champion" in app and "Challenger" in app
     assert "production" in KP.challenger_selection.__doc__
 
