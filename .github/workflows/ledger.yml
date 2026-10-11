@@ -114,11 +114,18 @@ jobs:
           mkdir -p ledger-work/ledger/weekly-decisions .state/weekly
           if python -m pipeline.weekly_publish data/site-data.json \
                ledger-work/ledger/weekly-decisions/receipts.jsonl \
-               .state/weekly/latest.json .state/weekly/receipts.jsonl; then
+               .state/weekly/latest.json .state/weekly/receipts.jsonl \
+               .state/weekly/publication-status.json; then
             cp .state/weekly/latest.json ledger-work/ledger/weekly-decisions/latest.json
             cp .state/weekly/receipts.jsonl ledger-work/ledger/weekly-decisions/receipts.jsonl
+            cp .state/weekly/publication-status.json ledger-work/ledger/weekly-decisions/publication-status.json
           else
-            echo "::warning::weekly decision refused; nothing written"
+            # latest.json and receipts stay as they were; only the refusal is published,
+            # so the site can say the last attempt failed instead of looking current.
+            if [ -f .state/weekly/publication-status.json ]; then
+              cp .state/weekly/publication-status.json ledger-work/ledger/weekly-decisions/publication-status.json
+            fi
+            echo "::warning::weekly decision refused; latest.json and receipts unchanged"
             exit 1
           fi
 

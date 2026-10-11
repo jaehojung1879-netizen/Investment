@@ -1,7 +1,10 @@
 """Turn a validated production site-data.json into the weekly decision artifact.
 
     python -m pipeline.weekly_publish <site-data.json> <receipts-in.jsonl> \
-        <weekly-decision.json out> <receipts-out.jsonl>
+        <weekly-decision.json out> <receipts-out.jsonl> [<publication-status.json out>]
+
+The optional status file is written on success AND on refusal, so a refused
+publication is visible to the site instead of only to the Actions log.
 
 Why a separate step: ``pipeline/build.py``, ``pipeline/validate.py`` and
 ``.github/workflows/pages.yml`` are byte-pinned by sealed studies
@@ -10,8 +13,9 @@ workflow census, so no new workflow file can be added. The weekly layer runs
 inside the paper-ledger workflow (``ledger.yml``) on the artifact it has just
 built and validated, and writes to signal-history beside the paper ledger. Every input it
 needs is in site-data: the research sleeve (``longTerm.regions.*.picks``), the
-production calibration (``historicalValidation.alphaCalibration``), each name's
-last session (``details.*.asOf``) and the safety flags.
+production calibration (``historicalValidation.alphaCalibration``), each region's
+index tape (``indices``: ^KS11 / ^GSPC), each name's last session (``details.*.asOf``)
+and the safety flags.
 
 ``now`` is the site's own ``generatedAt``, not the wall clock, so the same
 site-data always produces the same receipts.
@@ -20,23 +24,31 @@ from __future__ import annotations
 
 import hashlib
 import json
+import os
 import sys
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 
 from . import weekly_decision as W
 from . import weekly_history as H
 
 SCHEMA = "WEEKLY_DECISION_ARTIFACT_V1"
-ACTIVE = {"STOCKS_SELECTED", "PASSIVE_NO_DEFENSIBLE_EDGE", "NO_CANDIDATES"}
+ACTIVE = set(W.DECISION_STATUSES)
+STATUS_SCHEMA = "WEEKLY_PUBLICATION_STATUS_V1"
 
 
 def observed_sessions(site: dict) -> dict:
-    """Each region's latest observed session, from its own names only."""
+    """Each region's session evidence: its own index tape, never its newest stock.
+
+    The first version took the newest ``details.*.asOf`` of any name in the
+    region, so one current quote made a stale cross-section look current.
+    Per-name staleness is now judged in ``weekly_decision.build``.
+    """
+    by_symbol = {row.get("symbol"): row for row in site.get("indices") or []}
     out: dict[str, str] = {}
-    for detail in (site.get("details") or {}).values():
-        region, as_of = detail.get("region"), detail.get("asOf")
-        if region in W.BENCHMARKS and as_of and as_of > out.get(region, ""):
+    for region, symbol in W.SESSION_EVIDENCE.items():
+        as_of = (by_symbol.get(symbol) or {}).get("asOf")
+        if as_of:
             out[region] = as_of
     return out
 
@@ -84,7 +96,7 @@ def build_from_site(site: dict, site_sha256: str, receipts: list[dict]) -> dict:
     block = W.build(site.get("longTerm"), calibration, observed_sessions(site), now=now,
                     blocked=reason is not None, prior_receipts=receipts,
                     names=site.get("names") or {}, input_identity=identity,
-                    history=H.build_history())
+                    history=H.build_history(), details=site.get("details") or {})
     # A week already recorded is shown exactly as recorded. A later build for
     # the same (policy, region, asOfDate) may differ (vendor snapshots move);
     # the page must not show a decision the ledger refused to record.
@@ -102,6 +114,11 @@ def build_from_site(site: dict, site_sha256: str, receipts: list[dict]) -> dict:
     return block
 
 
+# An observation row may describe a name; it may not size it or forecast it.
+FORBIDDEN_WATCH_KEYS = {"weight", "weightPct", "targetWeight", "probability", "probUp",
+                        "expectedReturnPct", "kellyFraction", "position"}
+
+
 def validate(block: dict) -> list[str]:
     """Invariants the published file must satisfy; any error refuses publication."""
     errors: list[str] = []
@@ -114,9 +131,20 @@ def validate(block: dict) -> list[str]:
         holdings, weights = blob.get("holdings") or [], blob.get("weights") or {}
         status = blob.get("status")
         if blocked:
-            if status != "BLOCKED" or holdings or weights or blob.get("candidates"):
+            if (status != "DATA_BLOCKED" or holdings or weights or blob.get("candidates")
+                    or blob.get("watchlist")):
                 errors.append(f"blocked_with_actionable_output:{region}")
             continue
+        if status not in W.STATUS_KO:
+            errors.append(f"unknown_status:{region}")
+        watch = blob.get("watchlist") or []
+        if len(watch) > W.WATCHLIST_SIZE:
+            errors.append(f"watchlist_too_long:{region}")
+        if watch and blob.get("watchlistLabelKo") != W.WATCHLIST_LABEL_KO:
+            errors.append(f"watchlist_without_label:{region}")
+        for row in watch:
+            if set(row) & FORBIDDEN_WATCH_KEYS:
+                errors.append(f"watchlist_sizing_or_forecast:{region}:{row.get('ticker')}")
         if blob.get("liveValidated") not in (None, False):
             errors.append(f"claims_validation:{region}")
         if status not in ACTIVE:
@@ -150,18 +178,40 @@ def _read_jsonl(path: Path) -> list[dict]:
     return [json.loads(line) for line in path.read_text(encoding="utf-8").splitlines() if line.strip()]
 
 
+def write_status(path: Path | None, *, status: str, site: dict | None, errors: list[str],
+                 block: dict | None = None) -> None:
+    if path is None:
+        return
+    payload = {
+        "schema": STATUS_SCHEMA, "status": status,
+        "attemptedAt": datetime.now(timezone.utc).isoformat(),
+        "siteGeneratedAt": (site or {}).get("generatedAt"),
+        "runId": os.environ.get("GITHUB_RUN_ID"), "errors": errors,
+        "regions": {r: b.get("status") for r, b in ((block or {}).get("regions") or {}).items()},
+    }
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(payload, ensure_ascii=False, sort_keys=True) + "\n", encoding="utf-8")
+
+
 def main(argv=None) -> int:
     argv = argv if argv is not None else sys.argv[1:]
-    if len(argv) != 4:
+    if len(argv) not in (4, 5):
         print(__doc__)
         return 2
-    site_path, receipts_in, out_path, receipts_out = map(Path, argv)
-    raw = site_path.read_bytes()
-    site = json.loads(raw)
-    receipts = _read_jsonl(receipts_in)
-    block = build_from_site(site, hashlib.sha256(raw).hexdigest(), receipts)
+    site_path, receipts_in, out_path, receipts_out = map(Path, argv[:4])
+    status_path = Path(argv[4]) if len(argv) == 5 else None
+    site = None
+    try:
+        raw = site_path.read_bytes()
+        site = json.loads(raw)
+        receipts = _read_jsonl(receipts_in)
+        block = build_from_site(site, hashlib.sha256(raw).hexdigest(), receipts)
+    except Exception as exc:  # noqa: BLE001 - the refusal itself must be published
+        write_status(status_path, status="FAILED", site=site, errors=[f"{type(exc).__name__}: {exc}"])
+        raise
     errors = validate(block)
     if errors:
+        write_status(status_path, status="REFUSED", site=site, errors=errors, block=block)
         print("refusing to publish the weekly decision:", ", ".join(errors))
         return 1
     out_path.parent.mkdir(parents=True, exist_ok=True)
@@ -175,6 +225,7 @@ def main(argv=None) -> int:
                                     for r in merged), encoding="utf-8")
     summary = {r: (b.get("status"), b.get("asOfDate"), b.get("weekStatus"), b.get("stockCount"))
                for r, b in block["regions"].items()}
+    write_status(status_path, status="PUBLISHED", site=site, errors=[], block=block)
     print(json.dumps({"regions": summary, "receipts": report}, ensure_ascii=False))
     for conflict in report["conflicts"]:
         print(f"notice: kept the first receipt for {conflict['receiptId']}; a later, different "

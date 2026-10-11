@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import gzip
 import json
+import math
 from pathlib import Path
 
 from .config import REPO_ROOT
@@ -19,6 +20,17 @@ INTEGRATED_AUDIT = REPO_ROOT / "docs" / "results" / "kr-integrated-alpha-portfol
 BENCHMARK_RECON = REPO_ROOT / "docs" / "audits" / "kr-alpha-atlas-phase-c-integrity" / "benchmark-reconciliation.json"
 BENCHMARK_RECON_CORRECTED = (REPO_ROOT / "docs" / "audits" / "kr-alpha-atlas-phase-c-integrity"
                              / "benchmark-reconciliation-corrected.json")
+
+STOCK_SOURCE_AUDIT = (REPO_ROOT / "docs" / "audits" / "kr-alpha-atlas-phase-c-integrity"
+                      / "stock-price-integrity.json")
+REPLAY_RESULT_WEEKLY = REPO_ROOT / "docs" / "weekly-decision" / "weekly-passive-first-v1-weekly-replay.json"
+REPLAY_RESULT_CORRECTED = (REPO_ROOT / "docs" / "weekly-decision"
+                           / "weekly-passive-first-v1-replay-corrected-benchmark.json")
+REPLAY_RESULT_WEEKLY_CORRECTED = (REPO_ROOT / "docs" / "weekly-decision"
+                                  / "weekly-passive-first-v1-weekly-replay-corrected-benchmark.json")
+# A distribution applied once moves the series by the official factor; twice,
+# by its square. The band only sorts the events; it is not a test threshold.
+DOUBLE_BAND = (1.8, 2.2)
 
 PATH_LABELS_KO = {
     "P0": "지수 100% 보유",
@@ -77,6 +89,65 @@ def benchmark_definition_gap() -> dict:
             "noteKo": ("과거 재현(replay-v16)의 KODEX 200 수익률은 Phase C가 공식 시세·분배금으로 대조한 "
                        "총수익률보다 매년 높았습니다. 같은 가격 레시피를 쓰는 재현 경로끼리의 비교는 내부적으로 "
                        "일관되지만, 절대 수익률 수준은 과대일 수 있습니다.")}
+
+
+def benchmark_audit() -> dict:
+    """How replay-v16's 069500.KS series differs from the reconciled one, from committed audits only.
+
+    For each ex-date Phase C could verify, the log of the replay's growth over
+    the ex-date divided by the log of the official single distribution factor:
+    1 means the distribution was applied once, 2 means twice.
+    """
+    old, stock = _load(BENCHMARK_RECON), _load(STOCK_SOURCE_AUDIT)
+    if not old:
+        return {"available": False}
+    events = []
+    for row in old.get("distributionAdjustmentDiagnostics") or []:
+        official = math.log(row["officialSingleAdjustmentFactor"])
+        if official <= 0:
+            continue
+        events.append({
+            "exDate": row["exDate"], "cashKrwPerUnit": row["cashKrwPerUnit"],
+            "officialFactor": round(row["officialSingleAdjustmentFactor"], 6),
+            "replayOverRawMultiple": round(math.log(row["internalToRawGrowthFactor"]) / official, 3),
+            "vendorOverRawMultiple": round(math.log(row["vendorToRawGrowthFactor"]) / official, 3),
+            "replayOverVendorMultiple": round(
+                math.log(max(row["internalToVendorGrowthFactor"], 1.0)) / official, 3)})
+    doubled = [e for e in events if DOUBLE_BAND[0] <= e["replayOverRawMultiple"] <= DOUBLE_BAND[1]]
+    single = [e for e in events if e not in doubled]
+    gap = benchmark_definition_gap()
+    return {
+        "available": True,
+        "ticker": "069500.KS",
+        "status": "DISTRIBUTIONS_DOUBLE_APPLIED_IN_REPLAY_V16_BENCHMARK",
+        "mechanismKo": ("replay-v16의 한국 세션 시세(FinanceDataReader/Naver)는 이 ETF에 대해 분배금이 이미 "
+                        "반영된 수정 종가였고(벤더/원시 시세 비율 = 공식 분배 계수), pipeline/korea_prices.acquire가 "
+                        "Yahoo 분배 이벤트를 price_adjustment.to_total_return으로 한 번 더 적용했습니다"
+                        "(재현/벤더 비율 ≈ 공식 계수). 그래서 분배락일마다 계수가 두 번 곱해졌습니다."),
+        "codePath": "pipeline/korea_prices.py acquire() -> price_adjustment.to_total_return(clean, _events_for(...))",
+        "verifiableEvents": len(events), "doubledEvents": len(doubled),
+        "singleOrOtherEvents": [e["exDate"] for e in single],
+        "exceptionKo": ("2022-07-28은 재현/벤더 비율이 1.0(그 분배 이벤트가 Yahoo에 없음)이라 한 번만 반영됐습니다."
+                        if any(e["exDate"] == "2022-07-28" for e in single) else None),
+        "events": events,
+        "annualGap": gap,
+        "earlierYearsKo": ("발행사가 최근 20건만 제공해 2021-10 이전 분배락은 개별 검증이 안 됩니다. "
+                           "다만 Phase C는 공식 보관 분배표(2012년~ 46건)로 전 기간 총수익을 재구성해 PASS했고, "
+                           "연간 차이는 2013년부터 매년 양(+)입니다."),
+        "stockLegs": {
+            "conclusion": (stock or {}).get("ordinaryCashDoubleAdjustmentConclusion"),
+            "scope": (stock or {}).get("scopeLimit"),
+            "exception": (stock or {}).get("exception"),
+            "noteKo": ("종목 시세는 6종목 표본에서 일반 현금배당 이중 반영이 발견되지 않았습니다(006800.KS 주식배당은 예외). "
+                       "260종목 전체는 대조되지 않았습니다."),
+        },
+        "effectOnDecisionKo": ("주간 판단의 기대초과(보정)는 이 부풀려진 지수 대비로 측정된 봉인 결과 원장을 읽습니다. "
+                               "같은 날 모든 종목에 공통인 이동이므로 순위 정렬 검정(t값)에는 영향이 없지만, "
+                               "기대초과 수준은 종목에 불리하게 낮게 잡힙니다(연 1.1~4.5%p 차이, 126거래일 기준 대략 그 절반). 현재 판단(지수 100%)은 "
+                               "정렬 미확인 때문이므로 바뀌지 않습니다."),
+        "correctionKo": ("수정 회계: Phase C가 공식 분배금으로 대조한 일별 총수익 지수로 069500.KS 보유분만 다시 평가합니다. "
+                         "판단·종목·비용은 그대로이며 원래(replay-v16) 결과는 지우지 않고 함께 보존합니다."),
+    }
 
 
 def replay_block(report: dict | None, regions=("KR",)) -> dict:
@@ -163,6 +234,10 @@ PHASE_C = {
 def build_history(regions=("KR",)) -> dict:
     return {
         "replay": replay_block(_load(REPLAY_RESULT), regions),
+        "replayCorrected": replay_block(_load(REPLAY_RESULT_CORRECTED), regions),
+        "weeklyReplay": replay_block(_load(REPLAY_RESULT_WEEKLY), regions),
+        "weeklyReplayCorrected": replay_block(_load(REPLAY_RESULT_WEEKLY_CORRECTED), regions),
+        "benchmarkAudit": benchmark_audit(),
         "existingStudies": {"integratedAlphaPortfolio": integrated_block(_load(INTEGRATED_AUDIT)),
                             "phaseC": PHASE_C},
         "benchmarkDefinitionGap": benchmark_definition_gap(),
