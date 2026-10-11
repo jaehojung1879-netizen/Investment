@@ -1,0 +1,309 @@
+{
+ "calendar": {
+  "QQQ": {
+   "expectedSessions": 3947,
+   "extra": [],
+   "missing": []
+  },
+  "SPY": {
+   "expectedSessions": 3947,
+   "extra": [],
+   "missing": []
+  }
+ },
+ "evidenceClass": "OUTCOME_BLIND_DATA_AUDIT",
+ "externalCorroboration": {
+  "reason": "no free independent price host is reachable from this environment (Yahoo, Nasdaq, Stooq, SEC refused by the egress proxy) and the probe dispatch was refused (HTTP 403). scripts/probe_nasdaq100_sources.py fetches Nasdaq raw closes and distributions for both ETFs, but it is not wired into .github/workflows/probes.yml because that file is hash-pinned by two sealed KR specs; running it is an owner decision.",
+  "status": "NOT_PERFORMED"
+ },
+ "fx": {
+  "maxAgeDays": 7,
+  "missingOrStale": [],
+  "series": "FRED H.10 DEXKOUS",
+  "sessions": 3947
+ },
+ "id": "us-dual-benchmark-v1-data-audit",
+ "officialReplayReconciliation": {
+  "differencePctPt": 0.006,
+  "note": "official path includes its entry transaction cost and weekly block chaining; this is gross close-to-close",
+  "officialP1SpyUsdCagrPct": 14.734,
+  "officialSource": "docs/us-readiness/weekly-passive-first-v1-weekly-us-local-currency.json",
+  "thisSnapshotSpyUsdCagrPct": 14.74
+ },
+ "pair": {
+  "commonSessions": 3947,
+  "maxAbsDailyRatioMovePct": 3.259,
+  "onlyQqq": [],
+  "onlySpy": [],
+  "ratioJumpsForReview": []
+ },
+ "protected": {
+  "configBenchmarksUS": "SPY",
+  "signalHistoryReceiptsBlob": "0725e46112faddf18a06bb69f530377aac034ffe",
+  "weeklyDecisionDocsSha256": {
+   "weekly-passive-first-v1-benchmark-basis-protocol.json": "a08f92b06aab6de4959b52d0a5bc0fd2c6b21851c53deca114167898e97a8fe6",
+   "weekly-passive-first-v1-replay-corrected-benchmark.json": "901b3aee7d3bc06eed3fd2bd14b07a0d4ca4da23745b861a877203c48772b8d2",
+   "weekly-passive-first-v1-replay.json": "03ed2d619f3040136f8f13744cb776142d5966f9278092d7b29b81d440e5a957",
+   "weekly-passive-first-v1-weekly-replay-corrected-benchmark.json": "598161a74cafb459daefbcdd8404b6ca02804098d7f22a51b2531f077012bbc5",
+   "weekly-passive-first-v1-weekly-replay-protocol.json": "f0f2bc13a905c4611e9924f8bb1a4f828975a75dc8fa7ee3aae0d611208ecd23",
+   "weekly-passive-first-v1-weekly-replay.json": "dd099ba2728632635b400425dedcd8f8ee8e45af68968b80f525aae36a418602",
+   "weekly-passive-first-v1.json": "bfb25cf8799d29197ab50644a6f5d6cd9a06856db25f6a12c5de953af26b749a"
+  }
+ },
+ "rates": {
+  "path": "data/research/us-dual-benchmark-v1/rates.json",
+  "sha256": "7e06146de422661d52534d9322e38be04a25177b119ff3da710f96ae2769db4a"
+ },
+ "roles": {
+  "US_GROWTH_BENCHMARK": "QQQ",
+  "US_MARKET_BENCHMARK": "SPY",
+  "officialUsBenchmark": "SPY"
+ },
+ "series": {
+  "QQQ": {
+   "distributionMultiple": {
+    "max": 1.0,
+    "min": 1.0
+   },
+   "distributions": 64,
+   "distributionsDropped": 0,
+   "duplicateSessions": 0,
+   "firstSession": "2011-01-03",
+   "impliedDistributionDragPctPerYear": 1.0046,
+   "jumpsForReview": [
+    {
+     "date": "2020-03-12",
+     "returnPct": -9.169
+    },
+    {
+     "date": "2020-03-13",
+     "returnPct": 8.471
+    },
+    {
+     "date": "2020-03-16",
+     "returnPct": -11.979
+    },
+    {
+     "date": "2020-03-17",
+     "returnPct": 7.584
+    },
+    {
+     "date": "2020-03-24",
+     "returnPct": 7.744
+    },
+    {
+     "date": "2020-04-06",
+     "returnPct": 7.149
+    },
+    {
+     "date": "2022-11-10",
+     "returnPct": 7.379
+    },
+    {
+     "date": "2025-04-09",
+     "returnPct": 12.003
+    }
+   ],
+   "lastSession": "2026-09-14",
+   "nonPositiveOrMissingClose": 0,
+   "priceOnlyCagrPct": 17.6489,
+   "recipeRoundTripMaxRelError": 0.0,
+   "sessions": 3947,
+   "splitsInSpan": 0,
+   "ticker": "QQQ",
+   "totalReturnCagrPct": 18.6535,
+   "trailingDistributionYieldPct": {
+    "2011": 0.926,
+    "2012": 1.446,
+    "2013": 1.329,
+    "2014": 1.665,
+    "2015": 1.072,
+    "2016": 1.145,
+    "2017": 1.088,
+    "2018": 0.887,
+    "2019": 1.021,
+    "2020": 0.624,
+    "2021": 0.549,
+    "2022": 0.532,
+    "2023": 0.959,
+    "2024": 0.707,
+    "2025": 0.548,
+    "2026": 0.252
+   }
+  },
+  "SPY": {
+   "distributionMultiple": null,
+   "distributions": 0,
+   "distributionsDropped": 0,
+   "duplicateSessions": 0,
+   "firstSession": "2011-01-03",
+   "impliedDistributionDragPctPerYear": 0.0,
+   "jumpsForReview": [
+    {
+     "date": "2020-03-09",
+     "returnPct": -7.809
+    },
+    {
+     "date": "2020-03-12",
+     "returnPct": -9.568
+    },
+    {
+     "date": "2020-03-13",
+     "returnPct": 8.549
+    },
+    {
+     "date": "2020-03-16",
+     "returnPct": -10.942
+    },
+    {
+     "date": "2020-03-24",
+     "returnPct": 9.06
+    },
+    {
+     "date": "2025-04-09",
+     "returnPct": 10.502
+    }
+   ],
+   "lastSession": "2026-09-14",
+   "nonPositiveOrMissingClose": 0,
+   "priceOnlyCagrPct": 14.0468,
+   "recipeRoundTripMaxRelError": 0.0,
+   "sessions": 3947,
+   "splitsInSpan": 0,
+   "ticker": "SPY",
+   "totalReturnCagrPct": 14.0468,
+   "trailingDistributionYieldPct": {
+    "2011": 0.0,
+    "2012": 0.0,
+    "2013": 0.0,
+    "2014": 0.0,
+    "2015": 0.0,
+    "2016": 0.0,
+    "2017": 0.0,
+    "2018": 0.0,
+    "2019": 0.0,
+    "2020": 0.0,
+    "2021": 0.0,
+    "2022": 0.0,
+    "2023": 0.0,
+    "2024": 0.0,
+    "2025": 0.0,
+    "2026": 0.0
+   }
+  }
+ },
+ "snapshot": {
+  "path": "data/research/us-dual-benchmark-v1/spy-qqq-total-return.csv.gz",
+  "rows": 7894,
+  "sha256": "a82c64b96ef56e672373240d0b6df317dadbdee8c845bfaa9725b16bb9625b50"
+ },
+ "source": {
+  "componentContentHashesVerified": true,
+  "componentsUsed": 440,
+  "dataVersion": "as-traded-close-forward-total-return-v1-regional-session-download+krx-native-sessions-with-yahoo-distributions-v2+pit-index-membership+dart-pit-fundamentals-kr+immutable-inputs-v1+common-calendar-v2-kr-2026-closures+fred-h10-usdkrw-fixing-v1+benchmark-vendor-lineage-v1+kr-systemic-gap-detect-only-v4+kr-benchmark-kospi200-tracking-etf-total-return-v1+krx-pit-universe-and-prices-kr-v1+corporate-actions-v1+bok-rf-v1+finnhub-pit-fundamentals-us-v1",
+  "lineage": {
+   "adjustment": [
+    {
+     "adjustment": "as-traded-forward-total-return-v1",
+     "anchor": "FIRST_OBSERVED_SESSION",
+     "basis": "AS_TRADED_CLOSE_WITH_FORWARD_ACCUMULATED_TOTAL_RETURN",
+     "vendor": "YAHOO_UNADJUSTED_WITH_ACTIONS"
+    }
+   ],
+   "benchmark": [
+    {
+     "policy": "PINNED_FOR_GENERATION",
+     "region": "KR",
+     "source": "krx-total-return",
+     "symbol": "069500.KS",
+     "ticker": "069500.KS"
+    },
+    {
+     "policy": "PINNED_FOR_GENERATION",
+     "region": "US",
+     "source": "yahoo",
+     "symbol": "SPY",
+     "ticker": "SPY"
+    }
+   ],
+   "fx": [
+    {
+     "resolution": "LATEST_PUBLISHED_FIXING_ON_OR_BEFORE_SESSION",
+     "seriesId": "DEXKOUS",
+     "units": "KRW_PER_USD",
+     "vendor": "FEDERAL_RESERVE_H10"
+    }
+   ],
+   "price": [
+    {
+     "coverageShortfall": {
+      "clusterNames": 3,
+      "lateStartsWithoutSharedBoundary": [
+       {
+        "primaryFirstSession": "2013-07-18",
+        "secondaryFirstSession": "2011-01-03",
+        "sessions": 632,
+        "ticker": "175330.KS"
+       },
+       {
+        "primaryFirstSession": "2014-11-14",
+        "secondaryFirstSession": "2014-08-25",
+        "sessions": 54,
+        "ticker": "018260.KS"
+       }
+      ],
+      "missingSessions": 0,
+      "sharedStartDates": [],
+      "tickers": 0,
+      "toleranceSessions": 21,
+      "worst": []
+     },
+     "crossCheck": {
+      "medianOfMedianDifferenceBps": 0.0,
+      "policy": "FDR_SESSIONS_ARE_AUTHORITATIVE; YAHOO_IS_A_RECORDED_CROSS_CHECK",
+      "sessionsOnlyInPrimary": 1111,
+      "sessionsOnlyInSecondary": 880,
+      "sharedSessions": 795021,
+      "tickers": 238,
+      "worstDifferenceBps": 51781.4311487046,
+      "worstTicker": "011810.KS"
+     },
+     "distributions": "YAHOO_ACTIONS",
+     "region": "KR",
+     "routes": {
+      "naver-range": 260
+     },
+     "source": "krx-native-sessions-with-yahoo-distributions-and-open-api-fallback-v3",
+     "vendor": "FINANCE_DATA_READER"
+    },
+    {
+     "crossCheck": null,
+     "distributions": "YAHOO_ACTIONS",
+     "region": "US",
+     "vendor": "YAHOO_UNADJUSTED_WITH_ACTIONS"
+    }
+   ],
+   "riskFreeKrw": [
+    {
+     "basis": "BOK_POLICY_RATE_PROXY",
+     "source": "https://www.bok.or.kr/portal/singl/baseRate/list.do?dataSeCd=01&menuNo=200643"
+    }
+   ]
+  },
+  "replayManifest": "ledger/historical/replay-v16/inputs.json",
+  "replayVersion": "replay-v16",
+  "sha256": "f0781292f508a123c234ded6d28aa8e84a0dc3cc29500e14989dc0b68f53b4d2",
+  "signalHistoryCommit": "704d7db6d5b00def771aba5d2665d0846d6bc776",
+  "through": "2026-09-14"
+ },
+ "spyDistributionApplication": {
+  "reason": "SPY entered replay-v16 through benchmark_source._yahoo_close, which keeps only the rebased Close; its distributions were never written to corporate-events. The same fetch_prices(total_return=True) -> price_adjustment.to_total_return path built QQQ, whose 64 distributions each read multiple 1.000.",
+  "status": "NOT_VERIFIABLE_FROM_SEALED_STORE"
+ },
+ "spySnapshotCrossCheck": {
+  "commonSessions": 3947,
+  "ledgerBenchmarksSpySessions": 3948,
+  "maxRelativeDifference": 0.0,
+  "note": "same vendor lineage; a consistency check, not an independent corroboration"
+ }
+}

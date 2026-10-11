@@ -1,0 +1,45 @@
+{
+ "builtFrom": {
+  "n100tickersCommit": "ec99dfb8690820895d0a7546a7d9218336b96554",
+  "replayManifestSha256": "f0781292f508a123c234ded6d28aa8e84a0dc3cc29500e14989dc0b68f53b4d2",
+  "signalHistoryCommit": "704d7db6d5b00def771aba5d2665d0846d6bc776"
+ },
+ "coverageSummary": {
+  "BLOCKED_PAID_SOURCE": 183,
+  "NEEDS_FUNDAMENTALS": 0,
+  "NEEDS_IDENTITY_REPAIR": 38,
+  "NEEDS_MEMBERSHIP_EVIDENCE": 0,
+  "NEEDS_PRICE_HISTORY": 58,
+  "NOT_EVALUABLE": 0,
+  "READY": 606,
+  "symbols": 885
+ },
+ "files": {
+  "data/research/us-dual-benchmark-v1/nasdaq100-n100tickers/LICENSE": "2bf6265216cbd3aa3bf3a4f336362c133590f096b4efe5025a3adedc3135073c",
+  "data/research/us-dual-benchmark-v1/nasdaq100-n100tickers/n100-ticker-changes-2007.yaml": "eb95761cb36edcabdb5e0b6525a42c0f047c5f98928d9fe1d31664345706c2e8",
+  "data/research/us-dual-benchmark-v1/nasdaq100-n100tickers/n100-ticker-changes-2008.yaml": "95c77b29cba3cf51c6f690d073e677c735524368d5a8675b56911967a53351e5",
+  "data/research/us-dual-benchmark-v1/nasdaq100-n100tickers/n100-ticker-changes-2009.yaml": "ef1540d95227249db0b2d0a74f58f5badc259db68e377cd28c90ffd93dae9501",
+  "data/research/us-dual-benchmark-v1/nasdaq100-n100tickers/n100-ticker-changes-2010.yaml": "7c1045ca0dae9646b3b83d40e4555e190903f7a638eb9d934425e6c7983aac63",
+  "data/research/us-dual-benchmark-v1/nasdaq100-n100tickers/n100-ticker-changes-2011.yaml": "50d4490f0b2d0b3c3c0ecdc7c85882fe5763e81fc6930b6ab4c7fee455930b1f",
+  "data/research/us-dual-benchmark-v1/nasdaq100-n100tickers/n100-ticker-changes-2012.yaml": "a12e4dba2e47d0212a9c90ae7984f0981a0c8ca6eba17204c7bed2393e28df85",
+  "data/research/us-dual-benchmark-v1/nasdaq100-n100tickers/n100-ticker-changes-2013.yaml": "6e30297a43c2a3720659c3e34fd70eb53431f9bbdd372f93f0950fd3f95eb168",
+  "data/research/us-dual-benchmark-v1/nasdaq100-n100tickers/n100-ticker-changes-2014.yaml": "a05130c48ea708d345b6b44a05395fd9072f725a123f5e1b2f1c9ba7084d6a73",
+  "data/research/us-dual-benchmark-v1/nasdaq100-n100tickers/n100-ticker-changes-2015.yaml": "8f2170abc4ed83dfa1da629fef4ee18bf1b2eb91b74b57d48a6f52e9e0f7403a",
+  "data/research/us-dual-benchmark-v1/nasdaq100-n100tickers/n100-ticker-changes-2016.yaml": "e8309fe62689c05525b0c60986ad962ee564977997b37707a67d72358e8688f5",
+  "data/research/us-dual-benchmark-v1/nasdaq100-n100tickers/n100-ticker-changes-2017.yaml": "1dc113f0dd2c2bfb98e3ba5eedfff9d0e459f92aaa22748ba9d0a242b4ea3216",
+  "data/research/us-dual-benchmark-v1/nasdaq100-n100tickers/n100-ticker-changes-2018.yaml": "fa558a923558de887ba37681356c5a8fff0bf07d16e6a93eb5b91ff5f7fc460e",
+  "data/research/us-dual-benchmark-v1/nasdaq100-n100tickers/n100-ticker-changes-2019.yaml": "4d3beb972bd844641b1b100fadf16626888d656f4454a759a4a4acc47e3d6a0b",
+  "data/research/us-dual-benchmark-v1/nasdaq100-n100tickers/n100-ticker-changes-2020.yaml": "fc471f590e44a0f791f79baf9bd3a040343cfbcf421c2853294dbe1af6af845d",
+  "data/research/us-dual-benchmark-v1/nasdaq100-n100tickers/n100-ticker-changes-2021.yaml": "e810a7f3e67c702d044e73df3af4014b0d90b1abc2f04018afe04d1518b7f573",
+  "data/research/us-dual-benchmark-v1/nasdaq100-n100tickers/n100-ticker-changes-2022.yaml": "6313b84f4d178b8d37300a18109ad4f9551268b19e2b7b4383b7a5f742e18392",
+  "data/research/us-dual-benchmark-v1/nasdaq100-n100tickers/n100-ticker-changes-2023.yaml": "7d545922ec54325c9fc97eef738750d502ef4fd0bce3a58232741319febc7a3e",
+  "data/research/us-dual-benchmark-v1/nasdaq100-n100tickers/n100-ticker-changes-2024.yaml": "12bec472989760c3915e32582d42772f73241f4ef0067633ff57cb22cb3ae693",
+  "data/research/us-dual-benchmark-v1/nasdaq100-n100tickers/n100-ticker-changes-2025.yaml": "e20a547ed1bb5d6fde305e91560ed74aa9b74d6cadd7aee78dab8867b19366ee",
+  "data/research/us-dual-benchmark-v1/nasdaq100-n100tickers/n100-ticker-changes-2026.yaml": "a8d8d58165a654c5a2c4ab8006d56c4d6efd7edf41154cf838be8693b87c1bf6",
+  "data/research/us-dual-benchmark-v1/rates.json": "7e06146de422661d52534d9322e38be04a25177b119ff3da710f96ae2769db4a",
+  "data/research/us-dual-benchmark-v1/spy-qqq-total-return.csv.gz": "a82c64b96ef56e672373240d0b6df317dadbdee8c845bfaa9725b16bb9625b50",
+  "data/research/us-dual-benchmark-v1/us-universe-coverage-manifest.csv.gz": "b1f5fbbafeb4f7dd4b50534cd86e9942233ae3d5f94922970a7c854569c5bfb1"
+ },
+ "id": "us-dual-benchmark-v1",
+ "kind": "RESEARCH_DATASET_NOT_A_SEALED_INPUT"
+}
