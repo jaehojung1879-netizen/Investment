@@ -5,6 +5,7 @@ from __future__ import annotations
 import hashlib
 import json
 from pathlib import Path
+import subprocess
 
 from pipeline import kr_alpha_atlas_registry as REG
 from pipeline import kr_alpha_atlas_readiness as RD
@@ -498,8 +499,63 @@ def build(root=ROOT):
     return spec
 
 
+def historical_ci_dependencies(spec, expected, root):
+    """V1 compatibility: historical CI provenance, current scientific closure.
+
+    Only the operational Tests workflow and this explicitly versioned validator
+    adapter can differ. Never substitute historical scientific inputs/code, and
+    never change the returned registration or its dependency manifest.
+    """
+    root = Path(root)
+    registration = "8c3611116c5103a1e860173b180d0094e45b3074"
+    original_sha = "b57be30ce54abf1dd26388954053e99d4b1bf71fa06f3598787317e953988db0"
+    workflow = ".github/workflows/tests.yml"
+    validator = "pipeline/kr_alpha_atlas_phase_c/contract.py"
+    policy = read(root, "docs/ci/historical-workflow-provenance-v1.json")
+    if (set(policy) != {"schema", "version", "registrationCommit", "specPath", "specSha256",
+                       "historicalDependencies", "currentValidatorSha256"}
+            or policy["schema"] != "HISTORICAL_WORKFLOW_PROVENANCE_V1"
+            or type(policy["version"]) is not int or policy["version"] != 1
+            or policy["registrationCommit"] != registration or policy["specPath"] != SPEC
+            or policy["specSha256"] != original_sha
+            or set(policy["historicalDependencies"]) != {workflow, validator}):
+        raise ValueError("INCOMPLETE_MUTATED_OR_UNSUPPORTED_CI_PROVENANCE")
+
+    def registered_bytes(path):
+        try:
+            return subprocess.check_output(["git", "show", registration + ":" + path], cwd=root,
+                                           stderr=subprocess.PIPE)
+        except subprocess.CalledProcessError as exc:
+            raise ValueError("HISTORICAL_CI_GIT_OBJECT_UNAVAILABLE") from exc
+
+    try:
+        subprocess.run(["git", "merge-base", "--is-ancestor", registration, "HEAD"], cwd=root,
+                       check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    except subprocess.CalledProcessError as exc:
+        raise ValueError("HISTORICAL_CI_REGISTRATION_NOT_ANCESTOR") from exc
+    raw = registered_bytes(SPEC)
+    if (hashlib.sha256(raw).hexdigest() != original_sha or json.loads(raw) != spec
+            or file_hash(root / SPEC) != original_sha
+            or registered_bytes(SIDECAR) != (root / SIDECAR).read_bytes()
+            or (root / SIDECAR).read_text().strip() != original_sha):
+        raise ValueError("INCOMPLETE_MUTATED_OR_UNSUPPORTED_HISTORICAL_REGISTRATION")
+    for path, sha in policy["historicalDependencies"].items():
+        if (sha != spec["dependencyHashes"][path]
+                or hashlib.sha256(registered_bytes(path)).hexdigest() != sha):
+            raise ValueError("HISTORICAL_CI_DEPENDENCY_CHANGED: " + path)
+    if (file_hash(root / validator) != policy["currentValidatorSha256"]
+            or expected["dependencyHashes"][validator] != policy["currentValidatorSha256"]):
+        raise ValueError("CURRENT_CI_COMPATIBILITY_VALIDATOR_CHANGED")
+    # Normalize just these two identity fields for comparison. Every other
+    # current dependency, protected byte, formula and lifecycle remains checked.
+    expected["dependencyHashes"].update(policy["historicalDependencies"])
+    return expected
+
+
 def validate(spec, root=ROOT):
     expected = build(root)
+    if spec != expected:
+        expected = historical_ci_dependencies(spec, expected, root)
     if spec != expected:
         raise ValueError("INCOMPLETE_MUTATED_OR_UNSUPPORTED_REGISTRATION")
     assert spec["compute"]["featureHorizonTests"] == 73
