@@ -1,0 +1,12 @@
+{
+  "schema": "HISTORICAL_WORKFLOW_PROVENANCE_V1",
+  "version": 1,
+  "registrationCommit": "8c3611116c5103a1e860173b180d0094e45b3074",
+  "specPath": "research_specs/kr-alpha-atlas-phase-c-v1.json",
+  "specSha256": "b57be30ce54abf1dd26388954053e99d4b1bf71fa06f3598787317e953988db0",
+  "historicalDependencies": {
+    ".github/workflows/tests.yml": "1f270bcd6e19f332595b737286e75c4b611ddb0320c16d2c5b972a26ba057ec5",
+    "pipeline/kr_alpha_atlas_phase_c/contract.py": "b88ba29321c562c1c57af8232ae654644efcfe7d5680c8a6ff901e0dee671596"
+  },
+  "currentValidatorSha256": "df18390c1159901d449485aee71158dc0836c1522122fcfaadf84a0f82d5d976"
+}
