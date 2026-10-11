@@ -1,0 +1,781 @@
+{
+ "accountingVsExpectedReturn": {
+  "A_accountingCharacteristic": "A company's total cash distribution grew by at least 10% over the prior year, the increase is at least 2% of operating cash flow, and total distributions do not exceed operating cash flow. This is a statement about reported cash flows.",
+  "B_expectedReturnAdvantage": "A demonstrably positive expected return advantage over SPY or QQQ after costs. It requires evidence that the characteristic is not already in the price, which only out-of-sample outcomes can supply. None exists for this rule.",
+  "verdict": "The v1 rule selects on A. Nothing in its construction measures B. The score ranks companies by the size of a payout increase relative to cash flow; it contains no forecast, no price, no valuation and no estimate of how much of the increase is already priced."
+ },
+ "bySector": {
+  "Communication Services": {
+   "meanMeasuredPerWeek": 0.883,
+   "meanPassersPerWeek": 0.41,
+   "selectedOverMeasuredShare": 0.95,
+   "shareOfMeasured": 0.0108,
+   "shareOfPassers": 0.0159,
+   "shareOfSelectedSlots": 0.0102
+  },
+  "Consumer Discretionary": {
+   "meanMeasuredPerWeek": 12.225,
+   "meanPassersPerWeek": 2.666,
+   "selectedOverMeasuredShare": 0.903,
+   "shareOfMeasured": 0.1494,
+   "shareOfPassers": 0.1036,
+   "shareOfSelectedSlots": 0.1349
+  },
+  "Consumer Staples": {
+   "meanMeasuredPerWeek": 8.352,
+   "meanPassersPerWeek": 2.605,
+   "selectedOverMeasuredShare": 1.344,
+   "shareOfMeasured": 0.1021,
+   "shareOfPassers": 0.1013,
+   "shareOfSelectedSlots": 0.1372
+  },
+  "Energy": {
+   "meanMeasuredPerWeek": 6.458,
+   "meanPassersPerWeek": 2.083,
+   "selectedOverMeasuredShare": 1.252,
+   "shareOfMeasured": 0.0789,
+   "shareOfPassers": 0.081,
+   "shareOfSelectedSlots": 0.0988
+  },
+  "Health Care": {
+   "meanMeasuredPerWeek": 10.605,
+   "meanPassersPerWeek": 4.208,
+   "selectedOverMeasuredShare": 1.196,
+   "shareOfMeasured": 0.1296,
+   "shareOfPassers": 0.1636,
+   "shareOfSelectedSlots": 0.155
+  },
+  "Industrials": {
+   "meanMeasuredPerWeek": 21.883,
+   "meanPassersPerWeek": 7.16,
+   "selectedOverMeasuredShare": 1.061,
+   "shareOfMeasured": 0.2674,
+   "shareOfPassers": 0.2784,
+   "shareOfSelectedSlots": 0.2836
+  },
+  "Information Technology": {
+   "meanMeasuredPerWeek": 10.769,
+   "meanPassersPerWeek": 3.458,
+   "selectedOverMeasuredShare": 0.834,
+   "shareOfMeasured": 0.1316,
+   "shareOfPassers": 0.1344,
+   "shareOfSelectedSlots": 0.1098
+  },
+  "Materials": {
+   "meanMeasuredPerWeek": 7.284,
+   "meanPassersPerWeek": 2.145,
+   "selectedOverMeasuredShare": 0.635,
+   "shareOfMeasured": 0.089,
+   "shareOfPassers": 0.0834,
+   "shareOfSelectedSlots": 0.0565
+  },
+  "Utilities": {
+   "meanMeasuredPerWeek": 3.37,
+   "meanPassersPerWeek": 0.987,
+   "selectedOverMeasuredShare": 0.337,
+   "shareOfMeasured": 0.0412,
+   "shareOfPassers": 0.0384,
+   "shareOfSelectedSlots": 0.0139
+  }
+ },
+ "byYear": {
+  "2013": {
+   "blockedWeeks": 52,
+   "measuredNamesMedian": 5.0,
+   "namesSelected": {},
+   "passersPerLiveWeek": null,
+   "weeks": 52
+  },
+  "2014": {
+   "blockedWeeks": 42,
+   "measuredNamesMedian": 35.0,
+   "namesSelected": {
+    "5": 10
+   },
+   "passersPerLiveWeek": {
+    "max": 18.0,
+    "mean": 15.6,
+    "median": 14.5,
+    "min": 14.0
+   },
+   "weeks": 52
+  },
+  "2015": {
+   "blockedWeeks": 16,
+   "measuredNamesMedian": 49.0,
+   "namesSelected": {
+    "5": 37
+   },
+   "passersPerLiveWeek": {
+    "max": 24.0,
+    "mean": 18.0,
+    "median": 18.0,
+    "min": 10.0
+   },
+   "weeks": 53
+  },
+  "2016": {
+   "blockedWeeks": 0,
+   "measuredNamesMedian": 58.0,
+   "namesSelected": {
+    "5": 52
+   },
+   "passersPerLiveWeek": {
+    "max": 23.0,
+    "mean": 19.1346,
+    "median": 18.0,
+    "min": 16.0
+   },
+   "weeks": 52
+  },
+  "2017": {
+   "blockedWeeks": 0,
+   "measuredNamesMedian": 60.0,
+   "namesSelected": {
+    "5": 52
+   },
+   "passersPerLiveWeek": {
+    "max": 19.0,
+    "mean": 14.6731,
+    "median": 15.0,
+    "min": 10.0
+   },
+   "weeks": 52
+  },
+  "2018": {
+   "blockedWeeks": 0,
+   "measuredNamesMedian": 68.0,
+   "namesSelected": {
+    "5": 52
+   },
+   "passersPerLiveWeek": {
+    "max": 31.0,
+    "mean": 18.7885,
+    "median": 18.0,
+    "min": 14.0
+   },
+   "weeks": 52
+  },
+  "2019": {
+   "blockedWeeks": 0,
+   "measuredNamesMedian": 84.0,
+   "namesSelected": {
+    "5": 52
+   },
+   "passersPerLiveWeek": {
+    "max": 45.0,
+    "mean": 34.6346,
+    "median": 33.0,
+    "min": 28.0
+   },
+   "weeks": 52
+  },
+  "2020": {
+   "blockedWeeks": 0,
+   "measuredNamesMedian": 92.0,
+   "namesSelected": {
+    "5": 53
+   },
+   "passersPerLiveWeek": {
+    "max": 39.0,
+    "mean": 22.7736,
+    "median": 22.0,
+    "min": 13.0
+   },
+   "weeks": 53
+  },
+  "2021": {
+   "blockedWeeks": 0,
+   "measuredNamesMedian": 94.0,
+   "namesSelected": {
+    "5": 52
+   },
+   "passersPerLiveWeek": {
+    "max": 38.0,
+    "mean": 23.5,
+    "median": 20.0,
+    "min": 11.0
+   },
+   "weeks": 52
+  },
+  "2022": {
+   "blockedWeeks": 0,
+   "measuredNamesMedian": 97.0,
+   "namesSelected": {
+    "5": 52
+   },
+   "passersPerLiveWeek": {
+    "max": 54.0,
+    "mean": 47.0,
+    "median": 46.0,
+    "min": 37.0
+   },
+   "weeks": 52
+  },
+  "2023": {
+   "blockedWeeks": 0,
+   "measuredNamesMedian": 97.0,
+   "namesSelected": {
+    "5": 52
+   },
+   "passersPerLiveWeek": {
+    "max": 53.0,
+    "mean": 26.4808,
+    "median": 17.5,
+    "min": 10.0
+   },
+   "weeks": 52
+  },
+  "2024": {
+   "blockedWeeks": 0,
+   "measuredNamesMedian": 91.0,
+   "namesSelected": {
+    "5": 52
+   },
+   "passersPerLiveWeek": {
+    "max": 34.0,
+    "mean": 19.7885,
+    "median": 17.0,
+    "min": 11.0
+   },
+   "weeks": 52
+  },
+  "2025": {
+   "blockedWeeks": 0,
+   "measuredNamesMedian": 92.0,
+   "namesSelected": {
+    "5": 52
+   },
+   "passersPerLiveWeek": {
+    "max": 45.0,
+    "mean": 33.9808,
+    "median": 33.5,
+    "min": 27.0
+   },
+   "weeks": 52
+  },
+  "2026": {
+   "blockedWeeks": 0,
+   "measuredNamesMedian": 98.0,
+   "namesSelected": {
+    "5": 37
+   },
+   "passersPerLiveWeek": {
+    "max": 41.0,
+    "mean": 31.2973,
+    "median": 29.0,
+    "min": 23.0
+   },
+   "weeks": 37
+  }
+ },
+ "currentInputAttempt": {
+  "blocker": "NO_FRESH_US_PRICES: the newest sealed close is 2026-09-14 (25 days before the as-of session; the registered limit is 10). Using it as though it were current would be the stale-input error AGENTS.md forbids.",
+  "fundamentalsSideIfPricesWereFresh": {
+   "jointMeasured": 128,
+   "measuredNames": 97,
+   "note": "a count only; no name is listed because no valid price evidence exists for this session",
+   "question": "if the price-freshness gate were not binding, how many names would the fundamentals side measure on the as-of session?",
+   "reportStale": 6
+  },
+  "inputs": {
+   "asOfSession": "2026-10-09",
+   "fundamentals": {
+    "ageDays": 1,
+    "latestVisibleFiling": "2026-10-08",
+    "provenance": "signal-history@704d7db6 Finnhub shards (collected daily by fundamentals.yml)",
+    "status": "FRESH"
+   },
+   "generatedOn": "2026-10-11",
+   "membership": {
+    "ageDays": 34,
+    "historicalSnapshotGapDays": {
+     "max": 769,
+     "median": 6.0
+    },
+    "provenance": "research_specs/alpha-opportunity-model-v1-us-membership.json.gz (datasets/s-and-p-500-companies); no refresh job exists",
+    "snapshotPublishedAt": "2026-09-05T01:39:10Z",
+    "snapshotUsed": "2026-09-05",
+    "sourceCommit": "3b2bb60e6269439cd75541eded6281c48e7681d1",
+    "status": "AGED_NO_REGISTERED_LIMIT"
+   },
+   "prices": {
+    "ageDays": 25,
+    "lastObservedSession": "2026-09-14",
+    "provenance": "replay-v16 sealed price panels (Yahoo unadjusted + actions); there is no in-repo US price collection after the seal",
+    "registeredMaxAgeDays": 10,
+    "status": "STALE"
+   }
+  },
+  "label": "CURRENT_INPUT_ATTEMPT_BLOCKED_NOT_A_SIGNAL",
+  "notAReceipt": true,
+  "notIndependentEvidence": true,
+  "result": {
+   "measuredNames": 0,
+   "membersEvaluated": 503,
+   "reasons": [
+    "MEASURED_NAMES_BELOW_FLOOR:0<40"
+   ],
+   "residualSPYWeight": 1.0,
+   "selected": 0,
+   "status": "BLOCKED",
+   "statusCounts": {
+    "IDENTITY_AMBIGUOUS": 4,
+    "PRICE_HISTORY_INSUFFICIENT": 3,
+    "PRICE_STALE": 496
+   },
+   "weights": null
+  }
+ },
+ "decisions": {
+  "blockedShare": 0.1538,
+  "distinctNames": {
+   "everSelected": 103,
+   "giniOfSlotWeeks": 0.4134,
+   "herfindahlOfSlotWeeks": 0.015754,
+   "largestSingleNameShare": 0.0403,
+   "slotWeeks": 3025,
+   "top10ShareOfSlotWeeks": 0.2721,
+   "topTenShares": [
+    0.0403,
+    0.0324,
+    0.0284,
+    0.0278,
+    0.0271,
+    0.0268,
+    0.0248,
+    0.0218,
+    0.0215,
+    0.0212
+   ]
+  },
+  "participation": {
+   "namesPerWeek": {
+    "5": 605
+   },
+   "nonBlockedWeeks": 605,
+   "participationRate": 1.0,
+   "weeksWithAtLeastOneName": 605,
+   "weeksWithFullFiveNames": 605
+  },
+  "persistence": {
+   "holdingSpellsWeeks": {
+    "max": 66.0,
+    "mean": 12.197581,
+    "min": 1.0,
+    "n": 248,
+    "p10": 1.0,
+    "p25": 3.0,
+    "p50": 10.0,
+    "p75": 14.0,
+    "p90": 26.3
+   },
+   "spells": 248
+  },
+  "sectorCap": {
+   "share": 0.3273,
+   "weeksWhereCapSkippedAName": 198
+  },
+  "sectorExposure": {
+   "Communication Services": 0.0102,
+   "Consumer Discretionary": 0.1349,
+   "Consumer Staples": 0.1372,
+   "Energy": 0.0988,
+   "Health Care": 0.155,
+   "Industrials": 0.2836,
+   "Information Technology": 0.1098,
+   "Materials": 0.0565,
+   "Utilities": 0.0139
+  },
+  "status": {
+   "BLOCKED": 110,
+   "CANDIDATE_PORTFOLIO": 605
+  },
+  "turnover": {
+   "byFilingSeason": {
+    "Q1-10Q": {
+     "meanFractionReplaced": 0.0805,
+     "pairs": 154
+    },
+    "Q2-10Q": {
+     "meanFractionReplaced": 0.0808,
+     "pairs": 151
+    },
+    "Q3-10Q": {
+     "meanFractionReplaced": 0.0836,
+     "pairs": 146
+    },
+    "Q4-10K": {
+     "meanFractionReplaced": 0.0689,
+     "pairs": 151
+    }
+   },
+   "byYear": {
+    "2014": 0.1778,
+    "2015": 0.08,
+    "2016": 0.0577,
+    "2017": 0.0731,
+    "2018": 0.0808,
+    "2019": 0.0885,
+    "2020": 0.0679,
+    "2021": 0.0731,
+    "2022": 0.0885,
+    "2023": 0.0692,
+    "2024": 0.0962,
+    "2025": 0.0885,
+    "2026": 0.0541
+   },
+   "consecutiveWeekPairs": 602,
+   "meanFractionReplaced": 0.0784,
+   "meanNamesReplaced": 0.392,
+   "shareUnchanged": 0.6944,
+   "weeksWithUnchangedSet": 418
+  },
+  "weeks": 715
+ },
+ "evidenceClass": "OUTCOME_BLIND_RULE_DIAGNOSTIC",
+ "fitsModels": false,
+ "funnelReproducesCommittedCoverageAudit": true,
+ "gates": {
+  "DISTRIBUTION_INCREASE_NOT_MATERIAL": {
+   "eliminated": 28753,
+   "eliminatedShareOfReached": 0.5808,
+   "reached": 49506,
+   "shareOfAllEliminations": 0.1012
+  },
+  "DISTRIBUTION_NOT_COVERED_BY_OPERATING_CASH_FLOW": {
+   "eliminated": 5191,
+   "eliminatedShareOfReached": 0.2501,
+   "reached": 20753,
+   "shareOfAllEliminations": 0.0183
+  },
+  "FEATURES_NOT_MEASURED": {
+   "eliminated": 155268,
+   "eliminatedShareOfReached": 0.7582,
+   "reached": 204774,
+   "shareOfAllEliminations": 0.5465
+  },
+  "NOT_PRICED_OR_STALE_PRICE": {
+   "eliminated": 35529,
+   "eliminatedShareOfReached": 0.1186,
+   "reached": 299694,
+   "shareOfAllEliminations": 0.125
+  },
+  "PASSED_EVERY_GATE": {
+   "reached": 15562,
+   "shareOfEvaluated": 0.0519
+  },
+  "REPORT_ABSENT_OR_STALE": {
+   "eliminated": 5462,
+   "eliminatedShareOfReached": 0.026,
+   "reached": 210236,
+   "shareOfAllEliminations": 0.0192
+  },
+  "SECTOR_EXCLUDED": {
+   "eliminated": 53927,
+   "eliminatedShareOfReached": 0.2041,
+   "reached": 264163,
+   "shareOfAllEliminations": 0.1898
+  },
+  "SECTOR_UNKNOWN": {
+   "eliminated": 2,
+   "eliminatedShareOfReached": 0.0,
+   "reached": 264165,
+   "shareOfAllEliminations": 0.0
+  }
+ },
+ "id": "us-capital-allocation-v1-selection-diagnostics-v1",
+ "latestSealedWeek": {
+  "label": "LATEST_SEALED_WEEK_COUNTS_NOT_CURRENT",
+  "measuredNames": 97,
+  "passers": 28,
+  "selected": 5,
+  "signalDate": "2026-09-11",
+  "status": "CANDIDATE_PORTFOLIO"
+ },
+ "margins": {
+  "excludedPassersWithin10PctOfFifth": {
+   "max": 6.0,
+   "mean": 1.7008,
+   "median": 1.0,
+   "min": 0.0
+  },
+  "fifthOverFirst": {
+   "max": 0.935051,
+   "mean": 0.550773,
+   "min": 0.198817,
+   "n": 605,
+   "p10": 0.350745,
+   "p25": 0.433682,
+   "p50": 0.553961,
+   "p75": 0.656197,
+   "p90": 0.775175
+  },
+  "reading": "a small gap between the fifth and the best excluded name means the cut-off is arbitrary: the fifth slot is filled by a coin-toss-sized difference in an accounting ratio",
+  "relativeGapFifthToBestExcluded": {
+   "max": 0.444878,
+   "mean": -0.014185,
+   "min": -1.055721,
+   "n": 605,
+   "p10": -0.337058,
+   "p25": -0.091563,
+   "p50": 0.040422,
+   "p75": 0.092637,
+   "p90": 0.186018
+  },
+  "scoreOfBestExcludedPasser": {
+   "max": 0.512614,
+   "mean": 0.279186,
+   "min": 0.123256,
+   "n": 605,
+   "p10": 0.157739,
+   "p25": 0.201732,
+   "p50": 0.265782,
+   "p75": 0.355974,
+   "p90": 0.420687
+  },
+  "scoreOfFifth": {
+   "max": 0.501014,
+   "mean": 0.277147,
+   "min": 0.102725,
+   "n": 605,
+   "p10": 0.175224,
+   "p25": 0.20732,
+   "p50": 0.262239,
+   "p75": 0.325128,
+   "p90": 0.441555
+  },
+  "scoreOfFirst": {
+   "max": 0.775388,
+   "mean": 0.517616,
+   "min": 0.222575,
+   "n": 605,
+   "p10": 0.325745,
+   "p25": 0.406433,
+   "p50": 0.522299,
+   "p75": 0.637941,
+   "p90": 0.70341
+  },
+  "weeksWithFewerThanFive": 0,
+  "weeksWithFiveSelected": 605
+ },
+ "noThresholdSweep": "no alternative threshold was evaluated; the registered v1 constants are the only ones used",
+ "passerPersistence": {
+  "distinctPassingNames": 160,
+  "passingSpellsWeeks": {
+   "max": 195.0,
+   "mean": 30.754941,
+   "min": 1.0,
+   "n": 506,
+   "p10": 9.0,
+   "p25": 11.0,
+   "p50": 17.0,
+   "p75": 39.75,
+   "p90": 69.0
+  },
+  "reading": "median spell length near one filing cycle (about 13 weeks) means the weekly series is a quarterly signal repeated, so consecutive weeks are not independent evidence",
+  "spells": 506
+ },
+ "readsLabels": false,
+ "readsPriceLevels": false,
+ "readsReturns": false,
+ "registeredRule": {
+  "designDigest": "73c347a34bc53f038c9e33ebbc2cb322960f33fc4170919b85d2561a4f073342",
+  "policyVersion": "US_CAPITAL_ALLOCATION_SELECTION_V1"
+ },
+ "scoreConstruction": {
+  "byYear": {
+   "2013": {
+    "coverGate": 71,
+    "growthGate": 87,
+    "measured": 199,
+    "passShareOfMeasured": 0.3568,
+    "passed": 71,
+    "scoreGate": 87
+   },
+   "2014": {
+    "coverGate": 694,
+    "growthGate": 996,
+    "measured": 1735,
+    "passShareOfMeasured": 0.4,
+    "passed": 694,
+    "scoreGate": 986
+   },
+   "2015": {
+    "coverGate": 884,
+    "growthGate": 1234,
+    "measured": 2533,
+    "passShareOfMeasured": 0.349,
+    "passed": 884,
+    "scoreGate": 1234
+   },
+   "2016": {
+    "coverGate": 995,
+    "growthGate": 1430,
+    "measured": 2945,
+    "passShareOfMeasured": 0.3379,
+    "passed": 995,
+    "scoreGate": 1430
+   },
+   "2017": {
+    "coverGate": 763,
+    "growthGate": 1070,
+    "measured": 3138,
+    "passShareOfMeasured": 0.2431,
+    "passed": 763,
+    "scoreGate": 1058
+   },
+   "2018": {
+    "coverGate": 977,
+    "growthGate": 1428,
+    "measured": 3581,
+    "passShareOfMeasured": 0.2728,
+    "passed": 977,
+    "scoreGate": 1378
+   },
+   "2019": {
+    "coverGate": 1801,
+    "growthGate": 2531,
+    "measured": 4372,
+    "passShareOfMeasured": 0.4119,
+    "passed": 1801,
+    "scoreGate": 2488
+   },
+   "2020": {
+    "coverGate": 1207,
+    "growthGate": 1450,
+    "measured": 4866,
+    "passShareOfMeasured": 0.248,
+    "passed": 1207,
+    "scoreGate": 1450
+   },
+   "2021": {
+    "coverGate": 1222,
+    "growthGate": 1500,
+    "measured": 4914,
+    "passShareOfMeasured": 0.2487,
+    "passed": 1222,
+    "scoreGate": 1500
+   },
+   "2022": {
+    "coverGate": 2444,
+    "growthGate": 3667,
+    "measured": 5053,
+    "passShareOfMeasured": 0.4837,
+    "passed": 2444,
+    "scoreGate": 3667
+   },
+   "2023": {
+    "coverGate": 1377,
+    "growthGate": 1938,
+    "measured": 5001,
+    "passShareOfMeasured": 0.2753,
+    "passed": 1377,
+    "scoreGate": 1938
+   },
+   "2024": {
+    "coverGate": 1029,
+    "growthGate": 1245,
+    "measured": 4671,
+    "passShareOfMeasured": 0.2203,
+    "passed": 1029,
+    "scoreGate": 1232
+   },
+   "2025": {
+    "coverGate": 1767,
+    "growthGate": 2086,
+    "measured": 4743,
+    "passShareOfMeasured": 0.3725,
+    "passed": 1767,
+    "scoreGate": 2076
+   },
+   "2026": {
+    "coverGate": 1158,
+    "growthGate": 1377,
+    "measured": 3837,
+    "passShareOfMeasured": 0.3018,
+    "passed": 1158,
+    "scoreGate": 1356
+   }
+  },
+  "commonFactor": {
+   "betweenOverWithin": 1.024,
+   "betweenYearSpread": 0.0744,
+   "meanWithinYearWeeklySpread": 0.0726,
+   "reading": "the share of measured names that pass moves by year (a payout cycle) about as much as it moves by week; the yearly range is stated so a reader can see how much of the rule's abundance is the aggregate payout cycle",
+   "yearlyPassShareRange": [
+    0.2203,
+    0.4837
+   ]
+  },
+  "conditionalPass": {
+   "coverageGivenScore": 0.749,
+   "growthAtLeastHurdle": 0.4272,
+   "passedEveryGateOfMeasured": 0.3177,
+   "scoreAtLeastHurdleGivenGrowth": 0.9928
+  },
+  "distributionGrowthAmongMeasured": {
+   "max": 602.333333,
+   "mean": 0.537474,
+   "min": -1.0,
+   "n": 51588,
+   "p10": -0.454167,
+   "p25": -0.213632,
+   "p50": 0.038123,
+   "p75": 0.359976,
+   "p90": 0.963068
+  },
+  "distributionToOCFAmongMeasured": {
+   "max": 25.104959,
+   "mean": 0.694574,
+   "min": 0.0,
+   "n": 51588,
+   "p10": 0.258777,
+   "p25": 0.393634,
+   "p50": 0.591101,
+   "p75": 0.853698,
+   "p90": 1.191279
+  },
+  "hurdleVersusMedianGrowth": {
+   "medianGrowthAmongMeasured": 0.0381,
+   "reading": "a hurdle that a large minority of measured name-weeks clear is a coarse filter, not a rare event; the share is stated, not interpreted as selectivity",
+   "registeredHurdle": 0.1,
+   "shareOfMeasuredAtOrAboveHurdle": 0.4272
+  },
+  "measuredNameWeeks": 51588,
+  "passers": {
+   "distributionAbove80PctOfOCF": 0.2214,
+   "increaseComposition": {
+    "dividendLed": 0.0739,
+    "mixed": 0.1156,
+    "nameWeeksWithBothComponents": 15446,
+    "repurchaseLed": 0.8104
+   },
+   "nameWeeks": 16389,
+   "priorYearDistributionBelow2PctOfOCF": 0.0045,
+   "scoreQuantiles": {
+    "max": 0.775388,
+    "mean": 0.194101,
+    "min": 0.021046,
+    "n": 16389,
+    "p10": 0.057446,
+    "p25": 0.092361,
+    "p50": 0.160165,
+    "p75": 0.261405,
+    "p90": 0.381623
+   },
+   "spearmanScoreVsGrowth": 0.8272,
+   "spearmanScoreVsPayoutRatio": 0.559
+  }
+ },
+ "selectedComposition": {
+  "compositionKnownSlotWeeks": 2841,
+  "distributionAbove80PctOfOCF": 0.4608,
+  "dividendLed": 0.0088,
+  "priorYearDistributionBelow2PctOfOCF": 0.005,
+  "repurchaseLed": 0.962,
+  "selectedSlotWeeks": 3025
+ },
+ "variesThresholds": false,
+ "weeks": 715
+}

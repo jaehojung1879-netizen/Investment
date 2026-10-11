@@ -1,0 +1,154 @@
+{
+ "byFilingYearPct": {
+  "2012": {
+   "anyShareCount": 73.196,
+   "filings": 1996,
+   "periodEndBasis": 0.251,
+   "periodEndSameBasisNoSplitPair": 0.0,
+   "sameBasisNoSplitPair": 0.0
+  },
+  "2013": {
+   "anyShareCount": 72.923,
+   "filings": 2323,
+   "periodEndBasis": 0.387,
+   "periodEndSameBasisNoSplitPair": 0.086,
+   "sameBasisNoSplitPair": 48.214
+  },
+  "2014": {
+   "anyShareCount": 73.032,
+   "filings": 2299,
+   "periodEndBasis": 0.304,
+   "periodEndSameBasisNoSplitPair": 0.304,
+   "sameBasisNoSplitPair": 64.854
+  },
+  "2015": {
+   "anyShareCount": 73.043,
+   "filings": 2274,
+   "periodEndBasis": 0.308,
+   "periodEndSameBasisNoSplitPair": 0.264,
+   "sameBasisNoSplitPair": 66.051
+  },
+  "2016": {
+   "anyShareCount": 73.894,
+   "filings": 2306,
+   "periodEndBasis": 0.304,
+   "periodEndSameBasisNoSplitPair": 0.26,
+   "sameBasisNoSplitPair": 68.3
+  },
+  "2017": {
+   "anyShareCount": 73.37,
+   "filings": 2332,
+   "periodEndBasis": 0.3,
+   "periodEndSameBasisNoSplitPair": 0.257,
+   "sameBasisNoSplitPair": 69.983
+  },
+  "2018": {
+   "anyShareCount": 73.153,
+   "filings": 2369,
+   "periodEndBasis": 0.295,
+   "periodEndSameBasisNoSplitPair": 0.253,
+   "sameBasisNoSplitPair": 69.776
+  },
+  "2019": {
+   "anyShareCount": 73.779,
+   "filings": 2456,
+   "periodEndBasis": 0.326,
+   "periodEndSameBasisNoSplitPair": 0.285,
+   "sameBasisNoSplitPair": 68.037
+  },
+  "2020": {
+   "anyShareCount": 73.901,
+   "filings": 2433,
+   "periodEndBasis": 0.822,
+   "periodEndSameBasisNoSplitPair": 0.329,
+   "sameBasisNoSplitPair": 70.448
+  },
+  "2021": {
+   "anyShareCount": 74.96,
+   "filings": 2472,
+   "periodEndBasis": 0.647,
+   "periodEndSameBasisNoSplitPair": 0.364,
+   "sameBasisNoSplitPair": 67.557
+  },
+  "2022": {
+   "anyShareCount": 76.98,
+   "filings": 2450,
+   "periodEndBasis": 0.612,
+   "periodEndSameBasisNoSplitPair": 0.408,
+   "sameBasisNoSplitPair": 68.98
+  },
+  "2023": {
+   "anyShareCount": 78.162,
+   "filings": 2372,
+   "periodEndBasis": 0.632,
+   "periodEndSameBasisNoSplitPair": 0.464,
+   "sameBasisNoSplitPair": 72.175
+  },
+  "2024": {
+   "anyShareCount": 78.072,
+   "filings": 2303,
+   "periodEndBasis": 0.738,
+   "periodEndSameBasisNoSplitPair": 0.608,
+   "sameBasisNoSplitPair": 70.908
+  },
+  "2025": {
+   "anyShareCount": 77.81,
+   "filings": 2402,
+   "periodEndBasis": 0.541,
+   "periodEndSameBasisNoSplitPair": 0.458,
+   "sameBasisNoSplitPair": 68.318
+  },
+  "2026": {
+   "anyShareCount": 76.957,
+   "filings": 1814,
+   "periodEndBasis": 0.331,
+   "periodEndSameBasisNoSplitPair": 0.276,
+   "sameBasisNoSplitPair": 73.374
+  }
+ },
+ "evidenceClass": "OUTCOME_BLIND_SOURCE_EVIDENCE",
+ "fitsModels": false,
+ "id": "us-capital-allocation-dilution-evidence-v1",
+ "inputs": {
+  "cutoff": "2026-10-11",
+  "filings": 34601,
+  "fundamentalsCommit": "704d7db6d5b00def771aba5d2665d0846d6bc776",
+  "tickers": 782
+ },
+ "newAcquisition": false,
+ "overall": {
+  "filingsWithAnyShareCountPct": 74.879,
+  "jumpsOver40PctWithoutASealedSplit": 414,
+  "pairsWithPriorYearSameStagePct": 65.539,
+  "periodEndBasisPct": 0.46,
+  "periodEndSameBasisNoSplitPairsPct": 0.312,
+  "sameBasisNoSplitPairsPct": 63.683,
+  "sameBasisPairsPct": 65.359,
+  "splitBetweenPair": 582
+ },
+ "producesADilutionFeature": false,
+ "reading": [
+  "A same-basis, no-split pair is the most a NEW definition could build a dilution proxy on from this store.",
+  "Weighted-average counts move with issuance, buybacks, timing within the period and unit/class changes; none of that is separable here.",
+  "The period-end, share-class and split-adjusted count the registered hypothesis requires is the SEC XBRL instance fact, which is BLOCKED here."
+ ],
+ "readsLabels": false,
+ "readsReturns": false,
+ "sameBasisNoSplitChangeDistribution": {
+  "median": -0.0056,
+  "n": 22035,
+  "p01": -0.1547,
+  "p10": -0.0564,
+  "p90": 0.0421,
+  "p99": 0.6563
+ },
+ "shareCountBasis": {
+  "PERIOD_END_FACE_STATEMENT": 159,
+  "WEIGHTED_BASIC": 172,
+  "WEIGHTED_DILUTED": 25578
+ },
+ "status": {
+  "periodEndVerifiedDilution": "BLOCKED",
+  "weightedAverageProxy": "UNVERIFIED_BASIS_NOT_A_DILUTION_MEASURE"
+ }
+}

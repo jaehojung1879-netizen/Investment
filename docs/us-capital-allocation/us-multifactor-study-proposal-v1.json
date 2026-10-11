@@ -1,0 +1,244 @@
+{
+ "authorizes": "NOTHING",
+ "candidateUniverse": {
+  "knownBias": "no failed or acquired company has a price panel in the sealed history; prospective data does not have this bias",
+  "membership": "S&P 500, latest snapshot strictly earlier than the signal date",
+  "sectors": "Financials and Real Estate excluded (earnings-yield and operating-cash-flow definitions differ); owner decision D4",
+  "survivorship": "departed members stay while members; a held name without an exit price is unresolved, never zero"
+ },
+ "features": {
+  "cashConfirmation": "(OCF - capex) / OCF from the PR #220 engine, OCF > 0",
+  "composite": "equal-weight mean of within-date percentile ranks of the pre-declared features; no fitted weight, no sector neutralisation, no tuning",
+  "earningsYield": "epsTtm / as-traded close (positive earnings only)",
+  "excludedUntilVerified": [
+   "market capitalisation",
+   "period-end dilution",
+   "consensus estimates",
+   "any 13F or macro input (separate registered hypothesis required)"
+  ],
+  "fcfYield": "fcfPerShare / as-traded close",
+  "profitability": "roe, operatingMargin (existing sealed PIT_EXACT fields)",
+  "valueBasis": "RECONSTRUCTED as-traded price (pipeline/us_multifactor_inputs.py); a split between filing and observation withholds the yield; numerator share counts are weighted-average and unverified"
+ },
+ "forbiddenInThisProposal": [
+  "any historical stock-alpha outcome",
+  "any backtest of candidate strategies",
+  "choosing weights or thresholds from past returns"
+ ],
+ "id": "us-value-quality-breadth-v1",
+ "outcomeBlindEligibility": [
+  "positive close at most 10 calendar days old with at least 272 prior sessions",
+  "identity unambiguous",
+  "latest visible report period ended at most 180 days earlier",
+  "every composite feature present (no imputation, no fill, missing is never zero)",
+  "minimum scored names per week fixed from the power table before registration (recommended >= 150)"
+ ],
+ "pastDataClassification": [
+  {
+   "allowedUse": "outcome-blind readiness work (coverage, redundancy, definitions) only. Never confirmatory, never used to choose a weight, threshold or feature.",
+   "class": "OUTCOME_EXPOSED",
+   "consumedBy": [
+    "regional-alpha-model-v1: US annual models trained 2016 to 2026 on the 31-feature matrix; one-shot discovery budget spent (AGENTS.md v2.24)",
+    "fundamental-acceleration-discovery-v1 (US coverage 0.8179 reported)",
+    "benchmark-alpha-v1",
+    "weekly-passive-first-v1 replay (US sleeve)"
+   ],
+   "id": "US_LABELED_2013_2026H1",
+   "notClaimedExhaustive": "any other study that evaluated US forward returns is assumed to have exposed the same window",
+   "signalDates": "2013-01-04 to about 2026-03 (126-session labels matured inside the sealed data, which ends 2026-09-14)"
+  },
+  {
+   "allowedUse": "same as above; not a holdout",
+   "class": "PARTIALLY_EXPOSED_UNMATURED",
+   "id": "US_SIGNALS_2026H2_UNMATURED",
+   "reason": "stock-level 126-session outcomes do not exist, but sealed prices through 2026-09-14 are visible to the program and the SPY/QQQ path was published descriptively (PR #221)",
+   "signalDates": "about 2026-03 to 2026-09-11"
+  },
+  {
+   "class": "NOT_USABLE",
+   "id": "US_PRE_2013",
+   "reason": "no point-in-time S&P 500 membership before the 2012-12-27 snapshot; 2011-2012 prices are feature warm-up only"
+  },
+  {
+   "class": "UNTOUCHED_BY_CONSTRUCTION",
+   "definition": "signals dated after the authorizing merge of a registration; their outcomes do not exist when the rule is frozen",
+   "id": "PROSPECTIVE_AFTER_AUTHORIZATION",
+   "role": "the only confirmatory evidence the program can produce"
+  }
+ ],
+ "prerequisitesBeforeRegistration": [
+  {
+   "id": "VALUE_FEATURE_DEFINITION_V1",
+   "kind": "implementation",
+   "ownerApproval": false
+  },
+  {
+   "id": "FRESH_DAILY_US_PRICES_AND_MEMBERSHIP_REFRESH",
+   "kind": "data acquisition and a step in an existing workflow",
+   "ownerApproval": true
+  },
+  {
+   "id": "SEC_XBRL_ACCESS_FOR_SHARE_AND_DIVIDEND_CONTEXTS",
+   "kind": "network allow-list",
+   "ownerApproval": true
+  },
+  {
+   "id": "STATISTICIAN_REVIEW_OF_THE_POWER_AND_FUTILITY_LOOK",
+   "kind": "review",
+   "ownerApproval": true
+  }
+ ],
+ "primaryHypothesis": {
+  "alternativeBenchmark": "QQQ",
+  "benchmarkInvariance": "the IC is the same against SPY and QQQ because the benchmark return is constant within a date; SPY is primary, QQQ alternative, and the SPY-vs-QQQ difference is reported as the passive growth spread, never as selection",
+  "economic": "Within the S&P 500, companies that are simultaneously inexpensive on earnings and free-cash-flow yield and profitable with earnings confirmed by operating cash flow earn higher subsequent 126-session returns than their cross-sectional peers, beyond what price momentum and risk already order.",
+  "horizonSessions": 126,
+  "mechanism": "compensation for risk and slow investor adjustment to cash-confirmed profitability; it is a hypothesis, not a result",
+  "primaryBenchmark": "SPY",
+  "statistic": "mean cross-sectional Spearman rank correlation (IC) between the composite score and the H126 benchmark-relative return"
+ },
+ "productionEffect": "NONE",
+ "promotionEligible": false,
+ "registered": false,
+ "relationToV1": "independent; v1 (US_CAPITAL_ALLOCATION_SELECTION_V1, digest 73c347a34bc53f038c9e33ebbc2cb322960f33fc4170919b85d2561a4f073342) is neither modified nor replaced and keeps its own owner decision",
+ "scheduledPublication": "NOT_STARTED",
+ "status": "PROPOSED_NOT_REGISTERED",
+ "stopAndFailureCriteria": {
+  "failure": "at the gate: the one-sided 95% upper bound of the mean IC is not above zero",
+  "inconclusive": "neither, or any unresolved terminal outcome in a scored basket",
+  "noRetroactiveChange": "benchmarks, horizons and gates cannot be edited after observation",
+  "operationalStop": [
+   "fewer scored names than the floor on 8 consecutive weeks",
+   "price or membership input older than its limit on any signal date (BLOCKED receipt)",
+   "a feature definition or source changes (new study id)"
+  ],
+  "success": "at the gate: the one-sided 95% lower bound of the mean IC is above zero AND the IC clears a pre-declared minimum useful size"
+ },
+ "transactionCosts": {
+  "commissionBpsPerSide": 5.0,
+  "convention": "weekly-passive-first-v1 switchCost: round trip of the stock plus round trip of the ETF leg it displaces",
+  "etfRoundTripBps": 16.3,
+  "fullSpreadBps": 6.0,
+  "sellTaxBps": 0.3,
+  "source": "pipeline/benchmark_alpha.py REALISTIC_COSTS['US']",
+  "stockRoundTripBps": 16.3,
+  "switchBpsPerUnitStockWeight": 32.6
+ },
+ "twoStageDesign": {
+  "stage1_signalValidity": "score EVERY eligible name every week and record the rank information; paper only; the evidence accumulates with breadth, not with five holdings",
+  "stage2_investability": "0-5 names only if a hurdle calibrated on PROSPECTIVE stage 1 evidence exceeds cost plus a declared margin; until calibrated the output is UNCALIBRATED_HURDLE and 100% benchmark. Zero stocks is the normal and initial outcome",
+  "whyTwoStages": "a five-name book cannot resolve a realistic excess for years (see power); a signal can be tested on hundreds of names a week"
+ },
+ "validation": {
+  "confirmatoryEvidence": "prospective only; the rule, features and parameters are frozen by hash before the first scored week",
+  "inference": "circular moving-block bootstrap of the weekly IC series, block 26 weeks (one horizon), one-sided 95%, single look at the maturity gate",
+  "interimLooks": "none for efficacy; one pre-declared futility look at 6 independent windows (statistician sign-off required before registration)",
+  "multiplicity": "ONE primary claim (the IC); the stage 2 book and QQQ comparisons are secondary and carry no verdict power until the hurdle is calibrated",
+  "power": {
+   "assumptions": [
+    "one-sided 5% test, 80% power",
+    "names within a signal window treated as independent, which flatters the IC table",
+    "tracking errors are ASSUMED round numbers, not estimated from any return",
+    "windows = 126-session horizons, one independent draw each"
+   ],
+   "minimumDetectableAnnualExcessOfAFiveNameBook": {
+    "tracking error 10%": {
+     "3.0 years": 0.1436,
+     "6.5 years": 0.0975
+    },
+    "tracking error 6%": {
+     "3.0 years": 0.0862,
+     "6.5 years": 0.0585
+    },
+    "tracking error 8%": {
+     "3.0 years": 0.1149,
+     "6.5 years": 0.078
+    }
+   },
+   "minimumDetectableMeanRankIC": {
+    "100 names": {
+     "12 windows": 0.0718,
+     "4 windows": 0.1244,
+     "6 windows": 0.1015,
+     "8 windows": 0.0879
+    },
+    "200 names": {
+     "12 windows": 0.0508,
+     "4 windows": 0.0879,
+     "6 windows": 0.0718,
+     "8 windows": 0.0622
+    },
+    "330 names": {
+     "12 windows": 0.0395,
+     "4 windows": 0.0685,
+     "6 windows": 0.0559,
+     "8 windows": 0.0484
+    },
+    "50 names": {
+     "12 windows": 0.1015,
+     "4 windows": 0.1759,
+     "6 windows": 0.1436,
+     "8 windows": 0.1244
+    }
+   },
+   "reading": "a 0-5 name book needs years to resolve an excess of several percent a year, so it cannot be the FIRST evidence about a signal; a broad cross-section can, because its information grows with the number of names scored"
+  },
+  "secondary": [
+   "top-quintile minus universe spread vs SPY and QQQ",
+   "growth loading (QQQ - SPY spread)",
+   "turnover and exposure",
+   "H21 descriptive"
+  ]
+ },
+ "whyThisHypothesisAndNotAnother": {
+  "candidates": [
+   {
+    "blockers": [
+     "versioned value-feature definition",
+     "fresh prices for a prospective run",
+     "share-count basis of per-share numerators unverified"
+    ],
+    "breadth": "existing-model inputs 66.2% and plus value 32.3% of eligible member-dates; distribution alone 21.5%",
+    "dataReadiness": "PIT numerators exist; as-traded price basis is reconstructable from sealed events (round-trip exact)",
+    "id": "VALUE_QUALITY_CASHFLOW_COMPOSITE",
+    "novelty": "value was excluded from the closed regional model (price basis unresolved); cash confirmation of earnings was not in its matrix",
+    "rank": 1
+   },
+   {
+    "id": "SHAREHOLDER_DISTRIBUTION_GROWTH",
+    "note": "already registered as v1; breadth 17.9% (<= 30.6% under an unverified candidate view); buyback-led; dilution BLOCKED",
+    "rank": 2
+   },
+   {
+    "id": "NET_ISSUANCE_DILUTION",
+    "note": "economically attractive; BLOCKED until period-end share facts with class and split context are readable (SEC XBRL)",
+    "rank": 3
+   },
+   {
+    "id": "CATALYSTS_EVENTS",
+    "note": "no point-in-time event or earnings-calendar feed exists",
+    "rank": 4
+   },
+   {
+    "id": "PRICE_MOMENTUM_RISK",
+    "note": "inside the closed regional-alpha-model-v1 feature set; a retry would re-tune a closed result",
+    "rank": 5
+   }
+  ],
+  "criteria": [
+   "economic rationale",
+   "novelty against closed studies",
+   "breadth (power grows with names scored)",
+   "PIT data readiness",
+   "repair cost"
+  ]
+ },
+ "zeroToFiveNamePolicy": {
+  "cash": "none",
+  "hurdle": "UNCALIBRATED_HURDLE until stage 1 has at least 12 independent windows; then expected relative return net of 32.6 bp round-trip switch and a declared margin",
+  "maxNames": 5,
+  "mechanicalTopFive": "forbidden: a rank alone never fills a slot",
+  "residualAsset": "SPY",
+  "slotWeight": 0.15
+ }
+}
