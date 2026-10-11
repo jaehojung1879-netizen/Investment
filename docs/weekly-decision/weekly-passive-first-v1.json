@@ -1,0 +1,64 @@
+{
+  "id": "weekly-passive-first-v1",
+  "policyVersion": "weekly-passive-first-v1",
+  "status": "EXPLORATORY_WEEKLY_DECISION",
+  "authoredOn": "2026-10-10",
+  "evidenceClassOfAnyHistoricalResult": "POST_OUTCOME_EXPOSED_EXPLORATORY_PORTFOLIO_REPLAY",
+  "promotionEligible": false,
+  "liveValidated": false,
+  "relationToSealedStudies": "NONE. This is an operational decision policy assembled from existing production components. It is not an extension, rerun, amendment or rescue of kr-alpha-atlas Phase C, Phase D, kr-integrated-alpha-portfolio-v1, kr-model-overlay-portfolio-v1, benchmark-relative-alpha-v1 or any other sealed study, and it changes none of their verdicts.",
+  "preOutcomeDisclosure": [
+    "This file and docs/weekly-passive-first-v1.md were committed BEFORE the policy's own historical path (rule P1 and the cash-to-benchmark re-accounting C2 below) was computed.",
+    "The author HAD already seen: every previously published study on replay-v16 (all of which failed to beat the matched benchmark after costs), and the production calibration on the full replay-v16 ledger as of 2026-10-10, in which the alpha ordering is NOT established in either region (KR rank-IC t 0.68, top-minus-bottom t 1.42; US rank-IC t 0.17, top-minus-bottom t 0.61), so every bucket is unusable. The live rule is therefore expected to hold 100% of each regional benchmark today. The historical replay is outcome-exposed descriptive evidence, never confirmation.",
+    "No parameter below was chosen from a historical return. Every number is inherited from an existing file and the source is named next to it."
+  ],
+  "regions": {
+    "KR": {"benchmark": "069500.KS", "benchmarkName": "KODEX 200", "currency": "KRW"},
+    "US": {"benchmark": "SPY", "benchmarkName": "SPDR S&P 500 ETF", "currency": "USD"}
+  },
+  "rule": {
+    "decisionCadence": "WEEKLY: the last completed exchange session of each ISO week, per region, from that region's own exchange calendar",
+    "candidatePool": "The production long-term research sleeve of that region (longterm.build picks; in replay PV._research_candidates, which calls the same longterm.select_names). Regions are decided independently; no cross-region ranking, pooling or FX input.",
+    "edgeSource": "historical_calibration.calibrate, the production function, at horizon 126 sessions. A candidate's edge is calibratedExpectedExcessReturnPct of its region x alphaPercentile bucket, used ONLY when the bucket is usable (ordering established for the region AND enough effective spread dates). Otherwise the edge is NOT_AVAILABLE, never zero.",
+    "edgeHorizonSessions": 126,
+    "switchCost": "Round trip of the stock (dated REALISTIC_COSTS in pipeline/benchmark_alpha.py: commission both legs + full spread + dated sell tax) plus round trip of the benchmark ETF leg it displaces (commission both legs + full spread; KR sell tax 0 because domestic equity ETFs are exempt from the securities transaction tax; US uses the same 0.30bp regulatory-fee proxy as stocks).",
+    "netAdvantage": "edge (pp per 126 sessions) - switchCost (pp)",
+    "eligibility": [
+      "edge available and bucket usable",
+      "netAdvantage > 0",
+      "entry/research state multiplier > 0 (kelly_portfolio._state_multiplier: POSITIVE research view, not EVENT_RISK/AVOID, not data-insufficient, not value trap)",
+      "downside risk measurable (kelly_portfolio._risk_unit)"
+    ],
+    "ranking": "(netAdvantage + retentionCredit) / (downside risk in pp) x state multiplier, the benchmark_alpha.challenger_scores form. retentionCredit equals the switch cost for a name held in the previous receipt and is applied AFTER the eligibility gate, so it orders but never admits.",
+    "selection": "kelly_portfolio.select_portfolio_by_scores with targetNames 5, minNames 0, maxNamesPerSector 2 (config kellyPortfolio.selection.maxNamesPerSector), maxNamesPerRegion 5",
+    "maxNames": 5,
+    "minNames": 0,
+    "nameWeight": 0.15,
+    "nameWeightSource": "config.json longterm.maxNameWeight",
+    "residual": "1 - 0.15 x n held in the region's benchmark ETF. 0 names = 100% benchmark. Weights always sum to 100%.",
+    "noCashTarget": true,
+    "staleData": "If the region's latest observed session is earlier than its last completed exchange session (close + buffer), no new receipt is issued and the last valid receipt stays published with its true asOfDate.",
+    "receiptIdentity": "(policyVersion, region, asOfDate); append-only; a differing payload for an existing identity is refused, never overwritten"
+  },
+  "historicalComparisonProtocol": {
+    "name": "weekly-passive-first-v1-replay",
+    "inputs": "Frozen replay-v16 inputs on signal-history (input manifest sha256 f0781292f508a123c234ded6d28aa8e84a0dc3cc29500e14989dc0b68f53b4d2, through 2026-09-14), the replay-v16 historical signal and outcome ledgers, and docs/results/regional-standalone-paths.json.gz (sealed regional CHAMPION paths).",
+    "calendar": "replay_calendar.schedule('2013-01-01', through, 21, 'W'): the existing fixed 21-session anchor calendar, 155 matured blocks. The live policy decides weekly; the frozen replay ledger and valuation calendar exist only on 21-session anchors, so the replay re-decides every 21 sessions. This cadence difference is part of the result, not hidden.",
+    "pointInTime": "At each anchor the calibration is recomputed with historical_calibration.calibrate on outcomes whose 126-session endDate is on or before the anchor's signalDate. The probability-calibration block inside calibrate is not computed in the replay because the rule never reads it; the replay asserts that its bucket output on the full ledger equals the production call's.",
+    "valuation": "replay_valuation.ValuationData.window (production replay engine): daily marks, official closures, corporate-action successors; a held name with no valid mark makes the block INCOMPLETE and the path PARTIAL. Nothing is zero-filled or last-priced.",
+    "costs": "The same dated cost table as switchCost, charged on every traded weight at each anchor, including the initial purchase of the benchmark ETF for every path.",
+    "initialCapitalKrw": 50000000,
+    "paths": {
+      "P0": "Passive: 100% regional benchmark ETF, bought once and held.",
+      "P1": "weekly-passive-first-v1 rule replayed on the 21-session anchors (the operational policy).",
+      "C1": "Sealed regional standalone CHAMPION path (production conviction selector, cash residual at the KRW risk-free proxy), re-costed with the same dated cost table. Existing evidence, not re-selected.",
+      "C2": "C1's own decided weights with the residual held in the regional benchmark instead of cash, re-valued through the same engine. A descriptive comparison of the fallback asset only; not an operational policy."
+    },
+    "metrics": ["cumulative gross and net return", "CAGR", "benchmark CAGR", "excess CAGR (pp)", "arithmetic active return per year", "geometric minus arithmetic difference", "annualised cost drag", "max drawdown (daily)", "annualised volatility and downside volatility (daily)", "one-way turnover per year", "number of name trades", "average names held", "average benchmark weight", "calendar-year returns", "first-half / second-half split at the median block", "contribution by security", "share of anchors with zero names"],
+    "regionsComputed": ["KR", "US"],
+    "usHeadlineEligible": false,
+    "usHeadlineReason": "alpha-opportunity-model-v3's sealed survivorship audit: 212 of 324 departed S&P 500 identities have no usable price history in replay-v16, so any US stock path is survivor-conditioned. The US replay is published as SURVIVORSHIP_BIASED_PARTIAL and is never a headline.",
+    "benchmarkDefinition": "replay-v16 as-traded-close forward-accumulated index for BOTH the stocks and the benchmark (internally consistent). Phase C's corrected reconciliation shows this recipe's 069500.KS annual return exceeds the reconciled gross ETF total return by +1.11 to +4.51pp in every year 2013-2026; absolute KR levels are therefore overstated and the stock legs carry the same recipe with an unmeasured effect. KR comparisons are labelled BENCHMARK_DEFINITION_REPLAY_V16_NOT_RECONCILED.",
+    "forbidden": ["choosing nameWeight, maxNames, horizon, cost or any threshold from this replay", "a second run with a changed rule under the same id", "presenting P1, C1 or C2 as validated or as knowably best in advance", "pooling KR and US"]
+  }
+}
