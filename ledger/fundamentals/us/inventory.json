@@ -1,102 +1,105 @@
 {
   "filings": 1,
   "periodLengthByForm": {
-    "10-Q": {
-      "three quarters (226-315d)": 1
+    "10-K": {
+      "year (316-400d)": 1
     }
   },
   "filingsWithNoPeriodLength": 0,
   "filingsByFreq": {
-    "quarterly": 1
+    "annual": 1
   },
   "formsByFreq": {
-    "quarterly": {
-      "10-Q": 1
+    "annual": {
+      "10-K": 1
     }
   },
   "conceptsBySection": {
     "bs": 0,
-    "ic": 28,
-    "cf": 17
+    "ic": 20,
+    "cf": 30
   },
   "conceptsBySectionCollapsed": {
     "bs": 0,
-    "ic": 28,
-    "cf": 17
+    "ic": 20,
+    "cf": 30
   },
   "topConcepts": {
     "bs": [],
     "ic": [
       "us-gaap_RevenueFromContractWithCustomerExcludingAssessedTax",
-      "us-gaap_LaborAndRelatedExpense",
-      "us-gaap_FuelCosts",
-      "dal_RefineryExpenses",
-      "us-gaap_ProfessionalAndContractServicesExpense",
-      "us-gaap_LandingFeesAndOtherRentals",
-      "us-gaap_AircraftMaintenanceMaterialsAndRepairs",
-      "us-gaap_SellingAndMarketingExpense",
-      "us-gaap_AirlineCapacityPurchaseArrangements",
-      "us-gaap_DepreciationDepletionAndAmortization",
-      "us-gaap_CostOfServicesCatering",
-      "us-gaap_OtherLaborRelatedExpenses"
+      "us-gaap_CostOfGoodsAndServicesSold",
+      "us-gaap_GrossProfit",
+      "us-gaap_ResearchAndDevelopmentExpense",
+      "us-gaap_SellingGeneralAndAdministrativeExpense",
+      "us-gaap_OtherOperatingIncomeExpenseNet",
+      "us-gaap_OperatingIncomeLoss",
+      "us-gaap_InvestmentIncomeNet",
+      "us-gaap_InterestExpenseNonoperating",
+      "us-gaap_OtherNonoperatingIncomeExpense",
+      "us-gaap_IncomeLossFromContinuingOperationsBeforeIncomeTaxesMinorityInterestAndIncomeLossFromEquityMethodInvestments",
+      "us-gaap_IncomeTaxExpenseBenefit"
     ],
     "cf": [
+      "us-gaap_NetIncomeLoss",
+      "us-gaap_DepreciationDepletionAndAmortization",
+      "us-gaap_ShareBasedCompensation",
+      "us-gaap_IncreaseDecreaseInReceivables",
+      "us-gaap_IncreaseDecreaseInInventories",
+      "us-gaap_IncreaseDecreaseInAccountsPayableAndAccruedLiabilities",
+      "us-gaap_IncreaseDecreaseInOtherCurrentLiabilities",
+      "us-gaap_IncreaseDecreaseInOtherNoncurrentLiabilities",
+      "us-gaap_OtherOperatingActivitiesCashFlowStatement",
       "us-gaap_NetCashProvidedByUsedInOperatingActivities",
-      "us-gaap_PaymentsForFlightEquipment",
-      "us-gaap_PaymentsToAcquireOtherProductiveAssets",
-      "us-gaap_PaymentsToAcquireLongtermInvestments",
-      "us-gaap_PaymentsForProceedsFromOtherInvestingActivities",
-      "us-gaap_NetCashProvidedByUsedInInvestingActivities",
-      "us-gaap_ProceedsFromShortTermDebt",
-      "us-gaap_ProceedsFromIssuanceOfLongTermDebt",
-      "us-gaap_RepaymentsOfLongTermDebtAndCapitalSecurities",
-      "us-gaap_PaymentsOfDividends",
-      "us-gaap_ProceedsFromPaymentsForOtherFinancingActivities",
-      "us-gaap_NetCashProvidedByUsedInFinancingActivities"
+      "us-gaap_PaymentsToAcquireAvailableForSaleSecuritiesDebt",
+      "us-gaap_PaymentsToAcquirePropertyPlantAndEquipment"
     ]
   },
   "topConceptsCollapsed": {
     "bs": [],
     "ic": [
       "RevenueFromContractWithCustomerExcludingAssessedTax",
-      "LaborAndRelatedExpense",
-      "FuelCosts",
-      "dal_RefineryExpenses",
-      "ProfessionalAndContractServicesExpense",
-      "LandingFeesAndOtherRentals",
-      "AircraftMaintenanceMaterialsAndRepairs",
-      "SellingAndMarketingExpense",
-      "AirlineCapacityPurchaseArrangements",
-      "DepreciationDepletionAndAmortization",
-      "CostOfServicesCatering",
-      "OtherLaborRelatedExpenses"
+      "CostOfGoodsAndServicesSold",
+      "GrossProfit",
+      "ResearchAndDevelopmentExpense",
+      "SellingGeneralAndAdministrativeExpense",
+      "OtherOperatingIncomeExpenseNet",
+      "OperatingIncomeLoss",
+      "InvestmentIncomeNet",
+      "InterestExpenseNonoperating",
+      "OtherNonoperatingIncomeExpense",
+      "IncomeLossFromContinuingOperationsBeforeIncomeTaxesMinorityInterestAndIncomeLossFromEquityMethodInvestments",
+      "IncomeTaxExpenseBenefit"
     ],
     "cf": [
+      "NetIncomeLoss",
+      "DepreciationDepletionAndAmortization",
+      "ShareBasedCompensation",
+      "IncreaseDecreaseInReceivables",
+      "IncreaseDecreaseInInventories",
+      "IncreaseDecreaseInAccountsPayableAndAccruedLiabilities",
+      "IncreaseDecreaseInOtherCurrentLiabilities",
+      "IncreaseDecreaseInOtherNoncurrentLiabilities",
+      "OtherOperatingActivitiesCashFlowStatement",
       "NetCashProvidedByUsedInOperatingActivities",
-      "PaymentsForFlightEquipment",
-      "PaymentsToAcquireOtherProductiveAssets",
-      "PaymentsToAcquireLongtermInvestments",
-      "PaymentsForProceedsFromOtherInvestingActivities",
-      "NetCashProvidedByUsedInInvestingActivities",
-      "ProceedsFromShortTermDebt",
-      "ProceedsFromIssuanceOfLongTermDebt",
-      "RepaymentsOfLongTermDebtAndCapitalSecurities",
-      "PaymentsOfDividends",
-      "ProceedsFromPaymentsForOtherFinancingActivities",
-      "NetCashProvidedByUsedInFinancingActivities"
+      "PaymentsToAcquireAvailableForSaleSecuritiesDebt",
+      "PaymentsToAcquirePropertyPlantAndEquipment"
     ]
   },
   "units": {
-    "usd": 43,
-    "usd/share": 2
+    "usd": 46,
+    "usd/share": 2,
+    "shares": 2
   },
   "unitClasses": {
-    "currency": 43,
-    "perShare": 2
+    "currency": 46,
+    "perShare": 2,
+    "shares": 2
   },
   "unitClassesResolved": {
-    "currency": 43,
-    "perShare": 2
+    "currency": 46,
+    "perShare": 2,
+    "shares": 2
   },
   "unclassifiedUnits": {}
 }
