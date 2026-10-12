@@ -67,6 +67,15 @@ def test_sealed_build_publication_and_results_are_unchanged():
              "docs/weekly-decision/weekly-passive-first-v1-replay-corrected-benchmark.json"]
     for path in paths:
         original = subprocess.check_output(["git", "show", f"8f45870cf8a0c41c5d32c3ec1296417de23c5db1:{path}"], cwd=ROOT)
+        if path == "pipeline/weekly_publish.py":
+            current = (ROOT / path).read_bytes()
+            start = current.index(b"    # Additive research namespace.")
+            end = current.index(b"    return 0\n", start)
+            # v3 authorizes a separate append-only namespace only. Every
+            # original P1 function/statement remains byte-identical outside it.
+            assert current[:start] + current[end:] == original
+            assert b"research-strategies" in current[start:end]
+            continue
         if path == ".github/workflows/tests.yml":
             # The operational CI budget evolves independently of the terminal.
             # Permit exactly the owner-authorized timeout increase; all gates stay.

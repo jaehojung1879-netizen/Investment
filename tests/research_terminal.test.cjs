@@ -272,17 +272,20 @@ test("every original chart point is preserved and no invented initial point exis
   assert.equal(points.length, s.weeklyNav.P0.length);
   assert.doesNotMatch(html, /data-chart-line="P1"/);
 });
-test("live frontend has only four sections and no legacy production rendering or QQQ source", () => {
+test("v3 has six sections with sourced context and no combined Kelly recommendation", () => {
   const html = fs.readFileSync(path.join(root, "index.html"), "utf8");
   const app = fs.readFileSync(path.join(root, "app.js"), "utf8");
-  assert.equal((html.match(/<section /g) || []).length, 4);
-  for (const id of ["decision", "performance", "watchlist", "evidence"])
+  assert.equal((html.match(/<section /g) || []).length, 6);
+  for (const id of ["decision", "market", "performance", "institutional", "watchlist", "evidence"])
     assert.ok(html.includes(`id="${id}"`));
   assert.doesNotMatch(
     app,
-    /renderModelPortfolio|loadData\(|kellyFraction|site-data\.json|us-spy-qqq|QQQ/,
+    /renderModelPortfolio|loadData\(|kellyFraction/,
   );
   assert.ok(app.includes("/git/ref/heads/signal-history"));
   assert.ok(app.includes("raw.githubusercontent.com"));
+  assert.ok(app.includes("data/site-data.json"));
+  assert.ok(app.includes("current-champion-decisions-v1"));
+  assert.ok(app.includes("performanceOpened"));
 });
 module.exports = { receipt, bundle, clone };

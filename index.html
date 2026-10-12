@@ -34,8 +34,10 @@
         </div>
       </div>
       <nav class="wrap navigation" aria-label="주요 메뉴">
-        <a href="#decision">이번 주 판단</a
+        <a href="#decision">현재 전략별 판단</a
+        ><a href="#market">시장·거시 지표</a
         ><a href="#performance">전략별 과거 성과</a
+        ><a href="#institutional">기관 포트폴리오 13F</a
         ><a href="#watchlist">관찰 종목</a><a href="#evidence">연구 근거</a>
       </nav>
     </header>
@@ -44,7 +46,7 @@
         <div class="section-head">
           <div>
             <p class="eyebrow" id="marketContext">KR / KRX · 독립 판단</p>
-            <h1 id="decisionTitle">이번 주 가상 투자 판단</h1>
+            <h1 id="decisionTitle">현재 전략별 가상 판단</h1>
           </div>
           <button class="text-button" id="refresh" type="button">
             최신 확인 ↻
@@ -58,6 +60,13 @@
         >
           <p class="loading">게시된 영수증을 확인하고 있습니다.</p>
         </div>
+      </section>
+      <section id="market" aria-labelledby="marketTitle">
+        <div class="section-head"><div><p class="eyebrow">MARKET CONTEXT</p><h2 id="marketTitle">시장·거시 지표</h2></div><span class="evidence-label">원천 관측 · 매수 신호와 별개</span></div>
+        <div id="siteStatus" class="source-status" aria-live="polite">게시된 시장 자료 확인 중</div>
+        <div id="marketPanel"><p class="loading">시장 관측을 확인하고 있습니다.</p></div>
+        <div class="section-head macro-heading"><div><p class="eyebrow">MACRO INTELLIGENCE</p><h3>경제 환경과 위험예산</h3></div></div>
+        <div id="macroPanel"><p class="loading">거시 관측을 확인하고 있습니다.</p></div>
       </section>
       <section id="performance" aria-labelledby="performanceTitle">
         <div class="section-head">
@@ -82,6 +91,12 @@
         <div id="performancePanel" aria-live="polite" aria-busy="true">
           <p class="loading">교정된 원본 연구 자료를 확인하고 있습니다.</p>
         </div>
+      </section>
+      <section id="institutional" aria-labelledby="institutionalTitle">
+        <div class="section-head"><div><p class="eyebrow">DELAYED PUBLIC DISCLOSURE</p><h2 id="institutionalTitle">기관 포트폴리오 13F</h2></div><span class="evidence-label">분기말 공시 · 현재 보유 아님</span></div>
+        <p class="notice">13F는 보고대상 롱 포지션의 지연 공시입니다. 현금·숏·전체 자산을 포함하지 않으며, 주식 수 변화로 실제 거래일을 알 수 없습니다.</p>
+        <div id="institutionalPanel"><p class="loading">공식 공시 자료 확인 중</p></div>
+        <div id="npsPanel"></div>
       </section>
       <section id="watchlist" aria-labelledby="watchlistTitle">
         <div class="section-head">
@@ -114,6 +129,7 @@
         <span>KR · KRW / US · USD — 시장별 독립 연구</span>
       </footer>
     </main>
+    <dialog id="contextDialog" aria-labelledby="contextDialogTitle"><div class="dialog-toolbar"><button type="button" id="closeDialog" aria-label="상세 보기 닫기">닫기 ×</button></div><div id="contextDialogBody"></div></dialog>
     <noscript
       >주간 영수증과 연구 자료를 보려면 JavaScript를 활성화해 주세요. 여기에는
       기본 투자 비중을 표시하지 않습니다.</noscript

@@ -230,6 +230,25 @@ def main(argv=None) -> int:
     for conflict in report["conflicts"]:
         print(f"notice: kept the first receipt for {conflict['receiptId']}; a later, different "
               "payload for the same week was refused")
+    # Additive research namespace. The existing workflow stages `git add ledger`;
+    # no byte-pinned workflow, official P1 receipt or weekly output is changed.
+    # Explicitly recognize its ledger layout; standalone callers keep their
+    # original four/five-path output contract.
+    if receipts_in.parent.name == "weekly-decisions" and receipts_in.parent.parent.name == "ledger":
+        from . import current_champion_decisions as champion
+        try:
+            champion.publish(site, hashlib.sha256(raw).hexdigest(),
+                             receipts_in.parent.parent / "research-strategies" / champion.VERSION)
+        except Exception as exc:  # Research refusal cannot consume the official P1 publication.
+            directory = receipts_in.parent.parent / "research-strategies" / champion.VERSION
+            try:
+                directory.mkdir(parents=True, exist_ok=True)
+                (directory / "publication-status.json").write_bytes(champion.canonical({
+                    "schema": champion.PUBLICATION, "status": "REFUSED", "liveValidated": False,
+                    "generatedAt": site["generatedAt"], "errorClass": type(exc).__name__}) + b"\n")
+            except OSError:
+                print("notice: separate research refusal status could not be stored")
+            print(f"notice: separate CHAMPION research publication refused ({type(exc).__name__})")
     return 0
 
 
