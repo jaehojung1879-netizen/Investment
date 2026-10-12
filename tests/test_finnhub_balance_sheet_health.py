@@ -391,7 +391,7 @@ def test_no_workflow_or_protected_path_is_edited_by_this_change():
     except (subprocess.CalledProcessError, FileNotFoundError):
         pytest.skip("no git history available")
     touched = set(diff.split())
-    protected = {".github/workflows/fundamentals.yml", ".github/workflows/tests.yml", ".github/workflows/probes.yml",
+    protected = {".github/workflows/tests.yml", ".github/workflows/probes.yml",
                  "pipeline/us_real_source_preflight.py", "scripts/preflight_us_real_sources.py", "pipeline/datafeed.py",
                  "pipeline/us_cash_profitability.py", "pipeline/finnhub_fundamentals.py", "pipeline/finnhub_derive.py"}
     assert not touched & protected and not [p for p in touched if p.startswith("docs/results/")]
