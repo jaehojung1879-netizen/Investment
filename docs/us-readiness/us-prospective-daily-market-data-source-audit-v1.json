@@ -1,0 +1,82 @@
+{
+  "auditScope": "One bounded preflight from implementation before final timestamp/unit hardening; no repeated price-source probes.",
+  "implementationVersion": "us-prospective-daily-market-data-v1",
+  "integrationBaseMainSha": "21c8646d99b4bfe5bc65cc5136086679cae0b9d4",
+  "ledgerTreeObservation": {
+    "branchTree": "4686351c9aaed2ac865d0e2c9092d9f7e8b7f2be",
+    "method": "Read-only GitHub tree metadata; no signal or outcome records accessed.",
+    "prices": {
+      "sha": "1eda2bef6ae461e4d59b0e4add672fe6d1309e3b",
+      "tree": [
+        {
+          "path": "kr",
+          "type": "tree"
+        }
+      ]
+    },
+    "universe": {
+      "sha": "41a8ab9f3a5f3c7beac74c4452dad5ab744e20c5",
+      "tree": [
+        {
+          "path": "kr",
+          "type": "tree"
+        }
+      ]
+    }
+  },
+  "membership": {
+    "constituentSecurityCount": 503,
+    "effectiveMembershipDate": null,
+    "historicalPitComplete": false,
+    "issuerCikCount": 500,
+    "missingCikCount": 0,
+    "officialCompletenessVerified": false,
+    "source": "https://raw.githubusercontent.com/datasets/s-and-p-500-companies/36472b57910842f4025e8ca8303b93a692d2bbae/data/constituents.csv",
+    "sourceIdentity": "datasets/s-and-p-500-companies@36472b57910842f4025e8ca8303b93a692d2bbae:data/constituents.csv",
+    "sourceLastChangedAt": "2026-10-09T03:19:58Z",
+    "sourceRawSha256": "a8045f043ea7e68d4254a07470a5e95ca5759ded4656657eac514162e6e82e06"
+  },
+  "observedAt": "2026-10-12T03:48:26.806744Z",
+  "prices": {
+    "allExpectedRecordsMissing": true,
+    "constituentPriceRequestsPerformed": 0,
+    "expectedRecordCount": 505,
+    "limitation": "Environment proxy CONNECT 403; not a measurement of vendor-wide availability. Benchmark preflight stopped constituent fan-out.",
+    "missingBenchmarks": [
+      {
+        "date": "2026-10-09",
+        "ticker": "QQQ"
+      },
+      {
+        "date": "2026-10-09",
+        "ticker": "SPY"
+      }
+    ],
+    "providerAdapterCalls": 2,
+    "sourceFailures": [
+      {
+        "code": "YAHOO_PROVIDER_REFUSAL",
+        "outcome": "NETWORK_ERROR",
+        "sourceMessage": "ConnectionError: Failed to perform, curl: (7) CONNECT tunnel failed, response 403. See https://curl.se/libcurl/c/libcurl-errors.html first for more details.",
+        "ticker": "QQQ"
+      },
+      {
+        "code": "YAHOO_PROVIDER_REFUSAL",
+        "outcome": "NETWORK_ERROR",
+        "sourceMessage": "ConnectionError: Failed to perform, curl: (7) CONNECT tunnel failed, response 403. See https://curl.se/libcurl/c/libcurl-errors.html first for more details.",
+        "ticker": "SPY"
+      }
+    ],
+    "status": "PARTIAL",
+    "targetSessions": [
+      "2026-10-09"
+    ],
+    "validPriceRecordCount": 0
+  },
+  "probeCheckoutBaseMainSha": "9086f5ead25c9d158b22e9230faa35868e7746d0",
+  "productionWritePerformed": false,
+  "scheduleActivated": false,
+  "schema": "US_DAILY_MARKET_SOURCE_AUDIT_V1",
+  "sourceKind": "LIVE_SOURCE_OBSERVATION",
+  "syntheticCountsMixedIntoRealAudit": false
+}
