@@ -1,0 +1,95 @@
+{
+  "alphaOrResearchOutcomesComputed": false,
+  "artifact": {
+    "created_at": "2026-10-12T06:10:45Z",
+    "digest": "sha256:20d330cd8e1bc3c72cb6e6fc88e8df1b1d905b21641be951ec7b49c1ce1348ff",
+    "expired": false,
+    "expires_at": "2027-01-10T06:10:04Z",
+    "id": 11728239669,
+    "name": "us-real-source-preflight-v1-38211219882",
+    "size_in_bytes": 120044
+  },
+  "artifactDigestVerification": "GITHUB_API_DECLARED_NOT_LOCALLY_RECOMPUTED",
+  "artifactUrl": "https://github.com/jaehojung1879-netizen/Investment/actions/runs/38211219882/artifacts/11728239669",
+  "assertionEvidenceMethod": "PASS branch in exact producer code plus successful actual-source job. Original detailed report retained in artifact; not locally extracted.",
+  "authoringArtifactDownload": {
+    "bypassAttempted": false,
+    "errorSanitized": "Standard gh run download: signed Azure artifact URL returned Forbidden. Standard job-log API download also returned HTTP 403.",
+    "sourceConnectivityVerdictUnaffected": true,
+    "status": "BLOCKED"
+  },
+  "baseMainSha": "b656f852a29b475bdb697b0b2a6752f7a559fbe4",
+  "capturedAtUtc": "2026-10-12T06:16:33.785878+00:00",
+  "exactCountsEvidenceMethod": "GitHub Actions API completed summary-job name from diagnostic controlled outputs; not synthetic fixtures.",
+  "failureClasses": [],
+  "fullUniverseReady": false,
+  "limitations": [
+    "Single hosted-runner observation; not daily SLA or all-current-member coverage.",
+    "Secondary current membership is not official historical PIT effective membership.",
+    "CIK+symbol identity is provisional, not a permanent share-class ID."
+  ],
+  "maxProviderAdapterCalls": 5,
+  "membershipSourceCommitAndCurrentFullCount": "NOT_LOCALLY_INSPECTED; original pinned CSV and report retained in artifact.",
+  "nonzeroDividendAndSplitEventCounts": "NOT_LOCALLY_INSPECTED; original report records them. Do not claim real nonzero split-event coverage.",
+  "observedCountsFromCompletedJobName": {
+    "QQQ": 7,
+    "SPY": 7,
+    "successfulConstituentSample": 3,
+    "validPriceRecords": 35
+  },
+  "passedAssertionsByExecutedVerdictContract": [
+    "XNYS_COMPLETED_SESSION_GRID",
+    "USD_SYMBOL_AND_INSTRUMENT_TYPE",
+    "REQUIRED_DIVIDEND_AND_SPLIT_FIELDS",
+    "AS_TRADED_OHLCV_AND_DIVIDEND_BASIS",
+    "SAME_ACQUISITION_REPEAT_NO_NEW_REQUEST",
+    "APPEND_ONLY_BYTES_UNCHANGED",
+    "SOURCE_REFERENCES_VERIFIED",
+    "NO_PRICE_VISIBLE_BEFORE_ACQUISITION"
+  ],
+  "producerHeadSha": "ac1db54d7d3558b4360f75df1f4addd68a5767cc",
+  "productionWritePerformed": false,
+  "runId": 38211219882,
+  "runUrl": "https://github.com/jaehojung1879-netizen/Investment/actions/runs/38211219882",
+  "sampleSelectionRule": "Identity-only AAPL/JPM/BRK-B or BF-B from actual current source, deterministic fallback if absent.",
+  "scheduleActivated": false,
+  "schema": "US_REAL_SOURCE_PREFLIGHT_ACTIONS_EVIDENCE_V1",
+  "sourceCodeSha256FromProducerGitCommit": {
+    ".github/workflows/tests.yml": "6c9b390bc7155d229ca042ab2719aa335515490db8a6c34a5e9a8e8b383221f5",
+    "pipeline/us_daily_market_data.py": "cb09978442c5ded70cd99b943417229a4cf8f38b5a0415aa6c8ae54a49cbefcc",
+    "pipeline/us_daily_market_sources.py": "3e2335ad48adf86f7b5d16d827c2edb165e85fade87f828aede12632ca94ece5",
+    "pipeline/us_real_source_preflight.py": "2d3a1ef821bdafac6c0ade77737775ae4e9cc1696ceb82be454270f2357081f2",
+    "scripts/preflight_us_real_sources.py": "e83383242ff32df73468e78f13018981cf3c9af18c7229fc9720702f3e9025b1"
+  },
+  "sourceJob": {
+    "completed_at": "2026-10-12T06:10:48Z",
+    "conclusion": "success",
+    "head_sha": "ac1db54d7d3558b4360f75df1f4addd68a5767cc",
+    "html_url": "https://github.com/jaehojung1879-netizen/Investment/actions/runs/38211219882/job/114685596531",
+    "id": 114685596531,
+    "labels": [
+      "ubuntu-latest"
+    ],
+    "name": "us-real-source-preflight",
+    "runner_group_name": "GitHub Actions",
+    "runner_name": "GitHub Actions 1000005499",
+    "started_at": "2026-10-12T06:10:06Z"
+  },
+  "sourceKind": "LIVE_GITHUB_HOSTED_SOURCE_OBSERVATION",
+  "summaryJob": {
+    "completed_at": "2026-10-12T06:10:54Z",
+    "conclusion": "success",
+    "head_sha": "ac1db54d7d3558b4360f75df1f4addd68a5767cc",
+    "html_url": "https://github.com/jaehojung1879-netizen/Investment/actions/runs/38211219882/job/114685782789",
+    "id": 114685782789,
+    "labels": [
+      "ubuntu-latest"
+    ],
+    "name": "US evidence | PASS SPY=7 QQQ=7 sample=3 rows=35 failures=NONE",
+    "runner_group_name": "GitHub Actions",
+    "runner_name": "GitHub Actions 1000005501",
+    "started_at": "2026-10-12T06:10:51Z"
+  },
+  "verdict": "PASS",
+  "workflowStatusAtCapture": "SOURCE_AND_SUMMARY_JOBS_SUCCESS; PYTEST_JOB_STILL_RUNNING. Not a final full-workflow success claim."
+}
