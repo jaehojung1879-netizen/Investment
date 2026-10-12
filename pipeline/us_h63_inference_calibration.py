@@ -212,7 +212,7 @@ def simulate(geometry: dict[str, Any], dgp: dict[str, Any], *, weeks: int, seed_
         drift = np.where(alive, (effect_annual / 252.0) * w_now / norm2, 0.0)   # the current cohort earns effect/252 per session
     daily = np.where(alive, daily + drift, 0.0)
     last = available[-1]
-    return {"daily": daily, "drift": drift, "weights": weights, "defined": defined, "available": available,
+    return {"daily": daily, "drift": drift, "weights": weights, "defined": defined, "available": available, "aliveUntil": alive_until,
             "featureAccrualRankCorrelationLastWeek": float(np.corrcoef(
                 centred_ranks(observed[-1, :, 0], last)[last], zranks[-1, last, 0])[0, 1])}
 
