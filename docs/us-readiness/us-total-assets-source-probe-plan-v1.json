@@ -1,0 +1,432 @@
+{
+  "contract": "US_TOTAL_ASSETS_SOURCE_FEASIBILITY_V1",
+  "hardCeilingPerSource": 20,
+  "mode": "PLAN_ONLY",
+  "sampleDigest": "1552a99cdd9f25f0a71cacd80adce502026b59ab612e19d11638b94843715688",
+  "sampleFilings": 32,
+  "secUserAgentContactSupplied": false,
+  "sources": {
+    "finnhub": {
+      "keyPresentInThisProcess": false,
+      "keyRequired": true,
+      "plannedRequests": [
+        {
+          "cik": "878927",
+          "host": "finnhub.io",
+          "kind": "FINNHUB_STANDARDIZED_BS_QUARTERLY",
+          "params": {
+            "freq": "quarterly",
+            "statement": "bs",
+            "symbol": "ODFL"
+          },
+          "ticker": "ODFL",
+          "url": "https://finnhub.io/api/v1/stock/financials"
+        },
+        {
+          "cik": "12659",
+          "host": "finnhub.io",
+          "kind": "FINNHUB_STANDARDIZED_BS_QUARTERLY",
+          "params": {
+            "freq": "quarterly",
+            "statement": "bs",
+            "symbol": "HRB"
+          },
+          "ticker": "HRB",
+          "url": "https://finnhub.io/api/v1/stock/financials"
+        },
+        {
+          "cik": "875320",
+          "host": "finnhub.io",
+          "kind": "FINNHUB_STANDARDIZED_BS_QUARTERLY",
+          "params": {
+            "freq": "quarterly",
+            "statement": "bs",
+            "symbol": "VRTX"
+          },
+          "ticker": "VRTX",
+          "url": "https://finnhub.io/api/v1/stock/financials"
+        },
+        {
+          "cik": "1841666",
+          "host": "finnhub.io",
+          "kind": "FINNHUB_STANDARDIZED_BS_QUARTERLY",
+          "params": {
+            "freq": "quarterly",
+            "statement": "bs",
+            "symbol": "APA"
+          },
+          "ticker": "APA",
+          "url": "https://finnhub.io/api/v1/stock/financials"
+        },
+        {
+          "cik": "105770",
+          "host": "finnhub.io",
+          "kind": "FINNHUB_STANDARDIZED_BS_QUARTERLY",
+          "params": {
+            "freq": "quarterly",
+            "statement": "bs",
+            "symbol": "WST"
+          },
+          "ticker": "WST",
+          "url": "https://finnhub.io/api/v1/stock/financials"
+        },
+        {
+          "cik": "720005",
+          "host": "finnhub.io",
+          "kind": "FINNHUB_STANDARDIZED_BS_QUARTERLY",
+          "params": {
+            "freq": "quarterly",
+            "statement": "bs",
+            "symbol": "RJF"
+          },
+          "ticker": "RJF",
+          "url": "https://finnhub.io/api/v1/stock/financials"
+        },
+        {
+          "cik": "1071739",
+          "host": "finnhub.io",
+          "kind": "FINNHUB_STANDARDIZED_BS_QUARTERLY",
+          "params": {
+            "freq": "quarterly",
+            "statement": "bs",
+            "symbol": "CNC"
+          },
+          "ticker": "CNC",
+          "url": "https://finnhub.io/api/v1/stock/financials"
+        },
+        {
+          "cik": "1534701",
+          "host": "finnhub.io",
+          "kind": "FINNHUB_STANDARDIZED_BS_QUARTERLY",
+          "params": {
+            "freq": "quarterly",
+            "statement": "bs",
+            "symbol": "PSX"
+          },
+          "ticker": "PSX",
+          "url": "https://finnhub.io/api/v1/stock/financials"
+        }
+      ],
+      "verdict": "PENDING_OWNER_DISPATCH"
+    },
+    "fmp": {
+      "keyPresentInThisProcess": false,
+      "keyRequired": true,
+      "plannedRequests": [
+        {
+          "cik": "878927",
+          "host": "financialmodelingprep.com",
+          "kind": "FMP_STABLE_BALANCE_SHEET",
+          "params": {
+            "limit": "5",
+            "period": "quarter",
+            "symbol": "ODFL"
+          },
+          "ticker": "ODFL",
+          "url": "https://financialmodelingprep.com/stable/balance-sheet-statement"
+        },
+        {
+          "cik": "878927",
+          "host": "financialmodelingprep.com",
+          "kind": "FMP_STABLE_BALANCE_SHEET",
+          "params": {
+            "limit": "120",
+            "period": "quarter",
+            "symbol": "ODFL"
+          },
+          "ticker": "ODFL",
+          "url": "https://financialmodelingprep.com/stable/balance-sheet-statement"
+        },
+        {
+          "cik": "12659",
+          "host": "financialmodelingprep.com",
+          "kind": "FMP_STABLE_BALANCE_SHEET",
+          "params": {
+            "limit": "5",
+            "period": "quarter",
+            "symbol": "HRB"
+          },
+          "ticker": "HRB",
+          "url": "https://financialmodelingprep.com/stable/balance-sheet-statement"
+        },
+        {
+          "cik": "875320",
+          "host": "financialmodelingprep.com",
+          "kind": "FMP_STABLE_BALANCE_SHEET",
+          "params": {
+            "limit": "5",
+            "period": "quarter",
+            "symbol": "VRTX"
+          },
+          "ticker": "VRTX",
+          "url": "https://financialmodelingprep.com/stable/balance-sheet-statement"
+        },
+        {
+          "cik": "1841666",
+          "host": "financialmodelingprep.com",
+          "kind": "FMP_STABLE_BALANCE_SHEET",
+          "params": {
+            "limit": "5",
+            "period": "quarter",
+            "symbol": "APA"
+          },
+          "ticker": "APA",
+          "url": "https://financialmodelingprep.com/stable/balance-sheet-statement"
+        },
+        {
+          "cik": "105770",
+          "host": "financialmodelingprep.com",
+          "kind": "FMP_STABLE_BALANCE_SHEET",
+          "params": {
+            "limit": "5",
+            "period": "quarter",
+            "symbol": "WST"
+          },
+          "ticker": "WST",
+          "url": "https://financialmodelingprep.com/stable/balance-sheet-statement"
+        },
+        {
+          "cik": "720005",
+          "host": "financialmodelingprep.com",
+          "kind": "FMP_STABLE_BALANCE_SHEET",
+          "params": {
+            "limit": "5",
+            "period": "quarter",
+            "symbol": "RJF"
+          },
+          "ticker": "RJF",
+          "url": "https://financialmodelingprep.com/stable/balance-sheet-statement"
+        },
+        {
+          "cik": "1071739",
+          "host": "financialmodelingprep.com",
+          "kind": "FMP_STABLE_BALANCE_SHEET",
+          "params": {
+            "limit": "5",
+            "period": "quarter",
+            "symbol": "CNC"
+          },
+          "ticker": "CNC",
+          "url": "https://financialmodelingprep.com/stable/balance-sheet-statement"
+        },
+        {
+          "cik": "1534701",
+          "host": "financialmodelingprep.com",
+          "kind": "FMP_STABLE_BALANCE_SHEET",
+          "params": {
+            "limit": "5",
+            "period": "quarter",
+            "symbol": "PSX"
+          },
+          "ticker": "PSX",
+          "url": "https://financialmodelingprep.com/stable/balance-sheet-statement"
+        }
+      ],
+      "verdict": "PENDING_OWNER_DISPATCH"
+    },
+    "massive": {
+      "keyPresentInThisProcess": false,
+      "keyRequired": true,
+      "plannedRequests": [
+        {
+          "cik": "878927",
+          "host": "api.massive.com",
+          "kind": "MASSIVE_V1_BALANCE_SHEETS",
+          "params": {
+            "cik": "878927",
+            "limit": "100",
+            "sort": "period_end.desc",
+            "timeframe": "quarterly"
+          },
+          "ticker": "ODFL",
+          "url": "https://api.massive.com/stocks/financials/v1/balance-sheets"
+        },
+        {
+          "cik": "12659",
+          "host": "api.massive.com",
+          "kind": "MASSIVE_V1_BALANCE_SHEETS",
+          "params": {
+            "cik": "12659",
+            "limit": "100",
+            "sort": "period_end.desc",
+            "timeframe": "quarterly"
+          },
+          "ticker": "HRB",
+          "url": "https://api.massive.com/stocks/financials/v1/balance-sheets"
+        },
+        {
+          "cik": "875320",
+          "host": "api.massive.com",
+          "kind": "MASSIVE_V1_BALANCE_SHEETS",
+          "params": {
+            "cik": "875320",
+            "limit": "100",
+            "sort": "period_end.desc",
+            "timeframe": "quarterly"
+          },
+          "ticker": "VRTX",
+          "url": "https://api.massive.com/stocks/financials/v1/balance-sheets"
+        },
+        {
+          "cik": "1841666",
+          "host": "api.massive.com",
+          "kind": "MASSIVE_V1_BALANCE_SHEETS",
+          "params": {
+            "cik": "1841666",
+            "limit": "100",
+            "sort": "period_end.desc",
+            "timeframe": "quarterly"
+          },
+          "ticker": "APA",
+          "url": "https://api.massive.com/stocks/financials/v1/balance-sheets"
+        },
+        {
+          "cik": "105770",
+          "host": "api.massive.com",
+          "kind": "MASSIVE_V1_BALANCE_SHEETS",
+          "params": {
+            "cik": "105770",
+            "limit": "100",
+            "sort": "period_end.desc",
+            "timeframe": "quarterly"
+          },
+          "ticker": "WST",
+          "url": "https://api.massive.com/stocks/financials/v1/balance-sheets"
+        },
+        {
+          "cik": "720005",
+          "host": "api.massive.com",
+          "kind": "MASSIVE_V1_BALANCE_SHEETS",
+          "params": {
+            "cik": "720005",
+            "limit": "100",
+            "sort": "period_end.desc",
+            "timeframe": "quarterly"
+          },
+          "ticker": "RJF",
+          "url": "https://api.massive.com/stocks/financials/v1/balance-sheets"
+        },
+        {
+          "cik": "1071739",
+          "host": "api.massive.com",
+          "kind": "MASSIVE_V1_BALANCE_SHEETS",
+          "params": {
+            "cik": "1071739",
+            "limit": "100",
+            "sort": "period_end.desc",
+            "timeframe": "quarterly"
+          },
+          "ticker": "CNC",
+          "url": "https://api.massive.com/stocks/financials/v1/balance-sheets"
+        },
+        {
+          "cik": "1534701",
+          "host": "api.massive.com",
+          "kind": "MASSIVE_V1_BALANCE_SHEETS",
+          "params": {
+            "cik": "1534701",
+            "limit": "100",
+            "sort": "period_end.desc",
+            "timeframe": "quarterly"
+          },
+          "ticker": "PSX",
+          "url": "https://api.massive.com/stocks/financials/v1/balance-sheets"
+        }
+      ],
+      "verdict": "PENDING_OWNER_DISPATCH"
+    },
+    "sec": {
+      "keyPresentInThisProcess": false,
+      "keyRequired": false,
+      "plannedRequests": [
+        {
+          "host": "www.sec.gov",
+          "kind": "SEC_WWW_SMALL_RESOURCE",
+          "params": {},
+          "url": "https://www.sec.gov/files/company_tickers.json"
+        },
+        {
+          "cik": "878927",
+          "host": "data.sec.gov",
+          "kind": "SEC_COMPANYCONCEPT_ASSETS",
+          "params": {},
+          "ticker": "ODFL",
+          "url": "https://data.sec.gov/api/xbrl/companyconcept/CIK0000878927/us-gaap/Assets.json"
+        },
+        {
+          "cik": "12659",
+          "host": "data.sec.gov",
+          "kind": "SEC_COMPANYCONCEPT_ASSETS",
+          "params": {},
+          "ticker": "HRB",
+          "url": "https://data.sec.gov/api/xbrl/companyconcept/CIK0000012659/us-gaap/Assets.json"
+        },
+        {
+          "cik": "875320",
+          "host": "data.sec.gov",
+          "kind": "SEC_COMPANYCONCEPT_ASSETS",
+          "params": {},
+          "ticker": "VRTX",
+          "url": "https://data.sec.gov/api/xbrl/companyconcept/CIK0000875320/us-gaap/Assets.json"
+        },
+        {
+          "cik": "1841666",
+          "host": "data.sec.gov",
+          "kind": "SEC_COMPANYCONCEPT_ASSETS",
+          "params": {},
+          "ticker": "APA",
+          "url": "https://data.sec.gov/api/xbrl/companyconcept/CIK0001841666/us-gaap/Assets.json"
+        },
+        {
+          "cik": "105770",
+          "host": "data.sec.gov",
+          "kind": "SEC_COMPANYCONCEPT_ASSETS",
+          "params": {},
+          "ticker": "WST",
+          "url": "https://data.sec.gov/api/xbrl/companyconcept/CIK0000105770/us-gaap/Assets.json"
+        },
+        {
+          "cik": "720005",
+          "host": "data.sec.gov",
+          "kind": "SEC_COMPANYCONCEPT_ASSETS",
+          "params": {},
+          "ticker": "RJF",
+          "url": "https://data.sec.gov/api/xbrl/companyconcept/CIK0000720005/us-gaap/Assets.json"
+        },
+        {
+          "cik": "1071739",
+          "host": "data.sec.gov",
+          "kind": "SEC_COMPANYCONCEPT_ASSETS",
+          "params": {},
+          "ticker": "CNC",
+          "url": "https://data.sec.gov/api/xbrl/companyconcept/CIK0001071739/us-gaap/Assets.json"
+        },
+        {
+          "cik": "1534701",
+          "host": "data.sec.gov",
+          "kind": "SEC_COMPANYCONCEPT_ASSETS",
+          "params": {},
+          "ticker": "PSX",
+          "url": "https://data.sec.gov/api/xbrl/companyconcept/CIK0001534701/us-gaap/Assets.json"
+        },
+        {
+          "cik": "878927",
+          "host": "data.sec.gov",
+          "kind": "SEC_COMPANYFACTS",
+          "params": {},
+          "ticker": "ODFL",
+          "url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000878927.json"
+        },
+        {
+          "cik": "12659",
+          "host": "data.sec.gov",
+          "kind": "SEC_COMPANYFACTS",
+          "params": {},
+          "ticker": "HRB",
+          "url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000012659.json"
+        }
+      ],
+      "verdict": "PENDING_OWNER_DISPATCH"
+    }
+  }
+}

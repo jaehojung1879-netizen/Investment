@@ -64,10 +64,20 @@ on:
         type: string
         default: ""
       region:
-        description: "어느 쪽을 수집할지 (예약 실행은 항상 둘 다). finnhub-bs-probe = 읽기 전용 재무상태표 진단(수집·기록 없음, max_calls=0이면 계획만, 비우면 12콜, 상한 20)"
+        description: "어느 쪽을 수집할지 (예약 실행은 항상 둘 다). finnhub-bs-probe = 읽기 전용 재무상태표 진단 / total-assets-source-probe = 총자산 출처 가능성 진단(SEC·Finnhub·Massive·FMP, 수집·기록 없음, max_calls=0이면 계획만, 비우면 출처당 최대 20콜)"
         type: choice
-        options: ["both", "kr", "us", "finnhub-bs-probe"]
+        options: ["both", "kr", "us", "finnhub-bs-probe", "total-assets-source-probe"]
         default: "both"
+      # total-assets-source-probe only. Neither input is read by any other job.
+      probe_sources:
+        description: "total-assets-source-probe 전용 — all=SEC+벤더 / sec=SEC만(키 없음) / vendors=Finnhub·Massive·FMP만"
+        type: choice
+        options: ["all", "sec", "vendors"]
+        default: "all"
+      sec_contact:
+        description: "total-assets-source-probe 전용 — SEC User-Agent에 넣을 소유자의 연락 가능한 이메일 (비우면 SEC 요청을 하지 않음. 임의 값을 만들지 않으며 noreply·예시 주소는 거부)"
+        type: string
+        default: ""
 
 permissions:
   contents: write
@@ -424,6 +434,191 @@ jobs:
             echo '```'
             echo
             echo '원본 응답은 별도 아티팩트(finnhub-bs-probe-raw-restricted, 7일)에만 있고 이 요약에는 값이 없습니다.'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  # READ-ONLY diagnostic: where can quarterly TOTAL ASSETS come from, with an accession and a filing date? (us-total-assets-source-rescue-v1)
+  # Finnhub `financials-reported` stopped sending the balance sheet for newly served filings (probe run 38250579358), so this asks four sources
+  # the same bounded questions on one fixed sample (docs/us-readiness/us-total-assets-source-sample-v1.json): SEC data.sec.gov / www.sec.gov,
+  # Finnhub standardized /stock/financials, Massive /stocks/financials/v1/balance-sheets, FMP /stable/balance-sheet-statement.
+  # It writes nothing into any store, schedules nothing, and never reads signal-history. A vendor key is present only in that vendor's own step, and
+  # only when the gate step (which holds no secret) has validated a live request dispatched on main. Off main, or with max_calls=0, it only prints the plan.
+  us-total-assets-source-probe:
+    if: github.event_name == 'workflow_dispatch' && inputs.region == 'total-assets-source-probe' && inputs.target == 'auto'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+
+      # No secret in this step. It validates the typed inputs and records the decision; a rejected input stops the job before any step that can hold a key.
+      - name: Decide the mode (no secret)
+        id: gate
+        env:
+          MAX_CALLS: ${{ inputs.max_calls }}
+          PROBE_SOURCES: ${{ inputs.probe_sources }}
+          SEC_CONTACT: ${{ inputs.sec_contact }}
+          EVENT: ${{ github.event_name }}
+          REF: ${{ github.ref }}
+        run: |
+          set -euo pipefail
+          raw="${MAX_CALLS-}"
+          case "$raw" in
+            "") calls=20; source=default ;;
+            0)  calls=0;  source=explicit ;;
+            *)
+              if [[ "$raw" =~ ^[1-9][0-9]?$ ]] && [ "$raw" -le 20 ]; then
+                calls="$raw"; source=explicit
+              else
+                echo "::error title=max_calls::allowed: blank (default 20 per source), 0 (plan only), or a whole number 1-20 with no leading zero or space"
+                exit 2
+              fi ;;
+          esac
+          case "${PROBE_SOURCES-}" in
+            all|sec|vendors) ;;
+            *) echo "::error title=probe_sources::allowed: all, sec, vendors"; exit 2 ;;
+          esac
+          want_sec=false; want_vendors=false
+          case "$PROBE_SOURCES" in
+            all) want_sec=true; want_vendors=true ;;
+            sec) want_sec=true ;;
+            vendors) want_vendors=true ;;
+          esac
+          mode=plan; inject=false; reason=PLAN_ONLY_REQUESTED
+          if [ "$calls" -gt 0 ]; then
+            mode=live
+            if [ "$EVENT" = "workflow_dispatch" ] && [ "$REF" = "refs/heads/main" ]; then
+              inject=true; reason=LIVE_ON_MAIN_DISPATCH
+            else
+              reason=LIVE_WITHHELD_NOT_MAIN_DISPATCH
+            fi
+          fi
+          sec_run=false; sec_note=NOT_REQUESTED
+          if [ "$want_sec" = true ] && [ "$inject" = true ]; then
+            problem="$(python -c "import os; from pipeline import us_total_assets_source as T; print(T.sec_contact_problem(os.environ.get('SEC_CONTACT')) or '')")"
+            if [ -z "$problem" ]; then sec_run=true; sec_note=CONTACT_SUPPLIED; else sec_note="$problem"; fi
+          fi
+          vendors_run=false
+          if [ "$want_vendors" = true ] && [ "$inject" = true ]; then vendors_run=true; fi
+          {
+            echo "mode=$mode"
+            echo "calls=$calls"
+            echo "source=$source"
+            echo "inject=$inject"
+            echo "reason=$reason"
+            echo "sec_run=$sec_run"
+            echo "sec_note=$sec_note"
+            echo "vendors_run=$vendors_run"
+          } >> "$GITHUB_OUTPUT"
+          echo "max_calls input : '${raw}' (${source})"
+          echo "requested mode  : ${mode}"
+          echo "request budget  : ${calls} per source"
+          echo "sources         : ${PROBE_SOURCES}"
+          echo "keys injected   : ${inject} (${reason})"
+          echo "SEC requests    : ${sec_run} (${sec_note})"
+          echo "vendor requests : ${vendors_run}"
+
+      - name: Plan only (holds no key and no contact, makes no request)
+        if: steps.gate.outputs.inject != 'true'
+        run: |
+          set -euo pipefail
+          mkdir -p parts
+          python scripts/probe_us_total_assets_sources.py --sources sec,finnhub,massive,fmp --max-calls 0 --output parts/plan.json | tee probe.log
+
+      # No secret here either: SEC needs an identifying contact the OWNER typed, and nothing else.
+      - name: SEC data.sec.gov and www.sec.gov (owner-supplied contact, no key)
+        if: always() && steps.gate.outputs.sec_run == 'true'
+        env:
+          SEC_CONTACT: ${{ inputs.sec_contact }}
+          CALLS: ${{ steps.gate.outputs.calls }}
+        run: |
+          set -euo pipefail
+          mkdir -p parts
+          python scripts/probe_us_total_assets_sources.py --sources sec --max-calls "$CALLS" --output parts/sec.json | tee -a probe.log
+
+      - name: Finnhub standardized balance sheet (the only step that receives the Finnhub key)
+        if: always() && steps.gate.outputs.vendors_run == 'true'
+        env:
+          FINNHUB_API_KEY: ${{ secrets.FINNHUB }}
+          CALLS: ${{ steps.gate.outputs.calls }}
+        run: |
+          set -euo pipefail
+          mkdir -p parts
+          if [ -n "${FINNHUB_API_KEY:-}" ]; then echo "FINNHUB key: present (value never printed)"; else echo "FINNHUB key: ABSENT"; fi
+          python scripts/probe_us_total_assets_sources.py --sources finnhub --max-calls "$CALLS" --output parts/finnhub.json | tee -a probe.log
+
+      - name: Massive v1 balance sheets (the only step that receives the Massive key)
+        if: always() && steps.gate.outputs.vendors_run == 'true'
+        env:
+          MASSIVE_API_KEY: ${{ secrets.MASSIVE }}
+          CALLS: ${{ steps.gate.outputs.calls }}
+        run: |
+          set -euo pipefail
+          mkdir -p parts
+          if [ -n "${MASSIVE_API_KEY:-}" ]; then echo "MASSIVE key: present (value never printed)"; else echo "MASSIVE key: ABSENT"; fi
+          python scripts/probe_us_total_assets_sources.py --sources massive --max-calls "$CALLS" --output parts/massive.json | tee -a probe.log
+
+      - name: FMP stable balance sheet (the only step that receives the FMP key)
+        if: always() && steps.gate.outputs.vendors_run == 'true'
+        env:
+          FMP_API_KEY: ${{ secrets.FMP }}
+          CALLS: ${{ steps.gate.outputs.calls }}
+        run: |
+          set -euo pipefail
+          mkdir -p parts
+          if [ -n "${FMP_API_KEY:-}" ]; then echo "FMP key: present (value never printed)"; else echo "FMP key: ABSENT"; fi
+          python scripts/probe_us_total_assets_sources.py --sources fmp --max-calls "$CALLS" --output parts/fmp.json | tee -a probe.log
+
+      - name: Merge the per-source reports (no secret, no request)
+        if: always() && steps.gate.outputs.inject == 'true'
+        run: |
+          set -euo pipefail
+          if ls parts/*.json >/dev/null 2>&1; then
+            python scripts/probe_us_total_assets_sources.py --merge parts/*.json --output total-assets-report.json | tee -a probe.log
+          else
+            echo "no per-source report was produced"
+          fi
+
+      - name: Upload the report (verdicts and request metadata only; no response bodies, no credentials)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: us-total-assets-source-probe-report
+          path: |
+            total-assets-report.json
+            parts/
+            probe.log
+          retention-days: 90
+          if-no-files-found: warn
+
+      - name: Summary
+        if: always()
+        env:
+          GATE_MODE: ${{ steps.gate.outputs.mode }}
+          GATE_CALLS: ${{ steps.gate.outputs.calls }}
+          GATE_SOURCE: ${{ steps.gate.outputs.source }}
+          GATE_INJECT: ${{ steps.gate.outputs.inject }}
+          GATE_REASON: ${{ steps.gate.outputs.reason }}
+          GATE_SEC: ${{ steps.gate.outputs.sec_note }}
+        run: |
+          {
+            echo '## 총자산 출처 진단 (읽기 전용)'
+            echo
+            echo "- 입력 해석: ${GATE_SOURCE:-입력 거부} / 모드 ${GATE_MODE:-없음} / 출처당 요청 한도 ${GATE_CALLS:-없음}"
+            echo "- 키 주입: ${GATE_INJECT:-false} (${GATE_REASON:-게이트 이전에 중단})"
+            echo "- SEC 연락처: ${GATE_SEC:-게이트 이전에 중단}"
+            echo
+            echo '```'
+            tail -n 40 probe.log 2>/dev/null || echo '진단 출력 없음'
+            echo '```'
           } >> "$GITHUB_STEP_SUMMARY"
 
   # kr-accounting-coverage-repair-v1. Re-collects DART statement responses WHOLE

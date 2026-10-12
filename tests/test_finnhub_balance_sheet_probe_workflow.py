@@ -73,7 +73,7 @@ def gh_if(expression: str, event: str, inputs: dict, ref: str) -> bool:
     return bool(eval(py, {"I": inputs, "E": event, "R": ref}))      # noqa: S307 - the expression is this repository's own
 
 
-JOBS = ("kr", "us", "kr-raw", "us-finnhub-bs-probe")
+JOBS = ("kr", "us", "kr-raw", "us-finnhub-bs-probe", "us-total-assets-source-probe")
 DISPATCH_DEFAULTS = {"target": "auto", "region": "both", "max_calls": "", "max_minutes": ""}
 
 
@@ -104,7 +104,7 @@ def test_the_collectors_conditions_are_byte_identical_to_the_ones_other_tests_pi
     assert job_if("us") == "github.event_name == 'schedule' || ((inputs.region == 'both' || inputs.region == 'us') && !startsWith(inputs.target, 'raw-'))"
     assert job_if("kr-raw") == "github.event_name == 'workflow_dispatch' && startsWith(inputs.target, 'raw-')"
     text = workflow_text()
-    assert 'options: ["both", "kr", "us", "finnhub-bs-probe"]' in text and "cron: \"40 3 * * *\"" in text
+    assert 'options: ["both", "kr", "us", "finnhub-bs-probe", "total-assets-source-probe"]' in text and "cron: \"40 3 * * *\"" in text
 
 
 def test_the_probe_job_is_read_only_and_never_touches_signal_history():
@@ -160,9 +160,13 @@ def test_evidence_is_split_into_a_sanitized_report_and_a_short_lived_raw_artifac
 
 
 def _without_probe_job(text: str) -> str:
+    """Drop the two read-only diagnostic jobs (they sit together before `kr-raw`) and the inputs only they read; what is left must equal main's."""
     start = text.index("  # READ-ONLY diagnostic: why do the filings Finnhub first served")
     end = text.index("  # kr-accounting-coverage-repair-v1. Re-collects DART statement responses WHOLE")
-    return text[:start] + text[end:]
+    text = text[:start] + text[end:]
+    text = re.sub(r"      # total-assets-source-probe only\.[^\n]*\n", "", text)
+    text = re.sub(r"      (?:probe_sources|sec_contact):\n(?:        [^\n]*\n)+", "", text)
+    return re.sub(r'(      region:\n)        description: "[^\n]*"\n        type: choice\n        options: \[[^\n]*\]\n', r"\1<region description and options>\n", text)
 
 
 def test_everything_outside_the_probe_job_is_byte_identical_to_main():
