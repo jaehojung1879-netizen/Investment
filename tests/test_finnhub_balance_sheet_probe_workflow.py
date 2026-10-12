@@ -91,9 +91,10 @@ def test_the_probe_job_is_selected_only_by_its_own_region_and_never_starts_a_col
     assert runs("workflow_dispatch", region="finnhub-bs-probe", max_calls="0") == {"us-finnhub-bs-probe"}
 
 
-def test_secret_bearing_code_runs_only_for_a_dispatch_of_main():
-    assert runs("workflow_dispatch", ref="refs/heads/claude/some-branch", region="finnhub-bs-probe") == set()
-    assert runs("workflow_dispatch", ref="refs/pull/1/merge", region="finnhub-bs-probe") == set()
+def test_the_probe_job_may_run_from_any_ref_because_the_key_decision_is_made_inside_it():
+    """The job itself holds no secret; whether the key is injected is decided by the `gate` step (tested by executing it below)."""
+    assert runs("workflow_dispatch", ref="refs/heads/claude/some-branch", region="finnhub-bs-probe") == {"us-finnhub-bs-probe"}
+    assert runs("workflow_dispatch", ref="refs/heads/claude/some-branch") == {"kr", "us"}            # pre-existing behaviour, not changed here
     assert runs("schedule", ref="refs/heads/main") == {"kr", "us"}
     assert runs("workflow_dispatch", region="finnhub-bs-probe", target="raw-probe-2015") == {"kr-raw"}   # no combination runs both
 
@@ -118,13 +119,22 @@ def test_the_probe_job_is_read_only_and_never_touches_signal_history():
         assert "signal-history" not in step.split("\n      - name:", 1)[0], "an upload step may not carry stored fundamentals"
 
 
-def test_the_finnhub_key_reaches_exactly_one_step_and_not_at_all_for_a_plan_only_run():
+def step_block(job: str, name_start: str) -> str:
+    return job.split(f"      - name: {name_start}", 1)[1].split("\n      - name:", 1)[0]
+
+
+def test_the_finnhub_key_is_named_by_exactly_one_step_and_only_a_validated_main_dispatch_reaches_it():
     job = job_block("us-finnhub-bs-probe")
-    assert job.count("secrets.") == 1 and "secrets.FINNHUB" in job
-    step = job.split("- name: Probe (read-only)\n", 1)[1].split("\n      - name:", 1)[0]
-    assert "secrets.FINNHUB" in step
-    assert "FINNHUB_API_KEY: ${{ inputs.max_calls != '0' && secrets.FINNHUB || '' }}" in step
-    assert not [line for line in job.splitlines() if "echo" in line and "FINNHUB_API_KEY" in line]
+    assert job.count("secrets.") == 1 and job.count("secrets.FINNHUB") == 1
+    live = step_block(job, "Probe live")
+    assert "FINNHUB_API_KEY: ${{ secrets.FINNHUB }}" in live and "if: steps.gate.outputs.inject == 'true'" in live
+    assert "!= '0'" not in job and "inputs.max_calls != " not in job                                  # the old test of the raw input is gone
+    for name in ("Decide the mode", "Plan only"):
+        block = step_block(job, name)
+        assert "secrets" not in block and "FINNHUB" not in block, name
+    assert "if: steps.gate.outputs.inject != 'true'" in step_block(job, "Plan only")
+    assert "--max-calls 0" in step_block(job, "Plan only")
+    assert not [line for line in job.splitlines() if "echo" in line and "FINNHUB_API_KEY}" in line and "present" not in line]
 
 
 def test_no_dispatch_input_is_interpolated_into_a_shell_script():
@@ -132,10 +142,12 @@ def test_no_dispatch_input_is_interpolated_into_a_shell_script():
     for step in job.split("      - name: ")[1:]:
         for script in re.findall(r"run: \|\n((?:          .*\n?)+)", step):
             assert "${{" not in script, step.splitlines()[0]
-    step = job.split("- name: Probe (read-only)\n", 1)[1]
-    assert "MAX_CALLS: ${{ inputs.max_calls }}" in step and r'[[ "$calls" =~ ^[0-9]+$ ]]' in step
-    assert "set -euo pipefail" in step and "| tee probe.log" in step
-    assert '--max-calls "$calls"' in step and "--tickers" not in step
+    gate = step_block(job, "Decide the mode")
+    assert "MAX_CALLS: ${{ inputs.max_calls }}" in gate and "EVENT: ${{ github.event_name }}" in gate and "REF: ${{ github.ref }}" in gate
+    assert "set -euo pipefail" in gate
+    live = step_block(job, "Probe live")
+    assert "CALLS: ${{ steps.gate.outputs.calls }}" in live and '--max-calls "$CALLS"' in live and "| tee probe.log" in live
+    assert "--tickers" not in job
 
 
 def test_evidence_is_split_into_a_sanitized_report_and_a_short_lived_raw_artifact():
@@ -147,16 +159,22 @@ def test_evidence_is_split_into_a_sanitized_report_and_a_short_lived_raw_artifac
     assert "probe-report.json" not in raw and "timeout-minutes: 15" in job
 
 
-def test_the_edit_to_fundamentals_yml_is_limited_to_the_region_choice_and_the_new_job():
+def _without_probe_job(text: str) -> str:
+    start = text.index("  # READ-ONLY diagnostic: why do the filings Finnhub first served")
+    end = text.index("  # kr-accounting-coverage-repair-v1. Re-collects DART statement responses WHOLE")
+    return text[:start] + text[end:]
+
+
+def test_everything_outside_the_probe_job_is_byte_identical_to_main():
+    """The nightly schedule, the two collectors, `kr-raw`, the inputs and the permissions: untouched by this change."""
     try:
-        diff = subprocess.run(["git", "diff", "-U0", "origin/main...HEAD", "--", ".github/workflows/fundamentals.yml"],
-                              capture_output=True, text=True, cwd=ROOT, check=True).stdout
+        main_text = subprocess.run(["git", "show", "origin/main:.github/workflows/fundamentals.yml"], capture_output=True, text=True,
+                                   cwd=ROOT, check=True).stdout
     except (subprocess.CalledProcessError, FileNotFoundError):
         pytest.skip("no git history available")
-    if not diff:
-        pytest.skip("already merged: nothing to compare")
-    removed = [line for line in diff.splitlines() if line.startswith("-") and not line.startswith("---")]
-    assert len(removed) == 2 and any("description:" in line for line in removed) and any("options:" in line for line in removed)
+    if "us-finnhub-bs-probe" not in main_text:
+        pytest.skip("the probe job is not on main yet")
+    assert _without_probe_job(workflow_text()) == _without_probe_job(main_text)
 
 
 def test_sealed_and_neighbouring_files_are_untouched_by_this_change():
@@ -170,7 +188,7 @@ def test_sealed_and_neighbouring_files_are_untouched_by_this_change():
                  "tests/test_kr_alpha_atlas_price_repair_workflow_inventory.py", "docs/workflow-inventory.md",
                  "docs/workflow-inventory-addendum.md", "pipeline/us_cash_profitability.py", "pipeline/finnhub_fundamentals.py",
                  "pipeline/finnhub_derive.py"}
-    assert not touched & protected and not [p for p in touched if p.startswith(("docs/results/", "research_specs/"))]
+    assert not touched & protected and not [p for p in touched if p.startswith(("docs/results/", "research_specs/", "ledger/", "data/"))]
     probes = hashlib.sha256((ROOT / ".github/workflows/probes.yml").read_bytes()).hexdigest()
     assert probes == "2c00464e756e9512cec60961b22a35dd40d3798f350efb49a12e0aa94fab190d"      # still what two sealed specs pin
 
@@ -364,3 +382,96 @@ def test_the_korean_instructions_state_the_pending_status_and_every_repair_path(
     for needle in ("PENDING_OWNER_DISPATCH", "finnhub-bs-probe", "max_calls", "VENDOR_OMITTED", "VENDOR_MOVED_FIELD", "VENDOR_LATER_COMPLETED",
                    "INSUFFICIENT_EVIDENCE", "S2_SUPPLEMENT", "S3_BLOCKED_SOURCE", "병합"):
         assert needle in text, needle
+
+
+# ---------------------------------------------------------------- the gate step, EXECUTED (the real script text from the workflow)
+GATE_SCRIPT = None
+
+
+def gate_script() -> str:
+    step = step_block(job_block("us-finnhub-bs-probe"), "Decide the mode")
+    body = step.split("run: |\n", 1)[1]
+    return "\n".join(line[10:] if line.startswith(" " * 10) else line for line in body.splitlines()) + "\n"
+
+
+def run_gate(tmp_path, max_calls, event="workflow_dispatch", ref="refs/heads/main", extra_env=None):
+    out = tmp_path / "gh_output"
+    out.write_text("")
+    env = {"PATH": "/usr/bin:/bin", "LC_ALL": "C", "MAX_CALLS": max_calls, "EVENT": event, "REF": ref, "GITHUB_OUTPUT": str(out), **(extra_env or {})}
+    result = subprocess.run(["bash", "-c", gate_script()], env=env, capture_output=True, text=True)
+    outputs = dict(line.split("=", 1) for line in out.read_text().splitlines() if "=" in line)
+    return result, outputs
+
+
+MAIN, BRANCH = "refs/heads/main", "refs/heads/claude/feature"
+
+
+@pytest.mark.parametrize("raw,ref,expected", [
+    ("",   MAIN,   dict(mode="live", calls="12", source="default",  inject="true",  reason="LIVE_ON_MAIN_DISPATCH")),
+    ("12", MAIN,   dict(mode="live", calls="12", source="explicit", inject="true",  reason="LIVE_ON_MAIN_DISPATCH")),
+    ("0",  MAIN,   dict(mode="plan", calls="0",  source="explicit", inject="false", reason="PLAN_ONLY_REQUESTED")),
+    ("1",  MAIN,   dict(mode="live", calls="1",  source="explicit", inject="true",  reason="LIVE_ON_MAIN_DISPATCH")),
+    ("20", MAIN,   dict(mode="live", calls="20", source="explicit", inject="true",  reason="LIVE_ON_MAIN_DISPATCH")),
+    ("",   BRANCH, dict(mode="live", calls="12", source="default",  inject="false", reason="LIVE_WITHHELD_NOT_MAIN_DISPATCH")),
+    ("12", BRANCH, dict(mode="live", calls="12", source="explicit", inject="false", reason="LIVE_WITHHELD_NOT_MAIN_DISPATCH")),
+    ("0",  BRANCH, dict(mode="plan", calls="0",  source="explicit", inject="false", reason="PLAN_ONLY_REQUESTED")),
+    ("12", "refs/pull/9/merge", dict(mode="live", calls="12", source="explicit", inject="false", reason="LIVE_WITHHELD_NOT_MAIN_DISPATCH")),
+])
+def test_blank_zero_and_twelve_are_three_different_decisions_and_only_a_live_main_dispatch_injects_the_key(tmp_path, raw, ref, expected):
+    result, outputs = run_gate(tmp_path, raw, ref=ref)
+    assert result.returncode == 0, result.stderr
+    assert outputs == expected
+    assert (outputs["inject"] == "true") == (outputs["mode"] == "live" and ref == MAIN)
+
+
+def test_a_non_dispatch_event_never_injects_even_on_main(tmp_path):
+    for event in ("schedule", "pull_request", "push", "workflow_run"):
+        result, outputs = run_gate(tmp_path, "12", event=event)
+        assert result.returncode == 0 and outputs["inject"] == "false" and outputs["reason"] == "LIVE_WITHHELD_NOT_MAIN_DISPATCH", event
+
+
+@pytest.mark.parametrize("raw", ["00", "012", "0 ", " 0", " 12", "12 ", "21", "99", "100", "-1", "+5", "1.5", "1e1", "abc", "0x10", "12\n", "1;2",
+                                 "$(echo 1)", "`id`", "０", "１２", "twelve", "0\n0"])
+def test_every_other_input_stops_before_any_step_that_could_hold_the_key(tmp_path, raw):
+    result, outputs = run_gate(tmp_path, raw)
+    assert result.returncode == 2 and outputs == {}, (raw, result.stdout, result.stderr)
+    # One fixed line: the rejected text is never echoed, so a crafted input cannot inject a workflow command into the log.
+    assert result.stdout == ("::error title=max_calls::allowed: blank (default 12), 0 (plan only), or a whole number 1-20 "
+                             "with no leading zero or space\n")
+
+
+def test_the_gate_never_prints_or_forwards_a_key_even_if_one_is_present_in_its_environment(tmp_path):
+    sentinel = "SENTINEL-KEY-0123456789"
+    for raw in ("", "0", "12", "21"):
+        for ref in (MAIN, BRANCH):
+            result, outputs = run_gate(tmp_path, raw, ref=ref, extra_env={"FINNHUB_API_KEY": sentinel})
+            assert sentinel not in result.stdout + result.stderr + json.dumps(outputs)
+
+
+def _step_if(step_name):
+    return re.search(r"^        if: (.*)$", step_block(job_block("us-finnhub-bs-probe"), step_name), re.M).group(1)
+
+
+def _outputs_if(expression, outputs):
+    m = re.fullmatch(r"steps\.gate\.outputs\.(\w+) (==|!=) '(\w*)'", expression)
+    value = outputs.get(m.group(1), "")
+    return (value == m.group(3)) if m.group(2) == "==" else (value != m.group(3))
+
+
+@pytest.mark.parametrize("raw,ref", [("", MAIN), ("12", MAIN), ("0", MAIN), ("20", MAIN), ("", BRANCH), ("12", BRANCH), ("0", BRANCH)])
+def test_exactly_one_of_plan_only_and_live_runs_and_the_live_step_needs_a_validated_main_dispatch(tmp_path, raw, ref):
+    _, outputs = run_gate(tmp_path, raw, ref=ref)
+    plan, live = _outputs_if(_step_if("Plan only"), outputs), _outputs_if(_step_if("Probe live"), outputs)
+    assert plan != live
+    assert live == (ref == MAIN and raw != "0")
+
+
+def test_the_sentinel_key_cannot_reach_the_plan_only_step(tmp_path, monkeypatch):
+    """The plan-only step carries no `env:` of its own and the script needs no key at --max-calls 0."""
+    step = step_block(job_block("us-finnhub-bs-probe"), "Plan only")
+    assert "env:" not in step
+    monkeypatch.delenv("FINNHUB_API_KEY", raising=False)
+    store = make_store(tmp_path)
+    assert PROBE.main(["--store", str(store), "--max-calls", "0", "--output", str(tmp_path / "o.json"), "--raw-out", str(tmp_path / "r.gz"),
+                       "--today", "2026-10-12"]) == 0
+    assert json.loads((tmp_path / "o.json").read_text())["mode"] == "PLAN_ONLY"

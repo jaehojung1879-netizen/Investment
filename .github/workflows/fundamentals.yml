@@ -282,13 +282,19 @@ jobs:
   # READ-ONLY diagnostic: why do the filings Finnhub first served from 2026-10-07 have no balance sheet? (docs/us-finnhub-balance-sheet-probe-ko.md)
   #
   # Selected only by `region: finnhub-bs-probe`, which none of the collectors above match, so choosing it cannot start a collection, and a
-  # schedule never sends a region. Main only: a dispatch of any other ref skips it, so a branch cannot run secret-bearing code. It has its own
-  # `contents: read` token (the workflow default is `write`), checks out no credentials, and reads the stored US fundamentals from
-  # signal-history as reference data it can never write to (no git config, commit or push appears in this job). The FINNHUB key reaches ONE
-  # step, and only when max_calls is not 0; `max_calls=0` plans the requests from the stored records and calls nothing. At most 12 requests by
-  # default, a hard ceiling of 20 enforced by the script. The sanitized report and the raw bodies are separate artifacts.
+  # schedule never sends a region. It has its own `contents: read` token (the workflow default is `write`), checks out no credentials, and reads
+  # the stored US fundamentals from signal-history as reference data it can never write to (no git config, commit or push appears in this job).
+  #
+  # WHEN THE FINNHUB KEY IS INJECTED is decided by one secret-free step (`gate`), never by an expression on the secret itself. It reads
+  # `max_calls` exactly as typed and separates three cases that the old `inputs.max_calls != '0'` test could not:
+  #   blank -> the default 12 requests;  0 -> plan only, no key;  1..20 (no leading zero, no space) -> that many requests;
+  #   anything else ('00', '012', ' 0', '21', '-1', 'abc') stops the job BEFORE any step that could hold the key.
+  # The key reaches exactly one step, `Probe live`, whose `if` needs the gate's `inject == true`, and the gate only says true for a validated
+  # live request dispatched on `main`. Every other path (0, or a live request from any other ref) runs `Plan only`, which never receives the key
+  # and makes no request. So a branch can exercise and verify this whole decision without the secret ever being referenced by a step that runs.
+  # At most 12 requests by default, a hard ceiling of 20 enforced again by the script. Sanitized report and raw bodies are separate artifacts.
   us-finnhub-bs-probe:
-    if: github.event_name == 'workflow_dispatch' && inputs.region == 'finnhub-bs-probe' && inputs.target == 'auto' && github.ref == 'refs/heads/main'
+    if: github.event_name == 'workflow_dispatch' && inputs.region == 'finnhub-bs-probe' && inputs.target == 'auto'
     runs-on: ubuntu-latest
     timeout-minutes: 15
     permissions:
@@ -313,18 +319,70 @@ jobs:
           fetch-depth: 1
           persist-credentials: false
 
-      - name: Probe (read-only)
+      # No secret in this step: it reads the input as typed, validates it, and records the decision as outputs.
+      - name: Decide the mode (no secret)
+        id: gate
         env:
-          FINNHUB_API_KEY: ${{ inputs.max_calls != '0' && secrets.FINNHUB || '' }}
           MAX_CALLS: ${{ inputs.max_calls }}
+          EVENT: ${{ github.event_name }}
+          REF: ${{ github.ref }}
         run: |
           set -euo pipefail
-          calls="${MAX_CALLS:-12}"
-          [[ "$calls" =~ ^[0-9]+$ ]] || { echo "max_calls must be a whole number" >&2; exit 2; }
+          raw="${MAX_CALLS-}"
+          case "$raw" in
+            "") calls=12; source=default ;;
+            0)  calls=0;  source=explicit ;;
+            *)
+              if [[ "$raw" =~ ^[1-9][0-9]?$ ]] && [ "$raw" -le 20 ]; then
+                calls="$raw"; source=explicit
+              else
+                echo "::error title=max_calls::allowed: blank (default 12), 0 (plan only), or a whole number 1-20 with no leading zero or space"
+                exit 2
+              fi ;;
+          esac
+          mode=plan; inject=false; reason=PLAN_ONLY_REQUESTED
+          if [ "$calls" -gt 0 ]; then
+            mode=live
+            if [ "$EVENT" = "workflow_dispatch" ] && [ "$REF" = "refs/heads/main" ]; then
+              inject=true; reason=LIVE_ON_MAIN_DISPATCH
+            else
+              reason=LIVE_WITHHELD_NOT_MAIN_DISPATCH
+            fi
+          fi
+          {
+            echo "mode=$mode"
+            echo "calls=$calls"
+            echo "source=$source"
+            echo "inject=$inject"
+            echo "reason=$reason"
+          } >> "$GITHUB_OUTPUT"
+          echo "max_calls input : '${raw}' (${source})"
+          echo "requested mode  : ${mode}"
+          echo "request budget  : ${calls}"
+          echo "key injected    : ${inject} (${reason})"
+
+      - name: Plan only (never receives the key, makes no request)
+        if: steps.gate.outputs.inject != 'true'
+        run: |
+          set -euo pipefail
           python scripts/probe_finnhub_balance_sheet.py \
             --store signal-history/ledger/fundamentals/us \
             --store-commit "$(git -C signal-history rev-parse HEAD)" \
-            --max-calls "$calls" --output probe-report.json --raw-out probe-raw.jsonl.gz | tee probe.log
+            --max-calls 0 --output probe-report.json --raw-out probe-raw.jsonl.gz | tee probe.log
+
+      # The only step in this job that names the secret, and it is skipped unless the gate validated a live request dispatched on main.
+      - name: Probe live (the only step that receives the Finnhub key)
+        if: steps.gate.outputs.inject == 'true'
+        env:
+          FINNHUB_API_KEY: ${{ secrets.FINNHUB }}
+          CALLS: ${{ steps.gate.outputs.calls }}
+        run: |
+          set -euo pipefail
+          if [ -n "${FINNHUB_API_KEY:-}" ]; then echo "FINNHUB key: present (value never printed)"; else echo "FINNHUB key: ABSENT"; fi
+          python scripts/probe_finnhub_balance_sheet.py \
+            --store signal-history/ledger/fundamentals/us \
+            --store-commit "$(git -C signal-history rev-parse HEAD)" \
+            --max-calls "$CALLS" --output probe-report.json --raw-out probe-raw.jsonl.gz | tee probe.log
 
       - name: Upload the sanitized report
         if: always()
@@ -348,9 +406,18 @@ jobs:
 
       - name: Summary
         if: always()
+        env:
+          GATE_MODE: ${{ steps.gate.outputs.mode }}
+          GATE_CALLS: ${{ steps.gate.outputs.calls }}
+          GATE_SOURCE: ${{ steps.gate.outputs.source }}
+          GATE_INJECT: ${{ steps.gate.outputs.inject }}
+          GATE_REASON: ${{ steps.gate.outputs.reason }}
         run: |
           {
             echo '## Finnhub 재무상태표 진단 (읽기 전용)'
+            echo
+            echo "- 입력 해석: ${GATE_SOURCE:-입력 거부} / 모드 ${GATE_MODE:-없음} / 요청 한도 ${GATE_CALLS:-없음}"
+            echo "- 키 주입: ${GATE_INJECT:-false} (${GATE_REASON:-게이트 이전에 중단})"
             echo
             echo '```'
             tail -n 60 probe.log 2>/dev/null || echo '진단 출력 없음'
