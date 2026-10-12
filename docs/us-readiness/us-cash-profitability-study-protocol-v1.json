@@ -1,0 +1,111 @@
+{
+ "id": "us-cash-profitability-signal-v1",
+ "status": "PROPOSED_NOT_REGISTERED",
+ "authorizes": "NOTHING",
+ "registered": false,
+ "promotionEligible": false,
+ "productionEffect": "NONE",
+ "scheduledPublication": "NOT_STARTED",
+ "relationToExistingStudies": {
+  "usCapitalAllocationAlphaV1": "independent; v1 (design digest 73c347a34bc53f038c9e33ebbc2cb322960f33fc4170919b85d2561a4f073342) is neither modified nor replaced",
+  "usMultifactorStudyProposalV1": "supersedes the Phase 2 proposal's CHOICE OF FIRST TEST only (value + cash-confirmed quality composite); that proposal file is not edited. Reasons: the composite needs a reconstructed price basis and unverified numerator share counts, its components have prior outcome-exposed US readings in a different construction, and a five-part composite cannot say which part carries information",
+  "regionalAlphaModelV1": "its 31-feature matrix held no cash-flow feature; this test is not a rerun of a closed budget"
+ },
+ "primaryHypothesis": {
+  "economic": "Within the S&P 500 excluding Financials and Real Estate, companies whose trailing operating cash flow is high relative to their assets earn higher subsequent returns than companies with the same sector, size, 12-1 momentum, 252-day volatility and ACCRUAL-based operating profitability.",
+  "mechanism": "cash profits are harder to manage than accrual profits and investors under-weight the cash component of earnings (accrual and cash-profitability literature); it is a hypothesis, not a result",
+  "incrementalNotCorrelational": "the claim is about the part of the cash-profitability ranking that the control set does NOT already order; the raw IC is reported but cannot carry the claim. Measured outcome-blind: cashOperatingProfitability orders names like operatingProfitabilityToAssets at mean within-date Spearman 0.771 (above the repository's 0.70 redundancy flag) and like ROE at 0.59, so after the accrual-profitability control the residual is essentially the CASH-VERSUS-ACCRUAL component (accrualsToAssets is near-orthogonal to the control, 0.136). The test is therefore an accrual-quality test inside profitability, stated before any outcome",
+  "publicationDecayRisk": "the effect is published and well known; a smaller or zero effect in 2026+ large caps is a live possibility and is an informative outcome, not a failure of the design"
+ },
+ "features": {
+  "contract": "US_CASH_PROFITABILITY_CANDIDATE_V1",
+  "code": "pipeline/us_cash_profitability.py",
+  "primary": "cashOperatingProfitability = operating cash flow TTM / total assets of the latest visible filing",
+  "descriptiveCompanion": "accrualsToAssets = (net income TTM - operating cash flow TTM) / total assets; expected sign negative; never a second primary",
+  "timing": "a filing is usable only on days strictly after max(availableFrom, acceptedDate); latest visible period end; stale over 180 days",
+  "ttm": "finnhub_derive rollforward FY(Y-1) - cum(Y-1,Q) + cum(Y,Q); a missing prior filing is OCF_TTM_INCOMPLETE_CHAIN, never an annualisation",
+  "missingSemantics": "every absence carries one reason code; missing is never zero; no imputation in the primary statistic (complete-case within date, counts and missingness bias published)",
+  "notUsed": ["period-end share counts (SEC XBRL blocked)", "consensus estimates", "13F, Form 4, 8-K", "any macro input"]
+ },
+ "eligibleCrossSection": {
+  "membership": "S&P 500, latest dated snapshot strictly earlier than the signal date",
+  "priceAndIdentity": "Phase 2 funnel: positive close at most 10 calendar days old, at least 272 prior sessions, identity unambiguous",
+  "excludedSectors": ["Financials", "Real Estate"],
+  "whyExcluded": "operating cash flow and total assets do not measure operating profitability for banks, insurers and REITs",
+  "complete": "primary feature AND every control present",
+  "minimumNamesPerDate": 150,
+  "minimumBasis": "fixed from the outcome-blind readiness count (docs/us-readiness/us-alpha-phase3-readiness-v1.json), never from a return"
+ },
+ "controls": {
+  "sector": "dated S&P 500 snapshot sector (GICS sector)",
+  "size": "log 63-session median as-traded traded value (as-traded close x volume from the sealed price panel; withheld when a split falls in the window). Chosen over the market-cap proxy BEFORE any outcome because it is ~99% available and needs no unverified share count; the two agree only at mean within-date Spearman 0.72, so the market-cap proxy (carried-forward weighted-average shares x as-traded close) is a registered SENSITIVITY, never the primary control",
+  "momentum": "mom121 (12-1 month), existing sealed definition",
+  "volatility": "vol252, existing sealed definition",
+  "accrualProfitability": "operatingProfitabilityToAssets = operating income TTM / total assets (same denominator)",
+  "why": "market is removed by the benchmark-relative, dollar-neutral construction; sector, size, momentum and volatility are the exposures already known to order US returns or already tested here; accrual profitability isolates the CASH component"
+ },
+ "target": {
+  "label": "total return over the next 63 US sessions minus SPY's total return over the same sessions, entry at the first session after the signal close",
+  "benchmarkInvariance": "the primary weights sum to zero within every sector, so SPY (and QQQ) cancel exactly: the statistic is the same against either benchmark and a benchmark change can never read as selection",
+  "terminalOutcomes": "a name that stops trading inside the window is UNRESOLVED unless a cited terminal consideration exists; never zero, never last price; any UNRESOLVED name in a scored date makes that date's statistic missing and is counted"
+ },
+ "horizons": {
+  "primarySessions": 63,
+  "whyPrimary": "one quarterly filing cycle: the information set is refreshed every ~63 sessions, so H63 uses each vintage for its natural life; it matures in ~3 months and each window spans fewer terminal events than H126/H252. Power does NOT decide it: if the IC grows like sqrt(horizon) the power table is roughly horizon-neutral (IC/MDE at 5 years: H21 31.6c, H63 32.0c, H126 33.1c, H252 38.4c for IC_21 = c); decay within a quarter favours short horizons and slow build-up favours long ones, and which applies is unknown",
+  "secondarySessions": [21, 126],
+  "descriptiveOnlySessions": [252],
+  "secondaryCannotRescuePrimary": true
+ },
+ "primaryClaim": {
+  "statistic": "pure-factor spread: on each weekly signal date, OLS-residualise the within-date percentile rank of cashOperatingProfitability on sector dummies and the percentile ranks of the four continuous controls; weights proportional to the residual, scaled to gross exposure 2 ($1 long / $1 short); S_t = sum_i w_i * excess_i(H63); claim = mean over signal dates",
+  "properties": ["linear in returns with signal-date weights (calendar-time attribution applies)", "exactly orthogonal to every sector and control rank on each date", "rank-based, so a single outlier cannot dominate"],
+  "horizonSessions": 63,
+  "test": "one-sided, H1: mean S_t > 0",
+  "inference": "calendar-time SN interval after a US-geometry calibration (prerequisite P3); until it passes, the registration cannot be frozen",
+  "alpha": 0.05,
+  "count": 1
+ },
+ "secondaryAndDescriptive": {
+  "secondaryFamilyHolm": ["primary statistic at H21", "primary statistic at H126", "sector-neutral-only pure-factor spread at H63"],
+  "descriptive": ["raw Spearman IC (no neutralisation)", "within-sector quintile spread Q5-Q1, equal weight", "accrualsToAssets pure-factor spread", "by year, first/second half, and SPY trailing-126-session up/down regime", "long-only top-quintile (sector-weighted) minus SPY after 16.3 bp round-trip cost per unit turnover", "H252"],
+  "correlationVersusIncrement": "raw IC minus pure-factor spread is reported as the part explained by the controls; a positive raw IC with a zero pure-factor spread is classified REDUNDANT, not supported"
+ },
+ "transactionCosts": {
+  "source": "pipeline/benchmark_alpha.py REALISTIC_COSTS['US'] (as in the Phase 2 proposal)",
+  "stockRoundTripBps": 16.3,
+  "use": "descriptive economic significance only; the signal test is gross because it measures information, and the cost test asks whether the turnover the signal implies would consume it"
+ },
+ "evidenceClasses": [
+  {"class": "OUTCOME_BLIND", "what": "this protocol, the readiness audit and the power table", "status": "DONE in this change"},
+  {"class": "EXPLORATORY_DEVELOPMENT_ON_OUTCOME_EXPOSED_US_HISTORY", "what": "exactly this protocol run once on replay-v16 2013-2026 (survivor-conditioned: 212 departed identities have no prices)", "status": "PROPOSED; needs its own authorization; NOT run here", "allowedUse": "futility screen only: if the development one-sided 95% upper bound is <= 0 the hypothesis is abandoned before prospective collection starts; a favourable development reading is never reported as confirmation and changes no threshold, feature or horizon", "survivorshipDirection": "departed names are disproportionately low-profitability failures; their absence most plausibly understates a positive effect, which is a hypothesis, not a measurement"},
+  {"class": "PROSPECTIVE_CONFIRMATORY", "what": "weekly signals dated after the authorizing merge of a registration", "status": "the only confirmatory evidence"}
+ ],
+ "decisionRules": {
+  "gate": "single efficacy look after 260 weekly signal dates have matured at H63 (about 5 years and 3 months after the first signal)",
+  "supported": "one-sided 95% lower bound of the primary mean > 0",
+  "refuted": "one-sided 95% upper bound <= 0",
+  "redundant": "raw IC lower bound > 0 but the primary is not supported",
+  "unstable": "supported overall but opposite signs in the two halves of the prospective period",
+  "inconclusive": "anything else, including too many UNRESOLVED dates (> 10%)",
+  "futility": "one pre-declared look at 130 matured signal dates: stop if conditional power under the planning effect is below 10%; no efficacy interim",
+  "noRetroactiveChange": "features, controls, horizon, statistic, gate and floors cannot change after the first signal; a change is a new study id"
+ },
+ "falsification": [
+  "prospective primary upper bound <= 0 at the gate",
+  "development (exploratory) upper bound <= 0 before prospective collection (futility screen)",
+  "the sector-neutral-only spread is positive while the full pure-factor spread is not (the information is sector, size, momentum, volatility or accrual profitability, not cash)",
+  "sign reverses between halves"
+ ],
+ "powerPlanning": {
+  "source": "docs/us-readiness/us-alpha-phase3-readiness-v1.json powerPlanning (variance side of the committed four-factor report only)",
+  "reading": "an S&P 500-only prospective test detects a mean IC of about 0.05 at H63 after ~6 years and ~0.03 at H21 after ~5.5 years; residualising on the controls may reduce the dispersion and is not assumed. A realistic large-cap effect may therefore be INCONCLUSIVE at the gate, and the protocol says so in advance"
+ },
+ "prerequisitesBeforeRegistration": [
+  {"id": "P1_US_DAILY_PRICE_LEDGER", "what": "append-only daily US close + volume + dividends/splits for every S&P 500 member, SPY and QQQ on signal-history (the KR analogue ledger/prices/kr exists; no US analogue exists)", "ownerApproval": true, "why": "no fresh US price exists after 2026-09-14; without it no signal can be formed and no departed name's last price can be preserved"},
+  {"id": "P2_US_MEMBERSHIP_CAPTURE", "what": "dated weekly S&P 500 membership snapshot appended to signal-history (latest committed snapshot 2026-09-05)", "ownerApproval": true},
+  {"id": "P3_US_INFERENCE_CALIBRATION", "what": "Monte Carlo calibration of the calendar-time SN interval for ~350 names, weekly signals, H63 (reuse the alpha-inference-calibration engine with a US geometry)", "ownerApproval": false},
+  {"id": "P4_EXPLORATORY_FUTILITY_SCREEN", "what": "one authorized exploratory run of this exact protocol on replay-v16", "ownerApproval": true},
+  {"id": "P5_FREEZE", "what": "hash-freeze feature code, controls, statistic and gate before the first prospective signal", "ownerApproval": true}
+ ],
+ "forbiddenInThisProposal": ["any historical stock-outcome computation", "any backtest", "choosing a feature, control, horizon, weight or threshold from a return", "a 0-5 name book before the signal is measured on the broad cross-section"]
+}
