@@ -1,0 +1,858 @@
+{
+ "baselineFunnel": {
+  "FEATURES_NOT_MEASURED": 227310,
+  "IDENTITY_AMBIGUOUS": 7260,
+  "JOINT_MEASURED": 64409,
+  "NO_FUNDAMENTAL_RECORD": 297,
+  "NO_PRICE_PANEL": 46934,
+  "NO_VISIBLE_FILING": 3764,
+  "PRICE_HISTORY_INSUFFICIENT": 3143,
+  "REPORT_STALE_OVER_180_DAYS": 6409
+ },
+ "baselineJointMeasuredOfFilingEligiblePct": 21.6045,
+ "baselineJointMeasuredPct": 17.915,
+ "blocked": {
+  "dilutionFeature": "BLOCKED for every ticker pair: no SharesBasisEvidence",
+  "periodEndShareCounts": "BLOCKED: 1.7742% of visible filings carry a period-end common-share fact in the flattened store; the cover-page (dei) count and the XBRL class/split context are absent",
+  "secXbrlContext": "BLOCKED_NETWORK_POLICY: data.sec.gov and www.sec.gov return 403 at the proxy; no instance-level context (dimension members, period-end share counts, share class) can be read here"
+ },
+ "candidateView": {
+  "aliasCumulativeSemantics": {
+   "NetCashProvidedByUsedInOperatingActivities": {
+    "counts": {
+     "Q2OverQ1": 1475,
+     "Q3OverFY": 1651,
+     "Q3OverQ1": 1369
+    },
+    "limitation": "Aggregate value ratios corroborate vendor convention; flattened rows lack their own XBRL contexts.",
+    "medians": {
+     "Q2OverQ1": 2.1195389312395667,
+     "Q3OverFY": 0.7039340309077977,
+     "Q3OverQ1": 3.426537216828479
+    },
+    "verdict": "CUMULATIVE_CORROBORATED"
+   },
+   "PaymentsForRepurchaseOfCommonStock": {
+    "counts": {
+     "Q2OverQ1": 1213,
+     "Q3OverFY": 1280,
+     "Q3OverQ1": 1144
+    },
+    "limitation": "Aggregate value ratios corroborate vendor convention; flattened rows lack their own XBRL contexts.",
+    "medians": {
+     "Q2OverQ1": 1.8908450704225352,
+     "Q3OverFY": 0.7764665188936306,
+     "Q3OverQ1": 2.807561789991782
+    },
+    "verdict": "CUMULATIVE_CORROBORATED"
+   },
+   "PaymentsOfDividendsCommonStock": {
+    "counts": {
+     "Q2OverQ1": 1779,
+     "Q3OverFY": 1711,
+     "Q3OverQ1": 1659
+    },
+    "limitation": "Aggregate value ratios corroborate vendor convention; flattened rows lack their own XBRL contexts.",
+    "medians": {
+     "Q2OverQ1": 2.0,
+     "Q3OverFY": 0.7495721620079863,
+     "Q3OverQ1": 3.0
+    },
+    "verdict": "CUMULATIVE_CORROBORATED"
+   },
+   "PaymentsToAcquirePropertyPlantAndEquipment": {
+    "counts": {
+     "Q2OverQ1": 1356,
+     "Q3OverFY": 1282,
+     "Q3OverQ1": 1270
+    },
+    "limitation": "Aggregate value ratios corroborate vendor convention; flattened rows lack their own XBRL contexts.",
+    "medians": {
+     "Q2OverQ1": 2.0755681998862174,
+     "Q3OverFY": 0.7128287709224652,
+     "Q3OverQ1": 3.2015716374269005
+    },
+    "verdict": "CUMULATIVE_CORROBORATED"
+   }
+  },
+  "coverageUnderView": {
+   "byYear": {
+    "2013": {
+     "baselineJointPct": 0.7923,
+     "viewJointPct": 1.5808
+    },
+    "2014": {
+     "baselineJointPct": 7.8248,
+     "viewJointPct": 19.3486
+    },
+    "2015": {
+     "baselineJointPct": 11.0785,
+     "viewJointPct": 26.1825
+    },
+    "2016": {
+     "baselineJointPct": 13.6009,
+     "viewJointPct": 30.5035
+    },
+    "2017": {
+     "baselineJointPct": 14.8985,
+     "viewJointPct": 32.8407
+    },
+    "2018": {
+     "baselineJointPct": 16.6222,
+     "viewJointPct": 34.4021
+    },
+    "2019": {
+     "baselineJointPct": 20.4037,
+     "viewJointPct": 34.6687
+    },
+    "2020": {
+     "baselineJointPct": 22.7312,
+     "viewJointPct": 35.3372
+    },
+    "2021": {
+     "baselineJointPct": 23.2369,
+     "viewJointPct": 34.642
+    },
+    "2022": {
+     "baselineJointPct": 24.0155,
+     "viewJointPct": 35.5625
+    },
+    "2023": {
+     "baselineJointPct": 24.5,
+     "viewJointPct": 36.316
+    },
+    "2024": {
+     "baselineJointPct": 23.1246,
+     "viewJointPct": 34.9277
+    },
+    "2025": {
+     "baselineJointPct": 23.4754,
+     "viewJointPct": 35.1596
+    },
+    "2026": {
+     "baselineJointPct": 26.7774,
+     "viewJointPct": 39.8248
+    }
+   },
+   "funnel": {
+    "FEATURES_NOT_MEASURED": 181537,
+    "IDENTITY_AMBIGUOUS": 7260,
+    "JOINT_MEASURED": 110182,
+    "NO_FUNDAMENTAL_RECORD": 297,
+    "NO_PRICE_PANEL": 46934,
+    "NO_VISIBLE_FILING": 3764,
+    "PRICE_HISTORY_INSUFFICIENT": 3143,
+    "REPORT_STALE_OVER_180_DAYS": 6409
+   },
+   "gainedBySector": {
+    "Communication Services": 480,
+    "Consumer Discretionary": 7162,
+    "Consumer Staples": 5592,
+    "Energy": 473,
+    "Financials": 6502,
+    "Health Care": 3888,
+    "Industrials": 11328,
+    "Information Technology": 8447,
+    "Materials": 1365,
+    "Real Estate": 171,
+    "Utilities": 365
+   },
+   "gainedByYear": {
+    "2013": 205,
+    "2014": 2997,
+    "2015": 3966,
+    "2016": 4418,
+    "2017": 4710,
+    "2018": 4669,
+    "2019": 3746,
+    "2020": 3374,
+    "2021": 2995,
+    "2022": 3032,
+    "2023": 3090,
+    "2024": 3087,
+    "2025": 3056,
+    "2026": 2428
+   },
+   "gainedCompanies": 200,
+   "gainedFirstBlockerInBaseline": {
+    "operatingCashFlowTTM:AMBIGUOUS_ACCOUNTING": 7914,
+    "totalCashDistributionChangeYoY:AMBIGUOUS_ACCOUNTING": 433,
+    "totalCashDistributionTTM:AMBIGUOUS_ACCOUNTING": 37426
+   },
+   "gainedMemberDates": 45773,
+   "jointMeasuredPct": 30.6465,
+   "lostMemberDates": 0,
+   "remainingFirstBlockingFeature": {
+    "distributionToOCF | NOT_APPLICABLE | NONPOSITIVE_DENOMINATOR": 1156,
+    "operatingCashFlowTTM | AMBIGUOUS_ACCOUNTING | RELATED_CONCEPT_IS_NOT_AN_ALIAS": 3204,
+    "totalCashDistributionChangeYoY | AMBIGUOUS_ACCOUNTING | RELATED_CONCEPT_IS_NOT_AN_ALIAS": 1885,
+    "totalCashDistributionChangeYoY | INSUFFICIENT_HISTORY | MISSING_FISCAL_CHAIN": 10492,
+    "totalCashDistributionChangeYoY | INVALID | CONFLICTING_FISCAL_PERIODS": 344,
+    "totalCashDistributionChangeYoY | INVALID | INVALID_NUMBER": 319,
+    "totalCashDistributionChangeYoY | NOT_REPORTED | CONCEPT_NOT_REPORTED": 8924,
+    "totalCashDistributionTTM | AMBIGUOUS_ACCOUNTING | RELATED_CONCEPT_IS_NOT_AN_ALIAS": 35635,
+    "totalCashDistributionTTM | INSUFFICIENT_HISTORY | MISSING_FISCAL_CHAIN": 8475,
+    "totalCashDistributionTTM | INVALID | CONFLICTING_FISCAL_PERIODS": 2466,
+    "totalCashDistributionTTM | INVALID | INCOMPATIBLE_FISCAL_CHAIN": 359,
+    "totalCashDistributionTTM | INVALID | INCOMPATIBLE_PERIOD_METADATA": 516,
+    "totalCashDistributionTTM | INVALID | INVALID_NUMBER": 811,
+    "totalCashDistributionTTM | INVALID | INVALID_SIGN_OR_SHARE_COUNT": 545,
+    "totalCashDistributionTTM | NOT_REPORTED | CONCEPT_NOT_REPORTED": 105618
+   }
+  },
+  "dividendDecisions": {
+   "ALIAS_ACCEPTED_NO_OTHER_HOLDER_EVIDENCE": 7606,
+   "EXACT_CONCEPT_PRESENT": 14474,
+   "NO_DIVIDEND_CONCEPT_IN_CASH_FLOW": 9542,
+   "REJECT_CONFLICTING_GENERAL_CONCEPTS": 8,
+   "REJECT_ORDINARY_ONLY_EXCLUDES_SPECIAL_DIVIDENDS": 1328,
+   "REJECT_OTHER_HOLDER_DIVIDEND_LINE": 570,
+   "REJECT_OTHER_HOLDER_LABEL": 382,
+   "REJECT_PREFERRED_STOCK_OUTSTANDING": 1035
+  },
+  "dividendDecisionsByYear": {
+   "2012": {
+    "ALIAS_ACCEPTED_NO_OTHER_HOLDER_EVIDENCE": 426,
+    "EXACT_CONCEPT_PRESENT": 822,
+    "NO_DIVIDEND_CONCEPT_IN_CASH_FLOW": 669,
+    "REJECT_ORDINARY_ONLY_EXCLUDES_SPECIAL_DIVIDENDS": 47,
+    "REJECT_OTHER_HOLDER_DIVIDEND_LINE": 47,
+    "REJECT_OTHER_HOLDER_LABEL": 9,
+    "REJECT_PREFERRED_STOCK_OUTSTANDING": 50
+   },
+   "2013": {
+    "ALIAS_ACCEPTED_NO_OTHER_HOLDER_EVIDENCE": 475,
+    "EXACT_CONCEPT_PRESENT": 956,
+    "NO_DIVIDEND_CONCEPT_IN_CASH_FLOW": 741,
+    "REJECT_ORDINARY_ONLY_EXCLUDES_SPECIAL_DIVIDENDS": 64,
+    "REJECT_OTHER_HOLDER_DIVIDEND_LINE": 52,
+    "REJECT_OTHER_HOLDER_LABEL": 15,
+    "REJECT_PREFERRED_STOCK_OUTSTANDING": 72
+   },
+   "2014": {
+    "ALIAS_ACCEPTED_NO_OTHER_HOLDER_EVIDENCE": 487,
+    "EXACT_CONCEPT_PRESENT": 954,
+    "NO_DIVIDEND_CONCEPT_IN_CASH_FLOW": 663,
+    "REJECT_ORDINARY_ONLY_EXCLUDES_SPECIAL_DIVIDENDS": 76,
+    "REJECT_OTHER_HOLDER_DIVIDEND_LINE": 58,
+    "REJECT_OTHER_HOLDER_LABEL": 21,
+    "REJECT_PREFERRED_STOCK_OUTSTANDING": 73
+   },
+   "2015": {
+    "ALIAS_ACCEPTED_NO_OTHER_HOLDER_EVIDENCE": 470,
+    "EXACT_CONCEPT_PRESENT": 946,
+    "NO_DIVIDEND_CONCEPT_IN_CASH_FLOW": 636,
+    "REJECT_CONFLICTING_GENERAL_CONCEPTS": 3,
+    "REJECT_ORDINARY_ONLY_EXCLUDES_SPECIAL_DIVIDENDS": 87,
+    "REJECT_OTHER_HOLDER_DIVIDEND_LINE": 55,
+    "REJECT_OTHER_HOLDER_LABEL": 23,
+    "REJECT_PREFERRED_STOCK_OUTSTANDING": 69
+   },
+   "2016": {
+    "ALIAS_ACCEPTED_NO_OTHER_HOLDER_EVIDENCE": 492,
+    "EXACT_CONCEPT_PRESENT": 961,
+    "NO_DIVIDEND_CONCEPT_IN_CASH_FLOW": 621,
+    "REJECT_CONFLICTING_GENERAL_CONCEPTS": 1,
+    "REJECT_ORDINARY_ONLY_EXCLUDES_SPECIAL_DIVIDENDS": 92,
+    "REJECT_OTHER_HOLDER_DIVIDEND_LINE": 60,
+    "REJECT_OTHER_HOLDER_LABEL": 26,
+    "REJECT_PREFERRED_STOCK_OUTSTANDING": 66
+   },
+   "2017": {
+    "ALIAS_ACCEPTED_NO_OTHER_HOLDER_EVIDENCE": 507,
+    "EXACT_CONCEPT_PRESENT": 952,
+    "NO_DIVIDEND_CONCEPT_IN_CASH_FLOW": 623,
+    "REJECT_CONFLICTING_GENERAL_CONCEPTS": 2,
+    "REJECT_ORDINARY_ONLY_EXCLUDES_SPECIAL_DIVIDENDS": 93,
+    "REJECT_OTHER_HOLDER_DIVIDEND_LINE": 73,
+    "REJECT_OTHER_HOLDER_LABEL": 25,
+    "REJECT_PREFERRED_STOCK_OUTSTANDING": 74
+   },
+   "2018": {
+    "ALIAS_ACCEPTED_NO_OTHER_HOLDER_EVIDENCE": 514,
+    "EXACT_CONCEPT_PRESENT": 968,
+    "NO_DIVIDEND_CONCEPT_IN_CASH_FLOW": 602,
+    "REJECT_CONFLICTING_GENERAL_CONCEPTS": 1,
+    "REJECT_ORDINARY_ONLY_EXCLUDES_SPECIAL_DIVIDENDS": 98,
+    "REJECT_OTHER_HOLDER_DIVIDEND_LINE": 83,
+    "REJECT_OTHER_HOLDER_LABEL": 32,
+    "REJECT_PREFERRED_STOCK_OUTSTANDING": 78
+   },
+   "2019": {
+    "ALIAS_ACCEPTED_NO_OTHER_HOLDER_EVIDENCE": 537,
+    "EXACT_CONCEPT_PRESENT": 1018,
+    "NO_DIVIDEND_CONCEPT_IN_CASH_FLOW": 639,
+    "REJECT_CONFLICTING_GENERAL_CONCEPTS": 1,
+    "REJECT_ORDINARY_ONLY_EXCLUDES_SPECIAL_DIVIDENDS": 105,
+    "REJECT_OTHER_HOLDER_DIVIDEND_LINE": 71,
+    "REJECT_OTHER_HOLDER_LABEL": 28,
+    "REJECT_PREFERRED_STOCK_OUTSTANDING": 78
+   },
+   "2020": {
+    "ALIAS_ACCEPTED_NO_OTHER_HOLDER_EVIDENCE": 536,
+    "EXACT_CONCEPT_PRESENT": 1056,
+    "NO_DIVIDEND_CONCEPT_IN_CASH_FLOW": 631,
+    "REJECT_ORDINARY_ONLY_EXCLUDES_SPECIAL_DIVIDENDS": 101,
+    "REJECT_OTHER_HOLDER_DIVIDEND_LINE": 24,
+    "REJECT_OTHER_HOLDER_LABEL": 33,
+    "REJECT_PREFERRED_STOCK_OUTSTANDING": 84
+   },
+   "2021": {
+    "ALIAS_ACCEPTED_NO_OTHER_HOLDER_EVIDENCE": 550,
+    "EXACT_CONCEPT_PRESENT": 1028,
+    "NO_DIVIDEND_CONCEPT_IN_CASH_FLOW": 674,
+    "REJECT_ORDINARY_ONLY_EXCLUDES_SPECIAL_DIVIDENDS": 97,
+    "REJECT_OTHER_HOLDER_DIVIDEND_LINE": 13,
+    "REJECT_OTHER_HOLDER_LABEL": 40,
+    "REJECT_PREFERRED_STOCK_OUTSTANDING": 88
+   },
+   "2022": {
+    "ALIAS_ACCEPTED_NO_OTHER_HOLDER_EVIDENCE": 533,
+    "EXACT_CONCEPT_PRESENT": 1029,
+    "NO_DIVIDEND_CONCEPT_IN_CASH_FLOW": 700,
+    "REJECT_ORDINARY_ONLY_EXCLUDES_SPECIAL_DIVIDENDS": 97,
+    "REJECT_OTHER_HOLDER_DIVIDEND_LINE": 7,
+    "REJECT_OTHER_HOLDER_LABEL": 31,
+    "REJECT_PREFERRED_STOCK_OUTSTANDING": 74
+   },
+   "2023": {
+    "ALIAS_ACCEPTED_NO_OTHER_HOLDER_EVIDENCE": 535,
+    "EXACT_CONCEPT_PRESENT": 1015,
+    "NO_DIVIDEND_CONCEPT_IN_CASH_FLOW": 649,
+    "REJECT_ORDINARY_ONLY_EXCLUDES_SPECIAL_DIVIDENDS": 101,
+    "REJECT_OTHER_HOLDER_DIVIDEND_LINE": 4,
+    "REJECT_OTHER_HOLDER_LABEL": 26,
+    "REJECT_PREFERRED_STOCK_OUTSTANDING": 61
+   },
+   "2024": {
+    "ALIAS_ACCEPTED_NO_OTHER_HOLDER_EVIDENCE": 546,
+    "EXACT_CONCEPT_PRESENT": 967,
+    "NO_DIVIDEND_CONCEPT_IN_CASH_FLOW": 606,
+    "REJECT_ORDINARY_ONLY_EXCLUDES_SPECIAL_DIVIDENDS": 99,
+    "REJECT_OTHER_HOLDER_DIVIDEND_LINE": 9,
+    "REJECT_OTHER_HOLDER_LABEL": 26,
+    "REJECT_PREFERRED_STOCK_OUTSTANDING": 55
+   },
+   "2025": {
+    "ALIAS_ACCEPTED_NO_OTHER_HOLDER_EVIDENCE": 564,
+    "EXACT_CONCEPT_PRESENT": 1022,
+    "NO_DIVIDEND_CONCEPT_IN_CASH_FLOW": 624,
+    "REJECT_ORDINARY_ONLY_EXCLUDES_SPECIAL_DIVIDENDS": 97,
+    "REJECT_OTHER_HOLDER_DIVIDEND_LINE": 8,
+    "REJECT_OTHER_HOLDER_LABEL": 27,
+    "REJECT_PREFERRED_STOCK_OUTSTANDING": 70
+   },
+   "2026": {
+    "ALIAS_ACCEPTED_NO_OTHER_HOLDER_EVIDENCE": 434,
+    "EXACT_CONCEPT_PRESENT": 780,
+    "NO_DIVIDEND_CONCEPT_IN_CASH_FLOW": 464,
+    "REJECT_ORDINARY_ONLY_EXCLUDES_SPECIAL_DIVIDENDS": 74,
+    "REJECT_OTHER_HOLDER_DIVIDEND_LINE": 6,
+    "REJECT_OTHER_HOLDER_LABEL": 20,
+    "REJECT_PREFERRED_STOCK_OUTSTANDING": 43
+   }
+  },
+  "evidence": "STORE_EVIDENCE_NOT_CONTEXT_VERIFIED",
+  "frozenV1Untouched": true,
+  "operatingCashFlowDecisions": {
+   "ALIAS_ACCEPTED_NO_DISCONTINUED_OPERATIONS_LINE": 3660,
+   "EXACT_CONCEPT_PRESENT": 30212,
+   "NO_OPERATING_CASH_FLOW_CONCEPT": 328,
+   "REJECT_DISCONTINUED_OPERATIONS_LINE": 745
+  },
+  "reading": "an upper bound on source repair: the view is store evidence, not SEC context verification, and it is a NEW versioned definition, not a v1 fix",
+  "rules": {
+   "dividends": "PaymentsOfDividends is read as the common-stock total ONLY when the cash flow has no preferred/non-controlling/partnership dividend line, the line label names no other holder, no preferred stock is outstanding on any face statement, and no conflicting general concept exists. PaymentsOfOrdinaryDividends alone is rejected (excludes special dividends).",
+   "operatingCashFlow": "The continuing-operations total is read as operating cash flow ONLY when the filing has no discontinued-operations operating line. Everything else stays AMBIGUOUS_ACCOUNTING."
+  },
+  "version": "US_SHAREHOLDER_DISTRIBUTION_V2_CANDIDATE_VIEW"
+ },
+ "conceptAvailabilityByVisibleYearPct": {
+  "2012": {
+   "capexExact": 69.3237,
+   "cashDividendsExactCommon": 39.7101,
+   "cashDividendsGeneral": 25.5556,
+   "cashDividendsOrdinary": 2.4155,
+   "dividendPerShareDeclared": 51.3043,
+   "epsBasic": 90.8213,
+   "epsDiluted": 90.9662,
+   "filings": 2070,
+   "netIncome": 96.087,
+   "operatingCashFlowContinuingOnly": 20.2899,
+   "operatingCashFlowExact": 83.6715,
+   "operatingIncome": 73.3333,
+   "periodEndCommonShares": 1.1111,
+   "repurchasesEquityGeneral": 1.5942,
+   "repurchasesExactCommon": 62.1739,
+   "revenue": 87.343,
+   "stockholdersEquity": 97.2464,
+   "totalAssets": 98.5507,
+   "weightedAverageBasicShares": 71.6425,
+   "weightedAverageDilutedShares": 72.2705
+  },
+  "2013": {
+   "capexExact": 67.9579,
+   "cashDividendsExactCommon": 40.2526,
+   "cashDividendsGeneral": 25.6842,
+   "cashDividendsOrdinary": 2.9474,
+   "dividendPerShareDeclared": 52.1684,
+   "epsBasic": 91.4105,
+   "epsDiluted": 91.2421,
+   "filings": 2375,
+   "netIncome": 96.4632,
+   "operatingCashFlowContinuingOnly": 22.9474,
+   "operatingCashFlowExact": 80.0421,
+   "operatingIncome": 72.8421,
+   "periodEndCommonShares": 0.9684,
+   "repurchasesEquityGeneral": 1.6421,
+   "repurchasesExactCommon": 63.2,
+   "revenue": 86.9474,
+   "stockholdersEquity": 97.0947,
+   "totalAssets": 98.9053,
+   "weightedAverageBasicShares": 71.4947,
+   "weightedAverageDilutedShares": 71.6632
+  },
+  "2014": {
+   "capexExact": 67.4957,
+   "cashDividendsExactCommon": 40.9091,
+   "cashDividendsGeneral": 26.9297,
+   "cashDividendsOrdinary": 3.8593,
+   "dividendPerShareDeclared": 52.4871,
+   "epsBasic": 91.4237,
+   "epsDiluted": 90.952,
+   "filings": 2332,
+   "netIncome": 96.3551,
+   "operatingCashFlowContinuingOnly": 34.5197,
+   "operatingCashFlowExact": 69.1252,
+   "operatingIncome": 72.2556,
+   "periodEndCommonShares": 0.8148,
+   "repurchasesEquityGeneral": 1.2436,
+   "repurchasesExactCommon": 65.6518,
+   "revenue": 87.1355,
+   "stockholdersEquity": 97.5557,
+   "totalAssets": 98.7564,
+   "weightedAverageBasicShares": 71.6123,
+   "weightedAverageDilutedShares": 71.3979
+  },
+  "2015": {
+   "capexExact": 68.1083,
+   "cashDividendsExactCommon": 41.3281,
+   "cashDividendsGeneral": 26.6492,
+   "cashDividendsOrdinary": 4.4998,
+   "dividendPerShareDeclared": 54.3469,
+   "epsBasic": 91.9179,
+   "epsDiluted": 91.5247,
+   "filings": 2289,
+   "netIncome": 96.4176,
+   "operatingCashFlowContinuingOnly": 39.2748,
+   "operatingCashFlowExact": 64.5697,
+   "operatingIncome": 72.9576,
+   "periodEndCommonShares": 0.8301,
+   "repurchasesEquityGeneral": 1.0922,
+   "repurchasesExactCommon": 66.2735,
+   "revenue": 87.0686,
+   "stockholdersEquity": 98.1215,
+   "totalAssets": 99.0826,
+   "weightedAverageBasicShares": 71.647,
+   "weightedAverageDilutedShares": 71.7344
+  },
+  "2016": {
+   "capexExact": 69.1677,
+   "cashDividendsExactCommon": 41.4403,
+   "cashDividendsGeneral": 27.3394,
+   "cashDividendsOrdinary": 4.6572,
+   "dividendPerShareDeclared": 55.3256,
+   "epsBasic": 92.4536,
+   "epsDiluted": 92.1518,
+   "filings": 2319,
+   "netIncome": 96.7658,
+   "operatingCashFlowContinuingOnly": 38.853,
+   "operatingCashFlowExact": 65.5886,
+   "operatingIncome": 74.1268,
+   "periodEndCommonShares": 0.8193,
+   "repurchasesEquityGeneral": 1.423,
+   "repurchasesExactCommon": 68.3053,
+   "revenue": 87.2359,
+   "stockholdersEquity": 98.3182,
+   "totalAssets": 99.0513,
+   "weightedAverageBasicShares": 72.6175,
+   "weightedAverageDilutedShares": 72.6606
+  },
+  "2017": {
+   "capexExact": 70.0724,
+   "cashDividendsExactCommon": 40.5279,
+   "cashDividendsGeneral": 28.4376,
+   "cashDividendsOrdinary": 4.6828,
+   "dividendPerShareDeclared": 56.1516,
+   "epsBasic": 92.2946,
+   "epsDiluted": 91.8689,
+   "filings": 2349,
+   "netIncome": 96.5943,
+   "operatingCashFlowContinuingOnly": 33.3759,
+   "operatingCashFlowExact": 71.0941,
+   "operatingIncome": 74.0741,
+   "periodEndCommonShares": 0.8089,
+   "repurchasesEquityGeneral": 1.7029,
+   "repurchasesExactCommon": 67.6458,
+   "revenue": 87.2712,
+   "stockholdersEquity": 98.4674,
+   "totalAssets": 99.1486,
+   "weightedAverageBasicShares": 72.2009,
+   "weightedAverageDilutedShares": 72.0307
+  },
+  "2018": {
+   "capexExact": 69.7391,
+   "cashDividendsExactCommon": 40.7407,
+   "cashDividendsGeneral": 29.2088,
+   "cashDividendsOrdinary": 4.9242,
+   "dividendPerShareDeclared": 55.1768,
+   "epsBasic": 92.803,
+   "epsDiluted": 92.5084,
+   "filings": 2376,
+   "netIncome": 97.3485,
+   "operatingCashFlowContinuingOnly": 18.266,
+   "operatingCashFlowExact": 86.069,
+   "operatingIncome": 74.1162,
+   "periodEndCommonShares": 0.8838,
+   "repurchasesEquityGeneral": 2.1044,
+   "repurchasesExactCommon": 69.8232,
+   "revenue": 90.6566,
+   "stockholdersEquity": 98.6953,
+   "totalAssets": 99.4529,
+   "weightedAverageBasicShares": 72.2222,
+   "weightedAverageDilutedShares": 72.2222
+  },
+  "2019": {
+   "capexExact": 69.1159,
+   "cashDividendsExactCommon": 41.0981,
+   "cashDividendsGeneral": 28.4215,
+   "cashDividendsOrdinary": 4.9657,
+   "dividendPerShareDeclared": 18.6516,
+   "epsBasic": 92.5717,
+   "epsDiluted": 92.4102,
+   "filings": 2477,
+   "netIncome": 97.8199,
+   "operatingCashFlowContinuingOnly": 10.2947,
+   "operatingCashFlowExact": 93.7424,
+   "operatingIncome": 73.476,
+   "periodEndCommonShares": 1.1304,
+   "repurchasesEquityGeneral": 2.2608,
+   "repurchasesExactCommon": 70.7307,
+   "revenue": 94.1058,
+   "stockholdersEquity": 98.9503,
+   "totalAssets": 99.677,
+   "weightedAverageBasicShares": 72.7089,
+   "weightedAverageDilutedShares": 72.8704
+  },
+  "2020": {
+   "capexExact": 67.9919,
+   "cashDividendsExactCommon": 42.8398,
+   "cashDividendsGeneral": 27.4645,
+   "cashDividendsOrdinary": 4.5436,
+   "dividendPerShareDeclared": 15.8621,
+   "epsBasic": 92.4138,
+   "epsDiluted": 92.0081,
+   "filings": 2465,
+   "netIncome": 98.1744,
+   "operatingCashFlowContinuingOnly": 7.0183,
+   "operatingCashFlowExact": 97.2008,
+   "operatingIncome": 73.8742,
+   "periodEndCommonShares": 2.9615,
+   "repurchasesEquityGeneral": 1.9878,
+   "repurchasesExactCommon": 69.8986,
+   "revenue": 94.2394,
+   "stockholdersEquity": 99.432,
+   "totalAssets": 99.8377,
+   "weightedAverageBasicShares": 72.4544,
+   "weightedAverageDilutedShares": 72.4949
+  },
+  "2021": {
+   "capexExact": 68.755,
+   "cashDividendsExactCommon": 41.2851,
+   "cashDividendsGeneral": 27.7108,
+   "cashDividendsOrdinary": 4.2169,
+   "dividendPerShareDeclared": 13.9759,
+   "epsBasic": 93.5341,
+   "epsDiluted": 93.4137,
+   "filings": 2490,
+   "netIncome": 98.3133,
+   "operatingCashFlowContinuingOnly": 6.9478,
+   "operatingCashFlowExact": 97.1486,
+   "operatingIncome": 74.0562,
+   "periodEndCommonShares": 2.9719,
+   "repurchasesEquityGeneral": 1.7269,
+   "repurchasesExactCommon": 66.6667,
+   "revenue": 94.0964,
+   "stockholdersEquity": 99.3173,
+   "totalAssets": 99.759,
+   "weightedAverageBasicShares": 73.6546,
+   "weightedAverageDilutedShares": 73.9759
+  },
+  "2022": {
+   "capexExact": 68.6362,
+   "cashDividendsExactCommon": 41.6431,
+   "cashDividendsGeneral": 26.1433,
+   "cashDividendsOrdinary": 4.1684,
+   "dividendPerShareDeclared": 12.4241,
+   "epsBasic": 95.3865,
+   "epsDiluted": 95.4674,
+   "filings": 2471,
+   "netIncome": 98.624,
+   "operatingCashFlowContinuingOnly": 6.3132,
+   "operatingCashFlowExact": 97.41,
+   "operatingIncome": 74.4233,
+   "periodEndCommonShares": 2.2258,
+   "repurchasesEquityGeneral": 1.9021,
+   "repurchasesExactCommon": 70.1335,
+   "revenue": 94.3747,
+   "stockholdersEquity": 99.393,
+   "totalAssets": 99.8786,
+   "weightedAverageBasicShares": 75.9611,
+   "weightedAverageDilutedShares": 76.2849
+  },
+  "2023": {
+   "capexExact": 68.2978,
+   "cashDividendsExactCommon": 42.4509,
+   "cashDividendsGeneral": 26.307,
+   "cashDividendsOrdinary": 4.4333,
+   "dividendPerShareDeclared": 12.5471,
+   "epsBasic": 97.2815,
+   "epsDiluted": 96.9469,
+   "filings": 2391,
+   "netIncome": 98.4525,
+   "operatingCashFlowContinuingOnly": 5.8971,
+   "operatingCashFlowExact": 97.2396,
+   "operatingIncome": 74.1949,
+   "periodEndCommonShares": 2.9695,
+   "repurchasesEquityGeneral": 1.9657,
+   "repurchasesExactCommon": 72.6056,
+   "revenue": 94.7721,
+   "stockholdersEquity": 99.4981,
+   "totalAssets": 99.9582,
+   "weightedAverageBasicShares": 77.248,
+   "weightedAverageDilutedShares": 77.2062
+  },
+  "2024": {
+   "capexExact": 68.1976,
+   "cashDividendsExactCommon": 41.8977,
+   "cashDividendsGeneral": 27.383,
+   "cashDividendsOrdinary": 4.766,
+   "dividendPerShareDeclared": 11.6118,
+   "epsBasic": 97.0537,
+   "epsDiluted": 96.9671,
+   "filings": 2308,
+   "netIncome": 98.4835,
+   "operatingCashFlowContinuingOnly": 5.7192,
+   "operatingCashFlowExact": 97.747,
+   "operatingIncome": 74.5234,
+   "periodEndCommonShares": 3.4662,
+   "repurchasesEquityGeneral": 1.6031,
+   "repurchasesExactCommon": 73.0503,
+   "revenue": 94.8873,
+   "stockholdersEquity": 99.4367,
+   "totalAssets": 99.9567,
+   "weightedAverageBasicShares": 77.1231,
+   "weightedAverageDilutedShares": 77.2097
+  },
+  "2025": {
+   "capexExact": 68.2007,
+   "cashDividendsExactCommon": 42.3715,
+   "cashDividendsGeneral": 27.5705,
+   "cashDividendsOrdinary": 4.5191,
+   "dividendPerShareDeclared": 10.738,
+   "epsBasic": 97.3881,
+   "epsDiluted": 97.2637,
+   "filings": 2412,
+   "netIncome": 98.6318,
+   "operatingCashFlowContinuingOnly": 5.9701,
+   "operatingCashFlowExact": 97.3051,
+   "operatingIncome": 74.0464,
+   "periodEndCommonShares": 2.8607,
+   "repurchasesEquityGeneral": 2.1559,
+   "repurchasesExactCommon": 73.7148,
+   "revenue": 94.9005,
+   "stockholdersEquity": 99.461,
+   "totalAssets": 99.9585,
+   "weightedAverageBasicShares": 77.073,
+   "weightedAverageDilutedShares": 77.1559
+  },
+  "2026": {
+   "capexExact": 67.5453,
+   "cashDividendsExactCommon": 42.8336,
+   "cashDividendsGeneral": 27.4574,
+   "cashDividendsOrdinary": 4.5579,
+   "dividendPerShareDeclared": 10.2691,
+   "epsBasic": 97.1993,
+   "epsDiluted": 97.0895,
+   "filings": 1821,
+   "netIncome": 98.737,
+   "operatingCashFlowContinuingOnly": 5.6013,
+   "operatingCashFlowExact": 97.8034,
+   "operatingIncome": 74.3548,
+   "periodEndCommonShares": 1.4827,
+   "repurchasesEquityGeneral": 1.8122,
+   "repurchasesExactCommon": 74.6293,
+   "revenue": 94.7831,
+   "stockholdersEquity": 65.6233,
+   "totalAssets": 65.9528,
+   "weightedAverageBasicShares": 76.4964,
+   "weightedAverageDilutedShares": 76.4964
+  }
+ },
+ "conceptNameInventory": {
+  "dividendLikeCashFlowConcepts": {
+   "Dividends": 58,
+   "EquityMethodInvestmentDividendsOrDistributions": 3106,
+   "IncomeLossFromEquityMethodInvestmentsNetOfDividendsOrDistributions": 2841,
+   "IncreaseDecreaseInInterestAndDividendsReceivable": 38,
+   "PaymentsOfDividends": 9519,
+   "PaymentsOfDividendsCommonStock": 14484,
+   "PaymentsOfDividendsMinorityInterest": 3748,
+   "PaymentsOfDividendsPreferredStockAndPreferenceStock": 2294,
+   "PaymentsOfOrdinaryDividends": 1501,
+   "ProceedsFromDividendsReceived": 55,
+   "ProceedsFromEquityMethodInvestmentDividendsOrDistributionsReturnOfCapital": 1771,
+   "ProceedsFromInterestAndDividendsReceived": 72,
+   "frt_DividendsPaidToCommonAndPreferredShareholders": 36,
+   "frt_Paymentsofdividendsandredemptionsminorityinterest": 36,
+   "o_ProceedsFromDividendReinvestmentAndStockPurchasePlanNet": 49
+  },
+  "repurchaseLikeCashFlowConcepts": {
+   "AssetRetirementObligationAccretionExpense": 340,
+   "GainLossOnRepurchaseOfDebtInstrument": 181,
+   "IncreaseDecreaseInFederalFundsPurchasedAndSecuritiesSoldUnderAgreementsToRepurchaseNet": 315,
+   "IncreaseDecreaseInPensionAndPostretirementObligations": 1264,
+   "PaymentsForRepurchaseOfCommonStock": 24097,
+   "PaymentsForRepurchaseOfEquity": 613,
+   "PaymentsForRepurchaseOfOtherEquity": 394,
+   "PaymentsForRepurchaseOfPreferredStockAndPreferenceStock": 680,
+   "PaymentsForRepurchaseOfRedeemableNoncontrollingInterest": 738,
+   "PaymentsForRepurchaseOfRedeemablePreferredStock": 380,
+   "PensionAndOtherPostretirementBenefitContributions": 1750,
+   "PensionAndOtherPostretirementBenefitExpense": 1417,
+   "PensionAndOtherPostretirementBenefitsExpenseReversalOfExpenseNoncash": 577,
+   "ProceedsFromRepurchaseOfEquity": 232,
+   "ProceedsFromSaleOfTreasuryStock": 723
+  }
+ },
+ "evidenceClass": "OUTCOME_BLIND_SOURCE_GAP_DIAGNOSIS",
+ "fitsModels": false,
+ "id": "us-capital-allocation-source-gap-diagnosis-v1",
+ "inputs": {
+  "cutoff": "2026-10-11",
+  "filingsVisible": 34945,
+  "formCensus": {
+   "10-K": 8542,
+   "10-Q": 26403
+  },
+  "fundamentalsCommit": "704d7db6d5b00def771aba5d2665d0846d6bc776",
+  "limited": false,
+  "memberDates": 359526,
+  "weeksEvaluated": 715
+ },
+ "newAcquisition": false,
+ "priceAndIdentity": {
+  "identityAmbiguousMemberDates": 7260,
+  "identityAmbiguousReasons": {
+   "CIK_MISMATCH": 634,
+   "SAME_SECURITY_RENAME": 393,
+   "TICKER_REUSE_DIFFERENT_ISSUER": 6233
+  },
+  "membershipSnapshots": {
+   "count": 195,
+   "first": "2012-12-27",
+   "gapsOver45Days": 21,
+   "last": "2026-09-05",
+   "maxGapDays": 769
+  },
+  "noPricePanelMemberDates": {
+   "byYearDeparted": {
+    "2013": 6734,
+    "2014": 6319,
+    "2015": 6066,
+    "2016": 5149,
+    "2017": 4768,
+    "2018": 4225,
+    "2019": 4056,
+    "2020": 3170,
+    "2021": 2187,
+    "2022": 2062,
+    "2023": 1013,
+    "2024": 699,
+    "2025": 417,
+    "2026": 69
+   },
+   "currentMembers": 0,
+   "departedMembers": 46934
+  },
+  "reading": "every missing price panel is a departed member: the sealed price source (Yahoo) does not serve delisted US tickers, so exactly the names that later failed or were acquired are absent. This is a survivorship-correlated gap that no filing-side repair can fix",
+  "sealedSurvivorshipAudit": {
+   "departedExitIdentityUnresolved": 181,
+   "departedPricedByOwnHistory": 99,
+   "departedPricedViaVerifiedRename": 13,
+   "noPanelCurrent": 0,
+   "noPanelDeparted": 212
+  },
+  "terminations": {
+   "continuingPanels": 615,
+   "terminatedInPanel": 0,
+   "terminationGapDays": 45
+  }
+ },
+ "readsLabels": false,
+ "readsReturns": false,
+ "timestamps": {
+  "acceptedDatePct": 99.9971,
+  "acceptedMinusAvailableFromDays": {
+   "max": 633,
+   "median": 0.0,
+   "min": -4,
+   "n": 34944,
+   "p10": 0.0,
+   "p90": 0.0
+  },
+  "engineRejectedFilings": {
+   "INCOMPATIBLE_PERIOD_METADATA": 190,
+   "INVALID_FISCAL_IDENTITY": 9
+  },
+  "filings": 34945,
+  "filingsWithAcceptedDate": 34944,
+  "periodEndToVisibleDays": {
+   "max": 686,
+   "median": 35.0,
+   "min": 8,
+   "n": 34945,
+   "p10": 25.0,
+   "p90": 55.0
+  },
+  "visibilityRule": "max(availableFrom, acceptedDate), strictly before the signal date; a missing acceptedDate falls back to availableFrom"
+ },
+ "whyNotMeasured": {
+  "firstBlockingFeature": {
+   "distributionToOCF | NOT_APPLICABLE | NONPOSITIVE_DENOMINATOR": 487,
+   "operatingCashFlowTTM | AMBIGUOUS_ACCOUNTING | RELATED_CONCEPT_IS_NOT_AN_ALIAS": 9898,
+   "operatingCashFlowTTM | NOT_REPORTED | CONCEPT_NOT_REPORTED": 12,
+   "totalCashDistributionChangeYoY | AMBIGUOUS_ACCOUNTING | RELATED_CONCEPT_IS_NOT_AN_ALIAS": 1450,
+   "totalCashDistributionChangeYoY | INSUFFICIENT_HISTORY | MISSING_FISCAL_CHAIN": 6949,
+   "totalCashDistributionChangeYoY | INVALID | CONFLICTING_FISCAL_PERIODS": 146,
+   "totalCashDistributionChangeYoY | INVALID | INCOMPATIBLE_FISCAL_CHAIN": 103,
+   "totalCashDistributionChangeYoY | INVALID | INCOMPATIBLE_PERIOD_METADATA": 89,
+   "totalCashDistributionChangeYoY | INVALID | INCOMPATIBLE_YOY_PERIODS": 19,
+   "totalCashDistributionChangeYoY | INVALID | INVALID_NUMBER": 269,
+   "totalCashDistributionChangeYoY | INVALID | INVALID_SIGN_OR_SHARE_COUNT": 92,
+   "totalCashDistributionChangeYoY | INVALID | NEGATIVE_OUTFLOW_TTM": 17,
+   "totalCashDistributionChangeYoY | NOT_APPLICABLE | NONPOSITIVE_DENOMINATOR": 63,
+   "totalCashDistributionChangeYoY | NOT_REPORTED | CONCEPT_NOT_REPORTED": 5273,
+   "totalCashDistributionTTM | AMBIGUOUS_ACCOUNTING | RELATED_CONCEPT_IS_NOT_AN_ALIAS": 104004,
+   "totalCashDistributionTTM | INSUFFICIENT_HISTORY | MISSING_FISCAL_CHAIN": 6007,
+   "totalCashDistributionTTM | INVALID | CONFLICTING_FISCAL_PERIODS": 2186,
+   "totalCashDistributionTTM | INVALID | INCOMPATIBLE_FISCAL_CHAIN": 171,
+   "totalCashDistributionTTM | INVALID | INCOMPATIBLE_PERIOD_METADATA": 474,
+   "totalCashDistributionTTM | INVALID | INVALID_NUMBER": 582,
+   "totalCashDistributionTTM | INVALID | INVALID_SIGN_OR_SHARE_COUNT": 411,
+   "totalCashDistributionTTM | INVALID | NEGATIVE_OUTFLOW_TTM": 32,
+   "totalCashDistributionTTM | NOT_REPORTED | CONCEPT_NOT_REPORTED": 88576
+  },
+  "memberDatesNotMeasured": 227310
+ }
+}

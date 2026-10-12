@@ -1,0 +1,460 @@
+{
+ "alwaysFiveNames": {
+  "A_vs_B": {
+   "A_accountingCharacteristic": "A company's total cash distribution grew by at least 10% over the prior year, the increase is at least 2% of operating cash flow, and total distributions do not exceed operating cash flow. This is a statement about reported cash flows.",
+   "B_expectedReturnAdvantage": "A demonstrably positive expected return advantage over SPY or QQQ after costs. It requires evidence that the characteristic is not already in the price, which only out-of-sample outcomes can supply. None exists for this rule.",
+   "verdict": "The v1 rule selects on A. Nothing in its construction measures B. The score ranks companies by the size of a payout increase relative to cash flow; it contains no forecast, no price, no valuation and no estimate of how much of the increase is already priced."
+  },
+  "answer": "The registered rule ranks eligible companies on a payout-growth ratio; it does not impose an expected-return hurdle, so it fills five slots whenever five names clear accounting thresholds, which happens in every non-blocked week",
+  "distinctNamesEverSelected": 103,
+  "fifthVsBestExcludedMedianGap": 0.040422,
+  "passersPerLiveWeekMean": 25.72,
+  "repurchaseLedShareOfSelectedSlots": 0.962,
+  "sectorCapBindingShareOfWeeks": 0.3273,
+  "selectedAbove80PctPayout": 0.4608,
+  "shareOfMeasuredClearingGrowthHurdle": 0.4272,
+  "thresholdsChanged": false,
+  "weeklyTurnoverMeanFractionReplaced": 0.0784,
+  "weeksLive": 605
+ },
+ "currentInputAttempt": {
+  "blocker": "NO_FRESH_US_PRICES: the newest sealed close is 2026-09-14 (25 days before the as-of session; the registered limit is 10). Using it as though it were current would be the stale-input error AGENTS.md forbids.",
+  "fundamentalsSideIfPricesWereFresh": {
+   "jointMeasured": 128,
+   "measuredNames": 97,
+   "note": "a count only; no name is listed because no valid price evidence exists for this session",
+   "question": "if the price-freshness gate were not binding, how many names would the fundamentals side measure on the as-of session?",
+   "reportStale": 6
+  },
+  "inputs": {
+   "asOfSession": "2026-10-09",
+   "fundamentals": {
+    "ageDays": 1,
+    "latestVisibleFiling": "2026-10-08",
+    "provenance": "signal-history@704d7db6 Finnhub shards (collected daily by fundamentals.yml)",
+    "status": "FRESH"
+   },
+   "generatedOn": "2026-10-11",
+   "membership": {
+    "ageDays": 34,
+    "historicalSnapshotGapDays": {
+     "max": 769,
+     "median": 6.0
+    },
+    "provenance": "research_specs/alpha-opportunity-model-v1-us-membership.json.gz (datasets/s-and-p-500-companies); no refresh job exists",
+    "snapshotPublishedAt": "2026-09-05T01:39:10Z",
+    "snapshotUsed": "2026-09-05",
+    "sourceCommit": "3b2bb60e6269439cd75541eded6281c48e7681d1",
+    "status": "AGED_NO_REGISTERED_LIMIT"
+   },
+   "prices": {
+    "ageDays": 25,
+    "lastObservedSession": "2026-09-14",
+    "provenance": "replay-v16 sealed price panels (Yahoo unadjusted + actions); there is no in-repo US price collection after the seal",
+    "registeredMaxAgeDays": 10,
+    "status": "STALE"
+   }
+  },
+  "label": "CURRENT_INPUT_ATTEMPT_BLOCKED_NOT_A_SIGNAL",
+  "notAReceipt": true,
+  "notIndependentEvidence": true,
+  "result": {
+   "measuredNames": 0,
+   "membersEvaluated": 503,
+   "reasons": [
+    "MEASURED_NAMES_BELOW_FLOOR:0<40"
+   ],
+   "residualSPYWeight": 1.0,
+   "selected": 0,
+   "status": "BLOCKED",
+   "statusCounts": {
+    "IDENTITY_AMBIGUOUS": 4,
+    "PRICE_HISTORY_INSUFFICIENT": 3,
+    "PRICE_STALE": 496
+   },
+   "weights": null
+  }
+ },
+ "dataAcquisitionPriority": [
+  {
+   "cost": "low (existing vendor path)",
+   "item": "fresh daily US closes with actions for S&P 500 members, SPY and QQQ",
+   "rank": 1,
+   "why": "nothing live can start without it"
+  },
+  {
+   "cost": "low",
+   "item": "S&P 500 membership refresh on a schedule",
+   "rank": 2,
+   "why": "membership is 34 days old with no registered limit"
+  },
+  {
+   "cost": "network allow-list for data.sec.gov (free source)",
+   "item": "SEC XBRL instance facts: cover-page and period-end shares, dividend and preferred contexts",
+   "rank": 3,
+   "why": "unblocks dilution and verifies every alias"
+  },
+  {
+   "cost": "paid vendor or SEC filings; lower priority for prospective-only research",
+   "item": "delisted-security prices and cited terminal considerations (212 departed identities)",
+   "rank": 4,
+   "why": "removes survivorship from any historical work"
+  },
+  {
+   "cost": "paid",
+   "item": "point-in-time market capitalisation and consensus estimates",
+   "rank": 5,
+   "why": "completes value and expectations"
+  }
+ ],
+ "earlyMonitoring": {
+  "h126": "progress counts only until the gate",
+  "h21": "descriptive means and counts after each receipt's own maturity",
+  "module": "pipeline/us_capital_allocation_monitoring.py",
+  "signalMonitor": "coverage, blocked share, persistence, turnover, concentration, exposures",
+  "statisticalCriteriaChanged": false
+ },
+ "evidenceSchedule": {
+  "assumedApproval": "2026-10-19 15:00:00+00:00",
+  "firstH126Maturity": "2027-04-28",
+  "firstH21Maturity": "2026-11-24",
+  "firstProspectiveSession": "2026-10-20",
+  "firstSignalSession": "2026-10-23",
+  "gate": {
+   "blockWeeks": 26,
+   "calendarBound": "replay_calendar pinned to 2035-12-31",
+   "calendarDaysFromFirstSignal": 2362,
+   "earliestSingleLookVerdictSession": "2033-04-11",
+   "independentWindowsRequired": 12,
+   "maturedSignalWeeksRequired": 312,
+   "minPaperDays": 252,
+   "signalWeekThatMakesTheGateReachable": "2032-10-08"
+  },
+  "monitoring": {
+   "h126Progress": "counts only until the gate",
+   "h21Descriptive": "per receipt, after its own 21st session; counts and means only",
+   "primaryVerdict": "once, at the gate; later updates are continuation reports",
+   "signalMonitor": "from the first receipt, weekly, descriptive"
+  },
+  "notAccelerated": "observed returns can neither bring the gate forward nor redefine it"
+ },
+ "frozenV1": {
+  "designDigest": "73c347a34bc53f038c9e33ebbc2cb322960f33fc4170919b85d2561a4f073342",
+  "officialWeeklyFilesUnchanged": true,
+  "policyVersion": "US_CAPITAL_ALLOCATION_SELECTION_V1",
+  "registeredAuthorization": null,
+  "registrationSha256": "b82a9b16712605d9d7df643229b998e719f1665f1c0dfdaaa3151750b5ba2d9e",
+  "scheduledPublication": "NOT_STARTED",
+  "status": "REGISTERED_PENDING_OWNER_APPROVAL"
+ },
+ "id": "us-capital-allocation-phase2-readiness-v1",
+ "implementNow": [
+  "versioned value-feature definition with the reconstructed price basis (pipeline/us_multifactor_inputs.py is the draft)",
+  "keep this PR's audits regenerable",
+  "owner reviews the v1 decision memo and the study proposal"
+ ],
+ "multifactor": {
+  "combinations": {
+   "existingModelInputs": {
+    "companies": 526,
+    "memberDates": 15339,
+    "pct": 66.231
+   },
+   "plusCashFlow": {
+    "companies": 378,
+    "memberDates": 8867,
+    "pct": 38.286
+   },
+   "plusDistribution": {
+    "companies": 133,
+    "memberDates": 2294,
+    "pct": 9.905
+   },
+   "plusValue": {
+    "companies": 328,
+    "memberDates": 7476,
+    "pct": 32.28
+   }
+  },
+  "datesSampled": 55,
+  "eligibleMemberDatesSampled": 23160,
+  "flaggedRedundantPairs": [
+   "beta252~vol252",
+   "high52Distance~relative126",
+   "incrementalDistributionOverOCF~totalCashDistributionChangeYoY",
+   "maxDD252~vol252"
+  ],
+  "notFullyPit": "A weekly cross-section of price, risk, quality, cash-flow and (reconstructed) value exists point-in-time for a survivor-biased S&P 500 sample. It is NOT a fully point-in-time research matrix: market cap, consensus, dilution and catalysts are absent, value rests on a reconstructed price basis with unverified numerator share counts, and departed names are missing.",
+  "snapshotOnlyOrAbsent": [
+   "bookYield_vendor",
+   "catalysts",
+   "forwardPE_consensus",
+   "marketCap",
+   "periodEndSharesAndDilution",
+   "sectorHistory",
+   "trailingPE"
+  ]
+ },
+ "observationsAudited": {
+  "blockedWeeks": 110,
+  "dilutionStatus": "BLOCKED",
+  "historicalOutcomesAccessed": false,
+  "jointCoverageOfFilingEligiblePct": 21.6045,
+  "jointCoveragePct": 17.915,
+  "memberDates": 359526,
+  "valueOverlapMeasured": true,
+  "weeklySignalDates": 715,
+  "weeksWithFiveSelected": 605
+ },
+ "ownerApprovalRequired": [
+  "any live receipt or authorization flag",
+  "a step in an existing workflow for prices and membership",
+  "SEC network allow-list",
+  "registering the next study",
+  "whether v1 is observed unchanged"
+ ],
+ "pilotPreflight": {
+  "checks": [
+   {
+    "evidence": "MEMBERSHIP_SNAPSHOT_NOT_STRICTLY_BEFORE_THE_SIGNAL_DATE",
+    "id": "PIT_MEMBERSHIP_STRICTLY_BEFORE_SIGNAL",
+    "status": "PASS"
+   },
+   {
+    "evidence": "status=REPORT_STALE_OVER_180_DAYS",
+    "id": "FILING_AVAILABLE_ON_THE_SIGNAL_DAY_IS_INVISIBLE",
+    "status": "PASS"
+   },
+   {
+    "evidence": [
+     "SIGNAL_DATE_IS_NOT_A_US_SESSION",
+     "SIGNAL_DATE_IS_NOT_A_WEEKLY_DECISION_SESSION",
+     "NO_CLOSE_ON_THE_SIGNAL_SESSION: 2026-02-27"
+    ],
+    "id": "TRADING_SESSION_EVIDENCE",
+    "status": "PASS"
+   },
+   {
+    "evidence": {
+     "ambiguousExcluded": "IDENTITY_AMBIGUOUS",
+     "priceSeriesTicker": "T09NEW",
+     "selectedSymbol": "T09"
+    },
+    "id": "HISTORICAL_IDENTIFIER_MAPPING",
+    "status": "PASS"
+   },
+   {
+    "evidence": {
+     "allInputsVisibleBeforeSignal": true,
+     "names": 5
+    },
+    "id": "FEATURE_LINEAGE_SHA256_AND_INPUT_VISIBILITY",
+    "status": "PASS"
+   },
+   {
+    "evidence": {
+     "residualSPY": 0.25,
+     "weights": {
+      "T09": 0.15,
+      "T10": 0.15,
+      "T11": 0.15,
+      "T22": 0.15,
+      "T23": 0.15
+     }
+    },
+    "id": "SELECTED_WEIGHTS_AND_RESIDUAL_SPY",
+    "status": "PASS"
+   },
+   {
+    "evidence": 32.6,
+    "id": "COST_TREATMENT_RECORDED",
+    "status": "PASS"
+   },
+   {
+    "evidence": [
+     "MEASURED_NAMES_BELOW_FLOOR:0<40"
+    ],
+    "id": "BLOCKED_DATE_RECEIPT_HAS_NO_WEIGHTS_OR_EVIDENCE",
+    "status": "PASS"
+   },
+   {
+    "evidence": {
+     "duplicate": "RECEIPT_ALREADY_EXISTS",
+     "officialWeeklyPath": "RESEARCH_RECEIPT_REFUSED_IN_THE_OFFICIAL_WEEKLY_DECISION_NAMESPACE",
+     "syntheticRowOnLiveReader": "SYNTHETIC_RECEIPT_REFUSED_ON_THE_LIVE_PATH"
+    },
+    "id": "APPEND_ONLY_NON_DUPLICATE_AND_NAMESPACE",
+    "status": "PASS"
+   },
+   {
+    "evidence": {
+     "priceOlderThanLimit": "PRICE_STALE",
+     "priceRetrievedBeforeCloseRefused": "OBSERVATION_PRICE_RETRIEVED_OUTSIDE_THE_RECEIPT_WINDOW: QQQ"
+    },
+    "id": "LATEST_VERSUS_STALE_INPUTS",
+    "status": "PASS"
+   },
+   {
+    "evidence": {
+     "name": "TERMINAL_ECONOMICS_UNRESOLVED",
+     "portfolio": "TERMINAL_ECONOMICS_UNRESOLVED"
+    },
+    "id": "DELISTED_NAME_WITHOUT_EXIT_IS_UNRESOLVED_NEVER_ZERO",
+    "status": "PASS"
+   },
+   {
+    "evidence": {
+     "liveRefusal": "US_CAPITAL_ALLOCATION_ALPHA_NOT_AUTHORIZED: the owner has not approved the registration",
+     "officialFilesUnchanged": true,
+     "registeredAuthorization": null
+    },
+    "id": "OFFICIAL_P1_UNTOUCHED_AND_LIVE_PATH_REFUSED",
+    "status": "PASS"
+   }
+  ],
+  "passed": 12,
+  "total": 12,
+  "writesToProductionHistory": false
+ },
+ "remainingBlockers": [
+  {
+   "id": "NO_FRESH_US_PRICES",
+   "ownerApproval": true,
+   "severity": "BLOCKS_ANY_LIVE_OBSERVATION"
+  },
+  {
+   "id": "MEMBERSHIP_SNAPSHOT_AGED_NO_REFRESH_JOB",
+   "ownerApproval": true,
+   "severity": "BLOCKS_ANY_LIVE_OBSERVATION"
+  },
+  {
+   "id": "NO_WEEKLY_JOB_STEP_IN_EXISTING_WORKFLOW",
+   "ownerApproval": true,
+   "severity": "BLOCKS_ANY_LIVE_OBSERVATION"
+  },
+  {
+   "id": "SEC_XBRL_CONTEXT_UNREACHABLE",
+   "ownerApproval": true,
+   "severity": "BLOCKS_DILUTION_AND_ALIAS_VERIFICATION"
+  },
+  {
+   "id": "DEPARTED_MEMBER_PRICES_AND_TERMINAL_CONSIDERATION",
+   "ownerApproval": false,
+   "severity": "SURVIVORSHIP_BIAS_IN_ALL_HISTORICAL_WORK"
+  },
+  {
+   "id": "V1_HAS_NO_EXPECTED_RETURN_HURDLE",
+   "ownerApproval": true,
+   "severity": "SELECTION_POLICY"
+  },
+  {
+   "id": "VALUE_FEATURE_NOT_YET_A_VERSIONED_DEFINITION",
+   "ownerApproval": false,
+   "severity": "BLOCKS_NEXT_STUDY_REGISTRATION"
+  }
+ ],
+ "schemaVersion": 1,
+ "sourceGapDiagnosis": {
+  "baselineJointCoveragePct": 17.915,
+  "blocked": {
+   "dilutionFeature": "BLOCKED for every ticker pair: no SharesBasisEvidence",
+   "periodEndShareCounts": "BLOCKED: 1.7742% of visible filings carry a period-end common-share fact in the flattened store; the cover-page (dei) count and the XBRL class/split context are absent",
+   "secXbrlContext": "BLOCKED_NETWORK_POLICY: data.sec.gov and www.sec.gov return 403 at the proxy; no instance-level context (dimension members, period-end share counts, share class) can be read here"
+  },
+  "candidateViewJointCoveragePct": 30.6465,
+  "claim": "UPPER_BOUND_STORE_EVIDENCE_NOT_CONTEXT_VERIFIED",
+  "dilutionEvidence": {
+   "periodEndBasisPct": 0.46,
+   "sameBasisNoSplitPairsPct": 63.683,
+   "status": {
+    "periodEndVerifiedDilution": "BLOCKED",
+    "weightedAverageProxy": "UNVERIFIED_BASIS_NOT_A_DILUTION_MEASURE"
+   }
+  },
+  "firstBlockingFeatureTop3": [
+   [
+    "totalCashDistributionTTM | AMBIGUOUS_ACCOUNTING | RELATED_CONCEPT_IS_NOT_AN_ALIAS",
+    104004
+   ],
+   [
+    "totalCashDistributionTTM | NOT_REPORTED | CONCEPT_NOT_REPORTED",
+    88576
+   ],
+   [
+    "operatingCashFlowTTM | AMBIGUOUS_ACCOUNTING | RELATED_CONCEPT_IS_NOT_AN_ALIAS",
+    9898
+   ]
+  ],
+  "frozenV1Untouched": true,
+  "gainedCompanies": 200,
+  "legitimateRepairVsNewDefinition": {
+   "repairWithoutNewDefinition": [
+    "fresh prices and membership (inputs, not definitions)",
+    "SEC XBRL contexts to verify what the stored lines mean"
+   ],
+   "requiresNewVersionedDefinition": [
+    "accepting PaymentsOfDividends as the common-stock total",
+    "accepting the continuing-operations OCF total",
+    "any typed treatment of an absent dividend or repurchase line",
+    "a dilution measure built on weighted-average counts"
+   ]
+  },
+  "priceAndIdentity": {
+   "identityAmbiguousReasons": {
+    "CIK_MISMATCH": 634,
+    "SAME_SECURITY_RENAME": 393,
+    "TICKER_REUSE_DIFFERENT_ISSUER": 6233
+   },
+   "membershipSnapshots": {
+    "count": 195,
+    "first": "2012-12-27",
+    "gapsOver45Days": 21,
+    "last": "2026-09-05",
+    "maxGapDays": 769
+   },
+   "noPricePanelMemberDates": {
+    "byYearDeparted": {
+     "2013": 6734,
+     "2014": 6319,
+     "2015": 6066,
+     "2016": 5149,
+     "2017": 4768,
+     "2018": 4225,
+     "2019": 4056,
+     "2020": 3170,
+     "2021": 2187,
+     "2022": 2062,
+     "2023": 1013,
+     "2024": 699,
+     "2025": 417,
+     "2026": 69
+    },
+    "currentMembers": 0,
+    "departedMembers": 46934
+   }
+  },
+  "timestamps": {
+   "acceptedDatePct": 99.9971,
+   "medianPeriodEndToVisibleDays": 35.0
+  },
+  "upperBoundGainPoints": 12.7315
+ },
+ "studyId": "us-capital-allocation-alpha-v1",
+ "studyProposal": {
+  "path": "docs/us-capital-allocation/us-multifactor-study-proposal-v1.json",
+  "sha256": "9c7e6cf0a12ee49412df01f6336fb91528da8511ac8380e7fd7a739efe7a6bf8",
+  "status": "PROPOSED_NOT_REGISTERED"
+ },
+ "verdict": {
+  "dataReadiness": "NEEDS_SOURCE_REPAIR",
+  "meaning": "v1 can be reviewed as a research instrument, but no live observation can start (no fresh US prices, aged membership, no weekly job), v1 ranks accounting characteristics rather than measuring an expected-return hurdle, and the broader multifactor program needs a versioned value definition, a fresh price feed and SEC context access before it can be registered",
+  "ordering": [
+   "NEEDS_SOURCE_REPAIR",
+   "NEEDS_NEW_POLICY_REGISTRATION",
+   "READY_FOR_OWNER_APPROVAL"
+  ],
+  "overall": "NEEDS_SOURCE_REPAIR",
+  "selectionReadiness": "NEEDS_NEW_POLICY_REGISTRATION",
+  "v1UnchangedPilot": "NOT_STARTABLE_LIVE_INPUTS_MISSING_AND_OWNER_APPROVAL_PENDING"
+ }
+}
