@@ -1,0 +1,810 @@
+{
+ "causeClassification": {
+  "A_source_omitted_balance_sheet": "NOT_REFUTED_NOT_CONFIRMED — the stored value is empty; whether the vendor sent `[]` is not retained",
+  "B_schema_or_key_changed": "NOT_REFUTED_NOT_CONFIRMED — a balance sheet under a key the collector does not read is stored as `[]`, indistinguishable from A (the raw response is not kept)",
+  "C_frequency_behaviour_changed": "REFUTED",
+  "D_collector_truncated_or_normalised": "REFUTED_FOR_WHOLE_RESPONSE_TRUNCATION",
+  "E2_dedup_may_hide_a_later_completion": "UNTESTABLE_FROM_THE_STORE — a re-served copy is compared with nothing and dropped",
+  "E_dedup_masked_a_valid_record": "REFUTED_AS_CAUSE_OF_THE_STORED_GAP",
+  "F_pit_or_classification_hides_a_valid_balance_sheet": "REFUTED_AS_CAUSE — the stored `bs` list is empty before any feature code reads it"
+ },
+ "cohorts": {
+  "byCollectionDay": {
+   "2026-09-13": {
+    "acceptedDatePresent": 9073,
+    "assetsAcceptedAsCurrencyByTheFeaturePath": 8968,
+    "assetsStatedValueClass": {
+     "currency": 8968
+    },
+    "assetsTagStated": 8968,
+    "balanceSheetAbsent": 83,
+    "balanceSheetAbsentPct": 0.915,
+    "balanceSheetPresent": 8991,
+    "cashFlowPresent": 8901,
+    "collectedMinusFiledDaysMax": 5339,
+    "collectedMinusFiledDaysMedian": 4602.0,
+    "filings": 9074,
+    "incomeStatementPresent": 9030
+   },
+   "2026-09-14": {
+    "acceptedDatePresent": 25253,
+    "assetsAcceptedAsCurrencyByTheFeaturePath": 25172,
+    "assetsStatedValueClass": {
+     "currency": 25172
+    },
+    "assetsTagStated": 25172,
+    "balanceSheetAbsent": 59,
+    "balanceSheetAbsentPct": 0.234,
+    "balanceSheetPresent": 25194,
+    "cashFlowPresent": 25139,
+    "collectedMinusFiledDaysMax": 4245,
+    "collectedMinusFiledDaysMedian": 1971,
+    "filings": 25253,
+    "incomeStatementPresent": 25186
+   },
+   "2026-10-07": {
+    "acceptedDatePresent": 1,
+    "assetsAcceptedAsCurrencyByTheFeaturePath": 0,
+    "assetsStatedValueClass": {},
+    "assetsTagStated": 0,
+    "balanceSheetAbsent": 1,
+    "balanceSheetAbsentPct": 100.0,
+    "balanceSheetPresent": 0,
+    "cashFlowPresent": 1,
+    "collectedMinusFiledDaysMax": 82,
+    "collectedMinusFiledDaysMedian": 82,
+    "filings": 1,
+    "incomeStatementPresent": 1
+   },
+   "2026-10-08": {
+    "acceptedDatePresent": 588,
+    "assetsAcceptedAsCurrencyByTheFeaturePath": 0,
+    "assetsStatedValueClass": {},
+    "assetsTagStated": 0,
+    "balanceSheetAbsent": 588,
+    "balanceSheetAbsentPct": 100.0,
+    "balanceSheetPresent": 0,
+    "cashFlowPresent": 588,
+    "collectedMinusFiledDaysMax": 176,
+    "collectedMinusFiledDaysMedian": 66.0,
+    "filings": 588,
+    "incomeStatementPresent": 588
+   },
+   "2026-10-09": {
+    "acceptedDatePresent": 28,
+    "assetsAcceptedAsCurrencyByTheFeaturePath": 0,
+    "assetsStatedValueClass": {},
+    "assetsTagStated": 0,
+    "balanceSheetAbsent": 28,
+    "balanceSheetAbsentPct": 100.0,
+    "balanceSheetPresent": 0,
+    "cashFlowPresent": 28,
+    "collectedMinusFiledDaysMax": 78,
+    "collectedMinusFiledDaysMedian": 65.0,
+    "filings": 28,
+    "incomeStatementPresent": 27
+   },
+   "2026-10-10": {
+    "acceptedDatePresent": 1,
+    "assetsAcceptedAsCurrencyByTheFeaturePath": 0,
+    "assetsStatedValueClass": {},
+    "assetsTagStated": 0,
+    "balanceSheetAbsent": 1,
+    "balanceSheetAbsentPct": 100.0,
+    "balanceSheetPresent": 0,
+    "cashFlowPresent": 1,
+    "collectedMinusFiledDaysMax": 1,
+    "collectedMinusFiledDaysMedian": 1,
+    "filings": 1,
+    "incomeStatementPresent": 1
+   },
+   "2026-10-11": {
+    "acceptedDatePresent": 1,
+    "assetsAcceptedAsCurrencyByTheFeaturePath": 0,
+    "assetsStatedValueClass": {},
+    "assetsTagStated": 0,
+    "balanceSheetAbsent": 1,
+    "balanceSheetAbsentPct": 100.0,
+    "balanceSheetPresent": 0,
+    "cashFlowPresent": 1,
+    "collectedMinusFiledDaysMax": 2,
+    "collectedMinusFiledDaysMedian": 2,
+    "filings": 1,
+    "incomeStatementPresent": 1
+   }
+  },
+  "october": {
+   "acceptedDatePresent": 619,
+   "assetsAcceptedAsCurrencyByTheFeaturePath": 0,
+   "assetsStatedValueClass": {},
+   "assetsTagStated": 0,
+   "balanceSheetAbsent": 619,
+   "balanceSheetAbsentPct": 100.0,
+   "balanceSheetPresent": 0,
+   "cashFlowPresent": 619,
+   "collectedMinusFiledDaysMax": 176,
+   "collectedMinusFiledDaysMedian": 65,
+   "filings": 619,
+   "incomeStatementPresent": 618
+  },
+  "referenceHealthyRecentSeptember": {
+   "acceptedDatePresent": 679,
+   "assetsAcceptedAsCurrencyByTheFeaturePath": 679,
+   "assetsStatedValueClass": {
+    "currency": 679
+   },
+   "assetsTagStated": 679,
+   "balanceSheetAbsent": 0,
+   "balanceSheetAbsentPct": 0.0,
+   "balanceSheetPresent": 679,
+   "cashFlowPresent": 679,
+   "collectedMinusFiledDaysMax": 227,
+   "collectedMinusFiledDaysMedian": 136,
+   "filings": 679,
+   "incomeStatementPresent": 678
+  },
+  "september": {
+   "acceptedDatePresent": 34326,
+   "assetsAcceptedAsCurrencyByTheFeaturePath": 34140,
+   "assetsStatedValueClass": {
+    "currency": 34140
+   },
+   "assetsTagStated": 34140,
+   "balanceSheetAbsent": 142,
+   "balanceSheetAbsentPct": 0.414,
+   "balanceSheetPresent": 34185,
+   "cashFlowPresent": 34040,
+   "collectedMinusFiledDaysMax": 5339,
+   "collectedMinusFiledDaysMedian": 2686,
+   "filings": 34327,
+   "incomeStatementPresent": 34216
+  },
+  "septemberFilingsOfRecentPeriods": {
+   "acceptedDatePresent": 680,
+   "assetsAcceptedAsCurrencyByTheFeaturePath": 679,
+   "assetsStatedValueClass": {
+    "currency": 679
+   },
+   "assetsTagStated": 679,
+   "balanceSheetAbsent": 1,
+   "balanceSheetAbsentPct": 0.147,
+   "balanceSheetPresent": 679,
+   "cashFlowPresent": 679,
+   "collectedMinusFiledDaysMax": 227,
+   "collectedMinusFiledDaysMedian": 136.0,
+   "filings": 680,
+   "incomeStatementPresent": 678
+  }
+ },
+ "contract": "US_FINNHUB_BALANCE_SHEET_COVERAGE_AUDIT_V1",
+ "evidenceGap": {
+  "decidingMeasurement": "scripts/probe_finnhub_balance_sheet.py (bounded, owner-run) and the response-health sidecar the collector now writes",
+  "liveSourceCheck": "not performed in the authoring environment: no FINNHUB_API_KEY and no route to finnhub.io",
+  "rawResponseRetained": false,
+  "reDeliveredCopies": "a filing already stored is skipped on every later run without comparison, so the store cannot say whether the vendor completed the balance sheet after the first copy",
+  "whatIsStored": "per filing: id, form, period, availableFrom, acceptedDate and the entries of report.bs/ic/cf under the filer's tags; the response's own keys, the key that would carry a renamed balance sheet, and the raw bytes are not stored"
+ },
+ "facts": {
+  "bothFrequenciesAffected": true,
+  "everyLateFilingMissesBalanceSheet": true,
+  "icCfMedianSizeRatioLateToReference": {
+   "cf": 1.031,
+   "ic": 1.0
+  },
+  "lateCohortFilings": 619,
+  "lateFilingsFiledOnOrBeforeSeptemberCeiling": 7,
+  "lateFilingsFiledOnOrBeforeSeptemberCeilingWithoutBalanceSheet": 7,
+  "lateIdsAlreadyInEarlierStore": 0,
+  "lateWithBalanceSheet": 0,
+  "referenceConceptsMissingFromLate": {
+   "cf": [],
+   "ic": []
+  },
+  "septemberCeilingOfFilingDate": "2026-06-26",
+  "septemberCohortBalanceSheetAbsentPct": 0.414
+ },
+ "featureCoverage": {
+  "asStoredAtThisCommit": [
+   {
+    "accrualsToAssets": {
+     "ASSETS_NOT_STATED": 1,
+     "AVAILABLE": 476,
+     "NO_VISIBLE_FILING": 2,
+     "OCF_TTM_INCOMPLETE_CHAIN": 17,
+     "REPORT_STALE_OVER_180_DAYS": 7
+    },
+    "asOf": "2026-06-05",
+    "availablePct": 94.632,
+    "cashOperatingProfitability": {
+     "ASSETS_NOT_STATED": 1,
+     "AVAILABLE": 476,
+     "NO_VISIBLE_FILING": 2,
+     "OCF_TTM_INCOMPLETE_CHAIN": 17,
+     "REPORT_STALE_OVER_180_DAYS": 7
+    },
+    "tickers": 503
+   },
+   {
+    "accrualsToAssets": {
+     "ASSETS_NOT_STATED": 1,
+     "AVAILABLE": 476,
+     "NO_VISIBLE_FILING": 2,
+     "OCF_TTM_INCOMPLETE_CHAIN": 17,
+     "REPORT_STALE_OVER_180_DAYS": 7
+    },
+    "asOf": "2026-06-12",
+    "availablePct": 94.632,
+    "cashOperatingProfitability": {
+     "ASSETS_NOT_STATED": 1,
+     "AVAILABLE": 476,
+     "NO_VISIBLE_FILING": 2,
+     "OCF_TTM_INCOMPLETE_CHAIN": 17,
+     "REPORT_STALE_OVER_180_DAYS": 7
+    },
+    "tickers": 503
+   },
+   {
+    "accrualsToAssets": {
+     "ASSETS_NOT_STATED": 2,
+     "AVAILABLE": 475,
+     "NO_VISIBLE_FILING": 2,
+     "OCF_TTM_INCOMPLETE_CHAIN": 17,
+     "REPORT_STALE_OVER_180_DAYS": 7
+    },
+    "asOf": "2026-06-19",
+    "availablePct": 94.433,
+    "cashOperatingProfitability": {
+     "ASSETS_NOT_STATED": 2,
+     "AVAILABLE": 475,
+     "NO_VISIBLE_FILING": 2,
+     "OCF_TTM_INCOMPLETE_CHAIN": 17,
+     "REPORT_STALE_OVER_180_DAYS": 7
+    },
+    "tickers": 503
+   },
+   {
+    "accrualsToAssets": {
+     "ASSETS_NOT_STATED": 2,
+     "AVAILABLE": 475,
+     "NO_VISIBLE_FILING": 2,
+     "OCF_TTM_INCOMPLETE_CHAIN": 17,
+     "REPORT_STALE_OVER_180_DAYS": 7
+    },
+    "asOf": "2026-06-26",
+    "availablePct": 94.433,
+    "cashOperatingProfitability": {
+     "ASSETS_NOT_STATED": 2,
+     "AVAILABLE": 475,
+     "NO_VISIBLE_FILING": 2,
+     "OCF_TTM_INCOMPLETE_CHAIN": 17,
+     "REPORT_STALE_OVER_180_DAYS": 7
+    },
+    "tickers": 503
+   },
+   {
+    "accrualsToAssets": {
+     "ASSETS_NOT_STATED": 7,
+     "AVAILABLE": 468,
+     "NO_VISIBLE_FILING": 2,
+     "OCF_TTM_INCOMPLETE_CHAIN": 17,
+     "REPORT_STALE_OVER_180_DAYS": 9
+    },
+    "asOf": "2026-07-03",
+    "availablePct": 93.042,
+    "cashOperatingProfitability": {
+     "ASSETS_NOT_STATED": 7,
+     "AVAILABLE": 468,
+     "NO_VISIBLE_FILING": 2,
+     "OCF_TTM_INCOMPLETE_CHAIN": 17,
+     "REPORT_STALE_OVER_180_DAYS": 9
+    },
+    "tickers": 503
+   },
+   {
+    "accrualsToAssets": {
+     "ASSETS_NOT_STATED": 8,
+     "AVAILABLE": 467,
+     "NO_VISIBLE_FILING": 2,
+     "OCF_TTM_INCOMPLETE_CHAIN": 17,
+     "REPORT_STALE_OVER_180_DAYS": 9
+    },
+    "asOf": "2026-07-10",
+    "availablePct": 92.843,
+    "cashOperatingProfitability": {
+     "ASSETS_NOT_STATED": 8,
+     "AVAILABLE": 467,
+     "NO_VISIBLE_FILING": 2,
+     "OCF_TTM_INCOMPLETE_CHAIN": 17,
+     "REPORT_STALE_OVER_180_DAYS": 9
+    },
+    "tickers": 503
+   },
+   {
+    "accrualsToAssets": {
+     "ASSETS_NOT_STATED": 14,
+     "AVAILABLE": 461,
+     "NO_VISIBLE_FILING": 2,
+     "OCF_TTM_INCOMPLETE_CHAIN": 17,
+     "REPORT_STALE_OVER_180_DAYS": 9
+    },
+    "asOf": "2026-07-17",
+    "availablePct": 91.65,
+    "cashOperatingProfitability": {
+     "ASSETS_NOT_STATED": 14,
+     "AVAILABLE": 461,
+     "NO_VISIBLE_FILING": 2,
+     "OCF_TTM_INCOMPLETE_CHAIN": 17,
+     "REPORT_STALE_OVER_180_DAYS": 9
+    },
+    "tickers": 503
+   },
+   {
+    "accrualsToAssets": {
+     "ASSETS_NOT_STATED": 64,
+     "AVAILABLE": 412,
+     "NO_VISIBLE_FILING": 2,
+     "OCF_TTM_INCOMPLETE_CHAIN": 16,
+     "REPORT_STALE_OVER_180_DAYS": 9
+    },
+    "asOf": "2026-07-24",
+    "availablePct": 81.909,
+    "cashOperatingProfitability": {
+     "ASSETS_NOT_STATED": 64,
+     "AVAILABLE": 412,
+     "NO_VISIBLE_FILING": 2,
+     "OCF_TTM_INCOMPLETE_CHAIN": 16,
+     "REPORT_STALE_OVER_180_DAYS": 9
+    },
+    "tickers": 503
+   },
+   {
+    "accrualsToAssets": {
+     "ASSETS_NOT_STATED": 197,
+     "AVAILABLE": 280,
+     "NO_VISIBLE_FILING": 2,
+     "OCF_TTM_INCOMPLETE_CHAIN": 16,
+     "REPORT_STALE_OVER_180_DAYS": 8
+    },
+    "asOf": "2026-07-31",
+    "availablePct": 55.666,
+    "cashOperatingProfitability": {
+     "ASSETS_NOT_STATED": 197,
+     "AVAILABLE": 280,
+     "NO_VISIBLE_FILING": 2,
+     "OCF_TTM_INCOMPLETE_CHAIN": 16,
+     "REPORT_STALE_OVER_180_DAYS": 8
+    },
+    "tickers": 503
+   },
+   {
+    "accrualsToAssets": {
+     "ASSETS_NOT_STATED": 389,
+     "AVAILABLE": 91,
+     "OCF_TTM_INCOMPLETE_CHAIN": 16,
+     "REPORT_STALE_OVER_180_DAYS": 7
+    },
+    "asOf": "2026-08-07",
+    "availablePct": 18.091,
+    "cashOperatingProfitability": {
+     "ASSETS_NOT_STATED": 389,
+     "AVAILABLE": 91,
+     "OCF_TTM_INCOMPLETE_CHAIN": 16,
+     "REPORT_STALE_OVER_180_DAYS": 7
+    },
+    "tickers": 503
+   },
+   {
+    "accrualsToAssets": {
+     "ASSETS_NOT_STATED": 423,
+     "AVAILABLE": 58,
+     "OCF_TTM_INCOMPLETE_CHAIN": 16,
+     "REPORT_STALE_OVER_180_DAYS": 6
+    },
+    "asOf": "2026-08-14",
+    "availablePct": 11.531,
+    "cashOperatingProfitability": {
+     "ASSETS_NOT_STATED": 423,
+     "AVAILABLE": 58,
+     "OCF_TTM_INCOMPLETE_CHAIN": 16,
+     "REPORT_STALE_OVER_180_DAYS": 6
+    },
+    "tickers": 503
+   },
+   {
+    "accrualsToAssets": {
+     "ASSETS_NOT_STATED": 432,
+     "AVAILABLE": 49,
+     "OCF_TTM_INCOMPLETE_CHAIN": 16,
+     "REPORT_STALE_OVER_180_DAYS": 6
+    },
+    "asOf": "2026-08-21",
+    "availablePct": 9.742,
+    "cashOperatingProfitability": {
+     "ASSETS_NOT_STATED": 432,
+     "AVAILABLE": 49,
+     "OCF_TTM_INCOMPLETE_CHAIN": 16,
+     "REPORT_STALE_OVER_180_DAYS": 6
+    },
+    "tickers": 503
+   },
+   {
+    "accrualsToAssets": {
+     "ASSETS_NOT_STATED": 447,
+     "AVAILABLE": 35,
+     "OCF_TTM_INCOMPLETE_CHAIN": 15,
+     "REPORT_STALE_OVER_180_DAYS": 6
+    },
+    "asOf": "2026-08-28",
+    "availablePct": 6.958,
+    "cashOperatingProfitability": {
+     "ASSETS_NOT_STATED": 447,
+     "AVAILABLE": 35,
+     "OCF_TTM_INCOMPLETE_CHAIN": 15,
+     "REPORT_STALE_OVER_180_DAYS": 6
+    },
+    "tickers": 503
+   },
+   {
+    "accrualsToAssets": {
+     "ASSETS_NOT_STATED": 463,
+     "AVAILABLE": 19,
+     "OCF_TTM_INCOMPLETE_CHAIN": 15,
+     "REPORT_STALE_OVER_180_DAYS": 6
+    },
+    "asOf": "2026-09-04",
+    "availablePct": 3.777,
+    "cashOperatingProfitability": {
+     "ASSETS_NOT_STATED": 463,
+     "AVAILABLE": 19,
+     "OCF_TTM_INCOMPLETE_CHAIN": 15,
+     "REPORT_STALE_OVER_180_DAYS": 6
+    },
+    "tickers": 503
+   },
+   {
+    "accrualsToAssets": {
+     "ASSETS_NOT_STATED": 470,
+     "AVAILABLE": 12,
+     "OCF_TTM_INCOMPLETE_CHAIN": 15,
+     "REPORT_STALE_OVER_180_DAYS": 6
+    },
+    "asOf": "2026-09-11",
+    "availablePct": 2.386,
+    "cashOperatingProfitability": {
+     "ASSETS_NOT_STATED": 470,
+     "AVAILABLE": 12,
+     "OCF_TTM_INCOMPLETE_CHAIN": 15,
+     "REPORT_STALE_OVER_180_DAYS": 6
+    },
+    "tickers": 503
+   },
+   {
+    "accrualsToAssets": {
+     "ASSETS_NOT_STATED": 470,
+     "AVAILABLE": 12,
+     "OCF_TTM_INCOMPLETE_CHAIN": 15,
+     "REPORT_STALE_OVER_180_DAYS": 6
+    },
+    "asOf": "2026-09-18",
+    "availablePct": 2.386,
+    "cashOperatingProfitability": {
+     "ASSETS_NOT_STATED": 470,
+     "AVAILABLE": 12,
+     "OCF_TTM_INCOMPLETE_CHAIN": 15,
+     "REPORT_STALE_OVER_180_DAYS": 6
+    },
+    "tickers": 503
+   },
+   {
+    "accrualsToAssets": {
+     "ASSETS_NOT_STATED": 472,
+     "AVAILABLE": 10,
+     "OCF_TTM_INCOMPLETE_CHAIN": 15,
+     "REPORT_STALE_OVER_180_DAYS": 6
+    },
+    "asOf": "2026-09-25",
+    "availablePct": 1.988,
+    "cashOperatingProfitability": {
+     "ASSETS_NOT_STATED": 472,
+     "AVAILABLE": 10,
+     "OCF_TTM_INCOMPLETE_CHAIN": 15,
+     "REPORT_STALE_OVER_180_DAYS": 6
+    },
+    "tickers": 503
+   },
+   {
+    "accrualsToAssets": {
+     "ASSETS_NOT_STATED": 475,
+     "AVAILABLE": 5,
+     "OCF_TTM_INCOMPLETE_CHAIN": 13,
+     "REPORT_STALE_OVER_180_DAYS": 10
+    },
+    "asOf": "2026-10-02",
+    "availablePct": 0.994,
+    "cashOperatingProfitability": {
+     "ASSETS_NOT_STATED": 475,
+     "AVAILABLE": 5,
+     "OCF_TTM_INCOMPLETE_CHAIN": 13,
+     "REPORT_STALE_OVER_180_DAYS": 10
+    },
+    "tickers": 503
+   },
+   {
+    "accrualsToAssets": {
+     "ASSETS_NOT_STATED": 476,
+     "AVAILABLE": 4,
+     "OCF_TTM_INCOMPLETE_CHAIN": 13,
+     "REPORT_STALE_OVER_180_DAYS": 10
+    },
+    "asOf": "2026-10-09",
+    "availablePct": 0.795,
+    "cashOperatingProfitability": {
+     "ASSETS_NOT_STATED": 476,
+     "AVAILABLE": 4,
+     "OCF_TTM_INCOMPLETE_CHAIN": 13,
+     "REPORT_STALE_OVER_180_DAYS": 10
+    },
+    "tickers": 503
+   }
+  ],
+  "knownByObservationDate": [
+   {
+    "accrualsToAssets": {
+     "AVAILABLE": 462,
+     "NO_VISIBLE_FILING": 3,
+     "OCF_TTM_INCOMPLETE_CHAIN": 15,
+     "REPORT_STALE_OVER_180_DAYS": 23
+    },
+    "asOf": "2026-09-18",
+    "availablePct": 91.849,
+    "cashOperatingProfitability": {
+     "AVAILABLE": 462,
+     "NO_VISIBLE_FILING": 3,
+     "OCF_TTM_INCOMPLETE_CHAIN": 15,
+     "REPORT_STALE_OVER_180_DAYS": 23
+    },
+    "tickers": 503
+   },
+   {
+    "accrualsToAssets": {
+     "AVAILABLE": 442,
+     "NO_VISIBLE_FILING": 3,
+     "OCF_TTM_INCOMPLETE_CHAIN": 15,
+     "REPORT_STALE_OVER_180_DAYS": 43
+    },
+    "asOf": "2026-09-25",
+    "availablePct": 87.873,
+    "cashOperatingProfitability": {
+     "AVAILABLE": 442,
+     "NO_VISIBLE_FILING": 3,
+     "OCF_TTM_INCOMPLETE_CHAIN": 15,
+     "REPORT_STALE_OVER_180_DAYS": 43
+    },
+    "tickers": 503
+   },
+   {
+    "accrualsToAssets": {
+     "AVAILABLE": 47,
+     "NO_VISIBLE_FILING": 3,
+     "OCF_TTM_INCOMPLETE_CHAIN": 4,
+     "REPORT_STALE_OVER_180_DAYS": 449
+    },
+    "asOf": "2026-10-02",
+    "availablePct": 9.344,
+    "cashOperatingProfitability": {
+     "AVAILABLE": 47,
+     "NO_VISIBLE_FILING": 3,
+     "OCF_TTM_INCOMPLETE_CHAIN": 4,
+     "REPORT_STALE_OVER_180_DAYS": 449
+    },
+    "tickers": 503
+   },
+   {
+    "accrualsToAssets": {
+     "ASSETS_NOT_STATED": 460,
+     "AVAILABLE": 5,
+     "NO_VISIBLE_FILING": 2,
+     "OCF_TTM_INCOMPLETE_CHAIN": 11,
+     "REPORT_STALE_OVER_180_DAYS": 25
+    },
+    "asOf": "2026-10-09",
+    "availablePct": 0.994,
+    "cashOperatingProfitability": {
+     "ASSETS_NOT_STATED": 460,
+     "AVAILABLE": 5,
+     "NO_VISIBLE_FILING": 2,
+     "OCF_TTM_INCOMPLETE_CHAIN": 11,
+     "REPORT_STALE_OVER_180_DAYS": 25
+    },
+    "tickers": 503
+   }
+  ],
+  "readingNote": "asStored lets every stored filing count from its filing date; knownByObservationDate lets a filing count only from the day the collector first stored it, which is what a live signal on that date could have used; dates on or before the first collection day are omitted there because the store did not exist yet",
+  "universe": {
+   "basis": "tickers of the latest committed S&P 500 snapshot that have any stored filing; a measurement universe, not a historical membership claim",
+   "snapshotDate": "2026-09-05",
+   "tickers": 503
+  }
+ },
+ "octoberAbsentBreakdown": {
+  "10-K|annual|Q0": 45,
+  "10-Q|quarterly|Q1": 31,
+  "10-Q|quarterly|Q2": 498,
+  "10-Q|quarterly|Q3": 45
+ },
+ "quarantineView": {
+  "byCollectionCohort": {
+   "october": 619,
+   "september": 134
+  },
+  "definition": "stored records with income or cash-flow statement but no balance sheet; a read-side selection, no record is edited and no account is added",
+  "records": 753
+ },
+ "septemberAbsentSample": {
+  "byForm": {
+   "10-K": 39,
+   "10-Q": 103
+  },
+  "byPeriodYear": {
+   "2012": 29,
+   "2013": 19,
+   "2014": 20,
+   "2015": 17,
+   "2016": 17,
+   "2017": 15,
+   "2018": 10,
+   "2019": 3,
+   "2020": 4,
+   "2021": 1,
+   "2022": 3,
+   "2023": 1,
+   "2024": 1,
+   "2025": 1,
+   "2026": 1
+  },
+  "count": 142,
+  "withIncomeOrCashFlow": 134
+ },
+ "shards": [
+  {
+   "rows": 32,
+   "sha256": "023a2f3a0ce111a3e91d1565d39cc382607a44b75850b92899211931d026ea8c",
+   "shard": "finnhub-2011.jsonl.gz"
+  },
+  {
+   "rows": 2431,
+   "sha256": "5e5fa041838be0c2c077fd8ee94dffe840db713f0e6213837b679ad3c34e7b27",
+   "shard": "finnhub-2012.jsonl.gz"
+  },
+  {
+   "rows": 2395,
+   "sha256": "29135f2c7544bea499a15b0cfd49525260304bdf33e83815f621fdcadf9b0f95",
+   "shard": "finnhub-2013.jsonl.gz"
+  },
+  {
+   "rows": 2270,
+   "sha256": "2216355dfd621570f463f7bd8901ae1fea17a004a5c710764f5addaf457b3177",
+   "shard": "finnhub-2014.jsonl.gz"
+  },
+  {
+   "rows": 2295,
+   "sha256": "be5cf365cce7f14682ccba551a79d5064ebcbd70163c0c2fb0359a959f5c0648",
+   "shard": "finnhub-2015.jsonl.gz"
+  },
+  {
+   "rows": 2317,
+   "sha256": "6c48667b143891e8ce28caf65fc5c8464c410de2064e3b7597c163e73150cd50",
+   "shard": "finnhub-2016.jsonl.gz"
+  },
+  {
+   "rows": 2357,
+   "sha256": "6fe3dbc7a26715738e763d81ae2a0b65c9d26470a716bc5dcdba425ad5f5c6ba",
+   "shard": "finnhub-2017.jsonl.gz"
+  },
+  {
+   "rows": 2379,
+   "sha256": "71a95470b3cadff59838cd7889e8c36fc63737aed54b710f3110cc0322029617",
+   "shard": "finnhub-2018.jsonl.gz"
+  },
+  {
+   "rows": 2474,
+   "sha256": "4e5947ff06ab2cbc37d0afdd0a681dac66db63f4c67e72825347cc59dc4ed65d",
+   "shard": "finnhub-2019.jsonl.gz"
+  },
+  {
+   "rows": 2487,
+   "sha256": "2b921e4bb1fdd8b47ded342c2234633ab2f3820db8e588b41fe8322a9919d11a",
+   "shard": "finnhub-2020.jsonl.gz"
+  },
+  {
+   "rows": 2503,
+   "sha256": "89975f24adcdf9f4b1d3252b129994ca2cd182e72fc6855f1cd5d1f1f899c8f1",
+   "shard": "finnhub-2021.jsonl.gz"
+  },
+  {
+   "rows": 2453,
+   "sha256": "5703add3cfa98fb7dca3beb8c79d9171a1d2106cc41b7b76abfda8e2408a8897",
+   "shard": "finnhub-2022.jsonl.gz"
+  },
+  {
+   "rows": 2334,
+   "sha256": "c507b7bb846cd3ea4cc693a0ea91547e241404a9c71b51ef2bdd10ef13026221",
+   "shard": "finnhub-2023.jsonl.gz"
+  },
+  {
+   "rows": 2342,
+   "sha256": "2dc6a3c770932e5a6995cc51ea2e9a0d08fc70e2e9372d47847f9c8570e06858",
+   "shard": "finnhub-2024.jsonl.gz"
+  },
+  {
+   "rows": 2415,
+   "sha256": "49e91cedf1d27c3dfee8de66056dacaabbf56d04b84105ded30f6cf4b6fba9fa",
+   "shard": "finnhub-2025.jsonl.gz"
+  },
+  {
+   "rows": 1407,
+   "sha256": "65665e66e976cf72a82e54ec42ff8c47dec1e2f219cb725ede51fe308cfd13ff",
+   "shard": "finnhub-2026.jsonl.gz"
+  },
+  {
+   "rows": 55,
+   "sha256": "625df8ee283b85393b11d7ba2e80cd9b347d9486c8a6591c31280e1935a11d37",
+   "shard": "finnhub-2027.jsonl.gz"
+  }
+ ],
+ "source": {
+  "commit": "4ddeb87bac078f2681fa83b1225111896edb319b",
+  "gitRef": "4ddeb87"
+ },
+ "storeTotals": {
+  "cohortSplitCollectedOnOrAfter": "2026-10-01",
+  "filings": 34946,
+  "tickers": 782
+ },
+ "tickerView": {
+  "ofWhichHadAnEarlierFilingWithBalanceSheet": 598,
+  "tickersWithAnOctoberFiling": 601
+ },
+ "vendorServing": {
+  "latestFilingDateInSeptemberCohort": "2026-06-26",
+  "newFilingsPerCollectionDay": {
+   "2026-09-13": 9074,
+   "2026-09-14": 25253,
+   "2026-10-07": 1,
+   "2026-10-08": 588,
+   "2026-10-09": 28,
+   "2026-10-10": 1,
+   "2026-10-11": 1
+  },
+  "octoberFilingDateRange": [
+   "2026-04-15",
+   "2026-10-09"
+  ],
+  "octoberFilingsFiledInTheLastTwoDaysBeforeCollection": 7,
+  "octoberFilingsFiledOnOrBeforeThatDate": 7,
+  "octoberFilingsFiledOnOrBeforeThatDateTickers": [
+   "ECHO",
+   "FLEX",
+   "MDT",
+   "PARA",
+   "STI",
+   "VMRK"
+  ]
+ },
+ "vocabulary": {
+  "cf": {
+   "lateDistinct": 3118,
+   "lateMedianEntries": 33,
+   "referenceConceptsMissingFromLateAtLeast20Filings": [],
+   "referenceDistinct": 2859,
+   "referenceMedianEntries": 32
+  },
+  "ic": {
+   "lateDistinct": 1593,
+   "lateMedianEntries": 26,
+   "referenceConceptsMissingFromLateAtLeast20Filings": [],
+   "referenceDistinct": 1556,
+   "referenceMedianEntries": 26
+  }
+ }
+}
