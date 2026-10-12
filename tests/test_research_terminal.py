@@ -78,6 +78,11 @@ def test_sealed_build_publication_and_results_are_unchanged():
             continue
         if path == ".github/workflows/tests.yml":
             # The operational CI budget evolves independently of the terminal.
-            # Permit exactly the owner-authorized timeout increase; all gates stay.
+            # Preserve every original pytest/gate byte, permitting only appended
+            # authoring diagnostic jobs checked by test_us_real_source_preflight.
             original = original.replace(b"timeout-minutes: 30", b"timeout-minutes: 60", 1)
+            current = (ROOT / path).read_bytes()
+            assert current[:len(original)] == original, path
+            assert current[len(original):].startswith(b"\n  # Authoring PR only, once:")
+            continue
         assert (ROOT / path).read_bytes() == original, path

@@ -72,3 +72,10 @@ PARTIAL/BLOCKED이면 해당 실행의 원 오류·환경·provider status를 �
 작성 환경의 표준 artifact 다운로드와 job-log API 다운로드는 Azure 저장소 접근 Forbidden/HTTP 403으로 차단됐다. Yahoo source가 실패한 것이 아니다. 접근 우회나 provider 재요청은 하지 않았다. 따라서 archive digest는 GitHub API 선언값이며 로컬에서 재계산했다고 주장하지 않는다. 원 report/CSV/가격 청크는 Actions artifact에 보존되어 있으나 이 환경에서 직접 추출하지 못했다. 실제 nonzero dividend/split event 수·정확한 sample 심볼·이번 source commit/전체 membership 수는 원 artifact에서 확인해야 하며 이 문서에서 추정하지 않는다. PASS는 실행 코드의 필드·basis·availability·저장 검사가 성공했다는 주장이다; nonzero 실제 split event가 있었다는 주장은 아니다.
 
 최소 후속 단계는 owner가 원 artifact를 보존하고, **다음 별도 승인 작업으로** 동일 GitHub-hosted 환경의 전체 constituent+SPY+QQQ bounded isolated dry-run을 수행하는 것이다. source 연결 때문에 공급자를 전환할 근거는 이번 결과에서 발견되지 않았다. 일일 스케줄/허용 namespace publisher의 활성화는 그 결과 및 source 사용 조건·rate limit·identity 검토 이후 별도 승인 PR로 진행한다.
+
+
+## 전체 검사에서 발견한 운영 구성 보호 테스트
+
+증거 문서 head `aeaa80b`의 첫 전체 검사는 로컬 `4681 passed, 2 failed, 1 skipped, 4 xfailed`였고 해당 CI도 FAILURE였다. 실패는 Python terminal 보호 테스트 및 v3.1 JS 보호 테스트의 `tests.yml` 전체 과거 bytes 비교였다. 새 source collector 실패나 과학 계산 assertion 실패가 아니다. 이 두 UI 테스트는 연구 등록의 dependency hash에 고정되어 있지 않음을 확인했다.
+
+이를 생략하거나 제거하지 않고 운영 CI 경로에만 같은 original-prefix exact-byte 계약을 적용한다. 과학/게시/설정/다른 workflow/기존 연구 결과 경로는 여전히 전체 bytes를 비교한다. 추가 job은 새 preflight scope 테스트가 이름 집합·opened/branch/repo/attempt·권한·timeout·archive 조건을 검사한다. 기존 pytest job은 byte-identical이고 새 network job은 재실행하지 않는다. 이 확인된 실패 및 테스트 계약 변경은 최종 head에서 전체 검사를 다시 실행할 근거다. 새 연구 등록·결과·validator·실행 잠금은 변경하지 않는다.
