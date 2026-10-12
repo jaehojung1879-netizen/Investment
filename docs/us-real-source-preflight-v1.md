@@ -61,3 +61,14 @@ PASS라도 운영 활성화는 별도 owner 승인이다. 작은 표본 성공 �
 PARTIAL/BLOCKED이면 해당 실행의 원 오류·환경·provider status를 먼저 검토하고 지원되는 source/라이선스 또는 표준 접근 환경을 선택한다. 쿠키·프록시·TLS·엔드포인트 우회나 전체 종목 재시도는 하지 않는다. 추가 요청은 이 결과와 정확한 변경 이유를 바탕으로 별도로 승인한다.
 
 실제 Actions verdict·run/job/artifact 출처와 최종 테스트 결과는 진단 후 audit 및 PR 설명에 기록한다. 합성 테스트 통과를 실제 연결 성공으로 표현하지 않는다.
+
+
+## 실제 실행 결과 (2026-10-12 KST)
+
+[실행 38211219882](https://github.com/jaehojung1879-netizen/Investment/actions/runs/38211219882)의 실제 source job은 GitHub Actions runner group의 `ubuntu-latest`에서 성공했고 **Verdict PASS** step이 성공했다. 후속 summary job 이름은 `PASS SPY=7 QQQ=7 sample=3 rows=35 failures=NONE`이다. 이는 실제 provider 실행의 제어된 출력이며 합성 테스트 수치가 아니다. 기준·날짜·필수 action 필드·identity/unit·원 source 참조·동일 rows 반복 append·관측 전 비가용 검사가 PASS 계약에 포함되어 있다. 전체 현재 구성종목/장기간 운영의 성공을 의미하지 않는다.
+
+[실제 출처 기록](us-readiness/us-real-source-preflight-actions-evidence-v1.json)은 생산 head `ac1db54d7d3558b4360f75df1f4addd68a5767cc`, 성공한 job/step, GitHub-declared artifact SHA-256과 코드 hash를 보존한다. [원본 artifact 11728239669](https://github.com/jaehojung1879-netizen/Investment/actions/runs/38211219882/artifacts/11728239669)는 120,044 bytes이고 만료 예정일은 2027-01-10이다.
+
+작성 환경의 표준 artifact 다운로드와 job-log API 다운로드는 Azure 저장소 접근 Forbidden/HTTP 403으로 차단됐다. Yahoo source가 실패한 것이 아니다. 접근 우회나 provider 재요청은 하지 않았다. 따라서 archive digest는 GitHub API 선언값이며 로컬에서 재계산했다고 주장하지 않는다. 원 report/CSV/가격 청크는 Actions artifact에 보존되어 있으나 이 환경에서 직접 추출하지 못했다. 실제 nonzero dividend/split event 수·정확한 sample 심볼·이번 source commit/전체 membership 수는 원 artifact에서 확인해야 하며 이 문서에서 추정하지 않는다. PASS는 실행 코드의 필드·basis·availability·저장 검사가 성공했다는 주장이다; nonzero 실제 split event가 있었다는 주장은 아니다.
+
+최소 후속 단계는 owner가 원 artifact를 보존하고, **다음 별도 승인 작업으로** 동일 GitHub-hosted 환경의 전체 constituent+SPY+QQQ bounded isolated dry-run을 수행하는 것이다. source 연결 때문에 공급자를 전환할 근거는 이번 결과에서 발견되지 않았다. 일일 스케줄/허용 namespace publisher의 활성화는 그 결과 및 source 사용 조건·rate limit·identity 검토 이후 별도 승인 PR로 진행한다.
