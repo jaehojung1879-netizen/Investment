@@ -64,9 +64,9 @@ on:
         type: string
         default: ""
       region:
-        description: "어느 쪽을 수집할지 (예약 실행은 항상 둘 다)"
+        description: "어느 쪽을 수집할지 (예약 실행은 항상 둘 다). finnhub-bs-probe = 읽기 전용 재무상태표 진단(수집·기록 없음, max_calls=0이면 계획만, 비우면 12콜, 상한 20)"
         type: choice
-        options: ["both", "kr", "us"]
+        options: ["both", "kr", "us", "finnhub-bs-probe"]
         default: "both"
 
 permissions:
@@ -277,6 +277,86 @@ jobs:
             echo '```'
             cat us-semantics.log 2>/dev/null || echo '측정 출력 없음'
             echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  # READ-ONLY diagnostic: why do the filings Finnhub first served from 2026-10-07 have no balance sheet? (docs/us-finnhub-balance-sheet-probe-ko.md)
+  #
+  # Selected only by `region: finnhub-bs-probe`, which none of the collectors above match, so choosing it cannot start a collection, and a
+  # schedule never sends a region. Main only: a dispatch of any other ref skips it, so a branch cannot run secret-bearing code. It has its own
+  # `contents: read` token (the workflow default is `write`), checks out no credentials, and reads the stored US fundamentals from
+  # signal-history as reference data it can never write to (no git config, commit or push appears in this job). The FINNHUB key reaches ONE
+  # step, and only when max_calls is not 0; `max_calls=0` plans the requests from the stored records and calls nothing. At most 12 requests by
+  # default, a hard ceiling of 20 enforced by the script. The sanitized report and the raw bodies are separate artifacts.
+  us-finnhub-bs-probe:
+    if: github.event_name == 'workflow_dispatch' && inputs.region == 'finnhub-bs-probe' && inputs.target == 'auto' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+
+      - name: Read the stored US fundamentals (read-only reference)
+        uses: actions/checkout@v5
+        with:
+          ref: signal-history
+          path: signal-history
+          sparse-checkout: ledger/fundamentals/us
+          fetch-depth: 1
+          persist-credentials: false
+
+      - name: Probe (read-only)
+        env:
+          FINNHUB_API_KEY: ${{ inputs.max_calls != '0' && secrets.FINNHUB || '' }}
+          MAX_CALLS: ${{ inputs.max_calls }}
+        run: |
+          set -euo pipefail
+          calls="${MAX_CALLS:-12}"
+          [[ "$calls" =~ ^[0-9]+$ ]] || { echo "max_calls must be a whole number" >&2; exit 2; }
+          python scripts/probe_finnhub_balance_sheet.py \
+            --store signal-history/ledger/fundamentals/us \
+            --store-commit "$(git -C signal-history rev-parse HEAD)" \
+            --max-calls "$calls" --output probe-report.json --raw-out probe-raw.jsonl.gz | tee probe.log
+
+      - name: Upload the sanitized report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: finnhub-bs-probe-report
+          path: |
+            probe-report.json
+            probe.log
+          retention-days: 90
+          if-no-files-found: warn
+
+      - name: Upload the raw response bodies (restricted, short retention)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: finnhub-bs-probe-raw-restricted
+          path: probe-raw.jsonl.gz
+          retention-days: 7
+          if-no-files-found: ignore
+
+      - name: Summary
+        if: always()
+        run: |
+          {
+            echo '## Finnhub 재무상태표 진단 (읽기 전용)'
+            echo
+            echo '```'
+            tail -n 60 probe.log 2>/dev/null || echo '진단 출력 없음'
+            echo '```'
+            echo
+            echo '원본 응답은 별도 아티팩트(finnhub-bs-probe-raw-restricted, 7일)에만 있고 이 요약에는 값이 없습니다.'
           } >> "$GITHUB_STEP_SUMMARY"
 
   # kr-accounting-coverage-repair-v1. Re-collects DART statement responses WHOLE

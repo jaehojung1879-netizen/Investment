@@ -1,0 +1,84 @@
+{
+ "callBudget": 0,
+ "calls": 0,
+ "category": "PENDING_OWNER_DISPATCH",
+ "contract": "FINNHUB_BALANCE_SHEET_PROBE_V1",
+ "evidence": {
+  "lostWithBalanceLikeKeyOrAssetsElsewhere": 0,
+  "storedCompleteNowLost": 0,
+  "storedCompleteStillComplete": 0,
+  "storedLostNowServed": 0,
+  "storedLostStillLost": 0
+ },
+ "filings": [],
+ "hardCeiling": 20,
+ "mode": "PLAN_ONLY",
+ "nextRepairPath": null,
+ "perCall": [],
+ "planned": [
+  {
+   "freq": "quarterly",
+   "from": "2026-01-01",
+   "ticker": "D"
+  },
+  {
+   "freq": "quarterly",
+   "from": "2026-01-01",
+   "ticker": "VRSK"
+  },
+  {
+   "freq": "quarterly",
+   "from": "2026-01-01",
+   "ticker": "PNC"
+  },
+  {
+   "freq": "quarterly",
+   "from": "2026-01-01",
+   "ticker": "BG"
+  },
+  {
+   "freq": "quarterly",
+   "from": "2026-01-01",
+   "ticker": "CAG"
+  },
+  {
+   "freq": "annual",
+   "from": "2025-01-01",
+   "ticker": "COST"
+  },
+  {
+   "freq": "quarterly",
+   "from": "2026-01-01",
+   "ticker": "MGM"
+  },
+  {
+   "freq": "quarterly",
+   "from": "2026-01-01",
+   "ticker": "ADSK"
+  },
+  {
+   "freq": "quarterly",
+   "from": "2026-01-01",
+   "ticker": "WY"
+  },
+  {
+   "freq": "quarterly",
+   "from": "2026-01-01",
+   "ticker": "ITW"
+  },
+  {
+   "freq": "quarterly",
+   "from": "2026-01-01",
+   "ticker": "CMS"
+  },
+  {
+   "freq": "annual",
+   "from": "2025-01-01",
+   "ticker": "CAG"
+  }
+ ],
+ "stopped": null,
+ "storeCommit": "4ddeb87bac078f2681fa83b1225111896edb319b",
+ "today": "2026-10-12",
+ "verdict": "PENDING_NO_CALLS_MADE"
+}

@@ -3,6 +3,12 @@
     FINNHUB_API_KEY=... python scripts/probe_finnhub_balance_sheet.py --store <dir of finnhub-*.jsonl.gz> \\
         --output probe.json --raw-out probe-raw.jsonl.gz [--tickers NFLX,DAL,MU,AAPL] [--max-calls 12]
 
+    --max-calls 0   PLAN ONLY: reads the store, prints and records the exact requests it WOULD make, needs no key and calls nothing.
+
+In Actions it runs only through `fundamentals.yml` -> Run workflow -> region=finnhub-bs-probe (job `us-finnhub-bs-probe`: main only,
+`contents: read`, the stored US fundamentals checked out read-only, the key present only in the probe step). See
+docs/us-finnhub-balance-sheet-probe-ko.md.
+
 WHY ONE REQUEST CAN DECIDE IT. A quarterly request for `from=2026-01-01` returns, in ONE response, the Q1 10-Q (stored in September WITH a
 balance sheet) and the Q2 10-Q (stored in October WITHOUT one). So the same response is its own control:
 
@@ -41,6 +47,7 @@ BASE = "https://finnhub.io/api/v1/stock/financials-reported"
 DEFAULT_TICKERS = ("NFLX", "DAL", "MU", "AAPL", "MSFT", "JNJ", "MDT", "FLEX")
 HARD_CEILING = 20
 FROM = "2026-01-01"
+ANNUAL_FROM = "2025-01-01"
 LIKELY_BALANCE_WORDS = ("balance", "asset", "financialposition", "statementoffinancial")
 EXACT_BALANCE_KEYS = ("bs", "balancesheet", "balance_sheet")
 
@@ -159,59 +166,147 @@ def load_stored(store: Path) -> dict[str, dict]:
     return stored
 
 
-def run(key: str, store: Path, tickers: list[str], max_calls: int, today: str, fetch=fetch_raw, pace: float = FF.PACE_SECONDS):
-    stored = load_stored(store)
+# What each verdict means for the repair, in the words the recovery plan uses. The probe decides nothing beyond this table.
+CATEGORY = {
+    SERVED_NOW: "VENDOR_LATER_COMPLETED",
+    KEY_MOVED: "VENDOR_MOVED_FIELD",
+    NEW_ONLY: "VENDOR_OMITTED",
+    ENDPOINT_WIDE: "VENDOR_OMITTED",
+    INCONCLUSIVE: "INSUFFICIENT_EVIDENCE",
+}
+NEXT_REPAIR_PATH = {
+    SERVED_NOW: "recovery plan S2_SUPPLEMENT: a reviewed supplement writer re-fetches the affected tickers into a NEW append-only family; "
+                "stored shards are never rewritten and the supplement is visible only from the day the vendor served it",
+    KEY_MOVED: "recovery plan S2_SUPPLEMENT after a SEPARATE reviewed parser change that reads the key named in `balanceLikeKeysOutsideBs` "
+               "(build_record, with tests pinned to the raw bodies this probe retained); then the bounded supplement re-fetch",
+    NEW_ONLY: "recovery plan S3_BLOCKED_SOURCE: ask Finnhub whether financials-reported omits the balance sheet for filings first served "
+              "after 2026-10-07 and whether it will be back-filled; no value is repaired; the prospective signal stays unmeasurable",
+    ENDPOINT_WIDE: "recovery plan S3_BLOCKED_SOURCE: the endpoint no longer states a balance sheet for any filing, including ones it stated "
+                   "in September; vendor inquiry and a second balance-sheet source are the only paths; the nightly collector keeps "
+                   "storing income and cash-flow statements unchanged",
+    INCONCLUSIVE: "INSUFFICIENT_EVIDENCE: repeat once with a different sample (or more calls, up to the ceiling); do not start S2",
+}
+
+
+def _stable_rank(ticker: str, salt: str = "finnhub-bs-probe-v1") -> str:
+    return hashlib.sha256((salt + ticker).encode()).hexdigest()
+
+
+def select_plan(stored: dict[str, dict], quarterly: int = 10, annual: int = 2) -> list[dict]:
+    """A deterministic call plan drawn from the STORED records, so each response can pair a healthy filing with an empty one.
+
+    A quarterly ticker needs an empty 10-Q (period end 2026-03 or later) AND a healthy 10-Q of 2026 in the same request window; an annual
+    ticker needs an empty 10-K. The order is by a salted hash of the ticker (a fixed pseudo-random spread, not a hand-picked sample) and
+    the two annual calls are interleaved so a small budget still contains one.
+    """
+    by_ticker: dict[str, list[dict]] = {}
+    for record in stored.values():
+        by_ticker.setdefault(str(record.get("ticker")), []).append(record)
+    q, a = [], []
+    for ticker, records in by_ticker.items():
+        lost = [r for r in records if FH.stored_balance_sheet_status(r) == FH.STORED_BS_LOST and str(r.get("periodEnd")) >= "2026-03-01"]
+        healthy = [r for r in records if FH.stored_balance_sheet_status(r) == FH.BS_ASSETS_STATED and str(r.get("periodEnd")) >= FROM
+                   and r.get("form") == "10-Q"]
+        if any(r.get("form") == "10-Q" for r in lost) and healthy:
+            q.append(ticker)
+        if any(r.get("form") == "10-K" for r in lost):
+            a.append(ticker)
+    q = sorted(q, key=_stable_rank)[:quarterly]
+    a = sorted(a, key=_stable_rank)[:annual]
+    plan = [{"ticker": t, "freq": FF.QUARTERLY, "from": FROM} for t in q]
+    for i, t in enumerate(a):
+        plan.insert(min(len(plan), 5 * (i + 1) + i), {"ticker": t, "freq": FF.ANNUAL, "from": ANNUAL_FROM})
+    return plan
+
+
+def plan_from_tickers(tickers: list[str]) -> list[dict]:
+    return [{"ticker": t, "freq": FF.QUARTERLY, "from": FROM} for t in tickers]
+
+
+def leak_check(key: str, *texts: str) -> None:
+    """Defence in depth: refuse to write any output that contains the key."""
+    if key and any(key in t for t in texts):
+        raise SystemExit("KEY_FOUND_IN_OUTPUT: refusing to write")
+
+
+def run(key: str, store, plan: list[dict], max_calls: int, today: str, fetch=None, pace: float = FF.PACE_SECONDS,
+        store_commit: str | None = None):
+    """Execute at most `min(max_calls, HARD_CEILING)` requests of `plan`. `store` is a directory or an already loaded dict."""
+    fetch = fetch or fetch_raw                              # resolved at call time, so a test can replace the network function
+    stored = store if isinstance(store, dict) else load_stored(Path(store))
+    plan = [{"ticker": p, "freq": FF.QUARTERLY, "from": FROM} if isinstance(p, str) else p for p in plan]
+    budget = max(0, min(max_calls, HARD_CEILING))
     raw_rows, per_call, filings = [], [], []
-    calls = 0
-    for ticker in tickers:
-        for freq in (FF.QUARTERLY,):
-            if calls >= min(max_calls, HARD_CEILING):
-                break
-            status, text = fetch(key, ticker, freq, FROM, today)
-            calls += 1
-            raw_rows.append({"ticker": ticker, "freq": freq, "from": FROM, "to": today, "status": status,
-                             "bodySha256": hashlib.sha256(text.encode("utf-8")).hexdigest(), "body": text})
-            try:
-                payload = json.loads(text)
-            except ValueError:
-                per_call.append({"ticker": ticker, "freq": freq, "status": status, "shape": "NON_JSON"})
-                continue
-            rows = payload.get("data") if isinstance(payload, dict) else payload
-            per_call.append({"ticker": ticker, "freq": freq, "status": status,
-                             "responseKeys": sorted(payload) if isinstance(payload, dict) else "LIST",
-                             "filings": len(rows) if isinstance(rows, list) else None})
-            for filing in rows if isinstance(rows, list) else []:
-                if isinstance(filing, dict):
-                    fid = FF.filing_id(ticker, str(filing.get("accessNumber") or ""))
-                    filings.append(describe_filing(ticker, filing, stored.get(fid)))
-            time.sleep(pace)
-    return {"contract": "FINNHUB_BALANCE_SHEET_PROBE_V1", "calls": calls, "perCall": per_call, "filings": filings,
-            **verdict(filings)}, raw_rows
+    calls, stopped = 0, None
+    for item in plan[:budget]:
+        status, text = fetch(key, item["ticker"], item["freq"], item["from"], today)
+        calls += 1
+        raw_rows.append({"ticker": item["ticker"], "freq": item["freq"], "from": item["from"], "to": today, "status": status,
+                         "bodySha256": hashlib.sha256(text.encode("utf-8")).hexdigest(), "body": text})
+        entry = {"ticker": item["ticker"], "freq": item["freq"], "from": item["from"], "status": status}
+        if status != "HTTP_200":
+            per_call.append(entry)
+            stopped = f"STOPPED_ON_{status}" + ("_RATE_LIMIT" if FF.is_rate_limited(int(status[5:]) if status[5:].isdigit() else None, text) else "")
+            break
+        try:
+            payload = json.loads(text)
+        except ValueError:
+            per_call.append({**entry, "shape": "NON_JSON"})
+            stopped = "STOPPED_ON_NON_JSON"
+            break
+        rows = payload.get("data") if isinstance(payload, dict) else payload
+        per_call.append({**entry, "responseKeys": sorted(payload) if isinstance(payload, dict) else "LIST",
+                         "filings": len(rows) if isinstance(rows, list) else None})
+        for filing in rows if isinstance(rows, list) else []:
+            if isinstance(filing, dict):
+                fid = FF.filing_id(item["ticker"], str(filing.get("accessNumber") or ""))
+                filings.append(describe_filing(item["ticker"], filing, stored.get(fid)))
+        time.sleep(pace)
+    decided = verdict(filings)
+    report = {"contract": "FINNHUB_BALANCE_SHEET_PROBE_V1", "mode": "LIVE" if budget else "PLAN_ONLY", "storeCommit": store_commit,
+              "today": today, "planned": plan, "callBudget": budget, "hardCeiling": HARD_CEILING, "calls": calls,
+              "stopped": stopped, "perCall": per_call, "filings": filings, **decided}
+    if not budget:
+        report.update(verdict="PENDING_NO_CALLS_MADE", category="PENDING_OWNER_DISPATCH", nextRepairPath=None)
+    else:
+        report.update(category=CATEGORY[decided["verdict"]], nextRepairPath=NEXT_REPAIR_PATH[decided["verdict"]])
+        if stopped and decided["verdict"] != INCONCLUSIVE:
+            report["note"] = "the run stopped early (" + stopped + "); the verdict is drawn from the responses received before it"
+    return report, raw_rows
 
 
 def main(argv=None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--store", type=Path, required=True)
-    parser.add_argument("--tickers", default=",".join(DEFAULT_TICKERS))
-    parser.add_argument("--max-calls", type=int, default=12)
+    parser.add_argument("--store-commit", default=None, help="the signal-history commit the store was read from (recorded, not checked)")
+    parser.add_argument("--tickers", default="", help="override the stored-record selection with an explicit quarterly sample")
+    parser.add_argument("--max-calls", type=int, default=12, help="0 = plan only: no key needed, no request made")
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--raw-out", type=Path, required=True)
     parser.add_argument("--today", default=time.strftime("%Y-%m-%d", time.gmtime()))
     args = parser.parse_args(argv)
+    if args.max_calls > HARD_CEILING or args.max_calls < 0:
+        print(f"ERROR: --max-calls must be between 0 and the hard ceiling {HARD_CEILING}.")
+        return 2
     key = os.environ.get("FINNHUB_API_KEY", "").strip()
-    if not key:
+    if args.max_calls and not key:
         print("ERROR: FINNHUB_API_KEY not in the environment.")
         return 1
-    if args.max_calls > HARD_CEILING:
-        print(f"ERROR: --max-calls above the hard ceiling {HARD_CEILING}.")
-        return 2
+    stored = load_stored(args.store)
     tickers = [t.strip().upper() for t in args.tickers.split(",") if t.strip()]
-    report, raw_rows = run(key, args.store, tickers, args.max_calls, args.today)
-    args.output.write_text(json.dumps(report, indent=1, sort_keys=True, ensure_ascii=False) + "\n", encoding="utf-8")
+    plan = plan_from_tickers(tickers) if tickers else select_plan(stored)
+    if not plan:
+        plan = plan_from_tickers(list(DEFAULT_TICKERS))
+    report, raw_rows = run(key, stored, plan, args.max_calls, args.today, store_commit=args.store_commit)
+    report_text = json.dumps(report, indent=1, sort_keys=True, ensure_ascii=False) + "\n"
+    raw_text = "".join(json.dumps(row, sort_keys=True, ensure_ascii=False) + "\n" for row in raw_rows)
+    leak_check(key, report_text, raw_text)
+    args.output.write_text(report_text, encoding="utf-8")
     with gzip.open(args.raw_out, "wt", encoding="utf-8") as handle:
-        for row in raw_rows:
-            handle.write(json.dumps(row, sort_keys=True, ensure_ascii=False) + "\n")
-    print(json.dumps({"calls": report["calls"], "verdict": report["verdict"], "evidence": report["evidence"]}, indent=1))
+        handle.write(raw_text)
+    print(json.dumps({"mode": report["mode"], "calls": report["calls"], "verdict": report["verdict"], "category": report["category"],
+                      "evidence": report["evidence"], "stopped": report["stopped"], "nextRepairPath": report["nextRepairPath"]},
+                     indent=1, ensure_ascii=False))
     return 0
 
 

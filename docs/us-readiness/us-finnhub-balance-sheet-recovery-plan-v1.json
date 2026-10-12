@@ -24,7 +24,12 @@
       "writesInto": "nothing in the repository or the store",
       "ownerApproval": true,
       "yields": "one of SERVED_NOW_COMPLETION_AVAILABLE, BALANCE_SHEET_FOUND_UNDER_ANOTHER_KEY, VENDOR_OMITS_BALANCE_SHEET_FOR_NEWLY_SERVED_FILINGS_ONLY, VENDOR_OMITS_BALANCE_SHEET_ENDPOINT_WIDE, INCONCLUSIVE, plus the raw response bodies the collector never kept",
-      "alternativeWithoutAKey": "after this change merges, the next nightly collection writes ledger/fundamentals/us/response-health.json, whose seenAgain counters answer the same question for free; its first run compares 829 tickers x two windows of re-served filings against the stored copies"
+      "alternativeWithoutAKey": "after this change merges, the next nightly collection writes ledger/fundamentals/us/response-health.json, whose seenAgain counters answer the same question for free; its first run compares 829 tickers x two windows of re-served filings against the stored copies",
+      "viaActions": {
+        "status": "PENDING_OWNER_DISPATCH",
+        "how": "after the probe workflow path merges: Actions > Collect fundamentals > Run workflow with region=finnhub-bs-probe, target=auto; max_calls=0 plans only (no key), empty runs 12 requests (ceiling 20)",
+        "instructions": "docs/us-finnhub-balance-sheet-probe-ko.md"
+      }
     },
     {
       "id": "S1_DECIDE",
@@ -60,5 +65,10 @@
       "ownerApproval": true
     }
   ],
-  "unaffectedByThisPlan": ["docs/results/*", "signal-history shards", ".github/workflows/*", "the US daily price collector and its storage"]
+  "unaffectedByThisPlan": [
+    "docs/results/*",
+    "signal-history shards",
+    ".github/workflows/*",
+    "the US daily price collector and its storage"
+  ]
 }
