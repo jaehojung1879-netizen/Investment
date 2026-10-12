@@ -16,6 +16,6 @@ def test_v3_presentation_and_python_receipt_digest(tmp_path):
     (tmp_path/"site.json").write_text(json.dumps(site))
     environment = dict(os.environ)
     environment["CHAMPION_FIXTURE"] = str(tmp_path)
-    result = subprocess.run(["node", "--test", "tests/research_terminal_v3.test.cjs"], cwd=ROOT,
+    result = subprocess.run(["node", "--test", "tests/research_terminal_v3.test.cjs", "tests/research_terminal_v31.test.cjs"], cwd=ROOT,
                             env=environment, capture_output=True, text=True, timeout=60, check=False)
     assert result.returncode == 0, result.stdout+result.stderr

@@ -1,0 +1,88 @@
+{
+  "schema": "RESEARCH_TERMINAL_PUBLICATION_AUDIT_V31",
+  "observedAt": "2026-10-12T01:33:52.563Z",
+  "mainCommit": "8a1256f74a541d684100979cefb6dbc1759a620b",
+  "signalHistoryCommit": "8ba3cbab22e88a1b104328899396723707bf073b",
+  "gitTreeSha": "4bc289f78b04c1eef9adb05ba0ade4ed821b707b",
+  "sourceKind": "ACTUAL_PUBLISHED_GIT_BYTES",
+  "readOnly": true,
+  "files": {
+    "latest.json": {
+      "sha256": "f551f9bf01a52ef0ad073a7ee8e98a96d06e8ca115616d8f1b96f8d27568b40f",
+      "gitBlobSha": "22c3e869801b6f8a3b5bd5b1e654c578506f3b2d"
+    },
+    "publication-status.json": {
+      "sha256": "8af271d08298513e0b54d21545614e3a9d68997f3eab06e5b4dfde1df9eee590",
+      "gitBlobSha": "e2da849236b4a9f313603c66b8516d9dd9c2a46a"
+    },
+    "receipts.jsonl": {
+      "sha256": "08378da67dab94a67e46335ec097cb68ca19abd459d66abf8e6ba19970434d07",
+      "gitBlobSha": "0725e46112faddf18a06bb69f530377aac034ffe"
+    }
+  },
+  "p1": {
+    "publicationStatus": "PUBLISHED",
+    "sourceObservedAt": "2026-10-11T05:58:26.805659+00:00",
+    "publicationAttemptedAt": "2026-10-11T06:00:58.145116+00:00",
+    "digestVerifiedRecords": 2,
+    "regions": {
+      "KR": {
+        "state": "BENCHMARK_ONLY",
+        "reason": null,
+        "latestValidDecisionDate": "2026-10-08",
+        "currentDecisionDate": "2026-10-08",
+        "weights": {
+          "069500.KS": 1
+        },
+        "digest": "6c82d4c73d63a46b7ff852c3d375ad2195dfdb765f28c60c55da9f536b3666be",
+        "noTradeReason": "ORDERING_NOT_ESTABLISHED",
+        "freshness": {
+          "expectedSession": "2026-10-08",
+          "observedSession": "2026-10-08",
+          "reason": null,
+          "sessionEvidence": "^KS11",
+          "staleNames": [],
+          "status": "FRESH",
+          "weekEnd": true
+        }
+      },
+      "US": {
+        "state": "BENCHMARK_ONLY",
+        "reason": null,
+        "latestValidDecisionDate": "2026-10-09",
+        "currentDecisionDate": "2026-10-09",
+        "weights": {
+          "SPY": 1
+        },
+        "digest": "782f71e9d33269e84ff3f767184bd55b9b4abdef60e12fc974b336910364549e",
+        "noTradeReason": "ORDERING_NOT_ESTABLISHED",
+        "freshness": {
+          "expectedSession": "2026-10-09",
+          "observedSession": "2026-10-09",
+          "reason": null,
+          "sessionEvidence": "^GSPC",
+          "staleNames": [],
+          "status": "FRESH",
+          "weekEnd": true
+        }
+      }
+    }
+  },
+  "research": {
+    "namespace": "ledger/research-strategies/current-champion-decisions-v1/",
+    "presentFiles": [],
+    "missingFiles": [
+      "ledger/research-strategies/current-champion-decisions-v1/latest.json",
+      "ledger/research-strategies/current-champion-decisions-v1/publication-status.json",
+      "ledger/research-strategies/current-champion-decisions-v1/receipts.jsonl"
+    ],
+    "status": "NOT_PUBLISHED",
+    "stockWeightParity": "NOT_MEASURED_NO_VERIFIED_CURRENT_PAIR",
+    "p1Dependency": "Separate accounting/publication namespace; P1 remains visible when research is unavailable"
+  },
+  "limitations": [
+    "No current research allocation is derived by this audit.",
+    "Current site-data freshness cannot be inferred from historical state/latest.json.",
+    "Use browser/live verification for site-data availability; no source failure is treated as proof of missing publication."
+  ]
+}

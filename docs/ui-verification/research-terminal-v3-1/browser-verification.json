@@ -1,0 +1,199 @@
+{
+  "schema": "RESEARCH_TERMINAL_BROWSER_V31",
+  "sourceMain": "8a1256f74a541d684100979cefb6dbc1759a620b",
+  "p1ReceiptCommit": "6a6b7e753814cc9adf56811ca78abdcaef0d69ea",
+  "fixtureObservationTime": "2026-10-12T01:00:00Z",
+  "browser": "154.0.8037.57",
+  "sourceKinds": {
+    "currentChampion": "SYNTHETIC_ENGINE_FIXTURE",
+    "market": "SYNTHETIC_BROWSER_FIXTURE",
+    "macro": "SYNTHETIC_BROWSER_FIXTURE",
+    "officialP1": "UNCHANGED_PINNED_OFFICIAL_RECEIPTS",
+    "institutional13F": "UNCHANGED_PINNED_OFFICIAL_CACHE",
+    "nps": "UNCHANGED_PINNED_OFFICIAL_CACHE"
+  },
+  "frontendSha256": {
+    "index.html": "f6371ea86cf3c8b95d62de2f931de17324a2a979209550687b7169b06aac3b72",
+    "styles.css": "98721df44004b382115908b4ef1d795befee7801082318b727d19d7a7faf48c3",
+    "app.js": "7cb6b2feaf7889d5fd78b356f94bee51b86e9688b078970b0b0c7a9f17880e96"
+  },
+  "screenshots": [
+    "mobile-current-390.png",
+    "kr-current-1280.png",
+    "us-current-1280.png",
+    "market-charts-1280.png",
+    "market-detail-1280.png",
+    "macro-detail-1280.png",
+    "institutional-13f-1280.png",
+    "13f-manager-holdings-1280.png",
+    "mobile-13f-390.png",
+    "actual-publication-blockers-390.png",
+    "actual-publication-blockers-1280.png"
+  ],
+  "viewports": [
+    {
+      "label": "KR",
+      "width": 375,
+      "pageOverflowPx": 0
+    },
+    {
+      "label": "US",
+      "width": 375,
+      "pageOverflowPx": 0
+    },
+    {
+      "label": "KR",
+      "width": 390,
+      "pageOverflowPx": 0
+    },
+    {
+      "label": "US",
+      "width": 390,
+      "pageOverflowPx": 0
+    },
+    {
+      "label": "KR",
+      "width": 768,
+      "pageOverflowPx": 0
+    },
+    {
+      "label": "US",
+      "width": 768,
+      "pageOverflowPx": 0
+    },
+    {
+      "label": "KR",
+      "width": 1280,
+      "pageOverflowPx": 0
+    },
+    {
+      "label": "US",
+      "width": 1280,
+      "pageOverflowPx": 0
+    },
+    {
+      "label": "macro dialog",
+      "width": 375,
+      "pageOverflowPx": 0
+    },
+    {
+      "label": "macro dialog",
+      "width": 390,
+      "pageOverflowPx": 0
+    },
+    {
+      "label": "macro dialog",
+      "width": 768,
+      "pageOverflowPx": 0
+    },
+    {
+      "label": "macro dialog",
+      "width": 1280,
+      "pageOverflowPx": 0
+    },
+    {
+      "label": "13F/NPS",
+      "width": 375,
+      "pageOverflowPx": 0
+    },
+    {
+      "label": "13F/NPS",
+      "width": 390,
+      "pageOverflowPx": 0
+    },
+    {
+      "label": "13F/NPS",
+      "width": 768,
+      "pageOverflowPx": 0
+    },
+    {
+      "label": "13F/NPS",
+      "width": 1280,
+      "pageOverflowPx": 0
+    },
+    {
+      "label": "13F detail",
+      "width": 390,
+      "pageOverflowPx": 0
+    },
+    {
+      "label": "actual publication",
+      "width": 390,
+      "pageOverflowPx": 0
+    },
+    {
+      "label": "actual publication",
+      "width": 1280,
+      "pageOverflowPx": 0
+    }
+  ],
+  "checks": [
+    "375/390/768/1280px; independent KR/US; unchanged official P1; real Python-generated C1/C2 fixture digest; no historical performance prefetch",
+    "Market 1M/3M/6M/1Y and macro 1Y/3Y/5Y/10Y source-only observation counts; all seven official 13F cache filings; NPS scope separation; mobile dialogs",
+    "Original KR historical statistics/cadences preserved; merged QQQ comparison disclosed separately; US no fabricated stock-selection performance",
+    "Seed/stale/withheld/missing/first-publication absence: C1/C2 unavailable with no phantom positions; P1 stays independent"
+  ],
+  "applicationErrors": [],
+  "consoleErrors": [],
+  "live": {
+    "status": "OBSERVED_WITH_SOURCE_LIMITATIONS",
+    "observedAt": "2026-10-12T01:47:47.524Z",
+    "tlsVerified": true,
+    "managedProxyTransport": true,
+    "requests": [
+      {
+        "url": "https://jaehojung1879-netizen.github.io/Investment/data/site-data.json",
+        "status": 403
+      },
+      {
+        "url": "https://raw.githubusercontent.com/jaehojung1879-netizen/Investment/8a1256f74a541d684100979cefb6dbc1759a620b/data/institutional_13f_cache.json",
+        "status": 200
+      },
+      {
+        "url": "https://raw.githubusercontent.com/jaehojung1879-netizen/Investment/8a1256f74a541d684100979cefb6dbc1759a620b/data/national_pension_cache.json",
+        "status": 200
+      },
+      {
+        "url": "https://api.github.com/repos/jaehojung1879-netizen/Investment/git/ref/heads/signal-history",
+        "status": 200
+      },
+      {
+        "url": "https://raw.githubusercontent.com/jaehojung1879-netizen/Investment/8ba3cbab22e88a1b104328899396723707bf073b/ledger/weekly-decisions/publication-status.json",
+        "status": 200
+      },
+      {
+        "url": "https://raw.githubusercontent.com/jaehojung1879-netizen/Investment/8ba3cbab22e88a1b104328899396723707bf073b/ledger/weekly-decisions/latest.json",
+        "status": 200
+      },
+      {
+        "url": "https://raw.githubusercontent.com/jaehojung1879-netizen/Investment/8ba3cbab22e88a1b104328899396723707bf073b/ledger/weekly-decisions/receipts.jsonl",
+        "status": 200
+      },
+      {
+        "url": "https://api.github.com/repos/jaehojung1879-netizen/Investment/git/trees/8ba3cbab22e88a1b104328899396723707bf073b?recursive=1",
+        "status": 200
+      }
+    ],
+    "regions": {
+      "KR": {
+        "p1": "BENCHMARK_ONLY",
+        "champion": "BLOCKED",
+        "publicationState": "NOT_PUBLISHED",
+        "text": "P1은 공식 주간 정책의 가상 판단입니다. C1은 CHAMPION 선정 종목과 현금, C2는 같은 종목·비중과 잔여 지수 ETF를 비교하는 연구 전용 판단입니다.\n\nP1 · 공식 주간 판단\n2026-10-08 · KRX\nKODEX 200 100%\n\n확정된 투자 판단 · 종목 선택 근거 부족 · 지수 보유 · 합계 100%\n\n지수를 우선 보유하고, 비용을 넘는 근거가 있을 때 종목을 선정합니다.\n\n종목 순위가 수익을 정렬했다는 통계적 근거가 확인되지 않았습니다.\n\n판단 기준일\n2026-10-08\n검증 상태\n게시·무결성 확인\n자료 관측\n2026-10-11 05:58 UTC\n게시 시도\n2026-10-11 06:00 UTC\n개별 종목\n0개\n종목 비중\n0%\n잔여 지수\n100%\n시세 2026-10-08 · 게시 기준 충족\n전향 기록 · 성과 관측 전\n투자 판단 원문 ↗\n데이터 근거 · 선정·미선정 이유\nC1 · CHAMPION 종목 + 현금\n투자 판단 미등록\n\n기존 CHAMPION 규칙으로 종목과 비중을 정하고, 남은 자금은 현금으로 둡니다.\n\n현재 비중 확인 불가\n\n현재 C1/C2 연구 판단이 공개 저장소에 등록되지 않았습니다. 첫 정상 게시가 필요합니다.\n\n판단 기준일\n미등록\n검증 상태\n투자 판단 미등록\n자료 관측\n미확인\n게시 시도\n미확인\n\n연구 전용 · 선정·미선정 이유와 잔여 자산 비중도 현재 기록을 확인한 뒤 표시합니다.\n\n데이터 근거 · 확인 조건\nC2 · C1 동일 종목 + 지수 ETF\n투자 판단 미등록\n\nC1의 종목·종목 비중을 그대로 유지하고, 남은 현금만 KODEX 200에 배분합니다.\n\n현재 비중 확인 불가\n\n현재 C1/C2 연구 판단이 공개 저장소에 등록되지 않았습니다. 첫 정상 게시가 필요합니다.\n\n판단 기준일\n미등록\n검증 상태\n투자 판단 미등록\n자료 관측\n미확인\n게시 시도\n미확인\n\n연구 전용 · 선정·미선정 이유와 잔여 자산 비중도 현재 기록을 확인한 뒤 표시합니다.\n\n데이터 근거 · 확인 조건"
+      },
+      "US": {
+        "p1": "BENCHMARK_ONLY",
+        "champion": "BLOCKED",
+        "publicationState": "NOT_PUBLISHED",
+        "text": "P1은 공식 주간 정책의 가상 판단입니다. C1은 CHAMPION 선정 종목과 현금, C2는 같은 종목·비중과 잔여 지수 ETF를 비교하는 연구 전용 판단입니다.\n\nP1 · 공식 주간 판단\n2026-10-09 · NYSE/Nasdaq\nSPDR S&P 500 ETF 100%\n\n확정된 투자 판단 · 종목 선택 근거 부족 · 지수 보유 · 합계 100%\n\n지수를 우선 보유하고, 비용을 넘는 근거가 있을 때 종목을 선정합니다.\n\n종목 순위가 수익을 정렬했다는 통계적 근거가 확인되지 않았습니다.\n\n판단 기준일\n2026-10-09\n검증 상태\n게시·무결성 확인\n자료 관측\n2026-10-11 05:58 UTC\n게시 시도\n2026-10-11 06:00 UTC\n개별 종목\n0개\n종목 비중\n0%\n잔여 지수\n100%\n시세 2026-10-09 · 게시 기준 충족\n전향 기록 · 성과 관측 전\n투자 판단 원문 ↗\n데이터 근거 · 선정·미선정 이유\nC1 · CHAMPION 종목 + 현금\n투자 판단 미등록\n\n기존 CHAMPION 규칙으로 종목과 비중을 정하고, 남은 자금은 현금으로 둡니다.\n\n현재 비중 확인 불가\n\n현재 C1/C2 연구 판단이 공개 저장소에 등록되지 않았습니다. 첫 정상 게시가 필요합니다.\n\n판단 기준일\n미등록\n검증 상태\n투자 판단 미등록\n자료 관측\n미확인\n게시 시도\n미확인\n\n연구 전용 · 선정·미선정 이유와 잔여 자산 비중도 현재 기록을 확인한 뒤 표시합니다.\n\n데이터 근거 · 확인 조건\nC2 · C1 동일 종목 + 지수 ETF\n투자 판단 미등록\n\nC1의 종목·종목 비중을 그대로 유지하고, 남은 현금만 SPDR S&P 500 ETF에 배분합니다.\n\n현재 비중 확인 불가\n\n현재 C1/C2 연구 판단이 공개 저장소에 등록되지 않았습니다. 첫 정상 게시가 필요합니다.\n\n판단 기준일\n미등록\n검증 상태\n투자 판단 미등록\n자료 관측\n미확인\n게시 시도\n미확인\n\n연구 전용 · 선정·미선정 이유와 잔여 자산 비중도 현재 기록을 확인한 뒤 표시합니다.\n\n데이터 근거 · 확인 조건"
+      }
+    },
+    "errors": [
+      {
+        "kind": "browser",
+        "message": "Failed to load resource: the server responded with a status of 403 (Forbidden)"
+      }
+    ]
+  },
+  "status": "PASS"
+}
