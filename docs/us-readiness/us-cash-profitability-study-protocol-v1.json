@@ -25,12 +25,20 @@
   "timing": "a filing is usable only on days strictly after max(availableFrom, acceptedDate); latest visible period end; stale over 180 days",
   "ttm": "finnhub_derive rollforward FY(Y-1) - cum(Y-1,Q) + cum(Y,Q); a missing prior filing is OCF_TTM_INCOMPLETE_CHAIN, never an annualisation",
   "missingSemantics": "every absence carries one reason code; missing is never zero; no imputation in the primary statistic (complete-case within date, counts and missingness bias published)",
-  "notUsed": ["period-end share counts (SEC XBRL blocked)", "consensus estimates", "13F, Form 4, 8-K", "any macro input"]
+  "notUsed": [
+   "period-end share counts (SEC XBRL blocked)",
+   "consensus estimates",
+   "13F, Form 4, 8-K",
+   "any macro input"
+  ]
  },
  "eligibleCrossSection": {
   "membership": "S&P 500, latest dated snapshot strictly earlier than the signal date",
   "priceAndIdentity": "Phase 2 funnel: positive close at most 10 calendar days old, at least 272 prior sessions, identity unambiguous",
-  "excludedSectors": ["Financials", "Real Estate"],
+  "excludedSectors": [
+   "Financials",
+   "Real Estate"
+  ],
   "whyExcluded": "operating cash flow and total assets do not measure operating profitability for banks, insurers and REITs",
   "complete": "primary feature AND every control present",
   "minimumNamesPerDate": 150,
@@ -51,24 +59,50 @@
  },
  "horizons": {
   "primarySessions": 63,
-  "whyPrimary": "one quarterly filing cycle: the information set is refreshed every ~63 sessions, so H63 uses each vintage for its natural life; it matures in ~3 months and each window spans fewer terminal events than H126/H252. Power does NOT decide it: if the IC grows like sqrt(horizon) the power table is roughly horizon-neutral (IC/MDE at 5 years: H21 31.6c, H63 32.0c, H126 33.1c, H252 38.4c for IC_21 = c); decay within a quarter favours short horizons and slow build-up favours long ones, and which applies is unknown",
-  "secondarySessions": [21, 126],
-  "descriptiveOnlySessions": [252],
+  "whyPrimary": "one quarterly filing cycle: the information set is refreshed every ~63 sessions, so H63 uses each vintage for its natural life; it matures in ~3 months and each window spans fewer terminal events than H126/H252. Power does NOT decide it, and no power figure for the primary spread exists yet (see powerPlanning). The illustrative rank-IC proxy is roughly horizon-neutral if the IC grows like sqrt(horizon) (IC/MDE_IC at 5 years: H21 31.6c, H63 32.0c, H126 33.1c, H252 38.4c for IC_21 = c), which is a statement about rank IC only",
+  "secondarySessions": [
+   21,
+   126
+  ],
+  "descriptiveOnlySessions": [
+   252
+  ],
   "secondaryCannotRescuePrimary": true
  },
  "primaryClaim": {
   "statistic": "pure-factor spread: on each weekly signal date, OLS-residualise the within-date percentile rank of cashOperatingProfitability on sector dummies and the percentile ranks of the four continuous controls; weights proportional to the residual, scaled to gross exposure 2 ($1 long / $1 short); S_t = sum_i w_i * excess_i(H63); claim = mean over signal dates",
-  "properties": ["linear in returns with signal-date weights (calendar-time attribution applies)", "exactly orthogonal to every sector and control rank on each date", "rank-based, so a single outlier cannot dominate"],
+  "properties": [
+   "linear in returns with signal-date weights (calendar-time attribution applies)",
+   "exactly orthogonal to every sector and control rank on each date",
+   "rank-based, so a single outlier cannot dominate"
+  ],
   "horizonSessions": 63,
   "test": "one-sided, H1: mean S_t > 0",
-  "inference": "calendar-time SN interval after a US-geometry calibration (prerequisite P3); until it passes, the registration cannot be frozen",
+  "inference": "candidate: calendar-time-attribution self-normalized interval (the method alpha-inference-calibration-v5 validated for linear statistics). Its coverage for THIS statistic is NOT established: v5 was calibrated at 60 names, H21/H126, two-sided 97.5%, centred-rank weights; this claim is ~285 names, H63, one-sided 95%, OLS-residual weights on controls correlated 0.77 with the feature. Prerequisite P3 must PASS before registration; until then no interval, p-value or verdict of the primary is valid",
   "alpha": 0.05,
-  "count": 1
+  "count": 1,
+  "units": "percentage points of H63 excess return earned by $1 long / $1 short (gross 2); a weighted RETURN, not a correlation",
+  "inferenceStatus": "BLOCKED_PENDING_CALIBRATION",
+  "interval": "two one-sided 95% bounds of the same calibrated interval (equivalently a two-sided 90% interval); the lower bound decides SUPPORTED, the upper bound decides REFUTED, and both cannot hold at once"
  },
  "secondaryAndDescriptive": {
-  "secondaryFamilyHolm": ["primary statistic at H21", "primary statistic at H126", "sector-neutral-only pure-factor spread at H63"],
-  "descriptive": ["raw Spearman IC (no neutralisation)", "within-sector quintile spread Q5-Q1, equal weight", "accrualsToAssets pure-factor spread", "by year, first/second half, and SPY trailing-126-session up/down regime", "long-only top-quintile (sector-weighted) minus SPY after 16.3 bp round-trip cost per unit turnover", "H252"],
-  "correlationVersusIncrement": "raw IC minus pure-factor spread is reported as the part explained by the controls; a positive raw IC with a zero pure-factor spread is classified REDUNDANT, not supported"
+  "secondaryFamilyHolm": [
+   "controlled factor spread at H21",
+   "controlled factor spread at H126",
+   "sector-neutral spread at H63"
+  ],
+  "descriptive": [
+   "raw rank IC",
+   "partial rank association (same controls as the primary)",
+   "uncontrolled spread",
+   "within-sector quintile spread Q5-Q1, equal weight",
+   "accrualsToAssets controlled spread",
+   "by year, first/second half, and SPY trailing-126-session up/down regime",
+   "long-only top-quintile (sector-weighted) minus SPY after 16.3 bp round-trip cost per unit turnover",
+   "H252"
+  ],
+  "secondaryInference": "Holm over the three secondaries only for statistics whose interval coverage P3 calibrates; an uncalibrated secondary is reported as descriptive. No secondary can rescue the primary",
+  "associationVersusIncrement": "statistical association and economic return are reported side by side and never combined: raw rank IC versus partial rank association (correlations) answers whether the ordering survives the controls; uncontrolled, sector-neutral and controlled spreads (returns) answer what that ordering earns. REDUNDANT is decided on spreads only (decisionRules.redundant)"
  },
  "transactionCosts": {
   "source": "pipeline/benchmark_alpha.py REALISTIC_COSTS['US'] (as in the Phase 2 proposal)",
@@ -76,19 +110,34 @@
   "use": "descriptive economic significance only; the signal test is gross because it measures information, and the cost test asks whether the turnover the signal implies would consume it"
  },
  "evidenceClasses": [
-  {"class": "OUTCOME_BLIND", "what": "this protocol, the readiness audit and the power table", "status": "DONE in this change"},
-  {"class": "EXPLORATORY_DEVELOPMENT_ON_OUTCOME_EXPOSED_US_HISTORY", "what": "exactly this protocol run once on replay-v16 2013-2026 (survivor-conditioned: 212 departed identities have no prices)", "status": "PROPOSED; needs its own authorization; NOT run here", "allowedUse": "futility screen only: if the development one-sided 95% upper bound is <= 0 the hypothesis is abandoned before prospective collection starts; a favourable development reading is never reported as confirmation and changes no threshold, feature or horizon", "survivorshipDirection": "departed names are disproportionately low-profitability failures; their absence most plausibly understates a positive effect, which is a hypothesis, not a measurement"},
-  {"class": "PROSPECTIVE_CONFIRMATORY", "what": "weekly signals dated after the authorizing merge of a registration", "status": "the only confirmatory evidence"}
+  {
+   "class": "OUTCOME_BLIND",
+   "what": "this protocol, the readiness audit and the illustrative rank-IC proxy",
+   "status": "DONE in this change"
+  },
+  {
+   "class": "EXPLORATORY_DEVELOPMENT_ON_OUTCOME_EXPOSED_US_HISTORY",
+   "what": "exactly this protocol run once on replay-v16 2013-2026 (survivor-conditioned: 212 departed identities have no prices)",
+   "status": "PROPOSED; needs its own authorization; NOT run here",
+   "allowedUse": "futility screen only: if the development one-sided 95% upper bound is <= 0 the hypothesis is abandoned before prospective collection starts; a favourable development reading is never reported as confirmation and changes no threshold, feature or horizon. It uses the same calibrated interval as the primary; it cannot run before P3 has PASSED for the historical geometry (~700 weekly signals)",
+   "survivorshipDirection": "departed names are disproportionately low-profitability failures; their absence most plausibly understates a positive effect, which is a hypothesis, not a measurement"
+  },
+  {
+   "class": "PROSPECTIVE_CONFIRMATORY",
+   "what": "weekly signals dated after the authorizing merge of a registration",
+   "status": "the only confirmatory evidence"
+  }
  ],
  "decisionRules": {
   "gate": "single efficacy look after 260 weekly signal dates have matured at H63 (about 5 years and 3 months after the first signal)",
-  "supported": "one-sided 95% lower bound of the primary mean > 0",
-  "refuted": "one-sided 95% upper bound <= 0",
-  "redundant": "raw IC lower bound > 0 but the primary is not supported",
+  "supported": "one-sided 95% lower bound of the calibrated primary interval > 0",
+  "refuted": "one-sided 95% upper bound of the same calibrated interval <= 0",
+  "redundant": "primary not supported AND the Holm-adjusted lower bound of the sector-neutral spread at H63 (same units as the primary) > 0: the ordering earned something only through sector, size, momentum, volatility or accrual profitability. Rank IC never enters this rule",
   "unstable": "supported overall but opposite signs in the two halves of the prospective period",
   "inconclusive": "anything else, including too many UNRESOLVED dates (> 10%)",
-  "futility": "one pre-declared look at 130 matured signal dates: stop if conditional power under the planning effect is below 10%; no efficacy interim",
-  "noRetroactiveChange": "features, controls, horizon, statistic, gate and floors cannot change after the first signal; a change is a new study id"
+  "futility": "one NON-BINDING look at 130 matured H63 signal dates (stopping can only forgo a later efficacy claim; it never adds one, so it does not inflate the gate's type I error). Stop if conditional power for the controlled factor spread, at a planning effect stated in RETURN units, is below 10%. Both the planning effect and the conditional-power calculation require the primary statistic's calibrated variance (P3, with the variance side of P4) and must be fixed before registration; the rank-IC proxy may not supply either. Status: SPECIFICATION_PENDING",
+  "noRetroactiveChange": "features, controls, horizon, statistic, gate and floors cannot change after the first signal; a change is a new study id",
+  "validityPrecondition": "no verdict below is valid unless P3 has PASSED for the primary statistic at the gate size and at the futility size; otherwise the study cannot be registered"
  },
  "falsification": [
   "prospective primary upper bound <= 0 at the gate",
@@ -97,15 +146,87 @@
   "sign reverses between halves"
  ],
  "powerPlanning": {
-  "source": "docs/us-readiness/us-alpha-phase3-readiness-v1.json powerPlanning (variance side of the committed four-factor report only)",
-  "reading": "an S&P 500-only prospective test detects a mean IC of about 0.05 at H63 after ~6 years and ~0.03 at H21 after ~5.5 years; residualising on the controls may reduce the dispersion and is not assumed. A realistic large-cap effect may therefore be INCONCLUSIVE at the gate, and the protocol says so in advance"
+  "status": "NOT_ESTABLISHED_FOR_THE_PRIMARY_STATISTIC",
+  "available": "docs/us-readiness/us-alpha-phase3-readiness-v1.json powerPlanning: an ILLUSTRATIVE rank-IC proxy (scope ILLUSTRATIVE_RANK_IC_PROXY_NOT_PRIMARY_STATISTIC_POWER)",
+  "whatTheProxySays": "a mean weekly rank IC of about 0.05 at H63 needs ~6 years and about 0.03 at H21 ~5.5 years on the S&P 500 (one-sided 5%, power 80%, no residualisation gain); Phase 2's independence-based rank-IC table was optimistic by ~1.7x. A realistic large-cap effect may be INCONCLUSIVE at the gate",
+  "whatItCannotSay": "the power, minimum detectable spread, gate size or futility boundary of the controlled H63 factor spread",
+  "howThePrimaryWillBeSized": "after P3: simulate the primary statistic under the calibrated method at T = 130 and 260 weekly signals, with the per-week variance of the calendar-time series D(w) taken from an assumption stated in return units or from the variance (never the mean) of the P4 exploratory run, and fix the gate, the planning effect and the futility boundary from that, before registration"
  },
  "prerequisitesBeforeRegistration": [
-  {"id": "P1_US_DAILY_PRICE_LEDGER", "what": "append-only daily US close + volume + dividends/splits for every S&P 500 member, SPY and QQQ on signal-history (the KR analogue ledger/prices/kr exists; no US analogue exists)", "ownerApproval": true, "why": "no fresh US price exists after 2026-09-14; without it no signal can be formed and no departed name's last price can be preserved"},
-  {"id": "P2_US_MEMBERSHIP_CAPTURE", "what": "dated weekly S&P 500 membership snapshot appended to signal-history (latest committed snapshot 2026-09-05)", "ownerApproval": true},
-  {"id": "P3_US_INFERENCE_CALIBRATION", "what": "Monte Carlo calibration of the calendar-time SN interval for ~350 names, weekly signals, H63 (reuse the alpha-inference-calibration engine with a US geometry)", "ownerApproval": false},
-  {"id": "P4_EXPLORATORY_FUTILITY_SCREEN", "what": "one authorized exploratory run of this exact protocol on replay-v16", "ownerApproval": true},
-  {"id": "P5_FREEZE", "what": "hash-freeze feature code, controls, statistic and gate before the first prospective signal", "ownerApproval": true}
+  {
+   "id": "P1_US_DAILY_PRICE_LEDGER",
+   "what": "append-only daily US close + volume + dividends/splits for every S&P 500 member, SPY and QQQ on signal-history (the KR analogue ledger/prices/kr exists; no US analogue exists)",
+   "ownerApproval": true,
+   "why": "no fresh US price exists after 2026-09-14; without it no signal can be formed and no departed name's last price can be preserved"
+  },
+  {
+   "id": "P2_US_MEMBERSHIP_CAPTURE",
+   "what": "dated weekly S&P 500 membership snapshot appended to signal-history (latest committed snapshot 2026-09-05)",
+   "ownerApproval": true
+  },
+  {
+   "id": "P3_US_INFERENCE_CALIBRATION",
+   "what": "Monte Carlo coverage calibration of the calendar-time self-normalized interval for the EXACT primary statistic: OLS-residual weights on sector dummies and four control ranks (controls correlated with the feature, returns loading on the controls), ~285 names per date, weekly signals, H63 forward windows overlapping ~12 weeks, persistent (quarterly-refreshed) weights, heavy-tailed and persistent-shared DGPs, one-sided 95% bounds, at T = 130 (futility), 260 (gate) and ~700 (exploratory history); the same for the H21/H126 and sector-neutral secondaries if they are to carry inference. Reuse the alpha-inference-calibration v4/v5 engine and its Clopper-Pearson PASS/FAIL/INCONCLUSIVE rule; a new US calibration spec, not a change to v5",
+   "ownerApproval": false,
+   "why": "v5 PASSED for 60 names, H21/H126, two-sided 97.5% and centred-rank weights; none of those is this statistic. Overlapping H63 windows are removed exactly by calendar-time attribution (the statistic is linear in returns), so the self-normalized pivot remains the right CANDIDATE, but the remaining dependence comes from persistent weights and persistent shared returns, which is precisely where v4 read INCONCLUSIVE",
+   "status": "REGISTRATION_BLOCKER"
+  },
+  {
+   "id": "P4_EXPLORATORY_FUTILITY_SCREEN",
+   "what": "one authorized exploratory run of this exact protocol on replay-v16",
+   "ownerApproval": true
+  },
+  {
+   "id": "P5_FREEZE",
+   "what": "hash-freeze feature code, controls, statistic and gate before the first prospective signal",
+   "ownerApproval": true
+  }
  ],
- "forbiddenInThisProposal": ["any historical stock-outcome computation", "any backtest", "choosing a feature, control, horizon, weight or threshold from a return", "a 0-5 name book before the signal is measured on the broad cross-section"]
+ "forbiddenInThisProposal": [
+  "any historical stock-outcome computation",
+  "any backtest",
+  "choosing a feature, control, horizon, weight or threshold from a return",
+  "a 0-5 name book before the signal is measured on the broad cross-section"
+ ],
+ "distinctDiagnostics": {
+  "rule": "three different quantities; none is a component of another, and no statistic in one unit is ever added to or subtracted from a statistic in another",
+  "rawRankIC": {
+   "definition": "per date, Spearman correlation between the feature's percentile rank and the H63 excess-return rank; mean over dates",
+   "units": "unitless correlation in [-1, 1]",
+   "answers": "does the feature ORDER returns at all (association, controls included)",
+   "role": "descriptive"
+  },
+  "partialRankAssociation": {
+   "definition": "per date, the correlation between (a) the residual of the feature's percentile rank and (b) the residual of the H63 excess-return percentile rank, both residualised on the same sector dummies and control ranks as the primary; mean over dates",
+   "units": "unitless correlation in [-1, 1]",
+   "answers": "does the feature order returns BEYOND the controls (incremental association)",
+   "role": "descriptive",
+   "comparableWith": "rawRankIC only: both are correlations, so their difference is a change in association. It is NOT an additive decomposition (correlations do not add) and carries no calibrated inference"
+  },
+  "controlledFactorSpread": {
+   "definition": "the primary statistic S_t (residualised weights, gross 2)",
+   "units": "return (pp per H63)",
+   "answers": "what a dollar-neutral portfolio holding ONLY the incremental ranking would have earned (economic return)",
+   "role": "primary",
+   "relationToAssociation": "S_t ~ (scale of the weights) x (cross-sectional return dispersion on date t) x (partial association on date t); it varies with return dispersion, which a correlation does not, so neither can stand in for the other"
+  },
+  "sectorNeutralSpread": {
+   "definition": "same construction with sector dummies only",
+   "units": "return (pp per H63)",
+   "role": "registered secondary"
+  },
+  "uncontrolledSpread": {
+   "definition": "same construction with no residualisation (centred feature rank, gross 2)",
+   "units": "return (pp per H63)",
+   "role": "descriptive"
+  },
+  "validComparisons": [
+   "rawRankIC versus partialRankAssociation (both correlations; descriptive)",
+   "uncontrolledSpread, sectorNeutralSpread and controlledFactorSpread with each other (all returns of gross-2 portfolios; the difference of two is itself the return of the difference portfolio, a linear statistic)"
+  ],
+  "invalidComparisons": [
+   "any rank IC minus any spread",
+   "reading a rank-IC dispersion as the variance of a spread"
+  ]
+ }
 }

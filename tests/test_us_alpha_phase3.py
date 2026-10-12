@@ -124,10 +124,18 @@ def test_power_table_scales_with_the_square_root_of_time_and_ignores_the_mean():
             lo, hi = us["ci95"]
             us["ci95"] = [-hi, -lo]                              # same width, opposite sign
     assert POWER.planning_table(flipped) == base
-    h = base["byHorizonSessions"]["126"]["minimumDetectableMeanIc"]
+    h = base["byHorizonSessions"]["126"]["minimumDetectableMeanRankIc"]
     assert h["3y"] / h["5y"] == pytest.approx((5 / 3) ** 0.5, rel=1e-2)
-    assert base["byHorizonSessions"]["126"]["minimumDetectableMeanIc"]["5y"] > \
+    assert base["byHorizonSessions"]["126"]["minimumDetectableMeanRankIc"]["5y"] > \
         base["independenceBasedPhase2ForComparison"]["330 names, 12 H126 windows (6 years)"]
+
+
+def test_power_table_says_it_is_a_rank_ic_proxy_and_not_the_primary_statistic():
+    table = POWER.planning_table()
+    assert table["scope"] == POWER.SCOPE == "ILLUSTRATIVE_RANK_IC_PROXY_NOT_PRIMARY_STATISTIC_POWER"
+    assert any("primary" in item and "spread" in item for item in table["doesNotSupport"])
+    assert any("futility" in item for item in table["doesNotSupport"])
+    assert all("minimumDetectableMeanRankIc" in h for h in table["byHorizonSessions"].values())
 
 
 # --------------------------------------------------------------------------- #
@@ -151,6 +159,33 @@ def test_protocol_proposal_authorizes_nothing_and_matches_the_feature_contract()
     assert proposal["registered"] is False and proposal["promotionEligible"] is False and proposal["productionEffect"] == "NONE"
     assert proposal["features"]["contract"] == CP.CONTRACT
     assert proposal["primaryClaim"]["horizonSessions"] == 63 and len([proposal["primaryClaim"]]) == 1
+
+
+def test_protocol_never_combines_a_correlation_with_a_return():
+    proposal = json.loads(PROTOCOL.read_text())
+    text = json.dumps(proposal).lower()
+    assert "raw ic minus" not in text and "ic minus pure-factor" not in text
+    diag = proposal["distinctDiagnostics"]
+    assert diag["rawRankIC"]["units"].startswith("unitless") and diag["partialRankAssociation"]["units"].startswith("unitless")
+    assert diag["controlledFactorSpread"]["units"].startswith("return") and diag["controlledFactorSpread"]["role"] == "primary"
+    assert "any rank IC minus any spread" in diag["invalidComparisons"]
+    assert "rank ic never enters" in proposal["decisionRules"]["redundant"].lower()
+    report = (ROOT / "docs/us-alpha-research-phase3-ko.md").read_text()
+    stated = [line for line in report.splitlines() if "원 IC − 순수 팩터 스프레드" in line]
+    assert stated and all("삭제" in line for line in stated)      # only the correction note may quote the removed sentence
+
+
+def test_primary_inference_is_blocked_until_calibrated_and_rules_are_consistent():
+    proposal = json.loads(PROTOCOL.read_text())
+    primary, rules = proposal["primaryClaim"], proposal["decisionRules"]
+    assert primary["inferenceStatus"] == "BLOCKED_PENDING_CALIBRATION" and primary["alpha"] == 0.05
+    assert "one-sided 95%" in rules["supported"] and "one-sided 95%" in rules["refuted"]
+    assert "same calibrated interval" in rules["refuted"] and "P3" in rules["validityPrecondition"]
+    assert "NON-BINDING" in rules["futility"] and "SPECIFICATION_PENDING" in rules["futility"]
+    assert "RETURN units" in rules["futility"] and "rank-IC proxy may not" in rules["futility"]
+    assert proposal["powerPlanning"]["status"] == "NOT_ESTABLISHED_FOR_THE_PRIMARY_STATISTIC"
+    p3 = {p["id"]: p for p in proposal["prerequisitesBeforeRegistration"]}["P3_US_INFERENCE_CALIBRATION"]
+    assert p3["status"] == "REGISTRATION_BLOCKER" and "260" in p3["what"] and "130" in p3["what"]
 
 
 def test_phase3_code_imports_no_outcome_label_model_or_production_decision_module():
