@@ -86,7 +86,7 @@ async function main() {
   await new Promise(r=>server.listen(0,"127.0.0.1",r));
   const url=`http://127.0.0.1:${server.address().port}/`;
   const browser=await chromium.launch({executablePath:process.env.CHROMIUM_PATH||"/usr/bin/chromium",args:["--no-sandbox"]});
-  const report={schema:"RESEARCH_TERMINAL_BROWSER_V3",sourceMain:A.SOURCE_COMMIT,
+  const report={schema:"RESEARCH_TERMINAL_BROWSER_V31",sourceMain:A.SOURCE_COMMIT,
     p1ReceiptCommit:P1_COMMIT,fixtureObservationTime:NOW,browser:await browser.version(),
     sourceKinds:{currentChampion:"SYNTHETIC_ENGINE_FIXTURE",market:"SYNTHETIC_BROWSER_FIXTURE",macro:"SYNTHETIC_BROWSER_FIXTURE",
       officialP1:"UNCHANGED_PINNED_OFFICIAL_RECEIPTS",institutional13F:"UNCHANGED_PINNED_OFFICIAL_CACHE",nps:"UNCHANGED_PINNED_OFFICIAL_CACHE"},
@@ -140,6 +140,8 @@ async function main() {
         assert.equal(await p.locator("[data-portfolio-state]").getAttribute("data-portfolio-state"),"BENCHMARK_ONLY");
         assert.match(await p.locator("#decisionPanel").innerText(),/SYN_/);
         assert.equal(await p.locator("#watchlistPanel .watch-card").count(),5);
+        assert.doesNotMatch(await p.locator("#decisionPanel").innerText(),/영수증|원장|production|artifact|payload|digest|conviction/);
+        for(const label of ["판단 기준일","자료 관측","게시 시도","검증 상태"]) assert.ok((await p.locator("#decisionPanel").innerText()).includes(label));
         assert.doesNotMatch(await p.locator("#watchlistPanel").innerText(),/SYN_/);
         if(width===1280) await screenshot(`${market.toLowerCase()}-current-1280.png`);
         if(width===390&&market==="KR") await screenshot("mobile-current-390.png");
@@ -203,6 +205,8 @@ async function main() {
     }
     site=clone(originalSite);researchAvailable=false;await p.locator("#refresh").click();await settled();
     assert.equal(await p.locator("[data-current-state=READY]").count(),0);
+    assert.equal(await p.locator("[data-current-strategy=C1]").getAttribute("data-publication-state"),"NOT_PUBLISHED");
+    assert.match(await p.locator("#decisionPanel").innerText(),/투자 판단 미등록/);
     report.checks.push("Seed/stale/withheld/missing/first-publication absence: C1/C2 unavailable with no phantom positions; P1 stays independent");
     assert.deepEqual(report.applicationErrors,[]);assert.deepEqual(report.consoleErrors,[]);
     await context.close();
@@ -221,8 +225,14 @@ async function main() {
       await page.goto(url);
       await page.waitForFunction(()=>document.querySelector("#decisionPanel").getAttribute("aria-busy")==="false" && document.querySelectorAll(".manager-card").length===7);
       const regions={};
-      for(const market of ["KR","US"]) {await page.locator(`button[data-market=${market}]`).click();regions[market]={p1:await page.locator("[data-portfolio-state]").getAttribute("data-portfolio-state"),champion:await page.locator("[data-current-strategy=C1]").getAttribute("data-current-state"),text:await page.locator("#decisionPanel").innerText()};}
-      await page.screenshot({path:path.join(output,"actual-publication-blockers-1280.png")});report.screenshots.push("actual-publication-blockers-1280.png");
+      for(const market of ["KR","US"]) {await page.locator(`button[data-market=${market}]`).click();regions[market]={p1:await page.locator("[data-portfolio-state]").getAttribute("data-portfolio-state"),champion:await page.locator("[data-current-strategy=C1]").getAttribute("data-current-state"),publicationState:await page.locator("[data-current-strategy=C1]").getAttribute("data-publication-state"),text:await page.locator("#decisionPanel").innerText()};}
+      for(const width of [390,1280]) {
+        await page.setViewportSize({width,height:width<600?844:1000});
+        const size=await page.evaluate(()=>({width:innerWidth,scrollWidth:document.documentElement.scrollWidth}));
+        assert.ok(size.scrollWidth<=size.width);report.viewports.push({label:"actual publication",width,pageOverflowPx:size.scrollWidth-size.width});
+        await page.evaluate(()=>scrollTo({top:0,behavior:"instant"}));
+        const name=`actual-publication-blockers-${width}.png`;await page.screenshot({path:path.join(output,name)});report.screenshots.push(name);
+      }
       report.live={status:"OBSERVED_WITH_SOURCE_LIMITATIONS",observedAt:new Date().toISOString(),tlsVerified:true,managedProxyTransport:true,requests,regions,errors};
       assert.equal(errors.filter(e=>e.kind==="application").length,0);
       await live.close();

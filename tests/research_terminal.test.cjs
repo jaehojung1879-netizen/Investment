@@ -257,7 +257,7 @@ test("digest lexical parser preserves decimal tokens and excludes only transport
   assert.equal((await A.parseReceipts(JSON.stringify(r))).length, 1);
   await assert.rejects(
     A.parseReceipts(JSON.stringify({ ...r, stockCount: 1 })),
-    /다이제스트/,
+    /무결성 검증값/,
   );
   await assert.rejects(
     A.parseReceipts(`${JSON.stringify(r)}\n${JSON.stringify(r)}`),
