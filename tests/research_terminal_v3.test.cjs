@@ -18,7 +18,7 @@ const clone = structuredClone;
 test("Python and JavaScript agree on real engine receipt bytes, decimals and timestamps", async()=>{
   assert.deepEqual(await A.parseChampionReceipts(raw),records);
   const changed=raw.replace("SYN_KR_0","CHANGED");
-  await assert.rejects(A.parseChampionReceipts(changed),/다이제스트/);
+  await assert.rejects(A.parseChampionReceipts(changed),/무결성/);
   await assert.rejects(A.parseChampionReceipts(raw+raw),/식별자/);
 });
 test("current C1 and C2 preserve exact engine weights, sector constraints and residual substitution",()=>{
@@ -27,9 +27,9 @@ test("current C1 and C2 preserve exact engine weights, sector constraints and re
     assert.equal(s.state,"READY"); assert.equal(s.receipt.decisions.C1.stockCount,3);
     assert.notEqual(s.receipt.decisions.C1.holdings[0].weightPct,15);
     const html=A.championMarkup(s,"C1",market)+A.championMarkup(s,"C2",market);
-    assert.match(html,/CURRENT SELECTED HOLDINGS/); assert.match(html,/연구 전용 PAPER/);
-    assert.match(html,/과거 21세션/); assert.match(html,/원천 artifact/);
-    assert.match(html,/conviction/);
+    assert.match(html,/선정 종목과 잔여 자산/); assert.match(html,/연구 전용 · 가상 판단/);
+    assert.match(html,/과거 21세션/); assert.match(html,/원천 자료/);
+    assert.match(html,/종목 평가 점수/);
   }
 });
 for(const [label,mutate] of [
@@ -65,7 +65,7 @@ test("missing current regional candidates block C1/C2 without affecting the othe
 });
 test("market cards show sourced dates/units and never infer a missing quote from history",()=>{
   const s={dataMode:"live",indices:[{symbol:"^KS11",name:"코스피",region:"KR",last:null,asOf:"2026-10-08",freshnessStatus:"STALE",source:"Recorded source",history:[{date:"2026-10-07",value:100},{date:"2026-10-08",value:101}]},{symbol:"^GSPC",region:"US",last:700}]};
-  const html=A.marketMarkup(s,"KR");assert.match(html,/2026-10-08/);assert.match(html,/STALE/);
+  const html=A.marketMarkup(s,"KR");assert.match(html,/2026-10-08/);assert.match(html,/자료 지연/);
   assert.match(html,/class="asset-quote">—/);assert.doesNotMatch(html,/GSPC/);
   assert.doesNotMatch(A.marketMarkup({...s,dataMode:"synthetic"},"KR"),/<svg/);
   assert.equal(A.observations([{date:"2026-10-01",value:null},{date:"2026-10-02",value:0}]).length,1);
