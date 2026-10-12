@@ -98,6 +98,20 @@ def test_invalid_us_session_does_not_block_kr():
     assert result["regions"]["US"]["status"] == "BLOCKED"
 
 
+def test_cash_stock_identity_cannot_overwrite_cash_residual():
+    site = source()
+    candidate = site["longTerm"]["regions"]["US"]["picks"][0]
+    site["details"]["CASH"] = site["details"].pop(candidate["ticker"])
+    candidate["ticker"] = "CASH"
+    result = C.build(site, "a"*64)
+    assert result["regions"]["KR"]["status"] == "READY"
+    assert result["regions"]["US"]["status"] == "BLOCKED"
+    assert result["regions"]["US"]["decisions"] == {}
+    assert "RESIDUAL_ASSET_IDENTITY_COLLISION:CASH" in result["regions"]["US"]["reasonCodes"]
+    with pytest.raises(ValueError, match="RESIDUAL_ASSET_IDENTITY_COLLISION"):
+        C.allocation("US", [candidate], C.methodology(), site["macroRegime"])
+
+
 def test_missing_is_not_zero_and_zero_eligible_is_valid_cash_or_etf():
     site = source()
     for c in site["longTerm"]["regions"]["KR"]["picks"]:

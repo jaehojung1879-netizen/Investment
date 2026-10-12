@@ -67,6 +67,8 @@ def allocation(region, candidates, cfg, macro, names=None):
     lookup = {r["ticker"]: r for r in base["selected"]}
     ranking = {r["ticker"]: r for r in base["selection"]["ranking"]}
     weights = {t: w for t, w in base["weights"].items() if w > 0}
+    if set(weights) & {"CASH", W.BENCHMARKS[region]}:
+        raise ValueError("RESIDUAL_ASSET_IDENTITY_COLLISION")
     stock_total = sum(weights.values())
     residual = round(1.0 - stock_total, 6)
     if residual < 0 or any(not finite(w) or w < 0 for w in weights.values()):
@@ -146,6 +148,8 @@ def build(site, source_sha256):
             reasons.append("DUPLICATE_CANDIDATE")
         for candidate in candidates:
             ticker = candidate.get("ticker")
+            if ticker in {"CASH", W.BENCHMARKS[region]}:
+                reasons.append("RESIDUAL_ASSET_IDENTITY_COLLISION:" + ticker)
             risk = candidate.get("risk") or {}
             detail = (site.get("details") or {}).get(ticker) or {}
             if (not ticker or candidate.get("region") != region
