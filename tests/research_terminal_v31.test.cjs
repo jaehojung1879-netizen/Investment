@@ -52,16 +52,7 @@ test('loader verifies complete tree before declaring not published; refusal-only
 test('presentation and read-only audit do not alter scientific or publication code',()=>{
   const {execFileSync}=require('node:child_process');
   for(const file of ['pipeline/current_champion_decisions.py','pipeline/kelly_portfolio.py','pipeline/weekly_decision.py','pipeline/weekly_publish.py','config.json','.github/workflows/tests.yml','.github/workflows/pages.yml','.github/workflows/ledger.yml'])
-  {
-    const current=fs.readFileSync(path.join(__dirname,'..',file));
-    const original=execFileSync('git',['show',`${A.SOURCE_COMMIT}:${file}`]);
-    if(file==='.github/workflows/tests.yml') {
-      // Operational CI may append the explicitly scoped authoring diagnostic;
-      // every original gate byte and all scientific/publication files stay exact.
-      assert.deepEqual(current.subarray(0,original.length),original);
-      assert.match(current.subarray(original.length).toString(),/^\n  # Authoring PR only, once:/);
-    } else assert.deepEqual(current,original);
-  }
+    assert.deepEqual(fs.readFileSync(path.join(__dirname,'..',file)),execFileSync('git',['show',`${A.SOURCE_COMMIT}:${file}`]));
   const audit=fs.readFileSync(path.join(__dirname,'../scripts/audit_research_terminal_publication.cjs'),'utf8');
   assert.doesNotMatch(audit,/writeFile|appendFile|execFile|spawn|fetch\(|load_market_values|forward_return|pipeline\//);
 });

@@ -2,26 +2,23 @@
 
 ## 범위와 기준
 
-기준 main은 `b656f852a29b475bdb697b0b2a6752f7a559fbe4`이다. PR #229와 #230의 병합 및 AGENTS.md를 확인했다. 기존 US collector·source adapter·CLI와 [#229 source audit](us-readiness/us-prospective-daily-market-data-source-audit-v1.json)을 읽었다. #229의 CONNECT 403은 작성 환경 프록시 관측이며 GitHub-hosted runner의 Yahoo 접근 가능성을 측정한 결과가 아니다. 이 진단은 다른 실행 환경에서의 단일 실제 소스 점검이다.
+역사적 진단의 기준 main은 `b656f852a29b475bdb697b0b2a6752f7a559fbe4`였다. 최종 정리 기준 main은 #232가 병합된 `e7c3494fc1f69e7aae5bea3c15e22ddb36293e1e`이며 기존 PR 브랜치에 정상 merge했다. #232의 P4 exploratory-preflight 파일은 변경하지 않았다. PR #229와 #230의 병합 및 AGENTS.md를 확인했다. 기존 US collector·source adapter·CLI와 [#229 source audit](us-readiness/us-prospective-daily-market-data-source-audit-v1.json)을 읽었다. #229의 CONNECT 403은 작성 환경 프록시 관측이며 GitHub-hosted runner의 Yahoo 접근 가능성을 측정한 결과가 아니다. 이 진단은 다른 실행 환경에서의 단일 실제 소스 점검이다.
 
 모델·미래 수익률·알파·연구 결과·실행 잠금·production policy를 읽거나 변경하지 않는다. signal-history checkout/쓰기, daily schedule, 워크플로 dispatch, 공급자 자동 전환·접근 우회는 없다. 출력은 Git 체크아웃 밖의 `$RUNNER_TEMP`로 한정한다. PASS는 작은 진단 범위에 한정되며 전 종목 운영 준비 완료가 아니다.
 
-## 워크플로 제약과 허용 경로
+## 최종 제안 상태와 역사적 워크플로
 
-새 워크플로 파일은 현재 동결된 census와 충돌한다. 원 inventory, addendum, Phase C amendment 및 price-repair inventory뿐 아니라 두 census 테스트도 v1/v2/v3 연구 등록의 SHA에 고정되어 있다. 이를 수정하거나 등록을 재생성하지 않는다.
+역사적 source job은 임시 `tests.yml` 추가 job으로 실제 실행되어 PASS했다. 그 job은 목적을 완료했으므로 **최종 PR diff에서는 제거**한다. `.github/workflows/tests.yml`, `tests/test_historical_workflow_provenance.py`, `tests/test_research_terminal.py`, `tests/research_terminal_v31.test.cjs`는 현재 main의 원본 bytes로 복원한다. 기존 byte-integrity assertions와 workflow census를 수정·완화하지 않으며 새 workflow 파일도 없다.
 
-기존 `tests.yml`은 `historical-workflow-provenance-v1.json` 및 기존 validator가 등록 commit `8c3611116c5103a1e860173b180d0094e45b3074`의 원본 bytes로 역사적 출처를 검증하는 **현재 운영 CI**다. 이 파일에 별도 read-only job 두 개만 append하며 기존 pytest job·60분 timeout·lint·pinned-input fetch·entry-point import의 bytes를 그대로 유지한다. 새 workflow filename이 없으므로 동결된 census도 그대로 통과한다.
+격리 진단 엔진·CLI·합성 테스트·설계 문서·역사적 Actions 출처 기록은 유지한다. 기존 source run/artifact/생산 head와 당시 workflow hash는 역사적 증거이므로 갱신하거나 현재 workflow hash로 대체하지 않는다. 임시 workflow가 최종 diff에 없어도 실제 실행 증거는 유효하다.
 
-동결되지 않은 `test_historical_workflow_provenance.py`의 현재 운영 구성 검사는 원 파일 전체가 timeout 변경 외에는 동일해야 한다는 비교에서, **기존 원본 prefix 전체의 exact-byte 비교**로 갱신한다. 새 테스트가 허용된 추가 job 두 개만 존재하는지와 권한·branch·event·attempt·timeout·artifact 계약을 확인한다. 역사적 hash 검증·과학 코드·sealed spec·실행 권한·전체 pytest 검사를 약화하거나 제외하지 않는다.
+이 진단은 현재 CI에서 자동 실행되지 않는다. 최종-head CI는 일반 lint/전체 pytest/import 검증이며 **실제 네트워크 진단의 반복 실행이 아니다**. 다음 명령은 별도로 승인된 수동 점검이나 미래 workflow에서 재사용할 수 있는 인터페이스 예시이며, 이번 정리 작업에서는 실행하지 않는다.
 
-네트워크 job 조건은 전부 충족되어야 한다:
+```bash
+python scripts/preflight_us_real_sources.py --output /tmp/us-real-source-fresh-stage
+```
 
-- `pull_request`, action `opened`, 같은 저장소의 head.
-- head branch `diagnostic/us-real-source-preflight-v1`, run attempt 1.
-- `ubuntu-latest`, contents read, persist-credentials false, head SHA 직접 checkout.
-- 10분 job timeout, 기존 pinned requirements, secrets 사용 없음.
-
-synchronize/reopened/main push/다른 PR/fork/rerun에는 수집하지 않는다. 이 PR의 source evidence 생성 뒤 문서 갱신 시 일반 CI만 실행된다. source job과 전체 workflow의 결론은 별도로 보고한다. 이후 head 갱신으로 첫 전체 workflow가 취소되더라도 완료된 source job을 취소된 전체 CI의 성공으로 표현하지 않는다. 최종-head CI는 별도 실제 결론을 확인한다.
+새 수집 스케줄·recurring collection·production signal-history 쓰기는 없다. 전체 current universe의 수집 준비 상태와 반복 운영 신뢰성은 여전히 미검증이다.
 
 ## 제한적 요청과 보존
 
@@ -33,7 +30,7 @@ synchronize/reopened/main push/다른 PR/fork/rerun에는 수집하지 않는다
 
 Yahoo split-adjusted/dividend-unadjusted 원 패널과 as-traded OHLCV를 구분한다. strictly-after split factor로 가격·주당 배당은 곱하고 거래량은 나눈다. 분할 당일을 다시 조정하지 않고 Adj Close/총수익률을 생성하지 않는다. 실제 nonzero dividend/split 수를 보고하며, 0건일 때 실제 event 처리가 검증됐다고 주장하지 않는다. 합성 event 테스트는 별도 근거다.
 
-전체 현재 membership 원문·snapshot, 요청된 가격 원 패널·source metadata·취득 ID·버전·digest, 일별 청크, 계획, report, 파일별 SHA-256을 90일 Actions artifact에 보존한다. GitHub run/head/runner environment 및 관련 코드·workflow hash를 report에 포함한다. credentials/proxy 환경 전체는 출력하지 않는다. report digest와 artifact archive digest는 다른 검증값이다. 원문은 artifact가 기준이며 PR의 audit 파일은 그 실행을 가리키는 출처 기록이다.
+역사적 실행의 전체 membership 원문·snapshot, 요청된 가격 원 패널·source metadata·취득 ID·버전·digest, 일별 청크, 계획, report, 파일별 SHA-256은 원래 90일 Actions artifact에 보존했다. 최종 workflow를 복원하면서 이 artifact를 대체하거나 재생성하지 않는다. GitHub run/head/runner environment 및 관련 코드·workflow hash를 report에 포함한다. credentials/proxy 환경 전체는 출력하지 않는다. report digest와 artifact archive digest는 다른 검증값이다. 원문은 artifact가 기준이며 PR의 audit 파일은 그 실행을 가리키는 출처 기록이다.
 
 - **PASS:** 양 벤치마크 및 계획된 작은 표본이 유효하고 저장·반복·기준·availability 검사가 모두 성공.
 - **PARTIAL:** 일부 유효 관측을 보존했지만 벤치마크/표본/무결성에 미해결 문제가 존재.
@@ -60,7 +57,7 @@ PASS라도 운영 활성화는 별도 owner 승인이다. 작은 표본 성공 �
 
 PARTIAL/BLOCKED이면 해당 실행의 원 오류·환경·provider status를 먼저 검토하고 지원되는 source/라이선스 또는 표준 접근 환경을 선택한다. 쿠키·프록시·TLS·엔드포인트 우회나 전체 종목 재시도는 하지 않는다. 추가 요청은 이 결과와 정확한 변경 이유를 바탕으로 별도로 승인한다.
 
-실제 Actions verdict·run/job/artifact 출처와 최종 테스트 결과는 진단 후 audit 및 PR 설명에 기록한다. 합성 테스트 통과를 실제 연결 성공으로 표현하지 않는다.
+기존 실제 Actions verdict·run/job/artifact 출처는 원 audit에 그대로 유지하고, 정리된 최종 head의 일반 테스트·CI 결과는 PR 설명에 기록한다. 합성 테스트 통과를 실제 연결 성공으로 표현하지 않는다.
 
 
 ## 실제 실행 결과 (2026-10-12 KST)
@@ -74,8 +71,6 @@ PARTIAL/BLOCKED이면 해당 실행의 원 오류·환경·provider status를 �
 최소 후속 단계는 owner가 원 artifact를 보존하고, **다음 별도 승인 작업으로** 동일 GitHub-hosted 환경의 전체 constituent+SPY+QQQ bounded isolated dry-run을 수행하는 것이다. source 연결 때문에 공급자를 전환할 근거는 이번 결과에서 발견되지 않았다. 일일 스케줄/허용 namespace publisher의 활성화는 그 결과 및 source 사용 조건·rate limit·identity 검토 이후 별도 승인 PR로 진행한다.
 
 
-## 전체 검사에서 발견한 운영 구성 보호 테스트
+## 기존 보호 테스트의 최종 상태
 
-증거 문서 head `aeaa80b`의 첫 전체 검사는 로컬 `4681 passed, 2 failed, 1 skipped, 4 xfailed`였고 해당 CI도 FAILURE였다. 실패는 Python terminal 보호 테스트 및 v3.1 JS 보호 테스트의 `tests.yml` 전체 과거 bytes 비교였다. 새 source collector 실패나 과학 계산 assertion 실패가 아니다. 이 두 UI 테스트는 연구 등록의 dependency hash에 고정되어 있지 않음을 확인했다.
-
-이를 생략하거나 제거하지 않고 운영 CI 경로에만 같은 original-prefix exact-byte 계약을 적용한다. 과학/게시/설정/다른 workflow/기존 연구 결과 경로는 여전히 전체 bytes를 비교한다. 추가 job은 새 preflight scope 테스트가 이름 집합·opened/branch/repo/attempt·권한·timeout·archive 조건을 검사한다. 기존 pytest job은 byte-identical이고 새 network job은 재실행하지 않는다. 이 확인된 실패 및 테스트 계약 변경은 최종 head에서 전체 검사를 다시 실행할 근거다. 새 연구 등록·결과·validator·실행 잠금은 변경하지 않는다.
+앞선 authoring 과정에서는 임시 CI job 때문에 기존 보호 테스트의 whole-file 비교와 충돌했다. 최종 제안은 임시 job 및 당시 테스트 완화를 모두 제거하고 지정된 4개 파일을 current main과 byte-for-byte 일치시킨다. 기존 보호 테스트는 그대로 실행한다. 새 preflight 테스트는 임시 job의 존재를 요구하지 않고, 수동 CLI의 import 무요청·현재 자동 hook 부재·원 Git commit의 역사적 evidence hash를 검증한다. 역사적 PASS 관측값과 evidence JSON bytes는 보존한다.

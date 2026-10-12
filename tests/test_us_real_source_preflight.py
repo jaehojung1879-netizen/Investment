@@ -3,7 +3,8 @@ from datetime import timedelta
 import hashlib
 import json
 from pathlib import Path
-import re
+import importlib.util
+import subprocess
 
 import pandas as pd
 import pytest
@@ -174,20 +175,40 @@ def test_future_observations_are_unavailable_before_acquisition(tmp_path):
     assert len(store.prices_at(D.utc(NOW)+timedelta(seconds=20)))==35
 
 
-def test_diagnostic_job_scope_and_complete_workflow_census():
-    text=(ROOT/".github/workflows/tests.yml").read_text()
-    assert re.findall(r'^  ([\w-]+):',text.split('jobs:\n',1)[1],re.M)==['pytest','us-real-source-preflight','us-preflight-evidence']
-    section=text.split('  us-real-source-preflight:\n',1)[1].split('\n  us-preflight-evidence:',1)[0]
-    for guard in ("github.event_name == 'pull_request'", "github.event.action == 'opened'",
-                  "github.event.pull_request.head.repo.full_name == github.repository",
-                  "github.event.pull_request.head.ref == 'diagnostic/us-real-source-preflight-v1'", "github.run_attempt == 1"):
-        assert guard in section
-    assert 'persist-credentials: false' in section
-    assert 'contents: read' in section and 'runs-on: ubuntu-latest' in section
-    assert 'timeout-minutes: 10' in section and 'retention-days: 90' in section
-    assert 'actions/upload-artifact@v4' in section
-    assert not any(x in section for x in ('secrets.','contents: write','actions: write','workflow_dispatch','schedule:','pull_request_target','git push','signal-history'))
-    assert 'ref: ${{ github.event.pull_request.head.sha }}' in section
+def test_retained_cli_does_not_request_sources_on_import(monkeypatch):
+    def forbidden(*_):
+        pytest.fail("Manual diagnostic must not run on import")
+    monkeypatch.setattr(P, "main", forbidden)
+    monkeypatch.setattr(S, "current_sp500", forbidden)
+    monkeypatch.setattr(S, "yahoo_daily", forbidden)
+    spec = importlib.util.spec_from_file_location("retained_preflight_cli", ROOT/"scripts/preflight_us_real_sources.py")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+
+
+def test_temporary_network_job_removed_and_no_automatic_source_hooks():
+    for workflow in (ROOT/".github/workflows").iterdir():
+        if workflow.suffix not in (".yml", ".yaml"):
+            continue
+        text = workflow.read_text()
+        assert "preflight_us_real_sources.py" not in text
+        assert "us-real-source-preflight:" not in text
+        assert "us-preflight-evidence:" not in text
     for name in ('pipeline/us_real_source_preflight.py','scripts/preflight_us_real_sources.py'):
         code=(ROOT/name).read_text()
         assert not any(x in code for x in ('fit(', 'forward_return', 'load_market_values', 'append_signals', 'weekly_publish', 'workflow_dispatch', 'git push'))
+
+
+def test_historical_real_source_evidence_matches_original_producer_git_bytes():
+    evidence = json.loads((ROOT/"docs/us-readiness/us-real-source-preflight-actions-evidence-v1.json").read_text())
+    assert evidence["verdict"] == "PASS"
+    assert evidence["runId"] == 38211219882
+    assert evidence["artifact"]["id"] == 11728239669
+    assert evidence["observedCountsFromCompletedJobName"] == {
+        "SPY": 7, "QQQ": 7, "successfulConstituentSample": 3, "validPriceRecords": 35}
+    for path, sha in evidence["sourceCodeSha256FromProducerGitCommit"].items():
+        original = subprocess.check_output(["git", "show", evidence["producerHeadSha"]+":"+path], cwd=ROOT)
+        assert hashlib.sha256(original).hexdigest() == sha
+    # The recorded workflow hash is historical; never substitute current CI bytes.
+    assert evidence["sourceCodeSha256FromProducerGitCommit"][".github/workflows/tests.yml"] != hashlib.sha256(
+        (ROOT/".github/workflows/tests.yml").read_bytes()).hexdigest()
