@@ -1,0 +1,272 @@
+{
+ "contract": "US_H63_INFERENCE_CALIBRATION_V1",
+ "status": "FROZEN_BEFORE_ANY_REPLICATE",
+ "outcomeFree": true,
+ "realDataReads": "FORBIDDEN: every return is synthetic; geometry constants are copied from committed outcome-blind readiness reports",
+ "purpose": "Prerequisite P3 of us-cash-profitability-signal-v1: does an interval for the H63 controlled factor spread keep its nominal error rates under the study's geometry? Not an alpha study; a PASS says nothing about whether the feature predicts returns.",
+ "inferentialTarget": {
+  "statistic": "S_t = sum_i w(t,i) Y(t,i); w = gross-2 weights proportional to the OLS residual of the feature's within-date percentile rank on sector dummies and the percentile ranks of four controls; Y = 63-session forward return (synthetic, additive)",
+  "estimand": "theta = E[S_t] over weekly signal dates",
+  "unit": "fraction of capital per 63 sessions earned by $1 long / $1 short (x4 = annualised); a RETURN, not a correlation",
+  "nullHypothesis": "H0: theta <= 0",
+  "alternative": "H1: theta > 0",
+  "alpha": 0.05,
+  "interval": "one interval reported as two one-sided 95% bounds (two-sided 90%)",
+  "decisionRule": "lower bound > 0 -> SUPPORTED; upper bound <= 0 -> REFUTED; otherwise INCONCLUSIVE (the two cannot both hold)"
+ },
+ "geometry": {
+  "source": {
+   "namesPerDate": "docs/us-readiness/us-alpha-phase3-readiness-v1.json overall.namesPerDatePrimaryComplete median 285 (2016+ minimum 245)",
+   "sectorShares": "same file, sectorRepresentation.shareOfPrimaryComplete",
+   "featureCorrelations": "same file, orderingOverlapMeanSpearman.cashOperatingProfitability",
+   "controlCorrelations": "docs/us-readiness/us-multifactor-pit-readiness-v1.json featureRedundancy (mom121~vol252 -0.116; roe/operatingMargin~vol252 -0.098/-0.238 averaged -0.17; mom121~roe/operatingMargin ~0.10); entries marked ASSUMED have no committed measurement",
+   "sectorShareOfRankVariance": "readiness sectorShareOfRankVariance (tradedValue ASSUMED 0.10)"
+  },
+  "universe": 330,
+  "missingPersistence": 0.9,
+  "sectorShares": {
+   "Communication Services": 2.823,
+   "Consumer Discretionary": 16.524,
+   "Consumer Staples": 9.787,
+   "Energy": 4.861,
+   "Health Care": 14.804,
+   "Industrials": 19.172,
+   "Information Technology": 18.328,
+   "Materials": 5.633,
+   "Utilities": 8.067
+  },
+  "characteristicOrder": [
+   "feature",
+   "accrualProfitability",
+   "tradedValue",
+   "momentum",
+   "volatility"
+  ],
+  "characteristicCorrelation": [
+   [
+    1.0,
+    0.771,
+    0.13,
+    0.132,
+    0.009
+   ],
+   [
+    0.771,
+    1.0,
+    0.1,
+    0.1,
+    -0.17
+   ],
+   [
+    0.13,
+    0.1,
+    1.0,
+    0.05,
+    -0.2
+   ],
+   [
+    0.132,
+    0.1,
+    0.05,
+    1.0,
+    -0.116
+   ],
+   [
+    0.009,
+    -0.17,
+    -0.2,
+    -0.116,
+    1.0
+   ]
+  ],
+  "assumedCorrelations": [
+   "accrualProfitability~tradedValue 0.10",
+   "tradedValue~momentum 0.05",
+   "tradedValue~volatility -0.20"
+  ],
+  "weeklyPersistence": {
+   "feature": 0.9876,
+   "accrualProfitability": 0.9876,
+   "tradedValue": 0.995,
+   "momentum": 0.98,
+   "volatility": 0.99
+  },
+  "persistenceRationale": "accounting variables: quarterly autocorrelation 0.85 (0.85^(1/13) weekly) and observed only at a staggered quarterly filing week; momentum: 51 of 52 weeks of the 12-month window overlap; volatility and traded value: slow-moving. ASSUMED values, not measured from returns",
+  "quarterlyRefreshed": [
+   "feature",
+   "accrualProfitability"
+  ],
+  "sectorShareOfRankVariance": {
+   "feature": 0.179,
+   "accrualProfitability": 0.182,
+   "tradedValue": 0.1,
+   "momentum": 0.162,
+   "volatility": 0.266
+  }
+ },
+ "baseReturns": {
+  "marketMean": 0.0003,
+  "marketSd": 0.01,
+  "sectorSd": 0.006,
+  "controlSd": 0.004,
+  "controlPremia": {
+   "accrualProfitability": 0.0002,
+   "tradedValue": -0.0001,
+   "momentum": 0.0001,
+   "volatility": -0.0001
+  },
+  "dailyPersistence": 0.05,
+  "logVolPersistence": 0.995,
+  "logVolSd": 0.3,
+  "idioSd": 0.015,
+  "idioOnVolatility": 0.35,
+  "betaOnVolatilityRank": 0.5,
+  "exposureBasis": "RANK",
+  "note": "daily units; control premia are nonzero so the null 'no incremental information' is tested while the controls themselves earn premia; market and sector shocks are common; idiosyncratic volatility is cross-sectionally heteroskedastic and follows a common stochastic-volatility regime"
+ },
+ "dgps": [
+  {
+   "name": "BASE",
+   "gating": true,
+   "innovation": "GAUSSIAN",
+   "missingRate": 0.136,
+   "unresolvedTerminalPerYear": 0.0,
+   "returns": {}
+  },
+  {
+   "name": "PERSISTENT_SHARED",
+   "gating": true,
+   "innovation": "GAUSSIAN",
+   "missingRate": 0.136,
+   "unresolvedTerminalPerYear": 0.0,
+   "returns": {
+    "dailyPersistence": 0.2,
+    "logVolPersistence": 0.999,
+    "logVolSd": 0.5,
+    "sectorSd": 0.009,
+    "controlSd": 0.006
+   }
+  },
+  {
+   "name": "HEAVY_TAILED_PERSISTENT",
+   "gating": true,
+   "innovation": "STUDENT_T",
+   "studentTDegreesOfFreedom": 4,
+   "missingRate": 0.136,
+   "unresolvedTerminalPerYear": 0.0,
+   "returns": {
+    "dailyPersistence": 0.2,
+    "logVolPersistence": 0.999,
+    "logVolSd": 0.5,
+    "sectorSd": 0.009,
+    "controlSd": 0.006
+   }
+  },
+  {
+   "name": "SMALL_COLLINEAR",
+   "gating": true,
+   "innovation": "GAUSSIAN",
+   "universe": 280,
+   "missingRate": 0.125,
+   "unresolvedTerminalPerYear": 0.0,
+   "featureAccrualCorrelation": 0.9,
+   "sectorShareOfRankVarianceFeature": 0.3,
+   "returns": {}
+  },
+  {
+   "name": "MISSING_AND_TERMINAL",
+   "gating": true,
+   "innovation": "GAUSSIAN",
+   "missingRate": 0.2,
+   "unresolvedTerminalPerYear": 0.2,
+   "returns": {}
+  },
+  {
+   "name": "NONLINEAR_EXPOSURE_STRESS",
+   "gating": false,
+   "innovation": "GAUSSIAN",
+   "missingRate": 0.136,
+   "unresolvedTerminalPerYear": 0.0,
+   "returns": {
+    "exposureBasis": "LATENT",
+    "controlPremia": {
+     "accrualProfitability": 0.0004,
+     "tradedValue": -0.0002,
+     "momentum": 0.0002,
+     "volatility": -0.0002
+    }
+   },
+   "why": "returns load on latent characteristic values while the weights neutralise RANKS: tests whether control premia leak into the 'incremental' spread. A construct check, not an inference check; reported against zero, never gating"
+  }
+ ],
+ "sampleLengths": {
+  "weeks": [
+   130,
+   260,
+   700
+  ],
+  "roles": {
+   "130": "non-binding futility look",
+   "260": "registered gate",
+   "700": "exploratory historical depth (~2013-2026)"
+  }
+ },
+ "methods": {
+  "primaryCandidate": "CT_SN",
+  "CT_SN": "calendar-time attribution (each realised daily contribution assigned to its calendar week) + Lobato/Shao self-normalised interval, alpha_inference_calibration_v4.calendar_time_sn_interval",
+  "SD_SN": "self-normalised interval on the overlapping signal-date series (v3), comparator",
+  "SD_NW_L12": "Newey-West Bartlett, 12 lags (the H63 overlap in weeks), normal critical value, signal-date series, comparator",
+  "CT_NW_AUTO": "Newey-West Bartlett on the calendar-time residual series, lags floor(4 (n/100)^(2/9)), normal critical value, comparator",
+  "CT_CBB13": "circular block bootstrap of calendar weeks, block 13 weeks, 499 draws, ratio estimator, percentile bounds, comparator",
+  "snCriticalValue": 28.31,
+  "snCriticalValueSource": "Lobato (2001) U1 90% upper critical value (two-sided 90% = one-sided 95% per side); the repository's v3-v5 used the same table's 97.5% value 66.57. Checked by simulation in tests",
+  "nearZeroNormalizerRelativeTolerance": 1e-12,
+  "oneSidedAlpha": 0.05,
+  "signalDateNeweyWestLags": 12,
+  "blockWeeks": 13,
+  "bootstrapDraws": 499
+ },
+ "acceptance": {
+  "coverageFloor": 0.85,
+  "oneSidedErrorCeiling": 0.075,
+  "undefinedFrequencyCeiling": 0.05,
+  "maximumMonteCarlo95HalfWidth": 0.03,
+  "rationale": "nominal one-sided error 0.05 per side and two-sided coverage 0.90; up to 1.5x the nominal error is tolerated, stricter than v4/v5 (which tolerated 2x miscoverage at 97.5%). Fixed before any replicate",
+  "gating": "the primary candidate on gating DGPs only; comparators are classified by the same rule and reported, never gating",
+  "p3Rule": "P3 PASS iff CT_SN is PASS in every gating DGP at 260 and 700 weeks. The 130-week cells decide only whether an interval may be quoted at the futility look; the futility rule itself uses no interval. Any FAIL or INCONCLUSIVE at 260 or 700 -> P3 BLOCKED (an INCONCLUSIVE is not resolved by rerunning; a new version would be a new protocol)",
+  "estimandUnderNull": "coverage is judged against theta = 0. Rank-linear exposures make the gross-2 residual weights exactly neutral to every sector and control premium ON THE SIGNAL DATE; within the 63-session window exposures drift weekly, so any remaining null mean is second order. It is not assumed away: the mean of the estimate across null replicates and its Monte Carlo interval are reported, and any such bias counts against coverage (conservative)"
+ },
+ "monteCarloDecision": {
+  "intervalMethod": "CLOPPER_PEARSON_EXACT_ONE_SIDED (pipeline.alpha_inference_mc_decision)",
+  "passSideOneSidedAlpha": 0.025,
+  "failSideFamilywiseAlpha": 0.05,
+  "failSideDecisionCount": 60,
+  "failSideDecisionCountDefinition": "5 gating DGPs x 3 sample lengths x 4 metrics (coverage, lower-bound error, upper-bound error, undefined frequency) for the primary candidate"
+ },
+ "seed": 20261012,
+ "replicates": 2000,
+ "power": {
+  "dgps": [
+   "BASE",
+   "PERSISTENT_SHARED"
+  ],
+  "weeks": [
+   260,
+   700
+  ],
+  "effectsAnnual": [
+   0.01,
+   0.02,
+   0.04
+  ],
+  "replicates": 1000,
+  "construction": "a synthetic drift is added so a cohort's spread gains effect/252 per session (effect x 63/252 per H63); EXPLICITLY SYNTHETIC effect sizes, not estimates of any real effect",
+  "futility": "non-binding look at the first 130 signal dates of each 260-week replicate: stop if the interim point estimate <= 0. Reported: P(stop) under the null and under each effect, and the power lost to stopping"
+ },
+ "prohibitions": [
+  "no real return, price, label, model prediction or strategy PnL is read",
+  "no historical exploratory study is executed",
+  "no prospective study is registered or authorised",
+  "thresholds, DGPs, sample lengths, seed and replicate counts may not change after the first replicate; a change is a new contract version"
+ ]
+}
