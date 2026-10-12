@@ -76,3 +76,11 @@ test('read-only audit verifies Git blob bytes and rejects mismatched or truncate
     tree.truncated=true;fs.writeFileSync(treeFile,JSON.stringify(tree));await assert.rejects(audit(input,commit,A.SOURCE_COMMIT,now),/Incomplete/);
   } finally {fs.rmSync(input,{recursive:true,force:true});}
 });
+
+test('regional operational reason codes stay in expandable evidence',()=>{
+  const b=structuredClone(bundle);b.latest.regions.KR.status='BLOCKED';b.latest.regions.KR.reasonCodes=['CONFLICTING_SAME_SESSION_INPUT'];
+  const state=A.championState(b,'KR',site,now),html=A.championMarkup(state,'C1','KR');
+  assert.equal(state.publicationState,'REGIONAL_BLOCKED');
+  assert.match(html,/판단 생성 차단/);assert.doesNotMatch(html.split('<details>')[0],/CONFLICTING_SAME_SESSION_INPUT/);
+  assert.match(html.split('<details>')[1],/CONFLICTING_SAME_SESSION_INPUT/);assert.doesNotMatch(html,/class="holding|SYN_/);
+});

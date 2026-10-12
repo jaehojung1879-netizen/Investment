@@ -15,7 +15,7 @@
   "frontendSha256": {
     "index.html": "f6371ea86cf3c8b95d62de2f931de17324a2a979209550687b7169b06aac3b72",
     "styles.css": "98721df44004b382115908b4ef1d795befee7801082318b727d19d7a7faf48c3",
-    "app.js": "ddeea63225dff35f111a6daf21e3351396831b7946671f738ffb50ca181c8fa1"
+    "app.js": "7cb6b2feaf7889d5fd78b356f94bee51b86e9688b078970b0b0c7a9f17880e96"
   },
   "screenshots": [
     "mobile-current-390.png",
@@ -137,7 +137,7 @@
   "consoleErrors": [],
   "live": {
     "status": "OBSERVED_WITH_SOURCE_LIMITATIONS",
-    "observedAt": "2026-10-12T01:37:49.365Z",
+    "observedAt": "2026-10-12T01:47:47.524Z",
     "tlsVerified": true,
     "managedProxyTransport": true,
     "requests": [
@@ -146,15 +146,19 @@
         "status": 403
       },
       {
-        "url": "https://raw.githubusercontent.com/jaehojung1879-netizen/Investment/8a1256f74a541d684100979cefb6dbc1759a620b/data/national_pension_cache.json",
-        "status": 200
-      },
-      {
         "url": "https://raw.githubusercontent.com/jaehojung1879-netizen/Investment/8a1256f74a541d684100979cefb6dbc1759a620b/data/institutional_13f_cache.json",
         "status": 200
       },
       {
+        "url": "https://raw.githubusercontent.com/jaehojung1879-netizen/Investment/8a1256f74a541d684100979cefb6dbc1759a620b/data/national_pension_cache.json",
+        "status": 200
+      },
+      {
         "url": "https://api.github.com/repos/jaehojung1879-netizen/Investment/git/ref/heads/signal-history",
+        "status": 200
+      },
+      {
+        "url": "https://raw.githubusercontent.com/jaehojung1879-netizen/Investment/8ba3cbab22e88a1b104328899396723707bf073b/ledger/weekly-decisions/publication-status.json",
         "status": 200
       },
       {
@@ -163,10 +167,6 @@
       },
       {
         "url": "https://raw.githubusercontent.com/jaehojung1879-netizen/Investment/8ba3cbab22e88a1b104328899396723707bf073b/ledger/weekly-decisions/receipts.jsonl",
-        "status": 200
-      },
-      {
-        "url": "https://raw.githubusercontent.com/jaehojung1879-netizen/Investment/8ba3cbab22e88a1b104328899396723707bf073b/ledger/weekly-decisions/publication-status.json",
         "status": 200
       },
       {
