@@ -2,14 +2,14 @@
   "schemaVersion": "2.7.0",
   "modelVersion": "longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
   "buildCommitSha": "8a1256f74a54",
-  "generatedAt": "2026-10-12T02:36:06.482195+00:00",
+  "generatedAt": "2026-10-12T03:33:37.013060+00:00",
   "marketAsOf": "2026-10-12",
   "macroRegime": "Goldilocks",
   "holdingsByRegion": {
     "US": [
       "MU",
-      "HST",
       "NUE",
+      "HST",
       "TRV",
       "STT",
       "GOOGL",
@@ -36,16 +36,16 @@
     ]
   },
   "modelPortfolioWeights": {
-    "TRV": 0.297311,
-    "HST": 0.207464,
-    "GOOG": 0.145225,
-    "383220.KS": 0.056617,
-    "078935.KS": 0.067786
+    "TRV": 0.297724,
+    "HST": 0.207221,
+    "GOOG": 0.145055,
+    "096760.KS": 0.088479,
+    "383220.KS": 0.037648
   },
   "entryStatesByTicker": {
     "MU": "WAIT_FOR_PULLBACK",
-    "HST": "ACCUMULATE_GRADUALLY",
     "NUE": "WAIT_FOR_PULLBACK",
+    "HST": "ACCUMULATE_GRADUALLY",
     "TRV": "ACCUMULATE_GRADUALLY",
     "STT": "WATCH",
     "GOOGL": "ACCUMULATE_GRADUALLY",
@@ -60,7 +60,7 @@
     "CF": "AVOID",
     "000660.KS": "WATCH",
     "078930.KS": "WAIT_FOR_PULLBACK",
-    "096760.KS": "WATCH",
+    "096760.KS": "ACCUMULATE_GRADUALLY",
     "025000.KS": "WAIT_FOR_PULLBACK",
     "005930.KS": "WATCH",
     "033780.KS": "WAIT_FOR_PULLBACK",
@@ -77,12 +77,12 @@
   "opportunityTiersByTicker": {
     "012030.KS": "EMERGING_OPPORTUNITY",
     "373220.KS": "EMERGING_OPPORTUNITY",
-    "035000.KS": "EMERGING_OPPORTUNITY",
     "044450.KS": "EMERGING_OPPORTUNITY",
+    "035000.KS": "EMERGING_OPPORTUNITY",
     "033780.KS": "EMERGING_OPPORTUNITY",
     "093050.KS": "EMERGING_OPPORTUNITY",
-    "025000.KS": "EMERGING_OPPORTUNITY",
-    "000590.KS": "EMERGING_OPPORTUNITY",
+    "025000.KS": "WATCH",
+    "003620.KS": "EMERGING_OPPORTUNITY",
     "TWLO": "EMERGING_OPPORTUNITY",
     "ILMN": "WATCH",
     "CRL": "EMERGING_OPPORTUNITY",
@@ -93,12 +93,12 @@
     "RVTY": "WATCH"
   },
   "warningTiersByTicker": {
-    "096760.KS": "ELEVATED_WARNING",
-    "000660.KS": "ELEVATED_WARNING",
     "078935.KS": "WATCH",
-    "078930.KS": "WATCH",
+    "000660.KS": "ELEVATED_WARNING",
     "005930.KS": "WATCH",
+    "078930.KS": "WATCH",
     "119650.KS": "WATCH",
+    "096760.KS": "WATCH",
     "039570.KS": "WATCH",
     "282330.KS": "WATCH",
     "STT": "WATCH",
@@ -115,7 +115,7 @@
   "stale": false,
   "productionValidation": {
     "passed": true,
-    "validatedAt": "2026-10-12T02:36:06.482195+00:00",
+    "validatedAt": "2026-10-12T03:33:37.013060+00:00",
     "errors": []
   }
 }
