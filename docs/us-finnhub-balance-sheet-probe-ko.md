@@ -32,11 +32,11 @@ PR #233이 남긴 질문은 이것이다. 2026-10-07부터 처음 서빙된 Finn
 | 항목 | 내용 |
 |---|---|
 | 실행 주체 | `workflow_dispatch`만. 스케줄은 `region`을 보내지 않으므로 이 잡을 절대 고르지 못한다. |
-| 실행 ref | `main`만. 다른 ref는 `if`에서 건너뛴다. 병합되지 않은 코드에는 비밀이 가지 않는다. |
+| 실행 ref | 잡 자체는 어느 ref에서든 돌 수 있지만(비밀 없는 판정·계획 단계만 실행), **키가 가는 단계는 `main`의 dispatch에서만** 실행된다. 병합되지 않은 코드에는 비밀이 가지 않는다. |
 | 권한 | 잡 자체의 `contents: read`(워크플로 기본값은 `write`). 두 번의 체크아웃 모두 `persist-credentials: false`. |
 | 저장소 쓰기 | 없음. 이 잡에는 `git push/commit/add/config`가 없고, signal-history는 `ledger/fundamentals/us`만 sparse로 읽는다. |
-| 비밀 | `secrets.FINNHUB`가 **한 단계의 환경변수**에만 간다. `max_calls=0`이면 그 값도 비운다. 로그는 GitHub이 마스킹하고, 스크립트도 출력에 키가 있으면 쓰기를 거부한다. |
-| 입력 | `max_calls`는 쉘에 보간하지 않고 환경변수로 받아 숫자만 허용한다. 자유 인자(`args`)는 없다. |
+| 비밀 | `secrets.FINNHUB`는 **`Probe live` 한 단계의 환경변수**에만 있다. 입력 원문에 대한 표현식(`inputs.max_calls != '0'`)으로 주입을 정하지 않고, 비밀이 없는 `gate` 단계가 입력을 검증해 `inject`를 정한다. `inject=true`는 "검증된 실시간 요청 + `main`의 dispatch"일 때뿐이다. 로그는 GitHub이 마스킹하고, 스크립트도 출력에 키가 있으면 쓰기를 거부한다. |
+| 입력 | `max_calls`는 쉘에 보간하지 않고 환경변수로 받는다. 허용: **빈칸**(기본 12회) · **`0`**(계획 전용) · **`1`~`20`**(앞자리 0·공백 없음). `00`, `012`, ` 0`, `21`, `-1`, `abc` 등은 키를 쓰는 어떤 단계보다 먼저 job을 실패시킨다(거부한 입력은 로그에 되풀이하지 않는다). 자유 인자(`args`)는 없다. |
 | 호출 수 | 기본 12회, 하드 상한 20회(스크립트가 강제). 요청 한 번이라도 거부(HTTP 4xx/5xx, 속도 제한)되면 바로 멈춘다. |
 | 샘플 | 저장된 레코드에서 정한다: 같은 응답 창에 "재무상태표 있는 Q1"과 "없는 Q2"가 함께 오는 종목 10개(분기 요청)와 "없는 10-K" 종목 2개(연간 요청). 종목은 티커의 솔트 해시 순서(고정된 의사난수)로 골라 손으로 고르지 않는다. |
 | 증거 | 정제된 보고서(`finnhub-bs-probe-report`, 90일)와 원본 응답(`finnhub-bs-probe-raw-restricted`, **7일**)을 **별도 아티팩트**로 올린다. 요약에는 값이 없다. |
@@ -51,6 +51,17 @@ PR #233이 남긴 질문은 이것이다. 2026-10-07부터 처음 서빙된 Finn
 2. **계획 확인(키를 쓰지 않음):** Actions → *Collect fundamentals* → Run workflow →
    `region = finnhub-bs-probe`, `target = auto`, `max_calls = 0`. 저장 데이터를 읽어 실제로 보낼 요청 12개를 보고서에 적고 끝난다. 호출 0회, 비밀 0회.
 3. **실제 측정:** 같은 화면에서 `max_calls`를 **비워서**(기본 12회) 실행한다. 약 1분이 걸린다.
+   입력 해석표 (`gate` 단계의 로그와 Summary에도 같은 내용이 남는다):
+
+   | `max_calls` 입력 | 해석 | 모드 | 요청 한도 | 키 주입 |
+   |---|---|---|---|---|
+   | (빈칸) | 기본값 | live | 12 | `main`의 dispatch에서만 |
+   | `0` | 명시 | plan only | 0 | 절대 없음 |
+   | `12` | 명시 | live | 12 | `main`의 dispatch에서만 |
+   | `1`~`20` | 명시 | live | 입력값 | `main`의 dispatch에서만 |
+   | 그 밖의 모든 값 | 거부 | — | — | 절대 없음 (job 실패) |
+
+   `main`이 아닌 ref에서 live를 요청하면 키 없이 **계획 전용 단계만** 돌고, 이유(`LIVE_WITHHELD_NOT_MAIN_DISPATCH`)가 요약에 남는다. 그래서 병합 전에도 이 판정을 실제 Actions에서 확인할 수 있고, 그때 비밀은 어떤 실행 단계에도 참조되지 않는다.
 4. 실행이 끝나면 아티팩트 `finnhub-bs-probe-report`의 `probe-report.json`에서 `verdict`, `category`, `evidence`, `nextRepairPath`를 확인한다.
    원본(`…-raw-restricted`)은 이후 파서 수정이 필요한 경우의 근거이므로 7일 안에 필요하면 받아 둔다.
 5. 결과를 알려 주면 아래 표의 경로 가운데 **정확히 하나**를 다음 PR로 진행한다.
