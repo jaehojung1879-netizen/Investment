@@ -1,0 +1,122 @@
+{
+  "annotationTitle": "US full-universe source audit",
+  "apiDeclaredArtifactSha256": "sha256:64089eefb8e51407e19295160287f20d5c8312cbe57dfe692bcbe0ed65e3093d",
+  "artifactCreatedAt": "2026-10-12T09:23:11Z",
+  "artifactExpiresAt": "2027-01-10T09:14:05Z",
+  "artifactId": 11737957109,
+  "artifactName": "us-full-universe-dry-run-v1-38228554292",
+  "artifactSizeBytes": 1550156,
+  "artifactUrl": "https://github.com/jaehojung1879-netizen/Investment/actions/runs/38228554292/artifacts/11737957109",
+  "baseMainSha": "8639f8d7d2133769e23bb33736efc4c425873e38",
+  "evidenceMethod": "Original controlled source-audit notice retrieved through GitHub check-run annotations API, plus Actions jobs/artifact metadata. Full raw stage is preserved in the artifact; archive not downloaded or independently rehashed in authoring environment.",
+  "finalState": "Temporary workflow addition and three protection-test changes removed; isolated manual diagnostic retained. Final-head CI does not repeat the network diagnostic.",
+  "historicalAlphaCalculated": false,
+  "historicalPreflight": {
+    "artifactId": 11728239669,
+    "runId": 38211219882,
+    "status": "UNCHANGED_SEPARATE_HISTORICAL_EVIDENCE",
+    "validPriceObservations": 35
+  },
+  "postObservationCodeChange": "Transport rate-limit stop is hardened against vendor Exception swallowing and given a 2000 HTTP-call ceiling. Verified synthetically; original real run/code hashes retained, no second real run.",
+  "producerFileSha256": {
+    ".github/workflows/tests.yml": "a34400d5c7faf7a5eff96a6cd82b43f11ea1c451040e5cd0089da1708d4d5231",
+    "pipeline/us_daily_market_data.py": "cb09978442c5ded70cd99b943417229a4cf8f38b5a0415aa6c8ae54a49cbefcc",
+    "pipeline/us_daily_market_sources.py": "3e2335ad48adf86f7b5d16d827c2edb165e85fade87f828aede12632ca94ece5",
+    "pipeline/us_full_universe_dry_run.py": "0c9684a96d866562ce0f8972f3385ccd004f6418ce619e2be1ee99ab98e8385a",
+    "pipeline/us_real_source_preflight.py": "2d3a1ef821bdafac6c0ade77737775ae4e9cc1696ceb82be454270f2357081f2",
+    "scripts/dry_run_us_full_universe.py": "29620a23c9e95476c256ac628d23616364e5af0438165e7dc16bb74456bf953b"
+  },
+  "producerHeadSha": "394f0830936a3b88abe4375fd91d9694ea13a86f",
+  "productionWrites": false,
+  "projectionOmissions": [
+    "collectionManifest",
+    "missing",
+    "runtime"
+  ],
+  "providerHttp404Analysis": "One nonterminal HTTP 404 observed. Endpoint was not recorded, so exact cause is unresolved. All 505 required price records passed; no final source refusal, 429, fallback provider, or bypass observed.",
+  "runId": 38228554292,
+  "runUrl": "https://github.com/jaehojung1879-netizen/Investment/actions/runs/38228554292",
+  "scheduledCollectionEnabled": false,
+  "schema": "US_FULL_UNIVERSE_ACTIONS_EVIDENCE_V1",
+  "sourceAuditDigestStatus": "Original full-report digest retained; projection alone cannot recompute it",
+  "sourceAuditProjection": {
+    "actionColumnsVerifiedRecords": 505,
+    "actualProviderAdapterCalls": 505,
+    "benchmarks": {
+      "QQQ": "VALID",
+      "SPY": "VALID"
+    },
+    "collectedConstituents": 503,
+    "collectedSecurities": 505,
+    "completenessPercent": 100.0,
+    "corporateActionLimitation": "Single session does not establish future revisions, special distributions, spinoffs or provider event completeness",
+    "dailyOperationEnabled": false,
+    "dailyOperationalFeasibility": "ONE_SESSION_TECHNICALLY_FEASIBLE_NOT_RELIABILITY_PROVEN",
+    "diagnosticRetries": 0,
+    "digest": "ec6a47db418130b3509b128ba95001e1edd96b00c85fe3d0906371d3c8c787a0",
+    "elapsedSeconds": 505.492,
+    "expectedConstituentSecurities": 503,
+    "expectedSecuritiesIncludingBenchmarks": 505,
+    "failureCountsByRootCause": {},
+    "failures": [],
+    "historicalPitMembershipVerified": false,
+    "integrity": {
+      "appendOnlyBytesUnchanged": true,
+      "asTradedBasisVerified": true,
+      "noPricesBeforeFirstAcquisition": true,
+      "repeatCount": 505,
+      "sameAcquisitionRepeatProviderCalls": 0,
+      "sourceReferencesVerified": 505
+    },
+    "maxProviderAdapterCalls": 552,
+    "maxSeconds": 1200,
+    "membershipHttpCalls": 2,
+    "membershipObservedAt": "2026-10-12T09:14:43.436110Z",
+    "membershipSource": "https://raw.githubusercontent.com/datasets/s-and-p-500-companies/36472b57910842f4025e8ca8303b93a692d2bbae/data/constituents.csv",
+    "membershipSourceIdentity": "datasets/s-and-p-500-companies@36472b57910842f4025e8ca8303b93a692d2bbae:data/constituents.csv",
+    "minimumRequestStartIntervalSeconds": 1.0,
+    "nonidentitySplitRecords": 0,
+    "nonzeroDividendRecords": 9,
+    "observedIssuerCikCount": 500,
+    "permanentSecurityIdentityVerified": false,
+    "plannedAt": "2026-10-12T09:14:43.493640Z",
+    "productionWrites": false,
+    "providerHttpStatusCounts": {
+      "200": 1011,
+      "404": 1
+    },
+    "providerTimeoutSeconds": 20,
+    "qualityWarnings": [
+      "SECONDARY_SOURCE_CURRENT_LIST_NOT_OFFICIAL_RECONCILIATION",
+      "CIK_IS_ISSUER_ID_NOT_PERMANENT_SECURITY_ID",
+      "NO_PRE_OBSERVATION_OR_EFFECTIVE_DATE_MEMBERSHIP_INFERENCE"
+    ],
+    "schema": "US_FULL_UNIVERSE_DRY_RUN_V1",
+    "session": "2026-10-09",
+    "shareClassSymbols": [
+      {
+        "sourceSymbol": "BF.B",
+        "status": "VALID",
+        "ticker": "BF-B"
+      },
+      {
+        "sourceSymbol": "BRK.B",
+        "status": "VALID",
+        "ticker": "BRK-B"
+      }
+    ],
+    "sourceKind": "LIVE_SOURCE_OBSERVATION",
+    "sourceOfficialCompletenessVerified": false,
+    "sourceRawSha256": "a8045f043ea7e68d4254a07470a5e95ca5759ded4656657eac514162e6e82e06",
+    "stopReason": "WORK_LIST_EXHAUSTED",
+    "underlyingYahooHttpCalls": 1012,
+    "underlyingYahooHttpCallsStatus": "OBSERVED_PINNED_CURL_SESSION_REQUESTS",
+    "universeSnapshotDigest": "5a322b8f352d58d0a9458d33a982e4d0a74c748f5e6d186ed27e6de2e8ae7fdc",
+    "unresolvedActionIssues": [],
+    "verdict": "PASS",
+    "version": "us-full-universe-real-dry-run-v1"
+  },
+  "sourceJobConclusion": "success",
+  "sourceJobId": 114742031164,
+  "verdict": "PASS"
+}

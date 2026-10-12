@@ -3,6 +3,7 @@ from collections import Counter
 from contextlib import contextmanager
 from datetime import timedelta
 import json
+import math
 import os
 from pathlib import Path
 import time
@@ -21,9 +22,15 @@ class ControlledStop(BaseException):
     """Collector's finally block commits progress before this controlled stop."""
 
 
+class TransportStop(ControlledStop):
+    def __init__(self, reason, message):
+        self.reason = reason
+        self.message = message
+
+
 def run(root, membership, fetch, *, now, monotonic=time.monotonic, sleep=time.sleep,
         pace=PACE_SECONDS, max_seconds=MAX_SECONDS, max_calls=MAX_CALLS, runtime=None):
-    if pace < PACE_SECONDS or not 0 < max_seconds <= MAX_SECONDS or not 2 <= max_calls <= MAX_CALLS:
+    if not math.isfinite(pace) or not PACE_SECONDS <= pace <= 5 or not 0 < max_seconds <= MAX_SECONDS or type(max_calls) is not int or not 2 <= max_calls <= MAX_CALLS:
         raise ValueError('Refuse unpaced or expanded diagnostic budgets')
     store = D.ObservationStore(root, membership.source_kind)
     store.root.mkdir(parents=True, exist_ok=True)
@@ -55,6 +62,13 @@ def run(root, membership, fetch, *, now, monotonic=time.monotonic, sleep=time.sl
             event['status'] = 'VALID'
             event['observedAt'] = D.stamp(reply.observed_at)
             return reply
+        except TransportStop as exc:
+            stop_reason = exc.reason
+            refused = D.Refused('YAHOO_PROVIDER_REFUSAL' if exc.reason == 'PROVIDER_RATE_LIMIT' else 'CALL_BUDGET' if exc.reason == 'HTTP_CALL_BUDGET' else 'TIME_BUDGET', exc.message)
+            record = P.failure(ticker, 'PRICE_TRANSPORT', refused, reply)
+            failures.append(record)
+            event['status'] = record['failureClass']
+            raise
         except D.Refused as exc:
             record = P.failure(ticker, 'PRICE', exc, reply)
             failures.append(record)
@@ -111,7 +125,7 @@ def run(root, membership, fetch, *, now, monotonic=time.monotonic, sleep=time.sl
               'underlyingYahooHttpCalls': None, 'underlyingYahooHttpCallsStatus': 'NOT_INSTRUMENTED_YFINANCE_INTERNAL_TRANSPORT',
               'elapsedSeconds': round(monotonic()-started, 3), 'maxProviderAdapterCalls': max_calls,
               'maxSeconds': max_seconds, 'minimumRequestStartIntervalSeconds': pace,
-              'providerTimeoutSeconds': 20, 'diagnosticRetries': 0,
+              'providerHistoryTimeoutSeconds': 20, 'diagnosticRetries': 0,
               'nonzeroDividendRecords': sum(r['core']['cashDividendAsTraded'] > 0 for r in rows),
               'nonidentitySplitRecords': sum(r['core']['splitRatio'] != 1 for r in rows),
               'actionColumnsVerifiedRecords': len(rows),
@@ -141,16 +155,21 @@ def provider_http_evidence():
     from curl_cffi.requests import Session
     original = Session.request
     evidence = []
+    started = time.monotonic()
     def counted(session, method, url, *args, **kwargs):
+        if len(evidence) >= 2000:
+            raise TransportStop('HTTP_CALL_BUDGET', 'Pinned provider transport call budget spent')
+        if time.monotonic()-started >= MAX_SECONDS:
+            raise TransportStop('TIME_BUDGET', 'Pinned provider transport time budget spent')
         event = {'method': method, 'startedAt': S.now_utc(), 'statusCode': None}
         evidence.append(event)
         try:
             response = original(session, method, url, *args, **kwargs)
             event['statusCode'] = response.status_code
             if response.status_code == 429:
-                raise D.Refused('YAHOO_PROVIDER_REFUSAL', 'HTTP 429: rate limit; diagnostic refused internal retry')
+                raise TransportStop('PROVIDER_RATE_LIMIT', 'HTTP 429: rate limit; diagnostic refused internal retry')
             return response
-        except Exception as exc:
+        except BaseException as exc:
             event['exceptionType'] = type(exc).__name__
             raise
     Session.request = counted
@@ -175,6 +194,7 @@ def main(output):
         result.pop('digest')
         result['underlyingYahooHttpCalls'] = len(http)
         result['underlyingYahooHttpCallsStatus'] = 'OBSERVED_PINNED_CURL_SESSION_REQUESTS'
+        result['maxProviderHttpCalls'] = 2000
         result['providerHttpStatusCounts'] = dict(sorted(Counter(str(e['statusCode']) for e in http).items()))
         result = D.sealed(result)
         (root/'provider-http-attempts.json').write_text(json.dumps(http, sort_keys=True, indent=2)+'\n')

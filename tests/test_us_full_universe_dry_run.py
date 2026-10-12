@@ -85,6 +85,10 @@ def test_refuse_unpaced_expanded_or_occupied_stage_before_provider(tmp_path):
     with pytest.raises(ValueError):
         execute(tmp_path,pace=0)
     with pytest.raises(ValueError):
+        execute(tmp_path,pace=float("nan"))
+    with pytest.raises(ValueError):
+        execute(tmp_path,max_calls=2.5)
+    with pytest.raises(ValueError):
         execute(tmp_path,max_calls=1000)
     (tmp_path/'existing').write_text('untouched')
     with pytest.raises(D.Refused,match='fresh isolated'):
@@ -98,7 +102,7 @@ def test_transport_counts_actual_requests_stops_429_and_restores(monkeypatch):
         return SimpleNamespace(status_code=429)
     monkeypatch.setattr(Session,'request',response)
     with F.provider_http_evidence() as events:
-        with pytest.raises(D.Refused,match='429'):
+        with pytest.raises(F.TransportStop):
             Session.request(None,'GET','https://fixture.invalid')
     assert Session.request is response
     assert len(events) == 1 and events[0]['statusCode'] == 429
@@ -112,3 +116,36 @@ def test_manual_cli_import_has_no_provider_or_label_access(monkeypatch):
     monkeypatch.setattr(F.S,'current_sp500',forbidden)
     monkeypatch.setattr(F.S,'yahoo_daily',forbidden)
     runpy.run_path('scripts/dry_run_us_full_universe.py',run_name='import_only')
+
+
+def test_transport_stop_cannot_be_swallowed_by_vendor_exception_handler(tmp_path):
+    calls = []
+    def provider(ticker,start,through):
+        calls.append(ticker)
+        try:
+            if ticker == 'AAPL':
+                raise F.TransportStop('PROVIDER_RATE_LIMIT', 'HTTP 429')
+            return fetch(ticker,start,through)
+        except Exception:
+            raise AssertionError('Vendor must not swallow controlled stop') from None
+    result = execute(tmp_path,provider)
+    assert calls == ['QQQ','SPY','AAPL']
+    assert result['verdict'] == 'PARTIAL'
+    assert result['stopReason'] == 'PROVIDER_RATE_LIMIT'
+    assert result['collectedSecurities'] == 2
+
+
+def test_final_workflow_has_no_diagnostic_hook_and_producer_evidence_is_pinned():
+    from pathlib import Path
+    import hashlib
+    import subprocess
+    root = Path(__file__).resolve().parents[1]
+    workflow = (root/'.github/workflows/tests.yml').read_text()
+    assert 'dry_run_us_full_universe.py' not in workflow
+    assert 'us-full-universe-dry-run:' not in workflow
+    evidence = json.loads((root/'docs/us-readiness/us-full-universe-real-dry-run-actions-evidence-v1.json').read_text())
+    assert evidence['sourceAuditProjection']['collectedSecurities'] == 505
+    assert evidence['sourceAuditProjection']['verdict'] == 'PASS'
+    for path, sha in evidence['producerFileSha256'].items():
+        original = subprocess.check_output(['git','show',evidence['producerHeadSha']+':'+path],cwd=root)
+        assert hashlib.sha256(original).hexdigest() == sha
