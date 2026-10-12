@@ -1,8 +1,8 @@
 {
   "schemaVersion": "2.7.0",
   "modelVersion": "longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
-  "buildCommitSha": "e7c3494fc1f6",
-  "generatedAt": "2026-10-12T08:12:56.519620+00:00",
+  "buildCommitSha": "0f91f51a622c",
+  "generatedAt": "2026-10-12T09:27:52.019387+00:00",
   "marketAsOf": "2026-10-12",
   "macroRegime": "Goldilocks",
   "holdingsByRegion": {
@@ -32,7 +32,7 @@
       "005935.KS",
       "005490.KS",
       "009540.KS",
-      "326030.KS"
+      "032640.KS"
     ]
   },
   "modelPortfolioWeights": {
@@ -69,10 +69,10 @@
     "005935.KS": "WATCH",
     "005490.KS": "AVOID",
     "009540.KS": "AVOID",
+    "032640.KS": "AVOID",
     "326030.KS": "AVOID",
     "088350.KS": "WATCH",
-    "033780.KS": "ACCUMULATE_GRADUALLY",
-    "005930.KS": "WATCH"
+    "033780.KS": "ACCUMULATE_GRADUALLY"
   },
   "opportunityTiersByTicker": {
     "373220.KS": "EMERGING_OPPORTUNITY",
@@ -100,7 +100,7 @@
     "009540.KS": "ELEVATED_WARNING",
     "000660.KS": "ELEVATED_WARNING",
     "034730.KS": "WATCH",
-    "326030.KS": "WATCH",
+    "021240.KS": "WATCH",
     "STT": "WATCH",
     "ALL": "WATCH",
     "GM": "WATCH",
@@ -115,7 +115,7 @@
   "stale": false,
   "productionValidation": {
     "passed": true,
-    "validatedAt": "2026-10-12T08:12:56.519620+00:00",
+    "validatedAt": "2026-10-12T09:27:52.019387+00:00",
     "errors": []
   }
 }
