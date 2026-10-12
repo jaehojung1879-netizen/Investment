@@ -2,7 +2,7 @@
   "schemaVersion": "2.7.0",
   "modelVersion": "longterm-v2.2+regime-v2.1+entry-v1+probability-gated-regional-active-kelly-v3+daily-session-v2",
   "buildCommitSha": "3c0f4794ae6e",
-  "generatedAt": "2026-10-12T15:26:57.252514+00:00",
+  "generatedAt": "2026-10-12T18:30:34.059826+00:00",
   "marketAsOf": "2026-10-12",
   "macroRegime": "Goldilocks",
   "holdingsByRegion": {
@@ -10,8 +10,8 @@
       "TRV",
       "MU",
       "HST",
-      "STT",
       "NUE",
+      "STT",
       "SPG",
       "SWK",
       "GOOGL",
@@ -36,18 +36,18 @@
     ]
   },
   "modelPortfolioWeights": {
-    "HST": 0.283618,
-    "GOOG": 0.206805,
-    "GOOGL": 0.159577,
-    "021240.KS": 0.087473,
-    "005935.KS": 0.033621
+    "HST": 0.280824,
+    "GOOG": 0.208382,
+    "GOOGL": 0.160794,
+    "005935.KS": 0.051975,
+    "005490.KS": 0.048344
   },
   "entryStatesByTicker": {
     "TRV": "WAIT_FOR_PULLBACK",
     "MU": "WAIT_FOR_PULLBACK",
     "HST": "ACCUMULATE_GRADUALLY",
-    "STT": "WATCH",
     "NUE": "WAIT_FOR_PULLBACK",
+    "STT": "WATCH",
     "SPG": "WATCH",
     "SWK": "WATCH",
     "GOOGL": "ACCUMULATE_GRADUALLY",
@@ -61,13 +61,13 @@
     "078930.KS": "WAIT_FOR_PULLBACK",
     "402340.KS": "WATCH",
     "034730.KS": "WATCH",
-    "021240.KS": "ACCUMULATE_GRADUALLY",
+    "021240.KS": "WAIT_FOR_PULLBACK",
     "001450.KS": "WAIT_FOR_PULLBACK",
     "000660.KS": "WATCH",
     "161390.KS": "AVOID",
     "002380.KS": "WATCH",
     "005935.KS": "ACCUMULATE_GRADUALLY",
-    "005490.KS": "AVOID",
+    "005490.KS": "WATCH",
     "009540.KS": "AVOID",
     "326030.KS": "AVOID",
     "088350.KS": "WATCH",
@@ -84,13 +84,13 @@
     "000990.KS": "WATCH",
     "272210.KS": "EMERGING_OPPORTUNITY",
     "LIN": "EMERGING_OPPORTUNITY",
+    "ADI": "EMERGING_OPPORTUNITY",
     "VST": "EMERGING_OPPORTUNITY",
-    "IEX": "EMERGING_OPPORTUNITY",
     "NDSN": "EMERGING_OPPORTUNITY",
-    "PWR": "EMERGING_OPPORTUNITY",
-    "ITW": "EMERGING_OPPORTUNITY",
-    "NTAP": "EMERGING_OPPORTUNITY",
-    "HPE": "EMERGING_OPPORTUNITY"
+    "IEX": "EMERGING_OPPORTUNITY",
+    "TJX": "EMERGING_OPPORTUNITY",
+    "STZ": "EMERGING_OPPORTUNITY",
+    "NTAP": "EMERGING_OPPORTUNITY"
   },
   "warningTiersByTicker": {
     "005490.KS": "WATCH",
@@ -115,7 +115,7 @@
   "stale": false,
   "productionValidation": {
     "passed": true,
-    "validatedAt": "2026-10-12T15:26:57.252514+00:00",
+    "validatedAt": "2026-10-12T18:30:34.059826+00:00",
     "errors": []
   }
 }
