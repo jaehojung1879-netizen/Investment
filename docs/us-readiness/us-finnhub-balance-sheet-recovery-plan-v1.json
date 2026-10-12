@@ -1,0 +1,64 @@
+{
+  "contract": "US_FINNHUB_BALANCE_SHEET_RECOVERY_PLAN_V1",
+  "status": "PROPOSED_NOT_AUTHORIZED",
+  "authorizes": "NOTHING",
+  "executed": false,
+  "productionBackfillExecutedByThisChange": false,
+  "problem": "618 filings first served by Finnhub on 2026-10-08/09 and one each on 10-07, 10-10 and 10-11 (619 in all) carry no balance sheet; the other 34,327 stored filings are missing it in 0.414% of cases. Total assets is the denominator of cashOperatingProfitability and accrualsToAssets.",
+  "rootCauseStatus": "UNDETERMINED_BETWEEN_VENDOR_OMISSION_AND_VENDOR_KEY_CHANGE",
+  "whyUndetermined": "The collector stored report.bs only; the raw response, its keys, and every re-served copy of a stored filing were not kept.",
+  "rules": [
+    "No stored shard is rewritten, deleted or re-sorted; every correction is a NEW append-only row.",
+    "A missing total assets is never imputed, zeroed, taken from another period, another company or a later filing.",
+    "A supplemental row is visible from max(availableFrom, acceptedDate, the day the vendor served it); it is never back-dated to the filing day.",
+    "The frozen feature path (pipeline/us_cash_profitability.py) reads finnhub-*.jsonl.gz only and is not changed by this plan. Using a supplement in a prospective signal needs a new, hash-frozen feature contract version (protocol step P5).",
+    "The P4 historical exploratory run reads signal dates up to 2026-06-05 and filings visible before them; none of the 619 affected filings is visible before that date except the six listed in the P4 preflight, so P4 is unaffected."
+  ],
+  "steps": [
+    {
+      "id": "S0_PROBE",
+      "what": "Run scripts/probe_finnhub_balance_sheet.py once with the owner's own FINNHUB_API_KEY against the committed store snapshot.",
+      "command": "FINNHUB_API_KEY=... python scripts/probe_finnhub_balance_sheet.py --store <dir of finnhub-*.jsonl.gz from signal-history ledger/fundamentals/us> --output probe.json --raw-out probe-raw.jsonl.gz",
+      "maxCalls": 12,
+      "hardCeiling": 20,
+      "writesInto": "nothing in the repository or the store",
+      "ownerApproval": true,
+      "yields": "one of SERVED_NOW_COMPLETION_AVAILABLE, BALANCE_SHEET_FOUND_UNDER_ANOTHER_KEY, VENDOR_OMITS_BALANCE_SHEET_FOR_NEWLY_SERVED_FILINGS_ONLY, VENDOR_OMITS_BALANCE_SHEET_ENDPOINT_WIDE, INCONCLUSIVE, plus the raw response bodies the collector never kept",
+      "alternativeWithoutAKey": "after this change merges, the next nightly collection writes ledger/fundamentals/us/response-health.json, whose seenAgain counters answer the same question for free; its first run compares 829 tickers x two windows of re-served filings against the stored copies"
+    },
+    {
+      "id": "S1_DECIDE",
+      "what": "Read the S0 verdict and take exactly the matching branch.",
+      "ownerApproval": true,
+      "branches": {
+        "SERVED_NOW_COMPLETION_AVAILABLE": "S2_SUPPLEMENT",
+        "BALANCE_SHEET_FOUND_UNDER_ANOTHER_KEY": "S2_SUPPLEMENT after a parser change that reads the new key; the change and its tests are a separate reviewed PR",
+        "VENDOR_OMITS_BALANCE_SHEET_FOR_NEWLY_SERVED_FILINGS_ONLY": "BLOCKED_SOURCE: Finnhub does not currently supply the required values for the new quarter; S3",
+        "VENDOR_OMITS_BALANCE_SHEET_ENDPOINT_WIDE": "BLOCKED_SOURCE: the endpoint stopped supplying balance sheets altogether; S3",
+        "INCONCLUSIVE": "repeat S0 with a different ticker sample; do not proceed to S2"
+      }
+    },
+    {
+      "id": "S2_SUPPLEMENT",
+      "what": "One bounded re-fetch of the affected tickers into a NEW append-only family ledger/fundamentals/us-supplement-v1/finnhub-supplement-YYYY.jsonl.gz.",
+      "scope": "tickers that have a stored filing without a balance sheet (601 tickers with an October filing, plus the 134 September records with an income or cash-flow statement), one quarterly request from 2026-01-01 per ticker, plus one annual request for the 45 October 10-K filings' tickers",
+      "maxCalls": 700,
+      "pace": "1.1 seconds per call, about 13 minutes",
+      "row": "the full raw statements as served, supplementOf = the stored filing id, observedAt = the response time, bodySha256 of the response; a row is written only for a filing whose served balance sheet states Assets in a currency unit",
+      "rewritesStoredShards": false,
+      "ownerApproval": true,
+      "requires": "S1 branch SERVED_NOW or KEY_MOVED, a reviewed PR for the supplement writer, and the owner dispatching it; nothing here is run by the nightly collection"
+    },
+    {
+      "id": "S3_BLOCKED_SOURCE",
+      "what": "Report BLOCKED_SOURCE for the affected filings and keep the prospective cash-profitability signal unmeasurable until a source states total assets for them.",
+      "ownerActions": [
+        "ask Finnhub support whether financials-reported intentionally omits the balance sheet (bs) for filings first served after 2026-10-07, and whether it will be back-filled",
+        "evaluate a second vendor for the balance sheet only, under the vendor-refusal and PIT invariants; SEC hosts remain blocked from this CI egress",
+        "if no source is found, defer prospective registration (P5) rather than registering a signal that is dark for the whole cross-section"
+      ],
+      "ownerApproval": true
+    }
+  ],
+  "unaffectedByThisPlan": ["docs/results/*", "signal-history shards", ".github/workflows/*", "the US daily price collector and its storage"]
+}

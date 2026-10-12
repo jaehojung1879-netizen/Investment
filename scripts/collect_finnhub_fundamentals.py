@@ -65,6 +65,7 @@ ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 
 from pipeline import finnhub_fundamentals as FF  # noqa: E402
+from pipeline import finnhub_response_health as FH  # noqa: E402
 from pipeline import historical_store as HS  # noqa: E402
 
 BASE = "https://finnhub.io/api/v1/stock/financials-reported"
@@ -151,6 +152,14 @@ def load_done_windows(store: Path) -> set[tuple[str, str, str]]:
     return FF.normalise_done(raw)
 
 
+def load_health(store: Path) -> dict | None:
+    path = store / "response-health.json"
+    try:
+        return json.loads(path.read_text(encoding="utf-8")) if path.exists() else None
+    except ValueError:
+        return None
+
+
 def save_done_windows(store: Path, done: set[tuple[str, str, str]]) -> None:
     (store / "windows.json").write_text(
         json.dumps(sorted(list(w) for w in done), indent=0, ensure_ascii=False),
@@ -195,6 +204,9 @@ def main(argv=None) -> int:
     spans = FF.windows(args.from_year, args.through)
     done_windows = load_done_windows(store)
     existing_ids, shards = load_existing(store)
+    # Evidence only: the stored row for each id, so a re-served copy can be compared with it before it is discarded.
+    stored_by_id = {str(row.get("id")): row for rows in shards.values() for row in rows if row.get("id")}
+    health = FH.ResponseHealth()
     pending = FF.work_list(tickers, spans, done_windows, frequencies)
 
     state = FF.progress(len(done_windows), len(pending))
@@ -241,6 +253,8 @@ def main(argv=None) -> int:
 
         for filing in rows:
             record, reason = FF.build_record(ticker, filing, collected_at, freq)
+            health.observe(freq, filing, stored_by_id.get(record["id"]) if record else None,
+                           record["id"] if record else None)
             if record is None:
                 refused[reason] += 1
                 continue
@@ -250,6 +264,7 @@ def main(argv=None) -> int:
                 seen_again[freq] += 1
                 continue
             existing_ids.add(record["id"])
+            stored_by_id[record["id"]] = record      # the other frequency's copy of this filing is now a re-serve
             fresh.setdefault(FF.shard_year(record), []).append(record)
             fresh_records.append(record)
         done_windows.add((ticker, start, end, freq))
@@ -267,6 +282,12 @@ def main(argv=None) -> int:
         if HS.write_shard(path, merged):
             written.append(f"{path.name}({len(merged):,})")
     save_done_windows(store, done_windows)
+    # The sidecar is written beside the shards but is not one: it is a bounded run history, rewritten each run like
+    # `windows.json`, and nothing that reads `finnhub-*.jsonl.gz` can see it.
+    health_summary = health.summary()
+    (store / "response-health.json").write_text(
+        json.dumps(FH.merge_history(load_health(store), health_summary, collected_at), indent=1, sort_keys=True, ensure_ascii=False),
+        encoding="utf-8")
 
     print("\n=== 이번 실행 ===")
     print(f"  호출 {calls:,} · 중단 사유 {stop_reason}")
@@ -281,6 +302,17 @@ def main(argv=None) -> int:
         for freq, count in seen_again.most_common():
             print(f"    {freq:<20} {count:,}")
     print(f"  새 공시 {len(fresh_records):,}건 · 샤드 {', '.join(written) or '없음'}")
+
+    new_part, seen_part = health_summary["new"], health_summary["seenAgain"]
+    print(f"  응답 건전성 · 새 공시 {new_part['filings']:,}건 중 재무상태표(총자산) 없음 {new_part['balanceSheetMissing']:,}건 · "
+          f"이미 있던 공시 {seen_part['filings']:,}건 중 없음 {seen_part['balanceSheetMissing']:,}건")
+    print(f"    저장본엔 없고 이번엔 있음 {seen_part['storedLostButServedNow']:,} · 저장본엔 있고 이번엔 없음 "
+          f"{seen_part['storedHadButNotServedNow']:,} · 모르는 키 filing {health_summary['unknownFilingKeys'] or '없음'} "
+          f"report {health_summary['unknownReportKeys'] or '없음'}")
+    if health_summary["degraded"]:
+        # Annotation only: the exit code is unchanged, so the nightly commit of the income and cash-flow data is not blocked.
+        print("::warning title=finnhub balance sheet missing::새 공시의 5% 초과가 총자산을 포함하지 않습니다 "
+              "(response-health.json 참고). 수집은 계속되었고 값은 채워 넣지 않았습니다.")
 
     after = FF.progress(len(done_windows), len(pending) - calls if pending else 0)
     print(f"  진행률 {after['collected']:,} 창 완료")
