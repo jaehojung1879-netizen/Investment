@@ -1,0 +1,267 @@
+{
+ "calibratedGeometry": {
+  "byYear": {
+   "2013": 43,
+   "2014": 52,
+   "2015": 53,
+   "2016": 14,
+   "2017": 0,
+   "2018": 0,
+   "2019": 0,
+   "2020": 0,
+   "2021": 0,
+   "2022": 0,
+   "2023": 0,
+   "2024": 0,
+   "2025": 0,
+   "2026": 1
+  },
+  "definedDatesBelowCalibratedMin": 163,
+  "minNamesEvaluated": 245
+ },
+ "cohorts": {
+  "definedAndResolved": 692,
+  "definedSignalDates": 700,
+  "exceedsProtocolMaximum": false,
+  "maturedDefinedCohorts": 692,
+  "minimumDefinedWeeks": 260,
+  "rule": "a held name needs a positive close ON the entry session and ON the exit session; interior gaps are carried forward",
+  "unresolvedCohorts": 0,
+  "unresolvedExamples": [],
+  "unresolvedSharePct": 0.0
+ },
+ "contract": "US_CASH_PROFITABILITY_EXPLORATORY_V1",
+ "counters": {
+  "featureBuilds": 715,
+  "intervalComputations": 0,
+  "outcomeReads": 0
+ },
+ "evidenceClassOfTheFutureRun": "EXPLORATORY_DEVELOPMENT_ON_OUTCOME_EXPOSED_US_HISTORY",
+ "floor150": {
+  "belowDates": [
+   "2013-01-04",
+   "2013-01-11",
+   "2013-01-18",
+   "2013-01-25",
+   "2013-02-01",
+   "2013-02-08",
+   "2013-02-15",
+   "2013-02-22",
+   "2013-03-01",
+   "2026-08-07",
+   "2026-08-14",
+   "2026-08-21",
+   "2026-08-28",
+   "2026-09-04",
+   "2026-09-11"
+  ],
+  "datesBelow": 15
+ },
+ "frozenDefinitions": {
+  "controls": [
+   "logTradedValue63",
+   "mom121",
+   "vol252",
+   "operatingProfitabilityToAssets"
+  ],
+  "entryConvention": "close of the first session after the signal date",
+  "excludedSectors": [
+   "Financials",
+   "Real Estate"
+  ],
+  "feature": "cashOperatingProfitability",
+  "horizon": 63,
+  "minNamesPerDate": 150,
+  "snCriticalValue": 28.31
+ },
+ "fundamentalsCollection": {
+  "byCollectionDay": {
+   "2026-09-13": {
+    "bsCf": 8860,
+    "bsNoCf": 131,
+    "noBsCf": 41,
+    "noBsNoCf": 42
+   },
+   "2026-09-14": {
+    "bsCf": 25114,
+    "bsNoCf": 80,
+    "noBsCf": 25,
+    "noBsNoCf": 34
+   },
+   "2026-10-07": {
+    "noBsCf": 1
+   },
+   "2026-10-08": {
+    "noBsCf": 588
+   },
+   "2026-10-09": {
+    "noBsCf": 28
+   },
+   "2026-10-10": {
+    "noBsCf": 1
+   }
+  },
+  "lateCollectedWithoutBalanceSheetVisibleBeforeLastMaturedSignal": [
+   {
+    "form": "10-K",
+    "periodEnd": "2025-12-31",
+    "ticker": "STI",
+    "visibleAfter": "2026-04-15"
+   },
+   {
+    "form": "10-Q",
+    "periodEnd": "2026-03-31",
+    "ticker": "VMRK",
+    "visibleAfter": "2026-04-30"
+   },
+   {
+    "form": "10-Q",
+    "periodEnd": "2026-03-31",
+    "ticker": "ECHO",
+    "visibleAfter": "2026-05-11"
+   },
+   {
+    "form": "10-Q",
+    "periodEnd": "2026-03-31",
+    "ticker": "PARA",
+    "visibleAfter": "2026-05-15"
+   },
+   {
+    "form": "10-K",
+    "periodEnd": "2026-03-31",
+    "ticker": "FLEX",
+    "visibleAfter": "2026-05-20"
+   },
+   {
+    "form": "10-Q",
+    "periodEnd": "2026-03-31",
+    "ticker": "STI",
+    "visibleAfter": "2026-05-20"
+   }
+  ],
+  "reading": "filings collected after 2026-09-14 carry no balance sheet, so total assets (the denominator of the feature and of the accrual-profitability control) is not stated for them. The ones visible before the last matured signal date are listed: on those dates the name falls back to its previous filing or drops out (frozen staleness rule), which is part of the pinned input, not repaired. Prospective signals would be dark"
+ },
+ "identities": {
+  "calibrationProtocolSha256": "8bb72a8a083125e6506dfeca82eb1def1607b443afab2dc96233b54f7cbcf1ba",
+  "calibrationResultSha256": "a6c34275ab28dd75487a1d3848d311eb7fa2efeefc261f04794e7f8e5a7ae8d7",
+  "code:pipeline/alpha_inference_calibration_v4.py": "024231e1adeeb4d29ea047d187eb7eb5478fd21c442991bd1c8963d6a38cd601",
+  "code:pipeline/us_cash_profitability.py": "c4ff70f28b6ba25028e2b1fc63bae0f15469c0da66e8b4bfadad676cb27d42c3",
+  "code:pipeline/us_cash_profitability_exploratory.py": "fdca85eecbfb7d36f60081822ee67857d95968a9505e1ea57cfb9609e032c032",
+  "code:pipeline/us_h63_inference_calibration.py": "55e1d52b389aa86c9e6d631ada6b25532046f9cd3e77d38e949eefe20cffb1bc",
+  "code:scripts/audit_us_alpha_phase3_readiness.py": "1901c27cfad058237f9e57a544867474fa4ada68ad477059e160cd12a25d9d9e",
+  "code:scripts/run_us_cash_profitability_exploratory.py": "e53a6542d55fd7d47826a7bf70d95d172d0638f40a4e88bc8e794f470c7bbc52",
+  "fundamentalsCommit": "704d7db6d5b00def771aba5d2665d0846d6bc776",
+  "membershipSha256": "397b27270255d7a14a36d075a3e2889129d9351d817420614c8ccd289d74c30f",
+  "replayManifestSha256": "f0781292f508a123c234ded6d28aa8e84a0dc3cc29500e14989dc0b68f53b4d2",
+  "replayThrough": "2026-09-14",
+  "sectorsSha256": "f49c15a0ebcd371c9a407118abb6ef350bba2060227ca40d61ba210fc4f81a74",
+  "studyProtocolSha256": "e792214d3ba31e024173b924ee717b06c81ad89b6d3bbb9bdeaa27bf04389bf9"
+ },
+ "lastMaturedSignalDate": "2026-06-05",
+ "memberStatusNote": "engine-free context: NO_FUNDAMENTAL_RECORD here means price-and-identity eligible; the feature path decides the rest",
+ "memberStatusTotals": {
+  "IDENTITY_AMBIGUOUS": 7260,
+  "NO_FUNDAMENTAL_RECORD": 302189,
+  "NO_PRICE_PANEL": 46934,
+  "PRICE_HISTORY_INSUFFICIENT": 3143
+ },
+ "mode": "PREFLIGHT_OUTCOME_FREE",
+ "namesPerDate": {
+  "byYear": {
+   "2013": {
+    "dates": 52,
+    "median": 198.0,
+    "min": 19
+   },
+   "2014": {
+    "dates": 52,
+    "median": 210.5,
+    "min": 195
+   },
+   "2015": {
+    "dates": 53,
+    "median": 220.0,
+    "min": 210
+   },
+   "2016": {
+    "dates": 52,
+    "median": 248.5,
+    "min": 226
+   },
+   "2017": {
+    "dates": 52,
+    "median": 263.0,
+    "min": 257
+   },
+   "2018": {
+    "dates": 52,
+    "median": 281.0,
+    "min": 266
+   },
+   "2019": {
+    "dates": 52,
+    "median": 283.0,
+    "min": 278
+   },
+   "2020": {
+    "dates": 53,
+    "median": 308.0,
+    "min": 286
+   },
+   "2021": {
+    "dates": 52,
+    "median": 325.0,
+    "min": 313
+   },
+   "2022": {
+    "dates": 52,
+    "median": 321.0,
+    "min": 309
+   },
+   "2023": {
+    "dates": 52,
+    "median": 332.0,
+    "min": 299
+   },
+   "2024": {
+    "dates": 52,
+    "median": 316.5,
+    "min": 278
+   },
+   "2025": {
+    "dates": 52,
+    "median": 333.0,
+    "min": 319
+   },
+   "2026": {
+    "dates": 37,
+    "median": 357.0,
+    "min": 10
+   }
+  },
+  "max": 371,
+  "median": 285.0,
+  "min": 10,
+  "p10": 209.0
+ },
+ "phase3Reproduction": {
+  "committed": {
+   "companiesEver": 459,
+   "eligibleNonFinancialMemberDates": 18469,
+   "medianNamesPerDate": 285.0,
+   "primaryCompletePct": 83.426
+  },
+  "companiesEver": 459,
+  "dates": 55,
+  "eligibleNonFinancialMemberDates": 18469,
+  "medianNamesPerDate": 285.0,
+  "primaryCompleteMemberDates": 15408,
+  "reproduces": true
+ },
+ "study": "us-cash-profitability-signal-v1",
+ "weeklySignalDates": {
+  "count": 715,
+  "first": "2013-01-04",
+  "last": "2026-09-11"
+ }
+}

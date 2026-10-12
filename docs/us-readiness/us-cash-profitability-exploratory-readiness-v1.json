@@ -1,0 +1,152 @@
+{
+ "authorizes": "NOTHING",
+ "contract": "US_CASH_PROFITABILITY_EXPLORATORY_V1",
+ "executed": false,
+ "executionReadiness": "BLOCKED",
+ "items": [
+  {
+   "evidence": "pipeline/us_cash_profitability.features_as_of uses a filing only strictly after max(availableFrom, acceptedDate) and the latest visible period end, stale over 180 days; raw filings are read blob-verified from fundamentals commit 704d7db6d5b00def771aba5d2665d0846d6bc776; restatements arrive as their own filing",
+   "id": "PIT_FINANCIAL_STATEMENT_VISIBILITY",
+   "residualRisk": "as-reported (first) vintages only; no restated-value look-ahead path exists in the store",
+   "state": "PASS"
+  },
+  {
+   "condition": "a member is taken from the latest snapshot strictly before the signal date; inside the 21 snapshot gaps over 45 days the snapshot is stale, and ambiguous identities are excluded, never guessed. Disclosed, not repaired",
+   "evidence": {
+    "gapsOver45Days": 21,
+    "identityAmbiguousMemberDates": 7260,
+    "maxSnapshotGapDays": 769,
+    "membershipSnapshots": 195,
+    "tickerReuseDifferentIssuer": 29,
+    "verifiedRenames": 14
+   },
+   "id": "UNIVERSE_MEMBERSHIP_AND_IDENTITY",
+   "state": "CONDITIONAL"
+  },
+  {
+   "evidence": "replay-v16 total-return panel, manifest f0781292f508a123... verified by SealedReader; the traded-value control is withheld when a split falls in its window; a forward return is a ratio of total-return closes, so splits and dividends enter through the panel's own adjustment",
+   "id": "PRICE_AND_CORPORATE_ACTION_CONSISTENCY",
+   "state": "PASS"
+  },
+  {
+   "condition": "the sample is survivor-conditioned: missing names are ONLY departed ones (informative missingness), which the calibration's random missingness does not model. It biases the estimand, not the interval's coverage. No priced panel ends inside the window, so the UNRESOLVED rule has nothing to act on and cannot repair this. Owner must acknowledge that an ABANDON reading may partly reflect the missing departed names",
+   "evidence": {
+    "departedIdentities": 324,
+    "departedWithoutPrices": 212,
+    "maturedCohortsWithUnresolvedHeldName": 0,
+    "noPanelCurrentMembers": 0,
+    "noPanelPctOfMemberDatesFirstYear": 30.3231,
+    "noPanelPctOfMemberDatesLastYear": 0.5374,
+    "terminatedPanelsInSample": 0
+   },
+   "id": "DEPARTED_SECURITIES_AND_TERMINAL_CONSIDERATION",
+   "state": "CONDITIONAL"
+  },
+  {
+   "evidence": {
+    "datesBelow150": 15,
+    "definedSignalDates": 700,
+    "maturedDefinedCohorts": 692,
+    "medianNamesPerDate": 285.0,
+    "minimumDefinedWeeks": 260,
+    "weeklySignalDates": 715
+   },
+   "id": "COMPLETE_CASE_SAMPLE",
+   "state": "PASS"
+  },
+  {
+   "condition": "the calibration licenses CT_SN by weeks (>= 260) and evaluated 245-330 names per date; defined dates with 150-244 names are inside the protocol floor but outside the evaluated geometry",
+   "evidence": {
+    "byYear": {
+     "2013": 43,
+     "2014": 52,
+     "2015": 53,
+     "2016": 14,
+     "2026": 1
+    },
+    "calibratedMinimumNamesPerDate": 245,
+    "definedDatesBelowIt": 163
+   },
+   "id": "CALIBRATED_GEOMETRY",
+   "state": "CONDITIONAL"
+  },
+  {
+   "evidence": "entry at the close of the first session after the signal date, exit 63 sessions later; S_t = sum w (C[exit]/C[entry] - 1); SPY cancels because weights sum to zero within sector; a held name without a close at entry or exit makes the cohort UNRESOLVED (never zero, never last price) and > 10% unresolved is NOT_EVALUABLE; tested on synthetic data",
+   "id": "H63_OUTCOME_CONSTRUCTION",
+   "state": "PASS"
+  },
+  {
+   "evidence": "alpha_inference_calibration_v4.calendar_time_sn_interval with U1 28.31 on the compounded calendar-week series, which equals v4's calendar_time_series on additive uniform data and sums exactly to the signal-date statistic (tested)",
+   "id": "CT_SN_INFERENCE_CONTRACT",
+   "state": "PASS"
+  },
+  {
+   "evidence": {
+    "intervalComputations": 0,
+    "outcomeReads": 0,
+    "phase3ReproductionOn55Dates": true
+   },
+   "id": "FROZEN_DEFINITIONS_NO_LEAKAGE",
+   "state": "PASS"
+  },
+  {
+   "condition": "EXPLORATORY_DEVELOPMENT_ON_OUTCOME_EXPOSED_US_HISTORY only: one run, futility screen only, never confirmation",
+   "evidence": "this statistic was never computed on US outcomes; the same 2013-2026 history is exposed through other features (four-factor value sleeve incl. fcfYield, quality, momentum, low-vol; the 31-feature regional model without cash flow)",
+   "id": "OUTCOME_EXPOSURE_AND_BUDGET",
+   "state": "CONDITIONAL"
+  },
+  {
+   "evidence": "no authorization record exists (by design)",
+   "id": "OWNER_AUTHORIZATION",
+   "remedy": "owner commits docs/us-readiness/us-cash-profitability-exploratory-authorization-v1.json pinning every identity in the preflight",
+   "state": "BLOCKED"
+  },
+  {
+   "evidence": "local guards only (no committed result, new output path); no workflow and no study-level git ref",
+   "id": "DURABLE_ONE_SHOT_LOCK",
+   "remedy": "owner-approved manual workflow on merged main that creates refs/tags/us-cash-profitability-signal-v1-exploratory-lock atomically before the first outcome read and refuses if any ref under that prefix exists",
+   "state": "BLOCKED"
+  }
+ ],
+ "observationsNotGatingP4": [
+  {
+   "evidence": {
+    "byCollectionDay": {
+     "2026-10-07": {
+      "noBsCf": 1
+     },
+     "2026-10-08": {
+      "noBsCf": 588
+     },
+     "2026-10-09": {
+      "noBsCf": 28
+     },
+     "2026-10-10": {
+      "noBsCf": 1
+     }
+    },
+    "filingsCollectedAfterPanelEnd": 618,
+    "lastMaturedSignalDate": "2026-06-05",
+    "ofWhichWithBalanceSheet": 0,
+    "undefinedUnmaturedSignalDates": [
+     "2026-08-07",
+     "2026-08-14",
+     "2026-08-21",
+     "2026-08-28",
+     "2026-09-04",
+     "2026-09-11"
+    ],
+    "visibleBeforeLastMaturedSignal": 6
+   },
+   "gatesP4": false,
+   "gatesProspective": true,
+   "id": "PROSPECTIVE_FUNDAMENTALS_BALANCE_SHEET_GAP",
+   "reading": "filings collected after 2026-09-14 carry no balance sheet, so total assets (the denominator of the feature and of the accrual-profitability control) is not stated for them. The ones visible before the last matured signal date are listed: on those dates the name falls back to its previous filing or drops out (frozen staleness rule), which is part of the pinned input, not repaired. Prospective signals would be dark",
+   "remedy": "separate source diagnostic of the Finnhub financials-reported collector before any prospective registration; cause not determined here (the collector's history is not visible in this checkout)"
+  }
+ ],
+ "overall": "BLOCKED",
+ "preflight": "docs/us-readiness/us-cash-profitability-exploratory-preflight-v1.json",
+ "scientificReadiness": "CONDITIONAL",
+ "study": "us-cash-profitability-signal-v1"
+}
