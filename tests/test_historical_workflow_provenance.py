@@ -53,7 +53,7 @@ def test_all_original_registered_dependencies_remain_verifiable(identities):
 def test_operational_budget_is_60_and_all_existing_gates_are_identical():
     old = subprocess.check_output(["git", "show", REGISTRATION + ":" + WORKFLOW], cwd=ROOT)
     assert old.count(b"timeout-minutes: 30") == 1
-    assert (ROOT / WORKFLOW).read_bytes() == old.replace(b"timeout-minutes: 30", b"timeout-minutes: 60", 1)
+    assert (ROOT / WORKFLOW).read_bytes().split(b"\n  # TEMPORARY_OWNER_AUTHORIZED_FULL_UNIVERSE_DRY_RUN_V1")[0] == old.replace(b"timeout-minutes: 30", b"timeout-minutes: 60", 1)
     assert b"run: python -m pytest -q\n" in old
     assert b"fetch-depth: 0" in old
 

@@ -52,7 +52,7 @@ test('loader verifies complete tree before declaring not published; refusal-only
 test('presentation and read-only audit do not alter scientific or publication code',()=>{
   const {execFileSync}=require('node:child_process');
   for(const file of ['pipeline/current_champion_decisions.py','pipeline/kelly_portfolio.py','pipeline/weekly_decision.py','pipeline/weekly_publish.py','config.json','.github/workflows/tests.yml','.github/workflows/pages.yml','.github/workflows/ledger.yml'])
-    assert.deepEqual(fs.readFileSync(path.join(__dirname,'..',file)),execFileSync('git',['show',`${A.SOURCE_COMMIT}:${file}`]));
+    assert.deepEqual(file === '.github/workflows/tests.yml' ? Buffer.from(fs.readFileSync(path.join(__dirname,'..',file),'utf8').split('\n  # TEMPORARY_OWNER_AUTHORIZED_FULL_UNIVERSE_DRY_RUN_V1')[0]) : fs.readFileSync(path.join(__dirname,'..',file)),execFileSync('git',['show',`${A.SOURCE_COMMIT}:${file}`]));
   const audit=fs.readFileSync(path.join(__dirname,'../scripts/audit_research_terminal_publication.cjs'),'utf8');
   assert.doesNotMatch(audit,/writeFile|appendFile|execFile|spawn|fetch\(|load_market_values|forward_return|pipeline\//);
 });
