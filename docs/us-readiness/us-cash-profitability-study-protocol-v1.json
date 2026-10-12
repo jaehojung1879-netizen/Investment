@@ -78,12 +78,13 @@
   ],
   "horizonSessions": 63,
   "test": "one-sided, H1: mean S_t > 0",
-  "inference": "candidate: calendar-time-attribution self-normalized interval (the method alpha-inference-calibration-v5 validated for linear statistics). Its coverage for THIS statistic is NOT established: v5 was calibrated at 60 names, H21/H126, two-sided 97.5%, centred-rank weights; this claim is ~285 names, H63, one-sided 95%, OLS-residual weights on controls correlated 0.77 with the feature. Prerequisite P3 must PASS before registration; until then no interval, p-value or verdict of the primary is valid",
+  "inference": "calendar-time attribution + Lobato/Shao self-normalised interval (CT_SN), U1 90% critical value 28.31 (one-sided 95% per side). Calibrated for THIS statistic by US_H63_INFERENCE_CALIBRATION_V1 (synthetic only; protocol frozen before any replicate, sha256 8bb72a8a...): PASS in every gating DGP at 260 and 700 weekly signals (coverage of the 90% interval 0.895-0.911, each one-sided error 0.040-0.057, 2,000 replicates per cell). Not licensed below 260 weekly signals: at 130 one gating cell (missing names + unresolved terminal events) is INCONCLUSIVE, so no interval is quoted at the futility look. Calendar-time Newey-West (CT_NW_AUTO) also passed and is a pre-declared sensitivity only; the primary was named before any result and is not switched to the higher-power method",
   "alpha": 0.05,
   "count": 1,
   "units": "percentage points of H63 excess return earned by $1 long / $1 short (gross 2); a weighted RETURN, not a correlation",
-  "inferenceStatus": "BLOCKED_PENDING_CALIBRATION",
-  "interval": "two one-sided 95% bounds of the same calibrated interval (equivalently a two-sided 90% interval); the lower bound decides SUPPORTED, the upper bound decides REFUTED, and both cannot hold at once"
+  "inferenceStatus": "CALIBRATED_SYNTHETIC_PASS_AT_260_AND_700_WEEKS",
+  "interval": "two one-sided 95% bounds of the same calibrated interval (equivalently a two-sided 90% interval); the lower bound decides SUPPORTED, the upper bound decides REFUTED, and both cannot hold at once",
+  "calibration": "docs/us-readiness/us-h63-inference-calibration-v1-result.json"
  },
  "secondaryAndDescriptive": {
   "secondaryFamilyHolm": [
@@ -135,9 +136,10 @@
   "redundant": "primary not supported AND the Holm-adjusted lower bound of the sector-neutral spread at H63 (same units as the primary) > 0: the ordering earned something only through sector, size, momentum, volatility or accrual profitability. Rank IC never enters this rule",
   "unstable": "supported overall but opposite signs in the two halves of the prospective period",
   "inconclusive": "anything else, including too many UNRESOLVED dates (> 10%)",
-  "futility": "one NON-BINDING look at 130 matured H63 signal dates (stopping can only forgo a later efficacy claim; it never adds one, so it does not inflate the gate's type I error). Stop if conditional power for the controlled factor spread, at a planning effect stated in RETURN units, is below 10%. Both the planning effect and the conditional-power calculation require the primary statistic's calibrated variance (P3, with the variance side of P4) and must be fixed before registration; the rank-IC proxy may not supply either. Status: SPECIFICATION_PENDING",
+  "futility": "one NON-BINDING look at 130 matured H63 signal dates: stop if the interim POINT ESTIMATE of the controlled factor spread is <= 0. It uses no interval (CT_SN is not licensed at 130) and no planning effect, so it needs neither the rank-IC proxy nor an assumed variance; being non-binding it cannot inflate the gate's type I error. Synthetic operating characteristics (calibration v1, 1,000 replicates): P(stop) 0.49 under the null, about 0.20 at a 1.7%/yr spread and 0.06-0.08 at 3.4%/yr; in those replicates no stopped run would have ended SUPPORTED at 260, so the measured power loss is 0. It replaces the earlier SPECIFICATION_PENDING conditional-power wording; the rank-IC proxy may not supply a futility boundary",
   "noRetroactiveChange": "features, controls, horizon, statistic, gate and floors cannot change after the first signal; a change is a new study id",
-  "validityPrecondition": "no verdict below is valid unless P3 has PASSED for the primary statistic at the gate size and at the futility size; otherwise the study cannot be registered"
+  "validityPrecondition": "satisfied for the gate by US_H63_INFERENCE_CALIBRATION_V1 (P3 PASS at 260 and 700 weekly signals, synthetic geometry only). A verdict needs at least 260 matured weekly signal dates; no interval is quoted below that. A material change of the geometry (names per date, horizon, weights, missingness, terminal-event rate) needs a new calibration version",
+  "unresolvedTerminalRequirement": "the 'any held name UNRESOLVED voids the date' rule removes every cohort whose window contains an unresolved terminal event: in the synthetic geometry 0.2 such events per year voided 3.9% of dates. Keeping voided dates under the 10% INCONCLUSIVE limit therefore needs fewer than roughly 0.5 unresolved terminal events per year among the ~285 scored names, i.e. near-complete terminal-consideration capture. This is a data requirement, not something inference can absorb"
  },
  "falsification": [
   "prospective primary upper bound <= 0 at the gate",
@@ -146,11 +148,23 @@
   "sign reverses between halves"
  ],
  "powerPlanning": {
-  "status": "NOT_ESTABLISHED_FOR_THE_PRIMARY_STATISTIC",
-  "available": "docs/us-readiness/us-alpha-phase3-readiness-v1.json powerPlanning: an ILLUSTRATIVE rank-IC proxy (scope ILLUSTRATIVE_RANK_IC_PROXY_NOT_PRIMARY_STATISTIC_POWER)",
-  "whatTheProxySays": "a mean weekly rank IC of about 0.05 at H63 needs ~6 years and about 0.03 at H21 ~5.5 years on the S&P 500 (one-sided 5%, power 80%, no residualisation gain); Phase 2's independence-based rank-IC table was optimistic by ~1.7x. A realistic large-cap effect may be INCONCLUSIVE at the gate",
-  "whatItCannotSay": "the power, minimum detectable spread, gate size or futility boundary of the controlled H63 factor spread",
-  "howThePrimaryWillBeSized": "after P3: simulate the primary statistic under the calibrated method at T = 130 and 260 weekly signals, with the per-week variance of the calendar-time series D(w) taken from an assumption stated in return units or from the variance (never the mean) of the P4 exploratory run, and fix the gate, the planning effect and the futility boundary from that, before registration"
+  "status": "SYNTHETIC_POWER_AVAILABLE_FOR_THE_PRIMARY_STATISTIC",
+  "source": "docs/us-readiness/us-h63-inference-calibration-v1-result.json",
+  "assumptions": "synthetic only: per-H63 spread standard deviation about 200 bp (about 4%/yr), the calibration's return and characteristic processes, rank-linear control exposures; real spread volatility is unknown and power scales with effect / volatility",
+  "ctSnPowerOneSided5pct": {
+   "260 weeks": {
+    "0.86%/yr": "0.12-0.14",
+    "1.71%/yr": "0.27-0.32",
+    "3.42%/yr": "0.55-0.61"
+   },
+   "700 weeks": {
+    "0.85%/yr": "0.17-0.22",
+    "1.71%/yr": "0.43-0.46",
+    "3.42%/yr": "0.83-0.85"
+   }
+  },
+  "reading": "at the 260-week gate only a large spread (~3.4%/yr against ~4%/yr volatility) is detected more often than not; a realistic large-cap effect will often end INCONCLUSIVE, and the protocol says so before any outcome",
+  "illustrativeRankIcProxy": "docs/us-readiness/us-alpha-phase3-readiness-v1.json powerPlanning (rank IC only; not the primary statistic)"
  },
  "prerequisitesBeforeRegistration": [
   {
@@ -169,7 +183,17 @@
    "what": "Monte Carlo coverage calibration of the calendar-time self-normalized interval for the EXACT primary statistic: OLS-residual weights on sector dummies and four control ranks (controls correlated with the feature, returns loading on the controls), ~285 names per date, weekly signals, H63 forward windows overlapping ~12 weeks, persistent (quarterly-refreshed) weights, heavy-tailed and persistent-shared DGPs, one-sided 95% bounds, at T = 130 (futility), 260 (gate) and ~700 (exploratory history); the same for the H21/H126 and sector-neutral secondaries if they are to carry inference. Reuse the alpha-inference-calibration v4/v5 engine and its Clopper-Pearson PASS/FAIL/INCONCLUSIVE rule; a new US calibration spec, not a change to v5",
    "ownerApproval": false,
    "why": "v5 PASSED for 60 names, H21/H126, two-sided 97.5% and centred-rank weights; none of those is this statistic. Overlapping H63 windows are removed exactly by calendar-time attribution (the statistic is linear in returns), so the self-normalized pivot remains the right CANDIDATE, but the remaining dependence comes from persistent weights and persistent shared returns, which is precisely where v4 read INCONCLUSIVE",
-   "status": "REGISTRATION_BLOCKER"
+   "status": "COMPLETE_SYNTHETIC_PASS",
+   "calibrationResult": {
+    "p3Status": "PASS",
+    "contract": "US_H63_INFERENCE_CALIBRATION_V1",
+    "result": "docs/us-readiness/us-h63-inference-calibration-v1-result.json",
+    "protocol": "docs/us-readiness/us-h63-inference-calibration-v1-protocol.json",
+    "primaryMethod": "CT_SN",
+    "minimumWeeklySignalsForAnInterval": 260,
+    "intervalQuotableAt130Weeks": false,
+    "scope": "synthetic DGPs declared in the frozen protocol; a PASS licenses the interval's error rates under those processes, not the existence of any return"
+   }
   },
   {
    "id": "P4_EXPLORATORY_FUTILITY_SCREEN",

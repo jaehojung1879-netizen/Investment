@@ -175,17 +175,20 @@ def test_protocol_never_combines_a_correlation_with_a_return():
     assert stated and all("삭제" in line for line in stated)      # only the correction note may quote the removed sentence
 
 
-def test_primary_inference_is_blocked_until_calibrated_and_rules_are_consistent():
+def test_primary_inference_is_calibrated_at_the_gate_and_rules_are_consistent():
+    """Updated by US_H63_INFERENCE_CALIBRATION_V1: the blocker this test used to pin (P3) has been resolved by a frozen synthetic calibration."""
     proposal = json.loads(PROTOCOL.read_text())
     primary, rules = proposal["primaryClaim"], proposal["decisionRules"]
-    assert primary["inferenceStatus"] == "BLOCKED_PENDING_CALIBRATION" and primary["alpha"] == 0.05
+    assert primary["inferenceStatus"] == "CALIBRATED_SYNTHETIC_PASS_AT_260_AND_700_WEEKS" and primary["alpha"] == 0.05
+    assert "28.31" in primary["inference"] and "not switched" in primary["inference"]
     assert "one-sided 95%" in rules["supported"] and "one-sided 95%" in rules["refuted"]
-    assert "same calibrated interval" in rules["refuted"] and "P3" in rules["validityPrecondition"]
-    assert "NON-BINDING" in rules["futility"] and "SPECIFICATION_PENDING" in rules["futility"]
-    assert "RETURN units" in rules["futility"] and "rank-IC proxy may not" in rules["futility"]
-    assert proposal["powerPlanning"]["status"] == "NOT_ESTABLISHED_FOR_THE_PRIMARY_STATISTIC"
+    assert "same calibrated interval" in rules["refuted"] and "260" in rules["validityPrecondition"]
+    assert "NON-BINDING" in rules["futility"] and "POINT ESTIMATE" in rules["futility"] and "no interval" in rules["futility"]
+    assert "rank-IC proxy may not" in rules["futility"]
+    assert proposal["powerPlanning"]["status"] == "SYNTHETIC_POWER_AVAILABLE_FOR_THE_PRIMARY_STATISTIC"
     p3 = {p["id"]: p for p in proposal["prerequisitesBeforeRegistration"]}["P3_US_INFERENCE_CALIBRATION"]
-    assert p3["status"] == "REGISTRATION_BLOCKER" and "260" in p3["what"] and "130" in p3["what"]
+    assert p3["status"] == "COMPLETE_SYNTHETIC_PASS" and p3["calibrationResult"]["minimumWeeklySignalsForAnInterval"] == 260
+    assert proposal["registered"] is False and proposal["authorizes"] == "NOTHING"
 
 
 def test_phase3_code_imports_no_outcome_label_model_or_production_decision_module():
