@@ -24,6 +24,15 @@ name: Collect KR terminated-security corporate actions
 on:
   workflow_dispatch:
     inputs:
+      us_p4_action:
+        description: 'US P4 owner-gated route; none preserves KR collection defaults'
+        type: choice
+        options: [none, validate, execute]
+        default: none
+      us_p4_authorization_sha256:
+        description: 'Exact owner-reviewed committed P4 authorization bytes; never auto-filled'
+        type: string
+        default: ''
       mode:
         description: "auto=확인 후 자동 수집 / probe=확인만 / collect=확인 없이 강제 수집"
         type: choice
@@ -58,12 +67,14 @@ permissions:
   contents: write
 
 concurrency:
-  group: signal-history-kr-corporate-actions
+  group: ${{ (inputs.us_p4_action == 'validate' || inputs.us_p4_action == 'execute') && 'us-cash-profitability-signal-v1-exploratory-one-shot' || 'signal-history-kr-corporate-actions' }}
   cancel-in-progress: false
 
 jobs:
   probe:
-    if: inputs.mode == 'probe' || inputs.mode == 'auto'
+    if: >-
+      !(inputs.us_p4_action == 'validate' || inputs.us_p4_action == 'execute') &&
+      (inputs.mode == 'probe' || inputs.mode == 'auto')
     runs-on: ubuntu-latest
     timeout-minutes: 20
     outputs:
@@ -108,10 +119,9 @@ jobs:
 
   collect:
     needs: [probe]
-    if: |
-      always() &&
-      (inputs.mode == 'collect' ||
-       (inputs.mode == 'auto' && needs.probe.outputs.verdict == 'SERVED'))
+    if: >-
+      !(inputs.us_p4_action == 'validate' || inputs.us_p4_action == 'execute') &&
+      (always() && (inputs.mode == 'collect' || (inputs.mode == 'auto' && needs.probe.outputs.verdict == 'SERVED')))
     runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
@@ -191,10 +201,9 @@ jobs:
 
   collect-dividends:
     needs: [probe, collect]
-    if: |
-      always() &&
-      (inputs.mode == 'collect' ||
-       (inputs.mode == 'auto' && needs.probe.outputs.verdict == 'SERVED'))
+    if: >-
+      !(inputs.us_p4_action == 'validate' || inputs.us_p4_action == 'execute') &&
+      (always() && (inputs.mode == 'collect' || (inputs.mode == 'auto' && needs.probe.outputs.verdict == 'SERVED')))
     runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
@@ -283,10 +292,9 @@ jobs:
 
   collect-documents:
     needs: [probe, collect]
-    if: |
-      always() &&
-      (inputs.mode == 'collect' ||
-       (inputs.mode == 'auto' && needs.probe.outputs.verdict == 'SERVED'))
+    if: >-
+      !(inputs.us_p4_action == 'validate' || inputs.us_p4_action == 'execute') &&
+      (always() && (inputs.mode == 'collect' || (inputs.mode == 'auto' && needs.probe.outputs.verdict == 'SERVED')))
     runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
@@ -375,7 +383,9 @@ jobs:
 
   gate-stopped:
     needs: [probe]
-    if: inputs.mode == 'auto' && needs.probe.outputs.verdict != 'SERVED'
+    if: >-
+      !(inputs.us_p4_action == 'validate' || inputs.us_p4_action == 'execute') &&
+      (inputs.mode == 'auto' && needs.probe.outputs.verdict != 'SERVED')
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
@@ -391,3 +401,42 @@ jobs:
           } >> "$GITHUB_STEP_SUMMARY"
           echo "probe verdict was ${{ needs.probe.outputs.verdict }}, not SERVED — collection skipped" >&2
           exit 1
+
+  us-p4:
+    if: >-
+      github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main' &&
+      (inputs.us_p4_action == 'validate' || inputs.us_p4_action == 'execute')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 360
+    permissions:
+      contents: write
+    env:
+      OMP_NUM_THREADS: '1'
+      OPENBLAS_NUM_THREADS: '1'
+      MKL_NUM_THREADS: '1'
+      GH_TOKEN: ${{ github.token }}
+      P4_ACTION: ${{ inputs.us_p4_action }}
+      P4_AUTH_SHA256: ${{ inputs.us_p4_authorization_sha256 }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+          cache: pip
+      - run: pip install -r requirements.txt
+      - name: Retrieve frozen input commit without panel execution
+        run: git fetch --no-tags --filter=blob:none origin 704d7db6d5b00def771aba5d2665d0846d6bc776
+      - name: Owner gates, atomic remote lock, then existing P4 harness
+        run: python scripts/run_us_p4_owner_gated.py "$P4_ACTION" --work "$RUNNER_TEMP/us-p4-attempt" --authorization-sha256 "$P4_AUTH_SHA256"
+      - name: Preserve attempt and result even after consumed failure
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: us-cash-profitability-p4-attempt-${{ github.run_id }}
+          path: |
+            ${{ runner.temp }}/us-p4-attempt/attempt.json
+            ${{ runner.temp }}/us-p4-attempt/result.json
+          retention-days: 90
+          if-no-files-found: warn
