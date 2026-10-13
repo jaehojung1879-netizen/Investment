@@ -1,0 +1,297 @@
+{
+ "contract": "US_H63_INFERENCE_CALIBRATION_V1_SUPPLEMENT",
+ "dgps": [
+  {
+   "gating": true,
+   "innovation": "GAUSSIAN",
+   "missingRate": 0.136,
+   "name": "BASE__N150",
+   "parentDgp": "BASE",
+   "returns": {},
+   "targetAvailableNames": 150,
+   "universe": 174,
+   "unresolvedTerminalPerYear": 0.0
+  },
+  {
+   "gating": true,
+   "innovation": "GAUSSIAN",
+   "missingRate": 0.136,
+   "name": "BASE__N200",
+   "parentDgp": "BASE",
+   "returns": {},
+   "targetAvailableNames": 200,
+   "universe": 231,
+   "unresolvedTerminalPerYear": 0.0
+  },
+  {
+   "gating": true,
+   "innovation": "GAUSSIAN",
+   "missingRate": 0.136,
+   "name": "BASE__N244",
+   "parentDgp": "BASE",
+   "returns": {},
+   "targetAvailableNames": 244,
+   "universe": 282,
+   "unresolvedTerminalPerYear": 0.0
+  },
+  {
+   "gating": true,
+   "innovation": "GAUSSIAN",
+   "missingRate": 0.136,
+   "name": "PERSISTENT_SHARED__N150",
+   "parentDgp": "PERSISTENT_SHARED",
+   "returns": {
+    "controlSd": 0.006,
+    "dailyPersistence": 0.2,
+    "logVolPersistence": 0.999,
+    "logVolSd": 0.5,
+    "sectorSd": 0.009
+   },
+   "targetAvailableNames": 150,
+   "universe": 174,
+   "unresolvedTerminalPerYear": 0.0
+  },
+  {
+   "gating": true,
+   "innovation": "GAUSSIAN",
+   "missingRate": 0.136,
+   "name": "PERSISTENT_SHARED__N200",
+   "parentDgp": "PERSISTENT_SHARED",
+   "returns": {
+    "controlSd": 0.006,
+    "dailyPersistence": 0.2,
+    "logVolPersistence": 0.999,
+    "logVolSd": 0.5,
+    "sectorSd": 0.009
+   },
+   "targetAvailableNames": 200,
+   "universe": 231,
+   "unresolvedTerminalPerYear": 0.0
+  },
+  {
+   "gating": true,
+   "innovation": "GAUSSIAN",
+   "missingRate": 0.136,
+   "name": "PERSISTENT_SHARED__N244",
+   "parentDgp": "PERSISTENT_SHARED",
+   "returns": {
+    "controlSd": 0.006,
+    "dailyPersistence": 0.2,
+    "logVolPersistence": 0.999,
+    "logVolSd": 0.5,
+    "sectorSd": 0.009
+   },
+   "targetAvailableNames": 244,
+   "universe": 282,
+   "unresolvedTerminalPerYear": 0.0
+  },
+  {
+   "gating": true,
+   "innovation": "STUDENT_T",
+   "missingRate": 0.136,
+   "name": "HEAVY_TAILED_PERSISTENT__N150",
+   "parentDgp": "HEAVY_TAILED_PERSISTENT",
+   "returns": {
+    "controlSd": 0.006,
+    "dailyPersistence": 0.2,
+    "logVolPersistence": 0.999,
+    "logVolSd": 0.5,
+    "sectorSd": 0.009
+   },
+   "studentTDegreesOfFreedom": 4,
+   "targetAvailableNames": 150,
+   "universe": 174,
+   "unresolvedTerminalPerYear": 0.0
+  },
+  {
+   "gating": true,
+   "innovation": "STUDENT_T",
+   "missingRate": 0.136,
+   "name": "HEAVY_TAILED_PERSISTENT__N200",
+   "parentDgp": "HEAVY_TAILED_PERSISTENT",
+   "returns": {
+    "controlSd": 0.006,
+    "dailyPersistence": 0.2,
+    "logVolPersistence": 0.999,
+    "logVolSd": 0.5,
+    "sectorSd": 0.009
+   },
+   "studentTDegreesOfFreedom": 4,
+   "targetAvailableNames": 200,
+   "universe": 231,
+   "unresolvedTerminalPerYear": 0.0
+  },
+  {
+   "gating": true,
+   "innovation": "STUDENT_T",
+   "missingRate": 0.136,
+   "name": "HEAVY_TAILED_PERSISTENT__N244",
+   "parentDgp": "HEAVY_TAILED_PERSISTENT",
+   "returns": {
+    "controlSd": 0.006,
+    "dailyPersistence": 0.2,
+    "logVolPersistence": 0.999,
+    "logVolSd": 0.5,
+    "sectorSd": 0.009
+   },
+   "studentTDegreesOfFreedom": 4,
+   "targetAvailableNames": 244,
+   "universe": 282,
+   "unresolvedTerminalPerYear": 0.0
+  },
+  {
+   "featureAccrualCorrelation": 0.9,
+   "gating": true,
+   "innovation": "GAUSSIAN",
+   "missingRate": 0.125,
+   "name": "SMALL_COLLINEAR__N150",
+   "parentDgp": "SMALL_COLLINEAR",
+   "returns": {},
+   "sectorShareOfRankVarianceFeature": 0.3,
+   "targetAvailableNames": 150,
+   "universe": 171,
+   "unresolvedTerminalPerYear": 0.0
+  },
+  {
+   "featureAccrualCorrelation": 0.9,
+   "gating": true,
+   "innovation": "GAUSSIAN",
+   "missingRate": 0.125,
+   "name": "SMALL_COLLINEAR__N200",
+   "parentDgp": "SMALL_COLLINEAR",
+   "returns": {},
+   "sectorShareOfRankVarianceFeature": 0.3,
+   "targetAvailableNames": 200,
+   "universe": 229,
+   "unresolvedTerminalPerYear": 0.0
+  },
+  {
+   "featureAccrualCorrelation": 0.9,
+   "gating": true,
+   "innovation": "GAUSSIAN",
+   "missingRate": 0.125,
+   "name": "SMALL_COLLINEAR__N244",
+   "parentDgp": "SMALL_COLLINEAR",
+   "returns": {},
+   "sectorShareOfRankVarianceFeature": 0.3,
+   "targetAvailableNames": 244,
+   "universe": 279,
+   "unresolvedTerminalPerYear": 0.0
+  },
+  {
+   "gating": true,
+   "innovation": "GAUSSIAN",
+   "missingRate": 0.2,
+   "name": "MISSING_AND_TERMINAL__N150",
+   "parentDgp": "MISSING_AND_TERMINAL",
+   "returns": {},
+   "targetAvailableNames": 150,
+   "universe": 188,
+   "unresolvedTerminalPerYear": 0.2
+  },
+  {
+   "gating": true,
+   "innovation": "GAUSSIAN",
+   "missingRate": 0.2,
+   "name": "MISSING_AND_TERMINAL__N200",
+   "parentDgp": "MISSING_AND_TERMINAL",
+   "returns": {},
+   "targetAvailableNames": 200,
+   "universe": 250,
+   "unresolvedTerminalPerYear": 0.2
+  },
+  {
+   "gating": true,
+   "innovation": "GAUSSIAN",
+   "missingRate": 0.2,
+   "name": "MISSING_AND_TERMINAL__N244",
+   "parentDgp": "MISSING_AND_TERMINAL",
+   "returns": {},
+   "targetAvailableNames": 244,
+   "universe": 305,
+   "unresolvedTerminalPerYear": 0.2
+  }
+ ],
+ "historicalGeometry": {
+  "byYear": {
+   "2013": 43,
+   "2014": 52,
+   "2015": 53,
+   "2016": 14,
+   "2026": 1
+  },
+  "definedDatesBelowParentMinimum": 163,
+  "maturedDefinedCohorts": 692,
+  "namesPerDateMedianByYear": {
+   "2013": 198.0,
+   "2014": 210.5,
+   "2015": 220.0,
+   "2016": 248.5
+  },
+  "parentMinimumNamesPerDate": 245,
+  "protocolFloorNamesPerDate": 150,
+  "source": "docs/us-readiness/us-cash-profitability-exploratory-preflight-v1.json",
+  "sourceSha256": "bc2fabb79b5e1c6e79d52aebaac0de909c8db46af400252a5cf83ea58ffd4a3c"
+ },
+ "monteCarloDecision": {
+  "failSideDecisionCount": 120,
+  "failSideDecisionCountDefinition": "15 DGP x size cells (5 gating DGPs x 3 sizes) x 2 lengths x 4 metrics (coverage, lower-bound error, upper-bound error, undefined frequency) for the primary candidate",
+  "failSideFamilywiseAlpha": 0.05,
+  "intervalMethod": "CLOPPER_PEARSON_EXACT_ONE_SIDED (pipeline.alpha_inference_mc_decision)",
+  "passSideOneSidedAlpha": 0.025
+ },
+ "outcomeFree": true,
+ "parent": {
+  "code": "pipeline/us_h63_inference_calibration.py",
+  "codeSha256": "55e1d52b389aa86c9e6d631ada6b25532046f9cd3e77d38e949eefe20cffb1bc",
+  "protocol": "docs/us-readiness/us-h63-inference-calibration-v1-protocol.json",
+  "protocolSha256": "8bb72a8a083125e6506dfeca82eb1def1607b443afab2dc96233b54f7cbcf1ba",
+  "result": "docs/us-readiness/us-h63-inference-calibration-v1-result.json",
+  "resultSha256": "a6c34275ab28dd75487a1d3848d311eb7fa2efeefc261f04794e7f8e5a7ae8d7",
+  "rule": "the effective protocol is the parent protocol with only the PERMITTED_DIFFERENCES keys replaced; pipeline.us_h63_supplemental_calibration.semantic_differences proves it before any replicate"
+ },
+ "power": null,
+ "prohibitions": [
+  "no real return, price, label, model prediction or strategy PnL is read",
+  "no historical exploratory (P4) study is executed and no outcome budget is consumed",
+  "the parent protocol, result and simulation code are not edited",
+  "sizes, DGPs, weeks, seed, replicate count, thresholds and critical value may not change after the first replicate; a change is a new contract version"
+ ],
+ "purpose": "Cover the 150-244 names-per-date geometry that the parent calibration did not evaluate and that 163 defined historical signal dates occupy. Same statistic, null, DGPs, methods, critical value 28.31, acceptance thresholds and decision rule as the parent; only the universe size, the seed and the cell list differ. Not an alpha study.",
+ "realDataReads": "FORBIDDEN: every return is synthetic; the only facts quoted from real data are outcome-blind name counts from the committed P4 preflight",
+ "replicates": 2000,
+ "sampleLengths": {
+  "note": "130 weeks (non-binding futility look, interval not quoted) is not re-evaluated",
+  "roles": {
+   "260": "registered gate length",
+   "700": "exploratory historical depth (~2013-2026)"
+  },
+  "weeks": [
+   260,
+   700
+  ]
+ },
+ "seed": 20261013,
+ "sizeGrid": {
+  "geometryCheck": {
+   "replicateIndexOffset": 100000,
+   "replicates": 20,
+   "rule": "mean realised available names per date over the check replicates must lie within the tolerance of the target, otherwise the cell does not count as covering its size and the supplement is BLOCKED",
+   "toleranceNames": 5.0
+  },
+  "rationale": "150 is the study protocol's floor, 244 is the largest size below the parent's smallest geometry (245), 200 is the middle; three fixed points, not a search. Each cell holds ONE size for every date of the series, which is more demanding than the historical series (names per date rise over time)",
+  "targetAvailableNamesPerDate": [
+   150,
+   200,
+   244
+  ],
+  "universeRule": "round(target / (1 - missingRate)); availability is a stationary persistent Markov process, so mean available names equals the target up to rounding, less the permanent loss of names to unresolved terminal events in MISSING_AND_TERMINAL"
+ },
+ "status": "FROZEN_BEFORE_ANY_REPLICATE",
+ "verdictRule": {
+  "SUPPLEMENT_BLOCKED": "any other outcome (any FAIL or INCONCLUSIVE cell, or a cell whose realised geometry misses its target). An INCONCLUSIVE cell is not resolved by rerunning, re-seeding, adding replicates or dropping the cell; a different design is a new contract version. On BLOCKED the 163 dates are NOT dropped and the statistical rule is NOT changed: they remain an uncalibrated extrapolation and are reported as such",
+  "SUPPLEMENT_PASS": "CT_SN is PASS in every cell (gating DGP x target size x 260/700 weeks) AND every cell's geometry check holds",
+  "claimBoundary": "PASS covers interval error rates at 150-244 invented names per date for these DGPs. It does not cover informative missingness of departed names, the historical size trajectory as a time-varying process, or real-return behaviour",
+  "comparators": "SD_SN, SD_NW_L12, CT_NW_AUTO and CT_CBB13 are classified by the same rule and reported; they never gate"
+ }
+}
