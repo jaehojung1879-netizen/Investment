@@ -142,40 +142,84 @@ def test_main_moves_after_lock_zero_outcomes_and_lock_still_spent(tmp_path):
     assert not any(e[0]=='MOCK_OUTCOME_READ' for e in fix[-1])
 
 
-@pytest.mark.parametrize('verdict',['FAIL','INCONCLUSIVE','UNKNOWN'])
-def test_supplemental_failed_or_inconclusive_blocked(tmp_path,verdict):
-    fix=fixture(tmp_path);repo=fix[0]
-    result=repo/'synthetic-result.json';result.write_text(json.dumps({'verdict':verdict}))
-    protocol=repo/'synthetic-protocol.json';protocol.write_text('{}')
-    pre=repo/'docs/us-readiness/us-cash-profitability-exploratory-preflight-v1.json';pre.write_text('{}')
-    acceptance={'contract':'US_H63_SUPPLEMENTAL_ACCEPTANCE_V1','accepted':True,'authorizes':'NOTHING','reviewedBy':'fixture',
-                'preflightSha256':E.sha(pre.read_bytes()),'resultPath':'synthetic-result.json','resultSha256':E.sha(result.read_bytes()),
-                'protocolPath':'synthetic-protocol.json','protocolSha256':E.sha(protocol.read_bytes()),'overallVerdictPointer':'/verdict'}
-    (repo/E.ACCEPTANCE).write_text(json.dumps(acceptance));command(repo,'add','.');command(repo,'commit','-m','synthetic failing evidence')
-    with pytest.raises(E.Blocked,match='FAILED_INCONCLUSIVE'):
-        E.supplemental(repo,E.sha(pre.read_bytes()))
+def supplemental_fixture(tmp_path, mutate=None):
+    repo=fixture(tmp_path)[0]
+    def write(path,value):
+        target=repo/path;target.parent.mkdir(parents=True,exist_ok=True)
+        target.write_text(json.dumps(value));return E.sha(target.read_bytes())
+    codes={}
+    for path in E.PRODUCER_FILES:
+        target=repo/path;target.parent.mkdir(parents=True,exist_ok=True);target.write_text('# synthetic producer')
+        codes[path]=E.sha(target.read_bytes())
+    parent={'code':E.PRODUCER_FILES[0],'codeSha256':codes[E.PRODUCER_FILES[0]],
+            'protocol':'parent-protocol.json','protocolSha256':write('parent-protocol.json',{}),
+            'result':'parent-result.json','resultSha256':write('parent-result.json',{})}
+    prepath='docs/us-readiness/us-cash-profitability-exploratory-preflight-v1.json'
+    pre={'counters':{'outcomeReads':0,'intervalComputations':0,'featureBuilds':715}}
+    pre_sha=write(prepath,pre)
+    protocol={'parent':parent,'dgps':[{'name':f'SYNTHETIC_{n}'} for n in range(15)],
+              'sampleLengths':{'weeks':[260,700]},'historicalGeometry':{'source':prepath,'sourceSha256':pre_sha,
+              'definedDatesBelowParentMinimum':163},'outcomeFree':True,
+              'sizeGrid':{'targetAvailableNamesPerDate':[150,200,244]}}
+    protocol_sha=write(E.SUPPLEMENT_PROTOCOL,protocol)
+    cells=[{'dgp':d['name'],'weeks':w,'primaryState':'PASS','geometry':{'holds':True},
+            'methods':{'CT_SN':{'state':'PASS','metrics':{'coverage90':{'state':'PASS'}}}}}
+           for d in protocol['dgps'] for w in [260,700]]
+    from pipeline.us_h63_supplemental_calibration import verdict
+    result={'contract':'US_H63_INFERENCE_CALIBRATION_V1_SUPPLEMENT','developmentOnly':False,'readsRealData':False,
+            'primaryMethod':'CT_SN','replicates':2000,'protocolSha256':protocol_sha,'parent':parent,
+            'codeSha256':codes,'cells':cells,'verdict':verdict(cells,30)}
+    if mutate:mutate(result)
+    result_sha=write(E.SUPPLEMENT_RESULT,result)
+    readiness={'counters':pre['counters'],'executed':False,'outcomeFree':True,
+               'inputs':{'supplementResult':{'sha256':result_sha},'preflight':{'sha256':pre_sha}},
+               'groups':{'calibrationReadiness':{'state':'PASS'}}}
+    readiness_sha=write(E.READINESS_V2,readiness)
+    acceptance={'contract':'US_H63_SUPPLEMENTAL_ACCEPTANCE_V1','accepted':True,'authorizes':'NOTHING',
+                'reviewedBy':'fixture-owner','preflightSha256':pre_sha,'resultSha256':result_sha,
+                'protocolSha256':protocol_sha,'readinessV2Sha256':readiness_sha,
+                'upperGeometryDisposition':'EXPLICIT_OWNER_ACCEPTED_EXPLORATORY_EXTRAPOLATION'}
+    write(E.ACCEPTANCE,acceptance);command(repo,'add','.');command(repo,'commit','-m','Synthetic actual-schema evidence')
+    return repo,pre_sha,acceptance
 
 
-def test_supplemental_pass_requires_geometry_hash_and_zero_outcomes(tmp_path):
-    fix=fixture(tmp_path);repo=fix[0]
-    data={'verdict':'PASS','horizonSessions':63,'statistic':'CT_SN','criticalValue':28.31,'minimumNames':150,
-          'maximumNames':244,'underCalibratedDates':163,'outcomeReads':0}
-    result=repo/'synthetic-result.json';result.write_text(json.dumps(data))
-    protocol=repo/'synthetic-protocol.json';protocol.write_text('{}')
-    pre=repo/'docs/us-readiness/us-cash-profitability-exploratory-preflight-v1.json';pre.write_text('{}')
-    code=repo/'pipeline/synthetic_calibration.py';code.parent.mkdir();code.write_text('# SYNTHETIC code identity only')
-    data.update(protocolIdentity=E.sha(protocol.read_bytes()),producerSha=E.sha(code.read_bytes()))
-    result.write_text(json.dumps(data))
-    acceptance={'contract':'US_H63_SUPPLEMENTAL_ACCEPTANCE_V1','accepted':True,'authorizes':'NOTHING','reviewedBy':'fixture',
-                'preflightSha256':E.sha(pre.read_bytes()),'resultPath':result.name,'resultSha256':E.sha(result.read_bytes()),
-                'protocolPath':protocol.name,'protocolSha256':E.sha(protocol.read_bytes()),'overallVerdictPointer':'/verdict',
-                'proofPointers':{k:'/'+k for k in data if k not in ('verdict','protocolIdentity','producerSha')},
-                'protocolIdentityKind':'FILE_BYTES_SHA256','protocolIdentityPointer':'/protocolIdentity',
-                'producerCodePointers':{'pipeline/synthetic_calibration.py':'/producerSha'}}
-    path=repo/E.ACCEPTANCE;path.write_text(json.dumps(acceptance));command(repo,'add','.');command(repo,'commit','-m','synthetic accepted evidence')
-    assert E.supplemental(repo,E.sha(pre.read_bytes()))['supplementalResultSha256']==E.sha(result.read_bytes())
-    acceptance['resultSha256']='f'*64;path.write_text(json.dumps(acceptance));command(repo,'add','.');command(repo,'commit','-m','synthetic wrong hash')
-    with pytest.raises(E.Blocked,match='HASH_MISMATCH'):E.supplemental(repo,E.sha(pre.read_bytes()))
+@pytest.mark.parametrize('status',['SUPPLEMENT_BLOCKED','INCONCLUSIVE','UNKNOWN','PASS'])
+def test_supplemental_failed_or_invented_verdict_blocked(tmp_path,status):
+    repo,pre_sha,_=supplemental_fixture(tmp_path,lambda r:r['verdict'].update(supplementStatus=status))
+    with pytest.raises(E.Blocked,match='FAILED_INCONCLUSIVE'):E.supplemental(repo,pre_sha)
+
+
+@pytest.mark.parametrize('mutation',[
+    lambda r:r.update(developmentOnly=True),lambda r:r.update(readsRealData=True),
+    lambda r:r['cells'].pop(),lambda r:r['cells'].__setitem__(0,r['cells'][1]),
+    lambda r:r['cells'][0]['geometry'].update(holds=False),
+    lambda r:r['cells'][0]['methods']['CT_SN']['metrics']['coverage90'].update(state='INCONCLUSIVE'),
+    lambda r:r.update(protocolSha256='f'*64),lambda r:r['codeSha256'].update({E.PRODUCER_FILES[0]:'f'*64}),
+])
+def test_actual_schema_negative_proofs(tmp_path,mutation):
+    repo,pre_sha,_=supplemental_fixture(tmp_path,mutation)
+    with pytest.raises(E.Blocked):E.supplemental(repo,pre_sha)
+
+
+def test_actual_schema_pass_hash_and_upper_geometry_gate(tmp_path):
+    repo,pre_sha,acceptance=supplemental_fixture(tmp_path)
+    assert E.supplemental(repo,pre_sha)['readinessV2Sha256']==acceptance['readinessV2Sha256']
+    acceptance['upperGeometryDisposition']='OWNER_REVIEW_REQUIRED'
+    path=repo/E.ACCEPTANCE;path.write_text(json.dumps(acceptance));command(repo,'add','.');command(repo,'commit','-m','No upper acceptance')
+    with pytest.raises(E.Blocked,match='UNCALIBRATED_UPPER'):E.supplemental(repo,pre_sha)
+    acceptance['resultSha256']='f'*64;path.write_text(json.dumps(acceptance));command(repo,'add','.');command(repo,'commit','-m','Wrong hash')
+    with pytest.raises(E.Blocked,match='HASH_MISMATCH'):E.supplemental(repo,pre_sha)
+
+
+def test_owner_must_acknowledge_uncalibrated_upper_geometry(tmp_path):
+    fix=fixture(tmp_path);repo=fix[0];auth=json.loads((repo/E.AUTH).read_text())
+    auth['acknowledgments'].pop('uncalibratedUpperGeometry331To371')
+    (repo/E.AUTH).write_text(json.dumps(auth));command(repo,'add','.');command(repo,'commit','-m','Missing risk acknowledgment')
+    fix[2]['GITHUB_SHA']=command(repo,'rev-parse','HEAD')
+    command(fix[1],'fetch',str(repo),'main:main')
+    with pytest.raises(E.Blocked,match='ACKNOWLEDGMENT'):
+        run(tmp_path,fix,expected_auth_sha=E.sha((repo/E.AUTH).read_bytes()))
+    assert not any(e[0]=='POST' for e in fix[-1])
 
 
 def test_workflow_manual_route_excludes_all_original_jobs_and_preserves_steps():
@@ -192,6 +236,13 @@ def test_workflow_manual_route_excludes_all_original_jobs_and_preserves_steps():
     for name,body in before.items():
         assert body.split('    runs-on:',1)[1].strip()==after[name].split('    runs-on:',1)[1].strip()
         assert "!(inputs.us_p4_action == 'validate' || inputs.us_p4_action == 'execute')" in after[name]
+        # Compare the original expression itself, including always()/needs semantics.
+        def condition(block):
+            value=block.split('    if:',1)[1].split('    runs-on:',1)[0].strip()
+            return value.removeprefix('>-').removeprefix('|').strip()
+        legacy=condition(body)
+        guarded=condition(after[name]).split('&&',1)[1].strip()
+        assert re.sub(r'\s+','',guarded[1:-1])==re.sub(r'\s+','',legacy)
     trigger=text.split('on:\n',1)[1].split('permissions:',1)[0]
     assert re.findall(r'^  ([a-z_]+):',trigger,re.M)==['workflow_dispatch']
     assert "default: none" in trigger and "cancel-in-progress: false" in text

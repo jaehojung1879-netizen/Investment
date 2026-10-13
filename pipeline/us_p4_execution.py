@@ -17,7 +17,7 @@ ACCEPTANCE = 'docs/us-readiness/us-h63-supplemental-calibration-acceptance-v1.js
 WORKFLOW = '.github/workflows/kr-corporate-action-collection.yml'
 ACKNOWLEDGMENTS = ('outcomeExposedExploratoryHistory','survivorConditioned212MissingDeparted',
                   'membershipAndIdentityLimitations','oneShotFailureConsumesBudget','noLivePromotion',
-                  'abandonOrProspectiveReviewOnly')
+                  'abandonOrProspectiveReviewOnly','uncalibratedUpperGeometry331To371')
 
 
 class Blocked(RuntimeError):
@@ -43,19 +43,17 @@ def committed(root, relative):
     return path.read_bytes()
 
 
-def pointer(value, path):
-    if not isinstance(path,str) or not path.startswith('/'):
-        raise Blocked('CALIBRATION_POINTER_INVALID')
-    try:
-        for key in path[1:].split('/'):
-            value=value[int(key)] if isinstance(value,list) else value[key.replace('~1','/').replace('~0','~')]
-        return value
-    except (KeyError,IndexError,TypeError,ValueError) as exc:
-        raise Blocked('CALIBRATION_POINTER_MISSING') from exc
+SUPPLEMENT_RESULT = 'docs/us-readiness/us-h63-inference-calibration-v1-supplement-result.json'
+SUPPLEMENT_PROTOCOL = 'docs/us-readiness/us-h63-inference-calibration-v1-supplement-protocol.json'
+READINESS_V2 = 'docs/us-readiness/us-cash-profitability-exploratory-readiness-v2.json'
+PRODUCER_FILES = ('pipeline/us_h63_inference_calibration.py',
+                  'pipeline/us_h63_supplemental_calibration.py',
+                  'scripts/run_us_h63_supplemental_calibration.py')
 
 
 def supplemental(root, preflight_sha):
-    """Owner-reviewed schema bridge; never substitute the current P3 result."""
+    """Verify the actual merged supplement schema; never infer full geometry coverage."""
+    from .us_h63_supplemental_calibration import verdict
     try:
         raw=committed(root,ACCEPTANCE)
         acceptance=json.loads(raw)
@@ -63,42 +61,59 @@ def supplemental(root, preflight_sha):
                 acceptance.get('authorizes')!='NOTHING' or not acceptance.get('reviewedBy') or
                 acceptance.get('preflightSha256')!=preflight_sha):
             raise Blocked('SUPPLEMENTAL_NOT_ACCEPTED_OR_PREFLIGHT_MISMATCH')
-        result_raw=committed(root,acceptance['resultPath'])
-        protocol_raw=committed(root,acceptance['protocolPath'])
-        if sha(result_raw)!=acceptance['resultSha256'] or sha(protocol_raw)!=acceptance['protocolSha256']:
-            raise Blocked('SUPPLEMENTAL_HASH_MISMATCH')
-        result=json.loads(result_raw)
-        # Only a TOP-LEVEL overall verdict is selectable, never one passing cell.
-        verdict_path=acceptance['overallVerdictPointer']
-        if verdict_path not in ('/verdict','/overallVerdict','/status') or pointer(result,verdict_path) not in ('PASS','CALIBRATION_PASSED'):
-            raise Blocked('SUPPLEMENTAL_FAILED_INCONCLUSIVE_OR_UNKNOWN_VERDICT')
-        kind=acceptance['protocolIdentityKind']
-        protocol_identity=sha(protocol_raw) if kind=='FILE_BYTES_SHA256' else sha(canonical(json.loads(protocol_raw))) if kind=='CANONICAL_JSON_SHA256' else None
-        if protocol_identity is None or pointer(result,acceptance['protocolIdentityPointer'])!=protocol_identity:
+        result_raw=committed(root,SUPPLEMENT_RESULT)
+        protocol_raw=committed(root,SUPPLEMENT_PROTOCOL)
+        readiness_raw=committed(root,READINESS_V2)
+        for key,blob in (('resultSha256',result_raw),('protocolSha256',protocol_raw),('readinessV2Sha256',readiness_raw)):
+            if acceptance.get(key)!=sha(blob):
+                raise Blocked('SUPPLEMENTAL_HASH_MISMATCH:'+key)
+        result,protocol,readiness=map(json.loads,(result_raw,protocol_raw,readiness_raw))
+        if (result['contract']!='US_H63_INFERENCE_CALIBRATION_V1_SUPPLEMENT' or
+                result['developmentOnly'] is not False or result['readsRealData'] is not False or
+                result['primaryMethod']!='CT_SN' or result['replicates']!=2000 or
+                result['verdict']['supplementStatus']!='SUPPLEMENT_PASS'):
+            raise Blocked('SUPPLEMENTAL_FAILED_INCONCLUSIVE_OR_DEVELOPMENT')
+        if result['protocolSha256']!=sha(protocol_raw) or result['parent']!=protocol['parent']:
             raise Blocked('SUPPLEMENTAL_RESULT_PROTOCOL_LINK_MISMATCH')
-        producer=acceptance['producerCodePointers']
-        if not isinstance(producer,dict) or not producer:
+        if set(result['codeSha256'])!=set(PRODUCER_FILES):
             raise Blocked('SUPPLEMENTAL_PRODUCER_CODE_PROOF_MISSING')
-        for relative,location in producer.items():
-            if not relative.endswith('.py') or not relative.startswith(('pipeline/','scripts/')) or pointer(result,location)!=sha(committed(root,relative)):
+        for relative,digest in result['codeSha256'].items():
+            if digest!=sha(committed(root,relative)):
                 raise Blocked('SUPPLEMENTAL_PRODUCER_CODE_MISMATCH')
-        proof=acceptance['proofPointers']
-        sources={"result":result,"protocol":json.loads(protocol_raw),"preflight":json.loads(committed(root,"docs/us-readiness/us-cash-profitability-exploratory-preflight-v1.json"))}
-        expected={'horizonSessions':63,'statistic':'CT_SN','criticalValue':28.31,
-                  'minimumNames':150,'maximumNames':244,'underCalibratedDates':163,'outcomeReads':0}
-        for key,value in expected.items():
-            spec=proof[key]
-            source=spec.get('source','result') if isinstance(spec,dict) else 'result'
-            location=spec['pointer'] if isinstance(spec,dict) else spec
-            if source not in sources or (source=='preflight' and key!='underCalibratedDates'):
-                raise Blocked('INVALID_SUPPLEMENTAL_PROOF_SOURCE')
-            observed=pointer(sources[source],location)
-            valid=(type(observed) in (int,float) and observed<=value) if key=='minimumNames' else (type(observed) in (int,float) and observed>=value) if key=='maximumNames' else observed==value
-            if not valid:
-                raise Blocked('SUPPLEMENTAL_GEOMETRY_OR_STATISTIC_MISMATCH:'+key)
+        for kind in ('code','protocol','result'):
+            parent=protocol['parent']
+            if sha(committed(root,parent[kind]))!=parent[kind+'Sha256']:
+                raise Blocked('SUPPLEMENTAL_PARENT_HASH_MISMATCH')
+        expected={(d['name'],w) for d in protocol['dgps'] for w in protocol['sampleLengths']['weeks']}
+        cells=result['cells']
+        actual={(c['dgp'],c['weeks']) for c in cells}
+        if (len(expected)!=30 or len(cells)!=30 or actual!=expected or
+                result['verdict']!=verdict(cells,30) or result['verdict']['primaryStateCounts']!={'PASS':30} or
+                result['verdict']['allCellsGeometryAsDesigned'] is not True or
+                any(c['methods']['CT_SN']['state']!='PASS' or
+                    any(m['state']!='PASS' for m in c['methods']['CT_SN']['metrics'].values()) for c in cells)):
+            raise Blocked('SUPPLEMENTAL_CELL_PROOF_MISMATCH')
+        geometry=protocol['historicalGeometry']
+        preflight=json.loads(committed(root,geometry['source']))
+        if (geometry['sourceSha256']!=preflight_sha or geometry['definedDatesBelowParentMinimum']!=163 or
+                protocol['outcomeFree'] is not True or
+                protocol['sizeGrid']['targetAvailableNamesPerDate']!=[150,200,244] or
+                protocol['sampleLengths']['weeks']!=[260,700] or
+                preflight['counters']['outcomeReads']!=0 or preflight['counters']['intervalComputations']!=0 or
+                readiness['counters']!=preflight['counters'] or readiness['executed'] is not False or
+                readiness['outcomeFree'] is not True or
+                readiness['inputs']['supplementResult']['sha256']!=sha(result_raw) or
+                readiness['inputs']['preflight']['sha256']!=preflight_sha or
+                readiness['groups']['calibrationReadiness']['state']!='PASS'):
+            raise Blocked('SUPPLEMENTAL_READINESS_OR_OUTCOME_FREE_PROOF_MISMATCH')
+        # PASS covers only the specified synthetic geometries, NOT 331-371.
+        # An explicit, separately reviewed owner disposition is mandatory; no default waiver.
+        if acceptance.get('upperGeometryDisposition')!='EXPLICIT_OWNER_ACCEPTED_EXPLORATORY_EXTRAPOLATION':
+            raise Blocked('UNCALIBRATED_UPPER_GEOMETRY_331_TO_371_REQUIRES_OWNER_REVIEW')
         return {'acceptanceSha256':sha(raw),'supplementalResultSha256':sha(result_raw),
-                'supplementalProtocolSha256':sha(protocol_raw)}
-    except (OSError,KeyError,ValueError,subprocess.CalledProcessError) as exc:
+                'supplementalProtocolSha256':sha(protocol_raw),'readinessV2Sha256':sha(readiness_raw),
+                'uncalibratedUpperGeometry':'331-371:EXPLICIT_OWNER_ACCEPTED_EXPLORATORY_EXTRAPOLATION'}
+    except (OSError,KeyError,TypeError,ValueError,subprocess.CalledProcessError) as exc:
         raise Blocked('SUPPLEMENTAL_ABSENT_OR_INVALID') from exc
 
 
@@ -180,6 +195,10 @@ def authorize(root, env, expected_auth_sha, api, pins):
         raise Blocked('OWNER_SCOPE_OR_ACKNOWLEDGMENT_MISSING')
     # All expensive input byte checks follow explicit authorization, before lock.
     current=pins()
+    if current['executionPins'].get('acceptanceSha256'):
+        acceptance=json.loads(committed(root,ACCEPTANCE))
+        if acceptance.get('reviewedBy')!=env['GITHUB_ACTOR']:
+            raise Blocked('SUPPLEMENTAL_OWNER_REVIEW_REQUIRED')
     if auth.get('pinnedIdentities')!=current['pinnedIdentities'] or auth.get('executionPins')!=current['executionPins']:
         raise Blocked('PINNED_INPUT_CODE_OR_CALIBRATION_MISMATCH')
     if (root/'docs/us-readiness/us-cash-profitability-exploratory-result-v1.json').exists():

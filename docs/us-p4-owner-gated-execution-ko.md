@@ -1,7 +1,7 @@
 # US cash profitability H63 P4 — 수동 일회 실행 운영 절차
 
 **휴면 infrastructure다. 실행·승인 발급·원격 lock 생성은 하지 않았다.**
-시작 main `3c0f4794ae6e86cde395025a738759e6dc35f053`, Tests CI 성공.
+통합 기준 main `52ce1ffae953cb483ddf381b1fd976916f77809d`; #239 CI 38322204643 SUCCESS 확인.
 기존 P4 정의·P3 보정·preflight/readiness·역사 입력은 그대로 보존한다.
 692개 성숙·정의 코호트, 163개 작은 단면 날짜, 212개 이탈 식별자 가격 부재는
 기존 outcome-free 보고서의 제약이다. 최근 총자산 소스 문제는 P4 gate에 추가하지 않는다.
@@ -43,27 +43,26 @@ GitHub에는 서로 다른 두 ref를 함께 CAS하는 API가 없으므로 owner
 
 ## 보충 calibration 연결 계약
 
-Claude의 unmerged branch는 읽거나 의존하지 않는다. 현재 P3 결과를 최종 보충
-결과로 하드코딩하지 않았다. 별도 **비승인 acceptance record**가 최종 결과·protocol
-경로와 SHA, preflight SHA, 전체 verdict 및 geometry 증거의 JSON pointers를 고정한다.
-실제 파일은 `docs/us-readiness/us-h63-supplemental-calibration-acceptance-v1.json`이며
-이번 PR에는 없다. template은 accepted:false / authorizes:NOTHING이다.
+#239는 main `52ce1ffae953cb483ddf381b1fd976916f77809d`에 병합되었다.
+결과의 `verdict.supplementStatus == SUPPLEMENT_PASS`, 30/30 셀과 실제 셀별
+CT_SN/metric PASS·geometry.holds, `developmentOnly == false`, `readsRealData == false`를
+검증한다. invented top-level verdict나 geometry 필드·JSON pointer 선택은 사용하지 않는다.
+원본 protocol bytes SHA, parent protocol/result/code SHA, producer 3개 코드 SHA,
+readiness v2·preflight 연결 SHA 및 outcomeReads/intervalComputations=0을 확인한다.
+비승인 acceptance는 정확한 result/protocol/readiness v2/preflight SHA를 고정한다.
+실제 acceptance/authorization 파일은 이 PR에 없으며 template은 authorizes:NOTHING이다.
 
-전체 verdict는 top-level `/verdict`, `/overallVerdict`, `/status` 중 하나이며
-PASS 또는 CALIBRATION_PASSED만 허용한다. 한 passing cell을 전체 통과로 선택할 수 없다.
-추가 proof는 H63, CT_SN, frozen critical 28.31, 최소 150 이하·최대 244 이상의
-평가 범위, 163개 미보정 날짜의 연결, 실제 historical outcome reads=0을 확인한다.
-proofPointers 값은 문자열(pointer, result에서 읽음) 또는
-`{"source":"result|protocol|preflight","pointer":"/actual/field"}`다.
-preflight source는 underCalibratedDates에만 사용할 수 있다.
-결과/프로토콜의 실제 스키마·전체 판정·geometry 의미는 Claude merge 후 리뷰해야 한다.
-실제 결과가 주장하는 protocol identity와 producer Python 파일 해시도 현재 커밋과
-일치해야 한다. protocolIdentityPointer는 raw 파일 또는 canonical JSON SHA를 가리키며
-protocolIdentityKind로 구분한다. producerCodePointers는 원래 producer가 선언한
-모든 코드 경로→실제 result SHA pointer를 owner가 리뷰해 명시한다(비어 있으면 차단).
-새 결과가 이 gate 계약과 맞지 않으면 승인·실행을 차단하며 작은 adapter 계약 조정을
-먼저 리뷰한다. 실패·INCONCLUSIVE·미정·hash mismatch를 acceptance로 우회할 수 없다.
-미래 SHA나 판정은 template에 채우지 않았다.
+**331–371 names/date 상단 범위는 미보정이다.** 부모 P3는 245–330, 보충은
+150/200/244 고정 크기만 검증했다. readiness v2의 “every defined date” 설명은
+전체 역사 범위 보정 증거로 사용하지 않는다. 해당 원문·봉인된 과학 파일은 수정하지 않는다.
+보충 PASS gate는 그대로 유지하며, 별도의 상단 범위 gate는 기본 BLOCKED다.
+Owner는 실행 전에 추가 보정이 필요한지 먼저 판단해야 한다. 탐색적 외삽을 명시적으로
+수용하는 경우에만 acceptance의 `upperGeometryDisposition`을
+`EXPLICIT_OWNER_ACCEPTED_EXPLORATORY_EXTRAPOLATION`으로 리뷰·커밋하고,
+별도 실제 승인의 `uncalibratedUpperGeometry331To371`를 true로 승인해야 한다.
+이는 보정 PASS 범위를 확장하거나 완전 보정을 주장하는 행위가 아니다.
+실패·INCONCLUSIVE·development·hash mismatch는 owner acceptance로 우회할 수 없다.
+정보성 결측과 시간에 따른 크기 경로 역시 보정 범위 밖이다.
 
 ## Owner 작업 순서
 
@@ -100,7 +99,7 @@ protocolIdentityKind로 구분한다. producerCodePointers는 원래 producer가
 이번 PR은 원래 `scripts/run_us_cash_profitability_exploratory.py.execute`를 호출하는
 orchestration일 뿐 새 연구 엔진이 아니다. 결과 artifact 자동 업로드만 하며
 result commit/seal, signal-history, 전략 추천·portfolio 승격을 구현하지 않는다.
-실제 보충 evidence·acceptance·owner 승인·원격 tag 권한은 모두 아직 미확인/미발급이다.
+보충 evidence는 확인했으나 상단 미보정 위험 수용·acceptance·owner 승인·원격 tag 권한은 아직 미발급/미확인이다.
 새 테스트는 synthetic JSON, mock reader, local/bare Git만 사용한다.
 
 

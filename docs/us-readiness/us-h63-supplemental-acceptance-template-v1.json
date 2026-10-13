@@ -2,23 +2,11 @@
   "contract": "US_H63_SUPPLEMENTAL_ACCEPTANCE_V1",
   "authorizes": "NOTHING",
   "accepted": false,
-  "reviewedBy": "FINAL_CALIBRATION_NOT_REVIEWED",
+  "reviewedBy": "OWNER_REVIEW_NOT_ISSUED",
   "preflightSha256": "UNSET",
-  "resultPath": "UNSET_FINAL_MERGED_RESULT_PATH",
   "resultSha256": "UNSET",
-  "protocolPath": "UNSET_FINAL_MERGED_PROTOCOL_PATH",
   "protocolSha256": "UNSET",
-  "overallVerdictPointer": "/verdict",
-  "proofPointers": {
-    "horizonSessions": "UNSET_RESULT_POINTER",
-    "statistic": "UNSET_RESULT_POINTER",
-    "criticalValue": "UNSET_RESULT_POINTER",
-    "minimumNames": "UNSET_RESULT_POINTER",
-    "maximumNames": "UNSET_RESULT_POINTER",
-    "underCalibratedDates": "UNSET_RESULT_POINTER",
-    "outcomeReads": "UNSET_RESULT_POINTER"
-  },
-  "protocolIdentityKind": "FILE_BYTES_SHA256",
-  "protocolIdentityPointer": "UNSET_RESULT_POINTER",
-  "producerCodePointers": {}
+  "readinessV2Sha256": "UNSET",
+  "upperGeometryDisposition": "OWNER_REVIEW_REQUIRED",
+  "instructions": "NON_AUTHORIZING. Fixed merged #239 schema. SUPPLEMENT_PASS is not complete historical geometry coverage; 331-371 names/date remain uncalibrated. Explicit owner review and separate execution acknowledgment required; no automatic waiver."
 }
