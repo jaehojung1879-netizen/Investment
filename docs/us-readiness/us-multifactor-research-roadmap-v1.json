@@ -59,7 +59,7 @@
    },
    {
     "id": "AD3_SINGLE_BASIS",
-    "measure": "per-session basis class published (currently D/F 74,045 / A-only 95,157 / E-only 17,708 sessions); zero rows combine bases",
+    "measure": "per-session basis class published (public evidence gives it per identifier only: of 175 covered, D/F 59 / A-only 113 / E-only 3); zero rows combine bases",
     "rule": "each feature and label reads ONE publisher basis per security; no splicing; back-adjusted-only or rounded-close-only sessions never feed as-traded features"
    },
    {
@@ -96,7 +96,7 @@
   "codexDepartedPriceRecovery": {
    "assumedVerdict": null,
    "observedCandidateEvidence": {
-    "commit": "a6da327fee14b39e2cbdd7fe3dc0a0380f5b3f51",
+    "commit": "1e016bd9a4ff746a9b69958624182c6287301f51",
     "headline": {
      "denominator": "missing member sessions of the 212 no-panel identifiers",
      "pointer": "/pr241Evidence/headline",
@@ -297,7 +297,7 @@
   "acceptanceCriteria": [
    "reproduces #241 exactly before reclassifying: 212 identifiers, 186,910 covered and 69,492 missing member sessions, FULL/PARTIAL/NONE = 5/170/37",
    "every session carries exactly one of ADMITTED, IDENTITY_HOLD, NAME_ONLY, BASIS_UNRESOLVED, NO_OBSERVATION; counts sum to 256,402",
-   "per-session basis class counts reproduce 74,045 / 95,157 / 17,708",
+   "per-identifier basis classes reproduce 59 / 113 / 3 of the 175 covered identifiers; per-session basis counts are published for the first time",
    "zero rows splice two publisher bases; a test feeds a spliced series and expects refusal",
    "every H63 window that crosses a last observation without cited terminal consideration is UNRESOLVED; per-year UNRESOLVED shares published",
    "filing-to-issuer link status for all 212 identifiers; no filing with a non-matching CIK is admitted",
@@ -313,7 +313,7 @@
    "Monte Carlo"
   ],
   "id": "US_DEPARTED_DATASET_ADMISSION_AUDIT_V1",
-  "startsAfter": "#241 is merged to main (its candidate files must be on main; this task never copies or edits them)",
+  "startsAfter": "#241 is merged to main AND the owner restores the withheld candidate observations to durable, owner-controlled non-public storage (#241 publishes aggregate findings only); this task never copies, edits or republishes them",
   "what": "outcome-blind per-identifier and per-session admission table built from #241's candidate panel, the sealed identity evidence and the pinned Finnhub filings, implementing AD1-AD8"
  },
  "notBuiltYet": [
@@ -389,7 +389,7 @@
   },
   "integration": {
    "path": "docs/us-readiness/us-factor-integration-readiness-v1.json",
-   "sha256": "4c6a7a9e0f02ac0f3e843675fca7d0c97936df92bfacfff3ac259de92cb8515b"
+   "sha256": "a835f381f362f3aab189f76c4ecd98744cab0cbe73cc1d294cbeb631a8b53b97"
   },
   "multifactor": {
    "path": "docs/us-readiness/us-multifactor-pit-readiness-v1.json",

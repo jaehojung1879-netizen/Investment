@@ -3,26 +3,26 @@
     python scripts/audit_us_factor_integration_readiness.py --workspace <dir> [--extract]
 
 Outcome-blind and read-only. It reads:
-* the candidate departed-security price evidence of PR #241, from git OBJECTS pinned by commit and blob/content hash
-  (`docs/us-readiness/us-departed-public-price-recovery-v1.json` and the candidate observation panel). It never writes, merges or
-  re-downloads anything of #241, and nothing here admits a candidate price;
+* the SANITIZED departed-security evidence of PR #241 (head 1e016bd9), from git objects pinned by commit and blob id: the recovery
+  report `docs/us-readiness/us-departed-public-price-recovery-v1.json` and the redistribution audit. That head carries no third-party
+  price payload, and neither does anything read here: no raw archive, no observation panel, no superseded commit. It never writes,
+  merges or re-downloads anything of #241, and nothing here admits a candidate price;
 * the pinned Finnhub filings (signal-history 704d7db6, blob-verified by the Phase 3 reader) to count, per departed identifier, whether a
   filing became visible inside its membership window and how many filing CIKs a ticker carries;
 * the committed factor inventory (`docs/us-readiness/us-factor-inventory-v1.json`).
 It reads no forward price, return, label, model or portfolio: price use is the EXISTENCE of a positive close on a date and which
-publisher basis carried it.
+publisher bases #241 counted for an identifier, both as recorded in its aggregate report.
 Writes `docs/us-readiness/us-factor-integration-readiness-v1.json`.
 """
 from __future__ import annotations
 
 import argparse
-import gzip
 import hashlib
 import importlib.util
 import json
 import subprocess
 import sys
-from collections import Counter, defaultdict
+from collections import Counter
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -30,10 +30,10 @@ OUT = ROOT / "docs/us-readiness/us-factor-integration-readiness-v1.json"
 INVENTORY = ROOT / "docs/us-readiness/us-factor-inventory-v1.json"
 
 PR241 = {
-    "pullRequest": 241, "commit": "a6da327fee14b39e2cbdd7fe3dc0a0380f5b3f51", "state": "OPEN_DRAFT_NOT_MERGED",
-    "report": {"path": "docs/us-readiness/us-departed-public-price-recovery-v1.json", "gitBlob": "facad759bbcfcbbeea1d9bcb8670503c681c5c03"},
-    "panel": {"path": "candidate_data/us-departed-public-price-v1/observations-41ef2da7e8bc6ee7a07ec58635e08a25452c7228cfb33d269a22e266f0b7aa59.json.gz",
-              "sha256": "41ef2da7e8bc6ee7a07ec58635e08a25452c7228cfb33d269a22e266f0b7aa59"},
+    "pullRequest": 241, "commit": "1e016bd9a4ff746a9b69958624182c6287301f51", "state": "OPEN_DRAFT_NOT_MERGED",
+    "payload": "SANITIZED_NO_PRICE_PAYLOAD (raw archive and observation panel are not in this head)",
+    "report": {"path": "docs/us-readiness/us-departed-public-price-recovery-v1.json", "gitBlob": "2b29aed4a80693365da7cfbb2537d6730c5d9f34"},
+    "redistributionAudit": {"path": "docs/us-readiness/us-departed-price-redistribution-audit-v1.json", "gitBlob": "d8d7cc95f25b27a660df9e5836c185a4ad1fbbe3"},
 }
 
 REQUIREMENTS = {
@@ -90,35 +90,37 @@ def blob_id(raw: bytes) -> str:
 
 
 def load_pr241():
-    report_raw = git_bytes(PR241["commit"], PR241["report"]["path"])
-    if blob_id(report_raw) != PR241["report"]["gitBlob"]:
-        raise ValueError("PR241_REPORT_BLOB_MISMATCH")
-    panel_raw = git_bytes(PR241["commit"], PR241["panel"]["path"])
-    if hashlib.sha256(panel_raw).hexdigest() != PR241["panel"]["sha256"]:
-        raise ValueError("PR241_PANEL_HASH_MISMATCH")
-    return json.loads(report_raw), json.loads(gzip.decompress(panel_raw))
+    out = {}
+    for key in ("report", "redistributionAudit"):
+        raw = git_bytes(PR241["commit"], PR241[key]["path"])
+        if blob_id(raw) != PR241[key]["gitBlob"]:
+            raise ValueError("PR241_%s_BLOB_MISMATCH" % key.upper())
+        out[key] = json.loads(raw)
+    return out["report"], out["redistributionAudit"]
 
 
-def basis_classes(panel: dict) -> dict:
-    """Per membership session, which publisher bases carry a qualified close. Existence only; no value is used."""
-    sources = defaultdict(set)
-    last = {}
-    fields = panel["rowFields"]
-    i_t, i_s, i_d = fields.index("auditIdentifier"), fields.index("source"), fields.index("date")
-    for row in panel["rows"]:
-        sources[(row[i_t], row[i_d])].add(row[i_s])
-        last[row[i_t]] = max(last.get(row[i_t], ""), row[i_d])
+def basis_classes(report: dict) -> dict:
+    """Per identifier with qualified coverage, which publisher bases #241 counted. Aggregate report only; no price is read.
+
+    Session-level basis counts need the observation panel, which is not public in the sanitized head, so they are UNMEASURED here."""
     classes = Counter()
-    for srcs in sources.values():
-        if srcs & {"D", "F"}:
-            classes["ORIGINAL_OHLC_WITH_SEPARATE_ADJ_CLOSE_D_OR_F"] += 1
-        elif "A" in srcs:
+    for item in report["inventory"]:
+        if item["qualifiedPriceCoverage"] == "NONE":
+            continue
+        counted = {s["source"] for s in item["candidateSources"] if s["countedInQualifiedCoverage"]}
+        if counted & {"D", "F"}:
+            classes["HAS_ORIGINAL_OHLC_WITH_SEPARATE_ADJ_CLOSE_D_OR_F"] += 1
+        elif "A" in counted:
             classes["BACK_ADJUSTED_ONLY_A_EVENTS_STRIPPED"] += 1
         else:
             classes["ROUNDED_CLOSE_ONLY_E_NO_VOLUME"] += 1
     total = sum(classes.values())
-    return {"sessions": total, "byBasis": {k: {"sessions": v, "pct": round(100.0 * v / total, 2)} for k, v in sorted(classes.items())},
-            "meaning": "a session is classed by the best basis present; D/F Close is still a vendor series whose split basis must be verified"}, last
+    return {"identifiers": total, "byBasis": {k: {"identifiers": v, "pct": round(100.0 * v / total, 2)} for k, v in sorted(classes.items())},
+            "sessionLevelBasisCounts": "UNMEASURED: needs the observation panel, which the sanitized #241 head does not publish",
+            "sourceBases": {"A": "BACK_ADJUSTED_OHLCV_WIKI_FIRST_YAHOO_FALLBACK", "D": "YAHOO_OHLC_WITH_SEPARATE_ADJ_CLOSE",
+                            "E": "YFINANCE_CLOSE_ROUNDED_2DP_UNPINNED_ADJUSTMENT_DEFAULT", "F": "YAHOO_OHLC_WITH_SEPARATE_ADJ_CLOSE"},
+            "meaning": ("an identifier is classed by the best basis #241 counted for it; a D/F identifier may still have A-only sessions, and D/F Close "
+                        "is a vendor series whose split basis must still be verified")}
 
 
 def fundamentals_link(inventory_rows: list[dict], workspace: Path) -> dict:
@@ -148,7 +150,7 @@ def fundamentals_link(inventory_rows: list[dict], workspace: Path) -> dict:
                         "price panel existed. Member CIK is known only from 2023-04-13 snapshots, so most links rest on ticker plus dates")}
 
 
-def factor_matrix(inventory: dict, pr241: dict, basis: dict, last_obs: dict, fundamentals: dict) -> list[dict]:
+def factor_matrix(inventory: dict) -> list[dict]:
     group_of = {fid: g for g, spec in GROUPS.items() for fid in spec["ids"]}
     ids = [f["id"] for f in inventory["factors"]]
     missing = sorted(set(ids) - set(group_of))
@@ -166,10 +168,9 @@ def factor_matrix(inventory: dict, pr241: dict, basis: dict, last_obs: dict, fun
     return out
 
 
-def requirement_status(pr241: dict, basis: dict, last_obs: dict, fundamentals: dict, inventory: dict) -> dict:
+def requirement_status(pr241: dict, basis: dict, fundamentals: dict) -> dict:
     rows = pr241["inventory"]
     covered = [r for r in rows if r["qualifiedPriceCoverage"] != "NONE"]
-    reaching = sum(1 for r in covered if last_obs.get(r["auditIdentifier"]) == r["expectedPricingWindow"]["last"])
     return {
         "HISTORICAL_SECURITY_IDENTITY": {
             "state": "CANDIDATE_NAME_CORROBORATED_NOT_PERMANENT_ID",
@@ -179,14 +180,16 @@ def requirement_status(pr241: dict, basis: dict, last_obs: dict, fundamentals: d
             "blocksAdmission": True},
         "SPLIT_DIVIDEND_LINEAGE": {
             "state": "UNRESOLVED_FOR_ALL_212",
-            "measured": {"corporateActionUnresolvedIdentifiers": pr241["corporateActionUnresolvedIdentifiers"], "recoveredSessionsByBasis": basis},
-            "consequence": ("back-adjusted-only and rounded-close-only sessions cannot yield an as-traded price, so price-denominated value, traded "
-                            "value and volume features stay missing there even after identity is verified"),
+            "measured": {"corporateActionUnresolvedIdentifiers": pr241["corporateActionUnresolvedIdentifiers"], "coveredIdentifiersByBasis": basis},
+            "consequence": ("back-adjusted-only and rounded-close-only series cannot yield an as-traded price, so price-denominated value, traded "
+                            "value and volume features stay missing for those identifiers even after identity is verified"),
             "blocksAdmission": True},
         "TERMINAL_CONSIDERATION": {
             "state": "UNRESOLVED_FOR_ALL_212",
             "measured": {"terminalConsiderationUnresolvedIdentifiers": pr241["terminalConsiderationUnresolvedIdentifiers"],
-                         "identifiersWithQualifiedCoverage": len(covered), "observationsReachLastMembershipSession": reaching,
+                         "identifiersWithQualifiedCoverage": len(covered),
+                         "identifiersWithEveryMemberSessionObserved": sum(1 for r in rows if r["qualifiedPriceCoverage"] == "FULL"),
+                         "observationsReachLastMembershipSession": "UNMEASURED_FROM_PUBLIC_EVIDENCE: needs per-session dates, which the sanitized head does not publish",
                          "qualifiedObservationWindow": [pr241["qualifiedMembershipFirstDate"], pr241["qualifiedMembershipLastDate"]],
                          "afterRepairImprovement2024to2026": "0 (no candidate observation after 2023-10-10)"},
             "consequence": "a forward window that runs past a name's last candidate observation has no resolved endpoint; it is UNRESOLVED, never zero",
@@ -207,8 +210,8 @@ def requirement_status(pr241: dict, basis: dict, last_obs: dict, fundamentals: d
 
 def build(workspace: Path) -> dict:
     inventory = json.loads(INVENTORY.read_text(encoding="utf-8"))
-    pr241, panel = load_pr241()
-    basis, last_obs = basis_classes(panel)
+    pr241, redistribution = load_pr241()
+    basis = basis_classes(pr241)
     fundamentals = fundamentals_link(pr241["inventory"], workspace)
     annual = {y: {"beforePct": v["beforeMissingPricePanelsPct"], "candidateAfterPct": v["afterCandidateMissingObservationsPct"]}
               for y, v in pr241["annualMissingness"].items()}
@@ -222,11 +225,13 @@ def build(workspace: Path) -> dict:
                                            r["missingSessions"] for r in pr241["inventory"]),
                                        "readAs": ("72.90% = candidate positive-close OBSERVATIONS on missing member sessions. It is not validated total-return "
                                                   "coverage, not identity verification, not terminal economics, and not the end of survivorship bias")},
-                          "annualWeeklyMemberDateMissingness": annual, "studyReady": pr241["studyReady"]},
+                          "annualWeeklyMemberDateMissingness": annual, "studyReady": pr241["studyReady"],
+                          "licensing": pr241["licensing"], "redistributionAudit": {"reproducibility": redistribution["reproducibility"],
+                                                                                   "aggregateFindings": redistribution["aggregateFindings"]}},
         "requirements": REQUIREMENTS, "labelRequirements": LABEL_REQUIREMENTS,
-        "requirementStatus": requirement_status(pr241, basis, last_obs, fundamentals, inventory),
+        "requirementStatus": requirement_status(pr241, basis, fundamentals),
         "groups": {g: {"needs": s["needs"], "why": s["why"], "factorIds": s["ids"]} for g, s in GROUPS.items()},
-        "factorMatrix": factor_matrix(inventory, pr241, basis, last_obs, fundamentals),
+        "factorMatrix": factor_matrix(inventory),
         "inputs": {"inventory": {"path": str(INVENTORY.relative_to(ROOT)), "sha256": hashlib.sha256(INVENTORY.read_bytes()).hexdigest()},
                    "fundamentalsCommit": "704d7db6d5b00def771aba5d2665d0846d6bc776"},
     }

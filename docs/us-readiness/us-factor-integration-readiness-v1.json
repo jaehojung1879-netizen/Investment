@@ -1222,7 +1222,7 @@
   "fundamentalsCommit": "704d7db6d5b00def771aba5d2665d0846d6bc776",
   "inventory": {
    "path": "docs/us-readiness/us-factor-inventory-v1.json",
-   "sha256": "d88d93bb15015a0e86853877fa330eafbb8a9b969da3f62977d65742d20fd3bd"
+   "sha256": "33553625c761ffe80215bb98d88fadcbcd1d919666a3a4a4ec433bedb0622d5c"
   }
  },
  "labelRequirements": [
@@ -1290,20 +1290,22 @@
     "candidateAfterPct": 0.5374
    }
   },
-  "commit": "a6da327fee14b39e2cbdd7fe3dc0a0380f5b3f51",
+  "commit": "1e016bd9a4ff746a9b69958624182c6287301f51",
   "coverageMeaning": "Qualified positive-close existence under historical issuer-name and strictly-earlier snapshot corroboration. Not total-return readiness. Sources/bases not concatenated. G unknown provider excluded. Partial includes any missing expected session. Weekly before exactly reproduces sealed NO_PANEL; after measures absent candidate observations, not a rewritten sealed audit.",
   "headline": {
    "missingMembershipSessionsBefore": 256402,
    "readAs": "72.90% = candidate positive-close OBSERVATIONS on missing member sessions. It is not validated total-return coverage, not identity verification, not terminal economics, and not the end of survivorship bias",
    "recoveredMembershipSessions": 186910
   },
-  "panel": {
-   "path": "candidate_data/us-departed-public-price-v1/observations-41ef2da7e8bc6ee7a07ec58635e08a25452c7228cfb33d269a22e266f0b7aa59.json.gz",
-   "sha256": "41ef2da7e8bc6ee7a07ec58635e08a25452c7228cfb33d269a22e266f0b7aa59"
-  },
+  "licensing": "Raw and derived redistribution UNVERIFIED for every source. No third-party price payload is included in the proposed PR branch history. Original measured findings and checksums retained; durable owner-controlled non-public preservation is pending.",
+  "payload": "SANITIZED_NO_PRICE_PAYLOAD (raw archive and observation panel are not in this head)",
   "pullRequest": 241,
+  "redistributionAudit": {
+   "aggregateFindings": "Historical measured counts, date bounds, quality statistics and provenance retained; not a substitute downloadable price database",
+   "reproducibility": "Exact artifacts verified locally; public reacquisition NOT_RETESTED and not guaranteed; workspace retention is ephemeral"
+  },
   "report": {
-   "gitBlob": "facad759bbcfcbbeea1d9bcb8670503c681c5c03",
+   "gitBlob": "2b29aed4a80693365da7cfbb2537d6730c5d9f34",
    "path": "docs/us-readiness/us-departed-public-price-recovery-v1.json"
   },
   "state": "OPEN_DRAFT_NOT_MERGED",
@@ -1401,26 +1403,33 @@
   },
   "SPLIT_DIVIDEND_LINEAGE": {
    "blocksAdmission": true,
-   "consequence": "back-adjusted-only and rounded-close-only sessions cannot yield an as-traded price, so price-denominated value, traded value and volume features stay missing there even after identity is verified",
+   "consequence": "back-adjusted-only and rounded-close-only series cannot yield an as-traded price, so price-denominated value, traded value and volume features stay missing for those identifiers even after identity is verified",
    "measured": {
     "corporateActionUnresolvedIdentifiers": 212,
-    "recoveredSessionsByBasis": {
+    "coveredIdentifiersByBasis": {
      "byBasis": {
       "BACK_ADJUSTED_ONLY_A_EVENTS_STRIPPED": {
-       "pct": 50.91,
-       "sessions": 95157
+       "identifiers": 113,
+       "pct": 64.57
       },
-      "ORIGINAL_OHLC_WITH_SEPARATE_ADJ_CLOSE_D_OR_F": {
-       "pct": 39.62,
-       "sessions": 74045
+      "HAS_ORIGINAL_OHLC_WITH_SEPARATE_ADJ_CLOSE_D_OR_F": {
+       "identifiers": 59,
+       "pct": 33.71
       },
       "ROUNDED_CLOSE_ONLY_E_NO_VOLUME": {
-       "pct": 9.47,
-       "sessions": 17708
+       "identifiers": 3,
+       "pct": 1.71
       }
      },
-     "meaning": "a session is classed by the best basis present; D/F Close is still a vendor series whose split basis must be verified",
-     "sessions": 186910
+     "identifiers": 175,
+     "meaning": "an identifier is classed by the best basis #241 counted for it; a D/F identifier may still have A-only sessions, and D/F Close is a vendor series whose split basis must still be verified",
+     "sessionLevelBasisCounts": "UNMEASURED: needs the observation panel, which the sanitized #241 head does not publish",
+     "sourceBases": {
+      "A": "BACK_ADJUSTED_OHLCV_WIKI_FIRST_YAHOO_FALLBACK",
+      "D": "YAHOO_OHLC_WITH_SEPARATE_ADJ_CLOSE",
+      "E": "YFINANCE_CLOSE_ROUNDED_2DP_UNPINNED_ADJUSTMENT_DEFAULT",
+      "F": "YAHOO_OHLC_WITH_SEPARATE_ADJ_CLOSE"
+     }
     }
    },
    "state": "UNRESOLVED_FOR_ALL_212"
@@ -1430,8 +1439,9 @@
    "consequence": "a forward window that runs past a name's last candidate observation has no resolved endpoint; it is UNRESOLVED, never zero",
    "measured": {
     "afterRepairImprovement2024to2026": "0 (no candidate observation after 2023-10-10)",
+    "identifiersWithEveryMemberSessionObserved": 5,
     "identifiersWithQualifiedCoverage": 175,
-    "observationsReachLastMembershipSession": 10,
+    "observationsReachLastMembershipSession": "UNMEASURED_FROM_PUBLIC_EVIDENCE: needs per-session dates, which the sanitized head does not publish",
     "qualifiedObservationWindow": [
      "2013-01-02",
      "2023-03-27"

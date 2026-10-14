@@ -632,7 +632,7 @@ def roadmap() -> dict:
                 {"id": "AD2_IDENTITY", "rule": "a session is admitted only if its security is tied to the member issuer by filing CIK, explicit '(Previously X)' or identical name at the switch; identity holds and ticker-only matches stay out",
                  "measure": "per-identifier status ADMITTED / IDENTITY_HOLD / NAME_ONLY / NONE with counts that reproduce #241's 5 / 170 / 37 before any reclassification"},
                 {"id": "AD3_SINGLE_BASIS", "rule": "each feature and label reads ONE publisher basis per security; no splicing; back-adjusted-only or rounded-close-only sessions never feed as-traded features",
-                 "measure": "per-session basis class published (currently D/F 74,045 / A-only 95,157 / E-only 17,708 sessions); zero rows combine bases"},
+                 "measure": "per-session basis class published (public evidence gives it per identifier only: of 175 covered, D/F 59 / A-only 113 / E-only 3); zero rows combine bases"},
                 {"id": "AD4_LINEAGE", "rule": "split and distribution events dated and cited for every admitted security; total-return labels use them once, never twice",
                  "measure": "count of admitted securities with event lineage; adjusted-vs-rebuilt level check per security"},
                 {"id": "AD5_TERMINAL", "rule": "every H63 window that runs past a security's last observation is UNRESOLVED unless a cited terminal consideration exists",
@@ -743,12 +743,13 @@ def roadmap() -> dict:
             "rule": "a repaired historical panel is never described as unseen, out-of-sample or holdout data"},
         "nextImplementationTask": {
             "id": "US_DEPARTED_DATASET_ADMISSION_AUDIT_V1",
-            "startsAfter": "#241 is merged to main (its candidate files must be on main; this task never copies or edits them)",
+            "startsAfter": ("#241 is merged to main AND the owner restores the withheld candidate observations to durable, owner-controlled non-public "
+                            "storage (#241 publishes aggregate findings only); this task never copies, edits or republishes them"),
             "what": "outcome-blind per-identifier and per-session admission table built from #241's candidate panel, the sealed identity evidence and the pinned Finnhub filings, implementing AD1-AD8",
             "acceptanceCriteria": [
                 "reproduces #241 exactly before reclassifying: 212 identifiers, 186,910 covered and 69,492 missing member sessions, FULL/PARTIAL/NONE = 5/170/37",
                 "every session carries exactly one of ADMITTED, IDENTITY_HOLD, NAME_ONLY, BASIS_UNRESOLVED, NO_OBSERVATION; counts sum to 256,402",
-                "per-session basis class counts reproduce 74,045 / 95,157 / 17,708",
+                "per-identifier basis classes reproduce 59 / 113 / 3 of the 175 covered identifiers; per-session basis counts are published for the first time",
                 "zero rows splice two publisher bases; a test feeds a spliced series and expects refusal",
                 "every H63 window that crosses a last observation without cited terminal consideration is UNRESOLVED; per-year UNRESOLVED shares published",
                 "filing-to-issuer link status for all 212 identifiers; no filing with a non-matching CIK is admitted",

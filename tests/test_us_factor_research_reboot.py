@@ -139,8 +139,13 @@ def test_integration_report_admits_nothing_and_every_return_reading_needs_termin
             assert row["labelRequires"] == report["labelRequirements"]
     headline = report["pr241Evidence"]["headline"]
     assert headline["recoveredMembershipSessions"] == 186910 and headline["missingMembershipSessionsBefore"] == 256402
-    basis = report["requirementStatus"]["SPLIT_DIVIDEND_LINEAGE"]["measured"]["recoveredSessionsByBasis"]
-    assert sum(v["sessions"] for v in basis["byBasis"].values()) == basis["sessions"] == 186910
+    basis = report["requirementStatus"]["SPLIT_DIVIDEND_LINEAGE"]["measured"]["coveredIdentifiersByBasis"]
+    assert sum(v["identifiers"] for v in basis["byBasis"].values()) == basis["identifiers"] == 175
+    assert basis["sessionLevelBasisCounts"].startswith("UNMEASURED")
+    # only the sanitized #241 head is referenced: no superseded commit, raw archive or observation panel
+    assert report["pr241Evidence"]["commit"] == "1e016bd9a4ff746a9b69958624182c6287301f51"
+    text = INTEGRATION.read_text()
+    assert "a6da327f" not in text and "observations-" not in text and "raw-0fa0" not in text
 
 
 def test_roadmap_blocks_any_forward_return_reading_until_admission():
